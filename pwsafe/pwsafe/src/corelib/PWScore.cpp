@@ -101,30 +101,28 @@ void PWScore::SetApplicationNameAndVersion(const stringT &appName,
 // used in std::sort in SortDependents below.
 static bool GTUCompare(const StringX &elem1, const StringX &elem2)
 {
-  StringX g1, t1, u1, g2, t2, u2, tmp1, tmp2;
-
   StringX::size_type i1 = elem1.find(_T(':'));
-  g1 = (i1 == StringX::npos) ? elem1 : elem1.substr(0, i1);
+  StringX g1 = (i1 == StringX::npos) ? elem1 : elem1.substr(0, i1);
   StringX::size_type i2 = elem2.find(_T(':'));
-  g2 = (i2 == StringX::npos) ? elem2 : elem2.substr(0, i2);
+  StringX g2 = (i2 == StringX::npos) ? elem2 : elem2.substr(0, i2);
   if (g1 != g2)
     return g1.compare(g2) < 0;
 
-  tmp1 = elem1.substr(g1.length() + 1);
-  tmp2 = elem2.substr(g2.length() + 1);
+  StringX tmp1 = elem1.substr(g1.length() + 1);
+  StringX tmp2 = elem2.substr(g2.length() + 1);
   i1 = tmp1.find(_T(':'));
-  t1 = (i1 == StringX::npos) ? tmp1 : tmp1.substr(0, i1 - 1);
+  StringX t1 = (i1 == StringX::npos) ? tmp1 : tmp1.substr(0, i1);
   i2 = tmp2.find(_T(':'));
-  t2 = (i2 == StringX::npos) ? tmp2 : tmp2.substr(0, i2 - 1);
+  StringX t2 = (i2 == StringX::npos) ? tmp2 : tmp2.substr(0, i2);
   if (t1 != t2)
     return t1.compare(t2) < 0;
 
   tmp1 = tmp1.substr(t1.length() + 1);
   tmp2 = tmp2.substr(t2.length() + 1);
   i1 = tmp1.find(_T(':'));
-  u1 = (i1 == StringX::npos) ? tmp1 : tmp1.substr(0, i1 - 1);
+  StringX u1 = (i1 == StringX::npos) ? tmp1 : tmp1.substr(0, i1);
   i2 = tmp2.find(_T(':'));
-  u2 = (i2 == StringX::npos) ? tmp2 : tmp2.substr(0, i2 - 1);
+  StringX u2 = (i2 == StringX::npos) ? tmp2 : tmp2.substr(0, i2);
   return u1.compare(u2) < 0;
 }
 
