@@ -36,9 +36,9 @@ void CReport::StartReport(LPCTSTR tcAction, const stringT &csDataBase)
   m_tcAction = tcAction;
   m_csDataBase = csDataBase;
 
-  stringT cs_title;
-  Format(cs_title, IDSC_REPORT_TITLE1, tcAction,
-                  PWSUtil::GetTimeStamp());
+  stringT cs_title, sTimeStamp;
+  PWSUtil::GetTimeStamp(sTimeStamp);
+  Format(cs_title, IDSC_REPORT_TITLE1, tcAction, sTimeStamp.c_str());
   WriteLine();
   WriteLine(cs_title);
   Format(cs_title, IDSC_REPORT_TITLE2, csDataBase.c_str());

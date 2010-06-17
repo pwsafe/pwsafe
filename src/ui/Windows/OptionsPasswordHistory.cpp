@@ -119,7 +119,7 @@ BOOL COptionsPasswordHistory::OnInitDialog()
 
   m_pToolTipCtrl = new CToolTipCtrl;
   if (!m_pToolTipCtrl->Create(this, TTS_BALLOON | TTS_NOPREFIX)) {
-    TRACE(L"Unable To create Property Page ToolTip\n");
+    pws_os::Trace(L"Unable To create Property Page ToolTip\n");
     delete m_pToolTipCtrl;
     m_pToolTipCtrl = NULL;
     return TRUE;

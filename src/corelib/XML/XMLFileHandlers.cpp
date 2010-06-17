@@ -260,11 +260,11 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
           if (m_ctype >= PWSfileV3::HDR_LAST) {
             m_ukhxl.push_back(ukxfe);
 #ifdef NOTDEF // _DEBUG
-            stringT cs_timestamp;
-            cs_timestamp = PWSUtil::GetTimeStamp();
-            pws_os::Trace(_T("%s: Header has unknown field: %02x, length %d/0x%04x, value:\n",
-            cs_timestamp, m_ctype, m_fieldlen, m_fieldlen);
-            pws_os::HexDump(m_pfield, m_fieldlen, cs_timestamp);
+            stringT stimestamp;
+            PWSUtil::GetTimeStamp(stimestamp);
+            pws_os::Trace(_T("Header has unknown field: %02x, length %d/0x%04x, value:\n",
+                          m_ctype, m_fieldlen, m_fieldlen);
+            pws_os::HexDump(m_pfield, m_fieldlen, stimestamp);
 #endif /* _DEBUG */
           } else {
             m_bDatabaseHeaderErrors = true;
@@ -730,12 +730,12 @@ void XMLFileHandlers::AddEntries()
         vi_IterUXRFE++) {
           UnknownFieldEntry unkrfe = *vi_IterUXRFE;
 #ifdef NOTDEF // _DEBUG
-          stringT cs_timestamp;
-          cs_timestamp = PWSUtil::GetTimeStamp();
-          pws_os::Trace(_T("%s: Record %s, %s, %s has unknown field: %02x, length %d/0x%04x, value:\n",
-          cs_timestamp, cur_entry->group, cur_entry->title, cur_entry->username,
-          unkrfe.uc_Type, (int)unkrfe.st_length, (int)unkrfe.st_length);
-          pws_os::HexDump(unkrfe.uc_pUField, (int)unkrfe.st_length, cs_timestamp);
+          stringT stimestamp;
+          PWSUtil::GetTimeStamp(stimestamp);
+          pws_os::Trace(_T("Record %s, %s, %s has unknown field: %02x, length %d/0x%04x, value:\n",
+                        cur_entry->group, cur_entry->title, cur_entry->username,
+                        unkrfe.uc_Type, (int)unkrfe.st_length, (int)unkrfe.st_length);
+          pws_os::HexDump(unkrfe.uc_pUField, (int)unkrfe.st_length, stimestamp);
 #endif /* _DEBUG */
           ci_temp.SetUnknownField(unkrfe.uc_Type, (int)unkrfe.st_length, unkrfe.uc_pUField);
       }

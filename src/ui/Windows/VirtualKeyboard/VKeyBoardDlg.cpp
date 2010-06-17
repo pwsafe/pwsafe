@@ -215,10 +215,10 @@ bool CVKeyBoardDlg::IsOSKAvailable()
 #endif
   HINSTANCE OSK_module = LoadLibrary(dll_loc.c_str());
   if (OSK_module == NULL) {
-    TRACE(L"CVKeyBoardDlg::IsOSKAvailable - Unable to load OSK DLL. OSK not available.\n");
+    pws_os::Trace(L"CVKeyBoardDlg::IsOSKAvailable - Unable to load OSK DLL. OSK not available.\n");
     return false;
   } else {
-    TRACE(L"CVKeyBoardDlg::IsOSKAvailable - OSK DLL loaded OK.\n");
+    pws_os::Trace(L"CVKeyBoardDlg::IsOSKAvailable - OSK DLL loaded OK.\n");
 
 
     LP_OSK_GetKeyboardData pGetKBData  = (LP_OSK_GetKeyboardData)GetProcAddress(OSK_module,
@@ -236,7 +236,7 @@ bool CVKeyBoardDlg::IsOSKAvailable()
                   pGetKBData != NULL ? L"OK" : L"FAILED");
 
     if (pListKBs == NULL || pGetKBData == NULL || pOSKVersion == NULL)
-      TRACE(L"CVKeyBoardDlg::IsOSKAvailable - Unable to get all required OSK functions. OSK not available.\n");
+      pws_os::Trace(L"CVKeyBoardDlg::IsOSKAvailable - Unable to get all required OSK functions. OSK not available.\n");
     else if (pOSKVersion() == VK_DLL_VERSION) {
       bVKAvailable = true;
     } else if (!warnedAlready && !app.NoSysEnvWarnings()) {
@@ -317,7 +317,7 @@ bool CVKeyBoardDlg::IsOSKAvailable()
     goto exit;
   }
 
-  TRACE(L"CVKeyBoardDlg::IsOSKAvailable - No Unicode font installed. OSK not available.\n");
+  pws_os::Trace(L"CVKeyBoardDlg::IsOSKAvailable - No Unicode font installed. OSK not available.\n");
   if (!warnedAlready && !app.NoSysEnvWarnings()) {
     CGeneralMsgBox gmb;
     warnedAlready = true;
@@ -593,7 +593,7 @@ BOOL CVKeyBoardDlg::OnInitDialog()
 
   m_pToolTipCtrl = new CToolTipCtrl;
   if (!m_pToolTipCtrl->Create(this, TTS_ALWAYSTIP | TTS_BALLOON | TTS_NOPREFIX)) {
-    TRACE(L"Unable To create Advanced Dialog ToolTip\n");
+    pws_os::Trace(L"Unable To create Advanced Dialog ToolTip\n");
     delete m_pToolTipCtrl;
     m_pToolTipCtrl = NULL;
     return TRUE;
@@ -765,12 +765,12 @@ void CVKeyBoardDlg::OnKeys(UINT nID)
     iter_sc = m_map_stSC2Char.find(m_scancodes[nID - IDC_VKBBTN_KBD01]);
     if (iter_sc != m_map_stSC2Char.end()) {
       if (state2index[m_State] < 0) {
-        TRACE(L"OnKeys; Unknown state!");
+        pws_os::Trace(L"OnKeys; Unknown state!");
         ASSERT(0);
       }
       bDeadKeyPressed = iter_sc->second.bsDeadKey.test(state2index[m_State]);
     } else {
-      TRACE(L"OnKeys: Unknown scancode pressed!");
+      pws_os::Trace(L"OnKeys: Unknown scancode pressed!");
       ASSERT(0);
     }
   }
@@ -784,7 +784,7 @@ void CVKeyBoardDlg::OnKeys(UINT nID)
 
     Iter_MMap_DK2SCSSCC iter_DK2SCSSCC = m_stKBImpl.pmmapDK2SCSSCC->find(wc_temp);
     if (iter_DK2SCSSCC == m_stKBImpl.pmmapDK2SCSSCC->end()) {
-      TRACE(L"OnKeys; Unknown deadkey pressed!");
+      pws_os::Trace(L"OnKeys; Unknown deadkey pressed!");
       ASSERT(0);
     } else {
       m_wcDeadKey = wc_temp;
@@ -1267,7 +1267,7 @@ void CVKeyBoardDlg::SetNormalButtons()
       index = state2index[m_State];
 
     if (state2index[m_State] < 0) {
-      TRACE(L"SetButtons: Unknown state! (1)");
+      pws_os::Trace(L"SetButtons: Unknown state! (1)");
       ASSERT(0);
     }
 
@@ -1286,7 +1286,7 @@ void CVKeyBoardDlg::SetNormalButtons()
         iter_sc = m_map_stSC2Char.find(m_scancodes[i]);
         if (iter_sc != m_map_stSC2Char.end()) {
           if (index < 0) {
-            TRACE(L"SetButtons: Unknown state! (2)");
+            pws_os::Trace(L"SetButtons: Unknown state! (2)");
             ASSERT(0);
           } else {
             // Get scancode + shiftstate value
@@ -1354,7 +1354,7 @@ void CVKeyBoardDlg::SetNormalButtons()
     } else {
       if (index < 0) {
         wc_temp = (wchar_t)0;
-        TRACE(L"SetButtons: Unknown state! (3)");
+        pws_os::Trace(L"SetButtons: Unknown state! (3)");
         ASSERT(0);
       } else {
         wc_temp = iter_sc->second.wcChar[index];

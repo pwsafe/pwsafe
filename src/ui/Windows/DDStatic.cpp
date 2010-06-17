@@ -60,7 +60,7 @@ public:
     //  Only process the request if data has been dropped.
     SCODE sCode = COleDropSource::QueryContinueDrag(bEscapePressed, dwKeyState);
     if (sCode == DRAGDROP_S_DROP) {
-      TRACE(L"CStaticDropSource::QueryContinueDrag - dropped\n");
+      pws_os::Trace(L"CStaticDropSource::QueryContinueDrag - dropped\n");
       m_DDstatic.EndDrop();
     }
     return sCode;
@@ -81,25 +81,25 @@ public:
 
   DROPEFFECT StartDragging(RECT* rClient)
   {
-    //TRACE(L"CStaticDataSource::StartDragging\n");
+    //pws_os::Trace(L"CStaticDataSource::StartDragging\n");
 
     DelayRenderData(CF_UNICODETEXT);
     DelayRenderData(CF_TEXT);
 
-    //TRACE(L"CStaticDataSource::StartDragging - calling DoDragDrop\n");
+    //pws_os::Trace(L"CStaticDataSource::StartDragging - calling DoDragDrop\n");
     DROPEFFECT dropEffect = DoDragDrop(DROPEFFECT_COPY, rClient, m_pDropSource);
 
-    //TRACE(L"CStaticDataSource::StartDragging - returned from DoDragDrop, dropEffect=%d\n",
+    //pws_os::Trace(L"CStaticDataSource::StartDragging - returned from DoDragDrop, dropEffect=%d\n",
     //  dropEffect);
 
     if (m_DDstatic.m_hgDataTXT != NULL) {
-      //TRACE(L"CStaticDataSource::StartDragging - Unlock/Free m_hgDataTXT\n");
+      //pws_os::Trace(L"CStaticDataSource::StartDragging - Unlock/Free m_hgDataTXT\n");
       GlobalUnlock(m_DDstatic.m_hgDataTXT);
       GlobalFree(m_DDstatic.m_hgDataTXT);
       m_DDstatic.m_hgDataTXT = NULL;
     }
     if (m_DDstatic.m_hgDataUTXT != NULL) {
-      //TRACE(L"CStaticDataSource::StartDragging - Unlock/Free m_hgDataUTXT\n");
+      //pws_os::Trace(L"CStaticDataSource::StartDragging - Unlock/Free m_hgDataUTXT\n");
       GlobalUnlock(m_DDstatic.m_hgDataUTXT);
       GlobalFree(m_DDstatic.m_hgDataUTXT);
       m_DDstatic.m_hgDataUTXT = NULL;
@@ -301,7 +301,7 @@ void CDDStatic::OnMouseMove(UINT nFlags, CPoint point)
 
     // Start dragging
     m_bDropped = false;
-    //TRACE(L"CDDStatic::OnMouseMove: call m_pDataSource->StartDragging\n");
+    //pws_os::Trace(L"CDDStatic::OnMouseMove: call m_pDataSource->StartDragging\n");
     DROPEFFECT de = m_pDataSource->StartDragging(&rClient);
 
     if (de == DROPEFFECT_NONE) {
@@ -326,9 +326,9 @@ void CDDStatic::OnMouseMove(UINT nFlags, CPoint point)
         GlobalFree(m_hgDataUTXT);
         m_hgDataUTXT = NULL;
       }
-      TRACE(L"m_pDataSource->StartDragging() failed\n");
+      pws_os::Trace(L"m_pDataSource->StartDragging() failed\n");
     } else {
-      TRACE(L"CDDStatic::OnMouseMove() show cursor\n");
+      pws_os::Trace(L"CDDStatic::OnMouseMove() show cursor\n");
       while (ShowCursor(TRUE) < 0)
         ;
     }
@@ -404,7 +404,7 @@ void CDDStatic::SendToClipboard()
 
 BOOL CDDStatic::OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
 {
-  TRACE(L"CDDStatic::OnRenderGlobalData: %s; ci == %p\n",
+  pws_os::Trace(L"CDDStatic::OnRenderGlobalData: %s; ci == %p\n",
           lpFormatEtc->cfFormat == CF_UNICODETEXT ? L"CF_UNICODETEXT" : L"CF_TEXT",
           m_pci);
 
@@ -413,13 +413,13 @@ BOOL CDDStatic::OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
     return FALSE;
 
   if (m_hgDataTXT != NULL) {
-    TRACE(L"CDDStatic::OnRenderGlobalData - Unlock/Free m_hgDataTXT\n");
+    pws_os::Trace(L"CDDStatic::OnRenderGlobalData - Unlock/Free m_hgDataTXT\n");
     GlobalUnlock(m_hgDataTXT);
     GlobalFree(m_hgDataTXT);
     m_hgDataTXT = NULL;
   }
   if (m_hgDataUTXT != NULL) {
-    TRACE(L"CDDStatic::OnRenderGlobalData - Unlock/Free m_hgDataUTXT\n");
+    pws_os::Trace(L"CDDStatic::OnRenderGlobalData - Unlock/Free m_hgDataUTXT\n");
     GlobalUnlock(m_hgDataUTXT);
     GlobalFree(m_hgDataUTXT);
     m_hgDataUTXT = NULL;
@@ -428,7 +428,7 @@ BOOL CDDStatic::OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
   StringX cs_dragdata;
   if (m_pci == NULL) {
     if (m_groupname.empty()) {
-      TRACE(L"CDDStatic::OnRenderGlobalData - mpci == NULL\n");
+      pws_os::Trace(L"CDDStatic::OnRenderGlobalData - mpci == NULL\n");
       return FALSE;
     } else {
       cs_dragdata = m_groupname;
@@ -462,7 +462,7 @@ BOOL CDDStatic::OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
     // So is requested data!
     dwBufLen = (ilen + 1) * sizeof(wchar_t);
     lpszW = new WCHAR[ilen + 1];
-    TRACE(L"lpszW allocated %p, size %d\n", lpszW, dwBufLen);
+    pws_os::Trace(L"lpszW allocated %p, size %d\n", lpszW, dwBufLen);
 #if (_MSC_VER >= 1400)
     (void) wcsncpy_s(lpszW, ilen + 1, cs_dragdata.c_str(), ilen);
 #else
@@ -475,7 +475,7 @@ BOOL CDDStatic::OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
     dwBufLen = WideCharToMultiByte(CP_ACP, 0, lpszW, -1, NULL, 0, NULL, NULL);
     ASSERT(dwBufLen != 0);
     lpszA = new char[dwBufLen];
-    TRACE(L"lpszA allocated %p, size %d\n", lpszA, dwBufLen);
+    pws_os::Trace(L"lpszA allocated %p, size %d\n", lpszA, dwBufLen);
     WideCharToMultiByte(CP_ACP, 0, lpszW, -1, lpszA, dwBufLen, NULL, NULL);
     lpszW = NULL;
   }
@@ -493,7 +493,7 @@ BOOL CDDStatic::OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
 
   BOOL retval(FALSE);
   if (*phGlobal == NULL) {
-    //TRACE(L"CDDStatic::OnRenderGlobalData - Alloc global memory\n");
+    //pws_os::Trace(L"CDDStatic::OnRenderGlobalData - Alloc global memory\n");
     *phgData = GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, dwBufLen);
     ASSERT(*phgData != NULL);
     if (*phgData == NULL)
@@ -509,15 +509,15 @@ BOOL CDDStatic::OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
     *phGlobal = *phgData;
     retval = TRUE;
   } else {
-    TRACE(L"CDDStatic::OnRenderGlobalData - *phGlobal NOT NULL!\n");
+    pws_os::Trace(L"CDDStatic::OnRenderGlobalData - *phGlobal NOT NULL!\n");
     SIZE_T inSize = GlobalSize(*phGlobal);
     SIZE_T ourSize = GlobalSize(*phgData);
     if (inSize < ourSize) {
       // Pre-allocated space too small.  Not allowed to increase it - FAIL
-      TRACE(L"CDDStatic::OnRenderGlobalData - NOT enough room - FAIL\n");
+      pws_os::Trace(L"CDDStatic::OnRenderGlobalData - NOT enough room - FAIL\n");
     } else {
       // Enough room - copy our data into supplied area
-      TRACE(L"CDDStatic::OnRenderGlobalData - enough room - copy our data\n");
+      pws_os::Trace(L"CDDStatic::OnRenderGlobalData - enough room - copy our data\n");
       LPVOID pInGlobalLock = GlobalLock(*phGlobal);
       ASSERT(pInGlobalLock != NULL);
       if (pInGlobalLock == NULL)
@@ -533,9 +533,9 @@ bad_return:
   // Finished with buffer - trash it
   trashMemory(lpDataBuffer, dwBufLen);
   // Free the strings (only one is actually in use)
-  TRACE(L"lpszA freed %p\n", lpszA);
+  pws_os::Trace(L"lpszA freed %p\n", lpszA);
   delete[] lpszA;
-  TRACE(L"lpszW freed %p\n", lpszW);
+  pws_os::Trace(L"lpszW freed %p\n", lpszW);
   delete[] lpszW;
   // Since lpDataBuffer pointed to one of the above - just zero the pointer
   lpDataBuffer = NULL;
@@ -543,17 +543,17 @@ bad_return:
   // If retval == TRUE, recipient is responsible for freeing the global memory
   // if D&D succeeds (see after StartDragging in OnMouseMove)
   if (retval == FALSE) {
-    TRACE(L"CDDStatic::OnRenderGlobalData - returning FALSE!\n");
+    pws_os::Trace(L"CDDStatic::OnRenderGlobalData - returning FALSE!\n");
     if (lpData != NULL) {
       GlobalFree(*phgData);
       *phgData = NULL;
     }
   } else {
-    TRACE(L"CDDStatic::OnRenderGlobalData - D&D Data:");
+    pws_os::Trace(L"CDDStatic::OnRenderGlobalData - D&D Data:");
     if (lpFormatEtc->cfFormat == CF_UNICODETEXT) {
-      TRACE(L"\"%s\"\n", (LPWSTR)lpData);  // we are Unicode, data is Unicode
+      pws_os::Trace(L"\"%s\"\n", (LPWSTR)lpData);  // we are Unicode, data is Unicode
     } else {
-      TRACE(L"\"%S\"\n", (LPSTR)lpData);  // we are Unicode, data is NOT Unicode
+      pws_os::Trace(L"\"%S\"\n", (LPSTR)lpData);  // we are Unicode, data is NOT Unicode
     }
   }
   // Unlock our buffer

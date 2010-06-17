@@ -24,6 +24,8 @@
 #include "stdafx.h"
 #include "Shortcut.h"
 
+#include "os/debug.h"
+
 #ifdef _DEBUG
 #undef THIS_FILE
 static char THIS_FILE[]=__FILE__;
@@ -125,7 +127,7 @@ BOOL CShortcut::CreateShortCut(const CString &LnkTarget,
         hr = psl->SetIconLocation(IconLocation, IconIndex);
 #ifdef _DEBUG
         if (FAILED(hr))
-          TRACE(L"IconLocation not changed!\n");
+          pws_os::Trace(L"IconLocation not changed!\n");
 #endif
       }
 
@@ -138,7 +140,7 @@ BOOL CShortcut::CreateShortCut(const CString &LnkTarget,
     psl->Release();
   } 
 
-  TRACE(bRet ? L"Lnk Written!\n" :
+  pws_os::Trace(bRet ? L"Lnk Written!\n" :
                L"Lnk NOT Written! CreateShortCut(...) failed!\n");
   return bRet;
 }
@@ -201,10 +203,10 @@ BOOL CShortcut::DeleteShortCut(const CString &LnkName, UINT SpecialFolder)
   int bD = SHFileOperation(&FIO);
 
   if (!bD) {
-    TRACE(L"Lnk Deleted!\n");
+    pws_os::Trace(L"Lnk Deleted!\n");
     return TRUE;
   } else {
-    TRACE(L"Lnk NOT Deleted! DeleteShortCut(...) FAILED!\n");
+    pws_os::Trace(L"Lnk NOT Deleted! DeleteShortCut(...) FAILED!\n");
     return FALSE;
   }
 }

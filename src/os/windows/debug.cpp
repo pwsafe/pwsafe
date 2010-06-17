@@ -12,6 +12,7 @@
 
 // TRACE replacement
 #include "../debug.h"
+#include "../../corelib/util.h"
 #include <wtypes.h>
 
 #if defined(_DEBUG) || defined(DEBUG)
@@ -19,26 +20,60 @@
 #include <stdio.h>
 
 // Debug output - Same usage as MFC TRACE
+// Adds timestamp to start of every piece of debug output
 void pws_os::Trace(LPCTSTR lpszFormat, ...)
 {
   va_list args;
   va_start(args, lpszFormat);
 
+  stringT sTimeStamp;
+  PWSUtil::GetTimeStamp(sTimeStamp);
+
   TCHAR szBuffer[512];
   int nBuf = _vsntprintf(szBuffer, sizeof(szBuffer) / sizeof(TCHAR),
                         lpszFormat, args);
   _ASSERT(nBuf > -1);
-  if (nBuf > -1)
-    OutputDebugString(szBuffer);
-  else
-    OutputDebugString(_T("pws_os::Trace buffer overflow\n"));
+
+  const TCHAR szErrorMsg[] = _T("pws_os::Trace buffer overflow\n");
+  const size_t N = _tcslen(nBuf > -1 ? szBuffer : szErrorMsg) + sTimeStamp.length() + 2;
+  TCHAR *szDebugString = new TCHAR[N];
+
+#if (_MSC_VER >= 1400)
+  _tcscpy_s(szDebugString, N, sTimeStamp.c_str());
+  _tcscat_s(szDebugString, N, _T(" "));
+  _tcscat_s(szDebugString, N, nBuf > -1 ? szBuffer : szErrorMsg);
+#else
+  _tcscpy(szDebugString, sTimeStamp.c_str());
+  _tcscat(szDebugString, _T(" "));
+  _tcscpy(szDebugString, nBuf > -1 ? szBuffer : szErrorMsg);
+#endif
+
+  OutputDebugString(szDebugString);
+  delete szDebugString;
 
   va_end(args);
 }
 
 void pws_os::Trace0(LPCTSTR lpszFormat)
 {
-  OutputDebugString(lpszFormat);
+  stringT sTimeStamp;
+  PWSUtil::GetTimeStamp(sTimeStamp);
+
+  const size_t N = _tcslen(lpszFormat) + sTimeStamp.length() + 2;
+  TCHAR *szDebugString = new TCHAR[N];
+
+#if (_MSC_VER >= 1400)
+  _tcscpy_s(szDebugString, N, sTimeStamp.c_str());
+  _tcscat_s(szDebugString, N, _T(" "));
+  _tcscat_s(szDebugString, N, lpszFormat);
+#else
+  _tcscpy(szDebugString, sTimeStamp.c_str());
+  _tcscat(szDebugString, _T(" "));
+  _tcscpy(szDebugString, lpszFormat);
+#endif
+
+  OutputDebugString(szDebugString);
+  delete szDebugString;
 }
 #else   /* _DEBUG || DEBUG */
 void pws_os::Trace(LPCTSTR , ...)
@@ -152,10 +187,12 @@ void pws_os::HexDump(unsigned char *pmemory, const int &length,
 #else  /* _DEBUG or DEBUG */
 void pws_os::IssueError(const stringT &, bool )
 {
+//  Do nothing in non-Debug mode
 }
 
 void pws_os::HexDump(unsigned char *, const int &,
                      const stringT &, const int &)
 {
+//  Do nothing in non-Debug mode
 }
 #endif  /* _DEBUG or DEBUG */

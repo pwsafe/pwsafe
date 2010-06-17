@@ -122,7 +122,7 @@ BOOL CAddEdit_Additional::OnInitDialog()
   if (M_uicaller() != IDS_ADDENTRY) {
     m_pToolTipCtrl = new CToolTipCtrl;
     if (!m_pToolTipCtrl->Create(this, TTS_BALLOON | TTS_NOPREFIX)) {
-      TRACE(L"Unable To create CAddEdit_Additional Dialog ToolTip\n");
+      pws_os::Trace(L"Unable To create CAddEdit_Additional Dialog ToolTip\n");
       delete m_pToolTipCtrl;
       m_pToolTipCtrl = NULL;
     } else {

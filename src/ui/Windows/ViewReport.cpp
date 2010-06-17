@@ -76,7 +76,7 @@ BOOL CViewReport::OnInitDialog()
   // Get new edit string (as per MS doc.)
   HLOCAL h = ::LocalAlloc(LHND, m_dwDatasize + sizeof(wchar_t));
   if (h == NULL) {
-    TRACE(L"ViewReport: Unable to allocate memory.  Can't do this properly!\n");
+    pws_os::Trace(L"ViewReport: Unable to allocate memory.  Can't do this properly!\n");
     m_editreport.SetWindowText(m_pString.c_str());
     return FALSE;
   }

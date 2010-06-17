@@ -188,7 +188,7 @@ LRESULT CPWFontDialog::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
       pParent = pParent->GetParent();
   }
   if (pParent == NULL)
-    TRACE(L"CPWFontDialog::WindowProc - couldn't find DboxMain ancestor\n");
+    pws_os::Trace(L"CPWFontDialog::WindowProc - couldn't find DboxMain ancestor\n");
   return CFontDialog::WindowProc(message, wParam, lParam);
 }
 

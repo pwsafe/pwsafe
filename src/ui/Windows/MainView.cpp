@@ -485,7 +485,7 @@ void DboxMain::setupBars()
                               WS_CHILD | WS_VISIBLE | CCS_ADJUSTABLE |
                               CBRS_TOP | CBRS_SIZE_DYNAMIC,
                               CRect(0, 0, 0, 0), AFX_IDW_RESIZE_BAR + 1)) {
-    TRACE(L"Failed to create Main toolbar\n");
+    pws_os::Trace(L"Failed to create Main toolbar\n");
     return;      // fail to create
   }
   DWORD dwStyle = m_MainToolBar.GetBarStyle();
@@ -500,7 +500,7 @@ void DboxMain::setupBars()
                               WS_CHILD | WS_VISIBLE |
                               CBRS_BOTTOM | CBRS_SIZE_DYNAMIC,
                               CRect(0, 0, 0, 0), AFX_IDW_RESIZE_BAR + 2)) {
-    TRACE(L"Failed to create Find toolbar\n");
+    pws_os::Trace(L"Failed to create Find toolbar\n");
     return;      // fail to create
   }
   dwStyle = m_FindToolBar.GetBarStyle();
@@ -1096,7 +1096,7 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
 #if !defined(POCKET_PC)
   switch (nType) {
     case SIZE_MINIMIZED:
-      TRACE(L"OnSize:SIZE_MINIMIZED\n");
+      pws_os::Trace(L"OnSize:SIZE_MINIMIZED\n");
 
       // Called when minimize button select on main dialog control box
       // or the system menu or by right clicking in the Taskbar
@@ -1133,14 +1133,14 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
       }
       break;
     case SIZE_MAXIMIZED:
-      TRACE(L"OnSize:SIZE_MAXIMIZED\n");
+      pws_os::Trace(L"OnSize:SIZE_MAXIMIZED\n");
       RefreshViews();
       break;
     case SIZE_RESTORED:
       if (!m_bSizing) { // here if actually restored
 #endif
         app.SetMenuDefaultItem(ID_MENUITEM_MINIMIZE);
-        TRACE(L"OnSize:SIZE_RESTORED\n");
+        pws_os::Trace(L"OnSize:SIZE_RESTORED\n");
         RestoreWindowsData(false);
 
         m_bIsRestoring = true; // Stop 'sort of list view' hiding FindToolBar
@@ -1189,10 +1189,10 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
       }
       break;
     case SIZE_MAXHIDE:
-      TRACE(L"OnSize:SIZE_MAXHIDE\n");
+      pws_os::Trace(L"OnSize:SIZE_MAXHIDE\n");
       break;
     case SIZE_MAXSHOW:
-      TRACE(L"OnSize:SIZE_MAXSHOW\n");
+      pws_os::Trace(L"OnSize:SIZE_MAXSHOW\n");
       break;
   } // nType switch statement
 #endif
@@ -1515,7 +1515,7 @@ CItemData *DboxMain::getSelectedItem()
         DisplayInfo *pdi = (DisplayInfo *)retval->GetDisplayInfo();
         ASSERT(pdi != NULL);
         if (pdi->tree_item != ti) {
-          TRACE(L"DboxMain::getSelectedItem: fixing pdi->tree_item!\n");
+          pws_os::Trace(L"DboxMain::getSelectedItem: fixing pdi->tree_item!\n");
           pdi->tree_item = ti;
         }
       } else {
@@ -1868,7 +1868,7 @@ void DboxMain::OnTimer(UINT_PTR nIDEvent)
     // OK, so we need to lock. If we're not using a system tray,
     // just minimize. If we are, then we need to hide (which
     // also requires children be hidden explicitly)
-    TRACE(L"Locking due to Timer lock countdown or ws lock\n");
+    pws_os::Trace(L"Locking due to Timer lock countdown or ws lock\n");
     if (!LockDataBase())
       return;
 
@@ -1886,7 +1886,7 @@ void DboxMain::OnTimer(UINT_PTR nIDEvent)
     if (nIDEvent == TIMER_LOCKONWTSLOCK)
       KillTimer(TIMER_LOCKONWTSLOCK);
   } else {
-    TRACE(L"Timer lock kicked in (countdown=%u), not locking. Timer ID=%d\n",
+    pws_os::Trace(L"Timer lock kicked in (countdown=%u), not locking. Timer ID=%d\n",
           m_IdleLockCountDown, nIDEvent);
   }
 }
@@ -1897,9 +1897,11 @@ LRESULT DboxMain::OnSessionChange(WPARAM wParam, LPARAM )
   // Handle Lock/Unlock, Fast User Switching and Remote access.
   // Won't be called if the registration failed (i.e. < Windows XP
   // or the "Windows Terminal Server" service wasn't active at startup).
-  TRACE(L"OnSessionChange. wParam = %d\n", wParam);
+
+  pws_os::Trace(L"OnSessionChange. wParam = %d\n", wParam);
   PWSprefs *prefs = PWSprefs::GetInstance();
   CItemData *pci_selected(NULL);
+
   switch (wParam) {
     case WTS_CONSOLE_DISCONNECT:
     case WTS_REMOTE_DISCONNECT:
@@ -1999,7 +2001,7 @@ bool DboxMain::IsWorkstationLocked() const
     }
   }
   if (bResult)
-    TRACE(L"IsWorkstationLocked() returning true");
+    pws_os::Trace(L"IsWorkstationLocked() returning true");
   return bResult;
 }
 
@@ -3012,7 +3014,7 @@ void DboxMain::ViewReport(const CString &cs_ReportFileName)
 
   if (!CreateProcess(NULL, pszCommandLine, NULL, NULL, FALSE, dwCreationFlags, 
                      NULL, cs_path, &si, &pi)) {
-    TRACE(L"CreateProcess failed (%d).\n", GetLastError());
+    pws_os::Trace(L"CreateProcess failed (%d).\n", GetLastError());
   }
 
   // Close process and thread handles. 
@@ -3059,7 +3061,7 @@ int DboxMain::OnUpdateViewReports(const int nID)
       uistring = IDS_RPTVALIDATE;
       break;
     default:
-      TRACE(L"ID=%d\n", nID);
+      pws_os::Trace(L"ID=%d\n", nID);
       ASSERT(0);
   }
 
@@ -3881,6 +3883,8 @@ void DboxMain::SaveDisplayBeforeMinimize()
   if (!m_bOpen || app.GetSystemTrayState() != UNLOCKED)
     return;
 
+  pws_os::Trace(L"SaveDisplayBeforeMinimize\n");
+
   // Save expand/collapse status of groups
   m_vGroupDisplayState = GetGroupDisplayState();
 
@@ -3888,19 +3892,19 @@ void DboxMain::SaveDisplayBeforeMinimize()
   CItemData *pci_selected = getSelectedItem();
   if (pci_selected != NULL) {
     // Entry selected
-    TRACE(L"SaveDisplayBeforeMinimize - Entry selected\n");
+    pws_os::Trace(L"SaveDisplayBeforeMinimize - Entry selected\n");
     pci_selected->GetUUID(m_UUIDSelectedAtMinimize);
     m_sxSelectedGroup.clear();
   } else {
     // Probably group selected and m_csSelectedGroup has been set
-    TRACE(L"SaveDisplayBeforeMinimize - Entry selected\n");
+    pws_os::Trace(L"SaveDisplayBeforeMinimize - Entry selected\n");
     memset(m_UUIDSelectedAtMinimize, 0, sizeof(uuid_array_t));
   }
 }
 
 void DboxMain::RestoreDisplayAfterMinimize()
 {
-  TRACE(L"RestoreDisplayAfterMinimize\n");
+  pws_os::Trace(L"RestoreDisplayAfterMinimize\n");
 
   // Restore expand/collapse status of groups
   m_bIsRestoring = true;

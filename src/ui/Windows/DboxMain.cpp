@@ -278,20 +278,20 @@ LRESULT DboxMain::OnWH_SHELL_CallBack(WPARAM wParam, LPARAM )
   if (!m_bDoAutoType || (m_bDoAutoType && m_AutoType.empty())) {
     // Should never happen as we should not be active if not doing AutoType!
     brc = m_runner.UnInit();
-    TRACE(L"DboxMain::OnWH_SHELL_CallBack - Error - AT_HK_UnInitialise : %s\n",
+    pws_os::Trace(L"DboxMain::OnWH_SHELL_CallBack - Error - AT_HK_UnInitialise : %s\n",
           brc ? L"OK" : L"FAILED");
     // Reset Autotype
     m_bDoAutoType = false;
     m_AutoType.clear();
     // Reset Keyboard/Mouse Input
-    TRACE(L"DboxMain::OnWH_SHELL_CallBack - BlockInput reset\n");
+    pws_os::Trace(L"DboxMain::OnWH_SHELL_CallBack - BlockInput reset\n");
     ::BlockInput(FALSE);
     return FALSE;
   }
 
   // Deactivate us ASAP
   brc = m_runner.UnInit();
-  TRACE(L"DboxMain::OnWH_SHELL_CallBack - AT_HK_UnInitialise after callback : %s\n",
+  pws_os::Trace(L"DboxMain::OnWH_SHELL_CallBack - AT_HK_UnInitialise after callback : %s\n",
          brc ? L"OK" : L"FAILED");
 
   // Wait for time to do Autotype - if we can.
@@ -302,16 +302,16 @@ LRESULT DboxMain::OnWH_SHELL_CallBack(WPARAM wParam, LPARAM )
   }
 
   if (hProcess != NULL) {
-    TRACE(L"WaitForInputIdle - Process ID:%d\n", wParam);
+    pws_os::Trace(L"WaitForInputIdle - Process ID:%d\n", wParam);
     // Don't use INFINITE as may be a problem on user's system and do
     // not want to wait forever - pick a reasonable upperbound, say, 8 seconds?
     switch (WaitForInputIdle(hProcess, 8000)) {
       case 0:
-        TRACE(L"WaitForInputIdle satisfied successfully.\n");
+        pws_os::Trace(L"WaitForInputIdle satisfied successfully.\n");
         break;
       case WAIT_TIMEOUT:
         // Must be a problem with the user's process!
-        TRACE(L"WaitForInputIdle time interval expired.\n");
+        pws_os::Trace(L"WaitForInputIdle time interval expired.\n");
         break;
       case WAIT_FAILED:
         // Problem - wait same amount of time as if could not find process
@@ -1088,7 +1088,7 @@ BOOL DboxMain::OnInitDialog()
   // create tooltip unconditionally
   m_pToolTipCtrl = new CToolTipCtrl;
   if (!m_pToolTipCtrl->Create(this, TTS_BALLOON | TTS_NOPREFIX)) {
-    TRACE(L"Unable To create mainf DboxMain Dialog ToolTip\n");
+    pws_os::Trace(L"Unable To create mainf DboxMain Dialog ToolTip\n");
     delete m_pToolTipCtrl;
     m_pToolTipCtrl = NULL;
   } else {
@@ -1971,7 +1971,7 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
   // If currently locked, it checks the user knows the correct passphrase first
   // Note: bUpdateWindows = true only when called from within OnSysCommand-SC_RESTORE
 
-  TRACE(L"RestoreWindowsData:bUpdateWindows = %s\n", bUpdateWindows ? L"true" : L"false");
+  pws_os::Trace(L"RestoreWindowsData:bUpdateWindows = %s\n", bUpdateWindows ? L"true" : L"false");
   bool brc(false);
 
   // First - no database is currently open
@@ -2687,7 +2687,7 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
 
   if (it == m_MapUICommandTable.end()) {
     // Don't have it - allow by default
-    TRACE(L"Menu resource ID: %d not found in m_UICommandTable. Please investigate and correct.\n", nID);
+    pws_os::Trace(L"Menu resource ID: %d not found in m_UICommandTable. Please investigate and correct.\n", nID);
     return TRUE;
   }
 

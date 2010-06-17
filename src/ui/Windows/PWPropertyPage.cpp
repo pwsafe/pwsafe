@@ -37,7 +37,7 @@ LRESULT CPWPropertyPage::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
       pParent = pParent->GetParent();
   }
   if (pParent == NULL)
-    TRACE(L"CPWPropertyPage::WindowProc - couldn't find DboxMain ancestor\n");
+    pws_os::Trace(L"CPWPropertyPage::WindowProc - couldn't find DboxMain ancestor\n");
 
   return CPropertyPage::WindowProc(message, wParam, lParam);
 }
