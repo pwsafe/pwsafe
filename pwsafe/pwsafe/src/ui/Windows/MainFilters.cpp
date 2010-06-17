@@ -89,7 +89,7 @@ bool DboxMain::ApplyFilter(bool bJustDoIt)
 void DboxMain::OnSetFilter()
 {
   st_filters filters(m_currentfilter);
-  CSetFiltersDlg sf(this, &filters, WM_EXECUTE_FILTERS);
+  CSetFiltersDlg sf(this, &filters, PWS_MSG_EXECUTE_FILTERS);
 
   INT_PTR rc = sf.DoModal();
   if (rc == IDOK) {
@@ -122,7 +122,7 @@ void DboxMain::OnSetFilter()
 
 bool DboxMain::EditFilter(st_filters *pfilters, const bool &bAllowSet)
 {
-  CSetFiltersDlg sf(this, pfilters, WM_EXECUTE_FILTERS, bAllowSet);
+  CSetFiltersDlg sf(this, pfilters, PWS_MSG_EXECUTE_FILTERS, bAllowSet);
 
   INT_PTR rc = sf.DoModal();
   return (rc == IDOK);

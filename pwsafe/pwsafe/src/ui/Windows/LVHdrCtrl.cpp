@@ -14,7 +14,7 @@
 #include <afxodlgs.h>       // MFC OLE dialog classes
 #include <afxdisp.h >       // MFC OLE automation classes
 #include "LVHdrCtrl.h"
-#include "DboxMain.h"       // For WM_CCTOHDR_DD_COMPLETE and enum FROMCC & FROMHDR
+#include "DboxMain.h"       // For PWS_MSG_CCTOHDR_DD_COMPLETE and enum FROMCC & FROMHDR
 #include "corelib/itemdata.h" // For CItemData::UUID
 
 // LVHdrCtrl
@@ -105,7 +105,7 @@ BOOL CLVHdrCtrl::OnDrop(CWnd* /* pWnd */, COleDataObject* pDataObject,
 
   // Now add it
   ::SendMessage(AfxGetApp()->m_pMainWnd->GetSafeHwnd(),
-                WM_CCTOHDR_DD_COMPLETE, (WPARAM)iType, (LPARAM)iAfterIndex);
+                PWS_MSG_CCTOHDR_DD_COMPLETE, (WPARAM)iType, (LPARAM)iAfterIndex);
 
   GlobalUnlock(hGlobal);
 
@@ -178,5 +178,5 @@ void CLVHdrCtrl::CompleteMove()
   // After we have dragged successfully from Header to Column Chooser
   // Now delete it
   ::SendMessage(AfxGetApp()->m_pMainWnd->GetSafeHwnd(),
-                WM_HDRTOCC_DD_COMPLETE, (WPARAM)m_dwHDRType, (LPARAM)0);
+                PWS_MSG_HDRTOCC_DD_COMPLETE, (WPARAM)m_dwHDRType, (LPARAM)0);
 }
