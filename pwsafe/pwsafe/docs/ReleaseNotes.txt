@@ -25,6 +25,8 @@ Bugs fixed in 3.22.1
 similarly named aliases.
 [3013199] PasswordSafe no longer hangs when trying to read preferences
 stored in registry by older versions.
+[3011972] By adding more checking when creating the menus for Recent Entries
+off the System Tray menu, prevent crashing when clicking on the icon. 
 [3010541, 3013981, 3011972] Fixed crash when locked and the user
 right-clicks the System Tray icon.
 [3009130] Changes to an entry's password policy are now saved upon OK or Apply.
