@@ -9,9 +9,6 @@
 //-----------------------------------------------------------------------------
 
 #include "ItemData.h"
-#include "os/typedefs.h"
-#include "os/pws_tchar.h"
-#include "os/mem.h"
 #include "BlowFish.h"
 #include "TwoFish.h"
 #include "PWSrand.h"
@@ -22,6 +19,10 @@
 #include "Util.h"
 #include "StringXStream.h"
 #include "corelib.h"
+
+#include "os/typedefs.h"
+#include "os/pws_tchar.h"
+#include "os/mem.h"
 
 #include <time.h>
 #include <sstream>
@@ -1764,7 +1765,7 @@ static bool pull_string(StringX &str, unsigned char *data, int len)
   bool utf8status = utf8conv.FromUTF8((unsigned char *)&v[0],
     len, str);
   if (!utf8status) {
-    TRACE(_T("CItemData::DeserializePlainText(): FromUTF8 failed!\n"));
+    pws_os::Trace(_T("CItemData::DeserializePlainText(): FromUTF8 failed!\n"));
   }
   trashMemory(&v[0], len);
   return utf8status;
@@ -1965,7 +1966,7 @@ static void push_string(vector<char> &v, char type,
       push_length(v, utf8Len);
       v.insert(v.end(), (char *)utf8, (char *)utf8 + utf8Len);
     } else
-      TRACE(_T("ItemData::SerializePlainText:ToUTF8(%s) failed\n"),
+      pws_os::Trace(_T("ItemData::SerializePlainText:ToUTF8(%s) failed\n"),
             str.c_str());
   }
 }

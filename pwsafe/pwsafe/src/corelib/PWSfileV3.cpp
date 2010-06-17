@@ -54,7 +54,7 @@ int PWSfileV3::Open(const StringX &passkey)
 
   ASSERT(m_curversion == V30);
   if (passkey.empty()) { // Can happen if db 'locked'
-    TRACE(_T("PWSfileV3::Open(empty_passkey)\n"));
+    pws_os::Trace(_T("PWSfileV3::Open(empty_passkey)\n"));
     return WRONG_PASSWORD;
   }
   m_passkey = passkey;

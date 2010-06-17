@@ -457,7 +457,7 @@ void PWScore::ResetStateAfterSave()
 
 int PWScore::Execute(Command *pcmd)
 {
-  TRACE(_T("PWScore Execute-Start: m_vpcommands.size()=%d; undo offset=%d; redo offset=%d\n"),
+  pws_os::Trace(_T("PWScore Execute-Start: m_vpcommands.size()=%d; undo offset=%d; redo offset=%d\n"),
         m_vpcommands.size(),
         (m_undo_iter != m_vpcommands.end()) ? distance(m_undo_iter, m_vpcommands.begin()) : -1,
         (m_redo_iter != m_vpcommands.end()) ? distance(m_redo_iter, m_vpcommands.begin()) : -1);
@@ -480,7 +480,7 @@ int PWScore::Execute(Command *pcmd)
   uuid_array_t entry_uuid = {'0'};  // Valid value not required for this particular call.
   NotifyGUINeedsUpdating(UpdateGUICommand::GUI_UPDATE_STATUSBAR, entry_uuid);
 
-  TRACE(_T("PWScore Execute-End: m_vpcommands.size()=%d; undo offset=%d; redo offset=%d\n"),
+  pws_os::Trace(_T("PWScore Execute-End: m_vpcommands.size()=%d; undo offset=%d; redo offset=%d\n"),
         m_vpcommands.size(),
         (m_undo_iter != m_vpcommands.end()) ? distance(m_undo_iter, m_vpcommands.begin()) : -1,
         (m_redo_iter != m_vpcommands.end()) ? distance(m_redo_iter, m_vpcommands.begin()) : -1);
@@ -490,7 +490,7 @@ int PWScore::Execute(Command *pcmd)
 
 void PWScore::Undo()
 {
-  TRACE(_T("PWScore Undo-Start: m_vpcommands.size()=%d; undo offset=%d; redo offset=%d\n"),
+  pws_os::Trace(_T("PWScore Undo-Start: m_vpcommands.size()=%d; undo offset=%d; redo offset=%d\n"),
         m_vpcommands.size(),
         (m_undo_iter != m_vpcommands.end()) ? distance(m_undo_iter, m_vpcommands.begin()) : -1,
         (m_redo_iter != m_vpcommands.end()) ? distance(m_redo_iter, m_vpcommands.begin()) : -1);
@@ -508,7 +508,7 @@ void PWScore::Undo()
   uuid_array_t entry_uuid = {'0'};  // Valid value not required for this particular call.
   NotifyGUINeedsUpdating(UpdateGUICommand::GUI_UPDATE_STATUSBAR, entry_uuid);
 
-  TRACE(_T("PWScore Undo-End  : m_vpcommands.size()=%d; undo offset=%d; redo offset=%d\n"),
+  pws_os::Trace(_T("PWScore Undo-End  : m_vpcommands.size()=%d; undo offset=%d; redo offset=%d\n"),
         m_vpcommands.size(),
         (m_undo_iter != m_vpcommands.end()) ? distance(m_undo_iter, m_vpcommands.begin()) : -1,
         (m_redo_iter != m_vpcommands.end()) ? distance(m_redo_iter, m_vpcommands.begin()) : -1);
@@ -516,7 +516,7 @@ void PWScore::Undo()
 
 void PWScore::Redo()
 {
-  TRACE(_T("PWScore Redo-Start: m_vpcommands.size()=%d; undo offset=%d; redo offset=%d\n"),
+  pws_os::Trace(_T("PWScore Redo-Start: m_vpcommands.size()=%d; undo offset=%d; redo offset=%d\n"),
         m_vpcommands.size(),
         (m_undo_iter != m_vpcommands.end()) ? distance(m_undo_iter, m_vpcommands.begin()) : -1,
         (m_redo_iter != m_vpcommands.end()) ? distance(m_redo_iter, m_vpcommands.begin()) : -1);
@@ -532,7 +532,7 @@ void PWScore::Redo()
   uuid_array_t entry_uuid = {'0'};  // Valid value not required for this particular call.
   NotifyGUINeedsUpdating(UpdateGUICommand::GUI_UPDATE_STATUSBAR, entry_uuid);
 
-  TRACE(_T("PWScore Redo-End  : m_vpcommands.size()=%d; undo offset=%d; redo offset=%d\n"),
+  pws_os::Trace(_T("PWScore Redo-End  : m_vpcommands.size()=%d; undo offset=%d; redo offset=%d\n"),
         m_vpcommands.size(),
         (m_undo_iter != m_vpcommands.end()) ? distance(m_undo_iter, m_vpcommands.begin()) : -1,
         (m_redo_iter != m_vpcommands.end()) ? distance(m_redo_iter, m_vpcommands.begin()) : -1);
@@ -2093,18 +2093,18 @@ CItemData *PWScore::GetBaseEntry(const CItemData *pAliasOrSC)
   ASSERT(pAliasOrSC != NULL);
   CItemData::EntryType et = pAliasOrSC->GetEntryType();
   if (et != CItemData::ET_ALIAS && et != CItemData::ET_SHORTCUT) {
-    TRACE(_T("PWScore::GetBaseEntry called with non-dependent element!\n"));
+    pws_os::Trace(_T("PWScore::GetBaseEntry called with non-dependent element!\n"));
     return NULL;
   }
   uuid_array_t dep_uuid, base_uuid;
   pAliasOrSC->GetUUID(dep_uuid);
   if (!GetDependentEntryBaseUUID(dep_uuid, base_uuid, et)) {
-    TRACE(_T("PWScore::GetBaseEntry - couldn't find base uuid!\n"));
+    pws_os::Trace(_T("PWScore::GetBaseEntry - couldn't find base uuid!\n"));
     return NULL;
   }
   ItemListIter iter = Find(base_uuid);
   if (iter == GetEntryEndIter()) {
-    TRACE(_T("PWScore::GetBaseEntry - Find(base_uuid) failed!\n"));
+    pws_os::Trace(_T("PWScore::GetBaseEntry - Find(base_uuid) failed!\n"));
     return NULL;
   }
   return &iter->second;

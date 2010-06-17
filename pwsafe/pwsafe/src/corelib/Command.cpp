@@ -89,7 +89,7 @@ int MultiCommands::Execute()
 {
   std::vector<Command *>::iterator cmd_Iter;
 
-  TRACE(_T("Multicommands Execute\n"));
+  pws_os::Trace(_T("Multicommands Execute\n"));
   for (cmd_Iter = m_vpcmds.begin(); cmd_Iter != m_vpcmds.end(); cmd_Iter++) {
     int rc = (*cmd_Iter)->Execute();
     m_vRCs.push_back(rc);
@@ -100,7 +100,7 @@ int MultiCommands::Execute()
 
 int MultiCommands::Redo()
 {
-  TRACE(_T("Multicommands Redo\n"));
+  pws_os::Trace(_T("Multicommands Redo\n"));
   return Execute();
 }
 
@@ -108,7 +108,7 @@ void MultiCommands::Undo()
 {
   std::vector<Command *>::reverse_iterator cmd_rIter;
 
-  TRACE(_T("Multicommands Undo\n"));
+  pws_os::Trace(_T("Multicommands Undo\n"));
   for (cmd_rIter = m_vpcmds.rbegin(); cmd_rIter != m_vpcmds.rend(); cmd_rIter++) {
     (*cmd_rIter)->Undo();
   }
@@ -117,7 +117,7 @@ void MultiCommands::Undo()
 
 void MultiCommands::Add(Command *pcmd)
 {
-  TRACE(_T("Multicommands Add\n"));
+  pws_os::Trace(_T("Multicommands Add\n"));
   m_vpcmds.push_back(pcmd);
 }
 
@@ -125,7 +125,7 @@ bool MultiCommands::Remove(Command *pcmd)
 {
   std::vector<Command *>::iterator cmd_Iter;
 
-  TRACE(_T("Multicommands Remove\n"));
+  pws_os::Trace(_T("Multicommands Remove\n"));
   cmd_Iter = find(m_vpcmds.begin(), m_vpcmds.end(), pcmd);
   if (cmd_Iter != m_vpcmds.end()) {
     delete (*cmd_Iter);
@@ -137,7 +137,7 @@ bool MultiCommands::Remove(Command *pcmd)
 
 bool MultiCommands::Remove()
 {
-  TRACE(_T("Multicommands Remove\n"));
+  pws_os::Trace(_T("Multicommands Remove\n"));
   if (!m_vpcmds.empty()) {
     delete m_vpcmds.back();
     m_vpcmds.pop_back();
@@ -150,7 +150,7 @@ bool MultiCommands::GetRC(Command *pcmd, int &rc)
 {
   std::vector<Command *>::iterator cmd_Iter;
 
-  TRACE(_T("Multicommands GetRC\n"));
+  pws_os::Trace(_T("Multicommands GetRC\n"));
   cmd_Iter = find(m_vpcmds.begin(), m_vpcmds.end(), pcmd);
   if (cmd_Iter != m_vpcmds.end()) {
     rc = m_vRCs[cmd_Iter - m_vpcmds.begin()];
@@ -193,7 +193,7 @@ UpdateGUICommand::UpdateGUICommand(CommandInterface *pcomInt,
 
 int UpdateGUICommand::Execute()
 {
-  TRACE(_T("UpdateGUICommand Execute\n"));
+  pws_os::Trace(_T("UpdateGUICommand Execute\n"));
   if (m_When == WN_EXECUTE || m_When == WN_EXECUTE_REDO || 
       m_When == WN_ALL) {
     uuid_array_t entry_uuid = {'0'}; // dummy
@@ -204,7 +204,7 @@ int UpdateGUICommand::Execute()
 
 int UpdateGUICommand::Redo()
 {
-  TRACE(_T("UpdateGUICommand Redo\n"));
+  pws_os::Trace(_T("UpdateGUICommand Redo\n"));
   if (m_When == WN_REDO || m_When == WN_EXECUTE_REDO || 
       m_When == WN_ALL) {
     uuid_array_t entry_uuid = {'0'}; // dummy
@@ -215,7 +215,7 @@ int UpdateGUICommand::Redo()
 
 void UpdateGUICommand::Undo()
 {
-  TRACE(_T("UpdateGUICommand Undo\n"));
+  pws_os::Trace(_T("UpdateGUICommand Undo\n"));
   if (m_When == WN_UNDO || m_When == WN_ALL) {
     uuid_array_t entry_uuid = {'0'}; // dummy
     m_pcomInt->NotifyGUINeedsUpdating(m_ga, entry_uuid);
@@ -297,7 +297,7 @@ AddEntryCommand::~AddEntryCommand()
 int AddEntryCommand::Execute()
 {
   SaveState();
-  TRACE(_T("Command DoAddEntry\n"));
+  pws_os::Trace(_T("Command DoAddEntry\n"));
   if (m_pcomInt->IsReadOnly())
     return 0;
 
@@ -388,7 +388,7 @@ DeleteEntryCommand::~DeleteEntryCommand()
 int DeleteEntryCommand::Execute()
 {
   SaveState();
-  TRACE(_T("DeleteEntryCommand::Execute()\n"));
+  pws_os::Trace(_T("DeleteEntryCommand::Execute()\n"));
   if (m_pcomInt->IsReadOnly())
     return 0;
 
@@ -472,7 +472,7 @@ EditEntryCommand::~EditEntryCommand()
 int EditEntryCommand::Execute()
 {
   SaveState();
-  TRACE(_T("EditEntry::Execute\n"));
+  pws_os::Trace(_T("EditEntry::Execute\n"));
   if (m_pcomInt->IsReadOnly())
     return 0;
 
@@ -499,7 +499,7 @@ int EditEntryCommand::Redo()
 
 void EditEntryCommand::Undo()
 {
-  TRACE(_T("EditEntry::Undo\n"));
+  pws_os::Trace(_T("EditEntry::Undo\n"));
   if (m_pcomInt->IsReadOnly())
     return;
 
@@ -537,7 +537,7 @@ void UpdateEntryCommand::Doit(const uuid_array_t &entry_uuid,
                               const StringX &value,
                               CItemData::EntryStatus es)
 {
-  TRACE(_T("UpdateEntryCommand::Doit\n"));
+  pws_os::Trace(_T("UpdateEntryCommand::Doit\n"));
   if (m_pcomInt->IsReadOnly())
     return;
 
@@ -554,7 +554,7 @@ int UpdateEntryCommand::Execute()
 {
   SaveState();
 
-  TRACE(_T("Command UpdateEntry: Field=0x%02x; Old Value=%s; NewValue=%s\n"),
+  pws_os::Trace(_T("Command UpdateEntry: Field=0x%02x; Old Value=%s; NewValue=%s\n"),
     m_ftype, m_old_value.c_str(), m_value.c_str());
 
   Doit(m_entry_uuid, m_ftype, m_value, CItemData::ES_MODIFIED);
@@ -574,7 +574,7 @@ int UpdateEntryCommand::Redo()
 
 void UpdateEntryCommand::Undo()
 {
-  TRACE(_T("Command UndoUpdateEntry: Field=0x%02x; Old Value=%s;\n"),
+  pws_os::Trace(_T("Command UndoUpdateEntry: Field=0x%02x; Old Value=%s;\n"),
     m_ftype, m_old_value.c_str());
 
   Doit(m_entry_uuid, m_ftype, m_old_value, m_old_status);
@@ -605,7 +605,7 @@ int UpdatePasswordCommand::Execute()
 {
   SaveState();
 
-  TRACE(_T("UpdatePassword::Execute\n"));
+  pws_os::Trace(_T("UpdatePassword::Execute\n"));
   if (m_pcomInt->IsReadOnly())
     return 0;
 
@@ -632,7 +632,7 @@ int UpdatePasswordCommand::Redo()
 
 void UpdatePasswordCommand::Undo()
 {
-  TRACE(_T("UpdatePasswordCommand::Undo\n"));
+  pws_os::Trace(_T("UpdatePasswordCommand::Undo\n"));
   if (m_pcomInt->IsReadOnly())
     return;
 
@@ -666,7 +666,7 @@ AddDependentEntryCommand::AddDependentEntryCommand(CommandInterface *pcomInt,
 
 int AddDependentEntryCommand::Execute()
 {
-  TRACE(_T("AddDependentEntryCommand::Execute\n"));
+  pws_os::Trace(_T("AddDependentEntryCommand::Execute\n"));
   SaveState();
   if (m_pcomInt->IsReadOnly())
     return 0;
@@ -683,7 +683,7 @@ int AddDependentEntryCommand::Redo()
 
 void AddDependentEntryCommand::Undo()
 {
-  TRACE(_T("AddDependentEntryCommand::Undo\n"));
+  pws_os::Trace(_T("AddDependentEntryCommand::Undo\n"));
   if (m_pcomInt->IsReadOnly())
     return;
 
@@ -716,7 +716,7 @@ AddDependentEntriesCommand::~AddDependentEntriesCommand()
 
 int AddDependentEntriesCommand::Execute()
 {
-  TRACE(_T("AddDependentEntriesCommand::Execute\n"));
+  pws_os::Trace(_T("AddDependentEntriesCommand::Execute\n"));
   SaveState();
   if (m_type == CItemData::ET_ALIAS) {
     m_saved_base2aliases_mmap = m_pcomInt->GetBase2AliasesMmap();
@@ -742,7 +742,7 @@ int AddDependentEntriesCommand::Redo()
 
 void AddDependentEntriesCommand::Undo()
 {
-  TRACE(_T("AddDependentEntriesCommand::Undo\n"));
+  pws_os::Trace(_T("AddDependentEntriesCommand::Undo\n"));
   if (m_pcomInt->IsReadOnly())
     return;
 
@@ -774,7 +774,7 @@ RemoveDependentEntryCommand::RemoveDependentEntryCommand(CommandInterface *pcomI
 
 int RemoveDependentEntryCommand::Execute()
 {
-  TRACE(_T("RemoveDependentEntryCommand::Execute\n"));
+  pws_os::Trace(_T("RemoveDependentEntryCommand::Execute\n"));
   SaveState();
   if (m_pcomInt->IsReadOnly())
     return 0;
@@ -791,7 +791,7 @@ int RemoveDependentEntryCommand::Redo()
 
 void RemoveDependentEntryCommand::Undo()
 {
-  TRACE(_T("RemoveDependentEntryCommand::Undo\n"));
+  pws_os::Trace(_T("RemoveDependentEntryCommand::Undo\n"));
   if (m_pcomInt->IsReadOnly())
     return;
 
@@ -816,7 +816,7 @@ MoveDependentEntriesCommand::MoveDependentEntriesCommand(CommandInterface *pcomI
 
 int MoveDependentEntriesCommand::Execute()
 {
-  TRACE(_T("MoveDependentEntriesCommand::Execute\n"));
+  pws_os::Trace(_T("MoveDependentEntriesCommand::Execute\n"));
   SaveState();
   if (m_pcomInt->IsReadOnly())
     return 0;
@@ -833,7 +833,7 @@ int MoveDependentEntriesCommand::Redo()
 
 void MoveDependentEntriesCommand::Undo()
 {
-  TRACE(_T("MoveDependentEntriesCommand::Undo\n"));
+  pws_os::Trace(_T("MoveDependentEntriesCommand::Undo\n"));
   if (m_pcomInt->IsReadOnly())
     return;
 
@@ -855,7 +855,7 @@ UpdatePasswordHistoryCommand::UpdatePasswordHistoryCommand(CommandInterface *pco
 int UpdatePasswordHistoryCommand::Execute()
 {
   SaveState();
-  TRACE(_T("UpdatePasswordHistoryCommand::Execute\n"));
+  pws_os::Trace(_T("UpdatePasswordHistoryCommand::Execute\n"));
   if (m_pcomInt->IsReadOnly())
     return 0;
 
@@ -872,7 +872,7 @@ int UpdatePasswordHistoryCommand::Redo()
 
 void UpdatePasswordHistoryCommand::Undo()
 {
-  TRACE(_T("UpdatePasswordHistoryCommand::Undo\n"));
+  pws_os::Trace(_T("UpdatePasswordHistoryCommand::Undo\n"));
   if (m_pcomInt->IsReadOnly())
     return;
 

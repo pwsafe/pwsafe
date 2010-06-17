@@ -17,6 +17,7 @@
 
 #include "os/typedefs.h"
 #include "os/sleep.h"
+#include "os/debug.h"
 
 #include <vector>
 
@@ -540,7 +541,7 @@ bool CXMLprefs::MigrateSettings(const stringT &sNewFilename,
     const TCHAR *pKey = pElem->Value();
     if (pKey != NULL) {
       if (_tcscmp(pKey, sHost.c_str()) != 0) {
-        TRACE(_T("Deleting host: %s\n"), pKey);
+        pws_os::Trace(_T("Deleting host: %s\n"), pKey);
         hRoot.ToNode()->RemoveChild(TiXmlHandle(pElem).ToNode());
       } else {
         pElem_host = pElem;
@@ -561,7 +562,7 @@ bool CXMLprefs::MigrateSettings(const stringT &sNewFilename,
     const TCHAR *pKey = pElem->Value();
     if (pKey != NULL) {
       if (_tcscmp(pKey, sUser.c_str()) != 0) {
-        TRACE(_T("Deleting user: %s\n"), pKey);
+        pws_os::Trace(_T("Deleting user: %s\n"), pKey);
         pnode->RemoveChild(TiXmlHandle(pElem).ToNode());
       } else {
         pElem_user = pElem;
