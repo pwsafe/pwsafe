@@ -72,8 +72,7 @@ typedef void *HANDLE;
 typedef unsigned long DWORD;
 // assorted conveniences:
 #define ASSERT(p) assert(p)
-#define VERIFY(p) if (!(p)) TRACE(_T("VERIFY Failed"))
-#define TRACE pws_os::Trace
+#define VERIFY(p) if (!(p)) pws_os::Trace(_T("VERIFY Failed"))
 #ifndef TRUE
 #define TRUE 1
 #endif
