@@ -54,10 +54,8 @@ const UINT COptionsPasswordPolicy::nonHexLengthSpins[COptionsPasswordPolicy::N_H
 
 COptionsPasswordPolicy::COptionsPasswordPolicy(bool bFromOptions)
   : COptions_PropertyPage(COptionsPasswordPolicy::IDD), m_bFromOptions(bFromOptions),
-  m_pDbx(NULL)
+  m_pDbx(NULL), m_password(L"")
 {
-  //{{AFX_DATA_INIT(COptionsPasswordPolicy)
-  //}}AFX_DATA_INIT
 }
 
 COptionsPasswordPolicy::~COptionsPasswordPolicy()
@@ -81,6 +79,9 @@ void COptionsPasswordPolicy::DoDataExchange(CDataExchange* pDX)
   DDX_Check(pDX, IDC_EASYVISION, m_pweasyvision);
   DDX_Check(pDX, IDC_USEHEXDIGITS, m_pwusehexdigits);
   DDX_Check(pDX, IDC_PRONOUNCEABLE, m_pwmakepronounceable);
+
+  // Because we can show the generated password when used from Mangage->Generate
+  DDX_Control(pDX, IDC_PASSWORD, m_ex_password);
   //}}AFX_DATA_MAP
 }
 
@@ -95,7 +96,12 @@ BEGIN_MESSAGE_MAP(COptionsPasswordPolicy, COptions_PropertyPage)
   ON_BN_CLICKED(IDC_USESYMBOLS, OnUsesymbols)
   ON_BN_CLICKED(IDC_EASYVISION, OnEasyVision)
   ON_BN_CLICKED(IDC_PRONOUNCEABLE, OnMakePronounceable)
+
+  // Because we can show the generated password when used from Mangage->Generate
   ON_BN_CLICKED(IDC_RANDOM, OnRandom)
+  ON_BN_CLICKED(IDC_COPYPASSWORD, OnCopyPassword)
+  ON_EN_CHANGE(IDC_PASSWORD, OnENChangePassword)
+
   ON_MESSAGE(PSM_QUERYSIBLINGS, OnQuerySiblings)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
@@ -127,6 +133,10 @@ BOOL COptionsPasswordPolicy::OnInitDialog()
   if (m_bFromOptions) {
     GetDlgItem(IDC_RANDOM)->EnableWindow(FALSE);
     GetDlgItem(IDC_RANDOM)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_COPYPASSWORD)->EnableWindow(FALSE);
+    GetDlgItem(IDC_COPYPASSWORD)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_PASSWORD)->EnableWindow(FALSE);
+    GetDlgItem(IDC_PASSWORD)->ShowWindow(SW_HIDE);
   } else {
     // Centre the OK button & change its text
     RECT rc, rcOK;
@@ -146,6 +156,11 @@ BOOL COptionsPasswordPolicy::OnInitDialog()
     // Hide the Cancel button
     m_options_psh->GetDlgItem(IDCANCEL)->EnableWindow(FALSE);
     m_options_psh->GetDlgItem(IDCANCEL)->ShowWindow(SW_HIDE);
+
+    ApplyPasswordFont(GetDlgItem(IDC_PASSWORD));
+    m_ex_password.SetSecure(false);
+    // Remove password character so that the password is displayed
+    m_ex_password.SetPasswordChar(0);
   }
 
   CSpinButtonCtrl *pspin  = (CSpinButtonCtrl *)GetDlgItem(IDC_PWLENSPIN);
@@ -517,6 +532,24 @@ void COptionsPasswordPolicy::OnRandom()
   pwp.upperminlength = m_pwupperminlength;
   
   StringX passwd;
-  m_pDbx->MakeRandomPassword(passwd, pwp, true);
+  m_pDbx->MakeRandomPassword(passwd, pwp, false);
+  m_password = passwd.c_str();
+  m_ex_password.SetWindowText(m_password);
+  m_ex_password.Invalidate();
   UpdateData(FALSE);
+}
+
+void COptionsPasswordPolicy::OnCopyPassword()
+{
+  UpdateData(TRUE);
+
+  m_pDbx->SetClipboardData(m_password);
+  m_pDbx->UpdateLastClipboardAction(CItemData::PASSWORD);
+}
+
+void COptionsPasswordPolicy::OnENChangePassword()
+{
+  UpdateData(TRUE);
+
+  m_ex_password.GetWindowText((CString &)m_password);
 }

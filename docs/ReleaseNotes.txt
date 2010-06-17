@@ -10,6 +10,8 @@ releases may be found in the file ChangeLog.txt.
 
 New Features for 3.22.1
 =======================
+[3017535] Allow user to edit the generated passwords (Manage->Generate Password)
+before copying to the clipboard.
 [3011546] "autotype" can now be added to the List View via the Column
 Picker (right click on column labels).
 

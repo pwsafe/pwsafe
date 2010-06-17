@@ -15,6 +15,7 @@
 // COptionsPasswordPolicy dialog
 #include "Options_PropertyPage.h"
 #include "corelib/PWPolicy.h"
+#include "ControlExtns.h"
 
 class DboxMain;
 
@@ -59,6 +60,8 @@ public:
   UINT m_savepwupperminlength;
 
   PWPolicy m_default_pwp;
+  CSecString m_password;
+  CSecEditExtn m_ex_password;
 
   // Overrides
   // ClassWizard generate virtual function overrides
@@ -84,6 +87,8 @@ protected:
   afx_msg void OnMakePronounceable();
   afx_msg BOOL OnKillActive();
   afx_msg void OnRandom();
+  afx_msg void OnCopyPassword();
+  afx_msg void OnENChangePassword();
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
@@ -102,6 +107,5 @@ private:
   int m_save[N_NOHEX]; // save cb's state when disabling hex
   UINT m_savelen[N_HEX_LENGTHS];
 
-  CSecString m_NewPassword;
   bool m_bFromOptions;  // True if called by Options, false if called from GeneratePassword
 };
