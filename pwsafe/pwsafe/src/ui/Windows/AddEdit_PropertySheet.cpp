@@ -246,16 +246,22 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
         if (m_AEMD.XTimeInt > 0 && m_AEMD.XTimeInt <= 3650)
           m_AEMD.pci->SetXTimeInt(m_AEMD.XTimeInt);
 
-        if (bIsPSWDModified) {
-          m_AEMD.pci->UpdatePassword(m_AEMD.realpassword);
-          const CItemData *pciA(m_AEMD.pci);
+        if (bIsPSWDModified || m_AEMD.locXTime != m_AEMD.oldlocXTime) {
+          CItemData *pciA(m_AEMD.pci);
           if (m_AEMD.pci->IsAlias()) {
             pciA = m_AEMD.pcore->GetBaseEntry(m_AEMD.pci);
           }
-          m_AEMD.locPMTime = pciA->GetPMTimeL();
-          pciA->GetXTime(m_AEMD.tttXTime);
-          m_AEMD.locXTime = pciA->GetXTimeL();
-          m_AEMD.oldlocXTime = m_AEMD.locXTime;
+
+          if (bIsPSWDModified) {
+            m_AEMD.pci->UpdatePassword(m_AEMD.realpassword);
+            m_AEMD.locPMTime = pciA->GetPMTimeL();
+          }
+
+          if (m_AEMD.locXTime != m_AEMD.oldlocXTime) {
+            pciA->SetXTime(m_AEMD.tttXTime);
+            m_AEMD.locXTime = pciA->GetXTimeL();
+            m_AEMD.oldlocXTime = m_AEMD.locXTime;
+          }
         }
 
         if (m_bIsModified && !bIsPSWDModified) {
