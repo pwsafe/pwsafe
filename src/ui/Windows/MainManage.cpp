@@ -52,6 +52,7 @@ void DboxMain::OnPasswordChange()
 
   if (rc == IDOK) {
     m_core.ChangePasskey(changeDlg.m_newpasskey);
+    ChangeOkUpdate();
   }
 }
 
