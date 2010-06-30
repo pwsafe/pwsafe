@@ -216,7 +216,11 @@ bool PwsafeApp::OnInit()
     PWSprefs *prefs = PWSprefs::GetInstance();
     filename =  prefs->GetPref(PWSprefs::CurrentFile).c_str();
   }
+  else {
+    m_recentDatabases.AddFileToHistory(filename);
+  }
   m_core.SetCurFile(filename.c_str());
+  m_recentDatabases.Load();
 
   if (cmd_closed) {
     m_core.SetCurFile(wxT(""));
@@ -256,6 +260,7 @@ bool PwsafeApp::OnInit()
 
 int PwsafeApp::OnExit()
 {    
+  m_recentDatabases.Save();
   PWSprefs *prefs = PWSprefs::GetInstance();
   if (!m_core.GetCurFile().empty())
     prefs->SetPref(PWSprefs::CurrentFile, m_core.GetCurFile());

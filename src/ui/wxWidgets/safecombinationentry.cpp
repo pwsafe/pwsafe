@@ -34,6 +34,7 @@
 ////@end XPM images
 #include "../graphics/wxWidgets/cpane.xpm"
 #include "../graphics/wxWidgets/psafetxt.xpm"
+#include "pwsafeapp.h"
 
 
 /*!
@@ -174,6 +175,7 @@ void CSafeCombinationEntry::CreateControls()
   itemBoxSizer4->Add(itemBoxSizer9, 50, wxGROW|wxALL, 5);
 
   wxArrayString itemComboBox10Strings;
+  wxGetApp().m_recentDatabases.GetAll(itemComboBox10Strings);
   wxComboBox* itemComboBox10 = new wxComboBox( itemDialog1, ID_DBASECOMBOBOX, _T(""), wxDefaultPosition, wxSize(itemDialog1->ConvertDialogToPixels(wxSize(140, -1)).x, -1), itemComboBox10Strings, wxCB_DROPDOWN );
   itemBoxSizer9->Add(itemComboBox10, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 0);
   itemComboBox10->SetFocus();
@@ -312,6 +314,7 @@ void CSafeCombinationEntry::OnOk( wxCommandEvent& )
     }
     m_core.SetReadOnly(m_readOnly);
     m_core.SetCurFile(m_filename.c_str());
+    wxGetApp().m_recentDatabases.AddFileToHistory(m_filename);
     EndModal(wxID_OK);
   }
 }
@@ -387,6 +390,7 @@ void CSafeCombinationEntry::OnNewDbClick( wxCommandEvent& /* evt */ )
   // 3. Set m_filespec && m_passkey to returned value!
   m_core.SetCurFile(newfile.c_str());
   m_password = pksetup.GetPassword();
+  wxGetApp().m_recentDatabases.AddFileToHistory(newfile);
   EndModal(wxID_OK);
 }
 
