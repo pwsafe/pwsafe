@@ -45,7 +45,7 @@ BEGIN_EVENT_TABLE( SystemTray, wxTaskBarIcon )
   EVT_MENU( ID_CLEARCLIPBOARD,  SystemTray::OnSysTrayMenuItem )
   EVT_MENU( wxID_ABOUT,         SystemTray::OnSysTrayMenuItem )
   EVT_MENU( wxID_CLOSE,         SystemTray::OnSysTrayMenuItem )
-  EVT_MENU( ID_MENU_CLEAR_MRU,  SystemTray::OnSysTrayMenuItem )
+  EVT_MENU( ID_SYSTRAY_CLEAR_RUE,  SystemTray::OnSysTrayMenuItem )
   EVT_MENU_RANGE(MIN_RUE_COMMAND_ID, MAX_RUE_COMMAND_ID, SystemTray::OnSysTrayMenuItem )
   EVT_TASKBAR_LEFT_DCLICK( SystemTray::OnTaskBarLeftDoubleClick )
 END_EVENT_TABLE()
@@ -137,7 +137,7 @@ wxMenu* SystemTray::GetRecentHistory()
   //Must be on the heap.  wxWidgets will delete it
   wxMenu* menu = new wxMenu;
 
-  menu->Append(ID_MENU_CLEAR_MRU, wxT("&Clear Recent History"));
+  menu->Append(ID_SYSTRAY_CLEAR_RUE, wxT("&Clear Recent History"));
   menu->Append(wxID_NONE, wxT("Note: Entry format is »Group»Title»Username»"));
   menu->Append(wxID_NONE, wxT("Note: Empty fields are shown as »*»"));
   menu->AppendSeparator();
@@ -221,12 +221,15 @@ void SystemTray::OnSysTrayMenuItem(wxCommandEvent& evt)
         m_frame->UnlockSafe(false); // false => don't restore UI
         break;
 
+      case ID_SYSTRAY_CLEAR_RUE:
+        m_frame->ClearRUEList();
+        break;
+        
       case wxID_EXIT:
       case wxID_ICONIZE_FRAME:
       case ID_CLEARCLIPBOARD:
       case wxID_ABOUT:
       case wxID_CLOSE:
-      case ID_MENU_CLEAR_MRU:
         m_frame->ProcessEvent(evt);
         break;
 

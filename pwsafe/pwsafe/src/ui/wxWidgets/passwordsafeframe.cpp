@@ -45,6 +45,8 @@
 #include "wxutils.h"
 #include "guiinfo.h"
 #include <wx/clipbrd.h>
+#include "pwsafeapp.h"
+#include "../../os/file.h"
 
 // main toolbar images
 #include "../graphics/toolbar/wxWidgets/new.xpm"
@@ -169,6 +171,7 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_MENU( ID_CREATESHORTCUT, PasswordSafeFrame::OnCreateShortcut )
 
   EVT_MENU( ID_MENU_CLEAR_MRU, PasswordSafeFrame::OnClearRecentHistory )
+  EVT_UPDATE_UI( ID_MENU_CLEAR_MRU, PasswordSafeFrame::OnUpdateClearRecentDBHistory )
 
   EVT_ICONIZE(PasswordSafeFrame::OnIconize)
 
@@ -316,6 +319,8 @@ void PasswordSafeFrame::CreateControls()
   itemMenu3->AppendSeparator();
   itemMenu3->Append(wxID_EXIT, _("E&xit"), _T(""), wxITEM_NORMAL);
   menuBar->Append(itemMenu3, _("&File"));
+  wxGetApp().m_recentDatabases.UseMenu(itemMenu3);
+  wxGetApp().m_recentDatabases.AddFilesToMenu(itemMenu3);  //must add existing history entries manually.
   wxMenu* itemMenu28 = new wxMenu;
   itemMenu28->Append(wxID_ADD, _("&Add Entry...\tCtrl+A"), _T(""), wxITEM_NORMAL);
   itemMenu28->Append(ID_EDIT, _("Edit/&View Entry...\tCtrl+Enter"), _T(""), wxITEM_NORMAL);
@@ -395,8 +400,13 @@ void PasswordSafeFrame::CreateControls()
   itemBoxSizer83->Add(m_tree, wxSizerFlags().Expand().Border(0).Proportion(1));
   itemBoxSizer83->Layout();
 
-  if (m_currentView == TREE)
+  if (m_currentView == TREE) {
     itemMenu47->Check(ID_TREE_VIEW, true);
+  }
+  
+  const CRecentDBList& rdb = wxGetApp().m_recentDatabases;
+  Connect(rdb.GetBaseId(), rdb.GetBaseId() + rdb.GetMaxFiles() - 1, wxEVT_COMMAND_MENU_SELECTED,
+            wxCommandEventHandler(PasswordSafeFrame::OnOpenRecentDB));
 }
 
 /*
@@ -712,8 +722,10 @@ int PasswordSafeFrame::Open(const wxString &fname)
     m_core.SetCurFile(fname.c_str());
     wxString password = pwdprompt.GetPassword();
     int retval = Load(password);
-    if (retval == PWScore::SUCCESS)
+    if (retval == PWScore::SUCCESS) {
       Show();
+      wxGetApp().m_recentDatabases.AddFileToHistory(fname);
+    }
     return retval;
   } else
     return PWScore::USER_CANCEL;
@@ -1422,7 +1434,12 @@ void PasswordSafeFrame::OnNewClick( wxCommandEvent& /* evt */ )
 
 void PasswordSafeFrame::OnClearRecentHistory(wxCommandEvent& evt)
 {
-  m_RUEList.ClearEntries();
+  wxGetApp().m_recentDatabases.Clear();
+}
+
+void PasswordSafeFrame::OnUpdateClearRecentDBHistory(wxUpdateUIEvent& evt)
+{
+  evt.Enable(wxGetApp().m_recentDatabases.GetCount() > 0);
 }
 
 static void DisplayFileWriteError(int rc, const StringX &fname)
@@ -1498,6 +1515,7 @@ int PasswordSafeFrame::New()
 
   m_sysTray->SetTrayStatus(SystemTray::TRAY_UNLOCKED);
   m_RUEList.ClearEntries();
+  wxGetApp().m_recentDatabases.AddFileToHistory(towxstring(cs_newfile));
 #ifdef notyet
   if (!m_bOpen) {
     // Previous state was closed - reset DCA in status bar
@@ -1703,6 +1721,32 @@ void PasswordSafeFrame::HideUI(bool lock)
   }  
 }
 
+
+void PasswordSafeFrame::OnOpenRecentDB(wxCommandEvent& evt)
+{
+  CRecentDBList& db = wxGetApp().m_recentDatabases;
+  const size_t index = evt.GetId() - db.GetBaseId();
+  const wxString dbfile = db.GetHistoryFile(index);
+  switch(Open(dbfile))
+  {
+    case PWScore::SUCCESS:
+      break;
+      
+    case PWScore::USER_CANCEL:
+      //In case the file doesn't exist, user will have to cancel
+      //the safe combination entry box.  In that call, fall through
+      //to the default case of removing the file from history
+      if (pws_os::FileExists(stringT(dbfile)))
+        break;  //file exists.  don't remove it from history
+        
+      //fall through
+    default:
+      wxMessageBox(wxString(wxT("There was an error loading the database: ")) << dbfile, 
+                     wxT("Could not load database"), wxOK|wxICON_ERROR);
+      db.RemoveFileFromHistory(index);
+      break;
+  }
+}
 
 //-----------------------------------------------------------------
 // Remove all DialogBlock-generated stubs below this line, as we

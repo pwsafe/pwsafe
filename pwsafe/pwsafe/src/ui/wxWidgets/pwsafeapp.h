@@ -22,6 +22,7 @@
 #include "safecombinationentry.h"
 ////@end includes
 #include "corelib/PWScore.h"
+#include "./RecentDBList.h"
 
 /*!
  * Forward declarations
@@ -82,6 +83,9 @@ public:
     wxTimer* m_activityTimer;
     PasswordSafeFrame* m_frame;
     enum { ACTIVITY_TIMER_ID = 33 } ; 
+    
+ public:
+    CRecentDBList m_recentDatabases;
 };
 
 /*!

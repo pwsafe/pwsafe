@@ -116,7 +116,8 @@ enum {
   ID_SYSTRAY_LOCK,
   ID_SYSTRAY_UNLOCK,
   ID_SYSTRAY_CLOSE,
-  ID_SYSTRAY_EXIT
+  ID_SYSTRAY_EXIT,
+  ID_SYSTRAY_CLEAR_RUE
 };
 
 
@@ -265,8 +266,17 @@ public:
   void OnClearRecentHistory(wxCommandEvent& evt);
 
 
+  /// called when one of the MRU db's is selected from File menu
+  void OnOpenRecentDB(wxCommandEvent& evt);
+  
   /// wxEVT_UPDATE_UI event handler for all command ids
   void OnUpdateUI(wxUpdateUIEvent& evt);
+  
+  /// wxEVT_UPDATE_UI event handler for ID_MENU_CLEAR_MRU
+  void OnUpdateClearRecentDBHistory(wxUpdateUIEvent& evt);
+
+  /// Handler for all EVT_MENU_OPEN types events for all menus
+  void OnUpdateMenu(wxMenuEvent& evt);
 
   /// wxEVT_ICONIZE event handler
   void OnIconize(wxIconizeEvent& evt);
@@ -319,6 +329,8 @@ public:
     void GetAllMenuItemStrings(std::vector<RUEntryData>& vec) const { m_RUEList.GetAllMenuItemStrings(vec); };
     void DeleteRUEntry(size_t index) { m_RUEList.DeleteRUEntry(index); }
 
+    void ClearRUEList() { m_RUEList.ClearEntries(); }
+    void OnUpdateClearRecentHistory();
     
 ////@begin PasswordSafeFrame member variables
   PWSGrid* m_grid;
