@@ -143,10 +143,7 @@ void CSafeCombinationEntry::CreateControls()
   wxBoxSizer* itemBoxSizer2 = new wxBoxSizer(wxHORIZONTAL);
   itemDialog1->SetSizer(itemBoxSizer2);
 
-  wxStaticBitmap* itemStaticBitmap3 = new wxStaticBitmap(itemDialog1, wxID_STATIC,
-                                                         wxBitmap(cpane_xpm),
-                                                         wxDefaultPosition,
-                                                         itemDialog1->ConvertDialogToPixels(wxSize(49, 46)), 0 );
+  wxStaticBitmap* itemStaticBitmap3 = new wxStaticBitmap( itemDialog1, wxID_STATIC, itemDialog1->GetBitmapResource(wxT("../graphics/cpane.bmp")), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(49, 46)), 0 );
   itemBoxSizer2->Add(itemStaticBitmap3, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxBoxSizer* itemBoxSizer4 = new wxBoxSizer(wxVERTICAL);
@@ -155,17 +152,10 @@ void CSafeCombinationEntry::CreateControls()
   wxBoxSizer* itemBoxSizer5 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer4->Add(itemBoxSizer5, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
 
-  wxStaticBitmap* itemStaticBitmap6 = new wxStaticBitmap(itemDialog1, wxID_STATIC,
-                                                          wxBitmap(psafetxt_xpm),
-                                                         wxDefaultPosition,
-                                                         itemDialog1->ConvertDialogToPixels(wxSize(111, 16)), 0 );
+  wxStaticBitmap* itemStaticBitmap6 = new wxStaticBitmap( itemDialog1, wxID_STATIC, itemDialog1->GetBitmapResource(wxT("../graphics/psafetxt.bmp")), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(111, 16)), 0 );
   itemBoxSizer5->Add(itemStaticBitmap6, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxStaticText* itemStaticText7 = new wxStaticText(itemDialog1, wxID_STATIC,
-                                                   wxString::Format(_("Version %d.%d"),
-                                                                    MAJORVERSION,
-                                                                    MINORVERSION),
-                                                   wxDefaultPosition, wxDefaultSize, 0 );
+  wxStaticText* itemStaticText7 = new wxStaticText( itemDialog1, wxID_STATIC, _("Version 3.16"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer5->Add(itemStaticText7, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticText* itemStaticText8 = new wxStaticText( itemDialog1, wxID_STATIC, _("Open Password Database:"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -175,10 +165,8 @@ void CSafeCombinationEntry::CreateControls()
   itemBoxSizer4->Add(itemBoxSizer9, 50, wxGROW|wxALL, 5);
 
   wxArrayString itemComboBox10Strings;
-  wxGetApp().m_recentDatabases.GetAll(itemComboBox10Strings);
-  wxComboBox* itemComboBox10 = new wxComboBox( itemDialog1, ID_DBASECOMBOBOX, _T(""), wxDefaultPosition, wxSize(itemDialog1->ConvertDialogToPixels(wxSize(140, -1)).x, -1), itemComboBox10Strings, wxCB_DROPDOWN );
+  wxComboBox* itemComboBox10 = new wxComboBox( itemDialog1, ID_DBASECOMBOBOX, wxEmptyString, wxDefaultPosition, wxSize(itemDialog1->ConvertDialogToPixels(wxSize(140, -1)).x, -1), itemComboBox10Strings, wxCB_DROPDOWN );
   itemBoxSizer9->Add(itemComboBox10, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 0);
-  itemComboBox10->SetFocus();
 
   wxButton* itemButton11 = new wxButton( itemDialog1, ID_ELLIPSIS, _("..."), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT );
   itemBoxSizer9->Add(itemButton11, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
@@ -186,7 +174,7 @@ void CSafeCombinationEntry::CreateControls()
   wxStaticText* itemStaticText12 = new wxStaticText( itemDialog1, wxID_STATIC, _("Safe Combination:"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer4->Add(itemStaticText12, 0, wxALIGN_LEFT|wxALL, 3);
 
-  wxTextCtrl* itemTextCtrl13 = new wxTextCtrl( itemDialog1, ID_PASSWORD, _T(""), wxDefaultPosition, wxSize(itemDialog1->ConvertDialogToPixels(wxSize(160, -1)).x, -1), wxTE_PASSWORD );
+  wxTextCtrl* itemTextCtrl13 = new wxTextCtrl( itemDialog1, ID_COMBINATION, wxEmptyString, wxDefaultPosition, wxSize(itemDialog1->ConvertDialogToPixels(wxSize(160, -1)).x, -1), wxTE_PASSWORD );
   itemBoxSizer4->Add(itemTextCtrl13, 0, wxGROW|wxRIGHT|wxTOP|wxBOTTOM, 5);
 
   wxBoxSizer* itemBoxSizer14 = new wxBoxSizer(wxHORIZONTAL);
@@ -225,7 +213,7 @@ void CSafeCombinationEntry::CreateControls()
   itemCheckBox15->Enable(!m_readOnly);
   // if filename field not empty, set focus to password:
   if (!m_filename.empty()) {
-    FindWindow(ID_PASSWORD)->SetFocus();
+    FindWindow(ID_COMBINATION)->SetFocus();
   }
 }
 
@@ -307,7 +295,7 @@ void CSafeCombinationEntry::OnOk( wxCommandEvent& )
       wxMessageDialog err(this, errmess,
                           _("Error"), wxOK | wxICON_EXCLAMATION);
       err.ShowModal();
-      wxTextCtrl *txt = (wxTextCtrl *)FindWindow(ID_PASSWORD);
+      wxTextCtrl *txt = (wxTextCtrl *)FindWindow(ID_COMBINATION);
       txt->SetSelection(-1,-1);
       txt->SetFocus();
       return;
