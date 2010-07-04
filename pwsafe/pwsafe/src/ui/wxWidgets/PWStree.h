@@ -53,7 +53,7 @@ typedef std::map<CUUIDGen, wxTreeItemId, CUUIDGen::ltuuid> UUIDTIMapT;
 
 class PWSTreeCtrl: public wxTreeCtrl
 {    
-  DECLARE_DYNAMIC_CLASS( PWSTreeCtrl )
+  DECLARE_CLASS( PWSTreeCtrl )
   DECLARE_EVENT_TABLE()
 
 public:
