@@ -58,7 +58,7 @@ class PWSTreeCtrl: public wxTreeCtrl
 
 public:
   /// Constructors
-  PWSTreeCtrl(): m_core(*(PWScore*)(NULL)){} //if called, we're history
+  PWSTreeCtrl(); // Declared, never defined, as we don't support this!
   PWSTreeCtrl(PWScore &core);
   PWSTreeCtrl(wxWindow* parent, PWScore &core, wxWindowID id, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxTR_HAS_BUTTONS);
 
