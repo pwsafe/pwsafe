@@ -34,7 +34,7 @@ class SystemTray : protected wxTaskBarIcon
     void OnTaskBarLeftDoubleClick( wxTaskBarIconEvent& evt );
 
     /// event handler for all menu item events sent from system tray menu
-    void OnSysTrayMenuItem( wxCommandEvent& event );
+    void OnSysTrayMenuItem( wxCommandEvent& evt );
 
     using wxTaskBarIcon::RemoveIcon;
 
