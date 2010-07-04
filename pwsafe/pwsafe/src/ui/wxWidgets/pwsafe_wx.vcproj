@@ -226,6 +226,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\guiinfo.h"
+				>
+			</File>
+			<File
 				RelativePath=".\optionspropsheet.h"
 				>
 			</File>
@@ -263,6 +267,10 @@
 			</File>
 			<File
 				RelativePath=".\PWStree.h"
+				>
+			</File>
+			<File
+				RelativePath=".\RecentDBList.h"
 				>
 			</File>
 			<File
@@ -339,6 +347,10 @@
 			</File>
 			<File
 				RelativePath=".\editshortcut.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\guiinfo.cpp"
 				>
 			</File>
 			<File
