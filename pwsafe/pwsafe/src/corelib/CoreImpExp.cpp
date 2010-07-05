@@ -71,13 +71,13 @@ struct ExportTester {
   {return operator()(p.second);}
 
   // operator for OrderedItemList
-  bool operator()(const CItemData &item)
-  {
+  bool operator()(const CItemData &item) {
     return item.Matches(m_subgroup_name,
                         m_subgroup_object, m_subgroup_function);
   }
 
 private:
+  ExportTester& operator=(const ExportTester&); // Do not implement
   const stringT &m_subgroup_name;
   const int &m_subgroup_object;
   const int &m_subgroup_function;
@@ -224,8 +224,7 @@ struct PutText {
   {operator()(p.second);}
 
   // operator for OrderedItemList
-  void operator()(const CItemData &item)
-  {
+  void operator()(const CItemData &item) {
     if (m_subgroup_name.empty() || 
         item.Matches(m_subgroup_name, m_subgroup_object,
         m_subgroup_function)) {
@@ -247,6 +246,7 @@ struct PutText {
   }
 
 private:
+  PutText& operator=(const PutText&); // Do not implement
   const stringT &m_subgroup_name;
   const int &m_subgroup_object;
   const int &m_subgroup_function;
@@ -334,8 +334,7 @@ struct XMLRecordWriter {
   {operator()(p.second);}
 
   // operator for OrderedItemList
-  void operator()(const CItemData &item)
-  {
+  void operator()(const CItemData &item) {
     m_id++;
     if (m_subgroup_name.empty() ||
         item.Matches(m_subgroup_name,
@@ -361,6 +360,7 @@ struct XMLRecordWriter {
   }
 
 private:
+  XMLRecordWriter& operator=(const XMLRecordWriter&); // Do not implement
   const stringT &m_subgroup_name;
   const int m_subgroup_object;
   const int m_subgroup_function;

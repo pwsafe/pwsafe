@@ -932,6 +932,7 @@ struct FieldsMatch {
   m_group(a_group), m_title(a_title), m_user(a_user) {}
 
 private:
+  FieldsMatch& operator=(const FieldsMatch&); // Do not implement
   const StringX &m_group;
   const StringX &m_title;
   const StringX &m_user;
@@ -958,6 +959,7 @@ struct TitleMatch {
     m_title(a_title) {}
 
 private:
+  TitleMatch& operator=(const TitleMatch&); // Do not implement
   const StringX &m_title;
 };
 
@@ -1002,6 +1004,7 @@ struct GroupTitle_TitleUserMatch {
                             m_gt(a_grouptitle),  m_tu(a_titleuser) {}
 
 private:
+  GroupTitle_TitleUserMatch& operator=(const GroupTitle_TitleUserMatch&); // Do not implement
   const StringX &m_gt;
   const StringX &m_tu;
 };
@@ -2223,6 +2226,9 @@ struct HistoryUpdater {
 protected:
   int &m_num_altered;
   std::map<CUUIDGen, StringX, CUUIDGen::ltuuid> &m_mapSavedHistory;
+
+private:
+  HistoryUpdater& operator=(const HistoryUpdater&); // Do not implement
 };
 
 struct HistoryUpdateResetOff : public HistoryUpdater {
@@ -2230,8 +2236,7 @@ struct HistoryUpdateResetOff : public HistoryUpdater {
                         SavePWHistoryMap &mapSavedHistory)
  : HistoryUpdater(num_altered, mapSavedHistory) {}
 
-  void operator()(CItemData &ci)
-  {
+  void operator()(CItemData &ci) {
     uuid_array_t item_uuid;
     ci.GetUUID(item_uuid);
     StringX cs_tmp = ci.GetPWHistory();
@@ -2242,6 +2247,9 @@ struct HistoryUpdateResetOff : public HistoryUpdater {
       m_num_altered++;
     }
   }
+
+private:
+  HistoryUpdateResetOff& operator=(const HistoryUpdateResetOff&); // Do not implement
 };
 
 struct HistoryUpdateResetOn : public HistoryUpdater {
@@ -2250,8 +2258,7 @@ struct HistoryUpdateResetOn : public HistoryUpdater {
     : HistoryUpdater(num_altered, mapSavedHistory)
   {Format(m_text, _T("1%02x00"), new_default_max);}
 
-  void operator()(CItemData &ci)
-  {
+  void operator()(CItemData &ci) {
     uuid_array_t item_uuid;
     ci.GetUUID(item_uuid);
     StringX cs_tmp = ci.GetPWHistory();
@@ -2270,6 +2277,7 @@ struct HistoryUpdateResetOn : public HistoryUpdater {
   }
 
 private:
+  HistoryUpdateResetOn& operator=(const HistoryUpdateResetOn&); // Do not implement
   StringX m_text;
 };
 
@@ -2280,8 +2288,7 @@ struct HistoryUpdateSetMax : public HistoryUpdater {
     m_new_default_max(new_default_max)
   {Format(m_text, _T("1%02x"), new_default_max);}
 
-  void operator()(CItemData &ci)
-  {
+  void operator()(CItemData &ci) {
     uuid_array_t item_uuid;
     ci.GetUUID(item_uuid);
     StringX cs_tmp = ci.GetPWHistory();
@@ -2307,6 +2314,7 @@ struct HistoryUpdateSetMax : public HistoryUpdater {
   }
 
 private:
+  HistoryUpdateSetMax& operator=(const HistoryUpdateSetMax&); // Do not implement
   int m_new_default_max;
   StringX m_text;
 };
