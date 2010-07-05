@@ -127,6 +127,9 @@ protected:
   size_t m_fileLength;
   Asker *m_pAsker;
   Reporter *m_pReporter;
+
+private:
+  PWSfile& operator=(const PWSfile&); // Do not implement
 };
 
 // A quick way to determine if two files are equal,
@@ -135,13 +138,13 @@ protected:
 // to a performance trade-off.
 class PWSFileSig
 {
- public:
+public:
   PWSFileSig(const stringT &fname);
   PWSFileSig(const PWSFileSig &pfs);
   PWSFileSig &operator=(const PWSFileSig &that);
   bool operator==(const PWSFileSig &other);
   bool operator!=(const PWSFileSig &other) {return !(*this == other);}
- private:
+private:
   long m_length; // 0 if file doesn't exist
   unsigned char m_digest[SHA256::HASHLEN];
 };

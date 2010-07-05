@@ -34,6 +34,7 @@ protected:
   virtual size_t WriteCBC(unsigned char type, const StringX &data);
 
 private:
+  PWSfileV1V2& operator=(const PWSfileV1V2&); // Do not implement
   size_t ReadCBC(unsigned char &type, StringX &data);
   // crypto stuff for reading/writing files:
   unsigned char m_salt[SaltLength];

@@ -270,13 +270,16 @@ class FillSC {
 public:
   FillSC(vector<int> &sc, bool digits, bool symbols)
     : m_sc(sc), m_digits(digits), m_symbols(symbols), m_i(0) {}
+
   void operator()(charT t) {
     if ((m_digits && leets[t - charT('a')].num != 0) ||
       (m_symbols &&leets[t - charT('a')].sym != 0))
       m_sc.push_back(m_i);
     m_i++;
   }
+
 private:
+  FillSC& operator=(const FillSC&); // Do not implement
   vector<int> &m_sc;
   bool m_digits, m_symbols;
   int m_i;

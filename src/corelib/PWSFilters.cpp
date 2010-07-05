@@ -457,6 +457,7 @@ struct XMLFilterWriterToString {
     m_os << xml.c_str();
   }
 private:
+  XMLFilterWriterToString& operator=(const XMLFilterWriterToString&); // Do not implement
   ostream &m_os;
   bool m_bWithFormatting;
 };
