@@ -5,8 +5,11 @@ all clean unicodedebug unicoderelease:
 	$(MAKE) -C src/corelib $@
 	$(MAKE) -C src/ui/wxWidgets $@
 
-debug release:
-	@echo "'$@' not currently supported, use unicode{debug,release} instead"
+debug:
+	$(MAKE) unicodedebug
+
+release:
+	$(MAKE) unicoderelease
 
 reallyclean:
 	$(MAKE) clean CONFIG=unicodebug
