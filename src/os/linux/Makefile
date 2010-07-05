@@ -28,7 +28,7 @@ LIBOBJ    = $(addprefix $(OBJPATH)/,$(subst .cpp,.o,$(LIBSRC)))
 LIB       = $(LIBPATH)/libos.a
 OBJ       = $(LIBOBJ)
 
-CXXFLAGS +=  -Wall -I../../corelib -I../..
+CXXFLAGS =  -Wall -I../../corelib -I../..
 ifeq ($(CONFIG),debug)
 CXXFLAGS += -O0 -ggdb
 else ifeq ($(CONFIG),release)
