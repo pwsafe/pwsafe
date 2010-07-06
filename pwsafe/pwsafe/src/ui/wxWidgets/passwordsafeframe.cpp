@@ -560,7 +560,8 @@ void PasswordSafeFrame::ShowTree(bool show)
          iter++) {
       m_tree->AddItem(iter->second);
     }
-    m_tree->SortChildren(m_tree->GetRootItem());
+    if (!m_tree->IsEmpty()) // avoid assertion!
+      m_tree->SortChildren(m_tree->GetRootItem());
   }
 
   m_tree->Show(show);
