@@ -54,6 +54,9 @@
     <File Name="../src/ui/wxWidgets/pwsafeapp.h"/>
     <File Name="../src/ui/wxWidgets/RUEList.cpp"/>
     <File Name="../src/ui/wxWidgets/RUEList.h"/>
+    <File Name="../src/ui/wxWidgets/guiinfo.cpp"/>
+    <File Name="../src/ui/wxWidgets/guiinfo.h"/>
+    <File Name="../src/ui/wxWidgets/RecentDBList.h"/>
   </VirtualDirectory>
   <Dependencies Name="Release">
     <Project Name="core"/>
