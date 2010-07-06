@@ -84,16 +84,16 @@ public:
 ////@begin CSafeCombinationEntry event handler declarations
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_ELLIPSIS
-  void OnEllipsisClick( wxCommandEvent& evt );
+  void OnEllipsisClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_NEWDB
-  void OnNewDbClick( wxCommandEvent& evt );
+  void OnNewDbClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
-  void OnOk( wxCommandEvent& evt );
+  void OnOk( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL
-  void OnCancel( wxCommandEvent& evt );
+  void OnCancel( wxCommandEvent& event );
 
 ////@end CSafeCombinationEntry event handler declarations
 

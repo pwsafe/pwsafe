@@ -31,9 +31,9 @@
 #include "corelib/PWSdirs.h"
 #include "os/file.h"
 ////@begin XPM images
-////@end XPM images
 #include "../graphics/wxWidgets/cpane.xpm"
 #include "../graphics/wxWidgets/psafetxt.xpm"
+////@end XPM images
 #include "pwsafeapp.h"
 
 
@@ -143,7 +143,7 @@ void CSafeCombinationEntry::CreateControls()
   wxBoxSizer* itemBoxSizer2 = new wxBoxSizer(wxHORIZONTAL);
   itemDialog1->SetSizer(itemBoxSizer2);
 
-  wxStaticBitmap* itemStaticBitmap3 = new wxStaticBitmap( itemDialog1, wxID_STATIC, itemDialog1->GetBitmapResource(wxT("../graphics/cpane.bmp")), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(49, 46)), 0 );
+  wxStaticBitmap* itemStaticBitmap3 = new wxStaticBitmap( itemDialog1, wxID_STATIC, itemDialog1->GetBitmapResource(wxT("../graphics/wxWidgets/cpane.xpm")), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(49, 46)), 0 );
   itemBoxSizer2->Add(itemStaticBitmap3, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxBoxSizer* itemBoxSizer4 = new wxBoxSizer(wxVERTICAL);
@@ -152,7 +152,7 @@ void CSafeCombinationEntry::CreateControls()
   wxBoxSizer* itemBoxSizer5 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer4->Add(itemBoxSizer5, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
 
-  wxStaticBitmap* itemStaticBitmap6 = new wxStaticBitmap( itemDialog1, wxID_STATIC, itemDialog1->GetBitmapResource(wxT("../graphics/psafetxt.bmp")), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(111, 16)), 0 );
+  wxStaticBitmap* itemStaticBitmap6 = new wxStaticBitmap( itemDialog1, wxID_STATIC, itemDialog1->GetBitmapResource(wxT("../graphics/wxWidgets/psafetxt.xpm")), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(111, 16)), 0 );
   itemBoxSizer5->Add(itemStaticBitmap6, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticText* itemStaticText7 = new wxStaticText( itemDialog1, wxID_STATIC, _("Version 3.16"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -236,14 +236,14 @@ wxBitmap CSafeCombinationEntry::GetBitmapResource( const wxString& name )
   // Bitmap retrieval
 ////@begin CSafeCombinationEntry bitmap retrieval
   wxUnusedVar(name);
-  if (name == _T("../graphics/cpane.bmp"))
+  if (name == _T("../graphics/wxWidgets/cpane.xpm"))
   {
-    wxBitmap bitmap(_T("../graphics/cpane.bmp"), wxBITMAP_TYPE_BMP);
+    wxBitmap bitmap(cpane_xpm);
     return bitmap;
   }
-  else if (name == _T("../graphics/psafetxt.bmp"))
+  else if (name == _T("../graphics/wxWidgets/psafetxt.xpm"))
   {
-    wxBitmap bitmap(_T("../graphics/psafetxt.bmp"), wxBITMAP_TYPE_BMP);
+    wxBitmap bitmap(psafetxt_xpm);
     return bitmap;
   }
   return wxNullBitmap;
@@ -377,7 +377,7 @@ void CSafeCombinationEntry::OnNewDbClick( wxCommandEvent& /* evt */ )
 
   // 3. Set m_filespec && m_passkey to returned value!
   m_core.SetCurFile(newfile.c_str());
-  m_password = pksetup.GetPassword();
+  m_core.SetPassKey(pksetup.GetPassword().c_str());
   wxGetApp().m_recentDatabases.AddFileToHistory(newfile);
   EndModal(wxID_OK);
 }
