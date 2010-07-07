@@ -130,7 +130,6 @@
     <File Name="../src/corelib/PWSfile.cpp"/>
     <File Name="../src/corelib/BlowFish.cpp"/>
     <File Name="../src/corelib/PWSprefs.h"/>
-    <File Name="../src/corelib/corelib.rc2"/>
   </VirtualDirectory>
   <Dependencies Name="Release"/>
   <Dependencies Name="Debug"/>
@@ -161,8 +160,8 @@
       </CustomBuild>
       <AdditionalRules>
         <CustomPostBuild/>
-        <CustomPreBuild>corelib_st.cpp corelib_st.h
-corelib_st.cpp corelib_st.h : ../src/corelib/corelib.rc2
+        <CustomPreBuild>../src/corelib/corelib_st.cpp ../src/corelib/corelib_st.h
+../src/corelib/corelib_st.cpp ../src/corelib/corelib_st.h: ../src/corelib/corelib.rc2
 	../Misc/rc2cpp.pl ../src/corelib/corelib.rc2</CustomPreBuild>
       </AdditionalRules>
     </Configuration>
@@ -192,8 +191,8 @@ corelib_st.cpp corelib_st.h : ../src/corelib/corelib.rc2
       </CustomBuild>
       <AdditionalRules>
         <CustomPostBuild/>
-        <CustomPreBuild>corelib_st.cpp corelib_st.h
-corelib_st.cpp corelib_st.h : ../src/corelib/corelib.rc2
+        <CustomPreBuild>../src/corelib/corelib_st.cpp ../src/corelib/corelib_st.h
+../src/corelib/corelib_st.cpp ../src/corelib/corelib_st.h: ../src/corelib/corelib.rc2
 	../Misc/rc2cpp.pl ../src/corelib/corelib.rc2
 </CustomPreBuild>
       </AdditionalRules>
