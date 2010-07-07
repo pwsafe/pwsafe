@@ -161,6 +161,8 @@
       <AdditionalRules>
         <CustomPostBuild/>
         <CustomPreBuild>../src/corelib/corelib_st.cpp ../src/corelib/corelib_st.h
+#dummy line to prevent CodeLite from stripping the TAB from the next line
+	
 ../src/corelib/corelib_st.cpp ../src/corelib/corelib_st.h: ../src/corelib/corelib.rc2
 	../Misc/rc2cpp.pl ../src/corelib/corelib.rc2</CustomPreBuild>
       </AdditionalRules>
@@ -192,6 +194,8 @@
       <AdditionalRules>
         <CustomPostBuild/>
         <CustomPreBuild>../src/corelib/corelib_st.cpp ../src/corelib/corelib_st.h
+#dummy line to prevent CodeLite from stripping the TAB from the next line
+	
 ../src/corelib/corelib_st.cpp ../src/corelib/corelib_st.h: ../src/corelib/corelib.rc2
 	../Misc/rc2cpp.pl ../src/corelib/corelib.rc2
 </CustomPreBuild>

@@ -100,8 +100,10 @@
       <AdditionalRules>
         <CustomPostBuild/>
         <CustomPreBuild>../src/ui/wxWidgets/version.h
+#dummy line to keep CodeLite from stripping the TAB from the next line
+	
 ../src/ui/wxWidgets/version.h: ../src/ui/wxWidgets/version.in
-	../Misc/mkversion.pl ../src/ui/wxWidgets/version.in ../src/ui/wxWidgets/$@</CustomPreBuild>
+	../Misc/mkversion.pl ../src/ui/wxWidgets/version.in ../src/ui/wxWidgets/version.h</CustomPreBuild>
       </AdditionalRules>
     </Configuration>
     <Configuration Name="Release" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
@@ -137,8 +139,10 @@
       <AdditionalRules>
         <CustomPostBuild/>
         <CustomPreBuild>../src/ui/wxWidgets/version.h
+#dummy line to prevent CodeLite from stripping the TAB from the next line
+	
 ../src/ui/wxWidgets/version.h: ../src/ui/wxWidgets/version.in
-	../Misc/mkversion.pl ../src/ui/wxWidgets/version.in ../src/ui/wxWidgets/$@
+	../Misc/mkversion.pl ../src/ui/wxWidgets/version.in ../src/ui/wxWidgets/version.h
 </CustomPreBuild>
       </AdditionalRules>
     </Configuration>
