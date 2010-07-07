@@ -31,6 +31,7 @@ $(DEBNAME): $(INFILES)
 
 deb: debtree
 	@fakeroot dpkg-deb --build debian $(DEBNAME)
+	@(RM) debian
 
 debtree:
 	@$(MKDIR) debian/usr/bin

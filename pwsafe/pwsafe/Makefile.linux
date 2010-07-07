@@ -15,7 +15,13 @@ reallyclean:
 	$(MAKE) clean CONFIG=unicodebug
 	$(MAKE) clean CONFIG=unicorelease
 
-.PHONY:	all clean reallyclean debug release unicodedebug unicoderelease
+deb:
+	$(MAKE) -C install/deb
+
+clean:
+	$(MAKE) -C install/deb $@
+
+.PHONY:	all clean reallyclean debug release unicodedebug unicoderelease deb
 # Local variables:
 # mode: makefile
 # End:

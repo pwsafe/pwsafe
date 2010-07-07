@@ -30,6 +30,7 @@
 #include "passwordsafeframe.h"
 #include "corelib/CheckVersion.h"
 ////@begin XPM images
+#include "../graphics/wxWidgets/cpane.xpm"
 ////@end XPM images
 
 
@@ -128,7 +129,7 @@ void CAbout::CreateControls()
   wxBoxSizer* itemBoxSizer2 = new wxBoxSizer(wxHORIZONTAL);
   itemDialog1->SetSizer(itemBoxSizer2);
 
-  wxStaticBitmap* itemStaticBitmap3 = new wxStaticBitmap( itemDialog1, wxID_STATIC, itemDialog1->GetBitmapResource(wxT("../graphics/cpane.bmp")), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(49, 46)), 0 );
+  wxStaticBitmap* itemStaticBitmap3 = new wxStaticBitmap( itemDialog1, wxID_STATIC, itemDialog1->GetBitmapResource(wxT("../graphics/wxWidgets/cpane.xpm")), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(49, 46)), 0 );
   itemBoxSizer2->Add(itemStaticBitmap3, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxBoxSizer* itemBoxSizer4 = new wxBoxSizer(wxVERTICAL);
@@ -143,7 +144,7 @@ void CAbout::CreateControls()
   wxStaticText* itemStaticText7 = new wxStaticText( itemDialog1, wxID_STATIC, _("Latest version? Click"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer6->Add(itemStaticText7, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxHyperlinkCtrl* itemHyperlinkCtrl8 = new wxHyperlinkCtrl( itemDialog1, ID_HYPERLINKCTRL1, _("here"), _T(""), wxDefaultPosition, wxDefaultSize, wxHL_DEFAULT_STYLE );
+  wxHyperlinkCtrl* itemHyperlinkCtrl8 = new wxHyperlinkCtrl( itemDialog1, ID_HYPERLINKCTRL1, _("here"), wxEmptyString, wxDefaultPosition, wxDefaultSize, wxHL_DEFAULT_STYLE );
   itemBoxSizer6->Add(itemHyperlinkCtrl8, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticText* itemStaticText9 = new wxStaticText( itemDialog1, wxID_STATIC, _("to check."), wxDefaultPosition, wxDefaultSize, 0 );
@@ -161,10 +162,10 @@ void CAbout::CreateControls()
   wxStaticText* itemStaticText13 = new wxStaticText( itemDialog1, wxID_STATIC, _("See LICENSE for open souce details."), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT );
   itemBoxSizer4->Add(itemStaticText13, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxStaticText* itemStaticText14 = new wxStaticText( itemDialog1, wxID_STATIC, _("Copyright (c) 2003-2010 by Rony Shapiro"), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT );
+  wxStaticText* itemStaticText14 = new wxStaticText( itemDialog1, wxID_STATIC, _("Copyright (c) 2003-2009 by Rony Shapiro"), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT );
   itemBoxSizer4->Add(itemStaticText14, 0, wxALIGN_LEFT|wxALL, 5);
 
-  m_newVerStatus = new wxTextCtrl( itemDialog1, ID_TEXTCTRL, _T(""), wxDefaultPosition, wxSize(itemDialog1->ConvertDialogToPixels(wxSize(120, -1)).x, -1), wxTE_READONLY|wxNO_BORDER );
+  m_newVerStatus = new wxTextCtrl( itemDialog1, ID_TEXTCTRL, wxEmptyString, wxDefaultPosition, wxSize(itemDialog1->ConvertDialogToPixels(wxSize(120, -1)).x, -1), wxTE_READONLY|wxNO_BORDER );
   m_newVerStatus->SetBackgroundColour(wxColour(230, 231, 232));
   itemBoxSizer4->Add(m_newVerStatus, 0, wxALIGN_LEFT|wxALL, 5);
 
@@ -195,9 +196,9 @@ wxBitmap CAbout::GetBitmapResource( const wxString& name )
   // Bitmap retrieval
 ////@begin CAbout bitmap retrieval
   wxUnusedVar(name);
-  if (name == _T("../graphics/cpane.bmp"))
+  if (name == _T("../graphics/wxWidgets/cpane.xpm"))
   {
-    wxBitmap bitmap(_T("../graphics/cpane.bmp"), wxBITMAP_TYPE_BMP);
+    wxBitmap bitmap(cpane_xpm);
     return bitmap;
   }
   return wxNullBitmap;

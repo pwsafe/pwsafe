@@ -76,10 +76,10 @@ public:
 ////@begin CAbout event handler declarations
 
   /// wxEVT_COMMAND_HYPERLINK event handler for ID_HYPERLINKCTRL1
-  void OnHyperlinkctrl1HyperlinkClicked( wxHyperlinkEvent& evt);
+  void OnHyperlinkctrl1HyperlinkClicked( wxHyperlinkEvent& event );
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CLOSE
-  void OnCloseClick( wxCommandEvent& evt);
+  void OnCloseClick( wxCommandEvent& event );
 
 ////@end CAbout event handler declarations
 
