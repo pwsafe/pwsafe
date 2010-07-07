@@ -25,8 +25,9 @@
 ////@begin includes
 ////@end includes
 
-// currently for debugging
-#include <iostream>
+#include <iostream> // currently for debugging
+#include <unistd.h> // for fork()
+
 using namespace std;
 
 #include "pwsafeapp.h"
@@ -210,16 +211,29 @@ bool PwsafeApp::OnInit()
     PWSprefs::SetConfigFile(cfg_file.c_str());
 
   m_core.SetReadOnly(cmd_ro);
+  // OK to load prefs now
+  PWSprefs *prefs = PWSprefs::GetInstance();
   // if filename passed in command line, it tkae precedence
   // over that in preference:
   if (filename.empty()) {
-    PWSprefs *prefs = PWSprefs::GetInstance();
     filename =  prefs->GetPref(PWSprefs::CurrentFile).c_str();
-  }
-  else {
+  } else {
     m_recentDatabases.AddFileToHistory(filename);
   }
   m_core.SetCurFile(filename.c_str());
+#ifndef _DEBUG
+  // Now's a good time to fork
+  // and exit the parent process, returning the command prompt to the user
+  // (but not for debug builds - just make debugging harder)
+  pid_t pid = fork();
+  if (pid == -1) {
+    perror("fork"); // should never happen!
+    exit(1);
+  } else if (pid != 0) { // parent
+    exit(0);
+  }
+#endif /* _DEBUG */
+  // here if we're the child
   m_recentDatabases.Load();
 
   if (cmd_closed) {
