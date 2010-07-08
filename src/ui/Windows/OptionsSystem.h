@@ -28,6 +28,7 @@ public:
   enum { IDD = IDD_PS_SYSTEM };
   int m_maxreitems;
   BOOL m_usesystemtray;
+  BOOL m_hidesystemtray;
   BOOL m_startup;
   int m_maxmruitems;
   BOOL m_mruonfilemenu;
@@ -35,10 +36,12 @@ public:
   BOOL m_defaultopenro;
   BOOL m_multipleinstances;
   BOOL m_migrate2appdata;
+  BOOL m_initialhotkeystate;
   //}}AFX_DATA
 
   int m_savemaxreitems;
   BOOL m_saveusesystemtray;
+  BOOL m_savehidesystemtray;
   BOOL m_savestartup;
   int m_savemaxmruitems;
   BOOL m_savemruonfilemenu;
@@ -71,6 +74,7 @@ protected:
   afx_msg void OnApplyConfigChanges();
   afx_msg void OnNeverSaveDBNames();
   afx_msg BOOL OnKillActive();
+  afx_msg BOOL OnSetActive();
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()

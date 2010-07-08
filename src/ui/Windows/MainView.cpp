@@ -1127,9 +1127,18 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
       if (prefs->GetPref(PWSprefs::ClearClipboardOnMinimize))
         OnClearClipboard();
 
-      if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray)) {      
+      if (prefs->GetPref(PWSprefs::UseSystemTray)) {      
         app.SetMenuDefaultItem(ID_MENUITEM_RESTORE);
         ShowWindow(SW_HIDE);
+
+        // User can have 'stealth' mode where, as long as a hot-key is defined,
+        // they can hide the System Tray icon when PasswordSafe is minimized
+        if (prefs->GetPref(PWSprefs::HideSystemTray) && 
+            prefs->GetPref(PWSprefs::HotKeyEnabled) &&
+            prefs->GetPref(PWSprefs::HotKey) > 0)
+          app.HideIcon();
+        else if (app.IsIconVisible() == FALSE)
+          app.ShowIcon();
       }
       break;
     case SIZE_MAXIMIZED:
@@ -1163,6 +1172,10 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
         CPWDialog::GetDialogTracker()->Apply(Shower);
 
         RestoreDisplayAfterMinimize();
+
+        if (prefs->GetPref(PWSprefs::UseSystemTray) && app.IsIconVisible() == FALSE) {      
+          app.ShowIcon();
+        }
 
         // Resume notification of changes
         m_core.ResumeOnDBNotification();
