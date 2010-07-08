@@ -65,6 +65,7 @@ void COptionsSystem::DoDataExchange(CDataExchange* pDX)
   DDX_Text(pDX, IDC_MAXREITEMS, m_maxreitems);
   DDV_MinMaxInt(pDX, m_maxreitems, 0, ID_TRAYRECENT_ENTRYMAX - ID_TRAYRECENT_ENTRY1 + 1);
   DDX_Check(pDX, IDC_DEFPWUSESYSTRAY, m_usesystemtray);
+  DDX_Check(pDX, IDC_DEFPWHIDESYSTRAY, m_hidesystemtray);
   DDX_Check(pDX, IDC_STARTUP, m_startup);
   DDX_Text(pDX, IDC_MAXMRUITEMS, m_maxmruitems);
   DDV_MinMaxInt(pDX, m_maxmruitems, 0, ID_FILE_MRU_ENTRYMAX - ID_FILE_MRU_ENTRY1 + 1);
@@ -120,6 +121,17 @@ void COptionsSystem::OnUseSystemTray()
   GetDlgItem(IDC_STATIC_MAXREITEMS)->EnableWindow(enable);
   GetDlgItem(IDC_MAXREITEMS)->EnableWindow(enable);
   GetDlgItem(IDC_RESPIN)->EnableWindow(enable);
+
+  if (enable == TRUE) {
+    // Check if user has the Misc PP open and hot key set
+    if (QuerySiblings(PPOPT_HOTKEY_SET, 0L) == 1L) {
+      // Yes - open and hot key is set
+      GetDlgItem(IDC_DEFPWHIDESYSTRAY)->EnableWindow(TRUE);
+    } else {
+      // No - Not open - then take initial value as the answer
+      GetDlgItem(IDC_DEFPWHIDESYSTRAY)->EnableWindow(m_initialhotkeystate);
+    }
+  }
 }
 
 void COptionsSystem::OnStartup() 
@@ -224,6 +236,7 @@ BOOL COptionsSystem::OnInitDialog()
 
   m_savemaxreitems = m_maxreitems;
   m_saveusesystemtray = m_usesystemtray;
+  m_savehidesystemtray = m_hidesystemtray;
   m_savestartup = m_startup;
   m_savemaxmruitems = m_maxmruitems;
   m_savemruonfilemenu = m_mruonfilemenu;
@@ -291,6 +304,25 @@ BOOL COptionsSystem::OnKillActive()
   return CPWPropertyPage::OnKillActive();
 }
 
+BOOL COptionsSystem::OnSetActive()
+{
+  BOOL enable = (((CButton*)GetDlgItem(IDC_DEFPWUSESYSTRAY))->GetCheck() ==
+                BST_CHECKED) ? TRUE : FALSE;
+
+  if (enable == TRUE) {
+    // Check if user has the Misc PP open and hot key set
+    if (QuerySiblings(PPOPT_HOTKEY_SET, 0L) == 1L) {
+      // Yes - open and hot key is set
+      GetDlgItem(IDC_DEFPWHIDESYSTRAY)->EnableWindow(TRUE);
+    } else {
+      // No - Not open - then take initial value as the answer
+      GetDlgItem(IDC_DEFPWHIDESYSTRAY)->EnableWindow(m_initialhotkeystate);
+    }
+  }
+
+  return CPWPropertyPage::OnSetActive();
+}
+
 LRESULT COptionsSystem::OnQuerySiblings(WPARAM wParam, LPARAM )
 {
   UpdateData(TRUE);
@@ -299,6 +331,7 @@ LRESULT COptionsSystem::OnQuerySiblings(WPARAM wParam, LPARAM )
   switch (wParam) {
     case PP_DATA_CHANGED:
       if (m_saveusesystemtray     != m_usesystemtray   ||
+          m_savehidesystemtray    != m_hidesystemtray  ||
           (m_usesystemtray        == TRUE &&
            m_savemaxreitems       != m_maxreitems)     ||
           m_savestartup           != m_startup         ||

@@ -435,6 +435,8 @@ void DboxMain::OnOptions()
     GetPref(PWSprefs::MaxREItems);
   system.m_usesystemtray = prefs->
     GetPref(PWSprefs::UseSystemTray) ? TRUE : FALSE;
+  system.m_hidesystemtray = prefs->
+    GetPref(PWSprefs::HideSystemTray) ? TRUE : FALSE;
   system.m_maxmruitems = prefs->
     GetPref(PWSprefs::MaxMRUItems);
   system.m_mruonfilemenu = prefs->
@@ -444,6 +446,7 @@ void DboxMain::OnOptions()
     GetPref(PWSprefs::DefaultOpenRO) ? TRUE : FALSE;
   system.m_multipleinstances = prefs->
     GetPref(PWSprefs::MultipleInstances) ? TRUE : FALSE;
+  system.m_initialhotkeystate = save_hotkey_enabled;
 
   optionsPS.AddPage(&backup);
   optionsPS.AddPage(&display);
@@ -598,6 +601,8 @@ void DboxMain::OnOptions()
 
     prefs->SetPref(PWSprefs::UseSystemTray,
                    system.m_usesystemtray == TRUE);
+    prefs->SetPref(PWSprefs::HideSystemTray,
+                   system.m_hidesystemtray == TRUE);
     UpdateSystemMenu();
     prefs->SetPref(PWSprefs::MaxREItems,
                    system.m_maxreitems);
@@ -778,13 +783,6 @@ void DboxMain::OnOptions()
         prefs->GetPref(PWSprefs::ExplorerTypeTree))
       SaveGroupDisplayState();
 
-    if (system.m_usesystemtray == TRUE) {
-      if (app.IsIconVisible() == FALSE)
-        app.ShowIcon();
-    } else { // user doesn't want to display
-      if (app.IsIconVisible() == TRUE)
-        app.HideIcon();
-    }
     m_RUEList.SetMax(system.m_maxreitems);
 
     if (system.m_startup != StartupShortcutExists) {
@@ -905,9 +903,10 @@ void DboxMain::OnOptions()
       ChangeOkUpdate();
     }
 
+    brc = FALSE;
     // JHF no hotkeys under WinCE
 #if !defined(POCKET_PC)
-    // Restore hotkey as it was or as user changed it - if he/she pressed OK
+    // Restore hotkey as it was or as user changed it - if user pressed OK
     if (save_hotkey_enabled == TRUE) {
       WORD wVirtualKeyCode = WORD(save_hotkey_value & 0xffff);
       WORD mod = WORD(save_hotkey_value >> 16);

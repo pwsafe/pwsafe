@@ -291,6 +291,8 @@ LRESULT COptionsMisc::OnQuerySiblings(WPARAM wParam, LPARAM lParam)
           m_saveminauto                != m_minauto)
         return 1L;
       break;
+    case PPOPT_HOTKEY_SET:
+      return (m_hotkey_enabled == TRUE) ? 1L : 0L;
     case PP_UPDATE_VARIABLES:
       // Since OnOK calls OnApply after we need to verify and/or
       // copy data into the entry - we do it ourselfs here first
