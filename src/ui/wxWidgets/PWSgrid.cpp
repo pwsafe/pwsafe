@@ -224,7 +224,7 @@ void PWSGrid::Remove(const uuid_array_t &uuid)
     DeleteRows(row);
 
     //move all the rows up by 1
-    for (int newRow = row+1; newRow < m_row_map.size(); ++newRow) {
+    for (size_t newRow = row+1; newRow < m_row_map.size(); ++newRow) {
       m_row_map[newRow-1] = m_row_map[newRow];
     }
     
