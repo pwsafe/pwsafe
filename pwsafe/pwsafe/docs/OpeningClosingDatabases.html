@@ -1,0 +1,371 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
+	<TITLE>Opening/Closing databases</TITLE>
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 3.1  (Linux)">
+	<META NAME="CREATED" CONTENT="0;0">
+	<META NAME="CHANGEDBY" CONTENT="Saurav Ghosh">
+	<META NAME="CHANGED" CONTENT="20100708;17145700">
+	<STYLE TYPE="text/css">
+	<!--
+		TD P { font-family: "arial", sans-serif }
+		P { font-family: "arial", sans-serif }
+		A:link { color: #0000cc }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LANG="en-US" LINK="#0000cc" DIR="LTR">
+<P STYLE="margin-bottom: 0in"><FONT SIZE=5><B>Opening/Closing
+databases</B></FONT><BR><FONT SIZE=2>8 messages</FONT> 
+</P>
+<HR>
+<TABLE WIDTH=100% BORDER=0 CELLPADDING=0 CELLSPACING=0>
+	<COL WIDTH=93*>
+	<COL WIDTH=163*>
+	<TR>
+		<TD WIDTH=36%>
+			<P><FONT SIZE=2><B>Saurav Ghosh </B></FONT>
+			</P>
+		</TD>
+		<TD WIDTH=64%>
+			<P ALIGN=RIGHT><FONT SIZE=2><B>Tue, Jul 6, 2010 at 2:13 PM </B></FONT>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD COLSPAN=2 WIDTH=100%>
+			<P STYLE="margin-bottom: 0in"><FONT SIZE=2>To: David Kelvin, ronys
+			</FONT>
+			</P>
+			<TABLE WIDTH=100% BORDER=0 CELLPADDING=12 CELLSPACING=0>
+				<TR>
+					<TD>
+						<P><FONT SIZE=2>While opening or closing a DB, should the
+						UI<BR><BR>1. Ask the core to read the DB, and if successful,
+						enumerate over the DB items and add them to the UI element
+						(tree or grid). &nbsp;Similarly, when closing a DB, ask the
+						core to clear all items and then remove all items from the UI
+						element.<BR><BR>or<BR><BR>2. Ask the core to read/close the DB
+						and add/remove the DB items on getting notifications from
+						core?<BR><BR>Is the UIInterface interface class written for
+						(2), or does it only serve to update the GUI when an item is
+						edited/added/deleted individually?</FONT></P>
+					</TD>
+				</TR>
+			</TABLE>
+			<P><BR><BR>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD COLSPAN=2 WIDTH=100%></TD>
+	</TR>
+</TABLE>
+<HR>
+<TABLE WIDTH=100% BORDER=0 CELLPADDING=0 CELLSPACING=0>
+	<TR>
+		<TD>
+			<P><FONT SIZE=2><B>ronys </B></FONT>
+			</P>
+		</TD>
+		<TD>
+			<P ALIGN=RIGHT><FONT SIZE=2><B>Thu, Jul 8, 2010 at 2:49 AM </B></FONT>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD COLSPAN=2>
+			<P STYLE="margin-bottom: 0in"><FONT SIZE=2>To: Saurav Ghosh </FONT>
+			</P>
+			<P STYLE="margin-bottom: 0in"><FONT SIZE=2>Cc: David Kelvin </FONT>
+			</P>
+			<TABLE WIDTH=100% BORDER=0 CELLPADDING=12 CELLSPACING=0>
+				<TR>
+					<TD>
+						<P STYLE="margin-bottom: 0in"><BR>
+						</P>
+						<P STYLE="margin-bottom: 0in"><FONT SIZE=2>(2) would be the
+						correct approach. I'd disable updates for the duration, though,
+						in order to prevent lots of annoying flashing when adding
+						entries one after the other.</FONT></P>
+						<P STYLE="margin-bottom: 0in"><BR>
+						</P>
+						<P STYLE="margin-bottom: 0in"><FONT SIZE=2>Keep in mind that
+						the UIInterface was added retroactively, mainly to support
+						undo/redo, so some of the older code, including opening/closing
+						the db, might not have been adapted to it.</FONT></P>
+						<P STYLE="margin-bottom: 0in"><BR>
+						</P>
+						<P><FONT SIZE=2>BTW - I've a decent .deb file that should allow
+						non-developers to run pwsafe on Debian and Ubuntu platforms. Do
+						you see any reason not to release this as an &quot;early beta&quot;
+						say, over the weekend?</FONT></P>
+					</TD>
+				</TR>
+			</TABLE>
+			<P><BR><BR>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD COLSPAN=2></TD>
+	</TR>
+</TABLE>
+<HR>
+<TABLE WIDTH=100% BORDER=0 CELLPADDING=0 CELLSPACING=0>
+	<TR>
+		<TD>
+			<P><FONT SIZE=2><B>Saurav Ghosh </B></FONT>
+			</P>
+		</TD>
+		<TD>
+			<P ALIGN=RIGHT><FONT SIZE=2><B>Thu, Jul 8, 2010 at 12:24 PM </B></FONT>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD COLSPAN=2>
+			<P STYLE="margin-bottom: 0in"><FONT SIZE=2>To: ronys </FONT>
+			</P>
+			<P STYLE="margin-bottom: 0in"><FONT SIZE=2>Cc: David Kelvin </FONT>
+			</P>
+			<TABLE WIDTH=100% BORDER=0 CELLPADDING=12 CELLSPACING=0>
+				<TR>
+					<TD>
+						<P><FONT SIZE=2>If (2) should be the correct approach, we
+						probably need another method in the UIInterface to notify the
+						UI that a new DB has been loaded.&nbsp; I had earlier thought
+						that the DatabaseModified() function was actually serving that
+						notification, but as per David's earlier email, its not
+						so.<BR><BR>David - am I correct here?<BR><BR>Reg: the .deb
+						file, I don't think the Linux build is very stable yet.&nbsp;
+						Deleting entries in the grid definitely crashes pwsafe, and
+						there also seems to be other problems adding/removing new
+						entries from both grid and tree views.&nbsp; Also, I have never
+						tested the undo/redo functionality on Linux at all.&nbsp; I
+						think we should release the Linux build only after this much
+						functionality works reliably.<BR><BR>Plus, we don't have the
+						import/export support yet, so users using any other password
+						manager will not be able to import their data into pwsafe to
+						actually use it (or go back to their older PW manager if they
+						create a new db). <BR></FONT><BR>
+						</P>
+					</TD>
+				</TR>
+			</TABLE>
+			<P><BR><BR>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD COLSPAN=2></TD>
+	</TR>
+</TABLE>
+<HR>
+<TABLE WIDTH=100% BORDER=0 CELLPADDING=0 CELLSPACING=0>
+	<TR>
+		<TD>
+			<P><FONT SIZE=2><B>David Kelvin </B></FONT>
+			</P>
+		</TD>
+		<TD>
+			<P ALIGN=RIGHT><FONT SIZE=2><B>Thu, Jul 8, 2010 at 12:33 PM </B></FONT>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD COLSPAN=2>
+			<P STYLE="margin-bottom: 0in"><FONT SIZE=2>To: Saurav Ghosh </FONT>
+			</P>
+			<P STYLE="margin-bottom: 0in"><FONT SIZE=2>Cc: ronys </FONT>
+			</P>
+			<TABLE WIDTH=100% BORDER=0 CELLPADDING=12 CELLSPACING=0>
+				<TR>
+					<TD>
+						<P STYLE="margin-bottom: 0in"><FONT SIZE=2>There is no need for
+						an extra call as the UI is the driver of opening a new database
+						and therefore knows full well that it is a new database.
+						&nbsp;Remember, the UI drives the actions. &nbsp;corelib does
+						what it is told and tells the UI when things are changed due to
+						its actions.</FONT></P>
+						<P STYLE="margin-bottom: 0in"><BR>
+						</P>
+						<P><FONT SIZE=2>corelib will not open a new database without
+						being told to do so by the UI.</FONT></P>
+					</TD>
+				</TR>
+			</TABLE>
+			<P><BR><BR>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD COLSPAN=2></TD>
+	</TR>
+</TABLE>
+<HR>
+<TABLE WIDTH=100% BORDER=0 CELLPADDING=0 CELLSPACING=0>
+	<TR>
+		<TD>
+			<P><FONT SIZE=2><B>Saurav Ghosh </B></FONT>
+			</P>
+		</TD>
+		<TD>
+			<P ALIGN=RIGHT><FONT SIZE=2><B>Thu, Jul 8, 2010 at 12:40 PM </B></FONT>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD COLSPAN=2>
+			<P STYLE="margin-bottom: 0in"><FONT SIZE=2>To: David Kelvin </FONT>
+			</P>
+			<P STYLE="margin-bottom: 0in"><FONT SIZE=2>Cc: ronys </FONT>
+			</P>
+			<TABLE WIDTH=100% BORDER=0 CELLPADDING=12 CELLSPACING=0>
+				<TR>
+					<TD>
+						<P><FONT SIZE=2>In that case, (1) below (and not 2) in my first
+						mesage is the preferred approach?<BR><BR>I am ok either way,
+						but I need to know which one is the supported/expected way of
+						doing things.&nbsp; Right now, the Linux build is a mix of both
+						approaches (and therefore crashes).<BR><BR>How about importing
+						and merging databases?</FONT></P>
+					</TD>
+				</TR>
+			</TABLE>
+			<P><BR><BR>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD COLSPAN=2></TD>
+	</TR>
+</TABLE>
+<HR>
+<TABLE WIDTH=100% BORDER=0 CELLPADDING=0 CELLSPACING=0>
+	<TR>
+		<TD>
+			<P><FONT SIZE=2><B>David Kelvin </B></FONT>
+			</P>
+		</TD>
+		<TD>
+			<P ALIGN=RIGHT><FONT SIZE=2><B>Thu, Jul 8, 2010 at 12:54 PM </B></FONT>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD COLSPAN=2>
+			<P STYLE="margin-bottom: 0in"><FONT SIZE=2>To: Saurav Ghosh </FONT>
+			</P>
+			<P STYLE="margin-bottom: 0in"><FONT SIZE=2>Cc: ronys </FONT>
+			</P>
+			<TABLE WIDTH=100% BORDER=0 CELLPADDING=12 CELLSPACING=0>
+				<TR>
+					<TD>
+						<P STYLE="margin-bottom: 0in"><FONT SIZE=2>Last point first -
+						import and merge are still driven by the UI. &nbsp;In fact, ALL
+						actions are driven by the UI but the UI does not necessarily
+						know if an action it has initiated has caused any change to the
+						database.</FONT></P>
+						<P STYLE="margin-bottom: 0in"><BR>
+						</P>
+						<P STYLE="margin-bottom: 0in"><FONT SIZE=2>Looking at the MFC
+						code, during Open, corelib opens the database and, on success,
+						the UI does the initial load of the UI (Tree/List).</FONT></P>
+						<P STYLE="margin-bottom: 0in"><BR>
+						</P>
+						<P STYLE="margin-bottom: 0in"><FONT SIZE=2><U>corelib has no
+						knowledge of the UI - only of the entries in the database</U>.
+						&nbsp;After Open, when one or more entries change, it uses
+						the&nbsp;<FONT FACE="arial, sans-serif"><FONT SIZE=2 STYLE="font-size: 9pt">UIInterface
+						to tell the UI that it might have to change what the user sees.
+						&nbsp;For example, a field might have been changed but the user
+						currently doesn't display it in the List view - for example the
+						RunCommand field - so corelib tells the UI that it has changed
+						and the UI decides whether the what the user sees needs
+						updating.</FONT></FONT></FONT></P>
+						<P STYLE="margin-bottom: 0in"><BR>
+						</P>
+						<P><FONT SIZE=2>So - (1) is probably correct.</FONT></P>
+					</TD>
+				</TR>
+			</TABLE>
+			<P><BR><BR>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD COLSPAN=2></TD>
+	</TR>
+</TABLE>
+<HR>
+<TABLE WIDTH=100% BORDER=0 CELLPADDING=0 CELLSPACING=0>
+	<TR>
+		<TD>
+			<P><FONT SIZE=2><B>Saurav Ghosh</B></FONT></P>
+		</TD>
+		<TD>
+			<P ALIGN=RIGHT><FONT SIZE=2><B>Thu, Jul 8, 2010 at 1:01 PM </B></FONT>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD COLSPAN=2>
+			<P STYLE="margin-bottom: 0in"><FONT SIZE=2>To: David Kelvin</FONT></P>
+			<P STYLE="margin-bottom: 0in"><FONT SIZE=2>Cc: ronys</FONT></P>
+			<TABLE WIDTH=100% BORDER=0 CELLPADDING=12 CELLSPACING=0>
+				<TR>
+					<TD>
+						<P><FONT SIZE=2>Ok.&nbsp; That settles things for me.&nbsp; (1)
+						is the way to go.&nbsp; I will probably document this in the
+						'docs' directory.&nbsp; May be just archive this email thread
+						there, to begin with.<BR><BR>I have some other questions
+						regarding the UIInterface also which I will send you later,
+						once I have stabilized the Linux build.<BR><BR>Rony - you
+						concur?</FONT></P>
+					</TD>
+				</TR>
+			</TABLE>
+			<P><BR><BR>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD COLSPAN=2></TD>
+	</TR>
+</TABLE>
+<HR>
+<TABLE WIDTH=100% BORDER=0 CELLPADDING=0 CELLSPACING=0>
+	<TR>
+		<TD>
+			<P><FONT SIZE=2><B>ronys</B></FONT></P>
+		</TD>
+		<TD>
+			<P ALIGN=RIGHT><FONT SIZE=2><B>Thu, Jul 8, 2010 at 1:07 PM </B></FONT>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD COLSPAN=2>
+			<P STYLE="margin-bottom: 0in"><FONT SIZE=2>To: Saurav Ghosh</FONT></P>
+			<P STYLE="margin-bottom: 0in"><FONT SIZE=2>Cc: David Kelvin</FONT></P>
+			<TABLE WIDTH=100% BORDER=0 CELLPADDING=12 CELLSPACING=0>
+				<TR>
+					<TD>
+						<P><FONT SIZE=2>Yes, I concur - David worked in this area more
+						recently than I did, so his memory is probably more accurate.</FONT></P>
+					</TD>
+				</TR>
+			</TABLE>
+			<P><BR><BR>
+			</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD COLSPAN=2></TD>
+	</TR>
+</TABLE>
+<HR>
+</BODY>
+</HTML>
