@@ -26,6 +26,9 @@
 #include <utility> // for make_pair
 #include "PWSgrid.h"
 #include "passwordsafeframe.h" // for DispatchDblClickAction()
+#include <wx/memory.h>
+#include <algorithm>
+#include <functional>
 
 ////@begin XPM images
 ////@end XPM images
@@ -177,27 +180,16 @@ wxIcon PWSGrid::GetIconResource( const wxString& name )
 ////@end PWSGrid icon retrieval
 }
 
-void PWSGrid::DisplayItem(const CItemData &item, int row)
-{
-  wxString title = item.GetTitle().c_str();
-  wxString user = item.GetUser().c_str();
-  SetCellValue(row, 0, title);
-  SetCellValue(row, 1, user);
-}
-
-
 void PWSGrid::AddItem(const CItemData &item, int row)
 {
   int nRows = GetNumberRows();
   if (row == -1)
     row = nRows;
-  if (row >= nRows) // add rows as needed
-    AppendRows(row - nRows + 1);
-  DisplayItem(item, row);
   uuid_array_t uuid;
   item.GetUUID(uuid);
   m_row_map.insert(std::make_pair(row, CUUIDGen(uuid)));
   m_uuid_map.insert(std::make_pair(CUUIDGen(uuid), row));
+  InsertRows(row);
 }
 
 void PWSGrid::UpdateItem(const CItemData &item)
@@ -207,16 +199,44 @@ void PWSGrid::UpdateItem(const CItemData &item)
   UUIDRowMapT::iterator iter = m_uuid_map.find(CUUIDGen(uuid));
   if (iter != m_uuid_map.end()) {
     int row = iter->second;
-    DisplayItem(item, row);
+    DeleteRows(row);
+    InsertRows(row);
   }
 }
+
+struct moveup : public std::binary_function<UUIDRowMapT::value_type, int, void> {
+  void operator()(UUIDRowMapT::value_type& v, int rowDeleted) const {
+    if (v.second > rowDeleted)
+      v.second = v.second - 1;
+  }
+};
 
 void PWSGrid::Remove(const uuid_array_t &uuid)
 {
   UUIDRowMapT::iterator iter = m_uuid_map.find(CUUIDGen(uuid));
   if (iter != m_uuid_map.end()) {
-    int row = iter->second;
+    
+    const int row = iter->second;
+    
+    //The UI element must be removed first, since the entry in m_core is deleted after
+    //this callback returns, and the deletion process might check for consistency
+    //in number of entries in various UI maps and m_core
     DeleteRows(row);
+
+    //move all the rows up by 1
+    for (int newRow = row+1; newRow < m_row_map.size(); ++newRow) {
+      m_row_map[newRow-1] = m_row_map[newRow];
+    }
+    
+    //remove the last row, which is now extraneous
+    m_row_map.erase(m_row_map.size()-1);
+
+    //subtract the row values of all entries in uuid map if it is greater
+    //than the row we just deleted
+    std::for_each(m_uuid_map.begin(), m_uuid_map.end(), std::bind2nd(moveup(), row));
+    
+    //delete the item itself
+    m_uuid_map.erase(iter);
   }  
 }
 
@@ -225,9 +245,24 @@ void PWSGrid::Remove(const uuid_array_t &uuid)
  */
 size_t PWSGrid::GetNumItems() const
 {
-	wxASSERT(m_uuid_map.empty() || m_uuid_map.size() == m_core.GetNumEntries());
-  wxASSERT(m_row_map.empty() || m_row_map.size() == m_core.GetNumEntries());
-	return m_core.GetNumEntries();
+  //These vars help with debugging.  Declared volatile to keep the compiler
+  //from optimizing them away
+  volatile size_t uuid_map_size = m_uuid_map.size();
+  volatile size_t row_map_size = m_row_map.size();
+  volatile size_t numEntries = m_core.GetNumEntries();
+  
+  if(!m_uuid_map.empty() && uuid_map_size != numEntries) {
+    wxFAIL_MSG(wxString() << wxT("uuid map has ") << uuid_map_size
+                          << wxT(" entries, but core has ") << numEntries);
+  }
+  
+  if (!m_row_map.empty() && row_map_size != numEntries) {
+    wxFAIL_MSG(wxString() << wxT("row map has ") << row_map_size
+                          << wxT(" entries, but core has ") << numEntries);
+  }
+  //this is the most meaningful, to keep wxGrid from asking us
+  //about rows that we don't have
+  return row_map_size;
 }
 
 /*!
@@ -241,9 +276,11 @@ void PWSGrid::DeleteItems(int row, size_t numItems)
     RowUUIDMapT::iterator iter = m_row_map.find(row);
     if (iter != m_row_map.end()) {
       UUIDRowMapT::iterator iter_uuid = m_uuid_map.find(iter->second);
+      m_row_map.erase(iter);    
       if (iter_uuid != m_uuid_map.end()) {
         uuid_array_t uuid;
         iter_uuid->first.GetUUID(uuid);
+        m_uuid_map.erase(iter_uuid);
         ItemListIter citer = m_core.Find(uuid);
         if (citer != m_core.GetEntryEndIter()){
           m_core.SuspendOnDBNotification();
@@ -251,9 +288,7 @@ void PWSGrid::DeleteItems(int row, size_t numItems)
                                                     m_core.GetEntry(citer)));
           m_core.ResumeOnDBNotification();
         }
-        m_uuid_map.erase(iter_uuid);
       }
-      m_row_map.erase(iter);    
     }
   }
   if (m_core.IsChanged())
@@ -270,7 +305,6 @@ void PWSGrid::DeleteAllItems()
 {
   m_uuid_map.clear();
   m_row_map.clear();
-  m_core.ClearData();
 }
 
 /*!

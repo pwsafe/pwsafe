@@ -68,7 +68,9 @@ public:
   virtual wxString GetColLabelValue(int col);
   virtual void SetValue(int row, int col, const wxString& value);
   virtual bool DeleteRows(size_t pos, size_t numRows);
-
+  virtual bool InsertRows(size_t pos, size_t numRows);
+  virtual bool AppendRows(size_t numRows = 1);
+  
   ///optional overrides
   virtual void Clear();
 
