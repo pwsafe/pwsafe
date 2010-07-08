@@ -172,6 +172,7 @@ bool PWSGridTable::AppendRows(size_t numRows/*=1*/)
                            numRows);
     GetView()->ProcessTableMessage(msg);
   }
+  return true;
 }
 
 bool PWSGridTable::InsertRows(size_t pos/*=0*/, size_t numRows/*=1*/)
@@ -183,4 +184,5 @@ bool PWSGridTable::InsertRows(size_t pos/*=0*/, size_t numRows/*=1*/)
                            numRows);
     GetView()->ProcessTableMessage(msg);
   }
+  return true;
 }
