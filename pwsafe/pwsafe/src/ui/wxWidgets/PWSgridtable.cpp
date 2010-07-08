@@ -152,18 +152,35 @@ bool PWSGridTable::DeleteRows(size_t pos, size_t numRows)
 	if (numRows > curNumRows - pos)
 		numRows = curNumRows - pos;
 
-	if (numRows >= curNumRows) {
-    	m_pwsgrid->DeleteAllItems();
-	} else {
-		m_pwsgrid->DeleteItems(pos, numRows);
-		
-		//This will actually remove the item from grid display
-		wxGridTableMessage msg(this,
-                           wxGRIDTABLE_NOTIFY_ROWS_DELETED,
-                           pos,
-								numRows);
-	}
+  if (GetView()) {
+    //This will actually remove the item from grid display
+    wxGridTableMessage msg(this,
+                            wxGRIDTABLE_NOTIFY_ROWS_DELETED,
+                            pos,
+                            numRows);
+    GetView()->ProcessTableMessage(msg);
+  }
     
 	return true;  
 }
 
+bool PWSGridTable::AppendRows(size_t numRows/*=1*/)
+{
+  if (GetView()) {
+    wxGridTableMessage msg(this,
+                           wxGRIDTABLE_NOTIFY_ROWS_APPENDED,
+                           numRows);
+    GetView()->ProcessTableMessage(msg);
+  }
+}
+
+bool PWSGridTable::InsertRows(size_t pos/*=0*/, size_t numRows/*=1*/)
+{
+  if (GetView()) {
+    wxGridTableMessage msg(this,
+                           wxGRIDTABLE_NOTIFY_ROWS_INSERTED,
+                           pos,
+                           numRows);
+    GetView()->ProcessTableMessage(msg);
+  }
+}

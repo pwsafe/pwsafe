@@ -538,12 +538,16 @@ void PasswordSafeFrame::ShowGrid(bool show)
     m_grid->SetTable(new PWSGridTable(m_grid), true); // true => auto-delete
     m_grid->AutoSizeColumns();
     m_grid->EnableEditing(false);
-    ItemListConstIter iter;
-    int i;
-    for (iter = m_core.GetEntryIter(), i = 0;
-         iter != m_core.GetEntryEndIter();
-         iter++) {
-      m_grid->AddItem(iter->second, i++);
+    //we only need to do this the first time showing the grid
+    if (m_grid->GetNumItems() != m_core.GetNumEntries()) {
+      m_grid->DeleteAllItems();
+      ItemListConstIter iter;
+      int i;
+      for (iter = m_core.GetEntryIter(), i = 0;
+           iter != m_core.GetEntryEndIter();
+           iter++) {
+        m_grid->AddItem(iter->second, i++);
+      }
     }
   }
   m_grid->Show(show);
@@ -1362,10 +1366,8 @@ void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga,
       m_grid->AddItem(*pci);
       break;
     case UpdateGUICommand::GUI_DELETE_ENTRY:
-      if (m_grid->IsShown())
-        m_grid->Remove(entry_uuid);
-      else
-        m_tree->Remove(entry_uuid);
+      m_grid->Remove(entry_uuid);
+      m_tree->Remove(entry_uuid);
       break;
 #ifdef NOTYET
     case UpdateGUICommand::GUI_UPDATE_STATUSBAR:

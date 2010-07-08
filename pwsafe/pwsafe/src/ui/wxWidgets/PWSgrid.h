@@ -123,7 +123,6 @@ public:
 ////@end PWSGrid member variables
 
  private:
-  void DisplayItem(const CItemData &item, int row);
   PWScore &m_core;
   RowUUIDMapT m_row_map;
   UUIDRowMapT m_uuid_map;
