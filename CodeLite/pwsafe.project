@@ -68,7 +68,7 @@
   </Dependencies>
   <Settings Type="Executable">
     <Configuration Name="Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-g;$(shell wx-config --cxxflags --unicode=yes --debug=yes --inplace)" Required="yes" PreCompiledHeader="">
+      <Compiler Options="-Wall;$(shell wx-config --cxxflags --unicode=yes --debug=yes --inplace);-ggdb;-O0" Required="yes" PreCompiledHeader="">
         <IncludePath Value="../src"/>
         <Preprocessor Value="UNICODE"/>
       </Compiler>
@@ -107,7 +107,7 @@
       </AdditionalRules>
     </Configuration>
     <Configuration Name="Release" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="$(shell wx-config --cxxflags --unicode=yes --debug=no --inplace);-O" Required="yes" PreCompiledHeader="">
+      <Compiler Options="-O;-Wall;$(shell wx-config --cxxflags --unicode=yes --debug=no --inplace)" Required="yes" PreCompiledHeader="">
         <IncludePath Value="../src"/>
         <Preprocessor Value="UNICODE"/>
       </Compiler>
