@@ -721,7 +721,20 @@ void PasswordSafeFrame::OnCloseClick( wxCommandEvent& /* evt */ )
 }
 
 int PasswordSafeFrame::Open(const wxString &fname)
-{ // prompt for password, try to Load.
+{ 
+    
+  //Check that this file isn't already open
+  if (wxFileName(fname).SameAs(towxstring(m_core.GetCurFile()))) {
+    //It is the same damn file
+    wxMessageBox(wxT("That file is already open."), wxT("Open database"), wxOK|wxICON_EXCLAMATION);
+    return PWScore::ALREADY_OPEN;
+  }
+
+  int rc = SaveIfChanged();
+  if (rc != PWScore::SUCCESS)
+    return rc;
+
+  // prompt for password, try to Load.
   CSafeCombinationPrompt pwdprompt(this, m_core, fname);
   if (pwdprompt.ShowModal() == wxID_OK) {
     m_core.SetCurFile(fname.c_str());
@@ -734,19 +747,8 @@ int PasswordSafeFrame::Open(const wxString &fname)
     return retval;
   } else
     return PWScore::USER_CANCEL;
-#if 0
-  //Check that this file isn't already open
-  if (pszFilename == m_core.GetCurFile() && !m_needsreading) {
-    //It is the same damn file
-    cs_text.LoadString(IDS_ALREADYOPEN);
-    cs_title.LoadString(IDS_OPENDATABASE);
-    MessageBox(cs_text, cs_title, MB_OK|MB_ICONWARNING);
-    return PWScore::ALREADY_OPEN;
-  }
 
-  rc = SaveIfChanged();
-  if (rc != PWScore::SUCCESS)
-    return rc;
+#if 0
 
   rc = GetAndCheckPassword(pszFilename, passkey, GCP_NORMAL, bReadOnly);  // OK, CANCEL, HELP
   switch (rc) {
