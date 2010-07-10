@@ -869,10 +869,17 @@ void DboxMain::OnDisplayPswdSubset()
     ASSERT(pci != NULL);
   }
 
+  uuid_array_t entry_uuid;
+  pci_original->GetUUID(entry_uuid);
+
   CPasswordSubsetDlg DisplaySubsetDlg(this, pci->GetPassword());
 
-  if (DisplaySubsetDlg.DoModal() != IDCANCEL)
+  if (DisplaySubsetDlg.DoModal() != IDCANCEL) {
+    // Just in case PasswordSafe was locked and pci_original is invalid
+    ItemListIter iter = Find(entry_uuid);
+    pci_original = &iter->second;
     UpdateAccessTime(pci_original);
+  }
 }
 
 void DboxMain::OnCopyPassword()
