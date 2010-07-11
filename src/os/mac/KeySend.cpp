@@ -49,17 +49,17 @@ void CKeySend::SetCapsLock(const bool /*bState*/)
 {
 }
 
-bool CKeySend::isCapsLocked()
+bool CKeySend::isCapsLocked() const
 {
   return false; // as X doesn't care
 }
 
-void CKeySend::BlockInput(bool)
+void CKeySend::BlockInput(bool) const
 {
   // XXX TBD
 }
 
-void CKeySend::ResetKeyboardState()
+void CKeySend::ResetKeyboardState() const
 {
   // XXX Need we implement this for X?
 }
