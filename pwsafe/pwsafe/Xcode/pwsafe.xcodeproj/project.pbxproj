@@ -213,6 +213,7 @@
 		E6C1254511E1B2BA00D22D92 /* utf8conv.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = utf8conv.cpp; sourceTree = "<group>"; };
 		E6C1255911E1B35600D22D92 /* macsendstring.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = macsendstring.cpp; sourceTree = "<group>"; };
 		E6C1255A11E1B35600D22D92 /* macsendstring.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = macsendstring.h; sourceTree = "<group>"; };
+		E6CFEE4311EA0AFB001402D8 /* RecentDBList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentDBList.h; sourceTree = "<group>"; };
 		E6DA586311A701AE00D84199 /* guiinfo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = guiinfo.cpp; sourceTree = "<group>"; };
 		E6DA586411A701AE00D84199 /* guiinfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = guiinfo.h; sourceTree = "<group>"; };
 		E6EE837F11E87DAC00B01518 /* debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = debug.h; sourceTree = "<group>"; };
@@ -421,6 +422,7 @@
 		E6ADB9A411957099004E2BE5 /* wxWidgets */ = {
 			isa = PBXGroup;
 			children = (
+				E6CFEE4311EA0AFB001402D8 /* RecentDBList.h */,
 				E6DA586411A701AE00D84199 /* guiinfo.h */,
 				E6DA586311A701AE00D84199 /* guiinfo.cpp */,
 				E6ADB9A511957099004E2BE5 /* about.cpp */,
@@ -693,6 +695,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E6ADB80711956A94004E2BE5 /* Build configuration list for PBXNativeTarget "core" */;
 			buildPhases = (
+				E6CFEF1811EA41FB001402D8 /* Generate corelib_st */,
 				E6ADB80011956A93004E2BE5 /* Sources */,
 			);
 			buildRules = (
@@ -723,6 +726,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E6ADB9A31195706B004E2BE5 /* Build configuration list for PBXNativeTarget "pwsafe" */;
 			buildPhases = (
+				E6CFEEF711EA3E2F001402D8 /* Generate version.h */,
 				E6ADB99B1195706A004E2BE5 /* Sources */,
 				E6ADBAF3119577A7004E2BE5 /* Frameworks */,
 			);
@@ -759,6 +763,42 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		E6CFEEF711EA3E2F001402D8 /* Generate version.h */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				../src/ui/wxWidgets/version.in,
+			);
+			name = "Generate version.h";
+			outputPaths = (
+				../src/ui/wxWidgets/version.h,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "../Misc/mkversion.pl ../src/ui/wxWidgets/version.in ../src/ui/wxWidgets/version.h";
+		};
+		E6CFEF1811EA41FB001402D8 /* Generate corelib_st */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				../src/corelib/corelib.rc2,
+			);
+			name = "Generate corelib_st";
+			outputPaths = (
+				../src/corelib/corelib_st.h,
+				../src/corelib/corelib_st.cpp,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "../Misc/rc2cpp.pl ../src/corelib/corelib.rc2";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		E6ADB80011956A93004E2BE5 /* Sources */ = {
@@ -997,7 +1037,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
@@ -1016,7 +1055,6 @@
 					../src,
 				);
 				INFOPLIST_FILE = "pwsafe-Info.plist";
-				INSTALL_PATH = "$(HOME)/Applications";
 				OTHER_LDFLAGS = (
 					"-L/Users/sghosh/work/wxMac-2.8.10/build-debug-10.4/lib",
 					"-framework",
