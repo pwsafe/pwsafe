@@ -159,6 +159,9 @@ template<class T> void Format(T &s, const TCHAR *fmt, ...)
   va_start(args, fmt);
 #ifdef _WIN32
   int len = _vsctprintf(fmt, args) + 1;
+  va_end(args);//after using args we should reset list
+  va_start(args, fmt);
+
   TCHAR *buffer = new TCHAR[len];
 #else
   // Linux doesn't do this correctly :-(
@@ -168,7 +171,9 @@ template<class T> void Format(T &s, const TCHAR *fmt, ...)
   while (1) {
     buffer = new TCHAR[len];
     len = _vstprintf_s(buffer, len, fmt, args);
-    if (len++ > 0) 
+    va_end(args);//after using args we should reset list
+    va_start(args, fmt);
+    if (len++ > 0)
       break;
     else { // too small, resize & try again
       delete[] buffer;
@@ -192,6 +197,8 @@ template<class T> void Format(T &s, int fmt, ...)
   LoadAString(fmt_str, fmt);
 #ifdef _WIN32
   int len = _vsctprintf(fmt_str.c_str(), args) + 1;
+  va_end(args);//after using args we should reset list
+  va_start(args, fmt);
   TCHAR *buffer = new TCHAR[len];
 #else
   // Linux doesn't do this correctly :-(
@@ -201,6 +208,8 @@ template<class T> void Format(T &s, int fmt, ...)
   while (1) {
     buffer = new TCHAR[len];
     len = _vstprintf_s(buffer, len, fmt_str.c_str(), args);
+    va_end(args);//after using args we should reset list
+    va_start(args, fmt);
     if (len > 0)
       break;
     else { // too small, resize & try again

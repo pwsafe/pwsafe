@@ -25,6 +25,8 @@ void pws_os::Trace(LPCTSTR lpszFormat, ...)
   int num_required, num_written;
 #ifdef UNICODE
   num_required = _vscwprintf(lpszFormat, args);
+  va_end(args);//after using args we should reset list
+  va_start(args, lpszFormat);
   wchar_t *wcbuffer = new wchar_t[num_required + 1];
   num_written = vswprintf(wcbuffer, num_required, lpszFormat, args);
   assert(num_required == num_written);
@@ -36,6 +38,8 @@ void pws_os::Trace(LPCTSTR lpszFormat, ...)
   delete[] wcbuffer;
 #else
   num_required = _vscprintf(lpszFormat, args);
+  va_end(args);//after using args we should reset list
+  va_start(args, lpszFormat);
   char *szbuffer = new char[num_required + 1];
   num_written = vsprintf(szbuffer, num_required, lpszFormat, args);
   assert(num_required == num_written);

@@ -143,7 +143,7 @@
 // **********************************************
 #elif defined(__linux)
 #define PWS_PLATFORM "Linux"
-#if defined(__i386__) || defined(__i486__)
+#if defined(__i386__) || defined(__i486__) || defined(__x86_64__)
 #define PWS_LITTLE_ENDIAN
 #endif
 // **********************************************
