@@ -18,7 +18,7 @@ struct tm *gmtime64_r(const __time64_t *timep, struct tm *result)
   return gmtime_r((const time_t *)timep, result);
 }
 
-int pws_os::asctime(TCHAR *s, unsigned int, tm const *t)
+int pws_os::asctime(TCHAR *s, size_t, tm const *t)
 {
 #ifdef UNICODE
   char cbuf[26]; // length specified in man (3) asctime

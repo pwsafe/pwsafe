@@ -1,0 +1,158 @@
+#! /bin/bash
+
+# Password Safe build script 
+#--
+# Last edited: 11.07.2010
+#--
+
+if [ $UID = 0 ]; then
+	echo "[1mThere is no need to run this build script as root.[0m You'll be"
+	echo "asked for your root password at package creation time (if you"
+	echo "haven't installed fakeroot)."
+	echo -n "Type \"take risk\" to continue: "
+	read RISK
+	test "$RISK" = "take risk" || exit 1
+fi
+
+PRGNAM=pwsafe
+VERSION=${VERSION:-3.22.1}
+ARCH=${ARCH:-x86_64}
+BUILD_ID=${BUILD_ID:-1}
+BUILDER_ID=${BUILDER_ID:-kan}
+OUTPUT=${OUTPUT:-$(pwd)/packages}
+LOGS=${LOGS:-$(pwd)/logs}
+##
+MAKEDIR=$(pwd)/../..
+BINDIR=$(pwd)/../../src/ui/wxWidgets/GCCUnicodeRelease
+DOCSRCDIR=$(pwd)/../../docs
+XMLSRCDIR=$(pwd)/../../xml
+##
+PKGNAME=${PRGNAM}-${VERSION/-/.}-$ARCH-$BUILD_ID$BUILDER_ID
+##
+PREFIX="/usr"
+DOCDIR=$PREFIX/doc/$PRGNAM-$VERSION
+XMLDIR=$PREFIX/share/$PRGNAM/xml
+MANDIR=$PREFIX/man
+##
+OPTIMIZE="-O2"
+DATE=$(LC_ALL=C /bin/date +%d-%b-%Y)
+PKG=$(pwd)/package-${PRGNAM}
+MYDIR=$(pwd)
+
+MAKE_OPTIONS="-j3 unicoderelease"
+
+#exit after errors
+set -e
+trap 'echo "$0 FAILED at line ${LINENO}" | tee $LOGS/error-${PRGNAM}.log' ERR
+# Catch unitialized variables:
+set -u
+#catch non-zero status in pipes
+set -o pipefail
+P1=${1:-1}
+
+case "$ARCH" in
+  i[3456]86) SLKCFLAGS="$OPTIMIZE -march=$ARCH -mtune=$ARCH"
+             SLKLDFLAGS=""; LIBDIRSUFFIX=""
+             ;;
+  x86_64)    SLKCFLAGS="$OPTIMIZE -fPIC"
+             SLKLDFLAGS="-L/usr/lib64"; LIBDIRSUFFIX="64"
+             ;;
+esac
+
+umask 022
+
+
+# Create working directories:
+mkdir -p $LOGS
+mkdir -p $OUTPUT
+mkdir -p $PKG
+# always erase old package's contents
+rm -rf $PKG/*
+
+## Package building
+echo Building ...
+export LDFLAGS="$SLKLDFLAGS"
+export CXXFLAGS="$SLKCFLAGS"
+export CFLAGS="$SLKCFLAGS"
+
+cd $MAKEDIR
+make clean
+make $MAKE_OPTIONS 2>&1 | tee $LOGS/make-${PRGNAM}.log || exit 1
+
+#collect files before packaging
+#copy binaries
+mkdir -p $PKG/$PREFIX/bin
+cp $BINDIR/pwsafe $PKG/$PREFIX/bin
+#copy docs
+mkdir -p $PKG/$DOCDIR
+cp $DOCSRCDIR/* $PKG/$DOCDIR
+cp $DOCSRCDIR/../README* $PKG/$DOCDIR
+#move man pages to mandir
+mkdir -p $PKG/$MANDIR/man1
+mv $PKG/$DOCDIR/*.1 $PKG/$MANDIR/man1
+#copy XML files
+mkdir -p $PKG/$XMLDIR
+cp $XMLSRCDIR/* $PKG/$XMLDIR
+#copy buildscript
+mkdir -p $PKG/usr/src/slackbuild
+cp -a $MYDIR/$PRGNAM.SlackBuild $PKG/usr/src/slackbuild/
+#prepare package
+cd $PKG
+# remove debugging symbols
+find . -print0 | xargs -0 file | grep "executable" | grep ELF | cut -f 1 -d : | xargs -0 strip --strip-unneeded 2> /dev/null || true
+find . -print0 | xargs -0 file | grep "shared object" | grep ELF | cut -f 1 -d : | xargs -0 strip --strip-unneeded 2> /dev/null || true
+
+# fix permissions
+chmod 644 $PKG/$DOCDIR/*
+chmod 644 $PKG/$MANDIR/man1/*
+chmod 644 $PKG/$XMLDIR/*
+chmod 755 $PKG/$PREFIX/bin/*
+
+# compress doc files > 4 kB
+find $PKG/$DOCDIR -type f -size +4k ! -iname *.htm ! -iname *.html ! -iname *.sh -print0 |
+	xargs -0 --no-run-if-empty /bin/gzip --verbose --best
+# Compress and link manpages, if any:
+if [ -d $PKG/$PREFIX/man ]; then
+  ( cd $PKG/$PREFIX/man
+    for mandir in $(find . -type d -name "man*") ; do
+      ( cd $mandir
+        for page in $( find . -type l -maxdepth 1) ; do
+          ln -s $( readlink $page ).gz $page.gz
+          rm $page
+        done
+        gzip -9 *.*
+      )
+    done
+  )
+fi
+
+mkdir -p $PKG/install
+
+# make slack-desc package description file
+cp $MYDIR/slack-desc $PKG/install/slack-desc
+echo "$PRGNAM: build at $DATE" >> $PKG/install/slack-desc
+
+set +o xtrace
+
+ROOTCOMMANDS="set -o errexit -o xtrace -o pipefail ; cd $PKG;
+    chown -R root:root . ;"
+ROOTCOMMANDS="$ROOTCOMMANDS
+    if [ -x /usr/bin/requiredbuilder ]; then /usr/bin/requiredbuilder -v -b -p -y .; fi ;
+    /sbin/makepkg --linkadd y --chown n $OUTPUT/$PKGNAME.tgz 2>&1 | tee $LOGS/makepkg-${PRGNAM}.log ;
+    cd $OUTPUT ;
+    md5sum $PKGNAME.tgz > $PKGNAME.tgz.md5 ;
+    rm -rf $PKG"
+
+if [ $UID = 0 ]; then
+    eval $ROOTCOMMANDS
+    set +o xtrace
+elif [ -x /usr/bin/fakeroot ]; then
+    echo "[1mEntering fakeroot environment.[0m"
+    echo $ROOTCOMMANDS | /usr/bin/fakeroot
+else
+    echo "[1mPlease enter your root password.[0m"
+    /bin/su -c "$ROOTCOMMANDS"
+fi
+
+echo "Package is ready in $OUTPUT/$PKGNAME.tgz"
+#####

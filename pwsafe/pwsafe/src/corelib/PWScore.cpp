@@ -680,7 +680,7 @@ int PWScore::ReadFile(const StringX &a_filename,
       case PWSfile::SUCCESS:
         if (iMAXCHARS > 0 && ci_temp.GetSize() > iMAXCHARS) {
           numlarge++;
-          uimaxsize = max(uimaxsize, ci_temp.GetSize());
+          uimaxsize = MAX(uimaxsize, ci_temp.GetSize());
         }
         uuid_array_t uuid;
         ci_temp.GetUUID(uuid);
