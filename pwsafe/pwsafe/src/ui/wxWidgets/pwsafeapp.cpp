@@ -221,7 +221,7 @@ bool PwsafeApp::OnInit()
     m_recentDatabases.AddFileToHistory(filename);
   }
   m_core.SetCurFile(filename.c_str());
-#ifndef _DEBUG
+#if not defined(__WXDEBUG__) && not defined(__WXMAC__)
   // Now's a good time to fork
   // and exit the parent process, returning the command prompt to the user
   // (but not for debug builds - just make debugging harder)

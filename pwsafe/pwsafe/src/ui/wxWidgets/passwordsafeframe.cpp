@@ -143,7 +143,7 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
 
   EVT_MENU( ID_CHANGECOMBO, PasswordSafeFrame::OnChangePasswdClick )
 
-  EVT_MENU( ID_OPTIONS_M, PasswordSafeFrame::OnOptionsMClick )
+  EVT_MENU( wxID_PREFERENCES, PasswordSafeFrame::OnOptionsMClick )
 
   EVT_MENU( wxID_ABOUT, PasswordSafeFrame::OnAboutClick )
 
@@ -376,7 +376,7 @@ void PasswordSafeFrame::CreateControls()
   itemMenu72->Append(ID_BACKUP, _("Make &Backup\tCtrl+B"), _T(""), wxITEM_NORMAL);
   itemMenu72->Append(ID_RESTORE, _("&Restore from Backup...\tCtrl+R"), _T(""), wxITEM_NORMAL);
   itemMenu72->AppendSeparator();
-  itemMenu72->Append(ID_OPTIONS_M, _("&Options..."), _T(""), wxITEM_NORMAL);
+  itemMenu72->Append(wxID_PREFERENCES, _("&Options..."), _T(""), wxITEM_NORMAL);
   menuBar->Append(itemMenu72, _("&Manage"));
   wxMenu* itemMenu79 = new wxMenu;
   itemMenu79->Append(wxID_HELP, _("Get &Help"), _T(""), wxITEM_NORMAL);
@@ -439,7 +439,7 @@ void PasswordSafeFrame::CreateMainToolbar()
   toolbar->AddTool(ID_EXPANDALL, wxEmptyString, wxBitmap(expandall_xpm), wxBitmap(expandall_disabled_xpm), wxITEM_NORMAL, wxT("Expand All"));
   toolbar->AddTool(ID_COLLAPESALL, wxEmptyString, wxBitmap(collapseall_xpm), wxBitmap(collapseall_disabled_xpm), wxITEM_NORMAL, wxT("Collapse All"));
   toolbar->AddSeparator();
-  toolbar->AddTool(ID_OPTIONS_M, wxEmptyString, wxBitmap(options_xpm), wxBitmap(options_disabled_xpm), wxITEM_NORMAL, wxT("Options"));
+  toolbar->AddTool(wxID_PREFERENCES, wxEmptyString, wxBitmap(options_xpm), wxBitmap(options_disabled_xpm), wxITEM_NORMAL, wxT("Options"));
   toolbar->AddSeparator();
   toolbar->AddTool(wxID_HELP, wxEmptyString, wxBitmap(help_xpm), wxBitmap(help_disabled_xpm), wxITEM_NORMAL, wxT("Help"));
 
@@ -1554,12 +1554,12 @@ int PasswordSafeFrame::NewFile(StringX &fname)
   wxString cs_text(_("Please choose a name for the new database"));
 
   wxString cf(_("pwsafe")); // reasonable default for first time user
-  std::wstring v3FileName = PWSUtil::GetNewFileName(cf.c_str(), DEFAULT_SUFFIX);
-  std::wstring dir = PWSdirs::GetSafeDir();
+  wxString v3FileName = towxstring(PWSUtil::GetNewFileName(cf.c_str(), DEFAULT_SUFFIX));
+  wxString dir = towxstring(PWSdirs::GetSafeDir());
   int rc;
 
   while (1) {
-    wxFileDialog fd(this, cs_text, dir, v3FileName,
+    wxFileDialog fd(static_cast<wxWindow*>(this), cs_text, dir, v3FileName,
                     _("psafe3 files (*.psafe3)|*.psafe3|All files(*.*)|*.*"),
                     wxFD_OPEN | wxFD_CHANGE_DIR);
     rc = fd.ShowModal();
@@ -1711,12 +1711,14 @@ void PasswordSafeFrame::HideUI(bool lock)
 
   wxClipboard().Clear();
   
+#ifndef __WXMAC__
   if (!IsIconized()) {
     Iconize();
     while (!IsIconized()) {
       wxSafeYield();
     }
   }
+#endif
   
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray)) {
     //We should not have to show up the icon manually if m_sysTray
