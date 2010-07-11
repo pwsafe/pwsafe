@@ -165,7 +165,7 @@ size_t PWSfile::ReadCBC(unsigned char &type, unsigned char* &data,
                         unsigned int &length)
 {
   unsigned char *buffer = NULL;
-  unsigned int buffer_len = 0;
+  size_t buffer_len = 0;
   size_t retval;
 
   ASSERT(m_fish != NULL && m_IV != NULL);
@@ -352,7 +352,7 @@ bool PWSfile::Encrypt(const stringT &fn, const StringX &passwd, stringT &errmess
 
 bool PWSfile::Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess)
 {
-  unsigned int len;
+  size_t len;
   unsigned char* buf = NULL;
   bool status = true;
   unsigned char salt[SaltLength];

@@ -657,7 +657,7 @@ int PWScore::ReadFile(const StringX &a_filename,
     m_MapFilters = in3->GetFilters();
 
   UUIDVector Possible_Aliases, Possible_Shortcuts;
-  unsigned int uimaxsize(0);
+  size_t uimaxsize(0);
   int numlarge(0);
   do {
     ci_temp.Clear(); // Rather than creating a new one each time.

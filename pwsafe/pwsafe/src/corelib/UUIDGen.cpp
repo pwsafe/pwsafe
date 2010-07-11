@@ -20,6 +20,8 @@
 
 #ifdef _WIN32
 #include <Winsock.h> /* for htonl, htons */
+#elif defined(__PWS_MACINTOSH__)
+#include <sys/_endian.h>
 #else
 /* currently here only for Cygwin test harness */
 #include <asm/byteorder.h> /* for htonl, htons */
