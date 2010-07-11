@@ -630,7 +630,7 @@ COLORREF CRichEditCtrlExtn::ConvertColourToColorRef(CString &csValue)
 #if (_MSC_VER >= 1400)
     swscanf_s(csValue.Mid(1), L"%06x", &icolour);
 #else
-    swscanf(csValue.Mid(1), L("%06x", &retval);
+    swscanf(csValue.Mid(1), L"%06x", &icolour);
 #endif
     int ired = (icolour & 0xff0000) >> 16;
     int igreen = (icolour & 0xff00);

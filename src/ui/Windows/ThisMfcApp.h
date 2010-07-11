@@ -47,7 +47,9 @@ public:
 
   virtual BOOL InitInstance();
   virtual int ExitInstance();
-  WCE_DEL  virtual BOOL ProcessMessageFilter(int code, LPMSG lpMsg);
+#if !defined(POCKET_PC)
+  virtual BOOL ProcessMessageFilter(int code, LPMSG lpMsg);
+#endif
 
   void EnableAccelerator() { m_bUseAccelerator = true; }
   void DisableAccelerator() { m_bUseAccelerator = false; }

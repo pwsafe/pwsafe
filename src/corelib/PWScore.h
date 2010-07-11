@@ -320,7 +320,7 @@ public:
 
   void GetRUEList(UUIDList &RUElist)
   {RUElist = m_RUEList;}
-  void SetRUEList(const UUIDList RUElist)
+  void SetRUEList(const UUIDList &RUElist)
   {m_RUEList = RUElist;}
 
 private:

@@ -30,7 +30,7 @@ public:
   ~PWSRun();
 
   bool isValid() const; // false if failed to init st_run_impl
-  void Set(void *data); // set platform-dependant data
+  void Set(void *data) const; // set platform-dependant data
   bool UnInit(); // platform-dependant
 
   /**
@@ -40,11 +40,11 @@ public:
    *
    * getruncmd uses Windows Run command search rules or Linux equivalent
    */
-  StringX getruncmd(const StringX &sxFile, bool &bfound);
+  StringX getruncmd(const StringX &sxFile, bool &bfound) const;
 
-  bool runcmd(const StringX &run_command, const bool &bAutotype);
+  bool runcmd(const StringX &run_command, const bool &bAutotype) const;
   bool issuecmd(const StringX &sxFile, const StringX &sxParameters, 
-                const bool &bAutotype);
+                const bool &bAutotype) const;
 private:
   st_run_impl *pImpl;
 };

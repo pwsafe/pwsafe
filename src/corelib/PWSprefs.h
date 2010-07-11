@@ -194,7 +194,7 @@ public:
   int GetConfigIndicator() const;
 
   // Get & set vector of user shortcuts (only in XML cnfig file)
-  std::vector<st_prefShortcut> GetPrefShortcuts() {return m_vShortcuts;}
+  std::vector<st_prefShortcut> GetPrefShortcuts() const {return m_vShortcuts;}
   void SetPrefShortcuts(const std::vector<st_prefShortcut> &vShortcuts);
 
   // for OptionSystem property sheet - support removing registry traces

@@ -377,12 +377,10 @@ int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version)
     return status;
   }
 
-  if (m_fileSig != NULL) {
-    // since we're writing a new file, the previous sig's
-    // about to be invalidated
-    delete m_fileSig;
-    m_fileSig = NULL;
-  }
+  // since we're writing a new file, the previous sig's
+  // about to be invalidated
+  delete m_fileSig;
+  m_fileSig = NULL;
 
   m_hdr.m_prefString = PWSprefs::GetInstance()->Store();
   m_hdr.m_whatlastsaved = m_AppNameAndVersion.c_str();
@@ -761,8 +759,7 @@ int PWScore::ReadFile(const StringX &a_filename,
   // Setup file signature for checking file integrity upon backup.
   // Goal is to prevent overwriting a good backup with a corrupt file.
   if (a_filename == m_currfile) {
-    if (m_fileSig != NULL)
-      delete m_fileSig;
+    delete m_fileSig;
     m_fileSig = new PWSFileSig(a_filename.c_str());
   }
 

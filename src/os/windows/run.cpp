@@ -118,7 +118,7 @@ bool PWSRun::isValid() const
   return ((pImpl != NULL) && pImpl->isValid());
 }
 
-void PWSRun::Set(void *data)
+void PWSRun::Set(void *data) const
 {
   if (pImpl != NULL)
     pImpl->hCBWnd = reinterpret_cast<HWND>(data);
@@ -132,7 +132,7 @@ bool PWSRun::UnInit()
     return false;
 }
 
-bool PWSRun::runcmd(const StringX &run_command, const bool &bAutotype)
+bool PWSRun::runcmd(const StringX &run_command, const bool &bAutotype) const
 {
   // Get first parameter either enclosed by quotes or delimited by a space
   StringX full_string(run_command), first_part(_T("")), the_rest(_T(""));
@@ -201,7 +201,7 @@ bool PWSRun::runcmd(const StringX &run_command, const bool &bAutotype)
 }
 
 bool PWSRun::issuecmd(const StringX &sxFile, const StringX &sxParameters, 
-                      const bool &bAutotype)
+                      const bool &bAutotype) const
 {
   SHELLEXECUTEINFO si;
   ZeroMemory(&si, sizeof(si));
@@ -240,7 +240,7 @@ bool PWSRun::issuecmd(const StringX &sxFile, const StringX &sxParameters,
   return true;
 }
 
-StringX PWSRun::getruncmd(const StringX &sxFile, bool &bfound)
+StringX PWSRun::getruncmd(const StringX &sxFile, bool &bfound) const
 {
   // 1. If first parameter is in quotes - assume fully qualified - don't search.
   // 2. If first parameter starts with '%, assume it is going to be replaced by the

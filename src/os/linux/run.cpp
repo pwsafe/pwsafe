@@ -31,7 +31,7 @@ bool PWSRun::isValid() const
   return (pImpl != NULL);
 }
 
-void PWSRun::Set(void *)
+void PWSRun::Set(void *) const
 {
 }
 
@@ -40,7 +40,7 @@ bool UnInit() // currently only needed in Windows pImpl.
   return true;
 }
 
-StringX PWSRun::getruncmd(const StringX &sxFile, bool &bfound)
+StringX PWSRun::getruncmd(const StringX &sxFile, bool &bfound) const
 {
   // Stub!
   bfound = true;
@@ -54,7 +54,7 @@ bool PWSRun::runcmd(const StringX &runcommand, const bool &bAutotype)
 }
 
 bool PWSRun::issuecmd(const StringX &sxFile, const StringX &sxParameters, 
-                      const bool &bAutotype)
+                      const bool &bAutotype) const
 {
   // Stub!
   return false;

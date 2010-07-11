@@ -18,27 +18,10 @@
 
 #include "corelib/PwsPlatform.h"
 
-#if !defined(WCE_INS)
-#if defined(POCKET_PC)
-#define WCE_INS
-#else
-#define WCE_INS /##/
-#endif
-#endif
-
-#if !defined(WCE_DEL)
-#if defined(POCKET_PC)
-#define WCE_DEL /##/
-#else
-#define WCE_DEL
-#endif
-#endif
-
 /*
 jpr debug stuff
 */
 #include "jprdebug.h"
-
 
 /*
 eventually, this breaks off into pws_mfc.h

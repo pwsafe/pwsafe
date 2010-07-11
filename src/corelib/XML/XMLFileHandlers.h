@@ -76,29 +76,29 @@ public:
                     UUIDVector *pPossible_Aliases, UUIDVector *pPossible_Shortcuts,
                     MultiCommands *pmulticmds, CReport *prpt);
 
-  bool getIfErrors() {return m_bErrors;}
-  int getErrorCode() {return m_iErrorCode;}
-  stringT getErrorMessage() {return m_strErrorMessage;}
-  stringT getXMLErrors() {return m_strXMLErrors;}
-  stringT getSkippedList() {return m_strSkippedList;}
-  stringT getPWHErrorList() {return m_strPWHErrorList;}
-  stringT getRenameList() {return m_strRenameList;}
+  bool getIfErrors() const {return m_bErrors;}
+  int getErrorCode() const {return m_iErrorCode;}
+  stringT getErrorMessage() const {return m_strErrorMessage;}
+  stringT getXMLErrors() const {return m_strXMLErrors;}
+  stringT getSkippedList() const {return m_strSkippedList;}
+  stringT getPWHErrorList() const {return m_strPWHErrorList;}
+  stringT getRenameList() const {return m_strRenameList;}
 
   vdb_entries & getVDB_Entries() {return m_ventries;}
-  stringT getDefaultAutotypeString() {return m_sDefaultAutotypeString;}
-  stringT getDefaultUsername() {return m_sDefaultUsername;}
+  stringT getDefaultAutotypeString() const {return m_sDefaultAutotypeString;}
+  stringT getDefaultUsername() const {return m_sDefaultUsername;}
  
-  TCHAR getDelimiter() {return m_delimiter;}
+  TCHAR getDelimiter() const {return m_delimiter;}
  
-  int getNumIterations() {return m_nITER;}
-  int getNumEntries() {return m_numEntries;}
-  int getNumSkipped() {return m_numEntriesSkipped;}
-  int getNumRenamed() {return m_numEntriesRenamed;}
-  int getNumPWHErrors() {return m_numEntriesPWHErrors;}
-  int getNumRecordsWithUnknownFields() {return m_nRecordsWithUnknownFields;}
+  int getNumIterations() const {return m_nITER;}
+  int getNumEntries() const {return m_numEntries;}
+  int getNumSkipped() const {return m_numEntriesSkipped;}
+  int getNumRenamed() const {return m_numEntriesRenamed;}
+  int getNumPWHErrors() const {return m_numEntriesPWHErrors;}
+  int getNumRecordsWithUnknownFields() const {return m_nRecordsWithUnknownFields;}
  
-  bool getDatabaseHeaderErrors() {return m_bDatabaseHeaderErrors;}
-  bool getRecordHeaderErrors() {return m_bRecordHeaderErrors;}
+  bool getDatabaseHeaderErrors() const {return m_bDatabaseHeaderErrors;}
+  bool getRecordHeaderErrors() const {return m_bRecordHeaderErrors;}
 
 protected:
   bool ProcessStartElement(const int icurrent_element);

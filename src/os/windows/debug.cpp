@@ -49,7 +49,7 @@ void pws_os::Trace(LPCTSTR lpszFormat, ...)
 #endif
 
   OutputDebugString(szDebugString);
-  delete szDebugString;
+  delete [] szDebugString;
 
   va_end(args);
 }
@@ -73,7 +73,7 @@ void pws_os::Trace0(LPCTSTR lpszFormat)
 #endif
 
   OutputDebugString(szDebugString);
-  delete szDebugString;
+  delete [] szDebugString;
 }
 #else   /* _DEBUG || DEBUG */
 void pws_os::Trace(LPCTSTR , ...)

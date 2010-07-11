@@ -401,8 +401,7 @@ CVKeyBoardDlg::~CVKeyBoardDlg()
     m_pPassphraseFont = NULL;
   }
 
-  if (m_pToolTipCtrl != NULL)
-    delete m_pToolTipCtrl;
+  delete m_pToolTipCtrl;
 
   FreeLibrary(m_OSK_module);
 

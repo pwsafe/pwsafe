@@ -67,10 +67,9 @@ void pws_os::GetRandomSeed(void *p, unsigned &slen)
    */
   static char *data = NULL;
   if (p == NULL) {
-    if (data != NULL) { // just in case...
-      delete[] data;
-      data = NULL;
-    }
+    delete[] data;
+    data = NULL;
+
     ifstream ent_avail("/proc/sys/kernel/random/entropy_avail");
     if (ent_avail) {
       unsigned ent_bits;

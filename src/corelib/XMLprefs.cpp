@@ -370,10 +370,8 @@ stringT* CXMLprefs::ParseKeys(const stringT &csFullKeyPath, int &iNumKeys)
 
 void CXMLprefs::UnloadXML()
 {
-  if (m_pXMLDoc != NULL) {
-    delete m_pXMLDoc;
-    m_pXMLDoc = NULL;
-  }
+  delete m_pXMLDoc;
+  m_pXMLDoc = NULL;
 }
 
 // find a node given a chain of key names
