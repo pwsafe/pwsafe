@@ -169,7 +169,7 @@ static void newSendVK(WORD vk)
     pws_os::Trace(L"newSendVK: SendInput failed status=%d\n", status);
 }
 
-void CKeySend::ResetKeyboardState()
+void CKeySend::ResetKeyboardState() const
 {
   // We need to make sure that the Control Key is still not down. 
   // It will be down while the user presses ctrl-T the shortcut for autotype.
@@ -267,12 +267,12 @@ void CKeySend::SetCapsLock(const bool bState)
   }
 }
 
-bool CKeySend::isCapsLocked()
+bool CKeySend::isCapsLocked() const
 {
   return ::GetKeyState(VK_CAPITAL) != 0;
 }
 
-void CKeySend::BlockInput(bool bi)
+void CKeySend::BlockInput(bool bi) const
 {
   ::BlockInput(bi ? TRUE : FALSE);
 }

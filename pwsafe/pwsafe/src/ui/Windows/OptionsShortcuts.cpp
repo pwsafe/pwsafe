@@ -66,8 +66,8 @@ END_MESSAGE_MAP()
 
 void COptionsShortcuts::InitialSetup(const MapMenuShortcuts MapMenuShortcuts,
                     const MapKeyNameID MapKeyNameID,
-                    const std::vector<UINT> ExcludedMenuItems,
-                    const std::vector<st_MenuShortcut> ReservedShortcuts)
+                    const std::vector<UINT> &ExcludedMenuItems,
+                    const std::vector<st_MenuShortcut> &ReservedShortcuts)
 {
   m_MapMenuShortcuts = m_MapSaveMenuShortcuts = MapMenuShortcuts;
   m_MapKeyNameID = MapKeyNameID;

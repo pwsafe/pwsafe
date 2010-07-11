@@ -50,8 +50,11 @@ void CSysColStatic::ReloadBitmap(int nImageID)
                                       MAKEINTRESOURCE(m_nImageID),
                                       IMAGE_BITMAP,
                                       0, 0,
-                                      WCE_INS 0);  // WinCE only {kjp}
-  WCE_DEL LR_LOADMAP3DCOLORS);  // not WinCE {kjp}
+#if defined(POCKET_PC)
+                                      0);  // WinCE only {kjp}
+#else
+                                      LR_LOADMAP3DCOLORS);  // not WinCE {kjp}
+#endif
 
   if (hBmp == NULL)
     return;

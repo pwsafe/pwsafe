@@ -100,7 +100,7 @@ public:
   void SetCurVersion(VERSION v) {m_curversion = v;}
   void GetUnknownHeaderFields(UnknownFieldList &UHFL);
   void SetUnknownHeaderFields(UnknownFieldList &UHFL);
-  int GetNumRecordsWithUnknownFields()
+  int GetNumRecordsWithUnknownFields() const
   {return m_nRecordsWithUnknownFields;}
   
 protected:
@@ -144,6 +144,7 @@ public:
   PWSFileSig &operator=(const PWSFileSig &that);
   bool operator==(const PWSFileSig &other);
   bool operator!=(const PWSFileSig &other) {return !(*this == other);}
+
 private:
   long m_length; // 0 if file doesn't exist
   unsigned char m_digest[SHA256::HASHLEN];

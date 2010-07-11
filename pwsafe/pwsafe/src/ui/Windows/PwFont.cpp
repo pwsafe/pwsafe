@@ -130,8 +130,7 @@ void PWFonts::SetUpFont(CWnd *pWnd, CFont *pfont)
   m_pCurrentFont = pfont;
   pWnd->SetFont(pfont);
 
-  if (m_pModifiedFont != NULL)
-    delete m_pModifiedFont;
+  delete m_pModifiedFont;
 
   m_pModifiedFont = new CFont;
 

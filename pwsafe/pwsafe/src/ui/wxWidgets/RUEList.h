@@ -44,7 +44,7 @@ struct CRUEItemData {
   long     magicNum;      // magic number identifying me
   int      nImage;        // index of button image in image list
   CRUEItemData()          { magicNum = RUEMENUITEMID; }
-  BOOL     IsRUEID()      { return magicNum == RUEMENUITEMID; }
+  BOOL     IsRUEID() const { return magicNum == RUEMENUITEMID; }
 };
 
 typedef std::deque<RUEntry> RUEList;

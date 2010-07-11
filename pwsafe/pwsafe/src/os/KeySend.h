@@ -25,12 +25,12 @@ public:
   CKeySend(bool bForceOldMethod = false); // bForceOldMethod's Windows-specific
   ~CKeySend();
   void SendString(const StringX &data);
-  void ResetKeyboardState();
+  void ResetKeyboardState() const;
   void SetDelay(unsigned d);
   void SetAndDelay(unsigned d);
-  bool isCapsLocked();
+  bool isCapsLocked() const ;
   void SetCapsLock(bool bstate);
-  void BlockInput(bool bi);
+  void BlockInput(bool bi) const ;
 
 private:
   unsigned m_delayMS; //delay between keystrokes in milliseconds

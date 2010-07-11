@@ -1426,14 +1426,16 @@ CItemData& CItemData::operator=(const CItemData &that)
     m_PWHistory = that.m_PWHistory;
     m_PWPolicy = that.m_PWPolicy;
     m_XTimeInterval = that.m_XTimeInterval;
-    if (m_display_info != NULL)
-      delete m_display_info;
+
+    delete m_display_info;
     m_display_info = that.m_display_info == NULL ?
       NULL : that.m_display_info->clone();
+
     if (!that.m_URFL.empty())
       m_URFL = that.m_URFL;
     else
       m_URFL.clear();
+
     m_entrytype = that.m_entrytype;
     m_entrystatus = that.m_entrystatus;
     memcpy((char*)m_salt, (char*)that.m_salt, SaltLength);

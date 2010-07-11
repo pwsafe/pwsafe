@@ -38,8 +38,7 @@ CItemField &CItemField::operator=(const CItemField &that)
   if (this != &that) {
     m_Type = that.m_Type;
     m_Length = that.m_Length;
-    if (m_Data != NULL)
-      delete[] m_Data;
+    delete[] m_Data;
     if (m_Length > 0) {
       int bs = GetBlockSize(m_Length);
       m_Data = new unsigned char[bs];
@@ -67,8 +66,7 @@ void CItemField::Set(const unsigned char* value, unsigned int length, BlowFish *
   m_Length = length;
   BlockLength = GetBlockSize(m_Length);
 
-  if (m_Data != NULL)
-    delete[] m_Data;
+  delete[] m_Data;
 
   if (m_Length == 0) {
     m_Data = NULL;

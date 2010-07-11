@@ -386,7 +386,7 @@ void ThisMfcApp::LoadLocalizedStuff()
     cs_HelpPath.Format(L"%spwsafe%s.chm", cs_HelpDir, cs_PWS_HELP);
     if (PathFileExists(cs_HelpPath)) {
       helpFileFound = true;
-      if (m_pszHelpFilePath != NULL) free((void*)m_pszHelpFilePath);
+      free((void*)m_pszHelpFilePath);
       m_pszHelpFilePath = _wcsdup(cs_HelpPath);
       pws_os::Trace(L"Help file overriden by user. Using %s.\n", cs_HelpPath);
     }
@@ -427,8 +427,7 @@ void ThisMfcApp::LoadLocalizedStuff()
     pws_os::Trace(L"Using help file: %s\n", cs_HelpPath);
   }
 
-  if (m_pszHelpFilePath != NULL)
-    free((void*)m_pszHelpFilePath);
+  free((void*)m_pszHelpFilePath);
 
   m_pszHelpFilePath = _wcsdup(cs_HelpPath);
   pws_os::Trace(L"Using help file: %s\n", cs_HelpPath);
