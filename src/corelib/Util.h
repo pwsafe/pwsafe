@@ -50,7 +50,7 @@ extern void GenRandhash(const StringX &passkey,
 
 // buffer is allocated by _readcbc, *** delete[] is responsibility of caller ***
 extern size_t _readcbc(FILE *fp, unsigned char* &buffer,
-                       unsigned int &buffer_len,
+                       size_t &buffer_len,
                        unsigned char &type, Fish *Algorithm,
                        unsigned char* cbcbuffer,
                        const unsigned char *TERMINAL_BLOCK = NULL, 
