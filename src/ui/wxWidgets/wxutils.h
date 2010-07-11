@@ -18,5 +18,9 @@ inline wxString towxstring(const StringX& str) {
   return wxString(str.data(), str.size());
 }
 
+inline wxString towxstring(const stringT& str) {
+	return wxString(str.data(), str.size());
+}
+
 #endif
 
