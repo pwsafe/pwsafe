@@ -32,7 +32,6 @@
 #define _tcsncpy(t, s, sc) wcsncpy(t, s, sc)
 #define _tcslen(s) wcslen(s)
 #define _tcsclen(s) wcslen(s)
-#define _tcsicmp(s1, s2) wcscasecmp(s1, s2)
 #define _tcscmp(s1, s2) wcscmp(s1, s2)
 #define _tcsncmp(s1, s2, n) wcsncmp(s1, s2, n)
 #define _tcschr(s, c) wcschr(s, c)
@@ -42,7 +41,13 @@
 #define _vstprintf_s(str, size, fmt, args) vswprintf(str, size, fmt, args)
 #define _ftprintf fwprintf
 #define _stscanf swscanf
-#include "linux/pws_str.h"
+#ifdef __PWS_MACINTOSH__
+# include "./mac/pws_str.h"
+#define _tcsicmp pws_os::wcscasecmp
+#else
+#define _tcsicmp(s1, s2) wcscasecmp(s1, s2)
+# include "linux/pws_str.h"
+#endif
 #define _tstoi(s) pws_os::wctoi(s)
 #define _tstof(s) pws_os::wctof(s)
 #else /* !UNICODE */

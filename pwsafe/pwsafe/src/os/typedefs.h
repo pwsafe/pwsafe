@@ -6,6 +6,7 @@
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
 #ifndef _TYPEDEFS_H
+#define _TYPEDEFS_H
 /**
 * Silly wrapper to abstract away the difference between a Unicode
 * (wchar_t) and non-Unicode (char) std::string, as well as
@@ -83,8 +84,6 @@ typedef unsigned long DWORD;
 
 #else /* !defined(_WIN32) */
 #include <sys/types.h>
-#include "linux/pws_time.h"
-#include "debug.h"
 typedef int8_t  int8;
 typedef int16_t int16;
 typedef int32_t int32;
@@ -143,6 +142,9 @@ typedef int HANDLE;
 #ifndef FALSE
 #define FALSE false
 #endif
+/* These two files require the above definitions */
+#include "debug.h"
+#include "linux/pws_time.h"
 #endif /* _WIN32 */
           
 #endif /* _TYPEDEFS_H */
