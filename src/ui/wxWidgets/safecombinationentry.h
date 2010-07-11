@@ -110,6 +110,7 @@ public:
   static bool ShowToolTips();
 
 ////@begin CSafeCombinationEntry member variables
+  wxStaticText* m_version;
 ////@end CSafeCombinationEntry member variables
  private:
   wxString m_filename;

@@ -127,6 +127,7 @@ void CSafeCombinationEntry::Init()
   m_readOnly = m_core.IsReadOnly();
   m_filename = m_core.GetCurFile().c_str();
 ////@begin CSafeCombinationEntry member initialisation
+  m_version = NULL;
 ////@end CSafeCombinationEntry member initialisation
 }
 
@@ -155,8 +156,8 @@ void CSafeCombinationEntry::CreateControls()
   wxStaticBitmap* itemStaticBitmap6 = new wxStaticBitmap( itemDialog1, wxID_STATIC, itemDialog1->GetBitmapResource(wxT("../graphics/wxWidgets/psafetxt.xpm")), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(111, 16)), 0 );
   itemBoxSizer5->Add(itemStaticBitmap6, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxStaticText* itemStaticText7 = new wxStaticText( itemDialog1, wxID_STATIC, _("Version 3.16"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer5->Add(itemStaticText7, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_version = new wxStaticText( itemDialog1, wxID_STATIC, _("VX.YY"), wxDefaultPosition, wxDefaultSize, 0 );
+  itemBoxSizer5->Add(m_version, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticText* itemStaticText8 = new wxStaticText( itemDialog1, wxID_STATIC, _("Open Password Database:"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer4->Add(itemStaticText8, 0, wxALIGN_LEFT|wxALL, 3);
@@ -209,6 +210,14 @@ void CSafeCombinationEntry::CreateControls()
   itemTextCtrl13->SetValidator( wxGenericValidator(& m_password) );
   itemCheckBox15->SetValidator( wxGenericValidator(& m_readOnly) );
 ////@end CSafeCombinationEntry content construction
+#if (REVISION == 0)
+  m_version->SetLabel(wxString::Format(_("V%d.%02d %s"),
+                                       MAJORVERSION, MINORVERSION, SPECIALBUILD));
+#else
+  m_version->SetLabel(wxString::Format(_("V%d.%02d.%d %s"),
+                                       MAJORVERSION, MINORVERSION,
+                                       REVISION, SPECIALBUILD));
+#endif
   // if m_readOnly, then don't allow user to change it
   itemCheckBox15->Enable(!m_readOnly);
   // if filename field not empty, set focus to password:
@@ -312,11 +321,11 @@ void CSafeCombinationEntry::OnOk( wxCommandEvent& )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL
  */
 
-void CSafeCombinationEntry::OnCancel( wxCommandEvent& evt )
+void CSafeCombinationEntry::OnCancel( wxCommandEvent& event )
 {
 ////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in CSafeCombinationEntry.
   // Before editing this code, remove the block markers.
-  evt.Skip();
+  event.Skip();
 ////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in CSafeCombinationEntry. 
 }
 
