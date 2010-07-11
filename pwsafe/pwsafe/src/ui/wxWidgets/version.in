@@ -28,7 +28,7 @@
 #define SVN_VERSION "$WCREV$$WCMODS?+:$"
 
 // define following for custom/experimental versions
-#define SPECIALBUILD _T("pre-alpha")
+#define SPECIALBUILD _T("beta1")
 
 #ifndef SPECIALBUILD
 #define SPECIALBUILD _T("")

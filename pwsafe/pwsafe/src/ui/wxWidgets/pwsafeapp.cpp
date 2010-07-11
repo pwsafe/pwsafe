@@ -170,6 +170,9 @@ bool PwsafeApp::OnInit()
 #if wxUSE_GIF
   wxImage::AddHandler(new wxGIFHandler);
 #endif
+  // Get progname
+  wxString progName(argv[0]);
+  progName = progName.AfterLast(wxChar('/'));
   // Parse command line
   wxCmdLineParser cmdParser(cmdLineDesc, argc, argv);
   int res = cmdParser.Parse();
@@ -213,7 +216,7 @@ bool PwsafeApp::OnInit()
   m_core.SetReadOnly(cmd_ro);
   // OK to load prefs now
   PWSprefs *prefs = PWSprefs::GetInstance();
-  // if filename passed in command line, it tkae precedence
+  // if filename passed in command line, it takes precedence
   // over that in preference:
   if (filename.empty()) {
     filename =  prefs->GetPref(PWSprefs::CurrentFile).c_str();
@@ -221,6 +224,8 @@ bool PwsafeApp::OnInit()
     m_recentDatabases.AddFileToHistory(filename);
   }
   m_core.SetCurFile(filename.c_str());
+  m_core.SetApplicationNameAndVersion(progName.c_str(),
+                                      MAKEWORD(MAJORVERSION, MINORVERSION));
 #if not defined(__WXDEBUG__) && not defined(__WXMAC__)
   // Now's a good time to fork
   // and exit the parent process, returning the command prompt to the user
