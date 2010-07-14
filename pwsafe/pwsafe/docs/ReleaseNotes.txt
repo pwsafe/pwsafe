@@ -24,7 +24,7 @@ None
 
 Bugs fixed in 3.22.1
 ====================
-[.......] Ensure user specified backup directory ends with a slash.
+[3029576] Ensure user specified backup directory ends with a slash.
 [3028926] Entries modified via Synchronize are now displayed correctly if the
 user checks the preference "Highlight changed entries" via Options->Display.
 [3016803] No longer crashes when trying to view a base entry with
