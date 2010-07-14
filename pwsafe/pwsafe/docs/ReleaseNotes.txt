@@ -24,6 +24,9 @@ None
 
 Bugs fixed in 3.22.1
 ====================
+[.......] Ensure user specified backup directory ends with a slash.
+[3028926] Entries modified via Synchronize are now displayed correctly if the
+user checks the preference "Highlight changed entries" via Options->Display.
 [3016803] No longer crashes when trying to view a base entry with
 similarly named aliases.
 [3013199] PasswordSafe no longer hangs when trying to read preferences
@@ -227,4 +230,3 @@ application's main window, use the Restore menu item.
 to end of line characters, now only show the first line but indicate
 more are there using [>>>] at end of line. Setting preference "Show
 Notes as Tooltips in Tree & List View" will show these (up to 250 characters).
-
