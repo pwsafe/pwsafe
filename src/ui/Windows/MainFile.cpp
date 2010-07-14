@@ -2237,9 +2237,9 @@ void DboxMain::Merge(const StringX &sx_Filename2, PWScore *pothercore)
 
   Algorithm:
   Foreach entry in otherCore
-    Find in m_core
-    if find a match
-      if pw, notes, & group also matches
+    Find in m_core based on group/title/username
+    if match found
+      if all other fields match
         no merge
       else
         add to m_core with new title suffixed with -merged-YYYYMMDD-HHMMSS
@@ -2355,8 +2355,8 @@ void DboxMain::Merge(const StringX &sx_Filename2, PWScore *pothercore)
         cs_temp.LoadString(IDS_EMAIL);
         csDiffs += cs_temp + L", ";
       }
-      if (diff_flags |= 0) {
-        /* have a match on title/user, but not on other fields
+      if (diff_flags != 0) {
+        /* have a match on group/title/user, but not on other fields
         add an entry suffixed with -merged-YYYYMMDD-HHMMSS */
         StringX newTitle = otherTitle;
         CTime curTime = CTime::GetCurrentTime();
@@ -2383,6 +2383,7 @@ void DboxMain::Merge(const StringX &sx_Filename2, PWScore *pothercore)
         /* do it */
         bTitleRenamed = true;
         otherItem.SetTitle(newTitle);
+        otherItem.SetStatus(CItemData::ES_ADDED);
         Command *pcmd = AddEntryCommand::Create(&m_core, otherItem);
         pcmd->SetNoGUINotify();
         pmulticmds->Add(pcmd);
@@ -2397,6 +2398,7 @@ void DboxMain::Merge(const StringX &sx_Filename2, PWScore *pothercore)
         otherItem.GetUUID(new_base_uuid);
       }
 
+      otherItem.SetStatus(CItemData::ES_ADDED);
       Command *pcmd = AddEntryCommand::Create(&m_core, otherItem);
       pcmd->SetNoGUINotify();
       pmulticmds->Add(pcmd);
@@ -2960,6 +2962,7 @@ void DboxMain::Synchronize(const StringX &sx_Filename2, PWScore *pothercore)
 
       DisplayInfo *pdi_new = new DisplayInfo;
       updItem.SetDisplayInfo(pdi_new);
+      updItem.SetStatus(CItemData::ES_MODIFIED);
 
       StringX sx_updated = StringX(L"\xab") + 
                              otherGroup + StringX(L"\xbb \xab") + 
@@ -3009,6 +3012,9 @@ void DboxMain::Synchronize(const StringX &sx_Filename2, PWScore *pothercore)
   INT_PTR msg_rc = gmb.DoModal();
   if (msg_rc == IDS_VIEWREPORT)
     ViewReport(rpt);
+
+  if (numUpdated > 0)
+    SetChanged(Data);
 
   ChangeOkUpdate();
   RefreshViews();
