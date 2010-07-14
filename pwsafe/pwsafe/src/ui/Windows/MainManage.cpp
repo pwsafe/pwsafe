@@ -603,6 +603,12 @@ void DboxMain::OnOptions()
                    system.m_usesystemtray == TRUE);
     prefs->SetPref(PWSprefs::HideSystemTray,
                    system.m_hidesystemtray == TRUE);
+
+    if (system.m_usesystemtray == FALSE)
+      app.HideIcon();
+    else
+      app.ShowIcon();
+
     UpdateSystemMenu();
     prefs->SetPref(PWSprefs::MaxREItems,
                    system.m_maxreitems);
@@ -926,6 +932,16 @@ void DboxMain::OnOptions()
       }
     }
 #endif
+    if (prefs->GetPref(PWSprefs::UseSystemTray)) { 
+      if (prefs->GetPref(PWSprefs::HideSystemTray) && 
+          prefs->GetPref(PWSprefs::HotKeyEnabled) &&
+          prefs->GetPref(PWSprefs::HotKey) > 0)
+        app.HideIcon();
+      else if (app.IsIconVisible() == FALSE)
+        app.ShowIcon();
+    } else {
+      app.HideIcon();
+    }
   }  // rc == IDOK
 }
 

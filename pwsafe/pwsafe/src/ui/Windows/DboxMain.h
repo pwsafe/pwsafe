@@ -228,15 +228,15 @@ public:
   CItemData &GetEntryAt(ItemListIter iter)
   {return m_core.GetEntry(iter);}
 
-  // Set the section to the entry.  MakeVisible will scroll list, if needed.
-  BOOL SelectEntry(int i, BOOL MakeVisible = FALSE);
-  BOOL SelectFindEntry(int i, BOOL MakeVisible = FALSE);
-  void SelectFirstEntry();
-
   // For InsertItemIntoGUITreeList and RefreshViews (mainly when refreshing views)
   // Note: iBothViews = iListOnly + iTreeOnly
   enum {iListOnly = 1, iTreeOnly = 2, iBothViews = 3};
   void RefreshViews(const int iView = iBothViews);
+
+  // Set the section to the entry.  MakeVisible will scroll list, if needed.
+  BOOL SelectEntry(const int i, BOOL MakeVisible = FALSE);
+  BOOL SelectFindEntry(const int i, BOOL MakeVisible = FALSE);
+  void SelectFirstEntry();
 
   int CheckPasskey(const StringX &filename, const StringX &passkey)
   {return m_core.CheckPasskey(filename, passkey);}
@@ -401,6 +401,7 @@ protected:
   bool m_bIsRestoring;
   bool m_bOpen;
   bool m_bValidate; // do validation after reading db
+  bool m_bInRestoreWindowsData;
 
 #if !defined(POCKET_PC)
   CString m_titlebar; // what's displayed in the title bar
@@ -747,8 +748,14 @@ private:
   int m_nColumnHeaderWidthByType[CItemData::LAST];
   int m_iheadermaxwidth;
   CFont *m_pFontTree;
-  uuid_array_t m_UUIDSelectedAtMinimize; // to restore entry selection upon un-minimize
-  StringX m_sxSelectedGroup;             // to restore group selection upon un-minimize
+
+  uuid_array_t m_LUUIDSelectedAtMinimize; // to restore List entry selection upon un-minimize
+  uuid_array_t m_TUUIDSelectedAtMinimize; // to restore Tree entry selection upon un-minimize
+  StringX m_sxSelectedGroup;              // to restore Tree group selection upon un-minimize
+  uuid_array_t m_LUUIDVisibleAtMinimize;  // to restore List entry position  upon un-minimize
+  uuid_array_t m_TUUIDVisibleAtMinimize;  // to restore Tree entry position  upon un-minimize
+  StringX m_sxVisibleGroup;               // to restore Tree group position  upon un-minimize
+
   bool m_inExit; // help U3ExitNow
   std::vector<bool> m_vGroupDisplayState; // used to save/restore display state over minimize/restore
   StringX m_savedDBprefs;  // used across minimize/restore events

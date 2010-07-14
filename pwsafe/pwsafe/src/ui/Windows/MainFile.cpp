@@ -453,8 +453,15 @@ int DboxMain::Close(const bool bTrySave)
 
   // Clear all associated data
   ClearData();
-  memset(m_UUIDSelectedAtMinimize, 0, sizeof(uuid_array_t));
+
+  // Zero entry UUID selected and first visible at minimize and group text
+  memset(m_LUUIDSelectedAtMinimize, 0, sizeof(uuid_array_t));
+  memset(m_TUUIDSelectedAtMinimize, 0, sizeof(uuid_array_t));
+  memset(m_LUUIDVisibleAtMinimize, 0, sizeof(uuid_array_t));
+  memset(m_TUUIDVisibleAtMinimize, 0, sizeof(uuid_array_t));
   m_sxSelectedGroup.clear();
+  m_sxVisibleGroup.clear();
+
   CAddEdit_DateTimes::m_bShowUUID = false;
 
   // Reset core
@@ -682,8 +689,14 @@ int DboxMain::Open(const StringX &sx_Filename, const bool bReadOnly,  const bool
 
   // clear the data before loading the new file
   ClearData();
-  memset(m_UUIDSelectedAtMinimize, 0, sizeof(uuid_array_t));
+
+  // Zero entry UUID selected and first visible at minimize and group text
+  memset(m_LUUIDSelectedAtMinimize, 0, sizeof(uuid_array_t));
+  memset(m_TUUIDSelectedAtMinimize, 0, sizeof(uuid_array_t));
+  memset(m_LUUIDVisibleAtMinimize, 0, sizeof(uuid_array_t));
+  memset(m_TUUIDVisibleAtMinimize, 0, sizeof(uuid_array_t));
   m_sxSelectedGroup.clear();
+  m_sxVisibleGroup.clear();
 
   cs_title.LoadString(IDS_FILEREADERROR);
   bool bAskerSet = m_core.IsAskerSet();

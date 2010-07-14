@@ -769,10 +769,10 @@ BOOL DboxMain::SelItemOk()
   return (pci == NULL) ? FALSE : TRUE;
 }
 
-BOOL DboxMain::SelectEntry(int i, BOOL MakeVisible)
+BOOL DboxMain::SelectEntry(const int i, BOOL MakeVisible)
 {
   BOOL retval;
-  ASSERT(i >=0);
+  ASSERT(i >= 0);
   if (m_ctlItemList.GetItemCount() == 0)
     return false;
 
@@ -836,7 +836,7 @@ void DboxMain::SelectFirstEntry()
   }
 }
 
-BOOL DboxMain::SelectFindEntry(int i, BOOL MakeVisible)
+BOOL DboxMain::SelectFindEntry(const int i, BOOL MakeVisible)
 {
   BOOL retval;
   if (m_ctlItemList.GetItemCount() == 0)
@@ -899,16 +899,7 @@ void DboxMain::RefreshViews(const int iView)
 
   // Get current selected items and save ptr to the entries (unchanged over 
   // refresh of Tree/List
-  POSITION pSelected = m_ctlItemList.GetFirstSelectedItemPosition();
-  HTREEITEM hSelected = m_ctlItemTree.GetSelectedItem();
-  CItemData *pci_List(NULL), *pci_Tree(NULL);
-  if (pSelected != NULL)
-    pci_List = (CItemData *)m_ctlItemList.GetItemData((int)pSelected - 1);
-  if (hSelected != NULL)
-    pci_Tree = (CItemData *)m_ctlItemTree.GetItemData(hSelected);
-
-  // Save expand/collapse status of groups
-  vector <bool> displaystatus = GetGroupDisplayState();
+  SaveDisplayBeforeMinimize();
 
   // can't use LockWindowUpdate 'cause only one window at a time can be locked
   if (iView & iListOnly) {
@@ -958,26 +949,8 @@ void DboxMain::RefreshViews(const int iView)
     m_ctlItemTree.Invalidate();
   }
 
-  // FixListIndexes(); // No need as just added them all in again!
+  RestoreDisplayAfterMinimize();
 
-  // Restore expand/collapse status of groups
-  SetGroupDisplayState(displaystatus);
-
-  // Select previously selected items and ensure they are visible.
-  // Note: pdi->list_index and pdi->tree_item will have been changed by
-  // "InsertItemIntoGUITreeList" and "FixListIndexes" above.
-  if (pci_List != NULL) {
-    DisplayInfo *pdi = (DisplayInfo *)pci_List->GetDisplayInfo();
-    m_ctlItemList.SetItemState(pdi->list_index,
-                               LVIS_FOCUSED | LVIS_SELECTED,
-                               LVIS_FOCUSED | LVIS_SELECTED);
-    m_ctlItemList.EnsureVisible(pdi->list_index, FALSE);
-  }
-  if (pci_Tree != NULL) {
-    DisplayInfo *pdi = (DisplayInfo *)pci_Tree->GetDisplayInfo();
-    m_ctlItemTree.SelectItem(pdi->tree_item);
-    m_ctlItemTree.EnsureVisible(pdi->tree_item);
-  }
   if (m_bFilterActive)
     UpdateStatusBar();
 }
@@ -1100,6 +1073,7 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
 
       // Called when minimize button select on main dialog control box
       // or the system menu or by right clicking in the Taskbar
+      // AFTER THE WINDOW HAS BEEN MINIMIZED!!!
 
       // Save DB preferences that may not have been saved in the database
       // over the minimize/restore event.
@@ -1142,15 +1116,17 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
       }
       break;
     case SIZE_MAXIMIZED:
-      pws_os::Trace(L"OnSize:SIZE_MAXIMIZED\n");
-      RefreshViews();
-      break;
     case SIZE_RESTORED:
       if (!m_bSizing) { // here if actually restored
 #endif
+        if (nType == SIZE_MAXIMIZED)
+          pws_os::Trace(L"OnSize:SIZE_MAXIMIZED\n");
+        else
+          pws_os::Trace(L"OnSize:SIZE_RESTORED\n");
+
         app.SetMenuDefaultItem(ID_MENUITEM_MINIMIZE);
-        pws_os::Trace(L"OnSize:SIZE_RESTORED\n");
-        RestoreWindowsData(false);
+        if (!RestoreWindowsData(false))
+          return;
 
         m_bIsRestoring = true; // Stop 'sort of list view' hiding FindToolBar
         m_ctlItemTree.SetRestoreMode(true);
@@ -1231,7 +1207,10 @@ void DboxMain::OnRestore()
   // Called when the System Tray Restore menu option is used
   RestoreWindowsData(true);
 
-  RestoreDisplayAfterMinimize();
+  // No need for next statement as it is done via RestoreWindowsData(true)
+  // calling RestoreWindows which issues ShowWindow(SW_RESTORE) which does it
+  // in OnSize - convoluted logic - needs a re-write but oh so carefully!
+  //RestoreDisplayAfterMinimize();
 
   m_ctlItemTree.SetRestoreMode(false);
 }
@@ -1509,7 +1488,6 @@ int DboxMain::InsertItemIntoGUITreeList(CItemData &ci, int iIndex,
 CItemData *DboxMain::getSelectedItem()
 {
   CItemData *retval = NULL;
-  m_sxSelectedGroup.clear();
   if (m_ctlItemList.IsWindowVisible()) { // list view
     POSITION p = m_ctlItemList.GetFirstSelectedItemPosition();
     if (p) {
@@ -1531,9 +1509,6 @@ CItemData *DboxMain::getSelectedItem()
           pws_os::Trace(L"DboxMain::getSelectedItem: fixing pdi->tree_item!\n");
           pdi->tree_item = ti;
         }
-      } else {
-        // group: save entry text
-        m_sxSelectedGroup = m_ctlItemTree.GetGroup(ti);
       }
     } // ti != NULL
   } // tree view
@@ -1882,6 +1857,7 @@ void DboxMain::OnTimer(UINT_PTR nIDEvent)
     // just minimize. If we are, then we need to hide (which
     // also requires children be hidden explicitly)
     pws_os::Trace(L"Locking due to Timer lock countdown or ws lock\n");
+    m_vGroupDisplayState = GetGroupDisplayState();
     if (!LockDataBase())
       return;
 
@@ -1913,7 +1889,6 @@ LRESULT DboxMain::OnSessionChange(WPARAM wParam, LPARAM )
 
   pws_os::Trace(L"OnSessionChange. wParam = %d\n", wParam);
   PWSprefs *prefs = PWSprefs::GetInstance();
-  CItemData *pci_selected(NULL);
 
   switch (wParam) {
     case WTS_CONSOLE_DISCONNECT:
@@ -1922,13 +1897,8 @@ LRESULT DboxMain::OnSessionChange(WPARAM wParam, LPARAM )
       if (m_bOpen && app.GetSystemTrayState() == UNLOCKED) {
         m_bWSLocked = true;
 
-        pci_selected = getSelectedItem();
-        if (pci_selected != NULL) {
-          pci_selected->GetUUID(m_UUIDSelectedAtMinimize);
-          m_sxSelectedGroup.clear();
-        } else {
-          memset(m_UUIDSelectedAtMinimize, 0, sizeof(uuid_array_t));
-        }
+        if (!IsIconic())
+          SaveDisplayBeforeMinimize();
 
         if (prefs->GetPref(PWSprefs::LockOnWindowLock) &&
             LockDataBase()) {
@@ -1972,9 +1942,6 @@ bool DboxMain::LockDataBase()
    *
    * returns false iff save was required AND failed.
    */
-
-  // Need to save display status for when we return from minimize
-  m_vGroupDisplayState = GetGroupDisplayState();
 
   // Now try and save changes
   if (m_core.IsChanged() ||  m_bTSUpdated) {
@@ -3893,7 +3860,13 @@ void DboxMain::RebuildGUI(const int iView)
 
 void DboxMain::SaveDisplayBeforeMinimize()
 {
-  if (!m_bOpen || app.GetSystemTrayState() != UNLOCKED)
+  if (!m_bOpen || app.GetSystemTrayState() != UNLOCKED || IsIconic())
+    return;
+
+  if (m_core.GetNumEntries() == 0)
+    return;
+
+  if (m_ctlItemList.GetItemCount() == 0 || m_ctlItemTree.GetCount() == 0)
     return;
 
   pws_os::Trace(L"SaveDisplayBeforeMinimize\n");
@@ -3901,23 +3874,88 @@ void DboxMain::SaveDisplayBeforeMinimize()
   // Save expand/collapse status of groups
   m_vGroupDisplayState = GetGroupDisplayState();
 
-  // Now save selected entry or group
-  CItemData *pci_selected = getSelectedItem();
-  if (pci_selected != NULL) {
-    // Entry selected
-    pws_os::Trace(L"SaveDisplayBeforeMinimize - Entry selected\n");
-    pci_selected->GetUUID(m_UUIDSelectedAtMinimize);
-    m_sxSelectedGroup.clear();
-  } else {
-    // Probably group selected and m_csSelectedGroup has been set
-    pws_os::Trace(L"SaveDisplayBeforeMinimize - Entry selected\n");
-    memset(m_UUIDSelectedAtMinimize, 0, sizeof(uuid_array_t));
-  }
+  CItemData *pci(NULL);
+
+  // Note: User can have different entries selected/visible in Tree & List Views
+  memset(m_LUUIDSelectedAtMinimize, 0, sizeof(uuid_array_t));
+  memset(m_TUUIDSelectedAtMinimize, 0, sizeof(uuid_array_t));
+  memset(m_LUUIDVisibleAtMinimize, 0, sizeof(uuid_array_t));
+  memset(m_TUUIDVisibleAtMinimize, 0, sizeof(uuid_array_t));
+
+  m_sxSelectedGroup.clear();
+  m_sxVisibleGroup.clear();
+
+  // List view
+  // Get selected entry in CListCtrl
+  POSITION p = m_ctlItemList.GetFirstSelectedItemPosition();
+  if (p) {
+    int i = m_ctlItemList.GetNextSelectedItem(p);
+    pci = (CItemData *)m_ctlItemList.GetItemData(i);
+    ASSERT(pci != NULL);  // No groups in List View
+    DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
+    ASSERT(pdi != NULL && pdi->list_index == i);
+    pci->GetUUID(m_LUUIDSelectedAtMinimize);
+  } // p != 0
+
+  // Get first entry visible in CListCtrl
+  int i = m_ctlItemList.GetTopIndex();
+  if (i >= 0) {
+    pci = (CItemData *)m_ctlItemList.GetItemData(i);
+    ASSERT(pci != NULL);  // No groups in List View
+    DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
+    ASSERT(pdi != NULL && pdi->list_index == i);
+    pci->GetUUID(m_LUUIDVisibleAtMinimize);
+  } // i >= 0
+
+  // Tree view
+  // Get selected entry in CTreeCtrl
+  HTREEITEM ti = m_ctlItemTree.GetSelectedItem();
+  if (ti != NULL) {
+    pci = (CItemData *)m_ctlItemTree.GetItemData(ti);
+    if (pci != NULL) {
+      // Entry: do some sanity tests
+      DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
+      ASSERT(pdi != NULL);
+      if (pdi->tree_item != ti) {
+        pws_os::Trace(L"DboxMain::GetSelectedItems: fixing pdi->tree_item!\n");
+        pdi->tree_item = ti;
+      }
+      pci->GetUUID(m_TUUIDSelectedAtMinimize);
+    } else {
+      // Group: save entry text
+      m_sxSelectedGroup = m_ctlItemTree.GetGroup(ti);
+    }
+  } // ti != NULL
+
+  // Get first entry visible in CTreeCtrl
+  ti = m_ctlItemTree.GetFirstVisibleItem();
+  if (ti != NULL) {
+    pci = (CItemData *)m_ctlItemTree.GetItemData(ti);
+    if (pci != NULL) {
+      // Entry: do some sanity tests
+      DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
+      ASSERT(pdi != NULL);
+      if (pdi->tree_item != ti) {
+        pws_os::Trace(L"DboxMain::GetSelectedItems: fixing pdi->tree_item!\n");
+        pdi->tree_item = ti;
+      }
+      pci->GetUUID(m_TUUIDVisibleAtMinimize);
+    } else {
+      // Group: save entry text
+      m_sxVisibleGroup = m_ctlItemTree.GetGroup(ti);
+    }
+  } // ti != NULL
 }
 
 void DboxMain::RestoreDisplayAfterMinimize()
 {
   pws_os::Trace(L"RestoreDisplayAfterMinimize\n");
+
+  if (m_core.GetNumEntries() == 0)
+    return;
+
+  if (m_ctlItemList.GetItemCount() == 0 || m_ctlItemTree.GetCount() == 0)
+    return;
 
   // Restore expand/collapse status of groups
   m_bIsRestoring = true;
@@ -3929,28 +3967,116 @@ void DboxMain::RestoreDisplayAfterMinimize()
   m_ctlItemTree.SetRestoreMode(false);
   m_bIsRestoring = false;
 
-  
-  if (memcmp(m_UUIDSelectedAtMinimize, PWScore::NULL_UUID, sizeof(uuid_array_t)) != 0) {
-    // Leaf selected
-    ItemListIter iter = Find(m_UUIDSelectedAtMinimize);
+  HTREEITEM htvis(NULL), htsel(NULL);
+  CItemData *pci(NULL);
+
+  // Process Tree - Selected
+  if (memcmp(m_TUUIDSelectedAtMinimize, PWScore::NULL_UUID, sizeof(uuid_array_t)) != 0) {
+    // Entry selected
+    ItemListIter iter = Find(m_TUUIDSelectedAtMinimize);
     if (iter != End()) {
       DisplayInfo *pdi = ((DisplayInfo *)(iter->second.GetDisplayInfo()));
       ASSERT(pdi != NULL);
       if (pdi != NULL) {
-        SelectEntry(pdi->list_index, false);
-        memset(m_UUIDSelectedAtMinimize, 0, sizeof(uuid_array_t));
-        UpdateToolBarForSelectedItem(&iter->second);
+        htsel = pdi->tree_item;
+        pci = &iter->second;
+        //memset(m_TUUIDSelectedAtMinimize, 0, sizeof(uuid_array_t));
       }
     }
   } else {
     // Group selected
     if (!m_sxSelectedGroup.empty()) {
-      // Find tree item
+      // Find corresponding tree item
       std::map<StringX, HTREEITEM>::iterator iter;
       iter = m_mapGroupToTreeItem.find(m_sxSelectedGroup);
       if (iter != m_mapGroupToTreeItem.end()) {
-        m_ctlItemTree.Select(iter->second, TVGN_CARET);
-        UpdateToolBarForSelectedItem(NULL);
+        htsel = iter->second;
+        //m_sxSelectedGroup.clear();
+      }
+    }
+  }
+
+  if (htsel != NULL) {
+    m_ctlItemTree.Select(htsel, TVGN_CARET);
+    RECT rect;
+    m_ctlItemTree.GetItemRect(htsel, &rect, FALSE);
+    m_ctlItemTree.InvalidateRect(&rect, TRUE);
+    if (m_ctlItemTree.IsWindowVisible())
+      UpdateToolBarForSelectedItem(pci);
+  }
+
+  // Process Tree - Visible
+  if (memcmp(m_TUUIDVisibleAtMinimize, PWScore::NULL_UUID, sizeof(uuid_array_t)) != 0) {
+    // Entry topmost visible
+    ItemListIter iter = Find(m_TUUIDVisibleAtMinimize);
+    if (iter != End()) {
+      DisplayInfo *pdi = ((DisplayInfo *)(iter->second.GetDisplayInfo()));
+      ASSERT(pdi != NULL);
+      if (pdi != NULL) {
+        htvis = pdi->tree_item;
+        //memset(m_TUUIDVisibleAtMinimize, 0, sizeof(uuid_array_t));
+      }
+    }
+  } else {
+    // Group topmost visible
+    if (!m_sxVisibleGroup.empty()) {
+      // Find corresponding tree item
+      std::map<StringX, HTREEITEM>::iterator iter;
+      iter = m_mapGroupToTreeItem.find(m_sxVisibleGroup);
+      if (iter != m_mapGroupToTreeItem.end()) {
+        htvis = iter->second;
+        //m_sxVisibleGroup.clear();
+      }
+    }
+  }
+
+  // Just in case MFC actually selected the first visible entry
+  if (htvis != NULL) {
+    m_ctlItemTree.Select(htvis, TVGN_FIRSTVISIBLE);
+    //m_ctlItemTree.SetItemState(htvis, 0, TVIS_SELECTED | TVIS_DROPHILITED);
+    RECT rect;
+    m_ctlItemTree.GetItemRect(htvis, &rect, FALSE);
+    m_ctlItemTree.InvalidateRect(&rect, TRUE);
+  }
+
+  // Process List - selected
+  if (memcmp(m_LUUIDSelectedAtMinimize, PWScore::NULL_UUID, sizeof(uuid_array_t)) != 0) {
+    ItemListIter iter = Find(m_LUUIDSelectedAtMinimize);
+    if (iter != End()) {
+      DisplayInfo *pdi = ((DisplayInfo *)(iter->second.GetDisplayInfo()));
+      ASSERT(pdi != NULL);
+      if (pdi != NULL) {
+        // Select the Entry
+        m_ctlItemList.SetItemState(pdi->list_index,
+                                   LVIS_FOCUSED | LVIS_SELECTED,
+                                   LVIS_FOCUSED | LVIS_SELECTED);
+        m_ctlItemList.Update(pdi->list_index);
+        //memset(m_LUUIDSelectedAtMinimize, 0, sizeof(uuid_array_t));
+        if (m_ctlItemList.IsWindowVisible())
+          UpdateToolBarForSelectedItem(&iter->second);
+      }
+    }
+  }
+
+  // Process List - visible
+  if (memcmp(m_LUUIDVisibleAtMinimize, PWScore::NULL_UUID, sizeof(uuid_array_t)) != 0) {
+    ItemListIter iter = Find(m_LUUIDVisibleAtMinimize);
+    if (iter != End()) {
+      DisplayInfo *pdi = ((DisplayInfo *)(iter->second.GetDisplayInfo()));
+      ASSERT(pdi != NULL);
+      if (pdi != NULL) {
+        // There is CListCtrl::GetTopIndex but No CListCtrl::SetTopIndex - Grrrrr!
+        CRect indexRect, topRect;
+        m_ctlItemList.EnsureVisible(pdi->list_index, FALSE);
+        int icurtop = m_ctlItemList.GetTopIndex();
+        m_ctlItemList.GetItemRect(pdi->list_index, indexRect, LVIR_BOUNDS);
+        m_ctlItemList.GetItemRect(icurtop, topRect, LVIR_BOUNDS);
+        m_ctlItemList.Scroll(CSize(0, (topRect.top - indexRect.top) * indexRect.Height()));
+
+        // Just in case MFC actually selected the first visible entry
+        m_ctlItemList.SetItemState(pdi->list_index, 0, LVIS_FOCUSED | LVIS_SELECTED);
+        m_ctlItemList.Update(pdi->list_index);
+        //memset(m_LUUIDVisibleAtMinimize, 0, sizeof(uuid_array_t));
       }
     }
   }
