@@ -47,6 +47,8 @@ void DboxMain::OnTrayLockUnLock()
     case ThisMfcApp::UNLOCKED:          // User clicked Lock!
       UpdateSystemTray(LOCKED);
       ClearClipboardData();
+      if (!IsIconic())
+        m_vGroupDisplayState = GetGroupDisplayState();
       if (LockDataBase())  { // save db if needed, clear data
         ShowWindow(SW_HIDE);
       }
