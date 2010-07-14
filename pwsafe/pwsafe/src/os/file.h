@@ -26,7 +26,7 @@ namespace pws_os {
 
   extern std::FILE *FOpen(const stringT &filename, const TCHAR *mode);
   extern long fileLength(std::FILE *fp);
-  extern const TCHAR *PathSeparator; // slash for Unix, backslash for Windows
+  extern const TCHAR PathSeparator; // slash for Unix, backslash for Windows
 };
 #endif /* __FILE_H */
 //-----------------------------------------------------------------------------

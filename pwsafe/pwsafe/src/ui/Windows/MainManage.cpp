@@ -490,6 +490,11 @@ void DboxMain::OnOptions()
                    (unsigned int)backup.m_backupsuffix);
     prefs->SetPref(PWSprefs::BackupMaxIncremented,
                    backup.m_maxnumincbackups);
+    if (!backup.m_userbackupotherlocation.IsEmpty()) {
+      // Make sure it ends in a slash!
+      if (backup.m_userbackupotherlocation.Right(1) != L'\\')
+        backup.m_userbackupotherlocation += L'\\';
+    }
     prefs->SetPref(PWSprefs::BackupDir,
                    LPCWSTR(backup.m_userbackupotherlocation));
 

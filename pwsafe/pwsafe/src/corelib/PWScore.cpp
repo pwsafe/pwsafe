@@ -857,14 +857,19 @@ bool PWScore::BackupCurFile(int maxNumIncBackups, int backupSuffix,
 
   pws_os::splitpath(path, drv, dir, name, ext);
   // Get location for intermediate backup
-  if (userBackupDir.empty()) { // directory same as database's
+  if (userBackupDir.empty()) {
+    // directory same as database's
     // Get directory containing database
     cs_temp = drv + dir;
     // (in Windows, need to verify for non-Windows)
     // splitpath directory ends with a '/', therefore do not need:
     // cs_temp += pws_os::PathSeparator;
   } else {
+    // User specified somewhere else
     cs_temp = userBackupDir;
+    // Ensure ends with path separator
+    if (userBackupDir[userBackupDir.length() - 1] != pws_os::PathSeparator)
+      cs_temp += pws_os::PathSeparator;
   }
 
   // generate prefix of intermediate backup file name

@@ -30,7 +30,7 @@
 
 using namespace std;
 
-const TCHAR *pws_os::PathSeparator = _T("/");
+const TCHAR pws_os::PathSeparator = _T('/');
 
 bool pws_os::FileExists(const stringT &filename)
 {
