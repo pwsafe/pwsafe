@@ -59,6 +59,7 @@ void COptionsMisc::DoDataExchange(CDataExchange* pDX)
   COptions_PropertyPage::DoDataExchange(pDX);
 
   //{{AFX_DATA_MAP(COptionsMisc)
+  DDX_Check(pDX, IDC_CONFIRMDELETE, m_confirmdelete);
   DDX_Check(pDX, IDC_MAINTAINDATETIMESTAMPS, m_maintaindatetimestamps);
   DDX_Check(pDX, IDC_ESC_EXITS, m_escexits);
   DDX_Control(pDX, IDC_DOUBLE_CLICK_ACTION, m_dblclk_cbox);
@@ -186,6 +187,7 @@ BOOL COptionsMisc::OnInitDialog()
 
   OnUsedefuser();
 
+  m_saveconfirmdelete = m_confirmdelete;
   m_savemaintaindatetimestamps = m_maintaindatetimestamps;
   m_saveescexits = m_escexits;
   m_savehotkey_enabled = m_hotkey_enabled;
@@ -275,7 +277,8 @@ LRESULT COptionsMisc::OnQuerySiblings(WPARAM wParam, LPARAM lParam)
       return 1L;
       }
     case PP_DATA_CHANGED:
-      if (m_savemaintaindatetimestamps != m_maintaindatetimestamps ||
+      if (m_saveconfirmdelete          != m_confirmdelete          || 
+          m_savemaintaindatetimestamps != m_maintaindatetimestamps ||
           m_saveescexits               != m_escexits               ||
           m_savehotkey_enabled         != m_hotkey_enabled         ||
           m_saveusedefuser             != m_usedefuser             ||
