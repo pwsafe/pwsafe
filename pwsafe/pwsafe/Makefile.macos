@@ -1,0 +1,24 @@
+# Toplevel Makefile for Linux build of PasswordSafe
+
+all clean unicodedebug unicoderelease:
+	$(MAKE) -C src/os/mac $@
+	$(MAKE) -C src/corelib $@
+	$(MAKE) -C src/ui/wxWidgets $@
+
+debug:
+	$(MAKE) unicodedebug
+
+release:
+	$(MAKE) unicoderelease
+
+reallyclean:
+	$(MAKE) clean CONFIG=unicodebug
+	$(MAKE) clean CONFIG=unicorelease
+
+deb:
+	$(MAKE) -C install/deb
+
+.PHONY:	all clean reallyclean debug release unicodedebug unicoderelease deb
+# Local variables:
+# mode: makefile
+# End:
