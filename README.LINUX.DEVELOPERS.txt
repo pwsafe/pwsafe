@@ -6,19 +6,27 @@ described in terms of .deb packages. If someone builds pwsafe on
 another distro, please update this document with the corresponding
 package names (e.g., rpm).
 
-Here are the packages/tools required for building the Linux version:
+Here are the packages/tools required for building the Linux version
+under Debian:
 g++
 gmake (version 3.81 or newer.  Makefiles are not compatible with lower versions)
 libuuid1
 libwxgtk2.8-dev
+libwxgtk2.8-dbg
 libxt-dev
 libxtst-dev
 subversion
+fakeroot
+
+For Ubuntu:
+- 'make' replaces 'gmake'
+- uuid-dev should be added
+
 
 With these installed, running 'make' at the top of the source tree
 will result in the debug version of pwsafe being built under
 src/ui/wxWidgets/GCCUnicodeDebug
 
-TBD (development process, not functionality):
-1. Support "make release" to create non-Debug build
-2. Add packaging support (e.g., "make deb", "make rpm", etc.)
+TBD:
+1. Improve .deb building script
+2. Add support for .rpm building
