@@ -20,7 +20,7 @@ Picker (right click on column labels).
 
 Changes to Existing Features in 3.22.1
 ======================================
-None
+[3026944] Confirm on Delete option has been re-instated.
 
 Bugs fixed in 3.22.1
 ====================
