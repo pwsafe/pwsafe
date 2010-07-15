@@ -21,6 +21,7 @@ private:
   // Dialog Data
   //{{AFX_DATA(CConfirmDeleteDlg)
   enum { IDD = IDD_CONFIRMDELETE_DIALOG };
+  bool m_dontaskquestion;
   int m_numchildren;
   //}}AFX_DATA
 

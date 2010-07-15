@@ -26,6 +26,7 @@ public:
   // Dialog Data
   //{{AFX_DATA(COptionsMisc)
   enum { IDD = IDD_PS_MISC };
+  BOOL m_confirmdelete;
   BOOL m_maintaindatetimestamps;
   BOOL m_escexits;
   BOOL m_hotkey_enabled;
@@ -41,6 +42,7 @@ public:
   CString m_othereditorlocation;
   //}}AFX_DATA
 
+  BOOL m_saveconfirmdelete;
   BOOL m_savemaintaindatetimestamps;
   BOOL m_saveescexits;
   BOOL m_savehotkey_enabled;
