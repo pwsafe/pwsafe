@@ -47,6 +47,7 @@
 #include <wx/clipbrd.h>
 #include "pwsafeapp.h"
 #include "../../os/file.h"
+#include "./ImportTextDlg.h"
 
 // main toolbar images
 #include "../graphics/toolbar/wxWidgets/new.xpm"
@@ -169,6 +170,8 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_MENU( ID_EDITBASEENTRY, PasswordSafeFrame::OnEditBase )
 
   EVT_MENU( ID_CREATESHORTCUT, PasswordSafeFrame::OnCreateShortcut )
+
+  EVT_MENU( ID_IMPORT_PLAINTEXT, PasswordSafeFrame::OnImportText )
 
   EVT_MENU( ID_MENU_CLEAR_MRU, PasswordSafeFrame::OnClearRecentHistory )
   EVT_UPDATE_UI( ID_MENU_CLEAR_MRU, PasswordSafeFrame::OnUpdateClearRecentDBHistory )
@@ -1755,6 +1758,173 @@ void PasswordSafeFrame::OnOpenRecentDB(wxCommandEvent& evt)
   }
 }
 
+//
+// ---------- Import/Export ........................
+//
+void PasswordSafeFrame::OnImportText(wxCommandEvent& evt)
+{
+  if (m_core.IsReadOnly()) {// disable in read-only mode
+    wxMessageBox(wxT("The current database was opened in read-only mode.  You cannot import into it."),
+                  wxT("Import text"), wxOK | wxICON_EXCLAMATION);
+    return;
+  }
+
+  // Initialize set
+  GTUSet setGTU;
+  if (!m_core.GetUniqueGTUValidated() && !m_core.InitialiseGTU(setGTU)) {
+    // Database is not unique to start with - tell user to validate it first
+    wxMessageBox(wxString() << wxT("The database:\n\n") << m_core.GetCurFile() << wxT("\n\n")
+                            << wxT("has duplicate entries with the same group/title/user combination.")
+                            << wxT("  Please fix by validating database."),
+                            wxT("Import Text failed"), wxOK | wxICON_ERROR );
+    return;
+  }
+
+  CImportTextDlg dlg(this);
+  if (dlg.ShowModal() != wxID_OK)
+    return;
+
+  StringX ImportedPrefix(dlg.groupName);
+  TCHAR fieldSeparator = dlg.FieldSeparator();
+
+#if 0
+  CPWFileDialog fd(TRUE,
+                   L"txt",
+                   NULL,
+                   OFN_FILEMUSTEXIST | OFN_HIDEREADONLY | OFN_LONGNAMES,
+                   CString(MAKEINTRESOURCE(IDS_FDF_T_C_ALL)),
+                   this);
+  cs_text.LoadString(IDS_PICKTEXTFILE);
+  fd.m_ofn.lpstrTitle = cs_text;
+
+  INT_PTR rc = fd.DoModal();
+
+  if (m_inExit) {
+    // If U3ExitNow called while in CPWFileDialog,
+    // PostQuitMessage makes us return here instead
+    // of exiting the app. Try resignalling 
+    PostQuitMessage(0);
+    return;
+  }
+
+  if (rc == IDOK) {
+    bool bWasEmpty = m_core.GetNumEntries() == 0;
+    std::wstring strError;
+    StringX TxtFileName = fd.GetPathName();
+    int numImported(0), numSkipped(0), numPWHErrors(0), numRenamed(0);
+    wchar_t delimiter = dlg.m_defimpdelim[0];
+    bool bImportPSWDsOnly = dlg.m_bImportPSWDsOnly == TRUE;
+
+    /* Create report as we go */
+    CReport rpt;
+    std::wstring cs_text;
+    LoadAString(cs_text, IDS_RPTIMPORTTEXT);
+    rpt.StartReport(cs_text.c_str(), m_core.GetCurFile().c_str());
+    LoadAString(cs_text, IDS_TEXT);
+    cs_temp.Format(IDS_IMPORTFILE, cs_text.c_str(), TxtFileName.c_str());
+    rpt.WriteLine((LPCWSTR)cs_temp);
+    rpt.WriteLine();
+
+    Command *pcmd = NULL;
+    rc = m_core.ImportPlaintextFile(ImportedPrefix, TxtFileName, fieldSeparator,
+                                    delimiter, bImportPSWDsOnly,
+                                    strError,
+                                    numImported, numSkipped, numPWHErrors, numRenamed,
+                                    rpt, pcmd);
+
+    switch (rc) {
+      case PWScore::CANT_OPEN_FILE:
+        cs_title.LoadString(IDS_FILEREADERROR);
+        cs_temp.Format(IDS_CANTOPENREADING, TxtFileName.c_str());
+        delete pcmd;
+        break;
+      case PWScore::INVALID_FORMAT:
+        cs_title.LoadString(IDS_FILEREADERROR);
+        cs_temp.Format(IDS_INVALIDFORMAT, TxtFileName.c_str());
+        delete pcmd;
+        break;
+      case PWScore::FAILURE:
+        cs_title.LoadString(IDS_TEXTIMPORTFAILED);
+        cs_temp = strError.c_str();
+        delete pcmd;
+        break;
+      case PWScore::SUCCESS:
+      case PWScore::OK_WITH_ERRORS:
+        // deliberate fallthru
+      default:
+      {
+        if (pcmd != NULL)
+          Execute(pcmd);
+
+        rpt.WriteLine();
+        CString cs_type;
+        cs_type.LoadString(numImported == 1 ? IDSC_ENTRY : IDSC_ENTRIES);
+        cs_temp.Format(bImportPSWDsOnly ? IDS_RECORDSUPDATED : IDS_RECORDSIMPORTED, 
+                       numImported, cs_type);
+        rpt.WriteLine((LPCWSTR)cs_temp);
+
+        if (numSkipped != 0) {
+          CString cs_tmp;
+          cs_type.LoadString(numSkipped == 1 ? IDSC_ENTRY : IDSC_ENTRIES);
+          cs_tmp.Format(IDS_RECORDSSKIPPED, numSkipped, cs_type);
+          rpt.WriteLine((LPCWSTR)cs_tmp);
+          cs_temp += cs_tmp;
+        }
+
+        if (numPWHErrors != 0) {
+          CString cs_tmp;
+          cs_type.LoadString(numPWHErrors == 1 ? IDSC_ENTRY : IDSC_ENTRIES);
+          cs_tmp.Format(IDS_RECORDSPWHERRRORS, numPWHErrors, cs_type);
+          rpt.WriteLine((LPCWSTR)cs_tmp);
+          cs_temp += cs_tmp;
+        }
+
+        if (numRenamed != 0) {
+          CString cs_tmp;
+          cs_type.LoadString(numRenamed == 1 ? IDSC_ENTRY : IDSC_ENTRIES);
+          cs_tmp.Format(IDS_RECORDSRENAMED, numRenamed, cs_type);
+          rpt.WriteLine((LPCWSTR)cs_tmp);
+          cs_temp += cs_tmp;
+        }
+
+        cs_title.LoadString(rc == PWScore::SUCCESS ? IDS_COMPLETE : IDS_OKWITHERRORS);
+
+        ChangeOkUpdate();
+        RefreshViews();
+        break;
+      }
+    } // switch
+    // Finish Report
+    rpt.EndReport();
+
+    gmb.SetTitle(cs_title);
+    gmb.SetMsg(cs_temp);
+    gmb.SetStandardIcon(rc == PWScore::SUCCESS ? MB_ICONINFORMATION : MB_ICONEXCLAMATION);
+    gmb.AddButton(IDS_OK, IDS_OK, TRUE, TRUE);
+    gmb.AddButton(IDS_VIEWREPORT, IDS_VIEWREPORT);
+    INT_PTR rc = gmb.DoModal();
+    if (rc == IDS_VIEWREPORT)
+      ViewReport(rpt);
+
+    // May need to update menu/toolbar if original database was empty
+    if (bWasEmpty)
+      UpdateMenuAndToolBar(m_bOpen);
+  }
+#endif
+    /*
+    msg << wxT("Comma:") << wxT('\t') << dlg.delimiterComma << wxT('\n')
+        << wxT("Space:") << wxT('\t') << dlg.delimiterSpace << wxT('\n')
+        << wxT("Tab:")   << wxT('\t') << dlg.delimiterTab << wxT('\n')
+        << wxT("Semicolon:") << wxT('\t') << dlg.delimiterSemicolon << wxT('\n')
+        << wxT("Other:") << wxT('\t') << dlg.delimiterOther << wxT('\n')
+        << wxT("Other Delimiter:") << wxT('\t') << dlg.strDelimiterOther << wxT('\n')
+        << wxT("Line separator:") << wxT('\t') << dlg.strDelimiterLine << wxT('\n')
+        << wxT("Import Under Group:") << wxT('\t') << dlg.importUnderGroup << wxT('\n')
+        << wxT("Group Name:") << wxT('\t') << dlg.groupName << wxT('\n')
+        << wxT("Import Passwords Only:") << wxT('\t') << dlg.importPasswordsOnly << wxT('\n');
+    wxMessageBox(msg, wxT("Import options"));
+     */
+}
 //-----------------------------------------------------------------
 // Remove all DialogBlock-generated stubs below this line, as we
 // already have them implemented in mainEdit.cpp
