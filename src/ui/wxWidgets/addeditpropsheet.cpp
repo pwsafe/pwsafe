@@ -887,7 +887,7 @@ void AddEditPropSheet::ShowPassword()
                                   wxDefaultPosition, wxDefaultSize,
                                   0);
   m_BasicFGSizer->Replace(tmp, m_PasswordCtrl);
-  tmp->~wxTextCtrl(); // !?!
+  delete tmp;
   m_BasicFGSizer->Layout();
   // Disable confirmation Ctrl, as the user can see the password entered
   m_Password2Ctrl->ChangeValue(_(""));
@@ -908,7 +908,7 @@ void AddEditPropSheet::HidePassword()
                                   wxDefaultPosition, wxDefaultSize,
                                   wxTE_PASSWORD);
   m_BasicFGSizer->Replace(tmp, m_PasswordCtrl);
-  tmp->~wxTextCtrl(); // !?!
+  delete tmp;
   m_BasicFGSizer->Layout();
   m_Password2Ctrl->ChangeValue(m_password.c_str());
   m_Password2Ctrl->Enable(true);
