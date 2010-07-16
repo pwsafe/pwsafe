@@ -3,11 +3,15 @@
 
 #include <wx/dialog.h> // Base class: wxDialog
 #include <wx/grid.h>
+#include "../../os/typedefs.h"
 
 class wxCollapsiblePane;
 class wxBoxSizer;
 class wxSizerFlags;
+class wxRadioButton;
 
+//Usage: Instantiate this class and if ShowModal() returns Ok, check
+//the member variables which are automatically set by validators
 class CImportTextDlg : public wxDialog {
 
   DECLARE_CLASS( CImportTextDlg )
@@ -19,55 +23,32 @@ public:
 
   void CreateControls();
 
-protected:
-  virtual wxSize DoGetBestSize() const;
-
+  wxString filepath;
+  
+  bool delimiterComma;
+  bool delimiterSpace;
+  bool delimiterTab;
+  bool delimiterSemicolon;
+  bool delimiterOther;
+  wxString strDelimiterOther;
+  wxString strDelimiterLine;
+  
+  bool importUnderGroup;
+  wxString groupName;
+  
+  bool importPasswordsOnly;
+  
+  TCHAR FieldSeparator() const;
+  
 private:
-  wxCollapsiblePane* CreateFileFormatsPane(wxBoxSizer* sizer);
   wxCollapsiblePane* CreateParsingOptionsPane(wxBoxSizer* dlgSizer);
+  wxCollapsiblePane* CreateImportOptionsPane(wxBoxSizer* dlgSizer);
+  wxBoxSizer* CreateVerticalButtonSizer(long flags);
 
-};
-
-class ImportTextGrid : public wxGrid
-{
-public:
-  ImportTextGrid(wxWindow* parent, wxWindowID id) : wxGrid(parent, id) {}
-  
-  DECLARE_CLASS(ImportTextGrid)
-  
-protected:
-    virtual wxSize DoGetBestSize() const;
-};
-
-
-class ImportTextGridTable : public wxGridTableBase
-{
-  DECLARE_CLASS(ImportTextGridTable)
-  
-  wxArrayString m_lines;
-  
-public:
-  /// Constructors
-  ImportTextGridTable(const wxString& textfile);
-
-  /// Destructor
-  ~ImportTextGridTable(){}
-
-  /// overrides from wxGridTableBase
-  virtual int GetNumberRows() ;
-  virtual int GetNumberCols();
-  virtual bool IsEmptyCell(int row, int col);
-  virtual wxString GetValue(int row, int col);
-  //override this to suppress the row numbering in the grid
-  //virtual wxString GetRowLabelValue(int row);
-  virtual wxString GetColLabelValue(int col);
-  virtual void SetValue(int row, int col, const wxString& value){}
-  //virtual bool DeleteRows(size_t pos, size_t numRows);
-  //virtual bool InsertRows(size_t pos, size_t numRows);
-  //virtual bool AppendRows(size_t numRows = 1);
-  
-  ///optional overrides
-  //virtual void Clear();
+  //convenience functions
+  wxCheckBox* CheckBox(wxWindow* parent, const wxString& label, bool* validatorTarget);
+  wxTextCtrl* TextCtrl(wxWindow* parent, wxString* validatorTarget);
+  wxRadioButton* RadioButton(wxWindow* parent, const wxString& label, bool* validatorTarget, int flags = 0);
 };
 
 #endif // __IMPORTTEXTDLG_H__

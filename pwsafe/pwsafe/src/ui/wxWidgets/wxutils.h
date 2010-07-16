@@ -14,6 +14,10 @@ inline wxString& operator << ( wxString& str, const wxSize& sz) {
   return str << wxT('[') << sz.GetWidth() << wxT(',') << sz.GetHeight() << wxT(']');
 }
 
+inline wxString& operator << ( wxString& str, const StringX& s) {
+  return str << s.c_str();
+}
+
 inline wxString towxstring(const StringX& str) {
   return wxString(str.data(), str.size());
 }
@@ -22,5 +26,12 @@ inline wxString towxstring(const stringT& str) {
 	return wxString(str.data(), str.size());
 }
 
+inline stringT tostdstring(const wxString& str) {
+#if wxCHECK_VERSION(2,9,1)
+  return str.ToStdWstring();
+#else
+  return stringT(str.data(), str.size());
+#endif
+}
 #endif
 
