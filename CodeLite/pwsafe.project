@@ -57,6 +57,8 @@
     <File Name="../src/ui/wxWidgets/guiinfo.cpp"/>
     <File Name="../src/ui/wxWidgets/guiinfo.h"/>
     <File Name="../src/ui/wxWidgets/RecentDBList.h"/>
+    <File Name="../src/ui/wxWidgets/ImportTextDlg.h"/>
+    <File Name="../src/ui/wxWidgets/ImportTextDlg.cpp"/>
   </VirtualDirectory>
   <Dependencies Name="Release">
     <Project Name="core"/>
