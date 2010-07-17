@@ -83,7 +83,7 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("PWUseHexDigits"), false, ptDatabase},                // database
   {_T("PWUseEasyVision"), false, ptDatabase},               // database
   {_T("dontaskquestion"), false, ptApplication},            // application
-  {_T("deletequestion"), false, ptObsolete},                // obsolete in 3.21 - as user can now do Undo
+  {_T("deletequestion"), false, ptApplication},             // application
   {_T("DCShowsPassword"), false, ptApplication},            // application
   {_T("DontAskMinimizeClearYesNo"), true, ptObsolete},      // obsolete in 3.13 - replaced by 2 separate entries
   {_T("DatabaseClear"), false, ptApplication},              // application
