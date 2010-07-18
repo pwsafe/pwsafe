@@ -1,5 +1,5 @@
-Password Safe 3.22.1 Release Notes - June 2010
-==============================================
+Password Safe 3.23 Release Notes - July 2010
+============================================
 
 This note describe the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -8,8 +8,8 @@ information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
 
-New Features for 3.22.1
-=======================
+New Features for 3.23
+=====================
 [3022827] Implement 'stealth' mode where, as long as the user specifies both
 the use of the System Tray and a valid Hot Key, then the System Tray
 icon and the button on the Taskbar can be hidden.
@@ -18,12 +18,12 @@ before copying to the clipboard.
 [3011546] "autotype" can now be added to the List View via the Column
 Picker (right click on column labels).
 
-Changes to Existing Features in 3.22.1
-======================================
+Changes to Existing Features in 3.23
+====================================
 [3026944] Confirm on Delete option has been re-instated.
 
-Bugs fixed in 3.22.1
-====================
+Bugs fixed in 3.23
+==================
 [3029576] Ensure user specified backup directory ends with a slash.
 [3028926] Entries modified via Synchronize are now displayed correctly if the
 user checks the preference "Highlight changed entries" via Options->Display.

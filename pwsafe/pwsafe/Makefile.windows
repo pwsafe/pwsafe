@@ -8,8 +8,8 @@
 #
 # Oh, this works with GNU make under Cygwin. YMMV on other makes...
 
-RELEASENUM = 3.23pre
-RELEASE_SPECIAL =
+RELEASENUM = 3.23
+RELEASE_SPECIAL = pre
 RELEASENAME = $(RELEASENUM)$(RELEASE_SPECIAL)
 
 RELEASEDIR = /cygdrive/c/local/src/PasswordSafe/Releases
@@ -51,7 +51,7 @@ HELP_DIR = ./help
 BIN_DIR = ./build/bin/pwsafe/releasem
 RELNOTES := $(CURDIR)/docs/ReleaseNotes.txt
 
-BIN_MANIFEST = README.txt docs/ReleaseNotes.txt LICENSE \
+BIN_MANIFEST = README.txt docs/ReleaseNotes.txt docs/ReleaseNotes.html LICENSE \
     xml/pwsafe.xsd xml/pwsafe_filter.xsd xml/pwsafe.xsl \
 		docs/ChangeLog.txt $(BIN_DIR)/pwsafe.exe $(BIN_DIR)/pws_at.dll \
 		$(BIN_DIR)/pws_osk.dll help/default/pwsafe.chm \
