@@ -39,7 +39,7 @@ LangString RESERVE_TITLE ${LANG_DUTCH} "Choose Installation Type [NL]"
 LangString RESERVE_TITLE ${LANG_FRENCH} "Veuillez choisir le type d'installation"
 !endif
 !ifdef LANGUAGE_RUSSIAN
-LangString RESERVE_TITLE ${LANG_RUSSIAN} "Выберите ти?установк?
+LangString RESERVE_TITLE ${LANG_RUSSIAN} "Выберите ти?установк?"
 !endif
 !ifdef LANGUAGE_POLISH
 LangString RESERVE_TITLE ${LANG_POLISH} "Choose Installation Type [PL]"
@@ -243,7 +243,7 @@ LangString START_SHORTCUT ${LANG_DUTCH} "Install desktop shortcut [NL]"
 LangString START_SHORTCUT ${LANG_FRENCH} "Installer un raccourci sur le Bureau"
 !endif
 !ifdef LANGUAGE_RUSSIAN
-LangString START_SHORTCUT ${LANG_RUSSIAN} "Ярлы?на Рабоче?стол?
+LangString START_SHORTCUT ${LANG_RUSSIAN} "Ярлы?на Рабоче?стол?"
 !endif
 !ifdef LANGUAGE_POLISH
 LangString START_SHORTCUT ${LANG_POLISH} "Install desktop shortcut [PL]"
@@ -476,7 +476,7 @@ LangString TEXT_GC_TITLE ${LANG_DUTCH} "Installation Type [NL]"
 LangString TEXT_GC_TITLE ${LANG_FRENCH} "Type d'installation"
 !endif
 !ifdef LANGUAGE_RUSSIAN
-LangString TEXT_GC_TITLE ${LANG_RUSSIAN} "Ти?установк?
+LangString TEXT_GC_TITLE ${LANG_RUSSIAN} "Ти?установк?"
 !endif
 !ifdef LANGUAGE_POLISH
 LangString TEXT_GC_TITLE ${LANG_POLISH} "Installation Type [PL]"
@@ -540,7 +540,7 @@ LangString PSWINI_TITLE ${LANG_DUTCH} "Choose Installation Type [NL]"
 LangString PSWINI_TITLE ${LANG_FRENCH} "Veuillez choisir le type d'installation"
 !endif
 !ifdef LANGUAGE_RUSSIAN
-LangString PSWINI_TITLE ${LANG_RUSSIAN} "Выберите ти?установк?
+LangString PSWINI_TITLE ${LANG_RUSSIAN} "Выберите ти?установк?"
 !endif
 !ifdef LANGUAGE_POLISH
 LangString PSWINI_TITLE ${LANG_POLISH} "Choose Installation Type [PL]"

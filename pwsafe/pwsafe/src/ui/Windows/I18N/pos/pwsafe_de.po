@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2010-05-10 16:39+0100\n"
+"PO-Revision-Date: 2010-07-18 12:11+0100\n"
 "Last-Translator: Karel Van der Gcuht <karel@vandergucht.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -928,6 +928,10 @@ msgstr "------------------------------------------------------------------------
 msgid "..."
 msgstr "..."
 
+#. Resource IDs: (1017)
+msgid "...."
+msgstr "...."
+
 #. Resource IDs: (1293, 1294)
 msgid "....."
 msgstr "....."
@@ -1525,6 +1529,10 @@ msgstr "Übernehmen"
 msgid "Arabic (101)"
 msgstr "Arabisch (101)"
 
+#. Resource IDs: (341)
+msgid "Are you sure you want to delete the selected entry?"
+msgstr "Sind Sie sicher dass Sie den ausgewählten Eintrag löschen möchten?"
+
 #. Resource IDs: (355)
 msgid "Are you sure you want to delete the selected group?"
 msgstr "Sind Sie sicher dass Sie die ausgewählte Gruppe löschen möchten?"
@@ -2061,6 +2069,10 @@ msgstr ""
 msgid "Confirm Close Dialog"
 msgstr "Schließen-Dialog bestätigen"
 
+#. Resource IDs: (1019)
+msgid "Confirm deletion of items"
+msgstr "Das Löschen von Elementen bestätigen "
+
 #. Resource IDs: (1021)
 msgid "Confirm item copy to clipboard"
 msgstr "Kopieren von Elementen in die Zwischenablage bestätigen"
@@ -2540,6 +2552,10 @@ msgstr "&Beenden"
 msgid "E&xit\tCtrl+Q\\Alt+F4"
 msgstr "&Beenden\tStrg+Q\\Alt+F4"
 
+#. Resource IDs: (65535)
+msgid "E&xport Entry To"
+msgstr "E&xportiere Eintrag zu"
+
 #. Resource IDs: (350)
 msgid "Easyvision characters"
 msgstr "Easyvision Zeichen"
@@ -2779,10 +2795,6 @@ msgstr "Exportieren"
 #. Resource IDs: (32009)
 msgid "Export &To"
 msgstr "Exportiere &zu"
-
-#. Resource IDs: (65535)
-msgid "Export Entry &To"
-msgstr "Exportiere Eintrag &zu"
 
 #. Resource IDs: (32085)
 msgid "Export Entry in XML format..."
@@ -3177,6 +3189,10 @@ msgstr "Hexadezimale Zeichen"
 #. Resource IDs: (331)
 msgid "Hexadecimal is mutually exclusive to all other options!"
 msgstr "Hexadezimal schließt alle anderen Optionen aus!"
+
+#. Resource IDs: (1426)
+msgid "Hide System Tray icon (Hot Key MUST be active)"
+msgstr "Symbol im Infobereich verbergen (Tastenkürzel MUSS aktiv sein)"
 
 #. Resource IDs: (1397)
 msgid "Highlight changed entries"
