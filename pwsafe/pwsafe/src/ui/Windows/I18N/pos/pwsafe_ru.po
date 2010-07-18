@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2010-05-10 18:50+0300\n"
+"PO-Revision-Date: 2010-07-18 20:25+0300\n"
 "Last-Translator: Andrey Kuznetsov <pm_kan@users.sourceforge.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -450,7 +450,7 @@ msgstr "&Автонабор:"
 
 #. Resource IDs: (332, 32072)
 msgid "&Browse to URL"
-msgstr "&Перейти по ссылке"
+msgstr "Пе&рейти по ссылке"
 
 #. Resource IDs: (32151)
 msgid "&Change Safe Combination..."
@@ -470,7 +470,7 @@ msgstr "&Очистить историю"
 
 #. Resource IDs: (32008)
 msgid "&Clear Recent Safe List"
-msgstr "&Очистить список ранее использованных контейнеров"
+msgstr "О&чистить список ранее использованных контейнеров"
 
 #. Resource IDs: (351)
 msgid "&Clear current"
@@ -488,7 +488,7 @@ msgstr "&Сравнить"
 msgid "&Continue"
 msgstr "П&родолжить"
 
-#. Resource IDs: (1343, 2132)
+#. Resource IDs: (1343, 1425, 2132)
 msgid "&Copy"
 msgstr "&Копировать"
 
@@ -566,7 +566,7 @@ msgstr "&Поиск"
 #. Resource IDs: (32079)
 # пункт меню
 msgid "&Find..."
-msgstr "&Поиск..."
+msgstr "По&иск..."
 
 #. Resource IDs: (2)
 msgid "&Finish"
@@ -691,7 +691,7 @@ msgstr "&Простой текст..."
 
 #. Resource IDs: (32020)
 msgid "&Properties"
-msgstr "&Свойства"
+msgstr "Сво&йства"
 
 #. Resource IDs: (1023)
 msgid "&Quit"
@@ -884,6 +884,10 @@ msgstr "------------------------------------------------------------------------
 #. Resource IDs: (1223)
 msgid "..."
 msgstr "..."
+
+#. Resource IDs: (1017)
+msgid "...."
+msgstr "...."
 
 #. Resource IDs: (1293, 1294)
 msgid "....."
@@ -1423,7 +1427,11 @@ msgstr "Применить"
 msgid "Arabic (101)"
 msgstr "Арабская (101)"
 
-#. Resource IDs: (1017)
+#. Resource IDs: (341)
+msgid "Are you sure you want to delete the selected entry?"
+msgstr "Подтверждаете удаление выбранного элемента?"
+
+#. Resource IDs: (355)
 msgid "Are you sure you want to delete the selected group?"
 msgstr "Подтверждаете удаление выбранной группы?"
 
@@ -1962,6 +1970,10 @@ msgstr "Ошибка в конфигурационном файле:\n%s\n%s\nс
 msgid "Confirm Close Dialog"
 msgstr "Диалог подтверждения закрытия"
 
+#. Resource IDs: (1019)
+msgid "Confirm deletion of items"
+msgstr "Подтверждать удаление элементов"
+
 #. Resource IDs: (1021)
 msgid "Confirm item copy to clipboard"
 msgstr "Подтверждать копирование элемента в буфер обмена"
@@ -2418,6 +2430,10 @@ msgstr "Вы&ход"
 msgid "E&xit\tCtrl+Q\\Alt+F4"
 msgstr "Вы&ход\tCtrl+Q\\Alt+F4"
 
+#. Resource IDs: (65535)
+msgid "E&xport Entry To"
+msgstr "Экспортировать элемент &в"
+
 #. Resource IDs: (350)
 msgid "Easyvision characters"
 msgstr "Легкоотличимые символы"
@@ -2722,10 +2738,6 @@ msgstr "Экспорт"
 #. Resource IDs: (32009)
 msgid "Export &To"
 msgstr "Экспортировать &в"
-
-#. Resource IDs: (65535)
-msgid "Export Entry &To"
-msgstr "Экспортировать элемент &в"
 
 #. Resource IDs: (32085)
 msgid "Export Entry in XML format..."
@@ -3111,6 +3123,10 @@ msgstr "Шестнадцатеричные цифры"
 #. Resource IDs: (331)
 msgid "Hexadecimal is mutually exclusive to all other options!"
 msgstr "Опция 'шестнадцатеричные цифры' является не совместима с другими опциями!"
+
+#. Resource IDs: (1426)
+msgid "Hide System Tray icon (Hot Key MUST be active)"
+msgstr "Скрывать значок (должна быть задана горячая клавиша)"
 
 #. Resource IDs: (1397)
 msgid "Highlight changed entries"
@@ -5581,7 +5597,7 @@ msgstr "У данного элемента есть %d %s:\r\n%s\r\nПродол
 
 #. Resource IDs: (329)
 msgid "This entry must have a password."
-msgstr "Элемента должен содержать пароль."
+msgstr "Элемент должен содержать пароль."
 
 #. Resource IDs: (328)
 msgid "This entry must have a title."
