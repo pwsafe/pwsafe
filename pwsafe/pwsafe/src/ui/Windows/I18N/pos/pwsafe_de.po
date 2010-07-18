@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2010-07-18 12:11+0100\n"
+"PO-Revision-Date: 2010-07-18 12:34+0100\n"
 "Last-Translator: Karel Van der Gcuht <karel@vandergucht.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -3834,7 +3834,7 @@ msgstr "Datenbank %s wird zusammengeführt\r\n"
 
 #. Resource IDs: (1421)
 msgid "Migrate PasswordSafe configuration to user directory"
-msgstr "Migriere die PassowrdSafe Konfiguration zum Anwenderverzeichnis"
+msgstr "Migriere die PasswordSafe Konfiguration zum Anwenderverzeichnis"
 
 #. Resource IDs: (1250)
 msgid "Minimize after Autotype"
@@ -4818,7 +4818,7 @@ msgstr "Merke letzte"
 
 #. Resource IDs: (1188)
 msgid "Remove PasswordSafe configuration from Registry"
-msgstr "Lösche die PassowrdSafe Konfiguration aus der Registry"
+msgstr "Lösche die PasswordSafe Konfiguration aus der Registry"
 
 #. Resource IDs: (32291)
 msgid "Remove this shortcut"
