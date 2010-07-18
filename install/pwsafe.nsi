@@ -256,6 +256,7 @@ Section "$(PROGRAM_FILES)" ProgramFiles
   File "..\LICENSE"
   File "..\README.TXT"
   File "..\docs\ReleaseNotes.txt"
+  File "..\docs\ReleaseNotes.html"
   File "..\docs\ChangeLog.txt"
   File "..\xml\pwsafe.xsd"
   File "..\xml\pwsafe.xsl"
