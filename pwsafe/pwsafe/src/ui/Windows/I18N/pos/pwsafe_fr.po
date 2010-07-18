@@ -8,13 +8,26 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2010-05-16 10:29-0800\n"
+"PO-Revision-Date: 2010-07-17 19:15-0800\n"
 "Last-Translator: Francois Lamoureux\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
 #    ID:xxxxx = the menu ID corresponding to the accelerator
@@ -331,7 +344,7 @@ msgstr "Le fichier %s est en train d^\"tre importé: %s"
 #. Resource IDs: (212)
 #, c-format
 msgid "%s has an empty %s.\r\n"
-msgstr "%s a % vide.\r\n"
+msgstr "%s a %s vide.\r\n"
 
 #. Resource IDs: (326)
 #, c-format
@@ -915,6 +928,10 @@ msgstr "------------------------------------------------------------------------
 msgid "..."
 msgstr "..."
 
+#. Resource IDs: (1017)
+msgid "...."
+msgstr "...."
+
 #. Resource IDs: (1293, 1294)
 msgid "....."
 msgstr "....."
@@ -1359,7 +1376,7 @@ msgstr "Texte avancé%sOptions d'exportation"
 #. Resource IDs: (339)
 #, c-format
 msgid "Advanced XML%sExport Options"
-msgstr "XML Avancé%Options d'exportation"
+msgstr "XML Avancé%sOptions d'exportation"
 
 #. Resource IDs: (1252, 1253)
 msgid "Advanced..."
@@ -1511,6 +1528,10 @@ msgstr "Appliquer"
 #. Resource IDs: (513)
 msgid "Arabic (101)"
 msgstr "Arabe (101)"
+
+#. Resource IDs: (341)
+msgid "Are you sure you want to delete the selected entry?"
+msgstr "Êtes-vous certain de vouloir supprimer l'entrée sélectionnée?"
 
 #. Resource IDs: (355)
 msgid "Are you sure you want to delete the selected group?"
@@ -2048,6 +2069,10 @@ msgstr ""
 msgid "Confirm Close Dialog"
 msgstr "Confirmer la fermeture du dialogue"
 
+#. Resource IDs: (1019)
+msgid "Confirm deletion of items"
+msgstr "Confirmez la suppression des items"
+
 #. Resource IDs: (1021)
 msgid "Confirm item copy to clipboard"
 msgstr "Confirmer la copie de l'élément au presse-papier"
@@ -2527,6 +2552,10 @@ msgstr "E&xit"
 msgid "E&xit\tCtrl+Q\\Alt+F4"
 msgstr "Q&uitter\tCtrl+Q\\Alt+F4"
 
+#. Resource IDs: (65535)
+msgid "E&xport Entry To"
+msgstr "E&xporter l'entrée vers"
+
 #. Resource IDs: (350)
 msgid "Easyvision characters"
 msgstr "Gros caractères"
@@ -2767,10 +2796,6 @@ msgstr "Exporter"
 #. Resource IDs: (32009)
 msgid "Export &To"
 msgstr "Exporter &Vers"
-
-#. Resource IDs: (65535)
-msgid "Export Entry &To"
-msgstr "Exporter l'entrée &vers"
 
 #. Resource IDs: (32085)
 msgid "Export Entry in XML format..."
@@ -3165,6 +3190,10 @@ msgstr "Caractères hexadécimaux"
 #. Resource IDs: (331)
 msgid "Hexadecimal is mutually exclusive to all other options!"
 msgstr "L'hexadécimal est mutuellement exclusif de toutes les autres options!"
+
+#. Resource IDs: (1426)
+msgid "Hide System Tray icon (Hot Key MUST be active)"
+msgstr "Cacher l'icone de la barre de notification (Hot Key doit être actif)"
 
 #. Resource IDs: (1397)
 msgid "Highlight changed entries"
@@ -4102,6 +4131,8 @@ msgstr ""
 "Nombre d'entrées traitées: %d\n"
 "\n"
 "Nombre de UUID corrigés: %d\n"
+"\n"
+"Nombre d'historique de mot de passe corrrigés: %d\n"
 "\n"
 "Nombre de Groupe/Titre/Utilisateur non-unique corrigés: %d\n"
 "\n"
@@ -7172,7 +7203,7 @@ msgid ""
 "The following new %s %s merged into this database:"
 msgstr ""
 "\r\n"
-"Les nouveau % % suivants seront fusionnés dans cette base de données :"
+"Les nouveau %s %s suivants seront fusionnés dans cette base de données :"
 
 #. Resource IDs: (341)
 msgid ""
