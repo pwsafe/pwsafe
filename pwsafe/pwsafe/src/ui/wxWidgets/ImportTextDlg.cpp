@@ -17,7 +17,6 @@
 #include <wx/grid.h>
 #include <wx/wx.h>
 */
-#include <wx/collpane.h>
 #include <wx/spinctrl.h>
 #include <wx/statline.h>
 #include <wx/display.h>
@@ -221,11 +220,12 @@ void CImportTextDlg::CreateControls()
   
   dlgSizer->Add(new wxStaticText(this, wxID_ANY, strPrompt), Left);
   dlgSizer->AddSpacer(RowSeparation);
+  COpenFilePickerValidator validator(filepath);
   dlgSizer->Add(new wxFilePickerCtrl(this, wxID_ANY, wxEmptyString, 
                                           strPrompt, wxT("*.txt"), 
                                           wxDefaultPosition, wxDefaultSize, 
                                           wxFLP_DEFAULT_STYLE | wxFLP_USE_TEXTCTRL, 
-                                          COpenFilePickerValidator(filepath)), Left);
+                                          validator), Left);
   dlgSizer->AddSpacer(RowSeparation);
   
   wxCollapsiblePane* optionsPane = CreateImportOptionsPane(dlgSizer);

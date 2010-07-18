@@ -3,9 +3,9 @@
 
 #include <wx/dialog.h> // Base class: wxDialog
 #include <wx/grid.h>
+#include <wx/collpane.h>
 #include "../../os/typedefs.h"
 
-class wxCollapsiblePane;
 class wxBoxSizer;
 class wxSizerFlags;
 class wxRadioButton;
