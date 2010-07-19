@@ -116,6 +116,8 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
 
   EVT_MENU( wxID_SAVE, PasswordSafeFrame::OnSaveClick )
 
+  EVT_MENU( wxID_SAVEAS, PasswordSafeFrame::OnSaveAsClick )
+
   EVT_MENU( wxID_PROPERTIES, PasswordSafeFrame::OnPropertiesClick )
 
   EVT_MENU( wxID_EXIT, PasswordSafeFrame::OnExitClick )
@@ -202,6 +204,7 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_UPDATE_UI(ID_PASSWORDSUBSET,  PasswordSafeFrame::OnUpdateUI )
 END_EVENT_TABLE()
 
+static void DisplayFileWriteError(int rc, const StringX &fname);
 
 /*!
  * PasswordSafeFrame constructors
@@ -209,7 +212,7 @@ END_EVENT_TABLE()
 
 PasswordSafeFrame::PasswordSafeFrame(PWScore &core)
 : m_core(core), m_currentView(GRID), m_search(0), m_sysTray(new SystemTray(this)), m_exitFromMenu(false),
-  m_RUEList(core), m_guiInfo(new GUIInfo)
+  m_RUEList(core), m_guiInfo(new GUIInfo), m_bTSUpdated(false)
 {
     Init();
 }
@@ -219,7 +222,7 @@ PasswordSafeFrame::PasswordSafeFrame(wxWindow* parent, PWScore &core,
                                      const wxPoint& pos, const wxSize& size,
                                      long style)
   : m_core(core), m_currentView(GRID), m_search(0), m_sysTray(new SystemTray(this)), m_exitFromMenu(false),
-    m_RUEList(core), m_guiInfo(new GUIInfo)
+    m_RUEList(core), m_guiInfo(new GUIInfo), m_bTSUpdated(false)
 {
     Init();
     if (PWSprefs::GetInstance()->GetPref(PWSprefs::AlwaysOnTop))
@@ -541,16 +544,13 @@ void PasswordSafeFrame::ShowGrid(bool show)
     m_grid->SetTable(new PWSGridTable(m_grid), true); // true => auto-delete
     m_grid->AutoSizeColumns();
     m_grid->EnableEditing(false);
-    //we only need to do this the first time showing the grid
-    if (m_grid->GetNumItems() != m_core.GetNumEntries()) {
-      m_grid->DeleteAllItems();
-      ItemListConstIter iter;
-      int i;
-      for (iter = m_core.GetEntryIter(), i = 0;
-           iter != m_core.GetEntryEndIter();
-           iter++) {
-        m_grid->AddItem(iter->second, i++);
-      }
+    m_grid->DeleteAllItems();
+    ItemListConstIter iter;
+    int i;
+    for (iter = m_core.GetEntryIter(), i = 0;
+         iter != m_core.GetEntryEndIter();
+         iter++) {
+      m_grid->AddItem(iter->second, i++);
     }
   }
   m_grid->Show(show);
@@ -616,6 +616,21 @@ int PasswordSafeFrame::Save()
 
 int PasswordSafeFrame::SaveIfChanged()
 {
+  if (m_core.IsReadOnly())
+    return PWScore::SUCCESS;
+
+  // Note: RUE list saved here via time stamp being updated.
+  // Otherwise it won't be saved unless something else has changed
+  if ((m_bTSUpdated || m_core.WasDisplayStatusChanged()) &&
+       m_core.GetNumEntries() > 0) {
+    int rc = Save();
+    if (rc != PWScore::SUCCESS)
+      return PWScore::USER_CANCEL;
+    else
+      return PWScore::SUCCESS;
+  }
+
+
   // offer to save existing database if it was modified.
   // used before loading another
   // returns PWScore::SUCCESS if save succeeded or if user decided
@@ -642,7 +657,7 @@ int PasswordSafeFrame::SaveIfChanged()
           return PWScore::CANT_OPEN_FILE;
       case wxID_NO:
         // Reset changed flag
-        // SetChanged(Clear);
+        SetChanged(Clear);
         break;
     }
   }
@@ -893,6 +908,109 @@ void PasswordSafeFrame::OnSaveClick( wxCommandEvent& /* evt */ )
 }
 
 
+void PasswordSafeFrame::OnSaveAsClick(wxCommandEvent& evt)
+{
+  if (m_core.GetReadFileVersion() != PWSfile::VCURRENT &&
+      m_core.GetReadFileVersion() != PWSfile::UNKNOWN_VERSION) {
+    if (wxMessageBox( wxString::Format(_("The original database, ""%s"", is in pre-3.0 format. The data will now be written in the new format, which is unusable by old versions of PasswordSafe. To save the data in the old format, use the ""File->Export To-> Old (1.x or 2) format"" command."),
+                                        m_core.GetCurFile().c_str()), _("File version warning"), 
+                                        wxOK | wxCANCEL | wxICON_EXCLAMATION) == wxCANCEL) {
+      return;
+    }
+  }
+
+  StringX cf(m_core.GetCurFile());
+  if(cf.empty()) {
+    cf = _("pwsafe"); // reasonable default for first time user
+  }
+  wxString v3FileName = PWSUtil::GetNewFileName(cf.c_str(), DEFAULT_SUFFIX);
+
+  wxString title = (m_core.GetCurFile().empty()? _("Please choose a name for the current (Untitled) database:") : 
+                                    _("Please choose a new name for the current database:"));
+  wxFileName filename(v3FileName);
+  wxString dir = filename.GetPath();
+  if (dir.empty())
+    dir = PWSdirs::GetSafeDir();
+
+  //filename cannot have the path
+  wxFileDialog fd(this, title, dir, filename.GetFullName(),
+                  _("Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|All files (*.*)|*.*||"),
+                   wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+                   
+  if (fd.ShowModal() != wxID_OK) {
+    return;
+  }
+
+  StringX newfile = tostringx(fd.GetPath());
+  
+  std::wstring locker(L""); // null init is important here
+  // Note: We have to lock the new file before releasing the old (on success)
+  if (!m_core.LockFile2(newfile.c_str(), locker)) {
+    wxMessageBox(wxString::Format(_("%s\n\nFile is currently locked by %s"), newfile.c_str(), locker.c_str()),
+                    _("File lock error"), wxOK | wxICON_ERROR);
+    return;
+  }
+
+  // Save file UUID, clear it to generate new one, restore if necessary
+  uuid_array_t file_uuid_array;
+  m_core.GetFileUUID(file_uuid_array);
+  m_core.ClearFileUUID();
+
+  UUIDList RUElist;
+  m_RUEList.GetRUEList(RUElist);
+  m_core.SetRUEList(RUElist);
+
+  int rc = m_core.WriteFile(newfile);
+  m_core.ResetStateAfterSave();
+  m_core.ClearChangedNodes();
+
+  if (rc != PWScore::SUCCESS) {
+    m_core.SetFileUUID(file_uuid_array);
+    m_core.UnlockFile2(newfile.c_str());
+    DisplayFileWriteError(rc, newfile);
+    return;
+  }
+  if (!m_core.GetCurFile().empty())
+    m_core.UnlockFile(m_core.GetCurFile().c_str());
+
+  // Move the newfile lock to the right place
+  m_core.MoveLock();
+
+  m_core.SetCurFile(newfile);
+#if 0
+#if !defined(POCKET_PC)
+  m_titlebar = PWSUtil::NormalizeTTT(L"Password Safe - " +
+                                     m_core.GetCurFile()).c_str();
+  SetWindowText(LPCWSTR(m_titlebar));
+  app.SetTooltipText(m_core.GetCurFile().c_str());
+#endif
+#endif
+  SetTitle(towxstring(m_core.GetCurFile()));
+  SetChanged(Clear);
+#if 0
+  ChangeOkUpdate();
+
+  // Added/Modified entries now saved - reverse it & refresh display
+  if (m_bUnsavedDisplayed)
+    OnShowUnsavedEntries();
+
+  if (m_bFilterActive && m_bFilterForStatus) {
+    m_ctlItemList.Invalidate();
+    m_ctlItemTree.Invalidate();
+  }
+#endif
+  RefreshViews();
+
+  wxGetApp().m_recentDatabases.AddFileToHistory(towxstring(newfile));
+
+  if (m_core.IsReadOnly()) {
+    // reset read-only status (new file can't be read-only!)
+    // and so cause toolbar to be the correct version
+    m_core.SetReadOnly(false);
+  }
+
+}
+
 /*!
  * wxEVT_CLOSE_WINDOW event handler for ID_PASSWORDSAFEFRAME
  */
@@ -1037,6 +1155,39 @@ void PasswordSafeFrame::SelectItem(const CUUIDGen& uuid)
 
 }
 
+void PasswordSafeFrame::SetChanged(ChangeType changed)
+{
+  if (m_core.IsReadOnly())
+    return;
+
+  switch (changed) {
+    case Data:
+      if (PWSprefs::GetInstance()->GetPref(PWSprefs::SaveImmediately)) {
+        // Don't save if just adding group as it will just 'disappear'!
+        Save();
+      } else {
+        m_core.SetDBChanged(true);
+      }
+      break;
+    case Clear:
+      m_core.SetChanged(false, false);
+      m_bTSUpdated = false;
+      break;
+    case TimeStamp:
+      if (PWSprefs::GetInstance()->GetPref(PWSprefs::MaintainDateTimeStamps))
+        m_bTSUpdated = true;
+      break;
+    case DBPrefs:
+      m_core.SetDBPrefsChanged(true);
+      break;
+    case ClearDBPrefs:
+      m_core.SetDBPrefsChanged(false);
+      break;
+    default:
+      ASSERT(0);
+  }
+}
+
 void PasswordSafeFrame::UpdateAccessTime(CItemData &ci)
 {
   // Mark access time if so configured
@@ -1049,6 +1200,7 @@ void PasswordSafeFrame::UpdateAccessTime(CItemData &ci)
 
   if (!m_core.IsReadOnly() && bMaintainDateTimeStamps) {
     ci.SetATime();
+    SetChanged(TimeStamp);
 #ifdef NOTYET
     // Need to update view if there
     if (m_nColumnIndexByType[CItemData::ATIME] != -1) {
@@ -1501,7 +1653,7 @@ int PasswordSafeFrame::New()
           return PWScore::CANT_OPEN_FILE;
     case wxID_NO:
       // Reset changed flag
-      // SetChanged(Clear);
+      SetChanged(Clear);
       break;
     }
   }
@@ -1870,6 +2022,8 @@ void PasswordSafeFrame::OnImportText(wxCommandEvent& evt)
 
       cs_title = (rc == PWScore::SUCCESS ? wxT("Completed successfully") : wxT("Completed but ...."));
 
+      RefreshViews();
+      
       break;
     }
   } // switch
