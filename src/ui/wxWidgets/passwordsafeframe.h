@@ -180,6 +180,9 @@ public:
   /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_SAVE
   void OnSaveClick( wxCommandEvent& evt);
 
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_SAVEAS
+  void OnSaveAsClick(wxCommandEvent& evt);
+
   /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_PROPERTIES
   void OnPropertiesClick( wxCommandEvent& evt);
 
@@ -310,7 +313,7 @@ public:
     void Execute(Command *pcmd, PWScore *pcore = NULL);
 
     bool IsTreeView() const {return m_currentView == TREE;}
-    void RefreshView() {if (IsTreeView()) ShowTree(); else ShowGrid();}
+    void RefreshViews() {if (IsTreeView()) ShowTree(); else ShowGrid();}
     void FlattenTree(OrderedItemList& olist);
 
     void DispatchDblClickAction(CItemData &item); //called by grid/tree
@@ -357,6 +360,8 @@ public:
   CItemData *GetSelectedEntry() const;
   CItemData* GetBaseOfSelectedEntry(); //traverses to the base item if the selected item is a shortcut 
   void UpdateAccessTime(CItemData &ci);
+  enum ChangeType {Clear, Data, TimeStamp, DBPrefs, ClearDBPrefs};
+  void SetChanged(ChangeType changed);
   void CreateMainToolbar();
   bool IsRUEEvent(const wxCommandEvent& evt) {
     long index = evt.GetExtraLong();
@@ -384,6 +389,7 @@ public:
   bool m_exitFromMenu; 
   CRUEList m_RUEList;
   GUIInfo* m_guiInfo;
+  bool m_bTSUpdated;
 };
 
 #endif

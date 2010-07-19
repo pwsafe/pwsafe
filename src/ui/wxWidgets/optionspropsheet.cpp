@@ -929,7 +929,7 @@ void COptions::PropSheetToPrefs()
     PasswordSafeFrame *pwsframe = dynamic_cast<PasswordSafeFrame*>(GetParent());
     wxASSERT(pwsframe != NULL);
     if (pwsframe->IsTreeView())
-      pwsframe->RefreshView();
+      pwsframe->RefreshViews();
   }
 
   prefs->SetPref(PWSprefs::ShowNotesAsTooltipsInViews,
