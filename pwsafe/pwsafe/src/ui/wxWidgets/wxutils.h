@@ -33,5 +33,10 @@ inline stringT tostdstring(const wxString& str) {
   return stringT(str.data(), str.size());
 #endif
 }
+
+inline StringX tostringx(const wxString& str) {
+  return StringX(str.data(), str.size());
+}
+
 #endif
 

@@ -1471,6 +1471,13 @@ static void DisplayFileWriteError(int rc, const StringX &fname)
   wxMessageDialog(NULL, cs_temp, cs_title, wxOK | wxICON_ERROR);
 }
 
+void PasswordSafeFrame::Execute(Command *pcmd, PWScore *pcore /*= NULL*/)
+{
+  if (pcore == NULL)
+    pcore = &m_core;
+  pcore->Execute(pcmd);
+}
+
 int PasswordSafeFrame::New()
 {
   int rc, rc2;
@@ -1550,6 +1557,7 @@ int PasswordSafeFrame::New()
 #endif
   return PWScore::SUCCESS;
 }
+
 
 int PasswordSafeFrame::NewFile(StringX &fname)
 {
@@ -1787,143 +1795,96 @@ void PasswordSafeFrame::OnImportText(wxCommandEvent& evt)
   StringX ImportedPrefix(dlg.groupName);
   TCHAR fieldSeparator = dlg.FieldSeparator();
 
-#if 0
-  CPWFileDialog fd(TRUE,
-                   L"txt",
-                   NULL,
-                   OFN_FILEMUSTEXIST | OFN_HIDEREADONLY | OFN_LONGNAMES,
-                   CString(MAKEINTRESOURCE(IDS_FDF_T_C_ALL)),
-                   this);
-  cs_text.LoadString(IDS_PICKTEXTFILE);
-  fd.m_ofn.lpstrTitle = cs_text;
+  std::wstring strError;
+  wxString TxtFileName = dlg.filepath;
+  int numImported(0), numSkipped(0), numPWHErrors(0), numRenamed(0);
+  wchar_t delimiter = dlg.FieldSeparator();
+  bool bImportPSWDsOnly = dlg.importPasswordsOnly;
 
-  INT_PTR rc = fd.DoModal();
+  /* Create report as we go */
+  CReport rpt;
+  rpt.StartReport(wxT("Import_Text"), m_core.GetCurFile().c_str());
+  wxString header;
+  header.Format(wxT("%s file being imported: %s"), wxT("Text"), TxtFileName.c_str());
+  rpt.WriteLine(tostdstring(header));
+  rpt.WriteLine();
 
-  if (m_inExit) {
-    // If U3ExitNow called while in CPWFileDialog,
-    // PostQuitMessage makes us return here instead
-    // of exiting the app. Try resignalling 
-    PostQuitMessage(0);
-    return;
-  }
+  Command *pcmd = NULL;
+  int rc = m_core.ImportPlaintextFile(ImportedPrefix, tostringx(TxtFileName), fieldSeparator,
+                                  delimiter, bImportPSWDsOnly,
+                                  strError,
+                                  numImported, numSkipped, numPWHErrors, numRenamed,
+                                  rpt, pcmd);
 
-  if (rc == IDOK) {
-    bool bWasEmpty = m_core.GetNumEntries() == 0;
-    std::wstring strError;
-    StringX TxtFileName = fd.GetPathName();
-    int numImported(0), numSkipped(0), numPWHErrors(0), numRenamed(0);
-    wchar_t delimiter = dlg.m_defimpdelim[0];
-    bool bImportPSWDsOnly = dlg.m_bImportPSWDsOnly == TRUE;
+  wxString cs_title, cs_temp;
+  
+  switch (rc) {
+    case PWScore::CANT_OPEN_FILE:
+      cs_title = wxT("File Read Error");
+      cs_temp << TxtFileName << wxT("\n\nCould not open file for reading!");
+      delete pcmd;
+      break;
+    case PWScore::INVALID_FORMAT:
+      cs_title = wxT("File Read Error");
+      cs_temp << TxtFileName << wxT("\n\nInvalid format");
+      delete pcmd;
+      break;
+    case PWScore::FAILURE:
+      cs_title = wxT("Import Text failed");
+      cs_temp = strError;
+      delete pcmd;
+      break;
+    case PWScore::SUCCESS:
+    case PWScore::OK_WITH_ERRORS:
+      // deliberate fallthru
+    default:
+    {
+      if (pcmd != NULL)
+        Execute(pcmd);
 
-    /* Create report as we go */
-    CReport rpt;
-    std::wstring cs_text;
-    LoadAString(cs_text, IDS_RPTIMPORTTEXT);
-    rpt.StartReport(cs_text.c_str(), m_core.GetCurFile().c_str());
-    LoadAString(cs_text, IDS_TEXT);
-    cs_temp.Format(IDS_IMPORTFILE, cs_text.c_str(), TxtFileName.c_str());
-    rpt.WriteLine((LPCWSTR)cs_temp);
-    rpt.WriteLine();
+      rpt.WriteLine();
+      cs_temp << (bImportPSWDsOnly ? wxT("Updated ") : wxT("Imported "))
+              << numImported << (numImported == 1? wxT(" entry") : wxT(" entries"));
+      rpt.WriteLine(tostdstring(cs_temp));
 
-    Command *pcmd = NULL;
-    rc = m_core.ImportPlaintextFile(ImportedPrefix, TxtFileName, fieldSeparator,
-                                    delimiter, bImportPSWDsOnly,
-                                    strError,
-                                    numImported, numSkipped, numPWHErrors, numRenamed,
-                                    rpt, pcmd);
-
-    switch (rc) {
-      case PWScore::CANT_OPEN_FILE:
-        cs_title.LoadString(IDS_FILEREADERROR);
-        cs_temp.Format(IDS_CANTOPENREADING, TxtFileName.c_str());
-        delete pcmd;
-        break;
-      case PWScore::INVALID_FORMAT:
-        cs_title.LoadString(IDS_FILEREADERROR);
-        cs_temp.Format(IDS_INVALIDFORMAT, TxtFileName.c_str());
-        delete pcmd;
-        break;
-      case PWScore::FAILURE:
-        cs_title.LoadString(IDS_TEXTIMPORTFAILED);
-        cs_temp = strError.c_str();
-        delete pcmd;
-        break;
-      case PWScore::SUCCESS:
-      case PWScore::OK_WITH_ERRORS:
-        // deliberate fallthru
-      default:
-      {
-        if (pcmd != NULL)
-          Execute(pcmd);
-
-        rpt.WriteLine();
-        CString cs_type;
-        cs_type.LoadString(numImported == 1 ? IDSC_ENTRY : IDSC_ENTRIES);
-        cs_temp.Format(bImportPSWDsOnly ? IDS_RECORDSUPDATED : IDS_RECORDSIMPORTED, 
-                       numImported, cs_type);
-        rpt.WriteLine((LPCWSTR)cs_temp);
-
-        if (numSkipped != 0) {
-          CString cs_tmp;
-          cs_type.LoadString(numSkipped == 1 ? IDSC_ENTRY : IDSC_ENTRIES);
-          cs_tmp.Format(IDS_RECORDSSKIPPED, numSkipped, cs_type);
-          rpt.WriteLine((LPCWSTR)cs_tmp);
-          cs_temp += cs_tmp;
-        }
-
-        if (numPWHErrors != 0) {
-          CString cs_tmp;
-          cs_type.LoadString(numPWHErrors == 1 ? IDSC_ENTRY : IDSC_ENTRIES);
-          cs_tmp.Format(IDS_RECORDSPWHERRRORS, numPWHErrors, cs_type);
-          rpt.WriteLine((LPCWSTR)cs_tmp);
-          cs_temp += cs_tmp;
-        }
-
-        if (numRenamed != 0) {
-          CString cs_tmp;
-          cs_type.LoadString(numRenamed == 1 ? IDSC_ENTRY : IDSC_ENTRIES);
-          cs_tmp.Format(IDS_RECORDSRENAMED, numRenamed, cs_type);
-          rpt.WriteLine((LPCWSTR)cs_tmp);
-          cs_temp += cs_tmp;
-        }
-
-        cs_title.LoadString(rc == PWScore::SUCCESS ? IDS_COMPLETE : IDS_OKWITHERRORS);
-
-        ChangeOkUpdate();
-        RefreshViews();
-        break;
+      if (numSkipped != 0) {
+        wxString cs_tmp;
+        cs_tmp << wxT("\nSkipped ") << numSkipped << (numSkipped == 1? wxT(" entry") : wxT(" entries"));
+        rpt.WriteLine(tostdstring(cs_tmp));
+        cs_temp += cs_tmp;
       }
-    } // switch
-    // Finish Report
-    rpt.EndReport();
 
-    gmb.SetTitle(cs_title);
-    gmb.SetMsg(cs_temp);
-    gmb.SetStandardIcon(rc == PWScore::SUCCESS ? MB_ICONINFORMATION : MB_ICONEXCLAMATION);
-    gmb.AddButton(IDS_OK, IDS_OK, TRUE, TRUE);
-    gmb.AddButton(IDS_VIEWREPORT, IDS_VIEWREPORT);
-    INT_PTR rc = gmb.DoModal();
-    if (rc == IDS_VIEWREPORT)
-      ViewReport(rpt);
+      if (numPWHErrors != 0) {
+        wxString cs_tmp;
+        cs_tmp << wxT("\nwith Password History errors ") << numPWHErrors;
+        rpt.WriteLine(tostdstring(cs_tmp));
+        cs_temp += cs_tmp;
+      }
 
-    // May need to update menu/toolbar if original database was empty
-    if (bWasEmpty)
-      UpdateMenuAndToolBar(m_bOpen);
+      if (numRenamed != 0) {
+        wxString cs_tmp;
+        cs_tmp << wxT("\nRenamed ") << numRenamed << (numRenamed == 1? wxT(" entry") : wxT(" entries"));
+        rpt.WriteLine(tostdstring(cs_tmp));
+        cs_temp += cs_tmp;
+      }
+
+      cs_title = (rc == PWScore::SUCCESS ? wxT("Completed successfully") : wxT("Completed but ...."));
+
+      break;
+    }
+  } // switch
+  
+  // Finish Report
+  rpt.EndReport();
+
+  const int iconType = (rc == PWScore::SUCCESS ? wxICON_INFORMATION : wxICON_EXCLAMATION);
+  wxMessageBox(cs_temp, cs_title, wxOK | iconType);
+  /*
+  cs_title << wxT("\n\nDo you want to see a detailed report?");
+  if (wxMessageBox(cs_temp, cs_title, wxYES_NO | iconType) == wxID_YES) {
+    ViewReport(rpt);
   }
-#endif
-    /*
-    msg << wxT("Comma:") << wxT('\t') << dlg.delimiterComma << wxT('\n')
-        << wxT("Space:") << wxT('\t') << dlg.delimiterSpace << wxT('\n')
-        << wxT("Tab:")   << wxT('\t') << dlg.delimiterTab << wxT('\n')
-        << wxT("Semicolon:") << wxT('\t') << dlg.delimiterSemicolon << wxT('\n')
-        << wxT("Other:") << wxT('\t') << dlg.delimiterOther << wxT('\n')
-        << wxT("Other Delimiter:") << wxT('\t') << dlg.strDelimiterOther << wxT('\n')
-        << wxT("Line separator:") << wxT('\t') << dlg.strDelimiterLine << wxT('\n')
-        << wxT("Import Under Group:") << wxT('\t') << dlg.importUnderGroup << wxT('\n')
-        << wxT("Group Name:") << wxT('\t') << dlg.groupName << wxT('\n')
-        << wxT("Import Passwords Only:") << wxT('\t') << dlg.importPasswordsOnly << wxT('\n');
-    wxMessageBox(msg, wxT("Import options"));
-     */
+   */
 }
 //-----------------------------------------------------------------
 // Remove all DialogBlock-generated stubs below this line, as we

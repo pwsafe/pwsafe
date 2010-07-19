@@ -306,7 +306,9 @@ public:
 
     ItemListConstIter GetEntryIter() const {return m_core.GetEntryIter();}
     ItemListConstIter GetEntryEndIter() const {return m_core.GetEntryEndIter();}
-    
+
+    void Execute(Command *pcmd, PWScore *pcore = NULL);
+
     bool IsTreeView() const {return m_currentView == TREE;}
     void RefreshView() {if (IsTreeView()) ShowTree(); else ShowGrid();}
     void FlattenTree(OrderedItemList& olist);
