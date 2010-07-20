@@ -59,6 +59,10 @@
     <File Name="../src/ui/wxWidgets/RecentDBList.h"/>
     <File Name="../src/ui/wxWidgets/ImportTextDlg.h"/>
     <File Name="../src/ui/wxWidgets/ImportTextDlg.cpp"/>
+    <File Name="../src/ui/wxWidgets/ImportXmlDlg.h"/>
+    <File Name="../src/ui/wxWidgets/ImportXmlDlg.cpp"/>
+    <File Name="../src/ui/wxWidgets/OpenFilePickerValidator.cpp"/>
+    <File Name="../src/ui/wxWidgets/OpenFilePickerValidator.h"/>
   </VirtualDirectory>
   <Dependencies Name="Release">
     <Project Name="core"/>
