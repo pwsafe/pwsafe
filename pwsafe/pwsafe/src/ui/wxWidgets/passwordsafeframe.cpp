@@ -48,6 +48,7 @@
 #include "pwsafeapp.h"
 #include "../../os/file.h"
 #include "./ImportTextDlg.h"
+#include "./ImportXmlDlg.h"
 
 // main toolbar images
 #include "../graphics/toolbar/wxWidgets/new.xpm"
@@ -176,6 +177,8 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_MENU( ID_IMPORT_PLAINTEXT, PasswordSafeFrame::OnImportText )
 
   EVT_MENU( ID_IMPORT_KEEPASS, PasswordSafeFrame::OnImportKeePass )
+
+  EVT_MENU( ID_IMPORT_XML, PasswordSafeFrame::OnImportXML )
   
   EVT_MENU( ID_MENU_CLEAR_MRU, PasswordSafeFrame::OnClearRecentHistory )
   EVT_UPDATE_UI( ID_MENU_CLEAR_MRU, PasswordSafeFrame::OnUpdateClearRecentDBHistory )
@@ -2079,6 +2082,156 @@ void PasswordSafeFrame::OnImportKeePass(wxCommandEvent& evt)
       RefreshViews();
       break;
   } // switch
+}
+
+void PasswordSafeFrame::OnImportXML(wxCommandEvent& evt)
+{
+  if (m_core.IsReadOnly()) // disable in read-only mode
+    return;
+
+  // Initialize set
+  GTUSet setGTU;
+  if (!m_core.GetUniqueGTUValidated() && !m_core.InitialiseGTU(setGTU)) {
+    // Database is not unique to start with - tell user to validate it first
+    wxMessageBox(wxString::Format( _("The database:\n\n%s\n\nhas duplicate entries with the same group/title/user combination. Please fix by validating database."),
+                                    m_core.GetCurFile().c_str()), _("Import XML failed"), wxOK | wxICON_ERROR);
+    return;
+  }
+
+  TCHAR XSDfn[] = wxT("pwsafe.xsd");
+  wxFileName XSDFilename(PWSdirs::GetXMLDir(), XSDfn);
+
+#if USE_XML_LIBRARY == MSXML || USE_XML_LIBRARY == XERCES
+  // Expat is a non-validating parser - no use for Schema!
+  if (!XSDFilename.FileExists()) {
+    wxMessageBox(wxString::Format(_("Can't find XML Schema Definition file (%s) in your PasswordSafe Application Directory.\r\nPlease copy it from your installation file, or re-install PasswordSafe."), XSDfn), 
+                          _("Missing XSD File"), wxOK | wxICON_ERROR);
+    return;
+  }
+#endif
+
+  CImportXMLDlg dlg(this);
+  if (dlg.ShowModal() != wxID_OK)
+    return;
+
+  std::wstring ImportedPrefix(tostdstring(dlg.groupName));
+  std::wstring strXMLErrors, strSkippedList, strPWHErrorList, strRenameList;
+  wxString XMLFilename = dlg.filepath;
+  int numValidated, numImported, numSkipped, numRenamed, numPWHErrors;
+  bool bBadUnknownFileFields, bBadUnknownRecordFields;
+  bool bImportPSWDsOnly = dlg.importPasswordsOnly;
+
+  wxBeginBusyCursor();  // This may take a while!
+
+  /* Create report as we go */
+  CReport rpt;
+  rpt.StartReport(_("Import_XML"), m_core.GetCurFile().c_str());
+  rpt.WriteLine(tostdstring(wxString::Format(_("%s file being imported: %s"), _("XML"), XMLFilename.c_str())));
+  rpt.WriteLine();
+  std::vector<StringX> vgroups;
+  Command *pcmd = NULL;
+
+  int rc = m_core.ImportXMLFile(ImportedPrefix, std::wstring(XMLFilename),
+                            XSDFilename.GetFullPath().c_str(), bImportPSWDsOnly,
+                            strXMLErrors, strSkippedList, strPWHErrorList, strRenameList,
+                            numValidated, numImported, numSkipped, numPWHErrors, numRenamed,
+                            bBadUnknownFileFields, bBadUnknownRecordFields,
+                            rpt, pcmd);
+  wxEndBusyCursor();  // Restore normal cursor
+
+  wxString cs_temp;
+  wxString cs_title(_("Import XML failed"));
+  
+  std::wstring csErrors(wxT(""));
+  switch (rc) {
+    case PWScore::XML_FAILED_VALIDATION:
+      rpt.WriteLine(strXMLErrors.c_str());
+      cs_temp = wxString::Format(_("File: %s failed validation against XML Schema:\r\n\r\n%s"),
+                                        dlg.filepath.c_str(), wxT(""));
+      delete pcmd;
+      break;
+    case PWScore::XML_FAILED_IMPORT:
+      rpt.WriteLine(strXMLErrors.c_str());
+      cs_temp = wxString::Format(_("File: %s passed Validation but had the following errors during import:\r\n\r\n%s"),
+                              dlg.filepath.c_str(), wxT(""));
+      delete pcmd;
+      break;
+    case PWScore::SUCCESS:
+    case PWScore::OK_WITH_ERRORS:
+      cs_title = rc == PWScore::SUCCESS ? _("Completed successfully") :  _("Completed but ....");
+      if (pcmd != NULL)
+        Execute(pcmd);
+
+      if (!strXMLErrors.empty() ||
+          bBadUnknownFileFields || bBadUnknownRecordFields ||
+          numRenamed > 0 || numPWHErrors > 0) {
+        if (!strXMLErrors.empty())
+          csErrors = strXMLErrors + wxT("\n");
+
+        if (bBadUnknownFileFields) {
+          cs_temp.Format(_("At least one unknown %s field is now in use.  Any found have been ignored."), 
+                    _("header"));
+          csErrors += cs_temp + wxT("\n");
+        }
+        if (bBadUnknownRecordFields) {
+          cs_temp.Format( _("At least one unknown %s field is now in use.  Any found have been ignored."),
+                            _("record"));
+          csErrors += cs_temp + wxT("\n");
+        }
+
+        if (!csErrors.empty()) {
+          rpt.WriteLine(csErrors.c_str());
+        }
+
+        wxString cs_renamed, cs_PWHErrors, cs_skipped;
+        if (numSkipped > 0) {
+          cs_skipped = _("The following records were skipped:");
+          rpt.WriteLine(tostdstring(cs_skipped));
+          cs_skipped.Format(_(" / skipped %d"), numSkipped);
+          rpt.WriteLine(strSkippedList.c_str());
+          rpt.WriteLine();
+        }
+        if (numPWHErrors > 0) {
+          cs_PWHErrors = _("The following records had errors in their Password History:");
+          rpt.WriteLine(tostdstring(cs_PWHErrors));
+          cs_PWHErrors.Format(_(" / with Password History errors %d"), numPWHErrors);
+          rpt.WriteLine(strPWHErrorList.c_str());
+          rpt.WriteLine();
+        }
+        if (numRenamed > 0) {
+          cs_renamed = _("The following records were renamed as an entry already exists in your database or in the Import file:");
+          rpt.WriteLine(tostdstring(cs_renamed));
+          cs_renamed.Format(_(" / renamed %d"), numRenamed);
+          rpt.WriteLine(strRenameList.c_str());
+          rpt.WriteLine();
+        }
+
+        cs_temp.Format(_("File: %s was imported (entries validated %d / imported %d%s%s%s). See report for details."),
+                       dlg.filepath.c_str(), numValidated, numImported,
+                       cs_skipped.c_str(), cs_renamed.c_str(), cs_PWHErrors.c_str());
+
+      } else {
+        const TCHAR* cs_validate = numValidated == 1 ? _("entry") : _("entries");
+        const TCHAR* cs_imported = numImported == 1 ? _("entry") : _("entries");
+        cs_temp.Format(_("Validated %d %s\r\n\r\nImported %d %s"), numValidated, cs_validate, numImported, cs_imported);
+      }
+
+      RefreshViews();
+      break;
+    default:
+      ASSERT(0);
+  } // switch
+
+  // Finish Report
+  rpt.WriteLine(tostdstring(cs_temp));
+  rpt.EndReport();
+
+  const int iconType = (rc != PWScore::SUCCESS || !strXMLErrors.empty()) ? wxICON_EXCLAMATION : wxICON_INFORMATION;
+
+  cs_temp << _("\n\nDo you wish to see a detailed report?");
+  if ( wxMessageBox(cs_temp, cs_title, wxYES_NO | iconType) == wxID_YES) {
+    //ViewReport(rpt);
+  }
 }
 
 

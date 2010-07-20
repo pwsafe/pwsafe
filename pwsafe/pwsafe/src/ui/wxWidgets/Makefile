@@ -146,7 +146,8 @@ SOURCES= passwordsafeframe.cpp \
 	optionspropsheet.cpp PasswordSafeSearch.cpp \
 	deleteconfirmation.cpp editshortcut.cpp \
 	createshortcutdlg.cpp SystemTray.cpp \
-	RUEList.cpp guiinfo.cpp ImportTextDlg.cpp
+	RUEList.cpp guiinfo.cpp ImportTextDlg.cpp \
+	ImportXmlDlg.cpp OpenFilePickerValidator.cpp
 
 
 OBJECTS=$(SOURCES:%.cpp=$(OBJECTPATH)/%.o)
