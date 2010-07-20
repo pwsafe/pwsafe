@@ -98,7 +98,7 @@
 ; Just remove the comments ";-L-" where appropriate.
 ; Additional languages can be easily added, the following "pieces"
 ; have to be provided:
-; - all language specific "Langstring", done in file "pwsafe.lng"
+; - a .\I18N\pwsafe_xx.lng file with the installation texts in the language
 ; - several MUI_LANGUAGE
 ; - several "File" for the language specific DLL
 ; - "Delete ...DLL" for each language (at install time)
@@ -189,36 +189,92 @@
   !insertmacro MUI_LANGUAGE "English"
 !ifdef LANGUAGE_GERMAN
   !insertmacro MUI_LANGUAGE "German"
+  !include ".\I18N\pwsafe_de.lng"
 !endif
 !ifdef LANGUAGE_CHINESE
   !insertmacro MUI_LANGUAGE "SimpChinese"
+  !include ".\I18N\pwsafe_zh.lng"
 !endif
 !ifdef LANGUAGE_SPANISH
   !insertmacro MUI_LANGUAGE "Spanish"
+  !include ".\I18N\pwsafe_es.lng"
 !endif
 !ifdef LANGUAGE_SWEDISH
   !insertmacro MUI_LANGUAGE "Swedish"
+  !include ".\I18N\pwsafe_sv.lng"
 !endif
 !ifdef LANGUAGE_DUTCH
   !insertmacro MUI_LANGUAGE "Dutch"
+  !include ".\I18N\pwsafe_nl.lng"
 !endif
 !ifdef LANGUAGE_FRENCH
   !insertmacro MUI_LANGUAGE "French"
+  !include ".\I18N\pwsafe_fr.lng"
 !endif
 !ifdef LANGUAGE_RUSSIAN
   !insertmacro MUI_LANGUAGE "Russian"
+  !include ".\I18N\pwsafe_ru.lng"
 !endif
 !ifdef LANGUAGE_POLISH
   !insertmacro MUI_LANGUAGE "Polish"
+  !include ".\I18N\pwsafe_pl.lng"
 !endif
 !ifdef LANGUAGE_ITALIAN
   !insertmacro MUI_LANGUAGE "Italian"
+  !include ".\I18N\pwsafe_it.lng"
 !endif
 !ifdef LANGUAGE_DANISH
   !insertmacro MUI_LANGUAGE "Danish"
+  !include ".\I18N\pwsafe_dk.lng"
 !endif
 
-  !include "pwsafe.lng"
+; English texts here
+; Note that if we add a string, it needs to be added in all the
+; .\I18N\pwsafe_xx.lng files
+
+;Reserve Files
+LangString RESERVE_TITLE ${LANG_ENGLISH} "Choose Installation Type"
+LangString RESERVE_FIELD1 ${LANG_ENGLISH} "Regular (uses Registry, suitable for home or single user PC)"
+LangString RESERVE_FIELD2 ${LANG_ENGLISH} "Green (for Disk-on-Key; does not use host Registry)"
+
+; The program itself
+LangString PROGRAM_FILES ${LANG_ENGLISH} "Program Files"
+
+; Start with Windows
+LangString START_AUTO ${LANG_ENGLISH} "Start automatically"
+
+; Start menu
+LangString START_SHOW ${LANG_ENGLISH} "Show in start menu"
+
+; Desktop shortcut
+LangString START_SHORTCUT ${LANG_ENGLISH} "Install desktop shortcut"
+
+; Uninstall shortcut
+LangString UNINSTALL_SHORTCUT ${LANG_ENGLISH} "Uninstall shortcut"
+
+; Descriptions
+LangString DESC_ProgramFiles ${LANG_ENGLISH} "Installs the basic files necessary to run Password Safe."
+LangString DESC_StartUp ${LANG_ENGLISH} "Starts Password Safe as part of Windows boot/login."
+LangString DESC_StartMenu ${LANG_ENGLISH} "Creates an entry in the start menu for Password Safe."
+LangString DESC_DesktopShortcut ${LANG_ENGLISH} "Places a shortcut to Password Safe on your desktop."
+LangString DESC_UninstallMenu ${LANG_ENGLISH} "Places a shortcut in the start menu to Uninstall Password Safe."
+
+; "LangString" (for "Function GreenOrRegular") are setup here because they cannot be defined in the function body
+LangString TEXT_GC_TITLE ${LANG_ENGLISH} "Installation Type"
+LangString TEXT_GC_SUBTITLE ${LANG_ENGLISH} "Choose Regular for use on a single PC, Green for portable installation. If you're not sure, 'Regular' is fine."
+LangString PSWINI_TITLE ${LANG_ENGLISH} "Choose Installation Type"
+LangString PSWINI_TEXT1 ${LANG_ENGLISH} "Regular (uses Registry, suitable for home or single user PC)"
+LangString PSWINI_TEXT2 ${LANG_ENGLISH} "Green (for Disk-on-Key; does not use host Registry)"
+
+; several messages on install, check, ...
+; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+LangString RUNNING_INSTALL ${LANG_ENGLISH} "The installer is already running."
+LangString RUNNING_APPLICATION ${LANG_ENGLISH} "Please exit all running instances of PasswordSafe before installing a new version"
+LangString LANG_INSTALL ${LANG_ENGLISH} "Installation Language"
+LangString LANG_SELECT ${LANG_ENGLISH} "Please select the language for the installation"
+LangString SORRY_NO_95 ${LANG_ENGLISH} "Sorry, Windows 95 is no longer supported. Try PasswordSafe 2.16"
+LangString SORRY_NO_98 ${LANG_ENGLISH} "Sorry, Windows 98 is no longer supported. Try PasswordSafe 2.16"
+LangString SORRY_NO_ME ${LANG_ENGLISH} "Sorry, Windows ME is no longer supported. Try PasswordSafe 2.16"
 
 ;--------------------------------
 ; Interface Settings
