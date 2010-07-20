@@ -1,10 +1,10 @@
-#include "ImportTextDlg.h"
-
 #include <wx/wxprec.h>
 
 #ifndef WX_PRECOMP
 #include <wx/wx.h>
 #endif
+
+#include "ImportTextDlg.h"
 
 /*
 #include <wx/sizer.h>
@@ -29,6 +29,7 @@
 #include <wx/valgen.h>
 #include <wx/filepicker.h>
 #include "../../os/file.h"
+#include "./OpenFilePickerValidator.h"
 
 IMPLEMENT_CLASS( CImportTextDlg, wxDialog )
 
@@ -160,53 +161,6 @@ wxCollapsiblePane* CImportTextDlg::CreateParsingOptionsPane(wxBoxSizer* dlgSizer
   return pane;
 }
 
-struct COpenFilePickerValidator: public wxValidator
-{
-  COpenFilePickerValidator(wxString& str) : m_str(str) {}
-  virtual wxObject* Clone() const { return new COpenFilePickerValidator(m_str); }
-  virtual bool TransferFromWindow() {
-    if (GetWindow() && GetWindow()->IsKindOf(&wxFilePickerCtrl::ms_classInfo)) {
-      wxFilePickerCtrl* ctrl = dynamic_cast<wxFilePickerCtrl*>(GetWindow());
-      wxASSERT(ctrl);
-      m_str = ctrl->GetPath();
-      return true;
-    }
-    return false;
-  }
-  
-  virtual bool TransferToWindow() {
-    if (GetWindow() && GetWindow()->IsKindOf(&wxFilePickerCtrl::ms_classInfo)) {
-      wxFilePickerCtrl* ctrl = dynamic_cast<wxFilePickerCtrl*>(GetWindow());
-      wxASSERT(ctrl);
-      ctrl->SetPath(m_str);
-      return true;
-    }
-    return false;
-  }
-
-  virtual bool Validate (wxWindow */*parent*/) {
-    if (GetWindow() && GetWindow()->IsKindOf(&wxFilePickerCtrl::ms_classInfo)) {
-      wxFilePickerCtrl* ctrl = dynamic_cast<wxFilePickerCtrl*>(GetWindow());
-      wxASSERT(ctrl);
-      wxString path = ctrl->GetPath();
-      if (pws_os::FileExists(tostdstring(path))) {
-        return true;
-      }
-      else {
-        //path is blank on Linux/gtk. May be its not so on other platforms
-        wxMessageBox(wxString() << wxT("Selected file doesn't exist.\n\n") << path,
-                                wxT("Please select a valid file"), wxOK | wxICON_EXCLAMATION);
-        return false;
-      }
-    }
-    return false;
-  }
-private:
-  wxString& m_str;
-  DECLARE_NO_COPY_CLASS(COpenFilePickerValidator)
-};
-
-
 void CImportTextDlg::CreateControls()
 {
   const wxSizerFlags Left = wxSizerFlags().Proportion(0).Border(wxLEFT, SideMargin).Expand();
@@ -217,12 +171,13 @@ void CImportTextDlg::CreateControls()
   dlgSizer->AddSpacer(TopMargin);  //add a margin at the top
 
   wxString strPrompt(wxT("Select a text file to import:"));
+  wxString  wildCards(_("Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*)|*.*||"));
   
   dlgSizer->Add(new wxStaticText(this, wxID_ANY, strPrompt), Left);
   dlgSizer->AddSpacer(RowSeparation);
   COpenFilePickerValidator validator(filepath);
   dlgSizer->Add(new wxFilePickerCtrl(this, wxID_ANY, wxEmptyString, 
-                                          strPrompt, wxT("*.txt"), 
+                                          strPrompt, wildCards, 
                                           wxDefaultPosition, wxDefaultSize, 
                                           wxFLP_DEFAULT_STYLE | wxFLP_USE_TEXTCTRL, 
                                           validator), Left);
