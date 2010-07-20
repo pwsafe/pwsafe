@@ -175,6 +175,8 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
 
   EVT_MENU( ID_IMPORT_PLAINTEXT, PasswordSafeFrame::OnImportText )
 
+  EVT_MENU( ID_IMPORT_KEEPASS, PasswordSafeFrame::OnImportKeePass )
+  
   EVT_MENU( ID_MENU_CLEAR_MRU, PasswordSafeFrame::OnClearRecentHistory )
   EVT_UPDATE_UI( ID_MENU_CLEAR_MRU, PasswordSafeFrame::OnUpdateClearRecentDBHistory )
 
@@ -2040,6 +2042,46 @@ void PasswordSafeFrame::OnImportText(wxCommandEvent& evt)
   }
    */
 }
+
+void PasswordSafeFrame::OnImportKeePass(wxCommandEvent& evt)
+{
+  if (m_core.IsReadOnly()) // disable in read-only mode
+    return;
+
+  wxFileDialog fd(this, _("Please Choose a KeePass Text File to Import"),
+                  wxEmptyString, wxEmptyString,
+                  _("Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*)|*.*||"),
+                  (wxFD_OPEN | wxFD_FILE_MUST_EXIST | wxFD_PREVIEW));
+
+  if (fd.ShowModal() != wxID_OK )
+    return;
+    
+  Command *pcmd = NULL;
+  StringX KPsFileName = tostringx(fd.GetPath());
+  int rc = m_core.ImportKeePassTextFile(KPsFileName, pcmd);
+  switch (rc) {
+    case PWScore::CANT_OPEN_FILE:
+    {
+      wxMessageBox( wxString::Format(_("%s\n\nCould not open file for reading!"), KPsFileName.c_str()),
+                    _("File open error"), wxOK | wxICON_ERROR );
+      break;
+    }
+    case PWScore::INVALID_FORMAT:
+    {
+      wxMessageBox( wxString::Format(_("%s\n\nInvalid format"), KPsFileName.c_str()),
+                    _("File Read Error"), wxOK | wxICON_ERROR );
+      break;
+    }
+    case PWScore::SUCCESS:
+    default: // deliberate fallthru
+      if (pcmd != NULL)
+        Execute(pcmd);
+      RefreshViews();
+      break;
+  } // switch
+}
+
+
 //-----------------------------------------------------------------
 // Remove all DialogBlock-generated stubs below this line, as we
 // already have them implemented in mainEdit.cpp

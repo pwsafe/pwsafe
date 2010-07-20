@@ -270,7 +270,10 @@ public:
 
   /// .wxEVT_COMMAND_MENU_SELECTED event handler for ID_IMPORT_PLAINTEXT
   void OnImportText(wxCommandEvent& evt);
-  
+
+  /// .wxEVT_COMMAND_MENU_SELECTED event handler for ID_IMPORT_KEEPASS
+  void OnImportKeePass(wxCommandEvent& evt);
+
   /// called when one of the MRU db's is selected from File menu
   void OnOpenRecentDB(wxCommandEvent& evt);
   
