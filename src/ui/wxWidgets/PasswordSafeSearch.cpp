@@ -320,6 +320,7 @@ BEGIN_EVENT_TABLE( PasswordSafeSearch, wxEvtHandler )
   EVT_TOOL( ID_FIND_ADVANCED_OPTIONS, PasswordSafeSearch::OnAdvancedSearchOptions )
   EVT_TOOL( ID_FIND_IGNORE_CASE, PasswordSafeSearch::OnToggleCaseSensitivity )
   EVT_TOOL( ID_FIND_NEXT, PasswordSafeSearch::OnDoSearch )
+  EVT_KEY_DOWN(PasswordSafeSearch::OnChar)
 ////@end PasswordSafeSearch event table entries
 END_EVENT_TABLE()
 
@@ -427,6 +428,11 @@ void PasswordSafeSearch::FindPrevious()
 
 void PasswordSafeSearch::OnSearchClose(wxCommandEvent& /* evt */)
 {
+  HideSearchToolbar();
+}
+
+void PasswordSafeSearch::HideSearchToolbar()
+{
   m_toolbar->Show(false);
   m_parentFrame->GetSizer()->Layout();
 
@@ -473,14 +479,16 @@ void PasswordSafeSearch::CreateSearchBar()
   m_toolbar = new wxToolBar(m_parentFrame, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBORDER_NONE | wxTB_BOTTOM | wxTB_HORIZONTAL,  wxT("SearchBar"));
 
   m_toolbar->AddTool(ID_FIND_CLOSE, wxT(""), wxBitmap(findclose), wxNullBitmap, wxITEM_NORMAL, wxT("Close Find Bar"));
-  m_toolbar->AddControl(new wxTextCtrl(m_toolbar, ID_FIND_EDITBOX, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER));
+  wxTextCtrl* edit = new wxTextCtrl(m_toolbar, ID_FIND_EDITBOX, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER);
+  m_toolbar->AddControl(edit);
   m_toolbar->AddTool(ID_FIND_NEXT, wxT(""), wxBitmap(find), wxBitmap(find_disabled), wxITEM_NORMAL, wxT("Find Next"));
   m_toolbar->AddCheckTool(ID_FIND_IGNORE_CASE, wxT(""), wxBitmap(findcase_i), wxBitmap(findcase_s), wxT("Case Insensitive Search"));
   m_toolbar->AddTool(ID_FIND_ADVANCED_OPTIONS, wxT(""), wxBitmap(findadvanced), wxNullBitmap, wxITEM_NORMAL, wxT("Advanced Find Options"));
   m_toolbar->AddTool(ID_FIND_CREATE_REPORT, wxT(""), wxBitmap(findreport), wxNullBitmap, wxITEM_NORMAL, wxT("Create report of previous Find search"));
   m_toolbar->AddTool(ID_FIND_CLEAR, wxT(""), wxBitmap(findclear), wxNullBitmap, wxITEM_NORMAL, wxT("Clear Find"));
   m_toolbar->AddControl(new wxStaticText(m_toolbar, ID_FIND_STATUS_AREA, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY));
-
+//  Connect(ID_FIND_EDITBOX, wxEVT_KEY_DOWN, wxKeyEventHandler(PasswordSafeSearch::OnChar));
+  
   if (!m_toolbar->Realize())
     wxMessageBox(wxT("Could not create Search Bar"), wxT("Password Safe"));
 
@@ -493,6 +501,7 @@ void PasswordSafeSearch::CreateSearchBar()
   if (!m_toolbar->Show(true) && !m_toolbar->IsShownOnScreen())
     wxMessageBox(wxT("Could not display searchbar"));
  
+//  edit->PushEventHandler(this);
   m_toolbar->PushEventHandler(this);
 }
 
@@ -518,6 +527,14 @@ void PasswordSafeSearch::Activate(void)
   wxASSERT(m_toolbar);
 
   m_toolbar->FindControl(ID_FIND_EDITBOX)->SetFocus();
+}
+
+void PasswordSafeSearch::OnChar(wxKeyEvent& evt)
+{
+  if (evt.GetKeyCode() == WXK_ESCAPE)
+    HideSearchToolbar();
+  else
+    evt.Skip(); //propagate further
 }
 
 template <class Iter, class Accessor>
