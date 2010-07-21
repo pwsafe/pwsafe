@@ -37,9 +37,9 @@ static FILE *f;
 /////////////////////////////////////////////////////////////////////////////
 // CXMLprefs
 
-bool CXMLprefs::Lock()
+bool CXMLprefs::Lock(stringT &locker)
 {
-  stringT locker(_T(""));
+  locker = _T("");
   int tries = 10;
   do {
     m_bIsLocked = PWSprefs::LockCFGFile(m_csConfigFile, locker);
@@ -81,8 +81,10 @@ bool CXMLprefs::Load()
 
   bool alreadyLocked = m_bIsLocked;
   if (!alreadyLocked) {
-    if (!Lock()) {
+    stringT locker;
+    if (!Lock(locker)) {
       LoadAString(m_Reason, IDSC_XMLLOCK_CFG_FAILED);
+      m_Reason += _T("\n  "); m_Reason += locker;
       return false;
     }
   }
@@ -120,8 +122,10 @@ bool CXMLprefs::Store()
   bool alreadyLocked = m_bIsLocked;
 
   if (!alreadyLocked) {
-    if (!Lock()) {
+    stringT locker;
+    if (!Lock(locker)) {
       LoadAString(m_Reason, IDSC_XMLLOCK_CFG_FAILED);
+      m_Reason += _T("\n  "); m_Reason += locker;
       return false;
     }
   }

@@ -38,7 +38,7 @@ public:
   // Implementation
   bool Load();
   bool Store();
-  bool Lock();
+  bool Lock(stringT &locker); // if fails, locker points to culprit
   void Unlock();
 
   int Get(const stringT &csBaseKeyName, const stringT &csValueName,

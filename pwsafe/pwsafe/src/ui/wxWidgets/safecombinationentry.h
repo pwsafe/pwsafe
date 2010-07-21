@@ -111,6 +111,7 @@ public:
 
 ////@begin CSafeCombinationEntry member variables
   wxStaticText* m_version;
+  wxComboBox* m_filenameCB;
 ////@end CSafeCombinationEntry member variables
  private:
   wxString m_filename;

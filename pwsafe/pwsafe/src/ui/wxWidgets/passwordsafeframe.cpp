@@ -330,8 +330,8 @@ void PasswordSafeFrame::CreateControls()
   itemMenu3->AppendSeparator();
   itemMenu3->Append(wxID_EXIT, _("E&xit"), _T(""), wxITEM_NORMAL);
   menuBar->Append(itemMenu3, _("&File"));
-  wxGetApp().m_recentDatabases.UseMenu(itemMenu3);
-  wxGetApp().m_recentDatabases.AddFilesToMenu(itemMenu3);  //must add existing history entries manually.
+  wxGetApp().recentDatabases().UseMenu(itemMenu3);
+  wxGetApp().recentDatabases().AddFilesToMenu(itemMenu3);  //must add existing history entries manually.
   wxMenu* itemMenu28 = new wxMenu;
   itemMenu28->Append(wxID_ADD, _("&Add Entry...\tCtrl+A"), _T(""), wxITEM_NORMAL);
   itemMenu28->Append(ID_EDIT, _("Edit/&View Entry...\tCtrl+Enter"), _T(""), wxITEM_NORMAL);
@@ -415,7 +415,7 @@ void PasswordSafeFrame::CreateControls()
     itemMenu47->Check(ID_TREE_VIEW, true);
   }
   
-  const CRecentDBList& rdb = wxGetApp().m_recentDatabases;
+  const CRecentDBList& rdb = wxGetApp().recentDatabases();
   Connect(rdb.GetBaseId(), rdb.GetBaseId() + rdb.GetMaxFiles() - 1, wxEVT_COMMAND_MENU_SELECTED,
             wxCommandEventHandler(PasswordSafeFrame::OnOpenRecentDB));
 }
@@ -765,7 +765,7 @@ int PasswordSafeFrame::Open(const wxString &fname)
     int retval = Load(password);
     if (retval == PWScore::SUCCESS) {
       Show();
-      wxGetApp().m_recentDatabases.AddFileToHistory(fname);
+      wxGetApp().recentDatabases().AddFileToHistory(fname);
     }
     return retval;
   } else
@@ -1006,7 +1006,7 @@ void PasswordSafeFrame::OnSaveAsClick(wxCommandEvent& evt)
 #endif
   RefreshViews();
 
-  wxGetApp().m_recentDatabases.AddFileToHistory(towxstring(newfile));
+  wxGetApp().recentDatabases().AddFileToHistory(towxstring(newfile));
 
   if (m_core.IsReadOnly()) {
     // reset read-only status (new file can't be read-only!)
@@ -1599,12 +1599,12 @@ void PasswordSafeFrame::OnNewClick( wxCommandEvent& /* evt */ )
 
 void PasswordSafeFrame::OnClearRecentHistory(wxCommandEvent& evt)
 {
-  wxGetApp().m_recentDatabases.Clear();
+  wxGetApp().recentDatabases().Clear();
 }
 
 void PasswordSafeFrame::OnUpdateClearRecentDBHistory(wxUpdateUIEvent& evt)
 {
-  evt.Enable(wxGetApp().m_recentDatabases.GetCount() > 0);
+  evt.Enable(wxGetApp().recentDatabases().GetCount() > 0);
 }
 
 static void DisplayFileWriteError(int rc, const StringX &fname)
@@ -1687,7 +1687,7 @@ int PasswordSafeFrame::New()
 
   m_sysTray->SetTrayStatus(SystemTray::TRAY_UNLOCKED);
   m_RUEList.ClearEntries();
-  wxGetApp().m_recentDatabases.AddFileToHistory(towxstring(cs_newfile));
+  wxGetApp().recentDatabases().AddFileToHistory(towxstring(cs_newfile));
 #ifdef notyet
   if (!m_bOpen) {
     // Previous state was closed - reset DCA in status bar
@@ -1899,7 +1899,7 @@ void PasswordSafeFrame::HideUI(bool lock)
 
 void PasswordSafeFrame::OnOpenRecentDB(wxCommandEvent& evt)
 {
-  CRecentDBList& db = wxGetApp().m_recentDatabases;
+  CRecentDBList& db = wxGetApp().recentDatabases();
   const size_t index = evt.GetId() - db.GetBaseId();
   const wxString dbfile = db.GetHistoryFile(index);
   switch(Open(dbfile))
