@@ -86,9 +86,11 @@ LangString RUNNING_INSTALL ${LANG_RUSSIAN} "Установка уже запущена."
 LangString RUNNING_APPLICATION ${LANG_RUSSIAN} "Пожалуйста, закройте все запущенные экземпляры Password Safe"
 
 ; LANG_INSTALL "Installation Language"
+; Оставлена английская версия, чтобы сообщение было читабельно в случае запуска в неверной локали
 LangString LANG_INSTALL ${LANG_RUSSIAN} "Installation Language"
 
 ; LANG_SELECT "Please select the language for the installation"
+; Оставлена английская версия, чтобы сообщение было читабельно в случае запуска в неверной локали
 LangString LANG_SELECT ${LANG_RUSSIAN} "Please select the language for the installation"
 
 ; SORRY_NO_95 "Sorry, Windows 95 is no longer supported. Try PasswordSafe 2.16"
