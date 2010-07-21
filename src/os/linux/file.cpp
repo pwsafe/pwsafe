@@ -232,6 +232,7 @@ bool pws_os::LockFile(const stringT &filename, stringT &locker,
 {
   const stringT lock_filename = GetLockFileName(filename);
   stringT s_locker;
+  bool retval = false;
 #ifndef UNICODE
   const char *lfn = lock_filename.c_str();
 #else
@@ -241,9 +242,6 @@ bool pws_os::LockFile(const stringT &filename, stringT &locker,
 #endif
   int fh = open(lfn, (O_CREAT | O_EXCL | O_WRONLY),
                  (S_IREAD | S_IWRITE));
-#ifdef UNICODE
-  delete[] lfn;
-#endif
 
   if (fh == -1) { // failed to open exclusively. Already locked, or ???
     switch (errno) {
@@ -255,7 +253,7 @@ bool pws_os::LockFile(const stringT &filename, stringT &locker,
     case EEXIST: // filename already exists
       {
         // read locker data ("user@machine:nnnnnnnn") from file
-          istringstreamT is(lock_filename);
+          wifstream is(lfn);
           stringT lockerStr;
           if (is >> lockerStr) {
             locker = lockerStr;
@@ -275,22 +273,25 @@ bool pws_os::LockFile(const stringT &filename, stringT &locker,
       LoadAString(locker, IDSC_LOCKUNKNOWNERROR);
       break;
     } // switch (errno)
-    return false;
+    retval = false;
   } else { // valid filehandle, write our info
     int numWrit;
     const stringT user = pws_os::getusername();
     const stringT host = pws_os::gethostname();
     const stringT pid = pws_os::getprocessid();
 
-    numWrit = write(fh, user.c_str(), user.length() * sizeof(TCHAR));
-    numWrit += write(fh, _T("@"), sizeof(TCHAR));
-    numWrit += write(fh, host.c_str(), host.length() * sizeof(TCHAR));
-    numWrit += write(fh, _T(":"), sizeof(TCHAR));
-    numWrit += write(fh, pid.c_str(), pid.length() * sizeof(TCHAR));
+    const stringT lockStr = user + _T("@") + host + _T(":") + pid;
+
+    numWrit = write(fh, (void *)lockStr.c_str(),
+                    lockStr.length() * sizeof(TCHAR));
     ASSERT(numWrit > 0);
     close(fh);
-    return true;
+    retval = true;
   }
+#ifdef UNICODE
+  delete[] lfn;
+#endif
+  return retval;
 }
 
 void pws_os::UnlockFile(const stringT &filename,

@@ -128,6 +128,7 @@ void CSafeCombinationEntry::Init()
   m_filename = m_core.GetCurFile().c_str();
 ////@begin CSafeCombinationEntry member initialisation
   m_version = NULL;
+  m_filenameCB = NULL;
 ////@end CSafeCombinationEntry member initialisation
 }
 
@@ -165,9 +166,9 @@ void CSafeCombinationEntry::CreateControls()
   wxBoxSizer* itemBoxSizer9 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer4->Add(itemBoxSizer9, 50, wxGROW|wxALL, 5);
 
-  wxArrayString itemComboBox10Strings;
-  wxComboBox* itemComboBox10 = new wxComboBox( itemDialog1, ID_DBASECOMBOBOX, wxEmptyString, wxDefaultPosition, wxSize(itemDialog1->ConvertDialogToPixels(wxSize(140, -1)).x, -1), itemComboBox10Strings, wxCB_DROPDOWN );
-  itemBoxSizer9->Add(itemComboBox10, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 0);
+  wxArrayString m_filenameCBStrings;
+  m_filenameCB = new wxComboBox( itemDialog1, ID_DBASECOMBOBOX, wxEmptyString, wxDefaultPosition, wxSize(itemDialog1->ConvertDialogToPixels(wxSize(140, -1)).x, -1), m_filenameCBStrings, wxCB_DROPDOWN );
+  itemBoxSizer9->Add(m_filenameCB, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM, 0);
 
   wxButton* itemButton11 = new wxButton( itemDialog1, ID_ELLIPSIS, _("..."), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT );
   itemBoxSizer9->Add(itemButton11, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
@@ -206,7 +207,7 @@ void CSafeCombinationEntry::CreateControls()
   itemStdDialogButtonSizer18->Realize();
 
   // Set validators
-  itemComboBox10->SetValidator( wxGenericValidator(& m_filename) );
+  m_filenameCB->SetValidator( wxGenericValidator(& m_filename) );
   itemTextCtrl13->SetValidator( wxGenericValidator(& m_password) );
   itemCheckBox15->SetValidator( wxGenericValidator(& m_readOnly) );
 ////@end CSafeCombinationEntry content construction
@@ -218,6 +219,9 @@ void CSafeCombinationEntry::CreateControls()
                                        MAJORVERSION, MINORVERSION,
                                        REVISION, SPECIALBUILD));
 #endif
+  wxArrayString recentFiles;
+  wxGetApp().recentDatabases().GetAll(recentFiles);
+  m_filenameCB->Append(recentFiles);
   // if m_readOnly, then don't allow user to change it
   itemCheckBox15->Enable(!m_readOnly);
   // if filename field not empty, set focus to password:
@@ -311,7 +315,7 @@ void CSafeCombinationEntry::OnOk( wxCommandEvent& )
     }
     m_core.SetReadOnly(m_readOnly);
     m_core.SetCurFile(m_filename.c_str());
-    wxGetApp().m_recentDatabases.AddFileToHistory(m_filename);
+    wxGetApp().recentDatabases().AddFileToHistory(m_filename);
     EndModal(wxID_OK);
   }
 }
@@ -387,7 +391,7 @@ void CSafeCombinationEntry::OnNewDbClick( wxCommandEvent& /* evt */ )
   // 3. Set m_filespec && m_passkey to returned value!
   m_core.SetCurFile(newfile.c_str());
   m_core.SetPassKey(pksetup.GetPassword().c_str());
-  wxGetApp().m_recentDatabases.AddFileToHistory(newfile);
+  wxGetApp().recentDatabases().AddFileToHistory(newfile);
   EndModal(wxID_OK);
 }
 

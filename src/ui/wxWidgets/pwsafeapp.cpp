@@ -119,7 +119,7 @@ END_EVENT_TABLE()
  * Constructor for PwsafeApp
  */
 
-PwsafeApp::PwsafeApp() : m_activityTimer(new wxTimer(this, ACTIVITY_TIMER_ID)), m_frame(0)
+PwsafeApp::PwsafeApp() : m_activityTimer(new wxTimer(this, ACTIVITY_TIMER_ID)), m_frame(0), m_recentDatabases(0)
 {
     Init();
 }
@@ -130,6 +130,7 @@ PwsafeApp::PwsafeApp() : m_activityTimer(new wxTimer(this, ACTIVITY_TIMER_ID)), 
 PwsafeApp::~PwsafeApp()
 {
   delete m_activityTimer;
+  delete m_recentDatabases;
 
   PWSprefs::DeleteInstance();
   PWSrand::DeleteInstance();
@@ -221,7 +222,7 @@ bool PwsafeApp::OnInit()
   if (filename.empty()) {
     filename =  prefs->GetPref(PWSprefs::CurrentFile).c_str();
   } else {
-    m_recentDatabases.AddFileToHistory(filename);
+    recentDatabases().AddFileToHistory(filename);
   }
   m_core.SetCurFile(filename.c_str());
   m_core.SetApplicationNameAndVersion(progName.c_str(),
@@ -239,7 +240,7 @@ bool PwsafeApp::OnInit()
   }
 #endif /* _DEBUG */
   // here if we're the child
-  m_recentDatabases.Load();
+  recentDatabases().Load();
 
   if (cmd_closed) {
     m_core.SetCurFile(wxT(""));
@@ -279,7 +280,7 @@ bool PwsafeApp::OnInit()
 
 int PwsafeApp::OnExit()
 {    
-  m_recentDatabases.Save();
+  recentDatabases().Save();
   PWSprefs *prefs = PWSprefs::GetInstance();
   if (!m_core.GetCurFile().empty())
     prefs->SetPref(PWSprefs::CurrentFile, m_core.GetCurFile());
@@ -305,4 +306,14 @@ void PwsafeApp::OnActivate(wxActivateEvent& actEvent)
 void PwsafeApp::OnActivityTimer(wxTimerEvent& /* timerEvent */)
 {
   m_frame->HideUI(true);  //true => lock
+}
+
+CRecentDBList &PwsafeApp::recentDatabases()
+{
+  // we create an instance of m_recentDatabases
+  // as late as possible in order to make
+  // sure that prefs' is set correcly (user, machine, etc.)
+  if (m_recentDatabases == NULL)
+    m_recentDatabases = new CRecentDBList;
+  return *m_recentDatabases;
 }

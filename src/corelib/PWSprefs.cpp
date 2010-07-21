@@ -1231,7 +1231,8 @@ void PWSprefs::SaveApplicationPreferences()
     // Here we need to explicitly lock from before
     // load to after store
     m_pXML_Config = new CXMLprefs(m_configfilename.c_str());
-    if (!m_pXML_Config->Lock()) {
+    stringT locker;
+    if (!m_pXML_Config->Lock(locker)) {
       // punt to registry!
       m_ConfigOption = CF_REGISTRY;
       delete m_pXML_Config;
@@ -1404,7 +1405,8 @@ void PWSprefs::SaveShortcuts()
     // Here we need to explicitly lock from before
     // load to after store
     m_pXML_Config = new CXMLprefs(m_configfilename.c_str());
-    if (!m_pXML_Config->Lock()) {
+    stringT locker;
+    if (!m_pXML_Config->Lock(locker)) {
       // punt to registry!
       m_ConfigOption = CF_REGISTRY;
       delete m_pXML_Config;

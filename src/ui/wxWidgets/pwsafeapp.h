@@ -83,9 +83,10 @@ public:
     wxTimer* m_activityTimer;
     PasswordSafeFrame* m_frame;
     enum { ACTIVITY_TIMER_ID = 33 } ; 
+    CRecentDBList *m_recentDatabases;
     
  public:
-    CRecentDBList m_recentDatabases;
+    CRecentDBList &recentDatabases();
 };
 
 /*!

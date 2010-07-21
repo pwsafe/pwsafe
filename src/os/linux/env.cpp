@@ -16,6 +16,8 @@
 #include <cstdlib>
 #include <unistd.h>
 #include <limits.h>
+#include <sys/types.h>
+#include <pwd.h>
 
 
 #include "../env.h"
@@ -44,9 +46,8 @@ stringT pws_os::getenv(const char *env, bool is_path)
 stringT pws_os::getusername()
 {
   stringT retval;
-  const char *user = getlogin();
-  if (user == NULL)
-    user = "?";
+  struct passwd *pw_s = ::getpwuid(::getuid());
+  const char *user = (pw_s != NULL) ? pw_s->pw_name : "?";
 #ifdef UNICODE
   retval = pws_os::towc(user);
 #else
