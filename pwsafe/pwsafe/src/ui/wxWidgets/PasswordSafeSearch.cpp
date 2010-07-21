@@ -87,123 +87,111 @@ AdvancedSearchOptionsDlg::AdvancedSearchOptionsDlg(wxWindow* parentWnd,
 
 void AdvancedSearchOptionsDlg::CreateControls(wxWindow* parentWnd)
 {
-  wxDialog::Create(parentWnd, wxID_ANY, wxT("Advanced Find Options"));
+  enum { TopMargin = 20, BottomMargin = 20, SideMargin = 30, RowSeparation = 10, ColSeparation = 20};
+
+  wxDialog::Create(parentWnd, wxID_ANY, wxT("Advanced Find Options"),
+                    wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER);
   
-  wxPanel* panel = new wxPanel(this);
   wxBoxSizer* dlgSizer = new wxBoxSizer(wxVERTICAL);
+  dlgSizer->AddSpacer(TopMargin);
+  
   //Subset entries
   {
-    wxStaticBoxSizer* sizer = new wxStaticBoxSizer(wxVERTICAL, panel);
+    wxStaticBoxSizer* sizer = new wxStaticBoxSizer(wxVERTICAL, this);
 
-    sizer->AddSpacer(5);
-    wxCheckBox* check = new wxCheckBox(panel, wxID_ANY, wxT("&Restrict to a subset of entries:"));
+    wxCheckBox* check = new wxCheckBox(this, wxID_ANY, wxT("&Restrict to a subset of entries:"));
     check->SetValidator(wxGenericValidator(&m_searchData.m_fUseSubgroups));
-    sizer->Add(check);
-    sizer->Add(10, 10);
+    sizer->Add(check, wxSizerFlags().Border());
 
     wxBoxSizer* hbox = new wxBoxSizer(wxHORIZONTAL);
-    hbox->Add(new wxStaticText(panel, wxID_ANY, wxT("&Where")), wxSizerFlags(0));
-    hbox->AddSpacer(20);
+    hbox->Add(new wxStaticText(this, wxID_ANY, wxT("&Where")), wxSizerFlags(0));
+    hbox->AddSpacer(ColSeparation);
     
-    wxComboBox* comboSubgroup = new wxComboBox(panel, wxID_ANY);
+    wxComboBox* comboSubgroup = new wxComboBox(this, wxID_ANY);
     for (size_t idx = 0 ; idx < NumberOf(subgroups); ++idx) comboSubgroup->AppendString(subgroups[idx].name);
     comboSubgroup->SetValidator(wxGenericValidator(&m_searchData.m_subgroupObject));
     hbox->Add(comboSubgroup, wxSizerFlags(1).Expand());
     
-    hbox->AddSpacer(20);
+    hbox->AddSpacer(ColSeparation);
     
-    wxComboBox* comboFunctions = new wxComboBox(panel, wxID_ANY);
+    wxComboBox* comboFunctions = new wxComboBox(this, wxID_ANY);
     for( size_t idx = 0; idx < NumberOf(subgroupFunctions); ++idx) comboFunctions->AppendString(subgroupFunctions[idx].name);
     comboFunctions->SetValidator(wxGenericValidator(&m_searchData.m_subgroupFunction));
     hbox->Add(comboFunctions, wxSizerFlags(1).Expand());
     
-    sizer->Add(hbox, wxSizerFlags(1).Border(wxLEFT|wxRIGHT, 15).Expand());
+    sizer->Add(hbox, wxSizerFlags().Border().Expand());
 
-    sizer->AddSpacer(5);
+    sizer->Add( new wxStaticText(this, wxID_ANY, wxT("the &following text:")), wxSizerFlags().Border());
 
-    wxBoxSizer* vbox = new wxBoxSizer(wxVERTICAL);
-    vbox->Add( new wxStaticText(panel, wxID_ANY, wxT("the &following text:")) );
-    vbox->Add(0, 3);
-    wxBoxSizer* hsizer = new wxBoxSizer(wxHORIZONTAL);
-
-    wxTextCtrl* txtCtrl = new wxTextCtrl(panel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(200, -1));
+    wxTextCtrl* txtCtrl = new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(200, -1));
     txtCtrl->SetValidator(wxGenericValidator(&m_searchData.m_searchText));
-    hsizer->Add(txtCtrl, wxSizerFlags(1).Expand().FixedMinSize());
+    sizer->Add(txtCtrl, wxSizerFlags().Border().Expand().FixedMinSize());
 
-    vbox->Add(hsizer);
-    vbox->Add(0, 3);
-    wxCheckBox* checkCaseSensitivity = new wxCheckBox(panel, wxID_ANY, wxT("&Case Sensitive"));
+    wxCheckBox* checkCaseSensitivity = new wxCheckBox(this, wxID_ANY, wxT("&Case Sensitive"));
     checkCaseSensitivity->SetValidator(wxGenericValidator(&m_searchData.m_fCaseSensitive));
-    vbox->Add( checkCaseSensitivity, 1, wxEXPAND );
+    sizer->Add( checkCaseSensitivity, wxSizerFlags().Border() );
     
-    sizer->Add(vbox, wxSizerFlags().Border(wxLEFT, 15));
-
-    dlgSizer->Add(sizer, wxSizerFlags(0).Border(wxALL, 10).Center());
+    dlgSizer->Add(sizer, wxSizerFlags().Border(wxLEFT|wxRIGHT, SideMargin).Expand());
   }
 
+  dlgSizer->AddSpacer(RowSeparation);
+  
   {
-    wxBoxSizer* hbox = new wxBoxSizer(wxHORIZONTAL);
-
-    wxBoxSizer* vbox1 = new wxBoxSizer(wxVERTICAL);
-    vbox1->Add(new wxStaticText(panel, wxID_ANY, wxT("&Available Fields:")));
-    vbox1->AddSpacer(10);
-    wxListBox* lbFields = new wxListBox(panel, ID_LB_AVAILABLE_FIELDS, wxDefaultPosition, 
-              wxSize(100, 200), 0, NULL, wxLB_EXTENDED);
+    wxFlexGridSizer* grid = new wxFlexGridSizer(3, RowSeparation, ColSeparation);
+    
+    //first and third columns are growable
+    grid->AddGrowableCol(0, 1);  
+    grid->AddGrowableCol(2, 1);
+    grid->AddGrowableRow(1, 1);
+    grid->SetFlexibleDirection(wxBOTH);
+    
+    //first row is labels, with a spacer in between
+    grid->Add(new wxStaticText(this, wxID_ANY, wxT("&Available Fields:")));
+    grid->AddSpacer(0);
+    grid->Add(new wxStaticText(this, wxID_ANY, wxT("&Selected Fields:")));
+    
+    //second row is the listboxes, with buttons in between
+    wxListBox* lbFields = new wxListBox(this, ID_LB_AVAILABLE_FIELDS, wxDefaultPosition, 
+              wxDefaultSize, 0, NULL, wxLB_EXTENDED);
     for (size_t idx = 0; idx < NumberOf(fieldNames); ++idx)
         if (!m_searchData.m_bsFields.test(fieldNames[idx].type))
             lbFields->Append(fieldNames[idx].name, (void*)(idx));
 
-    vbox1->Add(lbFields, wxSizerFlags(1).Expand());
-    hbox->Add(vbox1);
-
-    hbox->AddSpacer(15);
-
+    grid->Add(lbFields, wxSizerFlags().Expand());
+    
     wxBoxSizer* buttonBox = new wxBoxSizer(wxVERTICAL);
-    buttonBox->Add( new wxButton(panel, ID_SELECT_SOME, wxT(">")) );
-    buttonBox->AddSpacer(5);
-    buttonBox->Add( new wxButton(panel, ID_SELECT_ALL, wxT(">>")) );
-    buttonBox->AddSpacer(30);
-    buttonBox->Add( new wxButton(panel, ID_REMOVE_SOME, wxT("<")) );
-    buttonBox->Add( new wxButton(panel, ID_REMOVE_ALL, wxT("<<")) );
-    buttonBox->AddSpacer(5);
-    hbox->Add(buttonBox, wxSizerFlags().Center());
+    buttonBox->AddStretchSpacer();
+    buttonBox->Add( new wxButton(this, ID_SELECT_SOME, wxT(">")) );
+    buttonBox->AddSpacer(RowSeparation);
+    buttonBox->Add( new wxButton(this, ID_SELECT_ALL, wxT(">>")) );
+    buttonBox->AddSpacer(RowSeparation*2);
+    buttonBox->Add( new wxButton(this, ID_REMOVE_SOME, wxT("<")) );
+    buttonBox->AddSpacer(RowSeparation);
+    buttonBox->Add( new wxButton(this, ID_REMOVE_ALL, wxT("<<")) );
+    buttonBox->AddStretchSpacer();
+    
+    grid->Add(buttonBox, wxSizerFlags().Align(wxALIGN_CENTER_VERTICAL));
 
-    hbox->AddSpacer(15);
 
-    wxBoxSizer* vbox2 = new wxBoxSizer(wxVERTICAL);
-    vbox2->Add(new wxStaticText(panel, wxID_ANY, wxT("&Selected Fields:")));
-    vbox2->AddSpacer(10);
-    wxListBox* lbSelectedFields = new wxListBox(panel, ID_LB_SELECTED_FIELDS, wxDefaultPosition, 
-                  wxSize(100, 200), 0, NULL, wxLB_EXTENDED);
+    wxListBox* lbSelectedFields = new wxListBox(this, ID_LB_SELECTED_FIELDS, wxDefaultPosition, 
+                  wxDefaultSize, 0, NULL, wxLB_EXTENDED);
     for (size_t idx=0; idx < NumberOf(fieldNames); ++idx)
         if (m_searchData.m_bsFields.test(fieldNames[idx].type))
             lbSelectedFields->Append(fieldNames[idx].name, (void*)(idx));
 
-    vbox2->Add(lbSelectedFields, wxSizerFlags(1).Expand());
-    hbox->Add(vbox2);
+    
+    grid->Add(lbSelectedFields, wxSizerFlags().Expand());
 
-    dlgSizer->Add(hbox, wxSizerFlags(1).Expand().Border(wxALL, 10));
+    dlgSizer->Add(grid, wxSizerFlags(1).Expand().Border(wxLEFT | wxRIGHT, SideMargin));
   }
   
-  dlgSizer->Add( new wxStaticLine(panel, wxID_ANY, wxDefaultPosition, wxSize(300, -1)), wxSizerFlags().Border(wxALL, 10).Center() );
-
-//  why doesn't this work?
-//  dlgSizer->Add( CreateButtonSizer(wxOK | wxCANCEL | wxHELP) );
-  {
-      wxBoxSizer* bbox = new wxBoxSizer(wxHORIZONTAL);
-      bbox->Add(new wxButton(panel, wxID_OK, wxT("&Ok")));
-      bbox->AddSpacer(20);
-      bbox->Add(new wxButton(panel, wxID_CANCEL, wxT("&Cancel")));
-      bbox->AddSpacer(20);
-      bbox->Add(new wxButton(panel, wxID_HELP, wxT("&Help")));
-
-      dlgSizer->Add(bbox, wxSizerFlags().Center().Border(wxBOTTOM, 10));
-  }
-
-  panel->SetSizer(dlgSizer);
-  dlgSizer->Fit(this);
-  dlgSizer->SetSizeHints(this);
-
+  dlgSizer->AddSpacer(RowSeparation);
+  dlgSizer->Add(new wxStaticLine(this), wxSizerFlags().Expand().Border(wxLEFT|wxRIGHT, SideMargin).Center());
+  dlgSizer->AddSpacer(RowSeparation);
+  dlgSizer->Add(CreateStdDialogButtonSizer(wxOK|wxCANCEL|wxHELP), wxSizerFlags().Center());
+  dlgSizer->AddSpacer(BottomMargin);
+  
+  SetSizerAndFit(dlgSizer);
 }
 
 void AdvancedSearchOptionsDlg::OnOk( wxCommandEvent& evt )
