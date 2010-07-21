@@ -320,7 +320,6 @@ BEGIN_EVENT_TABLE( PasswordSafeSearch, wxEvtHandler )
   EVT_TOOL( ID_FIND_ADVANCED_OPTIONS, PasswordSafeSearch::OnAdvancedSearchOptions )
   EVT_TOOL( ID_FIND_IGNORE_CASE, PasswordSafeSearch::OnToggleCaseSensitivity )
   EVT_TOOL( ID_FIND_NEXT, PasswordSafeSearch::OnDoSearch )
-  EVT_KEY_DOWN(PasswordSafeSearch::OnChar)
 ////@end PasswordSafeSearch event table entries
 END_EVENT_TABLE()
 
@@ -487,7 +486,6 @@ void PasswordSafeSearch::CreateSearchBar()
   m_toolbar->AddTool(ID_FIND_CREATE_REPORT, wxT(""), wxBitmap(findreport), wxNullBitmap, wxITEM_NORMAL, wxT("Create report of previous Find search"));
   m_toolbar->AddTool(ID_FIND_CLEAR, wxT(""), wxBitmap(findclear), wxNullBitmap, wxITEM_NORMAL, wxT("Clear Find"));
   m_toolbar->AddControl(new wxStaticText(m_toolbar, ID_FIND_STATUS_AREA, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY));
-//  Connect(ID_FIND_EDITBOX, wxEVT_KEY_DOWN, wxKeyEventHandler(PasswordSafeSearch::OnChar));
   
   if (!m_toolbar->Realize())
     wxMessageBox(wxT("Could not create Search Bar"), wxT("Password Safe"));
@@ -501,7 +499,8 @@ void PasswordSafeSearch::CreateSearchBar()
   if (!m_toolbar->Show(true) && !m_toolbar->IsShownOnScreen())
     wxMessageBox(wxT("Could not display searchbar"));
  
-//  edit->PushEventHandler(this);
+  //we need to filter out the ESCAPE key and also receive the toolbar notifications 
+  edit->PushEventHandler(this);
   m_toolbar->PushEventHandler(this);
 }
 
@@ -529,12 +528,36 @@ void PasswordSafeSearch::Activate(void)
   m_toolbar->FindControl(ID_FIND_EDITBOX)->SetFocus();
 }
 
-void PasswordSafeSearch::OnChar(wxKeyEvent& evt)
+bool PasswordSafeSearch::ProcessEvent(wxEvent& evt)
 {
-  if (evt.GetKeyCode() == WXK_ESCAPE)
-    HideSearchToolbar();
-  else
-    evt.Skip(); //propagate further
+  if (evt.GetId() == ID_FIND_EDITBOX && (evt.GetEventType() == wxEVT_KEY_DOWN || evt.GetEventType() == wxEVT_CHAR)) {
+    wxKeyEvent& keyEvent = dynamic_cast<wxKeyEvent&>(evt);
+    if (keyEvent.GetKeyCode() == WXK_ESCAPE) {
+      HideSearchToolbar();
+      return true;
+    }
+    else if (keyEvent.GetKeyCode() == WXK_DELETE) {
+      //never gets here.  Delete key is translated by a much lower
+      //layer like gtk, into the menu accelerator key
+      return true;
+    }
+    else if (keyEvent.GetKeyCode() == WXK_RETURN) {
+      return m_toolbar->FindControl(ID_FIND_EDITBOX)->ProcessEvent(evt);
+    }
+  }
+  
+  // Handle the EVT_TEXT_ENTER that the editCtrl would have sent us
+  // due to our processing of WXK_RETURN above
+  if (GetEvtHandlerEnabled()) { 
+    //copied from wxWidgets source: event.cpp
+    if ( GetEventHashTable().HandleEvent(evt, this) )
+      return true;
+  }
+  
+  if (GetNextHandler())
+    return GetNextHandler()->ProcessEvent(evt);
+
+  return false;
 }
 
 template <class Iter, class Accessor>

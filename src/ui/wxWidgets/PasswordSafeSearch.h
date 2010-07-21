@@ -195,6 +195,9 @@ public:
   void UpdateView();
   
   void Activate(void);
+  
+  //overridden from wxEvtHandler
+  virtual bool ProcessEvent(wxEvent& evt);
 
 private:
   template <class Iter, class Accessor>
