@@ -8,15 +8,26 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2010-05-20 23:31+0100\n"
-"Last-Translator: Björn Nordwall <nordwall.b@telia.com>\n"
+"PO-Revision-Date: 2010-07-23 10:43+0100\n"
+"Last-Translator: Björn Nordwall <pro.bn@telia.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Language: Swedish\n"
-"X-Poedit-Country: SWEDEN\n"
 
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
 #    ID:xxxxx = the menu ID corresponding to the accelerator
@@ -87,7 +98,7 @@ msgstr " 'DCA'"
 
 #. Resource IDs: (347)
 msgid " 'Group'"
-msgstr "'Grupp'"
+msgstr " 'Grupp'"
 
 #. Resource IDs: (336)
 msgid " 'Last Access Time'"
@@ -115,7 +126,7 @@ msgstr " 'Lösenordets ändringstidpunkt'"
 
 #. Resource IDs: (345)
 msgid " 'Password Policy'"
-msgstr "'Lösenordspolicy'"
+msgstr " 'Lösenordspolicy'"
 
 #. Resource IDs: (336)
 msgid " 'Password'"
@@ -127,7 +138,7 @@ msgstr " 'Tidpunkt för ändring av registreringen'"
 
 #. Resource IDs: (354)
 msgid " 'Run Command'"
-msgstr "'Körkommando'"
+msgstr " 'Körkommando'"
 
 #. Resource IDs: (363)
 msgid " 'Single Entry' "
@@ -143,11 +154,11 @@ msgstr " 'URL'"
 
 #. Resource IDs: (347)
 msgid " 'User'"
-msgstr "'Användare'"
+msgstr " 'Användare'"
 
 #. Resource IDs: (358)
 msgid " 'email'"
-msgstr "'e-post'"
+msgstr " 'e-post'"
 
 #. Resource IDs: (362)
 #, c-format
@@ -157,12 +168,12 @@ msgstr " / omdöpt %d"
 #. Resource IDs: (362)
 #, c-format
 msgid " / skipped %d"
-msgstr "/ överhoppad %d"
+msgstr " / överhoppad %d"
 
 #. Resource IDs: (362)
 #, c-format
 msgid " / with Password History errors %d"
-msgstr "/ med Password historikfel %d"
+msgstr " / med Password historikfel %d"
 
 #. Resource IDs: (332)
 #, c-format
@@ -196,7 +207,7 @@ msgstr " [Process ID=%s]"
 
 #. Resource IDs: (362)
 msgid " or undo all changes"
-msgstr "eller ångra alla ändringar"
+msgstr " eller ångra alla ändringar"
 
 #. Resource IDs: (354)
 msgid "! Edit externally"
@@ -328,7 +339,7 @@ msgstr ""
 #. Resource IDs: (341)
 #, c-format
 msgid "%s file being imported: %s"
-msgstr "%s importerad fil: %s"
+msgstr "%s fil som importerasl: %s"
 
 #. Resource IDs: (212)
 #, c-format
@@ -358,7 +369,7 @@ msgstr "%s%s%s_Rapport.txt"
 #. Resource IDs: (212)
 #, c-format
 msgid "%s, Title=\"%s\", User=\"%s\" already exists in your database or in the Import file. Added imported entry with title=\"%s\".\r\n"
-msgstr "%s, Titel=\"%s\", Användare=\"%s\" finns redan i din databas eller i importfilen. La till importerade poster med namn=\"%s\".\r\n"
+msgstr "%s, Titel=\"%s\", Användare=\"%s\" finns redan i din databas eller i importfilen. La till importerade post med namn=\"%s\".\r\n"
 
 #. Resource IDs: (363)
 #, c-format
@@ -468,7 +479,7 @@ msgstr "&Använd nuvarande"
 
 #. Resource IDs: (1356)
 msgid "&Autotype:"
-msgstr "Auto&skrift:"
+msgstr "&Autoskriv:"
 
 #. Resource IDs: (332, 32062)
 msgid "&Browse to URL"
@@ -476,7 +487,7 @@ msgstr "&Gå till URL"
 
 #. Resource IDs: (32151)
 msgid "&Change Safe Combination..."
-msgstr "&Byt Safe-kombination..."
+msgstr "&Byt Safe-nyckel..."
 
 #. Resource IDs: (32105)
 msgid "&Classic Toolbar"
@@ -616,7 +627,7 @@ msgstr "&Ignorera"
 
 #. Resource IDs: (1345)
 msgid "&Import"
-msgstr "&Import"
+msgstr "&Importera"
 
 #. Resource IDs: (1143)
 msgid "&Keep"
@@ -624,7 +635,7 @@ msgstr "&Behåll"
 
 #. Resource IDs: (32150)
 msgid "&Manage"
-msgstr "&Hantera"
+msgstr "Ha&ntera"
 
 #. Resource IDs: (32113)
 msgid "&Manage..."
@@ -844,7 +855,7 @@ msgstr "&Ja"
 
 #. Resource IDs: (1356)
 msgid "&email:"
-msgstr "&e-post:"
+msgstr "&e-postl:"
 
 #. Resource IDs: (510)
 msgid "'Alt Gr' (right Alt) key"
@@ -907,7 +918,7 @@ msgstr "- Dess titel har ändrats till:'%s'"
 
 #. Resource IDs: (513)
 msgid "- Physical -"
-msgstr "- Fysisk -"
+msgstr "- Verkligt -"
 
 #. Resource IDs: (204)
 msgid "--------------------------------------------------------------------------------"
@@ -916,6 +927,10 @@ msgstr "------------------------------------------------------------------------
 #. Resource IDs: (1223)
 msgid "..."
 msgstr "..."
+
+#. Resource IDs: (1017)
+msgid "...."
+msgstr "...."
 
 #. Resource IDs: (1293, 1294)
 msgid "....."
@@ -1251,7 +1266,7 @@ msgstr ">>"
 
 #. Resource IDs: (329)
 msgid "A dot is invalid as the first character of the Group field."
-msgstr "En punkt är ogiltig som första tecken i gruppfältet."
+msgstr "En punkt är inte giltig som första tecken i gruppfältet."
 
 #. Resource IDs: (326)
 msgid "A fatal error occured: "
@@ -1369,7 +1384,7 @@ msgstr "Avancerat..."
 
 #. Resource IDs: (514)
 msgid "Albanian"
-msgstr "Albanian"
+msgstr "Albanskt"
 
 #. Resource IDs: (478)
 msgid "Alias Password Change"
@@ -1512,7 +1527,11 @@ msgstr "Använd"
 
 #. Resource IDs: (513)
 msgid "Arabic (101)"
-msgstr "Arabic (101)"
+msgstr "Arabiskt (101)"
+
+#. Resource IDs: (341)
+msgid "Are you sure you want to delete the selected entry?"
+msgstr "Är du säker på att du vill radera den valda posten?"
 
 #. Resource IDs: (355)
 msgid "Are you sure you want to delete the selected group?"
@@ -1520,11 +1539,11 @@ msgstr "Är du säker på att du vill radera den valda gruppen?"
 
 #. Resource IDs: (515)
 msgid "Armenian Eastern"
-msgstr "Armenian Eastern"
+msgstr "Armeniskt Östra"
 
 #. Resource IDs: (519)
 msgid "Armenian Western"
-msgstr "Armenian Western"
+msgstr "Armeniskt Västra"
 
 #. Resource IDs: (330)
 msgid "As the double quotation character is used to delimit the whole notes field, it cannot be used within it to delimit multiple lines. Please enter another character."
@@ -1569,11 +1588,11 @@ msgstr "Tillgängliga filter:"
 
 #. Resource IDs: (518)
 msgid "Azeri Cyrillic"
-msgstr "Azeri Cyrillic"
+msgstr "Azerbajdzjanskt Cyrillic"
 
 #. Resource IDs: (515)
 msgid "Azeri Latin"
-msgstr "Azeri Latin"
+msgstr "Azerbajdzjanskt Latin"
 
 #. Resource IDs: (65535)
 msgid "Backup Name"
@@ -1601,31 +1620,31 @@ msgstr "Bas"
 
 #. Resource IDs: (515)
 msgid "Belarusian"
-msgstr "Belarusian"
+msgstr "Vitryskt"
 
 #. Resource IDs: (519)
 msgid "Belgian (Comma)"
-msgstr "Belgian (Komma)"
+msgstr "Belgiskt (Comma)"
 
 #. Resource IDs: (517)
 msgid "Belgian (Period)"
-msgstr "Belgian (Punkt)"
+msgstr "Belgiskt (Period)"
 
 #. Resource IDs: (517)
 msgid "Belgian French"
-msgstr "Belgian French"
+msgstr "Belgiskt Franska"
 
 #. Resource IDs: (516)
 msgid "Bengali"
-msgstr "Bengali"
+msgstr "Bengaliskt"
 
 #. Resource IDs: (520)
 msgid "Bengali - INSCRIPT"
-msgstr "Bengali - INSCRIPT"
+msgstr "Bengaliskt - INSCRIPT"
 
 #. Resource IDs: (519)
 msgid "Bengali - INSCRIPT (Legacy)"
-msgstr "Bengali - INSCRIPT (Legacy)"
+msgstr "Bengaliskt - INSCRIPT (Legacy)"
 
 #. Resource IDs: (8006)
 msgid "BkSpc"
@@ -1633,7 +1652,7 @@ msgstr "BkSpc"
 
 #. Resource IDs: (518)
 msgid "Bosnian (Cyrillic)"
-msgstr "Bosnian (Cyrillic)"
+msgstr "Bosniskt (Cyrillic)"
 
 #. Resource IDs: (1213)
 msgid "Browse"
@@ -1657,19 +1676,19 @@ msgstr "Browserns kommandoparametrar"
 
 #. Resource IDs: (520)
 msgid "Bulgarian"
-msgstr "Bulgarian"
+msgstr "Bulgariskt"
 
 #. Resource IDs: (518)
 msgid "Bulgarian (Latin)"
-msgstr "Bulgarian (Latin)"
+msgstr "Bulgariskt (Latin)"
 
 #. Resource IDs: (521)
 msgid "Bulgarian (Phonetic Traditional)"
-msgstr "Bulgarian (Phonetic Traditional)"
+msgstr "Bulgariskt (Fonetisk traditionellt)"
 
 #. Resource IDs: (513)
 msgid "Bulgarian (Typewriter)"
-msgstr "Bulgarian (Typewriter)"
+msgstr "Bulgariskt (Typewriter)"
 
 #. Resource IDs: (1411)
 msgid "Bytes"
@@ -1722,15 +1741,15 @@ msgstr "Kan inte hitta schemaversionen."
 
 #. Resource IDs: (518)
 msgid "Canadian French"
-msgstr "Canadian French"
+msgstr "Kanadensiskt Franska"
 
 #. Resource IDs: (518)
 msgid "Canadian French (Legacy)"
-msgstr "Canadian French (Legacy)"
+msgstr "Kanadensiskt Franska (Legacy)"
 
 #. Resource IDs: (520)
 msgid "Canadian Multilingual Standard"
-msgstr "Canadian Multilingual Standard"
+msgstr "Kanadensiskt Flerspråkig standard"
 
 #. Resource IDs: (2, 347, 32273)
 msgid "Cancel"
@@ -1821,11 +1840,11 @@ msgstr "Kontrollera"
 
 #. Resource IDs: (521)
 msgid "Chinese Bopomofo"
-msgstr "Chinese Bopomofo"
+msgstr "Kinesiskt Bopomofo"
 
 #. Resource IDs: (521)
 msgid "Chinese ChaJei"
-msgstr "Chinese ChaJei"
+msgstr "Kinesiskt ChaJei"
 
 #. Resource IDs: (8001)
 msgid "Clear Buffer"
@@ -2050,6 +2069,10 @@ msgstr ""
 msgid "Confirm Close Dialog"
 msgstr "Bekräfta stängningsdialog"
 
+#. Resource IDs: (1019)
+msgid "Confirm deletion of items"
+msgstr "Bekräfta radering av objekt"
+
 #. Resource IDs: (1021)
 msgid "Confirm item copy to clipboard"
 msgstr "Bekräfta kopiering till urklipp"
@@ -2076,7 +2099,7 @@ msgid ""
 "  Added merged entry as «%s» «%s» «%s».\r\n"
 "    Differing field(s): %s"
 msgstr ""
-"Poster i konflikt i «%s» «%s» «%s».\r\n"
+"Poster i konflikt «%s» «%s» «%s».\r\n"
 "  La till sammanslagen post som«%s» «%s» «%s».\r\n"
 "    Skiljande fält(s): %s"
 
@@ -2094,7 +2117,7 @@ msgstr "Kopiera &noteringar till urklipp"
 
 #. Resource IDs: (332)
 msgid "Copy &Notes to clipboard"
-msgstr "Kopiera n&oteringar till urklipp"
+msgstr "Kopiera &noteringar till urklipp"
 
 #. Resource IDs: (32059)
 msgid "Copy &Username to Clipboard"
@@ -2102,7 +2125,7 @@ msgstr "Kopiera &användarnamnet till urklipp"
 
 #. Resource IDs: (332)
 msgid "Copy &Username to clipboard"
-msgstr "Kopiera anv&ändarnamnet till urklipp"
+msgstr "Kopiera &användarnamnet till urklipp"
 
 #. Resource IDs: (1174)
 msgid "Copy All"
@@ -2110,7 +2133,7 @@ msgstr "Kopiera allt"
 
 #. Resource IDs: (32270)
 msgid "Copy Here"
-msgstr "Kopiera in här"
+msgstr "Kopiera här"
 
 #. Resource IDs: (32080)
 msgid "Copy Run Command to Clipboard"
@@ -2156,6 +2179,7 @@ msgstr "Kopiera till urklipp"
 msgid "Copy to DB"
 msgstr "Kopiera till DB"
 
+# Misspelt: Original
 #. Resource IDs: (32221)
 msgid "Copy to Orignal"
 msgstr "Kopiera till originalet"
@@ -2179,7 +2203,7 @@ msgstr "Kunde inte starta utskriften."
 
 #. Resource IDs: (332)
 msgid "Couldn't save database - Please save manually"
-msgstr "Kunde inte spara databasen - Spara manuellt"
+msgstr "Kunde inte spara databasen - Vänligen spara manuellt"
 
 #. Resource IDs: (354)
 msgid "Create &Shortcut"
@@ -2220,7 +2244,7 @@ msgstr "Kriterium"
 
 #. Resource IDs: (514)
 msgid "Croatian"
-msgstr "Croatian"
+msgstr "Kroatiskt"
 
 #. Resource IDs: (8011)
 msgid "Ctrl"
@@ -2272,17 +2296,19 @@ msgstr "Anpassa verktygsraden"
 
 #. Resource IDs: (513)
 msgid "Czech"
-msgstr "Czech"
+msgstr "Checkiska"
 
 #. Resource IDs: (518)
 msgid "Czech (QWERTY)"
-msgstr "Czech (QWERTY)"
+msgstr "Checkiskt (QWERTY)"
 
 #. Resource IDs: (520)
 msgid "Czech Programmers"
-msgstr "Czech Programmers"
+msgstr "Checkiskt Programmers"
 
+# Is this a command?
 #. Resource IDs: (360)
+#, fuzzy
 msgid "DB Format"
 msgstr "DB-format"
 
@@ -2296,7 +2322,7 @@ msgstr "DCA\t"
 
 #. Resource IDs: (513)
 msgid "Danish"
-msgstr "Danish"
+msgstr "Danskt"
 
 #. Resource IDs: (353)
 msgid "Database"
@@ -2364,7 +2390,7 @@ msgstr "Radera posten"
 
 #. Resource IDs: (341)
 msgid "Delete a Base Entry Confirmation?"
-msgstr "Bekräfta radering av en baspost?"
+msgstr "Radera en basposts ?"
 
 #. Resource IDs: (352)
 msgid "Delete a filter"
@@ -2393,7 +2419,7 @@ msgstr "Uppgifter om denna genväg till basposten '%s':"
 
 #. Resource IDs: (516)
 msgid "Devanagari - INSCRIPT"
-msgstr "Devanagari - INSCRIPT"
+msgstr "Sanskrit - INSCRIPT"
 
 #. Resource IDs: (3867)
 #, c-format
@@ -2495,7 +2521,7 @@ msgstr "Dubbelklicka på posten för att skicka e-post"
 
 #. Resource IDs: (315)
 msgid "Double-Click on entry to View/Edit it"
-msgstr "Dubbelklicka på posten för att visa/redigera den"
+msgstr "Dubbelklicka på posten för att visa/redigera"
 
 #. Resource IDs: (65535)
 msgid "Double-click action"
@@ -2504,7 +2530,7 @@ msgstr "Dubbelklicksval"
 #. Resource IDs: (357)
 #, c-format
 msgid "Drag this image onto a another window to paste the '%s' field."
-msgstr "Dra denna bild över ett annat fönster för att klistra '%s' fältet."
+msgstr "Drag bilden till ett annat fönster för att klistra '%s' fältet."
 
 # Dropped????
 #. Resource IDs: (342)
@@ -2520,7 +2546,7 @@ msgstr ""
 
 #. Resource IDs: (514)
 msgid "Dutch"
-msgstr "Dutch"
+msgstr "Holländskt"
 
 #. Resource IDs: (32021)
 msgid "E&xit"
@@ -2529,6 +2555,10 @@ msgstr "A&vsluta"
 #. Resource IDs: (32021)
 msgid "E&xit\tCtrl+Q\\Alt+F4"
 msgstr "A&vsluta\tCtrl+Q\\Alt+F4"
+
+#. Resource IDs: (65535)
+msgid "E&xport Entry To"
+msgstr "E&xportera post till"
 
 #. Resource IDs: (350)
 msgid "Easyvision characters"
@@ -2557,7 +2587,7 @@ msgstr "Redigera/&visa post..."
 
 #. Resource IDs: (203)
 msgid "Either or both of the Group/Title and Password columns are missing. No records imported."
-msgstr "Endera eller både grupp-/titel- och lösenords-kolumner saknas. Inga poster importerades."
+msgstr "Endera av eller både grupp-/titel- och lösenords-kolumner saknas. Inga poster importerades."
 
 #. Resource IDs: (354)
 msgid ""
@@ -2572,7 +2602,7 @@ msgstr ""
 #. Resource IDs: (209)
 #, c-format
 msgid "Element \"%s\" exceeded its MaxOccurs of %s."
-msgstr "Elementet \"%s\" översteg dess maximala förekomst med %s."
+msgstr "Elementet \"%s\" översteg dess maximala användning med %s."
 
 #. Resource IDs: (204)
 #, c-format
@@ -2745,7 +2775,7 @@ msgstr "Esc-tangenten stänger programmet"
 
 #. Resource IDs: (515)
 msgid "Estonian"
-msgstr "Estonian"
+msgstr "Estniskt"
 
 #. Resource IDs: (65535)
 msgid "Example:"
@@ -2770,10 +2800,6 @@ msgstr "Exportera"
 #. Resource IDs: (32009)
 msgid "Export &To"
 msgstr "Exportera &till"
-
-#. Resource IDs: (65535)
-msgid "Export Entry &To"
-msgstr "Exportera post &till"
 
 #. Resource IDs: (32085)
 msgid "Export Entry in XML format..."
@@ -2809,7 +2835,7 @@ msgstr "Export av data begränsades till vissa fält av användaren."
 
 #. Resource IDs: (516)
 msgid "Faeroese"
-msgstr "Faeroese"
+msgstr "Färaöiskt"
 
 #. Resource IDs: (3857)
 msgid "Failed to create empty document."
@@ -2962,11 +2988,11 @@ msgstr "Hitta tidigare"
 
 #. Resource IDs: (514)
 msgid "Finnish"
-msgstr "Finnish"
+msgstr "Finskt"
 
 #. Resource IDs: (519)
 msgid "Finnish with Sami"
-msgstr "Finnish med Sami"
+msgstr "Finskt med Samiska"
 
 #. Resource IDs: (210)
 msgid "First character of variable name must be alphabetic"
@@ -3003,7 +3029,7 @@ msgstr "Hittade 1 matchande."
 
 #. Resource IDs: (514)
 msgid "French"
-msgstr "French"
+msgstr "Franskt"
 
 #. Resource IDs: (1176)
 msgid "Fully collapsed"
@@ -3015,7 +3041,7 @@ msgstr "Helt maximerad"
 
 #. Resource IDs: (520)
 msgid "Gaelic"
-msgstr "Gaelic"
+msgstr "Gaeliskt"
 
 #. Resource IDs: (32157)
 msgid "Generate &Password"
@@ -3031,23 +3057,23 @@ msgstr "Generera lösenord"
 
 #. Resource IDs: (516)
 msgid "Georgian"
-msgstr "Georgian"
+msgstr "Georgiskt"
 
 #. Resource IDs: (520)
 msgid "Georgian (Ergonomic)"
-msgstr "Georgian (Ergonomic)"
+msgstr "Georgiskt (Ergonomic)"
 
 #. Resource IDs: (519)
 msgid "Georgian (QWERTY)"
-msgstr "Georgian (QWERTY)"
+msgstr "Georgiskt (QWERTY)"
 
 #. Resource IDs: (513)
 msgid "German"
-msgstr "German"
+msgstr "Tyskt"
 
 #. Resource IDs: (518)
 msgid "German (IBM)"
-msgstr "German (IBM)"
+msgstr "Tyskt (IBM)"
 
 #. Resource IDs: (57670)
 msgid "Get &Help\tF1"
@@ -3071,31 +3097,31 @@ msgstr "Kör+"
 
 #. Resource IDs: (513)
 msgid "Greek"
-msgstr "Greek"
+msgstr "Grekiskt"
 
 #. Resource IDs: (518)
 msgid "Greek (220)"
-msgstr "Greek (220)"
+msgstr "Grekiskt (220)"
 
 #. Resource IDs: (520)
 msgid "Greek (220) Latin"
-msgstr "Greek (220) Latin"
+msgstr "Grekiskt (220) Latin"
 
 #. Resource IDs: (520)
 msgid "Greek (319)"
-msgstr "Greek (319)"
+msgstr "Grekiskt (319)"
 
 #. Resource IDs: (521)
 msgid "Greek (319) Latin"
-msgstr "Greek (319) Latin"
+msgstr "Grekiskt (319) Latin"
 
 #. Resource IDs: (521)
 msgid "Greek Latin"
-msgstr "Greek Latin"
+msgstr "Grekiskt Latin"
 
 #. Resource IDs: (521)
 msgid "Greek Polytonic"
-msgstr "Greek Polytonic"
+msgstr "Grekiskt Polytonic"
 
 #. Resource IDs: (327)
 msgid "Group"
@@ -3151,7 +3177,7 @@ msgstr "Hausa"
 
 #. Resource IDs: (514)
 msgid "Hebrew"
-msgstr "Hebrew"
+msgstr "Hebreiskt"
 
 #. Resource IDs: (351, 57670)
 msgid "Help"
@@ -3168,6 +3194,10 @@ msgstr "Hexadecimala tecken"
 #. Resource IDs: (331)
 msgid "Hexadecimal is mutually exclusive to all other options!"
 msgstr "Hexadecimalt utesluter andra valmöjligheter!"
+
+#. Resource IDs: (1426)
+msgid "Hide System Tray icon (Hot Key MUST be active)"
+msgstr "Dölj ikonen i meddelandefältet (Hot Key MÅSTE vara aktiverad)"
 
 #. Resource IDs: (1397)
 msgid "Highlight changed entries"
@@ -3191,11 +3221,11 @@ msgstr "HotKey1"
 
 #. Resource IDs: (514)
 msgid "Hungarian"
-msgstr "Hungarian"
+msgstr "Ungerskt"
 
 #. Resource IDs: (518)
 msgid "Hungarian 101-key"
-msgstr "Hungarian 101-tangenter"
+msgstr "Ungerskt 101-tangenter"
 
 #. Resource IDs: (1269)
 msgid "I am a ..."
@@ -3327,7 +3357,7 @@ msgstr "ID:32504:V C +S"
 
 #. Resource IDs: (514)
 msgid "Icelandic"
-msgstr "Icelandic"
+msgstr "Isländskt"
 
 #. Resource IDs: (344)
 msgid "Icon"
@@ -3356,13 +3386,13 @@ msgid ""
 "\n"
 "You may need to also select the Shift key to see them."
 msgstr ""
-"Om detta tangentbord stödjer tecken via %s, så kommer denna tangent att bli tillgänglig och kan användas för at välja dessa.\n"
+"Om detta tangentbord stödjer tecken via %s, så kommer denna tangent att bli tillgänglig och kan användas för att välja dessa.\n"
 "\n"
-"Du kanske också måste välja skift-tangenten för att se dem."
+"Du måste kanske också välja skift-tangenten för att se dem."
 
 #. Resource IDs: (517)
 msgid "Igbo"
-msgstr "Igbo"
+msgstr "Ibo"
 
 #. Resource IDs: (361)
 msgid "Ignore all Failsafe Backup files and continue with the currently selected database."
@@ -3382,7 +3412,7 @@ msgstr "Importera &XML"
 
 #. Resource IDs: (125)
 msgid "Import Text Settings"
-msgstr "Val för import från textfi"
+msgstr "Val för import från textfil"
 
 #. Resource IDs: (343)
 msgid "Import Text failed"
@@ -3546,19 +3576,19 @@ msgstr "Ogiltig genväg ignorerad."
 
 #. Resource IDs: (518)
 msgid "Irish"
-msgstr "Irish"
+msgstr "Irländskt"
 
 #. Resource IDs: (514)
 msgid "Italian"
-msgstr "Italian"
+msgstr "Italienskt"
 
 #. Resource IDs: (518)
 msgid "Italian (142)"
-msgstr "Italian (142)"
+msgstr "Italienskt (142)"
 
 #. Resource IDs: (521)
 msgid "Japanese"
-msgstr "Japanese"
+msgstr "Japanskt"
 
 #. Resource IDs: (1412)
 msgid "KBytes"
@@ -3566,11 +3596,11 @@ msgstr "KBytes"
 
 #. Resource IDs: (516)
 msgid "Kannada"
-msgstr "Kannada"
+msgstr "Kannadiskt"
 
 #. Resource IDs: (516)
 msgid "Kazakh"
-msgstr "Kazakh"
+msgstr "Kazakiskt"
 
 #. Resource IDs: (32017)
 msgid "KeePass..."
@@ -3586,11 +3616,11 @@ msgstr "Tangentbordstyp:"
 
 #. Resource IDs: (521)
 msgid "Korean"
-msgstr "Korean"
+msgstr "Koreanskt"
 
 #. Resource IDs: (516)
 msgid "Kyrgyz Cyrillic"
-msgstr "Kyrgyz Cyrillic"
+msgstr "Kyrgyziskt Cyrillic"
 
 #. Resource IDs: (8009)
 msgid "L Ctrl"
@@ -3627,15 +3657,15 @@ msgstr "Senaste version? Klicka <a href=\"%s\">här</a> för att kontrollera."
 
 #. Resource IDs: (517)
 msgid "Latin American"
-msgstr "Latin American"
+msgstr "Latinamerikanskt"
 
 #. Resource IDs: (515)
 msgid "Latvian"
-msgstr "Latvian"
+msgstr "Lettiskt"
 
 #. Resource IDs: (519)
 msgid "Latvian (QWERTY)"
-msgstr "Latvian (QWERTY)"
+msgstr "Lettiskt (QWERTY)"
 
 #. Resource IDs: (510)
 msgid "Left Ctrl key"
@@ -3691,15 +3721,15 @@ msgstr "Lista1"
 
 #. Resource IDs: (519)
 msgid "Lithuanian"
-msgstr "Lithuanian"
+msgstr "Litauiskt"
 
 #. Resource IDs: (515)
 msgid "Lithuanian IBM"
-msgstr "Lithuanian IBM"
+msgstr "Litauiskt IBM"
 
 #. Resource IDs: (520)
 msgid "Lithuanian Standard"
-msgstr "Lithuanian Standard"
+msgstr "Litauiskt Standard"
 
 #. Resource IDs: (329)
 msgid "Lock Safe"
@@ -3755,7 +3785,7 @@ msgstr "Obligatoriskt ftyp-attribut saknas."
 
 #. Resource IDs: (517)
 msgid "Maori"
-msgstr "Maori"
+msgstr "Maoriskt"
 
 #. Resource IDs: (517)
 msgid "Marathi"
@@ -3870,7 +3900,7 @@ msgstr "Blandad"
 
 #. Resource IDs: (517)
 msgid "Mongolian Cyrillic"
-msgstr "Mongolian Cyrillic"
+msgstr "Mongoliskt Cyrillic"
 
 #. Resource IDs: (32271)
 msgid "Move Here"
@@ -4027,11 +4057,11 @@ msgstr "Inga"
 
 #. Resource IDs: (514)
 msgid "Norwegian"
-msgstr "Norwegian"
+msgstr "Norskt"
 
 #. Resource IDs: (516)
 msgid "Norwegian with Sami"
-msgstr "Norwegian med Sami"
+msgstr "Norskt med Samiska"
 
 #. Resource IDs: (3857)
 msgid "Not all of the system registry entries (or INI file) were removed."
@@ -4141,7 +4171,7 @@ msgstr "Antal lagrade"
 
 #. Resource IDs: (65535)
 msgid "Numeric Pad"
-msgstr "Numerisk bord"
+msgstr "Numeriskt bord"
 
 #. Resource IDs: (1, 351)
 msgid "OK"
@@ -4445,7 +4475,7 @@ msgstr "Au&toskriv"
 
 #. Resource IDs: (515)
 msgid "Persian"
-msgstr "Persian"
+msgstr "Persiskt"
 
 #. Resource IDs: (65535)
 msgid "Physical Keyboard:"
@@ -4642,19 +4672,19 @@ msgstr "Besök <a href=\"http://pwsafe.org/\">PasswordSafe's hemsida.</a>"
 
 #. Resource IDs: (519)
 msgid "Polish (214)"
-msgstr "Polish (214)"
+msgstr "Polskt (214)"
 
 #. Resource IDs: (514)
 msgid "Polish (Programmers)"
-msgstr "Polish (Programmers)"
+msgstr "Polskt (Programmers)"
 
 #. Resource IDs: (517)
 msgid "Portuguese"
-msgstr "Portuguese"
+msgstr "Portugisiskt"
 
 #. Resource IDs: (514)
 msgid "Portuguese (Brazilian ABNT)"
-msgstr "Portuguese (Brazilian ABNT)"
+msgstr "Portugisiskt (Brazilianska ABNT)"
 
 #. Resource IDs: (510)
 msgid "Press to delete all added characters."
@@ -4836,7 +4866,7 @@ msgstr ""
 
 #. Resource IDs: (1377)
 msgid "Rese&t to Database Defaults"
-msgstr "Åters&täll till databas-förvalen"
+msgstr "Åters&täll till databasens förval"
 
 #. Resource IDs: (356)
 #, c-format
@@ -4877,15 +4907,15 @@ msgstr "Högerklicka på 'Y' i någon av de 2 första kolumnerna för ytterligar
 
 #. Resource IDs: (514)
 msgid "Romanian (Legacy)"
-msgstr "Romanian (Legacy)"
+msgstr "Rumänskt (Legacy)"
 
 #. Resource IDs: (520)
 msgid "Romanian (Programmers)"
-msgstr "Romanian (Programmers)"
+msgstr "Rumänskt (Programmers)"
 
 #. Resource IDs: (519)
 msgid "Romanian (Standard)"
-msgstr "Romanian (Standard)"
+msgstr "Rumänskt (Standard)"
 
 #. Resource IDs: (348)
 #, c-format
@@ -4922,11 +4952,11 @@ msgstr "KörCmd kopierat"
 
 #. Resource IDs: (514)
 msgid "Russian"
-msgstr "Russian"
+msgstr "Ryskt"
 
 #. Resource IDs: (519)
 msgid "Russian (Typewriter)"
-msgstr "Russian (Typewriter)"
+msgstr "Ryskt (Typewriter)"
 
 #. Resource IDs: (328)
 msgid "S"
@@ -4976,11 +5006,11 @@ msgstr "Samma som senast sparad"
 
 #. Resource IDs: (520)
 msgid "Sami Extended Finland-Sweden"
-msgstr "Sami Utökad Finland-Sweden"
+msgstr "Samiskt Utökat Finland-Sverige"
 
 #. Resource IDs: (519)
 msgid "Sami Extended Norway"
-msgstr "Sami Utökad Norway"
+msgstr "Samiskt Utökat Norge"
 
 #. Resource IDs: (1073)
 msgid "Sample"
@@ -5123,11 +5153,11 @@ msgstr "Skicka e-post"
 
 #. Resource IDs: (518)
 msgid "Serbian (Cyrillic)"
-msgstr "Serbian (Cyrillic)"
+msgstr "Serbiskt (Cyrillic)"
 
 #. Resource IDs: (517)
 msgid "Serbian (Latin)"
-msgstr "Serbian (Latin)"
+msgstr "Serbiskt (Latin)"
 
 #. Resource IDs: (517)
 msgid "Sesotho sa Leboa"
@@ -5287,15 +5317,15 @@ msgstr "Simulera avbryt"
 
 #. Resource IDs: (514)
 msgid "Slovak"
-msgstr "Slovak"
+msgstr "Slovakiskt"
 
 #. Resource IDs: (519)
 msgid "Slovak (QWERTY)"
-msgstr "Slovak (QWERTY)"
+msgstr "Slovakiskt (QWERTY)"
 
 #. Resource IDs: (515)
 msgid "Slovenian"
-msgstr "Slovenian"
+msgstr "Slovenskt"
 
 #. Resource IDs: (1383)
 msgid "Some characters may be missing or not be displayed correctly, as we were unable to find the Arial Unicode MS font."
@@ -5351,11 +5381,11 @@ msgstr "Källa"
 
 #. Resource IDs: (514)
 msgid "Spanish"
-msgstr "Spanish"
+msgstr "Spanskt"
 
 #. Resource IDs: (518)
 msgid "Spanish Variation"
-msgstr "Spanish Variation"
+msgstr "Spanskt Variation"
 
 #. Resource IDs: (1220)
 msgid "Start PasswordSafe at Login"
@@ -5421,19 +5451,19 @@ msgstr "Suffix:"
 
 #. Resource IDs: (515)
 msgid "Swedish"
-msgstr "Swedish"
+msgstr "Svenskt"
 
 #. Resource IDs: (518)
 msgid "Swedish with Sami"
-msgstr "Swedish med Sami"
+msgstr "Svenskt med Samiska"
 
 #. Resource IDs: (518)
 msgid "Swiss French"
-msgstr "Swiss French"
+msgstr "Schweiziskt Franskt"
 
 #. Resource IDs: (517)
 msgid "Swiss German"
-msgstr "Swiss German"
+msgstr "Schweiziskt Tyskt"
 
 #. Resource IDs: (362)
 msgid "Synchronization failed"
@@ -5482,11 +5512,11 @@ msgstr "Tab"
 
 #. Resource IDs: (515)
 msgid "Tajik"
-msgstr "Tajik"
+msgstr "Tajikiska"
 
 #. Resource IDs: (516)
 msgid "Tamil"
-msgstr "Tamil"
+msgstr "Tamilska"
 
 #. Resource IDs: (1110)
 msgid "Target last changed on:"
@@ -5494,7 +5524,7 @@ msgstr "Visa på senaste förändring:"
 
 #. Resource IDs: (516)
 msgid "Tatar"
-msgstr "Tatar"
+msgstr "Tatariskt"
 
 #. Resource IDs: (516)
 msgid "Telugu"
@@ -5510,7 +5540,7 @@ msgstr "Textfiler (*.txt)|*.txt|CSV filer (*.csv)|*.csv|Allla filer (*.*)|*.*||"
 
 #. Resource IDs: (356)
 msgid "Text will be red if the shortcut is different to its default value."
-msgstr "Texten blir röd om genvägen avviker från sitt förvals-värde."
+msgstr "Texten blir röd om genvägen avviker från sitt förvalda värde."
 
 #. Resource IDs: (1322)
 msgid "Text:"
@@ -5934,7 +5964,7 @@ msgstr "Titel\t"
 
 #. Resource IDs: (65535)
 msgid "To add a new entry, simply fill in the fields below. At least a title and a password are required. If you have set a default username, it will appear in the username field."
-msgstr "För att lägga till en ny post, fyll i fälten nedan. Åtminstone en titel och ett lösenord krävs. Om du har förvalt användarnamn, kommer det att visas i användarfältet."
+msgstr "Fyll bara i fälten nedan för att lägga till en post. Åtminstone en titel och ett lösenord krävs. Om du har ett förvalt ett användarnamn, kommer det att visas i användarnamnsfältet."
 
 #. Resource IDs: (211)
 msgid "To replace passwords of existing entries, all the following columns must be present: Group/Title, Username and Password.  One or more are missing and no entries have been updated."
@@ -5971,15 +6001,15 @@ msgstr "Försöker kontakta servern..."
 
 #. Resource IDs: (519)
 msgid "Turkish F"
-msgstr "Turkish F"
+msgstr "Turkiskt F"
 
 #. Resource IDs: (515)
 msgid "Turkish Q"
-msgstr "Turkish Q"
+msgstr "Turkiskt Q"
 
 #. Resource IDs: (516)
 msgid "Turkmen"
-msgstr "Turkmen"
+msgstr "Turkmenskt"
 
 #. Resource IDs: (1355)
 msgid "U&RL:"
@@ -6003,11 +6033,11 @@ msgstr "US"
 
 #. Resource IDs: (515)
 msgid "Ukrainian"
-msgstr "Ukrainian"
+msgstr "Ukrainskt"
 
 #. Resource IDs: (520)
 msgid "Ukrainian (Enhanced)"
-msgstr "Ukrainian (Utökad)"
+msgstr "Ukrainskt (Utökad)"
 
 #. Resource IDs: (190)
 msgid ""
@@ -6139,15 +6169,15 @@ msgstr "Oväntat filformat."
 
 #. Resource IDs: (517)
 msgid "United Kingdom"
-msgstr "United Kingdom"
+msgstr "Engelskt"
 
 #. Resource IDs: (517)
 msgid "United Kingdom Extended"
-msgstr "United Kingdom Utökad"
+msgstr "Engelskt Utökat"
 
 #. Resource IDs: (520)
 msgid "United States-International"
-msgstr "United States-Internationell"
+msgstr "United States Internationellt"
 
 #. Resource IDs: (211)
 msgid "Unknown"
@@ -6280,7 +6310,7 @@ msgstr "Använd &VERSALER"
 
 #. Resource IDs: (1375)
 msgid "Use Database De&faults"
-msgstr "Använd databas&förval"
+msgstr "Använd databasens &förval"
 
 #. Resource IDs: (1378)
 msgid "Use Default"
@@ -6328,7 +6358,7 @@ msgstr "Uyghur"
 
 #. Resource IDs: (518)
 msgid "Uzbek Cyrillic"
-msgstr "Uzbek Cyrillic"
+msgstr "Uzbekistan Cyrillic"
 
 #. Resource IDs: (206, 347)
 msgid "Validate"
@@ -6371,7 +6401,7 @@ msgstr "Versionen överenstämmer inte med skärmtangentbordets DLL. Installera 
 
 #. Resource IDs: (515)
 msgid "Vietnamese"
-msgstr "Vietnamese"
+msgstr "Vietnamesiskt"
 
 #. Resource IDs: (352)
 msgid "View"
@@ -6515,7 +6545,7 @@ msgid ""
 msgstr ""
 "Vill du använda \"%s\" som förvalt användarnamn?\n"
 "\n"
-"Den kommer i så fall att automatiskt läggas i dialogen när du lägger till en ny post."
+"Det kommer i så fall att automatiskt läggas in i dialogen när du lägger till en ny post."
 
 #. Resource IDs: (333)
 msgid "Write Error"
