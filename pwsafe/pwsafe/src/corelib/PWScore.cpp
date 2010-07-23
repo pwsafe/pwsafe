@@ -263,6 +263,7 @@ void PWScore::DoReplaceEntry(const CItemData &old_ci, const CItemData &new_ci)
   m_pwlist[old_uuid] = new_ci;
   if (old_ci.GetEntryType() != new_ci.GetEntryType())
     GUIRefreshEntry(new_ci);
+  m_bDBChanged = true;
 }
 
 void PWScore::ClearData(void)
