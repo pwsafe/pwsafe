@@ -33,9 +33,13 @@
 ////@begin XPM images
 #include "../graphics/wxWidgets/cpane.xpm"
 #include "../graphics/wxWidgets/psafetxt.xpm"
+#include "../graphics/wxWidgets/vkbd.xpm"
 ////@end XPM images
 #include "pwsafeapp.h"
 
+//this is just on a hunch that the window name that wxWidgets accepts
+//as the last param could be the instance/class name of the X window object
+const wxChar xvkbdTargetName[] = wxT("__passwordsafetextctrl__");
 
 /*!
  * CSafeCombinationEntry type definition
@@ -59,6 +63,7 @@ BEGIN_EVENT_TABLE( CSafeCombinationEntry, wxDialog )
 
   EVT_BUTTON( wxID_CANCEL, CSafeCombinationEntry::OnCancel )
 
+  EVT_BUTTON( ID_VKBD, CSafeCombinationEntry::OnVirtualKeyboard )
 ////@end CSafeCombinationEntry event table entries
 
 END_EVENT_TABLE()
@@ -176,8 +181,12 @@ void CSafeCombinationEntry::CreateControls()
   wxStaticText* itemStaticText12 = new wxStaticText( itemDialog1, wxID_STATIC, _("Safe Combination:"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer4->Add(itemStaticText12, 0, wxALIGN_LEFT|wxALL, 3);
 
-  wxTextCtrl* itemTextCtrl13 = new wxTextCtrl( itemDialog1, ID_COMBINATION, wxEmptyString, wxDefaultPosition, wxSize(itemDialog1->ConvertDialogToPixels(wxSize(160, -1)).x, -1), wxTE_PASSWORD );
-  itemBoxSizer4->Add(itemTextCtrl13, 0, wxGROW|wxRIGHT|wxTOP|wxBOTTOM, 5);
+  wxTextCtrl* itemTextCtrl13 = new wxTextCtrl( itemDialog1, ID_COMBINATION, wxEmptyString, wxDefaultPosition, wxSize(itemDialog1->ConvertDialogToPixels(wxSize(160, -1)).x, -1), wxTE_PASSWORD, wxDefaultValidator, xvkbdTargetName );
+  wxBitmapButton* vkbdButton = new wxBitmapButton(itemDialog1, ID_VKBD, wxBitmap(vkbd_xpm));
+  wxBoxSizer* txtButtonSizer = new wxBoxSizer(wxHORIZONTAL);
+  txtButtonSizer->Add(itemTextCtrl13, wxSizerFlags().Expand().Proportion(1));
+  txtButtonSizer->Add(vkbdButton, wxSizerFlags().Border(wxLEFT|wxRIGHT, 5));
+  itemBoxSizer4->Add(txtButtonSizer, 0, wxGROW|wxRIGHT|wxTOP|wxBOTTOM, 5);
 
   wxBoxSizer* itemBoxSizer14 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer4->Add(itemBoxSizer14, 0, wxGROW|wxALL, 5);
@@ -395,3 +404,33 @@ void CSafeCombinationEntry::OnNewDbClick( wxCommandEvent& /* evt */ )
   EndModal(wxID_OK);
 }
 
+void CSafeCombinationEntry::OnVirtualKeyboard( wxCommandEvent& /*evt*/)
+{
+#ifdef __WXGTK__
+//if this works, we could pass the X window-id of the combination textCtrl
+//to make sure it is the only recipient of keystrokes from xvkbd
+#if 0
+#include <gtk-2.0/gtk/gtkwidget.h>
+  GtkWidget* widget = FindWindow(ID_COMBINATION)->GetHandle();
+  GdkWindow* window = widget->window;
+  int xwinid = GDK_WINDOW_XWINDOW(window);
+#endif
+  wxString command = wxString(wxT("xvkbd -window ")) + xvkbdTargetName;
+  
+  switch(wxExecute(command, wxEXEC_ASYNC, NULL)) //NULL => we don't want a wxProcess as callback
+  {
+    case 0:
+      wxMessageBox(_("Could not launch xvkbd.  Please make sure its in your PATH"), 
+                    _("Could not launch external onscreen keyboard"), wxOK | wxICON_ERROR);
+      break;
+      
+    case -1:    //only if ASYNC
+      wxMessageBox(_("Could not launch a new process for xvkbd.  Simultaneous execution is disabled?"), 
+                    _("Could not launch external onscreen keyboard"), wxOK | wxICON_ERROR);
+      break;
+      
+    default:
+    break;
+  }
+#endif
+}
