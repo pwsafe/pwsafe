@@ -840,6 +840,10 @@ msgstr "------------------------------------------------------------------------
 msgid "..."
 msgstr "..."
 
+#. Resource IDs: (1017)
+msgid "...."
+msgstr ""
+
 #. Resource IDs: (1293, 1294)
 msgid "....."
 msgstr "....."
@@ -1417,6 +1421,10 @@ msgstr "Applica"
 msgid "Arabic (101)"
 msgstr ""
 
+#. Resource IDs: (341)
+msgid "Are you sure you want to delete the selected entry?"
+msgstr ""
+
 #. Resource IDs: (355)
 msgid "Are you sure you want to delete the selected group?"
 msgstr ""
@@ -1923,6 +1931,10 @@ msgstr "Errore di configurazione file:\n%s\n%s\nlinea %d colonna %d"
 msgid "Confirm Close Dialog"
 msgstr "Finestra di dialogo per Conferma Chiusura"
 
+#. Resource IDs: (1019)
+msgid "Confirm deletion of items"
+msgstr ""
+
 #. Resource IDs: (1021)
 msgid "Confirm item copy to clipboard"
 msgstr "Conferma di copia negli appunti dell'elemento"
@@ -2356,6 +2368,10 @@ msgstr "E&xit"
 msgid "E&xit\tCtrl+Q\\Alt+F4"
 msgstr "E&xit\tCtrl+Q\\Alt+F4"
 
+#. Resource IDs: (65535)
+msgid "E&xport Entry To"
+msgstr ""
+
 #. Resource IDs: (350)
 msgid "Easyvision characters"
 msgstr "Caratteri che facilitano la visione"
@@ -2573,10 +2589,6 @@ msgstr ""
 
 #. Resource IDs: (32009)
 msgid "Export &To"
-msgstr ""
-
-#. Resource IDs: (65535)
-msgid "Export Entry &To"
 msgstr ""
 
 #. Resource IDs: (32085)
@@ -2955,6 +2967,10 @@ msgstr ""
 
 #. Resource IDs: (331)
 msgid "Hexadecimal is mutually exclusive to all other options!"
+msgstr ""
+
+#. Resource IDs: (1426)
+msgid "Hide System Tray icon (Hot Key MUST be active)"
 msgstr ""
 
 #. Resource IDs: (1397)
