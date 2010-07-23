@@ -44,6 +44,7 @@
 #define ID_COMBINATION 10004
 #define ID_READONLY 10005
 #define ID_NEWDB 10006
+#define ID_VKBD 10007
 #define SYMBOL_CSAFECOMBINATIONENTRY_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxDIALOG_MODAL|wxTAB_TRAVERSAL
 #define SYMBOL_CSAFECOMBINATIONENTRY_TITLE _("Safe Combination Entry")
 #define SYMBOL_CSAFECOMBINATIONENTRY_IDNAME ID_CSAFECOMBINATIONENTRY
@@ -95,6 +96,9 @@ public:
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL
   void OnCancel( wxCommandEvent& event );
 
+  /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_VKBD
+  void OnVirtualKeyboard( wxCommandEvent& event );
+  
 ////@end CSafeCombinationEntry event handler declarations
 
 ////@begin CSafeCombinationEntry member function declarations
