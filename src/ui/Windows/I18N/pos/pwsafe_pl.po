@@ -850,6 +850,10 @@ msgstr "------------------------------------------------------------------------
 msgid "..."
 msgstr "..."
 
+#. Resource IDs: (1017)
+msgid "...."
+msgstr ""
+
 #. Resource IDs: (1293, 1294)
 msgid "....."
 msgstr "....."
@@ -1434,6 +1438,10 @@ msgstr "Zastosuj"
 msgid "Arabic (101)"
 msgstr ""
 
+#. Resource IDs: (341)
+msgid "Are you sure you want to delete the selected entry?"
+msgstr ""
+
 #. Resource IDs: (355)
 msgid "Are you sure you want to delete the selected group?"
 msgstr ""
@@ -1952,6 +1960,10 @@ msgstr "Błąd pliku konfiguracyjnego:\n%s\n%s\nlinia %d kolumna %d"
 msgid "Confirm Close Dialog"
 msgstr "Potwierdź zamknięcie dialogu"
 
+#. Resource IDs: (1019)
+msgid "Confirm deletion of items"
+msgstr ""
+
 #. Resource IDs: (1021)
 msgid "Confirm item copy to clipboard"
 msgstr "Potwierdź kopiowanie wpisu do schowka"
@@ -2395,6 +2407,10 @@ msgstr ""
 msgid "E&xit\tCtrl+Q\\Alt+F4"
 msgstr ""
 
+#. Resource IDs: (65535)
+msgid "E&xport Entry To"
+msgstr ""
+
 #. Resource IDs: (350)
 msgid "Easyvision characters"
 msgstr "Znaki łatwo wyróżnialne"
@@ -2617,10 +2633,6 @@ msgstr "Eksportuj"
 
 #. Resource IDs: (32009)
 msgid "Export &To"
-msgstr ""
-
-#. Resource IDs: (65535)
-msgid "Export Entry &To"
 msgstr ""
 
 #. Resource IDs: (32085)
@@ -3010,6 +3022,10 @@ msgstr "Znaki szesnastkowe"
 #. Resource IDs: (331)
 msgid "Hexadecimal is mutually exclusive to all other options!"
 msgstr "System szesnastkowy wyklucza wszystkie pozostałe opcje!"
+
+#. Resource IDs: (1426)
+msgid "Hide System Tray icon (Hot Key MUST be active)"
+msgstr ""
 
 #. Resource IDs: (1397)
 msgid "Highlight changed entries"
