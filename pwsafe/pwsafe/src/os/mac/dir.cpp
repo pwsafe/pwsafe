@@ -17,22 +17,39 @@
 #include <cassert>
 #include <cstdlib>
 #include <sys/stat.h>
+#include <Carbon/Carbon.h>
 
 stringT pws_os::getexecdir()
 {
-  char path[PATH_MAX];
-
-  if (::readlink("/proc/self/exe", path, PATH_MAX) < 0)
-    return _T("?");
-  else {
-#ifdef UNICODE
-    stringT retval(pws_os::towc(path));
-#else
-    stringT retval(path);
-#endif
-    stringT::size_type last_slash = retval.find_last_of(_T("/"));
-    return retval.substr(0, last_slash + 1);
+  ProcessSerialNumber psn = {0, kCurrentProcess};
+  FSRef self = {0};
+  OSStatus err = GetProcessBundleLocation(&psn, &self);
+  if (!err) {
+    FSRef parent = {0};
+    err = FSGetCatalogInfo(&self, kFSCatInfoNone, NULL, NULL, NULL, &parent);
+    if (!err) {
+      CFURLRef url = CFURLCreateFromFSRef(kCFAllocatorDefault, &parent);
+      if (url) {
+        CFStringRef cfpath = CFURLCopyFileSystemPath(url, kCFURLPOSIXPathStyle);
+        if (cfpath) {
+          CFIndex numChars = CFStringGetLength(cfpath);
+          wchar_t* wPath = new wchar_t[numChars+1]; //any alignment issues?
+          CFIndex numBytesWritten = 0;
+          assert(sizeof(wchar_t) == 4); //kCFStringEncodingUTF32 hardcoded below
+          CFIndex numConverted = CFStringGetBytes(cfpath, CFRangeMake(0, numChars), 
+                                                 kCFStringEncodingUTF32, 0, false, reinterpret_cast<UInt8*>(wPath), 
+                                                 sizeof(wchar_t)*numChars, &numBytesWritten);
+          assert(numConverted*sizeof(wchar_t) == numBytesWritten);
+          stringT retval(wPath, numConverted);
+          delete [] wPath;
+          CFRelease(cfpath);
+          return retval;
+        }
+        CFRelease(url);
+      }
+    }
   }
+  return _T("?");
 }
 
 stringT pws_os::getcwd()

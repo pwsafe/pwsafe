@@ -928,14 +928,14 @@ void PasswordSafeFrame::OnSaveAsClick(wxCommandEvent& evt)
   if(cf.empty()) {
     cf = _("pwsafe"); // reasonable default for first time user
   }
-  wxString v3FileName = PWSUtil::GetNewFileName(cf.c_str(), DEFAULT_SUFFIX);
+  wxString v3FileName = towxstring(PWSUtil::GetNewFileName(cf.c_str(), DEFAULT_SUFFIX));
 
   wxString title = (m_core.GetCurFile().empty()? _("Please choose a name for the current (Untitled) database:") : 
                                     _("Please choose a new name for the current database:"));
   wxFileName filename(v3FileName);
   wxString dir = filename.GetPath();
   if (dir.empty())
-    dir = PWSdirs::GetSafeDir();
+    dir = towxstring(PWSdirs::GetSafeDir());
 
   //filename cannot have the path
   wxFileDialog fd(this, title, dir, filename.GetFullName(),
@@ -1988,7 +1988,7 @@ void PasswordSafeFrame::OnImportText(wxCommandEvent& evt)
       break;
     case PWScore::FAILURE:
       cs_title = wxT("Import Text failed");
-      cs_temp = strError;
+      cs_temp = towxstring(strError);
       delete pcmd;
       break;
     case PWScore::SUCCESS:
@@ -2053,7 +2053,7 @@ void PasswordSafeFrame::OnImportKeePass(wxCommandEvent& evt)
 
   wxFileDialog fd(this, _("Please Choose a KeePass Text File to Import"),
                   wxEmptyString, wxEmptyString,
-                  _("Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*)|*.*||"),
+                  _("Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*)|*.*"),
                   (wxFD_OPEN | wxFD_FILE_MUST_EXIST | wxFD_PREVIEW));
 
   if (fd.ShowModal() != wxID_OK )
@@ -2099,12 +2099,13 @@ void PasswordSafeFrame::OnImportXML(wxCommandEvent& evt)
   }
 
   TCHAR XSDfn[] = wxT("pwsafe.xsd");
-  wxFileName XSDFilename(PWSdirs::GetXMLDir(), XSDfn);
+  wxFileName XSDFilename(towxstring(PWSdirs::GetXMLDir()), XSDfn);
 
 #if USE_XML_LIBRARY == MSXML || USE_XML_LIBRARY == XERCES
   // Expat is a non-validating parser - no use for Schema!
   if (!XSDFilename.FileExists()) {
-    wxMessageBox(wxString::Format(_("Can't find XML Schema Definition file (%s) in your PasswordSafe Application Directory.\r\nPlease copy it from your installation file, or re-install PasswordSafe."), XSDfn), 
+    wxString filepath(XSDFilename.GetFullPath());
+    wxMessageBox(wxString::Format(_("Can't find XML Schema Definition file (%s) in your PasswordSafe Application Directory.\r\nPlease copy it from your installation file, or re-install PasswordSafe."), filepath.c_str()), 
                           _("Missing XSD File"), wxOK | wxICON_ERROR);
     return;
   }
