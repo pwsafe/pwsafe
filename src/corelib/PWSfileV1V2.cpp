@@ -178,7 +178,7 @@ int PWSfileV1V2::Open(const StringX &passkey)
   if (status != SUCCESS)
     Close();
 #ifdef UNICODE
-  trashMemory(pstr, 3*passLen);
+  trashMemory(pstr, pstr_len);
   delete[] pstr;
 #endif
   return status;
