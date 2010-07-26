@@ -277,6 +277,9 @@ public:
   /// .wxEVT_COMMAND_MENU_SELECTED event handler for ID_IMPORT_KEEPASS
   void OnImportKeePass(wxCommandEvent& evt);
 
+  /// .wxEVT_COMMAND_MENU_SELECTED event handler for EXPORT2OLD1XFORMAT & ID_EXPORT2V2FORMAT
+  void OnExportVx(wxCommandEvent& evt);
+
   /// called when one of the MRU db's is selected from File menu
   void OnOpenRecentDB(wxCommandEvent& evt);
   

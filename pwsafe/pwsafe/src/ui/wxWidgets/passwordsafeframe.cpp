@@ -179,6 +179,10 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_MENU( ID_IMPORT_KEEPASS, PasswordSafeFrame::OnImportKeePass )
 
   EVT_MENU( ID_IMPORT_XML, PasswordSafeFrame::OnImportXML )
+
+  EVT_MENU( ID_EXPORT2OLD1XFORMAT, PasswordSafeFrame::OnExportVx )
+
+  EVT_MENU( ID_EXPORT2V2FORMAT, PasswordSafeFrame::OnExportVx )
   
   EVT_MENU( ID_MENU_CLEAR_MRU, PasswordSafeFrame::OnClearRecentHistory )
   EVT_UPDATE_UI( ID_MENU_CLEAR_MRU, PasswordSafeFrame::OnUpdateClearRecentDBHistory )
@@ -2232,6 +2236,49 @@ void PasswordSafeFrame::OnImportXML(wxCommandEvent& evt)
   cs_temp << _("\n\nDo you wish to see a detailed report?");
   if ( wxMessageBox(cs_temp, cs_title, wxYES_NO | iconType) == wxID_YES) {
     //ViewReport(rpt);
+  }
+}
+
+void PasswordSafeFrame::OnExportVx(wxCommandEvent& evt)
+{
+  int rc;
+  StringX newfile;
+  wxString cs_text, cs_title, cs_temp;
+
+  //SaveAs-type dialog box
+  std::wstring OldFormatFileName = PWSUtil::GetNewFileName(m_core.GetCurFile().c_str(),
+                                                      _("dat"));
+  cs_text = _("Please name the exported database");
+
+  //filename cannot have the path. Need to pass it separately
+  wxFileName filename(OldFormatFileName);
+  wxString dir = filename.GetPath();
+  if (dir.empty())
+    dir = towxstring(PWSdirs::GetSafeDir());
+
+  wxFileDialog fd(this, cs_text, dir, filename.GetFullName(),
+                _("Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|All files (*.*)|*.*"),
+                 wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+
+  if (fd.ShowModal() != wxID_OK)
+    return;
+
+  newfile = tostringx(fd.GetPath());
+
+  switch (evt.GetId()) {
+    case ID_EXPORT2OLD1XFORMAT:
+      rc = m_core.WriteV17File(newfile);
+      break;
+    case ID_EXPORT2V2FORMAT:
+      rc = m_core.WriteV2File(newfile);
+      break;
+    default:
+      wxFAIL_MSG(_("Could not figure out why PasswordSafeFrame::OnExportVx was invoked"));
+      rc = PWScore::FAILURE;
+      break;
+  }
+  if (rc != PWScore::SUCCESS) {
+    DisplayFileWriteError(rc, newfile);
   }
 }
 
