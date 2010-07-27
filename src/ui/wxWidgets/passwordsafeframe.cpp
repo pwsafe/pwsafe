@@ -49,6 +49,7 @@
 #include "../../os/file.h"
 #include "./ImportTextDlg.h"
 #include "./ImportXmlDlg.h"
+#include "./ExportTextWarningDlg.h"
 
 // main toolbar images
 #include "../graphics/toolbar/wxWidgets/new.xpm"
@@ -183,6 +184,10 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_MENU( ID_EXPORT2OLD1XFORMAT, PasswordSafeFrame::OnExportVx )
 
   EVT_MENU( ID_EXPORT2V2FORMAT, PasswordSafeFrame::OnExportVx )
+
+  EVT_MENU( ID_EXPORT2PLAINTEXT, PasswordSafeFrame::OnExportPlainText )
+
+  EVT_MENU( ID_EXPORT2XML, PasswordSafeFrame::OnExportXml )
   
   EVT_MENU( ID_MENU_CLEAR_MRU, PasswordSafeFrame::OnClearRecentHistory )
   EVT_UPDATE_UI( ID_MENU_CLEAR_MRU, PasswordSafeFrame::OnUpdateClearRecentDBHistory )
@@ -2282,6 +2287,18 @@ void PasswordSafeFrame::OnExportVx(wxCommandEvent& evt)
   }
 }
 
+
+void PasswordSafeFrame::OnExportPlainText(wxCommandEvent& evt)
+{
+  CExportTextWarningDlg dlg(this, _("Export Text"));
+  dlg.ShowModal();
+}
+
+void PasswordSafeFrame::OnExportXml(wxCommandEvent& evt)
+{
+  CExportTextWarningDlg dlg(this, _("Export XML"));
+  dlg.ShowModal();
+}
 
 //-----------------------------------------------------------------
 // Remove all DialogBlock-generated stubs below this line, as we

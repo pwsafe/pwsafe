@@ -63,6 +63,10 @@
     <File Name="../src/ui/wxWidgets/ImportXmlDlg.cpp"/>
     <File Name="../src/ui/wxWidgets/OpenFilePickerValidator.cpp"/>
     <File Name="../src/ui/wxWidgets/OpenFilePickerValidator.h"/>
+    <File Name="../src/ui/wxWidgets/ExportTextWarningDlg.cpp"/>
+    <File Name="../src/ui/wxWidgets/ExportTextWarningDlg.h"/>
+    <File Name="../src/ui/wxWidgets/SafeCombinationCtrl.h"/>
+    <File Name="../src/ui/wxWidgets/SafeCombinationCtrl.cpp"/>
   </VirtualDirectory>
   <Dependencies Name="Release">
     <Project Name="core"/>
