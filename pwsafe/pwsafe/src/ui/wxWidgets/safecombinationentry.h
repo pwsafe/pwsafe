@@ -96,9 +96,6 @@ public:
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL
   void OnCancel( wxCommandEvent& event );
 
-  /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_VKBD
-  void OnVirtualKeyboard( wxCommandEvent& event );
-  
 ////@end CSafeCombinationEntry event handler declarations
 
 ////@begin CSafeCombinationEntry member function declarations
