@@ -19,86 +19,86 @@
 ;=================================================================
 
 ; RESERVE_TITLE "Choose Installation Type"
-LangString RESERVE_TITLE ${LANG_SPANISH} "TRANSLATION"
+LangString RESERVE_TITLE ${LANG_SPANISH} "Elegir tipo de instalación"
 
 ; RESERVE_FIELD1 "Regular (uses Registry, suitable for home or single user PC)"
-LangString RESERVE_FIELD1 ${LANG_SPANISH} "TRANSLATION"
+LangString RESERVE_FIELD1 ${LANG_SPANISH} "Normal (usa el registro, apropiada para un PC)"
 
 ; RESERVE_FIELD2 "Green (for Disk-on-Key; does not use host Registry)"
-LangString RESERVE_FIELD2 ${LANG_SPANISH} "TRANSLATION"
+LangString RESERVE_FIELD2 ${LANG_SPANISH} "Verde (para llave portatil; no usa el registro)"
 
 ; PROGRAM_FILES "Program Files"
-LangString PROGRAM_FILES ${LANG_SPANISH} "TRANSLATION"
+LangString PROGRAM_FILES ${LANG_SPANISH} "Archivos de programa"
 
 ; START_AUTO "Start automatically"
-LangString START_AUTO ${LANG_SPANISH} "TRANSLATION"
+LangString START_AUTO ${LANG_SPANISH} "Inciar automáticamente"
 
 ; START_SHOW "Show in start menu"
-LangString START_SHOW ${LANG_SPANISH} "TRANSLATION"
+LangString START_SHOW ${LANG_SPANISH} "Mostrar en menú de inicio"
 
 ; START_SHORTCUT "Install desktop shortcut"
-LangString START_SHORTCUT ${LANG_SPANISH} "TRANSLATION"
+LangString START_SHORTCUT ${LANG_SPANISH} "Acceso directo en escritorio"
 
 ; UNINSTALL_SHORTCUT "Uninstall shortcut"
-LangString UNINSTALL_SHORTCUT ${LANG_SPANISH} "TRANSLATION"
+LangString UNINSTALL_SHORTCUT ${LANG_SPANISH} "Menú desinstalar"
 
 ;--------------------------------
 ; Descriptions
 
 ; DESC_ProgramFiles "Installs the basic files necessary to run Password Safe."
-LangString DESC_ProgramFiles ${LANG_SPANISH} "TRANSLATION"
+LangString DESC_ProgramFiles ${LANG_SPANISH} "Instala los archivos imprescindibles para ejecutar Password Safe"
 
 ; DESC_StartUp "Starts Password Safe as part of Windows boot/login."
-LangString DESC_StartUp ${LANG_SPANISH} "TRANSLATION"
+LangString DESC_StartUp ${LANG_SPANISH} "Inicia Password Safe en el arranque de Windows"
 
 ; DESC_StartMenu "Creates an entry in the start menu for Password Safe."
-LangString DESC_StartMenu ${LANG_SPANISH} "TRANSLATION"
+LangString DESC_StartMenu ${LANG_SPANISH} "Crea una entrada en el menú de inicio para Password Safe"
 
 ; DESC_DesktopShortcut "Places a shortcut to Password Safe on your desktop."
-LangString DESC_DesktopShortcut ${LANG_SPANISH} "TRANSLATION"
+LangString DESC_DesktopShortcut ${LANG_SPANISH} "Crea un acceso directo a Password Safe en tu escritorio"
 
 ; DESC_UninstallMenu "Places a shortcut in the start menu to Uninstall Password Safe."
-LangString DESC_UninstallMenu ${LANG_SPANISH} "TRANSLATION"
+LangString DESC_UninstallMenu ${LANG_SPANISH} "Crea una entrada en el menú inicio para desinstalar Password Safe"
   
 ; "LangString" (for "Function GreenOrRegular") are setup here because they cannot be defined in the function body
 ; TEXT_GC_TITLE "Installation Type"
-LangString TEXT_GC_TITLE ${LANG_SPANISH} "TRANSLATION"
+LangString TEXT_GC_TITLE ${LANG_SPANISH} "Tipo de instalación"
 
 ; TEXT_GC_SUBTITLE "Choose Regular for use on a single PC, Green for portable installation. If you're not sure, 'Regular' is fine."
-LangString TEXT_GC_SUBTITLE ${LANG_SPANISH} "TRANSLATION"
+LangString TEXT_GC_SUBTITLE ${LANG_SPANISH} "Elige Normal para usarlo en un sólo PC, Verde para una instalación portable, para usar en distintos PC"
 
 ; PSWINI_TITLE "Choose Installation Type"
-LangString PSWINI_TITLE ${LANG_SPANISH} "TRANSLATION"
+LangString PSWINI_TITLE ${LANG_SPANISH} "Elige el tipo de instalación"
 
 ; PSWINI_TEXT1 "Regular (uses Registry, suitable for home or single user PC)"
-LangString PSWINI_TEXT1 ${LANG_SPANISH} "TRANSLATION"
+LangString PSWINI_TEXT1 ${LANG_SPANISH} "Normal (usa el registro, apropiada para un PC)"
 
 ; PSWINI_TEXT2 "Green (for Disk-on-Key; does not use host Registry)"
-LangString PSWINI_TEXT2 ${LANG_SPANISH} "TRANSLATION"
+LangString PSWINI_TEXT2 ${LANG_SPANISH} "Verde (para llave portatil; no usa el registro)"
 
 ;--------------------------------
 ; checks and warnings
 
 ; RUNNING_INSTALL "The installer is already running."
-LangString RUNNING_INSTALL ${LANG_SPANISH} "TRANSLATION"
+LangString RUNNING_INSTALL ${LANG_SPANISH} "El instalador ya se está ejecutando"
 
 ; RUNNING_APPLICATION "Please exit all running instances of PasswordSafe before installing a new version"
-LangString RUNNING_APPLICATION ${LANG_SPANISH} "TRANSLATION"
+LangString RUNNING_APPLICATION ${LANG_SPANISH} "Por favor, sal de todas las instancias de PasswordSafe antes de instalar una nueva versión"
 
 ; LANG_INSTALL "Installation Language"
-LangString LANG_INSTALL ${LANG_SPANISH} "TRANSLATION"
+LangString LANG_INSTALL ${LANG_SPANISH} "Lenguaje de instalación"
 
 ; LANG_SELECT "Please select the language for the installation"
-LangString LANG_SELECT ${LANG_SPANISH} "TRANSLATION"
+LangString LANG_SELECT ${LANG_SPANISH} "Por favor, selecciona el lenguaje de la instalación"
 
 ; SORRY_NO_95 "Sorry, Windows 95 is no longer supported. Try PasswordSafe 2.16"
-LangString SORRY_NO_95 ${LANG_SPANISH} "TRANSLATION"
+LangString SORRY_NO_95 ${LANG_SPANISH} "No hay soporte para Windows 95"
 
 ; SORRY_NO_98 "Sorry, Windows 98 is no longer supported. Try PasswordSafe 2.16"
-LangString SORRY_NO_98 ${LANG_SPANISH} "TRANSLATION"
+LangString SORRY_NO_98 ${LANG_SPANISH} "No hay soporte para Windows 98. Prueba con PasswordSafe 2.16"
 
 ; SORRY_NO_ME "Sorry, Windows ME is no longer supported. Try PasswordSafe 2.16"
-LangString SORRY_NO_ME ${LANG_SPANISH} "TRANSLATION"
+LangString SORRY_NO_ME ${LANG_SPANISH} "No hay soporte para Windows ME. Prueba con PasswordSafe 2.16"
 
 ;=================================================================
 ; End of pwsafe_es.lng
