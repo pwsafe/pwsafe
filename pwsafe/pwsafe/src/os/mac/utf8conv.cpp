@@ -7,7 +7,7 @@
 */
 
 /**
- * \file Linux-specific implementation of utf8conv.h
+ * \file MacOS-specific implementation of utf8conv.h
  */
 
 #include "../typedefs.h"

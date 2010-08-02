@@ -149,3 +149,8 @@ stringT pws_os::getsafedir(void)
 {
   return getuserprefsdir(); // same-same on linux
 }
+
+stringT pws_os::getxmldir(void)
+{
+  return _S("/usr/share/pwsafe/xml/");
+}

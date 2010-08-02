@@ -7,7 +7,7 @@
 */
 
 /**
- * \file Linux-specific implementation of env.h
+ * \file MacOS-specific implementation of env.h
  */
 
 #include <sstream>

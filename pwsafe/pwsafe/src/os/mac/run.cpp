@@ -7,7 +7,7 @@
 */
 
 /**
- * \file Linux-specific implementation of run.h - INCOMPLETE & UNTESTED
+ * \file MacOS-specific implementation of run.h - INCOMPLETE & UNTESTED
  */
 
 #include "../run.h"

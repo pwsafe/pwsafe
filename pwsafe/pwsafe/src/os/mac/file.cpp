@@ -7,7 +7,7 @@
 */
 
 /**
- * \file Linux-specific implementation of file.h
+ * \file MacOS-specific implementation of file.h
  */
 #include <sys/types.h>
 #include <sys/stat.h>

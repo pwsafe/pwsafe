@@ -7,7 +7,7 @@
 */
 
 /**
- * \file Linux-specific implementation of some wide-string related functionality
+ * \file MacOS-specific implementation of some wide-string related functionality
  */
 
 #include <wchar.h>
