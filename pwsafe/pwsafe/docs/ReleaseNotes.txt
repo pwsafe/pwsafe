@@ -10,7 +10,8 @@ releases may be found in the file ChangeLog.txt.
 
 Bugs fixed in 3.23.1
 ====================
-[] Added Spanish texts for installer.
+[] Spanish translations for installer and application updated - thanks
+to Jose.
 
 New Features for 3.23
 =====================
