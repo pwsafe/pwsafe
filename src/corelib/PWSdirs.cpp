@@ -74,7 +74,7 @@ stringT PWSdirs::GetXMLDir()
   if (!retval.empty())
     retval += _S("\\xml\\");
   else {
-    retval = GetOurExecDir();
+    retval = pws_os::getxmldir();
   }
   return retval;
 }

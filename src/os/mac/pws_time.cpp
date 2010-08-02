@@ -7,7 +7,7 @@
 */
 
 /**
- * \file Linux-specific implementation of some time related functionality
+ * \file MacOS-specific implementation of some time related functionality
  */
 
 #include "pws_time.h"

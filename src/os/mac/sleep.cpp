@@ -7,7 +7,7 @@
 */
 
 /**
- * \file Linux-specific implementation of sleep.h
+ * \file MacOS-specific implementation of sleep.h
  */
 
 #include <errno.h>

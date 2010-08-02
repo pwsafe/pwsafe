@@ -7,7 +7,7 @@
 */
 
 /**
- * \file Linux-specific implementation of registry.h
+ * \file MacOS-specific implementation of registry.h
  *
  * NULL, really, since registry's a Windows-ism
  */

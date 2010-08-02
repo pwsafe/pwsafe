@@ -7,7 +7,7 @@
 */
 
 /**
- * \file Linux-specific implementation of rand.h
+ * \file MacOS-specific implementation of rand.h
  */
 #include "../rand.h"
 #include <fstream>

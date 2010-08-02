@@ -24,6 +24,7 @@ namespace pws_os {
 
   extern stringT getuserprefsdir(void);
   extern stringT getsafedir(void);
+  extern stringT getxmldir(void);
 };
 #endif /* __DIR_H */
 //-----------------------------------------------------------------------------

@@ -7,7 +7,7 @@
 */
 
 /**
- * \file Linux-specific implementation of mem.h
+ * \file MacOS-specific implementation of mem.h
  */
 
 #include <sys/mman.h>
