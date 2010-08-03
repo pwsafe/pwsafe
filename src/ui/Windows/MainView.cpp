@@ -1431,7 +1431,7 @@ int DboxMain::InsertItemIntoGUITreeList(CItemData &ci, int iIndex,
 
   if (iView & iTreeOnly) {
     HTREEITEM ti;
-    StringX treeDispString = m_ctlItemTree.MakeTreeDisplayString(ci);
+    StringX treeDispString = (LPCWSTR)m_ctlItemTree.MakeTreeDisplayString(ci);
     // get path, create if necessary, add title as last node
     bool bAlreadyExists;
     ti = m_ctlItemTree.AddGroup(ci.GetGroup().c_str(), bAlreadyExists);
