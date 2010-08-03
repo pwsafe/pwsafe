@@ -8,6 +8,7 @@
 #include "../../corelib/Util.h"
 #include "passwordsafeframe.h"
 #include "wxutils.h"
+#include "AdvancedSelectionDlg.h"
 
 ////@begin XPM images
 #include "../graphics/wxWidgets/find.xpm"
@@ -25,266 +26,6 @@
 #include <functional>
 
 enum { FIND_MENU_POSITION = 4 } ;
-
-struct _subgroups {
-  const charT* name;
-  CItemData::FieldType type;
-} subgroups[] = { {wxT("Group"),       CItemData::GROUP},
-                  {wxT("Group/Title"), CItemData::GROUPTITLE},
-                  {wxT("Notes"),       CItemData::NOTES},
-                  {wxT("Title"),       CItemData::TITLE},
-                  {wxT("URL"),         CItemData::URL},
-                  {wxT("User Name"),   CItemData::USER} } ;
-
-struct _subgroupFunctions {
-  const charT* name;
-  PWSMatch::MatchRule function;
-} subgroupFunctions[] = { {wxT("equals"),              PWSMatch::MR_EQUALS},
-                          {wxT("does not equal"),      PWSMatch::MR_NOTEQUAL},
-                          {wxT("begins with"),         PWSMatch::MR_BEGINS},
-                          {wxT("does not begin with"), PWSMatch::MR_NOTBEGIN},
-                          {wxT("ends with"),           PWSMatch::MR_ENDS},
-                          {wxT("does not end with"),   PWSMatch::MR_NOTEND},
-                          {wxT("contains"),            PWSMatch::MR_CONTAINS},
-                          {wxT("does not contain"),    PWSMatch::MR_NOTCONTAIN} } ;
-
-struct _fieldNames {
-    const charT* name;
-    CItemData::FieldType type;
-} fieldNames[] = {  {wxT("Group"),              CItemData::GROUP},
-                    {wxT("Title"),              CItemData::TITLE},
-                    {wxT("User Name"),          CItemData::USER},
-                    {wxT("Notes"),              CItemData::NOTES},
-                    {wxT("Password"),           CItemData::PASSWORD},
-                    {wxT("URL"),                CItemData::URL},
-                    {wxT("Autotype"),           CItemData::AUTOTYPE},
-                    {wxT("Password History"),   CItemData::PWHIST},
-                    {wxT("Run Command"),        CItemData::RUNCMD},
-                    {wxT("Email"),              CItemData::EMAIL}
-                 };
-
-
-////////////////////////////////////////////////////////////////////////////
-// AdvancedSearchOptionsDlg implementation
-
-IMPLEMENT_CLASS( AdvancedSearchOptionsDlg, wxDialog )
-
-BEGIN_EVENT_TABLE( AdvancedSearchOptionsDlg, wxDialog )
-  EVT_BUTTON( wxID_OK, AdvancedSearchOptionsDlg::OnOk )
-  EVT_BUTTON( ID_SELECT_SOME, AdvancedSearchOptionsDlg::OnSelectSome )
-  EVT_BUTTON( ID_SELECT_ALL, AdvancedSearchOptionsDlg::OnSelectAll )
-  EVT_BUTTON( ID_REMOVE_SOME, AdvancedSearchOptionsDlg::OnRemoveSome )
-  EVT_BUTTON( ID_REMOVE_ALL, AdvancedSearchOptionsDlg::OnRemoveAll )
-END_EVENT_TABLE()
-
-AdvancedSearchOptionsDlg::AdvancedSearchOptionsDlg(wxWindow* parentWnd, 
-                                                   PasswordSafeSearchContext& context): m_context(context)
-{
-  SetExtraStyle(wxWS_EX_VALIDATE_RECURSIVELY);
-  m_searchData = m_context.Get();
-  CreateControls(parentWnd);
-}
-
-void AdvancedSearchOptionsDlg::CreateControls(wxWindow* parentWnd)
-{
-  enum { TopMargin = 20, BottomMargin = 20, SideMargin = 30, RowSeparation = 10, ColSeparation = 20};
-
-  wxDialog::Create(parentWnd, wxID_ANY, wxT("Advanced Find Options"),
-                    wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER);
-  
-  wxBoxSizer* dlgSizer = new wxBoxSizer(wxVERTICAL);
-  dlgSizer->AddSpacer(TopMargin);
-  
-  //Subset entries
-  {
-    wxStaticBoxSizer* sizer = new wxStaticBoxSizer(wxVERTICAL, this);
-
-    wxCheckBox* check = new wxCheckBox(this, wxID_ANY, wxT("&Restrict to a subset of entries:"));
-    check->SetValidator(wxGenericValidator(&m_searchData.m_fUseSubgroups));
-    sizer->Add(check, wxSizerFlags().Border());
-
-    wxBoxSizer* hbox = new wxBoxSizer(wxHORIZONTAL);
-    hbox->Add(new wxStaticText(this, wxID_ANY, wxT("&Where")), wxSizerFlags(0));
-    hbox->AddSpacer(ColSeparation);
-    
-    wxComboBox* comboSubgroup = new wxComboBox(this, wxID_ANY);
-    for (size_t idx = 0 ; idx < NumberOf(subgroups); ++idx) comboSubgroup->AppendString(subgroups[idx].name);
-    comboSubgroup->SetValidator(wxGenericValidator(&m_searchData.m_subgroupObject));
-    hbox->Add(comboSubgroup, wxSizerFlags(1).Expand());
-    
-    hbox->AddSpacer(ColSeparation);
-    
-    wxComboBox* comboFunctions = new wxComboBox(this, wxID_ANY);
-    for( size_t idx = 0; idx < NumberOf(subgroupFunctions); ++idx) comboFunctions->AppendString(subgroupFunctions[idx].name);
-    comboFunctions->SetValidator(wxGenericValidator(&m_searchData.m_subgroupFunction));
-    hbox->Add(comboFunctions, wxSizerFlags(1).Expand());
-    
-    sizer->Add(hbox, wxSizerFlags().Border().Expand());
-
-    sizer->Add( new wxStaticText(this, wxID_ANY, wxT("the &following text:")), wxSizerFlags().Border());
-
-    wxTextCtrl* txtCtrl = new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(200, -1));
-    txtCtrl->SetValidator(wxGenericValidator(&m_searchData.m_searchText));
-    sizer->Add(txtCtrl, wxSizerFlags().Border().Expand().FixedMinSize());
-
-    wxCheckBox* checkCaseSensitivity = new wxCheckBox(this, wxID_ANY, wxT("&Case Sensitive"));
-    checkCaseSensitivity->SetValidator(wxGenericValidator(&m_searchData.m_fCaseSensitive));
-    sizer->Add( checkCaseSensitivity, wxSizerFlags().Border() );
-    
-    dlgSizer->Add(sizer, wxSizerFlags().Border(wxLEFT|wxRIGHT, SideMargin).Expand());
-  }
-
-  dlgSizer->AddSpacer(RowSeparation);
-  
-  {
-    wxFlexGridSizer* grid = new wxFlexGridSizer(3, RowSeparation, ColSeparation);
-    
-    //first and third columns are growable
-    grid->AddGrowableCol(0, 1);  
-    grid->AddGrowableCol(2, 1);
-    grid->AddGrowableRow(1, 1);
-    grid->SetFlexibleDirection(wxBOTH);
-    
-    //first row is labels, with a spacer in between
-    grid->Add(new wxStaticText(this, wxID_ANY, wxT("&Available Fields:")));
-    grid->AddSpacer(0);
-    grid->Add(new wxStaticText(this, wxID_ANY, wxT("&Selected Fields:")));
-    
-    //second row is the listboxes, with buttons in between
-    wxListBox* lbFields = new wxListBox(this, ID_LB_AVAILABLE_FIELDS, wxDefaultPosition, 
-              wxDefaultSize, 0, NULL, wxLB_EXTENDED);
-    for (size_t idx = 0; idx < NumberOf(fieldNames); ++idx)
-        if (!m_searchData.m_bsFields.test(fieldNames[idx].type))
-            lbFields->Append(fieldNames[idx].name, (void*)(idx));
-
-    grid->Add(lbFields, wxSizerFlags().Expand());
-    
-    wxBoxSizer* buttonBox = new wxBoxSizer(wxVERTICAL);
-    buttonBox->AddStretchSpacer();
-    buttonBox->Add( new wxButton(this, ID_SELECT_SOME, wxT(">")) );
-    buttonBox->AddSpacer(RowSeparation);
-    buttonBox->Add( new wxButton(this, ID_SELECT_ALL, wxT(">>")) );
-    buttonBox->AddSpacer(RowSeparation*2);
-    buttonBox->Add( new wxButton(this, ID_REMOVE_SOME, wxT("<")) );
-    buttonBox->AddSpacer(RowSeparation);
-    buttonBox->Add( new wxButton(this, ID_REMOVE_ALL, wxT("<<")) );
-    buttonBox->AddStretchSpacer();
-    
-    grid->Add(buttonBox, wxSizerFlags().Align(wxALIGN_CENTER_VERTICAL));
-
-
-    wxListBox* lbSelectedFields = new wxListBox(this, ID_LB_SELECTED_FIELDS, wxDefaultPosition, 
-                  wxDefaultSize, 0, NULL, wxLB_EXTENDED);
-    for (size_t idx=0; idx < NumberOf(fieldNames); ++idx)
-        if (m_searchData.m_bsFields.test(fieldNames[idx].type))
-            lbSelectedFields->Append(fieldNames[idx].name, (void*)(idx));
-
-    
-    grid->Add(lbSelectedFields, wxSizerFlags().Expand());
-
-    dlgSizer->Add(grid, wxSizerFlags(1).Expand().Border(wxLEFT | wxRIGHT, SideMargin));
-  }
-  
-  dlgSizer->AddSpacer(RowSeparation);
-  dlgSizer->Add(new wxStaticLine(this), wxSizerFlags().Expand().Border(wxLEFT|wxRIGHT, SideMargin).Center());
-  dlgSizer->AddSpacer(RowSeparation);
-  dlgSizer->Add(CreateStdDialogButtonSizer(wxOK|wxCANCEL|wxHELP), wxSizerFlags().Center());
-  dlgSizer->AddSpacer(BottomMargin);
-  
-  SetSizerAndFit(dlgSizer);
-}
-
-void AdvancedSearchOptionsDlg::OnOk( wxCommandEvent& evt )
-{
-  TransferDataFromWindow();
-
-  wxListBox* lbSelected  = wxDynamicCast(FindWindow(ID_LB_SELECTED_FIELDS), wxListBox);
-  wxASSERT(lbSelected);
-
-  //reset the selected field bits 
-  m_searchData.m_bsFields.reset();
-  const size_t count = lbSelected->GetCount();
-  
-  for (size_t idx = 0; idx < count; ++idx) {
-      const size_t which = (size_t)lbSelected->GetClientData((unsigned int)idx);
-      m_searchData.m_bsFields.set(fieldNames[which].type, true);
-  }
-
-  if (!m_context.IsSame(m_searchData))
-      m_context.Set(m_searchData);
-
-  //Let wxDialog handle it as well, to close the window
-  evt.Skip(true);
-}
-
-void AdvancedSearchOptionsDlg::OnSelectSome( wxCommandEvent& /* evt */ )
-{
-  wxListBox* lbAvailable = wxDynamicCast(FindWindow(ID_LB_AVAILABLE_FIELDS), wxListBox);
-  wxListBox* lbSelected  = wxDynamicCast(FindWindow(ID_LB_SELECTED_FIELDS), wxListBox);
-  
-  wxASSERT(lbAvailable);
-  wxASSERT(lbSelected);
-
-  wxArrayInt aSelected;
-  if (lbAvailable->GetSelections(aSelected)) {
-    for (size_t idx = 0; idx < aSelected.GetCount(); ++idx) {
-      size_t which = (size_t)lbAvailable->GetClientData((unsigned int)(aSelected[idx] - idx));
-      wxASSERT(which < NumberOf(fieldNames));
-      lbAvailable->Delete((unsigned int)(aSelected[idx] - idx));
-      lbSelected->Append(fieldNames[which].name, (void *)which);
-    }
-  }
-}
-
-void AdvancedSearchOptionsDlg::OnSelectAll( wxCommandEvent& /* evt */ )
-{
-  wxListBox* lbAvailable = wxDynamicCast(FindWindow(ID_LB_AVAILABLE_FIELDS), wxListBox);
-  wxListBox* lbSelected  = wxDynamicCast(FindWindow(ID_LB_SELECTED_FIELDS), wxListBox);
-  
-  wxASSERT(lbAvailable);
-  wxASSERT(lbSelected);
-
-  while (lbAvailable->GetCount()) {
-      size_t which = (size_t)lbAvailable->GetClientData(0);
-      lbAvailable->Delete(0);
-      lbSelected->Append(fieldNames[which].name, (void*)which);
-  }
-}
-
-void AdvancedSearchOptionsDlg::OnRemoveSome( wxCommandEvent& /* evt */ )
-{
-  wxListBox* lbAvailable = wxDynamicCast(FindWindow(ID_LB_AVAILABLE_FIELDS), wxListBox);
-  wxListBox* lbSelected  = wxDynamicCast(FindWindow(ID_LB_SELECTED_FIELDS), wxListBox);
-  
-  wxASSERT(lbAvailable);
-  wxASSERT(lbSelected);
-
-  wxArrayInt aSelected;
-  if (lbSelected->GetSelections(aSelected)) {
-    for (size_t idx = 0; idx < aSelected.GetCount(); ++idx) {
-      size_t which = (size_t)lbSelected->GetClientData((unsigned int)(aSelected[idx] - idx));
-      wxASSERT(which < NumberOf(fieldNames));
-      lbSelected->Delete((unsigned int)(aSelected[idx] - idx));
-      lbAvailable->Append(fieldNames[which].name, (void *)which);
-    }
-  }
-}
-
-void AdvancedSearchOptionsDlg::OnRemoveAll( wxCommandEvent& /* evt */ )
-{
-  wxListBox* lbAvailable = wxDynamicCast(FindWindow(ID_LB_AVAILABLE_FIELDS), wxListBox);
-  wxListBox* lbSelected  = wxDynamicCast(FindWindow(ID_LB_SELECTED_FIELDS), wxListBox);
-  
-  wxASSERT(lbAvailable);
-  wxASSERT(lbSelected);
-
-  while (lbSelected->GetCount()) {
-      size_t which = (size_t)lbSelected->GetClientData(0);
-      lbSelected->Delete(0);
-      lbAvailable->Append(fieldNames[which].name, (void*)which);
-  }
-}
-
 
 ////////////////////////////////////////////////////////////////////////////
 // PasswordSafeSerach implementation
@@ -306,13 +47,14 @@ BEGIN_EVENT_TABLE( PasswordSafeSearch, wxEvtHandler )
   EVT_TEXT_ENTER( ID_FIND_EDITBOX, PasswordSafeSearch::OnDoSearch )
   EVT_TOOL( ID_FIND_CLOSE, PasswordSafeSearch::OnSearchClose )
   EVT_TOOL( ID_FIND_ADVANCED_OPTIONS, PasswordSafeSearch::OnAdvancedSearchOptions )
-  EVT_TOOL( ID_FIND_IGNORE_CASE, PasswordSafeSearch::OnToggleCaseSensitivity )
   EVT_TOOL( ID_FIND_NEXT, PasswordSafeSearch::OnDoSearch )
 ////@end PasswordSafeSearch event table entries
 END_EVENT_TABLE()
 
 
-PasswordSafeSearch::PasswordSafeSearch(PasswordSafeFrame* parent) : m_toolbar(0), m_parentFrame(parent), m_fAdvancedSearch(false)
+PasswordSafeSearch::PasswordSafeSearch(PasswordSafeFrame* parent) : m_toolbar(0), 
+                                                                    m_parentFrame(parent), 
+                                                                    m_fAdvancedSearch(false)
 {
 }
 
@@ -347,21 +89,24 @@ void PasswordSafeSearch::OnDoSearchT(Iter begin, Iter end, Accessor afn)
   wxTextCtrl* txtCtrl = wxDynamicCast(m_toolbar->FindControl(ID_FIND_EDITBOX), wxTextCtrl);
   wxASSERT(txtCtrl);
 
-  wxString searchText = txtCtrl->GetLineText(0);
-  if (m_searchContext->m_searchText != searchText)
-      m_searchContext.SetSearchText(searchText);
-
-  if (m_searchContext.IsDirty())  {
+  const wxString searchText = txtCtrl->GetLineText(0);
+  
+  if (searchText.IsEmpty())
+    return;
+    
+  if (m_criteria.IsDirty() || txtCtrl->IsModified())  {
       m_searchPointer.Clear();
    
       if (!m_fAdvancedSearch)
-        FindMatches(StringX(m_searchContext->m_searchText), m_searchContext->m_fCaseSensitive, m_searchPointer, begin, end, afn);
+        FindMatches(tostringx(searchText), m_toolbar->GetToolState(ID_FIND_IGNORE_CASE), m_searchPointer, begin, end, afn);
       else
-        FindMatches(StringX(m_searchContext->m_searchText), m_searchContext->m_fCaseSensitive, m_searchPointer, 
-                      m_searchContext->m_bsFields, m_searchContext->m_fUseSubgroups, m_searchContext->m_subgroupText,
-                      subgroups[m_searchContext->m_subgroupObject].type, subgroupFunctions[m_searchContext->m_subgroupFunction].function, begin, end, afn);
+        FindMatches(tostringx(searchText), m_toolbar->GetToolState(ID_FIND_IGNORE_CASE), m_searchPointer, 
+                      m_criteria.m_bsFields, m_criteria.m_fUseSubgroups, m_criteria.m_subgroupText,
+                      subgroups[m_criteria.m_subgroupObject].type, subgroupFunctions[m_criteria.m_subgroupFunction].function, 
+                      m_criteria.m_fCaseSensitive, begin, end, afn);
 
-      m_searchContext.Reset();
+      m_criteria.Clean();
+      txtCtrl->SetModified(false);
       m_searchPointer.InitIndex();
   }
   else {
@@ -442,19 +187,14 @@ void PasswordSafeSearch::HideSearchToolbar()
  */
 void PasswordSafeSearch::OnAdvancedSearchOptions(wxCommandEvent& /* evt */)
 {
-  m_searchContext.Reset();
-  AdvancedSearchOptionsDlg dlg(m_parentFrame, m_searchContext);
-  m_fAdvancedSearch = (dlg.ShowModal() == wxID_OK);
+  m_criteria.Clean();
+  AdvancedSelectionDlg dlg(m_parentFrame, m_criteria);
+  if (dlg.ShowModal() == wxID_OK) {
+    m_fAdvancedSearch = true;
+    if (m_criteria != dlg.m_criteria)
+      m_criteria = dlg.m_criteria;
+  }
 }
-
-/*!
- * wxEVT_COMMAND_TOOL_CLICKED event handler for ID_FIND_IGNORE_CASE
- */
-void PasswordSafeSearch::OnToggleCaseSensitivity(wxCommandEvent& /* evt */)
-{
-    m_searchContext.SetCaseSensitivity(!m_searchContext->m_fCaseSensitive);
-}
-
 
 /*!
  * Creates the search bar and keeps it hidden
@@ -556,7 +296,7 @@ void PasswordSafeSearch::FindMatches(const StringX& searchText, bool fCaseSensit
   CItemData::FieldBits bsFields;
   bsFields.set();
 
-  return FindMatches(searchText, fCaseSensitive, searchPtr, bsFields, false, wxEmptyString, CItemData::END, PWSMatch::MR_INVALID, begin, end, afn);
+  return FindMatches(searchText, fCaseSensitive, searchPtr, bsFields, false, wxEmptyString, CItemData::END, PWSMatch::MR_INVALID, false, begin, end, afn);
 }
 
 bool FindNoCase( const StringX& src, const StringX& dest)
@@ -573,7 +313,8 @@ bool FindNoCase( const StringX& src, const StringX& dest)
 template <class Iter, class Accessor>
 void PasswordSafeSearch::FindMatches(const StringX& searchText, bool fCaseSensitive, SearchPointer& searchPtr,
                                        const CItemData::FieldBits& bsFields, bool fUseSubgroups, const wxString& subgroupText,
-                                       CItemData::FieldType subgroupObject, PWSMatch::MatchRule subgroupFunction, Iter begin, Iter end, Accessor afn)
+                                       CItemData::FieldType subgroupObject, PWSMatch::MatchRule subgroupFunction, 
+                                       bool subgroupFunctionCaseSensitive, Iter begin, Iter end, Accessor afn)
 {
   if (searchText.empty())
       return;
@@ -600,7 +341,8 @@ void PasswordSafeSearch::FindMatches(const StringX& searchText, bool fCaseSensit
 
   for ( Iter itr = begin; itr != end; ++itr) {
     
-    if (fUseSubgroups && afn(itr).Matches((const charT*)subgroupText, subgroupObject, subgroupFunction))
+    const int fn = (subgroupFunctionCaseSensitive? -subgroupFunction: subgroupFunction);
+    if (fUseSubgroups && !afn(itr).Matches((const charT*)subgroupText, subgroupObject, fn))
         continue;
 
     bool found = false;
