@@ -24,7 +24,6 @@ CViewReport::CViewReport(CWnd* pParent /*=NULL*/,
   : CPWResizeDialog(CViewReport::IDD, pParent),
   m_pRpt(pRpt), m_bMemoryAllocOK(false)
 {
-  m_pDbx = static_cast<DboxMain *>(pParent);
 
   m_pString = m_pRpt->GetString(); 
   m_dwDatasize = m_pString.length() * sizeof(wchar_t);
@@ -70,7 +69,7 @@ BOOL CViewReport::OnInitDialog()
 
   CPWResizeDialog::OnInitDialog();
 
-  if (m_pDbx == NULL)
+  if (GetParent() == NULL)
     GetDlgItem(IDC_REPORT2CLIPBOARD)->EnableWindow(FALSE);
 
   // Get new edit string (as per MS doc.)
@@ -162,7 +161,9 @@ void CViewReport::Save()
 
 void CViewReport::SendToClipboard()
 {
-  m_pDbx->SetClipboardData(m_pString);
+  DboxMain *pDbx = dynamic_cast<DboxMain *>(GetParent());
+  if (pDbx != NULL)
+    pDbx->SetClipboardData(m_pString);
 }
 
 void CViewReport::Finish()

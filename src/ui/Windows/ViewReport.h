@@ -15,8 +15,6 @@
 
 // CViewReport dialog
 
-class DboxMain;
-
 class CViewReport : public CPWResizeDialog
 {
   DECLARE_DYNAMIC(CViewReport)
@@ -33,7 +31,6 @@ protected:
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
   virtual BOOL OnInitDialog();
 
-  DboxMain *m_pDbx;
   CReport *m_pRpt;
   StringX m_pString;
   DWORD m_dwDatasize;
