@@ -155,7 +155,7 @@ OSK_API BOOL OSK_GetKeyboardData(UINT uiKLID, st_KBImpl &stKBImpl)
     // and return FALSE
     for (int i = 0; i < MAX_ROWS; i++) {
       stKBImpl.stVKBD.stSC2CHAR[i].SC = 0;
-      stKBImpl.stVKBD.stSC2CHAR[i].bsDeadKey = 0UL;
+      stKBImpl.stVKBD.stSC2CHAR[i].bsDeadKey.reset();
       for (int j = 0; j < 16; j++) {
         stKBImpl.stVKBD.stSC2CHAR[i].wcChar[j] = 0;
       }
@@ -175,7 +175,8 @@ OSK_API BOOL OSK_GetKeyboardData(UINT uiKLID, st_KBImpl &stKBImpl)
   bool bLCtrl(false), bAltGr(false), bRCtrl(false);
   for (int i = 0; i < (int)pstIVKBD->numScanCodes; i++) {
     stKBImpl.stVKBD.stSC2CHAR[i].SC = pstIVKBD->stISC2CHAR[i].SC;
-    stKBImpl.stVKBD.stSC2CHAR[i].bsDeadKey = (unsigned long)pstIVKBD->stISC2CHAR[i].uiDeadKey;
+    std::bitset<16> bsDeadKey(pstIVKBD->stISC2CHAR[i].uiDeadKey);
+    stKBImpl.stVKBD.stSC2CHAR[i].bsDeadKey = bsDeadKey;
 
     for (int j = 0; j < 4; j++) {
       stKBImpl.stVKBD.stSC2CHAR[i].wcChar[j]      = wc_Chars[pstIVKBD->stISC2CHAR[i].uiOffset1][j];
