@@ -231,8 +231,8 @@ public:
   void Redo();
   void ClearCommands();
   void ResetStateAfterSave();
-  bool AnyToUndo();
-  bool AnyToRedo();
+  bool AnyToUndo() const;
+  bool AnyToRedo() const;
 
   // Find in m_pwlist by group, title and user name, exact match
   ItemListIter Find(const StringX &a_group,

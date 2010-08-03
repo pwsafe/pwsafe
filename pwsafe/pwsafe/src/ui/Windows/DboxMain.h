@@ -383,6 +383,8 @@ public:
   bool CheckPreTranslateRename(MSG* pMsg);
   bool CheckPreTranslateAutoType(MSG* pMsg);
 
+  void SetSetup() {m_bSetup = true;} // called by app when '--setup' passed
+
   // Needed public function for ComapreResultsDialog
   void CPRInitMenuPopup(CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu)
   {OnInitMenuPopup(pPopupMenu, nIndex, bSysMenu);}
@@ -403,6 +405,8 @@ protected:
   bool m_bValidate; // do validation after reading db
   bool m_bInRestoreWindowsData;
 
+  bool m_bSetup; // invoked with '--setup'?
+  
 #if !defined(POCKET_PC)
   CString m_titlebar; // what's displayed in the title bar
 #endif
@@ -716,6 +720,7 @@ protected:
                           int index, int flags = 0,
                           PWScore *pcore = 0, 
                           CAdvancedDlg::Type adv_type = CAdvancedDlg::ADV_INVALID);
+
 
 private:
   // UIInterFace implementations:

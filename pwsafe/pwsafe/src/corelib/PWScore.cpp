@@ -67,8 +67,7 @@ PWScore::PWScore() :
     PWSrand::GetInstance()->GetRandomData(m_session_salt,
                                           sizeof(m_session_salt));
   }
-  m_undo_iter = m_vpcommands.end();
-  m_redo_iter = m_vpcommands.end();
+  m_undo_iter = m_redo_iter = m_vpcommands.end();
 }
 
 PWScore::~PWScore()
@@ -324,7 +323,7 @@ void PWScore::NewFile(const StringX &passkey)
 {
   ClearData();
   SetPassKey(passkey);
-
+  m_ReadFileVersion = PWSfile::VCURRENT;
   SetChanged(false, false);
 }
 
@@ -470,9 +469,8 @@ int PWScore::Execute(Command *pcmd)
   }
 
   m_vpcommands.push_back(pcmd);
-  int rc = pcmd->Execute();
-
   m_undo_iter = m_redo_iter = m_vpcommands.end();
+  int rc = pcmd->Execute();
   m_undo_iter--;
 
   uuid_array_t entry_uuid = {'0'};  // Valid value not required for this particular call.
@@ -536,12 +534,12 @@ void PWScore::Redo()
         (m_redo_iter != m_vpcommands.end()) ? distance(m_redo_iter, m_vpcommands.begin()) : -1);
 }
 
-bool PWScore::AnyToUndo()
+bool PWScore::AnyToUndo() const
 {
   return (m_undo_iter != m_vpcommands.end());
 }
 
-bool PWScore::AnyToRedo()
+bool PWScore::AnyToRedo() const
 {
   return (m_redo_iter != m_vpcommands.end());
 }

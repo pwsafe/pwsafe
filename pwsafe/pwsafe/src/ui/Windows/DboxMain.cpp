@@ -28,6 +28,7 @@
 #include "ExpPWListDlg.h"
 #include "GeneralMsgBox.h"
 #include "InfoDisplay.h"
+#include "PasskeySetup.h"
 
 // Set Ctrl/Alt/Shift strings for menus
 #include "MenuShortcuts.h"
@@ -137,7 +138,7 @@ DboxMain::DboxMain(CWnd* pParent)
   m_bDeleteCtrl(false), m_bDeleteShift(false),
   m_bRenameCtrl(false), m_bRenameShift(false),
   m_bAutotypeCtrl(false), m_bAutotypeShift(false),
-  m_bInAT(false), m_bInRestoreWindowsData(false)
+  m_bInAT(false), m_bInRestoreWindowsData(false), m_bSetup(false)
 {
   // Need to do this as using the direct calls will fail for Windows versions before Vista
   m_hUser32 = ::LoadLibrary(L"User32.dll");
@@ -1067,7 +1068,40 @@ BOOL DboxMain::OnInitDialog()
   }
 
   if (!m_IsStartClosed && !m_IsStartSilent) {
-    OpenOnInit();
+    if (m_bSetup) { // --setup flag passed?
+      // If default dbase exists, DO NOT overwrite it, else
+      // prompt for new combination, create it.
+      // Meant for use when running after install
+      CString cf(MAKEINTRESOURCE(IDS_DEFDBNAME));
+      std::wstring fname = PWSUtil::GetNewFileName(LPCWSTR(cf),
+                                                   DEFAULT_SUFFIX);
+      std::wstring dir = PWSdirs::GetSafeDir();
+      if (dir[dir.length()-1] != TCHAR('\\')) dir += L"\\";
+      fname = dir + fname;
+      if (pws_os::FileExists(fname)) 
+        OpenOnInit();
+      else { // really first install!
+        CPasskeySetup dbox_pksetup(this);
+        INT_PTR rc = dbox_pksetup.DoModal();
+        if (rc == IDCANCEL) {
+          PostQuitMessage(0);
+          return FALSE;
+        }
+        m_core.SetCurFile(fname.c_str());
+        m_core.NewFile(dbox_pksetup.m_passkey);
+        m_core.SetReadOnly(false); 
+        rc = m_core.WriteCurFile();
+        if (rc == PWScore::CANT_OPEN_FILE) {
+          CGeneralMsgBox gmb;
+          CString cs_temp, cs_title(MAKEINTRESOURCE(IDS_FILEWRITEERROR));
+          cs_temp.Format(IDS_CANTOPENWRITING, m_core.GetCurFile().c_str());
+          gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
+          PostQuitMessage(0); // can we do something better here?
+          return FALSE;
+        }
+      } // first install
+    } else
+      OpenOnInit();
     // No need for another RefreshViews as OpenOnInit does one via PostOpenProcessing
   }
 

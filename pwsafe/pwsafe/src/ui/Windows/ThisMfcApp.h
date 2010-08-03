@@ -106,8 +106,9 @@ private:
   CString m_csFileVersionString;
   CString m_csCopyrightString;
   CString m_csHelpFile;
-  bool m_noSysEnvWarnings; // set by '-q' command line argument
-  bool m_bPermitTestdump;
+  // Following set by command line arguments
+  bool m_noSysEnvWarnings; // '-q'
+  bool m_bPermitTestdump;  // '--testdump'
 };
 //-----------------------------------------------------------------------------
 // Local variables:
