@@ -21,51 +21,14 @@
 #include <wx/toolbar.h>
 
 #include "../../corelib/ItemData.h"
+#include "AdvancedSelectionDlg.h"
 ////@end includes
 
 ////@begin forward declarations
 class PasswordSafeFrame;
 ////@end forward declarations
 
-
-/*!
- * PasswordSafeSearchData class declaration
- */
-
-class PasswordSafeSearchData 
-{
-  
-  PasswordSafeSearchData(const PasswordSafeSearchData&);
-
-public:
-  PasswordSafeSearchData():  m_fCaseSensitive(false),
-                             m_fUseSubgroups(false),
-                             m_subgroupObject(0),            // index into subgroups array defined in .cpp
-                             m_subgroupFunction(0)           // index into subgroupFunctions array defined in .cpp
-  {}
-
-  bool                  m_fCaseSensitive;
-  wxString              m_searchText;
-  CItemData::FieldBits  m_bsFields;
-  wxString              m_subgroupText;
-  bool                  m_fUseSubgroups;
-  int                   m_subgroupObject;
-  int                   m_subgroupFunction;
-};
-
-inline bool operator==(const PasswordSafeSearchData& a, const PasswordSafeSearchData& b)
-{
-  return a.m_bsFields         == b.m_bsFields && 
-         a.m_fCaseSensitive   == b.m_fCaseSensitive &&
-         a.m_fUseSubgroups    == b.m_fUseSubgroups &&
-         a.m_searchText       == b.m_searchText &&
-         a.m_subgroupFunction == b.m_subgroupFunction &&
-         a.m_subgroupText     == b.m_subgroupText &&
-         a.m_subgroupObject   == b.m_subgroupObject; 
-}
-
-
-
+#if 0
 /*!
  * PasswordSafeSearchContext class declaration.  This class tracks whether a  
  * contained PasswordSafeSearchData object has been modified
@@ -98,37 +61,7 @@ private:
   PasswordSafeSearchData* m_searchData;
   bool                    m_fDirty;
 };
-
-
-
-/*!
- * AdvancedSearchOptionsDlg class declaration
- */
-
-class AdvancedSearchOptionsDlg: public wxDialog
-{
-  DECLARE_CLASS(AdvancedSearchOptionsDlg)
-  DECLARE_EVENT_TABLE()
-
-  DECLARE_NO_COPY_CLASS(AdvancedSearchOptionsDlg);
-
-  PasswordSafeSearchContext& m_context;
-
-  enum {ID_SELECT_SOME = 101, ID_SELECT_ALL, ID_REMOVE_SOME, ID_REMOVE_ALL, ID_LB_AVAILABLE_FIELDS, ID_LB_SELECTED_FIELDS };
-
-public:
-  AdvancedSearchOptionsDlg(wxWindow* wnd, PasswordSafeSearchContext& context);
-
-  void OnOk( wxCommandEvent& evt );
-  void OnSelectSome( wxCommandEvent& evt );
-  void OnSelectAll( wxCommandEvent& evt );
-  void OnRemoveSome( wxCommandEvent& evt );
-  void OnRemoveAll( wxCommandEvent& evt );
-
-private:
-  void CreateControls(wxWindow* parentWnd);
-  PasswordSafeSearchData m_searchData;
-};
+#endif
 
 /*!
  * Encapsulates a search index
@@ -188,7 +121,6 @@ public:
   void OnDoSearch( wxCommandEvent& evt );
   void OnSearchClose(wxCommandEvent& evt);
   void OnAdvancedSearchOptions(wxCommandEvent& evt);
-  void OnToggleCaseSensitivity(wxCommandEvent& evt);
   void OnChar(wxKeyEvent& evt);
   void FindNext(void);
   void FindPrevious(void);
@@ -206,7 +138,8 @@ private:
   template <class Iter, class Accessor>
   void FindMatches(const StringX& searchText, bool fCaseSensitive, SearchPointer& searchPtr,
                      const CItemData::FieldBits& bsFields, bool fUseSubgroups, const wxString& subgroupText,
-                     CItemData::FieldType subgroupObject, PWSMatch::MatchRule subgroupFunction, Iter begin, Iter end, Accessor afn);
+                     CItemData::FieldType subgroupObject, PWSMatch::MatchRule subgroupFunction, 
+                     bool subgroupFunctionCaseSensitive, Iter begin, Iter end, Accessor afn);
 
   void CreateSearchBar(void);
   void HideSearchToolbar();
@@ -217,10 +150,8 @@ private:
   wxToolBar*           m_toolbar;
   PasswordSafeFrame*   m_parentFrame;
   bool                 m_fAdvancedSearch;
-
+  SelectionCriteria    m_criteria;
   SearchPointer        m_searchPointer;
-
-  PasswordSafeSearchContext m_searchContext;
 };
 
 #endif

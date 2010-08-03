@@ -148,7 +148,8 @@ SOURCES= passwordsafeframe.cpp \
 	createshortcutdlg.cpp SystemTray.cpp \
 	RUEList.cpp guiinfo.cpp ImportTextDlg.cpp \
 	ImportXmlDlg.cpp OpenFilePickerValidator.cpp \
-	SafeCombinationCtrl.cpp ExportTextWarningDlg.cpp
+	SafeCombinationCtrl.cpp ExportTextWarningDlg.cpp \
+	AdvancedSelectionDlg.cpp
 
 
 OBJECTS=$(SOURCES:%.cpp=$(OBJECTPATH)/%.o)
