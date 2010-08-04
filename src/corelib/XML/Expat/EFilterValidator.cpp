@@ -335,7 +335,7 @@ bool EFilterValidator::startElement(stringT & strStartElement)
   if (m_iErrorCode != 0) {
     switch (m_iErrorCode) {
       case XTPEC_UNEXPECTED_ELEMENT:
-        Format(m_sErrorMsg, IDSC_EXPATUNEXPECTED, strStartElement);
+        Format(m_sErrorMsg, IDSC_EXPATUNEXPECTED, strStartElement.c_str());
         break;
       default:
       /*
