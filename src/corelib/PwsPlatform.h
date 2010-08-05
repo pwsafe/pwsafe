@@ -566,4 +566,8 @@ static inline unsigned long ROR64c(unsigned long word, const int i)
 
 #define NumberOf(array) ((sizeof array)/sizeof(array[0]))
 
+#ifndef _MFC_VER
+#define UNREFERENCED_PARAMETER(P)
+#endif
+
 #endif /* __PWSPLATFORM_H */
