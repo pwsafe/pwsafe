@@ -13,7 +13,7 @@
 * Note: Xerces uses wchar_t even in non-Unicode mode.
 */
 
-#include "../XMLDefs.h"
+#include "../XMLDefs.h"    // Required if testing "USE_XML_LIBRARY"
 
 #if USE_XML_LIBRARY == XERCES
 

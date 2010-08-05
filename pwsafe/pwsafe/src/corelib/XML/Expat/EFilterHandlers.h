@@ -65,7 +65,7 @@ private:
   EFilterValidator *m_pValidator;
 
   // To ensure filtername is unique
-  std::set<const stringT> m_unique_filternames;
+  std::set<stringT> m_unique_filternames;
 
   // Local variables
   st_filters *cur_filter;

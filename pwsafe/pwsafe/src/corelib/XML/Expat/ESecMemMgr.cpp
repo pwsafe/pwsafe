@@ -16,13 +16,15 @@
 * Static library or used as a dynamic library e.g. DLL in Windows.
 */
 
-#include "../XMLDefs.h"
+#include "../XMLDefs.h"    // Required if testing "USE_XML_LIBRARY"
 
 #if USE_XML_LIBRARY == EXPAT
 
+#include <memory>
 #include "ESecMemMgr.h"
 
-#include <memory>
+#include <cstdlib>
+#include <cstring>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

@@ -21,7 +21,7 @@
 * As per XML parsing rules, any error stops the parsing immediately.
 */
 
-#include "XMLDefs.h"
+#include "XMLDefs.h"    // Required if testing "USE_XML_LIBRARY"
 
 #ifdef USE_XML_LIBRARY
 
@@ -31,7 +31,7 @@
 // PWS includes
 #include "../corelib.h"
 #include "../ItemData.h"
-#include "../util.h"
+#include "../Util.h"
 #include "../UUIDGen.h"
 #include "../PWSprefs.h"
 #include "../PWScore.h"
@@ -553,7 +553,7 @@ void XMLFileHandlers::AddEntries()
       LoadAString(cs_id, IDSC_IMPORT_ENTRY_ID);
       Format(cs_temp, IDSC_IMPORTENTRY, cs_id.c_str(), cur_entry->id, 
              cur_entry->group.c_str(), cur_entry->title.c_str(), cur_entry->username.c_str());
-      Format(cs_error, IDSC_IMPORTRECSKIPPED, cs_temp, cs_tp.c_str());
+      Format(cs_error, IDSC_IMPORTRECSKIPPED, cs_temp.c_str(), cs_tp.c_str());
       m_strSkippedList += cs_error;
       m_numEntriesSkipped++;
       m_numEntries--;
@@ -568,7 +568,7 @@ void XMLFileHandlers::AddEntries()
         LoadAString(cs_id, IDSC_IMPORT_ENTRY_ID);
         Format(cs_temp, IDSC_IMPORTENTRY, cs_id.c_str(), cur_entry->id, 
                cur_entry->group.c_str(), cur_entry->title.c_str(), cur_entry->username.c_str());
-        Format(cs_error, IDSC_IMPORTRECNOTFOUND, cs_temp);
+        Format(cs_error, IDSC_IMPORTRECNOTFOUND, cs_temp.c_str());
 
         m_strSkippedList += cs_error;
         m_numEntriesSkipped++;

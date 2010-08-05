@@ -18,7 +18,7 @@
 * As per XML parsing rules, any error stops the parsing immediately.
 */
 
-#include "../XMLDefs.h"
+#include "../XMLDefs.h"    // Required if testing "USE_XML_LIBRARY"
 
 #if USE_XML_LIBRARY == EXPAT
 
@@ -32,6 +32,7 @@
 #include "../../VerifyFormat.h"
 #include "../../PWSFilters.h"
 #include "../../corelib.h"
+#include "../../../os/pws_tchar.h"
 
 #include <algorithm>
 #include <sstream>

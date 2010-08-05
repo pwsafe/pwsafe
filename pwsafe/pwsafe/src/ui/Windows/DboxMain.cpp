@@ -43,6 +43,8 @@
 #include "corelib/PWSFilters.h"
 #include "corelib/PWSAuxParse.h"
 
+#include "corelib/XML/XMLDefs.h"  // Required if testing "USE_XML_LIBRARY"
+
 #include "os/file.h"
 #include "os/env.h"
 #include "os/dir.h"

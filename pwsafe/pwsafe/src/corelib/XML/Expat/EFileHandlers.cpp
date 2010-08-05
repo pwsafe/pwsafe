@@ -21,7 +21,7 @@
 * As per XML parsing rules, any error stops the parsing immediately.
 */
 
-#include "../XMLDefs.h"
+#include "../XMLDefs.h"    // Required if testing "USE_XML_LIBRARY"
 
 #if USE_XML_LIBRARY == EXPAT
 
@@ -32,6 +32,9 @@
 #include "../../corelib.h"
 #include "../../PWSfileV3.h"
 #include "../../UTF8Conv.h"
+#include "../../../os/pws_tchar.h"
+
+#include <cstring>
 
 // Expat includes
 #include <expat.h>
@@ -57,6 +60,7 @@ EFileHandlers::~EFileHandlers()
 void XMLCALL EFileHandlers::startElement(void *userdata, const XML_Char *name,
                                          const XML_Char **attrs)
 {
+  try {
   bool battr_found(false);
   m_strElemContent = _T("");
 
@@ -66,13 +70,13 @@ void XMLCALL EFileHandlers::startElement(void *userdata, const XML_Char *name,
       m_bErrors = true;
       m_iErrorCode = m_pValidator->getErrorCode();
       m_strErrorMessage = m_pValidator->getErrorMsg();
-      goto start_errors;
+      throw;
     }
   }
 
   st_file_element_data edata;
   if (!m_pValidator->GetElementInfo(name, edata))
-    goto start_errors;
+    throw;
 
   const int icurrent_element = m_bentrybeingprocessed ? edata.element_entry_code : edata.element_code;
   XMLFileHandlers::ProcessStartElement(icurrent_element);
@@ -105,14 +109,14 @@ void XMLCALL EFileHandlers::startElement(void *userdata, const XML_Char *name,
         // error - it is required!
         m_iErrorCode = XLPEC_MISSING_DELIMITER_ATTRIBUTE;
         LoadAString(m_strErrorMessage, IDSC_EXPATNODELIMITER);
-        goto start_errors;
+        throw;
       }
 
       if (!m_pValidator->VerifyXMLDataType(m_strElemContent, XLD_CHARACTERTYPE)) {
         // Invalid value - single character required
         m_iErrorCode = XLPEC_INVALID_DATA;
         LoadAString(m_strErrorMessage, IDSC_EXPATBADDELIMITER);
-        goto start_errors;
+        throw;
       }
       m_delimiter = m_strElemContent[0];
       break;
@@ -134,7 +138,7 @@ void XMLCALL EFileHandlers::startElement(void *userdata, const XML_Char *name,
         // error - it is required!
         m_iErrorCode = XLPEC_MISSING_ELEMENT;
         LoadAString(m_strErrorMessage, IDSC_EXPATFTYPEMISSING);
-        goto start_errors;
+        throw;
       }
       break;
     case XLE_ENTRY:
@@ -261,9 +265,9 @@ void XMLCALL EFileHandlers::startElement(void *userdata, const XML_Char *name,
     default:
       ASSERT(0);
   }
-  return;
+  }
+  catch(...) {
 
-start_errors:
   // Non validating parser, so we have to tidy up now
   vdb_entries::iterator entry_iter;
 
@@ -279,6 +283,7 @@ start_errors:
     cur_entry = NULL;
   }
   XML_StopParser((XML_Parser)userdata, XML_FALSE);
+  }
 }
 
 void XMLCALL EFileHandlers::characterData(void * /* userdata */, const XML_Char *s,
@@ -297,6 +302,7 @@ void XMLCALL EFileHandlers::characterData(void * /* userdata */, const XML_Char 
 
 void XMLCALL EFileHandlers::endElement(void * userdata, const XML_Char *name)
 {
+  try {
   StringX buffer(_T(""));
 
   if (m_bValidation) {
@@ -306,7 +312,7 @@ void XMLCALL EFileHandlers::endElement(void * userdata, const XML_Char *name)
       m_bErrors = true;
       m_iErrorCode = m_pValidator->getErrorCode();
       m_strErrorMessage = m_pValidator->getErrorMsg();
-      goto end_errors;
+      throw;
     }
   }
 
@@ -320,15 +326,15 @@ void XMLCALL EFileHandlers::endElement(void * userdata, const XML_Char *name)
 
   st_file_element_data edata;
   if (!m_pValidator->GetElementInfo(name, edata))
-    goto end_errors;
+    throw;
 
   // The rest is only processed in Import mode (not Validation mode)
   const int icurrent_element = m_bentrybeingprocessed ? edata.element_entry_code : edata.element_code;
   XMLFileHandlers::ProcessEndElement(icurrent_element);
 
-  return;
+  }
 
-end_errors:
+  catch(...) {
   // Non validating parser, so we have to tidy up now
   vdb_entries::iterator entry_iter;
 
@@ -344,6 +350,7 @@ end_errors:
     cur_entry = NULL;
   }
   XML_StopParser((XML_Parser)userdata, XML_FALSE);
+  }
 }
 
 #endif /* USE_XML_LIBRARY == EXPAT */

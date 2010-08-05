@@ -9,25 +9,24 @@
 #ifndef __XMLFILEVALIDATION_H
 #define __XMLFILEVALIDATION_H
 
+#include "XMLDefs.h"  // Required if testing "USE_XML_LIBRARY"
+
 #ifdef USE_XML_LIBRARY
 #include <map>
 // PWS includes
 #include "../StringX.h"
 
-
 #if   USE_XML_LIBRARY == EXPAT
 // Expat includes
 #include <expat.h>
-#elif USE_XML_LIBRARY == MSXMAL
+#elif USE_XML_LIBRARY == MSXML
 // MSXML includes
 // None
 #elif USE_XML_LIBRARY == XERCES
 // Xerces includes
 #include <xercesc/util/XercesDefs.hpp>
 #include <xercesc/util/XMLString.hpp>
-
 XERCES_CPP_NAMESPACE_USE
-
 #endif
 
 // Elements stack value
@@ -144,7 +143,7 @@ enum XLE_PASSWORDSAFE {
 // Number of Integer/Boolean Preferences
 #define NUMPREFSINXML (XLE_PREF_END - XLE_PREF_START + 1)
 
-const struct st_file_element_data {
+struct st_file_element_data {
   unsigned short int element_code /* XLE_PASSWORDSAFE */;
   unsigned short int element_entry_code /* XLE_PASSWORDSAFE  - entry values*/;
 };
@@ -169,7 +168,7 @@ private:
   typedef std::pair<stringT, st_file_element_data> file_element_pair;
 
   static const struct st_file_elements {
-    TCHAR *name; st_file_element_data file_element_data;
+    const TCHAR *name; st_file_element_data file_element_data;
   } m_file_elements[XLE_ELEMENTS];
 };
 

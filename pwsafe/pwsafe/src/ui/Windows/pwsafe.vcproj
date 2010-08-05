@@ -398,7 +398,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
-				AdditionalDependencies="corelib.lib os.lib WS2_32.lib Rpcrt4.lib version.lib psapi.lib Wtsapi32.lib htmlhelp.lib libexpatwMT.lib"
+				AdditionalDependencies="corelib.lib os.lib WS2_32.lib Rpcrt4.lib version.lib psapi.lib Wtsapi32.lib htmlhelp.lib libexpatw.lib"
 				ShowProgress="0"
 				OutputFile="..\..\..\build\bin\pwsafe\$(ConfigurationName)/pwsafe.exe"
 				LinkIncremental="1"
@@ -615,7 +615,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
-				AdditionalDependencies="corelib.lib os.lib WS2_32.lib Rpcrt4.lib version.lib psapi.lib Wtsapi32.lib htmlhelp.lib xerces-c_static_3D.lib"
+				AdditionalDependencies="corelib.lib os.lib WS2_32.lib Rpcrt4.lib version.lib psapi.lib Wtsapi32.lib htmlhelp.lib xerces-c_3D.lib"
 				ShowProgress="0"
 				OutputFile="..\..\..\build\bin\pwsafe\$(ConfigurationName)/pwsafe.exe"
 				LinkIncremental="1"
@@ -723,7 +723,7 @@
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
 				AdditionalOptions="/OPT:REF"
-				AdditionalDependencies="corelib.lib os.lib WS2_32.lib rpcrt4.lib version.lib psapi.lib Wtsapi32.lib dbghelp.lib htmlhelp.lib libexpatwMT.lib"
+				AdditionalDependencies="corelib.lib os.lib WS2_32.lib rpcrt4.lib version.lib psapi.lib Wtsapi32.lib dbghelp.lib htmlhelp.lib libexpatw.lib"
 				OutputFile="..\..\..\build\bin\pwsafe\$(ConfigurationName)/pwsafe.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
@@ -935,7 +935,7 @@
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
 				AdditionalOptions="/OPT:REF"
-				AdditionalDependencies="corelib.lib os.lib WS2_32.lib rpcrt4.lib version.lib psapi.lib Wtsapi32.lib dbghelp.lib htmlhelp.lib xerces-c_static_3.lib"
+				AdditionalDependencies="corelib.lib os.lib WS2_32.lib rpcrt4.lib version.lib psapi.lib Wtsapi32.lib dbghelp.lib htmlhelp.lib xerces-c_3.lib"
 				OutputFile="..\..\..\build\bin\pwsafe\$(ConfigurationName)/pwsafe.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
@@ -2618,15 +2618,15 @@
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\new\passwordchars.bmp"
-				>
-			</File>
-			<File
-				RelativePath="..\graphics\toolbar\new\passwordchars.bmp"
-				>
-			</File>
-			<File
 				RelativePath="..\graphics\toolbar\classic\passwordchars.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\passwordchars.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\passwordchars.bmp"
 				>
 			</File>
 			<File
@@ -2722,11 +2722,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\dragbar\new\PasswordX.bmp"
+				RelativePath="..\graphics\dragbar\classic\PasswordX.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\dragbar\classic\PasswordX.bmp"
+				RelativePath="..\graphics\dragbar\new\PasswordX.bmp"
 				>
 			</File>
 			<File
