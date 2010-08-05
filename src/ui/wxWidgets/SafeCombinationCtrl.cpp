@@ -60,11 +60,20 @@ void CommandEventHandler::HandleCommandEvent(wxCommandEvent& evt)
 #endif
 }
 
-CSafeCombinationCtrl::CSafeCombinationCtrl(wxWindow* parent, wxWindowID textCtrlID /*= wxID_ANY*/) : 
-                                      wxBoxSizer(wxHORIZONTAL), textCtrl(0)
+CSafeCombinationCtrl::CSafeCombinationCtrl(wxWindow* parent, 
+                                            wxWindowID textCtrlID /*= wxID_ANY*/,
+                                            wxString* valPtr /*= 0*/) : wxBoxSizer(wxHORIZONTAL), 
+                                                                        textCtrl(0)
 {
+#if wxCHECK_VERSION(2,9,1)
+  int validatorStyle = wxFILTER_EMPTY;
+#else
+  int validatorStyle = wxFILTER_NONE;
+#endif
+  
   textCtrl = new wxTextCtrl(parent, textCtrlID, wxEmptyString, wxDefaultPosition, wxDefaultSize, 
-                                                wxTE_PROCESS_ENTER|wxTE_PASSWORD);
+                                                wxTE_PROCESS_ENTER|wxTE_PASSWORD,
+                                                wxTextValidator(validatorStyle, valPtr));
   Add(textCtrl, wxSizerFlags().Proportion(1).Expand());
   
   wxBitmapButton* vkbdButton = new wxBitmapButton(parent, wxID_ANY, wxBitmap(vkbd_xpm));

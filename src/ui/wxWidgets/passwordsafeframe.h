@@ -396,6 +396,9 @@ public:
   void DoBrowse(CItemData &item);
   void DoRun(CItemData &item);
   void DoEmail(CItemData &item);
+
+  template <class ExportType>
+  void DoExportText();
   
   PWScore &m_core;
   enum {TREE, GRID} m_currentView;
