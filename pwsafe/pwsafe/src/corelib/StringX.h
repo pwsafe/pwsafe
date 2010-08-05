@@ -26,6 +26,7 @@
 #include <cstring> // for memset
 
 #include "../os/typedefs.h"
+#include "./PwsPlatform.h"
 
 namespace S_Alloc
 {
