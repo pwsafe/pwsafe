@@ -102,7 +102,7 @@ void PasswordSafeSearch::OnDoSearchT(Iter begin, Iter end, Accessor afn)
       else
         FindMatches(tostringx(searchText), m_toolbar->GetToolState(ID_FIND_IGNORE_CASE), m_searchPointer, 
                       m_criteria.m_bsFields, m_criteria.m_fUseSubgroups, m_criteria.m_subgroupText,
-                      subgroups[m_criteria.m_subgroupObject].type, subgroupFunctions[m_criteria.m_subgroupFunction].function, 
+                      m_criteria.SubgroupObject(), m_criteria.SubgroupFunction(), 
                       m_criteria.m_fCaseSensitive, begin, end, afn);
 
       m_criteria.Clean();
@@ -182,13 +182,23 @@ void PasswordSafeSearch::HideSearchToolbar()
   }
 }
 
+struct FindDlgType {
+  static wxString GetAdvancedSelectionTitle() {
+    return _("Advanced Find Options");
+  }
+  
+  static bool IsMandatoryField(CItemData::FieldType /*field*/) {
+    return false;
+  }
+};
+
 /*!
  * wxEVT_COMMAND_TOOL_CLICKED event handler for ID_FIND_ADVANCED_OPTIONS
  */
 void PasswordSafeSearch::OnAdvancedSearchOptions(wxCommandEvent& /* evt */)
 {
   m_criteria.Clean();
-  AdvancedSelectionDlg dlg(m_parentFrame, m_criteria);
+  AdvancedSelectionDlg<FindDlgType> dlg(m_parentFrame, m_criteria);
   if (dlg.ShowModal() == wxID_OK) {
     m_fAdvancedSearch = true;
     if (m_criteria != dlg.m_criteria)

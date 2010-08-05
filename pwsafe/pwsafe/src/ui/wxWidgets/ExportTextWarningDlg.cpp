@@ -27,8 +27,13 @@
 
 enum { ID_COMBINATION = 100, ID_VKBD, ID_LINE_DELIMITER, ID_ADVANCED };
 
-CExportTextWarningDlg::CExportTextWarningDlg(wxWindow* parent, const wxString& title) : 
-                                                            wxDialog(parent, wxID_ANY, title,
+
+BEGIN_EVENT_TABLE( CExportTextWarningDlgBase, wxDialog )
+  EVT_BUTTON( ID_ADVANCED, CExportTextWarningDlgBase::OnAdvancedSelection )
+END_EVENT_TABLE()
+
+
+CExportTextWarningDlgBase::CExportTextWarningDlgBase(wxWindow* parent) : wxDialog(parent, wxID_ANY, wxEmptyString,
                                                                       wxDefaultPosition, wxDefaultSize, 
                                                                       wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER)
 {
@@ -53,14 +58,19 @@ CExportTextWarningDlg::CExportTextWarningDlg(wxWindow* parent, const wxString& t
   wxBoxSizer* pwdCtrl = new wxBoxSizer(wxHORIZONTAL);
   pwdCtrl->Add(new wxStaticText(this, wxID_ANY, _("Safe Combination:")));
   pwdCtrl->AddSpacer(ColSeparation);
-  pwdCtrl->Add(new CSafeCombinationCtrl(this), wxSizerFlags().Expand().Proportion(1));
+  pwdCtrl->Add(new CSafeCombinationCtrl(this, wxID_ANY, &passKey), wxSizerFlags().Expand().Proportion(1));
   dlgSizer->Add(pwdCtrl, wxSizerFlags().Border(wxLEFT|wxRIGHT, SideMargin).Expand());
   dlgSizer->AddSpacer(RowSeparation);
 
+  delimiter = wxT('\xbb');
+  wxTextValidator delimValidator(wxFILTER_EXCLUDE_CHAR_LIST, &delimiter);
+  const wxChar* excludes[] = {_("\""), 0};
+  delimValidator.SetExcludes(wxArrayString(1, excludes));
   wxBoxSizer* delimRow = new wxBoxSizer(wxHORIZONTAL);
   delimRow->Add(new wxStaticText(this, wxID_ANY, _("Line delimiter in Notes field:")));
   delimRow->AddSpacer(ColSeparation);
-  delimRow->Add(new wxTextCtrl(this, ID_LINE_DELIMITER, _("»")));
+  delimRow->Add(new wxTextCtrl(this, ID_LINE_DELIMITER, _("\xbb"), wxDefaultPosition, wxDefaultSize, 0, 
+                                delimValidator));
   delimRow->AddSpacer(ColSeparation);
   delimRow->Add(new wxStaticText(this, wxID_ANY, _("Also used to replace periods in the Title field")));
   
@@ -79,7 +89,7 @@ CExportTextWarningDlg::CExportTextWarningDlg(wxWindow* parent, const wxString& t
   SetSizerAndFit(dlgSizer);
 }
 
-CExportTextWarningDlg::~CExportTextWarningDlg()
+void CExportTextWarningDlgBase::OnAdvancedSelection( wxCommandEvent& evt )
 {
+  DoAdvancedSelection();
 }
-

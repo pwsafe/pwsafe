@@ -50,6 +50,7 @@
 #include "./ImportTextDlg.h"
 #include "./ImportXmlDlg.h"
 #include "./ExportTextWarningDlg.h"
+#include "../../os/sleep.h"
 
 // main toolbar images
 #include "../graphics/toolbar/wxWidgets/new.xpm"
@@ -2287,17 +2288,148 @@ void PasswordSafeFrame::OnExportVx(wxCommandEvent& evt)
   }
 }
 
+struct ExportFullText
+{
+  static wxString GetTitle() {return _("Export Text");}
+  static void MakeOrderedItemList(PasswordSafeFrame* frame, OrderedItemList& olist) { 
+    frame->FlattenTree(olist);
+  }
+  static wxString GetFailureMsgTitle() {return _("Export Text failed"); }
+  static stringT  FileExtension() { return _("txt"); }
+  static wxString FileOpenPrompt() { return _("Please name the plaintext file"); }
+  static wxString WildCards() {return _("Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*)|*.*"); }
+  static int Write(PWScore& core, const StringX &filename, const CItemData::FieldBits &bsFields,
+                          const stringT &subgroup_name, int subgroup_object, 
+                          int subgroup_function, TCHAR delimiter, 
+                          const OrderedItemList *il)
+  {
+    return core.WritePlaintextFile(filename, bsFields, subgroup_name, subgroup_object, subgroup_function,
+                          delimiter, il);
+  }
+  static wxString GetAdvancedSelectionTitle() {
+    return _("Advanced Text Export Options");
+  }
+  
+  static bool IsMandatoryField(CItemData::FieldType /*field*/) {
+    return false;
+  }
+};
 
 void PasswordSafeFrame::OnExportPlainText(wxCommandEvent& evt)
 {
-  CExportTextWarningDlg dlg(this, _("Export Text"));
-  dlg.ShowModal();
+  DoExportText<ExportFullText>();
 }
+
+struct ExportFullXml {
+  static wxString GetTitle() {return _("Export XML");}
+  static void MakeOrderedItemList(PasswordSafeFrame* frame, OrderedItemList& olist) { 
+    frame->FlattenTree(olist);
+  }
+  static wxString GetFailureMsgTitle() {return _("Export XML failed"); }
+  static stringT  FileExtension() { return _("xml"); }
+  static wxString FileOpenPrompt() { return _("Please name the XML file"); }
+  static wxString WildCards() {return _("XML files (*.xml)|*.xml|All files (*.*)|*.*"); }
+  static int Write(PWScore& core, const StringX &filename, const CItemData::FieldBits &bsFields,
+                          const stringT &subgroup_name, int subgroup_object, 
+                          int subgroup_function, TCHAR delimiter, 
+                          const OrderedItemList *il)
+  {
+    bool bFilterActive = false;
+    return core.WriteXMLFile(filename, bsFields, subgroup_name, subgroup_object, subgroup_function,
+                          delimiter, il, bFilterActive);
+  }
+  static wxString GetAdvancedSelectionTitle() {
+    return _("Advanced XML Export Options");
+  }
+  
+  static bool IsMandatoryField(CItemData::FieldType field) {
+    return field == CItemData::TITLE || field == CItemData::PASSWORD;
+  }
+};
 
 void PasswordSafeFrame::OnExportXml(wxCommandEvent& evt)
 {
-  CExportTextWarningDlg dlg(this, _("Export XML"));
-  dlg.ShowModal();
+  DoExportText<ExportFullXml>();
+}
+
+template <class ExportType>
+void PasswordSafeFrame::DoExportText()
+{
+  const wxString title(ExportType::GetTitle());
+  
+  const StringX sx_temp(m_core.GetCurFile());
+  
+  //MFC code doesn't do this for XML export, but it probably should, because it tries
+  //to use core.GetcurFile() later 
+  if (sx_temp.empty()) {
+    //  Database has not been saved - prompt user to do so first!
+    wxMessageBox(_T("You must save this database before it can be exported."), title, wxOK|wxICON_EXCLAMATION);
+    return;
+  }
+
+  CExportTextWarningDlg<ExportType> et(this);
+  if (et.ShowModal() != wxID_OK)
+    return;
+  
+  StringX newfile;
+  StringX pw(et.passKey);
+  if (m_core.CheckPasskey(sx_temp, pw) == PWScore::SUCCESS) {
+    const CItemData::FieldBits bsExport = et.selCriteria.m_bsFields;
+    const std::wstring subgroup_name = tostdstring(et.selCriteria.m_subgroupText);
+    const int subgroup_object = et.selCriteria.SubgroupObject();
+    const int subgroup_function = et.selCriteria.SubgroupFunctionWithCase();
+    wchar_t delimiter = et.delimiter.IsEmpty()? wxT('\xbb') : et.delimiter[0];
+
+    // Note: MakeOrderedItemList gets its members by walking the 
+    // tree therefore, if a filter is active, it will ONLY export
+    // those being displayed.
+    OrderedItemList orderedItemList;
+    ExportType::MakeOrderedItemList(this, orderedItemList);
+    
+    switch(m_core.TestForExport(subgroup_name, subgroup_object,
+                             subgroup_function, &orderedItemList)) {
+      case PWScore::SUCCESS:
+      {
+        // do the export
+        // SaveAs-type dialog box
+        wxFileName TxtFileName(PWSUtil::GetNewFileName(sx_temp.c_str(), ExportType::FileExtension()));
+
+        wxFileDialog fd(this, ExportType::FileOpenPrompt(), TxtFileName.GetPath(), 
+                        TxtFileName.GetFullName(), ExportType::WildCards(), 
+                        wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+
+        if (fd.ShowModal() == wxID_OK) {
+          newfile = fd.GetPath();
+          int rc = ExportType::Write(m_core, newfile, bsExport, subgroup_name, subgroup_object, 
+                                      subgroup_function, delimiter, &orderedItemList);
+
+          orderedItemList.clear(); // cleanup soonest
+
+          if (rc != PWScore::SUCCESS) {
+            DisplayFileWriteError(rc, newfile);
+          }
+        }
+        break;
+      }
+      
+      case PWScore::NO_ENTRIES_EXPORTED:
+      {
+        wxMessageBox(_("No entries satisfied your selection criteria and so none were exported!"),
+                      ExportType::GetFailureMsgTitle(), wxOK | wxICON_WARNING);
+        break;
+      }
+      
+      default:
+        break;
+        
+    } //switch
+
+    orderedItemList.clear(); // cleanup soonest
+
+  } else {
+    wxMessageBox(_("Passkey incorrect"), title);
+    pws_os::sleep_ms(3000); // against automatic attacks
+  }
 }
 
 //-----------------------------------------------------------------

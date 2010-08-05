@@ -24,7 +24,6 @@ extern struct _subgroupFunctions subgroupFunctions[];
 struct SelectionCriteria 
 {
   SelectionCriteria() : m_fCaseSensitive(false),
-                        m_subgroupText(_("*")),
                         m_fUseSubgroups(false),
                         m_subgroupObject(0),            // index into subgroups array defined in .cpp
                         m_subgroupFunction(0),          // index into subgroupFunctions array defined in .cpp
@@ -53,7 +52,11 @@ struct SelectionCriteria
   bool IsDirty(void) const { return m_fDirty; }
   void Clean(void) { m_fDirty = false; }
   
-  SelectionCriteria& operator=(const SelectionCriteria& data) {
+  CItemData::FieldType SubgroupObject() const {return subgroups[m_subgroupObject].type;}
+  PWSMatch::MatchRule  SubgroupFunction() const {return subgroupFunctions[m_subgroupFunction].function;}
+  int  SubgroupFunctionWithCase() const {return m_fCaseSensitive? -SubgroupFunction(): SubgroupFunction();}
+
+SelectionCriteria& operator=(const SelectionCriteria& data) {
     m_fCaseSensitive    = data.m_fCaseSensitive;
     m_bsFields          = data.m_bsFields;
     m_subgroupText      = data.m_subgroupText;
@@ -83,15 +86,15 @@ inline bool operator!=(const SelectionCriteria& a, const SelectionCriteria& b)
  * AdvancedSelectionDlg class declaration
  */
 
-class AdvancedSelectionDlg: public wxDialog
+class AdvancedSelectionDlgBase: public wxDialog
 {
-  DECLARE_CLASS(AdvancedSelectionDlg)
+  DECLARE_CLASS(AdvancedSelectionDlgBase)
   DECLARE_EVENT_TABLE()
 
-  DECLARE_NO_COPY_CLASS(AdvancedSelectionDlg)
+  DECLARE_NO_COPY_CLASS(AdvancedSelectionDlgBase)
 
 public:
-  AdvancedSelectionDlg(wxWindow* wnd, const SelectionCriteria& existingCriteria);
+  AdvancedSelectionDlgBase(wxWindow* wnd, const SelectionCriteria& existingCriteria);
 
   void OnOk( wxCommandEvent& evt );
   void OnSelectSome( wxCommandEvent& evt );
@@ -99,11 +102,35 @@ public:
   void OnRemoveSome( wxCommandEvent& evt );
   void OnRemoveAll( wxCommandEvent& evt );
 
-private:
+protected:
   void CreateControls(wxWindow* parentWnd);
+  
+  virtual bool IsMandatoryField(CItemData::FieldType field) const = 0;
+  virtual wxString GetAdvancedSelectionTitle() const = 0;
   
 public:
   SelectionCriteria m_criteria;
 };
+
+template <class DlgType>
+class AdvancedSelectionDlg : public AdvancedSelectionDlgBase
+{
+public:
+  AdvancedSelectionDlg(wxWindow* parent, const SelectionCriteria& existingCriteria) : 
+                              AdvancedSelectionDlgBase(parent, existingCriteria) {
+    //we must call this here and not in the base class, since this function
+    //uses virtual functions redefined in derived class
+    CreateControls(parent);
+  }
+
+  virtual wxString GetAdvancedSelectionTitle() const {
+    return DlgType::GetAdvancedSelectionTitle();
+  }
+
+  virtual bool IsMandatoryField(CItemData::FieldType field) const {
+    return DlgType::IsMandatoryField(field);
+  }
+};
+
 
 #endif

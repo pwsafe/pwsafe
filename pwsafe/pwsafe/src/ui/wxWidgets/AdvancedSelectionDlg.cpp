@@ -61,33 +61,32 @@ struct _fieldNames {
 
 
 ////////////////////////////////////////////////////////////////////////////
-// AdvancedSelectionDlg implementation
+// AdvancedSelectionDlgBase implementation
 
-IMPLEMENT_CLASS( AdvancedSelectionDlg, wxDialog )
+IMPLEMENT_CLASS( AdvancedSelectionDlgBase, wxDialog )
 
 enum {ID_SELECT_SOME = 101, ID_SELECT_ALL, ID_REMOVE_SOME, ID_REMOVE_ALL, ID_LB_AVAILABLE_FIELDS, ID_LB_SELECTED_FIELDS };
 
-BEGIN_EVENT_TABLE( AdvancedSelectionDlg, wxDialog )
-  EVT_BUTTON( wxID_OK, AdvancedSelectionDlg::OnOk )
-  EVT_BUTTON( ID_SELECT_SOME, AdvancedSelectionDlg::OnSelectSome )
-  EVT_BUTTON( ID_SELECT_ALL, AdvancedSelectionDlg::OnSelectAll )
-  EVT_BUTTON( ID_REMOVE_SOME, AdvancedSelectionDlg::OnRemoveSome )
-  EVT_BUTTON( ID_REMOVE_ALL, AdvancedSelectionDlg::OnRemoveAll )
+BEGIN_EVENT_TABLE( AdvancedSelectionDlgBase, wxDialog )
+  EVT_BUTTON( wxID_OK, AdvancedSelectionDlgBase::OnOk )
+  EVT_BUTTON( ID_SELECT_SOME, AdvancedSelectionDlgBase::OnSelectSome )
+  EVT_BUTTON( ID_SELECT_ALL, AdvancedSelectionDlgBase::OnSelectAll )
+  EVT_BUTTON( ID_REMOVE_SOME, AdvancedSelectionDlgBase::OnRemoveSome )
+  EVT_BUTTON( ID_REMOVE_ALL, AdvancedSelectionDlgBase::OnRemoveAll )
 END_EVENT_TABLE()
 
 
-AdvancedSelectionDlg::AdvancedSelectionDlg(wxWindow* parentWnd, const SelectionCriteria& existingCriteria):
+AdvancedSelectionDlgBase::AdvancedSelectionDlgBase(wxWindow* parentWnd, const SelectionCriteria& existingCriteria):
                                                   m_criteria(existingCriteria)
 {
   SetExtraStyle(wxWS_EX_VALIDATE_RECURSIVELY);
-  CreateControls(parentWnd);
 }
 
-void AdvancedSelectionDlg::CreateControls(wxWindow* parentWnd)
+void AdvancedSelectionDlgBase::CreateControls(wxWindow* parentWnd)
 {
   enum { TopMargin = 20, BottomMargin = 20, SideMargin = 30, RowSeparation = 10, ColSeparation = 20};
 
-  wxDialog::Create(parentWnd, wxID_ANY, wxT("Advanced Find Options"),
+  wxDialog::Create(parentWnd, wxID_ANY, GetAdvancedSelectionTitle(),
                     wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER);
   
   wxBoxSizer* dlgSizer = new wxBoxSizer(wxVERTICAL);
@@ -121,7 +120,7 @@ void AdvancedSelectionDlg::CreateControls(wxWindow* parentWnd)
 
     sizer->Add( new wxStaticText(this, wxID_ANY, wxT("the &following text:")), wxSizerFlags().Border());
 
-    wxTextCtrl* txtCtrl = new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(200, -1));
+    wxTextCtrl* txtCtrl = new wxTextCtrl(this, wxID_ANY, _("*"), wxDefaultPosition, wxSize(200, -1));
     txtCtrl->SetValidator(wxGenericValidator(&m_criteria.m_subgroupText));
     sizer->Add(txtCtrl, wxSizerFlags().Border().Expand().FixedMinSize());
 
@@ -174,8 +173,12 @@ void AdvancedSelectionDlg::CreateControls(wxWindow* parentWnd)
     wxListBox* lbSelectedFields = new wxListBox(this, ID_LB_SELECTED_FIELDS, wxDefaultPosition, 
                   wxDefaultSize, 0, NULL, wxLB_EXTENDED);
     for (size_t idx=0; idx < NumberOf(fieldNames); ++idx)
-        if (m_criteria.m_bsFields.test(fieldNames[idx].type))
+        if (m_criteria.m_bsFields.test(fieldNames[idx].type)) {
+          if (IsMandatoryField(fieldNames[idx].type))
+            lbSelectedFields->Append(wxString(fieldNames[idx].name) + _(" [Mandatory Field]"), (void*)(idx));
+          else
             lbSelectedFields->Append(fieldNames[idx].name, (void*)(idx));
+        }
 
     
     grid->Add(lbSelectedFields, wxSizerFlags().Expand());
@@ -192,7 +195,7 @@ void AdvancedSelectionDlg::CreateControls(wxWindow* parentWnd)
   SetSizerAndFit(dlgSizer);
 }
 
-void AdvancedSelectionDlg::OnOk( wxCommandEvent& evt )
+void AdvancedSelectionDlgBase::OnOk( wxCommandEvent& evt )
 {
   TransferDataFromWindow();
 
@@ -212,7 +215,7 @@ void AdvancedSelectionDlg::OnOk( wxCommandEvent& evt )
   evt.Skip(true);
 }
 
-void AdvancedSelectionDlg::OnSelectSome( wxCommandEvent& /* evt */ )
+void AdvancedSelectionDlgBase::OnSelectSome( wxCommandEvent& /* evt */ )
 {
   wxListBox* lbAvailable = wxDynamicCast(FindWindow(ID_LB_AVAILABLE_FIELDS), wxListBox);
   wxListBox* lbSelected  = wxDynamicCast(FindWindow(ID_LB_SELECTED_FIELDS), wxListBox);
@@ -231,7 +234,7 @@ void AdvancedSelectionDlg::OnSelectSome( wxCommandEvent& /* evt */ )
   }
 }
 
-void AdvancedSelectionDlg::OnSelectAll( wxCommandEvent& /* evt */ )
+void AdvancedSelectionDlgBase::OnSelectAll( wxCommandEvent& /* evt */ )
 {
   wxListBox* lbAvailable = wxDynamicCast(FindWindow(ID_LB_AVAILABLE_FIELDS), wxListBox);
   wxListBox* lbSelected  = wxDynamicCast(FindWindow(ID_LB_SELECTED_FIELDS), wxListBox);
@@ -246,7 +249,7 @@ void AdvancedSelectionDlg::OnSelectAll( wxCommandEvent& /* evt */ )
   }
 }
 
-void AdvancedSelectionDlg::OnRemoveSome( wxCommandEvent& /* evt */ )
+void AdvancedSelectionDlgBase::OnRemoveSome( wxCommandEvent& /* evt */ )
 {
   wxListBox* lbAvailable = wxDynamicCast(FindWindow(ID_LB_AVAILABLE_FIELDS), wxListBox);
   wxListBox* lbSelected  = wxDynamicCast(FindWindow(ID_LB_SELECTED_FIELDS), wxListBox);
@@ -256,16 +259,18 @@ void AdvancedSelectionDlg::OnRemoveSome( wxCommandEvent& /* evt */ )
 
   wxArrayInt aSelected;
   if (lbSelected->GetSelections(aSelected)) {
-    for (size_t idx = 0; idx < aSelected.GetCount(); ++idx) {
-      size_t which = (size_t)lbSelected->GetClientData((unsigned int)(aSelected[idx] - idx));
+    for (size_t idx = 0, nRemoved = 0; idx < aSelected.GetCount(); ++idx) {
+      size_t which = (size_t)lbSelected->GetClientData((unsigned int)(aSelected[idx] - nRemoved));
       wxASSERT(which < NumberOf(fieldNames));
-      lbSelected->Delete((unsigned int)(aSelected[idx] - idx));
-      lbAvailable->Append(fieldNames[which].name, (void *)which);
+      if (!IsMandatoryField(fieldNames[which].type)) {
+        lbSelected->Delete((unsigned int)(aSelected[idx] - nRemoved++));
+        lbAvailable->Append(fieldNames[which].name, (void *)which);
+      }
     }
   }
 }
 
-void AdvancedSelectionDlg::OnRemoveAll( wxCommandEvent& /* evt */ )
+void AdvancedSelectionDlgBase::OnRemoveAll( wxCommandEvent& /* evt */ )
 {
   wxListBox* lbAvailable = wxDynamicCast(FindWindow(ID_LB_AVAILABLE_FIELDS), wxListBox);
   wxListBox* lbSelected  = wxDynamicCast(FindWindow(ID_LB_SELECTED_FIELDS), wxListBox);
@@ -273,10 +278,15 @@ void AdvancedSelectionDlg::OnRemoveAll( wxCommandEvent& /* evt */ )
   wxASSERT(lbAvailable);
   wxASSERT(lbSelected);
 
-  while (lbSelected->GetCount()) {
-      size_t which = (size_t)lbSelected->GetClientData(0);
-      lbSelected->Delete(0);
-      lbAvailable->Append(fieldNames[which].name, (void*)which);
+  for(size_t itemsLeft = lbSelected->GetCount(), idx = 0; idx < itemsLeft; ) {
+      size_t which = (size_t)lbSelected->GetClientData(idx);
+      if (!IsMandatoryField(fieldNames[which].type)) {
+        lbSelected->Delete(idx);
+        lbAvailable->Append(fieldNames[which].name, (void*)which);
+        --itemsLeft;
+      }
+      else
+        ++idx;
   }
 }
 

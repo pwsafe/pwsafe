@@ -13,7 +13,7 @@ public:
 class CSafeCombinationCtrl : virtual public wxBoxSizer, virtual CommandEventHandler {
 
 public:
-  CSafeCombinationCtrl(wxWindow* parent, wxWindowID textCtrlID = wxID_ANY);
+  CSafeCombinationCtrl(wxWindow* parent, wxWindowID textCtrlID = wxID_ANY, wxString* valPtr = 0);
   ~CSafeCombinationCtrl();
   
   //so that other have easy access to it
