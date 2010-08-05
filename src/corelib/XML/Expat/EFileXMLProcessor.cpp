@@ -22,7 +22,7 @@
 *
 */
 
-#include "../XMLDefs.h"
+#include "../XMLDefs.h"    // Required if testing "USE_XML_LIBRARY"
 
 #if USE_XML_LIBRARY == EXPAT
 
@@ -37,6 +37,7 @@
 
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <cstdio>
 
 // Expat includes
 #include <expat.h>
@@ -97,9 +98,9 @@ EFileXMLProcessor::EFileXMLProcessor(PWScore *pcore,
                                      UUIDVector *pPossible_Shortcuts,
                                      MultiCommands *p_multicmds,
                                      CReport *prpt)
-  : m_pXMLcore(pcore), m_delimiter(TCHAR('^')),
+  : m_pXMLcore(pcore),
     m_pPossible_Aliases(pPossible_Aliases), m_pPossible_Shortcuts(pPossible_Shortcuts),
-    m_pmulticmds(p_multicmds), m_prpt(prpt)
+    m_pmulticmds(p_multicmds), m_prpt(prpt), m_delimiter(TCHAR('^'))
 {
   pSecMM = new ESecMemMgr;
   pFileHandler = new EFileHandlers;

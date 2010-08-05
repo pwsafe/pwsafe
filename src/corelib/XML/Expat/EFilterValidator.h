@@ -36,7 +36,7 @@
 // Expat includes
 #include <expat.h>
 
-const struct st_filter_element_data {
+struct st_filter_element_data {
   XTE_Codes element_code;
   XTR_Codes rule_code;
   short int element_maxoccurs;
@@ -45,7 +45,7 @@ const struct st_filter_element_data {
   FieldType ft;
 };
 
-const struct st_filter_rulecodes {
+struct st_filter_rulecodes {
   PWSMatch::MatchRule mr;
   int irule_code;
 };
@@ -98,10 +98,10 @@ private:
   PWSMatch::MatchRule m_matchrule;
 
   static const struct st_filter_elements {
-    TCHAR *name; st_filter_element_data filter_element_data;
+    const TCHAR *name; st_filter_element_data filter_element_data;
   } m_filter_elements[XTE_LAST_ELEMENT];
   static const struct st_filter_rules {
-    TCHAR *name; st_filter_rulecodes filter_rulecode_data;
+    const TCHAR *name; st_filter_rulecodes filter_rulecode_data;
   } m_filter_rulecodes[PWSMatch::MR_LAST];
 };
 

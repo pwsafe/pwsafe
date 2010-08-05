@@ -34,8 +34,8 @@
 #include "corelib/Report.h"
 #include "corelib/ItemData.h"
 #include "corelib/corelib.h"
-#include "corelib/XML/XMLDefs.h"  // Required if testing "USE_XML_LIBRARY"
 #include "corelib/VerifyFormat.h"
+#include "corelib/XML/XMLDefs.h"  // Required if testing "USE_XML_LIBRARY"
 
 #include "os/file.h"
 #include "os/dir.h"

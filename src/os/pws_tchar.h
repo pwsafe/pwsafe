@@ -48,8 +48,13 @@
 #define _tcsicmp(s1, s2) wcscasecmp(s1, s2)
 # include "linux/pws_str.h"
 #endif
+#define _ttoi(s) pws_os::wctoi(s)
 #define _tstoi(s) pws_os::wctoi(s)
 #define _tstof(s) pws_os::wctof(s)
+#ifdef __linux__
+#include "./file.h"
+#define _tfopen(f,m) pws_os::FOpen(f,m)
+#endif
 #else /* !UNICODE */
 #include <ctype.h>
 #define _istalpha(x) isalpha(x)
@@ -76,7 +81,10 @@
 #define _ftprintf fprintf
 #define _stscanf sscanf
 #define _tstoi(s) atoi(s)
+#define _ttoi(s) atoi(s)
 #define _tstof(s) atof(s)
+#define _tfopen(s) fopen(s)
 #endif /* UNICODE */
+#define _itot(i, buf, base) pws_os::pws_itot(i, buf, base)
 #endif /* _WIN32 */
 #endif /* _PWS_TCHAR_H */

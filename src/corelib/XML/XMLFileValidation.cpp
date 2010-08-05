@@ -12,7 +12,7 @@
 * XML validation routine [E|M|X]FileValidator.cpp
 */
 
-#include "XMLDefs.h"
+#include "XMLDefs.h"   // Required if testing "USE_XML_LIBRARY"
 
 #ifdef USE_XML_LIBRARY
 

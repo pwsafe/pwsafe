@@ -16,6 +16,8 @@
 #include "../Command.h"
 #include "../Report.h"
 
+#include "XMLDefs.h"  // Required if testing "USE_XML_LIBRARY"
+
 // Entry types
 enum {NORMAL = 0, ALIAS, SHORTCUT};
 

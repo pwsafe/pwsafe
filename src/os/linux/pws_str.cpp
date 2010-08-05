@@ -13,6 +13,8 @@
 #include <wchar.h>
 #include "pws_str.h"
 #include "../utf8conv.h"
+#include "../../corelib/PwsPlatform.h"
+#include <algorithm>
 
 int pws_os::wctoi(const wchar_t *s)
 {
@@ -24,4 +26,22 @@ double pws_os::wctof(const wchar_t *s)
   return double(wcstold(s, NULL));
 }
 
+TCHAR* pws_os::pws_itot(int val, TCHAR* out, unsigned base)
+{
+  const TCHAR digits[] = _T("0123456789abcdef");
+  
+  assert(base > 0 && base <= NumberOf(digits));
+  
+  TCHAR* p = out;
+  
+  do {
+    *p++ = digits[val % base];
+  } 
+  while( (val /= base) != 0);
+
+  *p++ = 0;
+  
+  std::reverse(out, p);
+  return out;
+}
 
