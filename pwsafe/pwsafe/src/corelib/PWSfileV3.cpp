@@ -370,10 +370,11 @@ void PWSfileV3::StretchKey(const unsigned char *salt, unsigned long saltLen,
 const short VersionNum = 0x0307;
 
 // Following specific for PWSfileV3::WriteHeader
-#define SAFE_FWRITE(p, sz, cnt, stream) do { \
+#define SAFE_FWRITE(p, sz, cnt, stream) \
+  { \
     size_t _ret = fwrite(p, sz, cnt, stream); \
     if (_ret != cnt) { status = FAILURE; goto end;} \
-  } while (0)
+  }
 
 int PWSfileV3::WriteHeader()
 {

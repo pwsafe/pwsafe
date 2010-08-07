@@ -262,10 +262,11 @@ ErrorMessages()
 }
 
 // Following specific for PWSfile::Encrypt
-#define SAFE_FWRITE(p, sz, cnt, stream) do { \
+#define SAFE_FWRITE(p, sz, cnt, stream) \
+  { \
     size_t _ret = fwrite(p, sz, cnt, stream); \
     if (_ret != cnt) { status = false; goto exit;} \
-  } while (0)
+  }
 
 bool PWSfile::Encrypt(const stringT &fn, const StringX &passwd, stringT &errmess)
 {

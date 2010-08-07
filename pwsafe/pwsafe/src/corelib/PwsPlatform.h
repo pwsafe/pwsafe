@@ -566,7 +566,7 @@ static inline unsigned long ROR64c(unsigned long word, const int i)
 
 #define NumberOf(array) ((sizeof array)/sizeof(array[0]))
 
-#ifndef _MFC_VER
+#if !defined(_MFC_VER) && !defined(_WIN32)
 #define UNREFERENCED_PARAMETER(P)
 #endif
 

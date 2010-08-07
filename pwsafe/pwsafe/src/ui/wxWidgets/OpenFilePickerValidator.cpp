@@ -28,7 +28,7 @@ bool COpenFilePickerValidator::TransferToWindow() {
   return false;
 }
 
-bool COpenFilePickerValidator::Validate(wxWindow */*parent*/) {
+bool COpenFilePickerValidator::Validate(wxWindow * /*parent*/) {
   if (GetWindow() && GetWindow()->IsKindOf(&wxFilePickerCtrl::ms_classInfo)) {
     wxFilePickerCtrl* ctrl = dynamic_cast<wxFilePickerCtrl*>(GetWindow());
     wxASSERT(ctrl);

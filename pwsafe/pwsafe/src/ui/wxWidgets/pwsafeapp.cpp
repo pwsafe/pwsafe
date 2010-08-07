@@ -26,7 +26,10 @@
 ////@end includes
 
 #include <iostream> // currently for debugging
+
+#if !defined(_WIN32)
 #include <unistd.h> // for fork()
+#endif
 
 using namespace std;
 
@@ -227,7 +230,8 @@ bool PwsafeApp::OnInit()
   m_core.SetCurFile(filename.c_str());
   m_core.SetApplicationNameAndVersion(progName.c_str(),
                                       MAKEWORD(MAJORVERSION, MINORVERSION));
-#if not defined(__WXDEBUG__) && not defined(__WXMAC__)
+
+#if !defined(__WXDEBUG__) && !defined(__WXMAC__) && !defined(_WIN32)
   // Now's a good time to fork
   // and exit the parent process, returning the command prompt to the user
   // (but not for debug builds - just make debugging harder)
@@ -239,6 +243,7 @@ bool PwsafeApp::OnInit()
     exit(0);
   }
 #endif /* _DEBUG */
+
   // here if we're the child
   recentDatabases().Load();
 
