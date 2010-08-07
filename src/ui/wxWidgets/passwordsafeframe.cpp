@@ -927,7 +927,7 @@ void PasswordSafeFrame::OnSaveAsClick(wxCommandEvent& evt)
 {
   if (m_core.GetReadFileVersion() != PWSfile::VCURRENT &&
       m_core.GetReadFileVersion() != PWSfile::UNKNOWN_VERSION) {
-    if (wxMessageBox( wxString::Format(_("The original database, ""%s"", is in pre-3.0 format. The data will now be written in the new format, which is unusable by old versions of PasswordSafe. To save the data in the old format, use the ""File->Export To-> Old (1.x or 2) format"" command."),
+    if (wxMessageBox( wxString::Format(_("The original database, '%s', is in pre-3.0 format. The data will now be written in the new format, which is unusable by old versions of PasswordSafe. To save the data in the old format, use the 'File->Export To-> Old (1.x or 2) format' command."),
                                         m_core.GetCurFile().c_str()), _("File version warning"), 
                                         wxOK | wxCANCEL | wxICON_EXCLAMATION) == wxCANCEL) {
       return;

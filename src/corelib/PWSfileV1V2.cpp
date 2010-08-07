@@ -102,10 +102,11 @@ int PWSfileV1V2::ReadV2Header()
 }
 
 // Following specific for PWSfileV1V2::Open
-#define SAFE_FWRITE(p, sz, cnt, stream) do { \
+#define SAFE_FWRITE(p, sz, cnt, stream) \
+  { \
     size_t _ret = fwrite(p, sz, cnt, stream); \
     if (_ret != cnt) { status = FAILURE; goto exit;} \
-  } while (0)
+  }
 
 int PWSfileV1V2::Open(const StringX &passkey)
 {
