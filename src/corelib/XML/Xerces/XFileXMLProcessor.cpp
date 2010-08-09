@@ -57,12 +57,6 @@
 #include <fstream.h>
 #endif
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 XFileXMLProcessor::XFileXMLProcessor(PWScore *pcore, 
                                      UUIDVector *pPossible_Aliases,
                                      UUIDVector *pPossible_Shortcuts,

@@ -52,6 +52,8 @@
 #include "./ExportTextWarningDlg.h"
 #include "../../os/sleep.h"
 
+#include "corelib/XML/XMLDefs.h"  // Required if testing "USE_XML_LIBRARY"
+
 // main toolbar images
 #include "../graphics/toolbar/wxWidgets/new.xpm"
 #include "../graphics/toolbar/wxWidgets/new_disabled.xpm"

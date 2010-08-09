@@ -26,12 +26,6 @@
 #include <cstdlib>
 #include <cstring>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 using namespace std;
 
 static const int header = max(sizeof(size_t), sizeof(size_t *));
