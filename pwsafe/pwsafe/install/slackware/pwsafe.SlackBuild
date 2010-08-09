@@ -15,8 +15,8 @@ if [ $UID = 0 ]; then
 fi
 
 PRGNAM=pwsafe
-VERSION=${VERSION:-3.22.1}
-ARCH=${ARCH:-x86_64}
+VERSION=${VERSION:-0.1}
+ARCH=${ARCH:-i686}
 BUILD_ID=${BUILD_ID:-1}
 BUILDER_ID=${BUILDER_ID:-kan}
 OUTPUT=${OUTPUT:-$(pwd)/packages}
