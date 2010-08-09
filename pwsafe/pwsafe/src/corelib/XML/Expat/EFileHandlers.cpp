@@ -39,12 +39,6 @@
 // Expat includes
 #include <expat.h>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 using namespace std;
 
 EFileHandlers::EFileHandlers()
@@ -70,13 +64,13 @@ void XMLCALL EFileHandlers::startElement(void *userdata, const XML_Char *name,
       m_bErrors = true;
       m_iErrorCode = m_pValidator->getErrorCode();
       m_strErrorMessage = m_pValidator->getErrorMsg();
-      throw;
+      throw _T("XML failed validation");
     }
   }
 
   st_file_element_data edata;
   if (!m_pValidator->GetElementInfo(name, edata))
-    throw;
+    throw _T("XML element name failed validation");
 
   const int icurrent_element = m_bentrybeingprocessed ? edata.element_entry_code : edata.element_code;
   XMLFileHandlers::ProcessStartElement(icurrent_element);
@@ -109,14 +103,14 @@ void XMLCALL EFileHandlers::startElement(void *userdata, const XML_Char *name,
         // error - it is required!
         m_iErrorCode = XLPEC_MISSING_DELIMITER_ATTRIBUTE;
         LoadAString(m_strErrorMessage, IDSC_EXPATNODELIMITER);
-        throw;
+        throw _T("XML missing delimiter attribute");
       }
 
       if (!m_pValidator->VerifyXMLDataType(m_strElemContent, XLD_CHARACTERTYPE)) {
         // Invalid value - single character required
         m_iErrorCode = XLPEC_INVALID_DATA;
         LoadAString(m_strErrorMessage, IDSC_EXPATBADDELIMITER);
-        throw;
+        throw _T("XML single character delimiter missing or invalid");
       }
       m_delimiter = m_strElemContent[0];
       break;
@@ -138,7 +132,7 @@ void XMLCALL EFileHandlers::startElement(void *userdata, const XML_Char *name,
         // error - it is required!
         m_iErrorCode = XLPEC_MISSING_ELEMENT;
         LoadAString(m_strErrorMessage, IDSC_EXPATFTYPEMISSING);
-        throw;
+        throw _T("XML missing element");
       }
       break;
     case XLE_ENTRY:
@@ -312,7 +306,7 @@ void XMLCALL EFileHandlers::endElement(void * userdata, const XML_Char *name)
       m_bErrors = true;
       m_iErrorCode = m_pValidator->getErrorCode();
       m_strErrorMessage = m_pValidator->getErrorMsg();
-      throw;
+      throw _T("XML element has invalid data type");
     }
   }
 
@@ -326,7 +320,7 @@ void XMLCALL EFileHandlers::endElement(void * userdata, const XML_Char *name)
 
   st_file_element_data edata;
   if (!m_pValidator->GetElementInfo(name, edata))
-    throw;
+    throw _T("XML element name failed validation");
 
   // The rest is only processed in Import mode (not Validation mode)
   const int icurrent_element = m_bentrybeingprocessed ? edata.element_entry_code : edata.element_code;

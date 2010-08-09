@@ -26,12 +26,6 @@
 #include <map>
 #include <algorithm>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 MFilterXMLProcessor::MFilterXMLProcessor(PWSFilters &mapfilters, const FilterPool fpool,
                                          Asker *pAsker)
   : m_MSXML_Version(60), m_MapFilters(mapfilters), m_FPool(fpool), m_pAsker(pAsker)

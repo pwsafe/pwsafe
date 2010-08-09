@@ -38,12 +38,6 @@
 // Expat includes
 #include <expat.h>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 #define BUFFSIZE 8192
 
 // File Handler Wrappers as Expat is a C not a C++ interface

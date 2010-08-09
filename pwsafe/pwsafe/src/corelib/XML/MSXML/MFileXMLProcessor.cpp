@@ -26,12 +26,6 @@
 #include <sys/stat.h>
 #include <comutil.h>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 MFileXMLProcessor::MFileXMLProcessor(PWScore *pcore,
                                      UUIDVector *pPossible_Aliases,
                                      UUIDVector *pPossible_Shortcuts,

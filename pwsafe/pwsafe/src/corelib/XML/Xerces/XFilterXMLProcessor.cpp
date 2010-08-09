@@ -56,12 +56,6 @@
 #include <fstream.h>
 #endif
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 XFilterXMLProcessor::XFilterXMLProcessor(PWSFilters &mapfilters, const FilterPool fpool,
                                          Asker *pAsker)
   : m_MapFilters(mapfilters), m_FPool(fpool), m_pAsker(pAsker)
