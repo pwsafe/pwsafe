@@ -353,7 +353,9 @@ public:
 
     void ClearRUEList() { m_RUEList.ClearEntries(); }
     void OnUpdateClearRecentHistory();
-    
+
+    void ViewReport(CReport& rpt);
+
 ////@begin PasswordSafeFrame member variables
   PWSGrid* m_grid;
   PWSTreeCtrl* m_tree;

@@ -149,7 +149,7 @@ SOURCES= passwordsafeframe.cpp \
 	RUEList.cpp guiinfo.cpp ImportTextDlg.cpp \
 	ImportXmlDlg.cpp OpenFilePickerValidator.cpp \
 	SafeCombinationCtrl.cpp ExportTextWarningDlg.cpp \
-	AdvancedSelectionDlg.cpp
+	AdvancedSelectionDlg.cpp ViewReport.cpp
 
 
 OBJECTS=$(SOURCES:%.cpp=$(OBJECTPATH)/%.o)
