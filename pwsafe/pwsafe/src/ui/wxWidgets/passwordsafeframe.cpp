@@ -51,7 +51,8 @@
 #include "./ImportXmlDlg.h"
 #include "./ExportTextWarningDlg.h"
 #include "../../os/sleep.h"
-
+#include "../../corelib/XML/XMLDefs.h"
+#include "./ViewReport.h"
 #include "corelib/XML/XMLDefs.h"  // Required if testing "USE_XML_LIBRARY"
 
 // main toolbar images
@@ -2049,13 +2050,10 @@ void PasswordSafeFrame::OnImportText(wxCommandEvent& evt)
   rpt.EndReport();
 
   const int iconType = (rc == PWScore::SUCCESS ? wxICON_INFORMATION : wxICON_EXCLAMATION);
-  wxMessageBox(cs_temp, cs_title, wxOK | iconType);
-  /*
-  cs_title << wxT("\n\nDo you want to see a detailed report?");
-  if (wxMessageBox(cs_temp, cs_title, wxYES_NO | iconType) == wxID_YES) {
+  cs_temp << wxT("\n\nDo you want to see a detailed report?");
+  if (wxMessageBox(cs_temp, cs_title, wxYES_NO | iconType) == wxYES) {
     ViewReport(rpt);
   }
-   */
 }
 
 void PasswordSafeFrame::OnImportKeePass(wxCommandEvent& evt)
@@ -2118,7 +2116,7 @@ void PasswordSafeFrame::OnImportXML(wxCommandEvent& evt)
   if (!XSDFilename.FileExists()) {
     wxString filepath(XSDFilename.GetFullPath());
     wxMessageBox(wxString::Format(_("Can't find XML Schema Definition file (%s) in your PasswordSafe Application Directory.\r\nPlease copy it from your installation file, or re-install PasswordSafe."), filepath.c_str()), 
-                          _("Missing XSD File"), wxOK | wxICON_ERROR);
+                          wxString(_("Missing XSD File - ")) + wxSTRINGIZE_T(USE_XML_LIBRARY) + _(" Build"), wxOK | wxICON_ERROR);
     return;
   }
 #endif
@@ -2242,9 +2240,15 @@ void PasswordSafeFrame::OnImportXML(wxCommandEvent& evt)
   const int iconType = (rc != PWScore::SUCCESS || !strXMLErrors.empty()) ? wxICON_EXCLAMATION : wxICON_INFORMATION;
 
   cs_temp << _("\n\nDo you wish to see a detailed report?");
-  if ( wxMessageBox(cs_temp, cs_title, wxYES_NO | iconType) == wxID_YES) {
-    //ViewReport(rpt);
+  if ( wxMessageBox(cs_temp, cs_title, wxYES_NO | iconType) == wxYES) {
+    ViewReport(rpt);
   }
+}
+
+void PasswordSafeFrame::ViewReport(CReport& rpt)
+{
+  CViewReport vr(this, &rpt);
+  vr.ShowModal();
 }
 
 void PasswordSafeFrame::OnExportVx(wxCommandEvent& evt)
