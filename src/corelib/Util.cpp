@@ -617,3 +617,43 @@ string PWSUtil::GetXMLTime(int indent, const char *name,
   return oss.str();
 }
 
+/**
+ * Get TCHAR buffer size by format string with parameters
+ * @param[in] fmt - format string
+ * @param[in] args - arguments for format string
+ * @return buffer size including NULL-terminating character
+*/
+int GetStringBufSize(const TCHAR *fmt, va_list args)
+{
+  va_list ar;
+  TCHAR *buffer=NULL;
+
+  int len=0;
+
+  va_copy(ar, args);
+#ifdef _WIN32
+  len = _vsctprintf(fmt, ar) + 1;
+  buffer = new TCHAR[len];
+#else
+  // Linux doesn't do this correctly :-(
+  int guess = 16;
+  while (1) {
+    len = guess;
+    buffer = new TCHAR[len];
+    len = _vstprintf_s(buffer, len, fmt, ar);
+    va_end(ar);//after using args we should reset list
+    va_copy(ar, args);
+    if (len++ > 0)
+      break;
+    else { // too small, resize & try again
+      delete[] buffer;
+      guess *= 2;
+    }
+  }
+#endif
+  va_end(ar);
+  if (buffer)
+    delete[] buffer;
+  assert(len>0);
+  return len;
+}

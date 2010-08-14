@@ -1529,9 +1529,9 @@ void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga,
   if (pos != m_core.GetEntryEndIter()) {
     pci = &pos->second;
   }
-
+#ifdef NOTYET
   PWSprefs *prefs = PWSprefs::GetInstance();
-
+#endif
   switch (ga) {
     case UpdateGUICommand::GUI_ADD_ENTRY:
       m_tree->AddItem(*pci);

@@ -343,7 +343,7 @@ void pws_os::SendString(const char* str, AutotypeMethod method, unsigned delayMS
 
 	if (*str) {
 		/* some of the input chars were unprocessed */
-		sprintf(atGlobals.errorString, "char at approximate index(%u), ascii(%d), symbol(%c) couldn't be converted to keycode\n", ndest, (int)*str, *str);
+		sprintf(atGlobals.errorString, "char at approximate index(%u), ascii(%d), symbol(%c) couldn't be converted to keycode\n", static_cast<unsigned int>(ndest), (int)*str, *str);
 	}
 	else {
 		size_t n;

@@ -49,7 +49,6 @@
 		<Unit filename="../../src/corelib/ItemData.h" />
 		<Unit filename="../../src/corelib/ItemField.cpp" />
 		<Unit filename="../../src/corelib/ItemField.h" />
-		<Unit filename="../../src/corelib/Makefile" />
 		<Unit filename="../../src/corelib/Match.cpp" />
 		<Unit filename="../../src/corelib/Match.h" />
 		<Unit filename="../../src/corelib/PWCharPool.cpp" />
@@ -136,12 +135,10 @@
 		<Unit filename="../../src/corelib/coredefs.h" />
 		<Unit filename="../../src/corelib/corelib.h" />
 		<Unit filename="../../src/corelib/corelib.rc2" />
-		<Unit filename="../../src/corelib/corelib.vcproj" />
 		<Unit filename="../../src/corelib/corelib_st.cpp" />
 		<Unit filename="../../src/corelib/corelib_st.h" />
 		<Unit filename="../../src/corelib/hmac.cpp" />
 		<Unit filename="../../src/corelib/hmac.h" />
-		<Unit filename="../../src/corelib/pre_build.vbs" />
 		<Unit filename="../../src/corelib/sha1.cpp" />
 		<Unit filename="../../src/corelib/sha1.h" />
 		<Unit filename="../../src/corelib/sha256.cpp" />

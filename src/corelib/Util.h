@@ -22,6 +22,7 @@
 #include "../os/mem.h"
 
 #include <sstream>
+#include <stdarg.h>
 
 #define SaltLength 20
 #define StuffSize 10
@@ -167,7 +168,7 @@ class dereference {
     const value_type& operator()(const_iterator itr) { return *itr; }
 };
 
-
+extern int GetStringBufSize(const TCHAR *fmt, va_list args);
 #endif /* __UTIL_H */
 //-----------------------------------------------------------------------------
 // Local variables:

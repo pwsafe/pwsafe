@@ -696,7 +696,7 @@ int PWScore::ReadFile(const StringX &a_filename,
            CItemData::FieldBits bf;
            bf.flip();
            StringX dump = ci_temp.GetPlaintext(TCHAR(':'), bf, TCHAR('-'), NULL);
-           pws_os::Trace(_T("%s\n"), dump);
+           pws_os::Trace(_T("%s\n"), dump.c_str());
 #endif
            ci_temp.CreateUUID(); // replace duplicated uuid
            ci_temp.GetUUID(uuid); // refresh uuid_array

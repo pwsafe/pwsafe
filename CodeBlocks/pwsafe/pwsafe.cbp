@@ -34,6 +34,7 @@
 					<Add directory="../os" />
 				</Linker>
 				<ExtraCommands>
+					<Add before="rm bin/Debug/pwsafe || true" />
 					<Add before="../../Misc/mkversion.pl ../../src/ui/wxWidgets/version.in ../../src/ui/wxWidgets/version.h" />
 					<Mode after="always" />
 				</ExtraCommands>
