@@ -623,11 +623,6 @@ int PWSfileV3::ReadHeader()
   do {
     numRead = ReadCBC(fieldType, utf8, (unsigned int &)utf8Len);
 
-    if (numRead < 0) {
-      Close();
-      return FAILURE;
-    }
-
     switch (fieldType) {
       case HDR_VERSION: /* version */
         // in Beta, VersionNum was an int (4 bytes) instead of short (2)

@@ -925,6 +925,7 @@ void PasswordSafeFrame::OnSaveClick( wxCommandEvent& /* evt */ )
 
 void PasswordSafeFrame::OnSaveAsClick(wxCommandEvent& evt)
 {
+  UNREFERENCED_PARAMETER(evt);
   if (m_core.GetReadFileVersion() != PWSfile::VCURRENT &&
       m_core.GetReadFileVersion() != PWSfile::UNKNOWN_VERSION) {
     if (wxMessageBox( wxString::Format(_("The original database, '%s', is in pre-3.0 format. The data will now be written in the new format, which is unusable by old versions of PasswordSafe. To save the data in the old format, use the 'File->Export To-> Old (1.x or 2) format' command."),
@@ -1504,11 +1505,15 @@ void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga,
                                   uuid_array_t &entry_uuid,
                                   CItemData::FieldType ft)
 {
+  UNREFERENCED_PARAMETER(ga);
+  UNREFERENCED_PARAMETER(entry_uuid);
+  UNREFERENCED_PARAMETER(ft);
   // XXX TBD
 }
 
 void PasswordSafeFrame::GUISetupDisplayInfo(CItemData &ci)
 {
+  UNREFERENCED_PARAMETER(ci);
   // XXX TBD
 }
 
@@ -1523,6 +1528,11 @@ void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga,
   // "bUpdateGUI" is only used by GUI_DELETE_ENTRY when called as part
   // of the Edit Entry Command where the entry is deleted and then added and
   // the GUI should not be updated until after the Add.
+  
+  // TODO: bUpdateGUI processing in PasswordSafeFrame::UpdateGUI
+  UNREFERENCED_PARAMETER(ft);//remove after NOTYET 'll be done
+  UNREFERENCED_PARAMETER(bUpdateGUI);
+
   CItemData *pci(NULL);
 
   ItemListIter pos = m_core.Find(entry_uuid);
@@ -1609,6 +1619,7 @@ void PasswordSafeFrame::OnNewClick( wxCommandEvent& /* evt */ )
 
 void PasswordSafeFrame::OnClearRecentHistory(wxCommandEvent& evt)
 {
+  UNREFERENCED_PARAMETER(evt);
   wxGetApp().recentDatabases().Clear();
 }
 
@@ -1938,6 +1949,7 @@ void PasswordSafeFrame::OnOpenRecentDB(wxCommandEvent& evt)
 //
 void PasswordSafeFrame::OnImportText(wxCommandEvent& evt)
 {
+  UNREFERENCED_PARAMETER(evt);
   if (m_core.IsReadOnly()) {// disable in read-only mode
     wxMessageBox(wxT("The current database was opened in read-only mode.  You cannot import into it."),
                   wxT("Import text"), wxOK | wxICON_EXCLAMATION);
@@ -2058,6 +2070,7 @@ void PasswordSafeFrame::OnImportText(wxCommandEvent& evt)
 
 void PasswordSafeFrame::OnImportKeePass(wxCommandEvent& evt)
 {
+  UNREFERENCED_PARAMETER(evt);
   if (m_core.IsReadOnly()) // disable in read-only mode
     return;
 
@@ -2096,6 +2109,7 @@ void PasswordSafeFrame::OnImportKeePass(wxCommandEvent& evt)
 
 void PasswordSafeFrame::OnImportXML(wxCommandEvent& evt)
 {
+  UNREFERENCED_PARAMETER(evt);
   if (m_core.IsReadOnly()) // disable in read-only mode
     return;
 
@@ -2317,6 +2331,7 @@ struct ExportFullText
 
 void PasswordSafeFrame::OnExportPlainText(wxCommandEvent& evt)
 {
+  UNREFERENCED_PARAMETER(evt);
   DoExportText<ExportFullText>();
 }
 
@@ -2349,6 +2364,7 @@ struct ExportFullXml {
 
 void PasswordSafeFrame::OnExportXml(wxCommandEvent& evt)
 {
+  UNREFERENCED_PARAMETER(evt);
   DoExportText<ExportFullXml>();
 }
 

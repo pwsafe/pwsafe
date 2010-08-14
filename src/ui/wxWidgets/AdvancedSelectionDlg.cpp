@@ -79,6 +79,7 @@ END_EVENT_TABLE()
 AdvancedSelectionDlgBase::AdvancedSelectionDlgBase(wxWindow* parentWnd, const SelectionCriteria& existingCriteria):
                                                   m_criteria(existingCriteria)
 {
+  UNREFERENCED_PARAMETER(parentWnd);
   SetExtraStyle(wxWS_EX_VALIDATE_RECURSIVELY);
 }
 

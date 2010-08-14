@@ -282,14 +282,6 @@ size_t _readcbc(FILE *fp,
   // new for 2.0 -- lengthblock[4..7] previously set to zero
   type = lengthblock[sizeof(int)]; // type is first byte after the length
 
-  if (length < 0) { // sanity check
-    pws_os::Trace0(_T("_readcbc: Read negative length - aborting\n"));
-    buffer = NULL;
-    buffer_len = 0;
-    trashMemory(lengthblock, BS);
-    return 0;
-  }
-
   if ((file_len != 0 && length >= file_len)) {
     pws_os::Trace0(_T("_readcbc: Read size larger than file length - aborting\n"));
     buffer = NULL;

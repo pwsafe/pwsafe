@@ -85,7 +85,8 @@ bool VerifyImportDateTimeString(const stringT &time_str, time_t &t)
     return true;
   }
 
-  struct tm xtm = { 0 };
+  struct tm xtm;
+  memset(&xtm, 0, sizeof(xtm));
   xtm.tm_year = yyyy - 1900;
   xtm.tm_mon = mon - 1;
   xtm.tm_mday = dd;
@@ -147,7 +148,8 @@ bool VerifyASCDateTimeString(const stringT &time_str, time_t &t)
   }
 
   time_t xt;
-  struct tm xtm = { 0 };
+  struct tm xtm;
+  memset(&xtm, 0, sizeof(xtm));
   xtm.tm_year = yyyy - 1900;
   xtm.tm_mon = mon - 1;
   xtm.tm_mday = dd;
@@ -215,7 +217,8 @@ bool VerifyXMLDateTimeString(const stringT &time_str, time_t &t)
     return true;
   }
 
-  struct tm xtm = { 0 };
+  struct tm xtm;
+  memset(&xtm, 0, sizeof(xtm));
   xtm.tm_year = yyyy - 1900;
   xtm.tm_mon = mon - 1;
   xtm.tm_mday = dd;
@@ -268,7 +271,8 @@ bool VerifyXMLDateString(const stringT &time_str, time_t &t)
     return true;
   }
 
-  struct tm xtm = { 0 };
+  struct tm xtm;
+  memset(&xtm, 0, sizeof(xtm));
   xtm.tm_year = yyyy - 1900;
   xtm.tm_mon = mon - 1;
   xtm.tm_mday = dd;
