@@ -1135,8 +1135,12 @@ void PasswordSafeFrame::OnAutoType(wxCommandEvent& evt)
 {
   CItemData rueItem;
   CItemData* item = IsRUEEvent(evt)? (m_RUEList.GetPWEntry(GetRUEIndex(evt), rueItem)? &rueItem: NULL) : GetSelectedEntry();
-  if (item)
+  if (item) {
+#ifdef __WXMAC__
+    Lower();
+#endif
     DoAutotype(*item);
+  }
 }
 
 void PasswordSafeFrame::OnGotoBase(wxCommandEvent& /*evt*/)
@@ -2263,7 +2267,7 @@ void PasswordSafeFrame::OnExportVx(wxCommandEvent& evt)
   cs_text = _("Please name the exported database");
 
   //filename cannot have the path. Need to pass it separately
-  wxFileName filename(OldFormatFileName);
+  wxFileName filename(towxstring(OldFormatFileName));
   wxString dir = filename.GetPath();
   if (dir.empty())
     dir = towxstring(PWSdirs::GetSafeDir());
@@ -2398,7 +2402,7 @@ void PasswordSafeFrame::DoExportText()
       {
         // do the export
         // SaveAs-type dialog box
-        wxFileName TxtFileName(PWSUtil::GetNewFileName(sx_temp.c_str(), ExportType::FileExtension()));
+        wxFileName TxtFileName(towxstring(PWSUtil::GetNewFileName(sx_temp.c_str(), ExportType::FileExtension())));
 
         wxFileDialog fd(this, ExportType::FileOpenPrompt(), TxtFileName.GetPath(), 
                         TxtFileName.GetFullName(), ExportType::WildCards(), 
