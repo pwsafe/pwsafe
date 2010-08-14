@@ -132,7 +132,7 @@ bool CXMLprefs::Store()
 
   DOPEN();
   DPRINT((f, "Entered CXMLprefs::Store()\n"));
-  DPRINT((f, "\tm_pXMLDoc = %p\n", m_pXMLDoc));
+  DPRINT((f, "\tm_pXMLDoc = %p\n", static_cast<void*>(m_pXMLDoc)));
 
   // Although technically possible, it doesn't make sense
   // to create a toplevel document here, since we'd then

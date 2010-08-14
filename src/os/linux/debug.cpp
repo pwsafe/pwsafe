@@ -49,7 +49,7 @@ void pws_os::Trace(LPCTSTR lpszFormat, ...)
   assert(num_required == num_written+1);
   szbuffer[num_required-1] = '\0';
 #endif
-  syslog(LOG_DEBUG, szbuffer);
+  syslog(LOG_DEBUG, "%s", szbuffer);
 
   delete[] szbuffer;
   closelog();
@@ -66,11 +66,11 @@ void pws_os::Trace0(LPCTSTR lpszFormat)
   char *szbuffer = new char[N];
   wcstombs(szbuffer, lpszFormat, N);
 
-  syslog(LOG_DEBUG, szbuffer);
+  syslog(LOG_DEBUG, "%s", szbuffer);
 
   delete[] szbuffer;
 #else
-  syslog(LOG_DEBUG, lpszFormat);
+  syslog(LOG_DEBUG, "%s", lpszFormat);
 #endif
 
   closelog();

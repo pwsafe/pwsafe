@@ -22,7 +22,7 @@ namespace pws_os {
   // bytes should then be passed, which will be filled with
   // (hopefully) enough entropy to get the ball rolling...
   extern void GetRandomSeed(void *p, unsigned &slen);
-};
+}
 #endif /* __RAND_H */
 //-----------------------------------------------------------------------------
 // Local variables:

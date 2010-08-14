@@ -83,16 +83,17 @@ typedef unsigned long DWORD;
 #endif  /* __WX__ */
 
 #else /* !defined(_WIN32) */
+#include <stdint.h>
 #include <sys/types.h>
 typedef int8_t  int8;
 typedef int16_t int16;
 typedef int32_t int32;
 typedef int64_t int64;
 
-typedef u_int8_t  uint8;
-typedef u_int16_t uint16;
-typedef u_int32_t uint32;
-typedef u_int64_t uint64;
+typedef uint8_t  uint8;
+typedef uint16_t uint16;
+typedef uint32_t uint32;
+typedef uint64_t uint64;
 
 typedef int errno_t;
 
@@ -118,16 +119,16 @@ typedef TCHAR *LPTSTR;
 typedef const TCHAR *LPCTSTR;
 typedef bool BOOL;
 typedef unsigned char BYTE;
-typedef unsigned short WORD;
-typedef unsigned long DWORD;
-typedef long LONG;
+typedef uint16_t WORD;
+typedef uint32_t DWORD;
+typedef int32_t LONG;
 #define LOBYTE(w) ((BYTE)(w))
 #define HIBYTE(w) ((BYTE)(((WORD)(w) >> 8) & 0xFF))
 #define LOWORD(ul) (WORD(DWORD(ul) & 0xffff))
 #define HIWORD(ul) (WORD(DWORD(ul) >> 16))
 #define MAKELONG(high, low) ((LONG) (((WORD) (low)) | ((DWORD) ((WORD) (high))) << 16)) 
 #define MAKEWORD(high, low) ((WORD)((((WORD)(high)) << 8) | ((BYTE)(low))))	
-typedef long LPARAM;
+typedef int32_t LPARAM;
 typedef unsigned int UINT;
 typedef int HANDLE;
 #define INVALID_HANDLE_VALUE HANDLE(-1)

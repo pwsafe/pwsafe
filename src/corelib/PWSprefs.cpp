@@ -557,7 +557,7 @@ bool equal_shortcuts(st_prefShortcut a, st_prefShortcut b)
   return (a.id        == b.id &&
           a.cVirtKey  == b.cVirtKey &&
           a.cModifier == b.cModifier);
-};
+}
 
 void PWSprefs::SetPrefShortcuts(const std::vector<st_prefShortcut> &vShortcuts)
 {

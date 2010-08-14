@@ -38,7 +38,7 @@ namespace pws_os {
   bool RegReadSTValue(const TCHAR *name, int &value);
   bool RegReadSTValue(const TCHAR *name, stringT &value);
   bool RegCloseSubtree();
-};
+}
 #endif /* __REGISTRY_H */
 //-----------------------------------------------------------------------------
 // Local variables:

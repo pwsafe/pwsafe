@@ -59,6 +59,10 @@
 #include <cassert>
 #endif
 
+#ifndef _MSC_VER
+#include <stdint.h>
+#endif
+
 // Following seems needed on Linux/cygwin
 #if defined(__linux__) || defined(__CYGWIN__)
 #define LTC_NO_ROLC
@@ -236,7 +240,7 @@
 typedef unsigned __int64 ulong64;
 #else
 #define CONST64(n) n ## ULL
-typedef unsigned long long ulong64;
+typedef uint64_t ulong64;
 #endif
 
 /* this is the "32-bit at least" data type 

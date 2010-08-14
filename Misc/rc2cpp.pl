@@ -149,7 +149,7 @@ PREAMBLE
 }
     print CPP <<"POSTAMBLE";
   }; // Pairs array
-}; // anonymous namespace
+} // anonymous namespace
 
 map<int, const TCHAR *> ${b}_st(Pairs, Pairs + sizeof(Pairs)/sizeof(Pairs[0]));
 

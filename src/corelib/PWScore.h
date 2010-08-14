@@ -74,7 +74,7 @@ public:
     UNIMPLEMENTED,                            // 15
     NO_ENTRIES_EXPORTED,                      // 16
     DB_HAS_DUPLICATES,                        // 17
-    OK_WITH_ERRORS,                           // 18
+    OK_WITH_ERRORS                           // 18
   };
 
   PWScore();

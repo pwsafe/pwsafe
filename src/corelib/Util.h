@@ -146,7 +146,7 @@ namespace PWSUtil {
                      const char *tabs = "\t\t");
   std::string GetXMLTime(int indent, const char *name,
                          time_t t, CUTF8Conv &utf8conv);
-};
+}
 
 ///////////////////////////////////////////////////////
 // Following two templates lets us use the two types

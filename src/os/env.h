@@ -20,7 +20,7 @@ namespace pws_os {
   extern stringT gethostname(); // returns name of current machine
   extern stringT getprocessid();
   extern void    getosversion(DWORD &major, DWORD &minor);
-};
+}
 #endif /* __ENV_H */
 //-----------------------------------------------------------------------------
 // Local variables:

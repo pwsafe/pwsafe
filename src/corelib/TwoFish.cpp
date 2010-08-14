@@ -30,7 +30,7 @@ enum {
 
   CRYPT_MEM,              /* Out of memory */
 
-  CRYPT_INVALID_ARG,      /* Generic invalid argument */
+  CRYPT_INVALID_ARG      /* Generic invalid argument */
 };
 
 /** 

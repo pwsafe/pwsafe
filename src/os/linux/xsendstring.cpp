@@ -90,10 +90,9 @@ static struct {
     { '\t', 	"Tab",  		NoSymbol },
     { '\n', 	"Linefeed", 	NoSymbol },
     { '\r', 	"Return", 		NoSymbol },
-    { '\e', 	"Escape", 		NoSymbol },
     { '\010', 	"BackSpace", 	NoSymbol },  /* \b doesn't work */
     { '\177', 	"Delete", 		NoSymbol },
-    { '\27', 	"Escape", 		NoSymbol },  /* \e doesn't work */
+    { '\033', 	"Escape", 		NoSymbol },  /* \e doesn't work and \e is non-iso escape sequence*/
     { '!', 		"exclam", 		NoSymbol },
     { '#', 		"numbersign", 	NoSymbol },
     { '%', 		"percent", 		NoSymbol },
@@ -224,7 +223,7 @@ void InitKeyEvent(XKeyEvent* event)
 	event->same_screen = TRUE;
 }
 
-}; // anonymous namespace
+} // anonymous namespace
 
 /* 
  * SendString - sends a string to the X Window having input focus

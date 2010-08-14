@@ -19,6 +19,6 @@ namespace pws_os {
   typedef enum { ATMETHOD_AUTO, ATMETHOD_XTEST, ATMETHOD_XSENDKEYS } AutotypeMethod;
   
   void SendString(const char* str, AutotypeMethod method, unsigned delayMS);
-};
+}
 #endif
 
