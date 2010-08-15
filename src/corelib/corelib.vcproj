@@ -468,7 +468,7 @@
 			<Tool
 				Name="VCLibrarianTool"
 				OutputFile="..\..\build\lib\pwsafe\$(ConfigurationName)\corelib.lib"
-				AdditionalLibraryDirectories="$(ExpatDir)\Bin"
+				AdditionalLibraryDirectories="$(ExpatDir)\Bin10"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -703,7 +703,7 @@
 			<Tool
 				Name="VCLibrarianTool"
 				OutputFile="..\..\build\lib\pwsafe\$(ConfigurationName)\corelib.lib"
-				AdditionalLibraryDirectories="$(ExpatDir)\Bin"
+				AdditionalLibraryDirectories="$(ExpatDir)\Bin10"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -941,7 +941,7 @@
 			<Tool
 				Name="VCLibrarianTool"
 				OutputFile="..\..\build\lib\pwsafe\$(ConfigurationName)\corelib.lib"
-				AdditionalLibraryDirectories="$(ExpatDir)\Bin"
+				AdditionalLibraryDirectories="$(ExpatDir)\Bin10"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -1100,7 +1100,7 @@
 			<Tool
 				Name="VCLibrarianTool"
 				OutputFile="..\..\build\lib\pwsafe\$(ConfigurationName)\corelib.lib"
-				AdditionalLibraryDirectories="$(ExpatDir)\Bin"
+				AdditionalLibraryDirectories="$(ExpatDir)\Bin10"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
