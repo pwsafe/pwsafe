@@ -1,0 +1,20 @@
+The file "wxBuild_wxWidgets.bat" in this directory has been updated to compile
+V2.8.10 of wxWidgest for VS2010 (Visual C++ complier 10.0)
+
+Note: PasswordSafe wxWidgets uses the static Unicode libraries only, although the
+following will also build the Unicode DLLs.
+
+You should issue the following commands in a command window in this order:
+
+wxBuild_wxWidgets vc100 CLEAN
+
+wxBuild_wxWidgets vc100 NULL LIB_DEBUG_UNICODE
+wxBuild_wxWidgets vc100 NULL LIB_RELEASE_UNICODE
+wxBuild_wxWidgets vc100 NULL DLL_DEBUG_UNICODE
+wxBuild_wxWidgets vc100 NULL DLL_RELEASE_UNICODE
+
+wxBuild_wxWidgets vc100 MOVE
+wxBuild_wxWidgets vc100 CLEAN
+
+The resulting libraries will be placed in the correct vc10_lib and vc10_dll (the VS2005
+equivalents remain in directories vc_lib and vc_dll.
