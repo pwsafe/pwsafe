@@ -674,6 +674,8 @@ int PasswordSafeFrame::SaveIfChanged()
         // Reset changed flag
         SetChanged(Clear);
         break;
+      default:
+        ASSERT(0);
     }
   }
   return PWScore::SUCCESS;
@@ -1681,6 +1683,8 @@ int PasswordSafeFrame::New()
       // Reset changed flag
       SetChanged(Clear);
       break;
+    default:
+      ASSERT(0);
     }
   }
 

@@ -14,12 +14,16 @@
 				<Option compiler="gcc" />
 				<Option projectLinkerOptionsRelation="2" />
 				<Compiler>
+					<Add option="-Wshadow" />
+					<Add option="-Winit-self" />
+					<Add option="-Wswitch-default" />
 					<Add option="-Wextra" />
 					<Add option="-Wall" />
 					<Add option="-g" />
 					<Add option="`wx-config --cxxflags --unicode=yes --debug=yes --inplace`" />
 					<Add option="-fPIC" />
 					<Add option="-m64" />
+					<Add option="-Wformat=2" />
 					<Add option="-D_DEBUG" />
 					<Add option="-DDEBUG" />
 					<Add option="-D__WXDEBUG__" />

@@ -77,22 +77,22 @@ CPasswordCharPool::CPasswordCharPool(uint pwlen,
     m_usehexdigits || m_pronounceable);
 
   if (easyvision) {
-    m_char_arrays[LOWERCASE] = (charT *)easyvision_lowercase_chars;
-    m_char_arrays[UPPERCASE] = (charT *)easyvision_uppercase_chars;
-    m_char_arrays[DIGIT] = (charT *)easyvision_digit_chars;
-    m_char_arrays[SYMBOL] = (charT *)easyvision_symbol_chars;
-    m_char_arrays[HEXDIGIT] = (charT *)easyvision_hexdigit_chars;
+    m_char_arrays[LOWERCASE] = easyvision_lowercase_chars;
+    m_char_arrays[UPPERCASE] = easyvision_uppercase_chars;
+    m_char_arrays[DIGIT] = easyvision_digit_chars;
+    m_char_arrays[SYMBOL] = easyvision_symbol_chars;
+    m_char_arrays[HEXDIGIT] = easyvision_hexdigit_chars;
     m_lengths[LOWERCASE] = m_uselowercase ? easyvision_lowercase_len : 0;
     m_lengths[UPPERCASE] = m_useuppercase ? easyvision_uppercase_len : 0;
     m_lengths[DIGIT] = m_usedigits ? easyvision_digit_len : 0;
     m_lengths[SYMBOL] = m_usesymbols ? easyvision_symbol_len : 0;
     m_lengths[HEXDIGIT] = m_usehexdigits ? easyvision_hexdigit_len : 0;
   } else { // !easyvision
-    m_char_arrays[LOWERCASE] = (charT *)std_lowercase_chars;
-    m_char_arrays[UPPERCASE] = (charT *)std_uppercase_chars;
-    m_char_arrays[DIGIT] = (charT *)std_digit_chars;
-    m_char_arrays[SYMBOL] = (charT *)std_symbol_chars;
-    m_char_arrays[HEXDIGIT] = (charT *)std_hexdigit_chars;
+    m_char_arrays[LOWERCASE] = std_lowercase_chars;
+    m_char_arrays[UPPERCASE] = std_uppercase_chars;
+    m_char_arrays[DIGIT] = std_digit_chars;
+    m_char_arrays[SYMBOL] = std_symbol_chars;
+    m_char_arrays[HEXDIGIT] = std_hexdigit_chars;
     m_lengths[LOWERCASE] = m_uselowercase ? std_lowercase_len : 0;
     m_lengths[UPPERCASE] = m_useuppercase ? std_uppercase_len : 0;
     m_lengths[DIGIT] = m_usedigits ? std_digit_len : 0;

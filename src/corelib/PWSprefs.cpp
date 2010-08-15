@@ -710,7 +710,7 @@ void PWSprefs::Load(const StringX &prefString, bool bUseCopy)
         // forward compatibility and check whether still in DB
         if (index < NumBoolPrefs && m_bool_prefs[index].pt == ptDatabase) {
           ASSERT(ival == 0 || ival == 1);
-          bool *pb2 = (bool *)pb + index; // Can't use pb directly below as it is 'const'
+          bool *pb2 = const_cast<bool *>(pb) + index; // Can't use pb directly below as it is 'const'
           *pb2 = (ival != 0);
         }
         break;
@@ -719,7 +719,7 @@ void PWSprefs::Load(const StringX &prefString, bool bUseCopy)
         is >> iuval;
         // forward compatibility and check whether still in DB
         if (index < NumIntPrefs && m_int_prefs[index].pt == ptDatabase) {
-          int *pi2 = (int *)pi + index; // Can't use pi directly below as it is 'const'
+          unsigned int *pi2 = const_cast<unsigned int *>(pi) + index; // Can't use pi directly below as it is 'const'
           *pi2 = iuval;
         }
         break;
@@ -731,7 +731,7 @@ void PWSprefs::Load(const StringX &prefString, bool bUseCopy)
         is.ignore(1, TCHAR(' ')); // skip over trailing delimiter
         // forward compatibility and check whether still in DB
         if (index < NumStringPrefs && m_string_prefs[index].pt == ptDatabase) {
-          StringX *ps2 = (StringX *)ps + index; // Can't use ps directly below as it is 'const'
+          StringX *ps2 = const_cast<StringX *>(ps) + index; // Can't use ps directly below as it is 'const'
           *ps2 = buf;
         }
         break;
@@ -1358,16 +1358,16 @@ void PWSprefs::SaveApplicationPreferences()
 
   if (m_ConfigOption == CF_FILE_RW ||
       m_ConfigOption == CF_FILE_RW_NEW) {
-    int i;
+    int j;
     const int n = GetPref(PWSprefs::MaxMRUItems);
     // Delete ALL entries
     m_pXML_Config->DeleteSetting(m_csHKCU_MRU, _T(""));
     // Now put back the ones we want
     stringT csSubkey;
-    for (i = 0; i < n; i++) {
-      if (!m_MRUitems[i].empty()) {
-        Format(csSubkey, _T("Safe%02d"), i+1);
-        m_pXML_Config->Set(m_csHKCU_MRU, csSubkey, m_MRUitems[i]);
+    for (j = 0; j < n; j++) {
+      if (!m_MRUitems[j].empty()) {
+        Format(csSubkey, _T("Safe%02d"), j+1);
+        m_pXML_Config->Set(m_csHKCU_MRU, csSubkey, m_MRUitems[j]);
       }
     }
   }

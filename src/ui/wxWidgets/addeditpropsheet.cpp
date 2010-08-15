@@ -762,9 +762,9 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
   // get values from m_item
   if (m_type == ADD) {
     // Get history preferences
-    PWSprefs *prefs = PWSprefs::GetInstance();
-    m_keepPWHist = prefs->GetPref(PWSprefs::SavePasswordHistory);
-    m_maxPWHist = prefs->GetPref(PWSprefs::NumPWHistoryDefault);
+    PWSprefs *prefs1 = PWSprefs::GetInstance();
+    m_keepPWHist = prefs1->GetPref(PWSprefs::SavePasswordHistory);
+    m_maxPWHist = prefs1->GetPref(PWSprefs::NumPWHistoryDefault);
   } else { // EDIT or VIEW
     PWHistList pwhl;
     size_t pwh_max, num_err;
@@ -784,9 +784,9 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
       }
     } else { // empty history string
       // Get history preferences
-      PWSprefs *prefs = PWSprefs::GetInstance();
-      m_keepPWHist = prefs->GetPref(PWSprefs::SavePasswordHistory);
-      m_maxPWHist = prefs->GetPref(PWSprefs::NumPWHistoryDefault);
+      PWSprefs *prefs1 = PWSprefs::GetInstance();
+      m_keepPWHist = prefs1->GetPref(PWSprefs::SavePasswordHistory);
+      m_maxPWHist = prefs1->GetPref(PWSprefs::NumPWHistoryDefault);
     }
   } // m_type
 

@@ -275,6 +275,8 @@ static void h_func(const unsigned char *in, unsigned char *out, unsigned char *M
       y[1] = (unsigned char)(sbox(0, sbox(0, sbox(1, (unsigned long)y[1]) ^ M[4 * (2 + offset) + 1]) ^ M[4 * (0 + offset) + 1]));
       y[2] = (unsigned char)(sbox(1, sbox(1, sbox(0, (unsigned long)y[2]) ^ M[4 * (2 + offset) + 2]) ^ M[4 * (0 + offset) + 2]));
       y[3] = (unsigned char)(sbox(0, sbox(1, sbox(1, (unsigned long)y[3]) ^ M[4 * (2 + offset) + 3]) ^ M[4 * (0 + offset) + 3]));
+    default:
+      break;
   }
   mds_mult(y, out);
 }

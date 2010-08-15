@@ -1250,14 +1250,14 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
             *(quotedNotes.end() - 1) == TCHAR('\"')) {
           quotedNotes = quotedNotes.substr(1, quotedNotes.size() - 2);
         }
-        size_t from = 0, pos;
+        size_t frompos = 0, pos;
         stringT fixedNotes;
-        while (string::npos != (pos = quotedNotes.find(delimiter, from))) {
-          fixedNotes += quotedNotes.substr(from, (pos - from));
+        while (string::npos != (pos = quotedNotes.find(delimiter, frompos))) {
+          fixedNotes += quotedNotes.substr(frompos, (pos - frompos));
           fixedNotes += _T("\r\n");
-          from = pos + 1;
+          frompos = pos + 1;
         }
-        fixedNotes += quotedNotes.substr(from);
+        fixedNotes += quotedNotes.substr(frompos);
         ci_temp.SetNotes(fixedNotes.c_str());
       }
     }

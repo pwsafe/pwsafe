@@ -1120,14 +1120,14 @@ void CItemData::SetGroup(const StringX &group)
   SetField(m_Group, group);
 }
 
-void CItemData::SetUUID(const uuid_array_t &UUID)
+void CItemData::SetUUID(const uuid_array_t &uuid)
 {
-  SetField(m_UUID, (const unsigned char *)UUID, sizeof(UUID));
+  SetField(m_UUID, (const unsigned char *)uuid, sizeof(uuid));
 }
 
-void CItemData::SetURL(const StringX &URL)
+void CItemData::SetURL(const StringX &url)
 {
-  SetField(m_URL, URL);
+  SetField(m_URL, url);
 }
 
 void CItemData::SetAutoType(const StringX &autotype)

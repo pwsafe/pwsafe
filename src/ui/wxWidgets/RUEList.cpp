@@ -79,7 +79,7 @@ bool CRUEList::GetAllMenuItemStrings(vector<RUEntryData> &ListofAllMenuStrings) 
                            L"\xab" + user  + L"\xbb";
       //TODO: retrieve the proper image index
       ruentrydata.image = 0; /*m_pDbx->GetEntryImage(ci);*/
-      ruentrydata.pci = (CItemData *)&ci;
+      ruentrydata.pci = const_cast<CItemData *>(&ci);
     }
     ListofAllMenuStrings.push_back(ruentrydata);
     retval = true;

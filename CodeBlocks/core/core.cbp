@@ -15,11 +15,17 @@
 				<Option compiler="gcc" />
 				<Option createDefFile="1" />
 				<Compiler>
+					<Add option="-Wshadow" />
+					<Add option="-Winit-self" />
+					<Add option="-Wswitch-default" />
+					<Add option="-pedantic" />
 					<Add option="-Wextra" />
 					<Add option="-Wall" />
 					<Add option="-g" />
 					<Add option="-fPIC" />
 					<Add option="-m64" />
+					<Add option="-Wformat=2" />
+					<Add option="-Wcast-qual" />
 					<Add option="-D_DEBUG" />
 					<Add option="-DDEBUG" />
 					<Add option="-DDEBUG_XMLPREFS" />
@@ -149,9 +155,6 @@
 		<Unit filename="../../src/corelib/tinyxml/tinyxmlerror.cpp" />
 		<Unit filename="../../src/corelib/tinyxml/tinyxmlparser.cpp" />
 		<Unit filename="../../src/corelib/trigram.h" />
-		<Unit filename="../../src/corelib/twofish_tab.c">
-			<Option compilerVar="CC" />
-		</Unit>
 		<Extensions>
 			<envvars />
 			<code_completion />

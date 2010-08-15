@@ -48,9 +48,9 @@ static const unsigned long K[64] = {
 
 /* compress 512-bits */
 #ifdef LTC_CLEAN_STACK
-static void _sha256_compress(ulong32 state[8], unsigned char *buf)
+static void _sha256_compress(ulong32 state[8], const unsigned char *buf)
 #else
-static void  sha256_compress(ulong32 state[8], unsigned char *buf)
+static void  sha256_compress(ulong32 state[8], const unsigned char *buf)
 #endif
 {
   unsigned long S[8], W[64], t0, t1;
@@ -170,7 +170,7 @@ static void  sha256_compress(ulong32 state[8], unsigned char *buf)
 }
 
 #ifdef LTC_CLEAN_STACK
-static void sha256_compress(ulong32 state[8], unsigned char *buf)
+static void sha256_compress(ulong32 state[8], const unsigned char *buf)
 {
   _sha256_compress(state, buf);
   burnStack(sizeof(unsigned long) * 74);
@@ -212,7 +212,7 @@ void SHA256::Update(const unsigned char *in, size_t inlen)
   ASSERT(curlen <= sizeof(buf));
   while (inlen > 0) {
     if (curlen == 0 && inlen >= block_size) {
-      sha256_compress(state, (unsigned char *)in);
+      sha256_compress(state, in);
       length += block_size * 8;
       in             += block_size;
       inlen          -= block_size;

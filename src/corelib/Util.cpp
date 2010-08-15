@@ -471,6 +471,8 @@ stringT PWSUtil::Base64Encode(const BYTE *strIn, size_t len)
       cs_Out += TCHAR('=');
     case 2:
       cs_Out += TCHAR('=');
+    default:
+      break;
   }
   return cs_Out;
 }

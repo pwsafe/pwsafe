@@ -332,7 +332,7 @@ struct RecordWriter {
   RecordWriter(PWSfile *pout, PWScore *pcore) : m_pout(pout), m_pcore(pcore) {}
   void operator()(pair<CUUIDGen const, CItemData> &p)
   {
-    StringX savePassword, uuid_str;
+    StringX savePassword;
 
     savePassword = p.second.GetPassword();
     if (p.second.IsAlias()) {
@@ -712,8 +712,8 @@ int PWScore::ReadFile(const StringX &a_filename,
                  csMyPassword.substr(csMyPassword.length() - 2) == _T("~]"))) &&
                cs_possibleUUID.find_first_not_of(_T("0123456789abcdef")) == 
                StringX::npos) {
-             CUUIDGen uuid(cs_possibleUUID.c_str());
-             uuid.GetUUID(base_uuid);
+             CUUIDGen buuid(cs_possibleUUID.c_str());
+             buuid.GetUUID(base_uuid);
              ci_temp.GetUUID(temp_uuid);
              if (csMyPassword.substr(1, 1) == _T("[")) {
                m_alias2base_map[temp_uuid] = base_uuid;
@@ -736,6 +736,8 @@ int PWScore::ReadFile(const StringX &a_filename,
          break;
       case PWSfile::END_OF_FILE:
         go = false;
+        break;
+      default:
         break;
     } // switch
   } while (go);
