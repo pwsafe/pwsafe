@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="UserMacros">
+    <ConfigurationName>$(Configuration)</ConfigurationName>
+    <PWSBin>..\..\..\build10\bin\pwsafe\$(Configuration)</PWSBin>
+    <PWSLib>..\..\..\build10\lib\pwsafe\$(Configuration)</PWSLib>
+    <PWSObj>..\..\..\build10\obj\pwsafe\$(Configuration)</PWSObj>
+  </PropertyGroup>
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <_PropertySheetDisplayName>UserVariables</_PropertySheetDisplayName>
+  </PropertyGroup>
+  <ItemGroup>
+    <BuildMacro Include="ConfigurationName">
+      <Value>$(ConfigurationName)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
+    </BuildMacro>
+    <BuildMacro Include="OutDir">
+      <Value>$(OutDir)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
+    </BuildMacro>
+    <BuildMacro Include="PWSBin">
+      <Value>$(PWSBin)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
+    </BuildMacro>
+    <BuildMacro Include="PWSLib">
+      <Value>$(PWSLib)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
+    </BuildMacro>
+    <BuildMacro Include="PWSObj">
+      <Value>$(PWSObj)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
+    </BuildMacro>
+  </ItemGroup>
+</Project>

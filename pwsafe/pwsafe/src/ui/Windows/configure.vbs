@@ -8,9 +8,8 @@
 
 ' Simple VBScript to set up the Visual Studio Properties file for PasswordSafe
 
-Dim objFileSystem, objFileSystem_AT, objFileSystem_OSK
-Dim objOutputFile, objOutputFile_AT, objOutputFile_OSK
-Dim strOutputFile, strOutputFile_AT, strOutputFile_OSK
+Dim objFileSystem, objOutputFile
+Dim strOutputFile
 Dim strFileLocation
 Dim str1, str2, str3,CRLF
 Dim rc
@@ -155,5 +154,7 @@ objOutputFile.WriteLine("</VisualStudioPropertySheet>")
 
 objOutputFile.Close
 Set objFileSystem = Nothing
+
+Call MsgBox("File UserVariables.vsprops created successfully", 0, "Configure User Variables")
 
 WScript.Quit(0)

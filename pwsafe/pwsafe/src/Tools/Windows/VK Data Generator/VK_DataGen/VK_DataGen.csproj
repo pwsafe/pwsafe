@@ -1,4 +1,5 @@
-﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -10,6 +11,12 @@
     <RootNamespace>VK_DataGen</RootNamespace>
     <AssemblyName>VKDGen</AssemblyName>
     <ApplicationIcon>Resources\vk_datagen.ico</ApplicationIcon>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>2.0</OldToolsVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -17,7 +24,7 @@
     <Optimize>false</Optimize>
     <OutputPath>..\..\..\..\..\build\bin\VK_DataGen\Debug\</OutputPath>
     <BaseIntermediateOutputPath>..\..\..\..\..\build\obj\VK_DataGen\Debug\</BaseIntermediateOutputPath>
-    <IntermediateOutputPath>..\..\..\..\..\build\obj\VK_DataGen\Debug\</IntermediateOutputPath> 
+    <IntermediateOutputPath>..\..\..\..\..\build\obj\VK_DataGen\Debug\</IntermediateOutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -27,7 +34,7 @@
     <Optimize>true</Optimize>
     <OutputPath>..\..\..\..\..\build\bin\VK_DataGen\Release\</OutputPath>
     <BaseIntermediateOutputPath>..\..\..\..\..\build\obj\VK_DataGen\Release\</BaseIntermediateOutputPath>
-    <IntermediateOutputPath>..\..\..\..\..\build\obj\VK_DataGen\Release\</IntermediateOutputPath> 
+    <IntermediateOutputPath>..\..\..\..\..\build\obj\VK_DataGen\Release\</IntermediateOutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
