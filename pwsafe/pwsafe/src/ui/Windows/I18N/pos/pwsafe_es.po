@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2010-08-02 00:24+0100\n"
+"PO-Revision-Date: 2010-08-15 19:44+0100\n"
 "Last-Translator: José Luis Sánchez Lozano <jl.sanchez.lozano@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -473,7 +473,7 @@ msgstr "&Autoescritura:"
 
 #. Resource IDs: (332, 32062)
 msgid "&Browse to URL"
-msgstr "&Abrir URL"
+msgstr "A&brir URL"
 
 #. Resource IDs: (32151)
 msgid "&Change Safe Combination..."
@@ -525,23 +525,23 @@ msgstr "&Copiar contraseña al portapapeles"
 
 #. Resource IDs: (1041)
 msgid "&Create a New Database"
-msgstr "&Crear nueva Base de Datos"
+msgstr "&Crear nueva base de datos"
 
 #. Resource IDs: (1344)
 msgid "&Delete"
-msgstr "&Eliminar"
+msgstr "E&liminar"
 
 #. Resource IDs: (32056)
 msgid "&Delete Entry"
-msgstr "&Eliminar entrada"
+msgstr "E&liminar entrada"
 
 #. Resource IDs: (32053)
 msgid "&Delete Group"
-msgstr "&Eliminar grupo"
+msgstr "E&liminar grupo"
 
 #. Resource IDs: (332)
 msgid "&Delete from Recent Entry List"
-msgstr "&Eliminar de lista de más recientes"
+msgstr "E&liminar de lista de más recientes"
 
 #. Resource IDs: (1015, 1038)
 msgid "&Don't ask me again"
@@ -605,7 +605,7 @@ msgstr "&Ir a entrada"
 
 #. Resource IDs: (9, 32200, 57670)
 msgid "&Help"
-msgstr "&Ayuda"
+msgstr "Ay&uda"
 
 #. Resource IDs: (328, 3842)
 msgid "&Hide"
@@ -657,11 +657,11 @@ msgstr "&Nueva barra de herramientas"
 
 #. Resource IDs: (32003)
 msgid "&New..."
-msgstr "&Nuevo..."
+msgstr "&Nueva..."
 
 #. Resource IDs: (32111)
 msgid "&New/Edit Filter"
-msgstr "&Nuevo/Editar Filtro"
+msgstr "&Nuevo/editar filtro"
 
 #. Resource IDs: (2)
 msgid "&No"
@@ -673,15 +673,15 @@ msgstr "&Notas:"
 
 #. Resource IDs: (360)
 msgid "&Open"
-msgstr "&Abrir"
+msgstr "A&brir"
 
 #. Resource IDs: (1024)
 msgid "&Open Another Database..."
-msgstr "&Abrir otra Base de Datos..."
+msgstr "A&brir otra base de datos..."
 
 #. Resource IDs: (32002)
 msgid "&Open..."
-msgstr "&Abrir..."
+msgstr "A&brir..."
 
 #. Resource IDs: (32154)
 msgid "&Options..."
@@ -689,7 +689,7 @@ msgstr "&Opciones..."
 
 #. Resource IDs: (32116)
 msgid "&Password Font"
-msgstr "&Fuente para contraseña"
+msgstr "Fuente para &contraseña"
 
 #. Resource IDs: (1353, 65535)
 msgid "&Password:"
@@ -717,11 +717,11 @@ msgstr "&Salir"
 
 #. Resource IDs: (65535)
 msgid "&Recent Entries History"
-msgstr "&Entradas recientes"
+msgstr "Entradas &recientes"
 
 #. Resource IDs: (327)
 msgid "&Recent Safes"
-msgstr "&Bases de Datos Recientes"
+msgstr "Bases de Datos &Recientes"
 
 #. Resource IDs: (32111)
 msgid "&Refresh"
@@ -729,7 +729,7 @@ msgstr "&Refrescar"
 
 #. Resource IDs: (32117)
 msgid "&Reports"
-msgstr "&Informes"
+msgstr "Info&rmes"
 
 #. Resource IDs: (1374)
 msgid "&Reset"
@@ -745,15 +745,15 @@ msgstr "&Reintentar"
 
 #. Resource IDs: (354, 32065)
 msgid "&Run Command"
-msgstr "&Ejecutar comando"
+msgstr "Ejecuta&r comando"
 
 #. Resource IDs: (32005)
 msgid "&Save"
-msgstr "&Guardar"
+msgstr "Gu&ardar"
 
 #. Resource IDs: (1)
 msgid "&Save to Disk"
-msgstr "&Guardar a disco"
+msgstr "Gu&ardar a disco"
 
 #. Resource IDs: (348)
 msgid "&Search"
@@ -789,7 +789,7 @@ msgstr "&Título:"
 
 #. Resource IDs: (32115)
 msgid "&Tree/List Font"
-msgstr "&Fuente para árbol/lista"
+msgstr "Fuente para &árbol/lista"
 
 #. Resource IDs: (1022)
 msgid "&Try Again"
@@ -833,11 +833,11 @@ msgstr "&Ver informe"
 
 #. Resource IDs: (32126)
 msgid "&Virtual Keyboard Font"
-msgstr "&Fuente del teclado virtual"
+msgstr "Fuente del teclado &virtual"
 
 #. Resource IDs: (32013, 32015)
 msgid "&XML format..."
-msgstr "&formato XML..."
+msgstr "formato &XML..."
 
 #. Resource IDs: (1)
 msgid "&Yes"
@@ -845,7 +845,7 @@ msgstr "&Sí"
 
 #. Resource IDs: (1356)
 msgid "&email:"
-msgstr "&correo:"
+msgstr "corr&eo:"
 
 #. Resource IDs: (510)
 msgid "'Alt Gr' (right Alt) key"
@@ -1586,15 +1586,15 @@ msgstr "Acerí latino"
 
 #. Resource IDs: (65535)
 msgid "Backup Name"
-msgstr "Nombre de Copia de Respaldo"
+msgstr "Nombre de copia de respaldo"
 
 #. Resource IDs: (65535)
 msgid "Backup directory:"
-msgstr "Directorio de Respaldo:"
+msgstr "Directorio de respaldo:"
 
 #. Resource IDs: (137)
 msgid "Backups"
-msgstr "Copias de Respaldo"
+msgstr "Copias de respaldo"
 
 #. Resource IDs: (65535)
 msgid "Base entry:"
@@ -2321,11 +2321,11 @@ msgstr "ID único de base de datos"
 
 #. Resource IDs: (65535)
 msgid "Database Unique ID:"
-msgstr "ID único de Base de Datos:"
+msgstr "ID único de base de datos:"
 
 #. Resource IDs: (65535)
 msgid "Database format:"
-msgstr "Formato de la Base de Datos:"
+msgstr "Formato de la base de datos:"
 
 #. Resource IDs: (213)
 msgid "Database has some large entries!"
@@ -2654,7 +2654,7 @@ msgstr "La entrada \"%s, %s, %s\" tiene una contraseña con el formato de un ali
 #. Resource IDs: (205)
 #, c-format
 msgid "Entry \"%s, %s, %s\" has a password in the correct form for an alias, but the base entry is already an alias."
-msgstr "La entrada \"%s, %s, %s\" tiene una contraseñas con el formtao de un alias, pero la entrada base también es un alias."
+msgstr "La entrada \"%s, %s, %s\" tiene una contraseñas con el formato de un alias, pero la entrada base también es un alias."
 
 #. Resource IDs: (205)
 msgid "Entry import warnings"
@@ -2741,7 +2741,7 @@ msgstr "Error en un subcampo del historial de contraseñas en la posición %d (e
 
 #. Resource IDs: (354)
 msgid "Error parsing Run Command"
-msgstr "Error al analizar el comando Ejecutar"
+msgstr "Error al analizar el comando a ejecutar"
 
 #. Resource IDs: (212)
 msgid "Error while writing file! Try saving in a different location"
@@ -3183,7 +3183,7 @@ msgstr "¡Hexadecimal es incompatible con el resto de opciones!"
 
 #. Resource IDs: (1426)
 msgid "Hide System Tray icon (Hot Key MUST be active)"
-msgstr "Ocultar icono en la bandeja del sistema (tecla de acceso DEBE estar activada)"
+msgstr "Ocultar icono (la tecla de acceso DEBE estar activada)"
 
 #. Resource IDs: (1397)
 msgid "Highlight changed entries"
@@ -3489,7 +3489,7 @@ msgstr "Vista inicial en árbol"
 
 #. Resource IDs: (65535)
 msgid "Initial system tray icon"
-msgstr "Icono inicial de bandeja de sistema"
+msgstr "Icono inicial en área de notificación"
 
 #. Resource IDs: (210)
 msgid "Input string is empty"
@@ -3589,7 +3589,6 @@ msgid "Kazakh"
 msgstr "Kazaco"
 
 #. Resource IDs: (32017)
-#, fuzzy
 msgid "KeePass..."
 msgstr "KeePass..."
 
@@ -3936,7 +3935,7 @@ msgstr "Nuevo grupo"
 
 #. Resource IDs: (65535)
 msgid "New Safe Combination:"
-msgstr "Nueva contraseña maestra:"
+msgstr "Nueva contraseña:"
 
 #. Resource IDs: (343)
 msgid "New Version Found!"
@@ -4170,7 +4169,7 @@ msgstr "Apagar"
 
 #. Resource IDs: (65535)
 msgid "Old Safe Combination:"
-msgstr "Antigua contraseña maestra:"
+msgstr "Actual contraseña:"
 
 #. Resource IDs: (330, 1179, 1228)
 msgid "On"
@@ -4401,7 +4400,7 @@ msgstr "Base de datos"
 
 #. Resource IDs: (341)
 msgid "Password implies this is an alias entry, but "
-msgstr "La contraseña indica que esta entrada es un alias, pero"
+msgstr "La contraseña indica que esta entrada es un alias, pero "
 
 #. Resource IDs: (342)
 msgid ""
@@ -4450,15 +4449,15 @@ msgstr "Contraseña\t"
 
 #. Resource IDs: (32064)
 msgid "Perform Auto &Type"
-msgstr "Realizar auto&escritura"
+msgstr "Realizar autoescri&tura"
 
 #. Resource IDs: (332)
 msgid "Perform Auto&Type"
-msgstr "Realizar auto&escritura"
+msgstr "Realizar autoescri&tura"
 
 #. Resource IDs: (32075)
 msgid "Perform Auto&type"
-msgstr "Realizar auto&escritura"
+msgstr "Realizar autoescri&tura"
 
 #. Resource IDs: (515)
 msgid "Persian"
@@ -4725,7 +4724,7 @@ msgstr "Poner grupos primero en vista de árbol"
 
 #. Resource IDs: (1072)
 msgid "Put icon in System Tray"
-msgstr "Mostrar icono en bandeja de sistema (System Tray)"
+msgstr "Mostrar icono en el área de notificación"
 
 #. Resource IDs: (1030)
 msgid "Query user to set default username"
@@ -4749,7 +4748,7 @@ msgstr "Reglas de generación de contraseñas aleatorias"
 
 #. Resource IDs: (8002)
 msgid "Randomize"
-msgstr "Selección aleatoria"
+msgstr "Aleatorio"
 
 #. Resource IDs: (203)
 msgid "Read Error"
@@ -4773,7 +4772,7 @@ msgstr "Bases de datos recientes en el menú archivo en vez de en un submenú."
 
 #. Resource IDs: (1095)
 msgid "Recent PasswordSafe Databases"
-msgstr "Bases de datos Passwordafe más recientes"
+msgstr "Bases de datos Passwordafe recientes"
 
 #. Resource IDs: (189)
 msgid "Record Modified Time\t"
@@ -4878,7 +4877,7 @@ msgstr "Reiniciar este atajo"
 
 #. Resource IDs: (32153)
 msgid "Restore from Backup..."
-msgstr "Restaurar de copia de seguridad..."
+msgstr "Restaurar desde copia de seguridad..."
 
 #. Resource IDs: (1158)
 msgid "Restrict to a subset of entries:"
@@ -4890,7 +4889,7 @@ msgstr "Tecla Ctrl derecho"
 
 #. Resource IDs: (65535)
 msgid "Right-click on the 'Y' in either of the first 2 columns for additional functions"
-msgstr "Click derecho en 'Y' en cualquiera de las 2 primeras columnas para funciones adicionales"
+msgstr "Clic derecho en 'Y' en cualquiera de las 2 primeras columnas para funciones adicionales"
 
 #. Resource IDs: (514)
 msgid "Romanian (Legacy)"
@@ -4958,7 +4957,7 @@ msgid "S&ynchronize..."
 msgstr "S&incronizar..."
 
 #. Resource IDs: (192)
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "SAX Parse Error during %s\r\n"
 "%s."
@@ -4967,13 +4966,13 @@ msgstr ""
 "%s."
 
 #. Resource IDs: (191)
-#, fuzzy, c-format
+#, c-format
 msgid "SAX Parse%2d Error 0x%08X during %s."
 msgstr "SAX Análisis%2d Error 0x%08X mientras %s."
 
 #. Resource IDs: (131)
 msgid "Safe Combination Entry"
-msgstr "Entrada contraseña maestra"
+msgstr "Introducir contraseña maestra"
 
 #. Resource IDs: (133)
 msgid "Safe Combination Setup"
@@ -5013,7 +5012,7 @@ msgstr "Guardar"
 
 #. Resource IDs: (32006)
 msgid "Save &As..."
-msgstr "Guardar &como..."
+msgstr "Guardar c&omo..."
 
 #. Resource IDs: (3841)
 msgid "Save As"
@@ -5030,7 +5029,7 @@ msgstr "¿Guardar cambios en %1?"
 
 #. Resource IDs: (1045)
 msgid "Save database immediately after Edit or Add"
-msgstr "Guardar base de datos inmediatamente tras Editar o Añadir"
+msgstr "Guardar base de datos inmediatamente tras editar o añadir"
 
 #. Resource IDs: (1094)
 msgid "Sc&ript:"
@@ -5080,7 +5079,7 @@ msgstr "Seleccionar"
 
 #. Resource IDs: (2132)
 msgid "Select &All"
-msgstr "Seleccionar &Todo"
+msgstr "Seleccion&ar Todo"
 
 #. Resource IDs: (337)
 msgid "Select Browser:"
@@ -5095,7 +5094,6 @@ msgid "Select Location for Intermediate Backups"
 msgstr "Seleccionar destino de copias de respaldo intermedias"
 
 #. Resource IDs: (474)
-#, fuzzy
 msgid "Select Test Dump Type"
 msgstr "Seleccionar tipo de descarga de pruebas"
 
@@ -5129,7 +5127,7 @@ msgstr "Enviar"
 
 #. Resource IDs: (32074)
 msgid "Send &email"
-msgstr "Enviar &correo"
+msgstr "Enviar corr&eo"
 
 #. Resource IDs: (3866)
 msgid "Send Mail failed to send message."
@@ -5208,7 +5206,7 @@ msgstr "Ajustar fuente de teclado virtual"
 
 #. Resource IDs: (1186)
 msgid "Set maximum number of passwords saved to above value"
-msgstr "Establecer número máximo de contraseñas guardadas a un valor superior"
+msgstr "Establecer número máximo de contraseñas guardadas al valor de arriba"
 
 #. Resource IDs: (516)
 msgid "Setswana"
@@ -5233,7 +5231,7 @@ msgstr "Atajo '%s' ya está asignado al elemento de menú '%s'."
 
 #. Resource IDs: (356)
 msgid "Shortcut Key"
-msgstr "Tecla de método abreviado"
+msgstr "Tecla atajo"
 
 #. Resource IDs: (452)
 msgid "Shortcuts"
@@ -5245,7 +5243,7 @@ msgstr "Mostrar barra de herramientas de &Búsqueda"
 
 #. Resource IDs: (32127)
 msgid "Show &Unsaved Changes"
-msgstr "Mostrar cambios &No guardados"
+msgstr "Mostrar cambios no g&uardados"
 
 #. Resource IDs: (354)
 msgid "Show Notes"
@@ -5253,15 +5251,15 @@ msgstr "Mostrar notas"
 
 #. Resource IDs: (1296)
 msgid "Show Notes as ToolTips in Tree && List views"
-msgstr "Mostrar Notas como menú desplegable en vistas en árbol y lista"
+msgstr "Mostrar notas como menú desplegable en vistas en árbol y lista"
 
 #. Resource IDs: (1190)
 msgid "Show Notes in Edit"
-msgstr "Mostrar notas en Editar"
+msgstr "Mostrar notas al editar"
 
 #. Resource IDs: (1028)
 msgid "Show Password in Add && Edit"
-msgstr "Mostrar contraseña en Agregar y Editar"
+msgstr "Mostrar contraseña en agregar y editar"
 
 #. Resource IDs: (1031)
 msgid "Show Password in Tree View"
@@ -5855,7 +5853,7 @@ msgstr "El filtro ya existe"
 
 #. Resource IDs: (511)
 msgid "This is a DeadKey. Press it and then one of the combined keys then shown to add that new character to the Passphrase."
-msgstr ""
+msgstr "Tecla combinada. Pulsa esta tecla y luego uno de las teclas combinadas que se muestran para añadir un nuevo caracter a la frase."
 
 #. Resource IDs: (357)
 msgid "This is a shortcut base entry."
@@ -6274,7 +6272,7 @@ msgstr "Usar"
 
 #. Resource IDs: (1049)
 msgid "Use &Digits"
-msgstr "Usar &Números"
+msgstr "Usar &números"
 
 #. Resource IDs: (1070)
 msgid "Use &Hexadecimal digits only (0-9,a-f)"
@@ -6282,7 +6280,7 @@ msgstr "Usar sólo caracteres &Hexadecimales (0-9,a-f)"
 
 #. Resource IDs: (1047)
 msgid "Use &Lowercase letters"
-msgstr "Usar letras &minúsculas"
+msgstr "Usar letras minúscu&las"
 
 #. Resource IDs: (1050)
 msgid "Use &Symbols (i.e. &&, %, $, etc.)"
@@ -6306,7 +6304,7 @@ msgstr "Por defecto"
 
 #. Resource IDs: (1051)
 msgid "Use only &Easy-to-read characters (i.e., no  'l', '1', etc.)"
-msgstr "Usar sólo caracteres de &fácil lectura (no usar  'l', '1', etc.)"
+msgstr "Usar sólo caracteres de fácil l&ectura (no usar  'l', '1', etc.)"
 
 #. Resource IDs: (1376)
 msgid "Use the P&olicy below:"
@@ -6923,7 +6921,7 @@ msgid ""
 "Make New Database"
 msgstr ""
 "\n"
-"Crear nueva Base de Datos"
+"Crear nueva base de datos"
 
 #. Resource IDs: (2008)
 msgid ""
@@ -6939,7 +6937,7 @@ msgid ""
 "Merge into Database"
 msgstr ""
 "\n"
-"Fusionar con la Base de Datos"
+"Fusionar con la base de datos"
 
 #. Resource IDs: (2001)
 msgid ""
@@ -6947,7 +6945,7 @@ msgid ""
 "Open Another Database"
 msgstr ""
 "\n"
-"Abrir otra Base de Datos"
+"Abrir otra base de datos"
 
 #. Resource IDs: (2010)
 msgid ""
@@ -7012,7 +7010,7 @@ msgid ""
 "Save Database"
 msgstr ""
 "\n"
-"Guardar Base de Datos"
+"Guardar base de datos"
 
 #. Resource IDs: (2001)
 msgid ""
@@ -7020,7 +7018,7 @@ msgid ""
 "Save Database As..."
 msgstr ""
 "\n"
-"Guardar Base de Datos como..."
+"Guardar base de datos como..."
 
 #. Resource IDs: (2016)
 msgid ""
@@ -7101,7 +7099,7 @@ msgid ""
 "Use it anyway?"
 msgstr ""
 "\n"
-"¿Usarlo de cualquier forma?"
+"¿Aun así quieres usarla?"
 
 #. Resource IDs: (2017)
 msgid ""
@@ -7625,7 +7623,7 @@ msgstr "principio"
 
 #. Resource IDs: (1098)
 msgid "used entries in System Tray menu."
-msgstr "entradas usadas en el menú de Bandeja del Sistema."
+msgstr "entradas usadas en el menú del área de notificación."
 
 #. Resource IDs: (32011)
 msgid "v&1.x format..."
