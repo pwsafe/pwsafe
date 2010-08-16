@@ -9,10 +9,9 @@
 
 <p>This file contains notes, hints and information of interest for those developers
 wishing to compile PasswordSafe for Windows (MFC [Microsoft's Foundation Classes] and
-wxWdigets) and Linux (wxWidgets only).  For Windows develpment, this file assumes that
-either Microsoft's Visual Studio <i>2005</i> ('VS2005') and its C++ compiler version 8.0
-('VC8') or Microsoft's Visual Studio <i>2008</i> ('VS2008') and its C++ compiler version
-9.0 ('VC9') is being used.</p>
+wxWdigets) and Linux (wxWidgets only).  For Windows develpment, this file assumes
+that Microsoft's Visual Studio <i>2010</i> (referred to as 'VS2010' below)
+and its C++ compiler version 10.0 ('VC10') is being used.</p>
 
 <p>The 'official' build corresponds to the <i>ReleaseM</i> configuration i.e. the release
 build using Microsoft's XML parser.  This will build the required DLLs using their
@@ -70,7 +69,7 @@ configurations if using the wxWidgets PasswordSafe solution (pwsafe_wx100.sln).<
 <p>The source code for PasswordSafe may be downloaded as a zip file, or retrieved
 from the Subversion repository at <a href="https://passwordsafe.svn.sourceforge.net/svnroot/passwordsafe/trunk/pwsafe/pwsafe">
 https://passwordsafe.svn.sourceforge.net/svnroot/passwordsafe/trunk/pwsafe/pwsafe</a>
-using a subversion client. Currently (August 2010), the Windows version
+using a subversion client. Currently (2010), the Windows version
 is built using Microsoft's development tools as described <a href="#Windows_Build">below</a>.
 A Linux build is also in early stages of development, as described in the
 <a href="#Linux_Build">Linux Build</a> section.</p>
@@ -139,38 +138,18 @@ Tortoise SVN and then select Settings from the menu and using the Edit button in
 General Settings panel).</p>
 
 <h4><a name="Windows_Build"></a>Windows Build</h4>
+<p>The Windows version of PasswordSafe can be built using Microsoft Visual Studio
+2010 (C++ compiler for PaswordSafe ('VC10') and C# compiler if you wish to re-generate
+the Virtual Keyboard data, which is not normally necessary). The VC10 Express compiler
+does <u>not</u> support Microsoft's Foundation Classes, which are used extensively
+within the current official Windows version.</p>
 
-<p>The Windows version of PasswordSafe is currently built using
-Microsoft Visual Studio 2005 and 2008. People have also reported
-success in building PasswordSafe using Visual Studio Express (free edition),
-but that configuration is not described here.</p>
-
-<p>In order to build the Windows version of PasswordSafe, you
-need to install the following freely available components, in addition to
-Visual Studio:</p>
+<p>In order to build the Windows version of PasswordSafe, you need to install
+the Microsoft's Windows SDK.  However, it should be automatically installed as part
+of the installation of VC10 compiler if you select that you will want to build
+Win32 projects.  No other SDK is needed or needs to be installed.  However, you
+will need to install the following freely available components, in addition to Visual Studio:</p>
 <ul>
-<li><a href="http://msdn.microsoft.com/en-us/windows/dd146047.aspx">
-Microsoft's Windows SDK</a>. If you have installed Visual Studio 2008,
-it will have installed a Windows SDK V6.0A and you do not have to install
-another SDK. If you haven't installed VS2008, then please select either
-of the following versions:
-<ul>
-<li>"Windows Vista Update &amp; .NET 3.0 SDK"
-[V6.1.6000.16384.10 dated February 2007] - known as V6.0.</li>
-<li>"Windows Server 2008 and .NET Framework 3.5"
-[V6.0.6001.18000.367 dated February 2008] - known as V6.1.</li>
-<li>"Windows 7 and .NET Framework 3.5 SP1
-[V6.1.7600.16385 dated August 2009] - known as V7.0.</li>
-</ul>
-All these replace the old "Platform SDK" and support Operating
-Systems: Vista and Windows XP; and Development Environments: Visual
-Studio 2005 and 2008. However, V7.0 and later support Windows 7 <b>but not</b>
-Visual Studio 2005. At this time, PasswordSafe does not use any facilities or
-functions that are not supported by Windows XP and Visual Studio 2005.
-<br>
-By default, the SDKs are installed in directory "C:\Program
-Files\Microsoft SDKs\Windows\NNN", where NNN is '6.0', '6.0A', '6.1' or '7.0'.
-<u>See note below.</u></li>
 <li>To compile and produce the Help files (.chm) then
 <a href="http://www.microsoft.com/downloads/details.aspx?FamilyID=00535334-%0D%0Ac8a6-452f-9aa0-d597d16580cc&amp;DisplayLang=en">
 Microsoft's HTML Help Workshop</a> is required. Note however that the headers and
@@ -187,34 +166,36 @@ the Windows SDK mentioned above and do not need to be installed separately.</li>
 <li><a target="_blank" href="http://expat.sourceforge.net/">Expat's V2.0.1
 XML Library</a></li>
 <li><a target="_blank" href="http://xerces.apache.org/xerces-c/">Xerces
-V3.1.0 XML Library</a></li>
+V3.1.1 XML Library</a></li>
 </ul>
 </li>
 </ul>
 
-<p><b>SDK NOTE:</b> In order to compile PasswordSafe using MFC,
-the Microsoft Windows SDK's 'include' and 'lib' directories
-must be added to the directories supplied by Visual Studio 2005. This is
-achieved in VS2005 via Tools &gt; Options &gt; Project and Solutions
-&gt; VC++ directories &gt; Include files and Library files.
-They can be added at the end of each appropriate set using the directory you
-specified during installation (the defaults are: "C:\Program
-Files\Microsoft SDKs\Windows\NNN\Include" and "C:\Program
-Files\Microsoft SDKs\Windows\NNN\Lib", where NNN is 6.0, 6.0A, 6.1 or 7.0 as
-noted above). The Microsoft Visual Studio Registration Tool only adds
-the .Net libraries and not those needed for PasswordSafe. <b>It is
-recommended that you get SDK V6.1 <u>and</u> you place them above the
-libraries supplied with Visual Studio e.g. "$(VCInstallDir)PlatformSDK\include"
-and "$(VCInstallDir)PlatformSDK\lib" otherwise you may get warning messages
-compiling source members using BlockInput.</b></p>
+<h4>Compiling using Visual Studio</h4>
 
-<p><b>Compiling using Visual Studio:</b> If you're using Microsoft's Visual
-Studio, the file "UserVariables.vsprops" <b><u><i>must</i></u></b> exist
-and point to the directories where the non-"Windows SDK" components have
-been installed. <b><u><i>The solution will not open correctly without this
-file being present</i></u></b>. For your convenience, we've included a simple
-Visual Basic script, "configure.vbs", that you can run to generate the
-"UserVariables.vsprops" file with the correct values.</p>
+<p>If you're using VS2010, the file "UserVariables.props" <b><u><i>must</i></u></b>
+exist and point to the directories where the non-"Windows SDK" components have been
+installed. <b><u><i>The solution will not open correctly without this file being
+present</i></u></b>. For your convenience, we've included a simple
+Visual Basic script, "configure100.vbs", that you can run to generate the
+"UserVariables.props" file with the correct values (if you have already used Visual
+Studio 2005 or 2008 and have created a "UserVariables.<u>vs</u>props" file,
+"configure100.vbs" will use values in this file to generate the default values
+when creating the VS2010 equivalent "UserVariables.props". If you are intending
+to build the wxWidgets version using VS2010, then you should also copy this
+file to the '/src/ui/wxWidgets/' directory.</p>
+
+<h4>wxWidgets</h4>
+
+<p>If you are intending to build the wxWidgets version of PasswordSafe using VC10,
+you will need to rebuild the wxWidgets libraries using this compiler.  wxWidgets
+(at V2.8.10), as supplied as part of the wxPack package - http://wxpack.sourceforge.net/,
+comes with a batch file "wxBuild_wxWidgets.bat" that it places in directory
+'build/msw/'.  An updated version that supports VC10 is stored in the PasswordSafe
+repository in directory 'Misc/wxWidgets VS2010 Updates/build/msw/'.  It should be
+copied into the appropriate wxWidgets directory replacing the supplied batch file,
+if present. The file 'Notes.txt' in the same PasswordSafe directory explains how
+to run it to produce the necessary wxWidgets libraries.</p>
 
 <h4><a name="Linux_Build"></a>Linux Build</h4>
 
@@ -224,14 +205,15 @@ libwxgtk2.8-dev for building, as well as g++ and GNU make.</p>
 
 <h3><a name="XML_Processing"></a>XML Processing</h3>
 
-<p>Originally, PasswordSafe used Microsoft's XML library for XML parsing and
-validation. For portability, we're now working on support for the
+<p>Originally, PasswordSafe used only Microsoft's XML library for XML parsing
+and validation. For portability, we're now working on support for the
 <a href="http://expat.sourceforge.net/" target="_blank">Expat</a>
 and <a href="http://xerces.apache.org/xerces-c/" target="_blank">Xerces</a> XML
-libraries, which are available for non-Windows platforms.  We recommend the
-latest version (currently 3.1.1 as of April 2010), as they
-supply pre-built Windows binaries using the VS2005 (VC8) and VS2008 (VC9)
-compilers.</p>
+libraries, which are available for non-Windows platforms. When using VS2010,
+we recommend the latest version (currently 3.1.1 as of April 2010), as they
+supply pre-built Windows binaries using the VC10 compiler.</p>
+
+<h4><a name="XML_Libraries"></a>XML Libraries</h4>
 
 <p>To determine which XML library to use while building PasswordSafe,
 we've defined a pre-processor variable (USE_XML_LIBRARY). If <u>NOT</u>
@@ -239,7 +221,8 @@ defined, the compiled PasswordSafe <u>will not process XML files</u>
 (databases or filter definitions in XML format). Filters within a database
 will be treated as 'Unknown Fields' and will remain unchanged so that
 other versions of PasswordSafe that do support XML parsing can still
-use them. Note, however, that the application will be able to write XML files.</p>
+use them. PasswordSafe would also not be able to import databases exported
+to XML. Note, however, that the application will be able to write XML files.</p>
 
 <p>The three valid values of the USE_XML_LIBRARY variable are "EXPAT",
 "MSXML" and "XERCES" corresponding to the three different implementations.
@@ -249,7 +232,7 @@ still under development (as of August 2010).</p>
 <p>PasswordSafe uses SAX2 processing for both Microsoft's and the Xerces' XML
 Parsers, which are full validating parsers and require the presence of
 the appropriate XSD Schema file (included in the distribution and in the
-"xml" sub-directory, to process either file or filter imports. This
+"xml" sub-directory), to process either file or filter imports. This
 ensures that the data eventually hitting the SAX2 content handlers is
 correct and just needs placing in the appropriate fields.</p>
 
@@ -261,7 +244,22 @@ PasswordSafe to perform this validation, so that the program and its
 databases are not corrupted by poorly formed XML or incorrect data within
 the XML file.</p>
 
-<h3><a name="Minidump_Production"></a>Minidump Production (Windows only)</h3>
+<p>Expat is no longer under very active development.  The current version (2.0.1)
+was released in June 2007.  The Windows binaries from their web site are only
+build using VS2005 (the VC8 compiler).  If you intend to use Expat in a VS2010
+build (either the standard MFC build or the wxWidgets build), you will need to
+recompile Expat using the VC10 compiler.  The necessary VC10 project files have
+been uploaded to the PasswordSafe repository.  They can be found under the
+'/misc/Expat VS2010 Poject Files/' directory.  The directory structure corresponds to the
+Expat Windows directory structure created when installing Expat from their download.
+Note: The building of Expat using VC10, creates the new libraries and DLLs in a 
+directories 'Source/win32/Bin10/Debug' and '/Source/win32/Bin10/Release'. The Bin10
+directory should be copied to the same directory contining the VC8 builds (Bin). The
+distributed Expat only supplies the VC8 release builds.  PasswordSafe projects
+using Expat will use the corresponding debug or release versions depending on the
+version you are building.</p>
+
+<h3><a name="Minidump_Production"></a>Minidump Production (Windows MFC build only)</h3>
 
 <p>In order to help debug user problems when Windows just says "there has
 been an error", a "Windows Unhandled Fault Handler" has been added. This will
