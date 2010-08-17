@@ -1,0 +1,169 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+
+
+  
+
+  <title>Argumentos de línea de comandos</title><!-- pwsafe version: 3.23--><!-- Modified: 08/08/2010 --><!--Popup control --><script language="javascript" src="html/popups.js">
+  </script>
+  
+  
+  <link rel="stylesheet" type="text/css" href="style.css"></head>
+
+<body>
+
+
+
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"> </object>
+<!-- Popup Source File -->
+<h2>Argumentos de la línea de comandos</h2>
+
+
+
+<p>Ejecutar <span style="font-weight: bold;">Password Safe</span> sin argumentos hace que se pregunte por la contraseña 
+maestra de la última base de datos que se abrió, o por la contraseña maestra de una nueva base de datos si nunca fue 
+abierta una en tu máquina (por ejemplo, la primera vez que utilizas <span style="font-weight: bold;">Password Safe</span>).
+Es posible modificar esto ejecutando <span style="font-weight: bold;">Password Safe</span> como sigue:</p>
+
+
+
+<ul>
+
+
+
+  <li><i>pwsafe</i> <b>basededatos</b><br>
+
+
+
+Esto abrirá el archivo de base de datos especificado en lugar del último abierto. Si se indica un nombre de archivo, sin 
+trayectoria, se buscará en el directorio en que se llama a la aplicación. Si el nombre de archivo y/o trayectoria 
+contienen espacios deben encerrarse entre dobles comillas.
+
+
+  </li>
+
+
+
+  <li><i>pwsafe</i> <b>-r [basededatos]</b><br>
+
+
+
+Esto abrirá la base de datos especificada en modo sólo lectura. Si no se indica base de datos, la aplicación 
+preguntará por ella, y será abierta en modo sólo lectura.</li>
+
+
+
+  <li><span style="font-style: italic;">pwsafe </span><span style="font-weight: bold;">-v basededatos<br></span>
+Esto validará la base de datos tras la introducción de la contraseñas maestra, corrigiendo las inconsistencias que sean 
+necesarias. Bastante útil cuando se trabaja con bases de datos escritas por otras aplicaciones.
+
+  </li>
+
+
+
+  <li><i>pwsafe</i> <b>-e nombrearchivo</b><br>
+
+
+
+Preguntará por una contraseña y encriptará el fichero con una clave derivada de esa contraseña. <b>Nota:</b> 
+El archivo puede ser <i>cualquiera</i>. El archivo encriptado tendrá el nombre del archivo original, con ".PSF" 
+añadodo a el.<br>
+
+
+
+  </li>
+
+
+
+  <li><i>pwsafe</i> <b>-d nombrearchivo</b><br>
+
+
+
+Preguntará por una contraseña y desencriptará el archivo con una clave derivada des esa contraseña. <b>Nota:</b> 
+Esto sólo funciona en archivos que fueron encriptados ejecutando pwsafe con la opción '-e' (ver arriba).</li>
+
+
+
+  <li><span style="font-style: italic;">pwsafe </span><span style="font-weight: bold;">-c<br>
+
+
+
+    </span>Esto iniciará la aplicación cerrada, esto es, sin ninguna base de datos y sin el diálodo inicial de apertura
+(Para acceder a una base de datos usa el menú Archivo).</li>
+
+
+
+  <li><span style="font-style: italic;">pwsafe </span><span style="font-weight: bold;">-s [basededatos]<br></span>
+
+Iniciará la aplicación "silenciosamente", esto es, minimizada y sin base de datos (salvo que se especifique una). 
+Cuando la aplicación se pasa a primer plano, se presenta el dialodo de apertura (Esta opción es útil para iniciar la 
+aplicación al iniciar sesión, a través de un atajo en la carpeta Inicio del usuario). 
+<b>Nota:</b> Esto pone la apliación implicitamente en la bandeja de notificación.</li>
+
+
+
+  <li><span style="font-style: italic;">pwsafe</span>
+    <span style="font-weight: bold;">-m</span><br>
+
+
+
+    Esta es la misma opción que '<span style="font-weight: bold;">-c</span>', con el añadido de que la aplicación se 
+inicia minimizada.
+  </li>
+
+
+</ul>
+
+
+Adicionalmente, se aceptan las siguientes opciones:<br>
+
+
+<ul>
+
+
+  <li><span style="font-weight: bold;">-u</span> <span style="font-style: italic;">usuario</span><br>
+
+
+Hace que la aplicación lea y escriba las preferencias del <span style="font-style: italic;">usuario</span> espeficado, en lugar de usar el del 
+usuario de la sesión.</li>
+
+
+  <li><span style="font-weight: bold;">-h</span> <span style="font-style: italic;">hostname</span><br>
+
+
+Hace que la aplicación lea y escriba las preferencias del <span style="font-style: italic;">equipo</span>, en lugar del nombre de la máquina.</li>
+
+
+  <li><span style="font-weight: bold;">-g</span> <span style="font-style: italic;">archivo_configuración</span><br>
+
+Hace que se use el archivo especificado para leer y guardar las preferencias, en lugar del archivo por defecto pwsafe.cfg. 
+Si sólo se indica en nombre del archivo, sin trayectoria, se buscará en el directorio en que se llama a la aplicación. 
+Si el nombre de archivo y/o trayectoria contienen espacios deben encerrarse entre dobles comillas.</li>
+
+
+</ul>
+
+
+<ul>
+
+
+
+</ul>
+
+
+Estos puede ser útiles si quieres compartir las mismas preferencias en distintas máquinas, por ejemplo, al ejecutar
+<span style="font-weight: bold;">Password Safe</span> desde una llave portátil.<br>
+
+
+
+<br>
+
+
+
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e"> 
+<param name="Keyword" value="Sólo lectura"> 
+<param name="Keyword" value="CLI"> 
+<param name="Keyword" value="Argumentos de línea de comandos"> 
+<param name="Keyword" value="Encriptación de un archivo"> 
+<param name="Keyword" value="Desencriptación de un archivo"> </object>
+</body></html>

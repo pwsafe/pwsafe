@@ -1,0 +1,149 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+
+
+  <title>Nombres de usuario y contraseñas</title><!-- pwsafe version: 3.23--><!-- Modified: 15/06/2005 --><!--Popup control --><script language="javascript" src="html/popups.js">
+  </script>
+  <link rel="stylesheet" type="text/css" href="style.css"></head>
+
+<body>
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"> </object>
+<!-- Popup Source File -->
+<h2>Nombres de usuario, contraseñas y grupos: Básico</h2>
+<p>Nombres de usuario, contraseñas y grupos junto con los parámetros adicionales se gestionan en 4 pestañas:
+</p><ul>
+  <li><b><i>Básico</i>:</b> todos los elementos necesarios para la gestión de contraseñas</li>
+  <li><b><i><a href="entering_pwd_add.html">Adicional</a></i>:</b> especificaciones adicionales, incluyendo el historial</li>
+  <li><b><i><a href="entering_pwd_date.html">Fechas y horas</a></i>:</b> caducidad y estadísticas</li>
+  <li><b><i><a href="entering_pwd_pp.html">Política de contraseñas</a></i>:</b> diferencias específicas sobre los valores predeterminados</li>
+</ul>
+<h3>Pestana <i>básico</i></h3>
+<p>En esta pestaña se combinan los elementos más importantes.</p>
+<img alt="Editar/Ver entrada" src="images/edit_view_entry_base.jpg">
+<p>Cada entrada tiene asociados los siguientes datos:</p>
+<ul>
+  <li><b>Grupo</b>: Un nombre para agrupar (organizar) varias entradas relacionadas</li>
+  <li><b>Título</b>: Un nombre descriptivo de una entrada de contraseña</li>
+  <li><b>Usuario</b>: El nombre de usuario</li>
+  <li><b>Contraseña</b>: La contraseña</li>
+  <li><b>Notas</b>: Campo de notas generales en formato libre</li>
+  <li><small>Sólo los campos <b>título</b> y <b>contraseña</b> son requeridos; el resto son opcionales.</small></li>
+</ul>
+Además, se dispone de los siguientes campos en la presente ficha:<br><ul>
+  
+  <li><b>URL</b>:
+La URL asociada con la entrada. Si el campo no está vacío, el botón "Ir" está activo. 
+Si no se especifica el protocolo se asume "http://" (por ejemplo, "www.foo.net" es lo mismo que "http://www.foo.net"). 
+El botón <b>Ir</b> a la derecha del campo <b>URL</b> está activo si el campo URL no está vacio. 
+Pulsando con la tecla control pulsada (Ctrl+Clic) además realizará la función <a href="autotype.html">autoescritura</a> 
+en la página abierta en el navegador. Ver las <a href="#URL_details">siguientes notas</a> para más información</li>
+
+<li><b>correo: </b>La dirección de correo asociada con esta está entrada. Si el campo no está vacío, el botón "Enviar" 
+está activo. Pulsando en este botón se llamará al programa de correo predeterminado con el campo A: fijado a la 
+dirección especificada. Ver las <a href="#email_details">siguientes notas</a> para más opciones.</li>
+</ul>
+<hr style="width: 100%; height: 2px;">
+<ul>
+  <small><b>Las siguientes notas describen las forma de tratar URLs con más detalle:</b></small>
+  <li><small>Por defecto, Password Safe usará el navegador predeterminado de tu PC.
+Si lo deseas, puedes especificar un <i>navegador alternativo</i> indicando 
+'[alt]' antes de la URL, por ejemplo, "[alt]http://www.foo.net". 
+Esto es útil, por ejemplo, si tu navegador por defecto es Firefox y quieres acceder a un sitio triste y lamentable 
+que funciona mejor con Internet Explorer. Para configurar un navegador alternativo, utiliza el diálogo  
+<a href="misc_tab.html#AltBrowser">Herramientas-&gt;Opciones-&gt;Misc.</a>
+    </small></li>
+  
+  <li><small>Si se indica '{alt}' antes de la URL, se pasa 'tal cual' 
+al navegador alternativo, esto es, sin añadir 'http://' si no se especifica
+el protocolo. Esto es útil si el navegador alternativo es 
+una aplicación de acceso remoto, por ejemplo, un cliente SSH. [ssh] tendrá el mismo efecto.</small></li>
+  <li><small>Si se indica '[autotype]' antes de la URL, después de que se muestre/active
+la URL, Password Safe realizará la acción de autoescritura usando
+el campo autoescritura de la entrada o el valor por defecto si el campo no está especificado.</small></li>
+</ul><small><b>La dirección de correo debe seguir la reglas estandar (por RFC 2368):</b></small><br><ul>
+<li><small>La dirección puede ser una o más direcciones de correo válidas separadas por punto y coma, 
+utilizando caracteres 'Internet-safe'. Usa %20 para el caracter espacio.</small></li>
+<li><small>La dirección puede ir seguido de uno o más parejas de nombre-valor. 
+El primer par debe ir precedidos por un "?" y cualquier par adicional debe ir precedido por el signo y (&amp;). 
+El nombre puede ser una de las siguientes cadenas de texto:</small></li></ul><ul><ul>
+<li><small>subject - seguido por el texto que aparezca en la línea de asunto del mensaje.</small></li>
+<li><small>body - seguido por el texto que aparece en el cuerpo del mensaje.</small></li>
+<li><small>CC - seguido de las direcciones que se incluyen en el campo "cc" (con copia) del mensaje.</small></li>
+<li><small>BCC - seguido de las direcciones que se incluyen en el campo "cco" (con copia oculta) del mensaje.</small></li>
+</ul></ul>
+<small>Ejemplo: usuario@ejemplo.com?subject=Título del mensaje&amp;body=Contenido del mensaje"<br></small>
+<hr style="width: 100%; height: 2px;">
+
+
+
+<div class="instr">
+<h3>Creando una nueva entrada de usuario y contraseña</h3>
+<ol>
+  <li>Abra la base de datos donde desea colocar la nueva entrada</li>
+  <li>Desde el menú <b>Editar</b>, selecciona <b>Añadir entrada</b></li>
+  <li>Introduce la información necesaria en los campos del diálogo <b>Editar/Ver entrada</b></li>
+</ol>
+<hr> <small><b>Nota:</b> Si un nombre de grupo es seleccionado y luego añade una nueva entrada, 
+a entrada tendrá ese nombre Grupo precargada en el diálogo <b>Editar/Ver entrada</b>.
+Si se agrega un nuevo nombre de grupo al campo grupo, el grupo se creará.</small><br>
+<hr>
+<h3>Generando y editando contraseñas</h3>
+<p>Si lo desea, puede introducir su propia contraseña en el campo contraseña manualmente, 
+o puedes hacer que <b>Password Safe</b> genere una nueva basada en la <a href="password_policies.html">política de contraseñas</a> actual.
+Para hacer que <b>Password Safe</b> genere una contraseña, pulsa en 
+<b>Generar</b> en el diálogo <b>Editar/Ver entrada</b>. Si no te gusta el resultado, 
+puedes volver a pulsar <b>Generar</b> de nuevo, o editar la contraseña manualmente.</p>
+<hr>
+<small><b>Notas:</b>
+<ul>
+  <li>Si estás usando un sistema que te permite compartir la misma contraseña en distintas 
+maquinas/servidores/aplicaciones, etc. puedes configurar las entradas de <b>Password Safe</b>
+en consecuencia, de manera que cambiar una contraseña afecte a todas las otras entradas relacionadas. 
+Esto se conoce como "alias" de entradas y se explica en detalle <a href="aliases.html">aquí</a>.</li>
+</ul>
+</small>
+<hr>
+<h3>Editando entradas existentes</h3>
+<ol>
+  <li>Selecciona la entrada a editar en la lista</li>
+  <li>Selecciona <b>Editar/ver entrada</b> desde el menú <b>Editar</b></li>
+</ol>
+<hr>
+<small><b>Nota:</b> Por defecto, las contraseñas se ocultan. Para ver la 
+contraseña asociada a la entrada pulsa en <b>Mostrar</b>.</small><br>
+<hr>
+<h3>Añadir un nuevo grupo</h3>
+<ol>
+  <li>Selecciona <b>Añadir grupo</b> desde el menú <b>Editar</b></li>
+  <li>Introduce el nombre del grupo</li>
+</ol>
+<h3>Editar el nombre de un grupo</h3>
+<ul>
+  <li>Haz clic derecho en el grupo y selecciona <b>Renombrar grupo</b> 
+de la lista desplegable</li>
+</ul>
+<hr> <small><b>Nota:</b> Los nombres de grupos pueden "anidarse", colocando un nombre de grupo dentro de/bajo otro nombre de grupo.<br>
+</small>
+<hr><br>
+ </div>
+<!-- Added some white space at the bottom for natural scrolling -->
+<br>
+<br>
+<br>
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+  <param name="Keyword" value="Nombres de usuario">
+  <param name="Keyword" value="Añadir entradas">
+  <param name="Keyword" value="Almacenar contraseñas">
+  <param name="Keyword" value="Grupos">
+  <param name="Keyword" value="Generar contraseñas">
+  <param name="Keyword" value="Contraseñas">
+  <param name="Keyword" value="Editar entradas">
+  <param name="Keyword" value="Ver entradas">
+  <param name="Keyword" value="Renombrar entradas">
+  <param name="Keyword" value="Ir a">
+  <param name="Keyword" value="Navegador alternativo">
+  <param name="Keyword" value="ssh">
+  <param name="Keyword" value="URL">
+  <param name="Keyword" value="Correo">
+</object>
+</body></html>

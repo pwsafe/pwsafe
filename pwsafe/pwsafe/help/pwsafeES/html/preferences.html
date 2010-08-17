@@ -1,0 +1,579 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+  <meta content="text/html;charset=ISO-8859-1" http-equiv="Content-Type">
+
+  
+
+
+
+  
+  
+
+  <title>Preferencias</title><!-- pwsafe version: 3.23--><!-- Modified: 16/08/2010 --><!--Popup control --><script language="javascript" src="html/popups.js">
+  </script>
+  
+  <link rel="stylesheet" type="text/css" href="style.css"></head>
+<body>
+
+
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"> </object>
+<!-- Popup Source File -->
+<h1>Preferencias de PasswordSafe</h1>
+
+
+<hr style="width: 100%; height: 2px;">
+Al igual que muchas aplicaciones, PasswordSafe le permite configurar su comportamiento 
+y apariencia que mejor se ajuste a su gusto y necesidades. Muchas aplicaciones 
+almacenan las preferencias de este tipo en el 'Registro' de Windows, 
+como una cuestión de convención y conveniencia. Las versiones anteriores 
+de PasswordSafe también utilizaban el registro, pero esto ha demostrado ser 
+problemático por las siguientes razones:<br>
+1. Algunas de las preferencias configurables están relacionadas con la seguridad, 
+y almacenarlos en un repositorio abierto, como el registro de Windows, 
+puede permitir a un atacante obtener acceso a la base de datos (por ejemplo, 
+si el atacante desactivar el bloqueo de la base de datos después de un tiempo de 
+espera de inactividad, el usuario asumirá que la base de datos se ha bloqueado de 
+forma segura mientras sale a almorzar, mientras el atacante podría acceder a su conveniencia).<br>
+2. Muchas personas usan PasswordSafe en un disco-llave o de otra manera 
+compartiendo la misma base de datos entre varias máquinas. Es muy difícil compartir 
+los datos de configuración en un registro de tal manera.<br>
+<br>
+PasswordSafe tiene una serie de preferencias, cada una con un valor por defecto razonable. 
+Cuando un usuario cambia la configuración a un valor no predeterminado, el nuevo valor es 
+almacenado por PasswordSafe.<br>
+PasswordSafe define las preferencias como relacionadas o no con la seguridad. Las primeras 
+se mantienen en la base de datos, cifrado con la misma clave que los datos del usuario.<br>
+Las preferencias no relacionados con la seguridad se guardan en un archivo de configuración, 
+pwsafe.cfg. Este archivo está en formato XML, con secciones por máquina y por usuario, 
+para que el archivo se puede compartir entre diferentes usuarios, así como entre diferentes máquinas.<br>
+Por defecto, pwsafe.cfg se guarda en el mismo directorio que el programa ejecutable pwsafe.exe. 
+Sin embargo, si se establece la variable de entorno PWS_PREFSDIR, pwsafe usará el fichero de 
+configuración almacenados allí. Esto es útil si los permisos de escritura en el directorio 
+de instalación de pwsafe.exe están restringidos.<br>
+<br>
+En las siguientes tablas se describen los elementos de configuración. Mucho de ellos son 
+configurables a través del diálogo <a href="manage_menu.html">Herramientas-&gt;Opciones</a>.<br>
+<hr style="width: 100%; height: 2px;">
+<h4>Preferencias lógicas (cierto/falso)</h4>
+<table style="width: 740px;" border="1" cellpadding="2" cellspacing="2" width="100%">
+
+  <tbody>
+    <tr>
+      <td style="font-weight: bold; width: 214px;" align="center" valign="middle">Preferencia</td>
+      <td style="font-weight: bold; width: 68px;" align="center" valign="middle">Predeterminado</td>
+      <td style="font-weight: bold; width: 140px;" align="center" valign="middle">Almacenado en</td>
+      <td style="font-weight: bold; width: 300px;" align="center" valign="middle">Comentario</td>
+    </tr>
+    <tr>
+      <td style="width: 214px;">alwaysontop</td>
+      <td style="width: 68px;"> falso</td>
+      <td style="width: 140px;"> pwsafe.cfg</td>
+      <td style="width: 300px; text-align: left;" valign="middle"><small>&nbsp;Ventana principal siempre en primer plano</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">showpwdefault</td>
+      <td style="width: 68px;"> falso</td>
+      <td style="width: 140px;"> base de datos</td>
+      <td style="width: 300px; text-align: left;" valign="middle"><small>&nbsp;</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">showpwinlist</td>
+      <td style="width: 68px;"> falso</td>
+      <td style="width: 140px;"> base de datos</td>
+      <td style="width: 300px; text-align: left;" valign="middle"><small>&nbsp;</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">sortascending</td>
+      <td style="width: 68px;"> cierto</td>
+      <td style="width: 140px;"> base de datos</td>
+      <td style="width: 300px; text-align: left;" valign="middle"><small>&nbsp;</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">usedefuser</td>
+      <td style="width: 68px;"> falso</td>
+      <td style="width: 140px;"> base de datos</td>
+      <td style="width: 300px; text-align: left;" valign="middle"><small>&nbsp;</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">saveimmediately</td>
+      <td style="width: 68px;"> cierto</td>
+      <td style="width: 140px;"> base de datos</td>
+      <td style="width: 300px; text-align: left;" valign="middle"><small>&nbsp;</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">pwuselowercase</td>
+      <td style="width: 68px;"> cierto</td>
+      <td style="width: 140px;"> base de datos</td>
+      <td style="width: 300px; text-align: left;" valign="middle"><small>&nbsp;Política de generación de contraseñas</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">pwuseuppercase</td>
+      <td style="width: 68px;"> cierto</td>
+      <td style="width: 140px;"> base de datos</td>
+      <td style="width: 300px; text-align: left;" valign="middle"><small>&nbsp;Política de generación de contraseñas</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">pwusedigits</td>
+      <td style="width: 68px;"> cierto</td>
+      <td style="width: 140px;"> base de datos</td>
+      <td style="width: 300px; text-align: left;" valign="middle"><small>&nbsp;Política de generación de contraseñas</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">pwusesymbols</td>
+      <td style="width: 68px;"> falso</td>
+      <td style="width: 140px;"> base de datos</td>
+      <td style="width: 300px; text-align: left;" valign="middle"><small>&nbsp;Política de generación de contraseñas</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">pwusehexdigits</td>
+      <td style="width: 68px;"> falso</td>
+      <td style="width: 140px;"> base de datos</td>
+      <td style="width: 300px; text-align: left;" valign="middle"><small>&nbsp;Política de generación de contraseñas</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">pweasyvision</td>
+      <td style="width: 68px;"> falso</td>
+      <td style="width: 140px;"> base de datos</td>
+      <td style="width: 300px; text-align: left;" valign="middle"><small>&nbsp;Política de generación de contraseñas</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">dontaskquestion</td>
+      <td style="width: 68px;"> falso</td>
+      <td style="width: 140px;"> pwsafe.cfg</td>
+      <td style="width: 300px; text-align: left;" valign="middle"><small>&nbsp;</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">deletequestion</td>
+      <td style="width: 68px;"> falso</td>
+      <td style="width: 140px;"> pwsafe.cfg</td>
+      <td style="width: 300px; text-align: left;" valign="middle"><small>&nbsp;</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">DCShowsPassword</td>
+      <td style="width: 68px;"> falso</td>
+      <td style="width: 140px;"> pwsafe.cfg</td>
+      <td style="width: 300px; text-align: left;" valign="middle"><small>&nbsp;</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">DontAskMinimizeClearYesNo</td>
+      <td style="width: 68px;"> cierto</td>
+      <td style="width: 140px;"> pwsafe.cfg</td>
+      <td style="width: 300px; text-align: left;" valign="middle"><small>&nbsp;</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">DatabaseClear</td>
+      <td style="width: 68px;"> falso</td>
+      <td style="width: 140px;"> pwsafe.cfg</td>
+      <td style="width: 300px; text-align: left;" valign="middle"><small>&nbsp;</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">DontAskSaveMinimize</td>
+      <td style="width: 68px;"> falso</td>
+      <td style="width: 140px;"> pwsafe.cfg</td>
+      <td style="width: 300px; text-align: left;" valign="middle"><small>&nbsp;</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">QuerySetDef</td>
+      <td style="width: 68px;"> cierto</td>
+      <td style="width: 140px;"> pwsafe.cfg</td>
+      <td style="width: 300px; text-align: left;" valign="middle"><small>&nbsp;</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">UseNewToolbar</td>
+      <td style="width: 68px;"> cierto</td>
+      <td style="width: 140px;"> pwsafe.cfg</td>
+      <td style="width: 300px; text-align: left;" valign="middle"><small>&nbsp;</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">UseSystemTray</td>
+      <td style="width: 68px;"> cierto</td>
+      <td style="width: 140px;"> pwsafe.cfg</td>
+      <td style="width: 300px; text-align: left;" valign="middle"><small>&nbsp;</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">LockOnWindowLock</td>
+      <td style="width: 68px;"> cierto</td>
+      <td style="width: 140px;"> pwsafe.cfg</td>
+      <td style="width: 300px; text-align: left;" valign="middle"><small>&nbsp;</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">LockOnIdleTimeout</td>
+      <td style="width: 68px;"> cierto</td>
+      <td style="width: 140px;">base de datos</td>
+      <td style="width: 300px; text-align: left;" valign="middle"><small>&nbsp;Bloquear tras&nbsp;<b>IdleTimeout</b> minutos</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">EscExits</td>
+      <td style="width: 68px;"> cierto</td>
+      <td style="width: 140px;"> pwsafe.cfg</td>
+      <td style="width: 300px; text-align: left;" valign="middle"><small>&nbsp;</small></td>
+    </tr>
+
+
+    <tr>
+      <td style="width: 214px;">HotKeyEnabled</td>
+      <td style="width: 68px;"> falso</td>
+      <td style="width: 140px;"> pwsafe.cfg</td>
+      <td style="width: 300px; text-align: left;" valign="middle"><small>&nbsp;</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">MRUOnFileMenu</td>
+      <td style="width: 68px;"> cierto</td>
+      <td style="width: 140px;"> pwsafe.cfg</td>
+      <td style="width: 300px; text-align: left;" valign="middle"><small>&nbsp;Bases de datos recientes</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">MaintainDateTimeStamps</td>
+      <td style="width: 68px;"> falso</td>
+      <td style="width: 140px;"> base de datos</td>
+      <td style="width: 300px; text-align: left;" valign="middle"><small>&nbsp;</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">SavePasswordHistory</td>
+      <td style="width: 68px;"> falso</td>
+      <td style="width: 140px;"> base de datos</td>
+      <td style="width: 300px; text-align: left;" valign="middle"><small>&nbsp;</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">FindWraps</td>
+      <td style="width: 68px;"> falso</td>
+      <td style="width: 140px;"> pwsafe.cfg</td>
+      <td style="width: 300px; text-align: left;" valign="middle"><small>&nbsp;</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">ShowNotesDefault</td>
+      <td style="width: 68px;"> falso</td>
+      <td style="width: 140px;"> base de datos</td>
+      <td style="width: 300px; text-align: left;" valign="middle"><small>&nbsp;</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">BackupBeforeEverySave</td>
+      <td style="width: 68px;"> cierto</td>
+      <td style="width: 140px;"> pwsafe.cfg</td>
+      <td style="width: 300px; text-align: left;" valign="middle"><small>&nbsp;</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">PreExpiryWarn</td>
+      <td style="width: 68px;"> falso</td>
+      <td style="width: 140px;"> pwsafe.cfg</td>
+      <td style="width: 300px; text-align: left;" valign="middle"><small>&nbsp;</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">ExplorerTypeTree</td>
+      <td style="width: 68px;"> falso</td>
+      <td style="width: 140px;"> pwsafe.cfg</td>
+      <td style="width: 300px; text-align: left;" valign="middle"><small>&nbsp;Mostrar grupos primero en vista árbol</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">ListViewGridLines</td>
+      <td style="width: 68px;"> falso</td>
+      <td style="width: 140px;"> pwsafe.cfg</td>
+      <td style="width: 300px; text-align: left;" valign="middle"><small>&nbsp;Mostrar líneas de cuadrícula en lista</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 214px;">MinimizeOnAutotype</td>
+      <td style="width: 68px;"> cierto</td>
+      <td style="width: 140px;"> pwsafe.cfg</td>
+      <td style="width: 300px; text-align: left;" valign="middle"><small>&nbsp;</small></td>
+    </tr>
+
+  </tbody>
+</table>
+<br>
+<h4>Preferencias numéricas</h4>
+<table style="width: 780px;" border="1" cellpadding="2" cellspacing="2" width="100%">
+
+  <tbody>
+    <tr>
+      <td style="width: 185px; font-weight: bold;" align="center" valign="middle">Preferencia</td>
+      <td style="width: 194px; font-weight: bold;" align="center" valign="middle">Predeterminado</td>
+      <td style="width: 115px; font-weight: bold;" align="center" valign="middle">Almacenado en</td>
+      <td style="width: 40px; font-weight: bold;" align="center" valign="middle">Min</td>
+      <td style="width: 40px; font-weight: bold;" align="center" valign="middle">Max</td>
+      <td style="width: 180px; font-weight: bold;" align="center" valign="middle">Comentario</td>
+    </tr>
+    <tr>
+      <td style="width: 185px;">column1width</td>
+      <td style="width: 194px;">n/a</td>
+      <td style="width: 115px;"> pwsafe.cfg</td>
+      <td style="width: 40px;">n/a</td>
+      <td style="width: 40px;">n/a</td>
+      <td style="width: 180px;"><small>&nbsp;</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 185px;">column2width</td>
+      <td style="width: 194px;"> n/a</td>
+      <td style="width: 115px;"> pwsafe.cfg</td>
+      <td style="width: 40px;">n/a</td>
+      <td style="width: 40px;">n/a</td>
+      <td style="width: 180px;"><small>&nbsp;</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 185px;">column3width</td>
+      <td style="width: 194px;"> n/a</td>
+      <td style="width: 115px;"> pwsafe.cfg</td>
+      <td style="width: 40px;">n/a</td>
+      <td style="width: 40px;">n/a</td>
+      <td style="width: 180px;"><small>&nbsp;</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 185px;">column4width</td>
+      <td style="width: 194px;"> n/a</td>
+      <td style="width: 115px;"> pwsafe.cfg</td>
+      <td style="width: 40px;">n/a</td>
+      <td style="width: 40px;">n/a</td>
+      <td style="width: 180px;"><small>&nbsp;</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 185px;">sortedcolumn</td>
+      <td style="width: 194px;"> 0</td>
+      <td style="width: 115px;"> pwsafe.cfg</td>
+      <td style="width: 40px;"> 0</td>
+      <td style="width: 40px;"> 15</td>
+      <td style="width: 180px;"><small>&nbsp;</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 185px;">pwlendefault</td>
+      <td style="width: 194px;"> 8</td>
+      <td style="width: 115px;">base de datos</td>
+      <td style="width: 40px;"> 4</td>
+      <td style="width: 40px;"> 1024</td>
+      <td style="width: 180px;"><small>&nbsp;Longitud de la contraseña</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 185px;">maxmruitems</td>
+      <td style="width: 194px;"> 4</td>
+      <td style="width: 115px;"> pwsafe.cfg</td>
+      <td style="width: 40px;"> 0</td>
+      <td style="width: 40px;"> 20</td>
+      <td style="width: 180px;"><small>&nbsp;Bases de datos recientes</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 185px;">IdleTimeout</td>
+      <td style="width: 194px;"> 5</td>
+      <td style="width: 115px;">base de datos</td>
+      <td style="width: 40px;"> 1</td>
+      <td style="width: 40px;"> 120</td>
+      <td style="width: 180px;"><small>&nbsp;Minutos</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 185px;">DoubleClickAction</td>
+      <td style="width: 194px;"> DoubleClickCopyPassword</td>
+      <td style="width: 115px;"> pwsafe.cfg</td>
+      <td style="width: 40px;">n/a</td>
+      <td style="width: 40px;">n/a</td>
+      <td style="width: 180px;"><small>&nbsp;</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 185px;">HotKey</td>
+      <td style="width: 194px;"> none</td>
+      <td style="width: 115px;"> pwsafe.cfg</td>
+      <td style="width: 40px;"> n/a</td>
+      <td style="width: 40px;"> n/a</td>
+      <td style="width: 180px;"><small>&nbsp;</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 185px;">MaxREItems</td>
+      <td style="width: 194px;"> 25</td>
+      <td style="width: 115px;"> pwsafe.cfg</td>
+      <td style="width: 40px;"> 0</td>
+      <td style="width: 40px;"> 25</td>
+      <td style="width: 180px;"><small>&nbsp;Entradas recientes</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 185px;">TreeDisplayStatusAtOpen</td>
+      <td style="width: 194px;"> AllCollapsed</td>
+      <td style="width: 115px;">base de datos</td>
+      <td style="width: 40px;">n/a</td>
+      <td style="width: 40px;">n/a</td>
+      <td style="width: 180px;"><small>&nbsp;</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 185px;">NumPWHistoryDefault</td>
+      <td style="width: 194px;"> 3</td>
+      <td style="width: 115px;">base de datos</td>
+      <td style="width: 40px;"> 0</td>
+      <td style="width: 40px;"> 255</td>
+      <td style="width: 180px;"><small>&nbsp;contraseñas en historial</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 185px;">BackupSuffix</td>
+      <td style="width: 194px;"> 0</td>
+      <td style="width: 115px;"> pwsafe.cfg</td>
+      <td style="width: 40px;">n/a</td>
+      <td style="width: 40px;"> n/a</td>
+      <td style="width: 180px;"><small>&nbsp;</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 185px;">BackupMaxIncremented</td>
+      <td style="width: 194px;"> 1</td>
+      <td style="width: 115px;"> pwsafe.cfg</td>
+      <td style="width: 40px;"> 1</td>
+      <td style="width: 40px;"> 999</td>
+      <td style="width: 180px;"><small>&nbsp;</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 185px;">PreExpiryWarnDays</td>
+      <td style="width: 194px;"> 1</td>
+      <td style="width: 115px;"> pwsafe.cfg</td>
+      <td style="width: 40px;"> 1</td>
+      <td style="width: 40px;"> 30</td>
+      <td style="width: 180px;"><small>&nbsp;Aviso caducidad contraseñas</small></td>
+    </tr>
+
+  </tbody>
+</table>
+<br>
+<h4>Preferencias de texto</h4>
+<table border="1" cellpadding="2" cellspacing="2" width="100%">
+
+  <tbody>
+    <tr>
+      <td style="font-weight: bold;" align="center" valign="middle">Preferencia</td>
+      <td style="font-weight: bold;" align="center" valign="middle">Prederminado</td>
+      <td style="font-weight: bold;" align="center" valign="middle">Almacenado en</td>
+      <td style="font-weight: bold;" align="center" valign="middle">Comentario</td>
+    </tr>
+    <tr>
+      <td style="width: 185px;">currentbackup</td>
+      <td style="width: 80px;"> &lt;none&gt;</td>
+      <td style="width: 110px;"> pwsafe.cfg</td>
+      <td style="width: 399px;"><small>&nbsp;Nombre y trayectoria del último archivo de copia de seguridad</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 185px;">currentfile</td>
+      <td style="width: 80px;"> &lt;none&gt;</td>
+      <td style="width: 110px;"> pwsafe.cfg</td>
+      <td style="width: 399px;"><small>&nbsp;Archivo abierto actualmente (último)</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 185px;">lastview</td>
+      <td style="width: 80px;"> tree</td>
+      <td style="width: 110px;"> pwsafe.cfg</td>
+      <td style="width: 399px;"><small>&nbsp;Última vista seleccionada: Árbol o lista</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 185px;">defusername</td>
+      <td style="width: 80px;"> &lt;none&gt;</td>
+      <td style="width: 110px;">base de datos</td>
+      <td style="width: 399px;"><small>&nbsp;</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 185px;">treefont</td>
+      <td style="width: 80px;"> &lt;none&gt;</td>
+      <td style="width: 110px;"> pwsafe.cfg</td>
+      <td style="width: 399px;"><small>&nbsp;</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 185px;">BackupPrefixValue</td>
+      <td style="width: 80px;"> &lt;none&gt;</td>
+      <td style="width: 110px;"> pwsafe.cfg</td>
+      <td style="width: 399px;"><small>&nbsp;</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 185px;">BackupDir</td>
+      <td style="width: 80px;"> &lt;none&gt;</td>
+      <td style="width: 110px;"> pwsafe.cfg</td>
+      <td style="width: 399px;"><small>&nbsp;</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 185px;">AltBrowser</td>
+      <td style="width: 80px;"> &lt;none&gt;</td>
+      <td style="width: 110px;"> pwsafe.cfg</td>
+      <td style="width: 399px;"><small>&nbsp;Navegador alternativo</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 185px;">ListColumns</td>
+      <td style="width: 80px;"> &lt;none&gt;</td>
+      <td style="width: 110px;"> pwsafe.cfg</td>
+      <td style="width: 399px;"><small>&nbsp;Orden de columnas</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 185px;">ColumnWidths</td>
+      <td style="width: 80px;"> &lt;none&gt;</td>
+      <td style="width: 110px;"> pwsafe.cfg</td>
+      <td style="width: 399px;"><small>&nbsp;Tamaño de columnas</small></td>
+    </tr>
+
+    <tr>
+      <td style="width: 185px;">DefaultAutotypeString</td>
+      <td style="width: 80px;">\u\t\p\t\n</td>
+      <td style="width: 110px;">base de datos</td>
+      <td style="width: 399px;"><small>&nbsp;</small></td>
+    </tr>
+
+  </tbody>
+</table>
+<br>
+<br>
+&nbsp;<!-- Added some white space at the bottom for natural scrolling --><br>
+
+
+<br>
+
+
+<br>
+
+
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+  <param name="Keyword" value="Preferencias">
+  <param name="Keyword" value="Configuración">
+</object>
+</body></html>

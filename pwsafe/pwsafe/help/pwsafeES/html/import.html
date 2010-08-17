@@ -1,0 +1,207 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+
+  
+  <title>Importar entradas</title>
+<!-- pwsafe version: 2.23--><!-- Modified: 15/08/2010 --><!--Popup control -->
+  <script language="javascript" src="html/popups.js">
+		</script>
+  
+  
+  
+  
+  
+  
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+
+<body>
+
+
+
+
+
+
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11">
+		</object>
+		
+		<!-- Popup Source File -->
+		
+
+		
+	
+		
+<h2>Importar entradas</h2>
+
+<p><b>Password Safe</b> te permite importar información de contraseñas de otros formatos. 
+Estos archivos pueden haber sido generados por otras aplicaciones, exportados de una hoja 
+de cálculo, o incluso escritos a mano con el bloc de notas o un editor de texto similar.</p>
+
+
+
+
+
+<p>Los formatos soportados por <b>Password Safe</b> son:</p>
+
+
+
+
+
+<ul>
+
+
+
+
+
+  <li><a href="#text">Texto</a></li>
+
+
+
+
+
+  <li><a href="#XML">XML</a></li>
+
+
+
+
+
+  <li>KeePass (otra utilidad de gestión de contraseñas)</li>
+
+
+
+
+
+</ul>
+
+
+
+
+
+
+
+
+		
+<div class="instr">
+			
+<h3><a name="text"></a>Formato texto</h3>
+
+
+
+
+
+<p>Los archivos de texto utilizados para importar las entradas de contraseñas constan de 
+una o más entradas contraseña. Cada campo dentro de una entrada está separada por un separador 
+de campo y cada entrada puede consistir en una o más líneas. Detalles sobre el formato esperado 
+del archivo de texto a importar puede encontrarse en la sección 
+"<a href="imp_exp_text_details.html">Formato de importación y exportación como texto sin formato</a>".</p>
+
+<h3>Diálogo opciones de importación de texto</h3>
+
+
+
+<p>El separador de campo utilizado en el archivo de texto importado y un nombre de grupo predeterminado 
+para importar las nuevas entradas pueden configurarse en antes de procesar el archivo.</p>
+
+
+
+<p><img alt="Opciones de importación de texto" src="images/import.jpg"></p>
+
+
+
+
+<ol>
+
+
+
+				<li><b>Archivo &gt; Importar de....</b></li>
+
+
+
+				<li>Seleccionar <b>Texto sin formato...</b></li>
+
+
+
+				<li>Fijar los parametros y opciones para importar el archivo de texto</li>
+
+
+				<li>Si se ha utilizado un carácter delimitador de líneas en el campo notas, 
+ya sea en una exportación previa o con un editor de texto, introdúzcalo aquí para que, durante el 
+proceso de importación, el campo de notas se divide en varias líneas mediante la sustitución de este 
+caracter por un nueva línea.</li>
+
+
+
+				<li>Pulsa <b>Aceptar</b></li>
+
+
+
+				<li>Selecciona el archivo de texto a importar.</li>
+
+  <li>Al final del proceso de importación, aparece un pequeño cuadro de diálogo 
+mostrando cuántas entradas se han añadido, y cuántas (en caso de haberlas) se analizaron sin éxito.</li>
+
+
+			
+</ol>
+
+
+			
+<hr>
+			<small><b><span style="color: rgb(255, 0, 0);">IMPORTANTE</span>: </b>La
+primera línea del archivo que se importa debe ser una lista separada por tabulaciones de 
+los nombres de los campos que contiene cada entrada, por ejemplo
+"Grupo/Título Usuario Contraseña URL", etc. Esta línea se genera automáticamente por la función
+"<a href="export.html">Exportar texto</a>", pero debe añadirse manualmente para archivos 
+creados con otras herramientas.<br>
+</small>
+<hr style="width: 100%; height: 2px;">
+
+
+<h3><a name="XML"></a>XML</h3>
+
+XML (eXtensible Markup Language) es un formato popular de trasferencia de datos entre aplicaciones.
+<b>Password Safe</b> puede importar archivos XML que se generasen de acuerdo al esquema definido en 
+el archivo <i>pwsafe.xsd</i>, que se proporciona como parte de la distribución.
+		</div>
+
+
+
+
+
+
+
+
+		<!-- Added some white space at the bottom for natural scrolling -->
+		<br>
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+		
+		<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+			<param name="Keyword" value="Importar entradas de contraseñas">
+			<param name="Keyword" value="Exportar entradas de contraseñas">
+			<param name="Keyword" value="Convertir datos de contraseñas">
+		</object>
+	
+</body>
+</html>
