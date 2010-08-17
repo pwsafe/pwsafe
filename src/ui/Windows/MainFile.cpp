@@ -3198,6 +3198,21 @@ void DboxMain::OnOK()
   }
 }
 
+static void RelativizePath(stringT &curfile)
+{
+  // If exec's drive == curfile's drive, remove
+  // from latter's path. This supports DoK usage
+  const stringT execDir = pws_os::getexecdir();
+  stringT execDrive, dontCare;
+  pws_os::splitpath(execDir, execDrive, dontCare, dontCare, dontCare);
+  stringT fileDrive, fileDir, fileFile, fileExt;
+  pws_os::splitpath(curfile, fileDrive, fileDir, fileFile, fileExt);
+  ToUpper(fileDrive); ToUpper(execDrive);
+  if (fileDrive == execDrive) {
+    curfile = pws_os::makepath(L"", fileDir, fileFile, fileExt);
+  }
+}
+
 void DboxMain::SavePreferencesOnExit()
 {
   PWSprefs::IntPrefs WidthPrefs[] = {
@@ -3254,9 +3269,11 @@ void DboxMain::SavePreferencesOnExit()
     // Naughty Windows saves information in the registry for every Open and Save!
     RegistryAnonymity();
   } else
-  if (!m_core.GetCurFile().empty())
-    prefs->SetPref(PWSprefs::CurrentFile, m_core.GetCurFile());
-
+    if (!m_core.GetCurFile().empty()) {
+      stringT curFile = m_core.GetCurFile().c_str();
+      RelativizePath(curFile);
+      prefs->SetPref(PWSprefs::CurrentFile, curFile.c_str());
+    }
   // Now save the Find Toolbar display status
   prefs->SetPref(PWSprefs::ShowFindToolBarOnOpen, m_FindToolBar.IsVisible() == TRUE);
 
