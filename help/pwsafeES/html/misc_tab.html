@@ -1,0 +1,278 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+
+  
+
+  
+  <title>Pestaña Misc.</title>
+<!-- pwsafe version: 3.23--><!-- Modified: 08/08/2010 --><!--Popup control -->
+  <script language="javascript" src="html/popups.js">
+		</script>
+  
+  
+  
+  
+  
+  
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+
+<body>
+
+
+
+
+
+
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11">
+		</object>
+		
+		<!-- Popup Source File -->
+		
+		
+		
+	
+		
+<h2>Pestaña Misc</h2>
+
+
+
+
+
+
+
+		<img src="images/options/misc_tab.jpg" alt="Pestaña Misc"><br>
+
+
+
+
+
+
+
+
+		
+<p>Varios valores por defecto del programa se muestran en la <b>pestaña Misc</b>.</p>
+
+
+
+
+
+
+
+
+		
+<div class="instr">
+			
+<h3>Confirmar borrado de elementos</h3>
+
+Estando seleccionada, se mostrará un mensaje de confirmación cada vez que se intente borrar una entrada de la base de datos.
+<h3>Registro de últimos accesos</h3>
+
+
+
+
+
+Estando seleccionada, <span style="font-weight: bold;">Password Safe</span> registra la hora en que
+se accede a cada entrada (cuando se copió la contraseñas o cuando se vieron los detalles de la entrada, etc.). 
+La hora se almacena con la entrada y puede consultarse en el diálogo de la entrada.<br>
+
+
+
+
+
+<span style="font-weight: bold;">Notas:<br>
+
+
+
+
+
+</span>
+<ul>
+
+
+
+
+
+  <li><small>Estando habilitado, la base de datos se modificará sin que se edite una entrada. 
+Esto significa que puedes ser advertido de grabar la base de datos antes de salir, 
+incluso sin haber cambiado nada explicitamente.</small></li>
+
+
+
+
+
+  <li><small>Cuando la base de datos se abre en modo sólo lectura, las horas de acceso <span style="font-weight: bold;">no</span> se actualizan.</small></li>
+
+
+
+
+
+</ul>
+
+
+
+
+
+<h3>La tecla Escape cierra la aplicación</h3>
+
+
+
+
+
+
+
+			
+<p>Estando seleccionada, puede usarse <b>Esc</b> para cerrar <b>Password Safe</b> cuando el programa está 
+maximizado. Si está activado el icono en la bandeja de sistema (a través de la opción Mostrar icono en 
+el área de notificación), entonces <b>Esc</b> sólo cierra la ventana principal, que puede 
+reabrirse haciendo doble clic en el icono del área de notificación.</p>
+
+
+
+
+
+
+
+
+			
+<h3>Tecla rápida</h3>
+
+
+
+
+
+
+
+			
+<p>Estando selecionada, presionando las tecla en la secuencia a la derecha restaurará
+PasswordSafe desde el área de notificación, si está minimizado, o lo traerá al primer plano,
+si está tras otras aplicaciones. La secuencia puede cambiarse cuando la opción está seleccionada.</p>
+
+
+
+
+
+
+
+
+			
+<h3>Acción al hacer doble clic</h3>
+
+
+
+
+
+
+
+			
+<p>Te permite definir qué acción hará PasswordSafe cuando hagas doble clic en una entrada. El valor por defecto es 
+copiar la contraseña de la entrada al portapapeles. &nbsp;Las opciones disponibles son:</p>
+<p></p>
+<ul>
+  <li>Autoescritura</li>
+  <li>Abrir URL</li>
+  <li>Ir a URL + Autoescritura</li>
+  <li>Copiar notas al portapapeles</li>
+  <li>Copiar contraseña al portapapeles</li>
+  <li>Copiar contraseña al portapapeles, minimizar</li>
+  <li>Copiar usuario al portapapeles</li>
+  <li>Ejecutar comando</li>
+  <li>Enviar correo</li>
+  <li>Ver/Editar entrada seleccionada</li>
+</ul>
+<p>El elemento copiar contraseña y minimizar no funcionará como se espera si está seleccionada la opción 
+"Borrar portapapeles al minimizar" en la
+<a href="security_tab.html">pestaña de opciones de Seguridad</a>.</p>
+
+
+
+
+<h3>Autoescritura</h3>
+
+
+<ul>
+
+
+  <li><span style="font-weight: bold;">Minimizar tras autoescritura</span> Por defecto, <span style="font-weight: bold;">Password Safe</span> se minimiza 
+al realizar autoescritura. Si la opción no está marcada, <span style="font-weight: bold;">Password Safe</span> se situará tras todas las ventanas mostradas en su lugar.</li>
+
+
+  <li><span style="font-weight: bold;">Formato autoescritura por defecto</span>
+Aquí puedes indicar la cadena a usar por defecto para todas las entradas. Puedes modificar este comportamiento en cada entrada. 
+Esta opción es útil, por ejemplo, si quieres cambiar los retardos para todas las entradas. 
+Consulta <a href="autotype.html">aquí</a> para más detalles sobre autoescritura.</li>
+
+
+</ul>
+
+
+<h3>Usuario por defecto</h3>
+
+
+
+
+Esto te permite fijar un usuario por defecto que se utilizará automáticamente cada vez que se genere una nueva entrada. 
+Estando seleccionado, el nombre introducido se insertará por defecto en el campo usuario de las nuevas entradas. 
+Por supuesto, puedes editarlos si es necesario.<br>
+
+
+
+<h3><a name="AltBrowser"></a>Navegador alternativo</h3>
+
+
+
+El navegador que indiques en este campo &nbsp;se usará al seleccionar la opción 
+"Abrir URL" de una entrada, cuando la URL de la entrada tenga "[alt]" antes de la dirección, 
+por ejemplo, "[alt]http://www.foo.net". Esto es útil, por ejemplo, si tu navegador por defecto es Firefox
+y quieres acceder a un sitio triste y lamentable que funciona mejor con Internet Explorer, en cuyo caso
+debes indicar Internet Explorer como tu Navegador alternativo 
+(normalmente "C:\Archivos de programa\Internet Explorer\iexplorer.exe).<br>
+
+
+Puedes indicar parámetros al navegador a tras del campo Parámetros de línea de comandos. 
+
+
+		</div>
+
+
+
+
+
+
+
+
+		<!-- Added some white space at the bottom for natural scrolling -->
+		<br>
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+		<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+			<param name="Keyword" value="Pestaña misc.">
+			<param name="Keyword" value="Confirmar borrado">
+			<param name="Keyword" value="Confirmar guardar">
+			<param name="Keyword" value="Guardar cambios automáticamente">
+		</object>
+	
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+
+  
+
+
+
+  
+  
+
+  <title>Pestaña sistema</title><!-- pwsafe version: 3.23--><!-- Modified: 08/08/2010 --><!--Popup control --><script language="javascript" src="html/popups.js">
+  </script>
+  
+  <link rel="stylesheet" type="text/css" href="style.css"></head>
+
+<body>
+
+
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"> </object>
+<!-- Popup Source File -->
+<h2>Pestaña sistema</h2>
+
+
+<img alt="Pestaña sistema" src="images/options/system_tab.jpg">
+<p>La pestaña sistemas da acceso a opciones relacionadas con la interacción de Password Safe 
+con el sistema en que se ejecuta.</p>
+
+
+<div class="instr">
+<h3>Mostrar icono en el área de notificación</h3>
+
+
+<p>Si está seleccionado, <b>Password Safe</b> se minimizará al aréa de notificación del sistema. Si no está 
+seleccionado, el programa se minimizará a la barra de tareas.</p>
+
+
+<p>El icono en el área de notificación indica si la base de datos está bloqueada 
+(<img style="width: 32px; height: 32px;" alt="bloqueada" src="images/locked_tray.jpg">) o
+desbloqueada (<img style="width: 32px; height: 32px;" alt="desbloqueada" src="images/unlocked_tray.jpg">). Si está
+bloqueada, se solicitará la contraseña maestre al volverla a primer plano.</p>
+
+
+<h3>Recordar últimas <span style="font-style: italic;">N</span>
+entradas usadas en el menú del área de notificación</h3>
+
+
+Si la opción&nbsp;<span style="font-weight: bold;">Mostrar icono en el área de notificación</span> está activada, 
+puedes hacer clic derecho en el icono del área de notificación para obtener las entradas usadas más recientemente
+sin ir a la pantalla de la aplicación. Esta opción te permite configurar cuantas entradas recientes quieres
+mantener en las lista del icono del área de notificación.
+<h3>Ocultar icono (la tecla de acceso DEBE estar activada)</h3>
+Si está seleccionada, hará que Password Safe ocurte su icono en el área de notificación. 
+Esta funcionalidad sólo está disponible si la tecla rápida para iniciar o reabrir Password Safe está activada.
+
+<h3>Iniciar PasswordSafe al iniciar sesión</h3>
+
+Si está seleccionada, hará que se inicie Password Safe automáticamente en el área de notificación al iniciar sesión. 
+Se te pedirá la contraseñas maestra la primera vez que hagas doble clic en el icono del área de notificación, 
+<span style="font-weight: bold;">no <span style="font-weight: bold;">antes.</span></span><span style="font-weight: bold;"></span>
+<h3>Bases de datos Passwordafe recientes</h3>
+
+
+<p>Este control te permite configurar cuantas bases de datos abiertas recientemente se muestran en el menú Archivo. 
+Debes salir y reiniciar <b>Password Safe</b> para que tengan efecto los cambios en este control.</p>
+
+
+<h3>Bases de datos recientes en el menú archivo en vez de en un submenú</h3>
+
+
+Esta opción determina como se presentan las bases de datos abiertas recientemente en el menú archivo - directamente 
+en el menú o como un submenú.<br>
+
+<h3>Abrir base de datos en sólo lectura por defecto</h3>
+Fijar esta opción hará que <span style="font-weight: bold;">Password Safe</span> abrás las bases de datos 
+en modo sólo lectura por defecto. Esto puede ser util en un entorno multiusuario, como por defecto 
+<span style="font-weight: bold;">Password Safe</span> permite acceso de escritura a la primera persona que 
+abre la base de datos, restringe a las demás a modo sólo lectura. Con esta opción, puedes determinar 
+por la política del sitio quién tendra acceso de escritura a una base de datos dada.
+<h3>Permitir multiples instancias (todas las instancias deben reiniciarse)</h3>
+<h3>Eliminar configuración de PasswordSafe del registro</h3>
+
+Con anterioridad a la versión 3.05, <span style="font-weight: bold;">Password Safe</span>
+utilizaba el registro para almacenar datos de configuración, tales como configuración de opciones, última base de datos 
+abierta, etc. A partir de esa versión, esa información de configuración está partida entre la específica de la base de 
+datos y la específica del usuario/máquina, esta última está almacenada en un archivo de configuración. Seleccionar 
+esta opción y pulsar el botón <span style="font-weight: bold;">Aplicar</span> hace que se borren las opciones en el 
+registro. Esto es útil si quieres eliminar todo rastro de <span style="font-weight: bold;">Password Safe</span> de tu PC. 
+De cualquier forma, las antiguas versiones de <span style="font-weight: bold;">Password Safe</span> volverán a sus valores 
+por defecto para algunas opciones de configuración.<br>
+
+<span style="font-weight: bold;"></span>
+<hr style="width: 100%; height: 2px;"><span style="font-weight: bold;">Notas:<br>
+
+</span>
+<ul>
+
+  <li>Si nunca se ha instalado una versión previa de <span style="font-weight: bold;">Password Safe</span>, o si los datos ya han sido eliminados, la casilla de configuración y el botón <span style="font-weight: bold;">Aplicar </span>no se mostrarán.</li>
+
+  <li>En algunas extrañas circunstancias, en que <span style="font-weight: bold;">Password Safe</span> no puede crear o escribir en el fichero de configuración, se utilizará el registro.</li>
+
+</ul>
+
+<hr style="width: 100%; height: 2px;">
+
+<h3>Migrar configuración de PasswordSafe al directorio del usuario</h3>Con anterioridad a la versión 3.22,
+PasswordSafe mantenía las preferencias de la aplicación (como algunas opciones de usuario, últimos archivos abiertos, 
+tamaño y posición de la ventana, etc.) en un archivo en el mismo directorio del ejecutable de PasswordSafe. Esto ha 
+causado problemas con versiones recientes de Windows en que los usuarios no tienen acceso de escritura en este directorio. 
+Por tanto, a partir de la versión 3.22, el archivo de configuración (pwsafe.cfg) se creará en la ubicación estandar para 
+tales ficheros (en el directorio de usuario 'Configuración local\Datos de programa').<br>Por defecto, las actualizaciones 
+de instalaciones no cambian el archivo de preferencias existente ("si no está roto, no lo arregles"). De cualquiere modo,
+si un usuario quiere cambiar a la nueva configuración manualmente, seleccionando esta opción y pulsando en 'Aplicar' 
+se llevará a efecto.<br><br>Mas detalladamente: El archivo de configuración está diseñado para soportar múltiples usuarios 
+en múltiples máquinas. La función de migración cambiará la configuración del usuario actual (asociado con el actual PC) 
+del archivo de configuración a una nueva ubicación. Si hay otras configuraciones propias de otro usuario/máquina en el 
+archivo no se tocarán. Si no hay otras configuraciones tras la migración, se eliminará el archivo.<br>Si quieres 
+compartir un archivo de configuración común entre usuarios y/o entre distintos PCs, puedes mantener el archivo en
+directorio del ejecutable, o especificar su localización explicitamente utilizando la opción 
+'-g <span style="font-style: italic;">archivo-configuración</span>', tal como se describe en 
+<a href="cli.html">argumentos de la línea de comandos</a>.
+
+
+
+
+</div>
+
+
+
+
+<br>
+
+
+<br>
+
+
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+  <param name="Keyword" value="Pestaña seguridad">
+  <param name="Keyword" value="Bloquear base de datos">
+  <param name="Keyword" value="Confirmar copiar al portapapeles">
+  <param name="Keyword" value="Limpiar el portapapeles">
+</object>
+</body></html>

@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2010-08-15 19:44+0100\n"
+"PO-Revision-Date: 2010-08-16 19:57+0100\n"
 "Last-Translator: José Luis Sánchez Lozano <jl.sanchez.lozano@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -84,7 +84,7 @@ msgstr " 'Fecha de creación'"
 
 #. Resource IDs: (357)
 msgid " 'DCA'"
-msgstr " 'DCA'"
+msgstr " 'ADC'"
 
 #. Resource IDs: (347)
 msgid " 'Group'"
@@ -565,7 +565,7 @@ msgstr "&Editar"
 
 #. Resource IDs: (32081)
 msgid "&Edit Base entry"
-msgstr "&Editar entrada"
+msgstr "&Editar entrada base"
 
 #. Resource IDs: (1346)
 msgid "&Export"
@@ -601,7 +601,7 @@ msgstr "&Generar"
 
 #. Resource IDs: (32069)
 msgid "&Go to Base entry"
-msgstr "&Ir a entrada"
+msgstr "&Ir a entrada base"
 
 #. Resource IDs: (9, 32200, 57670)
 msgid "&Help"
@@ -853,7 +853,7 @@ msgstr "Tecla 'Alt Gr' (Alt derecho)"
 
 #. Resource IDs: (353)
 msgid "'Clear Clipboard on Minimize' and the Double Click Action of 'Copy Password and Minimize' conflict. Please change one or both."
-msgstr "Conflicto entre 'Vaciar portapapeles al minimizar' y la acción tras doble-click 'Copiar contraseña y minimizar'. Cambia una o ambas."
+msgstr "Conflicto entre 'Vaciar portapapeles al minimizar' y la acción tras doble clic 'Copiar contraseña y minimizar'. Cambia una o ambas."
 
 #. Resource IDs: (358)
 msgid ""
@@ -2301,11 +2301,11 @@ msgstr "Formato de la BD"
 
 #. Resource IDs: (357)
 msgid "DCA"
-msgstr "DCA"
+msgstr "ADC"
 
 #. Resource IDs: (192)
 msgid "DCA\t"
-msgstr "DCA\t"
+msgstr "ADC\t"
 
 #. Resource IDs: (513)
 msgid "Danish"
@@ -2464,7 +2464,7 @@ msgstr ""
 
 #. Resource IDs: (359)
 msgid "Double Click Action"
-msgstr "Acción al hacer doble clic"
+msgstr "Acción tras Doble Clic"
 
 #. Resource IDs: (65535)
 msgid "Double-Click Action:"
@@ -3131,7 +3131,7 @@ msgstr "Grupo/Título\t"
 
 #. Resource IDs: (188)
 msgid "Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tPassword Expiry Interval\tRecord Modified Time\tPassword Policy\tHistory\tRun Command\tDCA\te-mail\tNotes"
-msgstr "Grupo/Título\tUsuario\tContraseña\tURL\tAutoEscritura\tHora de creación\tHora de modificación de contraseña\tHora de último acceso\tFecha de caducidad de contraseña\tIntervalo de caducidad de contraseña\tHora de modificación del registro\tPolitica de contraseña\tHistorial\tEjecutar comando\tDCA\tcorreo\tNotas"
+msgstr "Grupo/Título\tUsuario\tContraseña\tURL\tAutoEscritura\tHora de creación\tHora de modificación de contraseña\tÚltimo acceso\tCaducidad de contraseña\tIntervalo de caducidad de contraseña\tHora de modificación del registro\tPolitica de contraseñas\tHistorial\tEjecutar comando\tADC\tCorreo\tNotas"
 
 #. Resource IDs: (1350, 65535)
 msgid "Group:"
@@ -4295,19 +4295,19 @@ msgstr "Caducidad de contraseña"
 
 #. Resource IDs: (327)
 msgid "Password Expiry Date"
-msgstr "Fecha de caducidad"
+msgstr "Caducidad de contraseña"
 
 #. Resource IDs: (189)
 msgid "Password Expiry Date\t"
-msgstr "Fecha de caducidad\t"
+msgstr "Caducidad de contraseña\t"
 
 #. Resource IDs: (348)
 msgid "Password Expiry Interval"
-msgstr "Intervalo de caducidad de contraseñas"
+msgstr "Intervalo de caducidad de contraseña"
 
 #. Resource IDs: (192)
 msgid "Password Expiry Interval\t"
-msgstr "Intervalo de caducidad\t"
+msgstr "Intervalo de caducidad de contraseña\t"
 
 #. Resource IDs: (360)
 msgid "Password Generated based on displayed policy"
@@ -4327,7 +4327,7 @@ msgstr "Contraseña modificada"
 
 #. Resource IDs: (189)
 msgid "Password Modified Time\t"
-msgstr "Modificación de la contraseña\t"
+msgstr "Hora de modificación de contraseña\t"
 
 #. Resource IDs: (141, 345)
 msgid "Password Policy"
@@ -4339,7 +4339,7 @@ msgstr "Filtro de política de contraseñas"
 
 #. Resource IDs: (329)
 msgid "Password Policy Override"
-msgstr "Sobrecarga de política de contraseñas"
+msgstr "Invalidar política de contraseñas"
 
 #. Resource IDs: (192)
 msgid "Password Policy\t"
@@ -4776,7 +4776,7 @@ msgstr "Bases de datos Passwordafe recientes"
 
 #. Resource IDs: (189)
 msgid "Record Modified Time\t"
-msgstr "Modificación de registro\t"
+msgstr "Hora de modificación del registro\t"
 
 #. Resource IDs: (1121)
 msgid "Record last access times"
@@ -7400,7 +7400,7 @@ msgstr "distinto"
 
 #. Resource IDs: (192)
 msgid "e-mail\t"
-msgstr "correo\t"
+msgstr "Correo\t"
 
 #. Resource IDs: (358)
 msgid "email"

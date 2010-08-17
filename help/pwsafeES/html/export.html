@@ -1,0 +1,254 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+
+
+
+
+  
+  
+
+  
+  <title>Exportar entradas</title>
+<!-- pwsafe version: 3.23--><!-- Modified: 12/08/2010 --><!--Popup control -->
+  <script language="javascript" src="html/popups.js">
+  </script>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+
+<body>
+
+
+
+
+
+
+
+
+
+
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"> </object>
+<!-- Popup Source File -->
+<h2>Exportar entradas</h2>
+
+
+
+
+
+
+
+
+
+
+<p><b>Password Safe</b> permite exportar (e importar) las contraseñas almacenadas a varios formatos. 
+Para exportar datos utiliza el menú
+Archivo-&gt;Exportar a. Los formatos soportados son:</p>
+
+
+
+
+<ul>
+
+
+
+  <li>Password Safe v1 (para usar con las versiones 1.x de Password Safe)</li>
+
+  <li>Password Safe v2 (para usar con las versiones 2.x de Password Safe)</li>
+
+  <li><a href="#te">Texto sin formato</a></li>
+
+  <li><a href="#xml">XML</a></li>
+
+
+
+</ul>
+
+
+
+
+<p>Para versiones previas de <b>Password Safe</b>, selecciona el formato deseado e indica 
+el nombre del archivo de base de datos que quieres crear.</p>
+
+
+
+
+<h3><a name="te"></a>Exportar a texto</h3>
+
+
+
+<hr> <small><span style="color: rgb(255, 0, 0);"><b>Nota:</b> El texto exportado es una
+copia desprotejida de las entradas seleccionadas. Borrar esta copia tras su uso <b>no</b> es suficiente para 
+hacerlo inaccesible a un atacante determinado, de hecho pasa por alto la seguridad del programa.
+
+<br>
+Por favor <b>NO</b> utilices esta función a menos que entiendas y aceptes los riesgos.</span><br>
+
+</small>
+<hr>
+
+<p><b>Password Safe</b> te permite exportar entradas de contraseñas a archivos de texto. 
+Estos archivos pueden ser utilizados y modificados por otras aplicaciones.<br>
+
+
+Antes de exportar la base de datos a un archivo de texto plano sin encriptar 
+se te pedirá que introduzcas la contraseña maestra o combinación de seguridad.
+</p>
+<br>
+
+
+<br>
+
+
+
+
+<img alt="Exportar a texto" src="images%5Cexport.jpg">
+<p>Puedes indicar algunas opciones:</p>
+
+
+<ul>
+
+  <li>
+
+ 
+    <p>Las entradas de contraseñas se exportan con un tabulador entre campos, esto es, entre 
+los campos grupo.título, usuario, contraseñas y notas. "Grupo.título" se considera un único campo. 
+Todd campo que contenga un espacio en blanco se delimitará con comillas dobles.
+Sólo el campo notas puede contener entradas con varias líneas. El tratamiento normal consiste en colocar 
+cada línea de notas en una línea independiente en el campo de texto exportado. Sin embargo, esto hace que 
+sea difícil ordenar o comparar dos archivos exportados diferentes. Puedes especificar un delimitador 
+para separar las líneas múltiples al exportalo. Si vas a importar un archivo de texto creado con un 
+delimitador, entonces debe ser especificado, todas las líneas de notas aparecerá como una sola línea 
+en la base de datos resultante.
+
+<br>
+
+Si es necesario, marca que quieres poner por separado todas las líneas en el campo notas en una 
+línea e introduzca el carácter que se utiliza como delimitador. Puesto que todo el campo notas 
+está encerrado entre comillas dobles, no se puede seleccionar este caracter como delimitador de líneas.</p>
+
+
+  </li>
+
+
+</ul>
+
+<ul>
+
+
+  <li>Tienes más control sobre el formato de exportación haciendo clic en "Opciones avanzadas". 
+Aparecerá el siguiente cuadro de diálogo:</li>
+
+
+</ul>
+
+
+
+<p><img alt="Opciones avanzadas de exportación a texto" src="images/export_text_adv.jpg"></p>
+
+
+<p>Este cuadro de diálogo te permite exportar sólo algunas de las entradas, 
+filtrar por el texto de un determinado campo, y/o especificar los campos que se van a exportar. 
+Haga clic en Aceptar cuando hayas terminado, o en Cancelar para volver al cuadro de diálogo 
+de exportación de texto sin ningún cambio.</p>
+
+
+
+<p>
+A continuación se te pedirá que proporciones el nombre del nuevo archivo y confirmar sobrescribir 
+un archivo del mismo nombre si ya existe en el directorio especificado.
+</p>
+
+
+<hr><small>Nota: Los detalles sobre el formato del archivo de texto exportados se pueden encontrarse en la sección "<a href="imp_exp_text_details.html">Formato de exportación e importación de texto sin formato</a>".</small>
+<hr style="width: 100%; height: 2px;">
+
+
+
+
+<h3><a name="xml"></a>XML</h3>
+
+
+
+XML (eXtensible Markup Language) es un formato popular para transferir datos entre aplicaciones. 
+Password Safe puede exportar (e importar) entradas de la base de dato en este formato. 
+La estructura (o <i>esquema</i>) con la que los datos se exportan y validan se define en 
+el archivo <i>pwsafe.xsd</i>, que se proporciona como parte de la distribución. Este archivo es 
+utilizado por Password Safe al importar datos XML, y debe proporcionarse a las aplicaciones que 
+deseen utilizar los datos exportados.<br>
+
+
+
+
+<hr> <small><span style="color: rgb(255, 0, 0);"><b>Nota:</b> El texto exportado es una
+copia desprotejida de las entradas seleccionadas. Borrar esta copia tras su uso <b>no</b> es suficiente para 
+hacerlo inaccesible a un atacante determinado, de hecho pasa por alto la seguridad del programa.
+
+<br>
+
+
+Por favor <b>NO</b> utilices esta función a menos que entiendas y aceptes los riesgos.</span><br>
+
+<hr>
+</small>
+
+
+La visualización de los archivos XML se especifica mediante <i>pwsafe.xsl</i>
+- un archivo de eXtensible Stylesheet Language. Un archivo de ejemplo, que puede 
+ser modificado para sus propias necesidades, se suministra como parte de la distribución.
+Este archivo es sólo un ejemplo y puede modificarse fácilmente para mostrar los campos 
+que quieras mostrar. Dado que sólo muestra los datos y no los altera, todavía podrás 
+importar a Password Safe posteriormente.<br>
+
+<br>
+
+Como con las opciones de exportar a texto plano, puedes controlar que 
+entradas y campos exportar al archivo XML pulsado en el botón Avanzadas del diálogo
+exportar a XML. Esto mostrará el siguiente cuadro de diálogo:<br>
+
+
+<img alt="Opciones avanzadas de exportación a XML" src="images/export_xml_adv.jpg"><br>
+
+<br>
+
+<p>Este cuadro de diálogo te permite exportar sólo algunas de las entradas, 
+filtrar por el texto de un determinado campo, y/o especificar los campos que se van a exportar. 
+Haga clic en Aceptar cuando hayas terminado, o en Cancelar para volver al cuadro de diálogo 
+de exportación de texto sin ningún cambio. Ten en cuenta que el 
+esquema XML requiere el título y campo de contraseña, por lo tanto, 
+estos no pueden ser deseleccionados.</p>
+
+
+<p>
+A continuación se te pedirá que proporciones el nombre del nuevo archivo y confirmar sobrescribir 
+un archivo del mismo nombre si ya existe en el directorio especificado.
+</p>
+
+&nbsp;<!-- Added some white space at the bottom for natural scrolling -->
+<br>
+
+
+<br>
+
+
+<br>
+
+
+
+
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e"> 
+<param name="Keyword" value="Exportar entradas de contraseñas"> 
+<param name="Keyword" value="Importar entradas de contraseñas"> 
+<param name="Keyword" value="Convertir datos de contraseñas">
+</object>
+</body>
+</html>
