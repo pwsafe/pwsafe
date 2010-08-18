@@ -960,6 +960,9 @@ int DboxMain::Save(const SaveType savetype)
 
   PWSprefs *prefs = PWSprefs::GetInstance();
 
+  // chdir to exe dir, avoid hassle with relative paths
+  PWSdirs dir(PWSdirs::GetExeDir()); // changes back in d'tor
+
   // Save Application related preferences
   prefs->SaveApplicationPreferences();
   prefs->SaveShortcuts();

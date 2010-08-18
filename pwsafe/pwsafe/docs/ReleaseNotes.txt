@@ -8,6 +8,10 @@ information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
 
+New Features for 3.23.1
+=======================
+[] Online help is now available in Spanish, thanks to Jose.
+
 Bugs fixed in 3.23.1
 ====================
 [] Spanish translations for installer and application updated - thanks
