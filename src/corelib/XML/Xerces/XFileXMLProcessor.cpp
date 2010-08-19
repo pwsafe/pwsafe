@@ -57,14 +57,16 @@
 #include <fstream.h>
 #endif
 
+#include "./XMLChConverter.h"
+
 XFileXMLProcessor::XFileXMLProcessor(PWScore *pcore, 
                                      UUIDVector *pPossible_Aliases,
                                      UUIDVector *pPossible_Shortcuts,
                                      MultiCommands *p_multicmds,
                                      CReport *prpt)
-  : m_pXMLcore(pcore), m_delimiter(TCHAR('^')),
+  : m_pXMLcore(pcore), 
     m_pPossible_Aliases(pPossible_Aliases), m_pPossible_Shortcuts(pPossible_Shortcuts),
-    m_pmulticmds(p_multicmds), m_prpt(prpt)
+    m_pmulticmds(p_multicmds), m_prpt(prpt), m_delimiter(TCHAR('^'))
 {
 }
 
@@ -79,6 +81,8 @@ bool XFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
                                 int &nITER, int &nRecordsWithUnknownFields, 
                                 UnknownFieldList &uhfl)
 {
+  USES_XMLCH_STR
+  
   bool bEerrorOccurred = false;
   bool b_into_empty = false;
   stringT cs_validation;
@@ -98,7 +102,7 @@ bool XFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
   catch (const XMLException& toCatch)
   {
 #ifdef UNICODE
-    strResultText = stringT(toCatch.getMessage());
+    strResultText = stringT(_X2ST(toCatch.getMessage()));
 #else
     char *szData = XMLString::transcode(toCatch.getMessage());
     strResultText = stringT(szData);
@@ -108,8 +112,8 @@ bool XFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
   }
 
 #ifdef UNICODE
-  const XMLCh* xmlfilename = strXMLFileName.c_str();
-  const XMLCh* schemafilename = strXSDFileName.c_str();
+  const XMLCh* xmlfilename = _W2X(strXMLFileName.c_str());
+  const XMLCh* schemafilename = _W2X(strXSDFileName.c_str());
 #else
   const XMLCh* xmlfilename = XMLString::transcode(strXMLFileName.c_str());
   const XMLCh* schemafilename = XMLString::transcode(strXSDFileName.c_str());
@@ -160,7 +164,7 @@ bool XFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
   }
   catch (const XMLException& e) {
 #ifdef UNICODE
-    strResultText = stringT(e.getMessage());
+    strResultText = stringT(_X2ST(e.getMessage()));
 #else
     char *szData = XMLString::transcode(e.getMessage());
     strResultText = stringT(szData);
@@ -221,6 +225,8 @@ bool XFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
   delete pSAX2Parser;
   delete pSAX2Handler;
 
+  USES_XMLCH_STR_END
+  
   // And call the termination method
   XMLPlatformUtils::Terminate();
 

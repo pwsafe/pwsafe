@@ -43,6 +43,8 @@
 #include <xercesc/sax/SAXParseException.hpp>
 #include <xercesc/sax/SAXException.hpp>
 
+#include "./XMLChConverter.h"
+
 using namespace std;
 
 XFileSAX2Handlers::XFileSAX2Handlers()
@@ -66,10 +68,13 @@ void XFileSAX2Handlers::startElement(const XMLCh* const /* uri */,
                                      const XMLCh* const qname,
                                      const Attributes& attrs)
 {
+  USES_XMLCH_STR
+  
   if (m_bValidation) {
-    if (XMLString::equals(qname, L"passwordsafe")) {
+    const XMLCh* pwsafe = _A2X("passwordsafe");
+    if (XMLString::equals(qname, pwsafe)) {
       // Only interested in the delimiter attribute
-      XMLCh *szValue = (XMLCh *)attrs.getValue(L"delimiter");
+      XMLCh *szValue = (XMLCh *)attrs.getValue(_A2X("delimiter"));
       if (szValue != NULL) {
 #ifdef UNICODE
         m_delimiter = szValue[0];
@@ -95,22 +100,22 @@ void XFileSAX2Handlers::startElement(const XMLCh* const /* uri */,
     case XLE_RFIELD:
       {
         // Only interested in the ftype attribute
-        XMLCh *szValue = (XMLCh *)attrs.getValue(L"ftype");
+        XMLCh *szValue = (XMLCh *)attrs.getValue(_A2X("ftype"));
         if (szValue != NULL) {
-          m_ctype = (unsigned char)_wtoi(szValue);
+          m_ctype = XMLString::parseInt(szValue);
         }
       }
       break;
     case XLE_ENTRY:
       {
-        XMLCh *szValue1 = (XMLCh *)attrs.getValue(L"normal");
+        XMLCh *szValue1 = (XMLCh *)attrs.getValue(_A2X("normal"));
         if (szValue1 != NULL) {
           cur_entry->bforce_normal_entry =
-               XMLString::equals(szValue1, L"1") || XMLString::equals(szValue1, L"true");
+               XMLString::equals(szValue1, _A2X("1")) || XMLString::equals(szValue1, _A2X("true"));
         }
-        XMLCh *szValue2 = (XMLCh *)attrs.getValue(L"id");
+        XMLCh *szValue2 = (XMLCh *)attrs.getValue(_A2X("id"));
         if (szValue2 != NULL) {
-          cur_entry->id = _wtoi(szValue2);
+          cur_entry->id = XMLString::parseInt(szValue2);
         }
       }
       break;
@@ -122,6 +127,8 @@ void XFileSAX2Handlers::startElement(const XMLCh* const /* uri */,
 
 void XFileSAX2Handlers::characters(const XMLCh* const chars, const XMLSize_t length)
 {
+  USES_XMLCH_STR
+  
   if (m_bValidation)
     return;
 
@@ -129,7 +136,7 @@ void XFileSAX2Handlers::characters(const XMLCh* const chars, const XMLSize_t len
   XMLString::copyNString(xmlchData, chars, length);
   xmlchData[length] = L'\0';
 #ifdef UNICODE
-  m_strElemContent += StringX(xmlchData);
+  m_strElemContent += StringX(_X2SX(xmlchData));
 #else
   char *szData = XMLString::transcode(xmlchData);
   m_strElemContent += StringX(szData);
@@ -141,6 +148,8 @@ void XFileSAX2Handlers::characters(const XMLCh* const chars, const XMLSize_t len
 void XFileSAX2Handlers::ignorableWhitespace(const XMLCh* const chars,
                                            const XMLSize_t length)
 {
+  USES_XMLCH_STR
+  
   if (m_bValidation)
     return;
 
@@ -148,7 +157,7 @@ void XFileSAX2Handlers::ignorableWhitespace(const XMLCh* const chars,
   XMLString::copyNString(xmlchData, chars, length);
   xmlchData[length] = L'\0';
 #ifdef UNICODE
-  m_strElemContent += StringX(xmlchData);
+  m_strElemContent += StringX(_X2SX(xmlchData));
 #else
   char *szData = XMLString::transcode(xmlchData);
   m_strElemContent += StringX(szData);
@@ -161,8 +170,10 @@ void XFileSAX2Handlers::endElement(const XMLCh* const /* uri */,
                                    const XMLCh* const /* localname */,
                                    const XMLCh* const qname)
 {
+  USES_XMLCH_STR
+  
   if (m_bValidation) {
-    if (XMLString::equals(qname, L"entry"))
+    if (XMLString::equals(qname, _A2X("entry")))
       m_numEntries++;
     return;
   }

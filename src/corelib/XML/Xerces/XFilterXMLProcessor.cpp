@@ -36,6 +36,7 @@
 
 #include "../../StringX.h"
 #include "../../corelib.h"
+#include "./XMLChConverter.h"
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -58,7 +59,7 @@
 
 XFilterXMLProcessor::XFilterXMLProcessor(PWSFilters &mapfilters, const FilterPool fpool,
                                          Asker *pAsker)
-  : m_MapFilters(mapfilters), m_FPool(fpool), m_pAsker(pAsker)
+  : m_pAsker(pAsker), m_MapFilters(mapfilters), m_FPool(fpool)
 {
 }
 
@@ -71,6 +72,8 @@ bool XFilterXMLProcessor::Process(const bool &bvalidation,
                                   const stringT &strXMLFileName,
                                   const stringT &strXSDFileName)
 {
+  USES_XMLCH_STR
+  
   bool bEerrorOccurred = false;
   stringT cs_validation;
   LoadAString(cs_validation, IDSC_XMLVALIDATION);
@@ -89,7 +92,7 @@ bool XFilterXMLProcessor::Process(const bool &bvalidation,
   catch (const XMLException& toCatch)
   {
 #ifdef UNICODE
-    m_strXMLErrors = stringT(toCatch.getMessage());
+    m_strXMLErrors = stringT(_X2ST(toCatch.getMessage()));
 #else
     char *szData = XMLString::transcode(toCatch.getMessage());
     strResultText = stringT(szData);
@@ -132,11 +135,11 @@ bool XFilterXMLProcessor::Process(const bool &bvalidation,
   {
     // Let's begin the parsing now
     if (!strXMLFileName.empty()) {
-      pSAX2Parser->parse(strXMLFileName.c_str());
+      pSAX2Parser->parse(_W2X(strXMLFileName.c_str()));
     } else {
       const char *szID = "database_filters";
 #ifdef UNICODE
-      const char *buffer = XMLString::transcode(strXMLData.c_str());
+      const char *buffer = XMLString::transcode(_W2X(strXMLData.c_str()));
 #else
       const char *buffer = strXMLData.c_str();
 #endif
@@ -159,7 +162,7 @@ bool XFilterXMLProcessor::Process(const bool &bvalidation,
   catch (const XMLException& e)
   {
 #ifdef UNICODE
-    strResultText = stringT(e.getMessage());
+    strResultText = stringT(_X2ST(e.getMessage()));
 #else
     char *szData = XMLString::transcode(e.getMessage());
     strResultText = stringT(szData);
@@ -187,6 +190,8 @@ bool XFilterXMLProcessor::Process(const bool &bvalidation,
   //  Delete the pSAX2Parser itself.  Must be done prior to calling Terminate, below.
   delete pSAX2Parser;
   delete pSAX2Handler;
+
+  USES_XMLCH_STR_END
 
   // And call the termination method
   XMLPlatformUtils::Terminate();
