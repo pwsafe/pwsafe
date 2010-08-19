@@ -55,9 +55,9 @@ CXXFLAGS += -O0 -ggdb
 else ifeq ($(CONFIG),release)
 CXXFLAGS += -O
 else ifeq ($(CONFIG),unicodedebug)
-CXXFLAGS += -O0 -ggdb -DUNICODE
+CXXFLAGS += -O0 -ggdb -DUNICODE -DUSE_XML_LIBRARY=XERCES -DWCHAR_INCOMPATIBLE_XMLCH
 else ifeq ($(CONFIG),unicoderelease)
-CXXFLAGS += -O -DUNICODE
+CXXFLAGS += -O -DUNICODE -DUSE_XML_LIBRARY=XERCES -DWCHAR_INCOMPATIBLE_XMLCH
 endif
 
 # rules

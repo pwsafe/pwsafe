@@ -33,12 +33,14 @@
 // PWS includes
 #include "XFilterSAX2Handlers.h"
 
-#include "../../util.h"
+#include "../../Util.h"
 #include "../../UUIDGen.h"
 #include "../../corelib.h"
 #include "../../PWSFilters.h"
 #include "../../VerifyFormat.h"
 #include "../../Match.h"
+#include "../../../os/pws_tchar.h"
+#include "./XMLChConverter.h"
 
 #include <map>
 #include <algorithm>
@@ -76,11 +78,13 @@ void XFilterSAX2Handlers::startElement(const XMLCh* const /* uri */,
                                       const XMLCh* const qname,
                                       const Attributes& attrs)
 {
-  if (m_bValidation && XMLString::equals(qname, L"filters")) {
+  USES_XMLCH_STR
+  
+  if (m_bValidation && XMLString::equals(qname, _A2X("filters"))) {
     if (m_pSchema_Version == NULL) {
       LoadAString(m_strXMLErrors, IDSC_MISSING_SCHEMA_VER);
 #ifdef UNICODE
-      const XMLCh *message = m_strXMLErrors.c_str();
+      const XMLCh *message = _W2X(m_strXMLErrors.c_str());
 #else
       const XMLCh *message = XMLString::transcode(m_strXMLErrors.c_str());
 #endif
@@ -94,7 +98,7 @@ void XFilterSAX2Handlers::startElement(const XMLCh* const /* uri */,
     if (m_iSchemaVersion <= 0) {
       LoadAString(m_strXMLErrors, IDSC_INVALID_SCHEMA_VER);
 #ifdef UNICODE
-      const XMLCh *message = m_strXMLErrors.c_str();
+      const XMLCh *message = _W2X(m_strXMLErrors.c_str());
 #else
       const XMLCh *message = XMLString::transcode(m_strXMLErrors.c_str());
 #endif
@@ -105,7 +109,7 @@ void XFilterSAX2Handlers::startElement(const XMLCh* const /* uri */,
       return;
     }
 
-    const XMLCh * xmlchValue = attrs.getValue(L"version");
+    const XMLCh * xmlchValue = attrs.getValue(_A2X("version"));
     if (xmlchValue != NULL) {
       m_iXMLVersion = XMLString::parseInt(xmlchValue);
     }
@@ -115,8 +119,8 @@ void XFilterSAX2Handlers::startElement(const XMLCh* const /* uri */,
   if (m_bValidation)
     return;
 
-  bool bfilter = XMLString::equals(qname, L"filter");
-  bool bfilter_entry = XMLString::equals(qname, L"filter_entry");
+  bool bfilter = XMLString::equals(qname, _A2X("filter"));
+  bool bfilter_entry = XMLString::equals(qname, _A2X("filter_entry"));
  
    if (bfilter) {
     cur_filter = new st_filters;
@@ -132,10 +136,10 @@ void XFilterSAX2Handlers::startElement(const XMLCh* const /* uri */,
   if (bfilter || bfilter_entry) {
     // Process the attributes we need.
     if (bfilter) {
-      XMLCh * xmlchValue = (XMLCh *)attrs.getValue(L"filtername"); 
+      XMLCh * xmlchValue = (XMLCh *)attrs.getValue(_A2X("filtername")); 
       if (xmlchValue != NULL) {
 #ifdef UNICODE
-        cur_filter->fname = stringT(xmlchValue);
+        cur_filter->fname = stringT(_X2ST(xmlchValue));
 #else
         char *szValue = XMLString::transcode(xmlchValue);
         cur_filter->fname = stringT(szValue);
@@ -145,8 +149,8 @@ void XFilterSAX2Handlers::startElement(const XMLCh* const /* uri */,
     }
 
     if (bfilter_entry) {
-      XMLCh * xmlchValue = (XMLCh *)attrs.getValue(L"active"); 
-      if (xmlchValue != NULL && XMLString::equals(xmlchValue, L"no"))
+      const XMLCh * xmlchValue = attrs.getValue(_A2X("active")); 
+      if (xmlchValue != NULL && XMLString::equals(xmlchValue, _A2X("no")))
         cur_filterentry->bFilterActive = false;
     }
   }
@@ -157,6 +161,8 @@ void XFilterSAX2Handlers::startElement(const XMLCh* const /* uri */,
 void XFilterSAX2Handlers::characters(const XMLCh* const chars,
                                     const XMLSize_t length)
 {
+  USES_XMLCH_STR
+  
   if (m_bValidation)
     return;
 
@@ -164,7 +170,7 @@ void XFilterSAX2Handlers::characters(const XMLCh* const chars,
   XMLString::copyNString(xmlchData, chars, length);
   xmlchData[length] = L'\0';
 #ifdef UNICODE
-  m_strElemContent += StringX(xmlchData);
+  m_strElemContent += StringX(_X2SX(xmlchData));
 #else
   char *szData = XMLString::transcode(xmlchData);
   m_strElemContent += StringX(szData);
@@ -176,6 +182,8 @@ void XFilterSAX2Handlers::characters(const XMLCh* const chars,
 void XFilterSAX2Handlers::ignorableWhitespace(const XMLCh* const chars,
                                              const XMLSize_t length)
 {
+  USES_XMLCH_STR
+  
   if (m_bValidation)
     return;
 
@@ -183,7 +191,7 @@ void XFilterSAX2Handlers::ignorableWhitespace(const XMLCh* const chars,
   XMLString::copyNString(xmlchData, chars, length);
   xmlchData[length] = L'\0';
 #ifdef UNICODE
-  m_strElemContent += StringX(xmlchData);
+  m_strElemContent += StringX(_X2SX(xmlchData));
 #else
   char *szData = XMLString::transcode(xmlchData);
   m_strElemContent += StringX(szData);
@@ -196,14 +204,16 @@ void XFilterSAX2Handlers::endElement(const XMLCh* const /* uri */,
                                     const XMLCh* const /* localname */,
                                     const XMLCh* const qname)
 {
-  if (m_bValidation && XMLString::equals(qname, L"filters")) {
+  USES_XMLCH_STR
+  
+  if (m_bValidation && XMLString::equals(qname, _A2X("filters"))) {
     // Check that the XML file version is present and that
     // a. it is less than or equal to the Filter schema version
     // b. it is less than or equal to the version supported by this PWS
     if (m_iXMLVersion < 0) {
       LoadAString(m_strXMLErrors, IDSC_MISSING_XML_VER);
 #ifdef UNICODE
-      const XMLCh *message = m_strXMLErrors.c_str();
+      const XMLCh *message = _W2X(m_strXMLErrors.c_str());
 #else
       const XMLCh *message = XMLString::transcode(m_strXMLErrors.c_str());
 #endif
@@ -217,7 +227,7 @@ void XFilterSAX2Handlers::endElement(const XMLCh* const /* uri */,
       Format(m_strXMLErrors,
              IDSC_INVALID_XML_VER1, m_iXMLVersion, m_iSchemaVersion);
 #ifdef UNICODE
-      const XMLCh *message = m_strXMLErrors.c_str();
+      const XMLCh *message = _W2X(m_strXMLErrors.c_str());
 #else
       const XMLCh *message = XMLString::transcode(m_strXMLErrors.c_str());
 #endif
@@ -231,7 +241,7 @@ void XFilterSAX2Handlers::endElement(const XMLCh* const /* uri */,
       Format(m_strXMLErrors, 
              IDSC_INVALID_XML_VER2, m_iXMLVersion, PWS_XML_FILTER_VERSION);
 #ifdef UNICODE
-      const XMLCh *message = m_strXMLErrors.c_str();
+      const XMLCh *message = _W2X(m_strXMLErrors.c_str());
 #else
       const XMLCh *message = XMLString::transcode(m_strXMLErrors.c_str());
 #endif
@@ -247,14 +257,20 @@ void XFilterSAX2Handlers::endElement(const XMLCh* const /* uri */,
     return;
   }
 
-  if (XMLString::equals(qname, L"filter")) {
+  if (XMLString::equals(qname, _A2X("filter"))) {
+#ifdef _WIN32
     INT_PTR rc = IDYES;
+#else
+#pragma message("TODO - David - define IDYES for non-Windows platforms")
+    enum {IDYES = 1};
+    int rc = IDYES;
+#endif
     st_Filterkey fk;
     fk.fpool = m_FPool;
     fk.cs_filtername = cur_filter->fname;
     if (m_MapFilters->find(fk) != m_MapFilters->end()) {
       stringT question;
-      Format(question, IDSC_FILTEREXISTS, cur_filter->fname);
+      Format(question, IDSC_FILTEREXISTS, cur_filter->fname.c_str());
       if (m_pAsker == NULL || !(*m_pAsker)(question)) {
         m_MapFilters->erase(fk);
       }
@@ -266,7 +282,7 @@ void XFilterSAX2Handlers::endElement(const XMLCh* const /* uri */,
     return;
   }
 
-  else if (XMLString::equals(qname, L"filter_entry")) {
+  else if (XMLString::equals(qname, _A2X("filter_entry"))) {
     if (cur_filterentry->mtype  == PWSMatch::MT_DATE &&
         cur_filterentry->rule   != PWSMatch::MR_PRESENT &&
         cur_filterentry->rule   != PWSMatch::MR_NOTPRESENT &&
@@ -286,234 +302,234 @@ void XFilterSAX2Handlers::endElement(const XMLCh* const /* uri */,
     delete cur_filterentry;
   }
 
-  else if (XMLString::equals(qname, L"grouptitle")) {
+  else if (XMLString::equals(qname, _A2X("grouptitle"))) {
     m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_STRING;
     cur_filterentry->ftype = FT_GROUPTITLE;
   }
 
-  else if (XMLString::equals(qname, L"group")) {
+  else if (XMLString::equals(qname, _A2X("group"))) {
     m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_STRING;
     cur_filterentry->ftype = FT_GROUP;
   }
 
-  else if (XMLString::equals(qname, L"title")) {
+  else if (XMLString::equals(qname, _A2X("title"))) {
     m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_STRING;
     cur_filterentry->ftype = FT_TITLE;
   }
 
-  else if (XMLString::equals(qname, L"user")) {
+  else if (XMLString::equals(qname, _A2X("user"))) {
     m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_STRING;
     cur_filterentry->ftype = FT_USER;
   }
 
-  else if (XMLString::equals(qname, L"password")) {
+  else if (XMLString::equals(qname, _A2X("password"))) {
     m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_PASSWORD;
     cur_filterentry->ftype = FT_PASSWORD;
   }
 
-  else if (XMLString::equals(qname, L"notes")) {
+  else if (XMLString::equals(qname, _A2X("notes"))) {
     m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_STRING;
     cur_filterentry->ftype = FT_NOTES;
   }
 
-  else if (XMLString::equals(qname, L"autotype")) {
+  else if (XMLString::equals(qname, _A2X("autotype"))) {
     m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_STRING;
     cur_filterentry->ftype = FT_AUTOTYPE;
   }
 
-  else if (XMLString::equals(qname, L"url")) {
+  else if (XMLString::equals(qname, _A2X("url"))) {
     m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_STRING;
     cur_filterentry->ftype = FT_URL;
   }
 
-  else if (XMLString::equals(qname, L"runcommand")) {
+  else if (XMLString::equals(qname, _A2X("runcommand"))) {
     m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_STRING;
     cur_filterentry->ftype = FT_RUNCMD;
   }
 
-  else if (XMLString::equals(qname, L"dca")) {
+  else if (XMLString::equals(qname, _A2X("dca"))) {
     m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_DCA;
     cur_filterentry->ftype = FT_DCA;
   }
 
-  else if (XMLString::equals(qname, L"email")) {
+  else if (XMLString::equals(qname, _A2X("email"))) {
     m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_STRING;
     cur_filterentry->ftype = FT_EMAIL;
   }
 
-  else if (XMLString::equals(qname, L"create_time")) {
+  else if (XMLString::equals(qname, _A2X("create_time"))) {
     m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_DATE;
     cur_filterentry->ftype = FT_CTIME;
   }
 
-  else if (XMLString::equals(qname, L"password_modified_time")) {
+  else if (XMLString::equals(qname, _A2X("password_modified_time"))) {
     m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_DATE;
     cur_filterentry->ftype = FT_PMTIME;
   }
 
-  else if (XMLString::equals(qname, L"last_access_time")) {
+  else if (XMLString::equals(qname, _A2X("last_access_time"))) {
     m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_DATE;
     cur_filterentry->ftype = FT_ATIME;
   }
 
-  else if (XMLString::equals(qname, L"expiry_time")) {
+  else if (XMLString::equals(qname, _A2X("expiry_time"))) {
     m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_DATE;
     cur_filterentry->ftype = FT_XTIME;
   }
 
-  else if (XMLString::equals(qname, L"record_modified_time")) {
+  else if (XMLString::equals(qname, _A2X("record_modified_time"))) {
     m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_DATE;
     cur_filterentry->ftype = FT_RMTIME;
   }
 
-  else if (XMLString::equals(qname, L"password_expiry_interval")) {
+  else if (XMLString::equals(qname, _A2X("password_expiry_interval"))) {
     m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_INTEGER;
     cur_filterentry->ftype = FT_XTIME_INT;
   }
 
-  else if (XMLString::equals(qname, L"entrysize")) {
+  else if (XMLString::equals(qname, _A2X("entrysize"))) {
     m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_ENTRYSIZE;
     cur_filterentry->ftype = FT_ENTRYSIZE;
   }
 
-  else if (XMLString::equals(qname, L"entrytype")) {
+  else if (XMLString::equals(qname, _A2X("entrytype"))) {
     m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_ENTRYTYPE;
     cur_filterentry->ftype = FT_ENTRYTYPE;
   }
 
-  else if (XMLString::equals(qname, L"entrystatus")) {
+  else if (XMLString::equals(qname, _A2X("entrystatus"))) {
     m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_ENTRYSTATUS;
     cur_filterentry->ftype = FT_ENTRYSTATUS;
   }
 
-  else if (XMLString::equals(qname, L"unknownfields")) {
+  else if (XMLString::equals(qname, _A2X("unknownfields"))) {
     m_type = DFTYPE_MAIN;
     cur_filterentry->ftype = FT_UNKNOWNFIELDS;
   }
 
-  else if (XMLString::equals(qname, L"password_history")) {
+  else if (XMLString::equals(qname, _A2X("password_history"))) {
     m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_PWHIST;
     cur_filterentry->ftype = FT_PWHIST;
   }
 
-  else if (XMLString::equals(qname, L"history_present")) {
+  else if (XMLString::equals(qname, _A2X("history_present"))) {
     m_type = DFTYPE_PWHISTORY;
     cur_filterentry->mtype = PWSMatch::MT_BOOL;
     cur_filterentry->ftype = HT_PRESENT;
   }
 
-  else if (XMLString::equals(qname, L"history_active")) {
+  else if (XMLString::equals(qname, _A2X("history_active"))) {
     m_type = DFTYPE_PWHISTORY;
     cur_filterentry->mtype = PWSMatch::MT_BOOL;
     cur_filterentry->ftype = HT_ACTIVE;
   }
 
-  else if (XMLString::equals(qname, L"history_number")) {
+  else if (XMLString::equals(qname, _A2X("history_number"))) {
     m_type = DFTYPE_PWHISTORY;
     cur_filterentry->mtype = PWSMatch::MT_INTEGER;
     cur_filterentry->ftype = HT_NUM;
   }
 
-  else if (XMLString::equals(qname, L"history_maximum")) {
+  else if (XMLString::equals(qname, _A2X("history_maximum"))) {
     m_type = DFTYPE_PWHISTORY;
     cur_filterentry->mtype = PWSMatch::MT_INTEGER;
     cur_filterentry->ftype = HT_MAX;
   }
 
-  else if (XMLString::equals(qname, L"history_changedate")) {
+  else if (XMLString::equals(qname, _A2X("history_changedate"))) {
     m_type = DFTYPE_PWHISTORY;
     cur_filterentry->mtype = PWSMatch::MT_DATE;
     cur_filterentry->ftype = HT_CHANGEDATE;
   }
 
-  else if (XMLString::equals(qname, L"history_passwords")) {
+  else if (XMLString::equals(qname, _A2X("history_passwords"))) {
     m_type = DFTYPE_PWHISTORY;
     cur_filterentry->mtype = PWSMatch::MT_PASSWORD;
     cur_filterentry->ftype = HT_PASSWORDS;
   }
 
-  else if (XMLString::equals(qname, L"password_policy")) {
+  else if (XMLString::equals(qname, _A2X("password_policy"))) {
     m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_POLICY;
     cur_filterentry->ftype = FT_POLICY;
   }
 
-  else if (XMLString::equals(qname, L"policy_present")) {
+  else if (XMLString::equals(qname, _A2X("policy_present"))) {
     m_type = DFTYPE_PWPOLICY;
     cur_filterentry->mtype = PWSMatch::MT_BOOL;
     cur_filterentry->ftype = PT_PRESENT;
   }
 
-  else if (XMLString::equals(qname, L"policy_length")) {
+  else if (XMLString::equals(qname, _A2X("policy_length"))) {
     m_type = DFTYPE_PWPOLICY;
     cur_filterentry->mtype = PWSMatch::MT_INTEGER;
     cur_filterentry->ftype = PT_LENGTH;
   }
 
-  else if (XMLString::equals(qname, L"policy_number_lowercase")) {
+  else if (XMLString::equals(qname, _A2X("policy_number_lowercase"))) {
     m_type = DFTYPE_PWPOLICY;
     cur_filterentry->mtype = PWSMatch::MT_INTEGER;
     cur_filterentry->ftype = PT_LOWERCASE;
   }
 
-  else if (XMLString::equals(qname, L"policy_number_uppercase")) {
+  else if (XMLString::equals(qname, _A2X("policy_number_uppercase"))) {
     m_type = DFTYPE_PWPOLICY;
     cur_filterentry->mtype = PWSMatch::MT_INTEGER;
     cur_filterentry->ftype = PT_UPPERCASE;
   }
 
-  else if (XMLString::equals(qname, L"policy_number_digits")) {
+  else if (XMLString::equals(qname, _A2X("policy_number_digits"))) {
     m_type = DFTYPE_PWPOLICY;
     cur_filterentry->mtype = PWSMatch::MT_INTEGER;
     cur_filterentry->ftype = PT_DIGITS;
   }
 
-  else if (XMLString::equals(qname, L"policy_number_symbols")) {
+  else if (XMLString::equals(qname, _A2X("policy_number_symbols"))) {
     m_type = DFTYPE_PWPOLICY;
     cur_filterentry->mtype = PWSMatch::MT_INTEGER;
     cur_filterentry->ftype = PT_SYMBOLS;
   }
 
-  else if (XMLString::equals(qname, L"policy_easyvision")) {
+  else if (XMLString::equals(qname, _A2X("policy_easyvision"))) {
     m_type = DFTYPE_PWPOLICY;
     cur_filterentry->mtype = PWSMatch::MT_BOOL;
     cur_filterentry->ftype = PT_EASYVISION;
   }
 
-  else if (XMLString::equals(qname, L"policy_pronounceable")) {
+  else if (XMLString::equals(qname, _A2X("policy_pronounceable"))) {
     m_type = DFTYPE_PWPOLICY;
     cur_filterentry->mtype = PWSMatch::MT_BOOL;
     cur_filterentry->ftype = PT_PRONOUNCEABLE;
   }
 
-  else if (XMLString::equals(qname, L"policy_hexadecimal")) {
+  else if (XMLString::equals(qname, _A2X("policy_hexadecimal"))) {
     m_type = DFTYPE_PWPOLICY;
     cur_filterentry->mtype = PWSMatch::MT_BOOL;
     cur_filterentry->ftype = PT_HEXADECIMAL;
   }
 
-  else if (XMLString::equals(qname, L"rule")) {
+  else if (XMLString::equals(qname, _A2X("rule"))) {
     ToUpper(m_strElemContent);
     if (m_strElemContent == _T("EQ"))
       cur_filterentry->rule = PWSMatch::MR_EQUALS;
@@ -567,38 +583,38 @@ void XFilterSAX2Handlers::endElement(const XMLCh* const /* uri */,
       cur_filterentry->rule = PWSMatch::MR_WILLEXPIRE;
   }
 
-  else if (XMLString::equals(qname, L"logic")) {
+  else if (XMLString::equals(qname, _A2X("logic"))) {
     if (m_strElemContent == _T("or"))
       cur_filterentry->ltype = LC_OR;
     else
       cur_filterentry->ltype = LC_AND;
   }
 
-  else if (XMLString::equals(qname, L"string")) {
+  else if (XMLString::equals(qname, _A2X("string"))) {
     cur_filterentry->fstring = m_strElemContent;
   }
 
-  else if (XMLString::equals(qname, L"case")) {
+  else if (XMLString::equals(qname, _A2X("case"))) {
     cur_filterentry->fcase = _ttoi(m_strElemContent.c_str()) != 0;
   }
 
-  else if (XMLString::equals(qname, L"warn")) {
+  else if (XMLString::equals(qname, _A2X("warn"))) {
     cur_filterentry->fnum1 = _ttoi(m_strElemContent.c_str());
   }
 
-  else if (XMLString::equals(qname, L"num1")) {
+  else if (XMLString::equals(qname, _A2X("num1"))) {
     cur_filterentry->fnum1 = _ttoi(m_strElemContent.c_str());
   }
 
-  else if (XMLString::equals(qname, L"num2")) {
+  else if (XMLString::equals(qname, _A2X("num2"))) {
     cur_filterentry->fnum2 = _ttoi(m_strElemContent.c_str());
   }
 
-  else if (XMLString::equals(qname, L"unit")) {
+  else if (XMLString::equals(qname, _A2X("unit"))) {
     cur_filterentry->funit = _ttoi(m_strElemContent.c_str());
   }
 
-  else if (XMLString::equals(qname, L"date1")) {
+  else if (XMLString::equals(qname, _A2X("date1"))) {
     time_t t(0);
     if (VerifyXMLDateString(m_strElemContent.c_str(), t) &&
         (t != (time_t)-1))
@@ -607,7 +623,7 @@ void XFilterSAX2Handlers::endElement(const XMLCh* const /* uri */,
     cur_filterentry->fdate1 = (time_t)0;
   }
 
-  else if (XMLString::equals(qname, L"date2")) {
+  else if (XMLString::equals(qname, _A2X("date2"))) {
     time_t t(0);
     if (VerifyXMLDateString(m_strElemContent.c_str(), t) &&
         (t != (time_t)-1))
@@ -616,11 +632,11 @@ void XFilterSAX2Handlers::endElement(const XMLCh* const /* uri */,
       cur_filterentry->fdate1 = (time_t)0;
   }
 
-  else if (XMLString::equals(qname, L"DCA")) {
+  else if (XMLString::equals(qname, _A2X("DCA"))) {
     cur_filterentry->fdca = (short)_ttoi(m_strElemContent.c_str());
   }
 
-  else if (XMLString::equals(qname, L"type")) {
+  else if (XMLString::equals(qname, _A2X("type"))) {
     if (m_strElemContent == _T("normal"))
       cur_filterentry->etype = CItemData::ET_NORMAL;
     else if (m_strElemContent == _T("alias"))
@@ -635,7 +651,7 @@ void XFilterSAX2Handlers::endElement(const XMLCh* const /* uri */,
       cur_filterentry->etype = CItemData::ET_INVALID;
   }
 
-  else if (XMLString::equals(qname, L"status")) {
+  else if (XMLString::equals(qname, _A2X("status"))) {
     if (m_strElemContent == _T("clean"))
       cur_filterentry->estatus = CItemData::ES_CLEAN;
     else if (m_strElemContent == _T("added"))
@@ -644,8 +660,8 @@ void XFilterSAX2Handlers::endElement(const XMLCh* const /* uri */,
       cur_filterentry->estatus = CItemData::ES_MODIFIED;
     else
       cur_filterentry->estatus = CItemData::ES_INVALID;
-  } else if (!(XMLString::equals(qname, L"test") ||
-               XMLString::equals(qname, L"filters"))) {
+  } else if (!(XMLString::equals(qname, _A2X("test")) ||
+               XMLString::equals(qname, _A2X("filters")))) {
       ASSERT(0);
   }
 

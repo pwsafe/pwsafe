@@ -32,6 +32,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <cstring>  //for std::memset, on Linux
 
 using namespace std;
 

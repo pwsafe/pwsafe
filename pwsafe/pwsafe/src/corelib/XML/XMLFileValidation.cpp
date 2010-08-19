@@ -18,6 +18,10 @@
 
 #include "XMLFileValidation.h"
 
+#if USE_XML_LIBRARY == XERCES
+#include "./Xerces/XMLChConverter.h"
+#endif
+
 /*
 * Data format:
 *   1. Element Name
@@ -117,8 +121,16 @@ bool XMLFileValidation::GetElementInfo(const wchar_t *name, st_file_element_data
 bool XMLFileValidation::GetElementInfo(const XMLCh *name, st_file_element_data &edata)
 #endif
 {
-#ifdef _UNICODE
+#if USE_XML_LIBRARY == XERCES
+  USES_XMLCH_STR
+#endif
+
+#ifdef UNICODE
+#if USE_XML_LIBRARY == XERCES
+  const stringT strValue(_X2ST(name));
+#else
   const stringT strValue(name);
+#endif
 #else   // NON-UNICODE
 #if   USE_XML_LIBRARY == EXPAT
   const stringT strValue(name);

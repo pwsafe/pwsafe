@@ -93,6 +93,8 @@ OPTFLAGS=-O0
 DEBUGFLAGS=-ggdb -D_DEBUG
 LIBPATH=../../../lib/unicodedebug
 CPPINC=`$(WX_CONFIG) --debug=yes --unicode=yes --inplace --cxxflags` -DUNICODE
+XERCESCPPFLAGS=-DUSE_XML_LIBRARY=XERCES -DWCHAR_INCOMPATIBLE_XMLCH
+XERCESLIBFLAGS=-lxerces-c
 GCCFLAGS=
 LIBDIRNAME=$(WXWIN)/GCCBuildDebugGTK2Unicode/lib
 RESPATH=--include-dir "$(WXWIN)/include" --include-dir "$(WXWIN)/contrib/include" --include-dir "$(WXWIN)/GCCBuildDebugGTK2Unicode/lib/wx/include/gtk2-unicode-debug-static-2.6"
@@ -120,6 +122,8 @@ OPTFLAGS=-O
 DEBUGFLAGS=
 LIBPATH=../../../lib/unicoderelease
 CPPINC=`$(WX_CONFIG) --debug=no --unicode=yes --inplace --cxxflags` -DUNICODE
+XERCESCPPFLAGS=-DUSE_XML_LIBRARY=XERCES -DWCHAR_INCOMPATIBLE_XMLCH
+XERCESLIBFLAGS=-lxerces-c
 GCCFLAGS=
 LDFLAGS=$(LIBS) -L$(LIBPATH) $(LINKERFLAGS)
 RESPATH=--include-dir "$(WXWIN)/include" --include-dir "$(WXWIN)/contrib/include" --include-dir "$(WXWIN)/GCCBuildReleaseGTK2Unicode/lib/wx/include/gtk2-unicode-release-static-2.6"
@@ -132,8 +136,8 @@ DEPDIR= ./deps
 
 CPPINC += -I../..
 
-LDFLAGS=$(LIBS) -L$(LIBPATH) $(LINKERFLAGS)
-CPPFLAGS=$(CPPINC) $(GCCFLAGS) $(DEBUGFLAGS) $(OPTFLAGS) $(WARNINGFLAGS)
+LDFLAGS=$(LIBS) -L$(LIBPATH) $(LINKERFLAGS) $(XERCESLIBFLAGS)
+CPPFLAGS=$(CPPINC) $(GCCFLAGS) $(DEBUGFLAGS) $(OPTFLAGS) $(WARNINGFLAGS) $(XERCESCPPFLAGS)
 
 SOURCES= passwordsafeframe.cpp \
 	pwsafeapp.cpp safecombinationentry.cpp \

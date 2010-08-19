@@ -118,7 +118,7 @@ bool CUTF8Conv::FromUTF8(const unsigned char *utf8, int utf8Len,
     // broken. Therefore, we'll give a consrevative value here,
     // and try to recover later
     pws_os::Trace0(_T("FromUTF8: Couldn't get buffer size - guessing!"));
-    wcLen = 3 * utf8Len;
+    wcLen = sizeof(StringX::value_type) * (utf8Len + 1);
   }
   // Allocate buffer (if previous allocation was smaller)
   if (wcLen > m_wcMaxLen) {
