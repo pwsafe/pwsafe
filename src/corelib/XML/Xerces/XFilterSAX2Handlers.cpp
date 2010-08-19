@@ -258,24 +258,18 @@ void XFilterSAX2Handlers::endElement(const XMLCh* const /* uri */,
   }
 
   if (XMLString::equals(qname, _A2X("filter"))) {
-#ifdef _WIN32
-    INT_PTR rc = IDYES;
-#else
-#pragma message("TODO - David - define IDYES for non-Windows platforms")
-    enum {IDYES = 1};
-    int rc = IDYES;
-#endif
+    bool bAddFilter(true);
     st_Filterkey fk;
     fk.fpool = m_FPool;
     fk.cs_filtername = cur_filter->fname;
     if (m_MapFilters->find(fk) != m_MapFilters->end()) {
       stringT question;
       Format(question, IDSC_FILTEREXISTS, cur_filter->fname.c_str());
-      if (m_pAsker == NULL || !(*m_pAsker)(question)) {
+      if (m_pAsker == NULL || (bAddFilter = (*m_pAsker)(question)) == true) {
         m_MapFilters->erase(fk);
       }
     }
-    if (rc == IDYES) {
+    if (bAddFilter) {
       m_MapFilters->insert(PWSFilters::Pair(fk, *cur_filter));
     }
     delete cur_filter;
