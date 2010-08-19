@@ -12,8 +12,8 @@ release:
 	$(MAKE) unicoderelease
 
 reallyclean:
-	$(MAKE) clean CONFIG=unicodebug
-	$(MAKE) clean CONFIG=unicorelease
+	$(MAKE) clean CONFIG=unicodedebug
+	$(MAKE) clean CONFIG=unicoderelease
 
 deb:
 	$(MAKE) -C install/deb
