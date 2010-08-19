@@ -2,7 +2,7 @@
 <CodeLite_Project Name="core" InternalType="Library">
   <Plugins>
     <Plugin Name="qmake">
-      <![CDATA[00020001N0005Debug0000000000000001N0007Release000000000000]]>
+      <![CDATA[00060001N0005Debug0000000000000001N0006DebugE0000000000000001N0006DebugX0000000000000001N0007Release0000000000000001N0008ReleaseE0000000000000001N0008ReleaseX000000000000]]>
     </Plugin>
   </Plugins>
   <VirtualDirectory Name="XML">
@@ -133,7 +133,18 @@
   </VirtualDirectory>
   <Dependencies Name="Release"/>
   <Dependencies Name="Debug"/>
+  <Dependencies Name="ReleaseE"/>
+  <Dependencies Name="ReleaseX"/>
   <Settings Type="Static Library">
+    <GlobalSettings>
+      <Compiler Options="">
+        <IncludePath Value="."/>
+      </Compiler>
+      <Linker Options="">
+        <LibraryPath Value="."/>
+      </Linker>
+      <ResourceCompiler Options=""/>
+    </GlobalSettings>
     <Configuration Name="Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Static Library" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
       <Compiler Options="-g;-Wall;-O0" Required="yes" PreCompiledHeader="">
         <IncludePath Value="../src"/>
@@ -142,6 +153,77 @@
       <Linker Options="" Required="yes"/>
       <ResourceCompiler Options="" Required="no"/>
       <General OutputFile="$(IntermediateDirectory)/lib$(ProjectName).a" IntermediateDirectory="./Debug" Command="" CommandArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes"/>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName>None</ThirdPartyToolName>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild>../src/corelib/corelib_st.cpp ../src/corelib/corelib_st.h
+#dummy line to prevent CodeLite from stripping the TAB from the next line
+	
+../src/corelib/corelib_st.cpp ../src/corelib/corelib_st.h: ../src/corelib/corelib.rc2
+	../Misc/rc2cpp.pl ../src/corelib/corelib.rc2
+</CustomPreBuild>
+      </AdditionalRules>
+    </Configuration>
+    <Configuration Name="DebugE" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Static Library" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-g;-Wall;-O0;-fexceptions" Required="yes" PreCompiledHeader="">
+        <IncludePath Value="../src"/>
+        <Preprocessor Value="UNICODE"/>
+        <Preprocessor Value="USE_XML_LIBRARY=EXPAT"/>
+        <Preprocessor Value="_GLIBCXX_DEBUG"/>
+      </Compiler>
+      <Linker Options="" Required="yes"/>
+      <ResourceCompiler Options="" Required="no"/>
+      <General OutputFile="$(IntermediateDirectory)/lib$(ProjectName).a" IntermediateDirectory="./DebugE" Command="" CommandArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes"/>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName>None</ThirdPartyToolName>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild>../src/corelib/corelib_st.cpp ../src/corelib/corelib_st.h
+#dummy line to prevent CodeLite from stripping the TAB from the next line
+	
+../src/corelib/corelib_st.cpp ../src/corelib/corelib_st.h: ../src/corelib/corelib.rc2
+	../Misc/rc2cpp.pl ../src/corelib/corelib.rc2</CustomPreBuild>
+      </AdditionalRules>
+    </Configuration>
+    <Configuration Name="DebugX" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Static Library" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-g;-Wall;-O0" Required="yes" PreCompiledHeader="">
+        <IncludePath Value="../src"/>
+        <Preprocessor Value="UNICODE"/>
+        <Preprocessor Value="USE_XML_LIBRARY=XERCES"/>
+        <Preprocessor Value="WCHAR_INCOMPATIBLE_XMLCH"/>
+      </Compiler>
+      <Linker Options="" Required="yes"/>
+      <ResourceCompiler Options="" Required="no"/>
+      <General OutputFile="$(IntermediateDirectory)/lib$(ProjectName).a" IntermediateDirectory="./$(ConfigurationName)" Command="" CommandArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes"/>
       <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
         <PostConnectCommands/>
         <StartupCommands/>
@@ -197,18 +279,77 @@
 #dummy line to prevent CodeLite from stripping the TAB from the next line
 	
 ../src/corelib/corelib_st.cpp ../src/corelib/corelib_st.h: ../src/corelib/corelib.rc2
-	../Misc/rc2cpp.pl ../src/corelib/corelib.rc2
-</CustomPreBuild>
+	../Misc/rc2cpp.pl ../src/corelib/corelib.rc2</CustomPreBuild>
       </AdditionalRules>
     </Configuration>
-    <GlobalSettings>
-      <Compiler Options="">
-        <IncludePath Value="."/>
+    <Configuration Name="ReleaseE" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Static Library" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-Wall;-O" Required="yes" PreCompiledHeader="">
+        <IncludePath Value="../src"/>
+        <Preprocessor Value="UNICODE"/>
+        <Preprocessor Value="USE_XML_LIBRARY=EXPAT"/>
       </Compiler>
-      <Linker Options="">
-        <LibraryPath Value="."/>
-      </Linker>
-      <ResourceCompiler Options=""/>
-    </GlobalSettings>
+      <Linker Options="" Required="yes"/>
+      <ResourceCompiler Options="" Required="no"/>
+      <General OutputFile="$(IntermediateDirectory)/lib$(ProjectName).a" IntermediateDirectory="./ReleaseE" Command="" CommandArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes"/>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName>None</ThirdPartyToolName>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild>../src/corelib/corelib_st.cpp ../src/corelib/corelib_st.h
+#dummy line to prevent CodeLite from stripping the TAB from the next line
+	
+../src/corelib/corelib_st.cpp ../src/corelib/corelib_st.h: ../src/corelib/corelib.rc2
+	../Misc/rc2cpp.pl ../src/corelib/corelib.rc2</CustomPreBuild>
+      </AdditionalRules>
+    </Configuration>
+    <Configuration Name="ReleaseX" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Static Library" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-Wall;-O" Required="yes" PreCompiledHeader="">
+        <IncludePath Value="../src"/>
+        <Preprocessor Value="UNICODE"/>
+        <Preprocessor Value="USE_XML_LIBRARY=XERCES"/>
+        <Preprocessor Value="WCHAR_INCOMPATIBLE_XMLCH"/>
+      </Compiler>
+      <Linker Options="" Required="yes"/>
+      <ResourceCompiler Options="" Required="no"/>
+      <General OutputFile="$(IntermediateDirectory)/lib$(ProjectName).a" IntermediateDirectory="./$(ConfigurationName)" Command="" CommandArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes"/>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName>None</ThirdPartyToolName>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild>../src/corelib/corelib_st.cpp ../src/corelib/corelib_st.h
+#dummy line to prevent CodeLite from stripping the TAB from the next line
+	
+../src/corelib/corelib_st.cpp ../src/corelib/corelib_st.h: ../src/corelib/corelib.rc2
+	../Misc/rc2cpp.pl ../src/corelib/corelib.rc2</CustomPreBuild>
+      </AdditionalRules>
+    </Configuration>
   </Settings>
 </CodeLite_Project>

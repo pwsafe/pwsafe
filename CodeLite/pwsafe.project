@@ -2,7 +2,7 @@
 <CodeLite_Project Name="pwsafe" InternalType="GUI">
   <Plugins>
     <Plugin Name="qmake">
-      <![CDATA[00020001N0005Debug0000000000000001N0007Release000000000000]]>
+      <![CDATA[00060001N0005Debug0000000000000001N0006DebugE0000000000000001N0006DebugX0000000000000001N0007Release0000000000000001N0008ReleaseE0000000000000001N0008ReleaseX000000000000]]>
     </Plugin>
   </Plugins>
   <Description/>
@@ -67,12 +67,32 @@
     <File Name="../src/ui/wxWidgets/ExportTextWarningDlg.h"/>
     <File Name="../src/ui/wxWidgets/SafeCombinationCtrl.h"/>
     <File Name="../src/ui/wxWidgets/SafeCombinationCtrl.cpp"/>
+    <File Name="../src/ui/wxWidgets/AdvancedSelectionDlg.cpp"/>
+    <File Name="../src/ui/wxWidgets/AdvancedSelectionDlg.h"/>
+    <File Name="../src/ui/wxWidgets/ViewReport.h"/>
+    <File Name="../src/ui/wxWidgets/ViewReport.cpp"/>
   </VirtualDirectory>
   <Dependencies Name="Release">
     <Project Name="core"/>
     <Project Name="os"/>
   </Dependencies>
+  <Dependencies Name="DebugE">
+    <Project Name="core"/>
+    <Project Name="os"/>
+  </Dependencies>
   <Dependencies Name="Debug">
+    <Project Name="core"/>
+    <Project Name="os"/>
+  </Dependencies>
+  <Dependencies Name="ReleaseE">
+    <Project Name="core"/>
+    <Project Name="os"/>
+  </Dependencies>
+  <Dependencies Name="DebugX">
+    <Project Name="core"/>
+    <Project Name="os"/>
+  </Dependencies>
+  <Dependencies Name="ReleaseX">
     <Project Name="core"/>
     <Project Name="os"/>
   </Dependencies>
@@ -116,6 +136,89 @@
 	../Misc/mkversion.pl ../src/ui/wxWidgets/version.in ../src/ui/wxWidgets/version.h</CustomPreBuild>
       </AdditionalRules>
     </Configuration>
+    <Configuration Name="DebugE" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="prepend" BuildResWithGlobalSettings="append">
+      <Compiler Options="-Wall;$(shell wx-config --cxxflags --unicode=yes --debug=yes --inplace);-ggdb;-O0" Required="yes" PreCompiledHeader="">
+        <IncludePath Value="../src"/>
+        <Preprocessor Value="UNICODE"/>
+        <Preprocessor Value="USE_XML_LIBRARY=EXPAT"/>
+        <Preprocessor Value="_GLIBCXX_DEBUG"/>
+      </Compiler>
+      <Linker Options="-v -nodefaultlibs -L/usr/lib/debug -lc $(shell wx-config --debug=yes --unicode=yes --inplace --libs | sed 's/ -lwx[^ ]*xml[^ ]*//' | sed 's/ -lwx[^ ]*xrc[^ ]*//')" Required="yes">
+        <LibraryPath Value="$(OutDir)"/>
+        <Library Value="core"/>
+        <Library Value="os"/>
+        <Library Value="uuid"/>
+        <Library Value="Xtst"/>
+      </Linker>
+      <ResourceCompiler Options="$(shell wx-config --rcflags)" Required="no"/>
+      <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./DebugE" Command="./$(ProjectName)" CommandArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes"/>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
+        <PostConnectCommands/>
+        <StartupCommands>dir ../wx/src</StartupCommands>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName>None</ThirdPartyToolName>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild>../src/ui/wxWidgets/version.h
+#dummy line to keep CodeLite from stripping the TAB from the next line
+	
+../src/ui/wxWidgets/version.h: ../src/ui/wxWidgets/version.in
+	../Misc/mkversion.pl ../src/ui/wxWidgets/version.in ../src/ui/wxWidgets/version.h</CustomPreBuild>
+      </AdditionalRules>
+    </Configuration>
+    <Configuration Name="DebugX" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-Wall;$(shell wx-config --cxxflags --unicode=yes --debug=yes --inplace);-ggdb;-O0" Required="yes" PreCompiledHeader="">
+        <IncludePath Value="../src"/>
+        <Preprocessor Value="UNICODE"/>
+        <Preprocessor Value="USE_XML_LIBRARY=XERCES"/>
+      </Compiler>
+      <Linker Options="$(shell wx-config --debug=yes --unicode=yes --inplace --libs)" Required="yes">
+        <LibraryPath Value="$(OutDir)"/>
+        <Library Value="core"/>
+        <Library Value="os"/>
+        <Library Value="uuid"/>
+        <Library Value="Xtst"/>
+        <Library Value="xerces-c"/>
+      </Linker>
+      <ResourceCompiler Options="$(shell wx-config --rcflags)" Required="no"/>
+      <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./DebugX" Command="./$(ProjectName)" CommandArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes"/>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
+        <PostConnectCommands/>
+        <StartupCommands>dir ../wx/src</StartupCommands>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName>None</ThirdPartyToolName>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild>../src/ui/wxWidgets/version.h
+#dummy line to keep CodeLite from stripping the TAB from the next line
+	
+../src/ui/wxWidgets/version.h: ../src/ui/wxWidgets/version.in
+	../Misc/mkversion.pl ../src/ui/wxWidgets/version.in ../src/ui/wxWidgets/version.h
+</CustomPreBuild>
+      </AdditionalRules>
+    </Configuration>
     <Configuration Name="Release" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
       <Compiler Options="-O;-Wall;$(shell wx-config --cxxflags --unicode=yes --debug=no --inplace)" Required="yes" PreCompiledHeader="">
         <IncludePath Value="../src"/>
@@ -152,8 +255,88 @@
 #dummy line to prevent CodeLite from stripping the TAB from the next line
 	
 ../src/ui/wxWidgets/version.h: ../src/ui/wxWidgets/version.in
-	../Misc/mkversion.pl ../src/ui/wxWidgets/version.in ../src/ui/wxWidgets/version.h
-</CustomPreBuild>
+	../Misc/mkversion.pl ../src/ui/wxWidgets/version.in ../src/ui/wxWidgets/version.h</CustomPreBuild>
+      </AdditionalRules>
+    </Configuration>
+    <Configuration Name="ReleaseE" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-O;-Wall;$(shell wx-config --cxxflags --unicode=yes --debug=no --inplace)" Required="yes" PreCompiledHeader="">
+        <IncludePath Value="../src"/>
+        <Preprocessor Value="UNICODE"/>
+        <Preprocessor Value="USE_XML_LIBRARY=EXPAT"/>
+      </Compiler>
+      <Linker Options="$(shell wx-config --debug=no --unicode=yes --inplace --libs)" Required="yes">
+        <LibraryPath Value="$(OutDir)"/>
+        <Library Value="core"/>
+        <Library Value="os"/>
+        <Library Value="uuid"/>
+        <Library Value="Xtst"/>
+      </Linker>
+      <ResourceCompiler Options="$(shell wx-config --rcflags)" Required="no"/>
+      <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./ReleaseE" Command="./$(ProjectName)" CommandArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes"/>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName>None</ThirdPartyToolName>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild>../src/ui/wxWidgets/version.h
+#dummy line to prevent CodeLite from stripping the TAB from the next line
+	
+../src/ui/wxWidgets/version.h: ../src/ui/wxWidgets/version.in
+	../Misc/mkversion.pl ../src/ui/wxWidgets/version.in ../src/ui/wxWidgets/version.h</CustomPreBuild>
+      </AdditionalRules>
+    </Configuration>
+    <Configuration Name="ReleaseX" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-O;-Wall;$(shell wx-config --cxxflags --unicode=yes --debug=no --inplace)" Required="yes" PreCompiledHeader="">
+        <IncludePath Value="../src"/>
+        <Preprocessor Value="UNICODE"/>
+        <Preprocessor Value="USE_XML_LIBRARY=XERCES"/>
+      </Compiler>
+      <Linker Options="$(shell wx-config --debug=no --unicode=yes --inplace --libs)" Required="yes">
+        <LibraryPath Value="$(OutDir)"/>
+        <Library Value="core"/>
+        <Library Value="os"/>
+        <Library Value="uuid"/>
+        <Library Value="Xtst"/>
+        <Library Value="xerces-c"/>
+      </Linker>
+      <ResourceCompiler Options="$(shell wx-config --rcflags)" Required="no"/>
+      <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./ReleaseX" Command="./$(ProjectName)" CommandArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes"/>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName>None</ThirdPartyToolName>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild>../src/ui/wxWidgets/version.h
+#dummy line to prevent CodeLite from stripping the TAB from the next line
+	
+../src/ui/wxWidgets/version.h: ../src/ui/wxWidgets/version.in
+	../Misc/mkversion.pl ../src/ui/wxWidgets/version.in ../src/ui/wxWidgets/version.h</CustomPreBuild>
       </AdditionalRules>
     </Configuration>
     <GlobalSettings>
