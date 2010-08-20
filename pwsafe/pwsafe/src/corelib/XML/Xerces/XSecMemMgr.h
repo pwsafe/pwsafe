@@ -33,7 +33,11 @@ class XSecMemMgr : public MemoryManager
   XSecMemMgr* getExceptionMemoryManager()
   {return this;}
 
+#if XERCES_VERSION_MAJOR > 2
   void* allocate(XMLSize_t size);
+#else
+  void* allocate(size_t size);
+#endif
   void deallocate(void * p);
 };
 
