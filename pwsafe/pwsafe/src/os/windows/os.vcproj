@@ -906,8 +906,8 @@
 		</Configuration>
 		<Configuration
 			Name="DebugwxX|Win32"
-			OutputDirectory=".\..\..\build\lib\pwsafe\$(ConfigurationName)"
-			IntermediateDirectory=".\..\..\build\obj\pwsafe\$(ConfigurationName)"
+			OutputDirectory="..\..\..\build\lib\pwsafe\$(ConfigurationName)"
+			IntermediateDirectory="..\..\..\build\obj\pwsafe\$(ConfigurationName)"
 			ConfigurationType="4"
       InheritedPropertySheets="..\..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="0"
@@ -1052,8 +1052,8 @@
 		</Configuration>
 		<Configuration
 			Name="ReleasewxX|Win32"
-			OutputDirectory=".\..\..\build\lib\pwsafe\$(ConfigurationName)"
-			IntermediateDirectory=".\..\..\build\obj\pwsafe\$(ConfigurationName)"
+			OutputDirectory="..\..\..\build\lib\pwsafe\$(ConfigurationName)"
+			IntermediateDirectory="..\..\..\build\obj\pwsafe\$(ConfigurationName)"
 			ConfigurationType="4"
 			InheritedPropertySheets="..\..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="0"
