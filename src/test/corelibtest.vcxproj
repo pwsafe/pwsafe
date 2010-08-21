@@ -42,18 +42,18 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\build2010\bin\pwsafe\$(Configuration)\$(ProjectName)\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\build2010\obj\pwsafe\$(Configuration)\$(ProjectName)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\build10\bin\pwsafe\$(Configuration)\$(ProjectName)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkIncremental>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\build2010\bin\pwsafe\$(Configuration)\$(ProjectName)\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\build2010\obj\pwsafe\$(Configuration)\$(ProjectName)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\build10\bin\pwsafe\$(Configuration)\$(ProjectName)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">corelibtest</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">corelibtest</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Midl>
-      <TypeLibraryName>..\..\build2010\obj\pwsafe\$(Configuration)\$(ProjectName)/corelibtest.tlb</TypeLibraryName>
+      <TypeLibraryName>..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)/corelibtest.tlb</TypeLibraryName>
       <HeaderFileName>
       </HeaderFileName>
     </Midl>
@@ -80,9 +80,9 @@
     <Link>
       <AdditionalDependencies>corelib.lib;os.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ShowProgress>NotSet</ShowProgress>
-      <OutputFile>..\..\build2010\bin\pwsafe\$(Configuration)\corelibtest.exe</OutputFile>
+      <OutputFile>..\..\build10\bin\pwsafe\$(Configuration)\corelibtest.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalLibraryDirectories>..\..\build2010\lib\pwsafe\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\build10\lib\pwsafe\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -92,7 +92,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Midl>
-      <TypeLibraryName>..\..\build2010\obj\pwsafe\$(Configuration)\$(ProjectName)/corelibtest.tlb</TypeLibraryName>
+      <TypeLibraryName>..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)/corelibtest.tlb</TypeLibraryName>
       <HeaderFileName>
       </HeaderFileName>
     </Midl>
@@ -118,9 +118,9 @@
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>corelib.lib%3bos.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>..\..\build2010\bin\pwsafe\$(Configuration)\corelibtest.exe</OutputFile>
+      <OutputFile>..\..\build10\bin\pwsafe\$(Configuration)\corelibtest.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalLibraryDirectories>..\..\build2010\lib\pwsafe\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\build10\lib\pwsafe\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <SubSystem>Console</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
