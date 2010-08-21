@@ -102,7 +102,7 @@ void XFileSAX2Handlers::startElement(const XMLCh* const /* uri */,
         // Only interested in the ftype attribute
         XMLCh *szValue = (XMLCh *)attrs.getValue(_A2X("ftype"));
         if (szValue != NULL) {
-          m_ctype = XMLString::parseInt(szValue);
+          m_ctype = (unsigned char)XMLString::parseInt(szValue);
         }
       }
       break;
