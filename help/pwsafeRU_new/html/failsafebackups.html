@@ -1,0 +1,86 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>Failsafe Backups</title><!-- pwsafe version: 3.21--><!-- Modified: 1/31/2010 --><!--Popup control -->
+
+<script language="javascript" src="html/popups.js">
+</script>
+<link rel="stylesheet" type="text/css" href="style.css"></head>
+<body>
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"> </object>
+<!-- Popup Source File -->
+<h2>Failsafe Backups</h2>
+
+<p>When PasswordSafe exits normally, you are prompted if there are unsaved changes to the
+database. However, if you log off your Windows session, shutdown or restart your PC, then
+PasswordSafe may not have the opportunity to prompt you (the exact
+  behaviour depends on the type of shutdown and the version of Windows).</p>
+
+<p>In this case, PasswordSafe will attempt to make a "Failsafe Backup" (file extension 'fbak').
+This will be created in the same directory as the currently open database. The current database
+and its "regular" backups will not be touched.</p>
+
+<p>When the original database is opened again, PasswordSafe will check for the existence of any
+Failsafe Backup file and, if found, will display a dialog similar to that below.</p>
+
+<img alt="Failsafe Backup Display during Open" src="images/failsafebackup.jpg">
+
+<p>The first row is the specified database followed by general information about it (the same as
+shown in the Properties dialog from the File menu). This is followed by the Failsafe Backup file(s).
+If they can be opened with the same passphrase as the currently open database, then their
+properties are also displayed. If they have a different passphrase or are not a valid database,
+then a 'No' is displayed in the Passphrase column and no properties are displayed.</p>
+
+<p>Your choices are as follows:
+<ul>
+<li>Continue<br>
+Clicking on this causes PasswordSafe to ignore all Failsafe backup files and continue with the
+currently selected database.</li>
+<br>
+<li>Select<br>
+The selected Failsafe Backup file will be opened instead of the currently selected database.</li>
+<br>
+<li>Delete<br>
+This will delete the selected Failsafe Backup file. If Windows supports a Recycle Bin on this media
+(usually only local disks), it will be moved there. If not, it will be permanently deleted.</li>
+<br>
+<li>Exit<br>
+If this is the first database opened on the startup of PasswordSafe, PasswordSafe will exit. If not,
+the new open will be cancelled and the existing opened database, if any, will remain open.</li>
+<br>
+<li>Help<br>
+Displays this Help topic.</li>
+</ul>
+</p>
+
+<p><i>Suggestions:</i></p>
+<p><ul>
+<li>If you are unable to choose, continue with the current database and use the database Compare
+function from the File menu to show the exact differences between the current and the Failsafe backup(s).</li>
+<li>If you do open a Failsafe Backup and have decided that it is the version you wish to keep,
+you should save it as a normal database. When you do, consider renaming the original first or
+save the Failsafe Backup with a completely new name.</li>
+<li>Once you are satisfied that you have recovered the correct database, either the original or a
+Failsafe Backup, you should delete any old Failsafe Backups so that you will not be prompted to
+decide at a later date. Note: If you use this dialog to delete these files, they will be sent to the
+Recycle Bin, if your version of Windows supports it on the media containing them.</li>
+</ul></p>
+
+<p><b>Note: There is nothing that <u>ANY</u> application can do to save information if the PC is just
+switched off, loses power or the processor, the hard disk or any other component fails. As with all data
+important to you, you should backup your data to another media <u>regularly</u>. This could be to USB pen
+drives, external hard disks, network drives, CDs or DVDs etc. These backups should be stored somewhere
+safe.</b></p>
+
+<hr><!-- Added some white space at the bottom for natural scrolling --><b><a name="N1"><br>
+<br>
+<br>
+<object type="application/x-oleobject"
+    classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+ <param name="Keyword" value="Logoff">
+ <param name="Keyword" value="Shutdown">
+ <param name="Keyword" value="Restart">
+ <param name="Keyword" value="Backup (failsafe)">
+ <param name="Keyword" value="Failsafe">
+ <param name="Keyword" value="Recovery">
+</object>
+</a></b>
+</body></html>
