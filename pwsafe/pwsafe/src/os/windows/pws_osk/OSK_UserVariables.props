@@ -2,9 +2,9 @@
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Label="UserMacros">
     <ConfigurationName>$(Configuration)</ConfigurationName>
-    <PWSBin>..\..\..\build10\bin\pwsafe\$(Configuration)</PWSBin>
-    <PWSLib>..\..\..\build10\lib\pwsafe\$(Configuration)</PWSLib>
-    <PWSObj>..\..\..\build10\obj\pwsafe\$(Configuration)</PWSObj>
+    <PWSBin>..\..\..\build\bin\pwsafe\$(Configuration)</PWSBin>
+    <PWSLib>..\..\..\build\lib\pwsafe\$(Configuration)</PWSLib>
+    <PWSObj>..\..\..\build\obj\pwsafe\$(Configuration)</PWSObj>
   </PropertyGroup>
   <PropertyGroup>
     <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>

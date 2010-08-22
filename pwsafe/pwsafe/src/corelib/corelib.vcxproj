@@ -209,36 +209,36 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\build10\lib\pwsafe\$(Configuration)\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)\</IntDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debugwx|Win32'">..\..\build10\lib\pwsafe\$(Configuration)\</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='DebugwxX|Win32'">..\..\build10\lib\pwsafe\$(Configuration)\</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='DebugwxE|Win32'">..\..\build10\lib\pwsafe\$(Configuration)\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debugwx|Win32'">..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)\</IntDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='DebugwxX|Win32'">..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)\</IntDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='DebugwxE|Win32'">..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)\</IntDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\build10\lib\pwsafe\$(Configuration)\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)\</IntDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Releasewx|Win32'">..\..\build10\lib\pwsafe\$(Configuration)\</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='ReleasewxE|Win32'">..\..\build10\lib\pwsafe\$(Configuration)\</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='ReleasewxX|Win32'">..\..\build10\lib\pwsafe\$(Configuration)\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Releasewx|Win32'">..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)\</IntDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='ReleasewxE|Win32'">..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)\</IntDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='ReleasewxX|Win32'">..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)\</IntDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Demo|Win32'">..\..\build10\lib\pwsafe\$(Configuration)\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Demo|Win32'">..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)\</IntDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='DebugE|Win32'">..\..\build10\lib\pwsafe\$(Configuration)\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='DebugE|Win32'">..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)\</IntDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='DebugM|Win32'">..\..\build10\lib\pwsafe\$(Configuration)\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='DebugM|Win32'">..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)\</IntDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='DebugX|Win32'">..\..\build10\lib\pwsafe\$(Configuration)\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='DebugX|Win32'">..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)\</IntDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='ReleaseE|Win32'">..\..\build10\lib\pwsafe\$(Configuration)\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='ReleaseE|Win32'">..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)\</IntDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='ReleaseM|Win32'">..\..\build10\lib\pwsafe\$(Configuration)\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='ReleaseM|Win32'">..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)\</IntDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='ReleaseX|Win32'">..\..\build10\lib\pwsafe\$(Configuration)\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='ReleaseX|Win32'">..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\build\lib\pwsafe\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debugwx|Win32'">..\..\build\lib\pwsafe\$(Configuration)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='DebugwxX|Win32'">..\..\build\lib\pwsafe\$(Configuration)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='DebugwxE|Win32'">..\..\build\lib\pwsafe\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debugwx|Win32'">..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='DebugwxX|Win32'">..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='DebugwxE|Win32'">..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\build\lib\pwsafe\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Releasewx|Win32'">..\..\build\lib\pwsafe\$(Configuration)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='ReleasewxE|Win32'">..\..\build\lib\pwsafe\$(Configuration)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='ReleasewxX|Win32'">..\..\build\lib\pwsafe\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Releasewx|Win32'">..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='ReleasewxE|Win32'">..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='ReleasewxX|Win32'">..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Demo|Win32'">..\..\build\lib\pwsafe\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Demo|Win32'">..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='DebugE|Win32'">..\..\build\lib\pwsafe\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='DebugE|Win32'">..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='DebugM|Win32'">..\..\build\lib\pwsafe\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='DebugM|Win32'">..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='DebugX|Win32'">..\..\build\lib\pwsafe\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='DebugX|Win32'">..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='ReleaseE|Win32'">..\..\build\lib\pwsafe\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='ReleaseE|Win32'">..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='ReleaseM|Win32'">..\..\build\lib\pwsafe\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='ReleaseM|Win32'">..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='ReleaseX|Win32'">..\..\build\lib\pwsafe\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='ReleaseX|Win32'">..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='DebugM|Win32'">corelib</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='ReleaseM|Win32'">corelib</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='DebugE|Win32'">corelib</TargetName>
@@ -267,10 +267,10 @@
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
-      <PrecompiledHeaderOutputFile>..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)/corelib.pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)/</AssemblerListingLocation>
-      <ObjectFileName>..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)/</ObjectFileName>
-      <ProgramDataBaseFileName>..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)/</ProgramDataBaseFileName>
+      <PrecompiledHeaderOutputFile>..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)/corelib.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)/</AssemblerListingLocation>
+      <ObjectFileName>..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)/</ObjectFileName>
+      <ProgramDataBaseFileName>..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)/</ProgramDataBaseFileName>
       <WarningLevel>Level4</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -281,7 +281,7 @@
       <Culture>0x040d</Culture>
     </ResourceCompile>
     <Lib>
-      <OutputFile>..\..\build10\lib\pwsafe\$(Configuration)\corelib.lib</OutputFile>
+      <OutputFile>..\..\build\lib\pwsafe\$(Configuration)\corelib.lib</OutputFile>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Lib>
@@ -298,10 +298,10 @@
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
-      <PrecompiledHeaderOutputFile>..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)/corelib.pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)/</AssemblerListingLocation>
-      <ObjectFileName>..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)/</ObjectFileName>
-      <ProgramDataBaseFileName>..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)/</ProgramDataBaseFileName>
+      <PrecompiledHeaderOutputFile>..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)/corelib.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)/</AssemblerListingLocation>
+      <ObjectFileName>..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)/</ObjectFileName>
+      <ProgramDataBaseFileName>..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)/</ProgramDataBaseFileName>
       <WarningLevel>Level4</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -313,7 +313,7 @@
       <Culture>0x040d</Culture>
     </ResourceCompile>
     <Lib>
-      <OutputFile>..\..\build10\lib\pwsafe\$(Configuration)\corelib.lib</OutputFile>
+      <OutputFile>..\..\build\lib\pwsafe\$(Configuration)\corelib.lib</OutputFile>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Lib>
@@ -330,10 +330,10 @@
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
-      <PrecompiledHeaderOutputFile>..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)/corelib.pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)/</AssemblerListingLocation>
-      <ObjectFileName>..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)/</ObjectFileName>
-      <ProgramDataBaseFileName>..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)/</ProgramDataBaseFileName>
+      <PrecompiledHeaderOutputFile>..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)/corelib.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)/</AssemblerListingLocation>
+      <ObjectFileName>..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)/</ObjectFileName>
+      <ProgramDataBaseFileName>..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)/</ProgramDataBaseFileName>
       <WarningLevel>Level4</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -345,7 +345,7 @@
       <Culture>0x040d</Culture>
     </ResourceCompile>
     <Lib>
-      <OutputFile>..\..\build10\lib\pwsafe\$(Configuration)\corelib.lib</OutputFile>
+      <OutputFile>..\..\build\lib\pwsafe\$(Configuration)\corelib.lib</OutputFile>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Lib>
@@ -362,10 +362,10 @@
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
-      <PrecompiledHeaderOutputFile>..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)/corelib.pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)/</AssemblerListingLocation>
-      <ObjectFileName>..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)/</ObjectFileName>
-      <ProgramDataBaseFileName>..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)/</ProgramDataBaseFileName>
+      <PrecompiledHeaderOutputFile>..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)/corelib.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)/</AssemblerListingLocation>
+      <ObjectFileName>..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)/</ObjectFileName>
+      <ProgramDataBaseFileName>..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)/</ProgramDataBaseFileName>
       <WarningLevel>Level4</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -377,7 +377,7 @@
       <Culture>0x040d</Culture>
     </ResourceCompile>
     <Lib>
-      <OutputFile>..\..\build10\lib\pwsafe\$(Configuration)\corelib.lib</OutputFile>
+      <OutputFile>..\..\build\lib\pwsafe\$(Configuration)\corelib.lib</OutputFile>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Lib>
@@ -396,10 +396,10 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
-      <PrecompiledHeaderOutputFile>..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)/corelib.pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)/</AssemblerListingLocation>
-      <ObjectFileName>..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)/</ObjectFileName>
-      <ProgramDataBaseFileName>..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)/</ProgramDataBaseFileName>
+      <PrecompiledHeaderOutputFile>..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)/corelib.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)/</AssemblerListingLocation>
+      <ObjectFileName>..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)/</ObjectFileName>
+      <ProgramDataBaseFileName>..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)/</ProgramDataBaseFileName>
       <WarningLevel>Level4</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <CompileAs>Default</CompileAs>
@@ -409,7 +409,7 @@
       <Culture>0x040d</Culture>
     </ResourceCompile>
     <Lib>
-      <OutputFile>..\..\build10\lib\pwsafe\$(Configuration)\corelib.lib</OutputFile>
+      <OutputFile>..\..\build\lib\pwsafe\$(Configuration)\corelib.lib</OutputFile>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Lib>
@@ -428,10 +428,10 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
-      <PrecompiledHeaderOutputFile>..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)/corelib.pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)/</AssemblerListingLocation>
-      <ObjectFileName>..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)/</ObjectFileName>
-      <ProgramDataBaseFileName>..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)/</ProgramDataBaseFileName>
+      <PrecompiledHeaderOutputFile>..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)/corelib.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)/</AssemblerListingLocation>
+      <ObjectFileName>..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)/</ObjectFileName>
+      <ProgramDataBaseFileName>..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)/</ProgramDataBaseFileName>
       <WarningLevel>Level4</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <CompileAs>Default</CompileAs>
@@ -441,7 +441,7 @@
       <Culture>0x040d</Culture>
     </ResourceCompile>
     <Lib>
-      <OutputFile>..\..\build10\lib\pwsafe\$(Configuration)\corelib.lib</OutputFile>
+      <OutputFile>..\..\build\lib\pwsafe\$(Configuration)\corelib.lib</OutputFile>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Lib>
@@ -460,10 +460,10 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
-      <PrecompiledHeaderOutputFile>..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)/corelib.pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)/</AssemblerListingLocation>
-      <ObjectFileName>..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)/</ObjectFileName>
-      <ProgramDataBaseFileName>..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)/</ProgramDataBaseFileName>
+      <PrecompiledHeaderOutputFile>..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)/corelib.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)/</AssemblerListingLocation>
+      <ObjectFileName>..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)/</ObjectFileName>
+      <ProgramDataBaseFileName>..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)/</ProgramDataBaseFileName>
       <WarningLevel>Level4</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <CompileAs>Default</CompileAs>
@@ -473,7 +473,7 @@
       <Culture>0x040d</Culture>
     </ResourceCompile>
     <Lib>
-      <OutputFile>..\..\build10\lib\pwsafe\$(Configuration)\corelib.lib</OutputFile>
+      <OutputFile>..\..\build\lib\pwsafe\$(Configuration)\corelib.lib</OutputFile>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Lib>
@@ -492,10 +492,10 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
-      <PrecompiledHeaderOutputFile>..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)/corelib.pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)/</AssemblerListingLocation>
-      <ObjectFileName>..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)/</ObjectFileName>
-      <ProgramDataBaseFileName>..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)/</ProgramDataBaseFileName>
+      <PrecompiledHeaderOutputFile>..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)/corelib.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)/</AssemblerListingLocation>
+      <ObjectFileName>..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)/</ObjectFileName>
+      <ProgramDataBaseFileName>..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)/</ProgramDataBaseFileName>
       <WarningLevel>Level4</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <CompileAs>Default</CompileAs>
@@ -505,7 +505,7 @@
       <Culture>0x040d</Culture>
     </ResourceCompile>
     <Lib>
-      <OutputFile>..\..\build10\lib\pwsafe\$(Configuration)\corelib.lib</OutputFile>
+      <OutputFile>..\..\build\lib\pwsafe\$(Configuration)\corelib.lib</OutputFile>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Lib>
@@ -524,10 +524,10 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
-      <PrecompiledHeaderOutputFile>..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)/corelib.pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)/</AssemblerListingLocation>
-      <ObjectFileName>..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)/</ObjectFileName>
-      <ProgramDataBaseFileName>..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)/</ProgramDataBaseFileName>
+      <PrecompiledHeaderOutputFile>..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)/corelib.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)/</AssemblerListingLocation>
+      <ObjectFileName>..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)/</ObjectFileName>
+      <ProgramDataBaseFileName>..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)/</ProgramDataBaseFileName>
       <WarningLevel>Level4</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -538,7 +538,7 @@
       <Culture>0x040d</Culture>
     </ResourceCompile>
     <Lib>
-      <OutputFile>..\..\build10\lib\pwsafe\$(Configuration)\corelib.lib</OutputFile>
+      <OutputFile>..\..\build\lib\pwsafe\$(Configuration)\corelib.lib</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Lib>
   </ItemDefinitionGroup>
@@ -554,10 +554,10 @@
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
-      <PrecompiledHeaderOutputFile>..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)/corelib.pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)/</AssemblerListingLocation>
-      <ObjectFileName>..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)/</ObjectFileName>
-      <ProgramDataBaseFileName>..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)/</ProgramDataBaseFileName>
+      <PrecompiledHeaderOutputFile>..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)/corelib.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)/</AssemblerListingLocation>
+      <ObjectFileName>..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)/</ObjectFileName>
+      <ProgramDataBaseFileName>..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)/</ProgramDataBaseFileName>
       <WarningLevel>Level4</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -568,7 +568,7 @@
       <Culture>0x040d</Culture>
     </ResourceCompile>
     <Lib>
-      <OutputFile>..\..\build10\lib\pwsafe\$(Configuration)\corelib.lib</OutputFile>
+      <OutputFile>..\..\build\lib\pwsafe\$(Configuration)\corelib.lib</OutputFile>
       <AdditionalLibraryDirectories>$(ExpatDir)\Bin10\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Lib>
@@ -585,10 +585,10 @@
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
-      <PrecompiledHeaderOutputFile>..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)/corelib.pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)/</AssemblerListingLocation>
-      <ObjectFileName>..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)/</ObjectFileName>
-      <ProgramDataBaseFileName>..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)/</ProgramDataBaseFileName>
+      <PrecompiledHeaderOutputFile>..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)/corelib.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)/</AssemblerListingLocation>
+      <ObjectFileName>..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)/</ObjectFileName>
+      <ProgramDataBaseFileName>..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)/</ProgramDataBaseFileName>
       <WarningLevel>Level4</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -599,7 +599,7 @@
       <Culture>0x040d</Culture>
     </ResourceCompile>
     <Lib>
-      <OutputFile>..\..\build10\lib\pwsafe\$(Configuration)\corelib.lib</OutputFile>
+      <OutputFile>..\..\build\lib\pwsafe\$(Configuration)\corelib.lib</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Lib>
   </ItemDefinitionGroup>
@@ -615,10 +615,10 @@
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
-      <PrecompiledHeaderOutputFile>..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)/corelib.pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)/</AssemblerListingLocation>
-      <ObjectFileName>..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)/</ObjectFileName>
-      <ProgramDataBaseFileName>..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)/</ProgramDataBaseFileName>
+      <PrecompiledHeaderOutputFile>..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)/corelib.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)/</AssemblerListingLocation>
+      <ObjectFileName>..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)/</ObjectFileName>
+      <ProgramDataBaseFileName>..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)/</ProgramDataBaseFileName>
       <WarningLevel>Level4</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -629,7 +629,7 @@
       <Culture>0x040d</Culture>
     </ResourceCompile>
     <Lib>
-      <OutputFile>..\..\build10\lib\pwsafe\$(Configuration)\corelib.lib</OutputFile>
+      <OutputFile>..\..\build\lib\pwsafe\$(Configuration)\corelib.lib</OutputFile>
       <AdditionalLibraryDirectories>$(XercesDir)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Lib>
@@ -648,10 +648,10 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
-      <PrecompiledHeaderOutputFile>..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)/corelib.pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)/</AssemblerListingLocation>
-      <ObjectFileName>..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)/</ObjectFileName>
-      <ProgramDataBaseFileName>..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)/</ProgramDataBaseFileName>
+      <PrecompiledHeaderOutputFile>..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)/corelib.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)/</AssemblerListingLocation>
+      <ObjectFileName>..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)/</ObjectFileName>
+      <ProgramDataBaseFileName>..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)/</ProgramDataBaseFileName>
       <WarningLevel>Level4</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -662,7 +662,7 @@
       <Culture>0x040d</Culture>
     </ResourceCompile>
     <Lib>
-      <OutputFile>..\..\build10\lib\pwsafe\$(Configuration)\corelib.lib</OutputFile>
+      <OutputFile>..\..\build\lib\pwsafe\$(Configuration)\corelib.lib</OutputFile>
       <AdditionalLibraryDirectories>$(ExpatDir)\Bin10\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Lib>
@@ -681,10 +681,10 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
-      <PrecompiledHeaderOutputFile>..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)/corelib.pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)/</AssemblerListingLocation>
-      <ObjectFileName>..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)/</ObjectFileName>
-      <ProgramDataBaseFileName>..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)/</ProgramDataBaseFileName>
+      <PrecompiledHeaderOutputFile>..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)/corelib.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)/</AssemblerListingLocation>
+      <ObjectFileName>..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)/</ObjectFileName>
+      <ProgramDataBaseFileName>..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)/</ProgramDataBaseFileName>
       <WarningLevel>Level4</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -696,7 +696,7 @@
       <Culture>0x040d</Culture>
     </ResourceCompile>
     <Lib>
-      <OutputFile>..\..\build10\lib\pwsafe\$(Configuration)\corelib.lib</OutputFile>
+      <OutputFile>..\..\build\lib\pwsafe\$(Configuration)\corelib.lib</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Lib>
   </ItemDefinitionGroup>
@@ -714,10 +714,10 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
-      <PrecompiledHeaderOutputFile>..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)/corelib.pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)/</AssemblerListingLocation>
-      <ObjectFileName>..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)/</ObjectFileName>
-      <ProgramDataBaseFileName>..\..\build10\obj\pwsafe\$(Configuration)\$(ProjectName)/</ProgramDataBaseFileName>
+      <PrecompiledHeaderOutputFile>..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)/corelib.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)/</AssemblerListingLocation>
+      <ObjectFileName>..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)/</ObjectFileName>
+      <ProgramDataBaseFileName>..\..\build\obj\pwsafe\$(Configuration)\$(ProjectName)/</ProgramDataBaseFileName>
       <WarningLevel>Level4</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -728,7 +728,7 @@
       <Culture>0x040d</Culture>
     </ResourceCompile>
     <Lib>
-      <OutputFile>..\..\build10\lib\pwsafe\$(Configuration)\corelib.lib</OutputFile>
+      <OutputFile>..\..\build\lib\pwsafe\$(Configuration)\corelib.lib</OutputFile>
       <AdditionalLibraryDirectories>$(XercesDir)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Lib>
