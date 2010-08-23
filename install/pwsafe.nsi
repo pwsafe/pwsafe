@@ -42,7 +42,7 @@
 ; 1. The installer will allow the user to place icons on the desktop
 ;    or in the Start Menu, for easy access.  
 ;
-; 2. The installer places two registry values in 
+; 2. The installer places four registry values in 
 ;    HKCU\Software\Password Safe\Password Safe.  These registry
 ;    values are for the use of the installer itself.  Password Safe
 ;    does not rely on these registry values.  If the installer is not
@@ -140,8 +140,9 @@
 
   Var INSTALL_TYPE
   Var HOST_OS
-
-  ;Request application privileges for Windows Vista
+  Var PROG_LANGUAGE
+  
+  ;Request application privileges for Windows Vista, Windows 7
   RequestExecutionLevel admin
 
 ;--------------------------------
@@ -233,9 +234,9 @@
 ; .\I18N\pwsafe_xx.lng files
 
 ;Reserve Files
-LangString RESERVE_TITLE ${LANG_ENGLISH} "Choose Installation Type"
-LangString RESERVE_FIELD1 ${LANG_ENGLISH} "Regular (uses Registry, suitable for home or single user PC)"
-LangString RESERVE_FIELD2 ${LANG_ENGLISH} "Green (for Disk-on-Key; does not use host Registry)"
+;LangString RESERVE_TITLE ${LANG_ENGLISH} "Choose Installation Type"
+;LangString RESERVE_FIELD1 ${LANG_ENGLISH} "Regular (uses Registry, suitable for home or single user PC)"
+;LangString RESERVE_FIELD2 ${LANG_ENGLISH} "Green (for Disk-on-Key; does not use host Registry)"
 
 ; The program itself
 LangString PROGRAM_FILES ${LANG_ENGLISH} "Program Files"
@@ -263,8 +264,8 @@ LangString DESC_UninstallMenu ${LANG_ENGLISH} "Places a shortcut in the start me
 LangString TEXT_GC_TITLE ${LANG_ENGLISH} "Installation Type"
 LangString TEXT_GC_SUBTITLE ${LANG_ENGLISH} "Choose Regular for use on a single PC, Green for portable installation. If you're not sure, 'Regular' is fine."
 LangString PSWINI_TITLE ${LANG_ENGLISH} "Choose Installation Type"
-LangString PSWINI_TEXT1 ${LANG_ENGLISH} "Regular (uses Registry, suitable for home or single user PC)"
-LangString PSWINI_TEXT2 ${LANG_ENGLISH} "Green (for Disk-on-Key; does not use host Registry)"
+LangString PSWINI_TEXT1 ${LANG_ENGLISH} "Regular (uses Registry, suitable for home - or single user PC)"
+LangString PSWINI_TEXT2 ${LANG_ENGLISH} "Green (for Disk-on-Key; does not use - host Registry)"
 
 ; several messages on install, check, ...
 ; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -272,6 +273,8 @@ LangString RUNNING_INSTALL ${LANG_ENGLISH} "The installer is already running."
 LangString RUNNING_APPLICATION ${LANG_ENGLISH} "Please exit all running instances of PasswordSafe before installing a new version"
 LangString LANG_INSTALL ${LANG_ENGLISH} "Installation Language"
 LangString LANG_SELECT ${LANG_ENGLISH} "Please select the language for the installation"
+LangString LANG_PROGRAM ${LANG_ENGLISH} "Program Language"
+LangString LANG_P_SELECT ${LANG_ENGLISH} "Please select the language for the program"
 LangString SORRY_NO_95 ${LANG_ENGLISH} "Sorry, Windows 95 is no longer supported. Try PasswordSafe 2.16"
 LangString SORRY_NO_98 ${LANG_ENGLISH} "Sorry, Windows 98 is no longer supported. Try PasswordSafe 2.16"
 LangString SORRY_NO_ME ${LANG_ENGLISH} "Sorry, Windows ME is no longer supported. Try PasswordSafe 2.16"
@@ -375,34 +378,34 @@ Section "$(PROGRAM_FILES)" ProgramFiles
 dont_install_Win98:
 
 !ifdef LANGUAGE_CHINESE
-  IntCmp $LANGUAGE 2052 languageChinese
+  IntCmp $PROG_LANGUAGE 2052 languageChinese
 !endif
 !ifdef LANGUAGE_SPANISH
-  IntCmp $LANGUAGE 1034 languageSpanish
+  IntCmp $PROG_LANGUAGE 1034 languageSpanish
 !endif
 !ifdef LANGUAGE_GERMAN
-  IntCmp $LANGUAGE 1031 languageGerman
+  IntCmp $PROG_LANGUAGE 1031 languageGerman
 !endif
 !ifdef LANGUAGE_SWEDISH
-  IntCmp $LANGUAGE 1053 languageSwedish
+  IntCmp $PROG_LANGUAGE 1053 languageSwedish
 !endif
 !ifdef LANGUAGE_DUTCH
-  IntCmp $LANGUAGE 1043 languageDutch
+  IntCmp $PROG_LANGUAGE 1043 languageDutch
 !endif
 !ifdef LANGUAGE_FRENCH
-  IntCmp $LANGUAGE 1036 languageFrench
+  IntCmp $PROG_LANGUAGE 1036 languageFrench
 !endif
 !ifdef LANGUAGE_RUSSIAN
-  IntCmp $LANGUAGE 1049 languageRussian
+  IntCmp $PROG_LANGUAGE 1049 languageRussian
 !endif
 !ifdef LANGUAGE_POLISH
-  IntCmp $LANGUAGE 1045 languagePolish
+  IntCmp $PROG_LANGUAGE 1045 languagePolish
 !endif
 !ifdef LANGUAGE_ITALIAN
-  IntCmp $LANGUAGE 1040 languageItalian
+  IntCmp $PROG_LANGUAGE 1040 languageItalian
 !endif
 !ifdef LANGUAGE_DANISH
-  IntCmp $LANGUAGE 1030 languageDanish
+  IntCmp $PROG_LANGUAGE 1030 languageDanish
 !endif
 ; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -    
 ; if language = english or "other" : remove all languageXX_XX.DLL
@@ -912,6 +915,7 @@ languageDone:
   
   ; and the language
   WriteRegStr HKCU "Software\Password Safe\Password Safe" "Language" "$LANGUAGE"
+  WriteRegStr HKCU "Software\Password Safe\Password Safe" "Program" "$PROG_LANGUAGE"
   
   ; Create uninstaller
   WriteUninstaller "$INSTDIR\Uninstall.exe"
@@ -950,34 +954,34 @@ Section "$(START_SHOW)" StartMenu
   CreateShortCut "$SMPROGRAMS\Password Safe\Password Safe Help.lnk" "$INSTDIR\pwsafe.chm"
   
 !ifdef LANGUAGE_CHINESE
-  IntCmp $LANGUAGE 2052 useLanguageChinese
+  IntCmp $PROG_LANGUAGE 2052 useLanguageChinese
 !endif
 !ifdef LANGUAGE_SPANISH
-  IntCmp $LANGUAGE 1034 useLanguageSpanish
+  IntCmp $PROG_LANGUAGE 1034 useLanguageSpanish
 !endif
 !ifdef LANGUAGE_GERMAN
-  IntCmp $LANGUAGE 1031 useLanguageGerman
+  IntCmp $PROG_LANGUAGE 1031 useLanguageGerman
 !endif
 !ifdef LANGUAGE_SWEDISH
-  IntCmp $LANGUAGE 1053 useLanguageSwedish
+  IntCmp $PROG_LANGUAGE 1053 useLanguageSwedish
 !endif
 !ifdef LANGUAGE_DUTCH
-  IntCmp $LANGUAGE 1043 useLanguageDutch
+  IntCmp $PROG_LANGUAGE 1043 useLanguageDutch
 !endif
 !ifdef LANGUAGE_FRENCH
-  IntCmp $LANGUAGE 1036 useLanguageFrench
+  IntCmp $PROG_LANGUAGE 1036 useLanguageFrench
 !endif
 !ifdef LANGUAGE_RUSSIAN
-  IntCmp $LANGUAGE 1049 useLanguageRussian
+  IntCmp $PROG_LANGUAGE 1049 useLanguageRussian
 !endif
 !ifdef LANGUAGE_POLISH
-  IntCmp $LANGUAGE 1045 useLanguagePolish
+  IntCmp $PROG_LANGUAGE 1045 useLanguagePolish
 !endif
 !ifdef LANGUAGE_ITALIAN
-  IntCmp $LANGUAGE 1040 useLanguageItalian
+  IntCmp $PROG_LANGUAGE 1040 useLanguageItalian
 !endif
 !ifdef LANGUAGE_DANISH
-  IntCmp $LANGUAGE 1030 useLanguageDanish
+  IntCmp $PROG_LANGUAGE 1030 useLanguageDanish
 !endif
   Goto languageChoicedone
 
@@ -1187,6 +1191,7 @@ Function .onInit
 	${nsProcess::Unload}
 
   ;Language selection dialog
+  ; (1) Installation language
 
 !ifdef LANGUAGE_GERMAN
   goto extraLanguage
@@ -1270,8 +1275,95 @@ extraLanguage:
 
   Pop $LANGUAGE
   StrCmp $LANGUAGE "cancel" 0 +2
-    Abort
- Return
+  Abort
+  
+  ; (2) Password Safe language
+!ifdef LANGUAGE_GERMAN
+  goto programLanguage
+!endif
+!ifdef LANGUAGE_CHINESE
+  goto programLanguage
+!endif
+!ifdef LANGUAGE_SPANISH
+  goto programLanguage
+!endif
+!ifdef LANGUAGE_SWEDISH
+  goto programLanguage
+!endif
+!ifdef LANGUAGE_DUTCH
+  goto programLanguage
+!endif
+!ifdef LANGUAGE_FRENCH
+  goto programLanguage
+!endif
+!ifdef LANGUAGE_RUSSIAN
+  goto programLanguage
+!endif
+!ifdef LANGUAGE_POLISH
+  goto programLanguage
+!endif
+!ifdef LANGUAGE_ITALIAN
+  goto programLanguage
+!endif
+!ifdef LANGUAGE_DANISH
+  goto programLanguage
+!endif
+  goto NOprogramLanguage
+ 
+programLanguage:  
+  Push ""
+  Push ${LANG_ENGLISH}
+  Push English
+!ifdef LANGUAGE_GERMAN
+  Push ${LANG_GERMAN}
+  Push Deutsch
+!endif
+!ifdef LANGUAGE_CHINESE
+  Push ${LANG_SIMPCHINESE}
+  Push Chinese
+!endif
+!ifdef LANGUAGE_SPANISH
+  Push ${LANG_SPANISH}
+  Push Espanol
+!endif
+!ifdef LANGUAGE_SWEDISH
+  Push ${LANG_SWEDISH}
+  Push Svensk
+!endif
+!ifdef LANGUAGE_DUTCH
+  Push ${LANG_DUTCH}
+  Push Dutch
+!endif
+!ifdef LANGUAGE_FRENCH
+  Push ${LANG_FRENCH}
+  Push Francais
+!endif
+!ifdef LANGUAGE_RUSSIAN
+  Push ${LANG_RUSSIAN}
+  Push Russian
+!endif
+!ifdef LANGUAGE_POLISH
+  Push ${LANG_POLISH}
+  Push Polska
+!endif
+!ifdef LANGUAGE_ITALIAN
+  Push ${LANG_ITALIAN}
+  Push Italiano
+!endif
+!ifdef LANGUAGE_DANISH
+  Push ${LANG_DANISH}
+  Push Dansk
+!endif
+  Push A ; A means auto count languages
+         ; for the auto count to work the first empty push (Push "") must remain
+  LangDLL::LangDialog $(LANG_PROGRAM) $(LANG_P_SELECT)
+
+  Pop $PROG_LANGUAGE
+  StrCmp $PROG_LANGUAGE "cancel" 0 +2
+  Abort
+  
+  Return
+  ; - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 is_win95:
   MessageBox MB_OK|MB_ICONSTOP $(SORRY_NO_95)
   Quit
@@ -1282,6 +1374,7 @@ is_winME:
   MessageBox MB_OK|MB_ICONSTOP $(SORRY_NO_ME)
   Quit
 NOextraLanguage:
+NOprogramLanguage:
 
 FunctionEnd
 

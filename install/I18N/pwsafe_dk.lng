@@ -91,6 +91,12 @@ LangString LANG_INSTALL ${LANG_DANISH} "Installations Sprog"
 ; LANG_SELECT "Please select the language for the installation"
 LangString LANG_SELECT ${LANG_DANISH} "Vælg venligst installations sprog"
 
+; LANG_PROGRAM "Program Language"
+LangString LANG_PROGRAM ${LANG_DANISH} "Program Language"
+
+; LANG_P_SELECT "Please select the language for the program"
+LangString LANG_P_SELECT ${LANG_DANISH} "Please select the language for the program"
+
 ; SORRY_NO_95 "Sorry, Windows 95 is no longer supported. Try PasswordSafe 2.16"
 LangString SORRY_NO_95 ${LANG_DANISH} "Beklager men, Windows 95 er ikke længere understøttet. Prøv PasswordSafe 2.16"
 
