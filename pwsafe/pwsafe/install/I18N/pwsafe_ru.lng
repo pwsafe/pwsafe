@@ -93,6 +93,12 @@ LangString LANG_INSTALL ${LANG_RUSSIAN} "Installation Language"
 ; Оставлена английская версия, чтобы сообщение было читабельно в случае запуска в неверной локали
 LangString LANG_SELECT ${LANG_RUSSIAN} "Please select the language for the installation"
 
+; LANG_PROGRAM "Program Language"
+LangString LANG_PROGRAM ${LANG_RUSSIAN} "Program Language"
+
+; LANG_P_SELECT "Please select the language for the program"
+LangString LANG_P_SELECT ${LANG_RUSSIAN} "Please select the language for the program"
+
 ; SORRY_NO_95 "Sorry, Windows 95 is no longer supported. Try PasswordSafe 2.16"
 LangString SORRY_NO_95 ${LANG_RUSSIAN} "Извините, Windows 95 больше не поддерживается Password Safe. Попробуйте версию 2.16"
 

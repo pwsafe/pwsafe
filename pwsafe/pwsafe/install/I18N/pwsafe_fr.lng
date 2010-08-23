@@ -91,6 +91,12 @@ LangString LANG_INSTALL ${LANG_FRENCH} "Installation Language [FR]"
 ; LANG_SELECT "Please select the language for the installation"
 LangString LANG_SELECT ${LANG_FRENCH} "Please select the language for the installation [FR]"
 
+; LANG_PROGRAM "Program Language"
+LangString LANG_PROGRAM ${LANG_FRENCH} "Program Language"
+
+; LANG_P_SELECT "Please select the language for the program"
+LangString LANG_P_SELECT ${LANG_FRENCH} "Please select the language for the program"
+
 ; SORRY_NO_95 "Sorry, Windows 95 is no longer supported. Try PasswordSafe 2.16"
 LangString SORRY_NO_95 ${LANG_FRENCH} "Sorry, Windows 95 is no longer supported. Try PasswordSafe 2.16 [FR]"
 
