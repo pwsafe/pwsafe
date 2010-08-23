@@ -11,7 +11,7 @@ HELP_DIRS := default pwsafeDE pwsafeFR pwsafeRU pwsafeES
 # pwsafePL -- nothing there :-(
 # pwsafeZH -- currently breaks my hhc :-(
 
-HHC = /cygdrive/c/local/MSVS8/HTMLHelpWorkshop/hhc.exe
+HHC = /cygdrive/c/local/MSVS10/HTMLHelpWorkshop/hhc.exe
 
 .PHONY: all
 

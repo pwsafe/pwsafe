@@ -1,27 +1,18 @@
-Microsoft Visual Studio Solution File, Format Version 9.00
-# Visual Studio 2005
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "corelib", "src\corelib\corelib.vcproj", "{261882E8-80AF-4373-A8CC-A8D52E24BF27}"
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "corelib", "src\corelib\corelib.vcxproj", "{261882E8-80AF-4373-A8CC-A8D52E24BF27}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "corelibtest", "src\test\corelibtest.vcproj", "{0FF1232A-8377-4271-BC22-04E57A39FFB6}"
-	ProjectSection(ProjectDependencies) = postProject
-		{261882E8-80AF-4373-A8CC-A8D52E24BF27} = {261882E8-80AF-4373-A8CC-A8D52E24BF27}
-	EndProjectSection
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "corelibtest", "src\test\corelibtest.vcxproj", "{0FF1232A-8377-4271-BC22-04E57A39FFB6}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pwsafe", "src\ui\Windows\pwsafe.vcproj", "{A3313FA9-CB57-48C2-B660-EE4BF94714D2}"
-	ProjectSection(ProjectDependencies) = postProject
-		{5F619D4F-185A-4B4B-8E77-02698EAEB962} = {5F619D4F-185A-4B4B-8E77-02698EAEB962}
-		{FC3F78C0-1B04-40CF-A7B5-6F037436D9C0} = {FC3F78C0-1B04-40CF-A7B5-6F037436D9C0}
-		{D5DBD8E8-CF48-4CA3-B773-C5F3B3316C73} = {D5DBD8E8-CF48-4CA3-B773-C5F3B3316C73}
-		{261882E8-80AF-4373-A8CC-A8D52E24BF27} = {261882E8-80AF-4373-A8CC-A8D52E24BF27}
-	EndProjectSection
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pwsafe", "src\ui\Windows\pwsafe.vcxproj", "{A3313FA9-CB57-48C2-B660-EE4BF94714D2}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "languageDLL", "src\ui\Windows\language\languageDLL.vcproj", "{FC821168-0D64-45EA-881D-4842A3A670CC}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "languageDLL", "src\ui\Windows\language\languageDLL.vcxproj", "{FC821168-0D64-45EA-881D-4842A3A670CC}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "os", "src\os\windows\os.vcproj", "{D5DBD8E8-CF48-4CA3-B773-C5F3B3316C73}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "os", "src\os\windows\os.vcxproj", "{D5DBD8E8-CF48-4CA3-B773-C5F3B3316C73}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pws_autotype", "src\os\windows\pws_autotype\pws_autotype.vcproj", "{FC3F78C0-1B04-40CF-A7B5-6F037436D9C0}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pws_autotype", "src\os\windows\pws_autotype\pws_autotype.vcxproj", "{FC3F78C0-1B04-40CF-A7B5-6F037436D9C0}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pws_osk", "src\os\windows\pws_osk\pws_osk.vcproj", "{5F619D4F-185A-4B4B-8E77-02698EAEB962}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pws_osk", "src\os\windows\pws_osk\pws_osk.vcxproj", "{5F619D4F-185A-4B4B-8E77-02698EAEB962}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -3,7 +3,7 @@
 # Really just a wrapper around VCBUILD
 #
 
-VCBUILD = /cygdrive/c/local/MSVS8/vc/vcpackages/vcbuild.exe
+VCBUILD = /cygdrive/c/local/MSVS10/vc/vcpackages/vcbuild.exe
 
 TOOLS_DIR = ../../../../build/bin
 RESTEXT = $(TOOLS_DIR)/restext/release/ResText.exe

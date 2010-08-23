@@ -7,14 +7,16 @@
 '
 
 ' Simple VBScript to set up the Visual Studio Properties file for PasswordSafe
+' This script is for setting up Visual Studio 2010 (MSVS10). For Visual
+' Studio 2005 (MSVS8), please use configure8.vbs
 
 Dim objFileSystem, objOutputFile
-Dim strOutputFile
+Dim strOutputFile, strPre2010
 Dim strFileLocation
 Dim str1, str2, str3,CRLF
 Dim rc
 
-Dim XML_XPATH, strPgmFiles
+Dim Node, XML_XPATH, strPgmFiles
 Dim strTortoiseSVNDir, strExpatDir, strXercesDir, strWXDir
 Dim strKeyPath, strValueName, strValue
 
@@ -50,42 +52,74 @@ Set oReg = Nothing
 ' Set defaults
 strTortoiseSVNDir = "C:\Program Files\TortoiseSVN"
 strExpatDir = "C:\Program Files" & strPgmFiles & "\Expat 2.0.1"
-strXercesDir = "C:\Program Files" & strPgmFiles & "\xerces-c-3.0.1-x86-windows-vc-8.0"
-strWXDir = "C:\Program Files" & strPgmFiles & "\wxWidgets-2.8.10"
+strXercesDir = "C:\Program Files" & strPgmFiles & "\xerces-c-3.1.1-x86-windows-vc-10.0"
+strWXDir = "C:\Program Files" & strPgmFiles & "\wxWidgets-2.8.11"
 
 str1 = "Please supply fully qualified location, without quotes, where "
 str2 = " was installed." & CRLF & "Leave empty or pressing Cancel for default to:" & CRLF & CRLF
 str3 = CRLF & CRLF & "See README.DEVELOPERS.txt for more information."
 
-strOutputFile = "UserVariables.vsprops"
-XML_XPATH="VisualStudioPropertySheet/UserMacro"
+strOutputFile = "UserVariables.props"
+strPre2010 = "UserVariables.vsprops"
 
-Set objXMLDoc = CreateObject("Microsoft.XMLDOM")
-objXMLDoc.async = False
-objXMLDoc.load(strOutputFile)
+Set objFileSystem = CreateObject("Scripting.fileSystemObject")
 
-' If already exists, set the defaults to be current value so user doesn't have to
-' remember what they set last time
-Set UserMacros = objXMLDoc.getElementsByTagName(XML_XPATH)
-If UserMacros.length > 0 Then
-  For each CurrentUserMacro in UserMacros
-    If CurrentUserMacro.Attributes.getNamedItem ("Name").text = "TortoiseSVNDir" Then
-      strTortoiseSVNDir = CurrentUserMacro.Attributes.getNamedItem("Value").text
+' Check if a VS2010 props file already exists
+If (objFileSystem.FileExists(strOutputFile)) Then
+  Set objXMLDoc = CreateObject("Microsoft.XMLDOM")
+  objXMLDoc.async = False
+  objXMLDoc.load(strOutputFile)
+
+  ' If already exists, set the defaults to be current value so user doesn't have to
+  ' remember what they set last time
+  Set Node = objXMLDoc.documentElement.selectSingleNode("PropertyGroup/TortoiseSVNDir") 
+  If Not Node Is Nothing Then
+    strTortoiseSVNDir = Node.text
+  End If
+  Set Node = objXMLDoc.documentElement.selectSingleNode("PropertyGroup/ExpatDir") 
+  If Not Node Is Nothing Then
+    strExpatDir = Node.text
+  End If
+  Set Node = objXMLDoc.documentElement.selectSingleNode("PropertyGroup/XercesDir") 
+  If Not Node Is Nothing Then
+    strXercesDir = Node.text
+  End If
+  Set Node = objXMLDoc.documentElement.selectSingleNode("PropertyGroup/WXDIR") 
+  If Not Node Is Nothing Then
+    strWXDir = Node.text
+  End If
+
+  Set Node = Nothing
+  Set objXMLDoc = Nothing
+Else
+  ' Maybe a pre-2010 vsprops file exists?
+  If (objFileSystem.FileExists(strPre2010)) Then
+    Set objXMLDoc = CreateObject("Microsoft.XMLDOM")
+    objXMLDoc.async = False
+    objXMLDoc.load(strPre2010)
+
+    XML_XPATH = "VisualStudioPropertySheet/UserMacro"
+    Set UserMacros = objXMLDoc.getElementsByTagName(XML_XPATH)
+    If UserMacros.length > 0 Then
+      For each CurrentUserMacro in UserMacros
+        If CurrentUserMacro.Attributes.getNamedItem ("Name").text = "TortoiseSVNDir" Then
+          strTortoiseSVNDir = CurrentUserMacro.Attributes.getNamedItem("Value").text
+        End If
+        If CurrentUserMacro.Attributes.getNamedItem ("Name").text = "ExpatDir" Then
+          strExpatDir = CurrentUserMacro.Attributes.getNamedItem("Value").text
+        End If
+        If CurrentUserMacro.Attributes.getNamedItem ("Name").text = "XercesDir" Then
+          strXercesDir = CurrentUserMacro.Attributes.getNamedItem("Value").text
+        End If
+        If CurrentUserMacro.Attributes.getNamedItem ("Name").text = "WXDIR" Then
+          strWXDir = CurrentUserMacro.Attributes.getNamedItem("Value").text
+        End If
+      Next
     End If
-    If CurrentUserMacro.Attributes.getNamedItem ("Name").text = "ExpatDir" Then
-      strExpatDir = CurrentUserMacro.Attributes.getNamedItem("Value").text
-    End If
-    If CurrentUserMacro.Attributes.getNamedItem ("Name").text = "XercesDir" Then
-      strXercesDir = CurrentUserMacro.Attributes.getNamedItem("Value").text
-    End If
-    If CurrentUserMacro.Attributes.getNamedItem ("Name").text = "WXDIR" Then
-      strWXDir = CurrentUserMacro.Attributes.getNamedItem("Value").text
-    End If
-  Next
+    Set UserMacros = Nothing
+    Set objXMLDoc = Nothing
+  End If
 End If
-
-Set UserMacros = Nothing
-Set objXMLDoc = Nothing
 
 Set objFileSystem = CreateObject("Scripting.fileSystemObject")
 
@@ -101,60 +135,85 @@ End If
 
 Set objOutputFile = objFileSystem.CreateTextFile(strOutputFile, TRUE)
 
-objOutputFile.WriteLine("<?xml version=""1.0"" encoding=""Windows-1252""?>")
-objOutputFile.WriteLine("<VisualStudioPropertySheet")
-objOutputFile.WriteLine("  ProjectType=""Visual C++""")
-objOutputFile.WriteLine("	Version=""8.00""")
-objOutputFile.WriteLine("	Name=""UserVariables""")
-objOutputFile.WriteLine("	>")
-objOutputFile.WriteLine("	<UserMacro")
-objOutputFile.WriteLine("		Name=""ProjectDir""")
-objOutputFile.WriteLine("		Value=""&quot;$(ProjectDir)&quot;""")
-objOutputFile.WriteLine("		PerformEnvironmentSet=""true""")
-objOutputFile.WriteLine("	/>")
-objOutputFile.WriteLine("	<UserMacro")
-objOutputFile.WriteLine("		Name=""ConfigurationName""")
-objOutputFile.WriteLine("		Value=""$(ConfigurationName)""")
-objOutputFile.WriteLine("		PerformEnvironmentSet=""true""")
-objOutputFile.WriteLine("	/>")
-objOutputFile.WriteLine("	<UserMacro")
-objOutputFile.WriteLine("		Name=""OutDir""")
-objOutputFile.WriteLine("		Value=""$(OutDir)""")
-objOutputFile.WriteLine("		PerformEnvironmentSet=""true""")
-objOutputFile.WriteLine("	/>")
-objOutputFile.WriteLine("	<UserMacro")
-objOutputFile.WriteLine("		Name=""TortoiseSVNDir""")
+objOutputFile.WriteLine("<?xml version=""1.0"" encoding=""utf-8""?>")
+objOutputFile.WriteLine("<Project DefaultTargets=""Build"" ToolsVersion=""4.0"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">")
+objOutputFile.WriteLine("  <PropertyGroup Label=""UserMacros"">")
+objOutputFile.WriteLine("    <ConfigurationName>$(Configuration)</ConfigurationName>")
+
 strFileLocation = InputBox(str1 & "Tortoise SVN" & str2 & strTortoiseSVNDir & str3, "Tortoise SVN Location", strTortoiseSVNDir)
 If (Len(strFileLocation) = 0) Then strFileLocation = strTortoiseSVNDir
-objOutputFile.WriteLine("		Value=""" & strFileLocation & """")
-objOutputFile.WriteLine("		PerformEnvironmentSet=""true""")
-objOutputFile.WriteLine("	/>")
-objOutputFile.WriteLine("	<UserMacro")
-objOutputFile.WriteLine("		Name=""ExpatDir""")
+
+objOutputFile.WriteLine("    <TortoiseSVNDir>" & strFileLocation & "</TortoiseSVNDir>")
+
 strFileLocation = InputBox(str1 & "Expat" & str2 & strExpatDir &str3 , "Expat Location", strExpatDir)
 If (Len(strFileLocation) = 0) Then strFileLocation = strExpatDir
-objOutputFile.WriteLine("		Value=""" & strFileLocation & """")
-objOutputFile.WriteLine("		PerformEnvironmentSet=""true""")
-objOutputFile.WriteLine("	/>")
-objOutputFile.WriteLine("	<UserMacro")
-objOutputFile.WriteLine("		Name=""XercesDir""")
+
+objOutputFile.WriteLine("    <ExpatDir>" & strFileLocation & "</ExpatDir>")
+
 strFileLocation = InputBox(str1 & "Xerces" & str2 & strXercesDir & str3, "Xerces Location", strXercesDir)
 If (Len(strFileLocation) = 0) Then strFileLocation = strXercesDir
-objOutputFile.WriteLine("		Value=""" & strFileLocation & """")
-objOutputFile.WriteLine("		PerformEnvironmentSet=""true""")
-objOutputFile.WriteLine("	/>")
-objOutputFile.WriteLine("	<UserMacro")
-objOutputFile.WriteLine("		Name=""WXDIR""")
+
+objOutputFile.WriteLine("    <XercesDir>" & strFileLocation & "</XercesDir>")
+
 strFileLocation = InputBox(str1 & "wxWidgets" & str2 & strWXDir & str3, "wxWidgets Location", strWXDir)
 If (Len(strFileLocation) = 0) Then strFileLocation = strWXDir
-objOutputFile.WriteLine("		Value=""" & strFileLocation & """")
-objOutputFile.WriteLine("		PerformEnvironmentSet=""true""")
-objOutputFile.WriteLine("	/>")
-objOutputFile.WriteLine("</VisualStudioPropertySheet>")
+
+objOutputFile.WriteLine("    <WXDIR>" & strFileLocation & "</WXDIR>")
+
+objOutputFile.WriteLine("    <PWSBin>..\..\..\build\bin\pwsafe\$(Configuration)</PWSBin>")
+objOutputFile.WriteLine("    <PWSLib>..\..\..\build\lib\pwsafe\$(Configuration)</PWSLib>")
+objOutputFile.WriteLine("    <PWSObj>..\..\..\build\obj\pwsafe\$(Configuration)</PWSObj>")
+objOutputFile.WriteLine("  </PropertyGroup>")
+objOutputFile.WriteLine("  <PropertyGroup>")
+objOutputFile.WriteLine("    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>")
+objOutputFile.WriteLine("  </PropertyGroup>")
+objOutputFile.WriteLine("  <ItemGroup>")
+objOutputFile.WriteLine("    <BuildMacro Include=""ProjectDir"">")
+objOutputFile.WriteLine("      <Value>$(ProjectDir)</Value>")
+objOutputFile.WriteLine("      <EnvironmentVariable>true</EnvironmentVariable>")
+objOutputFile.WriteLine("    </BuildMacro>")
+objOutputFile.WriteLine("    <BuildMacro Include=""ConfigurationName"">")
+objOutputFile.WriteLine("      <Value>$(ConfigurationName)</Value>")
+objOutputFile.WriteLine("      <EnvironmentVariable>true</EnvironmentVariable>")
+objOutputFile.WriteLine("    </BuildMacro>")
+objOutputFile.WriteLine("    <BuildMacro Include=""PWSBin"">")
+objOutputFile.WriteLine("      <Value>$(PWSBin)</Value>")
+objOutputFile.WriteLine("      <EnvironmentVariable>true</EnvironmentVariable>")
+objOutputFile.WriteLine("    </BuildMacro>")
+objOutputFile.WriteLine("    <BuildMacro Include=""PWSLib"">")
+objOutputFile.WriteLine("      <Value>$(PWSLib)</Value>")
+objOutputFile.WriteLine("      <EnvironmentVariable>true</EnvironmentVariable>")
+objOutputFile.WriteLine("    </BuildMacro>")
+objOutputFile.WriteLine("    <BuildMacro Include=""PWSObj"">")
+objOutputFile.WriteLine("      <Value>$(PWSObj)</Value>")
+objOutputFile.WriteLine("      <EnvironmentVariable>true</EnvironmentVariable>")
+objOutputFile.WriteLine("    </BuildMacro>")
+objOutputFile.WriteLine("    <BuildMacro Include=""OutDir"">")
+objOutputFile.WriteLine("      <Value>$(OutDir)</Value>")
+objOutputFile.WriteLine("      <EnvironmentVariable>true</EnvironmentVariable>")
+objOutputFile.WriteLine("    </BuildMacro>")
+objOutputFile.WriteLine("    <BuildMacro Include=""TortoiseSVNDir"">")
+objOutputFile.WriteLine("      <Value>$(TortoiseSVNDir)</Value>")
+objOutputFile.WriteLine("      <EnvironmentVariable>true</EnvironmentVariable>")
+objOutputFile.WriteLine("    </BuildMacro>")
+objOutputFile.WriteLine("    <BuildMacro Include=""ExpatDir"">")
+objOutputFile.WriteLine("      <Value>$(ExpatDir)</Value>")
+objOutputFile.WriteLine("      <EnvironmentVariable>true</EnvironmentVariable>")
+objOutputFile.WriteLine("    </BuildMacro>")
+objOutputFile.WriteLine("    <BuildMacro Include=""XercesDir"">")
+objOutputFile.WriteLine("      <Value>$(XercesDir)</Value>")
+objOutputFile.WriteLine("      <EnvironmentVariable>true</EnvironmentVariable>")
+objOutputFile.WriteLine("    </BuildMacro>")
+objOutputFile.WriteLine("    <BuildMacro Include=""WXDIR"">")
+objOutputFile.WriteLine("      <Value>$(WXDIR)</Value>")
+objOutputFile.WriteLine("      <EnvironmentVariable>true</EnvironmentVariable>")
+objOutputFile.WriteLine("    </BuildMacro>")
+objOutputFile.WriteLine("  </ItemGroup>")
+objOutputFile.WriteLine("</Project>")
 
 objOutputFile.Close
 Set objFileSystem = Nothing
 
-Call MsgBox("File UserVariables.vsprops created successfully", 0, "Configure User Variables")
+Call MsgBox("File UserVariables.props created successfully", 0, "Configure User Variables")
 
 WScript.Quit(0)
