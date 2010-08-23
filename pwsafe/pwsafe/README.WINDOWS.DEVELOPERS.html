@@ -1,20 +1,30 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-<head>
-<title>Readme For Developers</title>
-</head>
+<html><head>
+<title>Readme For Developers</title></head>
+
 <body>
 
 <h1>Developer Notes</h1>
 
 <p>This file contains notes, hints and information of interest for those developers
-wishing to compile PasswordSafe for Windows (MFC [Microsoft's Foundation Classes] and
-wxWdigets) and Linux (wxWidgets only).  For Windows develpment, this file assumes that
-either Microsoft's Visual Studio <i>2005</i> ('VS2005') and its C++ compiler version 8.0
-('VC8') or Microsoft's Visual Studio <i>2008</i> ('VS2008') and its C++ compiler version
-9.0 ('VC9') is being used.</p>
+wishing to compile PasswordSafe for Windows. Linux developers should read the file <a href="README.LINUX.DEVELOPERS.txt">README.LINUX.DEVELOPERS.txt</a>.</p><h3>Contents</h3>
 
-<p>The 'official' build corresponds to the <i>ReleaseM</i> configuration i.e. the release
+<ol><li><a href="#Introduction">Introduction</a></li><li><a href="README.WINDOWS.DEVELOPERS.html#Software_Requirements">Software Requirements</a></li><li><a href="README.WINDOWS.DEVELOPERS.html#XML_Processing">XML Processing</a></li><li><a href="README.WINDOWS.DEVELOPERS.html#Minidump_Production">Minidumps</a></li></ol><h3><a name="Introduction"></a>Introduction</h3><p>There are several 'degrees of freedom' for Windows developers:</p><ol><li>Development tools:&nbsp;Microsoft's Visual Studio <i>2010</i>
+(referred to as 'VS2010' below) is currently the main development
+environment, although Visual Studio 2005 (MSVS8) is currently also
+supported. Visual Studio 2008 (MSVS9) should also work. See note below
+for Visual Express users.</li><li>User interface library: The curently supported version of PasswordSafe for Windows is built upon MFC
+(Microsoft's Foundation Classes). Work is also being done on a
+wxWidgets version, which should provide cross platform support.</li><li>XML
+support: As PasswordSafe provides XML import/export capabilities, it
+can be configured to use one of several XML parsers (or none). Thecurently supported version of PasswordSafe for Windows is built using the&nbsp;Microsoft XML parser. </li></ol><p>Note regarding Visual Express: The MFC version of PasswordSafe currently <span style="font-weight: bold;">cannot </span>be
+built using Visual Express, as Microsoft does not provide MFC support
+in this product. It should, however, be possible to build the wxWidgets
+version.</p>
+
+<p>To summarise: The 'official' version of PasswordSafe on Windows
+platforms is based on&nbsp;MFC (Microsoft's Foundation Classes), and
+uses&nbsp;Microsoft's XML parser. This&nbsp;corresponds to the <i>ReleaseM</i> configuration in the build environment, i.e., the release
 build using Microsoft's XML parser.  This will build the required DLLs using their
 Release configuration (pws_at.dll for AutoType support and pws_osk.dll for the Virtual
 Keyboard) and the base resource DLL (pwsafe_base.dll used to create non-English language support).</p>
@@ -52,18 +62,8 @@ have to select them individually as selecting the main PasswordSafe
 configuration will select the correct configuration for these projects.  You should
 also be careful not to select all configrations in the VS2010 Batch Build process
 either to build, rebuild or clean all configurations.  Only select MFC configurations
-if using the MFC PasswordSafe solution (pwsafe100.sln) and the wxWdigets
-configurations if using the wxWidgets PasswordSafe solution (pwsafe_wx100.sln).</p>
-
-<h3>Contents</h3>
-
-<ol>
-<li><a href="#Software_Requirements">Software Requirements</a></li>
-<li><a href="#XML_Processing">XML Processing</a></li>
-<li><a href="#Minidump_Production">Minidumps</a></li>
-</ol>
-
-<h3><a name="Software_Requirements"></a>Software Requirements</h3>
+if using the MFC PasswordSafe solution (pwsafe.sln) and the wxWdigets
+configurations if using the wxWidgets PasswordSafe solution (pwsafe_wx.sln).</p><h3><a name="Software_Requirements"></a>Software Requirements</h3>
 
 <h4>Getting Source code</h4>
 
@@ -71,66 +71,18 @@ configurations if using the wxWidgets PasswordSafe solution (pwsafe_wx100.sln).<
 from the Subversion repository at <a href="https://passwordsafe.svn.sourceforge.net/svnroot/passwordsafe/trunk/pwsafe/pwsafe">
 https://passwordsafe.svn.sourceforge.net/svnroot/passwordsafe/trunk/pwsafe/pwsafe</a>
 using a subversion client. Currently (August 2010), the Windows version
-is built using Microsoft's development tools as described <a href="#Windows_Build">below</a>.
-A Linux build is also in early stages of development, as described in the
-<a href="#Linux_Build">Linux Build</a> section.</p>
+is built using Microsoft's development tools as described <a href="#Windows_Build">below</a>.</p>
 
 <p>If you're going to commit code to the repository, please set your subversion client's
 configuration file as follows:</p>
 
 <p>In the "[miscellany]" section, ensure the following variable is set to 'yes':
-<pre>
-  enable-auto-props = yes
-</pre>
-</p>
+</p><pre>  enable-auto-props = yes<br></pre>
+<p></p>
 
 <p>In the "[auto-props]" section, add the following if not already there:
-<pre>
-  *.c = svn:eol-style=native
-  *.cmd = svn:eol-style=native;svn:mime-type=text/plain
-  *.cpp = svn:eol-style=native
-  *.cs = svn:eol-style=native
-  *.csproj = svn:eol-style=native
-  *.dsp = svn:eol-style=CRLF
-  *.dsw = svn:eol-style=CRLF
-  *.h = svn:eol-style=native
-  *.hhc = svn:eol-style=native
-  *.hhk = svn:eol-style=native
-  *.hpp = svn:eol-style=native
-  *.html = svn:eol-style=native;svn:mime-type=text/html
-  *.ico = svn:mime-type=image/x-icon
-  *.in = svn:eol-style=native
-  *.inc = svn:eol-style=native
-  *.ini = svn:eol-style=native
-  *.iss = svn:eol-style=native
-  *.jpg = svn:mime-type=image/jpeg
-  *.js = svn:eol-style=native
-  *.linux = svn:eol-style=native
-  *.manifest = svn:eol-style=CRLF
-  *.nsi = svn:eol-style=CRLF
-  *.pjd = svn:eol-style=native
-  *.pl = svn:eol-style=native
-  *.png = svn:mime-type=image/png
-  *.po = svn:eol-style=native
-  *.rc = svn:eol-style=native
-  *.rc2 = svn:eol-style=native
-  *.resx = svn:eol-style=native
-  *.sh = svn:eol-style=native;svn:executable
-  *.sln = svn:eol-style=CRLF
-  *.txt = svn:eol-style=native;svn:mime-type=text/plain
-  *.vbs = svn:eol-style=native
-  *.vcproj = svn:eol-style=CRLF
-  *.windows = svn:eol-style=native
-  *.wxs = svn:eol-style=native
-  *.xml = svn:eol-style=native;svn:mime-type=text/xml
-  *.xpm = svn:mime-type=image/x-xpm
-  *.xsd = svn:eol-style=native
-  *.xsl = svn:eol-style=native
-  LICENSE = svn:eol-style=native;svn:mime-type=text/plain
-  Makefile = svn:eol-style=native;svn:mime-type=text/plain
-  README = svn:eol-style=native;svn:mime-type=text/plain
-</pre>
-</p>
+</p><pre>  *.c = svn:eol-style=native<br>  *.cmd = svn:eol-style=native;svn:mime-type=text/plain<br>  *.cpp = svn:eol-style=native<br>  *.cs = svn:eol-style=native<br>  *.csproj = svn:eol-style=native<br>  *.dsp = svn:eol-style=CRLF<br>  *.dsw = svn:eol-style=CRLF<br>  *.h = svn:eol-style=native<br>  *.hhc = svn:eol-style=native<br>  *.hhk = svn:eol-style=native<br>  *.hpp = svn:eol-style=native<br>  *.html = svn:eol-style=native;svn:mime-type=text/html<br>  *.ico = svn:mime-type=image/x-icon<br>  *.in = svn:eol-style=native<br>  *.inc = svn:eol-style=native<br>  *.ini = svn:eol-style=native<br>  *.iss = svn:eol-style=native<br>  *.jpg = svn:mime-type=image/jpeg<br>  *.js = svn:eol-style=native<br>  *.linux = svn:eol-style=native<br>  *.manifest = svn:eol-style=CRLF<br>  *.nsi = svn:eol-style=CRLF<br>  *.pjd = svn:eol-style=native<br>  *.pl = svn:eol-style=native<br>  *.png = svn:mime-type=image/png<br>  *.po = svn:eol-style=native<br>  *.rc = svn:eol-style=native<br>  *.rc2 = svn:eol-style=native<br>  *.resx = svn:eol-style=native<br>  *.sh = svn:eol-style=native;svn:executable<br>  *.sln = svn:eol-style=CRLF<br>  *.txt = svn:eol-style=native;svn:mime-type=text/plain<br>  *.vbs = svn:eol-style=native<br>  *.vcproj = svn:eol-style=CRLF<br>  *.windows = svn:eol-style=native<br>  *.wxs = svn:eol-style=native<br>  *.xml = svn:eol-style=native;svn:mime-type=text/xml<br>  *.xpm = svn:mime-type=image/x-xpm<br>  *.xsd = svn:eol-style=native<br>  *.xsl = svn:eol-style=native<br>  LICENSE = svn:eol-style=native;svn:mime-type=text/plain<br>  Makefile = svn:eol-style=native;svn:mime-type=text/plain<br>  README = svn:eol-style=native;svn:mime-type=text/plain<br></pre>
+<p></p>
 
 <p>(This file is ~/.subversion/config for Linux, and under Documents and
 Settings\user\Application Data\Subversion\config on Windows.  If using Tortoise
@@ -140,10 +92,11 @@ General Settings panel).</p>
 
 <h4><a name="Windows_Build"></a>Windows Build</h4>
 
-<p>The Windows version of PasswordSafe is currently built using
-Microsoft Visual Studio 2005 and 2008. People have also reported
-success in building PasswordSafe using Visual Studio Express (free edition),
-but that configuration is not described here.</p>
+<p>The Windows version of PasswordSafe can be built using Microsoft Visual Studio
+2010 (C++ compiler for PaswordSafe ('VC10') and C# compiler if you wish to re-generate
+the Virtual Keyboard data, which is not normally necessary). Microsoft Visual Studio 2005 (MSVS8) and 2008 are also supported, as described below. The VC10 Express compiler
+does <u>not</u> support Microsoft's Foundation Classes, which are used extensively
+within the current official Windows version.&nbsp;</p><p>The main (toplevel) Microsoft Visual Studio 2010 solution file is pwsafe.sln. The MSVS8 version is pwsafe<span style="font-weight: bold;">8</span>.sln. Likewise, the other solution files in this project have "8" appended to the MSVS8 versions.</p>
 
 <p>In order to build the Windows version of PasswordSafe, you
 need to install the following freely available components, in addition to
@@ -209,18 +162,14 @@ and "$(VCInstallDir)PlatformSDK\lib" otherwise you may get warning messages
 compiling source members using BlockInput.</b></p>
 
 <p><b>Compiling using Visual Studio:</b> If you're using Microsoft's Visual
-Studio, the file "UserVariables.vsprops" <b><u><i>must</i></u></b> exist
-and point to the directories where the non-"Windows SDK" components have
+Studio, the file&nbsp;"UserVariables.props" (for VS10) or "UserVariables.vsprops" (for VS8) <b><u><i>must</i></u></b> exist
+and describe the directories where the non-"Windows SDK" components have
 been installed. <b><u><i>The solution will not open correctly without this
-file being present</i></u></b>. For your convenience, we've included a simple
-Visual Basic script, "configure.vbs", that you can run to generate the
-"UserVariables.vsprops" file with the correct values.</p>
-
-<h4><a name="Linux_Build"></a>Linux Build</h4>
-
-<p>The Linux version of PasswordSafe is currently in pre-Alpha state. It is
-being built under Debian 5.0 (Lenny), and uses uuid-dev and
-libwxgtk2.8-dev for building, as well as g++ and GNU make.</p>
+file being present</i></u></b>.
+For your convenience, we've included a simple
+Visual Basic script, "configure.vbs" (or "configure8.vbs" for VS8) in
+the src/ui/Windows directory, that you can run to generate the above
+file with the correct values.</p>
 
 <h3><a name="XML_Processing"></a>XML Processing</h3>
 
@@ -230,7 +179,7 @@ validation. For portability, we're now working on support for the
 and <a href="http://xerces.apache.org/xerces-c/" target="_blank">Xerces</a> XML
 libraries, which are available for non-Windows platforms.  We recommend the
 latest version (currently 3.1.1 as of April 2010), as they
-supply pre-built Windows binaries using the VS2005 (VC8) and VS2008 (VC9)
+supply pre-built Windows binaries using the VS2005 (VC8) and VC9 and VC10
 compilers.</p>
 
 <p>To determine which XML library to use while building PasswordSafe,
@@ -283,7 +232,7 @@ specified in full - i.e. no abbreviations. They are not displayed in the
 Usage notes for the normal users and no error message or display is shown
 if they are not recognised.</u></p>
 
-<p>With this flag set, there will appear an extra button in the bottom right
+<p>With this flag set, an extra button will appear in the bottom right
 hand corner of the "About PasswordSafe" dialog. Click it, and a minidump
 should be produced.</p>
 
@@ -322,5 +271,4 @@ locations:").</li>
 <br>
 <br>
 <br>
-</body>
-</html>
+</body></html>

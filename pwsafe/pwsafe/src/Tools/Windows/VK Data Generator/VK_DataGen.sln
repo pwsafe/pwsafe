@@ -1,6 +1,6 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 9.00
-# Visual Studio 2005
+
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VK Data Generator", "VK_DataGen\VK_DataGen.csproj", "{ABE9DA51-D9AC-4B9A-BF7C-C5A8B0DA2660}"
 EndProject
 Global
