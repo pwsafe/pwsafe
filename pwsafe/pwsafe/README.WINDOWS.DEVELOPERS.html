@@ -1,33 +1,56 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head>
-<title>Readme For Developers</title></head>
+<html>
+<head>
+<title>Readme For Developers</title>
+</head>
 
 <body>
 
 <h1>Developer Notes</h1>
 
 <p>This file contains notes, hints and information of interest for those developers
-wishing to compile PasswordSafe for Windows. Linux developers should read the file <a href="README.LINUX.DEVELOPERS.txt">README.LINUX.DEVELOPERS.txt</a>.</p><h3>Contents</h3>
+wishing to compile PasswordSafe for Windows. Linux developers should read the file
+<a href="README.LINUX.DEVELOPERS.txt">README.LINUX.DEVELOPERS.txt</a>.</p>
+ 
+<h3>Contents</h3>
 
-<ol><li><a href="#Introduction">Introduction</a></li><li><a href="README.WINDOWS.DEVELOPERS.html#Software_Requirements">Software Requirements</a></li><li><a href="README.WINDOWS.DEVELOPERS.html#XML_Processing">XML Processing</a></li><li><a href="README.WINDOWS.DEVELOPERS.html#Minidump_Production">Minidumps</a></li></ol><h3><a name="Introduction"></a>Introduction</h3><p>There are several 'degrees of freedom' for Windows developers:</p><ol><li>Development tools:&nbsp;Microsoft's Visual Studio <i>2010</i>
+<ol>
+<li><a href="#Introduction">Introduction</a></li>
+<li><a href="README.WINDOWS.DEVELOPERS.html#Software_Requirements">Software Requirements</a></li>
+<li><a href="README.WINDOWS.DEVELOPERS.html#XML_Processing">XML Processing</a></li>
+<li><a href="README.WINDOWS.DEVELOPERS.html#Minidump_Production">Minidumps</a></li>
+</ol>
+
+<h3><a name="Introduction"></a>Introduction</h3>
+<p>There are several 'degrees of freedom' for Windows developers:</p>
+
+<ol>
+<li>Development tools:&nbsp;Microsoft's Visual Studio <i>2010</i>
 (referred to as 'VS2010' below) is currently the main development
 environment, although Visual Studio 2005 (MSVS8) is currently also
 supported. Visual Studio 2008 (MSVS9) should also work. See note below
-for Visual Express users.</li><li>User interface library: The curently supported version of PasswordSafe for Windows is built upon MFC
-(Microsoft's Foundation Classes). Work is also being done on a
-wxWidgets version, which should provide cross platform support.</li><li>XML
-support: As PasswordSafe provides XML import/export capabilities, it
-can be configured to use one of several XML parsers (or none). Thecurently supported version of PasswordSafe for Windows is built using the&nbsp;Microsoft XML parser. </li></ol><p>Note regarding Visual Express: The MFC version of PasswordSafe currently <span style="font-weight: bold;">cannot </span>be
-built using Visual Express, as Microsoft does not provide MFC support
-in this product. It should, however, be possible to build the wxWidgets
-version.</p>
+for Visual Express users.</li>
+<li>User interface library: The curently supported version of PasswordSafe for Windows
+is built upon MFC (Microsoft's Foundation Classes). Work is also being done on a
+wxWidgets version, which should provide cross platform support.</li>
+<li>XML support: As PasswordSafe provides XML import/export capabilities, it
+can be configured to use one of several XML parsers (or none).
+The curently supported version of PasswordSafe for Windows is built using the
+Microsoft XML parser. </li>
+</ol>
+
+<p>Note regarding Visual Express: The MFC version of PasswordSafe currently
+<span style="font-weight: bold;">cannot </span>be built using Visual Express,
+as Microsoft does not provide MFC support in this product. It should, however,
+be possible to build the wxWidgets version.</p>
 
 <p>To summarise: The 'official' version of PasswordSafe on Windows
 platforms is based on&nbsp;MFC (Microsoft's Foundation Classes), and
-uses&nbsp;Microsoft's XML parser. This&nbsp;corresponds to the <i>ReleaseM</i> configuration in the build environment, i.e., the release
-build using Microsoft's XML parser.  This will build the required DLLs using their
-Release configuration (pws_at.dll for AutoType support and pws_osk.dll for the Virtual
-Keyboard) and the base resource DLL (pwsafe_base.dll used to create non-English language support).</p>
+uses&nbsp;Microsoft's XML parser. This&nbsp;corresponds to the <i>ReleaseM</i>
+configuration in the build environment, i.e., the release build using Microsoft's
+XML parser.  This will build the required DLLs using their Release configuration
+(pws_at.dll for AutoType support and pws_osk.dll for the Virtual Keyboard) and
+the base resource DLL (pwsafe_base.dll used to create non-English language support).</p>
 
 <p>The current MFC configurations are:</p>
 
@@ -63,7 +86,9 @@ configuration will select the correct configuration for these projects.  You sho
 also be careful not to select all configrations in the VS2010 Batch Build process
 either to build, rebuild or clean all configurations.  Only select MFC configurations
 if using the MFC PasswordSafe solution (pwsafe.sln) and the wxWdigets
-configurations if using the wxWidgets PasswordSafe solution (pwsafe_wx.sln).</p><h3><a name="Software_Requirements"></a>Software Requirements</h3>
+configurations if using the wxWidgets PasswordSafe solution (pwsafe_wx.sln).</p>
+
+<h3><a name="Software_Requirements"></a>Software Requirements</h3>
 
 <h4>Getting Source code</h4>
 
@@ -76,13 +101,57 @@ is built using Microsoft's development tools as described <a href="#Windows_Buil
 <p>If you're going to commit code to the repository, please set your subversion client's
 configuration file as follows:</p>
 
-<p>In the "[miscellany]" section, ensure the following variable is set to 'yes':
-</p><pre>  enable-auto-props = yes<br></pre>
-<p></p>
+<p>In the "[miscellany]" section, ensure the following variable is set to 'yes':</p>
+<pre>
+  enable-auto-props = yes<br>
+</pre>
 
-<p>In the "[auto-props]" section, add the following if not already there:
-</p><pre>  *.c = svn:eol-style=native<br>  *.cmd = svn:eol-style=native;svn:mime-type=text/plain<br>  *.cpp = svn:eol-style=native<br>  *.cs = svn:eol-style=native<br>  *.csproj = svn:eol-style=native<br>  *.dsp = svn:eol-style=CRLF<br>  *.dsw = svn:eol-style=CRLF<br>  *.h = svn:eol-style=native<br>  *.hhc = svn:eol-style=native<br>  *.hhk = svn:eol-style=native<br>  *.hpp = svn:eol-style=native<br>  *.html = svn:eol-style=native;svn:mime-type=text/html<br>  *.ico = svn:mime-type=image/x-icon<br>  *.in = svn:eol-style=native<br>  *.inc = svn:eol-style=native<br>  *.ini = svn:eol-style=native<br>  *.iss = svn:eol-style=native<br>  *.jpg = svn:mime-type=image/jpeg<br>  *.js = svn:eol-style=native<br>  *.linux = svn:eol-style=native<br>  *.manifest = svn:eol-style=CRLF<br>  *.nsi = svn:eol-style=CRLF<br>  *.pjd = svn:eol-style=native<br>  *.pl = svn:eol-style=native<br>  *.png = svn:mime-type=image/png<br>  *.po = svn:eol-style=native<br>  *.rc = svn:eol-style=native<br>  *.rc2 = svn:eol-style=native<br>  *.resx = svn:eol-style=native<br>  *.sh = svn:eol-style=native;svn:executable<br>  *.sln = svn:eol-style=CRLF<br>  *.txt = svn:eol-style=native;svn:mime-type=text/plain<br>  *.vbs = svn:eol-style=native<br>  *.vcproj = svn:eol-style=CRLF<br>  *.windows = svn:eol-style=native<br>  *.wxs = svn:eol-style=native<br>  *.xml = svn:eol-style=native;svn:mime-type=text/xml<br>  *.xpm = svn:mime-type=image/x-xpm<br>  *.xsd = svn:eol-style=native<br>  *.xsl = svn:eol-style=native<br>  LICENSE = svn:eol-style=native;svn:mime-type=text/plain<br>  Makefile = svn:eol-style=native;svn:mime-type=text/plain<br>  README = svn:eol-style=native;svn:mime-type=text/plain<br></pre>
-<p></p>
+<p>In the "[auto-props]" section, add the following if not already there:</p>
+<pre>
+  *.c = svn:eol-style=native<br>
+  *.cmd = svn:eol-style=native;svn:mime-type=text/plain<br>
+  *.cpp = svn:eol-style=native<br>
+  *.cs = svn:eol-style=native<br>
+  *.csproj = svn:eol-style=native<br>
+  *.dsp = svn:eol-style=CRLF<br>
+  *.dsw = svn:eol-style=CRLF<br>
+  *.h = svn:eol-style=native<br>
+  *.hhc = svn:eol-style=native<br>
+  *.hhk = svn:eol-style=native<br>
+  *.hpp = svn:eol-style=native<br>
+  *.html = svn:eol-style=native;svn:mime-type=text/html<br>
+  *.ico = svn:mime-type=image/x-icon<br>
+  *.in = svn:eol-style=native<br>
+  *.inc = svn:eol-style=native<br>
+  *.ini = svn:eol-style=native<br>
+  *.iss = svn:eol-style=native<br>
+  *.jpg = svn:mime-type=image/jpeg<br>
+  *.js = svn:eol-style=native<br>
+  *.linux = svn:eol-style=native<br>
+  *.manifest = svn:eol-style=CRLF<br>
+  *.nsi = svn:eol-style=CRLF<br>
+  *.pjd = svn:eol-style=native<br>
+  *.pl = svn:eol-style=native<br>
+  *.png = svn:mime-type=image/png<br>
+  *.po = svn:eol-style=native<br>
+  *.rc = svn:eol-style=native<br>
+  *.rc2 = svn:eol-style=native<br>
+  *.resx = svn:eol-style=native<br>
+  *.sh = svn:eol-style=native;svn:executable<br>
+  *.sln = svn:eol-style=CRLF<br>
+  *.txt = svn:eol-style=native;svn:mime-type=text/plain<br>
+  *.vbs = svn:eol-style=native<br>
+  *.vcproj = svn:eol-style=CRLF<br>
+  *.windows = svn:eol-style=native<br>
+  *.wxs = svn:eol-style=native<br>
+  *.xml = svn:eol-style=native;svn:mime-type=text/xml<br>
+  *.xpm = svn:mime-type=image/x-xpm<br>
+  *.xsd = svn:eol-style=native<br>
+  *.xsl = svn:eol-style=native<br>
+  LICENSE = svn:eol-style=native;svn:mime-type=text/plain<br>
+  Makefile = svn:eol-style=native;svn:mime-type=text/plain<br>
+  README = svn:eol-style=native;svn:mime-type=text/plain<br>
+</pre>
 
 <p>(This file is ~/.subversion/config for Linux, and under Documents and
 Settings\user\Application Data\Subversion\config on Windows.  If using Tortoise
@@ -94,9 +163,12 @@ General Settings panel).</p>
 
 <p>The Windows version of PasswordSafe can be built using Microsoft Visual Studio
 2010 (C++ compiler for PaswordSafe ('VC10') and C# compiler if you wish to re-generate
-the Virtual Keyboard data, which is not normally necessary). Microsoft Visual Studio 2005 (MSVS8) and 2008 are also supported, as described below. The VC10 Express compiler
+the Virtual Keyboard data, which is not normally necessary). Microsoft Visual Studio 2005
+(MSVS8) and 2008 are also supported, as described below. The VC10 Express compiler
 does <u>not</u> support Microsoft's Foundation Classes, which are used extensively
-within the current official Windows version.&nbsp;</p><p>The main (toplevel) Microsoft Visual Studio 2010 solution file is pwsafe.sln. The MSVS8 version is pwsafe<span style="font-weight: bold;">8</span>.sln. Likewise, the other solution files in this project have "8" appended to the MSVS8 versions.</p>
+within the current official Windows version.&nbsp;</p><p>The main (toplevel) Microsoft 
+Visual Studio 2010 solution file is pwsafe.sln. The MSVS8 version is pwsafe<span style="font-weight: bold;">8</span>.sln.
+Likewise, the other solution files in this project have "8" appended to the MSVS8 versions.</p>
 
 <p>In order to build the Windows version of PasswordSafe, you
 need to install the following freely available components, in addition to
@@ -140,7 +212,7 @@ the Windows SDK mentioned above and do not need to be installed separately.</li>
 <li><a target="_blank" href="http://expat.sourceforge.net/">Expat's V2.0.1
 XML Library</a></li>
 <li><a target="_blank" href="http://xerces.apache.org/xerces-c/">Xerces
-V3.1.0 XML Library</a></li>
+V3.1.1 XML Library</a></li>
 </ul>
 </li>
 </ul>
@@ -162,14 +234,13 @@ and "$(VCInstallDir)PlatformSDK\lib" otherwise you may get warning messages
 compiling source members using BlockInput.</b></p>
 
 <p><b>Compiling using Visual Studio:</b> If you're using Microsoft's Visual
-Studio, the file&nbsp;"UserVariables.props" (for VS10) or "UserVariables.vsprops" (for VS8) <b><u><i>must</i></u></b> exist
-and describe the directories where the non-"Windows SDK" components have
-been installed. <b><u><i>The solution will not open correctly without this
-file being present</i></u></b>.
-For your convenience, we've included a simple
-Visual Basic script, "configure.vbs" (or "configure8.vbs" for VS8) in
-the src/ui/Windows directory, that you can run to generate the above
-file with the correct values.</p>
+Studio, the file&nbsp;"UserVariables.props" (for VS10) or "UserVariables.vsprops"
+(for VS8) <b><u><i>must</i></u></b> exist and describe the directories where
+the non-"Windows SDK" components have been installed. <b><u><i>The solution
+will not open correctly without this file being present</i></u></b>.
+For your convenience, we've included a simple Visual Basic script, "configure.vbs"
+(or "configure8.vbs" for VS8) in the src/ui/Windows directory, that you can
+run to generate the above file with the correct values.</p>
 
 <h3><a name="XML_Processing"></a>XML Processing</h3>
 
@@ -271,4 +342,5 @@ locations:").</li>
 <br>
 <br>
 <br>
-</body></html>
+</body>
+</html>
