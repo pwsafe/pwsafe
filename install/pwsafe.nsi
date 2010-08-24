@@ -163,6 +163,7 @@
 
   ; Name and file
   Name "Password Safe ${VERSION}"
+  BrandingText "PasswordSafe ${VERSION} Installer"
 
   OutFile "pwsafe-${VERSION}.exe"
 
