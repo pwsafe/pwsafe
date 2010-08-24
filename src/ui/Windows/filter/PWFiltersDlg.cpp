@@ -65,7 +65,7 @@ BOOL CPWFiltersDlg::OnInitDialog()
                                 MAKEINTRESOURCE(IDR_FILTERACCELERATOR));
 
   DWORD dwExStyle = m_FilterLC.GetExtendedStyle();
-  dwExStyle |= LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES;
+  dwExStyle |= LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES | LVS_EX_SUBITEMIMAGES;
   m_FilterLC.SetExtendedStyle(dwExStyle);
 
   m_FilterLC.Init(this, m_pfilters, m_iType);

@@ -139,7 +139,7 @@ BOOL CManageFiltersDlg::OnInitDialog()
   lvc.fmt = LVCFMT_CENTER;
 
   DWORD dwExStyle = m_FilterLC.GetExtendedStyle();
-  dwExStyle |= LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES;
+  dwExStyle |= LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES | LVS_EX_SUBITEMIMAGES;
   m_FilterLC.SetExtendedStyle(dwExStyle);
 
   CString cs_text;
@@ -1049,7 +1049,28 @@ void CManageFiltersDlg::DrawImage(CDC *pDC, CRect &rect, int nImage)
         SIZE size;
         size.cx = rect.Width() < sizeImage.cx ? rect.Width() : sizeImage.cx;
         size.cy = rect.Height() < sizeImage.cy ? rect.Height() : sizeImage.cy;
-        m_pCheckImageList->DrawIndirect(pDC, nImage, point, size, CPoint(0, 0));
+
+        // Due to a bug in VS2010 MFC the following does not work!
+        //    m_pCheckImageList->DrawIndirect(pDC, nImage, point, size, CPoint(0, 0));
+        // So do it the hard way!
+        IMAGELISTDRAWPARAMS imldp = {0};
+        imldp.cbSize = sizeof(imldp);
+        imldp.i = nImage;
+        imldp.hdcDst = pDC->m_hDC;
+        imldp.x = point.x;
+        imldp.y = point.y;
+        imldp.xBitmap = imldp.yBitmap = 0;
+        imldp.cx = size.cx;
+        imldp.cy = size.cy;
+        imldp.fStyle = ILD_NORMAL;
+        imldp.dwRop = SRCCOPY;
+        imldp.rgbBk = CLR_DEFAULT;
+        imldp.rgbFg = CLR_DEFAULT;
+        imldp.fState = ILS_NORMAL;
+        imldp.Frame = 0;
+        imldp.crEffect = CLR_DEFAULT;
+
+        m_pCheckImageList->DrawIndirect(&imldp);
       }
     }
   }
