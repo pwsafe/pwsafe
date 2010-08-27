@@ -724,8 +724,11 @@ BOOL ThisMfcApp::InitInstance()
   SHInitExtraControls();
 #endif
 
-  if (m_core.GetCurFile().empty())
-    m_core.SetCurFile(prefs->GetPref(PWSprefs::CurrentFile));
+  if (m_core.GetCurFile().empty()) {
+    stringT path = prefs->GetPref(PWSprefs::CurrentFile).c_str();
+    pws_os::AddDrive(path);
+    m_core.SetCurFile(path.c_str());
+  }
 
   int nMRUItems = prefs->GetPref(PWSprefs::MaxMRUItems);
   m_mruonfilemenu = prefs->GetPref(PWSprefs::MRUOnFileMenu);

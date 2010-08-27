@@ -12,6 +12,7 @@
 #include <vector>
 
 namespace pws_os {
+  extern void AddDrive(stringT &path);
   extern bool FileExists(const stringT &filename);
   extern bool FileExists(const stringT &filename, bool &bReadOnly);
   extern bool RenameFile(const stringT &oldname, const stringT &newname);
