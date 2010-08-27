@@ -10,6 +10,7 @@
 
 #include "PWSRecentFileList.h"
 #include "corelib/PWSprefs.h"
+#include "os/file.h"
 #include "resource2.h" // for ID_FILE_MRU_*
 
 /*
@@ -35,8 +36,11 @@ void CPWSRecentFileList::ReadList()
     ASSERT(nMRUItems == m_nSize);
     std::wstring *arrNames = new std::wstring[nMRUItems];
     pref->GetMRUList(arrNames);
-    for (int i = 0; i < nMRUItems; i++)
-      m_arrNames[i] = arrNames[i].c_str();
+    for (int i = 0; i < nMRUItems; i++) {
+      std::wstring path = arrNames[i].c_str();
+      pws_os::AddDrive(path);
+      m_arrNames[i] = path.c_str();
+    }
     delete[] arrNames;
   }
 }

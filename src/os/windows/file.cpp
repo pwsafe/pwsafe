@@ -52,7 +52,7 @@ bool pws_os::FileExists(const stringT &filename, bool &bReadOnly)
   return retval;
 }
 
-static void AddDrive(stringT &path)
+void pws_os::AddDrive(stringT &path)
 {
   using namespace pws_os;
   // Adds a drive letter to the path if not there, unless
@@ -82,7 +82,8 @@ static bool FileOP(const stringT &src, const stringT &dst,
   // (eg, renames to pwsafeN.psa instead of pwsafe.ibak)
   
   stringT srcD(src), dstD(dst);
-  AddDrive(srcD); AddDrive(dstD);
+  pws_os::AddDrive(srcD);
+  pws_os::AddDrive(dstD);
 
   if (srcD.length() >= _MAX_PATH || dstD.length() >= _MAX_PATH)
     return false;
