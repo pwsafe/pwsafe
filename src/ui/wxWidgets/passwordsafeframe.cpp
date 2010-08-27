@@ -192,7 +192,10 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_MENU( ID_EXPORT2PLAINTEXT, PasswordSafeFrame::OnExportPlainText )
 
   EVT_MENU( ID_EXPORT2XML, PasswordSafeFrame::OnExportXml )
-  
+
+  EVT_MENU(wxID_UNDO,          PasswordSafeFrame::OnUndo )
+  EVT_MENU(wxID_REDO,          PasswordSafeFrame::OnRedo )
+
   EVT_MENU( ID_MENU_CLEAR_MRU, PasswordSafeFrame::OnClearRecentHistory )
   EVT_UPDATE_UI( ID_MENU_CLEAR_MRU, PasswordSafeFrame::OnUpdateClearRecentDBHistory )
 
@@ -220,6 +223,8 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_UPDATE_UI(ID_AUTOTYPE,        PasswordSafeFrame::OnUpdateUI )
   EVT_UPDATE_UI(ID_EDIT,            PasswordSafeFrame::OnUpdateUI )
   EVT_UPDATE_UI(ID_PASSWORDSUBSET,  PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI(wxID_UNDO,          PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI(wxID_REDO,          PasswordSafeFrame::OnUpdateUI )
 END_EVENT_TABLE()
 
 static void DisplayFileWriteError(int rc, const StringX &fname);
@@ -355,6 +360,8 @@ void PasswordSafeFrame::CreateControls()
   itemMenu28->AppendSeparator();
   itemMenu28->Append(ID_ADDGROUP, _("Add Group"), _T(""), wxITEM_NORMAL);
   itemMenu28->AppendSeparator();
+  itemMenu28->Append(wxID_UNDO, _("Undo"), _T(""), wxITEM_NORMAL);
+  itemMenu28->Append(wxID_REDO, _("Redo"), _T(""), wxITEM_NORMAL);
   itemMenu28->Append(ID_CLEARCLIPBOARD, _("C&lear Clipboard\tCtrl+Del"), _T(""), wxITEM_NORMAL);
   itemMenu28->AppendSeparator();
   itemMenu28->Append(ID_COPYPASSWORD, _("&Copy Password to Clipboard\tCtrl+C"), _T(""), wxITEM_NORMAL);
@@ -1487,6 +1494,14 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
       break;
     }
  
+    case wxID_UNDO:
+      evt.Enable(m_core.AnyToUndo());
+      break;
+      
+    case wxID_REDO:
+      evt.Enable(m_core.AnyToRedo());
+      break;
+      
     default:
       break;
   }
@@ -1519,6 +1534,18 @@ void PasswordSafeFrame::GUISetupDisplayInfo(CItemData &ci)
   // XXX TBD
 }
 
+void PasswordSafeFrame::RebuildGUI(const int iView /*= iBothViews*/)
+{
+  // assumption: the view get updated on switching between each other, 
+  // so we don't need to update both at the same time
+  if (IsTreeView() && (iView & iTreeOnly)) {
+    ShowTree();
+  }
+  else if (iView & iListOnly) {
+    ShowGrid();
+  }
+}
+
 void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga,
                                   uuid_array_t &entry_uuid,
                                   CItemData::FieldType ft,
@@ -1548,6 +1575,20 @@ void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga,
       m_grid->Remove(entry_uuid);
       m_tree->Remove(entry_uuid);
       break;
+    case UpdateGUICommand::GUI_REFRESH_TREE:
+      // Caused by Database preference changed about showing username and/or
+      // passwords in the Tree View
+      RebuildGUI(iTreeOnly);
+      break;
+    case UpdateGUICommand::GUI_REDO_MERGESYNC:
+    case UpdateGUICommand::GUI_UNDO_MERGESYNC:
+    case UpdateGUICommand::GUI_REDO_IMPORT:
+    case UpdateGUICommand::GUI_UNDO_IMPORT:
+      // During these processes, many entries may be added/removed
+      // To stop the UI going nuts, updates to the UI are suspended until
+      // the action is complete - when these calls are then sent
+      RebuildGUI();
+      break;
 #ifdef NOTYET
     case UpdateGUICommand::GUI_UPDATE_STATUSBAR:
       UpdateToolBarDoUndo();
@@ -1558,20 +1599,6 @@ void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga,
       break;
     case UpdateGUICommand::GUI_REFRESH_ENTRYPASSWORD:
       RefreshEntryPasswordInGUI(*pci);
-      break;
-    case UpdateGUICommand::GUI_REDO_IMPORT:
-    case UpdateGUICommand::GUI_UNDO_IMPORT:
-    case UpdateGUICommand::GUI_REDO_MERGESYNC:
-    case UpdateGUICommand::GUI_UNDO_MERGESYNC:
-      // During these processes, many entries may be added/removed
-      // To stop the UI going nuts, updates to the UI are suspended until
-      // the action is complete - when these calls are then sent
-      RebuildGUI();
-      break;
-    case UpdateGUICommand::GUI_REFRESH_TREE:
-      // Caused by Database preference changed about showing username and/or
-      // passwords in the Tree View
-      RebuildGUI(iTreeOnly);
       break;
     case UpdateGUICommand::GUI_DB_PREFERENCES_CHANGED:
       // Change any impact on the application due to a database preference change

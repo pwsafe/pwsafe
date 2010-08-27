@@ -516,3 +516,15 @@ void PasswordSafeFrame::DoEmail(CItemData& item )
     UpdateAccessTime(item);
   }
 }
+
+void PasswordSafeFrame::OnUndo(wxCommandEvent& evt)
+{
+  m_core.Undo();
+//  RestoreGUIStatus();
+}
+
+void PasswordSafeFrame::OnRedo(wxCommandEvent& evt)
+{
+//  SaveGUIStatus();
+  m_core.Redo();
+}

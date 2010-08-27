@@ -300,6 +300,13 @@ public:
 
   /// wxEVT_ICONIZE event handler
   void OnIconize(wxIconizeEvent& evt);
+  
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_UNDO
+  void OnUndo(wxCommandEvent& evt);
+
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_REDO
+  void OnRedo(wxCommandEvent& evt);
+
 ////@begin PasswordSafeFrame member function declarations
 
   /// Retrieves bitmap resources
@@ -385,6 +392,7 @@ public:
     return index && index < 256 && size_t(index) < m_RUEList.GetCount(); 
   }
   long GetRUEIndex(const wxCommandEvent& evt) { return evt.GetExtraLong(); }
+  void RebuildGUI(const int iView = iBothViews);
 
   // Do* member functions for dbl-click and menu-accessible actions
   void DoCopyPassword(CItemData &item);
@@ -410,6 +418,7 @@ public:
   CRUEList m_RUEList;
   GUIInfo* m_guiInfo;
   bool m_bTSUpdated;
+  enum {iListOnly = 1, iTreeOnly = 2, iBothViews = 3};
 };
 
 #endif
