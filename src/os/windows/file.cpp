@@ -52,6 +52,24 @@ bool pws_os::FileExists(const stringT &filename, bool &bReadOnly)
   return retval;
 }
 
+static void AddDrive(stringT &path)
+{
+  using namespace pws_os;
+  // Adds a drive letter to the path if not there, unless
+  // it's a UNC path (\\host\sharename...)
+  if (!(path[0] == '\\' && path[1] == '\\')) {
+    stringT drive, dir, file, ext;
+    splitpath(path, drive, dir, file, ext);
+
+    if (drive.empty()) {
+      const stringT exedir = getexecdir();
+      stringT exeDrive, dummy;
+      splitpath(exedir, exeDrive, dummy, dummy, dummy);
+      path = makepath(exeDrive, dir, file, ext);
+    }
+  }
+}
+
 static bool FileOP(const stringT &src, const stringT &dst,
                    UINT wFunc)
 {
@@ -60,11 +78,17 @@ static bool FileOP(const stringT &src, const stringT &dst,
   TCHAR szSource[_MAX_PATH + 1];
   TCHAR szDestination[_MAX_PATH + 1];
 
-  if (src.length() >= _MAX_PATH || dst.length() >= _MAX_PATH)
+  // SHFileOperation() acts very oddly if files are missing a drive
+  // (eg, renames to pwsafeN.psa instead of pwsafe.ibak)
+  
+  stringT srcD(src), dstD(dst);
+  AddDrive(srcD); AddDrive(dstD);
+
+  if (srcD.length() >= _MAX_PATH || dstD.length() >= _MAX_PATH)
     return false;
 
-  const TCHAR *lpsz_current = src.c_str();
-  const TCHAR *lpsz_new = dst.c_str();
+  const TCHAR *lpsz_current = srcD.c_str();
+  const TCHAR *lpsz_new = dstD.c_str();
 
 #if (_MSC_VER >= 1400)
   _tcscpy_s(szSource, _MAX_PATH, lpsz_current);
@@ -75,8 +99,8 @@ static bool FileOP(const stringT &src, const stringT &dst,
 #endif
 
   // Must end with double NULL
-  szSource[src.length() + 1] = TCHAR('\0');
-  szDestination[dst.length() + 1] = TCHAR('\0');
+  szSource[srcD.length() + 1] = TCHAR('\0');
+  szDestination[dstD.length() + 1] = TCHAR('\0');
 
   SHFILEOPSTRUCT sfop;
   memset(&sfop, 0, sizeof(sfop));
