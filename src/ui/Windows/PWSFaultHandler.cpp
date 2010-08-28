@@ -117,7 +117,17 @@ void LocalizeFaultHandler(HINSTANCE inst) {
 void InstallFaultHandler(const int major, const int minor, const int build,
                          const wchar_t *revision, const DWORD timestamp)
 {
-  hDbgHelp = ::LoadLibrary(L"DbgHelp.dll");
+  // (Load Library using absolute path to avoid dll poisoning attacks)
+  TCHAR szFileName[ MAX_PATH ];
+  memset( szFileName, 0, MAX_PATH );
+  GetSystemDirectory( szFileName, MAX_PATH );
+  int nLen = _tcslen( szFileName );
+  if (nLen > 0) {
+    if (szFileName[ nLen - 1 ] != '\\')
+      _tcscat_s( szFileName, MAX_PATH, L"\\" );
+  }
+  _tcscat_s( szFileName, MAX_PATH, L"DbgHelp.dll" );
+  hDbgHelp = ::LoadLibrary(szFileName);
   if (hDbgHelp == NULL)
     return;
 
