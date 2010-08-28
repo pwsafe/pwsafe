@@ -54,9 +54,11 @@ bool pws_os::FileExists(const stringT &filename, bool &bReadOnly)
 
 void pws_os::AddDrive(stringT &path)
 {
-  using namespace pws_os;
   // Adds a drive letter to the path if not there, unless
-  // it's a UNC path (\\host\sharename...)
+  // empty string  or it's a UNC path (\\host\sharename...)
+  using namespace pws_os;
+  if(path.empty())
+    return;
   if (!(path[0] == '\\' && path[1] == '\\')) {
     stringT drive, dir, file, ext;
     splitpath(path, drive, dir, file, ext);
