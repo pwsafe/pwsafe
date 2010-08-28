@@ -212,7 +212,7 @@ static string GetFilterXML(const st_filters &filters, bool bWithFormatting)
       oss << "no";
     oss << "\">" << szendl;
 
-    const int ft = (int)st_fldata.ftype;
+    const int ft = static_cast<int>(st_fldata.ftype);
     const char *pszfieldtype = {"\0"};
     switch (ft) {
       case FT_GROUPTITLE:
@@ -329,7 +329,7 @@ static string GetFilterXML(const st_filters &filters, bool bWithFormatting)
       oss << "no";
     oss << "\">" << szendl;
 
-    const int ft = (int)st_fldata.ftype;
+    const int ft = static_cast<int>(st_fldata.ftype);
     const char *pszfieldtype = {"\0"};
     switch (ft) {
       case HT_PRESENT:
@@ -387,7 +387,7 @@ static string GetFilterXML(const st_filters &filters, bool bWithFormatting)
       oss << "no";
     oss << "\">" << szendl;
 
-    const int ft = (int)st_fldata.ftype;
+    const int ft = static_cast<int>(st_fldata.ftype);
     const char *pszfieldtype = {"\0"};
     switch (ft) {
       case PT_PRESENT:

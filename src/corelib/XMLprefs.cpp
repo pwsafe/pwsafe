@@ -451,11 +451,11 @@ std::vector<st_prefShortcut> CXMLprefs::GetShortcuts(const stringT &csKeyName)
 
     pChild = hShortcutsNode.Child(_T("Shortcut"), count).ToElement();
 
-    cur.cModifier = (unsigned char)0;
+    cur.cModifier = static_cast<unsigned char>(0);
     pChild->Attribute(_T("id"), &itemp);
     cur.id = itemp;
     pChild->Attribute(_T("Key"), &itemp);
-    cur.cVirtKey = (unsigned char)itemp;
+    cur.cVirtKey = static_cast<unsigned char>(itemp);
     pChild->Attribute(_T("Ctrl"), &itemp);
     cur.cModifier |= itemp != 0 ? HOTKEYF_CONTROL : 0;
     pChild->Attribute(_T("Alt"), &itemp);
@@ -504,7 +504,7 @@ int CXMLprefs::SetShortcuts(const stringT &csKeyName,
           (v_shortcuts[i].cModifier & HOTKEYF_ALT    ) == HOTKEYF_ALT     ? 1 : 0);
         element->SetAttribute(_T("Shift"),
           (v_shortcuts[i].cModifier & HOTKEYF_SHIFT  ) == HOTKEYF_SHIFT   ? 1 : 0);
-        element->SetAttribute(_T("Key"), (int)v_shortcuts[i].cVirtKey);
+        element->SetAttribute(_T("Key"), static_cast<int>(v_shortcuts[i].cVirtKey));
       }
     } else
       iRetVal = XML_LOAD_FAILED;

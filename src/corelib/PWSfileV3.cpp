@@ -219,32 +219,32 @@ int PWSfileV3::WriteRecord(const CItemData &item)
     WriteCBC(CItemData::AUTOTYPE, tmp);
   item.GetCTime(t);
   if (t != 0) {
-    i32 = (int)t;
-    WriteCBC(CItemData::CTIME, (unsigned char *)&i32, sizeof(i32));
+    i32 = static_cast<int>(t);
+    WriteCBC(CItemData::CTIME, reinterpret_cast<unsigned char *>(&i32), sizeof(i32));
   }
   item.GetPMTime(t);
   if (t != 0) {
-    i32 = (int)t;
-    WriteCBC(CItemData::PMTIME, (unsigned char *)&i32, sizeof(i32));
+    i32 = static_cast<int>(t);
+    WriteCBC(CItemData::PMTIME, reinterpret_cast<unsigned char *>(&i32), sizeof(i32));
   }
   item.GetATime(t);
   if (t != 0) {
-    i32 = (int)t;
-    WriteCBC(CItemData::ATIME, (unsigned char *)&i32, sizeof(i32));
+    i32 = static_cast<int>(t);
+    WriteCBC(CItemData::ATIME, reinterpret_cast<unsigned char *>(&i32), sizeof(i32));
   }
   item.GetXTime(t);
   if (t != 0) {
-    i32 = (int)t;
-    WriteCBC(CItemData::XTIME, (unsigned char *)&i32, sizeof(i32));
+    i32 = static_cast<int>(t);
+    WriteCBC(CItemData::XTIME, reinterpret_cast<unsigned char *>(&i32), sizeof(i32));
   }
   item.GetXTimeInt(i32);
   if (i32 > 0 && i32 <= 3650) {
-    WriteCBC(CItemData::XTIME_INT, (unsigned char *)&i32, sizeof(i32));
+    WriteCBC(CItemData::XTIME_INT, reinterpret_cast<unsigned char *>(&i32), sizeof(i32));
   }
   item.GetRMTime(t);
   if (t != 0) {
-    i32 = (int)t;
-    WriteCBC(CItemData::RMTIME, (unsigned char *)&i32, sizeof(i32));
+    i32 = static_cast<int>(t);
+    WriteCBC(CItemData::RMTIME, reinterpret_cast<unsigned char *>(&i32), sizeof(i32));
   }
   tmp = item.GetPWPolicy();
   if (!tmp.empty())
@@ -257,7 +257,7 @@ int PWSfileV3::WriteRecord(const CItemData &item)
     WriteCBC(CItemData::RUNCMD, tmp);
   item.GetDCA(i16);
   if (i16 >= PWSprefs::minDCA && i16 <= PWSprefs::maxDCA)
-    WriteCBC(CItemData::DCA, (unsigned char *)&i16, sizeof(short));
+    WriteCBC(CItemData::DCA, reinterpret_cast<unsigned char *>(&i16), sizeof(short));
   tmp = item.GetEmail();
   if (!tmp.empty())
     WriteCBC(CItemData::EMAIL, tmp);
@@ -309,7 +309,7 @@ int PWSfileV3::ReadRecord(CItemData &item)
     unsigned char *utf8 = NULL;
     int utf8Len = 0;
     fieldLen = static_cast<signed long>(ReadCBC(type, utf8,
-      (unsigned int &)utf8Len));
+      reinterpret_cast<unsigned int &>(utf8Len)));
 
     if (fieldLen > 0) {
       numread += fieldLen;
@@ -459,10 +459,10 @@ int PWSfileV3::WriteHeader()
   numWritten = 0;
   // Write version number
   unsigned char vnb[sizeof(VersionNum)];
-  vnb[0] = (unsigned char) (VersionNum & 0xff);
-  vnb[1] = (unsigned char) ((VersionNum & 0xff00) >> 8);
-  m_hdr.m_nCurrentMajorVersion = (unsigned short) ((VersionNum & 0xff00) >> 8);
-  m_hdr.m_nCurrentMinorVersion = (unsigned short) (VersionNum & 0xff);
+  vnb[0] = static_cast<unsigned char>(VersionNum & 0xff);
+  vnb[1] = static_cast<unsigned char>((VersionNum & 0xff00) >> 8);
+  m_hdr.m_nCurrentMajorVersion = static_cast<unsigned short>((VersionNum & 0xff00) >> 8);
+  m_hdr.m_nCurrentMinorVersion = static_cast<unsigned short>(VersionNum & 0xff);
 
   numWritten = WriteCBC(HDR_VERSION, vnb, sizeof(VersionNum));
 
@@ -501,7 +501,7 @@ int PWSfileV3::WriteHeader()
   time_t time_now;
   time(&time_now);
   numWritten = WriteCBC(HDR_LASTUPDATETIME,
-                        (unsigned char *)&time_now, sizeof(time_now));
+                        reinterpret_cast<unsigned char *>(&time_now), sizeof(time_now));
   if (numWritten <= 0) { status = FAILURE; goto end; }
   m_hdr.m_whenlastsaved = time_now;
 
@@ -568,7 +568,7 @@ int PWSfileV3::WriteHeader()
          vi_IterUHFE++) {
       UnknownFieldEntry &unkhfe = *vi_IterUHFE;
       numWritten = WriteCBC(unkhfe.uc_Type,
-                            unkhfe.uc_pUField, (unsigned int)unkhfe.st_length);
+                            unkhfe.uc_pUField, static_cast<unsigned int>(unkhfe.st_length));
       if (numWritten <= 0) { status = FAILURE; goto end; }
     }
   }
@@ -621,7 +621,7 @@ int PWSfileV3::ReadHeader()
   bool found0302UserHost = false; // to resolve potential conflicts
 
   do {
-    numRead = ReadCBC(fieldType, utf8, (unsigned int &)utf8Len);
+    numRead = ReadCBC(fieldType, utf8, reinterpret_cast<unsigned int &>(utf8Len));
 
     switch (fieldType) {
       case HDR_VERSION: /* version */
@@ -634,7 +634,7 @@ int PWSfileV3::ReadHeader()
           return FAILURE;
         }
         if (utf8[1] !=
-           (unsigned char)((VersionNum & 0xff00) >> 8)) {
+           static_cast<unsigned char>((VersionNum & 0xff00) >> 8)) {
           //major version mismatch
           delete[] utf8;
           Close();
@@ -642,8 +642,8 @@ int PWSfileV3::ReadHeader()
         }
         // for now we assume that minor version changes will
         // be backward-compatible
-        m_hdr.m_nCurrentMajorVersion = (unsigned short)utf8[1];
-        m_hdr.m_nCurrentMinorVersion = (unsigned short)utf8[0];
+        m_hdr.m_nCurrentMajorVersion = static_cast<unsigned short>(utf8[1]);
+        m_hdr.m_nCurrentMinorVersion = static_cast<unsigned short>(utf8[0]);
         break;
 
       case HDR_UUID: /* UUID */

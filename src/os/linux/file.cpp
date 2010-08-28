@@ -284,7 +284,7 @@ bool pws_os::LockFile(const stringT &filename, stringT &locker,
 
     const stringT lockStr = user + _T("@") + host + _T(":") + pid;
 
-    numWrit = write(fh, (void *)lockStr.c_str(),
+    numWrit = write(fh, lockStr.c_str(),
                     lockStr.length() * sizeof(TCHAR));
     ASSERT(numWrit > 0);
     close(fh);

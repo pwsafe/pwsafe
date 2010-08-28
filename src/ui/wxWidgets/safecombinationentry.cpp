@@ -307,7 +307,7 @@ void CSafeCombinationEntry::OnOk( wxCommandEvent& )
       wxMessageDialog err(this, errmess,
                           _("Error"), wxOK | wxICON_EXCLAMATION);
       err.ShowModal();
-      wxTextCtrl *txt = (wxTextCtrl *)FindWindow(ID_COMBINATION);
+      wxTextCtrl *txt = dynamic_cast<wxTextCtrl *>(FindWindow(ID_COMBINATION));
       txt->SetSelection(-1,-1);
       txt->SetFocus();
       return;
@@ -346,7 +346,7 @@ void CSafeCombinationEntry::OnEllipsisClick( wxCommandEvent& /* evt */ )
   
   if (fd.ShowModal() == wxID_OK) {
     m_filename = fd.GetPath();
-    wxComboBox *cb = (wxComboBox *)FindWindow(ID_DBASECOMBOBOX);
+    wxComboBox *cb = dynamic_cast<wxComboBox *>(FindWindow(ID_DBASECOMBOBOX));
     cb->SetValue(m_filename);
   }
 }

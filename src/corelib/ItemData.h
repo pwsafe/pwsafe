@@ -172,9 +172,9 @@ public:
                        unsigned char * &pdata,
                        const UnknownFieldsConstIter &iter) const;
   void SetUnknownField(const unsigned char &type, const unsigned int &length,
-                       unsigned char * &ufield);
-  unsigned int NumberUnknownFields() const
-  {return (unsigned int)m_URFL.size();}
+                       const unsigned char * &ufield);
+  size_t NumberUnknownFields() const
+  {return m_URFL.size();}
   void ClearUnknownFields()
   {return m_URFL.clear();}
   UnknownFieldsConstIter GetURFIterBegin() const {return m_URFL.begin();}
@@ -251,7 +251,7 @@ public:
   void SerializePlainText(std::vector<char> &v,
                           const CItemData *pcibase = NULL) const;
   bool DeserializePlainText(const std::vector<char> &v);
-  bool SetField(int type, unsigned char *data, int len);
+  bool SetField(int type, const unsigned char *data, int len);
 
   EntryType GetEntryType() const {return m_entrytype;}
 

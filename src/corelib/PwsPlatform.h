@@ -256,74 +256,74 @@ typedef unsigned long ulong32;
 #ifdef ENDIAN_NEUTRAL
 
 #define STORE32L(x, y)                                                                     \
-{ (y)[3] = (unsigned char)(((x)>>24)&255); (y)[2] = (unsigned char)(((x)>>16)&255);   \
-  (y)[1] = (unsigned char)(((x)>>8)&255); (y)[0] = (unsigned char)((x)&255); }
+{ (y)[3] = static_cast<unsigned char>(((x)>>24)&255); (y)[2] = static_cast<unsigned char>(((x)>>16)&255);   \
+  (y)[1] = static_cast<unsigned char>(((x)>>8)&255); (y)[0] = static_cast<unsigned char>((x)&255); }
 
 #define LOAD32L(x, y)                            \
-{ x = ((unsigned long)((y)[3] & 255)<<24) | \
-  ((unsigned long)((y)[2] & 255)<<16) | \
-  ((unsigned long)((y)[1] & 255)<<8)  | \
-  ((unsigned long)((y)[0] & 255)); }
+{ x = (static_cast<unsigned long>((y)[3] & 255)<<24) | \
+  (static_cast<unsigned long>((y)[2] & 255)<<16) | \
+  (static_cast<unsigned long>((y)[1] & 255)<<8)  | \
+  (static_cast<unsigned long>((y)[0] & 255)); }
 
 #define STORE64L(x, y)                                                                     \
-{ (y)[7] = (unsigned char)(((x)>>56)&255); (y)[6] = (unsigned char)(((x)>>48)&255);   \
-  (y)[5] = (unsigned char)(((x)>>40)&255); (y)[4] = (unsigned char)(((x)>>32)&255);   \
-  (y)[3] = (unsigned char)(((x)>>24)&255); (y)[2] = (unsigned char)(((x)>>16)&255);   \
-  (y)[1] = (unsigned char)(((x)>>8)&255); (y)[0] = (unsigned char)((x)&255); }
+{ (y)[7] = static_cast<unsigned char>(((x)>>56)&255); (y)[6] = static_cast<unsigned char>(((x)>>48)&255);   \
+  (y)[5] = static_cast<unsigned char>(((x)>>40)&255); (y)[4] = static_cast<unsigned char>(((x)>>32)&255);   \
+  (y)[3] = static_cast<unsigned char>(((x)>>24)&255); (y)[2] = static_cast<unsigned char>(((x)>>16)&255);   \
+  (y)[1] = static_cast<unsigned char>(((x)>>8)&255); (y)[0] = static_cast<unsigned char>((x)&255); }
 
 #define LOAD64L(x, y)                                                       \
-{ x = (((ulong64)((y)[7] & 255))<<56)|(((ulong64)((y)[6] & 255))<<48)| \
-  (((ulong64)((y)[5] & 255))<<40)|(((ulong64)((y)[4] & 255))<<32)| \
-  (((ulong64)((y)[3] & 255))<<24)|(((ulong64)((y)[2] & 255))<<16)| \
-  (((ulong64)((y)[1] & 255))<<8)|(((ulong64)((y)[0] & 255))); }
+{ x = ((static_cast<ulong64>((y)[7] & 255))<<56)|((static_cast<ulong64>((y)[6] & 255))<<48)| \
+  ((static_cast<ulong64>((y)[5] & 255))<<40)|((static_cast<ulong64>((y)[4] & 255))<<32)| \
+  ((static_cast<ulong64>((y)[3] & 255))<<24)|((static_cast<ulong64>((y)[2] & 255))<<16)| \
+  ((static_cast<ulong64>((y)[1] & 255))<<8)|((static_cast<ulong64>((y)[0] & 255))); }
 
 #define STORE32H(x, y)                                                                     \
-{ (y)[0] = (unsigned char)(((x)>>24)&255); (y)[1] = (unsigned char)(((x)>>16)&255);   \
-  (y)[2] = (unsigned char)(((x)>>8)&255); (y)[3] = (unsigned char)((x)&255); }
+{ (y)[0] = static_cast<unsigned char>(((x)>>24)&255); (y)[1] = static_cast<unsigned char>(((x)>>16)&255);   \
+  (y)[2] = static_cast<unsigned char>(((x)>>8)&255); (y)[3] = static_cast<unsigned char>((x)&255); }
 
 #define LOAD32H(x, y)                            \
-{ x = ((unsigned long)((y)[0] & 255)<<24) | \
-  ((unsigned long)((y)[1] & 255)<<16) | \
-  ((unsigned long)((y)[2] & 255)<<8)  | \
-  ((unsigned long)((y)[3] & 255)); }
+{ x = (static_cast<unsigned long>((y)[0] & 255)<<24) | \
+  (static_cast<unsigned long>((y)[1] & 255)<<16) | \
+  (static_cast<unsigned long>((y)[2] & 255)<<8)  | \
+  (static_cast<unsigned long>((y)[3] & 255)); }
 
 #define STORE64H(x, y)                                                                     \
-{ (y)[0] = (unsigned char)(((x)>>56)&255); (y)[1] = (unsigned char)(((x)>>48)&255);     \
-  (y)[2] = (unsigned char)(((x)>>40)&255); (y)[3] = (unsigned char)(((x)>>32)&255);     \
-  (y)[4] = (unsigned char)(((x)>>24)&255); (y)[5] = (unsigned char)(((x)>>16)&255);     \
-  (y)[6] = (unsigned char)(((x)>>8)&255); (y)[7] = (unsigned char)((x)&255); }
+{ (y)[0] = static_cast<unsigned char>(((x)>>56)&255); (y)[1] = static_cast<unsigned char>(((x)>>48)&255);     \
+  (y)[2] = static_cast<unsigned char>(((x)>>40)&255); (y)[3] = static_cast<unsigned char>(((x)>>32)&255);     \
+  (y)[4] = static_cast<unsigned char>(((x)>>24)&255); (y)[5] = static_cast<unsigned char>(((x)>>16)&255);     \
+  (y)[6] = static_cast<unsigned char>(((x)>>8)&255); (y)[7] = static_cast<unsigned char>((x)&255); }
 
 #define LOAD64H(x, y)                                                      \
-{ x = (((ulong64)((y)[0] & 255))<<56)|(((ulong64)((y)[1] & 255))<<48) | \
-  (((ulong64)((y)[2] & 255))<<40)|(((ulong64)((y)[3] & 255))<<32) | \
-  (((ulong64)((y)[4] & 255))<<24)|(((ulong64)((y)[5] & 255))<<16) | \
-  (((ulong64)((y)[6] & 255))<<8)|(((ulong64)((y)[7] & 255))); }
+{ x = ((static_cast<ulong64>((y)[0] & 255))<<56)|((static_cast<ulong64>((y)[1] & 255))<<48) | \
+  ((static_cast<ulong64>((y)[2] & 255))<<40)|((static_cast<ulong64>((y)[3] & 255))<<32) | \
+  ((static_cast<ulong64>((y)[4] & 255))<<24)|((static_cast<ulong64>((y)[5] & 255))<<16) | \
+  ((static_cast<ulong64>((y)[6] & 255))<<8)|((static_cast<ulong64>((y)[7] & 255))); }
 
 #endif /* ENDIAN_NEUTRAL */
 
 #ifdef ENDIAN_LITTLE
 
 #define STORE32H(x, y)                                                                     \
-{ (y)[0] = (unsigned char)(((x)>>24)&255); (y)[1] = (unsigned char)(((x)>>16)&255);   \
-  (y)[2] = (unsigned char)(((x)>>8)&255); (y)[3] = (unsigned char)((x)&255); }
+{ (y)[0] = static_cast<unsigned char>(((x)>>24)&255); (y)[1] = static_cast<unsigned char>(((x)>>16)&255);   \
+  (y)[2] = static_cast<unsigned char>(((x)>>8)&255); (y)[3] = static_cast<unsigned char>((x)&255); }
 
 #define LOAD32H(x, y)                            \
-{ x = ((unsigned long)((y)[0] & 255)<<24) | \
-  ((unsigned long)((y)[1] & 255)<<16) | \
-  ((unsigned long)((y)[2] & 255)<<8)  | \
-  ((unsigned long)((y)[3] & 255)); }
+{ x = (static_cast<unsigned long>((y)[0] & 255)<<24) | \
+  (static_cast<unsigned long>((y)[1] & 255)<<16) | \
+  (static_cast<unsigned long>((y)[2] & 255)<<8)  | \
+  (static_cast<unsigned long>((y)[3] & 255)); }
 
 #define STORE64H(x, y)                                                                     \
-{ (y)[0] = (unsigned char)(((x)>>56)&255); (y)[1] = (unsigned char)(((x)>>48)&255);     \
-  (y)[2] = (unsigned char)(((x)>>40)&255); (y)[3] = (unsigned char)(((x)>>32)&255);     \
-  (y)[4] = (unsigned char)(((x)>>24)&255); (y)[5] = (unsigned char)(((x)>>16)&255);     \
-  (y)[6] = (unsigned char)(((x)>>8)&255); (y)[7] = (unsigned char)((x)&255); }
+{ (y)[0] = static_cast<unsigned char>(((x)>>56)&255); (y)[1] = static_cast<unsigned char>(((x)>>48)&255);     \
+  (y)[2] = static_cast<unsigned char>(((x)>>40)&255); (y)[3] = static_cast<unsigned char>(((x)>>32)&255);     \
+  (y)[4] = static_cast<unsigned char>(((x)>>24)&255); (y)[5] = static_cast<unsigned char>(((x)>>16)&255);     \
+  (y)[6] = static_cast<unsigned char>(((x)>>8)&255); (y)[7] = static_cast<unsigned char>((x)&255); }
 
 #define LOAD64H(x, y)                                                      \
-{ x = (((ulong64)((y)[0] & 255))<<56)|(((ulong64)((y)[1] & 255))<<48) | \
-  (((ulong64)((y)[2] & 255))<<40)|(((ulong64)((y)[3] & 255))<<32) | \
-  (((ulong64)((y)[4] & 255))<<24)|(((ulong64)((y)[5] & 255))<<16) | \
-  (((ulong64)((y)[6] & 255))<<8)|(((ulong64)((y)[7] & 255))); }
+{ x = ((static_cast<ulong64>((y)[0] & 255))<<56)|((static_cast<ulong64>((y)[1] & 255))<<48) | \
+  ((static_cast<ulong64>((y)[2] & 255))<<40)|((static_cast<ulong64>((y)[3] & 255))<<32) | \
+  ((static_cast<ulong64>((y)[4] & 255))<<24)|((static_cast<ulong64>((y)[5] & 255))<<16) | \
+  ((static_cast<ulong64>((y)[6] & 255))<<8)|((static_cast<ulong64>((y)[7] & 255))); }
 
 #ifdef ENDIAN_32BITWORD 
 
@@ -334,16 +334,16 @@ typedef unsigned long ulong32;
   memcpy(&(x), y, 4);
 
 #define STORE64L(x, y)                                                                     \
-{ (y)[7] = (unsigned char)(((x)>>56)&255); (y)[6] = (unsigned char)(((x)>>48)&255);   \
-  (y)[5] = (unsigned char)(((x)>>40)&255); (y)[4] = (unsigned char)(((x)>>32)&255);   \
-  (y)[3] = (unsigned char)(((x)>>24)&255); (y)[2] = (unsigned char)(((x)>>16)&255);   \
-  (y)[1] = (unsigned char)(((x)>>8)&255); (y)[0] = (unsigned char)((x)&255); }
+{ (y)[7] = static_cast<unsigned char>(((x)>>56)&255); (y)[6] = static_cast<unsigned char>(((x)>>48)&255);   \
+  (y)[5] = static_cast<unsigned char>(((x)>>40)&255); (y)[4] = static_cast<unsigned char>(((x)>>32)&255);   \
+  (y)[3] = static_cast<unsigned char>(((x)>>24)&255); (y)[2] = static_cast<unsigned char>(((x)>>16)&255);   \
+  (y)[1] = static_cast<unsigned char>(((x)>>8)&255); (y)[0] = static_cast<unsigned char>((x)&255); }
 
 #define LOAD64L(x, y)                                                       \
-{ x = (((ulong64)((y)[7] & 255))<<56)|(((ulong64)((y)[6] & 255))<<48)| \
-  (((ulong64)((y)[5] & 255))<<40)|(((ulong64)((y)[4] & 255))<<32)| \
-  (((ulong64)((y)[3] & 255))<<24)|(((ulong64)((y)[2] & 255))<<16)| \
-  (((ulong64)((y)[1] & 255))<<8)|(((ulong64)((y)[0] & 255))); }
+{ x = ((static_cast<ulong64>((y)[7] & 255))<<56)|((static_cast<ulong64>((y)[6] & 255))<<48)| \
+  ((static_cast<ulong64>((y)[5] & 255))<<40)|((static_cast<ulong64>((y)[4] & 255))<<32)| \
+  ((static_cast<ulong64>((y)[3] & 255))<<24)|((static_cast<ulong64>((y)[2] & 255))<<16)| \
+  ((static_cast<ulong64>((y)[1] & 255))<<8)|((static_cast<ulong64>((y)[0] & 255))); }
 
 #else /* 64-bit words then  */
 
@@ -365,26 +365,26 @@ typedef unsigned long ulong32;
 
 #ifdef ENDIAN_BIG
 #define STORE32L(x, y)                                                                     \
-{ (y)[3] = (unsigned char)(((x)>>24)&255); (y)[2] = (unsigned char)(((x)>>16)&255);   \
-  (y)[1] = (unsigned char)(((x)>>8)&255); (y)[0] = (unsigned char)((x)&255); }
+{ (y)[3] = static_cast<unsigned char>(((x)>>24)&255); (y)[2] = static_cast<unsigned char>(((x)>>16)&255);   \
+  (y)[1] = static_cast<unsigned char>(((x)>>8)&255); (y)[0] = static_cast<unsigned char>((x)&255); }
 
 #define LOAD32L(x, y)                            \
-{ x = ((unsigned long)((y)[3] & 255)<<24) | \
-  ((unsigned long)((y)[2] & 255)<<16) | \
-  ((unsigned long)((y)[1] & 255)<<8)  | \
-  ((unsigned long)((y)[0] & 255)); }
+{ x = (static_cast<unsigned long>((y)[3] & 255)<<24) | \
+  (static_cast<unsigned long>((y)[2] & 255)<<16) | \
+  (static_cast<unsigned long>((y)[1] & 255)<<8)  | \
+  (static_cast<unsigned long>((y)[0] & 255)); }
 
 #define STORE64L(x, y)                                                                     \
-{ (y)[7] = (unsigned char)(((x)>>56)&255); (y)[6] = (unsigned char)(((x)>>48)&255);     \
-  (y)[5] = (unsigned char)(((x)>>40)&255); (y)[4] = (unsigned char)(((x)>>32)&255);     \
-  (y)[3] = (unsigned char)(((x)>>24)&255); (y)[2] = (unsigned char)(((x)>>16)&255);     \
-  (y)[1] = (unsigned char)(((x)>>8)&255); (y)[0] = (unsigned char)((x)&255); }
+{ (y)[7] = static_cast<unsigned char>(((x)>>56)&255); (y)[6] = static_cast<unsigned char>(((x)>>48)&255);     \
+  (y)[5] = static_cast<unsigned char>(((x)>>40)&255); (y)[4] = static_cast<unsigned char>(((x)>>32)&255);     \
+  (y)[3] = static_cast<unsigned char>(((x)>>24)&255); (y)[2] = static_cast<unsigned char>(((x)>>16)&255);     \
+  (y)[1] = static_cast<unsigned char>(((x)>>8)&255); (y)[0] = static_cast<unsigned char>((x)&255); }
 
 #define LOAD64L(x, y)                                                      \
-{ x = (((ulong64)((y)[7] & 255))<<56)|(((ulong64)((y)[6] & 255))<<48) | \
-  (((ulong64)((y)[5] & 255))<<40)|(((ulong64)((y)[4] & 255))<<32) | \
-  (((ulong64)((y)[3] & 255))<<24)|(((ulong64)((y)[2] & 255))<<16) | \
-  (((ulong64)((y)[1] & 255))<<8)|(((ulong64)((y)[0] & 255))); }
+{ x = ((static_cast<ulong64>((y)[7] & 255))<<56)|((static_cast<ulong64>((y)[6] & 255))<<48) | \
+  ((static_cast<ulong64>((y)[5] & 255))<<40)|((static_cast<ulong64>((y)[4] & 255))<<32) | \
+  ((static_cast<ulong64>((y)[3] & 255))<<24)|((static_cast<ulong64>((y)[2] & 255))<<16) | \
+  ((static_cast<ulong64>((y)[1] & 255))<<8)|((static_cast<ulong64>((y)[0] & 255))); }
 
 #ifdef ENDIAN_32BITWORD 
 
@@ -395,16 +395,16 @@ typedef unsigned long ulong32;
   memcpy(&(x), y, 4);
 
 #define STORE64H(x, y)                                                                     \
-{ (y)[0] = (unsigned char)(((x)>>56)&255); (y)[1] = (unsigned char)(((x)>>48)&255);   \
-  (y)[2] = (unsigned char)(((x)>>40)&255); (y)[3] = (unsigned char)(((x)>>32)&255);   \
-  (y)[4] = (unsigned char)(((x)>>24)&255); (y)[5] = (unsigned char)(((x)>>16)&255);   \
-  (y)[6] = (unsigned char)(((x)>>8)&255);  (y)[7] = (unsigned char)((x)&255); }
+{ (y)[0] = static_cast<unsigned char>(((x)>>56)&255); (y)[1] = static_cast<unsigned char>(((x)>>48)&255);   \
+  (y)[2] = static_cast<unsigned char>(((x)>>40)&255); (y)[3] = static_cast<unsigned char>(((x)>>32)&255);   \
+  (y)[4] = static_cast<unsigned char>(((x)>>24)&255); (y)[5] = static_cast<unsigned char>(((x)>>16)&255);   \
+  (y)[6] = static_cast<unsigned char>(((x)>>8)&255);  (y)[7] = static_cast<unsigned char>((x)&255); }
 
 #define LOAD64H(x, y)                                                       \
-{ x = (((ulong64)((y)[0] & 255))<<56)|(((ulong64)((y)[1] & 255))<<48)| \
-  (((ulong64)((y)[2] & 255))<<40)|(((ulong64)((y)[3] & 255))<<32)| \
-  (((ulong64)((y)[4] & 255))<<24)|(((ulong64)((y)[5] & 255))<<16)| \
-  (((ulong64)((y)[6] & 255))<<8)| (((ulong64)((y)[7] & 255))); }
+{ x = ((static_cast<ulong64>((y)[0] & 255))<<56)|((static_cast<ulong64>((y)[1] & 255))<<48)| \
+  ((static_cast<ulong64>((y)[2] & 255))<<40)|((static_cast<ulong64>((y)[3] & 255))<<32)| \
+  ((static_cast<ulong64>((y)[4] & 255))<<24)|((static_cast<ulong64>((y)[5] & 255))<<16)| \
+  ((static_cast<ulong64>((y)[6] & 255))<<8)| ((static_cast<ulong64>((y)[7] & 255))); }
 
 #else /* 64-bit words then  */
 
@@ -484,10 +484,10 @@ static inline unsigned RORc(unsigned word, const int i)
 #else
 
 /* rotates the hard way */
-#define ROL(x, y) ( (((unsigned long)(x)<<(unsigned long)((y)&31)) | (((unsigned long)(x)&0xFFFFFFFFUL)>>(unsigned long)(32-((y)&31)))) & 0xFFFFFFFFUL)
-#define ROR(x, y) ( ((((unsigned long)(x)&0xFFFFFFFFUL)>>(unsigned long)((y)&31)) | ((unsigned long)(x)<<(unsigned long)(32-((y)&31)))) & 0xFFFFFFFFUL)
-#define ROLc(x, y) ( (((unsigned long)(x)<<(unsigned long)((y)&31)) | (((unsigned long)(x)&0xFFFFFFFFUL)>>(unsigned long)(32-((y)&31)))) & 0xFFFFFFFFUL)
-#define RORc(x, y) ( ((((unsigned long)(x)&0xFFFFFFFFUL)>>(unsigned long)((y)&31)) | ((unsigned long)(x)<<(unsigned long)(32-((y)&31)))) & 0xFFFFFFFFUL)
+#define ROL(x, y) ( ((static_cast<unsigned long>(x)<<static_cast<unsigned long>((y)&31)) | ((static_cast<unsigned long>(x)&0xFFFFFFFFUL)>>static_cast<unsigned long>(32-((y)&31)))) & 0xFFFFFFFFUL)
+#define ROR(x, y) ( (((static_cast<unsigned long>(x)&0xFFFFFFFFUL)>>static_cast<unsigned long>((y)&31)) | (static_cast<unsigned long>(x)<<static_cast<unsigned long>(32-((y)&31)))) & 0xFFFFFFFFUL)
+#define ROLc(x, y) ( ((static_cast<unsigned long>(x)<<static_cast<unsigned long>((y)&31)) | ((static_cast<unsigned long>(x)&0xFFFFFFFFUL)>>static_cast<unsigned long>(32-((y)&31)))) & 0xFFFFFFFFUL)
+#define RORc(x, y) ( (((static_cast<unsigned long>(x)&0xFFFFFFFFUL)>>static_cast<unsigned long>((y)&31)) | (static_cast<unsigned long>(x)<<static_cast<unsigned long>(32-((y)&31)))) & 0xFFFFFFFFUL)
 
 #endif
 
@@ -539,20 +539,20 @@ static inline unsigned long ROR64c(unsigned long word, const int i)
 #else /* Not x86_64  */
 
 #define ROL64(x, y) \
-  ( (((x)<<((ulong64)(y)&63)) | \
-  (((x)&CONST64(0xFFFFFFFFFFFFFFFF))>>((ulong64)64-((y)&63)))) & CONST64(0xFFFFFFFFFFFFFFFF))
+  ( (((x)<<(static_cast<ulong64>(y)&63)) | \
+  (((x)&CONST64(0xFFFFFFFFFFFFFFFF))>>(static_cast<ulong64>64-((y)&63)))) & CONST64(0xFFFFFFFFFFFFFFFF))
 
 #define ROR64(x, y) \
-  ( ((((x)&CONST64(0xFFFFFFFFFFFFFFFF))>>((ulong64)(y)&CONST64(63))) | \
-  ((x)<<((ulong64)(64-((y)&CONST64(63)))))) & CONST64(0xFFFFFFFFFFFFFFFF))
+  ( ((((x)&CONST64(0xFFFFFFFFFFFFFFFF))>>(static_cast<ulong64>(y)&CONST64(63))) | \
+  ((x)<<(static_cast<ulong64>(64-((y)&CONST64(63)))))) & CONST64(0xFFFFFFFFFFFFFFFF))
 
 #define ROL64c(x, y) \
-  ( (((x)<<((ulong64)(y)&63)) | \
-  (((x)&CONST64(0xFFFFFFFFFFFFFFFF))>>((ulong64)64-((y)&63)))) & CONST64(0xFFFFFFFFFFFFFFFF))
+  ( (((x)<<(static_cast<ulong64>(y)&63)) | \
+  (((x)&CONST64(0xFFFFFFFFFFFFFFFF))>>(static_cast<ulong64>64-((y)&63)))) & CONST64(0xFFFFFFFFFFFFFFFF))
 
 #define ROR64c(x, y) \
-  ( ((((x)&CONST64(0xFFFFFFFFFFFFFFFF))>>((ulong64)(y)&CONST64(63))) | \
-  ((x)<<((ulong64)(64-((y)&CONST64(63)))))) & CONST64(0xFFFFFFFFFFFFFFFF))
+  ( ((((x)&CONST64(0xFFFFFFFFFFFFFFFF))>>(static_cast<ulong64>(y)&CONST64(63))) | \
+  ((x)<<(static_cast<ulong64>(64-((y)&CONST64(63)))))) & CONST64(0xFFFFFFFFFFFFFFFF))
 
 #endif
 
@@ -563,7 +563,7 @@ static inline unsigned long ROR64c(unsigned long word, const int i)
 
 /* extract a byte portably */
 #ifdef _MSC_VER
-#define byte(x, n) ((unsigned char)((x) >> (8 * (n))))
+#define byte(x, n) (static_cast<unsigned char>((x) >> (8 * (n))))
 #else
 #define byte(x, n) (((x) >> (8 * (n))) & 255)
 #endif   

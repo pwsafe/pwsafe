@@ -26,6 +26,7 @@
 					<Add option="-m64" />
 					<Add option="-Wformat=2" />
 					<Add option="-Wcast-qual" />
+					<Add option="-Wold-style-cast" />
 					<Add option="-D_DEBUG" />
 					<Add option="-DDEBUG" />
 					<Add directory="../../src" />

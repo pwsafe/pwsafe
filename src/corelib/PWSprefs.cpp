@@ -128,10 +128,10 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
 // Default value = -1 means set at runtime
 // Extra two values for Integer - min and max acceptable values (ignored if = -1)
 const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {
-  {_T("column1width"), (unsigned int)-1, ptApplication, -1, -1},    // application
-  {_T("column2width"), (unsigned int)-1, ptApplication, -1, -1},    // application
-  {_T("column3width"), (unsigned int)-1, ptApplication, -1, -1},    // application
-  {_T("column4width"), (unsigned int)-1, ptApplication, -1, -1},    // application
+  {_T("column1width"), static_cast<unsigned int>(-1), ptApplication, -1, -1},    // application
+  {_T("column2width"), static_cast<unsigned int>(-1), ptApplication, -1, -1},    // application
+  {_T("column3width"), static_cast<unsigned int>(-1), ptApplication, -1, -1},    // application
+  {_T("column4width"), static_cast<unsigned int>(-1), ptApplication, -1, -1},    // application
   {_T("sortedcolumn"), 0, ptApplication, 0, 15},                    // application
   {_T("PWDefaultLength"), 8, ptDatabase, 4, 1024},                  // database
   // maxmruitems maximum = (ID_FILE_MRU_ENTRYMAX - ID_FILE_MRU_ENTRY1 + 1)
@@ -259,7 +259,7 @@ StringX PWSprefs::GetPrefDefVal(StringPrefs pref_enum) const
 // Following for case where default value is determined at runtime
 unsigned int PWSprefs::GetPref(IntPrefs pref_enum, unsigned int defVal) const
 {
-  return m_intValues[pref_enum] == (unsigned int)-1 ? defVal : m_intValues[pref_enum];
+  return m_intValues[pref_enum] == static_cast<unsigned int>(-1) ? defVal : m_intValues[pref_enum];
 }
 
 void PWSprefs::GetPrefRect(long &top, long &bottom,

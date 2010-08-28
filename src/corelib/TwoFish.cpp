@@ -78,7 +78,7 @@ static const unsigned char qord[4][5] = {
 
 #include "twofish_tab.c"
 
-#define sbox(i, x) ((ulong32)SBOX[i][(x)&255])
+#define sbox(i, x) (static_cast<ulong32>(SBOX[i][(x)&255]))
 
 #else
 
@@ -261,20 +261,20 @@ static void h_func(const unsigned char *in, unsigned char *out, unsigned char *M
   }
   switch (k) {
     case 4:
-      y[0] = (unsigned char)(sbox(1, (unsigned long)y[0]) ^ M[4 * (6 + offset) + 0]);
-      y[1] = (unsigned char)(sbox(0, (unsigned long)y[1]) ^ M[4 * (6 + offset) + 1]);
-      y[2] = (unsigned char)(sbox(0, (unsigned long)y[2]) ^ M[4 * (6 + offset) + 2]);
-      y[3] = (unsigned char)(sbox(1, (unsigned long)y[3]) ^ M[4 * (6 + offset) + 3]);
+      y[0] = static_cast<unsigned char>(sbox(1, static_cast<unsigned long>(y[0])) ^ M[4 * (6 + offset) + 0]);
+      y[1] = static_cast<unsigned char>(sbox(0, static_cast<unsigned long>(y[1])) ^ M[4 * (6 + offset) + 1]);
+      y[2] = static_cast<unsigned char>(sbox(0, static_cast<unsigned long>(y[2])) ^ M[4 * (6 + offset) + 2]);
+      y[3] = static_cast<unsigned char>(sbox(1, static_cast<unsigned long>(y[3])) ^ M[4 * (6 + offset) + 3]);
     case 3:
-      y[0] = (unsigned char)(sbox(1, (unsigned long)y[0]) ^ M[4 * (4 + offset) + 0]);
-      y[1] = (unsigned char)(sbox(1, (unsigned long)y[1]) ^ M[4 * (4 + offset) + 1]);
-      y[2] = (unsigned char)(sbox(0, (unsigned long)y[2]) ^ M[4 * (4 + offset) + 2]);
-      y[3] = (unsigned char)(sbox(0, (unsigned long)y[3]) ^ M[4 * (4 + offset) + 3]);
+      y[0] = static_cast<unsigned char>(sbox(1, static_cast<unsigned long>(y[0])) ^ M[4 * (4 + offset) + 0]);
+      y[1] = static_cast<unsigned char>(sbox(1, static_cast<unsigned long>(y[1])) ^ M[4 * (4 + offset) + 1]);
+      y[2] = static_cast<unsigned char>(sbox(0, static_cast<unsigned long>(y[2])) ^ M[4 * (4 + offset) + 2]);
+      y[3] = static_cast<unsigned char>(sbox(0, static_cast<unsigned long>(y[3])) ^ M[4 * (4 + offset) + 3]);
     case 2:
-      y[0] = (unsigned char)(sbox(1, sbox(0, sbox(0, (unsigned long)y[0]) ^ M[4 * (2 + offset) + 0]) ^ M[4 * (0 + offset) + 0]));
-      y[1] = (unsigned char)(sbox(0, sbox(0, sbox(1, (unsigned long)y[1]) ^ M[4 * (2 + offset) + 1]) ^ M[4 * (0 + offset) + 1]));
-      y[2] = (unsigned char)(sbox(1, sbox(1, sbox(0, (unsigned long)y[2]) ^ M[4 * (2 + offset) + 2]) ^ M[4 * (0 + offset) + 2]));
-      y[3] = (unsigned char)(sbox(0, sbox(1, sbox(1, (unsigned long)y[3]) ^ M[4 * (2 + offset) + 3]) ^ M[4 * (0 + offset) + 3]));
+      y[0] = static_cast<unsigned char>(sbox(1, sbox(0, sbox(0, static_cast<unsigned long>(y[0])) ^ M[4 * (2 + offset) + 0]) ^ M[4 * (0 + offset) + 0]));
+      y[1] = static_cast<unsigned char>(sbox(0, sbox(0, sbox(1, static_cast<unsigned long>(y[1])) ^ M[4 * (2 + offset) + 1]) ^ M[4 * (0 + offset) + 1]));
+      y[2] = static_cast<unsigned char>(sbox(1, sbox(1, sbox(0, static_cast<unsigned long>(y[2])) ^ M[4 * (2 + offset) + 2]) ^ M[4 * (0 + offset) + 2]));
+      y[3] = static_cast<unsigned char>(sbox(0, sbox(1, sbox(1, static_cast<unsigned long>(y[3])) ^ M[4 * (2 + offset) + 3]) ^ M[4 * (0 + offset) + 3]));
     default:
       break;
   }
@@ -380,7 +380,7 @@ static int twofish_setup(const unsigned char *key, int keylen, int num_rounds, t
 
   /* copy the key into M */
   for (x = 0; x < keylen; x++) {
-    M[x] = (unsigned char)(key[x] & 255);
+    M[x] = static_cast<unsigned char>(key[x] & 255);
   }
 
   /* create the S[..] words */
@@ -398,14 +398,14 @@ static int twofish_setup(const unsigned char *key, int keylen, int num_rounds, t
   for (x = 0; x < 20; x++) {
     /* A = h(p * 2x, Me) */
     for (y = 0; y < 4; y++) {
-      tmp[y] = (unsigned char)(x+x);
+      tmp[y] = static_cast<unsigned char>(x+x);
     }
     h_func(tmp, tmp2, M, k, 0);
     LOAD32L(A, tmp2);
 
     /* B = ROL(h(p * (2x + 1), Mo), 8) */
     for (y = 0; y < 4; y++) {
-      tmp[y] = (unsigned char)(x+x+1);
+      tmp[y] = static_cast<unsigned char>(x+x+1);
     }
     h_func(tmp, tmp2, M, k, 1);
     LOAD32L(B, tmp2);
@@ -422,8 +422,8 @@ static int twofish_setup(const unsigned char *key, int keylen, int num_rounds, t
   /* make the sboxes (large ram variant) */
   if (k == 2) {
     for (x = 0; x < 256; x++) {
-      tmpx0 = (unsigned char)(sbox(0, x));
-      tmpx1 = (unsigned char)(sbox(1, x));
+      tmpx0 = static_cast<unsigned char>(sbox(0, x));
+      tmpx1 = static_cast<unsigned char>(sbox(1, x));
       skey->S[0][x] = mds_column_mult(sbox(1, (sbox(0, tmpx0 ^ S[0]) ^ S[4])),0);
       skey->S[1][x] = mds_column_mult(sbox(0, (sbox(0, tmpx1 ^ S[1]) ^ S[5])),1);
       skey->S[2][x] = mds_column_mult(sbox(1, (sbox(1, tmpx0 ^ S[2]) ^ S[6])),2);
@@ -431,8 +431,8 @@ static int twofish_setup(const unsigned char *key, int keylen, int num_rounds, t
     }
   } else if (k == 3) {
     for (x = 0; x < 256; x++) {
-      tmpx0 = (unsigned char)(sbox(0, x));
-      tmpx1 = (unsigned char)(sbox(1, x));
+      tmpx0 = static_cast<unsigned char>(sbox(0, x));
+      tmpx1 = static_cast<unsigned char>(sbox(1, x));
       skey->S[0][x] = mds_column_mult(sbox(1, (sbox(0, sbox(0, tmpx1 ^ S[0]) ^ S[4]) ^ S[8])),0);
       skey->S[1][x] = mds_column_mult(sbox(0, (sbox(0, sbox(1, tmpx1 ^ S[1]) ^ S[5]) ^ S[9])),1);
       skey->S[2][x] = mds_column_mult(sbox(1, (sbox(1, sbox(0, tmpx0 ^ S[2]) ^ S[6]) ^ S[10])),2);
@@ -440,8 +440,8 @@ static int twofish_setup(const unsigned char *key, int keylen, int num_rounds, t
     }
   } else {
     for (x = 0; x < 256; x++) {
-      tmpx0 = (unsigned char)(sbox(0, x));
-      tmpx1 = (unsigned char)(sbox(1, x));
+      tmpx0 = static_cast<unsigned char>(sbox(0, x));
+      tmpx1 = static_cast<unsigned char>(sbox(1, x));
       skey->S[0][x] = mds_column_mult(sbox(1, (sbox(0, sbox(0, sbox(1, tmpx1 ^ S[0]) ^ S[4]) ^ S[8]) ^ S[12])),0);
       skey->S[1][x] = mds_column_mult(sbox(0, (sbox(0, sbox(1, sbox(1, tmpx0 ^ S[1]) ^ S[5]) ^ S[9]) ^ S[13])),1);
       skey->S[2][x] = mds_column_mult(sbox(1, (sbox(1, sbox(0, sbox(0, tmpx0 ^ S[2]) ^ S[6]) ^ S[10]) ^ S[14])),2);

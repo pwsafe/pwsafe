@@ -133,7 +133,7 @@ void pws_os::HexDump(unsigned char *pmemory, const int &length,
       cs_outbuff += cs_hexbuff;
 
       if (c >= 32 && c < 127)
-        cs_charbuff += (TCHAR)c;
+        cs_charbuff += static_cast<TCHAR>(c);
       else
         cs_charbuff += _T('.');
     }

@@ -247,7 +247,7 @@ void CSafeCombinationPrompt::OnOkClick( wxCommandEvent& /* evt */ )
       wxMessageDialog err(this, errmess,
                           _("Error"), wxOK | wxICON_EXCLAMATION);
       err.ShowModal();
-      wxTextCtrl *txt = (wxTextCtrl *)FindWindow(ID_PASSWORD);
+      wxTextCtrl *txt = dynamic_cast<wxTextCtrl *>(FindWindow(ID_PASSWORD));
       txt->SetSelection(-1,-1);
       txt->SetFocus();
       return;

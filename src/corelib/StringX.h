@@ -92,7 +92,7 @@ namespace S_Alloc
       // Allocate raw memory
       pointer allocate(size_type n, const_pointer hint = 0) {
         UNREFERENCED_PARAMETER(hint);
-        pointer p = (pointer)std::malloc(n * sizeof(T));
+        pointer p = static_cast<pointer>(std::malloc(n * sizeof(T)));
         // pws_os::Trace(_T("Securely Allocated %d bytes at %p\n"), n * sizeof(T), p);
         if (p == NULL)
           throw std::bad_alloc();

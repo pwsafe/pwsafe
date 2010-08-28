@@ -218,7 +218,7 @@ void SHA256::Update(const unsigned char *in, size_t inlen)
       inlen          -= block_size;
     } else {
       n = MIN(inlen, (block_size - curlen));
-      memcpy(buf + curlen, in, (size_t)n);
+      memcpy(buf + curlen, in, static_cast<size_t>(n));
       curlen += n;
       in             += n;
       inlen          -= n;
@@ -247,7 +247,7 @@ void SHA256::Final(unsigned char digest[HASHLEN])
   length += curlen * 8;
 
   /* append the '1' bit */
-  buf[curlen++] = (unsigned char)0x80;
+  buf[curlen++] = static_cast<unsigned char>(0x80);
 
   /* if the length is currently above 56 bytes we append zeros
   * then compress.  Then we can fall back to padding zeros and length
@@ -255,7 +255,7 @@ void SHA256::Final(unsigned char digest[HASHLEN])
   */
   if (curlen > 56) {
     while (curlen < 64) {
-      buf[curlen++] = (unsigned char)0;
+      buf[curlen++] = 0;
     }
     sha256_compress(state, buf);
     curlen = 0;
@@ -263,7 +263,7 @@ void SHA256::Final(unsigned char digest[HASHLEN])
 
   /* pad upto 56 bytes of zeroes */
   while (curlen < 56) {
-    buf[curlen++] = (unsigned char)0;
+    buf[curlen++] = 0;
   }
 
   /* store length */

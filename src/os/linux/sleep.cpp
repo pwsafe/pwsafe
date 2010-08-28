@@ -18,9 +18,9 @@ void pws_os::sleep_ms(unsigned int milliseconds)
 {
   struct timespec tv;
   /* Construct the timespec from the number of whole seconds...  */
-  tv.tv_sec = (time_t) (milliseconds / 1000);
+  tv.tv_sec = static_cast<time_t>(milliseconds / 1000);
   /* ... and the remainder in nanoseconds.  */
-  tv.tv_nsec = (long) ((milliseconds % 1000) * 1000000);
+  tv.tv_nsec = static_cast<long>((milliseconds % 1000) * 1000000);
 
   while (1) {
     /* Sleep for the time specified in tv.  If interrupted by a

@@ -190,7 +190,7 @@ StringX CPasswordCharPool::MakePassword() const
     temp = _T("");    // empty the password string
 
     for (uint x = 0; x < m_pwlen; x++) {
-      unsigned int rand = PWSrand::GetInstance()->RangeRand((unsigned int)m_sumlengths);
+      unsigned int rand = PWSrand::GetInstance()->RangeRand(static_cast<unsigned int>(m_sumlengths));
       // The only reason for passing rand as a parameter is to
       // avoid having to generate two random numbers for each
       // character. Alternately, we could have had a m_rand
@@ -328,7 +328,7 @@ StringX CPasswordCharPool::MakePronounceable() const
      generates "mmitify" even though no word in my dictionary
      begins with mmi. So what.) */
   sumfreq = sigma;  // sigma calculated by loadtris
-  ranno = (long)pwsrnd->RangeRand(sumfreq+1); // Weight by sum of frequencies
+  ranno = static_cast<long>(pwsrnd->RangeRand(sumfreq+1)); // Weight by sum of frequencies
   sum = 0;
   for (c1 = 0; c1 < 26; c1++) {
     for (c2 = 0; c2 < 26; c2++) {
@@ -359,7 +359,7 @@ StringX CPasswordCharPool::MakePronounceable() const
       break;  // Break while nchar loop & print what we have.
     }
     /* Choose a continuation. */
-    ranno = (long)pwsrnd->RangeRand(sumfreq+1); // Weight by sum of frequencies
+    ranno = static_cast<long>(pwsrnd->RangeRand(sumfreq+1)); // Weight by sum of frequencies
     sum = 0;
     for (c3 = 0; c3 < 26; c3++) {
       sum += tris[int(c1)][int(c2)][int(c3)];
@@ -399,12 +399,12 @@ StringX CPasswordCharPool::MakePronounceable() const
   else if (!m_uselowercase && m_useuppercase)
     for (i = 0; i < m_pwlen; i++) {
       if (_istalpha(password[i]))
-        password[i] = (charT)_totupper(password[i]);
+        password[i] = static_cast<charT>(_totupper(password[i]));
     }
   else if (m_uselowercase && m_useuppercase) // mixed case
     for (i = 0; i < m_pwlen; i++) {
       if (_istalpha(password[i]) && pwsrnd->RandUInt() % 2)
-        password[i] = (charT)_totupper(password[i]);
+        password[i] = static_cast<charT>(_totupper(password[i]));
     }
 
   return password.c_str();

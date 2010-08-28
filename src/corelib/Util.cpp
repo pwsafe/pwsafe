@@ -61,7 +61,7 @@ void trashMemory(void* buffer, size_t length)
 #endif
 void trashMemory(LPTSTR buffer, size_t length)
 {
-  trashMemory((unsigned char *) buffer, length * sizeof(buffer[0]));
+  trashMemory(reinterpret_cast<unsigned char *>(buffer), length * sizeof(buffer[0]));
 }
 
 
@@ -73,7 +73,7 @@ void burnStack(unsigned long len)
 {
   unsigned char buf[32];
   trashMemory(buf, sizeof(buf));
-  if (len > (unsigned long)sizeof(buf))
+  if (len > static_cast<unsigned long>(sizeof(buf)))
     burnStack(len - sizeof(buf));
 }
 
@@ -97,8 +97,8 @@ void ConvertString(const StringX &text,
   memset(&mbs, 0, sizeof(mbs));
   size_t len = wcsrtombs(NULL, &txtstr, 0, &mbs);
   txt = new unsigned char[len + 1];
-  len = wcsrtombs((char *)txt, &txtstr, len, &mbs);
-  ASSERT(len != (size_t)-1);
+  len = wcsrtombs(reinterpret_cast<char *>(txt), &txtstr, len, &mbs);
+  ASSERT(len != size_t(-1));
 #endif
   txtlen = len;
   txt[len] = '\0';
@@ -137,7 +137,7 @@ void GenRandhash(const StringX &a_passkey,
   BlowFish Cipher(tempSalt, sizeof(tempSalt));
 
   unsigned char tempbuf[StuffSize];
-  memcpy((char*)tempbuf, (char*)a_randstuff, StuffSize);
+  memcpy(reinterpret_cast<char*>(tempbuf), reinterpret_cast<const char*>(a_randstuff), StuffSize);
 
   for (int x=0; x<1000; x++)
     Cipher.Encrypt(tempbuf, tempbuf);
@@ -442,7 +442,7 @@ void PWSUtil::GetTimeStamp(stringT &sTimeStamp)
   ostringstreamT *p_os;
   p_os = new ostringstreamT;
   *p_os << cmys_now << TCHAR('.') << setw(3) << setfill(TCHAR('0'))
-     << (unsigned int)ptimebuffer->millitm;
+     << static_cast<unsigned int>(ptimebuffer->millitm);
 
   sTimeStamp = p_os->str();
   delete ptimebuffer;
@@ -456,9 +456,9 @@ stringT PWSUtil::Base64Encode(const BYTE *strIn, size_t len)
     _S("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/");
 
   for (size_t i = 0; i < len; i += 3) {
-    long l = ( ((long)strIn[i]) << 16 ) | 
-               (((i + 1) < len) ? (((long)strIn[i + 1]) << 8) : 0) | 
-               (((i + 2) < len) ? ((long)strIn[i + 2]) : 0);
+    long l = ( static_cast<long>(strIn[i]) << 16 ) | 
+               (((i + 1) < len) ? (static_cast<long>(strIn[i + 1]) << 8) : 0) | 
+               (((i + 2) < len) ? static_cast<long>(strIn[i + 2]) : 0);
 
     cs_Out += base64ABC[(l >> 18) & 0x3F];
     cs_Out += base64ABC[(l >> 12) & 0x3F];
@@ -498,22 +498,22 @@ void PWSUtil::Base64Decode(const StringX &inString, BYTE* &outData, size_t &out_
       }
     }
 
-    outData[st_length] = ((BYTE)iDigits[0] << 2);
+    outData[st_length] = (static_cast<BYTE>(iDigits[0]) << 2);
 
     if (iDigits[1] >= 0) {
-      outData[st_length] += ((BYTE)iDigits[1] >> 4) & 0x3;
+      outData[st_length] += (static_cast<BYTE>(iDigits[1]) >> 4) & 0x3;
     }
 
     st_length++;
 
     if (iDigits[2] >= 0) {
-      outData[st_length++] = (((BYTE)iDigits[1] & 0x0f) << 4)
-        | (((BYTE)iDigits[2] >> 2) & 0x0f);
+      outData[st_length++] = ((static_cast<BYTE>(iDigits[1]) & 0x0f) << 4)
+        | ((static_cast<BYTE>(iDigits[2]) >> 2) & 0x0f);
     }
 
     if (iDigits[3] >= 0) {
-      outData[st_length++] = (((BYTE)iDigits[2] & 0x03) << 6)
-        | ((BYTE)iDigits[3] & 0x3f);
+      outData[st_length++] = ((static_cast<BYTE>(iDigits[2]) & 0x03) << 6)
+        | (static_cast<BYTE>(iDigits[3]) & 0x3f);
     }
   }
 
