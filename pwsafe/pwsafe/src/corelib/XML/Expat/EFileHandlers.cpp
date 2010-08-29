@@ -72,7 +72,7 @@ void XMLCALL EFileHandlers::startElement(void *userdata, const XML_Char *name,
   if (!m_pValidator->GetElementInfo(name, edata))
     throw _T("XML element name failed validation");
 
-  const int icurrent_element = m_bentrybeingprocessed ? edata.element_entry_code : edata.element_code;
+  const int icurrent_element = m_bEntryBeingProcessed ? edata.element_entry_code : edata.element_code;
   XMLFileHandlers::ProcessStartElement(icurrent_element);
 
   switch (icurrent_element) {
@@ -323,7 +323,7 @@ void XMLCALL EFileHandlers::endElement(void * userdata, const XML_Char *name)
     throw _T("XML element name failed validation");
 
   // The rest is only processed in Import mode (not Validation mode)
-  const int icurrent_element = m_bentrybeingprocessed ? edata.element_entry_code : edata.element_code;
+  const int icurrent_element = m_bEntryBeingProcessed ? edata.element_entry_code : edata.element_code;
   XMLFileHandlers::ProcessEndElement(icurrent_element);
 
   }

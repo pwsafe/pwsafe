@@ -70,7 +70,7 @@ XFilterSAX2Handlers::~XFilterSAX2Handlers()
 void XFilterSAX2Handlers::startDocument()
 {
   m_strXMLErrors.clear();
-  m_bentrybeingprocessed = false;
+  m_bEntryBeingProcessed = false;
 }
 
 void XFilterSAX2Handlers::startElement(const XMLCh* const /* uri */,
@@ -130,7 +130,7 @@ void XFilterSAX2Handlers::startElement(const XMLCh* const /* uri */,
     cur_filterentry = new st_FilterRow;
     cur_filterentry->Empty();
     cur_filterentry->bFilterActive = true;
-    m_bentrybeingprocessed = true;
+    m_bEntryBeingProcessed = true;
   }
 
   if (bfilter || bfilter_entry) {

@@ -101,14 +101,14 @@ bool XMLFileHandlers::ProcessStartElement(const int icurrent_element)
       m_numEntriesRenamed = 0;
       m_numEntriesPWHErrors = 0;
       m_nRecordsWithUnknownFields = 0;
-      m_bentrybeingprocessed = false;
+      m_bEntryBeingProcessed = false;
       break;
     case XLE_UNKNOWNHEADERFIELDS:
       m_ukhxl.clear();
       m_bheader = true;
       break;
     case XLE_ENTRY:
-      m_bentrybeingprocessed = true;
+      m_bEntryBeingProcessed = true;
       if (m_bValidation)
         return false;
 

@@ -128,7 +128,7 @@ protected:
   int m_iErrorCode;
   TCHAR m_delimiter;
 
-  bool m_bentrybeingprocessed;
+  bool m_bEntryBeingProcessed;
   bool m_bValidation;
   bool m_bErrors, m_bRecordHeaderErrors, m_bDatabaseHeaderErrors;
   bool m_bImportPSWDsOnly;

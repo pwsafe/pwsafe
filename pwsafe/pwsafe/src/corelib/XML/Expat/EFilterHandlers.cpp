@@ -122,7 +122,7 @@ void XMLCALL EFilterHandlers::startElement(void *userdata, const XML_Char *name,
   if (_tcscmp(name, _T("filters")) == 0) {
     m_unique_filternames.clear();
     m_strErrorMessage.clear();
-    m_bentrybeingprocessed = false;
+    m_bEntryBeingProcessed = false;
   }
 
   else if (_tcscmp(name, _T("filter")) == 0) {
@@ -139,7 +139,7 @@ void XMLCALL EFilterHandlers::startElement(void *userdata, const XML_Char *name,
     cur_filterentry = new st_FilterRow;
     cur_filterentry->Empty();
     cur_filterentry->bFilterActive = true;
-    m_bentrybeingprocessed = true;
+    m_bEntryBeingProcessed = true;
     // Process the attributes we need.
     for (int i = 0; attrs[i]; i += 2) {
       if (_tcscmp(attrs[i], _T("active")) == 0) {
