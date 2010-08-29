@@ -100,7 +100,7 @@ private:
   int m_iXMLVersion, m_iSchemaVersion;
   int m_iSchema_Version;
   bool m_bValidation;
-  bool m_bentrybeingprocessed;
+  bool m_bEntryBeingProcessed;
   bool m_bErrors;
   unsigned char m_ctype;
   unsigned char *m_pfield;

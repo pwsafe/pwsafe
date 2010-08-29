@@ -173,7 +173,7 @@ unsigned long __stdcall MFileSAX2ContentHandler::Release()
 HRESULT STDMETHODCALLTYPE  MFileSAX2ContentHandler::startDocument()
 {
   m_strXMLErrors = _T("");
-  m_bentrybeingprocessed = false;
+  m_bEntryBeingProcessed = false;
   return S_OK;
 }
 
@@ -258,7 +258,7 @@ HRESULT STDMETHODCALLTYPE MFileSAX2ContentHandler::startElement(
 
   st_file_element_data edata;
   m_pValidator->GetElementInfo(szCurElement, edata);
-  const int icurrent_element = m_bentrybeingprocessed ? edata.element_entry_code : edata.element_code;
+  const int icurrent_element = m_bEntryBeingProcessed ? edata.element_entry_code : edata.element_code;
   if (!XMLFileHandlers::ProcessStartElement(icurrent_element))
     return S_OK;
 
@@ -358,7 +358,7 @@ HRESULT STDMETHODCALLTYPE MFileSAX2ContentHandler::endElement(
   m_pValidator->GetElementInfo(szCurElement, edata);
 
   // The rest is only processed in Import mode (not Validation mode)
-  const int icurrent_element = m_bentrybeingprocessed ? edata.element_entry_code : edata.element_code;
+  const int icurrent_element = m_bEntryBeingProcessed ? edata.element_entry_code : edata.element_code;
   XMLFileHandlers::ProcessEndElement(icurrent_element);
 
   return S_OK;

@@ -78,7 +78,7 @@ private:
   int m_iErrorCode;
   int m_fieldlen;
   int m_iXMLVersion;
-  bool m_bentrybeingprocessed;
+  bool m_bEntryBeingProcessed;
   bool m_bErrors;
   unsigned char m_ctype;
   unsigned char *m_pfield;

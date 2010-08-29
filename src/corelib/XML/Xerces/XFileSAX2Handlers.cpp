@@ -60,7 +60,7 @@ XFileSAX2Handlers::~XFileSAX2Handlers()
 void XFileSAX2Handlers::startDocument( )
 {
   m_strXMLErrors = _T("");
-  m_bentrybeingprocessed = false;
+  m_bEntryBeingProcessed = false;
 }
 
 void XFileSAX2Handlers::startElement(const XMLCh* const /* uri */,
@@ -91,7 +91,7 @@ void XFileSAX2Handlers::startElement(const XMLCh* const /* uri */,
 
   st_file_element_data edata;
   m_pValidator->GetElementInfo(qname, edata);
-  const int icurrent_element = m_bentrybeingprocessed ? edata.element_entry_code : edata.element_code;
+  const int icurrent_element = m_bEntryBeingProcessed ? edata.element_entry_code : edata.element_code;
   if (!XMLFileHandlers::ProcessStartElement(icurrent_element))
     return;
     
@@ -184,7 +184,7 @@ void XFileSAX2Handlers::endElement(const XMLCh* const /* uri */,
   m_pValidator->GetElementInfo(qname, edata);
 
   // The rest is only processed in Import mode (not Validation mode)
-  const int icurrent_element = m_bentrybeingprocessed ? edata.element_entry_code : edata.element_code;
+  const int icurrent_element = m_bEntryBeingProcessed ? edata.element_entry_code : edata.element_code;
   XMLFileHandlers::ProcessEndElement(icurrent_element);
 }
 
