@@ -28,8 +28,8 @@
 #include "PWFileDialog.h"
 #include "DisplayFSBkupFiles.h"
 
-#include "corelib/pwsprefs.h"
-#include "corelib/util.h"
+#include "corelib/PWSprefs.h"
+#include "corelib/Util.h"
 #include "corelib/PWSdirs.h"
 #include "corelib/Report.h"
 #include "corelib/ItemData.h"
@@ -356,7 +356,15 @@ int DboxMain::NewFile(StringX &newfilename)
 
   CString cf(MAKEINTRESOURCE(IDS_DEFDBNAME)); // reasonable default for first time user
   std::wstring v3FileName = PWSUtil::GetNewFileName(LPCWSTR(cf), DEFAULT_SUFFIX);
-  std::wstring dir = PWSdirs::GetSafeDir();
+  std::wstring dir;
+  if (m_core.GetCurFile().empty())
+    dir = PWSdirs::GetSafeDir();
+  else {
+    std::wstring cdrive, cdir, dontCare;
+    pws_os::splitpath(m_core.GetCurFile().c_str(), cdrive, cdir, dontCare, dontCare);
+    dir = cdrive + cdir;
+  }
+
   INT_PTR rc;
 
   while (1) {
@@ -557,7 +565,14 @@ int DboxMain::Open(const UINT uiTitle)
   int rc = PWScore::SUCCESS;
   StringX sx_Filename;
   CString cs_text(MAKEINTRESOURCE(uiTitle));
-  std::wstring dir = PWSdirs::GetSafeDir();
+  std::wstring dir;
+  if (m_core.GetCurFile().empty())
+    dir = PWSdirs::GetSafeDir();
+  else {
+    std::wstring cdrive, cdir, dontCare;
+    pws_os::splitpath(m_core.GetCurFile().c_str(), cdrive, cdir, dontCare, dontCare);
+    dir = cdrive + cdir;
+  }
 
   // Open-type dialog box
   while (1) {
