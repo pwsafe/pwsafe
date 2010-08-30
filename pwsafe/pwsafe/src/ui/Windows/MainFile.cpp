@@ -35,6 +35,7 @@
 #include "corelib/ItemData.h"
 #include "corelib/corelib.h"
 #include "corelib/VerifyFormat.h"
+#include "corelib/SysInfo.h"
 #include "corelib/XML/XMLDefs.h"  // Required if testing "USE_XML_LIBRARY"
 
 #include "os/file.h"
@@ -3218,16 +3219,18 @@ void DboxMain::OnOK()
 
 static void RelativizePath(stringT &curfile)
 {
-  // If exec's drive == curfile's drive, remove
+  // If  IsUnderPw2go() && exec's drive == curfile's drive, remove
   // from latter's path. This supports DoK usage
-  const stringT execDir = pws_os::getexecdir();
-  stringT execDrive, dontCare;
-  pws_os::splitpath(execDir, execDrive, dontCare, dontCare, dontCare);
-  stringT fileDrive, fileDir, fileFile, fileExt;
-  pws_os::splitpath(curfile, fileDrive, fileDir, fileFile, fileExt);
-  ToUpper(fileDrive); ToUpper(execDrive);
-  if (fileDrive == execDrive) {
-    curfile = pws_os::makepath(L"", fileDir, fileFile, fileExt);
+  if (SysInfo::IsUnderPw2go()) {
+    const stringT execDir = pws_os::getexecdir();
+    stringT execDrive, dontCare;
+    pws_os::splitpath(execDir, execDrive, dontCare, dontCare, dontCare);
+    stringT fileDrive, fileDir, fileFile, fileExt;
+    pws_os::splitpath(curfile, fileDrive, fileDir, fileFile, fileExt);
+    ToUpper(fileDrive); ToUpper(execDrive);
+    if (fileDrive == execDrive) {
+      curfile = pws_os::makepath(L"", fileDir, fileFile, fileExt);
+    }
   }
 }
 

@@ -40,3 +40,8 @@ bool SysInfo::IsUnderU3()
 {
   return !pws_os::getenv("U3_ENV_VERSION", false).empty();
 }
+
+bool SysInfo::IsUnderPw2go()
+{
+  return !pws_os::getenv("PWS2GO", false).empty();
+}
