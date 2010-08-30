@@ -74,7 +74,7 @@ class PasswordSafeSearch;
 #define ID_SHOWHIDE_TOOLBAR 10037
 #define ID_SHOWHIDE_DRAGBAR 10038
 #define ID_EXPANDALL 10039
-#define ID_COLLAPESALL 10040
+#define ID_COLLAPSEALL 10040
 #define ID_FILTERMENU 10041
 #define ID_EDITFILTER 10042
 #define ID_APPLYFILTER 10043
@@ -306,6 +306,12 @@ public:
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_REDO
   void OnRedo(wxCommandEvent& evt);
+
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_EXPANDALL
+  void OnExpandAll(wxCommandEvent& /*evt*/);
+
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_COLLAPSEALL
+  void OnCollapseAll(wxCommandEvent& /*evt*/);
 
 ////@begin PasswordSafeFrame member function declarations
 
