@@ -27,6 +27,7 @@
 
 #include "safecombinationsetup.h"
 #include "corelib/PWCharPool.h" // for CheckPassword()
+#include "./wxutils.h"          // for ApplyPasswordFont()
 
 ////@begin XPM images
 ////@end XPM images
@@ -140,6 +141,7 @@ void CSafeCombinationSetup::CreateControls()
   itemBoxSizer4->Add(itemStaticText6, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxTextCtrl* itemTextCtrl7 = new wxTextCtrl( itemDialog1, ID_PASSKEY, _T(""), wxDefaultPosition, wxSize(itemDialog1->ConvertDialogToPixels(wxSize(120, -1)).x, -1), wxTE_PASSWORD );
+  ApplyPasswordFont(itemTextCtrl7);
   itemBoxSizer4->Add(itemTextCtrl7, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxBoxSizer* itemBoxSizer8 = new wxBoxSizer(wxHORIZONTAL);
@@ -151,6 +153,7 @@ void CSafeCombinationSetup::CreateControls()
   itemBoxSizer8->Add(itemStaticText10, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxTextCtrl* itemTextCtrl11 = new wxTextCtrl( itemDialog1, ID_VERIFY, _T(""), wxDefaultPosition, wxSize(itemDialog1->ConvertDialogToPixels(wxSize(120, -1)).x, -1), wxTE_PASSWORD );
+  ApplyPasswordFont(itemTextCtrl11);
   itemBoxSizer8->Add(itemTextCtrl11, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStdDialogButtonSizer* itemStdDialogButtonSizer12 = new wxStdDialogButtonSizer;

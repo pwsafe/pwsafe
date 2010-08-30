@@ -313,6 +313,9 @@ public:
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_COLLAPSEALL
   void OnCollapseAll(wxCommandEvent& /*evt*/);
 
+  void OnChangeTreeFont(wxCommandEvent& /*evt*/);
+  void OnChangePasswordFont(wxCommandEvent& /*evt*/);
+
 ////@begin PasswordSafeFrame member function declarations
 
   /// Retrieves bitmap resources

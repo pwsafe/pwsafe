@@ -25,6 +25,7 @@
 
 #include "safecombinationprompt.h"
 #include "os/file.h"
+#include "./wxutils.h"
 
 ////@begin XPM images
 #include "../graphics/wxWidgets/cpane.xpm"
@@ -147,6 +148,7 @@ void CSafeCombinationPrompt::CreateControls()
   itemBoxSizer8->Add(itemStaticText9, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxTextCtrl* itemTextCtrl10 = new wxTextCtrl( itemDialog1, ID_PASSWORD, wxEmptyString, wxDefaultPosition, wxSize(itemDialog1->ConvertDialogToPixels(wxSize(150, -1)).x, -1), wxTE_PASSWORD );
+  ApplyPasswordFont(itemTextCtrl10);
   itemBoxSizer8->Add(itemTextCtrl10, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStdDialogButtonSizer* itemStdDialogButtonSizer11 = new wxStdDialogButtonSizer;

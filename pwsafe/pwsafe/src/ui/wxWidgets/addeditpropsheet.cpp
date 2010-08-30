@@ -33,6 +33,7 @@
 
 #include "addeditpropsheet.h"
 #include "pwsclip.h"
+#include "./wxutils.h"
 
 ////@begin XPM images
 ////@end XPM images
@@ -277,6 +278,7 @@ void AddEditPropSheet::CreateControls()
   m_BasicFGSizer->Add(itemStaticText22, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_Password2Ctrl = new wxTextCtrl( m_BasicPanel, ID_TEXTCTRL3, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD );
+  ApplyPasswordFont(m_Password2Ctrl);
   m_BasicFGSizer->Add(m_Password2Ctrl, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_BasicFGSizer->Add(10, 10, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
@@ -907,6 +909,7 @@ void AddEditPropSheet::HidePassword()
                                   m_password.c_str(),
                                   wxDefaultPosition, wxDefaultSize,
                                   wxTE_PASSWORD);
+  ApplyPasswordFont(m_PasswordCtrl);
   m_BasicFGSizer->Replace(tmp, m_PasswordCtrl);
   delete tmp;
   m_BasicFGSizer->Layout();
