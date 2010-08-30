@@ -28,6 +28,7 @@ public:
   static void DeleteInstance();
 
   static bool IsUnderU3();
+  static bool IsUnderPw2go();
 
   void SetEffectiveUser(const stringT &u) {m_euser = u;}
   void SetEffectiveHost(const stringT &h) {m_esysname = h;}

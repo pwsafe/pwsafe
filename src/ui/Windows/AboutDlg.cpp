@@ -80,11 +80,12 @@ BOOL CAboutDlg::OnInitDialog()
     csRevision = csFileVersionString.Right(len - revIndex - 1);
     csRevision.Trim();
   }
+  const CString cs2go = SysInfo::IsUnderPw2go() ? L"2go " : L" ";
   if (m_nBuild == 0) { // hide build # if zero (formal release)
-    m_appversion.Format(L"%s V%d.%02d (%s)%s", AfxGetAppName(), 
+    m_appversion.Format(L"%s%sV%d.%02d (%s)%s", AfxGetAppName(), cs2go,
                         m_nMajor, m_nMinor, csRevision, SPECIAL_BUILD);
   } else {
-    m_appversion.Format(L"%s V%d.%02d.%02d (%s)%s", AfxGetAppName(), 
+    m_appversion.Format(L"%s%sV%d.%02d.%02d (%s)%s", AfxGetAppName(), cs2go,
                         m_nMajor, m_nMinor, m_nBuild, csRevision, SPECIAL_BUILD);
   }
 #ifdef _DEBUG
