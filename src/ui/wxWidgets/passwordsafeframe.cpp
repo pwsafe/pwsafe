@@ -54,6 +54,7 @@
 #include "../../corelib/XML/XMLDefs.h"
 #include "./ViewReport.h"
 #include "corelib/XML/XMLDefs.h"  // Required if testing "USE_XML_LIBRARY"
+#include <wx/fontdlg.h>
 
 // main toolbar images
 #include "../graphics/toolbar/wxWidgets/new.xpm"
@@ -198,7 +199,10 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
 
   EVT_MENU(ID_EXPANDALL,       PasswordSafeFrame::OnExpandAll )
   EVT_MENU(ID_COLLAPSEALL,     PasswordSafeFrame::OnCollapseAll )
-  
+
+  EVT_MENU(ID_CHANGETREEFONT,  PasswordSafeFrame::OnChangeTreeFont )
+  EVT_MENU(ID_CHANGEPSWDFONT,  PasswordSafeFrame::OnChangePasswordFont )
+
   EVT_MENU( ID_MENU_CLEAR_MRU, PasswordSafeFrame::OnClearRecentHistory )
   EVT_UPDATE_UI( ID_MENU_CLEAR_MRU, PasswordSafeFrame::OnUpdateClearRecentDBHistory )
 
@@ -573,6 +577,9 @@ void PasswordSafeFrame::ShowGrid(bool show)
     m_grid->AutoSizeColumns();
     m_grid->EnableEditing(false);
     m_grid->DeleteAllItems();
+    wxFont font(towxstring(PWSprefs::GetInstance()->GetPref(PWSprefs::TreeFont)));
+    if (font.IsOk())
+      m_grid->SetDefaultCellFont(font);
     ItemListConstIter iter;
     int i;
     for (iter = m_core.GetEntryIter(), i = 0;
@@ -589,6 +596,9 @@ void PasswordSafeFrame::ShowTree(bool show)
 {
   if (show) {
     m_tree->Clear();
+    wxFont font(towxstring(PWSprefs::GetInstance()->GetPref(PWSprefs::TreeFont)));
+    if (font.IsOk())
+      m_tree->SetFont(font);
     ItemListConstIter iter;
     for (iter = m_core.GetEntryIter();
          iter != m_core.GetEntryEndIter();
@@ -647,6 +657,50 @@ void PasswordSafeFrame::OnCollapseAll(wxCommandEvent& /*evt*/)
         idCurr = m_tree->GetNextChild(root, cookie) )
   {
       m_tree->CollapseAllChildren(idCurr);
+  }
+}
+
+void PasswordSafeFrame::OnChangeTreeFont(wxCommandEvent& /*evt*/)
+{
+  wxFont currentFont(towxstring(PWSprefs::GetInstance()->GetPref(PWSprefs::TreeFont)));
+
+  if (!currentFont.IsOk()) {
+    currentFont = IsTreeView() ? m_tree->GetFont() : m_grid->GetDefaultCellFont();
+  }
+  
+  wxFontData fd;
+  fd.SetInitialFont(currentFont);
+  
+  wxFontDialog dlg(this, fd);
+  
+  if (dlg.ShowModal() == wxID_OK) {
+    wxFont font = dlg.GetFontData().GetChosenFont();
+    if (IsTreeView()) {
+      m_tree->SetFont(font);
+    }
+    else {
+      m_grid->SetDefaultCellFont(font);
+    }
+    PWSprefs::GetInstance()->SetPref(PWSprefs::TreeFont, tostringx(font.GetNativeFontInfoDesc()));
+  }
+}
+
+void PasswordSafeFrame::OnChangePasswordFont(wxCommandEvent& /*evt*/)
+{
+  wxFontDialog dlg;
+
+  wxFont passwordFont(towxstring(PWSprefs::GetInstance()->GetPref(PWSprefs::PasswordFont)));
+  if (passwordFont.IsOk()) {
+    wxFontData fd;
+    fd.SetInitialFont(passwordFont);
+    dlg.Create(this, fd);
+  }
+  else
+    dlg.Create(this);
+
+  if (dlg.ShowModal() == wxID_OK) {
+    wxFont newFont = dlg.GetFontData().GetChosenFont();
+    PWSprefs::GetInstance()->SetPref(PWSprefs::PasswordFont, tostringx(newFont.GetNativeFontInfoDesc()));
   }
 }
 

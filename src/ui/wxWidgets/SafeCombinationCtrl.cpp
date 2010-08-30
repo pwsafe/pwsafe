@@ -21,6 +21,7 @@
 #endif
 
 #include "SafeCombinationCtrl.h"
+#include "./wxutils.h"
 
 #include "../graphics/wxWidgets/vkbd.xpm"
 
@@ -74,6 +75,7 @@ CSafeCombinationCtrl::CSafeCombinationCtrl(wxWindow* parent,
   textCtrl = new wxTextCtrl(parent, textCtrlID, wxEmptyString, wxDefaultPosition, wxDefaultSize, 
                                                 wxTE_PROCESS_ENTER|wxTE_PASSWORD,
                                                 wxTextValidator(validatorStyle, valPtr));
+  ApplyPasswordFont(textCtrl);
   Add(textCtrl, wxSizerFlags().Proportion(1).Expand());
   
   wxBitmapButton* vkbdButton = new wxBitmapButton(parent, wxID_ANY, wxBitmap(vkbd_xpm));

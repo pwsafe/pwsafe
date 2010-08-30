@@ -7,6 +7,7 @@
 #define __WXUTILS_H__
 
 #include "../../corelib/StringX.h"
+#include "../../corelib/PWSprefs.h"
 
 inline wxString& operator << ( wxString& str, const wxPoint& pt) {
   return str << wxT('[') << pt.x << wxT(',') << pt.y << wxT(']');
@@ -38,6 +39,14 @@ inline stringT tostdstring(const wxString& str) {
 
 inline StringX tostringx(const wxString& str) {
   return StringX(str.data(), str.size());
+}
+
+inline void ApplyPasswordFont(wxWindow* win)
+{
+  wxFont passwordFont(towxstring(PWSprefs::GetInstance()->GetPref(PWSprefs::PasswordFont)));
+  if (passwordFont.IsOk()) {
+    win->SetFont(passwordFont);
+  }
 }
 
 #endif

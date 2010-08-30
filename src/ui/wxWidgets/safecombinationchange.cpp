@@ -25,6 +25,7 @@
 
 #include "safecombinationchange.h"
 #include "corelib/PWCharPool.h" // for CheckPassword()
+#include "./wxutils.h"          // for ApplyPasswordFont
 
 ////@begin XPM images
 ////@end XPM images
@@ -134,6 +135,7 @@ void CSafeCombinationChange::CreateControls()
   itemFlexGridSizer4->Add(itemStaticText5, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxTextCtrl* itemTextCtrl6 = new wxTextCtrl( itemDialog1, ID_OLDPASSWD, _T(""), wxDefaultPosition, wxSize(itemDialog1->ConvertDialogToPixels(wxSize(150, -1)).x, -1), wxTE_PASSWORD );
+  ApplyPasswordFont(itemTextCtrl6);
   itemFlexGridSizer4->Add(itemTextCtrl6, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
   itemTextCtrl6->SetFocus();
 
@@ -141,12 +143,14 @@ void CSafeCombinationChange::CreateControls()
   itemFlexGridSizer4->Add(itemStaticText7, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxTextCtrl* itemTextCtrl8 = new wxTextCtrl( itemDialog1, ID_NEWPASSWD, _T(""), wxDefaultPosition, wxSize(itemDialog1->ConvertDialogToPixels(wxSize(150, -1)).x, -1), wxTE_PASSWORD );
+  ApplyPasswordFont(itemTextCtrl8);
   itemFlexGridSizer4->Add(itemTextCtrl8, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticText* itemStaticText9 = new wxStaticText( itemDialog1, wxID_STATIC, _("Confirmation:"), wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT );
   itemFlexGridSizer4->Add(itemStaticText9, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxTextCtrl* itemTextCtrl10 = new wxTextCtrl( itemDialog1, ID_CONFIRM, _T(""), wxDefaultPosition, wxSize(itemDialog1->ConvertDialogToPixels(wxSize(150, -1)).x, -1), wxTE_PASSWORD );
+  ApplyPasswordFont(itemTextCtrl10);
   itemFlexGridSizer4->Add(itemTextCtrl10, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStdDialogButtonSizer* itemStdDialogButtonSizer11 = new wxStdDialogButtonSizer;
