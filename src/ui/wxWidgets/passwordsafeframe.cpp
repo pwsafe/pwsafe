@@ -196,6 +196,9 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_MENU(wxID_UNDO,          PasswordSafeFrame::OnUndo )
   EVT_MENU(wxID_REDO,          PasswordSafeFrame::OnRedo )
 
+  EVT_MENU(ID_EXPANDALL,       PasswordSafeFrame::OnExpandAll )
+  EVT_MENU(ID_COLLAPSEALL,     PasswordSafeFrame::OnCollapseAll )
+  
   EVT_MENU( ID_MENU_CLEAR_MRU, PasswordSafeFrame::OnClearRecentHistory )
   EVT_UPDATE_UI( ID_MENU_CLEAR_MRU, PasswordSafeFrame::OnUpdateClearRecentDBHistory )
 
@@ -204,7 +207,7 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_UPDATE_UI(wxID_SAVE,          PasswordSafeFrame::OnUpdateUI )
   EVT_UPDATE_UI(ID_ADDGROUP,        PasswordSafeFrame::OnUpdateUI )
   EVT_UPDATE_UI(ID_RENAME,          PasswordSafeFrame::OnUpdateUI )
-  EVT_UPDATE_UI(ID_COLLAPESALL,     PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI(ID_COLLAPSEALL,     PasswordSafeFrame::OnUpdateUI )
   EVT_UPDATE_UI(ID_EXPANDALL,       PasswordSafeFrame::OnUpdateUI )
   EVT_UPDATE_UI(ID_GOTOBASEENTRY,   PasswordSafeFrame::OnUpdateUI )
   EVT_UPDATE_UI(ID_EDITBASEENTRY,   PasswordSafeFrame::OnUpdateUI )
@@ -380,7 +383,7 @@ void PasswordSafeFrame::CreateControls()
   itemMenu47->Append(ID_SHOWHIDE_DRAGBAR, _("&Dragbar visible"), _T(""), wxITEM_CHECK);
   itemMenu47->AppendSeparator();
   itemMenu47->Append(ID_EXPANDALL, _("Expand All"), _T(""), wxITEM_NORMAL);
-  itemMenu47->Append(ID_COLLAPESALL, _("Collapse All"), _T(""), wxITEM_NORMAL);
+  itemMenu47->Append(ID_COLLAPSEALL, _("Collapse All"), _T(""), wxITEM_NORMAL);
   wxMenu* itemMenu56 = new wxMenu;
   itemMenu56->Append(ID_EDITFILTER, _("&New/Edit Filter..."), _T(""), wxITEM_NORMAL);
   itemMenu56->Append(ID_APPLYFILTER, _("&Apply current"), _T(""), wxITEM_NORMAL);
@@ -468,7 +471,7 @@ void PasswordSafeFrame::CreateMainToolbar()
   toolbar->AddTool(wxID_DELETE, wxEmptyString, wxBitmap(delete_xpm), wxBitmap(delete_disabled_xpm), wxITEM_NORMAL, wxT("Delete an Entry"));
   toolbar->AddSeparator();
   toolbar->AddTool(ID_EXPANDALL, wxEmptyString, wxBitmap(expandall_xpm), wxBitmap(expandall_disabled_xpm), wxITEM_NORMAL, wxT("Expand All"));
-  toolbar->AddTool(ID_COLLAPESALL, wxEmptyString, wxBitmap(collapseall_xpm), wxBitmap(collapseall_disabled_xpm), wxITEM_NORMAL, wxT("Collapse All"));
+  toolbar->AddTool(ID_COLLAPSEALL, wxEmptyString, wxBitmap(collapseall_xpm), wxBitmap(collapseall_disabled_xpm), wxITEM_NORMAL, wxT("Collapse All"));
   toolbar->AddSeparator();
   toolbar->AddTool(wxID_PREFERENCES, wxEmptyString, wxBitmap(options_xpm), wxBitmap(options_disabled_xpm), wxITEM_NORMAL, wxT("Options"));
   toolbar->AddSeparator();
@@ -624,6 +627,27 @@ void PasswordSafeFrame::OnTreeViewClick( wxCommandEvent& /* evt */ )
   ShowGrid(false);
   ShowTree(true);
   m_currentView = TREE;
+}
+
+void PasswordSafeFrame::OnExpandAll(wxCommandEvent& /*evt*/)
+{
+  wxASSERT(m_currentView == TREE);
+  m_tree->ExpandAll();
+}
+
+void PasswordSafeFrame::OnCollapseAll(wxCommandEvent& /*evt*/)
+{
+  wxASSERT(m_currentView == TREE);
+  
+  //we cannot just call wxTreeCtrl::CollapseAll(), since it tries to 
+  //collapse the invisible root item also, and thus ASSERTs
+  wxTreeItemIdValue cookie;
+  for ( wxTreeItemId root = m_tree->GetRootItem(), idCurr = m_tree->GetFirstChild(root, cookie);
+        idCurr.IsOk();
+        idCurr = m_tree->GetNextChild(root, cookie) )
+  {
+      m_tree->CollapseAllChildren(idCurr);
+  }
 }
 
 int PasswordSafeFrame::Save()
@@ -1428,7 +1452,7 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
    
     case ID_ADDGROUP:
     case ID_EXPANDALL:
-    case ID_COLLAPESALL:
+    case ID_COLLAPSEALL:
       evt.Enable(m_currentView == TREE);
       break;
     
