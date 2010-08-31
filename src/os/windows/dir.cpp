@@ -191,11 +191,7 @@ stringT pws_os::getsafedir(void)
 
   const UINT uiDT = ::GetDriveType(sDriveT.c_str());
   if (uiDT == DRIVE_REMOVABLE) { 
-#ifndef DEBUG
     stringT::size_type index = sDir.rfind(_T("Program\\"));
-#else
-    stringT::size_type index = sDir.rfind(_T("debugm\\"));
-#endif
     if (index != stringT::npos) {
       sDir.replace(index, 8, stringT(_T("Safes\\")));
       retval = sDrive + sDir;

@@ -3217,7 +3217,7 @@ void DboxMain::OnOK()
   }
 }
 
-static void RelativizePath(stringT &curfile)
+void RelativizePath(stringT &curfile)
 {
   // If  IsUnderPw2go() && exec's drive == curfile's drive, remove
   // from latter's path. This supports DoK usage

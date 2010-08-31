@@ -47,6 +47,7 @@ void CPWSRecentFileList::ReadList()
 
 void CPWSRecentFileList::WriteList()
 {
+  extern void RelativizePath(stringT &);
   PWSprefs *pref = PWSprefs::GetInstance();
   // writes to registry or config file
   if (pref->IsUsingRegistry()) {
@@ -58,7 +59,10 @@ void CPWSRecentFileList::WriteList()
 
     for (int i = 0; i < num_MRU; i++) {
       csMRUFiles[i] = (*this)[i];
-      Trim(csMRUFiles[i]);
+      if (!csMRUFiles[i].empty()) {
+        Trim(csMRUFiles[i]);
+        RelativizePath(csMRUFiles[i]);
+      }
     }
 
     pref->SetMRUList(csMRUFiles, num_MRU, max_MRU);
