@@ -55,6 +55,7 @@
 #include "./ViewReport.h"
 #include "corelib/XML/XMLDefs.h"  // Required if testing "USE_XML_LIBRARY"
 #include <wx/fontdlg.h>
+#include "./PWSDragBar.h"
 
 // main toolbar images
 #include "../graphics/toolbar/wxWidgets/new.xpm"
@@ -203,6 +204,9 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_MENU(ID_CHANGETREEFONT,  PasswordSafeFrame::OnChangeTreeFont )
   EVT_MENU(ID_CHANGEPSWDFONT,  PasswordSafeFrame::OnChangePasswordFont )
 
+  EVT_MENU(ID_SHOWHIDE_TOOLBAR,  PasswordSafeFrame::OnShowHideToolBar )
+  EVT_MENU(ID_SHOWHIDE_DRAGBAR,  PasswordSafeFrame::OnShowHideDragBar )
+
   EVT_MENU( ID_MENU_CLEAR_MRU, PasswordSafeFrame::OnClearRecentHistory )
   EVT_UPDATE_UI( ID_MENU_CLEAR_MRU, PasswordSafeFrame::OnUpdateClearRecentDBHistory )
 
@@ -276,9 +280,27 @@ bool PasswordSafeFrame::Create( wxWindow* parent, wxWindowID id, const wxString&
 ////@end PasswordSafeFrame creation
   m_search = new PasswordSafeSearch(this);
   CreateMainToolbar();
+  CreateDragBar();
     return true;
 }
 
+void PasswordSafeFrame::CreateDragBar()
+{
+  wxSizer* origSizer = GetSizer();
+  
+  wxASSERT(origSizer);
+  wxASSERT(origSizer->IsKindOf(wxBoxSizer(wxVERTICAL).GetClassInfo()));
+  wxASSERT(((wxBoxSizer*)origSizer)->GetOrientation() == wxVERTICAL);
+
+  PWSDragBar* dragbar = new PWSDragBar(this);
+  origSizer->Insert(0, dragbar);
+  
+  const bool bShow = PWSprefs::GetInstance()->GetPref(PWSprefs::ShowDragbar);
+  if (!bShow) {
+    dragbar->Hide();
+  }
+  GetMenuBar()->Check(ID_SHOWHIDE_DRAGBAR, bShow);
+}
 
 /*!
  * PasswordSafeFrame destructor
@@ -483,6 +505,12 @@ void PasswordSafeFrame::CreateMainToolbar()
 
   if (!toolbar->Realize())
     wxMessageBox(wxT("Could not create main toolbar"));
+  
+  const bool bShow = PWSprefs::GetInstance()->GetPref(PWSprefs::ShowToolbar);
+  if (!bShow) {
+    toolbar->Hide();
+  }
+  GetMenuBar()->Check(ID_SHOWHIDE_TOOLBAR, bShow);
 }
 
 
@@ -668,40 +696,56 @@ void PasswordSafeFrame::OnChangeTreeFont(wxCommandEvent& /*evt*/)
     currentFont = IsTreeView() ? m_tree->GetFont() : m_grid->GetDefaultCellFont();
   }
   
-  wxFontData fd;
-  fd.SetInitialFont(currentFont);
+  wxFont newFont = ::wxGetFontFromUser(this, currentFont, _("Select Tree/List display font"));
   
-  wxFontDialog dlg(this, fd);
-  
-  if (dlg.ShowModal() == wxID_OK) {
-    wxFont font = dlg.GetFontData().GetChosenFont();
+  if (newFont.IsOk()) {
     if (IsTreeView()) {
-      m_tree->SetFont(font);
+      m_tree->SetFont(newFont);
     }
     else {
-      m_grid->SetDefaultCellFont(font);
+      m_grid->SetDefaultCellFont(newFont);
     }
-    PWSprefs::GetInstance()->SetPref(PWSprefs::TreeFont, tostringx(font.GetNativeFontInfoDesc()));
+    PWSprefs::GetInstance()->SetPref(PWSprefs::TreeFont, tostringx(newFont.GetNativeFontInfoDesc()));
   }
 }
 
 void PasswordSafeFrame::OnChangePasswordFont(wxCommandEvent& /*evt*/)
 {
-  wxFontDialog dlg;
-
   wxFont passwordFont(towxstring(PWSprefs::GetInstance()->GetPref(PWSprefs::PasswordFont)));
-  if (passwordFont.IsOk()) {
-    wxFontData fd;
-    fd.SetInitialFont(passwordFont);
-    dlg.Create(this, fd);
-  }
-  else
-    dlg.Create(this);
 
-  if (dlg.ShowModal() == wxID_OK) {
-    wxFont newFont = dlg.GetFontData().GetChosenFont();
+  wxFont newFont = ::wxGetFontFromUser(this, passwordFont, _("Set Password display font"));
+  if (newFont.IsOk()) {
     PWSprefs::GetInstance()->SetPref(PWSprefs::PasswordFont, tostringx(newFont.GetNativeFontInfoDesc()));
   }
+}
+
+void PasswordSafeFrame::OnShowHideToolBar(wxCommandEvent& evt)
+{
+  GetToolBar()->Show(evt.IsChecked());
+  PWSprefs::GetInstance()->SetPref(PWSprefs::ShowToolbar, evt.IsChecked());
+  DoLayout();
+  SendSizeEvent();
+}
+
+void PasswordSafeFrame::OnShowHideDragBar(wxCommandEvent& evt)
+{
+  wxSizer* origSizer = GetSizer();
+  
+  wxASSERT(origSizer);
+  wxASSERT(origSizer->IsKindOf(wxBoxSizer(wxVERTICAL).GetClassInfo()));
+  wxASSERT(((wxBoxSizer*)origSizer)->GetOrientation() == wxVERTICAL);
+  
+  wxSizerItem* dragbarItem = origSizer->GetItem(size_t(0));
+  wxASSERT_MSG(dragbarItem && dragbarItem->IsWindow() && 
+                      dragbarItem->GetWindow()->IsKindOf(&PWSDragBar::ms_classInfo),
+                    wxT("Found unexpected item while searching for DragBar"));
+                    
+  PWSDragBar* dragbar = wxDynamicCast(dragbarItem->GetWindow(), PWSDragBar);
+  wxASSERT(dragbar);
+  
+  dragbar->Show(evt.IsChecked());
+  PWSprefs::GetInstance()->SetPref(PWSprefs::ShowDragbar, evt.IsChecked());
+  DoLayout();
 }
 
 int PasswordSafeFrame::Save()

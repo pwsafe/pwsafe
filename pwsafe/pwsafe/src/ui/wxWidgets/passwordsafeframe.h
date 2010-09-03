@@ -316,6 +316,9 @@ public:
   void OnChangeTreeFont(wxCommandEvent& /*evt*/);
   void OnChangePasswordFont(wxCommandEvent& /*evt*/);
 
+  void OnShowHideToolBar(wxCommandEvent& /*evt*/);
+  void OnShowHideDragBar(wxCommandEvent& /*evt*/);
+
 ////@begin PasswordSafeFrame member function declarations
 
   /// Retrieves bitmap resources
@@ -372,6 +375,7 @@ public:
 
     void ViewReport(CReport& rpt);
 
+  CItemData *GetSelectedEntry() const;
 ////@begin PasswordSafeFrame member variables
   PWSGrid* m_grid;
   PWSTreeCtrl* m_tree;
@@ -390,7 +394,6 @@ public:
   void CleanupAfterReloadFailure(bool tellUser);
   Command *Delete(CItemData *pci);
   Command *Delete(wxTreeItemId tid); // for group delete
-  CItemData *GetSelectedEntry() const;
   CItemData* GetBaseOfSelectedEntry(); //traverses to the base item if the selected item is a shortcut 
   void UpdateAccessTime(CItemData &ci);
   enum ChangeType {Clear, Data, TimeStamp, DBPrefs, ClearDBPrefs};
@@ -402,6 +405,7 @@ public:
   }
   long GetRUEIndex(const wxCommandEvent& evt) { return evt.GetExtraLong(); }
   void RebuildGUI(const int iView = iBothViews);
+  void CreateDragBar();
 
   // Do* member functions for dbl-click and menu-accessible actions
   void DoCopyPassword(CItemData &item);
