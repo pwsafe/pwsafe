@@ -34,8 +34,6 @@ WX_DECLARE_OBJARRAY(DragBarItem, DragBarItemsArray);
 
 class CDragBar : public wxControl 
 {
-  wxFrame*            m_frame;
-  wxSize              m_currentSize;  //required size of window to display everything
   wxSize              m_margins;
   DragBarItemsArray   m_items;
   wxOrientation       m_orientation;

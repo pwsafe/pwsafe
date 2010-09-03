@@ -43,8 +43,6 @@ IMPLEMENT_CLASS( CDragBar, wxControl )
 CDragBar::CDragBar(wxFrame* parent, IDragSourceTextProvider* provider, 
                                 wxOrientation orient /*= wxHORIZONTAL*/) : 
                                                 wxControl(parent, wxID_ANY), 
-                                                m_frame(parent), 
-                                                m_currentSize(0, 0),
                                                 m_margins(5, 3),
                                                 m_orientation(orient),
                                                 m_bmpWidth(0),
