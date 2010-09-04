@@ -342,6 +342,7 @@
     <ClInclude Include="addeditpropsheet.h" />
     <ClInclude Include="createshortcutdlg.h" />
     <ClInclude Include="deleteconfirmation.h" />
+    <ClInclude Include="dragbar.h" />
     <ClInclude Include="editshortcut.h" />
     <ClInclude Include="ExportTextWarningDlg.h" />
     <ClInclude Include="guiinfo.h" />
@@ -355,6 +356,7 @@
     <ClInclude Include="pwsafeapp.h" />
     <ClInclude Include="pwsclip.h" />
     <ClInclude Include="pwsdca.h" />
+    <ClInclude Include="PWSDragBar.h" />
     <ClInclude Include="PWSgrid.h" />
     <ClInclude Include="PWSgridtable.h" />
     <ClInclude Include="PWStree.h" />
@@ -381,6 +383,7 @@
     <ClCompile Include="AdvancedSelectionDlg.cpp" />
     <ClCompile Include="createshortcutdlg.cpp" />
     <ClCompile Include="deleteconfirmation.cpp" />
+    <ClCompile Include="dragbar.cpp" />
     <ClCompile Include="editshortcut.cpp" />
     <ClCompile Include="ExportTextWarningDlg.cpp" />
     <ClCompile Include="guiinfo.cpp" />
@@ -394,6 +397,7 @@
     <ClCompile Include="properties.cpp" />
     <ClCompile Include="pwsafeapp.cpp" />
     <ClCompile Include="pwsclip.cpp" />
+    <ClCompile Include="PWSDragBar.cpp" />
     <ClCompile Include="PWSgrid.cpp" />
     <ClCompile Include="PWSgridtable.cpp" />
     <ClCompile Include="PWStree.cpp" />
