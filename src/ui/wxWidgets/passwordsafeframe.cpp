@@ -1895,7 +1895,7 @@ int PasswordSafeFrame::NewFile(StringX &fname)
   while (1) {
     wxFileDialog fd(static_cast<wxWindow*>(this), cs_text, dir, v3FileName,
                     _("psafe3 files (*.psafe3)|*.psafe3|All files(*.*)|*.*"),
-                    wxFD_OPEN | wxFD_CHANGE_DIR);
+                    wxFD_SAVE | wxFD_OVERWRITE_PROMPT | wxFD_CHANGE_DIR);
     rc = fd.ShowModal();
 
     if (rc == wxID_OK) {
