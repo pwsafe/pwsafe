@@ -33,6 +33,8 @@
 #include "corelib/PWSdirs.h"
 #include "corelib/PWSAuxParse.h"
 
+#include "os/dir.h"
+
 using namespace std;
 
 #ifdef _DEBUG
@@ -70,6 +72,16 @@ int DboxMain::BackupSafe()
 
   CString cs_text(MAKEINTRESOURCE(IDS_PICKBACKUP));
   CString cs_temp, cs_title;
+
+  std::wstring dir;
+  if (m_core.GetCurFile().empty())
+    dir = PWSdirs::GetSafeDir();
+  else {
+    std::wstring cdrive, cdir, dontCare;
+    pws_os::splitpath(m_core.GetCurFile().c_str(), cdrive, cdir, dontCare, dontCare);
+    dir = cdrive + cdir;
+  }
+
   //SaveAs-type dialog box
   while (1) {
     CPWFileDialog fd(FALSE,
@@ -79,12 +91,14 @@ int DboxMain::BackupSafe()
                         OFN_LONGNAMES | OFN_OVERWRITEPROMPT,
                      CString(MAKEINTRESOURCE(IDS_FDF_BU)),
                      this);
+
     fd.m_ofn.lpstrTitle = cs_text;
-    std::wstring dir = PWSdirs::GetSafeDir();
+
     if (!dir.empty())
       fd.m_ofn.lpstrInitialDir = dir.c_str();
 
     rc = fd.DoModal();
+
     if (m_inExit) {
       // If U3ExitNow called while in CPWFileDialog,
       // PostQuitMessage makes us return here instead
@@ -131,6 +145,16 @@ int DboxMain::RestoreSafe()
 
   CString cs_text, cs_temp, cs_title;
   cs_text.LoadString(IDS_PICKRESTORE);
+
+  std::wstring dir;
+  if (m_core.GetCurFile().empty())
+    dir = PWSdirs::GetSafeDir();
+  else {
+    std::wstring cdrive, cdir, dontCare;
+    pws_os::splitpath(m_core.GetCurFile().c_str(), cdrive, cdir, dontCare, dontCare);
+    dir = cdrive + cdir;
+  }
+
   //Open-type dialog box
   while (1) {
     CPWFileDialog fd(TRUE,
@@ -139,12 +163,14 @@ int DboxMain::RestoreSafe()
                      OFN_FILEMUSTEXIST | OFN_HIDEREADONLY | OFN_LONGNAMES,
                      CString(MAKEINTRESOURCE(IDS_FDF_BUS)),
                      this);
+
     fd.m_ofn.lpstrTitle = cs_text;
-    std::wstring dir = PWSdirs::GetSafeDir();
+
     if (!dir.empty())
       fd.m_ofn.lpstrInitialDir = dir.c_str();
 
     INT_PTR rc2 = fd.DoModal();
+
     if (m_inExit) {
       // If U3ExitNow called while in CPWFileDialog,
       // PostQuitMessage makes us return here instead

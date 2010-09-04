@@ -375,6 +375,7 @@ void COptionsMisc::OnBrowseForLocation(UINT nID)
   fd.m_ofn.lpstrInitialDir = cs_initiallocation;
 
   rc = fd.DoModal();
+
   if (rc == IDOK) {
     if (nID == IDC_BROWSEFORLOCATION_BROWSER)
       m_otherbrowserlocation = fd.GetPathName();

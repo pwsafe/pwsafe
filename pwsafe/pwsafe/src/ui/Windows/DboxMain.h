@@ -339,6 +339,7 @@ public:
   void OnItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult);
   bool IsNodeModified(StringX &path)
   {return m_core.IsNodeModified(path);}
+  StringX GetCurFile() {return m_core.GetCurFile();}
 
   // Following to simplify Command creation in child dialogs:
   CommandInterface *GetCore() {return &m_core;}
