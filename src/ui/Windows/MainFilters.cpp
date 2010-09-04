@@ -39,6 +39,7 @@
 #include "corelib/XML/XMLDefs.h"  // Required if testing "USE_XML_LIBRARY"
 
 #include "os/file.h"
+#include "os/dir.h"
 
 using namespace std;
 
@@ -697,6 +698,15 @@ void DboxMain::ExportFilters(PWSFilters &Filters)
   std::wstring XMLFileName = PWSUtil::GetNewFileName(m_core.GetCurFile().c_str(),
                                                   L"filters.xml");
   cs_text.LoadString(IDS_NAMEXMLFILE);
+  std::wstring dir;
+  if (m_core.GetCurFile().empty())
+    dir = PWSdirs::GetSafeDir();
+  else {
+    std::wstring cdrive, cdir, dontCare;
+    pws_os::splitpath(m_core.GetCurFile().c_str(), cdrive, cdir, dontCare, dontCare);
+    dir = cdrive + cdir;
+  }
+
   while (1) {
     CPWFileDialog fd(FALSE,
                      L"xml",
@@ -705,8 +715,14 @@ void DboxMain::ExportFilters(PWSFilters &Filters)
                         OFN_LONGNAMES | OFN_OVERWRITEPROMPT,
                      CString(MAKEINTRESOURCE(IDS_FDF_X_ALL)),
                      this);
+
     fd.m_ofn.lpstrTitle = cs_text;
+  
+    if (!dir.empty())
+      fd.m_ofn.lpstrInitialDir = dir.c_str();
+
     rc = fd.DoModal();
+
     if (m_inExit) {
       // If U3ExitNow called while in CPWFileDialog,
       // PostQuitMessage makes us return here instead
@@ -738,6 +754,7 @@ void DboxMain::ExportFilters(PWSFilters &Filters)
 void DboxMain::ImportFilters()
 {
   CString cs_title, cs_temp, cs_text;
+  cs_text.LoadString(IDS_PICKXMLFILE);
   const std::wstring XSDfn(L"pwsafe_filter.xsd");
   std::wstring XSDFilename = PWSdirs::GetXMLDir() + XSDfn;
 
@@ -752,16 +769,29 @@ void DboxMain::ImportFilters()
   }
 #endif
 
+  std::wstring dir;
+  if (m_core.GetCurFile().empty())
+    dir = PWSdirs::GetSafeDir();
+  else {
+    std::wstring cdrive, cdir, dontCare;
+    pws_os::splitpath(m_core.GetCurFile().c_str(), cdrive, cdir, dontCare, dontCare);
+    dir = cdrive + cdir;
+  }
+
   CPWFileDialog fd(TRUE,
                    L"xml",
                    NULL,
                    OFN_FILEMUSTEXIST | OFN_HIDEREADONLY | OFN_LONGNAMES,
                    CString(MAKEINTRESOURCE(IDS_FDF_XML)),
                    this);
-  cs_text.LoadString(IDS_PICKXMLFILE);
+
   fd.m_ofn.lpstrTitle = cs_text;
 
+  if (!dir.empty())
+    fd.m_ofn.lpstrInitialDir = dir.c_str();
+
   INT_PTR rc = fd.DoModal();
+
   if (m_inExit) {
     // If U3ExitNow called while in CPWFileDialog,
     // PostQuitMessage makes us return here instead
