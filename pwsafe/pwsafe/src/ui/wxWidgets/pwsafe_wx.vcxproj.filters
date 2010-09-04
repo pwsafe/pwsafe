@@ -114,6 +114,12 @@
     <ClInclude Include="ViewReport.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="dragbar.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PWSDragBar.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="pwsafe.rc">
@@ -209,6 +215,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ViewReport.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dragbar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PWSDragBar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

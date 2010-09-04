@@ -50,20 +50,20 @@ IMPLEMENT_CLASS( PWSDragBar, CDragBar )
 
 enum { DRAGBAR_TOOLID_BASE = 100 };
 
-#define TOOLINFO(t, f) { wxSTRINGIZE_T(t), t, wxCONCAT(t, X), CItemData::f}
+#define PWS_TOOLINFO(t, f) { wxSTRINGIZE_T(t), t, wxCONCAT(t, X), CItemData::f}
 
 struct _DragbarElementInfo {
   const TCHAR* name;
   const char** bitmap;
   const char** bitmap_disabled;
   CItemData::FieldType ft;
-} DragbarElements[] = { TOOLINFO(Group,     GROUP), 
-                        TOOLINFO(Title,     TITLE), 
-                        TOOLINFO(User,      USER), 
-                        TOOLINFO(Password,  PASSWORD), 
-                        TOOLINFO(Notes,     NOTES), 
-                        TOOLINFO(URL,       URL), 
-                        TOOLINFO(Email,     EMAIL)
+} DragbarElements[] = { PWS_TOOLINFO(Group,     GROUP), 
+                        PWS_TOOLINFO(Title,     TITLE), 
+                        PWS_TOOLINFO(User,      USER), 
+                        PWS_TOOLINFO(Password,  PASSWORD), 
+                        PWS_TOOLINFO(Notes,     NOTES), 
+                        PWS_TOOLINFO(URL,       URL), 
+                        PWS_TOOLINFO(Email,     EMAIL)
                       };
 
 PWSDragBar::PWSDragBar(PasswordSafeFrame* frame) : CDragBar(frame, this), m_frame(frame)
