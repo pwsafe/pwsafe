@@ -1,0 +1,22 @@
+database	контейнер
+entry	элемент
+autotype	автонабор
+instance	экземпляр
+field	поле
+safe combination	пароль/пароль для контейнера	в зависимости от размера метки
+Flattened list	Простой список
+Nested tree	Древовидный список
+Group	группа
+Notes	заметки
+Run command	выполнить команду
+Browse to URL	перейти по ссылке
+Password expiry	"истечения"	т.к. в нек. случаях присутствует контекст, противоречащий фразе "срок действия"
+Virtual keyboard	экранная клавиатура
+Base entry	исходный элемент
+Legacy	традиционная	в раскладках клавиатуры 
+Generate password	создать пароль
+Undo	вернуть
+Redo	повторить
+Failsafe Backup	Аварийная резервная копия
+Original	исходный
+Master password	мастер-пароль	так переводится в продуктах Mozilla

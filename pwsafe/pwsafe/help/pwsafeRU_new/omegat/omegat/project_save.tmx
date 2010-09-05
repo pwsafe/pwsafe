@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tmx SYSTEM "tmx11.dtd">
+<tmx version="1.1">
+  <header
+    creationtool="OmegaT"
+    creationtoolversion="2.1.8_1"
+    segtype="sentence"
+    o-tmf="OmegaT TMX"
+    adminlang="EN-US"
+    srclang="EN-US"
+    datatype="plaintext"
+  >
+  </header>
+  <body>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>&lt;b0&gt;Note: &lt;s1&gt;There is no mechanism within Password Safe to retrieve lost or forgotten safe passwords&lt;/s1&gt;&lt;/b0&gt;&lt;s2&gt;.&lt;/s2&gt; &lt;br3&gt;</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100905T130450Z" changeid="pm_kan">
+        <seg>&lt;b0&gt;Внимание: &lt;s1&gt;в Password Safe не существует механизма для восстановления потерянных (забытых) мастер-паролей&lt;/s1&gt;&lt;/b0&gt;&lt;s2&gt;.&lt;/s2&gt; &lt;br3&gt;</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>&lt;b0&gt;Password Safe&lt;/b0&gt; has a built in check for what it considers to be weak master passwords.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100905T125201Z" changeid="pm_kan">
+        <seg>&lt;b0&gt;Password Safe&lt;/b0&gt; имеет встроенные средства для проверки сложности пароля.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>A Word About Master Passwords</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100905T123632Z" changeid="pm_kan">
+        <seg>Пара слов о мастер-пароле</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>A Word about Master Passwords</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100905T123700Z" changeid="pm_kan">
+        <seg>Пара слов о мастер-пароле</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>If a master password is entered that the program considers weak, it will prompt for confirmation.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100905T125938Z" changeid="pm_kan">
+        <seg>Если программа решит, что выбранный Вами пароль является слабым, будет выдан запрос подтверждения.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>In general, a master password (like any password) should consist of mixed case characters with at least one number or &lt;a1&gt;special character&lt;/a1&gt; (such as those found above the number keys on a keyboard).</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100905T152651Z" changeid="pm_kan">
+        <seg>Мастер-пароль (как и любой другой) должен состоять из букв разного регистра, содержать хотя бы одну цифру и один &lt;a1&gt;специальный символ&lt;/a1&gt; (например, один из тех, что расположены над цифрами на клавиатуре).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>One of the most important keys to maintaining your security is selecting a strong master password for your &lt;b0&gt;Password Safe&lt;/b0&gt; database.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100905T123954Z" changeid="pm_kan">
+        <seg>Одним из наиболее важных шагов по обеспечению безопасности является выбор надежного мастер-пароля для контейнера &lt;b0&gt;Password Safe&lt;/b0&gt;.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Picking a spouse's name, a birthday, or some other easily guessable combination leaves your data vulnerable. &lt;i1&gt;It is important that you pick a hard-to-guess master password that &lt;u2&gt;you can easily remember&lt;/u2&gt;&lt;/i1&gt;&lt;s3&gt;.&lt;/s3&gt;</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100905T152843Z" changeid="pm_kan">
+        <seg>Поэтому, выбор в качестве пароля для контейнера имени супруга, даты рождения или любой другой легкоугадываемой комбинации делает хранящиеся там данные уязвимыми.&lt;i1&gt; Очень важно, чтобы Вы выбрали трудноподбираемый мастер-пароль, который &lt;u2&gt;легко сможете запомнить&lt;/u2&gt;&lt;/i1&gt;&lt;s3&gt;.&lt;/s3&gt;</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>The database (&quot;Safe&quot;) contains all your user names, passwords, and any additional information you may have added.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100905T152114Z" changeid="pm_kan">
+        <seg>Контейнер (&quot;сейф&quot;) содержит всю введенную в Password Safe информацию (имена, пароли, заметки, ...).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>This is a deliberate design decision, since any mechanism for retrieving lost passwords poses a security hole that can be exploited.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100905T141358Z" changeid="pm_kan">
+        <seg>Это осознанное решение разработчиков, так как любой механизм восстановления потерянных паролей является брешью в системе защиты и может быть использован злоумышленниками.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>To change your master password, please see &lt;a0&gt;Changing Master Passwords&lt;/a0&gt;.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100905T152709Z" changeid="pm_kan">
+        <seg>Порядок изменения мастер-пароля описан в разделе &lt;a0&gt;Изменение мастер-паролей&lt;/a0&gt;.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>You may the option to accept the originally entered (weak) password, or to enter a new one.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100905T140951Z" changeid="pm_kan">
+        <seg>Вы можете подтвердить использование заданного &quot;слабого&quot; пароля, или ввести новый пароль.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>images%5Cweakpassword.jpg</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100905T140813Z" changeid="pm_kan">
+        <seg>images/weakpassword.jpg</seg>
+      </tuv>
+    </tu>
+  </body>
+</tmx>
