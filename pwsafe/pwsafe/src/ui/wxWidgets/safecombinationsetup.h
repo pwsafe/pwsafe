@@ -38,7 +38,7 @@
 
 ////@begin control identifiers
 #define ID_SAFECOMBINATIONSETUP 10007
-#define ID_PASSKEY 10008
+#define ID_PASSWORD 10008
 #define ID_VERIFY 10009
 #define SYMBOL_CSAFECOMBINATIONSETUP_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxDIALOG_MODAL|wxTAB_TRAVERSAL
 #define SYMBOL_CSAFECOMBINATIONSETUP_TITLE _("Safe Combination Setup")
@@ -79,10 +79,10 @@ public:
   ////@begin CSafeCombinationSetup event handler declarations
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
-  void OnOkClick( wxCommandEvent& evt);
+  void OnOkClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL
-  void OnCancelClick( wxCommandEvent& evt);
+  void OnCancelClick( wxCommandEvent& event );
 
 ////@end CSafeCombinationSetup event handler declarations
 
