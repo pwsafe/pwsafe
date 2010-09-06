@@ -2186,6 +2186,14 @@
             <string name="proxy-type">"wbBoxSizerProxy"</string>
             <string name="proxy-Orientation">"Horizontal"</string>
             <string name="proxy-Member variable name">""</string>
+            <string name="proxy-AlignH">"Centre"</string>
+            <string name="proxy-AlignV">"Centre"</string>
+            <long name="proxy-Stretch factor">0</long>
+            <long name="proxy-Border">5</long>
+            <bool name="proxy-wxLEFT">1</bool>
+            <bool name="proxy-wxRIGHT">1</bool>
+            <bool name="proxy-wxTOP">1</bool>
+            <bool name="proxy-wxBOTTOM">1</bool>
             <bool name="proxy-wxSHAPED">0</bool>
             <bool name="proxy-wxADJUST_MINSIZE">0</bool>
             <bool name="proxy-wxFIXED_MINSIZE">0</bool>
@@ -3577,14 +3585,6 @@ Database"</string>
             <string name="proxy-type">"wbBoxSizerProxy"</string>
             <string name="proxy-Orientation">"Vertical"</string>
             <string name="proxy-Member variable name">""</string>
-            <string name="proxy-AlignH">"Centre"</string>
-            <string name="proxy-AlignV">"Centre"</string>
-            <long name="proxy-Stretch factor">0</long>
-            <long name="proxy-Border">5</long>
-            <bool name="proxy-wxLEFT">1</bool>
-            <bool name="proxy-wxRIGHT">1</bool>
-            <bool name="proxy-wxTOP">1</bool>
-            <bool name="proxy-wxBOTTOM">1</bool>
             <bool name="proxy-wxSHAPED">0</bool>
             <bool name="proxy-wxADJUST_MINSIZE">0</bool>
             <bool name="proxy-wxFIXED_MINSIZE">0</bool>
@@ -3610,8 +3610,9 @@ Database"</string>
               <string name="proxy-Header filename">""</string>
               <string name="proxy-Member variable name">""</string>
               <string name="proxy-Label">"A new password database will be created.
-The safe combination you enter will be used to encrypt the password database file.
-The Safe Combination can use any keyboard character and is case-sensitive."</string>
+The safe combination will be used to encrypt the password database file.
+You can use any keyboard character. The combination is case-sensitive.
+"</string>
               <long name="proxy-Wrapping width">-1</long>
               <string name="proxy-Help text">""</string>
               <string name="proxy-Tooltip text">""</string>
@@ -3647,7 +3648,7 @@ The Safe Combination can use any keyboard character and is case-sensitive."</str
               <long name="proxy-Y">-1</long>
               <long name="proxy-Width">-1</long>
               <long name="proxy-Height">-1</long>
-              <string name="proxy-AlignH">"Centre"</string>
+              <string name="proxy-AlignH">"Left"</string>
               <string name="proxy-AlignV">"Centre"</string>
               <long name="proxy-Stretch factor">0</long>
               <long name="proxy-Border">5</long>
@@ -3662,7 +3663,7 @@ The Safe Combination can use any keyboard character and is case-sensitive."</str
               <string name="proxy-Custom ctor arguments">""</string>
             </document>
             <document>
-              <string name="title">"wxBoxSizer H"</string>
+              <string name="title">"wxGridSizerProxy"</string>
               <string name="type">"dialog-control-document"</string>
               <string name="filename">""</string>
               <string name="icon-name">"sizer"</string>
@@ -3670,10 +3671,14 @@ The Safe Combination can use any keyboard character and is case-sensitive."</str
               <long name="owns-file">1</long>
               <long name="title-mode">0</long>
               <long name="locked">0</long>
-              <string name="proxy-type">"wbBoxSizerProxy"</string>
-              <string name="proxy-Orientation">"Horizontal"</string>
+              <string name="proxy-type">"wbGridSizerProxy"</string>
+              <long name="proxy-Columns">2</long>
+              <long name="proxy-Rows">2</long>
+              <long name="proxy-ColumnSpacing">-50</long>
+              <long name="proxy-RowSpacing">0</long>
               <string name="proxy-Member variable name">""</string>
-              <string name="proxy-AlignH">"Expand"</string>
+              <string name="proxy-Platform">"&lt;Any platform&gt;"</string>
+              <string name="proxy-AlignH">"Centre"</string>
               <string name="proxy-AlignV">"Centre"</string>
               <long name="proxy-Stretch factor">0</long>
               <long name="proxy-Border">5</long>
@@ -3684,32 +3689,6 @@ The Safe Combination can use any keyboard character and is case-sensitive."</str
               <bool name="proxy-wxSHAPED">0</bool>
               <bool name="proxy-wxADJUST_MINSIZE">0</bool>
               <bool name="proxy-wxFIXED_MINSIZE">0</bool>
-              <string name="proxy-Platform">"&lt;Any platform&gt;"</string>
-              <document>
-                <string name="title">"Spacer"</string>
-                <string name="type">"dialog-control-document"</string>
-                <string name="filename">""</string>
-                <string name="icon-name">"spacer"</string>
-                <long name="is-transient">0</long>
-                <long name="owns-file">1</long>
-                <long name="title-mode">0</long>
-                <long name="locked">0</long>
-                <string name="proxy-type">"wbSpacerProxy"</string>
-                <long name="proxy-Width">25</long>
-                <long name="proxy-Height">5</long>
-                <string name="proxy-AlignH">"Centre"</string>
-                <string name="proxy-AlignV">"Centre"</string>
-                <long name="proxy-Stretch factor">0</long>
-                <long name="proxy-Border">5</long>
-                <bool name="proxy-wxLEFT">1</bool>
-                <bool name="proxy-wxRIGHT">1</bool>
-                <bool name="proxy-wxTOP">1</bool>
-                <bool name="proxy-wxBOTTOM">1</bool>
-                <bool name="proxy-wxSHAPED">0</bool>
-                <bool name="proxy-wxADJUST_MINSIZE">0</bool>
-                <bool name="proxy-wxFIXED_MINSIZE">0</bool>
-                <string name="proxy-Platform">"&lt;Any platform&gt;"</string>
-              </document>
               <document>
                 <string name="title">"wxStaticText: wxID_STATIC"</string>
                 <string name="type">"dialog-control-document"</string>
@@ -3766,7 +3745,7 @@ The Safe Combination can use any keyboard character and is case-sensitive."</str
                 <long name="proxy-Y">-1</long>
                 <long name="proxy-Width">-1</long>
                 <long name="proxy-Height">-1</long>
-                <string name="proxy-AlignH">"Centre"</string>
+                <string name="proxy-AlignH">"Left"</string>
                 <string name="proxy-AlignV">"Centre"</string>
                 <long name="proxy-Stretch factor">0</long>
                 <long name="proxy-Border">5</long>
@@ -3862,56 +3841,6 @@ The Safe Combination can use any keyboard character and is case-sensitive."</str
                 <string name="proxy-Custom arguments">""</string>
                 <string name="proxy-Custom ctor arguments">""</string>
               </document>
-            </document>
-            <document>
-              <string name="title">"wxBoxSizer H"</string>
-              <string name="type">"dialog-control-document"</string>
-              <string name="filename">""</string>
-              <string name="icon-name">"sizer"</string>
-              <long name="is-transient">0</long>
-              <long name="owns-file">1</long>
-              <long name="title-mode">0</long>
-              <long name="locked">0</long>
-              <string name="proxy-type">"wbBoxSizerProxy"</string>
-              <string name="proxy-Orientation">"Horizontal"</string>
-              <string name="proxy-Member variable name">""</string>
-              <string name="proxy-AlignH">"Expand"</string>
-              <string name="proxy-AlignV">"Centre"</string>
-              <long name="proxy-Stretch factor">0</long>
-              <long name="proxy-Border">5</long>
-              <bool name="proxy-wxLEFT">1</bool>
-              <bool name="proxy-wxRIGHT">1</bool>
-              <bool name="proxy-wxTOP">1</bool>
-              <bool name="proxy-wxBOTTOM">1</bool>
-              <bool name="proxy-wxSHAPED">0</bool>
-              <bool name="proxy-wxADJUST_MINSIZE">0</bool>
-              <bool name="proxy-wxFIXED_MINSIZE">0</bool>
-              <string name="proxy-Platform">"&lt;Any platform&gt;"</string>
-              <document>
-                <string name="title">"Spacer"</string>
-                <string name="type">"dialog-control-document"</string>
-                <string name="filename">""</string>
-                <string name="icon-name">"spacer"</string>
-                <long name="is-transient">0</long>
-                <long name="owns-file">1</long>
-                <long name="title-mode">0</long>
-                <long name="locked">0</long>
-                <string name="proxy-type">"wbSpacerProxy"</string>
-                <long name="proxy-Width">65</long>
-                <long name="proxy-Height">5</long>
-                <string name="proxy-AlignH">"Centre"</string>
-                <string name="proxy-AlignV">"Centre"</string>
-                <long name="proxy-Stretch factor">0</long>
-                <long name="proxy-Border">5</long>
-                <bool name="proxy-wxLEFT">1</bool>
-                <bool name="proxy-wxRIGHT">1</bool>
-                <bool name="proxy-wxTOP">1</bool>
-                <bool name="proxy-wxBOTTOM">1</bool>
-                <bool name="proxy-wxSHAPED">0</bool>
-                <bool name="proxy-wxADJUST_MINSIZE">0</bool>
-                <bool name="proxy-wxFIXED_MINSIZE">0</bool>
-                <string name="proxy-Platform">"&lt;Any platform&gt;"</string>
-              </document>
               <document>
                 <string name="title">"wxStaticText: wxID_STATIC"</string>
                 <string name="type">"dialog-control-document"</string>
@@ -3968,7 +3897,7 @@ The Safe Combination can use any keyboard character and is case-sensitive."</str
                 <long name="proxy-Y">-1</long>
                 <long name="proxy-Width">-1</long>
                 <long name="proxy-Height">-1</long>
-                <string name="proxy-AlignH">"Centre"</string>
+                <string name="proxy-AlignH">"Left"</string>
                 <string name="proxy-AlignV">"Centre"</string>
                 <long name="proxy-Stretch factor">0</long>
                 <long name="proxy-Border">5</long>
@@ -4084,7 +4013,7 @@ The Safe Combination can use any keyboard character and is case-sensitive."</str
               <bool name="proxy-wxID_SAVE">0</bool>
               <bool name="proxy-wxID_CONTEXT_HELP">0</bool>
               <string name="proxy-Member variable name">""</string>
-              <string name="proxy-AlignH">"Expand"</string>
+              <string name="proxy-AlignH">"Left"</string>
               <string name="proxy-AlignV">"Centre"</string>
               <long name="proxy-Stretch factor">0</long>
               <long name="proxy-Border">5</long>
@@ -4387,14 +4316,6 @@ The Safe Combination can use any keyboard character and is case-sensitive."</str
             <string name="proxy-type">"wbBoxSizerProxy"</string>
             <string name="proxy-Orientation">"Vertical"</string>
             <string name="proxy-Member variable name">""</string>
-            <string name="proxy-AlignH">"Centre"</string>
-            <string name="proxy-AlignV">"Centre"</string>
-            <long name="proxy-Stretch factor">0</long>
-            <long name="proxy-Border">5</long>
-            <bool name="proxy-wxLEFT">1</bool>
-            <bool name="proxy-wxRIGHT">1</bool>
-            <bool name="proxy-wxTOP">1</bool>
-            <bool name="proxy-wxBOTTOM">1</bool>
             <bool name="proxy-wxSHAPED">0</bool>
             <bool name="proxy-wxADJUST_MINSIZE">0</bool>
             <bool name="proxy-wxFIXED_MINSIZE">0</bool>
