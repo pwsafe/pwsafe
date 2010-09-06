@@ -247,10 +247,9 @@ wxSize CDragBar::DoGetBestSize() const
 
 void RemoveToolTip(wxWindow* win)
 {
-  //none of these three work
+  //none of these work
   win->SetToolTip(wxEmptyString);
-  win->UnsetToolTip();
-  win->SetToolTip((wxToolTip*)NULL);
+  win->SetToolTip(NULL); // == UnsetToolTip()
 }
 
 void CDragBar::OnMouseMove(wxMouseEvent& evt)
