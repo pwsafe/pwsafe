@@ -113,9 +113,8 @@ BOOL CEditShortcutDlg::OnInitDialog()
     cs_text.LoadString(IDS_VIEWSHORTCUTS);
     SetWindowText(cs_text);
     // Only add this shortcut's group to combo box
-    if (m_ex_group.GetCount() == 0) {
-      m_ex_group.AddString(m_group);
-    }
+    m_ex_group.ResetContent(); // groups might be from a previous DB (BR 3062758)
+    m_ex_group.AddString(m_group);
     // Set fields to be read-only
     GetDlgItem(IDC_GROUP)->EnableWindow(FALSE);
     m_ex_title.EnableWindow(FALSE);
@@ -124,13 +123,13 @@ BOOL CEditShortcutDlg::OnInitDialog()
     cs_explanation.Format(IDS_SHORTCUTROEXPLANATION, cs_target);
   } else { // !read-only
     // Populate the groups combo box
-    if (m_ex_group.GetCount() == 0) {
-      std::vector<std::wstring> aryGroups;
-      app.m_core.GetUniqueGroups(aryGroups);
-      for (size_t igrp = 0; igrp < aryGroups.size(); igrp++) {
-        m_ex_group.AddString(aryGroups[igrp].c_str());
-      }
-    } // group combo-box handling
+    m_ex_group.ResetContent(); // groups might be from a previous DB (BR 3062758)
+    std::vector<std::wstring> aryGroups;
+    app.m_core.GetUniqueGroups(aryGroups);
+    for (std::vector<std::wstring>::iterator iter = aryGroups.begin();
+         iter != aryGroups.end(); ++iter) {
+      m_ex_group.AddString(iter->c_str());
+    }
     // setup explanatory text
     cs_explanation.Format(IDS_SHORTCUTEXPLANATION, cs_target);
   } // !read-only

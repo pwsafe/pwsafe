@@ -35,12 +35,12 @@ BOOL CCreateShortcutDlg::OnInitDialog()
   CPWDialog::OnInitDialog();
 
   // Populate the combo box
-  if (m_ex_group.GetCount() == 0) {
-      std::vector<std::wstring> aryGroups;
-      app.m_core.GetUniqueGroups(aryGroups);
-      for (size_t igrp = 0; igrp < aryGroups.size(); igrp++) {
-        m_ex_group.AddString(aryGroups[igrp].c_str());
-      }
+  m_ex_group.ResetContent(); // groups might be from a previous DB (BR 3062758)
+  std::vector<std::wstring> aryGroups;
+  app.m_core.GetUniqueGroups(aryGroups);
+  for (std::vector<std::wstring>::iterator iter = aryGroups.begin();
+       iter != aryGroups.end(); ++iter) {
+    m_ex_group.AddString(iter->c_str());
   }
 
   m_title.Format(IDS_SCTARGET, m_tt);
