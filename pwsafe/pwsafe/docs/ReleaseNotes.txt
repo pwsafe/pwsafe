@@ -16,6 +16,8 @@ Bugs fixed in 3.23.1
 ====================
 [] Spanish translations for installer and application updated - thanks
 to Jose.
+[3062758] Groups list in Add/Edit dialog box no longer "remembers"
+groups from previously opened database.
 
 New Features for 3.23
 =====================

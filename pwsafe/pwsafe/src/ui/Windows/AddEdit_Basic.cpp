@@ -272,13 +272,12 @@ BOOL CAddEdit_Basic::OnInitDialog()
   m_pex_notesww->ShowWindow(m_bWordWrap ? SW_SHOW : SW_HIDE);
 
   // Populate the combo box
-  if (m_ex_group.GetCount() == 0) {
-    std::vector<std::wstring> aryGroups;
-      M_pcore()->GetUniqueGroups(aryGroups);
-      for (std::vector<std::wstring>::iterator iter = aryGroups.begin();
-           iter != aryGroups.end(); ++iter) {
-        m_ex_group.AddString(iter->c_str());
-      }
+  m_ex_group.ResetContent(); // groups might be from a previous DB (BR 3062758)
+  std::vector<std::wstring> aryGroups;
+  M_pcore()->GetUniqueGroups(aryGroups);
+  for (std::vector<std::wstring>::iterator iter = aryGroups.begin();
+       iter != aryGroups.end(); ++iter) {
+    m_ex_group.AddString(iter->c_str());
   }
 
   int num_unkwn(0);
