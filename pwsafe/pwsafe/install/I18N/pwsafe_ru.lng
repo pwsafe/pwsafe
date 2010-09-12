@@ -28,7 +28,7 @@ LangString RESERVE_FIELD1 ${LANG_RUSSIAN} "Обычная (данные об установке хранятся
 LangString RESERVE_FIELD2 ${LANG_RUSSIAN} "Портативная (не использовать реестр для хранения данных об установке)"
 
 ; PROGRAM_FILES "Program Files"
-LangString PROGRAM_FILES ${LANG_RUSSIAN} "Основные файлы (необходимо)"
+LangString PROGRAM_FILES ${LANG_RUSSIAN} "Основные файлы"
 
 ; START_AUTO "Start automatically"
 LangString START_AUTO ${LANG_RUSSIAN} "Автозапуск"
@@ -86,27 +86,25 @@ LangString RUNNING_INSTALL ${LANG_RUSSIAN} "Установка уже запущена."
 LangString RUNNING_APPLICATION ${LANG_RUSSIAN} "Пожалуйста, закройте все запущенные экземпляры Password Safe"
 
 ; LANG_INSTALL "Installation Language"
-; Оставлена английская версия, чтобы сообщение было читабельно в случае запуска в неверной локали
-LangString LANG_INSTALL ${LANG_RUSSIAN} "Installation Language"
+LangString LANG_INSTALL ${LANG_RUSSIAN} "Язык установки (Installation Language)"
 
 ; LANG_SELECT "Please select the language for the installation"
-; Оставлена английская версия, чтобы сообщение было читабельно в случае запуска в неверной локали
-LangString LANG_SELECT ${LANG_RUSSIAN} "Please select the language for the installation"
+LangString LANG_SELECT ${LANG_RUSSIAN} "Выберите язык для установки $\n(Please select the language for the installation)"
 
 ; LANG_PROGRAM "Program Language"
-LangString LANG_PROGRAM ${LANG_RUSSIAN} "Program Language"
+LangString LANG_PROGRAM ${LANG_RUSSIAN} "Язык программы"
 
 ; LANG_P_SELECT "Please select the language for the program"
-LangString LANG_P_SELECT ${LANG_RUSSIAN} "Please select the language for the program"
+LangString LANG_P_SELECT ${LANG_RUSSIAN} "Выберите язык интерфейса программы"
 
 ; SORRY_NO_95 "Sorry, Windows 95 is no longer supported. Try PasswordSafe 2.16"
-LangString SORRY_NO_95 ${LANG_RUSSIAN} "Извините, Windows 95 больше не поддерживается Password Safe. Попробуйте версию 2.16"
+LangString SORRY_NO_95 ${LANG_RUSSIAN} "Извините, Windows 95 больше не поддерживается. Попробуйте версию 2.16"
 
 ; SORRY_NO_98 "Sorry, Windows 98 is no longer supported. Try PasswordSafe 2.16"
-LangString SORRY_NO_98 ${LANG_RUSSIAN} "Извините, Windows 98 больше не поддерживается Password Safe. Попробуйте версию 2.16"
+LangString SORRY_NO_98 ${LANG_RUSSIAN} "Извините, Windows 98 больше не поддерживается. Попробуйте версию 2.16"
 
 ; SORRY_NO_ME "Sorry, Windows ME is no longer supported. Try PasswordSafe 2.16"
-LangString SORRY_NO_ME ${LANG_RUSSIAN} "Извините, Windows ME больше не поддерживается Password Safe. Попробуйте версию 2.16"
+LangString SORRY_NO_ME ${LANG_RUSSIAN} "Извините, Windows ME больше не поддерживается. Попробуйте версию 2.16"
 
 ;=================================================================
 ; End of pwsafe_ru.lng
