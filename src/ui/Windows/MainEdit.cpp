@@ -355,8 +355,10 @@ void DboxMain::OnDelete()
     }
   }
 
-  if (dodelete)
+  if (dodelete) {
     Delete();
+    RefreshViews();
+  }
 }
 
 void

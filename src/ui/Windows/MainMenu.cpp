@@ -649,7 +649,6 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
         if (!bReadOnly) {
           pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                  ID_MENUITEM_ADD, tc_dummy);
-          pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
           pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                  ID_MENUITEM_ADDGROUP, tc_dummy);
           pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
@@ -695,9 +694,9 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
     }
 
     // Scenario 3 - Entry selected
-    //   Tree View - <Entry Items>, Sep, Add Group, Sep, Clear Clipboard, Sep
+    //   Tree View - <Entry Items>, Sep, Add Entry, Add Group, Sep, Clear Clipboard, Sep,
     //               Entry functions (copy to clipboard, browse, run etc)
-    //   List View - <Entry Items>, Sep, Clear Clipboard, Sep
+    //   List View - <Entry Items>, Sep, Add Entry, Sep, Clear Clipboard, Sep,
     //               Entry functions (copy to clipboard, browse, run etc)
     if (pci != NULL) {
       // Entry is selected
@@ -730,8 +729,8 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
       if (!bReadOnly) {
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_DUPLICATEENTRY, tc_dummy);
+        pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
         if (!m_IsListView) {
-          pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
           pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                  ID_MENUITEM_ADDGROUP, tc_dummy);
         }
@@ -1128,6 +1127,9 @@ void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint screen)
   }
 
   // RClick over TreeView
+  if (!m_bOpen)
+    return;
+
   if (m_ctlItemTree.IsWindowVisible()) {
     // currently in tree view
     m_ctlItemTree.GetWindowRect(&rect);
