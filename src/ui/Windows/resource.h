@@ -321,18 +321,18 @@
 #define IDB_DRAGEMAIL_CLASSIC           476
 #define IDB_DRAGEMAILX_CLASSIC          477
 #define IDB_UNDO_CLASSIC                478
-#define IDD_ALIAS_PSWDCHANGE            478
-#define IDB_REDO_CLASSIC                479
-#define IDB_UNDO_NEW                    480
-#define IDB_REDO_NEW                    481
-#define IDB_UNDO_NEW_D                  482
-#define IDB_REDO_NEW_D                  483
-#define IDB_SYNCHRONIZE_CLASSIC         484
-#define IDB_SYNCHRONIZE_NEW             485
-#define IDB_SYNCHRONIZE_NEW_D           486
-#define IDB_ADDGROUP_CLASSIC            487
-#define IDB_ADDGROUP_NEW                488
-#define IDB_ADDGROUP_NEW_D              489
+#define IDD_ALIAS_PSWDCHANGE            479
+#define IDB_REDO_CLASSIC                480
+#define IDB_UNDO_NEW                    481
+#define IDB_REDO_NEW                    482
+#define IDB_UNDO_NEW_D                  483
+#define IDB_REDO_NEW_D                  484
+#define IDB_SYNCHRONIZE_CLASSIC         485
+#define IDB_SYNCHRONIZE_NEW             486
+#define IDB_SYNCHRONIZE_NEW_D           487
+#define IDB_ADDGROUP_CLASSIC            488
+#define IDB_ADDGROUP_NEW                489
+#define IDB_ADDGROUP_NEW_D              490
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_BROWSE                      1002
@@ -716,7 +716,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        490
+#define _APS_NEXT_RESOURCE_VALUE        491
 #define _APS_NEXT_COMMAND_VALUE         30001
 #define _APS_NEXT_CONTROL_VALUE         1427
 #define _APS_NEXT_SYMED_VALUE           166
