@@ -10,14 +10,16 @@ releases may be found in the file ChangeLog.txt.
 
 New Features for 3.23.1
 =======================
+[3062809] Add "Add Group" to Toolbar.
+[3062788] Add "Add New Entry" menu item to additional context menus.
 [] Online help is now available in Spanish, thanks to Jose.
 
 Bugs fixed in 3.23.1
 ====================
-[] Spanish translations for installer and application updated - thanks
-to Jose.
 [3062758] Groups list in Add/Edit dialog box no longer "remembers"
 groups from previously opened database.
+[] Spanish translations for installer and application updated - thanks
+to Jose.
 
 New Features for 3.23
 =====================
