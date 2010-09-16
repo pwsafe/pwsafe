@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2010-07-18 12:34+0100\n"
+"PO-Revision-Date: 2010-09-16 16:02+0100\n"
 "Last-Translator: Karel Van der Gcuht <karel@vandergucht.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -6625,6 +6625,14 @@ msgstr "[keine Datenbank geöffnet]"
 #. Resource IDs: (328)
 msgid "[Notes hidden - click here to display]"
 msgstr "[Notizen versteckt - klicken Sie hier um sie anzuzeigen]"
+
+#. Resource IDs: (2005)
+msgid ""
+"\n"
+"Add Group"
+msgstr ""
+"\n"
+"Gruppe einfügen"
 
 #. Resource IDs: (2004)
 msgid ""
