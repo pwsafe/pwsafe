@@ -1,6 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8"><title>Auto Type</title><!-- pwsafe version: 3.18.1--><!-- Modified: 4/08/2009 --><!--Popup control -->
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"><title>Автонабор</title><!-- pwsafe version: 3.18.1--><!-- Modified: 4/08/2009 --><!--Popup control -->
 
 
 <script language="javascript" src="html/popups.js">
@@ -9,122 +9,50 @@
 <body>
 <object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"> </object><!-- Popup Source File -->
 
-<h2>Auto Type</h2>
-<p><b>Auto Type </b>provides a means for users to
-easily and quickly
-enter user name and password information. With a single click, the user
-name and password are entered and the data is submitted to the host for
-approval. By default, the formula followed by the automated keystrokes
-is as follows: <a name="defautotext"></a>the user
-name, followed by a tab key, followed by the
-password, another tab, and then the enter key (<i>username</i>
-<b>TAB</b> <i>password</i> <b>TAB </b><b>ENTER</b>).
-This works fine for most web sites that require username/password
-authentication.</p>
-<p>For web sites or applications that require different data, it
-is possible to
-tailor the autotype behaviour as described in the <a href="#autotype_details">Customizing Auto Type</a>
-section below. Note that you can also customize the&nbsp;<span style="font-style: italic;"><a href="#defautotext">default</a>&nbsp;</span>autotype
-text via the <span style="font-style: italic;"><a href="misc_tab.html">Misc</a>. </span>tab in
-the Options dialog box. This can be useful if, for example, the
-autotype is too fast for your machine.&nbsp;</p>
+<h2>Автонабор</h2>
+<p><b>Автонабор</b> предназначен для ускорения и упрощения ввода имени пользователя и пароля. Для ввода имени пользователя и пароля с последующей отправкой на проверку достаточно нажать одну кнопку. По умолчанию, для автоматизации используется следующая последовательность нажатий клавиш: <a name="defautotext"></a>имя пользователя, затем табуляция, пароль, еще одна табуляция, и Enter (<i>имя пользователя</i> <b>TAB</b> <i>пароль</i> <b>TAB </b><b>ENTER</b>). Данная схема подходит для большинства сайтов, требующих для аутентификации ввод имени пользователя и пароля.</p>
+<p>Для сайтов или приложений, требующих ввод дополнительных данных возможна тонкая настройка автонабора, описание которой приведено в разделе <a href="#autotype_details">Настройка автонабора</a>. Обратите внимание: последовательность для автонабора может быть переопределена на вкладке <span style="font-style: italic;"><a href="misc_tab.html">Разное</a> </span>в окне "Настройки". Например, это может потребоваться, если автонабор выполняется слишком быстро.&nbsp;</p>
 <div class="instr">
-<h3>Using Auto Type</h3>
+<h3>Использование автонабора</h3>
 <ol>
-<li>Place cursor in the form's user name field</li>
-<li>Maximize or open Password Safe</li>
-<li>Select a password entry</li>
-<li><b>Ctrl -T</b> or right-click and select <b>Perform
-Auto Type</b> or click on the Toolbar button to initiate.</li>
+<li>Установите курсор в поле для ввода имени пользователя</li>
+<li>Переключитесь или откройте Password Safe</li>
+<li>Выберите элемент с необходимым именем пользователя и паролем</li>
+<li>Для выполнения автонабора нажмите <b>Ctrl -T</b> (также можно щелкнуть правой кнопкой мыши и выбрать в контекстном меню <b>Автонабор</b> или нажать соответствующую кнопку на панели инструментов).</li>
 </ol>
-<h3><a name="autotype_details"></a>Customizing
-Auto Type</h3>
-<p>For web sites or applications that do not have the username
-field followed by
-the
-password field followed by the login button, you can modify the
-behaviour by filling in the <a href="#N1">"Autotype" field</a>
-with
-text that
-specifies the desired behavior as follows:</p>
+<h3><a name="autotype_details"></a>Настройка автонабора</h3>
+<p>Для веб-сайтов или приложений в которых за именем пользователя не идет поле для ввода пароля и затем кнопка входа, можно изменить последовательность, заполнив поле <a href="#N1">"Автонабор"</a> текстом описывающим необходимое поведение:</p>
 <ul>
-<li><span style="font-weight: bold;">\u</span>
-is replaced by the username associated with the entry.</li>
-<li><span style="font-weight: bold;">\p</span>
-is replaced by the password associated with the entry.</li>
-<li><span style="font-weight: bold;">\g</span>
-is replaced by the group associated with the entry.</li>
-<li><span style="font-weight: bold;">\i</span>
-is replaced by the title associated with the entry.</li>
-<li><span style="font-weight: bold;">\o</span>
-is replaced by the contents of the (possibly multilined) Notes field.</li>
+<li><span style="font-weight: bold;">\u</span> заменяется именем пользователя, связанным с элементом.</li>
+<li><span style="font-weight: bold;">\p</span> заменяется паролем, связанным с элементом.</li>
+<li><span style="font-weight: bold;">\g</span> заменяется группой, связанной с элементом.</li>
+<li><span style="font-weight: bold;">\i</span> заменяется заголовком, связанным с элементом.</li>
+<li><span style="font-weight: bold;">\o</span> заменяется содержимым (возможно многострочным) поля "заметки".</li>
 <ul>
-<li>Any end of line characters
-‘\n’, ‘\r’ or
-‘\r\n’ are converted to ‘\r’
-(carriage return).</li>
-<li>No substitution is made to escape sequences within the
-Notes field (e.g. ‘\u’, ‘\p’
-etc.) except for the ‘\t’ sequence which is
-replaced by the tab character.</li>
+<li>Символы конца строки ‘\n’, ‘\r’ или ‘\r\n’ преобразуются в ‘\r’ (возврат каретки).</li>
+<li>Для содержимого поля "заметки" не производится подстановка управляющих последовательностей (‘\u’, ‘\p’ и т.д.) кроме ‘\t’, заменяемой на символ табуляции.</li>
 </ul>
-<li><span style="font-weight: bold;">\o</span><span style="font-style: italic; font-weight: bold;">NNN</span>
-is replaced by the contents of the n<sup>th</sup> line of
-the Notes field</li>
+<li><span style="font-weight: bold;">\o</span><span style="font-style: italic; font-weight: bold;">NNN</span> заменяется  n<sup>ой</sup> строкой поля "заметки".</li>
 <ul>
-<li><span style="font-style: italic;">NNN </span>can
-be one to three digits (e.g., \o5 for the 5<sup>th</sup>
-line, \o45 for the 45<sup>th</sup>, etc.</li>
-<li>End of line characters are <span style="font-style: italic;">not </span> included.</li>
-<li>if <span style="font-style: italic;">NNN </span>is
-larger than the number of lines in the notes field, then this has no
-effect.<br>
+<li><span style="font-style: italic;">NNN</span> может состоять из одной, двух или трех цифр (например, \o5 для 5<sup>й</sup> строки, \o45 для 45<sup>й</sup>, и т.д.).</li>
+<li>При этом символы переноса строк <span style="font-style: italic;">не</span> включаются.</li>
+<li>Если <span style="font-style: italic;">NNN</span> превышает количество строк в поле "заметки", то последовательность игнорируется.<br>
 </li>
 </ul>
-<hr> <small><b>Note</b> that this is a
-convenient way to support
-autotyping for applications that require a second password or other
-arbitrary text as part of the authentication process.</small>
-<hr> <li><span style="font-weight: bold;">\b</span>
-is replaced by the backspace key.&nbsp;<span style="font-weight: bold;"></span></li>
-<li><span style="font-weight: bold;">\t</span>
-is replaced by the Tab key, in effect skipping a field.</li>
-<li><span style="font-weight: bold;">\n</span>
-is replaced by the enter key, in effect pressing a button.</li>
-<li><span style="font-weight: bold;">\\</span>
-is replaced by the backslash (\) key.</li>
-<li><span style="font-weight: bold;">\d<span style="font-style: italic;">NNN</span></span>
-sets the delay between characters to <span style="font-style: italic;">NNN</span>
-milliseconds,
-instead of 10 (the default). This changes the delay for the current and
-all subsequent characters. For example, "fast\d500slow" will result in
-'fast' being typed with the default delay, and the letters 's', 'l',
-'o', and 'w' typed with a half-second pause before each. if you want to
-put in a one-time delay that does not affect the speed of the following
-characters, use '\w' or '\W', as described below.</li>
-<li><span style="font-weight: bold;">\w</span><span style="font-style: italic; font-weight: bold;">NNN</span>
-<span style="font-weight: bold;"> or </span><span style="font-style: italic; font-weight: bold;">\WNNN</span>
- introduces a delay of <span style="font-style: italic;">NNN </span>milliseconds
-for \w, or seconds if \W is used. For example, "how\w500now" will cause
-'how' to be typed (at the default rate or that specified by the last
-\d), followed by a half-second pause, followed by 'now' typed at the
-same rate as 'how'). Likewise, "how\W2now" will introduce a two second
-pause between the two words. This is useful for fine-tuning the timing with certain web pages.</li>
-<li><span style="font-weight: bold;">\z</span> invokes the old AutoType mechanism.  This mechanism may handle
-non-Latin characters incorrectly, but can make Autotype work on certain problematical web sites.
-If you find that Autotype does not work properly on a particular web site, try this code in the autotype command field.</li>
-<li>All other text is typed as-is.</li>
+<hr> <small><b>Заметьте,</b> что таким образом возможен автонабор для приложений, требующих во время аутентификации ввод второго пароля или произвольного текста.</small>
+<hr> <li><span style="font-weight: bold;">\b</span> заменяется клавишей "забой".&nbsp;<span style="font-weight: bold;"></span></li>
+<li><span style="font-weight: bold;">\t</span> заменяется табуляцией и используется для перехода в следующее поле.</li>
+<li><span style="font-weight: bold;">\n</span> заменяется клавишей ввода и используется для нажатия на кнопку.</li>
+<li><span style="font-weight: bold;">\\</span> заменяется обратной косой чертой (\).</li>
+<li><span style="font-weight: bold;">\d<span style="font-style: italic;">NNN</span></span> устанавливает задержку между вводом символов в <span style="font-style: italic;">NNN</span> миллисекунд, вместо 10мс, установленных по умолчанию. Замена производится только для текущего и последующих символов. Например, "быстро\d500медленно" приведет к тому, что 'быстро' будет набрано со стандартной задержкой, а буквы 'м', 'е', 'д', 'л', 'е', 'н', 'н', 'о' с задержкой в полсекунды перед каждой буквой. Если требуется вставить однократную задержку, не влияющую на скорость ввода символов, используйте управляющие последовательности '\w' и '\W', описанные ниже.</li>
+<li><span style="font-weight: bold;">\w</span><span style="font-style: italic; font-weight: bold;">NNN</span> <span style="font-weight: bold;"> или </span><span style="font-style: italic; font-weight: bold;">\WNNN</span> используется для указания задержки в <span style="font-style: italic;">NNN</span> миллисекунд для '\w', и <span style="font-style: italic;">NNN</span> секунд для '\W'. Например, "как\w500сейчас" набирает 'как' (со стандартной межбуквенной задержкой или той, что была установлена с помощью \d), затем ждет полсекунды и вводит 'сейчас' с той же межбуквенной задержкой, что и 'как'). Аналогично, "как\W2сейчас" сделает задержку между словами в 2 секунды. Задержка может использоваться для тонкой настройки входа на некоторые веб-станицы.</li>
+<li><span style="font-weight: bold;">\z</span> использует "старый" механизм автонабора. В данном случае нелатинские символы могут вводиться некорректно, но также может улучшиться работа автонабора на некоторых проблемных веб-сайтах. Если вы заметили, что автонабор работает некорректно на каком-то из сайтов, попробуйте добавить данную ключевую последовательность в автонабор для этого элемента.</li>
+<li>Все другие символы переносятся без изменений.</li>
 </ul>
-<p><span style="font-weight: bold;">Example:</span>
-The following can be used where the bank account number (12345) must be
-entered before the user and password:<br>
-<br>
-<span style="font-style: italic;">12345\t\u\t\p\t\n</span></p>
+<p><span style="font-weight: bold;">Пример:</span> Если перед вводом имени и пароля нужно ввести номер счета (12345), можно использовать следующую последовательность:<br> <br> <span style="font-style: italic;">12345\t\u\t\p\t\n</span></p>
 <p><span style="font-style: italic;"></span></p>
 </div>
-<hr> <small><b>Note:</b>&nbsp;<a name="N1">If you are having problems with autotype, you might want to disable
-3rd-party popup-blockers. Users have reported problems with the
-interaction of popup-blockers with the autotype functionality.</a></small>
+<hr> <small><b>Примечание:</b>&nbsp;<a name="N1"> в случае возникновения проблем с автонабором попробуйте отключить блокировщики всплывающих окон (есть сообщения пользователей, указывающие на то, что использование блокировщиков всплывающих окон может привести к проблемам с автонабором).</a></small>
 <hr><!-- Added some white space at the bottom for natural scrolling --><a name="N1"><b><br>
 <br>
 <br>

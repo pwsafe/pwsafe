@@ -13,7 +13,7 @@
 		<param name="Local" value="html\Welcome.html">
 		</OBJECT>
 	</LI><LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="About Password Safe">
+		<param name="Name" value="О Password Safe">
 		<param name="Local" value="html\about_pws.html">
 		</OBJECT>
 	</LI><LI> <OBJECT type="text/sitemap">
@@ -75,15 +75,15 @@
 			<param name="Local" value="html\password_history.html">
 			</OBJECT>
 		</LI><LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Changing Master Passwords">
+			<param name="Name" value="Изменение мастер-пароля для контейнера">
 			<param name="Local" value="html\change_combo.html">
 			</OBJECT>
 		</LI><LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Using Auto Type">
+			<param name="Name" value="Использование автонабора">
 			<param name="Local" value="html\autotype.html">
 			</OBJECT>
 		</LI><LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Backing Up and Restoring Databases">
+			<param name="Name" value="Резервное копирование и восстановление контейнеров">
 			<param name="Local" value="html\backup_and_restore.html">
 			</OBJECT>
 		</LI><LI> <OBJECT type="text/sitemap">
@@ -107,7 +107,7 @@
 			<param name="Local" value="html\filters.html">
 			</OBJECT>
 		</LI><LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Command Line Arguments">
+			<param name="Name" value="Параметры командной строки">
 			<param name="Local" value="html\cli.html">
 			</OBJECT>
 	</LI></UL>
