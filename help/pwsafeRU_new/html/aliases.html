@@ -28,7 +28,7 @@
   
 
   
-  <title>Aliases</title><!-- pwsafe version: 3.11--><!-- Modified: 20/11/2007 --><!--Popup control -->
+  <title>Алиасы</title><!-- pwsafe version: 3.11--><!-- Modified: 20/11/2007 --><!--Popup control -->
 
   <script language="javascript" src="html/popups.js">
   </script>
@@ -47,122 +47,72 @@
 
 
 
-<h2>Password Aliases</h2>
+<h2>Алиасы для паролей</h2>
 
 
 
-<p>If you're using a "single sign-on" system that allows you to share
-the same password across different machines/servers/applications, etc.
-you can setup <span style="font-weight: bold;">Password Safe</span>
-entries accordingly, so that changing one password affects all other
-related entries. This is called "aliasing" entries. This section describes how to define and use such aliases.</p>
+<p>Если вы используете системы "единого входа", которые позволяют использовать один и тот же пароль для различных машин/серверов/приложений, то можно настроить несколько элементов <span style="font-weight: bold;">Password Safe</span> таким образом, чтобы изменение пароля в одном из них автоматически отражалось в остальных. Связывание элементов таким образом производится с помощью алиасов. Этот раздел описывает порядок определения и использования алиасов.</p>
 
 
 
-<h4>Summary</h4>
+<h4>Краткое описание</h4>
 
 
 
-<p>The basic idea is to allow one entry's password to be referred to
-by another. The "referred to" entry is called the 
-<span style="font-weight: bold;">base</span>, and the
-"referring" entry (or entries) is (are) called the
-<span style="font-weight: bold;">alias(es)</span>.
-When an entry is set to be the alias of another entry, the alias's
-password effectively "follows" that entry's password: If you copy the
-alias' password to the clipboard, the password that gets copied is
-the base's. If you change the base's password, this is immediately
-reflected in all the alias entries associated with the base. Although
-this may sound complicated, in fact it's quite simple and intuitive to
-use. The hardest part is setting up the aliases, as described below.</p>
+<p>Основная идея состоит в том, чтобы пароль элемента мог быть ссылкой на пароль другого. Элемент, на который ссылаются называется <span style="font-weight: bold;">исходным</span>, а ссылающийся на него - <span style="font-weight: bold;">алиасом</span>. В случае, если элемент является алиасом другого, его пароль совпадает с исходным: при копировании в буфер обмен пароля алиаса, туда будет помещен пароль  исходного элемента. Изменение пароля исходного элемента немедленно отражается на связанных с ним алиасах. На первый взгляд это может показаться сложным, но на самом деле все достаточно просто и понятно. Самая сложная часть - это определение алиасов.</p>
 
 
 
-<h4>Defining an alias</h4>
+<h4>Определение алиасов</h4>
 
 
 
-<p>In Password Safe, an entry can refer to another's password by means
-of a specially formatted password in the referring entry. The format is
-the "name" of the referred-to entry enclosed in square brackets. Most
-of the time, you can think of "name" as synonymous with the title field
-of an entry, so if the base entry's title is "master", for example,
-then entering "[master]" (without the quotes) in another entry's
-password field is enough to define the other entry as an alias of
-"master".</p>
-<p>In the general case, a "name" can contain all of the following fields, separated by colons:
-Group, Title and User name. Note that if the title is unique in the
-database, then the
-other fields are optional. Likewise, if the group and
-title together or title and user together specify a unique entry, then
-the corresponding user or group doesn't have to be
-specified.</p>
+<p>Для того, чтобы в Password Safe пароль элемента ссылался на другой, нужно записать его специальным образом. Для этого в поле пароля алиаса нужно написать "имя" исходного элемента в квадратных скобках. Чаще всего под "именем" можно понимать "заголовок" элемента. Таким образом, если заголовок исходного элемента "master", то указание в поле пароля другого элемента строки "[master]" (без кавычек) делает его алиасом для элемента "master".</p>
+<p>В общем случае, "имя" может содержать значения полей "группа", "заголовок" и "имя пользователя", разделенные двоеточием. Заметьте, что если заголовок уникален в данном контейнере, то другие поля являются необязательными. Аналогично, если пара группа и заголовок или заголовок и имя пользователя однозначно определяет элемент, указание в имени значения третьего поля не является обязательным.</p>
 
 
 
-<p>In Password Safe entries, only the Title field is mandatory.  Group and User name 
-fields are optional as long as the resulting combination of "group/title/user&nbsp;name"
-is unique. As indicated above, the alias' "password" is in the form [g:t:u] but
-in fact you only have to specify enough information to uniquely identify
-the base entry.  So, if there is only one entry in the database with title 't',
-then [t] would be sufficient - since title is mandatory and only one item is given,
-it is assumed to be the title.  If there were more than one entry with this title,
-you would be warned that this is the case, and you would need to be more specific to
-identify the base entry by adding either its group or its user name or both!
-As long as there is a unique entry that fits the information provided, any of
-the following formats are accepted: [g:t:u], [g:t], [t:u] or [t].  Specifying a
-colon without a value implies an empty field, e.g. [g:t:] says entry with
-title 't' in group 'g' and with no user name value and [:t:] says entry with 
-title 't' in the root with no user name value etc.</p>
+<p>В элементах контейнера Password Safe, только поле "заголовок" является обязательным для заполнения. Поля "группа" и "имя пользователя" необязательны если комбинация  "группа/заголовок/имя пользователя" уникальна. Из описанного следует, что "пароль" для алиаса имеет вид [g:t:u] (g - группа, t - заголовок, u - имя пользователя). При этом достаточно указать только ту информацию, по которой можно однозначно определить элемент. Таким образом, если в контейнере лишь один элемент с заголовком 't', то в качестве пароля алиаса можно указать [t] (если указано только одно значение, то считается, что это заголовок, т.к. он является обязательным). В случае, если несколько элементов имеют одинаковый заголовок, будет выведено предупреждение. Тогда потребуется указать дополнительную информацию об исходном элементе (группу и/или имя пользователя)! Допустимы следующие уникальные комбинации: [g:t:u], [g:t], [t:u] или [t]. Указание двоеточия без значения равносильно пустому полю, например, [g:t:] указывает на элемент с заголовком 't' в группе 'g' без имени пользователя, а [:t:] равносильно элементу 't' без имени пользователя, находящемуся в корне дерева.</p>
 
 
 
-<p>The following examples should make this clear.</p>
+<p>Ниже приведены поясняющие примеры.</p>
 
 
 
-<h4>Examples</h4>
+<h4>Примеры</h4>
 
 
 
-<p>1. If the base entry's title is "LDAP Server", and there are no
-other entries with that title, then an alias will be defined by an
-entry that has "[LDAP Server]" in the password field.</p>
+<p>1. Если заголовок исходного элемента "Сервер" и никакой другой элемент не имеет такого заголовка, то элемент в поле пароль которого указано "[Сервер]" будет являться его алиасом.</p>
 
 
 
-<p>2. If there are "LDAP Server" entries in two different groups, say
-"Dept. A" and "Dept. B", then one can specify an alias to the latter by
-"[Dept. A:LDAP Server]". Note you do not have to specify the user name if 
-the information you have provided uniquely identifies the base entry.</p>
+<p>2. Если элемент "Сервер" присутствует в двух группах, например "Отдел A" и "Отдел B", тогда первый определяется сочетанием "[Отдел A:Сервер]". Заметьте, что нет необходимости писать имя пользователя, если указанной информации достаточно для однозначного определения элемента.</p>
 
 
 
-<p>3. Different user names can also be used to differentiate between
-similar base entries, e.g., "[LDAP Server:Joe]" and "[LDAP
-Server:Mary]".</p>
+<p>3. Имя пользователя тоже может использоваться для различения похожих исходных элементов, например "[Сервер:Вася]" и "[Сервер:Маша]".</p>
 
 
 
-<p>4. Finally, all three fields may be specified, as in "[Dept. A:LDAP Server:Joe]"</p>
+<p>4. Наконец, можно указать все три поля, например "[Отдел  A:Сервер:Вася]"</p>
 
 
 
-<h4>Display</h4>
+<h4>Отображение</h4>
 
 
 
-<p>Base entries, that is, entries with at least one alias "pointing" to
-them, are displayed with a green triangle instead of a green square in
-the nested tree view.</p>
+<p>В древовидном списке исходные элементы, на которые указывает хотя бы один алиас, помечены значком зеленого треугольника вместо зеленого квадрата.</p>
 
 
 
-<p>Alias entries are shown with white triangles.</p>
+<p>Алиасы помечены белыми треугольниками.</p>
 
 
 
-<p><img style="border: 1px solid ; width: 163px; height: 127px;" alt="Alias example" src="images/alias_example.jpg"><br>
+<p><img style="border: 1px solid ; width: 163px; height: 127px;" alt="Пример алиаса" src="images/alias_example.jpg"><br>
 
 
 

@@ -14,6 +14,78 @@
   <body>
     <tu>
       <tuv lang="EN-US">
+        <seg>&lt;/s1&gt;This will start the application &quot;silently&quot;, that is, minimized and with no database (unless one is specified).</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T190734Z" changeid="pm_kan">
+        <seg>&lt;/s1&gt;Приложение будет запущено &quot;молча&quot; - в свернутом виде и без контейнера (если он не указан в параметрах).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>&lt;/s1&gt;This will start the application closed, that is, with no database, and without the initial opening dialog (To access a database, use the File menu).</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T195354Z" changeid="pm_kan">
+        <seg>&lt;/s1&gt;В данном случае приложение будет запущено без контейнера, в том числе не будет выведен стандартный диалог (для открытия контейнера можно использовать меню &quot;Файл&quot;).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>&lt;/s2&gt;This is a deliberate design decision, since any mechanism for retrieving lost passwords poses a security hole that can be exploited.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T183941Z" changeid="pm_kan">
+        <seg>&lt;/s2&gt;Это осознанное решение разработчиков, так как любой механизм восстановления потерянных паролей является брешью в системе защиты и может быть использован злоумышленниками.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>&lt;/s3&gt;tab in the Options dialog box.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T204616Z" changeid="pm_kan">
+        <seg>&lt;/s3&gt;в окне &quot;Настройки&quot;.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>&lt;b0&gt;&lt;s1&gt;There is no mechanism within Password Safe to retrieve lost or forgotten safe passwords&lt;/s1&gt;&lt;/b0&gt;&lt;s2&gt;.&lt;br3&gt;</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T183810Z" changeid="pm_kan">
+        <seg>&lt;b0&gt;&lt;s1&gt;В Password Safe не существует механизма для восстановления потерянных (забытых) мастер-паролей&lt;/s1&gt;&lt;/b0&gt;&lt;s2&gt;.&lt;br3&gt;</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>&lt;b0&gt;Auto Type &lt;/b0&gt;provides a means for users to easily and quickly enter user name and password information.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T203039Z" changeid="pm_kan">
+        <seg>&lt;b0&gt;Автонабор&lt;/b0&gt; предназначен для ускорения и упрощения ввода имени пользователя и пароля.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>&lt;b0&gt;Ctrl -T&lt;/b0&gt; or right-click and select &lt;b1&gt;Perform Auto Type&lt;/b1&gt; or click on the Toolbar button to initiate.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T193921Z" changeid="pm_kan">
+        <seg>Для выполнения автонабора нажмите &lt;b0&gt;Ctrl -T&lt;/b0&gt; (также можно щелкнуть правой кнопкой мыши и выбрать в контекстном меню &lt;b1&gt;Автонабор&lt;/b1&gt; или нажать соответствующую кнопку на панели инструментов).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>&lt;b0&gt;Note:&lt;/b0&gt; &lt;a1&gt;If you are having problems with autotype, you might want to disable 3rd-party popup-blockers.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T194302Z" changeid="pm_kan">
+        <seg>&lt;b0&gt;Примечание:&lt;/b0&gt; &lt;a1&gt; в случае возникновения проблем с автонабором попробуйте отключить блокировщики всплывающих окон</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>&lt;b0&gt;Note:&lt;/b0&gt; It is &lt;b1&gt;&lt;u2&gt;strongly recommended&lt;/u2&gt;&lt;/b1&gt; that you make frequent backups of your password databases.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T173040Z" changeid="pm_kan">
+        <seg>&lt;b0&gt;Примечание:&lt;/b0&gt; &lt;b1&gt;&lt;u2&gt;настоятельно рекомендуется&lt;/u2&gt;&lt;/b1&gt; делать резервные копии паролей как можно чаще.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>&lt;b0&gt;Note: &lt;s1&gt;There is no mechanism within Password Safe to retrieve lost or forgotten safe passwords&lt;/s1&gt;&lt;/b0&gt;&lt;s2&gt;.&lt;/s2&gt; &lt;br3&gt;</seg>
       </tuv>
       <tuv lang="RU-RU" changedate="20100905T130450Z" changeid="pm_kan">
@@ -22,10 +94,274 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>&lt;b0&gt;Note&lt;/b0&gt; that this is a convenient way to support autotyping for applications that require a second password or other arbitrary text as part of the authentication process.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T210817Z" changeid="pm_kan">
+        <seg>&lt;b0&gt;Заметьте,&lt;/b0&gt; что таким образом возможен автонабор для приложений, требующих во время аутентификации ввод второго пароля или произвольного текста.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>&lt;b0&gt;Password Safe&lt;/b0&gt; and the Twofish encryption algorithm it uses were originally developed and released to the public by &lt;a1&gt;Bruce Schneier&lt;/a1&gt; and Counterpane Labs.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T200835Z" changeid="pm_kan">
+        <seg>&lt;b0&gt;Password Safe&lt;/b0&gt; и использованный в нем алгоритм шифрования Twofish разработаны и опубликованы &lt;a1&gt;Брюсом Шнайером (Bruce Schneier)&lt;/a1&gt; и Counterpane Labs.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>&lt;b0&gt;Password Safe&lt;/b0&gt; has a built in check for what it considers to be weak master passwords.</seg>
       </tuv>
-      <tuv lang="RU-RU" changedate="20100905T125201Z" changeid="pm_kan">
-        <seg>&lt;b0&gt;Password Safe&lt;/b0&gt; имеет встроенные средства для проверки сложности пароля.</seg>
+      <tuv lang="RU-RU" changedate="20100919T181135Z" changeid="pm_kan">
+        <seg>&lt;b0&gt;Password Safe&lt;/b0&gt; имеет встроенные средства для проверки сложности мастер-пароля.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>&lt;b0&gt;Password Safe&lt;/b0&gt; is freely available and distributable under the restrictions set forth in the standard &lt;a1&gt;Open Source Initiative (OSI)&lt;/a1&gt; &quot;Artistic License 2.0.&quot; A copy of this license is included with the &lt;b2&gt;Password Safe&lt;/b2&gt; installation package in the file named &lt;s3&gt;LICENSE&lt;/s3&gt;.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T201547Z" changeid="pm_kan">
+        <seg>&lt;b0&gt;Password Safe&lt;/b0&gt; находится в свободном доступе и распространяется с учетом ограничений установленных &lt;a1&gt;Open Source Initiative (OSI)&lt;/a1&gt; &quot;Artistic License 2.0.&quot; Копия лицензии (на английском языке)  включена в поставку &lt;b2&gt;Password Safe&lt;/b2&gt; и находится в файле &lt;s3&gt;LICENSE&lt;/s3&gt;.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>&lt;b0&gt;Password Safe&lt;/b0&gt; is now an open source project hosted at &lt;a1&gt;sourceforge.net&lt;/a1&gt;.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T192637Z" changeid="pm_kan">
+        <seg>Сейчас &lt;b0&gt;Password Safe&lt;/b0&gt; является открытым программным обеспечением и размещается на &lt;a1&gt;sourceforge.net&lt;/a1&gt;.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>&lt;b3&gt;&lt;s4&gt;&lt;f5&gt;&lt;b6&gt;This is the same as the '&lt;s7&gt;-c&lt;/s7&gt;' option, with the addition that the application is started as minimized.&lt;/b6&gt;&lt;/f5&gt;&lt;/s4&gt;&lt;/b3&gt;</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T191133Z" changeid="pm_kan">
+        <seg>&lt;b3&gt;&lt;s4&gt;&lt;f5&gt;&lt;b6&gt;Параметр аналогичен '&lt;s7&gt;-c&lt;/s7&gt;', но, дополнительно, запуск будет произведен в свернутом виде.&lt;/b6&gt;&lt;/f5&gt;&lt;/s4&gt;&lt;/b3&gt;</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>&lt;b3&gt;Note:&lt;/b3&gt; The file can be &lt;i4&gt;any&lt;/i4&gt; file.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T185327Z" changeid="pm_kan">
+        <seg>&lt;b3&gt;Примечание:&lt;/b3&gt; Файл может быть &lt;i4&gt;любым&lt;/i4&gt;.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>&lt;b3&gt;Note:&lt;/b3&gt; This implicitly puts the application in the system tray.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T191037Z" changeid="pm_kan">
+        <seg>&lt;b3&gt;Внимание:&lt;/b3&gt; в данном случае значок приложения будет помещен в область уведомлений (трей).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>&lt;b3&gt;Note:&lt;/b3&gt; This will work only on files that were encrypted by invoking pwsafe with the '-e' option (see above).</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T185940Z" changeid="pm_kan">
+        <seg>&lt;b3&gt;Внимание:&lt;/b3&gt; Данный метод применим только к файлам ранее зашифрованным с использованием параметра &quot;-e&quot;.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>&lt;i0&gt;pwsafe&lt;/i0&gt; &lt;b1&gt;-d filename&lt;/b1&gt;&lt;br2&gt;</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T185458Z" changeid="pm_kan">
+        <seg>&lt;i0&gt;pwsafe&lt;/i0&gt; &lt;b1&gt;-d имя_файла&lt;/b1&gt;&lt;br2&gt;</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>&lt;i0&gt;pwsafe&lt;/i0&gt; &lt;b1&gt;-e filename&lt;/b1&gt;&lt;br2&gt;</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T185140Z" changeid="pm_kan">
+        <seg>&lt;i0&gt;pwsafe&lt;/i0&gt; &lt;b1&gt;-e имя_файла&lt;/b1&gt;&lt;br2&gt;</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>&lt;i0&gt;pwsafe&lt;/i0&gt; &lt;b1&gt;-r [database]&lt;/b1&gt;&lt;br2&gt;</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T190256Z" changeid="pm_kan">
+        <seg>&lt;i0&gt;pwsafe&lt;/i0&gt; &lt;b1&gt;-r [контейнера]&lt;/b1&gt;&lt;br2&gt;</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>&lt;i0&gt;pwsafe&lt;/i0&gt; &lt;b1&gt;database&lt;/b1&gt;&lt;br2&gt;</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T190245Z" changeid="pm_kan">
+        <seg>&lt;i0&gt;pwsafe&lt;/i0&gt; &lt;b1&gt;контейнер&lt;/b1&gt;&lt;br2&gt;</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>&lt;s0&gt;-g&lt;/s0&gt; &lt;s1&gt;config_file&lt;/s1&gt;&lt;br2&gt;</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T191540Z" changeid="pm_kan">
+        <seg>&lt;s0&gt;-g&lt;/s0&gt; &lt;s1&gt;файл_конфигурации&lt;/s1&gt;&lt;br2&gt;</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>&lt;s0&gt;-h&lt;/s0&gt; &lt;s1&gt;hostname&lt;/s1&gt;&lt;br2&gt;</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T191412Z" changeid="pm_kan">
+        <seg>&lt;s0&gt;-h&lt;/s0&gt; &lt;s1&gt;имя_хоста&lt;/s1&gt;&lt;br2&gt;</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>&lt;s0&gt;-u&lt;/s0&gt; &lt;s1&gt;username&lt;/s1&gt;&lt;br2&gt;</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T191209Z" changeid="pm_kan">
+        <seg>&lt;s0&gt;-u&lt;/s0&gt; &lt;s1&gt;имя_пользователя&lt;/s1&gt;&lt;br2&gt;</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>&lt;s0&gt;Example:&lt;/s0&gt; The following can be used where the bank account number (12345) must be entered before the user and password:&lt;br1&gt;</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T213152Z" changeid="pm_kan">
+        <seg>&lt;s0&gt;Пример:&lt;/s0&gt; Если перед вводом имени и пароля нужно ввести номер счета (12345), можно использовать следующую последовательность:&lt;br1&gt;</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>&lt;s0&gt;NNN &lt;/s0&gt;can be one to three digits (e.g., \o5 for the 5&lt;s1&gt;th&lt;/s1&gt; line, \o45 for the 45&lt;s2&gt;th&lt;/s2&gt;, etc.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T210407Z" changeid="pm_kan">
+        <seg>&lt;s0&gt;NNN&lt;/s0&gt; может состоять из одной, двух или трех цифр (например, \o5 для 5&lt;s1&gt;й&lt;/s1&gt; строки, \o45 для 45&lt;s2&gt;й&lt;/s2&gt;, и т.д.).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>&lt;s0&gt;\\&lt;/s0&gt; is replaced by the backslash (\) key.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T211133Z" changeid="pm_kan">
+        <seg>&lt;s0&gt;\\&lt;/s0&gt; заменяется обратной косой чертой (\).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>&lt;s0&gt;\b&lt;/s0&gt; is replaced by the backspace key.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T210907Z" changeid="pm_kan">
+        <seg>&lt;s0&gt;\b&lt;/s0&gt; заменяется клавишей &quot;забой&quot;.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>&lt;s0&gt;\d&lt;s1&gt;NNN&lt;/s1&gt;&lt;/s0&gt; sets the delay between characters to &lt;s2&gt;NNN&lt;/s2&gt; milliseconds, instead of 10 (the default).</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T211251Z" changeid="pm_kan">
+        <seg>&lt;s0&gt;\d&lt;s1&gt;NNN&lt;/s1&gt;&lt;/s0&gt; устанавливает задержку между вводом символов в &lt;s2&gt;NNN&lt;/s2&gt; миллисекунд, вместо 10мс, установленных по умолчанию.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>&lt;s0&gt;\g&lt;/s0&gt; is replaced by the group associated with the entry.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T205830Z" changeid="pm_kan">
+        <seg>&lt;s0&gt;\g&lt;/s0&gt; заменяется группой, связанной с элементом.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>&lt;s0&gt;\i&lt;/s0&gt; is replaced by the title associated with the entry.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T194040Z" changeid="pm_kan">
+        <seg>&lt;s0&gt;\i&lt;/s0&gt; заменяется заголовком, связанным с элементом.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>&lt;s0&gt;\n&lt;/s0&gt; is replaced by the enter key, in effect pressing a button.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T211015Z" changeid="pm_kan">
+        <seg>&lt;s0&gt;\n&lt;/s0&gt; заменяется клавишей ввода и используется для нажатия на кнопку.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>&lt;s0&gt;\o&lt;/s0&gt; is replaced by the contents of the (possibly multilined) Notes field.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T205928Z" changeid="pm_kan">
+        <seg>&lt;s0&gt;\o&lt;/s0&gt; заменяется содержимым (возможно многострочным) поля &quot;заметки&quot;.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>&lt;s0&gt;\o&lt;/s0&gt;&lt;s1&gt;NNN&lt;/s1&gt; is replaced by the contents of the n&lt;s2&gt;th&lt;/s2&gt; line of the Notes field</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T210246Z" changeid="pm_kan">
+        <seg>&lt;s0&gt;\o&lt;/s0&gt;&lt;s1&gt;NNN&lt;/s1&gt; заменяется  n&lt;s2&gt;ой&lt;/s2&gt; строкой поля &quot;заметки&quot;.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>&lt;s0&gt;\p&lt;/s0&gt; is replaced by the password associated with the entry.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T205751Z" changeid="pm_kan">
+        <seg>&lt;s0&gt;\p&lt;/s0&gt; заменяется паролем, связанным с элементом.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>&lt;s0&gt;\t&lt;/s0&gt; is replaced by the Tab key, in effect skipping a field.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T210941Z" changeid="pm_kan">
+        <seg>&lt;s0&gt;\t&lt;/s0&gt; заменяется табуляцией и используется для перехода в следующее поле.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>&lt;s0&gt;\u&lt;/s0&gt; is replaced by the username associated with the entry.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T205730Z" changeid="pm_kan">
+        <seg>&lt;s0&gt;\u&lt;/s0&gt; заменяется именем пользователя, связанным с элементом.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>&lt;s0&gt;\w&lt;/s0&gt;&lt;s1&gt;NNN&lt;/s1&gt; &lt;s2&gt; or &lt;/s2&gt;&lt;s3&gt;\WNNN&lt;/s3&gt; introduces a delay of &lt;s4&gt;NNN &lt;/s4&gt;milliseconds for \w, or seconds if \W is used.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T211953Z" changeid="pm_kan">
+        <seg>&lt;s0&gt;\w&lt;/s0&gt;&lt;s1&gt;NNN&lt;/s1&gt; &lt;s2&gt; или &lt;/s2&gt;&lt;s3&gt;\WNNN&lt;/s3&gt; используется для указания задержки в &lt;s4&gt;NNN&lt;/s4&gt; миллисекунд для '\w', и &lt;s4&gt;NNN&lt;/s4&gt; секунд для '\W'.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>&lt;s0&gt;\z&lt;/s0&gt; invokes the old AutoType mechanism.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T212557Z" changeid="pm_kan">
+        <seg>&lt;s0&gt;\z&lt;/s0&gt; использует &quot;старый&quot; механизм автонабора.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>&lt;s0&gt;pwsafe &lt;/s0&gt;&lt;s1&gt;-s [database]&lt;br2&gt;</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T190315Z" changeid="pm_kan">
+        <seg>&lt;s0&gt;pwsafe &lt;/s0&gt;&lt;s1&gt;-s [контейнер]&lt;br2&gt;</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>&lt;s0&gt;pwsafe &lt;/s0&gt;&lt;s1&gt;-v database&lt;br2&gt;</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T190311Z" changeid="pm_kan">
+        <seg>&lt;s0&gt;pwsafe &lt;/s0&gt;&lt;s1&gt;-v контейнера&lt;br2&gt;</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>&lt;s3&gt;&lt;/s3&gt;&lt;/s1&gt;This will validate the database after the correct passphrase is entered, correcting internal inconsistencies as necessary.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T185048Z" changeid="pm_kan">
+        <seg>&lt;s3&gt;&lt;/s3&gt;&lt;/s1&gt;После ввода пароля для контейнера будет проведена проверка на наличие несоответствий.</seg>
       </tuv>
     </tu>
     <tu>
@@ -46,18 +382,666 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>A password prompt will be displayed.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T173446Z" changeid="pm_kan">
+        <seg>Будет запрошен пароль для контейнера.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>A trivial password, such as &quot;password&quot; or your name is easy to guess, and negates the security that &lt;s0&gt;Password Safe&lt;/s0&gt; provides.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T184123Z" changeid="pm_kan">
+        <seg>Простой пароль, такой как &quot;пароль&quot; или ваше имя, легко подбирается и сводит на нет защиту, обеспечиваемую &lt;s0&gt;Password Safe&lt;/s0&gt;.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>A&quot; and &quot;Dept.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T200157Z" changeid="pm_kan">
+        <seg>A&quot; и &quot;Отдел</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>A:LDAP Server:Joe]&quot;</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T200229Z" changeid="pm_kan">
+        <seg>A:Сервер:Вася]&quot;</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>A:LDAP Server]&quot;.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T200043Z" changeid="pm_kan">
+        <seg>A:Сервер]&quot;.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>About Password Safe</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T200623Z" changeid="pm_kan">
+        <seg>О Password Safe</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Alias entries are shown with white triangles.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T200519Z" changeid="pm_kan">
+        <seg>Алиасы помечены белыми треугольниками.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Alias example</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T200531Z" changeid="pm_kan">
+        <seg>Пример алиаса</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Aliases</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T182743Z" changeid="pm_kan">
+        <seg>Алиасы</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>All other brand or product names are trademarks of their respective companies.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T202608Z" changeid="pm_kan">
+        <seg>Все другие торговые марки и названия продуктов являются товарными знаками соответствующих компаний.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>All other text is typed as-is.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T213048Z" changeid="pm_kan">
+        <seg>Все другие символы переносятся без изменений.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Although this may sound complicated, in fact it's quite simple and intuitive to use.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T190053Z" changeid="pm_kan">
+        <seg>На первый взгляд это может показаться сложным, но на самом деле все достаточно просто и понятно.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Any end of line characters ‘\n’, ‘\r’ or ‘\r\n’ are converted to ‘\r’ (carriage return).</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T210016Z" changeid="pm_kan">
+        <seg>Символы конца строки ‘\n’, ‘\r’ или ‘\r\n’ преобразуются в ‘\r’ (возврат каретки).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>As indicated above, the alias' &quot;password&quot; is in the form [g:t:u] but in fact you only have to specify enough information to uniquely identify the base entry.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T194514Z" changeid="pm_kan">
+        <seg>Из описанного следует, что &quot;пароль&quot; для алиаса имеет вид [g:t:u] (g - группа, t - заголовок, u - имя пользователя). При этом достаточно указать только ту информацию, по которой можно однозначно определить элемент.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>As long as there is a unique entry that fits the information provided, any of the following formats are accepted: [g:t:u], [g:t], [t:u] or [t].</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T193216Z" changeid="pm_kan">
+        <seg>Допустимы следующие уникальные комбинации: [g:t:u], [g:t], [t:u] или [t].</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Auto Type</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T202934Z" changeid="pm_kan">
+        <seg>Автонабор</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>B&quot;, then one can specify an alias to the latter by &quot;[Dept.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T200201Z" changeid="pm_kan">
+        <seg>B&quot;, тогда первый определяется сочетанием &quot;[Отдел</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Backing Up and Restoring Databases</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T171713Z" changeid="pm_kan">
+        <seg>Резервное копирование и восстановление контейнеров</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Backup Directory</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T182843Z" changeid="pm_kan">
+        <seg>Каталог для резервных копий</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Backup Name</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T181451Z" changeid="pm_kan">
+        <seg>Имя для резервной копии</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Backups Tab</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T175517Z" changeid="pm_kan">
+        <seg>Вкладка &quot;Резервные копии&quot;</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Base entries, that is, entries with at least one alias &quot;pointing&quot; to them, are displayed with a green triangle instead of a green square in the nested tree view.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T200448Z" changeid="pm_kan">
+        <seg>В древовидном списке исходные элементы, на которые указывает хотя бы один алиас, помечены значком зеленого треугольника вместо зеленого квадрата.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>By default, &lt;s0&gt;Password Safe &lt;/s0&gt;will store the backups in the same directory as the currently open database.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T182938Z" changeid="pm_kan">
+        <seg>По умолчанию &lt;s0&gt;Password Safe&lt;/s0&gt; создает резервные копии в том же каталоге, где находится открытый в настоящий момент контейнер.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>By default, the formula followed by the automated keystrokes is as follows: &lt;a1&gt;&lt;/a1&gt;the user name, followed by a tab key, followed by the password, another tab, and then the enter key (&lt;i2&gt;username&lt;/i2&gt; &lt;b3&gt;TAB&lt;/b3&gt; &lt;i4&gt;password&lt;/i4&gt; &lt;b5&gt;TAB &lt;/b5&gt;&lt;b6&gt;ENTER&lt;/b6&gt;).</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T193703Z" changeid="pm_kan">
+        <seg>По умолчанию, для автоматизации используется следующая последовательность нажатий клавиш: &lt;a1&gt;&lt;/a1&gt;имя пользователя, затем табуляция, пароль, еще одна табуляция, и Enter (&lt;i2&gt;имя пользователя&lt;/i2&gt; &lt;b3&gt;TAB&lt;/b3&gt; &lt;i4&gt;пароль&lt;/i4&gt; &lt;b5&gt;TAB &lt;/b5&gt;&lt;b6&gt;ENTER&lt;/b6&gt;).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Changing Master Passwords</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T183252Z" changeid="pm_kan">
+        <seg>Изменение мастер-пароля для контейнера</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Changing Safe Passwords</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T183234Z" changeid="pm_kan">
+        <seg>Изменение пароля для контейнера</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Click &lt;b0&gt;Make Backup&lt;/b0&gt;</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T172803Z" changeid="pm_kan">
+        <seg>Нажмите &lt;b0&gt;Создать резервную копию&lt;/b0&gt;</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Click &lt;b0&gt;Open&lt;/b0&gt;&lt;br1&gt;</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T173426Z" changeid="pm_kan">
+        <seg>Нажмите &lt;b0&gt;Открыть&lt;/b0&gt;&lt;br1&gt;</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Click &lt;b0&gt;Restore from Backup&lt;/b0&gt;</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T173358Z" changeid="pm_kan">
+        <seg>Нажмите &lt;b0&gt;Восстановление из резервной копии&lt;/b0&gt;</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Click &lt;b0&gt;Save&lt;/b0&gt;</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T172825Z" changeid="pm_kan">
+        <seg>Нажмите &lt;b0&gt;Сохранить&lt;/b0&gt;</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Command Line Arguments</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T184158Z" changeid="pm_kan">
+        <seg>Параметры командной строки</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Create intermediate backups (.ibak) before saving</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T181252Z" changeid="pm_kan">
+        <seg>Создавать копию (.ibak) перед сохранением</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Customizing Auto Type</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T205322Z" changeid="pm_kan">
+        <seg>Настройка автонабора</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Defining an alias</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T190155Z" changeid="pm_kan">
+        <seg>Определение алиасов</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Details on the Twofish algorithm, including speed comparisons and an extensive list of products that use Twofish, are available at &lt;a0&gt;http://www.schneier.com/twofish.html&lt;/a0&gt;.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T202307Z" changeid="pm_kan">
+        <seg>Описание алгоритма Twofish, включая сравнение скоростных характеристик и перечень продуктов, его использующих, доступно по адресу &lt;a0&gt;http://www.schneier.com/twofish.html&lt;/a0&gt;.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Different user names can also be used to differentiate between similar base entries, e.g., &quot;[LDAP Server:Joe]&quot; and &quot;[LDAP Server:Mary]&quot;.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T193439Z" changeid="pm_kan">
+        <seg>Имя пользователя тоже может использоваться для различения похожих исходных элементов, например &quot;[Сервер:Вася]&quot; и &quot;[Сервер:Маша]&quot;.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Display</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T200234Z" changeid="pm_kan">
+        <seg>Отображение</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>End of line characters are &lt;s0&gt;not &lt;/s0&gt; included.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T210450Z" changeid="pm_kan">
+        <seg>При этом символы переноса строк &lt;s0&gt;не&lt;/s0&gt; включаются.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Enter the database password and click &lt;b0&gt;OK&lt;/b0&gt;</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T173457Z" changeid="pm_kan">
+        <seg>Введите пароль и нажмите &lt;b0&gt;OK&lt;/b0&gt;</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Examples</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T194931Z" changeid="pm_kan">
+        <seg>Примеры</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Finally, all three fields may be specified, as in &quot;[Dept.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T193455Z" changeid="pm_kan">
+        <seg>Наконец, можно указать все три поля, например &quot;[Отдел </seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>For example, &quot;fast\d500slow&quot; will result in 'fast' being typed with the default delay, and the letters 's', 'l', 'o', and 'w' typed with a half-second pause before each.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T211542Z" changeid="pm_kan">
+        <seg>Например, &quot;быстро\d500медленно&quot; приведет к тому, что 'быстро' будет набрано со стандартной задержкой, а буквы 'м', 'е', 'д', 'л', 'е', 'н', 'н', 'о' с задержкой в полсекунды перед каждой буквой.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>For example, &quot;how\w500now&quot; will cause 'how' to be typed (at the default rate or that specified by the last \d), followed by a half-second pause, followed by 'now' typed at the same rate as 'how').</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T212353Z" changeid="pm_kan">
+        <seg>Например, &quot;как\w500сейчас&quot; набирает 'как' (со стандартной межбуквенной задержкой или той, что была установлена с помощью \d), затем ждет полсекунды и вводит 'сейчас' с той же межбуквенной задержкой, что и 'как').</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>For web sites or applications that do not have the username field followed by the password field followed by the login button, you can modify the behaviour by filling in the &lt;a0&gt;&quot;Autotype&quot; field&lt;/a0&gt; with text that specifies the desired behavior as follows:</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T194011Z" changeid="pm_kan">
+        <seg>Для веб-сайтов или приложений в которых за именем пользователя не идет поле для ввода пароля и затем кнопка входа, можно изменить последовательность, заполнив поле &lt;a0&gt;&quot;Автонабор&quot;&lt;/a0&gt; текстом описывающим необходимое поведение:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>For web sites or applications that require different data, it is possible to tailor the autotype behaviour as described in the &lt;a0&gt;Customizing Auto Type&lt;/a0&gt; section below.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T171347Z" changeid="pm_kan">
+        <seg>Для сайтов или приложений, требующих ввод дополнительных данных возможна тонкая настройка автонабора, описание которой приведено в разделе &lt;a0&gt;Настройка автонабора&lt;/a0&gt;.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Group and User name fields are optional as long as the resulting combination of &quot;group/title/user name&quot; is unique.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T192309Z" changeid="pm_kan">
+        <seg>Поля &quot;группа&quot; и &quot;имя пользователя&quot; необязательны если комбинация  &quot;группа/заголовок/имя пользователя&quot; уникальна.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Here you can configure what the backups will be named, and how many will be saved (&lt;s2&gt;Password Safe&lt;/s2&gt; will automatically erase the oldest databases beyond the number of backups that you specified.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T182825Z" changeid="pm_kan">
+        <seg>Здесь можно настроить именование резервных копий и их количество (&lt;s2&gt;Password Safe&lt;/s2&gt; автоматически перезапишет старую копию при превышении указанного количества,</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>If a database is not specified, then the application will prompt the user for a database, which will be opened in read-only mode.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T184949Z" changeid="pm_kan">
+        <seg>Если контейнер не указан, будет запрошено имя контейнера, который затем будет открыт в режиме &quot;только для чтения&quot;.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>If a master password is entered that the program considers weak, it will prompt for confirmation.</seg>
       </tuv>
-      <tuv lang="RU-RU" changedate="20100905T125938Z" changeid="pm_kan">
-        <seg>Если программа решит, что выбранный Вами пароль является слабым, будет выдан запрос подтверждения.</seg>
+      <tuv lang="RU-RU" changedate="20100919T181222Z" changeid="pm_kan">
+        <seg>Если программа решит, что выбранный пароль является слабым, будет выдан запрос подтверждения.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>If just a filename is given, without a path, it will be searched for in the directory in which the application was invoked.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T184604Z" changeid="pm_kan">
+        <seg>Если указано только имя файла (без пути), то поиск файла производится в каталоге из которого было запущено приложение.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>If the base entry's title is &quot;LDAP Server&quot;, and there are no other entries with that title, then an alias will be defined by an entry that has &quot;[LDAP Server]&quot; in the password field.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T193342Z" changeid="pm_kan">
+        <seg>Если заголовок исходного элемента &quot;Сервер&quot; и никакой другой элемент не имеет такого заголовка, то элемент в поле пароль которого указано &quot;[Сервер]&quot; будет являться его алиасом.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>If there are &quot;LDAP Server&quot; entries in two different groups, say &quot;Dept.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T200154Z" changeid="pm_kan">
+        <seg>Если элемент &quot;Сервер&quot; присутствует в двух группах, например &quot;Отдел</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>If there were more than one entry with this title, you would be warned that this is the case, and you would need to be more specific to identify the base entry by adding either its group or its user name or both!</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T193147Z" changeid="pm_kan">
+        <seg>В случае, если несколько элементов имеют одинаковый заголовок, будет выведено предупреждение. Тогда потребуется указать дополнительную информацию об исходном элементе (группу и/или имя пользователя)!</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>If you change the base's password, this is immediately reflected in all the alias entries associated with the base.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T185944Z" changeid="pm_kan">
+        <seg>Изменение пароля исходного элемента немедленно отражается на связанных с ним алиасах.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>If you find that Autotype does not work properly on a particular web site, try this code in the autotype command field.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T213028Z" changeid="pm_kan">
+        <seg>Если вы заметили, что автонабор работает некорректно на каком-то из сайтов, попробуйте добавить данную ключевую последовательность в автонабор для этого элемента.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>If you're using a &quot;single sign-on&quot; system that allows you to share the same password across different machines/servers/applications, etc. you can setup &lt;s0&gt;Password Safe&lt;/s0&gt; entries accordingly, so that changing one password affects all other related entries.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T183552Z" changeid="pm_kan">
+        <seg>Если вы используете системы &quot;единого входа&quot;, которые позволяют использовать один и тот же пароль для различных машин/серверов/приложений, то можно настроить несколько элементов &lt;s0&gt;Password Safe&lt;/s0&gt; таким образом, чтобы изменение пароля в одном из них автоматически отражалось в остальных.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>In Password Safe entries, only the Title field is mandatory.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T191934Z" changeid="pm_kan">
+        <seg>В элементах контейнера Password Safe, только поле &quot;заголовок&quot; является обязательным для заполнения.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>In Password Safe, an entry can refer to another's password by means of a specially formatted password in the referring entry.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T190557Z" changeid="pm_kan">
+        <seg>Для того, чтобы в Password Safe пароль элемента ссылался на другой, нужно записать его специальным образом.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>In addition to the backup and restore described here, Password Safe automatically keeps a copy of the database before you save a change.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T194551Z" changeid="pm_kan">
+        <seg>Кроме того Password Safe автоматически создает копию контейнера перед сохранением изменений.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>In addition, the following options are accepted:</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T191157Z" changeid="pm_kan">
+        <seg>Также допустимы следующие параметры:</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>In general, a master password (like any password) should consist of mixed case characters with at least one number or &lt;a1&gt;special character&lt;/a1&gt; (such as those found above the number keys on a keyboard).</seg>
       </tuv>
-      <tuv lang="RU-RU" changedate="20100905T152651Z" changeid="pm_kan">
-        <seg>Мастер-пароль (как и любой другой) должен состоять из букв разного регистра, содержать хотя бы одну цифру и один &lt;a1&gt;специальный символ&lt;/a1&gt; (например, один из тех, что расположены над цифрами на клавиатуре).</seg>
+      <tuv lang="RU-RU" changedate="20100919T181216Z" changeid="pm_kan">
+        <seg>Мастер-пароль (как и любой другой) должен состоять из букв разного регистра, содержать хотя бы одну цифру или &lt;a1&gt;специальный символ&lt;/a1&gt; (например, один из тех, что расположены над цифрами на клавиатуре).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>In the general case, a &quot;name&quot; can contain all of the following fields, separated by colons: Group, Title and User name.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T191525Z" changeid="pm_kan">
+        <seg>В общем случае, &quot;имя&quot; может содержать значения полей &quot;группа&quot;, &quot;заголовок&quot; и &quot;имя пользователя&quot;, разделенные двоеточием.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>In this field you can specify an alternate location, such as a special backup directory, network drive, disk-on-key, etc.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T183124Z" changeid="pm_kan">
+        <seg>В этом поле можно указать другое расположение, например, отдельный каталог для резервных копий, сетевой диск, съемный накопитель и т.п..</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Invoking &lt;s0&gt;Password Safe&lt;/s0&gt; with no arguments will cause the application to prompt you for the combination of the last database that was opened, or for the combination of a new database if none was previously opened on your machine (e.g., the first time you use &lt;s1&gt;Password Safe&lt;/s1&gt;).</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T195201Z" changeid="pm_kan">
+        <seg>При запуске &lt;s0&gt;Password Safe&lt;/s0&gt; без параметров выдается запрос пароля для последнего открытого контейнера, или для нового контейнера, если &lt;s1&gt;Password Safe&lt;/s1&gt; не использовался ранее на данном компьютере.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>It is, however, possible to modify this by invoking &lt;s2&gt;Password Safe&lt;/s2&gt; as follows:</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T195220Z" changeid="pm_kan">
+        <seg>Это поведение можно изменить, вызвав &lt;s2&gt;Password Safe&lt;/s2&gt; следующим образом:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Key Change dialog box</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T183307Z" changeid="pm_kan">
+        <seg>Диалог изменения пароля</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Likewise, &quot;how\W2now&quot; will introduce a two second pause between the two words.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T212441Z" changeid="pm_kan">
+        <seg>Аналогично, &quot;как\W2сейчас&quot; сделает задержку между словами в 2 секунды.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Likewise, if the group and title together or title and user together specify a unique entry, then the corresponding user or group doesn't have to be specified.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T192013Z" changeid="pm_kan">
+        <seg>Аналогично, если пара группа и заголовок или заголовок и имя пользователя однозначно определяет элемент, указание в имени значения третьего поля не является обязательным.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Make a Backup</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T172620Z" changeid="pm_kan">
+        <seg>Создание резервной копии</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Maximize or open Password Safe</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T204818Z" changeid="pm_kan">
+        <seg>Переключитесь или откройте Password Safe</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Most of the time, you can think of &quot;name&quot; as synonymous with the title field of an entry, so if the base entry's title is &quot;master&quot;, for example, then entering &quot;[master]&quot; (without the quotes) in another entry's password field is enough to define the other entry as an alias of &quot;master&quot;.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T191352Z" changeid="pm_kan">
+        <seg>Чаще всего под &quot;именем&quot; можно понимать &quot;заголовок&quot; элемента. Таким образом, если заголовок исходного элемента &quot;master&quot;, то указание в поле пароля другого элемента строки &quot;[master]&quot; (без кавычек) делает его алиасом для элемента &quot;master&quot;.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Mostly useful when working with databases written by other applications.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T185128Z" changeid="pm_kan">
+        <seg>Данный режим полезен в случае, если контейнер был создан в стороннем приложении.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Navigate to the backup location and select the file to restore</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T173416Z" changeid="pm_kan">
+        <seg>Перейдите в папку с резервной копией и выберите файл для восстановления</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>No substitution is made to escape sequences within the Notes field (e.g. ‘\u’, ‘\p’ etc.) except for the ‘\t’ sequence which is replaced by the tab character.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T210155Z" changeid="pm_kan">
+        <seg>Для содержимого поля &quot;заметки&quot; не производится подстановка управляющих последовательностей (‘\u’, ‘\p’ и т.д.) кроме ‘\t’, заменяемой на символ табуляции.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>No support or endorsement by these companies exists or is implied.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T202902Z" changeid="pm_kan">
+        <seg>Техническая поддержка со стороны этих компаний отсутствует и не подразумевается.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Note that Password Safe will only erase old databases if the suffix is an incremented number (running count).</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T182836Z" changeid="pm_kan">
+        <seg>если для создания суффикса используется &quot;Автонумератор&quot;).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Note that if the filename and/or path has spaces, it should be enclosed in double quotes.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T191932Z" changeid="pm_kan">
+        <seg>Обратите внимание, что имя файла нужно заключать в двойные кавычки (&quot;имя файла&quot;), если оно содержит пробелы.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Note that if the title is unique in the database, then the other fields are optional.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T191629Z" changeid="pm_kan">
+        <seg>Заметьте, что если заголовок уникален в данном контейнере, то другие поля являются необязательными.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Note that you can also customize the &lt;s1&gt;&lt;a2&gt;default&lt;/a2&gt; &lt;/s1&gt;autotype text via the &lt;s3&gt;&lt;a4&gt;Misc&lt;/a4&gt;.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T204536Z" changeid="pm_kan">
+        <seg>Обратите внимание: последовательность для автонабора может быть переопределена на вкладке &lt;s3&gt;&lt;a4&gt;Разное&lt;/a4&gt;</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Note you do not have to specify the user name if the information you have provided uniquely identifies the base entry.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T193414Z" changeid="pm_kan">
+        <seg>Заметьте, что нет необходимости писать имя пользователя, если указанной информации достаточно для однозначного определения элемента.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Notes:</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T173501Z" changeid="pm_kan">
+        <seg>Примечания:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Of course, you must have write permission to the location you specify.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T183218Z" changeid="pm_kan">
+        <seg>Для корректной работы необходимо иметь права на запись в указанный каталог.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Once opened, go to the &lt;b0&gt;Manage&lt;/b0&gt; menu and select &lt;b1&gt;Change Safe Combination&lt;/b1&gt;.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T183514Z" changeid="pm_kan">
+        <seg>После этого в меню &lt;b0&gt;Управление&lt;/b0&gt; выберите пункт &lt;b1&gt;Изменить пароль для контейнера&lt;/b1&gt;.</seg>
       </tuv>
     </tu>
     <tu>
@@ -70,18 +1054,282 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Password Aliases</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T182815Z" changeid="pm_kan">
+        <seg>Алиасы для паролей</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Picking a spouse's name, a birthday, or some other easily guessable combination leaves your data vulnerable. &lt;i1&gt;It is important that you pick a hard-to-guess master password that &lt;u2&gt;you can easily remember&lt;/u2&gt;&lt;/i1&gt;&lt;s3&gt;.&lt;/s3&gt;</seg>
       </tuv>
-      <tuv lang="RU-RU" changedate="20100905T152843Z" changeid="pm_kan">
-        <seg>Поэтому, выбор в качестве пароля для контейнера имени супруга, даты рождения или любой другой легкоугадываемой комбинации делает хранящиеся там данные уязвимыми.&lt;i1&gt; Очень важно, чтобы Вы выбрали трудноподбираемый мастер-пароль, который &lt;u2&gt;легко сможете запомнить&lt;/u2&gt;&lt;/i1&gt;&lt;s3&gt;.&lt;/s3&gt;</seg>
+      <tuv lang="RU-RU" changedate="20100920T192441Z" changeid="pm_kan">
+        <seg>Поэтому, выбор в качестве пароля для контейнера имени супруга, даты рождения или любой другой простой для подбора комбинации делает хранящиеся там данные уязвимыми.&lt;i1&gt; Очень важно, чтобы вы выбрали сложный для подбора мастер-пароль, который &lt;u2&gt;легко сможете запомнить&lt;/u2&gt;&lt;/i1&gt;&lt;s3&gt;.&lt;/s3&gt;</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Place cursor in the form's user name field</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T204758Z" changeid="pm_kan">
+        <seg>Установите курсор в поле для ввода имени пользователя</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Please choose a difficult-to-guess password.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T184007Z" changeid="pm_kan">
+        <seg>Всегда выбирайте пароли, которые сложно угадать.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Please read the &lt;i0&gt;readme.txt&lt;/i0&gt;, &lt;i1&gt;changelog.txt&lt;/i1&gt;, and &lt;i2&gt;releasenotes.txt&lt;/i2&gt; files in the installation package for the latest changes, bug fixes, and documentation addenda.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T202542Z" changeid="pm_kan">
+        <seg>Файлы &lt;i0&gt;readme.txt&lt;/i0&gt;, &lt;i1&gt;changelog.txt&lt;/i1&gt;, и &lt;i2&gt;releasenotes.txt&lt;/i2&gt; содержат перечень последних изменений, информацию об исправленных ошибках и дополнениях в документации.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Restore a backed up password database file.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T194445Z" changeid="pm_kan">
+        <seg>Восстановление контейнера из резервного копии:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Restore from Backup</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T173256Z" changeid="pm_kan">
+        <seg>Восстановление из резервной копии</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Safely create a copy of the current password database.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T194431Z" changeid="pm_kan">
+        <seg>Создание резервной копии текущего контейнера:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Save database immediately after Edit or Add</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T175947Z" changeid="pm_kan">
+        <seg>Сохранять контейнер после вставки или редактирования</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>See &lt;a0&gt;here&lt;/a0&gt; for more information about the automatic backups.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T174515Z" changeid="pm_kan">
+        <seg>Дополнительную информацию об автоматическом резервном копировании можно найти &lt;a0&gt;здесь&lt;/a0&gt;.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Select a location for the backup file</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T172816Z" changeid="pm_kan">
+        <seg>Выберите расположение файла резервной копии</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Select a password entry</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T204857Z" changeid="pm_kan">
+        <seg>Выберите элемент с необходимым именем пользователя и паролем</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Since the information stored in a password database is usually both sensitive and important, &lt;b0&gt;&lt;s1&gt;&lt;s2&gt;&lt;/s2&gt;&lt;/s1&gt;Password Safe&lt;/b0&gt; provides several mechanisms for backing up and restoring password databases.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T172216Z" changeid="pm_kan">
+        <seg>Так как информация, хранящаяся в контейнере с паролями обычно является важной, &lt;b0&gt;&lt;s1&gt;&lt;s2&gt;&lt;/s2&gt;&lt;/s1&gt;Password Safe&lt;/b0&gt; предоставляет несколько способов резервного копирования и восстановления контейнеров.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>So, if there is only one entry in the database with title 't', then [t] would be sufficient - since title is mandatory and only one item is given, it is assumed to be the title.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T193755Z" changeid="pm_kan">
+        <seg>Таким образом, если в контейнере лишь один элемент с заголовком 't', то в качестве пароля алиаса можно указать [t] (если указано только одно значение, то считается, что это заголовок, т.к. он является обязательным).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Specifying a colon without a value implies an empty field, e.g. [g:t:] says entry with title 't' in group 'g' and with no user name value and [:t:] says entry with title 't' in the root with no user name value etc.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T193241Z" changeid="pm_kan">
+        <seg>Указание двоеточия без значения равносильно пустому полю, например, [g:t:] указывает на элемент с заголовком 't' в группе 'g' без имени пользователя, а [:t:] равносильно элементу 't' без имени пользователя, находящемуся в корне дерева.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Such backups are called &lt;s5&gt;intermediate backups&lt;/s5&gt;, and are described &lt;a6&gt;here&lt;/a6&gt;.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T172607Z" changeid="pm_kan">
+        <seg>Такие резервные копии называются &lt;s5&gt;промежуточными&lt;/s5&gt; и описываются &lt;a6&gt;здесь&lt;/a6&gt;.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Summary</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T184550Z" changeid="pm_kan">
+        <seg>Краткое описание</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>The &quot;referred to&quot; entry is called the &lt;s0&gt;base&lt;/s0&gt;, and the &quot;referring&quot; entry (or entries) is (are) called the &lt;s1&gt;alias(es)&lt;/s1&gt;.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T185755Z" changeid="pm_kan">
+        <seg>Элемент, на который ссылаются называется &lt;s0&gt;исходным&lt;/s0&gt;, а ссылающийся на него - &lt;s1&gt;алиасом&lt;/s1&gt;.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>The Backups Tab allows you to configure how automatic backups are created and managed.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T175852Z" changeid="pm_kan">
+        <seg>Вкладка &quot;Резервные копии&quot; содержит параметры создания автоматических резервных копий.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>The backup is encrypted using the same master password as the current database being backed up.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T175354Z" changeid="pm_kan">
+        <seg>Резервная копия использует для шифрования тот же мастер-пароль, что и текущий контейнер.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>The basic idea is to allow one entry's password to be referred to by another.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T185641Z" changeid="pm_kan">
+        <seg>Основная идея состоит в том, чтобы пароль элемента мог быть ссылкой на пароль другого.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>The copy is in the same directory as the current database, and the name is identical, except for the extension, which is &quot;.ibak&quot; instead of &quot;.psafe3&quot;.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T174416Z" changeid="pm_kan">
+        <seg>Копия создается в том же каталоге, что и текущий контейнер, имеет то же имя и отличается лишь расширением (&quot;.ibak&quot; вместо &quot;.psafe3&quot;).</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>The database (&quot;Safe&quot;) contains all your user names, passwords, and any additional information you may have added.</seg>
       </tuv>
-      <tuv lang="RU-RU" changedate="20100905T152114Z" changeid="pm_kan">
-        <seg>Контейнер (&quot;сейф&quot;) содержит всю введенную в Password Safe информацию (имена, пароли, заметки, ...).</seg>
+      <tuv lang="RU-RU" changedate="20100919T181041Z" changeid="pm_kan">
+        <seg>Контейнер содержит всю введенную в Password Safe информацию (имена, пароли, заметки, ...).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>The encrypted file will have the same name as the original file, with &quot;.PSF&quot; appended to it.&lt;br5&gt;</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T185441Z" changeid="pm_kan">
+        <seg>Имя зашифрованного файла останется тем же, а в качестве расширения будет добавлено &quot;.PSF&quot;.&lt;br5&gt;</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>The following examples should make this clear.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T193310Z" changeid="pm_kan">
+        <seg>Ниже приведены поясняющие примеры.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>The format is the &quot;name&quot; of the referred-to entry enclosed in square brackets.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T192923Z" changeid="pm_kan">
+        <seg>Для этого в поле пароля алиаса нужно написать &quot;имя&quot; исходного элемента в квадратных скобках.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>The hardest part is setting up the aliases, as described below.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T192900Z" changeid="pm_kan">
+        <seg>Самая сложная часть - это определение алиасов.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>The latest program updates, documentation, and news can be located at &lt;a2&gt;http://pwsafe.org&lt;/a2&gt;.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T192718Z" changeid="pm_kan">
+        <seg>Последние обновления, документация и новости расположены на сайте &lt;a2&gt;http://pwsafe.org&lt;/a2&gt;.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>The master password can be entered using the physical or virtual keyboard.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T195004Z" changeid="pm_kan">
+        <seg>Пароль можно вводить с помощью физической или виртуальной клавиатуры.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>The names and location of the backup copies are defined in the following fields, as well as how many copies back should be kept.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T181443Z" changeid="pm_kan">
+        <seg>Имя файла, его расположение и количество сохраняемых копий указаны в следующих полях.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>The names of the backup files consist of a &lt;s0&gt;Base &lt;/s0&gt;(by default, the name of the database without the .psafe3 extension), and a &lt;s1&gt;Suffix &lt;/s1&gt;(none, a running count, or the date/time of the backup).</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T194807Z" changeid="pm_kan">
+        <seg>Имя для резервной копии состоит из &lt;s0&gt;начала&lt;/s0&gt; (по умолчанию это имя файла контейнера без расширения &quot;.psafe3&quot;), и &lt;s1&gt;суффикса&lt;/s1&gt; (может быть пустыми или содержать номер/дату/время резервного копирования).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>The restored database is not &quot;saved&quot; with the standard &lt;b0&gt;Password Safe&lt;/b0&gt; database extension (.psafe3) until you have selected &lt;b1&gt;Save&lt;/b1&gt; or &lt;b2&gt;Save As&lt;/b2&gt; from the file menu.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T173728Z" changeid="pm_kan">
+        <seg>Чтобы восстановленный контейнер сохранился со стандартным для &lt;b0&gt;Password Safe&lt;/b0&gt; расширением (.psafe3), выберите &lt;b1&gt;Сохранить&lt;/b1&gt; или &lt;b2&gt;Сохранить как&lt;/b2&gt; в меню Файл.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>These may be useful if you wish to share the same preferences across several machines, for example, when running &lt;s0&gt;Password Safe&lt;/s0&gt; from a disk-on-key.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T195515Z" changeid="pm_kan">
+        <seg>Данные параметры могут оказаться полезной если вы желаете использовать одни и те же настройки на разных машинах, например, при запуске &lt;s0&gt;Password Safe&lt;/s0&gt; со съемного диска.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>This can be useful if, for example, the autotype is too fast for your machine.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T204649Z" changeid="pm_kan">
+        <seg>Например, это может потребоваться, если автонабор выполняется слишком быстро.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>This changes the delay for the current and all subsequent characters.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T211325Z" changeid="pm_kan">
+        <seg>Замена производится только для текущего и последующих символов.</seg>
       </tuv>
     </tu>
     <tu>
@@ -94,6 +1342,126 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>This is called &quot;aliasing&quot; entries.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T192803Z" changeid="pm_kan">
+        <seg>Связывание элементов таким образом производится с помощью алиасов.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>This is useful for fine-tuning the timing with certain web pages.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T212534Z" changeid="pm_kan">
+        <seg>Задержка может использоваться для тонкой настройки входа на некоторые веб-станицы.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>This mechanism may handle non-Latin characters incorrectly, but can make Autotype work on certain problematical web sites.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T212901Z" changeid="pm_kan">
+        <seg>В данном случае нелатинские символы могут вводиться некорректно, но также может улучшиться работа автонабора на некоторых проблемных веб-сайтах.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>This section describes how to define and use such aliases.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T184433Z" changeid="pm_kan">
+        <seg>Этот раздел описывает порядок определения и использования алиасов.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>This section describes how to manually make backups of your password database. &lt;s3&gt;Password Safe &lt;/s3&gt;can also be configured to make &lt;s4&gt;automatic &lt;/s4&gt;backups of your database whenever the database is saved.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T172440Z" changeid="pm_kan">
+        <seg>Данный раздел описывает методы ручного создания резервных копий. Также можно настроить &lt;s3&gt;Password Safe &lt;/s3&gt;таким образом, чтобы резервные копии создавались &lt;s4&gt;автоматически&lt;/s4&gt; при сохранении контейнера.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>This will cause the application to read and write preferences under the specified &lt;s3&gt;hostname&lt;/s3&gt;, instead of under the machine's name.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T191530Z" changeid="pm_kan">
+        <seg>При запуске Password Safe будет использовать настройки, указанные для &lt;s3&gt;имя_хоста&lt;/s3&gt;, вместо настроек для текущей машины.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>This will cause the application to read and write preferences under the specified &lt;s3&gt;username&lt;/s3&gt;, instead of under the login name.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T191345Z" changeid="pm_kan">
+        <seg>При запуске приложение будет использовать настройки, заданные для пользователя &lt;s3&gt;имя_пользователя&lt;/s3&gt;, вместо настроек пользователя, вошедшего в систему.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>This will cause the specified file to be used for loading and storing preferences, instead of the default pwsafe.cfg.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T191758Z" changeid="pm_kan">
+        <seg>В данном случае указанный файл будет использован для загрузки и сохранения настроек (вместо файла по умолчанию &quot;pwsafe.cfg&quot;).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>This will help safeguard password lists against system crashes or corrupted files.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T173138Z" changeid="pm_kan">
+        <seg>Этот поможет избежать потери списка паролей в случае системного сбоя или повреждения файлов.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>This will open the specified database file, instead of the last one opened.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T184524Z" changeid="pm_kan">
+        <seg>Будет открыт указанный в параметре файл вместо того, что использовался в прошлый раз.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>This will open the specified database in read-only mode.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T184829Z" changeid="pm_kan">
+        <seg>Указанный контейнер будет открыт в режиме &quot;только для чтения&quot;.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>This will prompt the user for a passphrase, and decrypt the file with a key derived from the passphrase.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T185827Z" changeid="pm_kan">
+        <seg>Указанный файл будет расшифрован с использованием ключа, полученного из введенного пароля.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>This will prompt the user for a passphrase, and encrypt the file with a key derived from the passphrase.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T185753Z" changeid="pm_kan">
+        <seg>Указанный файл будет зашифрован с использованием ключа, полученного из введенного пароля.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>This works fine for most web sites that require username/password authentication.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T203949Z" changeid="pm_kan">
+        <seg>Данная схема подходит для большинства сайтов, требующих для аутентификации ввод имени пользователя и пароля.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>To change a master password (&quot;Safe Combination&quot;), first open up the database whose password you wish to change.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T183422Z" changeid="pm_kan">
+        <seg>Для изменения мастер-пароля откройте контейнер, пароль которого вы хотите изменить.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>To change your master password, please see &lt;a0&gt;Changing Master Passwords&lt;/a0&gt;.</seg>
       </tuv>
       <tuv lang="RU-RU" changedate="20100905T152709Z" changeid="pm_kan">
@@ -102,10 +1470,122 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Twofish is a fast, free alternative to the AES, DES and IDEA encryption algorithms.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T202130Z" changeid="pm_kan">
+        <seg>Twofish - быстрый и свободный алгоритм шифрования, являющийся альтернативой AES, DES и IDEA.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Users have reported problems with the interaction of popup-blockers with the autotype functionality.&lt;/a1&gt;</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T194308Z" changeid="pm_kan">
+        <seg>(есть сообщения пользователей, указывающие на то, что использование блокировщиков всплывающих окон может привести к проблемам с автонабором).&lt;/a1&gt;</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Using Auto Type</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T204657Z" changeid="pm_kan">
+        <seg>Использование автонабора</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>When an entry is set to be the alias of another entry, the alias's password effectively &quot;follows&quot; that entry's password: If you copy the alias' password to the clipboard, the password that gets copied is the base's.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T185634Z" changeid="pm_kan">
+        <seg>В случае, если элемент является алиасом другого, его пароль совпадает с исходным: при копировании в буфер обмен пароля алиаса, туда будет помещен пароль  исходного элемента.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>When checked, &lt;s0&gt;Password Safe&lt;/s0&gt; will copy the database before each save.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T181331Z" changeid="pm_kan">
+        <seg>Если помечено, &lt;s0&gt;Password Safe&lt;/s0&gt; будет копировать контейнер перед каждым сохранением.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>When checked,&lt;b0&gt; Password Safe&lt;/b0&gt; saves all changes made to a password entry immediately, without waiting for the user to use &lt;b1&gt;Save&lt;/b1&gt; or &lt;b2&gt;Save As&lt;/b2&gt; and without confirmation.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T181209Z" changeid="pm_kan">
+        <seg>Если помечено, &lt;b0&gt;Password Safe&lt;/b0&gt; будет без дополнительного запроса сохранять все изменения не дожидаясь того, что пользователь нажмет &lt;b1&gt;Сохранить&lt;/b1&gt; или &lt;b2&gt;Сохранить как&lt;/b2&gt;.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>When the application is unminimized, the user is presented with the opening dialog box (This option is meant for starting the application upon login, via a shortcut in the user's Startup folder).</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T190913Z" changeid="pm_kan">
+        <seg>При развертывании окна будет выведен диалог открытия контейнера (параметр предназначен для запуска Password Safe при входе в систему через ярлык автозапуска).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>With a single click, the user name and password are entered and the data is submitted to the host for approval.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T193634Z" changeid="pm_kan">
+        <seg>Для ввода имени пользователя и пароля с последующей отправкой на проверку достаточно нажать одну кнопку.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>You may the option to accept the originally entered (weak) password, or to enter a new one.</seg>
       </tuv>
       <tuv lang="RU-RU" changedate="20100905T140951Z" changeid="pm_kan">
         <seg>Вы можете подтвердить использование заданного &quot;слабого&quot; пароля, или ввести новый пароль.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>You should enter the current master password, and then the new master password (twice, for confirmation).</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T194945Z" changeid="pm_kan">
+        <seg>Здесь необходимо ввести текущий мастер-пароль и новый пароль (вводится дважды, для подтверждения).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>You will be prompted to &quot;Save&quot; the database and give it a name if you have not saved it prior to exiting the application.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T194520Z" changeid="pm_kan">
+        <seg>Перед выходом из приложения будет предложено сохранить контейнер, если вы не сделали этого ранее.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>backups tab</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T175536Z" changeid="pm_kan">
+        <seg>вкладка &quot;Резервные копии&quot;</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>if &lt;s0&gt;NNN &lt;/s0&gt;is larger than the number of lines in the notes field, then this has no effect.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T210608Z" changeid="pm_kan">
+        <seg>Если &lt;s0&gt;NNN&lt;/s0&gt; превышает количество строк в поле &quot;заметки&quot;, то последовательность игнорируется.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>if you want to put in a one-time delay that does not affect the speed of the following characters, use '\w' or '\W', as described below.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100919T211726Z" changeid="pm_kan">
+        <seg>Если требуется вставить однократную задержку, не влияющую на скорость ввода символов, используйте управляющие последовательности '\w' и '\W', описанные ниже.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>images%5Ccombo_change.jpg</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20100920T183313Z" changeid="pm_kan">
+        <seg>images/combo_change.jpg</seg>
       </tuv>
     </tu>
     <tu>
