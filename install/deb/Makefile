@@ -1,7 +1,9 @@
 # Makefile to create a Deb file for wxWidgets version of pwsafe
 
 RELNUM = 0.1-1
-DEBNAME = passwordsafe-$(RELNUM).deb
+DISTRO = $(shell echo $(word 2,$(shell lsb_release -d))| tr [:upper:] [:lower:])
+
+DEBNAME = passwordsafe-$(DISTRO)-$(RELNUM).deb
 
 MKDIR = /bin/mkdir -p
 CAT = /bin/cat
@@ -27,7 +29,9 @@ INFILES = $(PWSAFE-BIN) $(DOCS) $(MANPAGE) $(XMLFILES)
 all : $(DEBNAME)
 
 $(DEBNAME): $(INFILES)
+	@ln -sf control-$(DISTRO) control
 	$(MAKE) deb
+	@$(RM) control
 
 deb: debtree
 	@fakeroot dpkg-deb --build debian $(DEBNAME)
