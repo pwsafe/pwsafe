@@ -1,0 +1,54 @@
+
+Copyright (c) 2003-2010 Rony Shapiro <ronys@users.sourceforge.net>.
+All rights reserved. Use of the code is allowed under the Artistic
+License terms, as specified in the LICENSE file distributed with this
+code, or available from
+http://www.opensource.org/licenses/artistic-license-2.0.php 
+
+Following is a description of the "v1.9" file format. For v2 and v3
+formats, see the formatv2.txt and formatv3.txt files, respectively.
+
+v1.9 files are arranged as follows:
+
+RND|H(RND)|SALT|IP|Name1|Password1|Notes1|...|NameN|PasswordN|NotesN
+
+Where:
+
+RND is an 8 byte random value, used along with H(RND) to quickly
+verify the password.
+
+H(RND) is SHA1_init_state_zero(Cipher(RND)|{0x00,0x00});
+       tempSalt = SHA1(RND|{0x00,0x00}|password);
+       Cipher(RND) is 1000 encryptions of RND, with tempSalt as the
+       encryption key. In short, a kind of HMAC dependant on the
+       password. Written before the HMAC RFC came out, no good reason
+       to change. (If it ain't broke...)
+
+SHA1_init_state_zero() is the same as the normal SHA1 but the initial
+state of the hash is all zero's instead of the proscribed initial
+values (0x67452301, 0xEFCDAB89 and so forth). This (as well as the two
+zero bytes passed to SHA1) is an apparent artifact (bug?) of the
+original implementation. Changing it now would break all existing
+databases...
+
+[Thanks to Nicolas Dade for refining the above description - see
+https://sourceforge.net/forum/message.php?msg_id=2387939]
+[Thanks again to Jason Diamond for correcting my correction (private
+correspondence)]
+
+SALT is the salt used for encrypting the data (you know, to protect
+against dictionary attacks)
+
+IP is the initial initialization vector value
+
+Name, Password & Notes are stored sequentially as 8 byte blocks, with
+the first block holding an int with the length (in bytes) of the
+actual value, which follows immediately.
+
+Apparently as a hack to upgrade from previous versions, the Name field
+is actually two fields, "Title" and "Username", separated by
+SPLTCHR. Furthermore, if the Username is DEFUSERCHR, then it is
+replaced by the user's "default user name", as specified in
+options. It works, but is not a pretty sight.
+
+End of Format description.
