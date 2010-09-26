@@ -2382,8 +2382,12 @@ void PasswordSafeFrame::OnImportXML(wxCommandEvent& evt)
 
       RefreshViews();
       break;
+    case PWScore::UNIMPLEMENTED:
+      cs_temp = _("XML import not supported in this release");
+      break;
     default:
-      ASSERT(0);
+      cs_temp.Format(_("XML import: Unexpected return code(%d)"), rc);
+      break;
   } // switch
 
   // Finish Report
