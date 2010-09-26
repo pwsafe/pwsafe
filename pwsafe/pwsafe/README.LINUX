@@ -1,0 +1,23 @@
+Introduction:
+The Linux port of PasswordSafe is currently in BETA.
+This means that (1) you should take care to keep copies of the
+database to protect against possible loss of data due to bugs, and (2)
+there are several unimplemented features. Nonetheless, we feel that
+this is good enough to release as an early beta to gather feedback
+from a wider audience.
+
+Supported Distributions:
+Currently Debian 5.0 and Ubuntu 10.04.1 are supported.
+
+Installation:
+Download the .deb file that corresponds to your distribution.
+Install it using dpkg:
+$ sudo dpkg -i passwordsafe-*.deb
+Dpkg will complain if prerequisite packages are missing. To install
+the missing packages:
+$ sudo aptitude install missing-pkgX missing-pkgY
+
+Reporting bugs:
+Please submit bugs via
+https://sourceforge.net/tracker/?func=add&group_id=41019&atid=429579
+Set the Category field to Linux to help ensure timely response.
