@@ -523,7 +523,10 @@ void CPasskeyEntry::UpdateRO()
       m_PKE_ReadOnly = TRUE;
       GetDlgItem(IDC_READONLY)->EnableWindow(FALSE);
     } else { // no file or write-enabled
-      m_PKE_ReadOnly = FALSE;
+      if (m_index == GCP_FIRST)
+        m_PKE_ReadOnly = PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultOpenRO) ? TRUE : FALSE;
+      else
+        m_PKE_ReadOnly = FALSE;
       GetDlgItem(IDC_READONLY)->EnableWindow(TRUE);
     }
     UpdateData(FALSE);
@@ -535,6 +538,7 @@ void CPasskeyEntry::OnComboEditChange()
   m_MRU_combo.m_edit.GetWindowText(m_filespec);
   m_pctlPasskey->EnableWindow(TRUE);
   m_ctlOK.EnableWindow(TRUE);
+
   UpdateRO();
 }
 
@@ -543,6 +547,7 @@ void CPasskeyEntry::OnComboSelChange()
   CRecentFileList *mru = app.GetMRU();
   int curSel = m_MRU_combo.GetCurSel();
   const int N = mru->GetSize();
+
   if (curSel == CB_ERR || curSel >= N) {
     ASSERT(0);
   } else {
@@ -552,9 +557,11 @@ void CPasskeyEntry::OnComboSelChange()
     else
       m_filespec = m_orig_filespec;
   }
+
   m_pctlPasskey->EnableWindow(TRUE);
   m_pctlPasskey->SetFocus();
   m_ctlOK.EnableWindow(TRUE);
+
   UpdateRO();
 }
 
