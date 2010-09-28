@@ -274,6 +274,7 @@ bool PwsafeApp::OnInit()
     m_frame->Load(initWindow->GetPassword());
   }
 
+  RestoreFrameCoords();
   m_frame->Show();
   return true;
 }
@@ -321,4 +322,39 @@ CRecentDBList &PwsafeApp::recentDatabases()
   if (m_recentDatabases == NULL)
     m_recentDatabases = new CRecentDBList;
   return *m_recentDatabases;
+}
+
+void PwsafeApp::SaveFrameCoords(void)
+{
+  if (m_frame->IsMaximized()) {
+    PWSprefs::GetInstance()->SetPrefRect(-1, -1, -1, -1);
+  }
+  else if (m_frame->IsIconized() || !m_frame->IsShown()) {
+    //if we save coords when minimized/hidden, pwsafe could be hidden or off 
+    //screen next time it runs
+    return; 
+  }
+  else {
+    wxRect rc = m_frame->GetScreenRect();
+    PWSprefs::GetInstance()->SetPrefRect(rc.GetTop(), rc.GetBottom(), rc.GetLeft(), rc.GetRight());
+  }
+}
+
+void PwsafeApp::RestoreFrameCoords(void)
+{
+  long top, bottom, left, right;
+  PWSprefs::GetInstance()->GetPrefRect(top, bottom, left, right);
+  if (left == -1 && top == -1 && right == -1 && bottom == -1) {
+    m_frame->Maximize();
+  }
+  else {
+    wxRect rcApp(left, top, right - left, bottom - top);
+    
+    int displayWidth, displayHeight;
+    ::wxDisplaySize(&displayWidth, &displayHeight);
+    wxRect rcDisplay(0, 0, displayWidth, displayHeight);
+    
+    if (!rcApp.IsEmpty() && rcDisplay.Contains(rcApp))
+      m_frame->SetSize(rcApp);
+  }
 }

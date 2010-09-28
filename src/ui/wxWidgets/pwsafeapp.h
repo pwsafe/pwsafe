@@ -78,6 +78,9 @@ public:
 	void OnActivate(wxActivateEvent& actEvent);
 	void OnActivityTimer(wxTimerEvent& timerEvent);
 
+  void SaveFrameCoords(void);
+  void RestoreFrameCoords(void);
+  
  private:
     PWScore m_core;
     wxTimer* m_activityTimer;
