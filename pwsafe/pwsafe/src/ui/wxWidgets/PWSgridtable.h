@@ -47,8 +47,7 @@ class PWSGrid;
 
 class PWSGridTable: public wxGridTableBase
 {    
-  DECLARE_CLASS( PWSGrid )
-  //DECLARE_EVENT_TABLE()
+  DECLARE_CLASS( PWSGridTable )
 
   DECLARE_NO_COPY_CLASS(PWSGridTable)
 public:
