@@ -1164,6 +1164,7 @@ void PasswordSafeFrame::OnSaveAsClick(wxCommandEvent& evt)
 
 void PasswordSafeFrame::OnCloseWindow( wxCloseEvent& evt )
 {
+  wxGetApp().SaveFrameCoords();
   if (m_exitFromMenu) {
     if (evt.CanVeto()) {
       int rc = SaveIfChanged();
@@ -2036,7 +2037,8 @@ void PasswordSafeFrame::OnIconize(wxIconizeEvent& evt)
 void PasswordSafeFrame::HideUI(bool lock)
 {
   m_guiInfo->Save(this);
-
+  wxGetApp().SaveFrameCoords();
+  
   if (lock) {
     if (!SaveAndClearDatabase())
       return;
