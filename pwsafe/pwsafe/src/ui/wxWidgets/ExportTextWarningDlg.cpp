@@ -24,6 +24,7 @@
 #include "SafeCombinationCtrl.h"
 
 #include <wx/richtext/richtextctrl.h>
+#include <wx/statline.h>
 
 enum { ID_COMBINATION = 100, ID_VKBD, ID_LINE_DELIMITER, ID_ADVANCED };
 
@@ -77,11 +78,13 @@ CExportTextWarningDlgBase::CExportTextWarningDlgBase(wxWindow* parent) : wxDialo
   dlgSizer->Add(delimRow, wxSizerFlags().Border(wxLEFT|wxRIGHT, SideMargin));
   dlgSizer->AddSpacer(RowSeparation);
 
+  dlgSizer->Add(new wxStaticLine(this), wxSizerFlags().Expand().Border(wxLEFT|wxRIGHT, SideMargin).Center());
+  dlgSizer->AddSpacer(RowSeparation);
+  
   wxStdDialogButtonSizer* buttons = CreateStdDialogButtonSizer(wxOK|wxCANCEL|wxHELP);
   //This might not be a very wise thing to do.  We are only supposed to add certain
   //pre-defined button-ids to StdDlgBtnSizer
-  buttons->AddSpacer(wxSizerFlags::GetDefaultBorder());
-  buttons->Add(new wxButton(this, ID_ADVANCED, _("Advanced...")));
+  buttons->Add(new wxButton(this, ID_ADVANCED, _("Advanced...")), wxSizerFlags().Border(wxLEFT|wxRIGHT));
   dlgSizer->Add(buttons, wxSizerFlags().Border(wxLEFT|wxRIGHT, SideMargin).Center());
   
   dlgSizer->AddSpacer(BottomMargin);
