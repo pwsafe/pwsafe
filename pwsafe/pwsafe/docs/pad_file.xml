@@ -89,7 +89,7 @@ Oh, and the desktop version of Password Safe is freely available under an Open S
 			<Application_XML_File_URL>http://pwsafe.org/padfiles/pwsafe.xml</Application_XML_File_URL>
 		</Application_URLs>
 		<Download_URLs>
-			<Primary_Download_URL>https://sourceforge.net/projects/passwordsafe/files/passwordsafe/3.21/pwsafe-3.21.exe/download</Primary_Download_URL>
+			<Primary_Download_URL>https://sourceforge.net/projects/passwordsafe/files/passwordsafe/3.23/pwsafe-3.23.exe/download</Primary_Download_URL>
 			<Secondary_Download_URL />
 			<Additional_Download_URL_1 />
 			<Additional_Download_URL_2 />
