@@ -1,4 +1,4 @@
-Introduction:
+1. Introduction:
 The Linux port of PasswordSafe is currently in BETA.
 This means that (1) you should take care to keep copies of the
 database to protect against possible loss of data due to bugs, and (2)
@@ -6,18 +6,35 @@ there are several unimplemented features. Nonetheless, we feel that
 this is good enough to release as an early beta to gather feedback
 from a wider audience.
 
-Supported Distributions:
+2. Supported Distributions:
 Currently Debian 5.0 and Ubuntu 10.04.1 are supported.
 
-Installation:
-Download the .deb file that corresponds to your distribution.
-Install it using dpkg:
+3. Installation:
+3.1 Download the .deb file that corresponds to your distribution.
+3.2 Install it using dpkg (for experienced user):
 $ sudo dpkg -i passwordsafe-*.deb
 Dpkg will complain if prerequisite packages are missing. To install
 the missing packages:
 $ sudo aptitude install missing-pkgX missing-pkgY
+3.3 Installing using GUI:
+3.3.1 Ubuntu:
+If you download passwordsafe-ubuntu-0.1-1.deb to Ubuntu 10.04, and
+open it with GDebi Package Installer, the Package Installer may give
+an Error: Dependency is not satisfiable: libwxgtk2.8-0 (>=
+2.8.10.1-0ubuntu1.2). If so, click on Applications, Ubuntu Software
+Center, search for wxw, select wxFormBuilder and Use This Source. Then
+click on Install - Free. Afterwards, you should see a green check box
+next to Installed. Then close your Package Installer window, and
+double-click again on passwordsafe-ubuntu-0.1-1.deb in your Firefox
+Downloads menu. This time the package installer comes up again and you
+can Install Package. While you cannot simply double-click on an
+existing .psafe3 file, you can go to usr/bin/ and double-click on
+pwsafe. There, it will look for your .psafe3 or .dat files by
+default. Also, in your Nautilus File Browser, you can right click on
+pwsafe and Copy to Desktop.
+3.3.2 Debian: TBD
 
-Reporting bugs:
+4. Reporting bugs:
 Please submit bugs via
 https://sourceforge.net/tracker/?func=add&group_id=41019&atid=429579
 Set the Category field to Linux to help ensure timely response.
