@@ -54,8 +54,7 @@ extern size_t _readcbc(FILE *fp, unsigned char* &buffer,
                        unsigned char &type, Fish *Algorithm,
                        unsigned char* cbcbuffer,
                        const unsigned char *TERMINAL_BLOCK = NULL, 
-                       size_t file_len = 0,
-                       bool bSkip = false, unsigned char *pSkipTypes = NULL);
+                       size_t file_len = 0);
 
 // _writecbc will throw(EIO) iff a write fail occurs!
 extern size_t _writecbc(FILE *fp, const unsigned char* buffer, int length,
@@ -125,7 +124,7 @@ inline void putInt32(unsigned char buf[4], const int val )
 
 // Time conversion result formats - powers of 2 as they can be combined!
 enum {TMC_ASC_UNKNOWN = 1, TMC_ASC_NULL = 2, TMC_EXPORT_IMPORT = 4, TMC_XML = 8,
-      TMC_LOCALE = 16, TMC_FILE = 32};
+      TMC_LOCALE = 16};
 
 namespace PWSUtil {
   // namespace of common utility functions
@@ -138,24 +137,14 @@ namespace PWSUtil {
   stringT GetNewFileName(const stringT &oldfilename, const stringT &newExtn);
   extern const TCHAR *UNKNOWN_ASC_TIME_STR, *UNKNOWN_XML_TIME_STR;
   void GetTimeStamp(stringT &sTimeStamp);
+  stringT Base64Encode(const BYTE *inData, size_t len);
+  void Base64Decode(const StringX &inString, BYTE* &outData, size_t &out_len);
   StringX NormalizeTTT(const StringX &in);
   void WriteXMLField(std::ostream &os, const char *fname,
                      const StringX &value, CUTF8Conv &utf8conv,
                      const char *tabs = "\t\t");
   std::string GetXMLTime(int indent, const char *name,
                          time_t t, CUTF8Conv &utf8conv);
-
-  // Base64 routines
-  stringT Base64Encode(const BYTE *inData, const size_t len);
-  void Base64Decode(const StringX &inString, BYTE* &outData, size_t &out_len);
-
-  // CRC routines
-  void Init_CRC32_Table();
-  unsigned int Reflect(unsigned int ref, char ch);
-  unsigned int Get_CRC(unsigned char *pData, const unsigned int &iLen);
-  void Get_CRC_Incremental_Init();
-  void Get_CRC_Incremental_Update(unsigned char *pData, const unsigned int &iLen);
-  unsigned int Get_CRC_Incremental_Final();
 };
 
 ///////////////////////////////////////////////////////

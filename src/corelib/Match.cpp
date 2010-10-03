@@ -102,16 +102,14 @@ bool PWSMatch::Match(const bool bValue, int iFunction)
   if (bValue) {
     if (iFunction == MR_EQUALS ||
         iFunction == MR_ACTIVE ||
-        iFunction == MR_PRESENT ||
-        iFunction == MR_YES)
+        iFunction == MR_PRESENT)
       rc = true;
     else
       rc = false;
   } else {
     if (iFunction == MR_NOTEQUAL ||
         iFunction == MR_INACTIVE ||
-        iFunction == MR_NOTPRESENT ||
-        iFunction == MR_NO)
+        iFunction == MR_NOTPRESENT)
       rc = true;
     else
       rc = false;
@@ -130,8 +128,6 @@ const char *PWSMatch::GetRuleString(MatchRule rule)
     case MR_INACTIVE:   pszrule = "IA"; break;
     case MR_PRESENT:    pszrule = "PR"; break;
     case MR_NOTPRESENT: pszrule = "NP"; break;
-    case MR_YES:        pszrule = "YS"; break;
-    case MR_NO:         pszrule = "NO"; break;
     case MR_SET:        pszrule = "SE"; break;
     case MR_NOTSET:     pszrule = "NS"; break;
     case MR_IS:         pszrule = "IS"; break;
@@ -166,8 +162,6 @@ UINT PWSMatch::GetRule(MatchRule rule)
     case MR_NOTEQUAL:   id = IDSC_DOESNOTEQUAL; break;
     case MR_ACTIVE:     id = IDSC_ISACTIVE; break;
     case MR_INACTIVE:   id = IDSC_ISINACTIVE; break;
-    case MR_YES:        id = IDSC_YES; break;
-    case MR_NO:         id = IDSC_NO; break;
     case MR_PRESENT:    id = IDSC_ISPRESENT; break;
     case MR_NOTPRESENT: id = IDSC_ISNOTPRESENT; break;
     case MR_SET:        id = IDSC_SET; break;

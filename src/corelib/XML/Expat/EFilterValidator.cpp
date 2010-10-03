@@ -135,8 +135,6 @@ const EFilterValidator::st_filter_elements EFilterValidator::m_filter_elements[X
     {XTE_ENTRYSIZE, XTR_SIZERULE, 1, DFTYPE_MAIN, PWSMatch::MT_ENTRYSIZE, FT_ENTRYSIZE}},
   {_T("unknownfields"),
     {XTE_UNKNOWNFIELDS, XTR_BOOLEANPRESENTRULE, 1, DFTYPE_MAIN, PWSMatch::MT_INVALID, FT_UNKNOWNFIELDS}},
-  {_T("attachments"),
-    {XTE_ATTACHMENTS, XTR_BOOLEANPRESENTRULE, 1, DFTYPE_MAIN, PWSMatch::MT_INVALID, FT_ATTACHMENTS}},
   {_T("test"),
     {XTE_TEST, XTR_NA, 1, DFTYPE_INVALID, PWSMatch::MT_INVALID, FT_INVALID}},
   {_T("rule"),
@@ -175,8 +173,6 @@ const EFilterValidator::st_filter_rules EFilterValidator::m_filter_rulecodes[PWS
   {_T("IA"), {PWSMatch::MR_INACTIVE, XTR_BOOLEANACTIVERULE} },
   {_T("PR"), {PWSMatch::MR_PRESENT, XTR_BOOLEANPRESENTRULE | XTR_DATERULE | XTR_INTEGERRULE | XTR_STRINGPRESENTRULE} },
   {_T("NP"), {PWSMatch::MR_NOTPRESENT, XTR_BOOLEANPRESENTRULE | XTR_DATERULE | XTR_INTEGERRULE | XTR_STRINGPRESENTRULE} },
-  {_T("YS"), {PWSMatch::MR_YES, XTR_BOOLEANYESNORULE} },
-  {_T("NO"), {PWSMatch::MR_NO, XTR_BOOLEANYESNOULE} },
   {_T("SE"), {PWSMatch::MR_SET, XTR_BOOLEANSETRULE} },
   {_T("NS"), {PWSMatch::MR_NOTSET, XTR_BOOLEANSETRULE} },
   {_T("IS"), {PWSMatch::MR_IS, XTR_ENTRYRULE | XTR_DCARULE} },
@@ -538,7 +534,6 @@ bool EFilterValidator::VerifyStartElement(cFilter_Element_iter e_iter)
     case XTE_ENTRYSIZE:
     case XTE_ENTRYTYPE:
     case XTE_ENTRYSTATUS:
-    case XTE_ATTACHMENTS:
     case XTE_UNKNOWNFIELDS:
       if (m_bfiltergroup) {
         // Can't have more than one field in each filter_entry.

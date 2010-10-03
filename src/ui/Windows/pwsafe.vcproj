@@ -17,8 +17,8 @@
 	<Configurations>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="..\$(PWSBin)"
-			IntermediateDirectory="..\$(PWSObj)\$(ProjectName)"
+			OutputDirectory="..\..\..\build\bin\pwsafe\$(ConfigurationName)"
+			IntermediateDirectory="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="1"
 			InheritedPropertySheets=".\UserVariables.vsprops"
 			UseOfMFC="1"
@@ -46,7 +46,7 @@
 				MkTypLibCompatible="true"
 				SuppressStartupBanner="true"
 				TargetEnvironment="1"
-				TypeLibraryName="..\$(PWSObj)\$(ProjectName)/pwsafe.tlb"
+				TypeLibraryName="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/pwsafe.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
@@ -60,10 +60,10 @@
 				EnableFunctionLevelLinking="true"
 				TreatWChar_tAsBuiltInType="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile="..\$(PWSObj)\$(ProjectName)/pwsafe.pch"
-				AssemblerListingLocation="..\$(PWSObj)\$(ProjectName)/"
-				ObjectFile="..\$(PWSObj)\$(ProjectName)/"
-				ProgramDataBaseFileName="..\$(PWSObj)\$(ProjectName)/"
+				PrecompiledHeaderFile="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/pwsafe.pch"
+				AssemblerListingLocation="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ObjectFile="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ProgramDataBaseFileName="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
 				WarningLevel="4"
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="3"
@@ -83,12 +83,12 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
-				AdditionalDependencies="corelib.lib os.lib zlib.lib WS2_32.lib rpcrt4.lib version.lib psapi.lib Wtsapi32.lib htmlhelp.lib"
-				OutputFile="..\$(PWSBin)/pwsafe.exe"
+				AdditionalDependencies="corelib.lib os.lib WS2_32.lib rpcrt4.lib version.lib psapi.lib Wtsapi32.lib htmlhelp.lib"
+				OutputFile="..\..\..\build\bin\pwsafe\$(ConfigurationName)/pwsafe.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="..\$(PWSLib);..\..\..\build\bin\pwsafe\Release"
-				ProgramDatabaseFile="..\$(PWSBin)/pwsafe.pdb"
+				AdditionalLibraryDirectories="..\..\..\build\lib\pwsafe\$(ConfigurationName);..\..\..\build\bin\pwsafe\Release"
+				ProgramDatabaseFile="..\..\..\build\bin\pwsafe\$(ConfigurationName)/pwsafe.pdb"
 				SubSystem="2"
 				TargetMachine="1"
 			/>
@@ -119,8 +119,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="..\$(PWSBin)"
-			IntermediateDirectory="..\$(PWSObj)\$(ProjectName)"
+			OutputDirectory="..\..\..\build\bin\pwsafe\$(ConfigurationName)"
+			IntermediateDirectory="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="1"
 			InheritedPropertySheets=".\UserVariables.vsprops"
 			UseOfMFC="1"
@@ -147,7 +147,7 @@
 				MkTypLibCompatible="true"
 				SuppressStartupBanner="true"
 				TargetEnvironment="1"
-				TypeLibraryName="..\$(PWSObj)\$(ProjectName)/pwsafe.tlb"
+				TypeLibraryName="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/pwsafe.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
@@ -161,10 +161,10 @@
 				BufferSecurityCheck="true"
 				TreatWChar_tAsBuiltInType="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile="..\$(PWSObj)\$(ProjectName)/pwsafe.pch"
-				AssemblerListingLocation="..\$(PWSObj)\$(ProjectName)/"
-				ObjectFile="..\$(PWSObj)\$(ProjectName)/"
-				ProgramDataBaseFileName="..\$(PWSObj)\$(ProjectName)/"
+				PrecompiledHeaderFile="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/pwsafe.pch"
+				AssemblerListingLocation="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ObjectFile="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ProgramDataBaseFileName="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
 				BrowseInformation="1"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
@@ -186,16 +186,16 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
-				AdditionalDependencies="corelib.lib os.lib zlib.lib WS2_32.lib Rpcrt4.lib version.lib psapi.lib Wtsapi32.lib htmlhelp.lib"
+				AdditionalDependencies="corelib.lib os.lib WS2_32.lib Rpcrt4.lib version.lib psapi.lib Wtsapi32.lib htmlhelp.lib"
 				ShowProgress="0"
-				OutputFile="..\$(PWSBin)/pwsafe.exe"
+				OutputFile="..\..\..\build\bin\pwsafe\$(ConfigurationName)/pwsafe.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="..\$(PWSLib);..\..\..\build\bin\pwsafe\Debug"
+				AdditionalLibraryDirectories="..\..\..\build\lib\pwsafe\$(ConfigurationName);..\..\..\build\bin\pwsafe\Debug"
 				IgnoreAllDefaultLibraries="false"
 				IgnoreDefaultLibraryNames=""
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="..\$(PWSBin)/pwsafe.pdb"
+				ProgramDatabaseFile="..\..\..\build\bin\pwsafe\$(ConfigurationName)/pwsafe.pdb"
 				SubSystem="2"
 				TargetMachine="1"
 			/>
@@ -226,8 +226,8 @@
 		</Configuration>
 		<Configuration
 			Name="Demo|Win32"
-			OutputDirectory="..\$(PWSBin)"
-			IntermediateDirectory="..\$(PWSObj)\$(ProjectName)"
+			OutputDirectory="..\..\..\build\bin\pwsafe\$(ConfigurationName)"
+			IntermediateDirectory="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="1"
 			InheritedPropertySheets=".\UserVariables.vsprops"
 			UseOfMFC="1"
@@ -255,7 +255,7 @@
 				MkTypLibCompatible="true"
 				SuppressStartupBanner="true"
 				TargetEnvironment="1"
-				TypeLibraryName="..\$(PWSObj)\$(ProjectName)/pwsafe.tlb"
+				TypeLibraryName="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/pwsafe.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
@@ -269,10 +269,10 @@
 				EnableFunctionLevelLinking="true"
 				TreatWChar_tAsBuiltInType="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile="..\$(PWSObj)\$(ProjectName)/pwsafe.pch"
-				AssemblerListingLocation="..\$(PWSObj)\$(ProjectName)/"
-				ObjectFile="..\$(PWSObj)\$(ProjectName)/"
-				ProgramDataBaseFileName="..\$(PWSObj)\$(ProjectName)/"
+				PrecompiledHeaderFile="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/pwsafe.pch"
+				AssemblerListingLocation="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ObjectFile="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ProgramDataBaseFileName="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
 				WarningLevel="4"
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="3"
@@ -293,13 +293,13 @@
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
 				AdditionalOptions="/OPT:REF"
-				AdditionalDependencies="corelib.lib os.lib zlib.lib WS2_32.lib rpcrt4.lib version.lib psapi.lib Wtsapi32.lib dbghelp.lib htmlhelp.lib msxml6.lib"
-				OutputFile="..\$(PWSBin)/pwsafe.exe"
+				AdditionalDependencies="corelib.lib os.lib WS2_32.lib rpcrt4.lib version.lib psapi.lib Wtsapi32.lib dbghelp.lib htmlhelp.lib msxml6.lib"
+				OutputFile="..\..\..\build\bin\pwsafe\$(ConfigurationName)/pwsafe.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="..\$(PWSLib);..\..\..\build\bin\pwsafe\Release"
+				AdditionalLibraryDirectories="..\..\..\build\lib\pwsafe\$(ConfigurationName);..\..\..\build\bin\pwsafe\Release"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="..\$(PWSBin)/pwsafe.pdb"
+				ProgramDatabaseFile="..\..\..\build\bin\pwsafe\$(ConfigurationName)/pwsafe.pdb"
 				SubSystem="2"
 				TargetMachine="1"
 			/>
@@ -331,8 +331,8 @@
 		</Configuration>
 		<Configuration
 			Name="DebugE|Win32"
-			OutputDirectory="..\$(PWSBin)"
-			IntermediateDirectory="..\$(PWSObj)\$(ProjectName)"
+			OutputDirectory="..\..\..\build\bin\pwsafe\$(ConfigurationName)"
+			IntermediateDirectory="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="1"
 			InheritedPropertySheets=".\UserVariables.vsprops"
 			UseOfMFC="1"
@@ -359,7 +359,7 @@
 				MkTypLibCompatible="true"
 				SuppressStartupBanner="true"
 				TargetEnvironment="1"
-				TypeLibraryName="..\$(PWSObj)\$(ProjectName)/pwsafe.tlb"
+				TypeLibraryName="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/pwsafe.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
@@ -373,10 +373,10 @@
 				BufferSecurityCheck="true"
 				TreatWChar_tAsBuiltInType="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile="..\$(PWSObj)\$(ProjectName)/pwsafe.pch"
-				AssemblerListingLocation="..\$(PWSObj)\$(ProjectName)/"
-				ObjectFile="..\$(PWSObj)\$(ProjectName)/"
-				ProgramDataBaseFileName="..\$(PWSObj)\$(ProjectName)/"
+				PrecompiledHeaderFile="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/pwsafe.pch"
+				AssemblerListingLocation="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ObjectFile="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ProgramDataBaseFileName="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
 				BrowseInformation="1"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
@@ -398,16 +398,16 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
-				AdditionalDependencies="corelib.lib os.lib zlib.lib WS2_32.lib Rpcrt4.lib version.lib psapi.lib Wtsapi32.lib htmlhelp.lib libexpatwMT.lib"
+				AdditionalDependencies="corelib.lib os.lib WS2_32.lib Rpcrt4.lib version.lib psapi.lib Wtsapi32.lib htmlhelp.lib libexpatwMT.lib"
 				ShowProgress="0"
-				OutputFile="..\$(PWSBin)/pwsafe.exe"
+				OutputFile="..\..\..\build\bin\pwsafe\$(ConfigurationName)/pwsafe.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="..\$(PWSLib);$(ExpatDir)\Bin;..\..\..\build\bin\pwsafe\Debug"
+				AdditionalLibraryDirectories="..\..\..\build\lib\pwsafe\$(ConfigurationName);$(ExpatDir)\Bin;..\..\..\build\bin\pwsafe\Debug"
 				IgnoreAllDefaultLibraries="false"
 				IgnoreDefaultLibraryNames=""
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="..\$(PWSBin)/pwsafe.pdb"
+				ProgramDatabaseFile="..\..\..\build\bin\pwsafe\$(ConfigurationName)/pwsafe.pdb"
 				SubSystem="2"
 				TargetMachine="1"
 			/>
@@ -439,8 +439,8 @@
 		</Configuration>
 		<Configuration
 			Name="DebugM|Win32"
-			OutputDirectory="..\$(PWSBin)"
-			IntermediateDirectory="..\$(PWSObj)\$(ProjectName)"
+			OutputDirectory="..\..\..\build\bin\pwsafe\$(ConfigurationName)"
+			IntermediateDirectory="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="1"
 			InheritedPropertySheets=".\UserVariables.vsprops"
 			UseOfMFC="1"
@@ -467,7 +467,7 @@
 				MkTypLibCompatible="true"
 				SuppressStartupBanner="true"
 				TargetEnvironment="1"
-				TypeLibraryName="..\$(PWSObj)\$(ProjectName)/pwsafe.tlb"
+				TypeLibraryName="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/pwsafe.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
@@ -481,10 +481,10 @@
 				BufferSecurityCheck="true"
 				TreatWChar_tAsBuiltInType="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile="..\$(PWSObj)\$(ProjectName)/pwsafe.pch"
-				AssemblerListingLocation="..\$(PWSObj)\$(ProjectName)/"
-				ObjectFile="..\$(PWSObj)\$(ProjectName)/"
-				ProgramDataBaseFileName="..\$(PWSObj)\$(ProjectName)/"
+				PrecompiledHeaderFile="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/pwsafe.pch"
+				AssemblerListingLocation="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ObjectFile="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ProgramDataBaseFileName="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
 				BrowseInformation="1"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
@@ -507,16 +507,16 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
-				AdditionalDependencies="corelib.lib os.lib zlib.lib WS2_32.lib Rpcrt4.lib version.lib psapi.lib Wtsapi32.lib htmlhelp.lib msxml6.lib"
+				AdditionalDependencies="corelib.lib os.lib WS2_32.lib Rpcrt4.lib version.lib psapi.lib Wtsapi32.lib htmlhelp.lib msxml6.lib"
 				ShowProgress="0"
-				OutputFile="..\$(PWSBin)/pwsafe.exe"
+				OutputFile="..\..\..\build\bin\pwsafe\$(ConfigurationName)/pwsafe.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="..\$(PWSLib);..\..\..\build\bin\pwsafe\Debug"
+				AdditionalLibraryDirectories="..\..\..\build\lib\pwsafe\$(ConfigurationName);..\..\..\build\bin\pwsafe\Debug"
 				IgnoreAllDefaultLibraries="false"
 				IgnoreDefaultLibraryNames=""
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="..\$(PWSBin)/pwsafe.pdb"
+				ProgramDatabaseFile="..\..\..\build\bin\pwsafe\$(ConfigurationName)/pwsafe.pdb"
 				SubSystem="2"
 				TargetMachine="1"
 			/>
@@ -548,8 +548,8 @@
 		</Configuration>
 		<Configuration
 			Name="DebugX|Win32"
-			OutputDirectory="..\$(PWSBin)"
-			IntermediateDirectory="..\$(PWSObj)\$(ProjectName)"
+			OutputDirectory="..\..\..\build\bin\pwsafe\$(ConfigurationName)"
+			IntermediateDirectory="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="1"
 			InheritedPropertySheets=".\UserVariables.vsprops"
 			UseOfMFC="1"
@@ -576,7 +576,7 @@
 				MkTypLibCompatible="true"
 				SuppressStartupBanner="true"
 				TargetEnvironment="1"
-				TypeLibraryName="..\$(PWSObj)\$(ProjectName)/pwsafe.tlb"
+				TypeLibraryName="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/pwsafe.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
@@ -590,10 +590,10 @@
 				BufferSecurityCheck="true"
 				TreatWChar_tAsBuiltInType="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile="..\$(PWSObj)\$(ProjectName)/pwsafe.pch"
-				AssemblerListingLocation="..\$(PWSObj)\$(ProjectName)/"
-				ObjectFile="..\$(PWSObj)\$(ProjectName)/"
-				ProgramDataBaseFileName="..\$(PWSObj)\$(ProjectName)/"
+				PrecompiledHeaderFile="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/pwsafe.pch"
+				AssemblerListingLocation="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ObjectFile="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ProgramDataBaseFileName="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
 				BrowseInformation="1"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
@@ -615,16 +615,16 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
-				AdditionalDependencies="corelib.lib os.lib zlib.lib WS2_32.lib Rpcrt4.lib version.lib psapi.lib Wtsapi32.lib htmlhelp.lib xerces-c_static_3D.lib"
+				AdditionalDependencies="corelib.lib os.lib WS2_32.lib Rpcrt4.lib version.lib psapi.lib Wtsapi32.lib htmlhelp.lib xerces-c_static_3D.lib"
 				ShowProgress="0"
-				OutputFile="..\$(PWSBin)/pwsafe.exe"
+				OutputFile="..\..\..\build\bin\pwsafe\$(ConfigurationName)/pwsafe.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="..\$(PWSLib);$(XercesDir)\lib;..\..\..\build\bin\pwsafe\Debug"
+				AdditionalLibraryDirectories="..\..\..\build\lib\pwsafe\$(ConfigurationName);$(XercesDir)\lib;..\..\..\build\bin\pwsafe\Debug"
 				IgnoreAllDefaultLibraries="false"
 				IgnoreDefaultLibraryNames=""
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="..\$(PWSBin)/pwsafe.pdb"
+				ProgramDatabaseFile="..\..\..\build\bin\pwsafe\$(ConfigurationName)/pwsafe.pdb"
 				SubSystem="2"
 				TargetMachine="1"
 			/>
@@ -656,8 +656,8 @@
 		</Configuration>
 		<Configuration
 			Name="ReleaseE|Win32"
-			OutputDirectory="..\$(PWSBin)"
-			IntermediateDirectory="..\$(PWSObj)\$(ProjectName)"
+			OutputDirectory="..\..\..\build\bin\pwsafe\$(ConfigurationName)"
+			IntermediateDirectory="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="1"
 			InheritedPropertySheets=".\UserVariables.vsprops"
 			UseOfMFC="1"
@@ -685,7 +685,7 @@
 				MkTypLibCompatible="true"
 				SuppressStartupBanner="true"
 				TargetEnvironment="1"
-				TypeLibraryName="..\$(PWSObj)\$(ProjectName)/pwsafe.tlb"
+				TypeLibraryName="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/pwsafe.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
@@ -699,10 +699,10 @@
 				EnableFunctionLevelLinking="true"
 				TreatWChar_tAsBuiltInType="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile="..\$(PWSObj)\$(ProjectName)/pwsafe.pch"
-				AssemblerListingLocation="..\$(PWSObj)\$(ProjectName)/"
-				ObjectFile="..\$(PWSObj)\$(ProjectName)/"
-				ProgramDataBaseFileName="..\$(PWSObj)\$(ProjectName)/"
+				PrecompiledHeaderFile="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/pwsafe.pch"
+				AssemblerListingLocation="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ObjectFile="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ProgramDataBaseFileName="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
 				WarningLevel="4"
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="3"
@@ -723,13 +723,13 @@
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
 				AdditionalOptions="/OPT:REF"
-				AdditionalDependencies="corelib.lib os.lib zlib.lib WS2_32.lib rpcrt4.lib version.lib psapi.lib Wtsapi32.lib dbghelp.lib htmlhelp.lib libexpatwMT.lib"
-				OutputFile="..\$(PWSBin)/pwsafe.exe"
+				AdditionalDependencies="corelib.lib os.lib WS2_32.lib rpcrt4.lib version.lib psapi.lib Wtsapi32.lib dbghelp.lib htmlhelp.lib libexpatwMT.lib"
+				OutputFile="..\..\..\build\bin\pwsafe\$(ConfigurationName)/pwsafe.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="..\$(PWSLib);$(ExpatDir)\Bin;..\..\..\build\bin\pwsafe\Release"
+				AdditionalLibraryDirectories="..\..\..\build\lib\pwsafe\$(ConfigurationName);$(ExpatDir)\Bin;..\..\..\build\bin\pwsafe\Release"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="..\$(PWSBin)/pwsafe.pdb"
+				ProgramDatabaseFile="..\..\..\build\bin\pwsafe\$(ConfigurationName)/pwsafe.pdb"
 				SubSystem="2"
 				TargetMachine="1"
 			/>
@@ -761,8 +761,8 @@
 		</Configuration>
 		<Configuration
 			Name="ReleaseM|Win32"
-			OutputDirectory="..\$(PWSBin)"
-			IntermediateDirectory="..\$(PWSObj)\$(ProjectName)"
+			OutputDirectory="..\..\..\build\bin\pwsafe\$(ConfigurationName)"
+			IntermediateDirectory="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="1"
 			InheritedPropertySheets=".\UserVariables.vsprops"
 			UseOfMFC="1"
@@ -790,7 +790,7 @@
 				MkTypLibCompatible="true"
 				SuppressStartupBanner="true"
 				TargetEnvironment="1"
-				TypeLibraryName="..\$(PWSObj)\$(ProjectName)/pwsafe.tlb"
+				TypeLibraryName="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/pwsafe.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
@@ -804,10 +804,10 @@
 				EnableFunctionLevelLinking="true"
 				TreatWChar_tAsBuiltInType="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile="..\$(PWSObj)\$(ProjectName)/pwsafe.pch"
-				AssemblerListingLocation="..\$(PWSObj)\$(ProjectName)/"
-				ObjectFile="..\$(PWSObj)\$(ProjectName)/"
-				ProgramDataBaseFileName="..\$(PWSObj)\$(ProjectName)/"
+				PrecompiledHeaderFile="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/pwsafe.pch"
+				AssemblerListingLocation="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ObjectFile="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ProgramDataBaseFileName="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
 				WarningLevel="4"
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="3"
@@ -828,13 +828,13 @@
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
 				AdditionalOptions="/OPT:REF"
-				AdditionalDependencies="corelib.lib os.lib zlib.lib WS2_32.lib rpcrt4.lib version.lib psapi.lib Wtsapi32.lib dbghelp.lib htmlhelp.lib msxml6.lib"
-				OutputFile="..\$(PWSBin)/pwsafe.exe"
+				AdditionalDependencies="corelib.lib os.lib WS2_32.lib rpcrt4.lib version.lib psapi.lib Wtsapi32.lib dbghelp.lib htmlhelp.lib msxml6.lib"
+				OutputFile="..\..\..\build\bin\pwsafe\$(ConfigurationName)/pwsafe.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="..\$(PWSLib);..\..\..\build\bin\pwsafe\Release"
+				AdditionalLibraryDirectories="..\..\..\build\lib\pwsafe\$(ConfigurationName);..\..\..\build\bin\pwsafe\Release"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="..\$(PWSBin)/pwsafe.pdb"
+				ProgramDatabaseFile="..\..\..\build\bin\pwsafe\$(ConfigurationName)/pwsafe.pdb"
 				GenerateMapFile="true"
 				MapFileName="$(OutDir)\$(TargetName).map"
 				SubSystem="2"
@@ -868,8 +868,8 @@
 		</Configuration>
 		<Configuration
 			Name="ReleaseX|Win32"
-			OutputDirectory="..\$(PWSBin)"
-			IntermediateDirectory="..\$(PWSObj)\$(ProjectName)"
+			OutputDirectory="..\..\..\build\bin\pwsafe\$(ConfigurationName)"
+			IntermediateDirectory="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="1"
 			InheritedPropertySheets=".\UserVariables.vsprops"
 			UseOfMFC="1"
@@ -897,7 +897,7 @@
 				MkTypLibCompatible="true"
 				SuppressStartupBanner="true"
 				TargetEnvironment="1"
-				TypeLibraryName="..\$(PWSObj)\$(ProjectName)/pwsafe.tlb"
+				TypeLibraryName="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/pwsafe.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
@@ -911,10 +911,10 @@
 				EnableFunctionLevelLinking="true"
 				TreatWChar_tAsBuiltInType="true"
 				UsePrecompiledHeader="0"
-				PrecompiledHeaderFile="..\$(PWSObj)\$(ProjectName)/pwsafe.pch"
-				AssemblerListingLocation="..\$(PWSObj)\$(ProjectName)/"
-				ObjectFile="..\$(PWSObj)\$(ProjectName)/"
-				ProgramDataBaseFileName="..\$(PWSObj)\$(ProjectName)/"
+				PrecompiledHeaderFile="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/pwsafe.pch"
+				AssemblerListingLocation="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ObjectFile="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ProgramDataBaseFileName="..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
 				WarningLevel="4"
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="3"
@@ -935,13 +935,13 @@
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
 				AdditionalOptions="/OPT:REF"
-				AdditionalDependencies="corelib.lib os.lib zlib.lib WS2_32.lib rpcrt4.lib version.lib psapi.lib Wtsapi32.lib dbghelp.lib htmlhelp.lib xerces-c_static_3.lib"
-				OutputFile="..\$(PWSBin)/pwsafe.exe"
+				AdditionalDependencies="corelib.lib os.lib WS2_32.lib rpcrt4.lib version.lib psapi.lib Wtsapi32.lib dbghelp.lib htmlhelp.lib xerces-c_static_3.lib"
+				OutputFile="..\..\..\build\bin\pwsafe\$(ConfigurationName)/pwsafe.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="..\$(PWSLib);$(XercesDir)\lib;..\..\..\build\bin\pwsafe\Release"
+				AdditionalLibraryDirectories="..\..\..\build\lib\pwsafe\$(ConfigurationName);$(XercesDir)\lib;..\..\..\build\bin\pwsafe\Release"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="..\$(PWSBin)/pwsafe.pdb"
+				ProgramDatabaseFile="..\..\..\build\bin\pwsafe\$(ConfigurationName)/pwsafe.pdb"
 				SubSystem="2"
 				TargetMachine="1"
 			/>
@@ -984,15 +984,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\AddDescription.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\AddEdit_Additional.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\AddEdit_Attachments.cpp"
 				>
 			</File>
 			<File
@@ -1016,19 +1008,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\AdvancedAttDlg.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\AdvancedDlg.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\AttProgressDlg.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\AttProperties.cpp"
 				>
 			</File>
 			<File
@@ -1112,10 +1092,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\ExportAttDlg.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\ExportTextDlg.cpp"
 				>
 			</File>
@@ -1125,10 +1101,6 @@
 			</File>
 			<File
 				RelativePath=".\ExpPWListDlg.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\ExtractAttachment.cpp"
 				>
 			</File>
 			<File
@@ -1200,10 +1172,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\MainAtachments.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\MainEdit.cpp"
 				>
 			</File>
@@ -1241,10 +1209,6 @@
 			</File>
 			<File
 				RelativePath=".\MigratePrefs.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\NumUtilities.cpp"
 				>
 			</File>
 			<File
@@ -1309,10 +1273,6 @@
 			</File>
 			<File
 				RelativePath=".\PupText.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\PWAttLC.cpp"
 				>
 			</File>
 			<File
@@ -1464,10 +1424,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\ViewAttachments.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\ViewReport.cpp"
 				>
 			</File>
@@ -1489,15 +1445,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\AddDescription.h"
-				>
-			</File>
-			<File
 				RelativePath=".\AddEdit_Additional.h"
-				>
-			</File>
-			<File
-				RelativePath=".\AddEdit_Attachments.h"
 				>
 			</File>
 			<File
@@ -1521,19 +1469,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\AdvancedAttDlg.h"
-				>
-			</File>
-			<File
 				RelativePath=".\AdvancedDlg.h"
-				>
-			</File>
-			<File
-				RelativePath=".\AttProgressDlg.h"
-				>
-			</File>
-			<File
-				RelativePath=".\AttProperties.h"
 				>
 			</File>
 			<File
@@ -1617,10 +1553,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\ExportAttDlg.h"
-				>
-			</File>
-			<File
 				RelativePath=".\ExportTextDlg.h"
 				>
 			</File>
@@ -1630,10 +1562,6 @@
 			</File>
 			<File
 				RelativePath=".\ExpPWListDlg.h"
-				>
-			</File>
-			<File
-				RelativePath=".\ExtractAttachment.h"
 				>
 			</File>
 			<File
@@ -1717,10 +1645,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\NumUtilities.h"
-				>
-			</File>
-			<File
 				RelativePath=".\Options_PropertyPage.h"
 				>
 			</File>
@@ -1790,10 +1714,6 @@
 			</File>
 			<File
 				RelativePath=".\PupText.h"
-				>
-			</File>
-			<File
-				RelativePath=".\PWAttLC.h"
 				>
 			</File>
 			<File
@@ -1961,10 +1881,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\ViewAttachments.h"
-				>
-			</File>
-			<File
 				RelativePath=".\ViewReport.h"
 				>
 			</File>
@@ -2042,18 +1958,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\new\addgroup.bmp"
-				>
-			</File>
-			<File
-				RelativePath="..\graphics\toolbar\classic\addgroup.bmp"
-				>
-			</File>
-			<File
-				RelativePath="..\graphics\toolbar\new\addgroup_disabled.bmp"
-				>
-			</File>
-			<File
 				RelativePath="..\graphics\alias.bmp"
 				>
 			</File>
@@ -2071,54 +1975,6 @@
 			</File>
 			<File
 				RelativePath="..\graphics\toolbar\new\applyfilter_disabled.bmp"
-				>
-			</File>
-			<File
-				RelativePath="..\graphics\attabase.bmp"
-				>
-			</File>
-			<File
-				RelativePath="..\graphics\attabase_exp.bmp"
-				>
-			</File>
-			<File
-				RelativePath="..\graphics\attabase_warn.bmp"
-				>
-			</File>
-			<File
-				RelativePath="..\graphics\toolbar\new\attachment.bmp"
-				>
-			</File>
-			<File
-				RelativePath="..\graphics\toolbar\classic\attachment.bmp"
-				>
-			</File>
-			<File
-				RelativePath="..\graphics\toolbar\new\attachment_disabled.bmp"
-				>
-			</File>
-			<File
-				RelativePath="..\graphics\attnormal.bmp"
-				>
-			</File>
-			<File
-				RelativePath="..\graphics\attnormal_exp.bmp"
-				>
-			</File>
-			<File
-				RelativePath="..\graphics\attnormal_warn.bmp"
-				>
-			</File>
-			<File
-				RelativePath="..\graphics\attsbase.bmp"
-				>
-			</File>
-			<File
-				RelativePath="..\graphics\attsbase_exp.bmp"
-				>
-			</File>
-			<File
-				RelativePath="..\graphics\attsbase_warn.bmp"
 				>
 			</File>
 			<File
@@ -2162,11 +2018,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\new\browseurlplus.bmp"
+				RelativePath="..\graphics\toolbar\classic\browseurlplus.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\classic\browseurlplus.bmp"
+				RelativePath="..\graphics\toolbar\new\browseurlplus.bmp"
 				>
 			</File>
 			<File
@@ -2174,11 +2030,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\classic\changecombo.bmp"
+				RelativePath="..\graphics\toolbar\new\changecombo.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\new\changecombo.bmp"
+				RelativePath="..\graphics\toolbar\classic\changecombo.bmp"
 				>
 			</File>
 			<File
@@ -2226,10 +2082,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\checked_d.bmp"
-				>
-			</File>
-			<File
 				RelativePath="..\graphics\toolbar\classic\clearclipboard.bmp"
 				>
 			</File>
@@ -2254,11 +2106,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\classic\collapseall.bmp"
+				RelativePath="..\graphics\toolbar\new\collapseall.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\new\collapseall.bmp"
+				RelativePath="..\graphics\toolbar\classic\collapseall.bmp"
 				>
 			</File>
 			<File
@@ -2266,11 +2118,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\classic\compare.bmp"
+				RelativePath="..\graphics\toolbar\new\compare.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\new\compare.bmp"
+				RelativePath="..\graphics\toolbar\classic\compare.bmp"
 				>
 			</File>
 			<File
@@ -2290,11 +2142,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\new\copypassword.bmp"
+				RelativePath="..\graphics\toolbar\classic\copypassword.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\classic\copypassword.bmp"
+				RelativePath="..\graphics\toolbar\new\copypassword.bmp"
 				>
 			</File>
 			<File
@@ -2330,11 +2182,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\new\createshortcut.bmp"
+				RelativePath="..\graphics\toolbar\classic\createshortcut.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\classic\createshortcut.bmp"
+				RelativePath="..\graphics\toolbar\new\createshortcut.bmp"
 				>
 			</File>
 			<File
@@ -2362,11 +2214,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\new\duplicate.bmp"
+				RelativePath="..\graphics\toolbar\classic\duplicate.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\classic\duplicate.bmp"
+				RelativePath="..\graphics\toolbar\new\duplicate.bmp"
 				>
 			</File>
 			<File
@@ -2374,11 +2226,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\dragbar\new\email.bmp"
+				RelativePath="..\graphics\dragbar\classic\email.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\dragbar\classic\email.bmp"
+				RelativePath="..\graphics\dragbar\new\email.bmp"
 				>
 			</File>
 			<File
@@ -2398,11 +2250,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\new\exit.bmp"
+				RelativePath="..\graphics\toolbar\classic\exit.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\classic\exit.bmp"
+				RelativePath="..\graphics\toolbar\new\exit.bmp"
 				>
 			</File>
 			<File
@@ -2410,11 +2262,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\classic\expandall.bmp"
+				RelativePath="..\graphics\toolbar\new\expandall.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\new\expandall.bmp"
+				RelativePath="..\graphics\toolbar\classic\expandall.bmp"
 				>
 			</File>
 			<File
@@ -2422,11 +2274,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\classic\export.bmp"
+				RelativePath="..\graphics\toolbar\new\export.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\new\export.bmp"
+				RelativePath="..\graphics\toolbar\classic\export.bmp"
 				>
 			</File>
 			<File
@@ -2434,11 +2286,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\new\exporttext.bmp"
+				RelativePath="..\graphics\toolbar\classic\exporttext.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\classic\exporttext.bmp"
+				RelativePath="..\graphics\toolbar\new\exporttext.bmp"
 				>
 			</File>
 			<File
@@ -2446,11 +2298,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\new\exportXML.bmp"
+				RelativePath="..\graphics\toolbar\classic\exportXML.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\classic\exportXML.bmp"
+				RelativePath="..\graphics\toolbar\new\exportXML.bmp"
 				>
 			</File>
 			<File
@@ -2474,19 +2326,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\classic\findadvanced.bmp"
-				>
-			</File>
-			<File
 				RelativePath="..\graphics\toolbar\new\findadvanced.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\new\findcase_i.bmp"
+				RelativePath="..\graphics\toolbar\classic\findadvanced.bmp"
 				>
 			</File>
 			<File
 				RelativePath="..\graphics\toolbar\classic\findcase_i.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\toolbar\new\findcase_i.bmp"
 				>
 			</File>
 			<File
@@ -2498,15 +2350,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\new\findclear.bmp"
-				>
-			</File>
-			<File
 				RelativePath="..\graphics\toolbar\classic\findclear.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\new\findclose.bmp"
+				RelativePath="..\graphics\toolbar\new\findclear.bmp"
 				>
 			</File>
 			<File
@@ -2514,15 +2362,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\graphics\toolbar\new\findclose.bmp"
+				>
+			</File>
+			<File
 				RelativePath="..\graphics\toolbar\findctrlplaceholder.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\new\findreport.bmp"
+				RelativePath="..\graphics\toolbar\classic\findreport.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\classic\findreport.bmp"
+				RelativePath="..\graphics\toolbar\new\findreport.bmp"
 				>
 			</File>
 			<File
@@ -2534,11 +2386,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\new\groupenter.bmp"
+				RelativePath="..\graphics\toolbar\classic\groupenter.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\classic\groupenter.bmp"
+				RelativePath="..\graphics\toolbar\new\groupenter.bmp"
 				>
 			</File>
 			<File
@@ -2590,11 +2442,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\classic\importXML.bmp"
+				RelativePath="..\graphics\toolbar\new\importXML.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\new\importXML.bmp"
+				RelativePath="..\graphics\toolbar\classic\importXML.bmp"
 				>
 			</File>
 			<File
@@ -2614,11 +2466,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\new\lock.bmp"
+				RelativePath="..\graphics\toolbar\classic\lock.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\classic\lock.bmp"
+				RelativePath="..\graphics\toolbar\new\lock.bmp"
 				>
 			</File>
 			<File
@@ -2630,11 +2482,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\new\managefilters.bmp"
+				RelativePath="..\graphics\toolbar\classic\managefilters.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\classic\managefilters.bmp"
+				RelativePath="..\graphics\toolbar\new\managefilters.bmp"
 				>
 			</File>
 			<File
@@ -2654,11 +2506,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\classic\new.bmp"
+				RelativePath="..\graphics\toolbar\new\new.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\new\new.bmp"
+				RelativePath="..\graphics\toolbar\classic\new.bmp"
 				>
 			</File>
 			<File
@@ -2718,11 +2570,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\dragbar\classic\Notes.bmp"
+				RelativePath="..\graphics\dragbar\new\Notes.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\dragbar\new\Notes.bmp"
+				RelativePath="..\graphics\dragbar\classic\Notes.bmp"
 				>
 			</File>
 			<File
@@ -2734,11 +2586,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\classic\open.bmp"
+				RelativePath="..\graphics\toolbar\new\open.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\new\open.bmp"
+				RelativePath="..\graphics\toolbar\classic\open.bmp"
 				>
 			</File>
 			<File
@@ -2746,11 +2598,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\classic\options.bmp"
+				RelativePath="..\graphics\toolbar\new\options.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\new\options.bmp"
+				RelativePath="..\graphics\toolbar\classic\options.bmp"
 				>
 			</File>
 			<File
@@ -2766,11 +2618,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\new\passwordchars.bmp"
+				RelativePath="..\graphics\toolbar\classic\passwordchars.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\classic\passwordchars.bmp"
+				RelativePath="..\graphics\toolbar\new\passwordchars.bmp"
 				>
 			</File>
 			<File
@@ -2866,15 +2718,15 @@
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\dragbar\new\PasswordX.bmp"
-				>
-			</File>
-			<File
-				RelativePath="..\graphics\dragbar\new\PasswordX.bmp"
+				RelativePath="..\graphics\dragbar\classic\PasswordX.bmp"
 				>
 			</File>
 			<File
 				RelativePath="..\graphics\dragbar\classic\PasswordX.bmp"
+				>
+			</File>
+			<File
+				RelativePath="..\graphics\dragbar\new\PasswordX.bmp"
 				>
 			</File>
 			<File
@@ -2910,11 +2762,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\new\restore.bmp"
+				RelativePath="..\graphics\toolbar\classic\restore.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\classic\restore.bmp"
+				RelativePath="..\graphics\toolbar\new\restore.bmp"
 				>
 			</File>
 			<File
@@ -2922,11 +2774,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\new\runcmd.bmp"
+				RelativePath="..\graphics\toolbar\classic\runcmd.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\classic\runcmd.bmp"
+				RelativePath="..\graphics\toolbar\new\runcmd.bmp"
 				>
 			</File>
 			<File
@@ -2934,11 +2786,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\classic\save.bmp"
+				RelativePath="..\graphics\toolbar\new\save.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\new\save.bmp"
+				RelativePath="..\graphics\toolbar\classic\save.bmp"
 				>
 			</File>
 			<File
@@ -3014,11 +2866,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\new\synchronize.bmp"
+				RelativePath="..\graphics\toolbar\classic\synchronize.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\classic\synchronize.bmp"
+				RelativePath="..\graphics\toolbar\new\synchronize.bmp"
 				>
 			</File>
 			<File
@@ -3026,11 +2878,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\dragbar\classic\Title.bmp"
+				RelativePath="..\graphics\dragbar\new\Title.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\dragbar\new\Title.bmp"
+				RelativePath="..\graphics\dragbar\classic\Title.bmp"
 				>
 			</File>
 			<File
@@ -3062,14 +2914,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\uncheckeda.bmp"
-				>
-			</File>
-			<File
-				RelativePath="..\graphics\uncheckeda_d.bmp"
-				>
-			</File>
-			<File
 				RelativePath="..\graphics\toolbar\classic\undo.bmp"
 				>
 			</File>
@@ -3082,11 +2926,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\classic\unlock.bmp"
+				RelativePath="..\graphics\toolbar\new\unlock.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\toolbar\new\unlock.bmp"
+				RelativePath="..\graphics\toolbar\classic\unlock.bmp"
 				>
 			</File>
 			<File
@@ -3098,11 +2942,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\dragbar\new\URL.bmp"
+				RelativePath="..\graphics\dragbar\classic\URL.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\dragbar\classic\URL.bmp"
+				RelativePath="..\graphics\dragbar\new\URL.bmp"
 				>
 			</File>
 			<File
@@ -3122,11 +2966,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\dragbar\new\UserX.bmp"
+				RelativePath="..\graphics\dragbar\classic\UserX.bmp"
 				>
 			</File>
 			<File
-				RelativePath="..\graphics\dragbar\classic\UserX.bmp"
+				RelativePath="..\graphics\dragbar\new\UserX.bmp"
 				>
 			</File>
 			<File

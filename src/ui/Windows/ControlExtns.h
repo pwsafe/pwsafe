@@ -65,8 +65,6 @@ protected:
   afx_msg void OnMouseMove(UINT nFlags, CPoint point);
   afx_msg LRESULT OnMouseLeave(WPARAM, LPARAM);
   afx_msg HBRUSH CtlColor(CDC* pDC, UINT nCtlColor);
-  afx_msg void OnDropFiles(HDROP hDropInfo);
-  afx_msg void OnDestroy();
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
@@ -90,7 +88,7 @@ class CEditExtn : public CEdit
 public:
   CEditExtn(COLORREF focusColor = (RGB(222, 255, 222))); // light green
   CEditExtn(std::vector<st_context_menu> vmenu_items, 
-            COLORREF focusColor = (RGB(222, 255, 222))); // light green
+            COLORREF focusColor = (RGB(222, 255, 222))); //light green
   virtual ~CEditExtn();
 
   void ChangeColour() {m_bIsFocused = TRUE;}

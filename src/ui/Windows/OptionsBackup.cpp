@@ -428,7 +428,7 @@ void COptionsBackup::OnBrowseForLocation()
     // Create a buffer to store the path, then
     // get the path.
     wchar_t buffer[_MAX_PATH] = { 0 };
-    if (::SHGetPathFromIDList(pIDL, buffer) != 0)
+    if(::SHGetPathFromIDList(pIDL, buffer) != 0)
       m_userbackupotherlocation = CString(buffer);
     else
       m_userbackupotherlocation = L"";

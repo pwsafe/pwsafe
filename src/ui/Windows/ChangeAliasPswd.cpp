@@ -9,7 +9,7 @@
 IMPLEMENT_DYNAMIC(CChangeAliasPswd, CPWDialog)
 
 CChangeAliasPswd::CChangeAliasPswd(CWnd* pParent /*=NULL*/)
-  : CPWDialog(CChangeAliasPswd::IDD, pParent)
+	: CPWDialog(CChangeAliasPswd::IDD, pParent)
 {
 }
 
@@ -19,7 +19,7 @@ CChangeAliasPswd::~CChangeAliasPswd()
 
 void CChangeAliasPswd::DoDataExchange(CDataExchange* pDX)
 {
-  CDialog::DoDataExchange(pDX);
+	CDialog::DoDataExchange(pDX);
 
   DDX_Text(pDX, IDC_STATIC_BASE, m_BaseEntry);
 }

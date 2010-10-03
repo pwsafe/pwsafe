@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Source Files">
@@ -177,30 +177,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="XML\XERCES\XSecMemMgr.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CoreAttmnt.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PWSAttfile.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PWSAttfileV3.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="XML\XMLAttHandlers.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="XML\XMLAttValidation.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="XML\MSXML\MAttSAX2Handlers.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="XML\MSXML\MAttValidator.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="XML\MSXML\MAttXMLProcessor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -401,30 +377,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="XML\XERCES\XSecMemMgr.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="attachments.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PWSAttfile.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PWSAttfileV3.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="XML\XMLAttHandlers.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="XML\XMLAttValidation.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="XML\MSXML\MAttSAX2Handlers.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="XML\MSXML\MAttValidator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="XML\MSXML\MAttXMLProcessor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

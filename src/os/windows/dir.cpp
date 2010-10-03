@@ -113,12 +113,12 @@ static bool GetLocalDir(int nFolder, stringT &sLocalPath)
    *    Windows 98             4.10    PlatformID 1
    *    Windows 95             4.0     PlatformID 1
    *    Windows NT 3.51        3.51    PlatformID 2
-   *    Windows NT 3.5         3.5     PlatformID 2
+   *    Windows NT 3.5	       3.5     PlatformID 2
    *    Windows for Workgroups 3.11    PlatformID 0
-   *    Windows NT 3.1         3.10    PlatformID 2
-   *    Windows 3.0            3.0     n/a
+   *    Windows NT 3.1	       3.10    PlatformID 2
+   *    Windows 3.0	           3.0     n/a
    *    Windows 2.0            2.??    n/a
-   *    Windows 1.0            1.??    n/a
+   *    Windows 1.0	           1.??    n/a
    *
    * Use dwMajorVersion & dwMinorVersion from OSVERSIONINFOEX Structure via GetVersionEx
    * Note: Windows NT 4.0 SP6 and later is needed for the 'EX' version of OSVERSIONINFO for

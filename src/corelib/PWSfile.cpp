@@ -10,8 +10,6 @@
 #include "PWSfileV3.h"
 #include "SysInfo.h"
 #include "corelib.h"
-#include "return_codes.h"
-
 #include "os/file.h"
 
 #include "sha1.h" // for simple encrypt/decrypt
@@ -26,7 +24,7 @@ PWSfile *PWSfile::MakePWSfile(const StringX &a_filename, VERSION &version,
                               Asker *pAsker, Reporter *pReporter)
 {
   if (mode == Read && !pws_os::FileExists(a_filename.c_str())) {
-    status = PWSRC::CANT_OPEN_FILE;
+    status = CANT_OPEN_FILE;
     return NULL;
   }
 
@@ -34,28 +32,28 @@ PWSfile *PWSfile::MakePWSfile(const StringX &a_filename, VERSION &version,
   switch (version) {
     case V17:
     case V20:
-      status = PWSRC::SUCCESS;
+      status = SUCCESS;
       retval = new PWSfileV1V2(a_filename, mode, version);
       break;
     case V30:
-      status = PWSRC::SUCCESS;
+      status = SUCCESS;
       retval = new PWSfileV3(a_filename, mode, version);
       break;
     case UNKNOWN_VERSION:
       ASSERT(mode == Read);
       if (PWSfile::ReadVersion(a_filename) == V30) {
         version = V30;
-        status = PWSRC::SUCCESS;
+        status = SUCCESS;
         retval = new PWSfileV3(a_filename, mode, version);
       } else {
         version = V20; // may be inaccurate (V17)
-        status = PWSRC::SUCCESS;
+        status = SUCCESS;
         retval = new PWSfileV1V2(a_filename, mode, version);
       }
       break;
     default:
       ASSERT(0);
-      status = PWSRC::FAILURE; return NULL;
+      status = FAILURE; return NULL;
   }
   retval->m_pAsker = pAsker;
   retval->m_pReporter = pReporter;
@@ -153,7 +151,7 @@ int PWSfile::Close()
     fclose(m_fd);
     m_fd = NULL;
   }
-  return PWSRC::SUCCESS;
+  return SUCCESS;
 }
 
 size_t PWSfile::WriteCBC(unsigned char type, const unsigned char *data,
@@ -168,11 +166,11 @@ size_t PWSfile::ReadCBC(unsigned char &type, unsigned char* &data,
 {
   unsigned char *buffer = NULL;
   size_t buffer_len = 0;
-  size_t num_read;
+  size_t retval;
 
   ASSERT(m_fish != NULL && m_IV != NULL);
-  num_read = _readcbc(m_fd, buffer, buffer_len, type,
-                      m_fish, m_IV, m_terminal, m_fileLength);
+  retval = _readcbc(m_fd, buffer, buffer_len, type,
+    m_fish, m_IV, m_terminal, m_fileLength);
 
   if (buffer_len > 0) {
     if (buffer_len < length || data == NULL)
@@ -190,7 +188,7 @@ size_t PWSfile::ReadCBC(unsigned char &type, unsigned char* &data,
     // no need to delete[] buffer, since _readcbc will not allocate if
     // buffer_len is zero
   }
-  return num_read;
+  return retval;
 }
 
 int PWSfile::CheckPasskey(const StringX &filename,
@@ -198,16 +196,16 @@ int PWSfile::CheckPasskey(const StringX &filename,
 {
 
   if (passkey.empty())
-    return PWSRC::WRONG_PASSWORD;
+    return WRONG_PASSWORD;
 
   int status;
   version = UNKNOWN_VERSION;
   status = PWSfileV3::CheckPasskey(filename, passkey);
-  if (status == PWSRC::SUCCESS)
+  if (status == SUCCESS)
     version = V30;
-  if (status == PWSRC::NOT_PWS3_FILE) {
+  if (status == NOT_PWS3_FILE) {
     status = PWSfileV1V2::CheckPasskey(filename, passkey);
-    if (status == PWSRC::SUCCESS)
+    if (status == SUCCESS)
       version = V20; // or V17?
   }
   return status;

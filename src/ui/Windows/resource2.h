@@ -91,8 +91,6 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 #define ID_MENUITEM_REDO                32083
 #define ID_MENUITEM_EXPORTENT2PLAINTEXT 32084
 #define ID_MENUITEM_EXPORTENT2XML       32085
-#define ID_EXTRACTMENU                  32086
-#define ID_MENUITEM_EXTRACT_ATTACHMENT  32087
 
 // View menu
 #define ID_VIEWMENU                     32101
@@ -123,12 +121,6 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 #define ID_MENUITEM_VKEYBOARDFONT       32126
 #define ID_MENUITEM_SHOWHIDE_UNSAVED    32127
 #define ID_MENUITEM_REPORT_SYNCHRONIZE  32128
-#define ID_ATTACHMENTMENU               32129
-#define ID_MENUITEM_VIEWATTACHMENTS     32130
-#define ID_MENUITEM_EXPORTATT2XML       32131
-#define ID_MENUITEM_EXPORTATTACHMENTS   32132
-#define ID_MENUITEM_IMPORTATTACHMENTS   32133
-#define ID_MENUITEM_EDITDESCRIPTION     32134
 
 // Manage menu
 #define ID_MANAGEMENU                   32150
@@ -259,10 +251,10 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 
 // Following for CEditExtn context menu
 // Really string constants, but "logically" they're menus...
-#define IDS_MENUSTRING_UNDO             34100
-#define IDS_MENUSTRING_CUT              34101
-#define IDS_MENUSTRING_COPY             34102
-#define IDS_MENUSTRING_PASTE            34103
-#define IDS_MENUSTRING_DELETE           34104
-#define IDS_MENUSTRING_SELECTALL        34105
-#define IDS_MENUSTRING_SHOWVKB          34106
+#define IDS_MENUSTRING_UNDO        34100
+#define IDS_MENUSTRING_CUT         34101
+#define IDS_MENUSTRING_COPY        34102
+#define IDS_MENUSTRING_PASTE       34103
+#define IDS_MENUSTRING_DELETE      34104
+#define IDS_MENUSTRING_SELECTALL   34105
+#define IDS_MENUSTRING_SHOWVKB     34106

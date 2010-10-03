@@ -11,10 +11,7 @@
 /* based on SHA-1 in C By Steve Reid <steve@edmweb.com> */
 
 #include "PwsPlatform.h"
-
-// SHA1HANDSOFF - Copies data before messing with it - now needed as we use
-// SHA1 for getting the digest of attachments!
-#define SHA1HANDSOFF
+//#define SHA1HANDSOFF Copies data before messing with it.
 
 #include <stdio.h>
 #include <string.h>
@@ -154,17 +151,6 @@ void SHA1::Final(unsigned char digest[HASHLEN])
 #ifdef SHA1HANDSOFF  /* make SHA1Transform overwrite it's own static vars */
   SHA1Transform(state, buffer);
 #endif
-}
-
-void SHA1::Clear()
-{
-  /* SHA1 initialization constants */
-  state[0] = 0x67452301;
-  state[1] = 0xEFCDAB89;
-  state[2] = 0x98BADCFE;
-  state[3] = 0x10325476;
-  state[4] = 0xC3D2E1F0;
-  count[0] = count[1] = 0;  
 }
 
 SHA1::~SHA1()

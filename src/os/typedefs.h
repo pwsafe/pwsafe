@@ -49,8 +49,8 @@ typedef unsigned short   uint16;
 typedef unsigned int     uint32;
 typedef unsigned __int64 uint64;
 
-typedef unsigned __int64 ulong64;
-typedef unsigned long    ulong32;
+typedef unsigned __int64   ulong64;
+typedef unsigned long      ulong32;
 
 typedef unsigned int uint;
 
@@ -126,7 +126,7 @@ typedef long LONG;
 #define LOWORD(ul) (WORD(DWORD(ul) & 0xffff))
 #define HIWORD(ul) (WORD(DWORD(ul) >> 16))
 #define MAKELONG(high, low) ((LONG) (((WORD) (low)) | ((DWORD) ((WORD) (high))) << 16)) 
-#define MAKEWORD(high, low) ((WORD)((((WORD)(high)) << 8) | ((BYTE)(low))))
+#define MAKEWORD(high, low) ((WORD)((((WORD)(high)) << 8) | ((BYTE)(low))))	
 typedef long LPARAM;
 typedef unsigned int UINT;
 typedef int HANDLE;

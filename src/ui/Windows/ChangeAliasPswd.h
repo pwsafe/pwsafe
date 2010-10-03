@@ -15,24 +15,24 @@
 
 class CChangeAliasPswd : public CPWDialog
 {
-  DECLARE_DYNAMIC(CChangeAliasPswd)
+	DECLARE_DYNAMIC(CChangeAliasPswd)
 
 public:
-  CChangeAliasPswd(CWnd* pParent = NULL);   // standard constructor
-  virtual ~CChangeAliasPswd();
+	CChangeAliasPswd(CWnd* pParent = NULL);   // standard constructor
+	virtual ~CChangeAliasPswd();
 
   // Dialog Data
-  enum { IDD = IDD_ALIAS_PSWDCHANGE };
+	enum { IDD = IDD_ALIAS_PSWDCHANGE };
 
   enum { CHANGEBASE = -1, CHANGEALIAS = -2};
 
   CString m_BaseEntry;
 
 protected:
-  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
   afx_msg void OnChangeBasePswd();
   afx_msg void OnChangeAliasPswd();
 
-  DECLARE_MESSAGE_MAP()
+	DECLARE_MESSAGE_MAP()
 };

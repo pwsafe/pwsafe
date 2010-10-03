@@ -24,9 +24,6 @@ CPWPropertyPage::CPWPropertyPage(UINT nID)
   m_psp.dwFlags |= PSP_HASHELP;
 }
 
-BEGIN_MESSAGE_MAP(CPWPropertyPage, CPropertyPage)
-END_MESSAGE_MAP()
-
 LRESULT CPWPropertyPage::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {
   CWnd *pParent = GetParent();

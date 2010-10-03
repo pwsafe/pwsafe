@@ -52,7 +52,7 @@ struct PWPolicy {
   bool operator==(const PWPolicy &that) const;
 
   bool operator!=(const PWPolicy &that) const
-  {return !(*this == that);}
+  { return !(*this == that);}
 
   void Empty()
   { 

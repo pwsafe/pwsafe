@@ -67,8 +67,6 @@ BEGIN
   IDSC_IMPORTENTRY        "Entry %s%d with Group=""%s"", Title=""%s"", User=""%s"""
   IDSC_IMPORTRECNOTFOUND  "%s not found. Cannot update entry's password.\r\n"
   IDSC_IMPORTRECSKIPPED   "%s has an empty %s.\r\n"
-  IDSC_IMPORTATTACHMENT   "Attachment id=%d with Group=""%s"", Title=""%s"", User=""%s"""
-  IDSC_IMPORTATTSKIPPED   "%s. Reason: %s\r\n"
   IDSC_IMPORT_ON_LINE     "on line "
   IDSC_IMPORT_ENTRY_ID    "id="
   IDSC_IMPORTCONFLICTS0   "%s, Title=""%s"", User=""%s"" already exists in your database or in the Import file. Added imported entry with title=""%s"".\r\n"
@@ -76,9 +74,6 @@ BEGIN
   IDSC_IMPORTCONFLICTS2   "Entry on line %d with no group"
   IDSC_IMPORTCONFLICTSX1  "Entry with Group=""%s"""
   IDSC_IMPORTCONFLICTSX2  "Entry with no group"
-  IDSC_IMPORT_ENTRYNOTFOUND "associated entry not found"
-  IDSC_IMPORT_SIZEDIFFERENT "file sizes differ"
-  IDSC_IMPORT_DIGESTFAILED "digest check of attachment failed"
 END
 
 STRINGTABLE
@@ -178,7 +173,6 @@ STRINGTABLE
 BEGIN
   IDSC_IMPORTNUMBER        " Import # %d"
   IDSC_DUPLICATENUMBER     " Duplicate # %d"
-  IDSC_IMPORTTIMESTAMP     " : Imported on %s"
 END
 
 STRINGTABLE
@@ -240,8 +234,6 @@ BEGIN
   IDSC_ISNOTPRESENT        "is not present"
   IDSC_ISACTIVE            "is active"
   IDSC_ISINACTIVE          "is inactive"
-  IDSC_YES                 "Yes"
-  IDSC_NO                  "No"
   IDSC_SET                 "is set"
   IDSC_NOTSET              "is not set"
   IDSC_EQUALS              "equals"
@@ -352,24 +344,9 @@ END
 
 STRINGTABLE
 BEGIN
+  IDSC_YES                 "Yes"
+  IDSC_NO                  "No"
   IDSC_NONE                "None"
   IDSC_USERONHOST          "%s on %s"
   IDSC_UNKNOWNFIELDS       "In Headers(%s)/In Entries("
-END
-
-STRINGTABLE
-BEGIN
-  IDSC_ATT_ERRORS          "Encountered errors reading attachment files"
-  IDSC_ATT_HDRMISMATCH     "Mismatch of fields in attachment file headers"
-  IDSC_ATT_UNKNOWNERROR    "Unknown error reading attachment files %d"
-  IDSC_ATT_READVERIFY      "Reading attachment file and verifying data"
-  IDSC_ATT_READFILE        "Reading attachment file"
-  IDSC_ATT_COPYFILE        "Copying attachment file"
-  IDSC_ATT_APPEND_DUPS     "Appending duplicate attachments to attachment file"
-  IDSC_ATT_SEARCHFILE      "Searching for requested attachment"
-  IDSC_ATT_EXTRACTINGFILE  "Extracting for requested attachment"
-  IDSC_ATT_SKIPPINGFILE    "Skipping deleted attachment"
-  IDSC_ATT_APPEND_NEW      "Appending new attachments to attachment file"
-  IDSC_ATT_CREATEIMPFILE   "Creating Import atatchment file"
-  IDSC_ATT_APPEND_IMP      "Appending imported attachments to attachment file"
 END

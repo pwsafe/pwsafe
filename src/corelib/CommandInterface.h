@@ -7,12 +7,8 @@
 */
 #ifndef __COMMANDINTERFACE_H
 #define __COMMANDINTERFACE_H
-
 #include "coredefs.h"
 #include "Command.h"
-
-#include "PWSAttfile.h"
-
 /**
  * An abstract base class representing all of the PWScore functionality
  * that Command needs to know about.
@@ -22,8 +18,7 @@
 
 class CReport;
 
-class CommandInterface
-{
+class CommandInterface {
  public:
   CommandInterface() {}
   // Methods used both by PWScore and Commands:
@@ -72,8 +67,8 @@ class CommandInterface
                                       SavePWHistoryMap &mapSavedHistory) = 0;
   virtual void UndoUpdatePasswordHistory(SavePWHistoryMap &mapSavedHistory) = 0;
 
-  virtual const std::vector<StringX> &GetVNodesModified() const = 0;
-  virtual void SetVNodesModified(const std::vector<StringX> &) = 0;
+  virtual const std::vector<StringX> &GetVnodesModified() const = 0;
+  virtual void SetVnodesModified(const std::vector<StringX> &) = 0;
   virtual void AddChangedNodes(StringX path) = 0;
   
   virtual const CItemData *GetBaseEntry(const CItemData *pAliasOrSC) const = 0;
@@ -90,27 +85,6 @@ class CommandInterface
                                       uuid_array_t &,
                                       CItemData::FieldType ft = CItemData::START,
                                       bool bUpdateGUI = true) = 0;
-
-  // Attachment members
-  virtual size_t HasAttachments(const uuid_array_t &entry_uuid) = 0;
-
-  virtual void AddAttachments(ATRVector &vNewATRecords) = 0;
-
-  virtual void ChangeAttachment(const ATRecord &atr) = 0;
-
-  virtual bool MarkAttachmentForDeletion(const ATRecord &atr) = 0;
-  virtual bool UnMarkAttachmentForDeletion(const ATRecord &atr) = 0;
-  virtual void MarkAllAttachmentsForDeletion(const uuid_array_t &entry_uuid) = 0;
-  virtual void UnMarkAllAttachmentsForDeletion(const uuid_array_t &entry_uuid) = 0;
-
-  virtual size_t GetAttachments(const uuid_array_t &entry_uuid, ATRVector &vATRecords) = 0;
-  virtual int WriteAttachmentFile(const bool bCleanup = false,
-                                  PWSAttfile::VERSION version = PWSAttfile::VCURRENT) = 0;
-
-  virtual int XWriteAttachmentFile(const bool bCleanup = false,
-                                   PWSAttfile::VERSION version = PWSAttfile::VCURRENT) = 0;
-  virtual int XCompleteImportFile(const stringT &impfilename,
-                                  PWSAttfile::VERSION version = PWSAttfile::VCURRENT) = 0;
 
   virtual ~CommandInterface() {}
 };

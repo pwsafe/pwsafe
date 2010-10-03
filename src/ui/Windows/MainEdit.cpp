@@ -126,22 +126,14 @@ void DboxMain::OnAdd()
     // Add the entry
     ci.SetStatus(CItemData::ES_ADDED);
 
-    ATRVector vNewATRecords;
-    add_entry_psh.GetNewATRecords(vNewATRecords);
-    const bool bAddAttachments = vNewATRecords.size() > 0;
-    if (bAddAttachments) {
-      BeginWaitCursor();
-    }
-
     Command *pcmd;
     if (add_entry_psh.GetIBasedata() == 0) {
-      pcmd = AddEntryCommand::Create(&m_core, ci, &vNewATRecords);
+      pcmd = AddEntryCommand::Create(&m_core, ci);
     } else { // creating an alias
       uuid_array_t base_uuid;
       memcpy(base_uuid, add_entry_psh.GetBaseUUID(), sizeof(base_uuid));
-      pcmd = AddEntryCommand::Create(&m_core, ci, base_uuid, &vNewATRecords);
+      pcmd = AddEntryCommand::Create(&m_core, ci, base_uuid);
     }
-
     pmulticmds->Add(pcmd);
 
     if (bSetDefaultUser) {
@@ -151,11 +143,6 @@ void DboxMain::OnAdd()
       pmulticmds->Add(pcmd3);
     }
     Execute(pmulticmds);
-
-    if (bAddAttachments) {
-      EndWaitCursor();
-    }
-
     // Update Toolbar for this new entry
     m_ctlItemList.SetItemState(pdi->list_index, LVIS_SELECTED, LVIS_SELECTED);
     m_ctlItemTree.SelectItem(pdi->tree_item);
@@ -234,7 +221,6 @@ void DboxMain::OnCreateShortcut()
                         dlg_createshortcut.m_username, sxNewDBPrefsString);
   }
 }
-
 void DboxMain::CreateShortcutEntry(CItemData *pci, const StringX &cs_group,
                                    const StringX &cs_title, const StringX &cs_user,
                                    StringX &sxNewDBPrefsString)
@@ -275,8 +261,8 @@ void DboxMain::CreateShortcutEntry(CItemData *pci, const StringX &cs_group,
 
   if (!sxNewDBPrefsString.empty()) {
    Command *pcmd3 = UpdateGUICommand::Create(&m_core,
-                                             UpdateGUICommand::WN_EXECUTE_REDO,
-                                             UpdateGUICommand::GUI_REFRESH_TREE);
+                                              UpdateGUICommand::WN_EXECUTE_REDO,
+                                              UpdateGUICommand::GUI_REFRESH_TREE);
     pmulticmds->Add(pcmd3);
   }
   Execute(pmulticmds);
@@ -341,42 +327,28 @@ void DboxMain::OnDelete()
 {
   // Check preconditions, possibly prompt user for confirmation, then call Delete()
   // to do the heavy lifting.
-  // easiest way to avoid asking stupid questions... (and if user cancelled reading attachment file)
-  if (m_core.GetNumEntries() == 0 || m_bNoAttachments)
+  if (m_core.GetNumEntries() == 0) // easiest way to avoid asking stupid questions...
     return;
 
   bool bAskForDeleteConfirmation = !(PWSprefs::GetInstance()->
                                      GetPref(PWSprefs::DeleteQuestion));
   bool dodelete = true;
-  size_t num_children = 0;
-  size_t num_atts = 0;
+  int num_children = 0;
 
   // Find number of child items, ask for confirmation if > 0
-  HTREEITEM hStartItem = m_ctlItemTree.GetSelectedItem();
-  if (hStartItem != NULL) {
-    if (m_ctlItemTree.IsWindowVisible()) {
-      CItemData *pci = (CItemData *)m_ctlItemTree.GetItemData(hStartItem);
-      if (pci == NULL) {  // group node
+  if (m_ctlItemTree.IsWindowVisible()) {
+    HTREEITEM hStartItem = m_ctlItemTree.GetSelectedItem();
+    if (hStartItem != NULL) {
+      if (m_ctlItemTree.GetItemData(hStartItem) == NULL) {  // group node
         bAskForDeleteConfirmation = true; // ALWAYS ask if deleting a group
         num_children = m_ctlItemTree.CountChildren(hStartItem);
-        num_atts = m_ctlItemTree.CountAttachments(hStartItem);
-      } else {
-        uuid_array_t entry_uuid;
-        pci->GetUUID(entry_uuid);
-        num_atts = m_core.HasAttachments(entry_uuid);
       }
-    } else {
-      CItemData *pci = (CItemData *)m_ctlItemTree.GetItemData(hStartItem);
-      ASSERT(pci != NULL);
-      uuid_array_t entry_uuid;
-      pci->GetUUID(entry_uuid);
-      num_atts = m_core.HasAttachments(entry_uuid);
     }
   }
 
   // Confirm whether to delete the item
-  if (bAskForDeleteConfirmation || num_atts > 0) {
-    CConfirmDeleteDlg deleteDlg(this, num_children, num_atts);
+  if (bAskForDeleteConfirmation) {
+    CConfirmDeleteDlg deleteDlg(this, num_children);
     INT_PTR rc = deleteDlg.DoModal();
     if (rc == IDCANCEL) {
       dodelete = false;
@@ -389,7 +361,8 @@ void DboxMain::OnDelete()
   }
 }
 
-void DboxMain::Delete()
+void
+DboxMain::Delete()
 {
   // "Top level" element delete:
   // 1. Sets up Command mechanism
@@ -428,11 +401,9 @@ Command *DboxMain::Delete(const CItemData *pci)
   // ConfirmDelete asks for user confirmation
   // when deleting a shortcut or alias base.
   // Otherwise it just return true
-  if (m_core.ConfirmDelete(pci)) {
-    uuid_array_t entry_uuid;
-    pci->GetUUID(entry_uuid);
+  if (m_core.ConfirmDelete(pci))
     return DeleteEntryCommand::Create(&m_core, *pci);
-  } else
+  else
     return NULL;
 }
 
@@ -583,10 +554,11 @@ bool DboxMain::EditItem(CItemData *pci, PWScore *pcore)
   return false;
 }
 
-LRESULT DboxMain::OnApplyEditChanges(WPARAM wParam, LPARAM )
+LRESULT DboxMain::OnApplyEditChanges(WPARAM wParam, LPARAM lParam)
 {
   // Called if user does 'Apply' on the Add/Edit property sheet via
   // Windows Message PWS_MSG_EDIT_APPLY
+  UNREFERENCED_PARAMETER(lParam);
   CAddEdit_PropertySheet *pentry_psh = (CAddEdit_PropertySheet *)wParam;
   UpdateEntry(pentry_psh);
   return 0L;
@@ -709,35 +681,15 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
 
   pci_new->SetStatus(CItemData::ES_MODIFIED);
 
-  ATRVector vNewATRecords, vATRecords;
-  pentry_psh->GetNewATRecords(vNewATRecords);
-  pentry_psh->GetATRecords(vATRecords);
-
-  const bool bAddAttachments = vNewATRecords.size() > 0;
-  if (bAddAttachments) {
-    BeginWaitCursor();
-  }
-
   Command *pcmd = EditEntryCommand::Create(pcore, *(pci_original), 
-                                                  *(pci_new),
-                                                  &vNewATRecords,
-                                                  &vATRecords);
-
+                                                  *(pci_new));
   pmulticmds->Add(pcmd);
 
   Execute(pmulticmds, pcore);
 
-  if (bAddAttachments) {
-    if (vATRecords.size() == 0) {
-      // Newly had attachments
-      UpdateEntryImages(*(pci_new));
-    }
-    EndWaitCursor();
-  }
-
   SetChanged(Data);
-  ChangeOkUpdate();
 
+  ChangeOkUpdate();
   // Order may have changed as a result of edit
   m_ctlItemTree.SortTree(TVI_ROOT);
   SortListView();
@@ -860,7 +812,6 @@ void DboxMain::OnDuplicateEntry()
     ci2.SetStatus(CItemData::ES_ADDED);
 
     Command *pcmd = NULL;
-
     if (pci->IsDependent()) {
       if (pci->IsAlias()) {
         ci2.SetAlias();
@@ -887,18 +838,11 @@ void DboxMain::OnDuplicateEntry()
 
     Execute(pcmd);
 
-    uuid_array_t old_entry_uuid, new_entry_uuid;
-    pci->GetUUID(old_entry_uuid);
-    ci2.GetUUID(new_entry_uuid);
-
-    if (!pci->IsShortcut() && m_core.HasAttachments(old_entry_uuid) > 0) {
-      DuplicateAttachments(old_entry_uuid, new_entry_uuid);
-    }
-
     pdi->list_index = -1; // so that InsertItemIntoGUITreeList will set new values
 
-    ci2.GetUUID(new_entry_uuid);
-    ItemListIter iter = m_core.Find(new_entry_uuid);
+    uuid_array_t uuid;
+    ci2.GetUUID(uuid);
+    ItemListIter iter = m_core.Find(uuid);
     ASSERT(iter != m_core.GetEntryEndIter());
 
     InsertItemIntoGUITreeList(m_core.GetEntry(iter));
@@ -910,7 +854,7 @@ void DboxMain::OnDuplicateEntry()
       SelectEntry(m_ctlItemList.GetItemCount() - 1);
     }
     ChangeOkUpdate();
-    m_RUEList.AddRUEntry(new_entry_uuid);
+    m_RUEList.AddRUEntry(uuid);
   }
 }
 

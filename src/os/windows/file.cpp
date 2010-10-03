@@ -73,7 +73,7 @@ void pws_os::AddDrive(stringT &path)
 }
 
 static bool FileOP(const stringT &src, const stringT &dst,
-                                     UINT wFunc)
+                   UINT wFunc)
 {
   // wrapper for SHFileOperation() for moving or copying from src to dst
   // create any intervening directories as necessary & automatically
@@ -122,7 +122,7 @@ bool pws_os::RenameFile(const stringT &oldname, const stringT &newname)
   return FileOP(oldname, newname, FO_MOVE);
 }
 
-bool pws_os::CopyAFile(const stringT &from, const stringT &to)
+extern bool pws_os::CopyAFile(const stringT &from, const stringT &to)
 {
   return FileOP(from, to, FO_COPY);
 }
@@ -244,7 +244,7 @@ bool pws_os::LockFile(const stringT &filename, stringT &locker,
   stringT sDrive, sDir, sName, sExt;
   pws_os::splitpath(lock_filename, sDrive, sDir, sName, sExt);
   stringT sNewDir = sDrive + sDir;
-  DWORD dwAttrib = GetFileAttributes(sNewDir.c_str());
+	DWORD dwAttrib = GetFileAttributes(sNewDir.c_str());
   DWORD dwerr(0);
   if (dwAttrib == INVALID_FILE_ATTRIBUTES)
     dwerr = GetLastError();

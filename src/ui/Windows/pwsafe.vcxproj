@@ -177,8 +177,6 @@
     <TargetName Condition="'$(Configuration)|$(Platform)'=='ReleaseX|Win32'">pwsafe</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">pwsafe</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">pwsafe</TargetName>
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='DebugM|Win32'">C:\Program Files (x86)\Visual Leak Detector\include;$(IncludePath)</IncludePath>
-    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='DebugM|Win32'">C:\Program Files (x86)\Visual Leak Detector\lib\Win32;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <PreBuildEvent>
@@ -221,7 +219,7 @@
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
     </ProjectReference>
     <Link>
-      <AdditionalDependencies>corelib.lib;os.lib;zlib.lib;WS2_32.lib;rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;htmlhelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>corelib.lib;os.lib;WS2_32.lib;rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;htmlhelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>..\$(PWSBin)/pwsafe.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>..\$(PWSLib);..\..\..\build\bin\pwsafe\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -273,7 +271,7 @@
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
     </ProjectReference>
     <Link>
-      <AdditionalDependencies>corelib.lib;os.lib;zlib.lib;WS2_32.lib;Rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;htmlhelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>corelib.lib;os.lib;WS2_32.lib;Rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;htmlhelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ShowProgress>NotSet</ShowProgress>
       <OutputFile>..\$(PWSBin)/pwsafe.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -328,7 +326,7 @@
     </ProjectReference>
     <Link>
       <AdditionalOptions>/OPT:REF %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>corelib.lib;os.lib;zlib.lib;WS2_32.lib;rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;dbghelp.lib;htmlhelp.lib;msxml6.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>corelib.lib;os.lib;WS2_32.lib;rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;dbghelp.lib;htmlhelp.lib;msxml6.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>..\$(PWSBin)/pwsafe.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>..\$(PWSLib);..\..\..\build\bin\pwsafe\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -384,7 +382,7 @@
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
     </ProjectReference>
     <Link>
-      <AdditionalDependencies>corelib.lib;os.lib;zlib.lib;WS2_32.lib;Rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;htmlhelp.lib;libexpatwMTd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>corelib.lib;os.lib;WS2_32.lib;Rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;htmlhelp.lib;libexpatwMTd.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ShowProgress>NotSet</ShowProgress>
       <OutputFile>..\$(PWSBin)/pwsafe.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -444,7 +442,7 @@
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
     </ProjectReference>
     <Link>
-      <AdditionalDependencies>corelib.lib;os.lib;zlib.lib;WS2_32.lib;Rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;htmlhelp.lib;msxml6.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>corelib.lib;os.lib;WS2_32.lib;Rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;htmlhelp.lib;msxml6.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ShowProgress>NotSet</ShowProgress>
       <OutputFile>..\$(PWSBin)/pwsafe.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -503,7 +501,7 @@
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
     </ProjectReference>
     <Link>
-      <AdditionalDependencies>corelib.lib;os.lib;zlib.lib;WS2_32.lib;Rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;htmlhelp.lib;xerces-c_static_3D.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>corelib.lib;os.lib;WS2_32.lib;Rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;htmlhelp.lib;xerces-c_static_3D.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ShowProgress>NotSet</ShowProgress>
       <OutputFile>..\$(PWSBin)/pwsafe.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -561,7 +559,7 @@
     </ProjectReference>
     <Link>
       <AdditionalOptions>/OPT:REF %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>corelib.lib;os.lib;zlib.lib;WS2_32.lib;rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;dbghelp.lib;htmlhelp.lib;libexpatwMT.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>corelib.lib;os.lib;WS2_32.lib;rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;dbghelp.lib;htmlhelp.lib;libexpatwMT.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>..\$(PWSBin)/pwsafe.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>..\$(PWSLib);$(ExpatDir)\Bin10\Release;..\..\..\build\bin\pwsafe\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -617,7 +615,7 @@
     </ProjectReference>
     <Link>
       <AdditionalOptions>/OPT:REF %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>corelib.lib;os.lib;zlib.lib;WS2_32.lib;rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;dbghelp.lib;htmlhelp.lib;msxml6.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>corelib.lib;os.lib;WS2_32.lib;rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;dbghelp.lib;htmlhelp.lib;msxml6.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>..\$(PWSBin)/pwsafe.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>..\$(PWSLib);..\..\..\build\bin\pwsafe\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -674,7 +672,7 @@
     </ProjectReference>
     <Link>
       <AdditionalOptions>/OPT:REF %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>corelib.lib;os.lib;zlib.lib;WS2_32.lib;rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;dbghelp.lib;htmlhelp.lib;xerces-c_static_3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>corelib.lib;os.lib;WS2_32.lib;rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;dbghelp.lib;htmlhelp.lib;xerces-c_static_3.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>..\$(PWSBin)/pwsafe.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>..\$(PWSLib);$(XercesDir)\lib;..\..\..\build\bin\pwsafe\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -689,18 +687,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AboutDlg.cpp" />
-    <ClCompile Include="AddDescription.cpp" />
     <ClCompile Include="AddEdit_Additional.cpp" />
-    <ClCompile Include="AddEdit_Attachments.cpp" />
     <ClCompile Include="AddEdit_Basic.cpp" />
     <ClCompile Include="AddEdit_DateTimes.cpp" />
     <ClCompile Include="AddEdit_PasswordPolicy.cpp" />
     <ClCompile Include="AddEdit_PropertyPage.cpp" />
     <ClCompile Include="AddEdit_PropertySheet.cpp" />
-    <ClCompile Include="AdvancedAttDlg.cpp" />
     <ClCompile Include="AdvancedDlg.cpp" />
-    <ClCompile Include="AttProgressDlg.cpp" />
-    <ClCompile Include="AttProperties.cpp" />
     <ClCompile Include="ChangeAliasPswd.cpp" />
     <ClCompile Include="ClearQuestionDlg.cpp" />
     <ClCompile Include="ColumnChooserDlg.cpp" />
@@ -721,11 +714,9 @@
     <ClCompile Include="DumpSelect.cpp" />
     <ClCompile Include="EBListCtrl.cpp" />
     <ClCompile Include="EditShortcutDlg.cpp" />
-    <ClCompile Include="ExportAttDlg.cpp" />
     <ClCompile Include="ExportTextDlg.cpp" />
     <ClCompile Include="ExportXMLDlg.cpp" />
     <ClCompile Include="ExpPWListDlg.cpp" />
-    <ClCompile Include="ExtractAttachment.cpp" />
     <ClCompile Include="ExtThread.cpp" />
     <ClCompile Include="filter\FilterBaseDlg.cpp" />
     <ClCompile Include="filter\FilterBoolDlg.cpp" />
@@ -743,7 +734,6 @@
     <ClCompile Include="InfoDisplay.cpp" />
     <ClCompile Include="LVHdrCtrl.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="MainAtachments.cpp" />
     <ClCompile Include="MainEdit.cpp" />
     <ClCompile Include="MainFile.cpp" />
     <ClCompile Include="MainFilters.cpp" />
@@ -754,7 +744,6 @@
     <ClCompile Include="MenuShortcuts.cpp" />
     <ClCompile Include="MenuTipper.cpp" />
     <ClCompile Include="MigratePrefs.cpp" />
-    <ClCompile Include="NumUtilities.cpp" />
     <ClCompile Include="Options_PropertyPage.cpp" />
     <ClCompile Include="Options_PropertySheet.cpp" />
     <ClCompile Include="OptionsBackup.cpp" />
@@ -771,7 +760,6 @@
     <ClCompile Include="PasswordSubsetDlg.cpp" />
     <ClCompile Include="Properties.cpp" />
     <ClCompile Include="PupText.cpp" />
-    <ClCompile Include="PWAttLC.cpp" />
     <ClCompile Include="PWDialog.cpp" />
     <ClCompile Include="PWFileDialog.cpp" />
     <ClCompile Include="filter\PWFilterLC.cpp" />
@@ -809,25 +797,19 @@
     <ClCompile Include="SystemTray.cpp" />
     <ClCompile Include="ThisMfcApp.cpp" />
     <ClCompile Include="TryAgainDlg.cpp" />
-    <ClCompile Include="ViewAttachments.cpp" />
     <ClCompile Include="ViewReport.cpp" />
     <ClCompile Include="VirtualKeyboard\VKBButton.cpp" />
     <ClCompile Include="VirtualKeyboard\VKeyBoardDlg.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AboutDlg.h" />
-    <ClInclude Include="AddDescription.h" />
     <ClInclude Include="AddEdit_Additional.h" />
-    <ClInclude Include="AddEdit_Attachments.h" />
     <ClInclude Include="AddEdit_Basic.h" />
     <ClInclude Include="AddEdit_DateTimes.h" />
     <ClInclude Include="AddEdit_PasswordPolicy.h" />
     <ClInclude Include="AddEdit_PropertyPage.h" />
     <ClInclude Include="AddEdit_PropertySheet.h" />
-    <ClInclude Include="AdvancedAttDlg.h" />
     <ClInclude Include="AdvancedDlg.h" />
-    <ClInclude Include="AttProgressDlg.h" />
-    <ClInclude Include="AttProperties.h" />
     <ClInclude Include="ChangeAliasPswd.h" />
     <ClInclude Include="ClearQuestionDlg.h" />
     <ClInclude Include="ColumnChooserDlg.h" />
@@ -848,11 +830,9 @@
     <ClInclude Include="DumpSelect.h" />
     <ClInclude Include="EBListCtrl.h" />
     <ClInclude Include="EditShortcutDlg.h" />
-    <ClInclude Include="ExportAttDlg.h" />
     <ClInclude Include="ExportTextDlg.h" />
     <ClInclude Include="ExportXMLDlg.h" />
     <ClInclude Include="ExpPWListDlg.h" />
-    <ClInclude Include="ExtractAttachment.h" />
     <ClInclude Include="ExtThread.h" />
     <ClInclude Include="filter\FilterBoolDlg.h" />
     <ClInclude Include="filter\FilterDateDlg.h" />
@@ -873,7 +853,6 @@
     <ClInclude Include="MenuShortcuts.h" />
     <ClInclude Include="MenuTipper.h" />
     <ClInclude Include="MFCmessages.h" />
-    <ClInclude Include="NumUtilities.h" />
     <ClInclude Include="Options_PropertyPage.h" />
     <ClInclude Include="Options_PropertySheet.h" />
     <ClInclude Include="OptionsBackup.h" />
@@ -892,7 +871,6 @@
     <ClInclude Include="PasswordSubsetDlg.h" />
     <ClInclude Include="Properties.h" />
     <ClInclude Include="PupText.h" />
-    <ClInclude Include="PWAttLC.h" />
     <ClInclude Include="PWDialog.h" />
     <ClInclude Include="PWFileDialog.h" />
     <ClInclude Include="filter\PWFilterLC.h" />
@@ -934,7 +912,6 @@
     <ClInclude Include="ThisMfcApp.h" />
     <ClInclude Include="TryAgainDlg.h" />
     <ClInclude Include="version.h" />
-    <ClInclude Include="ViewAttachments.h" />
     <ClInclude Include="ViewReport.h" />
     <ClInclude Include="VirtualKeyboard\VKBButton.h" />
     <ClInclude Include="VirtualKeyboard\VKeyBoardDlg.h" />
@@ -949,25 +926,11 @@
     <None Include="..\graphics\abase_exp.ico" />
     <None Include="..\graphics\abase_warn.bmp" />
     <None Include="..\graphics\abase_warn.ico" />
-    <None Include="..\graphics\attabase.bmp" />
-    <None Include="..\graphics\attabase_exp.bmp" />
-    <None Include="..\graphics\attabase_warn.bmp" />
-    <None Include="..\graphics\attnormal.bmp" />
-    <None Include="..\graphics\attnormal_exp.bmp" />
-    <None Include="..\graphics\attnormal_warn.bmp" />
-    <None Include="..\graphics\attsbase.bmp" />
-    <None Include="..\graphics\attsbase_exp.bmp" />
-    <None Include="..\graphics\attsbase_warn.bmp" />
-    <None Include="..\graphics\checked_d.bmp" />
-    <None Include="..\graphics\toolbar\classic\addgroup.bmp" />
-    <None Include="..\graphics\toolbar\classic\attachment.bmp" />
     <None Include="..\graphics\toolbar\new\about.bmp" />
     <None Include="..\graphics\toolbar\classic\about.bmp" />
     <None Include="..\graphics\toolbar\new\about_disabled.bmp" />
     <None Include="..\graphics\toolbar\new\add.bmp" />
     <None Include="..\graphics\toolbar\classic\add.bmp" />
-    <None Include="..\graphics\toolbar\new\addgroup.bmp" />
-    <None Include="..\graphics\toolbar\new\addgroup_disabled.bmp" />
     <None Include="..\graphics\toolbar\new\add_disabled.bmp" />
     <None Include="..\graphics\alias.bmp" />
     <None Include="..\graphics\alias.ico" />
@@ -975,8 +938,6 @@
     <None Include="..\graphics\toolbar\classic\applyfilter.bmp" />
     <None Include="..\graphics\toolbar\new\applyfilter_disabled.bmp" />
     <None Include="..\graphics\toolbar\classic\autotype.bmp" />
-    <None Include="..\graphics\toolbar\new\attachment.bmp" />
-    <None Include="..\graphics\toolbar\new\attachment_disabled.bmp" />
     <None Include="..\graphics\toolbar\new\autotype.bmp" />
     <None Include="..\graphics\toolbar\new\autotype_disabled.bmp" />
     <None Include="..\graphics\toolbar\classic\backup.bmp" />
@@ -1133,8 +1094,6 @@
     <None Include="..\graphics\toolbar\new\passwordchars.bmp" />
     <None Include="..\graphics\toolbar\classic\passwordchars.bmp" />
     <None Include="..\graphics\toolbar\new\passwordchars_disabled.bmp" />
-    <None Include="..\graphics\uncheckeda.bmp" />
-    <None Include="..\graphics\uncheckeda_d.bmp" />
     <None Include="res\PasswordSafe2.rc2" />
     <None Include="res\PasswordSafe3.rc2" />
     <None Include="..\graphics\dragbar\classic\PasswordX.bmp" />

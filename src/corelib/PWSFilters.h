@@ -61,8 +61,7 @@ enum FieldType {
   FT_ENTRYSIZE     = CItemData::ENTRYSIZE,     // 0x100
   FT_ENTRYTYPE     = CItemData::ENTRYTYPE,     // 0x101,
   FT_ENTRYSTATUS   = CItemData::ENTRYSTATUS,   // 0x102,
-  FT_ATTACHMENTS   = CItemData::ATTACHMENTS,   // 0x103,
-  FT_UNKNOWNFIELDS = CItemData::UNKNOWNFIELDS, // 0x104,
+  FT_UNKNOWNFIELDS = CItemData::UNKNOWNFIELDS, // 0x103,
 
   // Password History Test fields
   HT_PRESENT       = 0x200,

@@ -27,7 +27,6 @@
 #include <time.h>
 #include <sstream>
 #include <iomanip>
-#include <algorithm>
 
 using namespace std;
 
@@ -82,73 +81,6 @@ CItemData::CItemData(const CItemData &that) :
 CItemData::~CItemData()
 {
   delete m_display_info;
-}
-
-CItemData& CItemData::operator=(const CItemData &that)
-{
-  // Check for self-assignment
-  if (this != &that) {
-    m_UUID = that.m_UUID;
-    m_Name = that.m_Name;
-    m_Title = that.m_Title;
-    m_User = that.m_User;
-    m_Password = that.m_Password;
-    m_Notes = that.m_Notes;
-    m_Group = that.m_Group;
-    m_URL = that.m_URL;
-    m_AutoType = that.m_AutoType;
-    m_RunCommand = that.m_RunCommand;
-    m_DCA = that.m_DCA;
-    m_email = that.m_email;
-    m_tttCTime = that.m_tttCTime;
-    m_tttPMTime = that.m_tttPMTime;
-    m_tttATime = that.m_tttATime;
-    m_tttXTime = that.m_tttXTime;
-    m_tttRMTime = that.m_tttRMTime;
-    m_PWHistory = that.m_PWHistory;
-    m_PWPolicy = that.m_PWPolicy;
-    m_XTimeInterval = that.m_XTimeInterval;
-
-    delete m_display_info;
-    m_display_info = that.m_display_info == NULL ?
-      NULL : that.m_display_info->clone();
-
-    if (!that.m_URFL.empty())
-      m_URFL = that.m_URFL;
-    else
-      m_URFL.clear();
-
-    m_entrytype = that.m_entrytype;
-    m_entrystatus = that.m_entrystatus;
-    memcpy((char*)m_salt, (char*)that.m_salt, SaltLength);
-  }
-
-  return *this;
-}
-
-void CItemData::Clear()
-{
-  m_Group.Empty();
-  m_Title.Empty();
-  m_User.Empty();
-  m_Password.Empty();
-  m_Notes.Empty();
-  m_URL.Empty();
-  m_AutoType.Empty();
-  m_RunCommand.Empty();
-  m_DCA.Empty();
-  m_email.Empty();
-  m_tttCTime.Empty();
-  m_tttPMTime.Empty();
-  m_tttATime.Empty();
-  m_tttXTime.Empty();
-  m_tttRMTime.Empty();
-  m_PWHistory.Empty();
-  m_PWPolicy.Empty();
-  m_XTimeInterval.Empty();
-  m_URFL.clear();
-  m_entrytype = ET_NORMAL;
-  m_entrystatus = ES_CLEAN;
 }
 
 //-----------------------------------------------------------------------------
@@ -1470,6 +1402,73 @@ BlowFish *CItemData::MakeBlowFish() const
     m_salt, SaltLength);
 }
 
+CItemData& CItemData::operator=(const CItemData &that)
+{
+  // Check for self-assignment
+  if (this != &that) {
+    m_UUID = that.m_UUID;
+    m_Name = that.m_Name;
+    m_Title = that.m_Title;
+    m_User = that.m_User;
+    m_Password = that.m_Password;
+    m_Notes = that.m_Notes;
+    m_Group = that.m_Group;
+    m_URL = that.m_URL;
+    m_AutoType = that.m_AutoType;
+    m_RunCommand = that.m_RunCommand;
+    m_DCA = that.m_DCA;
+    m_email = that.m_email;
+    m_tttCTime = that.m_tttCTime;
+    m_tttPMTime = that.m_tttPMTime;
+    m_tttATime = that.m_tttATime;
+    m_tttXTime = that.m_tttXTime;
+    m_tttRMTime = that.m_tttRMTime;
+    m_PWHistory = that.m_PWHistory;
+    m_PWPolicy = that.m_PWPolicy;
+    m_XTimeInterval = that.m_XTimeInterval;
+
+    delete m_display_info;
+    m_display_info = that.m_display_info == NULL ?
+      NULL : that.m_display_info->clone();
+
+    if (!that.m_URFL.empty())
+      m_URFL = that.m_URFL;
+    else
+      m_URFL.clear();
+
+    m_entrytype = that.m_entrytype;
+    m_entrystatus = that.m_entrystatus;
+    memcpy((char*)m_salt, (char*)that.m_salt, SaltLength);
+  }
+
+  return *this;
+}
+
+void CItemData::Clear()
+{
+  m_Group.Empty();
+  m_Title.Empty();
+  m_User.Empty();
+  m_Password.Empty();
+  m_Notes.Empty();
+  m_URL.Empty();
+  m_AutoType.Empty();
+  m_RunCommand.Empty();
+  m_DCA.Empty();
+  m_email.Empty();
+  m_tttCTime.Empty();
+  m_tttPMTime.Empty();
+  m_tttATime.Empty();
+  m_tttXTime.Empty();
+  m_tttRMTime.Empty();
+  m_PWHistory.Empty();
+  m_PWPolicy.Empty();
+  m_XTimeInterval.Empty();
+  m_URFL.clear();
+  m_entrytype = ET_NORMAL;
+  m_entrystatus = ES_CLEAN;
+}
+
 int CItemData::ValidateUUID(const unsigned short &nMajor, const unsigned short &nMinor,
                             uuid_array_t &uuid_array)
 {
@@ -1760,7 +1759,7 @@ bool CItemData::WillExpire(const int numdays) const
   return (XTime < exptime);
 }
 
-bool pull_string(StringX &str, unsigned char *data, int len)
+static bool pull_string(StringX &str, unsigned char *data, int len)
 {
   CUTF8Conv utf8conv;
   vector<unsigned char> v(data, (data + len));
@@ -1774,7 +1773,7 @@ bool pull_string(StringX &str, unsigned char *data, int len)
   return utf8status;
 }
 
-bool pull_time(time_t &t, unsigned char *data, size_t len)
+static bool pull_time(time_t &t, unsigned char *data, size_t len)
 {
   if (len == sizeof(__time32_t)) {
     t = *reinterpret_cast<__time32_t *>(data);
@@ -1795,18 +1794,7 @@ bool pull_time(time_t &t, unsigned char *data, size_t len)
   return true;
 }
 
-bool pull_uint(unsigned int &uint, unsigned char *data, size_t len)
-{
-  if (len == sizeof(unsigned long)) {
-    uint = *reinterpret_cast<unsigned long *>(data);
-  } else {
-    ASSERT(0);
-    return false;
-  }
-  return true;
-}
-
-bool pull_int(int &i, unsigned char *data, size_t len)
+static bool pull_int(int &i, unsigned char *data, size_t len)
 {
   if (len == sizeof(int)) {
     i = *reinterpret_cast<int *>(data);
@@ -1817,7 +1805,7 @@ bool pull_int(int &i, unsigned char *data, size_t len)
   return true;
 }
 
-bool pull_int16(short &i16, unsigned char *data, size_t len)
+static bool pull_int16(short &i16, unsigned char *data, size_t len)
 {
   if (len == sizeof(short)) {
     i16 = *reinterpret_cast<short *>(data);

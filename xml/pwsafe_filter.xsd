@@ -8,7 +8,7 @@
     supported by PasswordSafe.  If either of these are not true, the filters cannot be
     loaded into PasswordSafe.
 
-    This XML Schema corresponds to V3.23 Attachment PoC of Password Safe for filters.
+    This XML Schema corresponds to V3.22 of Password Safe for filters.
     Rules:
       EQ - equals
       NE - not equals
@@ -16,8 +16,6 @@
       IA - inactive
       PR - present
       NP - not preset
-      YS - yes
-      NO - no
       SE - set
       NS - not set
       IS - is
@@ -152,13 +150,6 @@
   <xs:restriction base="xs:string">
     <xs:enumeration value="PR" />
     <xs:enumeration value="NP" />
-  </xs:restriction>
-</xs:simpleType>
-
-<xs:simpleType name="booleanyesno_ruleType">
-  <xs:restriction base="xs:string">
-    <xs:enumeration value="YS" />
-    <xs:enumeration value="NO" />
   </xs:restriction>
 </xs:simpleType>
 
@@ -464,7 +455,6 @@
     <xs:element name="entrysize" type="sizefilterentry" minOccurs="1" maxOccurs="1" />
     <xs:element name="entrytype" type="entrytypefilterentry" minOccurs="1" maxOccurs="1" />
     <xs:element name="entrystatus" type="entrystatusfilterentry" minOccurs="1" maxOccurs="1" />
-    <xs:element name="attachments" type="booleanyesno_ruleType" minOccurs="1" maxOccurs="1" />
     <xs:element name="unknownfields" type="booleanpresentfilterentry" minOccurs="1" maxOccurs="1" />
   </xs:choice>
 </xs:group>
