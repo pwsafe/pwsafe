@@ -13,9 +13,12 @@
 #include "GeneralMsgBox.h"
 #include "ThisMfcApp.h"    // For Help
 #include "Options_PropertySheet.h"
+#include "PWFileDialog.h"
 
 #include "corelib/PwsPlatform.h"
 #include "corelib/PWSprefs.h"
+
+#include "os/dir.h"
 
 #if defined(POCKET_PC)
 #include "pocketpc/resource.h"
@@ -60,14 +63,16 @@ void COptionsSecurity::DoDataExchange(CDataExchange* pDX)
   DDX_Check(pDX, IDC_LOCKONSCREEN, m_LockOnWindowLock);
   DDX_Check(pDX, IDC_LOCK_TIMER, m_LockOnIdleTimeout);
   DDX_Text(pDX, IDC_IDLE_TIMEOUT, m_IdleTimeOut);
+  DDX_Text(pDX, IDC_ERASERLOCATION, m_csEraserLocation);
+  DDX_Text(pDX, IDC_ERASERCMDLINE, m_csEraseCmdLineParms);
   //}}AFX_DATA_MAP
 }
 
 BEGIN_MESSAGE_MAP(COptionsSecurity, COptions_PropertyPage)
   //{{AFX_MSG_MAP(COptionsSecurity)
   ON_BN_CLICKED(ID_HELP, OnHelp)
-
   ON_BN_CLICKED(IDC_LOCK_TIMER, OnLockOnIdleTimeout)
+  ON_BN_CLICKED(IDC_BROWSEFORLOCATION, OnBrowseForLocation)
   ON_MESSAGE(PSM_QUERYSIBLINGS, OnQuerySiblings)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
@@ -118,7 +123,9 @@ BOOL COptionsSecurity::OnInitDialog()
   m_saveLockOnWindowLock = m_LockOnWindowLock;
   m_saveLockOnIdleTimeout = m_LockOnIdleTimeout;
   m_saveIdleTimeOut = m_IdleTimeOut;
- 
+  m_csSaveEraserLocation = m_csEraserLocation;
+  m_csSaveEraseCmdLineParms = m_csEraseCmdLineParms;
+
   return TRUE;  // return TRUE unless you set the focus to a control
   // EXCEPTION: OCX Property Pages should return FALSE
 }
@@ -144,7 +151,9 @@ LRESULT COptionsSecurity::OnQuerySiblings(WPARAM wParam, LPARAM lParam)
           m_saveLockOnWindowLock         != m_LockOnWindowLock         ||
           m_saveLockOnIdleTimeout        != m_LockOnIdleTimeout        ||
           (m_LockOnIdleTimeout           == TRUE &&
-           m_saveIdleTimeOut             != m_IdleTimeOut))
+           m_saveIdleTimeOut             != m_IdleTimeOut)             ||
+          m_csSaveEraserLocation         != m_csEraserLocation         ||
+          m_csSaveEraseCmdLineParms      != m_csEraseCmdLineParms)
         return 1L;
       break;
     case PP_UPDATE_VARIABLES:
@@ -198,4 +207,36 @@ BOOL COptionsSecurity::OnApply()
   }
 
   return COptions_PropertyPage::OnApply();
+}
+
+void COptionsSecurity::OnBrowseForLocation()
+{
+  CString cs_initiallocation, cs_title;
+  std::wstring path = m_csEraserLocation;
+  INT_PTR rc;
+ 
+  if (path.empty())
+    cs_initiallocation = L"C:\\";
+  else {
+    std::wstring drive, dir, name, ext;
+    pws_os::splitpath(path, drive, dir, name, ext);
+    path = pws_os::makepath(drive, dir, L"", L"");
+    cs_initiallocation = path.c_str();
+  }
+
+  CPWFileDialog fd(TRUE, NULL, NULL,
+                   OFN_FILEMUSTEXIST | OFN_LONGNAMES | OFN_DONTADDTORECENT | 
+                      OFN_HIDEREADONLY | OFN_PATHMUSTEXIST,
+                   CString(MAKEINTRESOURCE(IDS_FDF_PR_ALL)),
+                   this);
+
+  cs_title.LoadString(IDS_SELECTERASER);
+  fd.m_ofn.lpstrTitle = cs_title;
+  fd.m_ofn.lpstrInitialDir = cs_initiallocation;
+
+  rc = fd.DoModal();
+  if (rc == IDOK) {
+    m_csEraserLocation = fd.GetPathName();
+    GetDlgItem(IDC_ERASERLOCATION)->SetWindowText(fd.GetPathName());
+  }
 }

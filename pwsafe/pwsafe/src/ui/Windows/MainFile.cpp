@@ -37,6 +37,7 @@
 #include "corelib/VerifyFormat.h"
 #include "corelib/SysInfo.h"
 #include "corelib/XML/XMLDefs.h"  // Required if testing "USE_XML_LIBRARY"
+#include "corelib/return_codes.h"
 
 #include "os/file.h"
 #include "os/dir.h"
@@ -59,18 +60,18 @@ static char THIS_FILE[] = __FILE__;
 
 static void DisplayFileWriteError(int rc, const StringX &cs_newfile)
 {
-  ASSERT(rc != PWScore::SUCCESS);
+  ASSERT(rc != PWSRC::SUCCESS);
 
   CGeneralMsgBox gmb;
   CString cs_temp, cs_title(MAKEINTRESOURCE(IDS_FILEWRITEERROR));
   switch (rc) {
-  case PWScore::CANT_OPEN_FILE:
+  case PWSRC::CANT_OPEN_FILE:
     cs_temp.Format(IDS_CANTOPENWRITING, cs_newfile.c_str());
     break;
-  case PWScore::FAILURE:
+  case PWSRC::FAILURE:
     cs_temp.Format(IDS_FILEWRITEFAILURE);
     break;
-  case PWScore::WRONG_PASSWORD:
+  case PWSRC::WRONG_PASSWORD:
     cs_temp.Format(IDS_MISSINGPASSKEY);
     break;
   default:
@@ -115,7 +116,7 @@ BOOL DboxMain::OpenOnInit()
   if (!bReporterSet)
     m_core.SetReporter(&r);
 
-  if (rc == PWScore::SUCCESS) {
+  if (rc == PWSRC::SUCCESS) {
     // Verify if any recovery databases exist
     INT_PTR chkrc = CheckEmergencyBackupFiles(m_core.GetCurFile(), passkey);
 
@@ -135,10 +136,10 @@ BOOL DboxMain::OpenOnInit()
       sxOriginalFileName.compare(m_core.GetCurFile()) != 0)
     m_bValidate = false;
 
-  int rc2 = PWScore::NOT_SUCCESS;
+  int rc2 = PWSRC::FAILURE;
 
   switch (rc) {
-    case PWScore::SUCCESS:
+    case PWSRC::SUCCESS:
       // Don't validate twice
       rc2 = m_core.ReadCurFile(passkey, m_bValidate ? 0 : MAXTEXTCHARS);
 #if !defined(POCKET_PC)
@@ -147,7 +148,7 @@ BOOL DboxMain::OpenOnInit()
       UpdateSystemTray(UNLOCKED);
 #endif
       break;
-    case PWScore::CANT_OPEN_FILE:
+    case PWSRC::CANT_OPEN_FILE:
       if (m_core.GetCurFile().empty()) {
         // Empty filename. Assume they are starting Password Safe
         // for the first time and don't confuse them.
@@ -175,24 +176,24 @@ BOOL DboxMain::OpenOnInit()
             rc2 = New();
             break;
           case IDS_EXIT:
-            rc2 = PWScore::USER_CANCEL;
+            rc2 = PWSRC::USER_CANCEL;
             break;
         }
         break;
       }
     case TAR_NEW:
       rc2 = New();
-      if (PWScore::USER_CANCEL == rc2) {
+      if (rc2 == PWSRC::USER_CANCEL) {
         // somehow, get DboxPasskeyEntryFirst redisplayed...
       }
       break;
     case TAR_OPEN:
       rc2 = Open();
-      if (PWScore::USER_CANCEL == rc2) {
+      if (rc2 == PWSRC::USER_CANCEL) {
         // somehow, get DboxPasskeyEntryFirst redisplayed...
       }
       break;
-    case PWScore::WRONG_PASSWORD:
+    case PWSRC::WRONG_PASSWORD:
     default:
       break;
   }
@@ -203,9 +204,10 @@ BOOL DboxMain::OpenOnInit()
    * the we prompt the user, and continue or not per user's input.
    * A bit too subtle for switch/case on rc2...
    */
-  if (rc2 == PWScore::BAD_DIGEST) {
+  if (rc2 == PWSRC::BAD_DIGEST) {
     CGeneralMsgBox gmb;
-    CString cs_msg; cs_msg.Format(IDS_FILECORRUPT, m_core.GetCurFile().c_str());
+    CString cs_msg;
+    cs_msg.Format(IDS_FILECORRUPT, m_core.GetCurFile().c_str());
     CString cs_title(MAKEINTRESOURCE(IDS_FILEREADERROR));
     if (gmb.MessageBox(cs_msg, cs_title, MB_YESNO | MB_ICONERROR) == IDNO) {
       CDialog::OnCancel();
@@ -214,7 +216,7 @@ BOOL DboxMain::OpenOnInit()
     go_ahead = true;
   } // BAD_DIGEST
 #ifdef DEMO
-  if (rc2 == PWScore::LIMIT_REACHED) {
+  if (rc2 == PWSRC::LIMIT_REACHED) {
     CGeneralMsgBox gmb;
     CString cs_msg;
     cs_msg.Format(IDS_LIMIT_MSG, MAXDEMO);
@@ -227,7 +229,7 @@ BOOL DboxMain::OpenOnInit()
   } // LIMIT_REACHED
 #endif /* DEMO */
 
-  if (rc2 != PWScore::SUCCESS && !go_ahead) {
+  if (rc2 != PWSRC::SUCCESS && !go_ahead) {
     // not a good return status, fold.
     if (!m_IsStartSilent)
       CDialog::OnCancel();
@@ -276,16 +278,16 @@ int DboxMain::New()
                              MB_YESNOCANCEL | MB_ICONQUESTION);
     switch (rc) {
       case IDCANCEL:
-        return PWScore::USER_CANCEL;
+        return PWSRC::USER_CANCEL;
       case IDYES:
         rc2 = Save();
         /*
         Make sure that writing the file was successful
         */
-        if (rc2 == PWScore::SUCCESS)
+        if (rc2 == PWSRC::SUCCESS)
           break;
         else
-          return PWScore::CANT_OPEN_FILE;
+          return PWSRC::CANT_OPEN_FILE;
       case IDNO:
         // Reset changed flag
         SetChanged(Clear);
@@ -295,21 +297,21 @@ int DboxMain::New()
 
   StringX cs_newfile;
   rc = NewFile(cs_newfile);
-  if (rc == PWScore::USER_CANCEL) {
+  if (rc == PWSRC::USER_CANCEL) {
     /*
     Everything stays as is...
     Worst case, they saved their file....
     */
-    return PWScore::USER_CANCEL;
+    return PWSRC::USER_CANCEL;
   }
 
   m_core.SetCurFile(cs_newfile);
   m_core.ClearFileUUID();
 
   rc = m_core.WriteCurFile();
-  if (rc != PWScore::SUCCESS) {
+  if (rc != PWSRC::SUCCESS) {
     DisplayFileWriteError(rc, cs_newfile);
-    return PWScore::USER_CANCEL;
+    return PWSRC::USER_CANCEL;
   }
   m_core.ClearChangedNodes();
 
@@ -347,7 +349,7 @@ int DboxMain::New()
   startLockCheckTimer();
   RegisterSessionNotification(true);
 
-  return PWScore::SUCCESS;
+  return PWSRC::SUCCESS;
 }
 
 int DboxMain::NewFile(StringX &newfilename)
@@ -390,13 +392,13 @@ int DboxMain::NewFile(StringX &newfilename)
       // PostQuitMessage makes us return here instead
       // of exiting the app. Try resignalling
       PostQuitMessage(0);
-      return PWScore::USER_CANCEL;
+      return PWSRC::USER_CANCEL;
     }
     if (rc == IDOK) {
       newfilename = LPCWSTR(fd.GetPathName());
       break;
     } else
-      return PWScore::USER_CANCEL;
+      return PWSRC::USER_CANCEL;
   }
 
   CPasskeySetup dbox_pksetup(this);
@@ -404,7 +406,7 @@ int DboxMain::NewFile(StringX &newfilename)
   rc = dbox_pksetup.DoModal();
 
   if (rc == IDCANCEL)
-    return PWScore::USER_CANCEL;  //User cancelled password entry
+    return PWSRC::USER_CANCEL;  //User cancelled password entry
 
   // Reset core
   m_core.ReInit(true);
@@ -427,7 +429,7 @@ int DboxMain::NewFile(StringX &newfilename)
   m_core.SetReadOnly(false); // new file can't be read-only...
   m_core.NewFile(dbox_pksetup.m_passkey);
   m_bDBNeedsReading = false;
-  return PWScore::SUCCESS;
+  return PWSRC::SUCCESS;
 }
 
 void DboxMain::OnClose()
@@ -447,9 +449,20 @@ int DboxMain::Close(const bool bTrySave)
     if (m_bOpen) {
       // try and save it first
       int rc = SaveIfChanged();
-      if (rc != PWScore::SUCCESS)
+      if (rc != PWSRC::SUCCESS)
         return rc;
     }
+  }
+
+  // If we did save the database, now save attachments.
+  // This will save changed items (new always saved when added) and 
+  // remove deleted & missing entries
+  if (bTrySave && m_bOpen && !m_core.IsReadOnly() && m_core.DBHasAttachments()) {
+    // Just in case user has changed the database since the last save but didn't
+    // want to keep those changes - restore the attachment status at the point of the
+    // last save
+    m_core.RestoreAttachmentStatusAtLastSave();
+    WriteAttachmentFile(true);
   }
 
   // Turn off special display if on
@@ -482,6 +495,9 @@ int DboxMain::Close(const bool bTrySave)
   m_currentfilter.Empty();
   m_bFilterActive = false;
 
+  // Reset attachments
+  m_bNoAttachments = false;
+
   // Set Dragbar images correctly
   m_DDGroup.SetStaticState(false);
   m_DDTitle.SetStaticState(false);
@@ -511,14 +527,14 @@ int DboxMain::Close(const bool bTrySave)
   KillTimer(TIMER_LOCKDBONIDLETIMEOUT);
   RegisterSessionNotification(false);
 
-  return PWScore::SUCCESS;
+  return PWSRC::SUCCESS;
 }
 
 void DboxMain::OnOpen()
 {
   int rc = Open();
 
-  if (rc == PWScore::SUCCESS) {
+  if (rc == PWSRC::SUCCESS) {
     if (!m_bOpen) {
       // Previous state was closed - reset DCA in status bar
       SetDCAText();
@@ -544,7 +560,7 @@ void DboxMain::OnOpenMRU(UINT nID)
   // Read-only status can be overriden by GetAndCheckPassword
   int rc = Open(LPCWSTR(mruItem), 
                 PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultOpenRO));
-  if (rc == PWScore::SUCCESS) {
+  if (rc == PWSRC::SUCCESS) {
     UpdateSystemTray(UNLOCKED);
     m_RUEList.ClearEntries();
     if (!m_bOpen) {
@@ -565,7 +581,7 @@ void DboxMain::OnOpenMRU(UINT nID)
 
 int DboxMain::Open(const UINT uiTitle)
 {
-  int rc = PWScore::SUCCESS;
+  int rc = PWSRC::SUCCESS;
   StringX sx_Filename;
   CString cs_text(MAKEINTRESOURCE(uiTitle));
   std::wstring dir;
@@ -608,7 +624,7 @@ int DboxMain::Open(const UINT uiTitle)
       // PostQuitMessage makes us return here instead
       // of exiting the app. Try resignalling 
       PostQuitMessage(0);
-      return PWScore::USER_CANCEL;
+      return PWSRC::USER_CANCEL;
     }
 
     const bool last_ro = m_core.IsReadOnly(); // restore if user cancels
@@ -617,17 +633,17 @@ int DboxMain::Open(const UINT uiTitle)
       sx_Filename = LPCWSTR(fd.GetPathName());
 
       rc = Open(sx_Filename, fd.GetReadOnlyPref() == TRUE, uiTitle == IDS_CHOOSEDATABASEV);
-      if (rc == PWScore::SUCCESS) {
+      if (rc == PWSRC::SUCCESS) {
         UpdateSystemTray(UNLOCKED);
         m_RUEList.ClearEntries();
         break;
       } else
-      if (rc == PWScore::ALREADY_OPEN) {
+      if (rc == PWSRC::ALREADY_OPEN) {
         m_core.SetReadOnly(last_ro);
       }
     } else {
       m_core.SetReadOnly(last_ro);
-      return PWScore::USER_CANCEL;
+      return PWSRC::USER_CANCEL;
     }
   }
 
@@ -648,11 +664,11 @@ int DboxMain::Open(const StringX &sx_Filename, const bool bReadOnly,  const bool
     cs_text.LoadString(IDS_ALREADYOPEN);
     cs_title.LoadString(IDS_OPENDATABASE);
     gmb.MessageBox(cs_text, cs_title, MB_OK | MB_ICONWARNING);
-    return PWScore::ALREADY_OPEN;
+    return PWSRC::ALREADY_OPEN;
   }
 
   rc = SaveIfChanged();
-  if (rc != PWScore::SUCCESS)
+  if (rc != PWSRC::SUCCESS)
     return rc;
 
   // If we were using a different file, unlock it do this before 
@@ -669,13 +685,13 @@ int DboxMain::Open(const StringX &sx_Filename, const bool bReadOnly,  const bool
   pws_os::splitpath(sx_Filename.c_str(), drive, dir, name, ext);
 
   switch (rc) {
-    case PWScore::SUCCESS:
+    case PWSRC::SUCCESS:
       // Do not add Failsafe Backup files to the MRU
       if (ext != L".fbak")
         app.AddToMRU(sx_Filename.c_str());
       m_bAlreadyToldUserNoSave = false;
       break; // Keep going...
-    case PWScore::CANT_OPEN_FILE:
+    case PWSRC::CANT_OPEN_FILE:
       cs_temp.Format(IDS_SAFENOTEXIST, sx_Filename.c_str());
       gmb.SetTitle(IDS_FILEOPENERROR);
       gmb.SetMsg(cs_temp);
@@ -689,21 +705,21 @@ int DboxMain::Open(const StringX &sx_Filename, const bool bReadOnly,  const bool
       else if (rc1 == IDS_NEW)
         return New();
       else
-        return PWScore::USER_CANCEL;
+        return PWSRC::USER_CANCEL;
     case TAR_OPEN:
       return Open();
     case TAR_NEW:
       return New();
-    case PWScore::WRONG_PASSWORD:
-    case PWScore::USER_CANCEL:
+    case PWSRC::WRONG_PASSWORD:
+    case PWSRC::USER_CANCEL:
       /*
       If the user just cancelled out of the password dialog,
       assume they want to return to where they were before...
       */
-      return PWScore::USER_CANCEL;
+      return PWSRC::USER_CANCEL;
     default:
       ASSERT(0); // we should take care of all cases explicitly
-      return PWScore::USER_CANCEL; // conservative behaviour for release version
+      return PWSRC::USER_CANCEL; // conservative behaviour for release version
   }
 
   // clear the data before loading the new file
@@ -729,13 +745,13 @@ int DboxMain::Open(const StringX &sx_Filename, const bool bReadOnly,  const bool
   if (!bReporterSet)
     m_core.SetReporter(&r);
 
-  if (rc == PWScore::SUCCESS) {
+  if (rc == PWSRC::SUCCESS) {
     // Verify if any recovery databases exist
     INT_PTR chkrc = CheckEmergencyBackupFiles(sx_Filename, passkey);
     
     if (chkrc == IDCANCEL) {
       // Cancel Open
-      rc = PWScore::USER_CANCEL;
+      rc = PWSRC::USER_CANCEL;
       goto exit;
     }
   }
@@ -744,35 +760,35 @@ int DboxMain::Open(const StringX &sx_Filename, const bool bReadOnly,  const bool
   rc = m_core.ReadFile(sx_Filename, passkey, MAXTEXTCHARS);
 
   switch (rc) {
-    case PWScore::SUCCESS:
+    case PWSRC::SUCCESS:
       break;
-    case PWScore::CANT_OPEN_FILE:
+    case PWSRC::CANT_OPEN_FILE:
       cs_temp.Format(IDS_CANTOPENREADING, sx_Filename.c_str());
       gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
       /*
       Everything stays as is... Worst case,
       they saved their file....
       */
-      rc = PWScore::CANT_OPEN_FILE;
+      rc = PWSRC::CANT_OPEN_FILE;
       goto exit;
-    case PWScore::BAD_DIGEST:
+    case PWSRC::BAD_DIGEST:
       cs_temp.Format(IDS_FILECORRUPT, sx_Filename.c_str());
       if (gmb.MessageBox(cs_temp, cs_title, MB_YESNO | MB_ICONERROR) == IDYES) {
-        rc = PWScore::SUCCESS;
+        rc = PWSRC::SUCCESS;
         break;
       } else
         goto exit;
 #ifdef DEMO
-    case PWScore::LIMIT_REACHED:
+    case PWSRC::LIMIT_REACHED:
     {
       CString cs_msg; cs_msg.Format(IDS_LIMIT_MSG, MAXDEMO);
       CString cs_title(MAKEINTRESOURCE(IDS_LIMIT_TITLE));
       const int yn = gmb.MessageBox(cs_msg, cs_title, MB_YESNO | MB_ICONWARNING);
       if (yn == IDNO) {
-        rc = PWScore::USER_CANCEL;
+        rc = PWSRC::USER_CANCEL;
         goto exit;
       }
-      rc = PWScore::SUCCESS;
+      rc = PWSRC::SUCCESS;
       m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MENUITEM_ADD, FALSE);
       break;
     }
@@ -802,6 +818,11 @@ void DboxMain::PostOpenProcessing()
                                      m_core.GetCurFile()).c_str();
   SetWindowText(LPCWSTR(m_titlebar));
 #endif
+  // Get attachments - unless user cancels the read!
+  if (ReadAttachmentFile(true) == PWSRC::USER_CANCEL) {
+    m_bNoAttachments = true;
+  }
+
   std::wstring drive, dir, name, ext;
   pws_os::splitpath(m_core.GetCurFile().c_str(), drive, dir, name, ext);
 
@@ -912,9 +933,9 @@ int DboxMain::CheckEmergencyBackupFiles(StringX sx_Filename, StringX &passkey)
     // If it is, try to open database (i.e. same passphrase) and get
     // the header record but not change anything in m_core related to
     // current open database (hence saving the database preferences for later)
-    if (rc == PWScore::SUCCESS) {
+    if (rc == PWSRC::SUCCESS) {
       rc = othercore.ReadFile(sx_fullfilename, passkey);
-      if (rc == PWScore::SUCCESS) {
+      if (rc == PWSRC::SUCCESS) {
         othercore.GetDBProperties(st_dbp);
         st_dbp.database = sx_fullfilename;
         st_rf.dbp = st_dbp;
@@ -949,7 +970,7 @@ int DboxMain::CheckEmergencyBackupFiles(StringX sx_Filename, StringX &passkey)
   // Now open the one selected by the user in R/O mode
   sx_fullfilename = vValidEBackupfiles[-dsprc].dbp.database;
   rc = m_core.ReadFile(sx_fullfilename, passkey);
-  ASSERT(rc == PWScore::SUCCESS);
+  ASSERT(rc == PWSRC::SUCCESS);
 
   m_core.SetCurFile(sx_fullfilename);
   m_core.SetReadOnly(true);
@@ -1010,7 +1031,7 @@ int DboxMain::Save(const SaveType savetype)
               gmb.AddButton(IDS_EXIT, IDS_EXIT, TRUE, TRUE);
               INT_PTR rc = gmb.DoModal();
               if (rc == IDS_EXIT)
-                return PWScore::SUCCESS;
+                return PWSRC::SUCCESS;
               else
                 return SaveAs();
             }
@@ -1018,7 +1039,7 @@ int DboxMain::Save(const SaveType savetype)
               // No particular end of PWS exit i.e. user clicked Save or
               // saving a changed database before opening another
               gmb.AfxMessageBox(IDS_NOIBACKUP, MB_OK);
-              return PWScore::USER_CANCEL;
+              return PWSRC::USER_CANCEL;
           }
           gmb.AfxMessageBox(IDS_NOIBACKUP, MB_OK);
           return SaveAs();
@@ -1038,7 +1059,7 @@ int DboxMain::Save(const SaveType savetype)
       gmb.AddButton(IDS_CONTINUE, IDS_CONTINUE);
       gmb.AddButton(IDS_CANCEL, IDS_CANCEL, TRUE, TRUE);
       if (gmb.DoModal() == IDS_CANCEL)
-        return PWScore::USER_CANCEL;
+        return PWSRC::USER_CANCEL;
 
       m_core.SetCurFile(NewName.c_str());
 #if !defined(POCKET_PC)
@@ -1058,7 +1079,7 @@ int DboxMain::Save(const SaveType savetype)
 
   rc = m_core.WriteCurFile();
 
-  if (rc != PWScore::SUCCESS) { // Save failed!
+  if (rc != PWSRC::SUCCESS) { // Save failed!
     // Restore backup, if we have one
     if (!bu_fname.empty() && !m_core.GetCurFile().empty())
       pws_os::RenameFile(bu_fname, m_core.GetCurFile().c_str());
@@ -1066,6 +1087,9 @@ int DboxMain::Save(const SaveType savetype)
     DisplayFileWriteError(rc, m_core.GetCurFile());
     return rc;
   }
+
+  // Save current Attachment status
+  m_core.SaveAttachmentStatusAtSave();
 
   m_core.ResetStateAfterSave();
   m_core.ClearChangedNodes();
@@ -1085,7 +1109,7 @@ int DboxMain::Save(const SaveType savetype)
   if (savetype != ST_NORMALEXIT)
     RefreshViews();
 
-  return PWScore::SUCCESS;
+  return PWSRC::SUCCESS;
 }
 
 int DboxMain::SaveIfChanged()
@@ -1103,22 +1127,22 @@ int DboxMain::SaveIfChanged()
   */
 
   if (m_core.IsReadOnly())
-    return PWScore::SUCCESS;
+    return PWSRC::SUCCESS;
 
   // Note: RUE list saved here via time stamp being updated.
   // Otherwise it won't be saved unless something else has changed
   if ((m_bTSUpdated || m_core.WasDisplayStatusChanged()) &&
        m_core.GetNumEntries() > 0) {
     int rc = Save();
-    if (rc != PWScore::SUCCESS)
-      return PWScore::USER_CANCEL;
+    if (rc != PWSRC::SUCCESS)
+      return PWSRC::USER_CANCEL;
     else
-      return PWScore::SUCCESS;
+      return PWSRC::SUCCESS;
   }
 
   // offer to save existing database if it was modified.
   // used before loading another
-  // returns PWScore::SUCCESS if save succeeded or if user decided
+  // returns PWSRC::SUCCESS if save succeeded or if user decided
   // not to save
   if (m_core.IsChanged() || m_core.HaveDBPrefsChanged()) {
     CGeneralMsgBox gmb;
@@ -1129,21 +1153,21 @@ int DboxMain::SaveIfChanged()
                             MB_YESNOCANCEL | MB_ICONQUESTION);
     switch (rc) {
       case IDCANCEL:
-        return PWScore::USER_CANCEL;
+        return PWSRC::USER_CANCEL;
       case IDYES:
         rc2 = Save();
         // Make sure that file was successfully written
-        if (rc2 == PWScore::SUCCESS)
+        if (rc2 == PWSRC::SUCCESS)
           break;
         else
-          return PWScore::CANT_OPEN_FILE;
+          return PWSRC::CANT_OPEN_FILE;
       case IDNO:
         // Reset changed flag to stop being asked again
         SetChanged(Clear);
         break;
     }
   }
-  return PWScore::SUCCESS;
+  return PWSRC::SUCCESS;
 }
 
 void DboxMain::OnSaveAs()
@@ -1170,7 +1194,7 @@ int DboxMain::SaveAs()
     gmb.AddButton(IDS_CANCEL, IDS_CANCEL, TRUE, TRUE);
     INT_PTR rc = gmb.DoModal();
     if (rc == IDS_CANCEL)
-      return PWScore::USER_CANCEL;
+      return PWSRC::USER_CANCEL;
   }
 
   //SaveAs-type dialog box
@@ -1215,13 +1239,13 @@ int DboxMain::SaveAs()
       // PostQuitMessage makes us return here instead
       // of exiting the app. Try resignalling 
       PostQuitMessage(0);
-      return PWScore::USER_CANCEL;
+      return PWSRC::USER_CANCEL;
     }
     if (rc == IDOK) {
       newfile = fd.GetPathName();
       break;
     } else
-      return PWScore::USER_CANCEL;
+      return PWSRC::USER_CANCEL;
   }
 
   std::wstring locker(L""); // null init is important here
@@ -1230,7 +1254,7 @@ int DboxMain::SaveAs()
     cs_temp.Format(IDS_FILEISLOCKED, newfile.c_str(), locker.c_str());
     cs_title.LoadString(IDS_FILELOCKERROR);
     gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
-    return PWScore::CANT_OPEN_FILE;
+    return PWSRC::CANT_OPEN_FILE;
   }
 
   // Save file UUID, clear it to generate new one, restore if necessary
@@ -1246,11 +1270,11 @@ int DboxMain::SaveAs()
   m_core.ResetStateAfterSave();
   m_core.ClearChangedNodes();
 
-  if (rc != PWScore::SUCCESS) {
+  if (rc != PWSRC::SUCCESS) {
     m_core.SetFileUUID(file_uuid_array);
     m_core.UnlockFile2(newfile.c_str());
     DisplayFileWriteError(rc, newfile);
-    return PWScore::CANT_OPEN_FILE;
+    return PWSRC::CANT_OPEN_FILE;
   }
   if (!m_core.GetCurFile().empty())
     m_core.UnlockFile(m_core.GetCurFile().c_str());
@@ -1286,7 +1310,13 @@ int DboxMain::SaveAs()
     m_core.SetReadOnly(false);
   }
 
-  return PWScore::SUCCESS;
+  // Now save any attachments in the new name!
+  if (m_core.DBHasAttachments()) {
+    WriteAttachmentFile(false);
+    m_core.SaveAttachmentStatusAtSave();
+  }
+
+  return PWSRC::SUCCESS;
 }
 
 void DboxMain::OnExportVx(UINT nID)
@@ -1348,10 +1378,10 @@ void DboxMain::OnExportVx(UINT nID)
       break;
     default:
       ASSERT(0);
-      rc = PWScore::FAILURE;
+      rc = PWSRC::FAILURE;
       break;
   }
-  if (rc != PWScore::SUCCESS) {
+  if (rc != PWSRC::SUCCESS) {
     DisplayFileWriteError(rc, newfile);
   }
 }
@@ -1390,7 +1420,7 @@ void DboxMain::DoExportText(const bool bAll)
   if (rc == IDOK) {
     StringX newfile;
     StringX pw(et.GetPasskey());
-    if (m_core.CheckPasskey(sx_temp, pw) == PWScore::SUCCESS) {
+    if (m_core.CheckPasskey(sx_temp, pw) == PWSRC::SUCCESS) {
       const CItemData::FieldBits bsExport = et.m_bsExport;
       const std::wstring subgroup_name = et.m_subgroup_name;
       const int subgroup_object = et.m_subgroup_object;
@@ -1410,13 +1440,13 @@ void DboxMain::DoExportText(const bool bAll)
 
       rc = m_core.TestForExport(subgroup_name, subgroup_object,
                                subgroup_function, &orderedItemList);
-      if (rc == PWScore::NO_ENTRIES_EXPORTED) {
+      if (rc == PWSRC::NO_ENTRIES_EXPORTED) {
         cs_temp.LoadString(IDS_NO_ENTRIES_EXPORTED);
         cs_title.LoadString(IDS_TEXTEXPORTFAILED);
         gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
         goto exit;
       }
-      if (rc != PWScore::SUCCESS) {
+      if (rc != PWSRC::SUCCESS) {
         goto exit;
       }
 
@@ -1469,7 +1499,7 @@ void DboxMain::DoExportText(const bool bAll)
 
       orderedItemList.clear(); // cleanup soonest
 
-      if (rc != PWScore::SUCCESS) {
+      if (rc != PWSRC::SUCCESS) {
         DisplayFileWriteError(rc, newfile);
       }
     } else {
@@ -1506,7 +1536,7 @@ void DboxMain::DoExportXML(const bool bAll)
     CGeneralMsgBox gmb;
     StringX newfile;
     StringX pw(eXML.GetPasskey());
-    if (m_core.CheckPasskey(m_core.GetCurFile(), pw) == PWScore::SUCCESS) {
+    if (m_core.CheckPasskey(m_core.GetCurFile(), pw) == PWSRC::SUCCESS) {
       const CItemData::FieldBits bsExport = eXML.m_bsExport;
       const std::wstring subgroup_name = eXML.m_subgroup_name;
       const int subgroup_object = eXML.m_subgroup_object;
@@ -1528,13 +1558,13 @@ void DboxMain::DoExportXML(const bool bAll)
       rc = m_core.TestForExport(subgroup_name, subgroup_object,
                                subgroup_function, &orderedItemList);
 
-      if (rc == PWScore::NO_ENTRIES_EXPORTED) {
+      if (rc == PWSRC::NO_ENTRIES_EXPORTED) {
         cs_temp.LoadString(IDS_NO_ENTRIES_EXPORTED);
         cs_title.LoadString(IDS_XMLEXPORTFAILED);
         gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
         goto exit;
       }
-      if (rc != PWScore::SUCCESS) {
+      if (rc != PWSRC::SUCCESS) {
         goto exit;
       }
 
@@ -1589,7 +1619,7 @@ void DboxMain::DoExportXML(const bool bAll)
 
       orderedItemList.clear(); // cleanup soonest
 
-      if (rc != PWScore::SUCCESS) {
+      if (rc != PWSRC::SUCCESS) {
         DisplayFileWriteError(rc, newfile);
       }
     } else {
@@ -1688,23 +1718,23 @@ void DboxMain::OnImportText()
                                     rpt, pcmd);
 
     switch (rc) {
-      case PWScore::CANT_OPEN_FILE:
+      case PWSRC::CANT_OPEN_FILE:
         cs_title.LoadString(IDS_FILEREADERROR);
         cs_temp.Format(IDS_CANTOPENREADING, TxtFileName.c_str());
         delete pcmd;
         break;
-      case PWScore::INVALID_FORMAT:
+      case PWSRC::INVALID_FORMAT:
         cs_title.LoadString(IDS_FILEREADERROR);
         cs_temp.Format(IDS_INVALIDFORMAT, TxtFileName.c_str());
         delete pcmd;
         break;
-      case PWScore::FAILURE:
+      case PWSRC::FAILURE:
         cs_title.LoadString(IDS_TEXTIMPORTFAILED);
         cs_temp = strError.c_str();
         delete pcmd;
         break;
-      case PWScore::SUCCESS:
-      case PWScore::OK_WITH_ERRORS:
+      case PWSRC::SUCCESS:
+      case PWSRC::OK_WITH_ERRORS:
         // deliberate fallthru
       default:
       {
@@ -1742,7 +1772,7 @@ void DboxMain::OnImportText()
           cs_temp += cs_tmp;
         }
 
-        cs_title.LoadString(rc == PWScore::SUCCESS ? IDS_COMPLETE : IDS_OKWITHERRORS);
+        cs_title.LoadString(rc == PWSRC::SUCCESS ? IDS_COMPLETE : IDS_OKWITHERRORS);
 
         ChangeOkUpdate();
         RefreshViews();
@@ -1754,7 +1784,7 @@ void DboxMain::OnImportText()
 
     gmb.SetTitle(cs_title);
     gmb.SetMsg(cs_temp);
-    gmb.SetStandardIcon(rc == PWScore::SUCCESS ? MB_ICONINFORMATION : MB_ICONEXCLAMATION);
+    gmb.SetStandardIcon(rc == PWSRC::SUCCESS ? MB_ICONINFORMATION : MB_ICONEXCLAMATION);
     gmb.AddButton(IDS_OK, IDS_OK, TRUE, TRUE);
     gmb.AddButton(IDS_VIEWREPORT, IDS_VIEWREPORT);
     INT_PTR rc = gmb.DoModal();
@@ -1811,21 +1841,21 @@ void DboxMain::OnImportKeePass()
     StringX KPsFileName = fd.GetPathName();
     rc = m_core.ImportKeePassTextFile(KPsFileName, pcmd);
     switch (rc) {
-      case PWScore::CANT_OPEN_FILE:
+      case PWSRC::CANT_OPEN_FILE:
       {
         cs_temp.Format(IDS_CANTOPENREADING, KPsFileName.c_str());
         cs_title.LoadString(IDS_FILEOPENERROR);
         gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
         break;
       }
-      case PWScore::INVALID_FORMAT:
+      case PWSRC::INVALID_FORMAT:
       {
         cs_temp.Format(IDS_INVALIDFORMAT, KPsFileName.c_str());
         cs_title.LoadString(IDS_FILEREADERROR);
         gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
         break;
       }
-      case PWScore::SUCCESS:
+      case PWSRC::SUCCESS:
       default: // deliberate fallthru
         if (pcmd != NULL)
           Execute(pcmd);
@@ -1932,29 +1962,29 @@ void DboxMain::OnImportXML()
     std::vector<StringX> vgroups;
     Command *pcmd = NULL;
 
-    rc = m_core.ImportXMLFile(ImportedPrefix, std::wstring(XMLFilename),
-                              XSDFilename.c_str(), bImportPSWDsOnly,
-                              strXMLErrors, strSkippedList, strPWHErrorList, strRenameList,
-                              numValidated, numImported, numSkipped, numPWHErrors, numRenamed,
-                              bBadUnknownFileFields, bBadUnknownRecordFields,
-                              rpt, pcmd);
+    int xrc = m_core.ImportXMLFile(ImportedPrefix, std::wstring(XMLFilename),
+                                   XSDFilename.c_str(), bImportPSWDsOnly,
+                                   strXMLErrors, strSkippedList, strPWHErrorList, strRenameList,
+                                   numValidated, numImported, numSkipped, numPWHErrors, numRenamed,
+                                   bBadUnknownFileFields, bBadUnknownRecordFields,
+                                   rpt, pcmd);
     waitCursor.Restore();  // Restore normal cursor
 
     std::wstring csErrors(L"");
-    switch (rc) {
-      case PWScore::XML_FAILED_VALIDATION:
+    switch (xrc) {
+      case PWSRC::XML_FAILED_VALIDATION:
         rpt.WriteLine(strXMLErrors.c_str());
         cs_temp.Format(IDS_FAILEDXMLVALIDATE, fd.GetFileName(), L"");
         delete pcmd;
         break;
-      case PWScore::XML_FAILED_IMPORT:
+      case PWSRC::XML_FAILED_IMPORT:
         rpt.WriteLine(strXMLErrors.c_str());
         cs_temp.Format(IDS_XMLERRORS, fd.GetFileName(), L"");
         delete pcmd;
         break;
-      case PWScore::SUCCESS:
-      case PWScore::OK_WITH_ERRORS:
-        cs_title.LoadString(rc == PWScore::SUCCESS ? IDS_COMPLETE : IDS_OKWITHERRORS);
+      case PWSRC::SUCCESS:
+      case PWSRC::OK_WITH_ERRORS:
+        cs_title.LoadString(rc == PWSRC::SUCCESS ? IDS_COMPLETE : IDS_OKWITHERRORS);
         if (pcmd != NULL)
           Execute(pcmd);
 
@@ -2025,7 +2055,7 @@ void DboxMain::OnImportXML()
     rpt.WriteLine((LPCWSTR)cs_temp);
     rpt.EndReport();
 
-    if (rc != PWScore::SUCCESS || !strXMLErrors.empty())
+    if (rc != PWSRC::SUCCESS || !strXMLErrors.empty())
       gmb.SetStandardIcon(MB_ICONEXCLAMATION);
     else
       gmb.SetStandardIcon(MB_ICONINFORMATION);
@@ -2189,16 +2219,16 @@ void DboxMain::DoOtherDBProcessing(const UINT uiftn)
                            iadv_type);   // Advanced type
 
   switch (rc) {
-    case PWScore::SUCCESS:
+    case PWSRC::SUCCESS:
       break; // Keep going...
-    case PWScore::CANT_OPEN_FILE:
+    case PWSRC::CANT_OPEN_FILE:
       cs_temp.Format(IDS_CANTOPEN, sx_Filename2.c_str());
       cs_title.LoadString(IDS_FILEOPENERROR);
       gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
     case TAR_OPEN:
     case TAR_NEW:
-    case PWScore::WRONG_PASSWORD:
-    case PWScore::USER_CANCEL:
+    case PWSRC::WRONG_PASSWORD:
+    case PWSRC::USER_CANCEL:
     default:
       /*
       If the user just cancelled out of the password dialog,
@@ -2221,21 +2251,21 @@ void DboxMain::DoOtherDBProcessing(const UINT uiftn)
   PWSprefs::GetInstance()->SetDBprefsChanged(bDBPrefsChanged);
 
   switch (rc) {
-    case PWScore::SUCCESS:
+    case PWSRC::SUCCESS:
       break;
-    case PWScore::CANT_OPEN_FILE:
+    case PWSRC::CANT_OPEN_FILE:
       cs_temp.Format(IDS_CANTOPENREADING, sx_Filename2.c_str());
       cs_title.LoadString(IDS_FILEREADERROR);
       gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
       break;
-    case PWScore::BAD_DIGEST:
+    case PWSRC::BAD_DIGEST:
       cs_temp.Format(IDS_FILECORRUPT, sx_Filename2.c_str());
       cs_title.LoadString(IDS_FILEREADERROR);
       if (gmb.MessageBox(cs_temp, cs_title, MB_YESNO | MB_ICONERROR) == IDYES)
-        rc = PWScore::SUCCESS;
+        rc = PWSRC::SUCCESS;
       break;
 #ifdef DEMO
-    case PWScore::LIMIT_REACHED:
+    case PWSRC::LIMIT_REACHED:
       cs_temp.Format(IDS_LIMIT_MSG2, MAXDEMO);
       cs_title.LoadString(IDS_LIMIT_TITLE);
       gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
@@ -2248,7 +2278,7 @@ void DboxMain::DoOtherDBProcessing(const UINT uiftn)
       break;
   }
 
-  if (rc == PWScore::SUCCESS) {
+  if (rc == PWSRC::SUCCESS) {
     othercore.SetCurFile(sx_Filename2);
 
     switch (uiftn) {
@@ -3322,7 +3352,8 @@ void DboxMain::OnOK()
   SavePreferencesOnExit();
 
   int rc = SaveDatabaseOnExit(ST_NORMALEXIT);
-  if (rc == PWScore::SUCCESS) {
+
+  if (rc == PWSRC::SUCCESS) {
     CleanUpAndExit();
   }
 }
@@ -3452,11 +3483,14 @@ int DboxMain::SaveDatabaseOnExit(const SaveType saveType)
 
       switch (rc) {
         case IDCANCEL:
-          return PWScore::USER_CANCEL;
+          return PWSRC::USER_CANCEL;
         case IDYES:
           rc = Save(saveType);
-          if (rc != PWScore::SUCCESS)
-            return PWScore::USER_CANCEL;
+          if (rc != PWSRC::SUCCESS)
+            return PWSRC::USER_CANCEL;
+
+          // Now save attachment file
+          WriteAttachmentFile(true);
           // Drop through to reset bAutoSave to prevent multiple saves
         case IDNO:
           bAutoSave = false;
@@ -3485,10 +3519,12 @@ int DboxMain::SaveDatabaseOnExit(const SaveType saveType)
         (m_bTSUpdated || m_core.WasDisplayStatusChanged()) &&
         m_core.GetNumEntries() > 0) {
       rc = Save(saveType);
-      if (rc != PWScore::SUCCESS)
-        return PWScore::USER_CANCEL;
+      if (rc != PWSRC::SUCCESS)
+        return PWSRC::USER_CANCEL;
+      // Now save attachment file
+      WriteAttachmentFile(true);
     }
-    return PWScore::SUCCESS;
+    return PWSRC::SUCCESS;
   } // ST_NORMALEXIT
   
   if (saveType == ST_ENDSESSIONEXIT || saveType == ST_WTSLOGOFFEXIT) {
@@ -3496,12 +3532,12 @@ int DboxMain::SaveDatabaseOnExit(const SaveType saveType)
     // ST_WTSLOGOFFEXIT:  Windows XP or later (if OnQueryEndSession not called)
     if (!m_core.IsReadOnly() && m_core.GetNumEntries() > 0) {
       rc = Save(saveType);
-      if (rc != PWScore::SUCCESS)
-        return PWScore::USER_CANCEL;
+      if (rc != PWSRC::SUCCESS)
+        return PWSRC::USER_CANCEL;
     }
   } // ST_ENDSESSIONEXIT || ST_WTSLOGOFFEXIT
 
-  return PWScore::SUCCESS;
+  return PWSRC::SUCCESS;
 }
 
 void DboxMain::CleanUpAndExit(const bool bNormalExit)
@@ -3544,7 +3580,7 @@ void DboxMain::OnCancel()
   } else {
     SavePreferencesOnExit();
     int rc = SaveDatabaseOnExit(ST_NORMALEXIT);
-    if (rc == PWScore::SUCCESS) {
+    if (rc == PWSRC::SUCCESS) {
       CleanUpAndExit();
     }
   }

@@ -421,6 +421,11 @@ void XFilterSAX2Handlers::endElement(const XMLCh* const /* uri */,
     cur_filterentry->ftype = FT_UNKNOWNFIELDS;
   }
 
+  else if (XMLString::equals(qname, _A2X("attachments"))) {
+    m_type = DFTYPE_MAIN;
+    cur_filterentry->ftype = FT_ATTACHMENTS;
+  }
+
   else if (XMLString::equals(qname, _A2X("password_history"))) {
     m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_PWHIST;
@@ -537,6 +542,10 @@ void XFilterSAX2Handlers::endElement(const XMLCh* const /* uri */,
       cur_filterentry->rule = PWSMatch::MR_PRESENT;
     else if (m_strElemContent == _T("NP"))
       cur_filterentry->rule = PWSMatch::MR_NOTPRESENT;
+    else if (m_strElemContent == _T("YS"))
+      cur_filterentry->rule = PWSMatch::MR_YES;
+    else if (m_strElemContent == _T("NO"))
+      cur_filterentry->rule = PWSMatch::MR_NO;
     else if (m_strElemContent == _T("SE"))
       cur_filterentry->rule = PWSMatch::MR_SET;
     else if (m_strElemContent == _T("NS"))

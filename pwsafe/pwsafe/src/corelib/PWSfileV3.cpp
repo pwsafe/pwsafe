@@ -15,6 +15,7 @@
 #include "PWSdirs.h"
 #include "PWSprefs.h"
 #include "corelib.h"
+#include "return_codes.h"
 
 #include "os/debug.h"
 #include "os/file.h"
@@ -50,24 +51,24 @@ PWSfileV3::~PWSfileV3()
 
 int PWSfileV3::Open(const StringX &passkey)
 {
-  int status = SUCCESS;
+  int status = PWSRC::SUCCESS;
 
   ASSERT(m_curversion == V30);
   if (passkey.empty()) { // Can happen if db 'locked'
     pws_os::Trace(_T("PWSfileV3::Open(empty_passkey)\n"));
-    return WRONG_PASSWORD;
+    return PWSRC::WRONG_PASSWORD;
   }
   m_passkey = passkey;
 
   FOpen();
   if (m_fd == NULL)
-    return CANT_OPEN_FILE;
+    return PWSRC::CANT_OPEN_FILE;
 
   if (m_rw == Write) {
     status = WriteHeader();
   } else { // open for read
     status = ReadHeader();
-    if (status != SUCCESS) {
+    if (status != PWSRC::SUCCESS) {
       Close();
       return status;
     }
@@ -78,7 +79,7 @@ int PWSfileV3::Open(const StringX &passkey)
 int PWSfileV3::Close()
 {
   if (m_fd == NULL)
-    return SUCCESS; // idempotent
+    return PWSRC::SUCCESS; // idempotent
 
   unsigned char digest[HMAC_SHA256::HASHLEN];
   m_hmac.Final(digest);
@@ -89,12 +90,12 @@ int PWSfileV3::Close()
     fret = fwrite(TERMINAL_BLOCK, sizeof(TERMINAL_BLOCK), 1, m_fd);
     if (fret != 1) {
       PWSfile::Close();
-      return FAILURE;
+      return PWSRC::FAILURE;
     }
     fret = fwrite(digest, sizeof(digest), 1, m_fd);
     if (fret != 1) {
       PWSfile::Close();
-      return FAILURE;
+      return PWSRC::FAILURE;
     }
     return PWSfile::Close();
   } else { // Read
@@ -106,7 +107,7 @@ int PWSfileV3::Close()
       return PWSfile::Close();
     else {
       PWSfile::Close();
-      return BAD_DIGEST;
+      return PWSRC::BAD_DIGEST;
     }
   }
 }
@@ -118,19 +119,19 @@ int PWSfileV3::CheckPasskey(const StringX &filename,
                             unsigned char *aPtag, int *nITER)
 {
   FILE *fd = a_fd;
-  int retval = SUCCESS;
+  int retval = PWSRC::SUCCESS;
   SHA256 H;
 
   if (fd == NULL) {
     fd = pws_os::FOpen(filename.c_str(), _T("rb"));
   }
   if (fd == NULL)
-    return CANT_OPEN_FILE;
+    return PWSRC::CANT_OPEN_FILE;
 
   char tag[sizeof(V3TAG)];
   fread(tag, 1, sizeof(tag), fd);
   if (memcmp(tag, V3TAG, sizeof(tag)) != 0) {
-    retval = NOT_PWS3_FILE;
+    retval = PWSRC::NOT_PWS3_FILE;
     goto err;
   }
 
@@ -144,7 +145,7 @@ int PWSfileV3::CheckPasskey(const StringX &filename,
 
     ASSERT(N >= MIN_HASH_ITERATIONS);
     if (N < MIN_HASH_ITERATIONS) {
-      retval = FAILURE;
+      retval = PWSRC::FAILURE;
       goto err;
     }
 
@@ -162,7 +163,7 @@ int PWSfileV3::CheckPasskey(const StringX &filename,
   unsigned char readHPtag[SHA256::HASHLEN];
   fread(readHPtag, 1, sizeof(readHPtag), fd);
   if (memcmp(readHPtag, HPtag, sizeof(readHPtag)) != 0) {
-    retval = WRONG_PASSWORD;
+    retval = PWSRC::WRONG_PASSWORD;
     goto err;
   }
 err:
@@ -179,6 +180,7 @@ size_t PWSfileV3::WriteCBC(unsigned char type, const StringX &data)
   status = m_utf8conv.ToUTF8(data, utf8, utf8Len);
   if (!status)
     pws_os::Trace(_T("ToUTF8(%s) failed\n"), data.c_str());
+
   return WriteCBC(type, utf8, utf8Len);
 }
 
@@ -193,7 +195,7 @@ int PWSfileV3::WriteRecord(const CItemData &item)
 {
   ASSERT(m_fd != NULL);
   ASSERT(m_curversion == V30);
-  int status = SUCCESS;
+  int status = PWSRC::SUCCESS;
   StringX tmp;
   uuid_array_t item_uuid;
   time_t t = 0;
@@ -297,7 +299,7 @@ int PWSfileV3::ReadRecord(CItemData &item)
   ASSERT(m_fd != NULL);
   ASSERT(m_curversion == V30);
 
-  int status = SUCCESS;
+  int status = PWSRC::SUCCESS;
 
   signed long numread = 0;
   unsigned char type;
@@ -314,7 +316,7 @@ int PWSfileV3::ReadRecord(CItemData &item)
     if (fieldLen > 0) {
       numread += fieldLen;
       if (!item.SetField(type, utf8, utf8Len)) {
-        status = FAILURE;
+        status = PWSRC::FAILURE;
         break;
       }
     } // if (fieldLen > 0)
@@ -327,7 +329,7 @@ int PWSfileV3::ReadRecord(CItemData &item)
   if (numread > 0)
     return status;
   else
-    return END_OF_FILE;
+    return PWSRC::END_OF_FILE;
 }
 
 void PWSfileV3::StretchKey(const unsigned char *salt, unsigned long saltLen,
@@ -373,7 +375,7 @@ const short VersionNum = 0x0307;
 #define SAFE_FWRITE(p, sz, cnt, stream) \
   { \
     size_t _ret = fwrite(p, sz, cnt, stream); \
-    if (_ret != cnt) { status = FAILURE; goto end;} \
+    if (_ret != cnt) { status = PWSRC::FAILURE; goto end;} \
   }
 
 int PWSfileV3::WriteHeader()
@@ -381,7 +383,7 @@ int PWSfileV3::WriteHeader()
   // Following code is divided into {} blocks to
   // prevent "uninitialized" compile errors, as we use
   // goto for error handling
-  int status = SUCCESS;
+  int status = PWSRC::SUCCESS;
   size_t numWritten;
   unsigned char salt[SaltLengthV3];
 
@@ -466,7 +468,7 @@ int PWSfileV3::WriteHeader()
 
   numWritten = WriteCBC(HDR_VERSION, vnb, sizeof(VersionNum));
 
-  if (numWritten <= 0) { status = FAILURE; goto end; }
+  if (numWritten <= 0) { status = PWSRC::FAILURE; goto end; }
 
   // Write UUID
   uuid_array_t file_uuid_array;
@@ -480,11 +482,11 @@ int PWSfileV3::WriteHeader()
 
   numWritten = WriteCBC(HDR_UUID, m_hdr.m_file_uuid_array,
                         sizeof(m_hdr.m_file_uuid_array));
-  if (numWritten <= 0) { status = FAILURE; goto end; }
+  if (numWritten <= 0) { status = PWSRC::FAILURE; goto end; }
 
   // Write (non default) user preferences
   numWritten = WriteCBC(HDR_NDPREFS, m_hdr.m_prefString.c_str());
-  if (numWritten <= 0) { status = FAILURE; goto end; }
+  if (numWritten <= 0) { status = PWSRC::FAILURE; goto end; }
 
   // Write out display status
   if (!m_hdr.m_displaystatus.empty()) {
@@ -494,7 +496,7 @@ int PWSfileV3::WriteHeader()
          iter != m_hdr.m_displaystatus.end(); iter++)
       ds += (*iter) ? _T("1") : _T("0");
     numWritten = WriteCBC(HDR_DISPSTAT, ds);
-    if (numWritten <= 0) { status = FAILURE; goto end; }
+    if (numWritten <= 0) { status = PWSRC::FAILURE; goto end; }
   }
 
   // Write out time of this update
@@ -502,7 +504,7 @@ int PWSfileV3::WriteHeader()
   time(&time_now);
   numWritten = WriteCBC(HDR_LASTUPDATETIME,
                         (unsigned char *)&time_now, sizeof(time_now));
-  if (numWritten <= 0) { status = FAILURE; goto end; }
+  if (numWritten <= 0) { status = PWSRC::FAILURE; goto end; }
   m_hdr.m_whenlastsaved = time_now;
 
   // Write out who saved it!
@@ -513,7 +515,7 @@ int PWSfileV3::WriteHeader()
     numWritten = WriteCBC(HDR_LASTUPDATEUSER, user.c_str());
     if (numWritten > 0)
       numWritten = WriteCBC(HDR_LASTUPDATEHOST, sysname.c_str());
-    if (numWritten <= 0) { status = FAILURE; goto end; }
+    if (numWritten <= 0) { status = PWSRC::FAILURE; goto end; }
     m_hdr.m_lastsavedby = user.c_str();
     m_hdr.m_lastsavedon = sysname.c_str();
   }
@@ -521,15 +523,15 @@ int PWSfileV3::WriteHeader()
   // Write out what saved it!
   numWritten = WriteCBC(HDR_LASTUPDATEAPPLICATION,
                         m_hdr.m_whatlastsaved);
-  if (numWritten <= 0) { status = FAILURE; goto end; }
+  if (numWritten <= 0) { status = PWSRC::FAILURE; goto end; }
 
   if (!m_hdr.m_dbname.empty()) {
     numWritten = WriteCBC(HDR_DBNAME, m_hdr.m_dbname);
-    if (numWritten <= 0) { status = FAILURE; goto end; }
+    if (numWritten <= 0) { status = PWSRC::FAILURE; goto end; }
   }
   if (!m_hdr.m_dbdesc.empty()) {
     numWritten = WriteCBC(HDR_DBDESC, m_hdr.m_dbdesc);
-    if (numWritten <= 0) { status = FAILURE; goto end; }
+    if (numWritten <= 0) { status = PWSRC::FAILURE; goto end; }
   }
   if (!m_MapFilters.empty()) {
     ostringstream oss;
@@ -537,7 +539,7 @@ int PWSfileV3::WriteHeader()
     numWritten = WriteCBC(HDR_FILTERS,
                           reinterpret_cast<const unsigned char *>(oss.str().c_str()),
                           oss.str().length());
-    if (numWritten <= 0) { status = FAILURE; goto end; }
+    if (numWritten <= 0) { status = PWSRC::FAILURE; goto end; }
   }
 
   if (!m_hdr.m_RUEList.empty()) {
@@ -558,7 +560,7 @@ int PWSfileV3::WriteHeader()
     numWritten = WriteCBC(HDR_RUE, 
                           reinterpret_cast<const unsigned char *>(oss.str().c_str()),
                           oss.str().length());
-    if (numWritten <= 0) { status = FAILURE; goto end; }
+    if (numWritten <= 0) { status = PWSRC::FAILURE; goto end; }
   }
 
   if (!m_UHFL.empty()) {
@@ -569,14 +571,14 @@ int PWSfileV3::WriteHeader()
       UnknownFieldEntry &unkhfe = *vi_IterUHFE;
       numWritten = WriteCBC(unkhfe.uc_Type,
                             unkhfe.uc_pUField, (unsigned int)unkhfe.st_length);
-      if (numWritten <= 0) { status = FAILURE; goto end; }
+      if (numWritten <= 0) { status = PWSRC::FAILURE; goto end; }
     }
   }
 
   // Write zero-length end-of-record type item
   WriteCBC(HDR_END, NULL, 0);
  end:
-  if (status != SUCCESS)
+  if (status != PWSRC::SUCCESS)
     Close();
   return status;
 }
@@ -587,7 +589,7 @@ int PWSfileV3::ReadHeader()
   int status = CheckPasskey(m_filename, m_passkey, m_fd,
     Ptag, &m_hdr.m_nITER);
 
-  if (status != SUCCESS) {
+  if (status != PWSRC::SUCCESS) {
     Close();
     return status;
   }
@@ -625,7 +627,7 @@ int PWSfileV3::ReadHeader()
 
     if (numRead < 0) {
       Close();
-      return FAILURE;
+      return PWSRC::FAILURE;
     }
 
     switch (fieldType) {
@@ -636,14 +638,14 @@ int PWSfileV3::ReadHeader()
             utf8Len != sizeof(int)) {
           delete[] utf8;
           Close();
-          return FAILURE;
+          return PWSRC::FAILURE;
         }
         if (utf8[1] !=
            (unsigned char)((VersionNum & 0xff00) >> 8)) {
           //major version mismatch
           delete[] utf8;
           Close();
-          return UNSUPPORTED_VERSION;
+          return PWSRC::UNSUPPORTED_VERSION;
         }
         // for now we assume that minor version changes will
         // be backward-compatible
@@ -655,7 +657,7 @@ int PWSfileV3::ReadHeader()
         if (utf8Len != sizeof(uuid_array_t)) {
           delete[] utf8;
           Close();
-          return FAILURE;
+          return PWSRC::FAILURE;
         }
         memcpy(m_hdr.m_file_uuid_array, utf8,
                sizeof(m_hdr.m_file_uuid_array));
@@ -788,7 +790,7 @@ int PWSfileV3::ReadHeader()
           int rc = m_MapFilters.ImportFilterXMLFile(FPOOL_DATABASE, text.c_str(), _T(""),
                                                     XSDFilename.c_str(),
                                                     strErrors, m_pAsker);
-          if (rc != PWScore::SUCCESS) {
+          if (rc != PWSRC::SUCCESS) {
             // Can't parse it - treat as an unknown field,
             // Notify user that filter won't be available
             stringT message;
@@ -864,7 +866,7 @@ int PWSfileV3::ReadHeader()
     delete[] utf8; utf8 = NULL; utf8Len = 0;
   } while (fieldType != HDR_END);
 
-  return SUCCESS;
+  return PWSRC::SUCCESS;
 }
 
 bool PWSfileV3::IsV3x(const StringX &filename, VERSION &v)

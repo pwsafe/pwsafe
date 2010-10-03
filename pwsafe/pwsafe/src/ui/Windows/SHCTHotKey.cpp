@@ -33,9 +33,8 @@ END_MESSAGE_MAP()
 
 // SHCTHotKey message handlers
 
-void CSHCTHotKey::OnKillFocus(CWnd *pWnd)
+void CSHCTHotKey::OnKillFocus(CWnd *)
 {
-  UNREFERENCED_PARAMETER(pWnd);
   if (m_pParent != NULL) {
     WORD wVK, wMod;
     GetHotKey(wVK, wMod);

@@ -15,14 +15,15 @@
 class CConfirmDeleteDlg : public CPWDialog
 {
 public:
-  CConfirmDeleteDlg(CWnd* pParent = NULL, int numchildren = 0);
+  CConfirmDeleteDlg(CWnd* pParent = NULL, size_t numchildren = 0, size_t numatts = 0);
 
 private:
   // Dialog Data
   //{{AFX_DATA(CConfirmDeleteDlg)
-  enum { IDD = IDD_CONFIRMDELETE_DIALOG };
+  enum { IDDENT = IDD_CONFIRMDELETE_DIALOGENT,
+         IDDGRP = IDD_CONFIRMDELETE_DIALOGGRP};
   bool m_dontaskquestion;
-  int m_numchildren;
+  size_t m_numchildren, m_numatts;
   //}}AFX_DATA
 
   // Overrides

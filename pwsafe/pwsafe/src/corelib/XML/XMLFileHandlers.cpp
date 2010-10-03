@@ -234,8 +234,8 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
         // as hexadecimal, rather than base64 encoding.
         // Easier to debug.
 #ifndef UNK_HEX_REP
-        m_pfield = new unsigned char[(length / 3) * 4 + 4];
-        size_t out_len;
+        size_t out_len = (length / 3) * 4 + 4;
+        m_pfield = new unsigned char[out_len];
         PWSUtil::Base64Decode(m_strElemContent, m_pfield, out_len);
         m_fieldlen = (int)out_len;
 #else

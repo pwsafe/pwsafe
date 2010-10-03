@@ -1,4 +1,5 @@
 /*
+/*
 * Copyright (c) 2003-2010 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
@@ -17,19 +18,14 @@
 #include "UUIDGen.h"
 #include "SysInfo.h"
 #include "UTF8Conv.h"
-#include "Report.h"
-#include "VerifyFormat.h"
-#include "PWSfileV3.h" // XXX cleanup with dynamic_cast
-#include "StringXStream.h"
+#include "PWSfileV3.h"    // XXX cleanup with dynamic_cast
+#include "return_codes.h"
 
 #include "os/typedefs.h"
 #include "os/dir.h"
 #include "os/debug.h"
 #include "os/file.h"
-#include "os/mem.h"
 
-#include <iostream>
-#include <iomanip>
 #include <string>
 #include <vector>
 #include <algorithm>
@@ -46,17 +42,18 @@ Reporter *PWScore::m_pReporter = NULL;
 
 uuid_array_t PWScore::NULL_UUID = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
-PWScore::PWScore() : 
-                     m_currfile(_T("")),
-                     m_passkey(NULL), m_passkey_len(0),
-                     m_lockFileHandle(INVALID_HANDLE_VALUE),
-                     m_lockFileHandle2(INVALID_HANDLE_VALUE),
-                     m_LockCount(0), m_LockCount2(0),
-                     m_ReadFileVersion(PWSfile::UNKNOWN_VERSION),
-                     m_bDBChanged(false), m_bDBPrefsChanged(false),
-                     m_IsReadOnly(false), m_bUniqueGTUValidated(false), 
-                     m_nRecordsWithUnknownFields(0),
-                     m_bNotifyDB(false), m_pUIIF(NULL), m_fileSig(NULL)
+PWScore::PWScore()
+  : m_currfile(_T("")),
+  m_passkey(NULL), m_passkey_len(0),
+  m_lockFileHandle(INVALID_HANDLE_VALUE),
+  m_lockFileHandle2(INVALID_HANDLE_VALUE),
+  m_LockCount(0), m_LockCount2(0),
+  m_ReadFileVersion(PWSfile::UNKNOWN_VERSION),
+  m_bDBChanged(false), m_bDBPrefsChanged(false),
+  m_bAtachmentsChanged(false),
+  m_IsReadOnly(false), m_bUniqueGTUValidated(false), 
+  m_nRecordsWithUnknownFields(0),
+  m_bNotifyDB(false), m_pUIIF(NULL), m_fileSig(NULL)
 {
   // following should ideally be wrapped in a mutex
   if (!PWScore::m_session_initialized) {
@@ -314,6 +311,9 @@ void PWScore::ReInit(bool bNewFile)
 
   m_nRecordsWithUnknownFields = 0;
   m_UHFL.clear();
+  m_MM_entry_uuid_atr.clear();
+  m_MM_entry_uuid_atr_saved.clear();
+
   ClearChangedNodes();
 
   SetChanged(false, false);
@@ -373,7 +373,7 @@ int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version)
   PWSfile *out = PWSfile::MakePWSfile(filename, version,
                                       PWSfile::Write, status);
 
-  if (status != PWSfile::SUCCESS) {
+  if (status != PWSRC::SUCCESS) {
     delete out;
     return status;
   }
@@ -400,7 +400,7 @@ int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version)
   try { // exception thrown on write error
     status = out->Open(GetPassKey());
 
-    if (status != PWSfile::SUCCESS) {
+    if (status != PWSRC::SUCCESS) {
       delete out;
       return status;
     }
@@ -412,7 +412,7 @@ int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version)
   } catch (...) {
     out->Close();
     delete out;
-    return FAILURE;
+    return PWSRC::FAILURE;
   }
   out->Close();
   delete out;
@@ -421,7 +421,7 @@ int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version)
 
   m_ReadFileVersion = version; // needed when saving a V17 as V20 1st time [871893]
 
-  return SUCCESS;
+  return PWSRC::SUCCESS;
 }
 
 void PWScore::ClearCommands()
@@ -553,29 +553,21 @@ int PWScore::CheckPasskey(const StringX &filename, const StringX &passkey)
   else { // can happen if tries to export b4 save
     unsigned int t_passkey_len = passkey.length();
     if (t_passkey_len != m_passkey_len) // trivial test
-      return WRONG_PASSWORD;
+      return PWSRC::WRONG_PASSWORD;
+
     int BlockLength = ((m_passkey_len + 7) / 8) * 8;
     unsigned char *t_passkey = new unsigned char[BlockLength];
     LPCTSTR plaintext = LPCTSTR(passkey.c_str());
     EncryptPassword((const unsigned char *)plaintext, t_passkey_len, t_passkey);
+
     if (memcmp(t_passkey, m_passkey, BlockLength) == 0)
-      status = PWSfile::SUCCESS;
+      status = PWSRC::SUCCESS;
     else
-      status = PWSfile::WRONG_PASSWORD;
+      status = PWSRC::WRONG_PASSWORD;
+
     delete[] t_passkey;
   }
-
-  switch (status) {
-    case PWSfile::SUCCESS:
-      return SUCCESS;
-    case PWSfile::CANT_OPEN_FILE:
-      return CANT_OPEN_FILE;
-    case PWSfile::WRONG_PASSWORD:
-      return WRONG_PASSWORD;
-    default:
-      ASSERT(0);
-      return status; // should never happen
-  }
+  return status;
 }
 
 #define MRE_FS _T("\xbb")
@@ -587,7 +579,7 @@ int PWScore::ReadFile(const StringX &a_filename,
   PWSfile *in = PWSfile::MakePWSfile(a_filename, m_ReadFileVersion,
                                      PWSfile::Read, status, m_pAsker, m_pReporter);
 
-  if (status != PWSfile::SUCCESS) {
+  if (status != PWSRC::SUCCESS) {
     delete in;
     return status;
   }
@@ -596,7 +588,7 @@ int PWScore::ReadFile(const StringX &a_filename,
 
   // in the old times we could open even 1.x files
   // for compatibility reasons, we open them again, to see if this is really a "1.x" file
-  if ((m_ReadFileVersion == PWSfile::V20) && (status == PWSfile::WRONG_VERSION)) {
+  if ((m_ReadFileVersion == PWSfile::V20) && (status == PWSRC::WRONG_VERSION)) {
     PWSfile::VERSION tmp_version;  // only for getting compatible to "1.x" files
     tmp_version = m_ReadFileVersion;
     m_ReadFileVersion = PWSfile::V17;
@@ -605,19 +597,19 @@ int PWScore::ReadFile(const StringX &a_filename,
     in->Close();
     in->SetCurVersion(PWSfile::V17);
     status = in->Open(a_passkey);
-    if (status != PWSfile::SUCCESS) {
+    if (status != PWSRC::SUCCESS) {
       m_ReadFileVersion = tmp_version;
     }
   }
 
-  if (status != PWSfile::SUCCESS) {
+  if (status != PWSRC::SUCCESS) {
     delete in;
-    return CANT_OPEN_FILE;
+    return PWSRC::CANT_OPEN_FILE;
   }
 
   if (m_ReadFileVersion == PWSfile::UNKNOWN_VERSION) {
     delete in;
-    return UNKNOWN_VERSION;
+    return PWSRC::UNKNOWN_VERSION;
   }
 
   m_hdr = in->GetHeader();
@@ -663,7 +655,7 @@ int PWScore::ReadFile(const StringX &a_filename,
     ci_temp.Clear(); // Rather than creating a new one each time.
     status = in->ReadRecord(ci_temp);
     switch (status) {
-      case PWSfile::FAILURE:
+      case PWSRC::FAILURE:
       {
         // Show a useful (?) error message - better than
         // silently losing data (but not by much)
@@ -677,7 +669,7 @@ int PWScore::ReadFile(const StringX &a_filename,
         }
       }
       // deliberate fall-through
-      case PWSfile::SUCCESS:
+      case PWSRC::SUCCESS:
         if (iMAXCHARS > 0 && ci_temp.GetSize() > iMAXCHARS) {
           numlarge++;
           uimaxsize = MAX(uimaxsize, ci_temp.GetSize());
@@ -734,7 +726,7 @@ int PWScore::ReadFile(const StringX &a_filename,
          m_pwlist.insert(make_pair(CUUIDGen(uuid), ci_temp));
 #endif
          break;
-      case PWSfile::END_OF_FILE:
+      case PWSRC::END_OF_FILE:
         go = false;
         break;
     } // switch
@@ -744,8 +736,8 @@ int PWScore::ReadFile(const StringX &a_filename,
   in->GetUnknownHeaderFields(m_UHFL);
   int closeStatus = in->Close(); // in V3 this checks integrity
 #ifdef DEMO
-  if (closeStatus == PWSfile::SUCCESS && limited)
-    closeStatus = LIMIT_REACHED; // if integrity OK but LIMIT_REACHED, return latter
+  if (closeStatus == PWSRC::SUCCESS && limited)
+    closeStatus = PWSRC::LIMIT_REACHED; // if integrity OK but LIMIT_REACHED, return latter
 #endif
   delete in;
 
@@ -764,7 +756,7 @@ int PWScore::ReadFile(const StringX &a_filename,
   }
 
   if (numlarge > 0 && 
-      (closeStatus == PWSfile::SUCCESS || closeStatus == LIMIT_REACHED) &&
+      (closeStatus == PWSRC::SUCCESS || closeStatus == PWSRC::LIMIT_REACHED) &&
       m_pReporter != NULL) {
     stringT cs_msg, cs_caption, cs_entry;
     int units(0);
@@ -912,7 +904,7 @@ bool PWScore::BackupCurFile(int maxNumIncBackups, int backupSuffix,
 
   // Current file becomes backup
   // Directories along the specified backup path are created as needed
-  return pws_os::RenameFile(m_currfile.c_str(), bu_fname);
+  return pws_os::RenameFile(path, bu_fname);
 }
 
 void PWScore::ChangePasskey(const StringX &newPasskey)
@@ -2142,7 +2134,8 @@ bool PWScore::GetDependentEntryBaseUUID(const uuid_array_t &entry_uuid,
 
 void PWScore::NotifyDBModified()
 {
-  if (m_bNotifyDB && m_pUIIF != NULL)
+  if (m_bNotifyDB && m_pUIIF != NULL &&
+      m_bsSupportedFunctions.test(UIInterFace::DATABASEMODIFIED))
     m_pUIIF->DatabaseModified(m_bDBChanged || m_bDBPrefsChanged);
 }
 
@@ -2152,20 +2145,55 @@ void PWScore::NotifyGUINeedsUpdating(UpdateGUICommand::GUI_Action ga,
                                      CItemData::FieldType ft,
                                      bool bUpdateGUI)
 {
-  if (m_pUIIF != NULL)
+  if (m_pUIIF != NULL &&
+      m_bsSupportedFunctions.test(UIInterFace::UPDATEGUI))
     m_pUIIF->UpdateGUI(ga, entry_uuid, ft, bUpdateGUI);
 }
 
 void PWScore::GUISetupDisplayInfo(CItemData &ci)
 {
-  if (m_pUIIF != NULL)
+  if (m_pUIIF != NULL &&
+      m_bsSupportedFunctions.test(UIInterFace::GUISETUPDISPLAYINFO))
     m_pUIIF->GUISetupDisplayInfo(ci);
 }
 
 void PWScore::GUIRefreshEntry(const CItemData &ci)
 {
-  if (m_pUIIF != NULL)
+  if (m_pUIIF != NULL &&
+      m_bsSupportedFunctions.test(UIInterFace::GUIREFRESHENTRY))
     m_pUIIF->GUIRefreshEntry(ci);
+}
+
+int PWScore::AttachmentProgress(const ATTProgress &st_atpg)
+{
+  if (m_pUIIF != NULL &&
+      m_bsSupportedFunctions.test(UIInterFace::ATTACHMENTPROGRESS))
+    return m_pUIIF->AttachmentProgress(st_atpg);
+  else
+    return PWSRC::SUCCESS;
+}
+
+// The following attachment functions (X...) if supported by the UI as
+// threads will be run as such - otherwise they are just internal calls
+
+int PWScore::XWriteAttachmentFile(const bool bCleanup,
+                                  PWSAttfile::VERSION version)
+{
+  if (m_pUIIF != NULL &&
+      m_bsSupportedFunctions.test(UIInterFace::WRITEATTACHMENTFILE))
+    return m_pUIIF->WriteAttachmentFile(bCleanup, version);
+  else
+    return WriteAttachmentFile(bCleanup, version);
+}
+
+int PWScore::XCompleteImportFile(const stringT &impfilename,
+                                 PWSAttfile::VERSION version)
+{
+  if (m_pUIIF != NULL &&
+      m_bsSupportedFunctions.test(UIInterFace::COMPLETEIMPORTFILE))
+    return m_pUIIF->CompleteImportFile(impfilename, version);
+  else
+    return CompleteImportFile(impfilename, version);
 }
 
 bool PWScore::LockFile(const stringT &filename, stringT &locker)
@@ -2445,5 +2473,21 @@ void PWScore::GetDBProperties(st_DBProperties &st_dbp)
     }
   } else {
     LoadAString(st_dbp.unknownfields, IDSC_NONE);
+  }
+
+  ATRExVector vATREx;
+  st_dbp.totalunc = st_dbp.totalcmp = st_dbp.largestunc = st_dbp.largestcmp = 0;
+
+  st_dbp.num_att = GetAllAttachments(vATREx);
+
+  if (st_dbp.num_att != 0) {
+    for (ATRExViter iter = vATREx.begin(); iter != vATREx.end(); iter++) {
+      st_dbp.totalunc += iter->atr.uncsize;
+      st_dbp.totalcmp += iter->atr.cmpsize;
+      if (iter->atr.uncsize > st_dbp.largestunc) {
+        st_dbp.largestunc = iter->atr.uncsize;
+        st_dbp.largestcmp = iter->atr.cmpsize;
+      }
+    }
   }
 }

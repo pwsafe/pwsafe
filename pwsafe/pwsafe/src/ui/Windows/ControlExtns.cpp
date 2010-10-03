@@ -48,8 +48,15 @@ BEGIN_MESSAGE_MAP(CStaticExtn, CStatic)
   ON_MESSAGE(WM_MOUSELEAVE, OnMouseLeave)
   ON_WM_MOUSEMOVE()
   ON_WM_CTLCOLOR_REFLECT()
+  ON_WM_DROPFILES()
+  ON_WM_DESTROY()
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
+
+void CStaticExtn::OnDestroy()
+{
+  DragAcceptFiles(FALSE);
+}
 
 void CStaticExtn::SetBkColour(COLORREF cfBkUser)
 {
@@ -128,6 +135,15 @@ HBRUSH CStaticExtn::CtlColor(CDC* pDC, UINT /*nCtlColor*/)
     return (HBRUSH)(m_brBkUser.GetSafeHandle());
   }
   return NULL;
+}
+
+void CStaticExtn::OnDropFiles(HDROP hDrop)
+{
+  CWnd *pParent = GetParent();
+  pParent->SendMessage(WM_DROPFILES, (WPARAM)hDrop);
+
+  // MUST be called for dialogs (not for main frames...) 
+  DragFinish(hDrop);
 }
 
 /////////////////////////////////////////////////////////////////////////////

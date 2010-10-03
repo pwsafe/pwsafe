@@ -31,7 +31,7 @@ double pws_os::wctof(const wchar_t *s)
 int pws_os::wcscasecmp(const wchar_t* s1, const wchar_t* s2)
 {
   wchar_t wc1, wc2;
-	
+
   if (s1 == s2) 
     return 0; 
 

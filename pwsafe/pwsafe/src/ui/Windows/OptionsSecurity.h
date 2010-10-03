@@ -43,6 +43,11 @@ public:
   BOOL m_saveLockOnIdleTimeout;
   UINT m_saveIdleTimeOut;
 
+  CString m_csEraserLocation;
+  CString m_csEraseCmdLineParms;
+  CString m_csSaveEraserLocation;
+  CString m_csSaveEraseCmdLineParms;
+
   // Overrides
   // ClassWizard generate virtual function overrides
   //{{AFX_VIRTUAL(COptionsSecurity)
@@ -62,6 +67,7 @@ protected:
   afx_msg void OnLockOnIdleTimeout();
   afx_msg void OnLockOnMinimize();
   afx_msg BOOL OnKillActive();
+  afx_msg void OnBrowseForLocation();
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()

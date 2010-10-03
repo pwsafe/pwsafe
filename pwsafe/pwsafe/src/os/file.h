@@ -20,10 +20,10 @@ namespace pws_os {
   extern bool DeleteAFile(const stringT &filename);
   extern void FindFiles(const stringT &filter, std::vector<stringT> &res);
   extern bool LockFile(const stringT &filename, stringT &locker,
-                       HANDLE &lockFileHandle, int &LockCount);
+                                         HANDLE &lockFileHandle, int &LockCount);
   extern bool IsLockedFile(const stringT &filename);
   extern void UnlockFile(const stringT &filename,
-                         HANDLE &lockFileHandle, int &LockCount);
+                                           HANDLE &lockFileHandle, int &LockCount);
 
   extern std::FILE *FOpen(const stringT &filename, const TCHAR *mode);
   extern long fileLength(std::FILE *fp);

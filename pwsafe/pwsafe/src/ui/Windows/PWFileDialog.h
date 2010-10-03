@@ -11,11 +11,17 @@
 class CPWFileDialog : public CFileDialog
 {
 public:
-  CPWFileDialog(BOOL bOpenFileDialog, LPCWSTR lpszDefExt = NULL, LPCWSTR lpszFileName = NULL,
-                DWORD dwFlags = OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, LPCWSTR lpszFilter = NULL,
-                CWnd* pParentWnd = NULL, DWORD dwSize = 0)
+  CPWFileDialog(BOOL bOpenFileDialog,
+                LPCWSTR lpszDefExt = NULL,
+                LPCWSTR lpszFileName = NULL,
+                DWORD dwFlags = OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
+                LPCWSTR lpszFilter = NULL,
+                CWnd* pParentWnd = NULL,
+                DWORD dwSize = 0,
+                bool bAttachment = false)
   : CFileDialog(bOpenFileDialog, lpszDefExt, lpszFileName, dwFlags, lpszFilter,
-                pParentWnd, dwSize) {}
+                pParentWnd, dwSize),
+    m_bAttachment(bAttachment), m_bOpenFileDialog(bOpenFileDialog), m_csDesc(L"") {}
 
   // Following override to reset idle timeout on any event
   virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
@@ -23,4 +29,22 @@ public:
   virtual INT_PTR DoModal();
 
   DECLARE_DYNAMIC(CPWFileDialog)
+
+  CString GetDescription() {return m_csDesc;}
+
+protected:
+  CStatic m_stcDesc;
+  CEdit m_edtDesc;
+
+  //{{AFX_MSG(CPWFileDialog)
+  virtual BOOL OnInitDialog();
+  afx_msg void OnDestroy();
+  //}}AFX_MSG
+
+  DECLARE_MESSAGE_MAP()
+
+private:
+  CString m_csDesc;
+  bool m_bAttachment;
+  BOOL m_bOpenFileDialog;
 };

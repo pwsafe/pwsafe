@@ -242,6 +242,29 @@ For your convenience, we've included a simple Visual Basic script, "configure.vb
 (or "configure8.vbs" for VS8) in the src/ui/Windows directory, that you can
 run to generate the above file with the correct values.</p>
 
+<p><i>This version uses zLib to compress attachments before adding to the attachment
+file and decompress them on extraction.  This uses two assembler source routines
+(inffas32.asm and match686.asm), but Visual Studio 2005 Standard Edition was supplied
+ without the assembler program (ml.exe) for x86 builds. The web page:
+<a href="http://social.msdn.microsoft.com/Forums/en-US/vcgeneral/thread/b3abf80a-5170-45f9-b7b2-58940e62efff">Get Assembler</a>
+provides a work-around. The contents of this page states:
+<Blockquote>
+The link <a href="http://www.microsoft.com/downloads/details.aspx?familyid=7A1C9DA0-0510-44A2-B042-7EF370530C64&displaylang=en">
+Download MASM</a> contains MASM, but it will only install it if you specifically have
+the Express Edition of 2005. The Express Edition's setup program from the above link is
+named MASMSetup.exe. Using a program that can extract '.cab' files, like WinRAR/7-Zip, open
+MASMSetup.exe as a '.cab' file and extract its 'setup.exe'.  Then open this file also
+as a '.cab' file and extract file 'vc_masm1.cab', then once again open it.  Extract the
+only file inside it, which has a long name starting with "FL_ml_exe".  Rename this to
+"ml.exe" and place it into "C:\Program Files\Microsoft Visual Studio 8\VC\bin".
+</Blockquote></i></p>
+
+<h4><a name="Linux_Build"></a>Linux Build</h4>
+
+<p>The Linux version of PasswordSafe is currently in pre-Alpha state. It is
+being built under Debian 5.0 (Lenny), and uses uuid-dev and
+libwxgtk2.8-dev for building, as well as g++ and GNU make.</p>
+
 <h3><a name="XML_Processing"></a>XML Processing</h3>
 
 <p>Originally, PasswordSafe used Microsoft's XML library for XML parsing and

@@ -797,6 +797,11 @@ bool CPWFilterLC::SetField(const int iItem)
           m_fbool.m_bt = CFilterBoolDlg::BT_PRESENT;
           mt = PWSMatch::MT_BOOL;
           break;
+        case FT_ATTACHMENTS:
+          // 'Add Present' not needed - bool match
+          m_fbool.m_bt = CFilterBoolDlg::BT_YESNO;
+          mt = PWSMatch::MT_BOOL;
+          break;
         case FT_ENTRYTYPE:
           // Entrytype is an entry attribute and MUST be present
           //  - no need to add that check
@@ -1514,6 +1519,10 @@ void CPWFilterLC::SetUpComboBoxData()
         stf.cs_text.LoadString(IDS_UNKNOWNFIELDSFILTER);
         stf.cs_text.TrimRight(L'\t');
         stf.ftype = FT_UNKNOWNFIELDS;
+        vFcbx_data.push_back(stf);
+
+        stf.cs_text.LoadString(IDS_ATTACHMENTS);
+        stf.ftype = FT_ATTACHMENTS;
         vFcbx_data.push_back(stf);
         break;
       case DFTYPE_PWHISTORY:

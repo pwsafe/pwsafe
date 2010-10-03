@@ -42,8 +42,10 @@ bool CUTF8Conv::ToUTF8(const StringX &data,
     utf8Len = 0;
     return true;
   }
+
   wchar_t *wcPtr; // to hide UNICODE differences
   size_t wcLen; // number of wide chars needed
+
 #ifndef UNICODE
   // first get needed wide char buffer size
   wcLen = pws_os::mbstowcs(NULL, 0, data.c_str(), size_t(-1), false);
@@ -68,6 +70,7 @@ bool CUTF8Conv::ToUTF8(const StringX &data,
   wcPtr = const_cast<wchar_t *>(data.c_str());
   wcLen = data.length()+1;
 #endif
+
   // first get needed utf8 buffer size
   size_t mbLen = pws_os::wcstombs(NULL, 0, wcPtr, wcLen);
 
@@ -76,6 +79,7 @@ bool CUTF8Conv::ToUTF8(const StringX &data,
     m_utf8Len = 0;
     return false;
   }
+
   // Allocate buffer (if previous allocation was smaller)
   if (mbLen > m_utf8MaxLen) {
     if (m_utf8 != NULL)
@@ -84,6 +88,7 @@ bool CUTF8Conv::ToUTF8(const StringX &data,
     m_utf8 = new unsigned char[mbLen];
     m_utf8MaxLen = mbLen;
   }
+
   // Finally get result
   m_utf8Len = pws_os::wcstombs((char *)m_utf8, mbLen, wcPtr, wcLen);
   ASSERT(m_utf8Len != 0);

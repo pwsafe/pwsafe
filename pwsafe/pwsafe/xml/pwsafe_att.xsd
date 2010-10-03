@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="iso-8859-1" standalone="yes"?>
+<xs:schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="3.18">
+
+<xs:annotation>
+  <xs:documentation xml:lang="en">
+    This XML Schema corresponds to V3.23++ of Password Safe for Attachments.
+    As each new version is a 'superset' of previous versions, the current version of Password Safe
+    will be able to import XML files created by all prior versions.
+    This is for the attachments ONLY.
+  </xs:documentation>
+</xs:annotation>
+
+<!-- Special types to allow easier processing of Password Safe data -->
+<xs:simpleType name="uuidType">
+  <xs:restriction base="xs:hexBinary">
+    <xs:length value="16" fixed="true" />
+  </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="crcType">
+  <xs:restriction base="xs:hexBinary">
+    <xs:length value="4" fixed="true" />
+  </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="digestType">
+  <xs:restriction base="xs:hexBinary">
+    <xs:length value="20" fixed="true" />
+  </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="stringType">
+  <xs:restriction base="xs:string">
+    <xs:whiteSpace value="preserve" />
+  </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="boolType">
+  <xs:restriction base="xs:int">
+    <xs:minInclusive value="0" />
+    <xs:maxInclusive value="1" />
+  </xs:restriction>
+</xs:simpleType>
+
+<xs:complexType name="datetimestampType">
+  <xs:sequence>
+    <xs:element name="date" type="xs:date" minOccurs="1" maxOccurs="1"/>
+    <xs:element name="time" type="xs:time" minOccurs="1" maxOccurs="1"/>
+  </xs:sequence>
+</xs:complexType>
+
+<xs:simpleType name="fieldType">
+  <xs:restriction base="xs:int">
+    <xs:minInclusive value="15" />
+    <xs:maxExclusive value="253" />
+  </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="fileuuidType">
+  <xs:restriction base="xs:string">
+    <xs:pattern value="[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA­F]{12}" />
+  </xs:restriction>
+</xs:simpleType>
+<!-- End of Special types -->
+
+<!-- Start of proper Password Safe validation XSD -->
+  <xs:element name="passwordsafe_attachments">
+  <!-- Start Database -->
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="attachment" minOccurs="0" maxOccurs="unbounded">
+        <!-- Start Database Attachments -->
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="group" type="stringType" minOccurs="0" maxOccurs="1" />
+              <xs:element name="title" type="stringType" minOccurs="1" />
+              <xs:element name="username" type="stringType" minOccurs="0" maxOccurs="1" />
+              <xs:element name="attachment_uuid" type="uuidType" minOccurs="1" maxOccurs="1" />
+              <xs:element name="entry_uuid" type="uuidType" minOccurs="1" maxOccurs="1" />
+              <xs:element name="filename" type="stringType" minOccurs="1" maxOccurs="1" />
+              <xs:element name="path" type="stringType" minOccurs="1" maxOccurs="1" />
+              <xs:element name="description" type="stringType" minOccurs="1" maxOccurs="1" />
+              <xs:element name="osize" type="xs:integer" minOccurs="1" maxOccurs="1" />
+              <xs:element name="bsize" type="xs:integer" minOccurs="1" maxOccurs="1" />
+              <xs:element name="csize" type="xs:integer" minOccurs="1" maxOccurs="1" />
+              <xs:element name="crc" type="crcType" minOccurs="1" maxOccurs="1" />
+              <xs:element name="odigest" type="digestType" minOccurs="1" maxOccurs="1" />
+              <xs:element name="cdigest" type="digestType" minOccurs="1" maxOccurs="1" />
+              <xs:element name="ctime" type="datetimestampType" minOccurs="1" maxOccurs="1" />
+              <xs:element name="atime" type="datetimestampType" minOccurs="1" maxOccurs="1" />
+              <xs:element name="mtime" type="datetimestampType" minOccurs="1" maxOccurs="1" />
+              <xs:element name="dtime" type="datetimestampType" minOccurs="1" maxOccurs="1" />
+              <xs:element name="flags" minOccurs="0" maxOccurs="1">
+                <xs:complexType>
+                  <xs:all>
+                    <xs:element name="extracttoremoveable" type="boolType" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="eraseprogamexists" type="boolType" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="eraseondatabaseclose" type="boolType" minOccurs="0" maxOccurs="1" />
+                  </xs:all>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="data80" type="xs:base64Binary" minOccurs="0" maxOccurs="unbounded" />
+              <xs:element name="data81" type="xs:base64Binary" minOccurs="1" maxOccurs="1" />
+            </xs:sequence>
+            <xs:attribute name="id" type="xs:int" use="optional" />
+          </xs:complexType>
+        <!-- End Database Entries -->
+        </xs:element>
+      </xs:sequence>
+      <!-- Start Database Attachment Attributes -->
+      <xs:attribute name="Database" type="stringType" use="optional" />
+      <xs:attribute name="ExportTimeStamp" type="xs:dateTime" use="optional" />
+      <xs:attribute name="FromDatabaseFormat" type="stringType" use="optional" />
+      <xs:attribute name="WhatSaved" type="stringType" use="optional" />
+      <xs:attribute name="WhoSaved" type="stringType" use="optional" />
+      <xs:attribute name="WhenLastSaved" type="xs:dateTime" use="optional" />
+      <xs:attribute name="Database_uuid" type="fileuuidType" use="optional" />
+      <xs:attribute name="Attachment_file_uuid" type="fileuuidType" use="optional" />
+      <!-- End Database Attributes -->
+    </xs:complexType>
+  <!-- End Database -->
+  </xs:element>
+</xs:schema>
+<!-- End of proper Password Safe validation XSD -->

@@ -194,12 +194,12 @@ size_t _writecbc(FILE *fp, const unsigned char* buffer, int length, unsigned cha
   }
   if (length > 0 ||
       (BS == 8 && length == 0)) { // This part for bwd compat w/pre-3 format
-    unsigned int BlockLength = ((length+(BS-1))/BS)*BS;
+    unsigned int BlockLength = ((length + (BS - 1)) / BS) * BS;
     if (BlockLength == 0 && BS == 8)
       BlockLength = BS;
 
     // Now, encrypt and write the (rest of the) buffer
-    for (unsigned int x=0; x<BlockLength; x+=BS) {
+    for (unsigned int x = 0; x < BlockLength; x += BS) {
       if ((length == 0) || ((length%BS != 0) && (length-x<BS))) {
         //This is for an uneven last block
         PWSrand::GetInstance()->GetRandomData(curblock, BS);
@@ -238,15 +238,16 @@ size_t _writecbc(FILE *fp, const unsigned char* buffer, int length, unsigned cha
 * and -1 is returned if it matches. (used in V3)
 */
 size_t _readcbc(FILE *fp,
-         unsigned char* &buffer, size_t &buffer_len, unsigned char &type,
-         Fish *Algorithm, unsigned char* cbcbuffer,
-         const unsigned char *TERMINAL_BLOCK, size_t file_len)
+                unsigned char* &buffer, size_t &buffer_len, unsigned char &type,
+                Fish *Algorithm, unsigned char* cbcbuffer,
+                const unsigned char *TERMINAL_BLOCK, size_t file_len,
+                bool bSkip, unsigned char *pSkipTypes)
 {
   const unsigned int BS = Algorithm->GetBlockSize();
-  size_t numRead = 0;
+  size_t num_bytes_read = 0;
 
   // some trickery to avoid new/delete
- // Initialize memory.  (Lockheed Martin) Secure Coding  11-14-2007
+  // Initialize memory.  (Lockheed Martin) Secure Coding  11-14-2007
   unsigned char block1[16] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
   unsigned char block2[16] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
   unsigned char block3[16] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -255,19 +256,19 @@ size_t _readcbc(FILE *fp,
   ASSERT(BS <= sizeof(block1)); // if needed we can be more sophisticated here...
   
   // Safety check.  (Lockheed Martin) Secure Coding  11-14-2007
-  if ((BS > sizeof( block1 )) || (BS == 0))
-   return 0;
+  if ((BS > sizeof(block1)) || (BS == 0))
+    return 0;
 
   lengthblock = block1;
 
   buffer_len = 0;
-  numRead = fread(lengthblock, 1, BS, fp);
-  if (numRead != BS) {
+  num_bytes_read = fread(lengthblock, 1, BS, fp);
+  if (num_bytes_read != BS) {
     return 0;
   }
 
   if (TERMINAL_BLOCK != NULL &&
-    memcmp(lengthblock, TERMINAL_BLOCK, BS) == 0)
+      memcmp(lengthblock, TERMINAL_BLOCK, BS) == 0)
     return static_cast<size_t>(-1);
 
   unsigned char *lcpy = block2;
@@ -299,22 +300,22 @@ size_t _readcbc(FILE *fp,
   }
 
   buffer_len = length;
-  buffer = new unsigned char[(length/BS)*BS +2*BS]; // round upwards
+  buffer = new unsigned char[(length / BS) * BS + 2 * BS]; // round upwards
   unsigned char *b = buffer;
 
   // Initialize memory.  (Lockheed Martin) Secure Coding  11-14-2007
   memset(b, 0, (length / BS) * BS + 2 * BS);
 
   if (BS == 16) {
-    // length block contains up to 11 (= 16 - 4 - 1) bytes
-    // of data
+    // length block contains up to 11 (= 16 - 4 - 1) bytes of data
     const int len1 = (length > 11) ? 11 : length;
     memcpy(b, lengthblock + 5, len1);
     length -= len1;
     b += len1;
   }
 
-  unsigned int BlockLength = ((length+(BS-1))/BS)*BS;
+  unsigned int BlockLength = ((length + (BS - 1)) / BS) * BS;
+
   // Following is meant for lengths < BS,
   // but results in a block being read even
   // if length is zero. This is wasteful,
@@ -322,13 +323,29 @@ size_t _readcbc(FILE *fp,
   if (BlockLength == 0 && BS == 8)
     BlockLength = BS;
 
+  // If requested - skip over data but return length it would have been
+  if (bSkip && pSkipTypes != NULL && pSkipTypes[type] != 0 &&
+      BlockLength > BS) {
+    // Skip up to the last block which we need to decrypt the next block!
+    fseek(fp, BlockLength - BS, SEEK_CUR);
+
+    // Read in last encrypted block ready for next call
+    size_t num_read = fread(cbcbuffer, 1, BS, fp);
+    ASSERT(num_read == BS);
+
+    // Get out now
+    delete [] buffer;
+    buffer = NULL;
+    return BlockLength + BS;
+  }
+
   trashMemory(lengthblock, BS);
 
   if (length > 0 ||
       (BS == 8 && length == 0)) { // pre-3 pain
     unsigned char *tempcbc = block3;
-    numRead += fread(b, 1, BlockLength, fp);
-    for (unsigned int x=0; x<BlockLength; x+=BS) {
+    num_bytes_read += fread(b, 1, BlockLength, fp);
+    for (unsigned int x = 0; x < BlockLength; x += BS) {
       memcpy(tempcbc, b + x, BS);
       Algorithm->Decrypt(b + x, b + x);
       xormem(b + x, cbcbuffer, BS);
@@ -336,11 +353,13 @@ size_t _readcbc(FILE *fp,
     }
   }
 
-  if (buffer_len == 0) {
-    // delete[] buffer here since caller will see zero length
-    delete[] buffer;
+  if (buffer_len == 0 || (bSkip && pSkipTypes != NULL && pSkipTypes[type] != 0)) {
+    // delete[] buffer here since caller will see zero length or has asked for data
+    // to be skipped
+    delete [] buffer;
+    buffer = NULL;
   }
-  return numRead;
+  return num_bytes_read;
 }
 
 // PWSUtil implementations
@@ -383,16 +402,20 @@ StringX PWSUtil::ConvertToDateTimeString(const time_t &t,
       return ConvertToDateTimeString(0, result_format);
 #endif
     if ((result_format & TMC_EXPORT_IMPORT) == TMC_EXPORT_IMPORT)
-      _tcsftime(datetime_str, sizeof(datetime_str)/sizeof(datetime_str[0]),
+      _tcsftime(datetime_str, sizeof(datetime_str) / sizeof(datetime_str[0]),
                 _T("%Y/%m/%d %H:%M:%S"), st);
     else if ((result_format & TMC_XML) == TMC_XML)
-      _tcsftime(datetime_str, sizeof(datetime_str)/sizeof(datetime_str[0]),
+      _tcsftime(datetime_str, sizeof(datetime_str) / sizeof(datetime_str[0]),
                 _T("%Y-%m-%dT%H:%M:%S"), st);
     else if ((result_format & TMC_LOCALE) == TMC_LOCALE) {
       setlocale(LC_TIME, "");
-      _tcsftime(datetime_str, sizeof(datetime_str)/sizeof(datetime_str[0]),
+      _tcsftime(datetime_str, sizeof(datetime_str) / sizeof(datetime_str[0]),
                 _T("%c"), st);
-    } else {
+    }
+    else if ((result_format & TMC_FILE) == TMC_FILE)
+      _tcsftime(datetime_str, sizeof(datetime_str) / sizeof(datetime_str[0]),
+                _T("_%Y%m%d_%H%M%S"), st);
+    else {
       int terr = _tasctime_s(datetime_str, 32, st);  // secure version
       if (terr != 0)
         return ConvertToDateTimeString(0, result_format);
@@ -457,9 +480,9 @@ void PWSUtil::GetTimeStamp(stringT &sTimeStamp)
   delete p_os;
 }
 
-stringT PWSUtil::Base64Encode(const BYTE *strIn, size_t len)
+stringT PWSUtil::Base64Encode(const BYTE *strIn, const size_t len)
 {
-  stringT cs_Out;
+  stringT encoded;
   static const TCHAR base64ABC[] = 
     _S("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/");
 
@@ -468,23 +491,30 @@ stringT PWSUtil::Base64Encode(const BYTE *strIn, size_t len)
                (((i + 1) < len) ? (((long)strIn[i + 1]) << 8) : 0) | 
                (((i + 2) < len) ? ((long)strIn[i + 2]) : 0);
 
-    cs_Out += base64ABC[(l >> 18) & 0x3F];
-    cs_Out += base64ABC[(l >> 12) & 0x3F];
-    if (i + 1 < len) cs_Out += base64ABC[(l >> 6) & 0x3F];
-    if (i + 2 < len) cs_Out += base64ABC[(l ) & 0x3F];
+    encoded += base64ABC[(l >> 18) & 0x3F];
+    encoded += base64ABC[(l >> 12) & 0x3F];
+    if (i + 1 < len) encoded += base64ABC[(l >> 6) & 0x3F];
+    if (i + 2 < len) encoded += base64ABC[(l) & 0x3F];
   }
 
   switch (len % 3) {
     case 1:
-      cs_Out += TCHAR('=');
+      encoded += TCHAR('=');
     case 2:
-      cs_Out += TCHAR('=');
+      encoded += TCHAR('=');
   }
-  return cs_Out;
+  return encoded;
 }
 
-void PWSUtil::Base64Decode(const StringX &inString, BYTE* &outData, size_t &out_len)
+void PWSUtil::Base64Decode(const StringX &inString, BYTE* &decoded, size_t &buffer_len)
 {
+  /*
+    NOTE: On entry - buffer_len MUST be the allocated size of the decoded buffer
+    On return it is the actual amount used in this buffer.
+
+    The output buffer will be no more than 3/4 size of the input length + 4.
+  */
+
   static const char szCS[]=
     "=ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
@@ -499,41 +529,44 @@ void PWSUtil::Base64Decode(const StringX &inString, BYTE* &outData, size_t &out_
 
     for (i1 = 0; i1 < sizeof(szCS) - 1; i1++) {
       for (i3 = i2; i3 < i2 + 4; i3++) {
-        if (i3 < in_length &&  inString[i3] == szCS[i1])
+        if (i3 < in_length && inString[i3] == szCS[i1])
           iDigits[i3 - i2] = i1 - 1;
       }
     }
 
-    outData[st_length] = ((BYTE)iDigits[0] << 2);
+    ASSERT(st_length <= buffer_len);
+    decoded[st_length] = ((BYTE)iDigits[0] << 2);
 
     if (iDigits[1] >= 0) {
-      outData[st_length] += ((BYTE)iDigits[1] >> 4) & 0x3;
+      decoded[st_length] += ((BYTE)iDigits[1] >> 4) & 0x3;
     }
 
     st_length++;
 
     if (iDigits[2] >= 0) {
-      outData[st_length++] = (((BYTE)iDigits[1] & 0x0f) << 4)
-        | (((BYTE)iDigits[2] >> 2) & 0x0f);
+      ASSERT(st_length <= buffer_len);    
+      decoded[st_length++] = (((BYTE)iDigits[1] & 0x0f) << 4) |
+                              (((BYTE)iDigits[2] >> 2) & 0x0f);
     }
 
     if (iDigits[3] >= 0) {
-      outData[st_length++] = (((BYTE)iDigits[2] & 0x03) << 6)
-        | ((BYTE)iDigits[3] & 0x3f);
+      ASSERT(st_length <= buffer_len);
+      decoded[st_length++] = (((BYTE)iDigits[2] & 0x03) << 6) |
+                              ((BYTE)iDigits[3] & 0x3f);
     }
   }
 
-  out_len = st_length;
+  buffer_len = st_length;
 }
 
-
 static const size_t MAX_TTT_LEN = 64; // Max tooltip text length
+
 StringX PWSUtil::NormalizeTTT(const StringX &in)
 {
   StringX ttt;
   if (in.length() >= MAX_TTT_LEN) {
-    ttt = in.substr(0, MAX_TTT_LEN/2-6) + 
-      _T(" ... ") + in.substr(in.length() - MAX_TTT_LEN/2);
+    ttt = in.substr(0, MAX_TTT_LEN / 2-6) + 
+      _T(" ... ") + in.substr(in.length() - MAX_TTT_LEN / 2);
   } else {
     ttt = in;
   }
@@ -617,3 +650,107 @@ string PWSUtil::GetXMLTime(int indent, const char *name,
   return oss.str();
 }
 
+// CRC creation
+static bool bCRCInitDone = false;
+static unsigned int CRC32_Table[256] = {0};
+static unsigned int uiCRC;
+
+void PWSUtil::Init_CRC32_Table()
+{
+  // From: http://www.createwindow.com/programming/crc32/index.htm
+  // Copyright © 2000 - 2010 Richard A. Ellingson
+
+  // Call this function only once to initialize the CRC table.
+  // This is the official polynomial used by CRC-32
+  if (bCRCInitDone)
+    return;
+
+  unsigned int uiPolynomial = 0x04c11db7; 
+
+  // 256 values representing ASCII character codes.
+  for (int i = 0; i <= 0xFF; i++) { 
+    CRC32_Table[i] = Reflect(i, 8) << 24;
+    for (int j = 0; j < 8; j++) {
+      CRC32_Table[i] = (CRC32_Table[i] << 1) ^ (CRC32_Table[i] & (1 << 31) ? uiPolynomial : 0);
+    }
+    CRC32_Table[i] = Reflect(CRC32_Table[i], 32);
+  }
+  bCRCInitDone = true;
+}
+
+unsigned int PWSUtil::Reflect(unsigned int ref, char ch)
+{
+  // From: http://www.createwindow.com/programming/crc32/index.htm
+  // Copyright © 2000 - 2010 Richard A. Ellingson
+
+  // Used only by Init_CRC32_Table().
+  unsigned int value(0);
+
+  // Swap bit 0 for bit 7, bit 1 for bit 6, etc.
+  for (int i = 1; i < (ch + 1); i++) {
+    if (ref & 1)
+      value |= 1 << (ch - i);
+
+    ref >>= 1;
+  }
+  return value;
+}
+
+unsigned int PWSUtil::Get_CRC(unsigned char *pData, const unsigned int &iLen)
+{
+  // From: http://www.createwindow.com/programming/crc32/index.htm
+  // Copyright © 2000 - 2010 Richard A. Ellingson
+
+  // Pass a text string to this function and it will return the CRC.
+  // Once the lookup table has been filled in by the two functions above,
+  // this function creates all CRCs using only the lookup table.
+
+  Init_CRC32_Table();
+
+  // Start out with all bits set high.
+  unsigned int len(iLen);
+  uiCRC = 0xffffffff;
+  // Perform the algorithm on each character in the string, using the lookup table values.
+  while (len--) {
+    uiCRC = (uiCRC >> 8) ^ CRC32_Table[(uiCRC & 0xFF) ^ *pData++];
+  }
+  // Exclusive OR the result with the beginning value.
+  return (uiCRC ^ 0xffffffff);
+} 
+
+void PWSUtil::Get_CRC_Incremental_Init()
+{
+  // From: http://www.createwindow.com/programming/crc32/index.htm
+  // Copyright © 2000 - 2010 Richard A. Ellingson
+
+  // Modified for incremental usage
+  Init_CRC32_Table();
+
+  // Start out with all bits set high.
+  uiCRC = 0xffffffff;
+}
+
+void PWSUtil::Get_CRC_Incremental_Update(unsigned char *pData, const unsigned int &iLen)
+{
+  // From: http://www.createwindow.com/programming/crc32/index.htm
+  // Copyright © 2000 - 2010 Richard A. Ellingson
+
+  // Modified for incremental usage
+  // Perform the algorithm on each character in the string, using the lookup table values.
+  ASSERT(pData != NULL && iLen != 0);
+
+  unsigned int len(iLen);
+  while (len--) {
+    uiCRC = (uiCRC >> 8) ^ CRC32_Table[(uiCRC & 0xFF) ^ *pData++];
+  }
+}
+
+unsigned int PWSUtil::Get_CRC_Incremental_Final()
+{
+  // From: http://www.createwindow.com/programming/crc32/index.htm
+  // Copyright © 2000 - 2010 Richard A. Ellingson
+
+  // Modified for incremental usage
+  // Exclusive OR the result with the beginning value.
+  return (uiCRC ^ 0xffffffff);
+}

@@ -20,6 +20,13 @@ public:
   enum {PP_DATA_CHANGED = 0, PP_UPDATE_VARIABLES, PP_UPDATE_PWPOLICY, PP_UPDATE_TIMES};
 
   DECLARE_DYNAMIC(CPWPropertyPage)
+
+protected:
+  // Generated message map functions
+  //{{AFX_MSG(CPWPropertyPage)
+  //}}AFX_MSG
+
+  DECLARE_MESSAGE_MAP()
 };
 //-----------------------------------------------------------------------------
 // Local variables:

@@ -74,7 +74,7 @@ BOOL CPWFiltersDlg::OnInitDialog()
   else
     m_filtername = m_pfilters->fname.c_str();
 
-  CHeaderCtrl* pHCtrl;
+  CHeaderCtrl *pHCtrl;
   pHCtrl = m_FilterLC.GetHeaderCtrl();
   ASSERT(pHCtrl != NULL);
   pHCtrl->SetDlgCtrlID(IDC_FILTERLC_HEADER);
@@ -203,11 +203,11 @@ bool CPWFiltersDlg::VerifyFilters()
   // First non-History/non-Policy filters on the main filter dialog
   vFilterRows *pvFilterRows(NULL);
   switch (m_iType) {
-  case DFTYPE_MAIN:
-    pvFilterRows = &m_pfilters->vMfldata;
-    break;
-  case DFTYPE_PWHISTORY:
-    pvFilterRows = &m_pfilters->vHfldata;
+    case DFTYPE_MAIN:
+      pvFilterRows = &m_pfilters->vMfldata;
+      break;
+    case DFTYPE_PWHISTORY:
+      pvFilterRows = &m_pfilters->vHfldata;
       break;
     case DFTYPE_PWPOLICY:
       pvFilterRows = &m_pfilters->vPfldata;
