@@ -160,9 +160,9 @@ If (Len(strFileLocation) = 0) Then strFileLocation = strWXDir
 
 objOutputFile.WriteLine("    <WXDIR>" & strFileLocation & "</WXDIR>")
 
-objOutputFile.WriteLine("    <PWSBin>..\..\..\build\bin\pwsafe\$(Configuration)</PWSBin>")
-objOutputFile.WriteLine("    <PWSLib>..\..\..\build\lib\pwsafe\$(Configuration)</PWSLib>")
-objOutputFile.WriteLine("    <PWSObj>..\..\..\build\obj\pwsafe\$(Configuration)</PWSObj>")
+objOutputFile.WriteLine("    <PWSBin>..\..\build\bin\pwsafe\$(Configuration)</PWSBin>")
+objOutputFile.WriteLine("    <PWSLib>..\..\build\lib\pwsafe\$(Configuration)</PWSLib>")
+objOutputFile.WriteLine("    <PWSObj>..\..\build\obj\pwsafe\$(Configuration)</PWSObj>")
 objOutputFile.WriteLine("  </PropertyGroup>")
 objOutputFile.WriteLine("  <PropertyGroup>")
 objOutputFile.WriteLine("    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>")

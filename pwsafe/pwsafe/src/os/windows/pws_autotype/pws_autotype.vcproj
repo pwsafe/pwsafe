@@ -17,8 +17,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="..\..\..\..\build\bin\pwsafe\$(ConfigurationName)"
-			IntermediateDirectory="..\..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)"
+			OutputDirectory="..\..\$(PWSBin)"
+			IntermediateDirectory="..\..\$(PWSObj)\$(ProjectName)"
 			ConfigurationType="2"
 			InheritedPropertySheets=".\AT_UserVariables.vsprops"
 			UseOfMFC="1"
@@ -68,7 +68,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="User32.lib"
-				OutputFile="..\..\..\..\build\bin\pwsafe\$(ConfigurationName)\pws_at_D.dll"
+				OutputFile="..\..\$(PWSBin)\pws_at_D.dll"
 				LinkIncremental="2"
 				ModuleDefinitionFile="pws_at_D.def"
 				DelayLoadDLLs="$(NOINHERIT)"
@@ -104,8 +104,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="..\..\..\..\build\bin\pwsafe\$(ConfigurationName)"
-			IntermediateDirectory="..\..\..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)"
+			OutputDirectory="..\..\$(PWSBin)"
+			IntermediateDirectory="..\..\$(PWSObj)\$(ProjectName)"
 			ConfigurationType="2"
 			InheritedPropertySheets=".\AT_UserVariables.vsprops"
 			UseOfMFC="1"
@@ -151,7 +151,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="User32.lib"
-				OutputFile="..\..\..\..\build\bin\pwsafe\$(ConfigurationName)\pws_at.dll"
+				OutputFile="..\..\$(PWSBin)\pws_at.dll"
 				LinkIncremental="1"
 				ModuleDefinitionFile="pws_at.def"
 				DelayLoadDLLs="$(NOINHERIT)"
