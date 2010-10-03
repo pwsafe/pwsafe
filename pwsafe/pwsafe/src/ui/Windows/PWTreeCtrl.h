@@ -50,8 +50,7 @@ public:
   HTREEITEM AddGroup(const CString &path, bool &bAlreadyExists);
   void SortTree(const HTREEITEM htreeitem);
   bool IsLeaf(HTREEITEM hItem) const;
-  size_t CountChildren(HTREEITEM hStartItem) const;
-  size_t CountAttachments(HTREEITEM hStartItem) const;
+  int CountChildren(HTREEITEM hStartItem) const;
   CSecString MakeTreeDisplayString(const CItemData &ci) const;
   void SetRestoreMode(bool flag) {m_isRestoring = flag;}
   void OnCollapseAll();

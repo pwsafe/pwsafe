@@ -276,3 +276,4 @@ void CKeySend::BlockInput(bool bi) const
 {
   ::BlockInput(bi ? TRUE : FALSE);
 }
+

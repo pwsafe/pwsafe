@@ -18,7 +18,6 @@
 #include "PWPolicy.h"
 #include "UUIDGen.h"
 #include "StringX.h"
-
 #include <time.h> // for time_t
 #include <bitset>
 #include <vector>
@@ -69,11 +68,12 @@ public:
     LAST,        // Start of unknown fields!
     END = 0xff,
     // Internal fields only - used in filters
-    ENTRYSIZE = 0x100, ENTRYTYPE = 0x101, ENTRYSTATUS  = 0x102, ATTACHMENTS = 0x103,
-    // Unknown fields must be last
-    UNKNOWNFIELDS = 0x104};
+    ENTRYSIZE = 0x100, ENTRYTYPE = 0x101, ENTRYSTATUS  = 0x102, UNKNOWNFIELDS = 0x103};
 
   // SubGroup Object - same as FieldType
+
+  // status returns from "ProcessInputRecordField"
+  enum {SUCCESS = 0, FAILURE, END_OF_FILE = 8};
 
   // entry type (note: powers of 2)
   enum EntryType {ET_INVALID      = -1,
@@ -102,7 +102,7 @@ public:
   //Construction
   CItemData();
 
-  CItemData(const CItemData& ci);
+  CItemData(const CItemData& stuffhere);
 
   ~CItemData();
 

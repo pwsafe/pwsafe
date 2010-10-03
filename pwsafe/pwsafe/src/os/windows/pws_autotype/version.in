@@ -20,7 +20,7 @@
 
 #define FILEVER          1, 1, 0, $WCREV$
 #define PRODUCTVER       1, 1, 0, $WCREV$
-#define STRATFILEVER     "1, 1, 0, $WCREV$$WCMODS?+:$\0"
+#define STRATFILEVER     "1, 1, 0 , $WCREV$$WCMODS?+:$\0"
 #define STRATPRODUCTVER  "1, 1, 0, $WCREV$$WCMODS?+:$\0"
 
 #endif // _VERSION_H_

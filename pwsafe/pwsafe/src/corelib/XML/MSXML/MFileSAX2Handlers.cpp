@@ -183,7 +183,7 @@ HRESULT STDMETHODCALLTYPE MFileSAX2ContentHandler::putDocumentLocator(
   return S_OK;
 }
 
-TCHAR * FileProcessAttributes(
+TCHAR * ProcessAttributes(
   /* [in] */  ISAXAttributes __RPC_FAR *pAttributes,
   /* [in] */  TCHAR *lpName)
 {
@@ -246,7 +246,7 @@ HRESULT STDMETHODCALLTYPE MFileSAX2ContentHandler::startElement(
   if (m_bValidation) {
     if (wcscmp(szCurElement, L"passwordsafe") == 0) {
       // Only interested in the delimiter
-      TCHAR *lpValue = FileProcessAttributes(pAttributes, _T("delimiter"));
+      TCHAR *lpValue = ProcessAttributes(pAttributes, _T("delimiter"));
       if (lpValue != NULL) {
         m_delimiter = lpValue[0];
         free(lpValue);
@@ -267,7 +267,7 @@ HRESULT STDMETHODCALLTYPE MFileSAX2ContentHandler::startElement(
     case XLE_RFIELD:
       {
         // Only interested in the ftype
-        TCHAR *lpValue = FileProcessAttributes(pAttributes, _T("ftype"));
+        TCHAR *lpValue = ProcessAttributes(pAttributes, _T("ftype"));
         if (lpValue != NULL) {
           m_ctype = (unsigned char)_ttoi(lpValue);
           free(lpValue);
@@ -276,13 +276,13 @@ HRESULT STDMETHODCALLTYPE MFileSAX2ContentHandler::startElement(
       break;
     case XLE_ENTRY:
       {
-        TCHAR *lpValue1 = FileProcessAttributes(pAttributes, _T("normal"));
+        TCHAR *lpValue1 = ProcessAttributes(pAttributes, _T("normal"));
         if (lpValue1 != NULL) {
           cur_entry->bforce_normal_entry =
                _ttoi(lpValue1) == 1 || _tcscmp(lpValue1, _T("true")) == 0;
           free(lpValue1);
         }
-        TCHAR *lpValue2 = FileProcessAttributes(pAttributes, _T("id"));
+        TCHAR *lpValue2 = ProcessAttributes(pAttributes, _T("id"));
         if (lpValue2 != NULL) {
           cur_entry->id = _ttoi(lpValue2) ;
           free(lpValue2);

@@ -250,11 +250,14 @@ void signal_dumphandler(int isignal)
 }
 
 LONG TakeMiniDump(struct _EXCEPTION_POINTERS *pExInfo, const int itype,
-                  st_invp * )
+                  st_invp *pinvp)
 {
   // Use standard functions as much as possible
   // Remove all handlers - but don't free the library just yet
   RemoveFaultHandler(false);
+
+  // Won't do anything with this - as long in dump if needed
+  UNREFERENCED_PARAMETER(pinvp);
 
   wchar_t sz_TempName[_MAX_PATH + 1];
 

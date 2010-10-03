@@ -22,7 +22,6 @@ down the streetsky.  [Groucho Marx]
 #include "corelib/PwsPlatform.h"
 #include "corelib/Pwsdirs.h"
 #include "corelib/pwsprefs.h"
-#include "corelib/return_codes.h"
 
 #include "os/file.h"
 #include "os/env.h"
@@ -475,7 +474,7 @@ void CPasskeyEntry::OnOK()
 void CPasskeyEntry::ProcessPhrase()
 {
   CGeneralMsgBox gmb;
-  if (m_pDbx->CheckPasskey(LPCWSTR(m_filespec), LPCWSTR(m_passkey)) != PWSRC::SUCCESS) {
+  if (m_pDbx->CheckPasskey(LPCWSTR(m_filespec), LPCWSTR(m_passkey)) != PWScore::SUCCESS) {
     if (m_tries >= 2) {
       CTryAgainDlg errorDlg(this);
 

@@ -24,7 +24,6 @@
 #define STRFILEVER     STRPRODUCTVER
 
 // Only define SPECIAL_BUILD before here (in version.in) if needed!
-#define SPECIAL_BUILD L"T2"
 #ifndef SPECIAL_BUILD
 #define SPECIAL_BUILD L""
 #endif

@@ -37,7 +37,6 @@
 #include "corelib/PWSfile.h"
 #include "corelib/PWSdirs.h"
 #include "corelib/XML/XMLDefs.h"  // Required if testing "USE_XML_LIBRARY"
-#include "corelib/return_codes.h"
 
 #include "os/file.h"
 #include "os/dir.h"
@@ -202,7 +201,6 @@ bool DboxMain::PassesFiltering(const CItemData &ci,
   const CItemData::EntryType entrytype = ci.GetEntryType();
 
   m_bFilterForStatus = false;
-  uuid_array_t entry_uuid;
 
   vfiltergroups::const_iterator Fltgroup_citer;
   for (Fltgroup_citer = m_vMflgroups.begin();
@@ -261,11 +259,6 @@ bool DboxMain::PassesFiltering(const CItemData &ci,
           break;
         case FT_UNKNOWNFIELDS:
           bValue = ci.NumberUnknownFields() > 0;
-          mt = PWSMatch::MT_BOOL;
-          break;
-        case FT_ATTACHMENTS:
-          ci.GetUUID(entry_uuid);
-          bValue = m_core.HasAttachments(entry_uuid) > 0;
           mt = PWSMatch::MT_BOOL;
           break;
         case FT_ENTRYTYPE:
@@ -630,13 +623,11 @@ struct CopyDBFilters {
   CopyDBFilters(PWSFilters &core_mapFilters) :
   m_CoreMapFilters(core_mapFilters)
   {}
-
   // operator
   void operator()(pair<const st_Filterkey, st_filters> p)
   {
     m_CoreMapFilters.insert(PWSFilters::Pair(p.first, p.second));
   }
-
 private:
   PWSFilters &m_CoreMapFilters;
 };
@@ -751,7 +742,7 @@ void DboxMain::ExportFilters(PWSFilters &Filters)
   rc = Filters.WriteFilterXMLFile(LPCWSTR(cs_newfile), hdr, currentfile);
 
   CGeneralMsgBox gmb;
-  if (rc == PWSRC::CANT_OPEN_FILE) {
+  if (rc == PWScore::CANT_OPEN_FILE) {
     cs_temp.Format(IDS_CANTOPENWRITING, cs_newfile);
     cs_title.LoadString(IDS_FILEWRITEERROR);
     gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
@@ -823,14 +814,14 @@ void DboxMain::ImportFilters()
     waitCursor.Restore();  // Restore normal cursor
 
     switch (rc) {
-      case PWSRC::XML_FAILED_VALIDATION:
+      case PWScore::XML_FAILED_VALIDATION:
         cs_temp.Format(IDS_FAILEDXMLVALIDATE, fd.GetFileName(),
                        strErrors.c_str());
         break;
-      case PWSRC::XML_FAILED_IMPORT:
+      case PWScore::XML_FAILED_IMPORT:
         cs_temp.Format(IDS_XMLERRORS, fd.GetFileName(), strErrors.c_str());
         break;
-      case PWSRC::SUCCESS:
+      case PWScore::SUCCESS:
         if (!strErrors.empty()) {
           std::wstring csErrors = strErrors + L"\n";
           cs_temp.Format(IDS_XMLIMPORTWITHERRORS, fd.GetFileName(),

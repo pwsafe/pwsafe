@@ -36,7 +36,6 @@
 #include "MenuShortcuts.h"
 #include "AdvancedDlg.h"
 #include "AddEdit_PropertySheet.h"
-#include "AttProgressDlg.h"
 
 #include "corelib/UIinterface.h"
 #include "corelib/PWScore.h"
@@ -45,7 +44,6 @@
 #include "corelib/PwsPlatform.h"
 #include "corelib/PWSFilters.h"
 #include "corelib/Command.h"
-#include "corelib/attachments.h"
 
 #include "os/run.h"
 
@@ -101,15 +99,6 @@ DECLARE_HANDLE(HDROP);
 
 // Update current filters whilst SetFilters dialog is open
 #define PWS_MSG_EXECUTE_FILTERS         (WM_APP + 60)
-
-// Extract attachment via context menu on Attachment CListCtrl - also defined in PWAttLC.h
-#define PWS_MSG_EXTRACT_ATTACHMENT      (WM_APP + 70)
-#define PWS_MSG_EXPORT_ATTACHMENT       (WM_APP + 71)
-#define PWS_MSG_CHANGE_ATTACHMENT       (WM_APP + 72)
-
-// Update AddEdit_Attachments that the user has changed an entry's flags - also defined in PWAttLC.h
-#define PWS_MSG_ATTACHMENT_FLAG_CHANGED (WM_APP + 79)
-#define PWS_MSG_ATTACHMENT_THREAD_ENDED (WM_APP + 80)
 
 /* timer event number used to by PupText.  Here for doc. only
 #define TIMER_PUPTEXT             0x03  */
@@ -168,7 +157,7 @@ enum SearchDirection {FIND_UP = -1, FIND_DOWN = 1};
 
 // List of all Popup menus in the Main Menu
 enum PopupMenus {FILEMENU = 0, EXPORTMENU, IMPORTMENU, 
-                 EDITMENU, VIEWMENU, FILTERMENU, ATTACHMENTMENU,
+                 EDITMENU, VIEWMENU, FILTERMENU, 
                  CHANGEFONTMENU, REPORTSMENU, MANAGEMENU, 
                  HELPMENU, NUMPOPUPMENUS};
 
@@ -183,9 +172,6 @@ enum {GCP_FIRST      = 0,   // At startup of PWS
 enum {GCP_READONLY = 1,
       GCP_FORCEREADONLY = 2,
       GCP_HIDEREADONLY = 4};
-
-enum GetAttachmentStatus {OK, BADTARGETDEVICE, CANTCREATEFILE,  CANTFINDATTACHMENT,
-                          BADDATA, BADATTACHMENTWRITE, BADCRCDIGEST};
 
 //-----------------------------------------------------------------------------
 class DboxMain : public CDialog, public UIInterFace
@@ -283,7 +269,7 @@ public:
   void InvalidateSearch() {m_FindToolBar.InvalidateSearch();}
   void ResumeOnDBNotification() {m_core.ResumeOnDBNotification();}
   void SuspendOnDBNotification() {m_core.SuspendOnDBNotification();}
-  bool IsDBReadOnly() const {return m_core.IsReadOnly();};
+  bool IsMcoreReadOnly() const {return m_core.IsReadOnly();};
   void SetStartSilent(bool state);
   void SetStartClosed(bool state) {m_IsStartClosed = state;}
   void SetValidate(bool state) {m_bValidate = state;}
@@ -403,18 +389,7 @@ public:
   // Needed public function for ComapreResultsDialog
   void CPRInitMenuPopup(CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu)
   {OnInitMenuPopup(pPopupMenu, nIndex, bSysMenu);}
-
-  // Attachments
-  bool GetNewAttachmentInfo(ATRecord &atr, const bool bGetFileName);
-  // Invoke thread to get attachment
-  int GetAttachment(const stringT &newname, const ATRecord &atr);
-  // Thread to do it
-  int XGetAttachment(const stringT &newname, const ATRecord &atr);
-  void DoAttachmentExtraction(const ATRecord &atr);
-  bool AnyAttachments(HTREEITEM hItem);
-  bool AllowAttachments()
-  {return !m_bNoAttachments;}
-
+  
   // ClassWizard generated virtual function overrides
   //{{AFX_VIRTUAL(DboxMain)
 protected:
@@ -690,9 +665,6 @@ protected:
   afx_msg void OnSetFilter();
   afx_msg void OnRefreshWindow();
   afx_msg void OnShowUnsavedEntries();
-  afx_msg void OnViewAttachments();
-  afx_msg void OnExportAllAttachments();
-  afx_msg void OnImportAttachments();
   afx_msg void OnMinimize();
   afx_msg void OnRestore();
   afx_msg void OnTimer(UINT_PTR nIDEvent);
@@ -724,12 +696,6 @@ protected:
   afx_msg void OnImportText();
   afx_msg void OnImportKeePass();
   afx_msg void OnImportXML();
-  afx_msg void OnExtractAttachment();
-  afx_msg LRESULT OnExtractAttachment(WPARAM wParam, LPARAM lParam);
-  afx_msg LRESULT OnExportAttachment(WPARAM wParam, LPARAM lParam);
-  afx_msg LRESULT OnChangeAttachment(WPARAM wParam, LPARAM lParam);
-  afx_msg LRESULT OnAttachmentThreadEnded(WPARAM wParam, LPARAM lParam);
-  afx_msg LRESULT OnCallAttachmentThread(WPARAM, LPARAM);
 
   afx_msg void OnToolBarFind();
   afx_msg void OnToolBarFindUp();
@@ -756,6 +722,7 @@ protected:
                           PWScore *pcore = 0, 
                           CAdvancedDlg::Type adv_type = CAdvancedDlg::ADV_INVALID);
 
+
 private:
   // UIInterFace implementations:
   void DatabaseModified(bool bChanged);
@@ -764,17 +731,6 @@ private:
                  CItemData::FieldType ft, bool bUpdateGUI);
   void GUISetupDisplayInfo(CItemData &ci);
   void GUIRefreshEntry(const CItemData &ci);
-
-  int AttachmentProgress(const ATTProgress &st_atpg);
-  int ReadAttachmentFile(bool bVerify);
-  int WriteAttachmentFile(const bool bCleanup = false,
-                          PWSAttfile::VERSION version = PWSAttfile::VCURRENT);
-  int DuplicateAttachments(const uuid_array_t &old_entry_uuid, 
-                           const uuid_array_t &new_entry_uuid,
-                           PWSAttfile::VERSION version = PWSAttfile::VCURRENT);
-  int WriteXMLAttachmentFile(const StringX &filename, ATFVector &vatf, 
-                             ATRExVector &vAIRecordExs, size_t &num_exported);
-  int CompleteImportFile(const stringT &filename, PWSAttfile::VERSION version);
 
   static int CALLBACK CompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
 
@@ -798,7 +754,6 @@ private:
   int m_nColumnHeaderWidthByType[CItemData::LAST];
   int m_iheadermaxwidth;
   CFont *m_pFontTree;
-  size_t m_numNormalImages;
 
   uuid_array_t m_LUUIDSelectedAtMinimize; // to restore List entry selection upon un-minimize
   uuid_array_t m_TUUIDSelectedAtMinimize; // to restore Tree entry selection upon un-minimize
@@ -859,7 +814,6 @@ private:
 
   void DoExportText(const bool bAll);
   void DoExportXML(const bool bAll);
-  void DoExportAttachmentsXML(ATRecordEx *patrex = NULL);
   
   static const struct UICommandTableEntry {
     UINT ID;
@@ -940,14 +894,6 @@ private:
   // Do Autotype
   bool m_bInAT;
   std::bitset<3> m_btAT;  // Representing the Key, Ctrl Key and Shift key
-
-  // Will be set if the user stops verification (only during reading of attachment file)
-  bool m_bStopVerify, m_bAttachmentCancel;
-  // Address of progress dialog to use SendMessage directly
-  CAttProgressDlg *m_pProgressDlg;
-  CWinThread *m_AttThread; // attachment worker thread
-  int DoAttachmentThread(ATThreadParms *pthdpms);
-  bool m_bNoAttachments;
 
   // The following is for saving information over an execute/undo/redo
   // Might need to add more e.g. if filter is active and which one?

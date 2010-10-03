@@ -44,7 +44,6 @@
 #include "corelib/PWSAuxParse.h"
 
 #include "corelib/XML/XMLDefs.h"  // Required if testing "USE_XML_LIBRARY"
-#include "corelib/return_codes.h"
 
 #include "os/file.h"
 #include "os/env.h"
@@ -141,8 +140,7 @@ DboxMain::DboxMain(CWnd* pParent)
   m_bDeleteCtrl(false), m_bDeleteShift(false),
   m_bRenameCtrl(false), m_bRenameShift(false),
   m_bAutotypeCtrl(false), m_bAutotypeShift(false),
-  m_bInAT(false), m_bInRestoreWindowsData(false), m_bSetup(false),
-   m_pProgressDlg(NULL), m_AttThread(NULL), m_bNoAttachments(false)
+  m_bInAT(false), m_bInRestoreWindowsData(false), m_bSetup(false)
 {
   // Need to do the following as using the direct calls will fail for Windows versions before Vista
   // (Load Library using absolute path to avoid dll poisoning attacks)
@@ -173,9 +171,8 @@ DboxMain::DboxMain(CWnd* pParent)
   }
 
   // Set menus to be rebuilt with user's shortcuts
-  for (int i = 0; i < NUMPOPUPMENUS; i++) {
+  for (int i = 0; i < NUMPOPUPMENUS; i++)
     m_bDoShortcuts[i] = true;
-  }
 
   m_hIcon = app.LoadIcon(IDI_CORNERICON);
   m_hIconSm = (HICON) ::LoadImage(app.m_hInstance, MAKEINTRESOURCE(IDI_CORNERICON),
@@ -202,8 +199,7 @@ DboxMain::DboxMain(CWnd* pParent)
 
 DboxMain::~DboxMain()
 {
-  std::bitset<UIInterFace::NUM_SUPPORTED> bsSupportedFunctions(0);
-  m_core.SetUIInterFace(NULL, bsSupportedFunctions);
+  m_core.SetUIInterFace(NULL);
 
   MapKeyNameIDIter iter;
   for (iter = m_MapKeyNameID.begin(); iter != m_MapKeyNameID.end(); iter++) {
@@ -415,7 +411,6 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_REDO, OnRedo)
   ON_COMMAND(ID_MENUITEM_EXPORTENT2PLAINTEXT, OnExportEntryText)
   ON_COMMAND(ID_MENUITEM_EXPORTENT2XML, OnExportEntryXML)
-  ON_COMMAND(ID_MENUITEM_EXTRACT_ATTACHMENT, OnExtractAttachment)
 
   // View Menu
   ON_COMMAND(ID_MENUITEM_LIST_VIEW, OnListView)
@@ -439,9 +434,6 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_PASSWORDSUBSET, OnDisplayPswdSubset)
   ON_COMMAND(ID_MENUITEM_REFRESH, OnRefreshWindow)
   ON_COMMAND(ID_MENUITEM_SHOWHIDE_UNSAVED, OnShowUnsavedEntries)
-  ON_COMMAND(ID_MENUITEM_VIEWATTACHMENTS, OnViewAttachments)
-  ON_COMMAND(ID_MENUITEM_EXPORTATTACHMENTS, OnExportAllAttachments)
-  ON_COMMAND(ID_MENUITEM_IMPORTATTACHMENTS, OnImportAttachments)
 
   // Manage Menu
   ON_COMMAND(ID_MENUITEM_CHANGECOMBO, OnPasswordChange)
@@ -537,10 +529,6 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_MESSAGE(PWS_MSG_EDIT_APPLY, OnApplyEditChanges)
   ON_MESSAGE(WM_QUERYENDSESSION, OnQueryEndSession)
   ON_MESSAGE(WM_ENDSESSION, OnEndSession)
-  ON_MESSAGE(PWS_MSG_EXTRACT_ATTACHMENT, OnExtractAttachment)
-  ON_MESSAGE(PWS_MSG_EXPORT_ATTACHMENT, OnExportAttachment)
-  ON_MESSAGE(PWS_MSG_CHANGE_ATTACHMENT, OnChangeAttachment)
-  ON_MESSAGE(PWS_MSG_ATTACHMENT_THREAD_ENDED, OnAttachmentThreadEnded)
 
   ON_COMMAND(ID_MENUITEM_CUSTOMIZETOOLBAR, OnCustomizeToolbar)
 
@@ -631,9 +619,6 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_REDO, true, false, true, false},
   {ID_MENUITEM_EXPORTENT2PLAINTEXT, true, true, false, false},
   {ID_MENUITEM_EXPORTENT2XML, true, true, false, false},
-  {ID_MENUITEM_EXTRACT_ATTACHMENT, true, true, false, false},
-  {ID_MENUITEM_EXPORTATT2XML, true, true, false, false},
-  {ID_MENUITEM_EDITDESCRIPTION, true, true, false, false},
   // View menu
   {ID_MENUITEM_LIST_VIEW, true, true, true, false},
   {ID_MENUITEM_TREE_VIEW, true, true, true, false},
@@ -660,9 +645,6 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_PASSWORDSUBSET, true, true, false, false},
   {ID_MENUITEM_REFRESH, true, true, false, false},
   {ID_MENUITEM_SHOWHIDE_UNSAVED, true, false, false, false},
-  {ID_MENUITEM_VIEWATTACHMENTS,  true, false, false, false},
-  {ID_MENUITEM_EXPORTATTACHMENTS, true, false, false, false},
-  {ID_MENUITEM_IMPORTATTACHMENTS, true, false, false, false},
   // Manage menu
   {ID_MENUITEM_CHANGECOMBO, true, false, true, false},
   {ID_MENUITEM_BACKUPSAFE, true, true, true, false},
@@ -788,23 +770,8 @@ void DboxMain::InitPasswordSafe()
     IDB_SHORTCUT,
   };
 
-  // Note shortcuts can not have attachments
-  UINT bitmapResIDsAttachments[] = {
-    IDB_ATT_NORMAL, IDB_ATT_NORMAL_WARNEXPIRED, IDB_ATT_NORMAL_EXPIRED,
-    IDB_ATT_ABASE, IDB_ATT_ABASE_WARNEXPIRED, IDB_ATT_ABASE_EXPIRED,
-    IDB_ATT_ALIAS,
-    IDB_ATT_SBASE, IDB_ATT_SBASE_WARNEXPIRED, IDB_ATT_SBASE_EXPIRED,
-  };
-
-  m_numNormalImages = sizeof(bitmapResIDs) / sizeof(bitmapResIDs[0]);
-  for (int i = 0; i < sizeof(bitmapResIDs) / sizeof(bitmapResIDs[0]); i++) {
+  for (int i = 0; i < sizeof(bitmapResIDs)/sizeof(bitmapResIDs[0]); i++) {
     bitmap.LoadBitmap(bitmapResIDs[i]);
-    m_pImageList->Add(&bitmap, crTransparent);
-    bitmap.DeleteObject();
-  }
-
-  for (int i = 0; i < sizeof(bitmapResIDsAttachments) / sizeof(bitmapResIDsAttachments[0]); i++) {
-    bitmap.LoadBitmap(bitmapResIDsAttachments[i]);
     m_pImageList->Add(&bitmap, crTransparent);
     bitmap.DeleteObject();
   }
@@ -996,7 +963,7 @@ void DboxMain::InitPasswordSafe()
                                           wsAutoLoad,
                                           XSDFilename.c_str(), strErrors, &q);
     waitCursor.Restore();  // Restore normal cursor
-    if (rc != PWSRC::SUCCESS) {
+    if (rc != PWScore::SUCCESS) {
       CGeneralMsgBox gmb;
       CString cs_msg;
       cs_msg.Format(IDS_CANTAUTOIMPORTFILTERS, strErrors.c_str());
@@ -1081,9 +1048,8 @@ BOOL DboxMain::OnInitDialog()
 
   // Set up UPDATE_UI data map.
   const int num_CommandTable_entries = _countof(m_UICommandTable);
-  for (int i = 0; i < num_CommandTable_entries; i++) {
+  for (int i = 0; i < num_CommandTable_entries; i++)
     m_MapUICommandTable[m_UICommandTable[i].ID] = i;
-  }
 
   // Install managers in window processing chain
   m_menuManager.Install(this);
@@ -1137,7 +1103,7 @@ BOOL DboxMain::OnInitDialog()
         m_core.NewFile(dbox_pksetup.m_passkey);
         m_core.SetReadOnly(false); 
         rc = m_core.WriteCurFile();
-        if (rc == PWSRC::CANT_OPEN_FILE) {
+        if (rc == PWScore::CANT_OPEN_FILE) {
           CGeneralMsgBox gmb;
           CString cs_temp, cs_title(MAKEINTRESOURCE(IDS_FILEWRITEERROR));
           cs_temp.Format(IDS_CANTOPENWRITING, m_core.GetCurFile().c_str());
@@ -1603,7 +1569,7 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
 
   if (dbox_pkentry != NULL) { // can happen via systray unlock
     dbox_pkentry->BringWindowToTop();
-    return PWSRC::USER_CANCEL; // multi-thread,
+    return PWScore::USER_CANCEL; // multi-thread,
     // original thread will continue processing
   }
 
@@ -1613,7 +1579,7 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
     bool exists = pws_os::FileExists(filename.c_str(), bFileIsReadOnly);
 
     if (!exists) {
-      return PWSRC::CANT_OPEN_FILE;
+      return PWScore::CANT_OPEN_FILE;
     } // !exists
   } // !filename.IsEmpty()
 
@@ -1731,19 +1697,19 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
       case IDS_READONLY:
         pcore->SetReadOnly(true);
         UpdateToolBarROStatus(true);
-        retval = PWSRC::SUCCESS;
+        retval = PWScore::SUCCESS;
         break;
       case IDS_READWRITE:
         pcore->SetReadOnly(false); // Caveat Emptor!
         UpdateToolBarROStatus(false);
-        retval = PWSRC::SUCCESS;
+        retval = PWScore::SUCCESS;
         break;
       case IDS_EXIT:
-        retval = PWSRC::USER_CANCEL;
+        retval = PWScore::USER_CANCEL;
         break;
       default:
         ASSERT(false);
-        retval = PWSRC::USER_CANCEL;
+        retval = PWScore::USER_CANCEL;
       }
     } else { // locker.IsEmpty() means no lock needed or lock was successful
       if (dbox_pkentry->GetStatus() == TAR_NEW) {
@@ -1751,19 +1717,19 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
         pcore->NewFile(dbox_pkentry->GetPasskey());
         rc = pcore->WriteCurFile();
 
-        if (rc == PWSRC::CANT_OPEN_FILE) {
+        if (rc == PWScore::CANT_OPEN_FILE) {
           CGeneralMsgBox gmb;
           CString cs_temp, cs_title(MAKEINTRESOURCE(IDS_FILEWRITEERROR));
           cs_temp.Format(IDS_CANTOPENWRITING, pcore->GetCurFile().c_str());
           gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
-          retval = PWSRC::USER_CANCEL;
+          retval = PWScore::USER_CANCEL;
         } else {
           // By definition - new files can't be read-only!
           pcore->SetReadOnly(false); 
-          retval = PWSRC::SUCCESS;
+          retval = PWScore::SUCCESS;
         }
       } else // no need to create file
-        retval = PWSRC::SUCCESS;
+        retval = PWScore::SUCCESS;
     }
   } else {/*if (rc==IDCANCEL) */ //Determine reason for cancel
     int cancelreturn = dbox_pkentry->GetStatus();
@@ -1772,14 +1738,14 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
       ASSERT(0); // now handled entirely in CPasskeyEntry
     case TAR_CANCEL:
     case TAR_NEW:
-      retval = PWSRC::USER_CANCEL;
+      retval = PWScore::USER_CANCEL;
       break;
     case TAR_EXIT:
-      retval = PWSRC::USER_EXIT;
+      retval = PWScore::USER_EXIT;
       break;
     default:
       DBGMSG("Default to WRONG_PASSWORD\n");
-      retval = PWSRC::WRONG_PASSWORD;  //Just a normal cancel
+      retval = PWScore::WRONG_PASSWORD;  //Just a normal cancel
       break;
     }
   }
@@ -2106,7 +2072,7 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
     int rc_passphrase;
     // Verify passphrase (dialog shows only OK, CANCEL & HELP)
     rc_passphrase = GetAndCheckPassword(m_core.GetCurFile(), passkey, GCP_RESTORE);
-    if (rc_passphrase != PWSRC::SUCCESS) {
+    if (rc_passphrase != PWScore::SUCCESS) {
       goto exit;  // return false - don't even think of restoring window!
     }
 
@@ -2122,7 +2088,7 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
   // Case 2 - data unavailable
   if (m_bInitDone && m_bDBNeedsReading) {
     StringX passkey;
-    int rc_passphrase(PWSRC::USER_CANCEL), rc_readdatabase;
+    int rc_passphrase(PWScore::USER_CANCEL), rc_readdatabase;
     const bool bUseSysTray = PWSprefs::GetInstance()->
                              GetPref(PWSprefs::UseSystemTray);
 
@@ -2140,14 +2106,14 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
     CString cs_temp, cs_title;
 
     switch (rc_passphrase) {
-      case PWSRC::SUCCESS:
+      case PWScore::SUCCESS:
         rc_readdatabase = m_core.ReadCurFile(passkey);
 #if !defined(POCKET_PC)
         m_titlebar = PWSUtil::NormalizeTTT(L"Password Safe - " +
                                            m_core.GetCurFile()).c_str();
 #endif
         break;
-      case PWSRC::CANT_OPEN_FILE:
+      case PWScore::CANT_OPEN_FILE:
         cs_temp.Format(IDS_CANTOPEN, m_core.GetCurFile().c_str());
         cs_title.LoadString(IDS_FILEOPEN);
         gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
@@ -2158,29 +2124,29 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
       case TAR_OPEN:
         rc_readdatabase = Open();
         break;
-      case PWSRC::WRONG_PASSWORD:
-        rc_readdatabase = PWSRC::FAILURE;
+      case PWScore::WRONG_PASSWORD:
+        rc_readdatabase = PWScore::NOT_SUCCESS;
         break;
-      case PWSRC::USER_CANCEL:
-        rc_readdatabase = PWSRC::FAILURE;
+      case PWScore::USER_CANCEL:
+        rc_readdatabase = PWScore::NOT_SUCCESS;
         break;
-      case PWSRC::USER_EXIT:
+      case PWScore::USER_EXIT:
         m_core.UnlockFile(m_core.GetCurFile().c_str());
         PostQuitMessage(0);
         return false;
       default:
-        rc_readdatabase = PWSRC::FAILURE;
+        rc_readdatabase = PWScore::NOT_SUCCESS;
         break;
     }
 
-    if (rc_readdatabase == PWSRC::SUCCESS) {
+    if (rc_readdatabase == PWScore::SUCCESS) {
       UpdateSystemTray(UNLOCKED);
       startLockCheckTimer();
       brc = true;
       m_bDBNeedsReading = false;
 
       if (bShow && !bUpdateWindows)
-        ShowWindow(SW_SHOW);
+        ShowWindow(SW_SHOW);	 
       if (bUpdateWindows)
         RestoreWindows();
     } else {
@@ -2634,7 +2600,7 @@ void DboxMain::MakeOrderedItemList(OrderedItemList &il)
   while (NULL != (hItem = m_ctlItemTree.GetNextTreeItem(hItem))) {
     if (!m_ctlItemTree.ItemHasChildren(hItem)) {
       CItemData *pci = (CItemData *)m_ctlItemTree.GetItemData(hItem);
-      if (pci != NULL) { // NULL if there's an empty group [bug #1633516]
+      if (pci != NULL) {// NULL if there's an empty group [bug #1633516]
         il.push_back(*pci);
       }
     }
@@ -2779,17 +2745,11 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
     case ID_MENUITEM_APPLYFILTER:
     case ID_MENUITEM_EDITFILTER:
     case ID_MENUITEM_MANAGEFILTERS:
-    case ID_MENUITEM_IMPORTATTACHMENTS:
       return FALSE;
     default:
       break;
   }
 #endif
-
-  // If user cancelled reading the attachment file - prevent deletion of entries
-  if (m_bNoAttachments &&
-      (nID == ID_MENUITEM_DELETE || nID == ID_MENUITEM_DELETEENTRY || nID == ID_MENUITEM_DELETEGROUP))
-    return FALSE;
 
   MapUICommandTableConstIter it;
   it = m_MapUICommandTable.find(nID);
@@ -3032,12 +2992,6 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
     case ID_MENUITEM_SHOWHIDE_UNSAVED:
       if (!m_core.IsChanged() || (m_core.IsChanged() && m_bFilterActive && !m_bUnsavedDisplayed))
         iEnable = FALSE;
-      break;
-    case ID_MENUITEM_VIEWATTACHMENTS:
-    case ID_MENUITEM_EXPORTATTACHMENTS:
-    case ID_MENUITEM_EXPORTATT2XML:
-    case ID_MENUITEM_EDITDESCRIPTION:
-      iEnable = m_core.DBHasAttachments() ? TRUE : FALSE;
       break;
     case ID_MENUITEM_CLEAR_MRU:
       if (app.GetMRU()->IsMRUEmpty())

@@ -17,8 +17,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="$(PWSLib)"
-			IntermediateDirectory="$(PWSObj)\$(ProjectName)"
+			OutputDirectory="..\..\build\lib\pwsafe\$(ConfigurationName)"
+			IntermediateDirectory="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
 			InheritedPropertySheets="..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="1"
@@ -50,10 +50,10 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
 				TreatWChar_tAsBuiltInType="true"
-				PrecompiledHeaderFile="$(PWSObj)\$(ProjectName)/corelib.pch"
-				AssemblerListingLocation="$(PWSObj)\$(ProjectName)/"
-				ObjectFile="$(PWSObj)\$(ProjectName)/"
-				ProgramDataBaseFileName="$(PWSObj)\$(ProjectName)/"
+				PrecompiledHeaderFile="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/corelib.pch"
+				AssemblerListingLocation="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ObjectFile="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ProgramDataBaseFileName="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
@@ -73,7 +73,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(PWSLib)\corelib.lib"
+				OutputFile="..\..\build\lib\pwsafe\$(ConfigurationName)\corelib.lib"
 				AdditionalLibraryDirectories=""
 				SuppressStartupBanner="true"
 			/>
@@ -95,8 +95,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debugwx|Win32"
-			OutputDirectory="$(PWSLib)"
-			IntermediateDirectory="$(PWSObj)\$(ProjectName)"
+			OutputDirectory="..\..\build\lib\pwsafe\$(ConfigurationName)"
+			IntermediateDirectory="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
 			InheritedPropertySheets="..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="0"
@@ -128,10 +128,10 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
 				TreatWChar_tAsBuiltInType="true"
-				PrecompiledHeaderFile="$(PWSObj)\$(ProjectName)/corelib.pch"
-				AssemblerListingLocation="$(PWSObj)\$(ProjectName)/"
-				ObjectFile="$(PWSObj)\$(ProjectName)/"
-				ProgramDataBaseFileName="$(PWSObj)\$(ProjectName)/"
+				PrecompiledHeaderFile="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/corelib.pch"
+				AssemblerListingLocation="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ObjectFile="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ProgramDataBaseFileName="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
@@ -152,7 +152,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(PWSLib)\corelib.lib"
+				OutputFile="..\..\build\lib\pwsafe\$(ConfigurationName)\corelib.lib"
 				AdditionalLibraryDirectories=""
 				SuppressStartupBanner="true"
 			/>
@@ -174,8 +174,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="$(PWSLib)"
-			IntermediateDirectory="$(PWSObj)\$(ProjectName)"
+			OutputDirectory="..\..\build\lib\pwsafe\$(ConfigurationName)"
+			IntermediateDirectory="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
 			InheritedPropertySheets="..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="1"
@@ -209,10 +209,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				TreatWChar_tAsBuiltInType="true"
-				PrecompiledHeaderFile="$(PWSObj)\$(ProjectName)/corelib.pch"
-				AssemblerListingLocation="$(PWSObj)\$(ProjectName)/"
-				ObjectFile="$(PWSObj)\$(ProjectName)/"
-				ProgramDataBaseFileName="$(PWSObj)\$(ProjectName)/"
+				PrecompiledHeaderFile="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/corelib.pch"
+				AssemblerListingLocation="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ObjectFile="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ProgramDataBaseFileName="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
@@ -231,7 +231,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(PWSLib)\corelib.lib"
+				OutputFile="..\..\build\lib\pwsafe\$(ConfigurationName)\corelib.lib"
 				AdditionalLibraryDirectories=""
 				SuppressStartupBanner="true"
 			/>
@@ -253,8 +253,8 @@
 		</Configuration>
 		<Configuration
 			Name="Releasewx|Win32"
-			OutputDirectory="$(PWSLib)"
-			IntermediateDirectory="$(PWSObj)\$(ProjectName)"
+			OutputDirectory="..\..\build\lib\pwsafe\$(ConfigurationName)"
+			IntermediateDirectory="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
 			InheritedPropertySheets="..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="0"
@@ -288,10 +288,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				TreatWChar_tAsBuiltInType="true"
-				PrecompiledHeaderFile="$(PWSObj)\$(ProjectName)/corelib.pch"
-				AssemblerListingLocation="$(PWSObj)\$(ProjectName)/"
-				ObjectFile="$(PWSObj)\$(ProjectName)/"
-				ProgramDataBaseFileName="$(PWSObj)\$(ProjectName)/"
+				PrecompiledHeaderFile="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/corelib.pch"
+				AssemblerListingLocation="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ObjectFile="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ProgramDataBaseFileName="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
@@ -310,7 +310,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(PWSLib)\corelib.lib"
+				OutputFile="..\..\build\lib\pwsafe\$(ConfigurationName)\corelib.lib"
 				AdditionalLibraryDirectories=""
 				SuppressStartupBanner="true"
 			/>
@@ -332,8 +332,8 @@
 		</Configuration>
 		<Configuration
 			Name="Demo|Win32"
-			OutputDirectory="$(PWSLib)"
-			IntermediateDirectory="$(PWSObj)\$(ProjectName)"
+			OutputDirectory="..\..\build\lib\pwsafe\$(ConfigurationName)"
+			IntermediateDirectory="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
 			InheritedPropertySheets="..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="1"
@@ -367,10 +367,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				TreatWChar_tAsBuiltInType="true"
-				PrecompiledHeaderFile="$(PWSObj)\$(ProjectName)/corelib.pch"
-				AssemblerListingLocation="$(PWSObj)\$(ProjectName)/"
-				ObjectFile="$(PWSObj)\$(ProjectName)/"
-				ProgramDataBaseFileName="$(PWSObj)\$(ProjectName)/"
+				PrecompiledHeaderFile="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/corelib.pch"
+				AssemblerListingLocation="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ObjectFile="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ProgramDataBaseFileName="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
@@ -390,7 +390,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(PWSLib)\corelib.lib"
+				OutputFile="..\..\build\lib\pwsafe\$(ConfigurationName)\corelib.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -411,8 +411,8 @@
 		</Configuration>
 		<Configuration
 			Name="DebugE|Win32"
-			OutputDirectory="$(PWSLib)"
-			IntermediateDirectory="$(PWSObj)\$(ProjectName)"
+			OutputDirectory="..\..\build\lib\pwsafe\$(ConfigurationName)"
+			IntermediateDirectory="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
 			InheritedPropertySheets="..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="1"
@@ -444,10 +444,10 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
 				TreatWChar_tAsBuiltInType="true"
-				PrecompiledHeaderFile="$(PWSObj)\$(ProjectName)/corelib.pch"
-				AssemblerListingLocation="$(PWSObj)\$(ProjectName)/"
-				ObjectFile="$(PWSObj)\$(ProjectName)/"
-				ProgramDataBaseFileName="$(PWSObj)\$(ProjectName)/"
+				PrecompiledHeaderFile="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/corelib.pch"
+				AssemblerListingLocation="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ObjectFile="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ProgramDataBaseFileName="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
@@ -467,7 +467,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(PWSLib)\corelib.lib"
+				OutputFile="..\..\build\lib\pwsafe\$(ConfigurationName)\corelib.lib"
 				AdditionalLibraryDirectories="$(ExpatDir)\Bin"
 				SuppressStartupBanner="true"
 			/>
@@ -489,8 +489,8 @@
 		</Configuration>
 		<Configuration
 			Name="DebugM|Win32"
-			OutputDirectory="$(PWSLib)"
-			IntermediateDirectory="$(PWSObj)\$(ProjectName)"
+			OutputDirectory="..\..\build\lib\pwsafe\$(ConfigurationName)"
+			IntermediateDirectory="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
 			InheritedPropertySheets="..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="1"
@@ -522,10 +522,10 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
 				TreatWChar_tAsBuiltInType="true"
-				PrecompiledHeaderFile="$(PWSObj)\$(ProjectName)/corelib.pch"
-				AssemblerListingLocation="$(PWSObj)\$(ProjectName)/"
-				ObjectFile="$(PWSObj)\$(ProjectName)/"
-				ProgramDataBaseFileName="$(PWSObj)\$(ProjectName)/"
+				PrecompiledHeaderFile="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/corelib.pch"
+				AssemblerListingLocation="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ObjectFile="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ProgramDataBaseFileName="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
@@ -545,7 +545,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(PWSLib)\corelib.lib"
+				OutputFile="..\..\build\lib\pwsafe\$(ConfigurationName)\corelib.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -566,8 +566,8 @@
 		</Configuration>
 		<Configuration
 			Name="DebugX|Win32"
-			OutputDirectory="$(PWSLib)"
-			IntermediateDirectory="$(PWSObj)\$(ProjectName)"
+			OutputDirectory="..\..\build\lib\pwsafe\$(ConfigurationName)"
+			IntermediateDirectory="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
 			InheritedPropertySheets="..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="1"
@@ -599,10 +599,10 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
 				TreatWChar_tAsBuiltInType="true"
-				PrecompiledHeaderFile="$(PWSObj)\$(ProjectName)/corelib.pch"
-				AssemblerListingLocation="$(PWSObj)\$(ProjectName)/"
-				ObjectFile="$(PWSObj)\$(ProjectName)/"
-				ProgramDataBaseFileName="$(PWSObj)\$(ProjectName)/"
+				PrecompiledHeaderFile="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/corelib.pch"
+				AssemblerListingLocation="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ObjectFile="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ProgramDataBaseFileName="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
@@ -622,7 +622,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(PWSLib)\corelib.lib"
+				OutputFile="..\..\build\lib\pwsafe\$(ConfigurationName)\corelib.lib"
 				AdditionalLibraryDirectories="$(XercesDir)\lib"
 				SuppressStartupBanner="true"
 			/>
@@ -644,8 +644,8 @@
 		</Configuration>
 		<Configuration
 			Name="ReleaseE|Win32"
-			OutputDirectory="$(PWSLib)"
-			IntermediateDirectory="$(PWSObj)\$(ProjectName)"
+			OutputDirectory="..\..\build\lib\pwsafe\$(ConfigurationName)"
+			IntermediateDirectory="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
 			InheritedPropertySheets="..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="1"
@@ -679,10 +679,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				TreatWChar_tAsBuiltInType="true"
-				PrecompiledHeaderFile="$(PWSObj)\$(ProjectName)/corelib.pch"
-				AssemblerListingLocation="$(PWSObj)\$(ProjectName)/"
-				ObjectFile="$(PWSObj)\$(ProjectName)/"
-				ProgramDataBaseFileName="$(PWSObj)\$(ProjectName)/"
+				PrecompiledHeaderFile="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/corelib.pch"
+				AssemblerListingLocation="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ObjectFile="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ProgramDataBaseFileName="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
@@ -702,7 +702,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(PWSLib)\corelib.lib"
+				OutputFile="..\..\build\lib\pwsafe\$(ConfigurationName)\corelib.lib"
 				AdditionalLibraryDirectories="$(ExpatDir)\Bin"
 				SuppressStartupBanner="true"
 			/>
@@ -724,8 +724,8 @@
 		</Configuration>
 		<Configuration
 			Name="ReleaseM|Win32"
-			OutputDirectory="$(PWSLib)"
-			IntermediateDirectory="$(PWSObj)\$(ProjectName)"
+			OutputDirectory="..\..\build\lib\pwsafe\$(ConfigurationName)"
+			IntermediateDirectory="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
 			InheritedPropertySheets="..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="1"
@@ -759,10 +759,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				TreatWChar_tAsBuiltInType="true"
-				PrecompiledHeaderFile="$(PWSObj)\$(ProjectName)/corelib.pch"
-				AssemblerListingLocation="$(PWSObj)\$(ProjectName)/"
-				ObjectFile="$(PWSObj)\$(ProjectName)/"
-				ProgramDataBaseFileName="$(PWSObj)\$(ProjectName)/"
+				PrecompiledHeaderFile="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/corelib.pch"
+				AssemblerListingLocation="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ObjectFile="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ProgramDataBaseFileName="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
@@ -782,7 +782,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(PWSLib)\corelib.lib"
+				OutputFile="..\..\build\lib\pwsafe\$(ConfigurationName)\corelib.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -803,8 +803,8 @@
 		</Configuration>
 		<Configuration
 			Name="ReleaseX|Win32"
-			OutputDirectory="$(PWSLib)"
-			IntermediateDirectory="$(PWSObj)\$(ProjectName)"
+			OutputDirectory="..\..\build\lib\pwsafe\$(ConfigurationName)"
+			IntermediateDirectory="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="4"
 			InheritedPropertySheets="..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="1"
@@ -838,10 +838,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				TreatWChar_tAsBuiltInType="true"
-				PrecompiledHeaderFile="$(PWSObj)\$(ProjectName)/corelib.pch"
-				AssemblerListingLocation="$(PWSObj)\$(ProjectName)/"
-				ObjectFile="$(PWSObj)\$(ProjectName)/"
-				ProgramDataBaseFileName="$(PWSObj)\$(ProjectName)/"
+				PrecompiledHeaderFile="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/corelib.pch"
+				AssemblerListingLocation="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ObjectFile="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ProgramDataBaseFileName="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
@@ -861,7 +861,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(PWSLib)\corelib.lib"
+				OutputFile="..\..\build\lib\pwsafe\$(ConfigurationName)\corelib.lib"
 				AdditionalLibraryDirectories="$(XercesDir)\lib"
 				SuppressStartupBanner="true"
 			/>
@@ -883,8 +883,8 @@
 		</Configuration>
 		<Configuration
 			Name="DebugwxE|Win32"
-			OutputDirectory="$(PWSLib)"
-			IntermediateDirectory="$(PWSObj)"
+			OutputDirectory="..\..\build\lib\pwsafe\$(ConfigurationName)"
+			IntermediateDirectory="..\..\build\obj\pwsafe\$(ConfigurationName)"
 			ConfigurationType="4"
 			InheritedPropertySheets="..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="0"
@@ -916,10 +916,10 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
 				TreatWChar_tAsBuiltInType="true"
-				PrecompiledHeaderFile="$(PWSObj)\$(ProjectName)/corelib.pch"
-				AssemblerListingLocation="$(PWSObj)\$(ProjectName)/"
-				ObjectFile="$(PWSObj)\$(ProjectName)/"
-				ProgramDataBaseFileName="$(PWSObj)\$(ProjectName)/"
+				PrecompiledHeaderFile="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/corelib.pch"
+				AssemblerListingLocation="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ObjectFile="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ProgramDataBaseFileName="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
@@ -940,7 +940,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(PWSLib)\corelib.lib"
+				OutputFile="..\..\build\lib\pwsafe\$(ConfigurationName)\corelib.lib"
 				AdditionalLibraryDirectories="$(ExpatDir)\Bin"
 				SuppressStartupBanner="true"
 			/>
@@ -962,8 +962,8 @@
 		</Configuration>
 		<Configuration
 			Name="DebugwxX|Win32"
-			OutputDirectory=".\$(PWSLib)"
-			IntermediateDirectory=".\$(PWSObj)"
+			OutputDirectory=".\..\..\build\lib\pwsafe\$(ConfigurationName)"
+			IntermediateDirectory=".\..\..\build\obj\pwsafe\$(ConfigurationName)"
 			ConfigurationType="4"
 			InheritedPropertySheets="..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="0"
@@ -995,10 +995,10 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
 				TreatWChar_tAsBuiltInType="true"
-				PrecompiledHeaderFile="$(PWSObj)\$(ProjectName)/corelib.pch"
-				AssemblerListingLocation="$(PWSObj)\$(ProjectName)/"
-				ObjectFile="$(PWSObj)\$(ProjectName)/"
-				ProgramDataBaseFileName="$(PWSObj)\$(ProjectName)/"
+				PrecompiledHeaderFile="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/corelib.pch"
+				AssemblerListingLocation="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ObjectFile="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ProgramDataBaseFileName="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
@@ -1019,7 +1019,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(PWSLib)\corelib.lib"
+				OutputFile="..\..\build\lib\pwsafe\$(ConfigurationName)\corelib.lib"
 				AdditionalLibraryDirectories="$(XercesDir)\lib"
 				SuppressStartupBanner="true"
 			/>
@@ -1041,8 +1041,8 @@
 		</Configuration>
 		<Configuration
 			Name="ReleasewxE|Win32"
-			OutputDirectory="$(PWSLib)"
-			IntermediateDirectory="$(PWSObj)"
+			OutputDirectory="..\..\build\lib\pwsafe\$(ConfigurationName)"
+			IntermediateDirectory="..\..\build\obj\pwsafe\$(ConfigurationName)"
 			ConfigurationType="4"
 			InheritedPropertySheets="..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="0"
@@ -1076,15 +1076,15 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				TreatWChar_tAsBuiltInType="true"
-				PrecompiledHeaderFile="$(PWSObj)\$(ProjectName)/corelib.pch"
-				AssemblerListingLocation="$(PWSObj)\$(ProjectName)/"
-				ObjectFile="$(PWSObj)\$(ProjectName)/"
-				ProgramDataBaseFileName="$(PWSObj)\$(ProjectName)/"
+				PrecompiledHeaderFile="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/corelib.pch"
+				AssemblerListingLocation="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ObjectFile="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ProgramDataBaseFileName="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
 				CompileAs="0"
-				ShowIncludes="false"
+        ShowIncludes="false"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -1099,7 +1099,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(PWSLib)\corelib.lib"
+				OutputFile="..\..\build\lib\pwsafe\$(ConfigurationName)\corelib.lib"
 				AdditionalLibraryDirectories="$(ExpatDir)\Bin"
 				SuppressStartupBanner="true"
 			/>
@@ -1121,8 +1121,8 @@
 		</Configuration>
 		<Configuration
 			Name="ReleasewxX|Win32"
-			OutputDirectory=".\$(PWSLib)"
-			IntermediateDirectory=".\$(PWSObj)"
+			OutputDirectory=".\..\..\build\lib\pwsafe\$(ConfigurationName)"
+			IntermediateDirectory=".\..\..\build\obj\pwsafe\$(ConfigurationName)"
 			ConfigurationType="4"
 			InheritedPropertySheets="..\ui\Windows\UserVariables.vsprops"
 			UseOfMFC="0"
@@ -1156,10 +1156,10 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				TreatWChar_tAsBuiltInType="true"
-				PrecompiledHeaderFile="$(PWSObj)\$(ProjectName)/corelib.pch"
-				AssemblerListingLocation="$(PWSObj)\$(ProjectName)/"
-				ObjectFile="$(PWSObj)\$(ProjectName)/"
-				ProgramDataBaseFileName="$(PWSObj)\$(ProjectName)/"
+				PrecompiledHeaderFile="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/corelib.pch"
+				AssemblerListingLocation="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ObjectFile="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
+				ProgramDataBaseFileName="..\..\build\obj\pwsafe\$(ConfigurationName)\$(ProjectName)/"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="false"
@@ -1178,7 +1178,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(PWSLib)\corelib.lib"
+				OutputFile="..\..\build\lib\pwsafe\$(ConfigurationName)\corelib.lib"
 				AdditionalLibraryDirectories="$(XercesDir)\lib"
 				SuppressStartupBanner="true"
 			/>
@@ -1216,10 +1216,6 @@
 			</File>
 			<File
 				RelativePath=".\Command.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\CoreAttmnt.cpp"
 				>
 			</File>
 			<File
@@ -1275,18 +1271,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\XML\MSXML\MAttSAX2Handlers.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\XML\MSXML\MAttValidator.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\XML\MSXML\MAttXMLProcessor.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\XML\MSXML\MFileSAX2Handlers.cpp"
 				>
 			</File>
@@ -1316,14 +1300,6 @@
 			</File>
 			<File
 				RelativePath=".\PWPolicy.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\PWSAttfile.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\PWSAttfileV3.cpp"
 				>
 			</File>
 			<File
@@ -1439,14 +1415,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\XML\XMLAttHandlers.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\XML\XMLAttValidation.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\XML\XMLFileHandlers.cpp"
 				>
 			</File>
@@ -1467,10 +1435,6 @@
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl"
 			>
-			<File
-				RelativePath=".\attachments.h"
-				>
-			</File>
 			<File
 				RelativePath=".\BlowFish.h"
 				>
@@ -1556,18 +1520,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\XML\MSXML\MAttSAX2Handlers.h"
-				>
-			</File>
-			<File
-				RelativePath=".\XML\MSXML\MAttValidator.h"
-				>
-			</File>
-			<File
-				RelativePath=".\XML\MSXML\MAttXMLProcessor.h"
-				>
-			</File>
-			<File
 				RelativePath=".\XML\MSXML\MFileSAX2Handlers.h"
 				>
 			</File>
@@ -1601,14 +1553,6 @@
 			</File>
 			<File
 				RelativePath=".\PWPolicy.h"
-				>
-			</File>
-			<File
-				RelativePath=".\PWSAttfile.h"
-				>
-			</File>
-			<File
-				RelativePath=".\PWSAttfileV3.h"
 				>
 			</File>
 			<File
@@ -1653,10 +1597,6 @@
 			</File>
 			<File
 				RelativePath=".\Report.h"
-				>
-			</File>
-			<File
-				RelativePath=".\return_codes.h"
 				>
 			</File>
 			<File
@@ -1737,14 +1677,6 @@
 			</File>
 			<File
 				RelativePath=".\XML\XERCES\XFilterXMLProcessor.h"
-				>
-			</File>
-			<File
-				RelativePath=".\XML\XMLAttHandlers.h"
-				>
-			</File>
-			<File
-				RelativePath=".\XML\XMLAttValidation.h"
 				>
 			</File>
 			<File

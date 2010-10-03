@@ -17,6 +17,7 @@
 
 #include "PasswordSafe.h"
 
+
 #if defined(POCKET_PC)
 #include "pocketpc/PocketPC.h"
 #include "pocketpc/resource.h"
@@ -645,18 +646,8 @@ BOOL ThisMfcApp::InitInstance()
   SetRegistryKey(L"Password Safe");
 
   DboxMain dbox(NULL);
-  std::bitset<UIInterFace::NUM_SUPPORTED> bsSupportedFunctions;
-  bsSupportedFunctions.set(UIInterFace::DATABASEMODIFIED);
-  bsSupportedFunctions.set(UIInterFace::UPDATEGUI);
-  bsSupportedFunctions.set(UIInterFace::GUISETUPDISPLAYINFO);
-  bsSupportedFunctions.set(UIInterFace::GUIREFRESHENTRY);
-  bsSupportedFunctions.set(UIInterFace::ATTACHMENTPROGRESS);
-  bsSupportedFunctions.set(UIInterFace::WRITEATTACHMENTFILE);
-  bsSupportedFunctions.set(UIInterFace::COMPLETEIMPORTFILE);
-
-  m_core.SetUIInterFace(&dbox, bsSupportedFunctions);
+  m_core.SetUIInterFace(&dbox);
   m_core.SetReadOnly(false);
-
   // Command line parsing MUST be done before the first PWSprefs lookup!
   // (since user/host/config file may be overriden!)
   bool allDone = false;
@@ -848,14 +839,6 @@ BOOL ThisMfcApp::InitInstance()
 
   pMenu2 = pMenu1->GetSubMenu(pos2);
   minfo.dwMenuData = ID_FILTERMENU;
-  pMenu2->SetMenuInfo(&minfo);
-
-  // Do View Menu Attachment submenu
-  pos2 = app.FindMenuItem(pMenu1, ID_ATTACHMENTMENU);
-  ASSERT(pos2 != -1);
-
-  pMenu2 = pMenu1->GetSubMenu(pos2);
-  minfo.dwMenuData = ID_ATTACHMENTMENU;
   pMenu2->SetMenuInfo(&minfo);
 
   // Do View Menu ChangeFont submenu

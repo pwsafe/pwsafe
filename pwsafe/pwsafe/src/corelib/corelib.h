@@ -237,26 +237,6 @@
 #define IDSC_ALIASES                    3403
 #define IDSC_SHORTCUTS                  3404
 
-#define IDSC_ATT_ERRORS                 3500
-#define IDSC_ATT_HDRMISMATCH            3501
-#define IDSC_ATT_UNKNOWNERROR           3502
-#define IDSC_IMPORTATTACHMENT           3503
-#define IDSC_IMPORTATTSKIPPED           3504
-#define IDSC_IMPORT_ENTRYNOTFOUND       3505
-#define IDSC_IMPORT_SIZEDIFFERENT       3506
-#define IDSC_IMPORT_DIGESTFAILED        3507
-#define IDSC_IMPORTTIMESTAMP            3508
-#define IDSC_ATT_READVERIFY             3509
-#define IDSC_ATT_READFILE               3510
-#define IDSC_ATT_COPYFILE               3511
-#define IDSC_ATT_APPEND_DUPS            3512
-#define IDSC_ATT_SEARCHFILE             3513
-#define IDSC_ATT_EXTRACTINGFILE         3514
-#define IDSC_ATT_SKIPPINGFILE           3515
-#define IDSC_ATT_APPEND_NEW             3516
-#define IDSC_ATT_CREATEIMPFILE          3517
-#define IDSC_ATT_APPEND_IMP             3518
-
 // Keep DCA together
 #define IDSC_CURRENTDEFAULTDCA          4000
 #define IDSC_DCABROWSE                  4001

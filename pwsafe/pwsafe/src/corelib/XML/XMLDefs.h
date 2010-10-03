@@ -27,10 +27,10 @@
 #endif
 #endif
 
-#if USE_XML_LIBRARY == XERCES
-#ifndef XERCES_STATIC_LIBRARY
-#define XERCES_STATIC_LIBRARY
-#endif
+#if USE_XML_LIBRARY == XERCES	 
+#ifndef XERCES_STATIC_LIBRARY	 
+#define XERCES_STATIC_LIBRARY	 
+#endif	 
 #endif
 
 #define PWS_XML_FILTER_VERSION 1

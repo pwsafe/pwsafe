@@ -32,7 +32,6 @@
 #include "corelib/pwsprefs.h"
 #include "corelib/PWSdirs.h"
 #include "corelib/PWSAuxParse.h"
-#include "corelib/return_codes.h"
 
 #include "os/dir.h"
 
@@ -105,26 +104,26 @@ int DboxMain::BackupSafe()
       // PostQuitMessage makes us return here instead
       // of exiting the app. Try resignalling 
       PostQuitMessage(0);
-      return PWSRC::USER_CANCEL;
+      return PWScore::USER_CANCEL;
     }
     if (rc == IDOK) {
       tempname = fd.GetPathName();
       break;
     } else
-      return PWSRC::USER_CANCEL;
+      return PWScore::USER_CANCEL;
   }
 
   rc = m_core.WriteFile(tempname);
-  if (rc == PWSRC::CANT_OPEN_FILE) {
+  if (rc == PWScore::CANT_OPEN_FILE) {
     CGeneralMsgBox gmb;
     cs_temp.Format(IDS_CANTOPENWRITING, tempname);
     cs_title.LoadString(IDS_FILEWRITEERROR);
     gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
-    return PWSRC::CANT_OPEN_FILE;
+    return PWScore::CANT_OPEN_FILE;
   }
 
   prefs->SetPref(PWSprefs::CurrentBackup, tempname);
-  return PWSRC::SUCCESS;
+  return PWScore::SUCCESS;
 }
 
 void DboxMain::OnRestoreSafe()
@@ -141,7 +140,7 @@ int DboxMain::RestoreSafe()
     PWSprefs::GetInstance()->GetPref(PWSprefs::CurrentBackup);
 
   rc = SaveIfChanged();
-  if (rc != PWSRC::SUCCESS)
+  if (rc != PWScore::SUCCESS)
     return rc;
 
   CString cs_text, cs_temp, cs_title;
@@ -177,37 +176,37 @@ int DboxMain::RestoreSafe()
       // PostQuitMessage makes us return here instead
       // of exiting the app. Try resignalling 
       PostQuitMessage(0);
-      return PWSRC::USER_CANCEL;
+      return PWScore::USER_CANCEL;
     }
     if (rc2 == IDOK) {
       backup = fd.GetPathName();
       break;
     } else
-      return PWSRC::USER_CANCEL;
+      return PWScore::USER_CANCEL;
   }
 
   rc = GetAndCheckPassword(backup, passkey, GCP_NORMAL);  // OK, CANCEL, HELP
   CGeneralMsgBox gmb;
   switch (rc) {
-    case PWSRC::SUCCESS:
+    case PWScore::SUCCESS:
       break; // Keep going...
-    case PWSRC::CANT_OPEN_FILE:
+    case PWScore::CANT_OPEN_FILE:
       cs_temp.Format(IDS_CANTOPEN, backup);
       cs_title.LoadString(IDS_FILEOPENERROR);
       gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
     case TAR_OPEN:
       ASSERT(0);
-      return PWSRC::FAILURE; // shouldn't be an option here
+      return PWScore::FAILURE; // shouldn't be an option here
     case TAR_NEW:
       ASSERT(0);
-      return PWSRC::FAILURE; // shouldn't be an option here
-    case PWSRC::WRONG_PASSWORD:
-    case PWSRC::USER_CANCEL:
+      return PWScore::FAILURE; // shouldn't be an option here
+    case PWScore::WRONG_PASSWORD:
+    case PWScore::USER_CANCEL:
       /*
       If the user just cancelled out of the password dialog,
       assume they want to return to where they were before...
       */
-      return PWSRC::USER_CANCEL;
+      return PWScore::USER_CANCEL;
   }
 
   // unlock the file we're leaving
@@ -219,11 +218,11 @@ int DboxMain::RestoreSafe()
   ClearData();
 
   rc = m_core.ReadFile(backup, passkey, MAXTEXTCHARS);
-  if (rc == PWSRC::CANT_OPEN_FILE) {
+  if (rc == PWScore::CANT_OPEN_FILE) {
     cs_temp.Format(IDS_CANTOPENREADING, backup);
     cs_title.LoadString(IDS_FILEREADERROR);
     gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
-    return PWSRC::CANT_OPEN_FILE;
+    return PWScore::CANT_OPEN_FILE;
   }
 
   m_core.SetCurFile(L"");    // Force a Save As...
@@ -235,7 +234,7 @@ int DboxMain::RestoreSafe()
   ChangeOkUpdate();
   RefreshViews();
 
-  return PWSRC::SUCCESS;
+  return PWScore::SUCCESS;
 }
 
 void DboxMain::OnValidate() 
@@ -244,7 +243,7 @@ void DboxMain::OnValidate()
   if (!m_bValidate) {
     // We didn't get here via command line flag - so must be via the menu
     int rc = Open(IDS_CHOOSEDATABASEV);
-    if (rc != PWSRC::SUCCESS)
+    if (rc != PWScore::SUCCESS)
       return;
   }
 
@@ -451,10 +450,6 @@ void DboxMain::OnOptions()
     GetPref(PWSprefs::LockDBOnIdleTimeout) ? TRUE : FALSE;
   security.m_IdleTimeOut = prevLockInterval = prefs->
     GetPref(PWSprefs::IdleTimeout);
-  security.m_csEraserLocation = prefs->
-    GetPref(PWSprefs::EraseProgram).c_str();
-  security.m_csEraseCmdLineParms = prefs->
-    GetPref(PWSprefs::ErasePgmCmdLineParms).c_str();
 
   shortcuts.m_iColWidth = prefs->
     GetPref(PWSprefs::OptShortcutColumnWidth);
@@ -638,10 +633,6 @@ void DboxMain::OnOptions()
                    security.m_confirmcopy == FALSE);
     prefs->SetPref(PWSprefs::LockOnWindowLock,
                    security.m_LockOnWindowLock == TRUE);
-    prefs->SetPref(PWSprefs::EraseProgram,
-                   LPCWSTR(security.m_csEraserLocation));
-    prefs->SetPref(PWSprefs::ErasePgmCmdLineParms,
-                   LPCWSTR(security.m_csEraseCmdLineParms));
 
     prefs->SetPref(PWSprefs::UseSystemTray,
                    system.m_usesystemtray == TRUE);

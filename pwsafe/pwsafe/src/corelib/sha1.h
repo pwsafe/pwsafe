@@ -12,40 +12,10 @@ class SHA1
 {
 public:
   enum {HASHLEN = 20};
-
   SHA1();
   ~SHA1();
-
   void Update(const unsigned char* data, unsigned int len);
   void Final(unsigned char digest[HASHLEN]);
-  void Clear();
-
-  SHA1(const SHA1 &cntxt)
-  {
-    for (int i = 0; i < 5; i++)
-      state[i] = cntxt.state[i];
-
-    count[0] = cntxt.count[0];
-    count[1] = cntxt.count[1];
-
-    for (int i = 0; i < 64; i++)
-      buffer[i] = cntxt.buffer[i];
-  }
-
-  SHA1 &operator=(const SHA1 &cntxt)
-  {
-    if (this != &cntxt) {
-      for (int i = 0; i < 5; i++)
-        state[i] = cntxt.state[i];
-
-      count[0] = cntxt.count[0];
-      count[1] = cntxt.count[1];
-
-      for (int i = 0; i < 64; i++)
-        buffer[i] = cntxt.buffer[i];
-    }
-    return *this;
-  }
 
 private:
   unsigned long state[5];

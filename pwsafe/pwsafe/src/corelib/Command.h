@@ -17,7 +17,6 @@ class CommandInterface;
 #include "ItemData.h"
 #include "StringX.h"
 #include "UUIDGen.h"
-#include "attachments.h"
 
 #include "coredefs.h"
 
@@ -38,7 +37,7 @@ class Command
 {
 public:
   virtual ~Command();
-  virtual int Execute(const bool bRedo = false) = 0;
+  virtual int Execute() = 0;
   virtual int Redo() = 0;
   virtual void Undo() = 0;
 
@@ -60,7 +59,7 @@ protected:
   bool m_bState;
 
   // Changed groups
-  std::vector<StringX> m_saved_vNodes_Modified;
+  std::vector<StringX> m_saved_vnodes_modified;
 };
 
 // GUI related commands
@@ -99,7 +98,7 @@ public:
   static UpdateGUICommand *Create(CommandInterface *pcomInt,
                                   ExecuteFn When, GUI_Action ga)
   { return new UpdateGUICommand(pcomInt, When, ga); }
-  int Execute(const bool bRedo = false);
+  int Execute();
   int Redo();
   void Undo();
 
@@ -119,7 +118,7 @@ public:
   static DBPrefsCommand *Create(CommandInterface *pcomInt,
                                 StringX &sxNewDBPrefs)
   { return new DBPrefsCommand(pcomInt, sxNewDBPrefs); }
-  int Execute(const bool bRedo = false);
+  int Execute();
   int Redo();
   void Undo();
 
@@ -135,31 +134,25 @@ class DeleteEntryCommand;
 class AddEntryCommand : public Command
 {
 public:
-  static AddEntryCommand *Create(CommandInterface *pcomInt, const CItemData &ci, 
-                                 const ATRVector *pvNewATRecords = NULL)
-  { return new AddEntryCommand(pcomInt, ci, pvNewATRecords); }
+  static AddEntryCommand *Create(CommandInterface *pcomInt, const CItemData &ci)
+  { return new AddEntryCommand(pcomInt, ci); }
   // Following for adding an alias or shortcut
   static AddEntryCommand *Create(CommandInterface *pcomInt,
-                                 const CItemData &ci, const uuid_array_t base_uuid,
-                                 const ATRVector *pvNewATRecords = NULL)
-  { return new AddEntryCommand(pcomInt, ci, base_uuid, pvNewATRecords); }
+                                 const CItemData &ci, const uuid_array_t base_uuid)
+  { return new AddEntryCommand(pcomInt, ci, base_uuid); }
   ~AddEntryCommand();
-  int Execute(const bool bRedo = false);
+  int Execute();
   int Redo();
   void Undo();
-
   friend class DeleteEntryCommand; // allow access to c'tor
 
 private:
   AddEntryCommand& operator=(const AddEntryCommand&); // Do not implement
-  AddEntryCommand(CommandInterface *pcomInt, const CItemData &ci,
-                  const ATRVector *pvNewATRecords = NULL);
+  AddEntryCommand(CommandInterface *pcomInt, const CItemData &ci);
   AddEntryCommand(CommandInterface *pcomInt,
-                  const CItemData &ci, const uuid_array_t base_uuid,
-                  const ATRVector *pvNewATRecords = NULL);
+                  const CItemData &ci, const uuid_array_t base_uuid);
   const CItemData m_ci;
-  uuid_array_t m_base_uuid, m_entry_uuid;
-  ATRVector m_vNewATRecords;
+  uuid_array_t m_base_uuid;
 };
 
 class DeleteEntryCommand : public Command
@@ -169,7 +162,7 @@ public:
                                     const CItemData &ci)
   { return new DeleteEntryCommand(pcomInt, ci); }
   ~DeleteEntryCommand();
-  int Execute(const bool bRedo = false);
+  int Execute();
   int Redo();
   void Undo();
   friend class AddEntryCommand; // allow access to c'tor
@@ -179,7 +172,6 @@ private:
   DeleteEntryCommand(CommandInterface *pcomInt, const CItemData &ci);
   const CItemData m_ci;
   uuid_array_t m_base_uuid; // for undo of shortcut or alias deletion
-  uuid_array_t m_entry_uuid;
   std::vector<CItemData> m_dependents; // for undo of base deletion
 };
 
@@ -188,26 +180,18 @@ class EditEntryCommand : public Command
 public:
   static EditEntryCommand *Create(CommandInterface *pcomInt,
                                   const CItemData &old_ci,
-                                  const CItemData &new_ci,
-                                  const ATRVector *pvNewATRecords = NULL,
-                                  const ATRVector *pvATRecords = NULL)
-  { return new EditEntryCommand(pcomInt, old_ci, new_ci, pvNewATRecords, pvATRecords); }
+                                  const CItemData &new_ci)
+  { return new EditEntryCommand(pcomInt, old_ci, new_ci); }
   ~EditEntryCommand();
-  int Execute(const bool bRedo = false);
+  int Execute();
   int Redo();
   void Undo();
 
 private:
   EditEntryCommand(CommandInterface *pcomInt, const CItemData &old_ci,
-                   const CItemData &new_ci,
-                   const ATRVector *pvNewATRecords,
-                   const ATRVector *pvATRecords);
+                   const CItemData &new_ci);
   CItemData m_old_ci;
   CItemData m_new_ci;
-  uuid_array_t m_entry_uuid;
-  ATRVector m_vNewATRecords;
-  ATRVector m_vATRecords;
-  ATRVector m_vOriginalATRecords;
 };
 
 class UpdateEntryCommand : public Command
@@ -218,7 +202,7 @@ public:
                                     CItemData::FieldType ftype,
                                     const StringX &value)
   { return new UpdateEntryCommand(pcomInt, ci, ftype, value); }
-  int Execute(const bool bRedo = false);
+  int Execute();
   int Redo();
   void Undo();
 
@@ -244,7 +228,7 @@ public:
                                        CItemData &ci,
                                        const StringX sxNewPassword)
   { return new UpdatePasswordCommand(pcomInt, ci, sxNewPassword); }
-  int Execute(const bool bRedo = false);
+  int Execute();
   int Redo();
   void Undo();
 
@@ -264,7 +248,7 @@ public:
                                           const uuid_array_t &entry_uuid,
                                           const CItemData::EntryType type)
   { return new AddDependentEntryCommand(pcomInt, base_uuid, entry_uuid, type); }
-  int Execute(const bool bRedo = false);
+  int Execute();
   int Redo();
   void Undo();
 
@@ -289,7 +273,7 @@ public:
   { return new AddDependentEntriesCommand(pcomInt, dependentslist, pRpt,
                                           type, iVia); }
   ~AddDependentEntriesCommand();
-  int Execute(const bool bRedo = false);
+  int Execute();
   int Redo();
   void Undo();
 
@@ -324,7 +308,7 @@ public:
                                              CItemData::EntryType type)
   { return new RemoveDependentEntryCommand(pcomInt, base_uuid, entry_uuid,
                                            type); }
-  int Execute(const bool bRedo = false);
+  int Execute();
   int Redo();
   void Undo();
 
@@ -347,7 +331,7 @@ public:
                                              CItemData::EntryType type)
   { return new MoveDependentEntriesCommand(pcomInt, from_baseuuid, to_baseuuid,
                                            type); }
-  int Execute(const bool bRedo = false);
+  int Execute();
   int Redo();
   void Undo();
 
@@ -369,7 +353,7 @@ public:
                                               int new_default_max)
   { return new UpdatePasswordHistoryCommand(pcomInt, iAction,
                                             new_default_max); }
-  int Execute(const bool bRedo = false);
+  int Execute();
   int Redo();
   void Undo();
 
@@ -388,7 +372,7 @@ public:
   static MultiCommands *Create(CommandInterface *pcomInt)
   { return new MultiCommands(pcomInt); }
   ~MultiCommands();
-  int Execute(const bool bRedo = false);
+  int Execute();
   int Redo();
   void Undo();
 

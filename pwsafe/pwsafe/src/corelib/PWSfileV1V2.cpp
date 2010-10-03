@@ -8,8 +8,6 @@
 #include "PWSfileV1V2.h"
 #include "PWSrand.h"
 #include "corelib.h"
-#include "return_codes.h"
-
 #include "os/file.h"
 #include "os/utf8conv.h"
 
@@ -88,17 +86,17 @@ int PWSfileV1V2::ReadV2Header()
   int status = ReadRecord(header);
   // restore after reading V17-format header
   m_curversion = sv;
-  if (status == PWSRC::SUCCESS) {
+  if (status == SUCCESS) {
     const StringX version = header.GetPassword();
     // Compare to AltVersionString due to silly mistake
     // "2.0" as well as "pre-2.0" are actually 2.0. sigh.
     if (version == VersionString || version == AltVersionString) {
-      status = PWSRC::SUCCESS;
+      status = SUCCESS;
       m_hdr.m_nCurrentMajorVersion = 2;
     } else
-      status = PWSRC::WRONG_VERSION;
+      status = WRONG_VERSION;
   }
-  if (status == PWSRC::SUCCESS)
+  if (status == SUCCESS)
     m_hdr.m_prefString = header.GetNotes();
   return status;
 }
@@ -107,19 +105,19 @@ int PWSfileV1V2::ReadV2Header()
 #define SAFE_FWRITE(p, sz, cnt, stream) \
   { \
     size_t _ret = fwrite(p, sz, cnt, stream); \
-    if (_ret != cnt) { status = PWSRC::FAILURE; goto exit;} \
+    if (_ret != cnt) { status = FAILURE; goto exit;} \
   }
 
 int PWSfileV1V2::Open(const StringX &passkey)
 {
-  int status = PWSRC::SUCCESS;
+  int status = SUCCESS;
 
   ASSERT(m_curversion == V17 || m_curversion == V20);
 
   m_passkey = passkey;
   FOpen();
   if (m_fd == NULL)
-    return PWSRC::CANT_OPEN_FILE;
+    return CANT_OPEN_FILE;
 
   LPCTSTR passstr = m_passkey.c_str();
   unsigned long passLen = passkey.length();
@@ -161,7 +159,7 @@ int PWSfileV1V2::Open(const StringX &passkey)
     }
   } else { // open for read
     status = CheckPasskey(m_filename, m_passkey, m_fd);
-    if (status != PWSRC::SUCCESS) {
+    if (status != SUCCESS) {
 #ifdef UNICODE
       trashMemory(pstr, pstr_len);
       delete[] pstr;
@@ -178,7 +176,7 @@ int PWSfileV1V2::Open(const StringX &passkey)
       status = ReadV2Header();
   } // read mode
  exit:
-  if (status != PWSRC::SUCCESS)
+  if (status != SUCCESS)
     Close();
 #ifdef UNICODE
   trashMemory(pstr, pstr_len);
@@ -200,7 +198,7 @@ int PWSfileV1V2::CheckPasskey(const StringX &filename,
     fd = pws_os::FOpen(filename.c_str(), _T("rb"));
   }
   if (fd == NULL)
-    return PWSRC::CANT_OPEN_FILE;
+    return CANT_OPEN_FILE;
 
   unsigned char randstuff[StuffSize];
   unsigned char randhash[20];   // HashSize
@@ -216,9 +214,9 @@ int PWSfileV1V2::CheckPasskey(const StringX &filename,
   GenRandhash(passkey, randstuff, temphash);
 
   if (0 != memcmp((char*)randhash, (char*)temphash, 20)) { // HashSize
-      return PWSRC::WRONG_PASSWORD;
+      return WRONG_PASSWORD;
   } else {
-    return PWSRC::SUCCESS;
+    return SUCCESS;
   }
 }
 
@@ -266,7 +264,7 @@ int PWSfileV1V2::WriteRecord(const CItemData &item)
 {
   ASSERT(m_fd != NULL);
   ASSERT(m_curversion != UNKNOWN_VERSION);
-  int status = PWSRC::SUCCESS;
+  int status = SUCCESS;
 
   switch (m_curversion) {
     case V17:
@@ -325,7 +323,7 @@ int PWSfileV1V2::WriteRecord(const CItemData &item)
     }
     default:
       ASSERT(0);
-      status = PWSRC::UNSUPPORTED_VERSION;
+      status = UNSUPPORTED_VERSION;
   }
   return status;
 }
@@ -438,7 +436,7 @@ int PWSfileV1V2::ReadRecord(CItemData &item)
       // No UUID, so we create one here
       item.CreateUUID();
       // No Group - currently leave empty
-      return (numread > 0) ? PWSRC::SUCCESS : PWSRC::END_OF_FILE;
+      return (numread > 0) ? SUCCESS : END_OF_FILE;
     }
     case V20:
     {
@@ -495,10 +493,10 @@ int PWSfileV1V2::ReadRecord(CItemData &item)
           } // switch
         } // if (fieldLen > 0)
       } while (!endFound && fieldLen > 0 && --emergencyExit > 0);
-      return (numread > 0 && endFound) ? PWSRC::SUCCESS : PWSRC::END_OF_FILE;
+      return (numread > 0 && endFound) ? SUCCESS : END_OF_FILE;
     }
     default:
       ASSERT(0);
-      return PWSRC::UNSUPPORTED_VERSION;
+      return UNSUPPORTED_VERSION;
   }
 }

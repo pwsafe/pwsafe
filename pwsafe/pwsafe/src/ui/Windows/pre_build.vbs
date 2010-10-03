@@ -33,7 +33,7 @@ Set objShell = WScript.CreateObject("WScript.Shell")
 Set objFSO = CreateObject("Scripting.FileSystemObject")
 
 ' Update SVN revision number
-Dim strTSVN, strProjectDir, strTSVNPGM, strVersionHeader, strVersionNotSVN
+Dim strTSVN, strProjectDir, strTSVNPGM, strVersionHeader
 strTSVN = objShell.ExpandEnvironmentStrings("%TortoiseSVNDir%")
 strProjectDir = objShell.ExpandEnvironmentStrings("%ProjectDir%")
 
@@ -51,13 +51,15 @@ End If
 
 strTSVNPGM = strTSVN + "bin\SubWCRev.exe"
 strVersionHeader = strProjectDir + "version.h"
-strVersionNotSVN = strProjectDir + "version.notsvn"
 
 stdout.WriteLine " "
 If Not objFSO.FileExists(strTSVNPGM) Then
   stdout.WriteLine " *** Can't find TortoiseSVN's SubWCRev.exe" & vbCRLF & _
-                   "     Version, release and revision numbers will not be updated"
-  rc = 0
+         " *** Please install it or create version.h from version.in manually"
+  If Not objFSO.FileExists(strVersionHeader) Then
+    MsgBox " *** Windows UI build will fail - can't find file: version.h"
+  End if
+  rc = 99
 Else
   cmd = Chr(34) & strTSVNPGM  & Chr(34) & " ..\..\.. version.in version.h"
   stdout.WriteLine "  Executing: " & cmd
@@ -80,12 +82,6 @@ Else
   stdout.WriteLine "  SubWCRev ended with return code: " & objWshScriptExec.ExitCode
   rc = 0
 End if
-
-If Not objFSO.FileExists(strVersionHeader) Then
-  stdout.WriteLine " *** Can't find file: version.h - creating dummy default"
-  objFSO.CopyFile strVersionNotSVN, strVersionHeader
-End if
-
 stdout.WriteLine " "
 
 Set objWshScriptExec = Nothing

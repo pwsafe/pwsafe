@@ -737,11 +737,8 @@
     <ClCompile Include="BlowFish.cpp" />
     <ClCompile Include="CheckVersion.cpp" />
     <ClCompile Include="Command.cpp" />
-    <ClCompile Include="CoreAttmnt.cpp" />
     <ClCompile Include="CoreImpExp.cpp" />
     <ClCompile Include="corelib_st.cpp" />
-    <ClCompile Include="PWSAttfile.cpp" />
-    <ClCompile Include="PWSAttfileV3.cpp" />
     <ClCompile Include="XML\EXPAT\EFileHandlers.cpp" />
     <ClCompile Include="XML\EXPAT\EFileValidator.cpp" />
     <ClCompile Include="XML\EXPAT\EFileXMLProcessor.cpp" />
@@ -753,9 +750,6 @@
     <ClCompile Include="ItemData.cpp" />
     <ClCompile Include="ItemField.cpp" />
     <ClCompile Include="Match.cpp" />
-    <ClCompile Include="XML\MSXML\MAttSAX2Handlers.cpp" />
-    <ClCompile Include="XML\MSXML\MAttValidator.cpp" />
-    <ClCompile Include="XML\MSXML\MAttXMLProcessor.cpp" />
     <ClCompile Include="XML\MSXML\MFileSAX2Handlers.cpp" />
     <ClCompile Include="XML\MSXML\MFileValidator.cpp" />
     <ClCompile Include="XML\MSXML\MFileXMLProcessor.cpp" />
@@ -792,15 +786,12 @@
     <ClCompile Include="XML\XERCES\XFileXMLProcessor.cpp" />
     <ClCompile Include="XML\XERCES\XFilterSAX2Handlers.cpp" />
     <ClCompile Include="XML\XERCES\XFilterXMLProcessor.cpp" />
-    <ClCompile Include="XML\XMLAttHandlers.cpp" />
-    <ClCompile Include="XML\XMLAttValidation.cpp" />
     <ClCompile Include="XML\XMLFileHandlers.cpp" />
     <ClCompile Include="XML\XMLFileValidation.cpp" />
     <ClCompile Include="XMLprefs.cpp" />
     <ClCompile Include="XML\XERCES\XSecMemMgr.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="attachments.h" />
     <ClInclude Include="BlowFish.h" />
     <ClInclude Include="CheckVersion.h" />
     <ClInclude Include="Command.h" />
@@ -808,8 +799,6 @@
     <ClInclude Include="coredefs.h" />
     <ClInclude Include="corelib.h" />
     <ClInclude Include="corelib_st.h" />
-    <ClInclude Include="PWSAttfile.h" />
-    <ClInclude Include="PWSAttfileV3.h" />
     <ClInclude Include="XML\EXPAT\EFileHandlers.h" />
     <ClInclude Include="XML\EXPAT\EFileValidator.h" />
     <ClInclude Include="XML\EXPAT\EFileValidatorDefs.h" />
@@ -824,9 +813,6 @@
     <ClInclude Include="ItemData.h" />
     <ClInclude Include="ItemField.h" />
     <ClInclude Include="Match.h" />
-    <ClInclude Include="XML\MSXML\MAttSAX2Handlers.h" />
-    <ClInclude Include="XML\MSXML\MAttValidator.h" />
-    <ClInclude Include="XML\MSXML\MAttXMLProcessor.h" />
     <ClInclude Include="XML\MSXML\MFileSAX2Handlers.h" />
     <ClInclude Include="XML\MSXML\MFileValidator.h" />
     <ClInclude Include="XML\MSXML\MFileXMLProcessor.h" />
@@ -867,8 +853,6 @@
     <ClInclude Include="XML\XERCES\XFileXMLProcessor.h" />
     <ClInclude Include="XML\XERCES\XFilterSAX2Handlers.h" />
     <ClInclude Include="XML\XERCES\XFilterXMLProcessor.h" />
-    <ClInclude Include="XML\XMLAttHandlers.h" />
-    <ClInclude Include="XML\XMLAttValidation.h" />
     <ClInclude Include="XML\XMLDefs.h" />
     <ClInclude Include="XML\XMLFileHandlers.h" />
     <ClInclude Include="XML\XMLFileValidation.h" />

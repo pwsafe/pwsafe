@@ -221,7 +221,7 @@ BOOL CManageFiltersDlg::OnInitDialog()
   m_FilterProperties.SetColumn(MFPRP_FILTER_ACTIVE, &lvc);
   m_FilterProperties.SetColumn(MFPRP_AND_OR, &lvc);
 
-  CHeaderCtrl *pHCtrl;
+  CHeaderCtrl* pHCtrl;
   pHCtrl = m_FilterLC.GetHeaderCtrl();
   ASSERT(pHCtrl != NULL);
   pHCtrl->SetDlgCtrlID(IDC_FILTERLC_HEADER);
@@ -1148,9 +1148,6 @@ UINT CManageFiltersDlg::GetFieldTypeName(const FieldType &ft)
       break;
     case FT_UNKNOWNFIELDS:
       nID = IDS_UNKNOWNFIELDSFILTER;
-      break;
-    case FT_ATTACHMENTS:
-      nID = IDS_ATTACHMENTS;
       break;
     case HT_PRESENT:
       nID = IDS_PRESENT;

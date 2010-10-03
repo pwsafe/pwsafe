@@ -35,10 +35,18 @@ class PWSfile
 {
 public:
   enum VERSION {V17, V20, V30, VCURRENT = V30,
-                NEWFILE = 98,
-                UNKNOWN_VERSION = 99}; // supported file versions: V17 is last pre-2.0
-
+    NEWFILE = 98,
+    UNKNOWN_VERSION = 99}; // supported file versions: V17 is last pre-2.0
   enum RWmode {Read, Write};
+  enum {SUCCESS = 0, FAILURE = 1, 
+    UNSUPPORTED_VERSION,                     //  2
+    WRONG_VERSION,                           //  3
+    NOT_PWS3_FILE,                           //  4
+    WRONG_PASSWORD,                          //  5 - see PWScore.h
+    BAD_DIGEST,                              //  6 - see PWScore.h
+    END_OF_FILE,                             //  7
+    CANT_OPEN_FILE,                          //  -10 - see PWScore.h
+  };
 
   /**
   * The format defines a handful of fields in the file's header
@@ -50,7 +58,7 @@ public:
   struct HeaderRecord {
     HeaderRecord();
     HeaderRecord(const HeaderRecord &hdr);
-    HeaderRecord &operator=(const HeaderRecord &hdr);
+    HeaderRecord &operator =(const HeaderRecord &hdr);
 
     unsigned short m_nCurrentMajorVersion, m_nCurrentMinorVersion;
     uuid_array_t m_file_uuid_array;

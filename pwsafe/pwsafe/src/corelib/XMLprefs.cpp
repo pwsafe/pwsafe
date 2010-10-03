@@ -12,7 +12,6 @@
 #include "PWSprefs.h"
 #include "corelib.h"
 #include "StringXStream.h"
-#include "return_codes.h"
 
 #include "tinyxml/tinyxml.h"
 
@@ -249,7 +248,7 @@ int CXMLprefs::Set(const stringT &csBaseKeyName, const stringT &csValueName,
   if (m_pXMLDoc == NULL && !CreateXML(false))
     return false;
 
-  int iRetVal = PWSRC::SUCCESS;
+  int iRetVal = XML_SUCCESS;
   int iNumKeys = 0;
 
   // Add the value to the base key separated by a '\'
@@ -277,10 +276,10 @@ int CXMLprefs::Set(const stringT &csBaseKeyName, const stringT &csValueName,
           foundNode->InsertEndChild(value);
         }
       } else
-        iRetVal = PWSRC::XML_NODE_NOT_FOUND;
+        iRetVal = XML_NODE_NOT_FOUND;
 
     } else
-      iRetVal = PWSRC::XML_LOAD_FAILED;
+      iRetVal = XML_LOAD_FAILED;
 
     delete [] pcsKeys;
   }
@@ -478,7 +477,7 @@ int CXMLprefs::SetShortcuts(const stringT &csKeyName,
   if (m_pXMLDoc == NULL && !CreateXML(false))
     return false;
 
-  int iRetVal = PWSRC::SUCCESS;
+  int iRetVal = XML_SUCCESS;
   int iNumKeys = 0;
 
   // Parse all keys from the base key name (keys separated by a '\')
@@ -508,7 +507,7 @@ int CXMLprefs::SetShortcuts(const stringT &csKeyName,
         element->SetAttribute(_T("Key"), (int)v_shortcuts[i].cVirtKey);
       }
     } else
-      iRetVal = PWSRC::XML_LOAD_FAILED;
+      iRetVal = XML_LOAD_FAILED;
 
     delete [] pcsKeys;
   }
