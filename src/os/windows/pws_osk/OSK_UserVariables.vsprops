@@ -14,4 +14,19 @@
 		Value="$(OutDir)"
 		PerformEnvironmentSet="true"
 	/>
+	<UserMacro
+		Name="PWSBin"
+		Value="..\..\build\bin\pwsafe\$(ConfigurationName)"
+		PerformEnvironmentSet="true"
+	/>
+	<UserMacro
+		Name="PWSObj"
+		Value="..\..\build\obj\pwsafe\$(ConfigurationName)"
+		PerformEnvironmentSet="true"
+	/>
+	<UserMacro
+		Name="PWSLib"
+		Value="..\..\build\lib\pwsafe\$(ConfigurationName)"
+		PerformEnvironmentSet="true"
+	/>
 </VisualStudioPropertySheet>

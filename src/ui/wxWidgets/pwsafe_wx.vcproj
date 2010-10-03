@@ -584,6 +584,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\dragbar.h"
+				>
+			</File>
+			<File
 				RelativePath=".\editshortcut.h"
 				>
 			</File>
@@ -633,6 +637,10 @@
 			</File>
 			<File
 				RelativePath=".\pwsdca.h"
+				>
+			</File>
+			<File
+				RelativePath=".\PWSDragBar.h"
 				>
 			</File>
 			<File
@@ -736,6 +744,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\dragbar.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\editshortcut.cpp"
 				>
 			</File>
@@ -785,6 +797,10 @@
 			</File>
 			<File
 				RelativePath=".\pwsclip.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\PWSDragBar.cpp"
 				>
 			</File>
 			<File
