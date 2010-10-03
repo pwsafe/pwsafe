@@ -153,7 +153,7 @@ typedef std::basic_string<char,
 // elegant way of extending a template class without public inheritance, 
 // including duplicating large parts of the interface
 //
-// Since we need the for stringT as well, we might as well templatize them
+// Since we need these for stringT as well, we might as well templatize them
 // (In for a dime, in for a $).
 
 template<class T> int CompareNoCase(const T &s1, const T &s2);

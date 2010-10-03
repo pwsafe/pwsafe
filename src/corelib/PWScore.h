@@ -15,6 +15,7 @@
 #include "ItemData.h"
 #include "StringX.h"
 #include "PWSfile.h"
+#include "PWSAttfile.h"
 #include "PWSFilters.h"
 #include "UUIDGen.h"
 #include "Report.h"
@@ -51,38 +52,26 @@ struct st_DBProperties {
   StringX whatlastsaved;
   StringX file_uuid;
   StringX unknownfields;
+  size_t num_att;
+  size_t totalunc;
+  size_t totalcmp;
+  size_t largestunc;
+  size_t largestcmp;
 };
 
 class PWScore : public CommandInterface
 {
 public:
-  enum {
-    SUCCESS = 0,
-    FAILURE = 1,
-    CANT_OPEN_FILE = PWSfile::CANT_OPEN_FILE, // -10 - ensure the same value
-    USER_CANCEL,                              // -9
-    WRONG_PASSWORD = PWSfile::WRONG_PASSWORD, //  5 - ensure the same value
-    BAD_DIGEST = PWSfile::BAD_DIGEST,         //  6 - ensure the same value
-    UNKNOWN_VERSION,                          //  7
-    NOT_SUCCESS,                              //  8
-    ALREADY_OPEN,                             //  9
-    INVALID_FORMAT,                           // 10
-    USER_EXIT,                                // 11
-    XML_FAILED_VALIDATION,                    // 12
-    XML_FAILED_IMPORT,                        // 13
-    LIMIT_REACHED,                            // 14
-    UNIMPLEMENTED,                            // 15
-    NO_ENTRIES_EXPORTED,                      // 16
-    DB_HAS_DUPLICATES,                        // 17
-    OK_WITH_ERRORS,                           // 18
-  };
 
   PWScore();
   ~PWScore();
 
   static uuid_array_t NULL_UUID;
 
-  void SetUIInterFace(UIInterFace *pUIIF) {m_pUIIF = pUIIF;}
+  void SetUIInterFace(UIInterFace *pUIIF, 
+    std::bitset<UIInterFace::NUM_SUPPORTED> bsSupportedFunctions)
+  {m_pUIIF = pUIIF; m_bsSupportedFunctions = bsSupportedFunctions;}
+
   // Set following to a Reporter-derived object
   // so that we can inform user of events of interest
   static void SetReporter(Reporter *pReporter) {m_pReporter = pReporter;}
@@ -129,6 +118,36 @@ public:
   int WriteV2File(const StringX &filename)
   {return WriteFile(filename, PWSfile::V20);}
 
+  // Attachment public members
+  bool DBHasAttachments()
+  {return m_MM_entry_uuid_atr.size() > 0;}
+  size_t HasAttachments(const uuid_array_t &entry_uuid);
+  int GetAttachment(const ATRecord &atr, const int ifunction, 
+                    unsigned char * &pUncData, size_t &UncLength, unsigned char &readtype);
+  size_t GetAttachments(const uuid_array_t &entry_uuid, ATRVector &vATRecords);
+  size_t GetAllAttachments(ATRExVector &vATRecordsEx);
+  void SetAttachments(const uuid_array_t &entry_uuid, ATRVector &vATRecords);
+  int ReadAttachmentFile(bool bVerify = false);
+  int WriteAttachmentFile(const bool bCleanup = false,
+                           PWSAttfile::VERSION version = PWSAttfile::VCURRENT);
+  int DuplicateAttachments(const uuid_array_t &old_entry_uuid, 
+                           const uuid_array_t &new_entry_uuid,
+                           PWSAttfile::VERSION version = PWSAttfile::VCURRENT);
+  void SaveAttachmentStatusAtSave()
+  {m_MM_entry_uuid_atr_saved = m_MM_entry_uuid_atr;}
+  void RestoreAttachmentStatusAtLastSave()
+  {m_MM_entry_uuid_atr = m_MM_entry_uuid_atr_saved;}
+  UUIDAVector GetAttachmentUUIDs();
+  bool AttMatches(const ATRecordEx &atrex, const ATFVector &atfv);
+  bool AttMatches(const ATRecordEx &atrex, const int &iObject, const int &iFunction,
+                  const stringT &value) const;
+  void AddAttachment(const ATRecord &atr);
+  void ChangeAttachment(const ATRecord &atr);
+  PWSAttfile *CreateImportFile(stringT &impfilename,    
+                               PWSAttfile::VERSION version = PWSAttfile::VCURRENT);
+  int CompleteImportFile(const stringT &impfilename,
+                         PWSAttfile::VERSION version = PWSAttfile::VCURRENT);
+
   // R/O file status
   void SetReadOnly(bool state) {m_IsReadOnly = state;}
   bool IsReadOnly() const {return m_IsReadOnly;};
@@ -152,6 +171,8 @@ public:
                    const int &iFunction, const TCHAR &delimiter,
                    const OrderedItemList *il = NULL,
                    const bool &bFilterActive = false);
+  int WriteXMLAttachmentFile(const StringX &filename, ATFVector &vatf, 
+                             ATRExVector &vAIRecordExs, size_t &num_exported);
 
   // Import databases
   // If returned status is SUCCESS, then returned Command * can be executed.
@@ -173,6 +194,11 @@ public:
                     int &numPWHErrors, int &numRenamed, 
                     bool &bBadUnknownFileFields,
                     bool &bBadUnknownRecordFields,
+                    CReport &rpt, Command *&pcommand);
+  int ImportXMLAttachmentFile(const stringT &strXMLFileName,
+                    const stringT &strXSDFileName,
+                    stringT &strXMLErrors, stringT &strSkippedList,
+                    int &numValidated, int &numImported, int &numSkipped,
                     CReport &rpt, Command *&pcommand);
   int ImportKeePassTextFile(const StringX &filename, Command *&pcommand);
 
@@ -242,8 +268,8 @@ public:
   ItemListConstIter Find(const uuid_array_t &entry_uuid) const
   {return m_pwlist.find(entry_uuid);}
 
-  bool ConfirmDelete(const CItemData *pci); // ask user when about to delete a base,
-  //                                           otherwise just return true
+  // ask user when about to delete a base, otherwise just return true
+  bool ConfirmDelete(const CItemData *pci);
 
   // General routines for aliases and shortcuts
   void GetAllDependentEntries(const uuid_array_t &base_uuid,
@@ -293,6 +319,7 @@ public:
   {m_bNotifyDB = false;}
   void ResumeOnDBNotification()
   {m_bNotifyDB = true;}
+  int AttachmentProgress(const ATTProgress &st_atpg);
 
   void GUISetupDisplayInfo(CItemData &ci);
   void GUIRefreshEntry(const CItemData &ci);
@@ -357,7 +384,15 @@ private:
                                       SavePWHistoryMap &mapSavedHistory);
   virtual void UndoUpdatePasswordHistory(SavePWHistoryMap &mapSavedHistory);
 
+  // Attachment
+  virtual void AddAttachments(ATRVector &vNewATRecords);
+  virtual bool MarkAttachmentForDeletion(const ATRecord &atr);
+  virtual bool UnMarkAttachmentForDeletion(const ATRecord &atr);
+  virtual void MarkAllAttachmentsForDeletion(const uuid_array_t &entry_uuid);
+  virtual void UnMarkAllAttachmentsForDeletion(const uuid_array_t &entry_uuid);
+
   // End of Command Interface implementations
+
   void ResetAllAliasPasswords(const uuid_array_t &base_uuid);
   
   StringX GetPassKey() const; // returns cleartext - USE WITH CARE
@@ -381,13 +416,16 @@ private:
 
   stringT m_AppNameAndVersion;
   PWSfile::VERSION m_ReadFileVersion;
+  PWSAttfile::VERSION m_ReadAttFileVersion;
 
   bool m_bDBChanged;
   bool m_bDBPrefsChanged;
+  bool m_bAtachmentsChanged;
   bool m_IsReadOnly;
   bool m_bUniqueGTUValidated;
 
   PWSfile::HeaderRecord m_hdr;
+  PWSAttfile::AttHeaderRecord m_atthdr;
   std::vector<bool> m_OrigDisplayStatus;
 
   // THE password database
@@ -417,10 +455,10 @@ private:
   // Changed groups
   std::vector<StringX> m_vnodes_modified;
   // Following are private in PWScore, public in CommandInterface:
-  virtual const std::vector<StringX> &GetVnodesModified() const
+  virtual const std::vector<StringX> &GetVNodesModified() const
   {return m_vnodes_modified;}
-  virtual void SetVnodesModified(const std::vector<StringX> &mvm)
-  {m_vnodes_modified = mvm;}
+  virtual void SetVNodesModified(const std::vector<StringX> &vnm)
+  {m_vnodes_modified = vnm;}
   void AddChangedNodes(StringX path);
 
   UnknownFieldList m_UHFL;
@@ -431,10 +469,18 @@ private:
   bool m_bNotifyDB;
 
   UIInterFace *m_pUIIF; // pointer to UI interface abtraction
+  std::bitset<UIInterFace::NUM_SUPPORTED> m_bsSupportedFunctions;
   
   void NotifyGUINeedsUpdating(UpdateGUICommand::GUI_Action, uuid_array_t &,
                               CItemData::FieldType ft = CItemData::START,
                               bool bUpdateGUI = true);
+
+  // The following attachment functions (X...) if supported by the UI as
+  // threads will be run as such - otherwise they are just internal calls
+  int XWriteAttachmentFile(const bool bCleanup = false,
+                           PWSAttfile::VERSION version = PWSAttfile::VCURRENT);
+  int XCompleteImportFile(const stringT &impfilename,
+                          PWSAttfile::VERSION version = PWSAttfile::VCURRENT);
 
   // Create header for included(Text) and excluded(XML) exports
   StringX BuildHeader(const CItemData::FieldBits &bsFields, const bool bIncluded);
@@ -443,6 +489,12 @@ private:
   std::vector<Command *> m_vpcommands;
   std::vector<Command *>::iterator m_undo_iter;
   std::vector<Command *>::iterator m_redo_iter;
+
+  // Attachments
+  void SetupAttachmentHeader();
+  int SaveAttachmentFile(const stringT &tempfilename);
+  UUIDATRMMap m_MM_entry_uuid_atr;        // std::multimap key = entry_uuid, value = attachment record
+  UUIDATRMMap m_MM_entry_uuid_atr_saved;  // As above but status as per the last save.
 
   static Reporter *m_pReporter; // set as soon as possible to show errors
   static Asker *m_pAsker;

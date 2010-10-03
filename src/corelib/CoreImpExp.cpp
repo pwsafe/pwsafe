@@ -22,6 +22,7 @@
 #include "VerifyFormat.h"
 #include "PWSfileV3.h" // XXX cleanup with dynamic_cast
 #include "StringXStream.h"
+#include "return_codes.h"
 
 #include "XML/XMLDefs.h"  // Required if testing "USE_XML_LIBRARY"
 
@@ -106,9 +107,9 @@ int PWScore::TestForExport(const stringT &subgroup_name,
     }
 
     if (!bAnyMatch)
-      return NO_ENTRIES_EXPORTED;
+      return PWSRC::NO_ENTRIES_EXPORTED;
   }
-  return SUCCESS;
+  return PWSRC::SUCCESS;
 }
 
 inline bool bittest(const CItemData::FieldBits &bsFields,
@@ -265,13 +266,13 @@ int PWScore::WritePlaintextFile(const StringX &filename,
 {
   // Check if anything to do! 
   if (bsFields.count() == 0)
-    return NO_ENTRIES_EXPORTED;
+    return PWSRC::NO_ENTRIES_EXPORTED;
 
   // Although the MFC UI prevents the user selecting export of an
   // empty database, other UIs might not, so:
   if ((il != NULL && il->size() == 0) ||
       (il == NULL && m_pwlist.size() == 0))
-    return NO_ENTRIES_EXPORTED;
+    return PWSRC::NO_ENTRIES_EXPORTED;
  
   CUTF8Conv conv;
 #ifdef UNICODE
@@ -285,7 +286,7 @@ int PWScore::WritePlaintextFile(const StringX &filename,
   ofstream ofs(reinterpret_cast<const char *>(fname));
 
   if (!ofs)
-    return CANT_OPEN_FILE;
+    return PWSRC::CANT_OPEN_FILE;
 
   StringX hdr(_T(""));
   const unsigned char *utf8 = NULL;
@@ -295,7 +296,7 @@ int PWScore::WritePlaintextFile(const StringX &filename,
     // all fields to be exported, use pre-built header
     StringX exphdr;
     LoadAString(exphdr, IDSC_EXPORTHEADER);
-    conv.ToUTF8(exphdr.c_str(), utf8, utf8Len);
+    conv.ToUTF8(exphdr, utf8, utf8Len);
     ofs.write(reinterpret_cast<const char *>(utf8), utf8Len);
     ofs << endl;
   } else {
@@ -316,7 +317,7 @@ int PWScore::WritePlaintextFile(const StringX &filename,
 
   ofs.close();
 
-  return SUCCESS;
+  return PWSRC::SUCCESS;
 }
 
 struct XMLRecordWriter {
@@ -382,7 +383,7 @@ int PWScore::WriteXMLFile(const StringX &filename,
   // empty database, other UIs might not, so:
   if ((il != NULL && il->size() == 0) ||
       (il == NULL && m_pwlist.size() == 0))
-    return NO_ENTRIES_EXPORTED;
+    return PWSRC::NO_ENTRIES_EXPORTED;
 
 #ifdef UNICODE
   const unsigned char *fname = NULL;
@@ -396,7 +397,7 @@ int PWScore::WriteXMLFile(const StringX &filename,
   ofstream ofs(reinterpret_cast<const char *>(fname));
 
   if (!ofs)
-    return CANT_OPEN_FILE;
+    return PWSRC::CANT_OPEN_FILE;
 
   oStringXStream oss_xml;
   StringX pwh, tmp;
@@ -454,7 +455,7 @@ int PWScore::WriteXMLFile(const StringX &filename,
   if (m_hdr.m_whenlastsaved != 0) {
     StringX wls = PWSUtil::ConvertToDateTimeString(m_hdr.m_whenlastsaved,
                                                    TMC_XML);
-    utf8conv.ToUTF8(wls.c_str(), utf8, utf8Len);
+    utf8conv.ToUTF8(wls, utf8, utf8Len);
     ofs << "WhenLastSaved=\"";
     ofs.write(reinterpret_cast<const char *>(utf8), utf8Len);
     ofs << "\"" << endl;
@@ -658,12 +659,12 @@ int PWScore::WriteXMLFile(const StringX &filename,
 
       hdr = BuildHeader(bsFields, false);
       int found = hdr.find(_T("\t"));
-	    while (found >= 0) {
-		    if (found >= 0) {
-			    hdr.replace(found, 1, _T(", "));
-		    }
-		    found = hdr.find(_T("\t"));
-	    }
+      while (found >= 0) {
+        if (found >= 0) {
+          hdr.replace(found, 1, _T(", "));
+        }
+        found = hdr.find(_T("\t"));
+      }
       hdr = _T("     ") + hdr;
       conv.ToUTF8(hdr, utf8, utf8Len);
       ofs.write(reinterpret_cast<const char *>(utf8), utf8Len);
@@ -689,7 +690,7 @@ int PWScore::WriteXMLFile(const StringX &filename,
   ofs << "</passwordsafe>" << endl;
   ofs.close();
 
- return SUCCESS;
+ return PWSRC::SUCCESS;
 }
 
 #if !defined(USE_XML_LIBRARY) || (!defined(_WIN32) && USE_XML_LIBRARY == MSXML)
@@ -701,7 +702,7 @@ int PWScore::ImportXMLFile(const stringT &, const stringT &,
                            bool &, bool &, 
                            CReport &, Command *&)
 {
-  return UNIMPLEMENTED;
+  return PWSRC::UNIMPLEMENTED;
 }
 #else
 int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLFileName,
@@ -740,7 +741,7 @@ int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLF
                         nITER, nRecordsWithUnknownFields, uhfl);
   strXMLErrors = iXML.getXMLErrors();
   if (!status) {
-    return XML_FAILED_VALIDATION;
+    return PWSRC::XML_FAILED_VALIDATION;
   }
   numValidated = iXML.getNumEntriesValidated();
 
@@ -762,7 +763,7 @@ int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLF
   if (!status) {
     delete pcommand;
     pcommand = NULL;
-    return XML_FAILED_IMPORT;
+    return PWSRC::XML_FAILED_IMPORT;
   }
  
   bBadUnknownFileFields = iXML.getIfDatabaseHeaderErrors();
@@ -784,7 +785,7 @@ int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLF
   if (numImported > 0)
     SetDBChanged(true);
 
-  return ((numRenamed + numPWHErrors) == 0) ? SUCCESS : OK_WITH_ERRORS;
+  return ((numRenamed + numPWHErrors) == 0) ? PWSRC::SUCCESS : PWSRC::OK_WITH_ERRORS;
 }
 #endif
 
@@ -823,7 +824,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   ifstream ifs(reinterpret_cast<const char *>(fname));
 
   if (!ifs)
-    return CANT_OPEN_FILE;
+    return PWSRC::CANT_OPEN_FILE;
 
   numImported = numSkipped = numRenamed = numPWHErrors = 0;
   int numlines = 0;
@@ -873,7 +874,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   if (!getline(ifs, s_header, '\n')) {
     LoadAString(strError, IDSC_IMPORTNOHEADER);
     rpt.WriteLine(strError);
-    return FAILURE;  // not even a title record!
+    return PWSRC::FAILURE;  // not even a title record!
   }
 
   // Capture individual column titles from s_header:
@@ -902,7 +903,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   if (num_found == 0) {
     LoadAString(strError, IDSC_IMPORTNOCOLS);
     rpt.WriteLine(strError);
-    return FAILURE;
+    return PWSRC::FAILURE;
   }
 
   // These are "must haves"!
@@ -911,12 +912,12 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
        i_Offset[USER] == -1)) {
     LoadAString(strError, IDSC_IMPORTPSWDNOCOLS);
     rpt.WriteLine(strError);
-    return FAILURE;
+    return PWSRC::FAILURE;
   } else
   if (i_Offset[PASSWORD] == -1 || i_Offset[GROUPTITLE] == -1) {
     LoadAString(strError, IDSC_IMPORTMISSINGCOLS);
     rpt.WriteLine(strError);
-    return FAILURE;
+    return PWSRC::FAILURE;
   }
 
   if (num_found < vs_Header.size()) {
@@ -1007,7 +1008,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
                 Format(cs_error, IDSC_IMPMISSINGQUOTE, numlines);
                 rpt.WriteLine(cs_error);
                 ifs.close(); // file ends before note closes
-                return (numImported > 0) ? SUCCESS : INVALID_FORMAT;
+                return (numImported > 0) ? PWSRC::SUCCESS : PWSRC::INVALID_FORMAT;
               }
               numlines++;
               // remove MS-DOS linebreaks, if needed.
@@ -1311,7 +1312,8 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   if (numImported > 0)
     SetDBChanged(true);
 
-  return ((numSkipped + numRenamed + numPWHErrors)) == 0 ? SUCCESS : OK_WITH_ERRORS;
+  return ((numSkipped + numRenamed + numPWHErrors)) == 0 ? 
+              PWSRC::SUCCESS : PWSRC::OK_WITH_ERRORS;
 }
 
 /*
@@ -1345,14 +1347,14 @@ PWScore::ImportKeePassTextFile(const StringX &filename, Command *&pcommand)
   ifstreamT ifs(reinterpret_cast<const char *>(fname));
 
   if (!ifs)
-    return CANT_OPEN_FILE;
+    return PWSRC::CANT_OPEN_FILE;
 
   stringT linebuf;
   stringT group, title, user, passwd, notes;
 
   // read a single line.
   if (!getline(ifs, linebuf, TCHAR('\n')) || linebuf.empty()) {
-    return INVALID_FORMAT;
+    return PWSRC::INVALID_FORMAT;
   }
 
   MultiCommands *pmulticmds = MultiCommands::Create(this);
@@ -1369,7 +1371,7 @@ PWScore::ImportKeePassTextFile(const StringX &filename, Command *&pcommand)
 
     // this line should always be a title contained in []'s
     if (*(linebuf.begin()) != '[' || *(linebuf.end() - 1) != TCHAR(']')) {
-      return INVALID_FORMAT;
+      return PWSRC::INVALID_FORMAT;
     }
 
     // set the title: line pattern: [<group>]
@@ -1378,7 +1380,7 @@ PWScore::ImportKeePassTextFile(const StringX &filename, Command *&pcommand)
     // set the group: line pattern: Group: <user>
     if (!getline(ifs, linebuf, TCHAR('\n')) ||
         (pos = linebuf.find(_T("Group: "))) == stringT::npos) {
-      return INVALID_FORMAT;
+      return PWSRC::INVALID_FORMAT;
     }
     group = ImportedPrefix;
     if (!linebuf.empty()) {
@@ -1389,14 +1391,14 @@ PWScore::ImportKeePassTextFile(const StringX &filename, Command *&pcommand)
     // set the user: line pattern: UserName: <user>
     if (!getline(ifs, linebuf, TCHAR('\n')) ||
         (pos = linebuf.find(_T("UserName: "))) == stringT::npos) {
-      return INVALID_FORMAT;
+      return PWSRC::INVALID_FORMAT;
     }
     user = linebuf.substr(pos + 10);
 
     // set the url: line pattern: URL: <url>
     if (!getline(ifs, linebuf, TCHAR('\n')) ||
         (pos = linebuf.find(_T("URL: "))) == stringT::npos) {
-      return INVALID_FORMAT;
+      return PWSRC::INVALID_FORMAT;
     }
     if (!linebuf.substr(pos + 5).empty()) {
       notes.append(linebuf.substr(pos + 5));
@@ -1406,14 +1408,14 @@ PWScore::ImportKeePassTextFile(const StringX &filename, Command *&pcommand)
     // set the password: line pattern: Password: <passwd>
     if (!getline(ifs, linebuf, TCHAR('\n')) ||
         (pos = linebuf.find(_T("Password: "))) == stringT::npos) {
-      return INVALID_FORMAT;
+      return PWSRC::INVALID_FORMAT;
     }
     passwd = linebuf.substr(pos + 10);
 
     // set the first line of notes: line pattern: Notes: <notes>
     if (!getline(ifs, linebuf, TCHAR('\n')) ||
         (pos = linebuf.find(_T("Notes: "))) == stringT::npos) {
-      return INVALID_FORMAT;
+      return PWSRC::INVALID_FORMAT;
     }
     notes.append(linebuf.substr(pos + 7));
 
@@ -1453,5 +1455,5 @@ PWScore::ImportKeePassTextFile(const StringX &filename, Command *&pcommand)
   // TODO: maybe return an error if the full end of the file was not reached?
 
   SetDBChanged(true);
-  return SUCCESS;
+  return PWSRC::SUCCESS;
 }

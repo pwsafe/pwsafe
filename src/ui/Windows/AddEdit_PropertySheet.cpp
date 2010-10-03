@@ -22,7 +22,8 @@ CAddEdit_PropertySheet::CAddEdit_PropertySheet(UINT nID, CWnd* pParent,
                                                CItemData *pci_original, CItemData *pci,
                                                const StringX currentDB)
   : CPWPropertySheet(nID, pParent), m_bIsModified(false), m_bChanged(false),
-  m_bNotesChanged(false)
+  m_bNotesChanged(false), m_bAttachmentsChanged(false), m_pp_basic(NULL),
+  m_pp_additional(NULL), m_pp_datetimes(NULL), m_pp_pwpolicy(NULL), m_pp_attachments(NULL)
 {
   m_AEMD.uicaller = nID;
 
@@ -111,6 +112,10 @@ CAddEdit_PropertySheet::CAddEdit_PropertySheet(UINT nID, CWnd* pParent,
   AddPage(m_pp_additional);
   AddPage(m_pp_datetimes);
   AddPage(m_pp_pwpolicy);
+  if (m_AEMD.uicaller != IDS_ADDENTRY && m_AEMD.pDbx->AllowAttachments()) {
+    m_pp_attachments = new CAddEdit_Attachments(this, &m_AEMD);
+    AddPage(m_pp_attachments);
+  }
 }
 
 CAddEdit_PropertySheet::~CAddEdit_PropertySheet()
@@ -119,6 +124,8 @@ CAddEdit_PropertySheet::~CAddEdit_PropertySheet()
   delete m_pp_additional;
   delete m_pp_datetimes;
   delete m_pp_pwpolicy;
+  if (m_AEMD.uicaller != IDS_ADDENTRY)
+    delete m_pp_attachments;
 }
 
 BOOL CAddEdit_PropertySheet::OnInitDialog()
@@ -159,8 +166,8 @@ BOOL CAddEdit_PropertySheet::OnInitDialog()
       break;
     case IDS_EDITENTRY:
       GetDlgItem(ID_APPLY_NOW)->SetDlgCtrlID(IDC_AEAPPLY);
-      GetDlgItem(IDOK)->EnableWindow(m_bChanged ? TRUE : FALSE);
-      GetDlgItem(IDC_AEAPPLY)->EnableWindow(m_bChanged ? TRUE : FALSE);
+      GetDlgItem(IDOK)->EnableWindow((m_bChanged || m_bAttachmentsChanged) ? TRUE : FALSE);
+      GetDlgItem(IDC_AEAPPLY)->EnableWindow((m_bChanged || m_bAttachmentsChanged) ? TRUE : FALSE);
       break;
   }
   return TRUE;
@@ -169,11 +176,31 @@ BOOL CAddEdit_PropertySheet::OnInitDialog()
 void CAddEdit_PropertySheet::SetChanged(const bool bChanged)
 {
   if (m_bChanged != bChanged) {
-    GetDlgItem(IDOK)->EnableWindow(bChanged ? TRUE : FALSE);
+    GetDlgItem(IDOK)->EnableWindow((m_bAttachmentsChanged || bChanged) ? TRUE : FALSE);
     if (m_AEMD.uicaller == IDS_EDITENTRY)
-      GetDlgItem(IDC_AEAPPLY)->EnableWindow(bChanged ? TRUE : FALSE);
+      GetDlgItem(IDC_AEAPPLY)->EnableWindow((bChanged) ? TRUE : FALSE);
+    m_bChanged = bChanged;
   }
-  m_bChanged = bChanged;
+}
+
+void CAddEdit_PropertySheet::SetAttachmentsChanged(const bool bChanged)
+{
+  // Note: Currently changes to attachments is only performed when the user clicks
+  // the OK button and not via the Apply button
+  if (m_bAttachmentsChanged != bChanged) {
+    GetDlgItem(IDOK)->EnableWindow((m_bChanged || bChanged) ? TRUE : FALSE);
+    m_bAttachmentsChanged = bChanged;
+    SetChanged(bChanged);
+  }
+}
+
+void CAddEdit_PropertySheet::GetNewATRecords(ATRVector &vNewATRecords)
+{
+  vNewATRecords.clear();
+  for (size_t i = 0; i < m_AEMD.vNewATRecords.size(); i++) {
+    if ((m_AEMD.vNewATRecords[i].uiflags & ATT_ATTACHMENT_DELETED) == 0)
+      vNewATRecords.push_back(m_AEMD.vNewATRecords[i]);
+  }
 }
 
 BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
@@ -213,7 +240,8 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
                          m_AEMD.XTimeInt    != m_AEMD.oldXTimeInt          ||
                          m_AEMD.ipolicy     != m_AEMD.oldipolicy           ||
                         (m_AEMD.ipolicy     == SPECIFIC_POLICY &&
-                         m_AEMD.pwp         != m_AEMD.oldpwp));
+                         m_AEMD.pwp         != m_AEMD.oldpwp)              ||
+                         m_bAttachmentsChanged);
 
         bIsPSWDModified = (m_AEMD.realpassword != m_AEMD.oldRealPassword);
 
@@ -525,4 +553,8 @@ void CAddEdit_PropertySheet::SetupInitialValues()
       m_AEMD.original_entrytype = CItemData::ET_ALIAS;
     }
   } // IsAlias
+
+  // Get current attachments
+  // m_AEMD.entry_uuid
+  m_AEMD.pcore->GetAttachments(m_AEMD.entry_uuid, m_AEMD.vATRecords);
 }

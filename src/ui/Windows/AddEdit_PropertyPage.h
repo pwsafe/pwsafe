@@ -14,6 +14,7 @@
 #include "corelib/ItemData.h"
 #include "corelib/PWSprefs.h"
 #include "corelib/PWHistory.h"
+#include "corelib/attachments.h"
 
 class CAddEdit_PropertySheet;
 
@@ -75,6 +76,10 @@ struct st_AE_master_data {
   // Password Policy
   PWPolicy pwp, oldpwp, default_pwp;
   int ipolicy, oldipolicy;
+
+  // Attachments
+  ATRVector vATRecords;
+  ATRVector vNewATRecords;
 };
 
 class CAddEdit_PropertyPage : public CPWPropertyPage
@@ -153,6 +158,12 @@ public:
   inline PWPolicy &M_default_pwp() {return m_AEMD.default_pwp;}
   inline int &M_ipolicy() {return m_AEMD.ipolicy;}
   inline int &M_oldipolicy() {return m_AEMD.oldipolicy;}
+
+  // Attachments
+  inline ATRVector &M_vATRecords()
+  {return m_AEMD.vATRecords;}
+  inline ATRVector &M_vNewATRecords()
+  {return m_AEMD.vNewATRecords;}
 
 protected:
   st_AE_master_data &m_AEMD;

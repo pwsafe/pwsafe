@@ -77,6 +77,17 @@ BOOL CFilterBoolDlg::OnInitDialog()
         m_cbxRule.SetItemData(iItem, PWSMatch::MR_INACTIVE);
         m_rule2selection[PWSMatch::MR_INACTIVE] = iItem;
         break;
+      case BT_YESNO:
+        cs_text.LoadString(IDSC_YES);
+        iItem = m_cbxRule.AddString(cs_text);
+        m_cbxRule.SetItemData(iItem, PWSMatch::MR_YES);
+        m_rule2selection[PWSMatch::MR_YES] = iItem;
+
+        cs_text.LoadString(IDSC_NO);
+        iItem = m_cbxRule.AddString(cs_text);
+        m_cbxRule.SetItemData(iItem, PWSMatch::MR_NO);
+        m_rule2selection[PWSMatch::MR_NO] = iItem;
+        break;
       case BT_SET:
         cs_text.LoadString(IDSC_SET);
         iItem = m_cbxRule.AddString(cs_text);

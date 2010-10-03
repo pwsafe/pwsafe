@@ -19,6 +19,7 @@
 #include "corelib/PWScore.h"    // for error statuses from CheckPasskey()
 #include "corelib/PWCharPool.h" // for CheckPassword()
 #include "corelib/pwsprefs.h"
+#include "corelib/return_codes.h"
 
 #include "os/dir.h"
 
@@ -133,9 +134,9 @@ void CPasskeyChangeDlg::OnOK()
   UpdateData(TRUE);
   CGeneralMsgBox gmb;
   int rc = app.m_core.CheckPasskey(app.m_core.GetCurFile(), m_oldpasskey);
-  if (rc == PWScore::WRONG_PASSWORD)
+  if (rc == PWSRC::WRONG_PASSWORD)
     gmb.AfxMessageBox(IDS_WRONGOLDPHRASE);
-  else if (rc == PWScore::CANT_OPEN_FILE)
+  else if (rc == PWSRC::CANT_OPEN_FILE)
     gmb.AfxMessageBox(IDS_CANTVERIFY);
   else if (m_confirmnew != m_newpasskey)
     gmb.AfxMessageBox(IDS_NEWOLDDONOTMATCH);

@@ -386,4 +386,3 @@ void COptionsMisc::OnBrowseForLocation(UINT nID)
                         IDC_OTHEREDITORLOCATION)->SetWindowText(fd.GetPathName());
   }
 }
-

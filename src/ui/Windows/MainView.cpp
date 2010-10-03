@@ -30,6 +30,7 @@
 #include "corelib/corelib.h"
 #include "corelib/PWHistory.h"
 #include "corelib/StringXStream.h"
+#include "corelib/return_codes.h"
 
 #include "os/Debug.h"
 #include "os/dir.h"
@@ -1945,7 +1946,7 @@ bool DboxMain::LockDataBase()
 
   // Now try and save changes
   if (m_core.IsChanged() ||  m_bTSUpdated) {
-    if (Save() != PWScore::SUCCESS) {
+    if (Save() != PWSRC::SUCCESS) {
       // If we don't warn the user, data may be lost!
       CGeneralMsgBox gmb;
       CString cs_text(MAKEINTRESOURCE(IDS_COULDNOTSAVE)), 
@@ -2749,6 +2750,7 @@ int DboxMain::GetHeaderWidth(int iType) const
     case CItemData::USER:
     case CItemData::PASSWORD:
     case CItemData::NOTES:
+    case CItemData::AUTOTYPE:
     case CItemData::URL:
     case CItemData::EMAIL:
     case CItemData::RUNCMD:
@@ -3371,15 +3373,18 @@ void DboxMain::OnToolBarFindReport()
 
 int DboxMain::GetEntryImage(const CItemData &ci)
 {
+  int nImage;
   int entrytype = ci.GetEntryType();
+
   if (entrytype == CItemData::ET_ALIAS) {
-    return CPWTreeCtrl::ALIAS;
+    nImage = CPWTreeCtrl::ALIAS;
+    goto check_for_attachments;
   }
+
   if (entrytype == CItemData::ET_SHORTCUT) {
     return CPWTreeCtrl::SHORTCUT;
   }
 
-  int nImage;
   switch (entrytype) {
     case CItemData::ET_NORMAL:
       nImage = CPWTreeCtrl::NORMAL;
@@ -3430,6 +3435,13 @@ int DboxMain::GetEntryImage(const CItemData &ci)
       nImage += 1;  // Warn nearly expired
     }
   }
+
+check_for_attachments:
+  uuid_array_t entry_uuid;
+  ci.GetUUID(entry_uuid);
+  if (entrytype != CItemData::ET_SHORTCUT && m_core.HasAttachments(entry_uuid) > 0) {
+    nImage = -nImage;
+  }
   return nImage;
 }
 
@@ -3438,7 +3450,8 @@ void DboxMain::SetEntryImage(const int &index, const int nImage, const bool bOne
   if (!m_bImageInLV)
     return;
 
-  m_ctlItemList.SetItem(index, 0, LVIF_IMAGE, NULL, nImage, 0, 0, 0);
+  const int iImage = (nImage >= 0) ? nImage : (abs(nImage) + m_numNormalImages);
+  m_ctlItemList.SetItem(index, 0, LVIF_IMAGE, NULL, iImage, 0, 0, 0);
 
   if (bOneEntry) {
     CRect rect;
@@ -3449,7 +3462,8 @@ void DboxMain::SetEntryImage(const int &index, const int nImage, const bool bOne
 
 void DboxMain::SetEntryImage(HTREEITEM &ti, const int nImage, const bool bOneEntry)
 {
-  m_ctlItemTree.SetItemImage(ti, nImage, nImage);
+  const int iImage = (nImage >= 0) ? nImage : (abs(nImage) + m_numNormalImages);
+  m_ctlItemTree.SetItemImage(ti, iImage, iImage);
 
   if (bOneEntry) {
     CRect rect;

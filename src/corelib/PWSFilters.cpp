@@ -15,6 +15,7 @@
 #include "PWScore.h"
 #include "StringX.h"
 #include "Util.h"
+#include "return_codes.h"
 
 #include "os/file.h"
 #include "os/dir.h"
@@ -278,6 +279,9 @@ static string GetFilterXML(const st_filters &filters, bool bWithFormatting)
       case FT_UNKNOWNFIELDS:
         pszfieldtype = "unknownfields";
         break;
+      case FT_ATTACHMENTS:
+        pszfieldtype = "attachments";
+        break;
       case FT_ENTRYSIZE:
         pszfieldtype = "entrysize";
         break;
@@ -476,7 +480,7 @@ int PWSFilters::WriteFilterXMLFile(const StringX &filename,
 #endif
   ofstream of(reinterpret_cast<const char *>(fname));
   if (!of)
-    return PWScore::CANT_OPEN_FILE;
+    return PWSRC::CANT_OPEN_FILE;
   else
     return WriteFilterXMLFile(of, hdr, currentfile, true);
 }
@@ -494,7 +498,7 @@ int PWSFilters::WriteFilterXMLFile(ostream &os,
 
   os << "</filters>";
 
-  return PWScore::SUCCESS;
+  return PWSRC::SUCCESS;
 }
 
 std::string PWSFilters::GetFilterXMLHeader(const StringX &currentfile,
@@ -581,7 +585,7 @@ int PWSFilters::ImportFilterXMLFile(const FilterPool,
                                     stringT &,
                                     Asker *)
 {
-  return PWScore::UNIMPLEMENTED;
+  return PWSRC::UNIMPLEMENTED;
 }
 #else
 int PWSFilters::ImportFilterXMLFile(const FilterPool fpool,
@@ -610,7 +614,7 @@ int PWSFilters::ImportFilterXMLFile(const FilterPool fpool,
 
   strErrors = fXML.getXMLErrors();
   if (!status) {
-    return PWScore::XML_FAILED_VALIDATION;
+    return PWSRC::XML_FAILED_VALIDATION;
   }
 
   validation = false;
@@ -621,7 +625,7 @@ int PWSFilters::ImportFilterXMLFile(const FilterPool fpool,
 
     strErrors = fXML.getXMLErrors();
   if (!status) {
-    return PWScore::XML_FAILED_IMPORT;
+    return PWSRC::XML_FAILED_IMPORT;
   }
 
   // By definition - all imported filters are complete!
@@ -636,7 +640,7 @@ int PWSFilters::ImportFilterXMLFile(const FilterPool fpool,
     for_each(filters.vPfldata.begin(), filters.vPfldata.end(),
              mem_fun_ref(&st_FilterRow::SetFilterComplete));
   }
-  return PWScore::SUCCESS;
+  return PWSRC::SUCCESS;
 }
 #endif
 

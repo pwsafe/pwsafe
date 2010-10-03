@@ -65,12 +65,6 @@ public:
   bool RemoveHostnameUsername(const stringT &sHost, const stringT &sUser,
                               bool &bNoMoreNodes);
   
-  enum {XML_SUCCESS = 0,
-        XML_LOAD_FAILED,
-        XML_NODE_NOT_FOUND,
-        XML_PUT_TEXT_FAILED,
-        XML_SAVE_FAILED};
-
 private:
   TiXmlDocument *m_pXMLDoc;
   stringT m_csConfigFile;

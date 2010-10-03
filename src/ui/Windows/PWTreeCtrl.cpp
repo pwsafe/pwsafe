@@ -278,7 +278,7 @@ BOOL CPWTreeCtrl::PreTranslateMessage(MSG* pMsg)
   // Process user's Rename shortcut
   if (m_pDbx != NULL && m_pDbx->CheckPreTranslateRename(pMsg)) {
     HTREEITEM hItem = GetSelectedItem();
-    if (hItem != NULL && !m_pDbx->IsMcoreReadOnly())
+    if (hItem != NULL && !m_pDbx->IsDBReadOnly())
       EditLabel(hItem);
     return TRUE;
   }
@@ -457,7 +457,7 @@ void CPWTreeCtrl::OnBeginLabelEdit(NMHDR *pNMHDR, LRESULT *pLResult)
   NMTVDISPINFO *ptvinfo = (NMTVDISPINFO *)pNMHDR;
 
   *pLResult = TRUE; // TRUE cancels label editing
-  if (m_pDbx->IsMcoreReadOnly())
+  if (m_pDbx->IsDBReadOnly())
     return;
 
   m_bEditLabelCompleted = false;
@@ -635,7 +635,7 @@ void CPWTreeCtrl::OnDeleteItem(NMHDR *pNMHDR, LRESULT *pLResult)
 
 void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNMHDR, LRESULT *pLResult)
 {
-  if (m_pDbx->IsMcoreReadOnly())
+  if (m_pDbx->IsDBReadOnly())
     return; // don't edit in read-only mode
 
   // Initial verification performed in OnBeginLabelEdit - so some events may not get here!
@@ -890,10 +890,10 @@ bool CPWTreeCtrl::IsLeaf(HTREEITEM hItem) const
 }
 
 // Returns the number of children of this group
-int CPWTreeCtrl::CountChildren(HTREEITEM hStartItem) const
+size_t CPWTreeCtrl::CountChildren(HTREEITEM hStartItem) const
 {
   // Walk the Tree!
-  int num = 0;
+  size_t num = 0;
   if (hStartItem != NULL && ItemHasChildren(hStartItem)) {
     HTREEITEM hChildItem = GetChildItem(hStartItem);
     while (hChildItem != NULL) {
@@ -901,6 +901,28 @@ int CPWTreeCtrl::CountChildren(HTREEITEM hStartItem) const
         num += CountChildren(hChildItem);
       } else {
         num++;
+      }
+      hChildItem = GetNextSiblingItem(hChildItem);
+    }
+  }
+  return num;
+}
+
+// Returns the number of attachments owned by members of this group
+size_t CPWTreeCtrl::CountAttachments(HTREEITEM hStartItem) const
+{
+  // Walk the Tree!
+  size_t num = 0;
+  if (hStartItem != NULL && ItemHasChildren(hStartItem)) {
+    HTREEITEM hChildItem = GetChildItem(hStartItem);
+    while (hChildItem != NULL) {
+      if (ItemHasChildren(hChildItem)) {
+        num += CountAttachments(hChildItem);
+      } else {
+        CItemData *pci = (CItemData *)GetItemData(hChildItem);
+        uuid_array_t entry_uuid;
+        pci->GetUUID(entry_uuid);
+        num += m_pDbx->GetCore()->HasAttachments(entry_uuid);
       }
       hChildItem = GetNextSiblingItem(hChildItem);
     }
@@ -1193,7 +1215,7 @@ BOOL CPWTreeCtrl::OnDrop(CWnd * , COleDataObject *pDataObject,
     pil->DeleteImageList();
   }
 
-  if (m_pDbx->IsMcoreReadOnly())
+  if (m_pDbx->IsDBReadOnly())
     return FALSE; // don't drop in read-only mode
 
   if (!pDataObject->IsDataAvailable(m_tcddCPFID, NULL))
@@ -1430,8 +1452,31 @@ void CPWTreeCtrl::OnBeginDrag(NMHDR *pNMHDR, LRESULT *pLResult)
   // If inter-process Move, we need to delete original
   if (m_cfdropped == m_tcddCPFID &&
       (de & DROPEFFECT_MOVE) == DROPEFFECT_MOVE &&
-      !m_bWithinThisInstance && !m_pDbx->IsMcoreReadOnly()) {
-    m_pDbx->Delete(); // XXX assume we've a selected item here!
+      !m_bWithinThisInstance && !m_pDbx->IsDBReadOnly()) {
+    HTREEITEM hItem = GetSelectedItem();
+    bool bDelete(true);
+    if (m_pDbx->AnyAttachments(hItem)) {
+      CGeneralMsgBox gmb;
+      gmb.SetTitle(IDS_DELETEMOVEDTITLE);
+      gmb.SetStandardIcon(MB_ICONQUESTION);
+      gmb.SetMsg(IDS_DELETEMOVED);
+      gmb.AddButton(IDS_YES, IDS_YES, TRUE, TRUE);
+      gmb.AddButton(IDS_NO, IDS_NO);
+
+      INT_PTR rc = gmb.DoModal();
+      switch (rc) {
+        case IDS_YES:
+          bDelete = false;
+          break;
+        case IDS_NO:
+          bDelete = true;
+          break;
+        default:
+          ASSERT(0);
+      }
+    }
+    if (bDelete)
+      m_pDbx->Delete(); // XXX assume we've a selected item here!
   }
 
   // wrong place to clean up imagelist?
@@ -2087,7 +2132,7 @@ BOOL CPWTreeCtrl::RenderAllData(HGLOBAL* phGlobal)
     return FALSE;
 
   char header[OLE_HDR_LEN+1];
-  // Note: GetDDType will return either FROMTREE or FROMTREE_R
+  // Note: GetDDType will return either FROMTREE_L or FROMTREE_R
 #if (_MSC_VER >= 1400)
   sprintf_s(header, sizeof(header),
             OLE_HDR_FMT, GetCurrentProcessId(), GetDDType(), lBufLen);

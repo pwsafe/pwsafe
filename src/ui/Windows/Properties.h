@@ -42,4 +42,6 @@ private:
   CString m_whatlastsaved;
   CString m_file_uuid;
   CString m_unknownfields;
+
+  size_t m_num_att, m_totalunc, m_totalcmp, m_largestunc, m_largestcmp;
 };

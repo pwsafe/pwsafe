@@ -10,6 +10,7 @@
 
 #include "stdafx.h"
 #include "Properties.h"
+#include "NumUtilities.h"
 #include "corelib/StringXStream.h" // for ostringstreamT
 
 // CProperties dialog
@@ -28,6 +29,11 @@ CProperties::CProperties(const st_DBProperties &st_dbp, CWnd* pParent /*=NULL*/)
   m_whatlastsaved = st_dbp.whatlastsaved.c_str();
   m_file_uuid = st_dbp.file_uuid.c_str();
   m_unknownfields = st_dbp.unknownfields.c_str();
+  m_num_att = st_dbp.num_att;
+  m_totalunc = st_dbp.totalunc;
+  m_totalcmp = st_dbp.totalcmp;
+  m_largestunc = st_dbp.largestunc;
+  m_largestcmp = st_dbp.largestcmp;
 }
 
 CProperties::~CProperties()
@@ -61,6 +67,44 @@ BOOL CProperties::OnInitDialog()
   GetDlgItem(IDC_SAVEDAPP)->SetWindowText(m_whatlastsaved);
   GetDlgItem(IDC_FILEUUID)->SetWindowText(m_file_uuid);
   GetDlgItem(IDC_UNKNOWNFIELDS)->SetWindowText(m_unknownfields);
+
+  CString tmp1, tmp2, tmp3, tmp4, tmp5;;
+  tmp1.Format(_T("%d"), m_num_att);
+  if (m_num_att == 0) {
+    tmp2 = tmp3 = tmp4 = L"n/a";
+  } else {
+    double dblVar;
+    wchar_t wcbuffer[40];
+    dblVar = (m_totalunc + 1023.0) / 1024.0;
+    PWSNumUtil::DoubleToLocalizedString(::GetThreadLocale(), dblVar, 1,
+                                        wcbuffer, sizeof(wcbuffer) / sizeof(wchar_t));
+    wcscat_s(wcbuffer, sizeof(wcbuffer) / sizeof(wchar_t), L" KB");
+    tmp2 = wcbuffer;
+
+    dblVar = (m_totalcmp + 1023.0) / 1024.0;;
+    PWSNumUtil::DoubleToLocalizedString(::GetThreadLocale(), dblVar, 1,
+                                        wcbuffer, sizeof(wcbuffer) / sizeof(wchar_t));
+    wcscat_s(wcbuffer, sizeof(wcbuffer) / sizeof(wchar_t), L" KB");
+    tmp3 = wcbuffer;
+
+    dblVar = (m_largestunc + 1023.0) / 1024.0;;
+    PWSNumUtil::DoubleToLocalizedString(::GetThreadLocale(), dblVar, 1,
+                                        wcbuffer, sizeof(wcbuffer) / sizeof(wchar_t));
+    wcscat_s(wcbuffer, sizeof(wcbuffer) / sizeof(wchar_t), L" KB");
+    tmp4 = wcbuffer;
+
+    dblVar = (m_largestcmp + 1023.0) / 1024.0;;
+    PWSNumUtil::DoubleToLocalizedString(::GetThreadLocale(), dblVar, 1,
+                                        wcbuffer, sizeof(wcbuffer) / sizeof(wchar_t));
+    wcscat_s(wcbuffer, sizeof(wcbuffer) / sizeof(wchar_t), L" KB");
+    tmp4 += L" / ";
+    tmp4 += wcbuffer;
+  }
+
+  GetDlgItem(IDC_NUMATTACHMENTS)->SetWindowText(tmp1);
+  GetDlgItem(IDC_TOTALUNCMP)->SetWindowText(tmp2);
+  GetDlgItem(IDC_TOTALCMP)->SetWindowText(tmp3);
+  GetDlgItem(IDC_ATTLARGEST)->SetWindowText(tmp4);
 
   return TRUE;
 }

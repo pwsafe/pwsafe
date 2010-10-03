@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Source Files">
@@ -357,6 +357,39 @@
     <ClCompile Include="VirtualKeyboard\VKeyBoardDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AddEdit_Attachments.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ExtractAttachment.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewAttachments.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PWAttLC.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MainAtachments.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AttProperties.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AddDescription.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AdvancedAttDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ExportAttDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NumUtilities.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AttProgressDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AboutDlg.h">
@@ -705,6 +738,36 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="VirtualKeyboard\VKShiftState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AddEdit_Attachments.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewAttachments.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ExtractAttachment.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PWAttLC.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AttProperties.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AddDescription.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AdvancedAttDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ExportAttDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NumUtilities.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AttProgressDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1469,6 +1532,60 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="..\graphics\w95mbx04.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\graphics\uncheckeda.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\graphics\toolbar\classic\attachment.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\graphics\toolbar\new\attachment.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\graphics\toolbar\new\attachment_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\graphics\attnormal.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\graphics\attnormal_warn.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\graphics\attnormal_exp.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\graphics\attabase.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\graphics\attabase_warn.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\graphics\attabase_exp.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\graphics\attsbase.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\graphics\attsbase_warn.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\graphics\attsbase_exp.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\graphics\checked_d.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\graphics\uncheckeda_d.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\graphics\toolbar\classic\addgroup.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\graphics\toolbar\new\addgroup.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\graphics\toolbar\new\addgroup_disabled.bmp">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

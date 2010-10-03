@@ -18,6 +18,7 @@ class ItemData;
 #include "AddEdit_Additional.h"
 #include "AddEdit_DateTimes.h"
 #include "AddEdit_PasswordPolicy.h"
+#include "AddEdit_Attachments.h"
 #include "SecString.h"
 
 class CAddEdit_PropertySheet : public CPWPropertySheet
@@ -57,6 +58,9 @@ public:
   CItemData *GetOriginalCI() {return m_AEMD.pci_original;}
   CItemData *GetNewCI() {return m_AEMD.pci;}
   PWScore *GetCore() {return m_AEMD.pcore;}
+  void GetNewATRecords(ATRVector &vNewATRecords);
+  void GetATRecords(ATRVector &vATRecords)
+  {vATRecords = m_AEMD.vATRecords;}
 
   bool IsEntryModified() {return m_bIsModified;}
 
@@ -64,6 +68,8 @@ public:
   bool IsChanged() {return m_bChanged;}
   void SetNotesChanged(const bool bChanged) {m_bNotesChanged = bChanged;}
   bool IsNotesChanged() {return m_bNotesChanged;}
+  void SetAttachmentsChanged(const bool bChanged);
+  bool HaveAttachmentsChanged() {return m_bAttachmentsChanged;}
 
 protected:
   st_AE_master_data m_AEMD;
@@ -75,8 +81,9 @@ private:
   CAddEdit_Additional      *m_pp_additional;
   CAddEdit_DateTimes       *m_pp_datetimes;
   CAddEdit_PasswordPolicy  *m_pp_pwpolicy;
+  CAddEdit_Attachments     *m_pp_attachments;
 
-  bool m_bIsModified, m_bChanged, m_bNotesChanged;
+  bool m_bIsModified, m_bChanged, m_bNotesChanged, m_bAttachmentsChanged;
 };
 //-----------------------------------------------------------------------------
 // Local variables:

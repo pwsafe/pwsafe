@@ -74,13 +74,25 @@ struct st_UUID {
   st_UUID() {}
 
   st_UUID(const uuid_array_t &u)
-  {memcpy(uuid, u, sizeof(uuid_array_t));}
+  {
+    memcpy(uuid, u, sizeof(uuid_array_t));
+  }
 
   st_UUID &operator=(const st_UUID &that) {
     if (this != &that) {
       memcpy(uuid, that.uuid, sizeof(uuid_array_t));
     }
     return *this;
+  }
+
+  bool operator==(const st_UUID &that) const
+  {
+    return std::memcmp(uuid, that.uuid, sizeof(uuid)) == 0;
+  }
+
+  bool operator!=(const st_UUID &that) const
+  {
+    return std::memcmp(uuid, that.uuid, sizeof(uuid)) != 0;
   }
 
   friend bool operator< (const st_UUID &uuid1,
@@ -116,6 +128,7 @@ typedef std::set<st_GroupTitleUser> GTUSet;
 typedef std::pair< std::set<st_GroupTitleUser>::iterator, bool > GTUSetPair;
 
 typedef std::set<st_UUID> UUIDSet;
+typedef UUIDSet::iterator UUIDSetIter;
 typedef std::pair< std::set<st_UUID>::iterator, bool > UUIDSetPair;
 
 typedef std::list<st_UUID> UUIDList;
