@@ -318,6 +318,8 @@ PasswordSafeFrame::~PasswordSafeFrame()
 
   delete m_guiInfo;
   m_guiInfo = 0;
+  
+  m_core.ClearData();
 }
 
 
