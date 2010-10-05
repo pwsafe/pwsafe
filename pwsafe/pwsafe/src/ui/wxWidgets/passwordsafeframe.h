@@ -36,6 +36,7 @@ class PWSGrid;
 class PWSTreeCtrl;
 class SystemTray;
 class GUIInfo;
+class SelectionCriteria;
 ////@end forward declarations
 class PasswordSafeSearch;
 
@@ -319,6 +320,8 @@ public:
   void OnShowHideToolBar(wxCommandEvent& /*evt*/);
   void OnShowHideDragBar(wxCommandEvent& /*evt*/);
 
+  void OnMergeAnotherSafe(wxCommandEvent& evt);
+  
 ////@begin PasswordSafeFrame member function declarations
 
   /// Retrieves bitmap resources
@@ -406,6 +409,13 @@ public:
   long GetRUEIndex(const wxCommandEvent& evt) { return evt.GetExtraLong(); }
   void RebuildGUI(const int iView = iBothViews);
   void CreateDragBar();
+
+  void Merge(const StringX &sx_Filename2, PWScore *pothercore, const SelectionCriteria& selection);
+  int MergeDependents(PWScore *pothercore, MultiCommands *pmulticmds,
+                              uuid_array_t &base_uuid, uuid_array_t &new_base_uuid, 
+                              const bool bTitleRenamed, wxString &timeStr, 
+                              const CItemData::EntryType et,
+                              std::vector<StringX> &vs_added);
 
   // Do* member functions for dbl-click and menu-accessible actions
   void DoCopyPassword(CItemData &item);
