@@ -7,7 +7,7 @@
 */
 
 /*
-* This routine processes Filter XML using the STANDARD and UNMODIFIED
+* This routine processes File XML using the STANDARD and UNMODIFIED
 * Expat library V2.0.1 released on June 5, 2007
 *
 * See http://expat.sourceforge.net/
@@ -133,7 +133,7 @@ bool EFileXMLProcessor::Process(const bool &bvalidation,
   if (fd == NULL)
     return false;
 
-  bool bEerrorOccurred = false;
+  bool bErrorOccurred = false;
   bool b_into_empty = m_pXMLcore->GetNumEntries() == 0;
   stringT cs_validation;
   LoadAString(cs_validation, IDSC_XMLVALIDATION);
@@ -172,7 +172,7 @@ bool EFileXMLProcessor::Process(const bool &bvalidation,
 
     status = XML_Parse(pParser, (char *)buffer, numread, done);
     if (status == XML_STATUS_ERROR || status == XML_STATUS_SUSPENDED) {
-      bEerrorOccurred = true;
+      bErrorOccurred = true;
       break;
     }
   };
@@ -194,8 +194,8 @@ bool EFileXMLProcessor::Process(const bool &bvalidation,
     m_strRenameList = pFileHandler->getRenameList();
   }
 
-  if (pFileHandler->getIfErrors() || bEerrorOccurred) {
-    bEerrorOccurred = true;
+  if (pFileHandler->getIfErrors() || bErrorOccurred) {
+    bErrorOccurred = true;
     Format(m_strXMLErrors, IDSC_EXPATPARSEERROR,
            XML_GetCurrentLineNumber(pParser),
            XML_GetCurrentColumnNumber(pParser),
@@ -239,7 +239,7 @@ bool EFileXMLProcessor::Process(const bool &bvalidation,
   // Free the parser
   XML_ParserFree(pParser);
 
-  return !bEerrorOccurred;
+  return !bErrorOccurred;
 }
 
 #endif /* USE_XML_LIBRARY == EXPAT */

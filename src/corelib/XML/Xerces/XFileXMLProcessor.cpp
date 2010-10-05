@@ -7,8 +7,8 @@
 */
 
 /*
-* This routine processes Filter XML using the STANDARD and UNMODIFIED
-* Xerces library V3.0.0 released on September 29, 2008
+* This routine processes File XML using the STANDARD and UNMODIFIED
+* Xerces library V3.1.1 released on April 27, 2010
 *
 * See http://xerces.apache.org/xerces-c/
 *
@@ -83,7 +83,7 @@ bool XFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
 {
   USES_XMLCH_STR
   
-  bool bEerrorOccurred = false;
+  bool bErrorOccurred = false;
   bool b_into_empty = false;
   stringT cs_validation;
   LoadAString(cs_validation, IDSC_XMLVALIDATION);
@@ -160,7 +160,7 @@ bool XFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
   }
   catch (const OutOfMemoryException&) {
     LoadAString(strResultText, IDCS_XERCESOUTOFMEMORY);
-    bEerrorOccurred = true;
+    bErrorOccurred = true;
   }
   catch (const XMLException& e) {
 #ifdef UNICODE
@@ -170,16 +170,16 @@ bool XFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
     strResultText = stringT(szData);
     XMLString::release(&szData);
 #endif
-    bEerrorOccurred = true;
+    bErrorOccurred = true;
   }
 
   catch (...) {
     LoadAString(strResultText, IDCS_XERCESEXCEPTION);
-    bEerrorOccurred = true;
+    bErrorOccurred = true;
   }
 
-  if (pSAX2Handler->getIfErrors() || bEerrorOccurred) {
-    bEerrorOccurred = true;
+  if (pSAX2Handler->getIfErrors() || bErrorOccurred) {
+    bErrorOccurred = true;
     strResultText = pSAX2Handler->getValidationResult();
     Format(m_strXMLErrors, IDSC_XERCESPARSEERROR, 
            m_bValidation ? cs_validation.c_str() : cs_import.c_str(), 
@@ -230,7 +230,7 @@ bool XFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
   // And call the termination method
   XMLPlatformUtils::Terminate();
 
-  return !bEerrorOccurred;
+  return !bErrorOccurred;
 }
 
 #endif /* USE_XML_LIBRARY == XERCES */
