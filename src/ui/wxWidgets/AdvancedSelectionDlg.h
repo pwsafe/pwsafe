@@ -3,6 +3,7 @@
 
 
 #include "../../corelib/ItemData.h"
+#include "./wxutils.h"
 
 struct _subgroups {
   const charT* name;
@@ -55,7 +56,10 @@ struct SelectionCriteria
   CItemData::FieldType SubgroupObject() const {return subgroups[m_subgroupObject].type;}
   PWSMatch::MatchRule  SubgroupFunction() const {return subgroupFunctions[m_subgroupFunction].function;}
   int  SubgroupFunctionWithCase() const {return m_fCaseSensitive? -SubgroupFunction(): SubgroupFunction();}
-
+  bool MatchesSubgroupText(const CItemData& item) const {
+    //could be very inefficient in a loop across the entire DB
+    return !m_fUseSubgroups || item.Matches(tostdstring(m_subgroupText), SubgroupObject(), SubgroupFunction());
+  }
 SelectionCriteria& operator=(const SelectionCriteria& data) {
     m_fCaseSensitive    = data.m_fCaseSensitive;
     m_bsFields          = data.m_bsFields;
@@ -107,6 +111,7 @@ protected:
   
   virtual bool IsMandatoryField(CItemData::FieldType field) const = 0;
   virtual wxString GetAdvancedSelectionTitle() const = 0;
+  virtual bool ShowFieldSelection() const = 0;
   
 public:
   SelectionCriteria m_criteria;
@@ -129,6 +134,10 @@ public:
 
   virtual bool IsMandatoryField(CItemData::FieldType field) const {
     return DlgType::IsMandatoryField(field);
+  }
+  
+  virtual bool ShowFieldSelection() const {
+    return DlgType::ShowFieldSelection();
   }
 };
 

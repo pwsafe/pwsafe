@@ -154,7 +154,7 @@ SOURCES= passwordsafeframe.cpp \
 	ImportXmlDlg.cpp OpenFilePickerValidator.cpp \
 	SafeCombinationCtrl.cpp ExportTextWarningDlg.cpp \
 	AdvancedSelectionDlg.cpp ViewReport.cpp dragbar.cpp \
-	PWSDragBar.cpp
+	PWSDragBar.cpp MergeDlg.cpp
 
 
 OBJECTS=$(SOURCES:%.cpp=$(OBJECTPATH)/%.o)

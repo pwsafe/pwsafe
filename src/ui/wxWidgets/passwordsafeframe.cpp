@@ -56,6 +56,8 @@
 #include "corelib/XML/XMLDefs.h"  // Required if testing "USE_XML_LIBRARY"
 #include <wx/fontdlg.h>
 #include "./PWSDragBar.h"
+#include "./MergeDlg.h"
+#include <algorithm>
 
 // main toolbar images
 #include "../graphics/toolbar/wxWidgets/new.xpm"
@@ -206,6 +208,8 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
 
   EVT_MENU(ID_SHOWHIDE_TOOLBAR,  PasswordSafeFrame::OnShowHideToolBar )
   EVT_MENU(ID_SHOWHIDE_DRAGBAR,  PasswordSafeFrame::OnShowHideDragBar )
+
+  EVT_MENU(ID_MERGE,            PasswordSafeFrame::OnMergeAnotherSafe )
 
   EVT_MENU( ID_MENU_CLEAR_MRU, PasswordSafeFrame::OnClearRecentHistory )
   EVT_UPDATE_UI( ID_MENU_CLEAR_MRU, PasswordSafeFrame::OnUpdateClearRecentDBHistory )
@@ -2480,6 +2484,10 @@ struct ExportFullText
   static bool IsMandatoryField(CItemData::FieldType /*field*/) {
     return false;
   }
+  
+  static bool ShowFieldSelection() {
+    return true;
+  }
 };
 
 void PasswordSafeFrame::OnExportPlainText(wxCommandEvent& evt)
@@ -2511,6 +2519,10 @@ struct ExportFullXml {
   
   static bool IsMandatoryField(CItemData::FieldType field) {
     return field == CItemData::TITLE || field == CItemData::PASSWORD;
+  }
+  
+  static bool ShowFieldSelection() {
+    return true;
   }
 };
 
@@ -2597,6 +2609,456 @@ void PasswordSafeFrame::DoExportText()
     wxMessageBox(_("Passkey incorrect"), title);
     pws_os::sleep_ms(3000); // against automatic attacks
   }
+}
+
+//
+// ----------  Merge and Compare ------------------
+//
+void PasswordSafeFrame::OnMergeAnotherSafe(wxCommandEvent& evt)
+{
+  MergeDlg dlg(this, &m_core);
+  if (dlg.ShowModal() == wxID_OK) {
+    //this code comes from DboxMain::DoOtherDBProcessing()
+    PWScore othercore;
+    // Not really needed but...
+    othercore.ClearData();
+
+    // Reading a new file changes the preferences!
+    const StringX sxSavePrefString(PWSprefs::GetInstance()->Store());
+    const bool bDBPrefsChanged = PWSprefs::GetInstance()->IsDBprefsChanged();
+
+    StringX dbpath(tostringx(dlg.GetOtherSafePath()));
+    int rc = othercore.ReadFile(dbpath, tostringx(dlg.GetOtherSafeCombination()));
+
+    // Reset database preferences - first to defaults then add saved changes!
+    PWSprefs::GetInstance()->Load(sxSavePrefString);
+    PWSprefs::GetInstance()->SetDBprefsChanged(bDBPrefsChanged);
+
+    switch (rc) {
+      case PWScore::SUCCESS:
+        Merge(dbpath, &othercore, dlg.GetSelectionCriteria());
+        break;
+      case PWScore::CANT_OPEN_FILE:
+        wxMessageBox(dlg.GetOtherSafePath() << _("\n\nCould not open file for reading!"),
+                      _("File Read Error"), wxOK | wxICON_ERROR );
+        break;
+      case PWScore::BAD_DIGEST:
+        if (wxMessageBox(dlg.GetOtherSafePath() << _("\n\nFile corrupt or truncated!\nData may have been lost or modified.\nContinue anyway?"), 
+              _("File Read Error"), wxYES_NO | wxICON_QUESTION) == wxYES)
+          rc = PWScore::SUCCESS;
+        break;
+#ifdef DEMO
+      case PWScore::LIMIT_REACHED:
+        wxMessageBox(wxString::Format(_("This version of PasswordSafe does not support more than %d entries in a database.\nTo get an unlimited version for the U3 platform, please visit http://software.u3.com\nNote: Saving this database will result in the removal of unread entries!"), MAXDEMO),
+                          _("Trial Version Limitation"), wxOK | wxICON_WARNING);
+        break;
+#endif
+      default:
+        wxMessageBox( dlg.GetOtherSafePath() << _("\n\nUnknown error"), _("File Read Error"), wxOK | wxICON_ERROR);
+        break;
+    }
+    
+    othercore.ClearData();
+    othercore.SetCurFile(L"");
+  }
+}
+
+// Merge flags indicating differing fields if group, title and user are identical
+#define MRG_PASSWORD   0x8000
+#define MRG_NOTES      0x4000
+#define MRG_URL        0x2000
+#define MRG_AUTOTYPE   0x1000
+#define MRG_HISTORY    0x0800
+#define MRG_POLICY     0x0400
+#define MRG_XTIME      0x0200
+#define MRG_XTIME_INT  0x0100
+#define MRG_EXECUTE    0x0080
+#define MRG_DCA        0x0040
+#define MRG_EMAIL      0x0020
+#define MRG_UNUSED     0x001f
+
+bool MergeSyncGTUCompare(const StringX &elem1, const StringX &elem2);
+
+void PasswordSafeFrame::Merge(const StringX &sx_Filename2, PWScore *pothercore, const SelectionCriteria& selection)
+{
+  // XXX Move to corelib
+  const StringX &sx_Filename1 = m_core.GetCurFile();
+
+  // Initialize set
+  GTUSet setGTU;
+
+  // First check other database
+  if (!pothercore->GetUniqueGTUValidated() && !pothercore->InitialiseGTU(setGTU)) {
+    // Database is not unique to start with - tell user to validate it first
+    wxMessageBox(wxString::Format(_("The database:\n\n%s\n\nhas duplicate entries with the same group/title/user combination. Please fix by validating database."), pothercore->GetCurFile().c_str()),
+                                    _("Synchronization failed"), wxOK | wxICON_EXCLAMATION);
+    return;
+  }
+
+  // Next check us - we need the setGTU later
+  if (!m_core.GetUniqueGTUValidated() && !m_core.InitialiseGTU(setGTU)) {
+    // Database is not unique to start with - tell user to validate it first
+    wxMessageBox(wxString::Format(_("The database:\n\n%s\n\nhas duplicate entries with the same group/title/user combination. Please fix by validating database."), m_core.GetCurFile().c_str()),
+                                    _("Synchronization failed"), wxOK | wxICON_EXCLAMATION);
+    return;
+  }
+
+  /* Put up hourglass...this might take a while */
+  ::wxBeginBusyCursor();
+
+  /* Create report as we go */
+  CReport rpt;
+  rpt.StartReport(_("Merge"), sx_Filename1.c_str());
+  rpt.WriteLine(wxString::Format(_("Merging database: %s\r\n"), sx_Filename2.c_str()).c_str());
+  
+  std::vector<StringX> vs_added;
+  std::vector<StringX> vs_AliasesAdded;
+  std::vector<StringX> vs_ShortcutsAdded;
+
+  /*
+  Purpose:
+  Merge entries from otherCore to m_core
+
+  Algorithm:
+  Foreach entry in otherCore
+    Find in m_core based on group/title/username
+    if match found
+      if all other fields match
+        no merge
+      else
+        add to m_core with new title suffixed with -merged-YYYYMMDD-HHMMSS
+    else
+      add to m_core directly
+  */
+  int numAdded = 0;
+  int numConflicts = 0;
+  int numAliasesAdded = 0;
+  int numShortcutsAdded = 0;
+  uuid_array_t base_uuid, new_base_uuid;
+  bool bTitleRenamed(false);
+
+  MultiCommands *pmulticmds = MultiCommands::Create(&m_core);
+  Command *pcmd1 = UpdateGUICommand::Create(&m_core, UpdateGUICommand::WN_UNDO,
+                                            UpdateGUICommand::GUI_UNDO_MERGESYNC);
+  pmulticmds->Add(pcmd1);
+
+  ItemListConstIter otherPos;
+  for (otherPos = pothercore->GetEntryIter();
+       otherPos != pothercore->GetEntryEndIter();
+       otherPos++) {
+    CItemData otherItem = pothercore->GetEntry(otherPos);
+    CItemData::EntryType et = otherItem.GetEntryType();
+
+    // Handle Aliases and Shortcuts when processing their base entries
+    if (otherItem.IsDependent())
+      continue;
+
+    if (!selection.MatchesSubgroupText(otherItem))
+      continue;
+
+    const StringX otherGroup = otherItem.GetGroup();
+    const StringX otherTitle = otherItem.GetTitle();
+    const StringX otherUser = otherItem.GetUser();
+
+    wxString timeStr;
+    ItemListConstIter foundPos = m_core.Find(otherGroup, otherTitle, otherUser);
+
+    otherItem.GetUUID(base_uuid);
+    memcpy(new_base_uuid, base_uuid, sizeof(new_base_uuid));
+    bTitleRenamed = false;
+    if (foundPos != m_core.GetEntryEndIter()) {
+      /* found a match, see if other fields also match */
+      CItemData curItem = m_core.GetEntry(foundPos);
+
+      wxString csDiffs, cs_temp;
+      int diff_flags = 0;
+      int cxtint, oxtint;
+      time_t cxt, oxt;
+      if (otherItem.GetPassword() != curItem.GetPassword()) {
+        diff_flags |= MRG_PASSWORD;
+        cs_temp = _("Password");
+        csDiffs += cs_temp + _(", ");
+      }
+      if (otherItem.GetNotes() != curItem.GetNotes()) {
+        diff_flags |= MRG_NOTES;
+        cs_temp = _("Notes");
+        csDiffs += cs_temp + _(", ");
+      }
+      if (otherItem.GetURL() != curItem.GetURL()) {
+        diff_flags |= MRG_URL;
+        cs_temp = _("URL");
+        csDiffs += cs_temp + _(", ");
+      }
+      if (otherItem.GetAutoType() != curItem.GetAutoType()) {
+        diff_flags |= MRG_AUTOTYPE;
+        cs_temp = _("Autotype");
+        csDiffs += cs_temp + _(", ");
+      }
+      if (otherItem.GetPWHistory() != curItem.GetPWHistory()) {
+        diff_flags |= MRG_HISTORY;
+        cs_temp = _("Password History");
+        csDiffs += cs_temp + _(", ");
+      }
+      if (otherItem.GetPWPolicy() != curItem.GetPWPolicy()) {
+        diff_flags |= MRG_POLICY;
+        cs_temp = _("Password Policy");
+        csDiffs += cs_temp + _(", ");
+      }
+      otherItem.GetXTime(oxt);
+      curItem.GetXTime(cxt);
+      if (oxt != cxt) {
+        diff_flags |= MRG_XTIME;
+        cs_temp = _("Password Expiry Date");
+        csDiffs += cs_temp + _(", ");
+      }
+      otherItem.GetXTimeInt(oxtint);
+      curItem.GetXTimeInt(cxtint);
+      if (oxtint != cxtint) {
+        diff_flags |= MRG_XTIME_INT;
+        cs_temp = _("Password Expiry Interval");
+        csDiffs += cs_temp + _(", ");
+      }
+      if (otherItem.GetRunCommand() != curItem.GetRunCommand()) {
+        diff_flags |= MRG_EXECUTE;
+        cs_temp = _("Run Command");
+        csDiffs += cs_temp + _(", ");
+      }
+      // Must use integer values not compare strings
+      short other_hDCA, cur_hDCA; 
+      otherItem.GetDCA(other_hDCA);
+      curItem.GetDCA(cur_hDCA);
+      if (other_hDCA != cur_hDCA) {
+        diff_flags |= MRG_DCA;
+        cs_temp = _("IDS_DCA");
+        csDiffs += cs_temp + _(", ");
+      }
+      if (otherItem.GetEmail() != curItem.GetEmail()) {
+        diff_flags |= MRG_EMAIL;
+        cs_temp = _("email");
+        csDiffs += cs_temp + _(", ");
+      }
+      if (diff_flags != 0) {
+        /* have a match on group/title/user, but not on other fields
+        add an entry suffixed with -merged-YYYYMMDD-HHMMSS */
+        StringX newTitle = otherTitle;
+        wxDateTime now = wxDateTime::Now().MakeUTC();
+        newTitle += _("-merged-");
+        timeStr = now.Format(wxT("%Y%m%d-%H%M%S"), wxDateTime::UTC);
+        newTitle += timeStr;
+
+        /* note it as an issue for the user */
+        wxString warnMsg = wxString::Format( _("Conflicting entries for \xab%s\xbb \xab%s\xbb \xab%s\xbb.\r\n  Added merged entry as \xab%s\xbb \xab%s\xbb \xab%s\xbb.\r\n    Differing field(s): %s"), 
+                       otherGroup.c_str(), otherTitle.c_str(), otherUser.c_str(),
+                       otherGroup.c_str(), newTitle.c_str(), otherUser.c_str(),
+                       csDiffs.c_str());
+
+        /* log it */
+        rpt.WriteLine(tostdstring(warnMsg));
+
+        /* Check no conflict of unique uuid */
+        if (m_core.Find(base_uuid) != m_core.GetEntryEndIter()) {
+          otherItem.CreateUUID();
+          otherItem.GetUUID(new_base_uuid);
+        }
+
+        /* do it */
+        bTitleRenamed = true;
+        otherItem.SetTitle(newTitle);
+        otherItem.SetStatus(CItemData::ES_ADDED);
+        Command *pcmd = AddEntryCommand::Create(&m_core, otherItem);
+        pcmd->SetNoGUINotify();
+        pmulticmds->Add(pcmd);
+
+        numConflicts++;
+      }
+    } else {
+      /* didn't find any match...add it directly */
+      /* Check no conflict of unique uuid */
+      if (m_core.Find(base_uuid) != m_core.GetEntryEndIter()) {
+        otherItem.CreateUUID();
+        otherItem.GetUUID(new_base_uuid);
+      }
+
+      otherItem.SetStatus(CItemData::ES_ADDED);
+      Command *pcmd = AddEntryCommand::Create(&m_core, otherItem);
+      pcmd->SetNoGUINotify();
+      pmulticmds->Add(pcmd);
+
+      StringX sx_added = StringX(L"\xab") + 
+                           otherGroup + StringX(L"\xbb \xab") + 
+                           otherTitle + StringX(L"\xbb \xab") +
+                           otherUser  + StringX(L"\xbb");
+      vs_added.push_back(sx_added);
+      numAdded++;
+    }
+    if (et == CItemData::ET_ALIASBASE)
+      numAliasesAdded += MergeDependents(pothercore, pmulticmds,
+                      base_uuid, new_base_uuid,
+                      bTitleRenamed, timeStr, CItemData::ET_ALIAS, vs_AliasesAdded);
+    if (et == CItemData::ET_SHORTCUTBASE)
+      numShortcutsAdded += MergeDependents(pothercore, pmulticmds,
+                      base_uuid, new_base_uuid, 
+                      bTitleRenamed, timeStr, CItemData::ET_SHORTCUT, vs_ShortcutsAdded); 
+  } // iteration over other core's entries
+
+  ;
+  if (numAdded > 0) {
+    std::sort(vs_added.begin(), vs_added.end(), MergeSyncGTUCompare);
+    wxString resultStr = wxString::Format(_("\r\nThe following new %s %s merged into this database:"), 
+                              numAdded == 1 ? _("entry") : _("entries"), numAdded == 1 ? _("was") : _("were"));
+    rpt.WriteLine(tostdstring(resultStr));
+    for (size_t i = 0; i < vs_added.size(); i++) {
+      rpt.WriteLine(tostdstring(wxString() << _("\t") << vs_added[i]));
+    }
+  }
+  if (numAliasesAdded > 0) {
+    std::sort(vs_AliasesAdded.begin(), vs_AliasesAdded.end(), MergeSyncGTUCompare);
+    wxString resultStr = wxString::Format(_("\r\nThe following new %s %s merged into this database:"),
+          numAliasesAdded == 1 ? _("alias") : _("aliases"), numAdded == 1 ? _("was") : _("were"));
+    rpt.WriteLine(tostdstring(resultStr));
+    for (size_t i = 0; i < vs_AliasesAdded.size(); i++) {
+      rpt.WriteLine(tostdstring(wxString() << _("\t") << vs_AliasesAdded[i]));
+    }
+  }
+  if (numShortcutsAdded > 0) {
+    std::sort(vs_ShortcutsAdded.begin(), vs_ShortcutsAdded.end(), MergeSyncGTUCompare);
+    wxString resultStr = wxString::Format(_("\r\nThe following new %s %s merged into this database:"),
+          numAliasesAdded == 1 ? _("shortcut") : _("shortcuts"), numAdded == 1 ? _("was") : _("were"));
+    rpt.WriteLine(tostdstring(resultStr));
+    for (size_t i = 0; i < vs_ShortcutsAdded.size(); i++) {
+      rpt.WriteLine(tostdstring(wxString() << _("\t") << vs_ShortcutsAdded[i]));
+    }
+  }
+
+  Command *pcmd2 = UpdateGUICommand::Create(&m_core, UpdateGUICommand::WN_REDO,
+                                            UpdateGUICommand::GUI_REDO_MERGESYNC);
+  pmulticmds->Add(pcmd2);
+  Execute(pmulticmds);
+  
+  ::wxEndBusyCursor();
+
+  /* tell the user we're done & provide short merge report */
+  int totalAdded = numAdded + numConflicts + numAliasesAdded + numShortcutsAdded;
+  wxString resultStr = wxString::Format(_("\r\nMerge completed: %d %s added\r\n(%d %s, %d %s, %d %s)"),
+                   totalAdded,        totalAdded == 1 ?         _("entry")    : _("entries"), 
+                   numConflicts,      numConflicts == 1 ?       _("conflict") : _("conflicts"),
+                   numAliasesAdded,   numAliasesAdded == 1 ?    _("alias")    : _("aliases"),
+                   numShortcutsAdded, numShortcutsAdded == 1 ?  _("shortcut") : _("shortcuts"));
+  rpt.WriteLine(tostdstring(resultStr));
+  rpt.EndReport();
+
+  
+  if (wxMessageBox(resultStr + _("\n\nDo you want to see a detailed report?"), 
+                      _("Merge"), wxYES_NO | wxICON_QUESTION) == wxYES)
+    ViewReport(rpt);
+
+  RefreshViews();
+
+}
+
+int PasswordSafeFrame::MergeDependents(PWScore *pothercore, MultiCommands *pmulticmds,
+                              uuid_array_t &base_uuid, uuid_array_t &new_base_uuid, 
+                              const bool bTitleRenamed, wxString &timeStr, 
+                              const CItemData::EntryType et,
+                              std::vector<StringX> &vs_added)
+{
+  UUIDVector dependentslist;
+  UUIDVectorIter paiter;
+  ItemListIter iter;
+  uuid_array_t entry_uuid, new_entry_uuid;
+  ItemListConstIter foundPos;
+  CItemData ci_temp;
+  int numadded(0);
+
+  // Get all the dependents
+  pothercore->GetAllDependentEntries(base_uuid, dependentslist, et);
+  for (paiter = dependentslist.begin();
+       paiter != dependentslist.end(); paiter++) {
+    paiter->GetUUID(entry_uuid);
+    iter = pothercore->Find(entry_uuid);
+
+    if (iter == pothercore->GetEntryEndIter())
+      continue;
+
+    CItemData *pci = &iter->second;
+    ci_temp = (*pci);
+
+    memcpy(new_entry_uuid, entry_uuid, sizeof(new_entry_uuid));
+    if (m_core.Find(entry_uuid) != m_core.GetEntryEndIter()) {
+      ci_temp.CreateUUID();
+      ci_temp.GetUUID(new_entry_uuid);
+    }
+
+    // If the base title was renamed - we should automatically rename any dependent.
+    // If we didn't, we still need to check uniqueness!
+    StringX newTitle = ci_temp.GetTitle();
+    if (bTitleRenamed) {
+      newTitle += L"-merged-";
+      newTitle += timeStr;
+      ci_temp.SetTitle(newTitle);
+    }
+    // Check this is unique - if not - don't add this one! - its only an alias/shortcut!
+    // We can't keep trying for uniqueness after adding a timestamp!
+    foundPos = m_core.Find(ci_temp.GetGroup(), newTitle, ci_temp.GetUser());
+    if (foundPos != m_core.GetEntryEndIter()) 
+      continue;
+
+    Command *pcmd1 = AddEntryCommand::Create(&m_core, ci_temp, new_base_uuid);
+    pcmd1->SetNoGUINotify();
+    pmulticmds->Add(pcmd1);
+
+    if (et == CItemData::ET_ALIAS) {
+      ci_temp.SetPassword(L"[Alias]");
+      ci_temp.SetAlias();
+    } else if (et == CItemData::ET_SHORTCUT) {
+      ci_temp.SetPassword(L"[Shortcut]");
+      ci_temp.SetShortcut();
+    } else
+      ASSERT(0);
+
+    StringX sx_added = StringX(L"\xab") + 
+                         ci_temp.GetGroup() + StringX(L"\xbb \xab") + 
+                         ci_temp.GetTitle() + StringX(L"\xbb \xab") +
+                         ci_temp.GetUser()  + StringX(L"\xbb");
+    vs_added.push_back(sx_added);
+    numadded++;
+  }
+  return numadded;
+}
+
+// Return whether first '«g» «t» «u»' is greater than the second '«g» «t» «u»'
+// used in std::sort below.
+// Need this as '»' is not in the correct lexical order for blank fields in entry
+bool MergeSyncGTUCompare(const StringX &elem1, const StringX &elem2)
+{
+  StringX g1, t1, u1, g2, t2, u2, tmp1, tmp2;
+
+  StringX::size_type i1 = elem1.find(L'\xbb');
+  g1 = (i1 == StringX::npos) ? elem1 : elem1.substr(0, i1 - 1);
+  StringX::size_type i2 = elem2.find(L'\xbb');
+  g2 = (i2 == StringX::npos) ? elem2 : elem2.substr(0, i2 - 1);
+  pws_os::Trace(L"Groups='%s' & '%s\n", g1.c_str(), g2.c_str());
+  if (g1 != g2)
+    return g1.compare(g2) < 0;
+
+  tmp1 = elem1.substr(g1.length() + 3);
+  tmp2 = elem2.substr(g2.length() + 3);
+  i1 = tmp1.find(L'\xbb');
+  t1 = (i1 == StringX::npos) ? tmp1 : tmp1.substr(0, i1 - 1);
+  i2 = tmp2.find(L'\xbb');
+  t2 = (i2 == StringX::npos) ? tmp2 : tmp2.substr(0, i2 - 1);
+  pws_os::Trace(L"Title='%s' & '%s\n", t1.c_str(), t2.c_str());
+  if (t1 != t2)
+    return t1.compare(t2) < 0;
+
+  tmp1 = tmp1.substr(t1.length() + 3);
+  tmp2 = tmp2.substr(t2.length() + 3);
+  i1 = tmp1.find(L'\xbb');
+  u1 = (i1 == StringX::npos) ? tmp1 : tmp1.substr(0, i1 - 1);
+  i2 = tmp2.find(L'\xbb');
+  u2 = (i2 == StringX::npos) ? tmp2 : tmp2.substr(0, i2 - 1);
+  pws_os::Trace(L"User='%s' & '%s\n", u1.c_str(), u2.c_str());
+  return u1.compare(u2) < 0;
 }
 
 //-----------------------------------------------------------------

@@ -190,6 +190,10 @@ struct FindDlgType {
   static bool IsMandatoryField(CItemData::FieldType /*field*/) {
     return false;
   }
+  
+  static bool ShowFieldSelection() {
+    return true;
+  }
 };
 
 /*!

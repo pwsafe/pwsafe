@@ -131,63 +131,67 @@ void AdvancedSelectionDlgBase::CreateControls(wxWindow* parentWnd)
     dlgSizer->Add(sizer, wxSizerFlags().Border(wxLEFT|wxRIGHT, SideMargin).Expand());
   }
 
-  dlgSizer->AddSpacer(RowSeparation);
+  if (ShowFieldSelection()) {
+    
+    dlgSizer->AddSpacer(RowSeparation);
+    
+    {
+      wxFlexGridSizer* grid = new wxFlexGridSizer(3, RowSeparation, ColSeparation);
+      
+      //first and third columns are growable
+      grid->AddGrowableCol(0, 1);  
+      grid->AddGrowableCol(2, 1);
+      grid->AddGrowableRow(1, 1);
+      grid->SetFlexibleDirection(wxBOTH);
+      
+      //first row is labels, with a spacer in between
+      grid->Add(new wxStaticText(this, wxID_ANY, wxT("&Available Fields:")));
+      grid->AddSpacer(0);
+      grid->Add(new wxStaticText(this, wxID_ANY, wxT("&Selected Fields:")));
+      
+      //second row is the listboxes, with buttons in between
+      wxListBox* lbFields = new wxListBox(this, ID_LB_AVAILABLE_FIELDS, wxDefaultPosition, 
+                wxDefaultSize, 0, NULL, wxLB_EXTENDED);
+      for (size_t idx = 0; idx < NumberOf(fieldNames); ++idx)
+          if (!m_criteria.m_bsFields.test(fieldNames[idx].type))
+              lbFields->Append(fieldNames[idx].name, (void*)(idx));
+
+      grid->Add(lbFields, wxSizerFlags().Expand());
+      
+      wxBoxSizer* buttonBox = new wxBoxSizer(wxVERTICAL);
+      buttonBox->AddStretchSpacer();
+      buttonBox->Add( new wxButton(this, ID_SELECT_SOME, wxT(">")) );
+      buttonBox->AddSpacer(RowSeparation);
+      buttonBox->Add( new wxButton(this, ID_SELECT_ALL, wxT(">>")) );
+      buttonBox->AddSpacer(RowSeparation*2);
+      buttonBox->Add( new wxButton(this, ID_REMOVE_SOME, wxT("<")) );
+      buttonBox->AddSpacer(RowSeparation);
+      buttonBox->Add( new wxButton(this, ID_REMOVE_ALL, wxT("<<")) );
+      buttonBox->AddStretchSpacer();
+      
+      grid->Add(buttonBox, wxSizerFlags().Align(wxALIGN_CENTER_VERTICAL));
+
+
+      wxListBox* lbSelectedFields = new wxListBox(this, ID_LB_SELECTED_FIELDS, wxDefaultPosition, 
+                    wxDefaultSize, 0, NULL, wxLB_EXTENDED);
+      for (size_t idx=0; idx < NumberOf(fieldNames); ++idx)
+          if (m_criteria.m_bsFields.test(fieldNames[idx].type)) {
+            if (IsMandatoryField(fieldNames[idx].type))
+              lbSelectedFields->Append(wxString(fieldNames[idx].name) + _(" [Mandatory Field]"), (void*)(idx));
+            else
+              lbSelectedFields->Append(fieldNames[idx].name, (void*)(idx));
+          }
+
+      
+      grid->Add(lbSelectedFields, wxSizerFlags().Expand());
+
+      dlgSizer->Add(grid, wxSizerFlags(1).Expand().Border(wxLEFT | wxRIGHT, SideMargin));
+    }
   
-  {
-    wxFlexGridSizer* grid = new wxFlexGridSizer(3, RowSeparation, ColSeparation);
-    
-    //first and third columns are growable
-    grid->AddGrowableCol(0, 1);  
-    grid->AddGrowableCol(2, 1);
-    grid->AddGrowableRow(1, 1);
-    grid->SetFlexibleDirection(wxBOTH);
-    
-    //first row is labels, with a spacer in between
-    grid->Add(new wxStaticText(this, wxID_ANY, wxT("&Available Fields:")));
-    grid->AddSpacer(0);
-    grid->Add(new wxStaticText(this, wxID_ANY, wxT("&Selected Fields:")));
-    
-    //second row is the listboxes, with buttons in between
-    wxListBox* lbFields = new wxListBox(this, ID_LB_AVAILABLE_FIELDS, wxDefaultPosition, 
-              wxDefaultSize, 0, NULL, wxLB_EXTENDED);
-    for (size_t idx = 0; idx < NumberOf(fieldNames); ++idx)
-        if (!m_criteria.m_bsFields.test(fieldNames[idx].type))
-            lbFields->Append(fieldNames[idx].name, (void*)(idx));
-
-    grid->Add(lbFields, wxSizerFlags().Expand());
-    
-    wxBoxSizer* buttonBox = new wxBoxSizer(wxVERTICAL);
-    buttonBox->AddStretchSpacer();
-    buttonBox->Add( new wxButton(this, ID_SELECT_SOME, wxT(">")) );
-    buttonBox->AddSpacer(RowSeparation);
-    buttonBox->Add( new wxButton(this, ID_SELECT_ALL, wxT(">>")) );
-    buttonBox->AddSpacer(RowSeparation*2);
-    buttonBox->Add( new wxButton(this, ID_REMOVE_SOME, wxT("<")) );
-    buttonBox->AddSpacer(RowSeparation);
-    buttonBox->Add( new wxButton(this, ID_REMOVE_ALL, wxT("<<")) );
-    buttonBox->AddStretchSpacer();
-    
-    grid->Add(buttonBox, wxSizerFlags().Align(wxALIGN_CENTER_VERTICAL));
-
-
-    wxListBox* lbSelectedFields = new wxListBox(this, ID_LB_SELECTED_FIELDS, wxDefaultPosition, 
-                  wxDefaultSize, 0, NULL, wxLB_EXTENDED);
-    for (size_t idx=0; idx < NumberOf(fieldNames); ++idx)
-        if (m_criteria.m_bsFields.test(fieldNames[idx].type)) {
-          if (IsMandatoryField(fieldNames[idx].type))
-            lbSelectedFields->Append(wxString(fieldNames[idx].name) + _(" [Mandatory Field]"), (void*)(idx));
-          else
-            lbSelectedFields->Append(fieldNames[idx].name, (void*)(idx));
-        }
-
-    
-    grid->Add(lbSelectedFields, wxSizerFlags().Expand());
-
-    dlgSizer->Add(grid, wxSizerFlags(1).Expand().Border(wxLEFT | wxRIGHT, SideMargin));
+    dlgSizer->AddSpacer(RowSeparation);
+    dlgSizer->Add(new wxStaticLine(this), wxSizerFlags().Expand().Border(wxLEFT|wxRIGHT, SideMargin).Center());
   }
   
-  dlgSizer->AddSpacer(RowSeparation);
-  dlgSizer->Add(new wxStaticLine(this), wxSizerFlags().Expand().Border(wxLEFT|wxRIGHT, SideMargin).Center());
   dlgSizer->AddSpacer(RowSeparation);
   dlgSizer->Add(CreateStdDialogButtonSizer(wxOK|wxCANCEL|wxHELP), wxSizerFlags().Center());
   dlgSizer->AddSpacer(BottomMargin);
