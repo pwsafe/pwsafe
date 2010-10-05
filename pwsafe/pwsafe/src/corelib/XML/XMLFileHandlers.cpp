@@ -6,21 +6,6 @@
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
 
-/*
-* This routine processes Filter XML using the STANDARD and UNMODIFIED
-* Expat library V2.0.1 released on June 5, 2007
-*
-* See http://expat.sourceforge.net/
-*
-* Note: This is a cross-platform library and can be linked in as a
-* Static library or used as a dynamic library e.g. DLL in Windows.
-*
-* NOTE: EXPAT is a NON-validating XML Parser.  All conformity with the
-* scheam must be performed in the handlers.  Also, the concept of pre-validation
-* before importing is not available.
-* As per XML parsing rules, any error stops the parsing immediately.
-*/
-
 #include "XMLDefs.h"    // Required if testing "USE_XML_LIBRARY"
 
 #ifdef USE_XML_LIBRARY
@@ -234,8 +219,8 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
         // as hexadecimal, rather than base64 encoding.
         // Easier to debug.
 #ifndef UNK_HEX_REP
-        m_pfield = new unsigned char[(length / 3) * 4 + 4];
-        size_t out_len;
+        size_t out_len = (length / 3) * 4 + 4;
+        m_pfield = new unsigned char[out_len];
         PWSUtil::Base64Decode(m_strElemContent, m_pfield, out_len);
         m_fieldlen = (int)out_len;
 #else

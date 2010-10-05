@@ -7,7 +7,7 @@
 */
 
 /*
-* This routine validates XML when using the Expat library V2.0.1
+* This routine validates File XML when using the Expat library V2.0.1
 * released on June 5, 2007
 *
 * See http://expat.sourceforge.net/

@@ -7,7 +7,7 @@
 */
 
 /*
-* This routine processes Filter XML using the STANDARD and UNMODIFIED
+* This routine processes File XML using the STANDARD and UNMODIFIED
 * Expat library V2.0.1 released on June 5, 2007
 *
 * See http://expat.sourceforge.net/

@@ -110,7 +110,7 @@ bool EFilterXMLProcessor::Process(const bool &bvalidation,
                                   const stringT &strXMLFileName,
                                   const stringT & /* XML Schema File Name */)
 {
-  bool bEerrorOccurred = false;
+  bool bErrorOccurred = false;
   stringT cs_validation;
   LoadAString(cs_validation, IDSC_XMLVALIDATION);
   stringT cs_import;
@@ -155,7 +155,7 @@ bool EFilterXMLProcessor::Process(const bool &bvalidation,
 
       status = XML_Parse(pParser, (char *)buffer, numread, done);
       if (status == XML_STATUS_ERROR || status == XML_STATUS_SUSPENDED) {
-        bEerrorOccurred = true;
+        bErrorOccurred = true;
         break;
       }
     };
@@ -175,8 +175,8 @@ bool EFilterXMLProcessor::Process(const bool &bvalidation,
                        _tcslen(sbuffer.c_str()) * sizeof(TCHAR), 1);
   }
 
-  if (pFilterHandler->getIfErrors() || bEerrorOccurred) {
-    bEerrorOccurred = true;
+  if (pFilterHandler->getIfErrors() || bErrorOccurred) {
+    bErrorOccurred = true;
     Format(m_strXMLErrors, IDSC_EXPATPARSEERROR,
            XML_GetCurrentLineNumber(pParser),
            XML_GetCurrentColumnNumber(pParser),
@@ -190,7 +190,7 @@ bool EFilterXMLProcessor::Process(const bool &bvalidation,
   // Free the parser
   XML_ParserFree(pParser);
 
-  return !bEerrorOccurred;
+  return !bErrorOccurred;
 }
 
 #endif /* USE_XML_LIBRARY == EXPAT */

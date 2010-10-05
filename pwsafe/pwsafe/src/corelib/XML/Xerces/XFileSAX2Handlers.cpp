@@ -7,8 +7,8 @@
 */
 
 /*
-* This routine processes Filter XML using the STANDARD and UNMODIFIED
-* Xerces library V3.0.0 released on September 29, 2008
+* This routine processes File XML using the STANDARD and UNMODIFIED
+* Xerces library V3.1.1 released on April 27, 2010
 *
 * See http://xerces.apache.org/xerces-c/
 *

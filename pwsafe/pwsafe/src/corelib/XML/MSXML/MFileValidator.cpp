@@ -7,7 +7,7 @@
 */
 
 /*
-* This routine doesn't do anything as Xerces is a validating XML Parser.
+* This routine doesn't do anything as MS XML is a validating XML Parser.
 * However, it is present to mimic Expat's version and contains similar data.
 *
 * Non-unicode builds will need convert any results from parsing the XML
