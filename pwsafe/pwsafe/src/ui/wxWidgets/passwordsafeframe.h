@@ -36,7 +36,7 @@ class PWSGrid;
 class PWSTreeCtrl;
 class SystemTray;
 class GUIInfo;
-class SelectionCriteria;
+struct SelectionCriteria;
 ////@end forward declarations
 class PasswordSafeSearch;
 
