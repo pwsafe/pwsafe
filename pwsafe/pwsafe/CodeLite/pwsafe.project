@@ -75,6 +75,8 @@
     <File Name="../src/ui/wxWidgets/dragbar.h"/>
     <File Name="../src/ui/wxWidgets/PWSDragBar.h"/>
     <File Name="../src/ui/wxWidgets/PWSDragBar.cpp"/>
+    <File Name="../src/ui/wxWidgets/MergeDlg.h"/>
+    <File Name="../src/ui/wxWidgets/MergeDlg.cpp"/>
   </VirtualDirectory>
   <Dependencies Name="Release">
     <Project Name="core"/>
