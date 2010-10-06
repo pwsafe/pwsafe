@@ -4,7 +4,7 @@
 #include <wx/dialog.h>
 
 class PWScore;
-class SelectionCriteria;
+struct SelectionCriteria;
 
 class MergeDlg : public wxDialog {
   
