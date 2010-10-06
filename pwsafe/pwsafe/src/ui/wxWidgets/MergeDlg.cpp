@@ -17,6 +17,7 @@
 #include "../../corelib/PWScore.h"
 #include "./wxutils.h"
 #include "./AdvancedSelectionDlg.h"
+#include "../../os/file.h"
 
 #include <wx/statline.h>
 
