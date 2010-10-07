@@ -2273,7 +2273,6 @@ void PasswordSafeFrame::OnImportXML(wxCommandEvent& evt)
   wxFileName XSDFilename(towxstring(PWSdirs::GetXMLDir()), XSDfn);
 
 #if USE_XML_LIBRARY == MSXML || USE_XML_LIBRARY == XERCES
-  // Expat is a non-validating parser - no use for Schema!
   if (!XSDFilename.FileExists()) {
     wxString filepath(XSDFilename.GetFullPath());
     wxMessageBox(wxString::Format(_("Can't find XML Schema Definition file (%s) in your PasswordSafe Application Directory.\r\nPlease copy it from your installation file, or re-install PasswordSafe."), filepath.c_str()), 

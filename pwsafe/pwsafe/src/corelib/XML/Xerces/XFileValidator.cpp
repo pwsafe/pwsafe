@@ -8,7 +8,6 @@
 
 /*
 * This routine doesn't do anything as Xerces is a validating XML Parser.
-* However, it is present to mimic Expat's version and contains similar data.
 *
 * Note: Xerces uses wchar_t even in non-Unicode mode.
 */
@@ -17,7 +16,7 @@
 
 #if USE_XML_LIBRARY == XERCES
 
-// XML File Import constants - used by Expat and Xerces and will be by MSXML
+// XML File Import constants - used by Xerces and will be by MSXML
 #include "../XMLFileValidation.h"
 
 // Xerces validation includes

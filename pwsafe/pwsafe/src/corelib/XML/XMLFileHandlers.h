@@ -60,9 +60,7 @@ class PWScore;
 class XMLFileHandlers
 {
   // to allow access to protected members
-#if   USE_XML_LIBRARY == EXPAT
-  friend class EFileXMLProcessor;
-#elif USE_XML_LIBRARY == MSXML
+#if USE_XML_LIBRARY == MSXML
   friend class MFileXMLProcessor;
 #elif USE_XML_LIBRARY == XERCES
   friend class XFileXMLProcessor;

@@ -18,7 +18,6 @@ Dim rc
 CRLF = Chr(13) & Chr(10)
 const strHTMLWSDir = "C:\Program Files\HTML Help Workshop"
 const strTortoiseSVNDir = "C:\Program Files\TortoiseSVN"
-const strExpatDir = "C:\Program Files\Expat 2.0.1"
 const strMSXML60SDKDir = "C:\Program Files\MSXML 6.0"
 const strXercesDir = "C:\Program Files\xerces-c-3.0.0-x86-windows-vc-8.0"
 const strwxWidgetsDir = "C:\Program Files\wxWidgets-2.8.7"
@@ -75,13 +74,6 @@ objOutputFile.WriteLine("	<UserMacro")
 objOutputFile.WriteLine("		Name=""TortoiseSVNDir""")
 strFileLocation = InputBox(str1 & "Tortoise SVN" & str2 & strTortoiseSVNDir & str3, "Tortoise SVN Location", strTortoiseSVNDir)
 If (Len(strFileLocation) = 0) Then strFileLocation = strTortoiseSVNDir
-objOutputFile.WriteLine("		Value=""" & strFileLocation & """")
-objOutputFile.WriteLine("		PerformEnvironmentSet=""true""")
-objOutputFile.WriteLine("	/>")
-objOutputFile.WriteLine("	<UserMacro")
-objOutputFile.WriteLine("		Name=""ExpatDir""")
-strFileLocation = InputBox(str1 & "Expat" & str2 & strExpatDir &str3 , "Expat Location", strExpatDir)
-If (Len(strFileLocation) = 0) Then strFileLocation = strExpatDir
 objOutputFile.WriteLine("		Value=""" & strFileLocation & """")
 objOutputFile.WriteLine("		PerformEnvironmentSet=""true""")
 objOutputFile.WriteLine("	/>")

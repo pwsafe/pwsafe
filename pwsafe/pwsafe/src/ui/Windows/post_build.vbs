@@ -72,7 +72,7 @@ Select Case strConfigLC
   Case "debug", "release"
     ' No action required
     rc = -1
-  Case "debuge", "debugm", "debugx"
+  Case "debugm", "debugx"
     strInDir = Replace(strOutDir, strConfig , "Debug")
     strDLL = "pws_" & strWhichDLL & "_D.dll"
     strInfile = strInDir & "\" & strDLL
@@ -82,7 +82,7 @@ Select Case strConfigLC
       Set objInfile = objFSO.GetFile(strInfile)
     End If
     strOutfile = strOutDir & "\" & strDLL
-  Case "demo", "releasee", "releasem", "releasex"
+  Case "demo", "releasem", "releasex"
     strInDir = Replace(strOutDir, strConfig , "Release")
     strDLL = "pws_" & strWhichDLL & ".dll"
     strInfile = strInDir & "\" & strDLL
@@ -164,7 +164,7 @@ Select Case strConfigLC
   Case "debug", "release"
     ' No action required
     rc = -1
-  Case "debuge", "debugm", "debugx"
+  Case "debugm", "debugx"
     strInDir = Replace(strOutDir, strConfig , "Debug")
     strPDB = "pws_" & strWhichPDB & "_D.pdb"
     strInfile = strInDir & "\" & strPDB
@@ -174,7 +174,7 @@ Select Case strConfigLC
       Set objInfile = objFSO.GetFile(strInfile)
     End If
     strOutfile = strOutDir & "\" & strPDB
-  Case "demo", "releasee", "releasem", "releasex"
+  Case "demo", "releasem", "releasex"
     strInDir = Replace(strOutDir, strConfig , "Release")
     strPDB = "pws_" & strWhichPDB & ".pdb"
     strInfile = strInDir & "\" & strPDB

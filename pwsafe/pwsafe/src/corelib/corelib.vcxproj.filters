@@ -26,27 +26,6 @@
     <ClCompile Include="corelib_st.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="XML\EXPAT\EFileHandlers.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="XML\EXPAT\EFileValidator.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="XML\EXPAT\EFileXMLProcessor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="XML\EXPAT\EFilterHandlers.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="XML\EXPAT\EFilterValidator.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="XML\EXPAT\EFilterXMLProcessor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="XML\EXPAT\ESecMemMgr.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="hmac.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -200,33 +179,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="corelib_st.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="XML\EXPAT\EFileHandlers.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="XML\EXPAT\EFileValidator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="XML\EXPAT\EFileValidatorDefs.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="XML\EXPAT\EFileXMLProcessor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="XML\EXPAT\EFilterHandlers.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="XML\EXPAT\EFilterValidator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="XML\EXPAT\EFilterValidatorDefs.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="XML\EXPAT\EFilterXMLProcessor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="XML\EXPAT\ESecMemMgr.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Fish.h">

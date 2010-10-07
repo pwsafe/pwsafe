@@ -43,9 +43,9 @@ strConfigLC = LCase(strConfig)
 Select Case strConfigLC
   Case "debug", "release"
     bMFC = true
-  Case "debuge", "debugm", "debugx"
+  Case "debugm", "debugx"
     bMFC = true
-  Case "demo", "releasee", "releasem", "releasex"
+  Case "demo", "releasem", "releasex"
     bMFC = true
   Case Else
     bMFC = false

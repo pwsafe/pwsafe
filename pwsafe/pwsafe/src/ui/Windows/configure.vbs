@@ -17,7 +17,7 @@ Dim str1, str2, str3,CRLF
 Dim rc
 
 Dim Node, XML_XPATH, strPgmFiles
-Dim strTortoiseSVNDir, strExpatDir, strXercesDir, strWXDir
+Dim strTortoiseSVNDir, strXercesDir, strWXDir
 Dim strKeyPath, strValueName, strValue
 
 CRLF = Chr(13) & Chr(10)
@@ -26,7 +26,7 @@ CRLF = Chr(13) & Chr(10)
 ' If running a 64-bit Windows OS, as PasswordSafe is a 32-bit application,
 ' developers should install the 32-bit version of Xerces XML library.
 ' Note: the 8.0 in the Xerces directory corresponds to VS2005; 9.0 to VS2008 etc.
-' Expat & wxWidgets only come in a 32-bit version.
+' wxWidgets only come in a 32-bit version.
 ' Default installation of wxWidgets is in a root directory. Changed here to be
 ' under the 'C:\Program Files' or 'C:\Program Files (x86)' directory.
 
@@ -51,7 +51,6 @@ Set oReg = Nothing
 
 ' Set defaults
 strTortoiseSVNDir = "C:\Program Files\TortoiseSVN"
-strExpatDir = "C:\Program Files" & strPgmFiles & "\Expat 2.0.1"
 strXercesDir = "C:\Program Files" & strPgmFiles & "\xerces-c-3.1.1-x86-windows-vc-10.0"
 strWXDir = "C:\Program Files" & strPgmFiles & "\wxWidgets-2.8.11"
 
@@ -75,10 +74,6 @@ If (objFileSystem.FileExists(strOutputFile)) Then
   Set Node = objXMLDoc.documentElement.selectSingleNode("PropertyGroup/TortoiseSVNDir") 
   If Not Node Is Nothing Then
     strTortoiseSVNDir = Node.text
-  End If
-  Set Node = objXMLDoc.documentElement.selectSingleNode("PropertyGroup/ExpatDir") 
-  If Not Node Is Nothing Then
-    strExpatDir = Node.text
   End If
   Set Node = objXMLDoc.documentElement.selectSingleNode("PropertyGroup/XercesDir") 
   If Not Node Is Nothing Then
@@ -104,9 +99,6 @@ Else
       For each CurrentUserMacro in UserMacros
         If CurrentUserMacro.Attributes.getNamedItem ("Name").text = "TortoiseSVNDir" Then
           strTortoiseSVNDir = CurrentUserMacro.Attributes.getNamedItem("Value").text
-        End If
-        If CurrentUserMacro.Attributes.getNamedItem ("Name").text = "ExpatDir" Then
-          strExpatDir = CurrentUserMacro.Attributes.getNamedItem("Value").text
         End If
         If CurrentUserMacro.Attributes.getNamedItem ("Name").text = "XercesDir" Then
           strXercesDir = CurrentUserMacro.Attributes.getNamedItem("Value").text
@@ -144,11 +136,6 @@ strFileLocation = InputBox(str1 & "Tortoise SVN" & str2 & strTortoiseSVNDir & st
 If (Len(strFileLocation) = 0) Then strFileLocation = strTortoiseSVNDir
 
 objOutputFile.WriteLine("    <TortoiseSVNDir>" & strFileLocation & "</TortoiseSVNDir>")
-
-strFileLocation = InputBox(str1 & "Expat" & str2 & strExpatDir &str3 , "Expat Location", strExpatDir)
-If (Len(strFileLocation) = 0) Then strFileLocation = strExpatDir
-
-objOutputFile.WriteLine("    <ExpatDir>" & strFileLocation & "</ExpatDir>")
 
 strFileLocation = InputBox(str1 & "Xerces" & str2 & strXercesDir & str3, "Xerces Location", strXercesDir)
 If (Len(strFileLocation) = 0) Then strFileLocation = strXercesDir
@@ -194,10 +181,6 @@ objOutputFile.WriteLine("      <EnvironmentVariable>true</EnvironmentVariable>")
 objOutputFile.WriteLine("    </BuildMacro>")
 objOutputFile.WriteLine("    <BuildMacro Include=""TortoiseSVNDir"">")
 objOutputFile.WriteLine("      <Value>$(TortoiseSVNDir)</Value>")
-objOutputFile.WriteLine("      <EnvironmentVariable>true</EnvironmentVariable>")
-objOutputFile.WriteLine("    </BuildMacro>")
-objOutputFile.WriteLine("    <BuildMacro Include=""ExpatDir"">")
-objOutputFile.WriteLine("      <Value>$(ExpatDir)</Value>")
 objOutputFile.WriteLine("      <EnvironmentVariable>true</EnvironmentVariable>")
 objOutputFile.WriteLine("    </BuildMacro>")
 objOutputFile.WriteLine("    <BuildMacro Include=""XercesDir"">")

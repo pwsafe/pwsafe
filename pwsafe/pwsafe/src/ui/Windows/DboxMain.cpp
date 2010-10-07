@@ -944,7 +944,6 @@ void DboxMain::InitPasswordSafe()
     std::wstring XSDFilename = PWSdirs::GetXMLDir() + L"pwsafe_filter.xsd";
 
 #if USE_XML_LIBRARY == MSXML || USE_XML_LIBRARY == XERCES
-    // Expat is a non-validating parser - no use for Schema!
     if (!pws_os::FileExists(XSDFilename)) {
       CGeneralMsgBox gmb;
       CString cs_title, cs_msg, cs_temp;
