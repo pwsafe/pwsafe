@@ -113,9 +113,7 @@ XMLFileValidation::~XMLFileValidation()
   m_element_map.clear();
 }
 
-#if   USE_XML_LIBRARY == EXPAT
-bool XMLFileValidation::GetElementInfo(const XML_Char *name, st_file_element_data &edata)
-#elif USE_XML_LIBRARY == MSXML
+#if USE_XML_LIBRARY == MSXML
 bool XMLFileValidation::GetElementInfo(const wchar_t *name, st_file_element_data &edata)
 #elif USE_XML_LIBRARY == XERCES
 bool XMLFileValidation::GetElementInfo(const XMLCh *name, st_file_element_data &edata)
@@ -132,9 +130,7 @@ bool XMLFileValidation::GetElementInfo(const XMLCh *name, st_file_element_data &
   const stringT strValue(name);
 #endif
 #else   // NON-UNICODE
-#if   USE_XML_LIBRARY == EXPAT
-  const stringT strValue(name);
-#elif USE_XML_LIBRARY == MSXML
+#if USE_XML_LIBRARY == MSXML
 #if (_MSC_VER >= 1400)
   size_t numchars = wcslen(name);
   char* szData = new char[numchars + 2];
@@ -149,7 +145,7 @@ bool XMLFileValidation::GetElementInfo(const XMLCh *name, st_file_element_data &
   char *szData = XMLString::transcode(name);
   const stringT strValue(szData);
   XMLString::release(&szData);
-#endif  // EXPAT, MSXML or XERCES
+#endif  // MSXML or XERCES
 #endif  // NON-UNICODE
 
   if (strValue.length() == 0)

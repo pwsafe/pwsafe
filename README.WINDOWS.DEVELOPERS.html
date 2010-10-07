@@ -57,13 +57,11 @@ the base resource DLL (pwsafe_base.dll used to create non-English language suppo
 <ul>
 <li><b>Debug</b> - builds the debug version of the required DLLs (pws_at_D.dll and pws_osk_D.dll).
 This project is automatically selected when any of the debug builds below are selected.</li>
-<li><b>DebugE</b> - builds the debug version using the Expat XML parser</li>
 <li><b>DebugM</b> - builds the debug version using the Microsoft XML parser</li>
 <li><b>DebugX</b> - builds the debug version using the Xerces XML parser</li>
 <li><b>Release</b> - builds the release version of the required DLLs (pws_at.dll and pws_osk.dll)
 and the resource DLL (pwsafe_base.dll). This project is automatically selected when any 
 of the release builds below are selected.</li>
-<li><b>ReleaseE</b> - builds the release version using the Expat XML parser</li>
 <li><b>ReleaseM</b> - builds the release version using the Microsoft XML parser</li>
 <li><b>ReleaseX</b> - builds the release version using the Xerces XML parser</li>
 </ul>
@@ -72,10 +70,8 @@ of the release builds below are selected.</li>
 
 <ul>
 <li><b>Debugwx</b> - builds the debug version without any XML parser</li>
-<li><b>DebugwxE</b> - builds the debug version using the Expat XML parser</li>
 <li><b>DebugwxX</b> - builds the debug version using the Xerces XML parser</li>
 <li><b>Releasewx</b> - builds the release version without any XML parser</li>
-<li><b>ReleasewxE</b> - builds the release version using the Expat XML parser</li>
 <li><b>ReleasewxX</b> - builds the release version using the Xerces XML parser</li>
 </ul>
 
@@ -209,8 +205,6 @@ version details)</li>
 <ul>
 <li>Headers and libraries to support Microsoft's XML V6.0 are included in
 the Windows SDK mentioned above and do not need to be installed separately.</li>
-<li><a target="_blank" href="http://expat.sourceforge.net/">Expat's V2.0.1
-XML Library</a></li>
 <li><a target="_blank" href="http://xerces.apache.org/xerces-c/">Xerces
 V3.1.1 XML Library</a></li>
 </ul>
@@ -245,9 +239,8 @@ run to generate the above file with the correct values.</p>
 <h3><a name="XML_Processing"></a>XML Processing</h3>
 
 <p>Originally, PasswordSafe used Microsoft's XML library for XML parsing and
-validation. For portability, we're now working on support for the
-<a href="http://expat.sourceforge.net/" target="_blank">Expat</a>
-and <a href="http://xerces.apache.org/xerces-c/" target="_blank">Xerces</a> XML
+validation. For portability, we're now support the
+<a href="http://xerces.apache.org/xerces-c/" target="_blank">Xerces</a> XML
 libraries, which are available for non-Windows platforms.  We recommend the
 latest version (currently 3.1.1 as of April 2010), as they
 supply pre-built Windows binaries using the VS2005 (VC8) and VC9 and VC10
@@ -261,9 +254,9 @@ will be treated as 'Unknown Fields' and will remain unchanged so that
 other versions of PasswordSafe that do support XML parsing can still
 use them. Note, however, that the application will be able to write XML files.</p>
 
-<p>The three valid values of the USE_XML_LIBRARY variable are "EXPAT",
+<p>The two valid values of the USE_XML_LIBRARY variable are
 "MSXML" and "XERCES" corresponding to the three different implementations.
-For wxWidgets builds, only EXPAT and XERCES will be possible but they are
+For wxWidgets builds, only XERCES will be possible but they are
 still under development (as of August 2010).</p>
 
 <p>PasswordSafe uses SAX2 processing for both Microsoft's and the Xerces' XML
@@ -272,14 +265,6 @@ the appropriate XSD Schema file (included in the distribution and in the
 "xml" sub-directory, to process either file or filter imports. This
 ensures that the data eventually hitting the SAX2 content handlers is
 correct and just needs placing in the appropriate fields.</p>
-
-<p>Expat is a non-validating XML Parser and uses its own API rather than SAX2.
-Note: SAX2 is only an official standard for Java XML processing,
-although many C supporting parsers also support this interface. Because
-Expat is non-validating, significant extra code has been added directly into
-PasswordSafe to perform this validation, so that the program and its 
-databases are not corrupted by poorly formed XML or incorrect data within
-the XML file.</p>
 
 <h3><a name="Minidump_Production"></a>Minidump Production (Windows only)</h3>
 

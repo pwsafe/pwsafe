@@ -31,9 +31,7 @@
 #include "os/file.h"
 #include "os/mem.h"
 
-#if USE_XML_LIBRARY == EXPAT
-#include "XML/Expat/EFileXMLProcessor.h"
-#elif USE_XML_LIBRARY == MSXML
+#if USE_XML_LIBRARY == MSXML
 #include "XML/MSXML/MFileXMLProcessor.h"
 #elif USE_XML_LIBRARY == XERCES
 #include "XML/Xerces/XFileXMLProcessor.h"
@@ -717,9 +715,7 @@ int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLF
   MultiCommands *pmulticmds = MultiCommands::Create(this);
   pcommand = pmulticmds;
 
-#if   USE_XML_LIBRARY == EXPAT
-  EFileXMLProcessor iXML(this, &Possible_Aliases, &Possible_Shortcuts, pmulticmds, &rpt);
-#elif USE_XML_LIBRARY == MSXML
+#if USE_XML_LIBRARY == MSXML
   MFileXMLProcessor iXML(this, &Possible_Aliases, &Possible_Shortcuts, pmulticmds, &rpt);
 #elif USE_XML_LIBRARY == XERCES
   XFileXMLProcessor iXML(this, &Possible_Aliases, &Possible_Shortcuts, pmulticmds, &rpt);
@@ -733,7 +729,6 @@ int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLF
 
   strXMLErrors = strPWHErrorList = strRenameList = _T("");
 
-  // Expat is not a validating parser - but we now do it ourselves!
   validation = true;
   status = iXML.Process(validation, ImportedPrefix, strXMLFileName,
                         strXSDFileName, bImportPSWDsOnly, 

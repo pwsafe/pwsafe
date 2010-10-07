@@ -17,7 +17,7 @@ Dim str1, str2, str3,CRLF
 Dim rc
 
 Dim XML_XPATH, strPgmFiles
-Dim strTortoiseSVNDir, strExpatDir, strXercesDir, strWXDir
+Dim strTortoiseSVNDir, strXercesDir, strWXDir
 Dim strKeyPath, strValueName, strValue
 
 CRLF = Chr(13) & Chr(10)
@@ -26,7 +26,7 @@ CRLF = Chr(13) & Chr(10)
 ' If running a 64-bit Windows OS, as PasswordSafe is a 32-bit application,
 ' developers should install the 32-bit version of Xerces XML library.
 ' Note: the 8.0 in the Xerces directory corresponds to VS2005; 9.0 to VS2008 etc.
-' Expat & wxWidgets only come in a 32-bit version.
+' wxWidgets only come in a 32-bit version.
 ' Default installation of wxWidgets is in a root directory. Changed here to be
 ' under the 'C:\Program Files' or 'C:\Program Files (x86)' directory.
 
@@ -51,7 +51,6 @@ Set oReg = Nothing
 
 ' Set defaults
 strTortoiseSVNDir = "C:\Program Files\TortoiseSVN"
-strExpatDir = "C:\Program Files" & strPgmFiles & "\Expat 2.0.1"
 strXercesDir = "C:\Program Files" & strPgmFiles & "\xerces-c-3.0.1-x86-windows-vc-8.0"
 strWXDir = "C:\Program Files" & strPgmFiles & "\wxWidgets-2.8.10"
 
@@ -73,9 +72,6 @@ If UserMacros.length > 0 Then
   For each CurrentUserMacro in UserMacros
     If CurrentUserMacro.Attributes.getNamedItem ("Name").text = "TortoiseSVNDir" Then
       strTortoiseSVNDir = CurrentUserMacro.Attributes.getNamedItem("Value").text
-    End If
-    If CurrentUserMacro.Attributes.getNamedItem ("Name").text = "ExpatDir" Then
-      strExpatDir = CurrentUserMacro.Attributes.getNamedItem("Value").text
     End If
     If CurrentUserMacro.Attributes.getNamedItem ("Name").text = "XercesDir" Then
       strXercesDir = CurrentUserMacro.Attributes.getNamedItem("Value").text
@@ -143,13 +139,6 @@ objOutputFile.WriteLine("	<UserMacro")
 objOutputFile.WriteLine("		Name=""TortoiseSVNDir""")
 strFileLocation = InputBox(str1 & "Tortoise SVN" & str2 & strTortoiseSVNDir & str3, "Tortoise SVN Location", strTortoiseSVNDir)
 If (Len(strFileLocation) = 0) Then strFileLocation = strTortoiseSVNDir
-objOutputFile.WriteLine("		Value=""" & strFileLocation & """")
-objOutputFile.WriteLine("		PerformEnvironmentSet=""true""")
-objOutputFile.WriteLine("	/>")
-objOutputFile.WriteLine("	<UserMacro")
-objOutputFile.WriteLine("		Name=""ExpatDir""")
-strFileLocation = InputBox(str1 & "Expat" & str2 & strExpatDir &str3 , "Expat Location", strExpatDir)
-If (Len(strFileLocation) = 0) Then strFileLocation = strExpatDir
 objOutputFile.WriteLine("		Value=""" & strFileLocation & """")
 objOutputFile.WriteLine("		PerformEnvironmentSet=""true""")
 objOutputFile.WriteLine("	/>")

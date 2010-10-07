@@ -90,12 +90,7 @@ End If
 
 Select Case strConfigLC
   Case "debug"
-    strOutDir = Replace(strOutDir, "\Debug" , "\DebugE")
-    If objFSO.FolderExists(strOutDir) Then
-      strOutfile = strOutDir & "\" & strDLL
-      Call CopyFile(strDLL, strInfile, strOutfile, "DebugE")
-    End If
-    strOutDir = Replace(strOutDir, "\DebugE" , "\DebugM")
+    strOutDir = Replace(strOutDir, "\Debug" , "\DebugM")
     If objFSO.FolderExists(strOutDir) Then
       strOutfile = strOutDir & "\" & strDLL
       Call CopyFile(strDLL, strInfile, strOutfile, "DebugM")
@@ -111,12 +106,7 @@ Select Case strConfigLC
       strOutfile = strOutDir & "\" & strDLL
       Call CopyFile(strDLL, strInfile, strOutfile, "Demo")
     End If
-    strOutDir = Replace(strOutDir, "\Demo" , "\ReleaseE")
-    If objFSO.FolderExists(strOutDir) Then
-      strOutfile = strOutDir & "\" & strDLL
-      Call CopyFile(strDLL, strInfile, strOutfile, "ReleaseE")
-    End If
-    strOutDir = Replace(strOutDir, "\ReleaseE" , "\ReleaseM")
+    strOutDir = Replace(strOutDir, "\Demo" , "\ReleaseM")
     If objFSO.FolderExists(strOutDir) Then
       strOutfile = strOutDir & "\" & strDLL
       Call CopyFile(strDLL, strInfile, strOutfile, "ReleaseM")

@@ -16,10 +16,7 @@
 // PWS includes
 #include "../StringX.h"
 
-#if   USE_XML_LIBRARY == EXPAT
-// Expat includes
-#include <expat.h>
-#elif USE_XML_LIBRARY == MSXML
+#if USE_XML_LIBRARY == MSXML
 // MSXML includes
 // None
 #elif USE_XML_LIBRARY == XERCES
@@ -155,9 +152,7 @@ public:
   XMLFileValidation();
   ~XMLFileValidation();
 
-#if   USE_XML_LIBRARY == EXPAT
-  bool GetElementInfo(const XML_Char *name, st_file_element_data &edata);
-#elif USE_XML_LIBRARY == MSXML
+#if USE_XML_LIBRARY == MSXML
   bool GetElementInfo(const wchar_t *name, st_file_element_data &edata);
 #elif USE_XML_LIBRARY == XERCES
   bool GetElementInfo(const XMLCh *name, st_file_element_data &edata);

@@ -62,7 +62,6 @@
 #define IDSC_XERCESPARSEERROR           3059
 #define IDCS_XERCESEXCEPTION            3060
 #define IDCS_XERCESOUTOFMEMORY          3061
-#define IDSC_EXPATPARSEERROR            3062
 #define IDSC_EXPHDRRUNCOMMAND           3063
 #define IDSC_EXPHDRDCA                  3064
 #define IDSC_EXPHDREMAIL                3065
@@ -166,19 +165,6 @@
 #define IDSC_SAX2ERROR                  3329
 #define IDSC_SAX2WARNING                3330
 #define IDSC_FILTEREXISTS               3331
-#define IDSC_EXPATNODELIMITER           3332
-#define IDSC_EXPATBADDELIMITER          3333
-#define IDSC_EXPATFTYPEMISSING          3334
-#define IDSC_EXPATUNKNELEMENT           3335
-#define IDSC_EXPATUNEXPECTED            3336
-#define IDSC_EXPATMISSINGTG             3337
-#define IDSC_EXPATINVALIDDATA           3338
-#define IDSC_EXPATMISSINGDT             3339
-#define IDSC_EXPATMISSINGPWH            3340
-#define IDSC_EXPATEXCEEDMAXOCCURS       3341
-#define IDSC_EXPATMISSINGTELM           3342
-#define IDSC_EXPATUNEXPFILTERFLD        3343
-#define IDSC_EXPATBADDATA               3344
 #define IDSC_MISSINGXSD                 3345
 #define IDSC_CANTVALIDATEXML            3346
 #define IDSC_FILTERSKEPT                3347

@@ -21,9 +21,7 @@
 
 #include "XML/XMLDefs.h"  // Required if testing "USE_XML_LIBRARY"
 
-#if   USE_XML_LIBRARY == EXPAT
-#include "XML/Expat/EFilterXMLProcessor.h"
-#elif USE_XML_LIBRARY == MSXML
+#if USE_XML_LIBRARY == MSXML
 #include "XML/MSXML/MFilterXMLProcessor.h"
 #elif USE_XML_LIBRARY == XERCES
 #include "XML/Xerces/XFilterXMLProcessor.h"
@@ -591,9 +589,7 @@ int PWSFilters::ImportFilterXMLFile(const FilterPool fpool,
                                     stringT &strErrors,
                                     Asker *pAsker)
 {
-#if   USE_XML_LIBRARY == EXPAT
-  EFilterXMLProcessor fXML(*this, fpool, pAsker);
-#elif USE_XML_LIBRARY == MSXML
+#if USE_XML_LIBRARY == MSXML
   MFilterXMLProcessor fXML(*this, fpool, pAsker);
 #elif USE_XML_LIBRARY == XERCES
   XFilterXMLProcessor fXML(*this, fpool, pAsker);

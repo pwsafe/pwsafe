@@ -30,10 +30,6 @@ LIBSRC          = BlowFish.cpp CheckVersion.cpp hmac.cpp \
                   tinyxml/tinyxml.cpp \
                   tinyxml/tinyxmlerror.cpp tinyxml/tinyxmlparser.cpp \
                   XML/XMLFileHandlers.cpp XML/XMLFileValidation.cpp \
-                  XML/Expat/EFileHandlers.cpp XML/Expat/EFileValidator.cpp \
-                  XML/Expat/EFileXMLProcessor.cpp XML/Expat/EFilterHandlers.cpp \
-                  XML/Expat/EFilterValidator.cpp XML/Expat/EFilterXMLProcessor.cpp \
-                  XML/Expat/ESecMemMgr.cpp \
                   XML/Xerces/XFileSAX2Handlers.cpp XML/Xerces/XFileValidator.cpp \
                   XML/Xerces/XFileXMLProcessor.cpp XML/Xerces/XFilterSAX2Handlers.cpp \
                   XML/Xerces/XFilterXMLProcessor.cpp XML/Xerces/XSecMemMgr.cpp                  
@@ -86,11 +82,11 @@ clean:
 	@rm corelib_st.cpp corelib_st.h
 
 setup:
-	@mkdir -p $(OBJPATH) $(OBJPATH)/tinyxml $(OBJPATH)/XML/Expat $(OBJPATH)/XML/Xerces $(LIBPATH) $(DEPDIR)
+	@mkdir -p $(OBJPATH) $(OBJPATH)/tinyxml $(OBJPATH)/XML/Xerces $(LIBPATH) $(DEPDIR)
 
 $(DEPDIR)/%.d: %.cpp
 	@set -e; mkdir -p $(DEPDIR) $(DEPDIR)/tinyxml; \
-	mkdir -p $(DEPDIR)/XML/Xerces $(DEPDIR)/XML/Expat; \
+	mkdir -p $(DEPDIR)/XML/Xerces \
 	$(RM) $@; \
 	$(CXX) -MM $(CXXFLAGS) $< > $@.$$$$; \
 	sed 's,\($*\)\.o[ :]*,$(OBJECTPATH)/\1.o $@ : ,g' < $@.$$$$ > $@; \

@@ -1,20 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
-    <ProjectConfiguration Include="DebugwxE|Win32">
-      <Configuration>DebugwxE</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
     <ProjectConfiguration Include="DebugwxX|Win32">
       <Configuration>DebugwxX</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Debugwx|Win32">
       <Configuration>Debugwx</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="ReleasewxE|Win32">
-      <Configuration>ReleasewxE</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="ReleasewxX|Win32">
@@ -36,9 +28,6 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Releasewx|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleasewxE|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleasewxX|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
   </PropertyGroup>
@@ -48,17 +37,10 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugwxX|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugwxE|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-  </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Releasewx|Win32'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="UserVariables.props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='ReleasewxE|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="UserVariables.props" />
   </ImportGroup>
@@ -74,48 +56,32 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="UserVariables.props" />
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DebugwxE|Win32'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="UserVariables.props" />
-  </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debugwx|Win32'">..\$(PWSBin)\</OutDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='DebugwxX|Win32'">..\$(PWSBin)\</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='DebugwxE|Win32'">..\$(PWSBin)\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debugwx|Win32'">..\$(PWSObj)\$(ProjectName)\</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='DebugwxX|Win32'">..\$(PWSObj)\$(ProjectName)\</IntDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='DebugwxE|Win32'">..\$(PWSObj)\$(ProjectName)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debugwx|Win32'">true</LinkIncremental>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='DebugwxX|Win32'">true</LinkIncremental>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='DebugwxE|Win32'">true</LinkIncremental>
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debugwx|Win32'">false</GenerateManifest>
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='DebugwxX|Win32'">false</GenerateManifest>
-    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='DebugwxE|Win32'">false</GenerateManifest>
     <EmbedManifest Condition="'$(Configuration)|$(Platform)'=='Debugwx|Win32'">false</EmbedManifest>
     <EmbedManifest Condition="'$(Configuration)|$(Platform)'=='DebugwxX|Win32'">false</EmbedManifest>
-    <EmbedManifest Condition="'$(Configuration)|$(Platform)'=='DebugwxE|Win32'">false</EmbedManifest>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Releasewx|Win32'">..\$(PWSBin)\</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='ReleasewxE|Win32'">..\$(PWSBin)\</OutDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='ReleasewxX|Win32'">..\$(PWSBin)\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Releasewx|Win32'">..\$(PWSObj)\$(ProjectName)\</IntDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='ReleasewxE|Win32'">..\$(PWSObj)\$(ProjectName)\</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='ReleasewxX|Win32'">..\$(PWSObj)\$(ProjectName)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Releasewx|Win32'">false</LinkIncremental>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='ReleasewxE|Win32'">false</LinkIncremental>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='ReleasewxX|Win32'">false</LinkIncremental>
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Releasewx|Win32'">false</GenerateManifest>
-    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='ReleasewxE|Win32'">false</GenerateManifest>
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='ReleasewxX|Win32'">false</GenerateManifest>
     <EmbedManifest Condition="'$(Configuration)|$(Platform)'=='Releasewx|Win32'">false</EmbedManifest>
-    <EmbedManifest Condition="'$(Configuration)|$(Platform)'=='ReleasewxE|Win32'">false</EmbedManifest>
     <EmbedManifest Condition="'$(Configuration)|$(Platform)'=='ReleasewxX|Win32'">false</EmbedManifest>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debugwx|Win32'">pwsafe</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='DebugwxX|Win32'">pwsafe</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='DebugwxE|Win32'">pwsafe</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Releasewx|Win32'">pwsafe</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='ReleasewxE|Win32'">pwsafe</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='ReleasewxX|Win32'">pwsafe</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debugwx|Win32'">
@@ -194,44 +160,6 @@
       <SuppressStartupBanner>false</SuppressStartupBanner>
     </Manifest>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugwxE|Win32'">
-    <PreBuildEvent>
-      <Message>Pre-build event command script</Message>
-      <Command>cscript pre_build.vbs</Command>
-    </PreBuildEvent>
-    <ClCompile>
-      <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(ExpatDir)\Source\lib;$(WXDIR)/include;$(WXDIR)/lib/vc10_lib/mswud;../../corelib;../../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;__WXDEBUG__;wxUSE_UNICODE;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=EXPAT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MinimalRebuild>true</MinimalRebuild>
-      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
-      <PrecompiledHeaderOutputFile>..\$(PWSObj)\$(ProjectName)/pwsafe.pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>..\$(PWSObj)\$(ProjectName)/</AssemblerListingLocation>
-      <ObjectFileName>..\$(PWSObj)\$(ProjectName)/</ObjectFileName>
-      <ProgramDataBaseFileName>..\$(PWSObj)\$(ProjectName)/</ProgramDataBaseFileName>
-      <WarningLevel>Level4</WarningLevel>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <ShowIncludes>false</ShowIncludes>
-    </ClCompile>
-    <ResourceCompile>
-      <AdditionalIncludeDirectories>$(WXDIR)/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ResourceCompile>
-    <Link>
-      <AdditionalDependencies>corelib.lib;os.lib;wxmsw28ud_xrc.lib;wxmsw28ud_qa.lib;wxmsw28ud_html.lib;wxmsw28ud_adv.lib;wxmsw28ud_core.lib;wxbase28ud_xml.lib;wxbase28ud_net.lib;wxmsw28ud_richtext.lib;wxbase28ud.lib;wxtiffd.lib;wxjpegd.lib;wxpngd.lib;wxzlibd.lib;wxregexud.lib;gdiplus.lib;comctl32.lib;wsock32.lib;uuid.lib;rpcrt4.lib;libcmtd.lib;shlwapi.lib;libexpatwMTd.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(WXDIR)/lib/vc10_lib;$(ExpatDir)\Bin10\Debug;..\$(PWSLib);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <IgnoreSpecificDefaultLibraries>uafxcwd.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>..\$(PWSBin)/pwsafe.pdb</ProgramDatabaseFile>
-      <SubSystem>Windows</SubSystem>
-      <TargetMachine>MachineX86</TargetMachine>
-    </Link>
-    <Manifest>
-      <SuppressStartupBanner>false</SuppressStartupBanner>
-    </Manifest>
-  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Releasewx|Win32'">
     <PreBuildEvent>
       <Message>Pre-build event command script</Message>
@@ -258,41 +186,6 @@
     <Link>
       <AdditionalDependencies>corelib.lib;os.lib;wxmsw28u_xrc.lib;wxmsw28u_qa.lib;wxmsw28u_html.lib;wxmsw28u_adv.lib;wxmsw28u_core.lib;wxbase28u_xml.lib;wxbase28u_net.lib;wxmsw28u_richtext.lib;wxbase28u.lib;wxtiff.lib;wxjpeg.lib;wxpng.lib;wxzlib.lib;wxregexu.lib;gdiplus.lib;comctl32.lib;wsock32.lib;uuid.lib;rpcrt4.lib;shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(WXDIR)/lib/vc10_lib;..\$(PWSLib);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <IgnoreSpecificDefaultLibraries>uafxcw.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>..\$(PWSBin)/pwsafe.pdb</ProgramDatabaseFile>
-      <SubSystem>Windows</SubSystem>
-      <OptimizeReferences>true</OptimizeReferences>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <TargetMachine>MachineX86</TargetMachine>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleasewxE|Win32'">
-    <PreBuildEvent>
-      <Message>Pre-build event command script</Message>
-      <Command>cscript pre_build.vbs</Command>
-    </PreBuildEvent>
-    <ClCompile>
-      <Optimization>MinSpace</Optimization>
-      <WholeProgramOptimization>false</WholeProgramOptimization>
-      <AdditionalIncludeDirectories>$(ExpatDir)\Source\lib;$(WXDIR)/include;$(WXDIR)/lib/vc10_lib/mswu;../../corelib;../../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;wxUSE_UNICODE;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=EXPAT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
-      <PrecompiledHeaderOutputFile>..\$(PWSObj)\$(ProjectName)/pwsafe.pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>..\$(PWSObj)\$(ProjectName)/</AssemblerListingLocation>
-      <ObjectFileName>..\$(PWSObj)\$(ProjectName)/</ObjectFileName>
-      <ProgramDataBaseFileName>..\$(PWSObj)\$(ProjectName)/</ProgramDataBaseFileName>
-      <WarningLevel>Level3</WarningLevel>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-    </ClCompile>
-    <ResourceCompile>
-      <AdditionalIncludeDirectories>$(WXDIR)/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ResourceCompile>
-    <Link>
-      <AdditionalDependencies>corelib.lib;os.lib;wxmsw28u_xrc.lib;wxmsw28u_qa.lib;wxmsw28u_html.lib;wxmsw28u_adv.lib;wxmsw28u_core.lib;wxbase28u_xml.lib;wxbase28u_net.lib;wxmsw28u_richtext.lib;wxbase28u.lib;wxtiff.lib;wxjpeg.lib;wxpng.lib;wxzlib.lib;wxregexu.lib;gdiplus.lib;comctl32.lib;wsock32.lib;uuid.lib;rpcrt4.lib;shlwapi.lib;libexpatwMT.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(WXDIR)/lib/vc10_lib;$(ExpatDir)\Bin10\Release;..\$(PWSLib);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>uafxcw.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>..\$(PWSBin)/pwsafe.pdb</ProgramDatabaseFile>
@@ -348,6 +241,7 @@
     <ClInclude Include="guiinfo.h" />
     <ClInclude Include="ImportTextDlg.h" />
     <ClInclude Include="ImportXmlDlg.h" />
+    <ClInclude Include="MergeDlg.h" />
     <ClInclude Include="OpenFilePickerValidator.h" />
     <ClInclude Include="optionspropsheet.h" />
     <ClInclude Include="passwordsafeframe.h" />
@@ -390,6 +284,7 @@
     <ClCompile Include="ImportTextDlg.cpp" />
     <ClCompile Include="ImportXmlDlg.cpp" />
     <ClCompile Include="mainEdit.cpp" />
+    <ClCompile Include="MergeDlg.cpp" />
     <ClCompile Include="OpenFilePickerValidator.cpp" />
     <ClCompile Include="optionspropsheet.cpp" />
     <ClCompile Include="passwordsafeframe.cpp" />

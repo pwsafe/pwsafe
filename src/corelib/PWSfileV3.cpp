@@ -766,7 +766,6 @@ int PWSfileV3::ReadHeader()
           stringT strErrors;
           stringT XSDFilename = PWSdirs::GetXMLDir() + _T("pwsafe_filter.xsd");
 #if USE_XML_LIBRARY == MSXML || USE_XML_LIBRARY == XERCES
-          // Expat is a non-validating parser - no use for Schema!
           if (!pws_os::FileExists(XSDFilename)) {
             // No filter schema => user won't be able to access stored filters
             // Inform her of the fact (probably an installation problem).
