@@ -20,24 +20,6 @@
       <File Name="../src/corelib/XML/Xerces/XFilterSAX2Handlers.h"/>
       <File Name="../src/corelib/XML/Xerces/XFilterSAX2Handlers.cpp"/>
     </VirtualDirectory>
-    <VirtualDirectory Name="Expat">
-      <File Name="../src/corelib/XML/Expat/EFilterValidatorDefs.h"/>
-      <File Name="../src/corelib/XML/Expat/ESecMemMgr.cpp"/>
-      <File Name="../src/corelib/XML/Expat/EFileXMLProcessor.cpp"/>
-      <File Name="../src/corelib/XML/Expat/EFilterHandlers.h"/>
-      <File Name="../src/corelib/XML/Expat/EFileHandlers.cpp"/>
-      <File Name="../src/corelib/XML/Expat/EFileValidator.h"/>
-      <File Name="../src/corelib/XML/Expat/EFilterXMLProcessor.h"/>
-      <File Name="../src/corelib/XML/Expat/EFileXMLProcessor.h"/>
-      <File Name="../src/corelib/XML/Expat/EFilterValidator.cpp"/>
-      <File Name="../src/corelib/XML/Expat/EFileValidatorDefs.h"/>
-      <File Name="../src/corelib/XML/Expat/ESecMemMgr.h"/>
-      <File Name="../src/corelib/XML/Expat/EFilterHandlers.cpp"/>
-      <File Name="../src/corelib/XML/Expat/EFileValidator.cpp"/>
-      <File Name="../src/corelib/XML/Expat/EFilterXMLProcessor.cpp"/>
-      <File Name="../src/corelib/XML/Expat/EFilterValidator.h"/>
-      <File Name="../src/corelib/XML/Expat/EFileHandlers.h"/>
-    </VirtualDirectory>
     <File Name="../src/corelib/XML/XMLDefs.h"/>
     <File Name="../src/corelib/XML/XMLFileValidation.h"/>
     <File Name="../src/corelib/XML/XMLFileHandlers.h"/>
