@@ -86,7 +86,7 @@ setup:
 
 $(DEPDIR)/%.d: %.cpp
 	@set -e; mkdir -p $(DEPDIR) $(DEPDIR)/tinyxml; \
-	mkdir -p $(DEPDIR)/XML/Xerces \
+	mkdir -p $(DEPDIR)/XML/Xerces; \
 	$(RM) $@; \
 	$(CXX) -MM $(CXXFLAGS) $< > $@.$$$$; \
 	sed 's,\($*\)\.o[ :]*,$(OBJECTPATH)/\1.o $@ : ,g' < $@.$$$$ > $@; \
