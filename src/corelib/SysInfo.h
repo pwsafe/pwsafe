@@ -29,6 +29,7 @@ public:
 
   static bool IsUnderU3();
   static bool IsUnderPw2go();
+  static bool IsLinux();
 
   void SetEffectiveUser(const stringT &u) {m_euser = u;}
   void SetEffectiveHost(const stringT &h) {m_esysname = h;}
