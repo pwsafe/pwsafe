@@ -884,10 +884,15 @@ void AddEditPropSheet::ShowPassword()
   // Per Dave Silvia's suggestion:
   // Following kludge since wxTE_PASSWORD style is immutable
   wxTextCtrl *tmp = m_PasswordCtrl;
+  const wxString pwd = tmp->GetValue();
   m_PasswordCtrl = new wxTextCtrl(m_BasicPanel, ID_TEXTCTRL2,
                                   m_password.c_str(),
                                   wxDefaultPosition, wxDefaultSize,
                                   0);
+  if (!pwd.IsEmpty()) {
+    m_PasswordCtrl->ChangeValue(pwd);
+    m_PasswordCtrl->SetModified(true);
+  }
   m_BasicFGSizer->Replace(tmp, m_PasswordCtrl);
   delete tmp;
   m_BasicFGSizer->Layout();
@@ -905,6 +910,7 @@ void AddEditPropSheet::HidePassword()
   // Following kludge since wxTE_PASSWORD style is immutable
   // Need verification as the user can not see the password entered
   wxTextCtrl *tmp = m_PasswordCtrl;
+  const wxString pwd = tmp->GetValue();
   m_PasswordCtrl = new wxTextCtrl(m_BasicPanel, ID_TEXTCTRL2,
                                   m_password.c_str(),
                                   wxDefaultPosition, wxDefaultSize,
@@ -913,7 +919,11 @@ void AddEditPropSheet::HidePassword()
   m_BasicFGSizer->Replace(tmp, m_PasswordCtrl);
   delete tmp;
   m_BasicFGSizer->Layout();
-  m_Password2Ctrl->ChangeValue(m_password.c_str());
+  if (!pwd.IsEmpty()) {
+    m_PasswordCtrl->ChangeValue(pwd);
+    m_PasswordCtrl->SetModified(true);
+  }
+  m_Password2Ctrl->ChangeValue(pwd);
   m_Password2Ctrl->Enable(true);
 }
 
