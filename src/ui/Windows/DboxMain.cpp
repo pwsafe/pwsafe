@@ -980,12 +980,16 @@ LRESULT DboxMain::OnHotKey(WPARAM , LPARAM)
   // for passphrase if needed.
 
   app.SetHotKeyPressed(true);
-  if (IsIconic()) {
+
+  // Because LockDataBase actually doesn't minimize the window,
+  // have to also use the current state i.e. Locked
+  if (app.GetSystemTrayState() == LOCKED || IsIconic()) {
     SendMessage(WM_COMMAND, ID_MENUITEM_RESTORE);
   }
+
   SetActiveWindow();
   SetForegroundWindow();
-  return 0;
+  return 0L;
 }
 
 LRESULT DboxMain::OnHeaderDragComplete(WPARAM /* wParam */, LPARAM /* lParam */)

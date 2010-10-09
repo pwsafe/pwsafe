@@ -1961,6 +1961,12 @@ bool DboxMain::LockDataBase()
   // Avoid lots of edge cases this way.
   CancelPendingPasswordDialog();
   ClearData(false);
+
+  // Because LockDatabase actually doen't minimize the Window, the OnSize
+  // routine is not called to clear the clipboard - so do it here
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::ClearClipboardOnMinimize)) {
+    ClearClipboardData();
+  }
   return true;
 }
 
