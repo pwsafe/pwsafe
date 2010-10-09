@@ -1,0 +1,6 @@
+#!/bin/bash
+xdg-icon-resource install --novendor --size 48 --mode system \
+                  /tmp/pwsafe.png
+xdg-desktop-menu install --novendor --mode system /tmp/pwsafe.desktop
+rm /tmp/pwsafe.png /tmp/pwsafe.desktop
+exit 0
