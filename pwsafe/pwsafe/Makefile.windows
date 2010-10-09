@@ -85,9 +85,12 @@ upload-latest: latest.xml
 	sftp -b putlatest.tmp ronys,passwordsafe@web.sourceforge.net
 	$(RM) putlatest.tmp
 
-latest.xml: src/ui/Windows/version.h
-	Misc/make-latest-xml.pl $< > $@
+latest.xml: src/ui/Windows/version.h src/ui/wxWidgets/version.h
+	Misc/make-latest-xml.pl $^ > $@
 	chmod 644 $@
+
+src/ui/wxWidgets/version.h:
+	Misc/mkversion.pl src/ui/wxWidgets/version.in $@
 
 sha1sums:
 	(cd $(RELEASEDIR); \
