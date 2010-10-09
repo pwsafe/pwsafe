@@ -44,7 +44,7 @@ LIBOBJ    = $(addprefix $(OBJPATH)/,$(subst .cpp,.o,$(LIBSRC)))
 LIB       = $(LIBPATH)/libcore.a
 OBJ       = $(LIBOBJ)
 
-CXXFLAGS +=  -Wall -I..
+CXXFLAGS +=  -Wall -I.. -DLINUX
 
 ifeq ($(CONFIG),debug)
 CXXFLAGS += -O0 -ggdb

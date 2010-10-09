@@ -20,8 +20,8 @@
  *    rev=100 />
  *  <Product name=PasswordSafe variant=U3 major=3 minor=10 build=2
  *    rev=1710 />
- *  <Product name=SWTPasswordSafe variant=Java major=0 minor=6
- *    build=0 rev=1230 />
+ *  <Product name=PasswordSafe variant=Linux major=3 minor=10 build=2
+ *    rev=1710 />
  * </VersionInfo>
  *
  * Note: The "rev" is the svn commit number. Not using it (for now),
@@ -63,7 +63,9 @@ CheckVersion::CheckLatestVersion(const stringT &xml, stringT &latest) const
         const stringT variant(pVariant);
         // Determine which variant is relevant for us
         if ((SysInfo::IsUnderU3() && variant == _T("U3")) ||
-          variant == _T("PC")) {
+            (SysInfo::IsLinux() && variant == _T("Linux")) ||
+            (!SysInfo::IsUnderU3() && !SysInfo::IsLinux() &&
+             variant == _T("PC"))) {
             int xmajor(0), xminor(0), xbuild(0), xrevision(0);
             pElem->QueryIntAttribute(_T("major"), &xmajor);
             pElem->QueryIntAttribute(_T("minor"), &xminor);

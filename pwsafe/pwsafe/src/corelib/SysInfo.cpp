@@ -45,3 +45,12 @@ bool SysInfo::IsUnderPw2go()
 {
   return !pws_os::getenv("PWS2GO", false).empty();
 }
+
+bool SysInfo::IsLinux()
+{
+#ifdef __linux__
+  return true;
+#else
+  return false;
+#endif
+}

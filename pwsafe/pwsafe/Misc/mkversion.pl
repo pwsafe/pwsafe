@@ -37,14 +37,25 @@ my $SVNVERSTRING = `$SVNVERSION -n $ROOT`;
 #Now that we're done with the formalities, let's get to work:
 my $TMPFILE = "/tmp/v$$";
 
+my ($MAJOR, $MINOR, $REVISION);
+
 open(TH, "<$TEMPLATE") || die "Couldn't read $TEMPLATE\n";
 open(VH, ">$TMPFILE") || die "Couldn't open $TMPFILE for writing\n";
 
 while (<TH>) {
-    if (!m/SVN_VERSION/) {
-        print VH;
-    } else {
+    if (m/^#define\s+MAJORVERSION\s+(.+)$/) {
+        $MAJOR=$1;
+    } elsif (m/^#define\s+MINORVERSION\s+(.+)$/) {
+        $MINOR=$1;
+    } elsif (m/^#define\s+REVISION\s+(.+)$/) {
+        $REVISION=$1;
+    }
+    if (m/^\#define\s+SVN_VERSION/) {
         print VH "#define SVN_VERSION \"$SVNVERSTRING\"\n";
+    } elsif (m/^\#define\s+LINUXPRODVER/) {
+        print VH "#define LINUXPRODVER $MAJOR, $MINOR, $REVISION, $SVNVERSTRING\n";
+    } else {
+        print VH;
     }
 }
 
