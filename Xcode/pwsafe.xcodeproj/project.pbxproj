@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E61D6FA312617EFC0049FA2A /* MergeDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E61D6FA112617EFC0049FA2A /* MergeDlg.cpp */; };
 		E69B7FA811F600BA0084F6C4 /* ImportXmlDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E69B7FA411F600BA0084F6C4 /* ImportXmlDlg.cpp */; };
 		E69B7FA911F600BA0084F6C4 /* OpenFilePickerValidator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E69B7FA611F600BA0084F6C4 /* OpenFilePickerValidator.cpp */; };
 		E6ADBA371195709A004E2BE5 /* about.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADB9A511957099004E2BE5 /* about.cpp */; };
@@ -34,6 +35,8 @@
 		E6ADBB2111957CCB004E2BE5 /* libcore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6ADB80311956A93004E2BE5 /* libcore.a */; };
 		E6ADBB2211957CD3004E2BE5 /* libos.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6ADB91C11956DD0004E2BE5 /* libos.a */; };
 		E6AF167E11F1FD77002C253B /* ImportTextDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6AF167C11F1FD77002C253B /* ImportTextDlg.cpp */; };
+		E6B5C6451232B3D000AC8B45 /* dragbar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6B5C6411232B3D000AC8B45 /* dragbar.cpp */; };
+		E6B5C6461232B3D000AC8B45 /* PWSDragBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6B5C6431232B3D000AC8B45 /* PWSDragBar.cpp */; };
 		E6BA47871216DB9C00193879 /* AdvancedSelectionDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6BA477F1216DB9C00193879 /* AdvancedSelectionDlg.cpp */; };
 		E6BA47881216DB9C00193879 /* ExportTextWarningDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6BA47811216DB9C00193879 /* ExportTextWarningDlg.cpp */; };
 		E6BA47891216DB9C00193879 /* SafeCombinationCtrl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6BA47831216DB9C00193879 /* SafeCombinationCtrl.cpp */; };
@@ -90,13 +93,6 @@
 		E6EE843E11E87E9800B01518 /* Util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83E411E87E9800B01518 /* Util.cpp */; };
 		E6EE843F11E87E9800B01518 /* UUIDGen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83E611E87E9800B01518 /* UUIDGen.cpp */; };
 		E6EE844011E87E9800B01518 /* VerifyFormat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83E811E87E9800B01518 /* VerifyFormat.cpp */; };
-		E6EE844111E87E9800B01518 /* EFileHandlers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83EC11E87E9800B01518 /* EFileHandlers.cpp */; };
-		E6EE844211E87E9800B01518 /* EFileValidator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83EE11E87E9800B01518 /* EFileValidator.cpp */; };
-		E6EE844311E87E9800B01518 /* EFileXMLProcessor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83F111E87E9800B01518 /* EFileXMLProcessor.cpp */; };
-		E6EE844411E87E9800B01518 /* EFilterHandlers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83F311E87E9800B01518 /* EFilterHandlers.cpp */; };
-		E6EE844511E87E9800B01518 /* EFilterValidator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83F511E87E9800B01518 /* EFilterValidator.cpp */; };
-		E6EE844611E87E9800B01518 /* EFilterXMLProcessor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83F811E87E9800B01518 /* EFilterXMLProcessor.cpp */; };
-		E6EE844711E87E9800B01518 /* ESecMemMgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83FA11E87E9800B01518 /* ESecMemMgr.cpp */; };
 		E6EE844D11E87E9800B01518 /* XFileSAX2Handlers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE840811E87E9800B01518 /* XFileSAX2Handlers.cpp */; };
 		E6EE844E11E87E9800B01518 /* XFileValidator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE840A11E87E9800B01518 /* XFileValidator.cpp */; };
 		E6EE844F11E87E9800B01518 /* XFileXMLProcessor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE840C11E87E9800B01518 /* XFileXMLProcessor.cpp */; };
@@ -126,6 +122,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E61D6FA112617EFC0049FA2A /* MergeDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MergeDlg.cpp; sourceTree = "<group>"; };
+		E61D6FA212617EFC0049FA2A /* MergeDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MergeDlg.h; sourceTree = "<group>"; };
 		E6881FA511E8E94A00FDC159 /* abase.xpm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = abase.xpm; sourceTree = "<group>"; };
 		E6881FA611E8E94A00FDC159 /* abase_exp.xpm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = abase_exp.xpm; sourceTree = "<group>"; };
 		E6881FA711E8E94A00FDC159 /* abase_warn.xpm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = abase_warn.xpm; sourceTree = "<group>"; };
@@ -210,6 +208,10 @@
 		E6ADBA361195709A004E2BE5 /* wxutils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wxutils.h; sourceTree = "<group>"; };
 		E6AF167C11F1FD77002C253B /* ImportTextDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ImportTextDlg.cpp; sourceTree = "<group>"; };
 		E6AF167D11F1FD77002C253B /* ImportTextDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImportTextDlg.h; sourceTree = "<group>"; };
+		E6B5C6411232B3D000AC8B45 /* dragbar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = dragbar.cpp; sourceTree = "<group>"; };
+		E6B5C6421232B3D000AC8B45 /* dragbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dragbar.h; sourceTree = "<group>"; };
+		E6B5C6431232B3D000AC8B45 /* PWSDragBar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PWSDragBar.cpp; sourceTree = "<group>"; };
+		E6B5C6441232B3D000AC8B45 /* PWSDragBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PWSDragBar.h; sourceTree = "<group>"; };
 		E6BA477F1216DB9C00193879 /* AdvancedSelectionDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AdvancedSelectionDlg.cpp; sourceTree = "<group>"; };
 		E6BA47801216DB9C00193879 /* AdvancedSelectionDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdvancedSelectionDlg.h; sourceTree = "<group>"; };
 		E6BA47811216DB9C00193879 /* ExportTextWarningDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ExportTextWarningDlg.cpp; sourceTree = "<group>"; };
@@ -445,6 +447,12 @@
 		E6ADB9A411957099004E2BE5 /* wxWidgets */ = {
 			isa = PBXGroup;
 			children = (
+				E61D6FA112617EFC0049FA2A /* MergeDlg.cpp */,
+				E61D6FA212617EFC0049FA2A /* MergeDlg.h */,
+				E6B5C6411232B3D000AC8B45 /* dragbar.cpp */,
+				E6B5C6421232B3D000AC8B45 /* dragbar.h */,
+				E6B5C6431232B3D000AC8B45 /* PWSDragBar.cpp */,
+				E6B5C6441232B3D000AC8B45 /* PWSDragBar.h */,
 				E6BA477F1216DB9C00193879 /* AdvancedSelectionDlg.cpp */,
 				E6BA47801216DB9C00193879 /* AdvancedSelectionDlg.h */,
 				E6BA47811216DB9C00193879 /* ExportTextWarningDlg.cpp */,
@@ -879,13 +887,6 @@
 				E6EE843E11E87E9800B01518 /* Util.cpp in Sources */,
 				E6EE843F11E87E9800B01518 /* UUIDGen.cpp in Sources */,
 				E6EE844011E87E9800B01518 /* VerifyFormat.cpp in Sources */,
-				E6EE844111E87E9800B01518 /* EFileHandlers.cpp in Sources */,
-				E6EE844211E87E9800B01518 /* EFileValidator.cpp in Sources */,
-				E6EE844311E87E9800B01518 /* EFileXMLProcessor.cpp in Sources */,
-				E6EE844411E87E9800B01518 /* EFilterHandlers.cpp in Sources */,
-				E6EE844511E87E9800B01518 /* EFilterValidator.cpp in Sources */,
-				E6EE844611E87E9800B01518 /* EFilterXMLProcessor.cpp in Sources */,
-				E6EE844711E87E9800B01518 /* ESecMemMgr.cpp in Sources */,
 				E6EE844D11E87E9800B01518 /* XFileSAX2Handlers.cpp in Sources */,
 				E6EE844E11E87E9800B01518 /* XFileValidator.cpp in Sources */,
 				E6EE844F11E87E9800B01518 /* XFileXMLProcessor.cpp in Sources */,
@@ -953,6 +954,9 @@
 				E6BA47881216DB9C00193879 /* ExportTextWarningDlg.cpp in Sources */,
 				E6BA47891216DB9C00193879 /* SafeCombinationCtrl.cpp in Sources */,
 				E6BA478A1216DB9C00193879 /* ViewReport.cpp in Sources */,
+				E6B5C6451232B3D000AC8B45 /* dragbar.cpp in Sources */,
+				E6B5C6461232B3D000AC8B45 /* PWSDragBar.cpp in Sources */,
+				E61D6FA312617EFC0049FA2A /* MergeDlg.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1148,7 +1152,7 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1)";
 				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
 				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_MODEL_TUNING = G5;
 				GCC_PREPROCESSOR_DEFINITIONS = (
