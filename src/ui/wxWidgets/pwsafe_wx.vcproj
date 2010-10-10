@@ -475,6 +475,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\PwsHelpProvider.h"
+				>
+			</File>
+			<File
 				RelativePath=".\PWStree.h"
 				>
 			</File>
@@ -636,6 +640,10 @@
 			</File>
 			<File
 				RelativePath=".\PWSgridtable.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\PwsHelpProvider.cpp"
 				>
 			</File>
 			<File
