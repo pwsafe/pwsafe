@@ -253,6 +253,7 @@
     <ClInclude Include="PWSDragBar.h" />
     <ClInclude Include="PWSgrid.h" />
     <ClInclude Include="PWSgridtable.h" />
+    <ClInclude Include="PwsHelpProvider.h" />
     <ClInclude Include="PWStree.h" />
     <ClInclude Include="RecentDBList.h" />
     <ClInclude Include="RUEList.h" />
@@ -295,6 +296,7 @@
     <ClCompile Include="PWSDragBar.cpp" />
     <ClCompile Include="PWSgrid.cpp" />
     <ClCompile Include="PWSgridtable.cpp" />
+    <ClCompile Include="PwsHelpProvider.cpp" />
     <ClCompile Include="PWStree.cpp" />
     <ClCompile Include="RUEList.cpp" />
     <ClCompile Include="safecombinationchange.cpp" />
