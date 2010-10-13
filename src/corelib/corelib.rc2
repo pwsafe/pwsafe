@@ -149,6 +149,7 @@ BEGIN
   IDSC_NOMOREHANDLES      "Internal error: Out of file handles"
   IDSC_BADPASSWORD        "Incorrect password"
   IDSC_FILEWRITEERROR     "Error while writing file! Try saving in a different location"
+  IDSC_FILE_UNREADABLE    "Cannot read file. Please check file permissions."
 END
 
 // Status Bar

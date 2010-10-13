@@ -28,6 +28,7 @@
 #include "safecombinationentry.h"
 #include "safecombinationsetup.h"
 #include "version.h"
+#include "corelib/corelib.h"
 #include "corelib/PWSdirs.h"
 #include "os/file.h"
 ////@begin XPM images
@@ -295,28 +296,39 @@ void CSafeCombinationEntry::OnOk( wxCommandEvent& )
       err.ShowModal();
       return;
     }
-    if (m_core.CheckPasskey(m_filename.c_str(),
-                            m_password.c_str()) != PWScore::SUCCESS) {
-      wxString errmess;
+    int status = m_core.CheckPasskey(m_filename.c_str(), m_password.c_str());
+    wxString errmess;
+    switch (status) {
+    case PWScore::SUCCESS:
+      m_core.SetReadOnly(m_readOnly);
+      m_core.SetCurFile(m_filename.c_str());
+      wxGetApp().recentDatabases().AddFileToHistory(m_filename);
+      EndModal(wxID_OK);
+      return;
+    case PWScore::CANT_OPEN_FILE:
+      { stringT str;
+        LoadAString(str, IDSC_FILE_UNREADABLE);
+        errmess = str.c_str();
+      }
+      break;
+    case PWScore::WRONG_PASSWORD:
+    default:
       if (m_tries >= 2) {
         errmess = _("Three strikes - yer out!");
       } else {
         m_tries++;
         errmess = _("Incorrect passkey, not a PasswordSafe database, or a corrupt database. (Backup database has same name as original, ending with '~')");
       }
-      wxMessageDialog err(this, errmess,
-                          _("Error"), wxOK | wxICON_EXCLAMATION);
-      err.ShowModal();
-      wxTextCtrl *txt = (wxTextCtrl *)FindWindow(ID_COMBINATION);
-      txt->SetSelection(-1,-1);
-      txt->SetFocus();
-      return;
-    }
-    m_core.SetReadOnly(m_readOnly);
-    m_core.SetCurFile(m_filename.c_str());
-    wxGetApp().recentDatabases().AddFileToHistory(m_filename);
-    EndModal(wxID_OK);
-  }
+      break;
+    } // switch (status)
+    // here iff CheckPasskey failed.
+    wxMessageDialog err(this, errmess,
+                        _("Error"), wxOK | wxICON_EXCLAMATION);
+    err.ShowModal();
+    wxTextCtrl *txt = (wxTextCtrl *)FindWindow(ID_COMBINATION);
+    txt->SetSelection(-1,-1);
+    txt->SetFocus();
+  } // Validate && TransferDataFromWindow
 }
 
 
