@@ -216,6 +216,7 @@
 #define IDSC_ENTRIES                    3395
 #define IDSC_LARGEENTRIES               3396
 #define IDSC_RELATIVE                   3397
+#define IDSC_FILE_UNREADABLE            3398
 
 #define IDSC_DELETEBASET                3400
 #define IDSC_DELETEABASE                3401
