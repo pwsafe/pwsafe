@@ -2530,6 +2530,9 @@ void PasswordSafeFrame::OnExportXml(wxCommandEvent& evt)
   DoExportText<ExportFullXml>();
 }
 
+IMPLEMENT_CLASS_TEMPLATE( AdvancedSelectionDlg, AdvancedSelectionDlgBase, ExportFullXml )
+IMPLEMENT_CLASS_TEMPLATE( AdvancedSelectionDlg, AdvancedSelectionDlgBase, ExportFullText )
+
 template <class ExportType>
 void PasswordSafeFrame::DoExportText()
 {

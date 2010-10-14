@@ -8,6 +8,8 @@ class wxTextCtrl;
 
 class CImportXMLDlg : public wxDialog {
 
+  DECLARE_CLASS( CImportXMLDlg )
+  
 public:
   CImportXMLDlg(wxWindow* parent);
 

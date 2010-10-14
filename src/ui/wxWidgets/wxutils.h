@@ -49,5 +49,27 @@ inline void ApplyPasswordFont(wxWindow* win)
   }
 }
 
+//
+// Macro to add RTTI to class templates that use DECLARE_CLASS macro
+//
+//This is required because these are really just specializations of templates
+//and therefore we need to specify the template parameters (the "template <>" part)
+//
+// Used by help subsystem to figure out class names from the template specializations
+//
+//Copied (and modified) from <wx/object.h>
+//
+#define IMPLEMENT_CLASS_TEMPLATE(name, basename, templatename)                                \
+    template <>                                                                         \
+    wxClassInfo name<templatename>::ms_classInfo(wxT(#name "<" #templatename ">"),      \
+            &basename::ms_classInfo,                                                    \
+            NULL,                                                                       \
+            (int) sizeof(name),                                                         \
+            (wxObjectConstructorFn) NULL);                                              \
+                                                                                        \
+    template <>                                                                         \
+    wxClassInfo* name<templatename>::GetClassInfo() const                               \
+        { return &name<templatename>::ms_classInfo; }
+
 #endif
 

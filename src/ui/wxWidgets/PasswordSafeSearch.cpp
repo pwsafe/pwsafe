@@ -196,6 +196,8 @@ struct FindDlgType {
   }
 };
 
+IMPLEMENT_CLASS_TEMPLATE( AdvancedSelectionDlg, AdvancedSelectionDlgBase, FindDlgType )
+
 /*!
  * wxEVT_COMMAND_TOOL_CLICKED event handler for ID_FIND_ADVANCED_OPTIONS
  */

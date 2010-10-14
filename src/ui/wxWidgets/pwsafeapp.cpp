@@ -41,6 +41,11 @@ using namespace std;
 #include "corelib/PWSprefs.h"
 #include "corelib/PWSrand.h"
 #include <wx/timer.h>
+#include <wx/html/helpctrl.h>
+#include "../../os/dir.h"
+#include <wx/tokenzr.h>
+#include <wx/fs_arc.h>
+#include <wx/propdlg.h>
 
 ////@begin XPM images
 ////@end XPM images
@@ -122,7 +127,8 @@ END_EVENT_TABLE()
  * Constructor for PwsafeApp
  */
 
-PwsafeApp::PwsafeApp() : m_activityTimer(new wxTimer(this, ACTIVITY_TIMER_ID)), m_frame(0), m_recentDatabases(0)
+PwsafeApp::PwsafeApp() : m_activityTimer(new wxTimer(this, ACTIVITY_TIMER_ID)), m_frame(0), m_recentDatabases(0),
+                          m_controller(new wxHtmlHelpController)
 {
     Init();
 }
@@ -137,6 +143,10 @@ PwsafeApp::~PwsafeApp()
 
   PWSprefs::DeleteInstance();
   PWSrand::DeleteInstance();
+  
+  delete m_controller;
+  m_controller = 0;
+  SaveHelpMap();
 }
 
 /*!
@@ -258,7 +268,20 @@ bool PwsafeApp::OnInit()
     // dbox.SetStartSilent(true);
   }
   // dbox.SetValidate(cmd_validate);
+
+  //Initialize help subsystem
+  wxFileSystem::AddHandler(new wxArchiveFSHandler);
   
+#ifdef _WIN32
+  wxString helpfile(wxFileName(towxstring(pws_os::getexecdir()), wxT("help.zip")).GetFullPath());
+#else
+  wxString helpfile(wxT("/usr/share/doc/pwsafe/help.zip"));
+#endif
+  if (!m_controller->Initialize(helpfile))
+    wxMessageBox(_("Could not initialize help subsystem.  Help would not be available"),
+    _("Error initializing help"), wxOK | wxICON_ERROR);
+  LoadHelpMap();
+
   m_frame = new PasswordSafeFrame(NULL, m_core);
 
   if (!cmd_closed) {
@@ -357,4 +380,107 @@ void PwsafeApp::RestoreFrameCoords(void)
     if (!rcApp.IsEmpty() && rcDisplay.Contains(rcApp))
       m_frame->SetSize(rcApp);
   }
+}
+
+int PwsafeApp::FilterEvent(wxEvent& evt) {
+  if (evt.IsCommandEvent() && evt.GetId() == wxID_HELP && 
+          (evt.GetEventType() == wxEVT_COMMAND_BUTTON_CLICKED || 
+            evt.GetEventType() == wxEVT_COMMAND_MENU_SELECTED)) {
+    OnHelp(*wxDynamicCast(&evt, wxCommandEvent));
+    return int(true);
+  }
+  return wxApp::FilterEvent(evt);
+}
+
+void PwsafeApp::OnHelp(wxCommandEvent& evt)
+{
+  wxWindow* win = wxDynamicCast(evt.GetEventObject(), wxWindow);
+  if (win) {
+    
+    //The window associated with the event is typically the Help button.  Fail if
+    //we can't get to its parent
+    if (win->GetId() == wxID_HELP && !(win = win->GetParent()))
+        return;
+    
+    wxString keyName, msg;
+    //Is this a property sheet?
+    wxPropertySheetDialog* propSheet = wxDynamicCast(win, wxPropertySheetDialog);
+    if (propSheet) {
+      const wxString dlgName = win->GetClassInfo()->GetClassName();
+      const wxString pageName = propSheet->GetBookCtrl()->GetPageText(propSheet->GetBookCtrl()->GetSelection());
+      keyName = dlgName + wxT('#') + pageName;
+      msg << wxT("Page \"") << pageName << wxT("\" of wxPropertySheetDialog derived class \"") << dlgName 
+          << wxT("\" doesn't have its Help section defined.\nPlease enter the Help title as under Contents, html file name or keywords to search for");
+    }
+    else {
+      keyName = win->GetClassInfo()->GetClassName();
+      msg << wxT("Window \"") << keyName << wxT("\" doesn't have its Help section defined.\nPlease enter the Help title as under Contents, html file name or keywords to search for");
+    }
+    
+    StringToStringMap::iterator itr = m_helpmap.find(keyName);
+    if (itr != m_helpmap.end())
+      m_controller->DisplaySection(itr->second);
+    else {
+#ifdef __WXDEBUG__
+      wxString section = ::wxGetTextFromUser(msg, _("Help not defined for this window"), wxEmptyString, win);
+      if (!section.IsEmpty()) {
+        m_helpmap[keyName] = section;
+        m_controller->DisplaySection(section);
+      }
+#endif
+    }
+  }
+  else {
+    //just display the main page.  Could happen if the click came from a menu instead of 
+    //a button, like for the top-level frame
+    m_controller->DisplayContents();
+  }
+}
+
+void PwsafeApp::LoadHelpMap()
+{
+  wxFileName filename(towxstring(pws_os::getuserprefsdir()), wxT("pws_helpmap.txt"));
+  if (filename.FileExists()) {
+    wxTextFile file(filename.GetFullPath());
+    if (file.Open()) {
+      for (wxString str = file.GetFirstLine(); !file.Eof(); str = file.GetNextLine()) {
+        if (!str.IsEmpty()) {
+          wxArrayString tokens = ::wxStringTokenize(str, wxT("="));
+          wxASSERT(tokens.GetCount() == 2);
+          m_helpmap[tokens[0]] = tokens[1];
+        }
+      }
+    }
+    else {
+      wxMessageBox(wxString() << wxT("Could not read file \"") << filename.GetFullPath() << wxT("\""), wxT("Error loading help map"), wxOK | wxICON_ERROR);
+      return;
+    }
+  }
+}
+
+void PwsafeApp::SaveHelpMap()
+{
+  wxFileName filename(towxstring(pws_os::getuserprefsdir()), wxT("pws_helpmap.txt"));
+  wxTextFile file(filename.GetFullPath());
+  if (file.Exists()) {
+    if (file.Open())
+      file.Clear();
+    else {
+      wxMessageBox(wxString(wxT("Could not open existing file \"")) << filename.GetFullPath() << wxT("\" for writing"), wxT("Error saving help map"), wxOK | wxICON_ERROR);
+      return;
+    }
+  }
+  else {
+    if (!file.Create()) {
+      wxMessageBox(wxString() << wxT("Could not create file \"") << filename.GetFullPath() << wxT("\" for writing"), wxT("Error saving help map"), wxOK | wxICON_ERROR);
+      return;
+    }
+  }
+  
+  for (StringToStringMap::const_iterator itr = m_helpmap.begin(); itr != m_helpmap.end(); ++itr) {
+    file.AddLine(wxString() << itr->first << wxT('=') << itr->second);
+  }
+  
+  if (!file.Write())
+    wxMessageBox(wxString(wxT("Write failed: \"")) << filename.GetFullPath() << wxT("\""), wxT("Error saving help map"), wxOK | wxICON_ERROR);
 }
