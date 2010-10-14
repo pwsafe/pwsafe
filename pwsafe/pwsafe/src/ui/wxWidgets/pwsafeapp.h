@@ -32,6 +32,7 @@
 ////@end forward declarations
 class wxTimer;
 class PasswordSafeFrame;
+class wxHtmlHelpController;
 
 /*!
  * Control identifiers
@@ -77,17 +78,28 @@ public:
 
 	void OnActivate(wxActivateEvent& actEvent);
 	void OnActivityTimer(wxTimerEvent& timerEvent);
+  void OnHelp(wxCommandEvent& evt);
 
   void SaveFrameCoords(void);
   void RestoreFrameCoords(void);
   
+  //virtual override from some ancestor, to handle Help commands from all windows
+  virtual int FilterEvent(wxEvent& evt);
+
  private:
     PWScore m_core;
     wxTimer* m_activityTimer;
     PasswordSafeFrame* m_frame;
     enum { ACTIVITY_TIMER_ID = 33 } ; 
     CRecentDBList *m_recentDatabases;
-    
+
+    //A map of dialog titles (or tab names) vs help sections
+    WX_DECLARE_STRING_HASH_MAP( wxString, StringToStringMap );
+    StringToStringMap m_helpmap;
+    wxHtmlHelpController* m_controller;
+    void LoadHelpMap();
+    void SaveHelpMap();
+
  public:
     CRecentDBList &recentDatabases();
 };

@@ -129,6 +129,7 @@ struct AdvancedMergeOptions {
   }
 };
 
+IMPLEMENT_CLASS_TEMPLATE( AdvancedSelectionDlg, AdvancedSelectionDlgBase, AdvancedMergeOptions )
 
 void MergeDlg::OnAdvancedSelection(wxCommandEvent& )
 {

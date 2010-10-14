@@ -10,6 +10,8 @@
 #include <wx/valgen.h>
 #include <wx/statline.h>
 
+IMPLEMENT_CLASS( CImportXMLDlg, wxDialog )
+
 CImportXMLDlg::CImportXMLDlg(wxWindow* parent) : wxDialog(parent, wxID_ANY, wxString(_("Import XML Settings"))),
                                                   importUnderGroup(false), 
                                                   importPasswordsOnly(false)

@@ -28,6 +28,7 @@
 
 enum { ID_COMBINATION = 100, ID_VKBD, ID_LINE_DELIMITER, ID_ADVANCED };
 
+IMPLEMENT_CLASS( CExportTextWarningDlgBase, wxDialog )
 
 BEGIN_EVENT_TABLE( CExportTextWarningDlgBase, wxDialog )
   EVT_BUTTON( ID_ADVANCED, CExportTextWarningDlgBase::OnAdvancedSelection )

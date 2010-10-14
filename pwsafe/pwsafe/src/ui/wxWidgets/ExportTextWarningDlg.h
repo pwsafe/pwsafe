@@ -7,6 +7,7 @@
 
 class CExportTextWarningDlgBase : public wxDialog {
 
+  DECLARE_CLASS( CExportTextWarningDlgBase )
   DECLARE_EVENT_TABLE()
 
 public:

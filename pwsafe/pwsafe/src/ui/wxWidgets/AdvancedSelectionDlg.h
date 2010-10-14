@@ -120,6 +120,8 @@ public:
 template <class DlgType>
 class AdvancedSelectionDlg : public AdvancedSelectionDlgBase
 {
+  DECLARE_CLASS(AdvancedSelectionDlg)
+  
 public:
   AdvancedSelectionDlg(wxWindow* parent, const SelectionCriteria& existingCriteria) : 
                               AdvancedSelectionDlgBase(parent, existingCriteria) {
