@@ -46,6 +46,7 @@ using namespace std;
 #include <wx/tokenzr.h>
 #include <wx/fs_arc.h>
 #include <wx/propdlg.h>
+#include <wx/textfile.h>
 
 ////@begin XPM images
 ////@end XPM images

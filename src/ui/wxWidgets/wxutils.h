@@ -61,7 +61,7 @@ inline void ApplyPasswordFont(wxWindow* win)
 //
 #define IMPLEMENT_CLASS_TEMPLATE(name, basename, templatename)                                \
     template <>                                                                         \
-    wxClassInfo name<templatename>::ms_classInfo(wxT(#name "<" #templatename ">"),      \
+    wxClassInfo name<templatename>::ms_classInfo(wxSTRINGIZE_T(name) wxSTRINGIZE_T(<) wxSTRINGIZE_T(templatename) wxSTRINGIZE_T(>),      \
             &basename::ms_classInfo,                                                    \
             NULL,                                                                       \
             (int) sizeof(name),                                                         \
