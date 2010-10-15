@@ -123,9 +123,6 @@
     <ClInclude Include="MergeDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PwsHelpProvider.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="pwsafe.rc">
@@ -230,9 +227,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MergeDlg.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PwsHelpProvider.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
