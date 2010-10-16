@@ -35,7 +35,7 @@
 
 ////@begin control identifiers
 #define ID_CSAFECOMBINATIONPROMPT 10062
-#define ID_PASSWORD 10063
+#define ID_PASSWORD 10008
 #define SYMBOL_CSAFECOMBINATIONPROMPT_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxDIALOG_MODAL|wxTAB_TRAVERSAL
 #define SYMBOL_CSAFECOMBINATIONPROMPT_TITLE _("Enter Safe Combination")
 #define SYMBOL_CSAFECOMBINATIONPROMPT_IDNAME ID_CSAFECOMBINATIONPROMPT
@@ -75,10 +75,10 @@ public:
 ////@begin CSafeCombinationPrompt event handler declarations
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
-  void OnOkClick( wxCommandEvent& evt);
+  void OnOkClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL
-  void OnCancelClick( wxCommandEvent& evt);
+  void OnCancelClick( wxCommandEvent& event );
 
 ////@end CSafeCombinationPrompt event handler declarations
 

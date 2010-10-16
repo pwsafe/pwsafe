@@ -148,7 +148,6 @@ void CSafeCombinationPrompt::CreateControls()
   itemBoxSizer8->Add(itemStaticText9, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxTextCtrl* itemTextCtrl10 = new wxTextCtrl( itemDialog1, ID_PASSWORD, wxEmptyString, wxDefaultPosition, wxSize(itemDialog1->ConvertDialogToPixels(wxSize(150, -1)).x, -1), wxTE_PASSWORD );
-  ApplyPasswordFont(itemTextCtrl10);
   itemBoxSizer8->Add(itemTextCtrl10, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStdDialogButtonSizer* itemStdDialogButtonSizer11 = new wxStdDialogButtonSizer;
@@ -172,8 +171,10 @@ void CSafeCombinationPrompt::CreateControls()
 ////@end CSafeCombinationPrompt content construction
 
   wxWindow* passwdCtrl = FindWindow(ID_PASSWORD);
-  if (passwdCtrl)
+  if (passwdCtrl) {
+    ApplyPasswordFont(passwdCtrl);
     passwdCtrl->SetFocus();
+  }
 }
 
 
