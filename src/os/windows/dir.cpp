@@ -228,3 +228,9 @@ stringT pws_os::getxmldir(void)
   }
   return getexecdir();
 }
+
+stringT pws_os::gethelpdir(void)
+{
+  return getexecdir();
+}
+  

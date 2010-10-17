@@ -97,6 +97,7 @@ public:
     WX_DECLARE_STRING_HASH_MAP( wxString, StringToStringMap );
     StringToStringMap m_helpmap;
     wxHtmlHelpController* m_controller;
+    bool m_helpMapChanged;
     void LoadHelpMap();
     void SaveHelpMap();
 

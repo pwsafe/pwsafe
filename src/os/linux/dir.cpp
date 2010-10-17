@@ -154,3 +154,8 @@ stringT pws_os::getxmldir(void)
 {
   return _S("/usr/share/pwsafe/xml/");
 }
+
+stringT pws_os::gethelpdir(void)
+{
+  return _S("/usr/share/pwsafe/help/");
+}
