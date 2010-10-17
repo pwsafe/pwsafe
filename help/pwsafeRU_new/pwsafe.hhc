@@ -21,7 +21,7 @@
 		</OBJECT>
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Creating and Opening a Safe">
+			<param name="Name" value="Создание и открытие нового контейнера">
 			<param name="Local" value="html\create_new_db.html">
 			</OBJECT>
 		</LI><LI> <OBJECT type="text/sitemap">
@@ -120,7 +120,7 @@
 			<param name="Local" value="html\file_menu.html">
 			</OBJECT>
 		</LI><LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Edit Menu">
+			<param name="Name" value='Меню "Изменить"'>
 			<param name="Local" value="html\edit_menu.html">
 			</OBJECT>
 		</LI><LI> <OBJECT type="text/sitemap">
@@ -194,7 +194,7 @@
 			<param name="Local" value="html\preferences.html">
 			</OBJECT>
 		</LI><LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Run Command">
+			<param name="Name" value="Выполнить команду">
 			<param name="Local" value="html\run_command.html">
 			</OBJECT>
 		</LI><LI> <OBJECT type="text/sitemap">
@@ -203,11 +203,11 @@
 			</OBJECT>
 	</LI></UL>
 	</LI><LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="Program Credits">
+		<param name="Name" value="Использованные программы">
 		</OBJECT>
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Program Credits">
+			<param name="Name" value="Использованные программы">
 			<param name="Local" value="html\credits.html">
 			</OBJECT>
 	</LI></UL>
