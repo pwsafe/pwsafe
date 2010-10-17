@@ -16,7 +16,7 @@
   
 
   
-  <title>Display Tab</title><!-- pwsafe version: 2.11--><!-- Modified: 15/06/2005 --><!--Popup control -->
+  <title>Вкладка "Отображение"</title><!-- pwsafe version: 2.11--><!-- Modified: 15/06/2005 --><!--Popup control -->
 
   <script language="javascript" src="html/popups.js">
   </script>
@@ -34,76 +34,54 @@
 
 <object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"> </object><!-- Popup Source File -->
 
-<h2>Display Tab</h2>
+<h2>Вкладка "Отображение"</h2>
 
 
 
 
-<img src="images/options/display_tab.jpg" alt="Display Tab">
-<p>Functions within the <b>Display Tab</b> control
-how Password Safe and password items are displayed.  </p>
+<img src="images/options/display_tab.jpg" alt='Вкладка "Отображение"'>
+<p>Параметры на вкладке <b>Отображение</b> управляют отображением Password Safe и его элементов. </p>
 
 <div class="instr">
 
-<h3>Always keep Password Safe on top</h3>
-<p>If checked, maximized <b>Password Safe</b> will
-always be the top most window displayed in the monitor, regardless of
-what other window may have focus.</p>
+<h3>Отображать Password Safe поверх всех окон</h3>
+<p>Если помечено, развернутый <b>Password Safe</b> будет находиться поверх всех окон, независимо от того, какое окно имеет фокус ввода.</p>
 
-<h3>Show Username in Tree View</h3>
-<p>If checked, usernames will be displayed in square brackets following the item's name in the 
-<span style="font-weight: bold;">Nested Tree</span> view.</p>
+<h3>Отображать имя пользователя в дереве</h3>
+<p>Если помечено, имя пользователя будет отображаться в квадратных скобках за именем элемента (в режиме <span style="font-weight: bold;">древовидного списка</span>).</p>
 
-<h3>Show Password in Tree View</h3>
-<p>If checked, passwords will be displayed in curly braces following the user's name in the 
-<span style="font-weight: bold;">Nested Tree</span> view.<br>
-<i><small>This option is <span style="font-weight: bold;">strongly</span> discouraged
-in environments where passers-by can view the monitor.</small></i></p>
+<h3>Отображать пароль в дереве</h3>
+<p>Если помечено, пароль будет отображаться в фигурных скобках после имени пользователя (в режиме <span style="font-weight: bold;">древовидного списка</span>).<br> <i><small>Данный параметр <span style="font-weight: bold;">строго</span> не рекомендуется использовать, если во время работы возможен просмотр экрана посторонними людьми.</small></i></p>
       
-<h3>Show Notes as ToolTips in Tree &amp; List Views</h3>
-<p>If checked, notes to an hovered item will be shown.</p>
+<h3>Отображать заметки во всплывающей подсказке</h3>
+<p>Если помечено, заметки будут отображаться при наведении курсора мыши на элемент.</p>
 
-<h3>Show password in Add &amp; Edit</h3>
-<p>If checked, passwords that would be hidden in the <b>Add Entry and Edit/View Entry</b>
-dialogs will be visible by default. You can
-display or hide the password for a specific entry by clicking on the "Show/Hide" button in the dialog.</p>
+<h3>Отображать пароль при добавлении и редактировании</h3>
+<p>Если помечено, скрытый по умолчанию пароль в диалогах <b>добавления и просмотр/редактирования</b> будет видимым. Вы можете отобразить или скрыть пароль текущего элемента, нажав в диалоге кнопку "Показать/Скрыть".</p>
 
-<h3>Show Notes in Edit</h3>
-<p>If checked, notes will be displayed by default in edit dialog. If not,
-you will need to click on the Notes field in order to view the text
-there.</p>
+<h3>Отображать заметки при редактировании</h3>
+<p>Если помечено, в диалоге редактирования заметки будут видимыми по умолчанию. В противном случае, нужно щелкнуть в поле заметок для отображения.</p>
                    
-<h3>Word Wrap Notes in Add &amp; Edit</h3>
-<p>If checked, the words will automatically be wrapped in the window, without an horizontal scroll bar.<br>
-If not checked, an horizontal scroll bar will appear, if necesarry.</p>
+<h3>При редактировании переносить заметки по словам</h3>
+<p>Если помечено, в поле заметок будет использоваться перенос по словам.<br> Иначе, будет отображаться горизонтальная полоса прокрутки.</p>
 
-<h3>Show Grid Lines in List View</h3>
-<p>If checked, a light grid line will be shown in the dispay list, making it look like a spreadsheet.</p>
+<h3>Отображать сетку списка</h3>
+<p>Если помечено, будут видны светлые линии сетки, и список будет похож на таблицу.</p>
 
-<h3>Put Groups first in Tree View</h3>
-<p>By default, your entries are displayed in strict alphabetical order in
-the tree view. When this option is selected, all the groups will be
-displayed first (in alphabetical order), followed by all top-level
-entries.</p>
+<h3>Отображать группы вверху дерева</h3>
+<p>В древовидном списке по умолчанию элементы отображаются в алфавитном порядке. Если данная опция активна, группы будут расположены вверху (в алфавитном порядке), а за ними пойдут остальные элементы соответствующего уровня.</p>
 
-<h3>Highlight changed entries</h3>
-<p>As long as entries are not saved, they will be shown highlighted.
-If you checked "Save database immediately after Edit or Add" in the Backup tab, 
-entries will never be highlighted, because they get saved immediately.</p>
+<h3>Подсветить измененные элементы</h3>
+<p>Пока элемент не сохранен, он будет помечен цветом. Если на вкладке "Резервные копии" активна опция "Сохранять контейнер после вставки или редактирования", элементы никогда не будут помечены, так как сохранение происходит немедленно.</p>
 
-<h3>Warn<span style="font-style: italic;">&nbsp;N&nbsp;</span>days before password expires</h3>
-<p>If checked, PasswordSafe will scan all entries when reading a database
-(typically when starting up), and display a list of the whose
-expiration date is <span style="font-style: italic;">N </span>days or less from the current date.</p>
+<h3>Предупреждать за <span style="font-style: italic;">N</span>дней до истечения пароля</h3>
+<p>Если помечено, при чтении контейнера (обычно при старте) Password Safe будет просматривать все элементы и уведомлять, если пароль истекает не позднее чем через <span style="font-style: italic;">N</span> дней от текущей даты.</p>
 
-<h3>Initial tree view</h3>
-<p>This determines how your entries will be displayed in the tree view
-when you open the database.</p>
+<h3>Вид дерева при старте</h3>
+<p>Определяет, как отображать элементы при открытии контейнера в режиме древовидного списка.</p>
 
-<h3>Initial system tray icon</h3>
-<p>This allows you to change the colour of the system tray icon displayed
-when Password Safe is initially started and when there's no open
-database.</p>
+<h3>Значок в области уведомлений</h3>
+<p>Позволяет указать цвет значка Password Safe в области уведомлений (трее), когда контейнер еще не открыт.</p>
 
 
  </div><!-- Added some white space at the bottom for natural scrolling -->
