@@ -1858,6 +1858,9 @@ void DboxMain::OnTimer(UINT_PTR nIDEvent)
     // also requires children be hidden explicitly)
     pws_os::Trace(L"Locking due to Timer lock countdown or ws lock\n");
     m_vGroupDisplayState = GetGroupDisplayState();
+    if (m_bOpen && app.GetSystemTrayState() == UNLOCKED && !IsIconic())
+      SaveDisplayBeforeMinimize();
+
     if (!LockDataBase())
       return;
 

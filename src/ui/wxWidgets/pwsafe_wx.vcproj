@@ -673,14 +673,6 @@
 			<File
 				RelativePath=".\version.cpp"
 				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						GeneratePreprocessedFile="0"
-					/>
-				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\ViewReport.cpp"
