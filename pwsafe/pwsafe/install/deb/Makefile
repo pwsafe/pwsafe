@@ -24,7 +24,7 @@ DOCS = ../../README.txt $(DOCSDIR)/ReleaseNotes.txt \
 MANPAGE = $(DOCSDIR)/pwsafe.1
 XMLFILES = $(XMLDIR)/pwsafe.xsd $(XMLDIR)/pwsafe_filter.xsd $(XMLDIR)/pwsafe.xsl
 HELPZIP = /tmp/help.zip
-HELPFILES = $(HELPDIR)/default/pws_helpmap.txt $(HELPZIP)
+HELPFILES = $(HELPZIP)
 
 INFILES = $(PWSAFE-BIN) $(DOCS) $(MANPAGE) $(XMLFILES) $(HELPFILES)
 

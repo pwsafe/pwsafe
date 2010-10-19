@@ -130,7 +130,7 @@ END_EVENT_TABLE()
 
 PwsafeApp::PwsafeApp() : m_activityTimer(new wxTimer(this, ACTIVITY_TIMER_ID)),
   m_frame(0), m_recentDatabases(0),
-  m_controller(new wxHtmlHelpController), m_helpMapChanged(false)
+  m_controller(new wxHtmlHelpController)
 {
     Init();
 }
@@ -147,7 +147,6 @@ PwsafeApp::~PwsafeApp()
   PWSrand::DeleteInstance();
   
   delete m_controller;
-  SaveHelpMap();
 }
 
 /*!
@@ -277,7 +276,6 @@ bool PwsafeApp::OnInit()
   if (!m_controller->Initialize(helpfile))
     wxMessageBox(_("Could not initialize help subsystem. Help will not be available"),
     _("Error initializing help"), wxOK | wxICON_ERROR);
-  LoadHelpMap();
   m_controller->SetParentWindow(NULL); // try to de-modalize. Partially (?) successful
 
   m_frame = new PasswordSafeFrame(NULL, m_core);
@@ -415,20 +413,14 @@ void PwsafeApp::OnHelp(wxCommandEvent& evt)
           << wxT("\".\n");
     }
     
-    StringToStringMap::iterator itr = m_helpmap.find(keyName);
-    if (itr != m_helpmap.end())
+    StringToStringMap& helpmap = GetHelpMap();
+    StringToStringMap::iterator itr = helpmap.find(keyName);
+    if (itr != helpmap.end())
       m_controller->DisplaySection(itr->second);
     else {
 #ifdef __WXDEBUG__
-      msg << wxT("Please enter the Help title as appears under Contents, html file name or keywords.");
-      wxString section = ::wxGetTextFromUser(msg,
-                                             _("Help Undefined"),
-                                             wxEmptyString, win);
-      if (!section.IsEmpty()) {
-        m_helpMapChanged = true;
-        m_helpmap[keyName] = section;
-        m_controller->DisplaySection(section);
-      }
+      msg << wxT("Please inform the developers.");
+      wxMessageBox(msg, _("Help Undefined"), wxOK | wxICON_EXCLAMATION);
 #endif
     } // keyName not found in map
   } else {
@@ -438,52 +430,21 @@ void PwsafeApp::OnHelp(wxCommandEvent& evt)
   }
 }
 
-void PwsafeApp::LoadHelpMap()
+PwsafeApp::StringToStringMap& PwsafeApp::GetHelpMap()
 {
-  wxFileName filename(towxstring(pws_os::gethelpdir()), wxT("pws_helpmap.txt"));
-  if (filename.FileExists()) {
-    wxTextFile file(filename.GetFullPath());
-    if (file.Open()) {
-      for (wxString str = file.GetFirstLine(); !file.Eof(); str = file.GetNextLine()) {
-        if (!str.IsEmpty() && str[0] != '#') {
-          wxArrayString tokens = ::wxStringTokenize(str, wxT("="));
-          if (tokens.GetCount() == 2)
-            m_helpmap[tokens[0]] = tokens[1];
-        }
-      }
-    }
-    else {
-      wxMessageBox(wxString() << wxT("Could not read file \"") << filename.GetFullPath() << wxT("\""), wxT("Error loading help map"), wxOK | wxICON_ERROR);
-      return;
-    }
+  //may be its worth defining a class and doing all this in its ctor, but
+  //I don't want to introduce yet another set of source/header files just for this
+  static StringToStringMap helpMap;
+  static bool initialized = false;
+  
+  if (!initialized) {
+#define DLG_HELP(dlgname, htmlfile) helpMap[wxSTRINGIZE_T(dlgname)] = wxSTRINGIZE_T(htmlfile);
+#define PROPSHEET_HELP(sheet, page, htmlfile) helpMap[wxString(wxSTRINGIZE_T(sheet) wxT("#")) + page] = wxSTRINGIZE_T(htmlfile);
+#include "./helpmap.h"
+#undef DLG_HELP
+#undef PROPSHEET_HELP
+    initialized = true;
   }
+  return helpMap;
 }
 
-void PwsafeApp::SaveHelpMap()
-{
-  if (!m_helpMapChanged)
-    return;
-  wxFileName filename(towxstring(pws_os::gethelpdir()), wxT("pws_helpmap.txt"));
-  wxTextFile file(filename.GetFullPath());
-  if (file.Exists()) {
-    if (file.Open())
-      file.Clear();
-    else {
-      wxMessageBox(wxString(wxT("Could not open existing file \"")) << filename.GetFullPath() << wxT("\" for writing"), wxT("Error saving help map"), wxOK | wxICON_ERROR);
-      return;
-    }
-  }
-  else {
-    if (!file.Create()) {
-      wxMessageBox(wxString() << wxT("Could not create file \"") << filename.GetFullPath() << wxT("\" for writing"), wxT("Error saving help map"), wxOK | wxICON_ERROR);
-      return;
-    }
-  }
-  
-  for (StringToStringMap::const_iterator itr = m_helpmap.begin(); itr != m_helpmap.end(); ++itr) {
-    file.AddLine(wxString() << itr->first << wxT('=') << itr->second);
-  }
-  
-  if (!file.Write())
-    wxMessageBox(wxString(wxT("Write failed: \"")) << filename.GetFullPath() << wxT("\""), wxT("Error saving help map"), wxOK | wxICON_ERROR);
-}
