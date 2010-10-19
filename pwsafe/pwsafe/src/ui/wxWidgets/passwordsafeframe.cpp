@@ -854,7 +854,7 @@ void PasswordSafeFrame::OnOpenClick( wxCommandEvent& /* evt */ )
   //Open-type dialog box
   wxFileDialog fd(this, _("Please Choose a Database to Open:"),
                   dir.c_str(), _("pwsafe.psafe3"),
-                  _("Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All files (*.*)|*.*"),
+                  _("Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat|Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All files (*.*; *)|*.*;*"),
                   (wxFD_OPEN | wxFD_FILE_MUST_EXIST | wxFD_CHANGE_DIR));
 
   while (1) {
@@ -1087,7 +1087,7 @@ void PasswordSafeFrame::OnSaveAsClick(wxCommandEvent& evt)
 
   //filename cannot have the path
   wxFileDialog fd(this, title, dir, filename.GetFullName(),
-                  _("Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|All files (*.*)|*.*||"),
+                  _("Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat|All files (*.*; *)|*.*;*"),
                    wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
                    
   if (fd.ShowModal() != wxID_OK) {
@@ -1901,7 +1901,7 @@ int PasswordSafeFrame::NewFile(StringX &fname)
 
   while (1) {
     wxFileDialog fd(static_cast<wxWindow*>(this), cs_text, dir, v3FileName,
-                    _("psafe3 files (*.psafe3)|*.psafe3|All files(*.*)|*.*"),
+                    _("psafe3 files (*.psafe3)|*.psafe3|All files(*.*; *)|*.*;*"),
                     wxFD_SAVE | wxFD_OVERWRITE_PROMPT | wxFD_CHANGE_DIR);
     rc = fd.ShowModal();
 
@@ -2224,7 +2224,7 @@ void PasswordSafeFrame::OnImportKeePass(wxCommandEvent& evt)
 
   wxFileDialog fd(this, _("Please Choose a KeePass Text File to Import"),
                   wxEmptyString, wxEmptyString,
-                  _("Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*)|*.*"),
+                  _("Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*; *)|*.*;*"),
                   (wxFD_OPEN | wxFD_FILE_MUST_EXIST | wxFD_PREVIEW));
 
   if (fd.ShowModal() != wxID_OK )
@@ -2433,7 +2433,7 @@ void PasswordSafeFrame::OnExportVx(wxCommandEvent& evt)
     dir = towxstring(PWSdirs::GetSafeDir());
 
   wxFileDialog fd(this, cs_text, dir, filename.GetFullName(),
-                _("Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|All files (*.*)|*.*"),
+                _("Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat|All files (*.*; *)|*.*;*"),
                  wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
 
   if (fd.ShowModal() != wxID_OK)
@@ -2467,7 +2467,7 @@ struct ExportFullText
   static wxString GetFailureMsgTitle() {return _("Export Text failed"); }
   static stringT  FileExtension() { return _("txt"); }
   static wxString FileOpenPrompt() { return _("Please name the plaintext file"); }
-  static wxString WildCards() {return _("Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*)|*.*"); }
+  static wxString WildCards() {return _("Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*; *)|*.*;*"); }
   static int Write(PWScore& core, const StringX &filename, const CItemData::FieldBits &bsFields,
                           const stringT &subgroup_name, int subgroup_object, 
                           int subgroup_function, TCHAR delimiter, 
@@ -2502,7 +2502,7 @@ struct ExportFullXml {
   static wxString GetFailureMsgTitle() {return _("Export XML failed"); }
   static stringT  FileExtension() { return _("xml"); }
   static wxString FileOpenPrompt() { return _("Please name the XML file"); }
-  static wxString WildCards() {return _("XML files (*.xml)|*.xml|All files (*.*)|*.*"); }
+  static wxString WildCards() {return _("XML files (*.xml)|*.xml|All files (*.*; *)|*.*;*"); }
   static int Write(PWScore& core, const StringX &filename, const CItemData::FieldBits &bsFields,
                           const stringT &subgroup_name, int subgroup_object, 
                           int subgroup_function, TCHAR delimiter, 
