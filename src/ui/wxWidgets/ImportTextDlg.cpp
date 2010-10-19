@@ -171,7 +171,7 @@ void CImportTextDlg::CreateControls()
   dlgSizer->AddSpacer(TopMargin);  //add a margin at the top
 
   wxString strPrompt(wxT("Select a text file to import:"));
-  wxString  wildCards(_("Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*)|*.*"));
+  wxString  wildCards(_("Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*; *)|*.*; *"));
   
   dlgSizer->Add(new wxStaticText(this, wxID_ANY, strPrompt), Left);
   dlgSizer->AddSpacer(RowSeparation);
