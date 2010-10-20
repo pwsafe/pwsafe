@@ -189,7 +189,7 @@ static StringX GetPathElem(StringX &path)
   // path = "a.b.c.d"
   // will return "a" and path will be "b.c.d"
   // (assuming GROUP_SEP is '.')
-  const char GROUP_SEP = '.';
+  const TCHAR GROUP_SEP = _T('.');
 
   StringX retval;
   StringX::size_type N = path.find(GROUP_SEP);
@@ -197,9 +197,8 @@ static StringX GetPathElem(StringX &path)
     retval = path;
     path = _T("");
   } else {
-    const StringX::size_type Len = path.length();
     retval = path.substr(0, N);
-    path = path.substr(Len - N - 1);
+    path = path.substr(N + 1);
   }
   return retval;
 }
