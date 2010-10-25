@@ -287,7 +287,7 @@ CString CRichEditCtrlExtn::GetTextFormatting(const CString &csHTML, int &iError)
        bNestedAnchor(false), bOverlapped(false);
 
   csToken = csHTML.Tokenize(L"<>", curPos);
-  while (csToken != "" && curPos != -1) {
+  while (csToken != L"" && curPos != -1) {
     oldPos = curPos - csToken.GetLength() - 1;
     CString a = csHTML.Mid(oldPos - 1, 1);
     CString b = csHTML.Mid(curPos - 1, 1);
@@ -402,7 +402,7 @@ vnext:
   ncm.cbSize = sizeof(NONCLIENTMETRICS);
 
   SystemParametersInfo(SPI_GETNONCLIENTMETRICS,
-    sizeof(NONCLIENTMETRICS), &ncm, NULL);
+                       sizeof(NONCLIENTMETRICS), &ncm, NULL);
 
   CWnd *pWndDesk = GetDesktopWindow();
   CDC *pDCDesk = pWndDesk->GetWindowDC();
@@ -414,16 +414,17 @@ vnext:
   iDefaultFontSize = ConvertPointsToSize(iCurrentFontPointSize);
   iCurrentFontSize = iDefaultFontSize;
 
-  curPos = oldPos = 0;
+  curPos = 0;
+  oldPos = 0;
 
   csToken = csHTML.Tokenize(L"<>", curPos);
-  while (csToken != "" && curPos != -1) {
+  while (csToken != L"" && curPos != -1) {
     oldPos = curPos - csToken.GetLength() - 1;
     CString a = csHTML.Mid(oldPos - 1, 1);
     CString b = csHTML.Mid(curPos - 1, 1);
     if (csHTML.Mid(oldPos - 1, 1) == L"<" &&
-      csHTML.Mid(curPos - 1, 1) == L">") {
-        bHTMLTag = true;
+        csHTML.Mid(curPos - 1, 1) == L">") {
+      bHTMLTag = true;
     } else
       bHTMLTag = false;
 
@@ -540,7 +541,7 @@ vnext:
         csFontVerb.TrimLeft();
         // Skip over first token of 'font verb='
         csFontVerbValue = csHTMLTag.Tokenize(L"\"", curFontPos);
-        while (csFontVerbValue != "" && curFontPos != -1) {
+        while (csFontVerbValue != L"" && curFontPos != -1) {
           if (csFontVerb == L"face=") {
             bsFontChange.set(FACENAMECHANGED);
             vLastFacenames.push_back(csFontVerbValue);

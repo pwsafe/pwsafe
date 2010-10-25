@@ -19,6 +19,7 @@
 #include "corelib/ItemData.h"
 #include "ControlExtns.h"
 #include "PWDialog.h"
+#include "AdvancedDlg.h"
 
 class CVKeyBoardDlg;
 
@@ -26,7 +27,7 @@ class CExportTextDlg : public CPWDialog
 {
   // Construction
 public:
-  CExportTextDlg(CWnd* pParent = NULL, bool bAll = true);   // standard constructor
+  CExportTextDlg(CWnd* pParent = NULL, bool bAll = true, st_SaveAdvValues *pst_SADV = NULL);   // standard constructor
   ~CExportTextDlg();
 
   const CSecString &GetPasskey() const {return m_passkey;}
@@ -35,11 +36,8 @@ public:
   //{{AFX_DATA(CExportTextDlg)
   enum { IDD = IDD_EXPORT_TEXT };
   CString m_defexpdelim;
+  BOOL m_bAdvanced;
   //}}AFX_DATA
-
-  CItemData::FieldBits m_bsExport;
-  CString m_subgroup_name;
-  int m_subgroup_set, m_subgroup_object, m_subgroup_function;
 
   // Overrides
   // ClassWizard generated virtual function overrides
@@ -49,7 +47,6 @@ protected:
   //}}AFX_VIRTUAL
 
   // Implementation
-protected:
   virtual BOOL OnInitDialog();
   // Generated message map functions
   //{{AFX_MSG(CExportTextDlg)
@@ -68,4 +65,5 @@ private:
   CSecString m_passkey;
   CVKeyBoardDlg *m_pVKeyBoardDlg;
   bool m_bAll;
+  st_SaveAdvValues *m_pst_SADV;
 };

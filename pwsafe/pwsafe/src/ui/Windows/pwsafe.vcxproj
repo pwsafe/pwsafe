@@ -777,11 +777,14 @@
     <None Include="..\graphics\abase_exp.ico" />
     <None Include="..\graphics\abase_warn.bmp" />
     <None Include="..\graphics\abase_warn.ico" />
+    <None Include="..\graphics\toolbar\classic\addgroup.bmp" />
     <None Include="..\graphics\toolbar\new\about.bmp" />
     <None Include="..\graphics\toolbar\classic\about.bmp" />
     <None Include="..\graphics\toolbar\new\about_disabled.bmp" />
     <None Include="..\graphics\toolbar\new\add.bmp" />
     <None Include="..\graphics\toolbar\classic\add.bmp" />
+    <None Include="..\graphics\toolbar\new\addgroup.bmp" />
+    <None Include="..\graphics\toolbar\new\addgroup_disabled.bmp" />
     <None Include="..\graphics\toolbar\new\add_disabled.bmp" />
     <None Include="..\graphics\alias.bmp" />
     <None Include="..\graphics\alias.ico" />

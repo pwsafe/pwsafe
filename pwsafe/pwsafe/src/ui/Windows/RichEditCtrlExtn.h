@@ -51,8 +51,8 @@ private:
     int iStart;
     int iEnd;
     enum EntryType entrytype;
-    COLORREF cr;                       // Only valid if entrytype = Colour
-    int iSize;                         // Only valid if entrytype = Size
+    COLORREF cr;                         // Only valid if entrytype = Colour
+    int iSize;                           // Only valid if entrytype = Size
     wchar_t tcszFACENAME[LF_FACESIZE];   // Only valid if entrytype = Name
   };
 

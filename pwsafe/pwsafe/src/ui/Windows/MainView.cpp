@@ -477,7 +477,8 @@ void DboxMain::setupBars()
   CDC* pDC = this->GetDC();
   int NumBits = (pDC ? pDC->GetDeviceCaps(12 /*BITSPIXEL*/) : 32);
   m_MainToolBar.Init(NumBits);
-  m_FindToolBar.Init(NumBits, this, PWS_MSG_TOOLBAR_FIND);
+  m_FindToolBar.Init(NumBits, this, PWS_MSG_TOOLBAR_FIND,
+                     &m_SaveAdvValues[CAdvancedDlg::ADV_FIND]);
   ReleaseDC(pDC);
 
   // Add the Main ToolBar.
@@ -3220,7 +3221,7 @@ void DboxMain::OnToolBarFindReport()
   rpt.StartReport(cs_temp, m_core.GetCurFile().c_str());
 
   CItemData::FieldBits bsFFields;
-  bool bFAdvanced;
+  BOOL bFAdvanced;
   CString Fsubgroup_name;
   int Fsubgroup_set, Fsubgroup_object, Fsubgroup_function;
 
@@ -3228,7 +3229,7 @@ void DboxMain::OnToolBarFindReport()
                               Fsubgroup_set, Fsubgroup_object, Fsubgroup_function);
 
   // tell the user we're done & provide short Compare report
-  if (!bFAdvanced) {
+  if (bFAdvanced == FALSE) {
     cs_temp.LoadString(IDS_NONE);
     buffer.Format(IDS_ADVANCEDOPTIONS, cs_temp);
     rpt.WriteLine((LPCWSTR)buffer);

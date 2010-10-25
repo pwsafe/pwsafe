@@ -16,6 +16,52 @@
 #include "corelib/ItemData.h"
 #include <bitset>
 
+struct st_SaveAdvValues {
+  st_SaveAdvValues()
+  : subgroup_name(L""),
+    subgroup_set(BST_UNCHECKED), subgroup_case(BST_UNCHECKED), 
+    treatwhitespaceasempty(BST_CHECKED),
+    subgroup_object(0), subgroup_function(0)
+  {
+    bsFields.set();
+  }
+
+  st_SaveAdvValues(const st_SaveAdvValues &adv)
+    : bsFields(adv.bsFields), subgroup_name(adv.subgroup_name),
+    subgroup_set(adv.subgroup_set), subgroup_object(adv.subgroup_object),
+    subgroup_function(adv.subgroup_function), subgroup_case(adv.subgroup_case),
+    treatwhitespaceasempty(adv.treatwhitespaceasempty)
+  {
+  }
+
+  st_SaveAdvValues &operator =(const st_SaveAdvValues &adv)
+  {
+    if (this != &adv) {
+      bsFields = adv.bsFields;
+      subgroup_name = adv.subgroup_name;
+      subgroup_set = adv.subgroup_set;
+      subgroup_object = adv.subgroup_object;
+      subgroup_function = adv.subgroup_function;
+      subgroup_case = adv.subgroup_case;
+      treatwhitespaceasempty = adv.treatwhitespaceasempty;
+    }
+    return *this;
+  }
+
+  void Clear() {
+    bsFields.set();
+    subgroup_set = subgroup_case = BST_UNCHECKED;
+    treatwhitespaceasempty = BST_CHECKED;
+    subgroup_object = subgroup_function = 0;
+    subgroup_name = L"";
+  }
+
+  CItemData::FieldBits bsFields;
+  CString subgroup_name;
+  int subgroup_set, subgroup_object, subgroup_function, subgroup_case;
+  int treatwhitespaceasempty;
+};
+
 class CAdvancedDlg : public CPWDialog
 {
 public:
@@ -32,9 +78,7 @@ public:
              ADV_LAST};
 
   CAdvancedDlg(CWnd* pParent = NULL, Type iIndex = ADV_INVALID,
-    CItemData::FieldBits bsFields = 0, CString subgroup_name = L"",
-    int subgroup_set = BST_UNCHECKED, 
-    int subgroup_object = 0, int subgroup_function = 0);   // standard constructor
+               st_SaveAdvValues *pst_SADV = NULL);   // standard constructor
   virtual CAdvancedDlg::~CAdvancedDlg();
 
   // Dialog Data
@@ -72,7 +116,8 @@ protected:
   afx_msg void OnDeselectAll();
   afx_msg void OnHelp();
   virtual void OnOK();
-  afx_msg void OnSelectedItemchanging(NMHDR * pNMHDR, LRESULT * pResult);
+  afx_msg void OnReset();
+  afx_msg void OnSelectedItemChanging(NMHDR *pNMHDR, LRESULT *pResult);
 
   //}}AFX_MSG
   DECLARE_MESSAGE_MAP()
@@ -81,6 +126,10 @@ protected:
 
 private:
   static int CALLBACK AdvCompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
+  void Set(CItemData::FieldBits bsFields);
+
   CListCtrl *m_pLC_List, *m_pLC_Selected;
   CToolTipCtrl* m_pToolTipCtrl;
+  st_SaveAdvValues *m_pst_SADV;
+  CItemData::FieldBits m_bsDefaultSelectedFields, m_bsAllowedFields, m_bsMandatoryFields;
 };

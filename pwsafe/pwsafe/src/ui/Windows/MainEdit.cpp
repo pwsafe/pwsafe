@@ -336,19 +336,34 @@ void DboxMain::OnDelete()
   int num_children = 0;
 
   // Find number of child items, ask for confirmation if > 0
+  StringX sxGroup(L""), sxTitle(L""), sxUser(L"");
+  CItemData *pci(NULL);
   if (m_ctlItemTree.IsWindowVisible()) {
     HTREEITEM hStartItem = m_ctlItemTree.GetSelectedItem();
     if (hStartItem != NULL) {
       if (m_ctlItemTree.GetItemData(hStartItem) == NULL) {  // group node
         bAskForDeleteConfirmation = true; // ALWAYS ask if deleting a group
         num_children = m_ctlItemTree.CountChildren(hStartItem);
+      } else {
+        pci = (CItemData *)m_ctlItemTree.GetItemData(hStartItem);
       }
     }
+  } else {
+    POSITION pos = m_ctlItemList.GetFirstSelectedItemPosition();
+    if (pos != NULL) {
+      pci = (CItemData *)m_ctlItemList.GetItemData((int)pos - 1);
+    }
+  }
+
+  if (pci != NULL) {
+    sxGroup = pci->GetGroup();
+    sxTitle = pci->GetTitle();
+    sxUser = pci->GetUser();
   }
 
   // Confirm whether to delete the item
   if (bAskForDeleteConfirmation) {
-    CConfirmDeleteDlg deleteDlg(this, num_children);
+    CConfirmDeleteDlg deleteDlg(this, num_children, sxGroup, sxTitle, sxUser);
     INT_PTR rc = deleteDlg.DoModal();
     if (rc == IDCANCEL) {
       dodelete = false;

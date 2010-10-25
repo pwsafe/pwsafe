@@ -28,6 +28,9 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+#define NORMALFIELD    0x1000
+#define MANDATORYFIELD 0x0800
+
 int CAdvancedDlg::dialog_lookup[ADV_LAST] = {
   IDD_ADVANCED,      // ADV_COMPARE
   IDD_ADVANCEDMERGE, // ADV_MERGE (significantly reduced dialog)
@@ -43,17 +46,26 @@ int CAdvancedDlg::dialog_lookup[ADV_LAST] = {
 /////////////////////////////////////////////////////////////////////////////
 // CAdvancedDlg dialog
 
-CAdvancedDlg::CAdvancedDlg(CWnd* pParent /* = NULL */, Type iIndex,
-                           CItemData::FieldBits bsFields, CString subgroup_name,
-                           int subgroup_set, int subgroup_object, int subgroup_function)
-  : CPWDialog(dialog_lookup[iIndex], pParent) , m_iIndex(iIndex), 
-  m_bsFields(bsFields), m_subgroup_name(subgroup_name), 
-  m_subgroup_set(subgroup_set), m_subgroup_object(subgroup_object),
-  m_subgroup_function(subgroup_function), m_subgroup_case(BST_UNCHECKED),
+CAdvancedDlg::CAdvancedDlg(CWnd* pParent /*=NULL*/, Type iIndex /*=ADV_INVALID*/,
+                           st_SaveAdvValues *pst_SADV)
+  : CPWDialog(dialog_lookup[iIndex], pParent), m_iIndex(iIndex), m_pst_SADV(pst_SADV),
   m_pToolTipCtrl(NULL), m_treatwhitespaceasempty(BST_CHECKED)
 {
-  //{{AFX_DATA_INIT(CAdvancedDlg)
-  //}}AFX_DATA_INIT
+  if (m_pst_SADV != NULL) {
+    m_bsFields = m_pst_SADV->bsFields;
+    m_subgroup_name = m_pst_SADV->subgroup_name;
+    m_subgroup_set = m_pst_SADV->subgroup_set;
+    m_subgroup_object = m_pst_SADV->subgroup_object;
+    m_subgroup_function = m_pst_SADV->subgroup_function;
+    m_subgroup_case = m_pst_SADV->subgroup_case;
+    m_treatwhitespaceasempty = m_pst_SADV->treatwhitespaceasempty;
+  } else {
+    m_bsFields.set();
+    m_subgroup_name = L"";
+    m_subgroup_set = m_subgroup_case = BST_UNCHECKED;
+    m_treatwhitespaceasempty = BST_CHECKED;
+    m_subgroup_object =  m_subgroup_function = 0;
+  }
 
   if (m_subgroup_function < 0) {
     m_subgroup_case = BST_CHECKED;
@@ -79,6 +91,10 @@ BOOL CAdvancedDlg::OnInitDialog()
 
   CString cs_text, cs_tmp;
   int iItem(-1), i;
+
+  m_bsAllowedFields.reset();
+  m_bsDefaultSelectedFields.reset();
+  m_bsMandatoryFields.reset();
 
   switch (m_iIndex) {
     case ADV_COMPARE:
@@ -201,43 +217,60 @@ BOOL CAdvancedDlg::OnInitDialog()
 
   // Deal with non-text fields
   // Time fields - use Compare text and remove the quotes and leading blank
+
+  // NOTE: ItemData field cannot be zero - so add 0x1000 to ensure this.
+  // However, we add only 0x800 to mandatory fields to ensure that they sort to top of list
   switch (m_iIndex) {
     case ADV_COMPARE:
       // All these are potential comparison fields
       cs_text.LoadString(IDS_COMPCTIME);
       cs_text = cs_text.Mid(2, cs_text.GetLength() - 3);
       iItem = m_pLC_List->InsertItem(++iItem, cs_text);
-      m_pLC_List->SetItemData(iItem, MAKELONG(CItemData::CTIME, 1));
+      m_pLC_List->SetItemData(iItem, CItemData::CTIME | NORMALFIELD);
+      m_bsAllowedFields.set(CItemData::CTIME);
+
       cs_text.LoadString(IDS_COMPPMTIME);
       cs_text = cs_text.Mid(2, cs_text.GetLength() - 3);
       iItem = m_pLC_List->InsertItem(++iItem, cs_text);
-      m_pLC_List->SetItemData(iItem, MAKELONG(CItemData::PMTIME, 1));
+      m_pLC_List->SetItemData(iItem, CItemData::PMTIME | NORMALFIELD);
+      m_bsAllowedFields.set(CItemData::PMTIME);
+
       cs_text.LoadString(IDS_COMPATIME);
       cs_text = cs_text.Mid(2, cs_text.GetLength() - 3);
       iItem = m_pLC_List->InsertItem(++iItem, cs_text);
-      m_pLC_List->SetItemData(iItem, MAKELONG(CItemData::ATIME, 1));
+      m_pLC_List->SetItemData(iItem, CItemData::ATIME | NORMALFIELD);
+      m_bsAllowedFields.set(CItemData::ATIME);
+
       cs_text.LoadString(IDS_COMPRMTIME);
       cs_text = cs_text.Mid(2, cs_text.GetLength() - 3);
       iItem = m_pLC_List->InsertItem(++iItem, cs_text);
-      m_pLC_List->SetItemData(iItem, MAKELONG(CItemData::RMTIME, 1));
+      m_pLC_List->SetItemData(iItem, CItemData::RMTIME | NORMALFIELD);
+      m_bsAllowedFields.set(CItemData::RMTIME);
+
       cs_text.LoadString(IDS_COMPXTIME);
       cs_text = cs_text.Mid(2, cs_text.GetLength() - 3);
       iItem = m_pLC_List->InsertItem(++iItem, cs_text);
-      m_pLC_List->SetItemData(iItem, MAKELONG(CItemData::XTIME, 1));
+      m_pLC_List->SetItemData(iItem, CItemData::XTIME | NORMALFIELD);
+      m_bsAllowedFields.set(CItemData::XTIME);
+
       cs_text.LoadString(IDS_PASSWORDEXPIRYDATEINT);
       iItem = m_pLC_List->InsertItem(++iItem, cs_text);
-      m_pLC_List->SetItemData(iItem, MAKELONG(CItemData::XTIME_INT, 1));
+      m_pLC_List->SetItemData(iItem, CItemData::XTIME_INT | NORMALFIELD);
+      m_bsAllowedFields.set(CItemData::XTIME_INT);
+
       cs_text.LoadString(IDS_PWPOLICY);
       iItem = m_pLC_List->InsertItem(++iItem, cs_text);
-      m_pLC_List->SetItemData(iItem, CItemData::POLICY);
+      m_pLC_List->SetItemData(iItem, CItemData::POLICY | NORMALFIELD);
+      m_bsAllowedFields.set(CItemData::POLICY);
+
       cs_text.LoadString(IDS_DCALONG);
       iItem = m_pLC_List->InsertItem(++iItem, cs_text);
-      m_pLC_List->SetItemData(iItem, CItemData::DCA);
+      m_pLC_List->SetItemData(iItem, CItemData::DCA | NORMALFIELD);
+      m_bsAllowedFields.set(CItemData::DCA);
       break;
     case ADV_FIND:
       // Don't add any of these - they are not text fields
       break;
-    case ADV_MERGE:
     case ADV_SYNCHRONIZE:
     case ADV_COMPARESYNCH:
     case ADV_EXPORT_TEXT:
@@ -248,32 +281,55 @@ BOOL CAdvancedDlg::OnInitDialog()
       cs_text.LoadString(IDS_COMPCTIME);
       cs_text = cs_text.Mid(2, cs_text.GetLength() - 3);
       iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-      m_pLC_Selected->SetItemData(iItem, MAKELONG(CItemData::CTIME, 1));
+      m_pLC_Selected->SetItemData(iItem, CItemData::CTIME | NORMALFIELD);
+      m_bsAllowedFields.set(CItemData::CTIME);
+      m_bsDefaultSelectedFields.set(CItemData::CTIME);
+
       cs_text.LoadString(IDS_COMPPMTIME);
       cs_text = cs_text.Mid(2, cs_text.GetLength() - 3);
       iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-      m_pLC_Selected->SetItemData(iItem, MAKELONG(CItemData::PMTIME, 1));
+      m_pLC_Selected->SetItemData(iItem, CItemData::PMTIME | NORMALFIELD);
+      m_bsAllowedFields.set(CItemData::PMTIME);
+      m_bsDefaultSelectedFields.set(CItemData::PMTIME);
+
       cs_text.LoadString(IDS_COMPATIME);
       cs_text = cs_text.Mid(2, cs_text.GetLength() - 3);
       iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-      m_pLC_Selected->SetItemData(iItem, MAKELONG(CItemData::ATIME, 1));
+      m_pLC_Selected->SetItemData(iItem, CItemData::ATIME | NORMALFIELD);
+      m_bsAllowedFields.set(CItemData::ATIME);
+      m_bsDefaultSelectedFields.set(CItemData::ATIME);
+
       cs_text.LoadString(IDS_COMPRMTIME);
       cs_text = cs_text.Mid(2, cs_text.GetLength() - 3);
       iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-      m_pLC_Selected->SetItemData(iItem, MAKELONG(CItemData::RMTIME, 1));
+      m_pLC_Selected->SetItemData(iItem, CItemData::RMTIME | NORMALFIELD);
+      m_bsAllowedFields.set(CItemData::RMTIME);
+      m_bsDefaultSelectedFields.set(CItemData::RMTIME);
+
       cs_text.LoadString(IDS_COMPXTIME);
       cs_text = cs_text.Mid(2, cs_text.GetLength() - 3);
       iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-      m_pLC_Selected->SetItemData(iItem, MAKELONG(CItemData::XTIME, 1));
+      m_pLC_Selected->SetItemData(iItem, CItemData::XTIME | NORMALFIELD);
+      m_bsAllowedFields.set(CItemData::XTIME);
+      m_bsDefaultSelectedFields.set(CItemData::XTIME);
+
       cs_text.LoadString(IDS_PASSWORDEXPIRYDATEINT);
       iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-      m_pLC_Selected->SetItemData(iItem, MAKELONG(CItemData::XTIME_INT, 1));
+      m_pLC_Selected->SetItemData(iItem, CItemData::XTIME_INT | NORMALFIELD);
+      m_bsAllowedFields.set(CItemData::XTIME_INT);
+      m_bsDefaultSelectedFields.set(CItemData::XTIME_INT);
+
       cs_text.LoadString(IDS_PWPOLICY);
       iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-      m_pLC_Selected->SetItemData(iItem, CItemData::POLICY);
+      m_pLC_Selected->SetItemData(iItem, CItemData::POLICY | NORMALFIELD);
+      m_bsAllowedFields.set(CItemData::POLICY);
+      m_bsDefaultSelectedFields.set(CItemData::POLICY);
+
       cs_text.LoadString(IDS_DCALONG);
       iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-      m_pLC_Selected->SetItemData(iItem, CItemData::DCA);
+      m_pLC_Selected->SetItemData(iItem, CItemData::DCA | NORMALFIELD);
+      m_bsAllowedFields.set(CItemData::DCA);
+      m_bsDefaultSelectedFields.set(CItemData::DCA);
       break;
     default:
       ASSERT(FALSE);
@@ -283,22 +339,39 @@ BOOL CAdvancedDlg::OnInitDialog()
   // Deal with text fields - all selected by default
   cs_text.LoadString(IDS_NOTES);
   iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-  m_pLC_Selected->SetItemData(iItem, CItemData::NOTES);
+  m_pLC_Selected->SetItemData(iItem, CItemData::NOTES | NORMALFIELD);
+  m_bsAllowedFields.set(CItemData::NOTES);
+  m_bsDefaultSelectedFields.set(CItemData::NOTES);
+
   cs_text.LoadString(IDS_URL);
   iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-  m_pLC_Selected->SetItemData(iItem, CItemData::URL);
+  m_pLC_Selected->SetItemData(iItem, CItemData::URL | NORMALFIELD);
+  m_bsAllowedFields.set(CItemData::URL);
+  m_bsDefaultSelectedFields.set(CItemData::URL);
+
   cs_text.LoadString(IDS_AUTOTYPE);
   iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-  m_pLC_Selected->SetItemData(iItem, CItemData::AUTOTYPE);
+  m_pLC_Selected->SetItemData(iItem, CItemData::AUTOTYPE | NORMALFIELD);
+  m_bsAllowedFields.set(CItemData::AUTOTYPE);
+  m_bsDefaultSelectedFields.set(CItemData::AUTOTYPE);
+
   cs_text.LoadString(IDS_PWHISTORY);
   iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-  m_pLC_Selected->SetItemData(iItem, CItemData::PWHIST);
+  m_pLC_Selected->SetItemData(iItem, CItemData::PWHIST | NORMALFIELD);
+  m_bsAllowedFields.set(CItemData::PWHIST);
+  m_bsDefaultSelectedFields.set(CItemData::PWHIST);
+
   cs_text.LoadString(IDS_RUNCOMMAND);
   iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-  m_pLC_Selected->SetItemData(iItem, CItemData::RUNCMD);
+  m_pLC_Selected->SetItemData(iItem, CItemData::RUNCMD | NORMALFIELD);
+  m_bsAllowedFields.set(CItemData::RUNCMD);
+  m_bsDefaultSelectedFields.set(CItemData::RUNCMD);
+
   cs_text.LoadString(IDS_EMAIL);
   iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-  m_pLC_Selected->SetItemData(iItem, CItemData::EMAIL);
+  m_pLC_Selected->SetItemData(iItem, CItemData::EMAIL | NORMALFIELD);
+  m_bsAllowedFields.set(CItemData::EMAIL);
+  m_bsDefaultSelectedFields.set(CItemData::EMAIL);
 
   // Deal with standard text fields - selected by default
   switch (m_iIndex) {
@@ -306,85 +379,99 @@ BOOL CAdvancedDlg::OnInitDialog()
     case ADV_EXPORT_ENTRYXML:
       cs_text.LoadString(IDS_GROUP);
       iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-      m_pLC_Selected->SetItemData(iItem, CItemData::GROUP);
-      cs_text.LoadString(IDS_ADVANCED_TITLETEXT); // <-- Special
+      m_pLC_Selected->SetItemData(iItem, CItemData::GROUP | NORMALFIELD);
+      m_bsAllowedFields.set(CItemData::GROUP);
+      m_bsDefaultSelectedFields.set(CItemData::GROUP);
+
+      cs_text.LoadString(IDS_ADVANCED_TITLETEXT); // <-- Special - Mandatory field
       iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-      m_pLC_Selected->SetItemData(iItem, CItemData::TITLE);
+      m_pLC_Selected->SetItemData(iItem, CItemData::TITLE | MANDATORYFIELD);
+      m_bsAllowedFields.set(CItemData::TITLE);
+      m_bsDefaultSelectedFields.set(CItemData::TITLE);
+      m_bsMandatoryFields.set(CItemData::TITLE);
+
       cs_text.LoadString(IDS_USERNAME);
       iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-      m_pLC_Selected->SetItemData(iItem, CItemData::USER);
-      cs_text.LoadString(IDS_ADVANCED_PASSWORDTEXT); // <-- Special
+      m_pLC_Selected->SetItemData(iItem, CItemData::USER | NORMALFIELD);
+      m_bsAllowedFields.set(CItemData::USER);
+      m_bsDefaultSelectedFields.set(CItemData::USER);
+
+      cs_text.LoadString(IDS_ADVANCED_PASSWORDTEXT); // <-- Special - Mandatory field
       iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-      m_pLC_Selected->SetItemData(iItem, CItemData::PASSWORD);
+      m_pLC_Selected->SetItemData(iItem, CItemData::PASSWORD | MANDATORYFIELD);
+      m_bsAllowedFields.set(CItemData::PASSWORD);
+      m_bsDefaultSelectedFields.set(CItemData::PASSWORD);
+      m_bsMandatoryFields.set(CItemData::PASSWORD);
       break;
     case ADV_COMPARE:
-      cs_text.LoadString(IDS_ADVANCED_GROUPTEXT); // <-- Special
+      cs_text.LoadString(IDS_ADVANCED_GROUPTEXT); // <-- Special - Mandatory field
       iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-      m_pLC_Selected->SetItemData(iItem, CItemData::GROUP);
-      cs_text.LoadString(IDS_ADVANCED_TITLETEXT); // <-- Special
+      m_pLC_Selected->SetItemData(iItem, CItemData::GROUP | MANDATORYFIELD);
+      m_bsAllowedFields.set(CItemData::GROUP);
+      m_bsDefaultSelectedFields.set(CItemData::GROUP);
+      m_bsMandatoryFields.set(CItemData::GROUP);
+
+      cs_text.LoadString(IDS_ADVANCED_TITLETEXT); // <-- Special - Mandatory field
       iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-      m_pLC_Selected->SetItemData(iItem, CItemData::TITLE);
-      cs_text.LoadString(IDS_ADVANCED_USERTEXT); // <-- Special
+      m_pLC_Selected->SetItemData(iItem, CItemData::TITLE | MANDATORYFIELD);
+      m_bsAllowedFields.set(CItemData::TITLE);
+      m_bsDefaultSelectedFields.set(CItemData::TITLE);
+      m_bsMandatoryFields.set(CItemData::TITLE);
+
+      cs_text.LoadString(IDS_ADVANCED_USERTEXT); // <-- Special - Mandatory field
       iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-      m_pLC_Selected->SetItemData(iItem, CItemData::USER);
+      m_pLC_Selected->SetItemData(iItem, CItemData::USER | MANDATORYFIELD);
+      m_bsAllowedFields.set(CItemData::USER);
+      m_bsDefaultSelectedFields.set(CItemData::USER);
+      m_bsMandatoryFields.set(CItemData::USER);
+
       cs_text.LoadString(IDS_PASSWORD);
       iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-      m_pLC_Selected->SetItemData(iItem, CItemData::PASSWORD);
+      m_pLC_Selected->SetItemData(iItem, CItemData::PASSWORD | NORMALFIELD);
+      m_bsAllowedFields.set(CItemData::PASSWORD);
+      m_bsDefaultSelectedFields.set(CItemData::PASSWORD);
       break;
     case ADV_SYNCHRONIZE:
     case ADV_COMPARESYNCH:
       cs_text.LoadString(IDS_PASSWORD);
       iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-      m_pLC_Selected->SetItemData(iItem, CItemData::PASSWORD);
+      m_pLC_Selected->SetItemData(iItem, CItemData::PASSWORD | NORMALFIELD);
+      m_bsAllowedFields.set(CItemData::PASSWORD);
+      m_bsDefaultSelectedFields.set(CItemData::PASSWORD);
       break;
     case ADV_FIND:
-    case ADV_MERGE:
     case ADV_EXPORT_TEXT:
     case ADV_EXPORT_ENTRYTEXT:
       cs_text.LoadString(IDS_GROUP);
       iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-      m_pLC_Selected->SetItemData(iItem, CItemData::GROUP);
+      m_pLC_Selected->SetItemData(iItem, CItemData::GROUP | NORMALFIELD);
+      m_bsAllowedFields.set(CItemData::GROUP);
+      m_bsDefaultSelectedFields.set(CItemData::GROUP);
+
       cs_text.LoadString(IDS_TITLE);
       iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-      m_pLC_Selected->SetItemData(iItem, CItemData::TITLE);
+      m_pLC_Selected->SetItemData(iItem, CItemData::TITLE | NORMALFIELD);
+      m_bsAllowedFields.set(CItemData::TITLE);
+      m_bsDefaultSelectedFields.set(CItemData::TITLE);
+
       cs_text.LoadString(IDS_USERNAME);
       iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-      m_pLC_Selected->SetItemData(iItem, CItemData::USER);
+      m_pLC_Selected->SetItemData(iItem, CItemData::USER | NORMALFIELD);
+      m_bsAllowedFields.set(CItemData::USER);
+      m_bsDefaultSelectedFields.set(CItemData::USER);
+
       cs_text.LoadString(IDS_PASSWORD);
       iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-      m_pLC_Selected->SetItemData(iItem, CItemData::PASSWORD);
+      m_pLC_Selected->SetItemData(iItem, CItemData::PASSWORD | NORMALFIELD);
+      m_bsAllowedFields.set(CItemData::PASSWORD);
+      m_bsDefaultSelectedFields.set(CItemData::PASSWORD);
       break;
     default:
       ASSERT(FALSE);
   }
 
-  if (m_bsFields.count() != 0) {
-    LVFINDINFO findinfo;
-    CString cs_text;
-    int iItem;
-    DWORD_PTR dw_data;
-
-    SecureZeroMemory(&findinfo, sizeof(findinfo));
-
-    findinfo.flags = LVFI_PARAM;
-
-    for (int i = 0; i < CItemData::LAST; i++) {
-      // If selected, leave in the list of selected fields
-      if (m_bsFields.test(i))
-        continue;
-
-      // Not selected - find entry in list of selected fields and move it
-      findinfo.lParam = i;
-      iItem = m_pLC_Selected->FindItem(&findinfo);
-      if (iItem == -1)
-        continue;
-
-      cs_text = m_pLC_Selected->GetItemText(iItem, 0);
-      dw_data = m_pLC_Selected->GetItemData(iItem);
-      m_pLC_Selected->DeleteItem(iItem);
-      iItem = m_pLC_List->InsertItem(0, cs_text);
-      m_pLC_List->SetItemData(iItem, dw_data);
-    }
+  if (m_bsFields.count() != 0 && m_bsFields.count() != m_bsFields.size()) {
+    Set(m_bsFields);
   }
 
   m_pLC_List->SortItems(AdvCompareFunc, NULL);
@@ -459,8 +546,9 @@ BEGIN_MESSAGE_MAP(CAdvancedDlg, CPWDialog)
   ON_BN_CLICKED(IDC_ADVANCED_SELECTALL, OnSelectAll)
   ON_BN_CLICKED(IDC_ADVANCED_DESELECTSOME, OnDeselectSome)
   ON_BN_CLICKED(IDC_ADVANCED_DESELECTALL, OnDeselectAll)
+  ON_BN_CLICKED(IDC_ADVANCED_RESET, OnReset)
   ON_BN_CLICKED(ID_HELP, OnHelp)
-  ON_NOTIFY(LVN_ITEMCHANGING, IDC_ADVANCED_SELECTED, OnSelectedItemchanging) 
+  ON_NOTIFY(LVN_ITEMCHANGING, IDC_ADVANCED_SELECTED, OnSelectedItemChanging) 
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -497,6 +585,78 @@ void CAdvancedDlg::OnHelp()
   HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
 }
 
+void CAdvancedDlg::OnReset()
+{
+  if (m_iIndex != ADV_MERGE) {
+    Set(m_bsDefaultSelectedFields);
+
+    m_pLC_List->SortItems(AdvCompareFunc, NULL);
+    m_pLC_Selected->SortItems(AdvCompareFunc, NULL);
+    m_pLC_List->Invalidate();
+    m_pLC_Selected->Invalidate();
+  }
+
+  m_subgroup_name = L"";
+  m_subgroup_set = m_subgroup_case = BST_UNCHECKED;
+  m_treatwhitespaceasempty = BST_CHECKED;
+  m_subgroup_object =  m_subgroup_function = 0;
+
+  ((CComboBox *)GetDlgItem(IDC_ADVANCED_SUBGROUP_OBJECT))->SetCurSel(1);  // Group/Title
+  ((CComboBox *)GetDlgItem(IDC_ADVANCED_SUBGROUP_FUNCTION))->SetCurSel(-1);
+
+  GetDlgItem(IDC_ADVANCED_SUBGROUP_FUNCTION)->EnableWindow(FALSE);
+  GetDlgItem(IDC_ADVANCED_SUBGROUP_OBJECT)->EnableWindow(FALSE);
+  GetDlgItem(IDC_ADVANCED_SUBGROUP_NAME)->EnableWindow(FALSE);
+  GetDlgItem(IDC_ADVANCED_SUBGROUP_CASE)->EnableWindow(FALSE);
+
+  UpdateData(FALSE);
+}
+
+void CAdvancedDlg::Set(CItemData::FieldBits bsFields)
+{
+  LVFINDINFO findinfo;
+  CString cs_text;
+  int iItem;
+  DWORD_PTR dw_data;
+
+  SecureZeroMemory(&findinfo, sizeof(findinfo));
+
+  findinfo.flags = LVFI_PARAM;
+  // Note: Mandatory fields have a ItemData value + 0x800 rather than 0x1000
+  // and so will not be found and so not moved anywhere.
+  for (int i = 0; i < CItemData::LAST; i++) {
+    // Don't move or allow non-allowed fields
+    if (!m_bsAllowedFields.test(i))
+      continue;
+
+    if (bsFields.test(i)) {
+      // Selected - find entry in list of available fields and move it
+      findinfo.lParam = i | NORMALFIELD;
+      iItem = m_pLC_List->FindItem(&findinfo);
+      if (iItem == -1)
+        continue;
+
+      cs_text = m_pLC_List->GetItemText(iItem, 0);
+      dw_data = m_pLC_List->GetItemData(iItem);
+      m_pLC_List->DeleteItem(iItem);
+      iItem = m_pLC_Selected->InsertItem(0, cs_text);
+      m_pLC_Selected->SetItemData(iItem, dw_data);
+    } else {
+      // Not selected - find entry in list of selected fields and move it
+      findinfo.lParam = i | NORMALFIELD;
+      iItem = m_pLC_Selected->FindItem(&findinfo);
+      if (iItem == -1)
+        continue;
+
+      cs_text = m_pLC_Selected->GetItemText(iItem, 0);
+      dw_data = m_pLC_Selected->GetItemData(iItem);
+      m_pLC_Selected->DeleteItem(iItem);
+      iItem = m_pLC_List->InsertItem(0, cs_text);
+      m_pLC_List->SetItemData(iItem, dw_data);
+    }
+  }
+}
+
 void CAdvancedDlg::OnOK()
 {
   CGeneralMsgBox gmb;
@@ -513,7 +673,7 @@ void CAdvancedDlg::OnOK()
     for (int i = 0; i < num_selected; i++) {
       nItem = m_pLC_Selected->GetNextItem(nItem, LVNI_ALL);
       dw_data = LOWORD(m_pLC_Selected->GetItemData(nItem));
-      m_bsFields.set(dw_data, true);
+      m_bsFields.set(dw_data & 0xff, true);
     }
 
     if (m_bsFields.count() == 0) {
@@ -570,6 +730,14 @@ void CAdvancedDlg::OnOK()
 
   if (m_subgroup_name == L"*")
     m_subgroup_name.Empty();
+
+  m_pst_SADV->bsFields = m_bsFields;
+  m_pst_SADV->subgroup_name = m_subgroup_name;
+  m_pst_SADV->subgroup_set = m_subgroup_set;
+  m_pst_SADV->subgroup_object = m_subgroup_object;
+  m_pst_SADV->subgroup_function = m_subgroup_function;
+  m_pst_SADV->subgroup_case = m_subgroup_case;
+  m_pst_SADV->treatwhitespaceasempty = m_treatwhitespaceasempty;
 
   CPWDialog::OnOK();
 }
@@ -649,8 +817,14 @@ void CAdvancedDlg::OnDeselectSome()
     nItem = m_pLC_Selected->GetNextItem(nItem, LVNI_SELECTED);
     if (nItem == -1)
       continue;
+
     cs_text = m_pLC_Selected->GetItemText(nItem, 0);
     dw_data = m_pLC_Selected->GetItemData(nItem);
+
+    // Ignore mandatory fields - can't be deselected
+    if (m_bsMandatoryFields.test(dw_data & 0xff))
+      continue;
+
     m_pLC_Selected->DeleteItem(nItem);
     iItem = m_pLC_List->InsertItem(0, cs_text);
     m_pLC_List->SetItemData(iItem, dw_data);
@@ -673,13 +847,10 @@ void CAdvancedDlg::OnDeselectAll()
   for (int i = num_selected - 1; i >= 0; i--) {
     cs_text = m_pLC_Selected->GetItemText(i, 0);
     dw_data = m_pLC_Selected->GetItemData(i);
-    if ((m_iIndex == ADV_EXPORT_XML || m_iIndex == ADV_EXPORT_ENTRYXML) &&
-        (dw_data == CItemData::TITLE || dw_data == CItemData::PASSWORD))
+    // Ignore mandatory fields - can't be deselected
+    if (m_bsMandatoryFields.test(dw_data & 0xff))
       continue;
-    if (m_iIndex == ADV_COMPARE &&
-        (dw_data == CItemData::GROUP || dw_data == CItemData::TITLE ||
-         dw_data == CItemData::USER))
-      continue;
+
     iItem = m_pLC_List->InsertItem(0, cs_text);
     m_pLC_List->SetItemData(iItem, dw_data);
     m_pLC_Selected->DeleteItem(i);
@@ -688,44 +859,17 @@ void CAdvancedDlg::OnDeselectAll()
   m_pLC_List->SortItems(AdvCompareFunc, NULL);
 }
 
-void CAdvancedDlg::OnSelectedItemchanging(NMHDR * pNMHDR, LRESULT * pResult)
+void CAdvancedDlg::OnSelectedItemChanging(NMHDR *pNMHDR, LRESULT *pResult)
 {
-  // Prevent TITLE and PASSWORD being deselected in EXPORT_XML function
-  // as they are mandatory fields
-  // Prevent group, TITLE and USER being deselected in COMPARE function
-  // as they are always checked
+  // Prevent mandatory fields being deselected
   NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR; 
-  *pResult = FALSE;
 
-  switch (m_iIndex) {
-    case ADV_COMPARE:
-      if ((pNMListView->lParam == CItemData::GROUP ||
-           pNMListView->lParam == CItemData::TITLE ||
-           pNMListView->lParam == CItemData::USER) &&
-          (pNMListView->uNewState & LVIS_SELECTED)) {
-        pNMListView->uNewState &= ~LVIS_SELECTED;
-        *pResult = TRUE;
-      }
-      break;
-    case ADV_EXPORT_XML:
-    case ADV_EXPORT_ENTRYXML:
-      if ((pNMListView->lParam == CItemData::TITLE ||
-           pNMListView->lParam == CItemData::PASSWORD) &&
-          (pNMListView->uNewState & LVIS_SELECTED)) {
-        pNMListView->uNewState &= ~LVIS_SELECTED;
-        *pResult = TRUE;
-      }
-      break;
-    case ADV_FIND:
-    case ADV_MERGE:
-    case ADV_SYNCHRONIZE:
-    case ADV_COMPARESYNCH:
-    case ADV_EXPORT_TEXT:
-    case ADV_EXPORT_ENTRYTEXT:
-      break;
-    default:
-      ASSERT(FALSE);
-  }
+  if (m_bsMandatoryFields.test(pNMListView->lParam & 0xff) &&
+      (pNMListView->uNewState & LVIS_SELECTED)) {
+    pNMListView->uNewState &= ~LVIS_SELECTED;
+    *pResult = TRUE;
+  } else
+    *pResult = FALSE;
 }
 
 // Override PreTranslateMessage() so RelayEvent() can be
