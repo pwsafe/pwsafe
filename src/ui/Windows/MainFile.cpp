@@ -100,7 +100,7 @@ BOOL DboxMain::OpenOnInit()
                     (m_core.IsReadOnly() ? GCP_FORCEREADONLY : 0);
   int rc = GetAndCheckPassword(m_core.GetCurFile(),
                                passkey, GCP_FIRST,
-                               flags);  // First
+                               flags) ;  // First
 
   CString cs_title;
   cs_title.LoadString(IDS_FILEREADERROR);
@@ -1371,7 +1371,9 @@ void DboxMain::OnExportEntryText()
 
 void DboxMain::DoExportText(const bool bAll)
 {
-  CExportTextDlg et(this, bAll);
+  st_SaveAdvValues *pst_ADV = &m_SaveAdvValues[bAll ? CAdvancedDlg::ADV_EXPORT_TEXT : 
+                                                      CAdvancedDlg::ADV_EXPORT_ENTRYTEXT];
+  CExportTextDlg eTxt(this, bAll, pst_ADV);
   CGeneralMsgBox gmb;
   OrderedItemList orderedItemList;
   CString cs_text, cs_title, cs_temp;
@@ -1386,16 +1388,18 @@ void DboxMain::DoExportText(const bool bAll)
     return;
   }
 
-  INT_PTR rc = et.DoModal();
+  INT_PTR rc = eTxt.DoModal();
   if (rc == IDOK) {
+    const bool bAdvanced = eTxt.m_bAdvanced == TRUE;
     StringX newfile;
-    StringX pw(et.GetPasskey());
+    StringX pw(eTxt.GetPasskey());
     if (m_core.CheckPasskey(sx_temp, pw) == PWScore::SUCCESS) {
-      const CItemData::FieldBits bsExport = et.m_bsExport;
-      const std::wstring subgroup_name = et.m_subgroup_name;
-      const int subgroup_object = et.m_subgroup_object;
-      const int subgroup_function = et.m_subgroup_function;
-      wchar_t delimiter = et.m_defexpdelim[0];
+      CItemData::FieldBits bsAllFields; bsAllFields.set();
+      const CItemData::FieldBits bsFields = bAdvanced ? pst_ADV->bsFields : bsAllFields;
+      const std::wstring subgroup_name = bAdvanced ? pst_ADV->subgroup_name : L"";
+      const int subgroup_object = pst_ADV->subgroup_object;
+      const int subgroup_function = pst_ADV->subgroup_function;
+      const wchar_t delimiter = eTxt.m_defexpdelim[0];
 
       if (bAll) {
         // Note: MakeOrderedItemList gets its members by walking the 
@@ -1408,8 +1412,9 @@ void DboxMain::DoExportText(const bool bAll)
         orderedItemList.push_back(*pci);
       }
 
-      rc = m_core.TestForExport(subgroup_name, subgroup_object,
-                               subgroup_function, &orderedItemList);
+      // Check if there are any that meet the user's filter
+      rc = m_core.TestForExport(bAdvanced, subgroup_name, subgroup_object,
+                                subgroup_function, &orderedItemList);
       if (rc == PWScore::NO_ENTRIES_EXPORTED) {
         cs_temp.LoadString(IDS_NO_ENTRIES_EXPORTED);
         cs_title.LoadString(IDS_TEXTEXPORTFAILED);
@@ -1420,7 +1425,7 @@ void DboxMain::DoExportText(const bool bAll)
         goto exit;
       }
 
-      // do the export
+      // Do the export
       // SaveAs-type dialog box
       std::wstring TxtFileName = PWSUtil::GetNewFileName(sx_temp.c_str(), L"txt");
       cs_text.LoadString(IDS_NAMETEXTFILE);
@@ -1463,7 +1468,7 @@ void DboxMain::DoExportText(const bool bAll)
           goto exit;
       } // while (1)
 
-      rc = m_core.WritePlaintextFile(newfile, bsExport, subgroup_name,
+      rc = m_core.WritePlaintextFile(newfile, bsFields, subgroup_name,
                                      subgroup_object, subgroup_function,
                                      delimiter, &orderedItemList);
 
@@ -1497,22 +1502,25 @@ void DboxMain::OnExportEntryXML()
 
 void DboxMain::DoExportXML(const bool bAll)
 {
-  CExportXMLDlg eXML(this, bAll);
+  st_SaveAdvValues *pst_ADV = &m_SaveAdvValues[bAll ? CAdvancedDlg::ADV_EXPORT_XML : 
+                                                      CAdvancedDlg::ADV_EXPORT_ENTRYXML];
+  CExportXMLDlg eXML(this, bAll, pst_ADV);
   OrderedItemList orderedItemList;
   CString cs_text, cs_title, cs_temp;
 
   INT_PTR rc = eXML.DoModal();
   if (rc == IDOK) {
+    const bool bAdvanced = eXML.m_bAdvanced == TRUE;
     CGeneralMsgBox gmb;
     StringX newfile;
     StringX pw(eXML.GetPasskey());
     if (m_core.CheckPasskey(m_core.GetCurFile(), pw) == PWScore::SUCCESS) {
-      const CItemData::FieldBits bsExport = eXML.m_bsExport;
-      const std::wstring subgroup_name = eXML.m_subgroup_name;
-      const int subgroup_object = eXML.m_subgroup_object;
-      const int subgroup_function = eXML.m_subgroup_function;
-      wchar_t delimiter;
-      delimiter = eXML.m_defexpdelim[0];
+      CItemData::FieldBits bsAllFields; bsAllFields.set();
+      const CItemData::FieldBits bsFields = bAdvanced ? pst_ADV->bsFields : bsAllFields;
+      const std::wstring subgroup_name = bAdvanced ? pst_ADV->subgroup_name : L"";
+      const int subgroup_object = pst_ADV->subgroup_object;
+      const int subgroup_function = pst_ADV->subgroup_function;
+      const wchar_t delimiter = eXML.m_defexpdelim[0];
 
       if (bAll) {
         // Note: MakeOrderedItemList gets its members by walking the 
@@ -1525,7 +1533,7 @@ void DboxMain::DoExportXML(const bool bAll)
         orderedItemList.push_back(*pci);
       }
 
-      rc = m_core.TestForExport(subgroup_name, subgroup_object,
+      rc = m_core.TestForExport(bAdvanced, subgroup_name, subgroup_object,
                                subgroup_function, &orderedItemList);
 
       if (rc == PWScore::NO_ENTRIES_EXPORTED) {
@@ -1582,7 +1590,7 @@ void DboxMain::DoExportXML(const bool bAll)
           goto exit;
       } // while (1)
 
-      rc = m_core.WriteXMLFile(newfile, bsExport, subgroup_name,
+      rc = m_core.WriteXMLFile(newfile, bsFields, subgroup_name,
                                subgroup_object, subgroup_function,
                                delimiter, &orderedItemList,
                                m_bFilterActive);
@@ -2185,7 +2193,7 @@ void DboxMain::DoOtherDBProcessing(const UINT uiftn)
                            GCP_ADVANCED, // OK, CANCEL, HELP
                            GCP_READONLY | GCP_FORCEREADONLY, 
                            &othercore,   // Use other core
-                           iadv_type);   // Advanced type
+                           iadv_type, &m_SaveAdvValues[iadv_type]);   // Advanced type
 
   switch (rc) {
     case PWScore::SUCCESS:
@@ -2359,6 +2367,26 @@ void DboxMain::Merge(const StringX &sx_Filename2, PWScore *pothercore)
   std::vector<StringX> vs_AliasesAdded;
   std::vector<StringX> vs_ShortcutsAdded;
 
+  //CItemData::FieldBits bsFields;
+  CString subgroup_name;
+  int subgroup_set, subgroup_object, subgroup_function;
+  //int subgroup_case;
+  //int treatwhitespaceasempty;
+
+  if (m_bAdvanced == TRUE) {
+    // Use saved or latest values
+    subgroup_name = m_SaveAdvValues[CAdvancedDlg::ADV_MERGE].subgroup_name;
+    subgroup_set = m_SaveAdvValues[CAdvancedDlg::ADV_MERGE].subgroup_set;
+    subgroup_object = m_SaveAdvValues[CAdvancedDlg::ADV_MERGE].subgroup_object;
+    subgroup_function = m_SaveAdvValues[CAdvancedDlg::ADV_MERGE].subgroup_function;
+  } else {
+    // Turn off advanced settings
+    subgroup_name = L"";
+    subgroup_set = BST_UNCHECKED;
+    subgroup_object = CItemData::GROUP;
+    subgroup_function = 0;
+  }
+ 
   /*
   Purpose:
   Merge entries from otherCore to m_core
@@ -2374,6 +2402,7 @@ void DboxMain::Merge(const StringX &sx_Filename2, PWScore *pothercore)
     else
       add to m_core directly
   */
+
   int numAdded = 0;
   int numConflicts = 0;
   int numAliasesAdded = 0;
@@ -2397,9 +2426,9 @@ void DboxMain::Merge(const StringX &sx_Filename2, PWScore *pothercore)
     if (otherItem.IsDependent())
       continue;
 
-    if (m_subgroup_set == BST_CHECKED &&
-        !otherItem.Matches(std::wstring(m_subgroup_name),
-                           m_subgroup_object, m_subgroup_function))
+    if (subgroup_set == BST_CHECKED &&
+        !otherItem.Matches(std::wstring(subgroup_name),
+                           subgroup_object, subgroup_function))
       continue;
 
     const StringX otherGroup = otherItem.GetGroup();
@@ -2746,13 +2775,34 @@ void DboxMain::Compare(const StringX &sx_Filename2, PWScore *pothercore)
   }
   */
 
-  if (!m_bAdvanced) {
-    // turn off time fields if not explicitly turned on by user via Advanced dialog
-    m_bsFields.reset(CItemData::CTIME);
-    m_bsFields.reset(CItemData::PMTIME);
-    m_bsFields.reset(CItemData::ATIME);
-    m_bsFields.reset(CItemData::XTIME);
-    m_bsFields.reset(CItemData::RMTIME);
+  CItemData::FieldBits bsFields;
+  CString subgroup_name;
+  int subgroup_set, subgroup_object, subgroup_function;
+  // int subgroup_case;
+  // int treatwhitespaceasempty;
+
+  if (m_bAdvanced == TRUE) {
+    // Use saved or latest values
+    bsFields = m_SaveAdvValues[CAdvancedDlg::ADV_COMPARE].bsFields;
+    subgroup_name = m_SaveAdvValues[CAdvancedDlg::ADV_COMPARE].subgroup_name;
+    subgroup_set = m_SaveAdvValues[CAdvancedDlg::ADV_COMPARE].subgroup_set;
+    subgroup_object = m_SaveAdvValues[CAdvancedDlg::ADV_COMPARE].subgroup_object;
+    subgroup_function = m_SaveAdvValues[CAdvancedDlg::ADV_COMPARE].subgroup_function;
+  } else {
+    // Turn off advanced settings
+    subgroup_name = L"";
+    subgroup_set = BST_UNCHECKED;
+    subgroup_object = CItemData::GROUP;
+    subgroup_function = 0;
+
+    // Set on all fields
+    bsFields.set();
+    // Turn off time fields if not explicitly turned on by user via Advanced dialog
+    bsFields.reset(CItemData::CTIME);
+    bsFields.reset(CItemData::PMTIME);
+    bsFields.reset(CItemData::ATIME);
+    bsFields.reset(CItemData::XTIME);
+    bsFields.reset(CItemData::RMTIME);
   }
 
   int numOnlyInCurrent = 0;
@@ -2770,9 +2820,9 @@ void DboxMain::Compare(const StringX &sx_Filename2, PWScore *pothercore)
        currentPos++) {
     CItemData currentItem = m_core.GetEntry(currentPos);
 
-    if (m_subgroup_set == BST_UNCHECKED ||
-        currentItem.Matches(std::wstring(m_subgroup_name), m_subgroup_object,
-                            m_subgroup_function)) {
+    if (subgroup_set == BST_UNCHECKED ||
+        currentItem.Matches(std::wstring(subgroup_name), subgroup_object,
+                            subgroup_function)) {
       st_data.group = currentItem.GetGroup();
       st_data.title = currentItem.GetTitle();
       st_data.user = currentItem.GetUser();
@@ -2809,34 +2859,35 @@ void DboxMain::Compare(const StringX &sx_Filename2, PWScore *pothercore)
          ..1. ....  RUNCMD    [0x12]
          ...1 ....  DCA       [0x13]
          .... 1...  EMAIL     [0x14]
+         .... .111  Unused
         */
         bsConflicts.reset();
 
         CItemData compItem = pothercore->GetEntry(foundPos);
-        if (m_bsFields.test(CItemData::NOTES) &&
+        if (bsFields.test(CItemData::NOTES) &&
             FieldsNotEqual(currentItem.GetNotes(), compItem.GetNotes()))
           bsConflicts.flip(CItemData::NOTES);
-        if (m_bsFields.test(CItemData::PASSWORD) &&
+        if (bsFields.test(CItemData::PASSWORD) &&
             currentItem.GetPassword() != compItem.GetPassword())
           bsConflicts.flip(CItemData::PASSWORD);
-        if (m_bAdvanced) {
+        if (m_bAdvanced == TRUE) {
           // Only checked if specified by the user in via the Advanced dialog
-          if (m_bsFields.test(CItemData::CTIME) &&
+          if (bsFields.test(CItemData::CTIME) &&
               currentItem.GetCTime() != compItem.GetCTime())
             bsConflicts.flip(CItemData::CTIME);
-          if (m_bsFields.test(CItemData::PMTIME) &&
+          if (bsFields.test(CItemData::PMTIME) &&
               currentItem.GetPMTime() != compItem.GetPMTime())
             bsConflicts.flip(CItemData::PMTIME);
-          if (m_bsFields.test(CItemData::ATIME) &&
+          if (bsFields.test(CItemData::ATIME) &&
               currentItem.GetATime() != compItem.GetATime())
             bsConflicts.flip(CItemData::ATIME);
-          if (m_bsFields.test(CItemData::XTIME) &&
+          if (bsFields.test(CItemData::XTIME) &&
               currentItem.GetXTime() != compItem.GetXTime())
             bsConflicts.flip(CItemData::XTIME);
-          if (m_bsFields.test(CItemData::RMTIME) &&
+          if (bsFields.test(CItemData::RMTIME) &&
               currentItem.GetRMTime() != compItem.GetRMTime())
             bsConflicts.flip(CItemData::RMTIME);
-          if (m_bsFields.test(CItemData::XTIME_INT)) {
+          if (bsFields.test(CItemData::XTIME_INT)) {
             int current_xint, comp_xint;
             currentItem.GetXTimeInt(current_xint);
             compItem.GetXTimeInt(comp_xint);
@@ -2844,25 +2895,25 @@ void DboxMain::Compare(const StringX &sx_Filename2, PWScore *pothercore)
               bsConflicts.flip(CItemData::XTIME_INT);
           }
         }
-        if (m_bsFields.test(CItemData::URL) &&
+        if (bsFields.test(CItemData::URL) &&
             FieldsNotEqual(currentItem.GetURL(), compItem.GetURL()))
           bsConflicts.flip(CItemData::URL);
-        if (m_bsFields.test(CItemData::AUTOTYPE) &&
+        if (bsFields.test(CItemData::AUTOTYPE) &&
             FieldsNotEqual(currentItem.GetAutoType(), compItem.GetAutoType()))
           bsConflicts.flip(CItemData::AUTOTYPE);
-        if (m_bsFields.test(CItemData::PWHIST) &&
+        if (bsFields.test(CItemData::PWHIST) &&
             currentItem.GetPWHistory() != compItem.GetPWHistory())
           bsConflicts.flip(CItemData::PWHIST);
-        if (m_bsFields.test(CItemData::POLICY) &&
+        if (bsFields.test(CItemData::POLICY) &&
             currentItem.GetPWPolicy() != compItem.GetPWPolicy())
           bsConflicts.flip(CItemData::POLICY);
-        if (m_bsFields.test(CItemData::RUNCMD) &&
+        if (bsFields.test(CItemData::RUNCMD) &&
             currentItem.GetRunCommand() != compItem.GetRunCommand())
           bsConflicts.flip(CItemData::RUNCMD);
-        if (m_bsFields.test(CItemData::DCA) &&
+        if (bsFields.test(CItemData::DCA) &&
             currentItem.GetDCA() != compItem.GetDCA())
           bsConflicts.flip(CItemData::DCA);
-        if (m_bsFields.test(CItemData::EMAIL) &&
+        if (bsFields.test(CItemData::EMAIL) &&
             currentItem.GetEmail() != compItem.GetEmail())
           bsConflicts.flip(CItemData::EMAIL);
 
@@ -2906,9 +2957,9 @@ void DboxMain::Compare(const StringX &sx_Filename2, PWScore *pothercore)
        compPos++) {
     CItemData compItem = pothercore->GetEntry(compPos);
 
-    if (m_subgroup_set == BST_UNCHECKED ||
-        compItem.Matches(std::wstring(m_subgroup_name), m_subgroup_object,
-                         m_subgroup_function)) {
+    if (subgroup_set == BST_UNCHECKED ||
+        compItem.Matches(std::wstring(subgroup_name), subgroup_object,
+                         subgroup_function)) {
       st_data.group = compItem.GetGroup();
       st_data.title = compItem.GetTitle();
       st_data.user = compItem.GetUser();
@@ -2963,7 +3014,7 @@ void DboxMain::Compare(const StringX &sx_Filename2, PWScore *pothercore)
 
     rpt.EndReport();
 
-    if (rc == 2)
+    if (rc == IDC_VIEWCOMPAREREPORT)
       ViewReport(rpt);
   }
 
@@ -3025,13 +3076,36 @@ void DboxMain::Synchronize(const StringX &sx_Filename2, PWScore *pothercore)
   */
   int numUpdated = 0;
 
-  // Reset reserved and not allowed fields
-  m_bsFields.reset(CItemData::NAME);
-  m_bsFields.reset(CItemData::UUID);
-  m_bsFields.reset(CItemData::GROUP);
-  m_bsFields.reset(CItemData::TITLE);
-  m_bsFields.reset(CItemData::USER);
-  m_bsFields.reset(CItemData::RESERVED);
+  CItemData::FieldBits bsFields;
+  CString subgroup_name;
+  int subgroup_set, subgroup_object, subgroup_function;
+  // int subgroup_case;
+  // int treatwhitespaceasempty;
+
+  if (m_bAdvanced == TRUE) {
+    // Use saved or latest values
+    bsFields = m_SaveAdvValues[CAdvancedDlg::ADV_SYNCHRONIZE].bsFields;
+    subgroup_name = m_SaveAdvValues[CAdvancedDlg::ADV_SYNCHRONIZE].subgroup_name;
+    subgroup_set = m_SaveAdvValues[CAdvancedDlg::ADV_SYNCHRONIZE].subgroup_set;
+    subgroup_object = m_SaveAdvValues[CAdvancedDlg::ADV_SYNCHRONIZE].subgroup_object;
+    subgroup_function = m_SaveAdvValues[CAdvancedDlg::ADV_SYNCHRONIZE].subgroup_function;
+  } else {
+    // Turn off advanced settings
+    subgroup_name = L"";
+    subgroup_set = BST_UNCHECKED;
+    subgroup_object = CItemData::GROUP;
+    subgroup_function = 0;
+
+    // Set on all fields
+    bsFields.set();
+    // Turn off
+    bsFields.reset(CItemData::NAME);
+    bsFields.reset(CItemData::UUID);
+    bsFields.reset(CItemData::GROUP);
+    bsFields.reset(CItemData::TITLE);
+    bsFields.reset(CItemData::USER);
+    bsFields.reset(CItemData::RESERVED);
+  }
 
   MultiCommands *pmulticmds = MultiCommands::Create(&m_core);
   Command *pcmd1 = UpdateGUICommand::Create(&m_core, UpdateGUICommand::WN_UNDO,
@@ -3049,9 +3123,9 @@ void DboxMain::Synchronize(const StringX &sx_Filename2, PWScore *pothercore)
     if (et == CItemData::ET_ALIAS || et == CItemData::ET_SHORTCUT)
       continue;
 
-    if (m_subgroup_set == BST_CHECKED &&
-        !otherItem.Matches(std::wstring(m_subgroup_name),
-                           m_subgroup_object, m_subgroup_function))
+    if (subgroup_set == BST_CHECKED &&
+        !otherItem.Matches(std::wstring(subgroup_name),
+                           subgroup_object, subgroup_function))
       continue;
 
     const StringX otherGroup = otherItem.GetGroup();
@@ -3076,7 +3150,7 @@ void DboxMain::Synchronize(const StringX &sx_Filename2, PWScore *pothercore)
 
       bool bUpdated(false);
       for (int i = 0; i < (int)m_bsFields.size(); i++) {
-        if (m_bsFields.test(i)) {
+        if (bsFields.test(i)) {
           const StringX sxValue = otherItem.GetFieldValue((CItemData::FieldType)i);
           if (sxValue != updItem.GetFieldValue((CItemData::FieldType)i)) {
             bUpdated = true;
@@ -3277,7 +3351,8 @@ LRESULT DboxMain::SynchCompareResult(PWScore *pfromcore, PWScore *ptocore,
   CItemData::FieldBits bsFields;
 
   // Use a cut down Advanced dialog (only fields to synchronize)
-  CAdvancedDlg Adv(this, CAdvancedDlg::ADV_COMPARESYNCH);
+  CAdvancedDlg Adv(this, CAdvancedDlg::ADV_COMPARESYNCH,
+                   &m_SaveAdvValues[CAdvancedDlg::ADV_COMPARESYNCH]);
 
   INT_PTR rc = Adv.DoModal();
 
@@ -3632,7 +3707,7 @@ void DboxMain::ReportAdvancedOptions(CReport *pRpt, const UINT uimsgftn)
 {
   CString cs_buffer, cs_temp, cs_text;
   // tell the user we're done & provide short Compare report
-  if (!m_bAdvanced) {
+  if (m_bAdvanced == FALSE) {
     cs_temp.LoadString(IDS_NONE);
     cs_buffer.Format(IDS_ADVANCEDOPTIONS, cs_temp);
     pRpt->WriteLine((LPCWSTR)cs_buffer);

@@ -11,6 +11,7 @@
 // CPWFindToolBar
 
 #include "ControlExtns.h"
+#include "AdvancedDlg.h"
 #include <vector>
 
 class DboxMain;
@@ -23,7 +24,8 @@ public:
   CPWFindToolBar();
   virtual ~CPWFindToolBar();
 
-  void Init(const int NumBits, CWnd *pMessageWindow, int iWMSGID);
+  void Init(const int NumBits, CWnd *pMessageWindow, int iWMSGID,
+            st_SaveAdvValues *pst_SADV);
   void LoadDefaultToolBar(const int toolbarMode);
   void AddExtraControls();
   void ChangeImages(const int toolbarMode);
@@ -42,7 +44,7 @@ public:
   {return m_bCaseSensitive ? TRUE : FALSE;}
   void RefreshImages();
   void InvalidateSearch() {m_lastshown = size_t(-1);}
-  void GetSearchInfo(bool &bAdvanced, CItemData::FieldBits &bsFields, 
+  void GetSearchInfo(BOOL &bAdvanced, CItemData::FieldBits &bsFields, 
                      CString &subgroup_name, 
                      int &subgroup_set, int &subgroup_object, int &subgroup_function)
   {bAdvanced = m_bAdvanced; bsFields = m_bsFields;
@@ -78,7 +80,8 @@ private:
   int m_iMaxNumButtons, m_iNum_Bitmaps, m_NumBits;
   int m_iWMSGID;
   int m_toolbarMode, m_bitmode, m_iFindDirection;
-  bool m_bVisible, m_bCaseSensitive, m_bAdvanced;
+  bool m_bVisible, m_bCaseSensitive;
+  BOOL m_bAdvanced;
 
   std::vector<int> m_indices; // array of found items
 
@@ -93,5 +96,7 @@ private:
   size_t m_lastshown; // last index selected, -1 indicates no search done yet
   size_t m_numFound; // number of matched items, as returned by DboxMain::FindAll
 
-  int m_iCase_Insensitive_BM_offset, m_iCase_Sensitive_BM_offset;
+  int m_iCase_Insensitive_BM_offset, m_iAdvanced_BM_offset;
+  int m_iCase_Sensitive_BM_offset,m_iAdvancedOn_BM_offset;
+  st_SaveAdvValues *m_pst_SADV;
 };

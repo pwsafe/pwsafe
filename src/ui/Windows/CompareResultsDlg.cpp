@@ -394,7 +394,7 @@ void CCompareResultsDlg::OnHelp()
 
 void CCompareResultsDlg::OnViewCompareReport()
 {
-  EndDialog(2);
+  EndDialog(IDC_VIEWCOMPAREREPORT);
 }
 
 void CCompareResultsDlg::UpdateStatusBar()

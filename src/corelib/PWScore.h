@@ -139,8 +139,11 @@ public:
   void SetPassKey(const StringX &new_passkey);
 
   // Export databases
-  int TestForExport(const stringT &subgroup_name, const int &subgroup_object,
-                           const int &subgroup_function, const OrderedItemList *il);
+  int TestForExport(const bool bAdvanced,
+                    const stringT &subgroup_name,
+                    const int &subgroup_object,
+                    const int &subgroup_function,
+                    const OrderedItemList *il);
   int WritePlaintextFile(const StringX &filename,
                          const CItemData::FieldBits &bsExport,
                          const stringT &subgroup, const int &iObject,

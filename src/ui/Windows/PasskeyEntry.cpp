@@ -64,7 +64,7 @@ int CPasskeyEntry::dialog_lookup[5] = {
 //-----------------------------------------------------------------------------
 CPasskeyEntry::CPasskeyEntry(CWnd* pParent, const CString& a_filespec, int index,
                              bool bReadOnly, bool bForceReadOnly, bool bHideReadOnly,
-                             CAdvancedDlg::Type adv_type)
+                             CAdvancedDlg::Type adv_type, st_SaveAdvValues *pst_SADV)
   : CPWDialog(dialog_lookup[index], pParent),
   m_index(index),
   m_filespec(a_filespec), m_orig_filespec(a_filespec),
@@ -73,12 +73,12 @@ CPasskeyEntry::CPasskeyEntry(CWnd* pParent, const CString& a_filespec, int index
   m_PKE_ReadOnly(bReadOnly ? TRUE : FALSE),
   m_bForceReadOnly(bForceReadOnly),
   m_bHideReadOnly(bHideReadOnly),
-  m_adv_type(adv_type), m_bAdvanced(false),
-  m_subgroup_set(BST_UNCHECKED),
-  m_subgroup_name(L""), m_subgroup_object(CItemData::GROUP),
-  m_subgroup_function(0),
-  m_treatwhitespaceasempty(BST_CHECKED), m_pVKeyBoardDlg(NULL)
+  m_pAdv(NULL), m_adv_type(adv_type), m_bAdvanced(FALSE),
+  m_pst_SADV(pst_SADV), m_pVKeyBoardDlg(NULL)
 {
+  ASSERT((adv_type == CAdvancedDlg::ADV_INVALID && pst_SADV == NULL) ||
+         (adv_type != CAdvancedDlg::ADV_INVALID && pst_SADV != NULL));
+
   DBGMSG("CPasskeyEntry()\n");
   if (m_index == GCP_FIRST) {
     DBGMSG("** FIRST **\n");
@@ -87,7 +87,6 @@ CPasskeyEntry::CPasskeyEntry(CWnd* pParent, const CString& a_filespec, int index
   m_passkey = L"";
   m_hIcon = app.LoadIcon(IDI_CORNERICON);
   m_message = a_filespec;
-  m_bsFields.set();
 
   m_pDbx = dynamic_cast<DboxMain *>(pParent);
   ASSERT(m_pDbx != NULL);
@@ -135,9 +134,13 @@ void CPasskeyEntry::DoDataExchange(CDataExchange* pDX)
 #endif
   DDX_Control(pDX, IDC_PASSKEY, *m_pctlPasskey);
   DDX_Text(pDX, IDC_MESSAGE, m_message);
+  DDX_Check(pDX, IDC_READONLY, m_PKE_ReadOnly);
+
   if (m_index == GCP_FIRST)
     DDX_Control(pDX, IDC_DATABASECOMBO, m_MRU_combo);
-  DDX_Check(pDX, IDC_READONLY, m_PKE_ReadOnly);
+
+  if (m_index == GCP_ADVANCED)
+    DDX_Check(pDX, IDC_ADVANCED, m_bAdvanced);
   //}}AFX_DATA_MAP
 }
 
@@ -145,7 +148,8 @@ BEGIN_MESSAGE_MAP(CPasskeyEntry, CPWDialog)
   //{{AFX_MSG_MAP(CPasskeyEntry)
   ON_BN_CLICKED(ID_HELP, OnHelp)
   ON_BN_CLICKED(IDC_CREATE_DB, OnCreateDb)
-  ON_BN_CLICKED(IDC_EXITADVANCED, OnExitAdvanced)
+  ON_BN_CLICKED(IDC_EXIT, OnExit)
+  ON_BN_CLICKED(IDC_ADVANCED, OnAdvanced)
   ON_CBN_EDITCHANGE(IDC_DATABASECOMBO, OnComboEditChange)
   ON_CBN_SELCHANGE(IDC_DATABASECOMBO, OnComboSelChange)
   ON_BN_CLICKED(IDC_BTN_BROWSE, OnOpenFileBrowser)
@@ -268,10 +272,27 @@ BOOL CPasskeyEntry::OnInitDialog(void)
     m_MRU_combo.SetToolTipStrings(cs_tooltips);
   }
 
-  // Change Exit button to say "Advanced" if necessary!
+  // Remove/hide Exit button
   if (m_index == GCP_ADVANCED) {
-    GetDlgItem(IDC_EXITADVANCED)->
-      SetWindowText(CString(MAKEINTRESOURCE(IDS_ADVANCED)));
+    GetDlgItem(IDC_EXIT)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_EXIT)->EnableWindow(FALSE);
+
+    // Rearrange buttons IDOK, IDCANCEL. ID_HELP
+    CRect btnRect, dlgRect;
+    GetClientRect(&dlgRect);
+    int iDialogWidth = dlgRect.Width();
+    // Assume buttons are same size!
+    GetDlgItem(IDOK)->GetWindowRect(&btnRect);
+    ScreenToClient(&btnRect);
+    // IDOK on the left
+    int ixleft = iDialogWidth / 4  - btnRect.Width() / 2;
+    GetDlgItem(IDOK)->SetWindowPos(NULL, ixleft, btnRect.top, NULL, NULL, SWP_NOSIZE | SWP_NOZORDER);
+    // IDCANCEL in the middle
+    ixleft += iDialogWidth / 4;
+    GetDlgItem(IDCANCEL)->SetWindowPos(NULL, ixleft, btnRect.top, NULL, NULL, SWP_NOSIZE | SWP_NOZORDER);
+    // ID_HELP on the right
+    ixleft += iDialogWidth / 4;
+    GetDlgItem(ID_HELP)->SetWindowPos(NULL, ixleft, btnRect.top, NULL, NULL, SWP_NOSIZE | SWP_NOZORDER);
   }
 
   /*
@@ -384,7 +405,7 @@ void CPasskeyEntry::OnCreateDb()
 
     rc = fd.DoModal();
 
-    if (((DboxMain*) GetParent())->ExitRequested()) {
+    if (((DboxMain*)GetParent())->ExitRequested()) {
       // If U3ExitNow called while in CPWFileDialog,
       // PostQuitMessage makes us return here instead
       // of exiting the app. Try resignalling
@@ -415,36 +436,50 @@ void CPasskeyEntry::OnCreateDb()
 
 void CPasskeyEntry::OnCancel()
 {
+  // This is the default function for WM_CLOSE message
+  // We need to check if we have an Advanced dialog showing and, if so,
+  // close it too
+  if (m_pAdv != NULL)
+    m_pAdv->SendMessage(WM_CLOSE);
+
   m_status = TAR_CANCEL;
   CPWDialog::OnCancel();
 }
 
-void CPasskeyEntry::OnExitAdvanced()
+void CPasskeyEntry::OnExit()
 {
-  if (m_index == GCP_WITHEXIT) {
-    m_status = TAR_EXIT;
-    CPWDialog::OnCancel();
+  m_status = TAR_EXIT;
+  CPWDialog::OnCancel();
+}
+
+void CPasskeyEntry::OnAdvanced()
+{
+  m_bAdvanced = ((CButton*)GetDlgItem(IDC_ADVANCED))->GetCheck();
+  if (m_bAdvanced == FALSE)
     return;
-  }
 
-  CAdvancedDlg Adv(this, m_adv_type, m_bsFields, m_subgroup_name,
-    m_subgroup_set, m_subgroup_object, m_subgroup_function);
+  m_pAdv = new CAdvancedDlg(this, m_adv_type, m_pst_SADV);
 
-  INT_PTR rc = Adv.DoModal();
+  INT_PTR rc = m_pAdv->DoModal();
 
   if (rc == IDOK) {
-    m_bAdvanced = true;
-    m_bsFields = Adv.m_bsFields;
-    m_subgroup_set = Adv.m_subgroup_set;
-    m_treatwhitespaceasempty = Adv.m_treatwhitespaceasempty;
-    if (m_subgroup_set == BST_CHECKED) {
-      m_subgroup_name = Adv.m_subgroup_name;
-      m_subgroup_object = Adv.m_subgroup_object;
-      m_subgroup_function = Adv.m_subgroup_function;
+    m_bAdvanced = TRUE;
+    m_pst_SADV->bsFields = m_pAdv->m_bsFields;
+    m_pst_SADV->subgroup_set = m_pAdv->m_subgroup_set;
+    m_pst_SADV->treatwhitespaceasempty = m_pAdv->m_treatwhitespaceasempty;
+    if (m_pst_SADV->subgroup_set == BST_CHECKED) {
+      m_pst_SADV->subgroup_name = m_pAdv->m_subgroup_name;
+      m_pst_SADV->subgroup_object = m_pAdv->m_subgroup_object;
+      m_pst_SADV->subgroup_function = m_pAdv->m_subgroup_function;
     }
   } else {
-    m_bAdvanced = false;
+    m_bAdvanced = FALSE;
   }
+
+  delete m_pAdv;
+  m_pAdv = NULL;
+
+  ((CButton*)GetDlgItem(IDC_ADVANCED))->SetCheck(m_bAdvanced);
 
   // Now that they have accessed the Advanced dialog - allow them to press OK
   GetDlgItem(IDOK)->EnableWindow(TRUE);

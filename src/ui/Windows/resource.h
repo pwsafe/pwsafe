@@ -110,6 +110,8 @@
 #define IDB_SBASE                       239
 #define IDB_SBASE_EXPIRED               240
 #define IDB_SBASE_WARNEXPIRED           241
+#define IDB_FINDADVANCEDON_CLASSIC      242
+#define IDB_FINDADVANCEDON_NEW          243
 #define IDB_FINDADVANCED_CLASSIC        250
 #define IDB_FINDADVANCED_NEW            251
 #define IDB_FINDCASE_I_CLASSIC          252
@@ -337,7 +339,7 @@
 #define IDC_VERSION                     1001
 #define IDC_BROWSE                      1002
 #define IDC_CREATE_DB                   1003
-#define IDC_EXITADVANCED                1004
+#define IDC_EXIT                        1004
 #define IDC_PASSWORD                    1005
 #define IDC_OLDPASSKEY                  1006
 #define IDC_NEWPASSKEY                  1007
@@ -399,6 +401,7 @@
 #define IDC_EXPORT_XML_PASSWORD         1068
 #define IDC_EXPORT_TEXT_PASSWORD        1069
 #define IDC_USEHEXDIGITS                1070
+#define IDC_ADVANCED                    1071
 #define IDC_DEFPWUSESYSTRAY             1072
 #define IDC_LOCKONSCREEN                1073
 #define IDC_DEFPWRECENTRYHELP           1074
@@ -711,6 +714,8 @@
 #define IDC_STATIC_RWSTATUS             1424
 #define IDC_COPYPASSWORD                1425
 #define IDC_DEFPWHIDESYSTRAY            1426
+#define IDC_ADVANCED_RESET              1427
+#define IDC_ENTRY                       1428
 
 // Next default values for new objects
 // 
@@ -718,7 +723,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        491
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1427
+#define _APS_NEXT_CONTROL_VALUE         1429
 #define _APS_NEXT_SYMED_VALUE           166
 #endif
 #endif

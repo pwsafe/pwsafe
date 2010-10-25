@@ -11,7 +11,6 @@
 #include "stdafx.h"
 #include "passwordsafe.h"
 #include "ExportXMLDlg.h"
-#include "AdvancedDlg.h"
 #include "PwFont.h"
 #include "ThisMfcApp.h"
 #include "GeneralMsgBox.h"
@@ -36,15 +35,15 @@ static wchar_t PSSWDCHAR = L'*';
 // CExportXMLDlg dialog
 
 
-CExportXMLDlg::CExportXMLDlg(CWnd* pParent /*=NULL*/, bool bAll)
-  : CPWDialog(CExportXMLDlg::IDD, pParent),
-  m_subgroup_set(BST_UNCHECKED),
-  m_subgroup_name(L""), m_subgroup_object(CItemData::GROUP),
-  m_subgroup_function(0), m_pVKeyBoardDlg(NULL), m_pctlPasskey(NULL),
-  m_bAll(bAll)
+CExportXMLDlg::CExportXMLDlg(CWnd* pParent /*=NULL*/, bool bAll, st_SaveAdvValues *pst_SADV)
+  : CPWDialog(CExportXMLDlg::IDD, pParent),   m_bAll(bAll), m_pst_SADV(pst_SADV),
+   m_pVKeyBoardDlg(NULL), m_pctlPasskey(NULL)
 {
+  ASSERT(pst_SADV != NULL);
+
   m_passkey = L"";
   m_defexpdelim = L"\xbb";
+  m_bAdvanced = FALSE;
 
   m_pctlPasskey = new CSecEditExtn;
 }
@@ -52,9 +51,6 @@ CExportXMLDlg::CExportXMLDlg(CWnd* pParent /*=NULL*/, bool bAll)
 BOOL CExportXMLDlg::OnInitDialog() 
 {
   CPWDialog::OnInitDialog();
-
-  m_bsExport.set();  // note: impossible to set them all even via the advanced dialog
-  m_subgroup_name.Empty();
 
   ApplyPasswordFont(GetDlgItem(IDC_EXPORT_XML_PASSWORD));
   ((CEdit*)GetDlgItem(IDC_EXPORT_XML_PASSWORD))->SetPasswordChar(PSSWDCHAR);
@@ -111,6 +107,7 @@ void CExportXMLDlg::DoDataExchange(CDataExchange* pDX)
   DDX_Text(pDX, IDC_DEFEXPDELIM, m_defexpdelim);
   DDV_MaxChars(pDX, m_defexpdelim, 1);
   DDV_CheckExpDelimiter(pDX, m_defexpdelim);
+  DDX_Check(pDX, IDC_XML_ADVANCED, m_bAdvanced);
   //}}AFX_DATA_MAP
 }
 
@@ -163,21 +160,29 @@ void CExportXMLDlg::OnOK()
 
 void CExportXMLDlg::OnAdvanced()
 {
+  ASSERT(m_pst_SADV != NULL);
+  m_bAdvanced = ((CButton*)GetDlgItem(IDC_XML_ADVANCED))->GetCheck();
+  if (m_bAdvanced == FALSE)
+    return;
+
   CAdvancedDlg Adv(this,  m_bAll ? CAdvancedDlg::ADV_EXPORT_XML : CAdvancedDlg::ADV_EXPORT_ENTRYXML,
-                   m_bsExport, m_subgroup_name, 
-                   m_subgroup_set, m_subgroup_object, m_subgroup_function);
+                   m_pst_SADV);
 
   INT_PTR rc = Adv.DoModal();
 
   if (rc == IDOK) {
-    m_bsExport = Adv.m_bsFields;
-    m_subgroup_set = Adv.m_subgroup_set;
-    if (m_subgroup_set == BST_CHECKED) {
-      m_subgroup_name = Adv.m_subgroup_name;
-      m_subgroup_object = Adv.m_subgroup_object;
-      m_subgroup_function = Adv.m_subgroup_function;
+    m_bAdvanced = TRUE;
+    m_pst_SADV->bsFields = Adv.m_bsFields;
+    m_pst_SADV->subgroup_set = Adv.m_subgroup_set;
+    if (m_pst_SADV->subgroup_set == BST_CHECKED) {
+      m_pst_SADV->subgroup_name = Adv.m_subgroup_name;
+      m_pst_SADV->subgroup_object = Adv.m_subgroup_object;
+      m_pst_SADV->subgroup_function = Adv.m_subgroup_function;
     }
+  } else {
+    m_bAdvanced = FALSE;
   }
+  ((CButton*)GetDlgItem(IDC_XML_ADVANCED))->SetCheck(m_bAdvanced);
 }
 
 void CExportXMLDlg::OnVirtualKeyboard()

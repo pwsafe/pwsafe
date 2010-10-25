@@ -15,7 +15,9 @@
 class CConfirmDeleteDlg : public CPWDialog
 {
 public:
-  CConfirmDeleteDlg(CWnd* pParent = NULL, int numchildren = 0);
+  CConfirmDeleteDlg(CWnd* pParent = NULL, const int numchildren = 0,
+      const StringX sxGroup = L"", const StringX sxTitle = L"",
+      const StringX sxUser = L"");
 
 private:
   // Dialog Data
@@ -42,6 +44,9 @@ protected:
   virtual void OnOK();
   //}}AFX_MSG
   DECLARE_MESSAGE_MAP()
+
+private:
+  StringX m_sxGroup, m_sxTitle, m_sxUser;
 };
 
 //-----------------------------------------------------------------------------
