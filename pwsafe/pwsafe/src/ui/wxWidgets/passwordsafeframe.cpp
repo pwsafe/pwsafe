@@ -60,42 +60,7 @@
 #include <algorithm>
 
 // main toolbar images
-#include "../graphics/toolbar/wxWidgets/new.xpm"
-#include "../graphics/toolbar/wxWidgets/new_disabled.xpm"
-#include "../graphics/toolbar/wxWidgets/open.xpm"
-#include "../graphics/toolbar/wxWidgets/open_disabled.xpm"
-#include "../graphics/toolbar/wxWidgets/close.xpm"
-#include "../graphics/toolbar/wxWidgets/close_disabled.xpm"
-#include "../graphics/toolbar/wxWidgets/save.xpm"
-#include "../graphics/toolbar/wxWidgets/save_disabled.xpm"
-#include "../graphics/toolbar/wxWidgets/copypassword.xpm"
-#include "../graphics/toolbar/wxWidgets/copypassword_disabled.xpm"
-#include "../graphics/toolbar/wxWidgets/copyuser.xpm"
-#include "../graphics/toolbar/wxWidgets/copyuser_disabled.xpm"
-#include "../graphics/toolbar/wxWidgets/copynotes.xpm"
-#include "../graphics/toolbar/wxWidgets/copynotes_disabled.xpm"
-#include "../graphics/toolbar/wxWidgets/clearclipboard.xpm"
-#include "../graphics/toolbar/wxWidgets/clearclipboard_disabled.xpm"
-#include "../graphics/toolbar/wxWidgets/autotype.xpm"
-#include "../graphics/toolbar/wxWidgets/autotype_disabled.xpm"
-#include "../graphics/toolbar/wxWidgets/browseurl.xpm"
-#include "../graphics/toolbar/wxWidgets/browseurl_disabled.xpm"
-#include "../graphics/toolbar/wxWidgets/sendemail.xpm"
-#include "../graphics/toolbar/wxWidgets/sendemail_disabled.xpm"
-#include "../graphics/toolbar/wxWidgets/add.xpm"
-#include "../graphics/toolbar/wxWidgets/add_disabled.xpm"
-#include "../graphics/toolbar/wxWidgets/viewedit.xpm"
-#include "../graphics/toolbar/wxWidgets/viewedit_disabled.xpm"
-#include "../graphics/toolbar/wxWidgets/delete.xpm"
-#include "../graphics/toolbar/wxWidgets/delete_disabled.xpm"
-#include "../graphics/toolbar/wxWidgets/expandall.xpm"
-#include "../graphics/toolbar/wxWidgets/expandall_disabled.xpm"
-#include "../graphics/toolbar/wxWidgets/collapseall.xpm"
-#include "../graphics/toolbar/wxWidgets/collapseall_disabled.xpm"
-#include "../graphics/toolbar/wxWidgets/options.xpm"
-#include "../graphics/toolbar/wxWidgets/options_disabled.xpm"
-#include "../graphics/toolbar/wxWidgets/help.xpm"
-#include "../graphics/toolbar/wxWidgets/help_disabled.xpm"
+#include "./PwsToolbarButtons.h"
 
 ////@begin XPM images
 #include "../graphics/wxWidgets/cpane.xpm"
@@ -208,6 +173,8 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
 
   EVT_MENU(ID_SHOWHIDE_TOOLBAR,  PasswordSafeFrame::OnShowHideToolBar )
   EVT_MENU(ID_SHOWHIDE_DRAGBAR,  PasswordSafeFrame::OnShowHideDragBar )
+  EVT_MENU( ID_TOOLBAR_NEW,     PasswordSafeFrame::OnChangeToolbarType )
+  EVT_MENU( ID_TOOLBAR_CLASSIC, PasswordSafeFrame::OnChangeToolbarType )
 
   EVT_MENU(ID_MERGE,            PasswordSafeFrame::OnMergeAnotherSafe )
 
@@ -412,6 +379,8 @@ void PasswordSafeFrame::CreateControls()
   itemMenu47->Append(ID_TREE_VIEW, _("Nested &Tree"), _T(""), wxITEM_RADIO);
   itemMenu47->AppendSeparator();
   itemMenu47->Append(ID_SHOWHIDE_TOOLBAR, _("Toolbar &visible"), _T(""), wxITEM_CHECK);
+  itemMenu47->AppendRadioItem(ID_TOOLBAR_NEW, _("&New Toolbar"));
+  itemMenu47->AppendRadioItem(ID_TOOLBAR_CLASSIC, _("&Classic Toolbar"));
   itemMenu47->Append(ID_SHOWHIDE_DRAGBAR, _("&Dragbar visible"), _T(""), wxITEM_CHECK);
   itemMenu47->AppendSeparator();
   itemMenu47->Append(ID_EXPANDALL, _("Expand All"), _T(""), wxITEM_NORMAL);
@@ -470,6 +439,8 @@ void PasswordSafeFrame::CreateControls()
     itemMenu47->Check(ID_TREE_VIEW, true);
   }
   
+  GetMenuBar()->Check(PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar)? ID_TOOLBAR_NEW: ID_TOOLBAR_CLASSIC, true);
+  
   const CRecentDBList& rdb = wxGetApp().recentDatabases();
   Connect(rdb.GetBaseId(), rdb.GetBaseId() + rdb.GetMaxFiles() - 1, wxEVT_COMMAND_MENU_SELECTED,
             wxCommandEventHandler(PasswordSafeFrame::OnOpenRecentDB));
@@ -483,32 +454,8 @@ void PasswordSafeFrame::CreateMainToolbar()
 {
   wxToolBar* toolbar = CreateToolBar(wxBORDER_NONE | wxTB_TOP | wxTB_HORIZONTAL, wxID_ANY, wxT("Main Toolbar"));
 
-  toolbar->AddTool(wxID_NEW, wxEmptyString, wxBitmap(new_xpm), wxBitmap(new_disabled_xpm), wxITEM_NORMAL, wxT("Make New Database"));
-  toolbar->AddTool(wxID_OPEN, wxEmptyString, wxBitmap(open_xpm), wxBitmap(open_disabled_xpm), wxITEM_NORMAL, wxT("Open Another Database"));
-  toolbar->AddTool(wxID_CLOSE, wxEmptyString, wxBitmap(close_xpm), wxBitmap(close_disabled_xpm), wxITEM_NORMAL, wxT("Close Database"));
-  toolbar->AddTool(wxID_SAVE, wxEmptyString, wxBitmap(save_xpm), wxBitmap(save_disabled_xpm), wxITEM_NORMAL, wxT("Save Database"));
-  toolbar->AddSeparator();
-  toolbar->AddTool(ID_COPYPASSWORD, wxEmptyString, wxBitmap(copypassword_xpm), wxBitmap(copypassword_disabled_xpm), wxITEM_NORMAL, wxT("Copy Password to Clipboard"));
-  toolbar->AddTool(ID_COPYUSERNAME, wxEmptyString, wxBitmap(copyuser_xpm), wxBitmap(copyuser_disabled_xpm), wxITEM_NORMAL, wxT("Copy Username to Clipboard"));
-  toolbar->AddTool(ID_COPYNOTESFLD, wxEmptyString, wxBitmap(copynotes_xpm), wxBitmap(copynotes_disabled_xpm), wxITEM_NORMAL, wxT("Copy Notes to Clipboard"));
-  toolbar->AddTool(ID_CLEARCLIPBOARD, wxEmptyString, wxBitmap(clearclipboard_xpm), wxBitmap(clearclipboard_disabled_xpm), wxITEM_NORMAL, wxT("Clear the clipboard contents"));
-  toolbar->AddSeparator();
-  toolbar->AddTool(ID_AUTOTYPE, wxEmptyString, wxBitmap(autotype_xpm), wxBitmap(autotype_disabled_xpm), wxITEM_NORMAL, wxT("Perform Autotype"));
-  toolbar->AddTool(ID_BROWSEURL, wxEmptyString, wxBitmap(browseurl_xpm), wxBitmap(browseurl_disabled_xpm), wxITEM_NORMAL, wxT("Browse to URL"));
-  toolbar->AddTool(ID_SENDEMAIL, wxEmptyString, wxBitmap(sendemail_xpm), wxBitmap(sendemail_disabled_xpm), wxITEM_NORMAL, wxT("Send Email"));
-  toolbar->AddSeparator();
-  toolbar->AddTool(wxID_ADD, wxEmptyString, wxBitmap(add_xpm), wxBitmap(add_disabled_xpm), wxITEM_NORMAL, wxT("Add New Entry"));
-  toolbar->AddTool(ID_EDIT, wxEmptyString, wxBitmap(viewedit_xpm), wxBitmap(viewedit_disabled_xpm), wxITEM_NORMAL, wxT("Edit an Entry"));
-  toolbar->AddSeparator();
-  toolbar->AddTool(wxID_DELETE, wxEmptyString, wxBitmap(delete_xpm), wxBitmap(delete_disabled_xpm), wxITEM_NORMAL, wxT("Delete an Entry"));
-  toolbar->AddSeparator();
-  toolbar->AddTool(ID_EXPANDALL, wxEmptyString, wxBitmap(expandall_xpm), wxBitmap(expandall_disabled_xpm), wxITEM_NORMAL, wxT("Expand All"));
-  toolbar->AddTool(ID_COLLAPSEALL, wxEmptyString, wxBitmap(collapseall_xpm), wxBitmap(collapseall_disabled_xpm), wxITEM_NORMAL, wxT("Collapse All"));
-  toolbar->AddSeparator();
-  toolbar->AddTool(wxID_PREFERENCES, wxEmptyString, wxBitmap(options_xpm), wxBitmap(options_disabled_xpm), wxITEM_NORMAL, wxT("Options"));
-  toolbar->AddSeparator();
-  toolbar->AddTool(wxID_HELP, wxEmptyString, wxBitmap(help_xpm), wxBitmap(help_disabled_xpm), wxITEM_NORMAL, wxT("Help"));
-
+  RefreshToolbarButtons();
+  
   if (!toolbar->Realize())
     wxMessageBox(wxT("Could not create main toolbar"));
   
@@ -519,6 +466,51 @@ void PasswordSafeFrame::CreateMainToolbar()
   GetMenuBar()->Check(ID_SHOWHIDE_TOOLBAR, bShow);
 }
 
+void PasswordSafeFrame::RefreshToolbarButtons()
+{
+  wxToolBar* tb = GetToolBar();
+  wxASSERT(tb);
+  
+  if (tb->GetToolsCount() == 0) {  //being created?
+    if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar)) {
+      for (size_t idx = 0; idx < NumberOf(PwsToolbarButtons); ++idx) {
+        if (PwsToolbarButtons[idx].id == ID_SEPARATOR)
+          tb->AddSeparator();
+        else
+          tb->AddTool(PwsToolbarButtons[idx].id, wxEmptyString, wxBitmap(PwsToolbarButtons[idx].bitmap_normal), 
+                              wxBitmap(PwsToolbarButtons[idx].bitmap_disabled), wxITEM_NORMAL,
+                              PwsToolbarButtons[idx].tooltip);
+      }
+    }
+    else {
+      for (size_t idx = 0; idx < NumberOf(PwsToolbarButtons); ++idx) {
+        if (PwsToolbarButtons[idx].id == ID_SEPARATOR)
+          tb->AddSeparator();
+        else
+          tb->AddTool(PwsToolbarButtons[idx].id, wxEmptyString, wxBitmap(PwsToolbarButtons[idx].bitmap_classic),
+                          PwsToolbarButtons[idx].tooltip);
+      }
+    }
+  }
+  else { //toolbar type was changed from the menu
+    if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar)) {
+      for (size_t idx = 0; idx < NumberOf(PwsToolbarButtons); ++idx) {
+        if (PwsToolbarButtons[idx].id == ID_SEPARATOR)
+          continue;
+        tb->SetToolNormalBitmap(PwsToolbarButtons[idx].id, wxBitmap(PwsToolbarButtons[idx].bitmap_normal));
+        tb->SetToolDisabledBitmap(PwsToolbarButtons[idx].id, wxBitmap(PwsToolbarButtons[idx].bitmap_disabled));
+      }
+    }
+    else {
+      for (size_t idx = 0; idx < NumberOf(PwsToolbarButtons); ++idx) {
+        if (PwsToolbarButtons[idx].id == ID_SEPARATOR)
+          continue;
+        tb->SetToolNormalBitmap(PwsToolbarButtons[idx].id, wxBitmap(PwsToolbarButtons[idx].bitmap_classic));
+        tb->SetToolDisabledBitmap(PwsToolbarButtons[idx].id, wxNullBitmap);
+      }
+    }
+  }
+}
 
 /*!
  * Should we show tooltips?
@@ -645,6 +637,15 @@ void PasswordSafeFrame::ShowTree(bool show)
 
   m_tree->Show(show);
   GetSizer()->Layout();
+}
+
+void PasswordSafeFrame::OnChangeToolbarType(wxCommandEvent& evt)
+{
+  //This assumes the menu item is checked before it comes here
+  if (GetMenuBar()->IsChecked(evt.GetId())) {
+    PWSprefs::GetInstance()->SetPref(PWSprefs::UseNewToolbar, evt.GetId() == ID_TOOLBAR_NEW);
+    RefreshToolbarButtons();
+  }
 }
 
 
@@ -2566,8 +2567,9 @@ void PasswordSafeFrame::DoExportText()
     // those being displayed.
     OrderedItemList orderedItemList;
     ExportType::MakeOrderedItemList(this, orderedItemList);
-    
-    switch(m_core.TestForExport(subgroup_name, subgroup_object,
+
+#pragma message("Saurav - find out the reason for the first bool param to TestForExport")
+    switch(m_core.TestForExport(false, subgroup_name, subgroup_object,
                              subgroup_function, &orderedItemList)) {
       case PWScore::SUCCESS:
       {

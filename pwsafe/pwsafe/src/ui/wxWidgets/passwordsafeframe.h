@@ -118,7 +118,9 @@ enum {
   ID_SYSTRAY_UNLOCK,
   ID_SYSTRAY_CLOSE,
   ID_SYSTRAY_EXIT,
-  ID_SYSTRAY_CLEAR_RUE
+  ID_SYSTRAY_CLEAR_RUE,
+  ID_TOOLBAR_NEW,
+  ID_TOOLBAR_CLASSIC
 };
 
 
@@ -321,7 +323,10 @@ public:
   void OnShowHideDragBar(wxCommandEvent& /*evt*/);
 
   void OnMergeAnotherSafe(wxCommandEvent& evt);
-  
+
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_TOOLBAR_CLASSIC and ID_TOOLBAR_NEW
+  void OnChangeToolbarType(wxCommandEvent& /*evt*/);
+
 ////@begin PasswordSafeFrame member function declarations
 
   /// Retrieves bitmap resources
@@ -409,7 +414,8 @@ public:
   long GetRUEIndex(const wxCommandEvent& evt) { return evt.GetExtraLong(); }
   void RebuildGUI(const int iView = iBothViews);
   void CreateDragBar();
-
+  void RefreshToolbarButtons();
+  
   void Merge(const StringX &sx_Filename2, PWScore *pothercore, const SelectionCriteria& selection);
   int MergeDependents(PWScore *pothercore, MultiCommands *pmulticmds,
                               uuid_array_t &base_uuid, uuid_array_t &new_base_uuid, 

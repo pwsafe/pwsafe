@@ -1,0 +1,26 @@
+/* XPM */
+static const char *classic_delete[] = {
+/* columns rows colors chars-per-pixel */
+"16 16 4 1",
+"  c black",
+". c #808080808080",
+"X c #C0C0C0C0C0C0",
+"o c gray100",
+/* pixels */
+"XXXXXXXXXXXXXXXX",
+"XXXXXXXXXXXXXXXX",
+"XXXXXXXX.    ..X",
+"XXXXXXX XoXoXX X",
+"XXXXXX XoXoXo. X",
+"XXXXX XoXoXo . X",
+"XXXX XoXoXo ...X",
+"XXX XoXoXo .. XX",
+"XX XoXoXo .. XXX",
+"X. XXXXX .. XXXX",
+"X XXXXXX . XXXXX",
+"X XXXXXX  XXXXXX",
+"X.      .XXXXXXX",
+"XXXXXXXXXXXXXXXX",
+"XXXXXXXXXXXXXXXX",
+"XXXXXXXXXXXXXXXX"
+};
