@@ -908,7 +908,6 @@ BOOL ThisMfcApp::InitInstance()
                                m_LockedIcon, dbox.m_RUEList,
                                PWS_MSG_ICON_NOTIFY, IDR_POPTRAY);
   m_TrayIcon->SetTarget(&dbox);
-
 #endif
 
   // Set up an Accelerator table

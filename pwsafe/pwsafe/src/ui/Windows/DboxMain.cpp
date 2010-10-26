@@ -703,6 +703,7 @@ void DboxMain::InitPasswordSafe()
   if (!m_IsStartSilent && !prefs->GetPref(PWSprefs::UseSystemTray))
     app.HideIcon();
 
+  m_RUEList.SetMainWindow(this);
   m_RUEList.SetMax(prefs->GetPref(PWSprefs::MaxREItems));
 
   // JHF : no hotkeys on WinCE

@@ -63,6 +63,9 @@ public:
 
   CRUEList& operator=(const CRUEList& second);
 
+  void SetMainWindow(DboxMain *pDbx)
+  {m_pDbx = pDbx;}
+
   // Data retrieval
   size_t GetCount() const {return m_RUEList.size();}
   size_t GetMax() const {return m_maxentries;}
