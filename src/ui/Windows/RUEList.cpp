@@ -41,7 +41,7 @@ bool RUEntry::operator()(const RUEntry &re)
 
 //-----------------------------------------------------------------------------
 
-CRUEList::CRUEList() : m_core(app.m_core), m_maxentries(0), m_pDbx(app.m_maindlg)
+CRUEList::CRUEList() : m_core(app.m_core), m_maxentries(0), m_pDbx(NULL)
 {
 }
 

@@ -662,20 +662,30 @@ void CAddEdit_PasswordPolicy::SetPolicyFromVariables()
     M_pwp() = M_default_pwp();
   } else {
     M_pwp().Empty();
-    if (m_pwuselowercase == TRUE)
+    // Since in Hex, the checkboxes for non-hex characters can still be
+    // checked but the checkbox is disabled, we have to check both
+    if (m_pwuselowercase == TRUE &&
+        (GetDlgItem(IDC_USELOWERCASE)->IsWindowEnabled() == TRUE))
       M_pwp().flags |= PWSprefs::PWPolicyUseLowercase;
-    if (m_pwuseuppercase == TRUE)
+    if (m_pwuseuppercase == TRUE &&
+        (GetDlgItem(IDC_USEUPPERCASE)->IsWindowEnabled() == TRUE))
       M_pwp().flags |= PWSprefs::PWPolicyUseUppercase;
-    if (m_pwusedigits == TRUE)
+    if (m_pwusedigits == TRUE &&
+        (GetDlgItem(IDC_USEDIGITS)->IsWindowEnabled() == TRUE))
       M_pwp().flags |= PWSprefs::PWPolicyUseDigits;
-    if (m_pwusesymbols == TRUE)
+    if (m_pwusesymbols == TRUE &&
+        (GetDlgItem(IDC_USESYMBOLS)->IsWindowEnabled() == TRUE))
       M_pwp().flags |= PWSprefs::PWPolicyUseSymbols;
-    if (m_pwusehexdigits == TRUE)
+    if (m_pwusehexdigits == TRUE &&
+        (GetDlgItem(IDC_USEHEXDIGITS)->IsWindowEnabled() == TRUE))
       M_pwp().flags |= PWSprefs::PWPolicyUseHexDigits;
-    if (m_pweasyvision == TRUE)
+    if (m_pweasyvision == TRUE &&
+        (GetDlgItem(IDC_EASYVISION)->IsWindowEnabled() == TRUE))
       M_pwp().flags |= PWSprefs::PWPolicyUseEasyVision;
-    if (m_pwmakepronounceable == TRUE)
+    if (m_pwmakepronounceable == TRUE &&
+        (GetDlgItem(IDC_PRONOUNCEABLE)->IsWindowEnabled() == TRUE))
       M_pwp().flags |= PWSprefs::PWPolicyMakePronounceable;
+
     M_pwp().length = m_pwdefaultlength;
     M_pwp().digitminlength = m_pwdigitminlength;
     M_pwp().lowerminlength = m_pwlowerminlength;

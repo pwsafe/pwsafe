@@ -381,19 +381,25 @@ static void String2PWPolicy(const stringT &cs_pwp, PWPolicy &pwp)
 
   // We need flags(4), length(3), lower_len(3), upper_len(3)
   //   digit_len(3), symbol_len(3) = 4 + 5 * 3 = 19 
+  // All fields are hexadecimal digits representing flags or lengths
+
   // Note: order of fields set by PWSprefs enum that can have minimum lengths.
   // Later releases must support these as a minimum.  Any fields added
   // by these releases will be lost if the user changes these field.
   ASSERT(cs_pwp.length() == 19);
+
+  // Get fields
   istringstreamT is_flags(stringT(cs_pwp, 0, 4));
   istringstreamT is_length(stringT(cs_pwp, 4, 3));
   istringstreamT is_digitminlength(stringT(cs_pwp, 7, 3));
   istringstreamT is_lowreminlength(stringT(cs_pwp, 10, 3));
   istringstreamT is_symbolminlength(stringT(cs_pwp, 13, 3));
   istringstreamT is_upperminlength(stringT(cs_pwp, 16, 3));
+
+  // Put them into PWPolicy structure
   unsigned int f; // dain bramaged istringstream requires this runaround
   is_flags >> hex >> f;
-  pwp.flags = static_cast<WORD>(f);
+  pwp.flags = static_cast<unsigned short>(f);
   is_length >> hex >> pwp.length;
   is_digitminlength >> hex >> pwp.digitminlength;
   is_lowreminlength >> hex >> pwp.lowerminlength;
@@ -405,9 +411,8 @@ void CItemData::GetPWPolicy(PWPolicy &pwp) const
 {
   StringX cs_pwp(GetField(m_PWPolicy));
 
-  int len = cs_pwp.length();
   pwp.flags = 0;
-  if (len == 19)
+  if (cs_pwp.length() == 19)
     String2PWPolicy(cs_pwp.c_str(), pwp);
 }
 
@@ -1241,6 +1246,7 @@ void CItemData::SetPWPolicy(const PWPolicy &pwp)
   bool bother_flags = (pwp.flags & (~PWSprefs::PWPolicyUseHexDigits)) != 0;
 
   StringX cs_pwp;
+
   if (pwp.flags == 0 || (bhex_flag && bother_flags)) {
     cs_pwp = _T("");
   } else {
