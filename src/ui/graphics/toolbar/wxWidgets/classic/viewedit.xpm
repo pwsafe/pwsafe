@@ -1,0 +1,26 @@
+/* XPM */
+static const char *classic_viewedit[] = {
+/* columns rows colors chars-per-pixel */
+"16 16 4 1",
+"  c black",
+". c yellow",
+"X c #C0C0C0C0C0C0",
+"o c gray100",
+/* pixels */
+"XXXXXXXXXXXXXXXX",
+"XXXX  XXXXXXXXXX",
+"XXXX o XXXXXXXXX",
+"XXXX oo XXXXXXXX",
+"XXXX oo  XXXXXXX",
+"XXXX   . XXXXXXX",
+"XXXXX . . XXXXXX",
+"XXXXX . . XXXXXX",
+"XXXXXX . . XXXXX",
+"XXXXXX . . XXXXX",
+"XXXXXXX . . XXXX",
+"XXXXXXX . . XXXX",
+"XXXXXXXX . . XXX",
+"XXXXXXXX .  XXXX",
+"XXXXXXXXX  XXXXX",
+"XXXXXXXXXXXXXXXX"
+};
