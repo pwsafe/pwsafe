@@ -157,5 +157,5 @@ stringT pws_os::getxmldir(void)
 
 stringT pws_os::gethelpdir(void)
 {
-  return _S("/usr/share/pwsafe/help/");
+  return _S("/usr/share/doc/passwordsafe/help/");
 }

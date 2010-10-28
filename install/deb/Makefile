@@ -44,8 +44,7 @@ deb: debtree
 debtree:
 	@$(MKDIR) debian/usr/bin
 	@$(MKDIR) debian/usr/share/pwsafe/xml
-	@$(MKDIR) debian/usr/share/pwsafe/help
-	@$(MKDIR) debian/usr/share/doc/passwordsafe
+	@$(MKDIR) debian/usr/share/doc/passwordsafe/help
 	@$(MKDIR) debian/usr/share/man/man1
 	@$(MKDIR) debian/tmp
 	@$(CP) $(PWSAFE-BIN) debian/usr/bin
@@ -59,7 +58,7 @@ debtree:
 	@$(CP) $(MANPAGE) debian/usr/share/man/man1
 	@gzip -9 debian/usr/share/man/man1/pwsafe.1
 	@$(CP) $(XMLFILES) debian/usr/share/pwsafe/xml
-	@$(CP) $(HELPFILES) debian/usr/share/pwsafe/help
+	@$(CP) $(HELPFILES) debian/usr/share/doc/passwordsafe/help
 	@$(MKDIR) debian/DEBIAN
 	@$(SED) s/VERSION/$(RELNUM)/ < control > debian/DEBIAN/control
 	@$(CP) ../desktop/pwsafe.desktop debian/tmp
