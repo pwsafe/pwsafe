@@ -1081,6 +1081,12 @@ SectionEnd
 
 Section "Uninstall"
 
+; Now protect against running instance of pwsafe
+	${nsProcess::FindProcess} "pwsafe.exe" $R0
+	StrCmp $R0 0 0 +3
+	MessageBox MB_OK $(RUNNING_APPLICATION)
+  Abort
+	${nsProcess::Unload}
   ; Delete all installed files in the directory
   Delete "$INSTDIR\pwsafe.exe"
   Delete "$INSTDIR\pws_at.dll"

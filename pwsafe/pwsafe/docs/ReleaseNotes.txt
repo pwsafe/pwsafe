@@ -27,6 +27,7 @@ Bugs fixed in 3.23.1
 ====================
 [3084401] When database is locked, clipboard is cleared and the hotkey works.
 [3069250] PasswordSafe now remembers the selected entry on Lock After Idle.
+[3065827] Uninstall fails gracefully when invoked with pwsafe running.
 [3062850] Dialogs are now correctly closed if open when the workstation locks
 (with preference "Lock password database on workstation lock" set), enabling
 the application to be opened again.
