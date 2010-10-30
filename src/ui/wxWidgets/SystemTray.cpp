@@ -9,6 +9,11 @@
 /** \file SystemTray.cpp
  * 
  */
+#include <wx/wxprec.h>
+
+#ifndef WX_PRECOMP
+#include "wx/wx.h"
+#endif
 
 #include "./passwordsafeframe.h"
 #include "./SystemTray.h"
