@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  <title>Plain Text Export &amp; Import Format</title><!-- pwsafe version: 3.06--><!-- Modified: 21/02/2007 --><!--Popup control -->
+  <title>Формат текстового экспорта и импорта</title><!-- pwsafe version: 3.06--><!-- Modified: 21/02/2007 --><!--Popup control -->
 
   <script language="javascript" src="html/popups.js">
   </script>
@@ -11,180 +11,136 @@
 <body>
 <object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"> </object><!-- Popup Source File -->
 
-<h1><span style="font-size: 14pt;" lang="EN-GB">Notes
-on Plain Text
-Export &amp; Import</span></h1>
+<h1><span style="font-size: 14pt;" lang="RU-RU">Заметки о текстовом экспорте и импорте</span></h1>
 <hr style="width: 100%; height: 2px;">
-<p class="MsoNormal" style="text-align: justify;"><b style="color: rgb(255, 0, 0);"><i><u><span style="font-size: 11pt;" lang="EN-GB">Warning</span></u></i></b><span style="font-size: 11pt;" lang="EN-GB"><span style="color: rgb(255, 0, 0);">: The Export of sensitive
-information from
-a Password Safe database to a text file has serious security
-consequences.&nbsp; This operation will create an unprotected
-copy of&nbsp;</span><b style="color: rgb(255, 0, 0);"></b><span style="color: rgb(255, 0, 0);">the passwords in the
-database.&nbsp; Deleting this copy after use is </span><b style="color: rgb(255, 0, 0);">not</b><span style="color: rgb(255, 0, 0);">
-sufficient and other actions should be taken to properly erase the data
-(e.g. third
-party “shredding” utilities).&nbsp; The export
-of sensitive data effectively bypasses the security of the Password Safe program.</span></span></p>
+<p class="MsoNormal" style="text-align: justify;"> <b style="color: rgb(255, 0, 0);"><i><u><span style="font-size: 11pt;" lang="RU-RU">Внимание:</span></u></i></b><span style="font-size: 11pt;" lang="RU-RU"><span style="color: rgb(255, 0, 0);"> экспорт в текстовый формат важной информации из контейнера Password Safe может привести к проблемам с безопасностью. Данная операция создает незащищенную копию&nbsp;</span><b style="color: rgb(255, 0, 0);"></b><span style="color: rgb(255, 0, 0);"> паролей из контейнера.&nbsp;Простого удаления данной копии </span><b style="color: rgb(255, 0, 0);">недостаточно</b><span style="color: rgb(255, 0, 0);">, и требуется использовать дополнительные утилиты для гарантированного удаления данных из файла.&nbsp;Экспорт важной информации позволяет обойти меры защиты, предоставляемые Password Safe.</span></span></p>
 <hr style="width: 100%; height: 2px;">
-<small>Note: The
-Export and Import to/from&nbsp;text files feature has been changed
-in V3.06. This page describes the current format.</small>
+<small>Примечание: некоторые параметры текстового экспорта и импорта были изменены в версии 3.06. Эта страница описывает текущий формат.</small>
 <hr style="width: 100%; height: 2px;">
-<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 11pt;" lang="EN-GB">Exported text
-will:</span></p>
+<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 11pt;" lang="RU-RU">Текст файла с экспортом:</span></p>
 <ul>
-  <li><span style="font-size: 11pt; font-family: Symbol;" lang="EN-GB"><span style=""><span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;"></span></span></span><span dir="ltr"><span style="font-size: 11pt;" lang="EN-GB">Begin with&nbsp;a Title Row as the first
-record in the
-text file</span></span></li>
-  <li><span style="font-size: 11pt; font-family: Symbol;" lang="EN-GB"><span style=""></span></span><span dir="ltr"><span style="font-size: 11pt;" lang="EN-GB">Use a delimiter to replace the
-“newline” character in a
-multi-line Notes field and the period (‘.’) if
-present in the Title field.<span style="">&nbsp; </span>The
-default is ‘»’ [Alt+0187], which may be
-overridden if needed.</span></span></li>
+  <li><span style="font-size: 11pt; font-family: Symbol;" lang="RU-RU"><span style=""><span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;"></span></span></span><span dir="ltr"><span style="font-size: 11pt;" lang="RU-RU">Начинается со строки с заголовками</span></span></li>
+  <li><span style="font-size: 11pt; font-family: Symbol;" lang="RU-RU"><span style=""></span></span><span dir="ltr"><span style="font-size: 11pt;" lang="RU-RU">Использует разделитель для замены переносов строк в многострочных заметках и точки (‘.’) в заголовках.<span style="">&nbsp; </span> По умолчанию используется символ ‘»’ [Alt+0187], который может быть переопределен.</span></span></li>
 </ul>
-<p class="MsoListBullet" style="margin-left: 0in; text-align: justify; text-indent: 0in;"><span style="font-size: 11pt;" lang="EN-GB">Imported text
-is assumed to &nbsp;have:<span style=""></span></span></p>
+<p class="MsoListBullet" style="margin-left: 0in; text-align: justify; text-indent: 0in;"><span style="font-size: 11pt;" lang="RU-RU">При импорте считается, что:<span style=""></span></span></p>
 <ul>
-  <li><span style="font-size: 11pt; font-family: Symbol;" lang="EN-GB"><span style=""><span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;"></span></span></span><span dir="ltr"><span style="font-size: 11pt;" lang="EN-GB">A Title Row as the first record in the text
-file.</span></span></li>
-  <li><span style="font-size: 11pt; font-family: Symbol;" lang="EN-GB"><span style=""><span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;"></span></span></span><span dir="ltr"><span style="font-size: 11pt;" lang="EN-GB">A delimiter to reinstate the
-“newline” character in a multi-line Notes
-field and the period (‘.’), if present, in the
-Title field.<span style="">&nbsp;&nbsp;</span></span></span><span dir="ltr"><span style="font-size: 11pt;" lang="EN-GB">The default is
-‘»’ [Alt+0187], which may be overridden
-if needed.</span></span></li>
+  <li><span style="font-size: 11pt; font-family: Symbol;" lang="RU-RU"><span style=""><span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;"></span></span></span><span dir="ltr"><span style="font-size: 11pt;" lang="RU-RU">Первая строка содержит заголовки</span></span></li>
+  <li><span style="font-size: 11pt; font-family: Symbol;" lang="RU-RU"><span style=""><span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;"></span></span></span><span dir="ltr"><span style="font-size: 11pt;" lang="RU-RU">Использует разделитель для замены переносов строк в многострочных заметках и точки (‘.’) в заголовках. <span style="">&nbsp;&nbsp;</span></span></span><span dir="ltr"><span style="font-size: 11pt;" lang="RU-RU">По умолчанию используется символ ‘»’ [Alt+0187], который может быть переопределен.</span></span></li>
 </ul>
-<p class="CitiChangeSummarybullet" style="margin-left: 0in; text-align: justify;"><span style="font-size: 11pt;" lang="EN-GB">The
-Title Row for full data export currently contains&nbsp;the
-following fields by default, separated by a tab.</span></p>
+<p class="CitiChangeSummarybullet" style="margin-left: 0in; text-align: justify;"><span style="font-size: 11pt;" lang="RU-RU">Строка с заголовками для полного экспорта содержит следующие поля, разделенные табуляцией (в скобках приведен перевод, который не пишется в файл экспорта):</span></p>
 <ul>
-  <li><span style="font-size: 11pt;" lang="EN-GB">Group/Title</span></li>
-  <li><span style="font-size: 11pt;" lang="EN-GB">Username</span></li>
-  <li><span style="font-size: 11pt;" lang="EN-GB">Password</span></li>
-  <li><span style="font-size: 11pt;" lang="EN-GB">URL</span></li>
-  <li><span style="font-size: 11pt;" lang="EN-GB">AutoType</span></li>
-  <li><span style="font-size: 11pt;" lang="EN-GB">Created Time</span></li>
-  <li><span style="font-size: 11pt;" lang="EN-GB">Password Modified Time</span></li>
-  <li><span style="font-size: 11pt;" lang="EN-GB">Last Access Time</span></li>
-  <li><span style="font-size: 11pt;" lang="EN-GB">Password Expiry Date</span></li>
-  <li><span style="font-size: 11pt;" lang="EN-GB">Password Expiry Interval</span></li>
-  <li><span style="font-size: 11pt;" lang="EN-GB">Record Modified Time</span></li>
-  <li><span style="font-size: 11pt;" lang="EN-GB">Password Policy</span></li>
-  <li><span style="font-size: 11pt;" lang="EN-GB">History</span></li>
-  <li><span style="font-size: 11pt;" lang="EN-GB">Выполнить команду</span></li>
-  <li><span style="font-size: 11pt;" lang="EN-GB">DCA</span></li>
-  <li><span style="font-size: 11pt;" lang="EN-GB">e-mail</span></li>
-  <li><span style="font-size: 11pt;" lang="EN-GB">Notes</span></li>
+  <li><span style="font-size: 11pt;" lang="RU-RU">Group/Title (группа/заголовок)</span></li>
+  <li><span style="font-size: 11pt;" lang="RU-RU">Username (имя пользователя)</span></li>
+  <li><span style="font-size: 11pt;" lang="RU-RU">Password (пароль)</span></li>
+  <li><span style="font-size: 11pt;" lang="RU-RU">UR (ссылка)</span></li>
+  <li><span style="font-size: 11pt;" lang="RU-RU">AutoType (автонабор)</span></li>
+  <li><span style="font-size: 11pt;" lang="RU-RU">Created Time (время создания)</span></li>
+  <li><span style="font-size: 11pt;" lang="RU-RU">Password Modified Time (время изменения пароля)</span></li>
+  <li><span style="font-size: 11pt;" lang="RU-RU">Last Access Time (время последнего доступа)</span></li>
+  <li><span style="font-size: 11pt;" lang="RU-RU">Password Expiry Date (дата истечения пароля)</span></li>
+  <li><span style="font-size: 11pt;" lang="RU-RU">Password Expiry Interval (срок действия пароля)</span></li>
+  <li><span style="font-size: 11pt;" lang="RU-RU">Record Modified Time (время изменения записи)</span></li>
+  <li><span style="font-size: 11pt;" lang="RU-RU">Password Policy (политика создания паролей)</span></li>
+  <li><span style="font-size: 11pt;" lang="RU-RU">History (история)</span></li>
+  <li><span style="font-size: 11pt;" lang="RU-RU">Run Command (выполнить команду)</span></li>
+  <li><span style="font-size: 11pt;" lang="RU-RU">DCA (действие по двойному клику)</span></li>
+  <li><span style="font-size: 11pt;" lang="RU-RU">e-mail (электронная почта)</span></li>
+  <li><span style="font-size: 11pt;" lang="RU-RU">Notes (заметки)</span></li>
 </ul>
-<p class="CitiChangeSummarybullet" style="margin-left: 0in; text-align: justify;"><span style="font-size: 11pt;" lang="EN-GB"><span style=""></span>When
-exporting data, you
-may use the “Advanced” feature to exclude
-any number of these fields from the Title Row and records. &nbsp;The
-Advanced &nbsp;option also allows you to specify a subset of the
-entries to export, as shown below.</span></p>
-<p class="CitiChangeSummarybullet" style="margin-left: 0in; text-align: justify;"><img alt="Advanced Text Export dialog box" src="images/adv_txt_ex.jpg"><span style="font-size: 11pt;" lang="EN-GB"><u></u></span></p>
-<p class="CitiChangeSummarybullet" style="margin-left: 0in; text-align: justify;"><span style="font-size: 11pt;" lang="EN-GB">During
-Import, the supplied Title Row must include “column
-headings” that match
-exactly one of the above.<span style="">&nbsp; </span>If any “column
-heading” is repeated, only the data in the last one will be added to the
-entries during import.<span style="">&nbsp; </span>If a “column
-heading” does not match one of the above, the data in that column will be
-ignored during import.<span style="">&nbsp;</span>The fields must be&nbsp;separated with the field separator specified for the data in the Import Text dialog box.</span></p>
+<p class="CitiChangeSummarybullet" style="margin-left: 0in; text-align: justify;"><span style="font-size: 11pt;" lang="RU-RU"><span style=""></span>С помощью "Расширенных настроек" экспорта вы можете исключить ненужные поля из заголовка и экспортируемых записей. Расширенные настройки также позволяют выбрать подмножество элементов для экспорта.</span></p>
+<p class="CitiChangeSummarybullet" style="margin-left: 0in; text-align: justify;"><img alt="Расширенные настройки экспорта в простой текст" src="images/adv_txt_ex.jpg"><span style="font-size: 11pt;" lang="RU-RU"><u></u></span></p>
+<p class="CitiChangeSummarybullet" style="margin-left: 0in; text-align: justify;"><span style="font-size: 11pt;" lang="RU-RU">При импорте из текстового файла строка с заголовками должна содержать имена столбцов, совпадающие с именами из указанного списка.<span style="">&nbsp; </span> Если какой-либо из заголовков повторяется, будут использованы данные из последнего столбца с повторяющимся именем.<span style="">&nbsp; </span> Если заголовок не совпадает ни с одним из указанных, данный из этого столбца игнорируются.<span style="">&nbsp;</span> Поля должны быть разделены определенным символом, который указывается в диалоге импорта.</span></p>
 <hr style="width: 100%; height: 2px;">
 <small>Примечания:<br>
 </small>
 <ul>
-  <li><small>To import any data into Password Safe, the Title and Password fields <i><u>must</u></i> be present and neither blank nor empty, as it would be if adding a new entry to an existing database.</small></li>
+  <li><small>При импорте данных в Password Safe поля "Заголовок" и "Пароль" <i><u>должны</u></i> присутствовать и содержать непустые значения, так как данные требования должны выполняться при создании элементов стандартным способом.</small></li>
 </ul>
 <ul>
-  <li><small>There is no restriction on the order of the “column headings”.&nbsp; Password Safe will use
-the supplied Title Row to correctly add the specified data to the right field.</small></li>
+  <li><small>Порядок столбцов может быть любым.&nbsp;Соответствие полей определяется по заголовкам.</small></li>
 </ul>
-<hr style="width: 100%; height: 2px;"><span style="font-size: 11pt;" lang="EN-GB"></span><span style="font-size: 11pt; font-family: &quot;Times New Roman&quot;;" lang="EN-GB"></span>
-<h2><u><span style="font-size: 11pt;" lang="EN-GB">Data Formats</span></u></h2>
+<hr style="width: 100%; height: 2px;"><span style="font-size: 11pt;" lang="RU-RU"></span><span style="font-size: 11pt; font-family: &quot;Times New Roman&quot;;" lang="RU-RU"></span>
+<h2><u><span style="font-size: 11pt;" lang="RU-RU">Формат данных</span></u></h2>
 <table class="MsoNormalTable" style="border: medium none ; border-collapse: collapse;" border="1" cellpadding="0" cellspacing="0">
   <tbody>
     <tr>
       <td style="border: 1pt solid windowtext; padding: 0in 5.4pt; width: 143.4pt;" valign="top" width="191">
-      <b>Column Heading/Field</b>
+      <b>Имя столбца (поля)</b>
       </td>
       <td style="border-style: solid solid solid none; border-color: windowtext windowtext windowtext -moz-use-text-color; border-width: 1pt 1pt 1pt medium; padding: 0in 5.4pt; width: 4.75in;" valign="top" width="456">
-      <b>Comments</b>
+      <b>Примечания</b>
       </td>
     </tr>
     <tr>
-      <td style="padding: 0in 5.4pt;">Column Heading/Field</td>
-      <td style="padding: 0in 5.4pt;">If present, groups are separated by periods (‘.’). The Title field cannot be
-blank, empty or contain the delimiter character.</td>
+      <td style="padding: 0in 5.4pt;">Имя столбца (поля)</td>
+      <td style="padding: 0in 5.4pt;">Группы (если присутствуют) разделяются символом ‘.’. Поле "Title" (заголовок) не может быть пустым или содержать символ-разделитель.</td>
     </tr>
     <tr>
-      <td style="padding: 0in 5.4pt;">Username</td>
+      <td style="padding: 0in 5.4pt;">Username (имя пользователя)</td>
       <td style="padding: 0in 5.4pt;"> </td>
     </tr>
     <tr>
-      <td style="padding: 0in 5.4pt;">Password</td>
-      <td style="padding: 0in 5.4pt;">Cannot be blank or empty.</td>
+      <td style="padding: 0in 5.4pt;">Password (пароль)</td>
+      <td style="padding: 0in 5.4pt;">Не может быть пустым.</td>
     </tr>
     <tr>
-      <td style="padding: 0in 5.4pt;">URL</td>
+      <td style="padding: 0in 5.4pt;">UR (ссылка)</td>
       <td style="padding: 0in 5.4pt;"> </td>
     </tr>
     <tr>
-      <td style="padding: 0in 5.4pt;">Autotype</td>
+      <td style="padding: 0in 5.4pt;">Autotype (Автонабор)</td>
       <td style="padding: 0in 5.4pt;"> </td>
     </tr>
     <tr>
-      <td style="padding: 0in 5.4pt;">Created Time</td>
-      <td style="padding: 0in 5.4pt;">See note <a href="#1"><sup>1</sup></a> below</td>
+      <td style="padding: 0in 5.4pt;">Created Time (время создания)</td>
+      <td style="padding: 0in 5.4pt;">См. примечание <a href="#1"><sup>1</sup></a></td>
     </tr>
     <tr>
-      <td style="padding: 0in 5.4pt;">Password Modified Time</td>
-      <td style="padding: 0in 5.4pt;">See note <a href="#1"><sup>1</sup></a> below</td>
+      <td style="padding: 0in 5.4pt;">Password Modified Time (время изменения пароля)</td>
+      <td style="padding: 0in 5.4pt;">См. примечание <a href="#1"><sup>1</sup></a></td>
     </tr>
     <tr>
-      <td style="padding: 0in 5.4pt;">Last Access Time</td>
-      <td style="padding: 0in 5.4pt;">See note <a href="#1"><sup>1</sup></a> below</td>
+      <td style="padding: 0in 5.4pt;">Last Access Time (время последнего доступа)</td>
+      <td style="padding: 0in 5.4pt;">См. примечание <a href="#1"><sup>1</sup></a></td>
     </tr>
     <tr>
-      <td style="padding: 0in 5.4pt;">Password Expiry Date</td>
-      <td style="padding: 0in 5.4pt;">See note <a href="#1"><sup>1</sup></a> below</td>
+      <td style="padding: 0in 5.4pt;">Password Expiry Date (дата истечения пароля)</td>
+      <td style="padding: 0in 5.4pt;">См. примечание <a href="#1"><sup>1</sup></a></td>
     </tr>
     <tr>
-      <td style="padding: 0in 5.4pt;">Password Expiry Interval</td>
-      <td style="padding: 0in 5.4pt;">See note <a href="#1"><sup>1</sup></a> below</td>
+      <td style="padding: 0in 5.4pt;">Password Expiry Interval (срок действия пароля)</td>
+      <td style="padding: 0in 5.4pt;">См. примечание <a href="#1"><sup>1</sup></a></td>
     </tr>
     <tr>
-      <td style="padding: 0in 5.4pt;">Record Modified Time</td>
-      <td style="padding: 0in 5.4pt;">See note <a href="#1"><sup>1</sup></a> below</td>
+      <td style="padding: 0in 5.4pt;">Record Modified Time (время изменения записи)</td>
+      <td style="padding: 0in 5.4pt;">См. примечание <a href="#1"><sup>1</sup></a></td>
     </tr>
     <tr>
-      <td style="padding: 0in 5.4pt;">Password Policy</td>
-      <td style="padding: 0in 5.4pt;">See note <a href="#3"><sup>3</sup></a> below</td>
+      <td style="padding: 0in 5.4pt;">Password Policy (политика создания паролей)</td>
+      <td style="padding: 0in 5.4pt;">См. примечание <a href="#3"><sup>3</sup></a></td>
     </tr>
     <tr>
-      <td style="padding: 0in 5.4pt;">History</td>
-      <td style="padding: 0in 5.4pt;">See note <a href="#2"><sup>2</sup></a> below</td>
+      <td style="padding: 0in 5.4pt;">History (история)</td>
+      <td style="padding: 0in 5.4pt;">См. примечание <a href="#2"><sup>2</sup></a></td>
     </tr>
     <tr>
-      <td style="padding: 0in 5.4pt;">Run command</td>
+      <td style="padding: 0in 5.4pt;">Run command (выполнить команду)</td>
       <td style="padding: 0in 5.4pt;"></td>
     </tr>
     <tr>
-      <td style="padding: 0in 5.4pt;">DCA</td>
-      <td style="padding: 0in 5.4pt;">  = ‘Double Click Action’. See note <a href="#4"><sup>4</sup></a> below</td>
+      <td style="padding: 0in 5.4pt;">DCA (действие по двойному клику)</td>
+      <td style="padding: 0in 5.4pt;">   См. примечание <a href="#4"><sup>4</sup></a></td>
     </tr>
     <tr>
-      <td style="padding: 0in 5.4pt;">e-mail</td>
+      <td style="padding: 0in 5.4pt;">e-mail (электронная почта)</td>
       <td style="padding: 0in 5.4pt;"></td>
     </tr>
     <tr>
-      <td style="padding: 0in 5.4pt;">Notes</td>
+      <td style="padding: 0in 5.4pt;">Notes (заметки)</td>
       <td style="padding: 0in 5.4pt;">
       <ul>
-        <li>The Notes field should be enclosed by double quotes ("like this").</li>
-        <li>The Notes field should not contain the delimiter character since on import it will be translated to a newline.</li>
+        <li>Содержимое поля с заметками должно быть заключено в двойные кавычки ("например, так").</li>
+        <li>Заметки не должны содержать символ-разделитель, так как при импорте он будет преобразован в перенос строки.</li>
       </ul>
       </td>
     </tr>
@@ -195,10 +151,10 @@ blank, empty or contain the delimiter character.</td>
   <tbody>
     <tr>
       <td style="padding: 0in 5.4pt; width: 80pt;" valign="top">
-      <p><a name="1"></a><b><u>Notes:</u> <sup>1</sup></b></p>
+      <p><a name="1"></a><b><u>Примечания:</u> <sup>1</sup></b></p>
       </td>
       <td style="padding: 0in 5.4pt;" valign="top">
-      <p>Time fields can be one of the following 5 formats:</p>
+      <p>Время может быть указано в одном из 5 форматов:</p>
       </td>
     </tr>
   </tbody>
@@ -208,92 +164,90 @@ blank, empty or contain the delimiter character.</td>
   <tbody>
     <tr>
   <td style="padding: 0in 15.4pt;">1.</td>
-  <td style="padding: 0in 15.4pt; font-size: 11pt; font-family: 'Courier New'">yyyy/mm/dd hh:mm:ss</td>
-  <td style="padding: 0in 15.4pt;">e.g., 2007/01/26 19:31:25</td>
+  <td style="padding: 0in 15.4pt; font-size: 11pt; font-family: 'Courier New'">гггг/мм/дд чч:мм:сс</td>
+  <td style="padding: 0in 15.4pt;">например, 2007/01/26 19:31:25</td>
     </tr>
     <tr>
   <td style="padding: 0in 15.4pt;">2.</td>
-  <td style="padding: 0in 15.4pt; font-size: 11pt; font-family: 'Courier New'">ddd MMM dd hh:mm:ss yyyy</td>
-  <td style="padding: 0in 15.4pt;">e.g., Fri Jan 26 19:31:25 2007</td>
+  <td style="padding: 0in 15.4pt; font-size: 11pt; font-family: 'Courier New'">ддд МММ дд чч:мм:сс гггг</td>
+  <td style="padding: 0in 15.4pt;">например, Вск Окт 31 19:31:25 2010</td>
     </tr>
     <tr>
   <td style="padding: 0in 15.4pt;">3.</td>
-  <td style="padding: 0in 15.4pt; font-size: 11pt; font-family: 'Courier New'">yyyy-mm-ddThh:mm:ss</td>
-  <td style="padding: 0in 15.4pt;">e.g., 2007-01-26T19:31:25</td>
+  <td style="padding: 0in 15.4pt; font-size: 11pt; font-family: 'Courier New'">гггг-мм-ддTчч:мм:сс</td>
+  <td style="padding: 0in 15.4pt;">например, 2007-01-26T19:31:25</td>
     </tr>
     <tr>
   <td style="padding: 0in 15.4pt;">4.</td>
   <td style="padding: 0in 15.4pt;">0</td>
-  <td style="padding: 0in 15.4pt;">Leave the field unset</td>
+  <td style="padding: 0in 15.4pt;">оставить поле незаполненным</td>
     </tr>
     <tr>
   <td style="padding: 0in 15.4pt;">5.</td>
   <td style="padding: 0in 15.4pt;">now</td>
-  <td style="padding: 0in 15.4pt;">Use the time of the import operation</td>
+  <td style="padding: 0in 15.4pt;">Использовать время импорта</td>
     </tr>
   </tbody>
 </table>
 
 
-<p>where:</p>
+<p>где:</p>
 <table border="0" cellpadding="0" cellspacing="0">
   <tbody>
   <tr>
-    <td style="padding: 0in 15.4pt;">yyyy</td><td>The year in full. Value is between 1970 and 2038.</td>
+    <td style="padding: 0in 15.4pt;">yyyy</td><td>Год в четырехзначном виде. Значение от 1970 до 2038.</td>
     </tr>
     <tr>
-    <td style="padding: 0in 15.4pt;">mm</td><td>The month; e.g. 01 = January, 02 = February etc.</td>
+    <td style="padding: 0in 15.4pt;">mm</td><td>Месяц в двузначном виде: 01 = январь, 02 = февраль, и т.д.</td>
     </tr>
     <tr>
-    <td style="padding: 0in 15.4pt;">dd</td><td>The day of the month</td>
+    <td style="padding: 0in 15.4pt;">dd</td><td>День месяца.</td>
     </tr>
     <tr>
-    <td style="padding: 0in 15.4pt;">MMM</td><td>The short form of the month; e.g. Jan = January, Feb = February etc.</td>
+    <td style="padding: 0in 15.4pt;">MMM</td><td>Краткое наименования месяца (язык сокращения для месяца зависит от текущей локали):  Jan = January, Feb = February или Янв - январь, Фев - февраль и т.д.</td>
     </tr>
     <tr>
-    <td style="padding: 0in 15.4pt;">ddd</td><td>The short form of the day of the week; e.g. Mon = Monday, Tue = Tuesday, etc.</td>
+    <td style="padding: 0in 15.4pt;">ddd</td><td>Краткое наименование дня недели (язык сокращения для дня недели зависит от текущей локали): Mon = Monday, Tue = Tuesday, Вск - воскресенье, Пнд. - понедельник и. т.д.</td>
     </tr>
     <tr>
-    <td style="padding: 0in 15.4pt;">hh</td><td>The hour using a 24-hour clock.</td>
+    <td style="padding: 0in 15.4pt;">hh</td><td>Час в 24-часовом формате.</td>
     </tr>
     <tr>
-    <td style="padding: 0in 15.4pt;">mm</td><td>The minutes</td>
+    <td style="padding: 0in 15.4pt;">mm</td><td>Минуты в двузначном формате</td>
     </tr>
     <tr>
-    <td style="padding: 0in 15.4pt;">ss</td><td>The seconds</td>
+    <td style="padding: 0in 15.4pt;">ss</td><td>Секунды в двузначном формате</td>
     </tr>
   </tbody>
 </table>
 
 <p>
-<small>Note: Format ‘2’ is the output from the ANSI C function <big><a name="asctime">‘</a><code>asctime</code>’</big> and format
-‘3’ conforms to the ISO 8601 standard.</small>
+<small>Примечание: формат ‘2’ является выводом ANSI C функции <big><a name="asctime">‘</a><code>asctime</code>’</big>, а формат ‘3’ соответствует стандарту ISO 8601.</small>
 </p>
 <hr style="width: 100%; height: 2px;">
 <table class="MsoTableGrid" style="border-collapse: collapse;" border="0" cellpadding="0" cellspacing="0">
   <tbody>
     <tr style="">
       <td style="padding: 0in 5.4pt; width: 80pt;" valign="top" width="47">
-      <p class="CitiChangeSummarybullet" style="margin-left: 0in; text-align: justify;"><a name="2"></a><b><u>Notes:</u> <sup>2</sup></b></p>
+      <p class="CitiChangeSummarybullet" style="margin-left: 0in; text-align: justify;"><a name="2"></a><b><u>Примечания:</u> <sup>2</sup></b></p>
       </td>
       <td style="padding: 0in 5.4pt; " valign="top">
-      <p class="CitiChangeSummarybullet" style="margin-left: 0in; text-align: justify;"><span style="font-size: 11pt;" lang="EN-GB">Password history is represented in the exported entry record as a text field
-comprising a header followed by the required number of entries of old passwords:</span></p>
+      <p class="CitiChangeSummarybullet" style="margin-left: 0in; text-align: justify;"><span style="font-size: 11pt;" lang="RU-RU">История паролей состоит из заголовка, описывающего элементы истории и требуемого количества записей о старых паролях:</span></p>
       </td>
     </tr>
   </tbody>
 </table>
-<p class="CitiChangeSummarybullet" style="margin-left: 0.5in; text-align: justify;"><span style="font-size: 11pt;" lang="EN-GB">Password History Header:</span></p>
+<p class="CitiChangeSummarybullet" style="margin-left: 0.5in; text-align: justify;"><span style="font-size: 11pt;" lang="RU-RU">Заголовок истории паролей:</span></p>
 <ul>
-  <li><span style="font-size: 11pt;" lang="EN-GB">1 hexadecimal digit<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;     </span>status for saving PWH for this entry (0 = no; 1 = yes)</span></li>
-  <li><span style="font-size: 11pt;" lang="EN-GB">2 hexadecimal digits<span style="">&nbsp;&nbsp;&nbsp;     </span>maximum number of entries in this entry</span></li>
-  <li><span style="font-size: 11pt;" lang="EN-GB">2 hexadecimal digits<span style="">&nbsp;&nbsp;&nbsp;     </span>number of entries currently saved</span></li>
+  <li><span style="font-size: 11pt;" lang="RU-RU">1 шестн. цифра<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>наличие сохраненной истории паролей для данного элемента (0 = нет; 1 = есть)</span></li>
+  <li><span style="font-size: 11pt;" lang="RU-RU">2 шестн. цифры<span style="">&nbsp;&nbsp;&nbsp; </span>максимальное количество элементов истории для данного элемента</span></li>
+  <li><span style="font-size: 11pt;" lang="RU-RU">2 шестн. цифры<span style="">&nbsp;&nbsp;&nbsp; </span>количество сохраненных паролей в истории</span></li>
 </ul>
-<p class="CitiChangeSummarybullet" style="margin-left: 0.5in; text-align: justify;"><span style="font-size: 11pt;" lang="EN-GB">Each Password History Entry:</span></p>
+<p class="CitiChangeSummarybullet" style="margin-left: 0.5in; text-align: justify;"><span style="font-size: 11pt;" lang="RU-RU">Элемент истории паролей:</span></p>
 <ul>
-  <li><span style="font-size: 11pt;" lang="EN-GB">8 hexadecimal digits<span style="">&nbsp;&nbsp;&nbsp;    </span>time oldpassword was set</span></li>
-  <li><span style="font-size: 11pt;" lang="EN-GB">4 hexadecimal digits<span style="">&nbsp;&nbsp;&nbsp;     </span>length of old password</span></li>
-  <li><span style="font-size: 11pt;" lang="EN-GB">character string<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style=""></span>old password</span></li>
+  <li><span style="font-size: 11pt;" lang="RU-RU">8 шестн. цифр<span style="">&nbsp;&nbsp;&nbsp; </span>время помещения пароля в историю</span></li>
+  <li><span style="font-size: 11pt;" lang="RU-RU">4 шестн. цифры<span style="">&nbsp;&nbsp;&nbsp; </span>длина пароля в данном элементе</span></li>
+  <li><span style="font-size: 11pt;" lang="RU-RU">строка символов<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style=""></span>пароля, сохраненный в истории</span></li>
 </ul><!-- Added some white space at the bottom for natural scrolling -->
 <br>
 <hr>
@@ -301,38 +255,36 @@ comprising a header followed by the required number of entries of old passwords:
   <tbody>
     <tr>
       <td style="padding: 0in 5.4pt; width: 80pt;" valign="top">
-      <p><a name="3"></a><b><u>Notes:</u> <sup>3</sup></b></p>
+      <p><a name="3"></a><b><u>Примечания:</u> <sup>3</sup></b></p>
       </td>
       <td style="padding: 0in 5.4pt;" valign="top">
-      <p>The Password Policy is represented in the exported entry record as a text field 'ffffnnnllluuudddsss' in hexadecimal format, e.g. 'F000010004002005003'. 
-      6 hexadecimal values are contained in this format. The first value has 4 digits, all other 3.</p>
-<p>'ffffnnnllluuudddsss' means in detail:</p>
+      <p>Политика создания паролей экспортируется как текстовое поле 'ffffnnnllluuudddsss' в шестнадцатеричном формате, например, 'F000010004002005003'. Это поле содержит 6 шестн. чисел. Первое из них состоит из 4 цифр, остальные - из трех.</p>
+<p>расшифровка 'ffffnnnllluuudddsss':</p>
 <ul>
-<li>ffff : 4 hexadecimal digits representing the following flags
-  
+<li>ffff : 4 шестн. цифры, являющиеся комбинацией флагов
   <ul>
-<li>0x8000: use lower case characters</li>
-<li>0x4000: use upper case characters</li>
-<li>0x2000: use digits</li>
-<li>0x1000: use symbols</li>
-<li>0x0800: use hex only (0-9,a-f) characters (if set, then no other flags can be set)</li>
-<li>0x0400: use EasyVision password characters</li>
-<li>0x0200: use pronounceable password characters</li>
-<li>0x01FF: not used</li>
+<li>0x8000: использовать строчные буквы</li>
+<li>0x4000: использовать прописные буквы</li>
+<li>0x2000: использовать цифры</li>
+<li>0x1000: использовать символы</li>
+<li>0x0800: использовать только шестнадцатеричные (0-9,a-f) символы (если указан данный флаг, остальные не должны быть установлены)</li>
+<li>0x0400: использовать легкоотличимые символы</li>
+<li>0x0200: создавать произносимые пароли</li>
+<li>0x01FF: не используется</li>
               </ul></li>
-<li>nnn  : 3 hexadecimal digits : total length of password</li>
-<li>lll  : 3 hexadecimal digits : password minimum number of lowercase characters</li>
-<li>uuu  : 3 hexadecimal digits : password minimum number of uppercase characters</li>
-<li>ddd  : 3 hexadecimal digits : password minimum number of digit characters</li>
-<li>sss  : 3 hexadecimal digits : password minimum number of symbol characters</li>
+<li>nnn : 3 шестн. цифры: длина пароля</li>
+<li>lll : 3 шестн. цифры: минимальное количество строчных букв</li>
+<li>uuu : 3 шестн. цифры: минимальное количество прописных букв</li>
+<li>ddd : 3 шестн. цифры: минимальное количество цифр</li>
+<li>sss : 3 шестн. цифры: минимальное количество символов</li>
 </ul>
-<p>The Password Policy 'F000010004002005003' means</p>
-<ul><li>F000 : use lowercase, uppercase, digit and symbol characters</li>
-<li>010  : use at least 16 (dec) characters</li>
-<li>004  : use at least 4 lowercase characters</li>
-<li>002  : use at least 2 uppercase characters</li>
-<li>005  : use at least 5 digit characters</li>
-<li>003  : use at least 3 symbol characters</li>
+<p>Политика паролей 'F000010004002005003' расшифровывается как:</p>
+<ul><li>F000 : использовать строчные и прописные буквы, цифры и символы</li>
+<li>010 : минимальная длина пароля 16 (в десятичной системе счисления) символов</li>
+<li>004 : не менее 4 строчных букв</li>
+<li>002 : не менее 2прописных букв</li>
+<li>005 : не менее 5 цифр</li>
+<li>003 : не менее 3 символов</li>
 </ul>
 
       </td>
@@ -344,21 +296,21 @@ comprising a header followed by the required number of entries of old passwords:
   <tbody>
     <tr>
       <td style="padding: 0in 5.4pt; width: 80pt;" valign="top">
-      <p><a name="4"></a><b><u>Notes:</u> <sup>4</sup></b></p>
+      <p><a name="4"></a><b><u>Примечания:</u> <sup>4</sup></b></p>
       </td>
       <td style="padding: 0in 5.4pt;" valign="top">
-      <p>The following values for <i><b>Double Click Action</b></i> are availble:</p>
-<ul><li>-1:&nbsp;Default</li>
-<li>0:&nbsp;&nbsp;Copy password to clipboard</li>
-<li>1:&nbsp;&nbsp;View/Edit selected entry</li>
-<li>2:&nbsp;&nbsp;Autotype</li>
-<li>3:&nbsp;&nbsp;Browse to URL</li>
-<li>4:&nbsp;&nbsp;Copy notes to clipboard</li>
-<li>5:&nbsp;&nbsp;Copy username to clipboard</li>
-<li>6:&nbsp;&nbsp;Copy password to clipboard, minimize</li>
-<li>7:&nbsp;&nbsp;Browse to URL + Autotype</li>
-<li>8:&nbsp;&nbsp;Run Command</li>
-<li>9:&nbsp;&nbsp;Send email</li>
+      <p>Допустимы следующие значения для <i><b>действия по двойному клику</b></i>:</p>
+<ul><li>-1:&nbsp;действие по умолчанию</li>
+<li>0:&nbsp;копировать пароль в буфер обмена</li>
+<li>1:&nbsp;просмотр/редактирование элемента</li>
+<li>2:&nbsp;автонабор</li>
+<li>3:&nbsp;перейти по ссылке</li>
+<li>4:&nbsp;копировать заметки в буфер обмена</li>
+<li>5:&nbsp;копировать имя пользователя в буфер</li>
+<li>6:&nbsp;копировать пароль в буфер и свернуть</li>
+<li>7:&nbsp;перейти по ссылке и выполнить автонабор</li>
+<li>8:&nbsp;выполнить команду</li>
+<li>9:&nbsp;отправить письмо</li>
 </ul>
       </td>
     </tr>

@@ -41,7 +41,7 @@
   
 
   
-  <title>File Menu</title><!-- pwsafe version: 2.11--><!-- Modified: 15/06/2005 --><!--Popup control -->
+  <title>Меню Файл</title><!-- pwsafe version: 2.11--><!-- Modified: 15/06/2005 --><!--Popup control -->
 
   <script language="javascript" src="html/popups.js">
 		</script>
@@ -75,7 +75,7 @@
 		
 	
 		
-<h2>File Menu</h2>
+<h2>Меню Файл</h2>
 
 
 
@@ -85,9 +85,9 @@
 
 
 
-		<img alt="file menu" src="images%5Cfile_menu.jpg">
+		<img alt="Меню Файл" src="images/file_menu.jpg">
 		
-<p>The <b>File Menu</b> contains options related to managing and creating new <span style="font-weight: bold;">Password Safe</span> databases.</p>
+<p>Через меню <b>Файл</b> выполняются действия, связанные с управлением и созданием контейнеров <span style="font-weight: bold;">Password Safe</span>.</p>
 
 
 
@@ -101,7 +101,7 @@
 		
 <div class="instr">
 			
-<h3>New</h3>
+<h3>Создать...</h3>
 
 
 
@@ -112,30 +112,7 @@
 
 
 			
-<p>Create a new blank password safe database.</p>
-
-
-
-
-
-
-
-
-
-
-			
-<h3>Open</h3>
-
-
-
-
-
-
-
-
-
-			
-<p>Open an existing password safe database.</p>
+<p>Создать новый контейнер Password Safe.</p>
 
 
 
@@ -147,7 +124,7 @@
 
 
 			
-<h3>Close</h3>
+<h3>Открыть...</h3>
 
 
 
@@ -158,10 +135,8 @@
 
 
 			
-<p>Closes the currently open password safe database without exiting the application.</p>
+<p>Открыть существующий контейнер Password Safe.</p>
 
-
-<h3>Recent</h3>
 
 
 
@@ -172,9 +147,32 @@
 
 
 			
-<p>This section of the file menu may list the recently
-opened database files. This section will be blank if this is the first
-time <b>Password Safe</b> has been used.</p>
+<h3>Закрыть</h3>
+
+
+
+
+
+
+
+
+
+			
+<p>Закрыть текущий контейнер без завершения приложения.</p>
+
+
+<h3>Недавно использованные</h3>
+
+
+
+
+
+
+
+
+
+			
+<p>Данное подменю может содержать список недавно использованных контейнеров. Подменю может быть пустым, если <b>Password Safe</b> запускается в первый раз.</p>
 
 
 
@@ -196,14 +194,14 @@ time <b>Password Safe</b> has been used.</p>
 
   <small>
 
-  </small><li><small>The list of recently opened files may be cleared by selecting "<span style="font-weight: bold;">Clear Recent Safe List</span>"</small></li>
+  </small><li><small>Список недавно использованных контейнеров можно очистить нажав на пункт меню "<span style="font-weight: bold;">Очистить список ранее использованных контейнеров</span>"</small></li>
 
 
 
 
   <small>
 
-  </small><li><small>The number of recent files that <span style="font-weight: bold;">Password Safe</span> will keep may be configured via the <a href="system_tab.html">Manage-&gt;Options-&gt;System</a> dialog box, where you may also configure if you prefer to see the recent files in the File menu, or as a submenu.</small></li>
+  </small><li><small>Количество запоминаемых контейнеров настраивается на вкладке <a href="system_tab.html">Система</a> диалога <a href="system_tab.html">Управление-&gt;Настройки...</a>. Также там можно настроить отображение списка недавно используемых контейнеров в самом меню Файл, а не в подменю.</small></li>
 
 
 
@@ -233,7 +231,7 @@ time <b>Password Safe</b> has been used.</p>
 
 
 			
-<h3>Save</h3>
+<h3>Сохранить</h3>
 
 
 
@@ -244,9 +242,7 @@ time <b>Password Safe</b> has been used.</p>
 
 
 			
-<p>Save any changes to the current safe. If no changes have been made
-since the previous save, or if the database was opened read-only, this
-choice will be greyed-out.</p>
+<p>Сохранить изменения в текущем контейнере. Если с момента предыдущего сохранения не было изменений, или если контейнер открыт только для чтения, данный пункт меню будет заблокирован.</p>
 
 
 
@@ -258,7 +254,7 @@ choice will be greyed-out.</p>
 
 
 			
-<h3>Save As</h3>
+<h3>Сохранить как...</h3>
 
 
 
@@ -269,7 +265,7 @@ choice will be greyed-out.</p>
 
 
 			
-<p>Save a copy of the current safe under a new name or location.</p>
+<p>Сохранить текущий контейнер под другим именем или в другом каталоге.</p>
 
 
 
@@ -281,7 +277,7 @@ choice will be greyed-out.</p>
 
 
 			
-<h3>Export To</h3>
+<h3>Экспортировать в...</h3>
 
 
 
@@ -292,11 +288,7 @@ choice will be greyed-out.</p>
 
 
 			
-<p>Export the contents of the current database to
-			an <a href="JavaScript:popup.TextPopup(strExternalFile,popFont,9,9,-1,-1)">external
-			file</a> in either an old <span style="font-weight: bold;">Password Safe</span> database&nbsp;format, XML, or as text. See <a href="export.html">here</a> for
-			more information on exporting the database to other formats.
-			
+<p>Экспорт содержимого открытого контейнера в <a href="JavaScript:popup.TextPopup(strExternalFile,popFont,9,9,-1,-1)">другой файл</a> в формате предыдущих версий <span style="font-weight: bold;">Password Safe</span>, XML-файл, или как простой текст. Подробная информация о сохранении в другие форматы содержится <a href="export.html">здесь</a>.
 			</p>
 
 
@@ -309,7 +301,7 @@ choice will be greyed-out.</p>
 
 
 			
-<h3>Import From</h3>
+<h3>Импортировать из...</h3>
 
 
 
@@ -320,10 +312,7 @@ choice will be greyed-out.</p>
 
 
 			
-<p>Import the contents of a previously <a href="export.html">exported</a> or
-			correctly formatted text file, XML, or a KeePass password
-			database into the current database. See <a href="import.html">here</a> for 
-			more information on importing text files.</p>
+<p>Импортировать в текущий контейнер содержимое <a href="export.html">ранее экспортированного</a> или правильно составленного текстового файла, XML-файла или контейнера KeePass. Подробная информация об импорте из текстовых форматов содержится <a href="import.html">здесь</a>.</p>
 
 
 
@@ -335,7 +324,7 @@ choice will be greyed-out.</p>
  
 
 			
-<h3>Merge</h3>
+<h3>Слияние...</h3>
 
 
 
@@ -343,44 +332,43 @@ choice will be greyed-out.</p>
 
 
 			
-<p>Merge a <b>Password Safe</b> database or backup file (.bak) into the current database. Disabled in read-only mode.</p>
+<p>Слияние контейнера <b>Password Safe</b> или резервной копии контейнера (.bak) с текущим контейнером. Заблокировано, если контейнер открыт в режиме "только для чтения".</p>
 
 
 
 
 
 
-<h3>Compare</h3>
+<h3>Сравнить...</h3>
 
 
 
 
 
 
-<p>Compare the currently opened database with another.</p>
+<p>Сравнить содержимое открытого контейнера с другим контейнером.</p>
 
 
 
 
 
 
-<h3>Synchronize</h3>
+<h3>Синхронизировать...</h3>
 
 
 
 
 
 
-<p>Synchronize the currently opened database with another.</p>
-<p>The main difference between Merge and Synchronize is that during a Merge, all elements of the merging database will be taken to the currently opened database. During synchronizing however, only elements in the currently opened database will be updated.</p>
+<p>Синхронизировать содержимое открытого контейнера с другим контейнером.</p>
+<p>Основное различие между слиянием и синхронизацией состоит в том, что во время слияния все элементы из выбранного контейнера переносятся в открытый. При синхронизации происходит обновление лишь тех элементов, который присутствуют в открытом контейнере.</p>
 
 
 
 
 
 <hr style="width: 100%; height: 2px;">
-<p><small><b>Note:</b> The Merge, Compare and Synchronize operations may take a long
-  time, especially for large databases.</small></p>
+<p><small><b>Примечание:</b> при работе с большими контейнерами операции слияния, сравнения и синхронизации могут занять длительное время.</small></p>
 
 
 
@@ -389,21 +377,13 @@ choice will be greyed-out.</p>
 
 
 			
-<h3>Properties</h3>
+<h3>Свойства</h3>
 
 
 
 
-
-
-
-
-
-Display information about the currently opened password safe database, such as: format
-version, number of groups, number of entries, and information about
-when it was last saved and by whom.
-
-<h3>Exit</h3>
+Отображение информации о текущем контейнере: версия формата файла, количество групп, количество элементов, данные о том, когда и кем было произведено последнее сохранение.
+<h3>Выход</h3>
 
 
 
@@ -414,7 +394,7 @@ when it was last saved and by whom.
 
 
 			
-<p>Closes the <b>Password Safe</b> program. If changes were made to the database since the last save, you will be prompted to save the database.</p>
+<p>Закрытие <b>Password Safe</b>. Если с момента последнего сохранения контейнер был изменен, вам будет предложено сохранить их.</p>
 
 
 
