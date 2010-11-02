@@ -15,7 +15,6 @@
 */
 
 #include <string>
-
 /*
  * _S is defined same as m'soft's _T, just to avoid collisions or
  * lousy include order dependencies.
@@ -36,8 +35,9 @@ typedef char charT;
 #define _S(x) x
 #endif
 
+#include "../corelib/PwsPlatform.h" // for afxwin.h, and endian macros
+
 #ifdef _WIN32
-#include "../corelib/PwsPlatform.h" // for afxwin.h
 #include "TCHAR.h"
 typedef char    int8;
 typedef short   int16;
@@ -121,12 +121,23 @@ typedef unsigned char BYTE;
 typedef unsigned short WORD;
 typedef unsigned long DWORD;
 typedef long LONG;
+#if defined(PWS_LITTLE_ENDIAN)
 #define LOBYTE(w) ((BYTE)(w))
 #define HIBYTE(w) ((BYTE)(((WORD)(w) >> 8) & 0xFF))
 #define LOWORD(ul) (WORD(DWORD(ul) & 0xffff))
 #define HIWORD(ul) (WORD(DWORD(ul) >> 16))
-#define MAKELONG(high, low) ((LONG) (((WORD) (low)) | ((DWORD) ((WORD) (high))) << 16)) 
-#define MAKEWORD(high, low) ((WORD)((((WORD)(high)) << 8) | ((BYTE)(low))))	
+#define MAKELONG(low, high) ((LONG) (((WORD) (low)) | ((DWORD) ((WORD) (high))) << 16)) 
+#define MAKEWORD(low, high) ((WORD)((((WORD)(high)) << 8) | ((BYTE)(low))))	
+#elif defined(PWS_BIG_ENDIAN)
+#define HIBYTE(w) ((BYTE)(w))
+#define LOBYTE(w) ((BYTE)(((WORD)(w) >> 8) & 0xFF))
+#define HIWORD(ul) (WORD(DWORD(ul) & 0xffff))
+#define LOWORD(ul) (WORD(DWORD(ul) >> 16))
+#define MAKELONG(low, high) ((LONG) (((WORD) (high)) | ((DWORD) ((WORD) (low))) << 16)) 
+#define MAKEWORD(low, high) ((WORD)((((WORD)(low)) << 8) | ((BYTE)(high))))	
+#else
+#error "One of PWS_LITTLE_ENDIAN or PWS_BIG_ENDIAN must be defined before including typedefs.h"
+#endif
 typedef long LPARAM;
 typedef unsigned int UINT;
 typedef int HANDLE;

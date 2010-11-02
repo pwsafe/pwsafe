@@ -94,7 +94,7 @@ typedef enum { RUE_COPYPASSWORD = 1, /* must start with 1, see above comments */
 
 inline uint16 MakeCommandId(RUEOperation opn, size_t index) {
   wxASSERT( index < 256 );
-  const uint16 id = MAKEWORD(opn, index);
+  const uint16 id = MAKEWORD(index, opn);
   wxASSERT(IsRUECommand(id));
   return id;
 }
