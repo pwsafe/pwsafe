@@ -239,7 +239,7 @@ bool PwsafeApp::OnInit()
   }
   m_core.SetCurFile(filename.c_str());
   m_core.SetApplicationNameAndVersion(progName.c_str(),
-                                      MAKEWORD(MAJORVERSION, MINORVERSION));
+                                      MAKEWORD(MINORVERSION, MAJORVERSION));
 
 #if !defined(__WXDEBUG__) && !defined(__WXMAC__) && !defined(_WIN32)
   // Now's a good time to fork
