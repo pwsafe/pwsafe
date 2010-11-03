@@ -73,7 +73,7 @@ CSafeCombinationCtrl::CSafeCombinationCtrl(wxWindow* parent,
 #endif
   
   textCtrl = new wxTextCtrl(parent, textCtrlID, wxEmptyString, wxDefaultPosition, wxDefaultSize, 
-                                                wxTE_PROCESS_ENTER|wxTE_PASSWORD,
+                                                wxTE_PASSWORD,
                                                 wxTextValidator(validatorStyle, valPtr));
   ApplyPasswordFont(textCtrl);
   Add(textCtrl, wxSizerFlags().Proportion(1).Expand());
