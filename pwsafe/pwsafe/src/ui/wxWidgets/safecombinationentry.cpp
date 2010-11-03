@@ -191,20 +191,7 @@ void CSafeCombinationEntry::CreateControls()
   wxButton* itemButton17 = new wxButton( itemDialog1, ID_NEWDB, _("New\nDatabase"), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT );
   itemBoxSizer14->Add(itemButton17, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxTOP|wxBOTTOM, 5);
 
-  wxStdDialogButtonSizer* itemStdDialogButtonSizer18 = new wxStdDialogButtonSizer;
-
-  itemBoxSizer4->Add(itemStdDialogButtonSizer18, 0, wxGROW|wxALL, 0);
-  wxButton* itemButton19 = new wxButton( itemDialog1, wxID_OK, _("OK"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemButton19->SetDefault();
-  itemStdDialogButtonSizer18->AddButton(itemButton19);
-
-  wxButton* itemButton20 = new wxButton( itemDialog1, wxID_CANCEL, _("Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemStdDialogButtonSizer18->AddButton(itemButton20);
-
-  wxButton* itemButton21 = new wxButton( itemDialog1, wxID_HELP, _("&Help"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemStdDialogButtonSizer18->AddButton(itemButton21);
-
-  itemStdDialogButtonSizer18->Realize();
+  itemBoxSizer4->Add(CreateStdDialogButtonSizer(wxOK|wxCANCEL|wxHELP), 0, wxGROW|wxALL, 0);
 
   // Set validators
   m_filenameCB->SetValidator( wxGenericValidator(& m_filename) );
