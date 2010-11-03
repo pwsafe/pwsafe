@@ -143,10 +143,13 @@ wxMenu* SystemTray::GetRecentHistory()
   wxMenu* menu = new wxMenu;
 
   menu->Append(ID_SYSTRAY_CLEAR_RUE, wxT("&Clear Recent History"));
-  menu->Append(wxID_NONE, wxT("Note: Entry format is »Group»Title»Username»"));
-  menu->Append(wxID_NONE, wxT("Note: Empty fields are shown as »*»"));
+  menu->Append(ID_TRAYRECENT_ENTRY_HELP1, wxT("Note: Entry format is »Group»Title»Username»"));
+  menu->Append(ID_TRAYRECENT_ENTRY_HELP2, wxT("Note: Empty fields are shown as »*»"));
   menu->AppendSeparator();
 
+  menu->Enable(ID_TRAYRECENT_ENTRY_HELP1, false);
+  menu->Enable(ID_TRAYRECENT_ENTRY_HELP2, false);
+  
   std::vector<RUEntryData> menulist;
   m_frame->GetAllMenuItemStrings(menulist);
 
