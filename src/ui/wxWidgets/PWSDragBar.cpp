@@ -30,20 +30,20 @@
 ////@end includes
 
 ////@begin XPM images
-#include "../graphics/wxWidgets/dragbar/Email.xpm"
-#include "../graphics/wxWidgets/dragbar/EmailX.xpm"
-#include "../graphics/wxWidgets/dragbar/Group.xpm"
-#include "../graphics/wxWidgets/dragbar/GroupX.xpm"
-#include "../graphics/wxWidgets/dragbar/Notes.xpm"
-#include "../graphics/wxWidgets/dragbar/NotesX.xpm"
-#include "../graphics/wxWidgets/dragbar/Password.xpm"
-#include "../graphics/wxWidgets/dragbar/PasswordX.xpm"
-#include "../graphics/wxWidgets/dragbar/Title.xpm"
-#include "../graphics/wxWidgets/dragbar/TitleX.xpm"
-#include "../graphics/wxWidgets/dragbar/URL.xpm"
-#include "../graphics/wxWidgets/dragbar/URLX.xpm"
-#include "../graphics/wxWidgets/dragbar/User.xpm"
-#include "../graphics/wxWidgets/dragbar/UserX.xpm"
+#include "./graphics/dragbar/new/Email.xpm"
+#include "./graphics/dragbar/new/EmailX.xpm"
+#include "./graphics/dragbar/new/Group.xpm"
+#include "./graphics/dragbar/new/GroupX.xpm"
+#include "./graphics/dragbar/new/Notes.xpm"
+#include "./graphics/dragbar/new/NotesX.xpm"
+#include "./graphics/dragbar/new/Password.xpm"
+#include "./graphics/dragbar/new/PasswordX.xpm"
+#include "./graphics/dragbar/new/Title.xpm"
+#include "./graphics/dragbar/new/TitleX.xpm"
+#include "./graphics/dragbar/new/URL.xpm"
+#include "./graphics/dragbar/new/URLX.xpm"
+#include "./graphics/dragbar/new/User.xpm"
+#include "./graphics/dragbar/new/UserX.xpm"
 ////@end XPM images
 
 IMPLEMENT_CLASS( PWSDragBar, CDragBar )

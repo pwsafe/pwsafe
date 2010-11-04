@@ -63,7 +63,7 @@
 #include "./PwsToolbarButtons.h"
 
 ////@begin XPM images
-#include "../graphics/wxWidgets/cpane.xpm"
+#include "./graphics/cpane.xpm"
 ////@end XPM images
 
 
@@ -246,7 +246,7 @@ bool PasswordSafeFrame::Create( wxWindow* parent, wxWindowID id, const wxString&
   wxFrame::Create( parent, id, caption, pos, size, style );
 
   CreateControls();
-  SetIcon(GetIconResource(wxT("../graphics/wxWidgets/cpane.xpm")));
+  SetIcon(GetIconResource(wxT("./graphics/cpane.xpm")));
   Centre();
 ////@end PasswordSafeFrame creation
   m_search = new PasswordSafeSearch(this);
@@ -543,7 +543,7 @@ wxIcon PasswordSafeFrame::GetIconResource( const wxString& name )
     // Icon retrieval
 ////@begin PasswordSafeFrame icon retrieval
   wxUnusedVar(name);
-  if (name == _T("../graphics/wxWidgets/cpane.xpm"))
+  if (name == _T("./graphics/cpane.xpm"))
   {
     wxIcon icon(cpane_xpm);
     return icon;

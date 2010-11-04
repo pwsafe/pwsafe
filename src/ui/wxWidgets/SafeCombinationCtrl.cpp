@@ -23,7 +23,7 @@
 #include "SafeCombinationCtrl.h"
 #include "./wxutils.h"
 
-#include "../graphics/wxWidgets/vkbd.xpm"
+#include "./graphics/vkbd.xpm"
 
 //this is just on a hunch that the window name that wxWidgets accepts
 //as the last param could be the instance/class name of the X window object
