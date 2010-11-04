@@ -27,6 +27,8 @@
 #include "corelib/PWScore.h"
 #include "corelib/UIinterface.h"
 #include "RUEList.h"
+#include "./wxutils.h"
+
 /*!
  * Forward declarations
  */
@@ -386,6 +388,8 @@ public:
     void ViewReport(CReport& rpt);
 
   CItemData *GetSelectedEntry() const;
+    wxString GetCurrentSafe() const { return towxstring(m_core.GetCurFile()); }
+    
 ////@begin PasswordSafeFrame member variables
   PWSGrid* m_grid;
   PWSTreeCtrl* m_tree;
