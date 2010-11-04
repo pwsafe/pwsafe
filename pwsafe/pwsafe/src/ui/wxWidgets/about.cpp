@@ -30,7 +30,7 @@
 #include "passwordsafeframe.h"
 #include "corelib/CheckVersion.h"
 ////@begin XPM images
-#include "../graphics/wxWidgets/cpane.xpm"
+#include "./graphics/cpane.xpm"
 ////@end XPM images
 
 
@@ -129,7 +129,7 @@ void CAbout::CreateControls()
   wxBoxSizer* itemBoxSizer2 = new wxBoxSizer(wxHORIZONTAL);
   itemDialog1->SetSizer(itemBoxSizer2);
 
-  wxStaticBitmap* itemStaticBitmap3 = new wxStaticBitmap( itemDialog1, wxID_STATIC, itemDialog1->GetBitmapResource(wxT("../graphics/wxWidgets/cpane.xpm")), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(49, 46)), 0 );
+  wxStaticBitmap* itemStaticBitmap3 = new wxStaticBitmap( itemDialog1, wxID_STATIC, itemDialog1->GetBitmapResource(wxT("./graphics/cpane.xpm")), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(49, 46)), 0 );
   itemBoxSizer2->Add(itemStaticBitmap3, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxBoxSizer* itemBoxSizer4 = new wxBoxSizer(wxVERTICAL);
@@ -196,7 +196,7 @@ wxBitmap CAbout::GetBitmapResource( const wxString& name )
   // Bitmap retrieval
 ////@begin CAbout bitmap retrieval
   wxUnusedVar(name);
-  if (name == _T("../graphics/wxWidgets/cpane.xpm"))
+  if (name == _T("./graphics/cpane.xpm"))
   {
     wxBitmap bitmap(cpane_xpm);
     return bitmap;

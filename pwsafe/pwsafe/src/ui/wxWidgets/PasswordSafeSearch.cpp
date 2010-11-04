@@ -11,14 +11,14 @@
 #include "AdvancedSelectionDlg.h"
 
 ////@begin XPM images
-#include "../graphics/wxWidgets/find.xpm"
-#include "../graphics/wxWidgets/findreport.xpm"
-#include "../graphics/wxWidgets/find_disabled.xpm"
-#include "../graphics/wxWidgets/findadvanced.xpm"
-#include "../graphics/wxWidgets/findcase_i.xpm"
-#include "../graphics/wxWidgets/findcase_s.xpm"
-#include "../graphics/wxWidgets/findclear.xpm"
-#include "../graphics/wxWidgets/findclose.xpm"
+#include "./graphics/findtoolbar/new/find.xpm"
+#include "./graphics/findtoolbar/new/findreport.xpm"
+#include "./graphics/findtoolbar/new/find_disabled.xpm"
+#include "./graphics/findtoolbar/new/findadvanced.xpm"
+#include "./graphics/findtoolbar/new/findcase_i.xpm"
+#include "./graphics/findtoolbar/new/findcase_s.xpm"
+#include "./graphics/findtoolbar/new/findclear.xpm"
+#include "./graphics/findtoolbar/new/findclose.xpm"
 ////@end XPM images
 #include <wx/statline.h> 
 #include <wx/valgen.h>

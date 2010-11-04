@@ -23,23 +23,24 @@
 
 #include <wx/menu.h>
 
-#include "../graphics/wxWidgets/tray.xpm"
-#include "../graphics/wxWidgets/locked_tray.xpm"
-#include "../graphics/wxWidgets/unlocked_tray.xpm"
-#include "../graphics/toolbar/wxWidgets/copypassword.xpm"
-#include "../graphics/toolbar/wxWidgets/copyuser.xpm"
-#include "../graphics/toolbar/wxWidgets/copynotes.xpm"
-#include "../graphics/toolbar/wxWidgets/clearclipboard.xpm"
-#include "../graphics/toolbar/wxWidgets/autotype.xpm"
-#include "../graphics/toolbar/wxWidgets/browseurl.xpm"
-#include "../graphics/toolbar/wxWidgets/browseurlplus.xpm"
-#include "../graphics/toolbar/wxWidgets/sendemail.xpm"
-#include "../graphics/toolbar/wxWidgets/delete.xpm"
-#include "../graphics/toolbar/wxWidgets/about.xpm"
-#include "../graphics/toolbar/wxWidgets/exit.xpm"
-#include "../graphics/toolbar/wxWidgets/lock.xpm"
-#include "../graphics/toolbar/wxWidgets/unlock.xpm"
-#include "../graphics/toolbar/wxWidgets/close.xpm"
+#include "./graphics/tray.xpm"
+#include "./graphics/locked_tray.xpm"
+#include "./graphics/unlocked_tray.xpm"
+#include "./graphics/about.xpm"
+#include "./graphics/exit.xpm"
+#include "./graphics/lock.xpm"
+#include "./graphics/unlock.xpm"
+
+#include "./graphics/toolbar/new/copypassword.xpm"
+#include "./graphics/toolbar/new/copyuser.xpm"
+#include "./graphics/toolbar/new/copynotes.xpm"
+#include "./graphics/toolbar/new/clearclipboard.xpm"
+#include "./graphics/toolbar/new/autotype.xpm"
+#include "./graphics/toolbar/new/browseurl.xpm"
+#include "./graphics/toolbar/new/browseurlplus.xpm"
+#include "./graphics/toolbar/new/sendemail.xpm"
+#include "./graphics/toolbar/new/delete.xpm"
+#include "./graphics/toolbar/new/close.xpm"
 
 BEGIN_EVENT_TABLE( SystemTray, wxTaskBarIcon )
   EVT_MENU( ID_SYSTRAY_RESTORE, SystemTray::OnSysTrayMenuItem )

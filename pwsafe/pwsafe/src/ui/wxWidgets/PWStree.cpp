@@ -32,18 +32,18 @@
 
 ////@begin XPM images
 ////@end XPM images
-#include "../graphics/wxWidgets/abase_exp.xpm"
-#include "../graphics/wxWidgets/abase_warn.xpm"
-#include "../graphics/wxWidgets/abase.xpm"
-#include "../graphics/wxWidgets/alias.xpm"
-#include "../graphics/wxWidgets/node.xpm"
-#include "../graphics/wxWidgets/normal_exp.xpm"
-#include "../graphics/wxWidgets/normal_warn.xpm"
-#include "../graphics/wxWidgets/normal.xpm"
-#include "../graphics/wxWidgets/sbase_exp.xpm"
-#include "../graphics/wxWidgets/sbase_warn.xpm"
-#include "../graphics/wxWidgets/sbase.xpm"
-#include "../graphics/wxWidgets/shortcut.xpm"
+#include "./graphics/abase_exp.xpm"
+#include "./graphics/abase_warn.xpm"
+#include "./graphics/abase.xpm"
+#include "./graphics/alias.xpm"
+#include "./graphics/node.xpm"
+#include "./graphics/normal_exp.xpm"
+#include "./graphics/normal_warn.xpm"
+#include "./graphics/normal.xpm"
+#include "./graphics/sbase_exp.xpm"
+#include "./graphics/sbase_warn.xpm"
+#include "./graphics/sbase.xpm"
+#include "./graphics/shortcut.xpm"
 
 /*!
  * PWSTreeCtrl type definition
