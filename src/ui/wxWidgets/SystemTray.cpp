@@ -75,15 +75,15 @@ void SystemTray::SetTrayStatus(TrayStatus status)
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray)) {
      switch(status) {
        case TRAY_CLOSED:
-         SetIcon(iconClosed);
+         SetIcon(iconClosed, wxTheApp->GetAppName());
          break;
 
        case TRAY_UNLOCKED:
-         SetIcon(iconUnlocked);
+         SetIcon(iconUnlocked, m_frame->GetCurrentSafe());
          break;
 
        case TRAY_LOCKED:
-         SetIcon(iconLocked);
+         SetIcon(iconLocked, m_frame->GetCurrentSafe());
          break;
 
        default:
