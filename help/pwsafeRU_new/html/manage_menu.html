@@ -5,7 +5,7 @@
 
 
 
-  <title>Manage Menu</title><!-- pwsafe version: 2.11--><!-- Modified: 15/06/2005 --><!--Popup control --><script language="javascript" src="html/popups.js">
+  <title>Меню "Управление"</title><!-- pwsafe version: 2.11--><!-- Modified: 15/06/2005 --><!--Popup control --><script language="javascript" src="html/popups.js">
   </script>
   <link rel="stylesheet" type="text/css" href="style.css"></head>
 
@@ -13,78 +13,43 @@
 
 <object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"> </object><!-- Popup Source File -->
 
-<h2>Manage Menu</h2>
+<h2>Меню "Управление"</h2>
 
-<img alt="manage menu" src="images%5Cmanage_menu.jpg">
-<p>The <b>Manage Menu</b> is where all of <span style="font-weight: bold;">Password Safe</span>'s
-options and settings are controlled.  </p>
+<img alt='Меню "Управление"' src="images/manage_menu.jpg">
+<p>Через меню <b>Управление</b> производится настройка всех опций <span style="font-weight: bold;">Password Safe</span>. </p>
 
 <div class="instr">
-<h3>Change Safe Combination</h3>
+<h3>Изменить пароль для контейнера...</h3>
 
-<p>  Selecting this option brings up the Change Safe Password
-dialog.<br>
+<p> При выборе данного пункта будет выведен диалог смены мастер-пароля.<br> <small><i>Для получения дополнительной информации см. <a href="change_combo.html">Изменение мастер-пароля для контейнера</a>.</i></small></p>
 
-<small><i>See <a href="change_combo.html">Changing
-Master Passwords</a> for more information.</i></small></p>
+<h3>Создать резервную копию</h3>
 
-<h3>Make Backup</h3>
-
-<p>Create a backup copy of the current password database.<br>
-
-<small><i>See <a href="backup_and_restore.html">Backing
-Up and Restoring Databases</a> for more information.</i></small>
+<p>Создание резервной копии текущего контейнера.<br> <small><i>Для получения дополнительной информации см. <a href="backup_and_restore.html">Резервное копирование и восстановление контейнеров</a>.</i></small>
 </p>
 
-<h3>Восстановление из резервной копии</h3>
+<h3>Восстановить из резервной копии...</h3>
 
-<p>Restore a backed up password database file.<br>
-
-<small><i>See <a href="backup_and_restore.html">Backing
-Up and Restoring Databases</a> for more information.</i></small>
+<p>Восстановление контейнера из резервной копии.<br> <small><i>Для получения дополнительной информации см. <a href="backup_and_restore.html">Резервное копирование и восстановление контейнеров</a>.</i></small>
 </p>
 
-<h3>Options...</h3>
+<h3>Настройки...</h3>
 
-<p>Selecting <b>Options...</b> brings up a tabbed
-dialog where
-many of Password Safe's settings can be viewed and edited.
-To learn more about a specific tab select it below:</p>
+<p>При выборе данного пункта будет отображен диалог, с помощью которого можно просматривать и редактировать настройки Password Safe. Для получения информации о настройках на той или иной вкладке перейдите по соответствующей ссылке:</p>
 
-<div class="instr"> <a href="backups_tab.html">Backups
-Tab</a><br>
+<div class="instr"> <a href="backups_tab.html">"Резервные копии"</a><br> <a href="display_tab.html">"Отображение"</a><br> <a href="security_tab.html">"Безопасность"</a><br> <a href="system_tab.html">"Система"</a><br> <a href="password_policies.html">"Политика создания паролей"</a><br> <a href="password_history_tab.html">"История паролей"</a><br> <a href="misc_tab.html">"Разное"</a><br> <a href="shortcuts_tab.html">"Комбинации клавиш"</a> <br>
 
-<a href="display_tab.html">Display Tab</a><br>
-
-<a href="security_tab.html">Security Tab</a><br>
-
-<a href="system_tab.html">System Tab</a><br>
-
-<a href="password_policies.html">Password Policy Tab</a><br>
-
-<a href="password_history_tab.html">Password History Tab</a><br>
-
-<a href="misc_tab.html">Misc Tab</a><br>
-
-<a href="shortcuts_tab.html">Shortcuts Tab</a>
-<br>
-
-<hr style="width: 100%; height: 2px;"><span style="font-weight: bold;">Note:</span><br>
-
-<small>Many of the setting are stored as <span style="font-style: italic;">preferences</span>, as
-described <a href="preferences.html">here</a>.</small>
+<hr style="width: 100%; height: 2px;"><span style="font-weight: bold;">Примечание:</span><br> <small>Особенности сохранения настроек описаны <a href="preferences.html">здесь</a>.</small>
 </div>
-<h3>Validate</h3>
-<p>After selecting a database, this database will be checked  for being completely compatible to  <b>PassowrdSafe</b>.<br>
-
-<small>Note: This menu item will only be enabled if there is no&nbsp;database currently opened.</small>
+<h3>Проверить...</h3>
+<p>Указанный контейнер будет проверен на совместимость с текущей версией <b>Password Safe</b>.<br> <small>Примечание: данный пункт меню недоступен, если в Password Safe открыт контейнер.</small>
 </p>
-<h3>Customize Main Toolbar</h3>
+<h3>Настроить основную панель инструментов</h3>
 
-<p>This&nbsp;allows you to select which commands appear on the toolbar, and in which order.</p>
+<p>Данный пункт меню позволяет выбрать и упорядочить команды, отображаемые на панели инструментов.</p>
 
-<h3>Generate Password</h3>
-<p>This allows you to generate a password with a specified password policy to be put into the clipboard, by pushing <i>Generate</i>. The password in the clipboard can then be used by some other application.</p>
+<h3>Создать пароль</h3>
+<p>Данный пункт меню позволяет создать пароль согласно выбранной политики и поместить его в буфер обмена. Пароль из буфера обмена может быть использован в других приложениях.</p>
 
 </div><!-- Added some white space at the bottom for natural scrolling -->
 

@@ -33,7 +33,7 @@
   
 
   
-  <title>Misc Tab</title><!-- pwsafe version: 2.11--><!-- Modified: 15/06/2005 --><!--Popup control -->
+  <title>Вкладка "Разное"</title><!-- pwsafe version: 2.11--><!-- Modified: 15/06/2005 --><!--Popup control -->
 
   <script language="javascript" src="html/popups.js">
 		</script>
@@ -63,7 +63,7 @@
 		
 	
 		
-<h2>Misc Tab</h2>
+<h2>Вкладка "Разное"</h2>
 
 
 
@@ -71,7 +71,7 @@
 
 
 
-		<img src="images/options/misc_tab.jpg" alt="Misc tab"><br>
+		<img src="images/options/misc_tab.jpg" alt='Вкладка "Разное"'><br>
 
 
 
@@ -81,7 +81,7 @@
 
 
 		
-<p>Various miscellaneous program defaults are displayed in the <b>Misc Tab</b>.</p>
+<p>На вкладке <b>Разное</b> настраиваются раличные действия по умолчанию.</p>
 
 
 
@@ -93,54 +93,29 @@
 		
 <div class="instr">
 			
-<h3>Confirm deletion of items</h3>
+<h3>Подтверждать удаление элементов</h3>
 
-
-
-When checked, a user prompt requesting confirmation will be displayed every time you try to delete a password entry.
-
-<h3>Record last access times</h3>
-
+Если помечено, при удалении элемента будет выводится запрос подтверждения.
+<h3>Сохранять время последнего доступа к записи</h3>
 
 
 
 
 
-
-
-
-
-
-When checked, <span style="font-weight: bold;">Password Safe</span> records the time each entry was accessed
-(e.g., when the password was copied, or when the entry's details were
-viewed, etc.). The time is stored with the entry, and may be viewed in the entry's dialog box.<br>
-
-
-
-
-
-<span style="font-weight: bold;">Notes:<br>
-
-
-
-
-
-</span>
+Если помечено, <span style="font-weight: bold;">Password Safe</span> будет записывать время доступа к элементу  (при копировании пароля, просмотре данных элемента и пр.). Время хранится вместе с элементом и может быть просмотрено в диалоге редактирования/просмотра элемента.<br> <span style="font-weight: bold;">Примечания:<br> </span>
 <ul>
 
 
 
 
 
-  <li><small>When this is enabled, the database will be modified even
-when no entry was edited. This means you may be prompted to save the
-database upon exit, even though you didn't explicitly change anything.</small></li>
+  <li><small>В данном случае контейнер будет изменяться даже если элементы не редактировались. Это значит, что при закрытии контейнера вам будет предложено сохранить изменения, даже если вы ничего явно не изменяли.</small></li>
 
 
 
 
 
-  <li><small>When the database is opened in read-only mode, the access times are <span style="font-weight: bold;">not </span>updated.</small></li>
+  <li><small>В случае, если контейнер открыт в режиме "только для чтения", время последнего доступа <span style="font-weight: bold;">не</span> обновляется.</small></li>
 
 
 
@@ -152,7 +127,7 @@ database upon exit, even though you didn't explicitly change anything.</small></
 
 
 
-<h3>Escape key closes application</h3>
+<h3>Закрывать приложение по Esc</h3>
 
 
 
@@ -161,13 +136,7 @@ database upon exit, even though you didn't explicitly change anything.</small></
 
 
 			
-<p>When checked, <b>Esc</b> can be used to close
-			<b>Password Safe</b> when the program is
-			maximized. Note that if the System Tray is enabled
-			(via the Put Icon in System Tray option), then
-			<b>Esc</b> just closes the main window, which can
-			be re-opened by double-clicking on the icon in the
-			System Tray.</p>
+<p>Если помечено, клавиша <b>Esc</b> закрывает <b>Password Safe</b>. Заметьте, что если активна настройка  "Отображать значок в области уведомлений", то клавиша <b>Esc</b> лишь скрывает окно, которое может быть открыто заново двойным щелчком по значку в области уведомлений.</p>
 
 
 
@@ -177,7 +146,7 @@ database upon exit, even though you didn't explicitly change anything.</small></
 
 
 			
-<h3>Hot Key</h3>
+<h3>Вызов по</h3>
 
 
 
@@ -186,10 +155,7 @@ database upon exit, even though you didn't explicitly change anything.</small></
 
 
 			
-<p>When checked, pressing the keys in the sequence to the right will
-restore PasswordSafe from the system tray, if minimized, or bring it to
-the front, if obscured by other applications. The sequence may be
-changed when the option is checked.</p>
+<p>Если помечено, указанная комбинация клавиш будет использована для восстановления Password Safe из скрытого состояния, или помещения его окна на передний план, если оно перекрыто другими окнами. Комбинация клавиш может быть изменена при установке флажка настройки.</p>
 
 
 
@@ -199,7 +165,7 @@ changed when the option is checked.</p>
 
 
 			
-<h3>Double click action</h3>
+<h3>Действие по двойному щелчку</h3>
 
 
 
@@ -208,84 +174,54 @@ changed when the option is checked.</p>
 
 
 			
-<p>This allows you to define what action PasswordSafe will take when you double-click on an entry. Действием по умолчанию является копирование пароля в буфер обмена. &nbsp;The available actions are:</p>
+<p>Позволяет установить действие, которое будет выполнять Password Safe при двойном щелчке на элементе. Действием по умолчанию является копирование пароля в буфер обмена. Возможные следующие действия:</p>
 <p></p>
 <ul>
-  <li>Autotype (Автонабор)</li>
+  <li>Автонабор</li>
   <li>Перейти по ссылке</li>
   <li>Перейти по ссылке и выполнить автонабор</li>
-  <li>Copy notes to clipboard</li>
-  <li>Copy password to clipboard</li>
-  <li>Copy password to clipboard, minimize</li>
-  <li>Copy username to clipboard</li>
-  <li>Run Command (выполнить команду)</li>
+  <li>Копировать заметки в буфер обмена</li>
+  <li>Копировать пароль в буфер обмена</li>
+  <li>Копировать пароль в буфер и свернуть</li>
+  <li>Копировать имя пользователя в буфер</li>
+  <li>Выполнить команду</li>
   <li>Отправить письмо</li>
-  <li>View/Edit selected entry</li>
+  <li>Просмотр/редактирование элемента</li>
 </ul>
-<p>Note that last item, copy password and then minimize, won't work as
-expected if the "Clear clipboard on minimize" option is selected in the
-<a href="security_tab.html">Security Options tab</a>.</p>
+<p>Обратите внимание, что поведение  "Копировать пароль в буфер и свернуть" будет не таким, как ожидалось, если включена настройка "Очищать буфер обмена при сворачивании" на вкладке <a href="security_tab.html">Безопасность</a>.</p>
 
 
 
 
-<h3>Autotype (Автонабор)</h3>
+<h3>Автонабор</h3>
 
 
 <ul>
 
 
-  <li><span style="font-weight: bold;">Minimize after autotype</span> By default, <span style="font-weight: bold;">Password Safe</span> minimizes when autotyping. If this checkbox is cleared, <span style="font-weight: bold;">Password Safe</span> will move "behind" all displayed windows instead.</li>
+  <li><span style="font-weight: bold;">Свернуть перед автонабором</span> По умолчанию, <span style="font-weight: bold;">Password Safe</span> сворачивает окно перед выполнение автонабора. Если флажок снят, вместо сворачивания <span style="font-weight: bold;">Password Safe</span> будет перемешать свое окна на задний план.</li>
 
 
-  <li><span style="font-weight: bold;">Default Autotype String</span>
-Here you can specify the autotype string to use by default for all
-entries. Note that you can override this on a per-entry basis. This
-option is useful, for example, if you wish to change the delays for all
-entries. See <a href="autotype.html">here</a> for more details on autotype.</li>
+  <li><span style="font-weight: bold;">Строка автонабора по умолчанию</span> Здесь можно указать строку автонабора, применяемую по умолчанию. При необходимости вы можете переопределить ее в настройках элемента. Например, данную настройку можно использовать для изменения задержки автонабора для всех элементов. Для получения дополнительной информации об автонаборе см. <a href="autotype.html">здесь</a>.</li>
 
 
 </ul>
 
 
-<h3>Default Username</h3>
+<h3>Имя пользователя по умолчанию</h3>
 
 
 
 
+Данная настройка позволяет указать имя пользователя, подставляемое по умолчанию при создании нового элемента. Если помечено, указанное имя будет подставляться в новые элементы по умолчанию. При создании элемента вы можете изменить это имя, если потребуется.<br>
 
 
 
-
-
-This allows you to set a default user name that will be used
-automatically every time a new password entry is generated. when checked, the name entered
-will be inserted into new entries' user name field as the default. Of course, you can edit it if needed.<br>
+<h3><a name="AltBrowser"></a>Альтернативный браузер </h3>
 
 
 
-<h3><a name="AltBrowser"></a>Alternate Browser</h3>
-
-
-
-
-
-
-
-The browser you specify in this field &nbsp;will be used when using the
-"Browse To" function for a selected entry, when the entry's URL has
-"[alt]" before the URL, e.g., "[alt]http://www.foo.net". This is
-useful, for example, if your
-default browser is Firefox, and you wish to access a website that works
-best with Internet Explorer, in which case you should specify the
-Internet Explorer as your alternate browser (typically "C:\Program
-Files\Internet Explorer\iexplorer.exe).<br>
-
-
-You can specify command line options to the browser via the Browser command line parameters field. 
-
-
-		 
+Указанный здесь браузер будет использован при выполнении команды "Перейти по ссылке", если в настройках элемента сыылка начинается с "[alt]", например, "[alt]http://www.foo.net". Данный функционал может потребоваться, например, если в качестве браузера по умолчанию настроен Firefox, а связанный с элементом сайт лучше работает в Internet Explorer. В данном случае необходимо указать Internet Explorer как альтернативный браузер ("C:\Program Files\Internet Explorer\iexplorer.exe").<br> Параметры командной строки для браузера указываются в поле "параметры командной строки". 
 
 
 		</div><!-- Added some white space at the bottom for natural scrolling -->

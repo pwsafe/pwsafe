@@ -11,7 +11,7 @@
   
   
 
-  <title>Run Command (выполнить команду)</title><!-- pwsafe version: 3.17--><!-- Modified: 11/03/2009 --><!--Popup control --><script language="javascript" src="html/popups.js">
+  <title>Выполнить команду</title><!-- pwsafe version: 3.17--><!-- Modified: 11/03/2009 --><!--Popup control --><script language="javascript" src="html/popups.js">
   </script>
   
   
@@ -24,64 +24,43 @@
 
 <object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"> </object><!-- Popup Source File -->
 
-<h1>Run Command (выполнить команду)</h1>
+<h1>Выполнить команду</h1>
 
 
 
-<p>An entry's&nbsp;'Run Command'&nbsp;field can contain a command that will
-be run when the Run Command action is selected. The command can be anything
-that can be executed by typing it in the Start-&gt;Run box of your computer.</p>
+<p>В поле "Выполнить" можно указать команду выполняемую при выборе действия "Выполнить". Можно указать любую команду, которая может быть выполнена через меню "Пуск-&gt;Выполнить" в ОС Windows.</p>
 
 
 
-<p>In addition, <span style="font-weight: bold;">Password Safe</span> is able to pass arguments to the command
-such as the entry's username, password, etc., as described below. This
-allows you to 'program' fairly complex actions, such as invoking a
-remote access program (<a target="_blank" href="http://www.chiark.greenend.org.uk/%7Esgtatham/putty/">PuTTY</a>, for example) and passing it the username and password
-associated with the entry.</p>
+<p>Также, <span style="font-weight: bold;">Password Safe</span> может передать в параметры команды имя пользователя, пароль и некоторые другие данные, описанные ниже. Это позволяет производить некоторые сложные действия с помощью указанной программы, например, запуск программы удаленного доступа (например, <a target="_blank" href="http://www.chiark.greenend.org.uk/%7Esgtatham/putty/">PuTTY</a>) и передавать ей имя пользователя и пароль, связанные с элементом.</p>
 
 
 
-<p>In general, 'variables' are replaced with values associated with them
-before being passed to the computer for execution. The dollar ('$')
-sign is used to indicate a variable.</p>
+<p>"Переменные" заменяются соответствующими значениями перед выполнение команды. Символ доллара ('$') используется для указания переменных.</p>
 
 
 
 <ul>
 
 
-  <li>Variables are specified as '$name' and <i>are case sensitive</i>. Variable names always start with an
-alphabetic character and the remaining characters are alphanumeric. The variable name is 
-terminated either by encountering a non-alphanumeric character (such as a space) or the end of the Run Command.</li>
+  <li>Имена переменных имеют вид '$имя' и <i>являются регистрозависимыми</i>. Имя переменной должно начинаться с буквы, в последующих символах имени можно использовать буквы и цифры. Имя переменной заканчивается перед символом отличном от буквы и цифры (например пробел) или концом команды.</li>
 
 
   
   <ul>
 
 
-    <li>To use a variable immediately followed by an alphanumeric character in the Run Command, enclose the variable's name in
-curly brackets e.g., '${varname}string'.</li>
+    <li>В случае, если требуется добавить букву или цифру сразу после значения переменной, заключите имя переменной в фигурные скобки, например, '${перем}строка'.</li>
 
 
 
-    <li>To use a '$' in the
-string as normal text&nbsp;(not indicating that the following text is a variable
-name), escape it using a back-slash ('\') e.g. '\$text' becomes '$text' and is
-not treated as a variable called 'text'.</li>
+    <li>Для использования знака '$' как обычного символа в строке (чтобы он не указывал на имя переменной), экранируйте его символом '\'. Например, '\$text' рассматривается как '$text', а не как переменная с именем "text".</li>
 
 
 
-    <li>To use a back-slash before a '$' as a back-slash, escape it with a back-slash e.g. '\\$name'
-becomes '\$name' in the resulting text and '$name' is treated as a variable. A
-back-slash does not have to be escaped unless it precedes a '$' indicating a
-following variable.</li>
+    <li>Для того чтобы вставить обратный слэш перед символом '$', экранируйте его с помощью символа '\'. "\\$имя" рассматривается как "\$name" в конечном тексте, при этом "$name" считается переменной. Обратный слеш не нужно экранировать, если он не идет перед символом '$'.</li>
 
-    <li>A variable may be followed by&nbsp;a numerical value within square brackets is called an 'Index
-value'. The index value 'n' can be preceded by '+' or '-' e.g.
-[-2] or [2] or [+2]. <span style="font-weight: bold;">Password Safe</span> treats an index that equates to zero as
-meaning the entire field.
-    
+    <li>После переменной может указываться числовое значение в квадратных скобках, называемое "индексом". Значение индекса "n" может предваряться символом '+' или '-', например, [-2] или [2] или [+2]. <span style="font-weight: bold;">Password Safe</span> считает нулевой индекс соответствующим значению всего поля.
     </li>
 
 
@@ -94,7 +73,7 @@ meaning the entire field.
 
 
 
-  <li>The following variables are currently recognised:</li>
+  <li>В настоящий момент распознаются следующие переменные:</li>
 
 
 
@@ -106,7 +85,7 @@ meaning the entire field.
   <ul>
 
 
-    <li>Application related:</li>
+    <li>Связанные с приложением:</li>
 
 
 
@@ -121,8 +100,7 @@ meaning the entire field.
 
           <td style="font-weight: bold;">appdir</td>
 
-          <td>Directory containing the <span style="font-weight: bold;">Password Safe</span> application. See notes <a href="#n1">1</a> &amp; <a href="#n2">2</a>
-  below.</td>
+          <td>Каталог, содержащий <span style="font-weight: bold;">Password Safe</span>. См. примечания <a href="#n1">1</a> и <a href="#n2">2</a>.</td>
 
         </tr>
 
@@ -138,7 +116,7 @@ meaning the entire field.
 
 
 
-    <li>Current&nbsp;database related:</li>
+    <li>Связанные с текущим контейнером:</li>
 
 
 
@@ -153,7 +131,7 @@ meaning the entire field.
 
           <td style="font-weight: bold;">dbdir</td>
 
-          <td>Directory of current open database. See notes <a href="#n1">1</a> &amp; <a href="#n2">2</a> below.</td>
+          <td>Каталог, содержащий текущий контейнер. См. примечания <a href="#n1">1</a> и <a href="#n2">2</a>.</td>
 
         </tr>
 
@@ -162,8 +140,7 @@ meaning the entire field.
 
           <td style="font-weight: bold;">fulldb</td>
 
-          <td>Full path, filename and extension of current open database. See
-  note <a href="#n2">2</a> below.</td>
+          <td>Полный путь, имя файла и расширение текущего контейнера. См. примечание <a href="#n2">2</a>.</td>
 
         </tr>
 
@@ -172,7 +149,7 @@ meaning the entire field.
 
           <td style="font-weight: bold;">dbname</td>
 
-          <td>Current open database filename.</td>
+          <td>Имя файла текущего контейнера.</td>
 
         </tr>
 
@@ -181,7 +158,7 @@ meaning the entire field.
 
           <td style="font-weight: bold;">dbextn</td>
 
-          <td>Current open database extension.</td>
+          <td>Расширение файла текущего контейнера.</td>
 
         </tr>
 
@@ -197,7 +174,7 @@ meaning the entire field.
 
 
 
-    <li>Current entry related:</li>
+    <li>Связанные с текущим элементом:</li>
 
 
 
@@ -210,37 +187,36 @@ meaning the entire field.
 
         <tr>
 
-          <td style="font-weight: bold;">g <span style="font-weight: normal;">or</span> group</td>
+          <td style="font-weight: bold;">g <span style="font-weight: normal;">или</span> group</td>
 
-          <td>Group (full tree structure back to root with groups separated by
-  dots).</td>
-
-        </tr>
-
-
- <tr>
-
-          <td style="font-weight: bold;">G <span style="font-weight: normal;">or</span> GROUP</td>
-
-          <td>The group containing this entry only.</td>
+          <td>Группа (полный путь до корня, разделенный точками).</td>
 
         </tr>
 
 
  <tr>
 
-          <td style="font-weight: bold;">t <span style="font-weight: normal;">or</span> title</td>
+          <td style="font-weight: bold;">G <span style="font-weight: normal;">или</span> GROUP</td>
 
-          <td>Title</td>
+          <td>Только имя группы содержащей текущий элемент.</td>
 
         </tr>
 
 
  <tr>
 
-          <td style="font-weight: bold;">u <span style="font-weight: normal;">or</span> user</td>
+          <td style="font-weight: bold;">t <span style="font-weight: normal;">или</span> title</td>
 
-          <td>Username (имя пользователя)</td>
+          <td>Заголовок</td>
+
+        </tr>
+
+
+ <tr>
+
+          <td style="font-weight: bold;">u <span style="font-weight: normal;">или</span> user</td>
+
+          <td>Имя пользователя</td>
 
         </tr>
 
@@ -249,16 +225,16 @@ meaning the entire field.
 
           <td style="font-weight: bold;">p <span style="font-weight: normal;">or</span> password</td>
 
-          <td>Password (пароль)</td>
+          <td>Пароль</td>
 
         </tr>
 
 
  <tr>
 
-          <td style="font-weight: bold;">a <span style="font-weight: normal;">or </span>autotype</td>
+          <td style="font-weight: bold;">a <span style="font-weight: normal;">или</span> autotype</td>
 
-          <td>AutoType. See Note <a href="#n5">5</a> below.</td>
+          <td>Автонабор. См. примечание <a href="#n5">5</a>.</td>
 
         </tr>
 
@@ -267,37 +243,34 @@ meaning the entire field.
 
           <td style="font-weight: bold;">url</td>
 
-          <td>UR (ссылка)</td>
+          <td>Ссылка</td>
 
         </tr>
 
 
  <tr>
 
-          <td><span style="font-weight: bold;">n</span> or <span style="font-weight: bold;">n[0]</span></td>
+          <td><span style="font-weight: bold;">n</span> или <span style="font-weight: bold;">n[0]</span></td>
 
-          <td>The complete Notes field (also: notes or notes[0]). See note <a href="#n3">3</a>
-  below.</td>
-
-        </tr>
-
-
- <tr>
-
-          <td><span style="font-weight: bold;">n[i]</span> or <span style="font-weight: bold;">notes[i]</span></td>
-
-          <td>i<sup>th</sup> line of the Notes field counting from the start, i.e. i=1
-  is the first line, i=2 means the second line etc. See note <a href="#n4">4</a> below.</td>
+          <td>Содержание всего поля заметок (также: notes или notes[0]). См. примечание <a href="#n3">3</a>.</td>
 
         </tr>
 
 
  <tr>
 
-          <td><span style="font-weight: bold;">n[-i]</span> or <span style="font-weight: bold;">notes[-i]</span></td>
+          <td><span style="font-weight: bold;">n[i]</span> или <span style="font-weight: bold;">notes[i]</span></td>
 
-          <td>i<sup>th</sup> line of the Notes field counting from the end, i.e. i=1 is
-  the last line, i=2 means the penultimate line etc. See note <a href="#n4">4</a> below.</td>
+          <td>i<sup>я</sup> строка заметок, считая с начала: i=1 - первая строка, i=2 - вторая и т.д.. См. примечание <a href="#n4">4</a>.</td>
+
+        </tr>
+
+
+ <tr>
+
+          <td><span style="font-weight: bold;">n[-i]</span> или <span style="font-weight: bold;">notes[-i]</span></td>
+
+          <td>i<sup>я</sup> строка заметок, считая с конца: i=1 - последняя строка, i=2 - предпоследняя и т.д.. См. примечание <a href="#n4">4</a>.</td>
 
         </tr>
 
@@ -322,7 +295,7 @@ meaning the entire field.
 
         <tr>
 
-          <th align="center">Notes (заметки)</th>
+          <th align="center">Заметки</th>
 
           <th>&nbsp;</th>
 
@@ -333,8 +306,7 @@ meaning the entire field.
 
           <td align="center">1<a name="n1"></a></td>
 
-          <td>Directory values (appdir or dbdir) do not have an ending '\'.
-  Remember to add this if you need it in your Run Command.</td>
+          <td>Имена каталогов (appdir или dbdir) не содержат конечного обратного слэша ('\'). Не забудьте добавить его, если это требуется в параметрах программы.</td>
 
         </tr>
 
@@ -343,9 +315,7 @@ meaning the entire field.
 
           <td align="center">2<a name="n2"></a></td>
 
-          <td>The contents of variables (including directory and full path
-  values) may contain blanks. You may need to enclose the result in quotes in
-  your Run Command for correct execution.</td>
+          <td>В значении переменной (включая имена каталогов и полные пути) могут присутствовать пробелы. Для корректного выполнения команды может потребовать заключение переменной в кавычки.</td>
 
         </tr>
 
@@ -354,9 +324,7 @@ meaning the entire field.
 
           <td align="center">3<a name="n3"></a></td>
 
-          <td>If the Notes field contains more than one line, it will include
-  any embedded carraige return (CR) or line feed (LF). This may cause issues when executed as CR and/or LF
-  will be taken as 'enter'.</td>
+          <td>Если поле заметок состоит из нескольких строк, значение переменной также будет содержать имеющиеся там символы возврата каретки (CR) и переноса строки (LF). Это можетпривести к ситуации когда CR и/или LF будут расценены как нажатие клавиши 'Enter'.</td>
 
         </tr>
 
@@ -365,8 +333,7 @@ meaning the entire field.
 
           <td align="center">4<a name="n4"></a></td>
 
-          <td>Any trailing CR and/or LF are removed from single lines selected
-  from the Notes field.</td>
+          <td>При указании одиночных строк из заметок конечные символы CR и/или LF отбрасываются.</td>
 
         </tr>
 
@@ -375,15 +342,7 @@ meaning the entire field.
 
           <td align="center">5<a name="n5"></a></td>
 
-          <td>If the AutoType variable is present in the Run Command,
-  AutoType will be performed once the target window is active. The variable and
-  its value, if present, will be removed from the string that is executed. This
-  variable can appear anywhere in the Run Command as it only specifies what
-  <span style="font-weight: bold;">Password Safe </span>will
-do after the command string has been executed. Unlike other variables,
-this one will be able to take a value to override the entry's current
-value. The format is as follows ('$autotype' can replace '$a' in the
-following examples):<br>
+          <td>Если в команде присутствует переменная автонабора, операция автонабора будет выполнена, как только окно приложения станет активным. При этом переменная и ее значение будут убраны из строки параметров. Данная переменная может быть написана в любом месте поля "Выполнить", так как она указывает, что должен сделать <span style="font-weight: bold;">Password Safe</span> после выполнения команды. В отличии от других переменных, она может принимать дополнительный параметр для изменения значения по умолчанию. Используется следующий формат (в указанных примерах "$a" можно заменить на "$autotype"):<br>
 
 
   
@@ -398,7 +357,7 @@ following examples):<br>
 
                 <td>$a</td>
 
-                <td>Use current entry value.</td>
+                <td>Использовать значение из текущего элемента.</td>
 
               </tr>
 
@@ -407,16 +366,16 @@ following examples):<br>
 
                 <td>${a}</td>
 
-                <td>Use current entry value (used if text immediately follows the '$a' variable).</td>
+                <td>Использовать значение из текущего элемента (фигурные скобки нужны, если за "$a" следует текст).</td>
 
               </tr>
 
 
    <tr>
 
-                <td>$a(value)</td>
+                <td>$a(значение)</td>
 
-                <td>Use autotype string specified between the round brackets.</td>
+                <td>Использовать строку автонабора, указанную в круглых скобках.</td>
 
               </tr>
 
@@ -425,7 +384,7 @@ following examples):<br>
 
                 <td>${a}(value)</td>
 
-                <td>Use autotype string specified between the round brackets.</td>
+                <td>Использовать строку автонабора, указанную в круглых скобках.</td>
 
               </tr>
 
@@ -450,29 +409,12 @@ following examples):<br>
 
 
     
-    <p><b>Note:</b> Be sure to add quotes around your string if required e.g., if your
-database directory contains spaces, to access a text file in it based on your
-open database name, you would need the following (with quotes):<br>
-
-
-'$dbdir\\$dbname.txt'<br>
-
-
-Notice that the backslash is escaped so that the '$dbname' is recognised as a
-variable.</p>
+    <p><b>Примечание:</b> не забудьте окружить строки кавычками, если это требуется. Например, если путь к контейнеру содержит пробелы, путь к текстовому файлу в данном каталоге следует писать так (с кавычками):<br> '$dbdir\\$dbname.txt'<br> Обратите внимание, что для того, чтобы '$dbname' было распознано как переменная, обратный слэш экранирован.</p>
 
 
 
     
-    <p>On Windows, the normal substitution of environmental variables
-(specified as %variable_name%) is performed. For example:
-'%windir%\notepad.exe' could become (depending on your installation)
-'C:\Windows\notepad.exe'. Current values set in your environment can
-be determined by running 'cmd.exe' and issuing the 'set' command without any 
-parameters. Any unknown environmental variable is left unchanged in the 
-Run Command e.g., %xyz%\notepad.exe remains as %xyz%\notepad.exe if
-variable 'xyz' is not set. Note: Windows environmental variables are <span style="font-weight: bold;">not</span> 
-case sensitive.</p><p></p></ul></ul><hr style="width: 100%; height: 2px;"><h3>Example</h3>The following Run Command will cause the <a href="http://www.chiark.greenend.org.uk/%7Esgtatham/putty/" target="_blank">Putty</a> program to connect to myHost giving the entry's username and password:<br><div style="text-align: center;"><span style="font-family: monospace;">"C:\Program Files\PuTTY\putty.exe"&nbsp; -ssh ${u}@myHost 22&nbsp; -pw $p</span></div><ul><ul><p></p>
+    <p>В ОС Windows также можно подставлять переменные окружения (как обычно, имя переменной окружается символами '%', например, %variable_name%). Пример: '%windir%\notepad.exe' преобразуется в 'C:\Windows\notepad.exe' (зависит от каталога установки Windows). Текущие значения переменных можно определить, запустив "cmd.exe" и выполнив в консоли команду "set" без параметров. Имена неопознанных переменных окружения остаются без изменений. Например, "%xyz%\notepad.exe" останется равным "%xyz%\notepad.exe", если переменная окружения "xyz" не определена. Примечание: в ОС Windows переменные окружения <span style="font-weight: bold;">регистронезависимые</span>.</p><p></p></ul></ul><hr style="width: 100%; height: 2px;"><h3>Пример</h3>Для подключения к myHost с именем пользователя и пароля из текущего элемента через <a href="http://www.chiark.greenend.org.uk/%7Esgtatham/putty/" target="_blank">Putty</a> нужно указать в поле "Выполнить" следующее значение:<br><div style="text-align: center;"><span style="font-family: monospace;">"C:\Program Files\PuTTY\putty.exe" -ssh ${u}@myHost 22&nbsp;-pw $p</span></div><ul><ul><p></p>
 
 
 
