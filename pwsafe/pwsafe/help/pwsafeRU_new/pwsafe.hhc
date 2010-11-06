@@ -9,7 +9,7 @@
 </OBJECT>
 <UL>
 	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="Welcome">
+		<param name="Name" value="Приветствие">
 		<param name="Local" value="html\Welcome.html">
 		</OBJECT>
 	</LI><LI> <OBJECT type="text/sitemap">
@@ -17,7 +17,7 @@
 		<param name="Local" value="html\about_pws.html">
 		</OBJECT>
 	</LI><LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="Getting Started">
+		<param name="Name" value="Начало работы">
 		</OBJECT>
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
@@ -25,20 +25,20 @@
 			<param name="Local" value="html\create_new_db.html">
 			</OBJECT>
 		</LI><LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Using Stored Passwords">
+			<param name="Name" value="Использование сохраненных паролей">
 			<param name="Local" value="html\retrieve_pwd.html">
 			</OBJECT>
 		</LI><LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Searching for an entry">
+			<param name="Name" value="Поиск элемента">
 			<param name="Local" value="html\searching.html">
 			</OBJECT>
 		</LI><LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Upgrading from previous versions">
+			<param name="Name" value="Переход на новые версии Password Safe">
 			<param name="Local" value="html\upgrade_from_v1x.html">
 			</OBJECT>
 	</LI></UL>
 	</LI><LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="Using Password Safe">
+		<param name="Name" value="Использование Password Safe">
 		</OBJECT>
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
@@ -46,32 +46,32 @@
 			<param name="Local" value="html\about_combinations.html">
 			</OBJECT>
 		</LI><LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="User Names, Passwords, and Groups">
+			<param name="Name" value="Имена пользователей, пароли и группы">
 			</OBJECT>
 		<UL>
 			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Basic">
+				<param name="Name" value="Основные">
 				<param name="Local" value="html\entering_pwd.html">
 				</OBJECT>
 			</LI><LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Additional">
+				<param name="Name" value="Дополнительно">
 				<param name="Local" value="html\entering_pwd_add.html">
 				</OBJECT>
 			</LI><LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Dates and Times">
+				<param name="Name" value="Дата и время">
 				<param name="Local" value="html\entering_pwd_date.html">
 				</OBJECT>
 			</LI><LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Password Policy (политика создания паролей)">
+				<param name="Name" value="Политика создания паролей">
 				<param name="Local" value="html\entering_pwd_pp.html">
 				</OBJECT>
 		</LI></UL>
 		</LI><LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Setting a Password Policy">
+			<param name="Name" value="Настройка политики создания паролей">
 			<param name="Local" value="html\password_policies.html">
 			</OBJECT>
 		</LI><LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Keeping Password History">
+			<param name="Name" value="Ведение истории паролей">
 			<param name="Local" value="html\password_history.html">
 			</OBJECT>
 		</LI><LI> <OBJECT type="text/sitemap">
@@ -87,11 +87,11 @@
 			<param name="Local" value="html\backup_and_restore.html">
 			</OBJECT>
 		</LI><LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Automatic Intermediate Backups">
+			<param name="Name" value="Промежуточные резервная копия">
 			<param name="Local" value="html\backups_tab.html">
 			</OBJECT>
 		</LI><LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Automatic Failsafe Backups">
+			<param name="Name" value="Аварийные резервные копии">
 			<param name="Local" value="html\failsafebackups.html">
 			</OBJECT>
 		</LI><LI> <OBJECT type="text/sitemap">
@@ -103,7 +103,7 @@
 			<param name="Local" value="html\export.html">
 			</OBJECT>
 		</LI><LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Filtering Entries">
+			<param name="Name" value="Отбор элементов">
 			<param name="Local" value="html\filters.html">
 			</OBJECT>
 		</LI><LI> <OBJECT type="text/sitemap">
@@ -112,11 +112,11 @@
 			</OBJECT>
 	</LI></UL>
 	</LI><LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="Password Safe Menus">
+		<param name="Name" value="Пункты меню Password Safe">
 		</OBJECT>
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Меню Файл">
+			<param name="Name" value='Меню "Файл"'>
 			<param name="Local" value="html\file_menu.html">
 			</OBJECT>
 		</LI><LI> <OBJECT type="text/sitemap">
@@ -124,65 +124,65 @@
 			<param name="Local" value="html\edit_menu.html">
 			</OBJECT>
 		</LI><LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="View Menu">
+			<param name="Name" value='Меню "Просмотр"'>
 			<param name="Local" value="html\view_menu.html">
 			</OBJECT>
 		</LI><LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Manage Menu">
+			<param name="Name" value='Меню "Управление"'>
 			<param name="Local" value="html\manage_menu.html">
 			</OBJECT>
 		</LI><LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Меню Помощь">
+			<param name="Name" value='Меню "Помощь"'>
 			<param name="Local" value="html\help_menu.html">
 			</OBJECT>
 		</LI><LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Menu Toolbar">
+			<param name="Name" value="Панель инструментов">
 			<param name="Local" value="html\menu_toolbar.html">
 			</OBJECT>
 	</LI></UL>
 	</LI><LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="Options">
+		<param name="Name" value="Настройки">
 		</OBJECT>
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Backup Options">
+			<param name="Name" value="Настройки резервного копирования">
 			<param name="Local" value="html\backups_tab.html">
 			</OBJECT>
 		</LI><LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Display Options">
+			<param name="Name" value="Настройки отображения">
 			<param name="Local" value="html\display_tab.html">
 			</OBJECT>
 		</LI><LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Misc. Options">
+			<param name="Name" value="Разное Настройки">
 			<param name="Local" value="html\misc_tab.html">
 			</OBJECT>
 		</LI><LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Password History Options">
+			<param name="Name" value="Настройки истории паролей">
 			<param name="Local" value="html\password_history_tab.html">
 			</OBJECT>
 		</LI><LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Password Policy Options">
+			<param name="Name" value="Настройки политики создания паролей">
 			<param name="Local" value="html\password_policies.html">
 			</OBJECT>
 		</LI><LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Security Options">
+			<param name="Name" value="Настройки безопасности">
 			<param name="Local" value="html\security_tab.html">
 			</OBJECT>
 		</LI><LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="System Options">
+			<param name="Name" value="Системные настройки">
 			<param name="Local" value="html\system_tab.html">
 			</OBJECT>
 		</LI><LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Keyboard Shortcuts">
+			<param name="Name" value="Комбинации клавиш">
 			<param name="Local" value="html\shortcuts_tab.html">
 			</OBJECT>
 	</LI></UL>
 	</LI><LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="Appendices">
+		<param name="Name" value="Приложения">
 		</OBJECT>
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Aliasing Passwords">
+			<param name="Name" value="Алиасы для паролей">
 			<param name="Local" value="html\aliases.html">
 			</OBJECT>
 		</LI><LI> <OBJECT type="text/sitemap">
@@ -190,15 +190,15 @@
 			<param name="Local" value="html\imp_exp_text_details.html">
 			</OBJECT>
 		</LI><LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Preferences">
+			<param name="Name" value="Настройки">
 			<param name="Local" value="html\preferences.html">
 			</OBJECT>
 		</LI><LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Run Command (выполнить команду)">
+			<param name="Name" value="Выполнить команду">
 			<param name="Local" value="html\run_command.html">
 			</OBJECT>
 		</LI><LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Shortcut Keys">
+			<param name="Name" value="Комбинация клавиш">
 			<param name="Local" value="html\Shortcut_Keys.html">
 			</OBJECT>
 	</LI></UL>
