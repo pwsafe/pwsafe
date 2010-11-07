@@ -2568,7 +2568,11 @@ void PasswordSafeFrame::DoExportText()
     OrderedItemList orderedItemList;
     ExportType::MakeOrderedItemList(this, orderedItemList);
 
-#pragma message("Saurav - find out the reason for the first bool param to TestForExport")
+    /*
+     * First parameter indicates whether or not the user has specified
+     * 'Advanced' to filter the entries to be exported.
+     * Effectively, subgroup_* parameters are ignored if 1st param is false.
+     */
     switch(m_core.TestForExport(false, subgroup_name, subgroup_object,
                              subgroup_function, &orderedItemList)) {
       case PWScore::SUCCESS:
