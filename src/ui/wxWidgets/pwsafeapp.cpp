@@ -394,7 +394,7 @@ void PwsafeApp::OnHelp(wxCommandEvent& evt)
   if (win) {
     //The window associated with the event is typically the Help button.  Fail if
     //we can't get to its parent
-    if (win->GetId() == wxID_HELP && !(win = win->GetParent()))
+    if (win->GetId() == wxID_HELP && ((win = win->GetParent()) == NULL))
       return;
     
     wxString keyName, msg;
