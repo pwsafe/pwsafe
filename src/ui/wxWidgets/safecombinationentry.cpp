@@ -215,6 +215,7 @@ void CSafeCombinationEntry::CreateControls()
   if (!m_filename.empty()) {
     FindWindow(ID_COMBINATION)->SetFocus();
   }
+  SetIcons(wxGetApp().GetAppIcons());
 }
 
 
