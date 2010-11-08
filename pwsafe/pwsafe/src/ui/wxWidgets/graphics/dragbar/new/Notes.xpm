@@ -107,7 +107,7 @@ static const char *Notes[] = {
 "&. c #FBFBEEEEBABA",
 "*. c #FBFBEEEEBBBB",
 "=. c #FBFBEFEFBEBE",
-"-. c #C0C0C0C0C0C0",
+"-. c None",
 ";. c #FBFBF0F0C0C0",
 ":. c #FBFBF0F0C4C4",
 ">. c #FBFBF1F1C8C8",

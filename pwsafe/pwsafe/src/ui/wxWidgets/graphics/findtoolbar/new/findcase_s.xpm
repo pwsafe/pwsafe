@@ -24,7 +24,7 @@ static const char *findcase_s[] = {
 "q c #6d6d6d",
 "r c #737373",
 "s c #777777",
-"t c #c0c0c0",
+"t c None",
 /* pixels */
 "tttttttttttttttt",
 "tttttttttttttttt",

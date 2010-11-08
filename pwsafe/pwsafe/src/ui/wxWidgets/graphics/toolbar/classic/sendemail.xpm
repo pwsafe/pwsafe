@@ -5,7 +5,7 @@ static const char *classic_sendemail[] = {
 "  c #040404040404",
 ". c yellow",
 "X c #868686868686",
-"o c #C0C0C0C0C0C0",
+"o c None",
 "O c gray100",
 /* pixels */
 "oooooooooooooooo",

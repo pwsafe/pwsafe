@@ -1,7 +1,7 @@
 /* XPM */
 static const char * copynotes_disabled_xpm[] = {
 "16 16 96 2",
-"  	g #C0C0C0",
+"  	g None",
 ". 	g #E4E4E4",
 "+ 	g #D8D8D8",
 "@ 	g #D7D7D7",

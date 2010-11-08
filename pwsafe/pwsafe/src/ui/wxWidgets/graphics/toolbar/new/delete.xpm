@@ -1,7 +1,7 @@
 /* XPM */
 static const char * delete_xpm[] = {
 "16 16 183 2",
-"  	c #C0C0C0",
+"  	c None",
 ". 	c #447DC1",
 "+ 	c #4D8BC8",
 "@ 	c #4F8CC8",

@@ -2,7 +2,7 @@
 static char *image_xpm[] = {
 /* width height ncolors chars_per_pixel */
 "16 16 3 1",
-"  c #c0c0c0",
+"  c None",
 ". c #000000",
 "+ c #4c4c4c",
 "                ",

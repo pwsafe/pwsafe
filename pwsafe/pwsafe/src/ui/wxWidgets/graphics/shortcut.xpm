@@ -28,7 +28,7 @@ static const char *shortcut_xpm[] = {
 ". c #757575",
 "> c #848484",
 "- c #939393",
-"  c #C0C0C0",
+"  c None",
 "7 c #494949",
 "2 c #A3A3A3",
 "3 c #DFDFDF",

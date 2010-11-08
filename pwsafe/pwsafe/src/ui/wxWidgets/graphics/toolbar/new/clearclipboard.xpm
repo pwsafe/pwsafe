@@ -4,7 +4,7 @@ static const char * clearclipboard_xpm[] = {
 "  	c #FD9090",
 ". 	c #FEB7B7",
 "+ 	c #986320",
-"@ 	c #C0C0C0",
+"@ 	c None",
 "# 	c #FC5F5F",
 "$ 	c #FB1616",
 "% 	c #C73411",

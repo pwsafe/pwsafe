@@ -76,7 +76,7 @@ static const char *findreport[] = {
 "#e c #bdd8f3",
 "#f c #be7849",
 "#g c #bf8f61",
-"#h c #c0c0c0",
+"#h c None",
 "#i c #c0d1e6",
 "#j c #c19263",
 "#k c #c1ad98",

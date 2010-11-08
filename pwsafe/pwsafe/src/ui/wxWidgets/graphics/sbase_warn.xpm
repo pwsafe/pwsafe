@@ -17,7 +17,7 @@ static const char *sbase_warn_xpm[] = {
 "= c #00D100",
 ": c #750075",
 "# c #00EB00",
-"  c #C0C0C0",
+"  c None",
 "O c #108910",
 "* c #00FF00",
 "+ c #424242",

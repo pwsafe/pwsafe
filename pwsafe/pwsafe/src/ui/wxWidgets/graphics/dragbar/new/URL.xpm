@@ -182,7 +182,7 @@ static const char *URL[] = {
 "`. c #B7B7EDEDC1C1",
 "'. c #B7B7E3E3D4D4",
 "]. c #B7B7EDEDD4D4",
-"[. c #C0C0C0C0C0C0",
+"[. c None",
 "{. c #D3D3EDEDCECE",
 "}. c #D6D6F2F2C7C7",
 "|. c #DEDEF2F2C0C0",

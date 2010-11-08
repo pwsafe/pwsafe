@@ -1,7 +1,7 @@
 /* XPM */
 static const char * sendemail_xpm[] = {
 "16 16 166 2",
-"  	c #C0C0C0",
+"  	c None",
 ". 	c #7C9AC8",
 "+ 	c #84A4D5",
 "@ 	c #7097D0",

@@ -12,7 +12,7 @@ static const char *abase_exp_xpm[] = {
 ", c #352235",
 "> c #9A9A9A",
 "2 c #620062",
-"  c #C0C0C0",
+"  c None",
 ". c #505050",
 "- c #5E005E",
 "; c #2B2B2B",

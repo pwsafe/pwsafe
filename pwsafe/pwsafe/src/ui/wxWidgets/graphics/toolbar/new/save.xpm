@@ -10,7 +10,7 @@ static const char * save_xpm[] = {
 "% 	c #386BBB",
 "& 	c #3E70BB",
 "* 	c #3569B6",
-"= 	c #C0C0C0",
+"= 	c None",
 "- 	c #D1E0F6",
 "; 	c #D1E0F7",
 "> 	c #F8FBFE",
