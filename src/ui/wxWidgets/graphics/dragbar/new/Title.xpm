@@ -42,7 +42,7 @@ static const char *Title[] = {
 "p c #BABAE1E1FDFD",
 "a c #BCBCE2E2FDFD",
 "s c #BDBDE3E3FDFD",
-"d c #C0C0C0C0C0C0",
+"d c None",
 "f c #C1C1C1C1C1C1",
 "g c #C3C3C3C3C3C3",
 "h c gray77",

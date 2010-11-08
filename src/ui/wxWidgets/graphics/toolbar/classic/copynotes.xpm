@@ -4,7 +4,7 @@ static const char *classic_copynotes[] = {
 "16 16 3 1",
 "  c black",
 ". c yellow",
-"X c #C0C0C0C0C0C0",
+"X c None",
 /* pixels */
 "XXXXXXXXXXXXXXXX",
 "X      XXX    XX",

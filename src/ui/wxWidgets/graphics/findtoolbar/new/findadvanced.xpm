@@ -63,7 +63,7 @@ static const char *findadvanced[] = {
 ".3 c #be8a4d",
 ".4 c #be8a4f",
 ".5 c #c08c4e",
-".6 c #c0c0c0",
+".6 c None",
 ".7 c #c18e4f",
 ".8 c #c18e58",
 ".9 c #c18f4f",

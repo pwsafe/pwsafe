@@ -1,7 +1,7 @@
 /* XPM */
 static const char * vkbd_xpm[] = {
 "31 16 4 1",
-" 	c #C0C0C0",
+" 	c None",
 ".	c #0080C0",
 "+	c #FFFFFF",
 "@	c #000080",

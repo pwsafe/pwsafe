@@ -4,7 +4,7 @@ static const char *classic_copyuser[] = {
 "16 16 3 1",
 "  c black",
 ". c #000080800000",
-"X c #C0C0C0C0C0C0",
+"X c None",
 /* pixels */
 "XXXXXXXXXXXXXXXX",
 "XX    XXXX    XX",

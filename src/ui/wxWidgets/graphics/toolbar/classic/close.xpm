@@ -4,7 +4,7 @@ static const char *classic_close[] = {
 "16 16 4 1",
 "  c black",
 ". c #808080800000",
-"X c #C0C0C0C0C0C0",
+"X c None",
 "o c gray100",
 /* pixels */
 "XXXXXXXXXXXXXXXX",

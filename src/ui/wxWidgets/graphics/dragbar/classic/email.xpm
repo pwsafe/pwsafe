@@ -2,7 +2,7 @@
 static const char *classic_Email[] = {
 /* width height ncolors chars_per_pixel */
 "16 16 3 1",
-"  c #c0c0c0",
+"  c None",
 ". c #606060",
 "+ c #ed3de9",
 "                ",

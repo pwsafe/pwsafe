@@ -1,7 +1,7 @@
 /* XPM */
 static const char * about_xpm[] = {
 "16 16 161 2",
-"  	c #C0C0C0",
+"  	c None",
 ". 	c #5298D8",
 "+ 	c #4D96D4",
 "@ 	c #4C92D2",

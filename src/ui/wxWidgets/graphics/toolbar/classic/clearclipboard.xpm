@@ -7,7 +7,7 @@ static const char *classic_clearclipboard[] = {
 "X c #808080800000",
 "o c yellow",
 "O c #808080808080",
-"+ c #C0C0C0C0C0C0",
+"+ c None",
 /* pixels */
 "++++++++++++++++",
 "++++++    ++++++",

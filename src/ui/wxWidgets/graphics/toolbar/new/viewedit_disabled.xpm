@@ -1,7 +1,7 @@
 /* XPM */
 static const char * viewedit_disabled_xpm[] = {
 "16 16 48 1",
-" 	g #C0C0C0",
+" 	g None",
 ".	g #B7B7B7",
 "+	g #AEAEAE",
 "@	g #9C9C9C",

@@ -4,7 +4,7 @@ static const char *classic_autotype[] = {
 "16 16 3 1",
 "  c black",
 ". c cyan",
-"X c #C0C0C0C0C0C0",
+"X c None",
 /* pixels */
 "XXXXXXXXXXXXXXXX",
 "XXXXXX   XXXXXXX",

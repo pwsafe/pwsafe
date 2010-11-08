@@ -140,7 +140,7 @@ static const char *User[] = {
 "h. c #9898D1D1FFFF",
 "j. c #ABABC8C8FCFC",
 "k. c #A4A4E4E4FFFF",
-"l. c #C0C0C0C0C0C0",
+"l. c None",
 "z. c #EEEEDFDFCDCD",
 "x. c #F7F7E8E8D9D9",
 "c. c #C3C3D6D6F3F3",

@@ -74,7 +74,7 @@ static const char *Email[] = {
 "P  c #BDBDD3D3F4F4",
 "I  c #BDBDD5D5F4F4",
 "U  c #B7B7D7D7FCFC",
-"Y  c #C0C0C0C0C0C0",
+"Y  c None",
 "T  c #CCCCD9D9EAEA",
 "R  c #C9C9DEDEF7F7",
 "E  c #C2C2DADAF8F8",

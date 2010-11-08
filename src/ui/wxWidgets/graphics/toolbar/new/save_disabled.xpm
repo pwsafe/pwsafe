@@ -8,7 +8,7 @@ static const char * save_disabled_xpm[] = {
 "#	g #656565",
 "$	g #6A6A6A",
 "%	g #626262",
-"&	g #C0C0C0",
+"&	g None",
 "*	g #DEDEDE",
 "=	g #FAFAFA",
 "-	g #F9F9F9",

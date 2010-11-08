@@ -46,7 +46,7 @@ static const char *find[] = {
 ".M c #be8a4d",
 ".N c #be8a4f",
 ".O c #c08c4e",
-".P c #c0c0c0",
+".P c None",
 ".Q c #c18c52",
 ".R c #c18e4f",
 ".S c #c18e58",

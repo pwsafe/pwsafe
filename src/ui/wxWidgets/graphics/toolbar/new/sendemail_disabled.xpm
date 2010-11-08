@@ -1,7 +1,7 @@
 /* XPM */
 static const char * sendemail_disabled_xpm[] = {
 "16 16 106 2",
-"  	g #C0C0C0",
+"  	g None",
 ". 	g #969696",
 "+ 	g #A0A0A0",
 "@ 	g #929292",

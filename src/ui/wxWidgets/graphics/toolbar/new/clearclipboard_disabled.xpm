@@ -4,7 +4,7 @@ static const char * clearclipboard_disabled_xpm[] = {
 "  	c #B1B1B1",
 ". 	c #CCCCCC",
 "+ 	c #6B6B6B",
-"@ 	c #C0C0C0",
+"@ 	c None",
 "# 	c #8E8E8E",
 "$ 	c #5A5A5A",
 "% 	c #5C5C5C",

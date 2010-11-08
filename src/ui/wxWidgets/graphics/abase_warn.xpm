@@ -14,7 +14,7 @@ static const char *abase_warn_xpm[] = {
 "7 c #224822",
 "6 c #9A9A9A",
 "= c #166616",
-"  c #C0C0C0",
+"  c None",
 "2 c #2DA32D",
 ". c #505050",
 ": c #5E005E",

@@ -14,7 +14,7 @@ static const char *alias_xpm[] = {
 ", c #222222",
 "> c #9A9A9A",
 "= c #666666",
-"  c #C0C0C0",
+"  c None",
 ". c #505050",
 "; c #2B2B2B",
 "* c #858585",

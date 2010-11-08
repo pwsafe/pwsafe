@@ -149,7 +149,7 @@ static const char *Group[] = {
 "n. c #9292C5C5FFFF",
 "m. c #8484D6D6FFFF",
 "M. c #B2B2D7D7FDFD",
-"N. c #C0C0C0C0C0C0",
+"N. c None",
 "B. c #C0C0E8E8FFFF",
 /* pixels */
 "N.N.N.N.N.N.V N.$ v z c <   N.N.",

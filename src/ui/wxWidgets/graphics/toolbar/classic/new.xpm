@@ -3,7 +3,7 @@ static const char *classic_new[] = {
 /* columns rows colors chars-per-pixel */
 "16 16 3 1",
 "  c black",
-". c #C0C0C0C0C0C0",
+". c None",
 "X c gray100",
 /* pixels */
 "................",

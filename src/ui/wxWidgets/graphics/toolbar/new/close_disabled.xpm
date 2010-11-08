@@ -1,7 +1,7 @@
 /* XPM */
 static const char * close_disabled_xpm[] = {
 "16 16 81 1",
-" 	g #C0C0C0",
+" 	g None",
 ".	g #A8A8A8",
 "+	g #A6A6A6",
 "@	g #A5A5A5",

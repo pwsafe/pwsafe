@@ -13,7 +13,7 @@ static const char *abase_xpm[] = {
 "> c #9A9A9A",
 "= c #166616",
 "O c #009C00",
-"  c #C0C0C0",
+"  c None",
 ". c #505050",
 "; c #2B2B2B",
 "* c #858585",

@@ -3,7 +3,7 @@ static const char *classic_collapseall[] = {
 /* columns rows colors chars-per-pixel */
 "16 16 2 1",
 "  c black",
-". c #C0C0C0C0C0C0",
+". c None",
 /* pixels */
 "................",
 "..  ..        ..",

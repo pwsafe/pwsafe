@@ -1,7 +1,7 @@
 /* XPM */
 static const char * unlock_xpm[] = {
 "16 16 157 2",
-"  	c #C0C0C0",
+"  	c None",
 ". 	c #A4A4A4",
 "+ 	c #A1A1A1",
 "@ 	c #9A9A9A",

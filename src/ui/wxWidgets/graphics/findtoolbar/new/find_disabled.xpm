@@ -56,7 +56,7 @@ static const char *find_disabled[] = {
 "W c #b7b7b7",
 "X c #b9b9b9",
 "Y c #bebebe",
-"Z c #c0c0c0",
+"Z c None",
 "0 c #c1c1c1",
 "1 c #c6c6c6",
 "2 c #c7c7c7",

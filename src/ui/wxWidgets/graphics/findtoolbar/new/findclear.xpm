@@ -37,7 +37,7 @@ static const char *findclear[] = {
 ".D c #be8a4d",
 ".E c #be8a4f",
 ".F c #c08c4e",
-".G c #c0c0c0",
+".G c None",
 ".H c #c18c52",
 ".I c #c18e4f",
 ".J c #c18e58",
