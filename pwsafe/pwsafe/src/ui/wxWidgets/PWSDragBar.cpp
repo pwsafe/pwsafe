@@ -44,18 +44,36 @@
 #include "./graphics/dragbar/new/URLX.xpm"
 #include "./graphics/dragbar/new/User.xpm"
 #include "./graphics/dragbar/new/UserX.xpm"
+//-- classic bitmaps...
+#include "./graphics/dragbar/classic/email.xpm"
+#include "./graphics/dragbar/classic/emailx.xpm"
+#include "./graphics/dragbar/classic/Group.xpm"
+#include "./graphics/dragbar/classic/GroupX.xpm"
+#include "./graphics/dragbar/classic/Notes.xpm"
+#include "./graphics/dragbar/classic/NotesX.xpm"
+#include "./graphics/dragbar/classic/Password.xpm"
+#include "./graphics/dragbar/classic/PasswordX.xpm"
+#include "./graphics/dragbar/classic/Title.xpm"
+#include "./graphics/dragbar/classic/TitleX.xpm"
+#include "./graphics/dragbar/classic/URL.xpm"
+#include "./graphics/dragbar/classic/URLX.xpm"
+#include "./graphics/dragbar/classic/User.xpm"
+#include "./graphics/dragbar/classic/UserX.xpm"
+
 ////@end XPM images
 
 IMPLEMENT_CLASS( PWSDragBar, CDragBar )
 
 enum { DRAGBAR_TOOLID_BASE = 100 };
 
-#define PWS_TOOLINFO(t, f) { wxSTRINGIZE_T(t), t, wxCONCAT(t, X), CItemData::f}
+#define PWS_TOOLINFO(t, f) { wxSTRINGIZE_T(t), t, wxCONCAT(t, X), wxCONCAT(classic_, t), wxCONCAT(wxCONCAT(classic_, t), X), CItemData::f}
 
 struct _DragbarElementInfo {
   const TCHAR* name;
   const char** bitmap;
   const char** bitmap_disabled;
+  const char** classic_bitmap;
+  const char** classic_bitmap_disabled;
   CItemData::FieldType ft;
 } DragbarElements[] = { PWS_TOOLINFO(Group,     GROUP), 
                         PWS_TOOLINFO(Title,     TITLE), 
@@ -68,13 +86,31 @@ struct _DragbarElementInfo {
 
 PWSDragBar::PWSDragBar(PasswordSafeFrame* frame) : CDragBar(frame, this), m_frame(frame)
 {
-  for (int idx = 0; size_t(idx) < NumberOf(DragbarElements); ++idx) {
-    AddTool(idx + DRAGBAR_TOOLID_BASE, wxBitmap(DragbarElements[idx].bitmap),
-              wxString(_("Drag this image onto another window to paste the '"))
-                      << DragbarElements[idx].name << _("' field."),
-              wxBitmap(DragbarElements[idx].bitmap_disabled));
+  RefreshButtons();
+}
+
+void PWSDragBar::RefreshButtons()
+{
+  const bool newButtons = PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar);
+
+#define BTN newButtons? wxBitmap(DragbarElements[idx].bitmap) : wxBitmap(DragbarElements[idx].classic_bitmap)
+#define BTN_DISABLED newButtons? wxBitmap(DragbarElements[idx].bitmap_disabled): wxBitmap(DragbarElements[idx].classic_bitmap_disabled)
+
+  if (GetToolsCount() == 0) {  //being created?
+    for (int idx = 0; size_t(idx) < NumberOf(DragbarElements); ++idx) {
+      AddTool(idx + DRAGBAR_TOOLID_BASE, BTN,
+                wxString(_("Drag this image onto another window to paste the '"))
+                        << DragbarElements[idx].name << _("' field."), BTN_DISABLED );
+    }
+  }
+  else {
+    for (int idx = 0; size_t(idx) < NumberOf(DragbarElements); ++idx) {
+      SetToolBitmaps(idx + DRAGBAR_TOOLID_BASE, BTN, BTN_DISABLED);
+    }
   }
 
+#undef BTN
+#undef BTN_DISABLED
 }
 
 PWSDragBar::~PWSDragBar()

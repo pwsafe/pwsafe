@@ -39,6 +39,7 @@ class PWSTreeCtrl;
 class SystemTray;
 class GUIInfo;
 struct SelectionCriteria;
+class PWSDragBar;
 ////@end forward declarations
 class PasswordSafeSearch;
 
@@ -421,6 +422,7 @@ public:
   void RebuildGUI(const int iView = iBothViews);
   void CreateDragBar();
   void RefreshToolbarButtons();
+  PWSDragBar* GetDragBar();
   
   void Merge(const StringX &sx_Filename2, PWScore *pothercore, const SelectionCriteria& selection);
   int MergeDependents(PWScore *pothercore, MultiCommands *pmulticmds,

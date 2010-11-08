@@ -645,6 +645,9 @@ void PasswordSafeFrame::OnChangeToolbarType(wxCommandEvent& evt)
   if (GetMenuBar()->IsChecked(evt.GetId())) {
     PWSprefs::GetInstance()->SetPref(PWSprefs::UseNewToolbar, evt.GetId() == ID_TOOLBAR_NEW);
     RefreshToolbarButtons();
+    PWSDragBar* dragbar = GetDragBar();
+    wxCHECK_RET(dragbar, wxT("Could not find dragbar"));
+    dragbar->RefreshButtons();
   }
 }
 
@@ -734,7 +737,7 @@ void PasswordSafeFrame::OnShowHideToolBar(wxCommandEvent& evt)
   SendSizeEvent();
 }
 
-void PasswordSafeFrame::OnShowHideDragBar(wxCommandEvent& evt)
+PWSDragBar* PasswordSafeFrame::GetDragBar()
 {
   wxSizer* origSizer = GetSizer();
   
@@ -744,11 +747,17 @@ void PasswordSafeFrame::OnShowHideDragBar(wxCommandEvent& evt)
   
   wxSizerItem* dragbarItem = origSizer->GetItem(size_t(0));
   wxASSERT_MSG(dragbarItem && dragbarItem->IsWindow() && 
-                      dragbarItem->GetWindow()->IsKindOf(&PWSDragBar::ms_classInfo),
+                      wxIS_KIND_OF(dragbarItem->GetWindow(), PWSDragBar),
                     wxT("Found unexpected item while searching for DragBar"));
                     
   PWSDragBar* dragbar = wxDynamicCast(dragbarItem->GetWindow(), PWSDragBar);
-  wxASSERT(dragbar);
+  return dragbar;
+}
+
+void PasswordSafeFrame::OnShowHideDragBar(wxCommandEvent& evt)
+{
+  PWSDragBar* dragbar = GetDragBar();
+  wxCHECK_RET(dragbar, wxT("Could not find dragbar"));
   
   dragbar->Show(evt.IsChecked());
   PWSprefs::GetInstance()->SetPref(PWSprefs::ShowDragbar, evt.IsChecked());

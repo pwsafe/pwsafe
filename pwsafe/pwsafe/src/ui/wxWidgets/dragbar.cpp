@@ -286,6 +286,17 @@ void CDragBar::OnUpdateUI(wxUpdateUIEvent& evt)
   }
 }
 
+void CDragBar::SetToolBitmaps(int id, const wxBitmap& bmp, const wxBitmap& bmpDisabled /*= wxNullBitmap*/)
+{
+  for (size_t idx = 0; idx < m_items.size(); ++idx) {
+    if (m_items[idx].id == id) {
+      m_items[idx].bmp = bmp;
+      m_items[idx].bmpDisabled = bmpDisabled;
+      RefreshRect( wxRect( wxPoint(GetToolX(idx), GetToolY(idx)), wxSize(m_bmpWidth, m_bmpHeight)), false );
+      break;
+    }
+  }
+}
 
 #include <wx/arrimpl.cpp>
 WX_DEFINE_OBJARRAY(DragBarItemsArray)

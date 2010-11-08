@@ -30,6 +30,9 @@ public:
   PWSDragBar(PasswordSafeFrame* frame);
   ~PWSDragBar();
 
+  //show the classic or new buttons depending on PWSprefs::UseNewToolbar
+  void RefreshButtons();
+  
   //PWSDragBar::IDragSourceTextProvider override
   virtual wxString GetText(int id) const;
   virtual bool IsEnabled(int id) const;

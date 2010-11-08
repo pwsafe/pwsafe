@@ -52,6 +52,9 @@ public:
 
   void AddTool(int id, const wxBitmap& bmp, const wxString& tooltip = wxEmptyString, 
                                     const wxBitmap& bmpDisabled = wxNullBitmap);
+  size_t GetToolsCount() const { return m_items.GetCount(); }
+  void SetToolBitmaps(int id, const wxBitmap& bmp, const wxBitmap& bmpDisabled = wxNullBitmap);
+  
   //overriden from wxWindow
   virtual wxSize DoGetBestSize() const ;
   
