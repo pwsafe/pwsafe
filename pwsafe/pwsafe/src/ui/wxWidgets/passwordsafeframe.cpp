@@ -246,7 +246,7 @@ bool PasswordSafeFrame::Create( wxWindow* parent, wxWindowID id, const wxString&
   wxFrame::Create( parent, id, caption, pos, size, style );
 
   CreateControls();
-  SetIcon(GetIconResource(wxT("./graphics/cpane.xpm")));
+  SetIcons(wxGetApp().GetAppIcons());
   Centre();
 ////@end PasswordSafeFrame creation
   m_search = new PasswordSafeSearch(this);

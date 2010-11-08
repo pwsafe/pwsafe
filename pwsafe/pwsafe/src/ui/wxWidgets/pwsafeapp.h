@@ -86,6 +86,8 @@ public:
   //virtual override from some ancestor, to handle Help commands from all windows
   virtual int FilterEvent(wxEvent& evt);
 
+  wxIconBundle GetAppIcons() const { return m_appIcons; }
+  
  private:
     PWScore m_core;
     wxTimer* m_activityTimer;
@@ -98,6 +100,8 @@ public:
     StringToStringMap& GetHelpMap();
     wxHtmlHelpController* m_controller;
 
+    wxIconBundle m_appIcons;
+    
  public:
     CRecentDBList &recentDatabases();
 };
