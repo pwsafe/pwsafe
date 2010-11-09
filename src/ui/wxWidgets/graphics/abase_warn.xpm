@@ -2,6 +2,8 @@
 static const char *abase_warn_xpm[] = {
 /* columns rows colors chars-per-pixel */
 "9 9 31 1",
+/* colors */
+"  c None",
 "X c Black",
 "q c #009800",
 "O c #4E004E",
@@ -14,7 +16,6 @@ static const char *abase_warn_xpm[] = {
 "7 c #224822",
 "6 c #9A9A9A",
 "= c #166616",
-"  c None",
 "2 c #2DA32D",
 ". c #505050",
 ": c #5E005E",

@@ -1,6 +1,8 @@
 /* XPM */
-static const char * autotype_disabled_xpm[] = {
+static const char *autotype_disabled_xpm[] = {
+/* columns rows colors chars-per-pixel */
 "16 16 71 1",
+/* colors */
 " 	g None",
 ".	g #D9D9D9",
 "+	g #D4D4D4",
@@ -72,6 +74,7 @@ static const char * autotype_disabled_xpm[] = {
 "D	g #969696",
 "E	g #909090",
 "F	g #8D8D8D",
+/* pixels */
 "                ",
 "                ",
 "  .+@# $%&*=-   ",

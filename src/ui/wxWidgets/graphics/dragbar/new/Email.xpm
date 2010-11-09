@@ -1,8 +1,9 @@
 /* XPM */
-static const char *Email[] = {
+static const char *Email_xpm[] = {
 /* columns rows colors chars-per-pixel */
 "16 16 147 2",
-"   c #2B2B51518E8E",
+/* colors */
+"   c None",
 ".  c #31315D5DA3A3",
 "X  c #31316363B0B0",
 "o  c #3C3C6F6FBEBE",
@@ -74,7 +75,7 @@ static const char *Email[] = {
 "P  c #BDBDD3D3F4F4",
 "I  c #BDBDD5D5F4F4",
 "U  c #B7B7D7D7FCFC",
-"Y  c None",
+"Y  c #2B2B51518E8E",
 "T  c #CCCCD9D9EAEA",
 "R  c #C9C9DEDEF7F7",
 "E  c #C2C2DADAF8F8",
@@ -150,9 +151,9 @@ static const char *Email[] = {
 "m. c #FBFBFDFDFFFF",
 "M. c #FCFCFDFDFFFF",
 /* pixels */
-"Y Y Y Y Y Y Y Y Y Y Y Y Y Y Y Y ",
-"Y Y Y Y Y Y Y Y Y Y Y Y Y Y Y Y ",
-"a g d i u y t r e 8 6 5 4 , %   ",
+"                                ",
+"                                ",
+"a g d i u y t r e 8 6 5 4 , %YY ",
 "k l.i.v.v.v.v.v.v.v.M.M.M.y.3.# ",
 "f t.c | q.o.@.*.1.2.5.j.:.l ^ 0 ",
 "d l.K c  .i.1.2.0.0.j.>.z M 7.0 ",
@@ -162,8 +163,8 @@ static const char *Email[] = {
 "& j.` H ) } I B B P [ R D W 4.0 ",
 "o a.J [ 1.@.@.*.@.@.@...~ F -.q ",
 ". 8.;.t.t.a.a.j.j.a.l.j.g.4.T # ",
-"  X O + * = = > 1 1 1 1 3 ; #   ",
-"Y Y Y Y Y Y Y Y Y Y Y Y Y Y Y Y ",
-"Y Y Y Y Y Y Y Y Y Y Y Y Y Y Y Y ",
-"Y Y Y Y Y Y Y Y Y Y Y Y Y Y Y Y "
+"Y X O + * = = > 1 1 1 1 3 ; # Y ",
+"                                ",
+"                                ",
+"                                "
 };

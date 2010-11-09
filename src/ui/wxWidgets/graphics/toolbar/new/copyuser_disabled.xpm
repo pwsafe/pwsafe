@@ -1,6 +1,7 @@
 /* XPM */
-static const char * copyuser_disabled_xpm[] = {
+static const char *copyuser_disabled_xpm[] = {
 "16 16 104 2",
+/* colors */
 "  	g None",
 ". 	g #414141",
 "+ 	g #565656",
@@ -105,6 +106,7 @@ static const char * copyuser_disabled_xpm[] = {
 "=.	g #5C5C5C",
 "-.	g #474747",
 ";.	g #525252",
+/* pixels */
 "                                ",
 "        . + @ # $ %             ",
 "      & * = - ; + > ,           ",

@@ -2,6 +2,8 @@
 static const char *alias_xpm[] = {
 /* columns rows colors chars-per-pixel */
 "9 9 20 1",
+/* colors */
+"  c None",
 "X c Black",
 "o c #787878",
 "& c #FFFFFF",
@@ -14,7 +16,6 @@ static const char *alias_xpm[] = {
 ", c #222222",
 "> c #9A9A9A",
 "= c #666666",
-"  c None",
 ". c #505050",
 "; c #2B2B2B",
 "* c #858585",

@@ -1,27 +1,28 @@
 /* XPM */
-static const char *classic_sendemail[] = {
+static const char *classic_sendemail_xpm[] = {
 /* columns rows colors chars-per-pixel */
 "16 16 5 1",
-"  c #040404040404",
+/* colors */
+"  c None",
+"o c #040404040404",
 ". c yellow",
 "X c #868686868686",
-"o c None",
 "O c gray100",
 /* pixels */
-"oooooooooooooooo",
-"oooooooooooooooo",
-"oooooooooooooooo",
-"oooooooooooooooo",
-" o o            ",
-"ooooo X.O.O.O.X ",
-" o o  . .O.O. . ",
-"ooooo O. .O. .O ",
-" o o  . . . . . ",
-"ooooo  .O. .O.  ",
-" o o  .O.O.O.O. ",
-"ooooo           ",
-"oooooooooooooooo",
-"oooooooooooooooo",
-"oooooooooooooooo",
-"oooooooooooooooo"
+"                ",
+"                ",
+"                ",
+"                ",
+"o o oooooooooooo",
+"     oX.O.O.O.Xo",
+"o o oo.o.O.O.o.o",
+"     oO.o.O.o.Oo",
+"o o oo.o.o.o.o.o",
+"     oo.O.o.O.oo",
+"o o oo.O.O.O.O.o",
+"     ooooooooooo",
+"                ",
+"                ",
+"                ",
+"                "
 };

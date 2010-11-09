@@ -1,10 +1,12 @@
 /* XPM */
-static char *image_xpm[] = {
-/* width height ncolors chars_per_pixel */
+static const char *classic_copyuser_disabled_xpm[] = {
+/* columns rows colors chars-per-pixel */
 "16 16 3 1",
+/* colors */
 "  c None",
 ". c #000000",
 "+ c #4c4c4c",
+/* pixels */
 "                ",
 "  ....    ....  ",
 "  .++.    .++.  ",

@@ -1,8 +1,9 @@
 /* XPM */
-static const char *Notes[] = {
+static const char *Notes_xpm[] = {
 /* columns rows colors chars-per-pixel */
 "16 16 124 2",
-"   c #DFDF79790000",
+/* colors */
+"   c None",
 ".  c #E2E27D7D0101",
 "X  c #E0E07D7D0303",
 "o  c #E3E381810808",
@@ -107,7 +108,7 @@ static const char *Notes[] = {
 "&. c #FBFBEEEEBABA",
 "*. c #FBFBEEEEBBBB",
 "=. c #FBFBEFEFBEBE",
-"-. c None",
+"-. c #DFDF79790000",
 ";. c #FBFBF0F0C0C0",
 ":. c #FBFBF0F0C4C4",
 ">. c #FBFBF1F1C8C8",
@@ -127,20 +128,20 @@ static const char *Notes[] = {
 "w. c #FFFFFDFDFAFA",
 "e. c #FFFFFEFEFAFA",
 /* pixels */
-"-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.",
-"-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.",
-"-.1 ] ` E Y I J H h f s a y -.-.",
-"1 -.' e.e.e.e.e.e.e.e.e.e.0 -.-.",
-"-.-.U e.5.7.7.5.5.5.7.8.e.5 -.-.",
-"-.-.P 3.| { ) / ^ ! L S >., -.-.",
-"-.-.J 2.{ ) / ~ W L S B :.> -.-.",
-"-.-.g 1.) / ~ W D S B m ;.- -.-.",
-"-.-.d T Z C b p S N m v =.= -.-.",
-"-.-.r G ,.,.O.i N n c x *.$ -.-.",
-"-.-.e q 4 ....u n v x l *.@ -.-.",
-"-.-.e ' < < } 8 c l l j O.o -.-.",
-"-.-.9 o.T 6 w V %.%.%.#.O.. -.-.",
-"-.-.7 3 , ; % * * # + o     -.-.",
-"-.1 -.-.-.-.-.-.-.-.-.-.-.1 -.-.",
-"1 -.-.-.-.-.-.-.-.-.-.-.1 -.-.-."
+"                                ",
+"                                ",
+"  1 ] ` E Y I J H h f s a y     ",
+"1   ' e.e.e.e.e.e.e.e.e.e.0     ",
+"    U e.5.7.7.5.5.5.7.8.e.5     ",
+"    P 3.| { ) / ^ ! L S >.,     ",
+"    J 2.{ ) / ~ W L S B :.>     ",
+"    g 1.) / ~ W D S B m ;.-     ",
+"    d T Z C b p S N m v =.=     ",
+"    r G ,.,.O.i N n c x *.$     ",
+"    e q 4 ....u n v x l *.@     ",
+"    e ' < < } 8 c l l j O.o     ",
+"    9 o.T 6 w V %.%.%.#.O..     ",
+"    7 3 , ; % * * # + o  -.     ",
+"  1                       1     ",
+"1                       1       "
 };

@@ -1,8 +1,9 @@
 /* XPM */
-static const char *URLX[] = {
+static const char *URLX_xpm[] = {
 /* columns rows colors chars-per-pixel */
 "16 16 256 2",
-"   c black",
+/* colors */
+"   c None",
 ".  c #010101",
 "X  c #020202",
 "o  c gray1",
@@ -194,7 +195,7 @@ static const char *URLX[] = {
 "+X c gray74",
 "@X c gray",
 "#X c gray75",
-"$X c None",
+"$X c black",
 "%X c #C1C1C1",
 "&X c gray76",
 "*X c #C3C3C3",
@@ -259,20 +260,20 @@ static const char *URLX[] = {
 "IX c #FEFEFE",
 "UX c gray100",
 /* pixels */
-"$X$XvXvX~.~.~.~.~.~.~.Q.$X$X$X$X",
-"$XvX~.~.~.qXdXeX6X3X<XT.P.H.$X$X",
-"vX~.~.:XNXzXkX0XqX,X;X:X XZ.M.$X",
-"$X~.;XvXcXxXgX5X9X%XOX|.1X}.x.$X",
+"    vXvX~.~.~.~.~.~.~.Q.        ",
+"  vX~.~.~.qXdXeX6X3X<XT.P.H.    ",
+"vX~.~.:XNXzXkX0XqX,X;X:X XZ.M.  ",
+"  ~.;XvXcXxXgX5X9X%XOX|.1X}.x.  ",
 "~.~.nXaXpXaXtX1X;XE.R.XX1XpXd.i.",
 "~.6XfXuXpXfX%X@XT.!.OX%X@X&XOXq.",
 "~.gX5X7XdXfX~.U.|.oX].`.'.Q.8X5.",
-"~.xX$XOX8X8XF.^.:XoX~.~.J.A.iX,.",
+"~.xX  OX8X8XF.^.:XoX~.~.J.A.iX,.",
 "!.xX X|.5XD.P.c.^.OX_.D.B.m.uX-.",
-"R.sX$X>XoXV.L.L.c.r.w.c.C.Z.4X%.",
+"R.sX  >XoXV.L.L.c.r.w.c.C.Z.4X%.",
 "P.<X7X).OXA.S.G.A.z.p.v.m._.'.%.",
 "G.Z.fXE.E.E.C.J.F.h.Z.H.j.8X%.%.",
-"$Xn._.1X/.].J.Y.P.n.S.k.[.D.%.vX",
-"$Xl.d.E.pX;X!.!.T.J.oX5XS.%.%.$X",
-"$X$Xy.q.6..X.X.XoX,X].%.%.%.vX$X",
-"$X$X$X$X1.:.=.%.%.%.%.%.vXvX$X$X"
+"  n._.1X/.].J.Y.P.n.S.k.[.D.%.vX",
+"  l.d.E.pX;X!.!.T.J.oX5XS.%.%.  ",
+"    y.q.6..X.X.XoX,X].%.%.%.vX  ",
+"        1.:.=.%.%.%.%.%.vXvX    "
 };

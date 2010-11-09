@@ -1,6 +1,8 @@
 /* XPM */
-static const char * lock_xpm[] = {
+static const char *lock_xpm[] = {
+/* columns rows colors chars-per-pixel */
 "16 16 176 2",
+/* colors */
 "  	c None",
 ". 	c #A5A5A5",
 "+ 	c #A3A3A3",
@@ -177,6 +179,7 @@ static const char * lock_xpm[] = {
 "Q.	c #CF7307",
 "R.	c #CF7004",
 "S.	c #CE6E01",
+/* pixels */
 "        . + @ # $ % & *         ",
 "      = - ; > , > ' ) ! ~       ",
 "    = { ] ^ { / ( % _ _ : <     ",

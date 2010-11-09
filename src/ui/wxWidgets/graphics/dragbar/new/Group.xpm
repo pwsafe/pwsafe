@@ -1,8 +1,9 @@
 /* XPM */
-static const char *Group[] = {
+static const char *Group_xpm[] = {
 /* columns rows colors chars-per-pixel */
 "16 16 149 2",
-"   c #4E4E37372222",
+/* colors */
+"   c None",
 ".  c #5F5F3B3B2424",
 "X  c #2E2E65652B2B",
 "o  c #2D2D7E7E2727",
@@ -149,23 +150,23 @@ static const char *Group[] = {
 "n. c #9292C5C5FFFF",
 "m. c #8484D6D6FFFF",
 "M. c #B2B2D7D7FDFD",
-"N. c None",
 "B. c #C0C0E8E8FFFF",
+"N. c #4E4E37372222",
 /* pixels */
-"N.N.N.N.N.N.V N.$ v z c <   N.N.",
-"N.N.N.N.N.N.V # M l l l l < N.N.",
-"N.N.N.N.N.V N.; N U f.B z v N.N.",
-"N.N.N.N.N.V N.- c.h.k.j.x.b N.N.",
-"N.N.N.N.V N.N.= P l.z.l.g.> N.N.",
-"N.N.N.% 5 3 7 & r Y p.T F O + N.",
-"N.V . 7 2 2 2 2 A r.S d d.t.t o ",
-"N.V > 9 D I q 3 8 _ ( E E s.g X ",
-"V N.: a.j.k.j.x.0 ^ Q R j j s G ",
-"N.d.= P l.z.l.g.C ) ~ ! / f y J ",
-"N.N.` r Y T T K * p a a u t ..H ",
-"N.[ @.B.u.-.=.b.,.[ ' N.N.N.N.V ",
-"| o.M.m.e.8.3.1.n.*.{ N.N.N.N.V ",
-"b i.9.6.0.<.<.>.:.y.G N.N.N.V N.",
-"n F #.q.3.3.6.7.;.X.J N.N.N.V N.",
-"L q  .O.;.$.$.+.| w H N.N.V N.N."
+"            V   $ v z c < N.    ",
+"            V # M l l l l <     ",
+"          V   ; N U f.B z v     ",
+"          V   - c.h.k.j.x.b     ",
+"        V     = P l.z.l.g.>     ",
+"      % 5 3 7 & r Y p.T F O +   ",
+"  V . 7 2 2 2 2 A r.S d d.t.t o ",
+"  V > 9 D I q 3 8 _ ( E E s.g X ",
+"V   : a.j.k.j.x.0 ^ Q R j j s G ",
+"  d.= P l.z.l.g.C ) ~ ! / f y J ",
+"    ` r Y T T K * p a a u t ..H ",
+"  [ @.B.u.-.=.b.,.[ '         V ",
+"| o.M.m.e.8.3.1.n.*.{         V ",
+"b i.9.6.0.<.<.>.:.y.G       V   ",
+"n F #.q.3.3.6.7.;.X.J       V   ",
+"L q  .O.;.$.$.+.| w H     V     "
 };

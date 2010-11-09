@@ -2,6 +2,7 @@
 static const char *normal_xpm[] = {
 /* columns rows colors chars-per-pixel */
 "9 9 5 1",
+/* colors */
 "  c Black",
 ". c #009800",
 "o c #00C500",

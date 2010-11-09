@@ -1,8 +1,9 @@
 /* XPM */
-static const char *Title[] = {
+static const char *Title_xpm[] = {
 /* columns rows colors chars-per-pixel */
 "16 16 87 1",
-"  c #FBFBF9F92828",
+/* colors */
+"  c None",
 ". c #AAAAAAAAAAAA",
 "X c gray67",
 "o c #ACACACACACAC",
@@ -42,7 +43,7 @@ static const char *Title[] = {
 "p c #BABAE1E1FDFD",
 "a c #BCBCE2E2FDFD",
 "s c #BDBDE3E3FDFD",
-"d c None",
+"d c #FBFBF9F92828",
 "f c #C1C1C1C1C1C1",
 "g c #C3C3C3C3C3C3",
 "h c gray77",
@@ -90,20 +91,20 @@ static const char *Title[] = {
 "` c gray99",
 "' c #FDFDFDFDFDFD",
 /* pixels */
-"BBMMnvvdkddddddd",
-"B'''''Pvxddddddd",
-"M'LvK''Lvddddddd",
-"M'v x!)'Lkdddddd",
-"v'Fxx~Es'Fg,dddd",
-"v'')~Q91a'Fd:ddd",
-"xR')E3we3s'A,&dd",
-"xkR)G1eii3a'A:$d",
-"dkjU'J6eie3a'C&+",
-"ddddU'J1ei9<_A&+",
-"ddd>>I'J190^A=+ ",
-"dddd--P'Je/Z=. d",
-"ddddd&&L''A&X dd",
-"dddddd$$KA&X ddd",
-"ddddddd@+&. dddd",
-"ddddddddX. ddddd"
+"BBMMnvv k       ",
+"B'''''Pvx       ",
+"M'LvK''Lv       ",
+"M'vdx!)'Lk      ",
+"v'Fxx~Es'Fg,    ",
+"v'')~Q91a'F :   ",
+"xR')E3we3s'A,&  ",
+"xkR)G1eii3a'A:$ ",
+" kjU'J6eie3a'C&+",
+"    U'J1ei9<_A&+",
+"   >>I'J190^A=+d",
+"    --P'Je/Z=.d ",
+"     &&L''A&Xd  ",
+"      $$KA&Xd   ",
+"       @+&.d    ",
+"        X.d     "
 };

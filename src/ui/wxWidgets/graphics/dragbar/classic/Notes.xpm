@@ -1,10 +1,12 @@
 /* XPM */
-static const char *classic_Notes[] = {
-/* width height ncolors chars_per_pixel */
+static const char *classic_Notes_xpm[] = {
+/* columns rows colors chars-per-pixel */
 "16 16 3 1",
+/* colors */
 "  c None",
 ". c #606060",
 "X c #ffff00",
+/* pixels */
 "                ",
 "                ",
 "  .....   ....  ",

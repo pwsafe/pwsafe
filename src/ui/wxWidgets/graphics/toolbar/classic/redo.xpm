@@ -1,0 +1,38 @@
+/* XPM */
+static const char *classic_redo_xpm[] = {
+/* columns rows colors chars-per-pixel */
+"16 16 15 1",
+/* colors */
+" 	c None",
+".	c Black",
+"X	c Gray100",
+"o	c Gray47",
+"O	c #e2f8af",
+"+	c Gray84",
+"@	c #ecfacb",
+"#	c #ebfac9",
+"$	c #f5ecff",
+"%	c #a8e61d",
+"&	c #b1b1b1",
+"*	c #77a40f",
+"=	c #22b14c",
+"-	c #998da9",
+";	c #605a68",
+/* pixels */
+"         .      ",
+"         ..     ",
+"         .X.    ",
+"     o....OX.   ",
+"    .+@@##OOX.  ",
+"   .$%%@@@%OOX. ",
+"  o$%%%%%%%%%$X.",
+"  .&%%*======*. ",
+"  .%%=======*.  ",
+"  .%*=*...=*.   ",
+"  .%**.  .*.    ",
+"  .%*.   ..     ",
+"  .-*.   .      ",
+"  o.*.          ",
+"   .-;.         ",
+"    ..          "
+};

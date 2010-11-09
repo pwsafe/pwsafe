@@ -1,8 +1,9 @@
 /* XPM */
-static const char *EmailX[] = {
+static const char *EmailX_xpm[] = {
 /* columns rows colors chars-per-pixel */
 "16 16 256 2",
-"   c black",
+/* colors */
+"   c None",
 ".  c #010101",
 "X  c #020202",
 "o  c gray1",
@@ -194,7 +195,6 @@ static const char *EmailX[] = {
 "+X c gray74",
 "@X c gray",
 "#X c gray75",
-"$X c None",
 "%X c #C1C1C1",
 "&X c gray76",
 "*X c #C3C3C3",
@@ -259,20 +259,20 @@ static const char *EmailX[] = {
 "IX c #FEFEFE",
 "UX c gray100",
 /* pixels */
-"$X$X$X$X$X$X$X$X$X$X$X$X$X$X$X$X",
-"$X$X$X$X$X$X$X$X$X$X$X$X$X$X$X$X",
+"                                ",
+"                                ",
 "V.K.m.j.h.g.d.a.p.u.t.w.0.q.2.E ",
 "E.HXAXKXKXKXKXKXKXKXLXLXLXSXMX>.",
 "A.SX).lXZXlXzXcXbXmXNXHXxXY.gXi.",
 "n.JX>X_.zXSXbXmXNXVXHXvXW.{.CXi.",
 "j.JXgX:X_.xXGXVXCXJXbX!.oX7XVXi.",
 "u.JXkXgX%XT.vXJXKXnXU..XwXwXVXi.",
-"8.JXkXaX;X#X`.kXlX`.+X$XqXyXVXi.",
+"8.JXkXaX;X#X`.kXlX`.+X  qXyXVXi.",
 "1.JXdX1XaXjX6X.XXX5XgXyX-XeXBXi.",
 "*.GX2XfXcXcXcXxXxXxXzXkXiX;XcXu.",
 "' CXvXAXSXDXFXGXGXGXGXHXHXBXwX:.",
 "E | &.>.2.4.6.8.q.w.e.e.e.9.;.E ",
-"$X$X$X$X$X$X$X$X$X$X$X$X$X$X$X$X",
-"$X$X$X$X$X$X$X$X$X$X$X$X$X$X$X$X",
-"$X$X$X$X$X$X$X$X$X$X$X$X$X$X$X$X"
+"                                ",
+"                                ",
+"                                "
 };

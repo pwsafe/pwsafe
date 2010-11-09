@@ -1,0 +1,31 @@
+/* XPM */
+static const char *classic_compare_xpm[] = {
+/* columns rows colors chars-per-pixel */
+"16 16 8 1",
+/* colors */
+" 	c None",
+".	c #0080ff",
+"X	c #4000ff",
+"o	c Red",
+"O	c #000080",
+"+	c #804000",
+"@	c #800000",
+"#	c Black",
+/* pixels */
+"      ..   ...  ",
+"      . .  .  . ",
+"      X  . X  . ",
+" oooo X  X XXXX ",
+"ooooooO  X O   X",
+"oo  ooO O  O   O",
+"oo  ooOO   OOOO ",
+"   oo           ",
+"  oo  ++   +++  ",
+"  oo  + +  +  + ",
+"      @  @ @  @ ",
+"  oo  @  @ @@@@ ",
+"  oo  @  @ @   @",
+"      # #  #   #",
+"      ##   #### ",
+"                "
+};

@@ -1,26 +1,27 @@
 /* XPM */
-static const char *classic_viewedit[] = {
+static const char *classic_viewedit_xpm[] = {
 /* columns rows colors chars-per-pixel */
 "16 16 4 1",
-"  c black",
+/* colors */
+"  c None",
+"X c black",
 ". c yellow",
-"X c None",
 "o c gray100",
 /* pixels */
-"XXXXXXXXXXXXXXXX",
-"XXXX  XXXXXXXXXX",
-"XXXX o XXXXXXXXX",
-"XXXX oo XXXXXXXX",
-"XXXX oo  XXXXXXX",
-"XXXX   . XXXXXXX",
-"XXXXX . . XXXXXX",
-"XXXXX . . XXXXXX",
-"XXXXXX . . XXXXX",
-"XXXXXX . . XXXXX",
-"XXXXXXX . . XXXX",
-"XXXXXXX . . XXXX",
-"XXXXXXXX . . XXX",
-"XXXXXXXX .  XXXX",
-"XXXXXXXXX  XXXXX",
-"XXXXXXXXXXXXXXXX"
+"                ",
+"    XX          ",
+"    XoX         ",
+"    XooX        ",
+"    XooXX       ",
+"    XXX.X       ",
+"     X.X.X      ",
+"     X.X.X      ",
+"      X.X.X     ",
+"      X.X.X     ",
+"       X.X.X    ",
+"       X.X.X    ",
+"        X.X.X   ",
+"        X.XX    ",
+"         XX     ",
+"                "
 };

@@ -1,6 +1,8 @@
 /* XPM */
-static const char * exit_xpm[] = {
+static const char *exit_xpm[] = {
+/* columns rows colors chars-per-pixel */
 "16 16 180 2",
+/* colors */
 "  	c None",
 ". 	c #D49C6D",
 "+ 	c #D29A6A",
@@ -181,6 +183,7 @@ static const char * exit_xpm[] = {
 "U.	c #925A10",
 "V.	c #90580D",
 "W.	c #925C13",
+/* pixels */
 "                          . + @ ",
 "                      # . $ % & ",
 "    * = - ; > , ' ) ! ~ { ] ^ / ",

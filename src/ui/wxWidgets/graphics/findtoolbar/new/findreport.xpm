@@ -1,8 +1,9 @@
 /* XPM */
-static const char *findreport[] = {
-/* width height num_colors chars_per_pixel */
-"    16    16      140            2",
+static const char *findreport_xpm[] = {
+/* columns rows colors chars-per-pixel */
+"16 16 140 2",
 /* colors */
+"   c None",
 ".. c #000000",
 ".# c #030303",
 ".a c #602512",
@@ -76,7 +77,6 @@ static const char *findreport[] = {
 "#e c #bdd8f3",
 "#f c #be7849",
 "#g c #bf8f61",
-"#h c None",
 "#i c #c0d1e6",
 "#j c #c19263",
 "#k c #c1ad98",
@@ -144,20 +144,20 @@ static const char *findreport[] = {
 "ai c #fcfcfc",
 "aj c #fdfdfd",
 /* pixels */
-"#h#O#n#f#b......................",
-"#O#H#C#L.9aiaiaiaiaiaiaiaiaiai..",
+"  #O#n#f#b......................",
+"#O  #C#L.9aiaiaiaiaiaiaiaiaiai..",
 ".n.S###s.8acacacacaaa#a#a##9ah..",
-"#O#H#C#K.6acacacacacaaaaaaa.ag..",
+"#O  #C#K.6acacacacacaaaaaaa.ag..",
 ".n.S.7#q.5aeae.p.o.m.l.k.ia#ag..",
-"#O#H#B#K.0afaf.o.B.A.y.w.da#ac..",
+"#O  #B#K.0afaf.o.B.A.y.w.da#ac..",
 ".n.S.3#p.Yagag.l.k.i.f.e.c#9ab..",
-"#O#H#B#K.Uahagad#l.M.x.E.4#8#7..",
+"#O  #B#K.Uahagad#l.M.x.E.4#8#7..",
 ".n.S.1#o.Tagae.z.Z#Y#2#A#.#a#6..",
-"#O#H#B#J.Ragaf.I#V#D#v#t#T.F#P.#",
+"#O  #B#J.Ragaf.I#V#D#v#t#T.F#P.#",
 ".n.S.W#j.Pafaf.v#0#u#r#e#M.C#4..",
-"#O#H#B#G.Oagag.G#W#m#e#e#I.tai..",
+"#O  #B#G.Oagag.G#W#m#e#e#I.tai..",
 ".n.S.V#g.Nagag#i#z#N#x#F.X.s#3..",
-"#O#H#B#G.Lajah#5#w.K.H.u.r#R#E.j",
+"#O  #B#G.Lajah#5#w.K.H.u.r#R#E.j",
 ".n.h.D.Q.J#Z#X#U#Q#P#S#P#k#y#1.2",
-"#h#h.a.q.b.................g#d#c"
+"    .a.q.b.................g#d#c"
 };

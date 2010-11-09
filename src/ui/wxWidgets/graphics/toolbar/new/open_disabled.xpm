@@ -1,6 +1,8 @@
 /* XPM */
-static const char * open_disabled_xpm[] = {
+static const char *open_disabled_xpm[] = {
+/* columns rows colors chars-per-pixel */
 "16 16 84 1",
+/* colors */
 " 	g None",
 ".	g #BCBCBC",
 "+	g #BBBBBB",
@@ -85,6 +87,7 @@ static const char * open_disabled_xpm[] = {
 "Q	g #949494",
 "R	g #969696",
 "S	g #959595",
+/* pixels */
 "       .+@#$%&* ",
 "       =-;>,')! ",
 "       ~{]>,{{^ ",

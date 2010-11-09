@@ -1,6 +1,8 @@
 /* XPM */
-static const char * browseurlplus_xpm[] = {
+static const char *browseurlplus_xpm[] = {
+/* columns rows colors chars-per-pixel */
 "16 16 200 2",
+/* colors */
 "  	c None",
 ". 	c #6EC461",
 "+ 	c #6DC260",
@@ -201,6 +203,7 @@ static const char * browseurlplus_xpm[] = {
 ",+	c #227D03",
 "'+	c #1E7B03",
 ")+	c #157900",
+/* pixels */
 "        . . . . . . . +         ",
 "    . . . @ # $ % & * = - ;     ",
 "  . . > , ' ) ! ~ { ] ^ / ( _   ",

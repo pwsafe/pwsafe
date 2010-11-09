@@ -1,8 +1,9 @@
 /* XPM */
-static const char *URL[] = {
+static const char *URL_xpm[] = {
 /* columns rows colors chars-per-pixel */
 "16 16 191 2",
-"   c #32327A7A2F2F",
+/* colors */
+"   c None",
 ".  c #34347D7D3131",
 "X  c #35357E7E3131",
 "o  c #373780803333",
@@ -182,7 +183,7 @@ static const char *URL[] = {
 "`. c #B7B7EDEDC1C1",
 "'. c #B7B7E3E3D4D4",
 "]. c #B7B7EDEDD4D4",
-"[. c None",
+"[. c #32327A7A2F2F",
 "{. c #D3D3EDEDCECE",
 "}. c #D6D6F2F2C7C7",
 "|. c #DEDEF2F2C0C0",
@@ -194,20 +195,20 @@ static const char *URL[] = {
 "+X c #E2E2F3F3C0C0",
 "@X c #E8E8F5F5CDCD",
 /* pixels */
-"[.[.x x h h h h h h h f [.[.[.[.",
-"[.x h h h z.Z._.!.j.a.6 5 4 [.[.",
-"x h h 6.@XOX{.Q.(.~.E.R.,.< , [.",
-"[.h 5.|.}.oXXX^./.I.K.J.g.m : [.",
+"    x x h h h h h h h f         ",
+"  x h h h z.Z._.!.j.a.6 5 4     ",
+"x h h 6.@XOX{.Q.(.~.E.R.,.< ,   ",
+"  h 5.|.}.oXXX^./.I.K.J.g.m :   ",
 "h h +Xc.v.`.'.Y.U.#.X.r.3.m.* & ",
 "h 0.C.x.)..XL.P.@.K U P z 7.4.$ ",
 "h A.w.q.]. X$.+.-.j a p d u b.@ ",
 "h F.<.k l.W._ o.i.Y i s 1 9 B.O ",
 "h F.n U k./ | ~ O.T R G 8 2 N.X ",
-"h A.m H.H.( } } ! Z C D V q f.  ",
-"6 6.9.L e.^ ` =.' Q A S N v ;.  ",
-"4 4 S.r t o._ } [ W B y = n.    ",
+"h A.m H.H.( } } ! Z C D V q f.[.",
+"6 6.9.L e.^ ` =.' Q A S N v ;.[.",
+"4 4 S.r t o._ } [ W B y = n.[.[.",
 "h., v 9.u %. .*.*.F 2 - :.w . x ",
-"[.: * c M.T.G.%.%.H >.b.w     [.",
-"[.[.$ $ $ ;.t.y.J.h.v .     x [.",
-"[.[.[.[.$ X X           x x [.[."
+"  : * c M.T.G.%.%.H >.b.w [.[.  ",
+"    $ $ $ ;.t.y.J.h.v . [.[.x   ",
+"        $ X X [.[.[.[.[.x x     "
 };

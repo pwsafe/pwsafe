@@ -1,6 +1,7 @@
 /* XPM */
-static const char * copynotes_xpm[] = {
+static const char *copynotes_xpm[] = {
 "16 16 151 2",
+/* colors */
 "  	c None",
 ". 	c #FEDFB6",
 "+ 	c #FAD2A2",
@@ -152,6 +153,7 @@ static const char * copynotes_xpm[] = {
 "r.	c #1F7B00",
 "s.	c #1E7B03",
 "t.	c #157900",
+/* pixels */
 "                                ",
 "  . + @ # $ % & * = - ; >       ",
 "  , ' ' ' ' ' ) ! ' ' ! ~       ",

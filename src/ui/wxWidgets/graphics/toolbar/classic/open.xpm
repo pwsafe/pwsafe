@@ -1,27 +1,28 @@
 /* XPM */
-static const char *classic_open[] = {
+static const char *classic_open_xpm[] = {
 /* columns rows colors chars-per-pixel */
 "16 16 5 1",
-"  c black",
+/* colors */
+"  c None",
+"o c black",
 ". c #808080800000",
 "X c yellow",
-"o c None",
 "O c gray100",
 /* pixels */
-"oooooooooooooooo",
-"oooooooooooooooo",
-"oooooooooo   ooo",
-"ooooooooo ooo o ",
-"oooooooooooooo  ",
-"oo   oooooooo   ",
-"o OXO       oooo",
-"o XOXOXOXOX oooo",
-"o OXOXOXOXO oooo",
-"o XOXO          ",
-"o OXO ......... ",
-"o XO ......... o",
-"o O ......... oo",
-"o  ......... ooo",
-"o           oooo",
-"oooooooooooooooo"
+"                ",
+"                ",
+"          ooo   ",
+"         o   o o",
+"              oo",
+"  ooo        ooo",
+" oOXOooooooo    ",
+" oXOXOXOXOXo    ",
+" oOXOXOXOXOo    ",
+" oXOXOoooooooooo",
+" oOXOo.........o",
+" oXOo.........o ",
+" oOo.........o  ",
+" oo.........o   ",
+" ooooooooooo    ",
+"                "
 };

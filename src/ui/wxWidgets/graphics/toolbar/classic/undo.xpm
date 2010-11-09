@@ -1,0 +1,38 @@
+/* XPM */
+static const char *classic_undo_xpm[] = {
+/* columns rows colors chars-per-pixel */
+"16 16 15 1",
+/* colors */
+" 	c None",
+".	c Black",
+"X	c #f7f3e6",
+"o	c #eed783",
+"O	c Gray46",
+"+	c #2f2f2f",
+"@	c #f4eccf",
+"#	c #af9a66",
+"$	c #cfb058",
+"%	c #d1950e",
+"&	c #ddc776",
+"*	c Gray63",
+"=	c #b48a24",
+"-	c #986b07",
+";	c #8d7e4a",
+/* pixels */
+"      .         ",
+"     ..         ",
+"    .X.         ",
+"   .Xo...O      ",
+"  +Xoo@@@#.O    ",
+" .Xooooooo$.O   ",
+".Xooooooooo$.   ",
+" .#%%%%%%$o&.*  ",
+"  .#%%%%%%%o=.  ",
+"   .#%...-%$$.  ",
+"    .#. *.=%o.  ",
+"     ..  *.%o.  ",
+"      .   .$#O  ",
+"          .&.   ",
+"         .$;.   ",
+"          ++    "
+};
