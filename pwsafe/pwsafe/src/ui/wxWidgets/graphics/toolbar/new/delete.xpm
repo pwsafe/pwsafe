@@ -1,6 +1,8 @@
 /* XPM */
-static const char * delete_xpm[] = {
+static const char *delete_xpm[] = {
+/* columns rows colors chars-per-pixel */
 "16 16 183 2",
+/* colors */
 "  	c None",
 ". 	c #447DC1",
 "+ 	c #4D8BC8",
@@ -184,6 +186,7 @@ static const char * delete_xpm[] = {
 "X.	c #BB4205",
 "Y.	c #AD4813",
 "Z.	c #8F4E39",
+/* pixels */
 "  . + @ @ @ @ # $ % & * =       ",
 "  - ; > , ' ' ' ) ; ! ~ { ]     ",
 "  ^ / ( _ : < [ } | 1 2 3 4 5   ",

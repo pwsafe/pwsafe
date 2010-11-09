@@ -1,11 +1,13 @@
 /* XPM */
-static char *image_xpm[] = {
-/* width height ncolors chars_per_pixel */
+static const char *classic_browseurlplus_xpm[] = {
+/* columns rows colors chars-per-pixel */
 "16 16 4 1",
+/* colors */
 "  c None",
 ". c #000000",
 "+ c #ffff00",
 "@ c #800080",
+/* pixels */
 "          ....  ",
 " ..........++.  ",
 " .@@@@@@...++...",

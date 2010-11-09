@@ -1,6 +1,8 @@
 /* XPM */
-static const char * collapseall_xpm[] = {
+static const char *collapseall_xpm[] = {
+/* columns rows colors chars-per-pixel */
 "16 16 104 2",
+/* colors */
 "  	c None",
 ". 	c #5171A9",
 "+ 	c #8DB1DD",
@@ -105,6 +107,7 @@ static const char * collapseall_xpm[] = {
 "=.	c #5676AD",
 "-.	c #5475AB",
 ";.	c #5373A9",
+/* pixels */
 "                                ",
 ". + @ # $ % & * = - ; > , ' .   ",
 ") ! ! ! ! ! ! ! ! ! ! ! ! ! ~   ",

@@ -1,10 +1,12 @@
 /* XPM */
-static const char * clearclipboard_disabled_xpm[] = {
+static const char *clearclipboard_disabled_xpm[] = {
+/* columns rows colors chars-per-pixel */
 "16 16 118 2",
-"  	c #B1B1B1",
+/* colors */
+"  	c None",
+"@ 	c #B1B1B1",
 ". 	c #CCCCCC",
 "+ 	c #6B6B6B",
-"@ 	c None",
 "# 	c #8E8E8E",
 "$ 	c #5A5A5A",
 "% 	c #5C5C5C",
@@ -119,14 +121,15 @@ static const char * clearclipboard_disabled_xpm[] = {
 "_.	c #9A9A9A",
 ":.	c #6E6E6E",
 "<.	c #555555",
-"  . + + + + + + + @ @ @ @ @ # $ ",
-"+ % & * = - - = ; + + + @ > $ , ",
-"+ ' ) ! ~ { { ~ ] ^ . + > $ / @ ",
-"+ ( _ : ) < < < [ ] } | 1 2 @ @ ",
-"+ 3 4 5 : [ 6 7 8 8 9 0 a b c @ ",
+/* pixels */
+"@ . + + + + + + +           # $ ",
+"+ % & * = - - = ; + + +   > $ , ",
+"+ ' ) ! ~ { { ~ ] ^ . + > $ /   ",
+"+ ( _ : ) < < < [ ] } | 1 2     ",
+"+ 3 4 5 : [ 6 7 8 8 9 0 a b c   ",
 "+ d 5 e f g > h i j k 4 l   m & ",
 "+ n o p q , & r s t 5 u v w / b ",
-"+ x y q z A [ B 1 @ C D E i F G ",
+"+ x y q z A [ B 1   C D E i F G ",
 "+ H I A , 6 b J B K L M { N = b ",
 "+ N A , 7 O % L u P K w M D l b ",
 "+ Q 6 R S T j U V W J X Y - i Z ",
@@ -134,4 +137,4 @@ static const char * clearclipboard_disabled_xpm[] = {
 "+ %.&.*.=.-.< ;.E +.E >. ._ ;.,.",
 "+ '.).  !.!.< ~.E +.E {.  t . G ",
 "& | + + + + ].^./.~.l i i I  .(.",
-"_.@ @ @ @ @ :.9 9 9 9 9 9 9 k <."};
+"_.          :.9 9 9 9 9 9 9 k <."};

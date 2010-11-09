@@ -1,9 +1,12 @@
 /* XPM */
-static const char * tray_xpm[] = {
+static const char *tray_xpm[] = {
+/* columns rows colors chars-per-pixel */
 "32 32 3 1",
+/* colors */
 " 	c None",
 ".	c #000000",
 "+	c #800080",
+/* pixels */
 ".                               ",
 "..                              ",
 "...                             ",

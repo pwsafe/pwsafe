@@ -1,6 +1,8 @@
 /* XPM */
-static const char * sendemail_xpm[] = {
+static const char *sendemail_xpm[] = {
+/* columns rows colors chars-per-pixel */
 "16 16 166 2",
+/* colors */
 "  	c None",
 ". 	c #7C9AC8",
 "+ 	c #84A4D5",
@@ -167,6 +169,7 @@ static const char * sendemail_xpm[] = {
 "G.	c #217D00",
 "H.	c #1E7B03",
 "I.	c #157900",
+/* pixels */
 "                                ",
 "                                ",
 ". + @ # $ % & * = - ; > , ' ) ! ",

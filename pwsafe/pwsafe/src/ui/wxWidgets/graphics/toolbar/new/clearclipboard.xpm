@@ -1,10 +1,12 @@
 /* XPM */
-static const char * clearclipboard_xpm[] = {
+static const char *clearclipboard_xpm[] = {
+/* columns rows colors chars-per-pixel */
 "16 16 190 2",
-"  	c #FD9090",
+/* colors */
+"  	c None",
 ". 	c #FEB7B7",
 "+ 	c #986320",
-"@ 	c None",
+"@ 	c #FD9090",
 "# 	c #FC5F5F",
 "$ 	c #FB1616",
 "% 	c #C73411",
@@ -191,11 +193,12 @@ static const char * clearclipboard_xpm[] = {
 "@+	c #4675C8",
 "#+	c #8F4474",
 "$+	c #D71B2C",
-"  . + + + + + + + @ @ @ @ @ # $ ",
-"+ % & * = - - = ; + + + @ > $ , ",
-"+ ' ) ! ~ { { ~ ] ^ / ( > $ _ @ ",
-"+ : < [ } | 1 2 3 4 5 6 7 8 @ @ ",
-"+ 9 0 a b c d e f f g h i j k @ ",
+/* pixels */
+"@ . + + + + + + +           # $ ",
+"+ % & * = - - = ; + + +   > $ , ",
+"+ ' ) ! ~ { { ~ ] ^ / ( > $ _   ",
+"+ : < [ } | 1 2 3 4 5 6 7 8     ",
+"+ 9 0 a b c d e f f g h i j k   ",
 "+ l m n o p q r s t u v w x y z ",
 "+ A B C D E F G H I J K L M N O ",
 "+ P Q R S T U V W X Y Z `  ...+.",
@@ -206,4 +209,4 @@ static const char * clearclipboard_xpm[] = {
 "+ t.u.v.w.x.k.y.m.n.m.z.A.B.C.D.",
 "+ E.F.G.H.I.J.K.m.n.m.L.M.N.O.P.",
 "& 6 ( + + + Q.R.S.T.U.V.V.W.X.Y.",
-"Z.@ @ @ @ @ `. +.+++.+++++@+#+$+"};
+"Z.          `. +.+++.+++++@+#+$+"};

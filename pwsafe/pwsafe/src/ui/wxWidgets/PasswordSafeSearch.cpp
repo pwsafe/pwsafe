@@ -19,6 +19,15 @@
 #include "./graphics/findtoolbar/new/findcase_s.xpm"
 #include "./graphics/findtoolbar/new/findclear.xpm"
 #include "./graphics/findtoolbar/new/findclose.xpm"
+//-- classic bitmaps...
+#include "./graphics/findtoolbar/classic/find.xpm"
+#include "./graphics/findtoolbar/classic/findreport.xpm"
+#include "./graphics/findtoolbar/classic/find_disabled.xpm"
+#include "./graphics/findtoolbar/classic/findadvanced.xpm"
+#include "./graphics/findtoolbar/classic/findcase_i.xpm"
+#include "./graphics/findtoolbar/classic/findcase_s.xpm"
+#include "./graphics/findtoolbar/classic/findclear.xpm"
+#include "./graphics/findtoolbar/classic/findclose.xpm"
 ////@end XPM images
 #include <wx/statline.h> 
 #include <wx/valgen.h>

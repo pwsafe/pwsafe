@@ -1,25 +1,26 @@
 /* XPM */
-static const char *classic_copynotes[] = {
+static const char *classic_copynotes_xpm[] = {
 /* columns rows colors chars-per-pixel */
 "16 16 3 1",
-"  c black",
+/* colors */
+"  c None",
+"X c black",
 ". c yellow",
-"X c None",
 /* pixels */
-"XXXXXXXXXXXXXXXX",
-"X      XXX    XX",
-"X .... XXX .. XX",
-"X .... XXX .. XX",
-"X ..... XX .. XX",
-"X ..... XX .. XX",
-"X ..  .. X .. XX",
-"X .. X . X .. XX",
-"X .. X ..  .. XX",
-"X .. XX .  .. XX",
-"X .. XX ..... XX",
-"X .. XXX .... XX",
-"X .. XXX .... XX",
-"X .. XXXX ... XX",
-"X    XXXX     XX",
-"XXXXXXXXXXXXXXXX"
+"                ",
+" XXXXXX   XXXX  ",
+" X....X   X..X  ",
+" X....X   X..X  ",
+" X.....X  X..X  ",
+" X.....X  X..X  ",
+" X..XX..X X..X  ",
+" X..X X.X X..X  ",
+" X..X X..XX..X  ",
+" X..X  X.XX..X  ",
+" X..X  X.....X  ",
+" X..X   X....X  ",
+" X..X   X....X  ",
+" X..X    X...X  ",
+" XXXX    XXXXX  ",
+"                "
 };

@@ -1,0 +1,37 @@
+/* XPM */
+static const char *undo_disabled_xpm[] = {
+/* columns rows colors chars-per-pixel */
+"16 16 15 1",
+/* colors */
+" 	c None",
+".	c Black",
+"X	c Gray95",
+"o	c #d5d5d5",
+"O	c Gray46",
+"+	c #2f2f2f",
+"@	c Gray92",
+"#	c #9b9b9b",
+"$	c Gray69",
+"%	c Gray60",
+"&	c #c5c5c5",
+"*	c Gray63",
+"=	c Gray55",
+"-	c Gray43",
+";	c Gray49",
+/* pixels */
+"      .         ",
+"     ..         ",
+"    .X.         ",
+"   .Xo...O      ",
+"  +Xoo@@@#.O    ",
+" .Xooooooo$.O   ",
+".Xooooooooo$.   ",
+" .#%%%%%%$o&.*  ",
+"  .#%%%%%%%o=.  ",
+"   .#%...-%$$.  ",
+"    .#. *.=%o.  ",
+"     ..  *.%o.  ",
+"      .   .$#O  ",
+"          .&.   ",
+"         .$;.   ",
+"          ++    "};

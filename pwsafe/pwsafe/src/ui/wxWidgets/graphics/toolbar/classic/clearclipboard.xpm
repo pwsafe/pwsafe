@@ -1,28 +1,29 @@
 /* XPM */
-static const char *classic_clearclipboard[] = {
+static const char *classic_clearclipboard_xpm[] = {
 /* columns rows colors chars-per-pixel */
 "16 16 6 1",
-"  c black",
+/* colors */
+"  c None",
+"+ c black",
 ". c red",
 "X c #808080800000",
 "o c yellow",
 "O c #808080808080",
-"+ c None",
 /* pixels */
-"++++++++++++++++",
-"++++++    ++++++",
-"+..    oo     .+",
-"+...O o  o XO..+",
-"+ ...++++++ ...+",
-"+ O...     ... +",
-"+ XO...OXO...O +",
-"+ OXO...O...OX +",
-"+ XOXO.....OXO +",
-"+ OXOX....OXOX +",
-"+ XOX......OXO +",
-"+ OX...XO...OX +",
-"+ X...XOXO...O +",
-"+ ...XOXOXO... +",
-"+...        ...+",
-"++++++++++++++++"
+"                ",
+"      ++++      ",
+" ..++++oo+++++. ",
+" ...O+o++o+XO.. ",
+" +...      +... ",
+" +O...+++++...+ ",
+" +XO...OXO...O+ ",
+" +OXO...O...OX+ ",
+" +XOXO.....OXO+ ",
+" +OXOX....OXOX+ ",
+" +XOX......OXO+ ",
+" +OX...XO...OX+ ",
+" +X...XOXO...O+ ",
+" +...XOXOXO...+ ",
+" ...++++++++... ",
+"                "
 };

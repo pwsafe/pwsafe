@@ -1,8 +1,9 @@
 /* XPM */
-static const char *findadvanced[] = {
-/* width height num_colors chars_per_pixel */
-"    16    16      113            2",
+static const char *findadvanced_xpm[] = {
+/* columns rows colors chars-per-pixel */
+"16 16 113 2",
 /* colors */
+"   c None",
 ".. c #2a6b26",
 ".# c #2e6f29",
 ".a c #30712b",
@@ -63,7 +64,6 @@ static const char *findadvanced[] = {
 ".3 c #be8a4d",
 ".4 c #be8a4f",
 ".5 c #c08c4e",
-".6 c None",
 ".7 c #c18e4f",
 ".8 c #c18e58",
 ".9 c #c18f4f",
@@ -117,20 +117,20 @@ static const char *findadvanced[] = {
 "#T c #e8d5a3",
 "#U c #e9d7a5",
 /* pixels */
-".6.6.6.6.6.6.6.6.6.6.6.6.6.6.6.6",
-".6.6#A#F#G#J#D#v#o#f.6.6.6.6.6.6",
-".6#E#I#B#u#r#n#m#l#j##.6.6.6.6.6",
-"#A#I#w#K#K#K#K#K#K#a#b.1.6.6.6.6",
-"#z#x#K#K#K#K#K#K#K#K.7.0.6.6.6.6",
-"#C#t#K#K#K#K#K#K#K#K.Y.2.6.6.6.6",
-"#H#q#K#K#K#K#K.p.m.j.R.4.6.6.6.6",
-"#y#k#K#K#K#K#K.l.D.h.O.Z.6.6.6.6",
-"#s#i#K#K#K.n.k.r.z.q.f.e.6.6.6.6",
-"#h#g#K#K#K.j.A.y.t.x.v.d.6.6.6.6",
-"#d#e.9#K#K.h.g.o.w.i.c.#.L.6.6.6",
-".6.5#..3.T.P.N.e.s.b#R#O.S.J.6.6",
-".6.6.W.W.X.Z.U.d.a..#T#U#N.H.E.6",
-".6.6.6.6.6.6.6.6.M.8#P#S#Q#p.u.6",
-".6.6.6.6.6.6.6.6.6.K.V#M#L#c.I.6",
-".6.6.6.6.6.6.6.6.6.6.F.B.Q.G.C.6"
+"                                ",
+"    #A#F#G#J#D#v#o#f            ",
+"  #E#I#B#u#r#n#m#l#j##          ",
+"#A#I#w#K#K#K#K#K#K#a#b.1        ",
+"#z#x#K#K#K#K#K#K#K#K.7.0        ",
+"#C#t#K#K#K#K#K#K#K#K.Y.2        ",
+"#H#q#K#K#K#K#K.p.m.j.R.4        ",
+"#y#k#K#K#K#K#K.l.D.h.O.Z        ",
+"#s#i#K#K#K.n.k.r.z.q.f.e        ",
+"#h#g#K#K#K.j.A.y.t.x.v.d        ",
+"#d#e.9#K#K.h.g.o.w.i.c.#.L      ",
+"  .5#..3.T.P.N.e.s.b#R#O.S.J    ",
+"    .W.W.X.Z.U.d.a..#T#U#N.H.E  ",
+"                .M.8#P#S#Q#p.u  ",
+"                  .K.V#M#L#c.I  ",
+"                    .F.B.Q.G.C  "
 };

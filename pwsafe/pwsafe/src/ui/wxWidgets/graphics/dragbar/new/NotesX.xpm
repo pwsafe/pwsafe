@@ -1,8 +1,9 @@
 /* XPM */
-static const char *NotesX[] = {
+static const char *NotesX_xpm[] = {
 /* columns rows colors chars-per-pixel */
 "16 16 256 2",
-"   c black",
+/* colors */
+"   c None",
 ".  c #010101",
 "X  c #020202",
 "o  c gray1",
@@ -194,7 +195,7 @@ static const char *NotesX[] = {
 "+X c gray74",
 "@X c gray",
 "#X c gray75",
-"$X c None",
+"$X c black",
 "%X c #C1C1C1",
 "&X c gray76",
 "*X c #C3C3C3",
@@ -259,20 +260,20 @@ static const char *NotesX[] = {
 "IX c #FEFEFE",
 "UX c gray100",
 /* pixels */
-"$X$X$X$X$X$X$X$X$X$X$X$X$X$X$X$X",
-"$X$X$X$X$X$X$X$X$X$X$X$X$X$X$X$X",
-"$XvXhXeXwX8X6X2X>X;X%X+XXX{.$X$X",
-"vX$XdXIXIXIXIXIXPXPXIXIXPX`.$X$X",
-"$X$X7XPXKXKXLXJXKXKXKXKXPX^.$X$X",
-"$X$X4XFXcXzXkXhXfXsXpXuXBXW.$X$X",
-"$X$X1XDXlXkXhXfXsXpXuXrXNXI.$X$X",
-"$X$X$XSXkXhXfXsXpXuXrXwXNXK.$X$X",
-"$X$X+XqX2X<X,X%XuXrXwX9XMXD.$X$X",
-"$X$X[.>XZXCXnX#XrXwX9X7XmXV.$X$X",
-"$X$X[.[.[.xXcX@XwX9X7X5XnXm.$X$X",
-"$X$X].jXR._.zX+X9X7X5X4XbXc.$X$X",
-"$X$X_.zX9X(.}.;XmXmXnXbXbXl.$X$X",
-"$X$X^.E.Y.K.C.C.A.B.b.c.k.g.$X$X",
-"$XvX$X$X$X$X$X$X$X$X$X$X$XvX$X$X",
-"vX$X$X$X$X$X$X$X$X$X$X$XvX$X$X$X"
+"                                ",
+"                                ",
+"  vXhXeXwX8X6X2X>X;X%X+XXX{.    ",
+"vX  dXIXIXIXIXIXPXPXIXIXPX`.    ",
+"    7XPXKXKXLXJXKXKXKXKXPX^.    ",
+"    4XFXcXzXkXhXfXsXpXuXBXW.    ",
+"    1XDXlXkXhXfXsXpXuXrXNXI.    ",
+"      SXkXhXfXsXpXuXrXwXNXK.    ",
+"    +XqX2X<X,X%XuXrXwX9XMXD.    ",
+"    [.>XZXCXnX#XrXwX9X7XmXV.    ",
+"    [.[.[.xXcX@XwX9X7X5XnXm.    ",
+"    ].jXR._.zX+X9X7X5X4XbXc.    ",
+"    _.zX9X(.}.;XmXmXnXbXbXl.    ",
+"    ^.E.Y.K.C.C.A.B.b.c.k.g.    ",
+"  vX                      vX    ",
+"vX                      vX      "
 };

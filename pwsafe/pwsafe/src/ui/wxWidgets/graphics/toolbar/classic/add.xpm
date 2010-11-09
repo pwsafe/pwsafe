@@ -1,26 +1,27 @@
 /* XPM */
-static const char *classic_add[] = {
+static const char *classic_add_xpm[] = {
 /* columns rows colors chars-per-pixel */
 "16 16 4 1",
-"  c black",
+/* colors */
+"  c None",
+"X c black",
 ". c yellow",
-"X c None",
 "o c gray100",
 /* pixels */
-"XXXXXXXXXXXXXXXX",
-"XXXXX     XXXXXX",
-"XXXXX .o. XXXXXX",
-"XXXXX o.o XXXXXX",
-"XXXXX .o. XXXXXX",
-"X     o.o     XX",
-"X .o.o.o.o.o. XX",
-"X o.o.o.o.o.o XX",
-"X .o.o.o.o.o. XX",
-"X     o.o     XX",
-"XXXXX .o. XXXXXX",
-"XXXXX o.o XXXXXX",
-"XXXXX .o. XXXXXX",
-"XXXXX     XXXXXX",
-"XXXXXXXXXXXXXXXX",
-"XXXXXXXXXXXXXXXX"
+"                ",
+"     XXXXX      ",
+"     X.o.X      ",
+"     Xo.oX      ",
+"     X.o.X      ",
+" XXXXXo.oXXXXX  ",
+" X.o.o.o.o.o.X  ",
+" Xo.o.o.o.o.oX  ",
+" X.o.o.o.o.o.X  ",
+" XXXXXo.oXXXXX  ",
+"     X.o.X      ",
+"     Xo.oX      ",
+"     X.o.X      ",
+"     XXXXX      ",
+"                ",
+"                "
 };

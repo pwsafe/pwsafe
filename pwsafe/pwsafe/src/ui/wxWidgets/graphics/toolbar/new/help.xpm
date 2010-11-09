@@ -1,6 +1,7 @@
 /* XPM */
-static const char * help_xpm[] = {
+static const char *help_xpm[] = {
 "16 16 162 2",
+/* colors */
 "  	c None",
 ". 	c #C4DBF9",
 "+ 	c #C2DAF8",
@@ -163,6 +164,7 @@ static const char * help_xpm[] = {
 "C.	c #3769A5",
 "D.	c #3568A4",
 "E.	c #3366A3",
+/* pixels */
 "                                ",
 "        . + @ # $ % & *         ",
 "      = - ; > , , ' ) ! ~       ",

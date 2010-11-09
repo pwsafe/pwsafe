@@ -1,6 +1,8 @@
 /* XPM */
-static const char * close_xpm[] = {
+static const char *close_xpm[] = {
+/* columns rows colors chars-per-pixel */
 "16 16 120 2",
+/* colors */
 "  	c None",
 ". 	c #D59D6E",
 "+ 	c #D39B6C",
@@ -121,6 +123,7 @@ static const char * close_xpm[] = {
 "<.	c #945C14",
 "[.	c #935B11",
 "}.	c #6C6C6C",
+/* pixels */
 "                                ",
 "                                ",
 "      . + @ # $ % & * = -       ",

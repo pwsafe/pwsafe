@@ -2,9 +2,10 @@
 static const char *node_xpm[] = {
 /* columns rows colors chars-per-pixel */
 "9 9 3 1",
+/* colors */
+"  c None",
 ". c Black",
 "X c #FFFF00",
-"  c None",
 /* pixels */
 "         ",
 "         ",

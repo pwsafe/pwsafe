@@ -1,0 +1,25 @@
+/* XPM */
+static const char *classic_exportXML_disabled_xpm[] = {
+/* width height ncolors chars_per_pixel */
+"16 16 2 1",
+/* colors */
+"  c None",
+". c #000000",
+/* pixels */
+"          .   . ",
+"           . .  ",
+"            .   ",
+"           . .  ",
+"   .      .   . ",
+"   ..           ",
+"   ...    .   . ",
+".......   .. .. ",
+"........  . . . ",
+".......   .   . ",
+"   ...          ",
+"   ..     .     ",
+"   .      .     ",
+"          .     ",
+"          .     ",
+"          ..... ",
+};

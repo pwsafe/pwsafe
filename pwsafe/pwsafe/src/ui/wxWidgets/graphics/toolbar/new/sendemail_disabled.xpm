@@ -1,6 +1,7 @@
 /* XPM */
-static const char * sendemail_disabled_xpm[] = {
+static const char *sendemail_disabled_xpm[] = {
 "16 16 106 2",
+/* colors */
 "  	g None",
 ". 	g #969696",
 "+ 	g #A0A0A0",
@@ -107,6 +108,7 @@ static const char * sendemail_disabled_xpm[] = {
 ";.	g #838383",
 ">.	g #515151",
 ",.	g #525252",
+/* pixels */
 "                                ",
 "                                ",
 ". + @ # $ % & * = - ; > , , ' ) ",

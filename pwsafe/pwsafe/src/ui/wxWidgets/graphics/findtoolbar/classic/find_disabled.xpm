@@ -1,8 +1,9 @@
 /* XPM */
-static const char *find_disabled[] = {
-/* width height num_colors chars_per_pixel */
-"    16    16       63            1",
+static const char *classic_find_disabled_xpm[] = {
+/* columns rows colors chars-per-pixel */
+"16 16 63 1",
 /* colors */
+"  c None",
 ". c #575757",
 "# c #676767",
 "a c #6d6d6d",
@@ -56,7 +57,6 @@ static const char *find_disabled[] = {
 "W c #b7b7b7",
 "X c #b9b9b9",
 "Y c #bebebe",
-"Z c None",
 "0 c #c1c1c1",
 "1 c #c6c6c6",
 "2 c #c7c7c7",
@@ -67,20 +67,20 @@ static const char *find_disabled[] = {
 "7 c #d7d7d7",
 "8 c #dedede",
 /* pixels */
-"ZZSSTUSPLHZZZZZZ",
-"ZSUSPMLKKIDZZZZZ",
-"SUQ888888EExZZZZ",
-"RR88888888BxZZZZ",
-"SO88888888wxZZZZ",
-"TM88888888tyZZZZ",
-"RJ88888888qwZZZZ",
-"NI88888888orZZZZ",
-"JH88888888smZZZZ",
-"EGC888888FVlkZZZ",
-"ZzCyurpnAW41uiZZ",
-"ZZvvwwuqt067YgeZ",
-"ZZZZZZZZkC253M.c",
-"ZZZZZZZZZjvXXEhb",
-"ZZZZZZZZZZfasfbZ",
-"ZZZZZZZZZZZd#bZZ"
+"  SSTUSPLH      ",
+" SUSPMLKKID     ",
+"SUQ888888EEx    ",
+"RR88888888Bx    ",
+"SO88888888wx    ",
+"TM88888888ty    ",
+"RJ88888888qw    ",
+"NI88888888or    ",
+"JH88888888sm    ",
+"EGC888888FVlk   ",
+"  CyurpnAW41ui  ",
+"  vvwwuqt067Yge ",
+"        kC253M.c",
+"         jvXXEhb",
+"          fasfb ",
+"           d#b  "
 };

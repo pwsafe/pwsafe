@@ -1,6 +1,8 @@
 /* XPM */
-static const char * viewedit_xpm[] = {
+static const char *viewedit_xpm[] = {
+/* columns rows colors chars-per-pixel */
 "16 16 63 1",
+/* colors */
 " 	c None",
 ".	c #E4BA2F",
 "+	c #DBAA4F",
@@ -64,6 +66,7 @@ static const char * viewedit_xpm[] = {
 "v	c #5E4215",
 "w	c #9C6925",
 "x	c #BA8B3B",
+/* pixels */
 "                ",
 "          .+@#$%",
 "          &*=-;>",

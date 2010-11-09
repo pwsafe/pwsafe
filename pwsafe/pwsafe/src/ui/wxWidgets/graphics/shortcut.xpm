@@ -2,6 +2,8 @@
 static const char *shortcut_xpm[] = {
 /* columns rows colors chars-per-pixel */
 "9 9 35 1",
+/* colors */
+"  c None",
 "* c Black",
 "8 c #2D2D2D",
 "1 c #626262",
@@ -28,7 +30,6 @@ static const char *shortcut_xpm[] = {
 ". c #757575",
 "> c #848484",
 "- c #939393",
-"  c None",
 "7 c #494949",
 "2 c #A3A3A3",
 "3 c #DFDFDF",

@@ -42,6 +42,17 @@
 #include "./graphics/toolbar/new/delete.xpm"
 #include "./graphics/toolbar/new/close.xpm"
 
+#include "./graphics/toolbar/classic/copypassword.xpm"
+#include "./graphics/toolbar/classic/copyuser.xpm"
+#include "./graphics/toolbar/classic/copynotes.xpm"
+#include "./graphics/toolbar/classic/clearclipboard.xpm"
+#include "./graphics/toolbar/classic/autotype.xpm"
+#include "./graphics/toolbar/classic/browseurl.xpm"
+#include "./graphics/toolbar/classic/browseurlplus.xpm"
+#include "./graphics/toolbar/classic/sendemail.xpm"
+#include "./graphics/toolbar/classic/delete.xpm"
+#include "./graphics/toolbar/classic/close.xpm"
+
 BEGIN_EVENT_TABLE( SystemTray, wxTaskBarIcon )
   EVT_MENU( ID_SYSTRAY_RESTORE, SystemTray::OnSysTrayMenuItem )
   EVT_MENU( ID_SYSTRAY_LOCK,    SystemTray::OnSysTrayMenuItem )

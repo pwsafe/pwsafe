@@ -1,7 +1,10 @@
 /* XPM */
-static const char * save_xpm[] = {
+static const char *save_xpm[] = {
+/* columns rows colors chars-per-pixel */
 "16 16 155 2",
-"  	c #366BBC",
+/* colors */
+"  	c None",
+"= 	c #366BBC",
 ". 	c #366BBB",
 "+ 	c #366ABB",
 "@ 	c #396CBC",
@@ -10,7 +13,6 @@ static const char * save_xpm[] = {
 "% 	c #386BBB",
 "& 	c #3E70BB",
 "* 	c #3569B6",
-"= 	c None",
 "- 	c #D1E0F6",
 "; 	c #D1E0F7",
 "> 	c #F8FBFE",
@@ -156,11 +158,12 @@ static const char * save_xpm[] = {
 "v.	c #3160A8",
 "w.	c #3160A6",
 "x.	c #3161A8",
-"          . . + + @ # $ % & * = ",
-"  - ; > , ' ) ! ~ ' { ] ^ / ( _ ",
-"  : < [ } | 1 2 3 > 4 5 6 7 / & ",
-"  8 9 4 4 | 0 a { ' b c d e f g ",
-"  h i b b j k l m n o p q r s t ",
+/* pixels */
+"= = = = = . . + + @ # $ % & *   ",
+"= - ; > , ' ) ! ~ ' { ] ^ / ( _ ",
+"= : < [ } | 1 2 3 > 4 5 6 7 / & ",
+"= 8 9 4 4 | 0 a { ' b c d e f g ",
+"= h i b b j k l m n o p q r s t ",
 ". u v w w x y { z A p q B C D E ",
 ". F G | H I J K L M | | | N O P ",
 "+ Q R S T U V W X Y Z `  ...+.@.",

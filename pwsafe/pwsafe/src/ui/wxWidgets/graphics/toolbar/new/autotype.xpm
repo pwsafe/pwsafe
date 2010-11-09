@@ -1,6 +1,8 @@
 /* XPM */
-static const char * autotype_xpm[] = {
+static const char *autotype_xpm[] = {
+/* columns rows colors chars-per-pixel */
 "16 16 113 2",
+/* colors */
 "  	c None",
 ". 	c #D9D9D9",
 "+ 	c #D4D4D4",
@@ -114,6 +116,7 @@ static const char * autotype_xpm[] = {
 "{.	c #6E96C8",
 "].	c #6B93C6",
 "^.	c #6990C4",
+/* pixels */
 "                                ",
 "                                ",
 "    . + @ #   $ % & * = -       ",

@@ -1,10 +1,12 @@
 /* XPM */
-static const char *classic_TitleX[] = {
-/* width height ncolors chars_per_pixel */
+static const char *classic_TitleX_xpm[] = {
+/* columns rows colors chars-per-pixel */
 "16 16 3 1",
+/* colors */
 "  c None",
 ". c #808080",
 "X c #c0c0c0",
+/* pixels */
 "                ",
 "                ",
 "  ............  ",

@@ -1,8 +1,9 @@
 /* XPM */
-static const char *findclear[] = {
-/* width height num_colors chars_per_pixel */
-"    16    16      104            2",
+static const char *findclear_xpm[] = {
+/* columns rows colors chars-per-pixel */
+"16 16 104 2",
 /* colors */
+"   c None",
 ".. c #874828",
 ".# c #a55c33",
 ".a c #a55e32",
@@ -37,7 +38,6 @@ static const char *findclear[] = {
 ".D c #be8a4d",
 ".E c #be8a4f",
 ".F c #c08c4e",
-".G c None",
 ".H c #c18c52",
 ".I c #c18e4f",
 ".J c #c18e58",
@@ -108,20 +108,20 @@ static const char *findclear[] = {
 "#K c #fc6f6d",
 "#L c #fe7874",
 /* pixels */
-".G.G.G.G.G.G.G.G.G.G.G.G.G.G.G.G",
-".G.G#b#g#h#k#e.8.1.S.G.G.G.G.G.G",
-".G#f#j#c.7.4.0.Z.Y.W.M.G.G.G.G.G",
-"#b#j.9#l#l#l#l#l#l.N.O.B.G.G.G.G",
-"#a#.#l#l#l#l#l#l#l#l.I.A.G.G.G.G",
-"#d.6#l#l#l#l#l#l#l#l.y.C.G.G.G.G",
-"#i.3#l#l#l#l#l#l#l#l.q.E.G.G.G.G",
-"##.X#l#l#l#l#l#l#l#l.n.z.G.G.G.G",
-".5.V#l#l#l#L#K#J#G#D#B#A.G.G.G.G",
-".U.T#l#l#l#K#I#H#F#E#C#z.G.G.G.G",
-".Q.R.K#l#l#J#G#D#B#A#z#y.i.G.G.G",
-".G.F.L.D.t.o.l.k.H#m#u#r.s.g.G.G",
-".G.G.w.w.x.z.u.m.r#q#w#x#p.e.b.G",
-".G.G.G.G.G.G.G.G.j.J#s#v#t.2...G",
-".G.G.G.G.G.G.G.G.G.h.v#o#n.P.f.G",
-".G.G.G.G.G.G.G.G.G.G.c.#.p.d.a.G"
+"                                ",
+"    #b#g#h#k#e.8.1.S            ",
+"  #f#j#c.7.4.0.Z.Y.W.M          ",
+"#b#j.9#l#l#l#l#l#l.N.O.B        ",
+"#a#.#l#l#l#l#l#l#l#l.I.A        ",
+"#d.6#l#l#l#l#l#l#l#l.y.C        ",
+"#i.3#l#l#l#l#l#l#l#l.q.E        ",
+"##.X#l#l#l#l#l#l#l#l.n.z        ",
+".5.V#l#l#l#L#K#J#G#D#B#A        ",
+".U.T#l#l#l#K#I#H#F#E#C#z        ",
+".Q.R.K#l#l#J#G#D#B#A#z#y.i      ",
+"  .F.L.D.t.o.l.k.H#m#u#r.s      ",
+"    .w.w.x.z.u.m.r#q#w#x#p.e.b  ",
+"                .j.J#s#v#t.2..  ",
+"                  .h.v#o#n.P.f  ",
+"                    .c.#.p.d.a  "
 };

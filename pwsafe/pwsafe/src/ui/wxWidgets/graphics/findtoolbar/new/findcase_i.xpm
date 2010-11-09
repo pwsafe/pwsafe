@@ -1,8 +1,9 @@
 /* XPM */
-static const char *findcase_i[] = {
-/* width height num_colors chars_per_pixel */
-"    16    16       23            1",
+static const char *findcase_i_xpm[] = {
+/* columns rows colors chars-per-pixel */
+"16 16 23 1",
 /* colors */
+"  c None",
 ". c #040404",
 "# c #0a0a0a",
 "a c #111111",
@@ -25,22 +26,21 @@ static const char *findcase_i[] = {
 "r c #707070",
 "s c #737373",
 "t c #777777",
-"u c None",
 /* pixels */
-"uuuuuuuuuuuuuuuu",
-"uuuuuuuuuuuuuuuu",
-"uuuuuuuuuuuuuuuu",
-"uuuuuuuuuuuuuuuu",
-"uttttsqomkhgfedu",
-"utttrqumkugfudcu",
-"utuspoukhufeuubu",
-"uuuqnmuuuueduuuu",
-"uuuolkuuuudcuuuu",
-"uuumjhuuuucbuuuu",
-"uuukiguuuubauuuu",
-"uuuhgfeuuba#.uuu",
-"uuuuuuuuuuuuuuuu",
-"uuuuuuuuuuuuuuuu",
-"uuuuuuuuuuuuuuuu",
-"uuuuuuuuuuuuuuuu"
+"                ",
+"                ",
+"                ",
+"                ",
+" ttttsqomkhgfed ",
+" tttrq mk gf dc ",
+" t spo kh fe  b ",
+"   qnm    ed    ",
+"   olk    dc    ",
+"   mjh    cb    ",
+"   kig    ba    ",
+"   hgfe  ba#.   ",
+"                ",
+"                ",
+"                ",
+"                "
 };

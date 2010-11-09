@@ -1,11 +1,13 @@
 /* XPM */
-static char *image_xpm[] = {
-/* width height ncolors chars_per_pixel */
+static const char *classic_viewedit_disabled_xpm[] = {
+/* columns rows colors chars-per-pixel */
 "16 16 4 1",
+/* colors */
 "  c None",
 ". c #000000",
 "+ c #ffffff",
 "@ c #e5e5e5",
+/* pixels */
 "                ",
 "    ..          ",
 "    .+.         ",
