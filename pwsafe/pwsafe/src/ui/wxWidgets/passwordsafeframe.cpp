@@ -2029,6 +2029,14 @@ bool PasswordSafeFrame::VerifySafeCombination(wxString& password)
   return false;
 }
 
+void PasswordSafeFrame::SetFocus()
+{
+  if (IsTreeView())
+    m_tree->SetFocus();
+  else
+    m_grid->SetFocus();
+}
+
 void PasswordSafeFrame::OnIconize(wxIconizeEvent& evt)
 {
   // being restored?
