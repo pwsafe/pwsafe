@@ -66,7 +66,12 @@ IMPLEMENT_CLASS( PWSDragBar, CDragBar )
 
 enum { DRAGBAR_TOOLID_BASE = 100 };
 
-#define PWS_TOOLINFO(t, f) { wxSTRINGIZE_T(t), t, wxCONCAT(t, X), wxCONCAT(classic_, t), wxCONCAT(wxCONCAT(classic_, t), X), CItemData::f}
+#define PWS_TOOLINFO(t, f) {  wxSTRINGIZE_T(t),                                       \
+                              wxCONCAT(t, _xpm),                                      \
+                              wxCONCAT(t, X_xpm),                                     \
+                              wxCONCAT(wxCONCAT(classic_, t), _xpm),                  \
+                              wxCONCAT(wxCONCAT(classic_, t), X_xpm),                 \
+                              CItemData::f  }
 
 struct _DragbarElementInfo {
   const TCHAR* name;

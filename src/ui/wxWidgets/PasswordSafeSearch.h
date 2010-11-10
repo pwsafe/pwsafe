@@ -127,6 +127,7 @@ public:
   void UpdateView();
   
   void Activate(void);
+  void RefreshButtons(void);
   
   //overridden from wxEvtHandler
   virtual bool ProcessEvent(wxEvent& evt);
