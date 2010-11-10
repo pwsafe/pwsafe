@@ -76,23 +76,41 @@
 #include "./graphics/toolbar/new/viewreports_disabled.xpm"
 //-- classic bitmaps...
 #include "./graphics/toolbar/classic/new.xpm"
+#include "./graphics/toolbar/classic/new_disabled.xpm"
 #include "./graphics/toolbar/classic/open.xpm"
+#include "./graphics/toolbar/classic/open_disabled.xpm"
 #include "./graphics/toolbar/classic/close.xpm"
+#include "./graphics/toolbar/classic/close_disabled.xpm"
 #include "./graphics/toolbar/classic/save.xpm"
+#include "./graphics/toolbar/classic/save_disabled.xpm"
 #include "./graphics/toolbar/classic/copypassword.xpm"
+#include "./graphics/toolbar/classic/copypassword_disabled.xpm"
 #include "./graphics/toolbar/classic/copyuser.xpm"
+#include "./graphics/toolbar/classic/copyuser_disabled.xpm"
 #include "./graphics/toolbar/classic/copynotes.xpm"
+#include "./graphics/toolbar/classic/copynotes_disabled.xpm"
 #include "./graphics/toolbar/classic/clearclipboard.xpm"
+#include "./graphics/toolbar/classic/clearclipboard_disabled.xpm"
 #include "./graphics/toolbar/classic/autotype.xpm"
+#include "./graphics/toolbar/classic/autotype_disabled.xpm"
 #include "./graphics/toolbar/classic/browseurl.xpm"
+#include "./graphics/toolbar/classic/browseurl_disabled.xpm"
 #include "./graphics/toolbar/classic/sendemail.xpm"
+#include "./graphics/toolbar/classic/sendemail_disabled.xpm"
 #include "./graphics/toolbar/classic/add.xpm"
+#include "./graphics/toolbar/classic/add_disabled.xpm"
 #include "./graphics/toolbar/classic/viewedit.xpm"
+#include "./graphics/toolbar/classic/viewedit_disabled.xpm"
 #include "./graphics/toolbar/classic/delete.xpm"
+#include "./graphics/toolbar/classic/delete_disabled.xpm"
 #include "./graphics/toolbar/classic/expandall.xpm"
+#include "./graphics/toolbar/classic/expandall_disabled.xpm"
 #include "./graphics/toolbar/classic/collapseall.xpm"
+#include "./graphics/toolbar/classic/collapseall_disabled.xpm"
 #include "./graphics/toolbar/classic/options.xpm"
+#include "./graphics/toolbar/classic/options_disabled.xpm"
 #include "./graphics/toolbar/classic/help.xpm"
+#include "./graphics/toolbar/classic/help_disabled.xpm"
 
 #include "./graphics/toolbar/classic/addgroup.xpm"
 #include "./graphics/toolbar/classic/addgroup_disabled.xpm"
@@ -134,7 +152,10 @@
 
 enum {ID_SEPARATOR = -1};
 
-#define PWS_TOOLBAR_BITMAPS(n) wxCONCAT(n, _xpm), wxCONCAT(wxCONCAT(n, _disabled), _xpm), wxCONCAT(classic_, n)
+#define PWS_TOOLBAR_BITMAPS(n)  wxCONCAT(n, _xpm),                              \
+                                wxCONCAT(wxCONCAT(n, _disabled), _xpm),         \
+                                wxCONCAT(wxCONCAT(classic_, n), _xpm),          \
+                                wxCONCAT(wxCONCAT(classic_, n), _disabled_xpm)
 #define SEPARATOR {ID_SEPARATOR, NULL, NULL, NULL, NULL}
 
 struct _PwsToolbarInfo{
@@ -143,7 +164,7 @@ struct _PwsToolbarInfo{
   const char** bitmap_normal;
   const char** bitmap_disabled;
   const char** bitmap_classic;
-  
+  const char** bitmap_classic_disabled;
 } PwsToolbarButtons[] = 
 
 {
