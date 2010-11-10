@@ -347,6 +347,7 @@ public:
     // Overriden virtuals
     virtual bool Show(bool show = true);
     virtual void SetTitle(const wxString& title);
+    virtual void SetFocus();
     
     // PasswordSafe specifics:
     int Load(const wxString &passwd);

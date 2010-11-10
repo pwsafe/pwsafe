@@ -176,7 +176,8 @@ void PasswordSafeSearch::HideSearchToolbar()
 {
   m_toolbar->Show(false);
   m_parentFrame->GetSizer()->Layout();
-
+  m_parentFrame->SetFocus();
+  
   wxMenu* editMenu = 0; // will be set by FindItem() below
   wxMenuItem* findNextItem = m_parentFrame->GetMenuBar()->FindItem(ID_EDITMENU_FIND_NEXT, &editMenu);
   if (editMenu) { //the menu might not have been modified if nothing was actually searched for
