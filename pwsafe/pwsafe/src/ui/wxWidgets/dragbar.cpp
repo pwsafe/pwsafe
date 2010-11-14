@@ -292,7 +292,7 @@ void CDragBar::SetToolBitmaps(int id, const wxBitmap& bmp, const wxBitmap& bmpDi
     if (m_items[idx].id == id) {
       m_items[idx].bmp = bmp;
       m_items[idx].bmpDisabled = bmpDisabled;
-      RefreshRect( wxRect( wxPoint(GetToolX(idx), GetToolY(idx)), wxSize(m_bmpWidth, m_bmpHeight)), false );
+      RefreshRect( wxRect( wxPoint(GetToolX(idx), GetToolY(idx)), wxSize(m_bmpWidth, m_bmpHeight)), true );
       break;
     }
   }
