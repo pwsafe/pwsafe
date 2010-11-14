@@ -1098,12 +1098,8 @@ Section "Uninstall"
   Delete "$INSTDIR\LICENSE"
   Delete "$INSTDIR\README.TXT"
   Delete "$INSTDIR\ReleaseNotes.txt"
+  Delete "$INSTDIR\ReleaseNotes.html"
   Delete "$INSTDIR\ChangeLog.txt"
-  Delete "$INSTDIR\mfc80.dll"
-  Delete "$INSTDIR\msvcp80.dll"
-  Delete "$INSTDIR\msvcr80.dll"
-  Delete "$INSTDIR\Microsoft.VC80.CRT.manifest"
-  Delete "$INSTDIR\Microsoft.VC80.MFC.manifest"
 !ifdef LANGUAGE_GERMAN
   Delete "$INSTDIR\pwsafeDE.dll"
   Delete "$INSTDIR\pwsafeDE.chm"
@@ -1158,8 +1154,11 @@ Section "Uninstall"
   ; they will be prompted to remove the entry.
   DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Password Safe"
   ; Delete shortcuts, if created
+  Delete "$SMPROGRAMS\Password Safe\Password Safe.lnk"
+  Delete "$SMPROGRAMS\Password Safe\Password Safe Help.lnk"
   RMDir /r "$SMPROGRAMS\Password Safe"
   Delete "$DESKTOP\Password Safe.lnk"
+  Delete "$SMSTARTUP\Password Safe.lnk"
 
 SectionEnd
 
