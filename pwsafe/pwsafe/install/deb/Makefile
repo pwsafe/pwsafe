@@ -62,7 +62,7 @@ debtree:
 	@$(MKDIR) debian/DEBIAN
 	@$(SED) s/VERSION/$(RELNUM)/ < control > debian/DEBIAN/control
 	@$(CP) ../desktop/pwsafe.desktop debian/tmp
-	@$(CP) ../../src/ui/graphics/pwsafe.png debian/tmp
+	@$(CP) ../graphics/pwsafe.png debian/tmp
 	@$(CP) postinst debian/DEBIAN
 	@$(CP) prerm debian/DEBIAN
 	@$(RM) $(HELPZIP)
