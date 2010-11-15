@@ -64,8 +64,10 @@ void PasswordSafeFrame::DoEdit(CItemData &item)
     EditShortcut editDbox(this, m_core, &item);
     rc = editDbox.ShowModal();
   }
-  if (rc != 0)
+  if (rc == wxID_OK) {
     UpdateAccessTime(item);
+    SetChanged(Data);
+  }
 }
 
 
@@ -80,6 +82,7 @@ void PasswordSafeFrame::OnAddClick( wxCommandEvent& /* evt */ )
   if (addDbox.ShowModal() == wxID_OK) {
     const CItemData &item = addDbox.GetItem();
     m_core.Execute(AddEntryCommand::Create(&m_core, item));
+    SetChanged(Data);
   }
 }
 
@@ -307,9 +310,10 @@ void PasswordSafeFrame::OnCreateShortcut(wxCommandEvent& /*evt*/)
   if (item && !item->IsDependent()) {
     CreateShortcutDlg dlg(this, m_core, item);
     int rc = dlg.ShowModal();
-    if (rc != 0) {
+    if (rc == wxID_OK) {
       UpdateAccessTime(*item);
       Show(true);
+      SetChanged(Data);
     }
   }
 }

@@ -2981,6 +2981,9 @@ void PasswordSafeFrame::Merge(const StringX &sx_Filename2, PWScore *pothercore, 
 
   RefreshViews();
 
+  //autosave, if anything changed
+  if (totalAdded > 0 || numConflicts > 0 || numAliasesAdded > 0 || numShortcutsAdded > 0)
+    SetChanged(Data);
 }
 
 int PasswordSafeFrame::MergeDependents(PWScore *pothercore, MultiCommands *pmulticmds,
