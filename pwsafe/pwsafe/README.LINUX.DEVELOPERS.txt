@@ -22,6 +22,15 @@ For Ubuntu:
 - 'make' replaces 'gmake'
 - uuid-dev should be added
 
+For Fedora:
+gcc-c++
+subversion
+libXt-devel
+libXtst-devel
+libuuid-devel
+xerces-c-devel
+wxGTK0devel
+make
 
 With these installed, running 'make' at the top of the source tree
 will result in the debug version of pwsafe being built under
