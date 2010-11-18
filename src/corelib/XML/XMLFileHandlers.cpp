@@ -728,7 +728,7 @@ void XMLFileHandlers::AddEntries()
       for (vi_IterUXRFE = cur_entry->uhrxl.begin();
         vi_IterUXRFE != cur_entry->uhrxl.end();
         vi_IterUXRFE++) {
-          UnknownFieldEntry unkrfe = *vi_IterUXRFE;
+          const UnknownFieldEntry unkrfe = *vi_IterUXRFE;
 #ifdef NOTDEF // _DEBUG
           stringT stimestamp;
           PWSUtil::GetTimeStamp(stimestamp);
@@ -737,7 +737,8 @@ void XMLFileHandlers::AddEntries()
                         unkrfe.uc_Type, (int)unkrfe.st_length, (int)unkrfe.st_length);
           pws_os::HexDump(unkrfe.uc_pUField, (int)unkrfe.st_length, stimestamp);
 #endif /* _DEBUG */
-          ci_temp.SetUnknownField(unkrfe.uc_Type, (int)unkrfe.st_length, unkrfe.uc_pUField);
+          ci_temp.SetUnknownField(unkrfe.uc_Type, (int)unkrfe.st_length,
+                                  (const unsigned char *&)unkrfe.uc_pUField);
       }
     }
 

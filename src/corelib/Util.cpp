@@ -619,16 +619,15 @@ string PWSUtil::GetXMLTime(int indent, const char *name,
 */
 int GetStringBufSize(const TCHAR *fmt, va_list args)
 {
-  va_list ar;
   TCHAR *buffer=NULL;
 
   int len=0;
 
-  va_copy(ar, args);
 #ifdef _WIN32
-  len = _vsctprintf(fmt, ar) + 1;
-  buffer = new TCHAR[len];
+  len = _vsctprintf(fmt, args) + 1;
 #else
+  va_list ar;
+  va_copy(ar, args);
   // Linux doesn't do this correctly :-(
   int guess = 16;
   while (1) {
@@ -644,10 +643,10 @@ int GetStringBufSize(const TCHAR *fmt, va_list args)
       guess *= 2;
     }
   }
-#endif
   va_end(ar);
+#endif
   if (buffer)
     delete[] buffer;
-  assert(len>0);
+  ASSERT(len>0);
   return len;
 }
