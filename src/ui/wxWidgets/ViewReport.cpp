@@ -45,18 +45,21 @@ CViewReport::~CViewReport()
 {
 }
 
-void CViewReport::OnSave(wxCommandEvent& event) 
-{ 
+void CViewReport::OnSave(wxCommandEvent& evt) 
+{
+  UNREFERENCED_PARAMETER(evt);
   m_pRpt->SaveToDisk();
 }
 
-void CViewReport::OnClose(wxCommandEvent& event) 
-{ 
+void CViewReport::OnClose(wxCommandEvent& evt) 
+{
+  UNREFERENCED_PARAMETER(evt);
   EndModal(0);
 }
 
-void CViewReport::OnCopy(wxCommandEvent& event) 
-{ 
+void CViewReport::OnCopy(wxCommandEvent& evt) 
+{
+  UNREFERENCED_PARAMETER(evt);
   if (wxTheClipboard->Open())
   {
     wxTheClipboard->SetData( new wxTextDataObject(towxstring(m_pRpt->GetString())) );
