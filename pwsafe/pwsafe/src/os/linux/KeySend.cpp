@@ -21,13 +21,7 @@ CKeySend::~CKeySend()
 
 void CKeySend::SendString(const StringX &data)
 {
-  unsigned char* str = 0;
-  int len = 0;
-  ConvertString(data, str, len);
-  if (len && str && str[0])
-    pws_os::SendString(reinterpret_cast<const char*>(str),
-                       pws_os::ATMETHOD_AUTO, m_delayMS);
-  delete [] str;
+  pws_os::SendString(data, pws_os::ATMETHOD_AUTO, m_delayMS);
 }
 
 void CKeySend::SetDelay(unsigned d)
