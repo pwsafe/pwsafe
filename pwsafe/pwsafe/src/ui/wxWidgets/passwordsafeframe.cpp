@@ -2663,6 +2663,7 @@ void PasswordSafeFrame::DoExportText()
 //
 void PasswordSafeFrame::OnMergeAnotherSafe(wxCommandEvent& evt)
 {
+  UNREFERENCED_PARAMETER(evt);
   MergeDlg dlg(this, &m_core);
   if (dlg.ShowModal() == wxID_OK) {
     //this code comes from DboxMain::DoOtherDBProcessing()

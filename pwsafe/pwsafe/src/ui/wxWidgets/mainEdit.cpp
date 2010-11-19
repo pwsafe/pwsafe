@@ -523,12 +523,14 @@ void PasswordSafeFrame::DoEmail(CItemData& item )
 
 void PasswordSafeFrame::OnUndo(wxCommandEvent& evt)
 {
+  UNREFERENCED_PARAMETER(evt);
   m_core.Undo();
 //  RestoreGUIStatus();
 }
 
 void PasswordSafeFrame::OnRedo(wxCommandEvent& evt)
 {
+  UNREFERENCED_PARAMETER(evt);
 //  SaveGUIStatus();
   m_core.Redo();
 }

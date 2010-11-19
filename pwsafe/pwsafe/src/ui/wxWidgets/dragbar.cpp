@@ -271,12 +271,14 @@ void CDragBar::OnMouseMove(wxMouseEvent& evt)
 
 void CDragBar::OnMouseLeave(wxMouseEvent& evt)
 {
+  UNREFERENCED_PARAMETER(evt);
   RemoveToolTip(this);
   //wxLogDebug(wxT("Removed tooltip since mouse left the window"));
 }
 
 void CDragBar::OnUpdateUI(wxUpdateUIEvent& evt)
 {
+  UNREFERENCED_PARAMETER(evt);
   for (size_t idx = 0; idx < m_items.size(); ++idx) {
     const bool status = m_provider->IsEnabled(m_items[idx].id);
     if (status != m_items[idx].enabled) {
