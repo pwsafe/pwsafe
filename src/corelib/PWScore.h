@@ -74,7 +74,7 @@ public:
     UNIMPLEMENTED,                            // 15
     NO_ENTRIES_EXPORTED,                      // 16
     DB_HAS_DUPLICATES,                        // 17
-    OK_WITH_ERRORS,                           // 18
+    OK_WITH_ERRORS                           // 18
   };
 
   PWScore();
@@ -263,10 +263,10 @@ public:
 
   // alias/base and shortcut/base handling
   void SortDependents(UUIDVector &dlist, StringX &csDependents);
-  int NumAliases(const uuid_array_t &base_uuid) const
-  {return (int)m_base2aliases_mmap.count(base_uuid);}
-  int NumShortcuts(const uuid_array_t &base_uuid) const
-  {return (int)m_base2shortcuts_mmap.count(base_uuid);}
+  size_t NumAliases(const uuid_array_t &base_uuid) const
+  {return m_base2aliases_mmap.count(base_uuid);}
+  size_t NumShortcuts(const uuid_array_t &base_uuid) const
+  {return m_base2shortcuts_mmap.count(base_uuid);}
 
   ItemListIter GetUniqueBase(const StringX &title, bool &bMultiple);
   ItemListIter GetUniqueBase(const StringX &grouptitle, 

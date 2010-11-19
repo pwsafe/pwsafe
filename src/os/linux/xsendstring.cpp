@@ -90,10 +90,9 @@ static struct {
     { '\t', 	"Tab",  		NoSymbol },
     { '\n', 	"Linefeed", 	NoSymbol },
     { '\r', 	"Return", 		NoSymbol },
-    { '\e', 	"Escape", 		NoSymbol },
     { '\010', 	"BackSpace", 	NoSymbol },  /* \b doesn't work */
     { '\177', 	"Delete", 		NoSymbol },
-    { '\27', 	"Escape", 		NoSymbol },  /* \e doesn't work */
+    { '\033', 	"Escape", 		NoSymbol },  /* \e doesn't work and \e is non-iso escape sequence*/
     { '!', 		"exclam", 		NoSymbol },
     { '#', 		"numbersign", 	NoSymbol },
     { '%', 		"percent", 		NoSymbol },
@@ -156,7 +155,7 @@ void XTest_SendEvent(XKeyEvent *event)
 
 void XSendKeys_SendEvent(XKeyEvent *event)
 {
-    XSendEvent(event->display, event->window, TRUE, KeyPressMask, (XEvent *)event);
+    XSendEvent(event->display, event->window, TRUE, KeyPressMask, reinterpret_cast<XEvent *>(event));
 }
 
 void XSendKeys_SendKeyEvent(XKeyEvent* event)
@@ -224,7 +223,7 @@ void InitKeyEvent(XKeyEvent* event)
 	event->same_screen = TRUE;
 }
 
-}; // anonymous namespace
+} // anonymous namespace
 
 /* 
  * SendString - sends a string to the X Window having input focus
@@ -260,7 +259,7 @@ void pws_os::SendString(const char* str, AutotypeMethod method, unsigned delayMS
 
 	/* convert all the chars into keycodes and required shift states first
 	 * Abort if any of the characters cannot be converted */
-	keypresses = (KeyPressInfo*)malloc(sizeof(KeyPressInfo)*nsrc);
+	keypresses = reinterpret_cast<KeyPressInfo*>(malloc(sizeof(KeyPressInfo)*nsrc));
 	if (!keypresses)
 		return;
 
@@ -335,7 +334,7 @@ void pws_os::SendString(const char* str, AutotypeMethod method, unsigned delayMS
 			}
 		}
 		else {
-			sprintf(atGlobals.errorString, "Cannot convert '%d' to keysym. Aborting ...\n", (int)keystring[0]);  
+			sprintf(atGlobals.errorString, "Cannot convert '%d' to keysym. Aborting ...\n", static_cast<int>(keystring[0]));  
 			break;
 		}
 		++str;
@@ -343,7 +342,7 @@ void pws_os::SendString(const char* str, AutotypeMethod method, unsigned delayMS
 
 	if (*str) {
 		/* some of the input chars were unprocessed */
-		sprintf(atGlobals.errorString, "char at approximate index(%u), ascii(%d), symbol(%c) couldn't be converted to keycode\n", ndest, (int)*str, *str);
+		sprintf(atGlobals.errorString, "char at approximate index(%u), ascii(%d), symbol(%c) couldn't be converted to keycode\n", static_cast<unsigned int>(ndest), static_cast<int>(*str), *str);
 	}
 	else {
 		size_t n;

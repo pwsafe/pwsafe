@@ -79,7 +79,7 @@ namespace PWSMatch {
                     const stringT &fstring, bool fcase,
                     short fdca, int etype, int estatus, int funit,
                     bool bBetween, stringT &cs1, stringT &cs2);
-};
+}
 #endif /* __MATCH_H */
 //-----------------------------------------------------------------------------
 // Local variables:

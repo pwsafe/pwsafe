@@ -250,8 +250,8 @@ void CSafeCombinationChange::OnOkClick( wxCommandEvent& /* evt */ )
       msg += _("\nUse it anyway?");
       wxMessageDialog err(this, msg,
                           _("Error"), wxYES_NO | wxICON_HAND);
-      int rc = err.ShowModal();
-      if (rc == wxID_YES)
+      int rc1 = err.ShowModal();
+      if (rc1 == wxID_YES)
         EndModal(wxID_OK);
 #else
       wxMessageDialog err(this, msg,

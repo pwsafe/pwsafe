@@ -35,6 +35,6 @@ namespace pws_os {
   */
   void HexDump(unsigned char *pmemory, const int &length,
                const stringT &cs_prefix = _S(""), const int &maxnum = 16);
-};
+}
 
 #endif /* _OSDEBUG_H */

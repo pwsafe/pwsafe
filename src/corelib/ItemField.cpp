@@ -18,7 +18,7 @@
 //Returns the number of bytes of 8 byte blocks needed to store 'size' bytes
 int CItemField::GetBlockSize(int size) const
 {
-  return (int)ceil((double)size/8.0) * 8;
+  return static_cast<int>(ceil(static_cast<double>(size)/8.0)) * 8;
 }
 
 CItemField::CItemField(const CItemField &that)
@@ -80,9 +80,9 @@ void CItemField::Set(const unsigned char* value, unsigned int length, BlowFish *
     unsigned char *tempmem = new unsigned char[BlockLength];
     // invariant: BlockLength >= plainlength
 #if (_MSC_VER >= 1400)
-    memcpy_s((char*)tempmem, BlockLength, (const char*)value, m_Length);
+    memcpy_s(reinterpret_cast<char*>(tempmem), BlockLength, reinterpret_cast<const char*>(value), m_Length);
 #else
-    memcpy((char*)tempmem, (const char*)value, m_Length);
+    memcpy(reinterpret_cast<char*>(tempmem), reinterpret_cast<const char*>(value), m_Length);
 #endif
 
     //Fill the unused characters in with random stuff
@@ -100,7 +100,7 @@ void CItemField::Set(const StringX &value, BlowFish *bf)
 {
   const LPCTSTR plainstr = value.c_str();
 
-  Set((const unsigned char *)plainstr,
+  Set(reinterpret_cast<const unsigned char *>(plainstr),
       value.length() * sizeof(*plainstr), bf);
 }
 
@@ -120,7 +120,7 @@ void CItemField::Get(unsigned char *value, unsigned int &length, BlowFish *bf) c
     length = 0;
   } else { // we have data to decrypt
     int BlockLength = GetBlockSize(m_Length);
-    ASSERT(length >= (unsigned int)BlockLength);
+    ASSERT(length >= static_cast<unsigned int>(BlockLength));
     unsigned char *tempmem = new unsigned char[BlockLength];
 
     int x;

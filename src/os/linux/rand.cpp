@@ -35,7 +35,7 @@ bool pws_os::GetRandomData(void *p, unsigned long len)
   ifstream is("/dev/urandom");
   if (!is)
     return false;
-  return is.read((char *)p, len);
+  return is.read(static_cast<char *>(p), len);
 }
 
 static void get_failsafe_rnd(char * &p, unsigned &slen)

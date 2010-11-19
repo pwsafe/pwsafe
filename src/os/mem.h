@@ -17,7 +17,7 @@ namespace pws_os {
    */
   extern bool mlock(void *p, size_t size);
   extern bool munlock(void *p, size_t size);
-};
+}
 #endif /* __MEM_H */
 //-----------------------------------------------------------------------------
 // Local variables:

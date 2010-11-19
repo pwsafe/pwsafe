@@ -17,7 +17,7 @@ namespace pws_os {
     extern int wctoi(const wchar_t *s);
     extern double wctof(const wchar_t *s);
     extern TCHAR* pws_itot(int val, TCHAR* out, unsigned base);
-};
+}
 
 #endif /* __PWS_STR_H */
 //-----------------------------------------------------------------------------

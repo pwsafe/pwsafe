@@ -64,7 +64,7 @@ static bool isFileUnicode(const stringT &fname)
 #endif /* UNICODE */
   unsigned char buffer[] = {0x00, 0x00};
   const unsigned char BOM[] = {0xff, 0xfe};
-  if (!is.read((char *)buffer, sizeof(buffer)))
+  if (!is.read(reinterpret_cast<char *>(buffer), sizeof(buffer)))
     return false;
   return (buffer[0] == BOM[0] && buffer[1] == BOM[1]);
 }
@@ -133,7 +133,7 @@ bool CReport::SaveToDisk()
         nBytesRead = fread(inbuffer, sizeof(inbuffer), 1, f_in);
 
         if (nBytesRead > 0) {
-          size_t len = pws_os::mbstowcs(outwbuffer, 4096, (const char *)inbuffer, nBytesRead);
+          size_t len = pws_os::mbstowcs(outwbuffer, 4096, reinterpret_cast<const char *>(inbuffer), nBytesRead);
           if (len != 0)
             fwrite(outwbuffer, sizeof(outwbuffer[0])*len, 1, f_out);
         } else
@@ -204,7 +204,7 @@ bool CReport::SaveToDisk()
   }
 #endif
   StringX sx = m_osxs.rdbuf()->str();
-  fwrite((void *)sx.c_str(), sizeof(BYTE), sx.length() * sizeof(TCHAR), fd);
+  fwrite(reinterpret_cast<const void *>(sx.c_str()), sizeof(BYTE), sx.length() * sizeof(TCHAR), fd);
   fclose(fd);
 
   return true;

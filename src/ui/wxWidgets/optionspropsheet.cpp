@@ -242,8 +242,6 @@ void COptions::Init()
 
 void COptions::CreateControls()
 {    
-////@begin COptions content construction
-  COptions* itemPropertySheetDialog1 = this;
 
   wxPanel* itemPanel2 = new wxPanel( GetBookCtrl(), ID_PANEL, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER|wxTAB_TRAVERSAL );
   wxBoxSizer* itemBoxSizer3 = new wxBoxSizer(wxVERTICAL);

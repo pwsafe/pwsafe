@@ -11,7 +11,7 @@
 */
 // For compilers that support precompilation, includes "wx/wx.h".
 #include "wx/wxprec.h"
-
+#include "../../corelib/PwsPlatform.h"
 #ifdef __BORLANDC__
 #pragma hdrstop
 #endif
@@ -32,6 +32,7 @@ const wxChar xvkbdTargetName[] = wxT("__passwordsafetextctrl__");
 
 void CommandEventHandler::HandleCommandEvent(wxCommandEvent& evt)
 {
+  UNREFERENCED_PARAMETER(evt);
 #ifdef __WXGTK__
 //if this works, we could pass the X window-id of the combination textCtrl
 //to make sure it is the only recipient of keystrokes from xvkbd

@@ -95,5 +95,6 @@ CExportTextWarningDlgBase::CExportTextWarningDlgBase(wxWindow* parent) : wxDialo
 
 void CExportTextWarningDlgBase::OnAdvancedSelection( wxCommandEvent& evt )
 {
+  UNREFERENCED_PARAMETER(evt);
   DoAdvancedSelection();
 }

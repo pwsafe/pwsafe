@@ -128,10 +128,10 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
 // Default value = -1 means set at runtime
 // Extra two values for Integer - min and max acceptable values (ignored if = -1)
 const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {
-  {_T("column1width"), (unsigned int)-1, ptApplication, -1, -1},    // application
-  {_T("column2width"), (unsigned int)-1, ptApplication, -1, -1},    // application
-  {_T("column3width"), (unsigned int)-1, ptApplication, -1, -1},    // application
-  {_T("column4width"), (unsigned int)-1, ptApplication, -1, -1},    // application
+  {_T("column1width"), static_cast<unsigned int>(-1), ptApplication, -1, -1},    // application
+  {_T("column2width"), static_cast<unsigned int>(-1), ptApplication, -1, -1},    // application
+  {_T("column3width"), static_cast<unsigned int>(-1), ptApplication, -1, -1},    // application
+  {_T("column4width"), static_cast<unsigned int>(-1), ptApplication, -1, -1},    // application
   {_T("sortedcolumn"), 0, ptApplication, 0, 15},                    // application
   {_T("PWDefaultLength"), 8, ptDatabase, 4, 1024},                  // database
   // maxmruitems maximum = (ID_FILE_MRU_ENTRYMAX - ID_FILE_MRU_ENTRY1 + 1)
@@ -259,7 +259,7 @@ StringX PWSprefs::GetPrefDefVal(StringPrefs pref_enum) const
 // Following for case where default value is determined at runtime
 unsigned int PWSprefs::GetPref(IntPrefs pref_enum, unsigned int defVal) const
 {
-  return m_intValues[pref_enum] == (unsigned int)-1 ? defVal : m_intValues[pref_enum];
+  return m_intValues[pref_enum] == static_cast<unsigned int>(-1) ? defVal : m_intValues[pref_enum];
 }
 
 void PWSprefs::GetPrefRect(long &top, long &bottom,
@@ -557,7 +557,7 @@ bool equal_shortcuts(st_prefShortcut a, st_prefShortcut b)
   return (a.id        == b.id &&
           a.cVirtKey  == b.cVirtKey &&
           a.cModifier == b.cModifier);
-};
+}
 
 void PWSprefs::SetPrefShortcuts(const std::vector<st_prefShortcut> &vShortcuts)
 {
@@ -1346,16 +1346,16 @@ void PWSprefs::SaveApplicationPreferences()
 
   if (m_ConfigOption == CF_FILE_RW ||
       m_ConfigOption == CF_FILE_RW_NEW) {
-    int i;
+    int j;
     const int n = GetPref(PWSprefs::MaxMRUItems);
     // Delete ALL entries
     m_pXML_Config->DeleteSetting(m_csHKCU_MRU, _T(""));
     // Now put back the ones we want
     stringT csSubkey;
-    for (i = 0; i < n; i++) {
-      if (!m_MRUitems[i].empty()) {
-        Format(csSubkey, _T("Safe%02d"), i+1);
-        m_pXML_Config->Set(m_csHKCU_MRU, csSubkey, m_MRUitems[i]);
+    for (j = 0; j < n; j++) {
+      if (!m_MRUitems[j].empty()) {
+        Format(csSubkey, _T("Safe%02d"), j+1);
+        m_pXML_Config->Set(m_csHKCU_MRU, csSubkey, m_MRUitems[j]);
       }
     }
   }

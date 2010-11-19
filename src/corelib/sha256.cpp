@@ -48,9 +48,9 @@ static const unsigned long K[64] = {
 
 /* compress 512-bits */
 #ifdef LTC_CLEAN_STACK
-static void _sha256_compress(ulong32 state[8], unsigned char *buf)
+static void _sha256_compress(ulong32 state[8], const unsigned char *buf)
 #else
-static void  sha256_compress(ulong32 state[8], unsigned char *buf)
+static void  sha256_compress(ulong32 state[8], const unsigned char *buf)
 #endif
 {
   unsigned long S[8], W[64], t0, t1;
@@ -170,7 +170,7 @@ static void  sha256_compress(ulong32 state[8], unsigned char *buf)
 }
 
 #ifdef LTC_CLEAN_STACK
-static void sha256_compress(ulong32 state[8], unsigned char *buf)
+static void sha256_compress(ulong32 state[8], const unsigned char *buf)
 {
   _sha256_compress(state, buf);
   burnStack(sizeof(unsigned long) * 74);
@@ -212,13 +212,13 @@ void SHA256::Update(const unsigned char *in, size_t inlen)
   ASSERT(curlen <= sizeof(buf));
   while (inlen > 0) {
     if (curlen == 0 && inlen >= block_size) {
-      sha256_compress(state, (unsigned char *)in);
+      sha256_compress(state, in);
       length += block_size * 8;
       in             += block_size;
       inlen          -= block_size;
     } else {
       n = MIN(inlen, (block_size - curlen));
-      memcpy(buf + curlen, in, (size_t)n);
+      memcpy(buf + curlen, in, static_cast<size_t>(n));
       curlen += n;
       in             += n;
       inlen          -= n;
@@ -247,7 +247,7 @@ void SHA256::Final(unsigned char digest[HASHLEN])
   length += curlen * 8;
 
   /* append the '1' bit */
-  buf[curlen++] = (unsigned char)0x80;
+  buf[curlen++] = static_cast<unsigned char>(0x80);
 
   /* if the length is currently above 56 bytes we append zeros
   * then compress.  Then we can fall back to padding zeros and length
@@ -255,7 +255,7 @@ void SHA256::Final(unsigned char digest[HASHLEN])
   */
   if (curlen > 56) {
     while (curlen < 64) {
-      buf[curlen++] = (unsigned char)0;
+      buf[curlen++] = 0;
     }
     sha256_compress(state, buf);
     curlen = 0;
@@ -263,7 +263,7 @@ void SHA256::Final(unsigned char digest[HASHLEN])
 
   /* pad upto 56 bytes of zeroes */
   while (curlen < 56) {
-    buf[curlen++] = (unsigned char)0;
+    buf[curlen++] = 0;
   }
 
   /* store length */

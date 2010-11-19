@@ -172,9 +172,9 @@ public:
                        unsigned char * &pdata,
                        const UnknownFieldsConstIter &iter) const;
   void SetUnknownField(const unsigned char &type, const unsigned int &length,
-                       unsigned char * &ufield);
-  unsigned int NumberUnknownFields() const
-  {return (unsigned int)m_URFL.size();}
+                       const unsigned char * &ufield);
+  size_t NumberUnknownFields() const
+  {return m_URFL.size();}
   void ClearUnknownFields()
   {return m_URFL.clear();}
   UnknownFieldsConstIter GetURFIterBegin() const {return m_URFL.begin();}
@@ -188,9 +188,9 @@ public:
   void SetPassword(const StringX &password);
   void UpdatePassword(const StringX &password); // use when password changed!
   void SetNotes(const StringX &notes, TCHAR delimiter = 0);
-  void SetUUID(const uuid_array_t &UUID); // V20
+  void SetUUID(const uuid_array_t &uuid); // V20
   void SetGroup(const StringX &group); // V20
-  void SetURL(const StringX &URL); // V30
+  void SetURL(const StringX &url); // V30
   void SetAutoType(const StringX &autotype); // V30
   void SetATime() {SetTime(ATIME);}  // V30
   void SetATime(time_t t) {SetTime(ATIME, t);}  // V30
@@ -251,7 +251,7 @@ public:
   void SerializePlainText(std::vector<char> &v,
                           const CItemData *pcibase = NULL) const;
   bool DeserializePlainText(const std::vector<char> &v);
-  bool SetField(int type, unsigned char *data, int len);
+  bool SetField(int type, const unsigned char *data, int len);
 
   EntryType GetEntryType() const {return m_entrytype;}
 

@@ -66,8 +66,8 @@ void PWSrand::NextRandBlock()
   SHA256 s;
   s.Update(K, sizeof(K));
   s.Final(R);
-  unsigned int *Kp = (unsigned int *)K;
-  unsigned int *Rp = (unsigned int *)R;
+  unsigned int *Kp = reinterpret_cast<unsigned int *>(K);
+  unsigned int *Rp = reinterpret_cast<unsigned int *>(R);
   const int N = SHA256::HASHLEN/sizeof(unsigned int);
 
   Kp[0]++;
@@ -89,7 +89,7 @@ void PWSrand::GetRandomData( void * const buffer, unsigned long length )
   // poor or subverted external PRNGs.
   // Otherwise, we'll rely on our lonesome.
 
-  unsigned char *pb = (unsigned char *)buffer;
+  unsigned char *pb = static_cast<unsigned char *>(buffer);
   while (length > SHA256::HASHLEN) {
     NextRandBlock();
     for (int j = 0; j < SHA256::HASHLEN; j++)

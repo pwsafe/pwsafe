@@ -49,13 +49,14 @@ static void SHA1Transform(unsigned long state[5],
     unsigned long l[16];
   } CHAR64LONG16;
   CHAR64LONG16* block;
-#ifdef SHA1HANDSOFF
+//commented, because otherwise we change the buffer
+//#ifdef SHA1HANDSOFF
   static unsigned char workspace[64];
-  block = (CHAR64LONG16*)workspace;
+  block = reinterpret_cast<CHAR64LONG16*>(workspace);
   memcpy(block, buffer, 64);
-#else
-  block = (CHAR64LONG16*)buffer;
-#endif
+//#else
+//  block = reinterpret_cast<const CHAR64LONG16*>(buffer);
+//#endif
   /* Copy context->state[] to working vars */
   a = state[0];
   b = state[1];
@@ -131,16 +132,16 @@ void SHA1::Final(unsigned char digest[HASHLEN])
   unsigned char finalcount[8];
 
   for (i = 0; i < 8; i++) {
-    finalcount[i] = (unsigned char)((count[(i >= 4 ? 0 : 1)]
+    finalcount[i] = static_cast<unsigned char>((count[(i >= 4 ? 0 : 1)]
     >> ((3-(i & 3)) * 8) ) & 255);  /* Endian independent */
   }
-  Update((unsigned char *)"\200", 1);
+  Update(reinterpret_cast<const unsigned char *>("\200"), 1);
   while ((count[0] & 504) != 448) {
-    Update((unsigned char *)"\0", 1);
+    Update(reinterpret_cast<const unsigned char *>("\0"), 1);
   }
   Update(finalcount, 8);  /* Should cause a SHA1Transform() */
   for (i = 0; i < 20; i++) {
-    digest[i] = (unsigned char)
+    digest[i] = static_cast<unsigned char>
       ((state[i>>2] >> ((3-(i & 3)) * 8) ) & 255);
   }
   /* Wipe variables */

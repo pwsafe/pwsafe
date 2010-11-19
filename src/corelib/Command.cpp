@@ -660,8 +660,8 @@ AddDependentEntryCommand::AddDependentEntryCommand(CommandInterface *pcomInt,
                                                    const CItemData::EntryType type)
   : Command(pcomInt), m_type(type)
 {
-  memcpy((void *)m_base_uuid, (void *)base_uuid, sizeof(uuid_array_t));
-  memcpy((void *)m_entry_uuid, (void *)entry_uuid, sizeof(uuid_array_t));
+  memcpy(static_cast<void *>(m_base_uuid), static_cast<const void *>(base_uuid), sizeof(uuid_array_t));
+  memcpy(static_cast<void *>(m_entry_uuid), static_cast<const void *>(entry_uuid), sizeof(uuid_array_t));
 }
 
 int AddDependentEntryCommand::Execute()
@@ -768,8 +768,8 @@ RemoveDependentEntryCommand::RemoveDependentEntryCommand(CommandInterface *pcomI
                                                          const CItemData::EntryType type)
   : Command(pcomInt), m_type(type)
 {
-  memcpy((void *)m_base_uuid, (void *)base_uuid, sizeof(uuid_array_t));
-  memcpy((void *)m_entry_uuid, (void *)entry_uuid, sizeof(uuid_array_t));
+  memcpy(static_cast<void *>(m_base_uuid), static_cast<const void *>(base_uuid), sizeof(uuid_array_t));
+  memcpy(static_cast<void *>(m_entry_uuid), static_cast<const void *>(entry_uuid), sizeof(uuid_array_t));
 }
 
 int RemoveDependentEntryCommand::Execute()
@@ -810,8 +810,8 @@ MoveDependentEntriesCommand::MoveDependentEntriesCommand(CommandInterface *pcomI
                                                          const CItemData::EntryType type)
   : Command(pcomInt), m_type(type)
 {
-  memcpy((void *)m_from_baseuuid, (void *)from_baseuuid, sizeof(uuid_array_t));
-  memcpy((void *)m_to_baseuuid, (void *)to_baseuuid, sizeof(uuid_array_t));
+  memcpy(static_cast<void *>(m_from_baseuuid), static_cast<const void *>(from_baseuuid), sizeof(uuid_array_t));
+  memcpy(static_cast<void *>(m_to_baseuuid), static_cast<const void *>(to_baseuuid), sizeof(uuid_array_t));
 }
 
 int MoveDependentEntriesCommand::Execute()

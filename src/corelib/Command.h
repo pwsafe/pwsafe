@@ -92,7 +92,7 @@ public:
     GUI_REDO_MERGESYNC,
     GUI_UNDO_MERGESYNC,
     GUI_REFRESH_TREE,
-    GUI_DB_PREFERENCES_CHANGED,
+    GUI_DB_PREFERENCES_CHANGED
   };
 
   static UpdateGUICommand *Create(CommandInterface *pcomInt,

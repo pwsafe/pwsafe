@@ -126,7 +126,7 @@ int PWSfileV1V2::Open(const StringX &passkey)
 #ifdef UNICODE
   unsigned long pstr_len = 3*passLen;
   pstr = new unsigned char[pstr_len];
-  size_t len = pws_os::wcstombs((char *)pstr, 3 * passLen, passstr, passLen, false);
+  size_t len = pws_os::wcstombs(reinterpret_cast<char *>(pstr), 3 * passLen, passstr, passLen, false);
   ASSERT(len != 0);
   // hack around OS-dependent semantics - too widespread to fix systematically :-(
   pstr[len < pstr_len ? len : pstr_len - 1] = '\0';
@@ -215,7 +215,7 @@ int PWSfileV1V2::CheckPasskey(const StringX &filename,
   unsigned char temphash[20]; // HashSize
   GenRandhash(passkey, randstuff, temphash);
 
-  if (0 != memcmp((char*)randhash, (char*)temphash, 20)) { // HashSize
+  if (0 != memcmp(reinterpret_cast<char*>(randhash), reinterpret_cast<char*>(temphash), MIN(sizeof(randhash), sizeof(temphash)))) { // HashSize
       return WRONG_PASSWORD;
   } else {
     return SUCCESS;
@@ -475,7 +475,7 @@ int PWSfileV1V2::ReadRecord(CItemData &item)
               LPCTSTR ptr = tempdata.c_str();
               uuid_array_t uuid_array;
               for (unsigned i = 0; i < sizeof(uuid_array); i++)
-                uuid_array[i] = (unsigned char)ptr[i];
+                uuid_array[i] = static_cast<unsigned char>(ptr[i]);
               item.SetUUID(uuid_array);
               break;
             }

@@ -7,6 +7,7 @@
 */
 
 #include "../debug.h"
+#include "../corelib/Util.h"
 
 #if defined(_DEBUG) || defined(DEBUG)
 
@@ -23,29 +24,32 @@ void pws_os::Trace(LPCTSTR lpszFormat, ...)
   va_start(args, lpszFormat);
 
   int num_required, num_written;
+
 #ifdef UNICODE
-  num_required = _vscwprintf(lpszFormat, args);
+  num_required = GetStringBufSize(lpszFormat, args);
   va_end(args);//after using args we should reset list
   va_start(args, lpszFormat);
-  wchar_t *wcbuffer = new wchar_t[num_required + 1];
+
+  wchar_t *wcbuffer = new wchar_t[num_required];
   num_written = vswprintf(wcbuffer, num_required, lpszFormat, args);
-  assert(num_required == num_written);
-  wcbuffer[num_required] = L'\0';
+  assert(num_required == num_written+1);
+  wcbuffer[num_required-1] = L'\0';
 
   size_t N = wcstombs(NULL, wcbuffer, 0) + 1;
   char *szbuffer = new char[N];
   wcstombs(szbuffer, wcbuffer, N);
   delete[] wcbuffer;
 #else
-  num_required = _vscprintf(lpszFormat, args);
+  num_required = GetStringBufSize(lpszFormat, args);
   va_end(args);//after using args we should reset list
   va_start(args, lpszFormat);
-  char *szbuffer = new char[num_required + 1];
-  num_written = vsprintf(szbuffer, num_required, lpszFormat, args);
-  assert(num_required == num_written);
-  szbuffer[num_required] = '\0';
+
+  char *szbuffer = new char[num_required];
+  num_written = vsnprintf(szbuffer, num_required, lpszFormat, args);
+  assert(num_required == num_written+1);
+  szbuffer[num_required-1] = '\0';
 #endif
-  syslog(LOG_DEBUG, szbuffer);
+  syslog(LOG_DEBUG, "%s", szbuffer);
 
   delete[] szbuffer;
   closelog();
@@ -62,11 +66,11 @@ void pws_os::Trace0(LPCTSTR lpszFormat)
   char *szbuffer = new char[N];
   wcstombs(szbuffer, lpszFormat, N);
 
-  syslog(LOG_DEBUG, szbuffer);
+  syslog(LOG_DEBUG, "%s", szbuffer);
 
   delete[] szbuffer;
 #else
-  syslog(LOG_DEBUG, lpszFormat);
+  syslog(LOG_DEBUG, "%s", lpszFormat);
 #endif
 
   closelog();
@@ -84,15 +88,17 @@ void pws_os::Trace0(LPCTSTR )
 
 #if defined(_DEBUG) || defined(DEBUG)
 #include "../../corelib/StringX.h"
+#include <iostream>
+#include "../pws_tchar.h"
 
 // This routine uses Windows functions
 void pws_os::IssueError(const stringT &csFunction, bool bMsgBox)
 {
   // Stub?
   if (bMsgBox)
-    cout << csFunction;
+    std::cout << csFunction.c_str();
   else
-    cerr << csFunction;
+    std::cerr << csFunction.c_str();
 }
 
 void pws_os::HexDump(unsigned char *pmemory, const int &length,
@@ -127,7 +133,7 @@ void pws_os::HexDump(unsigned char *pmemory, const int &length,
       cs_outbuff += cs_hexbuff;
 
       if (c >= 32 && c < 127)
-        cs_charbuff += (TCHAR)c;
+        cs_charbuff += static_cast<TCHAR>(c);
       else
         cs_charbuff += _T('.');
     }

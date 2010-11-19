@@ -86,7 +86,7 @@ CUUIDGen::CUUIDGen(const StringX &s) // s is a hex string as returned by GetHexS
   for (int i = 0; i < 16; i++) {
     iStringXStream is(s.substr(i*2, 2));
     is >> hex >> x;
-    uu[i] = (unsigned char)x;
+    uu[i] = static_cast<unsigned char>(x);
   }
 #ifdef _WIN32
   array2UUUID(uu, uuid);
@@ -95,7 +95,7 @@ CUUIDGen::CUUIDGen(const StringX &s) // s is a hex string as returned by GetHexS
 
 CUUIDGen::~CUUIDGen()
 {
-  trashMemory((unsigned char *)&uuid, sizeof(uuid));
+  trashMemory(reinterpret_cast<unsigned char *>(&uuid), sizeof(uuid));
 }
 
 void CUUIDGen::GetUUID(uuid_array_t &uuid_array) const

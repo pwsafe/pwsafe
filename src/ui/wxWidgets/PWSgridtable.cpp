@@ -142,9 +142,9 @@ bool PWSGridTable::DeleteRows(size_t pos, size_t numRows)
 		wxFAIL_MSG( wxString::Format 
                 (
                  wxT("Called PWSGridTable::DeleteRows(pos=%lu, N=%lu)\nPos value is invalid for present table with %lu rows"),
-                 (unsigned int)pos,
-                 (unsigned int)numRows,
-                 (unsigned int)curNumRows
+                 static_cast<unsigned int>(pos),
+                 static_cast<unsigned int>(numRows),
+                 static_cast<unsigned int>(curNumRows)
                  ) );
 		return false;
 	}

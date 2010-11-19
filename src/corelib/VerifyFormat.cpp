@@ -52,7 +52,7 @@ bool VerifyImportDateTimeString(const stringT &time_str, time_t &t)
   const int idigits[ndigits] = {0, 1, 2, 3, 5, 6, 8, 9, 11, 12, 14, 15, 17, 18};
   int yyyy, mon, dd, hh, min, ss;
 
-  t = (time_t)-1;
+  t = time_t(-1);
 
   if (time_str.length() != 19)
     return false;
@@ -81,11 +81,12 @@ bool VerifyImportDateTimeString(const stringT &time_str, time_t &t)
   // Accept 01/01/1970 as a special 'unset' value, otherwise there can be
   // issues with mktime after apply daylight savings offset.
   if (yyyy == 1970 && mon == 1 && dd == 1) {
-    t = (time_t)0;
+    t = time_t(0);
     return true;
   }
 
-  struct tm xtm = { 0 };
+  struct tm xtm;
+  memset(&xtm, 0, sizeof(xtm));
   xtm.tm_year = yyyy - 1900;
   xtm.tm_mon = mon - 1;
   xtm.tm_mday = dd;
@@ -111,7 +112,7 @@ bool VerifyASCDateTimeString(const stringT &time_str, time_t &t)
   stringT::size_type iMON, iDOW;
   int yyyy, mon, dd, hh, min, ss;
 
-  t = (time_t)-1;
+  t = time_t(-1);
 
   if (time_str.length() != 24)
     return false;
@@ -142,12 +143,13 @@ bool VerifyASCDateTimeString(const stringT &time_str, time_t &t)
   // Accept 01/01/1970 as a special 'unset' value, otherwise there can be
   // issues with mktime after apply daylight savings offset.
   if (yyyy == 1970 && mon == 1 && dd == 1) {
-    t = (time_t)0;
+    t = time_t(0);
     return true;
   }
 
   time_t xt;
-  struct tm xtm = { 0 };
+  struct tm xtm;
+  memset(&xtm, 0, sizeof(xtm));
   xtm.tm_year = yyyy - 1900;
   xtm.tm_mon = mon - 1;
   xtm.tm_mday = dd;
@@ -182,7 +184,7 @@ bool VerifyXMLDateTimeString(const stringT &time_str, time_t &t)
   const int idigits[ndigits] = {0, 1, 2, 3, 5, 6, 8, 9, 11, 12, 14, 15, 17, 18};
   int yyyy, mon, dd, hh, min, ss;
 
-  t = (time_t)-1;
+  t = time_t(-1);
 
   if (time_str.length() != 19)
     return false;
@@ -211,11 +213,12 @@ bool VerifyXMLDateTimeString(const stringT &time_str, time_t &t)
   // Accept 01/01/1970 as a special 'unset' value, otherwise there can be
   // issues with mktime after apply daylight savings offset.
   if (yyyy == 1970 && mon == 1 && dd == 1) {
-    t = (time_t)0;
+    t = time_t(0);
     return true;
   }
 
-  struct tm xtm = { 0 };
+  struct tm xtm;
+  memset(&xtm, 0, sizeof(xtm));
   xtm.tm_year = yyyy - 1900;
   xtm.tm_mon = mon - 1;
   xtm.tm_mday = dd;
@@ -238,7 +241,7 @@ bool VerifyXMLDateString(const stringT &time_str, time_t &t)
   const int idigits[ndigits] = {0, 1, 2, 3, 5, 6, 8, 9};
   int yyyy, mon, dd;
 
-  t = (time_t)-1;
+  t = time_t(-1);
 
   if (time_str.length() != 10)
     return false;
@@ -264,11 +267,12 @@ bool VerifyXMLDateString(const stringT &time_str, time_t &t)
   // Accept 01/01/1970 as a special 'unset' value, otherwise there can be
   // issues with mktime after apply daylight savings offset.
   if (yyyy == 1970 && mon == 1 && dd == 1) {
-    t = (time_t)0;
+    t = time_t(0);
     return true;
   }
 
-  struct tm xtm = { 0 };
+  struct tm xtm;
+  memset(&xtm, 0, sizeof(xtm));
   xtm.tm_year = yyyy - 1900;
   xtm.tm_mon = mon - 1;
   xtm.tm_mday = dd;
@@ -397,7 +401,7 @@ int VerifyImportPWHistoryString(const StringX &PWHistory,
     }
 
     tmp = StringX(lpszPWHistory, ipwlen);
-    Format(buffer, _T("%08x%04x%s"), (long) t, ipwlen, tmp.c_str());
+    Format(buffer, _T("%08x%04x%s"), static_cast<long>(t), ipwlen, tmp.c_str());
     newPWHistory += buffer.c_str();
     buffer.clear();
     lpszPWHistory += ipwlen;
