@@ -14,11 +14,13 @@
 #ifndef __XSENDSTRING_H__
 #define __XSENDSTRING_H__
 
+#include "../../corelib/StringX.h"
+
 namespace pws_os {
   /* Set the method to AUTO if you're not sure what it should be */
   typedef enum { ATMETHOD_AUTO, ATMETHOD_XTEST, ATMETHOD_XSENDKEYS } AutotypeMethod;
   
-  void SendString(const char* str, AutotypeMethod method, unsigned delayMS);
+  void SendString(const StringX& str, AutotypeMethod method, unsigned delayMS);
 }
 #endif
 

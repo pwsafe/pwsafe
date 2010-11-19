@@ -7,12 +7,11 @@
 */
 
 /*
- * xsendkeys - send a bunch of keystrokes to the app having current input focus
+ * xsendstring - send a bunch of keystrokes to the app having current input focus
  *
  * Calls X library functions defined in Xt and Xtst
  *
  * +. Initialize all the params of XKeyEvent
- * +. Test for \133 etc
  * +  More escape sequences from http://msdn.microsoft.com/en-us/library/h21280bw%28VS.80%29.aspx
  * +  XGetErrorText and sprintf overflow
  */
@@ -23,6 +22,9 @@
 #include <ctype.h>
 #include <string.h>
 #include <time.h>
+#include <vector>
+#include <errno.h>
+#include <limits.h>
 
 
 #include <X11/Intrinsic.h> // in libxt-dev
@@ -32,9 +34,14 @@
 #include "./xsendstring.h"
 #include "../sleep.h"
 #include "../../corelib/PwsPlatform.h" // for NumberOf()
+#include "../../corelib/StringX.h"
 
 namespace { // anonymous namespace for hiding
   //           local variables and functions
+typedef struct _KeyPress {
+  KeyCode code;
+  unsigned int state;
+} KeyPressInfo;
 
 struct AutotypeGlobals
 {
@@ -237,147 +244,100 @@ void InitKeyEvent(XKeyEvent* event)
  * by this function.  See the code below for details
  */
 
-void pws_os::SendString(const char* str, AutotypeMethod method, unsigned delayMS)
+void pws_os::SendString(const StringX& str, AutotypeMethod method, unsigned delayMS)
 {
-	typedef struct _KeyPress {
-		KeyCode code;
-		unsigned int state;
-	} KeyPressInfo;
 
-	XKeyEvent event;
-	KeyPressInfo* keypresses;
-	size_t nsrc, ndest;
-    char keystring[2];
+  if (!atGlobals.LiteralKeysymsInitialized) {
+    InitLiteralKeysyms();
+    atGlobals.LiteralKeysymsInitialized = True;
+  }
 
-	if (!str || !*str) return;
+  XKeyEvent event;
+  InitKeyEvent(&event);
 
-	InitKeyEvent(&event);
+  // convert all the chars into keycodes and required shift states first
+  // Abort if any of the characters cannot be converted
+  typedef std::vector<KeyPressInfo> KeyPressInfoVector;
+  KeyPressInfoVector keypresses;
+  
+  for (StringX::const_iterator srcIter = str.begin(); srcIter != str.end(); ++srcIter) {
 
-	/* no of bytes in strlen, not the same as number of characters to be converted
-	 * which could be different due to escape sequences like \r, \133, etc */
-	nsrc = strlen(str);
+    //This array holds the multibyte representation of the current (wide) char, plus NULL
+    char keystring[MB_LEN_MAX + 1] = {0};
 
-	/* convert all the chars into keycodes and required shift states first
-	 * Abort if any of the characters cannot be converted */
-	keypresses = reinterpret_cast<KeyPressInfo*>(malloc(sizeof(KeyPressInfo)*nsrc));
-	if (!keypresses)
-		return;
+    mbstate_t state = {0};
 
-	memset(keypresses, 0, sizeof(KeyPressInfo)*nsrc);
+    size_t ret = wcrtomb(keystring, *srcIter, &state);
+    if (ret < 0) {
+      snprintf(atGlobals.errorString, NumberOf(atGlobals.errorString), 
+              "char at index(%u), value(%d) couldn't be converted to keycode. %s\n",
+                  (unsigned int)std::distance(str.begin(), srcIter), (int)*srcIter, strerror(errno));
+      atGlobals.error_detected = True;
+      return;
+    }
 
-	ndest = 0;
-	while (*str) {
-		if (*str == '\\') {
-			++str;
-			switch(*str) {
-				case 't':
-					keystring[0] = '\t';
-					break;
+    ASSERT(ret < (NumberOf(keystring)-1));
+    
+    //Try a regular conversion first
+    KeySym sym = XStringToKeysym(keystring);
 
-				case 'n':
-					keystring[0] = '\n';
-					break;
-
-				case 'r':
-					keystring[0] = '\r';
-					break;
-
-				case 'b':
-					keystring[0] = '\b';
-					break;
-
-				case '\\':
-					keystring[0] = '\\';
-					break;
-
-				case '0': case '1': case '2': case '3': case '4':
-				case '5': case '6': case '7': case '8': case '9':
-                {
-					int number, nchars;
-                    sscanf(str, "%d%n", &number, &nchars); /* nchars is set by sscanf to the number of source chars processed */
-					keystring[0] = number;
-					str += nchars - 1; /* incremented below for the entire while loop*/
-					break;
-				}
-
-				default:
-					keystring[0] = '\\';
-					str--;
-					break; 
-			}
-		}
-		else {
-			keystring[0] = *str;
-		}
-
-		if (!atGlobals.LiteralKeysymsInitialized) {
-			InitLiteralKeysyms();
-            atGlobals.LiteralKeysymsInitialized = True;
+    //Failing which, use our hard-coded special names for certain keys
+    if (NoSymbol != sym || (sym = GetLiteralKeysym(keystring)) != NoSymbol) {
+      KeyPressInfo keypress = {0};
+      if ((keypress.code = XKeysymToKeycode(event.display, sym)) != 0) {
+        //non-zero return value implies sym -> code was successful
+        if (ShiftRequired(keystring)) {
+          keypress.state |= ShiftMask;
         }
+        keypresses.push_back(keypress);
+      }
+      else {
+        const char* symStr = XKeysymToString(sym);
+        snprintf(atGlobals.errorString, NumberOf(atGlobals.errorString), 
+              "Could not get keycode for key char(%s) - sym(%d) - str(%s). Aborting autotype\n", 
+                          keystring, static_cast<int>(sym), symStr ? symStr : "NULL");
+        atGlobals.error_detected = True;
+        return;
+      }
+    }
+    else {
+      snprintf(atGlobals.errorString, NumberOf(atGlobals.errorString), 
+              "Cannot convert '%s' to keysym. Aborting autotype\n", keystring);
+      atGlobals.error_detected = True;
+      return;
+    }
+  }
 
-		keystring[1] = '\0';
+  XSetErrorHandler(ErrorHandler);
+  atGlobals.error_detected = False;
 
-		/* Try a regular conversion first */
-		KeySym sym = XStringToKeysym(keystring);
+  bool useXTEST = (UseXTest() && method != ATMETHOD_XSENDKEYS);
+  void (*KeySendFunction)(XKeyEvent*);
 
-		/* Failing which, use our hard-coded special names for certain keys */
-		if (NoSymbol != sym || (sym = GetLiteralKeysym(keystring)) != NoSymbol) {
-			keypresses[ndest].code = XKeysymToKeycode(event.display, sym);
-			if (keypresses[ndest].code) { /* non-zero return value implies sym -> code was successful */
-				if (ShiftRequired(keystring))
-					keypresses[ndest].state |= ShiftMask;
-				ndest++;
-			}
-			else {
-				sprintf(atGlobals.errorString, "Could not get keycode for keysym(%s). Aborting...\n", XKeysymToString(sym));
-				break;
-			}
-		}
-		else {
-			sprintf(atGlobals.errorString, "Cannot convert '%d' to keysym. Aborting ...\n", static_cast<int>(keystring[0]));  
-			break;
-		}
-		++str;
-	}
+  if ( useXTEST) {
+    KeySendFunction = XTest_SendKeyEvent;
+    XTestGrabControl(event.display, True);
+  }
+  else {
+    KeySendFunction = XSendKeys_SendKeyEvent;
+  }
+  
+  for (KeyPressInfoVector::const_iterator itr = keypresses.begin(); itr != keypresses.end()
+                              && !atGlobals.error_detected; ++itr) {
+    event.keycode = itr->code;
+    event.state = itr->state;
+    event.time = CurrentTime;
 
-	if (*str) {
-		/* some of the input chars were unprocessed */
-		sprintf(atGlobals.errorString, "char at approximate index(%u), ascii(%d), symbol(%c) couldn't be converted to keycode\n", static_cast<unsigned int>(ndest), static_cast<int>(*str), *str);
-	}
-	else {
-		size_t n;
+    KeySendFunction(&event);
+    pws_os::sleep_ms(delayMS);
+  }
 
-		XSetErrorHandler(ErrorHandler);
-		atGlobals.error_detected = False;
+  if (useXTEST) {
+    XTestGrabControl(event.display, False);
+  }
+  else {
+    XSync(event.display, False);
+  }
 
-		if (method == ATMETHOD_XTEST || (method == ATMETHOD_AUTO && UseXTest())) {
-
-			XTestGrabControl(event.display, True);
-
-			for (n = 0; n < ndest && !atGlobals.error_detected; ++n) {
-				event.keycode = keypresses[n].code;
-				event.state = keypresses[n].state;
-				event.time = CurrentTime;
-
-				XTest_SendKeyEvent(&event);
-        pws_os::sleep_ms(delayMS);
-			}
-
-			XTestGrabControl(event.display, False);
-		}
-		else {
-			for (n = 0; n < ndest && !atGlobals.error_detected; ++n) {
-				event.keycode = keypresses[n].code;
-				event.state = keypresses[n].state;
-				event.time = CurrentTime;
-
-				XSendKeys_SendKeyEvent(&event);
-        pws_os::sleep_ms(delayMS);
-			}
-			XSync(event.display, False);
-		}
-
-		XSetErrorHandler(NULL);
-	}
-  free(keypresses);
+  XSetErrorHandler(NULL);
 }
