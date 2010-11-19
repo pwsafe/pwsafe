@@ -192,11 +192,11 @@ StringX PWSAuxParse::GetExpandedString(const StringX &sxRun_Command,
         std::vector<StringX> vsxnotes_lines;
         ParseNotes(sx_notes, vsxnotes_lines);
         // If line there - use it; otherwise ignore it
-        if (st_rctoken.index > 0 && st_rctoken.index <= (int)vsxnotes_lines.size()) {
+        if (st_rctoken.index > 0 && st_rctoken.index <= static_cast<int>(vsxnotes_lines.size())) {
           sxretval += vsxnotes_lines[st_rctoken.index - 1];
         } else
         if (st_rctoken.index < 0 &&
-            abs(st_rctoken.index) <= (int)vsxnotes_lines.size()) {
+            abs(st_rctoken.index) <= static_cast<int>(vsxnotes_lines.size())) {
           sxretval += vsxnotes_lines[vsxnotes_lines.size() + st_rctoken.index];
         }
       }
@@ -345,7 +345,7 @@ StringX PWSAuxParse::GetAutoTypeString(const StringX &sx_in_autotype,
             // Send the lot
             sxtmp += sx_notes;
           } else
-          if (line_number <= (int)vsxnotes_lines.size()) {
+          if (line_number <= static_cast<int>(vsxnotes_lines.size())) {
             // User specifies a too big a line number - ignore the lot
             sxtmp += vsxnotes_lines[line_number - 1];
           }
@@ -664,14 +664,14 @@ static UINT ParseRunCommand(const StringX &sxInputString,
   // Check if escaped - ending character of previous token == '\'
   // Make sure this '\' is not escaped itself!
   for (size_t st_idx = v_rctokens.size() - 1; st_idx > 0 ; st_idx--) {
-    st_RunCommandTokens &st_rctoken = v_rctokens[st_idx - 1];
-    StringX::size_type name_len = st_rctoken.sxname.length();
+    st_RunCommandTokens &st_rctokens = v_rctokens[st_idx - 1];
+    StringX::size_type name_len = st_rctokens.sxname.length();
     if (name_len == 0 || (name_len >= 2 &&
-            st_rctoken.sxname.substr(name_len - 2, 2).compare(_T("\\\\")) == 0))
+            st_rctokens.sxname.substr(name_len - 2, 2).compare(_T("\\\\")) == 0))
       continue;
 
-    if (st_rctoken.sxname.substr(name_len - 1, 1).compare(_T("\\")) == 0) {
-      st_rctoken.sxname = st_rctoken.sxname.substr(0, name_len - 1) + 
+    if (st_rctokens.sxname.substr(name_len - 1, 1).compare(_T("\\")) == 0) {
+      st_rctokens.sxname = st_rctokens.sxname.substr(0, name_len - 1) + 
                          _T("$") + v_rctokens[st_idx].sxname;
       v_rctokens.erase(v_rctokens.begin() + st_idx);
     }

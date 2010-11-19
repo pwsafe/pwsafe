@@ -40,6 +40,7 @@
 #define _vsctprintf(fmt, args) vswprintf(NULL, 0, fmt, args)
 #define _vstprintf_s(str, size, fmt, args) vswprintf(str, size, fmt, args)
 #define _ftprintf fwprintf
+#define _stprintf_s swprintf
 #define _stscanf swscanf
 #ifdef __PWS_MACINTOSH__
 # include "./mac/pws_str.h"
@@ -79,6 +80,7 @@
 #define _vsctprintf(fmt, args) vsnprintf(NULL, 0, fmt, args)
 #define _vstprintf_s(str, size, fmt, args) vsnprintf(str, size, fmt, args)
 #define _ftprintf fprintf
+#define _stprintf_s snprintf
 #define _stscanf sscanf
 #define _tstoi(s) atoi(s)
 #define _ttoi(s) atoi(s)

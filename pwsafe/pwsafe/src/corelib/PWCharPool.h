@@ -82,7 +82,7 @@ private:
   // in GetRandomCharType.
   size_t m_lengths[NUMTYPES];
   size_t m_x[NUMTYPES+1]; // spread lengths along X axis
-  charT *m_char_arrays[NUMTYPES];
+  const charT *m_char_arrays[NUMTYPES];
 
   size_t m_sumlengths; // sum of all selected chartypes
 

@@ -32,7 +32,7 @@ namespace pws_os {
   extern std::wstring towc(const char *val);
   extern std::string tomb(const stringT& val);
 #endif
-};
+}
 #endif /* __OSUTF8CONV_H */
 //-----------------------------------------------------------------------------
 // Local variables:

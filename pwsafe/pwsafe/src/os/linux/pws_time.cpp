@@ -15,7 +15,7 @@
 
 struct tm *gmtime64_r(const __time64_t *timep, struct tm *result)
 {
-  return gmtime_r((const time_t *)timep, result);
+  return gmtime_r(reinterpret_cast<const time_t *>(timep), result);
 }
 
 int pws_os::asctime(TCHAR *s, size_t, tm const *t)

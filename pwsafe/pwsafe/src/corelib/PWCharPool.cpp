@@ -77,22 +77,22 @@ CPasswordCharPool::CPasswordCharPool(uint pwlen,
     m_usehexdigits || m_pronounceable);
 
   if (easyvision) {
-    m_char_arrays[LOWERCASE] = (charT *)easyvision_lowercase_chars;
-    m_char_arrays[UPPERCASE] = (charT *)easyvision_uppercase_chars;
-    m_char_arrays[DIGIT] = (charT *)easyvision_digit_chars;
-    m_char_arrays[SYMBOL] = (charT *)easyvision_symbol_chars;
-    m_char_arrays[HEXDIGIT] = (charT *)easyvision_hexdigit_chars;
+    m_char_arrays[LOWERCASE] = easyvision_lowercase_chars;
+    m_char_arrays[UPPERCASE] = easyvision_uppercase_chars;
+    m_char_arrays[DIGIT] = easyvision_digit_chars;
+    m_char_arrays[SYMBOL] = easyvision_symbol_chars;
+    m_char_arrays[HEXDIGIT] = easyvision_hexdigit_chars;
     m_lengths[LOWERCASE] = m_uselowercase ? easyvision_lowercase_len : 0;
     m_lengths[UPPERCASE] = m_useuppercase ? easyvision_uppercase_len : 0;
     m_lengths[DIGIT] = m_usedigits ? easyvision_digit_len : 0;
     m_lengths[SYMBOL] = m_usesymbols ? easyvision_symbol_len : 0;
     m_lengths[HEXDIGIT] = m_usehexdigits ? easyvision_hexdigit_len : 0;
   } else { // !easyvision
-    m_char_arrays[LOWERCASE] = (charT *)std_lowercase_chars;
-    m_char_arrays[UPPERCASE] = (charT *)std_uppercase_chars;
-    m_char_arrays[DIGIT] = (charT *)std_digit_chars;
-    m_char_arrays[SYMBOL] = (charT *)std_symbol_chars;
-    m_char_arrays[HEXDIGIT] = (charT *)std_hexdigit_chars;
+    m_char_arrays[LOWERCASE] = std_lowercase_chars;
+    m_char_arrays[UPPERCASE] = std_uppercase_chars;
+    m_char_arrays[DIGIT] = std_digit_chars;
+    m_char_arrays[SYMBOL] = std_symbol_chars;
+    m_char_arrays[HEXDIGIT] = std_hexdigit_chars;
     m_lengths[LOWERCASE] = m_uselowercase ? std_lowercase_len : 0;
     m_lengths[UPPERCASE] = m_useuppercase ? std_uppercase_len : 0;
     m_lengths[DIGIT] = m_usedigits ? std_digit_len : 0;
@@ -190,7 +190,7 @@ StringX CPasswordCharPool::MakePassword() const
     temp = _T("");    // empty the password string
 
     for (uint x = 0; x < m_pwlen; x++) {
-      unsigned int rand = PWSrand::GetInstance()->RangeRand((unsigned int)m_sumlengths);
+      unsigned int rand = PWSrand::GetInstance()->RangeRand(static_cast<unsigned int>(m_sumlengths));
       // The only reason for passing rand as a parameter is to
       // avoid having to generate two random numbers for each
       // character. Alternately, we could have had a m_rand
@@ -328,7 +328,7 @@ StringX CPasswordCharPool::MakePronounceable() const
      generates "mmitify" even though no word in my dictionary
      begins with mmi. So what.) */
   sumfreq = sigma;  // sigma calculated by loadtris
-  ranno = (long)pwsrnd->RangeRand(sumfreq+1); // Weight by sum of frequencies
+  ranno = static_cast<long>(pwsrnd->RangeRand(sumfreq+1)); // Weight by sum of frequencies
   sum = 0;
   for (c1 = 0; c1 < 26; c1++) {
     for (c2 = 0; c2 < 26; c2++) {
@@ -359,7 +359,7 @@ StringX CPasswordCharPool::MakePronounceable() const
       break;  // Break while nchar loop & print what we have.
     }
     /* Choose a continuation. */
-    ranno = (long)pwsrnd->RangeRand(sumfreq+1); // Weight by sum of frequencies
+    ranno = static_cast<long>(pwsrnd->RangeRand(sumfreq+1)); // Weight by sum of frequencies
     sum = 0;
     for (c3 = 0; c3 < 26; c3++) {
       sum += tris[int(c1)][int(c2)][int(c3)];
@@ -399,12 +399,12 @@ StringX CPasswordCharPool::MakePronounceable() const
   else if (!m_uselowercase && m_useuppercase)
     for (i = 0; i < m_pwlen; i++) {
       if (_istalpha(password[i]))
-        password[i] = (charT)_totupper(password[i]);
+        password[i] = static_cast<charT>(_totupper(password[i]));
     }
   else if (m_uselowercase && m_useuppercase) // mixed case
     for (i = 0; i < m_pwlen; i++) {
       if (_istalpha(password[i]) && pwsrnd->RandUInt() % 2)
-        password[i] = (charT)_totupper(password[i]);
+        password[i] = static_cast<charT>(_totupper(password[i]));
     }
 
   return password.c_str();

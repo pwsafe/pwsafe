@@ -44,6 +44,6 @@ namespace PWSAuxParse {
   // as keystrokes:
   void SendAutoTypeString(const StringX &sx_autotype,
                           const std::vector<size_t> &vactionverboffsets);
-};
+}
 
 #endif /* __PWSAUXPARSE_H */

@@ -39,3 +39,19 @@ src/ui/wxWidgets/GCCUnicodeDebug
 TBD:
 1. Improve .deb building script
 2. Add support for .rpm building
+
+64 bit status:
+Work has started on supporting 64-bit builds under Linux (thanks to
+pm_kan). Currently (11/2010) the program compiles cleanly, but crashes
+when trying to add an entry or otherwise access the cryptographic
+functionality. Here's a partial list:
+- check usage of constants instead sizeof
+- check %s formats (wchar_t args in (v)(s)wprintf require %ls instead
+of %s in Linux) 
+- use stdint.h types
+- check long type sizes (in Lin x86_64 sizeof(long)==8 in
+Lin32/Win32/Win64 sizeof(long)==4) 
+- check size_t conversions (in Lin x86_64 sizeof(size_t)!=sizeof(unsigned int))
+- cppCheck warnings
+- valgrind warnings
+

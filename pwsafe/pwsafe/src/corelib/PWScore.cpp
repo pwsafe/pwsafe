@@ -332,7 +332,7 @@ struct RecordWriter {
   RecordWriter(PWSfile *pout, PWScore *pcore) : m_pout(pout), m_pcore(pcore) {}
   void operator()(pair<CUUIDGen const, CItemData> &p)
   {
-    StringX savePassword, uuid_str;
+    StringX savePassword;
 
     savePassword = p.second.GetPassword();
     if (p.second.IsAlias()) {
@@ -557,7 +557,7 @@ int PWScore::CheckPasskey(const StringX &filename, const StringX &passkey)
     int BlockLength = ((m_passkey_len + 7) / 8) * 8;
     unsigned char *t_passkey = new unsigned char[BlockLength];
     LPCTSTR plaintext = LPCTSTR(passkey.c_str());
-    EncryptPassword((const unsigned char *)plaintext, t_passkey_len, t_passkey);
+    EncryptPassword(reinterpret_cast<const unsigned char *>(plaintext), t_passkey_len, t_passkey);
     if (memcmp(t_passkey, m_passkey, BlockLength) == 0)
       status = PWSfile::SUCCESS;
     else
@@ -696,7 +696,7 @@ int PWScore::ReadFile(const StringX &a_filename,
            CItemData::FieldBits bf;
            bf.flip();
            StringX dump = ci_temp.GetPlaintext(TCHAR(':'), bf, TCHAR('-'), NULL);
-           pws_os::Trace(_T("%s\n"), dump);
+           pws_os::Trace(_T("%s\n"), dump.c_str());
 #endif
            ci_temp.CreateUUID(); // replace duplicated uuid
            ci_temp.GetUUID(uuid); // refresh uuid_array
@@ -712,8 +712,8 @@ int PWScore::ReadFile(const StringX &a_filename,
                  csMyPassword.substr(csMyPassword.length() - 2) == _T("~]"))) &&
                cs_possibleUUID.find_first_not_of(_T("0123456789abcdef")) == 
                StringX::npos) {
-             CUUIDGen uuid(cs_possibleUUID.c_str());
-             uuid.GetUUID(base_uuid);
+             CUUIDGen buuid(cs_possibleUUID.c_str());
+             buuid.GetUUID(base_uuid);
              ci_temp.GetUUID(temp_uuid);
              if (csMyPassword.substr(1, 1) == _T("[")) {
                m_alias2base_map[temp_uuid] = base_uuid;
@@ -736,6 +736,8 @@ int PWScore::ReadFile(const StringX &a_filename,
          break;
       case PWSfile::END_OF_FILE:
         go = false;
+        break;
+      default:
         break;
     } // switch
   } while (go);
@@ -1093,7 +1095,7 @@ void PWScore::SetPassKey(const StringX &new_passkey)
   int BlockLength = ((m_passkey_len + (BS - 1)) / BS) * BS;
   m_passkey = new unsigned char[BlockLength];
   LPCTSTR plaintext = LPCTSTR(new_passkey.c_str());
-  EncryptPassword((const unsigned char *)plaintext, m_passkey_len, m_passkey);
+  EncryptPassword(reinterpret_cast<const unsigned char *>(plaintext), m_passkey_len, m_passkey);
 }
 
 StringX PWScore::GetPassKey() const
@@ -1116,7 +1118,7 @@ StringX PWScore::GetPassKey() const
       bf->Decrypt(curblock, curblock);
       for (i = 0; i < BS; i += sizeof(TCHAR)) {
         if (x + i < m_passkey_len) {
-          retval += *((TCHAR*)(curblock + i));
+          retval += *(reinterpret_cast<TCHAR*>(curblock + i));
         }
       }
     }
@@ -1324,10 +1326,10 @@ bool PWScore::Validate(stringT &status, CReport &rpt, const size_t iMAXCHARS)
     // Note excessively sized text fields
     if (iMAXCHARS > 0) {
       bool bEntryHasBigField(false);
-      for (unsigned char uc = (unsigned char)CItemData::GROUP; 
-           uc < (unsigned char)CItemData::LAST; uc++) {
+      for (unsigned char uc = static_cast<unsigned char>(CItemData::GROUP); 
+           uc < static_cast<unsigned char>(CItemData::LAST); uc++) {
         if (CItemData::IsTextField(uc)) {
-          StringX sxvalue = ci.GetFieldValue((CItemData::FieldType)uc);
+          StringX sxvalue = ci.GetFieldValue(static_cast<CItemData::FieldType>(uc));
           if (sxvalue.length() > iMAXCHARS) {
             bEntryHasBigField = true;
             //fixedItem.SetFieldValue((CItemData::FieldType)uc, sxvalue.substr(0, iMAXCHARS));

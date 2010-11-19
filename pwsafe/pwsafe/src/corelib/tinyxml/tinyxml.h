@@ -308,14 +308,14 @@ protected:
 	static const TCHAR* SkipWhiteSpace( const TCHAR*, TiXmlEncoding encoding );
 	inline static bool IsWhiteSpace( TCHAR c )		
 	{
-    if ((unsigned)(c + 1) <= 256)
+    if (static_cast<unsigned>(c + 1) <= 256)
       return ( _istspace( c ) || c == TCHAR('\n') || c == TCHAR('\r') );
     return false;
 	}
 	inline static bool IsWhiteSpace( int c )
 	{
 		if ( c < 256 )
-			return IsWhiteSpace( (TCHAR) c );
+			return IsWhiteSpace( static_cast<TCHAR>(c) );
 		return false;	// Again, only truly correct for English/Latin...but usually works.
 	}
 
@@ -350,7 +350,7 @@ protected:
 		assert( p );
 		if ( encoding == TIXML_ENCODING_UTF8 )
 		{
-			*length = utf8ByteTable[ *((const unsigned char*)p) ];
+			*length = utf8ByteTable[ *(reinterpret_cast<const unsigned char*>(p)) ];
 			assert( *length >= 0 && *length < 5 );
 		}
 		else
@@ -1014,7 +1014,7 @@ public:
 		double d;
 		int result = QueryDoubleAttribute( name, &d );
 		if ( result == TIXML_SUCCESS ) {
-			*_value = (float)d;
+			*_value = static_cast<float>(d);
 		}
 		return result;
 	}

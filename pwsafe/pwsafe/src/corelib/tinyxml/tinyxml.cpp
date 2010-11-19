@@ -54,12 +54,12 @@ void TiXmlBase::EncodeString( const TIXML_STRING& str, TIXML_STRING* outString )
 {
 	int i=0;
 
-	while( i<(int)str.length() )
+	while( i<static_cast<int>(str.length()) )
 	{
 		TCHAR c = str[i];
 
 		if (    c == '&' 
-		     && i < ( (int)str.length() - 2 )
+		     && i < ( static_cast<int>(str.length()) - 2 )
 			 && str[i+1] == '#'
 			 && str[i+2] == 'x' )
 		{
@@ -73,7 +73,7 @@ void TiXmlBase::EncodeString( const TIXML_STRING& str, TIXML_STRING* outString )
 			// while fails (error case) and break (semicolon found).
 			// However, there is no mechanism (currently) for
 			// this function to return an error.
-			while ( i<(int)str.length()-1 )
+			while ( i<static_cast<int>(str.length())-1 )
 			{
 				outString->append( str.c_str() + i, 1 );
 				++i;
@@ -113,14 +113,14 @@ void TiXmlBase::EncodeString( const TIXML_STRING& str, TIXML_STRING* outString )
 			TCHAR buf[ 32 ];
 			
 			#if defined(TIXML_SNPRINTF)		
-            TIXML_SNPRINTF( buf, sizeof(buf), _T("&#x%02X;"), (unsigned) ( c & 0xff ) );
+            TIXML_SNPRINTF( buf, sizeof(buf), _T("&#x%02X;"), static_cast<unsigned>( c & 0xff ) );
 			#else
-				sprintf( buf, "&#x%02X;", (unsigned) ( c & 0xff ) );
+				sprintf( buf, "&#x%02X;", static_cast<unsigned>( c & 0xff ) );
 			#endif		
 
 			//*ME:	warning C4267: convert 'size_t' to 'int'
 			//*ME:	Int-Cast to make compiler happy ...
-			outString->append( buf, (int)_tcslen( buf ) );
+			outString->append( buf, static_cast<int>(_tcslen( buf )) );
 			++i;
 		}
 		else
@@ -1078,7 +1078,7 @@ bool TiXmlDocument::LoadFile( FILE* file, TiXmlEncoding encoding )
 #ifdef UNICODE
     // Gross hack - need to handle Unicode BOM
     // here instead of in parser.
-		const unsigned char* pU = (const unsigned char*)p;
+		const unsigned char* pU = reinterpret_cast<const unsigned char*>(p);
 		if ( *(pU+0) && *(pU+0) == TIXML_UTF_LEAD_0
 			 && *(pU+1) && *(pU+1) == TIXML_UTF_LEAD_1
 			 && *(pU+2) && *(pU+2) == TIXML_UTF_LEAD_2 ) {
@@ -1119,7 +1119,7 @@ bool TiXmlDocument::LoadFile( FILE* file, TiXmlEncoding encoding )
                 data.append( lastPos, (p-lastPos) );	// do not add the CR
 #endif
 			}
-			data += (char)0xa;						// a proper newline
+			data += static_cast<char>(0xa);						// a proper newline
 
 			if ( *(p+1) == 0xa ) {
 				// Carriage return - new line sequence

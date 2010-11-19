@@ -335,7 +335,7 @@ bool PWSfile::Encrypt(const stringT &fn, const StringX &passwd, stringT &errmess
   delete[] pwd; // gross - ConvertString allocates only if UNICODE.
 #endif
   try {
-    _writecbc(out, buf, len, (unsigned char)0, fish, ipthing);
+    _writecbc(out, buf, len, 0, fish, ipthing);
   } catch (...) { // _writecbc throws an exception if it fails to write
     fclose(out);
     errno = EIO;
@@ -376,7 +376,7 @@ bool PWSfile::Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess
   fread(randhash, 1, sizeof(randhash), in);
 
   GenRandhash(passwd, randstuff, temphash);
-  if (memcmp((char*)randhash, (char*)temphash, SHA1::HASHLEN != 0)) {
+  if (memcmp(reinterpret_cast<char*>(randhash), reinterpret_cast<char*>(temphash), SHA1::HASHLEN) != 0) {
     fclose(in);
     LoadAString(errmess, IDSC_BADPASSWORD);
     return false;

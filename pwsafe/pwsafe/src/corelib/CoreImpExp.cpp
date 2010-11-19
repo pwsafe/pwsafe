@@ -793,7 +793,7 @@ static void ReportInvalidField(CReport &rpt, const string &value, int numlines)
 {
   CUTF8Conv conv;
   StringX vx;
-  conv.FromUTF8((const unsigned char *)value.c_str(), value.length(), vx);
+  conv.FromUTF8(reinterpret_cast<const unsigned char *>(value.c_str()), value.length(), vx);
   stringT cs_error;
   Format(cs_error, IDSC_IMPORTINVALIDFIELD, numlines, vx.c_str());
   rpt.WriteLine(cs_error);
@@ -836,7 +836,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   const unsigned char *hdr;
   int hdrlen;
   conv.ToUTF8(cs_hdr.c_str(), hdr, hdrlen);
-  const string s_hdr((const char *)hdr);
+  const string s_hdr(reinterpret_cast<const char *>(hdr));
   const char pTab[] = "\t";
   char pSeps[] = " ";
 
@@ -850,7 +850,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   for (int i = 0; i < NUMFIELDS; i++)
     i_Offset[i] = -1;
 
-  pSeps[0] = (const char)fieldSeparator;
+  pSeps[0] = static_cast<const char>(fieldSeparator);
 
   // Capture individual column titles:
   string::size_type to = 0, from;
@@ -929,7 +929,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
       if (i_Offset[i] >= 0) {
         const string &sHdr = vs_Header.at(i);
         StringX sh2;
-        conv.FromUTF8((const unsigned char *)sHdr.c_str(), sHdr.length(), sh2);
+        conv.FromUTF8(reinterpret_cast<const unsigned char *>(sHdr.c_str()), sHdr.length(), sh2);
         Format(cs_error, _T(" %s,"), sh2.c_str());
         rpt.WriteLine(cs_error, false);
       }
@@ -975,7 +975,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
 
     // convert linebuf from UTF-8 to stringX
     StringX slinebuf;
-    if (!conv.FromUTF8((const unsigned char *)linebuf.c_str(), linebuf.length(), slinebuf)) {
+    if (!conv.FromUTF8(reinterpret_cast<const unsigned char *>(linebuf.c_str()), linebuf.length(), slinebuf)) {
       // XXX add an appropriate error message
       numSkipped++;
       continue;
@@ -1016,7 +1016,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
                 linebuf.resize(linebuf.size() - 1);
               }
               note += _T("\r\n");
-              if (!conv.FromUTF8((const unsigned char *)linebuf.c_str(), linebuf.length(),
+              if (!conv.FromUTF8(reinterpret_cast<const unsigned char *>(linebuf.c_str()), linebuf.length(),
                                  slinebuf)) {
                 // XXX add an appropriate error message
                 numSkipped++;
@@ -1069,7 +1069,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
       }
     } // loop over tokens
 
-    if ((size_t)i_Offset[PASSWORD] >= tokens.size() ||
+    if (static_cast<size_t>(i_Offset[PASSWORD]) >= tokens.size() ||
         tokens[i_Offset[PASSWORD]].empty()) {
       Format(cs_error, IDSC_IMPORTNOPASSWORD, numlines);
       rpt.WriteLine(cs_error);
@@ -1130,7 +1130,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
     // Start initializing the new record.
     ci_temp.Clear();
     ci_temp.CreateUUID();
-    if (i_Offset[USER] >= 0 && tokens.size() > (size_t)i_Offset[USER])
+    if (i_Offset[USER] >= 0 && tokens.size() > static_cast<size_t>(i_Offset[USER]))
       ci_temp.SetUser(tokens[i_Offset[USER]].c_str());
     StringX csPassword = tokens[i_Offset[PASSWORD]].c_str();
     if (i_Offset[PASSWORD] >= 0)
@@ -1182,32 +1182,32 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
       numRenamed++;
     }
 
-    if (i_Offset[URL] >= 0 && tokens.size() > (size_t)i_Offset[URL])
+    if (i_Offset[URL] >= 0 && tokens.size() > static_cast<size_t>(i_Offset[URL]))
       ci_temp.SetURL(tokens[i_Offset[URL]].c_str());
-    if (i_Offset[AUTOTYPE] >= 0 && tokens.size() > (size_t)i_Offset[AUTOTYPE])
+    if (i_Offset[AUTOTYPE] >= 0 && tokens.size() > static_cast<size_t>(i_Offset[AUTOTYPE]))
       ci_temp.SetAutoType(tokens[i_Offset[AUTOTYPE]].c_str());
-    if (i_Offset[CTIME] >= 0 && tokens.size() > (size_t)i_Offset[CTIME])
+    if (i_Offset[CTIME] >= 0 && tokens.size() > static_cast<size_t>(i_Offset[CTIME]))
       if (!ci_temp.SetCTime(tokens[i_Offset[CTIME]].c_str()))
         ReportInvalidField(rpt, vs_Header.at(CTIME), numlines);
-    if (i_Offset[PMTIME] >= 0 && tokens.size() > (size_t)i_Offset[PMTIME])
+    if (i_Offset[PMTIME] >= 0 && tokens.size() > static_cast<size_t>(i_Offset[PMTIME]))
       if (!ci_temp.SetPMTime(tokens[i_Offset[PMTIME]].c_str()))
         ReportInvalidField(rpt, vs_Header.at(PMTIME), numlines);
-    if (i_Offset[ATIME] >= 0 && tokens.size() > (size_t)i_Offset[ATIME])
+    if (i_Offset[ATIME] >= 0 && tokens.size() > static_cast<size_t>(i_Offset[ATIME]))
       if (!ci_temp.SetATime(tokens[i_Offset[ATIME]].c_str()))
         ReportInvalidField(rpt, vs_Header.at(ATIME), numlines);
-    if (i_Offset[XTIME] >= 0 && tokens.size() > (size_t)i_Offset[XTIME])
+    if (i_Offset[XTIME] >= 0 && tokens.size() > static_cast<size_t>(i_Offset[XTIME]))
       if (!ci_temp.SetXTime(tokens[i_Offset[XTIME]].c_str()))
         ReportInvalidField(rpt, vs_Header.at(XTIME), numlines);
-    if (i_Offset[XTIME_INT] >= 0 && tokens.size() > (size_t)i_Offset[XTIME_INT])
+    if (i_Offset[XTIME_INT] >= 0 && tokens.size() > static_cast<size_t>(i_Offset[XTIME_INT]))
       if (!ci_temp.SetXTimeInt(tokens[i_Offset[XTIME_INT]].c_str()))
         ReportInvalidField(rpt, vs_Header.at(XTIME_INT), numlines);
-    if (i_Offset[RMTIME] >= 0 && tokens.size() > (size_t)i_Offset[RMTIME])
+    if (i_Offset[RMTIME] >= 0 && tokens.size() > static_cast<size_t>(i_Offset[RMTIME]))
       if (!ci_temp.SetRMTime(tokens[i_Offset[RMTIME]].c_str()))
         ReportInvalidField(rpt, vs_Header.at(RMTIME), numlines);
-    if (i_Offset[POLICY] >= 0 && tokens.size() > (size_t)i_Offset[POLICY])
+    if (i_Offset[POLICY] >= 0 && tokens.size() > static_cast<size_t>(i_Offset[POLICY]))
       if (!ci_temp.SetPWPolicy(tokens[i_Offset[POLICY]].c_str()))
         ReportInvalidField(rpt, vs_Header.at(POLICY), numlines);
-    if (i_Offset[HISTORY] >= 0 && tokens.size() > (size_t)i_Offset[HISTORY]) {
+    if (i_Offset[HISTORY] >= 0 && tokens.size() > static_cast<size_t>(i_Offset[HISTORY])) {
       StringX newPWHistory;
       stringT strPWHErrorList;
       Format(cs_error, IDSC_IMPINVALIDPWH, numlines);
@@ -1235,30 +1235,30 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
           break;
       }
     }
-    if (i_Offset[RUNCMD] >= 0 && tokens.size() > (size_t)i_Offset[RUNCMD])
+    if (i_Offset[RUNCMD] >= 0 && tokens.size() > static_cast<size_t>(i_Offset[RUNCMD]))
       ci_temp.SetRunCommand(tokens[i_Offset[RUNCMD]].c_str());
-    if (i_Offset[DCA] >= 0 && tokens.size() > (size_t)i_Offset[DCA])
+    if (i_Offset[DCA] >= 0 && tokens.size() > static_cast<size_t>(i_Offset[DCA]))
       ci_temp.SetDCA(tokens[i_Offset[DCA]].c_str());
-    if (i_Offset[EMAIL] >= 0 && tokens.size() > (size_t)i_Offset[EMAIL])
+    if (i_Offset[EMAIL] >= 0 && tokens.size() > static_cast<size_t>(i_Offset[EMAIL]))
       ci_temp.SetEmail(tokens[i_Offset[EMAIL]].c_str());
 
     // The notes field begins and ends with a double-quote, with
     // replacement of delimiter by CR-LF.
-    if (i_Offset[NOTES] >= 0 && tokens.size() > (size_t)i_Offset[NOTES]) {
+    if (i_Offset[NOTES] >= 0 && tokens.size() > static_cast<size_t>(i_Offset[NOTES])) {
       stringT quotedNotes = tokens[i_Offset[NOTES]];
       if (!quotedNotes.empty()) {
         if (*quotedNotes.begin() == TCHAR('\"') &&
             *(quotedNotes.end() - 1) == TCHAR('\"')) {
           quotedNotes = quotedNotes.substr(1, quotedNotes.size() - 2);
         }
-        size_t from = 0, pos;
+        size_t frompos = 0, pos;
         stringT fixedNotes;
-        while (string::npos != (pos = quotedNotes.find(delimiter, from))) {
-          fixedNotes += quotedNotes.substr(from, (pos - from));
+        while (string::npos != (pos = quotedNotes.find(delimiter, frompos))) {
+          fixedNotes += quotedNotes.substr(frompos, (pos - frompos));
           fixedNotes += _T("\r\n");
-          from = pos + 1;
+          frompos = pos + 1;
         }
-        fixedNotes += quotedNotes.substr(from);
+        fixedNotes += quotedNotes.substr(frompos);
         ci_temp.SetNotes(fixedNotes.c_str());
       }
     }

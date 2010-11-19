@@ -230,6 +230,8 @@ static stringT GetLockFileName(const stringT &filename)
 bool pws_os::LockFile(const stringT &filename, stringT &locker, 
                       HANDLE &lockFileHandle, int &LockCount)
 {
+  UNREFERENCED_PARAMETER(lockFileHandle);
+  UNREFERENCED_PARAMETER(LockCount);
   const stringT lock_filename = GetLockFileName(filename);
   stringT s_locker;
   bool retval = false;
@@ -282,7 +284,7 @@ bool pws_os::LockFile(const stringT &filename, stringT &locker,
 
     const stringT lockStr = user + _T("@") + host + _T(":") + pid;
 
-    numWrit = write(fh, (void *)lockStr.c_str(),
+    numWrit = write(fh, lockStr.c_str(),
                     lockStr.length() * sizeof(TCHAR));
     ASSERT(numWrit > 0);
     close(fh);
@@ -297,6 +299,8 @@ bool pws_os::LockFile(const stringT &filename, stringT &locker,
 void pws_os::UnlockFile(const stringT &filename,
                         HANDLE &lockFileHandle, int &LockCount)
 {
+  UNREFERENCED_PARAMETER(lockFileHandle);
+  UNREFERENCED_PARAMETER(LockCount);
   stringT lock_filename = GetLockFileName(filename);
 #ifndef UNICODE
   const char *lfn = lock_filename.c_str();

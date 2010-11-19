@@ -248,7 +248,7 @@ void CreateShortcutDlg::OnOkClick( wxCommandEvent& /* evt */ )
     time_t t;
     time(&t);
     shortcut.SetCTime(t);
-    shortcut.SetXTime((time_t)0);
+    shortcut.SetXTime(time_t(0));
     shortcut.SetStatus(CItemData::ES_ADDED);
 
     uuid_array_t base_uuid;

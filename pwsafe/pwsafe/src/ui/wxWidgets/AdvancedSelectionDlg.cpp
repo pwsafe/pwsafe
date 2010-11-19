@@ -79,6 +79,7 @@ END_EVENT_TABLE()
 AdvancedSelectionDlgBase::AdvancedSelectionDlgBase(wxWindow* parentWnd, const SelectionCriteria& existingCriteria):
                                                   m_criteria(existingCriteria)
 {
+  UNREFERENCED_PARAMETER(parentWnd);
   SetExtraStyle(wxWS_EX_VALIDATE_RECURSIVELY);
 }
 
@@ -154,7 +155,7 @@ void AdvancedSelectionDlgBase::CreateControls(wxWindow* parentWnd)
                 wxDefaultSize, 0, NULL, wxLB_EXTENDED);
       for (size_t idx = 0; idx < NumberOf(fieldNames); ++idx)
           if (!m_criteria.m_bsFields.test(fieldNames[idx].type))
-              lbFields->Append(fieldNames[idx].name, (void*)(idx));
+              lbFields->Append(fieldNames[idx].name, reinterpret_cast<void*>(idx));
 
       grid->Add(lbFields, wxSizerFlags().Expand());
       
@@ -177,11 +178,11 @@ void AdvancedSelectionDlgBase::CreateControls(wxWindow* parentWnd)
       for (size_t idx=0; idx < NumberOf(fieldNames); ++idx)
           if (m_criteria.m_bsFields.test(fieldNames[idx].type)) {
             if (IsMandatoryField(fieldNames[idx].type))
-              lbSelectedFields->Append(wxString(fieldNames[idx].name) + _(" [Mandatory Field]"), (void*)(idx));
+              lbSelectedFields->Append(wxString(fieldNames[idx].name) + _(" [Mandatory Field]"),
+                                       reinterpret_cast<void*>(idx));
             else
-              lbSelectedFields->Append(fieldNames[idx].name, (void*)(idx));
+              lbSelectedFields->Append(fieldNames[idx].name, reinterpret_cast<void*>(idx));
           }
-
       
       grid->Add(lbSelectedFields, wxSizerFlags().Expand());
 
@@ -211,7 +212,7 @@ void AdvancedSelectionDlgBase::OnOk( wxCommandEvent& evt )
   const size_t count = lbSelected->GetCount();
   
   for (size_t idx = 0; idx < count; ++idx) {
-      const size_t which = (size_t)lbSelected->GetClientData((unsigned int)idx);
+      const size_t which = reinterpret_cast<size_t>(lbSelected->GetClientData(static_cast<unsigned int>(idx)));
       m_criteria.m_bsFields.set(fieldNames[which].type, true);
   }
 
@@ -230,10 +231,10 @@ void AdvancedSelectionDlgBase::OnSelectSome( wxCommandEvent& /* evt */ )
   wxArrayInt aSelected;
   if (lbAvailable->GetSelections(aSelected)) {
     for (size_t idx = 0; idx < aSelected.GetCount(); ++idx) {
-      size_t which = (size_t)lbAvailable->GetClientData((unsigned int)(aSelected[idx] - idx));
+      size_t which = reinterpret_cast<size_t>(lbAvailable->GetClientData(static_cast<unsigned int>(aSelected[idx] - idx)));
       wxASSERT(which < NumberOf(fieldNames));
-      lbAvailable->Delete((unsigned int)(aSelected[idx] - idx));
-      lbSelected->Append(fieldNames[which].name, (void *)which);
+      lbAvailable->Delete(static_cast<unsigned int>(aSelected[idx] - idx));
+      lbSelected->Append(fieldNames[which].name, reinterpret_cast<void *>(which));
     }
   }
 }
@@ -247,9 +248,9 @@ void AdvancedSelectionDlgBase::OnSelectAll( wxCommandEvent& /* evt */ )
   wxASSERT(lbSelected);
 
   while (lbAvailable->GetCount()) {
-      size_t which = (size_t)lbAvailable->GetClientData(0);
+      size_t which = reinterpret_cast<size_t>(lbAvailable->GetClientData(0));
       lbAvailable->Delete(0);
-      lbSelected->Append(fieldNames[which].name, (void*)which);
+      lbSelected->Append(fieldNames[which].name, reinterpret_cast<void*>(which));
   }
 }
 
@@ -264,11 +265,11 @@ void AdvancedSelectionDlgBase::OnRemoveSome( wxCommandEvent& /* evt */ )
   wxArrayInt aSelected;
   if (lbSelected->GetSelections(aSelected)) {
     for (size_t idx = 0, nRemoved = 0; idx < aSelected.GetCount(); ++idx) {
-      size_t which = (size_t)lbSelected->GetClientData((unsigned int)(aSelected[idx] - nRemoved));
+      size_t which = reinterpret_cast<size_t>(lbSelected->GetClientData(static_cast<unsigned int>(aSelected[idx] - nRemoved)));
       wxASSERT(which < NumberOf(fieldNames));
       if (!IsMandatoryField(fieldNames[which].type)) {
-        lbSelected->Delete((unsigned int)(aSelected[idx] - nRemoved++));
-        lbAvailable->Append(fieldNames[which].name, (void *)which);
+        lbSelected->Delete(static_cast<unsigned int>(aSelected[idx] - nRemoved++));
+        lbAvailable->Append(fieldNames[which].name, reinterpret_cast<void *>(which));
       }
     }
   }
@@ -283,10 +284,10 @@ void AdvancedSelectionDlgBase::OnRemoveAll( wxCommandEvent& /* evt */ )
   wxASSERT(lbSelected);
 
   for(size_t itemsLeft = lbSelected->GetCount(), idx = 0; idx < itemsLeft; ) {
-      size_t which = (size_t)lbSelected->GetClientData(idx);
+      size_t which = reinterpret_cast<size_t>(lbSelected->GetClientData(idx));
       if (!IsMandatoryField(fieldNames[which].type)) {
         lbSelected->Delete(idx);
-        lbAvailable->Append(fieldNames[which].name, (void*)which);
+        lbAvailable->Append(fieldNames[which].name, reinterpret_cast<void*>(which));
         --itemsLeft;
       }
       else

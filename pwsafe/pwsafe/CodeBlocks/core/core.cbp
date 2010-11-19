@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="core" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug_L64">
+				<Option platforms="Unix;" />
+				<Option output="libcore" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="obj/Debug/" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Compiler>
+					<Add option="-Wshadow" />
+					<Add option="-Winit-self" />
+					<Add option="-Wswitch-default" />
+					<Add option="-pedantic" />
+					<Add option="-Wextra" />
+					<Add option="-Wall" />
+					<Add option="-g" />
+					<Add option="-fPIC" />
+					<Add option="-m64" />
+					<Add option="-Wformat=2" />
+					<Add option="-Wcast-qual" />
+					<Add option="-Wold-style-cast" />
+					<Add option="-D_DEBUG" />
+					<Add option="-DDEBUG" />
+					<Add option="-DDEBUG_XMLPREFS" />
+					<Add directory="../../src" />
+				</Compiler>
+				<Linker>
+					<Add option="-m64" />
+				</Linker>
+				<ExtraCommands>
+					<Add before="../../Misc/rc2cpp.pl ../../src/corelib/corelib.rc2" />
+					<Mode after="always" />
+				</ExtraCommands>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-DUNICODE" />
+		</Compiler>
+		<Unit filename="../../src/corelib/BlowFish.cpp" />
+		<Unit filename="../../src/corelib/BlowFish.h" />
+		<Unit filename="../../src/corelib/CheckVersion.cpp" />
+		<Unit filename="../../src/corelib/CheckVersion.h" />
+		<Unit filename="../../src/corelib/Command.cpp" />
+		<Unit filename="../../src/corelib/Command.h" />
+		<Unit filename="../../src/corelib/CommandInterface.h" />
+		<Unit filename="../../src/corelib/CoreImpExp.cpp" />
+		<Unit filename="../../src/corelib/Fish.h" />
+		<Unit filename="../../src/corelib/ItemData.cpp" />
+		<Unit filename="../../src/corelib/ItemData.h" />
+		<Unit filename="../../src/corelib/ItemField.cpp" />
+		<Unit filename="../../src/corelib/ItemField.h" />
+		<Unit filename="../../src/corelib/Match.cpp" />
+		<Unit filename="../../src/corelib/Match.h" />
+		<Unit filename="../../src/corelib/PWCharPool.cpp" />
+		<Unit filename="../../src/corelib/PWCharPool.h" />
+		<Unit filename="../../src/corelib/PWHistory.cpp" />
+		<Unit filename="../../src/corelib/PWHistory.h" />
+		<Unit filename="../../src/corelib/PWPolicy.cpp" />
+		<Unit filename="../../src/corelib/PWPolicy.h" />
+		<Unit filename="../../src/corelib/PWSAuxParse.cpp" />
+		<Unit filename="../../src/corelib/PWSAuxParse.h" />
+		<Unit filename="../../src/corelib/PWSFilters.cpp" />
+		<Unit filename="../../src/corelib/PWSFilters.h" />
+		<Unit filename="../../src/corelib/PWScore.cpp" />
+		<Unit filename="../../src/corelib/PWScore.h" />
+		<Unit filename="../../src/corelib/PWSdirs.cpp" />
+		<Unit filename="../../src/corelib/PWSdirs.h" />
+		<Unit filename="../../src/corelib/PWSfile.cpp" />
+		<Unit filename="../../src/corelib/PWSfile.h" />
+		<Unit filename="../../src/corelib/PWSfileV1V2.cpp" />
+		<Unit filename="../../src/corelib/PWSfileV1V2.h" />
+		<Unit filename="../../src/corelib/PWSfileV3.cpp" />
+		<Unit filename="../../src/corelib/PWSfileV3.h" />
+		<Unit filename="../../src/corelib/PWSprefs.cpp" />
+		<Unit filename="../../src/corelib/PWSprefs.h" />
+		<Unit filename="../../src/corelib/PWSrand.cpp" />
+		<Unit filename="../../src/corelib/PWSrand.h" />
+		<Unit filename="../../src/corelib/Proxy.h" />
+		<Unit filename="../../src/corelib/PwsPlatform.h" />
+		<Unit filename="../../src/corelib/Report.cpp" />
+		<Unit filename="../../src/corelib/Report.h" />
+		<Unit filename="../../src/corelib/StringX.cpp" />
+		<Unit filename="../../src/corelib/StringX.h" />
+		<Unit filename="../../src/corelib/StringXStream.h" />
+		<Unit filename="../../src/corelib/SysInfo.cpp" />
+		<Unit filename="../../src/corelib/SysInfo.h" />
+		<Unit filename="../../src/corelib/TwoFish.cpp" />
+		<Unit filename="../../src/corelib/TwoFish.h" />
+		<Unit filename="../../src/corelib/UIinterface.h" />
+		<Unit filename="../../src/corelib/UTF8Conv.cpp" />
+		<Unit filename="../../src/corelib/UTF8Conv.h" />
+		<Unit filename="../../src/corelib/UUIDGen.cpp" />
+		<Unit filename="../../src/corelib/UUIDGen.h" />
+		<Unit filename="../../src/corelib/UnknownField.cpp" />
+		<Unit filename="../../src/corelib/UnknownField.h" />
+		<Unit filename="../../src/corelib/Util.cpp" />
+		<Unit filename="../../src/corelib/Util.h" />
+		<Unit filename="../../src/corelib/VerifyFormat.cpp" />
+		<Unit filename="../../src/corelib/VerifyFormat.h" />
+		<Unit filename="../../src/corelib/XML/Expat/EFileHandlers.cpp" />
+		<Unit filename="../../src/corelib/XML/Expat/EFileHandlers.h" />
+		<Unit filename="../../src/corelib/XML/Expat/EFileValidator.cpp" />
+		<Unit filename="../../src/corelib/XML/Expat/EFileValidator.h" />
+		<Unit filename="../../src/corelib/XML/Expat/EFileValidatorDefs.h" />
+		<Unit filename="../../src/corelib/XML/Expat/EFileXMLProcessor.cpp" />
+		<Unit filename="../../src/corelib/XML/Expat/EFileXMLProcessor.h" />
+		<Unit filename="../../src/corelib/XML/Expat/EFilterHandlers.cpp" />
+		<Unit filename="../../src/corelib/XML/Expat/EFilterHandlers.h" />
+		<Unit filename="../../src/corelib/XML/Expat/EFilterValidator.cpp" />
+		<Unit filename="../../src/corelib/XML/Expat/EFilterValidator.h" />
+		<Unit filename="../../src/corelib/XML/Expat/EFilterValidatorDefs.h" />
+		<Unit filename="../../src/corelib/XML/Expat/EFilterXMLProcessor.cpp" />
+		<Unit filename="../../src/corelib/XML/Expat/EFilterXMLProcessor.h" />
+		<Unit filename="../../src/corelib/XML/Expat/ESecMemMgr.cpp" />
+		<Unit filename="../../src/corelib/XML/Expat/ESecMemMgr.h" />
+		<Unit filename="../../src/corelib/XML/XMLDefs.h" />
+		<Unit filename="../../src/corelib/XML/XMLFileHandlers.cpp" />
+		<Unit filename="../../src/corelib/XML/XMLFileHandlers.h" />
+		<Unit filename="../../src/corelib/XML/XMLFileValidation.cpp" />
+		<Unit filename="../../src/corelib/XML/XMLFileValidation.h" />
+		<Unit filename="../../src/corelib/XML/Xerces/XFileSAX2Handlers.cpp" />
+		<Unit filename="../../src/corelib/XML/Xerces/XFileSAX2Handlers.h" />
+		<Unit filename="../../src/corelib/XML/Xerces/XFileValidator.cpp" />
+		<Unit filename="../../src/corelib/XML/Xerces/XFileValidator.h" />
+		<Unit filename="../../src/corelib/XML/Xerces/XFileXMLProcessor.cpp" />
+		<Unit filename="../../src/corelib/XML/Xerces/XFileXMLProcessor.h" />
+		<Unit filename="../../src/corelib/XML/Xerces/XFilterSAX2Handlers.cpp" />
+		<Unit filename="../../src/corelib/XML/Xerces/XFilterSAX2Handlers.h" />
+		<Unit filename="../../src/corelib/XML/Xerces/XFilterXMLProcessor.cpp" />
+		<Unit filename="../../src/corelib/XML/Xerces/XFilterXMLProcessor.h" />
+		<Unit filename="../../src/corelib/XML/Xerces/XSecMemMgr.cpp" />
+		<Unit filename="../../src/corelib/XML/Xerces/XSecMemMgr.h" />
+		<Unit filename="../../src/corelib/XMLprefs.cpp" />
+		<Unit filename="../../src/corelib/XMLprefs.h" />
+		<Unit filename="../../src/corelib/coredefs.h" />
+		<Unit filename="../../src/corelib/corelib.h" />
+		<Unit filename="../../src/corelib/corelib.rc2" />
+		<Unit filename="../../src/corelib/corelib_st.cpp" />
+		<Unit filename="../../src/corelib/corelib_st.h" />
+		<Unit filename="../../src/corelib/hmac.cpp" />
+		<Unit filename="../../src/corelib/hmac.h" />
+		<Unit filename="../../src/corelib/sha1.cpp" />
+		<Unit filename="../../src/corelib/sha1.h" />
+		<Unit filename="../../src/corelib/sha256.cpp" />
+		<Unit filename="../../src/corelib/sha256.h" />
+		<Unit filename="../../src/corelib/tinyxml/tinyxml.cpp" />
+		<Unit filename="../../src/corelib/tinyxml/tinyxml.h" />
+		<Unit filename="../../src/corelib/tinyxml/tinyxmlerror.cpp" />
+		<Unit filename="../../src/corelib/tinyxml/tinyxmlparser.cpp" />
+		<Unit filename="../../src/corelib/trigram.h" />
+		<Extensions>
+			<envvars />
+			<code_completion />
+			<debugger />
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

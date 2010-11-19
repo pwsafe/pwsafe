@@ -25,7 +25,7 @@ UnknownFieldEntry::UnknownFieldEntry(unsigned char t, size_t s,
 UnknownFieldEntry::~UnknownFieldEntry()
 {
   if (st_length > 0 && uc_pUField != NULL) {
-    trashMemory((void *)uc_pUField, st_length);
+    trashMemory(reinterpret_cast<void *>(uc_pUField), st_length);
     delete[] uc_pUField;
     st_length = 0;
     uc_pUField = NULL;

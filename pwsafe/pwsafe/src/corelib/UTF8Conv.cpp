@@ -85,7 +85,7 @@ bool CUTF8Conv::ToUTF8(const StringX &data,
     m_utf8MaxLen = mbLen;
   }
   // Finally get result
-  m_utf8Len = pws_os::wcstombs((char *)m_utf8, mbLen, wcPtr, wcLen);
+  m_utf8Len = pws_os::wcstombs(reinterpret_cast<char *>(m_utf8), mbLen, wcPtr, wcLen);
   ASSERT(m_utf8Len != 0);
   m_utf8Len--; // remove unneeded null termination
   utf8 = m_utf8;
@@ -112,7 +112,7 @@ bool CUTF8Conv::FromUTF8(const unsigned char *utf8, int utf8Len,
   ASSERT(utf8 != NULL);
 
   // first get needed wide char buffer size
-  size_t wcLen = pws_os::mbstowcs(NULL, 0, (char *)utf8, size_t(-1));
+  size_t wcLen = pws_os::mbstowcs(NULL, 0, reinterpret_cast<const char *>(utf8), size_t(-1));
   if (wcLen == 0) { // uh-oh
     // it seems that this always returns non-zero, even if encoding
     // broken. Therefore, we'll give a consrevative value here,
@@ -129,7 +129,7 @@ bool CUTF8Conv::FromUTF8(const unsigned char *utf8, int utf8Len,
     m_wcMaxLen = wcLen;
   }
   // next translate to buffer
-  wcLen = pws_os::mbstowcs(m_wc, wcLen, (char *)utf8, size_t(-1));
+  wcLen = pws_os::mbstowcs(m_wc, wcLen, reinterpret_cast<const char *>(utf8), size_t(-1));
 #ifdef _WIN32
   if (wcLen == 0) {
     DWORD errCode = GetLastError();

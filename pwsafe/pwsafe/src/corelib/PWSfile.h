@@ -45,7 +45,7 @@ public:
     WRONG_PASSWORD,                          //  5 - see PWScore.h
     BAD_DIGEST,                              //  6 - see PWScore.h
     END_OF_FILE,                             //  7
-    CANT_OPEN_FILE,                          //  -10 - see PWScore.h
+    CANT_OPEN_FILE                          //  -10 - see PWScore.h
   };
 
   /**

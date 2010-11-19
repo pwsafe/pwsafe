@@ -49,6 +49,8 @@ StringX PWSRun::getruncmd(const StringX &sxFile, bool &bfound) const
 
 bool PWSRun::runcmd(const StringX &runcommand, const bool &bAutotype) const
 {
+  UNREFERENCED_PARAMETER(runcommand);
+  UNREFERENCED_PARAMETER(bAutotype);
   // Stub!
   return false;
 }
@@ -56,6 +58,9 @@ bool PWSRun::runcmd(const StringX &runcommand, const bool &bAutotype) const
 bool PWSRun::issuecmd(const StringX &sxFile, const StringX &sxParameters, 
                       const bool &bAutotype) const
 {
+  UNREFERENCED_PARAMETER(sxFile);
+  UNREFERENCED_PARAMETER(sxParameters);
+  UNREFERENCED_PARAMETER(bAutotype);
   // Stub!
   return false;
 }

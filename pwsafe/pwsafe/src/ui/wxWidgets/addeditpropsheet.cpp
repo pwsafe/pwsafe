@@ -404,7 +404,7 @@ void AddEditPropSheet::CreateControls()
   m_OnRB->SetValue(false);
   itemFlexGridSizer61->Add(m_OnRB, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_ExpDate = new wxDatePickerCtrl( itemPanel54, ID_DATECTRL, wxDateTime(10, (wxDateTime::Month) 7, 2009), wxDefaultPosition, wxDefaultSize, wxDP_DEFAULT );
+  m_ExpDate = new wxDatePickerCtrl( itemPanel54, ID_DATECTRL, wxDateTime(10, static_cast<wxDateTime::Month>(7), 2009), wxDefaultPosition, wxDefaultSize, wxDP_DEFAULT );
   itemFlexGridSizer61->Add(m_ExpDate, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxBoxSizer* itemBoxSizer64 = new wxBoxSizer(wxHORIZONTAL);
@@ -764,9 +764,9 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
   // get values from m_item
   if (m_type == ADD) {
     // Get history preferences
-    PWSprefs *prefs = PWSprefs::GetInstance();
-    m_keepPWHist = prefs->GetPref(PWSprefs::SavePasswordHistory);
-    m_maxPWHist = prefs->GetPref(PWSprefs::NumPWHistoryDefault);
+    PWSprefs *prefs1 = PWSprefs::GetInstance();
+    m_keepPWHist = prefs1->GetPref(PWSprefs::SavePasswordHistory);
+    m_maxPWHist = prefs1->GetPref(PWSprefs::NumPWHistoryDefault);
   } else { // EDIT or VIEW
     PWHistList pwhl;
     size_t pwh_max, num_err;
@@ -786,9 +786,9 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
       }
     } else { // empty history string
       // Get history preferences
-      PWSprefs *prefs = PWSprefs::GetInstance();
-      m_keepPWHist = prefs->GetPref(PWSprefs::SavePasswordHistory);
-      m_maxPWHist = prefs->GetPref(PWSprefs::NumPWHistoryDefault);
+      PWSprefs *prefs1 = PWSprefs::GetInstance();
+      m_keepPWHist = prefs1->GetPref(PWSprefs::SavePasswordHistory);
+      m_maxPWHist = prefs1->GetPref(PWSprefs::NumPWHistoryDefault);
     }
   } // m_type
 
