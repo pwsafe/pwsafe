@@ -323,6 +323,234 @@ void DboxMain::OnAddGroup()
   }
 }
 
+void DboxMain::OnDuplicateGroup()
+{
+  if (m_core.IsReadOnly()) // disable in read-only mode
+    return;
+
+  bool bRefresh(true);
+  // Get selected group
+  HTREEITEM ti = m_ctlItemTree.GetSelectedItem();
+  const HTREEITEM nextsibling = m_ctlItemTree.GetNextSiblingItem(ti);
+
+  // Verify that it is a group
+  ASSERT((CItemData *)m_ctlItemTree.GetItemData(ti) == NULL);
+
+  // Get complete group name
+  StringX sxCurrentPath = (StringX)m_ctlItemTree.GetGroup(ti);
+  StringX sxCurrentGroup = (StringX)m_ctlItemTree.GetItemText(ti);
+  size_t grplen = sxCurrentPath.length();
+
+  size_t i = 0;
+  StringX sxNewPath, sxNewGroup, sxCopy;
+  do {
+    i++;
+    Format(sxCopy, IDS_COPYNUMBER, i);
+    sxNewPath = sxCurrentPath + sxCopy;
+  } while (m_mapGroupToTreeItem.find(sxNewPath) != m_mapGroupToTreeItem.end());
+  sxNewGroup = sxCurrentGroup + sxCopy;
+
+  // Have new group - now copy all entries in current group to new group
+  // Get all of the children
+
+  /*
+    Create 2 multi-commands to first add all normal or base entries and then a second
+    to add any aliases and shortcuts.
+  */
+  std::vector<bool> bVNodeStates;
+  bool bState = (m_ctlItemTree.GetItemState(ti, TVIS_EXPANDED) &
+                         TVIS_EXPANDED) != 0;
+   bVNodeStates.push_back(bState);
+
+  if (m_ctlItemTree.ItemHasChildren(ti)) {
+    MultiCommands *pmulti_cmd_base = MultiCommands::Create(&m_core);
+    MultiCommands *pmulti_cmd_deps = MultiCommands::Create(&m_core);
+
+    // Note that we need to do this twice - once to get all the normal entries
+    // and bases and then the dependents as we need the mapping between the old
+    // base UUIDs and their new UUIDs
+    std::map<st_UUID, st_UUID> mapOldToNewBaseUUIDs;
+    std::map<st_UUID, st_UUID>::const_iterator citer;
+    HTREEITEM hNextItem;
+
+    // Process normal & base entries
+    bool bDependentsExist(false);
+    hNextItem = m_ctlItemTree.GetNextTreeItem(ti);
+
+    while (hNextItem != NULL && hNextItem != nextsibling) {
+      CItemData *pci = (CItemData *)m_ctlItemTree.GetItemData(hNextItem);
+      CString cs_label = m_ctlItemTree.GetItemText(hNextItem);
+      TRACE(L"Label = '%s'\n", cs_label);
+      if (pci != NULL) {
+        // Not a group
+        if (pci->IsDependent()) {
+          bDependentsExist = true;
+          hNextItem = m_ctlItemTree.GetNextTreeItem(hNextItem);
+          continue;
+        }
+        
+        // Save old UUID
+        uuid_array_t old_uuid;
+        pci->GetUUID(old_uuid);
+        // Set up copy
+        CItemData ci2(*pci);
+        ci2.SetDisplayInfo(NULL);
+        ci2.CreateUUID();
+        ci2.SetStatus(CItemData::ES_ADDED);
+        // Set new group
+        StringX sxThisEntryNewGroup = sxNewPath + pci->GetGroup().substr(grplen);
+        ci2.SetGroup(sxThisEntryNewGroup);
+
+        if (pci->IsBase()) {
+          uuid_array_t new_uuid;
+          ci2.GetUUID(new_uuid);
+          st_UUID st_old(old_uuid), st_new(new_uuid);
+          mapOldToNewBaseUUIDs.insert(std::make_pair(st_old, st_new));
+        }
+
+        // Make it normal to begin with - if it has dependents then when those
+        // are added then its entry type will automatically be changed
+        ci2.SetNormal();
+        Command *pcmd = AddEntryCommand::Create(&m_core, ci2);
+        pcmd->SetNoGUINotify();
+        pmulti_cmd_base->Add(pcmd);
+      } else {
+        // Is node - save its expanded/collapsed state
+        bool bState = (m_ctlItemTree.GetItemState(hNextItem, TVIS_EXPANDED) &
+                               TVIS_EXPANDED) != 0;
+        bVNodeStates.push_back(bState);
+      }
+      hNextItem = m_ctlItemTree.GetNextTreeItem(hNextItem);
+    }
+
+    // Now process dependents (if any)
+    if (bDependentsExist) {
+      hNextItem = m_ctlItemTree.GetNextTreeItem(ti);
+
+      while (hNextItem != NULL && hNextItem != nextsibling) {
+        CItemData *pci = (CItemData *)m_ctlItemTree.GetItemData(hNextItem);
+        if (pci != NULL) {
+          // Not a group but ignore if not a dependent
+          if (!pci->IsDependent()) {
+            hNextItem = m_ctlItemTree.GetNextTreeItem(hNextItem);
+            continue;
+          }
+ 
+          // Save current UUID
+          uuid_array_t old_uuid;
+          pci->GetUUID(old_uuid);
+          // Set up copy
+          CItemData ci2(*pci);
+          ci2.SetDisplayInfo(NULL);
+          ci2.CreateUUID();
+          ci2.SetStatus(CItemData::ES_ADDED);
+          // Set new group
+          StringX sxThisEntryNewGroup = sxNewPath + pci->GetGroup().substr(grplen);
+          ci2.SetGroup(sxThisEntryNewGroup);
+
+          if (pci->IsAlias())
+            ci2.SetAlias();
+          else
+            ci2.SetShortcut();
+
+          Command *pcmd = NULL;
+          const CItemData *pbci = GetBaseEntry(pci);
+          ASSERT(pbci != NULL);
+
+          StringX sxtmp;
+          uuid_array_t old_base_uuid;
+          pbci->GetUUID(old_base_uuid);
+          st_UUID st_old_base(old_base_uuid);
+          citer = mapOldToNewBaseUUIDs.find(st_old_base);
+          if (citer != mapOldToNewBaseUUIDs.end()) {
+            // Base is in duplicated group - use new values
+            sxtmp = L"[" +
+                      sxNewPath + pbci->GetGroup().substr(grplen) + L":" +
+                      pbci->GetTitle() + L":" +
+                      pbci->GetUser()  +
+                    L"]";
+            ci2.SetPassword(sxtmp);
+            pcmd = AddEntryCommand::Create(&m_core, ci2, citer->second.uuid);
+          } else {
+            // Base not in duplicated group - use old values
+            sxtmp = L"[" +
+                      pbci->GetGroup() + L":" +
+                      pbci->GetTitle() + L":" +
+                      pbci->GetUser()  +
+                    L"]";
+            ci2.SetPassword(sxtmp);
+            pcmd = AddEntryCommand::Create(&m_core, ci2, old_base_uuid);
+          }
+          pcmd->SetNoGUINotify();
+          pmulti_cmd_deps->Add(pcmd);
+        }
+        hNextItem = m_ctlItemTree.GetNextTreeItem(hNextItem);
+      }
+    }
+
+    // We either do only one set of multi-commands, none of them or both of them
+    // as one multi-command (normals/bases first followed by dependents)
+    const int iDoExec = ((pmulti_cmd_base->GetSize() == 0) ? 0 : 1) +
+                        ((pmulti_cmd_deps->GetSize() == 0) ? 0 : 2);
+    switch (iDoExec) {
+      case 0:
+        // Do nothing
+        bRefresh = false;
+        break;
+      case 1:
+        // Only normal/base entries
+        Execute(pmulti_cmd_base);
+        break;
+      case 2:
+        // Only dependents
+        Execute(pmulti_cmd_deps);
+        break;
+      case 3:
+      {
+        // Both - normal entries/bases first then dependents
+        MultiCommands *pmulti_cmds = MultiCommands::Create(&m_core);
+        pmulti_cmds->Add(pmulti_cmd_base);
+        pmulti_cmds->Add(pmulti_cmd_deps);
+        Execute(pmulti_cmds);
+        break;
+      }
+      default:
+        ASSERT(0);
+    }
+  } else {
+    // User is duplicating an empty group - just add it
+    HTREEITEM parent = m_ctlItemTree.GetParentItem(ti);
+    HTREEITEM ng_ti = m_ctlItemTree.InsertItem(sxNewGroup.c_str(), parent, TVI_SORT);
+    m_ctlItemTree.SetItemImage(ng_ti, CPWTreeCtrl::NODE, CPWTreeCtrl::NODE);
+    m_mapGroupToTreeItem[sxNewPath] = ng_ti;
+    bRefresh = false;
+  }
+
+  // Must do this to re-populate m_mapGroupToTreeItem
+  if (bRefresh) {
+    RefreshViews();
+
+    // Set expand/collapse state of new groups to match old
+    HTREEITEM hNextItem = m_ctlItemTree.FindItem(sxNewPath.c_str(), TVI_ROOT);
+    ASSERT(hNextItem != NULL);
+
+    m_ctlItemTree.Expand(hNextItem, bVNodeStates[0] ? TVE_EXPAND : TVE_COLLAPSE);
+    i = 1;
+    hNextItem = m_ctlItemTree.GetNextTreeItem(hNextItem);
+
+    while (hNextItem != NULL && i < bVNodeStates.size()) {
+      if (m_ctlItemTree.ItemHasChildren(hNextItem)) {
+        // Is node - set its expanded/collapsed state
+        m_ctlItemTree.Expand(hNextItem, bVNodeStates[i] ? TVE_EXPAND : TVE_COLLAPSE);
+        i++;
+      }
+      hNextItem = m_ctlItemTree.GetNextTreeItem(hNextItem);
+    }
+  }
+
+  m_ctlItemTree.SelectItem(ti);
+}
+
 void DboxMain::OnDelete()
 {
   // Check preconditions, possibly prompt user for confirmation, then call Delete()
@@ -376,8 +604,7 @@ void DboxMain::OnDelete()
   }
 }
 
-void
-DboxMain::Delete()
+void DboxMain::Delete()
 {
   // "Top level" element delete:
   // 1. Sets up Command mechanism
@@ -809,11 +1036,11 @@ void DboxMain::OnDuplicateEntry()
     // Find a unique "Title"
     ItemListConstIter listpos;
     int i = 0;
-    CString s_copy;
+    StringX sxCopy;
     do {
       i++;
-      s_copy.Format(IDS_COPYNUMBER, i);
-      ci2_title = ci2_title0 + LPCWSTR(s_copy);
+      Format(sxCopy, IDS_COPYNUMBER, i);
+      ci2_title = ci2_title0 + sxCopy;
       listpos = m_core.Find(ci2_group, ci2_title, ci2_user);
     } while (listpos != m_core.GetEntryEndIter());
 
@@ -838,12 +1065,13 @@ void DboxMain::OnDuplicateEntry()
       if (pbci != NULL) {
         uuid_array_t base_uuid;
         pbci->GetUUID(base_uuid);
-        StringX cs_tmp;
-        cs_tmp = L"[" +
-          pbci->GetGroup() + L":" +
-          pbci->GetTitle() + L":" +
-          pbci->GetUser()  + L"]";
-        ci2.SetPassword(cs_tmp);
+        StringX sxtmp;
+        sxtmp = L"[" +
+                  pbci->GetGroup() + L":" +
+                  pbci->GetTitle() + L":" +
+                  pbci->GetUser()  +
+                L"]";
+        ci2.SetPassword(sxtmp);
         pcmd = AddEntryCommand::Create(&m_core, ci2, base_uuid);
       }
     } else { // not alias or shortcut

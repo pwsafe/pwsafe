@@ -30,9 +30,7 @@ remote = open('http://sourceforge.net/tracker/?func=detail&aid='+ ID +'&group_id
 }
 </script>
 <noscript><p style="color:red; text-align:center;
-font-size:24pt;">***
-Scripting
-is disabled - links to Tracker items will not work! ***</p>
+font-size:24pt;">*** Scripting is disabled - links to Tracker items will not work! ***</p>
 </noscript>
 </head>
 <body>
@@ -52,7 +50,13 @@ Information about older versions may be found <a href="http://pwsafe.org/history
 <h4><a name="V3.23.1New"></a>New Features for V3.23.1</h4>
 <table>
 <tbody align="left" valign="top">
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="FR(3111585);return false;">3111585</a></td>
+<td>User can now duplicate Groups. Aliases and shortcuts referring to base
+entries outside this group will still point to their respective bases. Those
+referring to base entries within the group will then point to the new copy.</td>
 </tr>
+<tr>
 <td align="center" width="100"><a href="nojs.html" onclick="FR(3065107);return false;">3065107</a></td>
 <td>Confirm Delete dialog for an entry now shows the entry's details.</td>
 </tr>

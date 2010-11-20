@@ -384,6 +384,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   // Edit Menu
   ON_COMMAND(ID_MENUITEM_ADD, OnAdd)
   ON_COMMAND(ID_MENUITEM_ADDGROUP, OnAddGroup)
+  ON_COMMAND(ID_MENUITEM_DUPLICATEGROUP, OnDuplicateGroup)
   ON_COMMAND(ID_MENUITEM_CREATESHORTCUT, OnCreateShortcut)
   ON_COMMAND(ID_MENUITEM_EDIT, OnEdit)
   ON_COMMAND(ID_MENUITEM_VIEW, OnEdit)
@@ -600,6 +601,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_FINDUP, true, true, false, false},
   {ID_MENUITEM_DUPLICATEENTRY, true, false, false, false},
   {ID_MENUITEM_ADDGROUP, true, false, true, false},
+  {ID_MENUITEM_DUPLICATEGROUP, true, false, true, false},
   {ID_MENUITEM_COPYPASSWORD, true, true, false, false},
   {ID_MENUITEM_COPYUSERNAME, true, true, false, false},
   {ID_MENUITEM_COPYNOTESFLD, true, true, false, false},
@@ -2935,6 +2937,7 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
       break;
     // Items not allowed in List View
     case ID_MENUITEM_ADDGROUP:
+    case ID_MENUITEM_DUPLICATEGROUP:
     case ID_MENUITEM_RENAMEENTRY:
     case ID_MENUITEM_RENAMEGROUP:
     case ID_MENUITEM_EXPANDALL:
@@ -3029,6 +3032,7 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
       switch (nID) {
         case ID_MENUITEM_ADD:
         case ID_MENUITEM_ADDGROUP:
+        case ID_MENUITEM_DUPLICATEGROUP:
         case ID_MENUITEM_DUPLICATEENTRY:
         case ID_MENUITEM_IMPORT_KEEPASS:
         case ID_MENUITEM_IMPORT_PLAINTEXT:
