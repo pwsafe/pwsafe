@@ -19,8 +19,36 @@
 #include <sys/stat.h>
 #include <Carbon/Carbon.h>
 
+/*
+ * GetStringTFromURLRef
+ * 
+ * Converts a URLRef (something on the filesystem, as far as this file is concerned) to a
+ * wchar_t string without making any assumptions about the encoding of CFURLRef
+ *
+ */
+static stringT GetStringTFromURLRef(CFURLRef url)
+{
+  stringT retval;
+  CFStringRef cfpath = CFURLCopyFileSystemPath(url, kCFURLPOSIXPathStyle);
+  if (cfpath) {
+    CFIndex numChars = CFStringGetLength(cfpath);
+    wchar_t* wPath = new wchar_t[numChars+1]; //any alignment issues?
+    CFIndex numBytesWritten = 0;
+    assert(sizeof(wchar_t) == 4); //kCFStringEncodingUTF32 hardcoded below
+    CFIndex numConverted = CFStringGetBytes(cfpath, CFRangeMake(0, numChars), 
+                                            kCFStringEncodingUTF32, 0, false, reinterpret_cast<UInt8*>(wPath), 
+                                            sizeof(wchar_t)*numChars, &numBytesWritten);
+    assert(numConverted*sizeof(wchar_t) == numBytesWritten);
+    retval = stringT(wPath, numConverted);
+    delete [] wPath;
+    CFRelease(cfpath);
+  }
+  return retval;
+}
+
 stringT pws_os::getexecdir()
 {
+  stringT retval(_T("?"));
   ProcessSerialNumber psn = {0, kCurrentProcess};
   FSRef self = {0};
   OSStatus err = GetProcessBundleLocation(&psn, &self);
@@ -30,26 +58,12 @@ stringT pws_os::getexecdir()
     if (!err) {
       CFURLRef url = CFURLCreateFromFSRef(kCFAllocatorDefault, &parent);
       if (url) {
-        CFStringRef cfpath = CFURLCopyFileSystemPath(url, kCFURLPOSIXPathStyle);
-        if (cfpath) {
-          CFIndex numChars = CFStringGetLength(cfpath);
-          wchar_t* wPath = new wchar_t[numChars+1]; //any alignment issues?
-          CFIndex numBytesWritten = 0;
-          assert(sizeof(wchar_t) == 4); //kCFStringEncodingUTF32 hardcoded below
-          CFIndex numConverted = CFStringGetBytes(cfpath, CFRangeMake(0, numChars), 
-                                                 kCFStringEncodingUTF32, 0, false, reinterpret_cast<UInt8*>(wPath), 
-                                                 sizeof(wchar_t)*numChars, &numBytesWritten);
-          assert(numConverted*sizeof(wchar_t) == numBytesWritten);
-          stringT retval(wPath, numConverted);
-          delete [] wPath;
-          CFRelease(cfpath);
-          return retval;
-        }
+        retval = GetStringTFromURLRef(url);
         CFRelease(url);
       }
     }
   }
-  return _T("?");
+  return retval;
 }
 
 stringT pws_os::getcwd()
@@ -167,7 +181,30 @@ stringT pws_os::getsafedir(void)
   return getuserprefsdir(); // same-same on linux
 }
 
+static stringT GetBundleResourceDir()
+{
+  stringT retval;
+  CFBundleRef mainBundle = CFBundleGetMainBundle();
+  if (mainBundle) {
+    CFURLRef helpDir = CFBundleCopyResourcesDirectoryURL(mainBundle);
+    if (helpDir) {
+      CFURLRef helpDirAbsolute = CFURLCopyAbsoluteURL(helpDir);
+      if (helpDirAbsolute) {
+        retval = GetStringTFromURLRef(helpDirAbsolute);
+        CFRelease(helpDirAbsolute);
+      }
+      CFRelease(helpDir);
+    }
+  }
+  return retval;
+}
+
 stringT pws_os::getxmldir(void)
 {
-  return _S("/usr/share/pwsafe/xml/");
+  return GetBundleResourceDir();
+}
+
+stringT pws_os::gethelpdir(void)
+{
+  return GetBundleResourceDir();
 }
