@@ -439,8 +439,11 @@ void CPWTreeCtrl::UpdateLeafsGroup(MultiCommands *pmulticmds, HTREEITEM hItem, C
   if (IsLeaf(hItem)) {
     CItemData *pci = (CItemData *)GetItemData(hItem);
     ASSERT(pci != NULL);
-    pmulticmds->Add(UpdateEntryCommand::Create(m_pDbx->GetCore(), *pci,
-                                               CItemData::GROUP, (LPCWSTR)prefix));
+    Command *pcmd = NULL;
+    pcmd = UpdateEntryCommand::Create(m_pDbx->GetCore(), *pci,
+                                               CItemData::GROUP, (LPCWSTR)prefix);
+    pcmd->SetNoGUINotify();
+    pmulticmds->Add(pcmd);
   } else { // update prefix with current group name and recurse
     if (!prefix.IsEmpty())
       prefix += GROUP_SEP;
@@ -998,7 +1001,7 @@ HTREEITEM CPWTreeCtrl::AddGroup(const CString &group, bool &bAlreadyExists)
         bAlreadyExists = false;
       } else
         ti = si;
-        m_pDbx->m_mapGroupToTreeItem[path2root] = ti;
+      m_pDbx->m_mapGroupToTreeItem[path2root] = ti;
     } while (!path.IsEmpty());
   }
   return ti;
@@ -2255,4 +2258,28 @@ void CPWTreeCtrl::OnCustomDraw(NMHDR *pNMHDR, LRESULT *pResult)
     default:
       break;
   }
+}
+
+HTREEITEM CPWTreeCtrl::FindItem(const CString &path, HTREEITEM hRoot)
+{
+  // check whether the current item is the searched one
+  CString cs_thispath = GetGroup(hRoot);// + GROUP_SEP2 + GetItemText(hRoot);
+  if (cs_thispath.Compare(path) == 0)
+    return hRoot; 
+
+  // get a handle to the first child item
+  HTREEITEM hSub = GetChildItem(hRoot);
+  // iterate as long a new item is found
+  while (hSub) {
+    // check the children of the current item
+    HTREEITEM hFound = FindItem(path, hSub);
+    if (hFound)
+      return hFound; 
+
+    // get the next sibling of the current item
+    hSub = GetNextSiblingItem(hSub);
+  } 
+
+  // return NULL if nothing was found
+  return NULL;
 }

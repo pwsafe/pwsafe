@@ -1,0 +1,27 @@
+/* XPM */
+static const char *classic_duplicategroup_disabled_xpm[] = {
+/* columns rows colors chars-per-pixel */
+"16 16 5 1",
+/* colors */
+" 	c #c0c0c0",
+".	c Black",
+"X	c Gray15",
+"o	c Gray35",
+"O	c #4c4c4c",
+/* pixels */
+"                ",
+"   ..........   ",
+"   .        .   ",
+"   .        .   ",
+"   .      . . . ",
+"           ...  ",
+"XX   XX     .   ",
+"XoooooX         ",
+" ooooo    OOOOO ",
+" oo       OOOOO ",
+" oo oo    OO    ",
+" oo oo    OO OO ",
+" ooooo    OO OO ",
+"XoooooX   OOOOO ",
+"XX   XX   OOOOO ",
+"                "};

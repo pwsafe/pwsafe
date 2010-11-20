@@ -335,6 +335,9 @@
 #define IDB_ADDGROUP_CLASSIC            488
 #define IDB_ADDGROUP_NEW                489
 #define IDB_ADDGROUP_NEW_D              490
+#define IDB_DUPLICATEGROUP_CLASSIC      491
+#define IDB_DUPLICATEGROUP_NEW          492
+#define IDB_DUPLICATEGROUP_NEW_D        493
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_BROWSE                      1002
@@ -721,7 +724,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        491
+#define _APS_NEXT_RESOURCE_VALUE        494
 #define _APS_NEXT_COMMAND_VALUE         30001
 #define _APS_NEXT_CONTROL_VALUE         1429
 #define _APS_NEXT_SYMED_VALUE           166

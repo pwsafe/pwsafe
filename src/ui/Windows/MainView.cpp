@@ -4116,9 +4116,9 @@ vector<bool> DboxMain::GetGroupDisplayState()
 
   while (NULL != (hItem = m_ctlItemTree.GetNextTreeItem(hItem))) {
     if (m_ctlItemTree.ItemHasChildren(hItem)) {
-      bool state = (m_ctlItemTree.GetItemState(hItem, TVIS_EXPANDED)
-                    & TVIS_EXPANDED) != 0;
-      v.push_back(state);
+      bool bState = (m_ctlItemTree.GetItemState(hItem, TVIS_EXPANDED) &
+                             TVIS_EXPANDED) != 0;
+      v.push_back(bState);
     }
   }
   return v;

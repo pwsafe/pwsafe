@@ -75,6 +75,7 @@ public:
   void SetUpFont(CFont *pfont) {m_fonts.SetUpFont(this, pfont);}
   void SetHighlightChanges(bool bvalue)
   {m_bUseHighLighting = bvalue;}
+  HTREEITEM FindItem(const CString &path, HTREEITEM hRoot);
 
 protected:
   //{{AFX_MSG(CPWTreeCtrl)

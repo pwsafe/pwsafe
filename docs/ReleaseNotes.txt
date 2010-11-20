@@ -10,6 +10,9 @@ releases may be found in the file ChangeLog.txt.
 
 New Features for 3.23.1
 =======================
+[3111585] User can now duplicate Groups. Aliases and shortcuts referring to base
+entries outside this group will still point to their respective bases. Those
+referring to base entries within the group will then point to the new copy.
 [3065107] Confirm Delete dialog for an entry now shows the entry's details.
 [3062854] Advanced Dialog Options settings are saved for a session to allow
 re-use. The following functions use the this dialog and their settings are saved
