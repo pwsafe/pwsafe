@@ -26,6 +26,7 @@
 		E690B56012984A1B007EA508 /* pwsafe.xsd in Resources */ = {isa = PBXBuildFile; fileRef = E690B55D12984A1A007EA508 /* pwsafe.xsd */; };
 		E690B56112984A1B007EA508 /* pwsafe.xsl in Resources */ = {isa = PBXBuildFile; fileRef = E690B55E12984A1A007EA508 /* pwsafe.xsl */; };
 		E690B95712984B1D007EA508 /* help.zip in Resources */ = {isa = PBXBuildFile; fileRef = E690B95612984B1D007EA508 /* help.zip */; };
+		E6919C641298FB25001F96D9 /* pwsafe.icns in Resources */ = {isa = PBXBuildFile; fileRef = E6919C631298FB25001F96D9 /* pwsafe.icns */; };
 		E69B7FA811F600BA0084F6C4 /* ImportXmlDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E69B7FA411F600BA0084F6C4 /* ImportXmlDlg.cpp */; };
 		E69B7FA911F600BA0084F6C4 /* OpenFilePickerValidator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E69B7FA611F600BA0084F6C4 /* OpenFilePickerValidator.cpp */; };
 		E6ADBA371195709A004E2BE5 /* about.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADB9A511957099004E2BE5 /* about.cpp */; };
@@ -153,6 +154,7 @@
 		E690B55D12984A1A007EA508 /* pwsafe.xsd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = pwsafe.xsd; path = ../xml/pwsafe.xsd; sourceTree = SOURCE_ROOT; };
 		E690B55E12984A1A007EA508 /* pwsafe.xsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = pwsafe.xsl; path = ../xml/pwsafe.xsl; sourceTree = SOURCE_ROOT; };
 		E690B95612984B1D007EA508 /* help.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; name = help.zip; path = ../help/default/help.zip; sourceTree = SOURCE_ROOT; };
+		E6919C631298FB25001F96D9 /* pwsafe.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = pwsafe.icns; path = ../src/ui/wxWidgets/graphics/pwsafe.icns; sourceTree = SOURCE_ROOT; };
 		E69B7FA411F600BA0084F6C4 /* ImportXmlDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ImportXmlDlg.cpp; sourceTree = "<group>"; };
 		E69B7FA511F600BA0084F6C4 /* ImportXmlDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImportXmlDlg.h; sourceTree = "<group>"; };
 		E69B7FA611F600BA0084F6C4 /* OpenFilePickerValidator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OpenFilePickerValidator.cpp; sourceTree = "<group>"; };
@@ -608,6 +610,7 @@
 		E690B1031297D76E007EA508 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				E6919C631298FB25001F96D9 /* pwsafe.icns */,
 				E690B95612984B1D007EA508 /* help.zip */,
 				E690B55C12984A1A007EA508 /* pwsafe_filter.xsd */,
 				E690B55D12984A1A007EA508 /* pwsafe.xsd */,
@@ -1270,11 +1273,10 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E6ADB9A31195706B004E2BE5 /* Build configuration list for PBXNativeTarget "pwsafe" */;
 			buildPhases = (
+				E690B5041297D80A007EA508 /* Resources */,
 				E6CFEEF711EA3E2F001402D8 /* Generate version.h */,
 				E6ADB99B1195706A004E2BE5 /* Sources */,
 				E6ADBAF3119577A7004E2BE5 /* Frameworks */,
-				E690B508129800DF007EA508 /* ShellScript */,
-				E690B5041297D80A007EA508 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -1322,29 +1324,13 @@
 				E690B56012984A1B007EA508 /* pwsafe.xsd in Resources */,
 				E690B56112984A1B007EA508 /* pwsafe.xsl in Resources */,
 				E690B95712984B1D007EA508 /* help.zip in Resources */,
+				E6919C641298FB25001F96D9 /* pwsafe.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		E690B508129800DF007EA508 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"../help/default/pwsafe.hh?",
-				"../help/default/html/*.html",
-				"../help/default/html/*.jpg",
-			);
-			outputPaths = (
-				../help/default/html/help.zip,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "cd ../help/default\necho `pwd`\nzip -r help.zip ./* --exclude \\.\\*";
-		};
 		E690B54212980CFC007EA508 /* Default English Help */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
