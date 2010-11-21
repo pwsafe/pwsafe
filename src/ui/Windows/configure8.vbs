@@ -17,7 +17,7 @@ Dim str1, str2, str3,CRLF
 Dim rc
 
 Dim XML_XPATH, strPgmFiles
-Dim strTortoiseSVNDir, strXercesDir, strWXDir
+Dim strTortoiseSVNDir, strXercesDir, strXerces64Dir, strWXDir
 Dim strKeyPath, strValueName, strValue
 
 CRLF = Chr(13) & Chr(10)
@@ -51,7 +51,8 @@ Set oReg = Nothing
 
 ' Set defaults
 strTortoiseSVNDir = "C:\Program Files\TortoiseSVN"
-strXercesDir = "C:\Program Files" & strPgmFiles & "\xerces-c-3.0.1-x86-windows-vc-8.0"
+strXercesDir = "C:\Program Files" & strPgmFiles & "\xerces-c-3.1.1-x86-windows-vc-8.0"
+strXerces64Dir = "C:\Program Files\xerces-c-3.1.1-x86_64-windows-vc-8.0"
 strWXDir = "C:\Program Files" & strPgmFiles & "\wxWidgets-2.8.10"
 
 str1 = "Please supply fully qualified location, without quotes, where "
@@ -75,6 +76,9 @@ If UserMacros.length > 0 Then
     End If
     If CurrentUserMacro.Attributes.getNamedItem ("Name").text = "XercesDir" Then
       strXercesDir = CurrentUserMacro.Attributes.getNamedItem("Value").text
+    End If
+    If CurrentUserMacro.Attributes.getNamedItem ("Name").text = "Xerces64Dir" Then
+      strXerces64Dir = CurrentUserMacro.Attributes.getNamedItem("Value").text
     End If
     If CurrentUserMacro.Attributes.getNamedItem ("Name").text = "WXDIR" Then
       strWXDir = CurrentUserMacro.Attributes.getNamedItem("Value").text
@@ -146,6 +150,13 @@ objOutputFile.WriteLine("	<UserMacro")
 objOutputFile.WriteLine("		Name=""XercesDir""")
 strFileLocation = InputBox(str1 & "Xerces" & str2 & strXercesDir & str3, "Xerces Location", strXercesDir)
 If (Len(strFileLocation) = 0) Then strFileLocation = strXercesDir
+objOutputFile.WriteLine("		Value=""" & strFileLocation & """")
+objOutputFile.WriteLine("		PerformEnvironmentSet=""true""")
+objOutputFile.WriteLine("	/>")
+objOutputFile.WriteLine("	<UserMacro")
+objOutputFile.WriteLine("		Name=""Xerces64Dir""")
+strFileLocation = InputBox(str1 & "Xerces" & str2 & strXerces64Dir & str3, "Xerces 64-bit Location", strXerces64Dir)
+If (Len(strFileLocation) = 0) Then strFileLocation = strXerces64Dir
 objOutputFile.WriteLine("		Value=""" & strFileLocation & """")
 objOutputFile.WriteLine("		PerformEnvironmentSet=""true""")
 objOutputFile.WriteLine("	/>")
