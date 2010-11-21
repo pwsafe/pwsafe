@@ -17,7 +17,7 @@ Dim str1, str2, str3,CRLF
 Dim rc
 
 Dim Node, XML_XPATH, strPgmFiles
-Dim strTortoiseSVNDir, strXercesDir, strWXDir
+Dim strTortoiseSVNDir, strXercesDir, strXerces64Dir, strWXDir
 Dim strKeyPath, strValueName, strValue
 
 CRLF = Chr(13) & Chr(10)
@@ -52,6 +52,7 @@ Set oReg = Nothing
 ' Set defaults
 strTortoiseSVNDir = "C:\Program Files\TortoiseSVN"
 strXercesDir = "C:\Program Files" & strPgmFiles & "\xerces-c-3.1.1-x86-windows-vc-10.0"
+strXerces64Dir = "C:\Program Files\xerces-c-3.1.1-x86_64-windows-vc-10.0"
 strWXDir = "C:\Program Files" & strPgmFiles & "\wxWidgets-2.8.11"
 
 str1 = "Please supply fully qualified location, without quotes, where "
@@ -79,6 +80,10 @@ If (objFileSystem.FileExists(strOutputFile)) Then
   If Not Node Is Nothing Then
     strXercesDir = Node.text
   End If
+  Set Node = objXMLDoc.documentElement.selectSingleNode("PropertyGroup/Xerces64Dir") 
+  If Not Node Is Nothing Then
+    strXerces64Dir = Node.text
+  End If
   Set Node = objXMLDoc.documentElement.selectSingleNode("PropertyGroup/WXDIR") 
   If Not Node Is Nothing Then
     strWXDir = Node.text
@@ -102,6 +107,9 @@ Else
         End If
         If CurrentUserMacro.Attributes.getNamedItem ("Name").text = "XercesDir" Then
           strXercesDir = CurrentUserMacro.Attributes.getNamedItem("Value").text
+        End If
+        If CurrentUserMacro.Attributes.getNamedItem ("Name").text = "Xerces64Dir" Then
+          strXerces64Dir = CurrentUserMacro.Attributes.getNamedItem("Value").text
         End If
         If CurrentUserMacro.Attributes.getNamedItem ("Name").text = "WXDIR" Then
           strWXDir = CurrentUserMacro.Attributes.getNamedItem("Value").text
@@ -141,6 +149,11 @@ strFileLocation = InputBox(str1 & "Xerces" & str2 & strXercesDir & str3, "Xerces
 If (Len(strFileLocation) = 0) Then strFileLocation = strXercesDir
 
 objOutputFile.WriteLine("    <XercesDir>" & strFileLocation & "</XercesDir>")
+
+strFileLocation = InputBox(str1 & "Xerces" & str2 & strXerces64Dir & str3, "Xerces 64-bit Location", strXerces64Dir)
+If (Len(strFileLocation) = 0) Then strFileLocation = strXerces64Dir
+
+objOutputFile.WriteLine("    <Xerces64Dir>" & strFileLocation & "</Xerces64Dir>")
 
 strFileLocation = InputBox(str1 & "wxWidgets" & str2 & strWXDir & str3, "wxWidgets Location", strWXDir)
 If (Len(strFileLocation) = 0) Then strFileLocation = strWXDir
@@ -185,6 +198,10 @@ objOutputFile.WriteLine("      <EnvironmentVariable>true</EnvironmentVariable>")
 objOutputFile.WriteLine("    </BuildMacro>")
 objOutputFile.WriteLine("    <BuildMacro Include=""XercesDir"">")
 objOutputFile.WriteLine("      <Value>$(XercesDir)</Value>")
+objOutputFile.WriteLine("      <EnvironmentVariable>true</EnvironmentVariable>")
+objOutputFile.WriteLine("    </BuildMacro>")
+objOutputFile.WriteLine("    <BuildMacro Include=""Xerces64Dir"">")
+objOutputFile.WriteLine("      <Value>$(Xerces64Dir)</Value>")
 objOutputFile.WriteLine("      <EnvironmentVariable>true</EnvironmentVariable>")
 objOutputFile.WriteLine("    </BuildMacro>")
 objOutputFile.WriteLine("    <BuildMacro Include=""WXDIR"">")
