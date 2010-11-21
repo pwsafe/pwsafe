@@ -1345,7 +1345,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd ../help/default\necho `pwd`\nzip -r help.zip ./* --exclude \\.\\*";
+			shellScript = "cd ../help/default\necho `pwd`\nzip -r help.zip ./* --exclude .\\*";
 		};
 		E6CFEEF711EA3E2F001402D8 /* Generate version.h */ = {
 			isa = PBXShellScriptBuildPhase;
