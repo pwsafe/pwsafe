@@ -124,7 +124,7 @@ void CSafeCombinationPrompt::CreateControls()
   CSafeCombinationPrompt* itemDialog1 = this;
 
   wxBoxSizer* itemBoxSizer2 = new wxBoxSizer(wxVERTICAL);
-  itemDialog1->SetSizer(itemBoxSizer2);
+//  itemDialog1->SetSizer(itemBoxSizer2);
 
   wxBoxSizer* itemBoxSizer3 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer2->Add(itemBoxSizer3, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
@@ -150,21 +150,10 @@ void CSafeCombinationPrompt::CreateControls()
   wxTextCtrl* itemTextCtrl10 = new wxTextCtrl( itemDialog1, ID_PASSWORD, wxEmptyString, wxDefaultPosition, wxSize(itemDialog1->ConvertDialogToPixels(wxSize(150, -1)).x, -1), wxTE_PASSWORD );
   itemBoxSizer8->Add(itemTextCtrl10, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxStdDialogButtonSizer* itemStdDialogButtonSizer11 = new wxStdDialogButtonSizer;
+  itemBoxSizer2->Add(CreateStdDialogButtonSizer(wxOK|wxCANCEL|wxHELP), wxSizerFlags().Border().Expand().Proportion(0));
 
-  itemBoxSizer2->Add(itemStdDialogButtonSizer11, 0, wxGROW|wxALL, 5);
-  wxButton* itemButton12 = new wxButton( itemDialog1, wxID_OK, _("&OK"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemButton12->SetDefault();
-  itemStdDialogButtonSizer11->AddButton(itemButton12);
-
-  wxButton* itemButton13 = new wxButton( itemDialog1, wxID_CANCEL, _("&Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemStdDialogButtonSizer11->AddButton(itemButton13);
-
-  wxButton* itemButton14 = new wxButton( itemDialog1, wxID_HELP, _("&Help"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemStdDialogButtonSizer11->AddButton(itemButton14);
-
-  itemStdDialogButtonSizer11->Realize();
-
+  SetSizerAndFit(itemBoxSizer2);
+  
   // Set validators
   itemStaticText7->SetValidator( wxGenericValidator(& m_filename) );
   itemTextCtrl10->SetValidator( wxGenericValidator(& m_password) );

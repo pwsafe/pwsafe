@@ -125,7 +125,6 @@ void CSafeCombinationSetup::CreateControls()
   CSafeCombinationSetup* itemDialog1 = this;
 
   wxBoxSizer* itemBoxSizer2 = new wxBoxSizer(wxVERTICAL);
-  itemDialog1->SetSizer(itemBoxSizer2);
 
   wxStaticText* itemStaticText3 = new wxStaticText( itemDialog1, wxID_STATIC, _("A new password database will be created.\nThe safe combination will be used to encrypt the password database file.\nYou can use any keyboard character. The combination is case-sensitive.\n"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer2->Add(itemStaticText3, 0, wxALIGN_LEFT|wxALL, 5);
@@ -145,19 +144,9 @@ void CSafeCombinationSetup::CreateControls()
   wxTextCtrl* itemTextCtrl8 = new wxTextCtrl( itemDialog1, ID_VERIFY, wxEmptyString, wxDefaultPosition, wxSize(itemDialog1->ConvertDialogToPixels(wxSize(120, -1)).x, -1), wxTE_PASSWORD );
   itemGridSizer4->Add(itemTextCtrl8, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxStdDialogButtonSizer* itemStdDialogButtonSizer9 = new wxStdDialogButtonSizer;
+  itemBoxSizer2->Add(CreateStdDialogButtonSizer(wxOK|wxCANCEL|wxHELP), wxSizerFlags().Border().Expand().Proportion(0));
 
-  itemBoxSizer2->Add(itemStdDialogButtonSizer9, 0, wxALIGN_LEFT|wxALL, 5);
-  wxButton* itemButton10 = new wxButton( itemDialog1, wxID_OK, _("&OK"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemStdDialogButtonSizer9->AddButton(itemButton10);
-
-  wxButton* itemButton11 = new wxButton( itemDialog1, wxID_CANCEL, _("&Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemStdDialogButtonSizer9->AddButton(itemButton11);
-
-  wxButton* itemButton12 = new wxButton( itemDialog1, wxID_HELP, _("&Help"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemStdDialogButtonSizer9->AddButton(itemButton12);
-
-  itemStdDialogButtonSizer9->Realize();
+  SetSizerAndFit(itemBoxSizer2);
 
   // Set validators
   itemTextCtrl6->SetValidator( wxGenericValidator(& m_password) );
