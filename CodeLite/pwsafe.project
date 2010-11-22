@@ -77,6 +77,9 @@
     <File Name="../src/ui/wxWidgets/PWSDragBar.cpp"/>
     <File Name="../src/ui/wxWidgets/MergeDlg.h"/>
     <File Name="../src/ui/wxWidgets/MergeDlg.cpp"/>
+    <File Name="../src/ui/wxWidgets/helpmap.h"/>
+    <File Name="../src/ui/wxWidgets/SystemTrayMenuId.h"/>
+    <File Name="../src/ui/wxWidgets/PwsToolbarButtons.h"/>
   </VirtualDirectory>
   <Dependencies Name="Release">
     <Project Name="core"/>
