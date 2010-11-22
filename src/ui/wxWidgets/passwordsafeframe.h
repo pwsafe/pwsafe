@@ -273,6 +273,9 @@ public:
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_CREATESHORTCUT
   void OnCreateShortcut(wxCommandEvent& evt);
 
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_DUPLICATEENTRY
+  void OnDuplicateEntry(wxCommandEvent& evt);
+
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_MENU_CLEAR_MRU
   void OnClearRecentHistory(wxCommandEvent& evt);
 
