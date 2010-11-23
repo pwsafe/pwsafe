@@ -286,9 +286,8 @@ void COptions::CreateControls()
   wxBoxSizer* itemBoxSizer15 = new wxBoxSizer(wxHORIZONTAL);
   itemStaticBoxSizer7->Add(itemBoxSizer15, 0, wxGROW|wxALL, 0);
   wxArrayString m_busuffixCBStrings;
-  m_busuffixCBStrings.Add(_("None"));
-  m_busuffixCBStrings.Add(_("YYYYMMMDD_HHMMSS"));
-  m_busuffixCBStrings.Add(_("Incremented Number [001-999]"));
+  for (size_t idx = 0; idx < NumberOf(BUSuffix); ++idx)
+    m_busuffixCBStrings.Add(BUSuffix[idx]);
   m_busuffixCB = new wxComboBox( itemPanel2, ID_COMBOBOX2, wxEmptyString, wxDefaultPosition, wxSize(itemPanel2->ConvertDialogToPixels(wxSize(140, -1)).x, -1), m_busuffixCBStrings, wxCB_READONLY );
   itemBoxSizer15->Add(m_busuffixCB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
@@ -800,7 +799,7 @@ void COptions::PrefsToPropSheet()
   m_usrbuprefixRB->SetValue(!buprefixValue.empty());
   m_usrbuprefixTxt->SetValue(buprefixValue);
   int suffixIndex = prefs->GetPref(PWSprefs::BackupSuffix);
-  m_busuffixCB->SetValue(BUSuffix[suffixIndex]);
+  m_busuffixCB->Select(suffixIndex);
   m_bumaxinc->SetValue(prefs->GetPref(PWSprefs::BackupMaxIncremented));
   wxString budirValue = prefs->GetPref(PWSprefs::BackupDir).c_str();
   m_dfltbudirRB->SetValue(budirValue.empty());
@@ -897,7 +896,7 @@ void COptions::PropSheetToPrefs()
   int suffixIndex = m_busuffixCB->GetCurrentSelection();
   prefs->SetPref(PWSprefs::BackupSuffix, suffixIndex);
   if (suffixIndex == INC_SFX)
-    prefs->SetPref(PWSprefs::BackupMaxIncremented, suffixIndex);
+    prefs->SetPref(PWSprefs::BackupMaxIncremented, m_bumaxinc->GetValue());
   wxString budirValue;
   if (m_usrbudirRB->GetValue())
     budirValue = m_usrbudirTxt->GetValue();

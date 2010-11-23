@@ -400,11 +400,15 @@ public:
   PWSTreeCtrl* m_tree;
 ////@end PasswordSafeFrame member variables
  private:
+  enum SaveType {ST_INVALID = -1, ST_NORMALEXIT = 0, 
+                 ST_ENDSESSIONEXIT, ST_WTSLOGOFFEXIT, ST_FAILSAFESAVE};
+
   int New();
   int NewFile(StringX &fname);
   int Open(const wxString &fname); // prompt for password, try to Load.
   int SaveIfChanged();
-  int Save();
+  int SaveAs(void);
+  int Save(SaveType st = ST_INVALID);
   void ShowGrid(bool show = true);
   void ShowTree(bool show = true);
   void ClearData();
