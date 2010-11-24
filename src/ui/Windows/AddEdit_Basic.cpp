@@ -19,11 +19,11 @@
 #include "AddEdit_PropertySheet.h"
 #include "ChangeAliasPswd.h"
 
-#include "corelib/PWCharPool.h"
-#include "corelib/PWSprefs.h"
-#include "corelib/PWSAuxParse.h"
-#include "corelib/corelib.h"
-#include "corelib/command.h"
+#include "core/PWCharPool.h"
+#include "core/PWSprefs.h"
+#include "core/PWSAuxParse.h"
+#include "core/core.h"
+#include "core/command.h"
 
 #include <shlwapi.h>
 #include <fstream>

@@ -23,9 +23,9 @@
 #include "SMemFile.h"
 #include "GeneralMsgBox.h"
 
-#include "corelib/ItemData.h"
-#include "corelib/Util.h"
-#include "corelib/Pwsprefs.h"
+#include "core/ItemData.h"
+#include "core/Util.h"
+#include "core/Pwsprefs.h"
 
 #include "os/debug.h"
 

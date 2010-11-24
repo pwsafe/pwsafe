@@ -23,8 +23,8 @@
 ////@begin includes
 #include "dragbar.h"
 #include "../../os/pws_tchar.h"
-#include "../../corelib/PwsPlatform.h"
-#include "../../corelib/ItemData.h"
+#include "../../core/PwsPlatform.h"
+#include "../../core/ItemData.h"
 #include "./wxutils.h"
 #include <wx/dnd.h>
 ////@end includes

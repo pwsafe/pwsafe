@@ -22,7 +22,7 @@
 ////@begin includes
 #include "wx/valgen.h"
 ////@end includes
-#include "corelib/PWScore.h"
+#include "core/PWScore.h"
 
 /*!
  * Forward declarations

@@ -83,7 +83,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
-				AdditionalDependencies="corelib.lib os.lib WS2_32.lib rpcrt4.lib version.lib psapi.lib Wtsapi32.lib htmlhelp.lib"
+				AdditionalDependencies="core.lib os.lib WS2_32.lib rpcrt4.lib version.lib psapi.lib Wtsapi32.lib htmlhelp.lib"
 				OutputFile="..\$(PWSBin)/pwsafe.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
@@ -186,7 +186,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
-				AdditionalDependencies="corelib.lib os.lib WS2_32.lib Rpcrt4.lib version.lib psapi.lib Wtsapi32.lib htmlhelp.lib"
+				AdditionalDependencies="core.lib os.lib WS2_32.lib Rpcrt4.lib version.lib psapi.lib Wtsapi32.lib htmlhelp.lib"
 				ShowProgress="0"
 				OutputFile="..\$(PWSBin)/pwsafe.exe"
 				LinkIncremental="1"
@@ -293,7 +293,7 @@
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
 				AdditionalOptions="/OPT:REF"
-				AdditionalDependencies="corelib.lib os.lib WS2_32.lib rpcrt4.lib version.lib psapi.lib Wtsapi32.lib dbghelp.lib htmlhelp.lib msxml6.lib"
+				AdditionalDependencies="core.lib os.lib WS2_32.lib rpcrt4.lib version.lib psapi.lib Wtsapi32.lib dbghelp.lib htmlhelp.lib msxml6.lib"
 				OutputFile="..\$(PWSBin)/pwsafe.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
@@ -399,7 +399,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
-				AdditionalDependencies="corelib.lib os.lib WS2_32.lib Rpcrt4.lib version.lib psapi.lib Wtsapi32.lib htmlhelp.lib msxml6.lib"
+				AdditionalDependencies="core.lib os.lib WS2_32.lib Rpcrt4.lib version.lib psapi.lib Wtsapi32.lib htmlhelp.lib msxml6.lib"
 				ShowProgress="0"
 				OutputFile="..\$(PWSBin)/pwsafe.exe"
 				LinkIncremental="1"
@@ -507,7 +507,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
-				AdditionalDependencies="corelib.lib os.lib WS2_32.lib Rpcrt4.lib version.lib psapi.lib Wtsapi32.lib htmlhelp.lib xerces-c_static_3D.lib"
+				AdditionalDependencies="core.lib os.lib WS2_32.lib Rpcrt4.lib version.lib psapi.lib Wtsapi32.lib htmlhelp.lib xerces-c_static_3D.lib"
 				ShowProgress="0"
 				OutputFile="..\$(PWSBin)/pwsafe.exe"
 				LinkIncremental="1"
@@ -615,7 +615,7 @@
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
 				AdditionalOptions="/OPT:REF"
-				AdditionalDependencies="corelib.lib os.lib WS2_32.lib rpcrt4.lib version.lib psapi.lib Wtsapi32.lib dbghelp.lib htmlhelp.lib msxml6.lib"
+				AdditionalDependencies="core.lib os.lib WS2_32.lib rpcrt4.lib version.lib psapi.lib Wtsapi32.lib dbghelp.lib htmlhelp.lib msxml6.lib"
 				OutputFile="..\$(PWSBin)/pwsafe.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
@@ -722,7 +722,7 @@
 				Name="VCLinkerTool"
 				LinkLibraryDependencies="false"
 				AdditionalOptions="/OPT:REF"
-				AdditionalDependencies="corelib.lib os.lib WS2_32.lib rpcrt4.lib version.lib psapi.lib Wtsapi32.lib dbghelp.lib htmlhelp.lib xerces-c_static_3.lib"
+				AdditionalDependencies="core.lib os.lib WS2_32.lib rpcrt4.lib version.lib psapi.lib Wtsapi32.lib dbghelp.lib htmlhelp.lib xerces-c_static_3.lib"
 				OutputFile="..\$(PWSBin)/pwsafe.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
@@ -1292,7 +1292,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\corelib\corelib.h"
+				RelativePath="..\..\core\core.h"
 				>
 			</File>
 			<File
@@ -1965,7 +1965,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\corelib\corelib.rc2"
+				RelativePath="..\..\core\core.rc2"
 				>
 			</File>
 			<File

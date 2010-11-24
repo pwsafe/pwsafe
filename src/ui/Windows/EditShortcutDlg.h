@@ -12,7 +12,7 @@
 
 #include "PWDialog.h"
 #include "ControlExtns.h"
-#include "corelib/ItemData.h"
+#include "core/ItemData.h"
 
 class CItemData;
 

@@ -36,8 +36,8 @@
 #include "createshortcutdlg.h"
 #include "wxutils.h"
 
-#include "../../corelib/PWSAuxParse.h"
-#include "../../corelib/Util.h"
+#include "../../core/PWSAuxParse.h"
+#include "../../core/Util.h"
 #include "../../os/KeySend.h"
 #include "../../os/sleep.h"
 

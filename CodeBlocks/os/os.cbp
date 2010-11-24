@@ -30,7 +30,7 @@
 					<Add option="-D_DEBUG" />
 					<Add option="-DDEBUG" />
 					<Add directory="../../src" />
-					<Add directory="../../src/corelib" />
+					<Add directory="../../src/core" />
 				</Compiler>
 				<Linker>
 					<Add option="-m64" />

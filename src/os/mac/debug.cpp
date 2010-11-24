@@ -79,7 +79,7 @@ void pws_os::Trace0(LPCTSTR )
 #endif  /* _DEBUG || DEBUG */
 
 #if defined(_DEBUG) || defined(DEBUG)
-#include "../../corelib/StringX.h"
+#include "../../core/StringX.h"
 
 // This routine uses Windows functions
 void pws_os::IssueError(const stringT &csFunction, bool bMsgBox)

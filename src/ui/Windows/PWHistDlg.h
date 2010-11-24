@@ -12,7 +12,7 @@
 
 #include "PWDialog.h"
 #include "SecString.h"
-#include "corelib/PWHistory.h"
+#include "core/PWHistory.h"
 
 class CPWHistDlg : public CPWDialog
 {

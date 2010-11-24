@@ -28,7 +28,7 @@
 #include "about.h"
 #include "version.h"
 #include "passwordsafeframe.h"
-#include "corelib/CheckVersion.h"
+#include "core/CheckVersion.h"
 ////@begin XPM images
 #include "./graphics/cpane.xpm"
 ////@end XPM images

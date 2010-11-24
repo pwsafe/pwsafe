@@ -9,7 +9,7 @@
 #pragma once
 
 #include "PWResizeDialog.h"
-#include "corelib/report.h"
+#include "core/report.h"
 
 #include "resource.h"
 

@@ -13,7 +13,7 @@
 // CAdvancedDlg dialog
 
 #include "PWDialog.h"
-#include "corelib/ItemData.h"
+#include "core/ItemData.h"
 #include <bitset>
 
 struct st_SaveAdvValues {

@@ -6,8 +6,8 @@
 #ifndef __WXUTILS_H__
 #define __WXUTILS_H__
 
-#include "../../corelib/StringX.h"
-#include "../../corelib/PWSprefs.h"
+#include "../../core/StringX.h"
+#include "../../core/PWSprefs.h"
 
 inline wxString& operator << ( wxString& str, const wxPoint& pt) {
   return str << wxT('[') << pt.x << wxT(',') << pt.y << wxT(']');

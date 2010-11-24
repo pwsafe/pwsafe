@@ -23,9 +23,9 @@
 #include <wx/wfstream.h>
 #include <wx/txtstrm.h>
 #include <wx/gbsizer.h>
-#include "../../corelib/StringX.h"
+#include "../../core/StringX.h"
 #include "./wxutils.h"
-#include "../../corelib/PwsPlatform.h"
+#include "../../core/PwsPlatform.h"
 #include <wx/valgen.h>
 #include <wx/filepicker.h>
 #include "../../os/file.h"

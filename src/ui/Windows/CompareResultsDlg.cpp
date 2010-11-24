@@ -16,9 +16,9 @@
 #include "DboxMain.h"
 #include "CompareResultsDlg.h"
 
-#include "corelib/PWScore.h"
-#include "corelib/Report.h"
-#include "corelib/uuidgen.h"
+#include "core/PWScore.h"
+#include "core/Report.h"
+#include "core/uuidgen.h"
 
 #include "resource.h"
 #include "resource2.h"

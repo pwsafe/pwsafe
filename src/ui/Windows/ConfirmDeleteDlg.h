@@ -9,7 +9,7 @@
 
 // ConfirmDeleteDlg.h
 //-----------------------------------------------------------------------------
-#include "corelib/PwsPlatform.h"
+#include "core/PwsPlatform.h"
 
 #include "PWDialog.h"
 class CConfirmDeleteDlg : public CPWDialog

@@ -36,14 +36,14 @@
 // widget override?
 #include "SysColStatic.h"
 
-#include "corelib/corelib.h"
-#include "corelib/PWSprefs.h"
-#include "corelib/PWSrand.h"
-#include "corelib/PWSdirs.h"
-#include "corelib/PWSFilters.h"
-#include "corelib/PWSAuxParse.h"
+#include "core/core.h"
+#include "core/PWSprefs.h"
+#include "core/PWSrand.h"
+#include "core/PWSdirs.h"
+#include "core/PWSFilters.h"
+#include "core/PWSAuxParse.h"
 
-#include "corelib/XML/XMLDefs.h"  // Required if testing "USE_XML_LIBRARY"
+#include "core/XML/XMLDefs.h"  // Required if testing "USE_XML_LIBRARY"
 
 #include "os/file.h"
 #include "os/env.h"

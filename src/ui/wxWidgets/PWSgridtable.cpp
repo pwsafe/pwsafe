@@ -28,8 +28,8 @@
 #include "PWSgridtable.h"
 #include "passwordsafeframe.h"
 #include "PWSgrid.h"
-#include "../../corelib/ItemData.h"
-#include "../../corelib/PWScore.h"
+#include "../../core/ItemData.h"
+#include "../../core/PWScore.h"
 
 
 ////@begin XPM images

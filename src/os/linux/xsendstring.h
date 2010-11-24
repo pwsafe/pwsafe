@@ -14,7 +14,7 @@
 #ifndef __XSENDSTRING_H__
 #define __XSENDSTRING_H__
 
-#include "../../corelib/StringX.h"
+#include "../../core/StringX.h"
 
 namespace pws_os {
   /* Set the method to AUTO if you're not sure what it should be */

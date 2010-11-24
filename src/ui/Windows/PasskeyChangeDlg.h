@@ -10,7 +10,7 @@
 // PasskeyChangeDlg.h
 //-----------------------------------------------------------------------------
 
-#include "corelib/PwsPlatform.h"
+#include "core/PwsPlatform.h"
 #include "PWDialog.h"
 #include "ControlExtns.h"
 

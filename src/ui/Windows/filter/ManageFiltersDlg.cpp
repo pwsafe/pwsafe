@@ -17,9 +17,9 @@
 
 #include "ManageFiltersDlg.h"
 
-#include "corelib/corelib.h"
-#include "corelib/PWSFilters.h"
-#include "corelib/match.h"
+#include "core/core.h"
+#include "core/PWSFilters.h"
+#include "core/match.h"
 
 #include "../resource3.h"
 

@@ -37,13 +37,13 @@
 #include "AdvancedDlg.h"
 #include "AddEdit_PropertySheet.h"
 
-#include "corelib/UIinterface.h"
-#include "corelib/PWScore.h"
-#include "corelib/StringX.h"
-#include "corelib/sha256.h"
-#include "corelib/PwsPlatform.h"
-#include "corelib/PWSFilters.h"
-#include "corelib/Command.h"
+#include "core/UIinterface.h"
+#include "core/PWScore.h"
+#include "core/StringX.h"
+#include "core/sha256.h"
+#include "core/PwsPlatform.h"
+#include "core/PWSFilters.h"
+#include "core/Command.h"
 
 #include "os/run.h"
 

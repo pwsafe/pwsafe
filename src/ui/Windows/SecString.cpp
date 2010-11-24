@@ -9,7 +9,7 @@
 //-----------------------------------------------------------------------------
 
 #include "SecString.h"
-#include "corelib/Util.h"
+#include "core/Util.h"
 
 #include <cstdarg>
 

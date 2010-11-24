@@ -9,7 +9,7 @@
 #include <afxadv.h>
 
 #include "PWSRecentFileList.h"
-#include "corelib/PWSprefs.h"
+#include "core/PWSprefs.h"
 #include "os/file.h"
 #include "resource2.h" // for ID_FILE_MRU_*
 

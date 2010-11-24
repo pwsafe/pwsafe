@@ -17,8 +17,8 @@
 #include "EditShortcutDlg.h"
 #include "ControlExtns.h"
 
-#include "corelib/PWSprefs.h"
-#include "corelib/ItemData.h"
+#include "core/PWSprefs.h"
+#include "core/ItemData.h"
 
 #include <shlwapi.h>
 #include <fstream>

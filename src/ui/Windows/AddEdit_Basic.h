@@ -14,7 +14,7 @@
 #include "AddEdit_PropertyPage.h"
 #include "ExtThread.h"
 #include "ControlExtns.h"
-#include "corelib/ItemData.h"
+#include "core/ItemData.h"
 
 class DboxMain;
 

@@ -15,7 +15,7 @@
 #include <afxdisp.h >       // MFC OLE automation classes
 #include "LVHdrCtrl.h"
 #include "DboxMain.h"       // For PWS_MSG_CCTOHDR_DD_COMPLETE and enum FROMCC & FROMHDR
-#include "corelib/itemdata.h" // For CItemData::UUID
+#include "core/itemdata.h" // For CItemData::UUID
 
 // LVHdrCtrl
 

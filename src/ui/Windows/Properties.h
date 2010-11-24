@@ -10,7 +10,7 @@
 // CProperties dialog
 
 #include "PWDialog.h"
-#include "corelib/PWScore.h"
+#include "core/PWScore.h"
 
 class CProperties : public CPWDialog
 {

@@ -66,8 +66,8 @@
 #include "resource.h"
 #include "resource2.h"  // Menu, Toolbar & Accelerator resources
 #include "resource3.h"  // String resources
-#include "corelib/StringX.h"
-#include "corelib/ItemData.h"
+#include "core/StringX.h"
+#include "core/ItemData.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

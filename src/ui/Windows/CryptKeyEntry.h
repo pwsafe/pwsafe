@@ -11,7 +11,7 @@
 //-----------------------------------------------------------------------------
 
 #include "SecString.h"
-#include "corelib/PwsPlatform.h"
+#include "core/PwsPlatform.h"
 #include "PWDialog.h"
 
 class CCryptKeyEntry : public CPWDialog

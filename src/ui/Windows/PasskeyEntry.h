@@ -13,7 +13,7 @@
 #include "SysColStatic.h"
 #include "ControlExtns.h"
 #include "SecString.h"
-#include "corelib/PwsPlatform.h"
+#include "core/PwsPlatform.h"
 #include "PWDialog.h"
 #include "AdvancedDlg.h"
 

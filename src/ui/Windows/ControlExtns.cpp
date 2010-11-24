@@ -10,9 +10,9 @@
 
 #include "stdafx.h"
 #include "ControlExtns.h"
-#include "corelib/ItemField.h" // for CSecEditExtn
-#include "corelib/BlowFish.h"  // ditto
-#include "corelib/PWSrand.h"   // ditto
+#include "core/ItemField.h" // for CSecEditExtn
+#include "core/BlowFish.h"  // ditto
+#include "core/PWSrand.h"   // ditto
 #include "resource2.h" // for CEditExtn context menu
 #include <algorithm>
 

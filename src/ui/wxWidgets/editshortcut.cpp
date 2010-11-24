@@ -24,7 +24,7 @@
 ////@end includes
 
 #include "editshortcut.h"
-#include "corelib/UIinterface.h"
+#include "core/UIinterface.h"
 
 ////@begin XPM images
 ////@end XPM images

@@ -3,7 +3,7 @@
 
 SRC         = main.cpp
 
-COREPATH        = ../../corelib
+COREPATH        = ../../core
 OSPATH          = ../../os
 LIBPATH         = ../../lib
 OBJPATH         = ../../obj

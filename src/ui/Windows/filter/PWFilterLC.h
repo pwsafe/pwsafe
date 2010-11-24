@@ -8,8 +8,8 @@
 
 #pragma once
 
-#include "corelib/Itemdata.h"
-#include "corelib/PWSFilters.h"
+#include "core/Itemdata.h"
+#include "core/PWSFilters.h"
 #include "FilterStringDlg.h"
 #include "FilterPasswordDlg.h"
 #include "FilterIntegerDlg.h"

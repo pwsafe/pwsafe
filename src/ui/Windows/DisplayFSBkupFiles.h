@@ -7,8 +7,8 @@
 */
 #pragma once
 
-#include "corelib/StringX.h"
-#include "corelib/PWScore.h"  // for st_DBProperties
+#include "core/StringX.h"
+#include "core/PWScore.h"  // for st_DBProperties
 
 #include "EBListCtrl.h"
 #include "resource.h"

@@ -24,7 +24,7 @@
 ////@end includes
 
 #include "deleteconfirmation.h"
-#include "corelib/PWSprefs.h"
+#include "core/PWSprefs.h"
 
 ////@begin XPM images
 ////@end XPM images

@@ -407,7 +407,7 @@
     <ClInclude Include="CoolMenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\corelib\corelib.h">
+    <ClInclude Include="..\..\core\core.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CreateShortcutDlg.h">
@@ -901,7 +901,7 @@
     <None Include=".\graphics\toolbar\new\copyuser_disabled.bmp">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="..\..\corelib\corelib.rc2">
+    <None Include="..\..\core\core.rc2">
       <Filter>Resource Files</Filter>
     </None>
     <None Include=".\graphics\cpane.bmp">

@@ -23,9 +23,9 @@
 #include <fnmatch.h>
 #include "../file.h"
 #include "../env.h"
-#include "../../corelib/corelib.h"
-#include "../../corelib/StringXStream.h"
-#include "../../corelib/PwsPlatform.h"
+#include "../../core/core.h"
+#include "../../core/StringXStream.h"
+#include "../../core/PwsPlatform.h"
 
 using namespace std;
 

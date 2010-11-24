@@ -12,8 +12,8 @@
 
 #include "AddEdit_PropertyPage.h"
 #include "ControlExtns.h"
-#include "corelib/ItemData.h"
-#include "corelib/PWSprefs.h"
+#include "core/ItemData.h"
+#include "core/PWSprefs.h"
 
 #include "resource.h"
 

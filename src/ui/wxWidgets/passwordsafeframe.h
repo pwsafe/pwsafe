@@ -24,8 +24,8 @@
 #include "wx/frame.h"
 ////@end includes
 #include "wx/treebase.h" // for wxTreeItemId
-#include "corelib/PWScore.h"
-#include "corelib/UIinterface.h"
+#include "core/PWScore.h"
+#include "core/UIinterface.h"
 #include "RUEList.h"
 #include "./wxutils.h"
 

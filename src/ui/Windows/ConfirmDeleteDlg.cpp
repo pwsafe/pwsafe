@@ -12,8 +12,8 @@
 
 #include "ThisMfcApp.h"
 #include "ConfirmDeleteDlg.h"
-#include "corelib/PwsPlatform.h"
-#include "corelib/PWSprefs.h"
+#include "core/PwsPlatform.h"
+#include "core/PWSprefs.h"
 
 #if defined(POCKET_PC)
 #include "pocketpc/PocketPC.h"

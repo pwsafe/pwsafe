@@ -28,7 +28,7 @@
 
 #include "PWStree.h"
 #include "passwordsafeframe.h" // for DispatchDblClickAction()
-#include "corelib/PWSprefs.h"
+#include "core/PWSprefs.h"
 
 ////@begin XPM images
 ////@end XPM images
@@ -182,7 +182,7 @@ void PWSTreeCtrl::CreateControls()
 }
 
 // XXX taken from Windows PWSTreeCtrl.cpp
-// XXX move to corelib
+// XXX move to core
 static StringX GetPathElem(StringX &path)
 {
   // Get first path element and chop it off, i.e., if

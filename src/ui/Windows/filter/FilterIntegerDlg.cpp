@@ -12,7 +12,7 @@
 #include "../stdafx.h"
 #include "../GeneralMsgBox.h"
 #include "FilterIntegerDlg.h"
-#include "corelib/corelib.h"
+#include "core/core.h"
 
 // CFilterIntegerDlg dialog
 

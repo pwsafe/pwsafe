@@ -9,7 +9,7 @@
 #pragma once
 
 #include "FilterBaseDlg.h"
-#include "corelib/PWSFilters.h"
+#include "core/PWSFilters.h"
 
 #include "afxdtctl.h" // only needed for date/time controls
 

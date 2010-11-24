@@ -14,7 +14,7 @@
 /////////////////////////////////////////////////////////////////////////////
 // COptionsPasswordPolicy dialog
 #include "Options_PropertyPage.h"
-#include "corelib/PWPolicy.h"
+#include "core/PWPolicy.h"
 #include "ControlExtns.h"
 
 class DboxMain;

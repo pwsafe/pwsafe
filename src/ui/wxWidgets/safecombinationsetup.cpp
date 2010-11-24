@@ -26,7 +26,7 @@
 ////@end includes
 
 #include "safecombinationsetup.h"
-#include "corelib/PWCharPool.h" // for CheckPassword()
+#include "core/PWCharPool.h" // for CheckPassword()
 #include "./wxutils.h"          // for ApplyPasswordFont()
 
 ////@begin XPM images

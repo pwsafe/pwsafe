@@ -12,8 +12,8 @@
 #include "ExpPWListDlg.h"
 #include "DboxMain.h"
 #include "SecString.h"
-#include "corelib/Util.h"
-#include "corelib/ItemData.h"
+#include "core/Util.h"
+#include "core/ItemData.h"
 #include "resource2.h"  // Menu, Toolbar & Accelerator resources
 #include "resource3.h"  // String resources
 

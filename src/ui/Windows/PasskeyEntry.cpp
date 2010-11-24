@@ -19,9 +19,9 @@ down the streetsky.  [Groucho Marx]
 #include "GeneralMsgBox.h"
 #include "AdvancedDlg.h"
 
-#include "corelib/PwsPlatform.h"
-#include "corelib/Pwsdirs.h"
-#include "corelib/pwsprefs.h"
+#include "core/PwsPlatform.h"
+#include "core/Pwsdirs.h"
+#include "core/pwsprefs.h"
 
 #include "os/file.h"
 #include "os/env.h"
@@ -47,7 +47,7 @@ down the streetsky.  [Groucho Marx]
 #include "DboxMain.h" // for CheckPasskey()
 #include "PasskeySetup.h"
 
-#include "corelib/Util.h"
+#include "core/Util.h"
 
 #include <iomanip>  // For setbase and setw
 

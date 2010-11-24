@@ -13,7 +13,7 @@
 #include "ThisMfcApp.h"
 #include "DboxMain.h"
 
-#include "corelib/PWSprefs.h"
+#include "core/PWSprefs.h"
 
 #if defined(POCKET_PC)
 #include "pocketpc/resource.h"

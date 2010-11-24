@@ -17,10 +17,10 @@
 #include "AddEdit_Additional.h"
 #include "AddEdit_PropertySheet.h"
 
-#include "corelib/PWSprefs.h"
-#include "corelib/PWSAuxParse.h"
+#include "core/PWSprefs.h"
+#include "core/PWSAuxParse.h"
 
-#include "corelib/corelib.h"
+#include "core/core.h"
 #include "resource3.h"
 
 /////////////////////////////////////////////////////////////////////////////

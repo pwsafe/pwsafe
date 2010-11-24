@@ -2,7 +2,7 @@
 #define __ADVANCEDDSELECTIONDLG_H__
 
 
-#include "../../corelib/ItemData.h"
+#include "../../core/ItemData.h"
 #include "./wxutils.h"
 
 struct _subgroups {

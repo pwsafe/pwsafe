@@ -7,111 +7,111 @@
   </Plugins>
   <VirtualDirectory Name="XML">
     <VirtualDirectory Name="Xerces">
-      <File Name="../src/corelib/XML/Xerces/XFileXMLProcessor.cpp"/>
-      <File Name="../src/corelib/XML/Xerces/XFileSAX2Handlers.h"/>
-      <File Name="../src/corelib/XML/Xerces/XFileXMLProcessor.h"/>
-      <File Name="../src/corelib/XML/Xerces/XSecMemMgr.h"/>
-      <File Name="../src/corelib/XML/Xerces/XFileSAX2Handlers.cpp"/>
-      <File Name="../src/corelib/XML/Xerces/XSecMemMgr.cpp"/>
-      <File Name="../src/corelib/XML/Xerces/XFilterXMLProcessor.h"/>
-      <File Name="../src/corelib/XML/Xerces/XFileValidator.h"/>
-      <File Name="../src/corelib/XML/Xerces/XFilterXMLProcessor.cpp"/>
-      <File Name="../src/corelib/XML/Xerces/XFileValidator.cpp"/>
-      <File Name="../src/corelib/XML/Xerces/XFilterSAX2Handlers.h"/>
-      <File Name="../src/corelib/XML/Xerces/XFilterSAX2Handlers.cpp"/>
+      <File Name="../src/core/XML/Xerces/XFileXMLProcessor.cpp"/>
+      <File Name="../src/core/XML/Xerces/XFileSAX2Handlers.h"/>
+      <File Name="../src/core/XML/Xerces/XFileXMLProcessor.h"/>
+      <File Name="../src/core/XML/Xerces/XSecMemMgr.h"/>
+      <File Name="../src/core/XML/Xerces/XFileSAX2Handlers.cpp"/>
+      <File Name="../src/core/XML/Xerces/XSecMemMgr.cpp"/>
+      <File Name="../src/core/XML/Xerces/XFilterXMLProcessor.h"/>
+      <File Name="../src/core/XML/Xerces/XFileValidator.h"/>
+      <File Name="../src/core/XML/Xerces/XFilterXMLProcessor.cpp"/>
+      <File Name="../src/core/XML/Xerces/XFileValidator.cpp"/>
+      <File Name="../src/core/XML/Xerces/XFilterSAX2Handlers.h"/>
+      <File Name="../src/core/XML/Xerces/XFilterSAX2Handlers.cpp"/>
     </VirtualDirectory>
-    <File Name="../src/corelib/XML/XMLDefs.h"/>
-    <File Name="../src/corelib/XML/XMLFileValidation.h"/>
-    <File Name="../src/corelib/XML/XMLFileHandlers.h"/>
-    <File Name="../src/corelib/XML/XMLFileValidation.cpp"/>
-    <File Name="../src/corelib/XML/XMLFileHandlers.cpp"/>
+    <File Name="../src/core/XML/XMLDefs.h"/>
+    <File Name="../src/core/XML/XMLFileValidation.h"/>
+    <File Name="../src/core/XML/XMLFileHandlers.h"/>
+    <File Name="../src/core/XML/XMLFileValidation.cpp"/>
+    <File Name="../src/core/XML/XMLFileHandlers.cpp"/>
   </VirtualDirectory>
   <Description/>
   <Dependencies/>
   <VirtualDirectory Name="src"/>
   <VirtualDirectory Name="include"/>
   <VirtualDirectory Name="tinyxml">
-    <File Name="../src/corelib/tinyxml/tinyxml.h"/>
-    <File Name="../src/corelib/tinyxml/tinyxmlparser.cpp"/>
-    <File Name="../src/corelib/tinyxml/tinyxml.cpp"/>
-    <File Name="../src/corelib/tinyxml/tinyxmlerror.cpp"/>
+    <File Name="../src/core/tinyxml/tinyxml.h"/>
+    <File Name="../src/core/tinyxml/tinyxmlparser.cpp"/>
+    <File Name="../src/core/tinyxml/tinyxml.cpp"/>
+    <File Name="../src/core/tinyxml/tinyxmlerror.cpp"/>
   </VirtualDirectory>
-  <VirtualDirectory Name="corelib">
-    <File Name="../src/corelib/PWSfile.h"/>
-    <File Name="../src/corelib/Util.cpp"/>
-    <File Name="../src/corelib/CommandInterface.h"/>
-    <File Name="../src/corelib/PWScore.cpp"/>
-    <File Name="../src/corelib/PWSfileV3.cpp"/>
-    <File Name="../src/corelib/PWScore.h"/>
-    <File Name="../src/corelib/trigram.h"/>
-    <File Name="../src/corelib/CheckVersion.h"/>
-    <File Name="../src/corelib/XMLprefs.cpp"/>
-    <File Name="../src/corelib/coredefs.h"/>
-    <File Name="../src/corelib/PWPolicy.h"/>
-    <File Name="../src/corelib/Match.h"/>
-    <File Name="../src/corelib/ItemField.h"/>
-    <File Name="../src/corelib/PWHistory.cpp"/>
-    <File Name="../src/corelib/TwoFish.h"/>
-    <File Name="../src/corelib/Report.h"/>
-    <File Name="../src/corelib/ItemData.h"/>
-    <File Name="../src/corelib/UnknownField.h"/>
-    <File Name="../src/corelib/corelib_st.cpp"/>
-    <File Name="../src/corelib/PWPolicy.cpp"/>
-    <File Name="../src/corelib/corelib.h"/>
-    <File Name="../src/corelib/VerifyFormat.cpp"/>
-    <File Name="../src/corelib/PWSFilters.cpp"/>
-    <File Name="../src/corelib/Report.cpp"/>
-    <File Name="../src/corelib/PWSfileV1V2.cpp"/>
-    <File Name="../src/corelib/StringXStream.h"/>
-    <File Name="../src/corelib/PWCharPool.h"/>
-    <File Name="../src/corelib/Proxy.h"/>
-    <File Name="../src/corelib/SysInfo.h"/>
-    <File Name="../src/corelib/PWSfileV3.h"/>
-    <File Name="../src/corelib/Command.h"/>
-    <File Name="../src/corelib/PWSrand.h"/>
-    <File Name="../src/corelib/hmac.cpp"/>
-    <File Name="../src/corelib/sha1.cpp"/>
-    <File Name="../src/corelib/ItemData.cpp"/>
-    <File Name="../src/corelib/TwoFish.cpp"/>
-    <File Name="../src/corelib/PWHistory.h"/>
-    <File Name="../src/corelib/UIinterface.h"/>
-    <File Name="../src/corelib/PWSdirs.cpp"/>
-    <File Name="../src/corelib/PWSrand.cpp"/>
-    <File Name="../src/corelib/sha256.cpp"/>
-    <File Name="../src/corelib/UTF8Conv.cpp"/>
-    <File Name="../src/corelib/StringX.h"/>
-    <File Name="../src/corelib/PWSfileV1V2.h"/>
-    <File Name="../src/corelib/UUIDGen.h"/>
-    <File Name="../src/corelib/CoreImpExp.cpp"/>
-    <File Name="../src/corelib/Util.h"/>
-    <File Name="../src/corelib/BlowFish.h"/>
-    <File Name="../src/corelib/twofish_tab.c"/>
-    <File Name="../src/corelib/PWSAuxParse.cpp"/>
-    <File Name="../src/corelib/StringX.cpp"/>
-    <File Name="../src/corelib/SysInfo.cpp"/>
-    <File Name="../src/corelib/PWSdirs.h"/>
-    <File Name="../src/corelib/UTF8Conv.h"/>
-    <File Name="../src/corelib/PWSprefs.cpp"/>
-    <File Name="../src/corelib/Fish.h"/>
-    <File Name="../src/corelib/PWSFilters.h"/>
-    <File Name="../src/corelib/corelib_st.h"/>
-    <File Name="../src/corelib/hmac.h"/>
-    <File Name="../src/corelib/VerifyFormat.h"/>
-    <File Name="../src/corelib/PWSAuxParse.h"/>
-    <File Name="../src/corelib/sha1.h"/>
-    <File Name="../src/corelib/UnknownField.cpp"/>
-    <File Name="../src/corelib/Match.cpp"/>
-    <File Name="../src/corelib/PwsPlatform.h"/>
-    <File Name="../src/corelib/UUIDGen.cpp"/>
-    <File Name="../src/corelib/PWCharPool.cpp"/>
-    <File Name="../src/corelib/ItemField.cpp"/>
-    <File Name="../src/corelib/XMLprefs.h"/>
-    <File Name="../src/corelib/Command.cpp"/>
-    <File Name="../src/corelib/CheckVersion.cpp"/>
-    <File Name="../src/corelib/sha256.h"/>
-    <File Name="../src/corelib/PWSfile.cpp"/>
-    <File Name="../src/corelib/BlowFish.cpp"/>
-    <File Name="../src/corelib/PWSprefs.h"/>
+  <VirtualDirectory Name="core">
+    <File Name="../src/core/PWSfile.h"/>
+    <File Name="../src/core/Util.cpp"/>
+    <File Name="../src/core/CommandInterface.h"/>
+    <File Name="../src/core/PWScore.cpp"/>
+    <File Name="../src/core/PWSfileV3.cpp"/>
+    <File Name="../src/core/PWScore.h"/>
+    <File Name="../src/core/trigram.h"/>
+    <File Name="../src/core/CheckVersion.h"/>
+    <File Name="../src/core/XMLprefs.cpp"/>
+    <File Name="../src/core/coredefs.h"/>
+    <File Name="../src/core/PWPolicy.h"/>
+    <File Name="../src/core/Match.h"/>
+    <File Name="../src/core/ItemField.h"/>
+    <File Name="../src/core/PWHistory.cpp"/>
+    <File Name="../src/core/TwoFish.h"/>
+    <File Name="../src/core/Report.h"/>
+    <File Name="../src/core/ItemData.h"/>
+    <File Name="../src/core/UnknownField.h"/>
+    <File Name="../src/core/core_st.cpp"/>
+    <File Name="../src/core/PWPolicy.cpp"/>
+    <File Name="../src/core/core.h"/>
+    <File Name="../src/core/VerifyFormat.cpp"/>
+    <File Name="../src/core/PWSFilters.cpp"/>
+    <File Name="../src/core/Report.cpp"/>
+    <File Name="../src/core/PWSfileV1V2.cpp"/>
+    <File Name="../src/core/StringXStream.h"/>
+    <File Name="../src/core/PWCharPool.h"/>
+    <File Name="../src/core/Proxy.h"/>
+    <File Name="../src/core/SysInfo.h"/>
+    <File Name="../src/core/PWSfileV3.h"/>
+    <File Name="../src/core/Command.h"/>
+    <File Name="../src/core/PWSrand.h"/>
+    <File Name="../src/core/hmac.cpp"/>
+    <File Name="../src/core/sha1.cpp"/>
+    <File Name="../src/core/ItemData.cpp"/>
+    <File Name="../src/core/TwoFish.cpp"/>
+    <File Name="../src/core/PWHistory.h"/>
+    <File Name="../src/core/UIinterface.h"/>
+    <File Name="../src/core/PWSdirs.cpp"/>
+    <File Name="../src/core/PWSrand.cpp"/>
+    <File Name="../src/core/sha256.cpp"/>
+    <File Name="../src/core/UTF8Conv.cpp"/>
+    <File Name="../src/core/StringX.h"/>
+    <File Name="../src/core/PWSfileV1V2.h"/>
+    <File Name="../src/core/UUIDGen.h"/>
+    <File Name="../src/core/CoreImpExp.cpp"/>
+    <File Name="../src/core/Util.h"/>
+    <File Name="../src/core/BlowFish.h"/>
+    <File Name="../src/core/twofish_tab.c"/>
+    <File Name="../src/core/PWSAuxParse.cpp"/>
+    <File Name="../src/core/StringX.cpp"/>
+    <File Name="../src/core/SysInfo.cpp"/>
+    <File Name="../src/core/PWSdirs.h"/>
+    <File Name="../src/core/UTF8Conv.h"/>
+    <File Name="../src/core/PWSprefs.cpp"/>
+    <File Name="../src/core/Fish.h"/>
+    <File Name="../src/core/PWSFilters.h"/>
+    <File Name="../src/core/core_st.h"/>
+    <File Name="../src/core/hmac.h"/>
+    <File Name="../src/core/VerifyFormat.h"/>
+    <File Name="../src/core/PWSAuxParse.h"/>
+    <File Name="../src/core/sha1.h"/>
+    <File Name="../src/core/UnknownField.cpp"/>
+    <File Name="../src/core/Match.cpp"/>
+    <File Name="../src/core/PwsPlatform.h"/>
+    <File Name="../src/core/UUIDGen.cpp"/>
+    <File Name="../src/core/PWCharPool.cpp"/>
+    <File Name="../src/core/ItemField.cpp"/>
+    <File Name="../src/core/XMLprefs.h"/>
+    <File Name="../src/core/Command.cpp"/>
+    <File Name="../src/core/CheckVersion.cpp"/>
+    <File Name="../src/core/sha256.h"/>
+    <File Name="../src/core/PWSfile.cpp"/>
+    <File Name="../src/core/BlowFish.cpp"/>
+    <File Name="../src/core/PWSprefs.h"/>
   </VirtualDirectory>
   <Dependencies Name="Release"/>
   <Dependencies Name="Debug"/>
@@ -153,11 +153,11 @@
       </CustomBuild>
       <AdditionalRules>
         <CustomPostBuild/>
-        <CustomPreBuild>../src/corelib/corelib_st.cpp ../src/corelib/corelib_st.h
+        <CustomPreBuild>../src/core/core_st.cpp ../src/core/core_st.h
 #dummy line to prevent CodeLite from stripping the TAB from the next line
 	
-../src/corelib/corelib_st.cpp ../src/corelib/corelib_st.h: ../src/corelib/corelib.rc2
-	../Misc/rc2cpp.pl ../src/corelib/corelib.rc2</CustomPreBuild>
+../src/core/core_st.cpp ../src/core/core_st.h: ../src/core/core.rc2
+	../Misc/rc2cpp.pl ../src/core/core.rc2</CustomPreBuild>
       </AdditionalRules>
     </Configuration>
     <Configuration Name="DebugX" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Static Library" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
@@ -188,11 +188,11 @@
       </CustomBuild>
       <AdditionalRules>
         <CustomPostBuild/>
-        <CustomPreBuild>../src/corelib/corelib_st.cpp ../src/corelib/corelib_st.h
+        <CustomPreBuild>../src/core/core_st.cpp ../src/core/core_st.h
 #dummy line to prevent CodeLite from stripping the TAB from the next line
 	
-../src/corelib/corelib_st.cpp ../src/corelib/corelib_st.h: ../src/corelib/corelib.rc2
-	../Misc/rc2cpp.pl ../src/corelib/corelib.rc2</CustomPreBuild>
+../src/core/core_st.cpp ../src/core/core_st.h: ../src/core/core.rc2
+	../Misc/rc2cpp.pl ../src/core/core.rc2</CustomPreBuild>
       </AdditionalRules>
     </Configuration>
     <Configuration Name="Release" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Static Library" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
@@ -221,11 +221,11 @@
       </CustomBuild>
       <AdditionalRules>
         <CustomPostBuild/>
-        <CustomPreBuild>../src/corelib/corelib_st.cpp ../src/corelib/corelib_st.h
+        <CustomPreBuild>../src/core/core_st.cpp ../src/core/core_st.h
 #dummy line to prevent CodeLite from stripping the TAB from the next line
 	
-../src/corelib/corelib_st.cpp ../src/corelib/corelib_st.h: ../src/corelib/corelib.rc2
-	../Misc/rc2cpp.pl ../src/corelib/corelib.rc2</CustomPreBuild>
+../src/core/core_st.cpp ../src/core/core_st.h: ../src/core/core.rc2
+	../Misc/rc2cpp.pl ../src/core/core.rc2</CustomPreBuild>
       </AdditionalRules>
     </Configuration>
     <Configuration Name="ReleaseX" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Static Library" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
@@ -256,11 +256,11 @@
       </CustomBuild>
       <AdditionalRules>
         <CustomPostBuild/>
-        <CustomPreBuild>../src/corelib/corelib_st.cpp ../src/corelib/corelib_st.h
+        <CustomPreBuild>../src/core/core_st.cpp ../src/core/core_st.h
 #dummy line to prevent CodeLite from stripping the TAB from the next line
 	
-../src/corelib/corelib_st.cpp ../src/corelib/corelib_st.h: ../src/corelib/corelib.rc2
-	../Misc/rc2cpp.pl ../src/corelib/corelib.rc2</CustomPreBuild>
+../src/core/core_st.cpp ../src/core/core_st.h: ../src/core/core.rc2
+	../Misc/rc2cpp.pl ../src/core/core.rc2</CustomPreBuild>
       </AdditionalRules>
     </Configuration>
   </Settings>

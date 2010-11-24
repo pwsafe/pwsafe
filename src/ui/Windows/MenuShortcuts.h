@@ -10,7 +10,7 @@
 
 #pragma once
 
-#include "corelib/StringX.h"
+#include "core/StringX.h"
 
 #include <map>
 #include <vector>

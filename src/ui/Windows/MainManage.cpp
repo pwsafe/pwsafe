@@ -29,9 +29,9 @@
 #include "OptionsBackup.h"
 #include "OptionsShortcuts.h"
 
-#include "corelib/pwsprefs.h"
-#include "corelib/PWSdirs.h"
-#include "corelib/PWSAuxParse.h"
+#include "core/pwsprefs.h"
+#include "core/PWSdirs.h"
+#include "core/PWSAuxParse.h"
 
 #include "os/dir.h"
 

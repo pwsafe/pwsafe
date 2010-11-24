@@ -9,7 +9,7 @@
 #ifndef __WXMESSAGES_H
 #define __WXMESSAGES_H
 
-#include "corelib/Proxy.h"
+#include "core/Proxy.h"
 #include <wx/msgdlg.h>
 
 class wxAsker : public Asker

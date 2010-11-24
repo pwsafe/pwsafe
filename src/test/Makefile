@@ -1,18 +1,18 @@
 # Baby Makefile for Linux
 #
 
-TESTSRC         = corelibtest.cpp test.cpp
+TESTSRC         = coretest.cpp test.cpp
 SRC             = $(TESTSRC)
 
 OBJPATH         = ./obj
-LIBPATH         = ../../corelib/lib
+LIBPATH         = ../../core/lib
 BINPATH         = ./bin
-INCPATH         = ../../corelib
+INCPATH         = ../../core
 
 #destination related macros
 TESTOBJ	 = $(addprefix $(OBJPATH)/,$(subst .cpp,.o,$(TESTSRC)))
 LIB	     = $(LIBPATH)/libcore.a
-TEST	   = $(BINPATH)/corelibtest
+TEST	   = $(BINPATH)/coretest
 OBJ	     = $(TESTOBJ) $(LIBOBJ)
 
 CXXFLAGS += -DUNICODE -Wall -I$(INCPATH)

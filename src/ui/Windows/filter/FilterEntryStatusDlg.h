@@ -9,7 +9,7 @@
 #pragma once
 
 #include "FilterBaseDlg.h"
-#include "corelib/Itemdata.h" // for CItemData::EntryStatus
+#include "core/Itemdata.h" // for CItemData::EntryStatus
 
 // CFilterEntryStatusDlg dialog
 

@@ -13,7 +13,7 @@
 #include "ThisMfcApp.h"
 #include "ClearQuestionDlg.h"
 
-#include "corelib/PWSprefs.h"
+#include "core/PWSprefs.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

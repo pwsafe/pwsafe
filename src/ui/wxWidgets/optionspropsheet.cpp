@@ -30,9 +30,9 @@
 
 #include "passwordsafeframe.h"
 #include "optionspropsheet.h"
-#include "corelib/PWSprefs.h"
-#include "corelib/Util.h" // for datetime string
-#include "corelib/PWSAuxParse.h" // for DEFAULT_AUTOTYPE
+#include "core/PWSprefs.h"
+#include "core/Util.h" // for datetime string
+#include "core/PWSAuxParse.h" // for DEFAULT_AUTOTYPE
 
 ////@begin XPM images
 ////@end XPM images

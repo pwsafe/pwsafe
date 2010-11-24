@@ -17,7 +17,7 @@
 
 #include "./passwordsafeframe.h"
 #include "./SystemTray.h"
-#include "../../corelib/PWSprefs.h"
+#include "../../core/PWSprefs.h"
 #include "./wxutils.h"
 #include "./SystemTrayMenuId.h"
 

@@ -16,7 +16,7 @@
 #include "RUEList.h"
 #include "GeneralMsgBox.h"
 
-#include "corelib/PWScore.h"
+#include "core/PWScore.h"
 
 #include "resource3.h"  // String resources
 

@@ -13,7 +13,7 @@
 #include "PWDialog.h"
 #include "DboxMain.h"
 #include "RichEditCtrlExtn.h"
-#include "corelib/CheckVersion.h"
+#include "core/CheckVersion.h"
 
 class CAboutDlg : public CPWDialog
 {

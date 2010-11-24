@@ -26,10 +26,10 @@
 #include <wx/datetime.h>
 
 #include <vector>
-#include "corelib/PWSprefs.h"
-#include "corelib/PWCharPool.h"
-#include "corelib/PWHistory.h"
-#include "corelib/UIinterface.h"
+#include "core/PWSprefs.h"
+#include "core/PWCharPool.h"
+#include "core/PWHistory.h"
+#include "core/UIinterface.h"
 
 #include "addeditpropsheet.h"
 #include "pwsclip.h"

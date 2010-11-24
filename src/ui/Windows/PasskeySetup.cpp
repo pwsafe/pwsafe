@@ -13,9 +13,9 @@
 #include "ThisMfcApp.h"
 #include "GeneralMsgBox.h"
 
-#include "corelib/PWCharPool.h" // for CheckPassword()
-#include "corelib/PwsPlatform.h"
-#include "corelib/pwsprefs.h"
+#include "core/PWCharPool.h" // for CheckPassword()
+#include "core/PwsPlatform.h"
+#include "core/pwsprefs.h"
 
 #include "os/dir.h"
 
@@ -29,7 +29,7 @@
 #include "resource3.h"  // String resources
 #endif
 
-#include "corelib/util.h"
+#include "core/util.h"
 
 #include "PasskeySetup.h"
 #include "PwFont.h"

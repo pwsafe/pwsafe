@@ -13,7 +13,7 @@
 //
 // Note that CSecString should ONLY be used for dialog box class member variables
 // that are mapped to Edit/Text controls. All other secure strings should
-// be of class StringX, defined and implemented in corelib (for portability).
+// be of class StringX, defined and implemented in core (for portability).
 //
 
 //-----------------------------------------------------------------------------
@@ -25,7 +25,7 @@
 #include <afx.h>
 #endif
 
-#include "corelib/StringX.h"
+#include "core/StringX.h"
 #include "os/typedefs.h"
 
 //-----------------------------------------------------------------------------

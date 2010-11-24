@@ -8,8 +8,8 @@
 
 #include "DDSupport.h"
 #include "SecString.h"
-#include "corelib/util.h"
-#include "corelib/UUIDGen.h"
+#include "core/util.h"
+#include "core/UUIDGen.h"
 
 #include <vector>
 

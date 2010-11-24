@@ -37,8 +37,8 @@
 #include "safecombinationprompt.h"
 #include "properties.h"
 #include "optionspropsheet.h"
-#include "corelib/PWSprefs.h"
-#include "corelib/PWSdirs.h"
+#include "core/PWSprefs.h"
+#include "core/PWSdirs.h"
 #include "PasswordSafeSearch.h"
 #include "pwsclip.h"
 #include "SystemTray.h"
@@ -51,9 +51,9 @@
 #include "./ImportXmlDlg.h"
 #include "./ExportTextWarningDlg.h"
 #include "../../os/sleep.h"
-#include "../../corelib/XML/XMLDefs.h"
+#include "../../core/XML/XMLDefs.h"
 #include "./ViewReport.h"
-#include "corelib/XML/XMLDefs.h"  // Required if testing "USE_XML_LIBRARY"
+#include "core/XML/XMLDefs.h"  // Required if testing "USE_XML_LIBRARY"
 #include <wx/fontdlg.h>
 #include "./PWSDragBar.h"
 #include "./MergeDlg.h"
@@ -2828,7 +2828,7 @@ bool MergeSyncGTUCompare(const StringX &elem1, const StringX &elem2);
 
 void PasswordSafeFrame::Merge(const StringX &sx_Filename2, PWScore *pothercore, const SelectionCriteria& selection)
 {
-  // XXX Move to corelib
+  // XXX Move to core
   const StringX &sx_Filename1 = m_core.GetCurFile();
 
   // Initialize set

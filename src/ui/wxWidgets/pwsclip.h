@@ -13,7 +13,7 @@
 
 #ifndef _PWSCLIP_H_
 #define _PWSCLIP_H_
-#include "corelib/StringX.h"
+#include "core/StringX.h"
 namespace PWSclip {
   bool SetData(const StringX &text);
   bool ClearData(); // clears clipboard iff last set by us
