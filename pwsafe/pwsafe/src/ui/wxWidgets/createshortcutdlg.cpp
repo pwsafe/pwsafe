@@ -24,7 +24,7 @@
 ////@end includes
 
 #include "createshortcutdlg.h"
-#include "corelib/ItemData.h"
+#include "core/ItemData.h"
 
 ////@begin XPM images
 ////@end XPM images

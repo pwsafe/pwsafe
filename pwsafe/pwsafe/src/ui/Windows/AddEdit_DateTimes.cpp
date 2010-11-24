@@ -16,8 +16,8 @@
 #include "AddEdit_DateTimes.h"
 #include "AddEdit_PropertySheet.h"
 
-#include "corelib/PWSprefs.h"
-#include "corelib/PWSAuxParse.h"
+#include "core/PWSprefs.h"
+#include "core/PWSAuxParse.h"
 
 #include "resource3.h"
 

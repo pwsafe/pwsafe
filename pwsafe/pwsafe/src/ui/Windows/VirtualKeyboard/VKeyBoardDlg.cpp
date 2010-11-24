@@ -24,8 +24,8 @@
 
 #include "../../../os/dir.h"
 #include "../../../os/windows/pws_osk/pws_osk.h"
-#include "../../../corelib/PWSrand.h"
-#include "../../../corelib/PWSprefs.h"
+#include "../../../core/PWSrand.h"
+#include "../../../core/PWSprefs.h"
 
 #include <sstream>
 #include <iomanip>  // For setbase and setw

@@ -10,7 +10,7 @@
 #define _DDStatic_H
 
 #include "ControlExtns.h"
-#include "corelib/ItemData.h"
+#include "core/ItemData.h"
 
 class DboxMain;
 

@@ -3,9 +3,9 @@
 #endif
 
 #include "PasswordSafeSearch.h"
-#include "../../corelib/PwsPlatform.h"
-#include "../../corelib/PWHistory.h"
-#include "../../corelib/Util.h"
+#include "../../core/PwsPlatform.h"
+#include "../../core/PWHistory.h"
+#include "../../core/Util.h"
 #include "passwordsafeframe.h"
 #include "wxutils.h"
 #include "AdvancedSelectionDlg.h"

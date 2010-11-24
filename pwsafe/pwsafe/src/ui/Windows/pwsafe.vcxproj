@@ -184,7 +184,7 @@
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
     </ProjectReference>
     <Link>
-      <AdditionalDependencies>corelib.lib;os.lib;WS2_32.lib;rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;htmlhelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>core.lib;os.lib;WS2_32.lib;rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;htmlhelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>..\$(PWSBin)/pwsafe.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>..\$(PWSLib);..\..\..\build\bin\pwsafe\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -236,7 +236,7 @@
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
     </ProjectReference>
     <Link>
-      <AdditionalDependencies>corelib.lib;os.lib;WS2_32.lib;Rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;htmlhelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>core.lib;os.lib;WS2_32.lib;Rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;htmlhelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ShowProgress>NotSet</ShowProgress>
       <OutputFile>..\$(PWSBin)/pwsafe.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -291,7 +291,7 @@
     </ProjectReference>
     <Link>
       <AdditionalOptions>/OPT:REF %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>corelib.lib;os.lib;WS2_32.lib;rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;dbghelp.lib;htmlhelp.lib;msxml6.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>core.lib;os.lib;WS2_32.lib;rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;dbghelp.lib;htmlhelp.lib;msxml6.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>..\$(PWSBin)/pwsafe.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>..\$(PWSLib);..\..\..\build\bin\pwsafe\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -348,7 +348,7 @@
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
     </ProjectReference>
     <Link>
-      <AdditionalDependencies>corelib.lib;os.lib;WS2_32.lib;Rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;htmlhelp.lib;msxml6.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>core.lib;os.lib;WS2_32.lib;Rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;htmlhelp.lib;msxml6.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ShowProgress>NotSet</ShowProgress>
       <OutputFile>..\$(PWSBin)/pwsafe.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -407,7 +407,7 @@
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
     </ProjectReference>
     <Link>
-      <AdditionalDependencies>corelib.lib;os.lib;WS2_32.lib;Rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;htmlhelp.lib;xerces-c_static_3D.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>core.lib;os.lib;WS2_32.lib;Rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;htmlhelp.lib;xerces-c_static_3D.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ShowProgress>NotSet</ShowProgress>
       <OutputFile>..\$(PWSBin)/pwsafe.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -466,7 +466,7 @@
     </ProjectReference>
     <Link>
       <AdditionalOptions>/OPT:REF %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>corelib.lib;os.lib;WS2_32.lib;rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;dbghelp.lib;htmlhelp.lib;msxml6.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>core.lib;os.lib;WS2_32.lib;rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;dbghelp.lib;htmlhelp.lib;msxml6.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>..\$(PWSBin)/pwsafe.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>..\$(PWSLib);..\..\..\build\bin\pwsafe\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -523,7 +523,7 @@
     </ProjectReference>
     <Link>
       <AdditionalOptions>/OPT:REF %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>corelib.lib;os.lib;WS2_32.lib;rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;dbghelp.lib;htmlhelp.lib;xerces-c_static_3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>core.lib;os.lib;WS2_32.lib;rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;dbghelp.lib;htmlhelp.lib;xerces-c_static_3.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>..\$(PWSBin)/pwsafe.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>..\$(PWSLib);$(XercesDir)\lib;..\..\..\build\bin\pwsafe\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -669,7 +669,7 @@
     <ClInclude Include="ConfirmDeleteDlg.h" />
     <ClInclude Include="ControlExtns.h" />
     <ClInclude Include="CoolMenu.h" />
-    <ClInclude Include="..\..\corelib\corelib.h" />
+    <ClInclude Include="..\..\core\core.h" />
     <ClInclude Include="CreateShortcutDlg.h" />
     <ClInclude Include="CryptKeyEntry.h" />
     <ClInclude Include="DboxMain.h" />
@@ -838,7 +838,7 @@
     <None Include="graphics\toolbar\classic\copyuser.bmp" />
     <None Include="graphics\toolbar\new\copyuser.bmp" />
     <None Include="graphics\toolbar\new\copyuser_disabled.bmp" />
-    <None Include="..\..\corelib\corelib.rc2" />
+    <None Include="..\..\core\core.rc2" />
     <None Include="graphics\cpane.bmp" />
     <None Include="graphics\cpane.ico" />
     <None Include="graphics\cpane_s.bmp" />
@@ -1044,7 +1044,7 @@
     <Manifest Include="res\PasswordSafe.exe.manifest" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\corelib\corelib.vcxproj">
+    <ProjectReference Include="..\..\core\core.vcxproj">
       <Project>{261882e8-80af-4373-a8cc-a8d52e24bf27}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>

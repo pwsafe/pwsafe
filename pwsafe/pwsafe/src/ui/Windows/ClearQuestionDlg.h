@@ -10,7 +10,7 @@
 // ClearQuestionDlg.h : header file
 //-----------------------------------------------------------------------------
 
-#include "corelib/PwsPlatform.h"
+#include "core/PwsPlatform.h"
 #include "PWDialog.h"
 
 class CClearQuestionDlg : public CPWDialog

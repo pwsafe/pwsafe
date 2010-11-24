@@ -11,8 +11,8 @@
 
 #include "stdafx.h"
 #include "ViewReport.h"
-#include "corelib/report.h"
-#include "corelib/util.h"
+#include "core/report.h"
+#include "core/util.h"
 #include "DboxMain.h"
 
 // CViewReport dialog

@@ -28,8 +28,8 @@
 #include "safecombinationentry.h"
 #include "safecombinationsetup.h"
 #include "version.h"
-#include "corelib/corelib.h"
-#include "corelib/PWSdirs.h"
+#include "core/core.h"
+#include "core/PWSdirs.h"
 #include "os/file.h"
 ////@begin XPM images
 #include "./graphics/cpane.xpm"

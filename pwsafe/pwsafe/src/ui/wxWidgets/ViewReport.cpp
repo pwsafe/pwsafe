@@ -7,7 +7,7 @@
 #include "ViewReport.h"
 #include "./wxutils.h"
 
-#include "../../corelib/Report.h"
+#include "../../core/Report.h"
 
 #include <wx/clipbrd.h>
 

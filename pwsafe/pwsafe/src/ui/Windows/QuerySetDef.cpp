@@ -10,7 +10,7 @@
 
 #include "stdafx.h"
 #include "PasswordSafe.h"
-#include "corelib/PwsPlatform.h"
+#include "core/PwsPlatform.h"
 
 #include "ThisMfcApp.h"
 #if defined(POCKET_PC)
@@ -20,7 +20,7 @@
 #endif
 
 #include "QuerySetDef.h"
-#include "corelib/PWSprefs.h"
+#include "core/PWSprefs.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

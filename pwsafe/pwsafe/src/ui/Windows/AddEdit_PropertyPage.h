@@ -11,9 +11,9 @@
 #include "PWPropertyPage.h"
 #include "SecString.h"
 #include "ControlExtns.h"
-#include "corelib/ItemData.h"
-#include "corelib/PWSprefs.h"
-#include "corelib/PWHistory.h"
+#include "core/ItemData.h"
+#include "core/PWSprefs.h"
+#include "core/PWHistory.h"
 
 class CAddEdit_PropertySheet;
 

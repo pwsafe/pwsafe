@@ -23,7 +23,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\corelib\corelib.h">
+    <ClInclude Include="..\..\..\core\core.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\resource.h">
@@ -43,7 +43,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\corelib\corelib.rc2">
+    <None Include="..\core\core.rc2">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="..\res\PasswordSafe2.rc2">

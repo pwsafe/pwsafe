@@ -16,9 +16,9 @@
 #include "Options_PropertySheet.h"
 #include "Options_PropertyPage.h"
 
-#include "corelib/corelib.h"
-#include "corelib/PwsPlatform.h"
-#include "corelib/PWSprefs.h" // for DoubleClickAction enums
+#include "core/core.h"
+#include "core/PwsPlatform.h"
+#include "core/PWSprefs.h" // for DoubleClickAction enums
 
 #include "os/dir.h"
 

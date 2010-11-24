@@ -25,11 +25,11 @@
 
 #include "VirtualKeyboard\VKeyBoardDlg.h"
 
-#include "corelib/pwsprefs.h"
-#include "corelib/UUIDGen.h"
-#include "corelib/corelib.h"
-#include "corelib/PWHistory.h"
-#include "corelib/StringXStream.h"
+#include "core/pwsprefs.h"
+#include "core/UUIDGen.h"
+#include "core/core.h"
+#include "core/PWHistory.h"
+#include "core/StringXStream.h"
 
 #include "os/Debug.h"
 #include "os/dir.h"

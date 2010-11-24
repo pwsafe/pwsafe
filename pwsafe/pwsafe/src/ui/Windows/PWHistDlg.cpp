@@ -15,8 +15,8 @@
 #include "resource3.h"  // String resources
 #include "DboxMain.h"
 #include "PWHistDlg.h"
-#include "corelib/ItemData.h"
-#include "corelib/PWSprefs.h"
+#include "core/ItemData.h"
+#include "core/PWSprefs.h"
 
 
 // CPWHistDlg dialog

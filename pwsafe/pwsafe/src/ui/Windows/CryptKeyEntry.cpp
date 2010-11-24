@@ -15,7 +15,7 @@
 
 #include "CryptKeyEntry.h"
 
-#include "corelib/util.h"
+#include "core/util.h"
 
 #if defined(POCKET_PC)
 #include "pocketpc/resource.h"

@@ -25,7 +25,7 @@
 
 #include "../file.h"
 #include "../env.h"
-#include "corelib.h"
+#include "core.h"
 #include "StringXStream.h"
 
 using namespace std;

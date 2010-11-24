@@ -37,9 +37,9 @@ using namespace std;
 #include "passwordsafeframe.h"
 #include "version.h"
 #include "wxMessages.h"
-#include "corelib/SysInfo.h"
-#include "corelib/PWSprefs.h"
-#include "corelib/PWSrand.h"
+#include "core/SysInfo.h"
+#include "core/PWSprefs.h"
+#include "core/PWSrand.h"
 #include <wx/timer.h>
 #include <wx/html/helpctrl.h>
 #include "../../os/dir.h"

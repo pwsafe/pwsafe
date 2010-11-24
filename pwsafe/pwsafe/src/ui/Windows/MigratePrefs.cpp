@@ -16,11 +16,11 @@
 
 #include "stdafx.h"
 #include "GeneralMsgBox.h"
-#include "corelib/VerifyFormat.h"
-#include "corelib/PWSprefs.h"
-#include "corelib/PWSdirs.h"
-#include "corelib/SysInfo.h"
-#include "corelib/XMLprefs.h"
+#include "core/VerifyFormat.h"
+#include "core/PWSprefs.h"
+#include "core/PWSdirs.h"
+#include "core/SysInfo.h"
+#include "core/XMLprefs.h"
 #include "os/dir.h"
 #include "os/file.h"
 

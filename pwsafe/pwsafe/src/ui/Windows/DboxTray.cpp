@@ -24,9 +24,9 @@
 #include "resource3.h"  // String resources
 #endif
 
-#include "corelib/pwsprefs.h"
-#include "corelib/pwscore.h"
-#include "corelib/PWSAuxParse.h"
+#include "core/pwsprefs.h"
+#include "core/pwscore.h"
+#include "core/PWSAuxParse.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

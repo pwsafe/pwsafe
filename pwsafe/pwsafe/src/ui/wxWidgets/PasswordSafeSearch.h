@@ -20,7 +20,7 @@
 #include <wx/event.h>
 #include <wx/toolbar.h>
 
-#include "../../corelib/ItemData.h"
+#include "../../core/ItemData.h"
 #include "AdvancedSelectionDlg.h"
 ////@end includes
 

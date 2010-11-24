@@ -12,8 +12,8 @@
 #include "../stdafx.h"
 #include "../GeneralMsgBox.h"
 #include "FilterEntryStatusDlg.h"
-#include "corelib/itemdata.h"
-#include "corelib/corelib.h"
+#include "core/itemdata.h"
+#include "core/core.h"
 
 // CFilterEntryStatusDlg dialog
 

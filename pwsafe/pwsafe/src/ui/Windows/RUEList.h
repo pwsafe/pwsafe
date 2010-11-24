@@ -12,10 +12,10 @@
 
 #include <deque>
 #include <vector>
-#include "corelib/ItemData.h"
-#include "corelib/StringX.h"
-#include "corelib/PWScore.h"
-#include "corelib/UUIDGen.h"
+#include "core/ItemData.h"
+#include "core/StringX.h"
+#include "core/PWScore.h"
+#include "core/UUIDGen.h"
 //-----------------------------------------------------------------------------
 
 /*

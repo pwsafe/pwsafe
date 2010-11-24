@@ -12,7 +12,7 @@
 #include "../stdafx.h"
 #include "../GeneralMsgBox.h"
 #include "FilterEntrySizeDlg.h"
-#include "corelib/corelib.h"
+#include "core/core.h"
 
 // CFilterEntrySizeDlg dialog
 

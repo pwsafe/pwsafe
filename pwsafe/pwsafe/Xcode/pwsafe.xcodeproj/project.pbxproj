@@ -79,7 +79,7 @@
 		E6EE841C11E87E9800B01518 /* CheckVersion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE839411E87E9700B01518 /* CheckVersion.cpp */; };
 		E6EE841D11E87E9800B01518 /* Command.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE839611E87E9700B01518 /* Command.cpp */; };
 		E6EE841E11E87E9800B01518 /* CoreImpExp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE839E11E87E9700B01518 /* CoreImpExp.cpp */; };
-		E6EE841F11E87E9800B01518 /* corelib_st.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83A211E87E9700B01518 /* corelib_st.cpp */; };
+		E6EE841F11E87E9800B01518 /* core_st.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83A211E87E9700B01518 /* core_st.cpp */; };
 		E6EE842011E87E9800B01518 /* hmac.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83A511E87E9700B01518 /* hmac.cpp */; };
 		E6EE842111E87E9800B01518 /* ItemData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83A711E87E9700B01518 /* ItemData.cpp */; };
 		E6EE842211E87E9800B01518 /* ItemField.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83A911E87E9700B01518 /* ItemField.cpp */; };
@@ -487,9 +487,9 @@
 		E6EE839811E87E9700B01518 /* CommandInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommandInterface.h; sourceTree = "<group>"; };
 		E6EE839D11E87E9700B01518 /* coredefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = coredefs.h; sourceTree = "<group>"; };
 		E6EE839E11E87E9700B01518 /* CoreImpExp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CoreImpExp.cpp; sourceTree = "<group>"; };
-		E6EE839F11E87E9700B01518 /* corelib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = corelib.h; sourceTree = "<group>"; };
-		E6EE83A211E87E9700B01518 /* corelib_st.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = corelib_st.cpp; sourceTree = "<group>"; };
-		E6EE83A311E87E9700B01518 /* corelib_st.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = corelib_st.h; sourceTree = "<group>"; };
+		E6EE839F11E87E9700B01518 /* core.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = core.h; sourceTree = "<group>"; };
+		E6EE83A211E87E9700B01518 /* core_st.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core_st.cpp; sourceTree = "<group>"; };
+		E6EE83A311E87E9700B01518 /* core_st.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = core_st.h; sourceTree = "<group>"; };
 		E6EE83A411E87E9700B01518 /* Fish.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Fish.h; sourceTree = "<group>"; };
 		E6EE83A511E87E9700B01518 /* hmac.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = hmac.cpp; sourceTree = "<group>"; };
 		E6EE83A611E87E9700B01518 /* hmac.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hmac.h; sourceTree = "<group>"; };
@@ -925,7 +925,7 @@
 			children = (
 				E690B1031297D76E007EA508 /* Resources */,
 				E6A11A2A1293D20E0060FB35 /* graphics */,
-				E6EE839111E87E9700B01518 /* corelib */,
+				E6EE839111E87E9700B01518 /* core */,
 				E6EE837D11E87CD200B01518 /* os */,
 				E6ADB9A411957099004E2BE5 /* wxWidgets */,
 				E6ADB80411956A93004E2BE5 /* Products */,
@@ -1078,7 +1078,7 @@
 			tabWidth = 2;
 			usesTabs = 0;
 		};
-		E6EE839111E87E9700B01518 /* corelib */ = {
+		E6EE839111E87E9700B01518 /* core */ = {
 			isa = PBXGroup;
 			children = (
 				E6EE839211E87E9700B01518 /* BlowFish.cpp */,
@@ -1090,9 +1090,9 @@
 				E6EE839811E87E9700B01518 /* CommandInterface.h */,
 				E6EE839D11E87E9700B01518 /* coredefs.h */,
 				E6EE839E11E87E9700B01518 /* CoreImpExp.cpp */,
-				E6EE839F11E87E9700B01518 /* corelib.h */,
-				E6EE83A211E87E9700B01518 /* corelib_st.cpp */,
-				E6EE83A311E87E9700B01518 /* corelib_st.h */,
+				E6EE839F11E87E9700B01518 /* core.h */,
+				E6EE83A211E87E9700B01518 /* core_st.cpp */,
+				E6EE83A311E87E9700B01518 /* core_st.h */,
 				E6EE83A411E87E9700B01518 /* Fish.h */,
 				E6EE83A511E87E9700B01518 /* hmac.cpp */,
 				E6EE83A611E87E9700B01518 /* hmac.h */,
@@ -1160,8 +1160,8 @@
 				E6EE841A11E87E9800B01518 /* XMLprefs.h */,
 			);
 			indentWidth = 4;
-			name = corelib;
-			path = ../src/corelib;
+			name = core;
+			path = ../src/core;
 			sourceTree = SOURCE_ROOT;
 			tabWidth = 2;
 			usesTabs = 0;
@@ -1242,7 +1242,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E6ADB80711956A94004E2BE5 /* Build configuration list for PBXNativeTarget "core" */;
 			buildPhases = (
-				E6CFEF1811EA41FB001402D8 /* Generate corelib_st */,
+				E6CFEF1811EA41FB001402D8 /* Generate core_st */,
 				E6ADB80011956A93004E2BE5 /* Sources */,
 			);
 			buildRules = (
@@ -1363,22 +1363,22 @@
 			shellPath = /bin/sh;
 			shellScript = "../Misc/mkversion.pl ../src/ui/wxWidgets/version.in ../src/ui/wxWidgets/version.h";
 		};
-		E6CFEF1811EA41FB001402D8 /* Generate corelib_st */ = {
+		E6CFEF1811EA41FB001402D8 /* Generate core_st */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
-				../src/corelib/corelib.rc2,
+				../src/core/core.rc2,
 			);
-			name = "Generate corelib_st";
+			name = "Generate core_st";
 			outputPaths = (
-				../src/corelib/corelib_st.h,
-				../src/corelib/corelib_st.cpp,
+				../src/core/core_st.h,
+				../src/core/core_st.cpp,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "echo \"Generating coelib_st.cpp and corelib_st.h ...\"\n../Misc/rc2cpp.pl ../src/corelib/corelib.rc2";
+			shellScript = "echo \"Generating coelib_st.cpp and core_st.h ...\"\n../Misc/rc2cpp.pl ../src/core/core.rc2";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1391,7 +1391,7 @@
 				E6EE841C11E87E9800B01518 /* CheckVersion.cpp in Sources */,
 				E6EE841D11E87E9800B01518 /* Command.cpp in Sources */,
 				E6EE841E11E87E9800B01518 /* CoreImpExp.cpp in Sources */,
-				E6EE841F11E87E9800B01518 /* corelib_st.cpp in Sources */,
+				E6EE841F11E87E9800B01518 /* core_st.cpp in Sources */,
 				E6EE842011E87E9800B01518 /* hmac.cpp in Sources */,
 				E6EE842111E87E9800B01518 /* ItemData.cpp in Sources */,
 				E6EE842211E87E9800B01518 /* ItemField.cpp in Sources */,

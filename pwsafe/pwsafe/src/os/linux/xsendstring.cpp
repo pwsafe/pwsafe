@@ -33,8 +33,8 @@
 
 #include "./xsendstring.h"
 #include "../sleep.h"
-#include "../../corelib/PwsPlatform.h" // for NumberOf()
-#include "../../corelib/StringX.h"
+#include "../../core/PwsPlatform.h" // for NumberOf()
+#include "../../core/StringX.h"
 
 namespace { // anonymous namespace for hiding
   //           local variables and functions

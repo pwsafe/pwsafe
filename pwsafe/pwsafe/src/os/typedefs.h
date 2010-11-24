@@ -35,7 +35,7 @@ typedef char charT;
 #define _S(x) x
 #endif
 
-#include "../corelib/PwsPlatform.h" // for afxwin.h, and endian macros
+#include "../core/PwsPlatform.h" // for afxwin.h, and endian macros
 
 #ifdef _WIN32
 #include "TCHAR.h"

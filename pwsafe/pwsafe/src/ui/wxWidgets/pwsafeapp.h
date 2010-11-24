@@ -21,7 +21,7 @@
 #include "wx/image.h"
 #include "safecombinationentry.h"
 ////@end includes
-#include "corelib/PWScore.h"
+#include "core/PWScore.h"
 #include "./RecentDBList.h"
 
 /*!

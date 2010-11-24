@@ -7,7 +7,7 @@
 */
 
 #include "../debug.h"
-#include "../corelib/Util.h"
+#include "../core/Util.h"
 
 #if defined(_DEBUG) || defined(DEBUG)
 
@@ -87,7 +87,7 @@ void pws_os::Trace0(LPCTSTR )
 #endif  /* _DEBUG || DEBUG */
 
 #if defined(_DEBUG) || defined(DEBUG)
-#include "../../corelib/StringX.h"
+#include "../../core/StringX.h"
 #include <iostream>
 #include "../pws_tchar.h"
 

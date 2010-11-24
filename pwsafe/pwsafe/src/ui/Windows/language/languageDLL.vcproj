@@ -126,7 +126,7 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath="..\..\..\corelib\corelib.h"
+				RelativePath="..\..\..\core\core.h"
 				>
 			</File>
 			<File
@@ -156,7 +156,7 @@
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 			<File
-				RelativePath="..\corelib\corelib.rc2"
+				RelativePath="..\core\core.rc2"
 				>
 			</File>
 			<File

@@ -20,8 +20,8 @@
 #include "version.h"
 #include "DumpSelect.h"
 
-#include "corelib/UTF8Conv.h"
-#include "corelib/SysInfo.h"
+#include "core/UTF8Conv.h"
+#include "core/SysInfo.h"
 
 #include "resource.h"
 #include "resource3.h"

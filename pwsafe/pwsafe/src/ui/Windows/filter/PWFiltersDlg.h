@@ -12,8 +12,8 @@
 
 #include "../PWResizeDialog.h"
 #include "../PWHdrCtrlNoChng.h"
-#include "corelib/Itemdata.h"
-#include "corelib/PWSFilters.h"
+#include "core/Itemdata.h"
+#include "core/PWSFilters.h"
 #include "PWFilterLC.h"
 
 #include "../resource.h"

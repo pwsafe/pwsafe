@@ -14,7 +14,7 @@
 #include "ThisMfcApp.h"
 #include "Options_PropertySheet.h"
 
-#include "corelib\pwsprefs.h"
+#include "core\pwsprefs.h"
 
 #if defined(POCKET_PC)
 #include "pocketpc/resource.h"

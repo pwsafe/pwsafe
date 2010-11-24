@@ -35,13 +35,13 @@
 #include "MFCMessages.h"
 #include "GeneralMsgBox.h"
 
-#include "corelib/Util.h"
-#include "corelib/BlowFish.h"
-#include "corelib/PWSprefs.h"
-#include "corelib/PWSrand.h"
-#include "corelib/PWSdirs.h"
-#include "corelib/SysInfo.h"
-#include "corelib/XMLprefs.h"
+#include "core/Util.h"
+#include "core/BlowFish.h"
+#include "core/PWSprefs.h"
+#include "core/PWSrand.h"
+#include "core/PWSdirs.h"
+#include "core/SysInfo.h"
+#include "core/XMLprefs.h"
 
 #include "os/windows/pws_autotype/pws_at.h"
 #include "os/dir.h"
@@ -638,7 +638,7 @@ BOOL ThisMfcApp::InitInstance()
   AFX_IDS_APP_TITLE (actually, CWinApp::m_pszAppName).
 
   Notes:
-  1. I would love to move this to corelib/PWSprefs.cpp, but it's a protected
+  1. I would love to move this to core/PWSprefs.cpp, but it's a protected
   member function!!!
   2. Prior to 3.05, the value was "Counterpane Systems". See PWSprefs.cpp
   for discussion on how this is handled.

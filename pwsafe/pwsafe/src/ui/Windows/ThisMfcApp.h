@@ -13,8 +13,8 @@
 
 #include "PasswordSafe.h"
 #include "stdafx.h"
-#include "corelib/Util.h"
-#include "corelib/PWScore.h"
+#include "core/Util.h"
+#include "core/PWScore.h"
 #include "SystemTray.h"
 #include "PWSRecentFileList.h"
 #include "os/run.h"

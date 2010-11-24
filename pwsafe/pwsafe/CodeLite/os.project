@@ -75,7 +75,7 @@
     <Configuration Name="Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Static Library" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
       <Compiler Options="-g;-Wall;-O0" Required="yes" PreCompiledHeader="">
         <IncludePath Value="."/>
-        <IncludePath Value="../src/corelib"/>
+        <IncludePath Value="../src/core"/>
         <IncludePath Value="../src"/>
         <Preprocessor Value="UNICODE"/>
       </Compiler>
@@ -106,7 +106,7 @@
     <Configuration Name="DebugX" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Static Library" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
       <Compiler Options="-g;-Wall;-O0" Required="yes" PreCompiledHeader="">
         <IncludePath Value="."/>
-        <IncludePath Value="../src/corelib"/>
+        <IncludePath Value="../src/core"/>
         <IncludePath Value="../src"/>
         <Preprocessor Value="UNICODE"/>
       </Compiler>
@@ -137,7 +137,7 @@
     <Configuration Name="Release" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Static Library" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
       <Compiler Options="-Wall;-O" Required="yes" PreCompiledHeader="">
         <IncludePath Value="."/>
-        <IncludePath Value="../src/corelib"/>
+        <IncludePath Value="../src/core"/>
         <IncludePath Value="../src"/>
         <Preprocessor Value="UNICODE"/>
       </Compiler>
@@ -168,7 +168,7 @@
     <Configuration Name="ReleaseX" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Static Library" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
       <Compiler Options="-Wall;-O" Required="yes" PreCompiledHeader="">
         <IncludePath Value="."/>
-        <IncludePath Value="../src/corelib"/>
+        <IncludePath Value="../src/core"/>
         <IncludePath Value="../src"/>
         <Preprocessor Value="UNICODE"/>
       </Compiler>

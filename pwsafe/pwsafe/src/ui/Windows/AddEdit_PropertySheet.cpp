@@ -12,8 +12,8 @@
 #include "AddEdit_PropertySheet.h"
 #include "GeneralMsgBox.h"
 
-#include "corelib/ItemData.h"
-#include "corelib/PWSprefs.h"
+#include "core/ItemData.h"
+#include "core/PWSprefs.h"
 
 IMPLEMENT_DYNAMIC(CAddEdit_PropertySheet, CPWPropertySheet)
 

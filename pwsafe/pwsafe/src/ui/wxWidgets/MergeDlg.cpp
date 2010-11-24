@@ -14,7 +14,7 @@
 #include "./MergeDlg.h"
 #include "./OpenFilePickerValidator.h"
 #include "./SafeCombinationCtrl.h"
-#include "../../corelib/PWScore.h"
+#include "../../core/PWScore.h"
 #include "./wxutils.h"
 #include "./AdvancedSelectionDlg.h"
 #include "../../os/file.h"

@@ -15,7 +15,7 @@
 #include "ThisMfcApp.h"
 #include "GeneralMsgBox.h"
 
-#include "corelib/pwsprefs.h"
+#include "core/pwsprefs.h"
 
 #include "VirtualKeyboard/VKeyBoardDlg.h"
 

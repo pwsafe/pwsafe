@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "corelib", "src\corelib\corelib.vcxproj", "{261882E8-80AF-4373-A8CC-A8D52E24BF27}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "core", "src\core\core.vcxproj", "{261882E8-80AF-4373-A8CC-A8D52E24BF27}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pwsafe", "src\ui\wxWidgets\pwsafe_wx.vcxproj", "{45779F00-D0DD-477B-B1E1-F624B6C86AB9}"
 	ProjectSection(ProjectDependencies) = postProject

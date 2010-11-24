@@ -9,7 +9,7 @@
 #ifndef __GUIINFO_H__
 #define __GUIINFO_H__
 
-#include "../../corelib/UUIDGen.h"
+#include "../../core/UUIDGen.h"
 #include <wx/string.h>
 #include <wx/gdicmn.h>
 #include <wx/arrstr.h>

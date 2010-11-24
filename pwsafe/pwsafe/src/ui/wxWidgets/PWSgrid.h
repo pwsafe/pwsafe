@@ -20,9 +20,9 @@
 ////@begin includes
 #include "wx/grid.h"
 ////@end includes
-#include "corelib/ItemData.h"
-#include "corelib/PWScore.h"
-#include "corelib/UUIDGen.h"
+#include "core/ItemData.h"
+#include "core/PWScore.h"
+#include "core/UUIDGen.h"
 #include <map>
 
 /*!

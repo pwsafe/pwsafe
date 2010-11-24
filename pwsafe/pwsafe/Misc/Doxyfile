@@ -111,7 +111,7 @@ FILE_PATTERNS          = *.c \
                          *.dox \
                          *.py
 RECURSIVE              = YES
-EXCLUDE                = src/corelib_cppunit_test/ \
+EXCLUDE                = src/core_cppunit_test/ \
                          src/test/
 EXCLUDE_SYMLINKS       = NO
 EXCLUDE_PATTERNS       = 

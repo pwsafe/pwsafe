@@ -17,7 +17,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 #include "PwFont.h"
-#include "corelib/PwsPlatform.h"
+#include "core/PwsPlatform.h"
 
 static CFont *pPasswordFont(NULL);
 

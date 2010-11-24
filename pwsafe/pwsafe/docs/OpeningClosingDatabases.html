@@ -186,12 +186,12 @@ databases</B></FONT><BR><FONT SIZE=2>8 messages</FONT>
 						<P STYLE="margin-bottom: 0in"><FONT SIZE=2>There is no need for
 						an extra call as the UI is the driver of opening a new database
 						and therefore knows full well that it is a new database.
-						&nbsp;Remember, the UI drives the actions. &nbsp;corelib does
+						&nbsp;Remember, the UI drives the actions. &nbsp;core does
 						what it is told and tells the UI when things are changed due to
 						its actions.</FONT></P>
 						<P STYLE="margin-bottom: 0in"><BR>
 						</P>
-						<P><FONT SIZE=2>corelib will not open a new database without
+						<P><FONT SIZE=2>core will not open a new database without
 						being told to do so by the UI.</FONT></P>
 					</TD>
 				</TR>
@@ -271,18 +271,18 @@ databases</B></FONT><BR><FONT SIZE=2>8 messages</FONT>
 						<P STYLE="margin-bottom: 0in"><BR>
 						</P>
 						<P STYLE="margin-bottom: 0in"><FONT SIZE=2>Looking at the MFC
-						code, during Open, corelib opens the database and, on success,
+						code, during Open, core opens the database and, on success,
 						the UI does the initial load of the UI (Tree/List).</FONT></P>
 						<P STYLE="margin-bottom: 0in"><BR>
 						</P>
-						<P STYLE="margin-bottom: 0in"><FONT SIZE=2><U>corelib has no
+						<P STYLE="margin-bottom: 0in"><FONT SIZE=2><U>core has no
 						knowledge of the UI - only of the entries in the database</U>.
 						&nbsp;After Open, when one or more entries change, it uses
 						the&nbsp;<FONT FACE="arial, sans-serif"><FONT SIZE=2 STYLE="font-size: 9pt">UIInterface
 						to tell the UI that it might have to change what the user sees.
 						&nbsp;For example, a field might have been changed but the user
 						currently doesn't display it in the List view - for example the
-						RunCommand field - so corelib tells the UI that it has changed
+						RunCommand field - so core tells the UI that it has changed
 						and the UI decides whether the what the user sees needs
 						updating.</FONT></FONT></FONT></P>
 						<P STYLE="margin-bottom: 0in"><BR>

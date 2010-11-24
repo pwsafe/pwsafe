@@ -12,7 +12,7 @@
 
 // TRACE replacement
 #include "../debug.h"
-#include "../../corelib/util.h"
+#include "../../core/util.h"
 #include <wtypes.h>
 
 #if defined(_DEBUG) || defined(DEBUG)
@@ -89,7 +89,7 @@ void pws_os::Trace0(LPCTSTR )
 #if defined(_DEBUG) || defined(DEBUG)
 #include "windows.h"
 #include "../debug.h"
-#include "../../corelib/StringX.h"
+#include "../../core/StringX.h"
 
 // This routine uses Windows functions
 void pws_os::IssueError(const stringT &csFunction, bool bMsgBox)

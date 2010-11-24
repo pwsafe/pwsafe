@@ -18,7 +18,7 @@
 #define __RUN_H
 
 #include "typedefs.h"
-#include "../corelib/StringX.h"
+#include "../core/StringX.h"
 
 #include <vector>
 

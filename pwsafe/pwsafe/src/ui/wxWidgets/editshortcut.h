@@ -20,8 +20,8 @@
 ////@begin includes
 #include "wx/valgen.h"
 ////@end includes
-#include "corelib/PWScore.h"
-#include "corelib/ItemData.h"
+#include "core/PWScore.h"
+#include "core/ItemData.h"
 
 /*!
  * Forward declarations

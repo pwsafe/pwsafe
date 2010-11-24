@@ -16,7 +16,7 @@
 // CExportText dialog
 
 #include "SecString.h"
-#include "corelib/ItemData.h"
+#include "core/ItemData.h"
 #include "ControlExtns.h"
 #include "PWDialog.h"
 #include "AdvancedDlg.h"

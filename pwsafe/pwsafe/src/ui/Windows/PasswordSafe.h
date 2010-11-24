@@ -16,7 +16,7 @@
 #include "stdafx.h"
 #endif
 
-#include "corelib/PwsPlatform.h"
+#include "core/PwsPlatform.h"
 
 /*
 jpr debug stuff

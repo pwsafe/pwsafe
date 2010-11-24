@@ -13,8 +13,8 @@
 #include "PasswordSubsetDlg.h"
 #include "DboxMain.h"
 #include "PwFont.h"
-#include "corelib/StringX.h"
-#include "corelib/PWSprefs.h"
+#include "core/StringX.h"
+#include "core/PWSprefs.h"
 
 #include <vector>
 

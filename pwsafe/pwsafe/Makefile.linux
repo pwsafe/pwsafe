@@ -2,7 +2,7 @@
 
 all clean unicodedebug unicoderelease:
 	$(MAKE) -C src/os/linux $@
-	$(MAKE) -C src/corelib $@
+	$(MAKE) -C src/core $@
 	$(MAKE) -C src/ui/wxWidgets $@
 
 debug:

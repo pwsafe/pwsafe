@@ -1,8 +1,8 @@
 Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "corelib", "src\corelib\corelib.vcproj", "{261882E8-80AF-4373-A8CC-A8D52E24BF27}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "core", "src\core\core.vcproj", "{261882E8-80AF-4373-A8CC-A8D52E24BF27}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "corelibtest", "src\test\corelibtest.vcproj", "{0FF1232A-8377-4271-BC22-04E57A39FFB6}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "coretest", "src\test\coretest.vcproj", "{0FF1232A-8377-4271-BC22-04E57A39FFB6}"
 	ProjectSection(ProjectDependencies) = postProject
 		{261882E8-80AF-4373-A8CC-A8D52E24BF27} = {261882E8-80AF-4373-A8CC-A8D52E24BF27}
 	EndProjectSection

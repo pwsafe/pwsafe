@@ -16,9 +16,9 @@
 #include "AddEdit_PasswordPolicy.h"
 #include "AddEdit_PropertySheet.h"
 
-#include "corelib/PwsPlatform.h"
-#include "corelib/ItemData.h"
-#include "corelib/PWSprefs.h"
+#include "core/PwsPlatform.h"
+#include "core/ItemData.h"
+#include "core/PWSprefs.h"
 
 #if defined(POCKET_PC)
 #include "pocketpc/resource.h"

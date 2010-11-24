@@ -11,11 +11,11 @@
 //-----------------------------------------------------------------------------
 
 #include "PWResizeDialog.h"
-#include "corelib/ItemData.h"
+#include "core/ItemData.h"
 #include "SecString.h"
-#include "corelib/PWScore.h"
-#include "corelib/Report.h"
-#include "corelib/uuidgen.h"
+#include "core/PWScore.h"
+#include "core/Report.h"
+#include "core/uuidgen.h"
 
 #ifdef _DEBUG
 #include <bitset>

@@ -28,15 +28,15 @@
 #include "PWFileDialog.h"
 #include "DisplayFSBkupFiles.h"
 
-#include "corelib/PWSprefs.h"
-#include "corelib/Util.h"
-#include "corelib/PWSdirs.h"
-#include "corelib/Report.h"
-#include "corelib/ItemData.h"
-#include "corelib/corelib.h"
-#include "corelib/VerifyFormat.h"
-#include "corelib/SysInfo.h"
-#include "corelib/XML/XMLDefs.h"  // Required if testing "USE_XML_LIBRARY"
+#include "core/PWSprefs.h"
+#include "core/Util.h"
+#include "core/PWSdirs.h"
+#include "core/Report.h"
+#include "core/ItemData.h"
+#include "core/core.h"
+#include "core/VerifyFormat.h"
+#include "core/SysInfo.h"
+#include "core/XML/XMLDefs.h"  // Required if testing "USE_XML_LIBRARY"
 
 #include "os/file.h"
 #include "os/dir.h"
@@ -2326,7 +2326,7 @@ bool MergeSyncGTUCompare(const StringX &elem1, const StringX &elem2)
 
 void DboxMain::Merge(const StringX &sx_Filename2, PWScore *pothercore)
 {
-  // XXX Move to corelib
+  // XXX Move to core
   const StringX &sx_Filename1 = m_core.GetCurFile();
 
   CGeneralMsgBox gmb;

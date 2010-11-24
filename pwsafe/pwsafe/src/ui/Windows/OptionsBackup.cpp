@@ -14,9 +14,9 @@
 #include "ThisMfcApp.h"    // For Help
 #include "Options_PropertySheet.h"
 
-#include "corelib/PwsPlatform.h"
-#include "corelib/PWSprefs.h" // for DoubleClickAction enums
-#include "corelib/util.h" // for datetime string
+#include "core/PwsPlatform.h"
+#include "core/PWSprefs.h" // for DoubleClickAction enums
+#include "core/util.h" // for datetime string
 
 #include "os/dir.h"
 

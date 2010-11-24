@@ -7,7 +7,7 @@
 */
 #pragma once
 
-#include "corelib/StringX.h"
+#include "core/StringX.h"
 #include "PWDialog.h"
 
 #include <vector>

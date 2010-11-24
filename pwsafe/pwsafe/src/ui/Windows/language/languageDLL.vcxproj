@@ -62,7 +62,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\corelib\corelib.h" />
+    <ClInclude Include="..\..\..\core\core.h" />
     <ClInclude Include="..\resource.h" />
     <ClInclude Include="..\resource2.h" />
     <ClInclude Include="..\resource3.h" />
@@ -70,7 +70,7 @@
     <ClInclude Include="..\version.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\corelib\corelib.rc2" />
+    <None Include="..\core\core.rc2" />
     <None Include="..\res\PasswordSafe2.rc2" />
     <None Include="..\res\PasswordSafe3.rc2" />
   </ItemGroup>

@@ -15,7 +15,7 @@
 //-----------------------------------------------------------------------------
 
 #include "typedefs.h"
-#include "../corelib/StringX.h"
+#include "../core/StringX.h"
 
 class CKeySendImpl; // for os-specific stuff
 

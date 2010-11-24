@@ -10,7 +10,7 @@
 
 #include <algorithm> // for find_if
 
-#include "../../corelib/PWScore.h"
+#include "../../core/PWScore.h"
 
 #include "RUEList.h"
 
