@@ -557,22 +557,6 @@
 		E6EE83E711E87E9800B01518 /* UUIDGen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UUIDGen.h; sourceTree = "<group>"; };
 		E6EE83E811E87E9800B01518 /* VerifyFormat.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VerifyFormat.cpp; sourceTree = "<group>"; };
 		E6EE83E911E87E9800B01518 /* VerifyFormat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VerifyFormat.h; sourceTree = "<group>"; };
-		E6EE83EC11E87E9800B01518 /* EFileHandlers.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EFileHandlers.cpp; sourceTree = "<group>"; };
-		E6EE83ED11E87E9800B01518 /* EFileHandlers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EFileHandlers.h; sourceTree = "<group>"; };
-		E6EE83EE11E87E9800B01518 /* EFileValidator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EFileValidator.cpp; sourceTree = "<group>"; };
-		E6EE83EF11E87E9800B01518 /* EFileValidator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EFileValidator.h; sourceTree = "<group>"; };
-		E6EE83F011E87E9800B01518 /* EFileValidatorDefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EFileValidatorDefs.h; sourceTree = "<group>"; };
-		E6EE83F111E87E9800B01518 /* EFileXMLProcessor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EFileXMLProcessor.cpp; sourceTree = "<group>"; };
-		E6EE83F211E87E9800B01518 /* EFileXMLProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EFileXMLProcessor.h; sourceTree = "<group>"; };
-		E6EE83F311E87E9800B01518 /* EFilterHandlers.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EFilterHandlers.cpp; sourceTree = "<group>"; };
-		E6EE83F411E87E9800B01518 /* EFilterHandlers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EFilterHandlers.h; sourceTree = "<group>"; };
-		E6EE83F511E87E9800B01518 /* EFilterValidator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EFilterValidator.cpp; sourceTree = "<group>"; };
-		E6EE83F611E87E9800B01518 /* EFilterValidator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EFilterValidator.h; sourceTree = "<group>"; };
-		E6EE83F711E87E9800B01518 /* EFilterValidatorDefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EFilterValidatorDefs.h; sourceTree = "<group>"; };
-		E6EE83F811E87E9800B01518 /* EFilterXMLProcessor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EFilterXMLProcessor.cpp; sourceTree = "<group>"; };
-		E6EE83F911E87E9800B01518 /* EFilterXMLProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EFilterXMLProcessor.h; sourceTree = "<group>"; };
-		E6EE83FA11E87E9800B01518 /* ESecMemMgr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ESecMemMgr.cpp; sourceTree = "<group>"; };
-		E6EE83FB11E87E9800B01518 /* ESecMemMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESecMemMgr.h; sourceTree = "<group>"; };
 		E6EE840811E87E9800B01518 /* XFileSAX2Handlers.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = XFileSAX2Handlers.cpp; sourceTree = "<group>"; };
 		E6EE840911E87E9800B01518 /* XFileSAX2Handlers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XFileSAX2Handlers.h; sourceTree = "<group>"; };
 		E6EE840A11E87E9800B01518 /* XFileValidator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = XFileValidator.cpp; sourceTree = "<group>"; };
@@ -1191,29 +1175,6 @@
 				E6EE841811E87E9800B01518 /* XMLFileValidation.h */,
 			);
 			path = XML;
-			sourceTree = "<group>";
-		};
-		E6EE83EB11E87E9800B01518 /* Expat */ = {
-			isa = PBXGroup;
-			children = (
-				E6EE83EC11E87E9800B01518 /* EFileHandlers.cpp */,
-				E6EE83ED11E87E9800B01518 /* EFileHandlers.h */,
-				E6EE83EE11E87E9800B01518 /* EFileValidator.cpp */,
-				E6EE83EF11E87E9800B01518 /* EFileValidator.h */,
-				E6EE83F011E87E9800B01518 /* EFileValidatorDefs.h */,
-				E6EE83F111E87E9800B01518 /* EFileXMLProcessor.cpp */,
-				E6EE83F211E87E9800B01518 /* EFileXMLProcessor.h */,
-				E6EE83F311E87E9800B01518 /* EFilterHandlers.cpp */,
-				E6EE83F411E87E9800B01518 /* EFilterHandlers.h */,
-				E6EE83F511E87E9800B01518 /* EFilterValidator.cpp */,
-				E6EE83F611E87E9800B01518 /* EFilterValidator.h */,
-				E6EE83F711E87E9800B01518 /* EFilterValidatorDefs.h */,
-				E6EE83F811E87E9800B01518 /* EFilterXMLProcessor.cpp */,
-				E6EE83F911E87E9800B01518 /* EFilterXMLProcessor.h */,
-				E6EE83FA11E87E9800B01518 /* ESecMemMgr.cpp */,
-				E6EE83FB11E87E9800B01518 /* ESecMemMgr.h */,
-			);
-			path = Expat;
 			sourceTree = "<group>";
 		};
 		E6EE840711E87E9800B01518 /* Xerces */ = {
