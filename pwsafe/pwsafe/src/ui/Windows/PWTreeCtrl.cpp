@@ -420,18 +420,6 @@ void CPWTreeCtrl::OnDragLeave()
     ;
 }
 
-void CPWTreeCtrl::SetNewStyle(long lStyleMask, BOOL bSetBits)
-{
-  long lStyleOld = GetWindowLong(m_hWnd, GWL_STYLE);
-
-  lStyleOld &= ~lStyleMask;
-  if (bSetBits)
-    lStyleOld |= lStyleMask;
-
-  SetWindowLong(m_hWnd, GWL_STYLE, lStyleOld);
-  SetWindowPos(NULL, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER);
-}
-
 void CPWTreeCtrl::UpdateLeafsGroup(MultiCommands *pmulticmds, HTREEITEM hItem, CString prefix)
 {
   // Starting with hItem, update the Group field of all of hItem's
@@ -930,7 +918,10 @@ void CPWTreeCtrl::DeleteWithParents(HTREEITEM hItem)
 // not including the name of the item itself.
 CString CPWTreeCtrl::GetGroup(HTREEITEM hItem)
 {
-  CString retval, nodeText;
+  CString retval(L""), nodeText;
+  if (hItem == TVI_ROOT)
+    return retval;
+
   while (hItem != NULL) {
     nodeText = GetItemText(hItem);
     if (!retval.IsEmpty())
