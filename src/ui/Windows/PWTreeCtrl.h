@@ -128,7 +128,7 @@ private:
   bool m_bDropped;
 
   CSecString m_eLabel; // label at start of edit, if we need to revert
-  void SetNewStyle(long lStyleMask, BOOL bSetBits);
+
   bool MoveItem(MultiCommands *pmulticmds, HTREEITEM hitem, HTREEITEM hNewParent);
   bool CopyItem(HTREEITEM hitem, HTREEITEM hNewParent, const CSecString &prefix);
   bool IsChildNodeOf(HTREEITEM hitemChild, HTREEITEM hitemSuspectedParent) const;
