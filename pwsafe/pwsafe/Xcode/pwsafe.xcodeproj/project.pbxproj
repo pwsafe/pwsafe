@@ -1166,7 +1166,6 @@
 		E6EE83EA11E87E9800B01518 /* XML */ = {
 			isa = PBXGroup;
 			children = (
-				E6EE83EB11E87E9800B01518 /* Expat */,
 				E6EE840711E87E9800B01518 /* Xerces */,
 				E6EE841411E87E9800B01518 /* XMLDefs.h */,
 				E6EE841511E87E9800B01518 /* XMLFileHandlers.cpp */,
@@ -1645,7 +1644,6 @@
 					"-framework",
 					WebKit,
 					"-lwxregexud-2.8",
-					"-lwxexpatd-2.8",
 					"-lwxtiffd-2.8",
 					"-lwxjpegd-2.8",
 					"-lwxpngd-2.8",
@@ -1708,7 +1706,6 @@
 					"-framework",
 					WebKit,
 					"-lwxregexu-2.8",
-					"-lwxexpat-2.8",
 					"-lwxtiff-2.8",
 					"-lwxjpeg-2.8",
 					"-lwxpng-2.8",
