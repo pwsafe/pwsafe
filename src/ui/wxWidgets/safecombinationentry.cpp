@@ -199,10 +199,10 @@ void CSafeCombinationEntry::CreateControls()
   itemCheckBox15->SetValidator( wxGenericValidator(& m_readOnly) );
 ////@end CSafeCombinationEntry content construction
 #if (REVISION == 0)
-  m_version->SetLabel(wxString::Format(_("V%d.%02d %s"),
+  m_version->SetLabel(wxString::Format(_("V%d.%d %s"),
                                        MAJORVERSION, MINORVERSION, SPECIALBUILD));
 #else
-  m_version->SetLabel(wxString::Format(_("V%d.%02d.%d %s"),
+  m_version->SetLabel(wxString::Format(_("V%d.%d.%d %s"),
                                        MAJORVERSION, MINORVERSION,
                                        REVISION, SPECIALBUILD));
 #endif
