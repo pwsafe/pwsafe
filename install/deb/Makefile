@@ -1,6 +1,6 @@
 # Makefile to create a Deb file for wxWidgets version of pwsafe
 
-RELNUM = 0.2-1
+RELNUM = 0.3
 DISTRO = $(shell echo $(word 2,$(shell lsb_release -d))| tr [:upper:] [:lower:])
 
 DEBNAME = passwordsafe-$(DISTRO)-$(RELNUM).deb

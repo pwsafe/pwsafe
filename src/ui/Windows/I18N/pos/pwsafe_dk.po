@@ -255,30 +255,15 @@ msgstr "#hvem"
 msgid "%1 contained an unexpected object."
 msgstr "%1 indeholder et uventet objekt"
 
+#. Resource IDs: (3867)
+#, c-format
+msgid "%1 contains an incorrect path."
+msgstr ""
+
 #. Resource IDs: (3868)
 #, c-format
 msgid "%1 contains an incorrect schema."
 msgstr "%1 indeholder et ukorrekt skema"
-
-#. Resource IDs: (3867)
-#, c-format
-msgid "%1 contains an invalid path."
-msgstr "%1 indeholder er ugyldig sti."
-
-#. Resource IDs: (3867)
-#, c-format
-msgid "%1 could not be created because the directory is full."
-msgstr "%1 kunne ikke oprettes fordi biblioteket er fuld."
-
-#. Resource IDs: (3867)
-#, c-format
-msgid "%1 could not be opened because there are too many open files."
-msgstr "%1 kunne ikke åbnes fordi der er for mange åbne filer."
-
-#. Resource IDs: (3867)
-#, c-format
-msgid "%1 could not be removed because it is the current directory."
-msgstr "%1 kunne ikke fjernes fordi det er det nuværende bibliotek."
 
 #. Resource IDs: (3868)
 #, c-format
@@ -297,8 +282,8 @@ msgstr "%1: %2\nFortsæt med det kørende script?"
 
 #. Resource IDs: (3859)
 #, c-format
-msgid "%1\nCannot find this file.\nPlease verify that the correct path and file name are given."
-msgstr "%1\n Kan ikke finde denne fil. \nVerificer venligst at den korrekte sti og filnavn er givet."
+msgid "%1\nCannot find this file.\nVerify that the correct path and file name are given."
+msgstr ""
 
 #. Resource IDs: (341)
 #, c-format
@@ -319,6 +304,11 @@ msgstr "%d poster"
 #, c-format
 msgid "%d of %d matches."
 msgstr "%d af %d passer sammen."
+
+#. Resource IDs: (3887)
+#, c-format
+msgid "%s [Recovered]"
+msgstr ""
 
 #. Resource IDs: (333)
 #, c-format
@@ -411,6 +401,10 @@ msgstr "&Om Password Safe..."
 #. Resource IDs: (32051)
 msgid "&Add Entry..."
 msgstr "&Tilføj Post..."
+
+#. Resource IDs: (1071, 1252)
+msgid "&Advanced"
+msgstr ""
 
 #. Resource IDs: (1026, 1306)
 msgid "&Apply"
@@ -511,6 +505,10 @@ msgstr "&Linien Træk synlig"
 #. Resource IDs: (32056)
 msgid "&Duplicate Entry"
 msgstr "&Dupliker Adgang"
+
+#. Resource IDs: (32086)
+msgid "&Duplicate Group"
+msgstr ""
 
 #. Resource IDs: (1342, 32050)
 msgid "&Edit"
@@ -1158,8 +1156,8 @@ msgid "<b><font color=\"red\">Couldn't contact server.</font></b>"
 msgstr "<b><font color=\"red\">Kunne ikke forbinde til serveren.</font></b>"
 
 #. Resource IDs: (360)
-msgid "<b><font color=\"red\">WARNING</font></b> If you continue, fields will be updated in your existing database from your selected input database.\r\n\r\nThe OK button on the password entry dialog for your input database will not be enabled <b> until you have accessed the Advanced dialog to confirm what you will be updating.</b>"
-msgstr "<b><font color=\"red\">ADVARSEL</font></b> hvis du fortsætter, vil felterne i din eksisterende database blive opdateret fra din valgte indlæste database.\r\n\r\nOK knappen på adgangskode post dialogen for din indlæste database vil ikke blive aktiveret <b> før du har fået tilgang til den Avancerede dialog så du kan bekræfte du vil opdatere.</b>"
+msgid "<b><font color=\"red\">WARNING</font></b> If you continue, fields will be updated in your existing database from your selected input database.  The OK button on the password entry dialog for your input database will not be enabled <b>until you have accessed the Advanced dialog to confirm what you will be updating.</b>"
+msgstr ""
 
 #. Resource IDs: (1154)
 msgid ">"
@@ -1185,16 +1183,6 @@ msgstr "Et filter var aktiv. Eksport af data blev begrænset til kun at inkluder
 msgid "A future date is not valid for this field"
 msgstr ""
 
-#. Resource IDs: (3867)
-#, c-format
-msgid "A hardware I/O error was reported while accessing %1."
-msgstr "En hardware I/O fejl blev rapporteret under tilgang %1."
-
-#. Resource IDs: (3867)
-#, c-format
-msgid "A locking violation occurred while accessing %1."
-msgstr "En låse overtrædelse opstod under tilgang %1."
-
 #. Resource IDs: (65535)
 msgid "A new password database will be created. The safe combination you enter will be used to encrypt the password database file. The Safe Combination can use any keyboard character and is case-sensitive."
 msgstr "En ny adgangskode database vil blive oprettet. Sikkerheds Adgangskoden du indsætter vil blive brugt til at kryptere adgangskode database filen. Sikkerheds Adgangskoden kan bruge enhver tastatur karakter og er følsom over for store/små bogst.."
@@ -1202,11 +1190,6 @@ msgstr "En ny adgangskode database vil blive oprettet. Sikkerheds Adgangskoden d
 #. Resource IDs: (3843)
 msgid "A required resource was unavailable."
 msgstr "En krævet hjælpekilde var ikke tilgængelig;."
-
-#. Resource IDs: (3867)
-#, c-format
-msgid "A sharing violation occurred while accessing %1."
-msgstr "En dele overtrædelse opstod under tilgang %1."
 
 #. Resource IDs: (345, 1092)
 msgid "AaBbYyZz 0O1lIL"
@@ -1283,9 +1266,9 @@ msgstr "Avancerede Tekst%sEksport Muligheder"
 msgid "Advanced XML%sExport Options"
 msgstr "Avancerede XML%sEksport Muligheder"
 
-#. Resource IDs: (1252, 1253)
-msgid "Advanced..."
-msgstr "Avanceret..."
+#. Resource IDs: (65535)
+msgid "Advanced:"
+msgstr ""
 
 #. Resource IDs: (514)
 msgid "Albanian"
@@ -1347,21 +1330,6 @@ msgstr "Altid øverst"
 msgid "An alias cannot refer to itself!"
 msgstr "Et alias kan ikke henvise til sig selv!"
 
-#. Resource IDs: (3867, 3868)
-#, c-format
-msgid "An attempt was made to access %1 past its end."
-msgstr "Der var et forsøg på adgang %1 ovre sin afslutning."
-
-#. Resource IDs: (3868)
-#, c-format
-msgid "An attempt was made to read from the writing %1."
-msgstr "Der var et forsøg på at læse fra skriften %1."
-
-#. Resource IDs: (3868)
-#, c-format
-msgid "An attempt was made to write to the reading %1."
-msgstr "Der var et forsøg på at skrive til læsningen %1."
-
 #. Resource IDs: (329)
 #, c-format
 msgid "An entry with Group \"%s\", Title \"%s\" and User Name \"%s\" already exists."
@@ -1382,24 +1350,10 @@ msgstr "En post med en tom Gruppe, Title \"%s\" og Bruger Navn \"%s\" eksisterer
 msgid "An entry with an empty Group, Title \"%s\" and empty User Name already exists."
 msgstr "En post med en tom Gruppe, Title \"%s\" og tomt Bruger Navn eksisterer allerede."
 
-#. Resource IDs: (3843)
-msgid "An invalid argument was encountered."
-msgstr "Et ugyldigt argument indtraf."
-
 #. Resource IDs: (3867)
 #, c-format
-msgid "An invalid file handle was associated with %1."
-msgstr "En ugyldig fil håndtering blev forbundet med %1."
-
-#. Resource IDs: (3859)
-#, c-format
-msgid "An unexpected error occurred while reading %1."
-msgstr "En uventet fejl opstod under læsning %1."
-
-#. Resource IDs: (3859)
-#, c-format
-msgid "An unexpected error occurred while writing %1."
-msgstr "En uventet fejl opstod under skrivning %1."
+msgid "An incorrect file handle was associated with %1."
+msgstr ""
 
 #. Resource IDs: (3843)
 msgid "An unknown error has occurred."
@@ -1409,10 +1363,6 @@ msgstr "En uventet fejl er opstået."
 #, c-format
 msgid "An unknown error occurred while accessing %1."
 msgstr "En uventet fejl er opstået under adgang %1."
-
-#. Resource IDs: (3843)
-msgid "An unsupported operation was attempted."
-msgstr "En ikke understøttet funktion blev forsøgt."
 
 #. Resource IDs: (208)
 msgid "And"
@@ -1463,6 +1413,25 @@ msgstr "Mindst en type af tegnene (små, store bogst., tal,\nsymboler, hexadecim
 msgid "At least one unknown %s field is now in use.  Any found have been ignored."
 msgstr "Mindst et ukendt %s felt er nu i brug.  Enhver oprettelse er blevet ignoreret."
 
+#. Resource IDs: (3843)
+msgid "Attempted an unsupported operation."
+msgstr ""
+
+#. Resource IDs: (3867, 3868)
+#, c-format
+msgid "Attempted to access %1 past its end."
+msgstr ""
+
+#. Resource IDs: (3868)
+#, c-format
+msgid "Attempted to read from the writing %1."
+msgstr ""
+
+#. Resource IDs: (3868)
+#, c-format
+msgid "Attempted to write to the reading %1."
+msgstr ""
+
 #. Resource IDs: (188)
 msgid "AutoType\t"
 msgstr "AutoIndsæt\t"
@@ -1496,12 +1465,12 @@ msgid "Azeri Latin"
 msgstr "Azeri Latin"
 
 #. Resource IDs: (65535)
-msgid "Backup Name"
-msgstr "Sikkerheds kopi Navn"
+msgid "Backup Directory:"
+msgstr ""
 
 #. Resource IDs: (65535)
-msgid "Backup directory:"
-msgstr "Sikkerheds kopi bibliotek:"
+msgid "Backup Name"
+msgstr "Sikkerheds kopi Navn"
 
 #. Resource IDs: (137)
 msgid "Backups"
@@ -1668,6 +1637,10 @@ msgstr "Kan ikke oprette låse fil - ingen tilladelse i biblioteket?"
 #. Resource IDs: (332)
 msgid "Cannot process as this entry has been deleted from the open database."
 msgstr "Kan ikke behandles fordi denne adgang er blevet slettet fra den åbne database."
+
+#. Resource IDs: (213)
+msgid "Cannot read file. Please check file permissions."
+msgstr ""
 
 #. Resource IDs: (331)
 msgid "Cannot verify old safe combination - file gone?"
@@ -2059,6 +2032,21 @@ msgstr "Ophavsret Bekendtgørelse"
 msgid "Could not access file: %s"
 msgstr "Kunne ikke få adgang til filen: %s"
 
+#. Resource IDs: (3867)
+#, c-format
+msgid "Could not create %1 because the directory is full."
+msgstr ""
+
+#. Resource IDs: (3867)
+#, c-format
+msgid "Could not open %1 because there are too many open files."
+msgstr ""
+
+#. Resource IDs: (3867)
+#, c-format
+msgid "Could not remove %1 because it is the current directory."
+msgstr ""
+
 #. Resource IDs: (3857)
 msgid "Could not start print job."
 msgstr "Kunne ikke starte udskrivning."
@@ -2285,6 +2273,10 @@ msgstr "Vis Filter - "
 msgid "Display subset of Password"
 msgstr "Vis delmængde af Adgangskode"
 
+#. Resource IDs: (3887)
+msgid "Do you want to recover these auto-saved documents?"
+msgstr ""
+
 #. Resource IDs: (333)
 #, c-format
 msgid "Do you want to save changes to the password database: %s?"
@@ -2306,6 +2298,10 @@ msgstr "Vil du erstatte den?"
 #, c-format
 msgid "Do you wish to save the changes made to database:\r\n\r\n%s\r\n\r\nor Cancel the shutdown\\restart\\logoff?"
 msgstr "Vil du gemme ændringerne til databasen:\r\n\r\n%s\r\n\r\neller afbryde nedlukningen\\genstart\\log af?"
+
+#. Resource IDs: (3887)
+msgid "Don't recover the auto-saved documents\nUse the last explicitly saved versions of the documents"
+msgstr ""
 
 #. Resource IDs: (359)
 msgid "Double Click Action"
@@ -2369,6 +2365,10 @@ msgstr "Træk dette billede over i et andet vindue for at indsætte '%s' feltet.
 msgid "Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\r\n\r\nThe dropped entry now references that entry's base entry."
 msgstr "Mistet post '%s:%s:%s' adgangskode Peger på en post der også er et alias.\r\n\r\nDen mistede post henviser nu til den posts basis post."
 
+#. Resource IDs: (32086)
+msgid "Duplicate Group"
+msgstr ""
+
 #. Resource IDs: (514)
 msgid "Dutch"
 msgstr "Dutch"
@@ -2418,15 +2418,39 @@ msgstr "Den ene eller begge af Grupoe/Titel og Adgangskode kolonner mangler. Int
 msgid "Either unable to load the necessary DLL, or it is the incorrect version, to support Autotype during Launch of a Browser or Run a command.\n\nAutotype for these functions is disabled."
 msgstr "Den ene kan ikke indlæse den nødvendige DLL, eller det er en ukorrekt version, til understøttelse af Autoindsæt under start af en Browser eller Køre en kommando.\n\nAutoindsæt for disse funktioner er deaktiveret."
 
-#. Resource IDs: (209)
-#, c-format
-msgid "Element \"%s\" exceeded its MaxOccurs of %s."
-msgstr "Element \"%s\" overskrider dets MaxHændelse af %s."
-
 #. Resource IDs: (204)
 #, c-format
 msgid "Empty line %d skipped"
 msgstr "Tom linie %d sprunget over"
+
+#. Resource IDs: (3867)
+#, c-format
+msgid "Encountered a hardware I/O error while accessing %1."
+msgstr ""
+
+#. Resource IDs: (3867)
+#, c-format
+msgid "Encountered a locking violation while accessing %1."
+msgstr ""
+
+#. Resource IDs: (3867)
+#, c-format
+msgid "Encountered a sharing violation while accessing %1."
+msgstr ""
+
+#. Resource IDs: (3843)
+msgid "Encountered an improper argument."
+msgstr ""
+
+#. Resource IDs: (3859)
+#, c-format
+msgid "Encountered an unexpected error while reading %1."
+msgstr ""
+
+#. Resource IDs: (3859)
+#, c-format
+msgid "Encountered an unexpected error while writing %1."
+msgstr ""
 
 #. Resource IDs: (118)
 msgid "Encrypt/Decrypt"
@@ -2447,6 +2471,57 @@ msgstr "Indtast nøgle:"
 #. Resource IDs: (130, 132)
 msgid "Enter Safe Combination"
 msgstr "Indtast Hovenøgle Adgangskoden"
+
+#. Resource IDs: (3858)
+msgid "Enter a GUID."
+msgstr ""
+
+#. Resource IDs: (3858)
+msgid "Enter a currency."
+msgstr ""
+
+#. Resource IDs: (3858)
+msgid "Enter a date and/or time."
+msgstr ""
+
+#. Resource IDs: (3858)
+msgid "Enter a date."
+msgstr ""
+
+#. Resource IDs: (3858)
+#, c-format
+msgid "Enter a number between %1 and %2."
+msgstr ""
+
+#. Resource IDs: (3858)
+msgid "Enter a number."
+msgstr ""
+
+#. Resource IDs: (3858)
+msgid "Enter a positive integer."
+msgstr ""
+
+#. Resource IDs: (3858)
+msgid "Enter a time."
+msgstr ""
+
+#. Resource IDs: (3858)
+#, c-format
+msgid "Enter an integer between %1 and %2."
+msgstr ""
+
+#. Resource IDs: (3858)
+msgid "Enter an integer between 0 and 255."
+msgstr ""
+
+#. Resource IDs: (3858)
+msgid "Enter an integer."
+msgstr ""
+
+#. Resource IDs: (3858)
+#, c-format
+msgid "Enter no more than %1 characters."
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Enter positions of password characters separated by spaces, commas or semi-colons:"
@@ -3249,6 +3324,10 @@ msgstr "Deaktiveret"
 msgid "Incorrect Passkey"
 msgstr "Ukorrekt hovednøgle"
 
+#. Resource IDs: (3857)
+msgid "Incorrect filename."
+msgstr ""
+
 #. Resource IDs: (331)
 msgid "Incorrect passkey, not a PasswordSafe database, or a corrupt database. (Backup database has same name as original, ending with '~')"
 msgstr "Ukorrekt hovednøgle, ikke en PasswordSafe database, eller en korrupt database. (Sikkerhedskopi databasen har samme navn som originalen, ender på '~')"
@@ -3337,14 +3416,6 @@ msgstr "Ugyldig Filter skema."
 #. Resource IDs: (1388)
 msgid "Invalid Parameter"
 msgstr "Ugyldig Parameter"
-
-#. Resource IDs: (209)
-msgid "Invalid data in element: "
-msgstr "Ugyldige data i post: "
-
-#. Resource IDs: (3857)
-msgid "Invalid filename."
-msgstr "Ugyldigt filenavn."
 
 #. Resource IDs: (189)
 #, c-format
@@ -3544,22 +3615,6 @@ msgstr "Håndter Filtre"
 msgid "Manage password history of current entries"
 msgstr "Håndter adgangskode historik over nuværende poster"
 
-#. Resource IDs: (209)
-msgid "Mandatory delimiter attribute invalid."
-msgstr "Oblikatorisk afgrænsnings kendetegn er ugyldig."
-
-#. Resource IDs: (209)
-msgid "Mandatory delimiter attribute missing."
-msgstr "Afgrænsnings kendetegn mangler."
-
-#. Resource IDs: (209)
-msgid "Mandatory element (title and/or password) missing."
-msgstr "Oblikatorisk post (titel og/eller adgangskode) mangler."
-
-#. Resource IDs: (209)
-msgid "Mandatory ftype attribute missing."
-msgstr "Oblikatorisk ftype  kendetegn mangler."
-
 #. Resource IDs: (517)
 msgid "Maori"
 msgstr "Maori"
@@ -3638,17 +3693,9 @@ msgstr "Minimum store tegn"
 msgid "Misc."
 msgstr "Diverse."
 
-#. Resource IDs: (209)
-msgid "Missing STATUS, MAX or NUM element in PWHISTORY."
-msgstr "Manglende STATUS, MAX eller NUM post i PWHISTORIK."
-
 #. Resource IDs: (210)
 msgid "Missing XSD File"
 msgstr "Manglende XSD File"
-
-#. Resource IDs: (209)
-msgid "Missing date/time element."
-msgstr "Manglende dato/tids angivelse."
 
 #. Resource IDs: (210)
 msgid "Missing ending curly bracket for variable name"
@@ -3661,11 +3708,6 @@ msgstr "Manglende rund slut klamme ending for Autoindsæt værdi"
 #. Resource IDs: (210)
 msgid "Missing ending square bracket for index value"
 msgstr "Manglende slut kasse klamme for index værdi"
-
-#. Resource IDs: (209)
-#, c-format
-msgid "Missing test element \"%s\"."
-msgstr "Manglende test element \"%s\"."
 
 #. Resource IDs: (3887)
 msgid "Mixed"
@@ -3840,6 +3882,10 @@ msgstr "Norwegian with Sami"
 msgid "Not all of the system registry entries (or INI file) were removed."
 msgstr "Ikke alle system registrerings poster (eller INI filen) blev fjernet."
 
+#. Resource IDs: (3887)
+msgid "Note that if you choose to recover the auto-saved documents, you must explicitly save them to overwrite the original documents.  If you choose to not recover the auto-saved versions, they will be deleted."
+msgstr ""
+
 #. Resource IDs: (33150)
 msgid "Note: Empty fields are shown as »*»"
 msgstr "Bemærk: Tomme felter er vist som »*»"
@@ -3940,6 +3986,10 @@ msgstr "Tændt"
 msgid "One of more preferences have been changed. Are you sure you wish to cancel?"
 msgstr "En af flere præferencer er blevet ændret. Er du sikker på du vil afbryde?"
 
+#. Resource IDs: (3887)
+msgid "One or more auto-saved documents were found."
+msgstr ""
+
 #. Resource IDs: (340)
 #, c-format
 msgid "Only in Original DB: %d; Only in Comparison DB: %d; In both (differences): %d; In both (identical): %d"
@@ -4012,11 +4062,6 @@ msgstr "PWS_CPF_CDD"
 #. Resource IDs: (341)
 msgid "PWS_CPF_TVDD"
 msgstr "PWS_CPF_TVDD"
-
-#. Resource IDs: (192)
-#, c-format
-msgid "Parse error at line %d, column %d:\nError: %s\n%s\n\n"
-msgstr "Analyser fejl i linie %d, kolonne %d:\nFejl: %s\n%s\n\n"
 
 #. Resource IDs: (334)
 msgid "Passkey incorrect"
@@ -4277,64 +4322,13 @@ msgstr "Bekræft venligst at du vil slette %s filteret %s?"
 msgid "Please do not use this option unless you understand and accept the risks. This option bypasses the security provided by this program."
 msgstr "Brug venligst ikke denne udvej medmindre du forstår og accepterer risikoen.  Denne udvej omgår sikkerheden forudsat  af dette program."
 
-#. Resource IDs: (3858)
-msgid "Please enter a GUID."
-msgstr "Indsæt venligst et GUID."
-
-#. Resource IDs: (3858)
-msgid "Please enter a currency."
-msgstr "Indsæt venligst en valuta."
-
-#. Resource IDs: (3858)
-msgid "Please enter a date and/or time."
-msgstr "Indsæt venligst en dato og/eller tid."
-
-#. Resource IDs: (3858)
-msgid "Please enter a date."
-msgstr "Indsæt venligst en dato."
-
-#. Resource IDs: (3858)
-#, c-format
-msgid "Please enter a number between %1 and %2."
-msgstr "Indsæt venligst et nummer mellem %1 og %2."
-
-#. Resource IDs: (3858)
-msgid "Please enter a number."
-msgstr "Indsæt venligst et nummer."
-
-#. Resource IDs: (3858)
-msgid "Please enter a positive integer."
-msgstr "Indsæt venligst et positivt helt tal."
-
 #. Resource IDs: (330)
 msgid "Please enter a search string"
 msgstr "Indsæt venligst en søge streng"
 
-#. Resource IDs: (3858)
-msgid "Please enter a time."
-msgstr "Indsæt venligst en tid."
-
 #. Resource IDs: (65535)
 msgid "Please enter an encryption or decryption key"
 msgstr "Indsæt venligst en krypterings eller dekrypterings nøgle"
-
-#. Resource IDs: (3858)
-#, c-format
-msgid "Please enter an integer between %1 and %2."
-msgstr "Indsæt venligst et helt tal mellem %1 og %2."
-
-#. Resource IDs: (3858)
-msgid "Please enter an integer between 0 and 255."
-msgstr "Indsæt venligst et helt tal mellem 0 og 255."
-
-#. Resource IDs: (3858)
-msgid "Please enter an integer."
-msgstr "Indsæt venligst et helt tal."
-
-#. Resource IDs: (3858)
-#, c-format
-msgid "Please enter no more than %1 characters."
-msgstr "Indsæt venligst ikke mere end %1 tegn."
 
 #. Resource IDs: (65535)
 msgid "Please enter the current combination, followed by a new combination.  Type the new combination once again to confirm it."
@@ -4367,10 +4361,6 @@ msgstr "Navngiv venligst den alm. tekst fil"
 #. Resource IDs: (352)
 msgid "Please name this filter"
 msgstr "Navngiv venligst dette filter"
-
-#. Resource IDs: (3858)
-msgid "Please select a button."
-msgstr "Vælg venligst en knap."
 
 #. Resource IDs: (343)
 msgid "Please select report to view."
@@ -4517,6 +4507,10 @@ msgstr "Post Ændret Tid\t"
 msgid "Record last access times"
 msgstr "Sidste post tilgangs tider"
 
+#. Resource IDs: (3887)
+msgid "Recover the auto-saved documents\nOpen the auto-saved versions instead of the explicitly saved versions"
+msgstr ""
+
 #. Resource IDs: (1297)
 msgid "Recurring"
 msgstr "Periodisk"
@@ -4587,6 +4581,10 @@ msgstr "Nulsti&l til Database Standarter"
 #, c-format
 msgid "Reserved shortcut '%s' ignored."
 msgstr "Reserveret genvej '%s' ignoreret."
+
+#. Resource IDs: (1427)
+msgid "Reset"
+msgstr ""
 
 #. Resource IDs: (1368)
 msgid "Reset All"
@@ -4821,6 +4819,10 @@ msgstr "Vælg Mappe til Mellemliggende Sikkerhedskopier"
 #. Resource IDs: (474)
 msgid "Select Test Dump Type"
 msgstr "Vælg Test Dump Type"
+
+#. Resource IDs: (3858)
+msgid "Select a button."
+msgstr ""
 
 #. Resource IDs: (340)
 msgid "Select all entries"
@@ -5264,11 +5266,6 @@ msgstr "ALT tasten bliver ikke brugt på noget tastatur til at vælge tegn. Brug
 msgid "The combination cannot be blank."
 msgstr "Kodefeltet kan ikke være tomt."
 
-#. Resource IDs: (210)
-#, c-format
-msgid "The contents [\"%s\"] of element \"%s\" is invalid/unexpected."
-msgstr "Indholdet [\"%s\"] af element \"%s\" er ugyldigt/uventet."
-
 #. Resource IDs: (332)
 #, c-format
 msgid "The database %s couldn't be opened.\nDo you wish to look for it elsewhere (Search), create a new database (New), or Exit?"
@@ -5413,6 +5410,10 @@ msgstr "Der er uforlignelig anførelsestegn i kør kommandoen"
 #. Resource IDs: (361)
 msgid "There does not appear to be a Recycle Bin on the media containing this Failsafe Backup file. If you delete it, it will be permanent. Do you wish to continue?"
 msgstr "Der syntes ikke at være en Papirkurv på mediet der indeholder denne Fejlsikre Sikkerhedskopi. Hvis du sletter den, vil det være varigt. Vil du fortsætte?"
+
+#. Resource IDs: (3887)
+msgid "These are more recently saved than the currently open documents and contain changes that were made before the application closed."
+msgstr ""
 
 #. Resource IDs: (344)
 #, c-format
@@ -5705,15 +5706,6 @@ msgstr "Fjern tjektegn"
 msgid "Undo"
 msgstr "Omgør"
 
-#. Resource IDs: (209)
-msgid "Unexpected element: Only one field allowed per filter entry."
-msgstr "Uventet element: Kun et felt er tilladt pr. filter adgang."
-
-#. Resource IDs: (209)
-#, c-format
-msgid "Unexpected element: \"%s\"."
-msgstr "Uventet element: \"%s\"."
-
 #. Resource IDs: (3859)
 msgid "Unexpected file format."
 msgstr "Uventet fil format."
@@ -5737,11 +5729,6 @@ msgstr "Ukendt"
 #. Resource IDs: (329)
 msgid "Unknown            "
 msgstr "Ukendt"
-
-#. Resource IDs: (209)
-#, c-format
-msgid "Unknown element: \"%s\"."
-msgstr "Ukendt element: \"%s\"."
 
 #. Resource IDs: (350)
 msgid "Unknown fields"
@@ -6101,6 +6088,10 @@ msgstr "[Ingen nuværende database]"
 msgid "[Notes hidden - click here to display]"
 msgstr "[Notater er skjult - klik her for at vise dem]"
 
+#. Resource IDs: (2005)
+msgid "\nAdd Group"
+msgstr ""
+
 #. Resource IDs: (2004)
 msgid "\nAdd New Entry"
 msgstr "\nTilføj ny adgang"
@@ -6180,6 +6171,10 @@ msgstr "\nVis delmængde af Adgangskode"
 #. Resource IDs: (2004)
 msgid "\nDuplicate Entry"
 msgstr "\nDupliker post"
+
+#. Resource IDs: (2006)
+msgid "\nDuplicate Group"
+msgstr ""
 
 #. Resource IDs: (2006)
 msgid "\nEdit Base entry"

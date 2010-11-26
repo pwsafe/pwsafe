@@ -250,30 +250,15 @@ msgstr "#kto"
 msgid "%1 contained an unexpected object."
 msgstr "%1 zawiera nieoczekiwany obiekt."
 
+#. Resource IDs: (3867)
+#, c-format
+msgid "%1 contains an incorrect path."
+msgstr ""
+
 #. Resource IDs: (3868)
 #, fuzzy, c-format
 msgid "%1 contains an incorrect schema."
 msgstr "%1 zawiera nieprawidłowy schemat."
-
-#. Resource IDs: (3867)
-#, c-format
-msgid "%1 contains an invalid path."
-msgstr "%1 zawiera nieprawidłową ścieżkę."
-
-#. Resource IDs: (3867)
-#, fuzzy, c-format
-msgid "%1 could not be created because the directory is full."
-msgstr "%1 nie mógł zostać utworzony ponieważ folder docelowy jest pełny."
-
-#. Resource IDs: (3867)
-#, c-format
-msgid "%1 could not be opened because there are too many open files."
-msgstr "%1 nie mógł zostać otwarty ponieważ jest zbyt dużo otwartych plików."
-
-#. Resource IDs: (3867)
-#, c-format
-msgid "%1 could not be removed because it is the current directory."
-msgstr "%1 nie mógł zostać usunięty ponieważ znajduje się w bieżącym katalogu."
 
 #. Resource IDs: (3868)
 #, c-format
@@ -292,8 +277,8 @@ msgstr "%1: %2\nKontynuować wykonywanie skryptu?"
 
 #. Resource IDs: (3859)
 #, c-format
-msgid "%1\nCannot find this file.\nPlease verify that the correct path and file name are given."
-msgstr "%1\nNie można znaleźć pliku.\nUpewnij się, że podano prawidłową ścieżkę i nazwę pliku."
+msgid "%1\nCannot find this file.\nVerify that the correct path and file name are given."
+msgstr ""
 
 #. Resource IDs: (341)
 #, c-format
@@ -314,6 +299,11 @@ msgstr "%d pozycje"
 #, c-format
 msgid "%d of %d matches."
 msgstr "%d z %d jest identycznych."
+
+#. Resource IDs: (3887)
+#, c-format
+msgid "%s [Recovered]"
+msgstr ""
 
 #. Resource IDs: (333)
 #, fuzzy, c-format
@@ -405,6 +395,10 @@ msgstr ""
 
 #. Resource IDs: (32051)
 msgid "&Add Entry..."
+msgstr ""
+
+#. Resource IDs: (1071, 1252)
+msgid "&Advanced"
 msgstr ""
 
 #. Resource IDs: (1026, 1306)
@@ -506,6 +500,10 @@ msgstr ""
 
 #. Resource IDs: (32056)
 msgid "&Duplicate Entry"
+msgstr ""
+
+#. Resource IDs: (32086)
+msgid "&Duplicate Group"
 msgstr ""
 
 #. Resource IDs: (1342, 32050)
@@ -1157,7 +1155,7 @@ msgid "<b><font color=\"red\">Couldn't contact server.</font></b>"
 msgstr "<b><font color=\"red\">Nie można połączyć się z serwerem.</font></b>"
 
 #. Resource IDs: (360)
-msgid "<b><font color=\"red\">WARNING</font></b> If you continue, fields will be updated in your existing database from your selected input database.\r\n\r\nThe OK button on the password entry dialog for your input database will not be enabled <b> until you have accessed the Advanced dialog to confirm what you will be updating.</b>"
+msgid "<b><font color=\"red\">WARNING</font></b> If you continue, fields will be updated in your existing database from your selected input database.  The OK button on the password entry dialog for your input database will not be enabled <b>until you have accessed the Advanced dialog to confirm what you will be updating.</b>"
 msgstr ""
 
 #. Resource IDs: (1154)
@@ -1184,16 +1182,6 @@ msgstr ""
 msgid "A future date is not valid for this field"
 msgstr ""
 
-#. Resource IDs: (3867)
-#, fuzzy, c-format
-msgid "A hardware I/O error was reported while accessing %1."
-msgstr "Sprzętowy błąd I/O wystąpił podczas próby dostępu do %1."
-
-#. Resource IDs: (3867)
-#, c-format
-msgid "A locking violation occurred while accessing %1."
-msgstr "Nastąpiło naruszenia zasad blokowania podczas dostępu do %1."
-
 #. Resource IDs: (65535)
 msgid "A new password database will be created. The safe combination you enter will be used to encrypt the password database file. The Safe Combination can use any keyboard character and is case-sensitive."
 msgstr "Zostanie utworzona nowa baza danych szyfrowana hasłem. Hasło może zawierać każdy znak wprowadzany z klawiatury. Rozróżniane są wielkie i małe litery."
@@ -1201,11 +1189,6 @@ msgstr "Zostanie utworzona nowa baza danych szyfrowana hasłem. Hasło może zaw
 #. Resource IDs: (3843)
 msgid "A required resource was unavailable."
 msgstr "Wymagany plik zasobów jest niedostępny."
-
-#. Resource IDs: (3867)
-#, c-format
-msgid "A sharing violation occurred while accessing %1."
-msgstr "Nastąpiło naruszenie zasad współużytkowania podczas dostępu do %1."
 
 #. Resource IDs: (345, 1092)
 msgid "AaBbYyZz 0O1lIL"
@@ -1285,9 +1268,9 @@ msgstr ""
 msgid "Advanced XML%sExport Options"
 msgstr ""
 
-#. Resource IDs: (1252, 1253)
-msgid "Advanced..."
-msgstr "Zaawansowane..."
+#. Resource IDs: (65535)
+msgid "Advanced:"
+msgstr ""
 
 #. Resource IDs: (514)
 msgid "Albanian"
@@ -1351,21 +1334,6 @@ msgstr "Zawsze na wierzchu"
 msgid "An alias cannot refer to itself!"
 msgstr "Alias nie może odwoływać się do siebie!"
 
-#. Resource IDs: (3867, 3868)
-#, c-format
-msgid "An attempt was made to access %1 past its end."
-msgstr "Nastąpiła próba dostępu do %1 poza jego końcem."
-
-#. Resource IDs: (3868)
-#, fuzzy, c-format
-msgid "An attempt was made to read from the writing %1."
-msgstr "An attempt was made to read from the writing %1."
-
-#. Resource IDs: (3868)
-#, fuzzy, c-format
-msgid "An attempt was made to write to the reading %1."
-msgstr "An attempt was made to write to the reading %1."
-
 #. Resource IDs: (329)
 #, c-format
 msgid "An entry with Group \"%s\", Title \"%s\" and User Name \"%s\" already exists."
@@ -1386,24 +1354,10 @@ msgstr "Wpis z pustą Grupą, Nazwą \"%s\" i Nazwą Użytkownika \"%s\" już is
 msgid "An entry with an empty Group, Title \"%s\" and empty User Name already exists."
 msgstr ""
 
-#. Resource IDs: (3843)
-msgid "An invalid argument was encountered."
-msgstr "Natrafiono na nieprawidłowy argument."
-
 #. Resource IDs: (3867)
 #, c-format
-msgid "An invalid file handle was associated with %1."
-msgstr "Nieprawidłowy deskryptor pliku został przypisany do %1."
-
-#. Resource IDs: (3859)
-#, c-format
-msgid "An unexpected error occurred while reading %1."
-msgstr "Wystąpił nieoczekiwany błąd podczas odczytu %1."
-
-#. Resource IDs: (3859)
-#, c-format
-msgid "An unexpected error occurred while writing %1."
-msgstr "Wystąpił nieoczekiwany błąd podczas zapisu %1."
+msgid "An incorrect file handle was associated with %1."
+msgstr ""
 
 #. Resource IDs: (3843)
 msgid "An unknown error has occurred."
@@ -1413,10 +1367,6 @@ msgstr "Wystąpił nieznany błąd"
 #, c-format
 msgid "An unknown error occurred while accessing %1."
 msgstr "Nieznany błąd wystąpił podczas próby dostępu do %1."
-
-#. Resource IDs: (3843)
-msgid "An unsupported operation was attempted."
-msgstr "Próbowano wykonać nie wspieraną operację."
 
 #. Resource IDs: (208)
 msgid "And"
@@ -1467,6 +1417,25 @@ msgstr "Przynajmniej jeden rodzaj znaków (małe lub wielkie litery, cyfry,\nsym
 msgid "At least one unknown %s field is now in use.  Any found have been ignored."
 msgstr "Przynajmniej jedno nieznane pole %s jest w użyciu. Jakiekolwiek znalezione zostały zignorowane."
 
+#. Resource IDs: (3843)
+msgid "Attempted an unsupported operation."
+msgstr ""
+
+#. Resource IDs: (3867, 3868)
+#, c-format
+msgid "Attempted to access %1 past its end."
+msgstr ""
+
+#. Resource IDs: (3868)
+#, c-format
+msgid "Attempted to read from the writing %1."
+msgstr ""
+
+#. Resource IDs: (3868)
+#, c-format
+msgid "Attempted to write to the reading %1."
+msgstr ""
+
 #. Resource IDs: (188)
 msgid "AutoType\t"
 msgstr "Autouzupełnianie\t"
@@ -1501,14 +1470,13 @@ msgid "Azeri Latin"
 msgstr ""
 
 #. Resource IDs: (65535)
-#, fuzzy
-msgid "Backup Name"
-msgstr "Nazwa Kopii Zapasowej"
+msgid "Backup Directory:"
+msgstr ""
 
 #. Resource IDs: (65535)
 #, fuzzy
-msgid "Backup directory:"
-msgstr "Katalog kopii zapasowych:"
+msgid "Backup Name"
+msgstr "Nazwa Kopii Zapasowej"
 
 #. Resource IDs: (137)
 msgid "Backups"
@@ -1679,6 +1647,10 @@ msgstr "Nie można utworzyć blokady pliku - brak uprawnień w katalogu?"
 #. Resource IDs: (332)
 msgid "Cannot process as this entry has been deleted from the open database."
 msgstr "Nie można kontynuować ponieważ wpis został usunięty z otwartej bazy danych."
+
+#. Resource IDs: (213)
+msgid "Cannot read file. Please check file permissions."
+msgstr ""
 
 #. Resource IDs: (331)
 msgid "Cannot verify old safe combination - file gone?"
@@ -2076,6 +2048,21 @@ msgstr "Info o prawach autorskich"
 msgid "Could not access file: %s"
 msgstr "Nie można uzyskać dostępu do pliku: %s"
 
+#. Resource IDs: (3867)
+#, c-format
+msgid "Could not create %1 because the directory is full."
+msgstr ""
+
+#. Resource IDs: (3867)
+#, c-format
+msgid "Could not open %1 because there are too many open files."
+msgstr ""
+
+#. Resource IDs: (3867)
+#, c-format
+msgid "Could not remove %1 because it is the current directory."
+msgstr ""
+
 #. Resource IDs: (3857)
 msgid "Could not start print job."
 msgstr "Nie udało się rozpocząć drukowania."
@@ -2310,6 +2297,10 @@ msgstr "Pokaż filtr - "
 msgid "Display subset of Password"
 msgstr ""
 
+#. Resource IDs: (3887)
+msgid "Do you want to recover these auto-saved documents?"
+msgstr ""
+
 #. Resource IDs: (333)
 #, c-format
 msgid "Do you want to save changes to the password database: %s?"
@@ -2331,6 +2322,10 @@ msgstr "Zastąpić?"
 #, c-format
 msgid "Do you wish to save the changes made to database:\r\n\r\n%s\r\n\r\nor Cancel the shutdown\\restart\\logoff?"
 msgstr "Zapisać zmiany wprowadzone do bazy danych:\r\n\r\n%s\r\n\r\nlub Anuluj i zamknij\\restartuj\\wyloguj?"
+
+#. Resource IDs: (3887)
+msgid "Don't recover the auto-saved documents\nUse the last explicitly saved versions of the documents"
+msgstr ""
 
 #. Resource IDs: (359)
 msgid "Double Click Action"
@@ -2395,6 +2390,10 @@ msgstr ""
 msgid "Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\r\n\r\nThe dropped entry now references that entry's base entry."
 msgstr "Opuszczono wpis '%s:%s:%s' hasło wskazuje na wpis, który też jest aliasem.\r\n\r\nOpuszczony wpis odnosi się teraz do wpisu bazowego tego wpisu."
 
+#. Resource IDs: (32086)
+msgid "Duplicate Group"
+msgstr ""
+
 #. Resource IDs: (514)
 msgid "Dutch"
 msgstr ""
@@ -2445,15 +2444,39 @@ msgstr "Brak obydwu lub jednej z kolumn Grupa/Nazwa i Hasło. Nie zaimportowano 
 msgid "Either unable to load the necessary DLL, or it is the incorrect version, to support Autotype during Launch of a Browser or Run a command.\n\nAutotype for these functions is disabled."
 msgstr ""
 
-#. Resource IDs: (209)
-#, c-format
-msgid "Element \"%s\" exceeded its MaxOccurs of %s."
-msgstr "Element \"%s\" przekroczył maks. ilość wystąpień wynoszącą %s."
-
 #. Resource IDs: (204)
 #, c-format
 msgid "Empty line %d skipped"
 msgstr "Opuszczono pustą linię %d"
+
+#. Resource IDs: (3867)
+#, c-format
+msgid "Encountered a hardware I/O error while accessing %1."
+msgstr ""
+
+#. Resource IDs: (3867)
+#, c-format
+msgid "Encountered a locking violation while accessing %1."
+msgstr ""
+
+#. Resource IDs: (3867)
+#, c-format
+msgid "Encountered a sharing violation while accessing %1."
+msgstr ""
+
+#. Resource IDs: (3843)
+msgid "Encountered an improper argument."
+msgstr ""
+
+#. Resource IDs: (3859)
+#, c-format
+msgid "Encountered an unexpected error while reading %1."
+msgstr ""
+
+#. Resource IDs: (3859)
+#, c-format
+msgid "Encountered an unexpected error while writing %1."
+msgstr ""
 
 #. Resource IDs: (118)
 #, fuzzy
@@ -2476,6 +2499,57 @@ msgstr "Wprowadź Klucz:"
 #. Resource IDs: (130, 132)
 msgid "Enter Safe Combination"
 msgstr "Wprowadź Hasło"
+
+#. Resource IDs: (3858)
+msgid "Enter a GUID."
+msgstr ""
+
+#. Resource IDs: (3858)
+msgid "Enter a currency."
+msgstr ""
+
+#. Resource IDs: (3858)
+msgid "Enter a date and/or time."
+msgstr ""
+
+#. Resource IDs: (3858)
+msgid "Enter a date."
+msgstr ""
+
+#. Resource IDs: (3858)
+#, c-format
+msgid "Enter a number between %1 and %2."
+msgstr ""
+
+#. Resource IDs: (3858)
+msgid "Enter a number."
+msgstr ""
+
+#. Resource IDs: (3858)
+msgid "Enter a positive integer."
+msgstr ""
+
+#. Resource IDs: (3858)
+msgid "Enter a time."
+msgstr ""
+
+#. Resource IDs: (3858)
+#, c-format
+msgid "Enter an integer between %1 and %2."
+msgstr ""
+
+#. Resource IDs: (3858)
+msgid "Enter an integer between 0 and 255."
+msgstr ""
+
+#. Resource IDs: (3858)
+msgid "Enter an integer."
+msgstr ""
+
+#. Resource IDs: (3858)
+#, c-format
+msgid "Enter no more than %1 characters."
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Enter positions of password characters separated by spaces, commas or semi-colons:"
@@ -3293,6 +3367,10 @@ msgstr "Nieaktywny"
 msgid "Incorrect Passkey"
 msgstr "Nieprawidłowe hasło"
 
+#. Resource IDs: (3857)
+msgid "Incorrect filename."
+msgstr ""
+
 #. Resource IDs: (331)
 msgid "Incorrect passkey, not a PasswordSafe database, or a corrupt database. (Backup database has same name as original, ending with '~')"
 msgstr "Nieprawidłowe hasło, baza danych innego programu lub uszkodzona baza danych. (Kopia zapasowa bazy danych ma taką samą nazwę ale kończy się na '~')"
@@ -3381,14 +3459,6 @@ msgstr "Nieprawidłowy schemat Filtra."
 #. Resource IDs: (1388)
 msgid "Invalid Parameter"
 msgstr ""
-
-#. Resource IDs: (209)
-msgid "Invalid data in element: "
-msgstr "Nieprawidłowe dane w elemencie:"
-
-#. Resource IDs: (3857)
-msgid "Invalid filename."
-msgstr "Nieprawidłowa nazwa pliku."
 
 #. Resource IDs: (189)
 #, c-format
@@ -3591,22 +3661,6 @@ msgstr "Zarządzaj Filtrami"
 msgid "Manage password history of current entries"
 msgstr "Zarządzaj historią haseł aktualnych wpisów"
 
-#. Resource IDs: (209)
-msgid "Mandatory delimiter attribute invalid."
-msgstr "Nieprawidłowy wymagany atrybut delimitera."
-
-#. Resource IDs: (209)
-msgid "Mandatory delimiter attribute missing."
-msgstr "Brak wymaganego atrybutu delimitera."
-
-#. Resource IDs: (209)
-msgid "Mandatory element (title and/or password) missing."
-msgstr "Brak wymaganego elementu (nazwy i/lub hasła)"
-
-#. Resource IDs: (209)
-msgid "Mandatory ftype attribute missing."
-msgstr "Brak wymaganego atrybutu ftype."
-
 #. Resource IDs: (517)
 msgid "Maori"
 msgstr ""
@@ -3689,18 +3743,9 @@ msgstr "Minimalna liczba znaków zawierających wielkie litery"
 msgid "Misc."
 msgstr "Inne"
 
-#. Resource IDs: (209)
-msgid "Missing STATUS, MAX or NUM element in PWHISTORY."
-msgstr "Brak elementu STATUS, MAX lub NUM w PWHISTORY."
-
 #. Resource IDs: (210)
 msgid "Missing XSD File"
 msgstr "Brak pliku XSD"
-
-#. Resource IDs: (209)
-#, fuzzy
-msgid "Missing date/time element."
-msgstr "Brak daty/czasu."
 
 #. Resource IDs: (210)
 msgid "Missing ending curly bracket for variable name"
@@ -3712,11 +3757,6 @@ msgstr ""
 
 #. Resource IDs: (210)
 msgid "Missing ending square bracket for index value"
-msgstr ""
-
-#. Resource IDs: (209)
-#, c-format
-msgid "Missing test element \"%s\"."
 msgstr ""
 
 #. Resource IDs: (3887)
@@ -3899,6 +3939,10 @@ msgstr ""
 msgid "Not all of the system registry entries (or INI file) were removed."
 msgstr "Nie wszystkie wpisy w rejestrze (lub pliku INI) zostały usunięte."
 
+#. Resource IDs: (3887)
+msgid "Note that if you choose to recover the auto-saved documents, you must explicitly save them to overwrite the original documents.  If you choose to not recover the auto-saved versions, they will be deleted."
+msgstr ""
+
 #. Resource IDs: (33150)
 msgid "Note: Empty fields are shown as »*»"
 msgstr ""
@@ -4001,6 +4045,10 @@ msgstr "Wł."
 msgid "One of more preferences have been changed. Are you sure you wish to cancel?"
 msgstr ""
 
+#. Resource IDs: (3887)
+msgid "One or more auto-saved documents were found."
+msgstr ""
+
 #. Resource IDs: (340)
 #, c-format
 msgid "Only in Original DB: %d; Only in Comparison DB: %d; In both (differences): %d; In both (identical): %d"
@@ -4077,11 +4125,6 @@ msgstr "PWS_CPF_CDD"
 #. Resource IDs: (341)
 msgid "PWS_CPF_TVDD"
 msgstr "PWS_CPF_TVDD"
-
-#. Resource IDs: (192)
-#, c-format
-msgid "Parse error at line %d, column %d:\nError: %s\n%s\n\n"
-msgstr "Błąd parsowania na linii %d, kolumna %d:\nBłąd: %s\n%s\n\n"
 
 #. Resource IDs: (334)
 #, fuzzy
@@ -4346,65 +4389,14 @@ msgstr "Potwierdź skasowanie %s filtra %s."
 msgid "Please do not use this option unless you understand and accept the risks. This option bypasses the security provided by this program."
 msgstr ""
 
-#. Resource IDs: (3858)
-msgid "Please enter a GUID."
-msgstr "Wprowadź GUID."
-
-#. Resource IDs: (3858)
-msgid "Please enter a currency."
-msgstr "Wprowadź walutę."
-
-#. Resource IDs: (3858)
-msgid "Please enter a date and/or time."
-msgstr "Wprowadź datę i/lub czas."
-
-#. Resource IDs: (3858)
-msgid "Please enter a date."
-msgstr "Wprowadź datę."
-
-#. Resource IDs: (3858)
-#, c-format
-msgid "Please enter a number between %1 and %2."
-msgstr "Wprowadź liczbę z zakresu od %1 do %2."
-
-#. Resource IDs: (3858)
-msgid "Please enter a number."
-msgstr "Wprowadź liczbę."
-
-#. Resource IDs: (3858)
-msgid "Please enter a positive integer."
-msgstr "Wprowadź dodatnią liczbę całkowitą"
-
 #. Resource IDs: (330)
 #, fuzzy
 msgid "Please enter a search string"
 msgstr "Wprowadź szukaną frazę"
 
-#. Resource IDs: (3858)
-msgid "Please enter a time."
-msgstr "Wprowadź czas."
-
 #. Resource IDs: (65535)
 msgid "Please enter an encryption or decryption key"
 msgstr "Wprowadź klucz szyfrujący lub deszyfrujący"
-
-#. Resource IDs: (3858)
-#, c-format
-msgid "Please enter an integer between %1 and %2."
-msgstr "Wprowadź liczbę całkowitą z przedziału od %1 do %2."
-
-#. Resource IDs: (3858)
-msgid "Please enter an integer between 0 and 255."
-msgstr "Wprowadź liczbę całkowitą od 0 do 255."
-
-#. Resource IDs: (3858)
-msgid "Please enter an integer."
-msgstr "Wprowadź liczbę całkowitą."
-
-#. Resource IDs: (3858)
-#, fuzzy, c-format
-msgid "Please enter no more than %1 characters."
-msgstr "Podaj nie więcej niż %1 znaków."
 
 #. Resource IDs: (65535)
 msgid "Please enter the current combination, followed by a new combination.  Type the new combination once again to confirm it."
@@ -4438,10 +4430,6 @@ msgstr "Nazwij plik tekstowy"
 #. Resource IDs: (352)
 msgid "Please name this filter"
 msgstr "Podaj nazwę dla filtra"
-
-#. Resource IDs: (3858)
-msgid "Please select a button."
-msgstr "Wybierz przycisk."
 
 #. Resource IDs: (343)
 msgid "Please select report to view."
@@ -4592,6 +4580,10 @@ msgstr "Data Modyfikacji Hasła\t"
 msgid "Record last access times"
 msgstr "Ostatnie czasy dostępu do rekordu"
 
+#. Resource IDs: (3887)
+msgid "Recover the auto-saved documents\nOpen the auto-saved versions instead of the explicitly saved versions"
+msgstr ""
+
 #. Resource IDs: (1297)
 msgid "Recurring"
 msgstr "Okresowy"
@@ -4661,6 +4653,10 @@ msgstr ""
 #. Resource IDs: (356)
 #, c-format
 msgid "Reserved shortcut '%s' ignored."
+msgstr ""
+
+#. Resource IDs: (1427)
+msgid "Reset"
 msgstr ""
 
 #. Resource IDs: (1368)
@@ -4898,6 +4894,10 @@ msgstr "Wybierz katalog dla tymczasowych kopii zapasowych"
 
 #. Resource IDs: (474)
 msgid "Select Test Dump Type"
+msgstr ""
+
+#. Resource IDs: (3858)
+msgid "Select a button."
 msgstr ""
 
 #. Resource IDs: (340)
@@ -5347,11 +5347,6 @@ msgstr ""
 msgid "The combination cannot be blank."
 msgstr "Hasło nie może być puste."
 
-#. Resource IDs: (210)
-#, c-format
-msgid "The contents [\"%s\"] of element \"%s\" is invalid/unexpected."
-msgstr ""
-
 #. Resource IDs: (332)
 #, c-format
 msgid "The database %s couldn't be opened.\nDo you wish to look for it elsewhere (Search), create a new database (New), or Exit?"
@@ -5496,6 +5491,10 @@ msgstr ""
 
 #. Resource IDs: (361)
 msgid "There does not appear to be a Recycle Bin on the media containing this Failsafe Backup file. If you delete it, it will be permanent. Do you wish to continue?"
+msgstr ""
+
+#. Resource IDs: (3887)
+msgid "These are more recently saved than the currently open documents and contain changes that were made before the application closed."
 msgstr ""
 
 #. Resource IDs: (344)
@@ -5792,15 +5791,6 @@ msgstr "Odznacz"
 msgid "Undo"
 msgstr ""
 
-#. Resource IDs: (209)
-msgid "Unexpected element: Only one field allowed per filter entry."
-msgstr ""
-
-#. Resource IDs: (209)
-#, c-format
-msgid "Unexpected element: \"%s\"."
-msgstr ""
-
 #. Resource IDs: (3859)
 msgid "Unexpected file format."
 msgstr "Nieoczekiwany format pliku."
@@ -5824,11 +5814,6 @@ msgstr ""
 #. Resource IDs: (329)
 msgid "Unknown            "
 msgstr "Nieznany"
-
-#. Resource IDs: (209)
-#, c-format
-msgid "Unknown element: \"%s\"."
-msgstr ""
 
 #. Resource IDs: (350)
 msgid "Unknown fields"
@@ -6192,6 +6177,10 @@ msgstr "[Brak bieżącej bazy danych]"
 msgid "[Notes hidden - click here to display]"
 msgstr "[Notatki są ukryte - kliknij tutaj żeby je zobaczyć]"
 
+#. Resource IDs: (2005)
+msgid "\nAdd Group"
+msgstr ""
+
 #. Resource IDs: (2004)
 #, fuzzy
 msgid "\nAdd New Entry"
@@ -6272,6 +6261,10 @@ msgstr "\nWyświetl podzbiór Hasła"
 
 #. Resource IDs: (2004)
 msgid "\nDuplicate Entry"
+msgstr ""
+
+#. Resource IDs: (2006)
+msgid "\nDuplicate Group"
 msgstr ""
 
 #. Resource IDs: (2006)
