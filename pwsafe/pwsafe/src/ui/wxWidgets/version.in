@@ -22,7 +22,7 @@
 #endif
 
 #define MAJORVERSION 0
-#define MINORVERSION 2
+#define MINORVERSION 3
 #define REVISION     0
 
 // LINUXPRODVER and SVN_VERSION set by mkversion.pl
@@ -32,7 +32,7 @@
 #define SVN_VERSION "SVNVERSTRING"
 
 // define following for custom/experimental versions
-#define SPECIALBUILD _T("beta1")
+#define SPECIALBUILD _T("beta")
 
 #ifndef SPECIALBUILD
 #define SPECIALBUILD _T("")
