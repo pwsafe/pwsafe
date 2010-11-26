@@ -1,4 +1,4 @@
-Password Safe 3.23.1 Release Notes - August 2010
+Password Safe 3.24 Release Notes - November 2010
 ================================================
 
 This note describe the new features, fixed bugs and known problems
@@ -8,8 +8,8 @@ information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
 
-New Features for 3.23.1
-=======================
+New Features for 3.24
+=====================
 [3111585] User can now duplicate Groups. Aliases and shortcuts referring to base
 entries outside this group will still point to their respective bases. Those
 referring to base entries within the group will then point to the new copy.
@@ -22,12 +22,12 @@ Find Toolbar.
 [3062788] Add "Add New Entry" menu item to additional context menus.
 [] Online help is now available in Spanish, thanks to Jose.
 
-Changes to Existing Features in 3.23
+Changes to Existing Features in 3.24
 ====================================
 None
 
-Bugs fixed in 3.23.1
-====================
+Bugs fixed in 3.24
+==================
 [3084401] When database is locked, clipboard is cleared and the hotkey works.
 [3069250] PasswordSafe now remembers the selected entry on Lock After Idle.
 [3065827] Uninstall fails gracefully when invoked with pwsafe running.
