@@ -153,19 +153,66 @@ template<class T> void LoadAString(T &s, int id)
 #endif
 }
 
+#if defined(__GNUC__)  && (defined(UNICODE) || defined(_UNICODE))
+#define CONVERT_GLIBC_FORMATSPECS
+#endif
+
+/*
+ * In UNICODE builds (more specifically, the wide versions of printf functions family) Microsoft's libc
+ * and glibc interpret the %s format specifier differently. Microsoft interprets the corresponding
+ * string argument to be wide-char, while glibc interprets it as single-char.  glibc requires either %S
+ * or %ls to interpret the corresponding string argument as wide-char.
+ * 
+ * Since we *always* use single or wide char functions/strings depending on UNICODE, we convert
+ * all %s to %S while building with GNU/glibc and UNICODE defined using the functions below
+ * 
+ * http://msdn.microsoft.com/en-us/library/hf4y5e3w(v=VS.80).aspx
+ * http://msdn.microsoft.com/en-us/library/tcxf1dw6(v=VS.80).aspx
+ * http://www.gnu.org/software/libc/manual/html_node/Other-Output-Conversions.html#Other-Output-Conversions
+ * 
+ * Note that this is not a Linux vs. Windows difference.  The same issue exists if we build this on WIN32
+ * with GNU with UNICODE defined.  Also, we don't do a similar conversion for ANSI builds (i.e. %S => %s)
+ * since all our format specs are always %s anyway.
+ */
+ 
+#ifdef CONVERT_GLIBC_FORMATSPECS
+template <typename T>
+inline void ConvertFormatSpecs(T& specs)
+{
+  for(typename T::size_type pos = 0; (pos = specs.find(L"%s", pos)) != T::npos; pos += 2) {
+    specs[pos+1] = L'S';
+  }
+}
+
+template <typename T>
+inline T ConvertFormatSpecs(const wchar_t* fmt)
+{
+  T specs(fmt);
+  ConvertFormatSpecs(specs);
+  return specs;
+}
+
+#endif
+
 template<class T> void Format(T &s, const TCHAR *fmt, ...)
 {
   va_list args;
-
   va_start(args, fmt);
 
-  int len = GetStringBufSize(fmt, args);
+#ifdef CONVERT_GLIBC_FORMATSPECS
+  T fmt_s(ConvertFormatSpecs<T>(fmt));
+  const TCHAR* newfmt = fmt_s.c_str();
+#else
+  const TCHAR* newfmt = fmt;
+#endif
+
+  int len = GetStringBufSize(newfmt, args);
   va_end(args);//after using args we should reset list
   va_start(args, fmt);
 
   TCHAR *buffer = new TCHAR[len];
 
-  _vstprintf_s(buffer, len, fmt, args);
+  _vstprintf_s(buffer, len, newfmt, args);
   s = buffer;
   delete[] buffer;
   va_end(args);
@@ -178,6 +225,10 @@ template<class T> void Format(T &s, int fmt, ...)
   va_start(args, fmt);
   T fmt_str;
   LoadAString(fmt_str, fmt);
+
+#ifdef CONVERT_GLIBC_FORMATSPECS
+  ConvertFormatSpecs(fmt_str);
+#endif
 
   int len = GetStringBufSize(fmt_str.c_str(), args);
   va_end(args);//after using args we should reset list
