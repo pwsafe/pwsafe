@@ -3,8 +3,8 @@
 RELNUM = 0.3
 DISTRO = $(shell echo $(word 2,$(shell lsb_release -d))| tr [:upper:] [:lower:])
 
-DEBNAME = passwordsafe-$(DISTRO)-$(RELNUM).deb
-
+DEBNAME32 = passwordsafe-$(DISTRO)-$(RELNUM).i686.deb
+DEBNAME64 = passwordsafe-$(DISTRO)-$(RELNUM).amd64.deb
 MKDIR = /bin/mkdir -p
 CAT = /bin/cat
 MV = /bin/mv
@@ -30,11 +30,16 @@ INFILES = $(PWSAFE-BIN) $(DOCS) $(MANPAGE) $(XMLFILES) $(HELPFILES)
 
 .PHONY: all deb debtree clean
 
-all : $(DEBNAME)
+all : $(DEBNAME32) $(DEBNAME64)
 
-$(DEBNAME): $(INFILES)
-	@ln -sf control-$(DISTRO) control
-	$(MAKE) deb
+$(DEBNAME32): $(INFILES)
+	@ln -sf control-$(DISTRO).i686 control
+	$(MAKE) deb DEBNAME=$@
+	@$(RM) control
+
+$(DEBNAME64): $(INFILES)
+	@ln -sf control-$(DISTRO).amd64 control
+	$(MAKE) deb DEBNAME=$@
 	@$(RM) control
 
 deb: debtree
@@ -65,10 +70,10 @@ debtree:
 	@$(CP) ../graphics/pwsafe.png debian/tmp
 	@$(CP) postinst debian/DEBIAN
 	@$(CP) prerm debian/DEBIAN
-	@$(RM) $(HELPZIP)
 
 $(HELPZIP):
 	(cd $(HELPDIR)/default; $(ZIP) -qR $@ pwsafe.hh? *.html *.jpg)
 
 clean:
 	@$(RM) debian $(DEBNAME)
+	@$(RM) $(HELPZIP)
