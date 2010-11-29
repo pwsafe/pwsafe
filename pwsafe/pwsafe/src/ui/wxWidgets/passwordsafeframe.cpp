@@ -791,8 +791,7 @@ int PasswordSafeFrame::Save(SaveType st /* = ST_INVALID*/)
                                   userBackupPrefix, userBackupDir, bu_fname)) {
           switch (st) {
             case ST_NORMALEXIT:
-              if (wxMessageBox(_("Unable to create intermediate backup.  Save database elsewhere or with another name?"
-                                 "\n\nClick 'No' to exit without saving."), 
+              if (wxMessageBox(_("Unable to create intermediate backup.  Save database elsewhere or with another name?\n\nClick 'No' to exit without saving."), 
                                _("Write Error"), wxYES_NO | wxICON_EXCLAMATION) == wxID_NO)
                 return PWScore::SUCCESS;
               else
@@ -815,9 +814,7 @@ int PasswordSafeFrame::Save(SaveType st /* = ST_INVALID*/)
       // file version mis-match
       stringT NewName = PWSUtil::GetNewFileName(m_core.GetCurFile().c_str(), DEFAULT_SUFFIX);
 
-      wxString msg( wxString::Format(_("The original database, \"%s\", is in pre-3.0 format."
-                                       " It will be unchanged.\nYour changes will be written as \"%s\" in the new format, which is unusable by old versions of PasswordSafe."
-                                       " To save your changes in the old format, use the \"File->Export To-> Old (1.x or 2) format\" command."),
+      wxString msg( wxString::Format(_("The original database, \"%s\", is in pre-3.0 format. It will be unchanged.\nYour changes will be written as \"%s\" in the new format, which is unusable by old versions of PasswordSafe. To save your changes in the old format, use the \"File->Export To-> Old (1.x or 2) format\" command."),
                                      m_core.GetCurFile().c_str(), NewName.c_str()));
       if (wxMessageBox(msg, _("File version warning"), wxOK|wxCANCEL|wxICON_INFORMATION) == wxID_CANCEL)
         return PWScore::USER_CANCEL;
