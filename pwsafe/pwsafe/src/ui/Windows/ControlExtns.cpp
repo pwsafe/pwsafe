@@ -266,13 +266,13 @@ HBRUSH CEditExtn::CtlColor(CDC* pDC, UINT /*nCtlColor*/)
 }
 
 struct equal_cmd {
-  equal_cmd(int const& nCmd) : m_nCmd(nCmd) {}
+  equal_cmd(UINT_PTR const& nCmd) : m_nCmd(nCmd) {}
   bool operator()(st_context_menu const& context_menu) const
   {
     return (context_menu.message_number == m_nCmd);
   }
 private:
-  int m_nCmd;
+  UINT_PTR m_nCmd;
 };
 
 void CEditExtn::OnContextMenu(CWnd* pWnd, CPoint point)
@@ -336,9 +336,9 @@ void CEditExtn::OnContextMenu(CWnd* pWnd, CPoint point)
     ClientToScreen(&point);
   }
 
-  UINT nCmd = menu.TrackPopupMenu(TPM_LEFTALIGN | TPM_LEFTBUTTON |
-                                 TPM_RETURNCMD | TPM_RIGHTBUTTON, 
-                                 point.x, point.y, this);
+  UINT_PTR nCmd = menu.TrackPopupMenu(TPM_LEFTALIGN | TPM_LEFTBUTTON |
+                                      TPM_RETURNCMD | TPM_RIGHTBUTTON, 
+                                      point.x, point.y, this);
 
   if (nCmd == 0)
     return;
