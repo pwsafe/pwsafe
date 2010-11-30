@@ -647,15 +647,14 @@ void DboxMain::OnOptions()
     UpdateSystemMenu();
     prefs->SetPref(PWSprefs::MaxREItems,
                    system.m_maxreitems);
-    if (system.m_maxreitems == 0) {
+    prefs->SetPref(PWSprefs::MaxMRUItems,
+                   system.m_maxmruitems);
+    if (system.m_maxmruitems == 0) {
       // Put them on File menu where they don't take up any room
       prefs->SetPref(PWSprefs::MRUOnFileMenu, true);
       // Clear any currently saved
       app.ClearMRU();
     } else {
-      // Otherwise use what the user wanted.
-      prefs->SetPref(PWSprefs::MaxMRUItems,
-                     system.m_maxmruitems);
       prefs->SetPref(PWSprefs::MRUOnFileMenu,
                      system.m_mruonfilemenu == TRUE);
     }
