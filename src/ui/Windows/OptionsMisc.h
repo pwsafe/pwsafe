@@ -52,7 +52,7 @@ public:
   CString m_saveotherbrowserlocation;
   CString m_saveothereditorlocation;
   DWORD m_savehotkey_value;
-  DWORD_PTR m_savedoubleclickaction;
+  int m_savedoubleclickaction;
   CString m_saveBrowserCmdLineParms;
   CString m_saveAutotype;
   BOOL m_saveminauto;

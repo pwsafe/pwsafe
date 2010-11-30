@@ -136,7 +136,7 @@ LRESULT CPasswordSubsetDlg::OnDisplayStatus(WPARAM /* wParam */, LPARAM /* lPara
       continue;
 
     int ipos = _wtoi(resToken);
-    if (ipos > ipwlengh || ipos == 0) {
+    if (ipos > (int)ipwlengh || ipos == 0) {
       if (ipos != 0)
         m_warningmsg.Format(IDS_SUBSETINDEXTOOBIG,ipwlengh);
       else
