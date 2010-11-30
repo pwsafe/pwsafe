@@ -412,7 +412,7 @@ StringX CPasswordCharPool::MakePronounceable() const
 
 bool CPasswordCharPool::CheckPassword(const StringX &pwd, StringX &error)
 {
-  const int MinLength = 8;
+  const size_t MinLength = 8;
   size_t length = pwd.length();
   // check for minimun length
   if (length < MinLength) {

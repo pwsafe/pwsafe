@@ -16,7 +16,7 @@
 #else
 #define _gmtime64_s(ts64, tm64) gmtime64_r(tm64, ts64)
 #define _mkgmtime32(ts) mktime(ts)
-#define _localtime32_s(st, t) (localtime_r(t, st) != NULL ? 0 : 1)
+#define localtime_s(st, t) (localtime_r(t, st) != NULL ? 0 : 1)
 #ifdef UNICODE
 #include <wctype.h>
 #define _istalpha(x) iswalpha(x)
