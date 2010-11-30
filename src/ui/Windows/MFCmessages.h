@@ -15,14 +15,14 @@ class MFCAsker : public Asker
 {
   bool operator()(const std::wstring &question) {
     CGeneralMsgBox gmb;
-    int msg_rc = gmb.AfxMessageBox(question.c_str(), NULL,
+    INT_PTR msg_rc = gmb.AfxMessageBox(question.c_str(), NULL,
                                    MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2);
     return msg_rc == IDYES;
   }
   virtual bool operator()(const std::wstring &title,
                           const std::wstring &question) {
     CGeneralMsgBox gmb;
-    int msg_rc = gmb.AfxMessageBox(question.c_str(), title.c_str(),
+    INT_PTR msg_rc = gmb.AfxMessageBox(question.c_str(), title.c_str(),
                                    MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2);
     return msg_rc == IDYES;
   }

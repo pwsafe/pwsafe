@@ -227,13 +227,13 @@ void PWSMatch::GetMatchType(MatchType mtype,
       } else {
         struct tm st_s;
         errno_t err;
-        err = _localtime32_s(&st_s, &fdate1);
+        err = localtime_s(&st_s, &fdate1);
         ASSERT(err == 0);
         TCHAR tc_buf1[80];
         _tcsftime(tc_buf1, sizeof(tc_buf1) / sizeof(tc_buf1[0]), _T("%x"), &st_s);
         cs1 = tc_buf1;
         if (bBetween) {
-          err = _localtime32_s(&st_s, &fdate2);
+          err = localtime_s(&st_s, &fdate2);
           ASSERT(err == 0);
           TCHAR tc_buf2[80];
           _tcsftime(tc_buf2, sizeof(tc_buf2) / sizeof(tc_buf2[0]), _T("%x"), &st_s);

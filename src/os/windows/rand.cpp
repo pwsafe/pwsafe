@@ -27,7 +27,7 @@ bool pws_os::InitRandomDataFunction()
   TCHAR szFileName[ MAX_PATH ];
   memset( szFileName, 0, MAX_PATH );
   GetSystemDirectory( szFileName, MAX_PATH );
-  int nLen = _tcslen( szFileName );
+  size_t nLen = _tcslen( szFileName );
   if (nLen > 0) {
     if (szFileName[ nLen - 1 ] != '\\')
       _tcscat_s( szFileName, MAX_PATH, _T("\\") );

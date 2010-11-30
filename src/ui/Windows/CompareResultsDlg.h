@@ -158,8 +158,8 @@ protected:
   void UpdateStatusBar();
   bool ProcessFunction(const int ifunction, st_CompareData *st_data);
   void WriteReportData();
-  st_CompareData * GetCompareData(const DWORD dwItemData);
-  static st_CompareData * GetCompareData(const DWORD dwItemData, CCompareResultsDlg *self);
+  st_CompareData * GetCompareData(const LONG_PTR dwItemData);
+  static st_CompareData * GetCompareData(const LONG_PTR dwItemData, CCompareResultsDlg *self);
   void AddCompareEntries(const bool bAddIdentical);
 
   // Generated message map functions

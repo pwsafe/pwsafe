@@ -82,7 +82,7 @@ LPWSTR CreateUniqueName(const LPCWSTR pszGUID, LPWSTR pszBuffer, const int iBuff
     wcscat(pszBuffer, L"-");
 #endif
     HDESK hDesk    = GetThreadDesktop(GetCurrentThreadId());
-    ULONG cchDesk  = MAX_PATH - wcslen(pszBuffer) - 1;
+    ULONG cchDesk  = (ULONG)(MAX_PATH - wcslen(pszBuffer) - 1);
 
     if (!GetUserObjectInformation(hDesk, UOI_NAME, pszBuffer + wcslen(pszBuffer), 
                                   cchDesk, &cchDesk))
@@ -126,7 +126,7 @@ LPWSTR CreateUniqueName(const LPCWSTR pszGUID, LPWSTR pszBuffer, const int iBuff
       // Since NetApi() calls are quite time consuming
       // we retrieve the domain name from an environment variable
       cchDomain = GetEnvironmentVariable(L"USERDOMAIN", szDomain, cchDomain);
-      UINT cchUsed = wcslen(pszBuffer);
+      size_t cchUsed = wcslen(pszBuffer);
       if (MAX_PATH - cchUsed > cchUser + cchDomain + 3) {
         HRESULT hr;
         hr = StringCchPrintf(pszBuffer + cchUsed, iBuffLen - cchUsed,

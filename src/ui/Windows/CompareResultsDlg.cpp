@@ -154,8 +154,8 @@ BOOL CCompareResultsDlg::OnInitDialog()
   m_numOnlyInComp = m_OnlyInComp.size();
   m_numConflicts = m_Conflicts.size();
   m_numIdentical = m_Identical.size();
-  m_LCResults.SetItemCount(m_numOnlyInCurrent + m_numOnlyInComp +
-                           m_numConflicts + m_numIdentical);
+  m_LCResults.SetItemCount((int)(m_numOnlyInCurrent + m_numOnlyInComp +
+                           m_numConflicts + m_numIdentical));
 
   // Sort the entries first by group, title, user (not case sensitive)
   if (m_numOnlyInCurrent > 0)
@@ -361,7 +361,7 @@ void CCompareResultsDlg::OnShowIdenticalEntries()
 
   // Reset item listindex
   for (i = 0; i < m_LCResults.GetItemCount(); i++) {
-    DWORD dwItemData = m_LCResults.GetItemData(i);
+    DWORD_PTR dwItemData = m_LCResults.GetItemData(i);
     st_CompareData *st_data = GetCompareData(dwItemData);
     ASSERT(st_data != NULL);
     st_data->listindex = i;
@@ -474,12 +474,12 @@ bool CCompareResultsDlg::ProcessFunction(const int ifunction, st_CompareData *st
   return rc;
 }
 
-st_CompareData * CCompareResultsDlg::GetCompareData(const DWORD dwItemData)
+st_CompareData * CCompareResultsDlg::GetCompareData(const LONG_PTR dwItemData)
 {
   return GetCompareData(dwItemData, this);
 }
 
-st_CompareData * CCompareResultsDlg::GetCompareData(const DWORD dwItemData, CCompareResultsDlg *self)
+st_CompareData * CCompareResultsDlg::GetCompareData(const LONG_PTR dwItemData, CCompareResultsDlg *self)
 {
   const int iList = (short int)LOWORD(dwItemData);
   const int id = HIWORD(dwItemData);
@@ -521,7 +521,7 @@ void CCompareResultsDlg::OnCompareViewEdit()
 {
   bool bDatabaseRO = (m_column == CURRENT) ? m_bOriginalDBReadOnly : m_bComparisonDBReadOnly;
 
-  DWORD dwItemData = m_LCResults.GetItemData(m_row);
+  DWORD_PTR dwItemData = m_LCResults.GetItemData(m_row);
   st_CompareData *st_data = GetCompareData(dwItemData);
   ASSERT(st_data != NULL);
 
@@ -551,7 +551,7 @@ void CCompareResultsDlg::OnCompareSynchronize()
   }
   setGTU.clear();  // Don't need it anymore - so clear it now
 
-  DWORD dwItemData = m_LCResults.GetItemData(m_row);
+  DWORD_PTR dwItemData = m_LCResults.GetItemData(m_row);
   st_CompareData *st_data = GetCompareData(dwItemData);
   ASSERT(st_data != NULL);
 
@@ -605,7 +605,7 @@ bool CCompareResultsDlg::CopyLeftOrRight(const bool bCopyLeft)
     return false;
 
   LRESULT lres(FALSE);
-  DWORD dwItemData = m_LCResults.GetItemData(m_row);
+  DWORD_PTR dwItemData = m_LCResults.GetItemData(m_row);
   st_CompareData *st_data = GetCompareData(dwItemData);
   ASSERT(st_data != NULL);
 
@@ -724,7 +724,7 @@ void CCompareResultsDlg::OnItemRightClick(NMHDR* /* pNMHDR */, LRESULT *pResult)
   } else
     return;
 
-  DWORD dwItemData = m_LCResults.GetItemData(m_row);
+  DWORD_PTR dwItemData = m_LCResults.GetItemData(m_row);
   st_CompareData *st_data = GetCompareData(dwItemData);
   ASSERT(st_data != NULL);
 
@@ -786,7 +786,7 @@ void CCompareResultsDlg::OnColumnClick(NMHDR* pNMHDR, LRESULT* pResult)
 
   // Reset item listindex
   for (int i = 0; i < m_LCResults.GetItemCount(); i++) {
-    DWORD dwItemData = m_LCResults.GetItemData(i);
+    DWORD_PTR dwItemData = m_LCResults.GetItemData(i);
     st_CompareData *st_data = GetCompareData(dwItemData);
     ASSERT(st_data != NULL);
     st_data->listindex = i;

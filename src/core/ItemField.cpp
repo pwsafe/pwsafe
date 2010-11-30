@@ -16,16 +16,16 @@
 #include "PWSrand.h"
 
 //Returns the number of bytes of 8 byte blocks needed to store 'size' bytes
-int CItemField::GetBlockSize(int size) const
+size_t CItemField::GetBlockSize(size_t size) const
 {
-  return static_cast<int>(ceil(static_cast<double>(size)/8.0)) * 8;
+  return static_cast<size_t>(ceil(static_cast<double>(size) / 8.0)) * 8;
 }
 
 CItemField::CItemField(const CItemField &that)
   : m_Type(that.m_Type), m_Length(that.m_Length)
 {
   if (m_Length > 0) {
-    int bs = GetBlockSize(m_Length);
+    size_t bs = GetBlockSize(reinterpret_cast<int &>(m_Length));
     m_Data = new unsigned char[bs];
     memcpy(m_Data, that.m_Data, bs);
   } else {
@@ -40,7 +40,7 @@ CItemField &CItemField::operator=(const CItemField &that)
     m_Length = that.m_Length;
     delete[] m_Data;
     if (m_Length > 0) {
-      int bs = GetBlockSize(m_Length);
+      size_t bs = GetBlockSize(reinterpret_cast<int &>(m_Length));
       m_Data = new unsigned char[bs];
       memcpy(m_Data, that.m_Data, bs);
     } else {
@@ -59,9 +59,9 @@ void CItemField::Empty()
   }
 }
 
-void CItemField::Set(const unsigned char* value, unsigned int length, BlowFish *bf)
+void CItemField::Set(const unsigned char* value, size_t length, BlowFish *bf)
 {
-  int BlockLength;
+  size_t BlockLength;
 
   m_Length = length;
   BlockLength = GetBlockSize(m_Length);
@@ -86,11 +86,11 @@ void CItemField::Set(const unsigned char* value, unsigned int length, BlowFish *
 #endif
 
     //Fill the unused characters in with random stuff
-    PWSrand::GetInstance()->GetRandomData(tempmem+m_Length, BlockLength-m_Length );
+    PWSrand::GetInstance()->GetRandomData(tempmem + m_Length, (unsigned long)(BlockLength - m_Length));
 
     //Do the actual encryption
-    for (int x=0; x<BlockLength; x+=8)
-      bf->Encrypt(tempmem+x, m_Data+x);
+    for (size_t x = 0; x < BlockLength; x += 8)
+      bf->Encrypt(tempmem + x, m_Data + x);
 
     delete[] tempmem;
   }
@@ -104,7 +104,7 @@ void CItemField::Set(const StringX &value, BlowFish *bf)
       value.length() * sizeof(*plainstr), bf);
 }
 
-void CItemField::Get(unsigned char *value, unsigned int &length, BlowFish *bf) const
+void CItemField::Get(unsigned char *value, size_t &length, BlowFish *bf) const
 {
   // Sanity check: length is 0 iff data ptr is NULL
   ASSERT((m_Length == 0 && m_Data == NULL) ||
@@ -119,16 +119,16 @@ void CItemField::Get(unsigned char *value, unsigned int &length, BlowFish *bf) c
     value[0] = TCHAR('\0');
     length = 0;
   } else { // we have data to decrypt
-    int BlockLength = GetBlockSize(m_Length);
+    size_t BlockLength = GetBlockSize(m_Length);
     ASSERT(length >= static_cast<unsigned int>(BlockLength));
     unsigned char *tempmem = new unsigned char[BlockLength];
 
-    int x;
+    size_t x;
     for (x = 0; x < BlockLength; x += 8)
       bf->Decrypt(m_Data + x, tempmem + x);
 
     for (x = 0; x < BlockLength; x++)
-      value[x] = (x < int(m_Length)) ? tempmem[x] : 0;
+      value[x] = (x < m_Length) ? tempmem[x] : 0;
 
     length = m_Length;
     delete [] tempmem;

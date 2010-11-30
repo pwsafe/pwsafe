@@ -1111,12 +1111,12 @@ bool TiXmlDocument::LoadFile( FILE* file, TiXmlEncoding encoding )
 			// handle moving forward in the buffer.
 			if ( (p-lastPos) > 0 ) {
 #ifdef UNICODE
-                // translate from lastpos to (p-lastPos) to wchar_t
-                int nw = pws_os::mbstowcs(wbuf, length + 1, lastPos, (p - lastPos));
-                assert(nw > 0 && nw <= p-lastPos);
-                data.append(wbuf, nw);
+        // translate from lastpos to (p-lastPos) to wchar_t
+        size_t nw = pws_os::mbstowcs(wbuf, length + 1, lastPos, (p - lastPos));
+        assert(reinterpret_cast<int &>(nw) > 0 && reinterpret_cast<int &>(nw) <= (p - lastPos));
+        data.append(wbuf, nw);
 #else
-                data.append( lastPos, (p-lastPos) );	// do not add the CR
+        data.append( lastPos, (p-lastPos) );	// do not add the CR
 #endif
 			}
 			data += static_cast<char>(0xa);						// a proper newline

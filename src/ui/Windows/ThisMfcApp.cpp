@@ -1183,7 +1183,7 @@ void ThisMfcApp::GetApplicationVersionData()
 
 BOOL CALLBACK ThisMfcApp::searcher(HWND hWnd, LPARAM lParam)
 {
-  DWORD result;
+  DWORD_PTR result;
   LRESULT ok = ::SendMessageTimeout(hWnd,
                                     m_uiRegMsg,
                                     0, 0, 

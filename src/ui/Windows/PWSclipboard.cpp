@@ -41,7 +41,7 @@ bool PWSclipboard::SetData(const StringX &data, bool isSensitive, CLIPFORMAT cfF
   ::GlobalUnlock(hDummyGlobalMemory);
 
   // Real data
-  unsigned int uGlobalMemSize = (data.length() + 1) * sizeof(TCHAR);
+  size_t uGlobalMemSize = (data.length() + 1) * sizeof(TCHAR);
   HGLOBAL hGlobalMemory = ::GlobalAlloc(GMEM_MOVEABLE, uGlobalMemSize);
   LPTSTR pGlobalLock = (LPTSTR)::GlobalLock(hGlobalMemory);
 

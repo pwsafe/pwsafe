@@ -175,7 +175,7 @@ size_t PWSfileV3::WriteCBC(unsigned char type, const StringX &data)
 {
   bool status;
   const unsigned char *utf8;
-  int utf8Len;
+  size_t utf8Len;
   status = m_utf8conv.ToUTF8(data, utf8, utf8Len);
   if (!status)
     pws_os::Trace(_T("ToUTF8(%s) failed\n"), data.c_str());
@@ -183,9 +183,9 @@ size_t PWSfileV3::WriteCBC(unsigned char type, const StringX &data)
 }
 
 size_t PWSfileV3::WriteCBC(unsigned char type, const unsigned char *data,
-                           unsigned int length)
+                           size_t length)
 {
-  m_hmac.Update(data, length);
+  m_hmac.Update(data, reinterpret_cast<int &>(length));
   return PWSfile::WriteCBC(type, data, length);
 }
 
@@ -267,7 +267,7 @@ int PWSfileV3::WriteRecord(const CItemData &item)
        vi_IterURFE != item.GetURFIterEnd();
        vi_IterURFE++) {
     unsigned char type;
-    unsigned int length = 0;
+    size_t length = 0;
     unsigned char *pdata = NULL;
     item.GetUnknownField(type, length, pdata, vi_IterURFE);
     WriteCBC(type, pdata, length);
@@ -281,12 +281,12 @@ int PWSfileV3::WriteRecord(const CItemData &item)
 }
 
 size_t PWSfileV3::ReadCBC(unsigned char &type, unsigned char* &data,
-                          unsigned int &length)
+                          size_t &length)
 {
   size_t numRead = PWSfile::ReadCBC(type, data, length);
 
   if (numRead > 0) {
-    m_hmac.Update(data, length);
+    m_hmac.Update(data, reinterpret_cast<unsigned long &>(length));
   }
 
   return numRead;
@@ -307,9 +307,9 @@ int PWSfileV3::ReadRecord(CItemData &item)
 
   do {
     unsigned char *utf8 = NULL;
-    int utf8Len = 0;
+    size_t utf8Len = 0;
     fieldLen = static_cast<signed long>(ReadCBC(type, utf8,
-      reinterpret_cast<unsigned int &>(utf8Len)));
+                                                utf8Len));
 
     if (fieldLen > 0) {
       numread += fieldLen;
@@ -340,7 +340,7 @@ void PWSfileV3::StretchKey(const unsigned char *salt, unsigned long saltLen,
   * http://www.schneier.com/paper-low-entropy.pdf (Section 4.1), with SHA-256
   * as the hash function, and N iterations.
   */
-  int passLen = 0;
+  size_t passLen = 0;
   unsigned char *pstr = NULL;
 
   ConvertString(passkey, pstr, passLen);
@@ -617,11 +617,11 @@ int PWSfileV3::ReadHeader()
   size_t numRead;
   bool utf8status;
   unsigned char *utf8 = NULL;
-  int utf8Len = 0;
+  size_t utf8Len = 0;
   bool found0302UserHost = false; // to resolve potential conflicts
 
   do {
-    numRead = ReadCBC(fieldType, utf8, reinterpret_cast<unsigned int &>(utf8Len));
+    numRead = ReadCBC(fieldType, utf8, utf8Len);
 
     switch (fieldType) {
       case HDR_VERSION: /* version */
@@ -691,7 +691,7 @@ int PWSfileV3::ReadHeader()
             is >> hex >> m_hdr.m_whenlastsaved;
         } else if (utf8Len == 4) {
           // retrieve time_t
-          m_hdr.m_whenlastsaved = *reinterpret_cast<time_t*>(utf8);
+          m_hdr.m_whenlastsaved = *reinterpret_cast< time_t*>(utf8);
         } else {
           m_hdr.m_whenlastsaved = 0;
         }

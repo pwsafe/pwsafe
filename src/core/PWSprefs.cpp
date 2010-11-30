@@ -687,7 +687,7 @@ void PWSprefs::Load(const StringX &prefString, bool bUseCopy)
   int index, ival;
   unsigned int iuval;
 
-  const int N = prefString.length(); // safe upper limit on string size
+  const size_t N = prefString.length(); // safe upper limit on string size
   TCHAR *buf = new TCHAR[N];
 
   while (is) {
@@ -762,8 +762,8 @@ void PWSprefs::XMLify(charT t, stringT &name)
 {
   if (!_istalpha(name[0]))
     name = t + name;
-  int N = name.length();
-  for (int i = 0; i < N; i++)
+  size_t N = name.length();
+  for (size_t i = 0; i < N; i++)
     if (!_istalnum(name[i]) &&
         name[i] != charT('_') &&
         name[i] != charT('-') &&
@@ -854,7 +854,7 @@ void PWSprefs::InitializePreferences()
     // Try and create the file (and delete afterwards if we succeeded)
 #ifdef UNICODE
     CUTF8Conv conv;
-    int fnamelen;
+    size_t fnamelen;
     const unsigned char *fname = NULL;
     conv.ToUTF8(m_configfilename.c_str(), fname, fnamelen); 
 #else
@@ -1580,7 +1580,7 @@ stringT PWSprefs::GetXMLPreferences()
         // ']]', the other starting with '>'
         const StringX value = m_stringValues[i];
         os << "\t\t<" << m_string_prefs[i].name << ">";
-        int from = 0, to = p + 2;
+        size_t from = 0, to = p + 2;
         do {
           StringX slice = value.substr(from, (to - from));
           os << "<![CDATA[" << slice << "]]><![CDATA[";

@@ -66,10 +66,10 @@ private:
   CUTF8Conv m_utf8conv;
   virtual size_t WriteCBC(unsigned char type, const StringX &data);
   virtual size_t WriteCBC(unsigned char type, const unsigned char *data,
-                          unsigned int length);
+                          size_t length);
 
   virtual size_t ReadCBC(unsigned char &type, unsigned char* &data,
-    unsigned int &length);
+                         size_t &length);
   int WriteHeader();
   int ReadHeader();
   PWSFilters m_MapFilters;

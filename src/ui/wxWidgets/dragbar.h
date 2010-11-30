@@ -75,17 +75,28 @@ private:
   
   int GetToolX(size_t idx) const {
     switch (m_orientation) {
-      case wxHORIZONTAL:  return m_margins.GetWidth() + idx*(m_margins.GetWidth() + m_bmpWidth);
-      case wxVERTICAL: return m_margins.GetWidth();
-      default: wxASSERT(wxT("Invalid orientation")); return -1;
+      case wxHORIZONTAL: 
+        return m_margins.GetWidth() + 
+                    static_cast<int>(idx * (m_margins.GetWidth() + m_bmpWidth));
+      case wxVERTICAL:
+        return m_margins.GetWidth();
+
+      default:
+        wxASSERT(wxT("Invalid orientation")); return -1;
     }
   }
   
   int GetToolY(size_t idx) const {
     switch(m_orientation) {
-      case wxHORIZONTAL:  return m_margins.GetHeight();
-      case wxVERTICAL:    return m_margins.GetHeight() + idx*(m_margins.GetHeight() + m_bmpHeight);
-      default: wxASSERT(wxT("Invalid orientation")); return -1;
+      case wxHORIZONTAL:
+        return m_margins.GetHeight();
+
+      case wxVERTICAL:
+        return m_margins.GetHeight() +
+                    static_cast<int>(idx * (m_margins.GetHeight() + m_bmpHeight));
+
+      default:
+        wxASSERT(wxT("Invalid orientation")); return -1;
     }
   }
 

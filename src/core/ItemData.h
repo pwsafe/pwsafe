@@ -165,13 +165,13 @@ public:
                        const TCHAR &delimiter, const CItemData *pcibase) const;
   std::string GetXML(unsigned id, const FieldBits &bsExport, TCHAR m_delimiter,
                      const CItemData *pcibase, bool bforce_normal_entry) const;
-  void GetUnknownField(unsigned char &type, unsigned int &length,
+  void GetUnknownField(unsigned char &type, size_t &length,
                        unsigned char * &pdata,
                        const unsigned int &num) const;
-  void GetUnknownField(unsigned char &type, unsigned int &length,
+  void GetUnknownField(unsigned char &type, size_t &length,
                        unsigned char * &pdata,
                        const UnknownFieldsConstIter &iter) const;
-  void SetUnknownField(const unsigned char &type, const unsigned int &length,
+  void SetUnknownField(const unsigned char &type, const size_t &length,
                        const unsigned char * &ufield);
   size_t NumberUnknownFields() const
   {return m_URFL.size();}
@@ -251,7 +251,7 @@ public:
   void SerializePlainText(std::vector<char> &v,
                           const CItemData *pcibase = NULL) const;
   bool DeserializePlainText(const std::vector<char> &v);
-  bool SetField(int type, const unsigned char *data, int len);
+  bool SetField(int type, const unsigned char *data, size_t len);
 
   EntryType GetEntryType() const {return m_entrytype;}
 
@@ -281,7 +281,7 @@ public:
   {return GetURL().find(_T("mailto:")) != StringX::npos;}
 
   size_t GetSize();
-  void GetSize(int &isize) const;
+  void GetSize(size_t &isize) const;
 
 private:
   CItemField m_Name;
@@ -334,12 +334,12 @@ private:
   // Laziness is a Virtue:
   StringX GetField(const CItemField &field) const;
   void GetField(const CItemField &field, unsigned char *value,
-                unsigned int &length) const;
-  void GetUnknownField(unsigned char &type, unsigned int &length,
+                size_t &length) const;
+  void GetUnknownField(unsigned char &type, size_t &length,
                        unsigned char * &pdata, const CItemField &item) const;
   void SetField(CItemField &field, const StringX &value);
   void SetField(CItemField &field, const unsigned char *value,
-                unsigned int length);
+                size_t length);
   void UpdatePasswordHistory(); // used by UpdatePassword()
 };
 

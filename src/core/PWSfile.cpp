@@ -155,14 +155,14 @@ int PWSfile::Close()
 }
 
 size_t PWSfile::WriteCBC(unsigned char type, const unsigned char *data,
-                         unsigned int length)
+                         size_t length)
 {
   ASSERT(m_fish != NULL && m_IV != NULL);
   return _writecbc(m_fd, data, length, type, m_fish, m_IV);
 }
 
 size_t PWSfile::ReadCBC(unsigned char &type, unsigned char* &data,
-                        unsigned int &length)
+                        size_t &length)
 {
   unsigned char *buffer = NULL;
   size_t buffer_len = 0;
@@ -276,7 +276,7 @@ bool PWSfile::Encrypt(const stringT &fn, const StringX &passwd, stringT &errmess
   bool status = true;
   stringT out_fn;
   unsigned char *pwd = NULL;
-  int passlen = 0;
+  size_t passlen = 0;
   FILE *out = NULL;
 
   FILE *in = pws_os::FOpen(fn, _T("rb"));;
@@ -329,7 +329,7 @@ bool PWSfile::Encrypt(const stringT &fn, const StringX &passwd, stringT &errmess
   SAFE_FWRITE(ipthing, 1, 8, out);
 
   ConvertString(passwd, pwd, passlen);
-  fish = BlowFish::MakeBlowFish(pwd, passlen, thesalt, SaltLength);
+  fish = BlowFish::MakeBlowFish(pwd, reinterpret_cast<int &>(passlen), thesalt, SaltLength);
   trashMemory(pwd, passlen);
 #ifdef UNICODE
   delete[] pwd; // gross - ConvertString allocates only if UNICODE.
@@ -389,10 +389,10 @@ bool PWSfile::Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess
 
     unsigned char dummyType;
     unsigned char *pwd = NULL;
-    int passlen = 0;
+    size_t passlen = 0;
     long file_len = pws_os::fileLength(in);
     ConvertString(passwd, pwd, passlen);
-    Fish *fish = BlowFish::MakeBlowFish(pwd, passlen, salt, SaltLength);
+    Fish *fish = BlowFish::MakeBlowFish(pwd, reinterpret_cast<int &>(passlen), salt, SaltLength);
     trashMemory(pwd, passlen);
 #ifdef UNICODE
     delete[] pwd; // gross - ConvertString allocates only if UNICODE.

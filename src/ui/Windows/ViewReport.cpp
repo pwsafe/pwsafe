@@ -26,7 +26,7 @@ CViewReport::CViewReport(CWnd* pParent /*=NULL*/,
 {
 
   m_pString = m_pRpt->GetString(); 
-  m_dwDatasize = m_pString.length() * sizeof(wchar_t);
+  m_dwDatasize = (DWORD)(m_pString.length() * sizeof(wchar_t));
 
   m_backgroundcolour = RGB(255, 255, 255);
   m_backgroundbrush.CreateSolidBrush(m_backgroundcolour);
@@ -92,7 +92,7 @@ BOOL CViewReport::OnInitDialog()
   CFont *pOldFont = dc.SelectObject(m_editreport.GetFont());
 
   // Get Height
-  dc.DrawText(lpszText, m_pString.length(), &textRect, DT_CALCRECT | DT_NOCLIP);
+  dc.DrawText(lpszText, (int)m_pString.length(), &textRect, DT_CALCRECT | DT_NOCLIP);
 
   // Get width of longest line - ignores tabs - but no issue as edit control has
   // horizontal scroll bars

@@ -32,7 +32,7 @@ CUTF8Conv::~CUTF8Conv()
 }
 
 bool CUTF8Conv::ToUTF8(const StringX &data,
-                       const unsigned char *&utf8, int &utf8Len)
+                       const unsigned char *&utf8, size_t &utf8Len)
 {
   // If we're not in Unicode, call MultiByteToWideChar to get from
   // current codepage to Unicode, and then WideCharToMultiByte to
@@ -94,7 +94,7 @@ bool CUTF8Conv::ToUTF8(const StringX &data,
 }
 
 // In following, char * is managed by caller.
-bool CUTF8Conv::FromUTF8(const unsigned char *utf8, int utf8Len,
+bool CUTF8Conv::FromUTF8(const unsigned char *utf8, size_t utf8Len,
                          StringX &data)
 {
   // Call MultiByteToWideChar to get from UTF-8 to Unicode.
@@ -112,13 +112,13 @@ bool CUTF8Conv::FromUTF8(const unsigned char *utf8, int utf8Len,
   ASSERT(utf8 != NULL);
 
   // first get needed wide char buffer size
-  size_t wcLen = pws_os::mbstowcs(NULL, 0, reinterpret_cast<const char *>(utf8), size_t(-1));
+  unsigned int wcLen = static_cast<unsigned int>(pws_os::mbstowcs(NULL, 0, reinterpret_cast<const char *>(utf8), size_t(-1)));
   if (wcLen == 0) { // uh-oh
     // it seems that this always returns non-zero, even if encoding
     // broken. Therefore, we'll give a consrevative value here,
     // and try to recover later
     pws_os::Trace0(_T("FromUTF8: Couldn't get buffer size - guessing!"));
-    wcLen = sizeof(StringX::value_type) * (utf8Len + 1);
+    wcLen = static_cast<unsigned int>(sizeof(StringX::value_type) * (utf8Len + 1));
   }
   // Allocate buffer (if previous allocation was smaller)
   if (wcLen > m_wcMaxLen) {
@@ -129,7 +129,7 @@ bool CUTF8Conv::FromUTF8(const unsigned char *utf8, int utf8Len,
     m_wcMaxLen = wcLen;
   }
   // next translate to buffer
-  wcLen = pws_os::mbstowcs(m_wc, wcLen, reinterpret_cast<const char *>(utf8), size_t(-1));
+  wcLen = static_cast<unsigned int>(pws_os::mbstowcs(m_wc, wcLen, reinterpret_cast<const char *>(utf8), size_t(-1)));
 #ifdef _WIN32
   if (wcLen == 0) {
     DWORD errCode = GetLastError();
@@ -143,11 +143,11 @@ bool CUTF8Conv::FromUTF8(const unsigned char *utf8, int utf8Len,
     case ERROR_NO_UNICODE_TRANSLATION:
       // try to recover
       pws_os::Trace0(_T("NO UNICODE TRANSLATION"));
-      wcLen = MultiByteToWideChar(CP_ACP,        // code page
+      wcLen = static_cast<size_t>(MultiByteToWideChar(CP_ACP,        // code page
                                   0,             // character-type options
                                   LPSTR(utf8),   // string to map
                                   -1,            // -1 means null-terminated
-                                  m_wc, wcLen);  // output buffer
+                                  m_wc, wcLen));  // output buffer
       if (wcLen > 0) {
         pws_os::Trace0(_T("FromUTF8: recovery succeeded!"));
       }

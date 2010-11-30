@@ -155,9 +155,9 @@ bool PWSGridTable::DeleteRows(size_t pos, size_t numRows)
   if (GetView()) {
     //This will actually remove the item from grid display
     wxGridTableMessage msg(this,
-                            wxGRIDTABLE_NOTIFY_ROWS_DELETED,
-                            pos,
-                            numRows);
+                           wxGRIDTABLE_NOTIFY_ROWS_DELETED,
+                           reinterpret_cast<int &>(pos),
+                           reinterpret_cast<int &>(numRows));
     GetView()->ProcessTableMessage(msg);
   }
     
@@ -169,7 +169,7 @@ bool PWSGridTable::AppendRows(size_t numRows/*=1*/)
   if (GetView()) {
     wxGridTableMessage msg(this,
                            wxGRIDTABLE_NOTIFY_ROWS_APPENDED,
-                           numRows);
+                           reinterpret_cast<int &>(numRows));
     GetView()->ProcessTableMessage(msg);
   }
   return true;
@@ -180,8 +180,8 @@ bool PWSGridTable::InsertRows(size_t pos/*=0*/, size_t numRows/*=1*/)
   if (GetView()) {
     wxGridTableMessage msg(this,
                            wxGRIDTABLE_NOTIFY_ROWS_INSERTED,
-                           pos,
-                           numRows);
+                           reinterpret_cast<int &>(pos),
+                           reinterpret_cast<int &>(numRows));
     GetView()->ProcessTableMessage(msg);
   }
   return true;

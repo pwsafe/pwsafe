@@ -247,7 +247,7 @@ void COptionsMisc::OnEnableHotKey()
 void COptionsMisc::OnComboChanged()
 {
   int nIndex = m_dblclk_cbox.GetCurSel();
-  m_doubleclickaction = m_dblclk_cbox.GetItemData(nIndex);
+  m_doubleclickaction = (int)m_dblclk_cbox.GetItemData(nIndex);
 }
 
 void COptionsMisc::OnUsedefuser()

@@ -443,7 +443,7 @@ BOOL CAddEdit_Additional::OnApply()
       CString cs_errmsg;
       cs_errmsg.Format(IDS_RUN_ERRORMSG, (int)st_column, errmsg.c_str());
       cs_errmsg += cs_temp;
-      int rc = gmb.MessageBox(cs_errmsg, cs_title,
+      INT_PTR rc = gmb.MessageBox(cs_errmsg, cs_title,
                            MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2);
       if (rc == IDNO) {
         UpdateData(FALSE);

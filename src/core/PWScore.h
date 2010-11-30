@@ -365,13 +365,13 @@ private:
   
   StringX GetPassKey() const; // returns cleartext - USE WITH CARE
   // Following used by SetPassKey
-  void EncryptPassword(const unsigned char *plaintext, int len,
+  void EncryptPassword(const unsigned char *plaintext, size_t len,
                        unsigned char *ciphertext) const;
 
   StringX m_currfile; // current pw db filespec
 
   unsigned char *m_passkey; // encrypted by session key
-  unsigned int m_passkey_len; // Length of cleartext passkey
+  size_t m_passkey_len; // Length of cleartext passkey
 
   static unsigned char m_session_key[20];
   static unsigned char m_session_salt[20];

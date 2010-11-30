@@ -25,7 +25,7 @@ wishing to compile PasswordSafe for Windows. Linux developers should read the fi
 <p>There are several 'degrees of freedom' for Windows developers:</p>
 
 <ol>
-<li>Development tools:&nbsp;Microsoft's Visual Studio <i>2010</i>
+<li>Development tools: Microsoft's Visual Studio <i>2010</i>
 (referred to as 'VS2010' below) is currently the main development
 environment, although Visual Studio 2005 (MSVS8) is currently also
 supported. Visual Studio 2008 (MSVS9) should also work. See note below
@@ -39,21 +39,39 @@ The curently supported version of PasswordSafe for Windows is built using the
 Microsoft XML parser. </li>
 </ol>
 
-<p>Note regarding Visual Express: The MFC version of PasswordSafe currently
-<span style="font-weight: bold;">cannot </span>be built using Visual Express,
+<p>Note regarding Visual Express: The MFC version of PasswordSafe
+<span style="font-weight: bold;">cannot</span> be built using Visual Express,
 as Microsoft does not provide MFC support in this product. It should, however,
 be possible to build the wxWidgets version.</p>
 
 <p>To summarise: The 'official' version of PasswordSafe on Windows
-platforms is based on&nbsp;MFC (Microsoft's Foundation Classes), and
-uses&nbsp;Microsoft's XML parser. This&nbsp;corresponds to the <i>ReleaseM</i>
+platforms is based on MFC (Microsoft's Foundation Classes), and
+uses Microsoft's XML parser. This corresponds to the <i>ReleaseM</i>
 configuration in the build environment, i.e., the release build using Microsoft's
 XML parser.  This will build the required DLLs using their Release configuration
 (pws_at.dll for AutoType support and pws_osk.dll for the Virtual Keyboard) and
 the base resource DLL (pwsafe_base.dll used to create non-English language support).</p>
 
+<p>The Visual Studio 2010 projects have been updated to be able to generate the 64-bit
+versions of both the MFC and wxWidgets. <b>This has only been tested on a 64-bit Windows
+environment with the VC10 64-bit compiler.  It has not been tested on a 32-bit Windows
+environment with a cross-compiler.</b> For wxWidgets, you will need the 64-bit static
+libraries and they should be placed in a new diretory 'lib64\vc10_lib' corresponding to
+the current 'lib\vc10_lib' for the 32-bit versions.</p>
+
+<p>For each Configuration there is an associated platform. Unfortunately, Visual Studio
+adds all defined platforms to all defined configurations even if a particular combination
+is not valid. The supported combinations are:</p>
+<ul>
+<li>If the Configuration name <i>does not</i> end with '64', only platform "Win32" is supported.</li>
+<li>If the Configuration name <i>does</i> end with '64', only platform "x64" is supported.</li>
+</ul>
+<b><i>No other combinations are supported or have been tested.</i></b>
+
 <p>The current MFC configurations are:</p>
 
+<ul>
+<li>32-bit versions - platform Win32:</li>
 <ul>
 <li><b>Debug</b> - builds the debug version of the required DLLs (pws_at_D.dll and pws_osk_D.dll).
 This project is automatically selected when any of the debug builds below are selected.</li>
@@ -66,8 +84,24 @@ of the release builds below are selected.</li>
 <li><b>ReleaseX</b> - builds the release version using the Xerces XML parser</li>
 </ul>
 
+<li>64-bit versions - platform x64:</li>
+<ul>
+<li><b>Debug64</b> - builds the debug version of the required DLLs (pws_at_D.dll and pws_osk_D.dll).
+This project is automatically selected when any of the debug builds below are selected.</li>
+<li><b>DebugM64</b> - builds the debug version using the Microsoft XML parser</li>
+<li><b>DebugX64</b> - builds the debug version using the Xerces XML parser</li>
+<li><b>Release64</b> - builds the release version of the required DLLs (pws_at.dll and pws_osk.dll)
+and the resource DLL (pwsafe_base.dll). This project is automatically selected when any 
+of the release builds below are selected.</li>
+<li><b>ReleaseM64</b> - builds the release version using the Microsoft XML parser</li>
+<li><b>ReleaseX64</b> - builds the release version using the Xerces XML parser</li>
+</ul>
+</ul>
+
 <p>The current wxWidgets configurations are:</p>
 
+<ul>
+<li>32-bit versions - platform Win32:</li>
 <ul>
 <li><b>Debugwx</b> - builds the debug version without any XML parser</li>
 <li><b>DebugwxX</b> - builds the debug version using the Xerces XML parser</li>
@@ -75,7 +109,16 @@ of the release builds below are selected.</li>
 <li><b>ReleasewxX</b> - builds the release version using the Xerces XML parser</li>
 </ul>
 
-<p>Note that the corlib and os project files contain <i>all</i> of the above projects,
+<li>64-bit versions - platform x64:</li>
+<ul>
+<li><b>Debugwx64</b> - builds the debug version without any XML parser</li>
+<li><b>DebugwxX64</b> - builds the debug version using the Xerces XML parser</li>
+<li><b>Releasewx64</b> - builds the release version without any XML parser</li>
+<li><b>ReleasewxX64</b> - builds the release version using the Xerces XML parser</li>
+</ul>
+</ul>
+
+<p>Note that the core and os project files contain <i>all</i> of the above projects,
 even if you are only selecting one of the MFC or the wxWidget builds. You should not
 have to select them individually as selecting the main PasswordSafe 
 configuration will select the correct configuration for these projects.  You should
@@ -99,54 +142,54 @@ configuration file as follows:</p>
 
 <p>In the "[miscellany]" section, ensure the following variable is set to 'yes':</p>
 <pre>
-  enable-auto-props = yes<br>
+  enable-auto-props = yes
 </pre>
 
 <p>In the "[auto-props]" section, add the following if not already there:</p>
 <pre>
-  *.c = svn:eol-style=native<br>
-  *.cmd = svn:eol-style=native;svn:mime-type=text/plain<br>
-  *.cpp = svn:eol-style=native<br>
-  *.cs = svn:eol-style=native<br>
-  *.csproj = svn:eol-style=native<br>
-  *.dsp = svn:eol-style=CRLF<br>
-  *.dsw = svn:eol-style=CRLF<br>
-  *.h = svn:eol-style=native<br>
-  *.hhc = svn:eol-style=native<br>
-  *.hhk = svn:eol-style=native<br>
-  *.hpp = svn:eol-style=native<br>
-  *.html = svn:eol-style=native;svn:mime-type=text/html<br>
-  *.ico = svn:mime-type=image/x-icon<br>
-  *.in = svn:eol-style=native<br>
-  *.inc = svn:eol-style=native<br>
-  *.ini = svn:eol-style=native<br>
-  *.iss = svn:eol-style=native<br>
-  *.jpg = svn:mime-type=image/jpeg<br>
-  *.js = svn:eol-style=native<br>
-  *.linux = svn:eol-style=native<br>
-  *.manifest = svn:eol-style=CRLF<br>
-  *.nsi = svn:eol-style=CRLF<br>
-  *.pjd = svn:eol-style=native<br>
-  *.pl = svn:eol-style=native<br>
-  *.png = svn:mime-type=image/png<br>
-  *.po = svn:eol-style=native<br>
-  *.rc = svn:eol-style=native<br>
-  *.rc2 = svn:eol-style=native<br>
-  *.resx = svn:eol-style=native<br>
-  *.sh = svn:eol-style=native;svn:executable<br>
-  *.sln = svn:eol-style=CRLF<br>
-  *.txt = svn:eol-style=native;svn:mime-type=text/plain<br>
-  *.vbs = svn:eol-style=native<br>
-  *.vcproj = svn:eol-style=CRLF<br>
-  *.windows = svn:eol-style=native<br>
-  *.wxs = svn:eol-style=native<br>
-  *.xml = svn:eol-style=native;svn:mime-type=text/xml<br>
-  *.xpm = svn:mime-type=image/x-xpm<br>
-  *.xsd = svn:eol-style=native<br>
-  *.xsl = svn:eol-style=native<br>
-  LICENSE = svn:eol-style=native;svn:mime-type=text/plain<br>
-  Makefile = svn:eol-style=native;svn:mime-type=text/plain<br>
-  README = svn:eol-style=native;svn:mime-type=text/plain<br>
+  *.c = svn:eol-style=native
+  *.cmd = svn:eol-style=native;svn:mime-type=text/plain
+  *.cpp = svn:eol-style=native
+  *.cs = svn:eol-style=native
+  *.csproj = svn:eol-style=native
+  *.dsp = svn:eol-style=CRLF
+  *.dsw = svn:eol-style=CRLF
+  *.h = svn:eol-style=native
+  *.hhc = svn:eol-style=native
+  *.hhk = svn:eol-style=native
+  *.hpp = svn:eol-style=native
+  *.html = svn:eol-style=native;svn:mime-type=text/html
+  *.ico = svn:mime-type=image/x-icon
+  *.in = svn:eol-style=native
+  *.inc = svn:eol-style=native
+  *.ini = svn:eol-style=native
+  *.iss = svn:eol-style=native
+  *.jpg = svn:mime-type=image/jpeg
+  *.js = svn:eol-style=native
+  *.linux = svn:eol-style=native
+  *.manifest = svn:eol-style=CRLF
+  *.nsi = svn:eol-style=CRLF
+  *.pjd = svn:eol-style=native
+  *.pl = svn:eol-style=native
+  *.png = svn:mime-type=image/png
+  *.po = svn:eol-style=native
+  *.rc = svn:eol-style=native
+  *.rc2 = svn:eol-style=native
+  *.resx = svn:eol-style=native
+  *.sh = svn:eol-style=native;svn:executable
+  *.sln = svn:eol-style=CRLF
+  *.txt = svn:eol-style=native;svn:mime-type=text/plain
+  *.vbs = svn:eol-style=native
+  *.vcproj = svn:eol-style=CRLF
+  *.windows = svn:eol-style=native
+  *.wxs = svn:eol-style=native
+  *.xml = svn:eol-style=native;svn:mime-type=text/xml
+  *.xpm = svn:mime-type=image/x-xpm
+  *.xsd = svn:eol-style=native
+  *.xsl = svn:eol-style=native
+  LICENSE = svn:eol-style=native;svn:mime-type=text/plain
+  Makefile = svn:eol-style=native;svn:mime-type=text/plain
+  README = svn:eol-style=native;svn:mime-type=text/plain
 </pre>
 
 <p>(This file is ~/.subversion/config for Linux, and under Documents and
@@ -162,8 +205,10 @@ General Settings panel).</p>
 the Virtual Keyboard data, which is not normally necessary). Microsoft Visual Studio 2005
 (MSVS8) and 2008 are also supported, as described below. The VC10 Express compiler
 does <u>not</u> support Microsoft's Foundation Classes, which are used extensively
-within the current official Windows version.&nbsp;</p><p>The main (toplevel) Microsoft 
-Visual Studio 2010 solution file is pwsafe.sln. The MSVS8 version is pwsafe<span style="font-weight: bold;">8</span>.sln.
+within the current official Windows version.</p>
+
+<p>The main (toplevel) Microsoft Visual Studio 2010 solution file is pwsafe.sln. The
+MSVS8 version is pwsafe<span style="font-weight: bold;">8</span>.sln.
 Likewise, the other solution files in this project have "8" appended to the MSVS8 versions.</p>
 
 <p>In order to build the Windows version of PasswordSafe, you
@@ -228,13 +273,14 @@ and "$(VCInstallDir)PlatformSDK\lib" otherwise you may get warning messages
 compiling source members using BlockInput.</b></p>
 
 <p><b>Compiling using Visual Studio:</b> If you're using Microsoft's Visual
-Studio, the file&nbsp;"UserVariables.props" (for VS10) or "UserVariables.vsprops"
+Studio, the file "UserVariables.props" (for VS10) or "UserVariables.vsprops"
 (for VS8) <b><u><i>must</i></u></b> exist and describe the directories where
 the non-"Windows SDK" components have been installed. <b><u><i>The solution
 will not open correctly without this file being present</i></u></b>.
 For your convenience, we've included a simple Visual Basic script, "configure.vbs"
 (or "configure8.vbs" for VS8) in the src/ui/Windows directory, that you can
-run to generate the above file with the correct values.</p>
+run to generate the above file with the correct values.  These script will also
+prompt for the location of the 64-bit Xerces libraries for 64-bit builds.</p>
 
 <h3><a name="XML_Processing"></a>XML Processing</h3>
 
@@ -243,8 +289,9 @@ validation. For portability, we're now support the
 <a href="http://xerces.apache.org/xerces-c/" target="_blank">Xerces</a> XML
 libraries, which are available for non-Windows platforms.  We recommend the
 latest version (currently 3.1.1 as of April 2010), as they
-supply pre-built Windows binaries using the VS2005 (VC8) and VC9 and VC10
-compilers.</p>
+supply pre-built Windows binaries using the VS2005 (VC8) and VS2008 (VC9) and
+VS2010 (VC10) compilers. <b>Note: for 64-bit Xerces builds, you must use the 64-bit
+versions of the Xerces libraries.</b></p>
 
 <p>To determine which XML library to use while building PasswordSafe,
 we've defined a pre-processor variable (USE_XML_LIBRARY). If <u>NOT</u>

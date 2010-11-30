@@ -24,9 +24,9 @@ public:
   ~CUTF8Conv();
   // In following, char * is managed internally. Caller must NOT
   // allocate or deallocate it!
-  bool ToUTF8(const StringX &data, const unsigned char *&utf8, int &utf8Len);
+  bool ToUTF8(const StringX &data, const unsigned char *&utf8, size_t &utf8Len);
   // In following, char * is managed by caller.
-  bool FromUTF8(const unsigned char *utf8, int utf8Len, StringX &data);
+  bool FromUTF8(const unsigned char *utf8, size_t utf8Len, StringX &data);
 
 private:
   CUTF8Conv(const CUTF8Conv &); // not supported

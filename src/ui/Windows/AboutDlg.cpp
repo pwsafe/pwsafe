@@ -135,7 +135,7 @@ void CAboutDlg::CheckNewVer()
   if (pDbx->GetNumEntries() != 0) {
     const CString cs_txt(MAKEINTRESOURCE(IDS_CLOSE_B4_CHECK));
     const CString cs_title(MAKEINTRESOURCE(IDS_CONFIRM_CLOSE));
-    int rc = gmb.MessageBox(cs_txt, cs_title,
+    INT_PTR rc = gmb.MessageBox(cs_txt, cs_title,
                         (MB_OKCANCEL | MB_ICONQUESTION));
     if (rc == IDCANCEL)
       return; // no hard feelings

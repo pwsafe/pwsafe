@@ -324,7 +324,7 @@ void CEditExtn::OnContextMenu(CWnd* pWnd, CPoint point)
   menu.InsertMenu(iPos++, MF_BYPOSITION | MF_SEPARATOR);
 
   for (size_t i = 0; i < m_vmenu_items.size(); i++) {
-      menu.InsertMenu(i + iPos, MF_BYPOSITION | m_vmenu_items[i].flags,
+      menu.InsertMenu((int)i + iPos, MF_BYPOSITION | m_vmenu_items[i].flags,
                       m_vmenu_items[i].message_number,
                       m_vmenu_items[i].menu_string.c_str());
   }

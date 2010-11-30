@@ -252,7 +252,7 @@ void CDDStatic::OnLButtonUp(UINT nFlags, CPoint point)
   CStatic::OnLButtonUp(nFlags, point);
 }
 
-void CDDStatic::OnTimer(UINT nIDEvent)
+void CDDStatic::OnTimer(UINT_PTR nIDEvent)
 {
   if (nIDEvent == TIMER_DRAGBAR)  {
     POINT pt;
@@ -448,7 +448,7 @@ BOOL CDDStatic::OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
       return FALSE;
   }
 
-  const int ilen = cs_dragdata.length();
+  const size_t ilen = cs_dragdata.length();
   if (ilen == 0) {
     // Nothing to do - why were we even called???
     return FALSE;
@@ -460,7 +460,7 @@ BOOL CDDStatic::OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
 
   if (lpFormatEtc->cfFormat == CF_UNICODETEXT) {
     // So is requested data!
-    dwBufLen = (ilen + 1) * sizeof(wchar_t);
+    dwBufLen = (DWORD)((ilen + 1) * sizeof(wchar_t));
     lpszW = new WCHAR[ilen + 1];
     pws_os::Trace(L"lpszW allocated %p, size %d\n", lpszW, dwBufLen);
 #if (_MSC_VER >= 1400)

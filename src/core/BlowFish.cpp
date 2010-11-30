@@ -407,8 +407,8 @@ BlowFish::~BlowFish()
 {
   // trashMemory((unsigned char*)tempbf_P, 18*4);
   // trashMemory((unsigned char*)tempbf_S, 256*4);
-  trashMemory(reinterpret_cast<unsigned char*>(bf_P), sizeof(bf_P));
-  trashMemory(reinterpret_cast<unsigned char*>(bf_S), sizeof(bf_S));
+  trashMemory(reinterpret_cast<unsigned char *>(bf_P), sizeof(bf_P));
+  trashMemory(reinterpret_cast<unsigned char *>(bf_S), sizeof(bf_S));
 }
 
 void BlowFish::Encrypt(const unsigned char *in, unsigned char *out)
@@ -416,8 +416,8 @@ void BlowFish::Encrypt(const unsigned char *in, unsigned char *out)
   for (int x=0; x<8; x++)
     out[x] = in[x];
 
-  Blowfish_encipher(reinterpret_cast<unsigned long*>(out),
-    reinterpret_cast<unsigned long*>(out+sizeof(unsigned long)));
+  Blowfish_encipher(reinterpret_cast<unsigned long *>(out),
+    reinterpret_cast<unsigned long *>(out + sizeof(unsigned long)));
 }
 
 void BlowFish::Decrypt(const unsigned char *in, unsigned char *out)
@@ -425,8 +425,8 @@ void BlowFish::Decrypt(const unsigned char *in, unsigned char *out)
   for (int x=0; x<8; x++)
     out[x] = in[x];
 
-  Blowfish_decipher(reinterpret_cast<unsigned long*>(out),
-    reinterpret_cast<unsigned long*>(out+sizeof(unsigned long)));
+  Blowfish_decipher(reinterpret_cast<unsigned long *>(out),
+    reinterpret_cast<unsigned long *>(out + sizeof(unsigned long)));
 }
 
 /*

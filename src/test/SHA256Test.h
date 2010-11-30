@@ -43,9 +43,9 @@ public:
       },
     };
 
-    int i;
+    size_t i;
     unsigned char tmp[32];
-    for (i = 0; i < (int)(sizeof(tests) / sizeof(tests[0])); i++) {
+    for (i = 0; i < (sizeof(tests) / sizeof(tests[0])); i++) {
       SHA256 md;
       md.Update( (unsigned char*)tests[i].msg,
         (unsigned long)strlen(tests[i].msg));

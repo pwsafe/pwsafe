@@ -413,7 +413,7 @@ StringX CPasswordCharPool::MakePronounceable() const
 bool CPasswordCharPool::CheckPassword(const StringX &pwd, StringX &error)
 {
   const int MinLength = 8;
-  int length = pwd.length();
+  size_t length = pwd.length();
   // check for minimun length
   if (length < MinLength) {
     LoadAString(error, IDSC_PASSWORDTOOSHORT);
@@ -423,7 +423,7 @@ bool CPasswordCharPool::CheckPassword(const StringX &pwd, StringX &error)
   // check for at least one  uppercase and lowercase and  digit or other
   bool has_uc = false, has_lc = false, has_digit = false, has_other = false;
 
-  for (int i = 0; i < length; i++) {
+  for (size_t i = 0; i < length; i++) {
     charT c = pwd[i];
     if (_istlower(c)) has_lc = true;
     else if (_istupper(c)) has_uc = true;

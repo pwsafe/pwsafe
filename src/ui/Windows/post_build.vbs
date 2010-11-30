@@ -69,7 +69,7 @@ Set objFSO = CreateObject("Scripting.FileSystemObject")
 strConfigLC = LCase(strConfig)
 
 Select Case strConfigLC
-  Case "debug", "release"
+  Case "debug", "release", "debug64", "release64"
     ' No action required
     rc = -1
   Case "debugm", "debugx"
@@ -82,8 +82,28 @@ Select Case strConfigLC
       Set objInfile = objFSO.GetFile(strInfile)
     End If
     strOutfile = strOutDir & "\" & strDLL
+  Case "debugm64", "debugx64"
+    strInDir = Replace(strOutDir, strConfig , "Debug64")
+    strDLL = "pws_" & strWhichDLL & "_D.dll"
+    strInfile = strInDir & "\" & strDLL
+    If Not objFSO.FileExists(strInfile) Then
+    	rc = 3
+    Else
+      Set objInfile = objFSO.GetFile(strInfile)
+    End If
+    strOutfile = strOutDir & "\" & strDLL
   Case "demo", "releasem", "releasex"
     strInDir = Replace(strOutDir, strConfig , "Release")
+    strDLL = "pws_" & strWhichDLL & ".dll"
+    strInfile = strInDir & "\" & strDLL
+    If Not objFSO.FileExists(strInfile) Then
+    	rc = 4
+    Else
+      Set objInfile = objFSO.GetFile(strInfile)
+    End If
+    strOutfile = strOutDir & "\" & strDLL
+  Case "demo64", "releasem64", "releasex64"
+    strInDir = Replace(strOutDir, strConfig , "Release64")
     strDLL = "pws_" & strWhichDLL & ".dll"
     strInfile = strInDir & "\" & strDLL
     If Not objFSO.FileExists(strInfile) Then
@@ -161,7 +181,7 @@ Set objFSO = CreateObject("Scripting.FileSystemObject")
 strConfigLC = LCase(strConfig)
 
 Select Case strConfigLC
-  Case "debug", "release"
+  Case "debug", "release", "debug64", "release64"
     ' No action required
     rc = -1
   Case "debugm", "debugx"
@@ -174,8 +194,28 @@ Select Case strConfigLC
       Set objInfile = objFSO.GetFile(strInfile)
     End If
     strOutfile = strOutDir & "\" & strPDB
+  Case "debugm64", "debugx64"
+    strInDir = Replace(strOutDir, strConfig , "Debug64")
+    strPDB = "pws_" & strWhichPDB & "_D.pdb"
+    strInfile = strInDir & "\" & strPDB
+    If Not objFSO.FileExists(strInfile) Then
+    	rc = 3
+    Else
+      Set objInfile = objFSO.GetFile(strInfile)
+    End If
+    strOutfile = strOutDir & "\" & strPDB
   Case "demo", "releasem", "releasex"
     strInDir = Replace(strOutDir, strConfig , "Release")
+    strPDB = "pws_" & strWhichPDB & ".pdb"
+    strInfile = strInDir & "\" & strPDB
+    If Not objFSO.FileExists(strInfile) Then
+    	rc = 4
+    Else
+      Set objInfile = objFSO.GetFile(strInfile)
+    End If
+    strOutfile = strOutDir & "\" & strPDB
+  Case "demo64", "releasem64", "releasex64"
+    strInDir = Replace(strOutDir, strConfig , "Release64")
     strPDB = "pws_" & strWhichPDB & ".pdb"
     strInfile = strInDir & "\" & strPDB
     If Not objFSO.FileExists(strInfile) Then

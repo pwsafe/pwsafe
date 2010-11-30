@@ -63,9 +63,10 @@ public:
     TwoFish *tf;
 
     unsigned char tmp[2][16];
-    int i, y;
+    size_t i;
+    int y;
 
-    for (i = 0; i < (int)(sizeof(tests)/sizeof(tests[0])); i++) {
+    for (i = 0; i < (int)(sizeof(tests) / sizeof(tests[0])); i++) {
       tf = new TwoFish(tests[i].key, tests[i].keylen);
 
       tf->Encrypt(tests[i].pt, tmp[0]);

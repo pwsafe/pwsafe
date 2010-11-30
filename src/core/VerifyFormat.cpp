@@ -135,7 +135,7 @@ bool VerifyASCDateTimeString(const stringT &time_str, time_t &t)
   if (iMON == stringT::npos)
     return false;
 
-  mon = (iMON / 3) + 1;
+  mon = ((reinterpret_cast<int &>(iMON) / 3) + 1);
 
   if (!verifyDTvalues(yyyy, mon, dd, hh, min, ss))
     return false;
@@ -293,7 +293,8 @@ int VerifyImportPWHistoryString(const StringX &PWHistory,
   //    !yyyy/mm/dd!hh:mm:ss! may be !1970-01-01 00:00:00! meaning unknown
 
   stringT buffer;
-  int ipwlen, pwleft = 0, s = -1, m = -1, n = -1;
+  size_t ipwlen, pwleft = 0;
+  int s = -1, m = -1, n = -1;
   int rc = PWH_OK;
   time_t t;
 
@@ -306,7 +307,7 @@ int VerifyImportPWHistoryString(const StringX &PWHistory,
   StringX pwh(PWHistory);
   StringX tmp;
   const TCHAR *lpszPWHistory = NULL;
-  int len = pwh.length();
+  size_t len = pwh.length();
 
   if (len < 5) {
     rc = PWH_INVALID_HDR;

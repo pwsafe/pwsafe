@@ -36,9 +36,9 @@ size_t pws_os::wcstombs(char *dst, size_t maxdstlen,
     dst = NULL; maxdstlen = 0; // resolve ambiguity
   }
 
-  size_t retval = WideCharToMultiByte(codePage, 0,
-                                      src, srclen, dst, maxdstlen,
-                                      NULL, NULL);
+  size_t retval = static_cast<size_t>(WideCharToMultiByte(codePage, 0,
+                                      src, (int)srclen, dst, (int)maxdstlen,
+                                      NULL, NULL));
   if (retval == 0) {
     pws_os::Trace0(_T("WideCharToMultiByte failed: "));
     switch (GetLastError()) {
@@ -74,6 +74,6 @@ size_t pws_os::mbstowcs(wchar_t *dst, size_t maxdstlen,
     dst = NULL; maxdstlen = 0; // resolve ambiguity
   }
   return MultiByteToWideChar(codePage, flags,
-                             src, srclen,
-                             dst, maxdstlen);
+                             src, reinterpret_cast<int &>(srclen),
+                             dst, reinterpret_cast<int &>(maxdstlen));
 }

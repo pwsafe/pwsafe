@@ -360,7 +360,7 @@ do_edit:
       CGeneralMsgBox gmb;
       CString cs_msg(MAKEINTRESOURCE(IDS_REPLACEFILTER));
       CString cs_title(MAKEINTRESOURCE(IDS_FILTEREXISTS));
-      int rc = gmb.MessageBox(cs_msg, cs_title, MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2);
+      INT_PTR rc = gmb.MessageBox(cs_msg, cs_title, MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2);
       // If NO, go to edit again!  Not best practice to jump out of loop
       // to prior call!
       if (rc == IDNO)
@@ -425,7 +425,7 @@ do_edit:
         CGeneralMsgBox gmb;
         CString cs_msg(MAKEINTRESOURCE(IDS_REPLACEFILTER));
         CString cs_title(MAKEINTRESOURCE(IDS_FILTEREXISTS));
-        int rc = gmb.MessageBox(cs_msg, cs_title, MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2);
+        INT_PTR rc = gmb.MessageBox(cs_msg, cs_title, MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2);
         // If NO, go to edit again!  Not best practice to jump out of loop
         // to prior call!
         if (rc == IDNO)
@@ -491,7 +491,7 @@ void CManageFiltersDlg::OnFilterCopy()
       CGeneralMsgBox gmb;
       CString cs_msg(MAKEINTRESOURCE(IDS_REPLACEFILTER));
       CString cs_title(MAKEINTRESOURCE(IDS_FILTEREXISTS));
-      int rc = gmb.MessageBox(cs_msg, cs_title, MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2);
+      INT_PTR rc = gmb.MessageBox(cs_msg, cs_title, MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2);
       if (rc == IDNO)
         continue;  // skip this one
 
@@ -909,7 +909,7 @@ void CManageFiltersDlg::OnCustomDraw(NMHDR* pNotifyStruct, LRESULT* pResult)
   NMLVCUSTOMDRAW* pLVCD = reinterpret_cast<NMLVCUSTOMDRAW *>(pNotifyStruct);
 
   *pResult = CDRF_DODEFAULT;
-  const int iItem = pLVCD->nmcd.dwItemSpec;
+  const int iItem = (int)pLVCD->nmcd.dwItemSpec;
   const int iSubItem = pLVCD->iSubItem;
 
   bool bCopy(false), bExport(false), bActive(false);

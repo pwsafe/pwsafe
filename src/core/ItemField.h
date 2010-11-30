@@ -34,21 +34,21 @@ public:
   CItemField &operator=(const CItemField &that);
 
   void Set(const StringX &value, BlowFish *bf);
-  void Set(const unsigned char* value, unsigned int length, BlowFish *bf);
+  void Set(const unsigned char* value, size_t length, BlowFish *bf);
 
   void Get(StringX &value, BlowFish *bf) const;
-  void Get(unsigned char *value, unsigned int &length, BlowFish *bf) const;
+  void Get(unsigned char *value, size_t &length, BlowFish *bf) const;
   unsigned char GetType() const {return m_Type;}
-  unsigned int GetLength() const {return m_Length;}
+  size_t GetLength() const {return m_Length;}
   bool IsEmpty() const {return m_Length == 0;}
   void Empty();
 
 private:
   //Number of 8 byte blocks needed for size
-  int GetBlockSize(int size) const;
+  size_t GetBlockSize(size_t size) const;
 
   unsigned char m_Type; // const except for assignment operator
-  unsigned int m_Length;
+  size_t m_Length;
   unsigned char *m_Data;
 };
 
