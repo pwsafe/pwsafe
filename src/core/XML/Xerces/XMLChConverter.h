@@ -30,7 +30,7 @@ struct _XMLChDeallocator {
   XMLCh* WChar2Xml(const wchar_t* ws) {
     CUTF8Conv conv;
     const unsigned char* data;
-    int len;
+    size_t len;
     if (conv.ToUTF8(StringX(ws), data, len)) { //conv would release data
       const char* utf8str = reinterpret_cast<const char *>(data);
       XMLCh* newstr = XMLString::transcode(utf8str);

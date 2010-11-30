@@ -345,7 +345,7 @@ StringX PWSAuxParse::GetAutoTypeString(const StringX &sx_in_autotype,
             // Send the lot
             sxtmp += sx_notes;
           } else
-          if (line_number <= static_cast<int>(vsxnotes_lines.size())) {
+          if (line_number <= vsxnotes_lines.size()) {
             // User specifies a too big a line number - ignore the lot
             sxtmp += vsxnotes_lines[line_number - 1];
           }
