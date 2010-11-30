@@ -28,6 +28,8 @@ None
 
 Bugs fixed in 3.24
 ==================
+[3121006] Can now change number of databases remembered independently of the
+value of the number of last used entries remembered in System Tray menu. 
 [3084401] When database is locked, clipboard is cleared and the hotkey works.
 [3069250] PasswordSafe now remembers the selected entry on Lock After Idle.
 [3065827] Uninstall fails gracefully when invoked with pwsafe running.
