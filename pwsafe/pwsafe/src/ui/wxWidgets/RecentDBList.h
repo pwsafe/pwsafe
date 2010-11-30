@@ -42,7 +42,7 @@ public:
       for (size_t idx = 0, max = GetCount(); idx < max; ++idx) {
         mruList.push_back(stringT(GetHistoryFile(idx)));
       }
-      PWSprefs::GetInstance()->SetMRUList(&mruList[0], mruList.size(), 
+      PWSprefs::GetInstance()->SetMRUList(&mruList[0], static_cast<int>(mruList.size()), 
                   PWSprefs::GetInstance()->GetPref(PWSprefs::MaxMRUItems));
     }
     

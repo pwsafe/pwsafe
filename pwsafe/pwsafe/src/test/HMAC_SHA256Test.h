@@ -183,9 +183,9 @@ public:
       }
     };
 
-    int i;
+    size_t i;
     unsigned char tmp[32];
-    for (i = 0; i < (int)(sizeof(tests) / sizeof(tests[0])); i++) {
+    for (i = 0; i < (sizeof(tests) / sizeof(tests[0])); i++) {
       HMAC_SHA256 md(tests[i].key, tests[i].keylen);
       md.Update(tests[i].data, tests[i].datalen);
       md.Final(tmp);

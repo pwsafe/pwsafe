@@ -318,7 +318,7 @@ INT_PTR CSHCTListCtrl::OnToolHitTest(CPoint point, TOOLINFO *pTI) const
 
 BOOL CSHCTListCtrl::OnToolTipText(UINT /*id*/, NMHDR * pNMHDR, LRESULT * pResult)
 {
-  UINT nID = pNMHDR->idFrom;
+  UINT_PTR nID = pNMHDR->idFrom;
 
   // check if this is the automatic tooltip of the control
   if (nID == 0) 

@@ -103,7 +103,7 @@ void CEBListCtrl::OnMouseMove(UINT nFlags, CPoint point)
 
 BOOL CEBListCtrl::OnToolTipText(UINT /*id*/, NMHDR * pNMHDR, LRESULT * pResult)
 {
-  UINT nID = pNMHDR->idFrom;
+  UINT_PTR nID = pNMHDR->idFrom;
   *pResult = 0;
 
   // check if this is the automatic tooltip of the control

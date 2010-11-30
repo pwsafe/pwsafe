@@ -562,11 +562,12 @@ LRESULT CCoolMenuManager::CMOnMenuChar(UINT nChar, UINT /* nFlags */, CMenu* pMe
   //   * if one:  execute it
   //   * if more than one: hilite next
   //
-  UINT nFound = arItemsMatched.GetSize();
+  size_t nFound = arItemsMatched.GetSize();
   if (nFound == 0)
     return 0;
 
-  else if (nFound == 1)
+  else
+  if (nFound == 1)
     return MAKELONG(arItemsMatched[0], MNC_EXECUTE);
 
   // more than one found--return 1st one past current selected item;

@@ -77,7 +77,7 @@ private:
 };
 
 struct st_context_menu {
-  int message_number;
+  UINT_PTR message_number;
   std::wstring menu_string;
   int flags;
 };
@@ -194,7 +194,7 @@ private:
 
   CComboBoxExtn *m_pCombo;
   CInfoDisplay *m_pLBToolTips;
-  UINT m_nHoverLBTimerID, m_nShowLBTimerID;
+  UINT_PTR m_nHoverLBTimerID, m_nShowLBTimerID;
   CPoint m_HoverLBPoint;
   int m_HoverLBnItem;
   bool m_bUseToolTips, m_bMouseInWindow;

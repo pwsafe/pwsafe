@@ -107,7 +107,7 @@ protected:
   virtual void CMOnInitMenuPopup(CMenu* pMenu, UINT nIndex, BOOL bSysMenu);
   virtual BOOL CMOnMeasureItem(LPMEASUREITEMSTRUCT lpms);
   virtual BOOL CMOnDrawItem(LPDRAWITEMSTRUCT lpds);
-  virtual LONG CMOnMenuChar(UINT nChar, UINT nFlags, CMenu* pMenu);
+  virtual LRESULT CMOnMenuChar(UINT nChar, UINT nFlags, CMenu* pMenu);
   virtual void CMOnMenuSelect(UINT nItemID, UINT nFlags, HMENU hSysMenu);
 };
 

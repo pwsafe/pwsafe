@@ -108,9 +108,9 @@ protected:
   void FOpen(); // calls right variant of m_fd = fopen(m_filename);
   virtual size_t WriteCBC(unsigned char type, const StringX &data) = 0;
   virtual size_t WriteCBC(unsigned char type, const unsigned char *data,
-                          unsigned int length);
+                          size_t length);
   virtual size_t ReadCBC(unsigned char &type, unsigned char* &data,
-                         unsigned int &length);
+                         size_t &length);
   const StringX m_filename;
   StringX m_passkey;
   FILE *m_fd;

@@ -127,7 +127,7 @@ LRESULT CPasswordSubsetDlg::OnDisplayStatus(WPARAM /* wParam */, LPARAM /* lPara
   int icurpos(0), lastpos;
   std::vector<int> vpos;
   CString resToken(m_subset);
-  const int ipwlengh = m_passwd.length();
+  const size_t ipwlengh = m_passwd.length();
 
   while (resToken != L"" && icurpos != -1) {
     lastpos = icurpos;

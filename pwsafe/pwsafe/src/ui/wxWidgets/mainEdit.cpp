@@ -100,7 +100,7 @@ void PasswordSafeFrame::OnDeleteClick( wxCommandEvent& /* evt */ )
   // If tree view, check if group selected
   if (m_tree->IsShown()) {
     wxTreeItemId sel = m_tree->GetSelection();
-    num_children = m_tree->GetChildrenCount(sel);
+    num_children = static_cast<int>(m_tree->GetChildrenCount(sel));
     if (num_children > 0) // ALWAYS confirm group delete
       dontaskquestion = false;
   }
@@ -481,7 +481,7 @@ void PasswordSafeFrame::DoAutotype(const StringX& sx_autotype,
   StringX sxautotype(sx_autotype);
   wchar_t curChar;
  
-  const int N = sxautotype.length();
+  const int N = static_cast<int>(sxautotype.length());
 
   //sleep for 1 second
   pws_os::sleep_ms(1000); // Karl Student's suggestion, to ensure focus set correctly on minimize.

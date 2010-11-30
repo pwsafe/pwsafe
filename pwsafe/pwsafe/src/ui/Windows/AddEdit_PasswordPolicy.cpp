@@ -159,31 +159,31 @@ BOOL CAddEdit_PasswordPolicy::OnInitDialog()
   pspin->SetBuddy(GetDlgItem(IDC_DEFPWLENGTH));
   pspin->SetRange(4, 1024);
   pspin->SetBase(10);
-  pspin->SetPos(m_pwdefaultlength);
+  pspin->SetPos((int)m_pwdefaultlength);
 
   pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_SPINDIGITS);
   pspin->SetBuddy(GetDlgItem(IDC_MINDIGITLENGTH));
   pspin->SetRange(0, 1024);
   pspin->SetBase(10);
-  pspin->SetPos(m_pwdigitminlength);
+  pspin->SetPos((int)m_pwdigitminlength);
 
   pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_SPINLOWERCASE);
   pspin->SetBuddy(GetDlgItem(IDC_MINLOWERLENGTH));
   pspin->SetRange(0, 1024);
   pspin->SetBase(10);
-  pspin->SetPos(m_pwlowerminlength);
+  pspin->SetPos((int)m_pwlowerminlength);
 
   pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_SPINSYMBOLS);
   pspin->SetBuddy(GetDlgItem(IDC_MINSYMBOLLENGTH));
   pspin->SetRange(0, 1024);
   pspin->SetBase(10);
-  pspin->SetPos(m_pwsymbolminlength);
+  pspin->SetPos((int)m_pwsymbolminlength);
 
   pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_SPINUPPERCASE);
   pspin->SetBuddy(GetDlgItem(IDC_MINUPPERLENGTH));
   pspin->SetRange(0, 1024);
   pspin->SetBase(10);
-  pspin->SetPos(m_pwupperminlength);
+  pspin->SetPos((int)m_pwupperminlength);
 
   // Disable controls based on m_ipolicy
   SetPolicyControls();
@@ -686,11 +686,11 @@ void CAddEdit_PasswordPolicy::SetPolicyFromVariables()
         (GetDlgItem(IDC_PRONOUNCEABLE)->IsWindowEnabled() == TRUE))
       M_pwp().flags |= PWSprefs::PWPolicyMakePronounceable;
 
-    M_pwp().length = m_pwdefaultlength;
-    M_pwp().digitminlength = m_pwdigitminlength;
-    M_pwp().lowerminlength = m_pwlowerminlength;
-    M_pwp().symbolminlength = m_pwsymbolminlength;
-    M_pwp().upperminlength = m_pwupperminlength;
+    M_pwp().length = (int)m_pwdefaultlength;
+    M_pwp().digitminlength = (int)m_pwdigitminlength;
+    M_pwp().lowerminlength = (int)m_pwlowerminlength;
+    M_pwp().symbolminlength = (int)m_pwsymbolminlength;
+    M_pwp().upperminlength = (int)m_pwupperminlength;
   }
 }
 

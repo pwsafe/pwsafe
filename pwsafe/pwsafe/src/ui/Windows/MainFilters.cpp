@@ -435,11 +435,11 @@ bool DboxMain::PassesPWHFiltering(const CItemData *pci,
           mt = PWSMatch::MT_BOOL;
           break;
         case HT_NUM:
-          iValue = pwhistlist.size();
+          iValue = (int)pwhistlist.size();
           mt = PWSMatch::MT_INTEGER;
           break;
         case HT_MAX:
-          iValue = pwh_max;
+          iValue = (int)pwh_max;
           mt = PWSMatch::MT_INTEGER;
           break;
         case HT_CHANGEDATE:

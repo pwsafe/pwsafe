@@ -611,7 +611,7 @@ void CGeneralMsgBox::CreateBtns()
 
   CRect rcDummy; // dimesion doesn't matter here
 
-  int cBtns = m_aBtns.GetSize();
+  INT_PTR cBtns = m_aBtns.GetSize();
 
   for (int i = 0; i < cBtns; ++i) {
     BTNDATA &btndata = m_aBtns[i];
@@ -689,7 +689,7 @@ void CGeneralMsgBox::UpdateLayout()
   xMsg += cxLeft;
 
   // Caching the minimum width needed for all buttons
-  int cBtns = m_aBtns.GetSize();
+  int cBtns = (int)m_aBtns.GetSize();
 
   int cxBtns = (cBtns - 1) * FromDlgX(m_aMetrics[CX_BTNS_SPACE]) +
                    cBtns * m_dimBtn.cx;

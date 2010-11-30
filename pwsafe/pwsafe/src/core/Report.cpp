@@ -124,7 +124,7 @@ bool CReport::SaveToDisk()
       // Write BOM
       putwc(iBOM, f_out);
 
-      UINT nBytesRead;
+      size_t nBytesRead;
       unsigned char inbuffer[4096];
       wchar_t outwbuffer[4096];
 

@@ -214,7 +214,7 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
         // _stscanf_s always outputs to an "int" using %x even though
         // target is only 1.  Read into larger buffer to prevent data being
         // overwritten and then copy to where we want it!
-        const int length = m_strElemContent.length();
+        const size_t length = m_strElemContent.length();
         // UNK_HEX_REP will represent unknown values
         // as hexadecimal, rather than base64 encoding.
         // Easier to debug.
@@ -222,7 +222,7 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
         size_t out_len = (length / 3) * 4 + 4;
         m_pfield = new unsigned char[out_len];
         PWSUtil::Base64Decode(m_strElemContent, m_pfield, out_len);
-        m_fieldlen = (int)out_len;
+        m_fieldlen = reinterpret_cast<int &>(out_len);
 #else
         m_fieldlen = length / 2;
         m_pfield = new unsigned char[m_fieldlen + sizeof(int)];
@@ -719,8 +719,9 @@ void XMLFileHandlers::AddEntries()
           PWSUtil::GetTimeStamp(stimestamp);
           pws_os::Trace(_T("Record %s, %s, %s has unknown field: %02x, length %d/0x%04x, value:\n",
                         cur_entry->group, cur_entry->title, cur_entry->username,
-                        unkrfe.uc_Type, (int)unkrfe.st_length, (int)unkrfe.st_length);
-          pws_os::HexDump(unkrfe.uc_pUField, (int)unkrfe.st_length, stimestamp);
+                        unkrfe.uc_Type, reinterpret_cast<int &>(unkrfe.st_length),
+                        reinterpret_cast<int &>(unkrfe.st_length));
+          pws_os::HexDump(unkrfe.uc_pUField, reinterpret_cast<int &>(unkrfe.st_length), stimestamp);
 #endif /* _DEBUG */
                         ci_temp.SetUnknownField(unkrfe.uc_Type, unkrfe.st_length,
                                                 (const unsigned char* &)unkrfe.uc_pUField);

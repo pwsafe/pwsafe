@@ -192,8 +192,8 @@ bool MFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
 #endif
     hr = pSAX2Reader->parseURL(wcURL);
 
-    if(!FAILED(hr)) {  // Check for parsing errors
-      if(pEH->bErrorsFound == TRUE) {
+    if (!FAILED(hr)) {  // Check for parsing errors
+      if (pEH->bErrorsFound == TRUE) {
         m_strXMLErrors = pEH->m_strValidationResult;
       } else {
         if (m_bValidation) {
@@ -229,7 +229,7 @@ bool MFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
         b_ok = true;
       }
     } else {
-      if(pEH->bErrorsFound == TRUE) {
+      if (pEH->bErrorsFound == TRUE) {
         m_strXMLErrors = pEH->m_strValidationResult;
       } else {
         Format(m_strXMLErrors, IDSC_MSXMLPARSEERROR, m_MSXML_Version, hr,

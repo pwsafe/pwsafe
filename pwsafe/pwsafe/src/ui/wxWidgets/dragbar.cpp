@@ -167,7 +167,7 @@ wxSize CDragBar::GetInvalidatedIconRange(const wxRect& rect)
       if (last == -1) {
         last = FindToolFromCoords(rect.GetTopRight() - wxSize(m_margins.GetWidth(), 0));
         if (last == -1)
-          last = m_items.size() - 1;
+          last = static_cast<int>(m_items.size() - 1);
       }
       
       return wxSize(first, last);
@@ -182,7 +182,7 @@ wxSize CDragBar::GetInvalidatedIconRange(const wxRect& rect)
       if (last == -1) {
         last = FindToolFromCoords(rect.GetBottomLeft() - wxSize(0, m_margins.GetHeight()));
         if (last == -1)
-          last = m_items.size() - 1;
+          last = static_cast<int>(m_items.size() - 1);
       }
         
       return wxSize(first, last);

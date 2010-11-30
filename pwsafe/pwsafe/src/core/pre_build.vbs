@@ -41,11 +41,11 @@ strConfigLC = LCase(strConfig)
 ' Rather than assume that wxWidgets or other non-MFC configurations and
 ' with 'wx', just use known MFC configurations
 Select Case strConfigLC
-  Case "debug", "release"
+  Case "debug", "release", "debug64", "release64"
     bMFC = true
-  Case "debugm", "debugx"
+  Case "debugm", "debugx", "debugm64", "debugx64"
     bMFC = true
-  Case "demo", "releasem", "releasex"
+  Case "demo", "releasem", "releasex", "demo64", "releasem64", "releasex64"
     bMFC = true
   Case Else
     bMFC = false

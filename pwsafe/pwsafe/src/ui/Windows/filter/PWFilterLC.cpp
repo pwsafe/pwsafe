@@ -1070,7 +1070,7 @@ void CPWFilterLC::DropDownCombo(const UINT nID)
       Fcbxdata_iter = std::find_if(vWCFcbx_data.begin(), vWCFcbx_data.end(), equal_ftype(ft));
       if (Fcbxdata_iter != vWCFcbx_data.end()) {
         cs_text = (*Fcbxdata_iter).cs_text;
-        index = Fcbxdata_iter - vWCFcbx_data.begin();
+        index = (int)(Fcbxdata_iter - vWCFcbx_data.begin());
       }
     }
     SetItemText(m_iItem, FLC_FLD_COMBOBOX, cs_text);
@@ -1864,7 +1864,7 @@ void CPWFilterLC::OnCustomDraw(NMHDR* pNotifyStruct, LRESULT* pResult)
   NMLVCUSTOMDRAW* pLVCD = reinterpret_cast<NMLVCUSTOMDRAW *>(pNotifyStruct);
 
   *pResult = CDRF_DODEFAULT;
-  const int iItem = pLVCD->nmcd.dwItemSpec;
+  const int iItem = (int)pLVCD->nmcd.dwItemSpec;
   const int iSubItem = pLVCD->iSubItem;
   const DWORD_PTR dwData = pLVCD->nmcd.lItemlParam;
   bool bFilterActive = (dwData & FLC_FILTER_ENABLED) == FLC_FILTER_ENABLED;
@@ -2081,7 +2081,7 @@ INT_PTR CPWFilterLC::OnToolHitTest(CPoint point, TOOLINFO *pTI) const
 
 BOOL CPWFilterLC::OnToolTipText(UINT /*id*/, NMHDR * pNMHDR, LRESULT * pResult)
 {
-  UINT nID = pNMHDR->idFrom;
+  UINT_PTR nID = pNMHDR->idFrom;
 
   // check if this is the automatic tooltip of the control
   if (nID == 0) 

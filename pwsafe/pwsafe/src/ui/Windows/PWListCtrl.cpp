@@ -329,7 +329,7 @@ void CPWListCtrl::OnCustomDraw(NMHDR *pNMHDR, LRESULT *pResult)
   static bool bchanged_item_font(false), bchanged_subitem_font(false);
   HFONT hfont;
   COLORREF cf;
-  int nItem = pNMLVCUSTOMDRAW->nmcd.dwItemSpec;
+  int nItem = (int)pNMLVCUSTOMDRAW->nmcd.dwItemSpec;
   CItemData *pci = (CItemData *)pNMLVCUSTOMDRAW->nmcd.lItemlParam;
 
   switch (pNMLVCUSTOMDRAW->nmcd.dwDrawStage) {

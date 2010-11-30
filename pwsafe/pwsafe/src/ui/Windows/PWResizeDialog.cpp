@@ -32,7 +32,7 @@ CPWResizeDialog::~CPWResizeDialog()
 void CPWResizeDialog::AddBtnsCtrlIDs(std::vector<UINT> viBottomButtons, int iFocus)
 {
   m_viBottomButtons = viBottomButtons;
-  m_numbtns = m_viBottomButtons.size();
+  m_numbtns = (int)m_viBottomButtons.size();
   if (iFocus < 0 || iFocus > m_numbtns - 1)
     m_iFocus = 0;
   else

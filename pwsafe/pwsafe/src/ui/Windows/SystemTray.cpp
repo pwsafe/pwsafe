@@ -672,7 +672,7 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
             continue;
           }
 
-          BOOL brc = SetupRecentEntryMenu(ppNewRecentEntryMenu[i], i, pci);
+          BOOL brc = SetupRecentEntryMenu(ppNewRecentEntryMenu[i], (int)i, pci);
           if (brc == 0) {
             pws_os::Trace(L"CSystemTray::OnTrayNotification: SetupRecentEntryMenu - ppNewRecentEntryMenu[%d] failed\n", i);
             continue;
@@ -684,7 +684,7 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
           // pos 2  = Note on missing fields in entry
           // pos 3  = Separator
           // pos 4+ = entries.....
-          irc = pMainRecentEntriesMenu->InsertMenu(i + 4, MF_BYPOSITION | MF_POPUP,
+          irc = pMainRecentEntriesMenu->InsertMenu((int)i + 4, MF_BYPOSITION | MF_POPUP,
                                                    UINT_PTR(ppNewRecentEntryMenu[i]->m_hMenu),
                                                    cEntry.c_str());
           if (irc == 0) {
@@ -695,7 +695,7 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
           pmd = new CRUEItemData;
           pmd->nImage = m_menulist[i].image; // Needed by OnInitMenuPopup
           miteminfo.dwItemData = (ULONG_PTR)pmd;
-          irc = pMainRecentEntriesMenu->SetMenuItemInfo(i + 4, &miteminfo, TRUE);
+          irc = pMainRecentEntriesMenu->SetMenuItemInfo((int)i + 4, &miteminfo, TRUE);
           if (irc == 0) {
             pws_os::Trace(L"CSystemTray::OnTrayNotification: SetMenuItemInfo(%d + 4) failed\n", i);
           }
@@ -722,7 +722,7 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
         if (ppNewRecentEntryMenu[i] == NULL)
           continue;
 
-        irc = pMainRecentEntriesMenu->GetMenuItemInfo(i + 4, &miteminfo, TRUE);
+        irc = pMainRecentEntriesMenu->GetMenuItemInfo((int)i + 4, &miteminfo, TRUE);
         if (irc == 0) {
           pws_os::Trace(L"CSystemTray::OnTrayNotification: GetMenuItemInfo(%d + 4) failed\n", i);
           continue;

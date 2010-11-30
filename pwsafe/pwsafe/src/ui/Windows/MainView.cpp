@@ -2900,7 +2900,7 @@ void DboxMain::OnViewReports()
     case IDS_RPTMERGE:
     case IDS_RPTSYNCH:
     case IDS_RPTVALIDATE:
-      uistring = rc;
+      uistring = (UINT)rc;
       break;
     default:
       return;
@@ -3750,7 +3750,7 @@ void DboxMain::OnShowUnsavedEntries()
     m_showunsavedfilter.vMfldata.push_back(fr);
     fr.estatus = CItemData::ES_MODIFIED;
     m_showunsavedfilter.vMfldata.push_back(fr);
-    m_showunsavedfilter.num_Mactive = m_showunsavedfilter.vMfldata.size();
+    m_showunsavedfilter.num_Mactive = (int)m_showunsavedfilter.vMfldata.size();
   }
 
   m_bFilterActive = !m_bFilterActive;

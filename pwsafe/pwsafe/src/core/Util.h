@@ -43,7 +43,7 @@ extern void trashMemory(LPTSTR buffer, size_t length);
 extern void burnStack(unsigned long len); // borrowed from libtomcrypt
 
 extern void ConvertString(const StringX &text,
-                          unsigned char *&txt, int &txtlen);
+                          unsigned char *&txt, size_t &txtlen);
 
 extern void GenRandhash(const StringX &passkey,
                         const unsigned char* m_randstuff,
@@ -58,7 +58,7 @@ extern size_t _readcbc(FILE *fp, unsigned char* &buffer,
                        size_t file_len = 0);
 
 // _writecbc will throw(EIO) iff a write fail occurs!
-extern size_t _writecbc(FILE *fp, const unsigned char* buffer, int length,
+extern size_t _writecbc(FILE *fp, const unsigned char* buffer, size_t length,
                         unsigned char type, Fish *Algorithm,
                         unsigned char* cbcbuffer);
 

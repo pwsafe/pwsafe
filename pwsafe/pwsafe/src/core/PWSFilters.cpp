@@ -56,7 +56,7 @@ static void GetFilterTestXML(const st_FilterRow &st_fldata,
 {
   CUTF8Conv utf8conv;
   const unsigned char *utf8 = NULL;
-  int utf8Len = 0;
+  size_t utf8Len = 0;
 
   const char *sztab4, *sztab5, *szendl;
   if (bFile) {
@@ -178,7 +178,7 @@ static string GetFilterXML(const st_filters &filters, bool bWithFormatting)
 
   CUTF8Conv utf8conv;
   const unsigned char *utf8 = NULL;
-  int utf8Len = 0;
+  size_t utf8Len = 0;
   const char *sztab1, *sztab2, *sztab3, *sztab4, *szendl;
   if (bWithFormatting) {
     sztab1 = "\t";
@@ -466,7 +466,7 @@ int PWSFilters::WriteFilterXMLFile(const StringX &filename,
 {
 #ifdef UNICODE
   CUTF8Conv conv;
-  int fnamelen;
+  size_t fnamelen;
   const unsigned char *fname = NULL;
   conv.ToUTF8(filename, fname, fnamelen); 
 #else
@@ -500,7 +500,7 @@ std::string PWSFilters::GetFilterXMLHeader(const StringX &currentfile,
 {
   CUTF8Conv utf8conv;
   const unsigned char *utf8 = NULL;
-  int utf8Len = 0;
+  size_t utf8Len = 0;
 
   ostringstream oss;
   StringX tmp;

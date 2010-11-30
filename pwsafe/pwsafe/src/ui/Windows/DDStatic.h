@@ -40,7 +40,7 @@ protected:
   //{{AFX_MSG(CDDStatic)
   afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
   afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
-  afx_msg void OnTimer(UINT nIDEvent);
+  afx_msg void OnTimer(UINT_PTR nIDEvent);
   afx_msg void OnMouseMove(UINT nFlags, CPoint point);
   afx_msg LRESULT OnMouseLeave(WPARAM, LPARAM);
   //}}AFX_MSG
@@ -67,7 +67,7 @@ private:
 
   CPoint m_StartPoint;
   bool m_bDropped;
-  UINT m_TimerID;
+  UINT_PTR m_TimerID;
   bool m_bMouseInClient;
 };
 

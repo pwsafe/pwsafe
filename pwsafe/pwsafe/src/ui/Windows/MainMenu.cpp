@@ -445,7 +445,7 @@ void DboxMain::UpdateAccelTable()
   CountShortcuts cntscs;
 
   // Add on space of 3 reserved shortcuts (Ctrl-Q, F4, F1)
-  numscs = std::count_if(m_MapMenuShortcuts.begin(), m_MapMenuShortcuts.end(),
+  numscs = (int)std::count_if(m_MapMenuShortcuts.begin(), m_MapMenuShortcuts.end(),
                          cntscs) + 3;
   // But take off 1 if there is a shprtcut for AutoType
   if (m_wpAutotypeKey != 0)
@@ -917,7 +917,7 @@ void DboxMain::OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL)
   }
 
   if (bDoShortcuts || minfo.dwMenuData == ID_EDITMENU || minfo.dwMenuData == ID_VIEWMENU)
-    CustomiseMenu(pPopupMenu, minfo.dwMenuData, bDoShortcuts);
+    CustomiseMenu(pPopupMenu, (UINT)minfo.dwMenuData, bDoShortcuts);
 
   // http://www4.ncsu.edu:8030/~jgbishop/codetips/dialog/updatecommandui_menu.html
   // This code comes from the MFC Documentation, and is adapted from

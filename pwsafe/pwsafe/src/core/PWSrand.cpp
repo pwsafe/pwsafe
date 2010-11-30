@@ -115,7 +115,7 @@ unsigned int PWSrand::RandUInt()
   // we don't want to keep filling the random buffer for each number we
   // want, so fill the buffer with random data and use it up
 
-  if( ibRandomData > ( SHA256::HASHLEN - sizeof( unsigned int ) ) ) {
+  if (ibRandomData > (SHA256::HASHLEN - sizeof(unsigned int))) {
     // no data left, refill the buffer
     GetRandomData(rgbRandomData, SHA256::HASHLEN);
     ibRandomData = 0;
@@ -133,10 +133,10 @@ unsigned int PWSrand::RandUInt()
 *  Returns a random number in the range 0 to (len-1).
 *  For example, RangeRand(256) returns a value from 0 to 255.
 */
-unsigned int PWSrand::RangeRand(unsigned int len)
+unsigned int PWSrand::RangeRand(size_t len)
 {
   unsigned int      r;
-  const unsigned int ceil = UINT_MAX - (UINT_MAX % len) - 1;
+  const size_t ceil = UINT_MAX - (UINT_MAX % len) - 1;
   while ((r = RandUInt()) > ceil)
     ;
   return(r%len);

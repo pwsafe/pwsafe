@@ -291,11 +291,11 @@ StringX PWSAuxParse::GetAutoTypeString(const StringX &sx_in_autotype,
     }
   }
 
-  const int N = sx_autotype.length();
+  const size_t N = sx_autotype.length();
   const StringX sxZeroes = _T("000");
   int gNumIts;
 
-  for (int n = 0; n < N; n++){
+  for (size_t n = 0; n < N; n++){
     curChar = sx_autotype[n];
     if (curChar == TCHAR('\\')) {
       n++;
@@ -332,7 +332,7 @@ StringX PWSAuxParse::GetAutoTypeString(const StringX &sx_in_autotype,
             sxtmp += sxNotes;
             break;
           }
-          int line_number(0);
+          size_t line_number(0);
           gNumIts = 0;
           for (n++; n < N && (gNumIts < 3); ++gNumIts, n++) {
             if (_istdigit(sx_autotype[n])) {
@@ -376,7 +376,7 @@ StringX PWSAuxParse::GetAutoTypeString(const StringX &sx_in_autotype,
           sxtmp += curChar;
 
           gNumIts = 0;
-          int i = n;
+          size_t i = n;
           for (i++; i < N && (gNumIts < 3); ++gNumIts, i++) {
             if (!_istdigit(sx_autotype[i]))
               break;
@@ -488,7 +488,7 @@ void PWSAuxParse::SendAutoTypeString(const StringX &sx_autotype,
     st_index = sxautotype.find(L"\\z", st_index + 1);
   }
 
-  const int N = sxautotype.length();
+  const size_t N = sxautotype.length();
   CKeySend ks(bForceOldMethod);
 
   // Turn off CAPSLOCK
@@ -505,8 +505,8 @@ void PWSAuxParse::SendAutoTypeString(const StringX &sx_autotype,
 
   pws_os::sleep_ms(1000); // Karl Student's suggestion, to ensure focus set correctly on minimize.
 
-  int gNumIts;
-  for (int n = 0; n < N; n++){
+  size_t gNumIts;
+  for (size_t n = 0; n < N; n++){
     curChar = sxautotype[n];
     if (curChar == L'\\') {
       n++;

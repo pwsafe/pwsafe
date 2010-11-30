@@ -57,7 +57,7 @@ using namespace std;
 static char THIS_FILE[] = __FILE__;
 #endif
 
-static void DisplayFileWriteError(int rc, const StringX &cs_newfile)
+static void DisplayFileWriteError(INT_PTR rc, const StringX &cs_newfile)
 {
   ASSERT(rc != PWScore::SUCCESS);
 
@@ -266,7 +266,7 @@ void DboxMain::OnNew()
 
 int DboxMain::New()
 {
-  int rc, rc2;
+  INT_PTR rc, rc2;
 
   if (!m_core.IsReadOnly() && m_core.IsChanged()) {
     CGeneralMsgBox gmb;
@@ -940,7 +940,7 @@ int DboxMain::CheckEmergencyBackupFiles(StringX sx_Filename, StringX &passkey)
 
   // Check if IDIGNORE > 0 (if < 0, then select nth entry of vValidEBackupfiles)
   if (dsprc > 0)
-    return dsprc;
+    return (int)dsprc;
 
   // User specified to open a recovery file instead
   // Close original - don't save anything
@@ -1122,7 +1122,7 @@ int DboxMain::SaveIfChanged()
   // not to save
   if (m_core.IsChanged() || m_core.HaveDBPrefsChanged()) {
     CGeneralMsgBox gmb;
-    int rc, rc2;
+    INT_PTR rc, rc2;
     CString cs_temp;
     cs_temp.Format(IDS_SAVEDATABASE, m_core.GetCurFile().c_str());
     rc = gmb.MessageBox(cs_temp, AfxGetAppName(),
@@ -3488,7 +3488,7 @@ void DboxMain::SavePreferencesOnExit()
 
 int DboxMain::SaveDatabaseOnExit(const SaveType saveType)
 {
-  int rc;
+  INT_PTR rc;
 
   if (saveType == ST_FAILSAFESAVE &&
       (m_core.IsChanged() || m_core.HaveDBPrefsChanged())) {
@@ -3513,7 +3513,7 @@ int DboxMain::SaveDatabaseOnExit(const SaveType saveType)
     cs_newfile = nf.c_str();
     cs_newfile += L".fbak";
     rc = m_core.WriteFile(cs_newfile.c_str());
-    return rc;
+    return (int)rc;
   }
 
   if (saveType == ST_NORMALEXIT) {

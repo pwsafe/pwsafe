@@ -147,7 +147,7 @@ DboxMain::DboxMain(CWnd* pParent)
   TCHAR szFileName[ MAX_PATH ];
   memset( szFileName, 0, MAX_PATH );
   GetSystemDirectory( szFileName, MAX_PATH );
-  int nLen = _tcslen( szFileName );
+  size_t nLen = _tcslen( szFileName );
   if (nLen > 0) {
     if (szFileName[ nLen - 1 ] != '\\')
       _tcscat_s( szFileName, MAX_PATH, L"\\" );
@@ -1797,7 +1797,7 @@ BOOL DboxMain::OnToolTipText(UINT,
   TOOLTIPTEXTW* pTTTW = (TOOLTIPTEXTW*)pNMHDR;
   wchar_t tc_FullText[4096];  // Maxsize of a string in a resource file
   CString cs_TipText;
-  UINT nID = pNMHDR->idFrom;
+  UINT nID = (UINT)pNMHDR->idFrom;
   if (pNMHDR->code == TTN_NEEDTEXTA && (pTTTA->uFlags & TTF_IDISHWND) ||
       pNMHDR->code == TTN_NEEDTEXTW && (pTTTW->uFlags & TTF_IDISHWND)) {
     // idFrom is actually the HWND of the tool
@@ -2492,7 +2492,7 @@ LRESULT DboxMain::OnEndSession(WPARAM wParam, LPARAM )
     m_iSessionEndingStatus = IDIGNORE;
   }
 
-  CDialog::OnEndSession(wParam);
+  CDialog::OnEndSession((BOOL)wParam);
   return 0L;
 }
 

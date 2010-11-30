@@ -25,7 +25,7 @@ public:
 
   unsigned int RandUInt(); // generate a random uint
   //  generate a random integer in [0, len)
-  unsigned int RangeRand(unsigned int len);
+  unsigned int RangeRand(size_t len);
 
 private:
   PWSrand(); // start with some minimal entropy

@@ -72,8 +72,24 @@ Select Case strConfigLC
       rc = 3
     End If
     strOutfile = strOutDir & "\" & strDLL
+  Case "debug64"
+    strInDir = Replace(strOutDir, strConfig , "Debug64")
+    strDLL = "pws_" & strWhichDLL & "_D.dll"
+    strInfile = strInDir & "\" & strDLL
+    If Not objFSO.FileExists(strInfile) Then
+      rc = 3
+    End If
+    strOutfile = strOutDir & "\" & strDLL
   Case "release"
     strInDir = Replace(strOutDir, strConfig , "Release")
+    strDLL = "pws_" & strWhichDLL & ".dll"
+    strInfile = strInDir & "\" & strDLL
+    If Not objFSO.FileExists(strInfile) Then
+      rc = 4
+    End If
+    strOutfile = strOutDir & "\" & strDLL
+  Case "release64"
+    strInDir = Replace(strOutDir, strConfig , "Release64")
     strDLL = "pws_" & strWhichDLL & ".dll"
     strInfile = strInDir & "\" & strDLL
     If Not objFSO.FileExists(strInfile) Then
@@ -100,6 +116,17 @@ Select Case strConfigLC
       strOutfile = strOutDir & "\" & strDLL
       Call CopyFile(strDLL, strInfile, strOutfile, "DebugX")
     End If
+  Case "debug64"
+    strOutDir = Replace(strOutDir, "\Debug64" , "\DebugM64")
+    If objFSO.FolderExists(strOutDir) Then
+      strOutfile = strOutDir & "\" & strDLL
+      Call CopyFile(strDLL, strInfile, strOutfile, "DebugM64")
+    End If
+    strOutDir = Replace(strOutDir, "\DebugM64" , "\DebugX64")
+    If objFSO.FolderExists(strOutDir) Then
+      strOutfile = strOutDir & "\" & strDLL
+      Call CopyFile(strDLL, strInfile, strOutfile, "DebugX64")
+    End If
   Case "release"
     strOutDir = Replace(strOutDir, "\Release" , "\Demo")
     If objFSO.FolderExists(strOutDir) Then
@@ -115,6 +142,22 @@ Select Case strConfigLC
     If objFSO.FolderExists(strOutDir) Then
       strOutfile = strOutDir & "\" & strDLL
       Call CopyFile(strDLL, strInfile, strOutfile, "ReleaseX")
+    End If
+  Case "release64"
+    strOutDir = Replace(strOutDir, "\Release64" , "\Demo64")
+    If objFSO.FolderExists(strOutDir) Then
+      strOutfile = strOutDir & "\" & strDLL
+      Call CopyFile(strDLL, strInfile, strOutfile, "Demo64")
+    End If
+    strOutDir = Replace(strOutDir, "\Demo64" , "\ReleaseM64")
+    If objFSO.FolderExists(strOutDir) Then
+      strOutfile = strOutDir & "\" & strDLL
+      Call CopyFile(strDLL, strInfile, strOutfile, "ReleaseM64")
+    End If
+    strOutDir = Replace(strOutDir, "\ReleaseM64" , "\ReleaseX64")
+    If objFSO.FolderExists(strOutDir) Then
+      strOutfile = strOutDir & "\" & strDLL
+      Call CopyFile(strDLL, strInfile, strOutfile, "ReleaseX64")
     End If
   Case Else
     rc = 5
@@ -170,8 +213,24 @@ Select Case strConfigLC
       rc = 3
     End If
     strOutfile = strOutDir & "\" & strPDB
+  Case "debug64"
+    strInDir = Replace(strOutDir, strConfig , "Debug64")
+    strPDB = "pws_" & strWhichPDB & "_D.pdb"
+    strInfile = strInDir & "\" & strPDB
+    If Not objFSO.FileExists(strInfile) Then
+      rc = 3
+    End If
+    strOutfile = strOutDir & "\" & strPDB
   Case "release"
     strInDir = Replace(strOutDir, strConfig , "Release")
+    strPDB = "pws_" & strWhichPDB & ".pdb"
+    strInfile = strInDir & "\" & strPDB
+    If Not objFSO.FileExists(strInfile) Then
+      rc = 4
+    End If
+    strOutfile = strOutDir & "\" & strPDB
+  Case "release64"
+    strInDir = Replace(strOutDir, strConfig , "Release64")
     strPDB = "pws_" & strWhichPDB & ".pdb"
     strInfile = strInDir & "\" & strPDB
     If Not objFSO.FileExists(strInfile) Then
@@ -193,11 +252,23 @@ Select Case strConfigLC
       strOutfile = strOutDir & "\" & strPDB
       Call CopyFile(strPDB, strInfile, strOutfile, "DebugM")
     End If
+  Case "debug64"
+    strOutDir = Replace(strOutDir, "\Debug64" , "\DebugM64")
+    If objFSO.FolderExists(strOutDir) Then
+      strOutfile = strOutDir & "\" & strPDB
+      Call CopyFile(strPDB, strInfile, strOutfile, "DebugM64")
+    End If
   Case "release"
     strOutDir = Replace(strOutDir, "\Release" , "\ReleaseM")
     If objFSO.FolderExists(strOutDir) Then
       strOutfile = strOutDir & "\" & strPDB
       Call CopyFile(strPDB, strInfile, strOutfile, "ReleaseM")
+    End If
+  Case "release64"
+    strOutDir = Replace(strOutDir, "\Release64" , "\ReleaseM64")
+    If objFSO.FolderExists(strOutDir) Then
+      strOutfile = strOutDir & "\" & strPDB
+      Call CopyFile(strPDB, strInfile, strOutfile, "ReleaseM64")
     End If
   Case Else
     rc = 5

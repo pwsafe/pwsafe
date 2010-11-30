@@ -60,7 +60,7 @@ private:
   UINT_PTR m_FindTimerID;
 
   // Notes Display
-  UINT m_nHoverNDTimerID, m_nShowNDTimerID;
+  UINT_PTR m_nHoverNDTimerID, m_nShowNDTimerID;
   CPoint m_HoverNDPoint;
   bool m_bShowNotes, m_bMouseInWindow;
 

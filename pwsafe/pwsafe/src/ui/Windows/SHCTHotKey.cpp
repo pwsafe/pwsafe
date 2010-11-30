@@ -46,7 +46,7 @@ void CSHCTHotKey::OnKillFocus(CWnd *pWnd)
 BOOL CSHCTHotKey::PreTranslateMessage(MSG* pMsg)
 {
   if (pMsg->message == WM_KEYDOWN || pMsg->message == WM_KEYUP) {
-    const UINT nChar = pMsg->wParam;
+    const UINT_PTR nChar = pMsg->wParam;
     if ((nChar == VK_RETURN && 
             (GetKeyState(VK_CONTROL) < 0 || GetKeyState(VK_MENU) < 0)) ||
         (nChar == VK_TAB &&

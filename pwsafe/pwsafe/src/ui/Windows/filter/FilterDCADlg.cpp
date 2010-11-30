@@ -133,7 +133,7 @@ BOOL CFilterDCADlg::OnInitDialog()
     m_cbxDCA.SetItemData(iItem, PWSprefs::DoubleClickSendEmail);
 
     for (int i = 0; i < m_cbxDCA.GetCount(); i++) {
-      int ival = m_cbxDCA.GetItemData(i);
+      DWORD_PTR ival = m_cbxDCA.GetItemData(i);
       m_DCA2selection[ival + 1] = i;  // Note: special case of '+ 1'
     }
   }

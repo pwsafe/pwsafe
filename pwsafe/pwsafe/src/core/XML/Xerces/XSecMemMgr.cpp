@@ -38,8 +38,8 @@ using namespace std;
 
 XERCES_CPP_NAMESPACE_BEGIN
 
-static const int header = max(sizeof(XMLSize_t), sizeof(XMLSize_t *));
-static const int offset = max((int)(header / sizeof(XMLSize_t *)), 1);
+static const int header = (int)max(sizeof(XMLSize_t), sizeof(XMLSize_t *));
+static const int offset = max((header / (int)sizeof(XMLSize_t *)), 1);
 
 #if XERCES_VERSION_MAJOR > 2
 void* XSecMemMgr::allocate(XMLSize_t size)

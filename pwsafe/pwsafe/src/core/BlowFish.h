@@ -31,7 +31,7 @@ class BlowFish : public Fish
 {
 public:
   static BlowFish *MakeBlowFish(const unsigned char *pass, int passlen,
-    const unsigned char *salt, int saltlen);
+                                const unsigned char *salt, int saltlen);
 
   enum {BLOCKSIZE = 8};
 

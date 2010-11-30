@@ -284,10 +284,10 @@ void AdvancedSelectionDlgBase::OnRemoveAll( wxCommandEvent& /* evt */ )
   wxASSERT(lbSelected);
 
   for(size_t itemsLeft = lbSelected->GetCount(), idx = 0; idx < itemsLeft; ) {
-      size_t which = reinterpret_cast<size_t>(lbSelected->GetClientData(idx));
+      size_t which = reinterpret_cast<size_t>(lbSelected->GetClientData(reinterpret_cast<unsigned int &>(idx)));
       if (!IsMandatoryField(fieldNames[which].type)) {
-        lbSelected->Delete(idx);
-        lbAvailable->Append(fieldNames[which].name, reinterpret_cast<void*>(which));
+        lbSelected->Delete(reinterpret_cast<unsigned int &>(idx));
+        lbAvailable->Append(fieldNames[which].name, reinterpret_cast<void *>(which));
         --itemsLeft;
       }
       else
