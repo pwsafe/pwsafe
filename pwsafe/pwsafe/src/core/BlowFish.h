@@ -35,7 +35,7 @@ public:
 
   enum {BLOCKSIZE = 8};
 
-  BlowFish(unsigned char* key, int keylen);
+  BlowFish(const unsigned char* key, int keylen);
   virtual ~BlowFish();
   virtual void Encrypt(const unsigned char *in, unsigned char *out);
   virtual void Decrypt(const unsigned char *in, unsigned char *out);
@@ -49,7 +49,7 @@ private:
   static const unsigned long tempbf_P[bf_N + 2];
   void Blowfish_encipher(unsigned long* xl, unsigned long* xr);
   void Blowfish_decipher(unsigned long* xl, unsigned long* xr);
-  void InitializeBlowfish(unsigned char key[], short keybytes);
+  void InitializeBlowfish(const unsigned char key[], short keybytes);
 };
 #endif /* __BLOWFISH_H */
 //-----------------------------------------------------------------------------

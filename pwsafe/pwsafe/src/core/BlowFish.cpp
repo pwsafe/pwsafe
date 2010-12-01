@@ -335,7 +335,7 @@ void BlowFish::Blowfish_decipher(unsigned long *xl,
   *xr = Xl.word;
 }
 
-void BlowFish::InitializeBlowfish(unsigned char key[],
+void BlowFish::InitializeBlowfish(const unsigned char key[],
                                   short keybytes)
 {
   short          i;
@@ -377,7 +377,7 @@ void BlowFish::InitializeBlowfish(unsigned char key[],
   }
 }
 
-BlowFish::BlowFish(unsigned char *key,
+BlowFish::BlowFish(const unsigned char *key,
                    int keylen)
 {
   /*
