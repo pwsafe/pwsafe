@@ -16,12 +16,14 @@
 #include <limits.h>
 #include <cassert>
 #include <cstdlib>
+#include <cstring> // for memset
 #include <sys/stat.h>
 
 stringT pws_os::getexecdir()
 {
   char path[PATH_MAX];
 
+  std::memset(path, 0, sizeof(path)); // keep valgrind happy
   if (::readlink("/proc/self/exe", path, PATH_MAX) < 0)
     return _T("?");
   else {
