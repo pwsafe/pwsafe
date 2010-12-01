@@ -347,7 +347,7 @@ void CEditExtn::OnContextMenu(CWnd* pWnd, CPoint point)
   iter = std::find_if(m_vmenu_items.begin(), m_vmenu_items.end(),
                       equal_cmd(nCmd));
   if (iter != m_vmenu_items.end()) {
-    this->GetParent()->SendMessage(nCmd);
+    this->GetParent()->SendMessage((UINT)nCmd);
     return;
   }
 
@@ -357,7 +357,7 @@ void CEditExtn::OnContextMenu(CWnd* pWnd, CPoint point)
     case WM_COPY:
     case WM_CLEAR:
     case WM_PASTE:
-      SendMessage(nCmd);
+      SendMessage((UINT)nCmd);
       break;
     case EM_SELECTALL:
       SendMessage(EM_SETSEL, 0, -1);

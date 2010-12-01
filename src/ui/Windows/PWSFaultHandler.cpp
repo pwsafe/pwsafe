@@ -121,7 +121,7 @@ void InstallFaultHandler(const int major, const int minor, const int build,
   TCHAR szFileName[ MAX_PATH ];
   memset( szFileName, 0, MAX_PATH );
   GetSystemDirectory( szFileName, MAX_PATH );
-  int nLen = _tcslen( szFileName );
+  size_t nLen = _tcslen( szFileName );
   if (nLen > 0) {
     if (szFileName[ nLen - 1 ] != '\\')
       _tcscat_s( szFileName, MAX_PATH, L"\\" );
@@ -274,8 +274,12 @@ LONG TakeMiniDump(struct _EXCEPTION_POINTERS *pExInfo, const int itype,
   // Create a temporary file
   // Shouldn't really use system calls in a signal handler!
   struct tm xt;
+#ifdef WIN64
+  struct __timeb64 timebuffer;
+#else
   struct __timeb32 timebuffer;
-  _ftime32_s(&timebuffer);
+#endif
+  _ftime_s(&timebuffer);
   localtime_s(&xt, &(timebuffer.time));
 
   _wsplitpath_s(sz_TempPath, sz_Drive, _MAX_DRIVE, sz_Dir, _MAX_DIR,
@@ -323,7 +327,7 @@ LONG TakeMiniDump(struct _EXCEPTION_POINTERS *pExInfo, const int itype,
 
     UserStreams[0].Type = LastReservedStream + 1;
     UserStreams[0].Buffer = (void *)&sz_UserData[0];
-    UserStreams[0].BufferSize = wcslen(sz_UserData) * sizeof(wchar_t);
+    UserStreams[0].BufferSize = (ULONG)(wcslen(sz_UserData) * sizeof(wchar_t));
 
     MINIDUMP_USER_STREAM_INFORMATION musi;
     musi.UserStreamCount = 1;
