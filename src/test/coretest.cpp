@@ -8,7 +8,11 @@
 
 #ifdef WIN32
 #include "../ui/Windows/stdafx.h"
+#else
+#include <cstring>
 #endif
+
+using namespace std;
 
 #define TEST_TWOFISH
 #define TEST_SHA256
