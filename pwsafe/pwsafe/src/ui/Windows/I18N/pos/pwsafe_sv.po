@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2010-11-30 00:05+0100\n"
+"PO-Revision-Date: 2010-12-01 17:36+0100\n"
 "Last-Translator: Björn Nordwall <pro.bn@telia.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -578,7 +578,7 @@ msgstr "&Duplicera posten"
 
 #. Resource IDs: (32086)
 msgid "&Duplicate Group"
-msgstr "&Duplicera Grupp"
+msgstr "&Duplicera gruppen"
 
 #. Resource IDs: (1342, 32050)
 msgid "&Edit"
@@ -596,8 +596,6 @@ msgstr "&Exportera"
 msgid "&File"
 msgstr "&Arkiv"
 
-# Original string: &Filters and Change &Font
-# has the same short command in the same menue!
 #. Resource IDs: (32110)
 msgid "&Filters"
 msgstr "&Filter"
@@ -1774,8 +1772,6 @@ msgstr "Icke lägeskänslig sökning"
 msgid "Case sensitive search"
 msgstr "Lägeskänslig sökning"
 
-# Original string: &Filters and Change &Font
-# has the same short command in the same menue!
 #. Resource IDs: (32114)
 msgid "Change &Font"
 msgstr "Ändra f&ont"
@@ -2163,7 +2159,6 @@ msgstr "Kopiera till Urklipp"
 msgid "Copy to DB"
 msgstr "Kopiera till DB"
 
-# Misspelt: Original
 #. Resource IDs: (32221)
 msgid "Copy to Orignal"
 msgstr "Kopiera till originalet"
@@ -2541,7 +2536,6 @@ msgstr "Dubbelklicksval"
 msgid "Drag this image onto a another window to paste the '%s' field."
 msgstr "Drag ikonen till ett annat fönster för att klistra in '%s'-fältet."
 
-# Dropped????
 #. Resource IDs: (342)
 #, c-format
 msgid ""
@@ -3453,7 +3447,7 @@ msgstr "Ikon"
 
 #. Resource IDs: (320)
 msgid "If enabled, a 'snapshot' will be taken before every save, and named according to the options listed below."
-msgstr "Om vald, kommer en 'snapshot' att tas innan varje fil sparas. Filen namnges och sparas enligt valen nedan."
+msgstr "Om vald, kommer ett 'snapshot' att tas före varje Spara. Filen namnges och sparas enligt valen nedan."
 
 #. Resource IDs: (330)
 msgid "If requested, then a delimiter character must be entered!"
@@ -3841,7 +3835,7 @@ msgstr "e-postsystemets DLL är ogiltig."
 
 #. Resource IDs: (32152)
 msgid "Make Backup"
-msgstr "Gör säkerhetskopia"
+msgstr "Säkerhetskopiera"
 
 #. Resource IDs: (158)
 msgid "Manage Filters"
@@ -4993,7 +4987,7 @@ msgstr "SAX parse%2d fel 0x%08X under %s."
 
 #. Resource IDs: (131)
 msgid "Safe Combination Entry"
-msgstr "Startmeny för Safedatabaser"
+msgstr "Startmeny för databaser"
 
 #. Resource IDs: (133)
 msgid "Safe Combination Setup"
@@ -5408,7 +5402,7 @@ msgstr "Att rapportera"
 
 #. Resource IDs: (319)
 msgid "Start saving password history for all entries, to the above number of entries."
-msgstr "Börja spara lösenordshistorik för all poster upp till antalet poster ovan."
+msgstr "Börja spara lösenordshistorik för alla poster upp till antalet poster ovan."
 
 #. Resource IDs: (1185)
 msgid "Start saving previous passwords"
@@ -5442,7 +5436,7 @@ msgstr ""
 
 #. Resource IDs: (1184)
 msgid "Stop saving previous passwords"
-msgstr "Sluta spara tidigare lösenord"
+msgstr "Sluta spara nuvarande lösenord"
 
 #. Resource IDs: (210)
 msgid "Stored filters will be unusable until the file's restored."
