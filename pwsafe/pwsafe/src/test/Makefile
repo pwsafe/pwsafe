@@ -1,22 +1,23 @@
 # Baby Makefile for Linux
 #
 
-TESTSRC         = coretest.cpp test.cpp
-SRC             = $(TESTSRC)
+BUILD			:= unicodedebug
 
-OBJPATH         = ./obj
-LIBPATH         = ../../core/lib
+TESTSRC         := coretest.cpp test.cpp
+
+OBJPATH         = ../../obj/$(BUILD)
+LIBPATH         = ../../lib/$(BUILD)
 BINPATH         = ./bin
-INCPATH         = ../../core
+INCPATH         = ..
 
 #destination related macros
 TESTOBJ	 = $(addprefix $(OBJPATH)/,$(subst .cpp,.o,$(TESTSRC)))
-LIB	     = $(LIBPATH)/libcore.a
-TEST	   = $(BINPATH)/coretest
+TEST	 = $(BINPATH)/coretest
 OBJ	     = $(TESTOBJ) $(LIBOBJ)
 
 CXXFLAGS += -DUNICODE -Wall -I$(INCPATH)
-LDFLAGS = -L$(LIBPATH) -lcore
+LDFLAGS   = -L$(LIBPATH) -lcore -los
+
 # rules
 .PHONY: all clean test setup
 
@@ -34,7 +35,7 @@ $(TEST): $(LIB) $(TESTOBJ)
 	$(CXX) -g $(CXXFLAGS) $(filter %.o,$^) $(LDFLAGS) -o $@
 
 clean:
-	rm -f *~ $(OBJ) $(TEST) $(LIB) $(DEPENDFILE)
+	rm -f *~ $(OBJ) $(TEST) $(DEPENDFILE)
 
 setup:
 	@mkdir -p $(OBJPATH) $(LIBPATH) $(BINPATH)

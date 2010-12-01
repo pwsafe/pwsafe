@@ -26,7 +26,7 @@ public:
   void sha256_test(void)
   {
     static const struct {
-      char *msg;
+      const char *msg;
       unsigned char hash[32];
     } tests[] = {
       { "abc",
