@@ -171,7 +171,7 @@ size_t _writecbc(FILE *fp, const unsigned char* buffer, size_t length, unsigned 
   putInt32(curblock, reinterpret_cast<int &>(length));
 
   // following new for format 2.0 - lengthblock bytes 4-7 were unused before.
-  curblock[sizeof(length)] = type;
+  curblock[sizeof(int)] = type;
 
   if (BS == 16) {
     // In this case, we've too many (11) wasted bytes in the length block
