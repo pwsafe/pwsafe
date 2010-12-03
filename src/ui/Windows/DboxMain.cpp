@@ -773,7 +773,7 @@ void DboxMain::InitPasswordSafe()
     IDB_SHORTCUT,
   };
 
-  for (int i = 0; i < sizeof(bitmapResIDs)/sizeof(bitmapResIDs[0]); i++) {
+  for (int i = 0; i < sizeof(bitmapResIDs) / sizeof(bitmapResIDs[0]); i++) {
     bitmap.LoadBitmap(bitmapResIDs[i]);
     m_pImageList->Add(&bitmap, crTransparent);
     bitmap.DeleteObject();

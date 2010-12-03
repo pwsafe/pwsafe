@@ -106,7 +106,7 @@ static bool FileOP(const stringT &src, const stringT &dst,
   szDestination[dstD.length() + 1] = TCHAR('\0');
 
   SHFILEOPSTRUCT sfop;
-  memset(&sfop, 0, sizeof(sfop));
+  memset(&sfop, 0, sizeof(SHFILEOPSTRUCT));
   sfop.hwnd = GetActiveWindow();
   sfop.wFunc = wFunc;
   sfop.pFrom = szSource;
@@ -195,11 +195,11 @@ static void GetLocker(const stringT &lock_filename, stringT &locker)
  
   if (h2 != INVALID_HANDLE_VALUE) {
     DWORD bytesRead;
-    (void)::ReadFile(h2, lockerStr, sizeof(lockerStr)-1,
+    (void)::ReadFile(h2, lockerStr, sizeof(lockerStr) - 1,
                      &bytesRead, NULL);
     CloseHandle(h2);
     if (bytesRead > 0) {
-      lockerStr[bytesRead/sizeof(TCHAR)] = TCHAR('\0');
+      lockerStr[bytesRead / sizeof(TCHAR)] = TCHAR('\0');
       locker = lockerStr;
     } // read info from lock file
   }

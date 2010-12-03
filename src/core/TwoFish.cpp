@@ -465,7 +465,7 @@ int twofish_setup(const unsigned char *key, int keylen, int num_rounds, twofish_
 {
   int x;
   x = _twofish_setup(key, keylen, num_rounds, skey);
-  burnStack(sizeof(int) * 7 + sizeof(unsigned char) * 56 + sizeof(unsigned long) * 2);
+  burnStack(sizeof(int32) * 7 + sizeof(unsigned char) * 56 + sizeof(unsigned long) * 2);
   return x;
 }
 #endif
@@ -535,7 +535,7 @@ static void twofish_ecb_encrypt(const unsigned char *pt, unsigned char *ct, twof
 static void twofish_ecb_encrypt(const unsigned char *pt, unsigned char *ct, twofish_key *skey)
 {
   _twofish_ecb_encrypt(pt, ct, skey);
-  burnStack(sizeof(unsigned long) * 10 + sizeof(int));
+  burnStack(sizeof(unsigned long) * 10 + sizeof(uint32));
 }
 #endif
 
@@ -607,7 +607,7 @@ static void twofish_ecb_decrypt(const unsigned char *ct, unsigned char *pt, twof
 static void twofish_ecb_decrypt(const unsigned char *ct, unsigned char *pt, twofish_key *skey)
 {
   _twofish_ecb_decrypt(ct, pt, skey);
-  burnStack(sizeof(unsigned long) * 10 + sizeof(int));
+  burnStack(sizeof(unsigned long) * 10 + sizeof(uint32));
 }
 #endif
 

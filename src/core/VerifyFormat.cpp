@@ -86,7 +86,7 @@ bool VerifyImportDateTimeString(const stringT &time_str, time_t &t)
   }
 
   struct tm xtm;
-  memset(&xtm, 0, sizeof(xtm));
+  memset(&xtm, 0, sizeof(tm));
   xtm.tm_year = yyyy - 1900;
   xtm.tm_mon = mon - 1;
   xtm.tm_mday = dd;

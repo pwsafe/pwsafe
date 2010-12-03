@@ -37,7 +37,7 @@ static stringT GetStringTFromURLRef(CFURLRef url)
     assert(sizeof(wchar_t) == 4); //kCFStringEncodingUTF32 hardcoded below
     CFIndex numConverted = CFStringGetBytes(cfpath, CFRangeMake(0, numChars), 
                                             kCFStringEncodingUTF32, 0, false, reinterpret_cast<UInt8 *>(wPath), 
-                                            sizeof(wchar_t)*numChars, &numBytesWritten);
+                                            sizeof(wchar_t) * numChars, &numBytesWritten);
     assert(numConverted*sizeof(wchar_t) == numBytesWritten);
     retval = stringT(wPath, numConverted);
     delete [] wPath;

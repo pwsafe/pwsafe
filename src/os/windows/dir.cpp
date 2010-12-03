@@ -61,10 +61,10 @@ bool pws_os::splitpath(const stringT &path,
   TCHAR tname[_MAX_FNAME];
   TCHAR text[_MAX_EXT];
 
-  wmemset(tdrv, 0, sizeof(tdrv)/sizeof(TCHAR));
-  wmemset(tdir, 0, sizeof(tdir)/sizeof(TCHAR));
-  wmemset(tname, 0, sizeof(tname)/sizeof(TCHAR));
-  wmemset(text, 0, sizeof(text)/sizeof(TCHAR));
+  wmemset(tdrv, 0, sizeof(tdrv) / sizeof(TCHAR));
+  wmemset(tdir, 0, sizeof(tdir) / sizeof(TCHAR));
+  wmemset(tname, 0, sizeof(tname) / sizeof(TCHAR));
+  wmemset(text, 0, sizeof(text) / sizeof(TCHAR));
 
   if (_tsplitpath_s(path.c_str(), tdrv, tdir, tname, text) == 0) {
     drive = tdrv;

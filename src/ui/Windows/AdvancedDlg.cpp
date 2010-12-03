@@ -619,7 +619,7 @@ void CAdvancedDlg::Set(CItemData::FieldBits bsFields)
   int iItem;
   DWORD_PTR dw_data;
 
-  SecureZeroMemory(&findinfo, sizeof(findinfo));
+  SecureZeroMemory(&findinfo, sizeof(LVFINDINFO));
 
   findinfo.flags = LVFI_PARAM;
   // Note: Mandatory fields have a ItemData value + 0x800 rather than 0x1000

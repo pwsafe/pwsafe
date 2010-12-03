@@ -225,7 +225,7 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
         m_fieldlen = reinterpret_cast<int &>(out_len);
 #else
         m_fieldlen = length / 2;
-        m_pfield = new unsigned char[m_fieldlen + sizeof(int)];
+        m_pfield = new unsigned char[m_fieldlen + sizeof(int32)];
         int nscanned = 0;
         TCHAR *lpsz_string = m_strElemContent.GetBuffer(length);
         for (int i = 0; i < m_fieldlen; i++) {
@@ -579,7 +579,7 @@ void XMLFileHandlers::AddEntries()
       // _stscanf_s always outputs to an "int" using %x even though
       // target is only 1.  Read into larger buffer to prevent data being
       // overwritten and then copy to where we want it!
-      unsigned char temp_uuid_array[sizeof(uuid_array_t) + sizeof(int)];
+      unsigned char temp_uuid_array[sizeof(uuid_array_t) + sizeof(int32)];
       int nscanned = 0;
       const TCHAR *lpszuuid = cur_entry->uuid.c_str();
       for (unsigned i = 0; i < sizeof(uuid_array_t); i++) {

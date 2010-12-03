@@ -38,7 +38,7 @@ void CItemData::SetSessionKey()
   // must be called once per session, no more, no less
   ASSERT(!IsSessionKeySet);
   pws_os::mlock(SessionKey, sizeof(SessionKey));
-  PWSrand::GetInstance()->GetRandomData( SessionKey, sizeof( SessionKey ) );
+  PWSrand::GetInstance()->GetRandomData(SessionKey, sizeof(SessionKey));
   IsSessionKeySet = true;
 }
 
@@ -371,7 +371,7 @@ void CItemData::GetTime(int whichtime, time_t &t) const
 
 void CItemData::GetUUID(uuid_array_t &uuid_array) const
 {
-  size_t length = sizeof(uuid_array);
+  size_t length = sizeof(uuid_array_t);
   GetField(m_UUID, static_cast<unsigned char *>(uuid_array), length);
 }
 
@@ -421,7 +421,7 @@ StringX CItemData::GetPWPolicy() const
   return GetField(m_PWPolicy);
 }
 
-void CItemData::GetXTimeInt(int &xint) const
+void CItemData::GetXTimeInt(int32 &xint) const
 {
   unsigned char in[TwoFish::BLOCKSIZE]; // required by GetField
   size_t tlen = sizeof(in); // ditto
@@ -429,8 +429,8 @@ void CItemData::GetXTimeInt(int &xint) const
   GetField(m_XTimeInterval, in, tlen);
 
   if (tlen != 0) {
-    ASSERT(tlen == sizeof(int));
-    memcpy(&xint, in, sizeof(int));
+    ASSERT(tlen == sizeof(int32));
+    memcpy(&xint, in, sizeof(int32));
   } else {
     xint = 0;
   }
@@ -1195,9 +1195,9 @@ bool CItemData::SetTime(int whichtime, const stringT &time_str)
   return false;
 }
 
-void CItemData::SetXTimeInt(int &xint)
+void CItemData::SetXTimeInt(int32 &xint)
 {
-   SetField(m_XTimeInterval, reinterpret_cast<const unsigned char *>(&xint), sizeof(int));
+   SetField(m_XTimeInterval, reinterpret_cast<const unsigned char *>(&xint), sizeof(int32));
 }
 
 bool CItemData::SetXTimeInt(const stringT &xint_str)
@@ -1800,10 +1800,10 @@ static bool pull_time32(time_t &t, const unsigned char *data, size_t len)
   return true;
 }
 
-static bool pull_int(int &i, const unsigned char *data, size_t len)
+static bool pull_int32(int32 &i, const unsigned char *data, size_t len)
 {
-  if (len == sizeof(int)) {
-    i = *reinterpret_cast<const int *>(data);
+  if (len == sizeof(int32)) {
+    i = *reinterpret_cast<const int32 *>(data);
   } else {
     ASSERT(0);
     return false;
@@ -1866,8 +1866,8 @@ bool CItemData::SetField(int type, const unsigned char *data, size_t len)
     case UUID:
     {
       uuid_array_t uuid_array;
-      ASSERT(len == sizeof(uuid_array));
-      for (size_t i = 0; i < sizeof(uuid_array); i++)
+      ASSERT(len == sizeof(uuid_array_t));
+      for (size_t i = 0; i < sizeof(uuid_array_t); i++)
         uuid_array[i] = data[i];
       SetUUID(uuid_array);
       break;
@@ -1909,7 +1909,7 @@ bool CItemData::SetField(int type, const unsigned char *data, size_t len)
       SetXTime(t);
       break;
     case XTIME_INT:
-      if (!pull_int(i32, data, len)) return false;
+      if (!pull_int32(i32, data, len)) return false;
       SetXTimeInt(i32);
       break;
     case POLICY:
@@ -1957,7 +1957,7 @@ bool CItemData::SetField(int type, const unsigned char *data, size_t len)
 static void push_length(vector<char> &v, size_t s)
 {
   v.insert(v.end(),
-    reinterpret_cast<char *>(&s), reinterpret_cast<char *>(&s) + sizeof(s));
+    reinterpret_cast<char *>(&s), reinterpret_cast<char *>(&s) + sizeof(size_t));
 }
 
 static void push_string(vector<char> &v, char type,
@@ -1990,13 +1990,13 @@ static void push_time(vector<char> &v, char type, time_t t)
   }
 }
 
-static void push_int(vector<char> &v, char type, int i)
+static void push_int32(vector<char> &v, char type, int32 i)
 {
   if (i != 0) {
     v.push_back(type);
-    push_length(v, sizeof(int));
+    push_length(v, sizeof(int32));
     v.insert(v.end(),
-      reinterpret_cast<char *>(&i), reinterpret_cast<char *>(&i) + sizeof(int));
+      reinterpret_cast<char *>(&i), reinterpret_cast<char *>(&i) + sizeof(int32));
   }
 }
 
@@ -2016,14 +2016,14 @@ void CItemData::SerializePlainText(vector<char> &v,
   StringX tmp;
   uuid_array_t uuid_array;
   time_t t = 0;
-  int i32 = 0;
+  int32 i32 = 0;
   short i16 = 0;
 
   v.clear();
   GetUUID(uuid_array);
   v.push_back(UUID);
-  push_length(v, sizeof(uuid_array));
-  v.insert(v.end(), uuid_array, (uuid_array + sizeof(uuid_array)));
+  push_length(v, sizeof(uuid_array_t));
+  v.insert(v.end(), uuid_array, (uuid_array + sizeof(uuid_array_t)));
   push_string(v, GROUP, GetGroup());
   push_string(v, TITLE, GetTitle());
   push_string(v, USER, GetUser());
@@ -2051,7 +2051,7 @@ void CItemData::SerializePlainText(vector<char> &v,
   GetXTime(t);   push_time(v, XTIME, t);
   GetRMTime(t);  push_time(v, RMTIME, t);
 
-  GetXTimeInt(i32); push_int(v, XTIME_INT, i32);
+  GetXTimeInt(i32); push_int32(v, XTIME_INT, i32);
 
   push_string(v, POLICY, GetPWPolicy());
   push_string(v, PWHIST, GetPWHistory());
