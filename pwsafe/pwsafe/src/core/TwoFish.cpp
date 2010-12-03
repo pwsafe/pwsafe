@@ -100,9 +100,9 @@ static const unsigned char qbox[2][4][16] = {
 
 /* computes S_i[x] */
 #ifdef LTC_CLEAN_STACK
-static unsigned long _sbox(int i, unsigned long x)
+static uint32 _sbox(int i, uint32 x)
 #else
-static unsigned long sbox(int i, unsigned long x)
+static uint32 sbox(int i, uint32 x)
 #endif
 {
   unsigned char a0, b0, a1, b1, a2, b2, a3, b3, a4, b4, y;
@@ -135,13 +135,13 @@ static unsigned long sbox(int i, unsigned long x)
   y = (b4 << 4) + a4;
 
   /* return result */
-  return (unsigned long)y;
+  return (uint32)y;
 }
 
 #ifdef LTC_CLEAN_STACK
-static unsigned long sbox(int i, unsigned long x)
+static uint32 sbox(int i, uint32 x)
 {
-  unsigned long y;
+  uint32 y;
   y = _sbox(i, x);
   burnStack(sizeof(unsigned char) * 11);
   return y;
@@ -152,9 +152,9 @@ static unsigned long sbox(int i, unsigned long x)
 
 #ifndef TWOFISH_TABLES
 /* computes ab mod p */
-static unsigned long gf_mult(unsigned long a, unsigned long b, unsigned long p)
+static uint32 gf_mult(uint32 a, uint32 b, uint32 p)
 {
-  unsigned long result, B[2], P[2];
+  uint32 result, B[2], P[2];
 
   P[1] = p;
   B[1] = b;
@@ -174,9 +174,9 @@ static unsigned long gf_mult(unsigned long a, unsigned long b, unsigned long p)
 }
 
 /* computes [y0 y1 y2 y3] = MDS . [x0] */
-static unsigned long mds_column_mult(unsigned char in, int col)
+static uint32 mds_column_mult(unsigned char in, int col)
 {
-  unsigned long x01, x5B, xEF;
+  uint32 x01, x5B, xEF;
 
   x01 = in;
   x5B = gf_mult(in, 0x5B, MDS_POLY);
@@ -218,7 +218,7 @@ static unsigned long mds_column_mult(unsigned char in, int col)
 static void mds_mult(const unsigned char *in, unsigned char *out)
 {
   int x;
-  unsigned long tmp;
+  uint32 tmp;
   for (tmp = x = 0; x < 4; x++) {
     tmp ^= mds_column_mult(in[x], x);
   }
@@ -229,7 +229,7 @@ static void mds_mult(const unsigned char *in, unsigned char *out)
 /* computes [y0 y1 y2 y3] = RS . [x0 x1 x2 x3 x4 x5 x6 x7] */
 static void rs_mult(const unsigned char *in, unsigned char *out)
 {
-  unsigned long tmp;
+  uint32 tmp;
   tmp = rs_tab0[in[0]] ^ rs_tab1[in[1]] ^ rs_tab2[in[2]] ^ rs_tab3[in[3]] ^
     rs_tab4[in[4]] ^ rs_tab5[in[5]] ^ rs_tab6[in[6]] ^ rs_tab7[in[7]];
   STORE32L(tmp, out);
@@ -261,20 +261,20 @@ static void h_func(const unsigned char *in, unsigned char *out, unsigned char *M
   }
   switch (k) {
     case 4:
-      y[0] = static_cast<unsigned char>(sbox(1, static_cast<unsigned long>(y[0])) ^ M[4 * (6 + offset) + 0]);
-      y[1] = static_cast<unsigned char>(sbox(0, static_cast<unsigned long>(y[1])) ^ M[4 * (6 + offset) + 1]);
-      y[2] = static_cast<unsigned char>(sbox(0, static_cast<unsigned long>(y[2])) ^ M[4 * (6 + offset) + 2]);
-      y[3] = static_cast<unsigned char>(sbox(1, static_cast<unsigned long>(y[3])) ^ M[4 * (6 + offset) + 3]);
+      y[0] = static_cast<unsigned char>(sbox(1, static_cast<uint32>(y[0])) ^ M[4 * (6 + offset) + 0]);
+      y[1] = static_cast<unsigned char>(sbox(0, static_cast<uint32>(y[1])) ^ M[4 * (6 + offset) + 1]);
+      y[2] = static_cast<unsigned char>(sbox(0, static_cast<uint32>(y[2])) ^ M[4 * (6 + offset) + 2]);
+      y[3] = static_cast<unsigned char>(sbox(1, static_cast<uint32>(y[3])) ^ M[4 * (6 + offset) + 3]);
     case 3:
-      y[0] = static_cast<unsigned char>(sbox(1, static_cast<unsigned long>(y[0])) ^ M[4 * (4 + offset) + 0]);
-      y[1] = static_cast<unsigned char>(sbox(1, static_cast<unsigned long>(y[1])) ^ M[4 * (4 + offset) + 1]);
-      y[2] = static_cast<unsigned char>(sbox(0, static_cast<unsigned long>(y[2])) ^ M[4 * (4 + offset) + 2]);
-      y[3] = static_cast<unsigned char>(sbox(0, static_cast<unsigned long>(y[3])) ^ M[4 * (4 + offset) + 3]);
+      y[0] = static_cast<unsigned char>(sbox(1, static_cast<uint32>(y[0])) ^ M[4 * (4 + offset) + 0]);
+      y[1] = static_cast<unsigned char>(sbox(1, static_cast<uint32>(y[1])) ^ M[4 * (4 + offset) + 1]);
+      y[2] = static_cast<unsigned char>(sbox(0, static_cast<uint32>(y[2])) ^ M[4 * (4 + offset) + 2]);
+      y[3] = static_cast<unsigned char>(sbox(0, static_cast<uint32>(y[3])) ^ M[4 * (4 + offset) + 3]);
     case 2:
-      y[0] = static_cast<unsigned char>(sbox(1, sbox(0, sbox(0, static_cast<unsigned long>(y[0])) ^ M[4 * (2 + offset) + 0]) ^ M[4 * (0 + offset) + 0]));
-      y[1] = static_cast<unsigned char>(sbox(0, sbox(0, sbox(1, static_cast<unsigned long>(y[1])) ^ M[4 * (2 + offset) + 1]) ^ M[4 * (0 + offset) + 1]));
-      y[2] = static_cast<unsigned char>(sbox(1, sbox(1, sbox(0, static_cast<unsigned long>(y[2])) ^ M[4 * (2 + offset) + 2]) ^ M[4 * (0 + offset) + 2]));
-      y[3] = static_cast<unsigned char>(sbox(0, sbox(1, sbox(1, static_cast<unsigned long>(y[3])) ^ M[4 * (2 + offset) + 3]) ^ M[4 * (0 + offset) + 3]));
+      y[0] = static_cast<unsigned char>(sbox(1, sbox(0, sbox(0, static_cast<uint32>(y[0])) ^ M[4 * (2 + offset) + 0]) ^ M[4 * (0 + offset) + 0]));
+      y[1] = static_cast<unsigned char>(sbox(0, sbox(0, sbox(1, static_cast<uint32>(y[1])) ^ M[4 * (2 + offset) + 1]) ^ M[4 * (0 + offset) + 1]));
+      y[2] = static_cast<unsigned char>(sbox(1, sbox(1, sbox(0, static_cast<uint32>(y[2])) ^ M[4 * (2 + offset) + 2]) ^ M[4 * (0 + offset) + 2]));
+      y[3] = static_cast<unsigned char>(sbox(0, sbox(1, sbox(1, static_cast<uint32>(y[3])) ^ M[4 * (2 + offset) + 3]) ^ M[4 * (0 + offset) + 3]));
     default:
       break;
   }
@@ -298,13 +298,13 @@ static void h_func(const unsigned char *in, unsigned char *out, unsigned char *M
 #else
 
 #ifdef LTC_CLEAN_STACK
-static unsigned long _g_func(unsigned long x, twofish_key *key)
+static uint32 _g_func(uint32 x, twofish_key *key)
 #else
-static unsigned long g_func(unsigned long x, twofish_key *key)
+static uint32 g_func(uint32 x, twofish_key *key)
 #endif
 {
   unsigned char g, i, y, z;
-  unsigned long res;
+  uint32 res;
 
   res = 0;
   for (y = 0; y < 4; y++) {
@@ -331,11 +331,11 @@ static unsigned long g_func(unsigned long x, twofish_key *key)
 #define g1_func(x, key) g_func(ROLc(x, 8), key)
 
 #ifdef LTC_CLEAN_STACK
-static unsigned long g_func(unsigned long x, twofish_key *key)
+static uint32 g_func(uint32 x, twofish_key *key)
 {
-  unsigned long y;
+  uint32 y;
   y = _g_func(x, key);
-  burnStack(sizeof(unsigned char) * 4 + sizeof(unsigned long));
+  burnStack(sizeof(unsigned char) * 4 + sizeof(uint32));
   return y;
 }
 #endif /* LTC_CLEAN_STACK */
@@ -361,7 +361,7 @@ static int twofish_setup(const unsigned char *key, int keylen, int num_rounds, t
 #endif
   int k, x, y;
   unsigned char tmp[4], tmp2[4], M[8*4];
-  unsigned long A, B;
+  uint32 A, B;
 
   ASSERT(key  != NULL);
   ASSERT(skey != NULL);
@@ -465,7 +465,7 @@ int twofish_setup(const unsigned char *key, int keylen, int num_rounds, twofish_
 {
   int x;
   x = _twofish_setup(key, keylen, num_rounds, skey);
-  burnStack(sizeof(int32) * 7 + sizeof(unsigned char) * 56 + sizeof(unsigned long) * 2);
+  burnStack(sizeof(int32) * 7 + sizeof(unsigned char) * 56 + sizeof(uint32) * 2);
   return x;
 }
 #endif
@@ -482,10 +482,10 @@ static void _twofish_ecb_encrypt(const unsigned char *pt, unsigned char *ct, two
 static void twofish_ecb_encrypt(const unsigned char *pt, unsigned char *ct, twofish_key *skey)
 #endif
 {
-  unsigned long a,b,c,d,ta,tb,tc,td,t1,t2, *k;
+  uint32 a,b,c,d,ta,tb,tc,td,t1,t2, *k;
   int r;
 #if !defined(TWOFISH_SMALL) && !defined(__GNUC__)
-  unsigned long *S1, *S2, *S3, *S4;
+  uint32 *S1, *S2, *S3, *S4;
 #endif    
 
   ASSERT(pt   != NULL);
@@ -535,7 +535,7 @@ static void twofish_ecb_encrypt(const unsigned char *pt, unsigned char *ct, twof
 static void twofish_ecb_encrypt(const unsigned char *pt, unsigned char *ct, twofish_key *skey)
 {
   _twofish_ecb_encrypt(pt, ct, skey);
-  burnStack(sizeof(unsigned long) * 10 + sizeof(uint32));
+  burnStack(sizeof(uint32) * 10 + sizeof(uint32));
 }
 #endif
 
@@ -551,10 +551,10 @@ static void _twofish_ecb_decrypt(const unsigned char *ct, unsigned char *pt, two
 static void twofish_ecb_decrypt(const unsigned char *ct, unsigned char *pt, twofish_key *skey)
 #endif
 {
-  unsigned long a,b,c,d,ta,tb,tc,td,t1,t2, *k;
+  uint32 a,b,c,d,ta,tb,tc,td,t1,t2, *k;
   int r;
 #if !defined(TWOFISH_SMALL) && !defined(__GNUC__)
-  unsigned long *S1, *S2, *S3, *S4;
+  uint32 *S1, *S2, *S3, *S4;
 #endif    
 
   ASSERT(pt   != NULL);
@@ -607,7 +607,7 @@ static void twofish_ecb_decrypt(const unsigned char *ct, unsigned char *pt, twof
 static void twofish_ecb_decrypt(const unsigned char *ct, unsigned char *pt, twofish_key *skey)
 {
   _twofish_ecb_decrypt(ct, pt, skey);
-  burnStack(sizeof(unsigned long) * 10 + sizeof(uint32));
+  burnStack(sizeof(uint32) * 10 + sizeof(uint32));
 }
 #endif
 

@@ -13,14 +13,15 @@
 #define __TWOFISH_H
 
 #include "Fish.h"
+#include "os/typedefs.h"
 
 #ifndef TWOFISH_SMALL
 struct twofish_key {
-  unsigned long S[4][256], K[40];
+  uint32 S[4][256], K[40];
 };
 #else
 struct twofish_key {
-  unsigned long K[40];
+  uint32 K[40];
   unsigned char S[32], start;
 };
 #endif
