@@ -67,7 +67,7 @@ extern size_t _writecbc(FILE *fp, const unsigned char* buffer, size_t length,
 */
 inline int getInt32(const unsigned char buf[4])
 {
-  ASSERT(sizeof(int) == 4);
+  ASSERT(sizeof(int32) == 4);
 #if defined(PWS_LITTLE_ENDIAN)
 #if defined(_DEBUG)
   if ( *reinterpret_cast<const int *>(buf) != (buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24)) )
@@ -96,7 +96,7 @@ inline int getInt32(const unsigned char buf[4])
 */
 inline void putInt32(unsigned char buf[4], const int val )
 {
-  ASSERT(sizeof(int) == 4);
+  ASSERT(sizeof(int32) == 4);
 #if defined(PWS_LITTLE_ENDIAN)
   *reinterpret_cast<int32 *>(buf) = val;
 #if defined(_DEBUG)

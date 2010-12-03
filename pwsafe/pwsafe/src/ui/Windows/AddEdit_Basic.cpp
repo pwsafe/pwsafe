@@ -1047,9 +1047,9 @@ UINT CAddEdit_Basic::ExternalEditorThread(LPVOID me) // static method!
   STARTUPINFO si;
   PROCESS_INFORMATION pi;
 
-  ZeroMemory(&si, sizeof(si));
+  ZeroMemory(&si, sizeof(STARTUPINFO));
   si.cb = sizeof(si);
-  ZeroMemory(&pi, sizeof(pi));
+  ZeroMemory(&pi, sizeof(PROCESS_INFORMATION));
 
   DWORD dwCreationFlags(0);
   dwCreationFlags = CREATE_UNICODE_ENVIRONMENT;
@@ -1170,7 +1170,7 @@ bool CAddEdit_Basic::CheckNewPassword(const StringX &group, const StringX &title
 
   // Copy data back before possibly returning
   ibasedata = pl.ibasedata;
-  memcpy(base_uuid, pl.base_uuid, sizeof(base_uuid));
+  memcpy(base_uuid, pl.base_uuid, sizeof(uuid_array_t));
   if (!brc)    
     return false;
 

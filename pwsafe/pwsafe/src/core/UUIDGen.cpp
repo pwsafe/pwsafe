@@ -110,9 +110,9 @@ void CUUIDGen::GetUUID(uuid_array_t &uuid_array) const
 
 ostream &operator<<(ostream &os, const CUUIDGen &uuid)
 {
- uuid_array_t uuid_a;
+  uuid_array_t uuid_a;
   uuid.GetUUID(uuid_a);
-  for (size_t i = 0; i < sizeof(uuid_a); i++) {
+  for (size_t i = 0; i < sizeof(uuid_array_t); i++) {
     os << setw(2) << setfill('0') << hex << int(uuid_a[i]);
     if (uuid.m_canonic && (i == 3 || i == 5 || i == 7 || i == 9))
       os << "-";
@@ -124,7 +124,7 @@ wostream &operator<<(wostream &os, const CUUIDGen &uuid)
 {
   uuid_array_t uuid_a;
   uuid.GetUUID(uuid_a);
-  for (size_t i = 0; i < sizeof(uuid_a); i++) {
+  for (size_t i = 0; i < sizeof(uuid_array_t); i++) {
     os << setw(2) << setfill(wchar_t('0')) << hex << int(uuid_a[i]);
     if (uuid.m_canonic && (i == 3 || i == 5 || i == 7 || i == 9))
       os << L"-";

@@ -94,7 +94,7 @@ void ConvertString(const StringX &text,
   ASSERT(len != 0);
 #else
   mbstate_t mbs;
-  memset(&mbs, 0, sizeof(mbs));
+  memset(&mbs, 0, sizeof(mbstate_t));
   size_t len = wcsrtombs(NULL, &txtstr, 0, &mbs);
   txt = new unsigned char[len + 1];
   len = wcsrtombs(reinterpret_cast<char *>(txt), &txtstr, len, &mbs);
@@ -168,10 +168,10 @@ size_t _writecbc(FILE *fp, const unsigned char* buffer, size_t length, unsigned 
   // a dictionary attack harder
   PWSrand::GetInstance()->GetRandomData(curblock, BS);
   // block length overwrites 4 bytes of the above randomness.
-  putInt32(curblock, reinterpret_cast<int &>(length));
+  putInt32(curblock, reinterpret_cast<int32 &>(length));
 
   // following new for format 2.0 - lengthblock bytes 4-7 were unused before.
-  curblock[sizeof(int)] = type;
+  curblock[sizeof(int32)] = type;
 
   if (BS == 16) {
     // In this case, we've too many (11) wasted bytes in the length block
@@ -280,7 +280,7 @@ size_t _readcbc(FILE *fp,
   size_t length = getInt32(lengthblock);
 
   // new for 2.0 -- lengthblock[4..7] previously set to zero
-  type = lengthblock[sizeof(int)]; // type is first byte after the length
+  type = lengthblock[sizeof(int32)]; // type is first byte after the length
 
   if ((file_len != 0 && length >= file_len)) {
     pws_os::Trace0(_T("_readcbc: Read size larger than file length - aborting\n"));
@@ -375,14 +375,14 @@ StringX PWSUtil::ConvertToDateTimeString(const time_t &t,
       return ConvertToDateTimeString(0, result_format);
 #endif
     if ((result_format & TMC_EXPORT_IMPORT) == TMC_EXPORT_IMPORT)
-      _tcsftime(datetime_str, sizeof(datetime_str)/sizeof(datetime_str[0]),
+      _tcsftime(datetime_str, sizeof(datetime_str) / sizeof(datetime_str[0]),
                 _T("%Y/%m/%d %H:%M:%S"), st);
     else if ((result_format & TMC_XML) == TMC_XML)
-      _tcsftime(datetime_str, sizeof(datetime_str)/sizeof(datetime_str[0]),
+      _tcsftime(datetime_str, sizeof(datetime_str) / sizeof(datetime_str[0]),
                 _T("%Y-%m-%dT%H:%M:%S"), st);
     else if ((result_format & TMC_LOCALE) == TMC_LOCALE) {
       setlocale(LC_TIME, "");
-      _tcsftime(datetime_str, sizeof(datetime_str)/sizeof(datetime_str[0]),
+      _tcsftime(datetime_str, sizeof(datetime_str) / sizeof(datetime_str[0]),
                 _T("%c"), st);
     } else {
       int terr = _tasctime_s(datetime_str, 32, st);  // secure version

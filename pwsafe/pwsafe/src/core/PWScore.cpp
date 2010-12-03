@@ -1437,18 +1437,18 @@ bool PWScore::Validate(stringT &status, CReport &rpt, const size_t iMAXCHARS)
 
 void PWScore::ClearFileUUID()
 {
-  memset(m_hdr.m_file_uuid_array, 0, sizeof(m_hdr.m_file_uuid_array));
+  memset(m_hdr.m_file_uuid_array, 0, sizeof(uuid_array_t));
 }
 
 void PWScore::SetFileUUID(uuid_array_t &file_uuid_array)
 {
   memcpy(m_hdr.m_file_uuid_array, file_uuid_array,
-         sizeof(m_hdr.m_file_uuid_array));
+         sizeof(uuid_array_t));
 }
 
 void PWScore::GetFileUUID(uuid_array_t &file_uuid_array) const
 {
-  memcpy(file_uuid_array, m_hdr.m_file_uuid_array, sizeof(file_uuid_array));
+  memcpy(file_uuid_array, m_hdr.m_file_uuid_array, sizeof(uuid_array_t));
 }
 
 StringX PWScore::GetUniqueTitle(const StringX &group, const StringX &title,

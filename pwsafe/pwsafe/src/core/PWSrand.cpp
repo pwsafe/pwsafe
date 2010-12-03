@@ -68,11 +68,11 @@ void PWSrand::NextRandBlock()
   s.Final(R);
   unsigned int *Kp = reinterpret_cast<unsigned int *>(K);
   unsigned int *Rp = reinterpret_cast<unsigned int *>(R);
-  const int N = SHA256::HASHLEN/sizeof(unsigned int);
+  const int N = SHA256::HASHLEN / sizeof(uint32);
 
   Kp[0]++;
 
-  for (int i = 0; i < N; i++)
+  for (int32 i = 0; i < N; i++)
     Kp[i] += Rp[i];
 }
 
@@ -115,15 +115,15 @@ unsigned int PWSrand::RandUInt()
   // we don't want to keep filling the random buffer for each number we
   // want, so fill the buffer with random data and use it up
 
-  if (ibRandomData > (SHA256::HASHLEN - sizeof(unsigned int))) {
+  if (ibRandomData > (SHA256::HASHLEN - sizeof(uint32))) {
     // no data left, refill the buffer
     GetRandomData(rgbRandomData, SHA256::HASHLEN);
     ibRandomData = 0;
   }
 
   const unsigned int u = 
-    *(reinterpret_cast<unsigned int *>(rgbRandomData + ibRandomData));
-  ibRandomData += sizeof(unsigned int);
+    *(reinterpret_cast<uint32 *>(rgbRandomData + ibRandomData));
+  ibRandomData += sizeof(uint32);
   return u;
 }
 

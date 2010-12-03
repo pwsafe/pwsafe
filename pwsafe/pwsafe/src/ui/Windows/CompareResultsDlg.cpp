@@ -119,7 +119,7 @@ BOOL CCompareResultsDlg::OnInitDialog()
   } FixedCols[] = {{IDS_ORIGINALDB, CURRENT}, {IDS_COMPARISONDB, COMPARE},
                    {IDS_GROUP, GROUP}, {IDS_TITLE, TITLE}, {IDS_USERNAME, USER},
   };
-  for (i = 0; i < sizeof(FixedCols)/sizeof(FixedCols[0]); i++) {
+  for (i = 0; i < sizeof(FixedCols) / sizeof(FixedCols[0]); i++) {
     cs_header.LoadString(FixedCols[i].ids);
     m_LCResults.InsertColumn(FixedCols[i].ncol, cs_header);
   }
@@ -143,7 +143,7 @@ BOOL CCompareResultsDlg::OnInitDialog()
                  {CItemData::EMAIL, IDS_EMAIL, EMAIL},
   };
 
-  for (i = 0; i < sizeof(OptCols)/sizeof(OptCols[0]); i++)
+  for (i = 0; i < sizeof(OptCols) / sizeof(OptCols[0]); i++)
     if (m_bsFields.test(OptCols[i].ft)) {
       cs_header.LoadString(OptCols[i].ids);
       m_LCResults.InsertColumn(OptCols[i].ncol, cs_header, LVCFMT_CENTER);

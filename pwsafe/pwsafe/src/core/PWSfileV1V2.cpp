@@ -313,7 +313,7 @@ int PWSfileV1V2::WriteRecord(const CItemData &item)
       {
         uuid_array_t uuid_array;
         item.GetUUID(uuid_array);
-        PWSfile::WriteCBC(CItemData::UUID, uuid_array, sizeof(uuid_array));
+        PWSfile::WriteCBC(CItemData::UUID, uuid_array, sizeof(uuid_array_t));
       }
       WriteCBC(CItemData::GROUP, item.GetGroup());
       WriteCBC(CItemData::TITLE, item.GetTitle());
@@ -474,7 +474,7 @@ int PWSfileV1V2::ReadRecord(CItemData &item)
             {
               LPCTSTR ptr = tempdata.c_str();
               uuid_array_t uuid_array;
-              for (size_t i = 0; i < sizeof(uuid_array); i++)
+              for (size_t i = 0; i < sizeof(uuid_array_t); i++)
                 uuid_array[i] = static_cast<unsigned char>(ptr[i]);
               item.SetUUID(uuid_array);
               break;

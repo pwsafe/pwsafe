@@ -93,7 +93,7 @@ PWSfile::HeaderRecord::HeaderRecord()
   m_whatlastsaved(_T("")),
   m_dbname(_T("")), m_dbdesc(_T(""))
 {
-  memset(m_file_uuid_array, 0, sizeof(m_file_uuid_array));
+  memset(m_file_uuid_array, 0, sizeof(uuid_array_t));
   m_RUEList.clear();
 }
 
@@ -107,7 +107,7 @@ PWSfile::HeaderRecord::HeaderRecord(const PWSfile::HeaderRecord &h)
   m_dbname(h.m_dbname), m_dbdesc(h.m_dbdesc), m_RUEList(h.m_RUEList)
 {
   memcpy(m_file_uuid_array, h.m_file_uuid_array,
-         sizeof(m_file_uuid_array));
+         sizeof(uuid_array_t));
 }
 
 PWSfile::HeaderRecord &PWSfile::HeaderRecord::operator=(const PWSfile::HeaderRecord &h)
@@ -125,7 +125,7 @@ PWSfile::HeaderRecord &PWSfile::HeaderRecord::operator=(const PWSfile::HeaderRec
     m_dbname = h.m_dbname;
     m_dbdesc = h.m_dbdesc;
     memcpy(m_file_uuid_array, h.m_file_uuid_array,
-           sizeof(m_file_uuid_array));
+           sizeof(uuid_array_t));
     m_RUEList = h.m_RUEList;
   }
   return *this;
@@ -308,7 +308,8 @@ bool PWSfile::Encrypt(const stringT &fn, const StringX &passwd, stringT &errmess
     status = false; goto exit;
   }
 #ifdef KEEP_FILE_MODE_BWD_COMPAT
-  SAFE_FWRITE( &len, 1, sizeof(len), out);
+  uint32 i32 = len;
+  SAFE_FWRITE(&i32, 1, sizeof(uint32), out);
 #else
   unsigned char randstuff[StuffSize];
   unsigned char randhash[SHA1::HASHLEN];   // HashSize
@@ -369,7 +370,9 @@ bool PWSfile::Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess
   }
 
 #ifdef KEEP_FILE_MODE_BWD_COMPAT
-  fread(&len, 1, sizeof(len), in); // XXX portability issue
+  uint32 i32;
+  fread(&i32, 1, sizeof(uint32), in); // XXX portability issue
+  len = i32;
 #else
   fread(randstuff, 1, 8, in);
   randstuff[8] = randstuff[9] = TCHAR('\0'); // ugly bug workaround

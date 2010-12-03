@@ -147,7 +147,7 @@ public:
   void GetXTime(time_t &t) const {GetTime(XTIME, t);}  // V30
   void GetPMTime(time_t &t) const {GetTime(PMTIME, t);}  // V30
   void GetRMTime(time_t &t) const {GetTime(RMTIME, t);}  // V30
-  void GetXTimeInt(int &xint) const; // V30
+  void GetXTimeInt(int32 &xint) const; // V30
   StringX GetXTimeInt() const; // V30
   StringX GetPWHistory() const;  // V30
   void GetPWPolicy(PWPolicy &pwp) const;

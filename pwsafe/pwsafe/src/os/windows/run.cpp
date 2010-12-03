@@ -204,7 +204,7 @@ bool PWSRun::issuecmd(const StringX &sxFile, const StringX &sxParameters,
                       const bool &bAutotype) const
 {
   SHELLEXECUTEINFO si;
-  ZeroMemory(&si, sizeof(si));
+  ZeroMemory(&si, sizeof(SHELLEXECUTEINFO));
   si.cbSize = sizeof(SHELLEXECUTEINFO);
   si.nShow = SW_SHOWNORMAL;
   si.fMask = SEE_MASK_NOCLOSEPROCESS | SEE_MASK_DOENVSUBST;
