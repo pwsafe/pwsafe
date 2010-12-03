@@ -137,7 +137,7 @@ sub WriteHFile {
 #if !defined(_WIN32) || defined(__WX__)
 #include <map>
 #include "../os/typedefs.h" // for definition of TCHAR
-extern std::map<int, const TCHAR *> ${b}_st;
+extern const std::map<int, const TCHAR *> ${b}_st;
 #endif
 
 #endif /* __${B}_ST_H */
@@ -188,7 +188,7 @@ PREAMBLE
   }; // Pairs array
 } // anonymous namespace
 
-map<int, const TCHAR *> ${b}_st(Pairs, Pairs + sizeof(Pairs)/sizeof(Pairs[0]));
+const map<int, const TCHAR *> ${b}_st(Pairs, Pairs + sizeof(Pairs)/sizeof(Pairs[0]));
 
 #endif
 POSTAMBLE
