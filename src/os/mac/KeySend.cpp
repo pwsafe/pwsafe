@@ -25,7 +25,7 @@ void CKeySend::SendString(const StringX &data)
   int len = 0;
   ConvertString(data, str, len);
   if (len && str && str[0])
-    pws_os::SendString(reinterpret_cast<const char*>(str), m_delayMS);
+    pws_os::SendString(reinterpret_cast<const char *>(str), m_delayMS);
   delete [] str;
 }
 

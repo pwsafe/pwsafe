@@ -1078,7 +1078,7 @@ bool TiXmlDocument::LoadFile( FILE* file, TiXmlEncoding encoding )
 #ifdef UNICODE
     // Gross hack - need to handle Unicode BOM
     // here instead of in parser.
-		const unsigned char* pU = reinterpret_cast<const unsigned char*>(p);
+		const unsigned char* pU = reinterpret_cast<const unsigned char *>(p);
 		if ( *(pU+0) && *(pU+0) == TIXML_UTF_LEAD_0
 			 && *(pU+1) && *(pU+1) == TIXML_UTF_LEAD_1
 			 && *(pU+2) && *(pU+2) == TIXML_UTF_LEAD_2 ) {

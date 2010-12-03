@@ -293,7 +293,7 @@ void TiXmlParsingData::Stamp( const TCHAR* now, TiXmlEncoding encoding )
 				if ( encoding == TIXML_ENCODING_UTF8 )
 				{
 					// Eat the 1 to 4 byte utf8 character.
-					int step = TiXmlBase::utf8ByteTable[*(reinterpret_cast<const unsigned char*>(p))];
+					int step = TiXmlBase::utf8ByteTable[*(reinterpret_cast<const unsigned char *>(p))];
 					if ( step == 0 )
 						step = 1;		// Error case from bad encoding, but handle gracefully.
 					p += step;
@@ -328,7 +328,7 @@ const TCHAR* TiXmlBase::SkipWhiteSpace( const TCHAR* p, TiXmlEncoding encoding )
 	{
 		while ( *p )
 		{
-			const unsigned char* pU = reinterpret_cast<const unsigned char*>(p);
+			const unsigned char* pU = reinterpret_cast<const unsigned char *>(p);
 			
 			// Skip the stupid Microsoft UTF-8 Byte order marks
 			if (	*(pU+0)==TIXML_UTF_LEAD_0
@@ -741,7 +741,7 @@ const TCHAR* TiXmlDocument::Parse( const TCHAR* p, TiXmlParsingData* prevData, T
 	if ( encoding == TIXML_ENCODING_UNKNOWN )
 	{
 		// Check for the Microsoft UTF-8 lead bytes.
-		const unsigned char* pU = reinterpret_cast<const unsigned char*>(p);
+		const unsigned char* pU = reinterpret_cast<const unsigned char *>(p);
 		if (	*(pU+0) && *(pU+0) == TIXML_UTF_LEAD_0
 			 && *(pU+1) && *(pU+1) == TIXML_UTF_LEAD_1
 			 && *(pU+2) && *(pU+2) == TIXML_UTF_LEAD_2 )

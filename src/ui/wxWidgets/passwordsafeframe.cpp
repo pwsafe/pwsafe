@@ -2023,7 +2023,7 @@ int PasswordSafeFrame::NewFile(StringX &fname)
   int rc;
 
   while (1) {
-    wxFileDialog fd(static_cast<wxWindow*>(this), cs_text, dir, v3FileName,
+    wxFileDialog fd(static_cast<wxWindow *>(this), cs_text, dir, v3FileName,
                     _("psafe3 files (*.psafe3)|*.psafe3|All files(*.*; *)|*.*;*"),
                     wxFD_SAVE | wxFD_OVERWRITE_PROMPT | wxFD_CHANGE_DIR);
     rc = fd.ShowModal();

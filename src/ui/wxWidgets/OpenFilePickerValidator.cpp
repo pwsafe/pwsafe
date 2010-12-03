@@ -10,7 +10,7 @@
 
 bool COpenFilePickerValidator::TransferFromWindow() {
   if (GetWindow() && GetWindow()->IsKindOf(&wxFilePickerCtrl::ms_classInfo)) {
-    wxFilePickerCtrl* ctrl = dynamic_cast<wxFilePickerCtrl*>(GetWindow());
+    wxFilePickerCtrl* ctrl = dynamic_cast<wxFilePickerCtrl *>(GetWindow());
     wxASSERT(ctrl);
     m_str = ctrl->GetPath();
     return true;
@@ -20,7 +20,7 @@ bool COpenFilePickerValidator::TransferFromWindow() {
 
 bool COpenFilePickerValidator::TransferToWindow() {
   if (GetWindow() && GetWindow()->IsKindOf(&wxFilePickerCtrl::ms_classInfo)) {
-    wxFilePickerCtrl* ctrl = dynamic_cast<wxFilePickerCtrl*>(GetWindow());
+    wxFilePickerCtrl* ctrl = dynamic_cast<wxFilePickerCtrl *>(GetWindow());
     wxASSERT(ctrl);
     ctrl->SetPath(m_str);
     return true;
@@ -30,7 +30,7 @@ bool COpenFilePickerValidator::TransferToWindow() {
 
 bool COpenFilePickerValidator::Validate(wxWindow * /*parent*/) {
   if (GetWindow() && GetWindow()->IsKindOf(&wxFilePickerCtrl::ms_classInfo)) {
-    wxFilePickerCtrl* ctrl = dynamic_cast<wxFilePickerCtrl*>(GetWindow());
+    wxFilePickerCtrl* ctrl = dynamic_cast<wxFilePickerCtrl *>(GetWindow());
     wxASSERT(ctrl);
     wxString path = ctrl->GetPath();
     if (pws_os::FileExists(tostdstring(path))) {

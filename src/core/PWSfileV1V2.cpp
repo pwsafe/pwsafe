@@ -215,7 +215,7 @@ int PWSfileV1V2::CheckPasskey(const StringX &filename,
   unsigned char temphash[20]; // HashSize
   GenRandhash(passkey, randstuff, temphash);
 
-  if (0 != memcmp(reinterpret_cast<char*>(randhash), reinterpret_cast<char*>(temphash), MIN(sizeof(randhash), sizeof(temphash)))) { // HashSize
+  if (0 != memcmp(reinterpret_cast<char *>(randhash), reinterpret_cast<char *>(temphash), MIN(sizeof(randhash), sizeof(temphash)))) { // HashSize
       return WRONG_PASSWORD;
   } else {
     return SUCCESS;
