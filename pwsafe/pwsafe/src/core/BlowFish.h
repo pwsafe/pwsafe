@@ -11,12 +11,11 @@
 #define __BLOWFISH_H
 
 #include "Fish.h"
-
-#define MAXKEYBYTES 56 // unused
+#include "os/typedefs.h"
 
 union aword
 {
-  unsigned long word;
+  uint32 word;
   unsigned char byte [4];
   struct
   {
@@ -43,12 +42,12 @@ public:
 
 private:
   enum {bf_N = 16};
-  unsigned long bf_S[4][256];
-  unsigned long bf_P[bf_N + 2];
-  static const unsigned long tempbf_S[4][256];
-  static const unsigned long tempbf_P[bf_N + 2];
-  void Blowfish_encipher(unsigned long* xl, unsigned long* xr);
-  void Blowfish_decipher(unsigned long* xl, unsigned long* xr);
+  uint32 bf_S[4][256];
+  uint32 bf_P[bf_N + 2];
+  static const uint32 tempbf_S[4][256];
+  static const uint32 tempbf_P[bf_N + 2];
+  void Blowfish_encipher(uint32* xl, uint32* xr);
+  void Blowfish_decipher(uint32* xl, uint32* xr);
   void InitializeBlowfish(const unsigned char key[], short keybytes);
 };
 #endif /* __BLOWFISH_H */
