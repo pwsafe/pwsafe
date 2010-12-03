@@ -137,7 +137,7 @@ void GenRandhash(const StringX &a_passkey,
   BlowFish Cipher(tempSalt, sizeof(tempSalt));
 
   unsigned char tempbuf[StuffSize];
-  memcpy(reinterpret_cast<char*>(tempbuf), reinterpret_cast<const char*>(a_randstuff), StuffSize);
+  memcpy(reinterpret_cast<char *>(tempbuf), reinterpret_cast<const char *>(a_randstuff), StuffSize);
 
   for (int x=0; x<1000; x++)
     Cipher.Encrypt(tempbuf, tempbuf);

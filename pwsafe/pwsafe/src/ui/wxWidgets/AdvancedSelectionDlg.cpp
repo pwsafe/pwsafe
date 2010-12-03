@@ -155,7 +155,7 @@ void AdvancedSelectionDlgBase::CreateControls(wxWindow* parentWnd)
                 wxDefaultSize, 0, NULL, wxLB_EXTENDED);
       for (size_t idx = 0; idx < NumberOf(fieldNames); ++idx)
           if (!m_criteria.m_bsFields.test(fieldNames[idx].type))
-              lbFields->Append(fieldNames[idx].name, reinterpret_cast<void*>(idx));
+              lbFields->Append(fieldNames[idx].name, reinterpret_cast<void *>(idx));
 
       grid->Add(lbFields, wxSizerFlags().Expand());
       
@@ -179,9 +179,9 @@ void AdvancedSelectionDlgBase::CreateControls(wxWindow* parentWnd)
           if (m_criteria.m_bsFields.test(fieldNames[idx].type)) {
             if (IsMandatoryField(fieldNames[idx].type))
               lbSelectedFields->Append(wxString(fieldNames[idx].name) + _(" [Mandatory Field]"),
-                                       reinterpret_cast<void*>(idx));
+                                       reinterpret_cast<void *>(idx));
             else
-              lbSelectedFields->Append(fieldNames[idx].name, reinterpret_cast<void*>(idx));
+              lbSelectedFields->Append(fieldNames[idx].name, reinterpret_cast<void *>(idx));
           }
       
       grid->Add(lbSelectedFields, wxSizerFlags().Expand());
@@ -250,7 +250,7 @@ void AdvancedSelectionDlgBase::OnSelectAll( wxCommandEvent& /* evt */ )
   while (lbAvailable->GetCount()) {
       size_t which = reinterpret_cast<size_t>(lbAvailable->GetClientData(0));
       lbAvailable->Delete(0);
-      lbSelected->Append(fieldNames[which].name, reinterpret_cast<void*>(which));
+      lbSelected->Append(fieldNames[which].name, reinterpret_cast<void *>(which));
   }
 }
 

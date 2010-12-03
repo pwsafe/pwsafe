@@ -350,7 +350,7 @@ protected:
 		assert( p );
 		if ( encoding == TIXML_ENCODING_UTF8 )
 		{
-			*length = utf8ByteTable[ *(reinterpret_cast<const unsigned char*>(p)) ];
+			*length = utf8ByteTable[ *(reinterpret_cast<const unsigned char *>(p)) ];
 			assert( *length >= 0 && *length < 5 );
 		}
 		else

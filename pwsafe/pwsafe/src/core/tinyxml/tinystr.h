@@ -240,13 +240,13 @@ class TiXmlString
 		if (cap)
 		{
 			// Lee: the original form:
-			//	rep_ = static_cast<Rep*>(operator new(sizeof(Rep) + cap));
+			//	rep_ = static_cast<Rep *>(operator new(sizeof(Rep) + cap));
 			// doesn't work in some cases of new being overloaded. Switching
 			// to the normal allocation, although use an 'int' for systems
 			// that are overly picky about structure alignment.
 			const size_type bytesNeeded = sizeof(Rep) + (cap * sizeof(TCHAR));
 			const size_type intsNeeded = ( bytesNeeded + sizeof(int) - 1 ) / sizeof( int ); 
-			rep_ = reinterpret_cast<Rep*>( new int[ intsNeeded ] );
+			rep_ = reinterpret_cast<Rep *>( new int[ intsNeeded ] );
 
 			rep_->str[ rep_->size = sz ] = '\0';
 			rep_->capacity = cap;
@@ -263,7 +263,7 @@ class TiXmlString
 		{
 			// The rep_ is really an array of ints. (see the allocator, above).
 			// Cast it back before delete, so the compiler won't incorrectly call destructors.
-			delete [] ( reinterpret_cast<int*>( rep_ ) );
+			delete [] ( reinterpret_cast<int *>( rep_ ) );
 		}
 	}
 

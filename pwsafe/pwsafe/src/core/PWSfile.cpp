@@ -376,7 +376,7 @@ bool PWSfile::Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess
   fread(randhash, 1, sizeof(randhash), in);
 
   GenRandhash(passwd, randstuff, temphash);
-  if (memcmp(reinterpret_cast<char*>(randhash), reinterpret_cast<char*>(temphash), SHA1::HASHLEN) != 0) {
+  if (memcmp(reinterpret_cast<char *>(randhash), reinterpret_cast<char *>(temphash), SHA1::HASHLEN) != 0) {
     fclose(in);
     LoadAString(errmess, IDSC_BADPASSWORD);
     return false;

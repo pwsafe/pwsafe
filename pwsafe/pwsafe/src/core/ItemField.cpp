@@ -80,9 +80,9 @@ void CItemField::Set(const unsigned char* value, size_t length, BlowFish *bf)
     unsigned char *tempmem = new unsigned char[BlockLength];
     // invariant: BlockLength >= plainlength
 #if (_MSC_VER >= 1400)
-    memcpy_s(reinterpret_cast<char*>(tempmem), BlockLength, reinterpret_cast<const char*>(value), m_Length);
+    memcpy_s(reinterpret_cast<char *>(tempmem), BlockLength, reinterpret_cast<const char *>(value), m_Length);
 #else
-    memcpy(reinterpret_cast<char*>(tempmem), reinterpret_cast<const char*>(value), m_Length);
+    memcpy(reinterpret_cast<char *>(tempmem), reinterpret_cast<const char *>(value), m_Length);
 #endif
 
     //Fill the unused characters in with random stuff

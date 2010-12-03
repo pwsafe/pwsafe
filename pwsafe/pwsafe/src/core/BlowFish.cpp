@@ -390,12 +390,12 @@ BlowFish::BlowFish(const unsigned char *key,
   */
 
   int x, y;
-  for (x=0; x<18; x++) {
+  for (x = 0; x < 18; x++) {
     bf_P[x] = tempbf_P[x];
   }
 
-  for (x=0; x<4; x++) {
-    for (y=0; y<256; y++) {
+  for (x = 0; x < 4; x++) {
+    for (y = 0; y < 256; y++) {
       bf_S[x][y] = tempbf_S[x][y];
     }
   }
@@ -413,7 +413,7 @@ BlowFish::~BlowFish()
 
 void BlowFish::Encrypt(const unsigned char *in, unsigned char *out)
 {
-  for (int x=0; x<8; x++)
+  for (int x = 0; x < 8; x++)
     out[x] = in[x];
 
   Blowfish_encipher(reinterpret_cast<unsigned long *>(out),
@@ -422,7 +422,7 @@ void BlowFish::Encrypt(const unsigned char *in, unsigned char *out)
 
 void BlowFish::Decrypt(const unsigned char *in, unsigned char *out)
 {
-  for (int x=0; x<8; x++)
+  for (int x = 0; x < 8; x++)
     out[x] = in[x];
 
   Blowfish_decipher(reinterpret_cast<unsigned long *>(out),
@@ -455,7 +455,7 @@ BlowFish *BlowFish::MakeBlowFish(const unsigned char *pass, int passlen,
   BlowFish *retval = new BlowFish(passkey, sizeof(passkey));
   trashMemory(passkey, sizeof(passkey));
   pws_os::munlock(passkey, sizeof(passkey));
-   return retval;
+  return retval;
 }
 
 //-----------------------------------------------------------------------------

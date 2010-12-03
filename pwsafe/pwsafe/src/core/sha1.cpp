@@ -52,10 +52,10 @@ static void SHA1Transform(unsigned long state[5],
 //commented, because otherwise we change the buffer
 //#ifdef SHA1HANDSOFF
   static unsigned char workspace[64];
-  block = reinterpret_cast<CHAR64LONG16*>(workspace);
+  block = reinterpret_cast<CHAR64LONG16 *>(workspace);
   memcpy(block, buffer, 64);
 //#else
-//  block = reinterpret_cast<const CHAR64LONG16*>(buffer);
+//  block = reinterpret_cast<const CHAR64LONG16 *>(buffer);
 //#endif
   /* Copy context->state[] to working vars */
   a = state[0];

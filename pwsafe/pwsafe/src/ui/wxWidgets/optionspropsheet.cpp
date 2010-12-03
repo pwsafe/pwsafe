@@ -923,7 +923,7 @@ void COptions::PropSheetToPrefs()
                           oldshowpswdpref != prefs->
                           GetPref(PWSprefs::ShowPasswordInTree));
   if (showprefchanged) {
-    PasswordSafeFrame *pwsframe = dynamic_cast<PasswordSafeFrame*>(GetParent());
+    PasswordSafeFrame *pwsframe = dynamic_cast<PasswordSafeFrame *>(GetParent());
     wxASSERT(pwsframe != NULL);
     if (pwsframe->IsTreeView())
       pwsframe->RefreshViews();

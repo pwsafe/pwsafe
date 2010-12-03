@@ -74,7 +74,7 @@ namespace S_Alloc
       // In-place construction
       void construct(pointer p, const_reference c) {
         // placement new operator
-        new(reinterpret_cast<void*>(p)) T(c);
+        new(reinterpret_cast<void *>(p)) T(c);
       }
 
       // In-place destruction

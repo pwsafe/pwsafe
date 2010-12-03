@@ -71,7 +71,7 @@ CItemData::CItemData(const CItemData &that) :
   m_display_info(that.m_display_info == NULL ?
                  NULL : that.m_display_info->clone())
 {
-  memcpy(reinterpret_cast<char*>(m_salt), reinterpret_cast<const char*>(that.m_salt), SaltLength);
+  memcpy(reinterpret_cast<char *>(m_salt), reinterpret_cast<const char *>(that.m_salt), SaltLength);
   if (!that.m_URFL.empty())
     m_URFL = that.m_URFL;
   else
@@ -1444,7 +1444,7 @@ CItemData& CItemData::operator=(const CItemData &that)
 
     m_entrytype = that.m_entrytype;
     m_entrystatus = that.m_entrystatus;
-    memcpy(reinterpret_cast<char*>(m_salt), reinterpret_cast<const char*>(that.m_salt), SaltLength);
+    memcpy(reinterpret_cast<char *>(m_salt), reinterpret_cast<const char *>(that.m_salt), SaltLength);
   }
 
   return *this;

@@ -38,7 +38,7 @@ public:
 private:
   string m_name;
   ostream* m_osptr;
-  vector<Test*> m_tests;
+  vector<Test *> m_tests;
   void reset();
 
   // Disallowed ops:

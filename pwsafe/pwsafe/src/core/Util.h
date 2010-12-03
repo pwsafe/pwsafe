@@ -70,7 +70,7 @@ inline int getInt32(const unsigned char buf[4])
   ASSERT(sizeof(int) == 4);
 #if defined(PWS_LITTLE_ENDIAN)
 #if defined(_DEBUG)
-  if ( *reinterpret_cast<const int*>(buf) != (buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24)) )
+  if ( *reinterpret_cast<const int *>(buf) != (buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24)) )
   {
     pws_os::Trace0(_T("Warning: PWS_LITTLE_ENDIAN defined but architecture is big endian\n"));
   }
@@ -80,7 +80,7 @@ inline int getInt32(const unsigned char buf[4])
 #if defined(_DEBUG)
   // Folowing code works for big or little endian architectures but we'll warn anyway
   // if CPU is really little endian
-  if ( *reinterpret_cast<const int*>(buf) == (buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24)) )
+  if ( *reinterpret_cast<const int *>(buf) == (buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24)) )
   {
     pws_os::Trace0(_T("Warning: PWS_BIG_ENDIAN defined but architecture is little endian\n"));
   }
