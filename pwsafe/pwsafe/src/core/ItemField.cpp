@@ -25,7 +25,7 @@ CItemField::CItemField(const CItemField &that)
   : m_Type(that.m_Type), m_Length(that.m_Length)
 {
   if (m_Length > 0) {
-    size_t bs = GetBlockSize(reinterpret_cast<int &>(m_Length));
+    size_t bs = GetBlockSize(m_Length);
     m_Data = new unsigned char[bs];
     memcpy(m_Data, that.m_Data, bs);
   } else {
@@ -40,7 +40,7 @@ CItemField &CItemField::operator=(const CItemField &that)
     m_Length = that.m_Length;
     delete[] m_Data;
     if (m_Length > 0) {
-      size_t bs = GetBlockSize(reinterpret_cast<int &>(m_Length));
+      size_t bs = GetBlockSize(m_Length);
       m_Data = new unsigned char[bs];
       memcpy(m_Data, that.m_Data, bs);
     } else {
@@ -80,9 +80,9 @@ void CItemField::Set(const unsigned char* value, size_t length, BlowFish *bf)
     unsigned char *tempmem = new unsigned char[BlockLength];
     // invariant: BlockLength >= plainlength
 #if (_MSC_VER >= 1400)
-    memcpy_s(reinterpret_cast<char *>(tempmem), BlockLength, reinterpret_cast<const char *>(value), m_Length);
+    memcpy_s(tempmem, BlockLength, value, m_Length);
 #else
-    memcpy(reinterpret_cast<char *>(tempmem), reinterpret_cast<const char *>(value), m_Length);
+    memcpy(tempmem, value, m_Length);
 #endif
 
     //Fill the unused characters in with random stuff
@@ -120,7 +120,7 @@ void CItemField::Get(unsigned char *value, size_t &length, BlowFish *bf) const
     length = 0;
   } else { // we have data to decrypt
     size_t BlockLength = GetBlockSize(m_Length);
-    ASSERT(length >= static_cast<unsigned int>(BlockLength));
+    ASSERT(length >= BlockLength);
     unsigned char *tempmem = new unsigned char[BlockLength];
 
     size_t x;
