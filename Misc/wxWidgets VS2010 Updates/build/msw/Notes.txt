@@ -1,20 +1,43 @@
 The file "wxBuild_wxWidgets.bat" in this directory has been updated to compile
-V2.8.10 of wxWidgest for VS2010 (Visual C++ complier 10.0)
+V2.8.11 of wxWidgets for VS2010 (Visual C++ complier 10.0) for 32-bit and 64-bit
+projects.
+
+This file is based on that provided by RJP Computing as part of the wxPack project
+(see: http://wxpack.sourceforge.net/).  It has been updated to support VS2010 and
+also 64-bit compilations for VS2005, VS2008 and VS2010.
 
 Note: PasswordSafe wxWidgets uses the static Unicode libraries only, although the
 following will also build the Unicode DLLs.
 
-You should issue the following commands in a command window in this order:
+For the 32-bit versions, you should issue the following commands in a command window in this order:
 
-wxBuild_wxWidgets vc100 CLEAN
+ wxBuild_wxWidgets vc100 CLEAN
 
-wxBuild_wxWidgets vc100 NULL LIB_DEBUG_UNICODE
-wxBuild_wxWidgets vc100 NULL LIB_RELEASE_UNICODE
-wxBuild_wxWidgets vc100 NULL DLL_DEBUG_UNICODE
-wxBuild_wxWidgets vc100 NULL DLL_RELEASE_UNICODE
+ wxBuild_wxWidgets vc100 NULL LIB_DEBUG_UNICODE
+ wxBuild_wxWidgets vc100 NULL LIB_RELEASE_UNICODE
+ wxBuild_wxWidgets vc100 NULL DLL_DEBUG_UNICODE
+ wxBuild_wxWidgets vc100 NULL DLL_RELEASE_UNICODE
 
-wxBuild_wxWidgets vc100 MOVE
-wxBuild_wxWidgets vc100 CLEAN
+ wxBuild_wxWidgets vc100 MOVE
+ wxBuild_wxWidgets vc100 CLEAN
 
-The resulting libraries will be placed in the correct vc10_lib and vc10_dll (the VS2005
-equivalents remain in directories vc_lib and vc_dll.
+The resulting libraries will be placed in the correct vc10_lib and vc10_dll directories under
+the "lib" directory.
+
+For the 64-bit versions, you should issue the following commands in a command window in this order:
+
+ wxBuild_wxWidgets vc100_64 CLEAN
+
+ wxBuild_wxWidgets vc100_64 NULL LIB_DEBUG_UNICODE
+ wxBuild_wxWidgets vc100_64 NULL LIB_RELEASE_UNICODE
+ wxBuild_wxWidgets vc100_64 NULL DLL_DEBUG_UNICODE
+ wxBuild_wxWidgets vc100_64 NULL DLL_RELEASE_UNICODE
+
+ wxBuild_wxWidgets vc100_64 MOVE
+ wxBuild_wxWidgets vc100_64 CLEAN
+
+The resulting libraries will be placed in the correct vc10_lib and vc10_dll directories under
+the "lib64" directory.
+
+The PasswordSafe VS2010 projects expect the static libraries to be in the wxWidgets sub-directories
+\lib\vc10_lib and \lib64\vc10_lib for the 32-bit and 64-bit compilations respectively.
