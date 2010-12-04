@@ -3,14 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"PO-Revision-Date: 2010-12-05 01:15+0300\n"
+"Last-Translator: Andrey Kuznetsov <pm_kan@users.sourceforge.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -30,10 +29,6 @@ msgstr ""
 # ONLY Accelerator Keys with corresponding alphanumeric characters can be
 # updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
 
-# ONLY change the msgstr field. Do NOT change any other.
-# If you do not want to change an Accelerator Key, copy msgid to msgstr
-
-#. Resource IDs: (315, 8016, 8017)
 # ONLY change the msgstr field. Do NOT change any other.
 # If you do not want to change an Accelerator Key, copy msgid to msgstr
 # поля msgid/msgstr для горячих клавиш
@@ -71,6 +66,7 @@ msgstr ""
 # Redo - повторить
 # Failsafe Backup - Аварийная резервная копия
 # Original - исходный
+#. Resource IDs: (315, 8016, 8017)
 msgid " "
 msgstr " "
 
@@ -121,8 +117,8 @@ msgstr " 'Автонабор'"
 msgid " 'Creation Time'"
 msgstr " 'Время создания'"
 
-#. Resource IDs: (357)
 # Действие по двойному клику (Double click action)
+#. Resource IDs: (357)
 #, fuzzy
 msgid " 'DCA'"
 msgstr "'По дв. клику'"
@@ -172,8 +168,8 @@ msgstr " 'Сохранять время модификации'"
 msgid " 'Run Command'"
 msgstr " 'Выполнить команду'"
 
-#. Resource IDs: (363)
 # Используется в расширенных настройках экспорта для одного элементы "Advanced Text 'Single Entry' Export Options"
+#. Resource IDs: (363)
 msgid " 'Single Entry' "
 msgstr " 'одного элемента' "
 
@@ -208,20 +204,20 @@ msgstr " / пропущено %d"
 msgid " / with Password History errors %d"
 msgstr " / с ошибками в истории паролей %d"
 
-#. Resource IDs: (332)
 # Используется для автоименования элементов при копировании
+#. Resource IDs: (332)
 #, c-format
 msgid " Copy # %d"
 msgstr " (копия № %d)"
 
-#. Resource IDs: (251)
 # Используется в фильтре для DCA (начинается с пробела для того, чт. было первым в списке)
+#. Resource IDs: (251)
 #, c-format
 msgid " Current default (%s)"
 msgstr " Текущие умолчания (%s)"
 
-#. Resource IDs: (339)
 # Используется для автоименования элементов при перетаскивании
+#. Resource IDs: (339)
 #, fuzzy, c-format
 msgid " Drag # %d"
 msgstr " (перетянуто № %d)"
@@ -231,14 +227,14 @@ msgstr " (перетянуто № %d)"
 msgid " Duplicate # %d"
 msgstr " (дубликат № %d)"
 
-#. Resource IDs: (203)
 # Используется для автоименования элементов при импоритровании из неродных форматов
+#. Resource IDs: (203)
 #, c-format
 msgid " Import # %d"
 msgstr " (импортировано № %d)"
 
-#. Resource IDs: (328)
 # Часть сообщения об ошибке, отображаемого при открытии контейнера, заблокированного другим экземпляром passwordsafe. Process ID  -- PID блокирующего экземпляра.
+#. Resource IDs: (328)
 #, c-format
 msgid " [Process ID=%s]"
 msgstr " [Process ID=%s]"
@@ -251,43 +247,43 @@ msgstr " или откатить все изменения"
 msgid "! Edit externally"
 msgstr "! Открыть во внешнем редакторе"
 
-#. Resource IDs: (1194)
 # can be ignored - no need to translate
+#. Resource IDs: (1194)
 msgid "#entries"
 msgstr "#entries"
 
-#. Resource IDs: (1192)
 # can be ignored - no need to translate
+#. Resource IDs: (1192)
 msgid "#format"
 msgstr "#format"
 
-#. Resource IDs: (1193)
 # can be ignored - no need to translate
+#. Resource IDs: (1193)
 msgid "#groups"
 msgstr "#groups"
 
-#. Resource IDs: (1256)
 # can be ignored - no need to translate
+#. Resource IDs: (1256)
 msgid "#unkflds"
 msgstr "#unkflds"
 
-#. Resource IDs: (1255)
 # can be ignored - no need to translate
+#. Resource IDs: (1255)
 msgid "#uuid"
 msgstr "#uuid"
 
-#. Resource IDs: (1197)
 # can be ignored - no need to translate
+#. Resource IDs: (1197)
 msgid "#what"
 msgstr "#what"
 
-#. Resource IDs: (1196)
 # can be ignored - no need to translate
+#. Resource IDs: (1196)
 msgid "#when"
 msgstr "#when"
 
-#. Resource IDs: (1195)
 # can be ignored - no need to translate
+#. Resource IDs: (1195)
 msgid "#who"
 msgstr "#who"
 
@@ -346,18 +342,13 @@ msgstr "%d элементов"
 msgid "%d of %d matches."
 msgstr "%d из %d совпадений."
 
-#. Resource IDs: (3887)
-#, c-format
-msgid "%s [Recovered]"
-msgstr ""
-
 #. Resource IDs: (333)
 #, c-format
 msgid "%s \n\nCan't open file. Please choose another."
 msgstr "%s \n\nНевозможно открыть файл. Пожалуйста, выберите другой."
 
-#. Resource IDs: (341)
 # Ex.: "Text file being imported: foo.txt"
+#. Resource IDs: (341)
 #, c-format
 msgid "%s file being imported: %s"
 msgstr "%s файл импортирован: %s"
@@ -377,8 +368,8 @@ msgstr "%s является каталогом"
 msgid "%s not found. Cannot update entry's password.\r\n"
 msgstr "%s не найден. Невозможно обновить пароль для элемента.\r\n"
 
-#. Resource IDs: (212)
 # Ex.: "Saved by: qq on MAIN"
+#. Resource IDs: (212)
 #, c-format
 msgid "%s on %s"
 msgstr "%s на %s"
@@ -447,7 +438,7 @@ msgstr "&Добавить элемент..."
 
 #. Resource IDs: (1071, 1252)
 msgid "&Advanced"
-msgstr ""
+msgstr "&Расширенные настройки"
 
 #. Resource IDs: (1026, 1306)
 msgid "&Apply"
@@ -552,11 +543,11 @@ msgstr "&Дублировать элемент"
 
 #. Resource IDs: (32086)
 msgid "&Duplicate Group"
-msgstr ""
+msgstr "&Дублировать группу"
 
-#. Resource IDs: (1342, 32050)
 # урезано
 # диалог управления фильтрами
+#. Resource IDs: (1342, 32050)
 msgid "&Edit"
 msgstr "&Изменить"
 
@@ -617,8 +608,8 @@ msgstr "&Игнорировать"
 msgid "&Import"
 msgstr "&Импорт"
 
-#. Resource IDs: (1143)
 # Понмить n последних паролей
+#. Resource IDs: (1143)
 msgid "&Keep"
 msgstr "&Помнить"
 
@@ -790,8 +781,8 @@ msgstr "&Заголовок:"
 msgid "&Tree/List Font"
 msgstr "&Шрифт для элементов дерева/списка"
 
-#. Resource IDs: (1022)
 # урезано
+#. Resource IDs: (1022)
 msgid "&Try Again"
 msgstr "&Ввести снова"
 
@@ -1206,9 +1197,10 @@ msgstr "<b><font color=\"red\">Невозможно прочитать данн�
 msgid "<b><font color=\"red\">Couldn't contact server.</font></b>"
 msgstr "<b><font color=\"red\">Невозможно соединиться с сервером.</font></b>"
 
+# после <b> стоят два пробела, чтобы корректно раскрашивался полужирный шрифт
 #. Resource IDs: (360)
 msgid "<b><font color=\"red\">WARNING</font></b> If you continue, fields will be updated in your existing database from your selected input database.  The OK button on the password entry dialog for your input database will not be enabled <b>until you have accessed the Advanced dialog to confirm what you will be updating.</b>"
-msgstr ""
+msgstr "<b><font color=\"red\">ВНИМАНИЕ</font></b> Если Вы продолжите, значения элементов текущего контейнера будут заменены на значения из указанного контейнера. Кнопка OK в диалоге ввода пароля для открываемого контейнера <b>  неактивна до тех пор, пока Вы не поставите флажок "Расширенные настройки" и не укажете поля для синхронизации.</b>"
 
 #. Resource IDs: (1154)
 msgid ">"
@@ -1242,8 +1234,8 @@ msgstr "Будет создан новый контейнер. Введенны�
 msgid "A required resource was unavailable."
 msgstr "Затребованный ресурс недоступен."
 
-#. Resource IDs: (345, 1092)
 # Пример при выборе шрифта
+#. Resource IDs: (345, 1092)
 msgid "AaBbYyZz 0O1lIL"
 msgstr "AaBbYyZzАаБбЖжЯя 0O1lIL"
 
@@ -1251,8 +1243,8 @@ msgstr "AaBbYyZzАаБбЖжЯя 0O1lIL"
 msgid "About Password Safe"
 msgstr "О Password Safe"
 
-#. Resource IDs: (1228)
 # В диалоге при задании времени
+#. Resource IDs: (1228)
 msgid "Absolute"
 msgstr "Абсолютное"
 
@@ -1261,8 +1253,8 @@ msgstr "Абсолютное"
 msgid "Access to %1 was denied."
 msgstr "Доступ к %1 запрещен."
 
-#. Resource IDs: (350)
 # refer to the state of a Filter - active means that the displayed entries match the filter, inactive means that the filter isn't being used
+#. Resource IDs: (350)
 msgid "Active"
 msgstr "Активен"
 
@@ -1311,27 +1303,27 @@ msgstr "Расширенные настройки слияния"
 msgid "Advanced Synchronize Options"
 msgstr "Расширенные настройки синхронизации"
 
-#. Resource IDs: (339)
 # Ex: Advanced Text 'Single Entry' Export Options
+#. Resource IDs: (339)
 #, c-format
 msgid "Advanced Text%sExport Options"
 msgstr "Расширенные настройки экспорта%sв простой текст"
 
-#. Resource IDs: (339)
 # Ex: Advanced XML 'Single Entry' Export Options
+#. Resource IDs: (339)
 #, c-format
 msgid "Advanced XML%sExport Options"
 msgstr "Расширенные настройки экспорта%sв XML"
 
 #. Resource IDs: (65535)
 msgid "Advanced:"
-msgstr ""
+msgstr "Расширенные настройки:"
 
 #. Resource IDs: (514)
 msgid "Albanian"
 msgstr "Албанская"
 
-#. Resource IDs: (478)
+#. Resource IDs: (479)
 msgid "Alias Password Change"
 msgstr "Изменение пароля для Алиаса"
 
@@ -1343,8 +1335,8 @@ msgstr "Все файлы (*.*)"
 msgid "All available columns are being displayed."
 msgstr "Все доступные столбцы отображены."
 
-#. Resource IDs: (1333)
 # на "экземпляров" вместо "копий" не хватает места
+#. Resource IDs: (1333)
 msgid "Allow multiple instances (requires all instances to be restarted)"
 msgstr "Разрешить одновременный запуск нескольких копий (для применения требуется перезапуск всех копий программы)"
 
@@ -1524,7 +1516,7 @@ msgstr "Азербайджанская (латиница)"
 
 #. Resource IDs: (65535)
 msgid "Backup Directory:"
-msgstr ""
+msgstr "Каталог для резервных копий:"
 
 #. Resource IDs: (65535)
 msgid "Backup Name"
@@ -1538,8 +1530,8 @@ msgstr "Резервные копии"
 msgid "Base entry:"
 msgstr "Исходный элемент:"
 
-#. Resource IDs: (65535)
 # в настройках резервных копий "начало" для имени
+#. Resource IDs: (65535)
 msgid "Base:"
 msgstr "Начало:"
 
@@ -1599,8 +1591,8 @@ msgstr "Перейти по ссылке и выполнить &автонабо
 msgid "Browse to URL + Autotype"
 msgstr "Перейти по ссылке и выполнить автонабор"
 
-#. Resource IDs: (65535)
 # урезано из-за ограничения длины
+#. Resource IDs: (65535)
 msgid "Browser Command Line parameters"
 msgstr "параметры командной строки"
 
@@ -1636,23 +1628,23 @@ msgstr "C++ Terminate"
 msgid "C++ Unexpected"
 msgstr "C++ Unexpected"
 
-#. Resource IDs: (203)
 # Отображается в статус-строке и указывает источник настроек. С - конфигурация, F - файл [RO]/[R/W], None - нет, Reg - реестр.
+#. Resource IDs: (203)
 msgid "C:F[R-O]"
 msgstr "C:F[R-O]"
 
-#. Resource IDs: (203)
 # Отображается в статус-строке и указывает источник настроек. С - конфигурация, F - файл [RO]/[R/W], None - нет, Reg - реестр.
+#. Resource IDs: (203)
 msgid "C:F[R/W]"
 msgstr "C:F[R/W]"
 
-#. Resource IDs: (202)
 # Отображается в статус-строке и указывает источник настроек. С - конфигурация, F - файл [RO]/[R/W], None - нет, Reg - реестр.
+#. Resource IDs: (202)
 msgid "C:None  "
 msgstr "C:None  "
 
-#. Resource IDs: (202)
 # Отображается в статус-строке и указывает источник настроек. С - конфигурация, F - файл [RO]/[R/W], None - нет, Reg - реестр.
+#. Resource IDs: (202)
 msgid "C:Reg   "
 msgstr "C:Reg   "
 
@@ -1704,7 +1696,7 @@ msgstr "Невозможно обработать элемент, т. к. он �
 
 #. Resource IDs: (213)
 msgid "Cannot read file. Please check file permissions."
-msgstr ""
+msgstr "Невозможно прочитать файл. Проверьте права доступа."
 
 #. Resource IDs: (331)
 msgid "Cannot verify old safe combination - file gone?"
@@ -1786,8 +1778,8 @@ msgstr "Очистить буфер обмена"
 msgid "Clear Find"
 msgstr "Очистить поле поиска"
 
-#. Resource IDs: (1141)
 # урезано
+#. Resource IDs: (1141)
 msgid "Clear History"
 msgstr "Очистить"
 
@@ -1811,8 +1803,8 @@ msgstr "Нажмите для изменения регистра"
 msgid "Click to copy to clipboard"
 msgstr "Нажмите чтобы скопировать в буфер обмена"
 
-#. Resource IDs: (358)
 # хинт на поле e-mail в диалоге добавления/редактирования
+#. Resource IDs: (358)
 #, fuzzy
 msgid "Click to copy to clipboard, Ctrl+Click to also set URL field to this value"
 msgstr "Нажмите для копирования в буфер обмена, Ctrl+щелчок - также поместить mailto:значение в поле Ссылка"
@@ -1954,7 +1946,7 @@ msgstr "Сравнение текущего контейнера с: %s"
 
 #. Resource IDs: (340)
 msgid "Comparison"
-msgstr "Сравнение"
+msgstr "Сравниваемый"
 
 #. Resource IDs: (65535)
 msgid "Comparison Database:"
@@ -2079,8 +2071,8 @@ msgstr "Копировать пароль в буфер обмена"
 msgid "Copy password to clipboard, minimize"
 msgstr "Копировать пароль в буфер и свернуть"
 
-#. Resource IDs: (1150)
 # Урезано из-за ограничения длины
+#. Resource IDs: (1150)
 msgid "Copy to Clipboard"
 msgstr "Копировать в буфер"
 
@@ -2132,8 +2124,8 @@ msgstr "Невозможно сохранить контейнер. Произв
 msgid "Create &Shortcut"
 msgstr "Создать &ярлык"
 
-#. Resource IDs: (191)
 # First substitution is a number, second is either "import" or "validation"
+#. Resource IDs: (191)
 #, c-format
 msgid "Create SchemaCache%2d Error 0x%08X during %s."
 msgstr "Создание SchemaCache%2d завершилось ошибкой 0x%08X при выполнении операции '%s'."
@@ -2142,8 +2134,8 @@ msgstr "Создание SchemaCache%2d завершилось ошибкой 0x
 msgid "Create Shortcut"
 msgstr "Создать ярлык"
 
-#. Resource IDs: (1199)
 # урезано из-за ограничения длины
+#. Resource IDs: (1199)
 msgid "Create intermediate backups (.ibak) before saving"
 msgstr "Создавать копию (.ibak) перед сохранением"
 
@@ -2159,14 +2151,14 @@ msgstr "Создано"
 msgid "Created Time\t"
 msgstr "Время создания\t"
 
-#. Resource IDs: (1108)
 # "Создан" т.к. относится к элементу
+#. Resource IDs: (1108)
 msgid "Created on:"
 msgstr "Создан:"
 
 #. Resource IDs: (351)
 msgid "Criteria"
-msgstr "Критерий"
+msgstr "Условие"
 
 #. Resource IDs: (514)
 msgid "Croatian"
@@ -2352,10 +2344,6 @@ msgstr "Фильтр отображения - "
 msgid "Display subset of Password"
 msgstr "Показать часть пароля"
 
-#. Resource IDs: (3887)
-msgid "Do you want to recover these auto-saved documents?"
-msgstr ""
-
 #. Resource IDs: (333)
 #, c-format
 msgid "Do you want to save changes to the password database: %s?"
@@ -2377,10 +2365,6 @@ msgstr "Заменить?"
 #, c-format
 msgid "Do you wish to save the changes made to database:\r\n\r\n%s\r\n\r\nor Cancel the shutdown\\restart\\logoff?"
 msgstr "Сохранить изменения в контейнере:\r\n\r\n%s\r\n\r\nили отменить выключение\\перезапуск\\завершение сеанса?"
-
-#. Resource IDs: (3887)
-msgid "Don't recover the auto-saved documents\nUse the last explicitly saved versions of the documents"
-msgstr ""
 
 #. Resource IDs: (359)
 msgid "Double Click Action"
@@ -2430,8 +2414,8 @@ msgstr "Щелкните дважды для отправки письма по 
 msgid "Double-Click on entry to View/Edit it"
 msgstr "Щелкните дважды для просмотра/редактирования"
 
-#. Resource IDs: (65535)
 # урезано из-за ограничения длины
+#. Resource IDs: (65535)
 msgid "Double-click action"
 msgstr "По двойному клику"
 
@@ -2447,7 +2431,7 @@ msgstr "Выбранный элемент '%s:%s:%s' ссылается на э�
 
 #. Resource IDs: (32086)
 msgid "Duplicate Group"
-msgstr ""
+msgstr "Дублировать группу"
 
 #. Resource IDs: (514)
 msgid "Dutch"
@@ -2544,9 +2528,9 @@ msgstr "Сбой при шифровании"
 msgid "End Report"
 msgstr "Конец отчета"
 
-#. Resource IDs: (65535)
 # урезано
 # диалог управления фильтрами
+#. Resource IDs: (65535)
 msgid "Enter Key:"
 msgstr "Ключ:"
 
@@ -2753,9 +2737,9 @@ msgstr "Развернуть все"
 msgid "Expand/Collapse Group"
 msgstr "Развернуть/свернуть группу"
 
-#. Resource IDs: (353)
 # урезано
 # диалог управления фильтрами
+#. Resource IDs: (353)
 msgid "Export"
 msgstr "Экспорт"
 
@@ -3032,9 +3016,9 @@ msgstr "&Помощь\tF1"
 msgid "Given path is a directory or file is read-only"
 msgstr "Указанный путь является каталогом или файл доступен только для чтения"
 
-#. Resource IDs: (1379)
 # переход по ссылке/выполнение команды в диалоге создания/редактирования элемента
 # "перейти" не входит по длине
+#. Resource IDs: (1379)
 msgid "Go"
 msgstr "Запуск"
 
@@ -3095,9 +3079,10 @@ msgstr "Группа/заголовок"
 msgid "Group/Title\t"
 msgstr "Группа/заголовок\t"
 
+#заголовки экспорта/импорта в текст (не переводятся для совместимости)
 #. Resource IDs: (188)
 msgid "Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tPassword Expiry Interval\tRecord Modified Time\tPassword Policy\tHistory\tRun Command\tDCA\te-mail\tNotes"
-msgstr "Группа/заголовок\tИмя пользователя\tПароль\tСсылка\tАвтонабор\tВремя создания\tВремя изменения пароля\tВремя последнего доступа\tДата истечения пароля\tВремя истечения пароля\tВремя изменения записи\tПолитика создания паролей\tИстория\tКоманда для запуска\tПо двойному кл.\tE-Mail\tЗаметки"
+msgstr "Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tPassword Expiry Interval\tRecord Modified Time\tPassword Policy\tHistory\tRun Command\tDCA\te-mail\tNotes"
 
 #. Resource IDs: (1350, 65535)
 msgid "Group:"
@@ -3115,8 +3100,8 @@ msgstr "Группа\tЗаголовок\tИмя пользователя\tДа�
 msgid "Gujarati"
 msgstr "Гуджаратская"
 
-#. Resource IDs: (328)
 # Без перевода
+#. Resource IDs: (328)
 msgid "H"
 msgstr "H"
 
@@ -3164,13 +3149,13 @@ msgstr "Хинди (традиционная)"
 msgid "History\t"
 msgstr "История\t"
 
-#. Resource IDs: (1088)
 # урезано
+#. Resource IDs: (1088)
 msgid "Hot Key"
 msgstr "Вызов по"
 
-#. Resource IDs: (1087)
 # No need to translate these
+#. Resource IDs: (1087)
 msgid "HotKey1"
 msgstr "HotKey1"
 
@@ -3182,8 +3167,8 @@ msgstr "Венгерская"
 msgid "Hungarian 101-key"
 msgstr "Венгерская (101 клавиша)"
 
-#. Resource IDs: (1269)
 # заглушка, не используется
+#. Resource IDs: (1269)
 msgid "I am a ..."
 msgstr "Тип элемента"
 
@@ -3203,7 +3188,7 @@ msgstr "ID:32005:V C +S"
 msgid "ID:32021:V C +Q"
 msgstr "ID:32021:V C +Q"
 
-#. Accelerator Entry for Menu ID:32051; 'Add &Entry'
+#. Accelerator Entry for Menu ID:32051; '&Add Entry...'
 msgid "ID:32051:V C +A"
 msgstr "ID:32051:V C +A"
 
@@ -3315,8 +3300,8 @@ msgstr "ID:32504:V C +S"
 msgid "Icelandic"
 msgstr "Исландская"
 
-#. Resource IDs: (344)
 # No need to translate these
+#. Resource IDs: (344)
 msgid "Icon"
 msgstr "Icon"
 
@@ -3386,13 +3371,13 @@ msgstr "При импорте будут изменены пароли толь�
 msgid "Import under Group?"
 msgstr "Импортировать в группу?"
 
-#. Resource IDs: (346)
 # Часть имени с отчетом. Оставлять без изменений.
+#. Resource IDs: (346)
 msgid "Import_Text"
 msgstr "Import_Text"
 
-#. Resource IDs: (346)
 # Часть имени с отчетом. Оставлять без изменений.
+#. Resource IDs: (346)
 msgid "Import_XML"
 msgstr "Import_XML"
 
@@ -3405,8 +3390,8 @@ msgstr "Импортировано"
 msgid "Imported %d %s"
 msgstr "Импортировано %d %s"
 
-#. Resource IDs: (1229)
 # Ex.: Password expires In 5 days
+#. Resource IDs: (1229)
 msgid "In"
 msgstr "Через"
 
@@ -3415,8 +3400,8 @@ msgstr "Через"
 msgid "In Headers(%s)/In Entries("
 msgstr "В заголовках(%s)/в элементах("
 
-#. Resource IDs: (350)
 # refer to the state of a Filter - active means that the displayed entries match the filter, inactive means that the filter isn't being used
+#. Resource IDs: (350)
 msgid "Inactive"
 msgstr "Неактивен"
 
@@ -3559,8 +3544,8 @@ msgstr "Казахская"
 msgid "KeePass..."
 msgstr "KeePass..."
 
-#. Resource IDs: (1143)
 # В истории паролей
+#. Resource IDs: (1143)
 msgid "Keep"
 msgstr "Помнить"
 
@@ -3596,13 +3581,13 @@ msgstr "Последний раз изменялось"
 msgid "Last accessed on:"
 msgstr "Последнее обращение:"
 
-#. Resource IDs: (65535)
 # Урезано из-за ограничения длины поля
+#. Resource IDs: (65535)
 msgid "Last saved by:"
 msgstr "Сохранил:"
 
-#. Resource IDs: (65535)
 # Урезано из-за ограничения длины поля
+#. Resource IDs: (65535)
 msgid "Last saved on:"
 msgstr "Дата сохранения:"
 
@@ -3667,8 +3652,8 @@ msgstr "Список"
 msgid "List of Expired Passwords"
 msgstr "Список истекших паролей"
 
-#. Resource IDs: (1012, 1257, 1303, 1347)
 # No need to translate these
+#. Resource IDs: (1012, 1257, 1303, 1347)
 msgid "List1"
 msgstr "List1"
 
@@ -3745,8 +3730,8 @@ msgstr "Максимально количество дней %d"
 msgid "Maximum number stored"
 msgstr "Максимально количество сохраненных"
 
-#. Resource IDs: (348)
 # Shown as-is when the user enters a value that's too large for X in "between X and Y" while defining a filter.
+#. Resource IDs: (348)
 msgid "Maximum value for first number and 'Between' rule"
 msgstr "Максимальное значение для первого числа и правила 'между'"
 
@@ -3868,8 +3853,8 @@ msgstr "Новый контейнер"
 msgid "New Group"
 msgstr "Новая группа"
 
-#. Resource IDs: (65535)
 # Урезано из-за ограничений длины
+#. Resource IDs: (65535)
 msgid "New Safe Combination:"
 msgstr "Новый пароль:"
 
@@ -3895,7 +3880,7 @@ msgstr "Без изменений"
 
 #. Resource IDs: (351)
 msgid "No criteria defined"
-msgstr "Критерий не указан"
+msgstr "Условие не указано"
 
 #. Resource IDs: (335)
 msgid "No database open with which to compare against another database!"
@@ -3973,8 +3958,8 @@ msgstr "Правило не выбрано"
 msgid "Non-saved changes"
 msgstr "Несохраненные изменения"
 
-#. Resource IDs: (212, 337)
 # Встречается в отчетах при указании отсутствия элементов
+#. Resource IDs: (212, 337)
 msgid "None"
 msgstr "Нет"
 
@@ -3989,10 +3974,6 @@ msgstr "Норвежская (с саамским)"
 #. Resource IDs: (3857)
 msgid "Not all of the system registry entries (or INI file) were removed."
 msgstr "Не все записи в реестре (или ini-файле) были удалены"
-
-#. Resource IDs: (3887)
-msgid "Note that if you choose to recover the auto-saved documents, you must explicitly save them to overwrite the original documents.  If you choose to not recover the auto-saved versions, they will be deleted."
-msgstr ""
 
 #. Resource IDs: (33150)
 msgid "Note: Empty fields are shown as »*»"
@@ -4096,10 +4077,6 @@ msgstr " "
 msgid "One of more preferences have been changed. Are you sure you wish to cancel?"
 msgstr "Один или несколько параметров были изменены. Вы уверены, что нужно отклонить изменения?"
 
-#. Resource IDs: (3887)
-msgid "One or more auto-saved documents were found."
-msgstr ""
-
 #. Resource IDs: (340)
 #, c-format
 msgid "Only in Original DB: %d; Only in Comparison DB: %d; In both (differences): %d; In both (identical): %d"
@@ -4149,15 +4126,15 @@ msgstr "Исходное значение:"
 msgid "Oriya"
 msgstr "Ория"
 
-#. Resource IDs: (1081, 1201)
 # (Настройки->резервные копии) Имя для контейнера:
 # и
 # Импорт из TXT (разделитель) 
+#. Resource IDs: (1081, 1201)
 msgid "Other:"
 msgstr "Указано:"
 
-#. Resource IDs: (1206)
 # (Настройки ->Резервные копии) Каталог для резервных копий: Другой
+#. Resource IDs: (1206)
 msgid "Other: "
 msgstr "Другой: "
 
@@ -4169,13 +4146,13 @@ msgstr "Недостаточно памяти."
 msgid "OutOfMemoryException."
 msgstr "OutOfMemoryException."
 
-#. Resource IDs: (339)
 # No need to translate these
+#. Resource IDs: (339)
 msgid "PWS_CPF_CDD"
 msgstr "PWS_CPF_CDD"
 
-#. Resource IDs: (341)
 # No need to translate these
+#. Resource IDs: (341)
 msgid "PWS_CPF_TVDD"
 msgstr "PWS_CPF_TVDD"
 
@@ -4199,8 +4176,8 @@ msgstr "Количество символов в пароле:"
 msgid "Password"
 msgstr "Пароль"
 
-#. Resource IDs: (1114)
 # Нельзя использовать "срок действия" есть контекст "Password expires on: Never"
+#. Resource IDs: (1114)
 #, fuzzy
 msgid "Password Expires on:"
 msgstr "Пароль истекает:"
@@ -4271,8 +4248,8 @@ msgstr "Password Safe"
 msgid "Password Safe - <Untitled Restored Backup>"
 msgstr "Password Safe - <Восстановлено из резервной копии>"
 
-#. Resource IDs: (317)
 # урезано
+#. Resource IDs: (317)
 msgid "Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak||"
 msgstr "Резервные копии Password Safe (*.bak)|*.bak|Промежуточные резервные копии (*.ibak)|*.ibak||"
 
@@ -4288,8 +4265,8 @@ msgstr "Контейнеры Password Safe (*.psafe3)|*.psafe3|Все файлы
 msgid "Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|All files (*.*)|*.*||"
 msgstr "Контейнеры Password Safe (*.psafe3; *.dat)|*.psafe3; *.dat|Все файлы (*.*)|*.*||"
 
-#. Resource IDs: (316)
 # урезано
+#. Resource IDs: (316)
 msgid "Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All files (*.*)|*.*||"
 msgstr "Контейнеры Password Safe (*.psafe3; *.dat)|*.psafe3; *.dat|Резервные копии Password Safe (*.bak)|*.bak|Промежуточные резервные копии (*.ibak)|*.ibak|Все файлы (*.*)|*.*||"
 
@@ -4326,8 +4303,8 @@ msgstr "Подразумевается, что это алиас, но ссыл�
 msgid "Password is too short"
 msgstr "Пароль слишком короткий"
 
-#. Resource IDs: (1110)
 # урезано из-за ограничения размеров
+#. Resource IDs: (1110)
 msgid "Password last changed on:"
 msgstr "Пароль изменен:"
 
@@ -4437,14 +4414,14 @@ msgstr "Укажите имя нового файла для текущего к
 msgid "Please confirm that you wish to delete PasswordSafe configuration information for the current user from the Windows registry.\n\n"
 msgstr "Подтвердите удаление настроек PasswordSafe из реестра Windows для текущего пользователя.\n\n"
 
-#. Resource IDs: (353)
 # "Please confirm you wish to delete the Session filter Filter1"
+#. Resource IDs: (353)
 #, fuzzy, c-format
 msgid "Please confirm you wish to delete the %s filter %s?"
 msgstr "Подтверждаете удаление %s фильтра %s?"
 
-#. Resource IDs: (1227)
 # Урезано из-за ограничений длины
+#. Resource IDs: (1227)
 msgid "Please do not use this option unless you understand and accept the risks. This option bypasses the security provided by this program."
 msgstr "Используйте эту опцию только в случае, если Вы понимаете и принимаете все возможные риски. Это позволяет обойти защиту предоставляемую программой."
 
@@ -4634,10 +4611,6 @@ msgstr "Время изменения записи\t"
 msgid "Record last access times"
 msgstr "Сохранять время последнего доступа к записи"
 
-#. Resource IDs: (3887)
-msgid "Recover the auto-saved documents\nOpen the auto-saved versions instead of the explicitly saved versions"
-msgstr ""
-
 #. Resource IDs: (1297)
 #, fuzzy
 msgid "Recurring"
@@ -4652,8 +4625,8 @@ msgstr "Повторять (%d дней)"
 msgid "Redo"
 msgstr "Повторить"
 
-#. Resource IDs: (1229)
 # При задании даты
+#. Resource IDs: (1229)
 msgid "Relative"
 msgstr "Относительное"
 
@@ -4689,14 +4662,14 @@ msgstr "Переименовать группу"
 msgid "Report created"
 msgstr "Отчет создан"
 
-#. Resource IDs: (204)
 # Ex.: "Report of Import Text function started at 24 February 2007  18:43"
+#. Resource IDs: (204)
 #, c-format
 msgid "Report of %s function started at %s"
 msgstr "Отчет '%s' начат %s"
 
-#. Resource IDs: (65535)
 # ограничения длины
+#. Resource IDs: (65535)
 msgid "Requested Values:"
 msgstr "Результат отбора:"
 
@@ -4716,7 +4689,7 @@ msgstr "Зарезервированная комбинация '%s' откло�
 
 #. Resource IDs: (1427)
 msgid "Reset"
-msgstr ""
+msgstr "Сбросить"
 
 #. Resource IDs: (1368)
 msgid "Reset All"
@@ -4747,8 +4720,9 @@ msgid "Right Ctrl key"
 msgstr "правый Ctrl"
 
 #. Resource IDs: (65535)
+# урезано
 msgid "Right-click on the 'Y' in either of the first 2 columns for additional functions"
-msgstr "Щелкните правой кнопкой на 'Y' в любом из первых двух столбцов для отображения доп. функций"
+msgstr "Щелкните на 'Y' в любом из первых двух столбцов для отображения доп. функций"
 
 #. Resource IDs: (514)
 msgid "Romanian (Legacy)"
@@ -4765,7 +4739,7 @@ msgstr "Румынская (стандартная)"
 #. Resource IDs: (348)
 #, c-format
 msgid "Row %d is incomplete. Please ensure both Field and Criteria are set."
-msgstr "Строка %d задана не полностью. Убедитесь, что указаны значения 'поле' и 'критерий'."
+msgstr "Строка %d задана не полностью. Убедитесь, что указаны значения 'Поле' и 'Условие'."
 
 #. Resource IDs: (351)
 msgid "Row number"
@@ -4821,8 +4795,8 @@ msgstr "С&инхронизировать..."
 msgid "SAX Parse Error during %s\r\n%s."
 msgstr "Ошибка разбора SAX при выполнении %s\r\n%s."
 
-#. Resource IDs: (191)
 # First two substitutions are numbers, last is either "import" or "validation"
+#. Resource IDs: (191)
 #, c-format
 msgid "SAX Parse%2d Error 0x%08X during %s."
 msgstr "Ошибка разбора SAX Parse%2d 0x%08X при выполнении операции '%s'."
@@ -4835,8 +4809,8 @@ msgstr "Пароль для контейнера"
 msgid "Safe Combination Setup"
 msgstr "Установка пароля для контейнера"
 
-#. Resource IDs: (65535)
 # В метке мало места, поэтому сокращено до "пароль"
+#. Resource IDs: (65535)
 msgid "Safe Combination:"
 msgstr "Пароль:"
 
@@ -4844,8 +4818,8 @@ msgstr "Пароль:"
 msgid "Same as database's"
 msgstr "Такой же как у контейнера"
 
-#. Resource IDs: (1178)
 # вид дерева
+#. Resource IDs: (1178)
 msgid "Same as when last saved"
 msgstr "Такой же, как при последнем сохранении"
 
@@ -4865,8 +4839,8 @@ msgstr "Образец"
 msgid "Sample text cannot be empty"
 msgstr "Текст образца не может быть пустым"
 
-#. Resource IDs: (1137)
 # Сохранять n последних паролей
+#. Resource IDs: (1137)
 msgid "Save"
 msgstr "Сохранять"
 
@@ -4982,8 +4956,8 @@ msgstr "Отобранные"
 msgid "Selected Fields:"
 msgstr "Отобранные поля:"
 
-#. Resource IDs: (65535)
 # Урезано из-за ограничения длины
+#. Resource IDs: (65535)
 msgid "Selected filter details:"
 msgstr "Параметры фильтра:"
 
@@ -5019,8 +4993,8 @@ msgstr "Северный сото"
 msgid "Session"
 msgstr "Сессия"
 
-#. Resource IDs: (331)
 # Столбец в истории
+#. Resource IDs: (331)
 msgid "Set Date/Time"
 msgstr "Дата/время создания"
 
@@ -5030,16 +5004,16 @@ msgstr "Установить имя пользователя по умолчан
 
 #. Resource IDs: (351)
 msgid "Set Display Filter"
-msgstr "Задать фильтр отображения"
+msgstr "Определение фильтра отображения"
 
 #. Resource IDs: (150, 349)
 msgid "Set Display Filters"
-msgstr "Задать фильтры отображения"
+msgstr "Определение фильтров отображения"
 
 #. Resource IDs: (349)
 #, c-format
 msgid "Set Display Filters: %d Added; %d Active"
-msgstr "Задать фильтры отображения: %d добавлено; %d активно"
+msgstr "Определение фильтров отображения: %d добавлено; %d активно"
 
 #. Resource IDs: (345)
 msgid "Set Entry's Password Policy"
@@ -5048,12 +5022,12 @@ msgstr "Задать политику создания паролей"
 #. Resource IDs: (349)
 #, c-format
 msgid "Set Password History Filters: %d Added; %d Active"
-msgstr "Задать фильтр по истории паролей: %d добавлено; %d активно"
+msgstr "Определение фильтров по истории паролей: %d добавлено; %d активно"
 
 #. Resource IDs: (349)
 #, c-format
 msgid "Set Password Policy Filters: %d Added; %d Active"
-msgstr "Задать фильтр по политике создания паролей: %d добавлено; %d активно"
+msgstr "Определение фильтров по политике создания паролей: %d добавлено; %d активно"
 
 #. Resource IDs: (356)
 msgid "Set Password display font"
@@ -5116,8 +5090,8 @@ msgstr "Отобразить &несохраненные изменения"
 msgid "Show Notes"
 msgstr "Показать заметки"
 
-#. Resource IDs: (1296)
 # урезано
+#. Resource IDs: (1296)
 msgid "Show Notes as ToolTips in Tree && List views"
 msgstr "Отображать заметки во всплывающей подсказке"
 
@@ -5237,13 +5211,13 @@ msgstr "Начать сохранение паролей для всех эле�
 msgid "Start saving previous passwords"
 msgstr "Начать сохранение предыдущих паролей"
 
-#. Resource IDs: (1107, 1264, 1408, 1410, 1416, 1423, 1424)
 # No need to translate these
+#. Resource IDs: (1107, 1264, 1408, 1410, 1416, 1423, 1424, 1428)
 msgid "Static"
 msgstr "Static"
 
-#. Resource IDs: (1037)
 # No need to translate these
+#. Resource IDs: (1037)
 msgid "Static_Static"
 msgstr "Static_Static"
 
@@ -5535,8 +5509,8 @@ msgstr "Пароль для контейнера был введен невер�
 msgid "The selected Failsafe Backup file will be opened instead of selected database."
 msgstr "Вместо заданного контейнера будет открыта выбранная аварийная резервная копия."
 
-#. Resource IDs: (329)
 # Выводится при неверном повторе пароля (взоможно, где-то еще), поэтому entry переведено как 'значение'
+#. Resource IDs: (329)
 msgid "The two entries do not match."
 msgstr "Введенные значения не совпадают"
 
@@ -5556,10 +5530,6 @@ msgstr "В команде присутствуют непарные кавычк
 msgid "There does not appear to be a Recycle Bin on the media containing this Failsafe Backup file. If you delete it, it will be permanent. Do you wish to continue?"
 msgstr "На носителе с аварийной резервной копией не обнаружена 'Корзина'. Вы желаете удалить файл насовсем?"
 
-#. Resource IDs: (3887)
-msgid "These are more recently saved than the currently open documents and contain changes that were made before the application closed."
-msgstr ""
-
 #. Resource IDs: (344)
 #, c-format
 msgid "This alias' target [%s:%s:%s] is not a normal entry or already an alias base."
@@ -5577,16 +5547,16 @@ msgstr "Указанный контейнер совпадает с текущи
 msgid "This entry has been changed. Are you sure you wish to cancel?"
 msgstr "Элемент был изменен. Вы уверены, что желаете отменить изменения?"
 
-#. Resource IDs: (341)
 # Ex.: "This entry has the following 3 shortcuts: foo, bar, zog" or
 # "This entry has the following 3 aliases: foo, bar, zog"
+#. Resource IDs: (341)
 #, c-format
 msgid "This entry has the following %d %s:\r\n%s"
 msgstr "У данного элемента есть %d %s:\r\n%s"
 
-#. Resource IDs: (213)
 # Ex.: "This entry has the following 3 shortcuts: foo, bar, zog" or
 # "This entry has the following 3 aliases: foo, bar, zog"
+#. Resource IDs: (213)
 #, c-format
 msgid "This entry has the following %d %s:\r\n%s\r\nPlease confirm you wish to continue (All shortcuts to this entry will be deleted)?"
 msgstr "У данного элемента есть %d подчиненных типа '%s':\r\n%s\r\nПродолжить выполнение (все ярлыки для этого элемента будут удалены)?"
@@ -5711,8 +5681,8 @@ msgstr "Отобразить &панель инструментов"
 msgid "Treat fields that only contain 'whitespace' as empty"
 msgstr "Считать поля, содержащие только пробелы, пустыми"
 
-#. Resource IDs: (1013)
 # No need to translate these
+#. Resource IDs: (1013)
 msgid "Tree1"
 msgstr "Tree1"
 
@@ -5753,8 +5723,8 @@ msgstr "Сс&ылка"
 msgid "URL"
 msgstr "Ссылка"
 
-#. Resource IDs: (355)
 # не 'ссылка', т.к. коллизия со ссылками на пароли
+#. Resource IDs: (355)
 msgid "URL copied "
 msgstr "URL скопирован"
 
@@ -5932,18 +5902,18 @@ msgstr "Использование: pwsafe [-r|-v] [контейнер]\nили 
 msgid "Use"
 msgstr "Задать"
 
-#. Resource IDs: (1049)
 # урезано из-за ограничения длины
+#. Resource IDs: (1049)
 msgid "Use &Digits"
 msgstr "&Цифры"
 
-#. Resource IDs: (1070)
 # урезано из-за ограничения длины
+#. Resource IDs: (1070)
 msgid "Use &Hexadecimal digits only (0-9,a-f)"
 msgstr "Только &шестнадцатеричные цифры (0-9,a-f)"
 
-#. Resource IDs: (1047)
 # урезано из-за ограничения длины
+#. Resource IDs: (1047)
 msgid "Use &Lowercase letters"
 msgstr "С&трочные буквы"
 
@@ -5951,13 +5921,13 @@ msgstr "С&трочные буквы"
 msgid "Use &Symbols (i.e. &&, %, $, etc.)"
 msgstr "&Символы (напр.  &&, %, $, etc.)"
 
-#. Resource IDs: (1050)
 # урезано из-за ограничения длины
+#. Resource IDs: (1050)
 msgid "Use &Symbols (i.e., &, %, $, etc.)"
 msgstr "&Символы (напр. &, %, $ и т.п.)"
 
-#. Resource IDs: (1048)
 # урезано из-за ограничения длины
+#. Resource IDs: (1048)
 msgid "Use &UPPERCASE letters"
 msgstr "П&РОПИСНЫЕ буквы"
 
@@ -5971,8 +5941,8 @@ msgstr "Использовать настройки контейнера по &�
 msgid "Use Default"
 msgstr "по умолчанию"
 
-#. Resource IDs: (1051)
 # урезано из-за ограничения длины
+#. Resource IDs: (1051)
 msgid "Use only &Easy-to-read characters (i.e., no  'l', '1', etc.)"
 msgstr "Только &легкоотличимые символы (не исп.  'l', '1' и т.п.)"
 
@@ -6037,9 +6007,9 @@ msgstr "Имя переменной не указано"
 msgid "Variable name must be alphanumeric"
 msgstr "Имя переменной может содержать только буквы и цифры"
 
-#. Resource IDs: (65535)
 # урезано
 # диалог, вызываемый по параметру -e
+#. Resource IDs: (65535)
 msgid "Verify Key:"
 msgstr "Повтор:"
 
@@ -6092,8 +6062,8 @@ msgstr "Просмотр фильтра"
 msgid "View report"
 msgstr "Просмотр отчета"
 
-#. Resource IDs: (251, 332)
 # урезано из-за ограничения длины
+#. Resource IDs: (251, 332)
 msgid "View/Edit selected entry"
 msgstr "Просмотр/редактирование элемента"
 
@@ -6105,8 +6075,8 @@ msgstr "Посетить сайт Pass&word Safe..."
 msgid "WARNING: Use of an external editor may leave sensitive data on your hard disk.\n\nDo you wish to continue?"
 msgstr "ВНИМАНИЕ: при использовании внешнего редактора на диске могут остаться данные.\n\nПродолжить?"
 
-#. Resource IDs: (1232)
 # Предупреждать за n дней до истечения пароля
+#. Resource IDs: (1232)
 msgid "Warn"
 msgstr "Предупр. за"
 
@@ -6133,8 +6103,8 @@ msgstr "Предупреждение! Продолжение приведет к
 msgid "Weak passphrase:\n\n %s"
 msgstr "Слабый пароль:\n\n %s"
 
-#. Resource IDs: (361)
 # поле в таблице аварийных резервных копий
+#. Resource IDs: (361)
 #, fuzzy
 msgid "What saved"
 msgstr "Приложение"
@@ -6144,8 +6114,8 @@ msgstr "Приложение"
 msgid "When saved"
 msgstr "Дата сохранения"
 
-#. Resource IDs: (1105, 1109, 1111, 1113, 1115, 1117)
 # No need to translate
+#. Resource IDs: (1105, 1109, 1111, 1113, 1115, 1117)
 msgid "Whenever"
 msgstr "Whenever"
 
@@ -6237,8 +6207,8 @@ msgstr "Вы можете использовать кнопку 'Копиров�
 msgid "You may not set a password expiry date in the past."
 msgstr "При указании даты истечения пароля нельзя использовать даты из прошлого."
 
-#. Resource IDs: (362)
 # %s2= exported | validated
+#. Resource IDs: (362)
 #, fuzzy, c-format
 msgid "You must save this database%s before it can be %s."
 msgstr "Контейнер(%s) должен быть сохранен перед тем как будет %s."
@@ -6262,7 +6232,7 @@ msgstr "[Заметки скрыты - кликните для отображе�
 
 #. Resource IDs: (2005)
 msgid "\nAdd Group"
-msgstr ""
+msgstr "\nДобавить группу"
 
 #. Resource IDs: (2004)
 msgid "\nAdd New Entry"
@@ -6346,7 +6316,7 @@ msgstr "\nДублировать элемент"
 
 #. Resource IDs: (2006)
 msgid "\nDuplicate Group"
-msgstr ""
+msgstr "\nДублировать группу"
 
 #. Resource IDs: (2006)
 msgid "\nEdit Base entry"
@@ -6632,8 +6602,8 @@ msgstr "элемент-ярлык"
 msgid "added but not yet saved to database"
 msgstr "добавлены, но еще не сохранены в контейнер"
 
-#. Resource IDs: (207)
 # For defining filters: after a date, before a date or between two dates.
+#. Resource IDs: (207)
 msgid "after"
 msgstr "после"
 
@@ -6641,8 +6611,8 @@ msgstr "после"
 msgid "alias"
 msgstr "алиас"
 
-#. Resource IDs: (213)
 # Ex.: 5 aliases
+#. Resource IDs: (213)
 msgid "aliases"
 msgstr "алиасов"
 
@@ -6666,8 +6636,8 @@ msgstr "как 'имя по умолчанию'"
 msgid "autotype:"
 msgstr "автонабор:"
 
-#. Resource IDs: (207)
 # For defining filters: after a date, before a date or between two dates.
+#. Resource IDs: (207)
 msgid "before"
 msgstr "до"
 
@@ -6675,18 +6645,18 @@ msgstr "до"
 msgid "begins with"
 msgstr "начинается с"
 
-#. Resource IDs: (207)
 # For defining filters: after a date, before a date or between two dates.
+#. Resource IDs: (207)
 msgid "between"
 msgstr "между"
 
-#. Resource IDs: (326)
 # can be ignored
+#. Resource IDs: (326)
 msgid "big endian"
 msgstr "big endian"
 
-#. Resource IDs: (355)
 # поиск продолжен с конца
+#. Resource IDs: (355)
 msgid "bottom"
 msgstr "конца"
 
@@ -6698,8 +6668,8 @@ msgstr "изменены, но еще не сохранены в контейн�
 msgid "conflict"
 msgstr "конфликт"
 
-#. Resource IDs: (344)
 # Ex.: 5 confilicts
+#. Resource IDs: (344)
 msgid "conflicts"
 msgstr "конфликтов"
 
@@ -6707,8 +6677,8 @@ msgstr "конфликтов"
 msgid "contains"
 msgstr "содержит"
 
-#. Resource IDs: (1093)
 # Помнить n контейнеров
+#. Resource IDs: (1093)
 msgid "databases."
 msgstr "контейнеров"
 
@@ -6756,8 +6726,8 @@ msgstr "E-mail скопирован"
 msgid "ends with"
 msgstr "заканчивается на"
 
-#. Resource IDs: (213)
 # Ex.: 5 entries
+#. Resource IDs: (213)
 msgid "entries"
 msgstr "элементов"
 
@@ -6868,13 +6838,13 @@ msgstr "меньше чем"
 msgid "less than or equal to"
 msgstr "меньше либо равно"
 
-#. Resource IDs: (326)
 # can be ignored
+#. Resource IDs: (326)
 msgid "little endian"
 msgstr "little endian"
 
-#. Resource IDs: (65535)
 # Ex.: "Lock password database after 5 minutes idle"
+#. Resource IDs: (65535)
 msgid "minutes idle"
 msgstr "минут бездействия"
 
@@ -6949,8 +6919,8 @@ msgstr "ярлык"
 msgid "shortcut to %s"
 msgstr "ярлык для  %s"
 
-#. Resource IDs: (213)
 # Ex.: 5 shortcuts
+#. Resource IDs: (213)
 msgid "shortcuts"
 msgstr "ярлыков"
 
@@ -6958,26 +6928,26 @@ msgstr "ярлыков"
 msgid "static"
 msgstr "static"
 
-#. Resource IDs: (346)
 # In a report generated for an advanced search.
 # Ex.: "The following advanced options were selected:
 # subset: 'Group/Title' field 'begins with' 'a' (case insensitive)"
+#. Resource IDs: (346)
 #, c-format
 msgid "subset: '%s' field '%s' '%s' %s"
 msgstr "подмножество: '%s' поле '%s' '%s' %s"
 
-#. Resource IDs: (1417, 65535)
 # Строка убрана, т.к. нет падежа соответствующего всем контекстам. В этом месте (в диалоге расширенных настроек экспорта в простой текст) допустимо отсутствие текста без потери смысла.
+#. Resource IDs: (1417, 65535)
 msgid "the following text:"
 msgstr " "
 
-#. Resource IDs: (354)
 # поиск продолжен с начала
+#. Resource IDs: (354)
 msgid "top"
 msgstr "начала"
 
-#. Resource IDs: (1098)
 # Помнить n использованных элементов...
+#. Resource IDs: (1098)
 msgid "used entries in System Tray menu."
 msgstr "использованных элементов в меню значка"
 
@@ -7007,8 +6977,8 @@ msgstr "был"
 msgid "were"
 msgstr "были"
 
-#. Resource IDs: (1209)
 # no need to translate
+#. Resource IDs: (1209)
 msgid "whatever"
 msgstr "whatever"
 
