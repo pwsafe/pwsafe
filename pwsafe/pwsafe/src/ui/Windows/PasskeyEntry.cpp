@@ -328,6 +328,12 @@ BOOL CPasskeyEntry::OnInitDialog(void)
     return FALSE;
   }
 
+  // Disable and hide Advanced checkbox if not valid
+  if (m_adv_type == CAdvancedDlg::ADV_INVALID) {
+    GetDlgItem(IDC_ADVANCED)->EnableWindow(FALSE);
+    GetDlgItem(IDC_ADVANCED)->ShowWindow(SW_HIDE);
+  }
+
   // Do not enable the OK button until the user has accessed the Advanced
   // dialog when Synchronizing databases
   if (m_adv_type == CAdvancedDlg::ADV_SYNCHRONIZE)
