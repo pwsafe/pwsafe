@@ -1803,7 +1803,6 @@ void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga,
   // the GUI should not be updated until after the Add.
   
   // TODO: bUpdateGUI processing in PasswordSafeFrame::UpdateGUI
-  UNREFERENCED_PARAMETER(ft);//remove after NOTYET 'll be done
   UNREFERENCED_PARAMETER(bUpdateGUI);
 
   CItemData *pci(NULL);
@@ -1811,12 +1810,19 @@ void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga,
   ItemListIter pos = m_core.Find(entry_uuid);
   if (pos != m_core.GetEntryEndIter()) {
     pci = &pos->second;
+  } else if (ga == UpdateGUICommand::GUI_ADD_ENTRY ||
+             ga == UpdateGUICommand::GUI_REFRESH_ENTRYFIELD ||
+             ga == UpdateGUICommand::GUI_REFRESH_ENTRYPASSWORD) {
+    TRACE(_("Couldn't find uuid %s"),
+          CUUIDGen(entry_uuid).GetHexStr().c_str());
   }
+
 #ifdef NOTYET
   PWSprefs *prefs = PWSprefs::GetInstance();
 #endif
   switch (ga) {
     case UpdateGUICommand::GUI_ADD_ENTRY:
+      ASSERT(pci != NULL);
       m_tree->AddItem(*pci);
       m_grid->AddItem(*pci);
       break;
@@ -1844,9 +1850,11 @@ void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga,
       UpdateStatusBar();
       break;
     case UpdateGUICommand::GUI_REFRESH_ENTRYFIELD:
+      ASSERT(pci != NULL);
       RefreshEntryFieldInGUI(*pci, ft);
       break;
     case UpdateGUICommand::GUI_REFRESH_ENTRYPASSWORD:
+      ASSERT(pci != NULL);
       RefreshEntryPasswordInGUI(*pci);
       break;
     case UpdateGUICommand::GUI_DB_PREFERENCES_CHANGED:
