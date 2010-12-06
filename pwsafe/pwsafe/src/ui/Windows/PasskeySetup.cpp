@@ -160,7 +160,7 @@ void CPasskeySetup::OnOK()
     CGeneralMsgBox gmb;
     cs_text.LoadString(IDS_USEITANYWAY);
     cs_msg += cs_text;
-    int rc = gmb.AfxMessageBox(cs_msg, NULL, MB_YESNO | MB_ICONSTOP);
+    INT_PTR rc = gmb.AfxMessageBox(cs_msg, NULL, MB_YESNO | MB_ICONSTOP);
     if (rc == IDNO)
       return;
 #else
