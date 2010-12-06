@@ -30,11 +30,11 @@ OBJ       = $(LIBOBJ)
 
 CXXFLAGS =  -Wall -I../../core -I../..
 ifeq ($(CONFIG),debug)
-CXXFLAGS += -O0 -ggdb
+CXXFLAGS += -O0 -ggdb -DDEBUG
 else ifeq ($(CONFIG),release)
 CXXFLAGS += -O
 else ifeq ($(CONFIG),unicodedebug)
-CXXFLAGS += -O0 -ggdb -DUNICODE
+CXXFLAGS += -O0 -ggdb -DUNICODE -DDEBUG
 else ifeq ($(CONFIG),unicoderelease)
 CXXFLAGS += -O -DUNICODE
 endif
