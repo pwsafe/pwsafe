@@ -1,12 +1,13 @@
 /* XPM */
 static const char *classic_addgroup_xpm[] = {
 /* columns rows colors chars-per-pixel */
-"16 16 4 1",
+"16 16 5 1",
 /* colors */
-" 	c None",
+" 	c none",
 ".	c #606060",
 "X	c #0080ff",
-"o	c #fff200",
+"o	c #000000",
+"O	c #fff200",
 /* pixels */
 "                ",
 "                ",
@@ -16,12 +17,12 @@ static const char *classic_addgroup_xpm[] = {
 "  .XX.........  ",
 "  .XX.          ",
 "  .XX.   .....  ",
-"  .XX.   .XXX.  ",
-"  .XX.   .ooo.  ",
-"  .XX.....ooo.  ",
-"  .XXXXXooooooo ",
-"  .XXXXXooooooo ",
-"  ......ooooooo ",
-"          ooo   ",
-"          ooo   "
+"  .XX.   .oooo  ",
+"  .XX.   .oOOo  ",
+"  .XX...oooOOooo",
+"  .XXXXXoOOOOOOo",
+"  .XXXXXoOOOOOOo",
+"  ......oooOOooo",
+"          oOOo  ",
+"          oooo  "
 };
