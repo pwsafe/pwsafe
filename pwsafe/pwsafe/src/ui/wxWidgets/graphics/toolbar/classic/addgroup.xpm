@@ -3,7 +3,7 @@ static const char *classic_addgroup_xpm[] = {
 /* columns rows colors chars-per-pixel */
 "16 16 5 1",
 /* colors */
-" 	c none",
+" 	c None",
 ".	c #606060",
 "X	c #0080ff",
 "o	c #000000",
