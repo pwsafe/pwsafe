@@ -13,6 +13,7 @@ gmake (version 3.81 or newer.  Makefiles are not compatible with lower versions)
 libuuid1
 libwxgtk2.8-dev
 libwxgtk2.8-dbg
+libxerces-c-dev
 libxt-dev
 libxtst-dev
 subversion

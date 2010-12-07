@@ -1,4 +1,4 @@
-Password Safe 3.24 Release Notes - November 2010
+Password Safe 3.24 Release Notes - December 2010
 ================================================
 
 This note describe the new features, fixed bugs and known problems
