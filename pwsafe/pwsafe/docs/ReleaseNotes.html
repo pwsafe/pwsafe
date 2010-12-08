@@ -1,6 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head><!-- A HTML version of the ReleaseNotes.txt file. There Javascript functions provide a mechanism to access Feature Requests, Support Requests and Bug Reports directly from the Tracker ID. They are implemented to make it easier to change if SourceForge change their environment. WOuld have been nice to open a new tab rather than a new Window but currentl not possible from Javascript. Within a given release, the order of the entries are: New Features, Changes to Existing Features and then Bugs Fixed. Within each section, entries are ordered in dcreasing Tracker ID order. If an entry resolves multiple Tracker IDs, they are also entered in decreasing Tracker ID order. -->
-
+<html>
+<head>
+<!-- A HTML version of the ReleaseNotes.txt file. There Javascript functions provide a mechanism to access Feature Requests, Support Requests and Bug Reports directly from the Tracker ID. They are implemented to make it easier to change if SourceForge change their environment. WOuld have been nice to open a new tab rather than a new Window but currentl not possible from Javascript. Within a given release, the order of the entries are: New Features, Changes to Existing Features and then Bugs Fixed. Within each section, entries are ordered in dcreasing Tracker ID order. If an entry resolves multiple Tracker IDs, they are also entered in decreasing Tracker ID order. -->
 <style>
 h2 { text-decoration: underline; }
 h3 { text-decoration: underline; }
@@ -27,13 +28,13 @@ remote = open('http://sourceforge.net/tracker/?func=detail&aid='+ ID +'&group_id
 '_blank',
 'resizable=yes,scrollbars=yes,toolbar=no,location=no,directories=no,status=no,menubar=no,copyhistory=no');
 }
-</script></head>
-
+</script>
 <noscript><p style="color:red; text-align:center;
 font-size:24pt;">*** Scripting is disabled - links to Tracker items will not work! ***</p>
 </noscript>
+</head>
 <body>
-<h1 align="center">Password Safe 3.24 Release Notes - December 2010</h1>
+<h1 align="center">Password Safe 3.24.1 Release Notes - December 2010</h1>
 <p>This note describe the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
 Password Safe, please see the accompanying README.txt file. For more
@@ -44,6 +45,82 @@ ChangeLog.txt.</p>
 <p>Here are the notes for the latest version. Previous versions
 are described <a href="#prev-vers">here</a>.
 Information about older versions may be found <a href="http://pwsafe.org/history.shtml">here</a>.</p>
+<hr style="width: 100%; height: 2px;">
+<h3>Version V3.24.1</h3>
+<h4><a name="V3.24.1New"></a>New Features for V3.24.1</h4>
+<table>
+<tbody align="left" valign="top">
+<tr>
+<td></td>
+<td>None</td>
+</tr>
+</tbody>
+</table>
+<h4><a name="V3.24.1Changes"></a>Changes to Existing Features in V3.24.1</h4>
+<table>
+<tbody align="left" valign="top">
+<tr>
+<td></td>
+<td>None</td>
+</tr>
+</tbody>
+</table>
+<h4><a name="V3.24.1BugsFixed"></a>Bugs fixed in V3.24.1</h4>
+<table>
+<tbody align="left" valign="top">
+<td align="center" width="100"><a href="nojs.html" onclick="BR(3132055);return false;">3132055</a>,<br>
+<a href="nojs.html" onclick="BR(3132347);return false;">3132347</a></td>
+<td>Fix crash in V3.24.</td>
+</tr>
+<tr>
+</tbody>
+</table>
+<hr style="width: 100%; height: 2px;"><span style="text-decoration: underline;"><span style="font-weight: bold;"></span></span>
+<h2><a name="prev-vers"></a>Previous Versions Described in this Document</h2>
+<ul>
+<li><a href="ReleaseNotes.html#V3.24">V3.24</a> Released 2010-12-07</li>
+<ul>
+<li><a href="ReleaseNotes.html#V3.24New">New Features</a></li>
+<li><a href="ReleaseNotes.html#V3.24Changes">Changes to Existing Features</a></li>
+<li><a href="ReleaseNotes.html#V3.24BugsFixed">Bugs Fixed</a></li>
+</ul>
+</ul>
+
+<ul>
+<li><a href="ReleaseNotes.html#V3.23">V3.23</a> Released 2010-07-26</li>
+<ul>
+<li><a href="ReleaseNotes.html#V3.23New">New Features</a></li>
+<li><a href="ReleaseNotes.html#V3.23Changes">Changes to Existing Features</a></li>
+<li><a href="ReleaseNotes.html#V3.23BugsFixed">Bugs Fixed</a></li>
+</ul>
+</ul>
+
+<ul>
+<li><a href="#V3.22">V3.22</a> Released 2010-05-23</li>
+<ul>
+<li><a href="#V3.22New">New Features</a></li>
+<li><a href="#V3.22Changes">Changes to Existing Features</a></li>
+<li><a href="#V3.22BugsFixed">Bugs Fixed</a></li>
+</ul>
+</ul>
+
+<ul>
+<li><a href="#V3.21">V3.21</a> Released 2010-02-14</li>
+<ul>
+<li><a href="#V3.21New">New Features</a></li>
+<li><a href="#V3.21Changes">Changes to Existing Features</a></li>
+<li><a href="#V3.21BugsFixed">Bugs Fixed</a></li>
+</ul>
+</ul>
+
+<ul>
+<li><a href="#V3.20">V3.20</a> Released 2009-12-08</li>
+<ul>
+<li><a href="#V3.20New">New Features</a></li>
+<li><a href="#V3.20Changes">Changes to Existing Features</a></li>
+<li><a href="#V3.20BugsFixed">Bugs Fixed</a></li>
+</ul>
+</ul>
 <hr style="width: 100%; height: 2px;">
 <h3>Version V3.24</h3>
 <h4><a name="V3.24New"></a>New Features for V3.24</h4>
@@ -95,7 +172,7 @@ Find Toolbar.</td>
 <tr>
 <td align="center" width="100"><a href="nojs.html" onclick="BR(3121006);return false;">3121006</a></td>
 <td>Can now change number of databases remembered independently of the
-value of the number of last used entries remembered in System Tray menu. </td>
+value of the number of last used entries remembered in System Tray menu.</td>
 </tr>
 <tr>
 <td align="center" width="100"><a href="nojs.html" onclick="BR(3084401);return false;">3084401</a></td>
@@ -129,44 +206,6 @@ the application to be opened again.</td>
 </tr>
 </tbody>
 </table>
-<hr style="width: 100%; height: 2px;"><span style="text-decoration: underline;"><span style="font-weight: bold;"></span></span>
-<h2><a name="prev-vers"></a>Previous Versions Described in this Document</h2>
-<ul>
-<li><a href="ReleaseNotes.html#V3.23">V3.23</a>Released 2010-07-26</li>
-<ul>
-<li><a href="ReleaseNotes.html#V3.23New">New Features</a></li>
-<li><a href="ReleaseNotes.html#V3.23Changes">Changes to Existing Features</a></li>
-<li><a href="ReleaseNotes.html#V3.23BugsFixed">Bugs Fixed</a></li>
-</ul>
-</ul>
-
-<ul>
-<li><a href="#V3.22">V3.22</a> Released 2010-05-23</li>
-<ul>
-<li><a href="#V3.22New">New Features</a></li>
-<li><a href="#V3.22Changes">Changes to Existing Features</a></li>
-<li><a href="#V3.22BugsFixed">Bugs Fixed</a></li>
-</ul>
-</ul>
-
-<ul>
-<li><a href="#V3.21">V3.21</a> Released 2010-02-14</li>
-<ul>
-<li><a href="#V3.21New">New Features</a></li>
-<li><a href="#V3.21Changes">Changes to Existing Features</a></li>
-<li><a href="#V3.21BugsFixed">Bugs Fixed</a></li>
-</ul>
-</ul>
-
-<ul>
-<li><a href="#V3.20">V3.20</a> Released 2009-12-08</li>
-<ul>
-<li><a href="#V3.20New">New Features</a></li>
-<li><a href="#V3.20Changes">Changes to Existing Features</a></li>
-<li><a href="#V3.20BugsFixed">Bugs Fixed</a></li>
-</ul>
-</ul>
-<hr style="width: 100%; height: 2px;">
 <h3>Version V3.23</h3>
 <h4><a name="V3.23New"></a>New Features for V3.23</h4>
 <table>
@@ -709,4 +748,5 @@ entries exported to Text or XML.</td>
 </tbody>
 </table>
 <p align="center">*** End of Document ***</p>
-</body></html>
+</body>
+</html>

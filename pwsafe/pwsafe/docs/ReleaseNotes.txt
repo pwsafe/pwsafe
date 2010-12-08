@@ -8,6 +8,18 @@ information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
 
+New Features for 3.24.1
+=======================
+None
+
+Changes to Existing Features in 3.24.1
+======================================
+None
+
+Bugs fixed in 3.24.1
+====================
+[3132055, 3132347] Fix crash in V3.24
+
 New Features for 3.24
 =====================
 [3111585] User can now duplicate Groups. Aliases and shortcuts referring to base

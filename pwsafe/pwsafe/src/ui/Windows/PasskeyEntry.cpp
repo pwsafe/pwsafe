@@ -328,10 +328,12 @@ BOOL CPasskeyEntry::OnInitDialog(void)
     return FALSE;
   }
 
+  CWnd *padv = GetDlgItem(IDC_ADVANCED);
   // Disable and hide Advanced checkbox if not valid
-  if (m_index != GCP_FIRST && m_adv_type == CAdvancedDlg::ADV_INVALID) {
-    GetDlgItem(IDC_ADVANCED)->EnableWindow(FALSE);
-    GetDlgItem(IDC_ADVANCED)->ShowWindow(SW_HIDE);
+  if ((m_index != GCP_ADVANCED || m_adv_type == CAdvancedDlg::ADV_INVALID) &&
+      padv != NULL) {
+    padv->EnableWindow(FALSE);
+    padv->ShowWindow(SW_HIDE);
   }
 
   // Do not enable the OK button until the user has accessed the Advanced
