@@ -49,6 +49,7 @@ I18N_DLL_DIR := ./build/bin/pwsafe/I18N
 POT_FILE := $(I18N_DIR)/pwsafe.pot
 HELP_DIR := ./help
 BIN_DIR := ./build/bin/pwsafe/releasem
+TMPDIR := /cygdrive/c/tmp
 RELNOTES := $(CURDIR)/docs/ReleaseNotes.txt
 
 BIN_MANIFEST = README.txt docs/ReleaseNotes.txt docs/ReleaseNotes.html LICENSE \
@@ -137,8 +138,8 @@ save-map:
    $(BIN_DIR)/pws_*.pdb		
 
 src-release: ChangeLog $(POT_FILE)
-	$(SVN) export --non-interactive . C:\\TMP\\$(SRCRELNAME)
-	$(MV) C:\\TMP\\$(SRCRELNAME) $(RELEASEDIR)
+	$(SVN) export --non-interactive . $(TMPDIR)/$(SRCRELNAME)
+	$(MV) $(TMPDIR)/$(SRCRELNAME) $(RELEASEDIR)
 	$(MV) ChangeLog $(RELEASEDIR)/$(SRCRELNAME)
 	$(CP) src/ui/Windows/version.h $(RELEASEDIR)/$(SRCRELNAME)/src/ui/Windows
 	$(CP) $(POT_FILE) $(RELEASEDIR)/$(SRCRELNAME)
