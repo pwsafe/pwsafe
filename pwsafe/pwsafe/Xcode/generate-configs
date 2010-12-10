@@ -37,13 +37,13 @@ $release_config='./pwsafe-release.xcconfig';
 open DBG, "> $debug_config" or die "cannot open $debug_config";
 my $libflags;
 foreach(split /\s+/, `$configurator --libs --unicode=yes --debug=yes`) {
-	$libflags .= $_." " if /\A-[lL]+/;
+	$libflags .= $_." " if /\A-[lL]/;
 }
 print DBG "OTHER_LDFLAGS = ", $libflags, "\n";
 
 my $cxxflags;
 foreach(split /\s+/, `$configurator --cxxflags --unicode=yes --debug=yes`) {
-	$cxxflags .= $_." " if /\A-I+/;
+	$cxxflags .= $1." " if /\A-I(.+)/;
 }
 print DBG "HEADER_SEARCH_PATHS = ", $cxxflags, "\n";
 close DBG;
@@ -53,12 +53,12 @@ open REL, "> $release_config" or die "cannot open $release_config";
 
 $libflags="";
 foreach(split /\s+/, `$configurator --libs --unicode=yes --debug=no`) {
-	$libflags .= $_." " if /\A-[lL]+/;
+	$libflags .= $_." " if /\A-[lL]/;
 }
 print REL "OTHER_LDFLAGS = ", $libflags, "\n";
 
 $cxxflags="";
 foreach(split /\s+/, `$configurator --cxxflags --unicode=yes --debug=no`) {
-	$cxxflags .= $_." " if /\A-I+/;
+	$cxxflags .= $1." " if /\A-I(.+)/;
 }
 print REL "HEADER_SEARCH_PATHS = ", $cxxflags, "\n";
