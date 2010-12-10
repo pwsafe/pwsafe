@@ -37,7 +37,7 @@ $release_config='./pwsafe-release.xcconfig';
 open DBG, "> $debug_config" or die "cannot open $debug_config";
 my $libflags;
 foreach(split /\s+/, `$configurator --libs --unicode=yes --debug=yes`) {
-	$libflags .= $_." " if /\A-[lL]/;
+	$libflags .= $_." " if /\A-[lL]|\.a\Z/;
 }
 print DBG "OTHER_LDFLAGS = ", $libflags, "\n";
 
@@ -53,7 +53,7 @@ open REL, "> $release_config" or die "cannot open $release_config";
 
 $libflags="";
 foreach(split /\s+/, `$configurator --libs --unicode=yes --debug=no`) {
-	$libflags .= $_." " if /\A-[lL]/;
+	$libflags .= $_." " if /\A-[lL]|\.a\Z/;
 }
 print REL "OTHER_LDFLAGS = ", $libflags, "\n";
 
