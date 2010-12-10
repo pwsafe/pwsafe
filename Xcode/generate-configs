@@ -1,0 +1,64 @@
+#!/usr/bin/perl -w
+#
+# Even though Apple ships wxWidgets binaries/headers with Mac OS X (2.8.8 with Snow Leopard), almost everyone building pwsafe on OS X
+# will need to build wxWidgets first, because
+#
+#   1. For some reason, Apple didn't include the release build.
+#
+#   2. If we want to ship a binary that works on multiple versions of OS X, we have to link pwsafe
+#      statically with wxWidgets.  Apple's build of wxWidgets consists of dylibs.
+#
+# Having built wxWidgets, unless someone is willing to "make install" wxWidgets and overwrite whatever shipped with 
+# the system, one will have to tell Xcode where it is for it to pick up the headers/libs. wxWidgets 
+# makes it easy by creating a script called 'wx-config' in its command-line build that spits out
+# the correct location of headers/libs as well as compiler and liker settings compatible with that build of wxWidgets.  
+# This is used by UNIX builds in makefiles compile/link with the desired build of wxWidgets where its trivial to read in the
+# settings from outputs of external commands.
+#
+# Since Xcode can't pick up settings from output of external commands , we use this script to put those settings 
+# into configuration files that Xcode can use. Xcode target configurations can be "based on" xcconfig files, 
+# which are essentially sets of name-value pairs.  For a target/configuration, Xcode will use the settings in 
+# its xcconfig file, if that setting is found. Else, it will use the setting value specified in its GUI.
+#
+# This script generates two files, pwsafe-{debug,release}.xcconfig upon which the configuration(s) of 'pwsafe' target
+# in Xcode are based on. For now, it only picks up the location of headers/libs and NOT the other compiler/linker flags.
+#
+# Run this script in the same directory as 'pwsafe.xcodeproj'.  That's where Xcode expects the config files to be
+#
+ 
+#change this to wherever your wx-config is
+$configurator='/Users/sghosh/work/wxMac-2.8.10/wx-config';
+
+#don't change these names! Xcode needs them.  They are always generated in the current directory
+$debug_config='./pwsafe-debug.xcconfig';
+$release_config='./pwsafe-release.xcconfig';
+
+#debug configuration
+open DBG, "> $debug_config" or die "cannot open $debug_config";
+my $libflags;
+foreach(split /\s+/, `$configurator --libs --unicode=yes --debug=yes`) {
+	$libflags .= $_." " if /\A-[lL]+/;
+}
+print DBG "OTHER_LD_FLAGS = ", $libflags, "\n";
+
+my $cxxflags;
+foreach(split /\s+/, `$configurator --cxxflags --unicode=yes --debug=yes`) {
+	$cxxflags .= $_." " if /\A-I+/;
+}
+print DBG "HEADER_SEARCH_PATHS = ", $cxxflags, "\n";
+close DBG;
+
+#release configuration
+open REL, "> $release_config" or die "cannot open $release_config";
+
+$libflags="";
+foreach(split /\s+/, `$configurator --libs --unicode=yes --debug=no`) {
+	$libflags .= $_." " if /\A-[lL]+/;
+}
+print REL "OTHER_LD_FLAGS = ", $libflags, "\n";
+
+$cxxflags="";
+foreach(split /\s+/, `$configurator --cxxflags --unicode=yes --debug=no`) {
+	$cxxflags .= $_." " if /\A-I+/;
+}
+print REL "HEADER_SEARCH_PATHS = ", $cxxflags, "\n";
