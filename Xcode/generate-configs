@@ -39,7 +39,7 @@ my $libflags;
 foreach(split /\s+/, `$configurator --libs --unicode=yes --debug=yes`) {
 	$libflags .= $_." " if /\A-[lL]+/;
 }
-print DBG "OTHER_LD_FLAGS = ", $libflags, "\n";
+print DBG "OTHER_LDFLAGS = ", $libflags, "\n";
 
 my $cxxflags;
 foreach(split /\s+/, `$configurator --cxxflags --unicode=yes --debug=yes`) {
@@ -55,7 +55,7 @@ $libflags="";
 foreach(split /\s+/, `$configurator --libs --unicode=yes --debug=no`) {
 	$libflags .= $_." " if /\A-[lL]+/;
 }
-print REL "OTHER_LD_FLAGS = ", $libflags, "\n";
+print REL "OTHER_LDFLAGS = ", $libflags, "\n";
 
 $cxxflags="";
 foreach(split /\s+/, `$configurator --cxxflags --unicode=yes --debug=no`) {
