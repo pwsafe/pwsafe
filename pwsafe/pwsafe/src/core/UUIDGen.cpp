@@ -107,6 +107,25 @@ void CUUIDGen::GetUUID(uuid_array_t &uuid_array) const
 #endif
 }
 
+bool CUUIDGen::operator==(const CUUIDGen &that) const
+{
+#ifdef _WIN32
+  return std::memcmp(&this->uuid, &that.uuid, sizeof(uuid)) == 0;
+#else
+  return uuid_compare(this->uuid, that.uuid) == 0;
+#endif
+}
+
+bool CUUIDGen::ltuuid::operator()(const CUUIDGen &u1, const CUUIDGen &u2) const
+{
+#ifdef _WIN32
+  return std::memcmp(&u1.uuid,
+                     &u2.uuid, sizeof(u1.uuid)) < 0;
+#else
+  return uuid_compare(u1.uuid, u2.uuid) < 0;
+#endif
+}
+
 
 ostream &operator<<(ostream &os, const CUUIDGen &uuid)
 {
