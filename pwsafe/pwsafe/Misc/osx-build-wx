@@ -1,0 +1,27 @@
+#!/bin/sh
+#
+# The idea is to build binaries which run on as many MacOS versions as possible
+# So I just build with gcc 4.0 and 10.4 sdk and with --enable-universal-binary
+# I guess implicit is the assumption that no 64-bit targets are required
+# or rather, 10.4 doesn't have 64 bit targets.  Also, the same binary should run
+# just fine on all MacOS versions
+#
+#
+# This should build the 10.5+ builds with universal binaries for x86, x64, ppc and ppc64
+#
+#export arch_flags="-arch x86_64 "
+#
+#../configure --enable-debug --with-macosx-version-min=10.5 --with-macosx-sdk=/Developer/SDKs/MacOSX10.5.sdk -with-osx_cocoa --disable-shared --disable-compat24 --enable-unicode --enable-universal-binary CFLAGS="$arch_flags" CXXFLAGS="$arch_flags" CPPFLAGS="$arch_flags" LDFLAGS="$arch_flags" OBJCFLAGS="$arch_flags" OBJCXXFLAGS="$arch_flags"
+#
+# -- this just builds the 10.4 universal binaries.  From build log, it seems the archs are ppc and i386
+#
+if [ "$1" == "DEBUG" ]; then
+
+../configure --prefix=`pwd` CC=gcc-4.0 CXX=g++-4.0 LD=g++-4.0 --enable-debug --with-macosx-version-min=10.4 --with-macosx-sdk=/Developer/SDKs/MacOSX10.4u.sdk --disable-shared --disable-compat24 --enable-unicode --enable-universal-binary CXXFLAGS="-fvisibility=hidden -fvisibility-inlines-hidden" 
+
+else
+
+../configure --prefix=`pwd` CC=gcc-4.0 CXX=g++-4.0 LD=g++-4.0 --disable-debug --with-macosx-version-min=10.4 --with-macosx-sdk=/Developer/SDKs/MacOSX10.4u.sdk --disable-shared --disable-compat24 --enable-unicode --enable-universal-binary CXXFLAGS="-fvisibility=hidden -fvisibility-inlines-hidden" 
+
+fi
+
