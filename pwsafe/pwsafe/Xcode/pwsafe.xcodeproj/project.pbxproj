@@ -54,6 +54,11 @@
 		E6ADBB2111957CCB004E2BE5 /* libcore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6ADB80311956A93004E2BE5 /* libcore.a */; };
 		E6ADBB2211957CD3004E2BE5 /* libos.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6ADB91C11956DD0004E2BE5 /* libos.a */; };
 		E6AF167E11F1FD77002C253B /* ImportTextDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6AF167C11F1FD77002C253B /* ImportTextDlg.cpp */; };
+		E6B1447B12B26CB700415AAE /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E69B800911F61CF20084F6C4 /* Carbon.framework */; };
+		E6B1448212B26CEE00415AAE /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B1448112B26CEE00415AAE /* OpenGL.framework */; };
+		E6B1448812B26D1500415AAE /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B1448712B26D1500415AAE /* Cocoa.framework */; };
+		E6B1449412B26D7E00415AAE /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B1449312B26D7E00415AAE /* IOKit.framework */; };
+		E6B144BB12B2707E00415AAE /* QuickTime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B144BA12B2707E00415AAE /* QuickTime.framework */; };
 		E6B5C6451232B3D000AC8B45 /* dragbar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6B5C6411232B3D000AC8B45 /* dragbar.cpp */; };
 		E6B5C6461232B3D000AC8B45 /* PWSDragBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6B5C6431232B3D000AC8B45 /* PWSDragBar.cpp */; };
 		E6BA47871216DB9C00193879 /* AdvancedSelectionDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6BA477F1216DB9C00193879 /* AdvancedSelectionDlg.cpp */; };
@@ -121,6 +126,8 @@
 		E6EE845311E87E9800B01518 /* XMLFileHandlers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE841511E87E9800B01518 /* XMLFileHandlers.cpp */; };
 		E6EE845411E87E9800B01518 /* XMLFileValidation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE841711E87E9800B01518 /* XMLFileValidation.cpp */; };
 		E6EE845511E87E9800B01518 /* XMLprefs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE841911E87E9800B01518 /* XMLprefs.cpp */; };
+		E6F9A9F812B251A000F93140 /* pwsafe-debug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = E6F9A9F612B251A000F93140 /* pwsafe-debug.xcconfig */; };
+		E6F9A9F912B251A000F93140 /* pwsafe-release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = E6F9A9F712B251A000F93140 /* pwsafe-release.xcconfig */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -432,6 +439,10 @@
 		E6ADBA361195709A004E2BE5 /* wxutils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wxutils.h; sourceTree = "<group>"; };
 		E6AF167C11F1FD77002C253B /* ImportTextDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ImportTextDlg.cpp; sourceTree = "<group>"; };
 		E6AF167D11F1FD77002C253B /* ImportTextDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImportTextDlg.h; sourceTree = "<group>"; };
+		E6B1448112B26CEE00415AAE /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		E6B1448712B26D1500415AAE /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		E6B1449312B26D7E00415AAE /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
+		E6B144BA12B2707E00415AAE /* QuickTime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickTime.framework; path = System/Library/Frameworks/QuickTime.framework; sourceTree = SDKROOT; };
 		E6B5C6411232B3D000AC8B45 /* dragbar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = dragbar.cpp; sourceTree = "<group>"; };
 		E6B5C6421232B3D000AC8B45 /* dragbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dragbar.h; sourceTree = "<group>"; };
 		E6B5C6431232B3D000AC8B45 /* PWSDragBar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PWSDragBar.cpp; sourceTree = "<group>"; };
@@ -576,6 +587,8 @@
 		E6EE841811E87E9800B01518 /* XMLFileValidation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLFileValidation.h; sourceTree = "<group>"; };
 		E6EE841911E87E9800B01518 /* XMLprefs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = XMLprefs.cpp; sourceTree = "<group>"; };
 		E6EE841A11E87E9800B01518 /* XMLprefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLprefs.h; sourceTree = "<group>"; };
+		E6F9A9F612B251A000F93140 /* pwsafe-debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "pwsafe-debug.xcconfig"; sourceTree = "<group>"; };
+		E6F9A9F712B251A000F93140 /* pwsafe-release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "pwsafe-release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -585,6 +598,11 @@
 			files = (
 				E6ADBB2111957CCB004E2BE5 /* libcore.a in Frameworks */,
 				E6ADBB2211957CD3004E2BE5 /* libos.a in Frameworks */,
+				E6B1447B12B26CB700415AAE /* Carbon.framework in Frameworks */,
+				E6B1448212B26CEE00415AAE /* OpenGL.framework in Frameworks */,
+				E6B1448812B26D1500415AAE /* Cocoa.framework in Frameworks */,
+				E6B1449412B26D7E00415AAE /* IOKit.framework in Frameworks */,
+				E6B144BB12B2707E00415AAE /* QuickTime.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -907,6 +925,8 @@
 		E6ADB7EE119569CC004E2BE5 = {
 			isa = PBXGroup;
 			children = (
+				E6F9A9F612B251A000F93140 /* pwsafe-debug.xcconfig */,
+				E6F9A9F712B251A000F93140 /* pwsafe-release.xcconfig */,
 				E690B1031297D76E007EA508 /* Resources */,
 				E6A11A2A1293D20E0060FB35 /* graphics */,
 				E6EE839111E87E9700B01518 /* core */,
@@ -914,6 +934,10 @@
 				E6ADB9A411957099004E2BE5 /* wxWidgets */,
 				E6ADB80411956A93004E2BE5 /* Products */,
 				E69B800911F61CF20084F6C4 /* Carbon.framework */,
+				E6B1448112B26CEE00415AAE /* OpenGL.framework */,
+				E6B1448712B26D1500415AAE /* Cocoa.framework */,
+				E6B1449312B26D7E00415AAE /* IOKit.framework */,
+				E6B144BA12B2707E00415AAE /* QuickTime.framework */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1285,6 +1309,8 @@
 				E690B56112984A1B007EA508 /* pwsafe.xsl in Resources */,
 				E690B95712984B1D007EA508 /* help.zip in Resources */,
 				E6919C641298FB25001F96D9 /* pwsafe.icns in Resources */,
+				E6F9A9F812B251A000F93140 /* pwsafe-debug.xcconfig in Resources */,
+				E6F9A9F912B251A000F93140 /* pwsafe-release.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1505,7 +1531,16 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1)";
 				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
 				COPY_PHASE_STRIP = NO;
-				GCC_PREPROCESSOR_DEFINITIONS = UNICODE;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					UNICODE,
+					"_FILE_OFFSET_BITS=64",
+					_LARGE_FILES,
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_VERSION = 4.0;
 				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 				VALID_ARCHS = "i386 ppc";
@@ -1518,7 +1553,9 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1)";
 				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
 				COPY_PHASE_STRIP = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = UNICODE;
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_VERSION = 4.0;
 				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 				VALID_ARCHS = "i386 ppc";
@@ -1595,12 +1632,9 @@
 		};
 		E6ADB9A11195706B004E2BE5 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E6F9A9F612B251A000F93140 /* pwsafe-debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					UNICODE,
 					"_FILE_OFFSET_BITS=64",
@@ -1608,60 +1642,21 @@
 					__WXDEBUG__,
 					__WXMAC__,
 				);
-				HEADER_SEARCH_PATHS = (
-					"/Users/sghosh/work/wxMac-2.8.10/include",
-					"/Users/sghosh/work/wxMac-2.8.10/build-debug-10.4/lib/wx/include/mac-unicode-debug-static-2.8",
-					"/Users/sghosh/work/wxMac-2.8.10/contrib/include",
-					../src,
-				);
 				INFOPLIST_FILE = "pwsafe-Info.plist";
-				OTHER_LDFLAGS = (
-					"-L/Users/sghosh/work/wxMac-2.8.10/build-debug-10.4/lib",
-					"-framework",
-					IOKit,
-					"-framework",
-					Carbon,
-					"-framework",
-					Cocoa,
-					"-framework",
-					System,
-					"-framework",
-					QuickTime,
-					"-framework",
-					OpenGL,
-					"-framework",
-					AGL,
-					"/Users/sghosh/work/wxMac-2.8.10/build-debug-10.4/lib/libwx_macud_richtext-2.8.a",
-					"/Users/sghosh/work/wxMac-2.8.10/build-debug-10.4/lib/libwx_macud_aui-2.8.a",
-					"/Users/sghosh/work/wxMac-2.8.10/build-debug-10.4/lib/libwx_macud_xrc-2.8.a",
-					"/Users/sghosh/work/wxMac-2.8.10/build-debug-10.4/lib/libwx_macud_qa-2.8.a",
-					"/Users/sghosh/work/wxMac-2.8.10/build-debug-10.4/lib/libwx_macud_html-2.8.a",
-					"/Users/sghosh/work/wxMac-2.8.10/build-debug-10.4/lib/libwx_macud_adv-2.8.a",
-					"/Users/sghosh/work/wxMac-2.8.10/build-debug-10.4/lib/libwx_macud_core-2.8.a",
-					"/Users/sghosh/work/wxMac-2.8.10/build-debug-10.4/lib/libwx_base_carbonud_xml-2.8.a",
-					"/Users/sghosh/work/wxMac-2.8.10/build-debug-10.4/lib/libwx_base_carbonud_net-2.8.a",
-					"/Users/sghosh/work/wxMac-2.8.10/build-debug-10.4/lib/libwx_base_carbonud-2.8.a",
-					"-framework",
-					WebKit,
-					"-lwxregexud-2.8",
-					"-lwxtiffd-2.8",
-					"-lwxjpegd-2.8",
-					"-lwxpngd-2.8",
-					"-lz",
-					"-lpthread",
-					"-liconv",
-				);
 				PREBINDING = NO;
 				PRODUCT_NAME = pwsafe;
+				USER_HEADER_SEARCH_PATHS = ../src;
 			};
 			name = Debug;
 		};
 		E6ADB9A21195706B004E2BE5 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E6F9A9F712B251A000F93140 /* pwsafe-release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				COPY_PHASE_STRIP = YES;
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
 				GCC_MODEL_TUNING = G5;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					_LARGE_FILES,
@@ -1669,52 +1664,11 @@
 					"_FILE_OFFSET_BITS=64",
 					__WXMAC__,
 				);
-				HEADER_SEARCH_PATHS = (
-					"/Users/sghosh/work/wxMac-2.8.10/build-release-10.4/lib/wx/include/mac-unicode-release-static-2.8",
-					"/Users/sghosh/work/wxMac-2.8.10/include",
-					"/Users/sghosh/work/wxMac-2.8.10/contrib/include\n",
-					../src,
-				);
 				INFOPLIST_FILE = "pwsafe-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-L/Users/sghosh/work/wxMac-2.8.10/build-release-10.4/lib",
-					"-framework",
-					IOKit,
-					"-framework",
-					Carbon,
-					"-framework",
-					Cocoa,
-					"-framework",
-					System,
-					"-framework",
-					QuickTime,
-					"-framework",
-					OpenGL,
-					"-framework",
-					AGL,
-					"/Users/sghosh/work/wxMac-2.8.10/build-release-10.4/lib/libwx_macu_richtext-2.8.a",
-					"/Users/sghosh/work/wxMac-2.8.10/build-release-10.4/lib/libwx_macu_aui-2.8.a",
-					"/Users/sghosh/work/wxMac-2.8.10/build-release-10.4/lib/libwx_macu_xrc-2.8.a",
-					"/Users/sghosh/work/wxMac-2.8.10/build-release-10.4/lib/libwx_macu_qa-2.8.a",
-					"/Users/sghosh/work/wxMac-2.8.10/build-release-10.4/lib/libwx_macu_html-2.8.a",
-					"/Users/sghosh/work/wxMac-2.8.10/build-release-10.4/lib/libwx_macu_adv-2.8.a",
-					"/Users/sghosh/work/wxMac-2.8.10/build-release-10.4/lib/libwx_macu_core-2.8.a",
-					"/Users/sghosh/work/wxMac-2.8.10/build-release-10.4/lib/libwx_base_carbonu_xml-2.8.a",
-					"/Users/sghosh/work/wxMac-2.8.10/build-release-10.4/lib/libwx_base_carbonu_net-2.8.a",
-					"/Users/sghosh/work/wxMac-2.8.10/build-release-10.4/lib/libwx_base_carbonu-2.8.a",
-					"-framework",
-					WebKit,
-					"-lwxregexu-2.8",
-					"-lwxtiff-2.8",
-					"-lwxjpeg-2.8",
-					"-lwxpng-2.8",
-					"-lz",
-					"-lpthread",
-					"-liconv",
-				);
 				PREBINDING = NO;
 				PRODUCT_NAME = pwsafe;
+				USER_HEADER_SEARCH_PATHS = ../src;
 				ZERO_LINK = NO;
 			};
 			name = Release;
