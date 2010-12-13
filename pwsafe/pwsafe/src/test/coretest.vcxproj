@@ -115,7 +115,7 @@
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>core.lib;os.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <ShowProgress>NotSet</ShowProgress>
+      <ShowProgress>LinkVerboseLib</ShowProgress>
       <OutputFile>$(PWSBin)\coretest.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>$(PWSLib);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>

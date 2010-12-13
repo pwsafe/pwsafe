@@ -14,11 +14,15 @@
 
 using namespace std;
 
+#define TEST_BLOWFISH
 #define TEST_TWOFISH
 #define TEST_SHA256
 #define TEST_HMAC_SHA256
 #define TEST_STRINGX
 
+#ifdef TEST_BLOWFISH
+#include "BlowFishTest.h"
+#endif
 #ifdef TEST_TWOFISH
 #include "TwoFishTest.h"
 #endif
@@ -36,6 +40,12 @@ using namespace std;
 
 int main()
 {
+#ifdef TEST_BLOWFISH
+  CBlowFishTest t0;
+  t0.setStream(&cout);
+  t0.run();
+  t0.report();
+#endif
 #ifdef TEST_MYSTRING
   CMyStringTest t1;
   t1.setStream(&cout);
