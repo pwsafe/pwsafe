@@ -247,6 +247,7 @@
     <ClCompile Include="test.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BlowFishTest.h" />
     <ClInclude Include="HMAC_SHA256Test.h" />
     <ClInclude Include="SHA256Test.h" />
     <ClInclude Include="StringXTest.h" />
