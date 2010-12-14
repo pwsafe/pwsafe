@@ -28,6 +28,7 @@
 #include "safecombinationsetup.h"
 #include "core/PWCharPool.h" // for CheckPassword()
 #include "./wxutils.h"          // for ApplyPasswordFont()
+#include "./ExternalKeyboardButton.h"
 
 ////@begin XPM images
 ////@end XPM images
@@ -144,7 +145,9 @@ void CSafeCombinationSetup::CreateControls()
   wxTextCtrl* itemTextCtrl8 = new wxTextCtrl( itemDialog1, ID_VERIFY, wxEmptyString, wxDefaultPosition, wxSize(itemDialog1->ConvertDialogToPixels(wxSize(120, -1)).x, -1), wxTE_PASSWORD );
   itemGridSizer4->Add(itemTextCtrl8, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  itemBoxSizer2->Add(CreateStdDialogButtonSizer(wxOK|wxCANCEL|wxHELP), wxSizerFlags().Border().Expand().Proportion(0));
+  wxStdDialogButtonSizer* sizer = CreateStdDialogButtonSizer(wxOK|wxCANCEL|wxHELP);
+  sizer->Add(new ExternalKeyboardButton(itemDialog1), wxSizerFlags().Border(wxLEFT));
+  itemBoxSizer2->Add(sizer, wxSizerFlags().Border().Expand().Proportion(0));
 
   SetSizerAndFit(itemBoxSizer2);
 
