@@ -26,6 +26,7 @@
 #include "safecombinationprompt.h"
 #include "os/file.h"
 #include "./wxutils.h"
+#include "./SafeCombinationCtrl.h"
 
 ////@begin XPM images
 #include "./graphics/cpane.xpm"
@@ -147,8 +148,8 @@ void CSafeCombinationPrompt::CreateControls()
   wxStaticText* itemStaticText9 = new wxStaticText( itemDialog1, wxID_STATIC, _("Safe\ncombination:"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer8->Add(itemStaticText9, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxTextCtrl* itemTextCtrl10 = new wxTextCtrl( itemDialog1, ID_PASSWORD, wxEmptyString, wxDefaultPosition, wxSize(itemDialog1->ConvertDialogToPixels(wxSize(150, -1)).x, -1), wxTE_PASSWORD );
-  itemBoxSizer8->Add(itemTextCtrl10, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  CSafeCombinationCtrl* scctrl = new CSafeCombinationCtrl( itemDialog1, ID_PASSWORD, &m_password, wxDefaultPosition, wxSize(itemDialog1->ConvertDialogToPixels(wxSize(150, -1)).x, -1));
+  itemBoxSizer8->Add(scctrl, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   itemBoxSizer2->Add(CreateStdDialogButtonSizer(wxOK|wxCANCEL|wxHELP), wxSizerFlags().Border().Expand().Proportion(0));
 
@@ -156,12 +157,10 @@ void CSafeCombinationPrompt::CreateControls()
   
   // Set validators
   itemStaticText7->SetValidator( wxGenericValidator(& m_filename) );
-  itemTextCtrl10->SetValidator( wxGenericValidator(& m_password) );
 ////@end CSafeCombinationPrompt content construction
 
   wxWindow* passwdCtrl = FindWindow(ID_PASSWORD);
   if (passwdCtrl) {
-    ApplyPasswordFont(passwdCtrl);
     passwdCtrl->SetFocus();
   }
 }

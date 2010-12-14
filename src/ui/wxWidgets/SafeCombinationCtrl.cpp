@@ -6,7 +6,7 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
-/** \file editshortcut.cpp
+/** \file SafeCombinationCtrl.cpp
 * 
 */
 // For compilers that support precompilation, includes "wx/wx.h".
@@ -22,49 +22,15 @@
 
 #include "SafeCombinationCtrl.h"
 #include "./wxutils.h"
+#include "./ExternalKeyboardButton.h"
 
-#include "./graphics/vkbd.xpm"
-
-//this is just on a hunch that the window name that wxWidgets accepts
-//as the last param could be the instance/class name of the X window object
-const wxChar xvkbdTargetName[] = wxT("__passwordsafetextctrl__");
-
-
-void CommandEventHandler::HandleCommandEvent(wxCommandEvent& evt)
-{
-  UNREFERENCED_PARAMETER(evt);
-#ifdef __WXGTK__
-//if this works, we could pass the X window-id of the combination textCtrl
-//to make sure it is the only recipient of keystrokes from xvkbd
-#if 0
-#include <gtk-2.0/gtk/gtkwidget.h>
-  GtkWidget* widget = FindWindow(ID_COMBINATION)->GetHandle();
-  GdkWindow* window = widget->window;
-  int xwinid = GDK_WINDOW_XWINDOW(window);
-#endif
-  wxString command = wxString(wxT("xvkbd -window ")) + xvkbdTargetName;
-  
-  switch(wxExecute(command, wxEXEC_ASYNC, NULL)) //NULL => we don't want a wxProcess as callback
-  {
-    case 0:
-      wxMessageBox(_("Could not launch xvkbd.  Please make sure its in your PATH"), 
-                    _("Could not launch external onscreen keyboard"), wxOK | wxICON_ERROR);
-      break;
-      
-    case -1:    //only if ASYNC
-      wxMessageBox(_("Could not launch a new process for xvkbd.  Simultaneous execution is disabled?"), 
-                    _("Could not launch external onscreen keyboard"), wxOK | wxICON_ERROR);
-      break;
-      
-    default:
-      break;
-  }
-#endif
-}
 
 CSafeCombinationCtrl::CSafeCombinationCtrl(wxWindow* parent, 
                                             wxWindowID textCtrlID /*= wxID_ANY*/,
-                                            wxString* valPtr /*= 0*/) : wxBoxSizer(wxHORIZONTAL), 
+                                            wxString* valPtr /*= 0*/,
+                                            const wxPoint& pos /* = wxDefaultPosition*/,
+                                            const wxSize& size /* = wxDefaultSize */) : 
+                                                                        wxBoxSizer(wxHORIZONTAL), 
                                                                         textCtrl(0)
 {
 #if wxCHECK_VERSION(2,9,1)
@@ -73,18 +39,14 @@ CSafeCombinationCtrl::CSafeCombinationCtrl(wxWindow* parent,
   int validatorStyle = wxFILTER_NONE;
 #endif
   
-  textCtrl = new wxTextCtrl(parent, textCtrlID, wxEmptyString, wxDefaultPosition, wxDefaultSize, 
+  textCtrl = new wxTextCtrl(parent, textCtrlID, wxEmptyString, pos, size, 
                                                 wxTE_PASSWORD,
                                                 wxTextValidator(validatorStyle, valPtr));
   ApplyPasswordFont(textCtrl);
   Add(textCtrl, wxSizerFlags().Proportion(1).Expand());
   
-  wxBitmapButton* vkbdButton = new wxBitmapButton(parent, wxID_ANY, wxBitmap(vkbd_xpm));
+  ExternalKeyboardButton* vkbdButton = new ExternalKeyboardButton(parent);
   Add(vkbdButton, wxSizerFlags().Border(wxLEFT));
-  //Create an event table entry in this class for the button's id
-  Connect(vkbdButton->GetId(), wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(CommandEventHandler::HandleCommandEvent));
-  //hook into the button so that we actually get events
-  vkbdButton->PushEventHandler(this);
 }
 
 CSafeCombinationCtrl::~CSafeCombinationCtrl()

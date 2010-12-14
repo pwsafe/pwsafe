@@ -26,6 +26,7 @@
 #include "safecombinationchange.h"
 #include "core/PWCharPool.h" // for CheckPassword()
 #include "./wxutils.h"          // for ApplyPasswordFont
+#include "./ExternalKeyboardButton.h"
 
 ////@begin XPM images
 ////@end XPM images
@@ -165,8 +166,10 @@ void CSafeCombinationChange::CreateControls()
 
   wxButton* itemButton14 = new wxButton( itemDialog1, wxID_HELP, _("&Help"), wxDefaultPosition, wxDefaultSize, 0 );
   itemStdDialogButtonSizer11->AddButton(itemButton14);
-
+  
   itemStdDialogButtonSizer11->Realize();
+
+  itemStdDialogButtonSizer11->Add(new ExternalKeyboardButton(itemDialog1), wxSizerFlags().Border(wxLEFT));
 
   // Set validators
   itemTextCtrl6->SetValidator( wxGenericValidator(& m_oldpasswd) );
