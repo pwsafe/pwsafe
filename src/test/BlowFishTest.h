@@ -200,6 +200,8 @@ public:
       BlowFish bf(variable_key[i], 8);
       bf.Encrypt(plaintext_vk[i], tmp);
       _test(memcmp(tmp, ciphertext_vk[i], 8) == 0);
+      bf.Decrypt(ciphertext_vk[i], tmp);
+      _test(memcmp(tmp, plaintext_vk[i], 8) == 0);
     }
   }
 
