@@ -89,7 +89,7 @@ CItemData::~CItemData()
 StringX CItemData::GetField(const CItemField &field) const
 {
   StringX retval;
-  BlowFish *bf = MakeBlowFish();
+  BlowFish *bf = MakeBlowFish(field.IsEmpty());
   field.Get(retval, bf);
   delete bf;
   return retval;
@@ -97,7 +97,7 @@ StringX CItemData::GetField(const CItemField &field) const
 
 void CItemData::GetField(const CItemField &field, unsigned char *value, size_t &length) const
 {
-  BlowFish *bf = MakeBlowFish();
+  BlowFish *bf = MakeBlowFish(field.IsEmpty());
   field.Get(value, length, bf);
   delete bf;
 }
@@ -918,7 +918,7 @@ void CItemData::SplitName(const StringX &name,
 
 void CItemData::SetField(CItemField &field, const StringX &value)
 {
-  BlowFish *bf = MakeBlowFish();
+  BlowFish *bf = MakeBlowFish(value.empty());
   field.Set(value, bf);
   delete bf;
 }
@@ -926,7 +926,7 @@ void CItemData::SetField(CItemField &field, const StringX &value)
 void CItemData::SetField(CItemField &field,
                          const unsigned char *value, size_t length)
 {
-  BlowFish *bf = MakeBlowFish();
+  BlowFish *bf = MakeBlowFish(length == 0);
   field.Set(value, length, bf);
   delete bf;
 }
@@ -1401,11 +1401,16 @@ void CItemData::SetFieldValue(const FieldType &ft, const StringX &value)
   }
 }
 
-BlowFish *CItemData::MakeBlowFish() const
+BlowFish *CItemData::MakeBlowFish(bool noData) const
 {
   ASSERT(IsSessionKeySet);
-  return BlowFish::MakeBlowFish(SessionKey, sizeof(SessionKey),
-    m_salt, SaltLength);
+  // Creating a BlowFish object's relatively expensive. No reason
+  // to bother if we don't have any data to process.
+  if (noData)
+    return NULL;
+  else
+    return BlowFish::MakeBlowFish(SessionKey, sizeof(SessionKey),
+                                  m_salt, SaltLength);
 }
 
 CItemData& CItemData::operator=(const CItemData &that)

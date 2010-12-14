@@ -330,7 +330,7 @@ private:
   bool SetTime(const int whichtime, const stringT &time_str); // V30
 
   // Create local Encryption/Decryption object
-  BlowFish *MakeBlowFish() const;
+  BlowFish *MakeBlowFish(bool noData = false) const;
   // Laziness is a Virtue:
   StringX GetField(const CItemField &field) const;
   void GetField(const CItemField &field, unsigned char *value,
