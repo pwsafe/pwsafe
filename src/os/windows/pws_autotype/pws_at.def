@@ -1,8 +1,0 @@
-; pws_at.def : Declares the module parameters for the Release DLL.
-
-LIBRARY	"pws_at"
-
-EXPORTS
-  AT_HK_Initialise
-  AT_HK_UnInitialise
-  AT_HK_GetVersion

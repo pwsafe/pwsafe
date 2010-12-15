@@ -415,6 +415,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ExternalKeyboardButton.h"
+				>
+			</File>
+			<File
 				RelativePath=".\guiinfo.h"
 				>
 			</File>
@@ -576,6 +580,10 @@
 			</File>
 			<File
 				RelativePath=".\ExportTextWarningDlg.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\ExternalKeyboardButton.cpp"
 				>
 			</File>
 			<File

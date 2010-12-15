@@ -56,8 +56,9 @@ the base resource DLL (pwsafe_base.dll used to create non-English language suppo
 versions of both the MFC and wxWidgets. <b>This has only been tested on a 64-bit Windows
 environment with the VC10 64-bit compiler.  It has not been tested on a 32-bit Windows
 environment with a cross-compiler.</b> For wxWidgets, you will need the 64-bit static
-libraries and they should be placed in a new diretory 'lib64\vc10_lib' corresponding to
-the current 'lib\vc10_lib' for the 32-bit versions.</p>
+libraries and they should be placed in a new diretory 'lib64\vc_lib' corresponding to
+the current 'lib\vc_lib' for the 32-bit versions.  <i>If you continue to use VS2005,
+you should put the static libraries built by it in '\lib\vc8_lib'.</i></p>
 
 <p>For each Configuration there is an associated platform. Unfortunately, Visual Studio
 adds all defined platforms to all defined configurations even if a particular combination

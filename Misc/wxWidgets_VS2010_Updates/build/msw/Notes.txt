@@ -40,4 +40,6 @@ The resulting libraries will be placed in the correct vc10_lib and vc10_dll dire
 the "lib64" directory.
 
 The PasswordSafe VS2010 projects expect the static libraries to be in the wxWidgets sub-directories
-\lib\vc10_lib and \lib64\vc10_lib for the 32-bit and 64-bit compilations respectively.
+\lib\vc_lib and \lib64\vc_lib for the 32-bit and 64-bit compilations respectively.
+
+If you continue to use VS2005, you should put the static libraries built by it in \lib\vc8_lib.

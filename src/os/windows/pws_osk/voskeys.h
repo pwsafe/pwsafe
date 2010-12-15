@@ -106,7 +106,7 @@ typedef Vct_ISCSS2MC::const_iterator CIter_Vct_ISCSS2MC;
 
 // Disable warning can't create const fields - we never do - they are constant values
 #pragma warning(push)
-#pragma warning(disable: 4510 4610)
+#pragma warning(disable: 4510 4512 4610)
 struct st_IKLID2SCSS2MC {
   const unsigned int uiKLID;
   const Vct_ISCSS2MC * pvctISCSS2MC;

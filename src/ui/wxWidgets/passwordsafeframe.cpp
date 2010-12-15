@@ -1803,6 +1803,7 @@ void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga,
   // the GUI should not be updated until after the Add.
   
   // TODO: bUpdateGUI processing in PasswordSafeFrame::UpdateGUI
+  UNREFERENCED_PARAMETER(ft);
   UNREFERENCED_PARAMETER(bUpdateGUI);
 
   CItemData *pci(NULL);
@@ -1813,7 +1814,7 @@ void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga,
   } else if (ga == UpdateGUICommand::GUI_ADD_ENTRY ||
              ga == UpdateGUICommand::GUI_REFRESH_ENTRYFIELD ||
              ga == UpdateGUICommand::GUI_REFRESH_ENTRYPASSWORD) {
-    TRACE(_("Couldn't find uuid %s"),
+    pws_os::Trace(_("Couldn't find uuid %s"),
           CUUIDGen(entry_uuid).GetHexStr().c_str());
   }
 

@@ -16,17 +16,17 @@
 	/>
 	<UserMacro
 		Name="PWSBin"
-		Value="..\..\build\bin\pwsafe\$(ConfigurationName)"
+		Value="..\..\build8\bin\pwsafe\$(ConfigurationName)"
 		PerformEnvironmentSet="true"
 	/>
 	<UserMacro
 		Name="PWSObj"
-		Value="..\..\build\obj\pwsafe\$(ConfigurationName)"
+		Value="..\..\build8\obj\pwsafe\$(ConfigurationName)"
 		PerformEnvironmentSet="true"
 	/>
 	<UserMacro
 		Name="PWSLib"
-		Value="..\..\build\lib\pwsafe\$(ConfigurationName)"
+		Value="..\..\build8\lib\pwsafe\$(ConfigurationName)"
 		PerformEnvironmentSet="true"
 	/>
 </VisualStudioPropertySheet>

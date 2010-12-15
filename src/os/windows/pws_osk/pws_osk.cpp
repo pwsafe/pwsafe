@@ -60,9 +60,9 @@ static MMap_DK2SCSSCC m_mmapDK2SCSSCC;
 #include "OSK_Define_DeadKey_DataMaps.inc"
 
 // Code
-BOOL APIENTRY DllMain(HMODULE hModule,
+BOOL APIENTRY DllMain(HMODULE /* hModule */,
                       DWORD   ul_reason_for_call,
-                      LPVOID  lpReserved)
+                      LPVOID  /* lpReserved */)
 {
   switch (ul_reason_for_call) {
     case DLL_PROCESS_ATTACH:
