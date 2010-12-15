@@ -1,8 +1,0 @@
-; pws_at_D.def : Declares the module parameters for the Debug DLL.
-
-LIBRARY	"pws_at_D"
-
-EXPORTS
-  AT_HK_Initialise
-  AT_HK_UnInitialise
-  AT_HK_GetVersion

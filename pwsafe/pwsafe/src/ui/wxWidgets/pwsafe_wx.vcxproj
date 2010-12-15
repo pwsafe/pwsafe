@@ -159,7 +159,7 @@
     </PreBuildEvent>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(WXDIR)/include;$(WXDIR)/lib/vc10_lib/mswud;../../core;../../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WXDIR)/include;$(WXDIR)/lib/vc_lib/mswud;../../core;../../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;__WXDEBUG__;wxUSE_UNICODE;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -179,7 +179,7 @@
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>core.lib;os.lib;wxmsw28ud_xrc.lib;wxmsw28ud_qa.lib;wxmsw28ud_html.lib;wxmsw28ud_adv.lib;wxmsw28ud_core.lib;wxbase28ud_xml.lib;wxbase28ud_net.lib;wxmsw28ud_richtext.lib;wxbase28ud.lib;wxtiffd.lib;wxjpegd.lib;wxpngd.lib;wxzlibd.lib;wxregexud.lib;gdiplus.lib;comctl32.lib;wsock32.lib;uuid.lib;rpcrt4.lib;libcmtd.lib;shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(WXDIR)/lib/vc10_lib;..\$(PWSLib);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(WXDIR)/lib/vc_lib;..\$(PWSLib);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>uafxcwd.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>..\$(PWSBin)/pwsafe.pdb</ProgramDatabaseFile>
@@ -197,7 +197,7 @@
     </PreBuildEvent>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(WXDIR)/include;$(WXDIR)/lib64/vc10_lib/mswud;../../core;../../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WXDIR)/include;$(WXDIR)/lib64/vc_lib/mswud;../../core;../../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;WIN64;_DEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;__WXDEBUG__;wxUSE_UNICODE;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -218,7 +218,7 @@
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>core.lib;os.lib;wxmsw28ud_xrc.lib;wxmsw28ud_qa.lib;wxmsw28ud_html.lib;wxmsw28ud_adv.lib;wxmsw28ud_core.lib;wxbase28ud_xml.lib;wxbase28ud_net.lib;wxmsw28ud_richtext.lib;wxbase28ud.lib;wxtiffd.lib;wxjpegd.lib;wxpngd.lib;wxzlibd.lib;wxregexud.lib;gdiplus.lib;comctl32.lib;wsock32.lib;uuid.lib;rpcrt4.lib;libcmtd.lib;shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(WXDIR)/lib64/vc10_lib;..\$(PWSLib);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(WXDIR)/lib64/vc_lib;..\$(PWSLib);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>uafxcwd.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>..\$(PWSBin)/pwsafe.pdb</ProgramDatabaseFile>
@@ -235,7 +235,7 @@
     </PreBuildEvent>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(WXDIR)/include;$(WXDIR)/lib/vc10_lib/mswud;../../core;../../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WXDIR)/include;../../core;../../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;__WXDEBUG__;wxUSE_UNICODE;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=XERCES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -255,7 +255,7 @@
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>core.lib;os.lib;wxmsw28ud_xrc.lib;wxmsw28ud_qa.lib;wxmsw28ud_html.lib;wxmsw28ud_adv.lib;wxmsw28ud_core.lib;wxbase28ud_xml.lib;wxbase28ud_net.lib;wxmsw28ud_richtext.lib;wxbase28ud.lib;wxtiffd.lib;wxjpegd.lib;wxpngd.lib;wxzlibd.lib;wxregexud.lib;gdiplus.lib;comctl32.lib;wsock32.lib;uuid.lib;rpcrt4.lib;libcmtd.lib;shlwapi.lib;xerces-c_static_3D.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(WXDIR)/lib/vc10_lib;$(XercesDir)/lib;..\$(PWSLib);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(WXDIR)/lib/vc_lib;$(XercesDir)/lib;..\$(PWSLib);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>uafxcwd.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>..\$(PWSBin)/pwsafe.pdb</ProgramDatabaseFile>
@@ -273,7 +273,7 @@
     </PreBuildEvent>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(WXDIR)/include;$(WXDIR)/lib64/vc10_lib/mswud;../../core;../../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WXDIR)/include;$(WXDIR)/lib64/vc_lib/mswud;../../core;../../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;WIN64;__IA64__;_DEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;__WXDEBUG__;wxUSE_UNICODE;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=XERCES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -294,7 +294,7 @@
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>core.lib;os.lib;wxmsw28ud_xrc.lib;wxmsw28ud_qa.lib;wxmsw28ud_html.lib;wxmsw28ud_adv.lib;wxmsw28ud_core.lib;wxbase28ud_xml.lib;wxbase28ud_net.lib;wxmsw28ud_richtext.lib;wxbase28ud.lib;wxtiffd.lib;wxjpegd.lib;wxpngd.lib;wxzlibd.lib;wxregexud.lib;gdiplus.lib;comctl32.lib;wsock32.lib;uuid.lib;rpcrt4.lib;libcmtd.lib;shlwapi.lib;xerces-c_static_3D.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(WXDIR)/lib64/vc10_lib;$(Xerces64Dir)/lib;..\$(PWSLib);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(WXDIR)/lib64/vc_lib;$(Xerces64Dir)/lib;..\$(PWSLib);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>uafxcwd.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>..\$(PWSBin)/pwsafe.pdb</ProgramDatabaseFile>
@@ -312,7 +312,7 @@
     <ClCompile>
       <Optimization>MinSpace</Optimization>
       <WholeProgramOptimization>false</WholeProgramOptimization>
-      <AdditionalIncludeDirectories>$(WXDIR)/include;$(WXDIR)/lib/vc10_lib/mswu;../../core;../../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WXDIR)/include;$(WXDIR)/lib/vc_lib/mswu;../../core;../../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;wxUSE_UNICODE;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>
@@ -321,7 +321,7 @@
       <AssemblerListingLocation>..\$(PWSObj)\$(ProjectName)/</AssemblerListingLocation>
       <ObjectFileName>..\$(PWSObj)\$(ProjectName)/</ObjectFileName>
       <ProgramDataBaseFileName>..\$(PWSObj)\$(ProjectName)/</ProgramDataBaseFileName>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <ResourceCompile>
@@ -329,7 +329,7 @@
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>core.lib;os.lib;wxmsw28u_xrc.lib;wxmsw28u_qa.lib;wxmsw28u_html.lib;wxmsw28u_adv.lib;wxmsw28u_core.lib;wxbase28u_xml.lib;wxbase28u_net.lib;wxmsw28u_richtext.lib;wxbase28u.lib;wxtiff.lib;wxjpeg.lib;wxpng.lib;wxzlib.lib;wxregexu.lib;gdiplus.lib;comctl32.lib;wsock32.lib;uuid.lib;rpcrt4.lib;shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(WXDIR)/lib/vc10_lib;..\$(PWSLib);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(WXDIR)/lib/vc_lib;..\$(PWSLib);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>uafxcw.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>..\$(PWSBin)/pwsafe.pdb</ProgramDatabaseFile>
@@ -347,7 +347,7 @@
     <ClCompile>
       <Optimization>MinSpace</Optimization>
       <WholeProgramOptimization>false</WholeProgramOptimization>
-      <AdditionalIncludeDirectories>$(WXDIR)/include;$(WXDIR)/lib64/vc10_lib/mswu;../../core;../../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WXDIR)/include;$(WXDIR)/lib64/vc_lib/mswu;../../core;../../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;WIN64;NDEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;wxUSE_UNICODE;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>
@@ -356,7 +356,7 @@
       <AssemblerListingLocation>..\$(PWSObj)\$(ProjectName)/</AssemblerListingLocation>
       <ObjectFileName>..\$(PWSObj)\$(ProjectName)/</ObjectFileName>
       <ProgramDataBaseFileName>..\$(PWSObj)\$(ProjectName)/</ProgramDataBaseFileName>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <ResourceCompile>
@@ -366,7 +366,7 @@
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>core.lib;os.lib;wxmsw28u_xrc.lib;wxmsw28u_qa.lib;wxmsw28u_html.lib;wxmsw28u_adv.lib;wxmsw28u_core.lib;wxbase28u_xml.lib;wxbase28u_net.lib;wxmsw28u_richtext.lib;wxbase28u.lib;wxtiff.lib;wxjpeg.lib;wxpng.lib;wxzlib.lib;wxregexu.lib;gdiplus.lib;comctl32.lib;wsock32.lib;uuid.lib;rpcrt4.lib;shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(WXDIR)/lib/vc10_lib;..\$(PWSLib);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(WXDIR)/lib/vc_lib;..\$(PWSLib);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>uafxcw.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>..\$(PWSBin)/pwsafe.pdb</ProgramDatabaseFile>
@@ -383,7 +383,7 @@
     <ClCompile>
       <Optimization>MinSpace</Optimization>
       <WholeProgramOptimization>false</WholeProgramOptimization>
-      <AdditionalIncludeDirectories>$(WXDIR)/include;$(WXDIR)/lib/vc10_lib/mswu;../../core;../../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WXDIR)/include;$(WXDIR)/lib/vc_lib/mswu;../../core;../../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;wxUSE_UNICODE;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=XERCES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>
@@ -392,7 +392,7 @@
       <AssemblerListingLocation>..\$(PWSObj)\$(ProjectName)/</AssemblerListingLocation>
       <ObjectFileName>..\$(PWSObj)\$(ProjectName)/</ObjectFileName>
       <ProgramDataBaseFileName>..\$(PWSObj)\$(ProjectName)/</ProgramDataBaseFileName>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <ResourceCompile>
@@ -400,7 +400,7 @@
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>core.lib;os.lib;wxmsw28u_xrc.lib;wxmsw28u_qa.lib;wxmsw28u_html.lib;wxmsw28u_adv.lib;wxmsw28u_core.lib;wxbase28u_xml.lib;wxbase28u_net.lib;wxmsw28u_richtext.lib;wxbase28u.lib;wxtiff.lib;wxjpeg.lib;wxpng.lib;wxzlib.lib;wxregexu.lib;gdiplus.lib;comctl32.lib;wsock32.lib;uuid.lib;rpcrt4.lib;shlwapi.lib;xerces-c_static_3.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(WXDIR)/lib/vc10_lib;$(XercesDir)/lib;..\$(PWSLib);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(WXDIR)/lib/vc_lib;$(XercesDir)/lib;..\$(PWSLib);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>uafxcw.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>..\$(PWSBin)/pwsafe.pdb</ProgramDatabaseFile>
@@ -418,7 +418,7 @@
     <ClCompile>
       <Optimization>MinSpace</Optimization>
       <WholeProgramOptimization>false</WholeProgramOptimization>
-      <AdditionalIncludeDirectories>$(WXDIR)/include;$(WXDIR)/lib64/vc10_lib/mswu;../../core;../../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WXDIR)/include;$(WXDIR)/lib64/vc_lib/mswu;../../core;../../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;WIN64;NDEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;wxUSE_UNICODE;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=XERCES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>
@@ -427,7 +427,7 @@
       <AssemblerListingLocation>..\$(PWSObj)\$(ProjectName)/</AssemblerListingLocation>
       <ObjectFileName>..\$(PWSObj)\$(ProjectName)/</ObjectFileName>
       <ProgramDataBaseFileName>..\$(PWSObj)\$(ProjectName)/</ProgramDataBaseFileName>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <ResourceCompile>
@@ -437,7 +437,7 @@
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>core.lib;os.lib;wxmsw28u_xrc.lib;wxmsw28u_qa.lib;wxmsw28u_html.lib;wxmsw28u_adv.lib;wxmsw28u_core.lib;wxbase28u_xml.lib;wxbase28u_net.lib;wxmsw28u_richtext.lib;wxbase28u.lib;wxtiff.lib;wxjpeg.lib;wxpng.lib;wxzlib.lib;wxregexu.lib;gdiplus.lib;comctl32.lib;wsock32.lib;uuid.lib;rpcrt4.lib;shlwapi.lib;xerces-c_static_3.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(WXDIR)/lib64/vc10_lib;$(Xerces64Dir)/lib;..\$(PWSLib);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(WXDIR)/lib64/vc_lib;$(Xerces64Dir)/lib;..\$(PWSLib);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>uafxcw.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>..\$(PWSBin)/pwsafe.pdb</ProgramDatabaseFile>
@@ -454,6 +454,7 @@
     <ClInclude Include="dragbar.h" />
     <ClInclude Include="editshortcut.h" />
     <ClInclude Include="ExportTextWarningDlg.h" />
+    <ClInclude Include="ExternalKeyboardButton.h" />
     <ClInclude Include="guiinfo.h" />
     <ClInclude Include="ImportTextDlg.h" />
     <ClInclude Include="ImportXmlDlg.h" />
@@ -496,6 +497,7 @@
     <ClCompile Include="dragbar.cpp" />
     <ClCompile Include="editshortcut.cpp" />
     <ClCompile Include="ExportTextWarningDlg.cpp" />
+    <ClCompile Include="ExternalKeyboardButton.cpp" />
     <ClCompile Include="guiinfo.cpp" />
     <ClCompile Include="ImportTextDlg.cpp" />
     <ClCompile Include="ImportXmlDlg.cpp" />
