@@ -30,12 +30,16 @@ libXt-devel
 libXtst-devel
 libuuid-devel
 xerces-c-devel
-wxGTK0devel
+wxGTK-devel
 make
 
 With these installed, running 'make' at the top of the source tree
 will result in the debug version of pwsafe being built under
-src/ui/wxWidgets/GCCUnicodeDebug
+src/ui/wxWidgets/GCCUnicodeDebug (*)
+
+(*) Note that under Fedora and RHEL5, wxGTK-devel doesn't support
+"wx-config --debug=yes --unicode=yes" so just "make" fails. The
+workaround is to use "make CONFIG=unicoderelease"
 
 TBD:
 1. Improve .deb building script
