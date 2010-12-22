@@ -1,0 +1,11 @@
+BASEDIRNAME=pwsafe
+LANGS=RU DE ES FR ZH PL RU_new
+
+default:
+	@cd default ;  zip -qr help ./* -x \*/.svn/\*
+
+$(LANGS):
+	@cd $(BASEDIRNAME)$@ ; zip -qr help ./* -x \*/.svn/\*
+
+
+.PHONY: default $(LANGS)
