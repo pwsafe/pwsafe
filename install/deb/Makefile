@@ -72,7 +72,7 @@ debtree:
 	@$(CP) prerm debian/DEBIAN
 
 $(HELPZIP):
-	(cd $(HELPDIR)/default; $(ZIP) -qR $@ pwsafe.hh? *.html *.jpg)
+	(cd $(HELPDIR)/default; $(ZIP) -qR $@ pwsafe.hh? *.html *.jpg *.css *.js)
 
 clean:
 	@$(RM) debian $(DEBNAME)
