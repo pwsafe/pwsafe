@@ -23,8 +23,7 @@ DOCS = ../../README.txt $(DOCSDIR)/ReleaseNotes.txt \
 	$(DOCSDIR)/ChangeLog.txt
 MANPAGE = $(DOCSDIR)/pwsafe.1
 XMLFILES = $(XMLDIR)/pwsafe.xsd $(XMLDIR)/pwsafe_filter.xsd $(XMLDIR)/pwsafe.xsl
-HELPZIP = /tmp/help.zip
-HELPFILES = $(HELPZIP)
+HELPFILES = $(HELPDIR)/help.zip
 
 INFILES = $(PWSAFE-BIN) $(DOCS) $(MANPAGE) $(XMLFILES) $(HELPFILES)
 
@@ -71,9 +70,8 @@ debtree:
 	@$(CP) postinst debian/DEBIAN
 	@$(CP) prerm debian/DEBIAN
 
-$(HELPZIP):
-	(cd $(HELPDIR)/default; $(ZIP) -qR $@ pwsafe.hh? *.html *.jpg *.css *.js)
+$(HELPFILES):
+	$(MAKE) -C $(HELPDIR)
 
 clean:
 	@$(RM) debian $(DEBNAME)
-	@$(RM) $(HELPZIP)

@@ -1,11 +1,21 @@
 BASEDIRNAME=pwsafe
-LANGS=RU DE ES FR ZH PL RU_new
+LANGS=RU DE ES FR ZH PL
+
+ZIP = /usr/bin/zip
+
+all: default $(LANGS)
 
 default:
-	@cd default ;  zip -qr help ./* -x \*/.svn/\*
+	@cd default ; $(ZIP) -qr help ./* -x \*/.svn/\*
 
 $(LANGS):
-	@cd $(BASEDIRNAME)$@ ; zip -qr help ./* -x \*/.svn/\*
+	@cd $(BASEDIRNAME)$@ ; $(ZIP) -qr ../help$@ ./* -x \*/.svn/\*
 
+clean:
+	$(RM) *.zip
 
-.PHONY: default $(LANGS)
+.PHONY: all clean default $(LANGS)
+
+# Local variables:
+# mode: makefile
+# End:
