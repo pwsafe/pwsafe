@@ -1,19 +1,13 @@
-#
-# Makefile to compile all versions of the pwsafe help
-#
-# We're not checking any dependencies, just invoking the 
-# compiler whenver we're called.
-# We're igonring the return status of hhc, since it's != 0 even
-# when compiles OK.
-#
+OS:= $(findstring Linux, $(shell uname -s))
 
-HELP_DIRS := default pwsafeDE pwsafeFR pwsafeRU pwsafeES
-# pwsafePL -- nothing there :-(
-# pwsafeZH -- currently breaks my hhc :-(
+ifeq ($(findstring Linux, $(shell uname -s)), Linux)
+include Makefile.linux
+else ifeq ($(findstring CYGWIN, $(shell uname -s)), CYGWIN)
+include Makefile.windows
+else ifeq ($(findstring Darwin, $(shell uname -s)), Darwin)
+#include Makefile.macos
+$(error "MacOS unsuported (yet)")
+else
+$(error "Unsupported OS or unable to determine OS")
+endif
 
-HHC = /cygdrive/c/local/MSVS10/HTMLHelpWorkshop/hhc.exe
-
-.PHONY: all
-
-all:
-	-$(foreach dir, $(HELP_DIRS), cd $(CURDIR)/$(dir); $(HHC) pwsafe.hhp;)
