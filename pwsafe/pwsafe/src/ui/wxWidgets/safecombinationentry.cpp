@@ -37,6 +37,7 @@
 ////@end XPM images
 #include "pwsafeapp.h"
 #include "SafeCombinationCtrl.h"
+#include <wx/filename.h>
 
 /*!
  * CSafeCombinationEntry type definition
@@ -375,7 +376,11 @@ void CSafeCombinationEntry::OnNewDbClick( wxCommandEvent& /* evt */ )
                   (wxFD_SAVE | wxFD_OVERWRITE_PROMPT| wxFD_CHANGE_DIR));
     int rc = fd.ShowModal();
     if (rc == wxID_OK) {
-      newfile = fd.GetPath();
+      wxFileName wxfn(fd.GetPath());
+      if (wxfn.GetExt().empty()) {
+        wxfn.SetExt(DEFAULT_SUFFIX);
+      }
+      newfile = wxfn.GetFullPath();
       break;
     } else
       return;
@@ -389,8 +394,20 @@ void CSafeCombinationEntry::OnNewDbClick( wxCommandEvent& /* evt */ )
 
   // 3. Set m_filespec && m_passkey to returned value!
   m_core.SetCurFile(newfile.c_str());
-  m_core.SetPassKey(pksetup.GetPassword().c_str());
-  wxGetApp().recentDatabases().AddFileToHistory(newfile);
-  EndModal(wxID_OK);
+  
+  // Now lock the new file
+  std::wstring locker(L""); // null init is important here
+  m_core.LockFile(newfile.c_str(), locker);
+  
+  m_core.SetReadOnly(false); // new file can't be read-only...
+  m_core.NewFile(pksetup.GetPassword().c_str());
+  if ((rc = m_core.WriteCurFile()) == PWSfile::SUCCESS) {
+    wxGetApp().recentDatabases().AddFileToHistory(newfile);
+    EndModal(wxID_OK);
+  }
+  else {
+    wxMessageBox(wxString()<< newfile << _("\r\n\r\nCould not open file for writing!"),
+                 _("Write Error"), wxOK | wxICON_ERROR, this);
+  }
 }
 
