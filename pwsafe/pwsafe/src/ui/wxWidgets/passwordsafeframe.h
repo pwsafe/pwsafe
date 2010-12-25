@@ -438,7 +438,9 @@ public:
                               const bool bTitleRenamed, wxString &timeStr, 
                               const CItemData::EntryType et,
                               std::vector<StringX> &vs_added);
-
+  BOOL LaunchBrowser(const wxString &csURL, const StringX &sxAutotype,
+                     const std::vector<size_t> &vactionverboffsets, bool bDoAutotype);
+  
   // Do* member functions for dbl-click and menu-accessible actions
   void DoCopyPassword(CItemData &item);
   void DoCopyNotes(CItemData &item);
@@ -448,7 +450,7 @@ public:
   void DoEdit(CItemData &item);
   void DoAutotype(CItemData &item);
   void DoAutotype(const StringX& sx_autotype, const std::vector<size_t>& vactionverboffsets);
-  void DoBrowse(CItemData &item);
+  void DoBrowse(CItemData &item, bool bAutotype);
   void DoRun(CItemData &item);
   void DoEmail(CItemData &item);
 
