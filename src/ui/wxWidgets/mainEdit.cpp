@@ -580,14 +580,113 @@ void PasswordSafeFrame::DoAutotype(const StringX& sx_autotype,
 
 }
 
-void PasswordSafeFrame::DoBrowse(CItemData &item)
+void PasswordSafeFrame::DoBrowse(CItemData &item, bool bAutotype)
 {
-  const wxString url = item.GetURL().c_str();
-
-  if (!url.empty()) {
-    ::wxLaunchDefaultBrowser(url, wxBROWSER_NEW_WINDOW);
+  CItemData* pci = &item;
+  
+  StringX sx_pswd;
+  if (pci->IsDependent()) {
+    CItemData *pbci = m_core.GetBaseEntry(pci);
+    ASSERT(pbci != NULL);
+    sx_pswd = pbci->GetPassword();
+    if (pci->IsShortcut())
+      pci = pbci;
+  } else
+    sx_pswd = pci->GetPassword();
+  
+  wxString cs_command = towxstring(pci->GetURL());
+  
+  if (!cs_command.IsEmpty()) {
+    std::vector<size_t> vactionverboffsets;
+    StringX sxautotype = PWSAuxParse::GetAutoTypeString(*pci, m_core,
+                                                        vactionverboffsets);
+    LaunchBrowser(cs_command, sxautotype, vactionverboffsets, bAutotype);
+#ifdef NOT_YET    
+    SetClipboardData(sx_pswd);
+    UpdateLastClipboardAction(CItemData::PASSWORD);
+#endif
     UpdateAccessTime(item);
   }
+}
+
+BOOL PasswordSafeFrame::LaunchBrowser(const wxString &csURL, const StringX &sxAutotype,
+                             const std::vector<size_t> &vactionverboffsets,
+                             bool bDoAutotype)
+{
+  /*
+   * This is a straight port of DBoxMain::LaunchBrowser.  See the comments in that function
+   * to understand what this code is doing, and why.
+   */
+  wxString theURL(csURL);
+  theURL.Replace(wxT("\n\t\r"), wxT(""), true); //true => replace all
+  
+  const bool isMailto = (theURL.Find(wxT("mailto:")) != wxNOT_FOUND);
+  const wxString errMsg = isMailto ? _("Unable to send email") : _("Unable to display URL");
+  
+  const size_t altReplacements = theURL.Replace(wxT("[alt]"), wxT(""));
+  const size_t alt2Replacements = (theURL.Replace(wxT("[ssh]"), wxT("")) +
+                          theURL.Replace(wxT("{alt}"), wxT("")));
+  const size_t autotypeReplacements = theURL.Replace(wxT("[autotype]"), wxT(""));
+  const size_t no_autotype = theURL.Replace(wxT("[xa]"), wxT(""));
+  
+  if (alt2Replacements == 0 && !isMailto && theURL.Find(wxT("://")) == wxNOT_FOUND)
+    theURL = wxT("http://") + theURL;
+  
+  const wxString sxAltBrowser(towxstring(PWSprefs::GetInstance()->GetPref(PWSprefs::AltBrowser)));
+  const bool useAltBrowser = ((altReplacements > 0 || alt2Replacements > 0) && !sxAltBrowser.empty());
+  
+  wxString sxFile, sxParameters;
+  if (!useAltBrowser) {
+    sxFile = theURL;
+  } 
+  else { // alternate browser specified, invoke w/optional args
+    sxFile = sxAltBrowser;
+    wxString sxCmdLineParms(towxstring(PWSprefs::GetInstance()->
+                           GetPref(PWSprefs::AltBrowserCmdLineParms)));
+    
+    if (!sxCmdLineParms.empty())
+      sxParameters = sxCmdLineParms + wxT(" ") + theURL;
+    else
+      sxParameters = theURL;
+  }
+  
+  sxFile.Trim(false); //false => from left
+  
+#ifdef NOT_YET
+  // Obey user's No Autotype flag [xa]
+  if (no_autotype > 0) {
+    m_bDoAutoType = false;
+    m_AutoType.clear();
+    m_vactionverboffsets.clear();
+  } 
+  else {
+    // Either do it because they pressed the right menu/shortcut
+    // or they had specified Do Auotype flag [autotype]
+    m_bDoAutoType = bDoAutotype || autotypeReplacements > 0;
+    m_AutoType = m_bDoAutoType ? sxAutotype : wxT("");
+    if (m_bDoAutoType)
+      m_vactionverboffsets = vactionverboffsets;
+  }
+#endif
+
+#ifdef NOT_YET 
+  bool rc = m_runner.issuecmd(sxFile, sxParameters, !m_AutoType.empty());
+#else
+  bool rc;
+  if (useAltBrowser) {
+    const wxString cmdLine(sxFile + wxT(" ") + sxParameters);
+    StringX xcmd = tostringx(cmdLine);
+    rc = (::wxExecute(cmdLine, wxEXEC_ASYNC) != 0);
+  }
+  else {
+    rc= ::wxLaunchDefaultBrowser(sxFile);
+  }
+#endif
+  
+  if (!rc) {
+    wxMessageBox(errMsg, wxTheApp->GetAppName(), wxOK|wxICON_STOP, this);
+  }
+  return rc ? TRUE : FALSE;
 }
 
 void PasswordSafeFrame::DoRun(CItemData& item)

@@ -1332,7 +1332,7 @@ void PasswordSafeFrame::OnBrowseURL(wxCommandEvent& evt)
   CItemData rueItem;
   CItemData* item = IsRUEEvent(evt)? (m_RUEList.GetPWEntry(GetRUEIndex(evt), rueItem)? &rueItem: NULL) : GetSelectedEntry();
   if (item)
-    DoBrowse(*item);
+    DoBrowse(*item, false); //false => no autotype
 }
 
 /*!
@@ -1344,9 +1344,7 @@ void PasswordSafeFrame::OnBrowseUrlAndAutotype(wxCommandEvent& evt)
   CItemData rueItem;
   CItemData* item = IsRUEEvent(evt)? (m_RUEList.GetPWEntry(GetRUEIndex(evt), rueItem)? &rueItem: NULL) : GetSelectedEntry();
   if (item) {
-    DoBrowse(*item);
-    //wait a little?
-    DoAutotype(*item);
+    DoBrowse(*item, true); //true => autotype
   }
 }
 
@@ -1492,7 +1490,7 @@ void PasswordSafeFrame::DispatchDblClickAction(CItemData &item)
     DoAutotype(item);
     break;
   case PWSprefs::DoubleClickBrowse:
-    DoBrowse(item);
+    DoBrowse(item, false); //false => no autotype
     break;
   case PWSprefs::DoubleClickCopyNotes:
     DoCopyNotes(item);
@@ -1511,9 +1509,7 @@ void PasswordSafeFrame::DispatchDblClickAction(CItemData &item)
     DoEdit(item);
     break;
   case PWSprefs::DoubleClickBrowsePlus:
-    DoBrowse(item);
-    // Wait a little?
-    DoAutotype(item);
+    DoBrowse(item, true); //true => autotype
     break;
   case PWSprefs::DoubleClickRun:
     DoRun(item);
