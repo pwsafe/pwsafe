@@ -56,7 +56,7 @@ public:
     i1.Set(v1, sizeof(v1), m_bf);
     i1.Get(v2, lenV2, m_bf);
     _test(lenV2 == sizeof(v1));
-    _test(memcmp(v1, v2, sizeof(v1)));
+    _test(memcmp(v1, v2, sizeof(v1)) == 0);
   }
  private:
   BlowFish *m_bf;

@@ -407,8 +407,8 @@ BlowFish::~BlowFish()
 {
   // trashMemory((unsigned char*)tempbf_P, 18*4);
   // trashMemory((unsigned char*)tempbf_S, 256*4);
-  trashMemory(reinterpret_cast<unsigned char *>(bf_P), sizeof(bf_P));
-  trashMemory(reinterpret_cast<unsigned char *>(bf_S), sizeof(bf_S));
+  trashMemory(bf_P, sizeof(bf_P));
+  trashMemory(bf_S, sizeof(bf_S));
 }
 
 void BlowFish::Encrypt(const unsigned char *in, unsigned char *out)
