@@ -11,12 +11,27 @@
 #include "core/BlowFish.h"
 
 
+class NullFish : public Fish
+{
+public:
+  NullFish() {}
+  virtual ~NullFish() {}
+virtual unsigned int GetBlockSize() const {return 8;}
+  // Following encrypt/decrypt a single block
+  // (blocksize dependent on cipher)
+  virtual void Encrypt(const unsigned char *pt, unsigned char *ct)
+  {memcpy(ct, pt, GetBlockSize());}
+  virtual void Decrypt(const unsigned char *ct, unsigned char *pt)
+  {memcpy(pt, ct, GetBlockSize());}
+};
+
 class ItemFieldTest : public Test
 {
 
 public:
   ItemFieldTest()
     {
+#if 1
       unsigned char sessionkey[64] = {
         0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08,
         0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18,
@@ -33,6 +48,9 @@ public:
       };
       m_bf = BlowFish::MakeBlowFish(sessionkey, sizeof(sessionkey),
                                     salt, sizeof(salt));
+#else
+      m_bf = new NullFish;
+#endif 
   }
   ~ItemFieldTest() {delete m_bf;}
 
@@ -59,5 +77,5 @@ public:
     _test(memcmp(v1, v2, sizeof(v1)) == 0);
   }
  private:
-  BlowFish *m_bf;
+  Fish *m_bf;
 };
