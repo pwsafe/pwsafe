@@ -13,19 +13,6 @@
 #include "Fish.h"
 #include "os/typedefs.h"
 
-union aword
-{
-  uint32 word;
-  unsigned char byte [4];
-  struct
-  {
-    unsigned int byte3:8;
-    unsigned int byte2:8;
-    unsigned int byte1:8;
-    unsigned int byte0:8;
-  } w;
-};
-
 class BlowFish : public Fish
 {
 public:

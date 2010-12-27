@@ -7,6 +7,7 @@
 */
 #ifndef __SHA1_H
 #define __SHA1_H
+#include "os/typedefs.h"
 
 class SHA1
 {
@@ -18,8 +19,8 @@ public:
   void Final(unsigned char digest[HASHLEN]);
 
 private:
-  unsigned long state[5];
-  unsigned long count[2];
+  uint32 state[5];
+  uint32 count[2];
   unsigned char buffer[64];
 };
 #endif /* __SHA1_H */
