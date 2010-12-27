@@ -21,7 +21,7 @@
 * Set() encrypts, Get() decrypts
 */
 
-class BlowFish;
+class Fish;
 
 class CItemField
 {
@@ -33,11 +33,11 @@ public:
 
   CItemField &operator=(const CItemField &that);
 
-  void Set(const StringX &value, BlowFish *bf);
-  void Set(const unsigned char* value, size_t length, BlowFish *bf);
+  void Set(const StringX &value, Fish *bf);
+  void Set(const unsigned char* value, size_t length, Fish *bf);
 
-  void Get(StringX &value, BlowFish *bf) const;
-  void Get(unsigned char *value, size_t &length, BlowFish *bf) const;
+  void Get(StringX &value, Fish *bf) const;
+  void Get(unsigned char *value, size_t &length, Fish *bf) const;
   unsigned char GetType() const {return m_Type;}
   size_t GetLength() const {return m_Length;}
   bool IsEmpty() const {return m_Length == 0;}
