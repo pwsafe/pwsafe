@@ -5,9 +5,9 @@ SRC         = main.cpp
 
 COREPATH        = ../../core
 OSPATH          = ../../os
-LIBPATH         = ../../lib
-OBJPATH         = ../../obj
-BINPATH         = ../../bin
+LIBPATH         = ../../../lib/unicodedebug
+OBJPATH         = ../../../obj/unicodedebug/cli
+BINPATH         = .
 
 #destination related macros
 OBJ	 = $(addprefix $(OBJPATH)/,$(subst .cpp,.o,$(SRC)))
@@ -17,7 +17,7 @@ LIBCORE	= $(LIBPATH)/libcore.a
 LIBOS  	= $(LIBPATH)/libos.a
 LIBS    = $(LIBCORE) $(LIBOS)
 
-CXXFLAGS +=  -Wall -I$(COREPATH) -I../..
+CXXFLAGS +=  -Wall -I$(COREPATH) -I../.. -DUNICODE
 
 # rules
 .PHONY: all clean deepclean setup
@@ -39,7 +39,7 @@ $(LIBOS):
 
 $(EXE): $(LIBS) $(OBJ)
 	$(CXX) -g $(CXXFLAGS) $(filter %.o,$^)  -o $@ $(LD_FLAGS) \
-	-L$(LIBPATH) -lcore -los -luuid
+	-L$(LIBPATH) -lcore -los -luuid -lxerces-c
 
 clean:
 	rm -f *~ $(OBJ) $(EXE) $(LIB) $(DEPENDFILE)
