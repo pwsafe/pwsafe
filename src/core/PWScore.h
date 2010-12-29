@@ -60,7 +60,7 @@ public:
     SUCCESS = 0,
     FAILURE = 1,
     CANT_OPEN_FILE = PWSfile::CANT_OPEN_FILE, // -10 - ensure the same value
-    USER_CANCEL,                              // -9
+    USER_CANCEL = -9,                         // -9
     WRONG_PASSWORD = PWSfile::WRONG_PASSWORD, //  5 - ensure the same value
     BAD_DIGEST = PWSfile::BAD_DIGEST,         //  6 - ensure the same value
     UNKNOWN_VERSION,                          //  7

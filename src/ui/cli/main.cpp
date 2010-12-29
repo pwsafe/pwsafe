@@ -11,6 +11,7 @@
 
 #include "PWScore.h"
 #include "os/file.h"
+#include "core/UTF8Conv.h"
 
 using namespace std;
 
@@ -49,24 +50,41 @@ int main(int argc, char *argv[])
   }
 
   PWScore core;
-  if (!pws_os::FileExists(argv[1])) {
+  StringX fname;
+  CUTF8Conv conv;
+  if (!conv.FromUTF8((const unsigned char *)argv[1], strlen(argv[1]), fname)) {
+    cerr << "Could not convert filename " << argv[1] << " to StringX" << endl;
+    return 2;
+  }
+  if (!pws_os::FileExists(fname.c_str())) {
     cerr << argv[1] << " - file not found" << endl;
     return 2;
   }
+  StringX pk;
+  if (!conv.FromUTF8((const unsigned char *)argv[2], strlen(argv[2]), pk)) {
+    cerr << "Could not convert passkey " << argv[2] << " to StringX" << endl;
+    return 2;
+  }
   int status;
-  status = core.CheckPassword(argv[1], argv[2]);
-  cout << "CheckPassword returned: " << status_text(status) << endl;
+  status = core.CheckPasskey(fname, pk);
+  cout << "CheckPasskey returned: " << status_text(status) << endl;
   if (status != PWScore::SUCCESS)
     goto done;
   {
-    stringT locker(getlogin() != NULL ? getlogin() : "unknown");
-    if (!core.LockFile(argv[1], locker)) {
+    const char *user = getlogin() != NULL ? getlogin() : "unknown";
+    StringX locker;
+    if (!conv.FromUTF8((const unsigned char *)user, strlen(user), locker)) {
+      cerr << "Could not convert user " << user << " to StringX" << endl;
+      return 2;
+    }
+    stringT lk(locker.c_str());
+    if (!core.LockFile(fname.c_str(), lk)) {
       cout << "Couldn't lock file " << locker << endl;
       status = -1;
       goto done;
     }
   }
-  status = core.ReadFile(argv[1], argv[2]);
+  status = core.ReadFile(fname, pk);
   cout << "ReadFile returned: " << status_text(status) << endl;
   if (status != PWScore::SUCCESS)
     goto done;
@@ -80,6 +98,6 @@ int main(int argc, char *argv[])
     }
   }
  done:
-  core.UnlockFile(argv[1]);
+  core.UnlockFile(fname.c_str());
   return status;
 }
