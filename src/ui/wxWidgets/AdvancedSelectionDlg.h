@@ -60,6 +60,11 @@ struct SelectionCriteria
     //could be very inefficient in a loop across the entire DB
     return !m_fUseSubgroups || item.Matches(tostdstring(m_subgroupText), SubgroupObject(), SubgroupFunction());
   }
+  
+  wxString GetGroupSelectionDescription() const;
+  //returns true if all fields have been selected
+  bool GetFieldSelection(wxArrayString& selectedFields, wxArrayString& unselectedFields);
+
 SelectionCriteria& operator=(const SelectionCriteria& data) {
     m_fCaseSensitive    = data.m_fCaseSensitive;
     m_bsFields          = data.m_bsFields;
@@ -90,49 +95,43 @@ inline bool operator!=(const SelectionCriteria& a, const SelectionCriteria& b)
  * AdvancedSelectionDlg class declaration
  */
 
-class AdvancedSelectionDlgBase: public wxDialog
+class AdvancedSelectionPanel: public wxPanel
 {
-  DECLARE_CLASS(AdvancedSelectionDlgBase)
+  DECLARE_CLASS(AdvancedSelectionPanel)
   DECLARE_EVENT_TABLE()
 
-  DECLARE_NO_COPY_CLASS(AdvancedSelectionDlgBase)
+  DECLARE_NO_COPY_CLASS(AdvancedSelectionPanel)
 
 public:
-  AdvancedSelectionDlgBase(wxWindow* wnd, const SelectionCriteria& existingCriteria);
+  AdvancedSelectionPanel(wxWindow* wnd, const SelectionCriteria& existingCriteria, bool autoValidate);
 
-  void OnOk( wxCommandEvent& evt );
+  bool Validate();               //overriden from wxWindow
+  bool TransferDataToWindow();   //overriden from wxWindow
+  bool TransferDataFromWindow(); //overriden from wxWindow
   void OnSelectSome( wxCommandEvent& evt );
   void OnSelectAll( wxCommandEvent& evt );
   void OnRemoveSome( wxCommandEvent& evt );
   void OnRemoveAll( wxCommandEvent& evt );
 
-protected:
   void CreateControls(wxWindow* parentWnd);
-  
+  bool DoValidation();               //actual validator
+
+protected:
   virtual bool IsMandatoryField(CItemData::FieldType field) const = 0;
-  virtual wxString GetAdvancedSelectionTitle() const = 0;
   virtual bool ShowFieldSelection() const = 0;
   
 public:
   SelectionCriteria m_criteria;
+  bool m_autoValidate;
 };
 
 template <class DlgType>
-class AdvancedSelectionDlg : public AdvancedSelectionDlgBase
+class AdvancedSelectionImpl: public AdvancedSelectionPanel
 {
-  DECLARE_CLASS(AdvancedSelectionDlg)
-  
 public:
-  AdvancedSelectionDlg(wxWindow* parent, const SelectionCriteria& existingCriteria) : 
-                              AdvancedSelectionDlgBase(parent, existingCriteria) {
-    //we must call this here and not in the base class, since this function
-    //uses virtual functions redefined in derived class
-    CreateControls(parent);
-  }
-
-  virtual wxString GetAdvancedSelectionTitle() const {
-    return DlgType::GetAdvancedSelectionTitle();
-  }
+  AdvancedSelectionImpl(wxWindow* wnd, const SelectionCriteria& existingCriteria, bool autoValidate):
+    AdvancedSelectionPanel(wnd, existingCriteria, autoValidate)
+  {}
 
   virtual bool IsMandatoryField(CItemData::FieldType field) const {
     return DlgType::IsMandatoryField(field);
@@ -141,6 +140,47 @@ public:
   virtual bool ShowFieldSelection() const {
     return DlgType::ShowFieldSelection();
   }
+};
+
+template <class DlgType>
+class AdvancedSelectionDlg : public wxDialog
+{
+  DECLARE_CLASS(AdvancedSelectionDlg)
+
+  typedef AdvancedSelectionImpl<DlgType> PanelType;
+  PanelType* m_panel;
+
+public:
+  AdvancedSelectionDlg(wxWindow* parent, const SelectionCriteria& existingCriteria): m_panel(0)
+  {
+    wxDialog::Create(parent, wxID_ANY, wxEmptyString, wxDefaultPosition, 
+                            wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER);
+  
+
+    wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
+    sizer->AddSpacer(TopMargin);
+
+    m_panel = new PanelType(this, existingCriteria, true);
+    m_panel->CreateControls(this);
+    sizer->Add(m_panel, wxSizerFlags().Expand().Proportion(1));
+    
+    sizer->AddSpacer(RowSeparation);
+    sizer->Add(CreateSeparatedButtonSizer(wxOK|wxCANCEL|wxHELP), 
+                      wxSizerFlags().Border(wxLEFT|wxRIGHT, SideMargin).Expand());
+    sizer->AddSpacer(BottomMargin);
+    
+    SetTitle(DlgType::GetAdvancedSelectionTitle());
+    
+    SetSizerAndFit(sizer);
+  }
+
+  SelectionCriteria GetSelectionCriteria() const { return m_panel->m_criteria; }
+  
+  void GetSelectionCriteria(SelectionCriteria& other) const { 
+    if (other != m_panel->m_criteria)
+      other = m_panel->m_criteria;
+  }
+
 };
 
 

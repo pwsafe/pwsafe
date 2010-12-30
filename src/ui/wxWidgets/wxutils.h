@@ -71,5 +71,16 @@ inline void ApplyPasswordFont(wxWindow* win)
     wxClassInfo* name<templatename>::GetClassInfo() const                               \
         { return &name<templatename>::ms_classInfo; }
 
+enum {
+      TopMargin     = 20,
+      BottomMargin  = 20,
+      SideMargin    = 30,
+      RowSeparation = 10,
+      ColSeparation = 20
+};
+
+extern bool MergeSyncGTUCompare(const StringX &elem1, const StringX &elem2);
+
+
 #endif
 

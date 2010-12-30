@@ -206,7 +206,7 @@ struct FindDlgType {
   }
 };
 
-IMPLEMENT_CLASS_TEMPLATE( AdvancedSelectionDlg, AdvancedSelectionDlgBase, FindDlgType )
+IMPLEMENT_CLASS_TEMPLATE( AdvancedSelectionDlg, wxDialog, FindDlgType )
 
 /*!
  * wxEVT_COMMAND_TOOL_CLICKED event handler for ID_FIND_ADVANCED_OPTIONS
@@ -217,8 +217,7 @@ void PasswordSafeSearch::OnAdvancedSearchOptions(wxCommandEvent& /* evt */)
   AdvancedSelectionDlg<FindDlgType> dlg(m_parentFrame, m_criteria);
   if (dlg.ShowModal() == wxID_OK) {
     m_fAdvancedSearch = true;
-    if (m_criteria != dlg.m_criteria)
-      m_criteria = dlg.m_criteria;
+    dlg.GetSelectionCriteria(m_criteria);
   }
 }
 

@@ -58,6 +58,7 @@
 #include "./PWSDragBar.h"
 #include "./MergeDlg.h"
 #include <algorithm>
+#include "./PwsSync.h"
 
 // main toolbar images
 #include "./PwsToolbarButtons.h"
@@ -179,6 +180,7 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_MENU( ID_TOOLBAR_CLASSIC, PasswordSafeFrame::OnChangeToolbarType )
 
   EVT_MENU(ID_MERGE,            PasswordSafeFrame::OnMergeAnotherSafe )
+  EVT_MENU(ID_SYNCHRONIZE,      PasswordSafeFrame::OnSynchronize )
 
   EVT_MENU( ID_MENU_CLEAR_MRU, PasswordSafeFrame::OnClearRecentHistory )
   EVT_UPDATE_UI( ID_MENU_CLEAR_MRU, PasswordSafeFrame::OnUpdateClearRecentDBHistory )
@@ -209,6 +211,7 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_UPDATE_UI(ID_PASSWORDSUBSET,  PasswordSafeFrame::OnUpdateUI )
   EVT_UPDATE_UI(wxID_UNDO,          PasswordSafeFrame::OnUpdateUI )
   EVT_UPDATE_UI(wxID_REDO,          PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI(ID_SYNCHRONIZE,     PasswordSafeFrame::OnUpdateUI )
 END_EVENT_TABLE()
 
 static void DisplayFileWriteError(int rc, const StringX &fname);
@@ -347,6 +350,7 @@ void PasswordSafeFrame::CreateControls()
   itemMenu3->Append(ID_IMPORTMENU, _("Import &From"), itemMenu18);
   itemMenu3->Append(ID_MERGE, _("Merge..."), _T(""), wxITEM_NORMAL);
   itemMenu3->Append(ID_COMPARE, _("Compare..."), _T(""), wxITEM_NORMAL);
+  itemMenu3->Append(ID_SYNCHRONIZE, _("S&ynchronize..."), _T(""), wxITEM_NORMAL);
   itemMenu3->AppendSeparator();
   itemMenu3->Append(wxID_PROPERTIES, _("&Properties"), _T(""), wxITEM_NORMAL);
   itemMenu3->AppendSeparator();
@@ -1738,6 +1742,10 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
       evt.Enable(m_core.AnyToRedo());
       break;
       
+    case ID_SYNCHRONIZE:
+      evt.Enable(!m_core.IsReadOnly() && !m_core.GetCurFile().empty() && m_core.GetNumEntries() != 0);
+      break;
+      
     default:
       break;
   }
@@ -2671,8 +2679,8 @@ void PasswordSafeFrame::OnExportXml(wxCommandEvent& evt)
   DoExportText<ExportFullXml>();
 }
 
-IMPLEMENT_CLASS_TEMPLATE( AdvancedSelectionDlg, AdvancedSelectionDlgBase, ExportFullXml )
-IMPLEMENT_CLASS_TEMPLATE( AdvancedSelectionDlg, AdvancedSelectionDlgBase, ExportFullText )
+IMPLEMENT_CLASS_TEMPLATE( AdvancedSelectionDlg, wxDialog, ExportFullXml )
+IMPLEMENT_CLASS_TEMPLATE( AdvancedSelectionDlg, wxDialog, ExportFullText )
 
 template <class ExportType>
 void PasswordSafeFrame::DoExportText()
@@ -2760,7 +2768,7 @@ void PasswordSafeFrame::DoExportText()
 }
 
 //
-// ----------  Merge and Compare ------------------
+// ----------  Merge, Synchronize and Compare ------------------
 //
 void PasswordSafeFrame::OnMergeAnotherSafe(wxCommandEvent& evt)
 {
@@ -2825,8 +2833,6 @@ void PasswordSafeFrame::OnMergeAnotherSafe(wxCommandEvent& evt)
 #define MRG_DCA        0x0040
 #define MRG_EMAIL      0x0020
 #define MRG_UNUSED     0x001f
-
-bool MergeSyncGTUCompare(const StringX &elem1, const StringX &elem2);
 
 void PasswordSafeFrame::Merge(const StringX &sx_Filename2, PWScore *pothercore, const SelectionCriteria& selection)
 {
@@ -3211,6 +3217,28 @@ bool MergeSyncGTUCompare(const StringX &elem1, const StringX &elem2)
   u2 = (i2 == StringX::npos) ? tmp2 : tmp2.substr(0, i2 - 1);
   pws_os::Trace(L"User='%s' & '%s\n", u1.c_str(), u2.c_str());
   return u1.compare(u2) < 0;
+}
+
+void PasswordSafeFrame::OnSynchronize(wxCommandEvent& evt)
+{
+  // disable in read-only mode or empty
+  wxCHECK_RET(!m_core.IsReadOnly() && !m_core.GetCurFile().empty() && m_core.GetNumEntries() != 0,
+                wxT("Synchronize menu enabled for empty or read-only database!"));
+
+  PwsSyncWizard wiz(this, &m_core);
+  wiz.RunWizard(wiz.GetFirstPage());
+
+  if (wiz.GetNumUpdated() > 0)
+    SetChanged(Data);
+
+#ifdef NOT_YET
+  ChangeOkUpdate();
+#endif
+
+  RefreshViews();
+  
+  if (wiz.ShowReport())
+    ViewReport(*wiz.GetReport());
 }
 
 //-----------------------------------------------------------------
