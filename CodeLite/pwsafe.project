@@ -80,6 +80,12 @@
     <File Name="../src/ui/wxWidgets/helpmap.h"/>
     <File Name="../src/ui/wxWidgets/SystemTrayMenuId.h"/>
     <File Name="../src/ui/wxWidgets/PwsToolbarButtons.h"/>
+    <File Name="../src/ui/wxWidgets/ExternalKeyboardButton.h"/>
+    <File Name="../src/ui/wxWidgets/ExternalKeyboardButton.cpp"/>
+    <File Name="../src/ui/wxWidgets/PwsSync.h"/>
+    <File Name="../src/ui/wxWidgets/PwsSync.cpp"/>
+    <File Name="../src/ui/wxWidgets/DbSelectionPanel.h"/>
+    <File Name="../src/ui/wxWidgets/DbSelectionPanel.cpp"/>
   </VirtualDirectory>
   <Dependencies Name="Release">
     <Project Name="core"/>
