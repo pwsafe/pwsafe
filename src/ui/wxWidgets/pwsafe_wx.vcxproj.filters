@@ -126,6 +126,12 @@
     <ClInclude Include="ExternalKeyboardButton.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PwsSync.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DbSelectionPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="pwsafe.rc">
@@ -233,6 +239,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ExternalKeyboardButton.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PwsSync.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DbSelectionPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
