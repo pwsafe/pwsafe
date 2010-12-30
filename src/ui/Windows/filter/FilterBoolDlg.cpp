@@ -88,6 +88,17 @@ BOOL CFilterBoolDlg::OnInitDialog()
         m_cbxRule.SetItemData(iItem, PWSMatch::MR_NOTSET);
         m_rule2selection[PWSMatch::MR_NOTSET] = iItem;
         break;
+      case BT_IS:
+        cs_text.LoadString(IDSC_IS);
+        iItem = m_cbxRule.AddString(cs_text);
+        m_cbxRule.SetItemData(iItem, PWSMatch::MR_IS);
+        m_rule2selection[PWSMatch::MR_SET] = iItem;
+
+        cs_text.LoadString(IDSC_ISNOT);
+        iItem = m_cbxRule.AddString(cs_text);
+        m_cbxRule.SetItemData(iItem, PWSMatch::MR_ISNOT);
+        m_rule2selection[PWSMatch::MR_NOTSET] = iItem;
+        break;
       default:
         ASSERT(0);
     }

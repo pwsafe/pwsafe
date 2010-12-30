@@ -246,6 +246,9 @@ static string GetFilterXML(const st_filters &filters, bool bWithFormatting)
       case FT_EMAIL:
         pszfieldtype = "email";
         break;
+      case FT_PROTECTED:
+        pszfieldtype = "protected";
+        break;
       // Time fields
       case FT_CTIME:
         pszfieldtype = "create_time";

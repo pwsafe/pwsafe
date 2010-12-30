@@ -120,7 +120,10 @@ BOOL CAddEdit_DateTimes::OnInitDialog()
 
   ModifyStyleEx(0, WS_EX_CONTROLPARENT);
 
-  if (M_uicaller() == IDS_VIEWENTRY) {
+  // Set times
+  UpdateTimes();
+
+  if (M_uicaller() == IDS_VIEWENTRY || M_oldprotected() != 0) {
     // Disable Buttons
     GetDlgItem(IDC_XTIME_CLEAR)->EnableWindow(FALSE);
     GetDlgItem(IDC_XTIME_SET)->EnableWindow(FALSE);
@@ -130,6 +133,8 @@ BOOL CAddEdit_DateTimes::OnInitDialog()
     GetDlgItem(IDC_EXPIRYDATE)->EnableWindow(FALSE);
     GetDlgItem(IDC_EXPIRYTIME)->EnableWindow(FALSE);
     GetDlgItem(IDC_STATIC_LTINTERVAL_NOW)->EnableWindow(FALSE);
+    GetDlgItem(IDC_EXPIRYDATE)->EnableWindow(FALSE);
+    GetDlgItem(IDC_EXPIRYTIME)->EnableWindow(FALSE);
   }
 
   if (M_uicaller() == IDS_ADDENTRY) {
@@ -168,9 +173,7 @@ BOOL CAddEdit_DateTimes::OnInitDialog()
     GetDlgItem(IDC_XTIME_RECUR)->EnableWindow(FALSE);
   }
 
-  // Set times and refresh dialog
-  UpdateTimes();
-
+  // Refresh dialog
   m_bInitdone = true;
   UpdateStats();
   return TRUE;
@@ -332,13 +335,29 @@ LRESULT CAddEdit_DateTimes::OnQuerySiblings(WPARAM wParam, LPARAM )
       UpdateTimes();
       UpdateWindow();
       break;
+    case PP_PROTECT_CHANGED:
+    {
+      const BOOL bProtect = M_oldprotected() != 0 ? FALSE : TRUE;
+      // Enable/Disable Buttons
+      GetDlgItem(IDC_XTIME_CLEAR)->EnableWindow(bProtect);
+      GetDlgItem(IDC_XTIME_SET)->EnableWindow(bProtect);
+      GetDlgItem(IDC_SELECTBYDATETIME)->EnableWindow(bProtect);
+      GetDlgItem(IDC_SELECTBYDAYS)->EnableWindow(bProtect);
+      GetDlgItem(IDC_REUSE_ON_CHANGE)->EnableWindow(bProtect);
+      GetDlgItem(IDC_EXPIRYDATE)->EnableWindow(bProtect);
+      GetDlgItem(IDC_EXPIRYTIME)->EnableWindow(bProtect);
+      GetDlgItem(IDC_STATIC_LTINTERVAL_NOW)->EnableWindow(bProtect);
+      GetDlgItem(IDC_EXPIRYDATE)->EnableWindow(bProtect);
+      GetDlgItem(IDC_EXPIRYTIME)->EnableWindow(bProtect);
+      break;
+    }
   }
   return 0L;
 }
 
 BOOL CAddEdit_DateTimes::OnApply()
 {
-  if (M_uicaller() == IDS_VIEWENTRY)
+  if (M_uicaller() == IDS_VIEWENTRY || M_oldprotected() != 0)
     return CAddEdit_PropertyPage::OnApply();
 
   if (UpdateData(TRUE) == FALSE) {

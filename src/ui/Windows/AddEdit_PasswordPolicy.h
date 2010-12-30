@@ -58,6 +58,7 @@ protected:
   //{{AFX_MSG(CAddEdit_PasswordPolicy)
   virtual BOOL OnInitDialog();
   afx_msg void OnHelp();
+  afx_msg BOOL OnKillActive();
   afx_msg LRESULT OnQuerySiblings(WPARAM wParam, LPARAM );
 
   afx_msg void OnChanged();
@@ -69,7 +70,6 @@ protected:
   afx_msg void OnUseSymbols();
   afx_msg void OnEasyVision();
   afx_msg void OnMakePronounceable();
-  afx_msg BOOL OnKillActive();
   afx_msg void OnSetDefaultPWPolicy();
   afx_msg void OnSetSpecificPWPolicy();
   afx_msg void OnResetPolicy();

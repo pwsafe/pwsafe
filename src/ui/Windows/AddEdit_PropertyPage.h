@@ -75,6 +75,9 @@ struct st_AE_master_data {
   // Password Policy
   PWPolicy pwp, oldpwp, default_pwp;
   int ipolicy, oldipolicy;
+  
+  // Attributes
+  unsigned char ucprotected, olducprotected;
 };
 
 class CAddEdit_PropertyPage : public CPWPropertyPage
@@ -153,6 +156,10 @@ public:
   inline PWPolicy &M_default_pwp() {return m_AEMD.default_pwp;}
   inline int &M_ipolicy() {return m_AEMD.ipolicy;}
   inline int &M_oldipolicy() {return m_AEMD.oldipolicy;}
+  
+  // Attributes
+  inline unsigned char &M_protected() {return m_AEMD.ucprotected;}
+  inline unsigned char &M_oldprotected() {return m_AEMD.olducprotected;}
 
 protected:
   st_AE_master_data &m_AEMD;

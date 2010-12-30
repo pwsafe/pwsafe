@@ -8,7 +8,7 @@
     supported by PasswordSafe.  If either of these are not true, the filters cannot be
     loaded into PasswordSafe.
 
-    This XML Schema corresponds to V3.22 of Password Safe for filters.
+    This XML Schema corresponds to V3.25 of Password Safe for filters.
     Rules:
       EQ - equals
       NE - not equals
@@ -157,6 +157,13 @@
   <xs:restriction base="xs:string">
     <xs:enumeration value="AC" />
     <xs:enumeration value="IA" />
+    </xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="booleanis_ruleType">
+  <xs:restriction base="xs:string">
+    <xs:enumeration value="IS" />
+    <xs:enumeration value="NI" />
     </xs:restriction>
 </xs:simpleType>
 
@@ -411,6 +418,13 @@
   </xs:sequence>
 </xs:complexType>
 
+<xs:complexType name="booleanisfilterentry" >
+  <xs:sequence>
+    <xs:element name="rule" type="booleanis_ruleType" minOccurs="1" maxOccurs="1" />
+    <xs:element name="logic" type="logicType" minOccurs="1" maxOccurs="1" />
+  </xs:sequence>
+</xs:complexType>
+
 <xs:group name="filter_group" >
   <xs:choice>
     <xs:element name="group" type="stringpresentfilterentry" minOccurs="1" maxOccurs="1" />
@@ -432,6 +446,7 @@
     <xs:element name="DCA" type="dcafilterentry" minOccurs="1" maxOccurs="1" />
     <xs:element name="autotype" type="stringpresentfilterentry" minOccurs="1" maxOccurs="1" />
     <xs:element name="password_expiry_interval" type="integerfilterentry" minOccurs="1" maxOccurs="1" />
+    <xs:element name="protected" type="booleanisfilterentry" minOccurs="1" maxOccurs="1" />
 
     <xs:element name="password_history" type="passwordhistoryentry" minOccurs="1" maxOccurs="1" />
     <xs:element name="history_present" type="booleanpresentfilterentry" minOccurs="1" maxOccurs="1" />

@@ -146,7 +146,7 @@ BOOL CAddEdit_Additional::OnInitDialog()
     m_stc_runcommand.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);
   }
 
-  if (M_uicaller() == IDS_VIEWENTRY) {
+  if (M_uicaller() == IDS_VIEWENTRY || M_oldprotected() != 0) {
     // Disable normal Edit controls
     GetDlgItem(IDC_AUTOTYPE)->SendMessage(EM_SETREADONLY, TRUE, 0);
     GetDlgItem(IDC_RUNCMD)->SendMessage(EM_SETREADONLY, TRUE, 0);
@@ -250,7 +250,7 @@ BOOL CAddEdit_Additional::OnInitDialog()
   GetDlgItem(IDC_PWHISTORY_LIST)->EnableWindow(bpwh_count);
   GetDlgItem(IDC_PWH_COPY_ALL)->EnableWindow(bpwh_count);
 
-  if (M_uicaller() == IDS_VIEWENTRY) {
+  if (M_uicaller() == IDS_VIEWENTRY || M_oldprotected() != 0) {
     GetDlgItem(IDC_MAXPWHISTORY)->EnableWindow(FALSE);
     GetDlgItem(IDC_PWHSPIN)->EnableWindow(FALSE);
     GetDlgItem(IDC_SAVE_PWHIST)->EnableWindow(FALSE);
@@ -411,13 +411,33 @@ LRESULT CAddEdit_Additional::OnQuerySiblings(WPARAM wParam, LPARAM )
       // copy data into the entry - we do it ourselfs here first
       if (OnApply() == FALSE)
         return 1L;
+      break;
+    case PP_PROTECT_CHANGED:
+    {
+      const BOOL bProtect = M_oldprotected() != 0 ? TRUE : FALSE;
+
+      // Enable/Disable normal Edit controls
+      GetDlgItem(IDC_AUTOTYPE)->SendMessage(EM_SETREADONLY, bProtect, 0);
+      GetDlgItem(IDC_RUNCMD)->SendMessage(EM_SETREADONLY, bProtect, 0);
+
+      // Enable/Disable DCA Checkbox  (assuming TRUE=1 & FALSE=0)
+      GetDlgItem(IDC_DCA_DEFAULT)->EnableWindow(1 - bProtect);
+      GetDlgItem(IDC_DOUBLE_CLICK_ACTION)->EnableWindow(1 - bProtect);
+
+      // Enable/Disable Password History controls (assuming TRUE=1 & FALSE=0)
+      GetDlgItem(IDC_MAXPWHISTORY)->EnableWindow(1 - bProtect);
+      GetDlgItem(IDC_PWHSPIN)->EnableWindow(1 - bProtect);
+      GetDlgItem(IDC_SAVE_PWHIST)->EnableWindow(1 - bProtect);
+      GetDlgItem(IDC_CLEAR_PWHIST)->EnableWindow(1 - bProtect);
+      break;
+    }
   }
   return 0L;
 }
 
 BOOL CAddEdit_Additional::OnApply()
 {
-  if (M_uicaller() == IDS_VIEWENTRY)
+  if (M_uicaller() == IDS_VIEWENTRY || M_oldprotected() != 0)
     return CAddEdit_PropertyPage::OnApply();
 
   CWnd *pFocus(NULL);

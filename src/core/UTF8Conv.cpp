@@ -102,7 +102,7 @@ bool CUTF8Conv::FromUTF8(const unsigned char *utf8, size_t utf8Len,
   // get to current codepage.
   //
   // Due to a bug in pre-3.08 versions, data may be in ACP
-  // instead of utf-8. We try to detect and workaround this.
+  // instead of UTF-8. We try to detect and workaround this.
 
   if (utf8Len == 0 || (utf8Len == 1 && utf8[0] == '\0')) {
     data = _T("");
@@ -112,10 +112,11 @@ bool CUTF8Conv::FromUTF8(const unsigned char *utf8, size_t utf8Len,
   ASSERT(utf8 != NULL);
 
   // first get needed wide char buffer size
-  unsigned int wcLen = static_cast<unsigned int>(pws_os::mbstowcs(NULL, 0, reinterpret_cast<const char *>(utf8), size_t(-1)));
+  unsigned int wcLen = static_cast<unsigned int>(pws_os::mbstowcs(NULL, 0, 
+                            reinterpret_cast<const char *>(utf8), size_t(-1)));
   if (wcLen == 0) { // uh-oh
     // it seems that this always returns non-zero, even if encoding
-    // broken. Therefore, we'll give a consrevative value here,
+    // broken. Therefore, we'll give a conservative value here,
     // and try to recover later
     pws_os::Trace0(_T("FromUTF8: Couldn't get buffer size - guessing!"));
     wcLen = static_cast<unsigned int>(sizeof(StringX::value_type) * (utf8Len + 1));
@@ -160,7 +161,7 @@ bool CUTF8Conv::FromUTF8(const unsigned char *utf8, size_t utf8Len,
   ASSERT(wcLen != 0);
 #ifdef UNICODE
   if (wcLen != 0) {
-    m_wc[wcLen-1] = TCHAR('\0');
+    m_wc[wcLen - 1] = TCHAR('\0');
     data = m_wc;
     return true;
   } else
@@ -184,7 +185,7 @@ bool CUTF8Conv::FromUTF8(const unsigned char *utf8, size_t utf8Len,
   // Finally get result
   size_t tmpLen = pws_os::wcstombs((char *)m_tmp, mbLen, m_wc, size_t(-1), false);
   ASSERT(tmpLen == mbLen);
-  m_tmp[mbLen-1] = '\0'; // char, no need to _T()...
+  m_tmp[mbLen - 1] = '\0'; // char, no need to _T()...
   data = (char *)m_tmp;
   ASSERT(!data.empty());
   return true;

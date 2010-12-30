@@ -97,6 +97,9 @@ CAddEdit_PropertySheet::CAddEdit_PropertySheet(UINT nID, CWnd* pParent,
     // PWPolicy fields
     m_AEMD.pwp = m_AEMD.oldpwp = m_AEMD.default_pwp;
     m_AEMD.ipolicy = m_AEMD.oldipolicy = DEFAULT_POLICY;
+
+    // Attributes
+    m_AEMD.ucprotected = m_AEMD.olducprotected = 0;
   } else {
     SetupInitialValues();
   }
@@ -193,10 +196,16 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
       return TRUE;
 
     time_t t;
+    bool bIsPSWDModified;
+    short iDCA;
+
     switch (m_AEMD.uicaller) {
       case IDS_EDITENTRY:
-        bool bIsPSWDModified;
-        short iDCA;
+        // Make as View entry if protected
+        if (m_AEMD.ucprotected == m_AEMD.olducprotected &&
+            m_AEMD.olducprotected != 0)
+          break;
+
         m_AEMD.pci->GetDCA(iDCA);
         // Check if modified
         m_bIsModified = (m_AEMD.group       != m_AEMD.pci->GetGroup()      ||
@@ -213,7 +222,8 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
                          m_AEMD.XTimeInt    != m_AEMD.oldXTimeInt          ||
                          m_AEMD.ipolicy     != m_AEMD.oldipolicy           ||
                         (m_AEMD.ipolicy     == SPECIFIC_POLICY &&
-                         m_AEMD.pwp         != m_AEMD.oldpwp));
+                         m_AEMD.pwp         != m_AEMD.oldpwp)              ||
+                         m_AEMD.ucprotected != m_AEMD.olducprotected);
 
         bIsPSWDModified = (m_AEMD.realpassword != m_AEMD.oldRealPassword);
 
@@ -241,6 +251,7 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
           m_AEMD.pci->SetRunCommand(m_AEMD.runcommand);
           m_AEMD.pci->SetDCA(m_AEMD.DCA);
           m_AEMD.pci->SetEmail(m_AEMD.email);
+          m_AEMD.pci->SetProtected(m_AEMD.ucprotected != 0);
         }
 
         if (m_AEMD.XTimeInt > 0 && m_AEMD.XTimeInt <= 3650)
@@ -289,6 +300,7 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
         m_AEMD.pci->SetRunCommand(m_AEMD.runcommand);
         m_AEMD.pci->SetDCA(m_AEMD.DCA);
         m_AEMD.pci->SetEmail(m_AEMD.email);
+        m_AEMD.pci->SetProtected(m_AEMD.ucprotected != 0);
 
         time(&t);
         m_AEMD.pci->SetCTime(t);
@@ -364,7 +376,7 @@ BOOL CAddEdit_PropertySheet::PreTranslateMessage(MSG* pMsg)
   // In View mode, there is no 'Cancel' button and 'OK' is renamed 'Close'
   // Make Escape key still work as designed
   if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_ESCAPE) {
-    if (m_AEMD.uicaller == IDS_VIEWENTRY) {
+    if (m_AEMD.uicaller == IDS_VIEWENTRY || m_AEMD.ucprotected != 0) {
       CPWPropertySheet::EndDialog(IDCANCEL);
       return TRUE;
     } else {
@@ -399,6 +411,8 @@ void CAddEdit_PropertySheet::SetupInitialValues()
   m_AEMD.realnotes = m_AEMD.originalrealnotesTRC = m_AEMD.pci->GetNotes();
   m_AEMD.URL = m_AEMD.pci->GetURL();
   m_AEMD.email = m_AEMD.pci->GetEmail();
+  m_AEMD.pci->GetProtected(m_AEMD.ucprotected);
+  m_AEMD.olducprotected = m_AEMD.ucprotected;
 
   if (m_AEMD.realnotes.GetLength() > MAXTEXTCHARS) {
     // Limit the Notes field to what can be displayed

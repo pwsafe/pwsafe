@@ -2742,6 +2742,9 @@ CString DboxMain::GetHeaderText(int iType) const
     case CItemData::POLICY:        
       cs_header.LoadString(IDS_PWPOLICY);
       break;
+    case CItemData::PROTECTED:        
+      cs_header.LoadString(IDS_PROTECTED);
+      break;
     default:
       cs_header.Empty();
   }
@@ -3857,7 +3860,8 @@ void DboxMain::RefreshEntryFieldInGUI(CItemData &ci, CItemData::FieldType ft)
         treeDispString += L" [" + ci.GetUser() + L"]";
       if (bShowPasswordInTree)
         treeDispString += L" {" + ci.GetPassword() + L"}";
-
+      if (ci.IsProtected())
+        treeDispString += L" *";
       UpdateTreeItem(pdi->tree_item, treeDispString);
     }
   }

@@ -56,6 +56,8 @@ public:
   CStaticExtn m_stc_URL;
   CStaticExtn m_stc_email;
 
+  BOOL m_bProtected;
+
   CButton m_ViewDependentsBtn;
   //}}AFX_DATA
 
@@ -103,6 +105,7 @@ protected:
   afx_msg void OnViewDependents();
   afx_msg void OnLaunch();
   afx_msg void OnSendEmail();
+  afx_msg void OnSetProtected();
 
   afx_msg LRESULT OnCallExternalEditor(WPARAM, LPARAM);
   afx_msg LRESULT OnExternalEditorEnded(WPARAM, LPARAM);

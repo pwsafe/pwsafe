@@ -102,14 +102,16 @@ bool PWSMatch::Match(const bool bValue, int iFunction)
   if (bValue) {
     if (iFunction == MR_EQUALS ||
         iFunction == MR_ACTIVE ||
-        iFunction == MR_PRESENT)
+        iFunction == MR_PRESENT ||
+        iFunction == MR_IS)
       rc = true;
     else
       rc = false;
   } else {
     if (iFunction == MR_NOTEQUAL ||
         iFunction == MR_INACTIVE ||
-        iFunction == MR_NOTPRESENT)
+        iFunction == MR_NOTPRESENT ||
+        iFunction == MR_ISNOT)
       rc = true;
     else
       rc = false;

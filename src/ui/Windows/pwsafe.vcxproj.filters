@@ -1480,6 +1480,21 @@
     <None Include="graphics\w95mbx04.ico">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="graphics\findtoolbar\classic\findadvancedon.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="graphics\findtoolbar\new\findadvancedon.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="graphics\toolbar\classic\duplicategroup.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="graphics\toolbar\new\duplicategroup.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="graphics\toolbar\new\duplicategroup_disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="PasswordSafe.rc">
