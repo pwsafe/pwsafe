@@ -79,7 +79,8 @@ int main(int argc, char *argv[])
     }
     stringT lk(locker.c_str());
     if (!core.LockFile(fname.c_str(), lk)) {
-      cout << "Couldn't lock file " << locker << endl;
+      wcout << L"Couldn't lock file " << fname
+            << L": locked by " << locker << endl;
       status = -1;
       goto done;
     }
@@ -93,8 +94,10 @@ int main(int argc, char *argv[])
     CItemData::FieldBits bits(~0L);
     for (ItemListConstIter iter = core.GetEntryIter();
          iter != core.GetEntryEndIter(); iter++) {
-      StringX text = iter->second.GetPlaintext('|', bits, '-', NULL);
-      cout << text << endl;
+      const CItemData &ci = iter->second;
+      CItemData *base = ci.IsDependent() ? core.GetBaseEntry(&ci) : NULL;
+      StringX text = ci.GetPlaintext('|', bits, '-', base);
+      wcout << text << endl;
     }
   }
  done:
