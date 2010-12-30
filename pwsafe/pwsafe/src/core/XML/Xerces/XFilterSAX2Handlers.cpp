@@ -362,6 +362,12 @@ void XFilterSAX2Handlers::endElement(const XMLCh* const /* uri */,
     cur_filterentry->ftype = FT_EMAIL;
   }
 
+  else if (XMLString::equals(qname, _A2X("protected"))) {
+    m_type = DFTYPE_MAIN;
+    cur_filterentry->mtype = PWSMatch::MT_BOOL;
+    cur_filterentry->ftype = FT_PROTECTED;
+  }
+
   else if (XMLString::equals(qname, _A2X("create_time"))) {
     m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_DATE;

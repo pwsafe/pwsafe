@@ -1113,6 +1113,9 @@ UINT CManageFiltersDlg::GetFieldTypeName(const FieldType &ft)
     case FT_EMAIL:
       nID = IDSC_EXPHDREMAIL;
       break;
+    case FT_PROTECTED:
+      nID = IDSC_EXPHDRPROTECTED;
+      break;
     case FT_CTIME:
       nID = IDSC_EXPHDRCTIME;
       break;

@@ -1312,7 +1312,10 @@
     <None Include="graphics\abase_exp.ico" />
     <None Include="graphics\abase_warn.bmp" />
     <None Include="graphics\abase_warn.ico" />
+    <None Include="graphics\findtoolbar\classic\findadvancedon.bmp" />
+    <None Include="graphics\findtoolbar\new\findadvancedon.bmp" />
     <None Include="graphics\toolbar\classic\addgroup.bmp" />
+    <None Include="graphics\toolbar\classic\duplicategroup.bmp" />
     <None Include="graphics\toolbar\new\about.bmp" />
     <None Include="graphics\toolbar\classic\about.bmp" />
     <None Include="graphics\toolbar\new\about_disabled.bmp" />
@@ -1387,6 +1390,8 @@
     <None Include="graphics\toolbar\new\delete_disabled.bmp" />
     <None Include="graphics\toolbar\classic\duplicate.bmp" />
     <None Include="graphics\toolbar\new\duplicate.bmp" />
+    <None Include="graphics\toolbar\new\duplicategroup.bmp" />
+    <None Include="graphics\toolbar\new\duplicategroup_disabled.bmp" />
     <None Include="graphics\toolbar\new\duplicate_disabled.bmp" />
     <None Include="graphics\dragbar\classic\email.bmp" />
     <None Include="graphics\dragbar\new\email.bmp" />

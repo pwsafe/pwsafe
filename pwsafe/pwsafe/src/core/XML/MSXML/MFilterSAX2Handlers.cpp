@@ -525,6 +525,12 @@ HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::endElement (
     cur_filterentry->ftype = FT_EMAIL;
   }
 
+  else if (_tcscmp(szCurElement, _T("protected")) == 0) {
+    m_type = DFTYPE_MAIN;
+    cur_filterentry->mtype = PWSMatch::MT_BOOL;
+    cur_filterentry->ftype = FT_PROTECTED;
+  }
+
   else if (_tcscmp(szCurElement, _T("create_time")) == 0) {
     m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_DATE;

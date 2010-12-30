@@ -471,6 +471,11 @@ void CPWTreeCtrl::OnBeginLabelEdit(NMHDR *pNMHDR, LRESULT *pLResult)
     DWORD_PTR itemData = GetItemData(ti);
     ASSERT(itemData != NULL);
     CItemData *pci = (CItemData *)itemData;
+
+    // Don't allow edit if a protected entry
+    if (pci->IsProtected())
+      return;
+
     CSecString currentTitle, currentUser, currentPassword;
 
     // We cannot allow in-place edit if these fields contain braces!
@@ -1760,6 +1765,8 @@ CSecString CPWTreeCtrl::MakeTreeDisplayString(const CItemData &ci) const
       treeDispString += L"}";
     }
   }
+  if (ci.IsProtected())
+    treeDispString += L" *";
   return treeDispString;
 }
 

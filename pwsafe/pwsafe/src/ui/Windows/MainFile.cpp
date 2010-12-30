@@ -102,6 +102,9 @@ BOOL DboxMain::OpenOnInit()
                                passkey, GCP_FIRST,
                                flags) ;  // First
 
+  if (rc == PWScore::USER_CANCEL || rc == PWScore::USER_EXIT)
+    return FALSE;
+
   CString cs_title;
   cs_title.LoadString(IDS_FILEREADERROR);
   bool bAskerSet = m_core.IsAskerSet();
@@ -182,13 +185,13 @@ BOOL DboxMain::OpenOnInit()
       }
     case TAR_NEW:
       rc2 = New();
-      if (PWScore::USER_CANCEL == rc2) {
+      if (rc2 == PWScore::USER_CANCEL) {
         // somehow, get DboxPasskeyEntryFirst redisplayed...
       }
       break;
     case TAR_OPEN:
       rc2 = Open();
-      if (PWScore::USER_CANCEL == rc2) {
+      if (rc2 == PWScore::USER_CANCEL) {
         // somehow, get DboxPasskeyEntryFirst redisplayed...
       }
       break;

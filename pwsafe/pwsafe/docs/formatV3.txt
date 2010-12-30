@@ -166,6 +166,7 @@ PasswordSafe V3.13 introduced Format 0x0304
 PasswordSafe V3.14 introduced Format 0x0305
 PasswordSafe V3.19 introduced Format 0x0306
 PasswordSafe V3.22 introduced Format 0x0307
+PasswordSafe V3.25 introduced Format 0x0308
 
 [2] A universally unique identifier is needed in order to synchronize
 databases, e.g., between a handheld pocketPC device and a
@@ -278,7 +279,8 @@ Password Expiry Interval    0x11        2 bytes       Y              [14]
 Run Command                 0x12        Text          Y
 Double-Click Action         0x13        2 bytes       Y              [15]
 EMail address               0x14        Text          Y              [16]
-End of Entry                0xff        [empty]       Y              [17]
+Protected Entry             0x15        1 byte        Y              [17]
+End of Entry                0xff        [empty]       Y              [18]
 
 [1] Per-record UUID to assist in sync, merge, etc. Representation is
 as described in Section 3.1.1.
@@ -396,7 +398,13 @@ Current 'preference values' are:
 [16] Separate Email address field as per RFC 2368 (without the 'mailto:'
 prefix. This field was introduced in version 0x0306 (PasswordSafe V3.19).
 
-[17] An explicit end of entry field is useful for supporting new fields
+[17] Entry is protected i.e. the entry cannot be changed until the user unsets
+this field.  Effectively a read-only entry in a read-write database. This field
+was introduced in version 0x0308 (PasswordSafe V3.25).  This a single character.
+An absent field or a zero valued field means that the entry is not protected.
+Any non-zero value is taken as meaning that the entry is protected.
+
+[18] An explicit end of entry field is useful for supporting new fields
 without breaking backwards compatability.
 
 4. Extensibility

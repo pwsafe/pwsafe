@@ -1,5 +1,5 @@
-Password Safe 3.24 Release Notes - December 2010
-================================================
+Password Safe 3.24.1 Release Notes - December 2010
+==================================================
 
 This note describe the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -10,7 +10,12 @@ releases may be found in the file ChangeLog.txt.
 
 New Features for 3.24.1
 =======================
-None
+[] Allow an entry to be protected against modification even if the database
+is opened in read-write mode. See 'Basic Tab' in Edit dialog. In Tree mode,
+an asterisk after the name indicates the entry is protected. In List mode, the
+'Protected' column may be added to the list. A protected entry can not be
+edited, renamed or deleted and retains this property if Dragged & Dropped onto
+another database.
 
 Changes to Existing Features in 3.24.1
 ======================================

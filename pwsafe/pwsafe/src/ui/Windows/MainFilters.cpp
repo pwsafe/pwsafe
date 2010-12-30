@@ -261,6 +261,10 @@ bool DboxMain::PassesFiltering(const CItemData &ci,
           bValue = ci.NumberUnknownFields() > 0;
           mt = PWSMatch::MT_BOOL;
           break;
+        case FT_PROTECTED:
+          bValue = ci.IsProtected();
+          mt = PWSMatch::MT_BOOL;
+          break;
         case FT_ENTRYTYPE:
           mt = PWSMatch::MT_ENTRYTYPE;
           break;

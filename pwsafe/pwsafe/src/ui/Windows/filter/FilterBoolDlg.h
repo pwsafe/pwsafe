@@ -17,7 +17,7 @@ class CFilterBoolDlg : public CFilterBaseDlg
   DECLARE_DYNAMIC(CFilterBoolDlg)
 
 public:
-  enum BoolType {BT_PRESENT, BT_ACTIVE, BT_SET};
+  enum BoolType {BT_PRESENT, BT_ACTIVE, BT_SET, BT_IS};
 
   CFilterBoolDlg(CWnd* pParent = NULL);
   virtual ~CFilterBoolDlg();

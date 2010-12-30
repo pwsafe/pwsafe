@@ -261,6 +261,9 @@ int PWSfileV3::WriteRecord(const CItemData &item)
   tmp = item.GetEmail();
   if (!tmp.empty())
     WriteCBC(CItemData::EMAIL, tmp);
+  tmp = item.GetProtected();
+  if (!tmp.empty())
+    WriteCBC(CItemData::PROTECTED, tmp);
 
   UnknownFieldsConstIter vi_IterURFE;
   for (vi_IterURFE = item.GetURFIterBegin();

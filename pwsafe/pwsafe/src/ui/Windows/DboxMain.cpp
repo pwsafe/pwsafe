@@ -1085,6 +1085,7 @@ BOOL DboxMain::OnInitDialog()
       ShowWindow(SW_SHOW);
   }
 
+  BOOL bOOI(FALSE);
   if (!m_IsStartClosed && !m_IsStartSilent) {
     if (m_bSetup) { // --setup flag passed?
       // If default dbase exists, DO NOT overwrite it, else
@@ -1097,7 +1098,7 @@ BOOL DboxMain::OnInitDialog()
       if (dir[dir.length()-1] != TCHAR('\\')) dir += L"\\";
       fname = dir + fname;
       if (pws_os::FileExists(fname)) 
-        OpenOnInit();
+        bOOI = OpenOnInit();
       else { // really first install!
         CPasskeySetup dbox_pksetup(this);
         INT_PTR rc = dbox_pksetup.DoModal();
@@ -1119,8 +1120,14 @@ BOOL DboxMain::OnInitDialog()
         }
       } // first install
     } else
-      OpenOnInit();
+      bOOI = OpenOnInit();
     // No need for another RefreshViews as OpenOnInit does one via PostOpenProcessing
+  }
+
+  // Check if user cancelled
+  if (bOOI == FALSE) {
+    PostQuitMessage(0);
+    return FALSE;
   }
 
   SetInitialDatabaseDisplay();
@@ -1139,7 +1146,6 @@ BOOL DboxMain::OnInitDialog()
     CGeneralMsgBox gmb;
     gmb.AfxMessageBox(IDS_CANTLOAD_AUTOTYPEDLL, MB_ICONERROR);
   }
-
 
   // create tooltip unconditionally
   m_pToolTipCtrl = new CToolTipCtrl;

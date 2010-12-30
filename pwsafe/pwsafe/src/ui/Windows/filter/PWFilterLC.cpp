@@ -792,6 +792,10 @@ bool CPWFilterLC::SetField(const int iItem)
           bAddPresent = true;
           mt = PWSMatch::MT_INTEGER;
           break;
+        case FT_PROTECTED:
+          m_fbool.m_bt = CFilterBoolDlg::BT_IS;
+          mt = PWSMatch::MT_BOOL;
+          break;
         case FT_UNKNOWNFIELDS:
           // 'Add Present' not needed - bool match
           m_fbool.m_bt = CFilterBoolDlg::BT_PRESENT;
@@ -1454,6 +1458,11 @@ void CPWFilterLC::SetUpComboBoxData()
         stf.cs_text.LoadString(IDSC_EXPHDREMAIL);
         stf.cs_text.TrimRight(L'\t');
         stf.ftype = FT_EMAIL;
+        vFcbx_data.push_back(stf);
+
+        stf.cs_text.LoadString(IDSC_EXPHDRPROTECTED);
+        stf.cs_text.TrimRight(L'\t');
+        stf.ftype = FT_PROTECTED;
         vFcbx_data.push_back(stf);
 
         stf.cs_text.LoadString(IDSC_EXPHDRCTIME);

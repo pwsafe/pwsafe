@@ -94,8 +94,6 @@
 #define IDS_DOTINVALID                  5249
 #define IDS_PASSWORDSNOTMATCH           5250
 #define IDS_ENTRYEXISTS                 5251
-#define IDS_LESS                        5252
-#define IDS_MORE                        5253
 #define IDS_ENTRIESDONOTMATCH           5254
 #define IDS_ENTERKEYANDVERIFY           5255
 #define IDS_PASSWORDOVERRIDE            5256
@@ -619,3 +617,4 @@
 #define IDS_INVALIDFUTUREDATE           5799
 #define IDS_REGISTRY                    5801
 #define IDS_MISSINGPASSKEY              5804
+#define IDS_PROTECTED                   5805

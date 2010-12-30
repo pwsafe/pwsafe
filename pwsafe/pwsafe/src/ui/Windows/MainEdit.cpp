@@ -397,6 +397,7 @@ void DboxMain::OnDuplicateGroup()
         ci2.SetDisplayInfo(NULL);
         ci2.CreateUUID();
         ci2.SetStatus(CItemData::ES_ADDED);
+        ci2.SetProtected(false);
         // Set new group
         StringX sxThisEntryNewGroup = sxNewPath + pci->GetGroup().substr(grplen);
         ci2.SetGroup(sxThisEntryNewGroup);
@@ -444,6 +445,7 @@ void DboxMain::OnDuplicateGroup()
           ci2.SetDisplayInfo(NULL);
           ci2.CreateUUID();
           ci2.SetStatus(CItemData::ES_ADDED);
+          ci2.SetProtected(false);
           // Set new group
           StringX sxThisEntryNewGroup = sxNewPath + pci->GetGroup().substr(grplen);
           ci2.SetGroup(sxThisEntryNewGroup);
@@ -584,6 +586,9 @@ void DboxMain::OnDelete()
   }
 
   if (pci != NULL) {
+    if (pci->IsProtected())
+      return;
+
     sxGroup = pci->GetGroup();
     sxTitle = pci->GetTitle();
     sxUser = pci->GetUser();
@@ -703,6 +708,13 @@ void DboxMain::OnRename()
   if (m_ctlItemTree.IsWindowVisible()) {
     HTREEITEM hItem = m_ctlItemTree.GetSelectedItem();
     if (hItem != NULL) {
+      if (m_ctlItemTree.IsLeaf(hItem)) {
+        // Do not allow rename of protected entry
+        CItemData *pci = (CItemData *)m_ctlItemTree.GetItemData(hItem);
+        ASSERT(pci != NULL);
+        if (pci->IsProtected())
+          return;
+      }
       m_ctlItemTree.EditLabel(hItem);
       if (m_bFilterActive && m_ctlItemTree.WasLabelEdited())
         RefreshViews();
@@ -936,7 +948,7 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
   m_ctlItemTree.SortTree(TVI_ROOT);
   SortListView();
 
-  // reselect entry, wherever it may be
+  // Reselect entry, wherever it may be
   iter = m_core.Find(original_uuid);
   if (iter != End()) {
     DisplayInfo *pdi = (DisplayInfo *)iter->second.GetDisplayInfo();
@@ -950,6 +962,9 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
     SetDCAText(pci_new);
 
   UpdateToolBarForSelectedItem(pci_new);
+
+  // Password may have been updated and so not expired
+  UpdateEntryImages(*pci_new);
 }
 
 bool DboxMain::EditShortcut(CItemData *pci, PWScore *pcore)
@@ -1052,6 +1067,7 @@ void DboxMain::OnDuplicateEntry()
     ci2.SetTitle(ci2_title);
     ci2.SetUser(ci2_user);
     ci2.SetStatus(CItemData::ES_ADDED);
+    ci2.SetProtected(false);
 
     Command *pcmd = NULL;
     if (pci->IsDependent()) {

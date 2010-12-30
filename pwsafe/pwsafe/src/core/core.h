@@ -65,6 +65,7 @@
 #define IDSC_EXPHDRRUNCOMMAND           3063
 #define IDSC_EXPHDRDCA                  3064
 #define IDSC_EXPHDREMAIL                3065
+#define IDSC_EXPHDRPROTECTED            3066
 
 #define IDSC_CONFIG_NONE                3230
 #define IDSC_CONFIG_REGISTRY            3231

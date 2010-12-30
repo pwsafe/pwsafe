@@ -28,7 +28,7 @@ namespace PWSMatch {
     MR_ACTIVE, MR_INACTIVE,
     MR_PRESENT, MR_NOTPRESENT,
     MR_SET, MR_NOTSET,
-    // For entrytype & DCA comparisons/filters
+    // For entrytype & DCA & Attributes comparisons/filters
     MR_IS, MR_ISNOT,
     // For string comparisons/filters
     MR_BEGINS, MR_NOTBEGIN, 

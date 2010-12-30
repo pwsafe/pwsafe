@@ -69,6 +69,8 @@ CAddEdit_Basic::CAddEdit_Basic(CWnd *pParent, st_AE_master_data *pAEMD)
   m_password = m_password2 = M_realpassword();
   m_notes = m_notesww = M_realnotes().Left(MAXTEXTCHARS);
 
+  m_bProtected = M_protected() != 0 ? TRUE : FALSE;
+
   // Set up right-click Notes context menu additions
   std::vector<st_context_menu> vmenu_items(3);
 
@@ -121,6 +123,8 @@ void CAddEdit_Basic::DoDataExchange(CDataExchange* pDX)
   DDX_Text(pDX, IDC_URL, (CString&)M_URL());
   DDX_Text(pDX, IDC_EMAIL, (CString&)M_email());
 
+  DDX_Check(pDX, IDC_PROTECTED, m_bProtected);
+
   DDX_Control(pDX, IDC_GROUP, m_ex_group);
   DDX_Control(pDX, IDC_TITLE, m_ex_title);
   DDX_Control(pDX, IDC_USERNAME, m_ex_username);
@@ -154,6 +158,8 @@ BEGIN_MESSAGE_MAP(CAddEdit_Basic, CAddEdit_PropertyPage)
   ON_BN_CLICKED(IDC_LAUNCH, OnLaunch)
   ON_BN_CLICKED(IDC_SENDEMAIL, OnSendEmail)
   ON_BN_CLICKED(IDC_VIEWDEPENDENTS, OnViewDependents)
+
+  ON_BN_CLICKED(IDC_PROTECTED, OnSetProtected)
 
   ON_CBN_SELCHANGE(IDC_GROUP, OnGroupComboChanged)
   ON_CBN_EDITCHANGE(IDC_GROUP, OnGroupComboChanged)
@@ -244,7 +250,7 @@ BOOL CAddEdit_Basic::OnInitDialog()
   GetDlgItem(IDC_LAUNCH)->EnableWindow(M_URL().IsEmpty() ? FALSE : TRUE);
   GetDlgItem(IDC_SENDEMAIL)->EnableWindow(M_email().IsEmpty() ? FALSE : TRUE);
 
-  if (M_uicaller() == IDS_VIEWENTRY) {
+  if (M_uicaller() == IDS_VIEWENTRY || M_oldprotected() != 0) {
     // Change 'OK' to 'Close' and disable 'Cancel'
     CancelToClose();
 
@@ -264,6 +270,9 @@ BOOL CAddEdit_Basic::OnInitDialog()
     // Disable Button
     GetDlgItem(IDC_RANDOM)->EnableWindow(FALSE);
   }
+
+  if (M_uicaller() == IDS_VIEWENTRY)
+    GetDlgItem(IDC_PROTECTED)->EnableWindow(FALSE);
 
   m_pex_notes->EnableWindow(m_bWordWrap ? FALSE : TRUE);
   m_pex_notes->ShowWindow(m_bWordWrap ? SW_HIDE : SW_SHOW);
@@ -453,6 +462,43 @@ LRESULT CAddEdit_Basic::OnQuerySiblings(WPARAM wParam, LPARAM )
       // copy data into the entry - we do it ourselfs here first
       if (OnApply() == FALSE)
         return 1L;
+      break;
+    case PP_PROTECT_CHANGED:
+    {
+      const BOOL bProtect = M_oldprotected() != 0 ? TRUE : FALSE;
+      // Change 'OK' to 'Close' and disable 'Cancel'
+      if (bProtect == TRUE) {
+        CString cs_Close(MAKEINTRESOURCE(IDS_CLOSE));
+        m_ae_psh->GetDlgItem(IDOK)->SetWindowText(cs_Close);
+        m_ae_psh->GetDlgItem(IDCANCEL)->EnableWindow(TRUE);
+        m_ae_psh->GetDlgItem(IDC_AEAPPLY)->EnableWindow(FALSE);
+      } else {
+        // There isn't a "CloseToCancel()" function - do it ourselves!
+        if (m_ae_psh != NULL && IsWindow(m_ae_psh->m_hWnd)) {
+          CString cs_OK(MAKEINTRESOURCE(IDS_OK));
+          m_ae_psh->GetDlgItem(IDOK)->SetWindowText(cs_OK);
+          m_ae_psh->GetDlgItem(IDCANCEL)->EnableWindow(TRUE);
+          m_ae_psh->GetDlgItem(IDC_AEAPPLY)->EnableWindow(TRUE);
+        }
+      }
+
+      // Enable/Disable Group Combo
+      GetDlgItem(IDC_GROUP)->EnableWindow(1 - bProtect);
+
+      // Enable/Disable normal Edit controls
+      GetDlgItem(IDC_TITLE)->SendMessage(EM_SETREADONLY, bProtect, 0);
+      GetDlgItem(IDC_USERNAME)->SendMessage(EM_SETREADONLY, bProtect, 0);
+      GetDlgItem(IDC_PASSWORD)->SendMessage(EM_SETREADONLY, bProtect, 0);
+      GetDlgItem(IDC_PASSWORD2)->SendMessage(EM_SETREADONLY, bProtect, 0);
+      GetDlgItem(IDC_NOTES)->SendMessage(EM_SETREADONLY, bProtect, 0);
+      GetDlgItem(IDC_NOTESWW)->SendMessage(EM_SETREADONLY, bProtect, 0);
+      GetDlgItem(IDC_URL)->SendMessage(EM_SETREADONLY, bProtect, 0);
+      GetDlgItem(IDC_EMAIL)->SendMessage(EM_SETREADONLY, bProtect, 0);
+
+      // Enable/Disable Button
+      GetDlgItem(IDC_RANDOM)->EnableWindow(1 - bProtect);
+      break;
+    }
   }
   return 0L;
 }
@@ -497,7 +543,7 @@ BOOL CAddEdit_Basic::PreTranslateMessage(MSG* pMsg)
 
 BOOL CAddEdit_Basic::OnApply()
 {
-  if (M_uicaller() == IDS_VIEWENTRY)
+  if (M_uicaller() == IDS_VIEWENTRY || M_oldprotected() != 0)
     return CAddEdit_PropertyPage::OnApply();
 
   CWnd *pFocus(NULL);
@@ -968,6 +1014,17 @@ void CAddEdit_Basic::OnLaunch()
     GetDlgItem(IDC_LAUNCH)->SetWindowText(cs_text);
   }
   m_bLaunchPlus = false;
+}
+
+void CAddEdit_Basic::OnSetProtected()
+{
+  m_ae_psh->SetChanged(true);
+
+  m_bProtected = ((CButton *)GetDlgItem(IDC_PROTECTED))->GetCheck() == BST_CHECKED;
+
+  M_protected() = m_bProtected ? '1' : '0';
+
+  QuerySiblings(PP_PROTECT_CHANGED, 0L);
 }
 
 void CAddEdit_Basic::OnSendEmail()

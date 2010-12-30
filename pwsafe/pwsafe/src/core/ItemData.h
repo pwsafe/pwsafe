@@ -64,7 +64,7 @@ public:
     PASSWORD = 0x06, CTIME = 0x07, PMTIME = 0x08, ATIME = 0x09, XTIME = 0x0a,
     RESERVED = 0x0b /* cannot use */, RMTIME = 0x0c, URL = 0x0d, AUTOTYPE = 0x0e,
     PWHIST = 0x0f, POLICY = 0x10, XTIME_INT = 0x11, RUNCMD = 0x12, DCA = 0x13,
-    EMAIL = 0x14,
+    EMAIL = 0x14, PROTECTED = 0x15,
     LAST,        // Start of unknown fields!
     END = 0xff,
     // Internal fields only - used in filters
@@ -72,17 +72,17 @@ public:
 
   // SubGroup Object - same as FieldType
 
-  // status returns from "ProcessInputRecordField"
+  // Status returns from "ProcessInputRecordField"
   enum {SUCCESS = 0, FAILURE, END_OF_FILE = 8};
 
-  // entry type (note: powers of 2)
+  // Entry type (note: powers of 2)
   enum EntryType {ET_INVALID      = -1,
                   ET_NORMAL       =  0, 
                   ET_ALIASBASE    =  1, ET_ALIAS    = 2, 
                   ET_SHORTCUTBASE =  4, ET_SHORTCUT = 8,
                   ET_LAST};
 
-  // entry status (note: powers of 2)
+  // Entry status (note: powers of 2)
   // A status can (currently) have values:
   //   0 (normal), 1 (added), 2 (modified) or 4 (deleted).
   enum EntryStatus {ES_INVALID      = -1,
@@ -156,6 +156,9 @@ public:
   void GetDCA(short &iDCA)  const;
   StringX GetDCA() const;
   StringX GetEmail() const;
+  StringX GetProtected() const;
+  void GetProtected(unsigned char &ucprotected) const;
+  bool IsProtected() const;
 
   StringX GetFieldValue(const FieldType &ft) const;
 
@@ -216,6 +219,7 @@ public:
   void SetDCA(const short &iDCA);
   bool SetDCA(const stringT &cs_DCA);
   void SetEmail(const StringX &cs_email);
+  void SetProtected(const bool &bOnOff);
 
   void SetFieldValue(const FieldType &ft, const StringX &value);
 
@@ -304,6 +308,7 @@ private:
   CItemField m_RunCommand;
   CItemField m_DCA;
   CItemField m_email;
+  CItemField m_protected;
 
   // Save unknown record fields on read to put back on write unchanged
   UnknownFields m_URFL;
