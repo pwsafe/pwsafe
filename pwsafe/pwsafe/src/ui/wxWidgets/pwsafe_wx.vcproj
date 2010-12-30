@@ -399,6 +399,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\DbSelectionPanel.h"
+				>
+			</File>
+			<File
 				RelativePath=".\deleteconfirmation.h"
 				>
 			</File>
@@ -476,6 +480,10 @@
 			</File>
 			<File
 				RelativePath=".\PWSgridtable.h"
+				>
+			</File>
+			<File
+				RelativePath=".\PwsSync.h"
 				>
 			</File>
 			<File
@@ -567,6 +575,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\DbSelectionPanel.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\deleteconfirmation.cpp"
 				>
 			</File>
@@ -644,6 +656,10 @@
 			</File>
 			<File
 				RelativePath=".\PWSgridtable.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\PwsSync.cpp"
 				>
 			</File>
 			<File
