@@ -3,7 +3,9 @@
 
 #include <wx/panel.h>
 
+class wxFilePickerCtrl;
 class CSafeCombinationCtrl;
+class PWScore;
 
 /*
  * This is a re-usable class for having the user select a db and
@@ -22,15 +24,26 @@ class CSafeCombinationCtrl;
  */
 class DbSelectionPanel : public wxPanel {
 
+  wxFilePickerCtrl* m_filepicker;
   CSafeCombinationCtrl* m_sc;
-
+  bool m_bAutoValidate;
+  PWScore* m_core;
+  
 public:
   DbSelectionPanel(wxWindow* parent, const wxString& filePrompt,
-                    const wxString& filePickerCtrlTitle, unsigned rowsep); 
+                    const wxString& filePickerCtrlTitle, bool autoValidate,
+                    PWScore* core, unsigned rowsep); 
   ~DbSelectionPanel();
 
   //Set the keyboard focus on combination entry box and select-all
   void SelectCombinationText();
+
+  //wxWindow override to not validate in cases like going back in a wizard page
+  virtual bool Validate() {
+    return !m_bAutoValidate || DoValidation();
+  }
+
+  bool DoValidation();
 
   wxString m_filepath;
   wxString m_combination;

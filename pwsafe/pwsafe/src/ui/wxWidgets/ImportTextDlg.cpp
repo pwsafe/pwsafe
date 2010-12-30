@@ -60,9 +60,6 @@ CImportTextDlg::~CImportTextDlg()
 {
 }
 
-enum { TopMargin = 20, BottomMargin = 20, SideMargin = 30, RowSeparation = 10, ColSeparation = 20};
-
-
 wxCollapsiblePane* CImportTextDlg::CreateImportOptionsPane(wxBoxSizer* dlgSizer)
 {
   const wxSizerFlags Left = wxSizerFlags().Proportion(0).Border(wxLEFT, SideMargin);

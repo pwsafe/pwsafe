@@ -125,7 +125,8 @@ enum {
   ID_TRAYRECENT_ENTRY_HELP1,
   ID_TRAYRECENT_ENTRY_HELP2,
   ID_TOOLBAR_NEW,
-  ID_TOOLBAR_CLASSIC
+  ID_TOOLBAR_CLASSIC,
+  ID_SYNCHRONIZE
 };
 
 
@@ -331,7 +332,8 @@ public:
   void OnShowHideDragBar(wxCommandEvent& /*evt*/);
 
   void OnMergeAnotherSafe(wxCommandEvent& evt);
-
+  void OnSynchronize(wxCommandEvent& evt);
+  
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_TOOLBAR_CLASSIC and ID_TOOLBAR_NEW
   void OnChangeToolbarType(wxCommandEvent& /*evt*/);
 

@@ -5,6 +5,7 @@
 
 class PWScore;
 struct SelectionCriteria;
+class DbSelectionPanel;
 
 class MergeDlg : public wxDialog {
   
@@ -16,19 +17,15 @@ public:
   ~MergeDlg();
 
   void OnAdvancedSelection( wxCommandEvent& evt );
-  void OnOk( wxCommandEvent& );
 
-  wxString GetOtherSafePath() const { return m_filepath; }
-  wxString GetOtherSafeCombination() const { return m_combination; }
-  SelectionCriteria GetSelectionCriteria() const ;
+  wxString GetOtherSafePath() const;
+  wxString GetOtherSafeCombination() const;
+  SelectionCriteria GetSelectionCriteria() const;
   
 private:
-  wxString m_filepath;
-  wxString m_combination;
-
-  
   PWScore* m_core;
   SelectionCriteria* m_selection;
+  DbSelectionPanel* m_dbPanel;
 };
 
 #endif // __MERGEDLG_H__

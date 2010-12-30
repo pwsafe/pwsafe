@@ -24,11 +24,19 @@
 #include "./OpenFilePickerValidator.h"
 #include "./SafeCombinationCtrl.h"
 #include "./wxutils.h"
+#include "../../core/PWScore.h"
+
+#include <wx/filename.h>
 
 DbSelectionPanel::DbSelectionPanel(wxWindow* parent, 
                                     const wxString& filePrompt,
                                     const wxString& filePickerCtrlTitle,
-                                    unsigned rowsep) : wxPanel(parent), m_sc(0)
+                                    bool autoValidate,
+                                    PWScore* core,
+                                    unsigned rowsep) : wxPanel(parent), m_filepicker(0),
+                                                                        m_sc(0),
+                                                                        m_bAutoValidate(autoValidate),
+                                                                        m_core(core)
 {
   wxSizerFlags borderFlags = wxSizerFlags().Border(wxLEFT|wxRIGHT, SideMargin);
 
@@ -43,12 +51,13 @@ DbSelectionPanel::DbSelectionPanel(wxWindow* parent,
   panelSizer->Add(new wxStaticText(this, wxID_ANY, filePrompt), borderFlags);
   panelSizer->AddSpacer(RowSeparation);
   COpenFilePickerValidator validator(m_filepath);
-  panelSizer->Add(new wxFilePickerCtrl(this, wxID_ANY, wxEmptyString, 
+  m_filepicker = new wxFilePickerCtrl(this, wxID_ANY, wxEmptyString, 
                                           filePickerCtrlTitle,
                                           _("Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat|Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All files (*.*; *)|*.*;*"), 
                                           wxDefaultPosition, wxDefaultSize, 
                                           wxFLP_DEFAULT_STYLE | wxFLP_USE_TEXTCTRL, 
-                                          validator), borderFlags.Expand());
+                                          validator);
+  panelSizer->Add(m_filepicker, borderFlags.Expand());
   panelSizer->AddSpacer(RowSeparation*rowsep);
 
   panelSizer->Add(new wxStaticText(this, wxID_ANY, _("Safe Combination:")), borderFlags);
@@ -72,4 +81,47 @@ void DbSelectionPanel::SelectCombinationText()
 {
   m_sc->textCtrl->SetFocus();
   m_sc->textCtrl->SetSelection(-1,-1);
+}
+
+bool DbSelectionPanel::DoValidation()
+{
+  //the data has not been transferred from the window to our members yet, so get them from the controls
+  if (wxWindow::Validate()) {
+
+    wxFileName wxfn(m_filepicker->GetPath());
+    
+    //Did the user enter a valid file path
+    if (!wxfn.FileExists()) {
+      wxMessageBox( _("File or path not found."), _("Error"), wxOK | wxICON_EXCLAMATION, this);
+      return false;
+    }
+    
+    //Did he enter the same file that's currently open?
+    if (wxfn.SameAs(wxFileName(towxstring(m_core->GetCurFile())))) {
+      // It is the same damn file
+      wxMessageBox(_("That file is already open."), _("Synchronize error"), wxOK | wxICON_WARNING, this);
+      return false;
+    }
+    
+    wxString combination = m_sc->textCtrl->GetValue();
+    //Did he enter a combination?
+    if (combination.empty()) {
+      wxMessageBox(_("The combination cannot be blank."), _("Error"), wxOK | wxICON_EXCLAMATION, this);
+      return false;
+    }
+    
+    //Does the combination match?
+    if (m_core->CheckPasskey(tostringx(wxfn.GetFullPath()), tostringx(combination)) != PWScore::SUCCESS) {
+      wxString errmess(_("Incorrect passkey, not a PasswordSafe database, or a corrupt database. (Backup database has same name as original, ending with '~')"));
+      wxMessageBox(errmess, _("Error"), wxOK | wxICON_ERROR, this);
+      SelectCombinationText();
+      return false;
+    }
+    
+    return true;
+    
+  }
+  else {
+    return false;
+  }
 }
