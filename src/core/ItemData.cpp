@@ -1919,9 +1919,9 @@ bool CItemData::DeserializePlainText(const std::vector<char> &v)
     if (type == END)
       return true; // happy end
 
-    unsigned int len = *(reinterpret_cast<const unsigned int *>(&(*iter)));
+    uint32 len = *(reinterpret_cast<const uint32 *>(&(*iter)));
     ASSERT(len < v.size()); // sanity check
-    iter += sizeof(unsigned int);
+    iter += sizeof(uint32);
 
     if (--emergencyExit == 0) {
       ASSERT(0);
@@ -2041,10 +2041,10 @@ bool CItemData::SetField(int type, const unsigned char *data, size_t len)
   return true;
 }
 
-static void push_length(vector<char> &v, size_t s)
+static void push_length(vector<char> &v, uint32 s)
 {
   v.insert(v.end(),
-    reinterpret_cast<char *>(&s), reinterpret_cast<char *>(&s) + sizeof(size_t));
+    reinterpret_cast<char *>(&s), reinterpret_cast<char *>(&s) + sizeof(uint32));
 }
 
 static void push_string(vector<char> &v, char type,
@@ -2058,7 +2058,7 @@ static void push_string(vector<char> &v, char type,
     status = utf8conv.ToUTF8(str, utf8, utf8Len);
     if (status) {
       v.push_back(type);
-      push_length(v, utf8Len);
+      push_length(v, (uint32)utf8Len);
       v.insert(v.end(), reinterpret_cast<const char *>(utf8), reinterpret_cast<const char *>(utf8) + utf8Len);
     } else
       pws_os::Trace(_T("ItemData::SerializePlainText:ToUTF8(%s) failed\n"),
@@ -2156,8 +2156,7 @@ void CItemData::SerializePlainText(vector<char> &v,
   push_string(v, RUNCMD, GetRunCommand());
   GetDCA(i16);   push_int16(v, DCA, i16);
   push_string(v, EMAIL, GetEmail());
-  GetProtected(uc);
-  push_uchar(v, PROTECTED, uc);
+  GetProtected(uc); push_uchar(v, PROTECTED, uc);
 
   UnknownFieldsConstIter vi_IterURFE;
   for (vi_IterURFE = GetURFIterBegin();
@@ -2169,7 +2168,7 @@ void CItemData::SerializePlainText(vector<char> &v,
     GetUnknownField(type, length, pdata, vi_IterURFE);
     if (length != 0) {
       v.push_back(static_cast<char>(type));
-      push_length(v, length);
+      push_length(v, (uint32)length);
       v.insert(v.end(), reinterpret_cast<char *>(pdata), reinterpret_cast<char *>(pdata) + length);
       trashMemory(pdata, length);
     }
