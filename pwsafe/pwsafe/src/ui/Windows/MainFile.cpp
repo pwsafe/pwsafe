@@ -3141,6 +3141,11 @@ void DboxMain::Synchronize(const StringX &sx_Filename2, PWScore *pothercore)
     if (foundPos != m_core.GetEntryEndIter()) {
       // found a match
       CItemData curItem = m_core.GetEntry(foundPos);
+
+      // Don't update if entry is protected
+      if (curItem.IsProtected())
+        continue;
+
       CItemData updItem(curItem);
       updItem.SetDisplayInfo(NULL);
 
