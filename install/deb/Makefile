@@ -1,10 +1,13 @@
 # Makefile to create a Deb file for wxWidgets version of pwsafe
 
-RELNUM = 0.3
-DISTRO = $(shell echo $(word 2,$(shell lsb_release -d))| tr [:upper:] [:lower:])
+# RELEASENAME should be provided by invoker, or grokked
+# from src/ui/wxWidgets/version.in
+RELEASENAME := 0.3
 
-DEBNAME32 = passwordsafe-$(DISTRO)-$(RELNUM).i686.deb
-DEBNAME64 = passwordsafe-$(DISTRO)-$(RELNUM).amd64.deb
+DISTRO := $(shell echo $(word 2,$(shell lsb_release -d))|tr [:upper:] [:lower:])
+
+DEBNAME32 = passwordsafe-$(DISTRO)-$(RELEASENAME).i686.deb
+DEBNAME64 = passwordsafe-$(DISTRO)-$(RELEASENAME).amd64.deb
 MKDIR = /bin/mkdir -p
 CAT = /bin/cat
 MV = /bin/mv
@@ -64,7 +67,7 @@ debtree:
 	@$(CP) $(XMLFILES) debian/usr/share/pwsafe/xml
 	@$(CP) $(HELPFILES) debian/usr/share/doc/passwordsafe/help
 	@$(MKDIR) debian/DEBIAN
-	@$(SED) s/VERSION/$(RELNUM)/ < control > debian/DEBIAN/control
+	@$(SED) s/VERSION/$(RELEASENAME)/ < control > debian/DEBIAN/control
 	@$(CP) ../desktop/pwsafe.desktop debian/tmp
 	@$(CP) ../graphics/pwsafe.png debian/tmp
 	@$(CP) postinst debian/DEBIAN

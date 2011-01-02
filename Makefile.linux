@@ -1,9 +1,28 @@
 # Toplevel Makefile for Linux build of PasswordSafe
 
+# TBD: Grok following from src/ui/wxWidgets/version.in
+RELEASENUM := 0.3.0
+RELEASE_SPECIAL := BETA
+
+# This should probably be overridden by invoker
+RELEASEDIR := .
+
+# Shouldn't change anything below here
+
+RELEASENAME := $(RELEASENUM)$(RELEASE_SPECIAL)
+
+TMPDIR := /tmp/pwsrc-$(shell echo $$$$)
+MKDIR := mkdir -p
+RM := /bin/rm -rf
+SVN := svn
+TAR := tar
+
 all clean unicodedebug unicoderelease:
 	$(MAKE) -C src/os/linux $@
 	$(MAKE) -C src/core $@
 	$(MAKE) -C src/ui/wxWidgets $@
+
+dist: all deb tar sign
 
 debug:
 	$(MAKE) unicodedebug
@@ -16,9 +35,24 @@ reallyclean:
 	$(MAKE) clean CONFIG=unicoderelease
 
 deb:
-	$(MAKE) -C install/deb
+	$(MAKE) -C install/deb RELEASENAME=$(RELEASENAME)
 
-.PHONY:	all clean reallyclean debug release unicodedebug unicoderelease deb
+tar:
+	@$(MKDIR) $(TMPDIR)
+	@echo -n "Exporting source tree..."
+	@$(SVN) export --quiet . $(TMPDIR)/pwsafe-$(RELEASENAME)
+# Prune windows-only code (not for now - provide as a reference?)
+#	@$(RM) $(TMPDIR)/pwsafe-$(RELEASENAME)/src/{ui/Windows,Tools/Windows}
+	@echo -n "Creating tarball..."
+	@$(TAR) czf pwsafe-$(RELEASENAME)-src.tgz  -C $(TMPDIR) .
+	@$(RM) $(TMPDIR)
+	@echo "Done."
+
+sign:
+	@echo "TBD: Add signing of deliverables"
+
+.PHONY:	all clean reallyclean debug release unicodedebug unicoderelease \
+	 deb tar sign dist
 # Local variables:
 # mode: makefile
 # End:
