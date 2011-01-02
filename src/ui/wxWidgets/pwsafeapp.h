@@ -5,7 +5,7 @@
 // Modified by: 
 // Created:     Wed 14 Jan 2009 10:11:39 PM IST
 // RCS-ID:      
-// Copyright:   Copyright (c) 2003-2010 Rony Shapiro <ronys@users.sourceforge.net>
+// Copyright:   Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>
 // Licence:     
 /////////////////////////////////////////////////////////////////////////////
 
