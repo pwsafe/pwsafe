@@ -3219,7 +3219,7 @@ bool MergeSyncGTUCompare(const StringX &elem1, const StringX &elem2)
   return u1.compare(u2) < 0;
 }
 
-void PasswordSafeFrame::OnSynchronize(wxCommandEvent& evt)
+void PasswordSafeFrame::OnSynchronize(wxCommandEvent& /*evt*/)
 {
   // disable in read-only mode or empty
   wxCHECK_RET(!m_core.IsReadOnly() && !m_core.GetCurFile().empty() && m_core.GetNumEntries() != 0,
