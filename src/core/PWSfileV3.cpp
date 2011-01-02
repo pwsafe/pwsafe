@@ -370,7 +370,7 @@ void PWSfileV3::StretchKey(const unsigned char *salt, unsigned long saltLen,
   }
 }
 
-const short VersionNum = 0x0307;
+const short VersionNum = 0x0308;
 
 // Following specific for PWSfileV3::WriteHeader
 #define SAFE_FWRITE(p, sz, cnt, stream) \
