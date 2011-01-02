@@ -46,6 +46,7 @@
 #include "os/windows/pws_autotype/pws_at.h"
 #include "os/dir.h"
 #include "os/file.h"
+#include "os/env.h"
 
 #include "Shlwapi.h"
 
@@ -487,9 +488,14 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
         // If a normal flag is not recognised - show Usage
         if ((*arg) == L"--testdump") {
           m_bPermitTestdump = true;
+        } else if ((*arg) == L"--fix-utf8") { // for reading non-utf8 non-English databases
+          // Databases created with ~3.05.02 and used non-English text were incorrectly
+          // encoded. This flag allows them to be read correctly. Saving them will
+          // then encode them as utf8
+          pws_os::setenv("PWS_CP_ACP", "1");
         } else if ((*arg) == L"--setup") {
           /**
-           * '--setup' is meant to be used whien invoking PasswordSafe at the end of the installation process.
+           * '--setup' is meant to be used when invoking PasswordSafe at the end of the installation process.
            * It will cause the application to create a new database with the default name at the default location,
            * prompting the user for the safe combination.
            * State of m_bSetup is accessible via public IsSetup() member function

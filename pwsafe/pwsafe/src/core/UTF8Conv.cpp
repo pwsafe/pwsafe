@@ -112,14 +112,15 @@ bool CUTF8Conv::FromUTF8(const unsigned char *utf8, size_t utf8Len,
   ASSERT(utf8 != NULL);
 
   // first get needed wide char buffer size
-  unsigned int wcLen = static_cast<unsigned int>(pws_os::mbstowcs(NULL, 0, 
-                            reinterpret_cast<const char *>(utf8), size_t(-1)));
+  size_t wcLen = pws_os::mbstowcs(NULL, 0,
+                                  reinterpret_cast<const char *>(utf8),
+                                  size_t(-1), !m_cp_acp);
   if (wcLen == 0) { // uh-oh
     // it seems that this always returns non-zero, even if encoding
     // broken. Therefore, we'll give a conservative value here,
     // and try to recover later
     pws_os::Trace0(_T("FromUTF8: Couldn't get buffer size - guessing!"));
-    wcLen = static_cast<unsigned int>(sizeof(StringX::value_type) * (utf8Len + 1));
+    wcLen = sizeof(StringX::value_type) * (utf8Len + 1);
   }
   // Allocate buffer (if previous allocation was smaller)
   if (wcLen > m_wcMaxLen) {
@@ -130,7 +131,9 @@ bool CUTF8Conv::FromUTF8(const unsigned char *utf8, size_t utf8Len,
     m_wcMaxLen = wcLen;
   }
   // next translate to buffer
-  wcLen = static_cast<unsigned int>(pws_os::mbstowcs(m_wc, wcLen, reinterpret_cast<const char *>(utf8), size_t(-1)));
+  wcLen = pws_os::mbstowcs(m_wc, wcLen,
+                           reinterpret_cast<const char *>(utf8),
+                           size_t(-1), !m_cp_acp);
 #ifdef _WIN32
   if (wcLen == 0) {
     DWORD errCode = GetLastError();
@@ -144,11 +147,11 @@ bool CUTF8Conv::FromUTF8(const unsigned char *utf8, size_t utf8Len,
     case ERROR_NO_UNICODE_TRANSLATION:
       // try to recover
       pws_os::Trace0(_T("NO UNICODE TRANSLATION"));
-      wcLen = static_cast<size_t>(MultiByteToWideChar(CP_ACP,        // code page
+      wcLen = MultiByteToWideChar(CP_ACP,        // code page
                                   0,             // character-type options
                                   LPSTR(utf8),   // string to map
                                   -1,            // -1 means null-terminated
-                                  m_wc, wcLen));  // output buffer
+                                  m_wc, wcLen);  // output buffer
       if (wcLen > 0) {
         pws_os::Trace0(_T("FromUTF8: recovery succeeded!"));
       }
