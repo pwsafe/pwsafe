@@ -647,6 +647,7 @@ protected:
   afx_msg void OnAdd();
   afx_msg void OnAddGroup();
   afx_msg void OnDuplicateGroup();
+  afx_msg void OnProtect(UINT nID);
   afx_msg void OnCreateShortcut();
   afx_msg void OnOK();
   afx_msg void OnShowHideToolbar();
@@ -803,6 +804,8 @@ private:
   void UpdateAccelTable();
   void SetupSpecialShortcuts();
   void DoBrowse(const bool bDoAutotype, const bool bSendEmail);
+  bool GetSubtreeEntriesProtectedStatus(int &numProtected, int &numUnprotected);
+  void ChangeSubtreeEntriesProtectStatus(const UINT nID);
   void CopyDataToClipBoard(const CItemData::FieldType ft, const bool special = false);
   void UpdateSystemMenu();
   void RestoreWindows(); // extended ShowWindow(SW_RESTORE), sort of

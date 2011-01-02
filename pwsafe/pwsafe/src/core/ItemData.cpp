@@ -274,7 +274,7 @@ StringX CItemData::GetFieldValue(const FieldType &ft) const
       return GetDCA();
     case EMAIL:      /* 14 */
       return GetEmail();
-    case PROTECTED: /* 15 */
+    case PROTECTED:  /* 15 */
     {
       unsigned char uc;
       StringX sxProtected = _T("");
@@ -1525,8 +1525,8 @@ void CItemData::SetFieldValue(const FieldType &ft, const StringX &value)
     case EMAIL:      /* 14 */
       SetEmail(value);
       break;
-    case PROTECTED: /* 15 */
-      SetProtected(value.compare(_T("1")) == 0);
+    case PROTECTED:  /* 15 */
+      SetProtected(value.compare(_T("1")) == 0 || value.compare(_T("Yes")) == 0);
       break;
     case GROUPTITLE: /* 00 */
     case UUID:       /* 01 */

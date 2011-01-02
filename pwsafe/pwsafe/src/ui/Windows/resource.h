@@ -696,7 +696,6 @@
 #define IDC_CONTINUE                    1403
 #define IDC_SELECT                      1404
 #define IDC_DELETE                      1405
-#define IDC_AEAPPLY                     1406
 #define IDC_STATIC_UUID                 1407
 #define IDC_UUID                        1408
 #define IDC_STATIC_SIZE                 1409

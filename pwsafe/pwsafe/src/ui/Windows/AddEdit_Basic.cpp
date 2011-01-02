@@ -250,27 +250,6 @@ BOOL CAddEdit_Basic::OnInitDialog()
   GetDlgItem(IDC_LAUNCH)->EnableWindow(M_URL().IsEmpty() ? FALSE : TRUE);
   GetDlgItem(IDC_SENDEMAIL)->EnableWindow(M_email().IsEmpty() ? FALSE : TRUE);
 
-  if (M_uicaller() == IDS_VIEWENTRY || M_oldprotected() != 0) {
-    // Change 'OK' to 'Close' and disable 'Cancel'
-    CancelToClose();
-
-    // Disable Group Combo
-    GetDlgItem(IDC_GROUP)->EnableWindow(FALSE);
-
-    // Disable normal Edit controls
-    GetDlgItem(IDC_TITLE)->SendMessage(EM_SETREADONLY, TRUE, 0);
-    GetDlgItem(IDC_USERNAME)->SendMessage(EM_SETREADONLY, TRUE, 0);
-    GetDlgItem(IDC_PASSWORD)->SendMessage(EM_SETREADONLY, TRUE, 0);
-    GetDlgItem(IDC_PASSWORD2)->SendMessage(EM_SETREADONLY, TRUE, 0);
-    GetDlgItem(IDC_NOTES)->SendMessage(EM_SETREADONLY, TRUE, 0);
-    GetDlgItem(IDC_NOTESWW)->SendMessage(EM_SETREADONLY, TRUE, 0);
-    GetDlgItem(IDC_URL)->SendMessage(EM_SETREADONLY, TRUE, 0);
-    GetDlgItem(IDC_EMAIL)->SendMessage(EM_SETREADONLY, TRUE, 0);
-
-    // Disable Button
-    GetDlgItem(IDC_RANDOM)->EnableWindow(FALSE);
-  }
-
   if (M_uicaller() == IDS_VIEWENTRY)
     GetDlgItem(IDC_PROTECTED)->EnableWindow(FALSE);
 
@@ -471,14 +450,14 @@ LRESULT CAddEdit_Basic::OnQuerySiblings(WPARAM wParam, LPARAM )
         CString cs_Close(MAKEINTRESOURCE(IDS_CLOSE));
         m_ae_psh->GetDlgItem(IDOK)->SetWindowText(cs_Close);
         m_ae_psh->GetDlgItem(IDCANCEL)->EnableWindow(TRUE);
-        m_ae_psh->GetDlgItem(IDC_AEAPPLY)->EnableWindow(FALSE);
+        m_ae_psh->GetDlgItem(ID_APPLY_NOW)->EnableWindow(FALSE);
       } else {
         // There isn't a "CloseToCancel()" function - do it ourselves!
         if (m_ae_psh != NULL && IsWindow(m_ae_psh->m_hWnd)) {
           CString cs_OK(MAKEINTRESOURCE(IDS_OK));
           m_ae_psh->GetDlgItem(IDOK)->SetWindowText(cs_OK);
           m_ae_psh->GetDlgItem(IDCANCEL)->EnableWindow(TRUE);
-          m_ae_psh->GetDlgItem(IDC_AEAPPLY)->EnableWindow(TRUE);
+          m_ae_psh->GetDlgItem(ID_APPLY_NOW)->EnableWindow(TRUE);
         }
       }
 
@@ -1016,13 +995,70 @@ void CAddEdit_Basic::OnLaunch()
   m_bLaunchPlus = false;
 }
 
+BOOL CAddEdit_Basic::OnSetActive()
+{
+  if (M_uicaller() == IDS_VIEWENTRY || M_oldprotected() != 0) {
+    // Change 'OK' to 'Close' and disable 'Cancel'
+    //CancelToClose();
+    CString cs_text(MAKEINTRESOURCE(IDS_CLOSE));
+    CButton *pbtn;
+    pbtn = reinterpret_cast<CButton *>(m_ae_psh->GetDlgItem(IDOK));
+    pbtn->SetWindowText(cs_text);
+    pbtn->EnableWindow(TRUE);
+    pbtn = reinterpret_cast<CButton *>(m_ae_psh->GetDlgItem(IDCANCEL));
+    pbtn->EnableWindow(FALSE);
+    pbtn = reinterpret_cast<CButton *>(m_ae_psh->GetDlgItem(ID_APPLY_NOW));
+    pbtn->EnableWindow(FALSE);
+
+    // Disable Group Combo
+    GetDlgItem(IDC_GROUP)->EnableWindow(FALSE);
+
+    // Disable normal Edit controls
+    GetDlgItem(IDC_TITLE)->SendMessage(EM_SETREADONLY, TRUE, 0);
+    GetDlgItem(IDC_USERNAME)->SendMessage(EM_SETREADONLY, TRUE, 0);
+    GetDlgItem(IDC_PASSWORD)->SendMessage(EM_SETREADONLY, TRUE, 0);
+    GetDlgItem(IDC_PASSWORD2)->SendMessage(EM_SETREADONLY, TRUE, 0);
+    GetDlgItem(IDC_NOTES)->SendMessage(EM_SETREADONLY, TRUE, 0);
+    GetDlgItem(IDC_NOTESWW)->SendMessage(EM_SETREADONLY, TRUE, 0);
+    GetDlgItem(IDC_URL)->SendMessage(EM_SETREADONLY, TRUE, 0);
+    GetDlgItem(IDC_EMAIL)->SendMessage(EM_SETREADONLY, TRUE, 0);
+
+    // Disable Button
+    GetDlgItem(IDC_RANDOM)->EnableWindow(FALSE);
+  }
+  return CAddEdit_PropertyPage::OnSetActive();
+}
+
 void CAddEdit_Basic::OnSetProtected()
 {
   m_ae_psh->SetChanged(true);
 
   m_bProtected = ((CButton *)GetDlgItem(IDC_PROTECTED))->GetCheck() == BST_CHECKED;
 
-  M_protected() = m_bProtected ? '1' : '0';
+  M_protected() = m_bProtected ? 1 : 0;
+
+  CButton *pbtn;
+  if (M_protected() != 0 && M_protected() == M_oldprotected()) {
+    // CancelToClose();
+    CString cs_text(MAKEINTRESOURCE(IDS_CLOSE));
+    pbtn = reinterpret_cast<CButton *>(m_ae_psh->GetDlgItem(IDOK));
+    pbtn->SetWindowText(cs_text);
+    pbtn->EnableWindow(TRUE);
+    pbtn = reinterpret_cast<CButton *>(m_ae_psh->GetDlgItem(IDCANCEL));
+    pbtn->EnableWindow(FALSE);
+    pbtn = reinterpret_cast<CButton *>(m_ae_psh->GetDlgItem(ID_APPLY_NOW));
+    pbtn->EnableWindow(FALSE);
+  } else {
+    // Undo CancelToClose();
+    CString cs_text(MAKEINTRESOURCE(IDS_OK));
+    pbtn = reinterpret_cast<CButton *>(m_ae_psh->GetDlgItem(IDOK));
+    pbtn->SetWindowText(cs_text);
+    pbtn->EnableWindow(TRUE);
+    pbtn = reinterpret_cast<CButton *>(m_ae_psh->GetDlgItem(IDCANCEL));
+    pbtn->EnableWindow(TRUE);
+    pbtn = reinterpret_cast<CButton *>(m_ae_psh->GetDlgItem(ID_APPLY_NOW));
+    pbtn->EnableWindow(TRUE);
+  }
 
   QuerySiblings(PP_PROTECT_CHANGED, 0L);
 }

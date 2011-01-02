@@ -338,7 +338,7 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
       break;
     case XLE_PROTECTED:
       if (m_strElemContent == _T("1"))
-        cur_entry->ucprotected = '1';
+        cur_entry->ucprotected = 1;
       break;
     case XLE_UNKNOWNRECORDFIELDS:
       if (!cur_entry->uhrxl.empty())

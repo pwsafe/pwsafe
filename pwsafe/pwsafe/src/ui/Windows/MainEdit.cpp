@@ -360,7 +360,7 @@ void DboxMain::OnDuplicateGroup()
   std::vector<bool> bVNodeStates;
   bool bState = (m_ctlItemTree.GetItemState(ti, TVIS_EXPANDED) &
                          TVIS_EXPANDED) != 0;
-   bVNodeStates.push_back(bState);
+  bVNodeStates.push_back(bState);
 
   if (m_ctlItemTree.ItemHasChildren(ti)) {
     MultiCommands *pmulti_cmd_base = MultiCommands::Create(&m_core);
@@ -551,6 +551,114 @@ void DboxMain::OnDuplicateGroup()
   }
 
   m_ctlItemTree.SelectItem(ti);
+}
+
+void DboxMain::OnProtect(UINT nID)
+{
+  CItemData *pci(NULL);
+  if (m_ctlItemTree.IsWindowVisible()) {
+    HTREEITEM hStartItem = m_ctlItemTree.GetSelectedItem();
+    if (hStartItem != NULL) {
+      pci = (CItemData *)m_ctlItemTree.GetItemData(hStartItem);
+    }
+  } else {
+    POSITION pos = m_ctlItemList.GetFirstSelectedItemPosition();
+    if (pos != NULL) {
+      pci = (CItemData *)m_ctlItemList.GetItemData((int)pos - 1);
+    }
+  }
+  if (pci != NULL) {
+    // Entry
+    ASSERT(nID == ID_MENUITEM_PROTECT || nID == ID_MENUITEM_UNPROTECT);
+    Command *pcmd = UpdateEntryCommand::Create(&m_core, *pci, 
+                                               CItemData::PROTECTED,
+                                               nID == ID_MENUITEM_UNPROTECT ? L"0" : L"1");
+    Execute(pcmd, &m_core);
+
+    SetChanged(Data);
+  } else {
+    // Group
+    ASSERT(nID == ID_MENUITEM_PROTECTGROUP || nID == ID_MENUITEM_UNPROTECTGROUP);
+    ChangeSubtreeEntriesProtectStatus(nID);
+  }
+}
+
+void DboxMain::ChangeSubtreeEntriesProtectStatus(const UINT nID)
+{
+  // Get selected group
+  HTREEITEM ti = m_ctlItemTree.GetSelectedItem();
+  const HTREEITEM nextsibling = m_ctlItemTree.GetNextSiblingItem(ti);
+
+  // Verify that it is a group
+  ASSERT((CItemData *)m_ctlItemTree.GetItemData(ti) == NULL);
+
+  // Get all of the children
+  MultiCommands *pmulticmds = MultiCommands::Create(&m_core);
+
+  if (m_ctlItemTree.ItemHasChildren(ti)) {
+    HTREEITEM hNextItem;
+    hNextItem = m_ctlItemTree.GetNextTreeItem(ti);
+
+    while (hNextItem != NULL && hNextItem != nextsibling) {
+      CItemData *pci = (CItemData *)m_ctlItemTree.GetItemData(hNextItem);
+      if (pci != NULL) {
+        if (!pci->IsShortcut()) {
+          if (pci->IsProtected() && nID == ID_MENUITEM_UNPROTECTGROUP) {
+            Command *pcmd = UpdateEntryCommand::Create(&m_core, *pci, 
+                                             CItemData::PROTECTED,
+                                             L"0");
+            pmulticmds->Add(pcmd);
+          } else {
+            if (nID == ID_MENUITEM_PROTECTGROUP) {
+              Command *pcmd = UpdateEntryCommand::Create(&m_core, *pci, 
+                                               CItemData::PROTECTED,
+                                               L"1");
+              pmulticmds->Add(pcmd);
+            }
+          }
+        }
+      }
+      hNextItem = m_ctlItemTree.GetNextTreeItem(hNextItem);
+    }
+  }
+  if (pmulticmds->GetSize() != 0)
+    Execute(pmulticmds);
+}
+
+bool DboxMain::GetSubtreeEntriesProtectedStatus(int &numProtected, int &numUnprotected)
+{
+  int numShortcuts(0);
+  numProtected = numUnprotected = 0;
+
+  // Get selected group
+  HTREEITEM ti = m_ctlItemTree.GetSelectedItem();
+  const HTREEITEM nextsibling = m_ctlItemTree.GetNextSiblingItem(ti);
+
+  // Verify that it is a group
+  ASSERT((CItemData *)m_ctlItemTree.GetItemData(ti) == NULL);
+
+  // Get all of the children
+  if (m_ctlItemTree.ItemHasChildren(ti)) {
+    HTREEITEM hNextItem;
+    hNextItem = m_ctlItemTree.GetNextTreeItem(ti);
+
+    while (hNextItem != NULL && hNextItem != nextsibling) {
+      CItemData *pci = (CItemData *)m_ctlItemTree.GetItemData(hNextItem);
+      if (pci != NULL) {
+        if (pci->IsShortcut()) {
+          numShortcuts++;
+        } else {
+          if (pci->IsProtected())
+            numProtected++;
+          else
+            numUnprotected++;
+        }
+      }
+      hNextItem = m_ctlItemTree.GetNextTreeItem(hNextItem);
+    }
+  }
+  // Nothing to do if sub-tree empty or only contains shortcuts
+  return !(numShortcuts >= 0 && (numProtected == 0 && numUnprotected == 0));
 }
 
 void DboxMain::OnDelete()

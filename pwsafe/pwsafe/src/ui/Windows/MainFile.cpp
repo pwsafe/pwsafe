@@ -2928,6 +2928,7 @@ void DboxMain::Compare(const StringX &sx_Filename2, PWScore *pothercore)
         st_data.indatabase = CCompareResultsDlg::BOTH;
         st_data.unknflds0 = currentItem.NumberUnknownFields() > 0;
         st_data.unknflds1 = compItem.NumberUnknownFields() > 0;
+        st_data.bIsProtected0 = currentItem.IsProtected();
 
         if (bsConflicts.any()) {
           numConflicts++;

@@ -362,9 +362,9 @@ void CCompareResultsDlg::OnShowIdenticalEntries()
   // Reset item listindex
   for (i = 0; i < m_LCResults.GetItemCount(); i++) {
     DWORD_PTR dwItemData = m_LCResults.GetItemData(i);
-    st_CompareData *st_data = GetCompareData(dwItemData);
-    ASSERT(st_data != NULL);
-    st_data->listindex = i;
+    st_CompareData *pst_data = GetCompareData(dwItemData);
+    ASSERT(pst_data != NULL);
+    pst_data->listindex = i;
   }
 
   m_LCResults.SortItems(CRCompareFunc, (LPARAM)this);
@@ -407,24 +407,24 @@ void CCompareResultsDlg::UpdateStatusBar()
   m_statusBar.UpdateWindow();
 }
 
-bool CCompareResultsDlg::ProcessFunction(const int ifunction, st_CompareData *st_data)
+bool CCompareResultsDlg::ProcessFunction(const int ifunction, st_CompareData *pst_data)
 {
-  st_CompareInfo *st_info;
-  st_info = new st_CompareInfo;
+  st_CompareInfo *pst_info;
+  pst_info = new st_CompareInfo;
 
   bool rc(false);
 
-  int indatabase = st_data->indatabase;
+  int indatabase = pst_data->indatabase;
   if (m_column == indatabase || indatabase == BOTH) {
-    st_info->pcore0 = m_pcore0;
-    st_info->pcore1 = m_pcore1;
-    memcpy(st_info->uuid0, st_data->uuid0, sizeof(st_info->uuid0));
-    memcpy(st_info->uuid1, st_data->uuid1, sizeof(st_info->uuid1));
-    st_info->clicked_column = m_column;
+    pst_info->pcore0 = m_pcore0;
+    pst_info->pcore1 = m_pcore1;
+    memcpy(pst_info->uuid0, pst_data->uuid0, sizeof(pst_info->uuid0));
+    memcpy(pst_info->uuid1, pst_data->uuid1, sizeof(pst_info->uuid1));
+    pst_info->clicked_column = m_column;
 
     LRESULT lres = ::SendMessage(AfxGetApp()->m_pMainWnd->GetSafeHwnd(),
                                      PWS_MSG_COMPARE_RESULT_FUNCTION,
-                                     (WPARAM)st_info, (LPARAM)ifunction);
+                                     (WPARAM)pst_info, (LPARAM)ifunction);
     if (lres == TRUE) {
       CSecString group, title, user, buffer, cs_tmp;
       ItemListIter pos;
@@ -432,9 +432,9 @@ bool CCompareResultsDlg::ProcessFunction(const int ifunction, st_CompareData *st
       switch (ifunction) {
         case CCompareResultsDlg::COPY_TO_ORIGINALDB:
           // UUID of copied entry returned - now update data
-          memcpy(st_data->uuid0, st_info->uuid0, sizeof(st_info->uuid0));
+          memcpy(pst_data->uuid0, pst_info->uuid0, sizeof(pst_info->uuid0));
 
-          pos = m_pcore1->Find(st_info->uuid1);
+          pos = m_pcore1->Find(pst_info->uuid1);
           ASSERT(pos != m_pcore1->GetEntryEndIter());
 
           group = pos->second.GetGroup();
@@ -446,9 +446,9 @@ bool CCompareResultsDlg::ProcessFunction(const int ifunction, st_CompareData *st
           break;
         case CCompareResultsDlg::COPY_TO_COMPARISONDB:
           // UUID of copied entry returned - now update data
-          memcpy(st_data->uuid1, st_info->uuid1, sizeof(st_info->uuid1));
+          memcpy(pst_data->uuid1, pst_info->uuid1, sizeof(pst_info->uuid1));
 
-          pos = m_pcore0->Find(st_info->uuid0);
+          pos = m_pcore0->Find(pst_info->uuid0);
           ASSERT(pos != m_pcore0->GetEntryEndIter());
 
           group = pos->second.GetGroup();
@@ -470,7 +470,7 @@ bool CCompareResultsDlg::ProcessFunction(const int ifunction, st_CompareData *st
     }
   }
 
-  delete st_info;
+  delete pst_info;
   return rc;
 }
 
@@ -522,13 +522,13 @@ void CCompareResultsDlg::OnCompareViewEdit()
   bool bDatabaseRO = (m_column == CURRENT) ? m_bOriginalDBReadOnly : m_bComparisonDBReadOnly;
 
   DWORD_PTR dwItemData = m_LCResults.GetItemData(m_row);
-  st_CompareData *st_data = GetCompareData(dwItemData);
-  ASSERT(st_data != NULL);
+  st_CompareData *pst_data = GetCompareData(dwItemData);
+  ASSERT(pst_data != NULL);
 
   if (bDatabaseRO || m_column == COMPARE)
-    ProcessFunction(VIEW, st_data);
+    ProcessFunction(VIEW, pst_data);
   else
-    ProcessFunction(EDIT, st_data);
+    ProcessFunction(EDIT, pst_data);
 }
 
 void CCompareResultsDlg::OnCompareSynchronize()
@@ -552,10 +552,10 @@ void CCompareResultsDlg::OnCompareSynchronize()
   setGTU.clear();  // Don't need it anymore - so clear it now
 
   DWORD_PTR dwItemData = m_LCResults.GetItemData(m_row);
-  st_CompareData *st_data = GetCompareData(dwItemData);
-  ASSERT(st_data != NULL);
+  st_CompareData *pst_data = GetCompareData(dwItemData);
+  ASSERT(pst_data != NULL);
 
-  ProcessFunction(SYNCH, st_data);
+  ProcessFunction(SYNCH, pst_data);
 }
 
 void CCompareResultsDlg::OnCompareCopyToOriginalDB()
@@ -606,24 +606,24 @@ bool CCompareResultsDlg::CopyLeftOrRight(const bool bCopyLeft)
 
   LRESULT lres(FALSE);
   DWORD_PTR dwItemData = m_LCResults.GetItemData(m_row);
-  st_CompareData *st_data = GetCompareData(dwItemData);
-  ASSERT(st_data != NULL);
+  st_CompareData *pst_data = GetCompareData(dwItemData);
+  ASSERT(pst_data != NULL);
 
-  int indatabase = st_data->indatabase;
+  int indatabase = pst_data->indatabase;
   if (m_column == indatabase || indatabase == BOTH) {
-    lres = ProcessFunction(ifunction, st_data);
+    lres = ProcessFunction(ifunction, pst_data);
   } else
     return false;
 
   if (lres != TRUE)
     return false;
 
-  if (st_data->unknflds0)
+  if (pst_data->unknflds0)
     m_LCResults.SetItemText(m_row, CURRENT, L"=*");
   else
     m_LCResults.SetItemText(m_row, CURRENT, L"=");
 
-  if (st_data->unknflds1)
+  if (pst_data->unknflds1)
     m_LCResults.SetItemText(m_row, COMPARE, L"=*");
   else
     m_LCResults.SetItemText(m_row, COMPARE, L"=");
@@ -632,10 +632,10 @@ bool CCompareResultsDlg::CopyLeftOrRight(const bool bCopyLeft)
     m_LCResults.SetItemText(m_row, USER + 1 + i, L"-");
 
   st_CompareData st_newdata;
-  st_newdata = *st_data;
+  st_newdata = *pst_data;
   st_newdata.bsDiffs.reset();
 
-  int id = st_data->id;
+  int id = pst_data->id;
   CompareData::iterator cd_iter;
   switch (indatabase) {
     case BOTH:
@@ -725,10 +725,10 @@ void CCompareResultsDlg::OnItemRightClick(NMHDR* /* pNMHDR */, LRESULT *pResult)
     return;
 
   DWORD_PTR dwItemData = m_LCResults.GetItemData(m_row);
-  st_CompareData *st_data = GetCompareData(dwItemData);
-  ASSERT(st_data != NULL);
+  st_CompareData *pst_data = GetCompareData(dwItemData);
+  ASSERT(pst_data != NULL);
 
-  int indatabase = st_data->indatabase;
+  int indatabase = pst_data->indatabase;
   if (m_column != indatabase && 
     (indatabase != BOTH && indatabase != IDENTICAL))
     return;
@@ -746,19 +746,19 @@ void CCompareResultsDlg::OnItemRightClick(NMHDR* /* pNMHDR */, LRESULT *pResult)
     CMenu* pPopup = menu.GetSubMenu(0);
     ASSERT(pPopup != NULL);
 
-    // Disable copy/sychnronize if target is read-only
-    // Delete synchornize if not in both databases (and not already identical)
+    // Disable copy/sychnronize if target is read-only or entry is protected
+    // Delete synchronize if not in both databases (and not already identical)
     if (m_column == COMPARE) {
-      if (bTargetRO) {
-        pPopup->EnableMenuItem(ID_MENUITEM_COPY_TO_ORIGINAL, MF_BYCOMMAND | MF_GRAYED);
-        pPopup->EnableMenuItem(ID_MENUITEM_SYNCHRONIZE, MF_BYCOMMAND | MF_GRAYED);
+      if (bTargetRO || pst_data->bIsProtected0) {
+        pPopup->RemoveMenu(ID_MENUITEM_COPY_TO_ORIGINAL, MF_BYCOMMAND);
+        pPopup->RemoveMenu(ID_MENUITEM_SYNCHRONIZE, MF_BYCOMMAND);
       }
       if (indatabase != BOTH)
         pPopup->RemoveMenu(ID_MENUITEM_SYNCHRONIZE, MF_BYCOMMAND);
     }
 
-    // Disable edit if source read-only OR if Comparison DB
-    if (bSourceRO) {
+    // Disable edit if source read-only OR entry is protected OR if Comparison DB
+    if (bSourceRO || pst_data->bIsProtected0) {
       const CString cs_View_Entry(MAKEINTRESOURCE(IDS_VIEWENTRY2));
       pPopup->ModifyMenu(ID_MENUITEM_COMPVIEWEDIT, MF_BYCOMMAND,
                          ID_MENUITEM_COMPVIEWEDIT, cs_View_Entry);
@@ -787,9 +787,9 @@ void CCompareResultsDlg::OnColumnClick(NMHDR* pNMHDR, LRESULT* pResult)
   // Reset item listindex
   for (int i = 0; i < m_LCResults.GetItemCount(); i++) {
     DWORD_PTR dwItemData = m_LCResults.GetItemData(i);
-    st_CompareData *st_data = GetCompareData(dwItemData);
-    ASSERT(st_data != NULL);
-    st_data->listindex = i;
+    st_CompareData *pst_data = GetCompareData(dwItemData);
+    ASSERT(pst_data != NULL);
+    pst_data->listindex = i;
   }
 
 #if (WINVER < 0x0501)  // These are already defined for WinXP and later

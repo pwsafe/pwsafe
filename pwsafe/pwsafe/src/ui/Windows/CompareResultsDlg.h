@@ -40,11 +40,12 @@ struct st_CompareData {
   int listindex;  // list index in CompareResultsDlg list control
   bool unknflds0;  // original DB
   bool unknflds1;  // comparison DB
+  bool bIsProtected0;
 
   st_CompareData()
     : bsDiffs(0), group(L""), title(L""), user(L""),
     id(0), indatabase(0), listindex(0),
-    unknflds0(false), unknflds1(false)
+    unknflds0(false), unknflds1(false), bIsProtected0(false)
   {
     SecureZeroMemory(uuid0, sizeof(uuid0));
     SecureZeroMemory(uuid1, sizeof(uuid1));
@@ -53,7 +54,7 @@ struct st_CompareData {
   st_CompareData(const st_CompareData &that)
     : bsDiffs(that.bsDiffs), group(that.group), title(that.title), user(that.user),
     id(that.id), indatabase(that.indatabase), listindex(that.listindex),
-    unknflds0(that.unknflds0), unknflds1(that.unknflds1)
+    unknflds0(that.unknflds0), unknflds1(that.unknflds1), bIsProtected0(that.bIsProtected0)
   {
     memcpy(uuid0, that.uuid0, sizeof(uuid0));
     memcpy(uuid1, that.uuid1, sizeof(uuid1));
@@ -73,6 +74,7 @@ struct st_CompareData {
       listindex = that.listindex;
       unknflds0 = that.unknflds0;
       unknflds1 = that.unknflds1;
+      bIsProtected0 = that.bIsProtected0;
     }
     return *this;
   }

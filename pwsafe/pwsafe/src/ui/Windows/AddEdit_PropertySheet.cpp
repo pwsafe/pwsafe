@@ -161,9 +161,9 @@ BOOL CAddEdit_PropertySheet::OnInitDialog()
       GetDlgItem(IDCANCEL)->ShowWindow(SW_HIDE);
       break;
     case IDS_EDITENTRY:
-      GetDlgItem(ID_APPLY_NOW)->SetDlgCtrlID(IDC_AEAPPLY);
-      GetDlgItem(IDOK)->EnableWindow(m_bChanged ? TRUE : FALSE);
-      GetDlgItem(IDC_AEAPPLY)->EnableWindow(m_bChanged ? TRUE : FALSE);
+      //GetDlgItem(ID_APPLY_NOW)->SetDlgCtrlID(IDC_AEAPPLY);
+      GetDlgItem(IDOK)->EnableWindow((m_bChanged || m_AEMD.olducprotected != 0) ? TRUE : FALSE);
+      GetDlgItem(ID_APPLY_NOW)->EnableWindow(m_bChanged ? TRUE : FALSE);
       break;
   }
   return TRUE;
@@ -174,7 +174,7 @@ void CAddEdit_PropertySheet::SetChanged(const bool bChanged)
   if (m_bChanged != bChanged) {
     GetDlgItem(IDOK)->EnableWindow(bChanged ? TRUE : FALSE);
     if (m_AEMD.uicaller == IDS_EDITENTRY)
-      GetDlgItem(IDC_AEAPPLY)->EnableWindow(bChanged ? TRUE : FALSE);
+      GetDlgItem(ID_APPLY_NOW)->EnableWindow(bChanged ? TRUE : FALSE);
   }
   m_bChanged = bChanged;
 }
@@ -184,7 +184,7 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
   // There is no OnOK for classes derived from CPropertySheet,
   // so we make our own!
   const int iCID = LOWORD(wParam);
-  if (iCID == IDOK || iCID == IDC_AEAPPLY) {
+  if (iCID == IDOK || iCID == ID_APPLY_NOW) {
     // First send a message to all loaded pages using base class function.
     // We want them all to update their variables in the Master Data area.
     // And call OnApply() rather than the default OnOK processing
