@@ -175,8 +175,8 @@ void CAddEdit_PropertySheet::SetChanged(const bool bChanged)
     GetDlgItem(IDOK)->EnableWindow(bChanged ? TRUE : FALSE);
     if (m_AEMD.uicaller == IDS_EDITENTRY)
       GetDlgItem(ID_APPLY_NOW)->EnableWindow(bChanged ? TRUE : FALSE);
+    m_bChanged = bChanged;
   }
-  m_bChanged = bChanged;
 }
 
 BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
