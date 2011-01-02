@@ -3853,7 +3853,8 @@ void DboxMain::RefreshEntryFieldInGUI(CItemData &ci, CItemData::FieldType ft)
     bool bShowPasswordInTree = prefs->GetPref(PWSprefs::ShowPasswordInTree);
     if (ft == CItemData::START || ft == CItemData::TITLE || 
         (ft == CItemData::USER && bShowUsernameInTree) ||
-        (ft == CItemData::PASSWORD && bShowPasswordInTree)) {
+        (ft == CItemData::PASSWORD && bShowPasswordInTree) ||
+        ft == CItemData::PROTECTED) {
       StringX treeDispString = ci.GetTitle();
 
       if (bShowUsernameInTree)
@@ -3861,7 +3862,7 @@ void DboxMain::RefreshEntryFieldInGUI(CItemData &ci, CItemData::FieldType ft)
       if (bShowPasswordInTree)
         treeDispString += L" {" + ci.GetPassword() + L"}";
       if (ci.IsProtected())
-        treeDispString += L" *";
+        treeDispString += L" #";
       UpdateTreeItem(pdi->tree_item, treeDispString);
     }
   }

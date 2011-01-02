@@ -412,6 +412,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_REDO, OnRedo)
   ON_COMMAND(ID_MENUITEM_EXPORTENT2PLAINTEXT, OnExportEntryText)
   ON_COMMAND(ID_MENUITEM_EXPORTENT2XML, OnExportEntryXML)
+  ON_COMMAND_RANGE(ID_MENUITEM_PROTECT, ID_MENUITEM_UNPROTECTGROUP, OnProtect)
 
   // View Menu
   ON_COMMAND(ID_MENUITEM_LIST_VIEW, OnListView)
@@ -601,7 +602,11 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_FINDUP, true, true, false, false},
   {ID_MENUITEM_DUPLICATEENTRY, true, false, false, false},
   {ID_MENUITEM_ADDGROUP, true, false, true, false},
-  {ID_MENUITEM_DUPLICATEGROUP, true, false, true, false},
+  {ID_MENUITEM_DUPLICATEGROUP, true, false, false, false},
+  {ID_MENUITEM_PROTECT, true, false, false, false},
+  {ID_MENUITEM_UNPROTECT, true, false, false, false},
+  {ID_MENUITEM_PROTECTGROUP, true, false, false, false},
+  {ID_MENUITEM_UNPROTECTGROUP, true, false, false, false},
   {ID_MENUITEM_COPYPASSWORD, true, true, false, false},
   {ID_MENUITEM_COPYUSERNAME, true, true, false, false},
   {ID_MENUITEM_COPYNOTESFLD, true, true, false, false},

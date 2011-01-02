@@ -628,7 +628,7 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
        List View - Add Entry, Sep, Clear Clipboard
      2. Group selected (Tree view only)
        Add Entry, Sep, <Group Items>, Sep, Clear Clipboard
-       Add Group, Duplicate Group
+       Add Group, Duplicate Group, (Un)Protect entries
      3. Entry selected
        Tree View - <Entry Items>, Sep, Add Group, Sep, Clear Clipboard, Sep
                    Entry functions (copy to clipboard, browse, run etc)
@@ -684,6 +684,16 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
                                ID_MENUITEM_ADDGROUP, tc_dummy);
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_DUPLICATEGROUP, tc_dummy);
+        int numProtected, numUnprotected;
+        bool bProtect = GetSubtreeEntriesProtectedStatus(numProtected, numUnprotected);
+        if (bProtect) {
+          if (numUnprotected > 0)
+            pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
+                                   ID_MENUITEM_PROTECTGROUP, tc_dummy);
+          if (numProtected > 0)
+            pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
+                                   ID_MENUITEM_UNPROTECTGROUP, tc_dummy);
+        }
       }
       pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
       pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
@@ -833,6 +843,11 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
                              ID_MENUITEM_EXPORTENT2PLAINTEXT, tc_dummy); 
       pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                              ID_MENUITEM_EXPORTENT2XML, tc_dummy);
+
+      if (!bReadOnly && etype_original != CItemData::ET_SHORTCUT)
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
+                               pci->IsProtected() ? ID_MENUITEM_UNPROTECT : ID_MENUITEM_PROTECT,
+                               tc_dummy);
     } else {
       // Must be List view with no entry selected
       pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
@@ -1126,6 +1141,7 @@ void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint screen)
       return; // right click on empty list
 
     pci = (CItemData *)m_ctlItemList.GetItemData(item);
+    UpdateToolBarForSelectedItem(pci);
     if (SelectEntry(item) == 0) {
       return;
     }
@@ -1147,6 +1163,7 @@ void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint screen)
     HTREEITEM ti = m_ctlItemTree.HitTest(client);
     if (ti != NULL) {
       pci = (CItemData *)m_ctlItemTree.GetItemData(ti);
+      UpdateToolBarForSelectedItem(pci);
       if (pci != NULL) {
         // right-click was on an item (LEAF of some kind: normal, alias, shortcut)
         DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
@@ -1164,6 +1181,12 @@ void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint screen)
           CMenu* pPopup = menu.GetSubMenu(0);
           ASSERT_VALID(pPopup);
           m_TreeViewGroup = m_ctlItemTree.GetGroup(ti);
+          int numProtected, numUnprotected;
+          bool bProtect = GetSubtreeEntriesProtectedStatus(numProtected, numUnprotected);
+          if (!bProtect || numUnprotected == 0)
+            pPopup->RemoveMenu(ID_MENUITEM_PROTECTGROUP, MF_BYCOMMAND);
+          if (!bProtect || numProtected == 0)
+            pPopup->RemoveMenu(ID_MENUITEM_UNPROTECTGROUP, MF_BYCOMMAND);
           // use this DboxMain for commands
           pPopup->TrackPopupMenu(dwTrackPopupFlags, screen.x, screen.y, this);
         }
@@ -1216,6 +1239,14 @@ void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint screen)
         ASSERT(0);
     }
 
+    if (m_core.IsReadOnly() || pci->IsShortcut()) {
+      pPopup->RemoveMenu(ID_MENUITEM_PROTECT, MF_BYCOMMAND);
+      pPopup->RemoveMenu(ID_MENUITEM_UNPROTECT, MF_BYCOMMAND);
+    } else {
+      pPopup->RemoveMenu(pci->IsProtected() ? ID_MENUITEM_PROTECT : ID_MENUITEM_UNPROTECT, MF_BYCOMMAND);
+    }
+
+    // NOTE: after here, if an entry is a Shortcut, pci points to its base entry!
     if (pci->IsShortcut()) {
       pci = m_core.GetBaseEntry(pci);
     }

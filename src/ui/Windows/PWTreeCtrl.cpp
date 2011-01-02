@@ -1766,7 +1766,7 @@ CSecString CPWTreeCtrl::MakeTreeDisplayString(const CItemData &ci) const
     }
   }
   if (ci.IsProtected())
-    treeDispString += L" *";
+    treeDispString += L" #";
   return treeDispString;
 }
 

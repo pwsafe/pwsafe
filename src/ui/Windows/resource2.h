@@ -92,6 +92,10 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 #define ID_MENUITEM_EXPORTENT2PLAINTEXT 32084
 #define ID_MENUITEM_EXPORTENT2XML       32085
 #define ID_MENUITEM_DUPLICATEGROUP      32086
+#define ID_MENUITEM_PROTECT             32087
+#define ID_MENUITEM_UNPROTECT           32088
+#define ID_MENUITEM_PROTECTGROUP        32089
+#define ID_MENUITEM_UNPROTECTGROUP      32090
 
 // View menu
 #define ID_VIEWMENU                     32101

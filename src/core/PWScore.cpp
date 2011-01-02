@@ -261,7 +261,7 @@ void PWScore::DoReplaceEntry(const CItemData &old_ci, const CItemData &new_ci)
   new_ci.GetUUID(new_uuid);
   ASSERT(memcmp(old_uuid, new_uuid, sizeof(uuid_array_t)) == 0);
   m_pwlist[old_uuid] = new_ci;
-  if (old_ci.GetEntryType() != new_ci.GetEntryType())
+  if (old_ci.GetEntryType() != new_ci.GetEntryType() || old_ci.IsProtected() != new_ci.IsProtected())
     GUIRefreshEntry(new_ci);
   m_bDBChanged = true;
 }
