@@ -609,9 +609,9 @@ void PasswordSafeFrame::DoBrowse(CItemData &item, bool bAutotype)
   }
 }
 
-BOOL PasswordSafeFrame::LaunchBrowser(const wxString &csURL, const StringX &sxAutotype,
-                             const std::vector<size_t> &vactionverboffsets,
-                             bool bDoAutotype)
+BOOL PasswordSafeFrame::LaunchBrowser(const wxString &csURL, const StringX &/*sxAutotype*/,
+                             const std::vector<size_t> &/*vactionverboffsets*/,
+                             bool /*bDoAutotype*/)
 {
   /*
    * This is a straight port of DBoxMain::LaunchBrowser.  See the comments in that function
@@ -626,9 +626,11 @@ BOOL PasswordSafeFrame::LaunchBrowser(const wxString &csURL, const StringX &sxAu
   const size_t altReplacements = theURL.Replace(wxT("[alt]"), wxT(""));
   const size_t alt2Replacements = (theURL.Replace(wxT("[ssh]"), wxT("")) +
                           theURL.Replace(wxT("{alt}"), wxT("")));
+#ifdef NOT_YET
   const size_t autotypeReplacements = theURL.Replace(wxT("[autotype]"), wxT(""));
   const size_t no_autotype = theURL.Replace(wxT("[xa]"), wxT(""));
-  
+#endif
+
   if (alt2Replacements == 0 && !isMailto && theURL.Find(wxT("://")) == wxNOT_FOUND)
     theURL = wxT("http://") + theURL;
   

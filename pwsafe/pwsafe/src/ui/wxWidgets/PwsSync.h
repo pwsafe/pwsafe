@@ -4,8 +4,8 @@
 #include <wx/wizard.h> 
 
 class PWScore;
-class SelectionCriteria;
-class SyncData;
+struct SelectionCriteria;
+struct SyncData;
 class CReport;
 
 /*!

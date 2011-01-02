@@ -69,9 +69,9 @@ public:
   void OnWizardPageChanging(wxWizardEvent& evt);
   void OnWizardPageChanged(wxWizardEvent& evt);
 
-  virtual void OnPageEnter(PageDirection dir) {}
+  virtual void OnPageEnter(PageDirection /*dir*/) {}
   //return false to veto the page change
-  virtual bool OnPageLeave(PageDirection dir) {return true;}
+  virtual bool OnPageLeave(PageDirection /*dir*/) {return true;}
 
   void SetChildWindowText(unsigned id, const wxString& str);
 
