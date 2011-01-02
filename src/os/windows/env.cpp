@@ -62,6 +62,20 @@ stringT pws_os::getenv(const char *env, bool is_path)
   return retval;
 }
 
+void pws_os::setenv(const char *name, const char *value)
+{
+  ASSERT(name != NULL && value != NULL);
+#if _MSC_VER < 1400
+  std::string envstring(name);
+  envstring += "=";
+  envstring += value;
+  setenv(envstring.c_str());
+#else
+  _putenv_s(name, value);
+#endif // _MSC_VER < 1400
+}
+
+
 stringT pws_os::getusername()
 {
   TCHAR user[UNLEN + sizeof(TCHAR)];

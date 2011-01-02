@@ -56,6 +56,15 @@ stringT pws_os::getenv(const char *env, bool is_path)
   return retval;
 }
 
+void pws_os::setenv(const char *name, const char *value)
+{
+  ASSERT(name != NULL && value != NULL);
+  std::string envstring(name);
+  envstring += "=";
+  envstring += value;
+  setenv(envstring.c_str());
+}
+
 stringT pws_os::getusername()
 {
   stringT retval;

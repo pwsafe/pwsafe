@@ -23,6 +23,7 @@
 #include "os/typedefs.h"
 #include "os/pws_tchar.h"
 #include "os/mem.h"
+#include "os/env.h"
 
 #include <time.h>
 #include <sstream>
@@ -1839,7 +1840,20 @@ bool CItemData::WillExpire(const int numdays) const
 
 static bool pull_string(StringX &str, const unsigned char *data, size_t len)
 {
-  CUTF8Conv utf8conv;
+  /**
+   * cp_acp is used to force reading data as non-utf8 encoded
+   * This is for databases that were incorrectly written, e.g., 3.05.02
+   * PWS_CP_ACP is either set externally or via the --CP_ACP argv
+   *
+   * We use a static variable purely for efficiency, as this won't change
+   * over the course of the program.
+   */
+
+  static int cp_acp = -1;
+  if (cp_acp == -1) {
+    cp_acp = pws_os::getenv("PWS_CP_ACP", false).empty() ? 0 : 1;
+  }
+  CUTF8Conv utf8conv(cp_acp != 0);
   vector<unsigned char> v(data, (data + len));
   v.push_back(0); // null terminate for FromUTF8.
   bool utf8status = utf8conv.FromUTF8(&v[0], len, str);
