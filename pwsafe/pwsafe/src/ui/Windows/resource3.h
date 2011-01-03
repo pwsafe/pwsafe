@@ -618,3 +618,4 @@
 #define IDS_REGISTRY                    5801
 #define IDS_MISSINGPASSKEY              5804
 #define IDS_PROTECTED                   5805
+#define IDS_UNPROTECT                   5806

@@ -718,7 +718,7 @@
 #define IDC_DEFPWHIDESYSTRAY            1426
 #define IDC_ADVANCED_RESET              1427
 #define IDC_ENTRY                       1428
-#define IDC_PROTECTED                   1429
+#define IDC_STATIC_PROTECTED            1429
 
 // Next default values for new objects
 // 

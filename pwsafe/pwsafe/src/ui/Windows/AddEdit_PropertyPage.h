@@ -77,7 +77,7 @@ struct st_AE_master_data {
   int ipolicy, oldipolicy;
   
   // Attributes
-  unsigned char ucprotected, olducprotected;
+  unsigned char ucprotected;
 };
 
 class CAddEdit_PropertyPage : public CPWPropertyPage
@@ -159,7 +159,6 @@ public:
   
   // Attributes
   inline unsigned char &M_protected() {return m_AEMD.ucprotected;}
-  inline unsigned char &M_oldprotected() {return m_AEMD.olducprotected;}
 
 protected:
   st_AE_master_data &m_AEMD;

@@ -69,8 +69,6 @@ CAddEdit_Basic::CAddEdit_Basic(CWnd *pParent, st_AE_master_data *pAEMD)
   m_password = m_password2 = M_realpassword();
   m_notes = m_notesww = M_realnotes().Left(MAXTEXTCHARS);
 
-  m_bProtected = M_protected() != 0 ? TRUE : FALSE;
-
   // Set up right-click Notes context menu additions
   std::vector<st_context_menu> vmenu_items(3);
 
@@ -123,8 +121,6 @@ void CAddEdit_Basic::DoDataExchange(CDataExchange* pDX)
   DDX_Text(pDX, IDC_URL, (CString&)M_URL());
   DDX_Text(pDX, IDC_EMAIL, (CString&)M_email());
 
-  DDX_Check(pDX, IDC_PROTECTED, m_bProtected);
-
   DDX_Control(pDX, IDC_GROUP, m_ex_group);
   DDX_Control(pDX, IDC_TITLE, m_ex_title);
   DDX_Control(pDX, IDC_USERNAME, m_ex_username);
@@ -145,6 +141,9 @@ void CAddEdit_Basic::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_STATIC_URL, m_stc_URL);
     DDX_Control(pDX, IDC_STATIC_EMAIL, m_stc_email);
   }
+
+  if (M_uicaller() == IDS_EDITENTRY && M_protected() != 0)
+    DDX_Control(pDX, IDC_STATIC_PROTECTED, m_stc_protected);
   //}}AFX_DATA_MAP
 }
 
@@ -158,8 +157,6 @@ BEGIN_MESSAGE_MAP(CAddEdit_Basic, CAddEdit_PropertyPage)
   ON_BN_CLICKED(IDC_LAUNCH, OnLaunch)
   ON_BN_CLICKED(IDC_SENDEMAIL, OnSendEmail)
   ON_BN_CLICKED(IDC_VIEWDEPENDENTS, OnViewDependents)
-
-  ON_BN_CLICKED(IDC_PROTECTED, OnSetProtected)
 
   ON_CBN_SELCHANGE(IDC_GROUP, OnGroupComboChanged)
   ON_CBN_EDITCHANGE(IDC_GROUP, OnGroupComboChanged)
@@ -204,6 +201,9 @@ BOOL CAddEdit_Basic::OnInitDialog()
   ApplyPasswordFont(GetDlgItem(IDC_PASSWORD));
   ApplyPasswordFont(GetDlgItem(IDC_PASSWORD2));
 
+  if (M_uicaller() != IDS_EDITENTRY || M_protected() == 0)
+    GetDlgItem(IDC_STATIC_PROTECTED)->ShowWindow(SW_HIDE);
+
   if (M_uicaller() != IDS_ADDENTRY) {
     m_pToolTipCtrl = new CToolTipCtrl;
     if (!m_pToolTipCtrl->Create(this, TTS_BALLOON | TTS_NOPREFIX)) {
@@ -212,10 +212,7 @@ BOOL CAddEdit_Basic::OnInitDialog()
       m_pToolTipCtrl = NULL;
     } else {
       EnableToolTips();
-      // Delay initial show & reshow
-      int iTime = m_pToolTipCtrl->GetDelayTime(TTDT_AUTOPOP) / 2;
-      m_pToolTipCtrl->SetDelayTime(TTDT_INITIAL, iTime);
-      m_pToolTipCtrl->SetDelayTime(TTDT_RESHOW, iTime);
+
       m_pToolTipCtrl->SetMaxTipWidth(300);
 
       CString cs_ToolTip;
@@ -234,6 +231,12 @@ BOOL CAddEdit_Basic::OnInitDialog()
       cs_ToolTip.LoadString(IDS_CLICKTOSEND);
       m_pToolTipCtrl->AddTool(GetDlgItem(IDC_SENDEMAIL), cs_ToolTip);
 
+      if (M_uicaller() == IDS_EDITENTRY && M_protected() != 0) {
+        cs_ToolTip.LoadString(IDS_UNPROTECT);
+        m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_PROTECTED), cs_ToolTip);
+        m_stc_protected.SetColour(RGB(255,0,0));
+      }
+
       m_pToolTipCtrl->Activate(TRUE);
     }
 
@@ -250,8 +253,28 @@ BOOL CAddEdit_Basic::OnInitDialog()
   GetDlgItem(IDC_LAUNCH)->EnableWindow(M_URL().IsEmpty() ? FALSE : TRUE);
   GetDlgItem(IDC_SENDEMAIL)->EnableWindow(M_email().IsEmpty() ? FALSE : TRUE);
 
-  if (M_uicaller() == IDS_VIEWENTRY)
-    GetDlgItem(IDC_PROTECTED)->EnableWindow(FALSE);
+  if (M_uicaller() == IDS_VIEWENTRY || (M_uicaller() == IDS_EDITENTRY && M_protected() != 0)) {
+    // Change 'OK' to 'Close' and disable 'Cancel'
+    CancelToClose();
+  }
+
+  if (M_uicaller() == IDS_VIEWENTRY) {
+    // Disable Group Combo
+    GetDlgItem(IDC_GROUP)->EnableWindow(FALSE);
+
+    // Disable normal Edit controls
+    GetDlgItem(IDC_TITLE)->SendMessage(EM_SETREADONLY, TRUE, 0);
+    GetDlgItem(IDC_USERNAME)->SendMessage(EM_SETREADONLY, TRUE, 0);
+    GetDlgItem(IDC_PASSWORD)->SendMessage(EM_SETREADONLY, TRUE, 0);
+    GetDlgItem(IDC_PASSWORD2)->SendMessage(EM_SETREADONLY, TRUE, 0);
+    GetDlgItem(IDC_NOTES)->SendMessage(EM_SETREADONLY, TRUE, 0);
+    GetDlgItem(IDC_NOTESWW)->SendMessage(EM_SETREADONLY, TRUE, 0);
+    GetDlgItem(IDC_URL)->SendMessage(EM_SETREADONLY, TRUE, 0);
+    GetDlgItem(IDC_EMAIL)->SendMessage(EM_SETREADONLY, TRUE, 0);
+
+    // Disable Button
+    GetDlgItem(IDC_RANDOM)->EnableWindow(FALSE);
+  }
 
   m_pex_notes->EnableWindow(m_bWordWrap ? FALSE : TRUE);
   m_pex_notes->ShowWindow(m_bWordWrap ? SW_HIDE : SW_SHOW);
@@ -370,6 +393,9 @@ HBRUSH CAddEdit_Basic::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
       case IDC_STATIC_EMAIL:
         pcfOld = &m_email_cfOldColour;
         break;
+      case IDC_STATIC_PROTECTED:
+        pcfOld = &m_protected_cfOldColour;
+        break;
       default:
         // Not one of ours - get out quick
         return hbr;
@@ -444,7 +470,7 @@ LRESULT CAddEdit_Basic::OnQuerySiblings(WPARAM wParam, LPARAM )
       break;
     case PP_PROTECT_CHANGED:
     {
-      const BOOL bProtect = M_oldprotected() != 0 ? TRUE : FALSE;
+      const BOOL bProtect = M_protected() != 0 ? TRUE : FALSE;
       // Change 'OK' to 'Close' and disable 'Cancel'
       if (bProtect == TRUE) {
         CString cs_Close(MAKEINTRESOURCE(IDS_CLOSE));
@@ -522,7 +548,7 @@ BOOL CAddEdit_Basic::PreTranslateMessage(MSG* pMsg)
 
 BOOL CAddEdit_Basic::OnApply()
 {
-  if (M_uicaller() == IDS_VIEWENTRY || M_oldprotected() != 0)
+  if (M_uicaller() == IDS_VIEWENTRY || M_protected() != 0)
     return CAddEdit_PropertyPage::OnApply();
 
   CWnd *pFocus(NULL);
@@ -993,74 +1019,6 @@ void CAddEdit_Basic::OnLaunch()
     GetDlgItem(IDC_LAUNCH)->SetWindowText(cs_text);
   }
   m_bLaunchPlus = false;
-}
-
-BOOL CAddEdit_Basic::OnSetActive()
-{
-  if (M_uicaller() == IDS_VIEWENTRY || M_oldprotected() != 0) {
-    // Change 'OK' to 'Close' and disable 'Cancel'
-    //CancelToClose();
-    CString cs_text(MAKEINTRESOURCE(IDS_CLOSE));
-    CButton *pbtn;
-    pbtn = reinterpret_cast<CButton *>(m_ae_psh->GetDlgItem(IDOK));
-    pbtn->SetWindowText(cs_text);
-    pbtn->EnableWindow(TRUE);
-    pbtn = reinterpret_cast<CButton *>(m_ae_psh->GetDlgItem(IDCANCEL));
-    pbtn->EnableWindow(FALSE);
-    pbtn = reinterpret_cast<CButton *>(m_ae_psh->GetDlgItem(ID_APPLY_NOW));
-    pbtn->EnableWindow(FALSE);
-
-    // Disable Group Combo
-    GetDlgItem(IDC_GROUP)->EnableWindow(FALSE);
-
-    // Disable normal Edit controls
-    GetDlgItem(IDC_TITLE)->SendMessage(EM_SETREADONLY, TRUE, 0);
-    GetDlgItem(IDC_USERNAME)->SendMessage(EM_SETREADONLY, TRUE, 0);
-    GetDlgItem(IDC_PASSWORD)->SendMessage(EM_SETREADONLY, TRUE, 0);
-    GetDlgItem(IDC_PASSWORD2)->SendMessage(EM_SETREADONLY, TRUE, 0);
-    GetDlgItem(IDC_NOTES)->SendMessage(EM_SETREADONLY, TRUE, 0);
-    GetDlgItem(IDC_NOTESWW)->SendMessage(EM_SETREADONLY, TRUE, 0);
-    GetDlgItem(IDC_URL)->SendMessage(EM_SETREADONLY, TRUE, 0);
-    GetDlgItem(IDC_EMAIL)->SendMessage(EM_SETREADONLY, TRUE, 0);
-
-    // Disable Button
-    GetDlgItem(IDC_RANDOM)->EnableWindow(FALSE);
-  }
-  return CAddEdit_PropertyPage::OnSetActive();
-}
-
-void CAddEdit_Basic::OnSetProtected()
-{
-  m_ae_psh->SetChanged(true);
-
-  m_bProtected = ((CButton *)GetDlgItem(IDC_PROTECTED))->GetCheck() == BST_CHECKED;
-
-  M_protected() = m_bProtected ? 1 : 0;
-
-  CButton *pbtn;
-  if (M_protected() != 0 && M_protected() == M_oldprotected()) {
-    // CancelToClose();
-    CString cs_text(MAKEINTRESOURCE(IDS_CLOSE));
-    pbtn = reinterpret_cast<CButton *>(m_ae_psh->GetDlgItem(IDOK));
-    pbtn->SetWindowText(cs_text);
-    pbtn->EnableWindow(TRUE);
-    pbtn = reinterpret_cast<CButton *>(m_ae_psh->GetDlgItem(IDCANCEL));
-    pbtn->EnableWindow(FALSE);
-    pbtn = reinterpret_cast<CButton *>(m_ae_psh->GetDlgItem(ID_APPLY_NOW));
-    pbtn->EnableWindow(FALSE);
-  } else {
-    // Undo CancelToClose();
-    CString cs_text(MAKEINTRESOURCE(IDS_OK));
-    pbtn = reinterpret_cast<CButton *>(m_ae_psh->GetDlgItem(IDOK));
-    pbtn->SetWindowText(cs_text);
-    pbtn->EnableWindow(TRUE);
-    pbtn = reinterpret_cast<CButton *>(m_ae_psh->GetDlgItem(IDCANCEL));
-    pbtn->EnableWindow(TRUE);
-    pbtn = reinterpret_cast<CButton *>(m_ae_psh->GetDlgItem(ID_APPLY_NOW));
-    pbtn->EnableWindow(TRUE);
-  }
-
-  QuerySiblings(PP_PROTECT_CHANGED, 0L);
 }
 
 void CAddEdit_Basic::OnSendEmail()

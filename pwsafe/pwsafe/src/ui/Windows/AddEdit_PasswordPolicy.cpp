@@ -192,7 +192,7 @@ BOOL CAddEdit_PasswordPolicy::OnInitDialog()
                 IDC_USEDEFAULTPWPOLICY : IDC_ENTRYPWPOLICY;
   ((CButton *)GetDlgItem(uiChk))->SetCheck(BST_CHECKED);
 
-  if (M_uicaller() == IDS_VIEWENTRY || M_oldprotected() != 0) {
+  if (M_uicaller() == IDS_VIEWENTRY || M_protected() != 0) {
     // Disable Buttons not already disabled in SetPolicyControls
     GetDlgItem(IDC_USEDEFAULTPWPOLICY)->EnableWindow(FALSE);
     GetDlgItem(IDC_ENTRYPWPOLICY)->EnableWindow(FALSE);
@@ -313,7 +313,7 @@ LRESULT CAddEdit_PasswordPolicy::OnQuerySiblings(WPARAM wParam, LPARAM )
       break;
     case PP_PROTECT_CHANGED:
     {
-      const BOOL bProtect = M_oldprotected() != 0 ? TRUE : FALSE;
+      const BOOL bProtect = M_protected() != 0 ? TRUE : FALSE;
 
       // Enable/Disable Buttons not already disabled in SetPolicyControls
       GetDlgItem(IDC_USEDEFAULTPWPOLICY)->EnableWindow(1 - bProtect);
@@ -328,7 +328,7 @@ LRESULT CAddEdit_PasswordPolicy::OnQuerySiblings(WPARAM wParam, LPARAM )
 
 BOOL CAddEdit_PasswordPolicy::OnApply()
 {
-  if (M_uicaller() == IDS_VIEWENTRY || M_oldprotected() != 0)
+  if (M_uicaller() == IDS_VIEWENTRY || M_protected() != 0)
     return CAddEdit_PropertyPage::OnApply();
 
   UpdateData(TRUE);
@@ -617,7 +617,7 @@ void CAddEdit_PasswordPolicy::SetPolicyControls()
   int iShowLengths(SW_SHOW);
 
   if (M_uicaller() == IDS_ADDENTRY || 
-     (M_uicaller() == IDS_EDITENTRY && M_oldprotected() == 0)) {
+     (M_uicaller() == IDS_EDITENTRY && M_protected() == 0)) {
     bEnableSpecificPolicy = (M_ipolicy() == CAddEdit_PropertySheet::DEFAULT_POLICY) ? FALSE : TRUE;
     bEnableLengths = ((bEnableSpecificPolicy == TRUE) &&
                       (m_pweasyvision == FALSE && m_pwmakepronounceable == FALSE &&

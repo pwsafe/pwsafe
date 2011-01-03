@@ -146,7 +146,7 @@ BOOL CAddEdit_Additional::OnInitDialog()
     m_stc_runcommand.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);
   }
 
-  if (M_uicaller() == IDS_VIEWENTRY || M_oldprotected() != 0) {
+  if (M_uicaller() == IDS_VIEWENTRY || M_protected() != 0) {
     // Disable normal Edit controls
     GetDlgItem(IDC_AUTOTYPE)->SendMessage(EM_SETREADONLY, TRUE, 0);
     GetDlgItem(IDC_RUNCMD)->SendMessage(EM_SETREADONLY, TRUE, 0);
@@ -250,7 +250,7 @@ BOOL CAddEdit_Additional::OnInitDialog()
   GetDlgItem(IDC_PWHISTORY_LIST)->EnableWindow(bpwh_count);
   GetDlgItem(IDC_PWH_COPY_ALL)->EnableWindow(bpwh_count);
 
-  if (M_uicaller() == IDS_VIEWENTRY || M_oldprotected() != 0) {
+  if (M_uicaller() == IDS_VIEWENTRY || M_protected() != 0) {
     GetDlgItem(IDC_MAXPWHISTORY)->EnableWindow(FALSE);
     GetDlgItem(IDC_PWHSPIN)->EnableWindow(FALSE);
     GetDlgItem(IDC_SAVE_PWHIST)->EnableWindow(FALSE);
@@ -414,7 +414,7 @@ LRESULT CAddEdit_Additional::OnQuerySiblings(WPARAM wParam, LPARAM )
       break;
     case PP_PROTECT_CHANGED:
     {
-      const BOOL bProtect = M_oldprotected() != 0 ? TRUE : FALSE;
+      const BOOL bProtect = M_protected() != 0 ? TRUE : FALSE;
 
       // Enable/Disable normal Edit controls
       GetDlgItem(IDC_AUTOTYPE)->SendMessage(EM_SETREADONLY, bProtect, 0);
@@ -437,7 +437,7 @@ LRESULT CAddEdit_Additional::OnQuerySiblings(WPARAM wParam, LPARAM )
 
 BOOL CAddEdit_Additional::OnApply()
 {
-  if (M_uicaller() == IDS_VIEWENTRY || M_oldprotected() != 0)
+  if (M_uicaller() == IDS_VIEWENTRY || M_protected() != 0)
     return CAddEdit_PropertyPage::OnApply();
 
   CWnd *pFocus(NULL);
