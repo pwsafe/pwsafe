@@ -30,9 +30,16 @@ HELPFILES = $(HELPDIR)/help.zip
 
 INFILES = $(PWSAFE-BIN) $(DOCS) $(MANPAGE) $(XMLFILES) $(HELPFILES)
 
+ARCH := $(shell uname -m)
+ifeq ($(ARCH),x86_64)
+ DEFAULT := $(DEBNAME64)
+else
+ DEFAULT := $(DEBNAME32)
+endif
+
 .PHONY: all deb debtree clean
 
-all : $(DEBNAME32) $(DEBNAME64)
+all : $(DEFAULT)
 
 $(DEBNAME32): $(INFILES)
 	@ln -sf control-$(DISTRO).i686 control

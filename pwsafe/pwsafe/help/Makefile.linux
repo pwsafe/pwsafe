@@ -6,7 +6,7 @@ ZIP = /usr/bin/zip
 all: default $(LANGS)
 
 default:
-	@cd default ; $(ZIP) -qr help ./* -x \*/.svn/\*
+	@cd default ; $(ZIP) -qr ../help ./* -x \*/.svn/\*
 
 $(LANGS):
 	@cd $(BASEDIRNAME)$@ ; $(ZIP) -qr ../help$@ ./* -x \*/.svn/\*
