@@ -123,7 +123,7 @@ BOOL CAddEdit_DateTimes::OnInitDialog()
   // Set times
   UpdateTimes();
 
-  if (M_uicaller() == IDS_VIEWENTRY || M_oldprotected() != 0) {
+  if (M_uicaller() == IDS_VIEWENTRY || M_protected() != 0) {
     // Disable Buttons
     GetDlgItem(IDC_XTIME_CLEAR)->EnableWindow(FALSE);
     GetDlgItem(IDC_XTIME_SET)->EnableWindow(FALSE);
@@ -337,7 +337,7 @@ LRESULT CAddEdit_DateTimes::OnQuerySiblings(WPARAM wParam, LPARAM )
       break;
     case PP_PROTECT_CHANGED:
     {
-      const BOOL bProtect = M_oldprotected() != 0 ? FALSE : TRUE;
+      const BOOL bProtect = M_protected() != 0 ? FALSE : TRUE;
       // Enable/Disable Buttons
       GetDlgItem(IDC_XTIME_CLEAR)->EnableWindow(bProtect);
       GetDlgItem(IDC_XTIME_SET)->EnableWindow(bProtect);
@@ -357,7 +357,7 @@ LRESULT CAddEdit_DateTimes::OnQuerySiblings(WPARAM wParam, LPARAM )
 
 BOOL CAddEdit_DateTimes::OnApply()
 {
-  if (M_uicaller() == IDS_VIEWENTRY || M_oldprotected() != 0)
+  if (M_uicaller() == IDS_VIEWENTRY || M_protected() != 0)
     return CAddEdit_PropertyPage::OnApply();
 
   if (UpdateData(TRUE) == FALSE) {

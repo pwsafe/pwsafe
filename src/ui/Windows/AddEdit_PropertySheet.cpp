@@ -97,9 +97,6 @@ CAddEdit_PropertySheet::CAddEdit_PropertySheet(UINT nID, CWnd* pParent,
     // PWPolicy fields
     m_AEMD.pwp = m_AEMD.oldpwp = m_AEMD.default_pwp;
     m_AEMD.ipolicy = m_AEMD.oldipolicy = DEFAULT_POLICY;
-
-    // Attributes
-    m_AEMD.ucprotected = m_AEMD.olducprotected = 0;
   } else {
     SetupInitialValues();
   }
@@ -161,8 +158,7 @@ BOOL CAddEdit_PropertySheet::OnInitDialog()
       GetDlgItem(IDCANCEL)->ShowWindow(SW_HIDE);
       break;
     case IDS_EDITENTRY:
-      //GetDlgItem(ID_APPLY_NOW)->SetDlgCtrlID(IDC_AEAPPLY);
-      GetDlgItem(IDOK)->EnableWindow((m_bChanged || m_AEMD.olducprotected != 0) ? TRUE : FALSE);
+      GetDlgItem(IDOK)->EnableWindow((m_bChanged || m_AEMD.ucprotected != 0) ? TRUE : FALSE);
       GetDlgItem(ID_APPLY_NOW)->EnableWindow(m_bChanged ? TRUE : FALSE);
       break;
   }
@@ -202,8 +198,7 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
     switch (m_AEMD.uicaller) {
       case IDS_EDITENTRY:
         // Make as View entry if protected
-        if (m_AEMD.ucprotected == m_AEMD.olducprotected &&
-            m_AEMD.olducprotected != 0)
+        if (m_AEMD.ucprotected != 0)
           break;
 
         m_AEMD.pci->GetDCA(iDCA);
@@ -222,8 +217,7 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
                          m_AEMD.XTimeInt    != m_AEMD.oldXTimeInt          ||
                          m_AEMD.ipolicy     != m_AEMD.oldipolicy           ||
                         (m_AEMD.ipolicy     == SPECIFIC_POLICY &&
-                         m_AEMD.pwp         != m_AEMD.oldpwp)              ||
-                         m_AEMD.ucprotected != m_AEMD.olducprotected);
+                         m_AEMD.pwp         != m_AEMD.oldpwp));
 
         bIsPSWDModified = (m_AEMD.realpassword != m_AEMD.oldRealPassword);
 
@@ -412,7 +406,6 @@ void CAddEdit_PropertySheet::SetupInitialValues()
   m_AEMD.URL = m_AEMD.pci->GetURL();
   m_AEMD.email = m_AEMD.pci->GetEmail();
   m_AEMD.pci->GetProtected(m_AEMD.ucprotected);
-  m_AEMD.olducprotected = m_AEMD.ucprotected;
 
   if (m_AEMD.realnotes.GetLength() > MAXTEXTCHARS) {
     // Limit the Notes field to what can be displayed
