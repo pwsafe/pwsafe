@@ -1879,6 +1879,14 @@ static bool pull_time32(time_t &t, const unsigned char *data, size_t len)
     if (t == time_t(-1)) { // time is past 2038!
       t = 0; return false;
     }
+  } else if (len < sizeof(__time32_t)) {
+    // Turns out that __time32_t is 8 bytes under 64bits...
+    __time32_t t8 = t;
+    if (pull_time32(t8, data, sizeof(t8))) {
+      t = time_t(t8);
+    } else {
+      ASSERT(0); return false;
+    }
   } else {
     ASSERT(0); return false;
   }
