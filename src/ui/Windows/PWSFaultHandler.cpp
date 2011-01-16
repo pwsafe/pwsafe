@@ -274,7 +274,7 @@ LONG TakeMiniDump(struct _EXCEPTION_POINTERS *pExInfo, const int itype,
   // Create a temporary file
   // Shouldn't really use system calls in a signal handler!
   struct tm xt;
-#ifdef WIN64
+#if (defined(WIN64) || defined(_WIN64))
   struct __timeb64 timebuffer;
 #else
   struct __timeb32 timebuffer;

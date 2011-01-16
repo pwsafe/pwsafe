@@ -151,7 +151,8 @@ bool CUTF8Conv::FromUTF8(const unsigned char *utf8, size_t utf8Len,
                                   0,             // character-type options
                                   LPSTR(utf8),   // string to map
                                   -1,            // -1 means null-terminated
-                                  m_wc, wcLen);  // output buffer
+                                  m_wc,          // output buffer
+                                  reinterpret_cast<int &>(wcLen));  // output buffer size
       if (wcLen > 0) {
         pws_os::Trace0(_T("FromUTF8: recovery succeeded!"));
       }
