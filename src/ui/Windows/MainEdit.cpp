@@ -581,6 +581,7 @@ void DboxMain::OnProtect(UINT nID)
     ASSERT(nID == ID_MENUITEM_PROTECTGROUP || nID == ID_MENUITEM_UNPROTECTGROUP);
     ChangeSubtreeEntriesProtectStatus(nID);
   }
+  ChangeOkUpdate();
 }
 
 void DboxMain::ChangeSubtreeEntriesProtectStatus(const UINT nID)
