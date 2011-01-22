@@ -59,10 +59,7 @@ stringT pws_os::getenv(const char *env, bool is_path)
 void pws_os::setenv(const char *name, const char *value)
 {
   ASSERT(name != NULL && value != NULL);
-  std::string envstring(name);
-  envstring += "=";
-  envstring += value;
-  setenv(envstring.c_str());
+  ::setenv(name, value, 1); // 1 => overwrite the variable with this value, if its already set
 }
 
 stringT pws_os::getusername()
