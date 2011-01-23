@@ -127,94 +127,75 @@ StringX PWScore::BuildHeader(const CItemData::FieldBits &bsFields, const bool bI
   // User chose fields, build custom header
   // Header fields MUST be in the same order as actual fields written
   // See CItemData::GetPlaintext for TextExport
-  StringX hdr(_T("")), cs_temp;
+  stringT hdr(_T(""));
+  const stringT TAB(_T("\t"));
   if (bittest(bsFields, CItemData::GROUP, bIncluded) && 
       bittest(bsFields, CItemData::TITLE, bIncluded)) {
-    LoadAString(cs_temp, IDSC_EXPHDRGROUPTITLE);
-    hdr += cs_temp;
+    hdr = CItemData::FieldName(CItemData::GROUPTITLE) + TAB;
   } else if (bittest(bsFields, CItemData::GROUP, bIncluded)) {
-    LoadAString(cs_temp, IDSC_EXPHDRGROUP);
-    hdr += cs_temp;
+    hdr = CItemData::FieldName(CItemData::GROUP) + TAB;
   } else if (bittest(bsFields, CItemData::TITLE, bIncluded)) {
-    LoadAString(cs_temp, IDSC_EXPHDRTITLE);
-    hdr += cs_temp;
+    hdr = CItemData::FieldName(CItemData::TITLE) + TAB;
   }
   if (bittest(bsFields, CItemData::USER, bIncluded)) {
-    LoadAString(cs_temp, IDSC_EXPHDRUSERNAME);
-    hdr += cs_temp;
+    hdr += CItemData::FieldName(CItemData::USER) + TAB;
   }
   if (bittest(bsFields, CItemData::PASSWORD, bIncluded)) {
-    LoadAString(cs_temp, IDSC_EXPHDRPASSWORD);
-    hdr += cs_temp;
+    hdr += CItemData::FieldName(CItemData::PASSWORD) + TAB;
   }
   if (bittest(bsFields, CItemData::URL, bIncluded)) {
-    LoadAString(cs_temp, IDSC_EXPHDRURL);
-    hdr += cs_temp;
+    hdr += CItemData::FieldName(CItemData::URL) + TAB;
   }
   if (bittest(bsFields, CItemData::AUTOTYPE, bIncluded)) {
-    LoadAString(cs_temp, IDSC_EXPHDRAUTOTYPE);
-    hdr += cs_temp;
+    hdr += CItemData::FieldName(CItemData::AUTOTYPE) + TAB;
   }
   if (bittest(bsFields, CItemData::CTIME, bIncluded)) {
-    LoadAString(cs_temp, IDSC_EXPHDRCTIME);
-    hdr += cs_temp;
+    hdr += CItemData::FieldName(CItemData::CTIME) + TAB;
   }
   if (bittest(bsFields, CItemData::PMTIME, bIncluded)) {
-    LoadAString(cs_temp, IDSC_EXPHDRPMTIME);
-    hdr += cs_temp;
+    hdr += CItemData::FieldName(CItemData::PMTIME) + TAB;
   }
   if (bittest(bsFields, CItemData::ATIME, bIncluded)) {
-    LoadAString(cs_temp, IDSC_EXPHDRATIME);
-    hdr += cs_temp;
+    hdr += CItemData::FieldName(CItemData::ATIME) + TAB;
   }
   if (bittest(bsFields, CItemData::XTIME, bIncluded)) {
-    LoadAString(cs_temp, IDSC_EXPHDRXTIME);
-    hdr += cs_temp;
+    hdr += CItemData::FieldName(CItemData::XTIME) + TAB;
   }
   if (bittest(bsFields, CItemData::XTIME_INT, bIncluded)) {
-    LoadAString(cs_temp, IDSC_EXPHDRXTIMEINT);
-    hdr += cs_temp;
+    hdr += CItemData::FieldName(CItemData::XTIME_INT) + TAB;
   }
   if (bittest(bsFields, CItemData::RMTIME, bIncluded)) {
-    LoadAString(cs_temp, IDSC_EXPHDRRMTIME);
-    hdr += cs_temp;
+    hdr += CItemData::FieldName(CItemData::RMTIME) + TAB;
   }
   if (bittest(bsFields, CItemData::POLICY, bIncluded)) {
-    LoadAString(cs_temp, IDSC_EXPHDRPWPOLICY);
-    hdr += cs_temp;
+    hdr += CItemData::FieldName(CItemData::POLICY) + TAB;
   }
   if (bittest(bsFields, CItemData::PWHIST, bIncluded)) {
-    LoadAString(cs_temp, IDSC_EXPHDRPWHISTORY);
-    hdr += cs_temp;
+    hdr += CItemData::FieldName(CItemData::PWHIST) + TAB;
   }
   if (bittest(bsFields, CItemData::RUNCMD, bIncluded)) {
-    LoadAString(cs_temp, IDSC_EXPHDRRUNCOMMAND);
-    hdr += cs_temp;
+    hdr += CItemData::FieldName(CItemData::RUNCMD) + TAB;
   }
   if (bittest(bsFields, CItemData::DCA, bIncluded)) {
-    LoadAString(cs_temp, IDSC_EXPHDRDCA);
-    hdr += cs_temp;
+    hdr += CItemData::FieldName(CItemData::DCA) + TAB;
   }
   if (bittest(bsFields, CItemData::EMAIL, bIncluded)) {
-    LoadAString(cs_temp, IDSC_EXPHDREMAIL);
-    hdr += cs_temp;
+    hdr += CItemData::FieldName(CItemData::EMAIL) + TAB;
   }
   if (bittest(bsFields, CItemData::PROTECTED, bIncluded)) {
-    LoadAString(cs_temp, IDSC_EXPHDRPROTECTED);
-    hdr += cs_temp;
+    hdr += CItemData::FieldName(CItemData::PROTECTED) + TAB;
   }
   if (bittest(bsFields, CItemData::NOTES, bIncluded)) {
-    LoadAString(cs_temp, IDSC_EXPHDRNOTES);
-    hdr += cs_temp;
+    hdr += CItemData::FieldName(CItemData::NOTES);
   }
-  size_t hdr_len = hdr.length();
-  if (hdr_len > 0) {
-    if (hdr[hdr.length() - 1] == _T('\t')) {
+  if (!hdr.empty()) {
+    size_t hdr_len = hdr.length();
+    if (hdr[hdr_len - 1] == _T('\t')) {
       hdr_len--;
       hdr = hdr.substr(0, hdr_len);
     }
   }
-  return hdr;
+  return hdr.c_str();
 }
 
 struct TextRecordWriter {
@@ -554,36 +535,8 @@ int PWScore::WriteXMLFile(const StringX &filename,
     oss_xml.str(_T(""));  // Clear buffer for next user
 
     if (!subgroup_name.empty()) {
-      stringT cs_object, cs_function, cs_case(_T(""));
-      int iObject(IDSC_UNKNOWNOBJECT);
-      switch (subgroup_object) {
-        case CItemData::GROUP:
-          iObject = IDSC_EXPHDRGROUP;
-          break;
-        case CItemData::GROUPTITLE:
-          iObject = IDSC_EXPHDRGROUPTITLE;
-          break;
-        case CItemData::TITLE:
-          iObject = IDSC_EXPHDRTITLE;
-          break;
-        case CItemData::USER:
-          iObject = IDSC_EXPHDRUSERNAME;
-          break;
-        case CItemData::URL:
-          iObject = IDSC_EXPHDRURL;
-          break;
-        case CItemData::NOTES:
-          iObject = IDSC_EXPHDRNOTES;
-          break;
-        default:
-          ASSERT(0);
-      }
-      LoadAString(cs_object, iObject);
-      size_t object_len = cs_object.length();
-      if (cs_object[object_len - 1] == _T('\t')) {
-        object_len--;
-        cs_object = cs_object.substr(0, object_len);
-      }
+      stringT cs_function, cs_case(_T(""));
+      stringT cs_object = CItemData::EngFieldName(CItemData::FieldType(subgroup_object));
 
       int iCase(IDSC_CASE_INSENSITIVE);
       if (subgroup_function < 0) {

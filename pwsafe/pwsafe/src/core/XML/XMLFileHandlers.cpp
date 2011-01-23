@@ -530,11 +530,11 @@ void XMLFileHandlers::AddEntries()
       int num = 0;
       if (sxtitle.empty()) {
         num++;
-        LoadAString(cs_t, IDSC_EXPHDRTITLE);
+        cs_t = CItemData::EngFieldName(CItemData::TITLE);
       }
       if (cur_entry->password.empty()) {
         num++;
-        LoadAString(cs_p, IDSC_EXPHDRPASSWORD);
+        cs_p = CItemData::EngFieldName(CItemData::PASSWORD);
       }
 
       Format(cs_tp, _T("%s%s%s"), cs_t.c_str(), num == 2 ? _T(" & ") : _T(""), cs_p.c_str());

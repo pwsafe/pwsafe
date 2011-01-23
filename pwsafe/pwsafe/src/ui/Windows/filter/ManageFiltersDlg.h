@@ -93,7 +93,7 @@ private:
   PWSFilters &m_MapFilters;
   std::vector<st_Filterkey> m_vcs_filters;
 
-  UINT GetFieldTypeName(const FieldType &ft);
+  CString GetFieldTypeName(FieldType ft);
   void SetFilter();
   void ClearFilter();
   void DisplayFilterProperties(st_filters *pfilter);
