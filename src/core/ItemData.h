@@ -106,6 +106,11 @@ public:
 
   ~CItemData();
 
+  // Convenience: Get the name associated with FieldType
+  static stringT FieldName(FieldType ft);
+  // Convenience: Get the untranslated (English) name of a FieldType
+  static stringT EngFieldName(FieldType ft);
+
   //Data retrieval
   StringX GetName() const; // V17 - deprecated - replaced by GetTitle & GetUser
   StringX GetTitle() const; // V20

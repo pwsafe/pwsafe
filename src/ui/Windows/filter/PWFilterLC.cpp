@@ -1405,103 +1405,83 @@ void CPWFilterLC::SetUpComboBoxData()
     st_Fcbxdata stf;
     switch (m_iType) {
       case DFTYPE_MAIN:
-        stf.cs_text.LoadString(IDSC_EXPHDRGROUP);
-        stf.cs_text.TrimRight(L'\t');
+        stf.cs_text = CItemData::FieldName(CItemData::GROUP).c_str();
         stf.ftype = FT_GROUP;
         vFcbx_data.push_back(stf);
 
-        stf.cs_text.LoadString(IDSC_EXPHDRTITLE);
-        stf.cs_text.TrimRight(L'\t');
+        stf.cs_text = CItemData::FieldName(CItemData::TITLE).c_str();
         stf.ftype = FT_TITLE;
         vFcbx_data.push_back(stf);
 
-        stf.cs_text.LoadString(IDSC_EXPHDRGROUPTITLE);
-        stf.cs_text.TrimRight(L'\t');
+        stf.cs_text = CItemData::FieldName(CItemData::GROUPTITLE).c_str();
         stf.ftype = FT_GROUPTITLE;
         vFcbx_data.push_back(stf);
 
-        stf.cs_text.LoadString(IDSC_EXPHDRUSERNAME);
-        stf.cs_text.TrimRight(L'\t');
+        stf.cs_text = CItemData::FieldName(CItemData::USER).c_str();
         stf.ftype = FT_USER;
         vFcbx_data.push_back(stf);
 
-        stf.cs_text.LoadString(IDSC_EXPHDRPASSWORD);
-        stf.cs_text.TrimRight(L'\t');
+        stf.cs_text = CItemData::FieldName(CItemData::PASSWORD).c_str();
         stf.ftype = FT_PASSWORD;
         vFcbx_data.push_back(stf);
 
-        stf.cs_text.LoadString(IDSC_EXPHDRNOTES);
-        stf.cs_text.TrimRight(L'\t');
+        stf.cs_text = CItemData::FieldName(CItemData::NOTES).c_str();
         stf.ftype = FT_NOTES;
         vFcbx_data.push_back(stf);
 
-        stf.cs_text.LoadString(IDSC_EXPHDRURL);
-        stf.cs_text.TrimRight(L'\t');
+        stf.cs_text = CItemData::FieldName(CItemData::URL).c_str();
         stf.ftype = FT_URL;
         vFcbx_data.push_back(stf);
 
-        stf.cs_text.LoadString(IDSC_EXPHDRAUTOTYPE);
-        stf.cs_text.TrimRight(L'\t');
+        stf.cs_text = CItemData::FieldName(CItemData::AUTOTYPE).c_str();
         stf.ftype = FT_AUTOTYPE;
         vFcbx_data.push_back(stf);
 
-        stf.cs_text.LoadString(IDSC_EXPHDRRUNCOMMAND);
-        stf.cs_text.TrimRight(L'\t');
+        stf.cs_text = CItemData::FieldName(CItemData::RUNCMD).c_str();
         stf.ftype = FT_RUNCMD;
         vFcbx_data.push_back(stf);
 
-        stf.cs_text.LoadString(IDSC_EXPHDRDCA);
-        stf.cs_text.TrimRight(L'\t');
+        stf.cs_text = CItemData::FieldName(CItemData::DCA).c_str();
         stf.ftype = FT_DCA;
         vFcbx_data.push_back(stf);
 
-        stf.cs_text.LoadString(IDSC_EXPHDREMAIL);
-        stf.cs_text.TrimRight(L'\t');
+        stf.cs_text = CItemData::FieldName(CItemData::EMAIL).c_str();
         stf.ftype = FT_EMAIL;
         vFcbx_data.push_back(stf);
 
-        stf.cs_text.LoadString(IDSC_EXPHDRPROTECTED);
-        stf.cs_text.TrimRight(L'\t');
+        stf.cs_text = CItemData::FieldName(CItemData::PROTECTED).c_str();
         stf.ftype = FT_PROTECTED;
         vFcbx_data.push_back(stf);
 
-        stf.cs_text.LoadString(IDSC_EXPHDRCTIME);
-        stf.cs_text.TrimRight(L'\t');
+        stf.cs_text = CItemData::FieldName(CItemData::CTIME).c_str();
         stf.ftype = FT_CTIME;
         vFcbx_data.push_back(stf);
 
-        stf.cs_text.LoadString(IDSC_EXPHDRATIME);
-        stf.cs_text.TrimRight(L'\t');
+        stf.cs_text = CItemData::FieldName(CItemData::ATIME).c_str();
         stf.ftype = FT_ATIME;
         vFcbx_data.push_back(stf);
 
-        stf.cs_text.LoadString(IDSC_EXPHDRPMTIME);
-        stf.cs_text.TrimRight(L'\t');
+        stf.cs_text = CItemData::FieldName(CItemData::PMTIME).c_str();
         stf.ftype = FT_PMTIME;
         vFcbx_data.push_back(stf);
 
-        stf.cs_text.LoadString(IDSC_EXPHDRXTIME);
-        stf.cs_text.TrimRight(L'\t');
+        stf.cs_text = CItemData::FieldName(CItemData::XTIME).c_str();
         stf.ftype = FT_XTIME;
         vFcbx_data.push_back(stf);
 
-        stf.cs_text.LoadString(IDSC_EXPHDRXTIMEINT);
-        stf.cs_text.TrimRight(L'\t');
+        stf.cs_text = CItemData::FieldName(CItemData::XTIME_INT).c_str();
         stf.ftype = FT_XTIME_INT;
         vFcbx_data.push_back(stf);
 
-        stf.cs_text.LoadString(IDSC_EXPHDRRMTIME);
-        stf.cs_text.TrimRight(L'\t');
+        stf.cs_text = CItemData::FieldName(CItemData::RMTIME).c_str();
         stf.ftype = FT_RMTIME;
         vFcbx_data.push_back(stf);
 
         stf.cs_text.LoadString(IDS_PASSWORDHISTORY);
-        stf.cs_text.TrimRight(L'\t');
         stf.ftype = FT_PWHIST;
         vFcbx_data.push_back(stf);
 
-        stf.cs_text.LoadString(IDSC_EXPHDRPWPOLICY);
-        stf.cs_text.TrimRight(L'\t');
+        stf.cs_text = CItemData::FieldName(CItemData::POLICY).c_str();
         stf.ftype = FT_POLICY;
         vFcbx_data.push_back(stf);
 

@@ -2203,3 +2203,66 @@ void CItemData::SerializePlainText(vector<char> &v,
   v.push_back(static_cast<const char>(end));
   push_length(v, 0);
 }
+
+  // Convenience: Get the name associated with FieldType
+stringT CItemData::FieldName(FieldType ft)
+{
+  stringT retval(_T(""));
+  switch (ft) {
+  case GROUPTITLE: LoadAString(retval, IDSC_FLDNMGROUPTITLE); break;
+  case UUID:       LoadAString(retval, IDSC_FLDNMUUID); break;
+  case GROUP:      LoadAString(retval, IDSC_FLDNMGROUP); break;
+  case TITLE:      LoadAString(retval, IDSC_FLDNMTITLE); break;
+  case USER:       LoadAString(retval, IDSC_FLDNMUSERNAME); break;
+  case NOTES:      LoadAString(retval, IDSC_FLDNMNOTES); break;
+  case PASSWORD:   LoadAString(retval, IDSC_FLDNMPASSWORD); break;
+  case CTIME:      LoadAString(retval, IDSC_FLDNMCTIME); break;
+  case PMTIME:     LoadAString(retval, IDSC_FLDNMPMTIME); break;
+  case ATIME:      LoadAString(retval, IDSC_FLDNMATIME); break;
+  case XTIME:      LoadAString(retval, IDSC_FLDNMXTIME); break;
+  case RMTIME:     LoadAString(retval, IDSC_FLDNMRMTIME); break;
+  case URL:        LoadAString(retval, IDSC_FLDNMURL); break;
+  case AUTOTYPE:   LoadAString(retval, IDSC_FLDNMAUTOTYPE); break;
+  case PWHIST:     LoadAString(retval, IDSC_FLDNMPWHISTORY); break;
+  case POLICY:     LoadAString(retval, IDSC_FLDNMPWPOLICY); break;
+  case XTIME_INT:  LoadAString(retval, IDSC_FLDNMXTIMEINT); break;
+  case RUNCMD:     LoadAString(retval, IDSC_FLDNMRUNCOMMAND); break;
+  case DCA:        LoadAString(retval, IDSC_FLDNMDCA); break;
+  case EMAIL:      LoadAString(retval, IDSC_FLDNMEMAIL); break;
+  case PROTECTED:  LoadAString(retval, IDSC_FLDNMPROTECTED); break;
+  default:
+    ASSERT(0);
+  };
+  return retval;
+}
+  // Convenience: Get the untranslated (English) name of a FieldType
+stringT CItemData::EngFieldName(FieldType ft)
+{
+  switch (ft) {
+  case GROUPTITLE: return _T("Group/Title");
+  case UUID:       return _T("UUID");
+  case GROUP:      return _T("Group");
+  case TITLE:      return _T("Title");
+  case USER:       return _T("Username");
+  case NOTES:      return _T("Notes");
+  case PASSWORD:   return _T("Password");
+  case CTIME:      return _T("Created Time");
+  case PMTIME:     return _T("Password Modified Time");
+  case ATIME:      return _T("Last Access Time");
+  case XTIME:      return _T("Password Expiry Date");
+  case RMTIME:     return _T("Record Modified Time");
+  case URL:        return _T("URL");
+  case AUTOTYPE:   return _T("AutoType");
+  case PWHIST:     return _T("History");
+  case POLICY:     return _T("Password Policy");
+  case XTIME_INT:  return _T("Password Expiry Interval");
+  case RUNCMD:     return _T("Run Command");
+  case DCA:        return _T("DCA");
+  case EMAIL:      return _T("e-mail");
+  case PROTECTED:  return _T("Protected");
+  default:
+    ASSERT(0);
+    return _T("");
+  };
+}
+
