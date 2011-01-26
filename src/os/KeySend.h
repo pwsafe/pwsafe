@@ -31,7 +31,9 @@ public:
   bool isCapsLocked() const ;
   void SetCapsLock(bool bstate);
   void BlockInput(bool bi) const ;
-
+#ifdef __PWS_MACINTOSH__  
+  bool SimulateApplicationSwitch();
+#endif  
 private:
   unsigned m_delayMS; //delay between keystrokes in milliseconds
   CKeySendImpl *m_impl;

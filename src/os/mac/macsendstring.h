@@ -19,6 +19,7 @@
 
 namespace pws_os {
   void SendString(const char* str, unsigned delayMS);
+  bool MacSimulateApplicationSwitch(unsigned delayMS);
 };
 #endif
 

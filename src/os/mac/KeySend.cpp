@@ -22,7 +22,7 @@ CKeySend::~CKeySend()
 void CKeySend::SendString(const StringX &data)
 {
   unsigned char* str = 0;
-  int len = 0;
+  size_t len = 0;
   ConvertString(data, str, len);
   if (len && str && str[0])
     pws_os::SendString(reinterpret_cast<const char *>(str), m_delayMS);
@@ -63,3 +63,11 @@ void CKeySend::ResetKeyboardState() const
 {
   // XXX Need we implement this for X?
 }
+
+#ifdef __PWS_MACINTOSH__
+bool CKeySend::SimulateApplicationSwitch(void)
+{
+  return pws_os::MacSimulateApplicationSwitch(m_delayMS);
+}
+#endif
+

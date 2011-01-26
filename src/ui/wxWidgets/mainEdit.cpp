@@ -449,7 +449,7 @@ void PasswordSafeFrame::DoAutotype(CItemData &ci)
       wxSafeYield();
   } else
     Hide();
-
+ 
   std::vector<size_t> vactionverboffsets;
   const StringX sxautotype = PWSAuxParse::GetAutoTypeString(ci, m_core,
                                                             vactionverboffsets);
@@ -483,11 +483,20 @@ void PasswordSafeFrame::DoAutotype(const StringX& sx_autotype,
  
   const int N = static_cast<int>(sxautotype.length());
 
+  CKeySend ks;
+#ifdef __WXMAC__
+  if (!ks.SimulateApplicationSwitch()) {
+    wxMessageBox(wxT("Error switching to another application before autotyping. Switch manually within 5 seconds"), 
+                  wxTheApp->GetAppName(), wxOK|wxICON_ERROR, this);
+    pws_os::sleep_ms(5000);
+  }
+  else {
+    wxYield();
+  }
+#endif
   //sleep for 1 second
   pws_os::sleep_ms(1000); // Karl Student's suggestion, to ensure focus set correctly on minimize.
-
-  CKeySend ks;
-
+    
   int gNumIts;
   for (int n = 0; n < N; n++){
     curChar = sxautotype[n];
@@ -677,7 +686,6 @@ BOOL PasswordSafeFrame::LaunchBrowser(const wxString &csURL, const StringX &/*sx
   bool rc;
   if (useAltBrowser) {
     const wxString cmdLine(sxFile + wxT(" ") + sxParameters);
-    StringX xcmd = tostringx(cmdLine);
     rc = (::wxExecute(cmdLine, wxEXEC_ASYNC) != 0);
   }
   else {
