@@ -6,6 +6,7 @@
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
 #ifndef _PWS_TCHAR_H
+#define _PWS_TCHAR_H
 /**
  * Use Windows' tchar.h for Windows build,
  * roll our own for others.
