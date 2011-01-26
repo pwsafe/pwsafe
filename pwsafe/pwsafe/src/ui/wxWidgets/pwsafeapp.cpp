@@ -288,8 +288,6 @@ bool PwsafeApp::OnInit()
   m_appIcons.AddIcon(pwsafe32);
   m_appIcons.AddIcon(pwsafe48);
 
-  m_frame = new PasswordSafeFrame(NULL, m_core);
-
   if (!cmd_closed) {
     // Get the file, r/w mode and password from user
     // Note that file may be new
@@ -300,7 +298,13 @@ bool PwsafeApp::OnInit()
     if (returnValue != wxID_OK) {
       return false;
     }
+    wxASSERT_MSG(!m_frame, wxT("Frame window created unexpectedly"));
+    m_frame = new PasswordSafeFrame(NULL, m_core);
     m_frame->Load(initWindow->GetPassword());
+  } 
+  else {
+    wxASSERT_MSG(!m_frame, wxT("Frame window created unexpectedly"));
+    m_frame = new PasswordSafeFrame(NULL, m_core);
   }
 
   RestoreFrameCoords();
