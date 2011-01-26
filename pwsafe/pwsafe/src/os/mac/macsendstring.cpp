@@ -15,7 +15,7 @@
 #include <ApplicationServices/ApplicationServices.h> // OSX-only header
 #include <Carbon/Carbon.h>
 #include "../sleep.h"
-
+#include "../../core/PwsPlatform.h"
 
 void SendString(CFStringRef str, unsigned delayMS)
 {
@@ -45,11 +45,43 @@ void SendString(CFStringRef str, unsigned delayMS)
 
 void pws_os::SendString(const char* str, unsigned delayMS)
 {
-	//GetApplicationTextEncoding call here certainly seems wrong.  We should stoe the keyboard layout
+	//GetApplicationTextEncoding call here certainly seems wrong.  We should store the keyboard layout
 	//and string encoding in password db.  But this works for now.
 	CFStringRef cfstr = CFStringCreateWithCString(kCFAllocatorDefault, str, GetApplicationTextEncoding());
 	SendString(cfstr, delayMS);
 	CFRelease(cfstr);
+}
+
+bool pws_os::MacSimulateApplicationSwitch(unsigned delayMS)
+{
+  enum { VK_CMD = 55, VK_TAB = 48 };
+
+  struct {
+    CGKeyCode virtualKey;
+    bool down;
+    bool mask;
+  } KeySequence[]={ {VK_CMD, true, true},
+                    {VK_TAB, true, true},
+                    {VK_TAB, false, true},
+                    {VK_CMD, false, false}
+                  };
+
+  for (size_t idx = 0; idx < NumberOf(KeySequence); ++idx) {
+    CGEventRef keystroke = CGEventCreateKeyboardEvent(NULL, KeySequence[idx].virtualKey, KeySequence[idx].down);
+    if (keystroke) {
+      if (KeySequence[idx].mask) {
+        CGEventSetFlags(keystroke, kCGEventFlagMaskCommand);
+      }
+      CGEventPost(kCGSessionEventTap, keystroke);
+      CFRelease(keystroke);
+      pws_os::sleep_ms(delayMS);
+    }
+    else {
+      return false;
+    }
+  }
+  
+  return true;
 }
 
 #if 0
