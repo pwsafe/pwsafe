@@ -474,7 +474,7 @@ SyncStatusPage::SyncStatusPage(wxWizard* parent, SyncData* data): SyncWizardPage
   midSizer->AddSpacer(RowSeparation);
   size_t range = data->core->GetNumEntries();
   wxCHECK2_MSG(range <= INT_MAX, range = INT_MAX, wxT("Too many entries in db for wxGauge"));
-  midSizer->Add(new wxGauge(this, ID_GAUGE, range), wxSizerFlags().Expand().Proportion(0));
+  midSizer->Add(new wxGauge(this, ID_GAUGE, int(range)), wxSizerFlags().Expand().Proportion(0));
   sizer->Add(midSizer, flags.Proportion(1));
 
   wxBoxSizer* horizSizer = new wxBoxSizer(wxHORIZONTAL);
@@ -626,7 +626,7 @@ void SyncStatusPage::Synchronize(PWScore* currentCore, const PWScore *otherCore)
   const stringT subgroup_name = tostdstring(criteria.m_subgroupText);
   
   wxGauge* gauge = wxDynamicCast(FindWindow(ID_GAUGE), wxGauge);
-  gauge->SetRange(otherCore->GetNumEntries());
+  gauge->SetRange(int(otherCore->GetNumEntries()));
 
   ItemListConstIter otherPos;
   for (otherPos = otherCore->GetEntryIter();
@@ -636,7 +636,7 @@ void SyncStatusPage::Synchronize(PWScore* currentCore, const PWScore *otherCore)
     CItemData::EntryType et = otherItem.GetEntryType();
 
     const size_t currentIndex = std::distance(otherCore->GetEntryIter(), otherPos);
-    gauge->SetValue(currentIndex);
+    gauge->SetValue(int(currentIndex));
 
     // Do not process Aliases and Shortcuts
     if (et == CItemData::ET_ALIAS || et == CItemData::ET_SHORTCUT)
