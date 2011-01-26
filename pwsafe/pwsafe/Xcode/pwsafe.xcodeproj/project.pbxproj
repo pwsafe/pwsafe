@@ -30,6 +30,8 @@
 		E6919C641298FB25001F96D9 /* pwsafe.icns in Resources */ = {isa = PBXBuildFile; fileRef = E6919C631298FB25001F96D9 /* pwsafe.icns */; };
 		E69B7FA811F600BA0084F6C4 /* ImportXmlDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E69B7FA411F600BA0084F6C4 /* ImportXmlDlg.cpp */; };
 		E69B7FA911F600BA0084F6C4 /* OpenFilePickerValidator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E69B7FA611F600BA0084F6C4 /* OpenFilePickerValidator.cpp */; };
+		E6A7ECAE12CDEAA40021D898 /* DbSelectionPanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6A7ECA912CDEAA40021D898 /* DbSelectionPanel.cpp */; };
+		E6A7ECAF12CDEAA40021D898 /* PwsSync.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6A7ECAB12CDEAA40021D898 /* PwsSync.cpp */; };
 		E6ADBA371195709A004E2BE5 /* about.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADB9A511957099004E2BE5 /* about.cpp */; };
 		E6ADBA381195709A004E2BE5 /* addeditpropsheet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADB9A711957099004E2BE5 /* addeditpropsheet.cpp */; };
 		E6ADBA3A1195709A004E2BE5 /* createshortcutdlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADB9AA11957099004E2BE5 /* createshortcutdlg.cpp */; };
@@ -389,6 +391,11 @@
 		E6A11B0E1293D20F0060FB35 /* unlock.xpm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = unlock.xpm; sourceTree = "<group>"; };
 		E6A11B0F1293D20F0060FB35 /* unlocked_tray.xpm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = unlocked_tray.xpm; sourceTree = "<group>"; };
 		E6A11B101293D20F0060FB35 /* vkbd.xpm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = vkbd.xpm; sourceTree = "<group>"; };
+		E6A7ECA912CDEAA40021D898 /* DbSelectionPanel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DbSelectionPanel.cpp; sourceTree = "<group>"; };
+		E6A7ECAA12CDEAA40021D898 /* DbSelectionPanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DbSelectionPanel.h; sourceTree = "<group>"; };
+		E6A7ECAB12CDEAA40021D898 /* PwsSync.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PwsSync.cpp; sourceTree = "<group>"; };
+		E6A7ECAC12CDEAA40021D898 /* PwsSync.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PwsSync.h; sourceTree = "<group>"; };
+		E6A7ECAD12CDEAA40021D898 /* PwsToolbarButtons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PwsToolbarButtons.h; sourceTree = "<group>"; };
 		E6ADB80311956A93004E2BE5 /* libcore.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libcore.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6ADB91C11956DD0004E2BE5 /* libos.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libos.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6ADB99E1195706A004E2BE5 /* pwsafe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = pwsafe.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -958,6 +965,11 @@
 		E6ADB9A411957099004E2BE5 /* wxWidgets */ = {
 			isa = PBXGroup;
 			children = (
+				E6A7ECA912CDEAA40021D898 /* DbSelectionPanel.cpp */,
+				E6A7ECAA12CDEAA40021D898 /* DbSelectionPanel.h */,
+				E6A7ECAB12CDEAA40021D898 /* PwsSync.cpp */,
+				E6A7ECAC12CDEAA40021D898 /* PwsSync.h */,
+				E6A7ECAD12CDEAA40021D898 /* PwsToolbarButtons.h */,
 				E60F25D612C4ACEB001E63C4 /* ExternalKeyboardButton.cpp */,
 				E60F25D712C4ACEB001E63C4 /* ExternalKeyboardButton.h */,
 				E61D6FA112617EFC0049FA2A /* MergeDlg.cpp */,
@@ -1287,7 +1299,14 @@
 			};
 			buildConfigurationList = E6ADB7F3119569CC004E2BE5 /* Build configuration list for PBXProject "pwsafe" */;
 			compatibilityVersion = "Xcode 2.4";
+			developmentRegion = English;
 			hasScannedForEncodings = 0;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
 			mainGroup = E6ADB7EE119569CC004E2BE5;
 			productRefGroup = E6ADB80411956A93004E2BE5 /* Products */;
 			projectDirPath = "";
@@ -1482,6 +1501,8 @@
 				E6B5C6461232B3D000AC8B45 /* PWSDragBar.cpp in Sources */,
 				E61D6FA312617EFC0049FA2A /* MergeDlg.cpp in Sources */,
 				E60F25D812C4ACEB001E63C4 /* ExternalKeyboardButton.cpp in Sources */,
+				E6A7ECAE12CDEAA40021D898 /* DbSelectionPanel.cpp in Sources */,
+				E6A7ECAF12CDEAA40021D898 /* PwsSync.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
