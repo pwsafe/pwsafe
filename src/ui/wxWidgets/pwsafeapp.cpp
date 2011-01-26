@@ -340,6 +340,7 @@ void PwsafeApp::OnActivate(wxActivateEvent& actEvent)
     m_activityTimer->Stop();
     m_activityTimer->Start(PWSprefs::GetInstance()->GetPref(PWSprefs::IdleTimeout)*60*1000, true);
   }
+  actEvent.Skip();
 }
 
 void PwsafeApp::OnActivityTimer(wxTimerEvent& /* timerEvent */)
