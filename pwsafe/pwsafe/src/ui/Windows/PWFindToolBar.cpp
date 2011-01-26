@@ -485,7 +485,7 @@ void CPWFindToolBar::Find()
     m_lastshown = size_t(-1);
   }
 
-  if (m_lastshown == -1) {
+  if (m_lastshown == size_t(-1)) {
     m_indices.clear();
 
     if (m_bAdvanced == TRUE)
@@ -508,24 +508,25 @@ void CPWFindToolBar::Find()
         break;
     }
     pDbx->ResumeOnDBNotification();
-  } // m_lastshown == -1
+  } // m_lastshown == size_t(-1)
 
   // OK, so now we have a (possibly empty) list of items to select.
   if (m_numFound > 0) {
     if (m_numFound == 1) {
       pDbx->SelectFindEntry(m_indices[0], TRUE);
-    } else {
+    } else { // m_numFound > 1
       if (m_iFindDirection == FIND_DOWN) {
         m_lastshown++;
       } else {
-        m_lastshown--;
+        if (m_lastshown != size_t(-1)) // prevent m_lastshown <- -2 !
+          m_lastshown--;
       }
       if (m_iFindDirection == FIND_DOWN && m_lastshown >= m_numFound) {
         cs_temp.LoadString(IDS_SEARCHTOP);
         cs_status.Format(IDS_SEARCHWRAPPED, cs_temp);
         m_lastshown = 0;
       } else
-      if (m_iFindDirection == FIND_UP   && m_lastshown == 0xffffffff) {
+        if (m_iFindDirection == FIND_UP && m_lastshown == size_t(-1)) {
         cs_temp.LoadString(IDS_SEARCHBOTTOM);
         cs_status.Format(IDS_SEARCHWRAPPED, cs_temp);
         m_lastshown = m_numFound - 1;
