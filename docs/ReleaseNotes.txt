@@ -8,6 +8,10 @@ information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
 
+New Features for 3.24.2
+=======================
+[] Installation instructions now available in Dutch, thank to Kees.
+
 Bugs fixed in 3.24.2
 ====================
 [3165889] No longer crashes if search starts with Shift-Enter (search
