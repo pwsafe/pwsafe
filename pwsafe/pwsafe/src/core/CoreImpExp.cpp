@@ -333,6 +333,12 @@ struct XMLRecordWriter {
         //  Check password doesn't incorrectly imply alias or shortcut entry
         StringX pswd;
         pswd = item.GetPassword();
+
+        // Passwords are mandatory but, if missing, don't crash referencing character out of bounds!
+        // Note: This value will not get to the XML file.
+        if (pswd.length() == 0)
+          pswd = _T("*MISSING*");
+
         int num_colons = Replace(pswd, _T(':'), _T(';')) + 1;
         if ((pswd[0] == _T('[')) &&
             (pswd[pswd.length() - 1] == _T(']')) &&
