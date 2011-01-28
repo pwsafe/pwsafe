@@ -89,7 +89,7 @@ int MultiCommands::Execute()
 {
   std::vector<Command *>::iterator cmd_Iter;
 
-  pws_os::Trace(_T("Multicommands Execute\n"));
+  //pws_os::Trace(_T("Multicommands Execute\n"));
   for (cmd_Iter = m_vpcmds.begin(); cmd_Iter != m_vpcmds.end(); cmd_Iter++) {
     int rc = (*cmd_Iter)->Execute();
     m_vRCs.push_back(rc);
@@ -100,7 +100,7 @@ int MultiCommands::Execute()
 
 int MultiCommands::Redo()
 {
-  pws_os::Trace(_T("Multicommands Redo\n"));
+  //pws_os::Trace(_T("Multicommands Redo\n"));
   return Execute();
 }
 
@@ -108,7 +108,7 @@ void MultiCommands::Undo()
 {
   std::vector<Command *>::reverse_iterator cmd_rIter;
 
-  pws_os::Trace(_T("Multicommands Undo\n"));
+  //pws_os::Trace(_T("Multicommands Undo\n"));
   for (cmd_rIter = m_vpcmds.rbegin(); cmd_rIter != m_vpcmds.rend(); cmd_rIter++) {
     (*cmd_rIter)->Undo();
   }
@@ -117,7 +117,7 @@ void MultiCommands::Undo()
 
 void MultiCommands::Add(Command *pcmd)
 {
-  pws_os::Trace(_T("Multicommands Add\n"));
+  //pws_os::Trace(_T("Multicommands Add\n"));
   m_vpcmds.push_back(pcmd);
 }
 
@@ -125,7 +125,7 @@ bool MultiCommands::Remove(Command *pcmd)
 {
   std::vector<Command *>::iterator cmd_Iter;
 
-  pws_os::Trace(_T("Multicommands Remove\n"));
+  //pws_os::Trace(_T("Multicommands Remove\n"));
   cmd_Iter = find(m_vpcmds.begin(), m_vpcmds.end(), pcmd);
   if (cmd_Iter != m_vpcmds.end()) {
     delete (*cmd_Iter);
@@ -137,7 +137,7 @@ bool MultiCommands::Remove(Command *pcmd)
 
 bool MultiCommands::Remove()
 {
-  pws_os::Trace(_T("Multicommands Remove\n"));
+  //pws_os::Trace(_T("Multicommands Remove\n"));
   if (!m_vpcmds.empty()) {
     delete m_vpcmds.back();
     m_vpcmds.pop_back();
@@ -150,7 +150,7 @@ bool MultiCommands::GetRC(Command *pcmd, int &rc)
 {
   std::vector<Command *>::iterator cmd_Iter;
 
-  pws_os::Trace(_T("Multicommands GetRC\n"));
+  //pws_os::Trace(_T("Multicommands GetRC\n"));
   cmd_Iter = find(m_vpcmds.begin(), m_vpcmds.end(), pcmd);
   if (cmd_Iter != m_vpcmds.end()) {
     rc = m_vRCs[cmd_Iter - m_vpcmds.begin()];
@@ -193,9 +193,9 @@ UpdateGUICommand::UpdateGUICommand(CommandInterface *pcomInt,
 
 int UpdateGUICommand::Execute()
 {
-  pws_os::Trace(_T("UpdateGUICommand Execute\n"));
+  //pws_os::Trace(_T("UpdateGUICommand Execute\n"));
   if (m_When == WN_EXECUTE || m_When == WN_EXECUTE_REDO || 
-      m_When == WN_ALL) {
+      m_When == WN_REDO || m_When == WN_ALL) {
     uuid_array_t entry_uuid = {'0'}; // dummy
     m_pcomInt->NotifyGUINeedsUpdating(m_ga, entry_uuid);
   }
@@ -204,9 +204,9 @@ int UpdateGUICommand::Execute()
 
 int UpdateGUICommand::Redo()
 {
-  pws_os::Trace(_T("UpdateGUICommand Redo\n"));
-  if (m_When == WN_REDO || m_When == WN_EXECUTE_REDO || 
-      m_When == WN_ALL) {
+  //pws_os::Trace(_T("UpdateGUICommand Redo\n"));
+  if (m_When == WN_EXECUTE || m_When == WN_EXECUTE_REDO || 
+      m_When == WN_REDO || m_When == WN_ALL) {
     uuid_array_t entry_uuid = {'0'}; // dummy
     m_pcomInt->NotifyGUINeedsUpdating(m_ga, entry_uuid);
   }
@@ -215,7 +215,7 @@ int UpdateGUICommand::Redo()
 
 void UpdateGUICommand::Undo()
 {
-  pws_os::Trace(_T("UpdateGUICommand Undo\n"));
+  //pws_os::Trace(_T("UpdateGUICommand Undo\n"));
   if (m_When == WN_UNDO || m_When == WN_ALL) {
     uuid_array_t entry_uuid = {'0'}; // dummy
     m_pcomInt->NotifyGUINeedsUpdating(m_ga, entry_uuid);
@@ -277,17 +277,22 @@ void DBPrefsCommand::Undo()
 // AddEntryCommand
 // ------------------------------------------------
 
-AddEntryCommand::AddEntryCommand(CommandInterface *pcomInt, const CItemData &ci)
+AddEntryCommand::AddEntryCommand(CommandInterface *pcomInt, const CItemData &ci,
+                                 Command *pcmd)
   : Command(pcomInt), m_ci(ci)
 {
   ASSERT(!ci.IsDependent()); // use other c'tor for dependent entries!
+  if (pcmd != NULL)
+    m_bNotifyGUI = pcmd->GetGUINotify();
 }
 
-AddEntryCommand::AddEntryCommand(CommandInterface *pcomInt, const CItemData &ci
-                                 , const uuid_array_t base_uuid)
+AddEntryCommand::AddEntryCommand(CommandInterface *pcomInt, const CItemData &ci,
+                                   const uuid_array_t base_uuid, Command *pcmd)
   : Command(pcomInt), m_ci(ci)
 {
   memcpy(m_base_uuid, base_uuid, sizeof(uuid_array_t));
+  if (pcmd != NULL)
+    m_bNotifyGUI = pcmd->GetGUINotify();
 }
 
 AddEntryCommand::~AddEntryCommand()
@@ -297,7 +302,7 @@ AddEntryCommand::~AddEntryCommand()
 int AddEntryCommand::Execute()
 {
   SaveState();
-  pws_os::Trace(_T("Command DoAddEntry\n"));
+  //pws_os::Trace(_T("Command DoAddEntry\n"));
   if (m_pcomInt->IsReadOnly())
     return 0;
 
@@ -326,7 +331,7 @@ int AddEntryCommand::Redo()
 
 void AddEntryCommand::Undo()
 {
-  DeleteEntryCommand dec(m_pcomInt, m_ci);
+  DeleteEntryCommand dec(m_pcomInt, m_ci, this);
   dec.Execute();
   if (m_ci.IsDependent()) {
     uuid_array_t entry_uuid;
@@ -342,9 +347,12 @@ void AddEntryCommand::Undo()
 // ------------------------------------------------
 
 DeleteEntryCommand::DeleteEntryCommand(CommandInterface *pcomInt,
-                                       const CItemData &ci)
+                                       const CItemData &ci, Command *pcmd)
   : Command(pcomInt), m_ci(ci), m_dependents(0)
 {
+  if (pcmd != NULL)
+    m_bNotifyGUI = pcmd->GetGUINotify();
+
   if (ci.IsNormal())
     memset(m_base_uuid, 0, sizeof(uuid_array_t));
   else {
@@ -388,7 +396,7 @@ DeleteEntryCommand::~DeleteEntryCommand()
 int DeleteEntryCommand::Execute()
 {
   SaveState();
-  pws_os::Trace(_T("DeleteEntryCommand::Execute()\n"));
+  //pws_os::Trace(_T("DeleteEntryCommand::Execute()\n"));
   if (m_pcomInt->IsReadOnly())
     return 0;
 
@@ -415,11 +423,11 @@ void DeleteEntryCommand::Undo()
   uuid_array_t uuid;
   m_ci.GetUUID(uuid);
   if (m_ci.IsDependent()) {
-    Command *pcmd = AddEntryCommand::Create(m_pcomInt, m_ci, m_base_uuid);
+    Command *pcmd = AddEntryCommand::Create(m_pcomInt, m_ci, m_base_uuid, this);
     pcmd->Execute();
     delete pcmd;
   } else {
-    AddEntryCommand undo(m_pcomInt, m_ci);
+    AddEntryCommand undo(m_pcomInt, m_ci, this);
     undo.Execute();
     if (m_ci.IsShortcutBase()) { // restore dependents
       for (std::vector<CItemData>::iterator iter = m_dependents.begin();
@@ -434,11 +442,11 @@ void DeleteEntryCommand::Undo()
       // and create new aliases.
       for (std::vector<CItemData>::iterator iter = m_dependents.begin();
            iter != m_dependents.end(); iter++) {
-        DeleteEntryCommand delExAlias(m_pcomInt, *iter);
+        DeleteEntryCommand delExAlias(m_pcomInt, *iter, this);
         delExAlias.Execute(); // out with the old...
         uuid_array_t alias_uuid;
         iter->GetUUID(alias_uuid);
-        Command *pcmd = AddEntryCommand::Create(m_pcomInt, *iter, uuid);
+        Command *pcmd = AddEntryCommand::Create(m_pcomInt, *iter, uuid, this);
         pcmd->Execute(); // in with the new!
         delete pcmd;
       }
@@ -472,7 +480,7 @@ EditEntryCommand::~EditEntryCommand()
 int EditEntryCommand::Execute()
 {
   SaveState();
-  pws_os::Trace(_T("EditEntry::Execute\n"));
+  //pws_os::Trace(_T("EditEntry::Execute\n"));
   if (m_pcomInt->IsReadOnly())
     return 0;
 
@@ -499,7 +507,7 @@ int EditEntryCommand::Redo()
 
 void EditEntryCommand::Undo()
 {
-  pws_os::Trace(_T("EditEntry::Undo\n"));
+  //pws_os::Trace(_T("EditEntry::Undo\n"));
   if (m_pcomInt->IsReadOnly())
     return;
 
@@ -537,7 +545,7 @@ void UpdateEntryCommand::Doit(const uuid_array_t &entry_uuid,
                               const StringX &value,
                               CItemData::EntryStatus es)
 {
-  pws_os::Trace(_T("UpdateEntryCommand::Doit\n"));
+  //pws_os::Trace(_T("UpdateEntryCommand::Doit\n"));
   if (m_pcomInt->IsReadOnly())
     return;
 
@@ -554,8 +562,8 @@ int UpdateEntryCommand::Execute()
 {
   SaveState();
 
-  pws_os::Trace(_T("Command UpdateEntry: Field=0x%02x; Old Value=%s; NewValue=%s\n"),
-    m_ftype, m_old_value.c_str(), m_value.c_str());
+  //pws_os::Trace(_T("Command UpdateEntry: Field=0x%02x; Old Value=%s; NewValue=%s\n"),
+  //  m_ftype, m_old_value.c_str(), m_value.c_str());
 
   Doit(m_entry_uuid, m_ftype, m_value, CItemData::ES_MODIFIED);
 
@@ -574,8 +582,8 @@ int UpdateEntryCommand::Redo()
 
 void UpdateEntryCommand::Undo()
 {
-  pws_os::Trace(_T("Command UndoUpdateEntry: Field=0x%02x; Old Value=%s;\n"),
-    m_ftype, m_old_value.c_str());
+  //pws_os::Trace(_T("Command UndoUpdateEntry: Field=0x%02x; Old Value=%s;\n"),
+  //  m_ftype, m_old_value.c_str());
 
   Doit(m_entry_uuid, m_ftype, m_old_value, m_old_status);
   RestoreState();
@@ -605,7 +613,7 @@ int UpdatePasswordCommand::Execute()
 {
   SaveState();
 
-  pws_os::Trace(_T("UpdatePassword::Execute\n"));
+  //pws_os::Trace(_T("UpdatePassword::Execute\n"));
   if (m_pcomInt->IsReadOnly())
     return 0;
 
@@ -632,7 +640,7 @@ int UpdatePasswordCommand::Redo()
 
 void UpdatePasswordCommand::Undo()
 {
-  pws_os::Trace(_T("UpdatePasswordCommand::Undo\n"));
+  //pws_os::Trace(_T("UpdatePasswordCommand::Undo\n"));
   if (m_pcomInt->IsReadOnly())
     return;
 
@@ -666,7 +674,7 @@ AddDependentEntryCommand::AddDependentEntryCommand(CommandInterface *pcomInt,
 
 int AddDependentEntryCommand::Execute()
 {
-  pws_os::Trace(_T("AddDependentEntryCommand::Execute\n"));
+  //pws_os::Trace(_T("AddDependentEntryCommand::Execute\n"));
   SaveState();
   if (m_pcomInt->IsReadOnly())
     return 0;
@@ -683,7 +691,7 @@ int AddDependentEntryCommand::Redo()
 
 void AddDependentEntryCommand::Undo()
 {
-  pws_os::Trace(_T("AddDependentEntryCommand::Undo\n"));
+  //pws_os::Trace(_T("AddDependentEntryCommand::Undo\n"));
   if (m_pcomInt->IsReadOnly())
     return;
 
@@ -716,7 +724,7 @@ AddDependentEntriesCommand::~AddDependentEntriesCommand()
 
 int AddDependentEntriesCommand::Execute()
 {
-  pws_os::Trace(_T("AddDependentEntriesCommand::Execute\n"));
+  //pws_os::Trace(_T("AddDependentEntriesCommand::Execute\n"));
   SaveState();
   if (m_type == CItemData::ET_ALIAS) {
     m_saved_base2aliases_mmap = m_pcomInt->GetBase2AliasesMmap();
@@ -742,7 +750,7 @@ int AddDependentEntriesCommand::Redo()
 
 void AddDependentEntriesCommand::Undo()
 {
-  pws_os::Trace(_T("AddDependentEntriesCommand::Undo\n"));
+  //pws_os::Trace(_T("AddDependentEntriesCommand::Undo\n"));
   if (m_pcomInt->IsReadOnly())
     return;
 
@@ -774,7 +782,7 @@ RemoveDependentEntryCommand::RemoveDependentEntryCommand(CommandInterface *pcomI
 
 int RemoveDependentEntryCommand::Execute()
 {
-  pws_os::Trace(_T("RemoveDependentEntryCommand::Execute\n"));
+  //pws_os::Trace(_T("RemoveDependentEntryCommand::Execute\n"));
   SaveState();
   if (m_pcomInt->IsReadOnly())
     return 0;
@@ -791,7 +799,7 @@ int RemoveDependentEntryCommand::Redo()
 
 void RemoveDependentEntryCommand::Undo()
 {
-  pws_os::Trace(_T("RemoveDependentEntryCommand::Undo\n"));
+  //pws_os::Trace(_T("RemoveDependentEntryCommand::Undo\n"));
   if (m_pcomInt->IsReadOnly())
     return;
 
@@ -816,7 +824,7 @@ MoveDependentEntriesCommand::MoveDependentEntriesCommand(CommandInterface *pcomI
 
 int MoveDependentEntriesCommand::Execute()
 {
-  pws_os::Trace(_T("MoveDependentEntriesCommand::Execute\n"));
+  //pws_os::Trace(_T("MoveDependentEntriesCommand::Execute\n"));
   SaveState();
   if (m_pcomInt->IsReadOnly())
     return 0;
@@ -833,7 +841,7 @@ int MoveDependentEntriesCommand::Redo()
 
 void MoveDependentEntriesCommand::Undo()
 {
-  pws_os::Trace(_T("MoveDependentEntriesCommand::Undo\n"));
+  //pws_os::Trace(_T("MoveDependentEntriesCommand::Undo\n"));
   if (m_pcomInt->IsReadOnly())
     return;
 
@@ -855,7 +863,7 @@ UpdatePasswordHistoryCommand::UpdatePasswordHistoryCommand(CommandInterface *pco
 int UpdatePasswordHistoryCommand::Execute()
 {
   SaveState();
-  pws_os::Trace(_T("UpdatePasswordHistoryCommand::Execute\n"));
+  //pws_os::Trace(_T("UpdatePasswordHistoryCommand::Execute\n"));
   if (m_pcomInt->IsReadOnly())
     return 0;
 
@@ -872,7 +880,7 @@ int UpdatePasswordHistoryCommand::Redo()
 
 void UpdatePasswordHistoryCommand::Undo()
 {
-  pws_os::Trace(_T("UpdatePasswordHistoryCommand::Undo\n"));
+  //pws_os::Trace(_T("UpdatePasswordHistoryCommand::Undo\n"));
   if (m_pcomInt->IsReadOnly())
     return;
 

@@ -335,7 +335,8 @@ struct XMLRecordWriter {
         pswd = item.GetPassword();
 
         // Passwords are mandatory but, if missing, don't crash referencing character out of bounds!
-        // Note: This value will not get to the XML file.
+        // Note: This value will not get to the XML file but the import will fail as the original entry
+        // did not have a password and, as above, it is mandatory.
         if (pswd.length() == 0)
           pswd = _T("*MISSING*");
 
