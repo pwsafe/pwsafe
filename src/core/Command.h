@@ -44,6 +44,7 @@ public:
   void SetNoGUINotify() {m_bNotifyGUI = false;}
   virtual void ResetSavedState(bool bNewDBState) // overrode in MultiCommands
   {m_bSaveDBChanged = bNewDBState;}
+  bool GetGUINotify() {return m_bNotifyGUI;}
 
 protected:
   Command(CommandInterface *pcomInt); // protected constructor!
@@ -134,12 +135,14 @@ class DeleteEntryCommand;
 class AddEntryCommand : public Command
 {
 public:
-  static AddEntryCommand *Create(CommandInterface *pcomInt, const CItemData &ci)
-  { return new AddEntryCommand(pcomInt, ci); }
+  static AddEntryCommand *Create(CommandInterface *pcomInt, const CItemData &ci,
+                                 Command *pcmd = NULL)
+  { return new AddEntryCommand(pcomInt, ci, pcmd); }
   // Following for adding an alias or shortcut
   static AddEntryCommand *Create(CommandInterface *pcomInt,
-                                 const CItemData &ci, const uuid_array_t base_uuid)
-  { return new AddEntryCommand(pcomInt, ci, base_uuid); }
+                                 const CItemData &ci, const uuid_array_t base_uuid,
+                                 Command *pcmd = NULL)
+  { return new AddEntryCommand(pcomInt, ci, base_uuid, pcmd); }
   ~AddEntryCommand();
   int Execute();
   int Redo();
@@ -148,9 +151,10 @@ public:
 
 private:
   AddEntryCommand& operator=(const AddEntryCommand&); // Do not implement
-  AddEntryCommand(CommandInterface *pcomInt, const CItemData &ci);
+  AddEntryCommand(CommandInterface *pcomInt, const CItemData &ci, Command *pcmd = NULL);
   AddEntryCommand(CommandInterface *pcomInt,
-                  const CItemData &ci, const uuid_array_t base_uuid);
+                    const CItemData &ci, const uuid_array_t base_uuid,
+                    Command *pcmd = NULL);
   const CItemData m_ci;
   uuid_array_t m_base_uuid;
 };
@@ -159,8 +163,9 @@ class DeleteEntryCommand : public Command
 {
 public:
   static DeleteEntryCommand *Create(CommandInterface *pcomInt,
-                                    const CItemData &ci)
-  { return new DeleteEntryCommand(pcomInt, ci); }
+                                    const CItemData &ci,
+                                    Command *pcmd = NULL)
+  { return new DeleteEntryCommand(pcomInt, ci, pcmd); }
   ~DeleteEntryCommand();
   int Execute();
   int Redo();
@@ -169,7 +174,8 @@ public:
 
 private:
   DeleteEntryCommand& operator=(const DeleteEntryCommand&); // Do not implement
-  DeleteEntryCommand(CommandInterface *pcomInt, const CItemData &ci);
+  DeleteEntryCommand(CommandInterface *pcomInt, const CItemData &ci,
+                     Command *pcmd = NULL);
   const CItemData m_ci;
   uuid_array_t m_base_uuid; // for undo of shortcut or alias deletion
   std::vector<CItemData> m_dependents; // for undo of base deletion
