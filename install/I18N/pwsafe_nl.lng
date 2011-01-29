@@ -25,7 +25,7 @@ LangString RESERVE_TITLE ${LANG_DUTCH} "Kies Installatietype"
 LangString RESERVE_FIELD1 ${LANG_DUTCH} "Standaard (gebruikt Register, geschikt voor thuis of persoonlijke PC)"
 
 ; RESERVE_FIELD2 "Green (for Disk-on-Key; does not use host Registry)"
-LangString RESERVE_FIELD2 ${LANG_DUTCH} "Groen (voor Disk-on-Key; gebruikt geen Register)"
+LangString RESERVE_FIELD2 ${LANG_DUTCH} "Groen (voor USB-stick; gebruikt geen Register)"
 
 ; PROGRAM_FILES "Program Files"
 LangString PROGRAM_FILES ${LANG_DUTCH} "Program Files"
@@ -74,7 +74,7 @@ LangString PSWINI_TITLE ${LANG_DUTCH} "Kies Installatietype"
 LangString PSWINI_TEXT1 ${LANG_DUTCH} "Standaard (gebruikt Register, geschikt voor thuis of persoonlijke PC)"
 
 ; PSWINI_TEXT2 "Green (for Disk-on-Key; does not use host Registry)"
-LangString PSWINI_TEXT2 ${LANG_DUTCH} "Groen (voor Disk-on-Key; gebruikt geen Register)"
+LangString PSWINI_TEXT2 ${LANG_DUTCH} "Groen (voor USB-stick; gebruikt geen Register)"
 
 ;--------------------------------
 ; checks and warnings
