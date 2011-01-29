@@ -16,6 +16,9 @@ Bugs fixed in 3.24.2
 ====================
 [3165889] No longer crashes if search starts with Shift-Enter (search
 backwards).
+[3115760] Window view is now saved and restored if the user uses the Windows
+"Show Desktop" feature.
+[] No longer crashes when doing an Undo after a Merge.
 [] Ensure Undo/Redo honour the changes to the display of the original change.
 
 New Features for 3.24.1

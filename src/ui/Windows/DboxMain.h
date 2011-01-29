@@ -231,6 +231,7 @@ public:
   // For InsertItemIntoGUITreeList and RefreshViews (mainly when refreshing views)
   // Note: iBothViews = iListOnly + iTreeOnly
   enum {iListOnly = 1, iTreeOnly = 2, iBothViews = 3};
+
   void RefreshViews(const int iView = iBothViews);
 
   // Set the section to the entry.  MakeVisible will scroll list, if needed.
@@ -298,8 +299,8 @@ public:
   Command *Delete(HTREEITEM ti); // For deleting a group
 
   void SaveGroupDisplayState(); // call when tree expansion state changes
-  void SaveDisplayBeforeMinimize();
-  void RestoreDisplayAfterMinimize();
+  void RestoreGUIStatusEx();
+  void SaveGUIStatusEx(const int iView);
 
   const CItemData *GetBaseEntry(const CItemData *pAliasOrSC) const
   {return m_core.GetBaseEntry(pAliasOrSC);}
@@ -748,6 +749,7 @@ private:
   bool m_IsListView;
   bool m_bAlreadyToldUserNoSave;
   bool m_bPasswordColumnShowing;
+  bool m_bInRefresh, m_bInRestoreWindows;
   int m_iDateTimeFieldWidth;
   int m_nColumns;
   int m_nColumnIndexByOrder[CItemData::LAST];
