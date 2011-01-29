@@ -1,10 +1,11 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head>
+<html>
+<head>
 <!-- A HTML version of the ReleaseNotes.txt file. There Javascript functions provide a mechanism to access Feature Requests,
      Support Requests and Bug Reports directly from the Tracker ID. They are implemented to make it easier to change if
-     SourceForge change their environment. WOuld have been nice to open a new tab rather than a new Window but currently
+     SourceForge change their environment. Would have been nice to open a new tab rather than a new Window but currently
      not possible from Javascript. Within a given release, the order of the entries are: New Features, Changes to Existing
-     Features and then Bugs Fixed. Within each section, entries are ordered in dcreasing Tracker ID order. If an entry resolves
+     Features and then Bugs Fixed. Within each section, entries are ordered in decreasing Tracker ID order. If an entry resolves
      multiple Tracker IDs, they are also entered in decreasing Tracker ID order. -->
 <style>
 h2 { text-decoration: underline; }
@@ -33,14 +34,13 @@ remote = open('http://sourceforge.net/tracker/?func=detail&aid='+ ID +'&group_id
 'resizable=yes,scrollbars=yes,toolbar=no,location=no,directories=no,status=no,menubar=no,copyhistory=no');
 }
 </script>
-<noscript><p style="color:red; text-align:center;
-font-size:24pt;">*** Scripting is disabled - links to Tracker items
-will not work! ***</p>
-</noscript></head>
 
-<noscript><p style="color:red; text-align:center;
-font-size:24pt;">*** Scripting is disabled - links to Tracker items will not work! ***</p>
+<noscript>
+<p style="color:red; text-align:center; font-size:24pt;">*** Scripting is disabled - links to Tracker items
+will not work! ***</p>
 </noscript>
+</head>
+
 <body>
 <h1 align="center">Password Safe 3.24.2 Release Notes - January 2011</h1>
 <p>This note describe the new features, fixed bugs and known problems
@@ -85,6 +85,16 @@ another database.
 <tr>
 <td align="center" width="100"><a href="nojs.html" onclick="BR(3165889);return false;">3165889</a><br></td>
 <td>No longer crashes if search starts with Shift-Enter (search backwards).</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(3115760);return false;">3115760</a></td>
+<td>Window view is now saved and restored if the user uses the Windows
+"Show Desktop" feature.</td>
+</tr>
+<tr>
+<td align="center" width="100">n/a<br>
+</td>
+<td>No longer crashes when doing an Undo after a Merge.</td>
 </tr>
 <tr>
 <td align="center" width="100">n/a</td>
@@ -283,7 +293,7 @@ icon and the button on the Taskbar can be hidden.</td>
 </tr>
 <tr>
 <td align="center" width="100"><a href="nojs.html" onclick="FR(3011546);return false;">3011546</a></td>
-<td>"autotype" can now be added to the List View via the Column Picker
+<td>"AutoType" can now be added to the List View via the Column Picker
 (right click on column labels).</td>
 </tr>
 </tbody>
@@ -356,8 +366,8 @@ when the database is later displayed.</td>
 </tr>
 <tr>
 <td align="center" width="100"><a href="nojs.html" onclick="BR(3006069);return false;">3006069</a></td>
-<td>Autotype now works correctly when the user specifies that
-PasswordSafe should minimize after Autotype and has also set that the
+<td>AutoType now works correctly when the user specifies that
+PasswordSafe should minimize after AutoType and has also set that the
 database should be locked on minimize.</td>
 </tr>
 <tr>
@@ -504,7 +514,7 @@ characters from any entry field substitution.</td>
 <tr>
 <td align="center" width="100"><a href="nojs.html" onclick="BR(2951871);return false;">2951871</a></td>
 <td>Shortcut related menu items now returned to the Edit menu and
-the "Run Command", "Browse to URL", "Browse to URL + Autotype" and
+the "Run Command", "Browse to URL", "Browse to URL + AutoType" and
 "Send email" functions now work again, when a Shortcut entry is
 selected.</td>
 </tr>
@@ -526,7 +536,7 @@ duplicate unique IDs (UUID elements).</td>
 </tr>
 <tr>
 <td align="center" width="100">n/a</td>
-<td>Remove "Confirm Deletion of Entries" checkbox from theMisc. Options
+<td>Remove "Confirm Deletion of Entries" checkbox from the Misc. Options
 page. New support for Undo/Redo made this unnecessary. Users are always
 asked to confirm the deletion of Groups or entries that have aliases or
 shortcuts.</td>
@@ -558,8 +568,8 @@ successfully found the first time.</td>
 <td>Undo/Redo of changes to the currently open database. Any change to
 the database can now be undone and redone, as long as the database is
 open. This is similar to the undo/redo feature available in most word
-processors, and is activated the same way (Ctrl-Z for undo, Ctrl-Y for
-redo, or via the Edit menu).</td>
+processors, and is activated the same way (Ctrl-Z for Undo, Ctrl-Y for
+Redo, or via the Edit menu).</td>
 </tr>
 <tr>
 <td align="center" width="100">n/a</td>
@@ -692,8 +702,7 @@ menu and/or by right-clicking on a shortcut entry.</td>
 </tr>
 <tr>
 <td align="center" width="100"><a href="nojs.html" onclick="FR(2826509);return false;">2826509</a></td>
-<td>Can now update passwords of existing entries via Import
-Text or XML:<br>
+<td>Can now update passwords of existing entries via Text or XML:<br>
 &#8226;&nbsp;For Text import, the 'Group/Title', 'Username' and
 'Password' fields are required.<br>
 &#8226;&nbsp;For XML import, the Title and Password elements are
@@ -714,7 +723,7 @@ The latter can seen via View&#8594;Show Changed Entries.</td>
 <tr>
 <td align="center" width="100"><a href="nojs.html" onclick="FR(2880663);return false;">2880663</a></td>
 <td>'Browse to' special fields (currently: [alt], {alt}, [ssh],
-[autotype] and [xa]) are removed from the URL field when copied to the
+[AutoType] and [xa]) are removed from the URL field when copied to the
 clipboard or when used in the RunCommand (via $url). If the [alt] or
 {alt} were present, then the RunCommand will execute this program.</td>
 </tr>
@@ -803,4 +812,5 @@ entries exported to Text or XML.</td>
 </tbody>
 </table>
 <p align="center">*** End of Document ***</p>
-</body></html>
+</body>
+</html>

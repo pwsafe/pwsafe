@@ -140,7 +140,8 @@ DboxMain::DboxMain(CWnd* pParent)
   m_bDeleteCtrl(false), m_bDeleteShift(false),
   m_bRenameCtrl(false), m_bRenameShift(false),
   m_bAutotypeCtrl(false), m_bAutotypeShift(false),
-  m_bInAT(false), m_bInRestoreWindowsData(false), m_bSetup(false)
+  m_bInAT(false), m_bInRestoreWindowsData(false), m_bSetup(false),
+  m_bInRefresh(false), m_bInRestoreWindows(false)
 {
   // Need to do the following as using the direct calls will fail for Windows versions before Vista
   // (Load Library using absolute path to avoid dll poisoning attacks)
@@ -152,7 +153,7 @@ DboxMain::DboxMain(CWnd* pParent)
     if (szFileName[ nLen - 1 ] != '\\')
       _tcscat_s( szFileName, MAX_PATH, L"\\" );
   }
-  _tcscat_s( szFileName, MAX_PATH, L"User32.dll" );
+  wcscat_s( szFileName, MAX_PATH, L"User32.dll" );
   m_hUser32 = ::LoadLibrary(szFileName);
   if (m_hUser32 != NULL) {
     m_pfcnShutdownBlockReasonCreate = (PSBR_CREATE)::GetProcAddress(m_hUser32, "ShutdownBlockReasonCreate"); 
@@ -1274,9 +1275,12 @@ void DboxMain::Execute(Command *pcmd, PWScore *pcore)
 {
   if (pcore == NULL)
     pcore = &m_core;
+
   SaveGUIStatus();
   pcore->Execute(pcmd);
   UpdateToolBarDoUndo();
+
+  SaveGUIStatusEx(iBothViews);
 }
 
 void DboxMain::OnUndo()
@@ -1287,6 +1291,8 @@ void DboxMain::OnUndo()
   UpdateToolBarDoUndo();
   UpdateMenuAndToolBar(m_bOpen);
   UpdateStatusBar();
+
+  SaveGUIStatusEx(iBothViews);
 }
 
 void DboxMain::OnRedo()
@@ -1297,6 +1303,8 @@ void DboxMain::OnRedo()
   UpdateToolBarDoUndo();
   UpdateMenuAndToolBar(m_bOpen);
   UpdateStatusBar();
+
+  SaveGUIStatusEx(iBothViews);
 }
 
 void DboxMain::FixListIndexes()
@@ -1940,10 +1948,9 @@ void DboxMain::OnSysCommand(UINT nID, LPARAM lParam)
     return;
   }
 
-  switch (nID & 0xFFF0) {
+  UINT const nSysID = nID & 0xFFFF;
+  switch (nSysID) {
     case SC_MINIMIZE:
-      // Save expand/collapse status of groups + selected item/group
-      SaveDisplayBeforeMinimize();
       break;
     case SC_CLOSE:
       if (!PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray)) {
@@ -1955,16 +1962,26 @@ void DboxMain::OnSysCommand(UINT nID, LPARAM lParam)
       break;
     case SC_MAXIMIZE:
     case SC_RESTORE:
-      if (app.GetSystemTrayState() == ThisMfcApp::LOCKED) {
-        if (!RestoreWindowsData(true))
-          return; // password bad or cancel pressed
-
-        RestoreDisplayAfterMinimize();
-      }
+      if (app.GetSystemTrayState() == ThisMfcApp::LOCKED &&
+          !RestoreWindowsData(nSysID == SC_RESTORE))
+        return; // password bad or cancel pressed
       break;
-    case SC_SIZE:
+    /*
+       Valid values not specifically used by PasswordSafe
+    case SC_HOTKEY:
+    case SC_HSCROLL:
+    case SC_KEYMENU:
+    case SC_MONITORPOWER:
+    case SC_MOUSEMENU:
     case SC_MOVE:
+    case SC_NEXTWINDOW:
+    case SC_PREVWINDOW:
+    case SC_SIZE:
     case SC_SCREENSAVE:
+    case SC_TASKLIST:
+    case SC_VSCROLL:
+    */
+    default:
       break;
   }
 
@@ -1986,7 +2003,11 @@ void DboxMain::ConfigureSystemMenu()
   CMenu *pSysMenu = GetSystemMenu(FALSE);
   const CString str(MAKEINTRESOURCE(IDS_ALWAYSONTOP));
 
-  pSysMenu->InsertMenu(5, MF_BYPOSITION | MF_STRING, ID_SYSMENU_ALWAYSONTOP, (LPCWSTR)str);
+  if (pSysMenu != NULL) {
+    UINT num = pSysMenu->GetMenuItemCount();
+    ASSERT(num > 2);
+    pSysMenu->InsertMenu(num - 2 /* 5 */, MF_BYPOSITION | MF_STRING, ID_SYSMENU_ALWAYSONTOP, (LPCWSTR)str);
+  }
 #endif
 }
 
@@ -2047,9 +2068,11 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
   // Note: bUpdateWindows = true only when called from within OnSysCommand-SC_RESTORE
   // and via the Restore menu item via the SystemTray (OnRestore)
 
-  pws_os::Trace(L"RestoreWindowsData:bUpdateWindows = %s; bInRestoreWindowsData\n",
+  /*
+  pws_os::Trace(L"RestoreWindowsData:bUpdateWindows = %s; bInRestoreWindowsData %s\n",
                 bUpdateWindows ? L"true" : L"false",
                 m_bInRestoreWindowsData ? L"true" : L"false");
+  */
 
   // We should not be called by a routine we call - only duplicates refreshes etc.
   if (m_bInRestoreWindowsData)

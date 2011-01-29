@@ -226,6 +226,8 @@ BEGIN_MESSAGE_MAP(CPWTreeCtrl, CTreeCtrl)
   ON_WM_TIMER()
   ON_WM_MOUSEMOVE()
   ON_WM_ERASEBKGND()
+  ON_WM_PAINT()
+  ON_WM_VSCROLL()
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -255,6 +257,22 @@ void CPWTreeCtrl::OnDestroy()
     delete pimagelist;
   }
   m_DropTarget->Revoke();
+}
+
+void CPWTreeCtrl::OnPaint()
+{
+  CTreeCtrl::OnPaint();
+
+  if (m_pDbx != NULL)
+    m_pDbx->SaveGUIStatusEx(DboxMain::iTreeOnly);
+}
+
+void CPWTreeCtrl::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar)
+{
+  CTreeCtrl::OnVScroll(nSBCode, nPos, pScrollBar);
+
+  if (m_pDbx != NULL)
+    m_pDbx->SaveGUIStatusEx(DboxMain::iTreeOnly);
 }
 
 BOOL CPWTreeCtrl::PreTranslateMessage(MSG* pMsg)
@@ -1559,7 +1577,7 @@ void CPWTreeCtrl::OnExpandCollapse(NMHDR *, LRESULT *)
   // (unless we're in the middle of restoring the state!)
 
   if (!m_isRestoring) {
-    m_pDbx->SaveGroupDisplayState();
+    m_pDbx->SaveGUIStatusEx(DboxMain::iTreeOnly);
   }
 }
 
@@ -1576,6 +1594,8 @@ void CPWTreeCtrl::OnExpandAll()
   } while (hItem);
   EnsureVisible(GetSelectedItem());
   SetRedraw(TRUE);
+
+  m_pDbx->SaveGUIStatusEx(DboxMain::iTreeOnly);
 }
 
 void CPWTreeCtrl::OnCollapseAll() 
@@ -1590,6 +1610,8 @@ void CPWTreeCtrl::OnCollapseAll()
     CollapseBranch(hItem);
   } while((hItem = GetNextSiblingItem(hItem)) != NULL);
   SetRedraw(TRUE);
+
+  m_pDbx->SaveGUIStatusEx(DboxMain::iTreeOnly);
 }
 
 void CPWTreeCtrl::CollapseBranch(HTREEITEM hItem)

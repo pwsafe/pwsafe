@@ -40,6 +40,8 @@ BEGIN_MESSAGE_MAP(CPWListCtrl, CListCtrl)
   ON_WM_DESTROY()
   ON_WM_TIMER()
   ON_WM_ERASEBKGND()
+  ON_WM_PAINT()
+  ON_WM_VSCROLL()
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -87,6 +89,22 @@ void CPWListCtrl::OnDestroy()
   // Remove dummy ImageList. PWTreeCtrl removes the real one!
   m_pDbx->m_pImageList0->DeleteImageList();
   delete m_pDbx->m_pImageList0;
+}
+
+void CPWListCtrl::OnPaint()
+{
+  CListCtrl::OnPaint();
+
+  if (m_pDbx != NULL)
+    m_pDbx->SaveGUIStatusEx(DboxMain::iListOnly);
+}
+
+void CPWListCtrl::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar)
+{
+  CListCtrl::OnVScroll(nSBCode, nPos, pScrollBar);
+
+  if (m_pDbx != NULL)
+    m_pDbx->SaveGUIStatusEx(DboxMain::iListOnly);
 }
 
 BOOL CPWListCtrl::PreTranslateMessage(MSG* pMsg)

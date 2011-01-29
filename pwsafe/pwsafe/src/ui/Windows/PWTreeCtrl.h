@@ -91,6 +91,8 @@ protected:
   afx_msg void OnTimer(UINT_PTR nIDEvent);
   afx_msg BOOL OnEraseBkgnd(CDC* pDC);
   afx_msg void OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult);
+  afx_msg void OnPaint();
+  afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar);
   //}}AFX_MSG
 
   BOOL PreTranslateMessage(MSG* pMsg);

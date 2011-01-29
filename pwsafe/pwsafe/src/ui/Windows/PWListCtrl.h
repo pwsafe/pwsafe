@@ -48,6 +48,8 @@ protected:
   afx_msg BOOL OnEraseBkgnd(CDC* pDC);
   afx_msg void OnSelectionChanged(NMHDR *pNMHDR, LRESULT *pLResult);
   afx_msg void OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult);
+  afx_msg void OnPaint();
+  afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar);
   //}}AFX_MSG
 
   BOOL PreTranslateMessage(MSG* pMsg);
