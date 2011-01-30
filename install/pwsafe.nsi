@@ -175,60 +175,28 @@
 
 ;--------------------------------
 ; Languages
-; To enable a language, remove the ";" in front, to disable: put a ";" in front
-
-!define LANGUAGE_GERMAN
-!define LANGUAGE_CHINESE
-!define LANGUAGE_SPANISH
-!define LANGUAGE_SWEDISH
-!define LANGUAGE_DUTCH
-!define LANGUAGE_FRENCH
-!define LANGUAGE_RUSSIAN
-!define LANGUAGE_POLISH
-;!define LANGUAGE_ITALIAN
-!define LANGUAGE_DANISH
 
   !insertmacro MUI_LANGUAGE "English"
-!ifdef LANGUAGE_GERMAN
   !insertmacro MUI_LANGUAGE "German"
   !include ".\I18N\pwsafe_de.lng"
-!endif
-!ifdef LANGUAGE_CHINESE
   !insertmacro MUI_LANGUAGE "SimpChinese"
   !include ".\I18N\pwsafe_zh.lng"
-!endif
-!ifdef LANGUAGE_SPANISH
   !insertmacro MUI_LANGUAGE "Spanish"
   !include ".\I18N\pwsafe_es.lng"
-!endif
-!ifdef LANGUAGE_SWEDISH
   !insertmacro MUI_LANGUAGE "Swedish"
   !include ".\I18N\pwsafe_sv.lng"
-!endif
-!ifdef LANGUAGE_DUTCH
   !insertmacro MUI_LANGUAGE "Dutch"
   !include ".\I18N\pwsafe_nl.lng"
-!endif
-!ifdef LANGUAGE_FRENCH
   !insertmacro MUI_LANGUAGE "French"
   !include ".\I18N\pwsafe_fr.lng"
-!endif
-!ifdef LANGUAGE_RUSSIAN
   !insertmacro MUI_LANGUAGE "Russian"
   !include ".\I18N\pwsafe_ru.lng"
-!endif
-!ifdef LANGUAGE_POLISH
   !insertmacro MUI_LANGUAGE "Polish"
   !include ".\I18N\pwsafe_pl.lng"
-!endif
-!ifdef LANGUAGE_ITALIAN
-  !insertmacro MUI_LANGUAGE "Italian"
-  !include ".\I18N\pwsafe_it.lng"
-!endif
-!ifdef LANGUAGE_DANISH
+;  !insertmacro MUI_LANGUAGE "Italian"
+;  !include ".\I18N\pwsafe_it.lng"
   !insertmacro MUI_LANGUAGE "Danish"
   !include ".\I18N\pwsafe_dk.lng"
-!endif
 
 ; English texts here
 ; Note that if we add a string, it needs to be added in all the
@@ -322,47 +290,27 @@ Section "$(PROGRAM_FILES)" ProgramFiles
   File "..\xml\pwsafe.xsl"
   File "..\xml\pwsafe_filter.xsd"
 
-  
-!ifdef LANGUAGE_CHINESE
+; Language-specific files  
   File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeZH.dll"
   File /nonfatal "..\help\pwsafeZH\pwsafeZH.chm"
-!endif
-!ifdef LANGUAGE_GERMAN
   File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeDE.dll"
   File /nonfatal "..\help\pwsafeDE\pwsafeDE.chm"
-!endif
-!ifdef LANGUAGE_SPANISH
   File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeES.dll"
   File /nonfatal "..\help\pwsafeES\pwsafeES.chm"
-!endif
-!ifdef LANGUAGE_SWEDISH
   File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeSV.dll"
   File /nonfatal "..\help\pwsafeSV\pwsafeSV.chm"
-!endif
-!ifdef LANGUAGE_DUTCH
   File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeNL.dll"
   File /nonfatal "..\help\pwsafeNL\pwsafeNL.chm"
-!endif
-!ifdef LANGUAGE_FRENCH
   File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeFR.dll"
   File /nonfatal "..\help\pwsafeFR\pwsafeFR.chm"
-!endif
-!ifdef LANGUAGE_RUSSIAN
   File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeRU.dll"
   File /nonfatal "..\help\pwsafeRU\pwsafeRU.chm"
-!endif
-!ifdef LANGUAGE_POLISH
   File /nonfatal "..\build\bin\pwsafe\I18N\pwsafePL.dll"
   File /nonfatal "..\help\pwsafePL\pwsafePL.chm"
-!endif
-!ifdef LANGUAGE_ITALIAN
   File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeIT.dll"
   File /nonfatal "..\help\pwsafeIT\pwsafeIT.chm"
-!endif
-!ifdef LANGUAGE_DANISH
   File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeDA.dll"
   File /nonfatal "..\help\pwsafeDA\pwsafeDA.chm"
-!endif
 
   Goto dont_install_Win98
   ; If installing under Windows98, delete pwsafe.exe, rename
@@ -378,530 +326,270 @@ Section "$(PROGRAM_FILES)" ProgramFiles
   lbl_cont:
 dont_install_Win98:
 
-!ifdef LANGUAGE_CHINESE
   IntCmp $PROG_LANGUAGE 2052 languageChinese
-!endif
-!ifdef LANGUAGE_SPANISH
   IntCmp $PROG_LANGUAGE 1034 languageSpanish
-!endif
-!ifdef LANGUAGE_GERMAN
   IntCmp $PROG_LANGUAGE 1031 languageGerman
-!endif
-!ifdef LANGUAGE_SWEDISH
   IntCmp $PROG_LANGUAGE 1053 languageSwedish
-!endif
-!ifdef LANGUAGE_DUTCH
   IntCmp $PROG_LANGUAGE 1043 languageDutch
-!endif
-!ifdef LANGUAGE_FRENCH
   IntCmp $PROG_LANGUAGE 1036 languageFrench
-!endif
-!ifdef LANGUAGE_RUSSIAN
   IntCmp $PROG_LANGUAGE 1049 languageRussian
-!endif
-!ifdef LANGUAGE_POLISH
   IntCmp $PROG_LANGUAGE 1045 languagePolish
-!endif
-!ifdef LANGUAGE_ITALIAN
   IntCmp $PROG_LANGUAGE 1040 languageItalian
-!endif
-!ifdef LANGUAGE_DANISH
   IntCmp $PROG_LANGUAGE 1030 languageDanish
-!endif
 ; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -    
 ; if language = english or "other" : remove all languageXX_XX.DLL
 ; else : English or no specific language
-!ifdef LANGUAGE_GERMAN
     Delete $INSTDIR\pwsafeDE.dll
     Delete $INSTDIR\pwsafeDE.chm
-!endif
-!ifdef LANGUAGE_CHINESE
     Delete $INSTDIR\pwsafeZH.dll
     Delete $INSTDIR\pwsafeZH.chm
-!endif
-!ifdef LANGUAGE_SPANISH
     Delete $INSTDIR\pwsafeES.dll
     Delete $INSTDIR\pwsafeES.chm
-!endif
-!ifdef LANGUAGE_SWEDISH
     Delete $INSTDIR\pwsafeSV.dll
     Delete $INSTDIR\pwsafeSV.chm
-!endif
-!ifdef LANGUAGE_DUTCH
     Delete $INSTDIR\pwsafeNL.dll
     Delete $INSTDIR\pwsafeNL.chm
-!endif
-!ifdef LANGUAGE_FRENCH
     Delete $INSTDIR\pwsafeFR.dll
     Delete $INSTDIR\pwsafeFR.chm
-!endif
-!ifdef LANGUAGE_RUSSIAN
     Delete $INSTDIR\pwsafeRU.dll
     Delete $INSTDIR\pwsafeRU.chm
-!endif
-!ifdef LANGUAGE_POLISH
     Delete $INSTDIR\pwsafePL.dll
     Delete $INSTDIR\pwsafePL.chm
-!endif
-!ifdef LANGUAGE_ITALIAN
     Delete $INSTDIR\pwsafeIT.dll
     Delete $INSTDIR\pwsafeIT.chm
-!endif
-!ifdef LANGUAGE_DANISH
     Delete $INSTDIR\pwsafeDA.dll
     Delete $INSTDIR\pwsafeDA.chm
-!endif
     goto languageDone
 ; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -    
-!ifdef LANGUAGE_GERMAN
 languageGerman:
-!ifdef LANGUAGE_GERMAN
 ;    Delete $INSTDIR\pwsafeDE.dll
 ;    Delete $INSTDIR\pwsafeDE.chm
-!endif
-!ifdef LANGUAGE_CHINESE
     Delete $INSTDIR\pwsafeZH.dll
     Delete $INSTDIR\pwsafeZH.chm
-!endif
-!ifdef LANGUAGE_SPANISH
     Delete $INSTDIR\pwsafeES.dll
     Delete $INSTDIR\pwsafeES.chm
-!endif
-!ifdef LANGUAGE_SWEDISH
     Delete $INSTDIR\pwsafeSV.dll
     Delete $INSTDIR\pwsafeSV.chm
-!endif
-!ifdef LANGUAGE_DUTCH
     Delete $INSTDIR\pwsafeNL.dll
     Delete $INSTDIR\pwsafeNL.chm
-!endif
-!ifdef LANGUAGE_FRENCH
     Delete $INSTDIR\pwsafeFR.dll
     Delete $INSTDIR\pwsafeFR.chm
-!endif
-!ifdef LANGUAGE_RUSSIAN
     Delete $INSTDIR\pwsafeRU.dll
     Delete $INSTDIR\pwsafeRU.chm
-!endif
-!ifdef LANGUAGE_POLISH
     Delete $INSTDIR\pwsafePL.dll
     Delete $INSTDIR\pwsafePL.chm
-!endif
-!ifdef LANGUAGE_ITALIAN
     Delete $INSTDIR\pwsafeIT.dll
     Delete $INSTDIR\pwsafeIT.chm
-!endif
-!ifdef LANGUAGE_DANISH
     Delete $INSTDIR\pwsafeDA.dll
     Delete $INSTDIR\pwsafeDA.chm
-!endif
     goto languageDone
-!endif
 ; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -    
-!ifdef LANGUAGE_CHINESE
 languageCHINESE:
-!ifdef LANGUAGE_GERMAN
     Delete $INSTDIR\pwsafeDE.dll
     Delete $INSTDIR\pwsafeDE.chm
-!endif
-!ifdef LANGUAGE_CHINESE
 ;    Delete $INSTDIR\pwsafeZH.dll
 ;    Delete $INSTDIR\pwsafeZH.chm
-!endif
-!ifdef LANGUAGE_SPANISH
     Delete $INSTDIR\pwsafeES.dll
     Delete $INSTDIR\pwsafeES.chm
-!endif
-!ifdef LANGUAGE_SWEDISH
     Delete $INSTDIR\pwsafeSV.dll
     Delete $INSTDIR\pwsafeSV.chm
-!endif
-!ifdef LANGUAGE_DUTCH
     Delete $INSTDIR\pwsafeNL.dll
     Delete $INSTDIR\pwsafeNL.chm
-!endif
-!ifdef LANGUAGE_FRENCH
     Delete $INSTDIR\pwsafeFR.dll
     Delete $INSTDIR\pwsafeFR.chm
-!endif
-!ifdef LANGUAGE_RUSSIAN
     Delete $INSTDIR\pwsafeRU.dll
     Delete $INSTDIR\pwsafeRU.chm
-!endif
-!ifdef LANGUAGE_POLISH
     Delete $INSTDIR\pwsafePL.dll
     Delete $INSTDIR\pwsafePL.chm
-!endif
-!ifdef LANGUAGE_ITALIAN
     Delete $INSTDIR\pwsafeIT.dll
     Delete $INSTDIR\pwsafeIT.chm
-!endif
-!ifdef LANGUAGE_DANISH
     Delete $INSTDIR\pwsafeDA.dll
     Delete $INSTDIR\pwsafeDA.chm
-!endif
     goto languageDone
-!endif
 ; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -    
-!ifdef LANGUAGE_SPANISH
 languageSpanish:
-!ifdef LANGUAGE_GERMAN
     Delete $INSTDIR\pwsafeDE.dll
     Delete $INSTDIR\pwsafeDE.chm
-!endif
-!ifdef LANGUAGE_CHINESE
     Delete $INSTDIR\pwsafeZH.dll
     Delete $INSTDIR\pwsafeZH.chm
-!endif
-!ifdef LANGUAGE_SPANISH
 ;    Delete $INSTDIR\pwsafeES.dll
 ;    Delete $INSTDIR\pwsafeES.chm
-!endif
-!ifdef LANGUAGE_SWEDISH
     Delete $INSTDIR\pwsafeSV.dll
     Delete $INSTDIR\pwsafeSV.chm
-!endif
-!ifdef LANGUAGE_DUTCH
     Delete $INSTDIR\pwsafeNL.dll
     Delete $INSTDIR\pwsafeNL.chm
-!endif
-!ifdef LANGUAGE_FRENCH
     Delete $INSTDIR\pwsafeFR.dll
     Delete $INSTDIR\pwsafeFR.chm
-!endif
-!ifdef LANGUAGE_RUSSIAN
     Delete $INSTDIR\pwsafeRU.dll
     Delete $INSTDIR\pwsafeRU.chm
-!endif
-!ifdef LANGUAGE_POLISH
     Delete $INSTDIR\pwsafePL.dll
     Delete $INSTDIR\pwsafePL.chm
-!endif
-!ifdef LANGUAGE_ITALIAN
     Delete $INSTDIR\pwsafeIT.dll
     Delete $INSTDIR\pwsafeIT.chm
-!endif
-!ifdef LANGUAGE_DANISH
     Delete $INSTDIR\pwsafeDA.dll
     Delete $INSTDIR\pwsafeDA.chm
-!endif
     goto languageDone
-!endif
 ; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -    
-!ifdef LANGUAGE_SWEDISH
 languageSwedish:
-!ifdef LANGUAGE_GERMAN
     Delete $INSTDIR\pwsafeDE.dll
     Delete $INSTDIR\pwsafeDE.chm
-!endif
-!ifdef LANGUAGE_CHINESE
     Delete $INSTDIR\pwsafeZH.dll
     Delete $INSTDIR\pwsafeZH.chm
-!endif
-!ifdef LANGUAGE_SPANISH
     Delete $INSTDIR\pwsafeES.dll
     Delete $INSTDIR\pwsafeES.chm
-!endif
-!ifdef LANGUAGE_SWEDISH
 ;    Delete $INSTDIR\pwsafeSV.dll
 ;    Delete $INSTDIR\pwsafeSV.chm
-!endif
-!ifdef LANGUAGE_DUTCH
     Delete $INSTDIR\pwsafeNL.dll
     Delete $INSTDIR\pwsafeNL.chm
-!endif
-!ifdef LANGUAGE_FRENCH
     Delete $INSTDIR\pwsafeFR.dll
     Delete $INSTDIR\pwsafeFR.chm
-!endif
-!ifdef LANGUAGE_RUSSIAN
     Delete $INSTDIR\pwsafeRU.dll
     Delete $INSTDIR\pwsafeRU.chm
-!endif
-!ifdef LANGUAGE_POLISH
     Delete $INSTDIR\pwsafePL.dll
     Delete $INSTDIR\pwsafePL.chm
-!endif
-!ifdef LANGUAGE_ITALIAN
     Delete $INSTDIR\pwsafeIT.dll
     Delete $INSTDIR\pwsafeIT.chm
-!endif
-!ifdef LANGUAGE_DANISH
     Delete $INSTDIR\pwsafeDA.dll
     Delete $INSTDIR\pwsafeDA.chm
-!endif
     goto languageDone
-!endif
 ; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -    
-!ifdef LANGUAGE_DUTCH
 languageDutch:
-!ifdef LANGUAGE_GERMAN
     Delete $INSTDIR\pwsafeDE.dll
     Delete $INSTDIR\pwsafeDE.chm
-!endif
-!ifdef LANGUAGE_CHINESE
     Delete $INSTDIR\pwsafeZH.dll
     Delete $INSTDIR\pwsafeZH.chm
-!endif
-!ifdef LANGUAGE_SPANISH
     Delete $INSTDIR\pwsafeES.dll
     Delete $INSTDIR\pwsafeES.chm
-!endif
-!ifdef LANGUAGE_SWEDISH
     Delete $INSTDIR\pwsafeSV.dll
     Delete $INSTDIR\pwsafeSV.chm
-!endif
-!ifdef LANGUAGE_DUTCH
 ;    Delete $INSTDIR\pwsafeNL.dll
 ;    Delete $INSTDIR\pwsafeNL.chm
-!endif
-!ifdef LANGUAGE_FRENCH
     Delete $INSTDIR\pwsafeFR.dll
     Delete $INSTDIR\pwsafeFR.chm
-!endif
-!ifdef LANGUAGE_RUSSIAN
     Delete $INSTDIR\pwsafeRU.dll
     Delete $INSTDIR\pwsafeRU.chm
-!endif
-!ifdef LANGUAGE_POLISH
     Delete $INSTDIR\pwsafePL.dll
     Delete $INSTDIR\pwsafePL.chm
-!endif
-!ifdef LANGUAGE_ITALIAN
     Delete $INSTDIR\pwsafeIT.dll
     Delete $INSTDIR\pwsafeIT.chm
-!endif
- !ifdef LANGUAGE_DANISH
     Delete $INSTDIR\pwsafeDA.dll
     Delete $INSTDIR\pwsafeDA.chm
-!endif
    goto languageDone
-!endif
 ; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -    
-!ifdef LANGUAGE_FRENCH
 languageFrench:
-!ifdef LANGUAGE_GERMAN
     Delete $INSTDIR\pwsafeDE.dll
     Delete $INSTDIR\pwsafeDE.chm
-!endif
-!ifdef LANGUAGE_CHINESE
     Delete $INSTDIR\pwsafeZH.dll
     Delete $INSTDIR\pwsafeZH.chm
-!endif
-!ifdef LANGUAGE_SPANISH
     Delete $INSTDIR\pwsafeES.dll
     Delete $INSTDIR\pwsafeES.chm
-!endif
-!ifdef LANGUAGE_SWEDISH
     Delete $INSTDIR\pwsafeSV.dll
     Delete $INSTDIR\pwsafeSV.chm
-!endif
-!ifdef LANGUAGE_DUTCH
     Delete $INSTDIR\pwsafeNL.dll
     Delete $INSTDIR\pwsafeNL.chm
-!endif
-!ifdef LANGUAGE_FRENCH
 ;    Delete $INSTDIR\pwsafeFR.dll
 ;    Delete $INSTDIR\pwsafeFR.chm
-!endif
-!ifdef LANGUAGE_RUSSIAN
     Delete $INSTDIR\pwsafeRU.dll
     Delete $INSTDIR\pwsafeRU.chm
-!endif
-!ifdef LANGUAGE_POLISH
     Delete $INSTDIR\pwsafePL.dll
     Delete $INSTDIR\pwsafePL.chm
-!endif
-!ifdef LANGUAGE_ITALIAN
     Delete $INSTDIR\pwsafeIT.dll
     Delete $INSTDIR\pwsafeIT.chm
-!endif
-!ifdef LANGUAGE_DANISH
     Delete $INSTDIR\pwsafeDA.dll
     Delete $INSTDIR\pwsafeDA.chm
-!endif
     goto languageDone
-!endif
 ; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -    
-!ifdef LANGUAGE_RUSSIAN
 languageRussian:
-!ifdef LANGUAGE_GERMAN
     Delete $INSTDIR\pwsafeDE.dll
     Delete $INSTDIR\pwsafeDE.chm
-!endif
-!ifdef LANGUAGE_CHINESE
     Delete $INSTDIR\pwsafeZH.dll
     Delete $INSTDIR\pwsafeZH.chm
-!endif
-!ifdef LANGUAGE_SPANISH
     Delete $INSTDIR\pwsafeES.dll
     Delete $INSTDIR\pwsafeES.chm
-!endif
-!ifdef LANGUAGE_SWEDISH
     Delete $INSTDIR\pwsafeSV.dll
     Delete $INSTDIR\pwsafeSV.chm
-!endif
-!ifdef LANGUAGE_DUTCH
     Delete $INSTDIR\pwsafeNL.dll
     Delete $INSTDIR\pwsafeNL.chm
-!endif
-!ifdef LANGUAGE_FRENCH
     Delete $INSTDIR\pwsafeFR.dll
     Delete $INSTDIR\pwsafeFR.chm
-!endif
-!ifdef LANGUAGE_RUSSIAN
 ;    Delete $INSTDIR\pwsafeRU.dll
 ;    Delete $INSTDIR\pwsafeRU.chm
-!endif
-!ifdef LANGUAGE_POLISH
     Delete $INSTDIR\pwsafePL.dll
     Delete $INSTDIR\pwsafePL.chm
-!endif
-!ifdef LANGUAGE_ITALIAN
     Delete $INSTDIR\pwsafeIT.dll
     Delete $INSTDIR\pwsafeIT.chm
-!endif
-!ifdef LANGUAGE_DANISH
     Delete $INSTDIR\pwsafeDA.dll
     Delete $INSTDIR\pwsafeDA.chm
-!endif
     goto languageDone
-!endif
 ; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -    
-!ifdef LANGUAGE_POLISH
 languagePolish:
-!ifdef LANGUAGE_GERMAN
     Delete $INSTDIR\pwsafeDE.dll
     Delete $INSTDIR\pwsafeDE.chm
-!endif
-!ifdef LANGUAGE_CHINESE
     Delete $INSTDIR\pwsafeZH.dll
     Delete $INSTDIR\pwsafeZH.chm
-!endif
-!ifdef LANGUAGE_SPANISH
     Delete $INSTDIR\pwsafeES.dll
     Delete $INSTDIR\pwsafeES.chm
-!endif
-!ifdef LANGUAGE_SWEDISH
     Delete $INSTDIR\pwsafeSV.dll
     Delete $INSTDIR\pwsafeSV.chm
-!endif
-!ifdef LANGUAGE_DUTCH
     Delete $INSTDIR\pwsafeNL.dll
     Delete $INSTDIR\pwsafeNL.chm
-!endif
-!ifdef LANGUAGE_FRENCH
     Delete $INSTDIR\pwsafeFR.dll
     Delete $INSTDIR\pwsafeFR.chm
-!endif
-!ifdef LANGUAGE_RUSSIAN
     Delete $INSTDIR\pwsafeRU.dll
     Delete $INSTDIR\pwsafeRU.chm
-!endif
-!ifdef LANGUAGE_POLISH
 ;    Delete $INSTDIR\pwsafePL.dll
 ;    Delete $INSTDIR\pwsafePL.chm
-!endif
-!ifdef LANGUAGE_ITALIAN
     Delete $INSTDIR\pwsafeIT.dll
     Delete $INSTDIR\pwsafeIT.chm
-!endif
-!ifdef LANGUAGE_DANISH
     Delete $INSTDIR\pwsafeDA.dll
     Delete $INSTDIR\pwsafeDA.chm
-!endif
     goto languageDone
-!endif
 ; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -    
-!ifdef LANGUAGE_ITALIAN
 languageItalian:
-!ifdef LANGUAGE_GERMAN
     Delete $INSTDIR\pwsafeDE.dll
     Delete $INSTDIR\pwsafeDE.chm
-!endif
-!ifdef LANGUAGE_CHINESE
     Delete $INSTDIR\pwsafeZH.dll
     Delete $INSTDIR\pwsafeZH.chm
-!endif
-!ifdef LANGUAGE_SPANISH
     Delete $INSTDIR\pwsafeES.dll
     Delete $INSTDIR\pwsafeES.chm
-!endif
-!ifdef LANGUAGE_SWEDISH
     Delete $INSTDIR\pwsafeSV.dll
     Delete $INSTDIR\pwsafeSV.chm
-!endif
-!ifdef LANGUAGE_DUTCH
     Delete $INSTDIR\pwsafeNL.dll
     Delete $INSTDIR\pwsafeNL.chm
-!endif
-!ifdef LANGUAGE_FRENCH
     Delete $INSTDIR\pwsafeFR.dll
     Delete $INSTDIR\pwsafeFR.chm
-!endif
-!ifdef LANGUAGE_RUSSIAN
     Delete $INSTDIR\pwsafeRU.dll
     Delete $INSTDIR\pwsafeRU.chm
-!endif
-!ifdef LANGUAGE_POLISH
     Delete $INSTDIR\pwsafePL.dll
     Delete $INSTDIR\pwsafePL.chm
-!endif
-!ifdef LANGUAGE_ITALIAN
 ;    Delete $INSTDIR\pwsafeIT.dll
 ;    Delete $INSTDIR\pwsafeIT.chm
-!endif
-!ifdef LANGUAGE_DANISH
     Delete $INSTDIR\pwsafeDA.dll
     Delete $INSTDIR\pwsafeDA.chm
-!endif
     goto languageDone
-!endif
 ; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -    
-!ifdef LANGUAGE_DANISH
 languageDanish:
-!ifdef LANGUAGE_GERMAN
     Delete $INSTDIR\pwsafeDE.dll
     Delete $INSTDIR\pwsafeDE.chm
-!endif
-!ifdef LANGUAGE_CHINESE
     Delete $INSTDIR\pwsafeZH.dll
     Delete $INSTDIR\pwsafeZH.chm
-!endif
-!ifdef LANGUAGE_SPANISH
     Delete $INSTDIR\pwsafeES.dll
     Delete $INSTDIR\pwsafeES.chm
-!endif
-!ifdef LANGUAGE_SWEDISH
     Delete $INSTDIR\pwsafeSV.dll
     Delete $INSTDIR\pwsafeSV.chm
-!endif
-!ifdef LANGUAGE_DUTCH
     Delete $INSTDIR\pwsafeNL.dll
     Delete $INSTDIR\pwsafeNL.chm
-!endif
-!ifdef LANGUAGE_FRENCH
     Delete $INSTDIR\pwsafeFR.dll
     Delete $INSTDIR\pwsafeFR.chm
-!endif
-!ifdef LANGUAGE_RUSSIAN
     Delete $INSTDIR\pwsafeRU.dll
     Delete $INSTDIR\pwsafeRU.chm
-!endif
-!ifdef LANGUAGE_POLISH
     Delete $INSTDIR\pwsafePL.dll
     Delete $INSTDIR\pwsafePL.chm
-!endif
-!ifdef LANGUAGE_ITALIAN
     Delete $INSTDIR\pwsafeIT.dll
     Delete $INSTDIR\pwsafeIT.chm
-!endif
-!ifdef LANGUAGE_DANISH
 ;    Delete $INSTDIR\pwsafeDA.dll
 ;    Delete $INSTDIR\pwsafeDA.chm
-!endif
     goto languageDone
-!endif
 ; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -    
 languageDone:
 
@@ -954,88 +642,48 @@ Section "$(START_SHOW)" StartMenu
 
   CreateShortCut "$SMPROGRAMS\Password Safe\Password Safe Help.lnk" "$INSTDIR\pwsafe.chm"
   
-!ifdef LANGUAGE_CHINESE
   IntCmp $PROG_LANGUAGE 2052 useLanguageChinese
-!endif
-!ifdef LANGUAGE_SPANISH
   IntCmp $PROG_LANGUAGE 1034 useLanguageSpanish
-!endif
-!ifdef LANGUAGE_GERMAN
   IntCmp $PROG_LANGUAGE 1031 useLanguageGerman
-!endif
-!ifdef LANGUAGE_SWEDISH
   IntCmp $PROG_LANGUAGE 1053 useLanguageSwedish
-!endif
-!ifdef LANGUAGE_DUTCH
   IntCmp $PROG_LANGUAGE 1043 useLanguageDutch
-!endif
-!ifdef LANGUAGE_FRENCH
   IntCmp $PROG_LANGUAGE 1036 useLanguageFrench
-!endif
-!ifdef LANGUAGE_RUSSIAN
   IntCmp $PROG_LANGUAGE 1049 useLanguageRussian
-!endif
-!ifdef LANGUAGE_POLISH
   IntCmp $PROG_LANGUAGE 1045 useLanguagePolish
-!endif
-!ifdef LANGUAGE_ITALIAN
   IntCmp $PROG_LANGUAGE 1040 useLanguageItalian
-!endif
-!ifdef LANGUAGE_DANISH
   IntCmp $PROG_LANGUAGE 1030 useLanguageDanish
-!endif
   Goto languageChoicedone
 
-!ifdef LANGUAGE_CHINESE
 useLanguageChinese:
   CreateShortCut "$SMPROGRAMS\Password Safe\Password Safe Help ZH.lnk" "$INSTDIR\pwsafeZH.chm"
   Goto languageChoicedone
-!endif
-!ifdef LANGUAGE_SPANISH
 useLanguageSpanish:
   CreateShortCut "$SMPROGRAMS\Password Safe\Password Safe Help ES.lnk" "$INSTDIR\pwsafeES.chm"
   Goto languageChoicedone
-!endif
-!ifdef LANGUAGE_GERMAN
 useLanguageGerman:
   CreateShortCut "$SMPROGRAMS\Password Safe\Password Safe Help DE.lnk" "$INSTDIR\pwsafeDE.chm"
   Goto languageChoicedone
-!endif
-!ifdef LANGUAGE_SWEDISH
 useLanguageSwedish:
   CreateShortCut "$SMPROGRAMS\Password Safe\Password Safe Help SV.lnk" "$INSTDIR\pwsafeSV.chm"
   Goto languageChoicedone
-!endif
-!ifdef LANGUAGE_DUTCH
 useLanguageDutch:
   CreateShortCut "$SMPROGRAMS\Password Safe\Password Safe Help NL.lnk" "$INSTDIR\pwsafeNL.chm"
   Goto languageChoicedone
-!endif
-!ifdef LANGUAGE_FRENCH
 useLanguageFrench:
   CreateShortCut "$SMPROGRAMS\Password Safe\Password Safe Help FR.lnk" "$INSTDIR\pwsafeFR.chm"
   Goto languageChoicedone
-!endif
-!ifdef LANGUAGE_RUSSIAN
 useLanguageRussian:
   CreateShortCut "$SMPROGRAMS\Password Safe\Password Safe Help RU.lnk" "$INSTDIR\pwsafeRU.chm"
   Goto languageChoicedone
-!endif
-!ifdef LANGUAGE_POLISH
 useLanguagePolish:
   CreateShortCut "$SMPROGRAMS\Password Safe\Password Safe Help PL.lnk" "$INSTDIR\pwsafePL.chm"
   Goto languageChoicedone
-!endif
-!ifdef LANGUAGE_ITALIAN
 useLanguageItalian:
   CreateShortCut "$SMPROGRAMS\Password Safe\Password Safe Help IT.lnk" "$INSTDIR\pwsafeIT.chm"
   Goto languageChoicedone
-!endif
-!ifdef LANGUAGE_DANISH
 useLanguageDanish:
   CreateShortCut "$SMPROGRAMS\Password Safe\Password Safe Help DA.lnk" "$INSTDIR\pwsafeDA.chm"
   Goto languageChoicedone
-!endif
 
 languageChoicedone:
 SectionEnd
@@ -1100,46 +748,26 @@ Section "Uninstall"
   Delete "$INSTDIR\ReleaseNotes.txt"
   Delete "$INSTDIR\ReleaseNotes.html"
   Delete "$INSTDIR\ChangeLog.txt"
-!ifdef LANGUAGE_GERMAN
   Delete "$INSTDIR\pwsafeDE.dll"
   Delete "$INSTDIR\pwsafeDE.chm"
-!endif
-!ifdef LANGUAGE_CHINESE
   Delete "$INSTDIR\pwsafeZH.dll"
   Delete "$INSTDIR\pwsafeZH.chm"
-!endif
-!ifdef LANGUAGE_SPANISH
   Delete "$INSTDIR\pwsafeES.dll"
   Delete "$INSTDIR\pwsafeES.chm"
-!endif
-!ifdef LANGUAGE_SWEDISH
   Delete "$INSTDIR\pwsafeSV.dll"
   Delete "$INSTDIR\pwsafeSV.chm"
-!endif
-!ifdef LANGUAGE_DUTCH
   Delete "$INSTDIR\pwsafeNL.dll"
   Delete "$INSTDIR\pwsafeNL.chm"
-!endif
-!ifdef LANGUAGE_FRENCH
   Delete "$INSTDIR\pwsafeFR.dll"
   Delete "$INSTDIR\pwsafeFR.chm"
-!endif
-!ifdef LANGUAGE_RUSSIAN
   Delete "$INSTDIR\pwsafeRU.dll"
   Delete "$INSTDIR\pwsafeRU.chm"
-!endif
-!ifdef LANGUAGE_POLISH
   Delete "$INSTDIR\pwsafePL.dll"
   Delete "$INSTDIR\pwsafePL.chm"
-!endif
-!ifdef LANGUAGE_ITALIAN
   Delete "$INSTDIR\pwsafeIT.dll"
   Delete "$INSTDIR\pwsafeIT.chm"
-!endif
-!ifdef LANGUAGE_DANISH
   Delete "$INSTDIR\pwsafeDA.dll"
   Delete "$INSTDIR\pwsafeDA.chm"
-!endif
 
   ; remove directory if it's empty
   RMDir  "$INSTDIR"
@@ -1199,82 +827,30 @@ Function .onInit
   ;Language selection dialog
   ; (1) Installation language
 
-!ifdef LANGUAGE_GERMAN
-  goto extraLanguage
-!endif
-!ifdef LANGUAGE_CHINESE
-  goto extraLanguage
-!endif
-!ifdef LANGUAGE_SPANISH
-  goto extraLanguage
-!endif
-!ifdef LANGUAGE_SWEDISH
-  goto extraLanguage
-!endif
-!ifdef LANGUAGE_DUTCH
-  goto extraLanguage
-!endif
-!ifdef LANGUAGE_FRENCH
-  goto extraLanguage
-!endif
-!ifdef LANGUAGE_RUSSIAN
-  goto extraLanguage
-!endif
-!ifdef LANGUAGE_POLISH
-  goto extraLanguage
-!endif
-!ifdef LANGUAGE_ITALIAN
-  goto extraLanguage
-!endif
-!ifdef LANGUAGE_DANISH
-  goto extraLanguage
-!endif
-  goto NOextraLanguage
  
-extraLanguage:  
   Push ""
   Push ${LANG_ENGLISH}
   Push English
-!ifdef LANGUAGE_GERMAN
   Push ${LANG_GERMAN}
   Push Deutsch
-!endif
-!ifdef LANGUAGE_CHINESE
   Push ${LANG_SIMPCHINESE}
   Push Chinese
-!endif
-!ifdef LANGUAGE_SPANISH
   Push ${LANG_SPANISH}
   Push Espanol
-!endif
-!ifdef LANGUAGE_SWEDISH
   Push ${LANG_SWEDISH}
   Push Svensk
-!endif
-!ifdef LANGUAGE_DUTCH
   Push ${LANG_DUTCH}
   Push Dutch
-!endif
-!ifdef LANGUAGE_FRENCH
   Push ${LANG_FRENCH}
   Push Francais
-!endif
-!ifdef LANGUAGE_RUSSIAN
   Push ${LANG_RUSSIAN}
   Push Russian
-!endif
-!ifdef LANGUAGE_POLISH
   Push ${LANG_POLISH}
   Push Polska
-!endif
-!ifdef LANGUAGE_ITALIAN
-  Push ${LANG_ITALIAN}
-  Push Italiano
-!endif
-!ifdef LANGUAGE_DANISH
+;  Push ${LANG_ITALIAN}
+;  Push Italiano
   Push ${LANG_DANISH}
   Push Dansk
-!endif
   Push A ; A means auto count languages
          ; for the auto count to work the first empty push (Push "") must remain
   LangDLL::LangDialog $(LANG_INSTALL) $(LANG_SELECT)
@@ -1284,82 +860,30 @@ extraLanguage:
   Abort
   
   ; (2) Password Safe language
-!ifdef LANGUAGE_GERMAN
-  goto programLanguage
-!endif
-!ifdef LANGUAGE_CHINESE
-  goto programLanguage
-!endif
-!ifdef LANGUAGE_SPANISH
-  goto programLanguage
-!endif
-!ifdef LANGUAGE_SWEDISH
-  goto programLanguage
-!endif
-!ifdef LANGUAGE_DUTCH
-  goto programLanguage
-!endif
-!ifdef LANGUAGE_FRENCH
-  goto programLanguage
-!endif
-!ifdef LANGUAGE_RUSSIAN
-  goto programLanguage
-!endif
-!ifdef LANGUAGE_POLISH
-  goto programLanguage
-!endif
-!ifdef LANGUAGE_ITALIAN
-  goto programLanguage
-!endif
-!ifdef LANGUAGE_DANISH
-  goto programLanguage
-!endif
-  goto NOprogramLanguage
  
-programLanguage:  
   Push ""
   Push ${LANG_ENGLISH}
   Push English
-!ifdef LANGUAGE_GERMAN
   Push ${LANG_GERMAN}
   Push Deutsch
-!endif
-!ifdef LANGUAGE_CHINESE
   Push ${LANG_SIMPCHINESE}
   Push Chinese
-!endif
-!ifdef LANGUAGE_SPANISH
   Push ${LANG_SPANISH}
   Push Espanol
-!endif
-!ifdef LANGUAGE_SWEDISH
   Push ${LANG_SWEDISH}
   Push Svensk
-!endif
-!ifdef LANGUAGE_DUTCH
   Push ${LANG_DUTCH}
   Push Dutch
-!endif
-!ifdef LANGUAGE_FRENCH
   Push ${LANG_FRENCH}
   Push Francais
-!endif
-!ifdef LANGUAGE_RUSSIAN
   Push ${LANG_RUSSIAN}
   Push Russian
-!endif
-!ifdef LANGUAGE_POLISH
   Push ${LANG_POLISH}
   Push Polska
-!endif
-!ifdef LANGUAGE_ITALIAN
-  Push ${LANG_ITALIAN}
-  Push Italiano
-!endif
-!ifdef LANGUAGE_DANISH
+;  Push ${LANG_ITALIAN}
+;  Push Italiano
   Push ${LANG_DANISH}
   Push Dansk
-!endif
   Push A ; A means auto count languages
          ; for the auto count to work the first empty push (Push "") must remain
   LangDLL::LangDialog $(LANG_PROGRAM) $(LANG_P_SELECT)
@@ -1379,9 +903,6 @@ is_win98:
 is_winME:
   MessageBox MB_OK|MB_ICONSTOP $(SORRY_NO_ME)
   Quit
-NOextraLanguage:
-NOprogramLanguage:
-
 FunctionEnd
 
 Function GreenOrRegular
