@@ -18,11 +18,12 @@
 
 POS = pwsafe.pot pos/pwsafe_sv.po pos/pwsafe_es.po pos/pwsafe_de.po \
 	pos/pwsafe_pl.po pos/pwsafe_zh.po pos/pwsafe_ru.po \
-	pos/pwsafe_it.po pos/pwsafe_fr.po pos/pwsafe_dk.po
+	pos/pwsafe_it.po pos/pwsafe_fr.po pos/pwsafe_dk.po \
+	pos/pwsafe_kr.po
 
 DLL_LIST = pwsafeSV.dll pwsafeES.dll pwsafeDE.dll \
 	pwsafePL.dll pwsafeZH.dll pwsafeRU.dll pwsafeIT.dll pwsafeFR.dll \
-	pwsafeDA.dll
+	pwsafeDA.dll pwsafeKR.dll
 
 DEST_DIR = ../../../../build/bin/pwsafe/I18N
 DLLS = $(DLL_LIST:%=$(DEST_DIR)/%)
@@ -90,6 +91,12 @@ $(DEST_DIR)/pwsafeDA.dll : pos/pwsafe_dk.po
 	$(RESTEXT) apply $(BASE_DLL) foo.dll ./$^; \
 	$(RESPWSL) apply foo.dll 0x0406; \
 	$(RM) foo.dll; $(MV) pwsafeDA_DK.dll $(DEST_DIR)/pwsafeDA.dll
+	$(CHMOD) 755 $@
+
+$(DEST_DIR)/pwsafeKR.dll : pos/pwsafe_kr.po
+	$(RESTEXT) apply $(BASE_DLL) foo.dll ./$^; \
+	$(RESPWSL) apply foo.dll 0x0412; \
+	$(RM) foo.dll; $(MV) pwsafeKO_KR.dll $(DEST_DIR)/pwsafeKR.dll
 	$(CHMOD) 755 $@
 
 # No need to change anything below this line
