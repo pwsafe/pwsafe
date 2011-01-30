@@ -394,8 +394,8 @@ private:
   ofstream &m_of;
   unsigned m_id;
   PWScore *m_pcore;
-  CReport *m_prpt;
   int &m_numExported;
+  CReport *m_prpt;
 };
 
 int PWScore::WriteXMLFile(const StringX &filename,
