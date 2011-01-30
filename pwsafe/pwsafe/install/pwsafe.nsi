@@ -181,6 +181,8 @@
   !include ".\I18N\pwsafe_de.lng"
   !insertmacro MUI_LANGUAGE "SimpChinese"
   !include ".\I18N\pwsafe_zh.lng"
+  !insertmacro MUI_LANGUAGE "TradChinese"
+  !include ".\I18N\pwsafe_zh_tw.lng"
   !insertmacro MUI_LANGUAGE "Spanish"
   !include ".\I18N\pwsafe_es.lng"
   !insertmacro MUI_LANGUAGE "Swedish"
@@ -834,7 +836,9 @@ Function .onInit
   Push ${LANG_GERMAN}
   Push Deutsch
   Push ${LANG_SIMPCHINESE}
-  Push Chinese
+  Push "Chinese (Simplified)"
+  Push ${LANG_TRADCHINESE}
+  Push "Chinese (Traditional)"
   Push ${LANG_SPANISH}
   Push Espanol
   Push ${LANG_SWEDISH}
