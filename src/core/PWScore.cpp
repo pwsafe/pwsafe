@@ -2151,7 +2151,7 @@ bool PWScore::SetUIInterFace(UIInterFace *pUIIF, size_t numsupported,
   if (numsupported == UIInterFace::NUM_SUPPORTED) {
     m_bsSupportedFunctions = bsSupportedFunctions;
   } else {
-    size_t minsupported = min(numsupported, UIInterFace::NUM_SUPPORTED);
+    size_t minsupported = min(numsupported, size_t(UIInterFace::NUM_SUPPORTED));
     for (size_t i = 0; i < minsupported; i++) {
       m_bsSupportedFunctions.set(i, bsSupportedFunctions.test(i));
     }
