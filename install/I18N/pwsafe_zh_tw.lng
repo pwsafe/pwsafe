@@ -1,0 +1,110 @@
+;---------------------------------------------------
+; Password Safe Language Script
+; Name : pwsafe_tw.lng
+; include file for "pwsafe.nsi"
+; first edit : poserpro
+;---------------------------------------------------
+; Copyright 2004, David Lacy Kusters (dkusters@yahoo.com)
+; Copyright 2005-2007 Rony Shapiro <ronys@users.sourceforge.net>
+; 2009 extended by Karlo Van der Gucht for multiple language use
+; 2011 extended by poserpro Traditional Chinese language
+; This script may be redistributed and/or modified under the Artistic
+; License 2.0 terms as available at 
+; http://www.opensource.org/licenses/artistic-license-2.0.php
+;
+; This script is distributed AS IS.  All warranties are explicitly
+; disclaimed, including, but not limited to, the implied warranties of
+; MERCHANTABILITY and FITNESS FOR A PARTICULAR PURPOSE.
+ 
+;=================================================================
+
+; RESERVE_TITLE "Choose Installation Type"
+LangString RESERVE_TITLE ${LANG_TRADCHINESE} "選擇安裝類型"
+
+; RESERVE_FIELD1 "Regular (uses Registry, suitable for home or single user PC)"
+LangString RESERVE_FIELD1 ${LANG_TRADCHINESE} "一般型，適合家用或個人使用的電腦"
+
+; RESERVE_FIELD2 "Green (for Disk-on-Key; does not use host Registry)"
+LangString RESERVE_FIELD2 ${LANG_TRADCHINESE} "綠色安裝(用在行動儲存裝置；無須登錄主機之註冊碼"
+
+; PROGRAM_FILES "Program Files"
+LangString PROGRAM_FILES ${LANG_TRADCHINESE} "Program Files路徑"
+
+; START_AUTO "Start automatically"
+LangString START_AUTO ${LANG_TRADCHINESE}  "自動啟動"
+
+; START_SHOW "Show in start menu"
+LangString START_SHOW ${LANG_TRADCHINESE} "在啟動選單顯示"
+
+; START_SHORTCUT "Install desktop shortcut"
+LangString START_SHORTCUT ${LANG_TRADCHINESE} "安裝桌面捷徑"
+
+; UNINSTALL_SHORTCUT "Uninstall shortcut"
+LangString UNINSTALL_SHORTCUT ${LANG_TRADCHINESE} "移除程式捷徑"
+
+;--------------------------------
+; Descriptions
+
+; DESC_ProgramFiles "Installs the basic files necessary to run Password Safe."
+LangString DESC_ProgramFiles ${LANG_TRADCHINESE} "安裝執行Password Safe所須的基本檔案"
+
+; DESC_StartUp "Starts Password Safe as part of Windows boot/login."
+LangString DESC_StartUp ${LANG_TRADCHINESE} "讓Password Safe隨著Windows啟動/登入時自動執行"
+
+; DESC_StartMenu "Creates an entry in the start menu for Password Safe."
+LangString DESC_StartMenu ${LANG_TRADCHINESE} "在開始選單產生Password Safe項目"
+
+; DESC_DesktopShortcut "Places a shortcut to Password Safe on your desktop."
+LangString DESC_DesktopShortcut ${LANG_TRADCHINESE} "在您的桌面加入Password Safe的捷徑"
+
+; DESC_UninstallMenu "Places a shortcut in the start menu to Uninstall Password Safe."
+LangString DESC_UninstallMenu ${LANG_TRADCHINESE} "在開始選單產生移除Password Safe的項目"
+  
+; "LangString" (for "Function GreenOrRegular") are setup here because they cannot be defined in the function body
+; TEXT_GC_TITLE "Installation Type"
+LangString TEXT_GC_TITLE ${LANG_TRADCHINESE} "安裝類型"
+
+; TEXT_GC_SUBTITLE "Choose Regular for use on a single PC, Green for portable installation. If you're not sure, 'Regular' is fine."
+LangString TEXT_GC_SUBTITLE ${LANG_TRADCHINESE} "在單一電腦使用，請選擇一般型，執行可攜式安裝，請選擇綠色安裝。如果不確定的話就直接選一般型安裝即可"
+
+; PSWINI_TITLE "Choose Installation Type"
+LangString PSWINI_TITLE ${LANG_TRADCHINESE} "選擇安裝類型"
+
+; PSWINI_TEXT1 "Regular (uses Registry, suitable for home or single user PC)"
+LangString PSWINI_TEXT1 ${LANG_TRADCHINESE} "一般型(須登錄註冊碼，適合家用或個人用戶使用)"
+
+; PSWINI_TEXT2 "Green (for Disk-on-Key; does not use host Registry)"
+LangString PSWINI_TEXT2 ${LANG_TRADCHINESE} "綠色安裝(用在行動儲存裝置；無須登錄主機之註冊碼"
+
+;--------------------------------
+; checks and warnings
+
+; RUNNING_INSTALL "The installer is already running."
+LangString RUNNING_INSTALL ${LANG_TRADCHINESE} "安裝程式正在進行"
+
+; RUNNING_APPLICATION "Please exit all running instances of PasswordSafe before installing a new version"
+LangString RUNNING_APPLICATION ${LANG_TRADCHINESE} "在安裝新版本時，請退出所有正在執行的PasswordSafe程式"
+
+; LANG_INSTALL "Installation Language"
+LangString LANG_INSTALL ${LANG_TRADCHINESE} "安裝語言"
+
+; LANG_SELECT "Please select the language for the installation"
+LangString LANG_SELECT ${LANG_TRADCHINESE} "請選擇安裝的語言"
+
+; LANG_PROGRAM "Program Language"
+LangString LANG_PROGRAM ${LANG_TRADCHINESE} "程式語言"
+
+; LANG_P_SELECT "Please select the language for the program"
+LangString LANG_P_SELECT ${LANG_TRADCHINESE} "請選擇程式使用的語言"
+
+; SORRY_NO_95 "Sorry, Windows 95 is no longer supported. Try PasswordSafe 2.16"
+LangString SORRY_NO_95 ${LANG_TRADCHINESE} "抱歉，我們已經不支援Windows 95，請改用PasswordSafe 2.16版"
+
+; SORRY_NO_98 "Sorry, Windows 98 is no longer supported. Try PasswordSafe 2.16"
+LangString SORRY_NO_98 ${LANG_TRADCHINESE} "抱歉，我們已經不支援Windows 98，請改用PasswordSafe 2.16版"
+
+; SORRY_NO_ME "Sorry, Windows ME is no longer supported. Try PasswordSafe 2.16"
+LangString SORRY_NO_ME ${LANG_TRADCHINESE} "抱歉，我們已經不支援Windows ME，請改用PasswordSafe 2.16版"
+
+;=================================================================
+; End of pwsafe_tw.lng
