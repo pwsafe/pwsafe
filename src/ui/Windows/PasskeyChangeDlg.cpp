@@ -101,7 +101,7 @@ BEGIN_MESSAGE_MAP(CPasskeyChangeDlg, CPWDialog)
   ON_EN_KILLFOCUS(IDC_CONFIRMNEW, OnPasskeyKillfocus)
 #endif
   ON_STN_CLICKED(IDC_VKB, OnVirtualKeyboard)
-  ON_MESSAGE(WM_INSERTBUFFER, OnInsertBuffer)
+  ON_MESSAGE(PWS_MSG_INSERTBUFFER, OnInsertBuffer)
 END_MESSAGE_MAP()
 
 BOOL CPasskeyChangeDlg::OnInitDialog()

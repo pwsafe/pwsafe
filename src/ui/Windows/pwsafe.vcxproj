@@ -298,6 +298,8 @@
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release64|x64'">pwsafe</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">pwsafe</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Template64|x64'">pwsafe</TargetName>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='DebugM|Win32'">C:\Program Files %28x86%29\Visual Leak Detector\include;$(IncludePath)</IncludePath>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='DebugM|Win32'">C:\Program Files %28x86%29\Visual Leak Detector\lib\Win32;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <PreBuildEvent>
@@ -1100,8 +1102,6 @@
     <ClCompile Include="DumpSelect.cpp" />
     <ClCompile Include="EBListCtrl.cpp" />
     <ClCompile Include="EditShortcutDlg.cpp" />
-    <ClCompile Include="ExportTextDlg.cpp" />
-    <ClCompile Include="ExportXMLDlg.cpp" />
     <ClCompile Include="ExpPWListDlg.cpp" />
     <ClCompile Include="ExtThread.cpp" />
     <ClCompile Include="filter\FilterBaseDlg.cpp" />
@@ -1186,6 +1186,11 @@
     <ClCompile Include="ViewReport.cpp" />
     <ClCompile Include="VirtualKeyboard\VKBButton.cpp" />
     <ClCompile Include="VirtualKeyboard\VKeyBoardDlg.cpp" />
+    <ClCompile Include="WZAdvanced.cpp" />
+    <ClCompile Include="WZFinish.cpp" />
+    <ClCompile Include="WZPropertyPage.cpp" />
+    <ClCompile Include="WZPropertySheet.cpp" />
+    <ClCompile Include="WZSelectDB.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AboutDlg.h" />
@@ -1196,6 +1201,7 @@
     <ClInclude Include="AddEdit_PropertyPage.h" />
     <ClInclude Include="AddEdit_PropertySheet.h" />
     <ClInclude Include="AdvancedDlg.h" />
+    <ClInclude Include="AdvancedValues.h" />
     <ClInclude Include="ChangeAliasPswd.h" />
     <ClInclude Include="ClearQuestionDlg.h" />
     <ClInclude Include="ColumnChooserDlg.h" />
@@ -1216,8 +1222,6 @@
     <ClInclude Include="DumpSelect.h" />
     <ClInclude Include="EBListCtrl.h" />
     <ClInclude Include="EditShortcutDlg.h" />
-    <ClInclude Include="ExportTextDlg.h" />
-    <ClInclude Include="ExportXMLDlg.h" />
     <ClInclude Include="ExpPWListDlg.h" />
     <ClInclude Include="ExtThread.h" />
     <ClInclude Include="filter\FilterBoolDlg.h" />
@@ -1304,6 +1308,12 @@
     <ClInclude Include="VirtualKeyboard\VKresource.h" />
     <ClInclude Include="VirtualKeyboard\VKresource3.h" />
     <ClInclude Include="VirtualKeyboard\VKShiftState.h" />
+    <ClInclude Include="WZAdvanced.h" />
+    <ClInclude Include="WZExecuteThreadParms.h" />
+    <ClInclude Include="WZFinish.h" />
+    <ClInclude Include="WZPropertyPage.h" />
+    <ClInclude Include="WZPropertySheet.h" />
+    <ClInclude Include="WZSelectDB.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="graphics\abase.bmp" />

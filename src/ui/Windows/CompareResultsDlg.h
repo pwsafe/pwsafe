@@ -144,6 +144,7 @@ public:
 
   bool m_bOriginalDBReadOnly, m_bComparisonDBReadOnly;
   bool m_OriginalDBChanged, m_ComparisonDBChanged;
+  CString GetResults() {return m_results;}
 
 protected:
   static int CALLBACK CRCompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
@@ -169,7 +170,6 @@ protected:
   virtual void OnCancel();
   virtual void OnOK();
   afx_msg void OnHelp();
-  afx_msg void OnViewCompareReport();
   afx_msg void OnShowIdenticalEntries();
   afx_msg void OnColumnClick(NMHDR* pNMHDR, LRESULT* pResult);
   afx_msg void OnItemDoubleClick(NMHDR* pNotifyStruct, LRESULT* result);
@@ -196,6 +196,7 @@ private:
   DboxMain *m_pDbx;
   CCoolMenuManager m_menuManager;
 
+  CString m_results;
   size_t m_numOnlyInCurrent, m_numOnlyInComp, m_numConflicts, m_numIdentical;
   int m_row, m_column;
   int m_nCols;

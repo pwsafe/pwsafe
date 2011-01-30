@@ -36,6 +36,7 @@
 #include "MenuShortcuts.h"
 #include "AdvancedDlg.h"
 #include "AddEdit_PropertySheet.h"
+#include "CompareResultsDlg.h"
 
 #include "core/UIinterface.h"
 #include "core/PWScore.h"
@@ -99,6 +100,10 @@ DECLARE_HANDLE(HDROP);
 
 // Update current filters whilst SetFilters dialog is open
 #define PWS_MSG_EXECUTE_FILTERS         (WM_APP + 60)
+
+/* Message to get Virtual Keyboard buffer.  Here for doc. only. See VKeyBoardDlg.h
+#define PWS_MSG_INSERTBUFFER            (WM_APP + 70)
+*/
 
 /* timer event number used to by PupText.  Here for doc. only
 #define TIMER_PUPTEXT             0x03  */
@@ -165,8 +170,7 @@ enum PopupMenus {FILEMENU = 0, EXPORTMENU, IMPORTMENU,
 enum {GCP_FIRST      = 0,   // At startup of PWS
       GCP_NORMAL     = 1,   // Only OK, CANCEL & HELP buttons
       GCP_RESTORE    = 2,   // Only OK, CANCEL & HELP buttons
-      GCP_WITHEXIT   = 3,   // OK, CANCEL, EXIT & HELP buttons
-      GCP_ADVANCED   = 4};  // OK, CANCEL, HELP buttons & ADVANCED checkbox
+      GCP_WITHEXIT   = 3};  // OK, CANCEL, EXIT & HELP buttons
 
 // GCP read only flags - tested via AND, set via OR, must be power of 2.
 enum {GCP_READONLY = 1,
@@ -348,6 +352,35 @@ public:
   void Execute(Command *pcmd, PWScore *pcore = NULL);
   void UpdateToolBarDoUndo();
 
+  void ViewReport(const CString &cs_ReportFileName);
+  void ViewReport(CReport &rpt);
+  void SetUpdateWizardWindow(CWnd *pWnd)
+  {m_pWZWnd = pWnd;}
+  CString Merge(const StringX &sx_Filename2, PWScore *pothercore,
+                const bool bAdvanced, CReport *prpt);
+  int Compare(const StringX &sx_Filename2, PWScore *pothercore,
+              const bool bAdvanced, CReport *prpt);
+  void Synchronize(const StringX &sx_Filename2, PWScore *pothercore,
+                   const bool bAdvanced, int &numUpdated, CReport *prpt);
+  int DoExportText(const StringX &sx_Filename, const bool bAll,
+                   const wchar_t &delimiter, const bool bAdvanced,
+                   int &numExported, CReport *prpt);
+  int DoExportXML(const StringX &sx_Filename, const bool bAll,
+                  const wchar_t &delimiter, const bool bAdvanced,
+                  int &numExported, CReport *prpt);
+  int TestForExport(const bool bAdvanced,
+                    const stringT &subgroup_name,
+                    const int &subgroup_object,
+                    const int &subgroup_function,
+                    const OrderedItemList *il)
+  {return m_core.TestForExport(bAdvanced, subgroup_name,
+                               subgroup_object, subgroup_function, il);}
+  void MakeOrderedItemList(OrderedItemList &il);
+  CItemData *getSelectedItem();
+  void UpdateGUIDisplay();
+  CString ShowCompareResults(const StringX sx_Filename1, const StringX sx_Filename2,
+                             PWScore *pothercore, CReport *prpt);
+
   //{{AFX_DATA(DboxMain)
   enum { IDD = IDD_PASSWORDSAFE_DIALOG };
 #if defined(POCKET_PC)
@@ -436,7 +469,6 @@ protected:
 
   // Used for Advanced functions
   CItemData::FieldBits m_bsFields;
-  BOOL m_bAdvanced;
   CString m_subgroup_name;
   int m_subgroup_set, m_subgroup_object, m_subgroup_function;
   int m_treatwhitespaceasempty;
@@ -454,7 +486,6 @@ protected:
 
   int InsertItemIntoGUITreeList(CItemData &itemData, int iIndex = -1, 
                  const bool bSort = true, const int iView = iBothViews);
-  CItemData *getSelectedItem();
 
   BOOL SelItemOk();
   void setupBars();
@@ -515,17 +546,12 @@ protected:
   void PostOpenProcessing();
   int Close(const bool bTrySave = true);
 
-  void DoOtherDBProcessing(UINT uiftn);
-  void Merge(const StringX &sx_Filename2, PWScore *pothercore);
-  void Compare(const StringX &sx_Filename2, PWScore *pothercore);
-  void Synchronize(const StringX &sx_Filename2, PWScore *pothercore);
-
   int MergeDependents(PWScore *pothercore, MultiCommands *pmulticmds,
                       uuid_array_t &base_uuid, uuid_array_t &new_base_uuid, 
                       const bool bTitleRenamed, CString &timeStr, 
                       const CItemData::EntryType et, std::vector<StringX> &vs_added);
 
-  void ReportAdvancedOptions(CReport *prpt, const UINT uimsgftn);
+  void ReportAdvancedOptions(CReport *prpt, const bool bAdvanced, const WZAdvanced::AdvType type);
 
   int BackupSafe(void);
   int RestoreSafe(void);
@@ -535,8 +561,6 @@ protected:
   bool EditItem(CItemData *pci, PWScore *pcore = NULL);
   void UpdateEntry(CAddEdit_PropertySheet *pentry_psh);
   bool EditShortcut(CItemData *pci, PWScore *pcore = NULL);
-  void ViewReport(const CString &cs_ReportFileName);
-  void ViewReport(CReport &rpt);
   void SetFindToolBar(bool bShow);
   void ApplyFilters();
 
@@ -722,10 +746,7 @@ protected:
 
   int GetAndCheckPassword(const StringX &filename, StringX& passkey,
                           int index, int flags = 0,
-                          PWScore *pcore = NULL, 
-                          CAdvancedDlg::Type adv_type = CAdvancedDlg::ADV_INVALID,
-                          st_SaveAdvValues *pst_SADV = NULL);
-
+                          PWScore *pcore = NULL);
 
 private:
   // UIInterFace implementations:
@@ -735,6 +756,7 @@ private:
                  CItemData::FieldType ft, bool bUpdateGUI);
   void GUISetupDisplayInfo(CItemData &ci);
   void GUIRefreshEntry(const CItemData &ci);
+  void UpdateWizard(const stringT &s);
 
   static int CALLBACK CompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
 
@@ -792,7 +814,6 @@ private:
   void RestoreGroupDisplayState();
   std::vector<bool> GetGroupDisplayState(); // get current display state from window
   void SetGroupDisplayState(const std::vector<bool> &displaystatus); // changes display
-  void MakeOrderedItemList(OrderedItemList &il);
   void SetColumns();  // default order
   void SetColumns(const CString cs_ListColumns);
   void SetColumnWidths(const CString cs_ListColumnsWidths);
@@ -818,9 +839,6 @@ private:
   void RefreshEntryFieldInGUI(CItemData &ci, CItemData::FieldType ft);
   void RefreshEntryPasswordInGUI(CItemData &ci);
   void RebuildGUI(const int iView = iBothViews);
-
-  void DoExportText(const bool bAll);
-  void DoExportXML(const bool bAll);
   
   static const struct UICommandTableEntry {
     UINT ID;
@@ -903,7 +921,16 @@ private:
   std::bitset<3> m_btAT;  // Representing the Key, Ctrl Key and Shift key
 
   // Save Advanced settings
-  st_SaveAdvValues m_SaveAdvValues[CAdvancedDlg::ADV_LAST];
+  st_SaveAdvValues m_SaveAdvValues[WZAdvanced::LAST];
+  st_SaveAdvValues m_SaveFindAdvValues;
+
+  // Used to update static text on the Wizard for Compare, Merge etc.
+  CWnd *m_pWZWnd;
+
+  CompareData m_list_OnlyInCurrent;
+  CompareData m_list_OnlyInComp;
+  CompareData m_list_Conflicts;
+  CompareData m_list_Identical;
 
   // The following is for saving information over an execute/undo/redo
   // Might need to add more e.g. if filter is active and which one?

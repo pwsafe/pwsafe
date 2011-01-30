@@ -202,10 +202,12 @@ struct TextRecordWriter {
   TextRecordWriter(const stringT &subgroup_name,
           const int &subgroup_object, const int &subgroup_function,
           const CItemData::FieldBits &bsFields,
-          const TCHAR &delimiter, ofstream &ofs, PWScore *pcore) :
+          const TCHAR &delimiter, ofstream &ofs, int &numExported,
+          CReport *prpt, PWScore *pcore) :
   m_subgroup_name(subgroup_name), m_subgroup_object(subgroup_object),
   m_subgroup_function(subgroup_function), m_bsFields(bsFields),
-  m_delimiter(delimiter), m_ofs(ofs), m_pcore(pcore)
+  m_delimiter(delimiter), m_ofs(ofs), m_pcore(pcore),
+  m_prpt(prpt), m_numExported(numExported)
   {}
 
   // operator for ItemList
@@ -221,12 +223,22 @@ struct TextRecordWriter {
       const StringX line = item.GetPlaintext(TCHAR('\t'),
                                              m_bsFields, m_delimiter, pcibase);
       if (!line.empty()) {
+        StringX sx_exported = StringX(L"\xab") + 
+                             item.GetGroup() + StringX(L"\xbb \xab") + 
+                             item.GetTitle() + StringX(L"\xbb \xab") +
+                             item.GetUser()  + StringX(L"\xbb");
+
+        if (m_prpt != NULL)
+          m_prpt->WriteLine(sx_exported.c_str());
+        m_pcore->UpdateWizard(sx_exported.c_str());
+
         CUTF8Conv conv; // can't make a member, as no copy c'tor!
         const unsigned char *utf8;
         size_t utf8Len;
         if (conv.ToUTF8(line, utf8, utf8Len)) {
           m_ofs.write(reinterpret_cast<const char *>(utf8), utf8Len);
           m_ofs << endl;
+          m_numExported++;
         } else {
           ASSERT(0);
         }
@@ -243,6 +255,8 @@ private:
   const TCHAR &m_delimiter;
   ofstream &m_ofs;
   PWScore *m_pcore;
+  CReport *m_prpt;
+  int &m_numExported;
 };
 
 int PWScore::WritePlaintextFile(const StringX &filename,
@@ -250,8 +264,11 @@ int PWScore::WritePlaintextFile(const StringX &filename,
                                 const stringT &subgroup_name,
                                 const int &subgroup_object,
                                 const int &subgroup_function,
-                                const TCHAR &delimiter, const OrderedItemList *il)
+                                const TCHAR &delimiter, int &numExported, 
+                                const OrderedItemList *il, CReport *prpt)
 {
+  numExported = 0;
+
   // Check if anything to do! 
   if (bsFields.count() == 0)
     return NO_ENTRIES_EXPORTED;
@@ -295,7 +312,7 @@ int PWScore::WritePlaintextFile(const StringX &filename,
   }
 
   TextRecordWriter put_text(subgroup_name, subgroup_object, subgroup_function,
-                   bsFields, delimiter, ofs, this);
+                   bsFields, delimiter, ofs, numExported, prpt, this);
 
   if (il != NULL) {
     for_each(il->begin(), il->end(), put_text);
@@ -312,10 +329,12 @@ struct XMLRecordWriter {
   XMLRecordWriter(const stringT &subgroup_name,
                   const int subgroup_object, const int subgroup_function,
                   const CItemData::FieldBits &bsFields,
-                  TCHAR delimiter, ofstream &ofs, PWScore *pcore) :
+                  TCHAR delimiter, ofstream &ofs,
+                  int &numExported, CReport *prpt, PWScore *pcore) :
   m_subgroup_name(subgroup_name), m_subgroup_object(subgroup_object),
   m_subgroup_function(subgroup_function), m_bsFields(bsFields),
-  m_delimiter(delimiter), m_of(ofs), m_id(0), m_pcore(pcore)
+  m_delimiter(delimiter), m_of(ofs), m_id(0), m_pcore(pcore),
+  m_numExported(numExported), m_prpt(prpt)
   {}
 
   // operator for ItemList
@@ -328,6 +347,10 @@ struct XMLRecordWriter {
     if (m_subgroup_name.empty() ||
         item.Matches(m_subgroup_name,
                      m_subgroup_object, m_subgroup_function)) {
+      StringX sx_exported = StringX(L"\xab") + 
+                             item.GetGroup() + StringX(L"\xbb \xab") + 
+                             item.GetTitle() + StringX(L"\xbb \xab") +
+                             item.GetUser()  + StringX(L"\xbb");
       bool bforce_normal_entry(false);
       if (item.IsNormal()) {
         //  Check password doesn't incorrectly imply alias or shortcut entry
@@ -341,17 +364,23 @@ struct XMLRecordWriter {
           pswd = _T("*MISSING*");
 
         int num_colons = Replace(pswd, _T(':'), _T(';')) + 1;
-        if ((pswd[0] == _T('[')) &&
+        if ((pswd.length() > 1 && pswd[0] == _T('[')) &&
             (pswd[pswd.length() - 1] == _T(']')) &&
             num_colons <= 3) {
           bforce_normal_entry = true;
         }
       }
+
+      if (m_prpt != NULL)
+        m_prpt->WriteLine(sx_exported.c_str());
+      m_pcore->UpdateWizard(sx_exported.c_str());
+
       const CItemData *pcibase = m_pcore->GetBaseEntry(&item);
       string xml = item.GetXML(m_id, m_bsFields, m_delimiter, pcibase,
                                bforce_normal_entry);
       m_of.write(xml.c_str(),
                  static_cast<streamsize>(xml.length()));
+      m_numExported++;
     }
   }
 
@@ -365,15 +394,19 @@ private:
   ofstream &m_of;
   unsigned m_id;
   PWScore *m_pcore;
+  CReport *m_prpt;
+  int &m_numExported;
 };
 
 int PWScore::WriteXMLFile(const StringX &filename,
                           const CItemData::FieldBits &bsFields,
                           const stringT &subgroup_name,
                           const int &subgroup_object, const int &subgroup_function,
-                          const TCHAR &delimiter, const OrderedItemList *il,
-                          const bool &bFilterActive)
+                          const TCHAR &delimiter, int &numExported, const OrderedItemList *il,
+                          const bool &bFilterActive, CReport *prpt)
 {
+  numExported = 0;
+
   // Although the MFC UI prevents the user selecting export of an
   // empty database, other UIs might not, so:
   if ((il != NULL && il->size() == 0) ||
@@ -646,7 +679,7 @@ int PWScore::WriteXMLFile(const StringX &filename,
   ofs << endl;
 
   XMLRecordWriter put_xml(subgroup_name, subgroup_object, subgroup_function,
-                          bsFields, delimiter, ofs, this);
+                          bsFields, delimiter, ofs, numExported, prpt, this);
 
   if (il != NULL) {
     for_each(il->begin(), il->end(), put_xml);

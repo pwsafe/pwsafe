@@ -883,7 +883,7 @@ bool DboxMain::EditItem(CItemData *pci, PWScore *pcore)
 
   const UINT uicaller = pcore->IsReadOnly() ? IDS_VIEWENTRY : IDS_EDITENTRY;
   CAddEdit_PropertySheet edit_entry_psh(uicaller, this, pcore,
-                                       &ci_original, &ci_edit, pcore->GetCurFile()); 
+                                        &ci_original, &ci_edit, pcore->GetCurFile()); 
 
   // List might be cleared if db locked.
   // Need to take care that we handle a rebuilt list.

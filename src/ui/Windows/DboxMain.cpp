@@ -200,7 +200,8 @@ DboxMain::DboxMain(CWnd* pParent)
 
 DboxMain::~DboxMain()
 {
-  m_core.SetUIInterFace(NULL);
+  std::bitset<UIInterFace::NUM_SUPPORTED> bsSupportedFunctions(0);
+  m_core.SetUIInterFace(NULL, UIInterFace::NUM_SUPPORTED, bsSupportedFunctions);
 
   MapKeyNameIDIter iter;
   for (iter = m_MapKeyNameID.begin(); iter != m_MapKeyNameID.end(); iter++) {
@@ -431,6 +432,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_VKEYBOARDFONT, OnChangeVKFont)
   ON_COMMAND_RANGE(ID_MENUITEM_REPORT_COMPARE, ID_MENUITEM_REPORT_VALIDATE, OnViewReports)
   ON_COMMAND_RANGE(ID_MENUITEM_REPORT_SYNCHRONIZE, ID_MENUITEM_REPORT_SYNCHRONIZE, OnViewReports)
+  ON_COMMAND_RANGE(ID_MENUITEM_REPORT_EXPORTTEXT, ID_MENUITEM_REPORT_EXPORTXML, OnViewReports)
   ON_COMMAND(ID_MENUITEM_APPLYFILTER, OnApplyFilter)
   ON_COMMAND(ID_MENUITEM_EDITFILTER, OnSetFilter)
   ON_COMMAND(ID_MENUITEM_MANAGEFILTERS, OnManageFilters)
@@ -644,6 +646,8 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_REPORT_FIND, true, true, true, true},
   {ID_MENUITEM_REPORT_IMPORTTEXT, true, true, true, true},
   {ID_MENUITEM_REPORT_IMPORTXML, true, true, true, true},
+  {ID_MENUITEM_REPORT_EXPORTTEXT, true, true, true, true},
+  {ID_MENUITEM_REPORT_EXPORTXML, true, true, true, true},
   {ID_MENUITEM_REPORT_MERGE, true, true, true, true},
   {ID_MENUITEM_REPORT_VALIDATE, true, true, true, true},
   {ID_MENUITEM_REPORT_SYNCHRONIZE, true, true, true, true},
@@ -885,6 +889,7 @@ void DboxMain::InitPasswordSafe()
     case CItemData::RUNCMD:
     case CItemData::AUTOTYPE:
     case CItemData::POLICY:
+    case CItemData::PROTECTED:
     break;
     case CItemData::PWHIST:  // Not displayed in ListView
     default:
@@ -1569,24 +1574,19 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
                                   StringX &passkey,
                                   int index,
                                   int flags,
-                                  PWScore *pcore,
-                                  CAdvancedDlg::Type adv_type,
-                                  st_SaveAdvValues *pst_SADV)
+                                  PWScore *pcore)
 {
   // index:
   //  GCP_FIRST      (0) first
   //  GCP_NORMAL     (1) OK, CANCEL & HELP buttons
   //  GCP_RESTORE    (2) OK, CANCEL & HELP buttons
   //  GCP_WITHEXIT   (3) OK, CANCEL, EXIT & HELP buttons
-  //  GCP_ADVANCED   (4) OK, CANCEL, HELP & ADVANCED buttons
 
   // for adv_type values, see enum in AdvancedDlg.h
 
   // Called for an existing database. Prompt user
   // for password, verify against file. Lock file to
   // prevent multiple r/w access.
-  ASSERT((adv_type == CAdvancedDlg::ADV_INVALID && pst_SADV == NULL) ||
-         (adv_type != CAdvancedDlg::ADV_INVALID && pst_SADV != NULL));
 
   int retval;
   bool bFileIsReadOnly = false;
@@ -1624,12 +1624,10 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
 
   ASSERT(dbox_pkentry == NULL); // should have been taken care of above
   dbox_pkentry = new CPasskeyEntry(this,
-    filename.c_str(),
-    index, bReadOnly || bFileIsReadOnly,
-    bFileIsReadOnly || bForceReadOnly,
-    bHideReadOnly,
-    adv_type,
-    adv_type == CAdvancedDlg::ADV_INVALID ? NULL : &m_SaveAdvValues[adv_type]);
+                                   filename.c_str(),
+                                   index, bReadOnly || bFileIsReadOnly,
+                                   bFileIsReadOnly || bForceReadOnly,
+                                   bHideReadOnly);
 
   int nMajor(0), nMinor(0), nBuild(0);
   DWORD dwMajorMinor = app.GetFileVersionMajorMinor();
@@ -1649,18 +1647,6 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
 
   INT_PTR rc = dbox_pkentry->DoModal();
 
-  if (rc == IDOK && index == GCP_ADVANCED) {
-    m_bAdvanced = dbox_pkentry->m_bAdvanced;
-    m_bsFields = pst_SADV->bsFields;
-    m_subgroup_set = pst_SADV->subgroup_set;
-    m_treatwhitespaceasempty = pst_SADV->treatwhitespaceasempty;
-    if (m_subgroup_set == BST_CHECKED) {
-      m_subgroup_name = pst_SADV->subgroup_name;
-      m_subgroup_object = pst_SADV->subgroup_object;
-      m_subgroup_function = pst_SADV->subgroup_function;
-    }
-  }
-
   if (rc == IDOK) {
     DBGMSG("PasskeyEntry returns IDOK\n");
     const StringX curFile = dbox_pkentry->GetFileName().GetString();
@@ -1677,7 +1663,6 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
       pcore->SetReadOnly(bIsReadOnly || !pcore->LockFile(curFile.c_str(), locker));
       break;
     case GCP_NORMAL:
-    case GCP_ADVANCED:
       if (!bIsReadOnly) // !first, lock if !bIsReadOnly
         pcore->SetReadOnly(!pcore->LockFile(curFile.c_str(), locker));
       else
@@ -2989,6 +2974,8 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
     case ID_MENUITEM_REPORT_FIND:
     case ID_MENUITEM_REPORT_IMPORTTEXT:
     case ID_MENUITEM_REPORT_IMPORTXML:
+    case ID_MENUITEM_REPORT_EXPORTTEXT:
+    case ID_MENUITEM_REPORT_EXPORTXML:
     case ID_MENUITEM_REPORT_MERGE:
     case ID_MENUITEM_REPORT_SYNCHRONIZE:
     case ID_MENUITEM_REPORT_VALIDATE:

@@ -99,12 +99,6 @@
     <ClCompile Include="EditShortcutDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ExportTextDlg.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ExportXMLDlg.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ExpPWListDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -357,6 +351,21 @@
     <ClCompile Include="VirtualKeyboard\VKeyBoardDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="WZPropertyPage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WZPropertySheet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WZFinish.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WZSelectDB.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WZAdvanced.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AboutDlg.h">
@@ -441,12 +450,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="EditShortcutDlg.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ExportTextDlg.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ExportXMLDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ExpPWListDlg.h">
@@ -705,6 +708,27 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="VirtualKeyboard\VKShiftState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WZPropertyPage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WZPropertySheet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AdvancedValues.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WZFinish.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WZSelectDB.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WZAdvanced.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WZExecuteThreadParms.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

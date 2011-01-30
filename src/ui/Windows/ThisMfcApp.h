@@ -81,6 +81,7 @@ public:
   void SetACCELTableCreated() {m_bACCEL_Table_Created = true;}
   bool NoSysEnvWarnings() const {return m_noSysEnvWarnings;}
   bool PermitTestdump() const {return m_bPermitTestdump;}
+  DWORD GetBaseThreadID() {return m_nBaseThreadID;}
 
   DECLARE_MESSAGE_MAP()
 
@@ -106,9 +107,13 @@ private:
   CString m_csFileVersionString;
   CString m_csCopyrightString;
   CString m_csHelpFile;
+
   // Following set by command line arguments
   bool m_noSysEnvWarnings; // '-q'
   bool m_bPermitTestdump;  // '--testdump'
+
+  // Used to check if called from a thread
+  DWORD m_nBaseThreadID;
 };
 //-----------------------------------------------------------------------------
 // Local variables:

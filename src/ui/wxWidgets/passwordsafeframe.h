@@ -160,9 +160,11 @@ public:
 
     // UIinterface concrete methods:
     virtual void DatabaseModified(bool bChanged);
+
     virtual void UpdateGUI(UpdateGUICommand::GUI_Action ga,
                            uuid_array_t &entry_uuid,
                            CItemData::FieldType ft);
+
     virtual void GUISetupDisplayInfo(CItemData &ci);
 
     virtual void UpdateGUI(UpdateGUICommand::GUI_Action ga,
@@ -170,7 +172,9 @@ public:
                            CItemData::FieldType ft = CItemData::START,
                            bool bUpdateGUI = true);
     
-    virtual void GUIRefreshEntry(const CItemData&);
+    virtual void GUIRefreshEntry(const CItemData &ci);
+
+    virtual void UpdateWizard(const stringT &s);
     
   ////@begin PasswordSafeFrame event handler declarations
 

@@ -16,8 +16,6 @@
 #include "DboxMain.h"
 #include "PasskeySetup.h"
 #include "TryAgainDlg.h"
-#include "ExportTextDlg.h"
-#include "ExportXMLDlg.h"
 #include "ImportTextDlg.h"
 #include "ImportXMLDlg.h"
 #include "AdvancedDlg.h"
@@ -27,6 +25,8 @@
 #include "MFCMessages.h"
 #include "PWFileDialog.h"
 #include "DisplayFSBkupFiles.h"
+
+#include "WZPropertySheet.h"
 
 #include "core/PWSprefs.h"
 #include "core/Util.h"
@@ -355,7 +355,7 @@ int DboxMain::New()
 
 int DboxMain::NewFile(StringX &newfilename)
 {
-  CString cs_msg, cs_title, cs_temp;
+  CString cs_msg, cs_temp;
   CString cs_text(MAKEINTRESOURCE(IDS_CREATENAME));
 
   CString cf(MAKEINTRESOURCE(IDS_DEFDBNAME)); // reasonable default for first time user
@@ -1296,7 +1296,7 @@ void DboxMain::OnExportVx(UINT nID)
 {
   INT_PTR rc;
   StringX newfile;
-  CString cs_text, cs_title, cs_temp;
+  CString cs_text, cs_temp;
 
   //SaveAs-type dialog box
   std::wstring OldFormatFileName = PWSUtil::GetNewFileName(m_core.GetCurFile().c_str(),
@@ -1361,26 +1361,9 @@ void DboxMain::OnExportVx(UINT nID)
 
 void DboxMain::OnExportText()
 {
-  DoExportText(true);
-}
-
-void DboxMain::OnExportEntryText()
-{
-  if (getSelectedItem() == NULL)
-    return;
-
-  DoExportText(false);
-}
-
-void DboxMain::DoExportText(const bool bAll)
-{
-  st_SaveAdvValues *pst_ADV = &m_SaveAdvValues[bAll ? CAdvancedDlg::ADV_EXPORT_TEXT : 
-                                                      CAdvancedDlg::ADV_EXPORT_ENTRYTEXT];
-  CExportTextDlg eTxt(this, bAll, pst_ADV);
   CGeneralMsgBox gmb;
-  OrderedItemList orderedItemList;
-  CString cs_text, cs_title, cs_temp;
   StringX sx_temp;
+  CString cs_text, cs_temp;
 
   sx_temp = m_core.GetCurFile();
   if (sx_temp.empty()) {
@@ -1391,108 +1374,103 @@ void DboxMain::DoExportText(const bool bAll)
     return;
   }
 
-  INT_PTR rc = eTxt.DoModal();
-  if (rc == IDOK) {
-    const bool bAdvanced = eTxt.m_bAdvanced == TRUE;
-    StringX newfile;
-    StringX pw(eTxt.GetPasskey());
-    if (m_core.CheckPasskey(sx_temp, pw) == PWScore::SUCCESS) {
-      CItemData::FieldBits bsAllFields; bsAllFields.set();
-      const CItemData::FieldBits bsFields = bAdvanced ? pst_ADV->bsFields : bsAllFields;
-      const std::wstring subgroup_name = bAdvanced ? pst_ADV->subgroup_name : L"";
-      const int subgroup_object = pst_ADV->subgroup_object;
-      const int subgroup_function = pst_ADV->subgroup_function;
-      const wchar_t delimiter = eTxt.m_defexpdelim[0];
+  CWZPropertySheet wizard(ID_MENUITEM_EXPORT2PLAINTEXT, IDS_RPTEXPORTTEXT,
+                          this, WZAdvanced::EXPORT_TEXT,
+                          &m_SaveAdvValues[WZAdvanced::EXPORT_TEXT]);
 
-      if (bAll) {
-        // Note: MakeOrderedItemList gets its members by walking the 
-        // tree therefore, if a filter is active, it will ONLY export
-        // those being displayed.
-        MakeOrderedItemList(orderedItemList);
-      } else {
-        // Note: Only selected entry
-        CItemData *pci = getSelectedItem();
-        orderedItemList.push_back(*pci);
-      }
+  // Don't care about the return code: ID_WIZFINISH or IDCANCEL
+  wizard.DoModal();
+}
 
-      // Check if there are any that meet the user's filter
-      rc = m_core.TestForExport(bAdvanced, subgroup_name, subgroup_object,
-                                subgroup_function, &orderedItemList);
-      if (rc == PWScore::NO_ENTRIES_EXPORTED) {
-        cs_temp.LoadString(IDS_NO_ENTRIES_EXPORTED);
-        cs_title.LoadString(IDS_TEXTEXPORTFAILED);
-        gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
-        goto exit;
-      }
-      if (rc != PWScore::SUCCESS) {
-        goto exit;
-      }
+void DboxMain::OnExportEntryText()
+{
+  if (getSelectedItem() == NULL)
+    return;
 
-      // Do the export
-      // SaveAs-type dialog box
-      std::wstring TxtFileName = PWSUtil::GetNewFileName(sx_temp.c_str(), L"txt");
-      cs_text.LoadString(IDS_NAMETEXTFILE);
-      std::wstring dir;
-      if (m_core.GetCurFile().empty())
-        dir = PWSdirs::GetSafeDir();
-      else {
-        std::wstring cdrive, cdir, dontCare;
-        pws_os::splitpath(m_core.GetCurFile().c_str(), cdrive, cdir, dontCare, dontCare);
-        dir = cdrive + cdir;
-      }
+  CWZPropertySheet wizard(ID_MENUITEM_EXPORTENT2PLAINTEXT, IDS_RPTEXPORTTEXT,
+                          this, WZAdvanced::EXPORT_ENTRYTEXT,
+                          &m_SaveAdvValues[WZAdvanced::EXPORT_ENTRYTEXT]);
 
-      while (1) {
-        CPWFileDialog fd(FALSE,
-                         L"txt",
-                         TxtFileName.c_str(),
-                         OFN_PATHMUSTEXIST | OFN_HIDEREADONLY |
-                            OFN_LONGNAMES | OFN_OVERWRITEPROMPT,
-                         CString(MAKEINTRESOURCE(IDS_FDF_T_C_ALL)),
-                         this);
+  // Don't care about the return code: ID_WIZFINISH or IDCANCEL
+  wizard.DoModal();
+}
 
-        fd.m_ofn.lpstrTitle = cs_text;
+int DboxMain::DoExportText(const StringX &sx_Filename, const bool bAll,
+                           const wchar_t &delimiter, const bool bAdvanced, 
+                           int &numExported, CReport *prpt)
+{
+  CGeneralMsgBox gmb;
+  OrderedItemList orderedItemList;
+  CString cs_temp;
 
-        if (!dir.empty())
-          fd.m_ofn.lpstrInitialDir = dir.c_str();
+  st_SaveAdvValues *pst_ADV = &m_SaveAdvValues[bAll ? WZAdvanced::EXPORT_TEXT : WZAdvanced::EXPORT_ENTRYTEXT];
 
-        rc = fd.DoModal();
+  CItemData::FieldBits bsAllFields; bsAllFields.set();
+  const CItemData::FieldBits bsFields = bAdvanced ? pst_ADV->bsFields : bsAllFields;
+  const std::wstring subgroup_name = bAdvanced ? pst_ADV->subgroup_name : L"";
+  const int subgroup_object = bAdvanced ? pst_ADV->subgroup_object : CItemData::GROUP;
+  const int subgroup_function = bAdvanced ? pst_ADV->subgroup_function : 0;
 
-        if (m_inExit) {
-          // If U3ExitNow called while in CPWFileDialog,
-          // PostQuitMessage makes us return here instead
-          // of exiting the app. Try resignalling 
-          PostQuitMessage(0);
-          return;
-        }
-        if (rc == IDOK) {
-          newfile = fd.GetPathName();
-          break;
-        } else
-          goto exit;
-      } // while (1)
-
-      rc = m_core.WritePlaintextFile(newfile, bsFields, subgroup_name,
-                                     subgroup_object, subgroup_function,
-                                     delimiter, &orderedItemList);
-
-      orderedItemList.clear(); // cleanup soonest
-
-      if (rc != PWScore::SUCCESS) {
-        DisplayFileWriteError(rc, newfile);
-      }
-    } else {
-      gmb.AfxMessageBox(IDS_BADPASSKEY);
-      ::Sleep(3000); // against automatic attacks
-    }
+  std::wstring cs_text;
+  LoadAString(cs_text, IDS_RPTEXPORTTEXT);
+  prpt->StartReport(cs_text.c_str(), m_core.GetCurFile().c_str());
+  LoadAString(cs_text, IDS_TEXT);
+  cs_temp.Format(IDS_EXPORTFILE, cs_text.c_str(), sx_Filename.c_str());
+  prpt->WriteLine((LPCWSTR)cs_temp);
+  prpt->WriteLine();
+ 
+  if (bAll) {
+    // Note: MakeOrderedItemList gets its members by walking the 
+    // tree therefore, if a filter is active, it will ONLY export
+    // those being displayed.
+    MakeOrderedItemList(orderedItemList);
+  } else {
+    // Note: Only selected entry
+    CItemData *pci = getSelectedItem();
+    orderedItemList.push_back(*pci);
   }
 
-exit:
+  ReportAdvancedOptions(prpt, bAdvanced, bAll ? WZAdvanced::EXPORT_TEXT : WZAdvanced::EXPORT_ENTRYTEXT);
+
+  // Do the export
+  int rc = m_core.WritePlaintextFile(sx_Filename, bsFields, subgroup_name,
+                                     subgroup_object, subgroup_function,
+                                     delimiter, numExported, &orderedItemList,
+                                     prpt);
+
   orderedItemList.clear(); // cleanup soonest
+
+  if (rc != PWScore::SUCCESS) {
+    DisplayFileWriteError(rc, sx_Filename);
+  }
+
+  prpt->EndReport();
+
+  orderedItemList.clear(); // cleanup soonest
+  return rc;
 }
 
 void DboxMain::OnExportXML()
 {
-  DoExportXML(true);
+  CGeneralMsgBox gmb;
+  StringX sx_temp;
+  CString cs_text, cs_temp;
+
+  sx_temp = m_core.GetCurFile();
+  if (sx_temp.empty()) {
+    //  Database has not been saved - prompt user to do so first!
+    cs_temp.LoadString(IDS_SAVEBEFOREEXPORT);
+    cs_text.Format(IDS_SAVEBEFOREPROCESS, L"", cs_temp);
+    gmb.AfxMessageBox(cs_text);
+    return;
+  }
+
+  CWZPropertySheet wizard(ID_MENUITEM_EXPORT2XML, IDS_RPTEXPORTXML,
+                          this, WZAdvanced::EXPORT_XML, 
+                          &m_SaveAdvValues[WZAdvanced::EXPORT_XML]);
+
+  // Don't care about the return code: ID_WIZFINISH or IDCANCEL
+  wizard.DoModal();
 }
 
 void DboxMain::OnExportEntryXML()
@@ -1500,117 +1478,67 @@ void DboxMain::OnExportEntryXML()
   if (getSelectedItem() == NULL)
     return;
 
-  DoExportXML(false);
+  CWZPropertySheet wizard(ID_MENUITEM_EXPORTENT2XML, IDS_RPTEXPORTXML,
+                          this, WZAdvanced::EXPORT_ENTRYXML,
+                          &m_SaveAdvValues[WZAdvanced::EXPORT_ENTRYXML]);
+
+  // Don't care about the return code: ID_WIZFINISH or IDCANCEL
+  wizard.DoModal();
 }
 
-void DboxMain::DoExportXML(const bool bAll)
+int DboxMain::DoExportXML(const StringX &sx_Filename, const bool bAll,
+                          const wchar_t &delimiter, const bool bAdvanced,
+                          int &numExported, CReport *prpt)
 {
-  st_SaveAdvValues *pst_ADV = &m_SaveAdvValues[bAll ? CAdvancedDlg::ADV_EXPORT_XML : 
-                                                      CAdvancedDlg::ADV_EXPORT_ENTRYXML];
-  CExportXMLDlg eXML(this, bAll, pst_ADV);
+  CGeneralMsgBox gmb;
   OrderedItemList orderedItemList;
-  CString cs_text, cs_title, cs_temp;
+  CString cs_temp;
+ 
+  st_SaveAdvValues *pst_ADV = &m_SaveAdvValues[bAll ? WZAdvanced::EXPORT_XML : WZAdvanced::EXPORT_ENTRYXML];
 
-  INT_PTR rc = eXML.DoModal();
-  if (rc == IDOK) {
-    const bool bAdvanced = eXML.m_bAdvanced == TRUE;
-    CGeneralMsgBox gmb;
-    StringX newfile;
-    StringX pw(eXML.GetPasskey());
-    if (m_core.CheckPasskey(m_core.GetCurFile(), pw) == PWScore::SUCCESS) {
-      CItemData::FieldBits bsAllFields; bsAllFields.set();
-      const CItemData::FieldBits bsFields = bAdvanced ? pst_ADV->bsFields : bsAllFields;
-      const std::wstring subgroup_name = bAdvanced ? pst_ADV->subgroup_name : L"";
-      const int subgroup_object = pst_ADV->subgroup_object;
-      const int subgroup_function = pst_ADV->subgroup_function;
-      const wchar_t delimiter = eXML.m_defexpdelim[0];
+  CItemData::FieldBits bsAllFields; bsAllFields.set();
+  const CItemData::FieldBits bsFields = bAdvanced ? pst_ADV->bsFields : bsAllFields;
+  const std::wstring subgroup_name = bAdvanced ? pst_ADV->subgroup_name : L"";
+  const int subgroup_object = bAdvanced ? pst_ADV->subgroup_object : CItemData::GROUP;
+  const int subgroup_function = bAdvanced ? pst_ADV->subgroup_function : 0;
 
-      if (bAll) {
-        // Note: MakeOrderedItemList gets its members by walking the 
-        // tree therefore, if a filter is active, it will ONLY export
-        // those being displayed.
-        MakeOrderedItemList(orderedItemList);
-      } else {
-        // Note: Only selected entry
-        CItemData *pci = getSelectedItem();
-        orderedItemList.push_back(*pci);
-      }
+  std::wstring cs_text;
+  LoadAString(cs_text, IDS_RPTEXPORTXML);
+  prpt->StartReport(cs_text.c_str(), m_core.GetCurFile().c_str());
+  LoadAString(cs_text, IDS_XML);
+  cs_temp.Format(IDS_EXPORTFILE, cs_text.c_str(), sx_Filename.c_str());
+  prpt->WriteLine((LPCWSTR)cs_temp);
+  prpt->WriteLine();
 
-      rc = m_core.TestForExport(bAdvanced, subgroup_name, subgroup_object,
-                               subgroup_function, &orderedItemList);
-
-      if (rc == PWScore::NO_ENTRIES_EXPORTED) {
-        cs_temp.LoadString(IDS_NO_ENTRIES_EXPORTED);
-        cs_title.LoadString(IDS_XMLEXPORTFAILED);
-        gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
-        goto exit;
-      }
-      if (rc != PWScore::SUCCESS) {
-        goto exit;
-      }
-
-      // do the export
-      //SaveAs-type dialog box
-      std::wstring XMLFileName = PWSUtil::GetNewFileName(m_core.GetCurFile().c_str(),
-                                                    L"xml");
-      cs_text.LoadString(IDS_NAMEXMLFILE);
-      std::wstring dir;
-      if (m_core.GetCurFile().empty())
-        dir = PWSdirs::GetSafeDir();
-      else {
-        std::wstring cdrive, cdir, dontCare;
-        pws_os::splitpath(m_core.GetCurFile().c_str(), cdrive, cdir, dontCare, dontCare);
-        dir = cdrive + cdir;
-      }
-
-      while (1) {
-        CPWFileDialog fd(FALSE,
-                         L"xml",
-                         XMLFileName.c_str(),
-                         OFN_PATHMUSTEXIST | OFN_HIDEREADONLY |
-                            OFN_LONGNAMES | OFN_OVERWRITEPROMPT,
-                         CString(MAKEINTRESOURCE(IDS_FDF_X_ALL)),
-                         this);
-
-        fd.m_ofn.lpstrTitle = cs_text;
-
-        if (!dir.empty())
-          fd.m_ofn.lpstrInitialDir = dir.c_str();
-
-        rc = fd.DoModal();
-
-        if (m_inExit) {
-          // If U3ExitNow called while in CPWFileDialog,
-          // PostQuitMessage makes us return here instead
-          // of exiting the app. Try resignalling 
-          PostQuitMessage(0);
-          return;
-        }
-        if (rc == IDOK) {
-          newfile = fd.GetPathName();
-          break;
-        } else
-          goto exit;
-      } // while (1)
-
-      rc = m_core.WriteXMLFile(newfile, bsFields, subgroup_name,
-                               subgroup_object, subgroup_function,
-                               delimiter, &orderedItemList,
-                               m_bFilterActive);
-
-      orderedItemList.clear(); // cleanup soonest
-
-      if (rc != PWScore::SUCCESS) {
-        DisplayFileWriteError(rc, newfile);
-      }
-    } else {
-      gmb.AfxMessageBox(IDS_BADPASSKEY);
-      ::Sleep(3000); // protect against automatic attacks
-    }
+  if (bAll) {
+    // Note: MakeOrderedItemList gets its members by walking the 
+    // tree therefore, if a filter is active, it will ONLY export
+    // those being displayed.
+    MakeOrderedItemList(orderedItemList);
+  } else {
+    // Note: Only selected entry
+    CItemData *pci = getSelectedItem();
+    orderedItemList.push_back(*pci);
   }
 
-exit:
+  ReportAdvancedOptions(prpt, bAdvanced, bAll ? WZAdvanced::EXPORT_XML : WZAdvanced::EXPORT_ENTRYXML);
+
+  // do the export
+  int rc = m_core.WriteXMLFile(sx_Filename, bsFields, subgroup_name,
+                               subgroup_object, subgroup_function,
+                               delimiter, numExported, &orderedItemList,
+                               m_bFilterActive, prpt);
+
   orderedItemList.clear(); // cleanup soonest
+
+  if (rc != PWScore::SUCCESS) {
+    DisplayFileWriteError(rc, sx_Filename);
+  }
+
+  orderedItemList.clear(); // cleanup soonest
+
+  prpt->EndReport();
+  return rc;
 }
 
 void DboxMain::OnImportText()
@@ -2069,7 +1997,12 @@ void DboxMain::OnMerge()
   if (m_core.IsReadOnly()) // disable in read-only mode
     return;
 
-  DoOtherDBProcessing(ID_MENUITEM_MERGE);
+  CWZPropertySheet wizard(ID_MENUITEM_MERGE, IDS_RPTMERGE,
+                          this, WZAdvanced::MERGE, 
+                          &m_SaveAdvValues[WZAdvanced::MERGE]);
+
+  // Don't care about the return code: ID_WIZFINISH or IDCANCEL
+  wizard.DoModal();
 }
 
 void DboxMain::OnCompare()
@@ -2080,7 +2013,12 @@ void DboxMain::OnCompare()
     return;
   }
 
-  DoOtherDBProcessing(ID_MENUITEM_COMPARE);
+  CWZPropertySheet wizard(ID_MENUITEM_COMPARE, IDS_RPTCOMPARE,
+                          this, WZAdvanced::COMPARE,
+                          &m_SaveAdvValues[WZAdvanced::COMPARE]);
+
+  // Don't care about the return code: ID_WIZFINISH or IDCANCEL
+  wizard.DoModal();
 }
 
 void DboxMain::OnSynchronize()
@@ -2089,193 +2027,12 @@ void DboxMain::OnSynchronize()
   if (m_core.IsReadOnly() || m_core.GetCurFile().empty() || m_core.GetNumEntries() == 0)
     return;
 
-  DoOtherDBProcessing(ID_MENUITEM_SYNCHRONIZE);
-}
+  CWZPropertySheet wizard(ID_MENUITEM_SYNCHRONIZE, IDS_RPTSYNCH,
+                          this, WZAdvanced::SYNCH,
+                          &m_SaveAdvValues[WZAdvanced::SYNCH]);
 
-void DboxMain::DoOtherDBProcessing(const UINT uiftn)
-{
-  // common 'other' file processing for Compare, Merge & Synchronize
-  UINT uimsgid;
-  CAdvancedDlg::Type iadv_type;
-  switch (uiftn) {
-    case ID_MENUITEM_COMPARE:
-      uimsgid = IDS_PICKCOMPAREFILE;
-      iadv_type = CAdvancedDlg::ADV_COMPARE;
-      break;
-    case ID_MENUITEM_MERGE:
-      uimsgid = IDS_PICKMERGEFILE;
-      iadv_type = CAdvancedDlg::ADV_MERGE;
-      break;
-    case ID_MENUITEM_SYNCHRONIZE:
-      uimsgid = IDS_PICKSYNCHRONIZEEFILE;
-      iadv_type = CAdvancedDlg::ADV_SYNCHRONIZE;
-      break;
-    default:
-      uimsgid = 0;
-      iadv_type = CAdvancedDlg::ADV_INVALID;
-      ASSERT(0);
-  }
-
-  if (uimsgid == 0)
-    return;
-
-  if (uiftn == ID_MENUITEM_SYNCHRONIZE) {
-    // Warn user about mass updates.  Give them a chance to cancel.
-    // Because CGeneralMsgBox uses "CDialog::InitModalIndirect", it can only
-    // be used ONCE. So either each use has its own instance, or there is only
-    // one instance but care must be taken to ensure that it is not re-used.
-    CGeneralMsgBox gmb;
-    gmb.SetTitle(IDS_RPTSYNCH);
-    gmb.SetStandardIcon(MB_ICONEXCLAMATION);
-    gmb.SetMsg(IDS_SYNCHWARNING);
-    gmb.AddButton(IDCONTINUE, IDS_CONTINUE);
-    gmb.AddButton(IDCANCEL, IDS_CANCEL, TRUE, TRUE);
-    if (gmb.DoModal() != IDCONTINUE)
-      return;
-  }
-
-  StringX sx_Filename2;
-  CString cs_text;
-  cs_text.LoadString(uimsgid);
-
-  std::wstring dir;
-  if (m_core.GetCurFile().empty())
-    dir = PWSdirs::GetSafeDir();
-  else {
-    std::wstring cdrive, cdir, dontCare;
-    pws_os::splitpath(m_core.GetCurFile().c_str(), cdrive, cdir, dontCare, dontCare);
-    dir = cdrive + cdir;
-  }
-
-  //Open-type dialog box
-  CPWFileDialog fd(TRUE,
-                   DEFAULT_SUFFIX,
-                   NULL,
-                   OFN_FILEMUSTEXIST | OFN_HIDEREADONLY | OFN_LONGNAMES,
-                   CString(MAKEINTRESOURCE(IDS_FDF_DB_BU_ALL)),
-                   this);
-
-  fd.m_ofn.lpstrTitle = cs_text;
-
-  if (!dir.empty())
-    fd.m_ofn.lpstrInitialDir = dir.c_str();
-
-  INT_PTR rc = fd.DoModal();
-
-  if (m_inExit) {
-    // If U3ExitNow called while in CPWFileDialog,
-    // PostQuitMessage makes us return here instead
-    // of exiting the app. Try resignalling 
-    PostQuitMessage(0);
-    return;
-  }
-
-  if (rc != IDOK)
-    return;
-
-  CGeneralMsgBox gmb;
-  sx_Filename2 = fd.GetPathName();
-
-  //Check that this file isn't already open
-  const StringX sx_Filename1(m_core.GetCurFile());
-  if (sx_Filename2 == sx_Filename1) {
-    // It is the same damn file
-    gmb.AfxMessageBox(uiftn == ID_MENUITEM_COMPARE ? IDS_COMPARESAME :IDS_ALREADYOPEN,
-                      MB_OK | MB_ICONWARNING);
-    return;
-  }
-
-  StringX passkey;
-  CString cs_temp, cs_title, cs_buffer;
-  PWScore othercore;
-
-  // OK, CANCEL, HELP, ADVANCED + force R/O + use othercore
-  // MAJOR change - in order to handle Undo/Redo, don't allow updates to the
-  // comparison database.
-  rc = GetAndCheckPassword(sx_Filename2, passkey,
-                           GCP_ADVANCED, // OK, CANCEL, HELP
-                           GCP_READONLY | GCP_FORCEREADONLY, 
-                           &othercore,   // Use other core
-                           iadv_type, &m_SaveAdvValues[iadv_type]);   // Advanced type
-
-  switch (rc) {
-    case PWScore::SUCCESS:
-      break; // Keep going...
-    case PWScore::CANT_OPEN_FILE:
-      cs_temp.Format(IDS_CANTOPEN, sx_Filename2.c_str());
-      cs_title.LoadString(IDS_FILEOPENERROR);
-      gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
-    case TAR_OPEN:
-    case TAR_NEW:
-    case PWScore::WRONG_PASSWORD:
-    case PWScore::USER_CANCEL:
-    default:
-      /*
-      If the user just cancelled out of the password dialog,
-      assume they want to return to where they were before...
-      */
-      return;
-  }
-
-  // Not really needed but...
-  othercore.ClearData();
-
-  // Reading a new file changes the preferences!
-  const StringX sxSavePrefString(PWSprefs::GetInstance()->Store());
-  const bool bDBPrefsChanged = PWSprefs::GetInstance()->IsDBprefsChanged();
-
-  rc = othercore.ReadFile(sx_Filename2, passkey);
-
-  // Reset database preferences - first to defaults then add saved changes!
-  PWSprefs::GetInstance()->Load(sxSavePrefString);
-  PWSprefs::GetInstance()->SetDBprefsChanged(bDBPrefsChanged);
-
-  switch (rc) {
-    case PWScore::SUCCESS:
-      break;
-    case PWScore::CANT_OPEN_FILE:
-      cs_temp.Format(IDS_CANTOPENREADING, sx_Filename2.c_str());
-      cs_title.LoadString(IDS_FILEREADERROR);
-      gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
-      break;
-    case PWScore::BAD_DIGEST:
-      cs_temp.Format(IDS_FILECORRUPT, sx_Filename2.c_str());
-      cs_title.LoadString(IDS_FILEREADERROR);
-      if (gmb.MessageBox(cs_temp, cs_title, MB_YESNO | MB_ICONERROR) == IDYES)
-        rc = PWScore::SUCCESS;
-      break;
-#ifdef DEMO
-    case PWScore::LIMIT_REACHED:
-      cs_temp.Format(IDS_LIMIT_MSG2, MAXDEMO);
-      cs_title.LoadString(IDS_LIMIT_TITLE);
-      gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
-      break;
-#endif
-    default:
-      cs_temp.Format(IDS_UNKNOWNERROR, sx_Filename2.c_str());
-      cs_title.LoadString(IDS_FILEREADERROR);
-      gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONERROR);
-      break;
-  }
-
-  if (rc == PWScore::SUCCESS) {
-    othercore.SetCurFile(sx_Filename2);
-
-    switch (uiftn) {
-      case ID_MENUITEM_COMPARE:
-        Compare(sx_Filename2, &othercore);
-        break;
-      case ID_MENUITEM_MERGE:
-        Merge(sx_Filename2, &othercore);
-        break;
-      case ID_MENUITEM_SYNCHRONIZE:
-        Synchronize(sx_Filename2, &othercore);
-        break;
-    }
-  }
-
-  othercore.ClearData();
-  othercore.SetCurFile(L"");
+  // Don't care about the return code: ID_WIZFINISH or IDCANCEL
+  wizard.DoModal();
 }
 
 // Return whether first '«g» «t» «u»' is greater than the second '«g» «t» «u»'
@@ -2307,7 +2064,6 @@ bool MergeSyncGTUCompare(const StringX &elem1, const StringX &elem2)
   u1 = (i1 == StringX::npos) ? tmp1 : tmp1.substr(0, i1 - 1);
   i2 = tmp2.find(L'\xbb');
   u2 = (i2 == StringX::npos) ? tmp2 : tmp2.substr(0, i2 - 1);
-
   return u1.compare(u2) < 0;
 }
 
@@ -2325,7 +2081,8 @@ bool MergeSyncGTUCompare(const StringX &elem1, const StringX &elem2)
 #define MRG_EMAIL      0x0020
 #define MRG_UNUSED     0x001f
 
-void DboxMain::Merge(const StringX &sx_Filename2, PWScore *pothercore)
+CString DboxMain::Merge(const StringX &sx_Filename2, PWScore *pothercore,
+                        const bool bAdvanced, CReport *prpt)
 {
   // XXX Move to core
   const StringX &sx_Filename1 = m_core.GetCurFile();
@@ -2341,7 +2098,7 @@ void DboxMain::Merge(const StringX &sx_Filename2, PWScore *pothercore)
     cs_title.LoadString(IDS_SYNCHFAILED);
     cs_temp.Format(IDS_DBHASDUPLICATES, pothercore->GetCurFile().c_str());
     gmb.MessageBox(cs_temp, cs_title, MB_ICONEXCLAMATION);
-    return;
+    return L"";
   }
 
   // Next check us - we need the setGTU later
@@ -2350,20 +2107,17 @@ void DboxMain::Merge(const StringX &sx_Filename2, PWScore *pothercore)
     cs_title.LoadString(IDS_SYNCHFAILED);
     cs_temp.Format(IDS_DBHASDUPLICATES, m_core.GetCurFile().c_str());
     gmb.MessageBox(cs_temp, cs_title, MB_ICONEXCLAMATION);
-    return;
+    return L"";
   }
 
   /* Put up hourglass...this might take a while */
   CWaitCursor waitCursor;
 
-  bool bWasEmpty = m_core.GetNumEntries() == 0;
-
   /* Create report as we go */
-  CReport rpt;
-  cs_text.LoadString(IDS_RPTMERGE);
-  rpt.StartReport(cs_text, sx_Filename1.c_str());
+  cs_text.LoadString(ID_MENUITEM_MERGE);
+  prpt->StartReport(cs_text, sx_Filename1.c_str());
   cs_temp.Format(IDS_MERGINGDATABASE, sx_Filename2.c_str());
-  rpt.WriteLine((LPCWSTR)cs_temp);
+  prpt->WriteLine((LPCWSTR)cs_temp);
   std::vector<StringX> vs_added;
   std::vector<StringX> vs_AliasesAdded;
   std::vector<StringX> vs_ShortcutsAdded;
@@ -2374,12 +2128,12 @@ void DboxMain::Merge(const StringX &sx_Filename2, PWScore *pothercore)
   //int subgroup_case;
   //int treatwhitespaceasempty;
 
-  if (m_bAdvanced == TRUE) {
+   if (bAdvanced == TRUE) {
     // Use saved or latest values
-    subgroup_name = m_SaveAdvValues[CAdvancedDlg::ADV_MERGE].subgroup_name;
-    subgroup_set = m_SaveAdvValues[CAdvancedDlg::ADV_MERGE].subgroup_set;
-    subgroup_object = m_SaveAdvValues[CAdvancedDlg::ADV_MERGE].subgroup_object;
-    subgroup_function = m_SaveAdvValues[CAdvancedDlg::ADV_MERGE].subgroup_function;
+    subgroup_name = m_SaveAdvValues[WZAdvanced::MERGE].subgroup_name;
+    subgroup_set = m_SaveAdvValues[WZAdvanced::MERGE].subgroup_set;
+    subgroup_object = m_SaveAdvValues[WZAdvanced::MERGE].subgroup_object;
+    subgroup_function = m_SaveAdvValues[WZAdvanced::MERGE].subgroup_function;
   } else {
     // Turn off advanced settings
     subgroup_name = L"";
@@ -2387,7 +2141,7 @@ void DboxMain::Merge(const StringX &sx_Filename2, PWScore *pothercore)
     subgroup_object = CItemData::GROUP;
     subgroup_function = 0;
   }
- 
+
   /*
   Purpose:
   Merge entries from otherCore to m_core
@@ -2530,7 +2284,7 @@ void DboxMain::Merge(const StringX &sx_Filename2, PWScore *pothercore)
                        csDiffs);
 
         /* log it */
-        rpt.WriteLine((LPCWSTR)warnMsg);
+        prpt->WriteLine((LPCWSTR)warnMsg);
 
         /* Check no conflict of unique uuid */
         if (m_core.Find(base_uuid) != m_core.GetEntryEndIter()) {
@@ -2545,6 +2299,13 @@ void DboxMain::Merge(const StringX &sx_Filename2, PWScore *pothercore)
         Command *pcmd = AddEntryCommand::Create(&m_core, otherItem);
         pcmd->SetNoGUINotify();
         pmulticmds->Add(pcmd);
+
+        StringX sx_merged = StringX(L"\xab") + 
+                               otherGroup + StringX(L"\xbb \xab") + 
+                               otherTitle + StringX(L"\xbb \xab") +
+                               otherUser  + StringX(L"\xbb");
+        // Update the Wizard page
+        UpdateWizard(sx_merged.c_str());
 
         numConflicts++;
       }
@@ -2566,6 +2327,9 @@ void DboxMain::Merge(const StringX &sx_Filename2, PWScore *pothercore)
                            otherTitle + StringX(L"\xbb \xab") +
                            otherUser  + StringX(L"\xbb");
       vs_added.push_back(sx_added);
+
+      // Update the Wizard page
+      UpdateWizard(sx_added.c_str());
       numAdded++;
     }
     if (et == CItemData::ET_ALIASBASE)
@@ -2584,10 +2348,10 @@ void DboxMain::Merge(const StringX &sx_Filename2, PWScore *pothercore)
     CString cs_singular_plural_type(MAKEINTRESOURCE(numAdded == 1 ? IDSC_ENTRY : IDSC_ENTRIES));
     CString cs_singular_plural_verb(MAKEINTRESOURCE(numAdded == 1 ? IDS_WAS : IDS_WERE));
     resultStr.Format(IDS_MERGEADDED, cs_singular_plural_type, cs_singular_plural_verb);
-    rpt.WriteLine((LPCWSTR)resultStr);
+    prpt->WriteLine((LPCWSTR)resultStr);
     for (size_t i = 0; i < vs_added.size(); i++) {
       resultStr.Format(L"\t%s", vs_added[i].c_str());
-      rpt.WriteLine((LPCWSTR)resultStr);
+      prpt->WriteLine((LPCWSTR)resultStr);
     }
   }
   if (numAliasesAdded > 0) {
@@ -2597,10 +2361,10 @@ void DboxMain::Merge(const StringX &sx_Filename2, PWScore *pothercore)
     CString cs_singular_plural_verb(MAKEINTRESOURCE(numAliasesAdded == 1 ?
                                                     IDS_WAS : IDS_WERE));
     resultStr.Format(IDS_MERGEADDED, cs_singular_plural_type, cs_singular_plural_verb);
-    rpt.WriteLine((LPCWSTR)resultStr);
+    prpt->WriteLine((LPCWSTR)resultStr);
     for (size_t i = 0; i < vs_AliasesAdded.size(); i++) {
       resultStr.Format(L"\t%s", vs_AliasesAdded[i].c_str());
-      rpt.WriteLine((LPCWSTR)resultStr);
+      prpt->WriteLine((LPCWSTR)resultStr);
     }
   }
   if (numShortcutsAdded > 0) {
@@ -2610,10 +2374,10 @@ void DboxMain::Merge(const StringX &sx_Filename2, PWScore *pothercore)
     CString cs_singular_plural_verb(MAKEINTRESOURCE(numShortcutsAdded == 1 ?
                                                     IDS_WAS : IDS_WERE));
     resultStr.Format(IDS_MERGEADDED, cs_singular_plural_type, cs_singular_plural_verb);
-    rpt.WriteLine((LPCWSTR)resultStr);
+    prpt->WriteLine((LPCWSTR)resultStr);
     for (size_t i = 0; i < vs_ShortcutsAdded.size(); i++) {
       resultStr.Format(L"\t%s", vs_ShortcutsAdded[i].c_str());
-      rpt.WriteLine((LPCWSTR)resultStr);
+      prpt->WriteLine((LPCWSTR)resultStr);
     }
   }
 
@@ -2623,6 +2387,8 @@ void DboxMain::Merge(const StringX &sx_Filename2, PWScore *pothercore)
   Execute(pmulticmds);
       
   waitCursor.Restore(); /* restore normal cursor */
+
+  ReportAdvancedOptions(prpt, bAdvanced, WZAdvanced::MERGE);
 
   /* tell the user we're done & provide short merge report */
   int totalAdded = numAdded + numConflicts + numAliasesAdded + numShortcutsAdded;
@@ -2637,25 +2403,13 @@ void DboxMain::Merge(const StringX &sx_Filename2, PWScore *pothercore)
                    totalAdded, cs_entries, numConflicts, cs_conflicts,
                    numAliasesAdded, cs_aliases,
                    numShortcutsAdded, cs_shortcuts);
-  rpt.WriteLine((LPCWSTR)resultStr);
-  rpt.EndReport();
+  prpt->WriteLine((LPCWSTR)resultStr);
+  prpt->EndReport();
 
-  gmb.SetTitle(IDS_RPTMERGE);
-  gmb.SetMsg(resultStr);
-  gmb.SetStandardIcon(MB_ICONINFORMATION);
-  gmb.AddButton(IDS_OK, IDS_OK, TRUE, TRUE);
-  gmb.AddButton(IDS_VIEWREPORT, IDS_VIEWREPORT);
-  INT_PTR msg_rc = gmb.DoModal();
-  if (msg_rc == IDS_VIEWREPORT)
-    ViewReport(rpt);
+  if (pothercore->IsLockedFile(pothercore->GetCurFile().c_str()))
+    pothercore->UnlockFile(pothercore->GetCurFile().c_str());
 
-  ChangeOkUpdate();
-  RefreshViews();
-  // May need to update menu/toolbar if original database was empty
-  if (bWasEmpty)
-    UpdateMenuAndToolBar(m_bOpen);
-
-  return;
+  return resultStr;
 }
 
 int DboxMain::MergeDependents(PWScore *pothercore, MultiCommands *pmulticmds,
@@ -2729,24 +2483,24 @@ int DboxMain::MergeDependents(PWScore *pothercore, MultiCommands *pmulticmds,
   return numadded;
 }
 
-void DboxMain::Compare(const StringX &sx_Filename2, PWScore *pothercore)
+int DboxMain::Compare(const StringX &sx_Filename2, PWScore *pothercore,
+                      const bool bAdvanced, CReport *prpt)
 {
   const StringX &sx_Filename1 = m_core.GetCurFile();
 
-  CString cs_temp, cs_title, cs_text, cs_buffer;
+  CString cs_temp, cs_text, cs_buffer;
 
-  CompareData list_OnlyInCurrent;
-  CompareData list_OnlyInComp;
-  CompareData list_Conflicts;
-  CompareData list_Identical;
+  m_list_OnlyInCurrent.clear();
+  m_list_OnlyInComp.clear();
+  m_list_Conflicts.clear();
+  m_list_Identical.clear();
 
   /* Create report as we go */
-  CReport rpt;
-  cs_text.LoadString(IDS_RPTCOMPARE);
-  rpt.StartReport(cs_text, sx_Filename1.c_str());
+  cs_text.LoadString(ID_MENUITEM_COMPARE);
+  prpt->StartReport(cs_text, sx_Filename1.c_str());
   cs_temp.Format(IDS_COMPARINGDATABASE, sx_Filename2.c_str());
-  rpt.WriteLine((LPCWSTR)cs_temp);
-  rpt.WriteLine();
+  prpt->WriteLine((LPCWSTR)cs_temp);
+  prpt->WriteLine();
 
   // Put up hourglass...this might take a while
   CWaitCursor waitCursor;
@@ -2782,13 +2536,13 @@ void DboxMain::Compare(const StringX &sx_Filename2, PWScore *pothercore)
   // int subgroup_case;
   // int treatwhitespaceasempty;
 
-  if (m_bAdvanced == TRUE) {
+  if (bAdvanced) {
     // Use saved or latest values
-    bsFields = m_SaveAdvValues[CAdvancedDlg::ADV_COMPARE].bsFields;
-    subgroup_name = m_SaveAdvValues[CAdvancedDlg::ADV_COMPARE].subgroup_name;
-    subgroup_set = m_SaveAdvValues[CAdvancedDlg::ADV_COMPARE].subgroup_set;
-    subgroup_object = m_SaveAdvValues[CAdvancedDlg::ADV_COMPARE].subgroup_object;
-    subgroup_function = m_SaveAdvValues[CAdvancedDlg::ADV_COMPARE].subgroup_function;
+    bsFields = m_SaveAdvValues[WZAdvanced::COMPARE].bsFields;
+    subgroup_name = m_SaveAdvValues[WZAdvanced::COMPARE].subgroup_name;
+    subgroup_set = m_SaveAdvValues[WZAdvanced::COMPARE].subgroup_set;
+    subgroup_object = m_SaveAdvValues[WZAdvanced::COMPARE].subgroup_object;
+    subgroup_function = m_SaveAdvValues[WZAdvanced::COMPARE].subgroup_function;
   } else {
     // Turn off advanced settings
     subgroup_name = L"";
@@ -2827,6 +2581,14 @@ void DboxMain::Compare(const StringX &sx_Filename2, PWScore *pothercore)
       st_data.group = currentItem.GetGroup();
       st_data.title = currentItem.GetTitle();
       st_data.user = currentItem.GetUser();
+
+      CSecString sx_original = CSecString(L"\xab") + 
+                             st_data.group + CSecString(L"\xbb \xab") + 
+                             st_data.title + CSecString(L"\xbb \xab") +
+                             st_data.user  + CSecString(L"\xbb");
+
+      // Update the Wizard page
+      UpdateWizard((LPCWSTR)sx_original);
 
       ItemListIter foundPos = pothercore->Find(st_data.group,
                                                st_data.title, st_data.user);
@@ -2871,30 +2633,27 @@ void DboxMain::Compare(const StringX &sx_Filename2, PWScore *pothercore)
         if (bsFields.test(CItemData::PASSWORD) &&
             currentItem.GetPassword() != compItem.GetPassword())
           bsConflicts.flip(CItemData::PASSWORD);
-        if (m_bAdvanced == TRUE) {
-          // Only checked if specified by the user in via the Advanced dialog
-          if (bsFields.test(CItemData::CTIME) &&
-              currentItem.GetCTime() != compItem.GetCTime())
-            bsConflicts.flip(CItemData::CTIME);
-          if (bsFields.test(CItemData::PMTIME) &&
-              currentItem.GetPMTime() != compItem.GetPMTime())
-            bsConflicts.flip(CItemData::PMTIME);
-          if (bsFields.test(CItemData::ATIME) &&
-              currentItem.GetATime() != compItem.GetATime())
-            bsConflicts.flip(CItemData::ATIME);
-          if (bsFields.test(CItemData::XTIME) &&
-              currentItem.GetXTime() != compItem.GetXTime())
-            bsConflicts.flip(CItemData::XTIME);
-          if (bsFields.test(CItemData::RMTIME) &&
-              currentItem.GetRMTime() != compItem.GetRMTime())
-            bsConflicts.flip(CItemData::RMTIME);
-          if (bsFields.test(CItemData::XTIME_INT)) {
-            int current_xint, comp_xint;
-            currentItem.GetXTimeInt(current_xint);
-            compItem.GetXTimeInt(comp_xint);
-            if (current_xint != comp_xint)
-              bsConflicts.flip(CItemData::XTIME_INT);
-          }
+        if (bsFields.test(CItemData::CTIME) &&
+            currentItem.GetCTime() != compItem.GetCTime())
+          bsConflicts.flip(CItemData::CTIME);
+        if (bsFields.test(CItemData::PMTIME) &&
+            currentItem.GetPMTime() != compItem.GetPMTime())
+          bsConflicts.flip(CItemData::PMTIME);
+        if (bsFields.test(CItemData::ATIME) &&
+            currentItem.GetATime() != compItem.GetATime())
+          bsConflicts.flip(CItemData::ATIME);
+        if (bsFields.test(CItemData::XTIME) &&
+            currentItem.GetXTime() != compItem.GetXTime())
+          bsConflicts.flip(CItemData::XTIME);
+        if (bsFields.test(CItemData::RMTIME) &&
+            currentItem.GetRMTime() != compItem.GetRMTime())
+          bsConflicts.flip(CItemData::RMTIME);
+        if (bsFields.test(CItemData::XTIME_INT)) {
+          int current_xint, comp_xint;
+          currentItem.GetXTimeInt(current_xint);
+          compItem.GetXTimeInt(comp_xint);
+          if (current_xint != comp_xint)
+            bsConflicts.flip(CItemData::XTIME_INT);
         }
         if (bsFields.test(CItemData::URL) &&
             FieldsNotEqual(currentItem.GetURL(), compItem.GetURL()))
@@ -2931,11 +2690,11 @@ void DboxMain::Compare(const StringX &sx_Filename2, PWScore *pothercore)
         if (bsConflicts.any()) {
           numConflicts++;
           st_data.id = numConflicts;
-          list_Conflicts.push_back(st_data);
+          m_list_Conflicts.push_back(st_data);
         } else {
           numIdentical++;
           st_data.id = numIdentical;
-          list_Identical.push_back(st_data);
+          m_list_Identical.push_back(st_data);
         }
       } else {
         /* didn't find any match... */
@@ -2948,7 +2707,7 @@ void DboxMain::Compare(const StringX &sx_Filename2, PWScore *pothercore)
         st_data.unknflds0 = currentItem.NumberUnknownFields() > 0;
         st_data.unknflds1 = false;
         st_data.id = numOnlyInCurrent;
-        list_OnlyInCurrent.push_back(st_data);
+        m_list_OnlyInCurrent.push_back(st_data);
       }
     }
   } // iteration over our entries
@@ -2966,6 +2725,14 @@ void DboxMain::Compare(const StringX &sx_Filename2, PWScore *pothercore)
       st_data.title = compItem.GetTitle();
       st_data.user = compItem.GetUser();
 
+      CSecString sx_compare = CSecString(L"\xab") + 
+                             st_data.group + CSecString(L"\xbb \xab") + 
+                             st_data.title + CSecString(L"\xbb \xab") +
+                             st_data.user  + CSecString(L"\xbb");
+
+      // Update the Wizard page
+      UpdateWizard((LPCWSTR)sx_compare);
+
       if (m_core.Find(st_data.group, st_data.title, st_data.user) ==
           m_core.GetEntryEndIter()) {
         /* didn't find any match... */
@@ -2978,56 +2745,69 @@ void DboxMain::Compare(const StringX &sx_Filename2, PWScore *pothercore)
         st_data.unknflds0 = false;
         st_data.unknflds1 = compItem.NumberUnknownFields() > 0;
         st_data.id = numOnlyInComp;
-        list_OnlyInComp.push_back(st_data);
+        m_list_OnlyInComp.push_back(st_data);
       }
     }
   } // iteration over other core's element
 
   waitCursor.Restore(); // restore normal cursor
 
-  ReportAdvancedOptions(&rpt, IDS_RPTCOMPARE);
+  ReportAdvancedOptions(prpt, bAdvanced, WZAdvanced::COMPARE);
 
-  cs_title.LoadString(IDS_COMPARECOMPLETE);
   cs_buffer.Format(IDS_COMPARESTATISTICS,
                 sx_Filename1.c_str(), sx_Filename2.c_str());
 
+  int rc = 0;
   if (numOnlyInCurrent == 0 && numOnlyInComp == 0 && numConflicts == 0) {
+    m_list_Identical.clear();
     cs_text.LoadString(IDS_IDENTICALDATABASES);
     cs_buffer += cs_text;
-    CGeneralMsgBox gmb;
-    gmb.MessageBox(cs_buffer, cs_title, MB_OK);
-    rpt.WriteLine((LPCWSTR)cs_buffer);
-    rpt.EndReport();
+    prpt->WriteLine((LPCWSTR)cs_buffer);
+    prpt->EndReport();
   } else {
-    CCompareResultsDlg CmpRes(this, list_OnlyInCurrent, list_OnlyInComp, 
-                              list_Conflicts, list_Identical, 
-                              m_bsFields, &m_core, pothercore, &rpt);
-
-    CmpRes.m_scFilename1 = sx_Filename1;
-    CmpRes.m_scFilename2 = sx_Filename2;
-    CmpRes.m_bOriginalDBReadOnly = m_core.IsReadOnly();
-    CmpRes.m_bComparisonDBReadOnly = pothercore->IsReadOnly();
-
-    INT_PTR rc = CmpRes.DoModal();
-    if (CmpRes.m_OriginalDBChanged) {
-      FixListIndexes();
-      RefreshViews();
-    }
-
-    rpt.EndReport();
-
-    if (rc == IDC_VIEWCOMPAREREPORT)
-      ViewReport(rpt);
+    prpt->WriteLine((LPCWSTR)cs_buffer);
+    rc = 1;
   }
 
   if (pothercore->IsLockedFile(pothercore->GetCurFile().c_str()))
     pothercore->UnlockFile(pothercore->GetCurFile().c_str());
 
-  return;
+  return rc;
 }
 
-void DboxMain::Synchronize(const StringX &sx_Filename2, PWScore *pothercore)
+CString DboxMain::ShowCompareResults(const StringX sx_Filename1, const StringX sx_Filename2,
+                                     PWScore *pothercore, CReport *prpt)
 {
+  // Can't do UI from a worker thread!
+  CCompareResultsDlg CmpRes(this, m_list_OnlyInCurrent, m_list_OnlyInComp, 
+                            m_list_Conflicts, m_list_Identical, 
+                            m_bsFields, &m_core, pothercore, prpt);
+
+  CmpRes.m_scFilename1 = sx_Filename1;
+  CmpRes.m_scFilename2 = sx_Filename2;
+  CmpRes.m_bOriginalDBReadOnly = m_core.IsReadOnly();
+  CmpRes.m_bComparisonDBReadOnly = pothercore->IsReadOnly();
+
+  CmpRes.DoModal();
+
+  if (CmpRes.m_OriginalDBChanged) {
+    FixListIndexes();
+    RefreshViews();
+  }
+
+  m_list_OnlyInCurrent.clear();
+  m_list_OnlyInComp.clear();
+  m_list_Conflicts.clear();
+  m_list_Identical.clear();
+
+  return CmpRes.GetResults();
+}
+
+void DboxMain::Synchronize(const StringX &sx_Filename2, PWScore *pothercore,
+                           const bool bAdvanced, int &numUpdated, CReport *prpt)
+{
+  numUpdated = 0;
+
   /* Put up hourglass...this might take a while */
   CWaitCursor waitCursor;
 
@@ -3053,18 +2833,18 @@ void DboxMain::Synchronize(const StringX &sx_Filename2, PWScore *pothercore)
     gmb.MessageBox(cs_temp, cs_title, MB_ICONEXCLAMATION);
     return;
   }
+
   setGTU.clear();  // Don't need it anymore - so clear it now
 
   /* Create report as we go */
-  CReport rpt;
   CString cs_text, cs_buffer;
-  cs_text.LoadString(IDS_RPTSYNCH);
-  rpt.StartReport(cs_text, m_core.GetCurFile().c_str());
+  cs_text.LoadString(ID_MENUITEM_SYNCHRONIZE);
+  prpt->StartReport(cs_text, m_core.GetCurFile().c_str());
   cs_temp.Format(IDS_SYNCHINGDATABASE, sx_Filename2.c_str());
-  rpt.WriteLine((LPCWSTR)cs_temp);
+  prpt->WriteLine((LPCWSTR)cs_temp);
   std::vector<StringX> vs_updated;
 
-  ReportAdvancedOptions(&rpt, IDS_RPTSYNCH);
+  ReportAdvancedOptions(prpt, bAdvanced, WZAdvanced::SYNCH);
 
   /*
   Purpose:
@@ -3076,7 +2856,6 @@ void DboxMain::Synchronize(const StringX &sx_Filename2, PWScore *pothercore)
     if find a match
       update requested fields
   */
-  int numUpdated = 0;
 
   CItemData::FieldBits bsFields;
   CString subgroup_name;
@@ -3084,13 +2863,13 @@ void DboxMain::Synchronize(const StringX &sx_Filename2, PWScore *pothercore)
   // int subgroup_case;
   // int treatwhitespaceasempty;
 
-  if (m_bAdvanced == TRUE) {
+  if (bAdvanced) {
     // Use saved or latest values
-    bsFields = m_SaveAdvValues[CAdvancedDlg::ADV_SYNCHRONIZE].bsFields;
-    subgroup_name = m_SaveAdvValues[CAdvancedDlg::ADV_SYNCHRONIZE].subgroup_name;
-    subgroup_set = m_SaveAdvValues[CAdvancedDlg::ADV_SYNCHRONIZE].subgroup_set;
-    subgroup_object = m_SaveAdvValues[CAdvancedDlg::ADV_SYNCHRONIZE].subgroup_object;
-    subgroup_function = m_SaveAdvValues[CAdvancedDlg::ADV_SYNCHRONIZE].subgroup_function;
+    bsFields = m_SaveAdvValues[WZAdvanced::SYNCH].bsFields;
+    subgroup_name = m_SaveAdvValues[WZAdvanced::SYNCH].subgroup_name;
+    subgroup_set = m_SaveAdvValues[WZAdvanced::SYNCH].subgroup_set;
+    subgroup_object = m_SaveAdvValues[WZAdvanced::SYNCH].subgroup_object;
+    subgroup_function = m_SaveAdvValues[WZAdvanced::SYNCH].subgroup_function;
   } else {
     // Turn off advanced settings
     subgroup_name = L"";
@@ -3183,6 +2962,9 @@ void DboxMain::Synchronize(const StringX &sx_Filename2, PWScore *pothercore)
       pcmd->SetNoGUINotify();
       pmulticmds->Add(pcmd);
 
+      // Update the Wizard page
+      UpdateWizard(sx_updated.c_str());
+
       numUpdated++;
     }  // Found match via [g:t:u]
   } // iteration over other core's entries
@@ -3193,10 +2975,10 @@ void DboxMain::Synchronize(const StringX &sx_Filename2, PWScore *pothercore)
     CString cs_singular_plural_type(MAKEINTRESOURCE(numUpdated == 1 ? IDSC_ENTRY : IDSC_ENTRIES));
     CString cs_singular_plural_verb(MAKEINTRESOURCE(numUpdated == 1 ? IDS_WAS : IDS_WERE));
     resultStr.Format(IDS_SYNCHUPDATED, cs_singular_plural_type, cs_singular_plural_verb);
-    rpt.WriteLine((LPCWSTR)resultStr);
+    prpt->WriteLine((LPCWSTR)resultStr);
     for (size_t i = 0; i < vs_updated.size(); i++) {
       resultStr.Format(L"\t%s", vs_updated[i].c_str());
-      rpt.WriteLine((LPCWSTR)resultStr);
+      prpt->WriteLine((LPCWSTR)resultStr);
     }
   }
 
@@ -3210,23 +2992,14 @@ void DboxMain::Synchronize(const StringX &sx_Filename2, PWScore *pothercore)
   /* tell the user we're done & provide short merge report */
   const CString cs_entries(MAKEINTRESOURCE(numUpdated == 1 ? IDSC_ENTRY : IDSC_ENTRIES));
   resultStr.Format(IDS_SYNCHCOMPLETED, numUpdated, cs_entries);
-  rpt.WriteLine((LPCWSTR)resultStr);
-  rpt.EndReport();
-
-  gmb.SetTitle(IDS_RPTSYNCH);
-  gmb.SetMsg(resultStr);
-  gmb.SetStandardIcon(MB_ICONINFORMATION);
-  gmb.AddButton(IDS_OK, IDS_OK, TRUE, TRUE);
-  gmb.AddButton(IDS_VIEWREPORT, IDS_VIEWREPORT);
-  INT_PTR msg_rc = gmb.DoModal();
-  if (msg_rc == IDS_VIEWREPORT)
-    ViewReport(rpt);
+  prpt->WriteLine((LPCWSTR)resultStr);
+  prpt->EndReport();
 
   if (numUpdated > 0)
     SetChanged(Data);
 
-  ChangeOkUpdate();
-  RefreshViews();
+  if (pothercore->IsLockedFile(pothercore->GetCurFile().c_str()))
+    pothercore->UnlockFile(pothercore->GetCurFile().c_str());
 }
 
 LRESULT DboxMain::OnProcessCompareResultFunction(WPARAM wParam, LPARAM lFunction)
@@ -3357,17 +3130,6 @@ LRESULT DboxMain::SynchCompareResult(PWScore *pfromcore, PWScore *ptocore,
   // Synch 1 entry *pfromcore -> *ptocore
   CItemData::FieldBits bsFields;
 
-  // Use a cut down Advanced dialog (only fields to synchronize)
-  CAdvancedDlg Adv(this, CAdvancedDlg::ADV_COMPARESYNCH,
-                   &m_SaveAdvValues[CAdvancedDlg::ADV_COMPARESYNCH]);
-
-  INT_PTR rc = Adv.DoModal();
-
-  if (rc == IDOK)
-    bsFields = Adv.m_bsFields;
-  else
-    return FALSE;
-
   ItemListIter fromPos = pfromcore->Find(fromUUID);
   ASSERT(fromPos != pfromcore->GetEntryEndIter());
   const CItemData *pfromEntry = &fromPos->second;
@@ -3379,7 +3141,7 @@ LRESULT DboxMain::SynchCompareResult(PWScore *pfromcore, PWScore *ptocore,
 
   bool bUpdated(false);
   for (int i = 0; i < (int)bsFields.size(); i++) {
-    if (bsFields.test(i)) {
+    if (m_SaveAdvValues[WZAdvanced::COMPARESYNCH].bsFields.test(i)) {
       const StringX sxValue = pfromEntry->GetFieldValue((CItemData::FieldType)i);
       if (sxValue != updtEntry.GetFieldValue((CItemData::FieldType)i)) {
         bUpdated = true;
@@ -3709,23 +3471,52 @@ void DboxMain::RegistryAnonymity()
   return;
 }
 
-void DboxMain::ReportAdvancedOptions(CReport *pRpt, const UINT uimsgftn)
+void DboxMain::ReportAdvancedOptions(CReport *pRpt, const bool bAdvanced, const WZAdvanced::AdvType type)
 {
   CString cs_buffer, cs_temp, cs_text;
+  UINT uimsgftn(0);
+  switch (type) {
+    case WZAdvanced::COMPARE:
+      uimsgftn = IDS_RPTCOMPARE;
+      break;
+    case WZAdvanced::MERGE:
+      uimsgftn = IDS_RPTMERGE;
+      break;
+    case WZAdvanced::SYNCH:
+      uimsgftn = IDS_RPTSYNCH;
+      break;
+    case WZAdvanced::EXPORT_TEXT:
+      uimsgftn = IDS_RPTEXPORTTEXT;
+      break;
+    case WZAdvanced::EXPORT_ENTRYTEXT:
+      uimsgftn = IDS_RPTEXPORTTEXT;
+      break;
+    case WZAdvanced::EXPORT_XML:
+      uimsgftn = IDS_RPTEXPORTXML;
+      break;
+    case WZAdvanced::EXPORT_ENTRYXML:
+      uimsgftn = IDS_RPTEXPORTXML;
+      break;
+    default:
+      ASSERT(0);
+      return;
+  }
+
+  st_SaveAdvValues &st_SADV = m_SaveAdvValues[type];
   // tell the user we're done & provide short Compare report
-  if (m_bAdvanced == FALSE) {
+  if (bAdvanced == FALSE) {
     cs_temp.LoadString(IDS_NONE);
     cs_buffer.Format(IDS_ADVANCEDOPTIONS, cs_temp);
     pRpt->WriteLine((LPCWSTR)cs_buffer);
     pRpt->WriteLine();
   } else {
-    if (m_subgroup_set == BST_UNCHECKED) {
+    if (st_SADV.subgroup_set == BST_UNCHECKED) {
       cs_temp.LoadString(IDS_NONE);
     } else {
       CString cs_Object, cs_case;
       UINT uistring(IDS_NONE);
 
-      switch(m_subgroup_object) {
+      switch(st_SADV.subgroup_object) {
         case CItemData::GROUP:
           uistring = IDS_GROUP;
           break;
@@ -3749,9 +3540,9 @@ void DboxMain::ReportAdvancedOptions(CReport *pRpt, const UINT uimsgftn)
       }
       cs_Object.LoadString(uistring);
 
-      cs_case.LoadString(m_subgroup_function > 0 ? IDS_ADVCASE_INSENSITIVE : IDS_ADVCASE_SENSITIVE);
+      cs_case.LoadString(st_SADV.subgroup_function > 0 ? IDS_ADVCASE_INSENSITIVE : IDS_ADVCASE_SENSITIVE);
 
-      switch (m_subgroup_function) {
+      switch (st_SADV.subgroup_function) {
         case -PWSMatch::MR_EQUALS:
         case  PWSMatch::MR_EQUALS:
           uistring = IDSC_EQUALS;
@@ -3788,9 +3579,13 @@ void DboxMain::ReportAdvancedOptions(CReport *pRpt, const UINT uimsgftn)
           ASSERT(0);
       }
       cs_text.LoadString(uistring);
-      cs_temp.Format(IDS_ADVANCEDSUBSET, cs_Object, cs_text, m_subgroup_name,
+      cs_temp.Format(IDS_ADVANCEDSUBSET, cs_Object, cs_text, st_SADV.subgroup_name,
                      cs_case);
     }
+
+    if (type == WZAdvanced::MERGE)
+      return;
+
     cs_buffer.Format(IDS_ADVANCEDOPTIONS, cs_temp);
     pRpt->WriteLine((LPCWSTR)cs_buffer);
     pRpt->WriteLine();
@@ -3818,7 +3613,7 @@ void DboxMain::ReportAdvancedOptions(CReport *pRpt, const UINT uimsgftn)
 
     int n(0);
     for (int i = 0; i < _countof(ifields); i++) {
-      if (m_bsFields.test(ifields[i])) {
+      if (st_SADV.bsFields.test(ifields[i])) {
         cs_buffer += L"\t" + CString(MAKEINTRESOURCE(uimsgids[i]));
         n++;
         if ((n % 5) == 0)
@@ -3828,7 +3623,7 @@ void DboxMain::ReportAdvancedOptions(CReport *pRpt, const UINT uimsgftn)
     cs_buffer += L"\r\n\t";
     n = 0;
     for (int i = 0; i < _countof(itfields); i++) {
-      if (m_bsFields.test(itfields[i])) {
+      if (st_SADV.bsFields.test(itfields[i])) {
         cs_buffer += L"\t" + CString(MAKEINTRESOURCE(uitmsgids[i]));
         n++;
         if ((n % 3) == 0)

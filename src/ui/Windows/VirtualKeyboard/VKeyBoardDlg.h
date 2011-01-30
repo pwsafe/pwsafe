@@ -32,7 +32,8 @@ typedef OSK_API int  (* LP_OSK_GetVersion) ();
 
 enum {USER_FONT, ARIALMS_FONT, ARIAL_FONT, LUCIDA_FONT};
 
-#define WM_INSERTBUFFER (WM_APP - 10)
+// See DboxMain.h as well, since all PWS messages are either defined or documented there
+#define PWS_MSG_INSERTBUFFER (WM_APP + 70)
 
 enum eJapanese {ENGLISH = 0, JAPANESE};    // Used for m_Kana
 enum eHK       {HIRAGANA = 0, KATAKANA};   // Used for m_Hiragana

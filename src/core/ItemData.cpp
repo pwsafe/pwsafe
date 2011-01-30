@@ -212,6 +212,8 @@ StringX CItemData::GetFieldValue(const FieldType &ft) const
       if (xint != 0)
         str += _T(" *");
       return str;
+    case RESERVED:   /* 0b */
+      break;
     case RMTIME:     /* 0c */
       return GetRMTimeL();
     case URL:        /* 0d */
@@ -283,7 +285,6 @@ StringX CItemData::GetFieldValue(const FieldType &ft) const
         LoadAString(sxProtected, IDSC_YES);
       return sxProtected;
     }
-    case RESERVED:
     default:
       ASSERT(0);
   }
