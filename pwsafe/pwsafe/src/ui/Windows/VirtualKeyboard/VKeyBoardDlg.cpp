@@ -709,7 +709,7 @@ void CVKeyBoardDlg::OnInsert()
   ShowWindow(SW_HIDE);
 
   // Send data to caller
-  m_pParent->SendMessage(WM_INSERTBUFFER,0, 0);
+  m_pParent->SendMessage(PWS_MSG_INSERTBUFFER,0, 0);
 
   // Clear buffer!
   // Must make the user type the phrase in twice to confirm what they have

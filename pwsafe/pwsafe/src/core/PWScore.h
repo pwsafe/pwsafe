@@ -74,7 +74,7 @@ public:
     UNIMPLEMENTED,                            // 15
     NO_ENTRIES_EXPORTED,                      // 16
     DB_HAS_DUPLICATES,                        // 17
-    OK_WITH_ERRORS                           // 18
+    OK_WITH_ERRORS                            // 18
   };
 
   PWScore();
@@ -82,7 +82,9 @@ public:
 
   static uuid_array_t NULL_UUID;
 
-  void SetUIInterFace(UIInterFace *pUIIF) {m_pUIIF = pUIIF;}
+  bool SetUIInterFace(UIInterFace *pUIIF, size_t num_supported,
+                      std::bitset<UIInterFace::NUM_SUPPORTED> bsSupportedFunctions);
+
   // Set following to a Reporter-derived object
   // so that we can inform user of events of interest
   static void SetReporter(Reporter *pReporter) {m_pReporter = pReporter;}
@@ -148,13 +150,15 @@ public:
                          const CItemData::FieldBits &bsExport,
                          const stringT &subgroup, const int &iObject,
                          const int &iFunction, const TCHAR &delimiter,
-                         const OrderedItemList *il = NULL);
+                         int &numExported, const OrderedItemList *il = NULL,
+                         CReport *prpt = NULL);
   int WriteXMLFile(const StringX &filename,
                    const CItemData::FieldBits &bsExport,
                    const stringT &subgroup, const int &iObject,
                    const int &iFunction, const TCHAR &delimiter,
-                   const OrderedItemList *il = NULL,
-                   const bool &bFilterActive = false);
+                   int &numExported, const OrderedItemList *il = NULL,
+                   const bool &bFilterActive = false,
+                   CReport *prpt = NULL);
 
   // Import databases
   // If returned status is SUCCESS, then returned Command * can be executed.
@@ -299,6 +303,7 @@ public:
 
   void GUISetupDisplayInfo(CItemData &ci);
   void GUIRefreshEntry(const CItemData &ci);
+  void UpdateWizard(const stringT &s);
 
   // Get/Set Display information from/to database
   void SetDisplayStatus(const std::vector<bool> &s);
@@ -434,6 +439,7 @@ private:
   bool m_bNotifyDB;
 
   UIInterFace *m_pUIIF; // pointer to UI interface abtraction
+  std::bitset<UIInterFace::NUM_SUPPORTED> m_bsSupportedFunctions;
   
   void NotifyGUINeedsUpdating(UpdateGUICommand::GUI_Action, uuid_array_t &,
                               CItemData::FieldType ft = CItemData::START,

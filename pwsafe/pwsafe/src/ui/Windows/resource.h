@@ -8,7 +8,6 @@
 #define IDR_FILTERACCELERATOR           103
 #define IDD_ABOUTBOX                    110
 #define IDD_ADVANCED                    112
-#define IDD_ADVANCEDMERGE               113
 #define IDD_COLUMNCHOOSER               114
 #define IDD_COMPARE_RESULTS             115
 #define IDD_CONFIRMDELETE_DIALOG        116
@@ -16,10 +15,7 @@
 #define IDD_CRYPTKEYENTRY               118
 #define IDD_DISPLAY_EXPIRED_ENTRIES     119
 #define IDD_DLG_PWHIST                  120
-#define IDD_ADVANCEDCOMPSYNCH           121
 #define IDD_EDIT_SHORTCUT               122
-#define IDD_EXPORT_TEXT                 123
-#define IDD_EXPORT_XML                  124
 #define IDD_IMPORT_TEXT                 125
 #define IDD_IMPORT_XML                  126
 #define IDD_KEYCHANGE_DIALOG            127
@@ -338,6 +334,11 @@
 #define IDB_DUPLICATEGROUP_CLASSIC      491
 #define IDB_DUPLICATEGROUP_NEW          492
 #define IDB_DUPLICATEGROUP_NEW_D        493
+#define IDD_WZADVANCED                  494
+#define IDD_WZADVANCEDTOP               495
+#define IDD_WZADVANCEDBOTTOM            496
+#define IDD_WZSELECTDB                  497
+#define IDD_WZFINISH                    498
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_BROWSE                      1002
@@ -401,8 +402,6 @@
 #define IDC_CLEARBOARDONMINIMIZE        1061
 #define IDC_CLEARBOARDONEXIT            1062
 #define IDC_GROUP                       1067
-#define IDC_EXPORT_XML_PASSWORD         1068
-#define IDC_EXPORT_TEXT_PASSWORD        1069
 #define IDC_USEHEXDIGITS                1070
 #define IDC_ADVANCED                    1071
 #define IDC_DEFPWUSESYSTRAY             1072
@@ -424,7 +423,7 @@
 #define IDC_HOTKEY_ENABLE               1088
 #define IDC_DEFIMPDELIM                 1090
 #define IDC_QUERYSETEXPDELIM            1091
-#define IDC_DEFEXPDELIM                 1092
+#define IDC_WZDEFEXPDELIM               1092
 #define IDC_STATIC_MAXMRUITEMS          1093
 #define IDC_MAXMRUITEMS                 1094
 #define IDC_STATIC_GBMRU                1095
@@ -532,8 +531,6 @@
 #define IDC_DATABASECOMBO               1222
 #define IDC_BTN_BROWSE                  1223
 #define IDC_SPCL_TXT                    1225
-#define IDC_EXPWARNING1                 1226
-#define IDC_EXPWARNING2                 1227
 #define IDC_SELECTBYDATETIME            1228
 #define IDC_SELECTBYDAYS                1229
 #define IDC_EXPDAYS                     1230
@@ -548,14 +545,11 @@
 #define IDC_DEFAULTAUTOTYPE             1249
 #define IDC_MINIMIZEONAUTOTYPE          1250
 #define IDC_ALTBROWSER_CMDLINE          1251
-#define IDC_EXPORT_ADVANCED             1252
-#define IDC_XML_ADVANCED                1253
 #define IDC_DEFUNSHOWINTREE             1254
 #define IDC_FILEUUID                    1255
 #define IDC_UNKNOWNFIELDS               1256
 #define IDC_RESULTLIST                  1257
 #define IDC_RESULTLISTHDR               1258
-#define IDC_VIEWCOMPAREREPORT           1259
 #define IDC_COMPAREORIGINALDB           1260
 #define IDC_COMPARECOMPARISONDB         1261
 #define IDC_SHOW_IDENTICAL_ENTRIES      1262
@@ -719,14 +713,22 @@
 #define IDC_ADVANCED_RESET              1427
 #define IDC_ENTRY                       1428
 #define IDC_STATIC_PROTECTED            1429
+#define IDC_DATABASE                    1430
+#define IDC_VIEWREPORT                  1431
+#define IDC_STATIC_WZWARNING            1432
+#define IDC_STATIC_WZEXPDLM1            1433
+#define IDC_STATIC_WZEXPDLM2            1434
+#define IDC_STATIC_WZFILE               1435
+#define IDC_STATIC_WZPROCESSING         1436
+#define IDC_STATIC_WZRESULTS            1437
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        494
+#define _APS_NEXT_RESOURCE_VALUE        499
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1430
+#define _APS_NEXT_CONTROL_VALUE         1438
 #define _APS_NEXT_SYMED_VALUE           166
 #endif
 #endif

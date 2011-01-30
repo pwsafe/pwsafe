@@ -190,7 +190,7 @@ public:
 
   void CreateUUID(); // V20 - generate UUID for new item
   void SetName(const StringX &name,
-    const StringX &defaultUsername); // V17 - deprecated - replaced by SetTitle & SetUser
+               const StringX &defaultUsername); // V17 - deprecated - replaced by SetTitle & SetUser
   void SetTitle(const StringX &title, TCHAR delimiter = 0);
   void SetUser(const StringX &user); // V20
   void SetPassword(const StringX &password);

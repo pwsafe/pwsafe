@@ -278,7 +278,7 @@ void DBPrefsCommand::Undo()
 // ------------------------------------------------
 
 AddEntryCommand::AddEntryCommand(CommandInterface *pcomInt, const CItemData &ci,
-                                 Command *pcmd)
+                                 const Command *pcmd)
   : Command(pcomInt), m_ci(ci)
 {
   ASSERT(!ci.IsDependent()); // use other c'tor for dependent entries!
@@ -287,7 +287,7 @@ AddEntryCommand::AddEntryCommand(CommandInterface *pcomInt, const CItemData &ci,
 }
 
 AddEntryCommand::AddEntryCommand(CommandInterface *pcomInt, const CItemData &ci,
-                                   const uuid_array_t base_uuid, Command *pcmd)
+                                 const uuid_array_t base_uuid, const Command *pcmd)
   : Command(pcomInt), m_ci(ci)
 {
   memcpy(m_base_uuid, base_uuid, sizeof(uuid_array_t));
@@ -347,11 +347,12 @@ void AddEntryCommand::Undo()
 // ------------------------------------------------
 
 DeleteEntryCommand::DeleteEntryCommand(CommandInterface *pcomInt,
-                                       const CItemData &ci, Command *pcmd)
+                                       const CItemData &ci, const Command *pcmd)
   : Command(pcomInt), m_ci(ci), m_dependents(0)
 {
-  if (pcmd != NULL)
+  if (pcmd != NULL) {
     m_bNotifyGUI = pcmd->GetGUINotify();
+  }
 
   if (ci.IsNormal())
     memset(m_base_uuid, 0, sizeof(uuid_array_t));

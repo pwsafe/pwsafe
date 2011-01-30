@@ -14,75 +14,16 @@
 
 #include "PWDialog.h"
 #include "core/ItemData.h"
-#include <bitset>
-
-struct st_SaveAdvValues {
-  st_SaveAdvValues()
-  : subgroup_name(L""),
-    subgroup_set(BST_UNCHECKED), subgroup_case(BST_UNCHECKED), 
-    treatwhitespaceasempty(BST_CHECKED),
-    subgroup_object(0), subgroup_function(0)
-  {
-    bsFields.set();
-  }
-
-  st_SaveAdvValues(const st_SaveAdvValues &adv)
-    : bsFields(adv.bsFields), subgroup_name(adv.subgroup_name),
-    subgroup_set(adv.subgroup_set), subgroup_object(adv.subgroup_object),
-    subgroup_function(adv.subgroup_function), subgroup_case(adv.subgroup_case),
-    treatwhitespaceasempty(adv.treatwhitespaceasempty)
-  {
-  }
-
-  st_SaveAdvValues &operator =(const st_SaveAdvValues &adv)
-  {
-    if (this != &adv) {
-      bsFields = adv.bsFields;
-      subgroup_name = adv.subgroup_name;
-      subgroup_set = adv.subgroup_set;
-      subgroup_object = adv.subgroup_object;
-      subgroup_function = adv.subgroup_function;
-      subgroup_case = adv.subgroup_case;
-      treatwhitespaceasempty = adv.treatwhitespaceasempty;
-    }
-    return *this;
-  }
-
-  void Clear() {
-    bsFields.set();
-    subgroup_set = subgroup_case = BST_UNCHECKED;
-    treatwhitespaceasempty = BST_CHECKED;
-    subgroup_object = subgroup_function = 0;
-    subgroup_name = L"";
-  }
-
-  CItemData::FieldBits bsFields;
-  CString subgroup_name;
-  int subgroup_set, subgroup_object, subgroup_function, subgroup_case;
-  int treatwhitespaceasempty;
-};
+#include "AdvancedValues.h"
 
 class CAdvancedDlg : public CPWDialog
 {
 public:
-  enum Type {ADV_INVALID = -1,
-             ADV_COMPARE = 0,
-             ADV_MERGE,
-             ADV_SYNCHRONIZE,
-             ADV_EXPORT_TEXT,
-             ADV_EXPORT_ENTRYTEXT,
-             ADV_EXPORT_XML,
-             ADV_EXPORT_ENTRYXML,
-             ADV_FIND,
-             ADV_COMPARESYNCH,
-             ADV_LAST};
-
-  CAdvancedDlg(CWnd* pParent = NULL, Type iIndex = ADV_INVALID,
+  CAdvancedDlg(CWnd* pParent = NULL,
                st_SaveAdvValues *pst_SADV = NULL);   // standard constructor
   virtual CAdvancedDlg::~CAdvancedDlg();
 
   // Dialog Data
-  enum { IDD_MERGE = IDD_ADVANCEDMERGE };
   //{{AFX_DATA(CADVANCEDDlg)
   enum { IDD = IDD_ADVANCED };
   CString m_subgroup_name;
@@ -101,10 +42,6 @@ protected:
   //}}AFX_VIRTUAL
 
   // Implementation
-protected:
-  Type m_iIndex;
-  static int dialog_lookup[ADV_LAST];
-
 protected:
   virtual BOOL OnInitDialog();
   // Generated message map functions

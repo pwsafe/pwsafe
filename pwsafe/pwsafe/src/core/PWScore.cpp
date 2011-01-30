@@ -2098,18 +2098,20 @@ CItemData *PWScore::GetBaseEntry(const CItemData *pAliasOrSC)
   ASSERT(pAliasOrSC != NULL);
   CItemData::EntryType et = pAliasOrSC->GetEntryType();
   if (et != CItemData::ET_ALIAS && et != CItemData::ET_SHORTCUT) {
-    pws_os::Trace(_T("PWScore::GetBaseEntry called with non-dependent element!\n"));
+    //pws_os::Trace(_T("PWScore::GetBaseEntry called with non-dependent element!\n"));
     return NULL;
   }
+
   uuid_array_t dep_uuid, base_uuid;
   pAliasOrSC->GetUUID(dep_uuid);
   if (!GetDependentEntryBaseUUID(dep_uuid, base_uuid, et)) {
-    pws_os::Trace(_T("PWScore::GetBaseEntry - couldn't find base uuid!\n"));
+   // pws_os::Trace(_T("PWScore::GetBaseEntry - couldn't find base uuid!\n"));
     return NULL;
   }
+
   ItemListIter iter = Find(base_uuid);
   if (iter == GetEntryEndIter()) {
-    pws_os::Trace(_T("PWScore::GetBaseEntry - Find(base_uuid) failed!\n"));
+    //pws_os::Trace(_T("PWScore::GetBaseEntry - Find(base_uuid) failed!\n"));
     return NULL;
   }
   return &iter->second;
@@ -2138,36 +2140,66 @@ bool PWScore::GetDependentEntryBaseUUID(const uuid_array_t &entry_uuid,
   }
 }
 
+bool PWScore::SetUIInterFace(UIInterFace *pUIIF, size_t numsupported,
+                      std::bitset<UIInterFace::NUM_SUPPORTED> bsSupportedFunctions)
+{
+  bool brc(true);
+  m_pUIIF = pUIIF;
+  ASSERT(numsupported == UIInterFace::NUM_SUPPORTED);
+
+  m_bsSupportedFunctions.reset();
+  if (numsupported == UIInterFace::NUM_SUPPORTED) {
+    m_bsSupportedFunctions = bsSupportedFunctions;
+  } else {
+    size_t minsupported = min(numsupported, UIInterFace::NUM_SUPPORTED);
+    for (size_t i = 0; i < minsupported; i++) {
+      m_bsSupportedFunctions.set(i, bsSupportedFunctions.test(i));
+    }
+    brc = false;
+  }
+  return brc;
+}
+
 // NotifyDBModified - used by GUI if the Database has changed
 // particularly to invalidate any current Find results and to populate
 // message during Vista and later shutdowns
 
 void PWScore::NotifyDBModified()
 {
-  if (m_bNotifyDB && m_pUIIF != NULL)
+  if (m_bNotifyDB && m_pUIIF != NULL &&
+      m_bsSupportedFunctions.test(UIInterFace::DATABASEMODIFIED))
     m_pUIIF->DatabaseModified(m_bDBChanged || m_bDBPrefsChanged);
 }
-
 
 void PWScore::NotifyGUINeedsUpdating(UpdateGUICommand::GUI_Action ga, 
                                      uuid_array_t &entry_uuid,
                                      CItemData::FieldType ft,
                                      bool bUpdateGUI)
 {
-  if (m_pUIIF != NULL)
+  if (m_pUIIF != NULL &&
+      m_bsSupportedFunctions.test(UIInterFace::UPDATEGUI))
     m_pUIIF->UpdateGUI(ga, entry_uuid, ft, bUpdateGUI);
 }
 
 void PWScore::GUISetupDisplayInfo(CItemData &ci)
 {
-  if (m_pUIIF != NULL)
+  if (m_pUIIF != NULL &&
+      m_bsSupportedFunctions.test(UIInterFace::GUISETUPDISPLAYINFO))
     m_pUIIF->GUISetupDisplayInfo(ci);
 }
 
 void PWScore::GUIRefreshEntry(const CItemData &ci)
 {
-  if (m_pUIIF != NULL)
+  if (m_pUIIF != NULL &&
+      m_bsSupportedFunctions.test(UIInterFace::GUIREFRESHENTRY))
     m_pUIIF->GUIRefreshEntry(ci);
+}
+
+void PWScore::UpdateWizard(const stringT &s)
+{
+  if (m_pUIIF != NULL &&
+      m_bsSupportedFunctions.test(UIInterFace::UPDATEWIZARD))
+    m_pUIIF->UpdateWizard(s);
 }
 
 bool PWScore::LockFile(const stringT &filename, stringT &locker)

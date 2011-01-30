@@ -44,7 +44,7 @@ public:
   {return m_bCaseSensitive ? TRUE : FALSE;}
   void RefreshImages();
   void InvalidateSearch() {m_lastshown = size_t(-1);}
-  void GetSearchInfo(BOOL &bAdvanced, CItemData::FieldBits &bsFields, 
+  void GetSearchInfo(bool &bAdvanced, CItemData::FieldBits &bsFields, 
                      CString &subgroup_name, 
                      int &subgroup_set, int &subgroup_object, int &subgroup_function)
   {bAdvanced = m_bAdvanced; bsFields = m_bsFields;
@@ -81,7 +81,7 @@ private:
   int m_iWMSGID;
   int m_toolbarMode, m_bitmode, m_iFindDirection;
   bool m_bVisible, m_bCaseSensitive;
-  BOOL m_bAdvanced;
+  bool m_bAdvanced;
 
   std::vector<int> m_indices; // array of found items
 

@@ -15,7 +15,6 @@
 #include "SecString.h"
 #include "core/PwsPlatform.h"
 #include "PWDialog.h"
-#include "AdvancedDlg.h"
 
 //-----------------------------------------------------------------------------
 /**
@@ -35,8 +34,7 @@ class CPasskeyEntry : public CPWDialog
 public:
   CPasskeyEntry(CWnd* pParent,
                 const CString& a_filespec, int index, /* GCP_NORMAL */
-                bool bReadOnly, bool bForceReadOnly, bool bHideReadOnly,
-                CAdvancedDlg::Type adv_type, st_SaveAdvValues *pst_SADV);
+                bool bReadOnly, bool bForceReadOnly, bool bHideReadOnly);
 
   ~CPasskeyEntry();
 
@@ -45,12 +43,6 @@ public:
   const CSecString &GetPasskey() const {return m_passkey;}
   const CString &GetFileName() const {return m_filespec;}
   CString m_appversion;
-
-  CItemData::FieldBits m_bsFields;
-  CString m_subgroup_name;
-  int m_subgroup_set, m_subgroup_object, m_subgroup_function;
-  int m_treatwhitespaceasempty;
-  BOOL m_bAdvanced;
 
 protected:
   // Dialog Data
@@ -84,9 +76,8 @@ protected:
   int m_tries;
   int m_status;
   int m_index;
-  CAdvancedDlg::Type m_adv_type;
 
-  static int dialog_lookup[5];
+  static int dialog_lookup[4];
 
   HICON m_hIcon;
 
@@ -97,7 +88,6 @@ protected:
   virtual void OnOK();
   afx_msg void OnHelp();
   afx_msg void OnExit();
-  afx_msg void OnAdvanced();
 #if defined(POCKET_PC)
   afx_msg void OnPasskeySetfocus();
   afx_msg void OnPasskeyKillfocus();
@@ -114,13 +104,11 @@ protected:
 
 private:
   DboxMain *m_pDbx;
-  CAdvancedDlg *m_pAdv;
 
   void SetHeight(const int num);
   void UpdateRO();
   void ProcessPhrase();
   CVKeyBoardDlg *m_pVKeyBoardDlg;
-  st_SaveAdvValues *m_pst_SADV;
 };
 //-----------------------------------------------------------------------------
 // Local variables:

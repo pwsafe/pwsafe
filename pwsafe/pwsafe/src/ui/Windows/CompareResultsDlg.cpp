@@ -80,7 +80,6 @@ BEGIN_MESSAGE_MAP(CCompareResultsDlg, CPWResizeDialog)
   ON_BN_CLICKED(ID_HELP, OnHelp)
   ON_BN_CLICKED(IDOK, OnOK)
   ON_BN_CLICKED(IDC_SHOW_IDENTICAL_ENTRIES, OnShowIdenticalEntries)
-  ON_BN_CLICKED(IDC_VIEWCOMPAREREPORT, OnViewCompareReport)
   ON_NOTIFY(HDN_ITEMCLICK, IDC_RESULTLISTHDR, OnColumnClick)
   ON_COMMAND(ID_MENUITEM_COMPVIEWEDIT, OnCompareViewEdit)
   ON_COMMAND(ID_MENUITEM_SYNCHRONIZE, OnCompareSynchronize)
@@ -91,7 +90,6 @@ END_MESSAGE_MAP()
 BOOL CCompareResultsDlg::OnInitDialog()
 {
   std::vector<UINT> vibottombtns;
-  vibottombtns.push_back(IDC_VIEWCOMPAREREPORT);
   vibottombtns.push_back(IDOK);
 
   AddMainCtrlID(IDC_RESULTLIST);
@@ -119,6 +117,7 @@ BOOL CCompareResultsDlg::OnInitDialog()
   } FixedCols[] = {{IDS_ORIGINALDB, CURRENT}, {IDS_COMPARISONDB, COMPARE},
                    {IDS_GROUP, GROUP}, {IDS_TITLE, TITLE}, {IDS_USERNAME, USER},
   };
+
   for (i = 0; i < sizeof(FixedCols) / sizeof(FixedCols[0]); i++) {
     cs_header.LoadString(FixedCols[i].ids);
     m_LCResults.InsertColumn(FixedCols[i].ncol, cs_header);
@@ -178,6 +177,7 @@ BOOL CCompareResultsDlg::OnInitDialog()
     if (header_width > data_width)
       m_LCResults.SetColumnWidth(i, LVSCW_AUTOSIZE_USEHEADER);
   }
+
   m_LCResults.SetColumnWidth(m_nCols - 1, LVSCW_AUTOSIZE_USEHEADER);
   m_LCResults.SetRedraw(TRUE);
   m_LCResults.Invalidate();
@@ -224,7 +224,10 @@ void CCompareResultsDlg::AddCompareEntries(const bool bAddIdentical)
         m_LCResults.SetItemText(iItem, COMPARE, L"=");
 
       m_LCResults.SetItemText(iItem, GROUP, st_data.group);
-      m_LCResults.SetItemText(iItem, TITLE, st_data.title);
+      if (st_data.bIsProtected0)
+        m_LCResults.SetItemText(iItem, TITLE, st_data.title + L" #");
+      else
+        m_LCResults.SetItemText(iItem, TITLE, st_data.title);
       m_LCResults.SetItemText(iItem, USER, st_data.user);
       for (i = USER + 1; i < m_nCols; i++)
         m_LCResults.SetItemText(iItem, i, L"-");
@@ -246,7 +249,10 @@ void CCompareResultsDlg::AddCompareEntries(const bool bAddIdentical)
 
       m_LCResults.SetItemText(iItem, COMPARE, L"-");
       m_LCResults.SetItemText(iItem, GROUP, st_data.group);
-      m_LCResults.SetItemText(iItem, TITLE, st_data.title);
+      if (st_data.bIsProtected0)
+        m_LCResults.SetItemText(iItem, TITLE, st_data.title + L" #");
+      else
+        m_LCResults.SetItemText(iItem, TITLE, st_data.title);
       m_LCResults.SetItemText(iItem, USER, st_data.user);
       for (i = USER + 1; i < m_nCols; i++)
         m_LCResults.SetItemText(iItem, i, L"-");
@@ -295,7 +301,10 @@ void CCompareResultsDlg::AddCompareEntries(const bool bAddIdentical)
         m_LCResults.SetItemText(iItem, COMPARE, L"Y");
 
       m_LCResults.SetItemText(iItem, GROUP, st_data.group);
-      m_LCResults.SetItemText(iItem, TITLE, st_data.title);
+      if (st_data.bIsProtected0)
+        m_LCResults.SetItemText(iItem, TITLE, st_data.title + L" #");
+      else
+        m_LCResults.SetItemText(iItem, TITLE, st_data.title);
       m_LCResults.SetItemText(iItem, USER, st_data.user);
 
       // Start of the 'data' columns (if present)
@@ -392,17 +401,11 @@ void CCompareResultsDlg::OnHelp()
   HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
 }
 
-void CCompareResultsDlg::OnViewCompareReport()
-{
-  EndDialog(IDC_VIEWCOMPAREREPORT);
-}
-
 void CCompareResultsDlg::UpdateStatusBar()
 {
-  CString s;
-  s.Format(IDS_COMPARERESULTS, m_numOnlyInCurrent, m_numOnlyInComp,
-    m_numConflicts, m_numIdentical);
-  m_statusBar.SetPaneText(0, s, TRUE);
+  m_results.Format(IDS_COMPARERESULTS, m_numOnlyInCurrent, m_numOnlyInComp,
+                                       m_numConflicts, m_numIdentical);
+  m_statusBar.SetPaneText(0, m_results, TRUE);
   m_statusBar.SetPaneInfo(0, m_statusBar.GetItemID(0), SBPS_STRETCH, NULL);
   m_statusBar.UpdateWindow();
 }

@@ -117,8 +117,11 @@ void DboxMain::UpdateGUI(UpdateGUICommand::GUI_Action ga,
 
   switch (ga) {
     case UpdateGUICommand::GUI_UPDATE_STATUSBAR:
-      UpdateToolBarDoUndo();
-      UpdateStatusBar();
+      if (app.GetBaseThreadID() == AfxGetThread()->m_nThreadID) {
+        // Can't do UI from a worker thread - so check if it is the main thread!
+        UpdateToolBarDoUndo();
+        UpdateStatusBar();
+      }
       break;
     case UpdateGUICommand::GUI_ADD_ENTRY:
       AddToGUI(*pci);
@@ -159,6 +162,15 @@ void DboxMain::UpdateGUI(UpdateGUICommand::GUI_Action ga,
   }
 }
 
+void DboxMain::UpdateGUIDisplay()
+{
+  ChangeOkUpdate();
+  RefreshViews();
+
+  // May need to update menu/toolbar if original database was empty
+  UpdateMenuAndToolBar(m_bOpen);
+}
+
 // Called from PWScore to get GUI to update its reserved field
 void DboxMain::GUISetupDisplayInfo(CItemData &ci)
 {
@@ -168,6 +180,12 @@ void DboxMain::GUISetupDisplayInfo(CItemData &ci)
 void DboxMain::GUIRefreshEntry(const CItemData &ci)
 {
   UpdateEntryImages(ci);
+}
+
+void DboxMain::UpdateWizard(const stringT &s)
+{
+  if (m_pWZWnd != NULL)
+    m_pWZWnd->SetWindowText(s.c_str());
 }
 
 //-----------------------------------------------------------------------------
@@ -281,6 +299,9 @@ int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2,
       break;
     case CItemData::POLICY:
       iResult = CompareNoCase(pLHS->GetPWPolicy(), pRHS->GetPWPolicy());
+      break;
+    case CItemData::PROTECTED:
+      iResult = pLHS->IsProtected() ? 1 : (pRHS->IsProtected() ? -1 : 1);
       break;
     default:
       iResult = 0; // should never happen - just keep compiler happy
@@ -478,7 +499,7 @@ void DboxMain::setupBars()
   int NumBits = (pDC ? pDC->GetDeviceCaps(12 /*BITSPIXEL*/) : 32);
   m_MainToolBar.Init(NumBits);
   m_FindToolBar.Init(NumBits, this, PWS_MSG_TOOLBAR_FIND,
-                     &m_SaveAdvValues[CAdvancedDlg::ADV_FIND]);
+                     &m_SaveFindAdvValues);
   ReleaseDC(pDC);
 
   // Add the Main ToolBar.
@@ -2866,10 +2887,11 @@ void DboxMain::OnViewReports()
 
   int Reports[] = {
     IDS_RPTCOMPARE, IDS_RPTFIND, IDS_RPTIMPORTTEXT, IDS_RPTIMPORTXML,
+    IDS_RPTEXPORTTEXT, IDS_RPTEXPORTXML,
     IDS_RPTMERGE, IDS_RPTSYNCH, IDS_RPTVALIDATE,
   };
 
-  for (int i = 0; i < sizeof(Reports)/sizeof(Reports[0]); i++) {
+  for (int i = 0; i < sizeof(Reports) / sizeof(Reports[0]); i++) {
     csAction.LoadString(Reports[i]);
     cs_filename.Format(IDSC_REPORTFILENAME, cs_drive, cs_directory, csAction);
     if (::_tstat(cs_filename, &statbuf) == 0) {
@@ -2894,6 +2916,8 @@ void DboxMain::OnViewReports()
     case IDS_RPTFIND:
     case IDS_RPTIMPORTTEXT:
     case IDS_RPTIMPORTXML:
+    case IDS_RPTEXPORTTEXT:
+    case IDS_RPTEXPORTXML:
     case IDS_RPTMERGE:
     case IDS_RPTSYNCH:
     case IDS_RPTVALIDATE:
@@ -2911,9 +2935,6 @@ void DboxMain::OnViewReports()
 
 void DboxMain::OnViewReports(UINT nID)
 {
-  ASSERT((nID >= ID_MENUITEM_REPORT_COMPARE) &&
-    (nID <= ID_MENUITEM_REPORT_VALIDATE || nID == ID_MENUITEM_REPORT_SYNCHRONIZE));
-
   CString cs_filename, cs_path, csAction;
   CString cs_drive, cs_directory;
 
@@ -3037,6 +3058,12 @@ int DboxMain::OnUpdateViewReports(const int nID)
       break;
     case ID_MENUITEM_REPORT_IMPORTXML:
       uistring = IDS_RPTIMPORTXML;
+      break;
+    case ID_MENUITEM_REPORT_EXPORTTEXT:
+      uistring = IDS_RPTEXPORTTEXT;
+      break;
+    case ID_MENUITEM_REPORT_EXPORTXML:
+      uistring = IDS_RPTEXPORTXML;
       break;
     case ID_MENUITEM_REPORT_MERGE:
       uistring = IDS_RPTMERGE;
@@ -3218,7 +3245,7 @@ void DboxMain::OnToolBarFindReport()
   rpt.StartReport(cs_temp, m_core.GetCurFile().c_str());
 
   CItemData::FieldBits bsFFields;
-  BOOL bFAdvanced;
+  bool bFAdvanced;
   CString Fsubgroup_name;
   int Fsubgroup_set, Fsubgroup_object, Fsubgroup_function;
 
@@ -3226,7 +3253,7 @@ void DboxMain::OnToolBarFindReport()
                               Fsubgroup_set, Fsubgroup_object, Fsubgroup_function);
 
   // tell the user we're done & provide short Compare report
-  if (bFAdvanced == FALSE) {
+  if (!bFAdvanced) {
     cs_temp.LoadString(IDS_NONE);
     buffer.Format(IDS_ADVANCEDOPTIONS, cs_temp);
     rpt.WriteLine((LPCWSTR)buffer);

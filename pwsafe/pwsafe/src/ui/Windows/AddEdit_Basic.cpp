@@ -399,7 +399,6 @@ HBRUSH CAddEdit_Basic::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
       default:
         // Not one of ours - get out quick
         return hbr;
-        break;
     }
     int iFlashing = ((CStaticExtn *)pWnd)->IsFlashing();
     BOOL bHighlight = ((CStaticExtn *)pWnd)->IsHighlighted();

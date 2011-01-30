@@ -305,7 +305,15 @@ PasswordSafeFrame::~PasswordSafeFrame()
 
 void PasswordSafeFrame::Init()
 {
-  m_core.SetUIInterFace(this);
+  std::bitset<UIInterFace::NUM_SUPPORTED> bsSupportedFunctions;
+  bsSupportedFunctions.set(UIInterFace::DATABASEMODIFIED);
+  bsSupportedFunctions.set(UIInterFace::UPDATEGUI);
+  bsSupportedFunctions.set(UIInterFace::GUISETUPDISPLAYINFO);
+  bsSupportedFunctions.set(UIInterFace::GUIREFRESHENTRY);
+  //bsSupportedFunctions.set(UIInterFace::UPDATEWIZARD);
+
+  m_core.SetUIInterFace(this, UIInterFace::NUM_SUPPORTED, bsSupportedFunctions);
+
   m_RUEList.SetMax(PWSprefs::GetInstance()->PWSprefs::MaxREItems);
 ////@begin PasswordSafeFrame member initialisation
   m_grid = NULL;
@@ -1890,6 +1898,11 @@ void PasswordSafeFrame::GUIRefreshEntry(const CItemData& item)
   }
 }
 
+void PasswordSafeFrame::UpdateWizard(const stringT &)
+{
+  // Stub
+}
+
 /*!
  * wxEVT_COMMAND_MENU_SELECTED event handler for wxID_NEW
  */
@@ -2617,11 +2630,11 @@ struct ExportFullText
   static wxString WildCards() {return _("Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*; *)|*.*;*"); }
   static int Write(PWScore& core, const StringX &filename, const CItemData::FieldBits &bsFields,
                           const stringT &subgroup_name, int subgroup_object, 
-                          int subgroup_function, TCHAR delimiter, 
+                          int subgroup_function, TCHAR delimiter, int &numExported,
                           const OrderedItemList *il)
   {
     return core.WritePlaintextFile(filename, bsFields, subgroup_name, subgroup_object, subgroup_function,
-                          delimiter, il);
+                          delimiter, numExported, il);
   }
   static wxString GetAdvancedSelectionTitle() {
     return _("Advanced Text Export Options");
@@ -2653,12 +2666,12 @@ struct ExportFullXml {
   static wxString WildCards() {return _("XML files (*.xml)|*.xml|All files (*.*; *)|*.*;*"); }
   static int Write(PWScore& core, const StringX &filename, const CItemData::FieldBits &bsFields,
                           const stringT &subgroup_name, int subgroup_object, 
-                          int subgroup_function, TCHAR delimiter, 
+                          int subgroup_function, TCHAR delimiter, int &numExported,
                           const OrderedItemList *il)
   {
     bool bFilterActive = false;
     return core.WriteXMLFile(filename, bsFields, subgroup_name, subgroup_object, subgroup_function,
-                          delimiter, il, bFilterActive);
+                          delimiter, numExported, il, bFilterActive);
   }
   static wxString GetAdvancedSelectionTitle() {
     return _("Advanced XML Export Options");
@@ -2721,6 +2734,7 @@ void PasswordSafeFrame::DoExportText()
      * 'Advanced' to filter the entries to be exported.
      * Effectively, subgroup_* parameters are ignored if 1st param is false.
      */
+    int numExported(0);
     switch(m_core.TestForExport(false, subgroup_name, subgroup_object,
                              subgroup_function, &orderedItemList)) {
       case PWScore::SUCCESS:
@@ -2736,7 +2750,7 @@ void PasswordSafeFrame::DoExportText()
         if (fd.ShowModal() == wxID_OK) {
           newfile = fd.GetPath();
           int rc = ExportType::Write(m_core, newfile, bsExport, subgroup_name, subgroup_object, 
-                                      subgroup_function, delimiter, &orderedItemList);
+                                      subgroup_function, delimiter, numExported, &orderedItemList);
 
           orderedItemList.clear(); // cleanup soonest
 
