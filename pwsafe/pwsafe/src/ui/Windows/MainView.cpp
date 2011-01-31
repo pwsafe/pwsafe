@@ -2961,6 +2961,12 @@ void DboxMain::OnViewReports(UINT nID)
     case ID_MENUITEM_REPORT_SYNCHRONIZE:
       uistring = IDS_RPTSYNCH;
       break;
+    case ID_MENUITEM_REPORT_EXPORTTEXT:
+      uistring = IDS_RPTEXPORTTEXT;
+      break;
+    case ID_MENUITEM_REPORT_EXPORTXML:
+      uistring = IDS_RPTEXPORTXML;
+      break;
     case ID_MENUITEM_REPORT_VALIDATE:
       uistring = IDS_RPTVALIDATE;
       break;
