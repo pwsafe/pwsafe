@@ -142,7 +142,9 @@ void DboxMain::OnAdd()
                                                 UpdateGUICommand::GUI_REFRESH_TREE);
       pmulticmds->Add(pcmd3);
     }
+
     Execute(pmulticmds);
+
     // Update Toolbar for this new entry
     m_ctlItemList.SetItemState(pdi->list_index, LVIS_SELECTED, LVIS_SELECTED);
     m_ctlItemTree.SelectItem(pdi->tree_item);

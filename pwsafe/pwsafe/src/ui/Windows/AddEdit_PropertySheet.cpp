@@ -97,6 +97,9 @@ CAddEdit_PropertySheet::CAddEdit_PropertySheet(UINT nID, CWnd* pParent,
     // PWPolicy fields
     m_AEMD.pwp = m_AEMD.oldpwp = m_AEMD.default_pwp;
     m_AEMD.ipolicy = m_AEMD.oldipolicy = DEFAULT_POLICY;
+
+    // Protected
+    m_AEMD.ucprotected = 0;
   } else {
     SetupInitialValues();
   }
