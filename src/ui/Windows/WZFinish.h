@@ -44,7 +44,7 @@ private:
 
   PWScore *m_pothercore;
   st_SaveAdvValues *m_pst_SADV;
-  bool m_bInitDone, m_bInProgress, m_bComplete, m_bShow;
+  bool m_bInitDone, m_bInProgress, m_bComplete, m_bViewingReport;
   int m_status;
 };
 //-----------------------------------------------------------------------------

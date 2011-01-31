@@ -28,7 +28,7 @@ IMPLEMENT_DYNAMIC(CWZFinish, CWZPropertyPage)
 
 CWZFinish::CWZFinish(CWnd *pParent, UINT nIDCaption, const int nType)
  : CWZPropertyPage(IDD, nIDCaption, nType), m_pothercore(NULL), m_prpt(NULL), m_pExecuteThread(NULL),
-   m_bInProgress(false), m_bComplete(false), m_bInitDone(false), m_bShow(false),
+   m_bInProgress(false), m_bComplete(false), m_bInitDone(false), m_bViewingReport(false),
    m_status(-1)
 {
   // Save pointer to my PropertySheet
@@ -297,7 +297,7 @@ LRESULT CWZFinish::OnExecuteThreadEnded(WPARAM wParam, LPARAM )
       cs_results = pthdpms->csResults;
       break;
     case ID_MENUITEM_SYNCHRONIZE:
-      cs_results.Format(IDS_EXPORTED, pthdpms->numProcessed);
+      cs_results.Format(IDS_SYNCHRONIZED, pthdpms->numProcessed);
       break;
     case ID_MENUITEM_EXPORT2PLAINTEXT:
     case ID_MENUITEM_EXPORTENT2PLAINTEXT:
@@ -341,6 +341,19 @@ LRESULT CWZFinish::OnExecuteThreadEnded(WPARAM wParam, LPARAM )
 
 void CWZFinish::OnViewReport()
 {
-  if (m_prpt != NULL)
+  if (m_bViewingReport)
+    return;
+
+  if (m_prpt != NULL) {
+    // Stop us doing it again and stop user ending Wizard
+    m_bViewingReport = true;
+    m_pWZPSH->EnableWindow(FALSE);
+
+    // Show report
     m_pWZPSH->WZPSHViewReport(*m_prpt);
+
+    // OK - let them end the Wizard and look at the report again
+    m_bViewingReport = false;
+    m_pWZPSH->EnableWindow(TRUE);
+  }
 }

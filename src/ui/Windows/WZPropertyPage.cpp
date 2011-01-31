@@ -26,12 +26,9 @@ CWZPropertyPage::CWZPropertyPage(UINT nID, UINT nIDCaption, const int nType)
 void CWZPropertyPage::DoDataExchange(CDataExchange* pDX)
 {
   CPropertyPage::DoDataExchange(pDX);
-
-  //{{AFX_DATA_MAP(CWZPropertyPage)
-  //}}AFX_DATA_MAP
 }
 
-BEGIN_MESSAGE_MAP(CWZPropertyPage, CPWPropertyPage)
+BEGIN_MESSAGE_MAP(CWZPropertyPage, CPropertyPage)
   //{{AFX_MSG_MAP(CWZPropertyPage)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
