@@ -121,6 +121,15 @@ void MultiCommands::Add(Command *pcmd)
   m_vpcmds.push_back(pcmd);
 }
 
+void MultiCommands::Insert(Command *pcmd)
+{
+  /*
+    VERY INEFFICIENT - use sparingly
+  */
+  //pws_os::Trace(_T("Multicommands Insert\n"));
+  m_vpcmds.insert(m_vpcmds.begin(), pcmd);
+}
+
 bool MultiCommands::Remove(Command *pcmd)
 {
   std::vector<Command *>::iterator cmd_Iter;

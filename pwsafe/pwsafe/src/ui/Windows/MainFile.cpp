@@ -2084,9 +2084,6 @@ bool MergeSyncGTUCompare(const StringX &elem1, const StringX &elem2)
 CString DboxMain::Merge(const StringX &sx_Filename2, PWScore *pothercore,
                         const bool bAdvanced, CReport *prpt)
 {
-  // XXX Move to core
-  const StringX &sx_Filename1 = m_core.GetCurFile();
-
   CGeneralMsgBox gmb;
   CString cs_title, cs_temp,cs_text;
   // Initialize set
