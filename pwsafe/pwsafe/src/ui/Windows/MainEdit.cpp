@@ -325,6 +325,18 @@ void DboxMain::OnAddGroup()
   }
 }
 
+struct DupGroupFunctor : public CPWTreeCtrl::TreeItemFunctor {
+  DupGroupFunctor(HTREEITEM hBase) : m_hBase(hBase) {}
+  virtual void operator()(HTREEITEM hItem) {
+    if (hItem == m_hBase) // we;re not interested in top
+      return;
+    m_items.push_back(hItem);
+  }
+  std::vector<HTREEITEM> m_items;
+private:
+  HTREEITEM m_hBase;
+};
+
 void DboxMain::OnDuplicateGroup()
 {
   if (m_core.IsReadOnly()) // disable in read-only mode
@@ -333,16 +345,16 @@ void DboxMain::OnDuplicateGroup()
   bool bRefresh(true);
   // Get selected group
   HTREEITEM ti = m_ctlItemTree.GetSelectedItem();
-  const HTREEITEM nextsibling = m_ctlItemTree.GetNextSiblingItem(ti);
 
   // Verify that it is a group
   ASSERT((CItemData *)m_ctlItemTree.GetItemData(ti) == NULL);
 
   // Get complete group name
-  StringX sxCurrentPath = (StringX)m_ctlItemTree.GetGroup(ti);
-  StringX sxCurrentGroup = (StringX)m_ctlItemTree.GetItemText(ti);
+  StringX sxCurrentPath = (StringX)m_ctlItemTree.GetGroup(ti); // e.g., a.b.c
+  StringX sxCurrentGroup = (StringX)m_ctlItemTree.GetItemText(ti); // e.g., c
   size_t grplen = sxCurrentPath.length();
 
+  // Make sxNewGroup a unique name for the duplicate, e.g., "a.b.c Copy #1"
   size_t i = 0;
   StringX sxNewPath, sxNewGroup, sxCopy;
   do {
@@ -353,18 +365,20 @@ void DboxMain::OnDuplicateGroup()
   sxNewGroup = sxCurrentGroup + sxCopy;
 
   // Have new group - now copy all entries in current group to new group
-  // Get all of the children
 
-  /*
-    Create 2 multi-commands to first add all normal or base entries and then a second
-    to add any aliases and shortcuts.
-  */
-  std::vector<bool> bVNodeStates;
+  std::vector<bool> bVNodeStates; // new group will have old's expanded nodes
   bool bState = (m_ctlItemTree.GetItemState(ti, TVIS_EXPANDED) &
-                         TVIS_EXPANDED) != 0;
+                 TVIS_EXPANDED) != 0;
   bVNodeStates.push_back(bState);
 
+  // Get all of the children
   if (m_ctlItemTree.ItemHasChildren(ti)) {
+    DupGroupFunctor dgf(ti);
+    m_ctlItemTree.Iterate(ti, dgf); // collects children into a handy vector
+    /*
+      Create 2 multi-commands to first add all normal or base entries and then a second
+      to add any aliases and shortcuts.
+    */
     MultiCommands *pmulti_cmd_base = MultiCommands::Create(&m_core);
     MultiCommands *pmulti_cmd_deps = MultiCommands::Create(&m_core);
 
@@ -373,27 +387,21 @@ void DboxMain::OnDuplicateGroup()
     // base UUIDs and their new UUIDs
     std::map<st_UUID, st_UUID> mapOldToNewBaseUUIDs;
     std::map<st_UUID, st_UUID>::const_iterator citer;
-    HTREEITEM hNextItem;
 
     // Process normal & base entries
     bool bDependentsExist(false);
-    hNextItem = m_ctlItemTree.GetNextTreeItem(ti);
 
-    while (hNextItem != NULL && hNextItem != nextsibling) {
+    std::vector<HTREEITEM>::iterator iter;
+    for (iter = dgf.m_items.begin(); iter != dgf.m_items.end(); iter++) {
+      HTREEITEM hNextItem = *iter;
       CItemData *pci = (CItemData *)m_ctlItemTree.GetItemData(hNextItem);
-      CString cs_label = m_ctlItemTree.GetItemText(hNextItem);
-      TRACE(L"Label = '%s'\n", cs_label);
-      if (pci != NULL) {
-        // Not a group
+      if (pci != NULL) { // An entry (leaf)
         if (pci->IsDependent()) {
           bDependentsExist = true;
-          hNextItem = m_ctlItemTree.GetNextTreeItem(hNextItem);
           continue;
         }
         
-        // Save old UUID
-        uuid_array_t old_uuid;
-        pci->GetUUID(old_uuid);
+        TRACE(L"Copying %s.%s\n", pci->GetGroup().c_str(), pci->GetTitle().c_str());
         // Set up copy
         CItemData ci2(*pci);
         ci2.SetDisplayInfo(NULL);
@@ -401,41 +409,42 @@ void DboxMain::OnDuplicateGroup()
         ci2.SetStatus(CItemData::ES_ADDED);
         ci2.SetProtected(false);
         // Set new group
-        StringX sxThisEntryNewGroup = sxNewPath + pci->GetGroup().substr(grplen);
+        StringX subPath =  pci->GetGroup();
+        ASSERT(subPath.length() >= grplen);
+        subPath =  subPath.substr(grplen);
+        const StringX sxThisEntryNewGroup = sxNewPath + subPath;
         ci2.SetGroup(sxThisEntryNewGroup);
 
         if (pci->IsBase()) {
+          uuid_array_t old_uuid;
+          pci->GetUUID(old_uuid);
           uuid_array_t new_uuid;
           ci2.GetUUID(new_uuid);
           st_UUID st_old(old_uuid), st_new(new_uuid);
           mapOldToNewBaseUUIDs.insert(std::make_pair(st_old, st_new));
-        }
+        } // pci->IsBase()
 
-        // Make it normal to begin with - if it has dependents then when those
+        // Make copy normal to begin with - if it has dependents then when those
         // are added then its entry type will automatically be changed
         ci2.SetNormal();
         Command *pcmd = AddEntryCommand::Create(&m_core, ci2);
         pcmd->SetNoGUINotify();
         pmulti_cmd_base->Add(pcmd);
-      } else {
-        // Is node - save its expanded/collapsed state
+      } else { // pci == NULL -> This is a node: save its expanded/collapsed state
         bool bState = (m_ctlItemTree.GetItemState(hNextItem, TVIS_EXPANDED) &
-                               TVIS_EXPANDED) != 0;
+                       TVIS_EXPANDED) != 0;
         bVNodeStates.push_back(bState);
       }
-      hNextItem = m_ctlItemTree.GetNextTreeItem(hNextItem);
-    }
+    } // for
 
     // Now process dependents (if any)
     if (bDependentsExist) {
-      hNextItem = m_ctlItemTree.GetNextTreeItem(ti);
-
-      while (hNextItem != NULL && hNextItem != nextsibling) {
+      for (iter = dgf.m_items.begin(); iter != dgf.m_items.end(); iter++) {
+        HTREEITEM hNextItem = *iter;
         CItemData *pci = (CItemData *)m_ctlItemTree.GetItemData(hNextItem);
         if (pci != NULL) {
           // Not a group but ignore if not a dependent
           if (!pci->IsDependent()) {
-            hNextItem = m_ctlItemTree.GetNextTreeItem(hNextItem);
             continue;
           }
  
@@ -449,7 +458,10 @@ void DboxMain::OnDuplicateGroup()
           ci2.SetStatus(CItemData::ES_ADDED);
           ci2.SetProtected(false);
           // Set new group
-          StringX sxThisEntryNewGroup = sxNewPath + pci->GetGroup().substr(grplen);
+          StringX subPath =  pci->GetGroup();
+          ASSERT(subPath.length() >= grplen);
+          subPath =  subPath.substr(grplen);
+          const StringX sxThisEntryNewGroup = sxNewPath + subPath;
           ci2.SetGroup(sxThisEntryNewGroup);
 
           if (pci->IsAlias())
@@ -468,8 +480,11 @@ void DboxMain::OnDuplicateGroup()
           citer = mapOldToNewBaseUUIDs.find(st_old_base);
           if (citer != mapOldToNewBaseUUIDs.end()) {
             // Base is in duplicated group - use new values
+            StringX subPath2 =  pbci->GetGroup();
+            ASSERT(subPath2.length() >= grplen);
+            subPath2 =  subPath2.substr(grplen);
             sxtmp = L"[" +
-                      sxNewPath + pbci->GetGroup().substr(grplen) + L":" +
+                      sxNewPath + subPath2 + L":" +
                       pbci->GetTitle() + L":" +
                       pbci->GetUser()  +
                     L"]";
@@ -484,13 +499,12 @@ void DboxMain::OnDuplicateGroup()
                     L"]";
             ci2.SetPassword(sxtmp);
             pcmd = AddEntryCommand::Create(&m_core, ci2, old_base_uuid);
-          }
+          } // where's the base?
           pcmd->SetNoGUINotify();
           pmulti_cmd_deps->Add(pcmd);
-        }
-        hNextItem = m_ctlItemTree.GetNextTreeItem(hNextItem);
-      }
-    }
+        } // pci != NULL
+      } // for
+    } // bDependentsExist
 
     // We either do only one set of multi-commands, none of them or both of them
     // as one multi-command (normals/bases first followed by dependents)
@@ -521,7 +535,7 @@ void DboxMain::OnDuplicateGroup()
       default:
         ASSERT(0);
     }
-  } else {
+  } else { // !m_ctlItemTree.ItemHasChildren(ti)
     // User is duplicating an empty group - just add it
     HTREEITEM parent = m_ctlItemTree.GetParentItem(ti);
     HTREEITEM ng_ti = m_ctlItemTree.InsertItem(sxNewGroup.c_str(), parent, TVI_SORT);
@@ -533,24 +547,21 @@ void DboxMain::OnDuplicateGroup()
   // Must do this to re-populate m_mapGroupToTreeItem
   if (bRefresh) {
     RefreshViews();
-
     // Set expand/collapse state of new groups to match old
     HTREEITEM hNextItem = m_ctlItemTree.FindItem(sxNewPath.c_str(), TVI_ROOT);
     ASSERT(hNextItem != NULL);
 
     m_ctlItemTree.Expand(hNextItem, bVNodeStates[0] ? TVE_EXPAND : TVE_COLLAPSE);
-    i = 1;
-    hNextItem = m_ctlItemTree.GetNextTreeItem(hNextItem);
-
-    while (hNextItem != NULL && i < bVNodeStates.size()) {
+    for (i = 1, hNextItem = m_ctlItemTree.GetNextTreeItem(hNextItem);
+         hNextItem != NULL && i < bVNodeStates.size();
+         hNextItem = m_ctlItemTree.GetNextTreeItem(hNextItem)) {
       if (m_ctlItemTree.ItemHasChildren(hNextItem)) {
         // Is node - set its expanded/collapsed state
         m_ctlItemTree.Expand(hNextItem, bVNodeStates[i] ? TVE_EXPAND : TVE_COLLAPSE);
         i++;
-      }
-      hNextItem = m_ctlItemTree.GetNextTreeItem(hNextItem);
-    }
-  }
+      } // ItemHasChildren
+    } // Expand/collapse
+  } // bRefresh
 
   m_ctlItemTree.SelectItem(ti);
 }

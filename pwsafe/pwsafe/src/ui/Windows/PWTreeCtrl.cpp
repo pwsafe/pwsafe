@@ -1650,6 +1650,25 @@ HTREEITEM CPWTreeCtrl::GetNextTreeItem(HTREEITEM hItem)
   return hReturn;
 } 
 
+void CPWTreeCtrl::Iterate(HTREEITEM hItem, TreeItemFunctor &functor)
+{
+  if (hItem) {
+    functor(hItem); // apply whatever needs to be done
+    hItem = GetNextItem(hItem, TVGN_CHILD);
+    while (hItem) {
+      Iterate(hItem, functor);
+      hItem = GetNextItem(hItem, TVGN_NEXT);
+    }
+  } else {
+    HTREEITEM hItem = GetNextItem(NULL, TVGN_ROOT);
+    while (hItem) {
+      Iterate(hItem, functor);
+      hItem = GetNextItem(hItem, TVGN_NEXT);
+    }
+  }
+}
+
+
 bool CPWTreeCtrl::CollectData(BYTE * &out_buffer, long &outLen)
 {
   DWORD_PTR itemData = GetItemData(m_hitemDrag);
