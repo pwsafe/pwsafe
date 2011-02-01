@@ -506,10 +506,18 @@ void DboxMain::OnDuplicateGroup()
       } // for
     } // bDependentsExist
 
+    Command *pcmd1(NULL), *pcmd2(NULL);
+
     // We either do only one set of multi-commands, none of them or both of them
     // as one multi-command (normals/bases first followed by dependents)
     const int iDoExec = ((pmulti_cmd_base->GetSize() == 0) ? 0 : 1) +
                         ((pmulti_cmd_deps->GetSize() == 0) ? 0 : 2);
+    if (iDoExec != 0) {
+      pcmd1 = UpdateGUICommand::Create(&m_core, UpdateGUICommand::WN_UNDO,
+                                            UpdateGUICommand::GUI_UNDO_IMPORT);
+      pcmd2 = UpdateGUICommand::Create(&m_core, UpdateGUICommand::WN_EXECUTE_REDO,
+                                            UpdateGUICommand::GUI_REDO_IMPORT);
+    }
     switch (iDoExec) {
       case 0:
         // Do nothing
@@ -517,18 +525,24 @@ void DboxMain::OnDuplicateGroup()
         break;
       case 1:
         // Only normal/base entries
+        pmulti_cmd_base->Insert(pcmd1);
+        pmulti_cmd_base->Add(pcmd2);
         Execute(pmulti_cmd_base);
         break;
       case 2:
         // Only dependents
+        pmulti_cmd_deps->Insert(pcmd1);
+        pmulti_cmd_deps->Add(pcmd2);
         Execute(pmulti_cmd_deps);
         break;
       case 3:
       {
         // Both - normal entries/bases first then dependents
         MultiCommands *pmulti_cmds = MultiCommands::Create(&m_core);
+        pmulti_cmds->Add(pcmd1);
         pmulti_cmds->Add(pmulti_cmd_base);
         pmulti_cmds->Add(pmulti_cmd_deps);
+        pmulti_cmds->Add(pcmd2);
         Execute(pmulti_cmds);
         break;
       }

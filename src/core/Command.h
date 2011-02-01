@@ -382,6 +382,7 @@ public:
   void Undo();
 
   void Add(Command *pcmd);
+  void Insert(Command *pcmd); // VERY INEFFICIENT - use sparingly
   bool Remove(Command *pcmd);
   bool Remove();
   bool GetRC(Command *pcmd, int &rc);

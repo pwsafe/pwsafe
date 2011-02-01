@@ -2160,12 +2160,15 @@ bool PWScore::SetUIInterFace(UIInterFace *pUIIF, size_t numsupported,
   return brc;
 }
 
-// NotifyDBModified - used by GUI if the Database has changed
-// particularly to invalidate any current Find results and to populate
-// message during Vista and later shutdowns
+/*
+ *  UI Interface feedback routines
+ */
 
 void PWScore::NotifyDBModified()
 {
+  // his allows the core to provide feedback to the UI that the Database 
+  // has changed particularly to invalidate any current Find results and 
+  // to populate message during Vista and later shutdowns
   if (m_bNotifyDB && m_pUIIF != NULL &&
       m_bsSupportedFunctions.test(UIInterFace::DATABASEMODIFIED))
     m_pUIIF->DatabaseModified(m_bDBChanged || m_bDBPrefsChanged);
@@ -2176,6 +2179,8 @@ void PWScore::NotifyGUINeedsUpdating(UpdateGUICommand::GUI_Action ga,
                                      CItemData::FieldType ft,
                                      bool bUpdateGUI)
 {
+  // This allows the core to provide feedback to the UI that the GUI needs
+  // uupdating due to a field having its value changed
   if (m_pUIIF != NULL &&
       m_bsSupportedFunctions.test(UIInterFace::UPDATEGUI))
     m_pUIIF->UpdateGUI(ga, entry_uuid, ft, bUpdateGUI);
@@ -2183,6 +2188,7 @@ void PWScore::NotifyGUINeedsUpdating(UpdateGUICommand::GUI_Action ga,
 
 void PWScore::GUISetupDisplayInfo(CItemData &ci)
 {
+  // This allows the core to provide feedback to the UI that ???
   if (m_pUIIF != NULL &&
       m_bsSupportedFunctions.test(UIInterFace::GUISETUPDISPLAYINFO))
     m_pUIIF->GUISetupDisplayInfo(ci);
@@ -2190,6 +2196,8 @@ void PWScore::GUISetupDisplayInfo(CItemData &ci)
 
 void PWScore::GUIRefreshEntry(const CItemData &ci)
 {
+  // This allows the core to provide feedback to the UI that a particular
+  // entry has been modifed
   if (m_pUIIF != NULL &&
       m_bsSupportedFunctions.test(UIInterFace::GUIREFRESHENTRY))
     m_pUIIF->GUIRefreshEntry(ci);
@@ -2197,6 +2205,12 @@ void PWScore::GUIRefreshEntry(const CItemData &ci)
 
 void PWScore::UpdateWizard(const stringT &s)
 {
+  // This allows the core to provide feedback to the Compare, Merge, Synchronize,
+  // Exort (Text/XML) UI wizard as to the entry currently being processed.
+  // The UI must be able to access the control in the wizard and the supplied
+  // string gives the full 'group, title, user' of the entry.
+  // It is expected that the UI will implement a pointer or other reference to
+  // this control so that it can update the text displayed there (see MFC implementation).
   if (m_pUIIF != NULL &&
       m_bsSupportedFunctions.test(UIInterFace::UPDATEWIZARD))
     m_pUIIF->UpdateWizard(s);
