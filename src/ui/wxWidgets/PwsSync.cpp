@@ -29,9 +29,10 @@
 #include "./AdvancedSelectionDlg.h"
 #include "../../core/PWScore.h"
 
-//#include <wx/richtext/richtextctrl.h>
 #include <wx/filename.h>
 #include <wx/valgen.h>
+#include <wx/statline.h>
+#include <wx/collpane.h>
 #include <algorithm>
 #include <iterator>
 
@@ -61,9 +62,10 @@ class SyncWizardPage: public wxWizardPageSimple
 protected:
   SyncData* m_syncData;
   typedef enum {BACKWARD, FORWARD} PageDirection;
+  wxBoxSizer* m_pageSizer;
   
 public:
-  SyncWizardPage(wxWizard* parent, SyncData* data);
+  SyncWizardPage(wxWizard* parent, SyncData* data, const wxString& pageHeader);
   virtual void SaveData(SyncData* data) = 0;
 
   void OnWizardPageChanging(wxWizardEvent& evt);
@@ -204,7 +206,6 @@ PwsSyncWizard::PwsSyncWizard(wxWindow* parent, PWScore* core):
   m_syncData->selCriteria.m_bsFields.set();
 
   //Other than these, all fields are selected for sync by default, as in
-  //DboxMain::Synchronize()
   m_syncData->selCriteria.m_bsFields.reset(CItemData::NAME);
   m_syncData->selCriteria.m_bsFields.reset(CItemData::UUID);
   m_syncData->selCriteria.m_bsFields.reset(CItemData::GROUP);
@@ -278,9 +279,22 @@ BEGIN_EVENT_TABLE(SyncWizardPage, wxWizardPageSimple)
   EVT_WIZARD_PAGE_CHANGED( wxID_ANY, SyncWizardPage::OnWizardPageChanged)
 END_EVENT_TABLE()
 
-SyncWizardPage::SyncWizardPage(wxWizard* parent, SyncData* data): wxWizardPageSimple(parent),
-                                                                    m_syncData(data)
+SyncWizardPage::SyncWizardPage(wxWizard* parent, SyncData* data, 
+                                  const wxString& pageHeader): wxWizardPageSimple(parent),
+                                                               m_syncData(data),
+                                                               m_pageSizer(new wxBoxSizer(wxVERTICAL))
 {
+  wxStaticText* hdr = new wxStaticText(this, wxID_ANY, pageHeader);
+
+  //make it bigger and bolder
+  wxFont f = hdr->GetFont();
+  f.SetWeight(wxFONTWEIGHT_BOLD);
+  f.SetPointSize(f.GetPointSize()*2);
+  hdr->SetFont(f);
+
+  m_pageSizer->Add(hdr, wxSizerFlags().Expand().Proportion(0).Border());
+  m_pageSizer->Add(new wxStaticLine(this), wxSizerFlags().Expand().Proportion(0).Border());
+  m_pageSizer->AddSpacer(RowSeparation);
 }
 
 void SyncWizardPage::OnWizardPageChanging(wxWizardEvent& evt)
@@ -315,23 +329,29 @@ void SyncWizardPage::SetChildWindowText(unsigned id, const wxString& str)
 ////////////////////////////////////////////
 //SyncStartPage implementation
 //
-SyncStartPage::SyncStartPage(wxWizard* parent, SyncData* data) : SyncWizardPage(parent, data)
+SyncStartPage::SyncStartPage(wxWizard* parent, SyncData* data) : SyncWizardPage(parent, data, _("Introduction"))
 {
-  wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
+  wxBoxSizer* sizer = m_pageSizer;
+
+  const wxString explanation(_("Synchroinzing with another database will update the entries in your\r\ndatabase with matching entries from the other database."));
+  sizer->Add(new wxStaticText(this, wxID_ANY, explanation), wxSizerFlags().Expand().Proportion(0).Border());
+
+  wxCollapsiblePane* pane = new wxCollapsiblePane(this, wxID_ANY, _("More Info"));
   
-  const wxString text(_("WARNING!!\r\n\r\nIf you continue, fields will be updated in your existing database\r\nfrom your selected input database"));
-  wxStaticText* txtCtrl = new wxStaticText(this, wxID_ANY, text);
-  /*
-  wxRichTextCtrl* txtCtrl = new wxRichTextCtrl(this);
+  const wxChar* helpItems[] = {
+    _("1. Two entries from different databases match if their Group, Title\r\nand User fields match."),
+    _("2. You can select the fields to update, as well as filter the entries\r\nfor synchronization."),
+    _("3. Only existing entries in your database are updated.  No new entries are\r\nadded or existing entries removed during this process."),
+    _("4. You can undo the operation once it is complete, but won't be\r\nable to abort it mid-way.")
+  };
   
-  txtCtrl->BeginTextColour(*wxRED);
-  txtCtrl->BeginBold();
-  txtCtrl->WriteText(_("WARNING!!\r\n\r\n"));
-  txtCtrl->EndBold();
-  txtCtrl->EndTextColour();
-  txtCtrl->WriteText(_("If you continue, fields will be updated in your existing database\r\nfrom your selected input database"));
-  */
-  sizer->Add(txtCtrl, wxSizerFlags().Expand().Proportion(1).Border());
+  wxBoxSizer* paneSizer = new wxBoxSizer(wxVERTICAL);
+  for (size_t idx = 0; idx < NumberOf(helpItems); ++idx) {
+    paneSizer->Add(new wxStaticText(pane->GetPane(), wxID_ANY, helpItems[idx]), wxSizerFlags().Expand().Border().Proportion(1));
+  }
+  pane->GetPane()->SetSizer(paneSizer);
+  sizer->Add(pane, wxSizerFlags().Border().Proportion(1).Expand());
+
   SetSizerAndFit(sizer);
 }
 
@@ -339,12 +359,12 @@ SyncStartPage::SyncStartPage(wxWizard* parent, SyncData* data) : SyncWizardPage(
 // DbSelectionPage implementation
 //
 DbSelectionPage::DbSelectionPage(wxWizard* parent, SyncData* data):
-                             SyncWizardPage(parent, data)
+                             SyncWizardPage(parent, data, _("Select another database"))
 {
   const wxString filePrompt(wxString(_("Choose Database to Synchronize with \"")) << towxstring(data->core->GetCurFile()) << _("\""));
   const wxString filePickerCtrlTitle(_("Please Choose a Database to Synchronize with current database"));
 
-  wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
+  wxBoxSizer* sizer = m_pageSizer;
   m_panel = new DbSelectionPanel(this, filePrompt, filePickerCtrlTitle, false, data->core, 5);
   sizer->Add(m_panel, wxSizerFlags().Expand().Proportion(1));
   SetSizerAndFit(sizer);
@@ -365,9 +385,9 @@ void DbSelectionPage::SaveData(SyncData* data)
 // SyncFieldSelectionPage implementation
 //
 SyncFieldSelectionPage::SyncFieldSelectionPage(wxWizard* parent, SyncData* data):
-                               SyncWizardPage(parent, data)
+                               SyncWizardPage(parent, data, _("Synchronization options"))
 {
-  wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
+  wxBoxSizer* sizer = m_pageSizer;
   
   m_panel = new SyncFieldSelectionPanel(this, data->selCriteria, false);
   m_panel->CreateControls(this);
@@ -390,13 +410,13 @@ void SyncFieldSelectionPage::SaveData(SyncData* data)
 // SyncOptionsSummaryPage implementation
 //
 SyncOptionsSummaryPage::SyncOptionsSummaryPage(wxWizard* parent, SyncData* data)
-                              : SyncWizardPage(parent, data),
+                              : SyncWizardPage(parent, data, _("Options Summary")),
                                 m_updatedFieldsGrid(0),
                                 m_notUpdatedFieldsGrid(0)
 {
   wxSizerFlags flags = wxSizerFlags().Expand().Proportion(0).Border(wxLEFT+wxRIGHT, SideMargin);
   wxSizerFlags gridFlags = wxSizerFlags().Expand().Proportion(1).Border(wxLEFT+wxRIGHT, SideMargin*2);
-  wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
+  wxBoxSizer* sizer = m_pageSizer;
   
   sizer->Add(new wxStaticText(this, ID_DESC, wxEmptyString), flags.Proportion(1));
   sizer->AddSpacer(RowSeparation);
@@ -404,19 +424,21 @@ SyncOptionsSummaryPage::SyncOptionsSummaryPage(wxWizard* parent, SyncData* data)
   sizer->Add(new wxStaticText(this, ID_UPDATED_TXT, wxEmptyString), flags.Proportion(0));
   sizer->AddSpacer(RowSeparation);
 
-  m_updatedFieldsGrid = new wxFlexGridSizer(3, 0, RowSeparation, ColSeparation);
+  m_updatedFieldsGrid = new wxFlexGridSizer(0, 3, RowSeparation, ColSeparation);
   sizer->Add(m_updatedFieldsGrid, gridFlags.Proportion(1));
   sizer->AddSpacer(RowSeparation);
 
   sizer->Add(new wxStaticText(this, ID_NOT_UPDATED_TXT, wxEmptyString), flags.Proportion(0));
   sizer->AddSpacer(RowSeparation);
 
-  m_notUpdatedFieldsGrid = new wxFlexGridSizer(3, 0, RowSeparation, ColSeparation);
+  m_notUpdatedFieldsGrid = new wxFlexGridSizer(0, 3, RowSeparation, ColSeparation);
   sizer->Add(m_notUpdatedFieldsGrid, gridFlags.Proportion(1));
   sizer->AddSpacer(RowSeparation*2);
 
   const wxString warning(_("WARNING!!\r\n\r\nIf you continue, fields will be updated in your existing database\r\nfrom your selected input database"));
-  sizer->Add(new wxStaticText(this, wxID_ANY, warning), flags.Proportion(0));
+  wxStaticText* txtWarn = new wxStaticText(this, wxID_ANY, warning);
+  txtWarn->SetForegroundColour(*wxRED);
+  sizer->Add(txtWarn, flags.Proportion(0).Bottom());
   
   SetSizerAndFit(sizer);
 }
@@ -461,9 +483,9 @@ void SyncOptionsSummaryPage::OnPageEnter(PageDirection dir)
 DECLARE_EVENT_TYPE(wxEVT_SYNC_START, -1)
 DEFINE_EVENT_TYPE(wxEVT_SYNC_START)
 
-SyncStatusPage::SyncStatusPage(wxWizard* parent, SyncData* data): SyncWizardPage(parent, data)
+SyncStatusPage::SyncStatusPage(wxWizard* parent, SyncData* data): SyncWizardPage(parent, data, _("Synchronization status"))
 {
-  wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
+  wxBoxSizer* sizer = m_pageSizer;
   wxSizerFlags flags = wxSizerFlags().Expand().Proportion(1).Border(wxLEFT|wxRIGHT, SideMargin).Align(wxALIGN_CENTER_VERTICAL);
 
   sizer->Add(new wxStaticText(this, ID_HEADER_TXT, wxEmptyString), flags.Proportion(1));
@@ -517,6 +539,7 @@ void SyncStatusPage::OnPageEnter(PageDirection dir)
     const wxString otherDBPath = m_syncData->otherDB.GetFullPath();
     const StringX  sxOtherFile = tostringx(otherDBPath);
     const int rc = othercore->ReadFile(sxOtherFile, tostringx(m_syncData->combination));
+    othercore->SetCurFile(sxOtherFile);
 
     // Reset database preferences - first to defaults then add saved changes!
     PWSprefs::GetInstance()->Load(sxSavePrefString);
@@ -525,7 +548,6 @@ void SyncStatusPage::OnPageEnter(PageDirection dir)
     if (rc == PWScore::SUCCESS) {
       if (DbHasNoDuplicates(othercore) && DbHasNoDuplicates(m_syncData->core)) {
         SetHeaderText(_("Your database is being synchronized with \"") + otherDBPath + _T('"'));
-        othercore->SetCurFile(sxOtherFile);
         Connect(GetId(), wxEVT_SYNC_START, wxCommandEventHandler(SyncStatusPage::OnSyncStartEvent));
         wxCommandEvent evt(wxEVT_SYNC_START, GetId());
         evt.SetClientData(reinterpret_cast<wxClientData*>(othercore));
@@ -590,6 +612,7 @@ bool SyncStatusPage::DbHasNoDuplicates(PWScore* core)
     // Database is not unique to start with - tell user to validate it first
     SetSyncSummary(_("Synchronization failed"));
     SetProgressText(wxString::Format(_("The database:\n\n%s\n\nhas duplicate entries with the same group/title/user combination. Please fix by validating database."), core->GetCurFile().c_str()));
+    FindWindow(ID_GAUGE)->Hide();
     return false;
   }
   return true;
