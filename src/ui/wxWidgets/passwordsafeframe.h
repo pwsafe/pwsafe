@@ -126,7 +126,8 @@ enum {
   ID_TRAYRECENT_ENTRY_HELP2,
   ID_TOOLBAR_NEW,
   ID_TOOLBAR_CLASSIC,
-  ID_SYNCHRONIZE
+  ID_SYNCHRONIZE,
+  ID_VALIDATE
 };
 
 
@@ -341,6 +342,9 @@ public:
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_TOOLBAR_CLASSIC and ID_TOOLBAR_NEW
   void OnChangeToolbarType(wxCommandEvent& /*evt*/);
 
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_VALIDATE
+  void OnValidate(wxCommandEvent& evt);
+
 ////@begin PasswordSafeFrame member function declarations
 
   /// Retrieves bitmap resources
@@ -401,6 +405,8 @@ public:
   CItemData *GetSelectedEntry() const;
     wxString GetCurrentSafe() const { return towxstring(m_core.GetCurFile()); }
     
+  void ValidateCurrentDatabase();
+    
 ////@begin PasswordSafeFrame member variables
   PWSGrid* m_grid;
   PWSTreeCtrl* m_tree;
@@ -411,6 +417,7 @@ public:
 
   int New();
   int NewFile(StringX &fname);
+  int DoOpen(const wxString& title);
   int Open(const wxString &fname); // prompt for password, try to Load.
   int SaveIfChanged();
   int SaveAs(void);
@@ -437,7 +444,8 @@ public:
   void CreateDragBar();
   void RefreshToolbarButtons();
   PWSDragBar* GetDragBar();
-  
+  bool IsClosed() const;
+
   void Merge(const StringX &sx_Filename2, PWScore *pothercore, const SelectionCriteria& selection);
   int MergeDependents(PWScore *pothercore, MultiCommands *pmulticmds,
                               uuid_array_t &base_uuid, uuid_array_t &new_base_uuid, 
