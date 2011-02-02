@@ -184,6 +184,8 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
 
   EVT_MENU( ID_MENU_CLEAR_MRU, PasswordSafeFrame::OnClearRecentHistory )
   EVT_UPDATE_UI( ID_MENU_CLEAR_MRU, PasswordSafeFrame::OnUpdateClearRecentDBHistory )
+  
+  EVT_MENU(ID_VALIDATE,    PasswordSafeFrame::OnValidate)
 
   EVT_ICONIZE(PasswordSafeFrame::OnIconize)
 
@@ -212,6 +214,7 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_UPDATE_UI(wxID_UNDO,          PasswordSafeFrame::OnUpdateUI )
   EVT_UPDATE_UI(wxID_REDO,          PasswordSafeFrame::OnUpdateUI )
   EVT_UPDATE_UI(ID_SYNCHRONIZE,     PasswordSafeFrame::OnUpdateUI )
+  EVT_UPDATE_UI(ID_VALIDATE,        PasswordSafeFrame::OnUpdateUI )
 END_EVENT_TABLE()
 
 static void DisplayFileWriteError(int rc, const StringX &fname);
@@ -426,6 +429,7 @@ void PasswordSafeFrame::CreateControls()
   itemMenu72->Append(ID_RESTORE, _("&Restore from Backup...\tCtrl+R"), _T(""), wxITEM_NORMAL);
   itemMenu72->AppendSeparator();
   itemMenu72->Append(wxID_PREFERENCES, _("&Options..."), _T(""), wxITEM_NORMAL);
+  itemMenu72->Append(ID_VALIDATE, _("&Validate..."), _T(""), wxITEM_NORMAL);
   menuBar->Append(itemMenu72, _("&Manage"));
   wxMenu* itemMenu79 = new wxMenu;
   itemMenu79->Append(wxID_HELP, _("Get &Help"), _T(""), wxITEM_NORMAL);
@@ -966,23 +970,7 @@ CItemData *PasswordSafeFrame::GetSelectedEntry() const
 
 void PasswordSafeFrame::OnOpenClick( wxCommandEvent& /* evt */ )
 {
-  stringT dir = PWSdirs::GetSafeDir();
-  //Open-type dialog box
-  wxFileDialog fd(this, _("Please Choose a Database to Open:"),
-                  dir.c_str(), _("pwsafe.psafe3"),
-                  _("Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat|Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All files (*.*; *)|*.*;*"),
-                  (wxFD_OPEN | wxFD_FILE_MUST_EXIST | wxFD_CHANGE_DIR));
-
-  while (1) {
-    if (fd.ShowModal() == wxID_OK) {
-      int rc = Open(fd.GetPath()); // prompt for password of new file and load.
-      if (rc == PWScore::SUCCESS) {
-        break;
-      }
-    } else { // user cancelled 
-      break;
-    }
-  }
+  DoOpen(_("Please Choose a Database to Open:"));
 }
 
 
@@ -1004,6 +992,26 @@ void PasswordSafeFrame::OnCloseClick( wxCommandEvent& /* evt */ )
     ClearData();
     SetTitle(_T(""));
     m_sysTray->SetTrayStatus(SystemTray::TRAY_CLOSED);
+  }
+}
+
+int PasswordSafeFrame::DoOpen(const wxString& title)
+{
+  stringT dir = PWSdirs::GetSafeDir();
+  //Open-type dialog box
+  wxFileDialog fd(this, title, dir.c_str(), _("pwsafe.psafe3"),
+                  _("Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat|Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All files (*.*; *)|*.*;*"),
+                  (wxFD_OPEN | wxFD_FILE_MUST_EXIST | wxFD_CHANGE_DIR));
+
+  while (1) {
+    if (fd.ShowModal() == wxID_OK) {
+      int rc = Open(fd.GetPath()); // prompt for password of new file and load.
+      if (rc == PWScore::SUCCESS) {
+        return PWScore::SUCCESS;
+      }
+    } else { // user cancelled 
+      return PWScore::USER_CANCEL;
+    }
   }
 }
 
@@ -1753,10 +1761,20 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
     case ID_SYNCHRONIZE:
       evt.Enable(!m_core.IsReadOnly() && !m_core.GetCurFile().empty() && m_core.GetNumEntries() != 0);
       break;
-      
+
+    case ID_VALIDATE:
+      evt.Enable(IsClosed());
+      break;
+
     default:
       break;
   }
+}
+
+bool PasswordSafeFrame::IsClosed() const
+{
+  return m_core.GetCurFile().empty() && m_core.GetNumEntries() == 0 && !m_core.IsChanged()
+                    && !m_core.AnyToUndo() && !m_core.AnyToRedo();
 }
 
 // Implementation of UIinterface methods
@@ -3253,6 +3271,48 @@ void PasswordSafeFrame::OnSynchronize(wxCommandEvent& /*evt*/)
   
   if (wiz.ShowReport())
     ViewReport(*wiz.GetReport());
+}
+
+//------------ Validation
+//
+//
+void PasswordSafeFrame::OnValidate(wxCommandEvent& /*evt*/) 
+{
+  if (DoOpen(_("Please Choose a Database to Validate:")) == PWScore::SUCCESS)
+    ValidateCurrentDatabase();
+}
+
+void PasswordSafeFrame::ValidateCurrentDatabase()
+{
+  CReport rpt;
+  rpt.StartReport(_("Validate"), m_core.GetCurFile().c_str());
+
+  //we need to restrict the size of individual text fields, to prevent creating
+  //enormous databases.  See the comments in DboxMain.h
+  enum {MAXTEXTCHARS = 30000};
+  
+  stringT cs_msg;
+  const bool bchanged = m_core.Validate(cs_msg, rpt, MAXTEXTCHARS);
+  if (bchanged) {
+    SetChanged(Data);
+
+#ifdef NOT_YET
+    ChangeOkUpdate();
+#endif
+
+    rpt.EndReport();
+
+    if (wxMessageBox(towxstring(cs_msg) << _("\r\n\r\nDo you wish to see a detailed report?"),
+                            _("Validate"), wxYES_NO|wxICON_EXCLAMATION, this) == wxYES)
+      ViewReport(rpt);
+  }
+  else {
+    wxMessageBox(_("Database validated - no problems found."), _("Validate"), wxOK|wxICON_INFORMATION, this);
+  }
+#ifdef NOT_YET
+  // Show UUID in Edit Date/Time property sheet stats
+  CAddEdit_DateTimes::m_bShowUUID = true;
+#endif
 }
 
 //-----------------------------------------------------------------
