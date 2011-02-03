@@ -48,28 +48,26 @@ public:
   CItemData *WZPSHgetSelectedItem()
   {return m_pDbx->getSelectedItem();}
 
-  int WZPSHTestForExport(const bool bAdvanced,
+  int WZPSHTestSelection(const bool bAdvanced,
                          const stringT &subgroup_name,
                          const int &subgroup_object,
                          const int &subgroup_function,
                          const OrderedItemList *il)
-  {return m_pDbx->TestForExport(bAdvanced, subgroup_name,
+  {return m_pDbx->TestSelection(bAdvanced, subgroup_name,
                                 subgroup_object, subgroup_function, il);}
 
   void WZPSHSetUpdateWizardWindow(CWnd *pWnd)
   {m_pDbx->SetUpdateWizardWindow(pWnd);}
 
-  int WZPSHCompare(const StringX &sx_Filename2, PWScore *pothercore,
-                   const bool bAdvanced, CReport *prpt)
-  {return m_pDbx->Compare(sx_Filename2, pothercore, bAdvanced, prpt);}
+  bool WZPSHDoCompare(PWScore *pothercore, const bool bAdvanced, CReport *prpt)
+  {return m_pDbx->DoCompare(pothercore, bAdvanced, prpt);}
 
-  CString WZPSHMerge(const StringX &sx_Filename2, PWScore *pothercore,
-                     const bool bAdvanced, CReport *prpt)
-  {return m_pDbx->Merge(sx_Filename2, pothercore, bAdvanced, prpt);}
+  stringT WZPSHDoMerge(PWScore *pothercore, const bool bAdvanced, CReport *prpt)
+  {return m_pDbx->DoMerge(pothercore, bAdvanced, prpt);}
 
-  void WZPSHSynchronize(const StringX &sx_Filename2, PWScore *pothercore,
-                        const bool bAdvanced, int &numExported, CReport *prpt)
-  {m_pDbx->Synchronize(sx_Filename2, pothercore, bAdvanced, numExported, prpt);}
+  void WZPSHDoSynchronize(PWScore *pothercore,
+                          const bool bAdvanced, int &numExported, CReport *prpt)
+  {m_pDbx->DoSynchronize(pothercore, bAdvanced, numExported, prpt);}
 
   int WZPSHDoExportText(const StringX &sx_Filename, const bool bAll,
                         const wchar_t &delimiter, const bool bAdvanced, 
@@ -100,6 +98,9 @@ public:
                                   PWScore *pothercore, CReport *prpt)
   {return m_pDbx->ShowCompareResults(sx_Filename1, sx_Filename2, pothercore, prpt);}
 
+  void SetNumProcessed(const int numProcessed) {m_numProcessed = numProcessed;}
+  int GetNumProcessed() {return m_numProcessed;}
+
   BOOL PreTranslateMessage(MSG* pMsg);
 
   // Following override to reset idle timeout on any event
@@ -122,6 +123,7 @@ private:
   st_SaveAdvValues *m_pst_SADV;
   wchar_t m_delimiter;
   bool m_bAdvanced, m_bCompleted;
+  int m_numProcessed;
 };
 //-----------------------------------------------------------------------------
 // Local variables:

@@ -499,7 +499,7 @@ void DboxMain::setupBars()
   int NumBits = (pDC ? pDC->GetDeviceCaps(12 /*BITSPIXEL*/) : 32);
   m_MainToolBar.Init(NumBits);
   m_FindToolBar.Init(NumBits, this, PWS_MSG_TOOLBAR_FIND,
-                     &m_SaveFindAdvValues);
+                     &m_SaveAdvValues[CAdvancedDlg::FIND]);
   ReleaseDC(pDC);
 
   // Add the Main ToolBar.
@@ -511,15 +511,15 @@ void DboxMain::setupBars()
     return;      // fail to create
   }
   DWORD dwStyle = m_MainToolBar.GetBarStyle();
-  dwStyle = dwStyle | CBRS_BORDER_BOTTOM | CBRS_BORDER_TOP |
+  dwStyle = dwStyle | CBRS_BORDER_BOTTOM | CBRS_BORDER_TOP   |
                       CBRS_BORDER_LEFT   | CBRS_BORDER_RIGHT |
-                      CBRS_TOOLTIPS | CBRS_FLYBY;
+                      CBRS_TOOLTIPS      | CBRS_FLYBY;
   m_MainToolBar.SetBarStyle(dwStyle);
   m_MainToolBar.SetWindowText(L"Standard");
 
   // Add the Find ToolBar.
   if (!m_FindToolBar.CreateEx(this, TBSTYLE_FLAT | TBSTYLE_TRANSPARENT,
-                              WS_CHILD | WS_VISIBLE |
+                              WS_CHILD    | WS_VISIBLE |
                               CBRS_BOTTOM | CBRS_SIZE_DYNAMIC,
                               CRect(0, 0, 0, 0), AFX_IDW_RESIZE_BAR + 2)) {
     pws_os::Trace(L"Failed to create Find toolbar\n");
@@ -528,7 +528,7 @@ void DboxMain::setupBars()
   dwStyle = m_FindToolBar.GetBarStyle();
   dwStyle = dwStyle | CBRS_BORDER_BOTTOM | CBRS_BORDER_TOP |
                       CBRS_BORDER_LEFT   | CBRS_BORDER_RIGHT |
-                      CBRS_TOOLTIPS | CBRS_FLYBY;
+                      CBRS_TOOLTIPS      | CBRS_FLYBY;
   m_FindToolBar.SetBarStyle(dwStyle);
   m_FindToolBar.SetWindowText(L"Find");
 
@@ -617,14 +617,14 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
   CItemData::FieldBits bsFields;
   bsFields.set();  // Default search is all text fields!
 
-  return FindAll(str, CaseSensitive, indices, bsFields, BST_UNCHECKED, 
+  return FindAll(str, CaseSensitive, indices, bsFields, false, 
                  L"", 0, 0);
 }
 
 size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
                          vector<int> &indices,
-                         const CItemData::FieldBits &bsFields, const int subgroup_set, 
-                         const CString &subgroup_name, const int subgroup_object,
+                         const CItemData::FieldBits &bsFields, const bool &subgroup_bset, 
+                         const std::wstring &subgroup_name, const int subgroup_object,
                          const int subgroup_function)
 {
   ASSERT(!str.IsEmpty());
@@ -662,7 +662,7 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
 
   while (m_IsListView ? (listPos != listEnd) : (olistPos != olistEnd)) {
     const CItemData &curitem = m_IsListView ? listPos->second : *olistPos;
-    if (subgroup_set == BST_CHECKED &&
+    if (subgroup_bset &&
         !curitem.Matches(std::wstring(subgroup_name),
                          subgroup_object, subgroup_function))
       goto nextentry;
@@ -3252,8 +3252,9 @@ void DboxMain::OnToolBarFindReport()
 
   CItemData::FieldBits bsFFields;
   bool bFAdvanced;
-  CString Fsubgroup_name;
-  int Fsubgroup_set, Fsubgroup_object, Fsubgroup_function;
+  std::wstring Fsubgroup_name;
+  int Fsubgroup_object, Fsubgroup_function;
+  bool Fsubgroup_set;
 
   m_FindToolBar.GetSearchInfo(bFAdvanced, bsFFields, Fsubgroup_name, 
                               Fsubgroup_set, Fsubgroup_object, Fsubgroup_function);
@@ -3265,7 +3266,7 @@ void DboxMain::OnToolBarFindReport()
     rpt.WriteLine((LPCWSTR)buffer);
     rpt.WriteLine();
   } else {
-    if (Fsubgroup_set == BST_UNCHECKED) {
+    if (!Fsubgroup_set) {
       cs_temp.LoadString(IDS_NONE);
     } else {
       CString cs_Object, cs_case, cs_text;

@@ -15,6 +15,7 @@
 #define IDD_CRYPTKEYENTRY               118
 #define IDD_DISPLAY_EXPIRED_ENTRIES     119
 #define IDD_DLG_PWHIST                  120
+#define IDD_ADVANCEDCOMPSYNCH           121
 #define IDD_EDIT_SHORTCUT               122
 #define IDD_IMPORT_TEXT                 125
 #define IDD_IMPORT_XML                  126

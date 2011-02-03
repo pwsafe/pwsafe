@@ -218,8 +218,8 @@ public:
                  std::vector<int> &indices);
   size_t FindAll(const CString &str, BOOL CaseSensitive,
                  std::vector<int> &indices,
-                 const CItemData::FieldBits &bsFields, const int subgroup_set, 
-                 const CString &subgroup_name, const int subgroup_object,
+                 const CItemData::FieldBits &bsFields, const bool &subgroup_set, 
+                 const std::wstring &subgroup_name, const int subgroup_object,
                  const int subgroup_function);
 
   // Used by ListCtrl KeyDown
@@ -318,7 +318,6 @@ public:
   void UpdateEntryImages(const CItemData &ci);
 
   void RefreshImages();
-  bool FieldsNotEqual(StringX a, StringX b);
   void CreateShortcutEntry(CItemData *pci, const StringX &cs_group,
                            const StringX &cs_title, const StringX &cs_user,
                            StringX &sxNewDBPrefsString);
@@ -356,24 +355,24 @@ public:
   void ViewReport(CReport &rpt);
   void SetUpdateWizardWindow(CWnd *pWnd)
   {m_pWZWnd = pWnd;}
-  CString Merge(const StringX &sx_Filename2, PWScore *pothercore,
-                const bool bAdvanced, CReport *prpt);
-  int Compare(const StringX &sx_Filename2, PWScore *pothercore,
-              const bool bAdvanced, CReport *prpt);
-  void Synchronize(const StringX &sx_Filename2, PWScore *pothercore,
-                   const bool bAdvanced, int &numUpdated, CReport *prpt);
+  stringT DoMerge(PWScore *pothercore,
+                  const bool bAdvanced, CReport *prpt);
+  bool DoCompare(PWScore *pothercore,
+                 const bool bAdvanced, CReport *prpt);
+  void DoSynchronize(PWScore *pothercore,
+                     const bool bAdvanced, int &numUpdated, CReport *prpt);
   int DoExportText(const StringX &sx_Filename, const bool bAll,
                    const wchar_t &delimiter, const bool bAdvanced,
                    int &numExported, CReport *prpt);
   int DoExportXML(const StringX &sx_Filename, const bool bAll,
                   const wchar_t &delimiter, const bool bAdvanced,
                   int &numExported, CReport *prpt);
-  int TestForExport(const bool bAdvanced,
+  int TestSelection(const bool bAdvanced,
                     const stringT &subgroup_name,
                     const int &subgroup_object,
                     const int &subgroup_function,
                     const OrderedItemList *il)
-  {return m_core.TestForExport(bAdvanced, subgroup_name,
+  {return m_core.TestSelection(bAdvanced, subgroup_name,
                                subgroup_object, subgroup_function, il);}
   void MakeOrderedItemList(OrderedItemList &il);
   CItemData *getSelectedItem();
@@ -545,11 +544,6 @@ protected:
   int CheckEmergencyBackupFiles(StringX sx_Filename, StringX &passkey);
   void PostOpenProcessing();
   int Close(const bool bTrySave = true);
-
-  int MergeDependents(PWScore *pothercore, MultiCommands *pmulticmds,
-                      uuid_array_t &base_uuid, uuid_array_t &new_base_uuid, 
-                      const bool bTitleRenamed, CString &timeStr, 
-                      const CItemData::EntryType et, std::vector<StringX> &vs_added);
 
   void ReportAdvancedOptions(CReport *prpt, const bool bAdvanced, const WZAdvanced::AdvType type);
 
@@ -921,8 +915,8 @@ private:
   std::bitset<3> m_btAT;  // Representing the Key, Ctrl Key and Shift key
 
   // Save Advanced settings
-  st_SaveAdvValues m_SaveAdvValues[WZAdvanced::LAST];
-  st_SaveAdvValues m_SaveFindAdvValues;
+  st_SaveAdvValues m_SaveWZAdvValues[WZAdvanced::LAST];
+  st_SaveAdvValues m_SaveAdvValues[CAdvancedDlg::LAST];
 
   // Used to update static text on the Wizard for Compare, Merge etc.
   CWnd *m_pWZWnd;
@@ -974,15 +968,6 @@ private:
 
   std::stack<st_SaveGUIInfo> m_stkSaveGUIInfo;
 };
-
-inline bool DboxMain::FieldsNotEqual(StringX a, StringX b)
-{
-  if (m_treatwhitespaceasempty == TRUE) {
-    EmptyIfOnlyWhiteSpace(a);
-    EmptyIfOnlyWhiteSpace(b);
-  }
-  return a != b;
-}
 
 // Following used to keep track of display vs data
 // stored as opaque data in CItemData.{Get,Set}DisplayInfo()

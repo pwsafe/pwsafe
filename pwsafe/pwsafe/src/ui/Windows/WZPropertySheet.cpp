@@ -23,7 +23,8 @@ extern const wchar_t *EYE_CATCHER;
 CWZPropertySheet::CWZPropertySheet(UINT nID, UINT nButtonID, CWnd* pDbx, WZAdvanced::AdvType iadv_type,
                                    st_SaveAdvValues *pst_SADV)
   : CPropertySheet(nID, pDbx), m_nID(nID), m_nButtonID(nButtonID),
-  m_passkey(L""), m_filespec(L""), m_pst_SADV(pst_SADV), m_bAdvanced(false), m_bCompleted(false)
+  m_passkey(L""), m_filespec(L""), m_pst_SADV(pst_SADV), m_bAdvanced(false), m_bCompleted(false),
+  m_numProcessed(-1)
 {
   m_pDbx = dynamic_cast<DboxMain *>(pDbx);
   ASSERT(m_pDbx != NULL);

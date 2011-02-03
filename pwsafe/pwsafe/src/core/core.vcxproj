@@ -1071,6 +1071,7 @@
     <ClCompile Include="BlowFish.cpp" />
     <ClCompile Include="CheckVersion.cpp" />
     <ClCompile Include="Command.cpp" />
+    <ClCompile Include="CoreOtherDB.cpp" />
     <ClCompile Include="CoreImpExp.cpp" />
     <ClCompile Include="core_st.cpp" />
     <ClCompile Include="hmac.cpp" />
@@ -1126,6 +1127,7 @@
     <ClInclude Include="coredefs.h" />
     <ClInclude Include="core.h" />
     <ClInclude Include="core_st.h" />
+    <ClInclude Include="DBCompareData.h" />
     <ClInclude Include="Fish.h" />
     <ClInclude Include="hmac.h" />
     <ClInclude Include="ItemData.h" />

@@ -30,8 +30,8 @@ namespace WZAdvanced {
 struct st_SaveAdvValues {
   st_SaveAdvValues()
   : subgroup_name(L""),
-    subgroup_set(BST_UNCHECKED), subgroup_case(BST_UNCHECKED), 
-    treatwhitespaceasempty(BST_CHECKED),
+    subgroup_bset(false), subgroup_bcase(false), 
+    btreatwhitespaceasempty(true),
     subgroup_object(0), subgroup_function(0)
   {
     bsFields.set();
@@ -39,9 +39,9 @@ struct st_SaveAdvValues {
 
   st_SaveAdvValues(const st_SaveAdvValues &adv)
     : bsFields(adv.bsFields), subgroup_name(adv.subgroup_name),
-    subgroup_set(adv.subgroup_set), subgroup_object(adv.subgroup_object),
-    subgroup_function(adv.subgroup_function), subgroup_case(adv.subgroup_case),
-    treatwhitespaceasempty(adv.treatwhitespaceasempty)
+    subgroup_bset(adv.subgroup_bset), subgroup_object(adv.subgroup_object),
+    subgroup_function(adv.subgroup_function), subgroup_bcase(adv.subgroup_bcase),
+    btreatwhitespaceasempty(adv.btreatwhitespaceasempty)
   {
   }
 
@@ -50,25 +50,25 @@ struct st_SaveAdvValues {
     if (this != &adv) {
       bsFields = adv.bsFields;
       subgroup_name = adv.subgroup_name;
-      subgroup_set = adv.subgroup_set;
+      subgroup_bset = adv.subgroup_bset;
       subgroup_object = adv.subgroup_object;
       subgroup_function = adv.subgroup_function;
-      subgroup_case = adv.subgroup_case;
-      treatwhitespaceasempty = adv.treatwhitespaceasempty;
+      subgroup_bcase = adv.subgroup_bcase;
+      btreatwhitespaceasempty = adv.btreatwhitespaceasempty;
     }
     return *this;
   }
 
   void Clear() {
     bsFields.set();
-    subgroup_set = subgroup_case = BST_UNCHECKED;
-    treatwhitespaceasempty = BST_CHECKED;
+    subgroup_bset = subgroup_bcase = BST_UNCHECKED;
+    btreatwhitespaceasempty = BST_CHECKED;
     subgroup_object = subgroup_function = 0;
     subgroup_name = L"";
   }
 
   CItemData::FieldBits bsFields;
-  CString subgroup_name;
-  int subgroup_set, subgroup_object, subgroup_function, subgroup_case;
-  int treatwhitespaceasempty;
+  std::wstring subgroup_name;
+  int subgroup_object, subgroup_function;
+  bool subgroup_bset, subgroup_bcase, btreatwhitespaceasempty;
 };

@@ -31,28 +31,34 @@ static char THIS_FILE[] = __FILE__;
 #define NORMALFIELD    0x1000
 #define MANDATORYFIELD 0x0800
 
+int CAdvancedDlg::dialog_lookup[LAST] = {
+  IDD_ADVANCED,          // FIND
+  IDD_ADVANCEDCOMPSYNCH  // Reduced for synchronizing only one entry
+};
 /////////////////////////////////////////////////////////////////////////////
 // CAdvancedDlg dialog
 
-CAdvancedDlg::CAdvancedDlg(CWnd* pParent /*=NULL*/,
+CAdvancedDlg::CAdvancedDlg(CWnd* pParent /*=NULL*/, Type iIndex /*=INVALID*/,
                            st_SaveAdvValues *pst_SADV)
-  : CPWDialog(IDD_ADVANCED, pParent), m_pst_SADV(pst_SADV),
+  : CPWDialog(dialog_lookup[iIndex], pParent), m_iIndex(iIndex), m_pst_SADV(pst_SADV),
   m_pToolTipCtrl(NULL), m_treatwhitespaceasempty(BST_CHECKED)
 {
   if (m_pst_SADV != NULL) {
     m_bsFields = m_pst_SADV->bsFields;
-    m_subgroup_name = m_pst_SADV->subgroup_name;
-    m_subgroup_set = m_pst_SADV->subgroup_set;
+    m_subgroup_name = m_pst_SADV->subgroup_name.c_str();
+    m_subgroup_set = m_pst_SADV->subgroup_bset ? BST_CHECKED : BST_UNCHECKED;
     m_subgroup_object = m_pst_SADV->subgroup_object;
     m_subgroup_function = m_pst_SADV->subgroup_function;
-    m_subgroup_case = m_pst_SADV->subgroup_case;
-    m_treatwhitespaceasempty = m_pst_SADV->treatwhitespaceasempty;
+    m_subgroup_case = m_pst_SADV->subgroup_bcase ? BST_CHECKED : BST_UNCHECKED;
+    m_treatwhitespaceasempty = m_pst_SADV->btreatwhitespaceasempty ? BST_CHECKED : BST_UNCHECKED;
   } else {
     m_bsFields.set();
     m_subgroup_name = L"";
-    m_subgroup_set = m_subgroup_case = BST_UNCHECKED;
+    m_subgroup_set = BST_UNCHECKED;
     m_treatwhitespaceasempty = BST_CHECKED;
-    m_subgroup_object =  m_subgroup_function = 0;
+    m_subgroup_object =  0;
+    m_subgroup_function = 0;
+    m_subgroup_case = BST_UNCHECKED;
   }
 
   if (m_subgroup_function < 0) {
@@ -83,80 +89,82 @@ BOOL CAdvancedDlg::OnInitDialog()
   m_bsDefaultSelectedFields.reset();
   m_bsMandatoryFields.reset();
 
-  cs_text.LoadString(IDS_FINDX);
+  cs_text.LoadString(m_iIndex == FIND ? IDS_FINDX : IDS_SYNCHRONIZEX);
 
   SetWindowText(cs_text);
 
-  CComboBox *cboSubgroupFunction = (CComboBox *)GetDlgItem(IDC_ADVANCED_SUBGROUP_FUNCTION);
-  if (cboSubgroupFunction->GetCount() == 0) {
-    cs_text.LoadString(IDSC_EQUALS);
-    iItem = cboSubgroupFunction->AddString(cs_text);
-    cboSubgroupFunction->SetItemData(iItem, PWSMatch::MR_EQUALS);
-    cs_text.LoadString(IDSC_DOESNOTEQUAL);
-    iItem = cboSubgroupFunction->AddString(cs_text);
-    cboSubgroupFunction->SetItemData(iItem, PWSMatch::MR_NOTEQUAL);
-    cs_text.LoadString(IDSC_BEGINSWITH);
-    iItem = cboSubgroupFunction->AddString(cs_text);
-    cboSubgroupFunction->SetItemData(iItem, PWSMatch::MR_BEGINS);
-    cs_text.LoadString(IDSC_DOESNOTBEGINSWITH);
-    iItem = cboSubgroupFunction->AddString(cs_text);
-    cboSubgroupFunction->SetItemData(iItem, PWSMatch::MR_NOTBEGIN);
-    cs_text.LoadString(IDSC_ENDSWITH);
-    iItem = cboSubgroupFunction->AddString(cs_text);
-    cboSubgroupFunction->SetItemData(iItem, PWSMatch::MR_ENDS);
-    cs_text.LoadString(IDSC_DOESNOTENDWITH);
-    iItem = cboSubgroupFunction->AddString(cs_text);
-    cboSubgroupFunction->SetItemData(iItem, PWSMatch::MR_NOTEND);
-    cs_text.LoadString(IDSC_CONTAINS);
-    iItem = cboSubgroupFunction->AddString(cs_text);
-    cboSubgroupFunction->SetItemData(iItem, PWSMatch::MR_CONTAINS);
-    cs_text.LoadString(IDSC_DOESNOTCONTAIN);
-    iItem = cboSubgroupFunction->AddString(cs_text);
-    cboSubgroupFunction->SetItemData(iItem, PWSMatch::MR_NOTCONTAIN);
-  }
-
-  for (i = 0; i < cboSubgroupFunction->GetCount(); i++) {
-    if ((int)cboSubgroupFunction->GetItemData(i) == m_subgroup_function) {
-      cboSubgroupFunction->SetCurSel(i);
-      break;
+  if (m_iIndex != COMPARESYNCH) {
+    CComboBox *cboSubgroupFunction = (CComboBox *)GetDlgItem(IDC_ADVANCED_SUBGROUP_FUNCTION);
+    if (cboSubgroupFunction->GetCount() == 0) {
+      cs_text.LoadString(IDSC_EQUALS);
+      iItem = cboSubgroupFunction->AddString(cs_text);
+      cboSubgroupFunction->SetItemData(iItem, PWSMatch::MR_EQUALS);
+      cs_text.LoadString(IDSC_DOESNOTEQUAL);
+      iItem = cboSubgroupFunction->AddString(cs_text);
+      cboSubgroupFunction->SetItemData(iItem, PWSMatch::MR_NOTEQUAL);
+      cs_text.LoadString(IDSC_BEGINSWITH);
+      iItem = cboSubgroupFunction->AddString(cs_text);
+      cboSubgroupFunction->SetItemData(iItem, PWSMatch::MR_BEGINS);
+      cs_text.LoadString(IDSC_DOESNOTBEGINSWITH);
+      iItem = cboSubgroupFunction->AddString(cs_text);
+      cboSubgroupFunction->SetItemData(iItem, PWSMatch::MR_NOTBEGIN);
+      cs_text.LoadString(IDSC_ENDSWITH);
+      iItem = cboSubgroupFunction->AddString(cs_text);
+      cboSubgroupFunction->SetItemData(iItem, PWSMatch::MR_ENDS);
+      cs_text.LoadString(IDSC_DOESNOTENDWITH);
+      iItem = cboSubgroupFunction->AddString(cs_text);
+      cboSubgroupFunction->SetItemData(iItem, PWSMatch::MR_NOTEND);
+      cs_text.LoadString(IDSC_CONTAINS);
+      iItem = cboSubgroupFunction->AddString(cs_text);
+      cboSubgroupFunction->SetItemData(iItem, PWSMatch::MR_CONTAINS);
+      cs_text.LoadString(IDSC_DOESNOTCONTAIN);
+      iItem = cboSubgroupFunction->AddString(cs_text);
+      cboSubgroupFunction->SetItemData(iItem, PWSMatch::MR_NOTCONTAIN);
     }
-  }
 
-  // Note: NOT SORTED by design
-  CComboBox *cboSubgroupObject = (CComboBox *)GetDlgItem(IDC_ADVANCED_SUBGROUP_OBJECT);
-  if (cboSubgroupObject->GetCount () == 0) {
-    cs_text.LoadString(IDS_GROUP);
-    iItem = cboSubgroupObject->AddString(cs_text);
-    cboSubgroupObject->SetItemData(iItem, CItemData::GROUP);
-    cs_text.LoadString(IDS_GROUPTITLE);
-    iItem = cboSubgroupObject->AddString(cs_text);
-    cboSubgroupObject->SetItemData(iItem, CItemData::GROUPTITLE);
-    cs_text.LoadString(IDS_TITLE);
-    iItem = cboSubgroupObject->AddString(cs_text);
-    cboSubgroupObject->SetItemData(iItem, CItemData::TITLE);
-    cs_text.LoadString(IDS_USERNAME);
-    iItem = cboSubgroupObject->AddString(cs_text);
-    cboSubgroupObject->SetItemData(iItem, CItemData::USER);
-    cs_text.LoadString(IDS_URL);
-    iItem = cboSubgroupObject->AddString(cs_text);
-    cboSubgroupObject->SetItemData(iItem, CItemData::URL);
-    cs_text.LoadString(IDS_NOTES);
-    iItem = cboSubgroupObject->AddString(cs_text);
-    cboSubgroupObject->SetItemData(iItem, CItemData::NOTES);
-  }
+    for (i = 0; i < cboSubgroupFunction->GetCount(); i++) {
+      if ((int)cboSubgroupFunction->GetItemData(i) == m_subgroup_function) {
+        cboSubgroupFunction->SetCurSel(i);
+        break;
+      }
+    }
+
+    // Note: NOT SORTED by design
+    CComboBox *cboSubgroupObject = (CComboBox *)GetDlgItem(IDC_ADVANCED_SUBGROUP_OBJECT);
+    if (cboSubgroupObject->GetCount () == 0) {
+      cs_text.LoadString(IDS_GROUP);
+      iItem = cboSubgroupObject->AddString(cs_text);
+      cboSubgroupObject->SetItemData(iItem, CItemData::GROUP);
+      cs_text.LoadString(IDS_GROUPTITLE);
+      iItem = cboSubgroupObject->AddString(cs_text);
+      cboSubgroupObject->SetItemData(iItem, CItemData::GROUPTITLE);
+      cs_text.LoadString(IDS_TITLE);
+      iItem = cboSubgroupObject->AddString(cs_text);
+      cboSubgroupObject->SetItemData(iItem, CItemData::TITLE);
+      cs_text.LoadString(IDS_USERNAME);
+      iItem = cboSubgroupObject->AddString(cs_text);
+      cboSubgroupObject->SetItemData(iItem, CItemData::USER);
+      cs_text.LoadString(IDS_URL);
+      iItem = cboSubgroupObject->AddString(cs_text);
+      cboSubgroupObject->SetItemData(iItem, CItemData::URL);
+      cs_text.LoadString(IDS_NOTES);
+      iItem = cboSubgroupObject->AddString(cs_text);
+      cboSubgroupObject->SetItemData(iItem, CItemData::NOTES);
+    }
   
-  for (i = 0; i < cboSubgroupObject->GetCount(); i++) {
-    if ((int)cboSubgroupObject->GetItemData(i) == m_subgroup_object) {
-      cboSubgroupObject->SetCurSel(i);
-      break;
+    for (i = 0; i < cboSubgroupObject->GetCount(); i++) {
+      if ((int)cboSubgroupObject->GetItemData(i) == m_subgroup_object) {
+        cboSubgroupObject->SetCurSel(i);
+        break;
+      }
     }
-  }
 
-  BOOL bEnable = (m_subgroup_set == BST_CHECKED) ? TRUE : FALSE;
-  GetDlgItem(IDC_ADVANCED_SUBGROUP_FUNCTION)->EnableWindow(bEnable);
-  GetDlgItem(IDC_ADVANCED_SUBGROUP_OBJECT)->EnableWindow(bEnable);
-  GetDlgItem(IDC_ADVANCED_SUBGROUP_NAME)->EnableWindow(bEnable);
-  GetDlgItem(IDC_ADVANCED_SUBGROUP_CASE)->EnableWindow(bEnable);
+    BOOL bEnable = (m_subgroup_set == BST_CHECKED) ? TRUE : FALSE;
+    GetDlgItem(IDC_ADVANCED_SUBGROUP_FUNCTION)->EnableWindow(bEnable);
+    GetDlgItem(IDC_ADVANCED_SUBGROUP_OBJECT)->EnableWindow(bEnable);
+    GetDlgItem(IDC_ADVANCED_SUBGROUP_NAME)->EnableWindow(bEnable);
+    GetDlgItem(IDC_ADVANCED_SUBGROUP_CASE)->EnableWindow(bEnable);
+  }
 
   // m_pLC_List are those fields that aren't currently selected but could be
   // m_pLC_Selected are those fields already selected
@@ -170,6 +178,67 @@ BOOL CAdvancedDlg::OnInitDialog()
 
   // Deal with non-text fields
   // Time fields - use Compare text and remove the quotes and leading blank
+  if (m_iIndex == COMPARESYNCH) {
+    // All these are already selected fields
+    cs_text.LoadString(IDS_COMPCTIME);
+    cs_text = cs_text.Mid(2, cs_text.GetLength() - 3);
+    iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
+    m_pLC_Selected->SetItemData(iItem, CItemData::CTIME | NORMALFIELD);
+    m_bsAllowedFields.set(CItemData::CTIME);
+    m_bsDefaultSelectedFields.set(CItemData::CTIME);
+
+    cs_text.LoadString(IDS_COMPPMTIME);
+    cs_text = cs_text.Mid(2, cs_text.GetLength() - 3);
+    iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
+    m_pLC_Selected->SetItemData(iItem, CItemData::PMTIME | NORMALFIELD);
+    m_bsAllowedFields.set(CItemData::PMTIME);
+    m_bsDefaultSelectedFields.set(CItemData::PMTIME);
+
+    cs_text.LoadString(IDS_COMPATIME);
+    cs_text = cs_text.Mid(2, cs_text.GetLength() - 3);
+    iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
+    m_pLC_Selected->SetItemData(iItem, CItemData::ATIME | NORMALFIELD);
+    m_bsAllowedFields.set(CItemData::ATIME);
+    m_bsDefaultSelectedFields.set(CItemData::ATIME);
+
+    cs_text.LoadString(IDS_COMPRMTIME);
+    cs_text = cs_text.Mid(2, cs_text.GetLength() - 3);
+    iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
+    m_pLC_Selected->SetItemData(iItem, CItemData::RMTIME | NORMALFIELD);
+    m_bsAllowedFields.set(CItemData::RMTIME);
+    m_bsDefaultSelectedFields.set(CItemData::RMTIME);
+
+    cs_text.LoadString(IDS_COMPXTIME);
+    cs_text = cs_text.Mid(2, cs_text.GetLength() - 3);
+    iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
+    m_pLC_Selected->SetItemData(iItem, CItemData::XTIME | NORMALFIELD);
+    m_bsAllowedFields.set(CItemData::XTIME);
+    m_bsDefaultSelectedFields.set(CItemData::XTIME);
+
+    cs_text.LoadString(IDS_PASSWORDEXPIRYDATEINT);
+    iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
+    m_pLC_Selected->SetItemData(iItem, CItemData::XTIME_INT | NORMALFIELD);
+    m_bsAllowedFields.set(CItemData::XTIME_INT);
+    m_bsDefaultSelectedFields.set(CItemData::XTIME_INT);
+
+    cs_text.LoadString(IDS_PWPOLICY);
+    iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
+    m_pLC_Selected->SetItemData(iItem, CItemData::POLICY | NORMALFIELD);
+    m_bsAllowedFields.set(CItemData::POLICY);
+    m_bsDefaultSelectedFields.set(CItemData::POLICY);
+
+    cs_text.LoadString(IDS_DCALONG);
+    iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
+    m_pLC_Selected->SetItemData(iItem, CItemData::DCA | NORMALFIELD);
+    m_bsAllowedFields.set(CItemData::DCA);
+    m_bsDefaultSelectedFields.set(CItemData::DCA);
+
+    cs_text.LoadString(IDS_PROTECTED);
+    iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
+    m_pLC_Selected->SetItemData(iItem, CItemData::PROTECTED | NORMALFIELD);
+    m_bsAllowedFields.set(CItemData::PROTECTED);
+    m_bsDefaultSelectedFields.set(CItemData::PROTECTED);
+  }
 
   // Deal with text fields - all selected by default
   cs_text.LoadString(IDS_NOTES);
@@ -209,30 +278,37 @@ BOOL CAdvancedDlg::OnInitDialog()
   m_bsDefaultSelectedFields.set(CItemData::EMAIL);
 
   // Deal with standard text fields - selected by default
-      cs_text.LoadString(IDS_GROUP);
-      iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-      m_pLC_Selected->SetItemData(iItem, CItemData::GROUP | NORMALFIELD);
-      m_bsAllowedFields.set(CItemData::GROUP);
-      m_bsDefaultSelectedFields.set(CItemData::GROUP);
+  if (m_iIndex == COMPARESYNCH) {
+    cs_text.LoadString(IDS_PASSWORD);
+    iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
+    m_pLC_Selected->SetItemData(iItem, CItemData::PASSWORD | NORMALFIELD);
+    m_bsAllowedFields.set(CItemData::PASSWORD);
+    m_bsDefaultSelectedFields.set(CItemData::PASSWORD);
+  } else {
+    cs_text.LoadString(IDS_GROUP);
+    iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
+    m_pLC_Selected->SetItemData(iItem, CItemData::GROUP | NORMALFIELD);
+    m_bsAllowedFields.set(CItemData::GROUP);
+    m_bsDefaultSelectedFields.set(CItemData::GROUP);
 
-      cs_text.LoadString(IDS_TITLE);
-      iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-      m_pLC_Selected->SetItemData(iItem, CItemData::TITLE | NORMALFIELD);
-      m_bsAllowedFields.set(CItemData::TITLE);
-      m_bsDefaultSelectedFields.set(CItemData::TITLE);
+    cs_text.LoadString(IDS_TITLE);
+    iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
+    m_pLC_Selected->SetItemData(iItem, CItemData::TITLE | NORMALFIELD);
+    m_bsAllowedFields.set(CItemData::TITLE);
+    m_bsDefaultSelectedFields.set(CItemData::TITLE);
 
-      cs_text.LoadString(IDS_USERNAME);
-      iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-      m_pLC_Selected->SetItemData(iItem, CItemData::USER | NORMALFIELD);
-      m_bsAllowedFields.set(CItemData::USER);
-      m_bsDefaultSelectedFields.set(CItemData::USER);
+    cs_text.LoadString(IDS_USERNAME);
+    iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
+    m_pLC_Selected->SetItemData(iItem, CItemData::USER | NORMALFIELD);
+    m_bsAllowedFields.set(CItemData::USER);
+    m_bsDefaultSelectedFields.set(CItemData::USER);
 
-      cs_text.LoadString(IDS_PASSWORD);
-      iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-      m_pLC_Selected->SetItemData(iItem, CItemData::PASSWORD | NORMALFIELD);
-      m_bsAllowedFields.set(CItemData::PASSWORD);
-      m_bsDefaultSelectedFields.set(CItemData::PASSWORD);
-
+    cs_text.LoadString(IDS_PASSWORD);
+    iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
+    m_pLC_Selected->SetItemData(iItem, CItemData::PASSWORD | NORMALFIELD);
+    m_bsAllowedFields.set(CItemData::PASSWORD);
+    m_bsDefaultSelectedFields.set(CItemData::PASSWORD);
+  }
 
   if (m_bsFields.count() != 0 && m_bsFields.count() != m_bsFields.size()) {
     Set(m_bsFields);
@@ -241,8 +317,10 @@ BOOL CAdvancedDlg::OnInitDialog()
   m_pLC_List->SortItems(AdvCompareFunc, NULL);
   m_pLC_Selected->SortItems(AdvCompareFunc, NULL);
 
-  GetDlgItem(IDC_TREATWHITESPACEASEMPTY)->EnableWindow(FALSE);
-  GetDlgItem(IDC_TREATWHITESPACEASEMPTY)->ShowWindow(SW_HIDE);
+  if (m_iIndex == FIND) {
+    GetDlgItem(IDC_TREATWHITESPACEASEMPTY)->EnableWindow(FALSE);
+    GetDlgItem(IDC_TREATWHITESPACEASEMPTY)->ShowWindow(SW_HIDE);
+  }
 
   m_pToolTipCtrl = new CToolTipCtrl;
   if (!m_pToolTipCtrl->Create(this, TTS_ALWAYSTIP | TTS_BALLOON | TTS_NOPREFIX)) {
@@ -281,9 +359,11 @@ void CAdvancedDlg::DoDataExchange(CDataExchange* pDX)
 {
   CPWDialog::DoDataExchange(pDX);
   //{{AFX_DATA_MAP(CAdvancedDlg)
-  DDX_Check(pDX, IDC_ADVANCED_SUBGROUP_SET, m_subgroup_set);
-  DDX_Check(pDX, IDC_ADVANCED_SUBGROUP_CASE, m_subgroup_case);
-  DDX_Text(pDX, IDC_ADVANCED_SUBGROUP_NAME, m_subgroup_name);
+  if (m_iIndex == FIND) {
+    DDX_Check(pDX, IDC_ADVANCED_SUBGROUP_SET, m_subgroup_set);
+    DDX_Check(pDX, IDC_ADVANCED_SUBGROUP_CASE, m_subgroup_case);
+    DDX_Text(pDX, IDC_ADVANCED_SUBGROUP_NAME, m_subgroup_name);
+  }
   //}}AFX_DATA_MAP
 }
 
@@ -306,7 +386,11 @@ END_MESSAGE_MAP()
 void CAdvancedDlg::OnHelp()
 {
   CString cs_HelpTopic(app.GetHelpFileName());
-  cs_HelpTopic += L"::/html/findx.html";
+  if (m_iIndex == COMPARESYNCH) {
+    cs_HelpTopic += L"::/html/comparesynchx.html";
+  } else {
+    cs_HelpTopic += L"::/html/findx.html";
+  }
 
   HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
 }
@@ -390,24 +474,26 @@ void CAdvancedDlg::OnOK()
   UpdateData();
   m_bsFields.reset();
 
-    int num_selected = m_pLC_Selected->GetItemCount();
-    int nItem(-1);
+  int num_selected = m_pLC_Selected->GetItemCount();
+  int nItem(-1);
 
-    for (int i = 0; i < num_selected; i++) {
-      nItem = m_pLC_Selected->GetNextItem(nItem, LVNI_ALL);
-      dw_data = LOWORD(m_pLC_Selected->GetItemData(nItem));
-      m_bsFields.set(dw_data & 0xff, true);
-    }
+  for (int i = 0; i < num_selected; i++) {
+    nItem = m_pLC_Selected->GetNextItem(nItem, LVNI_ALL);
+    dw_data = LOWORD(m_pLC_Selected->GetItemData(nItem));
+    m_bsFields.set(dw_data & 0xff, true);
+  }
 
-    if (m_bsFields.count() == 0) {
-      CString cs_error_msg;
-      cs_error_msg.LoadString(IDS_NOFIELDSFORSEARCH);
+  if (m_bsFields.count() == 0) {
+    CString cs_error_msg;
+    cs_error_msg.LoadString(m_iIndex == FIND ? 
+                    IDS_NOFIELDSFORSEARCH : IDS_NOFIELDSFORSYNCH);
 
-      gmb.AfxMessageBox(cs_error_msg);
-      m_bsFields.set();  // note: impossible to set them all even via the advanced dialog
-      return;
-    }
+    gmb.AfxMessageBox(cs_error_msg);
+    m_bsFields.set();  // note: impossible to set them all even via the advanced dialog
+    return;
+  }
 
+  if (m_iIndex == FIND) {
     if (m_subgroup_set == BST_CHECKED) {
       GetDlgItemText(IDC_ADVANCED_SUBGROUP_NAME, m_subgroup_name);
       int nObject = ((CComboBox *)GetDlgItem(IDC_ADVANCED_SUBGROUP_OBJECT))->GetCurSel();
@@ -431,17 +517,18 @@ void CAdvancedDlg::OnOK()
       if (m_subgroup_case == BST_CHECKED)
         m_subgroup_function *= (-1);
     }
+  }
 
   if (m_subgroup_name == L"*")
     m_subgroup_name.Empty();
 
   m_pst_SADV->bsFields = m_bsFields;
   m_pst_SADV->subgroup_name = m_subgroup_name;
-  m_pst_SADV->subgroup_set = m_subgroup_set;
+  m_pst_SADV->subgroup_bset = m_subgroup_set == BST_CHECKED;
   m_pst_SADV->subgroup_object = m_subgroup_object;
   m_pst_SADV->subgroup_function = m_subgroup_function;
-  m_pst_SADV->subgroup_case = m_subgroup_case;
-  m_pst_SADV->treatwhitespaceasempty = m_treatwhitespaceasempty;
+  m_pst_SADV->subgroup_bcase = m_subgroup_case == BST_CHECKED;
+  m_pst_SADV->btreatwhitespaceasempty = m_treatwhitespaceasempty == BST_CHECKED;
 
   CPWDialog::OnOK();
 }

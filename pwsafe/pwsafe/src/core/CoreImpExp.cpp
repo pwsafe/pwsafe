@@ -81,7 +81,7 @@ private:
   const int &m_subgroup_function;
 };
 
-int PWScore::TestForExport(const bool bAdvanced,
+int PWScore::TestSelection(const bool bAdvanced,
                            const stringT &subgroup_name,
                            const int &subgroup_object,
                            const int &subgroup_function,

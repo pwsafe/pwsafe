@@ -58,12 +58,12 @@ CCompareResultsDlg::CCompareResultsDlg(CWnd* pParent,
 bool GTUCompare2(st_CompareData elem1, st_CompareData elem2)
 {
   if (elem1.group != elem2.group)
-    return elem1.group.CompareNoCase(elem2.group) < 0;
+    return _wcsicmp(elem1.group.c_str(), elem2.group.c_str()) < 0;
 
   if (elem1.title != elem2.title)
-    return elem1.title.CompareNoCase(elem2.title) < 0;
+    return _wcsicmp(elem1.title.c_str(), elem2.title.c_str()) < 0;
 
-  return elem1.user.CompareNoCase(elem2.user) < 0;
+  return _wcsicmp(elem1.user.c_str(), elem2.user.c_str()) < 0;
 }
 
 void CCompareResultsDlg::DoDataExchange(CDataExchange* pDX)
@@ -223,12 +223,12 @@ void CCompareResultsDlg::AddCompareEntries(const bool bAddIdentical)
       else
         m_LCResults.SetItemText(iItem, COMPARE, L"=");
 
-      m_LCResults.SetItemText(iItem, GROUP, st_data.group);
+      m_LCResults.SetItemText(iItem, GROUP, st_data.group.c_str());
       if (st_data.bIsProtected0)
-        m_LCResults.SetItemText(iItem, TITLE, st_data.title + L" #");
+        m_LCResults.SetItemText(iItem, TITLE, (st_data.title + StringX(L" #")).c_str());
       else
-        m_LCResults.SetItemText(iItem, TITLE, st_data.title);
-      m_LCResults.SetItemText(iItem, USER, st_data.user);
+        m_LCResults.SetItemText(iItem, TITLE, st_data.title.c_str());
+      m_LCResults.SetItemText(iItem, USER, st_data.user.c_str());
       for (i = USER + 1; i < m_nCols; i++)
         m_LCResults.SetItemText(iItem, i, L"-");
 
@@ -248,12 +248,12 @@ void CCompareResultsDlg::AddCompareEntries(const bool bAddIdentical)
         m_LCResults.InsertItem(iItem, L"Y");
 
       m_LCResults.SetItemText(iItem, COMPARE, L"-");
-      m_LCResults.SetItemText(iItem, GROUP, st_data.group);
+      m_LCResults.SetItemText(iItem, GROUP, st_data.group.c_str());
       if (st_data.bIsProtected0)
-        m_LCResults.SetItemText(iItem, TITLE, st_data.title + L" #");
+        m_LCResults.SetItemText(iItem, TITLE, (st_data.title + StringX(L" #")).c_str());
       else
-        m_LCResults.SetItemText(iItem, TITLE, st_data.title);
-      m_LCResults.SetItemText(iItem, USER, st_data.user);
+        m_LCResults.SetItemText(iItem, TITLE, st_data.title.c_str());
+      m_LCResults.SetItemText(iItem, USER, st_data.user.c_str());
       for (i = USER + 1; i < m_nCols; i++)
         m_LCResults.SetItemText(iItem, i, L"-");
 
@@ -273,9 +273,9 @@ void CCompareResultsDlg::AddCompareEntries(const bool bAddIdentical)
       else
         m_LCResults.SetItemText(iItem, COMPARE, L"Y");
 
-      m_LCResults.SetItemText(iItem, GROUP, st_data.group);
-      m_LCResults.SetItemText(iItem, TITLE, st_data.title);
-      m_LCResults.SetItemText(iItem, USER, st_data.user);
+      m_LCResults.SetItemText(iItem, GROUP, st_data.group.c_str());
+      m_LCResults.SetItemText(iItem, TITLE, st_data.title.c_str());
+      m_LCResults.SetItemText(iItem, USER, st_data.user.c_str());
       for (i = USER + 1; i < m_nCols; i++)
         m_LCResults.SetItemText(iItem, i, L"-");
 
@@ -300,12 +300,12 @@ void CCompareResultsDlg::AddCompareEntries(const bool bAddIdentical)
       else
         m_LCResults.SetItemText(iItem, COMPARE, L"Y");
 
-      m_LCResults.SetItemText(iItem, GROUP, st_data.group);
+      m_LCResults.SetItemText(iItem, GROUP, st_data.group.c_str());
       if (st_data.bIsProtected0)
-        m_LCResults.SetItemText(iItem, TITLE, st_data.title + L" #");
+        m_LCResults.SetItemText(iItem, TITLE, (st_data.title + StringX(L" #")).c_str());
       else
-        m_LCResults.SetItemText(iItem, TITLE, st_data.title);
-      m_LCResults.SetItemText(iItem, USER, st_data.user);
+        m_LCResults.SetItemText(iItem, TITLE, st_data.title.c_str());
+      m_LCResults.SetItemText(iItem, USER, st_data.user.c_str());
 
       // Start of the 'data' columns (if present)
       icol = PASSWORD;

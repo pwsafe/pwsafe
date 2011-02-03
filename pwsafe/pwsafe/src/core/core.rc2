@@ -24,7 +24,7 @@ END
 
 STRINGTABLE
 BEGIN
-  IDSC_EXPORTHEADER       "Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tPassword Expiry Interval\tRecord Modified Time\tPassword Policy\tHistory\tRun Command\tDCA\te-mail\tProtected\tNotes"
+  IDSC_EXPORTHEADER      "Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tPassword Expiry Interval\tRecord Modified Time\tPassword Policy\tHistory\tRun Command\tDCA\te-mail\tProtected\tNotes"
   IDSC_FLDNMGROUPTITLE   "Group/Title"
   IDSC_FLDNMUUID         "UUID"
   IDSC_FLDNMUSERNAME     "Username"
@@ -338,4 +338,14 @@ BEGIN
   IDSC_NONE                "None"
   IDSC_USERONHOST          "%s on %s"
   IDSC_UNKNOWNFIELDS       "In Headers(%s)/In Entries("
+  IDSC_WAS                 "was"
+  IDSC_WERE                "were"
+  IDSC_SYNCHUPDATED        "\r\nThe following %s %s updated:"
+  IDSC_SYNCHCOMPLETED      "\r\nSynchronize completed: %d %s updated"
+  IDSC_MERGECONFLICTS      "Conflicting entries for \xab%s\xbb \xab%s\xbb \xab%s\xbb.\r\n  Added merged entry as \xab%s\xbb \xab%s\xbb \xab%s\xbb.\r\n    Differing field(s): %s"
+  IDSC_MERGECOMPLETED      "\r\nMerge completed: %d %s added (%d %s, %d %s, %d %s)"
+  IDSC_CONFLICT            "conflict"
+  IDSC_CONFLICTS           "conflicts"
+  IDSC_MERGED              "-merged-"
+  IDSC_MERGEADDED          "\r\nThe following new %s %s merged into this database:"
 END

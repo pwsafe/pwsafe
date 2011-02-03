@@ -187,9 +187,7 @@
 #define IDS_XMLIMPORTWITHERRORS         5346
 #define IDS_XMLIMPORTOK                 5347
 #define IDS_PICKMERGEFILE               5348
-#define IDS_MERGECONFLICTS              5349
 #define IDS_MERGINGDATABASE             5350
-#define IDS_MERGECOMPLETED              5351
 #define IDS_NOCOMPAREFILE               5353
 #define IDS_PICKCOMPAREFILE             5354
 #define IDS_COMPARESAME                 5355
@@ -322,8 +320,6 @@
 #define IDS_SELECTREPORT                5487
 #define IDS_NOREPORTSEXIST              5488
 #define IDS_VISIT_WEBSITE               5489
-#define IDS_CONFLICT                    5494
-#define IDS_CONFLICTS                   5495
 #define IDS_ICON                        5496
 #define IDS_ABASEINVALID                5499
 #define IDS_SBASEINVALID                5500
@@ -522,9 +518,6 @@
 #define IDS_ISASHORTCUTBASE             5703
 #define IDS_COMPDCA                     5704
 #define IDS_DCA                         5705
-#define IDS_MERGEADDED                  5706
-#define IDS_WAS                         5707
-#define IDS_WERE                        5708
 #define IDS_VKBDFONT                    5709
 #define IDS_OSKFONT                     5710
 #define IDS_USRFONT                     5711
@@ -567,8 +560,6 @@
 #define IDS_NOFIELDSFORSYNCH            5748
 #define IDS_RPTSYNCH                    5749
 #define IDS_SYNCHINGDATABASE            5750
-#define IDS_SYNCHUPDATED                5751
-#define IDS_SYNCHCOMPLETED              5752
 #define IDS_PICKSYNCHRONIZEEFILE        5753
 #define IDS_OPEN                        5754
 #define IDS_ENDSESSION                  5755
