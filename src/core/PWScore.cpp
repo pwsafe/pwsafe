@@ -2141,7 +2141,7 @@ bool PWScore::GetDependentEntryBaseUUID(const uuid_array_t &entry_uuid,
 }
 
 bool PWScore::SetUIInterFace(UIInterFace *pUIIF, size_t numsupported,
-                      std::bitset<UIInterFace::NUM_SUPPORTED> bsSupportedFunctions)
+                             std::bitset<UIInterFace::NUM_SUPPORTED> bsSupportedFunctions)
 {
   bool brc(true);
   m_pUIIF = pUIIF;

@@ -62,7 +62,7 @@ struct WZExecuteThreadParms {
   PWScore *pcore;
   CReport *prpt;
 
-  CString csResults;
+  std::wstring csResults;
   bool bAdvanced;
   int numProcessed;
 };

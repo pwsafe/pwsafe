@@ -16,84 +16,9 @@
 #include "core/PWScore.h"
 #include "core/Report.h"
 #include "core/uuidgen.h"
-
-#ifdef _DEBUG
-#include <bitset>
-#include <string>
-#endif
+#include "core/DBCompareData.h"
 
 class DboxMain;
-
-// The following structure is needed for compare when record is in
-// both databases (indatabase = -1) but there are differences
-// Subset used when record is in only one (indatabase = 0 or 1)
-// If entries made equal by copying, indatabase set to -1.
-struct st_CompareData {
-  uuid_array_t uuid0;  // original DB
-  uuid_array_t uuid1;  // comparison DB
-  CItemData::FieldBits bsDiffs;  // list of items compared
-  CSecString group;
-  CSecString title;
-  CSecString user;
-  int id;  // # in the appropriate list: "Only in Original", "Only in Comparison" or in "Both with Differences"
-  int indatabase;  // see enum below
-  int listindex;  // list index in CompareResultsDlg list control
-  bool unknflds0;  // original DB
-  bool unknflds1;  // comparison DB
-  bool bIsProtected0;
-
-  st_CompareData()
-    : bsDiffs(0), group(L""), title(L""), user(L""),
-    id(0), indatabase(0), listindex(0),
-    unknflds0(false), unknflds1(false), bIsProtected0(false)
-  {
-    SecureZeroMemory(uuid0, sizeof(uuid0));
-    SecureZeroMemory(uuid1, sizeof(uuid1));
-  }
-
-  st_CompareData(const st_CompareData &that)
-    : bsDiffs(that.bsDiffs), group(that.group), title(that.title), user(that.user),
-    id(that.id), indatabase(that.indatabase), listindex(that.listindex),
-    unknflds0(that.unknflds0), unknflds1(that.unknflds1), bIsProtected0(that.bIsProtected0)
-  {
-    memcpy(uuid0, that.uuid0, sizeof(uuid0));
-    memcpy(uuid1, that.uuid1, sizeof(uuid1));
-  }
-
-  st_CompareData &operator=(const st_CompareData &that)
-  {
-    if (this != &that) {
-      memcpy(uuid0, that.uuid0, sizeof(uuid0));
-      memcpy(uuid1, that.uuid1, sizeof(uuid1));
-      bsDiffs = that.bsDiffs;
-      group = that.group;
-      title = that.title;
-      user = that.user;
-      id = that.id;
-      indatabase = that.indatabase;
-      listindex = that.listindex;
-      unknflds0 = that.unknflds0;
-      unknflds1 = that.unknflds1;
-      bIsProtected0 = that.bIsProtected0;
-    }
-    return *this;
-  }
-};
-
-struct equal_id {
-  equal_id(int const& id) : m_id(id) {}
-  bool operator()(st_CompareData const& rdata) const
-  {
-    return (rdata.id == m_id);
-  }
-
-  int m_id;
-};
-
-// Vector of entries passed from DboxMain::Compare to CompareResultsDlg
-// Used for "Only in Original DB", "Only in Comparison DB" and
-// in "Both with Differences"
-typedef std::vector<st_CompareData> CompareData;
 
 // The following structure is needed for compare to send back data
 // to allow copying, viewing, editing and synching of entries
@@ -126,7 +51,11 @@ public:
   // Column indices
   // IDENTICAL means CURRENT + COMPARE but identical
   // BOTH means CURRENT + COMPARE but with differences
-  enum {IDENTICAL = -2, BOTH = -1 , CURRENT = 0, COMPARE, 
+
+  // NOTE: BOTH = -1 , CURRENT = 0, COMPARE = 1
+  // MUST be the same as in "core/DBCompareData.h"
+
+  enum {IDENTICAL = -2, BOTH = -1 , CURRENT = 0, COMPARE = 1, 
     GROUP, TITLE, USER, PASSWORD, NOTES, URL, AUTOTYPE, PWHIST, 
     CTIME, ATIME, XTIME, XTIME_INT, PMTIME, RMTIME, POLICY, RUNCMD,
     DCA, EMAIL,

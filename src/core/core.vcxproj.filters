@@ -158,6 +158,9 @@
     <ClCompile Include="core_st.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CoreOtherDB.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BlowFish.h">
@@ -329,6 +332,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="core_st.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DBCompareData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

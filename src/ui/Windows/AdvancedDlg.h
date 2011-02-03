@@ -19,13 +19,17 @@
 class CAdvancedDlg : public CPWDialog
 {
 public:
-  CAdvancedDlg(CWnd* pParent = NULL,
+  enum Type {INVALID = -1,
+             FIND,
+             COMPARESYNCH,
+             LAST};
+
+  CAdvancedDlg(CWnd* pParent = NULL, Type iIndex = INVALID,
                st_SaveAdvValues *pst_SADV = NULL);   // standard constructor
   virtual CAdvancedDlg::~CAdvancedDlg();
 
   // Dialog Data
-  //{{AFX_DATA(CADVANCEDDlg)
-  enum { IDD = IDD_ADVANCED };
+  //{{AFX_DATA(CAdvancedDlg)
   CString m_subgroup_name;
   int m_subgroup_set, m_subgroup_object, m_subgroup_function, m_subgroup_case;
   int m_treatwhitespaceasempty;
@@ -36,16 +40,19 @@ public:
 
   // Overrides
   // ClassWizard generated virtual function overrides
-  //{{AFX_VIRTUAL(CADVANCEDDlg)
+  //{{AFX_VIRTUAL(CAdvancedDlg)
 protected:
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
   //}}AFX_VIRTUAL
+
+  Type m_iIndex;
+  static int dialog_lookup[LAST];
 
   // Implementation
 protected:
   virtual BOOL OnInitDialog();
   // Generated message map functions
-  //{{AFX_MSG(CADVANCEDDlg)
+  //{{AFX_MSG(CAdvancedDlg)
   afx_msg void OnSetSubGroup();
   afx_msg void OnSelectSome();
   afx_msg void OnSelectAll();

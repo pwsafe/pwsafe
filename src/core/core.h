@@ -226,6 +226,17 @@
 #define IDSC_ALIASES                    3403
 #define IDSC_SHORTCUTS                  3404
 
+#define IDSC_WAS                        3410
+#define IDSC_WERE                       3411
+#define IDSC_SYNCHUPDATED               3412
+#define IDSC_SYNCHCOMPLETED             3413
+#define IDSC_MERGECONFLICTS             3414
+#define IDSC_MERGECOMPLETED             3415
+#define IDSC_CONFLICT                   3416
+#define IDSC_CONFLICTS                  3417
+#define IDSC_MERGED                     3418
+#define IDSC_MERGEADDED                 3419
+
 // Keep DCA together
 #define IDSC_CURRENTDEFAULTDCA          4000
 #define IDSC_DCABROWSE                  4001

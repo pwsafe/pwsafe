@@ -41,9 +41,7 @@ int CWZAdvanced::dialog_lookup[] = {
   IDD_WZADVANCED,       // EXPORT_TEXT
   IDD_WZADVANCEDBOTTOM, // EXPORT_ENTRYTEXT (reduced dialog - bottom half only)
   IDD_WZADVANCED,       // EXPORT_XML
-  IDD_WZADVANCEDBOTTOM, // EXPORT_ENTRYXML (reduced dialog - bottom half only)
-  IDD_WZADVANCEDBOTTOM  // SYNCH only one entry during DB Compare
-                        //  (reduced dialog - bottom half only)
+  IDD_WZADVANCEDBOTTOM  // EXPORT_ENTRYXML (reduced dialog - bottom half only)
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -63,12 +61,12 @@ CWZAdvanced::CWZAdvanced(CWnd *pParent, UINT nIDCaption, const int nType, WZAdva
 
   if (m_pst_SADV != NULL) {
     m_bsFields = m_pst_SADV->bsFields;
-    m_subgroup_name = m_pst_SADV->subgroup_name;
-    m_subgroup_set = m_pst_SADV->subgroup_set;
+    m_subgroup_name = m_pst_SADV->subgroup_name.c_str();
+    m_subgroup_set = m_pst_SADV->subgroup_bset ? BST_CHECKED : BST_UNCHECKED;
     m_subgroup_object = m_pst_SADV->subgroup_object;
     m_subgroup_function = m_pst_SADV->subgroup_function;
-    m_subgroup_case = m_pst_SADV->subgroup_case;
-    m_treatwhitespaceasempty = m_pst_SADV->treatwhitespaceasempty;
+    m_subgroup_case = m_pst_SADV->subgroup_bcase ? BST_CHECKED : BST_UNCHECKED;
+    m_treatwhitespaceasempty = m_pst_SADV->btreatwhitespaceasempty ? BST_CHECKED : BST_UNCHECKED;
   } else {
     m_bsFields.set();
     m_subgroup_name = L"";
@@ -113,6 +111,7 @@ void CWZAdvanced::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CWZAdvanced, CWZPropertyPage)
   //{{AFX_MSG_MAP(CWZAdvanced)
+  ON_BN_CLICKED(ID_HELP, OnHelp)
   ON_BN_CLICKED(IDC_ADVANCED_SUBGROUP_SET, OnSetSubGroup)
   ON_BN_CLICKED(IDC_ADVANCED_SELECTSOME, OnSelectSome)
   ON_BN_CLICKED(IDC_ADVANCED_SELECTALL, OnSelectAll)
@@ -122,6 +121,13 @@ BEGIN_MESSAGE_MAP(CWZAdvanced, CWZPropertyPage)
   ON_NOTIFY(LVN_ITEMCHANGING, IDC_ADVANCED_SELECTED, OnSelectedItemChanging)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
+
+void CWZAdvanced::OnHelp()
+{
+  CString cs_HelpTopic;
+  cs_HelpTopic = app.GetHelpFileName() + L"::/html/advanced.html";
+  ::HtmlHelp(this->GetSafeHwnd(), (LPCWSTR)cs_HelpTopic, HH_DISPLAY_TOPIC, 0);
+}
 
 BOOL CWZAdvanced::OnInitDialog()
 {
@@ -766,7 +772,7 @@ LRESULT CWZAdvanced::OnWizardNext()
     }
 
     // Check if there are any that meet the user's filter
-    int rc = m_pWZPSH->WZPSHTestForExport(bAdvanced, (LPCWSTR)m_subgroup_name,
+    int rc = m_pWZPSH->WZPSHTestSelection(bAdvanced, (LPCWSTR)m_subgroup_name,
                      m_subgroup_object, m_subgroup_function, &orderedItemList);
 
     orderedItemList.clear(); // cleanup soonest
@@ -782,11 +788,11 @@ LRESULT CWZAdvanced::OnWizardNext()
 
   m_pst_SADV->bsFields = m_bsFields;
   m_pst_SADV->subgroup_name = m_subgroup_name;
-  m_pst_SADV->subgroup_set = m_subgroup_set;
+  m_pst_SADV->subgroup_bset = m_subgroup_set == BST_CHECKED;
   m_pst_SADV->subgroup_object = m_subgroup_object;
   m_pst_SADV->subgroup_function = m_subgroup_function;
-  m_pst_SADV->subgroup_case = m_subgroup_case;
-  m_pst_SADV->treatwhitespaceasempty = m_treatwhitespaceasempty;
+  m_pst_SADV->subgroup_bcase = m_subgroup_case == BST_CHECKED;
+  m_pst_SADV->btreatwhitespaceasempty = m_treatwhitespaceasempty == BST_CHECKED;
 
   m_pWZPSH->SetAdvValues(m_pst_SADV);
   return CPropertyPage::OnWizardNext();

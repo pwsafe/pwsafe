@@ -52,6 +52,7 @@ protected:
   BOOL OnInitDialog();
   BOOL PreTranslateMessage(MSG* pMsg);
   LRESULT OnWizardNext();
+  afx_msg void OnHelp();
   //}}AFX_VIRTUAL
 
   // Implementation

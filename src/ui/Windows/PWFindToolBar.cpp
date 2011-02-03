@@ -88,9 +88,9 @@ CPWFindToolBar::CPWFindToolBar()
   m_bCaseSensitive(false), m_bAdvanced(false),
   m_lastshown(size_t(-1)), m_numFound(size_t(-1)),
   m_last_search_text(L""), m_last_cs_search(false),
-  m_subgroup_name(L""), m_subgroup_set(BST_UNCHECKED),
+  m_subgroup_name(L""), m_subgroup_bset(false),
   m_subgroup_object(CItemData::GROUP), m_subgroup_function(0),
-  m_last_subgroup_name(L""), m_last_subgroup_set(BST_UNCHECKED),
+  m_last_subgroup_name(L""), m_last_subgroup_bset(false),
   m_last_subgroup_object(CItemData::GROUP), m_last_subgroup_function(0),
   m_iCase_Insensitive_BM_offset(-1), m_iCase_Sensitive_BM_offset(-1),
   m_iAdvanced_BM_offset(-1), m_iAdvancedOn_BM_offset(-1),
@@ -441,7 +441,7 @@ void CPWFindToolBar::ClearFind()
   m_numFound = size_t(-1);
   m_last_search_text = L"";
   m_subgroup_name = m_last_subgroup_name = L"";
-  m_subgroup_set = m_last_subgroup_set = BST_UNCHECKED;
+  m_subgroup_bset = m_last_subgroup_bset;
   m_subgroup_object = m_subgroup_function = 0;
   m_last_subgroup_object = m_last_subgroup_function = 0;
   m_lastshown = size_t(-1);
@@ -472,14 +472,14 @@ void CPWFindToolBar::Find()
       m_cs_search != m_last_cs_search ||
       m_pst_SADV->bsFields != m_last_bsFields ||
       m_pst_SADV->subgroup_name != m_last_subgroup_name ||
-      m_pst_SADV->subgroup_set != m_last_subgroup_set ||
+      m_pst_SADV->subgroup_bset != m_last_subgroup_bset ||
       m_pst_SADV->subgroup_object != m_last_subgroup_object ||
       m_pst_SADV->subgroup_function != m_last_subgroup_function) {
     m_last_search_text = m_search_text;
     m_last_cs_search = m_cs_search;
     m_last_bsFields = m_pst_SADV->bsFields;
     m_last_subgroup_name = m_pst_SADV->subgroup_name;
-    m_last_subgroup_set = m_pst_SADV->subgroup_set;
+    m_last_subgroup_bset = m_pst_SADV->subgroup_bset;
     m_last_subgroup_object = m_pst_SADV->subgroup_object;
     m_last_subgroup_function = m_pst_SADV->subgroup_function;
     m_lastshown = size_t(-1);
@@ -490,7 +490,7 @@ void CPWFindToolBar::Find()
 
     if (m_bAdvanced)
       m_numFound = pDbx->FindAll(m_search_text, m_cs_search, m_indices,
-                                 m_pst_SADV->bsFields, m_pst_SADV->subgroup_set,
+                                 m_pst_SADV->bsFields, m_pst_SADV->subgroup_bset,
                                  m_pst_SADV->subgroup_name, m_pst_SADV->subgroup_object, 
                                  m_pst_SADV->subgroup_function);
     else
@@ -558,19 +558,19 @@ void CPWFindToolBar::ShowFindAdvanced()
 
   if (bAdvanced) {
     const CItemData::FieldBits old_bsFields(m_pst_SADV->bsFields);
-    const CString old_subgroup_name(m_pst_SADV->subgroup_name);
-    const int old_subgroup_set(m_pst_SADV->subgroup_set);
+    const std::wstring old_subgroup_name(m_pst_SADV->subgroup_name);
+    const bool old_subgroup_bset(m_pst_SADV->subgroup_bset);
     const int old_subgroup_object(m_pst_SADV->subgroup_object);
     const int old_subgroup_function(m_pst_SADV->subgroup_function);
 
-    CAdvancedDlg Adv(this, m_pst_SADV);
+    CAdvancedDlg Adv(this, CAdvancedDlg::FIND, m_pst_SADV);
 
     INT_PTR rc = Adv.DoModal();
 
     if (rc == IDOK) {
       m_pst_SADV->bsFields = Adv.m_bsFields;
-      m_pst_SADV->subgroup_set = Adv.m_subgroup_set;
-      if (m_pst_SADV->subgroup_set == BST_CHECKED) {
+      m_pst_SADV->subgroup_bset = Adv.m_subgroup_set == BST_CHECKED;
+      if (m_pst_SADV->subgroup_bset) {
         m_pst_SADV->subgroup_name = Adv.m_subgroup_name;
         m_pst_SADV->subgroup_object = Adv.m_subgroup_object;
         m_pst_SADV->subgroup_function = Adv.m_subgroup_function;
@@ -578,9 +578,9 @@ void CPWFindToolBar::ShowFindAdvanced()
  
       // Check if anything changed
       if (old_bsFields != m_pst_SADV->bsFields ||
-          old_subgroup_set != m_pst_SADV->subgroup_set ||
-          (old_subgroup_set == m_pst_SADV->subgroup_set &&
-           old_subgroup_set == BST_CHECKED &&
+          old_subgroup_bset != m_pst_SADV->subgroup_bset ||
+          (old_subgroup_bset == m_pst_SADV->subgroup_bset &&
+           old_subgroup_bset &&
            (old_subgroup_name != m_pst_SADV->subgroup_name ||
             old_subgroup_object != m_pst_SADV->subgroup_object ||
             old_subgroup_function != m_pst_SADV->subgroup_function))) {

@@ -282,9 +282,7 @@ int DboxMain::New()
         return PWScore::USER_CANCEL;
       case IDYES:
         rc2 = Save();
-        /*
-        Make sure that writing the file was successful
-        */
+        //  Make sure that writing the file was successful
         if (rc2 == PWScore::SUCCESS)
           break;
         else
@@ -300,8 +298,8 @@ int DboxMain::New()
   rc = NewFile(cs_newfile);
   if (rc == PWScore::USER_CANCEL) {
     /*
-    Everything stays as is...
-    Worst case, they saved their file....
+      Everything stays as is...
+      Worst case, they saved their file....
     */
     return PWScore::USER_CANCEL;
   }
@@ -700,8 +698,8 @@ int DboxMain::Open(const StringX &sx_Filename, const bool bReadOnly,  const bool
     case PWScore::WRONG_PASSWORD:
     case PWScore::USER_CANCEL:
       /*
-      If the user just cancelled out of the password dialog,
-      assume they want to return to where they were before...
+        If the user just cancelled out of the password dialog,
+        assume they want to return to where they were before...
       */
       return PWScore::USER_CANCEL;
     default:
@@ -753,8 +751,8 @@ int DboxMain::Open(const StringX &sx_Filename, const bool bReadOnly,  const bool
       cs_temp.Format(IDS_CANTOPENREADING, sx_Filename.c_str());
       gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
       /*
-      Everything stays as is... Worst case,
-      they saved their file....
+        Everything stays as is... Worst case,
+        they saved their file....
       */
       rc = PWScore::CANT_OPEN_FILE;
       goto exit;
@@ -1094,16 +1092,16 @@ int DboxMain::Save(const SaveType savetype)
 int DboxMain::SaveIfChanged()
 {
   /*
-  * Save silently (without asking user) iff:
-  * 1. NOT read-only AND
-  * 2. (timestamp updates OR tree view display vector changed) AND
-  * 3. Database NOT empty
-  *
-  * Less formally:
-  *
-  * If MaintainDateTimeStamps set and not read-only, save without asking
-  * user: "they get what it says on the tin".
-  */
+   * Save silently (without asking user) iff:
+   * 1. NOT read-only AND
+   * 2. (timestamp updates OR tree view display vector changed) AND
+   * 3. Database NOT empty
+   *
+   * Less formally:
+   *
+   * If MaintainDateTimeStamps set and not read-only, save without asking
+   * user: "they get what it says on the tin".
+   */
 
   if (m_core.IsReadOnly())
     return PWScore::SUCCESS;
@@ -1376,7 +1374,7 @@ void DboxMain::OnExportText()
 
   CWZPropertySheet wizard(ID_MENUITEM_EXPORT2PLAINTEXT, IDS_RPTEXPORTTEXT,
                           this, WZAdvanced::EXPORT_TEXT,
-                          &m_SaveAdvValues[WZAdvanced::EXPORT_TEXT]);
+                          &m_SaveWZAdvValues[WZAdvanced::EXPORT_TEXT]);
 
   // Don't care about the return code: ID_WIZFINISH or IDCANCEL
   wizard.DoModal();
@@ -1389,7 +1387,7 @@ void DboxMain::OnExportEntryText()
 
   CWZPropertySheet wizard(ID_MENUITEM_EXPORTENT2PLAINTEXT, IDS_RPTEXPORTTEXT,
                           this, WZAdvanced::EXPORT_ENTRYTEXT,
-                          &m_SaveAdvValues[WZAdvanced::EXPORT_ENTRYTEXT]);
+                          &m_SaveWZAdvValues[WZAdvanced::EXPORT_ENTRYTEXT]);
 
   // Don't care about the return code: ID_WIZFINISH or IDCANCEL
   wizard.DoModal();
@@ -1403,7 +1401,7 @@ int DboxMain::DoExportText(const StringX &sx_Filename, const bool bAll,
   OrderedItemList orderedItemList;
   CString cs_temp;
 
-  st_SaveAdvValues *pst_ADV = &m_SaveAdvValues[bAll ? WZAdvanced::EXPORT_TEXT : WZAdvanced::EXPORT_ENTRYTEXT];
+  st_SaveAdvValues *pst_ADV = &m_SaveWZAdvValues[bAll ? WZAdvanced::EXPORT_TEXT : WZAdvanced::EXPORT_ENTRYTEXT];
 
   CItemData::FieldBits bsAllFields; bsAllFields.set();
   const CItemData::FieldBits bsFields = bAdvanced ? pst_ADV->bsFields : bsAllFields;
@@ -1467,7 +1465,7 @@ void DboxMain::OnExportXML()
 
   CWZPropertySheet wizard(ID_MENUITEM_EXPORT2XML, IDS_RPTEXPORTXML,
                           this, WZAdvanced::EXPORT_XML, 
-                          &m_SaveAdvValues[WZAdvanced::EXPORT_XML]);
+                          &m_SaveWZAdvValues[WZAdvanced::EXPORT_XML]);
 
   // Don't care about the return code: ID_WIZFINISH or IDCANCEL
   wizard.DoModal();
@@ -1480,7 +1478,7 @@ void DboxMain::OnExportEntryXML()
 
   CWZPropertySheet wizard(ID_MENUITEM_EXPORTENT2XML, IDS_RPTEXPORTXML,
                           this, WZAdvanced::EXPORT_ENTRYXML,
-                          &m_SaveAdvValues[WZAdvanced::EXPORT_ENTRYXML]);
+                          &m_SaveWZAdvValues[WZAdvanced::EXPORT_ENTRYXML]);
 
   // Don't care about the return code: ID_WIZFINISH or IDCANCEL
   wizard.DoModal();
@@ -1494,7 +1492,7 @@ int DboxMain::DoExportXML(const StringX &sx_Filename, const bool bAll,
   OrderedItemList orderedItemList;
   CString cs_temp;
  
-  st_SaveAdvValues *pst_ADV = &m_SaveAdvValues[bAll ? WZAdvanced::EXPORT_XML : WZAdvanced::EXPORT_ENTRYXML];
+  st_SaveAdvValues *pst_ADV = &m_SaveWZAdvValues[bAll ? WZAdvanced::EXPORT_XML : WZAdvanced::EXPORT_ENTRYXML];
 
   CItemData::FieldBits bsAllFields; bsAllFields.set();
   const CItemData::FieldBits bsFields = bAdvanced ? pst_ADV->bsFields : bsAllFields;
@@ -1609,7 +1607,7 @@ void DboxMain::OnImportText()
     wchar_t delimiter = dlg.m_defimpdelim[0];
     bool bImportPSWDsOnly = dlg.m_bImportPSWDsOnly == TRUE;
 
-    /* Create report as we go */
+    // Create report as we go
     CReport rpt;
     std::wstring str_text;
     LoadAString(str_text, IDS_RPTIMPORTTEXT);
@@ -1858,7 +1856,7 @@ void DboxMain::OnImportXML()
 
     CWaitCursor waitCursor;  // This may take a while!
 
-    /* Create report as we go */
+    // Create report as we go
     CReport rpt;
     std::wstring str_text;
     LoadAString(str_text, IDS_RPTIMPORTXML);
@@ -1992,19 +1990,6 @@ void DboxMain::OnProperties()
   dlg.DoModal();
 }
 
-void DboxMain::OnMerge()
-{
-  if (m_core.IsReadOnly()) // disable in read-only mode
-    return;
-
-  CWZPropertySheet wizard(ID_MENUITEM_MERGE, IDS_RPTMERGE,
-                          this, WZAdvanced::MERGE, 
-                          &m_SaveAdvValues[WZAdvanced::MERGE]);
-
-  // Don't care about the return code: ID_WIZFINISH or IDCANCEL
-  wizard.DoModal();
-}
-
 void DboxMain::OnCompare()
 {
   if (m_core.GetCurFile().empty() || m_core.GetNumEntries() == 0) {
@@ -2015,10 +2000,25 @@ void DboxMain::OnCompare()
 
   CWZPropertySheet wizard(ID_MENUITEM_COMPARE, IDS_RPTCOMPARE,
                           this, WZAdvanced::COMPARE,
-                          &m_SaveAdvValues[WZAdvanced::COMPARE]);
+                          &m_SaveWZAdvValues[WZAdvanced::COMPARE]);
 
   // Don't care about the return code: ID_WIZFINISH or IDCANCEL
   wizard.DoModal();
+}
+
+void DboxMain::OnMerge()
+{
+  if (m_core.IsReadOnly()) // disable in read-only mode
+    return;
+
+  CWZPropertySheet wizard(ID_MENUITEM_MERGE, IDS_RPTMERGE,
+                          this, WZAdvanced::MERGE, 
+                          &m_SaveWZAdvValues[WZAdvanced::MERGE]);
+
+  INT_PTR rc = wizard.DoModal();
+
+  if (rc == ID_WIZFINISH)
+    UpdateToolBarDoUndo();
 }
 
 void DboxMain::OnSynchronize()
@@ -2029,60 +2029,17 @@ void DboxMain::OnSynchronize()
 
   CWZPropertySheet wizard(ID_MENUITEM_SYNCHRONIZE, IDS_RPTSYNCH,
                           this, WZAdvanced::SYNCH,
-                          &m_SaveAdvValues[WZAdvanced::SYNCH]);
+                          &m_SaveWZAdvValues[WZAdvanced::SYNCH]);
 
   // Don't care about the return code: ID_WIZFINISH or IDCANCEL
-  wizard.DoModal();
+  INT_PTR rc = wizard.DoModal();
+
+  if (rc == ID_WIZFINISH && wizard.GetNumProcessed() > 0)
+    SetChanged(Data);
 }
 
-// Return whether first '«g» «t» «u»' is greater than the second '«g» «t» «u»'
-// used in std::sort below.
-// Need this as '»' is not in the correct lexical order for blank fields in entry
-bool MergeSyncGTUCompare(const StringX &elem1, const StringX &elem2)
-{
-  StringX g1, t1, u1, g2, t2, u2, tmp1, tmp2;
-
-  StringX::size_type i1 = elem1.find(L'\xbb');
-  g1 = (i1 == StringX::npos) ? elem1 : elem1.substr(0, i1 - 1);
-  StringX::size_type i2 = elem2.find(L'\xbb');
-  g2 = (i2 == StringX::npos) ? elem2 : elem2.substr(0, i2 - 1);
-  if (g1 != g2)
-    return g1.compare(g2) < 0;
-
-  tmp1 = elem1.substr(g1.length() + 3);
-  tmp2 = elem2.substr(g2.length() + 3);
-  i1 = tmp1.find(L'\xbb');
-  t1 = (i1 == StringX::npos) ? tmp1 : tmp1.substr(0, i1 - 1);
-  i2 = tmp2.find(L'\xbb');
-  t2 = (i2 == StringX::npos) ? tmp2 : tmp2.substr(0, i2 - 1);
-  if (t1 != t2)
-    return t1.compare(t2) < 0;
-
-  tmp1 = tmp1.substr(t1.length() + 3);
-  tmp2 = tmp2.substr(t2.length() + 3);
-  i1 = tmp1.find(L'\xbb');
-  u1 = (i1 == StringX::npos) ? tmp1 : tmp1.substr(0, i1 - 1);
-  i2 = tmp2.find(L'\xbb');
-  u2 = (i2 == StringX::npos) ? tmp2 : tmp2.substr(0, i2 - 1);
-  return u1.compare(u2) < 0;
-}
-
-// Merge flags indicating differing fields if group, title and user are identical
-#define MRG_PASSWORD   0x8000
-#define MRG_NOTES      0x4000
-#define MRG_URL        0x2000
-#define MRG_AUTOTYPE   0x1000
-#define MRG_HISTORY    0x0800
-#define MRG_POLICY     0x0400
-#define MRG_XTIME      0x0200
-#define MRG_XTIME_INT  0x0100
-#define MRG_EXECUTE    0x0080
-#define MRG_DCA        0x0040
-#define MRG_EMAIL      0x0020
-#define MRG_UNUSED     0x001f
-
-CString DboxMain::Merge(const StringX &sx_Filename2, PWScore *pothercore,
-                        const bool bAdvanced, CReport *prpt)
+stringT DboxMain::DoMerge(PWScore *pothercore,
+                          const bool bAdvanced, CReport *prpt)
 {
   CGeneralMsgBox gmb;
   CString cs_title, cs_temp,cs_text;
@@ -2107,14 +2064,11 @@ CString DboxMain::Merge(const StringX &sx_Filename2, PWScore *pothercore,
     return L"";
   }
 
-  /* Put up hourglass...this might take a while */
-  CWaitCursor waitCursor;
-
-  /* Create report as we go */
+  // Create report as we go
   std::wstring str_text;
   LoadAString(str_text, IDS_RPTMERGE);
   prpt->StartReport(str_text.c_str(), m_core.GetCurFile().c_str());
-  cs_temp.Format(IDS_MERGINGDATABASE, sx_Filename2.c_str());
+  cs_temp.Format(IDS_MERGINGDATABASE, pothercore->GetCurFile().c_str());
   prpt->WriteLine((LPCWSTR)cs_temp);
   prpt->WriteLine();
  
@@ -2122,372 +2076,45 @@ CString DboxMain::Merge(const StringX &sx_Filename2, PWScore *pothercore,
   std::vector<StringX> vs_AliasesAdded;
   std::vector<StringX> vs_ShortcutsAdded;
 
-  //CItemData::FieldBits bsFields;
-  CString subgroup_name;
-  int subgroup_set, subgroup_object, subgroup_function;
-  //int subgroup_case;
-  //int treatwhitespaceasempty;
+  CItemData::FieldBits bsFields;
+  std::wstring subgroup_name;
+  int subgroup_object, subgroup_function;
+  bool subgroup_bset;
 
    if (bAdvanced == TRUE) {
     // Use saved or latest values
-    subgroup_name = m_SaveAdvValues[WZAdvanced::MERGE].subgroup_name;
-    subgroup_set = m_SaveAdvValues[WZAdvanced::MERGE].subgroup_set;
-    subgroup_object = m_SaveAdvValues[WZAdvanced::MERGE].subgroup_object;
-    subgroup_function = m_SaveAdvValues[WZAdvanced::MERGE].subgroup_function;
+    subgroup_name = m_SaveWZAdvValues[WZAdvanced::MERGE].subgroup_name;
+    subgroup_bset = m_SaveWZAdvValues[WZAdvanced::MERGE].subgroup_bset;
+    subgroup_object = m_SaveWZAdvValues[WZAdvanced::MERGE].subgroup_object;
+    subgroup_function = m_SaveWZAdvValues[WZAdvanced::MERGE].subgroup_function;
   } else {
     // Turn off advanced settings
     subgroup_name = L"";
-    subgroup_set = BST_UNCHECKED;
+    subgroup_bset = false;
     subgroup_object = CItemData::GROUP;
     subgroup_function = 0;
   }
 
-  /*
-  Purpose:
-  Merge entries from otherCore to m_core
-
-  Algorithm:
-  Foreach entry in otherCore
-    Find in m_core based on group/title/username
-    if match found
-      if all other fields match
-        no merge
-      else
-        add to m_core with new title suffixed with -merged-YYYYMMDD-HHMMSS
-    else
-      add to m_core directly
-  */
-
-  int numAdded = 0;
-  int numConflicts = 0;
-  int numAliasesAdded = 0;
-  int numShortcutsAdded = 0;
-  uuid_array_t base_uuid, new_base_uuid;
-  bool bTitleRenamed(false);
-
-  MultiCommands *pmulticmds = MultiCommands::Create(&m_core);
-  Command *pcmd1 = UpdateGUICommand::Create(&m_core, UpdateGUICommand::WN_UNDO,
-                                            UpdateGUICommand::GUI_UNDO_MERGESYNC);
-  pmulticmds->Add(pcmd1);
-
-  ItemListConstIter otherPos;
-  for (otherPos = pothercore->GetEntryIter();
-       otherPos != pothercore->GetEntryEndIter();
-       otherPos++) {
-    CItemData otherItem = pothercore->GetEntry(otherPos);
-    CItemData::EntryType et = otherItem.GetEntryType();
-
-    // Handle Aliases and Shortcuts when processing their base entries
-    if (otherItem.IsDependent())
-      continue;
-
-    if (subgroup_set == BST_CHECKED &&
-        !otherItem.Matches(std::wstring(subgroup_name),
-                           subgroup_object, subgroup_function))
-      continue;
-
-    const StringX otherGroup = otherItem.GetGroup();
-    const StringX otherTitle = otherItem.GetTitle();
-    const StringX otherUser = otherItem.GetUser();
-
-    CString timeStr(L"");
-    ItemListConstIter foundPos = m_core.Find(otherGroup, otherTitle, otherUser);
-
-    otherItem.GetUUID(base_uuid);
-    memcpy(new_base_uuid, base_uuid, sizeof(new_base_uuid));
-    bTitleRenamed = false;
-    if (foundPos != m_core.GetEntryEndIter()) {
-      /* found a match, see if other fields also match */
-      CItemData curItem = m_core.GetEntry(foundPos);
-
-      CString csDiffs(L""), cs_temp;
-      int diff_flags = 0;
-      int cxtint, oxtint;
-      time_t cxt, oxt;
-      if (otherItem.GetPassword() != curItem.GetPassword()) {
-        diff_flags |= MRG_PASSWORD;
-        cs_temp.LoadString(IDS_PASSWORD);
-        csDiffs += cs_temp + L", ";
-      }
-      if (otherItem.GetNotes() != curItem.GetNotes()) {
-        diff_flags |= MRG_NOTES;
-        cs_temp.LoadString(IDS_NOTES);
-        csDiffs += cs_temp + L", ";
-      }
-      if (otherItem.GetURL() != curItem.GetURL()) {
-        diff_flags |= MRG_URL;
-        cs_temp.LoadString(IDS_URL);
-        csDiffs += cs_temp + L", ";
-      }
-      if (otherItem.GetAutoType() != curItem.GetAutoType()) {
-        diff_flags |= MRG_AUTOTYPE;
-        cs_temp.LoadString(IDS_AUTOTYPE);
-        csDiffs += cs_temp + L", ";
-      }
-      if (otherItem.GetPWHistory() != curItem.GetPWHistory()) {
-        diff_flags |= MRG_HISTORY;
-        cs_temp.LoadString(IDS_PWHISTORY);
-        csDiffs += cs_temp + L", ";
-      }
-      if (otherItem.GetPWPolicy() != curItem.GetPWPolicy()) {
-        diff_flags |= MRG_POLICY;
-        cs_temp.LoadString(IDS_PWPOLICY);
-        csDiffs += cs_temp + L", ";
-      }
-      otherItem.GetXTime(oxt);
-      curItem.GetXTime(cxt);
-      if (oxt != cxt) {
-        diff_flags |= MRG_XTIME;
-        cs_temp.LoadString(IDS_PASSWORDEXPIRYDATE);
-        csDiffs += cs_temp + L", ";
-      }
-      otherItem.GetXTimeInt(oxtint);
-      curItem.GetXTimeInt(cxtint);
-      if (oxtint != cxtint) {
-        diff_flags |= MRG_XTIME_INT;
-        cs_temp.LoadString(IDS_PASSWORDEXPIRYDATEINT);
-        csDiffs += cs_temp + L", ";
-      }
-      if (otherItem.GetRunCommand() != curItem.GetRunCommand()) {
-        diff_flags |= MRG_EXECUTE;
-        cs_temp.LoadString(IDS_RUNCOMMAND);
-        csDiffs += cs_temp + L", ";
-      }
-      // Must use integer values not compare strings
-      short other_hDCA, cur_hDCA; 
-      otherItem.GetDCA(other_hDCA);
-      curItem.GetDCA(cur_hDCA);
-      if (other_hDCA != cur_hDCA) {
-        diff_flags |= MRG_DCA;
-        cs_temp.LoadString(IDS_DCA);
-        csDiffs += cs_temp + L", ";
-      }
-      if (otherItem.GetEmail() != curItem.GetEmail()) {
-        diff_flags |= MRG_EMAIL;
-        cs_temp.LoadString(IDS_EMAIL);
-        csDiffs += cs_temp + L", ";
-      }
-      if (diff_flags != 0) {
-        /* have a match on group/title/user, but not on other fields
-        add an entry suffixed with -merged-YYYYMMDD-HHMMSS */
-        StringX newTitle = otherTitle;
-        CTime curTime = CTime::GetCurrentTime();
-        newTitle += L"-merged-";
-        timeStr = curTime.Format(L"%Y%m%d-%H%M%S");
-        newTitle += timeStr;
-
-        /* note it as an issue for the user */
-        CString warnMsg;
-        warnMsg.Format(IDS_MERGECONFLICTS, 
-                       otherGroup.c_str(), otherTitle.c_str(), otherUser.c_str(),
-                       otherGroup.c_str(), newTitle.c_str(), otherUser.c_str(),
-                       csDiffs);
-
-        /* log it */
-        prpt->WriteLine((LPCWSTR)warnMsg);
-
-        /* Check no conflict of unique uuid */
-        if (m_core.Find(base_uuid) != m_core.GetEntryEndIter()) {
-          otherItem.CreateUUID();
-          otherItem.GetUUID(new_base_uuid);
-        }
-
-        /* do it */
-        bTitleRenamed = true;
-        otherItem.SetTitle(newTitle);
-        otherItem.SetStatus(CItemData::ES_ADDED);
-        Command *pcmd = AddEntryCommand::Create(&m_core, otherItem);
-        pcmd->SetNoGUINotify();
-        pmulticmds->Add(pcmd);
-
-        StringX sx_merged = StringX(L"\xab") + 
-                               otherGroup + StringX(L"\xbb \xab") + 
-                               otherTitle + StringX(L"\xbb \xab") +
-                               otherUser  + StringX(L"\xbb");
-        // Update the Wizard page
-        UpdateWizard(sx_merged.c_str());
-
-        numConflicts++;
-      }
-    } else {
-      /* didn't find any match...add it directly */
-      /* Check no conflict of unique uuid */
-      if (m_core.Find(base_uuid) != m_core.GetEntryEndIter()) {
-        otherItem.CreateUUID();
-        otherItem.GetUUID(new_base_uuid);
-      }
-
-      otherItem.SetStatus(CItemData::ES_ADDED);
-      Command *pcmd = AddEntryCommand::Create(&m_core, otherItem);
-      pcmd->SetNoGUINotify();
-      pmulticmds->Add(pcmd);
-
-      StringX sx_added = StringX(L"\xab") + 
-                           otherGroup + StringX(L"\xbb \xab") + 
-                           otherTitle + StringX(L"\xbb \xab") +
-                           otherUser  + StringX(L"\xbb");
-      vs_added.push_back(sx_added);
-
-      // Update the Wizard page
-      UpdateWizard(sx_added.c_str());
-      numAdded++;
-    }
-    if (et == CItemData::ET_ALIASBASE)
-      numAliasesAdded += MergeDependents(pothercore, pmulticmds,
-                      base_uuid, new_base_uuid,
-                      bTitleRenamed, timeStr, CItemData::ET_ALIAS, vs_AliasesAdded);
-    if (et == CItemData::ET_SHORTCUTBASE)
-      numShortcutsAdded += MergeDependents(pothercore, pmulticmds,
-                      base_uuid, new_base_uuid, 
-                      bTitleRenamed, timeStr, CItemData::ET_SHORTCUT, vs_ShortcutsAdded); 
-  } // iteration over other core's entries
-
-  CString resultStr;
-  if (numAdded > 0) {
-    std::sort(vs_added.begin(), vs_added.end(), MergeSyncGTUCompare);
-    CString cs_singular_plural_type(MAKEINTRESOURCE(numAdded == 1 ? IDSC_ENTRY : IDSC_ENTRIES));
-    CString cs_singular_plural_verb(MAKEINTRESOURCE(numAdded == 1 ? IDS_WAS : IDS_WERE));
-    resultStr.Format(IDS_MERGEADDED, cs_singular_plural_type, cs_singular_plural_verb);
-    prpt->WriteLine((LPCWSTR)resultStr);
-    for (size_t i = 0; i < vs_added.size(); i++) {
-      resultStr.Format(L"\t%s", vs_added[i].c_str());
-      prpt->WriteLine((LPCWSTR)resultStr);
-    }
-  }
-  if (numAliasesAdded > 0) {
-    std::sort(vs_AliasesAdded.begin(), vs_AliasesAdded.end(), MergeSyncGTUCompare);
-    CString cs_singular_plural_type(MAKEINTRESOURCE(numAliasesAdded == 1 ?
-                                                    IDSC_ALIAS : IDSC_ALIASES));
-    CString cs_singular_plural_verb(MAKEINTRESOURCE(numAliasesAdded == 1 ?
-                                                    IDS_WAS : IDS_WERE));
-    resultStr.Format(IDS_MERGEADDED, cs_singular_plural_type, cs_singular_plural_verb);
-    prpt->WriteLine((LPCWSTR)resultStr);
-    for (size_t i = 0; i < vs_AliasesAdded.size(); i++) {
-      resultStr.Format(L"\t%s", vs_AliasesAdded[i].c_str());
-      prpt->WriteLine((LPCWSTR)resultStr);
-    }
-  }
-  if (numShortcutsAdded > 0) {
-    std::sort(vs_ShortcutsAdded.begin(), vs_ShortcutsAdded.end(), MergeSyncGTUCompare);
-    CString cs_singular_plural_type(MAKEINTRESOURCE(numShortcutsAdded == 1 ?
-                                                    IDSC_SHORTCUT : IDSC_SHORTCUTS));
-    CString cs_singular_plural_verb(MAKEINTRESOURCE(numShortcutsAdded == 1 ?
-                                                    IDS_WAS : IDS_WERE));
-    resultStr.Format(IDS_MERGEADDED, cs_singular_plural_type, cs_singular_plural_verb);
-    prpt->WriteLine((LPCWSTR)resultStr);
-    for (size_t i = 0; i < vs_ShortcutsAdded.size(); i++) {
-      resultStr.Format(L"\t%s", vs_ShortcutsAdded[i].c_str());
-      prpt->WriteLine((LPCWSTR)resultStr);
-    }
-  }
-
-  Command *pcmd2 = UpdateGUICommand::Create(&m_core, UpdateGUICommand::WN_REDO,
-                                            UpdateGUICommand::GUI_REDO_MERGESYNC);
-  pmulticmds->Add(pcmd2);
-  Execute(pmulticmds);
-      
-  waitCursor.Restore(); /* restore normal cursor */
-
   ReportAdvancedOptions(prpt, bAdvanced, WZAdvanced::MERGE);
+ 
+  // Put up hourglass...this might take a while
+  CWaitCursor waitCursor;
 
-  /* tell the user we're done & provide short merge report */
-  int totalAdded = numAdded + numConflicts + numAliasesAdded + numShortcutsAdded;
-  const CString cs_entries(MAKEINTRESOURCE(totalAdded == 1 ? IDSC_ENTRY : IDSC_ENTRIES));
-  const CString cs_conflicts(MAKEINTRESOURCE(numConflicts == 1 ?
-                                             IDS_CONFLICT : IDS_CONFLICTS));
-  const CString cs_aliases(MAKEINTRESOURCE(numAliasesAdded == 1 ?
-                                           IDSC_ALIAS : IDSC_ALIASES));
-  const CString cs_shortcuts(MAKEINTRESOURCE(numShortcutsAdded == 1 ?
-                                             IDSC_SHORTCUT : IDSC_SHORTCUTS));
-  resultStr.Format(IDS_MERGECOMPLETED,
-                   totalAdded, cs_entries, numConflicts, cs_conflicts,
-                   numAliasesAdded, cs_aliases,
-                   numShortcutsAdded, cs_shortcuts);
-  prpt->WriteLine((LPCWSTR)resultStr);
+  // Do the Merge
+  std::wstring str_result = m_core.Merge(pothercore, subgroup_bset, 
+             subgroup_name, subgroup_object, subgroup_function, prpt);
+
+  // restore normal cursor
+  waitCursor.Restore();
+
   prpt->EndReport();
 
-  if (pothercore->IsLockedFile(pothercore->GetCurFile().c_str()))
-    pothercore->UnlockFile(pothercore->GetCurFile().c_str());
-
-  return resultStr;
+  return str_result;
 }
 
-int DboxMain::MergeDependents(PWScore *pothercore, MultiCommands *pmulticmds,
-                              uuid_array_t &base_uuid, uuid_array_t &new_base_uuid, 
-                              const bool bTitleRenamed, CString &timeStr, 
-                              const CItemData::EntryType et,
-                              std::vector<StringX> &vs_added)
+bool DboxMain::DoCompare(PWScore *pothercore,
+                         const bool bAdvanced, CReport *prpt)
 {
-  UUIDVector dependentslist;
-  UUIDVectorIter paiter;
-  ItemListIter iter;
-  uuid_array_t entry_uuid, new_entry_uuid;
-  ItemListConstIter foundPos;
-  CItemData ci_temp;
-  int numadded(0);
-
-  // Get all the dependents
-  pothercore->GetAllDependentEntries(base_uuid, dependentslist, et);
-  for (paiter = dependentslist.begin();
-       paiter != dependentslist.end(); paiter++) {
-    paiter->GetUUID(entry_uuid);
-    iter = pothercore->Find(entry_uuid);
-
-    if (iter == pothercore->GetEntryEndIter())
-      continue;
-
-    CItemData *pci = &iter->second;
-    ci_temp = (*pci);
-
-    memcpy(new_entry_uuid, entry_uuid, sizeof(new_entry_uuid));
-    if (m_core.Find(entry_uuid) != m_core.GetEntryEndIter()) {
-      ci_temp.CreateUUID();
-      ci_temp.GetUUID(new_entry_uuid);
-    }
-
-    // If the base title was renamed - we should automatically rename any dependent.
-    // If we didn't, we still need to check uniqueness!
-    StringX newTitle = ci_temp.GetTitle();
-    if (bTitleRenamed) {
-      newTitle += L"-merged-";
-      newTitle += timeStr;
-      ci_temp.SetTitle(newTitle);
-    }
-    // Check this is unique - if not - don't add this one! - its only an alias/shortcut!
-    // We can't keep trying for uniqueness after adding a timestamp!
-    foundPos = m_core.Find(ci_temp.GetGroup(), newTitle, ci_temp.GetUser());
-    if (foundPos != m_core.GetEntryEndIter()) 
-      continue;
-
-    Command *pcmd1 = AddEntryCommand::Create(&m_core, ci_temp, new_base_uuid);
-    pcmd1->SetNoGUINotify();
-    pmulticmds->Add(pcmd1);
-
-    if (et == CItemData::ET_ALIAS) {
-      ci_temp.SetPassword(L"[Alias]");
-      ci_temp.SetAlias();
-    } else if (et == CItemData::ET_SHORTCUT) {
-      ci_temp.SetPassword(L"[Shortcut]");
-      ci_temp.SetShortcut();
-    } else
-      ASSERT(0);
-
-    StringX sx_added = StringX(L"\xab") + 
-                         ci_temp.GetGroup() + StringX(L"\xbb \xab") + 
-                         ci_temp.GetTitle() + StringX(L"\xbb \xab") +
-                         ci_temp.GetUser()  + StringX(L"\xbb");
-    vs_added.push_back(sx_added);
-    numadded++;
-  }
-  UpdateToolBarDoUndo();
-  return numadded;
-}
-
-int DboxMain::Compare(const StringX &sx_Filename2, PWScore *pothercore,
-                      const bool bAdvanced, CReport *prpt)
-{
-  const StringX &sx_Filename1 = m_core.GetCurFile();
-
   CString cs_temp, cs_text, cs_buffer;
 
   m_list_OnlyInCurrent.clear();
@@ -2495,61 +2122,59 @@ int DboxMain::Compare(const StringX &sx_Filename2, PWScore *pothercore,
   m_list_Conflicts.clear();
   m_list_Identical.clear();
 
-  /* Create report as we go */
+  // Create report as we go
   std::wstring str_text;
   LoadAString(str_text, IDS_RPTCOMPARE);
   prpt->StartReport(str_text.c_str(), m_core.GetCurFile().c_str());
-  cs_temp.Format(IDS_COMPARINGDATABASE, sx_Filename2.c_str());
+  cs_temp.Format(IDS_COMPARINGDATABASE, pothercore->GetCurFile().c_str());
   prpt->WriteLine((LPCWSTR)cs_temp);
   prpt->WriteLine();
 
-  // Put up hourglass...this might take a while
-  CWaitCursor waitCursor;
-
   /*
   Purpose:
-  Compare entries from comparison database (compCore) with current database (m_core)
+    Compare entries from comparison database (compCore) with current database (m_core)
 
   Algorithm:
-  Foreach entry in current database {
-    Find in comparison database - subject to subgroup checking
-    if found {
-      Compare
-      if match
-        OK
-      else
-        There are conflicts; note them & increment numConflicts
-    } else {
-      save & increment numOnlyInCurrent
+    Foreach entry in current database {
+      Find in comparison database - subject to subgroup checking
+      if found {
+        Compare
+        if match
+          OK
+       else
+          There are conflicts; note them & increment numConflicts
+      } else {
+        save & increment numOnlyInCurrent
+      }
     }
-  }
 
-  Foreach entry in comparison database {
-    Find in current database - subject to subgroup checking
-    if not found
-      save & increment numOnlyInComp
-  }
+    Foreach entry in comparison database {
+      Find in current database - subject to subgroup checking
+      if not found
+        save & increment numOnlyInComp
+    }
   */
 
   CItemData::FieldBits bsFields;
-  CString subgroup_name;
-  int subgroup_set, subgroup_object, subgroup_function;
-  // int subgroup_case;
-  // int treatwhitespaceasempty;
+  std::wstring subgroup_name;
+  int subgroup_object, subgroup_function;
+  bool subgroup_bset, bTreatWhiteSpaceasEmpty;
 
   if (bAdvanced) {
     // Use saved or latest values
-    bsFields = m_SaveAdvValues[WZAdvanced::COMPARE].bsFields;
-    subgroup_name = m_SaveAdvValues[WZAdvanced::COMPARE].subgroup_name;
-    subgroup_set = m_SaveAdvValues[WZAdvanced::COMPARE].subgroup_set;
-    subgroup_object = m_SaveAdvValues[WZAdvanced::COMPARE].subgroup_object;
-    subgroup_function = m_SaveAdvValues[WZAdvanced::COMPARE].subgroup_function;
+    bsFields = m_SaveWZAdvValues[WZAdvanced::COMPARE].bsFields;
+    subgroup_name = m_SaveWZAdvValues[WZAdvanced::COMPARE].subgroup_name;
+    subgroup_bset = m_SaveWZAdvValues[WZAdvanced::COMPARE].subgroup_bset;
+    subgroup_object = m_SaveWZAdvValues[WZAdvanced::COMPARE].subgroup_object;
+    subgroup_function = m_SaveWZAdvValues[WZAdvanced::COMPARE].subgroup_function;
+    bTreatWhiteSpaceasEmpty = m_SaveWZAdvValues[WZAdvanced::COMPARE].btreatwhitespaceasempty;
   } else {
     // Turn off advanced settings
     subgroup_name = L"";
-    subgroup_set = BST_UNCHECKED;
+    subgroup_bset = false;
     subgroup_object = CItemData::GROUP;
     subgroup_function = 0;
+    bTreatWhiteSpaceasEmpty = false;
 
     // Set on all fields
     bsFields.set();
@@ -2561,205 +2186,28 @@ int DboxMain::Compare(const StringX &sx_Filename2, PWScore *pothercore,
     bsFields.reset(CItemData::RMTIME);
   }
 
-  int numOnlyInCurrent = 0;
-  int numOnlyInComp = 0;
-  int numConflicts = 0;
-  int numIdentical = 0;
-
-  CItemData::FieldBits bsConflicts(0);
-  st_CompareData st_data;
-  uuid_array_t xuuid;
-
-  ItemListIter currentPos;
-  for (currentPos = m_core.GetEntryIter();
-       currentPos != m_core.GetEntryEndIter();
-       currentPos++) {
-    CItemData currentItem = m_core.GetEntry(currentPos);
-
-    if (subgroup_set == BST_UNCHECKED ||
-        currentItem.Matches(std::wstring(subgroup_name), subgroup_object,
-                            subgroup_function)) {
-      st_data.group = currentItem.GetGroup();
-      st_data.title = currentItem.GetTitle();
-      st_data.user = currentItem.GetUser();
-
-      CSecString sx_original = CSecString(L"\xab") + 
-                             st_data.group + CSecString(L"\xbb \xab") + 
-                             st_data.title + CSecString(L"\xbb \xab") +
-                             st_data.user  + CSecString(L"\xbb");
-
-      // Update the Wizard page
-      UpdateWizard((LPCWSTR)sx_original);
-
-      ItemListIter foundPos = pothercore->Find(st_data.group,
-                                               st_data.title, st_data.user);
-      if (foundPos != pothercore->GetEntryEndIter()) {
-        // found a match, see if all other fields also match
-        // Difference flags:
-        /*
-         First byte (values in square brackets taken from ItemData.h)
-         1... ....  NAME      [0x00] - n/a - depreciated
-         .1.. ....  UUID      [0x01] - n/a - unique
-         ..1. ....  GROUP     [0x02] - not checked - must be identical
-         ...1 ....  TITLE     [0x03] - not checked - must be identical
-         .... 1...  USER      [0x04] - not checked - must be identical
-         .... .1..  NOTES     [0x05]
-         .... ..1.  PASSWORD  [0x06]
-         .... ...1  CTIME     [0x07] - not checked by default
-
-         Second byte
-         1... ....  PMTIME    [0x08] - not checked by default
-         .1.. ....  ATIME     [0x09] - not checked by default
-         ..1. ....  XTIME     [0x0a] - not checked by default
-         ...1 ....  RESERVED  [0x0b] - not used
-         .... 1...  RMTIME    [0x0c] - not checked by default
-         .... .1..  URL       [0x0d]
-         .... ..1.  AUTOTYPE  [0x0e]
-         .... ...1  PWHIST    [0x0f]
-
-         Third byte
-         1... ....  POLICY    [0x10] - not checked by default
-         .1.. ....  XTIME_INT [0x11] - not checked by default
-         ..1. ....  RUNCMD    [0x12]
-         ...1 ....  DCA       [0x13]
-         .... 1...  EMAIL     [0x14]
-         .... .111  Unused
-        */
-        bsConflicts.reset();
-
-        CItemData compItem = pothercore->GetEntry(foundPos);
-        if (bsFields.test(CItemData::NOTES) &&
-            FieldsNotEqual(currentItem.GetNotes(), compItem.GetNotes()))
-          bsConflicts.flip(CItemData::NOTES);
-        if (bsFields.test(CItemData::PASSWORD) &&
-            currentItem.GetPassword() != compItem.GetPassword())
-          bsConflicts.flip(CItemData::PASSWORD);
-        if (bsFields.test(CItemData::CTIME) &&
-            currentItem.GetCTime() != compItem.GetCTime())
-          bsConflicts.flip(CItemData::CTIME);
-        if (bsFields.test(CItemData::PMTIME) &&
-            currentItem.GetPMTime() != compItem.GetPMTime())
-          bsConflicts.flip(CItemData::PMTIME);
-        if (bsFields.test(CItemData::ATIME) &&
-            currentItem.GetATime() != compItem.GetATime())
-          bsConflicts.flip(CItemData::ATIME);
-        if (bsFields.test(CItemData::XTIME) &&
-            currentItem.GetXTime() != compItem.GetXTime())
-          bsConflicts.flip(CItemData::XTIME);
-        if (bsFields.test(CItemData::RMTIME) &&
-            currentItem.GetRMTime() != compItem.GetRMTime())
-          bsConflicts.flip(CItemData::RMTIME);
-        if (bsFields.test(CItemData::XTIME_INT)) {
-          int current_xint, comp_xint;
-          currentItem.GetXTimeInt(current_xint);
-          compItem.GetXTimeInt(comp_xint);
-          if (current_xint != comp_xint)
-            bsConflicts.flip(CItemData::XTIME_INT);
-        }
-        if (bsFields.test(CItemData::URL) &&
-            FieldsNotEqual(currentItem.GetURL(), compItem.GetURL()))
-          bsConflicts.flip(CItemData::URL);
-        if (bsFields.test(CItemData::AUTOTYPE) &&
-            FieldsNotEqual(currentItem.GetAutoType(), compItem.GetAutoType()))
-          bsConflicts.flip(CItemData::AUTOTYPE);
-        if (bsFields.test(CItemData::PWHIST) &&
-            currentItem.GetPWHistory() != compItem.GetPWHistory())
-          bsConflicts.flip(CItemData::PWHIST);
-        if (bsFields.test(CItemData::POLICY) &&
-            currentItem.GetPWPolicy() != compItem.GetPWPolicy())
-          bsConflicts.flip(CItemData::POLICY);
-        if (bsFields.test(CItemData::RUNCMD) &&
-            currentItem.GetRunCommand() != compItem.GetRunCommand())
-          bsConflicts.flip(CItemData::RUNCMD);
-        if (bsFields.test(CItemData::DCA) &&
-            currentItem.GetDCA() != compItem.GetDCA())
-          bsConflicts.flip(CItemData::DCA);
-        if (bsFields.test(CItemData::EMAIL) &&
-            currentItem.GetEmail() != compItem.GetEmail())
-          bsConflicts.flip(CItemData::EMAIL);
-
-        currentPos->first.GetUUID(xuuid);
-        memcpy(st_data.uuid0, xuuid, sizeof(st_data.uuid0));
-        foundPos->first.GetUUID(xuuid);
-        memcpy(st_data.uuid1, xuuid, sizeof(st_data.uuid1));
-        st_data.bsDiffs = bsConflicts;
-        st_data.indatabase = CCompareResultsDlg::BOTH;
-        st_data.unknflds0 = currentItem.NumberUnknownFields() > 0;
-        st_data.unknflds1 = compItem.NumberUnknownFields() > 0;
-        st_data.bIsProtected0 = currentItem.IsProtected();
-
-        if (bsConflicts.any()) {
-          numConflicts++;
-          st_data.id = numConflicts;
-          m_list_Conflicts.push_back(st_data);
-        } else {
-          numIdentical++;
-          st_data.id = numIdentical;
-          m_list_Identical.push_back(st_data);
-        }
-      } else {
-        /* didn't find any match... */
-        numOnlyInCurrent++;
-        currentPos->first.GetUUID(xuuid);
-        memcpy(st_data.uuid0, xuuid, sizeof(st_data.uuid0));
-        SecureZeroMemory(st_data.uuid1, sizeof(st_data.uuid1));
-        st_data.bsDiffs.reset();
-        st_data.indatabase = CCompareResultsDlg::CURRENT;
-        st_data.unknflds0 = currentItem.NumberUnknownFields() > 0;
-        st_data.unknflds1 = false;
-        st_data.id = numOnlyInCurrent;
-        m_list_OnlyInCurrent.push_back(st_data);
-      }
-    }
-  } // iteration over our entries
-
-  ItemListIter compPos;
-  for (compPos = pothercore->GetEntryIter();
-       compPos != pothercore->GetEntryEndIter();
-       compPos++) {
-    CItemData compItem = pothercore->GetEntry(compPos);
-
-    if (subgroup_set == BST_UNCHECKED ||
-        compItem.Matches(std::wstring(subgroup_name), subgroup_object,
-                         subgroup_function)) {
-      st_data.group = compItem.GetGroup();
-      st_data.title = compItem.GetTitle();
-      st_data.user = compItem.GetUser();
-
-      CSecString sx_compare = CSecString(L"\xab") + 
-                             st_data.group + CSecString(L"\xbb \xab") + 
-                             st_data.title + CSecString(L"\xbb \xab") +
-                             st_data.user  + CSecString(L"\xbb");
-
-      // Update the Wizard page
-      UpdateWizard((LPCWSTR)sx_compare);
-
-      if (m_core.Find(st_data.group, st_data.title, st_data.user) ==
-          m_core.GetEntryEndIter()) {
-        /* didn't find any match... */
-        numOnlyInComp++;
-        SecureZeroMemory(st_data.uuid0, sizeof(st_data.uuid0));
-        compPos->first.GetUUID(xuuid);
-        memcpy(st_data.uuid1, xuuid, sizeof(st_data.uuid1));
-        st_data.bsDiffs.reset();
-        st_data.indatabase = CCompareResultsDlg::COMPARE;
-        st_data.unknflds0 = false;
-        st_data.unknflds1 = compItem.NumberUnknownFields() > 0;
-        st_data.id = numOnlyInComp;
-        m_list_OnlyInComp.push_back(st_data);
-      }
-    }
-  } // iteration over other core's element
-
-  waitCursor.Restore(); // restore normal cursor
-
   ReportAdvancedOptions(prpt, bAdvanced, WZAdvanced::COMPARE);
 
-  cs_buffer.Format(IDS_COMPARESTATISTICS,
-                sx_Filename1.c_str(), sx_Filename2.c_str());
+  // Put up hourglass...this might take a while
+  CWaitCursor waitCursor;
 
-  int rc = 0;
-  if (numOnlyInCurrent == 0 && numOnlyInComp == 0 && numConflicts == 0) {
+  m_core.Compare(pothercore,
+                 bsFields, subgroup_bset, bTreatWhiteSpaceasEmpty,
+                 subgroup_name, subgroup_object, 
+                 subgroup_function,
+                 m_list_OnlyInCurrent, m_list_OnlyInComp,
+                 m_list_Conflicts, m_list_Identical);
+
+  // restore normal cursor
+  waitCursor.Restore();
+
+  cs_buffer.Format(IDS_COMPARESTATISTICS,
+                m_core.GetCurFile().c_str(), pothercore->GetCurFile().c_str());
+
+  bool brc(true);  // True == databases are identical
+  if (m_list_OnlyInCurrent.size() == 0 &&
+      m_list_OnlyInComp.size() == 0 &&
+      m_list_Conflicts.size() == 0) {
     m_list_Identical.clear();
     cs_text.LoadString(IDS_IDENTICALDATABASES);
     cs_buffer += cs_text;
@@ -2767,13 +2215,10 @@ int DboxMain::Compare(const StringX &sx_Filename2, PWScore *pothercore,
     prpt->EndReport();
   } else {
     prpt->WriteLine((LPCWSTR)cs_buffer);
-    rc = 1;
+    brc = false;
   }
 
-  if (pothercore->IsLockedFile(pothercore->GetCurFile().c_str()))
-    pothercore->UnlockFile(pothercore->GetCurFile().c_str());
-
-  return rc;
+  return brc;
 }
 
 CString DboxMain::ShowCompareResults(const StringX sx_Filename1, const StringX sx_Filename2,
@@ -2804,78 +2249,52 @@ CString DboxMain::ShowCompareResults(const StringX sx_Filename1, const StringX s
   return CmpRes.GetResults();
 }
 
-void DboxMain::Synchronize(const StringX &sx_Filename2, PWScore *pothercore,
-                           const bool bAdvanced, int &numUpdated, CReport *prpt)
+void DboxMain::DoSynchronize(PWScore *pothercore,
+                             const bool bAdvanced, int &numUpdated, CReport *prpt)
 {
   numUpdated = 0;
 
-  /* Put up hourglass...this might take a while */
-  CWaitCursor waitCursor;
-
   CGeneralMsgBox gmb;
-  CString cs_temp, cs_title, cs_buffer;
+  CString str_temp, str_title, str_buffer;
   // Initialize set
   GTUSet setGTU;
 
   // First check other database
   if (!pothercore->GetUniqueGTUValidated() && !pothercore->InitialiseGTU(setGTU)) {
     // Database is not unique to start with - tell user to validate it first
-    cs_title.LoadString(IDS_SYNCHFAILED);
-    cs_temp.Format(IDS_DBHASDUPLICATES, pothercore->GetCurFile().c_str());
-    gmb.MessageBox(cs_temp, cs_title, MB_ICONEXCLAMATION);
+    str_title.LoadString(IDS_SYNCHFAILED);
+    str_temp.Format(IDS_DBHASDUPLICATES, pothercore->GetCurFile().c_str());
+    gmb.MessageBox(str_temp, str_title, MB_ICONEXCLAMATION);
     return;
   }
 
   // Next check us
   if (!m_core.GetUniqueGTUValidated() && !m_core.InitialiseGTU(setGTU)) {
     // Database is not unique to start with - tell user to validate it first
-    cs_title.LoadString(IDS_SYNCHFAILED);
-    cs_temp.Format(IDS_DBHASDUPLICATES, m_core.GetCurFile().c_str());
-    gmb.MessageBox(cs_temp, cs_title, MB_ICONEXCLAMATION);
+    str_title.LoadString(IDS_SYNCHFAILED);
+    str_temp.Format(IDS_DBHASDUPLICATES, m_core.GetCurFile().c_str());
+    gmb.MessageBox(str_temp, str_title, MB_ICONEXCLAMATION);
     return;
   }
 
   setGTU.clear();  // Don't need it anymore - so clear it now
 
-  /* Create report as we go */
-  std::wstring str_text;
-  LoadAString(str_text, IDS_RPTSYNCH);
-  prpt->StartReport(str_text.c_str(), m_core.GetCurFile().c_str());
-  cs_temp.Format(IDS_SYNCHINGDATABASE, sx_Filename2.c_str());
-  prpt->WriteLine((LPCWSTR)cs_temp);
-  prpt->WriteLine();
-  std::vector<StringX> vs_updated;
-
-  ReportAdvancedOptions(prpt, bAdvanced, WZAdvanced::SYNCH);
-
-  /*
-  Purpose:
-  Merge entries from otherCore to m_core
-
-  Algorithm:
-  Foreach entry in otherCore
-    Find in m_core
-    if find a match
-      update requested fields
-  */
-
   CItemData::FieldBits bsFields;
-  CString subgroup_name;
-  int subgroup_set, subgroup_object, subgroup_function;
-  // int subgroup_case;
-  // int treatwhitespaceasempty;
+  std::wstring subgroup_name;
+  int subgroup_object, subgroup_function;
+  bool subgroup_bset;
 
   if (bAdvanced) {
     // Use saved or latest values
-    bsFields = m_SaveAdvValues[WZAdvanced::SYNCH].bsFields;
-    subgroup_name = m_SaveAdvValues[WZAdvanced::SYNCH].subgroup_name;
-    subgroup_set = m_SaveAdvValues[WZAdvanced::SYNCH].subgroup_set;
-    subgroup_object = m_SaveAdvValues[WZAdvanced::SYNCH].subgroup_object;
-    subgroup_function = m_SaveAdvValues[WZAdvanced::SYNCH].subgroup_function;
+    bsFields = m_SaveWZAdvValues[WZAdvanced::SYNCH].bsFields;
+    subgroup_name = m_SaveWZAdvValues[WZAdvanced::SYNCH].subgroup_name;
+    subgroup_bset = m_SaveWZAdvValues[WZAdvanced::SYNCH].subgroup_bset;
+    subgroup_object = m_SaveWZAdvValues[WZAdvanced::SYNCH].subgroup_object;
+    subgroup_function = m_SaveWZAdvValues[WZAdvanced::SYNCH].subgroup_function;
   } else {
     // Turn off advanced settings
     subgroup_name = L"";
-    subgroup_set = BST_UNCHECKED;
+    subgroup_bset = false;
     subgroup_object = CItemData::GROUP;
     subgroup_function = 0;
 
@@ -2890,118 +2309,29 @@ void DboxMain::Synchronize(const StringX &sx_Filename2, PWScore *pothercore,
     bsFields.reset(CItemData::RESERVED);
   }
 
-  MultiCommands *pmulticmds = MultiCommands::Create(&m_core);
-  Command *pcmd1 = UpdateGUICommand::Create(&m_core, UpdateGUICommand::WN_UNDO,
-                                            UpdateGUICommand::GUI_UNDO_MERGESYNC);
-  pmulticmds->Add(pcmd1);
+  // Create report as we go
+  std::wstring str_text;
+  LoadAString(str_text, IDS_RPTSYNCH);
+  prpt->StartReport(str_text.c_str(), m_core.GetCurFile().c_str());
+  str_temp.Format(IDS_SYNCHINGDATABASE, pothercore->GetCurFile().c_str());
+  prpt->WriteLine((LPCWSTR)str_temp);
+  prpt->WriteLine();
+  std::vector<StringX> vs_updated;
 
-  ItemListConstIter otherPos;
-  for (otherPos = pothercore->GetEntryIter();
-       otherPos != pothercore->GetEntryEndIter();
-       otherPos++) {
-    CItemData otherItem = pothercore->GetEntry(otherPos);
-    CItemData::EntryType et = otherItem.GetEntryType();
+  ReportAdvancedOptions(prpt, bAdvanced, WZAdvanced::SYNCH);
 
-    // Do not process Aliases and Shortcuts
-    if (et == CItemData::ET_ALIAS || et == CItemData::ET_SHORTCUT)
-      continue;
+  // Put up hourglass...this might take a while
+  CWaitCursor waitCursor;
 
-    if (subgroup_set == BST_CHECKED &&
-        !otherItem.Matches(std::wstring(subgroup_name),
-                           subgroup_object, subgroup_function))
-      continue;
+  // Do the Synchronize
+  m_core.Synchronize(pothercore, bsFields, subgroup_bset,
+                     subgroup_name, subgroup_object, subgroup_function,
+                     numUpdated, prpt);
 
-    const StringX otherGroup = otherItem.GetGroup();
-    const StringX otherTitle = otherItem.GetTitle();
-    const StringX otherUser = otherItem.GetUser();
+  // Restore normal cursor
+  waitCursor.Restore();
 
-    CString timeStr(L"");
-    ItemListConstIter foundPos = m_core.Find(otherGroup, otherTitle, otherUser);
-
-    if (foundPos != m_core.GetEntryEndIter()) {
-      // found a match
-      CItemData curItem = m_core.GetEntry(foundPos);
-
-      // Don't update if entry is protected
-      if (curItem.IsProtected())
-        continue;
-
-      CItemData updItem(curItem);
-      updItem.SetDisplayInfo(NULL);
-
-      uuid_array_t current_uuid, other_uuid;
-      curItem.GetUUID(current_uuid);
-      otherItem.GetUUID(other_uuid);
-      if (memcmp((void *)current_uuid, (void *)other_uuid, sizeof(uuid_array_t)) != 0) {
-        pws_os::Trace(L"Synchronize: Mis-match UUIDs for [%s:%s:%s]\n", otherGroup, otherTitle, otherUser);
-      }
-
-      bool bUpdated(false);
-      for (int i = 0; i < (int)m_bsFields.size(); i++) {
-        if (bsFields.test(i)) {
-          const StringX sxValue = otherItem.GetFieldValue((CItemData::FieldType)i);
-          if (sxValue != updItem.GetFieldValue((CItemData::FieldType)i)) {
-            bUpdated = true;
-            updItem.SetFieldValue((CItemData::FieldType)i, sxValue);
-          }
-        }
-      }
-
-      if (!bUpdated)
-        continue;
-
-      DisplayInfo *pdi_new = new DisplayInfo;
-      updItem.SetDisplayInfo(pdi_new);
-      updItem.SetStatus(CItemData::ES_MODIFIED);
-
-      StringX sx_updated = StringX(L"\xab") + 
-                             otherGroup + StringX(L"\xbb \xab") + 
-                             otherTitle + StringX(L"\xbb \xab") +
-                             otherUser  + StringX(L"\xbb");
-      vs_updated.push_back(sx_updated);
-
-      Command *pcmd = EditEntryCommand::Create(&m_core, curItem, updItem);
-      pcmd->SetNoGUINotify();
-      pmulticmds->Add(pcmd);
-
-      // Update the Wizard page
-      UpdateWizard(sx_updated.c_str());
-
-      numUpdated++;
-    }  // Found match via [g:t:u]
-  } // iteration over other core's entries
-
-  CString resultStr;
-  if (numUpdated > 0) {
-    std::sort(vs_updated.begin(), vs_updated.end(), MergeSyncGTUCompare);
-    CString cs_singular_plural_type(MAKEINTRESOURCE(numUpdated == 1 ? IDSC_ENTRY : IDSC_ENTRIES));
-    CString cs_singular_plural_verb(MAKEINTRESOURCE(numUpdated == 1 ? IDS_WAS : IDS_WERE));
-    resultStr.Format(IDS_SYNCHUPDATED, cs_singular_plural_type, cs_singular_plural_verb);
-    prpt->WriteLine((LPCWSTR)resultStr);
-    for (size_t i = 0; i < vs_updated.size(); i++) {
-      resultStr.Format(L"\t%s", vs_updated[i].c_str());
-      prpt->WriteLine((LPCWSTR)resultStr);
-    }
-  }
-
-  Command *pcmd2 = UpdateGUICommand::Create(&m_core, UpdateGUICommand::WN_REDO,
-                                            UpdateGUICommand::GUI_REDO_MERGESYNC);
-  pmulticmds->Add(pcmd2);
-  Execute(pmulticmds);
-      
-  waitCursor.Restore(); /* restore normal cursor */
-
-  /* tell the user we're done & provide short merge report */
-  const CString cs_entries(MAKEINTRESOURCE(numUpdated == 1 ? IDSC_ENTRY : IDSC_ENTRIES));
-  resultStr.Format(IDS_SYNCHCOMPLETED, numUpdated, cs_entries);
-  prpt->WriteLine((LPCWSTR)resultStr);
   prpt->EndReport();
-
-  if (numUpdated > 0)
-    SetChanged(Data);
-
-  if (pothercore->IsLockedFile(pothercore->GetCurFile().c_str()))
-    pothercore->UnlockFile(pothercore->GetCurFile().c_str());
 }
 
 LRESULT DboxMain::OnProcessCompareResultFunction(WPARAM wParam, LPARAM lFunction)
@@ -3132,6 +2462,15 @@ LRESULT DboxMain::SynchCompareResult(PWScore *pfromcore, PWScore *ptocore,
   // Synch 1 entry *pfromcore -> *ptocore
   CItemData::FieldBits bsFields;
 
+  // Use a cut down Advanced dialog (only fields to synchronize)
+  CAdvancedDlg Adv(this, CAdvancedDlg::COMPARESYNCH,
+                   &m_SaveAdvValues[CAdvancedDlg::COMPARESYNCH]);
+
+  INT_PTR rc = Adv.DoModal();
+
+  if (rc != IDOK)
+    return FALSE;
+
   ItemListIter fromPos = pfromcore->Find(fromUUID);
   ASSERT(fromPos != pfromcore->GetEntryEndIter());
   const CItemData *pfromEntry = &fromPos->second;
@@ -3142,8 +2481,8 @@ LRESULT DboxMain::SynchCompareResult(PWScore *pfromcore, PWScore *ptocore,
   CItemData updtEntry(*ptoEntry);
 
   bool bUpdated(false);
-  for (int i = 0; i < (int)bsFields.size(); i++) {
-    if (m_SaveAdvValues[WZAdvanced::COMPARESYNCH].bsFields.test(i)) {
+  for (size_t i = 0; i < bsFields.size(); i++) {
+    if (m_SaveAdvValues[CAdvancedDlg::COMPARESYNCH].bsFields.test(i)) {
       const StringX sxValue = pfromEntry->GetFieldValue((CItemData::FieldType)i);
       if (sxValue != updtEntry.GetFieldValue((CItemData::FieldType)i)) {
         bUpdated = true;
@@ -3505,7 +2844,7 @@ void DboxMain::ReportAdvancedOptions(CReport *pRpt, const bool bAdvanced, const 
   }
 
   // Get appropriate saved search values
-  st_SaveAdvValues &st_SADV = m_SaveAdvValues[type];
+  st_SaveAdvValues &st_SADV = m_SaveWZAdvValues[type];
 
   // tell the user we're done & provide short Compare report
   if (bAdvanced == FALSE) {
@@ -3514,7 +2853,7 @@ void DboxMain::ReportAdvancedOptions(CReport *pRpt, const bool bAdvanced, const 
     pRpt->WriteLine((LPCWSTR)cs_buffer);
     pRpt->WriteLine();
   } else {
-    if (st_SADV.subgroup_set == BST_UNCHECKED) {
+    if (!st_SADV.subgroup_bset) {
       cs_temp.LoadString(IDS_NONE);
     } else {
       CString cs_Object, cs_case;

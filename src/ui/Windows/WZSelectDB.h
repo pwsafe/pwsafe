@@ -45,6 +45,7 @@ protected:
   afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
   virtual BOOL OnSetActive();
 
+  afx_msg void OnHelp();
   afx_msg void OnPassKeyChange();
   afx_msg void OnDatabaseChange();
   afx_msg void OnOpenFileBrowser();
@@ -65,6 +66,7 @@ private:
   bool ProcessPhrase(const StringX &filename, const StringX &passkey);
   CVKeyBoardDlg *m_pVKeyBoardDlg;
   st_SaveAdvValues *m_pst_SADV;
+  CFont m_WarningFont;
 };
 //-----------------------------------------------------------------------------
 // Local variables:

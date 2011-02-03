@@ -2753,8 +2753,8 @@ void PasswordSafeFrame::DoExportText()
      * Effectively, subgroup_* parameters are ignored if 1st param is false.
      */
     int numExported(0);
-    switch(m_core.TestForExport(false, subgroup_name, subgroup_object,
-                             subgroup_function, &orderedItemList)) {
+    switch(m_core.TestSelection(false, subgroup_name, subgroup_object,
+                                subgroup_function, &orderedItemList)) {
       case PWScore::SUCCESS:
       {
         // do the export

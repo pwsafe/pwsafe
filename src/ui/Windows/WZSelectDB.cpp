@@ -128,9 +128,17 @@ BEGIN_MESSAGE_MAP(CWZSelectDB, CWZPropertyPage)
   ON_BN_CLICKED(IDC_BTN_BROWSE, OnOpenFileBrowser)
   ON_STN_CLICKED(IDC_VKB, OnVirtualKeyboard)
   ON_MESSAGE(PWS_MSG_INSERTBUFFER, OnInsertBuffer)
+  ON_BN_CLICKED(ID_HELP, OnHelp)
   ON_BN_CLICKED(IDC_ADVANCED, OnAdvanced)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
+
+void CWZSelectDB::OnHelp()
+{
+  CString cs_HelpTopic;
+  cs_HelpTopic = app.GetHelpFileName() + L"::/html/selectdb.html";
+  ::HtmlHelp(this->GetSafeHwnd(), (LPCWSTR)cs_HelpTopic, HH_DISPLAY_TOPIC, 0);
+}
 
 BOOL CWZSelectDB::OnInitDialog()
 {
@@ -171,6 +179,14 @@ BOOL CWZSelectDB::OnInitDialog()
     m_stc_warning.SetColour(RGB(255,0,0));
     if (nID != ID_MENUITEM_EXPORT2PLAINTEXT && nID != ID_MENUITEM_EXPORTENT2PLAINTEXT)
       GetDlgItem(IDC_STATIC_WZEXPDLM2)->ShowWindow(SW_HIDE);
+
+    LOGFONT LogFont;
+    m_stc_warning.GetFont()->GetLogFont(&LogFont);
+    LogFont.lfHeight = -14; // -14 stands for the size 14
+    LogFont.lfWeight = FW_BOLD;
+
+    m_WarningFont.CreateFontIndirect(&LogFont);
+    m_stc_warning.SetFont(&m_WarningFont);
   }
 
   std::wstring ExportFileName;

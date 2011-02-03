@@ -8,6 +8,7 @@
 
 #include "stdafx.h"
 #include "passwordsafe.h"
+#include "ThisMfcApp.h"
 #include "DboxMain.h"
 
 #include "GeneralMsgBox.h"
@@ -27,9 +28,9 @@
 IMPLEMENT_DYNAMIC(CWZFinish, CWZPropertyPage)
 
 CWZFinish::CWZFinish(CWnd *pParent, UINT nIDCaption, const int nType)
- : CWZPropertyPage(IDD, nIDCaption, nType), m_pothercore(NULL), m_prpt(NULL), m_pExecuteThread(NULL),
-   m_bInProgress(false), m_bComplete(false), m_bInitDone(false), m_bViewingReport(false),
-   m_status(-1)
+ : CWZPropertyPage(IDD, nIDCaption, nType), m_pothercore(NULL), m_prpt(NULL),
+   m_pExecuteThread(NULL), m_bInProgress(false), m_bComplete(false), 
+   m_bInitDone(false), m_bViewingReport(false), m_status(-1), m_numProcessed(-1)
 {
   // Save pointer to my PropertySheet
   m_pWZPSH = (CWZPropertySheet *)pParent;
@@ -42,10 +43,18 @@ CWZFinish::~CWZFinish()
 
 BEGIN_MESSAGE_MAP(CWZFinish, CWZPropertyPage)
   //{{AFX_MSG_MAP(CWZFinish)
+  ON_BN_CLICKED(ID_HELP, OnHelp)
   ON_BN_CLICKED(IDC_VIEWREPORT, OnViewReport)
   ON_MESSAGE(PWS_MSG_WIZARD_EXECUTE_THREAD_ENDED, OnExecuteThreadEnded)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
+
+void CWZFinish::OnHelp()
+{
+  CString cs_HelpTopic;
+  cs_HelpTopic = app.GetHelpFileName() + L"::/html/selectdb.html";
+  ::HtmlHelp(this->GetSafeHwnd(), (LPCWSTR)cs_HelpTopic, HH_DISPLAY_TOPIC, 0);
+}
 
 BOOL CWZFinish::OnInitDialog()
 {
@@ -72,25 +81,30 @@ static UINT WZExecuteThread(LPVOID pParam)
 
   switch (pthdpms->nID) {
     case ID_MENUITEM_COMPARE:
-      status = pthdpms->pWZPSH->WZPSHCompare(pthdpms->sx_Filename, pthdpms->pcore, pthdpms->bAdvanced, pthdpms->prpt);
+      status = pthdpms->pWZPSH->WZPSHDoCompare(pthdpms->pcore,
+                   pthdpms->bAdvanced, pthdpms->prpt) ? 1 : -1;
       break;
     case ID_MENUITEM_MERGE:
-      pthdpms->csResults = pthdpms->pWZPSH->WZPSHMerge(pthdpms->sx_Filename, pthdpms->pcore, pthdpms->bAdvanced, pthdpms->prpt);
+      pthdpms->csResults = pthdpms->pWZPSH->WZPSHDoMerge(pthdpms->pcore, 
+                   pthdpms->bAdvanced, pthdpms->prpt);
       break;
     case ID_MENUITEM_SYNCHRONIZE:
-      pthdpms->pWZPSH->WZPSHSynchronize(pthdpms->sx_Filename, pthdpms->pcore, pthdpms->bAdvanced, pthdpms->numProcessed, pthdpms->prpt);
+      pthdpms->pWZPSH->WZPSHDoSynchronize(pthdpms->pcore,
+                   pthdpms->bAdvanced, pthdpms->numProcessed, pthdpms->prpt);
       break;
     case ID_MENUITEM_EXPORT2PLAINTEXT:
     case ID_MENUITEM_EXPORTENT2PLAINTEXT:
-      status = pthdpms->pWZPSH->WZPSHDoExportText(pthdpms->sx_Filename, pthdpms->nID == ID_MENUITEM_EXPORT2PLAINTEXT,
-                                         pthdpms->pWZPSH->GetDelimiter(), pthdpms->bAdvanced, pthdpms->numProcessed,
-                                         pthdpms->prpt);
+      status = pthdpms->pWZPSH->WZPSHDoExportText(pthdpms->sx_Filename, 
+                   pthdpms->nID == ID_MENUITEM_EXPORT2PLAINTEXT,
+                   pthdpms->pWZPSH->GetDelimiter(), pthdpms->bAdvanced, 
+                   pthdpms->numProcessed, pthdpms->prpt);
       break;
     case ID_MENUITEM_EXPORT2XML:
     case ID_MENUITEM_EXPORTENT2XML:
-      status = pthdpms->pWZPSH->WZPSHDoExportXML(pthdpms->sx_Filename, pthdpms->nID == ID_MENUITEM_EXPORT2XML,
-                                        pthdpms->pWZPSH->GetDelimiter(), pthdpms->bAdvanced, pthdpms->numProcessed,
-                                        pthdpms->prpt);
+      status = pthdpms->pWZPSH->WZPSHDoExportXML(pthdpms->sx_Filename,
+                   pthdpms->nID == ID_MENUITEM_EXPORT2XML,
+                   pthdpms->pWZPSH->GetDelimiter(), pthdpms->bAdvanced,
+                   pthdpms->numProcessed, pthdpms->prpt);
       break;
     default:
       ASSERT(0);
@@ -284,7 +298,7 @@ LRESULT CWZFinish::OnExecuteThreadEnded(WPARAM wParam, LPARAM )
   CString cs_results;
   switch (pthdpms->nID) {
     case ID_MENUITEM_COMPARE:
-      if (pthdpms->status != 0) {
+      if (pthdpms->status != 1) {
         cs_results = m_pWZPSH->WZPSHShowCompareResults(m_pWZPSH->WZPSHGetCurFile(), 
                                                        pthdpms->sx_Filename,
                                                        m_pothercore, m_prpt);
@@ -294,7 +308,7 @@ LRESULT CWZFinish::OnExecuteThreadEnded(WPARAM wParam, LPARAM )
       }
       break;
     case ID_MENUITEM_MERGE:
-      cs_results = pthdpms->csResults;
+      cs_results = pthdpms->csResults.c_str();
       break;
     case ID_MENUITEM_SYNCHRONIZE:
       cs_results.Format(IDS_SYNCHRONIZED, pthdpms->numProcessed);
@@ -314,11 +328,16 @@ LRESULT CWZFinish::OnExecuteThreadEnded(WPARAM wParam, LPARAM )
   GetDlgItem(IDC_STATIC_WZRESULTS)->ShowWindow(SW_SHOW);
   GetDlgItem(IDC_STATIC_WZRESULTS)->EnableWindow(TRUE);
 
+  m_pWZPSH->SetNumProcessed(pthdpms->numProcessed);
+
   m_status = pthdpms->status;
   delete pthdpms;
 
   if (m_pothercore != NULL) {
     m_pothercore->ClearData();
+    if (m_pothercore->IsLockedFile(m_pothercore->GetCurFile().c_str()))
+      m_pothercore->UnlockFile(m_pothercore->GetCurFile().c_str());
+
     m_pothercore->SetCurFile(L"");
     delete m_pothercore;
     m_pothercore = NULL;

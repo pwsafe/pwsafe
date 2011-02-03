@@ -29,6 +29,7 @@ protected:
   // Generated message map functions
   //{{AFX_MSG(CWZFinish)
   afx_msg BOOL OnSetActive();
+  afx_msg void OnHelp();
   afx_msg void OnViewReport();
   LRESULT OnExecuteThreadEnded(WPARAM wParam, LPARAM );
   //}}AFX_MSG
@@ -46,6 +47,7 @@ private:
   st_SaveAdvValues *m_pst_SADV;
   bool m_bInitDone, m_bInProgress, m_bComplete, m_bViewingReport;
   int m_status;
+  int m_numProcessed;
 };
 //-----------------------------------------------------------------------------
 // Local variables:

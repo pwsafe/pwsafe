@@ -22,10 +22,9 @@
 #include "UIinterface.h"
 #include "Command.h"
 #include "CommandInterface.h"
+#include "DBCompareData.h"
 
 #include "coredefs.h"
-
-#define MAXDEMO 10
 
 // Parameter list for ParseBaseEntryPWD
 struct BaseEntryParms {
@@ -140,18 +139,40 @@ public:
   void ChangePasskey(const StringX &newPasskey);
   void SetPassKey(const StringX &new_passkey);
 
-  // Export databases
-  int TestForExport(const bool bAdvanced,
+  // Database functions
+  int TestSelection(const bool bAdvanced,
                     const stringT &subgroup_name,
                     const int &subgroup_object,
                     const int &subgroup_function,
                     const OrderedItemList *il);
+
+  void Compare(PWScore *pothercore,
+               const CItemData::FieldBits &bsFields, const bool &subgroup_bset,
+               const bool &bTreatWhiteSpaceasEmpty, const stringT &subgroup_name,
+               const int &subgroup_object, const int &subgroup_function,
+               CompareData &list_OnlyInCurrent, CompareData &list_OnlyInComp,
+               CompareData &list_Conflicts, CompareData &list_Identical);
+
+  stringT Merge(PWScore *pothercore,
+                const bool &subgroup_bset,
+                const stringT &subgroup_name,
+                const int &subgroup_object, const int &subgroup_function,
+                CReport *prpt);
+
+  void Synchronize(PWScore *pothercore, 
+                   const CItemData::FieldBits &bsFields, const bool &subgroup_bset,
+                   const stringT &subgroup_name,
+                   const int &subgroup_object, const int &subgroup_function,
+                   int &numUpdated, CReport *prpt);
+
+  // Export databases
   int WritePlaintextFile(const StringX &filename,
                          const CItemData::FieldBits &bsExport,
                          const stringT &subgroup, const int &iObject,
                          const int &iFunction, const TCHAR &delimiter,
                          int &numExported, const OrderedItemList *il = NULL,
                          CReport *prpt = NULL);
+
   int WriteXMLFile(const StringX &filename,
                    const CItemData::FieldBits &bsExport,
                    const stringT &subgroup, const int &iObject,
@@ -372,6 +393,11 @@ private:
   // Following used by SetPassKey
   void EncryptPassword(const unsigned char *plaintext, size_t len,
                        unsigned char *ciphertext) const;
+
+  int MergeDependents(PWScore *pothercore, MultiCommands *pmulticmds,
+                      uuid_array_t &base_uuid, uuid_array_t &new_base_uuid, 
+                      const bool bTitleRenamed, stringT &timeStr, 
+                      const CItemData::EntryType et, std::vector<StringX> &vs_added);
 
   StringX m_currfile; // current pw db filespec
 
