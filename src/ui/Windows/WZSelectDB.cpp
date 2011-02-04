@@ -135,8 +135,7 @@ END_MESSAGE_MAP()
 
 void CWZSelectDB::OnHelp()
 {
-  CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + L"::/html/selectdb.html";
+  CString cs_HelpTopic = app.GetHelpFileName() + L"::/html/wzselectdb.html";
   ::HtmlHelp(this->GetSafeHwnd(), (LPCWSTR)cs_HelpTopic, HH_DISPLAY_TOPIC, 0);
 }
 
