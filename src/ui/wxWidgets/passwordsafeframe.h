@@ -345,6 +345,9 @@ public:
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_VALIDATE
   void OnValidate(wxCommandEvent& evt);
 
+  void OnBackupSafe(wxCommandEvent& evt);
+  void OnRestoreSafe(wxCommandEvent& evt);
+
 ////@begin PasswordSafeFrame member function declarations
 
   /// Retrieves bitmap resources
@@ -414,6 +417,10 @@ public:
  private:
   enum SaveType {ST_INVALID = -1, ST_NORMALEXIT = 0, 
                  ST_ENDSESSIONEXIT, ST_WTSLOGOFFEXIT, ST_FAILSAFESAVE};
+
+  //we need to restrict the size of individual text fields, to prevent creating
+  //enormous databases.  See the comments in DboxMain.h
+  enum {MAXTEXTCHARS = 30000};  
 
   int New();
   int NewFile(StringX &fname);
