@@ -2246,7 +2246,9 @@ CString DboxMain::ShowCompareResults(const StringX sx_Filename1, const StringX s
   m_list_Conflicts.clear();
   m_list_Identical.clear();
 
-  return CmpRes.GetResults();
+  CString cs_results = CmpRes.GetResults();
+
+  return cs_results;
 }
 
 void DboxMain::DoSynchronize(PWScore *pothercore,

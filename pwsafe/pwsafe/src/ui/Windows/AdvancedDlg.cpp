@@ -385,14 +385,8 @@ END_MESSAGE_MAP()
 
 void CAdvancedDlg::OnHelp()
 {
-  CString cs_HelpTopic(app.GetHelpFileName());
-  if (m_iIndex == COMPARESYNCH) {
-    cs_HelpTopic += L"::/html/comparesynchx.html";
-  } else {
-    cs_HelpTopic += L"::/html/findx.html";
-  }
-
-  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
+  CString cs_HelpTopic = app.GetHelpFileName() + L"::/html/advanced.html";
+  ::HtmlHelp(this->GetSafeHwnd(), (LPCWSTR)cs_HelpTopic, HH_DISPLAY_TOPIC, 0);
 }
 
 void CAdvancedDlg::OnReset()

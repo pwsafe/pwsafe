@@ -51,8 +51,7 @@ END_MESSAGE_MAP()
 
 void CWZFinish::OnHelp()
 {
-  CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + L"::/html/selectdb.html";
+  CString cs_HelpTopic = app.GetHelpFileName() + L"::/html/wzfinish.html";
   ::HtmlHelp(this->GetSafeHwnd(), (LPCWSTR)cs_HelpTopic, HH_DISPLAY_TOPIC, 0);
 }
 
