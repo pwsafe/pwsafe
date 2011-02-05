@@ -12,6 +12,12 @@ New Features for 3.24.2
 =======================
 [] Installation instructions now available in Dutch, thank to Kees.
 
+Changes to Existing Features in 3.24.2
+======================================
+[3171962] Passwords on the last opened database will be checked for
+expiration daily as long as pwsafe is running, as well as upon
+database open.
+
 Bugs fixed in 3.24.2
 ====================
 [3165889] No longer crashes if search starts with Shift-Enter (search
