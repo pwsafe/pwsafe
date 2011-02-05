@@ -810,7 +810,7 @@ void DboxMain::PostOpenProcessing()
   if (ext != L".fbak")
     app.AddToMRU(m_core.GetCurFile().c_str());
 
-  CheckExpiredPasswords();
+  MakeExpireList();
   ChangeOkUpdate();
 
   // Tidy up filters
