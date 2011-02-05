@@ -22,8 +22,8 @@ static struct termios oldTermioFlags;
 
 static void usage(char *pname)
 {
-  cerr << "Usage: " << pname << " safe --imp [file] --text|--xml" << endl
-       << "\t safe --exp [file] --text|--xml" << endl;
+  cerr << "Usage: " << pname << " safe --imp[=file] --text|--xml" << endl
+       << "\t safe --exp[=file] --text|--xml" << endl;
 }
 
 static const char *status_text(int status)
@@ -50,7 +50,7 @@ static const char *status_text(int status)
 
 struct UserArgs {
   UserArgs() : ImpExp(Unset), Format(Unknown) {}
-  StringX fname;
+  StringX safe, fname;
   enum {Unset, Import, Export} ImpExp;
   enum {Unknown, XML, Text} Format;
 };
@@ -61,7 +61,7 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
     return false;
   CUTF8Conv conv;
   if (!conv.FromUTF8((const unsigned char *)argv[1], strlen(argv[1]),
-                     ua.fname)) {
+                     ua.safe)) {
     cerr << "Could not convert filename " << argv[1] << " to StringX" << endl;
     exit(2);
   }
@@ -69,14 +69,14 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
     int option_index = 0;
     static struct option long_options[] = {
       // name, has_arg, flag, val
-      {"import", 2, 0, 'i'},
-      {"export", 2, 0, 'e'},
-      {"text", 0, 0, 't'},
-      {"xml", 0, 0, 'x'},
+      {"import", optional_argument, 0, 'i'},
+      {"export", optional_argument, 0, 'e'},
+      {"text", no_argument, 0, 't'},
+      {"xml", no_argument, 0, 'x'},
       {0, 0, 0, 0}
     };
 
-    int c = getopt_long(argc, argv, "",
+    int c = getopt_long(argc-1, argv+1, "i::e::tx",
                         long_options, &option_index);
     if (c == -1)
       break;
@@ -87,16 +87,28 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
         ua.ImpExp = UserArgs::Import;
       else
         return false;
-      if (optarg)
-        printf(" with arg %s", optarg);
+      if (optarg) {
+        if (!conv.FromUTF8((const unsigned char *)optarg, strlen(optarg),
+                           ua.fname)) {
+          cerr << "Could not convert filename "
+               << optarg << " to StringX" << endl;
+          exit(2);
+        }
+      }
       break;
     case 'e':
       if (ua.ImpExp == UserArgs::Unset)
         ua.ImpExp = UserArgs::Export;
       else
         return false;
-      if (optarg)
-        printf(" with arg %s", optarg);
+      if (optarg) {
+        if (!conv.FromUTF8((const unsigned char *)optarg, strlen(optarg),
+                           ua.fname)) {
+          cerr << "Could not convert filename "
+               << optarg << " to StringX" << endl;
+          exit(2);
+        }
+      }
       break;
     case 'x':
       if (ua.Format == UserArgs::Unknown)
@@ -112,10 +124,12 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
       break;
 
     default:
-      printf("?? getopt returned character code 0%o ??\n", c);
+      cerr << "Unknown option: " << char(c) << endl;
+      return false;
     }
+    if (ua.fname.empty())
+      ua.fname = (ua.Format == UserArgs::XML) ? L"file.xml" : L"file.txt";
   }
-
   return true;
 }
 
@@ -148,7 +162,7 @@ int main(int argc, char *argv[])
   }
 
   PWScore core;
-  if (!pws_os::FileExists(ua.fname.c_str())) {
+  if (!pws_os::FileExists(ua.safe.c_str())) {
     cerr << argv[1] << " - file not found" << endl;
     return 2;
   }
@@ -160,10 +174,11 @@ int main(int argc, char *argv[])
   StringX pk(wpk.c_str());
 
   int status;
-  status = core.CheckPasskey(ua.fname, pk);
-  cout << "CheckPasskey returned: " << status_text(status) << endl;
-  if (status != PWScore::SUCCESS)
+  status = core.CheckPasskey(ua.safe, pk);
+  if (status != PWScore::SUCCESS) {
+    cout << "CheckPasskey returned: " << status_text(status) << endl;
     goto done;
+  }
   {
     CUTF8Conv conv;
     const char *user = getlogin() != NULL ? getlogin() : "unknown";
@@ -173,29 +188,33 @@ int main(int argc, char *argv[])
       return 2;
     }
     stringT lk(locker.c_str());
-    if (!core.LockFile(ua.fname.c_str(), lk)) {
-      wcout << L"Couldn't lock file " << ua.fname
+    if (!core.LockFile(ua.safe.c_str(), lk)) {
+      wcout << L"Couldn't lock file " << ua.safe
             << L": locked by " << locker << endl;
       status = -1;
       goto done;
     }
   }
-  status = core.ReadFile(ua.fname, pk);
-  cout << "ReadFile returned: " << status_text(status) << endl;
-  if (status != PWScore::SUCCESS)
+  status = core.ReadFile(ua.safe, pk);
+  if (status != PWScore::SUCCESS) {
+    cout << "ReadFile returned: " << status_text(status) << endl;
     goto done;
-  cout << argv[1] << " has " << core.GetNumEntries() << " entries" << endl;
-  {
-    CItemData::FieldBits bits(~0L);
-    for (ItemListConstIter iter = core.GetEntryIter();
-         iter != core.GetEntryEndIter(); iter++) {
-      const CItemData &ci = iter->second;
-      CItemData *base = ci.IsDependent() ? core.GetBaseEntry(&ci) : NULL;
-      StringX text = ci.GetPlaintext('|', bits, '-', base);
-      wcout << text << endl;
+  }
+
+  if (ua.ImpExp == UserArgs::Export) {
+    CItemData::FieldBits all(~0L);
+    int N;
+    if (ua.Format == UserArgs::XML) {
+      core.WriteXMLFile(ua.fname, all, L"", 0, 0, L' ', N);
+    } else { // export text
+      core.WritePlaintextFile(ua.fname, all, L"", 0, 0, L' ', N);
+    }
+  } else { // Import
+    if (ua.Format == UserArgs::XML) {
+    } else { // import text
     }
   }
  done:
-  core.UnlockFile(ua.fname.c_str());
+  core.UnlockFile(ua.safe.c_str());
   return status;
 }
