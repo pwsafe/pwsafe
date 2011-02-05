@@ -23,6 +23,54 @@
 /* Begin PBXBuildFile section */
 		E60F25D812C4ACEB001E63C4 /* ExternalKeyboardButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E60F25D612C4ACEB001E63C4 /* ExternalKeyboardButton.cpp */; };
 		E61D6FA312617EFC0049FA2A /* MergeDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E61D6FA112617EFC0049FA2A /* MergeDlg.cpp */; };
+		E6391BC212FD21B9009BBB8D /* pwsafe_filter.xsd in Resources */ = {isa = PBXBuildFile; fileRef = E690B55C12984A1A007EA508 /* pwsafe_filter.xsd */; };
+		E6391BC312FD21B9009BBB8D /* pwsafe.xsd in Resources */ = {isa = PBXBuildFile; fileRef = E690B55D12984A1A007EA508 /* pwsafe.xsd */; };
+		E6391BC412FD21B9009BBB8D /* pwsafe.xsl in Resources */ = {isa = PBXBuildFile; fileRef = E690B55E12984A1A007EA508 /* pwsafe.xsl */; };
+		E6391BC512FD21B9009BBB8D /* help.zip in Resources */ = {isa = PBXBuildFile; fileRef = E690B95612984B1D007EA508 /* help.zip */; };
+		E6391BC612FD21B9009BBB8D /* pwsafe.icns in Resources */ = {isa = PBXBuildFile; fileRef = E6919C631298FB25001F96D9 /* pwsafe.icns */; };
+		E6391BC912FD21B9009BBB8D /* about.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADB9A511957099004E2BE5 /* about.cpp */; };
+		E6391BCA12FD21B9009BBB8D /* addeditpropsheet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADB9A711957099004E2BE5 /* addeditpropsheet.cpp */; };
+		E6391BCB12FD21B9009BBB8D /* createshortcutdlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADB9AA11957099004E2BE5 /* createshortcutdlg.cpp */; };
+		E6391BCC12FD21B9009BBB8D /* deleteconfirmation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADB9AC11957099004E2BE5 /* deleteconfirmation.cpp */; };
+		E6391BCD12FD21B9009BBB8D /* editshortcut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADB9AE11957099004E2BE5 /* editshortcut.cpp */; };
+		E6391BCE12FD21B9009BBB8D /* mainEdit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADB9B011957099004E2BE5 /* mainEdit.cpp */; };
+		E6391BCF12FD21B9009BBB8D /* optionspropsheet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADB9B211957099004E2BE5 /* optionspropsheet.cpp */; };
+		E6391BD012FD21B9009BBB8D /* passwordsafeframe.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADB9B411957099004E2BE5 /* passwordsafeframe.cpp */; };
+		E6391BD112FD21B9009BBB8D /* PasswordSafeSearch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADB9B611957099004E2BE5 /* PasswordSafeSearch.cpp */; };
+		E6391BD212FD21B9009BBB8D /* properties.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADB9B911957099004E2BE5 /* properties.cpp */; };
+		E6391BD312FD21B9009BBB8D /* pwsafeapp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADBA1B1195709A004E2BE5 /* pwsafeapp.cpp */; };
+		E6391BD412FD21B9009BBB8D /* pwsclip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADBA1D1195709A004E2BE5 /* pwsclip.cpp */; };
+		E6391BD512FD21B9009BBB8D /* PWSgrid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADBA1F1195709A004E2BE5 /* PWSgrid.cpp */; };
+		E6391BD612FD21B9009BBB8D /* PWSgridtable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADBA211195709A004E2BE5 /* PWSgridtable.cpp */; };
+		E6391BD712FD21B9009BBB8D /* PWStree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADBA231195709A004E2BE5 /* PWStree.cpp */; };
+		E6391BD812FD21B9009BBB8D /* RUEList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADBA251195709A004E2BE5 /* RUEList.cpp */; };
+		E6391BD912FD21B9009BBB8D /* safecombinationchange.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADBA271195709A004E2BE5 /* safecombinationchange.cpp */; };
+		E6391BDA12FD21B9009BBB8D /* safecombinationentry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADBA291195709A004E2BE5 /* safecombinationentry.cpp */; };
+		E6391BDB12FD21B9009BBB8D /* safecombinationprompt.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADBA2B1195709A004E2BE5 /* safecombinationprompt.cpp */; };
+		E6391BDC12FD21B9009BBB8D /* safecombinationsetup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADBA2D1195709A004E2BE5 /* safecombinationsetup.cpp */; };
+		E6391BDD12FD21B9009BBB8D /* SystemTray.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADBA2F1195709A004E2BE5 /* SystemTray.cpp */; };
+		E6391BDE12FD21B9009BBB8D /* version.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADBA321195709A004E2BE5 /* version.cpp */; };
+		E6391BDF12FD21B9009BBB8D /* guiinfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6DA586311A701AE00D84199 /* guiinfo.cpp */; };
+		E6391BE012FD21B9009BBB8D /* ImportTextDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6AF167C11F1FD77002C253B /* ImportTextDlg.cpp */; };
+		E6391BE112FD21B9009BBB8D /* ImportXmlDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E69B7FA411F600BA0084F6C4 /* ImportXmlDlg.cpp */; };
+		E6391BE212FD21B9009BBB8D /* OpenFilePickerValidator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E69B7FA611F600BA0084F6C4 /* OpenFilePickerValidator.cpp */; };
+		E6391BE312FD21B9009BBB8D /* AdvancedSelectionDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6BA477F1216DB9C00193879 /* AdvancedSelectionDlg.cpp */; };
+		E6391BE412FD21B9009BBB8D /* ExportTextWarningDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6BA47811216DB9C00193879 /* ExportTextWarningDlg.cpp */; };
+		E6391BE512FD21B9009BBB8D /* SafeCombinationCtrl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6BA47831216DB9C00193879 /* SafeCombinationCtrl.cpp */; };
+		E6391BE612FD21B9009BBB8D /* ViewReport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6BA47851216DB9C00193879 /* ViewReport.cpp */; };
+		E6391BE712FD21B9009BBB8D /* dragbar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6B5C6411232B3D000AC8B45 /* dragbar.cpp */; };
+		E6391BE812FD21B9009BBB8D /* PWSDragBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6B5C6431232B3D000AC8B45 /* PWSDragBar.cpp */; };
+		E6391BE912FD21B9009BBB8D /* MergeDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E61D6FA112617EFC0049FA2A /* MergeDlg.cpp */; };
+		E6391BEA12FD21B9009BBB8D /* ExternalKeyboardButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E60F25D612C4ACEB001E63C4 /* ExternalKeyboardButton.cpp */; };
+		E6391BEB12FD21B9009BBB8D /* DbSelectionPanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6A7ECA912CDEAA40021D898 /* DbSelectionPanel.cpp */; };
+		E6391BEC12FD21B9009BBB8D /* PwsSync.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6A7ECAB12CDEAA40021D898 /* PwsSync.cpp */; };
+		E6391BEE12FD21B9009BBB8D /* libcore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6ADB80311956A93004E2BE5 /* libcore.a */; };
+		E6391BEF12FD21B9009BBB8D /* libos.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6ADB91C11956DD0004E2BE5 /* libos.a */; };
+		E6391BF012FD21B9009BBB8D /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E69B800911F61CF20084F6C4 /* Carbon.framework */; };
+		E6391BF112FD21B9009BBB8D /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B1448112B26CEE00415AAE /* OpenGL.framework */; };
+		E6391BF212FD21B9009BBB8D /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B1448712B26D1500415AAE /* Cocoa.framework */; };
+		E6391BF312FD21B9009BBB8D /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B1449312B26D7E00415AAE /* IOKit.framework */; };
+		E6391BF412FD21B9009BBB8D /* QuickTime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B144BA12B2707E00415AAE /* QuickTime.framework */; };
 		E690B55F12984A1B007EA508 /* pwsafe_filter.xsd in Resources */ = {isa = PBXBuildFile; fileRef = E690B55C12984A1A007EA508 /* pwsafe_filter.xsd */; };
 		E690B56012984A1B007EA508 /* pwsafe.xsd in Resources */ = {isa = PBXBuildFile; fileRef = E690B55D12984A1A007EA508 /* pwsafe.xsd */; };
 		E690B56112984A1B007EA508 /* pwsafe.xsl in Resources */ = {isa = PBXBuildFile; fileRef = E690B55E12984A1A007EA508 /* pwsafe.xsl */; };
@@ -132,6 +180,27 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		E6391BBC12FD21B9009BBB8D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E6ADB7F0119569CC004E2BE5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E6ADB80211956A93004E2BE5;
+			remoteInfo = core;
+		};
+		E6391BBE12FD21B9009BBB8D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E6ADB7F0119569CC004E2BE5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E6ADB91B11956DD0004E2BE5;
+			remoteInfo = os;
+		};
+		E6391BC012FD21B9009BBB8D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E6ADB7F0119569CC004E2BE5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E690B53012980BDD007EA508;
+			remoteInfo = "Help Files";
+		};
 		E690B54312980D76007EA508 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = E6ADB7F0119569CC004E2BE5 /* Project object */;
@@ -160,6 +229,8 @@
 		E60F25D712C4ACEB001E63C4 /* ExternalKeyboardButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExternalKeyboardButton.h; sourceTree = "<group>"; };
 		E61D6FA112617EFC0049FA2A /* MergeDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MergeDlg.cpp; sourceTree = "<group>"; };
 		E61D6FA212617EFC0049FA2A /* MergeDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MergeDlg.h; sourceTree = "<group>"; };
+		E6391BF812FD21B9009BBB8D /* pwsafe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = pwsafe.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E6391BFA12FD21B9009BBB8D /* pwsafe-Info copy.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "pwsafe-Info copy.plist"; sourceTree = "<group>"; };
 		E690B55C12984A1A007EA508 /* pwsafe_filter.xsd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = pwsafe_filter.xsd; path = ../xml/pwsafe_filter.xsd; sourceTree = SOURCE_ROOT; };
 		E690B55D12984A1A007EA508 /* pwsafe.xsd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = pwsafe.xsd; path = ../xml/pwsafe.xsd; sourceTree = SOURCE_ROOT; };
 		E690B55E12984A1A007EA508 /* pwsafe.xsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = pwsafe.xsl; path = ../xml/pwsafe.xsl; sourceTree = SOURCE_ROOT; };
@@ -600,6 +671,20 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		E6391BED12FD21B9009BBB8D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E6391BEE12FD21B9009BBB8D /* libcore.a in Frameworks */,
+				E6391BEF12FD21B9009BBB8D /* libos.a in Frameworks */,
+				E6391BF012FD21B9009BBB8D /* Carbon.framework in Frameworks */,
+				E6391BF112FD21B9009BBB8D /* OpenGL.framework in Frameworks */,
+				E6391BF212FD21B9009BBB8D /* Cocoa.framework in Frameworks */,
+				E6391BF312FD21B9009BBB8D /* IOKit.framework in Frameworks */,
+				E6391BF412FD21B9009BBB8D /* QuickTime.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E6ADBAF3119577A7004E2BE5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -946,6 +1031,7 @@
 				E6B1448712B26D1500415AAE /* Cocoa.framework */,
 				E6B1449312B26D7E00415AAE /* IOKit.framework */,
 				E6B144BA12B2707E00415AAE /* QuickTime.framework */,
+				E6391BFA12FD21B9009BBB8D /* pwsafe-Info copy.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -955,6 +1041,7 @@
 				E6ADB80311956A93004E2BE5 /* libcore.a */,
 				E6ADB91C11956DD0004E2BE5 /* libos.a */,
 				E6ADB99E1195706A004E2BE5 /* pwsafe.app */,
+				E6391BF812FD21B9009BBB8D /* pwsafe.app */,
 			);
 			indentWidth = 2;
 			name = Products;
@@ -1237,6 +1324,27 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		E6391BBA12FD21B9009BBB8D /* pwsafe-i386 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E6391BF512FD21B9009BBB8D /* Build configuration list for PBXNativeTarget "pwsafe-i386" */;
+			buildPhases = (
+				E6391BC112FD21B9009BBB8D /* Resources */,
+				E6391BC712FD21B9009BBB8D /* Generate version.h */,
+				E6391BC812FD21B9009BBB8D /* Sources */,
+				E6391BED12FD21B9009BBB8D /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E6391BBB12FD21B9009BBB8D /* PBXTargetDependency */,
+				E6391BBD12FD21B9009BBB8D /* PBXTargetDependency */,
+				E6391BBF12FD21B9009BBB8D /* PBXTargetDependency */,
+			);
+			name = "pwsafe-i386";
+			productName = pwsafe;
+			productReference = E6391BF812FD21B9009BBB8D /* pwsafe.app */;
+			productType = "com.apple.product-type.application";
+		};
 		E6ADB80211956A93004E2BE5 /* core */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = E6ADB80711956A94004E2BE5 /* Build configuration list for PBXNativeTarget "core" */;
@@ -1316,11 +1424,25 @@
 				E6ADB91B11956DD0004E2BE5 /* os */,
 				E6ADB99D1195706A004E2BE5 /* pwsafe */,
 				E690B53012980BDD007EA508 /* Help Files */,
+				E6391BBA12FD21B9009BBB8D /* pwsafe-i386 */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		E6391BC112FD21B9009BBB8D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			comments = "Copy Help files into app bundle";
+			files = (
+				E6391BC212FD21B9009BBB8D /* pwsafe_filter.xsd in Resources */,
+				E6391BC312FD21B9009BBB8D /* pwsafe.xsd in Resources */,
+				E6391BC412FD21B9009BBB8D /* pwsafe.xsl in Resources */,
+				E6391BC512FD21B9009BBB8D /* help.zip in Resources */,
+				E6391BC612FD21B9009BBB8D /* pwsafe.icns in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E690B5041297D80A007EA508 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1337,6 +1459,22 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		E6391BC712FD21B9009BBB8D /* Generate version.h */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				../src/ui/wxWidgets/version.in,
+			);
+			name = "Generate version.h";
+			outputPaths = (
+				../src/ui/wxWidgets/version.h,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "../Misc/mkversion.pl ../src/ui/wxWidgets/version.in ../src/ui/wxWidgets/version.h";
+		};
 		E690B54212980CFC007EA508 /* Default English Help */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1389,6 +1527,49 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		E6391BC812FD21B9009BBB8D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E6391BC912FD21B9009BBB8D /* about.cpp in Sources */,
+				E6391BCA12FD21B9009BBB8D /* addeditpropsheet.cpp in Sources */,
+				E6391BCB12FD21B9009BBB8D /* createshortcutdlg.cpp in Sources */,
+				E6391BCC12FD21B9009BBB8D /* deleteconfirmation.cpp in Sources */,
+				E6391BCD12FD21B9009BBB8D /* editshortcut.cpp in Sources */,
+				E6391BCE12FD21B9009BBB8D /* mainEdit.cpp in Sources */,
+				E6391BCF12FD21B9009BBB8D /* optionspropsheet.cpp in Sources */,
+				E6391BD012FD21B9009BBB8D /* passwordsafeframe.cpp in Sources */,
+				E6391BD112FD21B9009BBB8D /* PasswordSafeSearch.cpp in Sources */,
+				E6391BD212FD21B9009BBB8D /* properties.cpp in Sources */,
+				E6391BD312FD21B9009BBB8D /* pwsafeapp.cpp in Sources */,
+				E6391BD412FD21B9009BBB8D /* pwsclip.cpp in Sources */,
+				E6391BD512FD21B9009BBB8D /* PWSgrid.cpp in Sources */,
+				E6391BD612FD21B9009BBB8D /* PWSgridtable.cpp in Sources */,
+				E6391BD712FD21B9009BBB8D /* PWStree.cpp in Sources */,
+				E6391BD812FD21B9009BBB8D /* RUEList.cpp in Sources */,
+				E6391BD912FD21B9009BBB8D /* safecombinationchange.cpp in Sources */,
+				E6391BDA12FD21B9009BBB8D /* safecombinationentry.cpp in Sources */,
+				E6391BDB12FD21B9009BBB8D /* safecombinationprompt.cpp in Sources */,
+				E6391BDC12FD21B9009BBB8D /* safecombinationsetup.cpp in Sources */,
+				E6391BDD12FD21B9009BBB8D /* SystemTray.cpp in Sources */,
+				E6391BDE12FD21B9009BBB8D /* version.cpp in Sources */,
+				E6391BDF12FD21B9009BBB8D /* guiinfo.cpp in Sources */,
+				E6391BE012FD21B9009BBB8D /* ImportTextDlg.cpp in Sources */,
+				E6391BE112FD21B9009BBB8D /* ImportXmlDlg.cpp in Sources */,
+				E6391BE212FD21B9009BBB8D /* OpenFilePickerValidator.cpp in Sources */,
+				E6391BE312FD21B9009BBB8D /* AdvancedSelectionDlg.cpp in Sources */,
+				E6391BE412FD21B9009BBB8D /* ExportTextWarningDlg.cpp in Sources */,
+				E6391BE512FD21B9009BBB8D /* SafeCombinationCtrl.cpp in Sources */,
+				E6391BE612FD21B9009BBB8D /* ViewReport.cpp in Sources */,
+				E6391BE712FD21B9009BBB8D /* dragbar.cpp in Sources */,
+				E6391BE812FD21B9009BBB8D /* PWSDragBar.cpp in Sources */,
+				E6391BE912FD21B9009BBB8D /* MergeDlg.cpp in Sources */,
+				E6391BEA12FD21B9009BBB8D /* ExternalKeyboardButton.cpp in Sources */,
+				E6391BEB12FD21B9009BBB8D /* DbSelectionPanel.cpp in Sources */,
+				E6391BEC12FD21B9009BBB8D /* PwsSync.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E6ADB80011956A93004E2BE5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1509,6 +1690,21 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		E6391BBB12FD21B9009BBB8D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E6ADB80211956A93004E2BE5 /* core */;
+			targetProxy = E6391BBC12FD21B9009BBB8D /* PBXContainerItemProxy */;
+		};
+		E6391BBD12FD21B9009BBB8D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E6ADB91B11956DD0004E2BE5 /* os */;
+			targetProxy = E6391BBE12FD21B9009BBB8D /* PBXContainerItemProxy */;
+		};
+		E6391BBF12FD21B9009BBB8D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E690B53012980BDD007EA508 /* Help Files */;
+			targetProxy = E6391BC012FD21B9009BBB8D /* PBXContainerItemProxy */;
+		};
 		E690B54412980D76007EA508 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = E690B53012980BDD007EA508 /* Help Files */;
@@ -1527,6 +1723,51 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		E6391BF612FD21B9009BBB8D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E6F9A9F612B251A000F93140 /* pwsafe-debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					UNICODE,
+					"_FILE_OFFSET_BITS=64",
+					_LARGE_FILES,
+					__WXDEBUG__,
+					__WXMAC__,
+				);
+				INFOPLIST_FILE = "pwsafe-Info copy.plist";
+				PREBINDING = NO;
+				PRODUCT_NAME = pwsafe;
+				USER_HEADER_SEARCH_PATHS = ../src;
+				VALID_ARCHS = i386;
+			};
+			name = Debug;
+		};
+		E6391BF712FD21B9009BBB8D /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E6F9A9F712B251A000F93140 /* pwsafe-release.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					_LARGE_FILES,
+					UNICODE,
+					"_FILE_OFFSET_BITS=64",
+					__WXMAC__,
+				);
+				INFOPLIST_FILE = "pwsafe-Info copy.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				PREBINDING = NO;
+				PRODUCT_NAME = pwsafe;
+				USER_HEADER_SEARCH_PATHS = ../src;
+				VALID_ARCHS = i386;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
 		E690B53112980BDD007EA508 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1699,6 +1940,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		E6391BF512FD21B9009BBB8D /* Build configuration list for PBXNativeTarget "pwsafe-i386" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E6391BF612FD21B9009BBB8D /* Debug */,
+				E6391BF712FD21B9009BBB8D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		E690B53312980BFB007EA508 /* Build configuration list for PBXAggregateTarget "Help Files" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
