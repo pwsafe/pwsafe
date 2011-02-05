@@ -141,7 +141,7 @@ DboxMain::DboxMain(CWnd* pParent)
   m_bRenameCtrl(false), m_bRenameShift(false),
   m_bAutotypeCtrl(false), m_bAutotypeShift(false),
   m_bInAT(false), m_bInRestoreWindowsData(false), m_bSetup(false),
-  m_bInRefresh(false), m_bInRestoreWindows(false)
+  m_bInRefresh(false), m_bInRestoreWindows(false), m_ExpireCandidates(NULL)
 {
   // Need to do the following as using the direct calls will fail for Windows versions before Vista
   // (Load Library using absolute path to avoid dll poisoning attacks)
@@ -218,6 +218,7 @@ DboxMain::~DboxMain()
   DeletePasswordFont();
 
   delete m_pToolTipCtrl;
+  delete m_ExpireCandidates;
 
   if (m_hUser32 != NULL)
     ::FreeLibrary(m_hUser32);
@@ -2310,31 +2311,23 @@ void DboxMain::RefreshImages()
   m_menuManager.SetImageList(&m_MainToolBar);
 }
 
-void DboxMain::CheckExpiredPasswords()
+void DboxMain::MakeExpireList()
 {
-  time_t now, exptime, XTime;
-  time(&now);
+  // Called from PostOpenProcessing, creates a list
+  // of entries with expiration dates.
+  // If we have such entries, check them, and start a daily timer
+  // to repeat the check
 
-  if (PWSprefs::GetInstance()->GetPref(PWSprefs::PreExpiryWarn)) {
-    int idays = PWSprefs::GetInstance()->GetPref(PWSprefs::PreExpiryWarnDays);
-    struct tm st;
-#if (_MSC_VER >= 1400)
-    errno_t err;
-    err = localtime_s(&st, &now);  // secure version
-    ASSERT(err == 0);
-#else
-    st = *localtime(&now);
-#endif
-    st.tm_mday += idays;
-    exptime = mktime(&st);
-    if (exptime == (time_t)-1)
-      exptime = now;
-  } else
-    exptime = now;
+  if (!PWSprefs::GetInstance()->GetPref(PWSprefs::PreExpiryWarn))
+    return;
 
-  ExpiredList expPWList;
+  if (m_ExpireCandidates != NULL) { // from previous Open
+    delete m_ExpireCandidates;
+    m_ExpireCandidates = NULL;
+  }
 
   ItemListConstIter listPos;
+  time_t XTime;
   for (listPos = m_core.GetEntryIter();
        listPos != m_core.GetEntryEndIter();
        listPos++) {
@@ -2343,14 +2336,31 @@ void DboxMain::CheckExpiredPasswords()
       continue;
 
     curitem.GetXTime(XTime);
-    if (((long)XTime != 0) && (XTime < exptime)) {
-      ExpPWEntry exppwentry(curitem, now, XTime);
-      expPWList.push_back(exppwentry);
+    if (XTime != time_t(0)) {
+      if (m_ExpireCandidates == NULL)
+        m_ExpireCandidates = new ExpiredList;
+      m_ExpireCandidates->Add(curitem);
     }
-  }
+  } // iteration over entries
 
-  if (!expPWList.empty()) {
-    CExpPWListDlg dlg(this, expPWList, m_core.GetCurFile().c_str());
+  if (m_ExpireCandidates != NULL) {
+    CheckExpireList();
+    const UINT DAY = 24*60*60*1000; // 24 hours, in millisecs
+    SetTimer(TIMER_EXPENT, DAY, NULL);
+  }
+}
+
+void DboxMain::CheckExpireList()
+{
+  // Check if we've any expired entries. If so, show the user.
+  if (!PWSprefs::GetInstance()->GetPref(PWSprefs::PreExpiryWarn) ||
+      m_ExpireCandidates == NULL)
+    return;
+
+  int idays = PWSprefs::GetInstance()->GetPref(PWSprefs::PreExpiryWarnDays);
+  ExpiredList expiredEntries = m_ExpireCandidates->GetExpired(idays);
+  if (!expiredEntries.empty()) {
+    CExpPWListDlg dlg(this, expiredEntries, m_core.GetCurFile().c_str());
     dlg.DoModal();
   }
 }

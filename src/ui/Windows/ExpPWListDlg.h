@@ -8,6 +8,7 @@
 #pragma once
 
 #include "core/StringX.h"
+#include "core/UUIDGen.h"
 #include "PWDialog.h"
 
 #include <vector>
@@ -16,17 +17,27 @@
 class CItemData;
 
 struct ExpPWEntry {
-  ExpPWEntry(const CItemData &ci, time_t now, time_t XTime);
+  ExpPWEntry(const CItemData &ci);
+  ExpPWEntry(const ExpPWEntry &ee);
+  ExpPWEntry &operator=(const ExpPWEntry &that);
+  uuid_array_t uuid;
   StringX group;
   StringX title;
   StringX user;
-  StringX expirylocdate;  // user's long dat/time   - format displayed in ListCtrl
+  StringX expirylocdate;  // user's long date/time  - format displayed in ListCtrl
   StringX expiryexpdate;  // "YYYY/MM/DD HH:MM:SS"  - format copied to clipboard - best for sorting
   time_t expirytttdate;
   int type;
 };
 
-typedef std::vector<ExpPWEntry> ExpiredList;
+class ExpiredList: public std::vector<ExpPWEntry>
+{
+ public:
+  void Add(const CItemData &ci);
+  void Update(const CItemData &ci) {Remove(ci); Add(ci);}
+  void Remove(const CItemData &ci);
+  ExpiredList GetExpired(int idays); // return a subset
+};
 
 // CExpPWListDlg dialog
 

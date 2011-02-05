@@ -22,6 +22,7 @@
 #include "PWFont.h"
 #include "InfoDisplay.h"
 #include "ViewReport.h"
+#include "ExpPWListDlg.h"
 
 #include "VirtualKeyboard\VKeyBoardDlg.h"
 
@@ -1896,6 +1897,9 @@ void DboxMain::OnTimer(UINT_PTR nIDEvent)
     }
     if (nIDEvent == TIMER_LOCKONWTSLOCK)
       KillTimer(TIMER_LOCKONWTSLOCK);
+  } else if (nIDEvent == TIMER_EXPENT) {
+    // once a day, we want to check the expired entries list
+    CheckExpireList();
   } else {
     pws_os::Trace(L"Timer lock kicked in (countdown=%u), not locking. Timer ID=%d\n",
           m_IdleLockCountDown, nIDEvent);

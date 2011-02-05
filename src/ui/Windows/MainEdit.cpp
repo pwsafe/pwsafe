@@ -22,6 +22,7 @@
 #include "ClearQuestionDlg.h"
 #include "CreateShortcutDlg.h"
 #include "PasswordSubsetDlg.h"
+#include "ExpPWListDlg.h"
 
 #include "core/pwsprefs.h"
 #include "core/PWSAuxParse.h"
@@ -167,7 +168,12 @@ void DboxMain::OnAdd()
     // May need to update menu/toolbar if database was previously empty
     if (bWasEmpty)
       UpdateMenuAndToolBar(m_bOpen);
-  }
+    if (!ci.GetXTime().empty()) {
+      if (m_ExpireCandidates == NULL)
+        m_ExpireCandidates = new ExpiredList;
+      m_ExpireCandidates->Add(ci);
+    }
+  } // rc == OK
 }
 
 //Add a shortcut

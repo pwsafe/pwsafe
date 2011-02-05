@@ -19,11 +19,17 @@
 
 using namespace std;
 
-ExpPWEntry::ExpPWEntry(const CItemData &ci, time_t now, time_t XTime)
+ExpPWEntry::ExpPWEntry(const CItemData &ci)
 {
+  time_t now, XTime;
+
+  ci.GetXTime(XTime);
+  time(&now);
+  ci.GetUUID(uuid);
   group = ci.GetGroup();
   title = ci.GetTitle();
   user = ci.GetUser();
+  
   // Expired or Warning / Normal or Alias Base or Shortcut Base 
   // See image list below
   // Note only neither or one of IsAliasBase or IsShortcutBase can be true!
@@ -32,6 +38,79 @@ ExpPWEntry::ExpPWEntry(const CItemData &ci, time_t now, time_t XTime)
   expiryexpdate = ci.GetXTimeExp();
   expirytttdate = XTime;
 }
+
+ExpPWEntry::ExpPWEntry(const ExpPWEntry &ee) : group(ee.group),
+                                               title(ee.title), user(ee.user),
+                                               expirylocdate(ee.expirylocdate),
+                                               expiryexpdate(ee.expiryexpdate),
+                                               expirytttdate(ee.expirytttdate),
+                                               type(ee.type)
+{
+  memcpy(uuid, ee.uuid, sizeof(uuid));
+}
+
+ExpPWEntry &ExpPWEntry::operator=(const ExpPWEntry &that)
+{
+  if (this != &that) {
+    memcpy(uuid, that.uuid, sizeof(uuid));
+    group = that.group;
+    title = that.title;
+    user = that.user;
+    expirylocdate = that.expirylocdate;
+    expiryexpdate = that.expiryexpdate;
+    expirytttdate = that.expirytttdate;
+    type = that.type;
+  }
+  return *this;
+}
+
+void ExpiredList::Add(const CItemData &ci)
+{
+  // We might be called from Update with a ci
+  // that doesn't have an expiration date - check!
+  if (!ci.GetXTime().empty())
+    push_back(ExpPWEntry(ci));
+}
+
+void ExpiredList::Remove(const CItemData &ci)
+{
+  uuid_array_t uuid;
+  ci.GetUUID(uuid);
+  ExpiredList::iterator iter;
+  for (iter = begin(); iter != end(); iter++)
+    if (memcmp(uuid, iter->uuid, sizeof(uuid)) == 0) {
+      erase(iter);
+      break;
+    }
+}
+
+ExpiredList ExpiredList::GetExpired(int idays)
+{
+  ExpiredList retval;
+  ExpiredList::iterator iter;
+  struct tm st;
+
+  time_t now, exptime;
+  time(&now);
+#if (_MSC_VER >= 1400)
+  errno_t err;
+  err = localtime_s(&st, &now);  // secure version
+  ASSERT(err == 0);
+#else
+  st = *localtime(&now);
+#endif
+  st.tm_mday += idays;
+  exptime = mktime(&st);
+  if (exptime == (time_t)-1)
+    exptime = now;
+
+  for (iter = begin(); iter != end(); iter++) {
+    if (iter->expirytttdate < exptime)
+      retval.push_back(*iter);
+  }
+  return retval;
+}
+
 
 // CExpPWListDlg dialog
 CExpPWListDlg::CExpPWListDlg(CWnd* pParent,

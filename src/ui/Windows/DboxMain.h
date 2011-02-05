@@ -126,7 +126,8 @@ DECLARE_HANDLE(HDROP);
 /* timer event numbers used to by ControlExtns for ListBox tooltips.  Here for doc. only
 #define TIMER_LB_HOVER            0x0A
 #define TIMER_LB_SHOWING          0x0B */
-
+// Timer event for daily expired entries check
+#define TIMER_EXPENT              0x0C
 /*
 HOVER_TIME_ND       The length of time the pointer must remain stationary
                     within a tool's bounding rectangle before the tool tip
@@ -177,6 +178,7 @@ enum {GCP_READONLY = 1,
       GCP_FORCEREADONLY = 2,
       GCP_HIDEREADONLY = 4};
 
+class ExpiredList;
 //-----------------------------------------------------------------------------
 class DboxMain : public CDialog, public UIInterFace
 {
@@ -802,7 +804,8 @@ private:
   void SetIdleLockCounter(UINT i); // i in minutes, set to timer counts
   bool DecrementAndTestIdleLockCounter();
   int SaveIfChanged();
-  void CheckExpiredPasswords();
+  void MakeExpireList(); // Upon Open, make a list of entries w/Expiration dates
+  void CheckExpireList(); // Upon open and upon timer, check list, show exp.
   bool RestoreWindowsData(bool bUpdateWindows, bool bShow = true);
   void UpdateAccessTime(CItemData *pci);
   void RestoreGroupDisplayState();
@@ -967,6 +970,7 @@ private:
   };
 
   std::stack<st_SaveGUIInfo> m_stkSaveGUIInfo;
+  ExpiredList  *m_ExpireCandidates; // info on entries with expiration dates
 };
 
 // Following used to keep track of display vs data
