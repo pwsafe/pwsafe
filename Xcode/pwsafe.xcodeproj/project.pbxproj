@@ -229,8 +229,7 @@
 		E60F25D712C4ACEB001E63C4 /* ExternalKeyboardButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExternalKeyboardButton.h; sourceTree = "<group>"; };
 		E61D6FA112617EFC0049FA2A /* MergeDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MergeDlg.cpp; sourceTree = "<group>"; };
 		E61D6FA212617EFC0049FA2A /* MergeDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MergeDlg.h; sourceTree = "<group>"; };
-		E6391BF812FD21B9009BBB8D /* pwsafe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = pwsafe.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		E6391BFA12FD21B9009BBB8D /* pwsafe-Info copy.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "pwsafe-Info copy.plist"; sourceTree = "<group>"; };
+		E6391BF812FD21B9009BBB8D /* pwsafe-i386.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "pwsafe-i386.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E690B55C12984A1A007EA508 /* pwsafe_filter.xsd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = pwsafe_filter.xsd; path = ../xml/pwsafe_filter.xsd; sourceTree = SOURCE_ROOT; };
 		E690B55D12984A1A007EA508 /* pwsafe.xsd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = pwsafe.xsd; path = ../xml/pwsafe.xsd; sourceTree = SOURCE_ROOT; };
 		E690B55E12984A1A007EA508 /* pwsafe.xsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = pwsafe.xsl; path = ../xml/pwsafe.xsl; sourceTree = SOURCE_ROOT; };
@@ -1031,7 +1030,6 @@
 				E6B1448712B26D1500415AAE /* Cocoa.framework */,
 				E6B1449312B26D7E00415AAE /* IOKit.framework */,
 				E6B144BA12B2707E00415AAE /* QuickTime.framework */,
-				E6391BFA12FD21B9009BBB8D /* pwsafe-Info copy.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1041,7 +1039,7 @@
 				E6ADB80311956A93004E2BE5 /* libcore.a */,
 				E6ADB91C11956DD0004E2BE5 /* libos.a */,
 				E6ADB99E1195706A004E2BE5 /* pwsafe.app */,
-				E6391BF812FD21B9009BBB8D /* pwsafe.app */,
+				E6391BF812FD21B9009BBB8D /* pwsafe-i386.app */,
 			);
 			indentWidth = 2;
 			name = Products;
@@ -1342,7 +1340,7 @@
 			);
 			name = "pwsafe-i386";
 			productName = pwsafe;
-			productReference = E6391BF812FD21B9009BBB8D /* pwsafe.app */;
+			productReference = E6391BF812FD21B9009BBB8D /* pwsafe-i386.app */;
 			productType = "com.apple.product-type.application";
 		};
 		E6ADB80211956A93004E2BE5 /* core */ = {
@@ -1727,7 +1725,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E6F9A9F612B251A000F93140 /* pwsafe-debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1)";
+				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
+				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					UNICODE,
 					"_FILE_OFFSET_BITS=64",
@@ -1735,9 +1735,10 @@
 					__WXDEBUG__,
 					__WXMAC__,
 				);
-				INFOPLIST_FILE = "pwsafe-Info copy.plist";
-				PREBINDING = NO;
-				PRODUCT_NAME = pwsafe;
+				GCC_VERSION = 4.0;
+				INFOPLIST_FILE = "pwsafe-Info-i386.plist";
+				PRODUCT_NAME = "pwsafe-i386";
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 				USER_HEADER_SEARCH_PATHS = ../src;
 				VALID_ARCHS = i386;
 			};
@@ -1747,21 +1748,18 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E6F9A9F712B251A000F93140 /* pwsafe-release.xcconfig */;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = YES;
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
-				GCC_MODEL_TUNING = G5;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1)";
+				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					_LARGE_FILES,
 					UNICODE,
 					"_FILE_OFFSET_BITS=64",
 					__WXMAC__,
 				);
-				INFOPLIST_FILE = "pwsafe-Info copy.plist";
-				INSTALL_PATH = "$(HOME)/Applications";
-				PREBINDING = NO;
-				PRODUCT_NAME = pwsafe;
+				GCC_VERSION = 4.0;
+				INFOPLIST_FILE = "pwsafe-Info-i386.plist";
+				PRODUCT_NAME = "pwsafe-i386";
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 				USER_HEADER_SEARCH_PATHS = ../src;
 				VALID_ARCHS = i386;
 				ZERO_LINK = NO;
@@ -1792,21 +1790,11 @@
 		E6ADB7F1119569CC004E2BE5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1)";
-				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
-				COPY_PHASE_STRIP = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					UNICODE,
 					"_FILE_OFFSET_BITS=64",
 					_LARGE_FILES,
 				);
-				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
-				GCC_VERSION = 4.0;
-				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 				VALID_ARCHS = "i386 ppc";
 			};
 			name = Debug;
@@ -1814,14 +1802,11 @@
 		E6ADB7F2119569CC004E2BE5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1)";
-				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
-				COPY_PHASE_STRIP = YES;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
-				GCC_PREPROCESSOR_DEFINITIONS = UNICODE;
-				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
-				GCC_VERSION = 4.0;
-				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					UNICODE,
+					"_FILE_OFFSET_BITS=64",
+					_LARGE_FILES,
+				);
 				VALID_ARCHS = "i386 ppc";
 			};
 			name = Release;
@@ -1829,34 +1814,25 @@
 		E6ADB80511956A93004E2BE5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
-				GCC_MODEL_TUNING = G5;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1)";
+				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_VERSION = 4.0;
 				HEADER_SEARCH_PATHS = ../src/;
-				INSTALL_PATH = /usr/local/lib;
-				PREBINDING = NO;
 				PRODUCT_NAME = core;
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 			};
 			name = Debug;
 		};
 		E6ADB80611956A93004E2BE5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = YES;
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_PREPROCESSOR_DEFINITIONS = UNICODE;
-				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1)";
+				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
+				GCC_VERSION = 4.0;
 				HEADER_SEARCH_PATHS = ../src/;
-				INSTALL_PATH = /usr/local/lib;
-				PREBINDING = NO;
 				PRODUCT_NAME = core;
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 				ZERO_LINK = NO;
 			};
 			name = Release;
@@ -1864,32 +1840,23 @@
 		E6ADB91D11956DD0004E2BE5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
-				GCC_MODEL_TUNING = G5;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1)";
+				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
 				GCC_OPTIMIZATION_LEVEL = 0;
-				INSTALL_PATH = /usr/local/lib;
-				PREBINDING = NO;
+				GCC_VERSION = 4.0;
 				PRODUCT_NAME = os;
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 			};
 			name = Debug;
 		};
 		E6ADB91E11956DD0004E2BE5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = YES;
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_PREPROCESSOR_DEFINITIONS = UNICODE;
-				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
-				INSTALL_PATH = /usr/local/lib;
-				PREBINDING = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1)";
+				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
+				GCC_VERSION = 4.0;
 				PRODUCT_NAME = os;
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 				ZERO_LINK = NO;
 			};
 			name = Release;
@@ -1898,7 +1865,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E6F9A9F612B251A000F93140 /* pwsafe-debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1)";
+				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
+				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					UNICODE,
 					"_FILE_OFFSET_BITS=64",
@@ -1906,9 +1875,10 @@
 					__WXDEBUG__,
 					__WXMAC__,
 				);
+				GCC_VERSION = 4.0;
 				INFOPLIST_FILE = "pwsafe-Info.plist";
-				PREBINDING = NO;
 				PRODUCT_NAME = pwsafe;
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 				USER_HEADER_SEARCH_PATHS = ../src;
 			};
 			name = Debug;
@@ -1917,21 +1887,18 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E6F9A9F712B251A000F93140 /* pwsafe-release.xcconfig */;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = YES;
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
-				GCC_MODEL_TUNING = G5;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1)";
+				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					_LARGE_FILES,
 					UNICODE,
 					"_FILE_OFFSET_BITS=64",
 					__WXMAC__,
 				);
+				GCC_VERSION = 4.0;
 				INFOPLIST_FILE = "pwsafe-Info.plist";
-				INSTALL_PATH = "$(HOME)/Applications";
-				PREBINDING = NO;
 				PRODUCT_NAME = pwsafe;
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 				USER_HEADER_SEARCH_PATHS = ../src;
 				ZERO_LINK = NO;
 			};
