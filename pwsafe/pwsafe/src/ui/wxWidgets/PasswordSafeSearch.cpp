@@ -337,7 +337,11 @@ bool PasswordSafeSearch::ProcessEvent(wxEvent& evt)
       return true;
     }
     else if (keyEvent.GetKeyCode() == WXK_RETURN) {
+#if wxCHECK_VERSION(2,9,0)
+      return m_toolbar->FindControl(ID_FIND_EDITBOX)->GetEventHandler()->ProcessEvent(evt);
+#else
       return m_toolbar->FindControl(ID_FIND_EDITBOX)->ProcessEvent(evt);
+#endif
     }
   }
   
