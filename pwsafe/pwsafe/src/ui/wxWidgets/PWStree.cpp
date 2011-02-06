@@ -177,7 +177,7 @@ void PWSTreeCtrl::CreateControls()
 
   wxImageList *iList = new wxImageList(9, 9, true, Nimages);
   for (int i = 0; i < Nimages; i++)
-    iList->Add(wxIcon(xpmList[i]));
+    iList->Add(wxBitmap(xpmList[i]));
   AssignImageList(iList);
 }
 

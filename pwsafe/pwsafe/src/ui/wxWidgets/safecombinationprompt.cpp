@@ -220,14 +220,14 @@ void CSafeCombinationPrompt::OnOkClick( wxCommandEvent& /* evt */ )
       err.ShowModal();
       return;
     }
-    if (!pws_os::FileExists(m_filename.c_str())) {
+    if (!pws_os::FileExists(tostdstring(m_filename))) {
       wxMessageDialog err(this, _("File or path not found."),
                           _("Error"), wxOK | wxICON_EXCLAMATION);
       err.ShowModal();
       return;
     }
-    if (m_core.CheckPasskey(m_filename.c_str(),
-                            m_password.c_str()) != PWScore::SUCCESS) {
+    if (m_core.CheckPasskey(tostringx(m_filename),
+                            tostringx(m_password)) != PWScore::SUCCESS) {
       wxString errmess;
       if (m_tries >= 2) {
         errmess = _("Three strikes - yer out!");
@@ -244,7 +244,7 @@ void CSafeCombinationPrompt::OnOkClick( wxCommandEvent& /* evt */ )
       return;
     }
     // m_core.SetReadOnly(m_readOnly);
-    m_core.SetCurFile(m_filename.c_str());
+    m_core.SetCurFile(tostringx(m_filename));
     EndModal(wxID_OK);
   }
 }

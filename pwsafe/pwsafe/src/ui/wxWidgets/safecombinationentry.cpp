@@ -279,18 +279,18 @@ void CSafeCombinationEntry::OnOk( wxCommandEvent& )
       err.ShowModal();
       return;
     }
-    if (!pws_os::FileExists(m_filename.c_str())) {
+    if (!pws_os::FileExists(tostdstring(m_filename))) {
       wxMessageDialog err(this, _("File or path not found."),
                           _("Error"), wxOK | wxICON_EXCLAMATION);
       err.ShowModal();
       return;
     }
-    int status = m_core.CheckPasskey(m_filename.c_str(), m_password.c_str());
+    int status = m_core.CheckPasskey(tostringx(m_filename), tostringx(m_password));
     wxString errmess;
     switch (status) {
     case PWScore::SUCCESS:
       m_core.SetReadOnly(m_readOnly);
-      m_core.SetCurFile(m_filename.c_str());
+      m_core.SetCurFile(tostringx(m_filename));
       wxGetApp().recentDatabases().AddFileToHistory(m_filename);
       EndModal(wxID_OK);
       return;
@@ -366,7 +366,7 @@ void CSafeCombinationEntry::OnNewDbClick( wxCommandEvent& /* evt */ )
   wxString cs_msg, cs_title, cs_temp;
 
   wxString cf(_("pwsafe")); // reasonable default for first time user
-  stringT v3FileName = PWSUtil::GetNewFileName(cf.c_str(), _("psafe3"));
+  stringT v3FileName = PWSUtil::GetNewFileName(tostdstring(cf), wxT("psafe3"));
   stringT dir = PWSdirs::GetSafeDir();
 
   while (1) {
@@ -393,14 +393,14 @@ void CSafeCombinationEntry::OnNewDbClick( wxCommandEvent& /* evt */ )
     return;  //User cancelled password entry
 
   // 3. Set m_filespec && m_passkey to returned value!
-  m_core.SetCurFile(newfile.c_str());
+  m_core.SetCurFile(tostringx(newfile));
   
   // Now lock the new file
   std::wstring locker(L""); // null init is important here
-  m_core.LockFile(newfile.c_str(), locker);
+  m_core.LockFile(tostdstring(newfile), locker);
   
   m_core.SetReadOnly(false); // new file can't be read-only...
-  m_core.NewFile(pksetup.GetPassword().c_str());
+  m_core.NewFile(tostringx(pksetup.GetPassword()));
   if ((rc = m_core.WriteCurFile()) == PWSfile::SUCCESS) {
     wxGetApp().recentDatabases().AddFileToHistory(newfile);
     EndModal(wxID_OK);

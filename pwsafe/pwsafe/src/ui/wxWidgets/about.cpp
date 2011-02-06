@@ -273,7 +273,11 @@ void CAbout::OnHyperlinkctrl1HyperlinkClicked( wxHyperlinkEvent& /* evt */ )
       return; // no hard feelings
     // Close database, prompt for save if changed
     wxCommandEvent closeEvent(wxEVT_COMMAND_MENU_SELECTED, wxID_CLOSE);
+#if wxCHECK_VERSION(2,9,0)
+    pFrm->GetEventHandler()->ProcessEvent(closeEvent);
+#else
     pFrm->ProcessEvent(closeEvent);
+#endif
     // User could have cancelled save, need to check if really closed:
     if (pFrm->GetNumEntries() != 0)
       return;

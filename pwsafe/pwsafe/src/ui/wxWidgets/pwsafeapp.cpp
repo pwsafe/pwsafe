@@ -49,53 +49,62 @@ using namespace std;
 #include <wx/textfile.h>
 
 ////@begin XPM images
+#ifndef __WXOSX_COCOA__
 #include "./graphics/pwsafe8.xpm"
+#endif
 #include "./graphics/pwsafe16.xpm"
 #include "./graphics/pwsafe32.xpm"
 #include "./graphics/pwsafe48.xpm"
 
 ////@end XPM images
 
+#if wxCHECK_VERSION(2,9,0)
+#define STR(s) s
+#else
+#define STR(s) wxT(s)
+#endif
+
 static const wxCmdLineEntryDesc cmdLineDesc[] = {
-  {wxCMD_LINE_SWITCH, wxT("?"), wxT("help"),
-   wxT("displays command line usage"),
+  {wxCMD_LINE_SWITCH, STR("?"), STR("help"),
+   STR("displays command line usage"),
    wxCMD_LINE_VAL_NONE, wxCMD_LINE_OPTION_HELP},
-  {wxCMD_LINE_SWITCH, wxT("r"), wxT("read-only"),
-   wxT("open database read-only"),
+  {wxCMD_LINE_SWITCH, STR("r"), STR("read-only"),
+   STR("open database read-only"),
    wxCMD_LINE_VAL_NONE, wxCMD_LINE_PARAM_OPTIONAL},
-  {wxCMD_LINE_OPTION, wxT("v"), wxT("validate"),
-   wxT("validate (and repair) database"),
+  {wxCMD_LINE_OPTION, STR("v"), STR("validate"),
+   STR("validate (and repair) database"),
    wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL},
-  {wxCMD_LINE_OPTION, wxT("e"), wxT("encrypt"),
-   wxT("encrypt a file (deprecated)"),
+  {wxCMD_LINE_OPTION, STR("e"), STR("encrypt"),
+   STR("encrypt a file (deprecated)"),
    wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL},
-  {wxCMD_LINE_OPTION, wxT("d"), wxT("decrypt"),
-   wxT("decrypt a file (deprecated)"),
+  {wxCMD_LINE_OPTION, STR("d"), STR("decrypt"),
+   STR("decrypt a file (deprecated)"),
    wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL},
-  {wxCMD_LINE_SWITCH, wxT("c"), wxT("close"),
-   wxT("start 'closed', without prompting for database"),
+  {wxCMD_LINE_SWITCH, STR("c"), STR("close"),
+   STR("start 'closed', without prompting for database"),
    wxCMD_LINE_VAL_NONE, wxCMD_LINE_PARAM_OPTIONAL},
-  {wxCMD_LINE_SWITCH, wxT("s"), wxT("silent"),
-   wxT("start 'silently', minimized and with no database"),
+  {wxCMD_LINE_SWITCH, STR("s"), STR("silent"),
+   STR("start 'silently', minimized and with no database"),
    wxCMD_LINE_VAL_NONE, wxCMD_LINE_PARAM_OPTIONAL},
-  {wxCMD_LINE_SWITCH, wxT("m"), wxT("minimized"),
-   wxT("like '-c', plus start minimized"),
+  {wxCMD_LINE_SWITCH, STR("m"), STR("minimized"),
+   STR("like '-c', plus start minimized"),
    wxCMD_LINE_VAL_NONE, wxCMD_LINE_PARAM_OPTIONAL},
-  {wxCMD_LINE_OPTION, wxT("u"), wxT("username"),
-   wxT("use specified user preferences instead of current user"),
+  {wxCMD_LINE_OPTION, STR("u"), STR("username"),
+   STR("use specified user preferences instead of current user"),
    wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL},
-  {wxCMD_LINE_OPTION, wxT("h"), wxT("hostname"),
-   wxT("use specified host preferences instead of current host"),
+  {wxCMD_LINE_OPTION, STR("h"), STR("hostname"),
+   STR("use specified host preferences instead of current host"),
    wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL},
-  {wxCMD_LINE_OPTION, wxT("g"), wxT("config_file"),
-   wxT("use specified configuration file instead of default"),
+  {wxCMD_LINE_OPTION, STR("g"), STR("config_file"),
+   STR("use specified configuration file instead of default"),
    wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL},
-  {wxCMD_LINE_PARAM, NULL, NULL, wxT("database"),
+  {wxCMD_LINE_PARAM, NULL, NULL, STR("database"),
    wxCMD_LINE_VAL_STRING,
    (wxCMD_LINE_PARAM_OPTIONAL | wxCMD_LINE_PARAM_MULTIPLE)},
   {wxCMD_LINE_NONE, NULL, NULL, NULL, wxCMD_LINE_VAL_NONE, 0}
 };
 
+#undef STR
 
 static wxReporter aReporter;
 static wxAsker    anAsker;
@@ -171,7 +180,7 @@ void PwsafeApp::Init()
 bool PwsafeApp::OnInit()
 {    
   SetAppName(pwsafeAppName);
-  m_core.SetApplicationNameAndVersion(pwsafeAppName.c_str(),
+  m_core.SetApplicationNameAndVersion(tostdstring(pwsafeAppName),
                                       DWORD((MINORVERSION << 16) | MAJORVERSION));
   PWSprefs::SetReporter(&aReporter);
   PWScore::SetReporter(&aReporter);
@@ -226,11 +235,11 @@ bool PwsafeApp::OnInit()
   }
 
   if (cmd_user)
-    SysInfo::GetInstance()->SetEffectiveUser(user.c_str());
+    SysInfo::GetInstance()->SetEffectiveUser(tostdstring(user));
   if (cmd_host)
-    SysInfo::GetInstance()->SetEffectiveHost(host.c_str());
+    SysInfo::GetInstance()->SetEffectiveHost(tostdstring(host));
   if (cmd_cfg)
-    PWSprefs::SetConfigFile(cfg_file.c_str());
+    PWSprefs::SetConfigFile(tostdstring(cfg_file));
 
   m_core.SetReadOnly(cmd_ro);
   // OK to load prefs now
@@ -242,8 +251,8 @@ bool PwsafeApp::OnInit()
   } else {
     recentDatabases().AddFileToHistory(filename);
   }
-  m_core.SetCurFile(filename.c_str());
-  m_core.SetApplicationNameAndVersion(progName.c_str(),
+  m_core.SetCurFile(tostringx(filename));
+  m_core.SetApplicationNameAndVersion(tostdstring(progName),
                                       MAKEWORD(MINORVERSION, MAJORVERSION));
 
 #if !defined(__WXDEBUG__) && !defined(__WXMAC__) && !defined(_WIN32)
@@ -283,7 +292,9 @@ bool PwsafeApp::OnInit()
     _("Error initializing help"), wxOK | wxICON_ERROR);
   m_controller->SetParentWindow(NULL); // try to de-modalize. Partially (?) successful
 
+#ifndef __WXOSX_COCOA__
   m_appIcons.AddIcon(pwsafe8);
+#endif
   m_appIcons.AddIcon(pwsafe16);
   m_appIcons.AddIcon(pwsafe32);
   m_appIcons.AddIcon(pwsafe48);

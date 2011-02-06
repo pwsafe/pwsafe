@@ -223,7 +223,11 @@ void SystemTray::OnSysTrayMenuItem(wxCommandEvent& evt)
     else {
       wxCommandEvent cmd(evt.GetEventType(), GetFrameCommandId(opn));
       cmd.SetExtraLong(GetRUEIndex(id));
+#if wxCHECK_VERSION(2,9,0)
+      m_frame->GetEventHandler()->ProcessEvent(cmd);
+#else
       m_frame->ProcessEvent(cmd);
+#endif
     }
   }
   else {
@@ -250,7 +254,11 @@ void SystemTray::OnSysTrayMenuItem(wxCommandEvent& evt)
       case ID_CLEARCLIPBOARD:
       case wxID_ABOUT:
       case wxID_CLOSE:
+#if wxCHECK_VERSION(2,9,0)
+        m_frame->GetEventHandler()->ProcessEvent(evt);
+#else
         m_frame->ProcessEvent(evt);
+#endif
         break;
 
       default:

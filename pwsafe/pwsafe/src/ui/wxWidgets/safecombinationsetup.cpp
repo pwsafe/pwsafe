@@ -221,7 +221,7 @@ void CSafeCombinationSetup::OnOkClick( wxCommandEvent& /* evt */ )
     // (also used in CPasskeyChangeDlg)
 #ifndef _DEBUG // for debug, we want no checks at all, to save time
     StringX errmess;
-    if (!CPasswordCharPool::CheckPassword(m_password.c_str(), errmess)) {
+    if (!CPasswordCharPool::CheckPassword(tostringx(m_password), errmess)) {
       wxString cs_msg;
       cs_msg = _("Weak passphrase:\n\n");
       cs_msg += errmess.c_str();

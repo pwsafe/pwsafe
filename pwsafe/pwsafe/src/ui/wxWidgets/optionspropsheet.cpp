@@ -892,7 +892,7 @@ void COptions::PropSheetToPrefs()
   wxString buprefixValue;
   if (m_usrbuprefixRB->GetValue())
     buprefixValue = m_usrbuprefixTxt->GetValue();
-  prefs->SetPref(PWSprefs::BackupPrefixValue, buprefixValue.c_str());
+  prefs->SetPref(PWSprefs::BackupPrefixValue, tostringx(buprefixValue));
   int suffixIndex = m_busuffixCB->GetCurrentSelection();
   prefs->SetPref(PWSprefs::BackupSuffix, suffixIndex);
   if (suffixIndex == INC_SFX)
@@ -900,7 +900,7 @@ void COptions::PropSheetToPrefs()
   wxString budirValue;
   if (m_usrbudirRB->GetValue())
     budirValue = m_usrbudirTxt->GetValue();
-  prefs->SetPref(PWSprefs::BackupDir, budirValue.c_str());
+  prefs->SetPref(PWSprefs::BackupDir, tostringx(budirValue));
 
   // display-related preferences
   prefs->SetPref(PWSprefs::AlwaysOnTop, m_alwaysontop);
@@ -956,14 +956,14 @@ void COptions::PropSheetToPrefs()
   prefs->SetPref(PWSprefs::MinimizeOnAutotype, m_minauto);
   if (m_autotypeStr.empty() || m_autotypeStr == DEFAULT_AUTOTYPE)
       prefs->SetPref(PWSprefs::DefaultAutotypeString, L"");
-  else prefs->SetPref(PWSprefs::DefaultAutotypeString, m_autotypeStr.c_str());
+  else prefs->SetPref(PWSprefs::DefaultAutotypeString, tostringx(m_autotypeStr));
   prefs->SetPref(PWSprefs::UseDefaultUser, m_usedefuser);
   prefs->SetPref(PWSprefs::DefaultUsername,
-                 m_defusernameTXT->GetValue().c_str());
+                 tostringx(m_defusernameTXT->GetValue()));
   prefs->SetPref(PWSprefs::QuerySetDef, m_querysetdef);
-  prefs->SetPref(PWSprefs::AltBrowser, m_otherbrowser.c_str());
+  prefs->SetPref(PWSprefs::AltBrowser, tostringx(m_otherbrowser));
   prefs->SetPref(PWSprefs::AltBrowserCmdLineParms,
-                 m_otherbrowserparams.c_str());
+                 tostringx(m_otherbrowserparams));
 
   // Password Policy preferences:
   prefs->SetPref(PWSprefs::PWDefaultLength, m_pwdefaultlength);
