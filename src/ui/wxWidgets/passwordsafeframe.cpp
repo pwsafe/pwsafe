@@ -2201,7 +2201,11 @@ void PasswordSafeFrame::SetFocus()
 void PasswordSafeFrame::OnIconize(wxIconizeEvent& evt)
 {
   // being restored?
+#if wxCHECK_VERSION(2,9,0)
   if (!evt.IsIconized() && m_sysTray->IsLocked()){
+#else
+  if (!evt.Iconized() && m_sysTray->IsLocked()){
+#endif
     wxString password;
     if (VerifySafeCombination(password)) {
       if (ReloadDatabase(password)) {
