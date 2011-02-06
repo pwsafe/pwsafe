@@ -733,7 +733,7 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
   wxWindow *goBtn = FindWindow(ID_GO_BTN);
   goBtn->Enable(!m_url.empty());
   m_notes = (m_type != ADD && m_isNotesHidden) ?
-    _("[Notes hidden - click here to display]") : m_item.GetNotes().c_str();
+    wxString(_("[Notes hidden - click here to display]")) : towxstring(m_item.GetNotes());
   // Following has no effect under Linux :-(
   long style = m_noteTX->GetExtraStyle();
   if (prefs->GetPref(PWSprefs::NotesWordWrap)) 
@@ -932,10 +932,10 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
   if (Validate() && TransferDataFromWindow()) {
     time_t t;
     const wxString group = m_groupCtrl->GetValue();
-    const StringX password = m_PasswordCtrl->GetValue().c_str();
+    const StringX password = tostringx(m_PasswordCtrl->GetValue());
 
     if (m_isPWHidden) { // hidden passwords - compare both values
-      const StringX p2 = m_Password2Ctrl->GetValue().c_str();
+      const StringX p2 = tostringx(m_Password2Ctrl->GetValue());
       if (password != p2) {
         wxMessageDialog msg(this, _("Passwords do not match"), _("Error"),
                             wxOK|wxICON_ERROR);
@@ -996,16 +996,16 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
 
       if (bIsModified) {
         // Just modify all - even though only 1 may have actually been modified
-        m_item.SetGroup(group.c_str());
-        m_item.SetTitle(m_title.c_str());
+        m_item.SetGroup(tostringx(group));
+        m_item.SetTitle(tostringx(m_title));
         m_item.SetUser(m_user.empty() ?
                        PWSprefs::GetInstance()->
                        GetPref(PWSprefs::DefaultUsername).c_str() : m_user.c_str());
-        m_item.SetNotes(m_notes.c_str());
-        m_item.SetURL(m_url.c_str());
-        m_item.SetAutoType(m_autotype.c_str());
-        m_item.SetRunCommand(m_runcmd.c_str());
-        m_item.SetPWHistory(m_PWHistory.c_str());
+        m_item.SetNotes(tostringx(m_notes));
+        m_item.SetURL(tostringx(m_url));
+        m_item.SetAutoType(tostringx(m_autotype));
+        m_item.SetRunCommand(tostringx(m_runcmd));
+        m_item.SetPWHistory(tostringx(m_PWHistory));
         if (m_defPWPRB->GetValue())
           m_item.SetPWPolicy(_T(""));
         else {
@@ -1065,16 +1065,16 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
       break;
 
     case ADD:
-      m_item.SetGroup(group.c_str());
-      m_item.SetTitle(m_title.c_str());
+      m_item.SetGroup(tostringx(group));
+      m_item.SetTitle(tostringx(m_title));
       m_item.SetUser(m_user.empty() ?
                      PWSprefs::GetInstance()->
                       GetPref(PWSprefs::DefaultUsername).c_str() : m_user.c_str());
-      m_item.SetNotes(m_notes.c_str());
-      m_item.SetURL(m_url.c_str());
+      m_item.SetNotes(tostringx(m_notes));
+      m_item.SetURL(tostringx(m_url));
       m_item.SetPassword(password);
-      m_item.SetAutoType(m_autotype.c_str());
-      m_item.SetRunCommand(m_runcmd.c_str());
+      m_item.SetAutoType(tostringx(m_autotype));
+      m_item.SetRunCommand(tostringx(m_runcmd));
       m_item.SetDCA(m_DCA);
       time(&t);
       m_item.SetCTime(t);

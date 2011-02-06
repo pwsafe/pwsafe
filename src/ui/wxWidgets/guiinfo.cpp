@@ -88,7 +88,8 @@ void GUIInfo::SaveTreeViewInfo(PWSTreeCtrl* tree)
   if (selection.IsOk()) {
     if(tree->HasChildren(selection)) {
       m_treeSelection = tree->GetItemText(selection);
-      wxASSERT(!wxString(m_treeSelection).IsEmpty());
+      const wxString selectionStr = m_treeSelection;
+      wxASSERT(!selectionStr.IsEmpty());
     }
     else {
       CItemData* item = tree->GetItem(selection);
@@ -192,7 +193,8 @@ void RestoreTreeItem(PWSTreeCtrl* tree, const string_or_uuid& val, TreeFunc func
       func(tree, id); 
   }
   else {
-    VisitGroupItems(tree, std::bind2nd(std::equal_to<wxString>(), val), func, false);
+    const wxString valStr = val;
+    VisitGroupItems(tree, std::bind2nd(std::equal_to<wxString>(), valStr), func, false);
   }
 }
 

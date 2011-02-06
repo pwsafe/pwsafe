@@ -23,7 +23,6 @@
 #include "ExportTextWarningDlg.h"
 #include "SafeCombinationCtrl.h"
 
-#include <wx/richtext/richtextctrl.h>
 #include <wx/statline.h>
 
 enum { ID_COMBINATION = 100, ID_VKBD, ID_LINE_DELIMITER, ID_ADVANCED };
@@ -44,16 +43,12 @@ CExportTextWarningDlgBase::CExportTextWarningDlgBase(wxWindow* parent) : wxDialo
   wxBoxSizer* dlgSizer = new wxBoxSizer(wxVERTICAL);
   dlgSizer->AddSpacer(TopMargin);
   
-  wxString warningTxt(_("Warning! This operation will create an unprotected copy of ALL of the passwords in the database. Deleting this copy after use is NOT sufficient."));
-  wxString warningTxt2(_("Please do not use this option unless you understand and accept the risks. This option bypasses the security provided by this program."));
+  wxString warningTxt(_("Warning! This operation will create an unprotected copy of ALL of the passwords\r\nin the database. Deleting this copy after use is NOT sufficient."));
+  wxString warningTxt2(_("Please do not use this option unless you understand and accept the risks. This option\r\nbypasses the security provided by this program."));
   
-  wxRichTextCtrl* rt = new wxRichTextCtrl(this, wxID_ANY, warningTxt + _("\r\n\r\n") + warningTxt2, wxDefaultPosition, 
-                                              wxSize(-1, 200), wxRE_MULTILINE|wxRE_READONLY);
-  wxRichTextAttr attr(*wxRED); 
-  attr.SetFontWeight(wxBOLD); 
-  rt->SetBasicStyle(attr);
-  rt->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE));
-  rt->SetTransparent(wxIMAGE_ALPHA_TRANSPARENT); //doesn't work on Gtk, may be it does on Windows/Mac
+  wxStaticText* rt = new wxStaticText(this, wxID_ANY, warningTxt + _("\r\n\r\n") + warningTxt2, wxDefaultPosition, 
+                                              wxSize(-1, 200));
+  rt->SetForegroundColour(*wxRED);
   dlgSizer->Add(rt, wxSizerFlags().Border(wxLEFT|wxRIGHT, SideMargin).Proportion(1).Expand());
   dlgSizer->AddSpacer(RowSeparation);
   

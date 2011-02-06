@@ -25,6 +25,7 @@
 
 #include "createshortcutdlg.h"
 #include "core/ItemData.h"
+#include "./wxutils.h"
 
 ////@begin XPM images
 ////@end XPM images
@@ -241,10 +242,10 @@ void CreateShortcutDlg::OnOkClick( wxCommandEvent& /* evt */ )
     const wxString group = m_groupCtrl->GetValue();
 
     if (!group.empty())
-      shortcut.SetGroup(group.c_str());
-    shortcut.SetTitle(m_title.c_str());
+      shortcut.SetGroup(tostringx(group));
+    shortcut.SetTitle(tostringx(m_title));
     if (!m_user.empty())
-      shortcut.SetUser(m_user.c_str());
+      shortcut.SetUser(tostringx(m_user));
     time_t t;
     time(&t);
     shortcut.SetCTime(t);

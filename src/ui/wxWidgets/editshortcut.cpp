@@ -25,6 +25,7 @@
 
 #include "editshortcut.h"
 #include "core/UIinterface.h"
+#include "./wxutils.h"
 
 ////@begin XPM images
 ////@end XPM images
@@ -284,15 +285,15 @@ void EditShortcut::OnOkClick( wxCommandEvent& /* evt */ )
     const wxString group = m_groupCtrl->GetValue();
     if (group != m_item->GetGroup().c_str()) {
       modified = true;
-      modified_item.SetGroup(group.c_str());
+      modified_item.SetGroup(tostringx(group));
     }
     if (m_title != m_item->GetTitle().c_str()) {
       modified = true;
-      modified_item.SetTitle(m_title.c_str());
+      modified_item.SetTitle(tostringx(m_title));
     }
     if (m_user != m_item->GetUser().c_str()) {
       modified = true;
-      modified_item.SetUser(m_user.c_str());
+      modified_item.SetUser(tostringx(m_user));
     }
     if (modified) {
       time_t t;

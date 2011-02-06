@@ -578,7 +578,7 @@ void PasswordSafeFrame::SetTitle(const wxString& title)
   wxString newtitle = _T("PasswordSafe");
   if (!title.empty()) {
     newtitle += _T(" - ");
-    StringX fname = title.c_str();
+    StringX fname = tostringx(title);
     StringX::size_type findex = fname.rfind(_T("/"));
     if (findex != StringX::npos)
       fname = fname.substr(findex + 1);
@@ -589,7 +589,7 @@ void PasswordSafeFrame::SetTitle(const wxString& title)
 
 int PasswordSafeFrame::Load(const wxString &passwd)
 {
-  int status = m_core.ReadCurFile(passwd.c_str());
+  int status = m_core.ReadCurFile(tostringx(passwd));
   if (status == PWScore::SUCCESS) {
     SetTitle(m_core.GetCurFile().c_str());
     m_sysTray->SetTrayStatus(SystemTray::TRAY_UNLOCKED);
@@ -1038,7 +1038,7 @@ int PasswordSafeFrame::Open(const wxString &fname)
   // prompt for password, try to Load.
   CSafeCombinationPrompt pwdprompt(this, m_core, fname);
   if (pwdprompt.ShowModal() == wxID_OK) {
-    m_core.SetCurFile(fname.c_str());
+    m_core.SetCurFile(tostringx(fname));
     wxString password = pwdprompt.GetPassword();
     int retval = Load(password);
     if (retval == PWScore::SUCCESS) {
@@ -1175,7 +1175,7 @@ void PasswordSafeFrame::OnChangePasswdClick( wxCommandEvent& /* evt */ )
   CSafeCombinationChange* window = new CSafeCombinationChange(this, m_core);
   int returnValue = window->ShowModal();
   if (returnValue == wxID_OK) {
-    m_core.ChangePasskey(window->GetNewpasswd().c_str());
+    m_core.ChangePasskey(tostringx(window->GetNewpasswd()));
   }
   window->Destroy();
 }
@@ -2068,7 +2068,7 @@ int PasswordSafeFrame::NewFile(StringX &fname)
   wxString cs_text(_("Please choose a name for the new database"));
 
   wxString cf(_("pwsafe")); // reasonable default for first time user
-  wxString v3FileName = towxstring(PWSUtil::GetNewFileName(cf.c_str(), DEFAULT_SUFFIX));
+  wxString v3FileName = towxstring(PWSUtil::GetNewFileName(tostdstring(cf), DEFAULT_SUFFIX));
   wxString dir = towxstring(PWSdirs::GetSafeDir());
   int rc;
 
@@ -2115,7 +2115,7 @@ int PasswordSafeFrame::NewFile(StringX &fname)
   m_core.LockFile(fname.c_str(), locker);
 
   m_core.SetReadOnly(false); // new file can't be read-only...
-  m_core.NewFile(dbox_pksetup.GetPassword().c_str());
+  m_core.NewFile(tostringx(dbox_pksetup.GetPassword()));
 #ifdef notyet
   startLockCheckTimer();
 #endif
@@ -2201,7 +2201,7 @@ void PasswordSafeFrame::SetFocus()
 void PasswordSafeFrame::OnIconize(wxIconizeEvent& evt)
 {
   // being restored?
-  if (!evt.Iconized() && m_sysTray->IsLocked()){
+  if (!evt.IsIconized() && m_sysTray->IsLocked()){
     wxString password;
     if (VerifySafeCombination(password)) {
       if (ReloadDatabase(password)) {
@@ -2487,7 +2487,7 @@ void PasswordSafeFrame::OnImportXML(wxCommandEvent& evt)
   Command *pcmd = NULL;
 
   int rc = m_core.ImportXMLFile(ImportedPrefix, std::wstring(XMLFilename),
-                            XSDFilename.GetFullPath().c_str(), bImportPSWDsOnly,
+                            tostdstring(XSDFilename.GetFullPath()), bImportPSWDsOnly,
                             strXMLErrors, strSkippedList, strPWHErrorList, strRenameList,
                             numValidated, numImported, numSkipped, numPWHErrors, numRenamed,
                             bBadUnknownFileFields, bBadUnknownRecordFields,
@@ -2607,7 +2607,7 @@ void PasswordSafeFrame::OnExportVx(wxCommandEvent& evt)
 
   //SaveAs-type dialog box
   std::wstring OldFormatFileName = PWSUtil::GetNewFileName(m_core.GetCurFile().c_str(),
-                                                      _("dat"));
+                                                      wxT("dat"));
   cs_text = _("Please name the exported database");
 
   //filename cannot have the path. Need to pass it separately
@@ -2649,7 +2649,7 @@ struct ExportFullText
     frame->FlattenTree(olist);
   }
   static wxString GetFailureMsgTitle() {return _("Export Text failed"); }
-  static stringT  FileExtension() { return _("txt"); }
+  static stringT  FileExtension() { return wxT("txt"); }
   static wxString FileOpenPrompt() { return _("Please name the plaintext file"); }
   static wxString WildCards() {return _("Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*; *)|*.*;*"); }
   static int Write(PWScore& core, const StringX &filename, const CItemData::FieldBits &bsFields,
@@ -2685,7 +2685,7 @@ struct ExportFullXml {
     frame->FlattenTree(olist);
   }
   static wxString GetFailureMsgTitle() {return _("Export XML failed"); }
-  static stringT  FileExtension() { return _("xml"); }
+  static stringT  FileExtension() { return wxT("xml"); }
   static wxString FileOpenPrompt() { return _("Please name the XML file"); }
   static wxString WildCards() {return _("XML files (*.xml)|*.xml|All files (*.*; *)|*.*;*"); }
   static int Write(PWScore& core, const StringX &filename, const CItemData::FieldBits &bsFields,
@@ -2902,7 +2902,7 @@ void PasswordSafeFrame::Merge(const StringX &sx_Filename2, PWScore *pothercore, 
   /* Create report as we go */
   CReport rpt;
   rpt.StartReport(_("Merge"), sx_Filename1.c_str());
-  rpt.WriteLine(wxString::Format(_("Merging database: %s\r\n"), sx_Filename2.c_str()).c_str());
+  rpt.WriteLine(tostdstring(wxString(_("Merging database: ")) << towxstring(sx_Filename2) << wxT("\r\n")));
   
   std::vector<StringX> vs_added;
   std::vector<StringX> vs_AliasesAdded;
