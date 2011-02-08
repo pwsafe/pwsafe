@@ -85,7 +85,7 @@ void GUIInfo::SaveTreeViewInfo(PWSTreeCtrl* tree)
 
   //save the selected item
   wxTreeItemId selection = tree->GetSelection();
-  if (selection.IsOk()) {
+  if (selection.IsOk() && selection != tree->GetRootItem()) {
     if(tree->HasChildren(selection)) {
       m_treeSelection = tree->GetItemText(selection);
       const wxString selectionStr = m_treeSelection;
