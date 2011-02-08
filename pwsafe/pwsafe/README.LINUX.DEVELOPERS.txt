@@ -8,6 +8,7 @@ package names (e.g., rpm).
 
 Here are the packages/tools required for building the Linux version
 under Debian:
+fakeroot
 g++
 gmake (version 3.81 or newer.  Makefiles are not compatible with lower versions)
 libuuid1
@@ -17,11 +18,11 @@ libxerces-c-dev
 libxt-dev
 libxtst-dev
 subversion
-fakeroot
+uuid-dev
+zip
 
 For Ubuntu:
 - 'make' replaces 'gmake'
-- uuid-dev should be added
 
 For Fedora:
 gcc-c++
