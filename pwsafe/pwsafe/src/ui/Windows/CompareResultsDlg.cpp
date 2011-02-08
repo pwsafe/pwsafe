@@ -858,7 +858,7 @@ void CCompareResultsDlg::WriteReportData()
          cd_iter++) {
       const st_CompareData &st_data = *cd_iter;
 
-      buffer.Format(IDS_COMPARESTATS, st_data.group, st_data.title, st_data.user);
+      buffer.Format(IDS_COMPARESTATS, st_data.group.c_str(), st_data.title.c_str(), st_data.user.c_str());
       m_pRpt->WriteLine((LPCWSTR)buffer);
     }
     m_pRpt->WriteLine();
@@ -871,7 +871,7 @@ void CCompareResultsDlg::WriteReportData()
          cd_iter++) {
       const st_CompareData &st_data = *cd_iter;
 
-      buffer.Format(IDS_COMPARESTATS, st_data.group, st_data.title, st_data.user);
+      buffer.Format(IDS_COMPARESTATS, st_data.group.c_str(), st_data.title.c_str(), st_data.user.c_str());
       m_pRpt->WriteLine((LPCWSTR)buffer);
     }
     m_pRpt->WriteLine();
@@ -901,7 +901,7 @@ void CCompareResultsDlg::WriteReportData()
          cd_iter++) {
       const st_CompareData &st_data = *cd_iter;
 
-      buffer.Format(IDS_COMPARESTATS2, st_data.group, st_data.title, st_data.user);
+      buffer.Format(IDS_COMPARESTATS2, st_data.group.c_str(), st_data.title.c_str(), st_data.user.c_str());
       m_pRpt->WriteLine(std::wstring(buffer));
       buffer.Empty();
 
