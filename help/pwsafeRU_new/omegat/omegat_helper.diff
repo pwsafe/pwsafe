@@ -194,3 +194,68 @@ diff -bNau ../../default/html/password_history.html ./source/html/password_histo
  
  
  
+diff -bNau ../../default/html/style.css ./source/html/style.css
+--- ../../default/html/style.css	2010-09-05 00:12:11.000000000 +0400
++++ ./source/html/style.css	2011-02-09 15:40:19.000000000 +0300
+@@ -26,19 +26,23 @@
+ 	{
+ 	margin-top: .75em;
+ 	margin-bottom: 1.25em;	
++	text-align:justify;
+ 	}	
+ 
+ li	{
+ 	margin-left: .15in;
++	text-align:justify;
+ 	}	 
+ 
+ ol li
+ 	{
+ 	margin-left: .10in;
++	text-align:justify;
+ 	}
+ 
+ ul	{
+ 	list-style: disc;
++	text-align:justify;
+ 	}
+ 
+ ul.onestep
+@@ -73,3 +77,9 @@
+ 	vertical-align: top;
+ 	padding: 0;
+ 	}
++
++p	{
++        text-align:justify;
++	text-indent: 3ex;
++	margin:0.25em;
++	}
+diff -bNau ../../default/html/wzselectdb.html ./source/html/wzselectdb.html
+--- ../../default/html/wzselectdb.html	2011-02-07 18:45:12.000000000 +0300
++++ ./source/html/wzselectdb.html	2011-02-09 19:50:30.000000000 +0300
+@@ -39,13 +39,19 @@
+ based on the contents of the Group, Title, User Name, URL or Notes fields and/or which
+ fields to Compare, Merge, Synchronize or Export.</p>
+ 
+-<p>Note 1: When exporting a single entry via the Edit Menu or Context Menu (by right
++<hr>
++<small><b>Notes:</b><br></small>
++<ul>
++<li><small>Note 1: When exporting a single entry via the Edit Menu or Context Menu (by right
+ clicking on the entry), the option to restrict the export based on the contents of
+-the Group, Title, User Name, URL or Notes fields is obviously not available.</p>
+-
+-<p>Note 2: When Merging a database into the currently open database, you will not be able
++the Group, Title, User Name, URL or Notes fields is obviously not available.</small>
++</li>
++<li><small>Note 2: When Merging a database into the currently open database, you will not be able
+ to restrict which fields of the entries being merged are copied.  If an entry passes your
+-selection criteria, then the complete entry will be merged into the current database.</p>
++selection criteria, then the complete entry will be merged into the current database.</small>
++</li>
++</ul>
++<hr>
+ <br>
+ <br>
+ <br>
