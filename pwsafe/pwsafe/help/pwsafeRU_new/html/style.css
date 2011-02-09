@@ -25,20 +25,24 @@ DD	{
 li p
 	{
 	margin-top: .75em;
-	margin-bottom: 1.25em;	
+	margin-bottom: 1.25em;
+	text-align:justify;
 	}	
 
 li	{
 	margin-left: .15in;
+	text-align:justify;
 	}	 
 
 ol li
 	{
 	margin-left: .10in;
+	text-align:justify;
 	}
 
 ul	{
 	list-style: disc;
+	text-align:justify;
 	}
 
 ul.onestep
@@ -72,4 +76,10 @@ td	{
 	margin: .25em;
 	vertical-align: top;
 	padding: 0;
+	}
+
+p	{
+        text-align:justify;
+	text-indent: 3ex;
+	margin:0.25em;
 	}
