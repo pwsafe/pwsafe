@@ -214,6 +214,8 @@ wxMenu* SystemTray::SetupRecentEntryMenu(const CItemData* pci, size_t idx)
 
 void SystemTray::OnSysTrayMenuItem(wxCommandEvent& evt)
 {
+  EventHandlerDisabler ehd(this);
+
   const int id = evt.GetId();
   if (IsRUECommand(id)) {
     RUEOperation opn = GetRUEOperation(id);
@@ -269,5 +271,6 @@ void SystemTray::OnSysTrayMenuItem(wxCommandEvent& evt)
 
 void SystemTray::OnTaskBarLeftDoubleClick(wxTaskBarIconEvent& /*evt*/)
 {
+  EventHandlerDisabler ehd(this);
   m_frame->UnlockSafe(true); //true => restore UI
 }

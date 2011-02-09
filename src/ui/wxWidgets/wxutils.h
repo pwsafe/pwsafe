@@ -81,6 +81,19 @@ enum {
 
 extern bool MergeSyncGTUCompare(const StringX &elem1, const StringX &elem2);
 
+class EventHandlerDisabler {
+  wxEvtHandler* m_handler;
+  bool m_enabled;
+public:
+  EventHandlerDisabler(wxEvtHandler* h): m_handler(h), m_enabled(h->GetEvtHandlerEnabled()){
+    if (m_enabled)
+      h->SetEvtHandlerEnabled(false);
+  }
+  ~EventHandlerDisabler() {
+    if (m_enabled)
+      m_handler->SetEvtHandlerEnabled(true);
+  }
+};
 
 #endif
 
