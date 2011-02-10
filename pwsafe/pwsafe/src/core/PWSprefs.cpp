@@ -123,6 +123,7 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("LockDBOnIdleTimeout"), true, ptDatabase},            // database
   {_T("HighlightChanges"), true, ptApplication},            // application
   {_T("HideSystemTray"), false, ptApplication},             // application
+  {_T("UsePrimarySelectionForClipboard"), false, ptApplication}, //application
 };
 
 // Default value = -1 means set at runtime

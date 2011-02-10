@@ -27,13 +27,15 @@
 #include "wx/dirdlg.h"
 #include "wx/msgdlg.h"
 #include "wx/debug.h"
+#if defined(__X__) || defined(__WXGTK__)
+#include <wx/clipbrd.h>
+#endif
 
 #include "passwordsafeframe.h"
 #include "optionspropsheet.h"
 #include "core/PWSprefs.h"
 #include "core/Util.h" // for datetime string
 #include "core/PWSAuxParse.h" // for DEFAULT_AUTOTYPE
-
 ////@begin XPM images
 ////@end XPM images
 
@@ -703,6 +705,12 @@ void COptions::CreateControls()
   itemCheckBox141->SetValue(false);
   itemBoxSizer126->Add(itemCheckBox141, 0, wxALIGN_LEFT|wxALL, 5);
 
+#if defined(__X__) || defined(__WXGTK__)
+  wxCheckBox* itemCheckBox142 = new wxCheckBox( itemPanel125, ID_CHECKBOX35, _("Use Primary Selection for clipboard"), wxDefaultPosition, wxDefaultSize, 0 );
+  itemCheckBox142->SetValue(false);
+  itemBoxSizer126->Add(itemCheckBox142, 0, wxALIGN_LEFT|wxALL, 5);
+#endif
+
   GetBookCtrl()->AddPage(itemPanel125, _("System"));
 
   wxPanel* itemPanel142 = new wxPanel( GetBookCtrl(), ID_PANEL7, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER|wxTAB_TRAVERSAL );
@@ -749,6 +757,9 @@ void COptions::CreateControls()
   // Connect events and objects
   m_usrbuprefixTxt->Connect(ID_TEXTCTRL9, wxEVT_SET_FOCUS, wxFocusEventHandler(COptions::OnBuPrefixTxtSetFocus), NULL, this);
 ////@end COptions content construction
+#if defined(__X__) || defined(__WXGTK__)
+  itemCheckBox142->SetValidator(wxGenericValidator(&m_usePrimarySelection));
+#endif
 }
 
 
@@ -881,6 +892,9 @@ void COptions::PrefsToPropSheet()
   m_sysmruonfilemenu = prefs->GetPref(PWSprefs::MRUOnFileMenu);
   m_sysdefopenro = prefs->GetPref(PWSprefs::DefaultOpenRO);
   m_sysmultinst = prefs->GetPref(PWSprefs::MultipleInstances);
+#if defined(__X__) || defined(__WXGTK__)
+  m_usePrimarySelection = prefs->GetPref(PWSprefs::UsePrimarySelectionForClipboard);
+#endif
 }
 
 void COptions::PropSheetToPrefs()
@@ -1002,6 +1016,10 @@ void COptions::PropSheetToPrefs()
   prefs->SetPref(PWSprefs::MRUOnFileMenu, m_sysmruonfilemenu);
   prefs->SetPref(PWSprefs::DefaultOpenRO, m_sysdefopenro);
   prefs->SetPref(PWSprefs::MultipleInstances, m_sysmultinst);
+#if defined(__X__) || defined(__WXGTK__)
+  prefs->SetPref(PWSprefs::UsePrimarySelectionForClipboard, m_usePrimarySelection);
+  wxTheClipboard->UsePrimarySelection(m_usePrimarySelection);
+#endif
 }
 
 void COptions::OnOk(wxCommandEvent& /* evt */)
