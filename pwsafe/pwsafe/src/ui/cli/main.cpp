@@ -13,6 +13,7 @@
 
 #include "PWScore.h"
 #include "os/file.h"
+#include "core/PWSdirs.h"
 #include "core/UTF8Conv.h"
 #include "core/Report.h"
 #include "core/XML/XMLDefs.h"
@@ -311,172 +312,131 @@ ImportText(PWScore &core, const StringX &fname)
 static int
 ImportXML(PWScore &core, const StringX &fname)
 {
-#if 0
   const std::wstring XSDfn(L"pwsafe.xsd");
   std::wstring XSDFilename = PWSdirs::GetXMLDir() + XSDfn;
 
 #if USE_XML_LIBRARY == MSXML || USE_XML_LIBRARY == XERCES
   if (!pws_os::FileExists(XSDFilename)) {
-    CGeneralMsgBox gmb;
-    cs_temp.Format(IDSC_MISSINGXSD, XSDfn.c_str());
-    cs_title.LoadString(IDSC_CANTVALIDATEXML);
-    gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONSTOP);
-    return;
+    wcerr << L"Can't find XML Schema Definition file"
+          << XSDFilename << endl
+          << L"Can't import without it." << endl;
+    return PWScore::XML_FAILED_IMPORT;
   }
 #endif
 
-  CImportXMLDlg dlg;
-  INT_PTR status = dlg.DoModal();
-
-  if (status == IDCANCEL)
-    return;
-
-  std::wstring ImportedPrefix(dlg.m_groupName);
+  std::wstring ImportedPrefix;
   std::wstring dir;
-  if (core.GetCurFile().empty())
-    dir = PWSdirs::GetSafeDir();
-  else {
-    std::wstring cdrive, cdir, dontCare;
-    pws_os::splitpath(core.GetCurFile().c_str(), cdrive, cdir, dontCare, dontCare);
-    dir = cdrive + cdir;
-  }
+  std::wstring strXMLErrors, strSkippedList, strPWHErrorList, strRenameList;
+  int numValidated, numImported, numSkipped, numRenamed, numPWHErrors;
+  bool bBadUnknownFileFields, bBadUnknownRecordFields;
+  bool bImportPSWDsOnly = false;
 
-  CPWFileDialog fd(TRUE,
-                   L"xml",
-                   NULL,
-                   OFN_FILEMUSTEXIST | OFN_HIDEREADONLY | OFN_LONGNAMES,
-                   CString(MAKEINTRESOURCE(IDS_FDF_XML)),
-                   this);
+  
+  // Create report as we go
+  CReport rpt;
+  std::wstring str_text;
+  rpt.StartReport(L"Import_XML", core.GetCurFile().c_str());
+  str_text = L"XML file being imported: ";
+  str_text += fname.c_str();
+  rpt.WriteLine(str_text);
+  rpt.WriteLine();
+  std::vector<StringX> vgroups;
+  Command *pcmd = NULL;
 
-  fd.m_ofn.lpstrTitle = cs_text;
-
-  if (!dir.empty())
-    fd.m_ofn.lpstrInitialDir = dir.c_str();
-
-  INT_PTR rc = fd.DoModal();
-
-  if (m_inExit) {
-    // If U3ExitNow called while in CPWFileDialog,
-    // PostQuitMessage makes us return here instead
-    // of exiting the app. Try resignalling 
-    PostQuitMessage(0);
-    return;
-  }
-
-  if (rc == IDOK) {
-    bool bWasEmpty = core.GetNumEntries() == 0;
-    std::wstring strXMLErrors, strSkippedList, strPWHErrorList, strRenameList;
-    CString XMLFilename = fd.GetPathName();
-    int numValidated, numImported, numSkipped, numRenamed, numPWHErrors;
-    bool bBadUnknownFileFields, bBadUnknownRecordFields;
-    bool bImportPSWDsOnly = dlg.m_bImportPSWDsOnly == TRUE;
-
-    CWaitCursor waitCursor;  // This may take a while!
-
-    // Create report as we go
-    CReport rpt;
-    std::wstring str_text;
-    LoadAString(str_text, IDS_RPTIMPORTXML);
-    rpt.StartReport(str_text.c_str(), core.GetCurFile().c_str());
-    LoadAString(str_text, IDS_XML);
-    cs_temp.Format(IDS_IMPORTFILE, str_text.c_str(), XMLFilename);
-    rpt.WriteLine((LPCWSTR)cs_temp);
-    rpt.WriteLine();
-    std::vector<StringX> vgroups;
-    Command *pcmd = NULL;
-
-    rc = core.ImportXMLFile(ImportedPrefix, std::wstring(XMLFilename),
+  int rc = core.ImportXMLFile(ImportedPrefix.c_str(), fname.c_str(),
                               XSDFilename.c_str(), bImportPSWDsOnly,
-                              strXMLErrors, strSkippedList, strPWHErrorList, strRenameList,
-                              numValidated, numImported, numSkipped, numPWHErrors, numRenamed,
+                              strXMLErrors, strSkippedList, strPWHErrorList,
+                              strRenameList, numValidated, numImported,
+                              numSkipped, numPWHErrors, numRenamed,
                               bBadUnknownFileFields, bBadUnknownRecordFields,
                               rpt, pcmd);
-    waitCursor.Restore();  // Restore normal cursor
 
-    std::wstring csErrors(L"");
-    switch (rc) {
-    case PWScore::XML_FAILED_VALIDATION:
-      rpt.WriteLine(strXMLErrors.c_str());
-      cs_temp.Format(IDS_FAILEDXMLVALIDATE, fd.GetFileName(), L"");
-      delete pcmd;
-      break;
-    case PWScore::XML_FAILED_IMPORT:
-      rpt.WriteLine(strXMLErrors.c_str());
-      cs_temp.Format(IDS_XMLERRORS, fd.GetFileName(), L"");
-      delete pcmd;
-      break;
-    case PWScore::SUCCESS:
-    case PWScore::OK_WITH_ERRORS:
-      cs_title.LoadString(rc == PWScore::SUCCESS ? IDS_COMPLETE : IDS_OKWITHERRORS);
-      if (pcmd != NULL)
-        Execute(pcmd);
+  switch (rc) {
+  case PWScore::XML_FAILED_VALIDATION:
+    rpt.WriteLine(strXMLErrors.c_str());
+    str_text = L"File ";
+    str_text += fname.c_str();
+    str_text += L" failed to validate.";
+    delete pcmd;
+    break;
+  case PWScore::XML_FAILED_IMPORT:
+    rpt.WriteLine(strXMLErrors.c_str());
+    str_text = L"File ";
+    str_text += fname.c_str();
+    str_text += L" validated but hadd errors during import.";
+    delete pcmd;
+    break;
+  case PWScore::SUCCESS:
+  case PWScore::OK_WITH_ERRORS:
+    if (pcmd != NULL)
+      rc = core.Execute(pcmd);
 
-      if (!strXMLErrors.empty() ||
-          bBadUnknownFileFields || bBadUnknownRecordFields ||
-          numRenamed > 0 || numPWHErrors > 0) {
-        if (!strXMLErrors.empty())
-          csErrors = strXMLErrors + L"\n";
+    if (!strXMLErrors.empty() ||
+        bBadUnknownFileFields || bBadUnknownRecordFields ||
+        numRenamed > 0 || numPWHErrors > 0) {
+      wstring csErrors;
+      if (!strXMLErrors.empty())
+        csErrors = strXMLErrors + L"\n";
 
-        if (bBadUnknownFileFields) {
-          CString cs_type(MAKEINTRESOURCE(IDS_HEADER));
-          cs_temp.Format(IDS_XMLUNKNFLDIGNORED, cs_type);
-          csErrors += cs_temp + L"\n";
-        }
-
-        if (bBadUnknownRecordFields) {
-          CString cs_type(MAKEINTRESOURCE(IDS_RECORD));
-          cs_temp.Format(IDS_XMLUNKNFLDIGNORED, cs_type);
-          csErrors += cs_temp + L"\n";
-        }
-
-        if (!csErrors.empty()) {
-          rpt.WriteLine(csErrors.c_str());
-        }
-
-        CString cs_renamed(L""), cs_PWHErrors(L""), cs_skipped(L"");
-        if (numSkipped > 0) {
-          cs_skipped.LoadString(IDS_TITLESKIPPED);
-          rpt.WriteLine((LPCWSTR)cs_skipped);
-          cs_skipped.Format(IDS_XMLIMPORTSKIPPED, numSkipped);
-          rpt.WriteLine(strSkippedList.c_str());
-          rpt.WriteLine();
-        }
-        if (numPWHErrors > 0) {
-          cs_PWHErrors.LoadString(IDS_TITLEPWHERRORS);
-          rpt.WriteLine((LPCWSTR)cs_PWHErrors);
-          cs_PWHErrors.Format(IDS_XMLIMPORTPWHERRORS, numPWHErrors);
-          rpt.WriteLine(strPWHErrorList.c_str());
-          rpt.WriteLine();
-        }
-        if (numRenamed > 0) {
-          cs_renamed.LoadString(IDS_TITLERENAMED);
-          rpt.WriteLine((LPCWSTR)cs_renamed);
-          cs_renamed.Format(IDS_XMLIMPORTRENAMED, numRenamed);
-          rpt.WriteLine(strRenameList.c_str());
-          rpt.WriteLine();
-        }
-
-        cs_temp.Format(IDS_XMLIMPORTWITHERRORS,
-                       fd.GetFileName(), numValidated, numImported,
-                       cs_skipped, cs_renamed, cs_PWHErrors);
-
-        ChangeOkUpdate();
-      } else {
-        const CString cs_validate(MAKEINTRESOURCE(numValidated == 1 ? IDSC_ENTRY : IDSC_ENTRIES));
-        const CString cs_imported(MAKEINTRESOURCE(numImported == 1 ? IDSC_ENTRY : IDSC_ENTRIES));
-        cs_temp.Format(IDS_XMLIMPORTOK, numValidated, cs_validate, numImported, cs_imported);
-        ChangeOkUpdate();
+      if (bBadUnknownFileFields) {
+        csErrors += L"At least one unknown header field is now in use. Any found have been ignored.\n";
       }
 
-      RefreshViews();
-      break;
-    default:
-      ASSERT(0);
-    } // switch
+      if (bBadUnknownRecordFields) {
+        csErrors += L"At least one unknown record field is now in use. Any found have been ignored.\n";
+      }
+
+      if (!csErrors.empty()) {
+        rpt.WriteLine(csErrors.c_str());
+      }
+
+      wstring cs_renamed, cs_PWHErrors, cs_skipped;
+      if (numSkipped > 0) {
+        rpt.WriteLine(wstring(L"The following records were skipped:"));
+        wostringstream oss;
+        oss << L" / skipped " << numSkipped;
+        cs_skipped = oss.str();
+        rpt.WriteLine(strSkippedList.c_str());
+        rpt.WriteLine();
+      }
+      if (numPWHErrors > 0) {
+        rpt.WriteLine(wstring(L"The following records had errors in their Password History:"));
+        wostringstream oss;
+        oss << L" / with Password History errors " << numPWHErrors;
+        cs_PWHErrors = oss.str();
+        rpt.WriteLine(strPWHErrorList.c_str());
+        rpt.WriteLine();
+      }
+      if (numRenamed > 0) {
+        rpt.WriteLine(wstring(L"The following records were renamed as an entry already exists in your database or in the Import file:"));
+        wostringstream oss;
+        oss << L" / renamed " << numRenamed;
+        cs_renamed = oss.str();
+        rpt.WriteLine(strRenameList.c_str());
+        rpt.WriteLine();
+      }
+
+      wostringstream os2;
+      os2 << L"File " << fname << L" was imported (entries validated"
+          << numValidated << L" / imported " << numImported
+          << cs_skipped <<  cs_renamed << cs_PWHErrors;
+      str_text = os2.str();
+    } else {
+      const wstring validate(numValidated == 1 ? L" entry" : L" entries");
+      const wstring import(numImported == 1 ? L" entry" : L" entries");
+      wostringstream oss;
+      oss << L"Validated " << numValidated << validate << L'\t'
+          << L"Imported " << numImported << import << endl;
+      str_text = oss.str();
+    }
+
+    break;
+  default:
+    ASSERT(0);
+  } // switch
 
     // Finish Report
-    rpt.WriteLine((LPCWSTR)cs_temp);
-    rpt.EndReport();
-#endif
-    return 0;
-  }
+  rpt.WriteLine(str_text);
+  rpt.EndReport();
+  return rc;
+}
