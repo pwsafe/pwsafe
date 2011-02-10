@@ -327,7 +327,7 @@ std::FILE *pws_os::FOpen(const stringT &filename, const TCHAR *mode)
   const char *cmode = NULL;
 #ifdef UNICODE
   size_t fnsize = wcstombs(NULL, filename.c_str(), 0) + 1;
-  assert(fnsize > 0);
+  assert(fnsize > 1);
   cfname = new char[fnsize];
   wcstombs(const_cast<char *>(cfname), filename.c_str(), fnsize);
 
@@ -349,6 +349,8 @@ std::FILE *pws_os::FOpen(const stringT &filename, const TCHAR *mode)
 
 long pws_os::fileLength(std::FILE *fp)
 {
+  if (fp == NULL)
+    return -1;
   int fd = fileno(fp);
   if (fd == -1)
     return -1;
