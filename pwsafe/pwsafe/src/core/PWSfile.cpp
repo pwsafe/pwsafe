@@ -133,6 +133,7 @@ PWSfile::HeaderRecord &PWSfile::HeaderRecord::operator=(const PWSfile::HeaderRec
 
 void PWSfile::FOpen()
 {
+  ASSERT(!m_filename.empty());
   const TCHAR* m = (m_rw == Read) ? _T("rb") : _T("wb");
   if (m_fd != NULL) {
     fclose(m_fd);

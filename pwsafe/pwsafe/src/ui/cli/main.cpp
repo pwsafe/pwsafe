@@ -168,7 +168,11 @@ int main(int argc, char *argv[])
       goto done;
     }
   }
-  status = core.ReadFile(ua.safe, pk);
+  // Since we may be writing the same file we're reading,
+  // it behooves us to set the Current File and use its' related
+  // functions
+  core.SetCurFile(ua.safe);
+  status = core.ReadCurFile(pk);
   if (status != PWScore::SUCCESS) {
     cout << "ReadFile returned: " << status_text(status) << endl;
     goto done;
@@ -178,9 +182,9 @@ int main(int argc, char *argv[])
     CItemData::FieldBits all(~0L);
     int N;
     if (ua.Format == UserArgs::XML) {
-      core.WriteXMLFile(ua.fname, all, L"", 0, 0, L' ', N);
+      status = core.WriteXMLFile(ua.fname, all, L"", 0, 0, L' ', N);
     } else { // export text
-      core.WritePlaintextFile(ua.fname, all, L"", 0, 0, L' ', N);
+      status = core.WritePlaintextFile(ua.fname, all, L"", 0, 0, L' ', N);
     }
   } else { // Import
     if (ua.Format == UserArgs::XML) {
@@ -188,6 +192,12 @@ int main(int argc, char *argv[])
     } else { // import text
       status = ImportText(core, ua.fname);
     }
+    if (status == PWScore::SUCCESS)
+      status = core.WriteCurFile();
+  }
+  if (status != PWScore::SUCCESS) {
+    cout << "Operation returned status: " << status_text(status) << endl;
+    goto done;
   }
  done:
   core.UnlockFile(ua.safe.c_str());
@@ -233,7 +243,8 @@ static const char *status_text(int status)
   case PWScore::XML_FAILED_IMPORT: return "XML_FAILED_IMPORT";
   case PWScore::LIMIT_REACHED: return "LIMIT_REACHED";
   case PWScore::UNIMPLEMENTED: return "UNIMPLEMENTED";
-  default: return "UNKNOWN !!!";
+  case PWScore::NO_ENTRIES_EXPORTED: return "NO_ENTRIES_EXPORTED";
+  default: return "UNKNOWN ?!";
   }
 }
 
@@ -243,7 +254,7 @@ ImportText(PWScore &core, const StringX &fname)
   int numImported(0), numSkipped(0), numPWHErrors(0), numRenamed(0);
   std::wstring strError;
   wchar_t delimiter = L' ';
-  wchar_t fieldSeparator = L' ';
+  wchar_t fieldSeparator = L'\t';
   StringX ImportedPrefix;
   bool bImportPSWDsOnly = false;
 
