@@ -114,6 +114,9 @@ class wxBoxSizer;
 #define ID_CHECKBOX32 10185
 #define ID_CHECKBOX33 10186
 #define ID_CHECKBOX34 10005
+#if defined(__X__) || defined(__WXGTK__)
+#define ID_CHECKBOX35 10006
+#endif
 #define ID_PANEL7 10138
 #define ID_GRID1 10187
 #if WXWIN_COMPATIBILITY_2_6
@@ -387,6 +390,9 @@ private:
   bool m_sysdefopenro;
   bool m_sysmultinst;
   bool m_putgroups1st;
+#if defined(__X__) || defined(__WXGTK__)
+  bool m_usePrimarySelection;
+#endif
 ////@end COptions member variables
  private:
   void PrefsToPropSheet();

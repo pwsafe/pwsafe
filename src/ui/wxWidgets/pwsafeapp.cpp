@@ -47,6 +47,9 @@ using namespace std;
 #include <wx/fs_arc.h>
 #include <wx/propdlg.h>
 #include <wx/textfile.h>
+#if defined(__X__) || defined(__WXGTK__)
+#include <wx/clipbrd.h>
+#endif
 
 ////@begin XPM images
 #ifndef __WXOSX_COCOA__
@@ -267,6 +270,10 @@ bool PwsafeApp::OnInit()
     exit(0);
   }
 #endif /* _DEBUG */
+
+#if defined(__X__) || defined(__WXGTK__)
+  wxTheClipboard->UsePrimarySelection(prefs->GetPref(PWSprefs::UsePrimarySelectionForClipboard));
+#endif
 
   // here if we're the child
   recentDatabases().Load();
