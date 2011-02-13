@@ -27,6 +27,7 @@
 					<Add option="-D_DEBUG" />
 					<Add option="-DDEBUG" />
 					<Add option="-D__WXDEBUG__" />
+					<Add option="-D__WX__" />
 					<Add directory="../../src" />
 				</Compiler>
 				<Linker>
@@ -41,7 +42,47 @@
 				</Linker>
 				<ExtraCommands>
 					<Add before="rm bin/Debug/pwsafe || true" />
-					<Add before="../../Misc/mkversion.pl ../../src/ui/wxWidgets/version.in ../../src/ui/wxWidgets/version.h" />
+					<Add before="perl -w ../../Misc/mkversion.pl ../../src/ui/wxWidgets/version.in ../../src/ui/wxWidgets/version.h" />
+					<Mode after="always" />
+				</ExtraCommands>
+			</Target>
+			<Target title="Debug_L32">
+				<Option platforms="Unix;" />
+				<Option output="bin/Debug/pwsafe" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Option projectLinkerOptionsRelation="2" />
+				<Compiler>
+					<Add option="-Wshadow" />
+					<Add option="-Winit-self" />
+					<Add option="-Wswitch-default" />
+					<Add option="-Wextra" />
+					<Add option="-Wall" />
+					<Add option="-g" />
+					<Add option="`wx-config --cxxflags --unicode=yes --debug=yes --inplace`" />
+					<Add option="-fPIC" />
+					<Add option="-m32" />
+					<Add option="-Wformat=2" />
+					<Add option="-D_DEBUG" />
+					<Add option="-DDEBUG" />
+					<Add option="-D__WXDEBUG__" />
+					<Add option="-D__WX__" />
+					<Add directory="../../src" />
+				</Compiler>
+				<Linker>
+					<Add option="`wx-config --libs --unicode=yes --debug=yes --inplace`" />
+					<Add option="-m32" />
+					<Add library="core" />
+					<Add library="os" />
+					<Add library="uuid" />
+					<Add library="Xtst" />
+					<Add directory="../core" />
+					<Add directory="../os" />
+				</Linker>
+				<ExtraCommands>
+					<Add before="rm bin/Debug/pwsafe || true" />
+					<Add before="perl -w ../../Misc/mkversion.pl ../../src/ui/wxWidgets/version.in ../../src/ui/wxWidgets/version.h" />
 					<Mode after="always" />
 				</ExtraCommands>
 			</Target>
@@ -56,14 +97,22 @@
 		</Linker>
 		<Unit filename="../../src/ui/wxWidgets/AdvancedSelectionDlg.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/AdvancedSelectionDlg.h" />
+		<Unit filename="../../src/ui/wxWidgets/DbSelectionPanel.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/DbSelectionPanel.h" />
 		<Unit filename="../../src/ui/wxWidgets/ExportTextWarningDlg.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/ExportTextWarningDlg.h" />
+		<Unit filename="../../src/ui/wxWidgets/ExternalKeyboardButton.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/ExternalKeyboardButton.h" />
 		<Unit filename="../../src/ui/wxWidgets/ImportTextDlg.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/ImportTextDlg.h" />
 		<Unit filename="../../src/ui/wxWidgets/ImportXmlDlg.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/ImportXmlDlg.h" />
+		<Unit filename="../../src/ui/wxWidgets/MergeDlg.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/MergeDlg.h" />
 		<Unit filename="../../src/ui/wxWidgets/OpenFilePickerValidator.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/OpenFilePickerValidator.h" />
+		<Unit filename="../../src/ui/wxWidgets/PWSDragBar.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/PWSDragBar.h" />
 		<Unit filename="../../src/ui/wxWidgets/PWSgrid.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/PWSgrid.h" />
 		<Unit filename="../../src/ui/wxWidgets/PWSgridtable.cpp" />
@@ -72,6 +121,9 @@
 		<Unit filename="../../src/ui/wxWidgets/PWStree.h" />
 		<Unit filename="../../src/ui/wxWidgets/PasswordSafeSearch.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/PasswordSafeSearch.h" />
+		<Unit filename="../../src/ui/wxWidgets/PwsSync.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/PwsSync.h" />
+		<Unit filename="../../src/ui/wxWidgets/PwsToolbarButtons.h" />
 		<Unit filename="../../src/ui/wxWidgets/RUEList.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/RUEList.h" />
 		<Unit filename="../../src/ui/wxWidgets/RecentDBList.h" />
@@ -80,6 +132,8 @@
 		<Unit filename="../../src/ui/wxWidgets/SystemTray.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/SystemTray.h" />
 		<Unit filename="../../src/ui/wxWidgets/SystemTrayMenuId.h" />
+		<Unit filename="../../src/ui/wxWidgets/ViewReport.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/ViewReport.h" />
 		<Unit filename="../../src/ui/wxWidgets/about.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/about.h" />
 		<Unit filename="../../src/ui/wxWidgets/addeditpropsheet.cpp" />
@@ -88,10 +142,13 @@
 		<Unit filename="../../src/ui/wxWidgets/createshortcutdlg.h" />
 		<Unit filename="../../src/ui/wxWidgets/deleteconfirmation.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/deleteconfirmation.h" />
+		<Unit filename="../../src/ui/wxWidgets/dragbar.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/dragbar.h" />
 		<Unit filename="../../src/ui/wxWidgets/editshortcut.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/editshortcut.h" />
 		<Unit filename="../../src/ui/wxWidgets/guiinfo.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/guiinfo.h" />
+		<Unit filename="../../src/ui/wxWidgets/helpmap.h" />
 		<Unit filename="../../src/ui/wxWidgets/mainEdit.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/optionspropsheet.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/optionspropsheet.h" />

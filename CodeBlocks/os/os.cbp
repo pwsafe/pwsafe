@@ -30,10 +30,40 @@
 					<Add option="-D_DEBUG" />
 					<Add option="-DDEBUG" />
 					<Add directory="../../src" />
-					<Add directory="../../src/corelib" />
+					<Add directory="../../src/core" />
 				</Compiler>
 				<Linker>
 					<Add option="-m64" />
+				</Linker>
+			</Target>
+			<Target title="Debug_L32">
+				<Option platforms="Unix;" />
+				<Option output="libos" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="obj/Debug/" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Compiler>
+					<Add option="-Wshadow" />
+					<Add option="-Winit-self" />
+					<Add option="-Wswitch-default" />
+					<Add option="-pedantic" />
+					<Add option="-Wextra" />
+					<Add option="-Wall" />
+					<Add option="-g" />
+					<Add option="-fPIC" />
+					<Add option="-m32" />
+					<Add option="-Wformat=2" />
+					<Add option="-Wcast-qual" />
+					<Add option="-Wold-style-cast" />
+					<Add option="-D_DEBUG" />
+					<Add option="-DDEBUG" />
+					<Add directory="../../src" />
+					<Add directory="../../src/core" />
+				</Compiler>
+				<Linker>
+					<Add option="-m32" />
 				</Linker>
 			</Target>
 		</Build>
