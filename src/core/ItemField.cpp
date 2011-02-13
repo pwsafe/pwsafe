@@ -86,7 +86,7 @@ void CItemField::Set(const unsigned char* value, size_t length, Fish *bf)
 #endif
 
     //Fill the unused characters in with random stuff
-    PWSrand::GetInstance()->GetRandomData(tempmem + m_Length, (unsigned long)(BlockLength - m_Length));
+    PWSrand::GetInstance()->GetRandomData(tempmem + m_Length, static_cast<unsigned long>(BlockLength - m_Length));
 
     //Do the actual encryption
     for (size_t x = 0; x < BlockLength; x += 8)

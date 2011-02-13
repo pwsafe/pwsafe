@@ -32,7 +32,7 @@ PWSfileV1V2::~PWSfileV1V2()
 static const StringX V2ItemName(_T(" !!!Version 2 File Format!!! Please upgrade to PasswordSafe 2.0 or later"));
 // Used to specify the exact version
 static const StringX VersionString(_T("2.0"));
-static const StringX AltVersionString(_T("pre-2.0")); 
+static const StringX AltVersionString(_T("pre-2.0"));
 
 int PWSfileV1V2::WriteV2Header()
 {
@@ -130,9 +130,9 @@ int PWSfileV1V2::Open(const StringX &passkey)
   ASSERT(len != 0);
   // hack around OS-dependent semantics - too widespread to fix systematically :-(
   pstr[len < pstr_len ? len : pstr_len - 1] = '\0';
-  passLen = strlen((const char *)pstr);
+  passLen = strlen(reinterpret_cast<const char *>(pstr));
 #else
-  pstr = (unsigned char *)passstr;
+  pstr = reinterpret_cast<unsigned char *>(passstr);
 #endif
 
   if (m_rw == Write) {
@@ -337,7 +337,7 @@ static void ExtractAutoTypeCmd(StringX &notesStr, StringX &autotypeStr)
   LoadAString(cs_autotype, IDSC_AUTOTYPE);
   StringX::size_type left = instr.find(cs_autotype.c_str(), 0);
   if (left == StringX::npos) {
-    autotypeStr = _T(""); 
+    autotypeStr = _T("");
   } else {
     StringX tmp(notesStr);
     tmp = tmp.substr(left+9); // throw out everything left of "autotype:"
@@ -370,7 +370,7 @@ static void ExtractURL(StringX &notesStr, StringX &outurl)
     StringX::size_type right = url.find_first_of(_T(" \t\r\n"));
     if (right != StringX::npos) {
       instr += url.substr(right);
-      url = url.substr(0, right);    
+      url = url.substr(0, right);
     }
     outurl = url;
     notesStr = instr;
@@ -421,7 +421,7 @@ int PWSfileV1V2::ReadRecord(CItemData &item)
   ASSERT(m_fd != NULL);
   ASSERT(m_curversion != UNKNOWN_VERSION);
 
-  StringX tempdata;  
+  StringX tempdata;
   signed long numread = 0;
   unsigned char type;
 

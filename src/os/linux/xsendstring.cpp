@@ -72,9 +72,9 @@ int ShiftRequired(char* keystring)
 		return 1;
 
 	switch(keystring[0]) {
-		case '~': case '!': case '@': case '#': case '$': case '%': 
-		case '^': case '&': case '*': case '(': case ')': case '_': 
-		case '+': case '{': case '}': case '|': case ':': case '"': 
+		case '~': case '!': case '@': case '#': case '$': case '%':
+		case '^': case '&': case '*': case '(': case ')': case '_':
+		case '+': case '{': case '}': case '|': case ':': case '"':
 		case '<': case '>': case '?':
 			return 1;
 		default:
@@ -172,7 +172,7 @@ void XSendKeys_SendKeyEvent(XKeyEvent* event)
 
 	event->type = KeyRelease;
 	XSendKeys_SendEvent(event);
-  
+
 	XFlush(event->display);
 }
 
@@ -196,7 +196,7 @@ void XTest_SendKeyEvent(XKeyEvent* event)
 
 	event->type = KeyRelease;
 	XTest_SendEvent(event);
-  
+
 	if (event->state & ShiftMask) {
 		shiftEvent.type = KeyRelease;
 		XTest_SendEvent(&shiftEvent);
@@ -211,7 +211,7 @@ Bool UseXTest(void)
 	int major_opcode, first_event, first_error;
 	static Bool useXTest;
 	static int checked = 0;
-    
+
 	if (!checked) {
 		useXTest = XQueryExtension(XOpenDisplay(0), "XTEST", &major_opcode, &first_event, &first_error);
 		checked = 1;
@@ -232,15 +232,15 @@ void InitKeyEvent(XKeyEvent* event)
 
 } // anonymous namespace
 
-/* 
+/*
  * SendString - sends a string to the X Window having input focus
  *
- * The main task of this function is to convert the ascii char values 
+ * The main task of this function is to convert the ascii char values
  * into X KeyCodes.  But they need to be converted to X KeySyms first
  * and then to the keycodes.  The KeyCodes can have any random values
  * and are not contiguous like the ascii values are.
  *
- * Some escape sequences can be converted to the appropriate KeyCodes 
+ * Some escape sequences can be converted to the appropriate KeyCodes
  * by this function.  See the code below for details
  */
 
@@ -259,31 +259,31 @@ void pws_os::SendString(const StringX& str, AutotypeMethod method, unsigned dela
   // Abort if any of the characters cannot be converted
   typedef std::vector<KeyPressInfo> KeyPressInfoVector;
   KeyPressInfoVector keypresses;
-  
+
   for (StringX::const_iterator srcIter = str.begin(); srcIter != str.end(); ++srcIter) {
 
     //This array holds the multibyte representation of the current (wide) char, plus NULL
     char keystring[MB_LEN_MAX + 1] = {0};
 
-    mbstate_t state = {0};
+    mbstate_t state = mbstate_t();//using init throw constructor because of missing initializer warning
 
     size_t ret = wcrtomb(keystring, *srcIter, &state);
-    if (ret < 0) {
-      snprintf(atGlobals.errorString, NumberOf(atGlobals.errorString), 
+    if (ret == static_cast<size_t>(-1)) {
+      snprintf(atGlobals.errorString, NumberOf(atGlobals.errorString),
               "char at index(%u), value(%d) couldn't be converted to keycode. %s\n",
-                  (unsigned int)std::distance(str.begin(), srcIter), (int)*srcIter, strerror(errno));
+                  static_cast<unsigned int>(std::distance(str.begin(), srcIter)), static_cast<int>(*srcIter), strerror(errno));
       atGlobals.error_detected = True;
       return;
     }
 
     ASSERT(ret < (NumberOf(keystring)-1));
-    
+
     //Try a regular conversion first
     KeySym sym = XStringToKeysym(keystring);
 
     //Failing which, use our hard-coded special names for certain keys
     if (NoSymbol != sym || (sym = GetLiteralKeysym(keystring)) != NoSymbol) {
-      KeyPressInfo keypress = {0};
+      KeyPressInfo keypress = {0, 0};
       if ((keypress.code = XKeysymToKeycode(event.display, sym)) != 0) {
         //non-zero return value implies sym -> code was successful
         if (ShiftRequired(keystring)) {
@@ -293,15 +293,15 @@ void pws_os::SendString(const StringX& str, AutotypeMethod method, unsigned dela
       }
       else {
         const char* symStr = XKeysymToString(sym);
-        snprintf(atGlobals.errorString, NumberOf(atGlobals.errorString), 
-              "Could not get keycode for key char(%s) - sym(%d) - str(%s). Aborting autotype\n", 
+        snprintf(atGlobals.errorString, NumberOf(atGlobals.errorString),
+              "Could not get keycode for key char(%s) - sym(%d) - str(%s). Aborting autotype\n",
                           keystring, static_cast<int>(sym), symStr ? symStr : "NULL");
         atGlobals.error_detected = True;
         return;
       }
     }
     else {
-      snprintf(atGlobals.errorString, NumberOf(atGlobals.errorString), 
+      snprintf(atGlobals.errorString, NumberOf(atGlobals.errorString),
               "Cannot convert '%s' to keysym. Aborting autotype\n", keystring);
       atGlobals.error_detected = True;
       return;
@@ -321,7 +321,7 @@ void pws_os::SendString(const StringX& str, AutotypeMethod method, unsigned dela
   else {
     KeySendFunction = XSendKeys_SendKeyEvent;
   }
-  
+
   for (KeyPressInfoVector::const_iterator itr = keypresses.begin(); itr != keypresses.end()
                               && !atGlobals.error_detected; ++itr) {
     event.keycode = itr->code;

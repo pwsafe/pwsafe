@@ -156,7 +156,7 @@ enum {ID_SEPARATOR = -1};
                                 wxCONCAT(wxCONCAT(n, _disabled), _xpm),         \
                                 wxCONCAT(wxCONCAT(classic_, n), _xpm),          \
                                 wxCONCAT(wxCONCAT(classic_, n), _disabled_xpm)
-#define SEPARATOR {ID_SEPARATOR, NULL, NULL, NULL, NULL}
+#define SEPARATOR {ID_SEPARATOR, NULL, NULL, NULL, NULL, NULL}
 
 struct _PwsToolbarInfo{
   int id;
@@ -165,7 +165,7 @@ struct _PwsToolbarInfo{
   const char** bitmap_disabled;
   const char** bitmap_classic;
   const char** bitmap_classic_disabled;
-} PwsToolbarButtons[] = 
+} PwsToolbarButtons[] =
 
 {
           { wxID_NEW,         _("Make New Database"),               PWS_TOOLBAR_BITMAPS(new)            },
