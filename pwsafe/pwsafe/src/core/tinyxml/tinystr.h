@@ -116,7 +116,7 @@ class TiXmlString
 	// = operator
 	TiXmlString& operator = (const TCHAR * copy)
 	{
-		return assign( copy, (size_type)_tcsclen(copy));
+		return assign( copy, static_cast<size_type>(_tcsclen(copy)));
 	}
 
 	// = operator
@@ -245,7 +245,7 @@ class TiXmlString
 			// to the normal allocation, although use an 'int' for systems
 			// that are overly picky about structure alignment.
 			const size_type bytesNeeded = sizeof(Rep) + (cap * sizeof(TCHAR));
-			const size_type intsNeeded = ( bytesNeeded + sizeof(int32) - 1 ) / sizeof( int32 ); 
+			const size_type intsNeeded = ( bytesNeeded + sizeof(int32) - 1 ) / sizeof( int32 );
 			rep_ = reinterpret_cast<Rep *>( new int32[ intsNeeded ] );
 
 			rep_->str[ rep_->size = sz ] = '\0';

@@ -68,7 +68,7 @@ CItemData::CItemData(const CItemData &that) :
   m_tttRMTime(that.m_tttRMTime), m_PWHistory(that.m_PWHistory),
   m_PWPolicy(that.m_PWPolicy), m_XTimeInterval(that.m_XTimeInterval),
   m_RunCommand(that.m_RunCommand), m_DCA(that.m_DCA), m_email(that.m_email),
-  m_protected(that.m_protected), m_entrytype(that.m_entrytype), 
+  m_protected(that.m_protected), m_entrytype(that.m_entrytype),
   m_entrystatus(that.m_entrystatus),
   m_display_info(that.m_display_info == NULL ?
                  NULL : that.m_display_info->clone())
@@ -463,7 +463,7 @@ static void String2PWPolicy(const stringT &cs_pwp, PWPolicy &pwp)
   // should really be a c'tor of PWPolicy - later...
 
   // We need flags(4), length(3), lower_len(3), upper_len(3)
-  //   digit_len(3), symbol_len(3) = 4 + 5 * 3 = 19 
+  //   digit_len(3), symbol_len(3) = 4 + 5 * 3 = 19
   // All fields are hexadecimal digits representing flags or lengths
 
   // Note: order of fields set by PWSprefs enum that can have minimum lengths.
@@ -694,15 +694,15 @@ StringX CItemData::GetPlaintext(const TCHAR &separator,
   StringX csPassword;
   if (m_entrytype == ET_ALIAS) {
     ASSERT(pcibase != NULL);
-    csPassword = _T("[[") + 
-                 pcibase->GetGroup() + _T(":") + 
-                 pcibase->GetTitle() + _T(":") + 
+    csPassword = _T("[[") +
+                 pcibase->GetGroup() + _T(":") +
+                 pcibase->GetTitle() + _T(":") +
                  pcibase->GetUser() + _T("]]") ;
   } else if (m_entrytype == ET_SHORTCUT) {
     ASSERT(pcibase != NULL);
-    csPassword = _T("[~") + 
-                 pcibase->GetGroup() + _T(":") + 
-                 pcibase->GetTitle() + _T(":") + 
+    csPassword = _T("[~") +
+                 pcibase->GetGroup() + _T(":") +
+                 pcibase->GetTitle() + _T(":") +
                  pcibase->GetUser() + _T("~]") ;
   } else
     csPassword = GetPassword();
@@ -714,10 +714,10 @@ StringX CItemData::GetPlaintext(const TCHAR &separator,
     unsigned char uc;
     GetProtected(uc);
     StringX sxProtected = uc != 0 ? _T("Y") : _T("N");
-    ret = (grouptitle + separator + 
+    ret = (grouptitle + separator +
            user + separator +
-           csPassword + separator + 
-           url + separator + 
+           csPassword + separator +
+           url + separator +
            GetAutoType() + separator +
            GetCTimeExp() + separator +
            GetPMTimeExp() + separator +
@@ -818,16 +818,16 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
   // Password mandatory (see pwsafe.xsd)
   if (m_entrytype == ET_ALIAS) {
     ASSERT(pcibase != NULL);
-    tmp = _T("[[") + 
-          pcibase->GetGroup() + _T(":") + 
-          pcibase->GetTitle() + _T(":") + 
+    tmp = _T("[[") +
+          pcibase->GetGroup() + _T(":") +
+          pcibase->GetTitle() + _T(":") +
           pcibase->GetUser() + _T("]]") ;
   } else
   if (m_entrytype == ET_SHORTCUT) {
     ASSERT(pcibase != NULL);
-    tmp = _T("[~") + 
-          pcibase->GetGroup() + _T(":") + 
-          pcibase->GetTitle() + _T(":") + 
+    tmp = _T("[~") +
+          pcibase->GetGroup() + _T(":") +
+          pcibase->GetTitle() + _T(":") +
           pcibase->GetUser() + _T("~]") ;
   } else
     tmp = GetPassword();
@@ -966,7 +966,7 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
     PWSUtil::WriteXMLField(oss, "runcommand", tmp, utf8conv);
 
   GetDCA(i16);
-  if (bsExport.test(CItemData::DCA) && 
+  if (bsExport.test(CItemData::DCA) &&
       i16 >= PWSprefs::minDCA && i16 <= PWSprefs::maxDCA)
     oss << "\t\t<dca>" << i16 << "</dca>" << endl;
 
@@ -1008,7 +1008,7 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
       trashMemory(pdata, length);
       delete[] pdata;
     } // iteration over unknown fields
-    oss << "\t\t</unknownrecordfields>" << endl;  
+    oss << "\t\t</unknownrecordfields>" << endl;
   } // if there are unknown fields
 
   oss << "\t</entry>" << endl << endl;
@@ -1772,7 +1772,7 @@ bool CItemData::Matches(time_t time1, time_t time2, int iObject,
     return PWSMatch::Match(time1, time2, testtime, iFunction);
   }
 }
-  
+
 bool CItemData::Matches(EntryType etype, int iFunction) const
 {
   switch (iFunction) {
@@ -2083,7 +2083,7 @@ static void push_string(vector<char> &v, char type,
     status = utf8conv.ToUTF8(str, utf8, utf8Len);
     if (status) {
       v.push_back(type);
-      push_length(v, (uint32)utf8Len);
+      push_length(v, static_cast<uint32>(utf8Len));
       v.insert(v.end(), reinterpret_cast<const char *>(utf8), reinterpret_cast<const char *>(utf8) + utf8Len);
     } else
       pws_os::Trace(_T("ItemData::SerializePlainText:ToUTF8(%s) failed\n"),
@@ -2193,7 +2193,7 @@ void CItemData::SerializePlainText(vector<char> &v,
     GetUnknownField(type, length, pdata, vi_IterURFE);
     if (length != 0) {
       v.push_back(static_cast<char>(type));
-      push_length(v, (uint32)length);
+      push_length(v, static_cast<uint32>(length));
       v.insert(v.end(), reinterpret_cast<char *>(pdata), reinterpret_cast<char *>(pdata) + length);
       trashMemory(pdata, length);
     }

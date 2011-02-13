@@ -103,8 +103,8 @@ void PWScore::Compare(PWScore *pothercore,
       st_data.title = currentItem.GetTitle();
       st_data.user = currentItem.GetUser();
 
-      StringX sx_original = sx_StartChevron + 
-                             st_data.group + sx_MiddleChevron + 
+      StringX sx_original = sx_StartChevron +
+                             st_data.group + sx_MiddleChevron +
                              st_data.title + sx_MiddleChevron +
                              st_data.user  + sx_EndChevron;
 
@@ -246,8 +246,8 @@ void PWScore::Compare(PWScore *pothercore,
       st_data.title = compItem.GetTitle();
       st_data.user = compItem.GetUser();
 
-      StringX sx_compare = sx_StartChevron + 
-                             st_data.group + sx_MiddleChevron + 
+      StringX sx_compare = sx_StartChevron +
+                             st_data.group + sx_MiddleChevron +
                              st_data.title + sx_MiddleChevron +
                              st_data.user  + sx_EndChevron;
 
@@ -497,12 +497,12 @@ stringT PWScore::Merge(PWScore *pothercore,
         pcmd->SetNoGUINotify();
         pmulticmds->Add(pcmd);
 
-        StringX sx_merged = sx_StartChevron +
+        StringX sx_merged1 = sx_StartChevron +
                               sx_otherGroup + sx_MiddleChevron +
                               sx_otherTitle + sx_MiddleChevron +
                               sx_otherUser  + sx_EndChevron;
         // Update the Wizard page
-        UpdateWizard(sx_merged.c_str());
+        UpdateWizard(sx_merged1.c_str());
 
         numConflicts++;
       }
@@ -649,7 +649,7 @@ int PWScore::MergeDependents(PWScore *pothercore, MultiCommands *pmulticmds,
     StringX sx_newTitle = ci_temp.GetTitle();
     if (bTitleRenamed) {
       StringX sx_otherTitle(sx_newTitle);
-      Format(sx_newTitle, _T("%s%s%s"), sx_otherTitle.c_str(), 
+      Format(sx_newTitle, _T("%s%s%s"), sx_otherTitle.c_str(),
                           sx_merged.c_str(), str_timestring.c_str());
       ci_temp.SetTitle(sx_newTitle);
     }
@@ -699,7 +699,7 @@ void PWScore::Synchronize(PWScore *pothercore,
         if find a match
           update requested fields
   */
- 
+
   std::vector<StringX> vs_updated;
   numUpdated = 0;
 
@@ -743,17 +743,17 @@ void PWScore::Synchronize(PWScore *pothercore,
       uuid_array_t current_uuid, other_uuid;
       curItem.GetUUID(current_uuid);
       otherItem.GetUUID(other_uuid);
-      if (memcmp((void *)current_uuid, (void *)other_uuid, sizeof(uuid_array_t)) != 0) {
-        pws_os::Trace(_T("Synchronize: Mis-match UUIDs for [%s:%s:%s]\n"), sx_otherGroup, sx_otherTitle, sx_otherUser);
+      if (memcmp(reinterpret_cast<void *>(current_uuid), reinterpret_cast<void *>(other_uuid), sizeof(uuid_array_t)) != 0) {
+        pws_os::Trace(_T("Synchronize: Mis-match UUIDs for [%s:%s:%s]\n"), sx_otherGroup.c_str(), sx_otherTitle.c_str(), sx_otherUser.c_str());
       }
 
       bool bUpdated(false);
-      for (int i = 0; i < (int)bsFields.size(); i++) {
+      for (size_t i = 0; i < bsFields.size(); i++) {
         if (bsFields.test(i)) {
-          const StringX sxValue = otherItem.GetFieldValue((CItemData::FieldType)i);
-          if (sxValue != updItem.GetFieldValue((CItemData::FieldType)i)) {
+          const StringX sxValue = otherItem.GetFieldValue(static_cast<CItemData::FieldType>(i));
+          if (sxValue != updItem.GetFieldValue(static_cast<CItemData::FieldType>(i))) {
             bUpdated = true;
-            updItem.SetFieldValue((CItemData::FieldType)i, sxValue);
+            updItem.SetFieldValue(static_cast<CItemData::FieldType>(i), sxValue);
           }
         }
       }
