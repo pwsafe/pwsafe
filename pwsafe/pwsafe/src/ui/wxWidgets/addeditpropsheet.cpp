@@ -7,7 +7,7 @@
  */
 
 /** \file addeditpropsheet.cpp
-* 
+*
 */
 // For compilers that support precompilation, includes "wx/wx.h".
 #include "wx/wxprec.h"
@@ -217,7 +217,7 @@ const wxChar *DCAs[] = {
  */
 
 void AddEditPropSheet::CreateControls()
-{    
+{
 ////@begin AddEditPropSheet content construction
   // Next variable currently not referenced
   // AddEditPropSheet* itemPropertySheetDialog = this;
@@ -716,7 +716,7 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
         m_groupCtrl->SetSelection((int)igrp);
         break;
       }
-  
+
   m_title = m_item.GetTitle().c_str();
   m_user = m_item.GetUser().c_str();
   m_url = m_item.GetURL().c_str();
@@ -736,7 +736,7 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
     wxString(_("[Notes hidden - click here to display]")) : towxstring(m_item.GetNotes());
   // Following has no effect under Linux :-(
   long style = m_noteTX->GetExtraStyle();
-  if (prefs->GetPref(PWSprefs::NotesWordWrap)) 
+  if (prefs->GetPref(PWSprefs::NotesWordWrap))
     style |= wxTE_WORDWRAP;
   else
     style &= ~wxTE_WORDWRAP;
@@ -838,7 +838,7 @@ void AddEditPropSheet::OnGoButtonClick( wxCommandEvent& /* evt */ )
 ////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_GO_BTN in AddEditPropSheet.
   // Before editing this code, remove the block markers.
   wxMessageBox(_("'Go' placeholder"));
-////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_GO_BTN in AddEditPropSheet. 
+////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_GO_BTN in AddEditPropSheet.
 }
 
 
@@ -884,9 +884,9 @@ void AddEditPropSheet::ShowPassword()
   // Per Dave Silvia's suggestion:
   // Following kludge since wxTE_PASSWORD style is immutable
   wxTextCtrl *tmp = m_PasswordCtrl;
-  const wxString pwd = tmp->GetValue();
+  const wxString pwd = m_password.c_str();
   m_PasswordCtrl = new wxTextCtrl(m_BasicPanel, ID_TEXTCTRL2,
-                                  m_password.c_str(),
+                                  pwd,
                                   wxDefaultPosition, wxDefaultSize,
                                   0);
   if (!pwd.IsEmpty()) {
@@ -910,9 +910,9 @@ void AddEditPropSheet::HidePassword()
   // Following kludge since wxTE_PASSWORD style is immutable
   // Need verification as the user can not see the password entered
   wxTextCtrl *tmp = m_PasswordCtrl;
-  const wxString pwd = tmp->GetValue();
+  const wxString pwd = m_password.c_str();
   m_PasswordCtrl = new wxTextCtrl(m_BasicPanel, ID_TEXTCTRL2,
-                                  m_password.c_str(),
+                                  pwd,
                                   wxDefaultPosition, wxDefaultSize,
                                   wxTE_PASSWORD);
   ApplyPasswordFont(m_PasswordCtrl);
@@ -953,14 +953,14 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
         m_DCA = short(PWSprefs::GetInstance()->
                       GetPref(PWSprefs::DoubleClickAction));
       } else { // get value from field
-        const wxString cv = m_DCAcomboBox->GetValue();      
+        const wxString cv = m_DCAcomboBox->GetValue();
         for (size_t i = 0; i < sizeof(dcaMapping)/sizeof(dcaMapping[0]); i++)
           if (cv == dcaMapping[i].name) {
             m_DCA = dcaMapping[i].pv;
             break;
           }
       }
-      
+
       // Check if modified
       int lastXTimeInt;
       m_item.GetXTimeInt(lastXTimeInt);
