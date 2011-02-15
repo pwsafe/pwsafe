@@ -227,14 +227,14 @@ void CSafeCombinationSetup::OnOkClick( wxCommandEvent& /* evt */ )
       cs_msg += errmess.c_str();
 #ifndef PWS_FORCE_STRONG_PASSPHRASE
       cs_msg += _("\nUse it anyway?");
-      wxMessageDialog mb(this, _("Warning"), cs_msg,
+      wxMessageDialog mb(this, cs_msg, _("Warning"),
                       wxYES_NO | wxNO_DEFAULT | wxICON_HAND);
       int rc = mb.ShowModal();
     if (rc == wxID_NO)
       return;
 #else
     cs_msg += _("\nPlease try another");
-    wxMessageDialog mb(this, _("Error"), cs_msg, wxOK | wxICON_HAND);
+    wxMessageDialog mb(this, cs_msg, _("Error"), wxOK | wxICON_HAND);
     mb.ShowModal();
     return;
 #endif // PWS_FORCE_STRONG_PASSPHRASE
