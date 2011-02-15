@@ -1545,7 +1545,7 @@ void PasswordSafeFrame::DispatchDblClickAction(CItemData &item)
     break;
   default: {
     wxString action;
-    action.Format(_("Unknown code: %d"),
+    action.Printf(_("Unknown code: %d"),
                   PWSprefs::GetInstance()->GetPref(PWSprefs::DoubleClickAction));
     wxMessageBox(action);
     break;
@@ -2322,7 +2322,7 @@ void PasswordSafeFrame::OnImportText(wxCommandEvent& evt)
   CReport rpt;
   rpt.StartReport(wxT("Import_Text"), m_core.GetCurFile().c_str());
   wxString header;
-  header.Format(wxT("%s file being imported: %s"), wxT("Text"), TxtFileName.c_str());
+  header.Printf(wxT("%s file being imported: %s"), wxT("Text"), TxtFileName.c_str());
   rpt.WriteLine(tostdstring(header));
   rpt.WriteLine();
 
@@ -2528,12 +2528,12 @@ void PasswordSafeFrame::OnImportXML(wxCommandEvent& evt)
           csErrors = strXMLErrors + wxT("\n");
 
         if (bBadUnknownFileFields) {
-          cs_temp.Format(_("At least one unknown %s field is now in use.  Any found have been ignored."), 
+          cs_temp.Printf(_("At least one unknown %s field is now in use.  Any found have been ignored."), 
                     _("header"));
           csErrors += cs_temp + wxT("\n");
         }
         if (bBadUnknownRecordFields) {
-          cs_temp.Format( _("At least one unknown %s field is now in use.  Any found have been ignored."),
+          cs_temp.Printf( _("At least one unknown %s field is now in use.  Any found have been ignored."),
                             _("record"));
           csErrors += cs_temp + wxT("\n");
         }
@@ -2546,33 +2546,33 @@ void PasswordSafeFrame::OnImportXML(wxCommandEvent& evt)
         if (numSkipped > 0) {
           cs_skipped = _("The following records were skipped:");
           rpt.WriteLine(tostdstring(cs_skipped));
-          cs_skipped.Format(_(" / skipped %d"), numSkipped);
+          cs_skipped.Printf(_(" / skipped %d"), numSkipped);
           rpt.WriteLine(strSkippedList.c_str());
           rpt.WriteLine();
         }
         if (numPWHErrors > 0) {
           cs_PWHErrors = _("The following records had errors in their Password History:");
           rpt.WriteLine(tostdstring(cs_PWHErrors));
-          cs_PWHErrors.Format(_(" / with Password History errors %d"), numPWHErrors);
+          cs_PWHErrors.Printf(_(" / with Password History errors %d"), numPWHErrors);
           rpt.WriteLine(strPWHErrorList.c_str());
           rpt.WriteLine();
         }
         if (numRenamed > 0) {
           cs_renamed = _("The following records were renamed as an entry already exists in your database or in the Import file:");
           rpt.WriteLine(tostdstring(cs_renamed));
-          cs_renamed.Format(_(" / renamed %d"), numRenamed);
+          cs_renamed.Printf(_(" / renamed %d"), numRenamed);
           rpt.WriteLine(strRenameList.c_str());
           rpt.WriteLine();
         }
 
-        cs_temp.Format(_("File: %s was imported (entries validated %d / imported %d%s%s%s). See report for details."),
+        cs_temp.Printf(_("File: %s was imported (entries validated %d / imported %d%s%s%s). See report for details."),
                        dlg.filepath.c_str(), numValidated, numImported,
                        cs_skipped.c_str(), cs_renamed.c_str(), cs_PWHErrors.c_str());
 
       } else {
         const TCHAR* cs_validate = numValidated == 1 ? _("entry") : _("entries");
         const TCHAR* cs_imported = numImported == 1 ? _("entry") : _("entries");
-        cs_temp.Format(_("Validated %d %s\r\n\r\nImported %d %s"), numValidated, cs_validate, numImported, cs_imported);
+        cs_temp.Printf(_("Validated %d %s\r\n\r\nImported %d %s"), numValidated, cs_validate, numImported, cs_imported);
       }
 
       RefreshViews();
@@ -2581,7 +2581,7 @@ void PasswordSafeFrame::OnImportXML(wxCommandEvent& evt)
       cs_temp = _("XML import not supported in this release");
       break;
     default:
-      cs_temp.Format(_("XML import: Unexpected return code(%d)"), rc);
+      cs_temp.Printf(_("XML import: Unexpected return code(%d)"), rc);
       break;
   } // switch
 
