@@ -20,7 +20,6 @@
 #define IDD_IMPORT_TEXT                 125
 #define IDD_IMPORT_XML                  126
 #define IDD_KEYCHANGE_DIALOG            127
-#define IDD_MINIMIZECLEAR_DIALOG        128
 #define IDD_OPTIONS                     129
 #define IDD_PASSKEYENTRY                130
 #define IDD_PASSKEYENTRY_FIRST          131
