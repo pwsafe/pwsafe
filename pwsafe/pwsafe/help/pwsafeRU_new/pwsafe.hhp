@@ -1,14 +1,14 @@
 [OPTIONS]
 Auto Index=Yes
 Compatibility=1.1 or later
-Compiled file=pwsafe.chm
-Contents file=pwsafe.hhc
+Compiled file=pwsafeRU.chm
+Contents file=pwsafeRU.hhc
 Default topic=html\Welcome.html
 Display compile progress=Yes
 Error log file=pwsafe.log
 Full-text search=Yes
-Index file=pwsafe.hhk
-Language=0x409 Englisch (USA)
+Index file=pwsafeRU.hhk
+Language=0x419 Русский
 Title=HTML Help for Password Safe
 
 
