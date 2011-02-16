@@ -13,7 +13,7 @@
 //
 #pragma once
 #include "PupText.h"
-#include "subclass.h"
+#include "Subclass.h"
 
 //////////////////
 // Implement menu tips for any MFC main window. To use:

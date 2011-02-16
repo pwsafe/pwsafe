@@ -20,7 +20,7 @@
 // Change from MS classes to STL eqivalents where possible
 // Understand that RUE menu also uses MENUITEMINFO dwItemData field for icons
 
-#include "SubClass.h"
+#include "Subclass.h"
 #include "PWToolbar.h"
 #include <vector>
 #include <map>
