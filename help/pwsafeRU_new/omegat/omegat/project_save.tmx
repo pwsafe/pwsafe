@@ -7982,6 +7982,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Password Policy Tab</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20110216T133933Z" changeid="pm_kan">
+        <seg>Вкладка «Политика создания паролей»</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Password Safe About dialog box</seg>
       </tuv>
       <tuv lang="RU-RU" changedate="20110215T113921Z" changeid="pm_kan">
