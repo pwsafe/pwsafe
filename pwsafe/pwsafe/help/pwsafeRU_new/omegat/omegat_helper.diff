@@ -1,7 +1,7 @@
 Common subdirectories: ../../default/html/.svn and ./source/html/.svn
 diff -bNau ../../default/html/export.html ./source/html/export.html
 --- ../../default/html/export.html	2010-11-06 22:24:36.000000000 +0300
-+++ ./source/html/export.html	2011-02-16 16:14:04.000000000 +0300
++++ ./source/html/export.html	2011-02-16 16:28:01.000000000 +0300
 @@ -296,7 +296,7 @@
  overcome this, you may specify a delimiter to&nbsp;separate&nbsp;multiple lines when exporting them. If you are
  going to import a text file created with such a delimiter,&nbsp;<span style="font-weight: bold;"></span>then it must be specified,
@@ -60,7 +60,7 @@ diff -bNau ../../default/html/export.html ./source/html/export.html
  
 diff -bNau ../../default/html/file_menu.html ./source/html/file_menu.html
 --- ../../default/html/file_menu.html	2010-11-06 22:24:17.000000000 +0300
-+++ ./source/html/file_menu.html	2011-02-16 16:14:04.000000000 +0300
++++ ./source/html/file_menu.html	2011-02-16 16:28:01.000000000 +0300
 @@ -392,9 +392,9 @@
  
  
@@ -76,7 +76,7 @@ diff -bNau ../../default/html/file_menu.html ./source/html/file_menu.html
 Common subdirectories: ../../default/html/images and ./source/html/images
 diff -bNau ../../default/html/images.html ./source/html/images.html
 --- ../../default/html/images.html	2011-02-13 13:33:07.000000000 +0300
-+++ ./source/html/images.html	2011-02-16 16:14:04.000000000 +0300
++++ ./source/html/images.html	2011-02-16 16:28:01.000000000 +0300
 @@ -23,8 +23,8 @@
  
  <h1>Entry Icons</h1>
@@ -90,7 +90,7 @@ diff -bNau ../../default/html/images.html ./source/html/images.html
  <p class="indented"><img src="images/node.png"/>&nbsp;Node or Group [Tree View <i>only</i>]</p>
 diff -bNau ../../default/html/imp_exp_text_details.html ./source/html/imp_exp_text_details.html
 --- ../../default/html/imp_exp_text_details.html	2010-09-05 00:12:11.000000000 +0400
-+++ ./source/html/imp_exp_text_details.html	2011-02-16 16:14:04.000000000 +0300
++++ ./source/html/imp_exp_text_details.html	2011-02-16 16:28:01.000000000 +0300
 @@ -58,23 +58,23 @@
  Title Row for full data export currently contains&nbsp;the
  following fields by default, separated by a tab.</span></p>
@@ -324,7 +324,7 @@ diff -bNau ../../default/html/imp_exp_text_details.html ./source/html/imp_exp_te
  <object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e"> <param name="Keyword" value="Export Password Entries"> <param name="Keyword" value="Import Password Entries"> <param name="Keyword" valuetext="" password="" data="">
 diff -bNau ../../default/html/manage_menu.html ./source/html/manage_menu.html
 --- ../../default/html/manage_menu.html	2010-11-06 22:22:54.000000000 +0300
-+++ ./source/html/manage_menu.html	2011-02-16 16:14:04.000000000 +0300
++++ ./source/html/manage_menu.html	2011-02-16 16:28:01.000000000 +0300
 @@ -19,7 +19,7 @@
  options and settings are controlled. </p>
  
@@ -354,7 +354,7 @@ diff -bNau ../../default/html/manage_menu.html ./source/html/manage_menu.html
  <small>Note: This menu item will only be enabled if there is no&nbsp;database currently opened.</small>
 diff -bNau ../../default/html/menu_toolbar.html ./source/html/menu_toolbar.html
 --- ../../default/html/menu_toolbar.html	2011-01-24 21:58:21.000000000 +0300
-+++ ./source/html/menu_toolbar.html	2011-02-16 16:14:04.000000000 +0300
++++ ./source/html/menu_toolbar.html	2011-02-16 16:28:01.000000000 +0300
 @@ -31,8 +31,8 @@
  <table align="center" cellspacing="5">
    <tbody>
@@ -368,7 +368,7 @@ diff -bNau ../../default/html/menu_toolbar.html ./source/html/menu_toolbar.html
      </tr>
 diff -bNau ../../default/html/password_history.html ./source/html/password_history.html
 --- ../../default/html/password_history.html	2010-09-05 00:12:11.000000000 +0400
-+++ ./source/html/password_history.html	2011-02-16 16:14:04.000000000 +0300
++++ ./source/html/password_history.html	2011-02-16 16:28:01.000000000 +0300
 @@ -62,8 +62,7 @@
  
  <img alt="Password History" src="images/edit_view_entry_add.jpg">
@@ -390,7 +390,7 @@ diff -bNau ../../default/html/password_history.html ./source/html/password_histo
  
 diff -bNau ../../default/html/password_history_tab.html ./source/html/password_history_tab.html
 --- ../../default/html/password_history_tab.html	2010-09-05 00:12:11.000000000 +0400
-+++ ./source/html/password_history_tab.html	2011-02-16 16:14:04.000000000 +0300
++++ ./source/html/password_history_tab.html	2011-02-16 16:28:01.000000000 +0300
 @@ -1,7 +1,7 @@
  <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
  <html>
@@ -400,9 +400,21 @@ diff -bNau ../../default/html/password_history_tab.html ./source/html/password_h
  
  
  <!-- pwsafe version: 2.11--><!-- Modified: 15/06/2005 --><!--Popup control -->
+diff -bNau ../../default/html/password_policies.html ./source/html/password_policies.html
+--- ../../default/html/password_policies.html	2010-09-05 00:12:11.000000000 +0400
++++ ./source/html/password_policies.html	2011-02-16 16:38:42.000000000 +0300
+@@ -27,7 +27,7 @@
+ 
+ <object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"> </object>
+ <!-- Popup Source File -->
+-<h2>Setting a Password Policy</h2>
++<h2>Password Policy Tab</h2>
+ 
+ 
+ 
 diff -bNau ../../default/html/run_command.html ./source/html/run_command.html
 --- ../../default/html/run_command.html	2010-09-05 15:49:24.000000000 +0400
-+++ ./source/html/run_command.html	2011-02-16 16:14:04.000000000 +0300
++++ ./source/html/run_command.html	2011-02-16 16:28:01.000000000 +0300
 @@ -10,7 +10,7 @@
    
    
@@ -423,7 +435,7 @@ diff -bNau ../../default/html/run_command.html ./source/html/run_command.html
  
 diff -bNau ../../default/html/style.css ./source/html/style.css
 --- ../../default/html/style.css	2010-09-05 00:12:11.000000000 +0400
-+++ ./source/html/style.css	2011-02-16 16:14:04.000000000 +0300
++++ ./source/html/style.css	2011-02-16 16:28:01.000000000 +0300
 @@ -6,6 +6,7 @@
  	color:black;
  	font-size="small";
@@ -475,7 +487,7 @@ diff -bNau ../../default/html/style.css ./source/html/style.css
 +	}
 diff -bNau ../../default/html/wzselectdb.html ./source/html/wzselectdb.html
 --- ../../default/html/wzselectdb.html	2011-02-07 18:45:12.000000000 +0300
-+++ ./source/html/wzselectdb.html	2011-02-16 16:14:04.000000000 +0300
++++ ./source/html/wzselectdb.html	2011-02-16 16:28:01.000000000 +0300
 @@ -39,13 +39,19 @@
  based on the contents of the Group, Title, User Name, URL or Notes fields and/or which
  fields to Compare, Merge, Synchronize or Export.</p>
@@ -502,7 +514,7 @@ diff -bNau ../../default/html/wzselectdb.html ./source/html/wzselectdb.html
  <br>
  <br>
 --- ../../default/pwsafe.hhc	2010-09-05 18:02:29.000000000 +0400
-+++ ./source/pwsafe.hhc	2011-02-16 16:18:37.000000000 +0300
++++ ./source/pwsafe.hhc	2011-02-16 16:28:01.000000000 +0300
 @@ -153,7 +153,7 @@
  			<param name="Local" value="html\display_tab.html">
  			</OBJECT>
