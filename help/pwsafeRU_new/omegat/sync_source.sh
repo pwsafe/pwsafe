@@ -3,7 +3,7 @@
 rm -rf ./source/*
 mkdir -p ./source/html
 #copy files
-cp ../../default/*.hh? ./source
+cp ../../default/pwsafe.hhc ./source/pwsafe.hhc
 cp ../../default/html/* ./source/html
 #apply helper pathes
 patch -p0 < omegat_helper.diff

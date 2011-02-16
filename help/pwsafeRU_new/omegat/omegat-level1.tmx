@@ -3352,8 +3352,8 @@
       <tuv lang="EN-US">
         <seg>Automatic Intermediate Backups</seg>
       </tuv>
-      <tuv lang="RU-RU" changedate="20101106T190850Z" changeid="pm_kan">
-        <seg>Промежуточные резервная копия</seg>
+      <tuv lang="RU-RU" changedate="20110216T131637Z" changeid="pm_kan">
+        <seg>Промежуточные резервные копии</seg>
       </tuv>
     </tu>
     <tu>
@@ -7985,8 +7985,8 @@
       <tuv lang="EN-US">
         <seg>Setting a Password Policy</seg>
       </tuv>
-      <tuv lang="RU-RU" changedate="20110215T173933Z" changeid="pm_kan">
-        <seg>Вкладка «Политика создания паролей»</seg>
+      <tuv lang="RU-RU" changedate="20110216T131506Z" changeid="pm_kan">
+        <seg>Политика создания паролей</seg>
       </tuv>
     </tu>
     <tu>
@@ -13703,6 +13703,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Misc Options</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20110216T131938Z" changeid="pm_kan">
+        <seg>Прочие настройки</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>images/rightclick_edit_e.jpg</seg>
       </tuv>
       <tuv lang="RU-RU" changedate="20110209T204934Z" changeid="pm_kan">
@@ -14307,14 +14315,6 @@
       </tuv>
       <tuv lang="RU-RU" changedate="20110215T114015Z" changeid="pm_kan">
         <seg>Открывает домашнюю страницу Password Safe в браузере.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>Misc.</seg>
-      </tuv>
-      <tuv lang="RU-RU" changedate="20101106T191046Z" changeid="pm_kan">
-        <seg>Разное</seg>
       </tuv>
     </tu>
     <tu>
