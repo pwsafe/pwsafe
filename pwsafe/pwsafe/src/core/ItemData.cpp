@@ -1715,6 +1715,9 @@ bool CItemData::Matches(short dca, int iFunction) const
 {
   short iDCA;
   GetDCA(iDCA);
+  if (iDCA < 0)
+    iDCA = (short)PWSprefs::GetInstance()->GetPref(PWSprefs::DoubleClickAction);
+
   switch (iFunction) {
     case PWSMatch::MR_IS:
       return iDCA == dca;
