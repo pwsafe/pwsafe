@@ -6,6 +6,7 @@ BODY
 	color:black;
 	font-size="small";
 	background-color: white;
+	text-align:justify;
 	}
 
 A:link {color: #0069CE; text-decoration: none;} 
@@ -25,7 +26,7 @@ DD	{
 li p
 	{
 	margin-top: .75em;
-	margin-bottom: 1.25em;
+	margin-bottom: 1.25em;	
 	text-align:justify;
 	}	
 
@@ -76,6 +77,13 @@ td	{
 	margin: .25em;
 	vertical-align: top;
 	padding: 0;
+	}
+
+td p	{
+	margin: .25em;
+	vertical-align: top;
+	padding: 0;
+	text-indent: 0;
 	}
 
 p	{
