@@ -170,19 +170,20 @@ int CWZFinish::ExecuteAction()
     case ID_MENUITEM_COMPARE:
     case ID_MENUITEM_MERGE:
     case ID_MENUITEM_SYNCHRONIZE:
+      m_pothercore = new PWScore;
       bOtherIsDB = true;
       break;
     case ID_MENUITEM_EXPORT2PLAINTEXT:
     case ID_MENUITEM_EXPORTENT2PLAINTEXT:
     case ID_MENUITEM_EXPORT2XML:
     case ID_MENUITEM_EXPORTENT2XML:
+      m_pothercore = NULL;
       break;
     default:
       ASSERT(0);
       break;
   }
 
-  m_pothercore = new PWScore;
   INT_PTR rc(PWScore::SUCCESS);
   const StringX sx_Filename2 = m_pWZPSH->GetOtherDBFile();
 
@@ -333,10 +334,10 @@ LRESULT CWZFinish::OnExecuteThreadEnded(WPARAM wParam, LPARAM )
   delete pthdpms;
 
   if (m_pothercore != NULL) {
-    m_pothercore->ClearData();
     if (m_pothercore->IsLockedFile(m_pothercore->GetCurFile().c_str()))
       m_pothercore->UnlockFile(m_pothercore->GetCurFile().c_str());
 
+    m_pothercore->ClearData();
     m_pothercore->SetCurFile(L"");
     delete m_pothercore;
     m_pothercore = NULL;
