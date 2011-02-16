@@ -1738,9 +1738,10 @@ msgstr "Изменить &шрифт"
 msgid "Change Base"
 msgstr "Изменить исходный"
 
+# условие фильтра
 #. Resource IDs: (349)
 msgid "Change Date"
-msgstr "Изменить дату"
+msgstr "Дата изменения"
 
 #. Resource IDs: (127)
 msgid "Change Safe Combination"
@@ -3558,7 +3559,7 @@ msgstr "Японская"
 
 #. Resource IDs: (1412)
 msgid "KBytes"
-msgstr "Килобайт"
+msgstr "Кб"
 
 #. Resource IDs: (516)
 msgid "Kannada"
@@ -3715,7 +3716,7 @@ msgstr "Блокировать контейнер при блокировке к
 
 #. Resource IDs: (1413)
 msgid "MBytes"
-msgstr "Мегабайт"
+msgstr "Мб"
 
 #. Resource IDs: (3866)
 msgid "Mail system DLL is invalid."
@@ -5281,11 +5282,12 @@ msgstr "Перестать сохранять предыдущие пароли"
 
 #. Resource IDs: (210)
 msgid "Stored filters will be unusable until the file's restored."
-msgstr "Сохранённые фильтры будут недоступны пока идет восстановление файла."
+msgstr "Сохранённые фильтры будут недоступны, пока файла не будет восстановлен."
 
+# урезано (условие фильтра по паролю)
 #. Resource IDs: (1322)
 msgid "String value:"
-msgstr "Строковое значение:"
+msgstr "Строка:"
 
 #. Resource IDs: (211)
 msgid "Subset of entries restricted by the following rule:"
@@ -6858,9 +6860,10 @@ msgstr "id="
 msgid "import"
 msgstr "импорт"
 
+# в фильтре (in 5 days)
 #. Resource IDs: (1320)
 msgid "in"
-msgstr "в"
+msgstr "через"
 
 #. Resource IDs: (211)
 #, fuzzy
@@ -6871,37 +6874,41 @@ msgstr "в контейнере"
 msgid "invalid!"
 msgstr "недопустимый!"
 
+# условие фильтра (is in container, is alias)
 #. Resource IDs: (206)
 msgid "is"
-msgstr "является"
+msgstr "выполняется:"
 
 #. Resource IDs: (207)
 msgid "is active"
-msgstr "активен"
+msgstr "активно"
 
 #. Resource IDs: (207)
 msgid "is inactive"
-msgstr "не активен"
+msgstr "неактивно"
 
+# условие фильтра (is not in container, is not alias)
 #. Resource IDs: (206)
 msgid "is not"
-msgstr "не является"
+msgstr "не выполняется:"
 
 #. Resource IDs: (207)
 msgid "is not present"
 msgstr "отсутствует"
 
+# условие фильтра по флажкам
 #. Resource IDs: (207)
 msgid "is not set"
-msgstr "не установлен"
+msgstr "выключено"
 
 #. Resource IDs: (207)
 msgid "is present"
 msgstr "присутствует"
 
+# условие фильтра по флажкам
 #. Resource IDs: (207)
 msgid "is set"
-msgstr "установлен"
+msgstr "включено"
 
 #. Resource IDs: (1144)
 msgid "last passwords"
