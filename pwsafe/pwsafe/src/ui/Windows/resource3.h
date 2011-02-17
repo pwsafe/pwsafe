@@ -640,3 +640,9 @@
 #define IDS_EXP_SBASE_WARN              5830
 #define IDS_EXP_SBASE_EXP               5831
 #define IDS_EXPIREPASSWORDS             5832
+#define IDS_WZEXPORTTEXT                5833
+#define IDS_WZEXPORTXML                 5834
+#define IDS_WZCOMPARE                   5835
+#define IDS_WZMERGE                     5836
+#define IDS_WZSYNCH                     5837
+

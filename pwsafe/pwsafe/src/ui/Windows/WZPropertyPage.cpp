@@ -71,9 +71,6 @@ BOOL CWZPropertyPage::OnSetActive()
 
   if (nID_NEXT != 0) {
     cs_text.LoadString(nID_NEXT);
-    // Export button text reuses value used for report file (has underscore not blank between words)
-    // Looks nicer here with a blank!
-    cs_text.Replace(L"_", L" ");
     m_pWZPSH->GetDlgItem(ID_WIZNEXT)->SetWindowText(cs_text);
   }
 

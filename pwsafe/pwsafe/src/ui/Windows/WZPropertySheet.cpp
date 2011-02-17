@@ -20,10 +20,10 @@ IMPLEMENT_DYNAMIC(CWZPropertySheet, CPropertySheet)
 
 extern const wchar_t *EYE_CATCHER;
 
-CWZPropertySheet::CWZPropertySheet(UINT nID, UINT nButtonID, CWnd* pDbx, WZAdvanced::AdvType iadv_type,
+CWZPropertySheet::CWZPropertySheet(UINT nID, CWnd* pDbx, WZAdvanced::AdvType iadv_type,
                                    st_SaveAdvValues *pst_SADV)
-  : CPropertySheet(nID, pDbx), m_nID(nID), m_nButtonID(nButtonID),
-  m_passkey(L""), m_filespec(L""), m_pst_SADV(pst_SADV), m_bAdvanced(false), m_bCompleted(false),
+  : CPropertySheet(nID, pDbx), m_nID(nID), m_passkey(L""), m_filespec(L""),
+  m_pst_SADV(pst_SADV), m_bAdvanced(false), m_bCompleted(false),
   m_numProcessed(-1)
 {
   m_pDbx = dynamic_cast<DboxMain *>(pDbx);
@@ -35,42 +35,43 @@ CWZPropertySheet::CWZPropertySheet(UINT nID, UINT nButtonID, CWnd* pDbx, WZAdvan
     case ID_MENUITEM_COMPARE:
       uimsgid_select = IDS_PICKCOMPAREFILE;
       uimsgid_advanced = IDS_COMPAREX;
-      uimsgid_finish = IDS_RPTCOMPARE;
+      uimsgid_finish = IDS_WZCOMPARE;
       break;
     case ID_MENUITEM_MERGE:
       uimsgid_select = IDS_PICKMERGEFILE;
       uimsgid_advanced = IDS_MERGEX;
-      uimsgid_finish = IDS_RPTMERGE;
+      uimsgid_finish = IDS_WZMERGE;
       break;
     case ID_MENUITEM_SYNCHRONIZE:
       uimsgid_select = IDS_PICKSYNCHRONIZEEFILE;
       uimsgid_advanced = IDS_SYNCHRONIZEX;
-      uimsgid_finish = IDS_RPTSYNCH;
+      uimsgid_finish = IDS_WZSYNCH;
       break;
     case ID_MENUITEM_EXPORT2PLAINTEXT:
       uimsgid_select = IDS_NAMETEXTFILE;
       uimsgid_advanced = IDS_EXPORT_TEXTX;
-      uimsgid_finish = IDS_RPTEXPORTTEXT;
+      uimsgid_finish = IDS_WZEXPORTTEXT;
       break;
     case ID_MENUITEM_EXPORTENT2PLAINTEXT:
       uimsgid_select = IDS_NAMETEXTFILE;
       uimsgid_advanced = IDS_EXPORT_TEXTX_SINGLE;
-      uimsgid_finish = IDS_RPTEXPORTTEXT;
+      uimsgid_finish = IDS_WZEXPORTTEXT;
       break;
     case ID_MENUITEM_EXPORT2XML:
       uimsgid_select = IDS_NAMEXMLFILE;
       uimsgid_advanced = IDS_EXPORT_XMLX;
-      uimsgid_finish = IDS_RPTEXPORTXML;
+      uimsgid_finish = IDS_WZEXPORTXML;
       break;
     case ID_MENUITEM_EXPORTENT2XML:
       uimsgid_select = IDS_NAMEXMLFILE;
       uimsgid_advanced = IDS_EXPORT_XMLX_SINGLE;
-      uimsgid_finish = IDS_RPTEXPORTXML;
+      uimsgid_finish = IDS_WZEXPORTXML;
       break;
     default:
       ASSERT(0);
   }
 
+  m_nButtonID = uimsgid_finish;
   m_pp_selectdb = new CWZSelectDB(this, uimsgid_select, CWZPropertyPage::START);
   m_pp_advanced = new CWZAdvanced(this, uimsgid_advanced, CWZPropertyPage::PENULTIMATE,
                                   iadv_type, m_pst_SADV);
