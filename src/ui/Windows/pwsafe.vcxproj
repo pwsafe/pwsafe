@@ -1102,6 +1102,7 @@
     <ClCompile Include="DumpSelect.cpp" />
     <ClCompile Include="EBListCtrl.cpp" />
     <ClCompile Include="EditShortcutDlg.cpp" />
+    <ClCompile Include="ExpPswdLC.cpp" />
     <ClCompile Include="ExpPWListDlg.cpp" />
     <ClCompile Include="ExtThread.cpp" />
     <ClCompile Include="filter\FilterBaseDlg.cpp" />
@@ -1222,6 +1223,7 @@
     <ClInclude Include="DumpSelect.h" />
     <ClInclude Include="EBListCtrl.h" />
     <ClInclude Include="EditShortcutDlg.h" />
+    <ClInclude Include="ExpPswdLC.h" />
     <ClInclude Include="ExpPWListDlg.h" />
     <ClInclude Include="ExtThread.h" />
     <ClInclude Include="filter\FilterBoolDlg.h" />

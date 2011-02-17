@@ -1235,6 +1235,8 @@ void DboxMain::OnRestore()
   //RestoreDisplayAfterMinimize();
 
   m_ctlItemTree.SetRestoreMode(false);
+
+  TellUserAboutExpiredPasswords();
 }
 
 void DboxMain::OnListItemSelected(NMHDR *pNMHDR, LRESULT *pLResult)
@@ -1972,7 +1974,7 @@ bool DboxMain::LockDataBase()
       // If we don't warn the user, data may be lost!
       CGeneralMsgBox gmb;
       CString cs_text(MAKEINTRESOURCE(IDS_COULDNOTSAVE)), 
-      cs_title(MAKEINTRESOURCE(IDS_SAVEERROR));
+              cs_title(MAKEINTRESOURCE(IDS_SAVEERROR));
       gmb.MessageBox(cs_text, cs_title, MB_ICONSTOP);
       return false;
     }
@@ -3439,17 +3441,17 @@ int DboxMain::GetEntryImage(const CItemData &ci)
       nImage = CPWTreeCtrl::NORMAL;
   }
 
-  time_t tXTime;
-  ci.GetXTime(tXTime);
-  if ((long)tXTime > 0L && (long)tXTime <= 3650L) {
-    time_t tCPMTime;
-    ci.GetPMTime(tCPMTime);
-    if ((long)tCPMTime == 0L)
-      ci.GetCTime(tCPMTime);
-    tXTime = (time_t)((long)tCPMTime + (long)tXTime * 86400);
+  time_t tttXTime;
+  ci.GetXTime(tttXTime);
+  if ((long)tttXTime > 0L && (long)tttXTime <= 3650L) {
+    time_t tttCPMTime;
+    ci.GetPMTime(tttCPMTime);
+    if ((long)tttCPMTime == 0L)
+      ci.GetCTime(tttCPMTime);
+    tttXTime = (time_t)((long)tttCPMTime + (long)tttXTime * 86400);
   }
 
-  if (tXTime != 0) {
+  if (tttXTime != 0) {
     time_t now, warnexptime((time_t)0);
     time(&now);
     if (PWSprefs::GetInstance()->GetPref(PWSprefs::PreExpiryWarn)) {
@@ -3469,9 +3471,9 @@ int DboxMain::GetEntryImage(const CItemData &ci)
       if (warnexptime == (time_t)-1)
         warnexptime = (time_t)0;
     }
-    if (tXTime <= now) {
+    if (tttXTime <= now) {
       nImage += 2;  // Expired
-    } else if (tXTime < warnexptime) {
+    } else if (tttXTime < warnexptime) {
       nImage += 1;  // Warn nearly expired
     }
   }
@@ -3788,10 +3790,15 @@ void DboxMain::OnShowUnsavedEntries()
     m_showunsavedfilter.num_Mactive = (int)m_showunsavedfilter.vMfldata.size();
   }
 
-  m_bFilterActive = !m_bFilterActive;
-  if (m_bFilterActive)
+  if (!m_bExpireDisplayed)
+    m_bFilterActive = !m_bFilterActive;
+
+  if (m_bFilterActive) {
+    if (m_bExpireDisplayed)
+      m_bExpireDisplayed = !m_bExpireDisplayed;
+
     m_currentfilter = m_showunsavedfilter;
-  else
+  } else
     m_currentfilter.Empty();
 
   ApplyFilters();
@@ -3802,6 +3809,49 @@ void DboxMain::OnShowUnsavedEntries()
     m_bUnsavedDisplayed ? FALSE : TRUE);
   m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MENUITEM_MANAGEFILTERS,
     m_bUnsavedDisplayed ? FALSE : TRUE);
+}
+
+void DboxMain::OnShowExpireList()
+{
+  m_bExpireDisplayed = !m_bExpireDisplayed;
+
+  if (m_bExpireDisplayed) {
+    CString cs_temp(MAKEINTRESOURCE(IDS_EXPIREPASSWORDS));
+    m_showexpirefilter.Empty();
+    m_showexpirefilter.fname = cs_temp;
+
+    st_FilterRow fr;
+
+    fr.bFilterComplete = true;
+    fr.ftype = FT_XTIME;
+    fr.mtype = PWSMatch::MT_DATE;
+    fr.rule = PWSMatch::MR_NOTEQUAL;
+    fr.ltype = LC_OR;
+
+    fr.fdate1 = 0;
+    m_showexpirefilter.vMfldata.push_back(fr);
+    m_showexpirefilter.num_Mactive = (int)m_showexpirefilter.vMfldata.size();
+  }
+
+  if (!m_bUnsavedDisplayed)
+    m_bFilterActive = !m_bFilterActive;
+
+  if (m_bFilterActive) {
+    if (m_bUnsavedDisplayed)
+      m_bUnsavedDisplayed = !m_bUnsavedDisplayed;
+
+    m_currentfilter = m_showexpirefilter;
+  } else
+    m_currentfilter.Empty();
+
+  ApplyFilters();
+
+  m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MENUITEM_APPLYFILTER,
+    (m_bExpireDisplayed || !m_bFilterActive) ? FALSE : TRUE);
+  m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MENUITEM_EDITFILTER,
+    m_bExpireDisplayed ? FALSE : TRUE);
+  m_MainToolBar.GetToolBarCtrl().EnableButton(ID_MENUITEM_MANAGEFILTERS,
+    m_bExpireDisplayed ? FALSE : TRUE);
 }
 
 void DboxMain::UpdateToolBarDoUndo()
@@ -3829,6 +3879,8 @@ void DboxMain::AddToGUI(CItemData &ci)
 void DboxMain::RemoveFromGUI(CItemData &ci, bool bUpdateGUI)
 {
   // RemoveFromGUI should always occur BEFORE the entry is deleted!
+  // Note: Also called if a filter is active and an entry is changed and no longer
+  // satisfies the filter criteria.
   uuid_array_t entry_uuid;
   ci.GetUUID(entry_uuid);
   ItemListIter iter = m_core.Find(entry_uuid);
@@ -3852,8 +3904,10 @@ void DboxMain::RemoveFromGUI(CItemData &ci, bool bUpdateGUI)
 
     m_ctlItemList.DeleteItem(pdi->list_index);
     m_ctlItemTree.DeleteWithParents(pdi->tree_item);
+    pdi->list_index = -1;
+    pdi->tree_item = NULL;
 
-    FixListIndexes(); // sucks, as make m deletions an NxM operation
+    FixListIndexes(); // sucks, as make M deletions an NxM operation
     if (bUpdateGUI) { // Make controls redraw
       m_ctlItemList.Invalidate();
       m_ctlItemTree.Invalidate();
@@ -3877,7 +3931,7 @@ void DboxMain::RefreshEntryFieldInGUI(CItemData &ci, CItemData::FieldType ft)
 
   UpdateListItem(pdi->list_index, ft, ci.GetFieldValue(ft));
 
-  if (ft == CItemData::GROUP) {
+  if (ft == CItemData::GROUP || m_bFilterActive) {
     RefreshViews();
   } else {
     PWSprefs *prefs = PWSprefs::GetInstance();
@@ -3896,6 +3950,9 @@ void DboxMain::RefreshEntryFieldInGUI(CItemData &ci, CItemData::FieldType ft)
       if (ci.IsProtected())
         treeDispString += L" #";
       UpdateTreeItem(pdi->tree_item, treeDispString);
+      if (ft == CItemData::PASSWORD && bShowPasswordInTree) {
+        UpdateEntryImages(ci);
+      }
     }
   }
 }

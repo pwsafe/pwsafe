@@ -586,6 +586,9 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
     pPopupMenu->CheckMenuItem(ID_MENUITEM_SHOWHIDE_UNSAVED, MF_BYCOMMAND |
                               m_bUnsavedDisplayed ? MF_CHECKED : MF_UNCHECKED);
 
+    pPopupMenu->CheckMenuItem(ID_MENUITEM_SHOW_ALL_EXPIRY, MF_BYCOMMAND |
+                              m_bExpireDisplayed ? MF_CHECKED : MF_UNCHECKED);
+
     pPopupMenu->ModifyMenu(ID_MENUITEM_APPLYFILTER, MF_BYCOMMAND |
                            m_bFilterActive ? MF_CHECKED : MF_UNCHECKED,
                            ID_MENUITEM_APPLYFILTER,

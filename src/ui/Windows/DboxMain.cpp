@@ -141,7 +141,8 @@ DboxMain::DboxMain(CWnd* pParent)
   m_bRenameCtrl(false), m_bRenameShift(false),
   m_bAutotypeCtrl(false), m_bAutotypeShift(false),
   m_bInAT(false), m_bInRestoreWindowsData(false), m_bSetup(false),
-  m_bInRefresh(false), m_bInRestoreWindows(false), m_ExpireCandidates(NULL)
+  m_bInRefresh(false), m_bInRestoreWindows(false), m_bExpireDisplayed(false),
+  m_bTellUserExpired(false)
 {
   // Need to do the following as using the direct calls will fail for Windows versions before Vista
   // (Load Library using absolute path to avoid dll poisoning attacks)
@@ -218,7 +219,6 @@ DboxMain::~DboxMain()
   DeletePasswordFont();
 
   delete m_pToolTipCtrl;
-  delete m_ExpireCandidates;
 
   if (m_hUser32 != NULL)
     ::FreeLibrary(m_hUser32);
@@ -440,6 +440,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_PASSWORDSUBSET, OnDisplayPswdSubset)
   ON_COMMAND(ID_MENUITEM_REFRESH, OnRefreshWindow)
   ON_COMMAND(ID_MENUITEM_SHOWHIDE_UNSAVED, OnShowUnsavedEntries)
+  ON_COMMAND(ID_MENUITEM_SHOW_ALL_EXPIRY, OnShowExpireList)
 
   // Manage Menu
   ON_COMMAND(ID_MENUITEM_CHANGECOMBO, OnPasswordChange)
@@ -530,6 +531,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_MESSAGE(PWS_MSG_HDRTOCC_DD_COMPLETE, OnHdrToCCDragComplete)
   ON_MESSAGE(PWS_MSG_HDR_DRAG_COMPLETE, OnHeaderDragComplete)
   ON_MESSAGE(PWS_MSG_COMPARE_RESULT_FUNCTION, OnProcessCompareResultFunction)
+  ON_MESSAGE(PWS_MSG_EXPIRED_PASSWORD_EDIT, OnEditExpiredPasswordEntry)
   ON_MESSAGE(PWS_MSG_TOOLBAR_FIND, OnToolBarFindMessage)
   ON_MESSAGE(PWS_MSG_EXECUTE_FILTERS, OnExecuteFilters)
   ON_MESSAGE(PWS_MSG_EDIT_APPLY, OnApplyEditChanges)
@@ -658,6 +660,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_PASSWORDSUBSET, true, true, false, false},
   {ID_MENUITEM_REFRESH, true, true, false, false},
   {ID_MENUITEM_SHOWHIDE_UNSAVED, true, false, false, false},
+  {ID_MENUITEM_SHOW_ALL_EXPIRY, true, true, false, false},
   // Manage menu
   {ID_MENUITEM_CHANGECOMBO, true, false, true, false},
   {ID_MENUITEM_BACKUPSAFE, true, true, true, false},
@@ -2311,57 +2314,59 @@ void DboxMain::RefreshImages()
   m_menuManager.SetImageList(&m_MainToolBar);
 }
 
-void DboxMain::MakeExpireList()
+void DboxMain::CheckExpireList(const bool bAtOpen)
 {
-  // Called from PostOpenProcessing, creates a list
-  // of entries with expiration dates.
-  // If we have such entries, check them, and start a daily timer
+  // Called from PostOpenProcessing, OnOptions (if user turns on warnings
+  // or changes warning interval) and from OnTimer when the timer pops.
+  // If we have entries with expiration dates, check them, and start a daily timer
   // to repeat the check
 
-  if (!PWSprefs::GetInstance()->GetPref(PWSprefs::PreExpiryWarn))
-    return;
+  // Cancel timer and restart it - even if there are no expired events this time
+  // or the user has not set a warning period - they may do so in the next 24 hrs
+  KillTimer(TIMER_EXPENT);
+  const UINT DAY = 86400000; // 24 hours, in millisecs (24*60*60*1000)
+  SetTimer(TIMER_EXPENT, DAY, NULL);
 
-  if (m_ExpireCandidates != NULL) { // from previous Open
-    delete m_ExpireCandidates;
-    m_ExpireCandidates = NULL;
-  }
-
-  ItemListConstIter listPos;
-  time_t XTime;
-  for (listPos = m_core.GetEntryIter();
-       listPos != m_core.GetEntryEndIter();
-       listPos++) {
-    const CItemData &curitem = m_core.GetEntry(listPos);
-    if (curitem.IsAlias())
-      continue;
-
-    curitem.GetXTime(XTime);
-    if (XTime != time_t(0)) {
-      if (m_ExpireCandidates == NULL)
-        m_ExpireCandidates = new ExpiredList;
-      m_ExpireCandidates->Add(curitem);
-    }
-  } // iteration over entries
-
-  if (m_ExpireCandidates != NULL) {
-    CheckExpireList();
-    const UINT DAY = 24*60*60*1000; // 24 hours, in millisecs
-    SetTimer(TIMER_EXPENT, DAY, NULL);
-  }
-}
-
-void DboxMain::CheckExpireList()
-{
   // Check if we've any expired entries. If so, show the user.
   if (!PWSprefs::GetInstance()->GetPref(PWSprefs::PreExpiryWarn) ||
-      m_ExpireCandidates == NULL)
+       m_core.GetExpirySize() == 0) {
+    m_bTellUserExpired = false;
     return;
+  }
 
   int idays = PWSprefs::GetInstance()->GetPref(PWSprefs::PreExpiryWarnDays);
-  ExpiredList expiredEntries = m_ExpireCandidates->GetExpired(idays);
-  if (!expiredEntries.empty()) {
-    CExpPWListDlg dlg(this, expiredEntries, m_core.GetCurFile().c_str());
-    dlg.DoModal();
+  ExpiredList expiredEntries = m_core.GetExpired(idays);
+
+  if (!expiredEntries.empty() && (app.GetSystemTrayState() == LOCKED || IsIconic() == TRUE || bAtOpen))
+    m_bTellUserExpired = true;
+}
+
+void DboxMain::TellUserAboutExpiredPasswords()
+{
+  // Check once more
+  if (!PWSprefs::GetInstance()->GetPref(PWSprefs::PreExpiryWarn) ||
+       m_core.GetExpirySize() == 0) {
+    m_bTellUserExpired = false;
+    return;
+  }
+
+  // Tell user that there are expired passwords
+  int idays = PWSprefs::GetInstance()->GetPref(PWSprefs::PreExpiryWarnDays);
+  ExpiredList expiredEntries = m_core.GetExpired(idays);
+
+  if (m_bTellUserExpired && expiredEntries.size() != 0) {
+    m_bTellUserExpired = !m_bTellUserExpired;
+
+    // Give user option to display and edit them
+    CGeneralMsgBox gmb;
+    CString cs_text, cs_title(MAKEINTRESOURCE(IDS_EXPIREDPSWDSTITLE));
+    cs_text.LoadString(IDS_EXPIREDPSWDSEXIST);
+    INT_PTR rc = gmb.MessageBox(cs_text, cs_title, MB_ICONEXCLAMATION | MB_YESNO);
+
+    if (rc == IDYES) {
+      CExpPWListDlg dlg(this, expiredEntries, m_core.GetCurFile().c_str());
+      dlg.DoModal();
+    }
   }
 }
 
@@ -3034,7 +3039,13 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
         iEnable = FALSE;
       break;
     case ID_MENUITEM_SHOWHIDE_UNSAVED:
-      if (!m_core.IsChanged() || (m_core.IsChanged() && m_bFilterActive && !m_bUnsavedDisplayed))
+      if (!m_core.IsChanged() || 
+          (m_core.IsChanged() && m_bFilterActive && !m_bUnsavedDisplayed && !m_bExpireDisplayed))
+        iEnable = FALSE;
+      break;
+    case ID_MENUITEM_SHOW_ALL_EXPIRY:
+      if (m_core.GetExpirySize() == 0 ||
+          (m_core.GetExpirySize() == 0 && m_bFilterActive && !m_bUnsavedDisplayed && !m_bExpireDisplayed))
         iEnable = FALSE;
       break;
     case ID_MENUITEM_CLEAR_MRU:

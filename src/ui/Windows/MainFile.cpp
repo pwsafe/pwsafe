@@ -37,6 +37,7 @@
 #include "core/VerifyFormat.h"
 #include "core/SysInfo.h"
 #include "core/XML/XMLDefs.h"  // Required if testing "USE_XML_LIBRARY"
+#include "core/ExpiredList.h"
 
 #include "os/file.h"
 #include "os/dir.h"
@@ -508,9 +509,10 @@ int DboxMain::Close(const bool bTrySave)
     m_stkSaveGUIInfo.pop();
   }
 
-  // Nothing to hide, don't lock on idle
-  // or logout
+  // Nothing to hide, don't lock on idle or logout
+  // No need to check expired passwords
   KillTimer(TIMER_LOCKDBONIDLETIMEOUT);
+  KillTimer(TIMER_EXPENT);
   RegisterSessionNotification(false);
 
   return PWScore::SUCCESS;
@@ -811,7 +813,6 @@ void DboxMain::PostOpenProcessing()
   if (ext != L".fbak")
     app.AddToMRU(m_core.GetCurFile().c_str());
 
-  MakeExpireList();
   ChangeOkUpdate();
 
   // Tidy up filters
@@ -827,6 +828,9 @@ void DboxMain::PostOpenProcessing()
   UpdateMenuAndToolBar(true); // sets m_bOpen too...
   UpdateToolBarROStatus(m_core.IsReadOnly());
   UpdateStatusBar();
+
+  CheckExpireList(true);
+  TellUserAboutExpiredPasswords();
 
   UUIDList RUElist;
   m_core.GetRUEList(RUElist);
@@ -2335,6 +2339,51 @@ void DboxMain::DoSynchronize(PWScore *pothercore,
   waitCursor.Restore();
 
   prpt->EndReport();
+}
+
+LRESULT DboxMain::OnEditExpiredPasswordEntry(WPARAM wParam, LPARAM )
+{
+  ExpPWEntry *pEE = (ExpPWEntry *)wParam;
+
+  ItemListIter iter = Find(pEE->uuid);
+  ASSERT(iter != End());
+  if (iter == End())
+    return FALSE;
+
+  CItemData *pci = &iter->second;
+  ASSERT(pci != NULL);
+
+  // Edit the correct entry
+  if (EditItem(pci)) {
+    // pci is now invalid after EditItem - find the new one!
+    iter = Find(pEE->uuid);
+    ASSERT(iter != End());
+    pci = &iter->second;
+    ASSERT(pci != NULL);
+
+    // user may have changed group/title/user
+    pEE->group = pci->GetGroup();
+    pEE->title = pci->GetTitle();
+    pEE->user = pci->GetUser();
+
+    // Update time fields
+    time_t tttXTime;
+    pci->GetXTime(tttXTime);
+    if ((long)tttXTime > 0L && (long)tttXTime <= 3650L) {
+      time_t tttCPMTime;
+      pci->GetPMTime(tttCPMTime);
+      if ((long)tttCPMTime == 0L)
+        pci->GetCTime(tttCPMTime);
+      tttXTime = (time_t)((long)tttCPMTime + (long)tttXTime * 86400);
+    }
+    pEE->expirytttXTime = tttXTime;
+    pEE->expirylocdate = PWSUtil::ConvertToDateTimeString(tttXTime, TMC_LOCALE);
+    pEE->expiryexpdate = PWSUtil::ConvertToDateTimeString(tttXTime, TMC_EXPORT_IMPORT);
+
+    return TRUE;
+  }
+
+  return FALSE;
 }
 
 LRESULT DboxMain::OnProcessCompareResultFunction(WPARAM wParam, LPARAM lFunction)

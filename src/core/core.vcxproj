@@ -1074,6 +1074,7 @@
     <ClCompile Include="CoreOtherDB.cpp" />
     <ClCompile Include="CoreImpExp.cpp" />
     <ClCompile Include="core_st.cpp" />
+    <ClCompile Include="ExpiredList.cpp" />
     <ClCompile Include="hmac.cpp" />
     <ClCompile Include="ItemData.cpp" />
     <ClCompile Include="ItemField.cpp" />
@@ -1128,6 +1129,7 @@
     <ClInclude Include="core.h" />
     <ClInclude Include="core_st.h" />
     <ClInclude Include="DBCompareData.h" />
+    <ClInclude Include="ExpiredList.h" />
     <ClInclude Include="Fish.h" />
     <ClInclude Include="hmac.h" />
     <ClInclude Include="ItemData.h" />
