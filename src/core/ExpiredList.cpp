@@ -29,10 +29,10 @@ ExpPWEntry::ExpPWEntry(const CItemData &ci)
   user = ci.GetUser();
   et = ci.GetEntryType();
 
-  if ((long)tttXTime > 0L && (long)tttXTime <= 3650L) {
+  if (tttXTime > time_t(0) && tttXTime <= time_t(3650L)) {
     time_t tttCPMTime;
     ci.GetPMTime(tttCPMTime);
-    if ((long)tttCPMTime == 0L)
+    if (tttCPMTime == time_t(0))
       ci.GetCTime(tttCPMTime);
     tttXTime = (time_t)((long)tttCPMTime + (long)tttXTime * 86400);
   }
@@ -67,8 +67,7 @@ ExpPWEntry &ExpPWEntry::operator=(const ExpPWEntry &that)
 void ExpiredList::Add(const CItemData &ci)
 {
   // Not valid for aliases or shortcuts!
-  const CItemData::EntryType et = ci.GetEntryType();
-  if (et == CItemData::ET_ALIAS || et == CItemData::ET_SHORTCUT)
+  if (ci.IsDependent())
     return;
 
   // We might be called from Update with a ci
@@ -108,7 +107,7 @@ ExpiredList ExpiredList::GetExpired(const int &idays)
   st.tm_mday += idays;
   // Note: mktime will normalise the date structure before converting to time_t
   exptime = mktime(&st);
-  if (exptime == (time_t)-1)
+  if (exptime == time_t(-1))
     exptime = now;
 
   for (iter = begin(); iter != end(); iter++) {
@@ -116,6 +115,5 @@ ExpiredList ExpiredList::GetExpired(const int &idays)
       retval.push_back(*iter);
     }
   }
-
   return retval;
 }

@@ -29,21 +29,9 @@ CExpPWListDlg::CExpPWListDlg(CWnd* pParent,
   : CPWDialog(CExpPWListDlg::IDD, pParent), m_expPWList(expPWList)
 {
   m_pDbx = reinterpret_cast<DboxMain *>(pParent);
-
-  const int FILE_DISP_LEN = 75;
-
-  if (a_filespec.GetLength() > FILE_DISP_LEN) {
-    // m_message = a_filespec.Right(FILE_DISP_LEN - 3); // truncate for display
-    // m_message.Insert(0, L"...");
-    m_message =  a_filespec.Left(FILE_DISP_LEN/2-5) +
-                     L" ... " + a_filespec.Right(FILE_DISP_LEN/2);
-  } else {
-    m_message = a_filespec;
-  }
-
+  m_message = a_filespec; // Path Ellipsis=true, no length woes
   m_iSortedColumn = 4;
   m_bSortAscending = FALSE;
-
   m_idays = PWSprefs::GetInstance()->GetPref(PWSprefs::PreExpiryWarnDays);
 }
 
