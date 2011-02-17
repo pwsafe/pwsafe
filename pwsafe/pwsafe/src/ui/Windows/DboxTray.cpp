@@ -43,6 +43,7 @@ void DboxMain::OnTrayLockUnLock()
       // This only unlocks the database - it does not restore the window
       pws_os::Trace(L"OnTrayLockUnLock: User clicked Unlock\n");
       RestoreWindowsData(false, false);
+      TellUserAboutExpiredPasswords();
       break;
     case ThisMfcApp::UNLOCKED:          // User clicked Lock!
       UpdateSystemTray(LOCKED);

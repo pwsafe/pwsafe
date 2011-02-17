@@ -717,7 +717,8 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNMHDR, LRESULT *pLResult)
     }
 
     StringX sxGroup = pci->GetGroup();
-    if (m_pDbx->Find(sxGroup, sxNewTitle, sxNewUser) != m_pDbx->End()) {
+    if ((sxNewTitle != pci->GetTitle() || sxNewUser != pci->GetUser()) &&
+        m_pDbx->Find(sxGroup, sxNewTitle, sxNewUser) != m_pDbx->End()) {
       CGeneralMsgBox gmb;
       CSecString temp;
       if (sxGroup.empty()) {
@@ -772,8 +773,10 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNMHDR, LRESULT *pLResult)
       m_pDbx->UpdateListItemTitle(lindex, sxNewTitle);
     }
 
-    if (bShowUsernameInTree && sxNewUser != pci->GetUser()) {
-      m_pDbx->UpdateListItemUser(lindex, sxNewUser);
+    if (bShowUsernameInTree) {
+      if(sxNewUser != pci->GetUser()) {
+        m_pDbx->UpdateListItemUser(lindex, sxNewUser);
+      }
       if (bShowPasswordInTree && sxNewPassword != pci->GetPassword()) {
         m_pDbx->UpdateListItemPassword(lindex, sxNewPassword);
       }
@@ -845,9 +848,11 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNMHDR, LRESULT *pLResult)
                                                  CItemData::TITLE, sxNewTitle));
     }
 
-    if (bShowUsernameInTree && sxNewUser != pci->GetUser()) {
-      pmulticmds->Add(UpdateEntryCommand::Create(pcore, *pci,
-                                                 CItemData::USER, sxNewUser));
+    if (bShowUsernameInTree) {
+      if (sxNewUser != pci->GetUser()) {
+        pmulticmds->Add(UpdateEntryCommand::Create(pcore, *pci,
+                                                   CItemData::USER, sxNewUser));
+      }
       if (bShowPasswordInTree && sxNewPassword != pci->GetPassword()) {
         pmulticmds->Add(UpdateEntryCommand::Create(pcore, *pci,
                                                    CItemData::PASSWORD, sxNewPassword));

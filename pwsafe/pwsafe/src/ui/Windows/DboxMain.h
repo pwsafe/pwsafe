@@ -88,6 +88,9 @@ DECLARE_HANDLE(HDROP);
 // Process Compare Result Dialog click/menu functions
 #define PWS_MSG_COMPARE_RESULT_FUNCTION (WM_APP + 30)
 
+// Equivalent one from Expired Password dialog
+#define PWS_MSG_EXPIRED_PASSWORD_EDIT   (WM_APP + 31)
+
 // Edit/Add extra context menu messages
 #define PWS_MSG_CALL_EXTERNAL_EDITOR    (WM_APP + 40)
 #define PWS_MSG_EXTERNAL_EDITOR_ENDED   (WM_APP + 41)
@@ -106,7 +109,7 @@ DECLARE_HANDLE(HDROP);
 */
 
 /* timer event number used to by PupText.  Here for doc. only
-#define TIMER_PUPTEXT             0x03  */
+#define TIMER_PUPTEXT             0x03 */
 // timer event number used to check if the workstation is locked
 #define TIMER_LOCKONWTSLOCK       0x04
 // timer event number used to support lock on user-defined idle timeout
@@ -128,23 +131,26 @@ DECLARE_HANDLE(HDROP);
 #define TIMER_LB_SHOWING          0x0B */
 // Timer event for daily expired entries check
 #define TIMER_EXPENT              0x0C
+
 /*
 HOVER_TIME_ND       The length of time the pointer must remain stationary
                     within a tool's bounding rectangle before the tool tip
                     window appears.
+*/
+#define HOVER_TIME_ND      2000
 
+/*
 TIMEINT_ND_SHOWING The length of time the tool tip window remains visible
                    if the pointer is stationary within a tool's bounding
                    rectangle.
 */
-#define HOVER_TIME_ND      2000
 #define TIMEINT_ND_SHOWING 5000
 
 // DragBar time interval 
 #define TIMER_DRAGBAR_TIME 100
 
 // Hotkey value ID
-#define PWS_HOTKEY_ID 5767
+#define PWS_HOTKEY_ID      5767
 
 // Arbitrary string to mean that the saved DB preferences are empty.
 #define EMPTYSAVEDDBPREFS L"#Empty#"
@@ -153,7 +159,7 @@ TIMEINT_ND_SHOWING The length of time the tool tip window remains visible
 // by default (i.e. without calling SetLimitText). Note: 30000 not 32K!
 // Although this limit can be changed to up to 2GB of characters
 // (4GB memory if Unicode), it would make the database size absolutely enormous!
-#define MAXTEXTCHARS 30000
+#define MAXTEXTCHARS       30000
 
 // For ShutdownBlockReasonCreate & ShutdownBlockReasonDestroy
 typedef BOOL (WINAPI *PSBR_CREATE) (HWND, LPCWSTR);
@@ -515,6 +521,7 @@ protected:
   LRESULT OnTrayNotification(WPARAM wParam, LPARAM lParam);
 
   LRESULT OnProcessCompareResultFunction(WPARAM wParam, LPARAM lParam);
+  LRESULT OnEditExpiredPasswordEntry(WPARAM wParam, LPARAM lParam);
   LRESULT ViewCompareResult(PWScore *pcore, uuid_array_t &uuid);
   LRESULT EditCompareResult(PWScore *pcore, uuid_array_t &uuid);
   LRESULT CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
@@ -688,6 +695,7 @@ protected:
   afx_msg void OnSetFilter();
   afx_msg void OnRefreshWindow();
   afx_msg void OnShowUnsavedEntries();
+  afx_msg void OnShowExpireList();
   afx_msg void OnMinimize();
   afx_msg void OnRestore();
   afx_msg void OnTimer(UINT_PTR nIDEvent);
@@ -804,8 +812,8 @@ private:
   void SetIdleLockCounter(UINT i); // i in minutes, set to timer counts
   bool DecrementAndTestIdleLockCounter();
   int SaveIfChanged();
-  void MakeExpireList(); // Upon Open, make a list of entries w/Expiration dates
-  void CheckExpireList(); // Upon open and upon timer, check list, show exp.
+  void CheckExpireList(const bool bAtOpen = false); // Upon open, timer + menu, check list, show exp.
+  void TellUserAboutExpiredPasswords();
   bool RestoreWindowsData(bool bUpdateWindows, bool bShow = true);
   void UpdateAccessTime(CItemData *pci);
   void RestoreGroupDisplayState();
@@ -855,11 +863,13 @@ private:
   CInfoDisplay *m_pNotesDisplay;
 
   // Filters
-  bool m_bFilterActive, m_bFilterForStatus, m_bUnsavedDisplayed;
+  bool m_bFilterActive, m_bFilterForStatus, m_bUnsavedDisplayed, m_bExpireDisplayed;
   // Current filter
   st_filters m_currentfilter;
   // Special Show Unsaved Changes filter
   st_filters m_showunsavedfilter;
+  // Special Show Expired/expiring passwords filter
+  st_filters m_showexpirefilter;
 
   // Sorted Groups
   vfiltergroups m_vMflgroups;
@@ -924,10 +934,14 @@ private:
   // Used to update static text on the Wizard for Compare, Merge etc.
   CWnd *m_pWZWnd;
 
+  // Compare vectors - when comparing databases
   CompareData m_list_OnlyInCurrent;
   CompareData m_list_OnlyInComp;
   CompareData m_list_Conflicts;
   CompareData m_list_Identical;
+
+  // Flag to tell user there are some expird entries
+  bool m_bTellUserExpired;
 
   // The following is for saving information over an execute/undo/redo
   // Might need to add more e.g. if filter is active and which one?
@@ -970,7 +984,6 @@ private:
   };
 
   std::stack<st_SaveGUIInfo> m_stkSaveGUIInfo;
-  ExpiredList  *m_ExpireCandidates; // info on entries with expiration dates
 };
 
 // Following used to keep track of display vs data

@@ -11,126 +11,40 @@
 #include "stdafx.h"
 #include "ExpPWListDlg.h"
 #include "DboxMain.h"
+#include "ThisMfcApp.h"
 #include "SecString.h"
+#include "PWTreeCtrl.h"
+
 #include "core/Util.h"
+#include "core/PWSprefs.h"
 #include "core/ItemData.h"
+
 #include "resource2.h"  // Menu, Toolbar & Accelerator resources
 #include "resource3.h"  // String resources
 
-using namespace std;
-
-ExpPWEntry::ExpPWEntry(const CItemData &ci)
-{
-  time_t now, XTime;
-
-  ci.GetXTime(XTime);
-  time(&now);
-  ci.GetUUID(uuid);
-  group = ci.GetGroup();
-  title = ci.GetTitle();
-  user = ci.GetUser();
-  
-  // Expired or Warning / Normal or Alias Base or Shortcut Base 
-  // See image list below
-  // Note only neither or one of IsAliasBase or IsShortcutBase can be true!
-  type = (XTime > now ? 0 : 1) + (ci.IsAliasBase() ? 2 : 0) + (ci.IsShortcutBase() ? 4 : 0);
-  expirylocdate = ci.GetXTimeL();
-  expiryexpdate = ci.GetXTimeExp();
-  expirytttdate = XTime;
-}
-
-ExpPWEntry::ExpPWEntry(const ExpPWEntry &ee) : group(ee.group),
-                                               title(ee.title), user(ee.user),
-                                               expirylocdate(ee.expirylocdate),
-                                               expiryexpdate(ee.expiryexpdate),
-                                               expirytttdate(ee.expirytttdate),
-                                               type(ee.type)
-{
-  memcpy(uuid, ee.uuid, sizeof(uuid));
-}
-
-ExpPWEntry &ExpPWEntry::operator=(const ExpPWEntry &that)
-{
-  if (this != &that) {
-    memcpy(uuid, that.uuid, sizeof(uuid));
-    group = that.group;
-    title = that.title;
-    user = that.user;
-    expirylocdate = that.expirylocdate;
-    expiryexpdate = that.expiryexpdate;
-    expirytttdate = that.expirytttdate;
-    type = that.type;
-  }
-  return *this;
-}
-
-void ExpiredList::Add(const CItemData &ci)
-{
-  // We might be called from Update with a ci
-  // that doesn't have an expiration date - check!
-  if (!ci.GetXTime().empty())
-    push_back(ExpPWEntry(ci));
-}
-
-void ExpiredList::Remove(const CItemData &ci)
-{
-  uuid_array_t uuid;
-  ci.GetUUID(uuid);
-  ExpiredList::iterator iter;
-  for (iter = begin(); iter != end(); iter++)
-    if (memcmp(uuid, iter->uuid, sizeof(uuid)) == 0) {
-      erase(iter);
-      break;
-    }
-}
-
-ExpiredList ExpiredList::GetExpired(int idays)
-{
-  ExpiredList retval;
-  ExpiredList::iterator iter;
-  struct tm st;
-
-  time_t now, exptime;
-  time(&now);
-#if (_MSC_VER >= 1400)
-  errno_t err;
-  err = localtime_s(&st, &now);  // secure version
-  ASSERT(err == 0);
-#else
-  st = *localtime(&now);
-#endif
-  st.tm_mday += idays;
-  exptime = mktime(&st);
-  if (exptime == (time_t)-1)
-    exptime = now;
-
-  for (iter = begin(); iter != end(); iter++) {
-    if (iter->expirytttdate < exptime)
-      retval.push_back(*iter);
-  }
-  return retval;
-}
-
-
 // CExpPWListDlg dialog
 CExpPWListDlg::CExpPWListDlg(CWnd* pParent,
-                             const ExpiredList &expPWList,
+                             ExpiredList &expPWList,
                              const CString& a_filespec)
   : CPWDialog(CExpPWListDlg::IDD, pParent), m_expPWList(expPWList)
 {
+  m_pDbx = reinterpret_cast<DboxMain *>(pParent);
+
   const int FILE_DISP_LEN = 75;
 
   if (a_filespec.GetLength() > FILE_DISP_LEN) {
     // m_message = a_filespec.Right(FILE_DISP_LEN - 3); // truncate for display
     // m_message.Insert(0, L"...");
-    m_message =  a_filespec.Left(FILE_DISP_LEN/2-5) + 
+    m_message =  a_filespec.Left(FILE_DISP_LEN/2-5) +
                      L" ... " + a_filespec.Right(FILE_DISP_LEN/2);
   } else {
     m_message = a_filespec;
   }
 
-  m_iSortedColumn = -1; 
-  m_bSortAscending = TRUE; 
+  m_iSortedColumn = 4;
+  m_bSortAscending = FALSE;
+
+  m_idays = PWSprefs::GetInstance()->GetPref(PWSprefs::PreExpiryWarnDays);
 }
 
 CExpPWListDlg::~CExpPWListDlg()
@@ -151,18 +65,33 @@ void CExpPWListDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CExpPWListDlg, CPWDialog)
-  ON_BN_CLICKED(IDC_COPY_EXP_TO_CLIPBOARD, OnBnClickedCopyExpToClipboard)
   ON_BN_CLICKED(IDOK, OnOK)
+  ON_BN_CLICKED(ID_HELP, OnIconHelp)
   ON_NOTIFY(HDN_ITEMCLICKA, 0, OnHeaderClicked)
   ON_NOTIFY(HDN_ITEMCLICKW, 0, OnHeaderClicked)
+  ON_NOTIFY(NM_DBLCLK, IDC_EXPIRED_PASSWORD_LIST, OnItemDoubleClick)
   ON_WM_DESTROY()
 END_MESSAGE_MAP()
 
 // CExpPWListDlg message handlers
 
+BOOL CExpPWListDlg::PreTranslateMessage(MSG* pMsg)
+{
+  if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
+    PostMessage(WM_COMMAND, MAKELONG(ID_HELP, BN_CLICKED), NULL);
+    return TRUE;
+  }
+
+  return CPWDialog::PreTranslateMessage(pMsg);
+}
+
 BOOL CExpPWListDlg::OnInitDialog()
 {
   CPWDialog::OnInitDialog();
+
+  DWORD dwStyleEx = m_expPWListCtrl.GetExtendedStyle();
+  dwStyleEx |= LVS_EX_FULLROWSELECT;
+  m_expPWListCtrl.SetExtendedStyle(dwStyleEx);
 
   //m_expPWListCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_SUBITEMIMAGES);
 
@@ -177,38 +106,39 @@ BOOL CExpPWListDlg::OnInitDialog()
   cs_text.LoadString(IDS_PASSWORDEXPIRYDATE);
   m_expPWListCtrl.InsertColumn(4, cs_text);
 
-  m_pImageList = new CImageList();
-  // Number (6) same as total of warn/expired images below
   CBitmap bitmap;
   BITMAP bm;
 
-  bitmap.LoadBitmap(IDB_NORMAL_WARNEXPIRED);
-  bitmap.GetBitmap(&bm);
-
-  BOOL status = m_pImageList->Create(bm.bmWidth, bm.bmHeight, 
-                                     ILC_MASK | ILC_COLOR, 6, 0);
-  ASSERT(status != 0);
-
   // Change all pixels in this 'grey' to transparent
   const COLORREF crTransparent = RGB(192, 192, 192);
-  //bitmap.LoadBitmap(IDB_NORMAL_WARNEXPIRED); - already loaded above to get width
+
+  bitmap.LoadBitmap(IDB_NODE);
+  bitmap.GetBitmap(&bm);
+
+  m_pImageList = new CImageList();
+  // Number (12) corresponds to number in CPWTreeCtrl public enum
+  BOOL status = m_pImageList->Create(bm.bmWidth, bm.bmHeight,
+                                     ILC_MASK | ILC_COLOR, 12, 0);
+  ASSERT(status != 0);
+
+  // Order of LoadBitmap() calls matches CPWTreeCtrl public enum
+  // Also now used by CListCtrl!
+  //bitmap.LoadBitmap(IDB_NODE); - already loaded above to get width
   m_pImageList->Add(&bitmap, crTransparent);
   bitmap.DeleteObject();
-  bitmap.LoadBitmap(IDB_NORMAL_EXPIRED);
-  m_pImageList->Add(&bitmap, crTransparent);
-  bitmap.DeleteObject();
-  bitmap.LoadBitmap(IDB_ABASE_WARNEXPIRED);
-  m_pImageList->Add(&bitmap, crTransparent);
-  bitmap.DeleteObject();
-  bitmap.LoadBitmap(IDB_ABASE_EXPIRED);
-  m_pImageList->Add(&bitmap, crTransparent);
-  bitmap.DeleteObject();
-  bitmap.LoadBitmap(IDB_SBASE_WARNEXPIRED);
-  m_pImageList->Add(&bitmap, crTransparent);
-  bitmap.DeleteObject();
-  bitmap.LoadBitmap(IDB_SBASE_EXPIRED);
-  m_pImageList->Add(&bitmap, crTransparent);
-  bitmap.DeleteObject();
+  UINT bitmapResIDs[] = {
+    IDB_NORMAL, IDB_NORMAL_WARNEXPIRED, IDB_NORMAL_EXPIRED,
+    IDB_ABASE, IDB_ABASE_WARNEXPIRED, IDB_ABASE_EXPIRED,
+    IDB_ALIAS,
+    IDB_SBASE, IDB_SBASE_WARNEXPIRED, IDB_SBASE_EXPIRED,
+    IDB_SHORTCUT,
+  };
+
+  for (int i = 0; i < sizeof(bitmapResIDs) / sizeof(bitmapResIDs[0]); i++) {
+    bitmap.LoadBitmap(bitmapResIDs[i]);
+    m_pImageList->Add(&bitmap, crTransparent);
+    bitmap.DeleteObject();
+  }
 
   m_expPWListCtrl.SetImageList(m_pImageList, LVSIL_SMALL);
   m_expPWListCtrl.SetImageList(m_pImageList, LVSIL_NORMAL);
@@ -220,16 +150,28 @@ BOOL CExpPWListDlg::OnInitDialog()
        itempos != m_expPWList.end();
        itempos++) {
     const ExpPWEntry exppwentry = *itempos;
-    nPos = m_expPWListCtrl.InsertItem(nPos, NULL, exppwentry.type);
+
+    // To get the correct bitmap image....
+    int image = GetEntryImage(exppwentry);
+
+    // Add to ListCtrl
+    nPos = m_expPWListCtrl.InsertItem(++nPos, NULL, image);
     m_expPWListCtrl.SetItemText(nPos, 1, exppwentry.group.c_str());
     m_expPWListCtrl.SetItemText(nPos, 2, exppwentry.title.c_str());
     m_expPWListCtrl.SetItemText(nPos, 3, exppwentry.user.c_str());
     m_expPWListCtrl.SetItemText(nPos, 4, exppwentry.expirylocdate.c_str());
-    // original nPos == index in vector: save for Sort
+
+    // original nPos == index in vector: need to know even if user sorts rows
     m_expPWListCtrl.SetItemData(nPos, static_cast<DWORD>(nPos));
   }
 
+  // Stop flickers
   m_expPWListCtrl.SetRedraw(FALSE);
+
+  // Sort by expiry date - soonest first
+  m_expPWListCtrl.SortItems(ExpPWCompareFunc, (LPARAM)this);
+
+  // Set column widths
   for (int i = 0; i < 5; i++) {
     m_expPWListCtrl.SetColumnWidth(i, LVSCW_AUTOSIZE);
     int nColumnWidth = m_expPWListCtrl.GetColumnWidth(i);
@@ -237,42 +179,19 @@ BOOL CExpPWListDlg::OnInitDialog()
     int nHeaderWidth = m_expPWListCtrl.GetColumnWidth(i);
     m_expPWListCtrl.SetColumnWidth(i, max(nColumnWidth, nHeaderWidth));
   }
+
+  // Redraw
   m_expPWListCtrl.SetRedraw(TRUE);
 
   return TRUE;
 }
 
-void CExpPWListDlg::OnOK() 
+void CExpPWListDlg::OnOK()
 {
   CPWDialog::OnOK();
 }
 
-void CExpPWListDlg::OnBnClickedCopyExpToClipboard()
-{
-  CString title(MAKEINTRESOURCE(IDS_COPYTITLE));
-  const StringX CRLF = L"\r\n";
-  const StringX TAB = L"\t";
-
-  StringX data = LPCWSTR(title);
-
-  ExpiredList::const_iterator itempos;
-
-  for (itempos = m_expPWList.begin();
-       itempos != m_expPWList.end();
-       itempos++) {
-    const ExpPWEntry exppwentry = *itempos;
-    data +=
-        exppwentry.group + TAB + 
-        exppwentry.title + TAB + 
-        exppwentry.user + TAB + 
-        exppwentry.expiryexpdate + CRLF;
-  }
-
-  DboxMain *pDbx = static_cast<DboxMain *>(GetParent());
-  pDbx->SetClipboardData(data);
-}
-
-void CExpPWListDlg::OnHeaderClicked(NMHDR* pNMHDR, LRESULT* pResult) 
+void CExpPWListDlg::OnHeaderClicked(NMHDR* pNMHDR, LRESULT* pResult)
 {
   HD_NOTIFY *phdn = (HD_NOTIFY *) pNMHDR;
 
@@ -286,7 +205,7 @@ void CExpPWListDlg::OnHeaderClicked(NMHDR* pNMHDR, LRESULT* pResult)
     m_iSortedColumn = phdn->iItem;
     m_expPWListCtrl.SortItems(ExpPWCompareFunc, (LPARAM)this);
 
-    // Note: WINVER defines the minimum system level for which this is program compiled and 
+    // Note: WINVER defines the minimum system level for which this is program compiled and
     // NOT the level of system it is running on!
     // In this case, these values are defined in Windows XP and later and supported
     // by V6 of comctl32.dll (supplied with Windows XP) and later.
@@ -319,15 +238,15 @@ int CALLBACK CExpPWListDlg::ExpPWCompareFunc(LPARAM lParam1, LPARAM lParam2,
   const ExpPWEntry pRHS = self->m_expPWList[lParam2];
   CSecString group1, title1, username1;
   CSecString group2, title2, username2;
-  int type1, type2;
+  int et1, et2;
   time_t t1, t2;
 
   int iResult;
   switch(nSortColumn) {
     case 0:
-      type1 = pLHS.type;
-      type2 = pRHS.type;
-      iResult = (type1 < type2) ? -1 : 1;
+      et1 = (int)pLHS.et;
+      et2 = (int)pRHS.et;
+      iResult = (et1 < et2) ? -1 : 1;
       break;
     case 1:
       group1 = pLHS.group;
@@ -345,8 +264,8 @@ int CALLBACK CExpPWListDlg::ExpPWCompareFunc(LPARAM lParam1, LPARAM lParam2,
       iResult = ((CString)username1).CompareNoCase(username2);
       break;
     case 4:
-      t1 = pLHS.expirytttdate;
-      t2 = pRHS.expirytttdate;
+      t1 = pLHS.expirytttXTime;
+      t2 = pRHS.expirytttXTime;
       iResult = ((long) t1 < (long) t2) ? -1 : 1;
       break;
     default:
@@ -358,4 +277,106 @@ int CALLBACK CExpPWListDlg::ExpPWCompareFunc(LPARAM lParam1, LPARAM lParam2,
     iResult *= -1;
 
   return iResult;
+}
+
+void CExpPWListDlg::OnItemDoubleClick(NMHDR* /* pNMHDR */, LRESULT *pResult)
+{
+  *pResult = 0;
+
+  int irow = m_expPWListCtrl.GetNextItem(-1, LVNI_SELECTED);
+  if (irow == -1)
+    return;
+
+  ASSERT(irow >= 0 && irow < (int)m_expPWList.size());
+  size_t iv = (size_t)m_expPWListCtrl.GetItemData(irow);
+  ExpPWEntry *pEE = &m_expPWList[iv];
+
+  LRESULT lres = ::SendMessage(AfxGetApp()->m_pMainWnd->GetSafeHwnd(),
+                                   PWS_MSG_EXPIRED_PASSWORD_EDIT,
+                                   (WPARAM)pEE, 0);
+  if (lres == TRUE) {
+    // Update row
+    // Update image and unselect
+    LVITEM lv= {0};
+    lv.iItem = irow;
+    lv.mask = LVIF_IMAGE | LVIF_STATE;
+    lv.state = 0;
+    lv.stateMask = LVIS_SELECTED;
+    lv.iImage = GetEntryImage(*pEE);
+    m_expPWListCtrl.SetItem(&lv);
+
+    // User may have edited the group/title/user fields!!!
+    m_expPWListCtrl.SetItemText(irow, 1, pEE->group.c_str());
+    m_expPWListCtrl.SetItemText(irow, 2, pEE->title.c_str());
+    m_expPWListCtrl.SetItemText(irow, 3, pEE->user.c_str());
+
+    // User may have changed the expiry date
+    m_expPWListCtrl.SetItemText(irow, 4, pEE->expirytttXTime != (time_t)0 ?
+               pEE->expirylocdate.c_str() : L"");
+
+    // Refresh it
+    m_expPWListCtrl.Update(irow);
+
+    // Re-sort
+    m_expPWListCtrl.SortItems(ExpPWCompareFunc, (LPARAM)this);
+  }
+}
+
+int CExpPWListDlg::GetEntryImage(const ExpPWEntry &ee)
+{
+  if (ee.et == CItemData::ET_ALIAS)
+    return CPWTreeCtrl::ALIAS;
+
+  if (ee.et == CItemData::ET_SHORTCUT)
+    return CPWTreeCtrl::SHORTCUT;
+
+  int nImage;
+  switch (ee.et) {
+    case CItemData::ET_NORMAL:
+      nImage = CPWTreeCtrl::NORMAL;
+      break;
+    case CItemData::ET_ALIASBASE:
+      nImage = CPWTreeCtrl::ALIASBASE;
+      break;
+    case CItemData::ET_SHORTCUTBASE:
+      nImage = CPWTreeCtrl::SHORTCUTBASE;
+      break;
+    default:
+      nImage = CPWTreeCtrl::NORMAL;
+      break;
+  }
+
+  // Entry has been updated - need to check further as it might be OK now
+  if (ee.expirytttXTime != 0) {
+    time_t now, warnexptime((time_t)0);
+    time(&now);
+    struct tm st;
+#if (_MSC_VER >= 1400)
+    errno_t err;
+    err = localtime_s(&st, &now);  // secure version
+    ASSERT(err == 0);
+#else
+    st = *localtime(&now);
+    ASSERT(st != NULL); // null means invalid time
+#endif
+    st.tm_mday += m_idays;
+    warnexptime = mktime(&st);
+
+    if (warnexptime == (time_t)-1)
+      warnexptime = (time_t)0;
+
+    if (ee.expirytttXTime <= now) {
+      nImage += 2;  // Expired
+    } else if (ee.expirytttXTime < warnexptime) {
+      nImage += 1;  // Warn nearly expired
+    }
+  }
+
+  return nImage;
+}
+
+void CExpPWListDlg::OnIconHelp()
+{
+  CString cs_HelpTopic = app.GetHelpFileName() + L"::/html/images.html";
+  ::HtmlHelp(this->GetSafeHwnd(), (LPCWSTR)cs_HelpTopic, HH_DISPLAY_TOPIC, 0);
 }

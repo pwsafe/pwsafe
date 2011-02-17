@@ -457,7 +457,6 @@
 #define IDC_LEFT_HIDEABLE               1126
 #define IDC_RIGHT_HIDEABLE              1127
 #define IDC_EXPIRED_PASSWORD_LIST       1128
-#define IDC_COPY_EXP_TO_CLIPBOARD       1129
 #define IDC_RESPIN                      1132
 #define IDC_MRUSPIN                     1133
 #define IDC_PWHSPIN                     1134

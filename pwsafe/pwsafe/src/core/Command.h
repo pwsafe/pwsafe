@@ -156,6 +156,7 @@ private:
                   const uuid_array_t base_uuid, const Command *pcmd = NULL);
   const CItemData m_ci;
   uuid_array_t m_base_uuid;
+  bool m_bExpired;
 };
 
 class DeleteEntryCommand : public Command
@@ -218,11 +219,13 @@ private:
   void Doit(const uuid_array_t &entry_uuid,
             CItemData::FieldType ftype,
             const StringX &value,
-            CItemData::EntryStatus es);
+            CItemData::EntryStatus es,
+            UpdateGUICommand::ExecuteFn efn);
 
   uuid_array_t m_entry_uuid;
   CItemData::FieldType m_ftype;
-  StringX m_value, m_old_value;
+  StringX m_value, m_old_value, m_oldpwhistory;
+  time_t m_tttoldXtime;
   CItemData::EntryStatus m_old_status;
 };
 
@@ -243,6 +246,7 @@ private:
   uuid_array_t m_entry_uuid;
   StringX m_sxNewPassword, m_sxOldPassword, m_sxOldPWHistory;
   CItemData::EntryStatus m_old_status;
+  time_t m_tttOldXTime;
 };
 
 class AddDependentEntryCommand : public Command

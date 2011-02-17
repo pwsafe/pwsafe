@@ -1138,6 +1138,8 @@ void CItemData::UpdatePassword(const StringX &password)
     // convert days to seconds for time_t
     t += (xint * 86400);
     SetXTime(t);
+  } else {
+    SetXTime(time_t(0));
   }
 }
 

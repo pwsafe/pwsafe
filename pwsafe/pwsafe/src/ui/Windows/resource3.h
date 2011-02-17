@@ -628,3 +628,15 @@
 #define IDS_WZCOMPAREDB                 5818
 #define IDS_WZSYNCHRONIZEDB             5819
 #define IDS_WZMERGEDB                   5820
+#define IDS_EXPIREDPSWDSEXIST           5821
+#define IDS_EXPIREDPSWDSTITLE           5822
+#define IDS_EXP_NORMAL                  5823
+#define IDS_EXP_NORMAL_WARN             5824
+#define IDS_EXP_NORMAL_EXP              5825
+#define IDS_EXP_ABASE                   5826
+#define IDS_EXP_ABASE_WARN              5827
+#define IDS_EXP_ABASE_EXP               5828
+#define IDS_EXP_SBASE                   5829
+#define IDS_EXP_SBASE_WARN              5830
+#define IDS_EXP_SBASE_EXP               5831
+#define IDS_EXPIREPASSWORDS             5832

@@ -263,6 +263,19 @@ void PWScore::DoReplaceEntry(const CItemData &old_ci, const CItemData &new_ci)
   m_pwlist[old_uuid] = new_ci;
   if (old_ci.GetEntryType() != new_ci.GetEntryType() || old_ci.IsProtected() != new_ci.IsProtected())
     GUIRefreshEntry(new_ci);
+
+  // Check if we need to update Expiry vector
+  time_t tttXTime_old, tttXTime_new;
+  old_ci.GetXTime(tttXTime_old);
+  new_ci.GetXTime(tttXTime_new);
+
+  if (tttXTime_old != tttXTime_new) {
+    if (tttXTime_old != time_t(0))
+      RemoveExpiryEntry(old_ci);
+    if (tttXTime_new != time_t(0))
+      AddExpiryEntry(new_ci);
+  }
+
   m_bDBChanged = true;
 }
 
@@ -315,6 +328,9 @@ void PWScore::ReInit(bool bNewFile)
   m_nRecordsWithUnknownFields = 0;
   m_UHFL.clear();
   ClearChangedNodes();
+  
+  // Clear expired password entries
+  m_ExpireCandidates.clear();
 
   SetChanged(false, false);
 }
@@ -584,6 +600,9 @@ int PWScore::ReadFile(const StringX &a_filename,
                       const StringX &a_passkey, const size_t iMAXCHARS)
 {
   int status;
+  // Clear any old expired password entries
+  m_ExpireCandidates.clear();
+
   PWSfile *in = PWSfile::MakePWSfile(a_filename, m_ReadFileVersion,
                                      PWSfile::Read, status, m_pAsker, m_pReporter);
 
@@ -648,9 +667,7 @@ int PWScore::ReadFile(const StringX &a_filename,
   uuid_array_t base_uuid, temp_uuid;
   StringX csMyPassword, cs_possibleUUID;
   bool go = true;
-#ifdef DEMO
   bool limited = false;
-#endif
 
   PWSfileV3 *in3 = dynamic_cast<PWSfileV3 *>(in); // XXX cleanup
   if (in3 != NULL  && !in3->GetFilters().empty())
@@ -733,6 +750,12 @@ int PWScore::ReadFile(const StringX &a_filename,
 #else
          m_pwlist.insert(make_pair(CUUIDGen(uuid), ci_temp));
 #endif
+         time_t tttXTime;
+         ci_temp.GetXTime(tttXTime);
+         if (!limited && tttXTime != time_t(0)) {
+           ExpPWEntry ee(ci_temp);
+           m_ExpireCandidates.push_back(ee);
+         }
          break;
       case PWSfile::END_OF_FILE:
         go = false;
@@ -2493,5 +2516,29 @@ void PWScore::GetDBProperties(st_DBProperties &st_dbp)
     }
   } else {
     LoadAString(st_dbp.unknownfields, IDSC_NONE);
+  }
+}
+
+void PWScore::UpdateExpiryEntry(const uuid_array_t &uuid, const CItemData::FieldType ft, const StringX &value)
+{
+  ExpiredList::iterator iter;
+
+  iter = std::find_if(m_ExpireCandidates.begin(), m_ExpireCandidates.end(), ee_equal_uuid(uuid));
+  if (iter == m_ExpireCandidates.end())
+    return;
+
+  switch (ft) {
+    case CItemData::GROUP:
+      iter->group = value;
+      break;
+    case CItemData::TITLE:
+      iter->title = value;
+      break;
+    case CItemData::USER:
+      iter->user = value;
+      break;
+    default:
+      ASSERT(0);
+      break;
   }
 }

@@ -23,6 +23,7 @@
 #include "Command.h"
 #include "CommandInterface.h"
 #include "DBCompareData.h"
+#include "ExpiredList.h"
 
 #include "coredefs.h"
 
@@ -352,6 +353,9 @@ public:
   void SetRUEList(const UUIDList &RUElist)
   {m_RUEList = RUElist;}
 
+  size_t GetExpirySize() {return m_ExpireCandidates.size();}
+  ExpiredList GetExpired(int idays) {return m_ExpireCandidates.GetExpired(idays);}
+
 private:
   // Database update routines
 
@@ -482,6 +486,16 @@ private:
   static Reporter *m_pReporter; // set as soon as possible to show errors
   static Asker *m_pAsker;
   PWSFileSig *m_fileSig;
+
+  // Entries with an expiry date
+  ExpiredList m_ExpireCandidates;
+  void AddExpiryEntry(const CItemData &ci)
+  {m_ExpireCandidates.Add(ci);}
+  void UpdateExpiryEntry(const CItemData &ci)
+  {m_ExpireCandidates.Update(ci);}
+  void UpdateExpiryEntry(const uuid_array_t &uuid, const CItemData::FieldType ft, const StringX &value);
+  void RemoveExpiryEntry(const CItemData &ci)
+  {m_ExpireCandidates.Remove(ci);}
 };
 
 #endif /* __PWSCORE_H */

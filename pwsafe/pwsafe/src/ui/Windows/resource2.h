@@ -128,6 +128,7 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 #define ID_MENUITEM_REPORT_SYNCHRONIZE  32128
 #define ID_MENUITEM_REPORT_EXPORTTEXT   32129
 #define ID_MENUITEM_REPORT_EXPORTXML    32130
+#define ID_MENUITEM_SHOW_ALL_EXPIRY     32131
 
 // Manage menu
 #define ID_MANAGEMENU                   32150

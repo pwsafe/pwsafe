@@ -7,51 +7,26 @@
 */
 #pragma once
 
-#include "core/StringX.h"
-#include "core/UUIDGen.h"
 #include "PWDialog.h"
+#include "ExpPswdLC.h"
 
-#include <vector>
-
-// Expired password Entry structure for CList
-class CItemData;
-
-struct ExpPWEntry {
-  ExpPWEntry(const CItemData &ci);
-  ExpPWEntry(const ExpPWEntry &ee);
-  ExpPWEntry &operator=(const ExpPWEntry &that);
-  uuid_array_t uuid;
-  StringX group;
-  StringX title;
-  StringX user;
-  StringX expirylocdate;  // user's long date/time  - format displayed in ListCtrl
-  StringX expiryexpdate;  // "YYYY/MM/DD HH:MM:SS"  - format copied to clipboard - best for sorting
-  time_t expirytttdate;
-  int type;
-};
-
-class ExpiredList: public std::vector<ExpPWEntry>
-{
- public:
-  void Add(const CItemData &ci);
-  void Update(const CItemData &ci) {Remove(ci); Add(ci);}
-  void Remove(const CItemData &ci);
-  ExpiredList GetExpired(int idays); // return a subset
-};
+#include "core/ExpiredList.h"
 
 // CExpPWListDlg dialog
+
+class ExpiredList;
+class DboxMain;
 
 class CExpPWListDlg : public CPWDialog
 {
 public:
-  CExpPWListDlg(CWnd* pParent,
-    const ExpiredList &expPWList,
-    const CString& a_filespec = L"");
+  CExpPWListDlg(CWnd* pParent, ExpiredList &expPWList,
+                const CString& a_filespec = L"");
   virtual ~CExpPWListDlg();
 
   // Dialog Data
   enum { IDD = IDD_DISPLAY_EXPIRED_ENTRIES };
-  CListCtrl m_expPWListCtrl;
+  CExpPswdLC m_expPWListCtrl;
   CImageList *m_pImageList;
   CString m_message;
   int m_iSortedColumn; 
@@ -59,17 +34,21 @@ public:
 
 protected:
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+  BOOL PreTranslateMessage(MSG* pMsg);
   virtual BOOL OnInitDialog();
   afx_msg void OnDestroy();
+  afx_msg void OnIconHelp();
+  afx_msg void OnHeaderClicked(NMHDR* pNMHDR, LRESULT* pResult);
+  afx_msg void OnItemDoubleClick(NMHDR* pNotifyStruct, LRESULT* result);
   virtual void OnOK();
 
   DECLARE_MESSAGE_MAP()
 
-public:
-  afx_msg void OnBnClickedCopyExpToClipboard();
-  afx_msg void OnHeaderClicked(NMHDR* pNMHDR, LRESULT* pResult);
-
 private:
-  const ExpiredList &m_expPWList;
+  int GetEntryImage(const ExpPWEntry &ee);
+  ExpiredList &m_expPWList;
+  DboxMain *m_pDbx;
+
+  int m_idays;
   static int CALLBACK ExpPWCompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
 };

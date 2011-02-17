@@ -168,11 +168,7 @@ void DboxMain::OnAdd()
     // May need to update menu/toolbar if database was previously empty
     if (bWasEmpty)
       UpdateMenuAndToolBar(m_bOpen);
-    if (!ci.GetXTime().empty()) {
-      if (m_ExpireCandidates == NULL)
-        m_ExpireCandidates = new ExpiredList;
-      m_ExpireCandidates->Add(ci);
-    }
+
   } // rc == OK
 }
 
@@ -977,8 +973,10 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
 
   StringX newPassword = pci_new->GetPassword();
   uuid_array_t original_uuid = {'\0'}, original_base_uuid = {'\0'}, new_base_uuid = {'\0'};
+
   memcpy(new_base_uuid, pentry_psh->GetBaseUUID(), sizeof(new_base_uuid));
   pci_original->GetUUID(original_uuid);
+
   if (pci_original->IsDependent()) {
     const CItemData *pci_orig_base = m_core.GetBaseEntry(pci_original);
     ASSERT(pci_orig_base != NULL);
@@ -1090,13 +1088,6 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
   m_ctlItemTree.SortTree(TVI_ROOT);
   SortListView();
 
-  // Reselect entry, wherever it may be
-  iter = m_core.Find(original_uuid);
-  if (iter != End()) {
-    DisplayInfo *pdi = (DisplayInfo *)iter->second.GetDisplayInfo();
-    SelectEntry(pdi->list_index);
-  }
-
   short sh_odca, sh_ndca;
   pci_original->GetDCA(sh_odca);
   pci_new->GetDCA(sh_ndca);
@@ -1107,6 +1098,19 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
 
   // Password may have been updated and so not expired
   UpdateEntryImages(*pci_new);
+
+  // Update display if no longer passes filter criteria
+  if (m_bFilterActive && !PassesFiltering(*pci_new, m_currentfilter)) {
+      RefreshViews();
+      return;
+  }
+
+  // Reselect entry, where-ever it may be
+  iter = m_core.Find(original_uuid);
+  if (iter != End()) {
+    DisplayInfo *pdi = (DisplayInfo *)iter->second.GetDisplayInfo();
+    SelectEntry(pdi->list_index);
+  }
 }
 
 bool DboxMain::EditShortcut(CItemData *pci, PWScore *pcore)
