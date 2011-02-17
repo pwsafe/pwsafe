@@ -1,4 +1,4 @@
-Password Safe 3.24.2 Release Notes - February 2011
+Password Safe 3.24.3 Release Notes - February 2011
 ==================================================
 
 This note describe the new features, fixed bugs and known problems
@@ -8,28 +8,27 @@ information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
 
-New Features for 3.24.2
+New Features for 3.24.3
 =======================
-[3171962] Passwords on the currently opened database will be checked for
-expiration daily and the user notified if requested. If they request 
-notification, it will be when the database is opened and then daily but only
-when the user either unminimizes or unlocks the database. This will reduce
-the impact on the user who may be using the database. Users will be able to
-update the entry directly from the displayed list.
 [] Installation instructions now available in Dutch, thank to Kees.
+[] New View menu option: Show entries with Expiry. This is useful for
+displaying entries with passwords that are expired or about to expire.
 
-Changes to Existing Features in 3.24.2
+Changes to Existing Features in 3.24.3
 ======================================
-[3171962] As part of this Feature Request above, when an expired password is
-changed, the expiry date will be cleared unless there is a recurring password
-expiry interval set (e.g. any password for this entry expires in 30 days from
-being changed) when a new expiry date will be calculated.
-[] If a filter is active and an entry is edited such that it no longer satisfies
-the filter's criteria, it will be removed from the display.
+[3171962] The password expiration warning mechanism now checks for
+expiration daily, if enabled. Users will be able to update the entry
+directly from the displayed list. When an expired password is 
+changed, the expiry date will be cleared unless there is a recurring
+password expiry interval, in which case a new expiry date will be
+calculated.
+[] Filtered views are now updated when an entry's edited, e.g., if an
+entry is edited such that it no longer satisfies the filter's
+criteria, it will be removed from the display. 
 [] The Russian online help has been totally rewritten and updated,
 thanks to pm_kan.
 
-Bugs fixed in 3.24.2
+Bugs fixed in 3.24.3
 ====================
 [3165889] No longer crashes if search starts with Shift-Enter (search
 backwards).
