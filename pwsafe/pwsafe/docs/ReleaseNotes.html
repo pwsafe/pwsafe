@@ -42,7 +42,7 @@ will not work! ***</p>
 </head>
 
 <body>
-<h1 align="center">Password Safe 3.24.2 Release Notes - February 2011</h1>
+<h1 align="center">Password Safe 3.24.3 Release Notes - February 2011</h1>
 <p>This note describe the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
 Password Safe, please see the accompanying README.txt file. For more
@@ -54,43 +54,47 @@ ChangeLog.txt.</p>
 are described <a href="#prev-vers">here</a>.
 Information about older versions may be found <a href="http://pwsafe.org/history.shtml">here</a>.</p>
 <hr style="width: 100%; height: 2px;">
-<h3><a name="V3.24.2"></a>Version V3.24.2</h3>
-<h4><a name="V3.24.2New"></a>New Features for V3.24.2</h4>
+<h3><a name="V3.24.3"></a>Version V3.24.3</h3>
+<h4><a name="V3.24.3New"></a>New Features for V3.24.3</h4>
 <table>
 <tbody align="left" valign="top">
-<tr>
-<td align="center" width="100"><a href="nojs.html" onclick="FR(3171962);return false;">3171962</a><br></td>
-<td>Passwords on the currently opened database will be checked for
-expiration daily and the user notified if requested. If they request 
-notification, it will be when the database is opened and then daily but only
-when the user either unminimizes or unlocks the database. This will reduce
-the impact on the user who may be using the database. Users will be able to
-update the entry directly from the displayed list.</td>
-</tr>
 <tr>
 <td align="center" width="100">n/a</td>
 <td>Installation instructions now available in Dutch, thank to Kees.</td>
 </tr>
+<tr>
+<td align="center" width="100">n/a</td>
+<td>New View menu option: Show entries with Expiry. This is useful for
+displaying entries with passwords that are expired or about to expire.</td>
+</tr>
 </tbody>
 </table>
-<h4><a name="V3.24.2Changes"></a>Changes to Existing Features in V3.24.2</h4>
+<h4><a name="V3.24.3Changes"></a>Changes to Existing Features in V3.24.3</h4>
 <table>
 <tbody align="left" valign="top">
 <tr>
 <td align="center" width="100"><a href="nojs.html" onclick="FR(3171962);return false;">3171962</a><br></td>
-<td>As part of this Feature Request above, when an expired password is changed,
-the expiry date will be cleared unless there is a recurring password expiry
-interval set (e.g. any password for this entry expires in 30 days from being
-changed) when a new expiry date will be calculated.</td>
+<td>The password expiration warning mechanism now checks for
+expiration daily, if enabled. Users will be able to update the entry
+directly from the displayed list. When an expired password is 
+changed, the expiry date will be cleared unless there is a recurring
+password expiry interval, in which case a new expiry date will be
+calculated.</td>
 </tr>
 <tr>
 <td align="center" width="100">n/a</td>
-<td>If a filter is active and an entry is edited such that it no longer satisfies
-the filter's criteria, it will be removed from the display.</td>
+<td>Filtered views are now updated when an entry's edited, e.g., if an
+entry is edited such that it no longer satisfies the filter's
+criteria, it will be removed from the display.</td>
+</tr>
+<tr>
+<td align="center" width="100">n/a</td>
+<td>The Russian online help has been totally rewritten and updated,
+thanks to pm_kan.</td>
 </tr>
 </tbody>
 </table>
-<h4><a name="V3.24.2BugsFixed"></a>Bugs fixed in V3.24.2</h4>
+<h4><a name="V3.24.3BugsFixed"></a>Bugs fixed in V3.24.3</h4>
 <table>
 <tbody align="left" valign="top">
 <tr>
