@@ -1377,7 +1377,7 @@ void DboxMain::OnExportText()
     return;
   }
 
-  CWZPropertySheet wizard(ID_MENUITEM_EXPORT2PLAINTEXT, IDS_RPTEXPORTTEXT,
+  CWZPropertySheet wizard(ID_MENUITEM_EXPORT2PLAINTEXT,
                           this, WZAdvanced::EXPORT_TEXT,
                           &m_SaveWZAdvValues[WZAdvanced::EXPORT_TEXT]);
 
@@ -1390,7 +1390,7 @@ void DboxMain::OnExportEntryText()
   if (getSelectedItem() == NULL)
     return;
 
-  CWZPropertySheet wizard(ID_MENUITEM_EXPORTENT2PLAINTEXT, IDS_RPTEXPORTTEXT,
+  CWZPropertySheet wizard(ID_MENUITEM_EXPORTENT2PLAINTEXT,
                           this, WZAdvanced::EXPORT_ENTRYTEXT,
                           &m_SaveWZAdvValues[WZAdvanced::EXPORT_ENTRYTEXT]);
 
@@ -1468,7 +1468,7 @@ void DboxMain::OnExportXML()
     return;
   }
 
-  CWZPropertySheet wizard(ID_MENUITEM_EXPORT2XML, IDS_RPTEXPORTXML,
+  CWZPropertySheet wizard(ID_MENUITEM_EXPORT2XML,
                           this, WZAdvanced::EXPORT_XML, 
                           &m_SaveWZAdvValues[WZAdvanced::EXPORT_XML]);
 
@@ -1481,7 +1481,7 @@ void DboxMain::OnExportEntryXML()
   if (getSelectedItem() == NULL)
     return;
 
-  CWZPropertySheet wizard(ID_MENUITEM_EXPORTENT2XML, IDS_RPTEXPORTXML,
+  CWZPropertySheet wizard(ID_MENUITEM_EXPORTENT2XML,
                           this, WZAdvanced::EXPORT_ENTRYXML,
                           &m_SaveWZAdvValues[WZAdvanced::EXPORT_ENTRYXML]);
 
@@ -2003,7 +2003,7 @@ void DboxMain::OnCompare()
     return;
   }
 
-  CWZPropertySheet wizard(ID_MENUITEM_COMPARE, IDS_RPTCOMPARE,
+  CWZPropertySheet wizard(ID_MENUITEM_COMPARE,
                           this, WZAdvanced::COMPARE,
                           &m_SaveWZAdvValues[WZAdvanced::COMPARE]);
 
@@ -2016,7 +2016,7 @@ void DboxMain::OnMerge()
   if (m_core.IsReadOnly()) // disable in read-only mode
     return;
 
-  CWZPropertySheet wizard(ID_MENUITEM_MERGE, IDS_RPTMERGE,
+  CWZPropertySheet wizard(ID_MENUITEM_MERGE,
                           this, WZAdvanced::MERGE, 
                           &m_SaveWZAdvValues[WZAdvanced::MERGE]);
 
@@ -2032,7 +2032,7 @@ void DboxMain::OnSynchronize()
   if (m_core.IsReadOnly() || m_core.GetCurFile().empty() || m_core.GetNumEntries() == 0)
     return;
 
-  CWZPropertySheet wizard(ID_MENUITEM_SYNCHRONIZE, IDS_RPTSYNCH,
+  CWZPropertySheet wizard(ID_MENUITEM_SYNCHRONIZE,
                           this, WZAdvanced::SYNCH,
                           &m_SaveWZAdvValues[WZAdvanced::SYNCH]);
 

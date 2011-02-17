@@ -22,7 +22,7 @@ class CWZPropertySheet : public CPropertySheet
 public:
   DECLARE_DYNAMIC(CWZPropertySheet)
 
-  CWZPropertySheet(UINT nID, UINT nButtonID, CWnd* pDbx, WZAdvanced::AdvType iadv_type, 
+  CWZPropertySheet(UINT nID, CWnd* pDbx, WZAdvanced::AdvType iadv_type, 
                    st_SaveAdvValues *pst_SADV);
   ~CWZPropertySheet();
 
