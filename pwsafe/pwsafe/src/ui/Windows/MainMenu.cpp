@@ -168,7 +168,6 @@ void DboxMain::SetUpInitialMenuStrings()
   // ID_MENUITEM_EDIT, ID_MENUITEM_DELETE & ID_MENUITEM_RENAME
     ID_MENUITEM_VIEW,
     ID_MENUITEM_DELETEENTRY, ID_MENUITEM_DELETEGROUP,
-    
     ID_MENUITEM_RENAMEENTRY, ID_MENUITEM_RENAMEGROUP,
   };
 
@@ -390,10 +389,11 @@ void DboxMain::SetUpInitialMenuStrings()
   for (size_t i = 0; i < N; i++) {
     const st_prefShortcut &stxst = vShortcuts[i];
     // User should not have these sub-entries in their config file
-    if (stxst.id == ID_MENUITEM_GROUPENTER ||
-        stxst.id == ID_MENUITEM_VIEW ||
+    if (stxst.id == ID_MENUITEM_GROUPENTER  ||
+        stxst.id == ID_MENUITEM_VIEW        ||
         stxst.id == ID_MENUITEM_DELETEENTRY ||
         stxst.id == ID_MENUITEM_DELETEGROUP ||
+        stxst.id == ID_MENUITEM_RENAME      ||
         stxst.id == ID_MENUITEM_RENAMEENTRY ||
         stxst.id == ID_MENUITEM_RENAMEGROUP) {
       continue;

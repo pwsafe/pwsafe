@@ -142,7 +142,7 @@ DboxMain::DboxMain(CWnd* pParent)
   m_bAutotypeCtrl(false), m_bAutotypeShift(false),
   m_bInAT(false), m_bInRestoreWindowsData(false), m_bSetup(false),
   m_bInRefresh(false), m_bInRestoreWindows(false), m_bExpireDisplayed(false),
-  m_bTellUserExpired(false)
+  m_bTellUserExpired(false), m_bInRename(false)
 {
   // Need to do the following as using the direct calls will fail for Windows versions before Vista
   // (Load Library using absolute path to avoid dll poisoning attacks)
@@ -404,6 +404,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_CLEARCLIPBOARD, OnClearClipboard)
   ON_COMMAND(ID_MENUITEM_DELETEENTRY, OnDelete)
   ON_COMMAND(ID_MENUITEM_DELETEGROUP, OnDelete)
+  ON_COMMAND(ID_MENUITEM_RENAME, OnRename)
   ON_COMMAND(ID_MENUITEM_RENAMEENTRY, OnRename)
   ON_COMMAND(ID_MENUITEM_RENAMEGROUP, OnRename)
   ON_COMMAND(ID_MENUITEM_DUPLICATEENTRY, OnDuplicateEntry)
@@ -3220,8 +3221,8 @@ bool DboxMain::CheckPreTranslateDelete(MSG* pMsg)
 {
   // Both TreeCtrl and ListCtrl
   if (pMsg->message == m_wpDeleteMsg && pMsg->wParam == m_wpDeleteKey) {
-    if (m_bDeleteCtrl  == (GetKeyState(VK_CONTROL) < 0) && 
-        m_bDeleteShift == (GetKeyState(VK_SHIFT)   < 0)) {
+    if (m_bDeleteCtrl  == ((GetKeyState(VK_CONTROL) & 0x8000) == 0x8000) && 
+        m_bDeleteShift == ((GetKeyState(VK_SHIFT)   & 0x8000) == 0x8000)) {
       if (!m_core.IsReadOnly())
         OnDelete();
       return true;
@@ -3234,8 +3235,8 @@ bool DboxMain::CheckPreTranslateRename(MSG* pMsg)
 {
   // Only TreeCtrl but not ListCtrl!
   if (pMsg->message == m_wpRenameMsg && pMsg->wParam == m_wpRenameKey) {
-    if (m_bRenameCtrl  == (GetKeyState(VK_CONTROL) < 0) && 
-        m_bRenameShift == (GetKeyState(VK_SHIFT)   < 0)) {
+    if (m_bRenameCtrl  == ((GetKeyState(VK_CONTROL) & 0x8000) == 0x8000) && 
+        m_bRenameShift == ((GetKeyState(VK_SHIFT)   & 0x8000) == 0x8000)) {
       return true;
     }
   }
@@ -3249,8 +3250,8 @@ bool DboxMain::CheckPreTranslateAutoType(MSG* pMsg)
   if (m_wpAutotypeKey != 0) {
     // Process user's Autotype shortcut - (Sys)KeyDown
     if (pMsg->message == m_wpAutotypeDNMsg && pMsg->wParam == m_wpAutotypeKey) {
-      if (m_bAutotypeCtrl  == (GetKeyState(VK_CONTROL) < 0) && 
-          m_bAutotypeShift == (GetKeyState(VK_SHIFT)   < 0)) {
+      if (m_bAutotypeCtrl  == ((GetKeyState(VK_CONTROL) & 0x8000) == 0x8000) && 
+          m_bAutotypeShift == ((GetKeyState(VK_SHIFT)   & 0x8000) == 0x8000)) {
         m_btAT.set(0);   // Virtual Key
         if (m_bAutotypeCtrl)
           m_btAT.set(1); // Ctrl Key

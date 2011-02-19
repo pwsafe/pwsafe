@@ -387,6 +387,7 @@ public:
   void UpdateGUIDisplay();
   CString ShowCompareResults(const StringX sx_Filename1, const StringX sx_Filename2,
                              PWScore *pothercore, CReport *prpt);
+  bool IsInRename() {return m_bInRename;}
 
   //{{AFX_DATA(DboxMain)
   enum { IDD = IDD_PASSWORDSAFE_DIALOG };
@@ -942,6 +943,9 @@ private:
 
   // Flag to tell user there are some expird entries
   bool m_bTellUserExpired;
+
+  // Prevent rename of entries in Tree mode by clicking on entry
+  bool m_bInRename;
 
   // The following is for saving information over an execute/undo/redo
   // Might need to add more e.g. if filter is active and which one?
