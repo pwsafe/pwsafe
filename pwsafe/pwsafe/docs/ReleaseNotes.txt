@@ -32,6 +32,8 @@ Bugs fixed in 3.24.3
 ====================
 [3165889] No longer crashes if search starts with Shift-Enter (search
 backwards).
+[3148701] Windows installer will now refuse to install on Win2K,
+referring user to last supported version on that OS (3.18).
 [3115760] Window view is now saved and restored if the user uses the Windows
 "Show Desktop" feature.
 [] No longer crashes when doing an Undo after a Merge.

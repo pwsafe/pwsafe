@@ -265,6 +265,7 @@ LangString LANG_PROGRAM ${LANG_ENGLISH} "Program Language"
 LangString SORRY_NO_95 ${LANG_ENGLISH} "Sorry, Windows 95 is no longer supported. Try PasswordSafe 2.16"
 LangString SORRY_NO_98 ${LANG_ENGLISH} "Sorry, Windows 98 is no longer supported. Try PasswordSafe 2.16"
 LangString SORRY_NO_ME ${LANG_ENGLISH} "Sorry, Windows ME is no longer supported. Try PasswordSafe 2.16"
+LangString SORRY_NO_2K ${LANG_ENGLISH} "Sorry, Windows 2000 is no longer supported. Try PasswordSafe 3.18"
 
 ;--------------------------------
 ; Interface Settings
@@ -578,6 +579,7 @@ Function .onInit
  StrCmp $R0 '95' is_win95
  StrCmp $R0 '98' is_win98
  StrCmp $R0 'ME' is_winME
+ StrCmp $R0 '2000' is_win2k
  StrCpy $HOST_OS $R0
 
 ; Following tests should really be done
@@ -649,6 +651,9 @@ is_win98:
   Quit
 is_winME:
   MessageBox MB_OK|MB_ICONSTOP $(SORRY_NO_ME)
+  Quit
+is_win2k:
+  MessageBox MB_OK|MB_ICONSTOP $(SORRY_NO_2K)
   Quit
 FunctionEnd
 

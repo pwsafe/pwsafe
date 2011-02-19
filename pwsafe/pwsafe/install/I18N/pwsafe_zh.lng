@@ -136,5 +136,8 @@ LangString SORRY_NO_98 ${LANG_SIMPCHINESE} "抱歉，Windows 98 不再支持！尝试 Pass
 ; SORRY_NO_ME "Sorry, Windows ME is no longer supported. Try PasswordSafe 2.16"
 LangString SORRY_NO_ME ${LANG_SIMPCHINESE} "抱歉，Windows ME 不再支持！尝试 PasswordSafe 2.16。"
 
+; SORRY_NO_2K "Sorry, Windows 2000 is no longer supported. Try PasswordSafe 3.18"
+LangString SORRY_NO_2K ${LANG_SIMPCHINESE} "抱歉，Windows 2000 不再支持！尝试 PasswordSafe 3.18。"
+
 ;=================================================================
 ; End of pwsafe_zh.lng

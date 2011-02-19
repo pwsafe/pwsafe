@@ -123,5 +123,8 @@ LangString SORRY_NO_98 ${LANG_GERMAN} "Schade, aber Windows 98 wieder nicht mehr
 ; SORRY_NO_ME "Sorry, Windows ME is no longer supported. Try PasswordSafe 2.16"
 LangString SORRY_NO_ME ${LANG_GERMAN} "Schade, aber Windows ME wieder nicht mehr unterstützt. Versuchen Sie PasswordSafe 2.16"
 
+; SORRY_NO_2K "Sorry, Windows 2000 is no longer supported. Try PasswordSafe 3.18"
+LangString SORRY_NO_2K ${LANG_GERMAN} "Schade, aber Windows 2000 wieder nicht mehr unterstützt. Versuchen Sie PasswordSafe 3.18"
+
 ;=================================================================
 ; End of pwsafe_de.lng
