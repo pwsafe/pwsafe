@@ -853,9 +853,11 @@ void DboxMain::OnRename()
         if (pci->IsProtected())
           return;
       }
+      m_bInRename = true;
       m_ctlItemTree.EditLabel(hItem);
       if (m_bFilterActive && m_ctlItemTree.WasLabelEdited())
         RefreshViews();
+      m_bInRename = false;
     }
   }
 }

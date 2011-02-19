@@ -295,9 +295,8 @@ BOOL CPWTreeCtrl::PreTranslateMessage(MSG* pMsg)
   
   // Process user's Rename shortcut
   if (m_pDbx != NULL && m_pDbx->CheckPreTranslateRename(pMsg)) {
-    HTREEITEM hItem = GetSelectedItem();
-    if (hItem != NULL && !m_pDbx->IsMcoreReadOnly())
-      EditLabel(hItem);
+    //  Send via main window to ensure it isn't an Edit in place
+    m_pDbx->SendMessage(WM_COMMAND, ID_MENUITEM_RENAME);
     return TRUE;
   }
 
@@ -466,21 +465,23 @@ void CPWTreeCtrl::OnBeginLabelEdit(NMHDR *pNMHDR, LRESULT *pLResult)
   NMTVDISPINFO *ptvinfo = (NMTVDISPINFO *)pNMHDR;
 
   *pLResult = TRUE; // TRUE cancels label editing
-  if (m_pDbx->IsMcoreReadOnly())
+
+  // Check IsInRename to prevent unintentional Edit in place
+  if (m_pDbx->IsMcoreReadOnly() || !m_pDbx->IsInRename())
     return;
 
   m_bEditLabelCompleted = false;
 
   /*
-  Allowed formats:
-  1.   title
-  If preference ShowUsernameInTree is set:
-  2.   title [username]
-  If preferences ShowUsernameInTree and ShowPasswordInTree are set:
-  3.   title [username] {password}
+    Allowed formats:
+    1.   title
+      If preference ShowUsernameInTree is set:
+      2.   title [username]
+        If preferences ShowUsernameInTree and ShowPasswordInTree are set:
+        3.   title [username] {password}
 
-  Neither Title, Username or Password may contain square or curly brackes to be
-  edited in place and visible.
+    Neither Title, Username or Password may contain square or curly brackes to be
+    edited in place and visible.
   */
   HTREEITEM ti = ptvinfo->item.hItem;
   PWSprefs *prefs = PWSprefs::GetInstance();

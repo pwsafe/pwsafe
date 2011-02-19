@@ -22,6 +22,10 @@ directly from the displayed list. When an expired password is
 changed, the expiry date will be cleared unless there is a recurring
 password expiry interval, in which case a new expiry date will be
 calculated.
+[3131935] Rename of an entry or group in the Tree View can now only be
+performed via the Rename shortcut (default value F2), using the Edit
+menu or the right-click context menu. Edit in place by double clicking
+the entry is no longer allowed to prevent unwanted changes.
 [] Filtered views are now updated when an entry's edited, e.g., if an
 entry is edited such that it no longer satisfies the filter's
 criteria, it will be removed from the display. 
