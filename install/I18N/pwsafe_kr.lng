@@ -121,5 +121,8 @@ LangString SORRY_NO_98 ${LANG_KOREAN} "TRANSLATION"
 ; SORRY_NO_ME "Sorry, Windows ME is no longer supported. Try PasswordSafe 2.16"
 LangString SORRY_NO_ME ${LANG_KOREAN} "TRANSLATION"
 
+; SORRY_NO_2K "Sorry, Windows 2000 is no longer supported. Try PasswordSafe 3.18"
+LangString SORRY_NO_2K ${LANG_KOREAN} "TRANSLATION"
+
 ;=================================================================
 ; End of pwsafe_kr.lng

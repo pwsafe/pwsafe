@@ -146,5 +146,8 @@ LangString SORRY_NO_98 ${LANG_NEW} "TRANSLATION"
 ; SORRY_NO_ME "Sorry, Windows ME is no longer supported. Try PasswordSafe 2.16"
 LangString SORRY_NO_ME ${LANG_NEW} "TRANSLATION"
 
+; SORRY_NO_2K "Sorry, Windows 2000 is no longer supported. Try PasswordSafe 3.18"
+LangString SORRY_NO_2K ${LANG_NEW} "TRANSLATION"
+
 ;=================================================================
 ; End of pwsafe_xx.lng
