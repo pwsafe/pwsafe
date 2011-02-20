@@ -105,7 +105,7 @@ int PWScore::TestSelection(const bool bAdvanced,
     }
 
     if (!bAnyMatch)
-      return NO_ENTRIES_EXPORTED;
+      return FAILURE;
   } else {
     if (il != NULL)
       return (il->size() == 0) ? NO_ENTRIES_EXPORTED : SUCCESS;

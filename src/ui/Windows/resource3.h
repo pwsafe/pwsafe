@@ -544,9 +544,8 @@
 #define IDS_AREYOUSURE_OPT              5732
 #define IDS_HEADER                      5733
 #define IDS_RECORD                      5734
-#define IDS_XMLEXPORTFAILED             5735
-#define IDS_TEXTEXPORTFAILED            5736
-#define IDS_NO_ENTRIES_EXPORTED         5737
+#define IDS_NO_ENTRIES_SELECTED         5736
+#define IDS_NO_ENTRIES_PROCESSED        5737
 #define IDS_DCALONG                     5738
 #define IDS_ENTRYSTATUS                 5739
 #define IDS_NONSAVEDCHANGES             5740
@@ -645,4 +644,6 @@
 #define IDS_WZCOMPARE                   5835
 #define IDS_WZMERGE                     5836
 #define IDS_WZSYNCH                     5837
-
+#define IDS_NONE_EXPORTED               5838
+#define IDS_NONE_COMPARED               5839
+#define IDS_NONE_SYNCHRONIZED           5840
