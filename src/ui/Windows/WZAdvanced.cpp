@@ -778,7 +778,7 @@ LRESULT CWZAdvanced::OnWizardNext()
 
     orderedItemList.clear(); // cleanup soonest
 
-    if (rc == PWScore::FAILURE) {
+    if (rc != PWScore::SUCCESS) {
       UINT uimsg(0);
       switch (nID) {
         case ID_MENUITEM_COMPARE:
