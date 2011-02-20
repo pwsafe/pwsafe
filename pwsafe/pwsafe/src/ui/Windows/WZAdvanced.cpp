@@ -755,7 +755,9 @@ LRESULT CWZAdvanced::OnWizardNext()
       break;
   }
 
-  if (iAll != 0) {
+  // No need to check selection for Merge as this applies to 2nd database
+  // not the current database
+  if (iAll != 0  && nID != ID_MENUITEM_MERGE) {
     OrderedItemList orderedItemList;
     CString cs_title, cs_temp;
 
@@ -776,11 +778,32 @@ LRESULT CWZAdvanced::OnWizardNext()
 
     orderedItemList.clear(); // cleanup soonest
 
-    if (rc == PWScore::NO_ENTRIES_EXPORTED) {
+    if (rc == PWScore::FAILURE) {
+      UINT uimsg(0);
+      switch (nID) {
+        case ID_MENUITEM_COMPARE:
+          uimsg = IDS_NONE_COMPARED;
+          break;
+        case ID_MENUITEM_SYNCHRONIZE:
+          uimsg = IDS_NONE_SYNCHRONIZED;
+          break;
+        case ID_MENUITEM_EXPORT2PLAINTEXT:
+        case ID_MENUITEM_EXPORT2XML:
+        case ID_MENUITEM_EXPORTENT2PLAINTEXT:
+        case ID_MENUITEM_EXPORTENT2XML:
+          uimsg = IDS_NONE_EXPORTED;
+          break;
+        default:
+          ASSERT(0);
+          break;
+      }
+
       CGeneralMsgBox gmb;
-      cs_temp.LoadString(IDS_NO_ENTRIES_EXPORTED);
-      cs_title.LoadString(IDS_TEXTEXPORTFAILED);
-      gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
+      CString cs_msg;
+      cs_temp.LoadString(uimsg);
+      cs_msg.Format(IDS_NO_ENTRIES_PROCESSED, cs_temp);
+      cs_title.LoadString(IDS_NO_ENTRIES_SELECTED);
+      gmb.MessageBox(cs_msg, cs_title, MB_OK | MB_ICONWARNING);
       return -1;
     }
   }

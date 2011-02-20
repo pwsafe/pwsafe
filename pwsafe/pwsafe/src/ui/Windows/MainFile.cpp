@@ -2054,7 +2054,7 @@ stringT DboxMain::DoMerge(PWScore *pothercore,
   // First check other database
   if (!pothercore->GetUniqueGTUValidated() && !pothercore->InitialiseGTU(setGTU)) {
     // Database is not unique to start with - tell user to validate it first
-    cs_title.LoadString(IDS_SYNCHFAILED);
+    cs_title.LoadString(IDS_MERGEFAILED);
     cs_temp.Format(IDS_DBHASDUPLICATES, pothercore->GetCurFile().c_str());
     gmb.MessageBox(cs_temp, cs_title, MB_ICONEXCLAMATION);
     return L"";
@@ -2063,7 +2063,7 @@ stringT DboxMain::DoMerge(PWScore *pothercore,
   // Next check us - we need the setGTU later
   if (!m_core.GetUniqueGTUValidated() && !m_core.InitialiseGTU(setGTU)) {
     // Database is not unique to start with - tell user to validate it first
-    cs_title.LoadString(IDS_SYNCHFAILED);
+    cs_title.LoadString(IDS_MERGEFAILED);
     cs_temp.Format(IDS_DBHASDUPLICATES, m_core.GetCurFile().c_str());
     gmb.MessageBox(cs_temp, cs_title, MB_ICONEXCLAMATION);
     return L"";
