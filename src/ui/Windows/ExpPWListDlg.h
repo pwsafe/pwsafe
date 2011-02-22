@@ -17,6 +17,49 @@
 class ExpiredList;
 class DboxMain;
 
+// Local vector - has the group/title/user and locale version of expiry date
+// Generated from similar vector in core, which doesn't need these.
+struct st_ExpLocalListEntry {
+  st_ExpLocalListEntry()
+  : sx_group(L""), sx_title(L""), sx_user(L""), sx_expirylocdate(L""),
+  expirytttXTime(time_t(0)), et(CItemData::ET_INVALID)
+  {
+    memset(uuid, 0, sizeof(uuid));
+  }
+
+  st_ExpLocalListEntry(const st_ExpLocalListEntry &elle)
+    : sx_group(elle.sx_group), sx_title(elle.sx_title), sx_user(elle.sx_user),
+    sx_expirylocdate(elle.sx_expirylocdate), expirytttXTime(elle.expirytttXTime),
+    et(elle.et)
+  {
+    memcpy(uuid, elle.uuid, sizeof(uuid));
+  }
+
+  st_ExpLocalListEntry &operator =(const st_ExpLocalListEntry &elle)
+  {
+    if (this != &elle) {
+      sx_group = elle.sx_group;
+      sx_title = elle.sx_title;
+      sx_user = elle.sx_user;
+      sx_expirylocdate = elle.sx_expirylocdate;
+      expirytttXTime = elle.expirytttXTime;
+      et = elle.et;
+      memcpy(uuid, elle.uuid, sizeof(uuid));
+    }
+    return *this;
+  }
+ 
+  StringX sx_group;
+  StringX sx_title;
+  StringX sx_user;
+  StringX sx_expirylocdate;  // user's long date/time  - format displayed to user in UI
+  time_t expirytttXTime;
+  CItemData::EntryType et; // Used to select image for display to user e.g.
+                           // 'warn will expire' or 'has expired' &
+                           // 'normal, aliasbase or shortcut base' entry
+  uuid_array_t uuid;
+};
+
 class CExpPWListDlg : public CPWDialog
 {
 public:
@@ -45,10 +88,11 @@ protected:
   DECLARE_MESSAGE_MAP()
 
 private:
-  int GetEntryImage(const ExpPWEntry &ee);
+  int GetEntryImage(const st_ExpLocalListEntry &elle);
   ExpiredList &m_expPWList;
   DboxMain *m_pDbx;
 
+  std::vector<st_ExpLocalListEntry> m_vExpLocalListEntries;
   int m_idays;
   static int CALLBACK ExpPWCompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
 };

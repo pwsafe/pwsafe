@@ -25,6 +25,7 @@
 #include "MFCMessages.h"
 #include "PWFileDialog.h"
 #include "DisplayFSBkupFiles.h"
+#include "ExpPWListDlg.h"
 
 #include "WZPropertySheet.h"
 
@@ -2343,9 +2344,9 @@ void DboxMain::DoSynchronize(PWScore *pothercore,
 
 LRESULT DboxMain::OnEditExpiredPasswordEntry(WPARAM wParam, LPARAM )
 {
-  ExpPWEntry *pEE = (ExpPWEntry *)wParam;
+  st_ExpLocalListEntry *pELLE = (st_ExpLocalListEntry *)wParam;
 
-  ItemListIter iter = Find(pEE->uuid);
+  ItemListIter iter = Find(pELLE->uuid);
   ASSERT(iter != End());
   if (iter == End())
     return FALSE;
@@ -2356,29 +2357,31 @@ LRESULT DboxMain::OnEditExpiredPasswordEntry(WPARAM wParam, LPARAM )
   // Edit the correct entry
   if (EditItem(pci)) {
     // pci is now invalid after EditItem - find the new one!
-    iter = Find(pEE->uuid);
+    iter = Find(pELLE->uuid);
     ASSERT(iter != End());
     pci = &iter->second;
     ASSERT(pci != NULL);
 
-    // user may have changed group/title/user
-    pEE->group = pci->GetGroup();
-    pEE->title = pci->GetTitle();
-    pEE->user = pci->GetUser();
+    // User may have changed these!
+    pELLE->sx_group = pci->GetGroup();
+    pELLE->sx_title = pci->GetTitle();
+    pELLE->sx_user  = pci->GetUser();
+    if (pci->IsProtected())
+      pELLE->sx_title += L" #";
 
     // Update time fields
     time_t tttXTime;
     pci->GetXTime(tttXTime);
-    if ((long)tttXTime > 0L && (long)tttXTime <= 3650L) {
+    // If value is >0 & <=3650, this corresponds to expiry interval in days (< 10 years)
+    if (tttXTime > time_t(0) && tttXTime <= time_t(3650)) {
       time_t tttCPMTime;
       pci->GetPMTime(tttCPMTime);
       if ((long)tttCPMTime == 0L)
         pci->GetCTime(tttCPMTime);
       tttXTime = (time_t)((long)tttCPMTime + (long)tttXTime * 86400);
     }
-    pEE->expirytttXTime = tttXTime;
-    pEE->expirylocdate = PWSUtil::ConvertToDateTimeString(tttXTime, TMC_LOCALE);
-    pEE->expiryexpdate = PWSUtil::ConvertToDateTimeString(tttXTime, TMC_EXPORT_IMPORT);
+    pELLE->expirytttXTime = tttXTime;
+    pELLE->sx_expirylocdate = PWSUtil::ConvertToDateTimeString(tttXTime, TMC_LOCALE);
 
     return TRUE;
   }

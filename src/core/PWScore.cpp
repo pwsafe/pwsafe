@@ -470,11 +470,6 @@ void PWScore::ResetStateAfterSave()
 
 int PWScore::Execute(Command *pcmd)
 {
-  pws_os::Trace(_T("PWScore Execute-Start: m_vpcommands.size()=%d; undo offset=%d; redo offset=%d\n"),
-        m_vpcommands.size(),
-        (m_undo_iter != m_vpcommands.end()) ? distance(m_undo_iter, m_vpcommands.begin()) : -1,
-        (m_redo_iter != m_vpcommands.end()) ? distance(m_redo_iter, m_vpcommands.begin()) : -1);
-
   if (m_redo_iter != m_vpcommands.end()) {
     std::vector<Command *>::iterator cmd_Iter;
 
@@ -491,22 +486,11 @@ int PWScore::Execute(Command *pcmd)
 
   uuid_array_t entry_uuid = {'0'};  // Valid value not required for this particular call.
   NotifyGUINeedsUpdating(UpdateGUICommand::GUI_UPDATE_STATUSBAR, entry_uuid);
-
-  pws_os::Trace(_T("PWScore Execute-End: m_vpcommands.size()=%d; undo offset=%d; redo offset=%d\n"),
-        m_vpcommands.size(),
-        (m_undo_iter != m_vpcommands.end()) ? distance(m_undo_iter, m_vpcommands.begin()) : -1,
-        (m_redo_iter != m_vpcommands.end()) ? distance(m_redo_iter, m_vpcommands.begin()) : -1);
-
   return rc;
 }
 
 void PWScore::Undo()
 {
-  pws_os::Trace(_T("PWScore Undo-Start: m_vpcommands.size()=%d; undo offset=%d; redo offset=%d\n"),
-        m_vpcommands.size(),
-        (m_undo_iter != m_vpcommands.end()) ? distance(m_undo_iter, m_vpcommands.begin()) : -1,
-        (m_redo_iter != m_vpcommands.end()) ? distance(m_redo_iter, m_vpcommands.begin()) : -1);
-
   ASSERT(m_undo_iter != m_vpcommands.end());
   m_redo_iter = m_undo_iter;
 
@@ -519,20 +503,10 @@ void PWScore::Undo()
 
   uuid_array_t entry_uuid = {'0'};  // Valid value not required for this particular call.
   NotifyGUINeedsUpdating(UpdateGUICommand::GUI_UPDATE_STATUSBAR, entry_uuid);
-
-  pws_os::Trace(_T("PWScore Undo-End  : m_vpcommands.size()=%d; undo offset=%d; redo offset=%d\n"),
-        m_vpcommands.size(),
-        (m_undo_iter != m_vpcommands.end()) ? distance(m_undo_iter, m_vpcommands.begin()) : -1,
-        (m_redo_iter != m_vpcommands.end()) ? distance(m_redo_iter, m_vpcommands.begin()) : -1);
 }
 
 void PWScore::Redo()
 {
-  pws_os::Trace(_T("PWScore Redo-Start: m_vpcommands.size()=%d; undo offset=%d; redo offset=%d\n"),
-        m_vpcommands.size(),
-        (m_undo_iter != m_vpcommands.end()) ? distance(m_undo_iter, m_vpcommands.begin()) : -1,
-        (m_redo_iter != m_vpcommands.end()) ? distance(m_redo_iter, m_vpcommands.begin()) : -1);
-
   ASSERT(m_redo_iter != m_vpcommands.end());
   m_undo_iter = m_redo_iter;
 
@@ -543,11 +517,6 @@ void PWScore::Redo()
 
   uuid_array_t entry_uuid = {'0'};  // Valid value not required for this particular call.
   NotifyGUINeedsUpdating(UpdateGUICommand::GUI_UPDATE_STATUSBAR, entry_uuid);
-
-  pws_os::Trace(_T("PWScore Redo-End  : m_vpcommands.size()=%d; undo offset=%d; redo offset=%d\n"),
-        m_vpcommands.size(),
-        (m_undo_iter != m_vpcommands.end()) ? distance(m_undo_iter, m_vpcommands.begin()) : -1,
-        (m_redo_iter != m_vpcommands.end()) ? distance(m_redo_iter, m_vpcommands.begin()) : -1);
 }
 
 bool PWScore::AnyToUndo() const
@@ -2527,18 +2496,17 @@ void PWScore::UpdateExpiryEntry(const uuid_array_t &uuid, const CItemData::Field
   if (iter == m_ExpireCandidates.end())
     return;
 
-  switch (ft) {
-    case CItemData::GROUP:
-      iter->group = value;
-      break;
-    case CItemData::TITLE:
-      iter->title = value;
-      break;
-    case CItemData::USER:
-      iter->user = value;
-      break;
-    default:
+  if (ft == CItemData::XTIME) {
+    time_t t;
+    if ((VerifyImportDateTimeString(value.c_str(), t) ||
+         VerifyXMLDateTimeString(value.c_str(), t)    ||
+         VerifyASCDateTimeString(value.c_str(), t))   &&
+         (t != time_t(-1))) {  // checkerror despite all our verification!
+      iter->expirytttXTime = t;
+    } else {
       ASSERT(0);
-      break;
+    }
+  } else {
+    ASSERT(0);
   }
 }

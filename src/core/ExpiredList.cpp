@@ -22,14 +22,7 @@ ExpPWEntry::ExpPWEntry(const CItemData &ci)
   ci.GetUUID(uuid);
   ci.GetXTime(tttXTime);
 
-  group = ci.GetGroup();
-  title = ci.GetTitle();
-  if (ci.IsProtected())
-    title += L" #";
-  user = ci.GetUser();
-  et = ci.GetEntryType();
-
-  if (tttXTime > time_t(0) && tttXTime <= time_t(3650L)) {
+  if (tttXTime > time_t(0) && tttXTime <= time_t(3650)) {
     time_t tttCPMTime;
     ci.GetPMTime(tttCPMTime);
     if (tttCPMTime == time_t(0))
@@ -37,14 +30,10 @@ ExpPWEntry::ExpPWEntry(const CItemData &ci)
     tttXTime = (time_t)((long)tttCPMTime + (long)tttXTime * 86400);
   }
   expirytttXTime = tttXTime;
-  expirylocdate = PWSUtil::ConvertToDateTimeString(tttXTime, TMC_LOCALE);
-  expiryexpdate = PWSUtil::ConvertToDateTimeString(tttXTime, TMC_EXPORT_IMPORT);
 }
 
 ExpPWEntry::ExpPWEntry(const ExpPWEntry &ee)
-  : group(ee.group), title(ee.title), user(ee.user),
-  expirylocdate(ee.expirylocdate), expiryexpdate(ee.expiryexpdate),
-  expirytttXTime(ee.expirytttXTime), et(ee.et)
+  : expirytttXTime(ee.expirytttXTime)
 {
   memcpy(uuid, ee.uuid, sizeof(uuid));
 }
@@ -52,14 +41,8 @@ ExpPWEntry::ExpPWEntry(const ExpPWEntry &ee)
 ExpPWEntry &ExpPWEntry::operator=(const ExpPWEntry &that)
 {
   if (this != &that) {
-    memcpy(uuid, that.uuid, sizeof(uuid));
-    group = that.group;
-    title = that.title;
-    user = that.user;
-    expirylocdate = that.expirylocdate;
-    expiryexpdate = that.expiryexpdate;
     expirytttXTime = that.expirytttXTime;
-    et = that.et;
+    memcpy(uuid, that.uuid, sizeof(uuid));
   }
   return *this;
 }
