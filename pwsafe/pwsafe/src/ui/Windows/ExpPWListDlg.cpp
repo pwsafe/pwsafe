@@ -33,6 +33,37 @@ CExpPWListDlg::CExpPWListDlg(CWnd* pParent,
   m_iSortedColumn = 4;
   m_bSortAscending = FALSE;
   m_idays = PWSprefs::GetInstance()->GetPref(PWSprefs::PreExpiryWarnDays);
+
+  // Get all entries using core vector
+  for (size_t i = 0; i < m_expPWList.size(); i++) {
+    st_ExpLocalListEntry elle;
+ 
+    // Find entry
+    ItemListIter iter = m_pDbx->Find(m_expPWList[i].uuid);
+    ASSERT(iter != m_pDbx->End());
+    CItemData *pci = &iter->second;
+    ASSERT(pci != NULL);
+    
+    // Get group/title/user values
+    elle.sx_group = pci->GetGroup();
+    elle.sx_title = pci->GetTitle();
+    elle.sx_user  = pci->GetUser();
+    if (pci->IsProtected())
+      elle.sx_title += L" #";
+
+    // Get XTime and string versions
+    elle.expirytttXTime = m_expPWList[i].expirytttXTime;
+    elle.sx_expirylocdate = PWSUtil::ConvertToDateTimeString(elle.expirytttXTime, TMC_LOCALE);
+    
+    // Get entrytype (used for selecting image)
+    elle.et = pci->GetEntryType();
+    
+    // Copy entry uuid
+    memcpy(elle.uuid, m_expPWList[i].uuid, sizeof(elle.uuid));
+    
+    // Save in local vector
+    m_vExpLocalListEntries.push_back(elle);
+  }
 }
 
 CExpPWListDlg::~CExpPWListDlg()
@@ -80,8 +111,6 @@ BOOL CExpPWListDlg::OnInitDialog()
   DWORD dwStyleEx = m_expPWListCtrl.GetExtendedStyle();
   dwStyleEx |= LVS_EX_FULLROWSELECT;
   m_expPWListCtrl.SetExtendedStyle(dwStyleEx);
-
-  //m_expPWListCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_SUBITEMIMAGES);
 
   CString cs_text;
   m_expPWListCtrl.InsertColumn(0, L"");
@@ -132,22 +161,22 @@ BOOL CExpPWListDlg::OnInitDialog()
   m_expPWListCtrl.SetImageList(m_pImageList, LVSIL_NORMAL);
 
   int nPos = 0;
-  ExpiredList::const_iterator itempos;
+  std::vector<st_ExpLocalListEntry>::const_iterator itempos;
 
-  for (itempos = m_expPWList.begin();
-       itempos != m_expPWList.end();
+  for (itempos = m_vExpLocalListEntries.begin();
+       itempos != m_vExpLocalListEntries.end();
        itempos++) {
-    const ExpPWEntry exppwentry = *itempos;
+    const st_ExpLocalListEntry &elle = *itempos;
 
     // To get the correct bitmap image....
-    int image = GetEntryImage(exppwentry);
+    int image = GetEntryImage(elle);
 
     // Add to ListCtrl
     nPos = m_expPWListCtrl.InsertItem(++nPos, NULL, image);
-    m_expPWListCtrl.SetItemText(nPos, 1, exppwentry.group.c_str());
-    m_expPWListCtrl.SetItemText(nPos, 2, exppwentry.title.c_str());
-    m_expPWListCtrl.SetItemText(nPos, 3, exppwentry.user.c_str());
-    m_expPWListCtrl.SetItemText(nPos, 4, exppwentry.expirylocdate.c_str());
+    m_expPWListCtrl.SetItemText(nPos, 1, elle.sx_group.c_str());
+    m_expPWListCtrl.SetItemText(nPos, 2, elle.sx_title.c_str());
+    m_expPWListCtrl.SetItemText(nPos, 3, elle.sx_user.c_str());
+    m_expPWListCtrl.SetItemText(nPos, 4, elle.sx_expirylocdate.c_str());
 
     // original nPos == index in vector: need to know even if user sorts rows
     m_expPWListCtrl.SetItemData(nPos, static_cast<DWORD>(nPos));
@@ -222,8 +251,8 @@ int CALLBACK CExpPWListDlg::ExpPWCompareFunc(LPARAM lParam1, LPARAM lParam2,
 {
   CExpPWListDlg *self = (CExpPWListDlg*)closure;
   int nSortColumn = self->m_iSortedColumn;
-  const ExpPWEntry pLHS = self->m_expPWList[lParam1];
-  const ExpPWEntry pRHS = self->m_expPWList[lParam2];
+  const st_ExpLocalListEntry pLHS = self->m_vExpLocalListEntries[lParam1];
+  const st_ExpLocalListEntry pRHS = self->m_vExpLocalListEntries[lParam2];
   CSecString group1, title1, username1;
   CSecString group2, title2, username2;
   int et1, et2;
@@ -237,24 +266,24 @@ int CALLBACK CExpPWListDlg::ExpPWCompareFunc(LPARAM lParam1, LPARAM lParam2,
       iResult = (et1 < et2) ? -1 : 1;
       break;
     case 1:
-      group1 = pLHS.group;
-      group2 = pRHS.group;
+      group1 = pLHS.sx_group;
+      group2 = pRHS.sx_group;
       iResult = ((CString)group1).CompareNoCase(group2);
       break;
     case 2:
-      title1 = pLHS.title;
-      title2 = pRHS.title;
+      title1 = pLHS.sx_title;
+      title2 = pRHS.sx_title;
       iResult = ((CString)title1).CompareNoCase(title2);
       break;
     case 3:
-      username1 = pLHS.user;
-      username2 = pRHS.user;
+      username1 = pLHS.sx_user;
+      username2 = pRHS.sx_user;
       iResult = ((CString)username1).CompareNoCase(username2);
       break;
     case 4:
       t1 = pLHS.expirytttXTime;
       t2 = pRHS.expirytttXTime;
-      iResult = ((long) t1 < (long) t2) ? -1 : 1;
+      iResult = ((long)t1 < (long)t2) ? -1 : 1;
       break;
     default:
       iResult = 0; // should never happen - just keep compiler happy
@@ -277,30 +306,30 @@ void CExpPWListDlg::OnItemDoubleClick(NMHDR* /* pNMHDR */, LRESULT *pResult)
 
   ASSERT(irow >= 0 && irow < (int)m_expPWList.size());
   size_t iv = (size_t)m_expPWListCtrl.GetItemData(irow);
-  ExpPWEntry *pEE = &m_expPWList[iv];
+  st_ExpLocalListEntry *pELLE = &m_vExpLocalListEntries[iv];
 
   LRESULT lres = ::SendMessage(AfxGetApp()->m_pMainWnd->GetSafeHwnd(),
                                    PWS_MSG_EXPIRED_PASSWORD_EDIT,
-                                   (WPARAM)pEE, 0);
+                                   (WPARAM)pELLE, 0);
+
   if (lres == TRUE) {
     // Update row
+    m_expPWListCtrl.SetItemText(irow, 1, pELLE->sx_group.c_str());
+    m_expPWListCtrl.SetItemText(irow, 2, pELLE->sx_title.c_str());
+    m_expPWListCtrl.SetItemText(irow, 3, pELLE->sx_user.c_str());
+
+    // User may have changed the expiry date
+    m_expPWListCtrl.SetItemText(irow, 4, pELLE->expirytttXTime != (time_t)0 ?
+               pELLE->sx_expirylocdate.c_str() : L"");
+
     // Update image and unselect
     LVITEM lv= {0};
     lv.iItem = irow;
     lv.mask = LVIF_IMAGE | LVIF_STATE;
     lv.state = 0;
     lv.stateMask = LVIS_SELECTED;
-    lv.iImage = GetEntryImage(*pEE);
+    lv.iImage = GetEntryImage(*pELLE);
     m_expPWListCtrl.SetItem(&lv);
-
-    // User may have edited the group/title/user fields!!!
-    m_expPWListCtrl.SetItemText(irow, 1, pEE->group.c_str());
-    m_expPWListCtrl.SetItemText(irow, 2, pEE->title.c_str());
-    m_expPWListCtrl.SetItemText(irow, 3, pEE->user.c_str());
-
-    // User may have changed the expiry date
-    m_expPWListCtrl.SetItemText(irow, 4, pEE->expirytttXTime != (time_t)0 ?
-               pEE->expirylocdate.c_str() : L"");
 
     // Refresh it
     m_expPWListCtrl.Update(irow);
@@ -310,16 +339,16 @@ void CExpPWListDlg::OnItemDoubleClick(NMHDR* /* pNMHDR */, LRESULT *pResult)
   }
 }
 
-int CExpPWListDlg::GetEntryImage(const ExpPWEntry &ee)
+int CExpPWListDlg::GetEntryImage(const st_ExpLocalListEntry &elle)
 {
-  if (ee.et == CItemData::ET_ALIAS)
+  if (elle.et == CItemData::ET_ALIAS)
     return CPWTreeCtrl::ALIAS;
 
-  if (ee.et == CItemData::ET_SHORTCUT)
+  if (elle.et == CItemData::ET_SHORTCUT)
     return CPWTreeCtrl::SHORTCUT;
 
   int nImage;
-  switch (ee.et) {
+  switch (elle.et) {
     case CItemData::ET_NORMAL:
       nImage = CPWTreeCtrl::NORMAL;
       break;
@@ -335,7 +364,7 @@ int CExpPWListDlg::GetEntryImage(const ExpPWEntry &ee)
   }
 
   // Entry has been updated - need to check further as it might be OK now
-  if (ee.expirytttXTime != 0) {
+  if (elle.expirytttXTime != 0) {
     time_t now, warnexptime((time_t)0);
     time(&now);
     struct tm st;
@@ -353,9 +382,9 @@ int CExpPWListDlg::GetEntryImage(const ExpPWEntry &ee)
     if (warnexptime == (time_t)-1)
       warnexptime = (time_t)0;
 
-    if (ee.expirytttXTime <= now) {
+    if (elle.expirytttXTime <= now) {
       nImage += 2;  // Expired
-    } else if (ee.expirytttXTime < warnexptime) {
+    } else if (elle.expirytttXTime < warnexptime) {
       nImage += 1;  // Warn nearly expired
     }
   }

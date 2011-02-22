@@ -493,7 +493,8 @@ private:
   {m_ExpireCandidates.Add(ci);}
   void UpdateExpiryEntry(const CItemData &ci)
   {m_ExpireCandidates.Update(ci);}
-  void UpdateExpiryEntry(const uuid_array_t &uuid, const CItemData::FieldType ft, const StringX &value);
+  void UpdateExpiryEntry(const uuid_array_t &uuid, const CItemData::FieldType ft,
+                         const StringX &value);
   void RemoveExpiryEntry(const CItemData &ci)
   {m_ExpireCandidates.Remove(ci);}
 };

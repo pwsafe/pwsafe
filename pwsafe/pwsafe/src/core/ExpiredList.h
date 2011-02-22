@@ -23,15 +23,7 @@ struct ExpPWEntry {
   ExpPWEntry &operator=(const ExpPWEntry &that);
 
   uuid_array_t uuid;
-  StringX group;
-  StringX title;
-  StringX user;
-  StringX expirylocdate;  // user's long date/time  - format displayed to user in UI
-  StringX expiryexpdate;  // "YYYY/MM/DD HH:MM:SS"  - format copied to clipboard - best for sorting
   time_t expirytttXTime;
-  CItemData::EntryType et; // Used to select image for display to user e.g.
-                           // 'warn will expire' or 'has expired' &
-                           // 'normal, aliasbase or shortcut base' entry
 };
 
 class ExpiredList: public std::vector<ExpPWEntry>

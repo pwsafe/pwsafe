@@ -206,7 +206,6 @@ int UpdateGUICommand::Execute()
 
 int UpdateGUICommand::Redo()
 {
-  //pws_os::Trace(_T("UpdateGUICommand Redo\n"));
   if (m_When == WN_EXECUTE || m_When == WN_EXECUTE_REDO || 
       m_When == WN_REDO || m_When == WN_ALL) {
     uuid_array_t entry_uuid = {'0'}; // dummy
@@ -580,10 +579,7 @@ void UpdateEntryCommand::Doit(const uuid_array_t &entry_uuid,
         pos->second.SetPWHistory(m_oldpwhistory);
       }
     }
-    if (ftype == CItemData::GROUP    ||
-        ftype == CItemData::TITLE    ||
-        ftype == CItemData::USER     ||
-        ftype == CItemData::PASSWORD ||
+    if (ftype == CItemData::PASSWORD ||
         ftype == CItemData::XTIME)
       m_pcomInt->UpdateExpiryEntry(pos->second);
 
@@ -603,10 +599,7 @@ int UpdateEntryCommand::Execute()
     m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_REFRESH_ENTRYFIELD,
                                       m_entry_uuid, m_ftype);
 
-  if (m_ftype == CItemData::GROUP ||
-      m_ftype == CItemData::TITLE ||
-      m_ftype == CItemData::USER ||
-      m_ftype == CItemData::XTIME)
+  if (m_ftype == CItemData::XTIME)
     m_pcomInt->UpdateExpiryEntry(m_entry_uuid, m_ftype, m_value);
 
   m_bState = true;

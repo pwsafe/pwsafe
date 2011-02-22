@@ -3443,7 +3443,7 @@ int DboxMain::GetEntryImage(const CItemData &ci)
 
   time_t tttXTime;
   ci.GetXTime(tttXTime);
-  if ((long)tttXTime > 0L && (long)tttXTime <= 3650L) {
+  if (tttXTime > time_t(0) && tttXTime <= time_t(3650)) {
     time_t tttCPMTime;
     ci.GetPMTime(tttCPMTime);
     if ((long)tttCPMTime == 0L)
