@@ -22,6 +22,8 @@ directly from the displayed list. When an expired password is
 changed, the expiry date will be cleared unless there is a recurring
 password expiry interval, in which case a new expiry date will be
 calculated.
+[3131945] Double-clicking on the system tray icon when PasswordSafe is
+not minimized now brings it to front, instead of minimizing.
 [3131935] Rename of an entry or group in the Tree View can now only be
 performed via the Rename shortcut (default value F2), using the Edit
 menu or the right-click context menu. Edit in place by double clicking

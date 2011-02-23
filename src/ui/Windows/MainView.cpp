@@ -1148,7 +1148,7 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
           pws_os::Trace(L"OnSize:SIZE_RESTORED\n");
         */
 
-        app.SetMenuDefaultItem(ID_MENUITEM_MINIMIZE);
+        app.SetMenuDefaultItem(ID_MENUITEM_RESTORE);
         if (!RestoreWindowsData(false))
           return;
 

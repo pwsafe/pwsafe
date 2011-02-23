@@ -718,7 +718,7 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
     }
     m_menulist.clear();
     menu.DestroyMenu();
-  } else if (LOWORD(lParam) == WM_LBUTTONDBLCLK) {
+  } else if (LOWORD(lParam) == WM_LBUTTONDBLCLK) { // WM_RBUTTONUP
     ASSERT(m_pTarget != NULL);
     // double click received, the default action is to execute default menu item
     m_pTarget->SetForegroundWindow();  
