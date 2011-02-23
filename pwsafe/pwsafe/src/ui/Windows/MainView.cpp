@@ -1965,7 +1965,7 @@ bool DboxMain::LockDataBase()
    */
 
   // Now try and save changes
-  if (m_core.IsChanged() ||  m_bTSUpdated) {
+  if (m_core.IsChanged() ||  m_bTSUpdated || m_core.HaveDBPrefsChanged()) {
     if (Save() != PWScore::SUCCESS) {
       // If we don't warn the user, data may be lost!
       CGeneralMsgBox gmb;
