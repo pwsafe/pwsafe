@@ -1124,7 +1124,6 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
         OnClearClipboard();
 
       if (prefs->GetPref(PWSprefs::UseSystemTray)) {      
-        app.SetMenuDefaultItem(ID_MENUITEM_RESTORE);
         ShowWindow(SW_HIDE);
 
         // User can have 'stealth' mode where, as long as a hot-key is defined,
@@ -1148,7 +1147,6 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
           pws_os::Trace(L"OnSize:SIZE_RESTORED\n");
         */
 
-        app.SetMenuDefaultItem(ID_MENUITEM_RESTORE);
         if (!RestoreWindowsData(false))
           return;
 
@@ -1895,7 +1893,6 @@ void DboxMain::OnTimer(UINT_PTR nIDEvent)
     } else {
       CPWDialog::GetDialogTracker()->Apply(Hider);
       ShowWindow(SW_HIDE);
-      app.SetMenuDefaultItem(ID_MENUITEM_RESTORE);
     }
     if (nIDEvent == TIMER_LOCKONWTSLOCK)
       KillTimer(TIMER_LOCKONWTSLOCK);
@@ -1933,7 +1930,6 @@ LRESULT DboxMain::OnSessionChange(WPARAM wParam, LPARAM )
           } else {
             CPWDialog::GetDialogTracker()->Apply(Hider);
             ShowWindow(SW_HIDE);
-            app.SetMenuDefaultItem(ID_MENUITEM_RESTORE);
           }
         }
       }
