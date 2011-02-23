@@ -56,8 +56,6 @@ public:
   bool IsAcceleratorEnabled() { return m_bUseAccelerator;}
 
   BOOL SetTooltipText(LPCWSTR ttt) {return m_TrayIcon->SetTooltipText(ttt);}
-  BOOL SetMenuDefaultItem(UINT uItem)
-  {return m_TrayIcon->SetMenuDefaultItem(uItem, FALSE);}
   BOOL IsIconVisible() const {return m_TrayIcon->Visible();}
   void ShowIcon() {m_TrayIcon->ShowIcon();}
   void HideIcon() {m_TrayIcon->HideIcon();}

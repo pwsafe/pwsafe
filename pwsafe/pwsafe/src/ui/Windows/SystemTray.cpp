@@ -87,8 +87,8 @@ CSystemTray::CSystemTray(CWnd* pParent, UINT uCallbackMessage, LPCWSTR szToolTip
                          HICON icon, CRUEList &RUEList,
                          UINT uID, UINT menuID)
   : m_RUEList(RUEList), m_pParent(pParent), m_bEnabled(FALSE),
-  m_bHidden(FALSE), m_uIDTimer(0), m_hSavedIcon(NULL), m_DefaultMenuItemID(0),
-  m_DefaultMenuItemByPos(TRUE), m_pTarget(NULL), m_menuID(0)
+  m_bHidden(FALSE), m_uIDTimer(0), m_hSavedIcon(NULL), m_DefaultMenuItemID(ID_MENUITEM_RESTORE),
+  m_DefaultMenuItemByPos(FALSE), m_pTarget(NULL), m_menuID(0)
 {
   ASSERT(m_pParent != NULL);
   SecureZeroMemory(&m_tnd, sizeof(m_tnd));
@@ -358,38 +358,6 @@ BOOL CSystemTray::SetNotificationWnd(CWnd* pWnd)
 CWnd* CSystemTray::GetNotificationWnd() const
 {
   return CWnd::FromHandle(m_tnd.hWnd);
-}
-
-/////////////////////////////////////////////////////////////////////////////
-// CSystemTray menu manipulation
-
-BOOL CSystemTray::SetMenuDefaultItem(UINT uItem, BOOL bByPos)
-{
-  if ((m_DefaultMenuItemID == uItem) && (m_DefaultMenuItemByPos == bByPos)) 
-    return TRUE;
-
-  m_DefaultMenuItemID = uItem;
-  m_DefaultMenuItemByPos = bByPos;   
-
-  CMenu menu, *pSubMenu;
-
-  if (!menu.LoadMenu(m_menuID))
-    return FALSE;
-
-  pSubMenu = menu.GetSubMenu(0);
-  if (!pSubMenu)
-    return FALSE;
-
-  ::SetMenuDefaultItem(pSubMenu->m_hMenu, m_DefaultMenuItemID,
-                       m_DefaultMenuItemByPos);
-
-  return TRUE;
-}
-
-void CSystemTray::GetMenuDefaultItem(UINT& uItem, BOOL& bByPos) const
-{
-  uItem = m_DefaultMenuItemID;
-  bByPos = m_DefaultMenuItemByPos;
 }
 
 /////////////////////////////////////////////////////////////////////////////

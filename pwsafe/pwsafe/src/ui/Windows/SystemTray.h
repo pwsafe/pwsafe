@@ -84,11 +84,7 @@ public:
   BOOL Animate(UINT nDelayMilliSeconds, int nNumSeconds = -1);
   BOOL StepAnimation();
   BOOL StopAnimation();
-
-  // Change menu default item
-  void GetMenuDefaultItem(UINT &uItem, BOOL &bByPos) const;
-  BOOL SetMenuDefaultItem(UINT uItem, BOOL bByPos);
-
+  
   // Change or retrieve the window to send notification messages to
   BOOL SetNotificationWnd(CWnd *NotifyWnd);
   CWnd* GetNotificationWnd() const;
