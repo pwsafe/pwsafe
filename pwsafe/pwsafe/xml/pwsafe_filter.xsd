@@ -273,17 +273,17 @@
 </xs:complexType>
 
 <xs:group name="date_group">
-        <xs:sequence>
-          <xs:element name="date1" type="xs:date" minOccurs="1" maxOccurs="1"/>
-          <xs:element name="date2" type="xs:date" minOccurs="1" maxOccurs="1"/>
-        </xs:sequence>
+  <xs:sequence>
+    <xs:element name="date1" type="xs:date" minOccurs="1" maxOccurs="1"/>
+    <xs:element name="date2" type="xs:date" minOccurs="1" maxOccurs="1"/>
+  </xs:sequence>
 </xs:group>
 
 <xs:group name="dateint_group">
-        <xs:sequence>
-          <xs:element name="num1" type="dateintType" minOccurs="1" maxOccurs="1"/>
-          <xs:element name="num2" type="dateintType" minOccurs="1" maxOccurs="1"/>
-        </xs:sequence>
+  <xs:sequence>
+    <xs:element name="num1" type="dateintType" minOccurs="1" maxOccurs="1"/>
+    <xs:element name="num2" type="dateintType" minOccurs="1" maxOccurs="1"/>
+  </xs:sequence>
 </xs:group>
 
 <xs:complexType name="matchDate">
