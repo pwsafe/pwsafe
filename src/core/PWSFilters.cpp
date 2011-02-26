@@ -618,7 +618,7 @@ int PWSFilters::ImportFilterXMLFile(const FilterPool fpool,
   else
     status = fXML.Process(validation, _T(""), strXMLFileName, strXSDFileName);
 
-    strErrors = fXML.getXMLErrors();
+  strErrors = fXML.getXMLErrors();
   if (!status) {
     return PWScore::XML_FAILED_IMPORT;
   }
