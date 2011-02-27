@@ -96,10 +96,10 @@ $(DEST_DIR)/pwsafeDA.dll : pos/pwsafe_dk.po
 $(DEST_DIR)/pwsafeKR.dll : pos/pwsafe_kr.po
 	$(RESTEXT) apply $(BASE_DLL) foo.dll ./$^; \
 	$(RESPWSL) apply foo.dll 0x0412; \
-	$(RM) foo.dll; $(MV) pwsafeKO_KR.dll $(DEST_DIR)/pwsafeKO.dll
+	$(RM) foo.dll; $(MV) pwsafeKO_KR.dll $(DEST_DIR)/pwsafeKR.dll
 	$(CHMOD) 755 $@
 
-$(DEST_DIR)/pwsafeNL.dll : pos/pwsafe_kr.po
+$(DEST_DIR)/pwsafeNL.dll : pos/pwsafe_nl.po
 	$(RESTEXT) apply $(BASE_DLL) foo.dll ./$^; \
 	$(RESPWSL) apply foo.dll 0x0413; \
 	$(RM) foo.dll; $(MV) pwsafeNL_NL.dll $(DEST_DIR)/pwsafeNL.dll

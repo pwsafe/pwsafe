@@ -304,14 +304,8 @@ msgstr "%1: %2\nSkript weiter ausführen?"
 
 #. Resource IDs: (3859)
 #, c-format
-msgid ""
-"%1\n"
-"Cannot find this file.\n"
-"Verify that the correct path and file name are given."
-msgstr ""
-"%1\n"
-"Kann diese Datei nicht finden.\n"
-"Stellen Sie sicher das der richtige Dateiname und Pfad angegeben sind."
+msgid "%1\nCannot find this file.\nVerify that the correct path and file name are given."
+msgstr "%1\nKann diese Datei nicht finden.\nStellen Sie sicher das der richtige Dateiname und Pfad angegeben sind."
 
 #. Resource IDs: (341)
 #, c-format
@@ -353,6 +347,10 @@ msgstr "%s [Wiederhergestellt]"
 msgid "%s \n\nCan't open file. Please choose another."
 msgstr "%s \n\nKann die Datei nicht öffnen. Bitte wählen Sie eine andere aus."
 
+#. Resource IDs: (341)
+#, c-format
+msgid "%s file being exported: %s"
+msgstr ""
 
 #. Resource IDs: (341)
 #, c-format
@@ -2357,12 +2355,8 @@ msgid "Do you wish to save the changes made to database:\r\n\r\n%s\r\n\r\nor Can
 msgstr "Möchten Sie die Änderungen an der Datenbank speichern:\r\n\r\n%s\r\n\r\noder das Herunterfahren\\Neustart\\Abmelden abbrechen?"
 
 #. Resource IDs: (3887)
-msgid ""
-"Don't recover the auto-saved documents\n"
-"Use the last explicitly saved versions of the documents"
-msgstr ""
-"Stelle nicht die automatisch gespeicherte Dokumente wieder her\n"
-"Nimm die letzte explizit gespeicherte Version der Dokumente"
+msgid "Don't recover the auto-saved documents\nUse the last explicitly saved versions of the documents"
+msgstr "Stelle nicht die automatisch gespeicherte Dokumente wieder her\nNimm die letzte explizit gespeicherte Version der Dokumente"
 
 #. Resource IDs: (359)
 msgid "Double Click Action"
@@ -2683,18 +2677,8 @@ msgid "Error (%08X): line %d character %d %s"
 msgstr "Fehler (%08X): Zeile %d Zeichen %d %s"
 
 #. Resource IDs: (190)
-msgid ""
-"Error - unable to determine settings configuration!\n"
-"\n"
-"No application settings will be saved.\n"
-"\n"
-"Database related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
-msgstr ""
-"Fehler - Einstellungskonfiguration nicht ermittelbar!\n"
-"\n"
-"Keine Anwendungseinstellungen werden gespeichert.\n"
-"\n"
-"Datenbankeinstellungen werden in die aktuelle Datenbank beim Schließen gespeichert, vorausgesetzt sie ist nicht Nur-Lesen oder gesperrt durch ein andere Benutzer."
+msgid "Error - unable to determine settings configuration!\n\nNo application settings will be saved.\n\nDatabase related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
+msgstr "Fehler - Einstellungskonfiguration nicht ermittelbar!\n\nKeine Anwendungseinstellungen werden gespeichert.\n\nDatenbankeinstellungen werden in die aktuelle Datenbank beim Schließen gespeichert, vorausgesetzt sie ist nicht Nur-Lesen oder gesperrt durch ein andere Benutzer."
 
 #. Resource IDs: (354)
 #, c-format
@@ -4496,14 +4480,8 @@ msgid "Press to delete all added characters."
 msgstr "Drücken zum Löschen aller hinzugefügten Zeichen."
 
 #. Resource IDs: (65535)
-msgid ""
-"Pressing OK will copy the password of the selected item to the clipboard. The clipboard will be securely cleared when Password Safe is closed.\r\n"
-"\r\n"
-"Pressing Cancel stops the password being copied."
-msgstr ""
-"Mit Drücken von OK wird das Passwort des ausgewählten Eintrages in die Zwischenablage kopiert. Die Zwischenablage wird sicher gelöscht, wenn Password Safe schließt.\r\n"
-"\r\n"
-"Mit Drücken von Abbrechen wird das Kopieren des Passwortes angehalten."
+msgid "Pressing OK will copy the password of the selected item to the clipboard. The clipboard will be securely cleared when Password Safe is closed.\r\n\r\nPressing Cancel stops the password being copied."
+msgstr "Mit Drücken von OK wird das Passwort des ausgewählten Eintrages in die Zwischenablage kopiert. Die Zwischenablage wird sicher gelöscht, wenn Password Safe schließt.\r\n\r\nMit Drücken von Abbrechen wird das Kopieren des Passwortes angehalten."
 
 #. Resource IDs: (349)
 msgid "Previous Passwords"
@@ -4618,12 +4596,8 @@ msgid "Record last access times"
 msgstr "Speichere das Datum des letzten Zugriffs"
 
 #. Resource IDs: (3887)
-msgid ""
-"Recover the auto-saved documents\n"
-"Open the auto-saved versions instead of the explicitly saved versions"
-msgstr ""
-"Automatisch gesicherte Dokumente wiederherstellen\n"
-"Öffnen Sie die automatisch gesicherte Versionen anstelle der explizit gespeicherten Versionen"
+msgid "Recover the auto-saved documents\nOpen the auto-saved versions instead of the explicitly saved versions"
+msgstr "Automatisch gesicherte Dokumente wiederherstellen\nÖffnen Sie die automatisch gesicherte Versionen anstelle der explizit gespeicherten Versionen"
 
 #. Resource IDs: (1297)
 msgid "Recurring"
@@ -5593,7 +5567,6 @@ msgstr "Dieser Eintrag hat folgende %d %s:\r\n%s\r\nBitte bestätigen Sie, dass 
 msgid "This entry has the following %d %s:\r\n%s\r\nPlease confirm you wish to continue (alias entry's passwords will be replaced by this entry's password)?"
 msgstr "Dieser Eintrag hat folgende %d %s:\r\n%s\r\nBitte bestätigen Sie, dass Sie fortfahren möchten (Passwörter des Alias-Eintrages werden durch das Passwort dieses Eintrags ersetzt)?"
 
-
 #. Resource IDs: (1429)
 msgid "This entry is protected."
 msgstr "Dieser Eintrag ist geschützt."
@@ -6099,15 +6072,8 @@ msgstr "ACHTUNG: wenn Sie fortfahren, werden Felder aktualisiert in den Einträg
 
 #. Resource IDs: (363)
 #, c-format
-msgid ""
-"WARNING: This operation will create an unprotected copy of %s in the database. Deleting this copy after use is NOT sufficient.\r\n"
-"\r\n"
-"Please do not use this option unless you understand and accept the risks. This option bypasses the security provided by this program."
-msgstr ""
-"ACHTUNG: Dieser Vorgang wird eine ungeschützte Kopie von %s in der Datenbank anlegen. Es reicht NICHT aus, diese Kopie nach dem Gebrauch zu löschen.\r\n"
-"\r\n"
-"Bitte verwenden Sie diese Option nur dann wenn Sie die Risiken verstehen und akzeptieren. Diese Option umgeht die Sicherheit die dieses Program bietet."
-
+msgid "WARNING: This operation will create an unprotected copy of %s in the database. Deleting this copy after use is NOT sufficient.\r\n\r\nPlease do not use this option unless you understand and accept the risks. This option bypasses the security provided by this program."
+msgstr "ACHTUNG: Dieser Vorgang wird eine ungeschützte Kopie von %s in der Datenbank anlegen. Es reicht NICHT aus, diese Kopie nach dem Gebrauch zu löschen.\r\n\r\nBitte verwenden Sie diese Option nur dann wenn Sie die Risiken verstehen und akzeptieren. Diese Option umgeht die Sicherheit die dieses Program bietet."
 
 #. Resource IDs: (341)
 msgid "WARNING: Use of an external editor may leave sensitive data on your hard disk.\n\nDo you wish to continue?"
@@ -6440,23 +6406,13 @@ msgstr "\nBitte probieren Sie andere"
 msgid "\nProgram will terminate."
 msgstr "\nProgramm wird beendet."
 
+#. Resource IDs: (2006)
+msgid "\nProtect All Entries"
+msgstr "\nSchütze alle Einträge"
 
 #. Resource IDs: (2006)
-msgid ""
-"\n"
-"Protect All Entries"
-msgstr ""
-"\n"
-"Schütze alle Einträge"
-
-#. Resource IDs: (2006)
-msgid ""
-"\n"
-"Protect Entry"
-msgstr ""
-"\n"
-"Eintrag schützen"
-
+msgid "\nProtect Entry"
+msgstr "\nEintrag schützen"
 
 #. Resource IDs: (2006)
 msgid "\nRedo"
@@ -6499,14 +6455,9 @@ msgstr "\nZeige Suchleiste"
 msgid "\nShow Unsaved Changes"
 msgstr "\nUngesicherte Änderungen anzeigen"
 
-
 #. Resource IDs: (2009)
-msgid ""
-"\n"
-"Show entries with Password Expiry dates"
-msgstr ""
-"\n"
-"Zeige Einträge mit Passwortablaufdatum"
+msgid "\nShow entries with Password Expiry dates"
+msgstr "\nZeige Einträge mit Passwortablaufdatum"
 
 #. Resource IDs: (334)
 #, c-format
@@ -6514,9 +6465,7 @@ msgid "\nSkipped %d %s"
 msgstr "\n%d %s übersprungen"
 
 #. Resource IDs: (2002)
-msgid ""
-"\n"
-"Synchronize Databases"
+msgid "\nSynchronize Databases"
 msgstr "\nSynchronisiere Datenbanken"
 
 #. Resource IDs: (2006)
@@ -6527,23 +6476,13 @@ msgstr "\nRückgängig"
 msgid "\nUnexpected exception during parsing."
 msgstr "\nUnerwartete Ausnahme während Parse."
 
+#. Resource IDs: (2006)
+msgid "\nUnprotect All Entries"
+msgstr "\nSchutz entfernen bei allen Einträgen"
 
 #. Resource IDs: (2006)
-msgid ""
-"\n"
-"Unprotect All Entries"
-msgstr ""
-"\n"
-"Schutz entfernen bei allen Einträgen"
-
-#. Resource IDs: (2006)
-msgid ""
-"\n"
-"Unprotect Entry"
-msgstr ""
-"\n"
-"Schutz entfernen"
-
+msgid "\nUnprotect Entry"
+msgstr "\nSchutz entfernen"
 
 #. Resource IDs: (331)
 msgid "\nUse it anyway?"
@@ -6576,12 +6515,8 @@ msgstr "\nmit Passworthistoriefehler %d"
 
 #. Resource IDs: (214)
 #, c-format
-msgid ""
-"\r\n"
-"Merge completed: %d %s added (%d %s, %d %s, %d %s)"
-msgstr ""
-"\r\n"
-"Zusammenführen komplett: %d %s hinzugefügt (%d %s, %d %s, %d %s)"
+msgid "\r\nMerge completed: %d %s added (%d %s, %d %s, %d %s)"
+msgstr "\r\nZusammenführen komplett: %d %s hinzugefügt (%d %s, %d %s, %d %s)"
 
 #. Resource IDs: (360)
 #, c-format
