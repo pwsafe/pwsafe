@@ -89,14 +89,20 @@
 	    <File Id='file21' Name='pwsafeZH.dll' DiskId='1'
 	      Source='build\bin\pwsafe\I18N\pwsafeZH.dll' Vital='yes'> 
 	    </File>
+	    <File Id='file22' Name='pwsafeKR.dll' DiskId='1'
+	      Source='build\bin\pwsafe\I18N\pwsafeKR.dll' Vital='yes'> 
+	    </File>
+	    <File Id='file23' Name='pwsafeNL.dll' DiskId='1'
+	      Source='build\bin\pwsafe\I18N\pwsafeNL.dll' Vital='yes'> 
+	    </File>
 	  </Component>
 	  <Component Id='SupportingFiles'
 	    Guid='2cb36029-a029-4f15-9838-4acacb823ce7'> 
-	    <File Id='file22' Name='pwsafe.xsd' DiskId='1'
+	    <File Id='file24' Name='pwsafe.xsd' DiskId='1'
 	    Source='xml\pwsafe.xsd' Vital='yes' />
-	    <File Id='file23' Name='pwsafe.xsl' DiskId='1'
+	    <File Id='file25' Name='pwsafe.xsl' DiskId='1'
 	    Source='xml\pwsafe.xsl' Vital='yes' />
-	    <File Id='file24' Name='pwsafe_filter.xsd' DiskId='1'
+	    <File Id='file26' Name='pwsafe_filter.xsd' DiskId='1'
 	    Source='xml\pwsafe_filter.xsd' Vital='yes' />
 	  </Component>
 	</Directory>
