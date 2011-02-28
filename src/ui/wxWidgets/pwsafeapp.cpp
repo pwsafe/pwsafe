@@ -377,7 +377,8 @@ void PwsafeApp::OnActivate(wxActivateEvent& actEvent)
 
 void PwsafeApp::OnActivityTimer(wxTimerEvent& /* timerEvent */)
 {
-  m_frame->HideUI(true);  //true => lock
+  if (!m_frame->GetCurrentSafe().IsEmpty())
+    m_frame->HideUI(true);  //true => lock
 }
 
 CRecentDBList &PwsafeApp::recentDatabases()
