@@ -93,10 +93,11 @@ END_EVENT_TABLE()
 
 AddEditPropSheet::AddEditPropSheet(wxWindow* parent, PWScore &core,
                                    AddOrEdit type, const CItemData *item,
+                                   const wxString& selectedGroup,
                                    wxWindowID id, const wxString& caption,
                                    const wxPoint& pos, const wxSize& size,
                                    long style)
-: m_core(core), m_ui(dynamic_cast<UIInterFace *>(parent)), m_type(type)
+: m_core(core), m_ui(dynamic_cast<UIInterFace *>(parent)), m_selectedGroup(selectedGroup), m_type(type)
 {
   if (item != NULL)
     m_item = *item; // copy existing item to display values
@@ -709,7 +710,7 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
     m_groupCtrl->Append(aryGroups[igrp].c_str());
   }
   // select relevant group
-  const StringX group = m_item.GetGroup();
+  const StringX group = (m_type == ADD? tostringx(m_selectedGroup): m_item.GetGroup());
   if (!group.empty())
     for (size_t igrp = 0; igrp < aryGroups.size(); igrp++)
       if (group == aryGroups[igrp].c_str()) {

@@ -125,6 +125,7 @@ public:
   // item is NULL for ADD, otherwise its values are retrieved and displayed
   AddEditPropSheet(wxWindow* parent, PWScore &core,
                    AddOrEdit type, const CItemData *item = NULL,
+                   const wxString& selectedGroup = wxEmptyString,
                    wxWindowID id = SYMBOL_ADDEDITPROPSHEET_IDNAME,
                    const wxString& caption = SYMBOL_ADDEDITPROPSHEET_TITLE,
                    const wxPoint& pos = SYMBOL_ADDEDITPROPSHEET_POSITION,
@@ -318,6 +319,7 @@ private:
   PWPolicy m_PWP;
   PWScore &m_core;
   UIInterFace *m_ui;
+  wxString m_selectedGroup;  //Group title in tree view user right-clicked on to add an item
 
   AddOrEdit m_type;
   CItemData m_item;
