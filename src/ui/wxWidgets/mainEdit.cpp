@@ -78,7 +78,13 @@ void PasswordSafeFrame::DoEdit(CItemData &item)
 
 void PasswordSafeFrame::OnAddClick( wxCommandEvent& /* evt */ )
 {
-  AddEditPropSheet addDbox(this, m_core, AddEditPropSheet::ADD);
+  wxString selectedGroup = wxEmptyString;
+  wxTreeItemId selection;
+  if (IsTreeView() && (selection = m_tree->GetSelection()).IsOk() && m_tree->ItemHasChildren(selection)) {
+    selectedGroup = m_tree->GetItemText(selection);
+  }
+
+  AddEditPropSheet addDbox(this, m_core, AddEditPropSheet::ADD, NULL, selectedGroup);
   if (addDbox.ShowModal() == wxID_OK) {
     const CItemData &item = addDbox.GetItem();
     m_core.Execute(AddEntryCommand::Create(&m_core, item));
