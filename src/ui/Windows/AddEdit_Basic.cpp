@@ -284,10 +284,16 @@ BOOL CAddEdit_Basic::OnInitDialog()
 
   // Populate the combo box
   m_ex_group.ResetContent(); // groups might be from a previous DB (BR 3062758)
-  std::vector<std::wstring> aryGroups;
-  M_pcore()->GetUniqueGroups(aryGroups);
-  for (std::vector<std::wstring>::iterator iter = aryGroups.begin();
-       iter != aryGroups.end(); ++iter) {
+
+  // The core function "GetUniqueGroups(vGroups)" returns the group list by
+  // going through the entries in the database. This will not include empty
+  // groups.  However, we already maintain this list in the UI to save the
+  // display status, so use this instead.
+  std::vector<std::wstring> vGroups;
+  M_pDbx()->GetAllGroups(vGroups);
+
+  for (std::vector<std::wstring>::iterator iter = vGroups.begin();
+       iter != vGroups.end(); ++iter) {
     m_ex_group.AddString(iter->c_str());
   }
 

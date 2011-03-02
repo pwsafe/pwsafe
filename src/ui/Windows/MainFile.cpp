@@ -430,6 +430,14 @@ int DboxMain::NewFile(StringX &newfilename)
   m_core.SetReadOnly(false); // new file can't be read-only...
   m_core.NewFile(dbox_pksetup.m_passkey);
   m_bDBNeedsReading = false;
+  
+  // Tidy up filters
+  m_currentfilter.Empty();
+  m_bFilterActive = false;
+
+  // Clear any saved group information
+  m_TreeViewGroup = L"";
+
   return PWScore::SUCCESS;
 }
 
@@ -819,6 +827,9 @@ void DboxMain::PostOpenProcessing()
   // Tidy up filters
   m_currentfilter.Empty();
   m_bFilterActive = false;
+
+  // Clear any saved group information
+  m_TreeViewGroup = L"";
 
   RefreshViews();
   SetInitialDatabaseDisplay();

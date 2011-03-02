@@ -1118,7 +1118,7 @@ void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint screen)
       CMenu* pPopup = menu.GetSubMenu(0);
       ASSERT_VALID(pPopup);
 
-      // use this window for commands
+      // Use this DboxMain for commands
       pPopup->TrackPopupMenu(dwTrackPopupFlags, screen.x, screen.y, this);
     }
     return;
@@ -1184,13 +1184,16 @@ void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint screen)
           CMenu* pPopup = menu.GetSubMenu(0);
           ASSERT_VALID(pPopup);
           m_TreeViewGroup = m_ctlItemTree.GetGroup(ti);
+
           int numProtected, numUnprotected;
           bool bProtect = GetSubtreeEntriesProtectedStatus(numProtected, numUnprotected);
+
           if (!bProtect || numUnprotected == 0)
             pPopup->RemoveMenu(ID_MENUITEM_PROTECTGROUP, MF_BYCOMMAND);
           if (!bProtect || numProtected == 0)
             pPopup->RemoveMenu(ID_MENUITEM_UNPROTECTGROUP, MF_BYCOMMAND);
-          // use this DboxMain for commands
+
+          // Use this DboxMain for commands
           pPopup->TrackPopupMenu(dwTrackPopupFlags, screen.x, screen.y, this);
         }
       }
@@ -1202,7 +1205,13 @@ void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint screen)
         ASSERT(brc != 0);
         CMenu* pPopup = menu.GetSubMenu(0);
         ASSERT_VALID(pPopup);
-        // use this DboxMain for commands
+        
+        ti = m_ctlItemTree.GetSelectedItem();
+        if (ti == NULL || (ti != NULL && (CItemData *)m_ctlItemTree.GetItemData(ti) != NULL))
+          pPopup->RemoveMenu(ID_MENUITEM_DUPLICATEGROUP, MF_BYCOMMAND);
+
+        // Use this DboxMain for commands
+        m_bWhitespaceRightClick = true;
         pPopup->TrackPopupMenu(dwTrackPopupFlags, screen.x, screen.y, this);
       }
     }
@@ -1286,7 +1295,7 @@ void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint screen)
     // Since an entry - remove Duplicate Group
     pPopup->RemoveMenu(ID_MENUITEM_DUPLICATEGROUP, MF_BYCOMMAND);
 
-    // use this DboxMain for commands
+    // Use this DboxMain for commands
     pPopup->TrackPopupMenu(dwTrackPopupFlags, screen.x, screen.y, this);
   } // if (item >= 0)
 }

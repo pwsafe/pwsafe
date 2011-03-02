@@ -388,6 +388,8 @@ public:
   CString ShowCompareResults(const StringX sx_Filename1, const StringX sx_Filename2,
                              PWScore *pothercore, CReport *prpt);
   bool IsInRename() {return m_bInRename;}
+  bool IsInAddGroup() {return m_bInAddGroup;}
+  void ResetInAddGroup() {m_bInAddGroup = false;}
 
   //{{AFX_DATA(DboxMain)
   enum { IDD = IDD_PASSWORDSAFE_DIALOG };
@@ -409,7 +411,6 @@ public:
   CRUEList m_RUEList;   // recent entry lists
 
   wchar_t *m_eye_catcher;
-  bool m_bInAddGroup;
 
   bool m_bDoAutoType;
   StringX m_AutoType;
@@ -420,6 +421,7 @@ public:
 
   // Mapping Group to Tree Item to save searching all the time!
   std::map<StringX, HTREEITEM> m_mapGroupToTreeItem;
+  void GetAllGroups(std::vector<std::wstring> &vGroups);
 
   // Process Special Shortcuts for Tree & List controls
   bool CheckPreTranslateDelete(MSG* pMsg);
@@ -946,6 +948,8 @@ private:
 
   // Prevent rename of entries in Tree mode by clicking on entry
   bool m_bInRename;
+  // When in AddGroup and where AddGroup initiated
+  bool m_bInAddGroup, m_bWhitespaceRightClick;
 
   // The following is for saving information over an execute/undo/redo
   // Might need to add more e.g. if filter is active and which one?

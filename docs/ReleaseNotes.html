@@ -42,7 +42,7 @@ will not work! ***</p>
 </head>
 
 <body>
-<h1 align="center">Password Safe 3.24.3 Release Notes - February 2011</h1>
+<h1 align="center">Password Safe 3.25 Release Notes - March 2011</h1>
 <p>This note describe the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
 Password Safe, please see the accompanying README.txt file. For more
@@ -54,8 +54,8 @@ ChangeLog.txt.</p>
 are described <a href="#prev-vers">here</a>.
 Information about older versions may be found <a href="http://pwsafe.org/history.shtml">here</a>.</p>
 <hr style="width: 100%; height: 2px;">
-<h3><a name="V3.24.3"></a>Version V3.24.3</h3>
-<h4><a name="V3.24.3New"></a>New Features for V3.24.3</h4>
+<h3><a name="V3.25"></a>Version V3.25</h3>
+<h4><a name="V3.25New"></a>New Features for V3.25</h4>
 <table>
 <tbody align="left" valign="top">
 <tr>
@@ -69,7 +69,7 @@ displaying entries with passwords that are expired or about to expire.</td>
 </tr>
 </tbody>
 </table>
-<h4><a name="V3.24.3Changes"></a>Changes to Existing Features in V3.24.3</h4>
+<h4><a name="V3.25Changes"></a>Changes to Existing Features in V3.25</h4>
 <table>
 <tbody align="left" valign="top">
 <tr>
@@ -106,9 +106,19 @@ thanks to pm_kan.</td>
 </tr>
 </tbody>
 </table>
-<h4><a name="V3.24.3BugsFixed"></a>Bugs fixed in V3.24.3</h4>
+<h4><a name="V3.25BugsFixed"></a>Bugs fixed in V3.25</h4>
 <table>
 <tbody align="left" valign="top">
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(3194472);return false;">3194472</a><br></td>
+<td>
+Fix new group creation location. When a Group is selected, then
+selecting 'Add Group' from the Edit menu or from the context menu displayed by
+right clicking on that Group, the new group will be a child of the selected group.
+However, when using the context menu displayed on right clicking on 'white space'
+below the last entry/group displayed, the group will be created at the topmost level.
+</td>
+</tr>
 <tr>
 <td align="center" width="100"><a href="nojs.html" onclick="BR(3165889);return false;">3165889</a><br></td>
 <td>No longer crashes if search starts with Shift-Enter (search backwards).</td>
