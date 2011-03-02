@@ -90,7 +90,10 @@ int MultiCommands::Execute()
   std::vector<Command *>::iterator cmd_Iter;
 
   for (cmd_Iter = m_vpcmds.begin(); cmd_Iter != m_vpcmds.end(); cmd_Iter++) {
-    int rc = (*cmd_Iter)->Execute();
+    int rc(-1);
+    if (*cmd_Iter != NULL) {
+      rc = (*cmd_Iter)->Execute();
+    }
     m_vRCs.push_back(rc);
   }
 
@@ -108,7 +111,8 @@ void MultiCommands::Undo()
   std::vector<Command *>::reverse_iterator cmd_rIter;
 
   for (cmd_rIter = m_vpcmds.rbegin(); cmd_rIter != m_vpcmds.rend(); cmd_rIter++) {
-    (*cmd_rIter)->Undo();
+    if (*cmd_rIter != NULL)
+      (*cmd_rIter)->Undo();
   }
 
   m_bState = false;
@@ -121,9 +125,8 @@ void MultiCommands::Add(Command *pcmd)
 
 void MultiCommands::Insert(Command *pcmd)
 {
-  /*
-    VERY INEFFICIENT - use sparingly
-  */
+  // VERY INEFFICIENT - use sparingly to add commands at the front of the
+  // multi-command vector
   m_vpcmds.insert(m_vpcmds.begin(), pcmd);
 }
 
