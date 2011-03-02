@@ -120,6 +120,7 @@ void MultiCommands::Undo()
 
 void MultiCommands::Add(Command *pcmd)
 {
+  ASSERT(pcmd != NULL);
   m_vpcmds.push_back(pcmd);
 }
 
@@ -127,11 +128,13 @@ void MultiCommands::Insert(Command *pcmd)
 {
   // VERY INEFFICIENT - use sparingly to add commands at the front of the
   // multi-command vector
+  ASSERT(pcmd != NULL);
   m_vpcmds.insert(m_vpcmds.begin(), pcmd);
 }
 
 bool MultiCommands::Remove(Command *pcmd)
 {
+  ASSERT(pcmd != NULL);
   std::vector<Command *>::iterator cmd_Iter;
 
   cmd_Iter = find(m_vpcmds.begin(), m_vpcmds.end(), pcmd);
