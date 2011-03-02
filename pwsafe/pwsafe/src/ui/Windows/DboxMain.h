@@ -231,13 +231,13 @@ public:
                  const int subgroup_function);
 
   // Used by ListCtrl KeyDown
-  bool IsImageVisible() {return m_bImageInLV;}
+  bool IsImageVisible() const {return m_bImageInLV;}
 
   // Count the number of total entries.
   size_t GetNumEntries() const {return m_core.GetNumEntries();}
 
   // Get CItemData @ position
-  CItemData &GetEntryAt(ItemListIter iter)
+  CItemData &GetEntryAt(ItemListIter iter) const
   {return m_core.GetEntry(iter);}
 
   // For InsertItemIntoGUITreeList and RefreshViews (mainly when refreshing views)
@@ -303,7 +303,7 @@ public:
   {return m_clipboard.SetData(data.c_str());}
   void AddEntries(CDDObList &in_oblist, const StringX &DropGroup);
   StringX GetUniqueTitle(const StringX &group, const StringX &title,
-                         const StringX &user, const int IDS_MESSAGE)
+                         const StringX &user, const int IDS_MESSAGE) const
   {return m_core.GetUniqueTitle(group, title, user, IDS_MESSAGE);}
   void FixListIndexes();
   void Delete(); // "Top level" delete, calls the following 2 and Execute()
@@ -319,7 +319,7 @@ public:
   CItemData *GetBaseEntry(const CItemData *pAliasOrSC)
   {return m_core.GetBaseEntry(pAliasOrSC);}
 
-  int GetEntryImage(const CItemData &ci);
+  int GetEntryImage(const CItemData &ci) const;
   HICON GetEntryIcon(const int nImage) const;
   void SetEntryImage(const int &index, const int nImage, const bool bOneEntry = false);
   void SetEntryImage(HTREEITEM &ti, const int nImage, const bool bOneEntry = false);
@@ -332,8 +332,8 @@ public:
   bool SetNotesWindow(const CPoint point, const bool bVisible = true);
   bool IsFilterActive() const {return m_bFilterActive;}
   int GetNumPassedFiltering() const {return m_bNumPassedFiltering;}
-  CItemData *GetLastSelected();
-  StringX GetGroupName();
+  CItemData *GetLastSelected() const;
+  StringX GetGroupName() const;
   void UpdateGroupNamesInMap(const StringX sxOldPath, const StringX sxNewPath);
 
   void SetFilter(FilterPool selectedpool, CString selectedfiltername)
@@ -349,9 +349,9 @@ public:
   void PlaceWindow(CWnd *pWnd, CRect *pRect, UINT uiShowCmd);
   void SetDCAText(CItemData * pci = NULL);
   void OnItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult);
-  bool IsNodeModified(StringX &path)
+  bool IsNodeModified(StringX &path) const
   {return m_core.IsNodeModified(path);}
-  StringX GetCurFile() {return m_core.GetCurFile();}
+  StringX GetCurFile() const {return m_core.GetCurFile();}
 
   // Following to simplify Command creation in child dialogs:
   CommandInterface *GetCore() {return &m_core;}
@@ -359,8 +359,8 @@ public:
   void Execute(Command *pcmd, PWScore *pcore = NULL);
   void UpdateToolBarDoUndo();
 
-  void ViewReport(const CString &cs_ReportFileName);
-  void ViewReport(CReport &rpt);
+  void ViewReport(const CString &cs_ReportFileName) const;
+  void ViewReport(CReport &rpt) const;
   void SetUpdateWizardWindow(CWnd *pWnd)
   {m_pWZWnd = pWnd;}
   stringT DoMerge(PWScore *pothercore,
@@ -379,16 +379,16 @@ public:
                     const stringT &subgroup_name,
                     const int &subgroup_object,
                     const int &subgroup_function,
-                    const OrderedItemList *il)
+                    const OrderedItemList *il) const
   {return m_core.TestSelection(bAdvanced, subgroup_name,
                                subgroup_object, subgroup_function, il);}
-  void MakeOrderedItemList(OrderedItemList &il);
+  void MakeOrderedItemList(OrderedItemList &il) const;
   CItemData *getSelectedItem();
   void UpdateGUIDisplay();
   CString ShowCompareResults(const StringX sx_Filename1, const StringX sx_Filename2,
                              PWScore *pothercore, CReport *prpt);
-  bool IsInRename() {return m_bInRename;}
-  bool IsInAddGroup() {return m_bInAddGroup;}
+  bool IsInRename() const {return m_bInRename;}
+  bool IsInAddGroup() const {return m_bInAddGroup;}
   void ResetInAddGroup() {m_bInAddGroup = false;}
 
   //{{AFX_DATA(DboxMain)
@@ -421,7 +421,7 @@ public:
 
   // Mapping Group to Tree Item to save searching all the time!
   std::map<StringX, HTREEITEM> m_mapGroupToTreeItem;
-  void GetAllGroups(std::vector<std::wstring> &vGroups);
+  void GetAllGroups(std::vector<std::wstring> &vGroups) const;
 
   // Process Special Shortcuts for Tree & List controls
   bool CheckPreTranslateDelete(MSG* pMsg);

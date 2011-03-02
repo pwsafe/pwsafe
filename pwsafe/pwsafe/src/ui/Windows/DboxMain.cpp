@@ -2640,11 +2640,13 @@ void DboxMain::SetDCAText(CItemData *pci)
 }
 
 // Returns a list of entries as they appear in tree in DFS order
-void DboxMain::MakeOrderedItemList(OrderedItemList &il)
+void DboxMain::MakeOrderedItemList(OrderedItemList &il) const
 {
   // Walk the Tree!
   HTREEITEM hItem = NULL;
-  while (NULL != (hItem = m_ctlItemTree.GetNextTreeItem(hItem))) {
+  // The non-const-ness of GetNextTreeItem is debatable, and
+  // certainly irrelevant here.
+  while (NULL != (hItem = const_cast<DboxMain *>(this)->m_ctlItemTree.GetNextTreeItem(hItem))) {
     if (!m_ctlItemTree.ItemHasChildren(hItem)) {
       CItemData *pci = (CItemData *)m_ctlItemTree.GetItemData(hItem);
       if (pci != NULL) {// NULL if there's an empty group [bug #1633516]

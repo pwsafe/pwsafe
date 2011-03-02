@@ -757,7 +757,7 @@ void DboxMain::OnDelete()
   if (dodelete) {
     Delete();
     // Only refresh views if an entry or a non-empty group was deleted
-    // If we refresh when deleting an empty group, the user will loose all
+    // If we refresh when deleting an empty group, the user will lose all
     // other empty groups
     if (m_bFilterActive || pci != NULL || (pci == NULL && num_children > 0))
       RefreshViews();

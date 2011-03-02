@@ -2981,14 +2981,14 @@ void DboxMain::OnViewReports(UINT nID)
   ViewReport(cs_filename);
 }
 
-void DboxMain::ViewReport(CReport &rpt)
+void DboxMain::ViewReport(CReport &rpt) const
 {
-  CViewReport vr_dlg(this, &rpt);
+  CViewReport vr_dlg(const_cast<DboxMain*>(this), &rpt);
 
   vr_dlg.DoModal();
 }
 
-void DboxMain::ViewReport(const CString &cs_ReportFileName)
+void DboxMain::ViewReport(const CString &cs_ReportFileName) const
 {
   CString cs_drive, cs_directory;
 
@@ -3412,7 +3412,7 @@ void DboxMain::OnToolBarFindReport()
   m_FindToolBar.SetStatus(cs_temp);
 }
 
-int DboxMain::GetEntryImage(const CItemData &ci)
+int DboxMain::GetEntryImage(const CItemData &ci) const
 {
   int entrytype = ci.GetEntryType();
   if (entrytype == CItemData::ET_ALIAS) {
@@ -3695,7 +3695,7 @@ bool DboxMain::SetNotesWindow(const CPoint point, const bool bVisible)
   return !cs_notes.empty();
 }
 
-CItemData *DboxMain::GetLastSelected()
+CItemData *DboxMain::GetLastSelected() const
 {
   CItemData *retval(NULL);
   if (m_core.GetNumEntries() == 0)
@@ -3713,7 +3713,7 @@ CItemData *DboxMain::GetLastSelected()
   return retval;
 }
 
-StringX DboxMain::GetGroupName()
+StringX DboxMain::GetGroupName() const
 {
   HTREEITEM hi = m_ctlItemTree.GetSelectedItem();
   StringX s(L"");
@@ -4326,9 +4326,9 @@ void DboxMain::RestoreGUIStatus()
   m_stkSaveGUIInfo.pop();
 }
 
-void DboxMain::GetAllGroups(std::vector<std::wstring> &vGroups)
+void DboxMain::GetAllGroups(std::vector<std::wstring> &vGroups) const
 {
-  std::map<StringX, HTREEITEM>::iterator iter;
+  std::map<StringX, HTREEITEM>::const_iterator iter;
 
   for (iter = m_mapGroupToTreeItem.begin(); 
        iter != m_mapGroupToTreeItem.end(); iter++) {
