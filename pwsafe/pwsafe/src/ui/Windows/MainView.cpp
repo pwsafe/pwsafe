@@ -1509,23 +1509,23 @@ int DboxMain::InsertItemIntoGUITreeList(CItemData &ci, int iIndex,
 
 CItemData *DboxMain::getSelectedItem()
 {
-  CItemData *retval = NULL;
+  CItemData *pci = NULL;
   if (m_ctlItemList.IsWindowVisible()) { // list view
     POSITION p = m_ctlItemList.GetFirstSelectedItemPosition();
     if (p) {
       int i = m_ctlItemList.GetNextSelectedItem(p);
-      retval = (CItemData *)m_ctlItemList.GetItemData(i);
-      ASSERT(retval != NULL);
-      DisplayInfo *pdi = (DisplayInfo *)retval->GetDisplayInfo();
+      pci = (CItemData *)m_ctlItemList.GetItemData(i);
+      ASSERT(pci != NULL);
+      DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
       ASSERT(pdi != NULL && pdi->list_index == i);
     }
   } else { // tree view; go from HTREEITEM to index
     HTREEITEM ti = m_ctlItemTree.GetSelectedItem();
     if (ti != NULL) {
-      retval = (CItemData *)m_ctlItemTree.GetItemData(ti);
-      if (retval != NULL) {
+      pci = (CItemData *)m_ctlItemTree.GetItemData(ti);
+      if (pci != NULL) {
         // leaf: do some sanity tests
-        DisplayInfo *pdi = (DisplayInfo *)retval->GetDisplayInfo();
+        DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
         ASSERT(pdi != NULL);
         if (pdi->tree_item != ti) {
           pws_os::Trace(L"DboxMain::getSelectedItem: fixing pdi->tree_item!\n");
@@ -1534,7 +1534,7 @@ CItemData *DboxMain::getSelectedItem()
       }
     } // ti != NULL
   } // tree view
-  return retval;
+  return pci;
 }
 
 void DboxMain::ClearData(const bool clearMRE)
@@ -3731,7 +3731,7 @@ StringX DboxMain::GetGroupName()
 void DboxMain::UpdateGroupNamesInMap(const StringX sxOldPath, const StringX sxNewPath)
 {
   // When a group node is renamed, need to update the group to HTREEITEM map
-  // We need to build a new map, as we can't erase&add while iterating.
+  // We need to build a new map, as we can't erase & add while iterating.
   std::map<StringX, HTREEITEM> new_map;
 
   size_t len = sxOldPath.length();
@@ -4324,4 +4324,14 @@ void DboxMain::RestoreGUIStatus()
   SetGroupDisplayState(SaveGUIInfo.vGroupDisplayState);
 
   m_stkSaveGUIInfo.pop();
+}
+
+void DboxMain::GetAllGroups(std::vector<std::wstring> &vGroups)
+{
+  std::map<StringX, HTREEITEM>::iterator iter;
+
+  for (iter = m_mapGroupToTreeItem.begin(); 
+       iter != m_mapGroupToTreeItem.end(); iter++) {
+    vGroups.push_back(iter->first.c_str());
+  }
 }

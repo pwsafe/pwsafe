@@ -296,7 +296,19 @@ void DboxMain::OnAddGroup()
     CString cmys_text(MAKEINTRESOURCE(IDS_NEWGROUP));
     CItemData *pci = getSelectedItem();
     if (pci != NULL) {
+      // On an entry
       m_TreeViewGroup = pci->GetGroup();
+    } else {
+      // Group is selected but need to know if user used the Edit menu, right-clicked on it
+      // or right-clicked on whitespace
+      // The first 2 create a group under the selected group, the last creates it under root.
+      if (m_bWhitespaceRightClick) {
+        m_bWhitespaceRightClick = false;
+        m_TreeViewGroup = L"";
+      } else  {
+        HTREEITEM ti = m_ctlItemTree.GetSelectedItem();
+        m_TreeViewGroup = m_ctlItemTree.GetGroup(ti);
+      }
     }
 
     if (m_TreeViewGroup.empty())
@@ -710,8 +722,9 @@ void DboxMain::OnDelete()
     HTREEITEM hStartItem = m_ctlItemTree.GetSelectedItem();
     if (hStartItem != NULL) {
       if (m_ctlItemTree.GetItemData(hStartItem) == NULL) {  // group node
-        bAskForDeleteConfirmation = true; // ALWAYS ask if deleting a group
+        // ALWAYS ask if deleting a group - unless it is empty!
         num_children = m_ctlItemTree.CountChildren(hStartItem);
+        bAskForDeleteConfirmation = num_children != 0;
       } else {
         pci = (CItemData *)m_ctlItemTree.GetItemData(hStartItem);
       }
@@ -743,7 +756,13 @@ void DboxMain::OnDelete()
 
   if (dodelete) {
     Delete();
-    RefreshViews();
+    // Only refresh views if an entry or a non-empty group was deleted
+    // If we refresh when deleting an empty group, the user will loose all
+    // other empty groups
+    if (m_bFilterActive || pci != NULL || (pci == NULL && num_children > 0))
+      RefreshViews();
+
+    ChangeOkUpdate();
   }
 }
 
@@ -767,11 +786,9 @@ void DboxMain::Delete()
     m_ctlItemTree.SelectItem(parent);
     m_TreeViewGroup = L"";
   }
+
   if (pcmd != NULL) {
     Execute(pcmd);
-    if (m_bFilterActive)
-      RefreshViews();
-    ChangeOkUpdate();
   }
 }
 
@@ -812,6 +829,7 @@ Command *DboxMain::Delete(HTREEITEM ti)
 
   if (ti == NULL)
     return NULL; // bad bottoming out of recursion?
+
   if (m_ctlItemTree.IsLeaf(ti)) {
     CItemData *pci = (CItemData *)m_ctlItemTree.GetItemData(ti);
     return Delete(pci); // normal bottom out of recursion
@@ -819,7 +837,6 @@ Command *DboxMain::Delete(HTREEITEM ti)
 
   // Here if we have a bona fida group
   ASSERT(ti != NULL && !m_ctlItemTree.IsLeaf(ti));
-  pws_os::Trace(L"DboxMain::Delete(HTREEITEM %s)", m_ctlItemTree.GetItemText(ti));
   MultiCommands *pmulti_cmd = MultiCommands::Create(&m_core);
   
   HTREEITEM cti = m_ctlItemTree.GetChildItem(ti);

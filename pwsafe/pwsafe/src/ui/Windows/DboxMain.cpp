@@ -142,7 +142,7 @@ DboxMain::DboxMain(CWnd* pParent)
   m_bAutotypeCtrl(false), m_bAutotypeShift(false),
   m_bInAT(false), m_bInRestoreWindowsData(false), m_bSetup(false),
   m_bInRefresh(false), m_bInRestoreWindows(false), m_bExpireDisplayed(false),
-  m_bTellUserExpired(false), m_bInRename(false)
+  m_bTellUserExpired(false), m_bInRename(false), m_bWhitespaceRightClick(false)
 {
   // Need to do the following as using the direct calls will fail for Windows versions before Vista
   // (Load Library using absolute path to avoid dll poisoning attacks)

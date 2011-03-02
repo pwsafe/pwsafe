@@ -1,5 +1,5 @@
-Password Safe 3.24.3 Release Notes - February 2011
-==================================================
+Password Safe 3.25 Release Notes - March 2011
+=============================================
 
 This note describe the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -8,13 +8,13 @@ information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
 
-New Features for 3.24.3
+New Features for 3.25
 =======================
 [] Installation instructions now available in Dutch, thank to Kees.
 [] New View menu option: Show entries with Expiry. This is useful for
 displaying entries with passwords that are expired or about to expire.
 
-Changes to Existing Features in 3.24.3
+Changes to Existing Features in 3.25
 ======================================
 [3171962] The password expiration warning mechanism now checks for
 expiration daily, if enabled. Users will be able to update the entry
@@ -34,8 +34,13 @@ criteria, it will be removed from the display.
 [] The Russian online help has been totally rewritten and updated,
 thanks to pm_kan.
 
-Bugs fixed in 3.24.3
+Bugs fixed in 3.25
 ====================
+[3194472] Fix new group creation location. When a Group is selected, then
+selecting 'Add Group' from the Edit menu or from the context menu displayed by
+right clicking on that Group, the new group will be a child of the selected group.
+However, when using the context menu displayed on right clicking on 'white space'
+below the last entry/group displayed, the group will be created at the topmost level.
 [3165889] No longer crashes if search starts with Shift-Enter (search
 backwards).
 [3148701] Windows installer will now refuse to install on Win2K,

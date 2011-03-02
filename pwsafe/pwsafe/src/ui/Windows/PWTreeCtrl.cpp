@@ -467,7 +467,7 @@ void CPWTreeCtrl::OnBeginLabelEdit(NMHDR *pNMHDR, LRESULT *pLResult)
   *pLResult = TRUE; // TRUE cancels label editing
 
   // Check IsInRename to prevent unintentional Edit in place
-  if (m_pDbx->IsMcoreReadOnly() || !m_pDbx->IsInRename())
+  if (m_pDbx->IsMcoreReadOnly() || (!m_pDbx->IsInRename() && !m_pDbx->IsInAddGroup()))
     return;
 
   m_bEditLabelCompleted = false;
@@ -684,8 +684,8 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNMHDR, LRESULT *pLResult)
       ptvinfo->item.pszText[0] == L'\0') { // empty if text deleted - not allowed
     // If called from AddGroup, user cancels EditLabel - save it
     // (Still called "New Group")
-    if (m_pDbx->m_bInAddGroup) {
-      m_pDbx->m_bInAddGroup = false;
+    if (m_pDbx->IsInAddGroup()) {
+      m_pDbx->ResetInAddGroup();
       *pLResult = TRUE;
     }
     return;
