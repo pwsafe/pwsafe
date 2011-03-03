@@ -444,7 +444,7 @@ public:
   void CreateMainToolbar();
   bool IsRUEEvent(const wxCommandEvent& evt) {
     long index = evt.GetExtraLong();
-    return index && index < 256 && size_t(index) < m_RUEList.GetCount(); 
+    return index >= 0 && index < 256 && size_t(index) < m_RUEList.GetCount(); 
   }
   long GetRUEIndex(const wxCommandEvent& evt) { return evt.GetExtraLong(); }
   void RebuildGUI(const int iView = iBothViews);
