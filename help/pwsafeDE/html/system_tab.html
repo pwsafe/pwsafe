@@ -39,7 +39,16 @@ Vor Version 3.05 benutzte <b>Password Safe</b> die Registry, um die Konfiguratio
 </ul>
 <hr>
 <h3>Migriere die PasswordSafe Daten zur lokalen Benutzer-Anwenderdaten</h3>
-Unter Windows werden Daten in der Regel benutzerspezifisch abgespeichert. <b>Password Safe</b> hat die Konfigurationsdatei(en) mit den Einstellungen immer im Installationsverzeichnis abgelegt. Jetzt besteht die Möglichkeit die Konfigurationsdatei im benutzerspezifischen Anwenderbereich zu verlagern. Dies sollten Sie tun, wenn Sie als Einziger am PC arbeiten. Wenn aber mehrere Personen an einem PC arbeiten, und alle verwenden die gleiche <b>Password Safe</b>-Konfigurationsdatei, sollte man diese Datei im Installationsverzeichnis belassen.
+
+Vor Version 3.22 speicherte Password Safe die Einstellungen (z.B. Benutzeroptionen, zuletzt ge&ouml;ffnete Dateien, Fenstergr&ouml;&szlig;e, usw.) in einer Datei ab, die im selben Verzeichnis war wie das ausgef&uuml;hrte Programm Password Safe. Dies verursachte Probleme mit neueren Versionen von Windows, wo der Benutzer keinen Zugriff mehr auf dieses Verzeichnis hatte. Darum wurde, ab Version 3.22, die Konfigurationsdatei im standardm&auml;&szlig;igen Verzeichnis f&uuml;r solche Dateien abgelegt (im benutzereigenen Verzeichnis 'Anwendungsdaten').<br>
+
+Standardm&auml;&szlig;ig werden Updates bei bestehende Installationen dieses nicht &auml;ndern. (nach dem Motto: "Wenn es nicht kaputt ist, repariere es nicht"). Allerdings kann der Benutzer, wenn er die neue Einstellung verwenden will, diesen Punkt markieren, und die Taste <i>&Uuml;bernehmen</i> dr&uuml;cken, um dies &Auml;nderung zu realisieren.<br><br>
+
+Im Detail: Die Konfigurationsdatei ist so konzipiert, dass mehrere Benutzer auf mehreren Maschinen bedient werden k&ouml;nnen. Die Migrier-Funktion wird die Einstellungen des aktuellen Benutzers (auf dem aktuellen PC) aus der Konfigurationsdatei in die neue Datei ablegen. Andere Einstellungen bleiben davon unber&uuml;hrt. Wenn aber am Ende der Operation keine Einstellungen mehr &uuml;brig bleiben sollten, wird die Konfigurationsdatei gel&ouml;scht.<br>
+
+Wenn Sie eine gemeinsame Konfigurationsdatei f&uuml;r Benutzer und/oder PC's benutzen wollen, k&ouml;nnen Sie entweder die Datei im Verzeichnis des Programmes belassen, oder ein spezifisches Verzeichnis festlegen mit der  '-g <span style="font-style: italic;">Konfigurationsdatei</span>' Option, wie beschrieben in <a href="cli.html">Kommandozeilen Argumente</a>.
+
+<!--Unter Windows werden Daten in der Regel benutzerspezifisch abgespeichert. <b>Password Safe</b> hat die Konfigurationsdatei(en) mit den Einstellungen immer im Installationsverzeichnis abgelegt. Jetzt besteht die Möglichkeit die Konfigurationsdatei im benutzerspezifischen Anwenderbereich zu verlagern. Dies sollten Sie tun, wenn Sie als Einziger am PC arbeiten. Wenn aber mehrere Personen an einem PC arbeiten, und alle verwenden die gleiche <b>Password Safe</b>-Konfigurationsdatei, sollte man diese Datei im Installationsverzeichnis belassen.-->
 </div>
 <br>
 <br>
