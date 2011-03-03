@@ -1,4 +1,4 @@
-﻿# SOME DESCRIPTIVE TITLE.
+# SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
@@ -65,7 +65,7 @@ msgstr "  无效标题:“%s”！"
 #. Resource IDs: (190)
 #, c-format
 msgid "  Invalid number of saved old passwords %d."
-msgstr "  保存的旧密码 %d 个数量无效！"
+msgstr "  保存的旧密码 %d 数量无效！"
 
 #. Resource IDs: (190)
 msgid "  Invalid password length found."
@@ -102,11 +102,11 @@ msgstr " '备注'"
 
 #. Resource IDs: (356)
 msgid " 'Password Expiry Time Interval'"
-msgstr " '密码期限间隔时间'"
+msgstr " '密码失效间隔时间'"
 
 #. Resource IDs: (336)
 msgid " 'Password Expiry Time'"
-msgstr " '密码到期时间'"
+msgstr " '密码失效时间'"
 
 #. Resource IDs: (336)
 msgid " 'Password History'"
@@ -126,7 +126,7 @@ msgstr " '密码'"
 
 #. Resource IDs: (336)
 msgid " 'Record Modification Time'"
-msgstr " '记录修改时间'"
+msgstr " '档案修改时间'"
 
 #. Resource IDs: (354)
 msgid " 'Run Command'"
@@ -161,7 +161,7 @@ msgstr " / 跳过 %d"
 #. Resource IDs: (362)
 #, c-format
 msgid " / with Password History errors %d"
-msgstr " / 使用历史密码错误 %d"
+msgstr " / 使用错误历史密码 %d"
 
 #. Resource IDs: (332)
 #, c-format
@@ -281,12 +281,12 @@ msgstr "%d (%d) 项目"
 #. Resource IDs: (364)
 #, c-format
 msgid "%d entries exported"
-msgstr "%d 个项目已导出"
+msgstr "%d 项目导出"
 
 #. Resource IDs: (364)
 #, c-format
 msgid "%d entries synchronized"
-msgstr "%d 个项目已同步"
+msgstr "%d 项目同步"
 
 #. Resource IDs: (328)
 #, c-format
@@ -296,7 +296,7 @@ msgstr "%d 个项目"
 #. Resource IDs: (330)
 #, c-format
 msgid "%d of %d matches."
-msgstr "%d 个结果中有 %d 个相匹配！"
+msgstr "%d 中 %d 个相匹配！"
 
 #. Resource IDs: (3887)
 #, c-format
@@ -566,7 +566,7 @@ msgstr "导入(&I)"
 
 #. Resource IDs: (1143)
 msgid "&Keep"
-msgstr "保留(&K)"
+msgstr "保存(&K)"
 
 #. Resource IDs: (32150)
 msgid "&Manage"
@@ -758,7 +758,7 @@ msgstr "验证(&V)..."
 
 #. Resource IDs: (32101)
 msgid "&View"
-msgstr "视图(&V)"
+msgstr "查看(&V)"
 
 #. Resource IDs: (1268)
 msgid "&View Aliases"
@@ -1498,7 +1498,7 @@ msgstr "基本项目:"
 
 #. Resource IDs: (65535)
 msgid "Base:"
-msgstr "基于:"
+msgstr "基本:"
 
 #. Resource IDs: (465)
 msgid "Basic"
@@ -1610,7 +1610,7 @@ msgstr "C:Reg   "
 
 #. Resource IDs: (339)
 msgid "Can only warn between 1 and 30 days before passwords expire"
-msgstr "只能在 1 和 30 天之前提醒密码到期时间！"
+msgstr "只能在 1 和 30 天之前提醒密码失效时间！"
 
 #. Resource IDs: (210)
 #, c-format
@@ -3043,7 +3043,7 @@ msgstr "组/标题"
 
 #. Resource IDs: (188)
 msgid "Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tPassword Expiry Interval\tRecord Modified Time\tPassword Policy\tHistory\tRun Command\tDCA\te-mail\tProtected\tNotes"
-msgstr "组/标题\t用户名\t密码\t网址\t自动输入\t创建时间\t密码修改时间\t最后访问时间\t密码到期日期\t密码到期间隔\t记录修改时间\t密码策略\t历史密码\t运行命令\tDCA\t电子邮件\t保护\t备注"
+msgstr "组/标题\t用户名称\t密码\t网址\t自动输入\t创建时间\t密码修改时间\t最后访问时间\t密码失效日期\t密码失效间隔\t档案修改时间\t密码策略\t历史密码\t运行命令\tDCA\t电子邮件\t保护\t备注"
 
 #. Resource IDs: (1350, 65535)
 msgid "Group:"
@@ -3051,7 +3051,7 @@ msgstr "组:"
 
 #. Resource IDs: (328)
 msgid "Group\tTitle\tUsername\tPassword Expiry Date\r\n"
-msgstr "组\t标题\t用户名\t密码到期日期\r\n"
+msgstr "组\t标题\t用户名\t密码失效日期\r\n"
 
 #. Resource IDs: (516)
 msgid "Gujarati"
@@ -3288,7 +3288,7 @@ msgstr "忽略所有安全保障备份文件并继续当前所选的数据库。
 
 #. Resource IDs: (32014)
 msgid "Import &From"
-msgstr "导入为(&F)"
+msgstr "导入(&F)"
 
 #. Resource IDs: (32120)
 msgid "Import &Text"
@@ -3332,12 +3332,12 @@ msgstr "Import_XML"
 
 #. Resource IDs: (330, 353)
 msgid "Imported"
-msgstr "已导入"
+msgstr "导入"
 
 #. Resource IDs: (334)
 #, c-format
 msgid "Imported %d %s"
-msgstr "已导入 %d 个 %s"
+msgstr "导入 %d %s"
 
 #. Resource IDs: (1229)
 msgid "In"
@@ -3816,7 +3816,7 @@ msgstr "否"
 
 #. Resource IDs: (329)
 msgid "No Safe open"
-msgstr "未打开密码保险箱！"
+msgstr "没有打开密码保险箱！"
 
 #. Resource IDs: (1183)
 msgid "No change"
@@ -3828,7 +3828,7 @@ msgstr "未定义规则，请单击这里！"
 
 #. Resource IDs: (335)
 msgid "No database open with which to compare against another database!"
-msgstr "未打开与之相比较的另一个数据库！"
+msgstr "没有打开哪个数据库与其它数据库相比较！"
 
 #. Resource IDs: (359)
 #, c-format
@@ -4142,19 +4142,19 @@ msgstr "密码数据库:"
 
 #. Resource IDs: (1114)
 msgid "Password Expires on:"
-msgstr "密码到期时间:"
+msgstr "密码失效时间:"
 
 #. Resource IDs: (1123)
 msgid "Password Expiry"
-msgstr "密码到期"
+msgstr "密码效期"
 
 #. Resource IDs: (327)
 msgid "Password Expiry Date"
-msgstr "密码到期日期"
+msgstr "密码失效日期"
 
 #. Resource IDs: (348)
 msgid "Password Expiry Interval"
-msgstr "密码到期间隔"
+msgstr "密码失效间隔"
 
 #. Resource IDs: (360)
 msgid "Password Generated based on displayed policy"
@@ -4272,7 +4272,7 @@ msgstr "PasswordSafe V%d.%d.%d (编译 %s) 已有一个错误！"
 
 #. Resource IDs: (364)
 msgid "PasswordSafe: Entries exist with expired or about to be expired passwords"
-msgstr "PasswordSafe: 项目存在期限或涉及到期密码"
+msgstr "PasswordSafe: 项目存在失效或涉及到期密码"
 
 #. Resource IDs: (32075)
 msgid "Perform Auto &Type"
@@ -4550,11 +4550,11 @@ msgstr "最近 PasswordSafe 数据库 "
 
 #. Resource IDs: (189)
 msgid "Record Modified Time"
-msgstr "记录修改时间"
+msgstr "档案修改时间"
 
 #. Resource IDs: (1121)
 msgid "Record last access times"
-msgstr "记录最后访问时间"
+msgstr "档案最后访问时间"
 
 #. Resource IDs: (3887)
 msgid "Recover the auto-saved documents\nOpen the auto-saved versions instead of the explicitly saved versions"
@@ -4756,7 +4756,7 @@ msgstr "保险箱密码:"
 
 #. Resource IDs: (1205)
 msgid "Same as database's"
-msgstr "相同于数据库位置"
+msgstr "相同数据库"
 
 #. Resource IDs: (1178)
 msgid "Same as when last saved"
@@ -4895,7 +4895,7 @@ msgstr "选择"
 
 #. Resource IDs: (65535)
 msgid "Selected Fields:"
-msgstr "已选字段:"
+msgstr "选择字段:"
 
 #. Resource IDs: (65535)
 msgid "Selected filter details:"
@@ -5015,7 +5015,7 @@ msgstr "基本项目快捷方式"
 
 #. Resource IDs: (365)
 msgid "Shortcut Base entry - password expired"
-msgstr "基本项目快捷方式 - 密码到期"
+msgstr "基本项目快捷方式 - 密码失效"
 
 #. Resource IDs: (365)
 msgid "Shortcut Base entry - warning password will expire"
@@ -5035,7 +5035,7 @@ msgstr "显示查找工具栏(&F)"
 
 #. Resource IDs: (32127)
 msgid "Show &Unsaved Changes"
-msgstr "显示未保存的更改(&U)"
+msgstr "显示未保存更改(&U)"
 
 #. Resource IDs: (354)
 msgid "Show Notes"
@@ -5043,7 +5043,7 @@ msgstr "显示备注"
 
 #. Resource IDs: (1296)
 msgid "Show Notes as ToolTips in Tree && List views"
-msgstr "在树状目录与列表视图时显示工具提示备注内容"
+msgstr "在树状目录与列表视图工具提示备注内容"
 
 #. Resource IDs: (1190)
 msgid "Show Notes in Edit"
@@ -5055,11 +5055,11 @@ msgstr "添加与编辑时显示密码"
 
 #. Resource IDs: (1031)
 msgid "Show Password in Tree View"
-msgstr "树状目录视图时显示密码"
+msgstr "树状目录视图显示密码"
 
 #. Resource IDs: (1254)
 msgid "Show Username in Tree View"
-msgstr "树状目录视图时显示用户名"
+msgstr "树状目录视图显示用户名"
 
 #. Resource IDs: (2132)
 msgid "Show Virtual Keyboard"
@@ -5071,7 +5071,7 @@ msgstr "显示一个密码子集"
 
 #. Resource IDs: (32131)
 msgid "Show entries with E&xpiry dates"
-msgstr "显示具有期限日期的项目(&X)"
+msgstr "显示具有失效日期的项目(&X)"
 
 #. Resource IDs: (1262)
 msgid "Show entries with identical compared fields (Note: Unknown fields were not compared.)"
@@ -5079,7 +5079,7 @@ msgstr "显示项目使用同一比较字段 (注意: 未知字段不能比较�
 
 #. Resource IDs: (1246)
 msgid "Show grid lines in List View"
-msgstr "列表视图时显示网格线"
+msgstr "列表视图显示网格线"
 
 #. Resource IDs: (360)
 msgid "Shutdown, Restart or Logoff in progress"
@@ -5115,7 +5115,7 @@ msgstr "某些字符可能会丢失或显示不正确，因为我们无法找到
 
 #. Resource IDs: (364)
 msgid "Some of the entries in this database have passwords that have expired or are about to.  Do you wish to list them and possibly update them?"
-msgstr "在该数据库中的部分项目具有期限或涉及到期的密码！你是否希望列出它们并尽可能更新它们？"
+msgstr "在该数据库中的部分项目具有到期或涉及失效的密码！你是否希望列出它们并尽可能更新它们？"
 
 #. Resource IDs: (520)
 msgid "Sorbian Standard"
@@ -5391,7 +5391,7 @@ msgstr "缺少筛选 XML 版本！"
 
 #. Resource IDs: (211)
 msgid "The following columns were recognised but only Group/Title, Username and Password will be processed:"
-msgstr "下列栏目被认可，但只有 组/标题、用户名和密码可以被处理:"
+msgstr "下列栏目被认可，但只有 组/标题、用户名称和密码可以被处理:"
 
 #. Resource IDs: (204)
 msgid "The following columns will be processed: "
@@ -5416,7 +5416,7 @@ msgstr "下列项目是一个现有项目的副本！"
 
 #. Resource IDs: (65535)
 msgid "The following entries' passwords are about to expire or expired:"
-msgstr "下列项目的密码涉及期限或已到期:"
+msgstr "下列项目的密码涉及到期或已失效:"
 
 #. Resource IDs: (343)
 #, c-format
@@ -5637,7 +5637,7 @@ msgstr "需要替换现有项目密码，所有下列栏目必须存在: 组/标
 
 #. Resource IDs: (363)
 msgid "To unprotect this entry, click on Close, use the Edit menu or right-click on the entry and select Unprotect."
-msgstr "要解除受保护的该项目，单击关闭，利用编辑菜单或右击项目并选择解除保护！"
+msgstr "要解除保护该项目，单击关闭，利用编辑菜单或右击项目并选择解除保护！"
 
 #. Resource IDs: (32106)
 msgid "Toolbar &visible"
@@ -5662,7 +5662,7 @@ msgstr "读取存储筛选困难(版本配合不当？)。筛选将不可用！"
 #. Resource IDs: (203)
 #, c-format
 msgid "Trouble with a non-textual (e.g., time) field in record '%s' - please check data carefully."
-msgstr "让人深感不安的一个无原文(例如：时间) 字段被记录“%s”- 请小心校验数据！"
+msgstr "让人深感不安的一个无原文(例如：时间) 字段在档案“%s”- 请小心校验数据！"
 
 #. Resource IDs: (343)
 msgid "Trying to contact server..."
@@ -5841,11 +5841,11 @@ msgstr "解除锁定"
 
 #. Resource IDs: (32090)
 msgid "Unprotect All Entries"
-msgstr "解除所有受保护的项目"
+msgstr "解除所有保护项目"
 
 #. Resource IDs: (32088)
 msgid "Unprotect Entry"
-msgstr "解除受保护的项目"
+msgstr "解除保护项目"
 
 #. Resource IDs: (358)
 #, c-format
@@ -5859,7 +5859,7 @@ msgstr "未命名"
 #. Resource IDs: (359)
 #, c-format
 msgid "Updated %d %s"
-msgstr "已更新 %d 个 %s 项目"
+msgstr "已更新 %d %s"
 
 #. Resource IDs: (515)
 msgid "Urdu"
@@ -5915,11 +5915,11 @@ msgstr "使用下列策略(&O):"
 
 #. Resource IDs: (320)
 msgid "Use the application specified here to browse when an entry's URL field starts with [alt], e.g., '[alt]http://foo.com'"
-msgstr "在这里指定一个应用程序浏览，当一个项目的网址字段以 [alt] 起始时，例如:“[alt]http://foo.com”"
+msgstr "使用应用程序在这里浏览一个项目网址字段以 [alt] 开始时，例如:“[alt]http://foo.com”"
 
 #. Resource IDs: (320)
 msgid "Use the application specified here to edit an entry's Notes field via the right-click context menu during Add/Edit."
-msgstr "在这里指定编辑一个项目备注字段时所关联使用的应用程序（如: Windows 记事本、Notepad++、UltraEdit、EditPlus等）。通过 添加/编辑 时右击上下文菜单。"
+msgstr "使用应用程序指定这里编辑一个项目的备注字段，通过在 添加/编辑 时右击上下文菜单。"
 
 #. Resource IDs: (327)
 msgid "User Name"
@@ -6154,16 +6154,16 @@ msgstr "约鲁巴语"
 
 #. Resource IDs: (363)
 msgid "You may not set a password expiry date in the past."
-msgstr "你别设定一个密码有效日期在过去时间！"
+msgstr "你不能设定一个密码有效期日期在过去！"
 
 #. Resource IDs: (362)
 #, c-format
 msgid "You must save this database%s before it can be %s."
-msgstr "你必须保存该数据库%s，在它可被 %s 之前！"
+msgstr "你必须保存该数据库%s，在它可被 %s。"
 
 #. Resource IDs: (361)
 msgid "Your currently opened database will be in the first row.  Failsafe Backup files will be displayed below this.  If the passphrase is the same as the current database, the properties of these backups will also be shown.  If you are unable to chose, continue with the current database and use the database Compare function to view the differences between the versions."
-msgstr "你当前所打开的数据库将被排列在首行，安全保障备份文件将被显示在下列其中。如果密码与当前数据库相同，这些备份文件的属性也同样被显示；如果你不选择，继续使用当前数据库并使用数据库比较功能来查看不同版本之间存在的差异！"
+msgstr "你当前所打开的数据库将被排列在首行，安全保障备份文件将被显示在下列其中某个。如果密码与当前数据库相同，这些备份文件的属性也同样被显示；如果你不选择，可以继续当前的数据库以及使用数据库比较功能在不同版本之间查看。"
 
 #. Resource IDs: (357)
 #, c-format
@@ -6418,7 +6418,7 @@ msgstr "\n显示未保存的更改"
 
 #. Resource IDs: (2009)
 msgid "\nShow entries with Password Expiry dates"
-msgstr "\n显示具有密码日期期限的项目"
+msgstr "\n显示具有密码失效日期的项目"
 
 #. Resource IDs: (334)
 #, c-format
@@ -6439,11 +6439,11 @@ msgstr "\n分析期间意外事故！"
 
 #. Resource IDs: (2006)
 msgid "\nUnprotect All Entries"
-msgstr "\n解除受保护得所有项目"
+msgstr "\n解除保护所有项目"
 
 #. Resource IDs: (2006)
 msgid "\nUnprotect Entry"
-msgstr "\n解除受保护的项目"
+msgstr "\n解除保护项目"
 
 #. Resource IDs: (331)
 msgid "\nUse it anyway?"
@@ -6655,7 +6655,7 @@ msgstr "天后"
 
 #. Resource IDs: (65535)
 msgid "days before passwords expire"
-msgstr "天通知密码到期"
+msgstr "天通知密码失效"
 
 #. Resource IDs: (206)
 msgid "does not begin with"
@@ -6719,7 +6719,7 @@ msgstr "大于或等于"
 
 #. Resource IDs: (208)
 msgid "has expired"
-msgstr "已到期"
+msgstr "已失效"
 
 #. Resource IDs: (359)
 msgid "header"
@@ -6851,7 +6851,7 @@ msgstr "像素"
 
 #. Resource IDs: (65535)
 msgid "previous passwords per entry"
-msgstr "个早期密码(每个项目)"
+msgstr "个早期每项目密码"
 
 #. Resource IDs: (338)
 msgid "pwsafe"
@@ -6859,7 +6859,7 @@ msgstr "pwsafe"
 
 #. Resource IDs: (359)
 msgid "record"
-msgstr "记录"
+msgstr "档案"
 
 #. Resource IDs: (344)
 msgid "shortcut"
@@ -6937,7 +6937,7 @@ msgstr "位置:"
 
 #. Resource IDs: (208)
 msgid "will expire"
-msgstr "即将到期"
+msgstr "即将失效"
 
 #. Resource IDs: (208)
 #, c-format
