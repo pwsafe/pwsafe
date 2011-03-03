@@ -201,6 +201,10 @@
 			<param name="Name" value="Schnelltasten">
 			<param name="Local" value="html\shortcut_keys.html">
 			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Eintrag Icons">
+			<param name="Local" value="html\images.html">
+			</OBJECT>
 	</UL>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Programm Danksagung">
