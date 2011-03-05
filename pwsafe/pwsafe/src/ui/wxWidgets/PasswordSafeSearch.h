@@ -107,7 +107,6 @@ private:
 class PasswordSafeSearch : public wxEvtHandler
 {
   DECLARE_CLASS( PasswordSafeSearch )
-  DECLARE_EVENT_TABLE()
 
   DECLARE_NO_COPY_CLASS(PasswordSafeSearch);
 
@@ -125,13 +124,11 @@ public:
   void FindNext(void);
   void FindPrevious(void);
   void UpdateView();
+  void OnSearchBarTextChar(wxKeyEvent& evt);
   
   void Activate(void);
   void RefreshButtons(void);
   
-  //overridden from wxEvtHandler
-  virtual bool ProcessEvent(wxEvent& evt);
-
 private:
   template <class Iter, class Accessor>
   void FindMatches(const StringX& searchText, bool fCaseSensitive, SearchPointer& searchPtr, Iter begin, Iter end, Accessor afn);
