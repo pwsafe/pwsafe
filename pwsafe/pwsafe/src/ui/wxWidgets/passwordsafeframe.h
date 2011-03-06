@@ -442,11 +442,8 @@ public:
   enum ChangeType {Clear, Data, TimeStamp, DBPrefs, ClearDBPrefs};
   void SetChanged(ChangeType changed);
   void CreateMainToolbar();
-  bool IsRUEEvent(const wxCommandEvent& evt) {
-    long index = evt.GetExtraLong();
-    return index >= 0 && index < 256 && size_t(index) < m_RUEList.GetCount(); 
-  }
-  long GetRUEIndex(const wxCommandEvent& evt) { return evt.GetExtraLong(); }
+  long GetEventRUEIndex(const wxCommandEvent& evt) const;
+  bool IsRUEEvent(const wxCommandEvent& evt) const;
   void RebuildGUI(const int iView = iBothViews);
   void CreateDragBar();
   void RefreshToolbarButtons();

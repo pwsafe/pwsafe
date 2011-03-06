@@ -231,7 +231,7 @@ void PasswordSafeFrame::OnClearclipboardClick( wxCommandEvent& /* evt */ )
 void PasswordSafeFrame::OnCopypasswordClick(wxCommandEvent& evt)
 {
   CItemData rueItem;
-  CItemData* item = IsRUEEvent(evt)? (m_RUEList.GetPWEntry(GetRUEIndex(evt), rueItem)? &rueItem: NULL) : GetSelectedEntry();
+  CItemData* item = IsRUEEvent(evt)? (m_RUEList.GetPWEntry(GetEventRUEIndex(evt), rueItem)? &rueItem: NULL) : GetSelectedEntry();
   if (item != NULL)
     DoCopyPassword(*item);
 }
@@ -251,7 +251,7 @@ void PasswordSafeFrame::DoCopyPassword(CItemData &item)
 void PasswordSafeFrame::OnCopyusernameClick(wxCommandEvent& evt)
 {
   CItemData rueItem;
-  CItemData* item = IsRUEEvent(evt)? (m_RUEList.GetPWEntry(GetRUEIndex(evt), rueItem)? &rueItem: NULL) : GetSelectedEntry();
+  CItemData* item = IsRUEEvent(evt)? (m_RUEList.GetPWEntry(GetEventRUEIndex(evt), rueItem)? &rueItem: NULL) : GetSelectedEntry();
   if (item != NULL)
     DoCopyUsername(*item);
 }
@@ -270,7 +270,7 @@ void PasswordSafeFrame::DoCopyUsername(CItemData &item)
 void PasswordSafeFrame::OnCopynotesfldClick(wxCommandEvent& evt)
 {
   CItemData rueItem;
-  CItemData* item = IsRUEEvent(evt)? (m_RUEList.GetPWEntry(GetRUEIndex(evt), rueItem)? &rueItem: NULL) : GetSelectedEntry();
+  CItemData* item = IsRUEEvent(evt)? (m_RUEList.GetPWEntry(GetEventRUEIndex(evt), rueItem)? &rueItem: NULL) : GetSelectedEntry();
   if (item != NULL)
     DoCopyNotes(*item);
 }
@@ -289,7 +289,7 @@ void PasswordSafeFrame::DoCopyNotes(CItemData &item)
 void PasswordSafeFrame::OnCopyurlClick(wxCommandEvent& evt)
 {
   CItemData rueItem;
-  CItemData* item = IsRUEEvent(evt)? (m_RUEList.GetPWEntry(GetRUEIndex(evt), rueItem)? &rueItem: NULL) : GetSelectedEntry();
+  CItemData* item = IsRUEEvent(evt)? (m_RUEList.GetPWEntry(GetEventRUEIndex(evt), rueItem)? &rueItem: NULL) : GetSelectedEntry();
   if (item != NULL)
     DoCopyURL(*item);
 }
@@ -301,7 +301,7 @@ void PasswordSafeFrame::OnCopyurlClick(wxCommandEvent& evt)
 void PasswordSafeFrame::OnCopyEmailClick(wxCommandEvent& evt)
 {
   CItemData rueItem;
-  CItemData* item = IsRUEEvent(evt)? (m_RUEList.GetPWEntry(GetRUEIndex(evt), rueItem)? &rueItem: NULL) : GetSelectedEntry();
+  CItemData* item = IsRUEEvent(evt)? (m_RUEList.GetPWEntry(GetEventRUEIndex(evt), rueItem)? &rueItem: NULL) : GetSelectedEntry();
   if (item != NULL)
     DoCopyEmail(*item);
 }

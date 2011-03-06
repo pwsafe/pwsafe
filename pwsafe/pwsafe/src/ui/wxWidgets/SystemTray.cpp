@@ -224,7 +224,7 @@ void SystemTray::OnSysTrayMenuItem(wxCommandEvent& evt)
     }
     else {
       wxCommandEvent cmd(evt.GetEventType(), GetFrameCommandId(opn));
-      cmd.SetExtraLong(GetRUEIndex(id));
+      cmd.SetExtraLong(id);
 #if wxCHECK_VERSION(2,9,0)
       m_frame->GetEventHandler()->ProcessEvent(cmd);
 #else

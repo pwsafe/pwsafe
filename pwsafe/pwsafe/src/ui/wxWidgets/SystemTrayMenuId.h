@@ -68,7 +68,7 @@
  * entries in the array, which should be good enough
  *
  * So the lowest value of our id is 000100000000 (256) and the highest is
- * 1111111111111111 (4095), well clear of all the ranges defined in precautions
+ * 00001111 11111111 (4095), well clear of all the ranges defined in precautions
  * listed above
  */
 
