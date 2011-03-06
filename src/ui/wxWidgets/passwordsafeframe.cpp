@@ -59,6 +59,7 @@
 #include "./MergeDlg.h"
 #include <algorithm>
 #include "./PwsSync.h"
+#include "./SystemTrayMenuId.h"
 
 // main toolbar images
 #include "./PwsToolbarButtons.h"
@@ -1356,7 +1357,7 @@ void PasswordSafeFrame::OnOptionsMClick( wxCommandEvent& /* evt */ )
 void PasswordSafeFrame::OnBrowseURL(wxCommandEvent& evt)
 {
   CItemData rueItem;
-  CItemData* item = IsRUEEvent(evt)? (m_RUEList.GetPWEntry(GetRUEIndex(evt), rueItem)? &rueItem: NULL) : GetSelectedEntry();
+  CItemData* item = IsRUEEvent(evt)? (m_RUEList.GetPWEntry(GetEventRUEIndex(evt), rueItem)? &rueItem: NULL) : GetSelectedEntry();
   if (item)
     DoBrowse(*item, false); //false => no autotype
 }
@@ -1368,7 +1369,7 @@ void PasswordSafeFrame::OnBrowseURL(wxCommandEvent& evt)
 void PasswordSafeFrame::OnBrowseUrlAndAutotype(wxCommandEvent& evt)
 {
   CItemData rueItem;
-  CItemData* item = IsRUEEvent(evt)? (m_RUEList.GetPWEntry(GetRUEIndex(evt), rueItem)? &rueItem: NULL) : GetSelectedEntry();
+  CItemData* item = IsRUEEvent(evt)? (m_RUEList.GetPWEntry(GetEventRUEIndex(evt), rueItem)? &rueItem: NULL) : GetSelectedEntry();
   if (item) {
     DoBrowse(*item, true); //true => autotype
   }
@@ -1381,7 +1382,7 @@ void PasswordSafeFrame::OnBrowseUrlAndAutotype(wxCommandEvent& evt)
 void PasswordSafeFrame::OnSendEmail(wxCommandEvent& evt)
 {
   CItemData rueItem;
-  CItemData* item = IsRUEEvent(evt)? (m_RUEList.GetPWEntry(GetRUEIndex(evt), rueItem)? &rueItem: NULL) : GetSelectedEntry();
+  CItemData* item = IsRUEEvent(evt)? (m_RUEList.GetPWEntry(GetEventRUEIndex(evt), rueItem)? &rueItem: NULL) : GetSelectedEntry();
   if (item)
     DoEmail(*item);
 }
@@ -1393,7 +1394,7 @@ void PasswordSafeFrame::OnSendEmail(wxCommandEvent& evt)
 void PasswordSafeFrame::OnRunCommand(wxCommandEvent& evt)
 {
   CItemData rueItem;
-  CItemData* item = IsRUEEvent(evt)? (m_RUEList.GetPWEntry(GetRUEIndex(evt), rueItem)? &rueItem: NULL) : GetSelectedEntry();
+  CItemData* item = IsRUEEvent(evt)? (m_RUEList.GetPWEntry(GetEventRUEIndex(evt), rueItem)? &rueItem: NULL) : GetSelectedEntry();
   if (item)
     DoRun(*item);
 }
@@ -1405,7 +1406,7 @@ void PasswordSafeFrame::OnRunCommand(wxCommandEvent& evt)
 void PasswordSafeFrame::OnAutoType(wxCommandEvent& evt)
 {
   CItemData rueItem;
-  CItemData* item = IsRUEEvent(evt)? (m_RUEList.GetPWEntry(GetRUEIndex(evt), rueItem)? &rueItem: NULL) : GetSelectedEntry();
+  CItemData* item = IsRUEEvent(evt)? (m_RUEList.GetPWEntry(GetEventRUEIndex(evt), rueItem)? &rueItem: NULL) : GetSelectedEntry();
   if (item) {
 #ifdef __WXMAC__
     Lower();
@@ -1480,6 +1481,18 @@ void PasswordSafeFrame::SetChanged(ChangeType changed)
       ASSERT(0);
   }
 }
+
+bool PasswordSafeFrame::IsRUEEvent(const wxCommandEvent& evt) const 
+{
+  const int cmd = int(evt.GetExtraLong());
+  return IsRUECommand(cmd) && GetRUEIndex(cmd) < m_RUEList.GetCount(); 
+}
+
+long PasswordSafeFrame::GetEventRUEIndex(const wxCommandEvent& evt) const
+{
+  return GetRUEIndex(int(evt.GetExtraLong())); 
+}
+
 
 void PasswordSafeFrame::UpdateAccessTime(CItemData &ci)
 {
