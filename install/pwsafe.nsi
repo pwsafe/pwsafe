@@ -206,9 +206,9 @@
 ; .\I18N\pwsafe_xx.lng files
 
 ;Reserve Files
-;LangString RESERVE_TITLE ${LANG_ENGLISH} "Choose Installation Type"
-;LangString RESERVE_FIELD1 ${LANG_ENGLISH} "Regular (uses Registry, suitable for home or single user PC)"
-;LangString RESERVE_FIELD2 ${LANG_ENGLISH} "Green (for Disk-on-Key; does not use host Registry)"
+LangString RESERVE_TITLE ${LANG_ENGLISH} "Choose Installation Type"
+LangString RESERVE_FIELD1 ${LANG_ENGLISH} "Regular (uses Registry, suitable for home or single user PC)"
+LangString RESERVE_FIELD2 ${LANG_ENGLISH} "Green (for Disk-on-Key; does not use host Registry)"
 
 ; The program itself
 LangString PROGRAM_FILES ${LANG_ENGLISH} "Program Files"
@@ -236,9 +236,6 @@ LangString DESC_UninstallMenu ${LANG_ENGLISH} "Places a shortcut in the start me
 ; "LangString" (for "Function GreenOrRegular") are setup here because they cannot be defined in the function body
 LangString TEXT_GC_TITLE ${LANG_ENGLISH} "Installation Type"
 LangString TEXT_GC_SUBTITLE ${LANG_ENGLISH} "Choose Regular for use on a single PC, Green for portable installation. If you're not sure, 'Regular' is fine."
-LangString PSWINI_TITLE ${LANG_ENGLISH} "Choose Installation Type"
-LangString PSWINI_TEXT1 ${LANG_ENGLISH} "Regular (uses Registry, suitable for home - or single user PC)"
-LangString PSWINI_TEXT2 ${LANG_ENGLISH} "Green (for Disk-on-Key; does not use - host Registry)"
 
 ; several messages on install, check, ...
 ; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -662,9 +659,9 @@ FunctionEnd
 Function GreenOrRegular
   !insertmacro MUI_HEADER_TEXT "$(TEXT_GC_TITLE)" "$(TEXT_GC_SUBTITLE)"
   ; english is in "pws-install.ini" by default, so no writing necesarry
-  !insertmacro INSTALLOPTIONS_WRITE "pws-install.ini" "Settings" "Title" $(PSWINI_TITLE)
-  !insertmacro INSTALLOPTIONS_WRITE "pws-install.ini" "Field 1" "Text" $(PSWINI_TEXT1)
-  !insertmacro INSTALLOPTIONS_WRITE "pws-install.ini" "Field 2" "Text" $(PSWINI_TEXT2)
+  !insertmacro INSTALLOPTIONS_WRITE "pws-install.ini" "Settings" "Title" $(RESERVE_TITLE)
+  !insertmacro INSTALLOPTIONS_WRITE "pws-install.ini" "Field 1" "Text" $(RESERVE_FIELD1)
+  !insertmacro INSTALLOPTIONS_WRITE "pws-install.ini" "Field 2" "Text" $(RESERVE_FIELD2)
   !insertmacro INSTALLOPTIONS_DISPLAY "pws-install.ini"
 FunctionEnd
   

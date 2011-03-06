@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2011-03-05 18:29+0100\n"
+"PO-Revision-Date: 2011-03-06 11:34+0100\n"
 "Last-Translator: Björn Nordwall <pro.bn@telia.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -738,7 +738,7 @@ msgstr "&Klistra"
 
 #. Resource IDs: (32010)
 msgid "&Plain Text (tab separated)..."
-msgstr "&Ren text (tabseparerad)..."
+msgstr "&Ren Text (tabseparerad)..."
 
 #. Resource IDs: (32016)
 msgid "&Plain Text..."
@@ -3708,7 +3708,7 @@ msgstr "Ogiltig inmatning på rad %d. Antalet fält separerade med '%c' förvän
 
 #. Resource IDs: (356)
 msgid "Invalid shortcut ignored."
-msgstr "Ogiltig genväg ignorerad."
+msgstr "Ogiltig genväg ignorerades."
 
 #. Resource IDs: (518)
 msgid "Irish"
@@ -3809,7 +3809,7 @@ msgstr "Vänster Ctrl-tangent"
 
 #. Resource IDs: (356)
 msgid "Left click here to change. Right click here to reset or remove it. After selecting the shortcut key combination, press Enter to set it."
-msgstr "Vänsterklicka här för att byta. Högerklicka här för att återställa eller ta bort den. Efter val av genvägens nyckelkombination, tryck Enter för att använda den. "
+msgstr "Vänsterklicka här för att ändra. Högerklicka här för att återställa eller ta bort den. Efter val av genvägens nyckelkombination, tryck Enter för att använda den. "
 
 #. Resource IDs: (331)
 msgid ""
@@ -5327,19 +5327,17 @@ msgstr "Shift+klick för att visa aktuell policy"
 msgid "Shortcut '%s' already assigned to menu item '%s'."
 msgstr "Genväg '%s' är redan kopplad till menyvalet '%s'."
 
-# What is this about?
 #. Resource IDs: (365)
-#, fuzzy
 msgid "Shortcut Base entry"
-msgstr "Basposts genväg"
+msgstr "Post med basgenväg"
 
 #. Resource IDs: (365)
 msgid "Shortcut Base entry - password expired"
-msgstr "Basposts genväg - lösenordet har gått ut"
+msgstr "Baspostens genväg - lösenordet har gått ut"
 
 #. Resource IDs: (365)
 msgid "Shortcut Base entry - warning password will expire"
-msgstr "Basposts genväg - varning, lösenordet kommer att gå ut"
+msgstr "Baspostens genväg - varning, lösenordet kommer att gå ut"
 
 #. Resource IDs: (356)
 msgid "Shortcut Key"
@@ -5988,7 +5986,7 @@ msgstr "Detta är en icke fungerande tangent. Tryck på den så kommer kopplade 
 
 #. Resource IDs: (357)
 msgid "This is a shortcut base entry."
-msgstr "Detta är en genvägs baspost."
+msgstr "Detta är genvägens baspost."
 
 #. Resource IDs: (357)
 msgid "This is an alias base entry."
