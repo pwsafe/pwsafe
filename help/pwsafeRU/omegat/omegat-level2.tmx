@@ -134,6 +134,14 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg>If there aren't any entries with expiry date, this menu item will be grayed out.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changedate="20110307T102505Z" changeid="pm_kan">
+        <seg>Пункт меню неактивен, если отсутствуют элементы с заданными датами истечения пароля.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg>Many applications store such preferences in the Windows &quot;registry&quot;, as a matter of convention and convenience.</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20101104T200005Z" changeid="pm_kan">
@@ -250,14 +258,6 @@
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20110215T152114Z" changeid="pm_kan">
         <seg>Доступно два стиля отображения значков на панели инструментов: «современный» и «классический».</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="EN-US">
-        <seg>The &quot;<bpt i='6' x='6'>&lt;s6&gt;</bpt>dragbar<ept i='6'>&lt;/s6&gt;</ept>&quot; is a special toolbar that allows you to paste parts of the currently selected entry by &quot;dragging&quot; the icon specifying the part you want to paste to the window tht you want it to be pasted to.</seg>
-      </tuv>
-      <tuv xml:lang="RU-RU" changedate="20110215T213914Z" changeid="pm_kan">
-        <seg>Панель <bpt i='6' x='6'>&lt;s6&gt;</bpt>Dragbar<ept i='6'>&lt;/s6&gt;</ept> является специальной панелью, позволяющей вставлять некоторые значения, связанные с текущим элементом, перетаскивая соответствующий значок с этой панели в нужное поле окна другого приложения.</seg>
       </tuv>
     </tu>
     <tu>
@@ -542,6 +542,14 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg>The &quot;<bpt i='6' x='6'>&lt;s6&gt;</bpt>dragbar<ept i='6'>&lt;/s6&gt;</ept>&quot; is a special toolbar that allows you to paste parts of the currently selected entry by &quot;dragging&quot; the icon specifying the part you want to paste to the window that you want it to be pasted to.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changedate="20110307T101115Z" changeid="pm_kan">
+        <seg>Панель <bpt i='6' x='6'>&lt;s6&gt;</bpt>Dragbar<ept i='6'>&lt;/s6&gt;</ept> является специальной панелью, позволяющей вставлять некоторые значения, связанные с текущим элементом, перетаскивая соответствующий значок с этой панели в нужное поле окна другого приложения.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg>6 hexadecimal values are contained in this format.</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20110215T131239Z" changeid="pm_kan">
@@ -618,6 +626,14 @@
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20110215T182606Z" changeid="pm_kan">
         <seg>PreExpiryWarn</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>Protect entry / Protect All Entries</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changedate="20110307T093822Z" changeid="pm_kan">
+        <seg>Защитить элемент / Защитить все элементы</seg>
       </tuv>
     </tu>
     <tu>
@@ -974,14 +990,6 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>If you are going to import a text file created with such a delimiter, <bpt i='0' x='0'>&lt;s0&gt;</bpt><ept i='0'>&lt;/s0&gt;</ept>then it must be specified, all the Notes lines will appear as one single line in the resulting database.</seg>
-      </tuv>
-      <tuv xml:lang="RU-RU" changedate="20110214T121746Z" changeid="pm_kan">
-        <seg>Использованный разделитель нужно будет указать при импорте, иначе текст заметок не будет разбит на строки.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="EN-US">
         <seg>Picking a spouse's name, a birthday, or some other easily guessable combination leaves your data vulnerable. <bpt i='1' x='1'>&lt;i1&gt;</bpt>It is important that you pick a hard-to-guess master password that <bpt i='2' x='2'>&lt;u2&gt;</bpt>you can easily remember<ept i='2'>&lt;/u2&gt;</ept><ept i='1'>&lt;/i1&gt;</ept><bpt i='3' x='3'>&lt;s3&gt;</bpt>.<ept i='3'>&lt;/s3&gt;</ept></seg>
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20110207T171934Z" changeid="pm_kan">
@@ -1130,14 +1138,6 @@
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20101104T211534Z" changeid="pm_kan">
         <seg>t <bpt i='0' x='0'>&lt;s0&gt;</bpt>или<ept i='0'>&lt;/s0&gt;</ept> title</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="EN-US">
-        <seg>This dialog box allows you to export only some of the entries, based on the text in specified fields, and/or specify which fields are to be exported.</seg>
-      </tuv>
-      <tuv xml:lang="RU-RU" changedate="20110214T122059Z" changeid="pm_kan">
-        <seg>Здесь можно указать поля для экспорта и/или отобрать элементы по содержимому каких-либо полей.</seg>
       </tuv>
     </tu>
     <tu>
@@ -2014,6 +2014,14 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg>If item <bpt i='0' x='0'>&lt;b0&gt;</bpt>Save database immediately after Edit or Add<ept i='0'>&lt;/b0&gt;</ept> in menu <bpt i='1' x='1'>&lt;a1&gt;</bpt>Manage =&gt; Options =&gt; Backups<ept i='1'>&lt;/a1&gt;</ept> is unchecked, changed item will not be saved, but they will be shown in a different colour.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changedate="20110307T101421Z" changeid="pm_kan">
+        <seg>Если на вкладке <bpt i='1' x='1'>&lt;a1&gt;</bpt>Управление→Настройки→Резервные копии<ept i='1'>&lt;/a1&gt;</ept> снят флажок <bpt i='0' x='0'>&lt;b0&gt;</bpt>Сохранять контейнер после вставки или редактирования<ept i='0'>&lt;/b0&gt;</ept>, изменения не сохраняются автоматически, а выделяются цветом.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg>Clear clipboard upon minimize</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20101105T172424Z" changeid="pm_kan">
@@ -2294,14 +2302,6 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>You should also provide the character to be used to denote a line break in the Notes field so that it can be correctly processed when imported.</seg>
-      </tuv>
-      <tuv xml:lang="RU-RU" changedate="20110208T222044Z" changeid="pm_kan">
-        <seg>Чтобы в последующем файл можно было корректно импортировать, нужно указать символ, используемый для разрыва строк в заметках.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="EN-US">
         <seg>If this field is not empty, then the &quot;Go&quot; button is enabled.</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20110209T223334Z" changeid="pm_kan">
@@ -2314,6 +2314,14 @@
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20110207T211300Z" changeid="pm_kan">
         <seg>В этом поле можно указать другое расположение, например, отдельный каталог для резервных копий, сетевой диск, съёмный накопитель и т. п.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>You should also provide the character to be used to denote a line break in the Notes field so that it can be correctly processed when imported.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changedate="20110208T222044Z" changeid="pm_kan">
+        <seg>Чтобы в последующем файл можно было корректно импортировать, нужно указать символ, используемый для разрыва строк в заметках.</seg>
       </tuv>
     </tu>
     <tu>
@@ -2750,14 +2758,6 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>Refreshes the display either by clicking F5 or this menu item.</seg>
-      </tuv>
-      <tuv xml:lang="RU-RU" changedate="20110215T214333Z" changeid="pm_kan">
-        <seg>Обновление окна при нажатии на это пункт меню или клавишу F5.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="EN-US">
         <seg>'#' - This is the row number.</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20110215T104657Z" changeid="pm_kan">
@@ -2846,6 +2846,14 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg>This dialog box allows you to export only some of the entries, based on the text in specified fields, and/or specify which fields are to be exported.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changedate="20110307T095625Z" changeid="pm_kan">
+        <seg>Здесь можно указать поля для экспорта и/или отобрать элементы по содержимому каких-либо полей.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg>Put Groups first in Tree View</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20100926T194417Z" changeid="pm_kan">
@@ -2914,6 +2922,14 @@
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20101104T212147Z" changeid="pm_kan">
         <seg>В значении переменной (включая имена каталогов и полные пути) могут присутствовать пробелы.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>Note: As long as there are some unsaved items, there will be a &quot;*&quot; in the status area at the bottom of the application's window.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changedate="20110307T101501Z" changeid="pm_kan">
+        <seg>Примечание. Когда в контейнере присутствуют несохранённые изменения, в строке статуса отображается символ «*».</seg>
       </tuv>
     </tu>
     <tu>
@@ -3210,6 +3226,14 @@
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20100920T183941Z" changeid="pm_kan">
         <seg><it pos='end' x='2'>&lt;/s2&gt;</it>Это осознанное решение разработчиков, так как любой механизм восстановления потерянных паролей является брешью в системе защиты и может быть использован злоумышленниками.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>If you are going to import a text file created with such a delimiter, <bpt i='0' x='0'>&lt;s0&gt;</bpt><ept i='0'>&lt;/s0&gt;</ept>then it must be specified, all the Notes lines will appear as one single line in the resulting database.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changedate="20110307T095451Z" changeid="pm_kan">
+        <seg>Использованный разделитель нужно будет указать при импорте, иначе текст заметок не будет разбит на строки.</seg>
       </tuv>
     </tu>
     <tu>
@@ -4398,14 +4422,6 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>Before exporting, you will be asked to input the Master password as a confirmation, that you intend to export an element of the database into an unencrypted text file.<it pos='begin' x='0'>&lt;br0&gt;</it></seg>
-      </tuv>
-      <tuv xml:lang="RU-RU" changedate="20101004T191409Z" changeid="pm_kan">
-        <seg>Для подтверждения экспорта содержимого элемента в незашифрованный файл, будет предложено ввести мастер-пароль.<it pos='begin' x='0'>&lt;br0&gt;</it></seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="EN-US">
         <seg>images/normal_exp.png</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20110215T123957Z" changeid="pm_kan">
@@ -4902,14 +4918,6 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>Each field within an entry is separated by a field separator and each entry may consist of one or more lines. Details on the expected format of the imported text file may be found in the &quot;<bpt i='0' x='0'>&lt;a0&gt;</bpt>Plain Text Export &amp; Import Format<ept i='0'>&lt;/a0&gt;</ept>&quot; section.</seg>
-      </tuv>
-      <tuv xml:lang="RU-RU" changedate="20110215T150005Z" changeid="pm_kan">
-        <seg>Поля внутри элемента разделяются специальным символом. Информация об элементе может быть записана в одну или несколько строк. Описание формата импорта из текстового файла находится в разделе <bpt i='0' x='0'>&lt;a0&gt;</bpt>Формат текстового экспорта и импорта<ept i='0'>&lt;/a0&gt;</ept>.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="EN-US">
         <seg>Copy User Name to Clipboard</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20110209T210908Z" changeid="pm_kan">
@@ -4990,14 +4998,6 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>The dragbar will disable (&quot;grey out&quot;) icons for fields that are empty for a given entry.<it pos='begin' x='7'>&lt;br7&gt;</it></seg>
-      </tuv>
-      <tuv xml:lang="RU-RU" changedate="20110215T214223Z" changeid="pm_kan">
-        <seg>Для незаполненных полей элемента, соответствующие значки на панели «Dragbar» заблокированы (серые).<it pos='begin' x='7'>&lt;br7&gt;</it></seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="EN-US">
         <seg>The Manage Filters dialog box has two tables.</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20101031T181122Z" changeid="pm_kan">
@@ -5042,6 +5042,14 @@
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20110215T120916Z" changeid="pm_kan">
         <seg>images/normal_warn.png</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>Note that the contents of this menu change according to what's selected in the main view (e.g., if you've selected an entry or a group).</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changedate="20110307T092521Z" changeid="pm_kan">
+        <seg>Обратите внимание, что состав меню зависит от того, что сейчас выбрано в списке (элемент, псевдоним или группа).</seg>
       </tuv>
     </tu>
     <tu>
@@ -5186,6 +5194,14 @@
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20110216T112223Z" changeid="pm_kan">
         <seg>Год в четырёхзначном виде.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>As this only displays the data and will not alter it, you will still be able to import it into Password Safe at some later time.<it pos='begin' x='1'>&lt;br1&gt;</it></seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changedate="20110307T100548Z" changeid="pm_kan">
+        <seg>Так как стилевой файл лишь задаёт отображение данных, а не изменяет их, его содержимое не влияет на возможность импорта из XML-файла в контейнер Password Safe.<it pos='begin' x='1'>&lt;br1&gt;</it></seg>
       </tuv>
     </tu>
     <tu>
@@ -6302,6 +6318,14 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg>Show entries with Expiry dates</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changedate="20110307T101840Z" changeid="pm_kan">
+        <seg>Показать элементы с заданными датами истечения пароля</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg>pwuselowercase</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20110215T182215Z" changeid="pm_kan">
@@ -6726,14 +6750,6 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>If item <bpt i='0' x='0'>&lt;b0&gt;</bpt>Save database immediately after Edit or Add<ept i='0'>&lt;/b0&gt;</ept> in menu <bpt i='1' x='1'>&lt;a1&gt;</bpt>Manage =&gt; Options =&gt; Backups<ept i='1'>&lt;/a1&gt;</ept> is unchecked, changed item will not be saved, but they will be shown coloured.</seg>
-      </tuv>
-      <tuv xml:lang="RU-RU" changedate="20110215T214435Z" changeid="pm_kan">
-        <seg>Если на вкладке <bpt i='1' x='1'>&lt;a1&gt;</bpt>Управление→Настройки→Резервные копии<ept i='1'>&lt;/a1&gt;</ept> снят флажок <bpt i='0' x='0'>&lt;b0&gt;</bpt>Сохранять контейнер после вставки или редактирования<ept i='0'>&lt;/b0&gt;</ept>, изменения не сохраняются автоматически и  выделяются цветом.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="EN-US">
         <seg>images/toolbar/classic/delete.jpg</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20110215T152334Z" changeid="pm_kan">
@@ -6994,6 +7010,14 @@
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20100920T182843Z" changeid="pm_kan">
         <seg>Каталог для резервных копий</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>Refreshes the display either by pressing the F5 key or clicking on this menu item.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changedate="20110307T101317Z" changeid="pm_kan">
+        <seg>При выборе этого пункта меню или нажатии на клавишу F5 будет произведено обновление окна.</seg>
       </tuv>
     </tu>
     <tu>
@@ -7402,14 +7426,6 @@
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20101104T203419Z" changeid="pm_kan">
         <seg>Предупреждение о сроке истечения паролей</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="EN-US">
-        <seg>Note: As long as there are some unsaved items, there will be a &quot;*&quot; in the status row.</seg>
-      </tuv>
-      <tuv xml:lang="RU-RU" changedate="20110215T214548Z" changeid="pm_kan">
-        <seg>Примечание. Когда в контейнере присутствуют несохранённые изменения, в строке статуса отображается символ «*».</seg>
       </tuv>
     </tu>
     <tu>
@@ -7919,14 +7935,6 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>This file is only an example and you can easily modify it to display whatever fields you want to show.  As this only displays the data and will not alter it, you will still be able to import it into Password Safe at some later time.<it pos='begin' x='1'>&lt;br1&gt;</it></seg>
-      </tuv>
-      <tuv xml:lang="RU-RU" changedate="20110214T115723Z" changeid="pm_kan">
-        <seg>Так как стилевой файл влияет лишь на отображение данных, а не изменяет их, его содержимое не влияет на возможность импорта данных из XML-файла в контейнер Password Safe.<it pos='begin' x='1'>&lt;br1&gt;</it></seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="EN-US">
         <seg>images/options/password_policy_tab.jpg</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20110215T173938Z" changeid="pm_kan">
@@ -8087,6 +8095,14 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg>Text files used to import password entries consist of one or more password entries.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changedate="20110307T100855Z" changeid="pm_kan">
+        <seg>Импортируемые текстовые файлы содержат одну или несколько записей о паролях.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg>images/toolbar/classic/synchronize.jpg</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20110215T152354Z" changeid="pm_kan">
@@ -8099,6 +8115,14 @@
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20110215T153335Z" changeid="pm_kan">
         <seg>images/options/misc_tab.jpg</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>Each field within an entry is separated by a field separator and each entry may consist of one or more lines.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changedate="20110307T100953Z" changeid="pm_kan">
+        <seg>Поля внутри элемента разделяются специальным символом. Информация об элементе может быть записана в одну или несколько строк.</seg>
       </tuv>
     </tu>
     <tu>
@@ -8339,6 +8363,14 @@
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20101004T184257Z" changeid="pm_kan">
         <seg>Выход производится по кнопке <bpt i='0' x='0'>&lt;b0&gt;</bpt>Esc<ept i='0'>&lt;/b0&gt;</ept>.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>To overcome this, you may specify a delimiter to separate multiple lines when exporting them.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changedate="20110307T095309Z" changeid="pm_kan">
+        <seg>Для упрощения сортировки вы можете указать разделитель, который будет вставляться между строками.</seg>
       </tuv>
     </tu>
     <tu>
@@ -8615,10 +8647,26 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg>In addition, to 'import' a subset of entries from another Password Safe database, just start Password Safe (assuming you permit multiple instances via Manage-&gt;Options-&gt;System tab) and open the other database, whilst having your normal database open in another instance.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changedate="20110307T100740Z" changeid="pm_kan">
+        <seg>Чтобы импортировать элементы из другого контейнера Password Safe, запустите ещё одну копию Password Safe (должен быть разрешён запуск нескольких экземпляров на вкладке «Управление→Настройки→Система») и откройте нужный контейнер.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg><bpt i='0' x='0'>&lt;s0&gt;</bpt>Note: <ept i='0'>&lt;/s0&gt;</ept>The entry is not actually modified until you click on the OK button in the Edit/View Entry dialog box.</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20110215T164543Z" changeid="pm_kan">
         <seg><bpt i='0' x='0'>&lt;s0&gt;</bpt>Примечание.<ept i='0'>&lt;/s0&gt;</ept> Фактически история паролей очищается только после нажатия на кнопку OK.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>Details on the expected format of the imported text file may be found in the &quot;<bpt i='0' x='0'>&lt;a0&gt;</bpt>Plain Text Export &amp; Import Format<ept i='0'>&lt;/a0&gt;</ept>&quot; section.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changedate="20110307T101017Z" changeid="pm_kan">
+        <seg>Описание формата импорта из текстового файла находится в разделе <bpt i='0' x='0'>&lt;a0&gt;</bpt>Формат текстового экспорта и импорта<ept i='0'>&lt;/a0&gt;</ept>.</seg>
       </tuv>
     </tu>
     <tu>
@@ -10575,14 +10623,6 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>To overcome this, you may specify a delimiter to separate multiple lines when exporting them.</seg>
-      </tuv>
-      <tuv xml:lang="RU-RU" changedate="20101031T125137Z" changeid="pm_kan">
-        <seg>Для упрощения сортировки вы можете указать разделитель, который будет вставляться между строками.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="EN-US">
         <seg>BackupBeforeEverySave</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20110215T182605Z" changeid="pm_kan">
@@ -10635,6 +10675,14 @@
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20110209T215403Z" changeid="pm_kan">
         <seg>Количество сохраняемых предыдущих паролей может быть изменено позже.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>In addition, to 'export' a subset of entries to another Password Safe database, just start Password Safe (assuming you permit multiple instances via Manage-&gt;Options-&gt;System tab) and create a new database, whilst having your normal database open in another instance.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changedate="20110307T094921Z" changeid="pm_kan">
+        <seg>Чтобы экспортировать элементы в другой контейнер Password Safe, запустите ещё одну копию Password Safe (должен быть разрешён запуск нескольких экземпляров на вкладке «Управление→Настройки→Система») и создайте новый контейнер.</seg>
       </tuv>
     </tu>
     <tu>
@@ -10959,14 +11007,6 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>Before exporting, you will be asked to input the Master password as a confirmation, that you intend to export an element of the database into an unencrypted XML file..<it pos='begin' x='0'>&lt;br0&gt;</it></seg>
-      </tuv>
-      <tuv xml:lang="RU-RU" changedate="20110209T204909Z" changeid="pm_kan">
-        <seg>Для подтверждения экспорта содержимого элемента в незашифрованный XML-файл, будет предложено ввести мастер-пароль.<it pos='begin' x='0'>&lt;br0&gt;</it></seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="EN-US">
         <seg>If not, the new open will be cancelled and the existing opened database, if any, will remain open.</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20101031T153134Z" changeid="pm_kan">
@@ -11067,14 +11107,6 @@
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20110209T231426Z" changeid="pm_kan">
         <seg>Если в поле «Группа» указать новое имя, будет создана группа с таким же именем.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="EN-US">
-        <seg>Note that the contents of this menu change according to what's selected in the main view (e.g., if you've selected and entry or a group).</seg>
-      </tuv>
-      <tuv xml:lang="RU-RU" changedate="20110209T202040Z" changeid="pm_kan">
-        <seg>Обратите внимание, что состав меню зависит от того, что сейчас выбрано в списке (элемент, псевдоним или группа).</seg>
       </tuv>
     </tu>
     <tu>
@@ -12247,6 +12279,14 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg>Then you can simply drag and drop any entries or groups from your open database to this 'export' database.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changedate="20110307T095200Z" changeid="pm_kan">
+        <seg>Затем перетяните необходимые элементы или группы в новый контейнер.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg>Any unknown environmental variable is left unchanged in the Run Command e.g., %xyz%\notepad.exe remains as %xyz%\notepad.exe if variable 'xyz' is not set.</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20110215T191700Z" changeid="pm_kan">
@@ -13175,6 +13215,14 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg>Before exporting, you will be asked to input the Master password as confirmation that you intend to export data from the database into an unencrypted XML file..<it pos='begin' x='0'>&lt;br0&gt;</it></seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changedate="20110307T092757Z" changeid="pm_kan">
+        <seg>Для подтверждения экспорта данных в незашифрованный XML-файл, будет предложено ввести мастер-пароль.<it pos='begin' x='0'>&lt;br0&gt;</it></seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg>Please choose a difficult-to-guess password.</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20100920T184007Z" changeid="pm_kan">
@@ -13591,14 +13639,6 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>Text files used to import password entries consist of one or more password entries.</seg>
-      </tuv>
-      <tuv xml:lang="RU-RU" changedate="20110215T144314Z" changeid="pm_kan">
-        <seg>Импортируетмые текстовые файлы содержат одну или несколько записей о паролях.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="EN-US">
         <seg>The master password can be entered using the physical or virtual keyboard.</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20110209T110820Z" changeid="pm_kan">
@@ -13675,6 +13715,22 @@
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20101031T191501Z" changeid="pm_kan">
         <seg>Расширенные настройки также позволяют выбрать подмножество элементов для экспорта.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>Before exporting, you will be asked to input the Master Password as confirmation that you intend to export data from the the database into an unencrypted text file.<it pos='begin' x='0'>&lt;br0&gt;</it></seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changedate="20110307T092616Z" changeid="pm_kan">
+        <seg>Для подтверждения экспорта данных в незашифрованный файл, будет предложено ввести мастер-пароль.<it pos='begin' x='0'>&lt;br0&gt;</it></seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>The selected entry or group of entries will be protected.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changedate="20110307T093929Z" changeid="pm_kan">
+        <seg>Выбранный элемент или группа элементов будут защищены.</seg>
       </tuv>
     </tu>
     <tu>
@@ -13771,6 +13827,14 @@
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20100920T173501Z" changeid="pm_kan">
         <seg>Примечания:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>Protected entries are marked with a '#'.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changedate="20110307T094413Z" changeid="pm_kan">
+        <seg>Защищённые элементы отмечены символом «#».</seg>
       </tuv>
     </tu>
     <tu>
@@ -13939,6 +14003,14 @@
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20101017T203331Z" changeid="pm_kan">
         <seg>Редактирование имени группы</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>It does not matter that the expiry date is in the past or future.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changedate="20110307T102356Z" changeid="pm_kan">
+        <seg>При этом не важно, находится ли дата истечения пароля в прошлом или будущем.</seg>
       </tuv>
     </tu>
     <tu>
@@ -14359,6 +14431,14 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg>If you select this menu item, only entries with an expiry date will be shown in the list.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changedate="20110307T102206Z" changeid="pm_kan">
+        <seg>Если выбран этот пункт меню, в списке отображаются только те элементы, у которых задана дата истечения пароля.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg>Shortcut</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20110215T120406Z" changeid="pm_kan">
@@ -14379,6 +14459,14 @@
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20110209T162518Z" changeid="pm_kan">
         <seg>&quot;Автор «Прикладной криптографии» («Applied Cryptography») и других книг, создатель алгоритма Blowfish, а также создатель и технический директор Counterpane Internet Security.&quot;</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>Then you can simply drag and drop any entries or groups to your open database from this 'import' database.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changedate="20110307T100808Z" changeid="pm_kan">
+        <seg>Затем перетяните из него необходимые элементы или группы в первый контейнер.</seg>
       </tuv>
     </tu>
     <tu>
@@ -14467,6 +14555,14 @@
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20110209T231735Z" changeid="pm_kan">
         <seg>Введите имя новой группы.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>The dragbar will disable (&quot;grey out&quot;) icons for fields that are empty for the selected entry.<it pos='begin' x='7'>&lt;br7&gt;</it></seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changedate="20110307T101142Z" changeid="pm_kan">
+        <seg>Для незаполненных полей элемента, соответствующие значки на панели «Dragbar» заблокированы (серые).<it pos='begin' x='7'>&lt;br7&gt;</it></seg>
       </tuv>
     </tu>
     <tu>
@@ -14683,6 +14779,14 @@
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20110215T182230Z" changeid="pm_kan">
         <seg>dontaskquestion</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>A protected entry cannot be modified until it is unprotected.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changedate="20110307T094125Z" changeid="pm_kan">
+        <seg>Защищённый элемент не может быть изменён.</seg>
       </tuv>
     </tu>
     <tu>

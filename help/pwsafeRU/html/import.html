@@ -2,288 +2,70 @@
 <html>
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Импорт элементов</title><!-- pwsafe version: 2.11--><!-- Modified: 15/06/2005 --><!--Popup control -->
 
-
-
-
-
-
-
-		
-		
-		
-
-		
-		
-  
-
-  
-  
-
-  
-  
-
-  
-  
-
-  
-  
-
-  
-  
-
-  
-  <title>Импорт элементов</title><!-- pwsafe version: 2.11--><!-- Modified: 15/06/2005 --><!--Popup control -->
-
-  <script language="javascript" src="html/popups.js">
-		</script>
-  
-  
-  
-  
-  
-  
-  <link rel="stylesheet" type="text/css" href="style.css">
+<script language="javascript" src="html/popups.js">
+</script>
+<link rel="stylesheet" type="text/css" href="style.css">
 </head>
-
-
 <body>
-
-
-
-
-
-
 <object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11">
-		</object><!-- Popup Source File -->
-		
-		
-		
+</object><!-- Popup Source File -->
 
-		
-	
-		
+
 <h2>Импорт элементов</h2>
-
-
-
-
-
-
-
-		
-		
 <p><span style="font-weight: bold;">Password Safe</span> позволяет импортировать данные о паролях из других форматов. Данные файлы могут быть сформированы другими приложениями, экспортированы из таблиц, или даже составлены вручную в текстовом редакторе.</p>
-
-
-
-
 
 <p><span style="font-weight: bold;">Password Safe</span> поддерживает следующие форматы:</p>
 
-
-
-
-
 <ul>
-
-
-
-
-
-  <li><a href="#text">Простой текст</a></li>
-
-
-
-
-
-  <li><a href="#XML">XML</a></li>
-
-
-
-
-
-  <li>KeePass (другая программа для управления паролями)</li>
-
-
-
-
-
+<li><a href="#text">Простой текст</a></li>
+<li><a href="#XML">XML</a></li>
+<li>KeePass (другая программа для управления паролями)</li>
 </ul>
 
+<p>Чтобы импортировать элементы из другого контейнера Password Safe, запустите ещё одну копию Password Safe (должен быть разрешён запуск нескольких экземпляров на вкладке «Управление→Настройки→Система») и откройте нужный контейнер. Затем перетяните из него необходимые элементы или группы в первый контейнер. </p>
 
-
-
-
-
-
-
-		
 <div class="instr">
-			
+
 <h3><a name="text"></a>Текстовый формат</h3>
-
-
-
-
-
-<p>Импортируетмые текстовые файлы содержат одну или несколько записей о паролях. Поля внутри элемента разделяются специальным символом. Информация об элементе может быть записана в одну или несколько строк. Описание формата импорта из текстового файла находится в разделе <a href="imp_exp_text_details.html">Формат текстового экспорта и импорта</a>.</p>
+<p>Импортируемые текстовые файлы содержат одну или несколько записей о паролях. Поля внутри элемента разделяются специальным символом. Информация об элементе может быть записана в одну или несколько строк. Описание формата импорта из текстового файла находится в разделе <a href="imp_exp_text_details.html">Формат текстового экспорта и импорта</a>.</p>
 
 <h3>Настройки импорта из простого текста</h3>
-
-
-
-
-
-
-
-			
 <p>Разделитель полей используется для выделения полей в текстовых строках. Также можно указать имя группы, в которую будут помещены все импортированные элементы.</p>
 
-
-
-
-
 <p><img alt="Настройки импорта из простого текста" src="images/import.jpg"></p>
-
-
-
-
-
-<p> </p>
-
-
-
-
-
-
 <ol>
-
-
-
-
-
-
-
-				<li><b>Файл→Импортировать из.</b></li>
-
-
-
-
-
-
-
-				<li>Выберите <b>Простой текст</b>.</li>
-
-
-
-
-
-
-
-				<li>Укажите параметры импорта из данного файла.</li>
-
-
-
-
-
-
-
-				<li>Если при экспорте заметок был использован разделитель строк, укажите его, чтобы при импорте он был заменён на перенос строки.</li>
-
-
-
-
-
-
-  
-
-
-
-
-
-
-				<li>Нажмите <b>OK</b>.</li>
-
-
-
-
-
-
-
-				<li>Выберите текстовый файл для импорта.</li>
-
-  <li>По окончанию процесса импорта будет выведен диалог с информацией о количестве ошибок и успешно импортированных элементов.</li>
-
-
-
-
-
-
-
-			
+<li><b>Файл→Импортировать из.</b></li>
+<li>Выберите <b>Простой текст</b>.</li>
+<li>Укажите параметры импорта из данного файла.</li>
+<li>Если при экспорте заметок был использован разделитель строк, укажите его, чтобы при импорте он был заменён на перенос строки.</li>
+<li>Нажмите <b>OK</b>.</li>
+<li>Выберите текстовый файл для импорта.</li>
+<li>По окончанию процесса импорта будет выведен диалог с информацией о количестве ошибок и успешно импортированных элементов.</li>
 </ol>
 
-
-
-
-
-
-
-			
 <hr>
-			<small><b><span style="color: rgb(255, 0, 0);">Внимание!</span> </b> Первая строка импортируемого файла должна содержать список имён столбцов, разделённых табуляцией. Эта строка создаётся автоматически при <a href="export.html">экспорте из Password Safe</a>. Для файлов, созданных вручную (или с помощью других утилит), её нужно заполнить или отредактировать в соответствии с форматом.<br>
-
-
-
+<small><b><span style="color: rgb(255, 0, 0);">Внимание!</span> </b> Первая строка импортируемого файла должна содержать список имён столбцов, разделённых табуляцией. Эта строка создаётся автоматически при <a href="export.html">экспорте из Password Safe</a>. Для файлов, созданных вручную (или с помощью других утилит), её нужно заполнить или отредактировать в соответствии с форматом.<br>
 </small>
 <hr style="width: 100%; height: 2px;">
+
 <h3><a name="XML"></a>XML</h3>
 
-
-
-
-
-XML (eXtensible Markup Language) — распространённый формат для передачи данных между приложениями. <span style="font-weight: bold;">Password Safe</span> может импортировать XML-файлы, соответствующие схеме <span style="font-style: italic;">pwsafe.xsd</span>, распространяемой вместе с Password Safe.
-		</div><!-- Added some white space at the bottom for natural scrolling -->
-
-
-
-
-
-
-
-
-		
-		<br>
-
-
-
-
+<p>XML (eXtensible Markup Language) — распространённый формат для передачи данных между приложениями. <span style="font-weight: bold;">Password Safe</span> может импортировать XML-файлы, соответствующие схеме <span style="font-style: italic;">pwsafe.xsd</span>, распространяемой вместе с Password Safe.</p>
+</div><!-- Added some white space at the bottom for natural scrolling -->
 
 
 <br>
-
-
-
-
-
-
+<br>
 <br>
 
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+  <param name="Keyword" value="Import Password Entries">
+  <param name="Keyword" value="Export Password Entries">
+  <param name="Keyword" value="Excel Password Data">
+  <param name="Keyword" value="Converting Existing Password Data">
+</object>
 
-
-
-
-
-
-		
-		<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
-			<param name="Keyword" value="Import Password Entries">
-			<param name="Keyword" value="Export Password Entries">
-			<param name="Keyword" value="Excel Password Data">
-			<param name="Keyword" value="Converting Existing Password Data">
-		</object>
-	
 </body>
 </html>

@@ -201,6 +201,10 @@
 			<param name="Name" value="Комбинации клавиш">
 			<param name="Local" value="html\Shortcut_Keys.html">
 			</OBJECT>
+		</LI><LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Значки элементов">
+			<param name="Local" value="html\images.html">
+			</OBJECT>
 	</LI></UL>
 	</LI><LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Использованные программы">

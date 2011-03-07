@@ -29,7 +29,4 @@ Alias	псевдоним
 Wizard	мастер
 Shortcut	ярлык
 safe	контейнер
-"	&laquo; &raquo;	кавычки-елочки
-'	&laquo; &raquo;	кавычки-елочки
--	&ndash; &mdash;	короткое и длинное тире
-
+Protected entry	защищённый элемент
