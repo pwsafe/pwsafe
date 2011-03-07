@@ -751,7 +751,7 @@ void DboxMain::ExportFilters(PWSFilters &Filters)
     cs_title.LoadString(IDS_FILEWRITEERROR);
     gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
   } else {
-    gmb.AfxMessageBox(IDS_FILTERSEXPORTEDOK, MB_OK);
+    gmb.AfxMessageBox(IDS_FILTERSEXPORTEDOK, MB_OK | MB_ICONINFORMATION);
   }
 }
 
@@ -816,6 +816,7 @@ void DboxMain::ImportFilters()
                                           XSDFilename.c_str(), strErrors, &q);
     waitCursor.Restore();  // Restore normal cursor
 
+    UINT uiFlags = MB_OK | MB_ICONWARNING;
     switch (rc) {
       case PWScore::XML_FAILED_VALIDATION:
         cs_temp.Format(IDS_FAILEDXMLVALIDATE, fd.GetFileName(),
@@ -831,6 +832,7 @@ void DboxMain::ImportFilters()
                          csErrors.c_str());
         } else {
           cs_temp.LoadString(IDS_FILTERSIMPORTEDOK);
+          uiFlags = MB_OK | MB_ICONINFORMATION;
         }
         break;
       default:
@@ -839,7 +841,7 @@ void DboxMain::ImportFilters()
 
     CGeneralMsgBox gmb;
     cs_title.LoadString(IDS_STATUS);
-    gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONINFORMATION);
+    gmb.MessageBox(cs_temp, cs_title, uiFlags);
   }
 }
 
