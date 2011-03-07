@@ -467,7 +467,7 @@ void CPWTreeCtrl::OnBeginLabelEdit(NMHDR *pNMHDR, LRESULT *pLResult)
   *pLResult = TRUE; // TRUE cancels label editing
 
   // Check IsInRename to prevent unintentional Edit in place
-  if (m_pDbx->IsMcoreReadOnly() || (!m_pDbx->IsInRename() && !m_pDbx->IsInAddGroup()))
+  if (m_pDbx->IsDBReadOnly() || (!m_pDbx->IsInRename() && !m_pDbx->IsInAddGroup()))
     return;
 
   m_bEditLabelCompleted = false;
@@ -650,7 +650,7 @@ void CPWTreeCtrl::OnDeleteItem(NMHDR *pNMHDR, LRESULT *pLResult)
 
 void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNMHDR, LRESULT *pLResult)
 {
-  if (m_pDbx->IsMcoreReadOnly())
+  if (m_pDbx->IsDBReadOnly())
     return; // don't edit in read-only mode
 
   // Initial verification performed in OnBeginLabelEdit - so some events may not get here!
@@ -1216,7 +1216,7 @@ BOOL CPWTreeCtrl::OnDrop(CWnd * , COleDataObject *pDataObject,
     pil->DeleteImageList();
   }
 
-  if (m_pDbx->IsMcoreReadOnly())
+  if (m_pDbx->IsDBReadOnly())
     return FALSE; // don't drop in read-only mode
 
   if (!pDataObject->IsDataAvailable(m_tcddCPFID, NULL))
@@ -1453,7 +1453,7 @@ void CPWTreeCtrl::OnBeginDrag(NMHDR *pNMHDR, LRESULT *pLResult)
   // If inter-process Move, we need to delete original
   if (m_cfdropped == m_tcddCPFID &&
       (de & DROPEFFECT_MOVE) == DROPEFFECT_MOVE &&
-      !m_bWithinThisInstance && !m_pDbx->IsMcoreReadOnly()) {
+      !m_bWithinThisInstance && !m_pDbx->IsDBReadOnly()) {
     m_pDbx->Delete(); // XXX assume we've a selected item here!
   }
 
