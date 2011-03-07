@@ -49,7 +49,7 @@ LangString UNINSTALL_SHORTCUT ${LANG_SWEDISH} "Installera genväg för avinstallat
 LangString DESC_ProgramFiles ${LANG_SWEDISH} "Installerar de filer som är nödvändiga för att använda Password Safe."
  
 ; DESC_LangSupport "Please select the language(s) that PasswordSafe will use."
-LangString DESC_LangSupport ${LANG_SWEDISH} "Välj det/de språk som PasswordSafe skall använda."
+LangString DESC_LangSupport ${LANG_SWEDISH} "Välj det/de språk som Password Safe skall använda."
  
 ; DESC_StartUp "Starts Password Safe as part of Windows boot/login."
 LangString DESC_StartUp ${LANG_SWEDISH} "Startar Password Safe som en del av Windows boot-/inloggning."
@@ -61,20 +61,20 @@ LangString DESC_StartMenu ${LANG_SWEDISH} "Skapar en post i startmenyn till Pass
 LangString DESC_DesktopShortcut ${LANG_SWEDISH} "Placerar en genväg till Password Safe på ditt skrivbord."
  
 ; DESC_UninstallMenu "Places a shortcut in the start menu to Uninstall Password Safe."
-LangString DESC_UninstallMenu ${LANG_SWEDISH} "Places a shortcut in the startmenyn för att avinstallera Password Safe."
+LangString DESC_UninstallMenu ${LANG_SWEDISH} "Placerar en genväg i startmenyn för avinstallation av Password Safe."
   
 ; "LangString" (for "Function GreenOrRegular") are setup here because they cannot be defined in the function body
 ; TEXT_GC_TITLE "Installation Type"
 LangString TEXT_GC_TITLE ${LANG_SWEDISH} "Installationstyp"
  
 ; TEXT_GC_SUBTITLE "Choose Regular for use on a single PC, Green for portable installation. If you're not sure, 'Regular' is fine."
-LangString TEXT_GC_SUBTITLE ${LANG_SWEDISH} "Välj Standard för användning på en fristående PC, Grön för mobil installation. Om du inte är säker så fungerar 'Standard' bra."
+LangString TEXT_GC_SUBTITLE ${LANG_SWEDISH} "Välj ’Standard’ för användning på en fristående PC eller ’Grön’ för mobil installation. Om du inte är säker så fungerar ’Standard’ bra."
  
 ; PSWINI_TITLE "Choose Installation Type"
 LangString PSWINI_TITLE ${LANG_SWEDISH} "Välj installationstyp"
  
 ; PSWINI_TEXT1 "Regular (uses Registry, suitable for home or single user PC)"
-LangString PSWINI_TEXT1 ${LANG_SWEDISH} "Vanlig(använder Registret, passar användare i hemmet eller PC för en användare)"
+LangString PSWINI_TEXT1 ${LANG_SWEDISH} "Vanlig (använder Registret, passar användare i hemmet eller PC för en användare)"
  
 ; PSWINI_TEXT2 "Green (for Disk-on-Key; does not use host Registry)"
 LangString PSWINI_TEXT2 ${LANG_SWEDISH} "Grön (för Disk-on-Key; värddatorns Register används inte)"
