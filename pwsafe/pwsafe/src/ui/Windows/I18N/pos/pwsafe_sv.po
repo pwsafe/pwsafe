@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2011-03-06 11:34+0100\n"
+"PO-Revision-Date: 2011-03-07 14:43+0100\n"
 "Last-Translator: Björn Nordwall <pro.bn@telia.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -136,7 +136,7 @@ msgstr " 'Noteringar'"
 
 #. Resource IDs: (356)
 msgid " 'Password Expiry Time Interval'"
-msgstr " 'Period för lösenordets utgångsdatum'"
+msgstr " 'Tidsperiod för lösenordets utgång'"
 
 #. Resource IDs: (336)
 msgid " 'Password Expiry Time'"
@@ -4440,7 +4440,7 @@ msgstr "Lösenordets utgångsdatum"
 
 #. Resource IDs: (348)
 msgid "Password Expiry Interval"
-msgstr "Lösenordets utgångsintervall"
+msgstr "Lösenordets utgångsperiod"
 
 #. Resource IDs: (360)
 msgid "Password Generated based on displayed policy"
