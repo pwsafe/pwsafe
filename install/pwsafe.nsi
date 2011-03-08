@@ -617,7 +617,7 @@ Function .onInit
   Push ${LANG_SPANISH}
   Push Espanol
   Push ${LANG_SWEDISH}
-  Push Svensk
+  Push Svenska
   Push ${LANG_DUTCH}
   Push Dutch
   Push ${LANG_FRENCH}
