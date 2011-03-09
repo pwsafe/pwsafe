@@ -97,9 +97,8 @@ void CWZAdvanced::DoDataExchange(CDataExchange* pDX)
 {
   CWZPropertyPage::DoDataExchange(pDX);
   //{{AFX_DATA_MAP(CWZAdvanced)
-  if (m_iIndex != WZAdvanced::COMPARESYNCH && 
-      m_iIndex != WZAdvanced::EXPORT_ENTRYTEXT &&
-      m_iIndex != WZAdvanced::EXPORT_ENTRYXML) {
+  if (dialog_lookup[m_iIndex] != IDD_WZADVANCEDBOTTOM) {
+    // These controls are only in the top half
     DDX_Check(pDX, IDC_ADVANCED_SUBGROUP_SET, m_subgroup_set);
     DDX_Check(pDX, IDC_ADVANCED_SUBGROUP_CASE, m_subgroup_case);
     DDX_Text(pDX, IDC_ADVANCED_SUBGROUP_NAME, m_subgroup_name);
@@ -175,9 +174,8 @@ BOOL CWZAdvanced::OnInitDialog()
   }
   m_pWZPSH->SetWindowText(cs_text);
 
-  if (m_iIndex != WZAdvanced::COMPARESYNCH &&
-      m_iIndex != WZAdvanced::EXPORT_ENTRYTEXT &&
-      m_iIndex != WZAdvanced::EXPORT_ENTRYXML) {
+  if (dialog_lookup[m_iIndex] != IDD_WZADVANCEDBOTTOM) {
+    // These controls are only in the top half
     CComboBox *cboSubgroupFunction = (CComboBox *)GetDlgItem(IDC_ADVANCED_SUBGROUP_FUNCTION);
     if (cboSubgroupFunction->GetCount() == 0) {
       cs_text.LoadString(IDSC_EQUALS);
@@ -533,16 +531,20 @@ BOOL CWZAdvanced::OnInitDialog()
   m_pLC_List->SortItems(AdvCompareFunc, NULL);
   m_pLC_Selected->SortItems(AdvCompareFunc, NULL);
 
-  if (m_iIndex != WZAdvanced::COMPARESYNCH) {
-    if (m_iIndex != WZAdvanced::COMPARE) {
-      GetDlgItem(IDC_TREATWHITESPACEASEMPTY)->EnableWindow(FALSE);
-      GetDlgItem(IDC_TREATWHITESPACEASEMPTY)->ShowWindow(SW_HIDE);
-    } else {
-      ((CButton *)GetDlgItem(IDC_TREATWHITESPACEASEMPTY))->SetCheck(BST_CHECKED);
+  if (dialog_lookup[m_iIndex] == IDD_WZADVANCED) {
+    // IDC_TREATWHITESPACEASEMPTY is only in the full Wizard dialog
+    if (m_iIndex != WZAdvanced::COMPARESYNCH) {
+      if (m_iIndex != WZAdvanced::COMPARE) {
+        GetDlgItem(IDC_TREATWHITESPACEASEMPTY)->EnableWindow(FALSE);
+        GetDlgItem(IDC_TREATWHITESPACEASEMPTY)->ShowWindow(SW_HIDE);
+      } else {
+        ((CButton *)GetDlgItem(IDC_TREATWHITESPACEASEMPTY))->SetCheck(BST_CHECKED);
+      }
     }
   }
 
-  if (m_iIndex == WZAdvanced::EXPORT_ENTRYTEXT || m_iIndex == WZAdvanced::EXPORT_ENTRYXML) {
+  if (dialog_lookup[m_iIndex] != IDD_WZADVANCEDBOTTOM) {
+    // These controls are only in the top half
     GetDlgItem(IDC_ADVANCED_SUBGROUP_SET)->EnableWindow(FALSE);
     GetDlgItem(IDC_STATIC_WHERE)->EnableWindow(FALSE);
     GetDlgItem(IDC_STATIC_TEXT)->EnableWindow(FALSE);
@@ -600,13 +602,16 @@ void CWZAdvanced::OnReset()
   m_treatwhitespaceasempty = BST_CHECKED;
   m_subgroup_object =  m_subgroup_function = 0;
 
-  ((CComboBox *)GetDlgItem(IDC_ADVANCED_SUBGROUP_OBJECT))->SetCurSel(1);  // Group/Title
-  ((CComboBox *)GetDlgItem(IDC_ADVANCED_SUBGROUP_FUNCTION))->SetCurSel(-1);
+  if (dialog_lookup[m_iIndex] != IDD_WZADVANCEDBOTTOM) {
+    // These controls are only in the top half
+    ((CComboBox *)GetDlgItem(IDC_ADVANCED_SUBGROUP_OBJECT))->SetCurSel(1);  // Group/Title
+    ((CComboBox *)GetDlgItem(IDC_ADVANCED_SUBGROUP_FUNCTION))->SetCurSel(-1);
 
-  GetDlgItem(IDC_ADVANCED_SUBGROUP_FUNCTION)->EnableWindow(FALSE);
-  GetDlgItem(IDC_ADVANCED_SUBGROUP_OBJECT)->EnableWindow(FALSE);
-  GetDlgItem(IDC_ADVANCED_SUBGROUP_NAME)->EnableWindow(FALSE);
-  GetDlgItem(IDC_ADVANCED_SUBGROUP_CASE)->EnableWindow(FALSE);
+    GetDlgItem(IDC_ADVANCED_SUBGROUP_FUNCTION)->EnableWindow(FALSE);
+    GetDlgItem(IDC_ADVANCED_SUBGROUP_OBJECT)->EnableWindow(FALSE);
+    GetDlgItem(IDC_ADVANCED_SUBGROUP_NAME)->EnableWindow(FALSE);
+    GetDlgItem(IDC_ADVANCED_SUBGROUP_CASE)->EnableWindow(FALSE);
+  }
 
   UpdateData(FALSE);
 }
@@ -702,9 +707,8 @@ LRESULT CWZAdvanced::OnWizardNext()
     }
   }
 
-  if (m_iIndex != WZAdvanced::COMPARESYNCH &&
-      m_iIndex != WZAdvanced::EXPORT_ENTRYTEXT &&
-      m_iIndex != WZAdvanced::EXPORT_ENTRYXML) {
+  if (dialog_lookup[m_iIndex] != IDD_WZADVANCEDBOTTOM) {
+    // These controls are only in the top half
     if (m_subgroup_set == BST_CHECKED) {
       GetDlgItemText(IDC_ADVANCED_SUBGROUP_NAME, m_subgroup_name);
       int nObject = ((CComboBox *)GetDlgItem(IDC_ADVANCED_SUBGROUP_OBJECT))->GetCurSel();
