@@ -6033,8 +6033,8 @@ msgstr "警告: 如果继续，来自你选定输入数据库中现有数据库�
 
 #. Resource IDs: (363)
 #, c-format
-msgid "WARNING: This operation will create an unpro\r\n\r\nPlease do not use this option unless you understand and accept the risks. This option bypasses the security provided by this program."
-msgstr "警告: 该操作将在数据库中创建一个不受保护的“%s”副本，记得在不需要使用后删除该副本！\r\n\r\n请尽量不要使用该选项，除非你了解并接受该风险，该选项将会绕过本程序所提供的安全性！"
+msgid "WARNING: This operation will create an unprotected copy of %s in the database. Deleting this copy after use is NOT sufficient.\r\n\r\nPlease do not use this option unless you understand and accept the risks. This option bypasses the security provided by this program."
+msgstr ""
 
 #. Resource IDs: (341)
 msgid "WARNING: Use of an external editor may leave sensitive data on your hard disk.\n\nDo you wish to continue?"
