@@ -543,13 +543,6 @@ BOOL CWZAdvanced::OnInitDialog()
     }
   }
 
-  if (dialog_lookup[m_iIndex] != IDD_WZADVANCEDBOTTOM) {
-    // These controls are only in the top half
-    GetDlgItem(IDC_ADVANCED_SUBGROUP_SET)->EnableWindow(FALSE);
-    GetDlgItem(IDC_STATIC_WHERE)->EnableWindow(FALSE);
-    GetDlgItem(IDC_STATIC_TEXT)->EnableWindow(FALSE);
-  }
-
   m_pToolTipCtrl = new CToolTipCtrl;
   if (!m_pToolTipCtrl->Create(this, TTS_ALWAYSTIP | TTS_BALLOON | TTS_NOPREFIX)) {
     pws_os::Trace(L"Unable To create Advanced Dialog ToolTip\n");

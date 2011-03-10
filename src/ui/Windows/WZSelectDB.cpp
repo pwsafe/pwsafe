@@ -198,7 +198,8 @@ BOOL CWZSelectDB::OnInitDialog()
     case ID_MENUITEM_EXPORT2PLAINTEXT:
     case ID_MENUITEM_EXPORTENT2PLAINTEXT:
         ExportFileName = PWSUtil::GetNewFileName(m_pWZPSH->WZPSHGetCurFile().c_str(),
-                                                 nID == ID_MENUITEM_EXPORT2XML ? L"xml" : L"txt");
+            (nID == ID_MENUITEM_EXPORT2XML || nID == ID_MENUITEM_EXPORTENT2XML) ?
+               L"xml" : L"txt");
         m_pctlDB->SetWindowText(ExportFileName.c_str());
         m_filespec = ExportFileName.c_str();
         uifilemsg = IDS_WZFILE;

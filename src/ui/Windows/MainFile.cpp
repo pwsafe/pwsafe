@@ -2988,7 +2988,7 @@ void DboxMain::ReportAdvancedOptions(CReport *pRpt, const bool bAdvanced, const 
           ASSERT(0);
       }
       cs_text.LoadString(uistring);
-      cs_temp.Format(IDS_ADVANCEDSUBSET, cs_Object, cs_text, st_SADV.subgroup_name,
+      cs_temp.Format(IDS_ADVANCEDSUBSET, cs_Object, cs_text, st_SADV.subgroup_name.c_str(),
                      cs_case);
     }
 
