@@ -43,25 +43,30 @@
 IMPLEMENT_CLASS(PWSGridTable, wxGridTableBase)
 
 
-static inline wxString towx(const StringX& str)
-{
-  return wxString(str.data(), str.size());
-}
-
 typedef StringX (CItemData::*ItemDataFuncT)() const;
 
 struct PWSGridCellDataType {
-  const charT* fieldname;
+  CItemData::FieldType ft;
   ItemDataFuncT func;
 } PWSGridCellData[] = {
-                        {_S("Title"),                     &CItemData::GetTitle},
-                        {_S("Username"),                  &CItemData::GetUser},
-                        {_S("URL"),                       &CItemData::GetURL},
-                        {_S("Creation Time"),             &CItemData::GetCTimeL},
-                        {_S("Password Modified"),         &CItemData::GetPMTimeL},
-                        {_S("Last Accessed"),             &CItemData::GetATimeL},
-                        {_S("Password Expiry Date"),      &CItemData::GetXTimeL},
-                        {_S("Last Modified"),             &CItemData::GetRMTimeL},
+                        { CItemData::GROUP,                 &CItemData::GetGroup},
+                        { CItemData::TITLE,                 &CItemData::GetTitle},
+                        { CItemData::USER,                  &CItemData::GetUser},
+                        { CItemData::URL,                   &CItemData::GetURL},
+                        { CItemData::EMAIL,                 &CItemData::GetEmail},
+                        { CItemData::AUTOTYPE,              &CItemData::GetAutoType},
+                        { CItemData::RUNCMD,                &CItemData::GetRunCommand},
+                        { CItemData::PROTECTED,             &CItemData::GetProtected},
+                        { CItemData::CTIME,                 &CItemData::GetCTimeL},
+                        { CItemData::PMTIME,                &CItemData::GetPMTimeL},
+                        { CItemData::ATIME,                 &CItemData::GetATimeL},
+                        { CItemData::XTIME,                 &CItemData::GetXTimeL},
+                        { CItemData::XTIME_INT,             &CItemData::GetXTimeInt},
+                        { CItemData::RMTIME,                &CItemData::GetRMTimeL},
+//                        { CItemData::PASSWORD,              &CItemData::GetPassword},
+                        { CItemData::PWHIST,                &CItemData::GetPWHistory},
+                        { CItemData::POLICY,              &CItemData::GetPWPolicy},
+                        { CItemData::DCA,                   &CItemData::GetDCA},
                       };
 
 /*!
@@ -102,13 +107,13 @@ bool PWSGridTable::IsEmptyCell(int row, int col)
 {
   const wxString val = GetValue(row, col);
 
-  return val.empty() || val.IsSameAs(wxString(_S("Unknown")));
+  return val == wxEmptyString || val.empty() || val.IsSameAs(wxT("Unknown"));
 }
 
 wxString PWSGridTable::GetColLabelValue(int col)
 {    
   return (size_t(col) < NumberOf(PWSGridCellData)) ?
-    wxString(PWSGridCellData[col].fieldname) : wxString();
+    towxstring(CItemData::FieldName(PWSGridCellData[col].ft)) : wxString();
 }
 
 
@@ -118,10 +123,10 @@ wxString PWSGridTable::GetValue(int row, int col)
       size_t(col) < NumberOf(PWSGridCellData)) {
 		const CItemData* item = m_pwsgrid->GetItem(row);
     if (item != NULL) {
-			return towx((item->*PWSGridCellData[col].func)());
+			return towxstring((item->*PWSGridCellData[col].func)());
 		}
 	}
-	return wxString();
+	return wxEmptyString;
 }
 
 void PWSGridTable::SetValue(int /*row*/, int /*col*/, const wxString& /*value*/)
