@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2011-03-07 14:43+0100\n"
+"PO-Revision-Date: 2011-03-09 18:11+0100\n"
 "Last-Translator: Björn Nordwall <pro.bn@telia.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -2951,7 +2951,7 @@ msgstr "Exportera post till ren text..."
 
 #. Resource IDs: (123)
 msgid "Export Text"
-msgstr "Exporterad text"
+msgstr "Exportera text"
 
 #. Resource IDs: (112)
 msgid "Export Text Extra"
@@ -4744,7 +4744,7 @@ msgid ""
 "\r\n"
 "Pressing Cancel stops the password being copied."
 msgstr ""
-"Tryck på OK så kopieras den valda postens lösenord till urklipp. Urklipp rensas säkert närPassword Safe stängs.\r\n"
+"Tryck på OK så kopieras den valda postens lösenord till Urklipp. Urklipp rensas säkert när Password Safe stängs.\r\n"
 "\r\n"
 "Tryck på Avsluta så stoppas kopieringen av lösenordet."
 
@@ -5915,7 +5915,7 @@ msgstr "Dessa har sparats senare än de nu öppna dokumenten och har förändrin
 #. Resource IDs: (344)
 #, c-format
 msgid "This alias' target [%s:%s:%s] is not a normal entry or already an alias base."
-msgstr "Detta aliasmål  [%s:%s:%s] är inte en normal post eller redan ett basalias."
+msgstr "Detta aliasmål  [%s:%s:%s] är inte en vanlig post eller redan ett basalias."
 
 #. Resource IDs: (320)
 msgid "This allows you to keep backups in a separate location. Make sure that you have write permission to the directory you specify."
@@ -6010,7 +6010,7 @@ msgstr "Detta program kräver filen %s, som inte hittades i detta system."
 #. Resource IDs: (344)
 #, c-format
 msgid "This shortcut's target [%s:%s:%s] is not a normal entry or already a shortcut base."
-msgstr "Denna genvägs mål [%s:%s:%s] är inte en normal post eller redan en genvägsbas."
+msgstr "Denna genvägs mål [%s:%s:%s] är inte en vanlig post eller redan en genvägsbas."
 
 #. Resource IDs: (338)
 #, c-format
@@ -7801,7 +7801,7 @@ msgstr "följande text:"
 
 #. Resource IDs: (364)
 msgid "this entry's password and data"
-msgstr "denna posts lösenord odh data"
+msgstr "denna posts lösenord och data"
 
 #. Resource IDs: (354)
 msgid "top"
