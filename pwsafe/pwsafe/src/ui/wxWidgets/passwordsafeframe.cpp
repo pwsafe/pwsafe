@@ -622,7 +622,6 @@ void PasswordSafeFrame::ShowGrid(bool show)
 {
   if (show) {
     m_grid->SetTable(new PWSGridTable(m_grid), true); // true => auto-delete
-    m_grid->AutoSizeColumns();
     m_grid->EnableEditing(false);
     m_grid->DeleteAllItems();
     wxFont font(towxstring(PWSprefs::GetInstance()->GetPref(PWSprefs::TreeFont)));
@@ -1318,6 +1317,7 @@ void PasswordSafeFrame::OnCloseWindow( wxCloseEvent& evt )
         return;
       }
     }
+    SaveSettings();
     Destroy();
   }
   else {
@@ -1447,6 +1447,11 @@ void PasswordSafeFrame::SelectItem(const CUUIDGen& uuid)
       m_tree->SelectItem(uuid);
     }
 
+}
+
+void PasswordSafeFrame::SaveSettings(void) const
+{
+  m_grid->SaveSettings();
 }
 
 void PasswordSafeFrame::SetChanged(ChangeType changed)

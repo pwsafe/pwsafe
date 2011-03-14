@@ -72,6 +72,11 @@ public:
   
   ///optional overrides
   virtual void Clear();
+  virtual void SetView(wxGrid* grid);
+
+  static int GetColumnFieldType(int colID);
+  void SaveSettings(void) const;
+  void RestoreSettings(void) const;
 
 private:
   PWSGrid* m_pwsgrid;

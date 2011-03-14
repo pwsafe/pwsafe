@@ -449,6 +449,7 @@ public:
   void RefreshToolbarButtons();
   PWSDragBar* GetDragBar();
   bool IsClosed() const;
+  void SaveSettings() const;
 
   void Merge(const StringX &sx_Filename2, PWScore *pothercore, const SelectionCriteria& selection);
   int MergeDependents(PWScore *pothercore, MultiCommands *pmulticmds,
