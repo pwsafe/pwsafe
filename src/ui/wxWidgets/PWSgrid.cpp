@@ -422,5 +422,6 @@ void PWSGrid::OnChar( wxKeyEvent& evt )
 void PWSGrid::SaveSettings(void) const
 {
   PWSGridTable* table = dynamic_cast<PWSGridTable*>(GetTable());
-  table->SaveSettings();
+  if (table)  //may not have been created/assigned
+    table->SaveSettings();
 }
