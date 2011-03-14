@@ -30,6 +30,7 @@
 #include "PWSgrid.h"
 #include "../../core/ItemData.h"
 #include "../../core/PWScore.h"
+#include <wx/tokenzr.h>
 
 
 ////@begin XPM images
@@ -46,27 +47,30 @@ IMPLEMENT_CLASS(PWSGridTable, wxGridTableBase)
 typedef StringX (CItemData::*ItemDataFuncT)() const;
 
 struct PWSGridCellDataType {
-  CItemData::FieldType ft;
-  ItemDataFuncT func;
+    CItemData::FieldType ft;
+    ItemDataFuncT func;
+    bool visible;
+    int width;
+    int position;
 } PWSGridCellData[] = {
-                        { CItemData::GROUP,                 &CItemData::GetGroup},
-                        { CItemData::TITLE,                 &CItemData::GetTitle},
-                        { CItemData::USER,                  &CItemData::GetUser},
-                        { CItemData::URL,                   &CItemData::GetURL},
-                        { CItemData::EMAIL,                 &CItemData::GetEmail},
-                        { CItemData::AUTOTYPE,              &CItemData::GetAutoType},
-                        { CItemData::RUNCMD,                &CItemData::GetRunCommand},
-                        { CItemData::PROTECTED,             &CItemData::GetProtected},
-                        { CItemData::CTIME,                 &CItemData::GetCTimeL},
-                        { CItemData::PMTIME,                &CItemData::GetPMTimeL},
-                        { CItemData::ATIME,                 &CItemData::GetATimeL},
-                        { CItemData::XTIME,                 &CItemData::GetXTimeL},
-                        { CItemData::XTIME_INT,             &CItemData::GetXTimeInt},
-                        { CItemData::RMTIME,                &CItemData::GetRMTimeL},
-//                        { CItemData::PASSWORD,              &CItemData::GetPassword},
-                        { CItemData::PWHIST,                &CItemData::GetPWHistory},
-                        { CItemData::POLICY,              &CItemData::GetPWPolicy},
-                        { CItemData::DCA,                   &CItemData::GetDCA},
+                        { CItemData::GROUP,       &CItemData::GetGroup,       true,     wxDefaultCoord,     0},
+                        { CItemData::TITLE,       &CItemData::GetTitle,       true,     wxDefaultCoord,     1},
+                        { CItemData::USER,        &CItemData::GetUser,        true,     wxDefaultCoord,     2},
+                        { CItemData::URL,         &CItemData::GetURL,         true,     wxDefaultCoord,     3},
+                        { CItemData::EMAIL,       &CItemData::GetEmail,       true,     wxDefaultCoord,     4},
+                        { CItemData::AUTOTYPE,    &CItemData::GetAutoType,    true,     wxDefaultCoord,     5},
+                        { CItemData::RUNCMD,      &CItemData::GetRunCommand,  true,     wxDefaultCoord,     6},
+                        { CItemData::PROTECTED,   &CItemData::GetProtected,   true,     wxDefaultCoord,     7},
+                        { CItemData::CTIME,       &CItemData::GetCTimeL,      true,     wxDefaultCoord,     8},
+                        { CItemData::PMTIME,      &CItemData::GetPMTimeL,     true,     wxDefaultCoord,     9},
+                        { CItemData::ATIME,       &CItemData::GetATimeL,      true,     wxDefaultCoord,     10},
+                        { CItemData::XTIME,       &CItemData::GetXTimeL,      true,     wxDefaultCoord,     11},
+                        { CItemData::XTIME_INT,   &CItemData::GetXTimeInt,    true,     wxDefaultCoord,     12},
+                        { CItemData::RMTIME,      &CItemData::GetRMTimeL,     true,     wxDefaultCoord,     13},
+                        { CItemData::PASSWORD,    &CItemData::GetPassword,    false,    wxDefaultCoord,     14},
+                        { CItemData::PWHIST,      &CItemData::GetPWHistory,   true,     wxDefaultCoord,     15},
+                        { CItemData::POLICY,      &CItemData::GetPWPolicy,    true,     wxDefaultCoord,     16},
+                        { CItemData::DCA,         &CItemData::GetDCA,         true,     wxDefaultCoord,     17},
                       };
 
 /*!
@@ -75,6 +79,13 @@ struct PWSGridCellDataType {
 
 PWSGridTable::PWSGridTable(PWSGrid* pwsgrid) : m_pwsgrid(pwsgrid)
 {
+  //PWSGridTable could be created many times, but the above table should be initialized
+  //only once to avoid losing the changes made during a session
+  static bool initialized = false;
+  if (!initialized) {
+    RestoreSettings();
+    initialized = true;
+  }
 }
 
 /*!
@@ -139,6 +150,52 @@ void PWSGridTable::Clear()
   m_pwsgrid->DeleteAllItems();
 }
 
+//overriden
+void PWSGridTable::SetView(wxGrid* newGrid)
+{
+  wxGrid* oldGrid = GetView();
+  wxGridTableBase::SetView(newGrid);
+  if (newGrid) {
+    //A new gridtable is being installed.  Update the grid with our settings
+    for (size_t idx = 0; idx < WXSIZEOF(PWSGridCellData); ++idx) {
+
+#if wxCHECK_VERSION(2, 9, 1)
+      if (PWSGridCellData[idx].visible)
+        newGrid->ShowCol(idx);
+      else
+        newGrid->HideCol(idx);
+#endif
+
+      //calling SetColSize, SetColPos would make them visible, so don't call them
+      //unless they are really visible
+      if (PWSGridCellData[idx].visible) {
+        if (PWSGridCellData[idx].width != wxDefaultCoord)
+          newGrid->SetColSize(idx, PWSGridCellData[idx].width);
+          
+        newGrid->SetColPos(idx, PWSGridCellData[idx].position);
+      }
+    }
+  }
+  else {
+    wxCHECK_RET(oldGrid, wxT("Both old and new grid views are NULL"));
+    //This gridtable is about to be deleted.  Save current settings
+    for (size_t idx = 0; idx < WXSIZEOF(PWSGridCellData); ++idx) {
+
+      bool visible = true;
+
+#if wxCHECK_VERSION(2, 9, 1)
+      visible = PWSGridCellData[idx].visible = oldGrid->IsColShown(idx);
+#endif
+
+      if (visible) {
+        PWSGridCellData[idx].width = oldGrid->GetColSize(idx);
+        PWSGridCellData[idx].position = oldGrid->GetColPos(idx);
+      }
+    }
+  }
+}
+
+
 bool PWSGridTable::DeleteRows(size_t pos, size_t numRows)
 {
 	size_t curNumRows = m_pwsgrid->GetNumItems();
@@ -190,4 +247,73 @@ bool PWSGridTable::InsertRows(size_t pos/*=0*/, size_t numRows/*=1*/)
     GetView()->ProcessTableMessage(msg);
   }
   return true;
+}
+
+//static
+int PWSGridTable::GetColumnFieldType(int colID)
+{
+  wxCHECK_MSG(colID >= 0 && size_t(colID) < WXSIZEOF(PWSGridCellData), CItemData::END,
+                wxT("column ID is greater than the number of columns in PWSGrid"));
+  return PWSGridCellData[colID].ft;
+}
+
+void PWSGridTable::SaveSettings(void) const
+{
+  wxString colWidths, colShown;
+  wxGrid* grid = GetView();
+  const int nCols = grid->GetNumberCols();
+
+  for(int idx = 0; idx < nCols; ++idx) {
+
+    const int colID = grid->GetColAt(idx);
+
+#if wxCHECK_VERSION(2, 9, 1)
+    if (!grid->IsColShown(colID))
+      continue;
+#endif
+
+    colShown << GetColumnFieldType(colID) << wxT(',');
+    colWidths << grid->GetColSize(colID) << wxT(',');
+  }
+
+  if (!colShown.IsEmpty())
+    colShown.RemoveLast();
+
+  if (!colWidths.IsEmpty())
+    colWidths.RemoveLast();
+
+  //write these, even if colWidth and colShown are empty
+  PWSprefs::GetInstance()->SetPref(PWSprefs::ListColumns, tostringx(colShown));
+  PWSprefs::GetInstance()->SetPref(PWSprefs::ColumnWidths, tostringx(colWidths));
+}
+
+void PWSGridTable::RestoreSettings(void) const
+{
+  wxString colShown = towxstring(PWSprefs::GetInstance()->GetPref(PWSprefs::ListColumns));
+  wxString colWidths = towxstring(PWSprefs::GetInstance()->GetPref(PWSprefs::ColumnWidths));
+
+  wxArrayString colShownArray = wxStringTokenize(colShown, wxT(" \r\n\t,"), wxTOKEN_STRTOK);
+  wxArrayString colWidthArray = wxStringTokenize(colWidths, wxT(" \r\n\t,"), wxTOKEN_STRTOK);
+  
+  if (colShownArray.Count() != colWidthArray.Count() || colShownArray.Count() == 0)
+    return;
+
+  //turn off all the columns first
+  for(size_t n = 0; n < WXSIZEOF(PWSGridCellData); ++n) {
+    PWSGridCellData[n].visible = false;
+  }
+
+  //now turn on the selected columns
+  for( size_t idx = 0; idx < colShownArray.Count(); ++idx) {
+    const int fieldType = wxAtoi(colShownArray[idx]);
+    const int fieldWidth = wxAtoi(colWidthArray[idx]);
+    for(size_t n = 0; n < WXSIZEOF(PWSGridCellData); ++n) {
+      if (PWSGridCellData[n].ft == fieldType) {
+        PWSGridCellData[n].visible = true;
+        PWSGridCellData[n].width = fieldWidth;
+        PWSGridCellData[n].position = idx;
+        break;
+      }
+    }
+  }
 }

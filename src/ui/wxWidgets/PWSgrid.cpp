@@ -29,6 +29,7 @@
 #include <wx/memory.h>
 #include <algorithm>
 #include <functional>
+#include "./PWSgridtable.h"
 
 ////@begin XPM images
 ////@end XPM images
@@ -84,6 +85,13 @@ bool PWSGrid::Create(wxWindow* parent, wxWindowID id, const wxPoint& pos, const 
 ////@begin PWSGrid creation
   wxGrid::Create(parent, id, pos, size, style);
   CreateControls();
+  EnableGridLines(PWSprefs::GetInstance()->GetPref(PWSprefs::ListViewGridLines));
+  EnableDragColMove(true);
+
+  //column picker is free if built with wx2.9.1
+#if wxCHECK_VERSION(2, 9, 1)
+  UseNativeColHeader(true);
+#endif
 ////@end PWSGrid creation
   return true;
 }
@@ -346,7 +354,7 @@ void PWSGrid::OnContextMenu( wxContextMenuEvent& evt )
     dynamic_cast<PasswordSafeFrame *>(GetParent())->OnContextMenu(GetItem(row));
   }
   else { //sent from mouse.  I don't know how to convert the mouse coords to grid's row,column
-    wxASSERT_MSG(false, wxT("Unexpected wxContextMenuEvent from mouse click"));
+    evt.Skip();
   }
 }
 
@@ -410,3 +418,9 @@ void PWSGrid::OnChar( wxKeyEvent& evt )
   evt.Skip();
 }
 
+
+void PWSGrid::SaveSettings(void) const
+{
+  PWSGridTable* table = dynamic_cast<PWSGridTable*>(GetTable());
+  table->SaveSettings();
+}
