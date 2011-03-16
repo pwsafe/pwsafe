@@ -25,7 +25,7 @@ Call DoI18N("it", "0x0410", "IT_IT", "IT")
 Call DoI18N("kr", "0x0412", "KO_KR", "KR")
 Call DoI18N("nl", "0x0413", "NL_NL", "NL")
 Call DoI18N("pl", "0x0415", "PL_PL", "PL")
-Call DoI18N("ru", "0x0419", "RU_RU", "RV")
+Call DoI18N("ru", "0x0419", "RU_RU", "RU")
 Call DoI18N("sv", "0x041d", "SV_SE", "SV")
 Call DoI18N("zh", "0x0804", "ZH_CN", "ZH")
 
