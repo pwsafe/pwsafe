@@ -229,7 +229,7 @@ static void DisplayFileWriteError(int rc, const StringX &fname);
 
 PasswordSafeFrame::PasswordSafeFrame(PWScore &core)
 : m_core(core), m_currentView(GRID), m_search(0), m_sysTray(new SystemTray(this)), m_exitFromMenu(false),
-  m_RUEList(core), m_guiInfo(new GUIInfo), m_bTSUpdated(false)
+  m_RUEList(core), m_guiInfo(new GUIInfo), m_bTSUpdated(false), m_savedDBPrefs(wxEmptyString)
 {
     Init();
 }
@@ -239,7 +239,7 @@ PasswordSafeFrame::PasswordSafeFrame(wxWindow* parent, PWScore &core,
                                      const wxPoint& pos, const wxSize& size,
                                      long style)
   : m_core(core), m_currentView(GRID), m_search(0), m_sysTray(new SystemTray(this)), m_exitFromMenu(false),
-    m_RUEList(core), m_guiInfo(new GUIInfo), m_bTSUpdated(false)
+    m_RUEList(core), m_guiInfo(new GUIInfo), m_bTSUpdated(false), m_savedDBPrefs(wxEmptyString)
 {
     Init();
     if (PWSprefs::GetInstance()->GetPref(PWSprefs::AlwaysOnTop))
@@ -910,7 +910,7 @@ int PasswordSafeFrame::SaveIfChanged()
   // returns PWScore::SUCCESS if save succeeded or if user decided
   // not to save
 
-  if (m_core.IsChanged() || PWSprefs::GetInstance()->IsDBprefsChanged()) {
+  if (m_core.IsChanged() || m_core.HaveDBPrefsChanged()) {
     wxString prompt(_("Do you want to save changes to the password database"));
     if (!m_core.GetCurFile().empty()) {
       prompt += _(": ");
@@ -1703,7 +1703,7 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
 {
   switch (evt.GetId()) {
     case wxID_SAVE:
-      evt.Enable(m_core.IsChanged());
+      evt.Enable(m_core.IsChanged() || m_core.HaveDBPrefsChanged());
       break;
    
     case ID_ADDGROUP:
@@ -2145,6 +2145,8 @@ bool PasswordSafeFrame::SaveAndClearDatabase()
   //Save UI elements first
   PWSprefs::GetInstance()->SaveApplicationPreferences();
   PWSprefs::GetInstance()->SaveShortcuts();
+  m_savedDBPrefs = towxstring(PWSprefs::GetInstance()->Store());
+
   //Save alerts the user
   if (!m_core.IsChanged() || Save() == PWScore::SUCCESS) {
     ClearData();
@@ -2183,6 +2185,13 @@ void PasswordSafeFrame::UnlockSafe(bool restoreUI)
     }
     else {
       return;
+    }
+    if (m_savedDBPrefs != wxEmptyString) {
+      const StringX savedPrefs = tostringx(m_savedDBPrefs);
+      PWSprefs::GetInstance()->Load(savedPrefs);
+      if (m_core.HaveHeaderPreferencesChanged(savedPrefs))
+        m_core.SetDBPrefsChanged(true);
+      m_savedDBPrefs = wxEmptyString;
     }
   }
   
