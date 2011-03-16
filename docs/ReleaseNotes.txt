@@ -33,7 +33,7 @@ not minimized now brings it to front, instead of minimizing.
 [3131935] Rename of an entry or group in the Tree View can now only be
 performed via the Rename shortcut (default value F2), using the Edit
 menu or the right-click context menu. Edit in place by double clicking
-the entry is no longer allowed, as mst of the times this was not the
+the entry is no longer allowed as, most of the time, this was not the
 desired action.
 [] Filtered views are now updated when an entry's edited, e.g., if an
 entry is edited such that it no longer satisfies the filter's
