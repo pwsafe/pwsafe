@@ -484,6 +484,7 @@ public:
   CRUEList m_RUEList;
   GUIInfo* m_guiInfo;
   bool m_bTSUpdated;
+  wxString m_savedDBPrefs;
   enum {iListOnly = 1, iTreeOnly = 2, iBothViews = 3};
 };
 
