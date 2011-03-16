@@ -19,110 +19,111 @@
 ;=================================================================
 
 ; RESERVE_TITLE "Choose Installation Type"
-LangString RESERVE_TITLE ${LANG_KOREAN} "TRANSLATION"
+LangString RESERVE_TITLE ${LANG_KOREAN} "설치 종류를 선택해 주십시오"
 
 ; RESERVE_FIELD1 "Regular (uses Registry, suitable for home or single user PC)"
-LangString RESERVE_FIELD1 ${LANG_KOREAN} "TRANSLATION"
+LangString RESERVE_FIELD1 ${LANG_KOREAN} "일반 설치(레지스트리에 값을 저장함. 가정 및 개인 사용자에게 적합"
 
 ; RESERVE_FIELD2 "Green (for Disk-on-Key; does not use host Registry)"
-LangString RESERVE_FIELD2 ${LANG_KOREAN} "TRANSLATION"
+LangString RESERVE_FIELD2 ${LANG_KOREAN} "안전 설치 (레지스트리를 이용하지 않고 키 데이터베이스 파일을 사용)"
 
 ; PROGRAM_FILES "Program Files"
-LangString PROGRAM_FILES ${LANG_KOREAN} "TRANSLATION"
+LangString PROGRAM_FILES ${LANG_KOREAN} "Program Files"
 
 ; START_AUTO "Start automatically"
-LangString START_AUTO ${LANG_KOREAN} "TRANSLATION"
+LangString START_AUTO ${LANG_KOREAN} "자동으로 시작"
 
 ; START_SHOW "Show in start menu"
-LangString START_SHOW ${LANG_KOREAN} "TRANSLATION"
+LangString START_SHOW ${LANG_KOREAN} "시작 메뉴에 보이기"
 
 ; START_SHORTCUT "Install desktop shortcut"
-LangString START_SHORTCUT ${LANG_KOREAN} "TRANSLATION"
+LangString START_SHORTCUT ${LANG_KOREAN} "바로 가기 아이콘 설치"
 
 ; UNINSTALL_SHORTCUT "Uninstall shortcut"
-LangString UNINSTALL_SHORTCUT ${LANG_KOREAN} "TRANSLATION"
+LangString UNINSTALL_SHORTCUT ${LANG_KOREAN} "바로 가기 아이콘 삭제"
 
 ;--------------------------------
 ; Descriptions
 
 ; DESC_ProgramFiles "Installs the basic files necessary to run Password Safe."
-LangString DESC_ProgramFiles ${LANG_KOREAN} "TRANSLATION"
+LangString DESC_ProgramFiles ${LANG_KOREAN} "Password Safe를 실행시키기 위한 최소한의 파일만 설치"
 
 ; DESC_LangSupport "Please select the language(s) that PasswordSafe will use."
-LangString DESC_LangSupport ${LANG_KOREAN} "TRANSLATION"
+LangString DESC_LangSupport ${LANG_KOREAN} "Password Safe에서 사용하실 언어를 선택해 주십시오"
 
 ; DESC_StartUp "Starts Password Safe as part of Windows boot/login."
-LangString DESC_StartUp ${LANG_KOREAN} "TRANSLATION"
+LangString DESC_StartUp ${LANG_KOREAN} "윈도우 시작 시에 Password Safe를 실행"
 
 ; DESC_StartMenu "Creates an entry in the start menu for Password Safe."
-LangString DESC_StartMenu ${LANG_KOREAN} "TRANSLATION"
+LangString DESC_StartMenu ${LANG_KOREAN} "시작 메뉴에 Password Safe 바로 가기 아이콘 설치"
 
 ; DESC_DesktopShortcut "Places a shortcut to Password Safe on your desktop."
-LangString DESC_DesktopShortcut ${LANG_KOREAN} "TRANSLATION"
+LangString DESC_DesktopShortcut ${LANG_KOREAN} "바탕화면에 Password Safe 바로 가기 아이콘 설치"
 
 ; DESC_UninstallMenu "Places a shortcut in the start menu to Uninstall Password Safe."
-LangString DESC_UninstallMenu ${LANG_KOREAN} "TRANSLATION"
+LangString DESC_UninstallMenu ${LANG_KOREAN} "시작 메뉴에 Password Safe 삭제 아이콘 설치"
   
 ; "LangString" (for "Function GreenOrRegular") are setup here because they cannot be defined in the function body
 ; TEXT_GC_TITLE "Installation Type"
-LangString TEXT_GC_TITLE ${LANG_KOREAN} "TRANSLATION"
+LangString TEXT_GC_TITLE ${LANG_KOREAN} "설치 종류"
 
 ; TEXT_GC_SUBTITLE "Choose Regular for use on a single PC, Green for portable installation. If you're not sure, 'Regular' is fine."
-LangString TEXT_GC_SUBTITLE ${LANG_KOREAN} "TRANSLATION"
+LangString TEXT_GC_SUBTITLE ${LANG_KOREAN} "개인 컴퓨터에 설치하시려면 일반 설치를, 이동형 실행을 원하시면 고급 설치를 선택해주십시오. 잘 모르겠으면, 일반 설치를 선택해 주십시오"
 
 ; PSWINI_TITLE "Choose Installation Type"
-LangString PSWINI_TITLE ${LANG_KOREAN} "TRANSLATION"
+LangString PSWINI_TITLE ${LANG_KOREAN} "설치 종류를 선택해 주십시오"
 
 ; PSWINI_TEXT1 "Regular (uses Registry, suitable for home or single user PC)"
-LangString PSWINI_TEXT1 ${LANG_KOREAN} "TRANSLATION"
+LangString PSWINI_TEXT1 ${LANG_KOREAN} "일반 설치(레지스트리 사용, 개인 및 가정용으로 적합)"
 
 ; PSWINI_TEXT2 "Green (for Disk-on-Key; does not use host Registry)"
-LangString PSWINI_TEXT2 ${LANG_KOREAN} "TRANSLATION"
+LangString PSWINI_TEXT2 ${LANG_KOREAN} "고급 설치(디스크 드라이브 사용, 레지스트리 사용 안함)"
 
 ;--------------------------------
 ; checks and warnings
 
 ; RUNNING_INSTALL "The installer is already running."
-LangString RUNNING_INSTALL ${LANG_KOREAN} "TRANSLATION"
+LangString RUNNING_INSTALL ${LANG_KOREAN} "설치 프로그램이 이미 실행중입니다"
 
 ; RUNNING_APPLICATION "Please exit all running instances of PasswordSafe before installing a new version"
-LangString RUNNING_APPLICATION ${LANG_KOREAN} "TRANSLATION"
+LangString RUNNING_APPLICATION ${LANG_KOREAN} "새 버전의 Password Safe를 설치하기 전에, 이전 버전의 프로그램은 모두 종료해 주십시오."
 
 ; LANG_INSTALL "Installation Language"
-LangString LANG_INSTALL ${LANG_KOREAN} "TRANSLATION"
+LangString LANG_INSTALL ${LANG_KOREAN} "설치 언어"
 
 ; LANG_SELECT "Please select the language for the installation"
-LangString LANG_SELECT ${LANG_KOREAN} "TRANSLATION"
+LangString LANG_SELECT ${LANG_KOREAN} "설치하실 언어를 선택해 주십시오"
 
-LangString LANGUAGE_SUPPORT ${LANG_KOREAN} "Language Support"
-LangString ENGLISH_SUPPORT ${LANG_KOREAN} "English"
-LangString CHINESE_CN_SUPPORT ${LANG_KOREAN} "Chinese (Simplified)"
-LangString CHINESE_TW_SUPPORT ${LANG_KOREAN} "Chinese (Traditional)"
-LangString GERMAN_SUPPORT ${LANG_KOREAN} "German"
-LangString SPANISH_SUPPORT ${LANG_KOREAN} "Spanish"
-LangString SWEDISH_SUPPORT ${LANG_KOREAN} "Swedish"
-LangString DUTCH_SUPPORT ${LANG_KOREAN} "Dutch"
-LangString FRENCH_SUPPORT ${LANG_KOREAN} "French"
-LangString RUSSIAN_SUPPORT ${LANG_KOREAN} "Russian"
-LangString POLISH_SUPPORT ${LANG_KOREAN} "Polish"
-LangString ITALIAN_SUPPORT ${LANG_KOREAN} "Italian"
-LangString DANISH_SUPPORT ${LANG_KOREAN} "Danish"
-LangString KOREAN_SUPPORT ${LANG_KOREAN} "Korean"
+LangString LANGUAGE_SUPPORT ${LANG_KOREAN} "언어 선택"
+LangString ENGLISH_SUPPORT ${LANG_KOREAN} "영어"
+LangString CHINESE_CN_SUPPORT ${LANG_KOREAN} "중국어 (간체)"
+LangString CHINESE_TW_SUPPORT ${LANG_KOREAN} "중국어 (번체)"
+LangString GERMAN_SUPPORT ${LANG_KOREAN} "독일어"
+LangString SPANISH_SUPPORT ${LANG_KOREAN} "스페인어"
+LangString SWEDISH_SUPPORT ${LANG_KOREAN} "스웨덴어"
+LangString DUTCH_SUPPORT ${LANG_KOREAN} "네덜란드어"
+LangString FRENCH_SUPPORT ${LANG_KOREAN} "프랑스어"
+LangString RUSSIAN_SUPPORT ${LANG_KOREAN} "러시아어"
+LangString POLISH_SUPPORT ${LANG_KOREAN} "폴란드어"
+LangString ITALIAN_SUPPORT ${LANG_KOREAN} "이탈리아어"
+LangString DANISH_SUPPORT ${LANG_KOREAN} "덴마크어"
+LangString KOREAN_SUPPORT ${LANG_KOREAN} "한국어"
 
 ; LANG_PROGRAM "Program Language"
-LangString LANG_PROGRAM ${LANG_KOREAN} "TRANSLATION"
+LangString LANG_PROGRAM ${LANG_KOREAN} "프로그램 언어"
 
 ; SORRY_NO_95 "Sorry, Windows 95 is no longer supported. Try PasswordSafe 2.16"
-LangString SORRY_NO_95 ${LANG_KOREAN} "TRANSLATION"
+LangString SORRY_NO_95 ${LANG_KOREAN} "Windows 95는 더 이상 지원되지 않습니다. Password Safe 2.16을 사용해 주십시오."
 
 ; SORRY_NO_98 "Sorry, Windows 98 is no longer supported. Try PasswordSafe 2.16"
-LangString SORRY_NO_98 ${LANG_KOREAN} "TRANSLATION"
+LangString SORRY_NO_98 ${LANG_KOREAN} " Windows 98는 더 이상 지원되지 않습니다. Password Safe 2.16을 사용해 주십시오."
 
 ; SORRY_NO_ME "Sorry, Windows ME is no longer supported. Try PasswordSafe 2.16"
-LangString SORRY_NO_ME ${LANG_KOREAN} "TRANSLATION"
+LangString SORRY_NO_ME ${LANG_KOREAN} " Windows ME는 더 이상 지원되지 않습니다. Password Safe 2.16을 사용해 주십시오."
 
 ; SORRY_NO_2K "Sorry, Windows 2000 is no longer supported. Try PasswordSafe 3.18"
-LangString SORRY_NO_2K ${LANG_KOREAN} "TRANSLATION"
+LangString SORRY_NO_2K ${LANG_KOREAN} " Windows 2000은 더 이상 지원되지 않습니다. Password Safe 3.18을 사용해 주십시오."
 
 ;=================================================================
 ; End of pwsafe_kr.lng
+
