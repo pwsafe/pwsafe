@@ -10,37 +10,53 @@ releases may be found in the file ChangeLog.txt.
 
 New Features for 3.25
 =======================
-[] Installation instructions now available in Dutch, thank to Kees.
+[] Dutch installation instructions thank to Kees, and a first
+(incomplete) Dutch translation of the application thank to Bert, Kees
+and Fred.
+[] Korean texts in the application and installer program thanks to
+Seunggyun.
+[] Poserpro has provided Traditional Chinese texts for the installer
+program.
 [] New View menu option: Show entries with Expiry. This is useful for
 displaying entries with passwords that are expired or about to expire.
 
 Changes to Existing Features in 3.25
 ======================================
 [3171962] The password expiration warning mechanism now checks for
-expiration daily, if enabled. Users will be able to update the entry
-directly from the displayed list. When an expired password is 
-changed, the expiry date will be cleared unless there is a recurring
-password expiry interval, in which case a new expiry date will be
-calculated.
+expiration daily. The display of expired and almost-expired entries
+has been redesigned, allowing users to update the entry directly. When
+an expired password is changed, the expiry date will be cleared unless
+there is a recurring password expiry interval, in which case a new
+expiry date will be calculated.
 [3131945] Double-clicking on the system tray icon when PasswordSafe is
 not minimized now brings it to front, instead of minimizing.
 [3131935] Rename of an entry or group in the Tree View can now only be
 performed via the Rename shortcut (default value F2), using the Edit
 menu or the right-click context menu. Edit in place by double clicking
-the entry is no longer allowed to prevent unwanted changes.
+the entry is no longer allowed, as mst of the times this was not the
+desired action.
 [] Filtered views are now updated when an entry's edited, e.g., if an
 entry is edited such that it no longer satisfies the filter's
 criteria, it will be removed from the display. 
 [] The Russian online help has been totally rewritten and updated,
 thanks to pm_kan.
+[] pm_kan has updated the Russian texts.
+[] The Spanish texts have been updated thanks to Jose.
+[] Karlo has updated the German texts.
+[] Francois has updated the French texts.
+[] Bjorne has updated the Swedish version.
+[] freedoctor has updated the Chinese texts.
+
 
 Bugs fixed in 3.25
 ====================
 [3194472] Fix new group creation location. When a Group is selected, then
-selecting 'Add Group' from the Edit menu or from the context menu displayed by
-right clicking on that Group, the new group will be a child of the selected group.
-However, when using the context menu displayed on right clicking on 'white space'
-below the last entry/group displayed, the group will be created at the topmost level.
+selecting 'Add Group' from the Edit menu or from the context menu
+displayed by right clicking on that Group, the new group will be a
+child of the selected group. However, when using the context menu
+displayed on right clicking on 'white space' below the last
+entry/group displayed, the group will be created at the topmost
+level. 
 [3165889] No longer crashes if search starts with Shift-Enter (search
 backwards).
 [3148701] Windows installer will now refuse to install on Win2K,
@@ -49,277 +65,3 @@ referring user to last supported version on that OS (3.18).
 "Show Desktop" feature.
 [] No longer crashes when doing an Undo after a Merge.
 [] Ensure Undo/Redo honour the changes to the display of the original change.
-
-New Features for 3.24.1
-=======================
-[] Allow an entry to be protected against modification even if the database
-is opened in read-write mode. See 'Basic Tab' in Edit dialog. In Tree mode,
-a number sign (#) after the name indicates the entry is protected. In List mode, the
-'Protected' column may be added to the list. A protected entry can not be
-edited, renamed or deleted and retains this property if Dragged & Dropped onto
-another database.
-
-Changes to Existing Features in 3.24.1
-======================================
-None
-
-Bugs fixed in 3.24.1
-====================
-[3132055, 3132347] Fix crash in V3.24
-
-New Features for 3.24
-=====================
-[3111585] User can now duplicate Groups. Aliases and shortcuts referring to base
-entries outside this group will still point to their respective bases. Those
-referring to base entries within the group will then point to the new copy.
-[3065107] Confirm Delete dialog for an entry now shows the entry's details.
-[3062854] Advanced Dialog Options settings are saved for a session to allow
-re-use. The following functions use the this dialog and their settings are saved
-separately: Merge, Compare, Export to Text, Export to XML, Synchronize and
-Find Toolbar.
-[3062809] Add "Add Group" to Toolbar.
-[3062788] Add "Add New Entry" menu item to additional context menus.
-[] Online help is now available in Spanish, thanks to Jose.
-
-Changes to Existing Features in 3.24
-====================================
-None
-
-Bugs fixed in 3.24
-==================
-[3121006] Can now change number of databases remembered independently of the
-value of the number of last used entries remembered in System Tray menu. 
-[3084401] When database is locked, clipboard is cleared and the hotkey works.
-[3069250] PasswordSafe now remembers the selected entry on Lock After Idle.
-[3065827] Uninstall fails gracefully when invoked with pwsafe running.
-[3062850] Dialogs are now correctly closed if open when the workstation locks
-(with preference "Lock password database on workstation lock" set), enabling
-the application to be opened again.
-[3062769] Groups list in Add/Edit dialog box no longer "remembers"
-groups from previously opened database.
-[3058043] Hexadecimal password policy now correctly saved.
-[] Spanish translations for installer and application updated - thanks
-to Jose.
-
-New Features for 3.23
-=====================
-[3022827] Implement 'stealth' mode where, as long as the user specifies both
-the use of the System Tray and a valid Hot Key, then the System Tray
-icon and the button on the Taskbar can be hidden.
-[3017535] Allow user to edit the generated passwords (Manage->Generate Password)
-before copying to the clipboard.
-[3011546] "autotype" can now be added to the List View via the Column
-Picker (right click on column labels).
-
-Changes to Existing Features in 3.23
-====================================
-[3026944] Confirm on Delete option has been re-instated.
-
-Bugs fixed in 3.23
-==================
-[3029576] Ensure user specified backup directory ends with a slash.
-[3028926] Entries modified via Synchronize are now displayed correctly if the
-user checks the preference "Highlight changed entries" via Options->Display.
-[3016803] No longer crashes when trying to view a base entry with
-similarly named aliases.
-[3013199] PasswordSafe no longer hangs when trying to read preferences
-stored in registry by older versions.
-[3011972] By adding more checking when creating the menus for Recent Entries
-off the System Tray menu, prevent crashing when clicking on the icon.
-[3010926] Can now set a non-recurring expiry date using the calendar during
-Add/Edit.
-[3010541, 3013981, 3011972] Fixed crash when locked and the user
-right-clicks the System Tray icon.
-[3009130] Changes to an entry's password policy are now saved upon OK or Apply.
-[3008203] The password expiration date is now automatically updated when
-a "recurring" password expiration is set and the password is changed.
-[3006125] Selected entry/group before database is locked or minimized,
-including when Windows goes into Standby/Hibernate is now re-selected when
-the database is later displayed.
-[3006069] Autotype now works correctly when the user specifies that
-PasswordSafe should minimize after Autotype and has also set that the
-database should be locked on minimize.
-[2957038] Cursor no longer disappears when PasswordSafe thinks that the
-user is dragging an entry but then doesn't.
-[] The Save Toolbar button and the Save menu item are now correctly
-enabled if the user changes preferences saved in the database.
-
-New Features for 3.22
-=====================
-[2983775] Recently Used Entries are now saved in the database header and
-so are "persistent".  The current Windows user interface limits this to a
-maximum of the last 25 entries accessed.
-[2980609] Allow date filters to use relative dates
-[2979411] A single entry can now be exported to a text or XML file via the
-Edit menu or right-click context menu.
-[2957185] Add Synchronize function to the menu options during review of
-the results of a Compare database operation.
-[] Support for Danish has been added - thanks to Rejmond for his
-effort in translating!
-[] Validation of databases can now be performed via the Manage menu as
-well as via the command line flag '-v'. When executed via the menu, it
-is very similar to opening a new database in that the current open database
-is closed and the selected database is validated during the open process.
-[] Allow user to select external editor for Notes field in Add/Edit dialog.
-[] Add entry size to the available filters to be able view entries.
-[] Warn users during database open and entry import if there are entries
-with large text fields (e.g. Notes) that cannot be fully displayed and may
-be truncated if edited.
-
-Changes to Existing Features in 3.22
-====================================
-[] Preferences are now saved in the 'normal' per-user directory under
-Windows. Existing installations will use current preferences, but
-users can migrate to the new location via
-Manage->Options->System->Migrate PasswordSafe configuration to user
-directory.
-[] New databases will be created by default in "My Safes" directory
-under "My Documents".
-
-Bugs fixed in 3.22
-==================
-[3004446] Deleting a group of entries works again.
-[2994118] Swedish version no longer crashes when checking for latest
-version.
-[2990734] Changing either whether password history is kept and deleting
-currently saved history now activates the OK Button.
-[2990609] Clicking to rename entries is now disabled when database is read-only.
-[2984527] Database preferences (including the Idle Timer setting) now retained
-during a locking minimize to the System Tray.
-[2977941] The password expiry date is now updated during edit if the password
-is changed either via the Generate button or by the user manually editing it.
-[2977045] Can now make password expiration date any value from the current
-date.
-[2962916] Save toolbar button only enabled if database is R/W and has been
-changed since last saved.
-[2962847] Fix password length checking to be between 4 and 1024 during
-menu Generate Password option & Password Policy setting as per previous
-releases.
-[2960709] Entry selected prior to workstation locking is reselected on
-being restored after unlocking the workstation.
-[2957933] Ensure that AutoType delay and wait times are not impacted by numeric
-characters from any entry field substitution.
-[2951871] Shortcut related menu items now returned to the Edit menu and
-the "Run Command", "Browse to URL", "Browse to URL + Autotype" and
-"Send email" functions now work again, when a Shortcut entry is selected.
-[2897661, 2779654] Group expand/collapse state restored after the database
-is Locked, Minimized or "AutoType with Minimize" and then Restored.
-[] Use of External Editor on Notes field from Edit dialog now activates Apply
-and OK buttons.
-[] Fix errors if importing an XML file with entries with duplicate unique IDs
-(UUID elements).
-[] Remove "Confirm Deletion of Entries" checkbox from theMisc. Options
-page. New support for Undo/Redo made this unnecessary. Users are always 
-asked to confirm the deletion of Groups or entries that have aliases or shortcuts.
-
-New Features for 3.21
-=====================
-[2940756] Add "Apply" button to Edit property pages so that
-intermediate changes can be saved without closing the Edit property pages.
-[2919319] PasswordSafe can now be used as a password generator via the
-Manage menu.
-[2616175] Allows user to retry finding the original database if not
-successfully found the first time.
-[] Undo/Redo of changes to the currently open database. Any change to
-the database can now be undone and redone, as long as the database is
-open. This is similar to the undo/redo feature available in most word
-processors, and is activated the same way (Ctrl-Z for undo, Ctrl-Y for
-redo, or via the Edit menu).
-[] New Synchronize feature (subset of the current Merge function) to
-allow changes in the fields of entries of two databases to be
-synchronised.  Entries with identical Group names, Titles and User
-names are compared when syncing. The database selected to be
-synchronised with the current open database is now always in read-only
-mode i.e. Synchronisation is uni-directional and only entries in the
-currently open database can be modified.
-
-Changes to Existing Features in 3.21
-====================================
-[] When comparing databases, the "other" selected database is now always
-opened in read-only mode.
-
-Bugs fixed in 3.21
-==================
-[2941828] In Add & Edit, changes to the Password Policy take effect
-immediately; pressing the Generate button will create a password
-according to the new policy, without having to save and re-open the
-entry.
-[2940712] Dragging a group now drags along all its descendants.
-[2931428] Password history now displayed correctly in View/Edit.
-[2918306, 2816066, 2798788, 2446052, 2837591, 2917066, ...] Re-instate
-AutoType via shortcut and when an entry has been selected via the 
-Find Toolbar.
-[2921935] Dragbar now works in List view without needing the mouse to activate.
-[2918849] Fixed icon no longer appearing in taskbar when locking due to
-workstation lock and terminal services running.
-[2916338] "Edit Base entry" now works for Alias entries as well as for Shortcuts.
-[2913440] Copy/Send Email menu items now correctly activated if email field
-is set or 'mailto:' used in URL field.
-[2912177] Adding Groups via right-click menu now works again under
-default configuration.
-[2894100] PasswordSafe window no longer creeps down the screen if the Windows 
-taskbar is at the top of the screen.
-[2818401] AutoType backspace field ('\b') now honoured in both "AutoType" and
-"Browse To + AutoType" consistently.
-[2431438] When unable to find a previous database via the recently opened databases
-on the File menu and the user is given the option to open a different database or
-create a new one.
-[1751462] After Find Toolbar Advanced dialog is used, the previous Find results
-are now reset.
-[] Finally fix issues running under pre-XP versions of Windows.
-[] Fix issue when changing the displayed columns in List View and then switching
-to Tree View.
-
-Bugs fixed in 3.20
-==================
-[2906249] User changes to List view's column order are now persistent.
-[2905961] ESC key now works correctly in View Entry when in RO mode.
-[2873106] Export XML warnings now consistent with Export Text's.
-[2872829] Duplicating an entry now copies the password policy as well.
-[2872602] Preferences are now correctly deleted from the Windows registry
-if they match the default (when registry is enabled).
-[2870059] When an entry is highlighted during Find, the Toolbar and menu
-items now reflect its contents.
-[2868278] Minimize via the system menu, SystemTray menu and system control
-box button now locks the database if the preference 'Lock on Minimize' is
-set.
-[2868244] Change font dialogs now work again.
-[] Import from a text file with non-Latin text now works correctly.
-[] No longer complains about WTS service in pre-XP versions of Windows.
-[] Filters containing tests on the entry type are now correctly
-exported to XML.
-[] Validate of Password History (-v command line flag) now removes
-history fields with invalid dates or empty old password fields.
-[] Fix match test 'does not begin with' - used in filters and restricting
-entries exported to Text or XML.
-[] Fixed icons display in List view.
-
-New Features for 3.20
-=====================
-[2895167] Dragbar tooltips changed to provide relevant information for each
-image and reduce the amount of text.
-[2881604] Allow edit of base entry of a shortcut via the Edit menu and/or
-by right-clicking on a shortcut entry.
-[2872273] Improve Import Text 'Line skipped' message.
-[2826509] Can now update passwords of existing entries via Import Text or XML:
-  For Text import, the 'Group/Title', 'Username' and 'Password' fields
-  are required. 
-  For XML import, the Title and Password elements are required. If the
-  Group and Username elements are missing, they are assumed to be
-  empty.  All other fields or elements can be present but will be ignored.
-[] Add highlighting of added/changed and deleted records.  The latter can
-seen via View->Show Changed Entries.
-
-Changes to Existing Features in 3.20
-====================================
-[2880663] 'Browse to' special fields (currently: [alt], {alt}, [ssh], [autotype]
-and [xa]) are removed from the URL field when copied to the clipboard or when
-used in the RunCommand (via $url).  If the '[alt]' or {alt} were present, then
-the RunCommand will execute this program.
-[2868278] The SystemTray Unlock menu item now only unlocks the
-database (when correct passphrase is provided). To show the
-application's main window, use the Restore menu item.
-[2874520] To prevent junk showing in the Notes field in List View due
-to end of line characters, now only show the first line but indicate
-more are there using [>>>] at end of line. Setting preference "Show
-Notes as Tooltips in Tree & List View" will show these (up to 250 characters).
