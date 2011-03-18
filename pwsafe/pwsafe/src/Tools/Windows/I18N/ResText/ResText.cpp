@@ -141,7 +141,7 @@ int _tmain(int argc, _TCHAR* argv[])
 		_ftprintf(stdout, _T("Replaces all strings in the dst resource.dll with the po-file translations\n"));
 		_ftprintf(stdout, _T("-quiet: don't print progress messages\n"));
 		_ftprintf(stdout, _T("-rtl  : change the controls to RTL reading\n"));
-      _ftprintf(stdout, _T("-showdefault  : print untranslated values to stderr\n"));
+		_ftprintf(stdout, _T("-showdefault  : print untranslated values to stderr\n"));
 		_ftprintf(stdout, _T("\n"));
 	}
 
