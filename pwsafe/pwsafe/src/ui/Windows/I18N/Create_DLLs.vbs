@@ -1,5 +1,16 @@
 'Update the Resource Only DLLs for each language we support
 
+Option Explicit
+
+If Instr(1, WScript.FullName, "cscript.exe", vbTextCompare) = 0 then
+    MsgBox "This script must be executed by cscript.exe" & vbCRLF & _
+           "e.g. cscript Create_DLLs.vbs", _
+           vbCritical, _
+           "Error: " & Wscript.ScriptFullName
+    ' return error code to caller
+    Wscript.Quit(99)
+End If
+
 Dim TOOLS, RESTEXT, RESPWSL, BASE_DLL, DEST_DIR
 Dim objFSO
 
@@ -16,21 +27,48 @@ If (objFSO.FileExists("foo.dll")) Then
   objFSO.DeleteFile "foo.dll"
 End If
 
+Dim objStdOut
+Set objStdOut = WScript.StdOut
+
 ' Now do them
+objStdOut.WriteLine " Creating German Language DLL"
 Call DoI18N("de", "0x0407", "DE_DE", "DE")
+objStdOut.WriteLine "   Done"
+objStdOut.WriteLine " Creating Danish Language DLL"
 Call DoI18N("dk", "0x0406", "DA_DK", "DA")
+objStdOut.WriteLine "   Done"
+objStdOut.WriteLine " Creating Spanish Language DLL"
 Call DoI18N("es", "0x0c0a", "ES_ES", "ES")
+objStdOut.WriteLine "   Done"
+objStdOut.WriteLine " Creating French Language DLL"
 Call DoI18N("fr", "0x040c", "FR_FR", "FR")
+objStdOut.WriteLine "   Done"
+objStdOut.WriteLine " Creating Italian Language DLL"
 Call DoI18N("it", "0x0410", "IT_IT", "IT")
+objStdOut.WriteLine "   Done"
+objStdOut.WriteLine " Creating Korean Language DLL"
 Call DoI18N("kr", "0x0412", "KO_KR", "KR")
+objStdOut.WriteLine "   Done"
+objStdOut.WriteLine " Creating Dutch Language DLL"
 Call DoI18N("nl", "0x0413", "NL_NL", "NL")
+objStdOut.WriteLine "   Done"
+objStdOut.WriteLine " Creating Polish Language DLL"
 Call DoI18N("pl", "0x0415", "PL_PL", "PL")
+objStdOut.WriteLine "   Done"
+objStdOut.WriteLine " Creating Russian Language DLL"
 Call DoI18N("ru", "0x0419", "RU_RU", "RU")
+objStdOut.WriteLine "   Done"
+objStdOut.WriteLine " Creating Swedish Language DLL"
 Call DoI18N("sv", "0x041d", "SV_SE", "SV")
+objStdOut.WriteLine "   Done"
+objStdOut.WriteLine " Creating Chinese Language DLL"
 Call DoI18N("zh", "0x0804", "ZH_CN", "ZH")
+objStdOut.WriteLine "   Done"
+objStdOut.WriteLine " Processing Completed"
 
 ' Delete FileSystemObject
 Set objFSO = Nothing
+Set objStdOut = Nothing
 
 WScript.Quit(0)
 
@@ -51,14 +89,16 @@ Set WshShell = CreateObject("WScript.Shell")
 Set oExec = WshShell.Exec(RESTEXT & " apply " & BASE_DLL & " foo.dll " & "pos\pwsafe_" & PO & ".po")
 
 Do While oExec.Status = 0
-     WScript.Sleep 100
+  objStdOut.Write ".."
+  WScript.Sleep 100
 Loop
 
 ' Create new DLL with correct name and update version information
 Set oExec = WshShell.Exec(RESPWSL & " apply foo.dll " & LCID)
 
 Do While oExec.Status = 0
-     WScript.Sleep 100
+  objStdOut.Write ".."
+  WScript.Sleep 100
 Loop
 
 Set oExec = Nothing
