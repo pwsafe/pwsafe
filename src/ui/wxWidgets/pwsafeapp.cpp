@@ -249,16 +249,6 @@ bool PwsafeApp::OnInit()
   // OK to load prefs now
   PWSprefs *prefs = PWSprefs::GetInstance();
 
-  wxSingleInstanceChecker appInstance;
-  if (!prefs->GetPref(PWSprefs::MultipleInstances) && 
-        (appInstance.Create(wxT("pwsafe.lck"), towxstring(pws_os::getuserprefsdir())) &&
-         appInstance.IsAnotherRunning())) 
-  {
-    wxMessageBox(_("Another instance of Password Safe is already running"), _("Password Safe"),
-                          wxOK|wxICON_INFORMATION);
-    return false;
-  }
-
   // if filename passed in command line, it takes precedence
   // over that in preference:
   if (filename.empty()) {
@@ -282,6 +272,16 @@ bool PwsafeApp::OnInit()
     exit(0);
   }
 #endif /* _DEBUG */
+
+  wxSingleInstanceChecker appInstance;
+  if (!prefs->GetPref(PWSprefs::MultipleInstances) && 
+        (appInstance.Create(wxT("pwsafe.lck"), towxstring(pws_os::getuserprefsdir())) &&
+         appInstance.IsAnotherRunning())) 
+  {
+    wxMessageBox(_("Another instance of Password Safe is already running"), _("Password Safe"),
+                          wxOK|wxICON_INFORMATION);
+    return false;
+  }
 
 #if defined(__X__) || defined(__WXGTK__)
   wxTheClipboard->UsePrimarySelection(prefs->GetPref(PWSprefs::UsePrimarySelectionForClipboard));
