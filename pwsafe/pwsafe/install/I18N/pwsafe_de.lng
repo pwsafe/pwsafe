@@ -100,9 +100,9 @@ LangString LANG_PROGRAM ${LANG_GERMAN} "Sprache der Anwendung"
 LangString LANGUAGE_SUPPORT ${LANG_GERMAN} "Sprachenunterstützung"
 LangString ENGLISH_SUPPORT ${LANG_GERMAN} "Englisch"
 ; Chinese (Simplified)
-LangString CHINESE_CN_SUPPORT ${LANG_GERMAN} "Chinesisch (TRANSLATE)"
+LangString CHINESE_CN_SUPPORT ${LANG_GERMAN} "Chinesisch (Simplified)"
 ; Chinese (Traditional)
-LangString CHINESE_TW_SUPPORT ${LANG_GERMAN} "Chinesisch (TRANSLATE)"
+LangString CHINESE_TW_SUPPORT ${LANG_GERMAN} "Chinesisch (Traditional)"
 LangString CHINESE_SUPPORT ${LANG_GERMAN} "Chinesisch"
 LangString GERMAN_SUPPORT ${LANG_GERMAN} "Deutsch"
 LangString SPANISH_SUPPORT ${LANG_GERMAN} "Spanisch"
