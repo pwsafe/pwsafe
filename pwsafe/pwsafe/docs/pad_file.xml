@@ -34,10 +34,10 @@
 	</Company_Info>
 	<Program_Info>
 		<Program_Name>PasswordSafe</Program_Name>
-		<Program_Version>3.23</Program_Version>
-		<Program_Release_Month>07</Program_Release_Month>
-		<Program_Release_Day>26</Program_Release_Day>
-		<Program_Release_Year>2010</Program_Release_Year>
+		<Program_Version>3.25</Program_Version>
+		<Program_Release_Month>03</Program_Release_Month>
+		<Program_Release_Day>18</Program_Release_Day>
+		<Program_Release_Year>2011</Program_Release_Year>
 		<Program_Cost_Dollars>0</Program_Cost_Dollars>
 		<Program_Cost_Other_Code />
 		<Program_Cost_Other />
@@ -45,15 +45,15 @@
 		<Program_Release_Status>Minor Update</Program_Release_Status>
 		<Program_Install_Support>Install and Uninstall</Program_Install_Support>
 		<Program_OS_Support>Win7 x32,Win7 x64,WinVista,WinVista x64,WinXP</Program_OS_Support>
-		<Program_Language>English,Chinese,ChineseSimplified,Danish,French,German,Polish,Russian,Spanish,Swedish</Program_Language>
+		<Program_Language>English,Chinese,ChineseSimplified,Danish,Dutch,French,German,Korean,Polish,Russian,Spanish,Swedish</Program_Language>
 		<Program_Change_Info>Minor bug fixes and features</Program_Change_Info>
 		<Program_Specific_Category>Utilities</Program_Specific_Category>
 		<Program_Category_Class>Security &amp; Privacy::Password Managers</Program_Category_Class>
 		<Program_System_Requirements />
 		<File_Info>
-			<File_Size_Bytes>4869351</File_Size_Bytes>
-			<File_Size_K>4755</File_Size_K>
-			<File_Size_MB>4.64</File_Size_MB>
+			<File_Size_Bytes>9196177</File_Size_Bytes>
+			<File_Size_K>8980</File_Size_K>
+			<File_Size_MB>8.77</File_Size_MB>
 		</File_Info>
 		<Expire_Info>
 			<Has_Expire_Info>N</Has_Expire_Info>
@@ -77,7 +77,7 @@ Whether the answer is one or hundreds, Password Safe allows you to safely and ea
 Security starts with you, the user. Keeping written lists of passwords on scraps of paper, or in a text document on your desktop is unsafe and is easily viewed by prying eyes (both cyber-based and human). Using the same password over and over again across a wide spectrum of systems and web sites creates the nightmare scenario where once someone has figured out one password, they have figured out all your passwords and now have access to every part of your life (system, e-mail, retail, financial, work).
 Password Safe allows you to manage your old passwords and to easily and quickly generate, store, organize, retrieve, and use complex new passwords, using password policies that you control. Once stored, your user names and passwords are just a few clicks away.
 Using Password Safe you can organize your passwords using your own customizable references—for example, by user ID, category, web site, or location. You can choose to store all your passwords in a single encrypted master password list (an encrypted password database), or use multiple databases to further organize your passwords (work and home, for example). And with its intuitive interface you will be up and running in minutes.
-Oh, and the desktop version of Password Safe is freely available under an Open Source approved license. A U3 disk-on-key version is also available. For customization and commercial support, please contact me.</Char_Desc_2000>
+Oh, and the desktop version of Password Safe is freely available under an Open Source approved license. disk-on-key versions are also available. For customization and commercial support, please contact me.</Char_Desc_2000>
 		</English>
 	</Program_Descriptions>
 	<Web_Info>
@@ -89,7 +89,7 @@ Oh, and the desktop version of Password Safe is freely available under an Open S
 			<Application_XML_File_URL>http://pwsafe.org/padfiles/pwsafe.xml</Application_XML_File_URL>
 		</Application_URLs>
 		<Download_URLs>
-			<Primary_Download_URL>https://sourceforge.net/projects/passwordsafe/files/passwordsafe/3.23/pwsafe-3.23.exe/download</Primary_Download_URL>
+			<Primary_Download_URL>https://sourceforge.net/projects/passwordsafe/files/passwordsafe/3.21/pwsafe-3.21.exe/download</Primary_Download_URL>
 			<Secondary_Download_URL />
 			<Additional_Download_URL_1 />
 			<Additional_Download_URL_2 />
