@@ -181,7 +181,7 @@ msgstr "Sleep # %d"
 #. Resource IDs: (212)
 #, c-format
 msgid " Duplicate # %d"
-msgstr "Dubbele # %d"
+msgstr "Verdubbel # %d"
 
 #. Resource IDs: (203)
 #, c-format
@@ -442,11 +442,11 @@ msgstr ""
 
 #. Resource IDs: (32004)
 msgid "&Close"
-msgstr ""
+msgstr "&Sluiten"
 
 #. Resource IDs: (32118)
 msgid "&Compare"
-msgstr ""
+msgstr "&Vergelijken"
 
 #. Resource IDs: (347)
 msgid "&Continue"
@@ -458,11 +458,11 @@ msgstr ""
 
 #. Resource IDs: (32058)
 msgid "&Copy Password to Clipboard"
-msgstr ""
+msgstr "&Kopieer wachtwoord naar klembord"
 
 #. Resource IDs: (332)
 msgid "&Copy Password to clipboard"
-msgstr ""
+msgstr "&Kopieer wachtwoord naar klembord"
 
 #. Resource IDs: (1041)
 msgid "&Create a New Database"
@@ -498,15 +498,15 @@ msgstr ""
 
 #. Resource IDs: (32056)
 msgid "&Duplicate Entry"
-msgstr ""
+msgstr "&Verdubbel element"
 
 #. Resource IDs: (32086)
 msgid "&Duplicate Group"
-msgstr ""
+msgstr "&Verdubbel groep"
 
 #. Resource IDs: (1342, 32050)
 msgid "&Edit"
-msgstr ""
+msgstr "&Bewerken"
 
 #. Resource IDs: (32081)
 msgid "&Edit Base entry"
@@ -518,7 +518,7 @@ msgstr ""
 
 #. Resource IDs: (32001)
 msgid "&File"
-msgstr ""
+msgstr "&Bestand"
 
 #. Resource IDs: (32110)
 msgid "&Filters"
@@ -586,11 +586,11 @@ msgstr ""
 
 #. Resource IDs: (1341)
 msgid "&New"
-msgstr ""
+msgstr "&Nieuw"
 
 #. Resource IDs: (65535)
 msgid "&New "
-msgstr ""
+msgstr "&Nieuw"
 
 #. Resource IDs: (32104)
 msgid "&New Toolbar"
@@ -598,11 +598,11 @@ msgstr "&Nieuwe Werkbalk"
 
 #. Resource IDs: (32003)
 msgid "&New..."
-msgstr ""
+msgstr "&Nieuw..."
 
 #. Resource IDs: (32111)
 msgid "&New/Edit Filter"
-msgstr ""
+msgstr "&Nieuw/Bewerken filter"
 
 #. Resource IDs: (2)
 msgid "&No"
@@ -626,7 +626,7 @@ msgstr ""
 
 #. Resource IDs: (32154)
 msgid "&Options..."
-msgstr ""
+msgstr "&Opties..."
 
 #. Resource IDs: (32116)
 msgid "&Password Font"
@@ -650,7 +650,7 @@ msgstr ""
 
 #. Resource IDs: (32020)
 msgid "&Properties"
-msgstr ""
+msgstr "&Eigenschappen"
 
 #. Resource IDs: (1023)
 msgid "&Quit"
@@ -666,7 +666,7 @@ msgstr ""
 
 #. Resource IDs: (32111)
 msgid "&Refresh"
-msgstr ""
+msgstr "&Verversen"
 
 #. Resource IDs: (32117)
 msgid "&Reports"
@@ -1224,7 +1224,7 @@ msgstr ""
 
 #. Resource IDs: (32057)
 msgid "Add Group"
-msgstr ""
+msgstr "Groep toevoegen"
 
 #. Resource IDs: (466)
 msgid "Additional"
@@ -1296,7 +1296,7 @@ msgstr ""
 
 #. Resource IDs: (3841)
 msgid "All Files (*.*)"
-msgstr ""
+msgstr "Alle bestanden (*.*)"
 
 #. Resource IDs: (339)
 msgid "All available columns are being displayed."
@@ -1582,7 +1582,7 @@ msgstr "Bytes"
 
 #. Resource IDs: (32061)
 msgid "C&lear Clipboard"
-msgstr ""
+msgstr "&Wis klembord"
 
 #. Resource IDs: (1386)
 msgid "C++ Terminate"
@@ -1732,7 +1732,7 @@ msgstr ""
 
 #. Resource IDs: (128, 145)
 msgid "Clear Clipboard"
-msgstr ""
+msgstr "Wis klembord"
 
 #. Resource IDs: (32302)
 msgid "Clear Find"
@@ -1744,11 +1744,11 @@ msgstr ""
 
 #. Resource IDs: (1062)
 msgid "Clear clipboard upon exit"
-msgstr ""
+msgstr "Klembord wissen bij afsluiten"
 
 #. Resource IDs: (1061)
 msgid "Clear clipboard upon minimize"
-msgstr ""
+msgstr "Klembord wissen bij minimeren"
 
 #. Resource IDs: (351)
 msgid "Click here to pick field"
@@ -1760,7 +1760,7 @@ msgstr ""
 
 #. Resource IDs: (353)
 msgid "Click to copy to clipboard"
-msgstr ""
+msgstr "Klik om klembord to kopieren"
 
 #. Resource IDs: (358)
 msgid "Click to copy to clipboard, Ctrl+Click to also set URL field to this value"
@@ -1844,7 +1844,7 @@ msgstr ""
 
 #. Resource IDs: (1)
 msgid "Close"
-msgstr ""
+msgstr "Sluiten"
 
 #. Resource IDs: (32301)
 msgid "Close Find Bar"
@@ -1852,7 +1852,7 @@ msgstr ""
 
 #. Resource IDs: (32110)
 msgid "Collapse All"
-msgstr ""
+msgstr "Alles samenvouwen"
 
 #. Resource IDs: (114, 32210)
 msgid "Column Picker"
@@ -1872,11 +1872,11 @@ msgstr ""
 
 #. Resource IDs: (346)
 msgid "Compare"
-msgstr ""
+msgstr "Vergelijken"
 
 #. Resource IDs: (335)
 msgid "Compare Complete"
-msgstr ""
+msgstr "Vergelijk voltooid"
 
 #. Resource IDs: (115)
 msgid "Compare Database Results"
@@ -1886,10 +1886,14 @@ msgstr ""
 #, c-format
 msgid "Compare complete of current database:\n\t %s\n and:\n\t %s"
 msgstr ""
+"Vergelijk van de aktuele database voltooid\n"
+"\t %s\n"
+" en:\n"
+"\t %s"
 
 #. Resource IDs: (32019)
 msgid "Compare..."
-msgstr ""
+msgstr "Vergelijken..."
 
 #. Resource IDs: (364)
 msgid "Comparing current database with:"
@@ -1943,7 +1947,7 @@ msgstr ""
 
 #. Resource IDs: (1021)
 msgid "Confirm item copy to clipboard"
-msgstr ""
+msgstr "Bevestige het kopieren van een element naar het klembord"
 
 #. Resource IDs: (340)
 #, c-format
@@ -2383,7 +2387,7 @@ msgstr ""
 
 #. Resource IDs: (32086)
 msgid "Duplicate Group"
-msgstr ""
+msgstr "Verdubbel groep"
 
 #. Resource IDs: (514)
 msgid "Dutch"
@@ -2705,7 +2709,7 @@ msgstr ""
 
 #. Resource IDs: (32009)
 msgid "Export &To"
-msgstr "Exporteren &Naar"
+msgstr "Exporteren &naar"
 
 #. Resource IDs: (32130)
 msgid "Export &XML"
@@ -2733,7 +2737,7 @@ msgstr "Export XML"
 
 #. Resource IDs: (364)
 msgid "Export file:"
-msgstr ""
+msgstr "Export bestand:"
 
 #. Resource IDs: (211)
 msgid "Export of data was restricted to certain fields by the user."
@@ -2749,7 +2753,7 @@ msgstr ""
 
 #. Resource IDs: (364)
 msgid "Exporting to file:"
-msgstr ""
+msgstr "Exporteren naar bestand:"
 
 #. Resource IDs: (516)
 msgid "Faeroese"
@@ -3800,7 +3804,7 @@ msgstr ""
 
 #. Resource IDs: (343)
 msgid "New Version Found!"
-msgstr ""
+msgstr "Nieuwe versie gevonden!"
 
 #. Resource IDs: (331)
 msgid "New safe combination and confirmation do not match"
@@ -3808,7 +3812,7 @@ msgstr ""
 
 #. Resource IDs: (364)
 msgid "Next >"
-msgstr ""
+msgstr "Volgende >"
 
 #. Resource IDs: (340, 1083)
 msgid "No"
@@ -3861,7 +3865,7 @@ msgstr ""
 
 #. Resource IDs: (340)
 msgid "No fields selected to compare!"
-msgstr ""
+msgstr "Geen veld uitgezocht om te vergelijken!"
 
 #. Resource IDs: (348)
 msgid "No fields selected to filter the display!"
@@ -4070,7 +4074,7 @@ msgstr ""
 
 #. Resource IDs: (327)
 msgid "Options"
-msgstr ""
+msgstr "Opties"
 
 #. Resource IDs: (208, 65535)
 msgid "Or"
@@ -4206,11 +4210,11 @@ msgstr ""
 
 #. Resource IDs: (316)
 msgid "Password Safe Databases (*.psafe3)|*.psafe3|All files (*.*)|*.*||"
-msgstr ""
+msgstr "Password Safe Databases (*.psafe3)|*.psafe3|Alle bestanden (*.*)|*.*||"
 
 #. Resource IDs: (316)
 msgid "Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|All files (*.*)|*.*||"
-msgstr ""
+msgstr "Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|Alle bestanden (*.*)|*.*||"
 
 #. Resource IDs: (316)
 msgid "Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All files (*.*)|*.*||"
@@ -4462,11 +4466,11 @@ msgstr ""
 
 #. Resource IDs: (136)
 msgid "Properties"
-msgstr ""
+msgstr "Eigenschappen"
 
 #. Resource IDs: (361)
 msgid "Properties of the currently selected database."
-msgstr ""
+msgstr "Eigenschappen van de aktueel geselecteerde database"
 
 #. Resource IDs: (32089)
 msgid "Protect All Entries"
@@ -4595,15 +4599,15 @@ msgstr ""
 
 #. Resource IDs: (32058)
 msgid "Rename"
-msgstr ""
+msgstr "Naam wijzigen"
 
 #. Resource IDs: (32054)
 msgid "Rename Entry"
-msgstr ""
+msgstr "Naam van een element wijzigen"
 
 #. Resource IDs: (32054)
 msgid "Rename Group"
-msgstr ""
+msgstr "Naam van een groep wijzigen"
 
 #. Resource IDs: (347)
 msgid "Report created"
@@ -5957,7 +5961,7 @@ msgstr "Valideren"
 #. Resource IDs: (335)
 #, c-format
 msgid "Validated %d %s\r\n\r\nImported %d %s"
-msgstr "Gevalideerd %d %s\r\n\r\nGeomporteerd %d %s"
+msgstr "Gevalideerd %d %s\r\n\r\nGeimporteerd %d %s"
 
 #. Resource IDs: (1322)
 msgid "Value:"
