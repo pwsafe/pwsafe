@@ -15,6 +15,10 @@
 
 #include "StringX.h"
 
+// Password Policy related stuff
+enum {DEFAULT_POLICY = 0, SPECIFIC_POLICY};
+enum {DEFAULT_SYMBOLS = 0, OWN_SYMBOLS = 1}; // m_symbols's values
+
 struct PWPolicy {
   unsigned short flags;
   int length;
@@ -63,7 +67,7 @@ struct PWPolicy {
   // Following calls CPasswordCharPool::MakePassword()
   // with arguments matching 'this' policy, or,
   // preference-defined policy if this->flags == 0
-  StringX MakeRandomPassword() const;
+  StringX MakeRandomPassword(stringT st_symbols) const;
 };
 
 #endif /* __PWPOLICY_H */

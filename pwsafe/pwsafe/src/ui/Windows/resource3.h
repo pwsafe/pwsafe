@@ -648,3 +648,5 @@
 #define IDS_NONE_COMPARED               5839
 #define IDS_NONE_SYNCHRONIZED           5840
 #define IDS_EMBEDDEDRESOURCES           5841
+#define IDS_SYMBOLS                     5842
+#define IDS_COMPSYMBOLS                 5843

@@ -144,8 +144,10 @@ void PWScore::Compare(PWScore *pothercore,
          ...1 ....  DCA       [0x13]
          .... 1...  EMAIL     [0x14]
          .... .1..  PROTECTED [0x15]
-         .... ..11  Unused
-        */
+         .... ..1.  SYMBOLS   [0x16]
+         .... ...1  Unused
+
+         */
         bsConflicts.reset();
 
         CItemData compItem = pothercore->GetEntry(foundPos);
@@ -201,6 +203,9 @@ void PWScore::Compare(PWScore *pothercore,
         if (bsFields.test(CItemData::PROTECTED) &&
             currentItem.GetEmail() != compItem.GetProtected())
           bsConflicts.flip(CItemData::PROTECTED);
+        if (bsFields.test(CItemData::SYMBOLS) &&
+            currentItem.GetEmail() != compItem.GetSymbols())
+          bsConflicts.flip(CItemData::SYMBOLS);
 
         currentPos->first.GetUUID(xuuid);
         memcpy(st_data.uuid0, xuuid, sizeof(st_data.uuid0));

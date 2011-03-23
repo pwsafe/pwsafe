@@ -18,7 +18,7 @@
 // CFilterStringDlg dialog
 
 // NOTE: Even though supposed to be just for strings, this dialog deals
-// with the special case for Passwords - they have expired or they wil
+// with the special case for Passwords - they have expired or they will
 // expired in 'n' days.
 
 IMPLEMENT_DYNAMIC(CFilterStringDlg, CFilterBaseDlg)
@@ -26,7 +26,7 @@ IMPLEMENT_DYNAMIC(CFilterStringDlg, CFilterBaseDlg)
 CFilterStringDlg::CFilterStringDlg(CWnd* pParent /*=NULL*/)
   : CFilterBaseDlg(CFilterStringDlg::IDD, pParent),
   m_case(BST_UNCHECKED), m_string(L""),
-  m_add_present(false)
+  m_add_present(false), m_bSymbol(false)
 {
 }
 
@@ -42,7 +42,10 @@ void CFilterStringDlg::DoDataExchange(CDataExchange* pDX)
   DDX_Check(pDX, IDC_STRINGCASE, m_case);
   DDX_Text(pDX, IDC_STRING1, m_string);
   DDX_Control(pDX, IDC_STRINGRULE, m_cbxRule);
-  DDX_Control(pDX, IDC_STRING1, m_edtString);
+  if (m_bSymbol)
+    DDX_Control(pDX, IDC_STRING1, m_edtSymbolString);
+  else
+    DDX_Control(pDX, IDC_STRING1, m_edtString);
   DDX_Control(pDX, IDC_STRINGCASE, m_btnCase);
   DDX_Control(pDX, IDC_STATIC_STATUS, m_stcStatus);
   //}}AFX_DATA_MAP
@@ -65,55 +68,30 @@ BOOL CFilterStringDlg::OnInitDialog()
   // NOTE: This ComboBox is NOT sorted by design !
   if (m_cbxRule.GetCount() == 0) {
     if (m_add_present) {
-      cs_text.LoadString(IDSC_ISPRESENT);
-      iItem = m_cbxRule.AddString(cs_text);
-      m_cbxRule.SetItemData(iItem, PWSMatch::MR_PRESENT);
-      m_rule2selection[PWSMatch::MR_PRESENT] = iItem;
+      const PWSMatch::MatchRule mrx[] = {PWSMatch::MR_PRESENT, PWSMatch::MR_NOTPRESENT};
 
-      cs_text.LoadString(IDSC_ISNOTPRESENT);
-      iItem = m_cbxRule.AddString(cs_text);
-      m_cbxRule.SetItemData(iItem, PWSMatch::MR_NOTPRESENT);
-      m_rule2selection[PWSMatch::MR_NOTPRESENT] = iItem;
+      for (size_t i = 0; i < _countof(mrx); i++) {
+        UINT iumsg = PWSMatch::GetRule(mrx[i]);
+        cs_text.LoadString(iumsg);
+        iItem = m_cbxRule.AddString(cs_text);
+        m_cbxRule.SetItemData(iItem, mrx[i]);
+        m_rule2selection[mrx[i]] = iItem;
+      }
     }
-    cs_text.LoadString(IDSC_EQUALS);
-    iItem = m_cbxRule.AddString(cs_text);
-    m_cbxRule.SetItemData(iItem, PWSMatch::MR_EQUALS);
-    m_rule2selection[PWSMatch::MR_EQUALS] = iItem;
+    const PWSMatch::MatchRule mrx[] = {PWSMatch::MR_EQUALS,   PWSMatch::MR_NOTEQUAL,
+                                       PWSMatch::MR_BEGINS,   PWSMatch::MR_NOTBEGIN,
+                                       PWSMatch::MR_ENDS,     PWSMatch::MR_NOTEND,
+                                       PWSMatch::MR_CONTAINS, PWSMatch::MR_NOTCONTAIN,
+                                       PWSMatch::MR_CNTNANY,  PWSMatch::MR_NOTCNTNANY,
+                                       PWSMatch::MR_CNTNALL,  PWSMatch::MR_NOTCNTNALL};
 
-    cs_text.LoadString(IDSC_DOESNOTEQUAL);
-    iItem = m_cbxRule.AddString(cs_text);
-    m_cbxRule.SetItemData(iItem, PWSMatch::MR_NOTEQUAL);
-    m_rule2selection[PWSMatch::MR_NOTEQUAL] = iItem;
-
-    cs_text.LoadString(IDSC_BEGINSWITH);
-    iItem = m_cbxRule.AddString(cs_text);
-    m_cbxRule.SetItemData(iItem, PWSMatch::MR_BEGINS);
-    m_rule2selection[PWSMatch::MR_BEGINS] = iItem;
-
-    cs_text.LoadString(IDSC_DOESNOTBEGINSWITH);
-    iItem = m_cbxRule.AddString(cs_text);
-    m_cbxRule.SetItemData(iItem, PWSMatch::MR_NOTBEGIN);
-    m_rule2selection[PWSMatch::MR_NOTBEGIN] = iItem;
-
-    cs_text.LoadString(IDSC_ENDSWITH);
-    iItem = m_cbxRule.AddString(cs_text);
-    m_cbxRule.SetItemData(iItem, PWSMatch::MR_ENDS);
-    m_rule2selection[PWSMatch::MR_ENDS] = iItem;
-
-    cs_text.LoadString(IDSC_DOESNOTENDWITH);
-    iItem = m_cbxRule.AddString(cs_text);
-    m_cbxRule.SetItemData(iItem, PWSMatch::MR_NOTEND);
-    m_rule2selection[PWSMatch::MR_NOTEND] = iItem;
-
-    cs_text.LoadString(IDSC_CONTAINS);
-    iItem = m_cbxRule.AddString(cs_text);
-    m_cbxRule.SetItemData(iItem, PWSMatch::MR_CONTAINS);
-    m_rule2selection[PWSMatch::MR_CONTAINS] = iItem;
-
-    cs_text.LoadString(IDSC_DOESNOTCONTAIN);
-    iItem = m_cbxRule.AddString(cs_text);
-    m_cbxRule.SetItemData(iItem, PWSMatch::MR_NOTCONTAIN);
-    m_rule2selection[PWSMatch::MR_NOTCONTAIN] = iItem;
+    for (size_t i = 0; i < _countof(mrx); i++) {
+      UINT iumsg = PWSMatch::GetRule(mrx[i]);
+      cs_text.LoadString(iumsg);
+      iItem = m_cbxRule.AddString(cs_text);
+      m_cbxRule.SetItemData(iItem, mrx[i]);
+      m_rule2selection[mrx[i]] = iItem;
+    }
   }
 
   int isel = m_rule2selection[(int)m_rule];
@@ -147,14 +125,24 @@ void CFilterStringDlg::EnableDialogItems()
     switch (m_rule) {
       case PWSMatch::MR_PRESENT:
       case PWSMatch::MR_NOTPRESENT:
-        m_edtString.EnableWindow(FALSE);
-        m_edtString.ShowWindow(SW_SHOW);
+        if (m_bSymbol) {
+          m_edtSymbolString.EnableWindow(FALSE);
+          m_edtSymbolString.ShowWindow(SW_SHOW);
+        } else {
+          m_edtString.EnableWindow(FALSE);
+          m_edtString.ShowWindow(SW_SHOW);
+        }
         m_btnCase.EnableWindow(FALSE);
         m_stcStatus.EnableWindow(FALSE);
         break;
       default:
-        m_edtString.EnableWindow(TRUE);
-        m_edtString.ShowWindow(SW_SHOW);
+        if (m_bSymbol) {
+          m_edtSymbolString.EnableWindow(TRUE);
+          m_edtSymbolString.ShowWindow(SW_SHOW);
+        } else {
+          m_edtString.EnableWindow(TRUE);
+          m_edtString.ShowWindow(SW_SHOW);
+        }
         m_btnCase.EnableWindow(TRUE);
         m_stcStatus.EnableWindow(TRUE);
     }

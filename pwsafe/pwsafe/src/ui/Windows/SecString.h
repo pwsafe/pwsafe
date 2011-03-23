@@ -38,6 +38,7 @@ public:
   CSecString(const CSecString& stringSrc) : m_mystring(stringSrc.m_mystring) {}
   CSecString(const CString& stringSrc) : m_mystring(stringSrc) {}
   CSecString(const StringX& sx) : m_mystring(sx.c_str()) {}
+  CSecString(const stringT& st) : m_mystring(st.c_str()) {}
 
   ~CSecString() {trashstring();}
 
@@ -51,6 +52,7 @@ public:
   void SetAt(int nIndex, wchar_t ch) {m_mystring.SetAt(nIndex,ch);}
   operator LPCWSTR() const {return (LPCWSTR)m_mystring;}
   operator StringX() const {return StringX((LPCWSTR)m_mystring);}
+  operator stringT() const {return stringT((LPCWSTR)m_mystring);}
   BOOL IsEmpty() const {return m_mystring.IsEmpty();}
   LPWSTR GetBuffer(int nMinBufLength) {return m_mystring.GetBuffer(nMinBufLength);}
   LPWSTR GetBuffer() {return m_mystring.GetBuffer();}
@@ -135,16 +137,15 @@ public:
   // CSecString operator+(LPCWSTR lpsz);
 
   friend CSecString operator+(const CSecString& string1,
-    const CSecString& string2);
+                              const CSecString& string2);
   friend CSecString operator+(const CSecString& string,
-    wchar_t ch);
+                              wchar_t ch);
   friend CSecString operator+(wchar_t ch,
-    const CSecString& string);
+                              const CSecString& string);
   friend CSecString operator+(const CSecString& string,
-    LPCWSTR lpsz);
+                              LPCWSTR lpsz);
   friend CSecString operator+(LPCWSTR lpsz,
-    const CSecString& string);
-
+                              const CSecString& string);
 
   CSecString Left(int nCount) const;
   CSecString Right(int nCount) const;
@@ -164,17 +165,17 @@ private:
 //-----------------------------------------------------------------------------
 
 inline bool operator==(const CSecString& s1, const CSecString& s2)
-{return (const CString)s1 == (const CString)s2;}
+    {return (const CString)s1 == (const CString)s2;}
 inline bool operator==(const CSecString& s1, LPCWSTR s2)
-{return (const CString)s1==s2;}
+    {return (const CString)s1==s2;}
 inline bool operator==(LPCWSTR s1, const CSecString& s2)
-{return s1==(const CString)s2;}
+    {return s1==(const CString)s2;}
 inline bool operator!=(const CSecString& s1, const CSecString& s2)
-{return (const CString)s1 != (const CString)s2;}
+    {return (const CString)s1 != (const CString)s2;}
 inline bool operator!=(const CSecString& s1, LPCWSTR s2)
-{return (const CString)s1 != s2;}
+    {return (const CString)s1 != s2;}
 inline bool operator!=(LPCWSTR s1, const CSecString& s2)
-{return s1 != (const CString)s2;}
+    {return s1 != (const CString)s2;}
 
 //-----------------------------------------------------------------------------
 #endif /* __SECSTRING_H */

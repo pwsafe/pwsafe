@@ -9,6 +9,7 @@
 #pragma once
 
 #include "FilterBaseDlg.h"
+#include "../ControlExtns.h"
 
 // CFilterStringDlg dialog
 
@@ -20,6 +21,8 @@ public:
   CFilterStringDlg(CWnd* pParent = NULL);   // standard constructor
   virtual ~CFilterStringDlg();
 
+  void SetSymbol(const bool bSymbol) {m_bSymbol = bSymbol;}
+  
 // Dialog Data
   enum { IDD = IDD_FILTER_STRING };
   int m_case;
@@ -37,9 +40,11 @@ public:
   afx_msg void OnBnClickedOk();
   CComboBox m_cbxRule;
   CEdit m_edtString;
+  CSymbolEdit m_edtSymbolString;
   CButton m_btnCase;
   CStatic m_stcStatus;
 
 private:
   void EnableDialogItems();
+  bool m_bSymbol;
 };

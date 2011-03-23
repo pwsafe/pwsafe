@@ -766,6 +766,7 @@ bool CPWFilterLC::SetField(const int iItem)
         case FT_AUTOTYPE:
         case FT_RUNCMD:
         case FT_EMAIL:
+        case FT_SYMBOLS:
           bAddPresent = true;
           mt = PWSMatch::MT_STRING;
           break;
@@ -1120,6 +1121,7 @@ bool CPWFilterLC::GetCriterion()
       } else {
         m_fstring.m_rule = PWSMatch::MR_INVALID;
       }
+      m_fstring.SetSymbol(st_fldata.ftype == FT_SYMBOLS);
       rc = m_fstring.DoModal();
       if (rc == IDOK) {
         st_fldata.Empty();
@@ -1447,6 +1449,10 @@ void CPWFilterLC::SetUpComboBoxData()
 
         stf.cs_text = CItemData::FieldName(CItemData::EMAIL).c_str();
         stf.ftype = FT_EMAIL;
+        vFcbx_data.push_back(stf);
+
+        stf.cs_text = CItemData::FieldName(CItemData::SYMBOLS).c_str();
+        stf.ftype = FT_SYMBOLS;
         vFcbx_data.push_back(stf);
 
         stf.cs_text = CItemData::FieldName(CItemData::PROTECTED).c_str();

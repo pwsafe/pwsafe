@@ -721,6 +721,10 @@
 #define IDC_STATIC_WZFILE               1435
 #define IDC_STATIC_WZPROCESSING         1436
 #define IDC_STATIC_WZRESULTS            1437
+#define IDC_USEDEFAULTSYMBOLS           1438
+#define IDC_USEOWNSYMBOLS               1439
+#define IDC_OWNSYMBOLS                  1440
+#define IDC_STATIC_DEFAULTSYMBOLS       1441
 
 // Next default values for new objects
 // 
@@ -728,7 +732,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        499
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1438
+#define _APS_NEXT_CONTROL_VALUE         1442
 #define _APS_NEXT_SYMED_VALUE           166
 #endif
 #endif

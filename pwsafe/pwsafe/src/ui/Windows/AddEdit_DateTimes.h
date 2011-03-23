@@ -37,7 +37,7 @@ public:
   //{{AFX_DATA(CAddEdit_DateTimes)
   enum { IDD = IDD_ADDEDIT_DATETIMES };
 
-  enum {ABSOLUTE_EXP = 0, RELATIVE_EXP = 1}; // m_how's values
+  enum {ABSOLUTE_EXP = 0, RELATIVE_EXP = 1}; // m_how's values DEFAULT_SYMBOLS
 
   CDateTimeCtrl m_pTimeCtl;    // time picker control
   CDateTimeCtrl m_pDateCtl;    // date picker control

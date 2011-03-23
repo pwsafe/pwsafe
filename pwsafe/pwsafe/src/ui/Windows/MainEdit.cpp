@@ -1498,10 +1498,10 @@ void DboxMain::OnClearClipboard()
 // be avoided by putting the password into the clipboard when the entry is saved
 // but that would be annoying when generating a new entry.
 
-void DboxMain::MakeRandomPassword(StringX &password, PWPolicy &pwp, 
+void DboxMain::MakeRandomPassword(StringX &password, PWPolicy &pwp, stringT st_symbols,
                                   bool bIssueMsg)
 {
-  password = pwp.MakeRandomPassword();
+  password = pwp.MakeRandomPassword(st_symbols);
   SetClipboardData(password);
   UpdateLastClipboardAction(CItemData::PASSWORD);
 

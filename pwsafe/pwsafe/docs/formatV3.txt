@@ -167,6 +167,7 @@ PasswordSafe V3.14 introduced Format 0x0305
 PasswordSafe V3.19 introduced Format 0x0306
 PasswordSafe V3.22 introduced Format 0x0307
 PasswordSafe V3.25 introduced Format 0x0308
+PasswordSafe V3.26 introduced Format 0x0309
 
 [2] A universally unique identifier is needed in order to synchronize
 databases, e.g., between a handheld pocketPC device and a
@@ -179,7 +180,8 @@ value, {1 or 0} for bool, unsigned integer for int, and a delimited string
 for String. Only non-default values are stored. See PWSprefs.cpp for more
 details.  Note: normally strings are delimited by the doublequote character.
 However, if this character is in the string value, an arbitrary character
-will be chosen to delimit the string.
+will be chosen to delimit the string. Version 0x0309 added database wide
+special symbols to the Non-default preferences (0x02).
 
 [4] If requested to be saved, this is a string of 1s and 0s indicating the
 expanded state of the tree display when the database was saved. This can
@@ -280,7 +282,8 @@ Run Command                 0x12        Text          Y
 Double-Click Action         0x13        2 bytes       Y              [15]
 EMail address               0x14        Text          Y              [16]
 Protected Entry             0x15        1 byte        Y              [17]
-End of Entry                0xff        [empty]       Y              [18]
+Own symbols for password    0x16        Text          Y              [18]
+End of Entry                0xff        [empty]       Y              [19]
 
 [1] Per-record UUID to assist in sync, merge, etc. Representation is
 as described in Section 3.1.1.
@@ -404,7 +407,11 @@ was introduced in version 0x0308 (PasswordSafe V3.25).  This a single character.
 An absent field or a zero valued field means that the entry is not protected.
 Any non-zero value is taken as meaning that the entry is protected.
 
-[18] An explicit end of entry field is useful for supporting new fields
+[18] Each entry can now specify it on set of allowed special symbols for
+password generation.  This overrides the default set and any database specific
+set.  This was introduced in version 0x0309 (PasswordSafe V3.26).
+
+[19] An explicit end of entry field is useful for supporting new fields
 without breaking backwards compatability.
 
 4. Extensibility

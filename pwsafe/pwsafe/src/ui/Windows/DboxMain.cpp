@@ -893,11 +893,12 @@ void DboxMain::InitPasswordSafe()
     case CItemData::RMTIME:
     case CItemData::URL:
     case CItemData::EMAIL:
+    case CItemData::SYMBOLS:
     case CItemData::RUNCMD:
     case CItemData::AUTOTYPE:
     case CItemData::POLICY:
     case CItemData::PROTECTED:
-    break;
+      break;
     case CItemData::PWHIST:  // Not displayed in ListView
     default:
       // Title is a mandatory column - so can't go wrong!
@@ -2196,7 +2197,7 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
       m_bDBNeedsReading = false;
 
       if (bShow && !bUpdateWindows)
-        ShowWindow(SW_SHOW);	 
+        ShowWindow(SW_SHOW);
       if (bUpdateWindows)
         RestoreWindows();
     } else {

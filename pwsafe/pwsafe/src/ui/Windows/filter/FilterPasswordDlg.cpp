@@ -97,55 +97,21 @@ BOOL CFilterPasswordDlg::OnInitDialog()
 
   // NOTE: This ComboBox is NOT sorted by design !
   if (m_cbxRule.GetCount() == 0) {
-    cs_text.LoadString(IDSC_EQUALS);
-    iItem = m_cbxRule.AddString(cs_text);
-    m_cbxRule.SetItemData(iItem, PWSMatch::MR_EQUALS);
-    m_rule2selection[PWSMatch::MR_EQUALS] = iItem;
+    const PWSMatch::MatchRule mrx[] = {PWSMatch::MR_EQUALS,   PWSMatch::MR_NOTEQUAL,
+                                       PWSMatch::MR_BEGINS,   PWSMatch::MR_NOTBEGIN,
+                                       PWSMatch::MR_ENDS,     PWSMatch::MR_NOTEND,
+                                       PWSMatch::MR_CONTAINS, PWSMatch::MR_NOTCONTAIN,
+                                       PWSMatch::MR_CNTNANY,  PWSMatch::MR_NOTCNTNANY,
+                                       PWSMatch::MR_CNTNALL,  PWSMatch::MR_NOTCNTNALL,
+                                       PWSMatch::MR_EXPIRED,  PWSMatch::MR_WILLEXPIRE};
 
-    cs_text.LoadString(IDSC_DOESNOTEQUAL);
-    iItem = m_cbxRule.AddString(cs_text);
-    m_cbxRule.SetItemData(iItem, PWSMatch::MR_NOTEQUAL);
-    m_rule2selection[PWSMatch::MR_NOTEQUAL] = iItem;
-
-    cs_text.LoadString(IDSC_BEGINSWITH);
-    iItem = m_cbxRule.AddString(cs_text);
-    m_cbxRule.SetItemData(iItem, PWSMatch::MR_BEGINS);
-    m_rule2selection[PWSMatch::MR_BEGINS] = iItem;
-
-    cs_text.LoadString(IDSC_DOESNOTBEGINSWITH);
-    iItem = m_cbxRule.AddString(cs_text);
-    m_cbxRule.SetItemData(iItem, PWSMatch::MR_NOTBEGIN);
-    m_rule2selection[PWSMatch::MR_NOTBEGIN] = iItem;
-
-    cs_text.LoadString(IDSC_ENDSWITH);
-    iItem = m_cbxRule.AddString(cs_text);
-    m_cbxRule.SetItemData(iItem, PWSMatch::MR_ENDS);
-    m_rule2selection[PWSMatch::MR_ENDS] = iItem;
-
-    cs_text.LoadString(IDSC_DOESNOTENDWITH);
-    iItem = m_cbxRule.AddString(cs_text);
-    m_cbxRule.SetItemData(iItem, PWSMatch::MR_NOTEND);
-    m_rule2selection[PWSMatch::MR_NOTEND] = iItem;
-
-    cs_text.LoadString(IDSC_CONTAINS);
-    iItem = m_cbxRule.AddString(cs_text);
-    m_cbxRule.SetItemData(iItem, PWSMatch::MR_CONTAINS);
-    m_rule2selection[PWSMatch::MR_CONTAINS] = iItem;
-
-    cs_text.LoadString(IDSC_DOESNOTCONTAIN);
-    iItem = m_cbxRule.AddString(cs_text);
-    m_cbxRule.SetItemData(iItem, PWSMatch::MR_NOTCONTAIN);
-    m_rule2selection[PWSMatch::MR_NOTCONTAIN] = iItem;
-
-    cs_text.LoadString(IDSC_EXPIRED);
-    iItem = m_cbxRule.AddString(cs_text);
-    m_cbxRule.SetItemData(iItem, PWSMatch::MR_EXPIRED);
-    m_rule2selection[PWSMatch::MR_EXPIRED] = iItem;
-
-    cs_text.LoadString(IDSC_WILLEXPIRE);
-    iItem = m_cbxRule.AddString(cs_text);
-    m_cbxRule.SetItemData(iItem, PWSMatch::MR_WILLEXPIRE);
-    m_rule2selection[PWSMatch::MR_WILLEXPIRE] = iItem;
+    for (size_t i = 0; i < _countof(mrx); i++) {
+      UINT iumsg = PWSMatch::GetRule(mrx[i]);
+      cs_text.LoadString(iumsg);
+      iItem = m_cbxRule.AddString(cs_text);
+      m_cbxRule.SetItemData(iItem, mrx[i]);
+      m_rule2selection[mrx[i]] = iItem;
+    }
   }
 
   int isel = m_rule2selection[(int)m_rule];

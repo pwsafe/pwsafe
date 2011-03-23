@@ -65,7 +65,7 @@ public:
     PASSWORD = 0x06, CTIME = 0x07, PMTIME = 0x08, ATIME = 0x09, XTIME = 0x0a,
     RESERVED = 0x0b /* cannot use */, RMTIME = 0x0c, URL = 0x0d, AUTOTYPE = 0x0e,
     PWHIST = 0x0f, POLICY = 0x10, XTIME_INT = 0x11, RUNCMD = 0x12, DCA = 0x13,
-    EMAIL = 0x14, PROTECTED = 0x15,
+    EMAIL = 0x14, PROTECTED = 0x15, SYMBOLS = 0x16,
     LAST,        // Start of unknown fields!
     END = 0xff,
     // Internal fields only - used in filters
@@ -165,6 +165,7 @@ public:
   StringX GetProtected() const;
   void GetProtected(unsigned char &ucprotected) const;
   bool IsProtected() const;
+  StringX GetSymbols() const;
 
   StringX GetFieldValue(const FieldType &ft) const;
 
@@ -224,8 +225,9 @@ public:
   void SetRunCommand(const StringX &cs_RunCommand);
   void SetDCA(const short &iDCA);
   bool SetDCA(const stringT &cs_DCA);
-  void SetEmail(const StringX &cs_email);
+  void SetEmail(const StringX &sx_email);
   void SetProtected(const bool &bOnOff);
+  void SetSymbols(const StringX &sx_symbols);
 
   void SetFieldValue(const FieldType &ft, const StringX &value);
 
@@ -242,7 +244,7 @@ public:
   bool WillExpire(const int numdays) const;
 
   // Predicate to determine if item matches given criteria
-  bool Matches(const stringT &string, int iObject, 
+  bool Matches(const stringT &stValue, int iObject, 
                int iFunction) const;  // string values
   bool Matches(int num1, int num2, int iObject,
                int iFunction) const;  // integer values
@@ -315,6 +317,7 @@ private:
   CItemField m_DCA;
   CItemField m_email;
   CItemField m_protected;
+  CItemField m_symbols;
 
   // Save unknown record fields on read to put back on write unchanged
   UnknownFields m_URFL;

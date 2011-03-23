@@ -11,6 +11,7 @@
 #pragma once
 
 #include "AddEdit_PropertyPage.h"
+#include "ControlExtns.h"
 #include "resource.h"
 
 /////////////////////////////////////////////////////////////////////////////
@@ -29,6 +30,8 @@ public:
   //{{AFX_DATA(CAddEdit_PasswordPolicy)
   enum { IDD = IDD_ADDEDIT_PASSWORDPOLICY };
 
+  CSymbolEdit m_symbols;
+
   BOOL m_pwuselowercase;
   BOOL m_pwuseuppercase;
   BOOL m_pwusedigits;
@@ -36,11 +39,15 @@ public:
   BOOL m_pwusehexdigits;
   BOOL m_pweasyvision;
   BOOL m_pwmakepronounceable;
+
   size_t m_pwdefaultlength;
   size_t m_pwdigitminlength;
   size_t m_pwlowerminlength;
   size_t m_pwsymbolminlength;
   size_t m_pwupperminlength;
+
+  int m_useownsymbols;
+
   //}}AFX_DATA
 
   // Overrides
@@ -73,6 +80,7 @@ protected:
   afx_msg void OnSetDefaultPWPolicy();
   afx_msg void OnSetSpecificPWPolicy();
   afx_msg void OnResetPolicy();
+  afx_msg void OnSymbols();
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()

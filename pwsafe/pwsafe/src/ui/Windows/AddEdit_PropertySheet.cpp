@@ -71,6 +71,7 @@ CAddEdit_PropertySheet::CAddEdit_PropertySheet(UINT nID, CWnd* pParent,
     m_AEMD.realnotes = m_AEMD.originalrealnotesTRC = L"";
     m_AEMD.URL = L"";
     m_AEMD.email = L"";
+    m_AEMD.symbols = m_AEMD.oldsymbols = L"";
 
     // Entry type initialisation
     m_AEMD.original_entrytype = CItemData::ET_NORMAL;
@@ -97,6 +98,8 @@ CAddEdit_PropertySheet::CAddEdit_PropertySheet(UINT nID, CWnd* pParent,
     // PWPolicy fields
     m_AEMD.pwp = m_AEMD.oldpwp = m_AEMD.default_pwp;
     m_AEMD.ipolicy = m_AEMD.oldipolicy = DEFAULT_POLICY;
+    m_AEMD.iownsymbols = m_AEMD.ioldownsymbols = DEFAULT_SYMBOLS;
+    m_AEMD.symbols = L"";
 
     // Protected
     m_AEMD.ucprotected = 0;
@@ -215,6 +218,7 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
                          m_AEMD.runcommand  != m_AEMD.pci->GetRunCommand() ||
                          m_AEMD.DCA         != iDCA                        ||
                          m_AEMD.email       != m_AEMD.pci->GetEmail()      ||
+                         m_AEMD.symbols     != m_AEMD.oldsymbols           ||
                          m_AEMD.PWHistory   != m_AEMD.pci->GetPWHistory()  ||
                          m_AEMD.locXTime    != m_AEMD.oldlocXTime          ||
                          m_AEMD.XTimeInt    != m_AEMD.oldXTimeInt          ||
@@ -244,10 +248,12 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
 
           m_AEMD.oldipolicy = m_AEMD.ipolicy;
           m_AEMD.oldpwp = m_AEMD.pwp;
+          m_AEMD.oldsymbols = m_AEMD.symbols;
 
           m_AEMD.pci->SetRunCommand(m_AEMD.runcommand);
           m_AEMD.pci->SetDCA(m_AEMD.DCA);
           m_AEMD.pci->SetEmail(m_AEMD.email);
+          m_AEMD.pci->SetSymbols(m_AEMD.symbols);
           m_AEMD.pci->SetProtected(m_AEMD.ucprotected != 0);
         }
 
@@ -297,6 +303,7 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
         m_AEMD.pci->SetRunCommand(m_AEMD.runcommand);
         m_AEMD.pci->SetDCA(m_AEMD.DCA);
         m_AEMD.pci->SetEmail(m_AEMD.email);
+        m_AEMD.pci->SetSymbols(m_AEMD.symbols);
         m_AEMD.pci->SetProtected(m_AEMD.ucprotected != 0);
 
         time(&t);
@@ -408,6 +415,10 @@ void CAddEdit_PropertySheet::SetupInitialValues()
   m_AEMD.realnotes = m_AEMD.originalrealnotesTRC = m_AEMD.pci->GetNotes();
   m_AEMD.URL = m_AEMD.pci->GetURL();
   m_AEMD.email = m_AEMD.pci->GetEmail();
+  m_AEMD.symbols = m_AEMD.oldsymbols = m_AEMD.pci->GetSymbols();
+  m_AEMD.ioldownsymbols = m_AEMD.symbols.IsEmpty() == TRUE ?
+                            DEFAULT_SYMBOLS : OWN_SYMBOLS;
+  m_AEMD.iownsymbols = m_AEMD.ioldownsymbols;
   m_AEMD.pci->GetProtected(m_AEMD.ucprotected);
 
   if (m_AEMD.realnotes.GetLength() > MAXTEXTCHARS) {

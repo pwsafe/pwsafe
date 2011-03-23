@@ -146,6 +146,8 @@ namespace PWSUtil {
                      const char *tabs = "\t\t");
   std::string GetXMLTime(int indent, const char *name,
                          time_t t, CUTF8Conv &utf8conv);
+
+  StringX DeDupString(StringX &in_string);
 }
 
 ///////////////////////////////////////////////////////

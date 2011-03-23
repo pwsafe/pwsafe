@@ -53,8 +53,8 @@ CItemData::CItemData()
     m_tttATime(ATIME), m_tttCTime(CTIME), m_tttXTime(XTIME),
     m_tttPMTime(PMTIME), m_tttRMTime(RMTIME), m_PWHistory(PWHIST),
     m_PWPolicy(POLICY), m_XTimeInterval(XTIME_INT), m_RunCommand(RUNCMD),
-    m_DCA(DCA), m_email(EMAIL), m_protected(PROTECTED), m_entrytype(ET_NORMAL),
-    m_entrystatus(ES_CLEAN), m_display_info(NULL)
+    m_DCA(DCA), m_email(EMAIL), m_protected(PROTECTED), m_symbols(SYMBOLS),
+    m_entrytype(ET_NORMAL), m_entrystatus(ES_CLEAN), m_display_info(NULL)
 {
   PWSrand::GetInstance()->GetRandomData( m_salt, SaltLength );
 }
@@ -68,10 +68,10 @@ CItemData::CItemData(const CItemData &that) :
   m_tttRMTime(that.m_tttRMTime), m_PWHistory(that.m_PWHistory),
   m_PWPolicy(that.m_PWPolicy), m_XTimeInterval(that.m_XTimeInterval),
   m_RunCommand(that.m_RunCommand), m_DCA(that.m_DCA), m_email(that.m_email),
-  m_protected(that.m_protected), m_entrytype(that.m_entrytype),
-  m_entrystatus(that.m_entrystatus),
+  m_protected(that.m_protected), m_symbols(that.m_symbols),
+  m_entrytype(that.m_entrytype), m_entrystatus(that.m_entrystatus),
   m_display_info(that.m_display_info == NULL ?
-                 NULL : that.m_display_info->clone())
+                      NULL : that.m_display_info->clone())
 {
   memcpy(m_salt, that.m_salt, SaltLength);
   if (!that.m_URFL.empty())
@@ -101,6 +101,7 @@ CItemData& CItemData::operator=(const CItemData &that)
     m_RunCommand = that.m_RunCommand;
     m_DCA = that.m_DCA;
     m_email = that.m_email;
+    m_symbols = that.m_symbols;
     m_tttCTime = that.m_tttCTime;
     m_tttPMTime = that.m_tttPMTime;
     m_tttATime = that.m_tttATime;
@@ -140,6 +141,7 @@ void CItemData::Clear()
   m_RunCommand.Empty();
   m_DCA.Empty();
   m_email.Empty();
+  m_symbols.Empty();
   m_tttCTime.Empty();
   m_tttPMTime.Empty();
   m_tttATime.Empty();
@@ -285,6 +287,8 @@ StringX CItemData::GetFieldValue(const FieldType &ft) const
         LoadAString(sxProtected, IDSC_YES);
       return sxProtected;
     }
+    case SYMBOLS:    /* 16 */
+      return GetSymbols();
     default:
       ASSERT(0);
   }
@@ -315,6 +319,7 @@ size_t CItemData::GetSize()
   length += m_DCA.GetLength();
   length += m_email.GetLength();
   length += m_protected.GetLength();
+  length += m_symbols.GetLength();
 
   for (unsigned int i = 0; i != m_URFL.size(); i++) {
     CItemField &item = m_URFL.at(i);
@@ -347,6 +352,7 @@ void CItemData::GetSize(size_t &isize) const
   isize += m_DCA.GetLength();
   isize += m_email.GetLength();
   isize += m_protected.GetLength();
+  isize += m_symbols.GetLength();
 
   for (unsigned int i = 0; i != m_URFL.size(); i++) {
     isize += m_URFL.at(i).GetLength();
@@ -595,6 +601,11 @@ StringX CItemData::GetEmail() const
   return GetField(m_email);
 }
 
+StringX CItemData::GetSymbols() const
+{
+  return GetField(m_symbols);
+}
+
 void CItemData::GetUnknownField(unsigned char &type, size_t &length,
                                 unsigned char * &pdata,
                                 const CItemField &item) const
@@ -777,6 +788,8 @@ StringX CItemData::GetPlaintext(const TCHAR &separator,
       StringX sxProtected = uc != 0 ? _T("Y") : _T("N");
       ret += sxProtected + separator;
     }
+    if (bsFields.test(CItemData::SYMBOLS))
+      ret += GetSymbols() + separator;
     if (bsFields.test(CItemData::NOTES))
       ret += _T("\"") + notes + _T("\"");
     // remove trailing separator
@@ -977,6 +990,10 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
   GetProtected(uc);
   if (bsExport.test(CItemData::PROTECTED) && uc != 0)
     oss << "\t\t<protected>1</protected>" << endl;
+
+  tmp = GetSymbols();
+  if (bsExport.test(CItemData::SYMBOLS) && !tmp.empty())
+    PWSUtil::WriteXMLField(oss, "symbols", tmp, utf8conv);
 
   if (NumberUnknownFields() > 0) {
     oss << "\t\t<unknownrecordfields>" << endl;
@@ -1433,9 +1450,14 @@ void CItemData::SetRunCommand(const StringX &cs_RunCommand)
   SetField(m_RunCommand, cs_RunCommand);
 }
 
-void CItemData::SetEmail(const StringX &cs_email)
+void CItemData::SetEmail(const StringX &sx_email)
 {
-  SetField(m_email, cs_email);
+  SetField(m_email, sx_email);
+}
+
+void CItemData::SetSymbols(const StringX &sx_symbols)
+{
+  SetField(m_symbols, sx_symbols);
 }
 
 void CItemData::SetDCA(const short &iDCA)
@@ -1530,6 +1552,9 @@ void CItemData::SetFieldValue(const FieldType &ft, const StringX &value)
       break;
     case PROTECTED:  /* 15 */
       SetProtected(value.compare(_T("1")) == 0 || value.compare(_T("Yes")) == 0);
+      break;
+    case SYMBOLS:    /* 16 */
+      SetSymbols(value);
       break;
     case GROUPTITLE: /* 00 */
     case UUID:       /* 01 */
@@ -1633,48 +1658,51 @@ bool CItemData::ValidatePWHistory()
   return false;
 }
 
-bool CItemData::Matches(const stringT &string, int iObject,
+bool CItemData::Matches(const stringT &stValue, int iObject,
                         int iFunction) const
 {
   ASSERT(iFunction != 0); // must be positive or negative!
 
-  StringX csObject;
+  StringX sx_Object;
   switch(iObject) {
     case GROUP:
-      csObject = GetGroup();
+      sx_Object = GetGroup();
       break;
     case TITLE:
-      csObject = GetTitle();
+      sx_Object = GetTitle();
       break;
     case USER:
-      csObject = GetUser();
+      sx_Object = GetUser();
       break;
     case GROUPTITLE:
-      csObject = GetGroup() + TCHAR('.') + GetTitle();
+      sx_Object = GetGroup() + TCHAR('.') + GetTitle();
       break;
     case URL:
-      csObject = GetURL();
+      sx_Object = GetURL();
       break;
     case NOTES:
-      csObject = GetNotes();
+      sx_Object = GetNotes();
       break;
     case PASSWORD:
-      csObject = GetPassword();
+      sx_Object = GetPassword();
       break;
     case RUNCMD:
-      csObject = GetRunCommand();
+      sx_Object = GetRunCommand();
       break;
     case EMAIL:
-      csObject = GetEmail();
+      sx_Object = GetEmail();
+      break;
+    case SYMBOLS:
+      sx_Object = GetSymbols();
       break;
     case AUTOTYPE:
-      csObject = GetAutoType();
+      sx_Object = GetAutoType();
       break;
     default:
       ASSERT(0);
   }
 
-  const bool bValue = !csObject.empty();
+  const bool bValue = !sx_Object.empty();
   if (iFunction == PWSMatch::MR_PRESENT || iFunction == PWSMatch::MR_NOTPRESENT) {
     return PWSMatch::Match(bValue, iFunction);
   }
@@ -1682,7 +1710,7 @@ bool CItemData::Matches(const stringT &string, int iObject,
   if (!bValue) // String empty - always return false for other comparisons
     return false;
   else
-    return PWSMatch::Match(string.c_str(), csObject, iFunction);
+    return PWSMatch::Match(stValue.c_str(), sx_Object, iFunction);
 }
 
 bool CItemData::Matches(int num1, int num2, int iObject,
@@ -2009,7 +2037,7 @@ bool CItemData::SetField(int type, const unsigned char *data, size_t len)
       if (!pull_time32(t, data, len)) return false;
       SetCTime(t);
       break;
-    case  PMTIME:
+    case PMTIME:
       if (!pull_time32(t, data, len)) return false;
       SetPMTime(t);
       break;
@@ -2060,6 +2088,10 @@ bool CItemData::SetField(int type, const unsigned char *data, size_t len)
     case PROTECTED:
       if (!pull_char(uc, data, len)) return false;
       SetProtected(uc != 0);
+      break;
+    case SYMBOLS:
+      if (!pull_string(str, data, len)) return false;
+      SetSymbols(str);
       break;
     case END:
       break;
@@ -2187,6 +2219,7 @@ void CItemData::SerializePlainText(vector<char> &v,
   GetDCA(i16);   push_int16(v, DCA, i16);
   push_string(v, EMAIL, GetEmail());
   GetProtected(uc); push_uchar(v, PROTECTED, uc);
+  push_string(v, SYMBOLS, GetSymbols());
 
   UnknownFieldsConstIter vi_IterURFE;
   for (vi_IterURFE = GetURFIterBegin();
@@ -2236,6 +2269,7 @@ stringT CItemData::FieldName(FieldType ft)
   case DCA:        LoadAString(retval, IDSC_FLDNMDCA); break;
   case EMAIL:      LoadAString(retval, IDSC_FLDNMEMAIL); break;
   case PROTECTED:  LoadAString(retval, IDSC_FLDNMPROTECTED); break;
+  case SYMBOLS:    LoadAString(retval, IDSC_FLDNMSYMBOLS); break;
   default:
     ASSERT(0);
   };
@@ -2266,6 +2300,7 @@ stringT CItemData::EngFieldName(FieldType ft)
   case DCA:        return _T("DCA");
   case EMAIL:      return _T("e-mail");
   case PROTECTED:  return _T("Protected");
+  case SYMBOLS:    return _T("Symbols");
   default:
     ASSERT(0);
     return _T("");

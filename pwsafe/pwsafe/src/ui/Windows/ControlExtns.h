@@ -227,3 +227,20 @@ private:
   bool m_bUseToolTips;
   std::vector<CSecString> m_vtooltips;
 };
+
+/////////////////////////////////////////////////////////////////////////////
+// CSymbolEdit
+
+class CSymbolEdit : public CEdit
+{
+  // Construction
+public:
+  CSymbolEdit() {}
+
+protected:
+  //{{AFX_MSG(CSymbolEdit)
+  afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
+  //}}AFX_MSG
+
+  DECLARE_MESSAGE_MAP()
+};
