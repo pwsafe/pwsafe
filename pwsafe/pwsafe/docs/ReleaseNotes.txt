@@ -19,7 +19,7 @@ for EasyVision and Pronounceable passwords can not be overriden in either case.
 
 Changes to Existing Features in 3.25.1
 ======================================
-None
+[] Polish installation texts added thanks to Michal Niklas.
 
 Bugs fixed in 3.25.1
 ====================
