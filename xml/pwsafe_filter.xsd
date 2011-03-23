@@ -8,7 +8,7 @@
     supported by PasswordSafe.  If either of these are not true, the filters cannot be
     loaded into PasswordSafe.
 
-    This XML Schema corresponds to V3.25 of Password Safe for filters.
+    This XML Schema corresponds to V3.26 of Password Safe for filters.
     Rules:
       EQ - equals
       NE - not equals
@@ -26,6 +26,10 @@
       ND - does not end with
       CO - contains
       NC - does not contain
+      CY - contains any of
+      NY - does not contain any of
+      CA - contains all of
+      NA - does not contain all of
       BT - between
       LT - less than
       LE - less than or equal
@@ -95,6 +99,10 @@
     <xs:enumeration value="ND" />
     <xs:enumeration value="CO" />
     <xs:enumeration value="NC" />
+    <xs:enumeration value="CY" />
+    <xs:enumeration value="NY" />
+    <xs:enumeration value="CA" />
+    <xs:enumeration value="NA" />
   </xs:restriction>
 </xs:simpleType>
 
@@ -110,6 +118,10 @@
     <xs:enumeration value="ND" />
     <xs:enumeration value="CO" />
     <xs:enumeration value="NC" />
+    <xs:enumeration value="CY" />
+    <xs:enumeration value="NY" />
+    <xs:enumeration value="CA" />
+    <xs:enumeration value="NA" />
   </xs:restriction>
 </xs:simpleType>
 
@@ -447,6 +459,7 @@
     <xs:element name="autotype" type="stringpresentfilterentry" minOccurs="1" maxOccurs="1" />
     <xs:element name="password_expiry_interval" type="integerfilterentry" minOccurs="1" maxOccurs="1" />
     <xs:element name="protected" type="booleanisfilterentry" minOccurs="1" maxOccurs="1" />
+    <xs:element name="symbols" type="stringpresentfilterentry" minOccurs="1" maxOccurs="1" />
 
     <xs:element name="password_history" type="passwordhistoryentry" minOccurs="1" maxOccurs="1" />
     <xs:element name="history_present" type="booleanpresentfilterentry" minOccurs="1" maxOccurs="1" />

@@ -264,6 +264,9 @@ int PWSfileV3::WriteRecord(const CItemData &item)
   tmp = item.GetProtected();
   if (!tmp.empty())
     WriteCBC(CItemData::PROTECTED, tmp);
+  tmp = item.GetSymbols();
+  if (!tmp.empty())
+    WriteCBC(CItemData::SYMBOLS, tmp);
 
   UnknownFieldsConstIter vi_IterURFE;
   for (vi_IterURFE = item.GetURFIterBegin();
@@ -370,7 +373,7 @@ void PWSfileV3::StretchKey(const unsigned char *salt, unsigned long saltLen,
   }
 }
 
-const short VersionNum = 0x0308;
+const short VersionNum = 0x0309;
 
 // Following specific for PWSfileV3::WriteHeader
 #define SAFE_FWRITE(p, sz, cnt, stream) \

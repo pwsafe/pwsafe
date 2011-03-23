@@ -38,13 +38,17 @@
 class CPasswordCharPool
 {
 public:
-  CPasswordCharPool(uint pwlen,
-    uint numlowercase, uint numuppercase,
-    uint numdigits, uint numsymbols, bool usehexdigits,
-    bool easyvision, bool pronounceable);
+  CPasswordCharPool(const uint pwlen,
+                    const uint numlowercase, const uint numuppercase,
+                    const uint numdigits, const uint numsymbols,
+                    const bool usehexdigits,  const bool easyvision,
+                    const bool pronounceable,
+                    const charT *ct_symbols);
   StringX MakePassword() const;
 
   static bool CheckPassword(const StringX &pwd, StringX &error);
+  static void GetDefaultSymbols(stringT &symbols)
+  {symbols = std_symbol_chars;}
 
 private:
   enum CharType {LOWERCASE = 0, UPPERCASE = 1,

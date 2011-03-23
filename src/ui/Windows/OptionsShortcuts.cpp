@@ -170,7 +170,7 @@ BOOL COptionsShortcuts::OnInitDialog()
     // Remove the ampersand from the menu item the user sees here
     sMenuItemtext.Remove(L'&');
 
-	  iItem = m_ShortcutLC.InsertItem(iItem, str);  // SHCT_SHORTCUTKEYS
+    iItem = m_ShortcutLC.InsertItem(iItem, str);  // SHCT_SHORTCUTKEYS
     ASSERT(iItem != -1);
     brc = m_ShortcutLC.SetItemText(iItem, 1, sMenuItemtext); // SHCT_MENUITEMTEXT
     ASSERT(brc != 0);

@@ -43,6 +43,8 @@ struct st_AE_master_data {
   CSecString originalrealnotesTRC;
   CSecString URL;
   CSecString email;
+  CSecString symbols;
+  CSecString oldsymbols;
 
   CSecString base;
   CSecString dependents;
@@ -74,7 +76,7 @@ struct st_AE_master_data {
 
   // Password Policy
   PWPolicy pwp, oldpwp, default_pwp;
-  int ipolicy, oldipolicy;
+  int ipolicy, oldipolicy, iownsymbols, ioldownsymbols;
   
   // Attributes
   unsigned char ucprotected;
@@ -113,6 +115,8 @@ public:
   inline CSecString &M_originalrealnotesTRC() {return m_AEMD.originalrealnotesTRC;}
   inline CSecString &M_URL() {return m_AEMD.URL;}
   inline CSecString &M_email() {return m_AEMD.email;}
+  inline CSecString &M_symbols() {return m_AEMD.symbols;}
+  inline CSecString &M_oldsymbols() {return m_AEMD.oldsymbols;}
 
   inline CSecString &M_base() {return m_AEMD.base;}
   inline CSecString &M_dependents() {return m_AEMD.dependents;}
@@ -156,6 +160,8 @@ public:
   inline PWPolicy &M_default_pwp() {return m_AEMD.default_pwp;}
   inline int &M_ipolicy() {return m_AEMD.ipolicy;}
   inline int &M_oldipolicy() {return m_AEMD.oldipolicy;}
+  inline int &M_iownsymbols() {return m_AEMD.iownsymbols;}
+  inline int &M_ioldownsymbols() {return m_AEMD.ioldownsymbols;}
   
   // Attributes
   inline unsigned char &M_protected() {return m_AEMD.ucprotected;}

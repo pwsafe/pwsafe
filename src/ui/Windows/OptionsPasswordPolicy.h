@@ -32,6 +32,9 @@ public:
   // Dialog Data
   //{{AFX_DATA(COptionsPasswordPolicy)
   enum { IDD = IDD_PS_PASSWORDPOLICY };
+ 
+  CSymbolEdit m_symbols;
+
   UINT m_pwdefaultlength;
   BOOL m_pwuselowercase;
   BOOL m_pwuseuppercase;
@@ -62,6 +65,9 @@ public:
   PWPolicy m_default_pwp;
   CSecString m_password;
   CSecEditExtn m_ex_password;
+  
+  int m_useownsymbols, m_saveuseownsymbols;
+  CString m_cs_symbols, m_cs_savesymbols;
 
   // Overrides
   // ClassWizard generate virtual function overrides
@@ -78,17 +84,18 @@ protected:
   //{{AFX_MSG(COptionsPasswordPolicy)
   afx_msg LRESULT OnQuerySiblings(WPARAM wParam, LPARAM);
   afx_msg void OnHelp();
-  afx_msg void OnUsehexdigits();
-  afx_msg void OnUselowercase();
-  afx_msg void OnUseuppercase();
-  afx_msg void OnUsedigits();
-  afx_msg void OnUsesymbols();
+  afx_msg void OnUseHexdigits();
+  afx_msg void OnUseLowerCase();
+  afx_msg void OnUseUpperCase();
+  afx_msg void OnUseDigits();
+  afx_msg void OnUseSymbols();
   afx_msg void OnEasyVision();
   afx_msg void OnMakePronounceable();
   afx_msg BOOL OnKillActive();
   afx_msg void OnRandom();
   afx_msg void OnCopyPassword();
   afx_msg void OnENChangePassword();
+  afx_msg void OnSymbols();
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
@@ -96,7 +103,7 @@ protected:
 private:
   BOOL Validate();
 
-  void do_nohex(const bool bNonHex); // bNonHex == true enable non-hex
+  void do_hex(const bool bNonHex); // bNonHex == true enable non-hex
   void do_easyorpronounceable(const bool bSet); // bSet == true enable one of these options
   // number of checkboxes & lengths disabled when hex chosen
   enum {N_NOHEX = 6, N_HEX_LENGTHS = 4};

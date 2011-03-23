@@ -128,40 +128,18 @@ BOOL CFilterEntrySizeDlg::OnInitDialog()
 
   // NOTE: This ComboBox is NOT sorted by design !
   if (m_cbxRule.GetCount() == 0) {
-    cs_text.LoadString(IDSC_EQUALS);
-    iItem = m_cbxRule.AddString(cs_text);
-    m_cbxRule.SetItemData(iItem, PWSMatch::MR_EQUALS);
-    m_rule2selection[PWSMatch::MR_EQUALS] = iItem;
+    const PWSMatch::MatchRule mrx[] = {PWSMatch::MR_EQUALS, PWSMatch::MR_NOTEQUAL,
+                                       PWSMatch::MR_LT,     PWSMatch::MR_LE,
+                                       PWSMatch::MR_GT,     PWSMatch::MR_GE,
+                                       PWSMatch::MR_BETWEEN};
 
-    cs_text.LoadString(IDSC_DOESNOTEQUAL);
-    iItem = m_cbxRule.AddString(cs_text);
-    m_cbxRule.SetItemData(iItem, PWSMatch::MR_NOTEQUAL);
-    m_rule2selection[PWSMatch::MR_NOTEQUAL] = iItem;
-
-    cs_text.LoadString(IDSC_BETWEEN);
-    iItem = m_cbxRule.AddString(cs_text);
-    m_cbxRule.SetItemData(iItem, PWSMatch::MR_BETWEEN);
-    m_rule2selection[PWSMatch::MR_BETWEEN] = iItem;
-
-    cs_text.LoadString(IDSC_LESSTHAN);
-    iItem = m_cbxRule.AddString(cs_text);
-    m_cbxRule.SetItemData(iItem, PWSMatch::MR_LT);
-    m_rule2selection[PWSMatch::MR_LT] = iItem;
-
-    cs_text.LoadString(IDSC_LESSTHANEQUAL);
-    iItem = m_cbxRule.AddString(cs_text);
-    m_cbxRule.SetItemData(iItem, PWSMatch::MR_LE);
-    m_rule2selection[PWSMatch::MR_LE] = iItem;
-
-    cs_text.LoadString(IDSC_GREATERTHAN);
-    iItem = m_cbxRule.AddString(cs_text);
-    m_cbxRule.SetItemData(iItem, PWSMatch::MR_GT);
-    m_rule2selection[PWSMatch::MR_GT] = iItem;
-
-    cs_text.LoadString(IDSC_GREATERTHANEQUAL);
-    iItem = m_cbxRule.AddString(cs_text);
-    m_cbxRule.SetItemData(iItem, PWSMatch::MR_GE);
-    m_rule2selection[PWSMatch::MR_GE] = iItem;
+    for (size_t i = 0; i < _countof(mrx); i++) {
+      UINT iumsg = PWSMatch::GetRule(mrx[i]);
+      cs_text.LoadString(iumsg);
+      iItem = m_cbxRule.AddString(cs_text);
+      m_cbxRule.SetItemData(iItem, mrx[i]);
+      m_rule2selection[mrx[i]] = iItem;
+    }
   }
 
   int isel = m_rule2selection[(int)m_rule];

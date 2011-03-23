@@ -46,6 +46,7 @@ BEGIN
   IDSC_FLDNMDCA          "DCA"
   IDSC_FLDNMEMAIL        "e-mail"
   IDSC_FLDNMPROTECTED    "Protected"
+  IDSC_FLDNMSYMBOLS      "Symbols"
 END
 
 STRINGTABLE
@@ -239,6 +240,10 @@ BEGIN
   IDSC_DOESNOTENDWITH      "does not end with"
   IDSC_CONTAINS            "contains"
   IDSC_DOESNOTCONTAIN      "does not contain"
+  IDSC_CONTAINSANY         "contains any of"
+  IDSC_DOESNOTCONTAINANY   "does not contain any of"
+  IDSC_CONTAINSALL         "contains all of"
+  IDSC_DOESNOTCONTAINALL   "does not contain all of"
   IDSC_BETWEEN             "between"
   IDSC_LESSTHAN            "less than"
   IDSC_LESSTHANEQUAL       "less than or equal to"

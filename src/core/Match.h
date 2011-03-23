@@ -31,9 +31,11 @@ namespace PWSMatch {
     // For entrytype & DCA & Attributes comparisons/filters
     MR_IS, MR_ISNOT,
     // For string comparisons/filters
-    MR_BEGINS, MR_NOTBEGIN, 
-    MR_ENDS, MR_NOTEND, 
-    MR_CONTAINS, MR_NOTCONTAIN, 
+    MR_BEGINS, MR_NOTBEGIN,
+    MR_ENDS, MR_NOTEND,
+    MR_CONTAINS, MR_NOTCONTAIN,
+    MR_CNTNANY, MR_NOTCNTNANY,
+    MR_CNTNALL, MR_NOTCNTNALL,
     // For integer and date comparisons/filtering
     MR_BETWEEN,
     // For integer comparisons/filtering
@@ -51,7 +53,8 @@ namespace PWSMatch {
                   MT_DCA, MT_ENTRYSTATUS, MT_ENTRYSIZE};
 
   // Generalised checking
-  bool Match(const StringX &string1, StringX &csValue, int iFunction);
+  bool Match(const StringX &stValue, StringX sx_Object, const int &iFunction);
+
   template<typename T> bool Match(T v1, T v2, T value, int iFunction)
   {
     switch (iFunction) {
@@ -71,8 +74,9 @@ namespace PWSMatch {
 
   bool Match(bool bValue, int iFunction);  // bool - if field present or not
 
-  UINT GetRule(MatchRule rule);
-  const char *GetRuleString(MatchRule rule);
+  const UINT GetRule(const MatchRule rule);
+  const MatchRule GetRule(const StringX sx_mnemonic);
+  const char *GetRuleString(const MatchRule rule);
   void GetMatchType(MatchType mtype,
                     int fnum1, int fnum2,
                     time_t fdate1, time_t fdate2, int fdatetype,

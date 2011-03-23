@@ -452,6 +452,7 @@ LRESULT CAddEdit_Basic::OnQuerySiblings(WPARAM wParam, LPARAM )
               M_realnotes()    != M_originalrealnotesTRC() ||
               M_URL()          != M_pci()->GetURL()        ||
               M_email()        != M_pci()->GetEmail()      ||
+              M_symbols()      != M_pci()->GetSymbols()    ||
               M_realpassword() != M_oldRealPassword())
             return 1L;
           break;
@@ -462,7 +463,8 @@ LRESULT CAddEdit_Basic::OnQuerySiblings(WPARAM wParam, LPARAM )
               !M_realpassword().IsEmpty() ||
               !M_realnotes().IsEmpty()    ||
               !M_URL().IsEmpty()          ||
-              !M_email().IsEmpty())
+              !M_email().IsEmpty()        ||
+              !M_symbols().IsEmpty()        )
             return 1L;
           break;
       }
@@ -568,6 +570,7 @@ BOOL CAddEdit_Basic::OnApply()
   M_username().EmptyIfOnlyWhiteSpace();
   M_URL().EmptyIfOnlyWhiteSpace();
   M_email().EmptyIfOnlyWhiteSpace();
+  M_symbols().EmptyIfOnlyWhiteSpace();
 
   m_notes.EmptyIfOnlyWhiteSpace();
   m_notesww.EmptyIfOnlyWhiteSpace();
@@ -826,7 +829,7 @@ void CAddEdit_Basic::OnRandom()
   }
 
   StringX passwd;
-  M_pDbx()->MakeRandomPassword(passwd, M_pwp());
+  M_pDbx()->MakeRandomPassword(passwd, M_pwp(), M_symbols());
   if (rc == CChangeAliasPswd::CHANGEBASE) {
     // Change Base
     ItemListIter iter = M_pDbx()->Find(M_base_uuid());

@@ -232,40 +232,27 @@ BOOL CFilterDateDlg::OnInitDialog()
   // NOTE: This ComboBox is NOT sorted by design !
   if (m_cbxRule.GetCount() == 0) {
     if (m_add_present) {
-      cs_text.LoadString(IDSC_ISPRESENT);
-      iItem = m_cbxRule.AddString(cs_text);
-      m_cbxRule.SetItemData(iItem, PWSMatch::MR_PRESENT);
-      m_rule2selection[PWSMatch::MR_PRESENT] = iItem;
+      const PWSMatch::MatchRule mrx[] = {PWSMatch::MR_PRESENT, PWSMatch::MR_NOTPRESENT};
 
-      cs_text.LoadString(IDSC_ISNOTPRESENT);
-      iItem = m_cbxRule.AddString(cs_text);
-      m_cbxRule.SetItemData(iItem, PWSMatch::MR_NOTPRESENT);
-      m_rule2selection[PWSMatch::MR_NOTPRESENT] = iItem;
+      for (size_t i = 0; i < _countof(mrx); i++) {
+        UINT iumsg = PWSMatch::GetRule(mrx[i]);
+        cs_text.LoadString(iumsg);
+        iItem = m_cbxRule.AddString(cs_text);
+        m_cbxRule.SetItemData(iItem, mrx[i]);
+        m_rule2selection[mrx[i]] = iItem;
+      }
     }
-    cs_text.LoadString(IDSC_EQUALS);
-    iItem = m_cbxRule.AddString(cs_text);
-    m_cbxRule.SetItemData(iItem, PWSMatch::MR_EQUALS);
-    m_rule2selection[PWSMatch::MR_EQUALS] = iItem;
+    const PWSMatch::MatchRule mrx[] = {PWSMatch::MR_EQUALS, PWSMatch::MR_NOTEQUAL,
+                                       PWSMatch::MR_BEFORE, PWSMatch::MR_AFTER,
+                                       PWSMatch::MR_BETWEEN};
 
-    cs_text.LoadString(IDSC_DOESNOTEQUAL);
-    iItem = m_cbxRule.AddString(cs_text);
-    m_cbxRule.SetItemData(iItem, PWSMatch::MR_NOTEQUAL);
-    m_rule2selection[PWSMatch::MR_NOTEQUAL] = iItem;
-
-    cs_text.LoadString(IDSC_BEFORE);
-    iItem = m_cbxRule.AddString(cs_text);
-    m_cbxRule.SetItemData(iItem, PWSMatch::MR_BEFORE);
-    m_rule2selection[PWSMatch::MR_BEFORE] = iItem;
-
-    cs_text.LoadString(IDSC_AFTER);
-    iItem = m_cbxRule.AddString(cs_text);
-    m_cbxRule.SetItemData(iItem, PWSMatch::MR_AFTER);
-    m_rule2selection[PWSMatch::MR_AFTER] = iItem;
-
-    cs_text.LoadString(IDSC_BETWEEN);
-    iItem = m_cbxRule.AddString(cs_text);
-    m_cbxRule.SetItemData(iItem, PWSMatch::MR_BETWEEN);
-    m_rule2selection[PWSMatch::MR_BETWEEN] = iItem;
+    for (size_t i = 0; i < _countof(mrx); i++) {
+      UINT iumsg = PWSMatch::GetRule(mrx[i]);
+      cs_text.LoadString(iumsg);
+      iItem = m_cbxRule.AddString(cs_text);
+      m_cbxRule.SetItemData(iItem, mrx[i]);
+      m_rule2selection[mrx[i]] = iItem;
+    }
   }
 
   wchar_t szBuf[81];       // workspace

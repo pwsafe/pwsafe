@@ -262,6 +262,9 @@ int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2,
     case CItemData::EMAIL:
       iResult = CompareNoCase(pLHS->GetEmail(), pRHS->GetEmail());
       break;
+    case CItemData::SYMBOLS:
+      iResult = CompareNoCase(pLHS->GetSymbols(), pRHS->GetSymbols());
+      break;
     case CItemData::RUNCMD:
       iResult = CompareNoCase(pLHS->GetRunCommand(), pRHS->GetRunCommand());
       break;
@@ -632,7 +635,7 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
   ASSERT(indices.empty());
 
   StringX curGroup, curTitle, curUser, curNotes, curPassword, curURL, curAT, curXInt;
-  StringX curEmail, curRunCommand, listTitle, saveTitle;
+  StringX curEmail, curSymbols, curRunCommand, listTitle, saveTitle;
   bool bFoundit;
   CString searchstr(str); // Since str is const, and we might need to MakeLower
   size_t retval = 0;
@@ -676,6 +679,7 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
     curNotes = curitem.GetNotes();
     curURL = curitem.GetURL();
     curEmail = curitem.GetEmail();
+    curSymbols = curitem.GetSymbols();
     curRunCommand = curitem.GetRunCommand();
     curAT = curitem.GetAutoType();
     curXInt = curitem.GetXTimeInt();
@@ -720,6 +724,10 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
         break;
       }
       if (bsFields.test(CItemData::EMAIL) && ::wcsstr(curEmail.c_str(), searchstr)) {
+        bFoundit = true;
+        break;
+      }
+      if (bsFields.test(CItemData::SYMBOLS) && ::wcsstr(curSymbols.c_str(), searchstr)) {
         bFoundit = true;
         break;
       }
@@ -2732,6 +2740,9 @@ CString DboxMain::GetHeaderText(int iType) const
     case CItemData::EMAIL:
       cs_header.LoadString(IDS_EMAIL);
       break;
+    case CItemData::SYMBOLS:
+      cs_header.LoadString(IDS_SYMBOLS);
+      break;
     case CItemData::RUNCMD:
       cs_header.LoadString(IDS_RUNCOMMAND);
       break;
@@ -2781,6 +2792,7 @@ int DboxMain::GetHeaderWidth(int iType) const
     case CItemData::NOTES:
     case CItemData::URL:
     case CItemData::EMAIL:
+    case CItemData::SYMBOLS:
     case CItemData::RUNCMD:
     case CItemData::POLICY:
     case CItemData::XTIME_INT:
@@ -3293,6 +3305,9 @@ void DboxMain::OnToolBarFindReport()
         case CItemData::EMAIL:
           uistring = IDS_EMAIL;
           break;
+        case CItemData::SYMBOLS:
+          uistring = IDS_SYMBOLS;
+          break;
         case CItemData::RUNCMD:
           uistring = IDS_RUNCOMMAND;
           break;
@@ -3307,42 +3322,8 @@ void DboxMain::OnToolBarFindReport()
       cs_case.LoadString(Fsubgroup_function > 0 ? 
                          IDS_ADVCASE_INSENSITIVE : IDS_ADVCASE_SENSITIVE);
 
-      switch (Fsubgroup_function) {
-        case -PWSMatch::MR_EQUALS:
-        case  PWSMatch::MR_EQUALS:
-          uistring = IDSC_EQUALS;
-          break;
-        case -PWSMatch::MR_NOTEQUAL:
-        case  PWSMatch::MR_NOTEQUAL:
-          uistring = IDSC_DOESNOTEQUAL;
-          break;
-        case -PWSMatch::MR_BEGINS:
-        case  PWSMatch::MR_BEGINS:
-          uistring = IDSC_BEGINSWITH;
-          break;
-        case -PWSMatch::MR_NOTBEGIN:
-        case  PWSMatch::MR_NOTBEGIN:
-          uistring = IDSC_DOESNOTBEGINSWITH;
-          break;
-        case -PWSMatch::MR_ENDS:
-        case  PWSMatch::MR_ENDS:
-          uistring = IDSC_ENDSWITH;
-          break;
-        case -PWSMatch::MR_NOTEND:
-        case  PWSMatch::MR_NOTEND:
-          uistring = IDSC_DOESNOTENDWITH;
-          break;
-        case -PWSMatch::MR_CONTAINS:
-        case  PWSMatch::MR_CONTAINS:
-          uistring = IDSC_CONTAINS;
-          break;
-        case -PWSMatch::MR_NOTCONTAIN:
-        case  PWSMatch::MR_NOTCONTAIN:
-          uistring = IDSC_DOESNOTCONTAIN;
-          break;
-        default:
-          ASSERT(0);
-      }
+      uistring = PWSMatch::GetRule(PWSMatch::MatchRule(abs(Fsubgroup_function)));
+
       cs_text.LoadString(uistring);
       cs_temp.Format(IDS_ADVANCEDSUBSET, cs_Object, cs_text, Fsubgroup_name,
                      cs_case);
@@ -3371,6 +3352,8 @@ void DboxMain::OnToolBarFindReport()
       buffer += L"\t" + CString(MAKEINTRESOURCE(IDS_COMPURL));
     if (bsFFields.test(CItemData::EMAIL))
       buffer += L"\t" + CString(MAKEINTRESOURCE(IDS_COMPEMAIL));
+    if (bsFFields.test(CItemData::SYMBOLS))
+      buffer += L"\t" + CString(MAKEINTRESOURCE(IDS_COMPSYMBOLS));
     if (bsFFields.test(CItemData::RUNCMD))
       buffer += L"\t" + CString(MAKEINTRESOURCE(IDS_COMPRUNCOMMAND));
     if (bsFFields.test(CItemData::AUTOTYPE))

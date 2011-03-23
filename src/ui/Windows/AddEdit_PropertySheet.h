@@ -34,9 +34,6 @@ public:
 
   DECLARE_DYNAMIC(CAddEdit_PropertySheet)
 
-  // Password Policy related stuff
-  enum {DEFAULT_POLICY = 0, SPECIFIC_POLICY};
-
   // Get/Set routines needed by DboxMain Add & Edit
   CSecString &GetGroup() {return m_AEMD.group;}
   void SetGroup(StringX group) {m_AEMD.group = CSecString(group);}

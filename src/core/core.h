@@ -67,6 +67,7 @@
 #define IDSC_FLDNMEMAIL                 3065
 #define IDSC_FLDNMPROTECTED             3066
 #define IDSC_FLDNMUUID                  3067
+#define IDSC_FLDNMSYMBOLS               3068
 
 #define IDSC_CONFIG_NONE                3230
 #define IDSC_CONFIG_REGISTRY            3231
@@ -236,6 +237,10 @@
 #define IDSC_CONFLICTS                  3417
 #define IDSC_MERGED                     3418
 #define IDSC_MERGEADDED                 3419
+#define IDSC_CONTAINSANY                3420
+#define IDSC_DOESNOTCONTAINANY          3421
+#define IDSC_CONTAINSALL                3422
+#define IDSC_DOESNOTCONTAINALL          3423
 
 // Keep DCA together
 #define IDSC_CURRENTDEFAULTDCA          4000

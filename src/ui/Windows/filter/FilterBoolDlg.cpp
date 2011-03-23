@@ -54,53 +54,34 @@ BOOL CFilterBoolDlg::OnInitDialog()
 
   // NOTE: This ComboBox is NOT sorted by design !
   if (m_cbxRule.GetCount() == 0) {
+    const PWSMatch::MatchRule mrxp[2] = {PWSMatch::MR_PRESENT, PWSMatch::MR_NOTPRESENT};
+    const PWSMatch::MatchRule mrxa[2] = {PWSMatch::MR_ACTIVE,  PWSMatch::MR_INACTIVE};
+    const PWSMatch::MatchRule mrxs[2] = {PWSMatch::MR_SET,     PWSMatch::MR_NOTSET};
+    const PWSMatch::MatchRule mrxi[2] = {PWSMatch::MR_IS,      PWSMatch::MR_ISNOT};
+
+    const PWSMatch::MatchRule *pmrx(NULL);
     switch (m_bt) {
       case BT_PRESENT:
-        cs_text.LoadString(IDSC_ISPRESENT);
-        iItem = m_cbxRule.AddString(cs_text);
-        m_cbxRule.SetItemData(iItem, PWSMatch::MR_PRESENT);
-        m_rule2selection[PWSMatch::MR_PRESENT] = iItem;
-
-        cs_text.LoadString(IDSC_ISNOTPRESENT);
-        iItem = m_cbxRule.AddString(cs_text);
-        m_cbxRule.SetItemData(iItem, PWSMatch::MR_NOTPRESENT);
-        m_rule2selection[PWSMatch::MR_NOTPRESENT] = iItem;
+        pmrx = mrxp;
         break;
       case BT_ACTIVE:
-        cs_text.LoadString(IDSC_ISACTIVE);
-        iItem = m_cbxRule.AddString(cs_text);
-        m_cbxRule.SetItemData(iItem, PWSMatch::MR_ACTIVE);
-        m_rule2selection[PWSMatch::MR_ACTIVE] = iItem;
-
-        cs_text.LoadString(IDSC_ISINACTIVE);
-        iItem = m_cbxRule.AddString(cs_text);
-        m_cbxRule.SetItemData(iItem, PWSMatch::MR_INACTIVE);
-        m_rule2selection[PWSMatch::MR_INACTIVE] = iItem;
+        pmrx = mrxa;
         break;
       case BT_SET:
-        cs_text.LoadString(IDSC_SET);
-        iItem = m_cbxRule.AddString(cs_text);
-        m_cbxRule.SetItemData(iItem, PWSMatch::MR_SET);
-        m_rule2selection[PWSMatch::MR_SET] = iItem;
-
-        cs_text.LoadString(IDSC_NOTSET);
-        iItem = m_cbxRule.AddString(cs_text);
-        m_cbxRule.SetItemData(iItem, PWSMatch::MR_NOTSET);
-        m_rule2selection[PWSMatch::MR_NOTSET] = iItem;
+        pmrx = mrxs;
         break;
       case BT_IS:
-        cs_text.LoadString(IDSC_IS);
-        iItem = m_cbxRule.AddString(cs_text);
-        m_cbxRule.SetItemData(iItem, PWSMatch::MR_IS);
-        m_rule2selection[PWSMatch::MR_SET] = iItem;
-
-        cs_text.LoadString(IDSC_ISNOT);
-        iItem = m_cbxRule.AddString(cs_text);
-        m_cbxRule.SetItemData(iItem, PWSMatch::MR_ISNOT);
-        m_rule2selection[PWSMatch::MR_NOTSET] = iItem;
+        pmrx = mrxi;
         break;
       default:
         ASSERT(0);
+    }
+    for (size_t i = 0; i < 2; i++) {
+      UINT iumsg = PWSMatch::GetRule(pmrx[i]);
+      cs_text.LoadString(iumsg);
+      iItem = m_cbxRule.AddString(cs_text);
+      m_cbxRule.SetItemData(iItem, pmrx[i]);
+      m_rule2selection[pmrx[i]] = iItem;
     }
   }
 

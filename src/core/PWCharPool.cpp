@@ -12,9 +12,12 @@
 #include "Util.h"
 #include "core.h"
 #include "PWSrand.h"
+#include "PWSprefs.h"
 #include "trigram.h" // for pronounceable passwords
+
 #include "os/typedefs.h"
 #include "os/pws_tchar.h"
+
 #include <string>
 #include <vector>
 #include <algorithm>
@@ -57,11 +60,12 @@ const size_t CPasswordCharPool::easyvision_hexdigit_len = LENGTH(easyvision_hexd
 
 //-----------------------------------------------------------------------------
 
-CPasswordCharPool::CPasswordCharPool(uint pwlen,
-                                     uint numlowercase, uint numuppercase,
-                                     uint numdigits, uint numsymbols,
-                                     bool usehexdigits, bool easyvision,
-                                     bool pronounceable)
+CPasswordCharPool::CPasswordCharPool(const uint pwlen,
+                                     const uint numlowercase, const uint numuppercase,
+                                     const uint numdigits, const uint numsymbols,
+                                     const bool usehexdigits, const bool easyvision,
+                                     const bool pronounceable,
+                                     const charT *ct_symbols)
   : m_pwlen(pwlen),
   m_numlowercase(numlowercase), m_numuppercase(numuppercase),
   m_numdigits(numdigits), m_numsymbols(numsymbols),
@@ -73,8 +77,8 @@ CPasswordCharPool::CPasswordCharPool(uint pwlen,
 {
   ASSERT(m_pwlen > 0);
   ASSERT(m_uselowercase || m_useuppercase || 
-    m_usedigits || m_usesymbols || 
-    m_usehexdigits || m_pronounceable);
+         m_usedigits    || m_usesymbols   || 
+         m_usehexdigits || m_pronounceable);
 
   if (easyvision) {
     m_char_arrays[LOWERCASE] = easyvision_lowercase_chars;
@@ -82,6 +86,7 @@ CPasswordCharPool::CPasswordCharPool(uint pwlen,
     m_char_arrays[DIGIT] = easyvision_digit_chars;
     m_char_arrays[SYMBOL] = easyvision_symbol_chars;
     m_char_arrays[HEXDIGIT] = easyvision_hexdigit_chars;
+
     m_lengths[LOWERCASE] = m_uselowercase ? easyvision_lowercase_len : 0;
     m_lengths[UPPERCASE] = m_useuppercase ? easyvision_uppercase_len : 0;
     m_lengths[DIGIT] = m_usedigits ? easyvision_digit_len : 0;
@@ -91,13 +96,26 @@ CPasswordCharPool::CPasswordCharPool(uint pwlen,
     m_char_arrays[LOWERCASE] = std_lowercase_chars;
     m_char_arrays[UPPERCASE] = std_uppercase_chars;
     m_char_arrays[DIGIT] = std_digit_chars;
-    m_char_arrays[SYMBOL] = std_symbol_chars;
     m_char_arrays[HEXDIGIT] = std_hexdigit_chars;
+
     m_lengths[LOWERCASE] = m_uselowercase ? std_lowercase_len : 0;
     m_lengths[UPPERCASE] = m_useuppercase ? std_uppercase_len : 0;
     m_lengths[DIGIT] = m_usedigits ? std_digit_len : 0;
-    m_lengths[SYMBOL] = m_usesymbols ? std_symbol_len : 0;
     m_lengths[HEXDIGIT] = m_usehexdigits ? std_hexdigit_len : 0;
+
+    if (_tcslen(ct_symbols) == 0) {
+      StringX sx_symbols = PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultSymbols);
+      if (sx_symbols.length() == 0) {
+        m_char_arrays[SYMBOL] = std_symbol_chars;
+        m_lengths[SYMBOL] = m_usesymbols ? std_symbol_len : 0;
+      } else {
+        m_char_arrays[SYMBOL] = _tcsdup(sx_symbols.c_str());
+        m_lengths[SYMBOL] = m_usesymbols ? sx_symbols.length() : 0;
+      }
+    } else {
+      m_char_arrays[SYMBOL] = ct_symbols;
+      m_lengths[SYMBOL] = m_usesymbols ? _tcslen(ct_symbols) : 0;
+    }
   }
 
   // See GetRandomCharType to understand what this does and why
@@ -151,7 +169,7 @@ StringX CPasswordCharPool::MakePassword() const
   // number of lower case chars > 1 + make pronouceable
   // The individual routines (normal, hex, pronouceable) will
   // ignore what they don't need.
-  // Saves an awful amount of bother with  setting values to zero and
+  // Saves an awful amount of bother with setting values to zero and
   // back as the user changes their minds!
 
   // Order of priority:

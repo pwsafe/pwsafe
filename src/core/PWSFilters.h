@@ -55,7 +55,8 @@ enum FieldType {
   FT_RUNCMD        = CItemData::RUNCMD,
   FT_DCA           = CItemData::DCA,
   FT_EMAIL         = CItemData::EMAIL,
-  FT_PROTECTED     = CItemData::PROTECTED,     // 0x180 - an attribute
+  FT_PROTECTED     = CItemData::PROTECTED,
+  FT_SYMBOLS       = CItemData::SYMBOLS,
   FT_END           = CItemData::END,
 
   // Internal fields purely for filters

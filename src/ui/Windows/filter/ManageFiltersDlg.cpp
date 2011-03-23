@@ -1086,6 +1086,7 @@ CString CManageFiltersDlg::GetFieldTypeName(FieldType ft)
   case FT_DCA:        return CItemData::FieldName(CItemData::DCA).c_str();
   case FT_EMAIL:      return CItemData::FieldName(CItemData::EMAIL).c_str();
   case FT_PROTECTED:  return CItemData::FieldName(CItemData::PROTECTED).c_str();
+  case FT_SYMBOLS:    return CItemData::FieldName(CItemData::SYMBOLS).c_str();
   case FT_CTIME:      return CItemData::FieldName(CItemData::CTIME).c_str();
   case FT_ATIME:      return CItemData::FieldName(CItemData::ATIME).c_str();
   case FT_PMTIME:     return CItemData::FieldName(CItemData::PMTIME).c_str();

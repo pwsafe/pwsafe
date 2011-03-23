@@ -368,6 +368,13 @@ void XFilterSAX2Handlers::endElement(const XMLCh* const /* uri */,
     cur_filterentry->ftype = FT_PROTECTED;
   }
 
+  else if (XMLString::equals(qname, _A2X("symbols"))) {
+    m_type = DFTYPE_MAIN;
+    cur_filterentry->mtype = PWSMatch::MT_STRING;
+    cur_filterentry->ftype = FT_SYMBOLS;
+    cur_filterentry->fstring = PWSUtil::DeDupString(cur_filterentry->fstring);
+  }
+
   else if (XMLString::equals(qname, _A2X("create_time"))) {
     m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_DATE;
@@ -531,56 +538,7 @@ void XFilterSAX2Handlers::endElement(const XMLCh* const /* uri */,
 
   else if (XMLString::equals(qname, _A2X("rule"))) {
     ToUpper(m_strElemContent);
-    if (m_strElemContent == _T("EQ"))
-      cur_filterentry->rule = PWSMatch::MR_EQUALS;
-    else if (m_strElemContent == _T("NE"))
-      cur_filterentry->rule = PWSMatch::MR_NOTEQUAL;
-    else if (m_strElemContent == _T("AC"))
-      cur_filterentry->rule = PWSMatch::MR_ACTIVE;
-    else if (m_strElemContent == _T("IA"))
-      cur_filterentry->rule = PWSMatch::MR_INACTIVE;
-    else if (m_strElemContent == _T("PR"))
-      cur_filterentry->rule = PWSMatch::MR_PRESENT;
-    else if (m_strElemContent == _T("NP"))
-      cur_filterentry->rule = PWSMatch::MR_NOTPRESENT;
-    else if (m_strElemContent == _T("SE"))
-      cur_filterentry->rule = PWSMatch::MR_SET;
-    else if (m_strElemContent == _T("NS"))
-      cur_filterentry->rule = PWSMatch::MR_NOTSET;
-    else if (m_strElemContent == _T("IS"))
-      cur_filterentry->rule = PWSMatch::MR_IS;
-    else if (m_strElemContent == _T("NI"))
-      cur_filterentry->rule = PWSMatch::MR_ISNOT;
-    else if (m_strElemContent == _T("BE"))
-      cur_filterentry->rule = PWSMatch::MR_BEGINS;
-    else if (m_strElemContent == _T("NB"))
-      cur_filterentry->rule = PWSMatch::MR_NOTBEGIN;
-    else if (m_strElemContent == _T("EN"))
-      cur_filterentry->rule = PWSMatch::MR_ENDS;
-    else if (m_strElemContent == _T("ND"))
-      cur_filterentry->rule = PWSMatch::MR_NOTEND;
-    else if (m_strElemContent == _T("CO"))
-      cur_filterentry->rule = PWSMatch::MR_CONTAINS;
-    else if (m_strElemContent == _T("NC"))
-      cur_filterentry->rule = PWSMatch::MR_NOTCONTAIN;
-    else if (m_strElemContent == _T("BT"))
-      cur_filterentry->rule = PWSMatch::MR_BETWEEN;
-    else if (m_strElemContent == _T("LT"))
-      cur_filterentry->rule = PWSMatch::MR_LT;
-    else if (m_strElemContent == _T("LE"))
-      cur_filterentry->rule = PWSMatch::MR_LE;
-    else if (m_strElemContent == _T("GT"))
-      cur_filterentry->rule = PWSMatch::MR_GT;
-    else if (m_strElemContent == _T("GE"))
-      cur_filterentry->rule = PWSMatch::MR_GE;
-    else if (m_strElemContent == _T("BF"))
-      cur_filterentry->rule = PWSMatch::MR_BEFORE;
-    else if (m_strElemContent == _T("AF"))
-      cur_filterentry->rule = PWSMatch::MR_AFTER;
-    else if (m_strElemContent == _T("EX"))
-      cur_filterentry->rule = PWSMatch::MR_EXPIRED;
-    else if (m_strElemContent == _T("WX"))
-      cur_filterentry->rule = PWSMatch::MR_WILLEXPIRE;
+    cur_filterentry->rule = PWSMatch::GetRule(m_strElemContent);
   }
 
   else if (XMLString::equals(qname, _A2X("logic"))) {

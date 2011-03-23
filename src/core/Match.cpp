@@ -17,76 +17,170 @@
 
 #include <time.h>
 
-bool PWSMatch::Match(const StringX &string1, StringX &csValue,
-                     int iFunction)
+bool PWSMatch::Match(const StringX &stValue, StringX sx_Object,
+                     const int &iFunction)
 {
-  const StringX::size_type str_len = string1.length();
-  const StringX::size_type val_len = csValue.length();
+  // Note: sx_Object may be changed within this routine.
+
+  const StringX::size_type val_len = stValue.length();
+  const StringX::size_type obj_len = sx_Object.length();
 
   // Negative = Case   Sensitive
   // Positive = Case INsensitive
   switch (iFunction) {
     case -MR_EQUALS:
     case  MR_EQUALS:
-      return ((val_len == str_len) &&
-             (((iFunction < 0) && (csValue == string1)) ||
-              ((iFunction > 0) && CompareNoCase(csValue, string1) == 0)));
+      return ((obj_len == val_len) &&
+             (((iFunction < 0) && (sx_Object == stValue)) ||
+              ((iFunction > 0) && CompareNoCase(sx_Object, stValue) == 0)));
     case -MR_NOTEQUAL:
     case  MR_NOTEQUAL:
-      return (((iFunction < 0) && (csValue != string1)) ||
-              ((iFunction > 0) && CompareNoCase(csValue, string1) != 0));
+      return (((iFunction < 0) && (sx_Object != stValue)) ||
+              ((iFunction > 0) && CompareNoCase(sx_Object, stValue) != 0));
     case -MR_BEGINS:
     case  MR_BEGINS:
-      if (val_len >= str_len) {
-        csValue = csValue.substr(0, str_len);
-        return (((iFunction < 0) && (string1 == csValue)) ||
-                ((iFunction > 0) && CompareNoCase(string1, csValue) == 0));
+      if (obj_len >= val_len) {
+        sx_Object = sx_Object.substr(0, val_len);
+        return (((iFunction < 0) && (stValue == sx_Object)) ||
+                ((iFunction > 0) && CompareNoCase(stValue, sx_Object) == 0));
       } else {
         return false;
       }
     case -MR_NOTBEGIN:
     case  MR_NOTBEGIN:
-      if (val_len >= str_len) {
-        csValue = csValue.substr(0, str_len);
-        return (((iFunction < 0) && (string1 != csValue)) ||
-                ((iFunction > 0) && CompareNoCase(string1, csValue) != 0));
+      if (obj_len >= val_len) {
+        sx_Object = sx_Object.substr(0, val_len);
+        return (((iFunction < 0) && (stValue != sx_Object)) ||
+                ((iFunction > 0) && CompareNoCase(stValue, sx_Object) != 0));
       } else {
         return true;
       }
     case -MR_ENDS:
     case  MR_ENDS:
-      if (val_len > str_len) {
-        csValue = csValue.substr(val_len - str_len);
-        return (((iFunction < 0) && (string1 == csValue)) ||
-                ((iFunction > 0) && CompareNoCase(string1, csValue) == 0));
+      if (obj_len > val_len) {
+        sx_Object = sx_Object.substr(obj_len - val_len);
+        return (((iFunction < 0) && (stValue == sx_Object)) ||
+                ((iFunction > 0) && CompareNoCase(stValue, sx_Object) == 0));
       } else {
         return false;
       }
     case -MR_NOTEND:
     case  MR_NOTEND:
-      if (val_len > str_len) {
-        csValue = csValue.substr(val_len - str_len);
-        return (((iFunction < 0) && (string1 != csValue)) ||
-                ((iFunction > 0) && CompareNoCase(string1, csValue)!= 0));
+      if (obj_len > val_len) {
+        sx_Object = sx_Object.substr(obj_len - val_len);
+        return (((iFunction < 0) && (stValue != sx_Object)) ||
+                ((iFunction > 0) && CompareNoCase(stValue, sx_Object) != 0));
       } else
         return true;
     case -MR_CONTAINS:
-      return (csValue.find(string1) != StringX::npos);
+      return (sx_Object.find(stValue) != StringX::npos);
     case  MR_CONTAINS:
     {
-      ToLower(csValue);
-      StringX subgroupLC(string1);
-      ToLower(subgroupLC);
-      return (csValue.find(subgroupLC) != StringX::npos);
+      ToLower(sx_Object);
+      StringX stValue_lc(stValue);
+      ToLower(stValue_lc);
+      return (sx_Object.find(stValue_lc) != StringX::npos);
     }
     case -MR_NOTCONTAIN:
-      return (csValue.find(string1)== StringX::npos);
+      return (sx_Object.find(stValue) == StringX::npos);
     case  MR_NOTCONTAIN:
     {
-      ToLower(csValue);
-      StringX subgroupLC(string1);
-      ToLower(subgroupLC);
-      return (csValue.find(subgroupLC) == StringX::npos);
+      ToLower(sx_Object);
+      StringX stValue_lc(stValue);
+      ToLower(stValue_lc);
+      return (sx_Object.find(stValue_lc) == StringX::npos);
+    }
+    case -MR_CNTNANY:
+    {
+      const charT *c = stValue.c_str();
+      for (size_t i = 0; i < stValue.length(); i++) {
+        if (sx_Object.find(c, 0, 1) != StringX::npos)
+          return true;
+        c++;
+      }
+      return false;
+    }
+    case  MR_CNTNANY:
+    {
+      ToLower(sx_Object);
+      StringX stValue_lc(stValue);
+      ToLower(stValue_lc);
+      const charT *c = stValue_lc.c_str();
+      for (size_t i = 0; i < stValue_lc.length(); i++) {
+        if (sx_Object.find(c, 0, 1) != StringX::npos)
+          return true;
+        c++;
+      }
+      return false;
+    }
+    case -MR_NOTCNTNANY:
+    {
+      const charT *c = stValue.c_str();
+      for (size_t i = 0; i < stValue.length(); i++) {
+        if (sx_Object.find(c, 0, 1) != StringX::npos)
+          return false;
+        c++;
+      }
+      return true;
+    }
+    case  MR_NOTCNTNANY:
+    {
+      ToLower(sx_Object);
+      StringX stValue_lc(stValue);
+      ToLower(stValue_lc);
+      const charT *c = stValue_lc.c_str();
+      for (size_t i = 0; i < stValue_lc.length(); i++) {
+        if (sx_Object.find(c, 0, 1) != StringX::npos)
+          return false;
+        c++;
+      }
+      return true;
+    }
+    case -MR_CNTNALL:
+    {
+      const charT *c = stValue.c_str();
+      for (size_t i = 0; i < stValue.length(); i++) {
+        if (sx_Object.find(c, 0, 1) == StringX::npos)
+          return false;
+        c++;
+      }
+      return true;
+    }
+    case  MR_CNTNALL:
+    {
+      ToLower(sx_Object);
+      StringX stValue_lc(stValue);
+      ToLower(stValue_lc);
+      const charT *c = stValue_lc.c_str();
+      for (size_t i = 0; i < stValue_lc.length(); i++) {
+        if (sx_Object.find(c, 0, 1) == StringX::npos)
+          return false;
+        c++;
+      }
+      return true;
+    }
+    case -MR_NOTCNTNALL:
+    {
+      const charT *c = stValue.c_str();
+      for (size_t i = 0; i < stValue.length(); i++) {
+        if (sx_Object.find(c, 0, 1) != StringX::npos)
+          return false;
+        c++;
+      }
+      return true;
+    }
+    case  MR_NOTCNTNALL:
+    {
+      ToLower(sx_Object);
+      StringX stValue_lc(stValue);
+      ToLower(stValue_lc);
+      const charT *c = stValue_lc.c_str();
+      for (size_t i = 0; i < stValue_lc.length(); i++) {
+        if (sx_Object.find(c, 0, 1) != StringX::npos)
+          return false;
+        c++;
+      }
+      return true;
     }
     default:
       ASSERT(0);
@@ -100,16 +194,16 @@ bool PWSMatch::Match(const bool bValue, int iFunction)
   bool rc;
 
   if (bValue) {
-    if (iFunction == MR_EQUALS ||
-        iFunction == MR_ACTIVE ||
-        iFunction == MR_PRESENT ||
+    if (iFunction == MR_EQUALS     ||
+        iFunction == MR_ACTIVE     ||
+        iFunction == MR_PRESENT    ||
         iFunction == MR_IS)
       rc = true;
     else
       rc = false;
   } else {
-    if (iFunction == MR_NOTEQUAL ||
-        iFunction == MR_INACTIVE ||
+    if (iFunction == MR_NOTEQUAL   ||
+        iFunction == MR_INACTIVE   ||
         iFunction == MR_NOTPRESENT ||
         iFunction == MR_ISNOT)
       rc = true;
@@ -119,7 +213,7 @@ bool PWSMatch::Match(const bool bValue, int iFunction)
   return rc;
 }
 
-const char *PWSMatch::GetRuleString(MatchRule rule)
+const char *PWSMatch::GetRuleString(const MatchRule rule)
 {
   const char *pszrule = "  ";
   switch (rule) {
@@ -140,6 +234,10 @@ const char *PWSMatch::GetRuleString(MatchRule rule)
     case MR_NOTEND:     pszrule = "ND"; break;
     case MR_CONTAINS:   pszrule = "CO"; break;
     case MR_NOTCONTAIN: pszrule = "NC"; break;
+    case MR_CNTNANY:    pszrule = "CY"; break;
+    case MR_NOTCNTNANY: pszrule = "NY"; break;
+    case MR_CNTNALL:    pszrule = "CA"; break;
+    case MR_NOTCNTNALL: pszrule = "NA"; break;
     case MR_BETWEEN:    pszrule = "BT"; break;
     case MR_LT:         pszrule = "LT"; break;
     case MR_LE:         pszrule = "LE"; break;
@@ -155,7 +253,7 @@ const char *PWSMatch::GetRuleString(MatchRule rule)
   return pszrule;
 }
 
-UINT PWSMatch::GetRule(MatchRule rule)
+const UINT PWSMatch::GetRule(const MatchRule rule)
 {
   UINT id(0);
   switch (rule) {
@@ -176,6 +274,10 @@ UINT PWSMatch::GetRule(MatchRule rule)
     case MR_NOTEND:     id = IDSC_DOESNOTENDWITH; break;
     case MR_CONTAINS:   id = IDSC_CONTAINS; break;
     case MR_NOTCONTAIN: id = IDSC_DOESNOTCONTAIN; break;
+    case MR_CNTNANY:    id = IDSC_CONTAINSANY; break;
+    case MR_NOTCNTNANY: id = IDSC_DOESNOTCONTAINANY; break;
+    case MR_CNTNALL:    id = IDSC_CONTAINSALL; break;
+    case MR_NOTCNTNALL: id = IDSC_DOESNOTCONTAINALL; break;
     case MR_BETWEEN:    id = IDSC_BETWEEN; break;
     case MR_LT:         id = IDSC_LESSTHAN; break;
     case MR_LE:         id = IDSC_LESSTHANEQUAL; break;
@@ -189,6 +291,47 @@ UINT PWSMatch::GetRule(MatchRule rule)
       ASSERT(0);
   }
   return id;
+}
+
+const PWSMatch::MatchRule PWSMatch::GetRule(const StringX sx_mnemonic)
+{
+  static const charT *mnemonics[] = {
+    _T("  "), 
+    _T("EQ"), _T("NE"), _T("AC"), _T("IA"), _T("PR"), _T("NP"),
+    _T("SE"), _T("NS"), _T("IS"), _T("NI"), _T("BE"), _T("NB"),
+    _T("EN"), _T("ND"), _T("CO"), _T("NC"), _T("CY"), _T("NY"),
+    _T("CA"), _T("NA"),
+    _T("BT"),
+    _T("LT"), _T("LE"), _T("GT"), _T("GE"), _T("BF"), _T("AF"),
+    _T("EX"), _T("WX")};
+
+  static const PWSMatch::MatchRule mr[] = {
+    MR_INVALID,
+    MR_EQUALS,  MR_NOTEQUAL,   MR_ACTIVE,   MR_INACTIVE,   MR_PRESENT, MR_NOTPRESENT,
+    MR_SET,     MR_NOTSET,     MR_IS,       MR_ISNOT,      MR_BEGINS,  MR_NOTBEGIN,
+    MR_ENDS,    MR_NOTEND,     MR_CONTAINS, MR_NOTCONTAIN, MR_CNTNANY, MR_NOTCNTNANY,
+    MR_CNTNALL, MR_NOTCNTNALL,
+    MR_BETWEEN,
+    MR_LT,      MR_LE,         MR_GT,       MR_GE,         MR_BEFORE,  MR_AFTER,
+    MR_EXPIRED, MR_WILLEXPIRE};
+  
+  const size_t NUM_ITEMS = sizeof(mnemonics) / sizeof(mnemonics[0]);
+  ASSERT(NUM_ITEMS == sizeof(mr) / sizeof(mr[0]));
+
+  PWSMatch::MatchRule rule = MR_INVALID;
+  
+  // Now find it!
+  size_t i = 0;
+  for (; _tcscmp(sx_mnemonic.c_str(), mnemonics[i]) != 0 && i < NUM_ITEMS; ++i);
+
+  bool found = i < NUM_ITEMS && _tcscmp(sx_mnemonic.c_str(), mnemonics[i]) == 0;
+
+  if (found)
+    rule = mr[i];
+  else
+    ASSERT(0);
+
+  return rule;
 }
 
 void PWSMatch::GetMatchType(MatchType mtype,

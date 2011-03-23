@@ -802,3 +802,31 @@ void CSecEditExtn::OnSecureUpdate()
   SetSecureText(str);
   SetSel(startSel, endSel); // need to restore after Set.
 }
+
+/////////////////////////////////////////////////////////////////////////////
+// CSymbolEdit
+
+BEGIN_MESSAGE_MAP(CSymbolEdit, CEdit)
+  //{{AFX_MSG_MAP(CSymbolEdit)
+  ON_WM_CHAR()
+  //}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
+void CSymbolEdit::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
+{
+  //Allowed inputs are passed on to the base class
+  if (nChar == VK_BACK) {
+    CEdit::OnChar(nChar, nRepCnt, nFlags);
+    return;
+  }
+
+  wint_t wChar = reinterpret_cast<wint_t &>(nChar);
+  // Must not be alphanumeric nor have and Alt/Ctrl key
+  if ((_istalpha(wChar) == 0 && _istdigit(wChar) == 0 && (nFlags & 0xE0800000) == 0)) {
+    CString cs_text;
+    GetWindowText(cs_text);
+    // Must not have duplicates
+    if (cs_text.Find(wChar) == -1)
+      CEdit::OnChar(nChar, 0, nFlags);
+  }
+}

@@ -435,6 +435,10 @@ void DboxMain::OnOptions()
     GetPref(PWSprefs::PWSymbolMinLength);
   passwordpolicy.m_pwupperminlength = prefs->
     GetPref(PWSprefs::PWUppercaseMinLength);
+  CString cs_symbols(prefs->GetPref(PWSprefs::DefaultSymbols).c_str());
+  passwordpolicy.m_cs_symbols = passwordpolicy.m_cs_savesymbols = cs_symbols;
+  passwordpolicy.m_useownsymbols = passwordpolicy.m_saveuseownsymbols =
+                (cs_symbols.GetLength() == 0) ? DEFAULT_SYMBOLS : OWN_SYMBOLS;
 
   security.m_clearclipboardonminimize = prefs->
     GetPref(PWSprefs::ClearClipboardOnMinimize) ? TRUE : FALSE;
@@ -733,6 +737,12 @@ void DboxMain::OnOptions()
     prefs->SetPref(PWSprefs::PWUppercaseMinLength,
                    passwordpolicy.m_pwupperminlength, true);
 
+    if (passwordpolicy.m_useownsymbols != passwordpolicy.m_saveuseownsymbols ||
+        (passwordpolicy.m_useownsymbols == OWN_SYMBOLS &&
+         passwordpolicy.m_cs_symbols != passwordpolicy.m_cs_savesymbols))
+      prefs->SetPref(PWSprefs::DefaultSymbols,
+                     LPCWSTR(passwordpolicy.m_cs_symbols), true);
+
     prefs->SetPref(PWSprefs::LockDBOnIdleTimeout,
                    security.m_LockOnIdleTimeout == TRUE, true);
     prefs->SetPref(PWSprefs::IdleTimeout,
@@ -1008,6 +1018,11 @@ void DboxMain::OnGeneratePassword()
   pp.m_pwlowerminlength = prefs->GetPref(PWSprefs::PWLowercaseMinLength);
   pp.m_pwsymbolminlength = prefs->GetPref(PWSprefs::PWSymbolMinLength);
   pp.m_pwupperminlength = prefs->GetPref(PWSprefs::PWUppercaseMinLength);
+
+  CString cs_symbols(prefs->GetPref(PWSprefs::DefaultSymbols).c_str());
+  pp.m_cs_symbols = pp.m_cs_savesymbols = cs_symbols;
+  pp.m_useownsymbols = pp.m_saveuseownsymbols =
+                (cs_symbols.GetLength() == 0) ? DEFAULT_SYMBOLS : OWN_SYMBOLS;
 
   CString cs_caption(MAKEINTRESOURCE(IDS_GENERATEPASSWORD));
   GenPswdPS.AddPage(&pp);
