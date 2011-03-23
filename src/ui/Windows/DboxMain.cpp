@@ -142,7 +142,8 @@ DboxMain::DboxMain(CWnd* pParent)
   m_bAutotypeCtrl(false), m_bAutotypeShift(false),
   m_bInAT(false), m_bInRestoreWindowsData(false), m_bSetup(false),
   m_bInRefresh(false), m_bInRestoreWindows(false), m_bExpireDisplayed(false),
-  m_bTellUserExpired(false), m_bInRename(false), m_bWhitespaceRightClick(false)
+  m_bTellUserExpired(false), m_bInRename(false), m_bWhitespaceRightClick(false),
+  m_ilastaction(0)
 {
   // Need to do the following as using the direct calls will fail for Windows versions before Vista
   // (Load Library using absolute path to avoid dll poisoning attacks)
@@ -173,8 +174,9 @@ DboxMain::DboxMain(CWnd* pParent)
   }
 
   // Set menus to be rebuilt with user's shortcuts
-  for (int i = 0; i < NUMPOPUPMENUS; i++)
+  for (int i = 0; i < NUMPOPUPMENUS; i++) {
     m_bDoShortcuts[i] = true;
+  }
 
   m_hIcon = app.LoadIcon(IDI_CORNERICON);
   m_hIconSm = (HICON) ::LoadImage(app.m_hInstance, MAKEINTRESOURCE(IDI_CORNERICON),
@@ -204,10 +206,10 @@ DboxMain::~DboxMain()
   std::bitset<UIInterFace::NUM_SUPPORTED> bsSupportedFunctions(0);
   m_core.SetUIInterFace(NULL, UIInterFace::NUM_SUPPORTED, bsSupportedFunctions);
 
-  MapKeyNameIDIter iter;
-  for (iter = m_MapKeyNameID.begin(); iter != m_MapKeyNameID.end(); iter++) {
-    free((void *)iter->second);
-    iter->second = NULL;
+  MapKeyNameIDIter KNIDiter;
+  for (KNIDiter = m_MapKeyNameID.begin(); KNIDiter != m_MapKeyNameID.end(); KNIDiter++) {
+    free((void *)KNIDiter->second);
+    KNIDiter->second = NULL;
   }
 
   ::DestroyIcon(m_hIcon);
@@ -1163,10 +1165,24 @@ BOOL DboxMain::OnInitDialog()
     gmb.AfxMessageBox(IDS_CANTLOAD_AUTOTYPEDLL, MB_ICONERROR);
   }
 
+  // Set up DragBar Tooltips
+  SetDragbarToolTips();
+
+  return TRUE;  // return TRUE unless you set the focus to a control
+}
+
+void DboxMain::SetDragbarToolTips()
+{
+  // Remove it if already present
+  if (m_pToolTipCtrl != NULL) {
+    delete m_pToolTipCtrl;
+    m_pToolTipCtrl = NULL;
+  }
+
   // create tooltip unconditionally
   m_pToolTipCtrl = new CToolTipCtrl;
   if (!m_pToolTipCtrl->Create(this, TTS_BALLOON | TTS_NOPREFIX)) {
-    pws_os::Trace(L"Unable To create mainf DboxMain Dialog ToolTip\n");
+    pws_os::Trace(L"Unable To create main DboxMain Dialog ToolTip\n");
     delete m_pToolTipCtrl;
     m_pToolTipCtrl = NULL;
   } else {
@@ -1217,8 +1233,6 @@ BOOL DboxMain::OnInitDialog()
     cs_ToolTip.Format(IDS_DRAGTOCOPY, cs_field);
     m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_DRAGEMAIL), cs_ToolTip);
   }
-
-  return TRUE;  // return TRUE unless you set the focus to a control
 }
 
 void DboxMain::SetInitialDatabaseDisplay()
@@ -2305,7 +2319,73 @@ LRESULT DboxMain::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
       message == WM_SETTINGCHANGE)
     RefreshImages();
 
+  const WORD wNCode = HIWORD(wParam);
+  const WORD wID = LOWORD(wParam);
+  /*
+    wNCode = Notification Code if from a control, 1 if from an accelerator
+             and 0 if from a menu.
+    wID    = Identifier of control, accelerator or menu item.
+    lParam = If from a control, then its handle otherwise NULL.
+  */
+  if (message == WM_COMMAND && lParam == NULL &&
+      wNCode == 0 && wID >= ID_LANGUAGES ) {
+    // Process Language Selection
+    const size_t iLang = wID - ID_LANGUAGES;
+    if (iLang < app.m_vlanguagefiles.size()) {
+      StringX sxLL = app.m_vlanguagefiles[iLang].wsLL.c_str();
+      StringX sxCC = app.m_vlanguagefiles[iLang].wsCC.c_str();
+      if (!sxCC.empty()) {
+        sxLL += L"_";
+        sxLL += sxCC;
+      }
+      PWSprefs::GetInstance()->SetPref(PWSprefs::LanguageFile, sxLL);
+      SetLanguage(app.m_vlanguagefiles[iLang].lcid);
+    }
+  }
+
   return CDialog::WindowProc(message, wParam, lParam);
+}
+
+void DboxMain::SetLanguage(LCID lcid)
+{
+  // Show wait cursor
+  CWaitCursor wait;
+
+  SetMenu(NULL);
+
+  // Set up the new language and main menu
+  app.SetLanguage();
+
+  // Reset new language equivalent to Ctrl, Alt & shift
+  CMenuShortcut::InitStrings();
+
+  // Set up menu shortcuts
+  SetUpInitialMenuStrings(lcid);
+
+  // Set up local strings
+  SetLocalStrings();
+
+  // Now show menu...
+  SetMenu(app.m_pMainMenu);
+
+  // Make sure shortcuts updated
+  for (int i = 0; i < NUMPOPUPMENUS; i++) {
+    m_bDoShortcuts[i] = true;
+  }
+
+  // Update Statusbar
+  CItemData *pci = getSelectedItem();
+  SetDCAText(pci);
+  if (m_ilastaction != 0)
+    UpdateLastClipboardAction(m_ilastaction);
+  else
+    UpdateStatusBar();
+
+  // Set up DragBar Tooltips
+  SetDragbarToolTips();
+
+  // Remove wait cursor
+  wait.Restore();
 }
 
 void DboxMain::RefreshImages()
@@ -2799,6 +2879,10 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
       break;
   }
 #endif
+
+  // Special control IDs e.g. Language dynamic menus should always be true
+  if (nID >= 64000)
+    return TRUE;
 
   MapUICommandTableConstIter it;
   it = m_MapUICommandTable.find(nID);

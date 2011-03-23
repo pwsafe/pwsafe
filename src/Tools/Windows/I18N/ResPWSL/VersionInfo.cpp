@@ -26,15 +26,18 @@ static char THIS_FILE[]=__FILE__;
 
 //////////////////////////////////////////////////////////////////////
 // CVersionInfo main class wrapping Version info for modules
-CVersionInfo::CVersionInfo():m_lpszResourceId(NULL), m_wLangId(0xFFFF), m_bRegularInfoOrder(TRUE)
+CVersionInfo::CVersionInfo()
+  : m_lpszResourceId(NULL), m_wLangId(0xFFFF), m_bRegularInfoOrder(TRUE)
 {
   ZeroMemory(&m_vsFixedFileInfo, sizeof VS_VERSION_INFO);
 }
 
-CVersionInfo::CVersionInfo(const CString& strModulePath, LPCTSTR lpszResourceId, WORD wLangId):
-m_strModulePath(strModulePath), m_lpszResourceId((LPTSTR)lpszResourceId), m_wLangId(wLangId), m_bRegularInfoOrder(TRUE)
+CVersionInfo::CVersionInfo(const CString& strModulePath, LPCTSTR lpszResourceId, WORD wLangId)
+  : m_strModulePath(strModulePath), m_lpszResourceId((LPTSTR)lpszResourceId),
+  m_wLangId(wLangId), m_bRegularInfoOrder(TRUE)
 {
-  // LPCTSTR lpszResourceId may contain integer value pointer to string, in case it's a string make a local copy of it
+  // LPCTSTR lpszResourceId may contain integer value pointer to string,
+  // in case it's a string make a local copy of it
   if (IS_INTRESOURCE(lpszResourceId)) { 
     m_strStringResourceId = lpszResourceId; 
   } 
@@ -53,7 +56,8 @@ BOOL CVersionInfo::Save()
   return ToFile();
 }
 
-BOOL CVersionInfo::ToFile(const CString &strModulePath, LPCTSTR lpszResourceId, WORD wLangId)
+BOOL CVersionInfo::ToFile(const CString &strModulePath, LPCTSTR lpszResourceId, 
+                          WORD wLangId, const bool bReplace)
 {
   CString strUseModulePath(strModulePath);
 
@@ -84,19 +88,28 @@ BOOL CVersionInfo::ToFile(const CString &strModulePath, LPCTSTR lpszResourceId, 
   CVersionInfoBuffer viSaveBuf;
   Write(viSaveBuf);
 
-  return UpdateModuleResource(strUseModulePath, lpszResourceId, wLangId, viSaveBuf.GetData(), viSaveBuf.GetPosition());
+  return UpdateModuleResource(strUseModulePath, lpszResourceId, wLangId,
+                              viSaveBuf.GetData(), viSaveBuf.GetPosition(), bReplace);
 }
 
-BOOL CVersionInfo::UpdateModuleResource(const CString &strFilePath, LPCTSTR lpszResourceId, WORD wLangId, LPVOID lpData, DWORD dwDataLength)
+BOOL CVersionInfo::UpdateModuleResource(const CString &strFilePath, LPCTSTR lpszResourceId,
+                                        WORD wLangId, LPVOID lpData, DWORD dwDataLength,
+                                        const bool bReplace)
 {
   HANDLE hUpdate = ::BeginUpdateResource(strFilePath, FALSE);
 
   if (hUpdate == NULL)
     return FALSE;
 
-  BOOL bUpdateResult = FALSE;
+  BOOL bUpdateResult = TRUE;
 
-  bUpdateResult = UpdateResource(hUpdate, RT_VERSION, lpszResourceId, wLangId, lpData, dwDataLength);
+  // If we need to replace the language - delete original first
+  if (bReplace)
+    bUpdateResult = UpdateResource(hUpdate, RT_VERSION, lpszResourceId, m_wLangId, NULL, 0);
+
+  // Update or add new version information
+  if (bUpdateResult)
+    bUpdateResult = UpdateResource(hUpdate, RT_VERSION, lpszResourceId, wLangId, lpData, dwDataLength);
 
   return EndUpdateResource(hUpdate, FALSE) && bUpdateResult;
 }
@@ -108,7 +121,8 @@ BOOL CVersionInfo::FromFile(const CString &strModulePath, LPCTSTR lpszResourceId
   m_wLangId = wLangId;
   m_lpszResourceId = (LPTSTR)lpszResourceId;
 
-  //LoadVersionInfoResource will update member variables m_wLangId, m_lpszResourceId, which is awkward, need to change this flow
+  // LoadVersionInfoResource will update member variables m_wLangId, m_lpszResourceId, 
+  // which is awkward, need to change this flow
   if (!LoadVersionInfoResource(strModulePath, viLoadBuf, lpszResourceId, wLangId))
     return FALSE;
 
@@ -139,7 +153,8 @@ BOOL CVersionInfo::FromFile(const CString &strModulePath, LPCTSTR lpszResourceId
       StringFileInfo* pStringFI = (StringFileInfo*)pChild;
       ASSERT(!pStringFI->wValueLength);
 
-      //MSDN says: Specifies an array of zero or one StringFileInfo structures.  So there should be only one StringFileInfo at most
+      // MSDN says: Specifies an array of zero or one StringFileInfo structures.
+      // So there should be only one StringFileInfo at most
       ASSERT(m_stringFileInfo.IsEmpty());
 
       m_stringFileInfo.FromStringFileInfo(pStringFI);
@@ -149,8 +164,8 @@ BOOL CVersionInfo::FromFile(const CString &strModulePath, LPCTSTR lpszResourceId
       ASSERT(1 == pVarInfo->wType);
       ASSERT(!wcscmp(pVarInfo->szKey, L"VarFileInfo"));
       ASSERT(!pVarInfo->wValueLength);
-      //Iterate Var elements
-      //There really must be only one
+      // Iterate Var elements
+      // There really must be only one
       Var* pVar = (Var*) DWORDALIGN(&pVarInfo->szKey[wcslen(pVarInfo->szKey)+1]);
       while ((DWORD)pVar < ((DWORD) pVarInfo + pVarInfo->wLength)) {
         ASSERT(!bHasVar && "Multiple Vars in VarFileInfo");
@@ -192,7 +207,8 @@ BOOL CVersionInfo::FromFile(const CString &strModulePath, LPCTSTR lpszResourceId
     CString strTranslationUpper (strTranslation);
     strTranslation.MakeUpper();
 
-    ASSERT(m_stringFileInfo.HasStringTable(strTranslation) || m_stringFileInfo.HasStringTable(strTranslationUpper));
+    ASSERT(m_stringFileInfo.HasStringTable(strTranslation) || 
+           m_stringFileInfo.HasStringTable(strTranslationUpper));
   }
   //Verify Write
   CVersionInfoBuffer viSaveBuf;
@@ -329,11 +345,10 @@ void CVersionInfo::SetInfoBlockOrder(BOOL bRegularStringsFirst)
   m_bRegularInfoOrder = bRegularStringsFirst;
 }
 
-BOOL CVersionInfo::EnumResourceNamesFuncFindFirst( 
-  HANDLE hModule,   // module handle 
-  LPCTSTR lpType,   // address of resource type 
-  LPTSTR lpName,    // address of resource name 
-  LONG_PTR lParam)      // extra parameter, could be 
+BOOL CVersionInfo::EnumResourceNamesFuncFindFirst(HANDLE hModule,   // module handle 
+                                                  LPCTSTR lpType,   // address of resource type 
+                                                  LPTSTR lpName,    // address of resource name 
+                                                  LONG_PTR lParam)  // extra parameter, could be 
 { 
   CVersionInfo * pVI= (CVersionInfo *)lParam;
 
@@ -350,12 +365,11 @@ BOOL CVersionInfo::EnumResourceNamesFuncFindFirst(
   return FALSE; 
 } 
 
-BOOL CVersionInfo::EnumResourceLangFuncFindFirst(
-  HANDLE hModule,     // module handle
-  LPCTSTR lpszType,   // resource type
-  LPCTSTR lpszName,   // resource name
-  WORD wIDLanguage,   // language identifier
-  LONG_PTR lParam)    // application-defined parameter
+BOOL CVersionInfo::EnumResourceLangFuncFindFirst(HANDLE hModule,     // module handle
+                                                 LPCTSTR lpszType,   // resource type
+                                                 LPCTSTR lpszName,   // resource name
+                                                 WORD wIDLanguage,   // language identifier
+                                                 LONG_PTR lParam)    // application-defined parameter
 {
   CVersionInfo * pVI= (CVersionInfo *)lParam;
 
@@ -365,11 +379,14 @@ BOOL CVersionInfo::EnumResourceLangFuncFindFirst(
   return FALSE;
 }
 
-BOOL CVersionInfo::LoadVersionInfoResource(const CString& strModulePath, CVersionInfoBuffer &viBuf, LPCTSTR lpszResourceId, WORD wLangId)
+BOOL CVersionInfo::LoadVersionInfoResource(const CString& strModulePath,
+                                           CVersionInfoBuffer &viBuf, LPCTSTR lpszResourceId,
+                                           WORD wLangId)
 {
   HRSRC hResInfo; 
 
-  HMODULE hModule = LoadLibraryEx(strModulePath, NULL, DONT_RESOLVE_DLL_REFERENCES | LOAD_LIBRARY_AS_DATAFILE);
+  HMODULE hModule = LoadLibraryEx(strModulePath, NULL, 
+                                  DONT_RESOLVE_DLL_REFERENCES | LOAD_LIBRARY_AS_DATAFILE);
   if (NULL == hModule)
     return FALSE;
 
@@ -378,7 +395,8 @@ BOOL CVersionInfo::LoadVersionInfoResource(const CString& strModulePath, CVersio
 
     m_lpszResourceId = NULL;
 
-    EnumResourceNames(hModule, RT_VERSION, (ENUMRESNAMEPROC)EnumResourceNamesFuncFindFirst, (LONG_PTR)this);
+    EnumResourceNames(hModule, RT_VERSION,
+                      (ENUMRESNAMEPROC)EnumResourceNamesFuncFindFirst, (LONG_PTR)this);
 
     if (NULL == m_lpszResourceId) {
       FreeLibrary(hModule);
@@ -387,7 +405,8 @@ BOOL CVersionInfo::LoadVersionInfoResource(const CString& strModulePath, CVersio
 
     // Now the m_lpszResourceId must be the name of the resource
     m_wLangId = 0xFFFF;
-    EnumResourceLanguages(hModule, RT_VERSION, m_lpszResourceId, (ENUMRESLANGPROC)EnumResourceLangFuncFindFirst, (LONG_PTR)this);
+    EnumResourceLanguages(hModule, RT_VERSION, m_lpszResourceId,
+                          (ENUMRESLANGPROC)EnumResourceLangFuncFindFirst, (LONG_PTR)this);
 
     // Found resource, copy the ID's to local vars
     lpszResourceId = m_lpszResourceId;
@@ -447,12 +466,17 @@ VS_FIXEDFILEINFO& CVersionInfo::GetFixedFileInfo()
   return m_vsFixedFileInfo;
 }
 
-void CVersionInfo::SetFileVersion(WORD dwFileVersionMSHi, WORD dwFileVersionMSLo, WORD dwFileVersionLSHi, WORD dwFileVersionLSLo, BOOL bUpdateStringTables /* =TRUE */, LPCTSTR lpszDelim /*= _T(", ") */)
+void CVersionInfo::SetFileVersion(WORD dwFileVersionMSHi, WORD dwFileVersionMSLo,
+                                  WORD dwFileVersionLSHi, WORD dwFileVersionLSLo,
+                                  BOOL bUpdateStringTables /* =TRUE */, LPCTSTR lpszDelim /*= _T(", ") */)
 {
-  SetFileVersion((dwFileVersionMSHi << 16) | dwFileVersionMSLo, (dwFileVersionLSHi << 16) | dwFileVersionLSLo, bUpdateStringTables, lpszDelim);
+  SetFileVersion((dwFileVersionMSHi << 16) | dwFileVersionMSLo,
+                 (dwFileVersionLSHi << 16) | dwFileVersionLSLo,
+                 bUpdateStringTables, lpszDelim);
 }
 
-void CVersionInfo::SetFileVersion(DWORD dwFileVersionMS, DWORD dwFileVersionLS, BOOL bUpdateStringTables /* =TRUE */, LPCTSTR lpszDelim /*= _T(", ") */)
+void CVersionInfo::SetFileVersion(DWORD dwFileVersionMS, DWORD dwFileVersionLS,
+                                  BOOL bUpdateStringTables /* =TRUE */, LPCTSTR lpszDelim /*= _T(", ") */)
 {
   m_vsFixedFileInfo.dwFileVersionMS = dwFileVersionMS;
   m_vsFixedFileInfo.dwFileVersionLS = dwFileVersionLS;
@@ -460,7 +484,10 @@ void CVersionInfo::SetFileVersion(DWORD dwFileVersionMS, DWORD dwFileVersionLS, 
   if (bUpdateStringTables) {
     POSITION posTable = m_stringFileInfo.GetFirstStringTablePosition();
     CString strVersion;
-    strVersion.Format(_T("%d%s%d%s%d%s%d"), HIWORD(dwFileVersionMS), lpszDelim, LOWORD(dwFileVersionMS), lpszDelim, HIWORD(dwFileVersionLS), lpszDelim, LOWORD(dwFileVersionLS));
+    strVersion.Format(_T("%d%s%d%s%d%s%d"), HIWORD(dwFileVersionMS), lpszDelim,
+                                            LOWORD(dwFileVersionMS), lpszDelim,
+                                            HIWORD(dwFileVersionLS), lpszDelim,
+                                            LOWORD(dwFileVersionLS));
     while (posTable != NULL) {
       CStringTable * pStringTable = m_stringFileInfo.GetNextStringTable(posTable);
       (*pStringTable)[L"FileVersion"] = strVersion;
@@ -468,12 +495,17 @@ void CVersionInfo::SetFileVersion(DWORD dwFileVersionMS, DWORD dwFileVersionLS, 
   }
 }
 
-void CVersionInfo::SetProductVersion(WORD dwProductVersionMSHi, WORD dwProductVersionMSLo, WORD dwProductVersionLSHi, WORD dwProductVersionLSLo, BOOL bUpdateStringTables /* =TRUE */, LPCTSTR lpszDelim /*= _T(", ") */)
+void CVersionInfo::SetProductVersion(WORD dwProductVersionMSHi, WORD dwProductVersionMSLo,
+                                     WORD dwProductVersionLSHi, WORD dwProductVersionLSLo,
+                                     BOOL bUpdateStringTables /* =TRUE */, LPCTSTR lpszDelim /*= _T(", ") */)
 {
-  SetProductVersion((dwProductVersionMSHi << 16) | dwProductVersionMSLo, (dwProductVersionLSHi << 16) | dwProductVersionLSLo, bUpdateStringTables, lpszDelim);
+  SetProductVersion((dwProductVersionMSHi << 16) | dwProductVersionMSLo,
+                    (dwProductVersionLSHi << 16) | dwProductVersionLSLo,
+                    bUpdateStringTables, lpszDelim);
 }
 
-void CVersionInfo::SetProductVersion(DWORD dwProductVersionMS, DWORD dwProductVersionLS, BOOL bUpdateStringTables /* =TRUE */, LPCTSTR lpszDelim /*= _T(", ") */)
+void CVersionInfo::SetProductVersion(DWORD dwProductVersionMS, DWORD dwProductVersionLS,
+                                     BOOL bUpdateStringTables /* =TRUE */, LPCTSTR lpszDelim /*= _T(", ") */)
 {
   m_vsFixedFileInfo.dwProductVersionMS = dwProductVersionMS;
   m_vsFixedFileInfo.dwProductVersionLS = dwProductVersionLS;
@@ -481,7 +513,10 @@ void CVersionInfo::SetProductVersion(DWORD dwProductVersionMS, DWORD dwProductVe
   if (bUpdateStringTables) {
     POSITION posTable = m_stringFileInfo.GetFirstStringTablePosition();
     CString strVersion;
-    strVersion.Format(_T("%d%s%d%s%d%s%d"), HIWORD(dwProductVersionMS), lpszDelim, LOWORD(dwProductVersionMS), lpszDelim, HIWORD(dwProductVersionLS), lpszDelim, LOWORD(dwProductVersionLS));
+    strVersion.Format(_T("%d%s%d%s%d%s%d"), HIWORD(dwProductVersionMS), lpszDelim,
+                                            LOWORD(dwProductVersionMS), lpszDelim,
+                                            HIWORD(dwProductVersionLS), lpszDelim,
+                                            LOWORD(dwProductVersionLS));
     while (posTable != NULL) {
       CStringTable * pStringTable = m_stringFileInfo.GetNextStringTable(posTable);
       (*pStringTable)[L"ProductVersion"] = strVersion;

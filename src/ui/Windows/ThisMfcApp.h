@@ -22,6 +22,20 @@
 #include <afxmt.h>
 //-----------------------------------------------------------------------------
 
+// Structure for saving information on what language/help files are installed.
+struct LANGHELPFILE {
+  LCID lcid;                 // LCID for the language
+  std::wstring wsLL;         // 2-character language code
+  std::wstring wsCC;         // 2-chharacter country code if needed
+  std::wstring wsLanguage;   // Name of language for menu item
+
+  /*
+    1... .... 0x80 Current
+    .1.. .... 0x40 Help file also present
+  */
+  BYTE xFlags;               // Flags
+};
+
 class DboxMain;
 
 class ThisMfcApp : public CWinApp
@@ -36,11 +50,12 @@ public:
   void ClearMRU();
   void AddToMRU(const CString &pszFilename);
 
-  DboxMain* m_maindlg;
+  DboxMain *m_pMainDlg;
   PWScore m_core;
-  CMenu* m_pMainMenu;
+  CMenu *m_pMainMenu, *m_pMRUMenu;
   BOOL m_mruonfilemenu;
   HINSTANCE m_hInstResDLL;
+  std::vector<LANGHELPFILE> m_vlanguagefiles;
 
   static const UINT m_uiRegMsg;
   static const UINT m_uiWH_SHELL;
@@ -71,6 +86,7 @@ public:
   int FindMenuItem(CMenu* Menu, UINT MenuID);
   int FindMenuItem(CMenu* Menu, LPCWSTR MenuString);
   void GetApplicationVersionData();
+  void GetDLLVersionData(const CString &cs_dll, int &wLangID);
   CString GetFileVersionString() const {return m_csFileVersionString;}
   CString GetCopyrightString() const {return m_csCopyrightString;}
   CString GetHelpFileName() const {return m_csHelpFile;}
@@ -80,6 +96,8 @@ public:
   bool NoSysEnvWarnings() const {return m_noSysEnvWarnings;}
   bool PermitTestdump() const {return m_bPermitTestdump;}
   DWORD GetBaseThreadID() {return m_nBaseThreadID;}
+  void GetLanguageFiles();
+  void SetLanguage();
 
   DECLARE_MESSAGE_MAP()
 
@@ -90,6 +108,7 @@ protected:
 private:
   bool ParseCommandLine(DboxMain &dbox, bool &allDone);
   void LoadLocalizedStuff();
+  void SetupMenu();
   static BOOL CALLBACK searcher(HWND hWnd, LPARAM lParam);
 
   HANDLE m_hMutexOneInstance;
@@ -105,6 +124,7 @@ private:
   CString m_csFileVersionString;
   CString m_csCopyrightString;
   CString m_csHelpFile;
+  int m_AppLangID, m_ResLangID;
 
   // Following set by command line arguments
   bool m_noSysEnvWarnings; // '-q'

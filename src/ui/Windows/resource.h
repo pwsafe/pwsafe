@@ -90,6 +90,7 @@
 #define IDI_TRAY_WHITE                  207
 #define IDI_TRAY_YELLOW                 208
 #define IDI_UNLOCKEDICON                209
+#define IDR_POPLANGUAGES                210
 #define IDB_CLOGO                       220
 #define IDB_CLOGO_SMALL                 221
 #define IDB_PSLOGO                      223

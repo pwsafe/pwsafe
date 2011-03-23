@@ -99,7 +99,8 @@ ThisMfcApp::ThisMfcApp() :
   m_HotKeyPressed(false), m_hMutexOneInstance(NULL),
   m_ghAccelTable(NULL), m_pMainMenu(NULL),
   m_bACCEL_Table_Created(false), m_noSysEnvWarnings(false),
-  m_bPermitTestdump(false), m_hInstResDLL(NULL)
+  m_bPermitTestdump(false), m_hInstResDLL(NULL), m_ResLangID(0),
+  m_pMRUMenu(NULL)
 {
   // Get my Thread ID
   m_nBaseThreadID = AfxGetThread()->m_nThreadID;
@@ -175,7 +176,15 @@ ThisMfcApp::~ThisMfcApp()
   delete m_TrayIcon;
   delete m_pMRU;
 
-  if (m_pMainMenu){
+  // Remove MRU menu
+  if (m_pMRUMenu) {
+    m_pMRUMenu->DestroyMenu();
+    delete m_pMRUMenu;
+    m_pMRUMenu = NULL;
+  }
+
+  // Remove main menu
+  if (m_pMainMenu) {
     m_pMainMenu->DestroyMenu();
     delete m_pMainMenu;
   }
@@ -233,7 +242,7 @@ static bool CheckFile(const CString &fn)
 #endif // !POCKET_PC
 int ThisMfcApp::ExitInstance()
 {
-  if (m_hInstResDLL != NULL)
+  if (m_hInstResDLL != NULL && m_hInstResDLL != m_hInstance)
     FreeLibrary(m_hInstResDLL);
 
   CWinApp::ExitInstance();
@@ -310,8 +319,6 @@ void ThisMfcApp::LoadLocalizedStuff()
   Older native and .NET V1 applications only support the ISO 639-1 two character
   language codes.
 
-  We will use locale info from ::GetLocaleInfo unless PWS_LANG is defined.
-
   Search order will be pwsafeLL_CC.dll, followed by pwsafeLL.dll. If neither exist or
   can't be found, the resources embedded in the executable pwsafe.exe will be used 
   (US English i.e. equivalent to pwsafeEN_US.dll)).
@@ -320,22 +327,39 @@ void ThisMfcApp::LoadLocalizedStuff()
   defaulting to pwsafe.chm if not found.
   */
 
-  CString cs_PWS_LANG, cs_LANG, cs_CTRY;
-  BOOL bPLRC = cs_PWS_LANG.GetEnvironmentVariable(L"PWS_LANG");
-  if (bPLRC == TRUE) { // did user override via PWS_LANG env var?
-    cs_LANG = cs_PWS_LANG;
-    cs_CTRY = L"";
-  } else { // no override, use Locale info
+  CString cs_LANG, cs_CTRY(L"");
+
+  // See if user overridden default via Environmental Variable
+  bool bPLRC(FALSE);
+  
+  // See if user has set preference instead.
+  StringX sxLL = PWSprefs::GetInstance()->GetPref(PWSprefs::LanguageFile);
+
+  if (!sxLL.empty()) {
+    // Preferences trumps Environmental Variable!!!!!
+    size_t len = sxLL.length();
+    ASSERT(len == 2 || len == 5);
+    if (len == 2) {
+      cs_LANG = sxLL.c_str();
+    } else {
+      cs_LANG = sxLL.substr(0,2).c_str();
+      cs_CTRY = sxLL.substr(3,2).c_str();
+    }
+    bPLRC = true;
+  }    
+    
+  if (!bPLRC) {
+    // no override, use Locale info
     int inum;
     wchar_t szLang[4], szCtry[4];
     inum = ::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SISO639LANGNAME, szLang, 4);
     ASSERT(inum == 3);
+
     _wcsupr_s(szLang, 4);
-    pws_os::Trace(L"LOCALE_SISO639LANGNAME=%s\n", szLang);
 
     inum = ::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SISO3166CTRYNAME, szCtry, 4);
     ASSERT(inum == 3);
-    pws_os::Trace(L"LOCALE_SISO3166CTRYNAME=%s\n", szCtry);
+
     cs_LANG = szLang; cs_CTRY = szCtry;
   }
 
@@ -351,6 +375,7 @@ void ThisMfcApp::LoadLocalizedStuff()
     cs_ResPath.Format(L"%spwsafe%s.dll", cs_ExePath, cs_LANG);
     m_hInstResDLL = LoadLibrary(cs_ResPath);
   }
+
   if (m_hInstResDLL == NULL) {
     pws_os::Trace(L"Could not load language DLLs - using embedded resources.\n");
   } else { // successfully loaded a resource dll, check version
@@ -369,6 +394,7 @@ void ThisMfcApp::LoadLocalizedStuff()
       m_hInstResDLL = NULL;
     } else { // Passed version check
       pws_os::Trace(L"Using language DLL '%s'.\n", cs_ResPath);
+      GetDLLVersionData(cs_ResPath, m_ResLangID);
     }
   } // end of resource dll hunt
 
@@ -384,42 +410,33 @@ void ThisMfcApp::LoadLocalizedStuff()
   const CString cs_HelpDir(PWSdirs::GetHelpDir().c_str());
   bool helpFileFound = false;
 
-  CString cs_PWS_HELP;
-  BOOL bPHRC = cs_PWS_HELP.GetEnvironmentVariable(L"PWS_HELP");
-  if (bPHRC == TRUE) {
-    cs_HelpPath.Format(L"%spwsafe%s.chm", cs_HelpDir, cs_PWS_HELP);
-    if (PathFileExists(cs_HelpPath)) {
-      helpFileFound = true;
-      free((void*)m_pszHelpFilePath);
-      m_pszHelpFilePath = _wcsdup(cs_HelpPath);
-      pws_os::Trace(L"Help file overriden by user. Using %s.\n", cs_HelpPath);
-    }
-  }
-
-  if (!helpFileFound) {
+  if (!cs_LANG.IsEmpty() && !cs_CTRY.IsEmpty()) {
     cs_HelpPath.Format(L"%spwsafe%s_%s.chm", cs_HelpDir, cs_LANG, cs_CTRY);
     if (PathFileExists(cs_HelpPath)) {
       helpFileFound = true;
     }
   }
-  if (!helpFileFound) {
+
+  if (!helpFileFound && !cs_LANG.IsEmpty()) {
     cs_HelpPath.Format(L"%spwsafe%s.chm", cs_HelpDir, cs_LANG);
     if (PathFileExists(cs_HelpPath)) {
       helpFileFound = true;
     }
   }
+
   if (!helpFileFound) {
     cs_HelpPath.Format(L"%spwsafe.chm", cs_HelpDir);
     if (PathFileExists(cs_HelpPath)) {
       helpFileFound = true;
     }
   }
-  if (!helpFileFound) { // last resort
+
+  if (!helpFileFound && _tcslen(m_pszHelpFilePath) > 0) { // last resort
     wchar_t fname[_MAX_FNAME];
     wchar_t ext[_MAX_EXT];
 #if (_MSC_VER >= 1400)
     _wsplitpath_s(m_pszHelpFilePath, NULL, 0, NULL, 0, fname,
-      _MAX_FNAME, ext, _MAX_EXT);
+                  _MAX_FNAME, ext, _MAX_EXT);
     _wcslwr_s(fname, _MAX_FNAME);
     _wcslwr_s(ext, _MAX_EXT);
 #else
@@ -428,15 +445,217 @@ void ThisMfcApp::LoadLocalizedStuff()
     _wcslwr(fname);
 #endif
     cs_HelpPath.Format(L"%s%s", fname, ext);
-    pws_os::Trace(L"Using help file: %s\n", cs_HelpPath);
   }
 
-  free((void*)m_pszHelpFilePath);
+  if (helpFileFound) {
+    free((void*)m_pszHelpFilePath);
 
-  m_pszHelpFilePath = _wcsdup(cs_HelpPath);
-  pws_os::Trace(L"Using help file: %s\n", cs_HelpPath);
+    m_pszHelpFilePath = _wcsdup(cs_HelpPath);
+    pws_os::Trace(L"Using help file: %s\n", cs_HelpPath);
 
-  m_csHelpFile = cs_HelpPath;
+    m_csHelpFile = cs_HelpPath;
+  }
+}
+
+void ThisMfcApp::SetupMenu()
+{
+  // Remove MRU menu
+  if (m_pMRUMenu) {
+    m_pMRUMenu->DestroyMenu();
+    delete m_pMRUMenu;
+    m_pMRUMenu = NULL;
+  }
+
+  // Remove Main menu
+  if (m_pMainMenu) {
+    m_pMainMenu->DestroyMenu();
+    delete m_pMainMenu;
+    m_pMainMenu = NULL;
+  }
+
+  int nMRUItems = PWSprefs::GetInstance()->GetPref(PWSprefs::MaxMRUItems);
+  m_mruonfilemenu = PWSprefs::GetInstance()->GetPref(PWSprefs::MRUOnFileMenu);
+  m_pMainMenu = new CMenu;
+  m_pMainMenu->LoadMenu(IDR_MAINMENU);
+
+  m_pMRUMenu = new CMenu;
+
+  MENUINFO minfo = {0};
+  minfo.cbSize = sizeof(MENUINFO);
+  minfo.fMask = MIM_MENUDATA;
+
+  // Menu position indices (File & Close).
+  int pos1, pos2;
+  CMenu *pMenu1, *pMenu2;
+
+  // Look for "File" menu.
+  pos1 = app.FindMenuItem(m_pMainMenu, ID_FILEMENU);
+  ASSERT(pos1 != -1);
+
+  pMenu1 = m_pMainMenu->GetSubMenu(pos1);
+  minfo.dwMenuData = ID_FILEMENU;
+  pMenu1->SetMenuInfo(&minfo);
+
+  if (pMenu1 != NULL) // Look for "Close Database"
+    pos2 = FindMenuItem(pMenu1, ID_MENUITEM_CLOSE);
+  else
+    pos2 = -1;
+
+  if (m_pMRU != NULL) {
+    delete m_pMRU;
+    m_pMRU = NULL;
+  }
+
+  m_pMRU = new CPWSRecentFileList(0, L"MRU", L"Safe%d",
+                                 ((nMRUItems != 0) ? nMRUItems : 1));
+  if (nMRUItems > 0) {
+    if (pos2 > -1) {
+      int irc;
+      // Create New Popup Menu
+      m_pMRUMenu->CreatePopupMenu();
+      CString cs_recent(MAKEINTRESOURCE(IDS_RECENT));
+      CString cs_recentsafes(MAKEINTRESOURCE(IDS_RECENTSAFES));
+
+      if (!m_mruonfilemenu) { // MRU entries in popup menu
+        // Insert Item onto new popup
+        irc = m_pMRUMenu->InsertMenu(0, MF_BYPOSITION, 
+                                       ID_FILE_MRU_ENTRY1, cs_recent);
+        ASSERT(irc != 0);
+        // Insert Popup onto main menu
+        ASSERT(pMenu1 != NULL);
+        irc = pMenu1->InsertMenu(pos2 + 2,
+                                 MF_BYPOSITION | MF_POPUP,
+                                 UINT_PTR(m_pMRUMenu->m_hMenu),
+                                 cs_recentsafes);
+        ASSERT(irc != 0);
+      } else {  // MRU entries inline
+        ASSERT(pMenu1 != NULL);
+        irc = pMenu1->InsertMenu(pos2 + 2, MF_BYPOSITION, 
+                                 ID_FILE_MRU_ENTRY1, cs_recent);
+        ASSERT(irc != 0);
+      } // m_mruonfilemenu
+
+      m_pMRU->ReadList();
+    } // pos > -1
+  } else { // nMRUItems <= 0
+    if (pos2 > -1) {
+      int irc;
+      // Remove extra separator
+      ASSERT(pMenu1 != NULL);
+      irc = pMenu1->RemoveMenu(pos2 + 1, MF_BYPOSITION);
+      ASSERT(irc != 0);
+      // Remove Clear MRU menu item.
+      irc = pMenu1->RemoveMenu(ID_MENUITEM_CLEAR_MRU, MF_BYCOMMAND);
+      ASSERT(irc != 0);
+    }
+  }
+
+  // Do File Menu Export submenu
+  pos2 = app.FindMenuItem(pMenu1, ID_EXPORTMENU);
+  ASSERT(pos2 != -1);
+
+  pMenu2 = pMenu1->GetSubMenu(pos2);
+  minfo.dwMenuData = ID_EXPORTMENU;
+  pMenu2->SetMenuInfo(&minfo);
+
+  // Do File Menu Import submenu
+  pos2 = app.FindMenuItem(pMenu1, ID_IMPORTMENU);
+  ASSERT(pos2 != -1);
+
+  pMenu2 = pMenu1->GetSubMenu(pos2);
+  minfo.dwMenuData = ID_IMPORTMENU;
+  pMenu2->SetMenuInfo(&minfo);
+
+  // Do Edit Menu
+  pos1 = app.FindMenuItem(m_pMainMenu, ID_EDITMENU);
+  ASSERT(pos1 != -1);
+
+  pMenu1 = m_pMainMenu->GetSubMenu(pos1);
+  minfo.dwMenuData = ID_EDITMENU;
+  pMenu1->SetMenuInfo(&minfo);
+
+  // Do View Menu
+  pos1 = app.FindMenuItem(m_pMainMenu, ID_VIEWMENU);
+  ASSERT(pos1 != -1);
+
+  pMenu1 = m_pMainMenu->GetSubMenu(pos1);
+  minfo.dwMenuData = ID_VIEWMENU;
+  pMenu1->SetMenuInfo(&minfo);
+
+  // Do View Menu Filter submenu
+  pos2 = app.FindMenuItem(pMenu1, ID_FILTERMENU);
+  ASSERT(pos2 != -1);
+
+  pMenu2 = pMenu1->GetSubMenu(pos2);
+  minfo.dwMenuData = ID_FILTERMENU;
+  pMenu2->SetMenuInfo(&minfo);
+
+  // Do View Menu ChangeFont submenu
+  pos2 = app.FindMenuItem(pMenu1, ID_CHANGEFONTMENU);
+  ASSERT(pos2 != -1);
+
+  pMenu2 = pMenu1->GetSubMenu(pos2);
+  minfo.dwMenuData = ID_CHANGEFONTMENU;
+  pMenu2->SetMenuInfo(&minfo);
+
+  // Do View Menu Reports submenu
+  pos2 = app.FindMenuItem(pMenu1, ID_REPORTSMENU);
+  ASSERT(pos2 != -1);
+
+  pMenu2 = pMenu1->GetSubMenu(pos2);
+  minfo.dwMenuData = ID_REPORTSMENU;
+  pMenu2->SetMenuInfo(&minfo);
+
+  // Do Manage Menu
+  pos1 = app.FindMenuItem(m_pMainMenu, ID_MANAGEMENU);
+  ASSERT(pos1 != -1);
+
+  pMenu1 = m_pMainMenu->GetSubMenu(pos1);
+  minfo.dwMenuData = ID_MANAGEMENU;
+  pMenu1->SetMenuInfo(&minfo);
+
+  // No need to do the Manage Menu Languages submenu as rebuilt each time
+
+  // Do Help Menu
+  pos1 = app.FindMenuItem(m_pMainMenu, ID_HELPMENU);
+  ASSERT(pos1 != -1);
+
+  pMenu1 = m_pMainMenu->GetSubMenu(pos1);
+  minfo.dwMenuData = ID_HELPMENU;
+  pMenu1->SetMenuInfo(&minfo);
+
+#ifdef DEMO
+  // add specific menu item for demo version
+  // relies on last pMenu -> Help Menu
+  if (pMenu1 != NULL) {
+    pMenu1->InsertMenu(2, MF_BYPOSITION, ID_MENUITEM_U3SHOP_WEBSITE,
+                       CString(MAKEINTRESOURCE(IDS_U3PURCHASE)));
+  }
+#endif /* DEMO */
+}
+
+void ThisMfcApp::SetLanguage()
+{
+  // Free old resource only DLL
+  if (m_hInstResDLL != NULL && m_hInstResDLL != m_hInstance)
+    FreeLibrary(m_hInstResDLL);
+
+  m_hInstResDLL = NULL;
+
+  // Close the current Help file
+  ::HtmlHelp(NULL, NULL, HH_CLOSE_ALL, 0);
+
+  // Go set it up again
+  LoadLocalizedStuff();
+
+  if (m_hInstResDLL == NULL) {
+    // OK - not to use resource-only DLL - need to set to embedded resources
+    AfxSetResourceHandle(m_hInstance);
+    m_ResLangID = m_AppLangID;
+  }
+
+  // Setup main menu again
+  SetupMenu();
 }
 
 bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
@@ -747,157 +966,7 @@ BOOL ThisMfcApp::InitInstance()
     m_core.SetCurFile(path.c_str());
   }
 
-  int nMRUItems = prefs->GetPref(PWSprefs::MaxMRUItems);
-  m_mruonfilemenu = prefs->GetPref(PWSprefs::MRUOnFileMenu);
-  m_pMainMenu = new CMenu;
-  m_pMainMenu->LoadMenu(IDR_MAINMENU);
-
-  CMenu new_popupmenu;
-
-  MENUINFO minfo = {0};
-  minfo.cbSize = sizeof(MENUINFO);
-  minfo.fMask = MIM_MENUDATA;
-
-  // Menu position indices (File & Close).
-  int pos1, pos2;
-  CMenu *pMenu1, *pMenu2;
-
-  // Look for "File" menu.
-  pos1 = app.FindMenuItem(m_pMainMenu, ID_FILEMENU);
-  ASSERT(pos1 != -1);
-
-  pMenu1 = m_pMainMenu->GetSubMenu(pos1);
-  minfo.dwMenuData = ID_FILEMENU;
-  pMenu1->SetMenuInfo(&minfo);
-
-  if (pMenu1 != NULL) // Look for "Close Database"
-    pos2 = FindMenuItem(pMenu1, ID_MENUITEM_CLOSE);
-  else
-    pos2 = -1;
-
-  m_pMRU = new CPWSRecentFileList(0, L"MRU", L"Safe%d",
-                                 ((nMRUItems != 0) ? nMRUItems : 1));
-  if (nMRUItems > 0) {
-    if (pos2 > -1) {
-      int irc;
-      // Create New Popup Menu
-      new_popupmenu.CreatePopupMenu();
-      CString cs_recent(MAKEINTRESOURCE(IDS_RECENT));
-      CString cs_recentsafes(MAKEINTRESOURCE(IDS_RECENTSAFES));
-
-      if (!m_mruonfilemenu) { // MRU entries in popup menu
-        // Insert Item onto new popup
-        irc = new_popupmenu.InsertMenu(0, MF_BYPOSITION, 
-                                       ID_FILE_MRU_ENTRY1, cs_recent);
-        ASSERT(irc != 0);
-        // Insert Popup onto main menu
-        ASSERT(pMenu1 != NULL);
-        irc = pMenu1->InsertMenu(pos2 + 2,
-                                 MF_BYPOSITION | MF_POPUP,
-                                 UINT_PTR(new_popupmenu.m_hMenu),
-                                 cs_recentsafes);
-        ASSERT(irc != 0);
-      } else {  // MRU entries inline
-        ASSERT(pMenu1 != NULL);
-        irc = pMenu1->InsertMenu(pos2 + 2, MF_BYPOSITION, 
-                                 ID_FILE_MRU_ENTRY1, cs_recent);
-        ASSERT(irc != 0);
-      } // m_mruonfilemenu
-
-      m_pMRU->ReadList();
-    } // pos > -1
-  } else { // nMRUItems <= 0
-    if (pos2 > -1) {
-      int irc;
-      // Remove extra separator
-      ASSERT(pMenu1 != NULL);
-      irc = pMenu1->RemoveMenu(pos2 + 1, MF_BYPOSITION);
-      ASSERT(irc != 0);
-      // Remove Clear MRU menu item.
-      irc = pMenu1->RemoveMenu(ID_MENUITEM_CLEAR_MRU, MF_BYCOMMAND);
-      ASSERT(irc != 0);
-    }
-  }
-  // Do File Menu Export submenu
-  pos2 = app.FindMenuItem(pMenu1, ID_EXPORTMENU);
-  ASSERT(pos2 != -1);
-
-  pMenu2 = pMenu1->GetSubMenu(pos2);
-  minfo.dwMenuData = ID_EXPORTMENU;
-  pMenu2->SetMenuInfo(&minfo);
-
-  // Do File Menu Import submenu
-  pos2 = app.FindMenuItem(pMenu1, ID_IMPORTMENU);
-  ASSERT(pos2 != -1);
-
-  pMenu2 = pMenu1->GetSubMenu(pos2);
-  minfo.dwMenuData = ID_IMPORTMENU;
-  pMenu2->SetMenuInfo(&minfo);
-
-  // Do Edit Menu
-  pos1 = app.FindMenuItem(m_pMainMenu, ID_EDITMENU);
-  ASSERT(pos1 != -1);
-
-  pMenu1 = m_pMainMenu->GetSubMenu(pos1);
-  minfo.dwMenuData = ID_EDITMENU;
-  pMenu1->SetMenuInfo(&minfo);
-
-  // Do View Menu
-  pos1 = app.FindMenuItem(m_pMainMenu, ID_VIEWMENU);
-  ASSERT(pos1 != -1);
-
-  pMenu1 = m_pMainMenu->GetSubMenu(pos1);
-  minfo.dwMenuData = ID_VIEWMENU;
-  pMenu1->SetMenuInfo(&minfo);
-
-  // Do View Menu Filter submenu
-  pos2 = app.FindMenuItem(pMenu1, ID_FILTERMENU);
-  ASSERT(pos2 != -1);
-
-  pMenu2 = pMenu1->GetSubMenu(pos2);
-  minfo.dwMenuData = ID_FILTERMENU;
-  pMenu2->SetMenuInfo(&minfo);
-
-  // Do View Menu ChangeFont submenu
-  pos2 = app.FindMenuItem(pMenu1, ID_CHANGEFONTMENU);
-  ASSERT(pos2 != -1);
-
-  pMenu2 = pMenu1->GetSubMenu(pos2);
-  minfo.dwMenuData = ID_CHANGEFONTMENU;
-  pMenu2->SetMenuInfo(&minfo);
-
-  // Do View Menu Reports submenu
-  pos2 = app.FindMenuItem(pMenu1, ID_REPORTSMENU);
-  ASSERT(pos2 != -1);
-
-  pMenu2 = pMenu1->GetSubMenu(pos2);
-  minfo.dwMenuData = ID_REPORTSMENU;
-  pMenu2->SetMenuInfo(&minfo);
-
-  // Do Manage Menu
-  pos1 = app.FindMenuItem(m_pMainMenu, ID_MANAGEMENU);
-  ASSERT(pos1 != -1);
-
-  pMenu1 = m_pMainMenu->GetSubMenu(pos1);
-  minfo.dwMenuData = ID_MANAGEMENU;
-  pMenu1->SetMenuInfo(&minfo);
-
-  // Do Help Menu
-  pos1 = app.FindMenuItem(m_pMainMenu, ID_HELPMENU);
-  ASSERT(pos1 != -1);
-
-  pMenu1 = m_pMainMenu->GetSubMenu(pos1);
-  minfo.dwMenuData = ID_HELPMENU;
-  pMenu1->SetMenuInfo(&minfo);
-
-#ifdef DEMO
-  // add specific menu item for demo version
-  // relies on last pMenu -> Help Menu
-  if (pMenu1 != NULL) {
-    pMenu1->InsertMenu(2, MF_BYPOSITION, ID_MENUITEM_U3SHOP_WEBSITE,
-                       CString(MAKEINTRESOURCE(IDS_U3PURCHASE)));
-  }
-#endif /* DEMO */
+  SetupMenu();
 
   /*
   * normal startup
@@ -910,8 +979,8 @@ BOOL ThisMfcApp::InitInstance()
   The app object (here) should instead do the initial PasskeyEntry,
   and, if successful, move on to DboxMain.  I think. {jpr}
   */
-  m_maindlg = &dbox;
-  m_pMainWnd = m_maindlg;
+  m_pMainDlg = &dbox;
+  m_pMainWnd = m_pMainDlg;
 
   // JHF : no tray icon and menu for PPC
 #if !defined(POCKET_PC)
@@ -921,7 +990,7 @@ BOOL ThisMfcApp::InitInstance()
   m_UnLockedIcon = app.LoadIcon(IDI_UNLOCKEDICON);
   int iData = prefs->GetPref(PWSprefs::ClosedTrayIconColour);
   SetClosedTrayIcon(iData);
-  m_TrayIcon = new CSystemTray((CWnd *)m_maindlg, PWS_MSG_ICON_NOTIFY, L"PasswordSafe",
+  m_TrayIcon = new CSystemTray((CWnd *)m_pMainDlg, PWS_MSG_ICON_NOTIFY, L"PasswordSafe",
                                m_LockedIcon, dbox.m_RUEList,
                                PWS_MSG_ICON_NOTIFY, IDR_POPTRAY);
   m_TrayIcon->SetTarget(&dbox);
@@ -1081,9 +1150,9 @@ BOOL ThisMfcApp::ProcessMessageFilter(int code, LPMSG lpMsg)
   if (code < 0)
     CWinApp::ProcessMessageFilter(code, lpMsg);
 
-  if (m_bUseAccelerator && m_maindlg != NULL && m_ghAccelTable != NULL &&
+  if (m_bUseAccelerator && m_pMainDlg != NULL && m_ghAccelTable != NULL &&
       code != MSGF_MENU) {
-    if (::TranslateAccelerator(m_maindlg->m_hWnd, m_ghAccelTable, lpMsg))
+    if (::TranslateAccelerator(m_pMainDlg->m_hWnd, m_ghAccelTable, lpMsg))
       return TRUE;
   }
 
@@ -1165,7 +1234,7 @@ void ThisMfcApp::GetApplicationVersionData()
 
         struct TRANSARRAY {
           WORD wLangID;
-          WORD wCharSet;
+          WORD wCodePage;
         };
 
         CString cs_text;
@@ -1175,11 +1244,17 @@ void ThisMfcApp::GetApplicationVersionData()
 
         VerQueryValue(pVersionInfo, L"\\VarFileInfo\\Translation",
                      (LPVOID*)&buffer, &buflen);
-        lpTransArray = (TRANSARRAY*) buffer;
+        lpTransArray = (TRANSARRAY *)buffer;
+
+        // Save for later
+        m_AppLangID = lpTransArray[0].wLangID;
+        
+        // Until we know better
+        m_ResLangID = m_AppLangID;
 
         // Get string File Version information 
         cs_text.Format(L"\\StringFileInfo\\%04x%04x\\FileVersion",
-                       lpTransArray[0].wLangID, lpTransArray[0].wCharSet);
+                       lpTransArray[0].wLangID, lpTransArray[0].wCodePage);
         lpsztext = cs_text.GetBuffer(cs_text.GetLength() + sizeof(wchar_t));
         bRet = ::VerQueryValue(pVersionInfo, lpsztext, (LPVOID*)&buffer, &buflen); 
         m_csFileVersionString = bRet ? buffer : L"";
@@ -1187,7 +1262,7 @@ void ThisMfcApp::GetApplicationVersionData()
 
         // Get string Legal Copyright information 
         cs_text.Format(L"\\StringFileInfo\\%04x%04x\\LegalCopyright",
-                       lpTransArray[0].wLangID, lpTransArray[0].wCharSet);
+                       lpTransArray[0].wLangID, lpTransArray[0].wCodePage);
         lpsztext = cs_text.GetBuffer(cs_text.GetLength() + sizeof(wchar_t));
         bRet = ::VerQueryValue(pVersionInfo, lpsztext, (LPVOID*)&buffer, &buflen); 
         m_csCopyrightString = bRet ? buffer : L"All rights reserved.";
@@ -1217,4 +1292,137 @@ BOOL CALLBACK ThisMfcApp::searcher(HWND hWnd, LPARAM lParam)
   } /* found it */
 
   return TRUE; // continue search
+}
+
+void ThisMfcApp::GetDLLVersionData(const CString &cs_dll, int &wLangID)
+{
+  wLangID = 0;
+  DWORD dwVerHnd, dwVerInfoSize;
+
+  // Get version information from the DLL
+  dwVerInfoSize = ::GetFileVersionInfoSize(cs_dll, &dwVerHnd);
+  if (dwVerInfoSize > 0) {
+    char* pVersionInfo = new char[dwVerInfoSize];
+    if (pVersionInfo != NULL) {
+      BOOL bRet = ::GetFileVersionInfo((LPCWSTR)cs_dll,
+                                       (DWORD)dwVerHnd,
+                                       (DWORD)dwVerInfoSize,
+                                       (LPVOID)pVersionInfo);
+
+      if (bRet) {
+        struct TRANSARRAY {
+          WORD wLangID;
+          WORD wCodePage;
+        };
+
+        wchar_t *buffer;
+        UINT buflen;
+
+        VerQueryValue(pVersionInfo, L"\\VarFileInfo\\Translation",
+                     (LPVOID*)&buffer, &buflen);
+        TRANSARRAY *lpTransArray = (TRANSARRAY *)buffer;
+        wLangID = lpTransArray[0].wLangID;
+      }
+    }
+    delete[] pVersionInfo;
+  }
+}
+
+void ThisMfcApp::GetLanguageFiles()
+{
+  // NOTE: Assumption that a Help file can only exist if a resource file also exists
+  const CString cs_ExePath(PWSdirs::GetExeDir().c_str());
+  CString cs_ResPath = cs_ExePath + L"pwsafe*.dll";
+  //     L"%wsafe%s%s.dll" : L"pwsafe%s_%s.dll";
+
+  // Find all language DLLs
+  m_vlanguagefiles.clear();
+
+  LANGHELPFILE st_lng;
+
+  // Add default embedded language
+  const LCID AppLCID = MAKELCID(m_AppLangID, SORT_DEFAULT); // 0x0409 - English US
+
+  wchar_t *szLanguage_Native(NULL);
+  int inum = ::GetLocaleInfo(AppLCID, LOCALE_SNATIVELANGNAME, szLanguage_Native, 0);
+  if (inum > 0) {
+    CString cs_language, cs_Embedded(MAKEINTRESOURCE(IDS_EMBEDDEDRESOURCES));
+    szLanguage_Native = new wchar_t[inum + 1];
+    ::GetLocaleInfo(AppLCID, LOCALE_SNATIVELANGNAME, szLanguage_Native, inum);
+
+    cs_language.Format(L"%s (%s)", szLanguage_Native, cs_Embedded);
+
+    st_lng.lcid = AppLCID;
+    st_lng.xFlags = (m_AppLangID == m_ResLangID) ? 0xC0 : 0x40;
+    st_lng.wsLL = L"";
+    st_lng.wsCC = L"";
+    st_lng.wsLanguage = (LPCWSTR)cs_language;
+
+    m_vlanguagefiles.push_back(st_lng);
+    delete szLanguage_Native;
+  }
+
+  CFileFind finder;
+  BOOL bWorking = finder.FindFile(cs_ResPath);
+
+  while (bWorking) {
+    bWorking = finder.FindNextFile();
+    CString cs_temp, cs_helpfile;
+    CString cs_dll = finder.GetFileName();
+
+    // Parse file name
+    CString cs_LL(L""), cs_CC(L""), cs_language;
+    //                               012345678901           012345678901234
+    // length should be either 10+2 (pwsafeLL.dll) or 10+5 (pwsafeLL_CC.dll)
+    int len = cs_dll.GetLength();
+    ASSERT(len == 12 || len == 15);
+    cs_LL = cs_dll.Mid(6, 2);
+    if (len == 15)
+      cs_CC = cs_dll.Mid(9, 2);
+
+    cs_temp.Format(L"pwsafe%s.chm", cs_LL);
+    cs_helpfile = cs_ExePath + cs_temp;
+    std::wstring wsHelpFile = (LPCWSTR)cs_helpfile;
+    bool bHelpFileExists = pws_os::FileExists(wsHelpFile);
+    int FoundResLangID;
+    GetDLLVersionData(cs_ExePath + cs_dll, FoundResLangID);
+
+    // If the Resource-only DLL has same LCID as application, it is back level
+    // and we can't use it.
+    if (FoundResLangID == m_AppLangID)
+      continue;
+
+    LCID lcid = MAKELCID(FoundResLangID, SORT_DEFAULT);
+    wchar_t *szLanguage_Native(NULL), *szCountry_Language(NULL);
+    int inum = ::GetLocaleInfo(lcid, LOCALE_SNATIVELANGNAME, NULL, 0);
+    if (inum > 0) {
+      szLanguage_Native = new wchar_t[inum + 1];
+      ::GetLocaleInfo(lcid, LOCALE_SNATIVELANGNAME, szLanguage_Native, inum);
+
+      // For Chinese - we really only want "Chinese (Simplified)" or "Chinese (Traditional)"
+      LCTYPE LCType = LOBYTE(lcid) == 0x04 ? LOCALE_SENGLANGUAGE : LOCALE_SCOUNTRY;
+      int jnum = ::GetLocaleInfo(lcid, LCType, NULL, 0);
+      if (jnum > 0) {
+        szCountry_Language = new wchar_t[jnum + 1];
+        ::GetLocaleInfo(lcid, LCType, szCountry_Language, jnum);
+        if (wcscmp(szLanguage_Native, szCountry_Language) != 0)
+          cs_language.Format(L"%s (%s)", szLanguage_Native, szCountry_Language);
+        else
+          cs_language.Format(L"%s", szLanguage_Native);
+      } else
+        cs_language.Format(L"%s", szLanguage_Native);
+
+      st_lng.lcid = lcid;
+      st_lng.xFlags = (m_ResLangID == FoundResLangID) ? 0x80 : 0x00;
+      st_lng.xFlags |= bHelpFileExists ? 0x40 : 0x00;
+      st_lng.wsLL = (LPCWSTR)cs_LL;
+      st_lng.wsCC = (LPCWSTR)cs_CC;
+      st_lng.wsLanguage = (LPCWSTR)cs_language;
+
+      m_vlanguagefiles.push_back(st_lng);
+      delete szLanguage_Native;
+      delete szCountry_Language;
+    }
+  }
+  finder.Close();
 }

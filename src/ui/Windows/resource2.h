@@ -29,6 +29,7 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 */
 
 #define ID_MENUTOOLBAR_START            32000
+#define ID_LANGUAGES                    64000
 
 // File menu
 #define ID_FILEMENU                     32001
@@ -139,6 +140,7 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 #define ID_MENUITEM_CUSTOMIZETOOLBAR    32155
 #define ID_MENUITEM_VALIDATE            32156
 #define ID_MENUITEM_GENERATEPASSWORD    32157
+#define ID_LANGUAGEMENU                 32158
 
 // Help menu
 #define ID_HELPMENU                     32200

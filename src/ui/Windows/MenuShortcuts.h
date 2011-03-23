@@ -51,7 +51,8 @@ typedef std::pair<const st_KeyIDExt, const wchar_t *> MapKeyNameIDPair;
 typedef MapKeyNameID::const_iterator MapKeyNameIDConstIter;
 typedef MapKeyNameID::iterator MapKeyNameIDIter;
 
-class CMenuShortcut {
+class CMenuShortcut
+{
 public:
   // Menu item text
   std::wstring name;
