@@ -511,6 +511,7 @@ int DboxMain::Close(const bool bTrySave)
   m_titlebar = L"Password Safe";
   SetWindowText(LPCWSTR(m_titlebar));
   m_lastclipboardaction = L"";
+  m_ilastaction = 0;
   UpdateStatusBar();
 
   // Delete any saved status information

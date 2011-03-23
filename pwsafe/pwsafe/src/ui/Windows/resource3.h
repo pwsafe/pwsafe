@@ -647,3 +647,4 @@
 #define IDS_NONE_EXPORTED               5838
 #define IDS_NONE_COMPARED               5839
 #define IDS_NONE_SYNCHRONIZED           5840
+#define IDS_EMBEDDEDRESOURCES           5841

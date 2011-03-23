@@ -57,7 +57,8 @@ public:
   CStringTable& AddStringTable(const CString &strKey);
   CStringTable& AddStringTable(CStringTable* pStringTable);
 
-  // Change language of the string table (the proper way, do not use CStringTable::SetKey() directly)
+  // Change language of the string table (the proper way, do not use
+  // CStringTable::SetKey() directly)
   BOOL SetStringTableKey(const CString &strOldKey, const CString &strNewKey);
 
 private:

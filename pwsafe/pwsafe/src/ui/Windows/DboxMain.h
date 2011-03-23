@@ -831,9 +831,10 @@ private:
   void RegistryAnonymity();
   void CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID, const bool bDoShortcuts);
   void SetUpMenuStrings(CMenu *pPopupMenu);
-  void SetUpInitialMenuStrings();
+  void SetUpInitialMenuStrings(LCID lcid = 0);
   void UpdateAccelTable();
   void SetupSpecialShortcuts();
+  bool ProcessLanguageMenu(CMenu *pPopupMenu);
   void DoBrowse(const bool bDoAutotype, const bool bSendEmail);
   bool GetSubtreeEntriesProtectedStatus(int &numProtected, int &numUnprotected);
   void ChangeSubtreeEntriesProtectStatus(const UINT nID);
@@ -950,6 +951,11 @@ private:
   bool m_bInRename;
   // When in AddGroup and where AddGroup initiated
   bool m_bInAddGroup, m_bWhitespaceRightClick;
+
+  // Change languages on the fly
+  void SetLanguage(LCID lcid);
+  int m_ilastaction;  // Last action
+  void SetDragbarToolTips();
 
   // The following is for saving information over an execute/undo/redo
   // Might need to add more e.g. if filter is active and which one?

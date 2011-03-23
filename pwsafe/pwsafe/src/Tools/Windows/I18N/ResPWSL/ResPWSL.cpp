@@ -114,8 +114,6 @@ bool UpdateRODLL(const CString csInFilePath, const LCID locale)
 
   _tcsupr_s(szLang, 3);
 
-  TRACE("LOCALE_SISO639LANGNAME=%s\n", szLang);
-
   if ((int)locale < 0x0100) {
     csFilename.Format(_T("pwsafe%s"), szLang);
   } else {
@@ -125,7 +123,6 @@ bool UpdateRODLL(const CString csInFilePath, const LCID locale)
       return false;
     }
 
-    TRACE("LOCALE_SISO3166CTRYNAME=%s\n", szCtry);
     csFilename.Format(_T("pwsafe%s_%s"), szLang, szCtry);
   }
 
@@ -159,12 +156,31 @@ bool UpdateRODLL(const CString csInFilePath, const LCID locale)
     return false;
   }
 
+  // Get version information from resource-only DLL
   CVersionInfo vi(csOutFilePath);
 
+  // Change any information
   vi[_T("OriginalFilename")] = csFilename + _T(".dll");
   vi[_T("ProductName")] = csProductName;
 
-  vi.Save();
+  // Get StringFileInfo section
+  CStringFileInfo &stringFileInfo = vi.GetStringFileInfo();
+
+  // CodePage = 0x04b0 = 1200 = Unicode
+  CString strOldLangID, strNewLangID, strCodePage(_T("04b0"));
+
+  // Get new language ID
+  strNewLangID.Format(_T("%04x"), locale);
+
+  // Get language ID from read in version information
+  WORD wOldLangID = vi.GetLangID();
+  strOldLangID.Format(_T("%04x"), wOldLangID);
+
+  // Change the language key
+  stringFileInfo.SetStringTableKey(strOldLangID + strCodePage, strNewLangID + strCodePage);
+
+  // Replace the version information under the old language ID to be under the new language ID
+  vi.ToFile(_T(""), NULL, (WORD)locale, true);
 
   return true;
 }

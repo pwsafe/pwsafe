@@ -38,6 +38,12 @@ COptionsShortcuts::COptionsShortcuts()
 
 COptionsShortcuts::~COptionsShortcuts()
 {
+  MapKeyNameIDIter iter;
+  for (iter = m_MapKeyNameID.begin(); iter != m_MapKeyNameID.end(); iter++) {
+    free((void *)iter->second);
+    iter->second = NULL;
+  }
+  m_MapKeyNameID.clear();
 }
 
 void COptionsShortcuts::DoDataExchange(CDataExchange* pDX)
@@ -70,7 +76,15 @@ void COptionsShortcuts::InitialSetup(const MapMenuShortcuts MapMenuShortcuts,
                     const std::vector<st_MenuShortcut> &ReservedShortcuts)
 {
   m_MapMenuShortcuts = m_MapSaveMenuShortcuts = MapMenuShortcuts;
-  m_MapKeyNameID = MapKeyNameID;
+
+  // Need to make our own copy as KNIDciter->second is a pointer to whar_t variable
+  MapKeyNameIDConstIter KNIDciter;
+  std::pair< MapKeyNameIDIter, bool > prMKNID;
+
+  for (KNIDciter = MapKeyNameID.begin(); KNIDciter != MapKeyNameID.end(); KNIDciter++) {
+    prMKNID = m_MapKeyNameID.insert(MapKeyNameIDPair(KNIDciter->first,  _wcsdup(KNIDciter->second)));
+  }
+
   m_ExcludedMenuItems = ExcludedMenuItems;
   m_ReservedShortcuts = ReservedShortcuts;
 }

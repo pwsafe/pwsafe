@@ -1474,6 +1474,8 @@ void DboxMain::UpdateLastClipboardAction(const int iaction)
     m_lastclipboardaction.LoadString(imsg);
     m_lastclipboardaction += szTimeString;
   }
+
+  m_ilastaction = iaction;
   UpdateStatusBar();
 }
 

@@ -47,7 +47,8 @@ public:
 
   friend class CStringFileInfo;
 private:
-  //Set key renames/changes the language/codepage for the table, accessible only via CStringFileInfo::SetStringTableKey()
+  //Set key renames/changes the language/codepage for the table, accessible
+  // only via CStringFileInfo::SetStringTableKey()
   void SetKey(const CString& strKey);
 
   CObList m_lstStrings;

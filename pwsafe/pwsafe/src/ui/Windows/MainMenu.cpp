@@ -132,7 +132,7 @@ void InsertShortcuts(CMenu *pMenu, MapMenuShortcuts &mms,
   }
 }
 
-void DboxMain::SetUpInitialMenuStrings()
+void DboxMain::SetUpInitialMenuStrings(LCID lcid)
 {
   CMenu *pMainMenu, *pSubMenu;
   int isubmenu_pos;
@@ -151,7 +151,7 @@ void DboxMain::SetUpInitialMenuStrings()
   // Add user Excluded Menu Items - anything that is a Popup Menu
     ID_FILEMENU, ID_EXPORTMENU, ID_IMPORTMENU, ID_EDITMENU,
     ID_VIEWMENU, ID_FILTERMENU, ID_CHANGEFONTMENU, ID_REPORTSMENU,
-    ID_MANAGEMENU, ID_HELPMENU, ID_FINDMENU,
+    ID_MANAGEMENU, ID_LANGUAGEMENU, ID_HELPMENU, ID_FINDMENU,
 
   // Plus Exit (2 shortcuts Ctrl+Q and Alt+F4) and Help (F1)
     ID_MENUITEM_EXIT, ID_HELP,
@@ -171,10 +171,19 @@ void DboxMain::SetUpInitialMenuStrings()
     ID_MENUITEM_RENAMEENTRY, ID_MENUITEM_RENAMEGROUP,
   };
 
+  m_ExcludedMenuItems.clear();
   m_ExcludedMenuItems.assign(excludedMenuItems,
                              excludedMenuItems + _countof(excludedMenuItems));
 
   std::pair< MapKeyNameIDIter, bool > prMKNID;
+
+  // Clear out any there
+  MapKeyNameIDIter KNIDiter;
+  for (KNIDiter = m_MapKeyNameID.begin(); KNIDiter != m_MapKeyNameID.end(); KNIDiter++) {
+    free((void *)KNIDiter->second);
+    KNIDiter->second = NULL;
+  }
+  m_MapKeyNameID.clear();
 
   // Add in the zero/None entry
   pname = _wcsdup(L"");
@@ -183,11 +192,23 @@ void DboxMain::SetUpInitialMenuStrings()
   prMKNID = m_MapKeyNameID.insert(MapKeyNameIDPair(st_KIDEx, pname));
   ASSERT(prMKNID.second == true);
 
+  HKL hkl(NULL), prevhkl(NULL);
+  if (lcid != 0) {
+    // This won't work for Japanese, Korean or Chinese as they use IMEs and not keyboard layouts :-(
+    CString csKLID;
+    csKLID.Format(L"%08x", lcid);
+
+    // Load new keyboard layout
+    hkl = LoadKeyboardLayout(csKLID, KLF_NOTELLSHELL);
+    // Activate it so that we get the correct names for things like "Scroll-Lock", "Nackspace" etc.
+    prevhkl = ActivateKeyboardLayout(hkl, KLF_SETFORPROCESS);
+  }
+
   // Now add in locale key names (note range 0xE0-0xFF not used)
   for (int i = 1; i < 0xE0; i++) {
     // Following are reserved or unassigned by Windows
-    if ( i == 0x07 || i == 0x0A || 
-         i == 0x0B || i == 0x1B ||
+    if ( i == 0x07 || i == 0x0A  || 
+         i == 0x0B || i == 0x1B  ||
         (i >= 0x3A && i <= 0x40) ||
         (i >= 0x5B && i <= 0x5F) ||
         (i >= 0x88 && i <= 0x8F) ||
@@ -222,6 +243,13 @@ void DboxMain::SetUpInitialMenuStrings()
     }
   }
 
+  if (hkl != NULL) {
+    // Put keyboard layout back as it was.
+    UnloadKeyboardLayout(hkl);
+    if (prevhkl != NULL)
+      ActivateKeyboardLayout(prevhkl, KLF_SETFORPROCESS);
+  }
+
   pMainMenu = new CMenu;
   brc = pMainMenu->LoadMenu(IDR_MAINMENU);
   ASSERT(brc != 0);
@@ -235,6 +263,8 @@ void DboxMain::SetUpInitialMenuStrings()
 
   // Add reserved shortcuts = Alt+'x' for main menu e.g. Alt+F, E, V, M, H
   // Maybe different in other languages
+  m_ReservedShortcuts.clear();
+
   st_MenuShortcut st_mst;
   st_mst.cVirtKey;
   st_mst.cModifier = HOTKEYF_ALT;
@@ -277,6 +307,8 @@ void DboxMain::SetUpInitialMenuStrings()
   // Now get all other Menu items
   // (ronys) I think we can do the following properly via recursive descent. Later.
 
+  m_MapMenuShortcuts.clear();
+
   // Do Main Menu (uiParentID == 0)
   InsertShortcuts(pMainMenu, m_MapMenuShortcuts, 0);
 
@@ -315,6 +347,8 @@ void DboxMain::SetUpInitialMenuStrings()
   // Do Manage Menu
   InsertShortcuts(pMainMenu, m_MapMenuShortcuts, ID_MANAGEMENU);
 
+  // No need to do Manage Menu Langauges submenu as rebuilt every time!
+
   // Do Help Menu
   InsertShortcuts(pMainMenu, m_MapMenuShortcuts, ID_HELPMENU);
 
@@ -341,6 +375,11 @@ void DboxMain::SetUpInitialMenuStrings()
   // and update Map
   MapMenuShortcutsIter iter, iter_entry, iter_group, inuse_iter;
   HACCEL curacctbl = app.m_ghAccelTable;
+  //if (curacctbl != NULL) {
+  //  DestroyAcceleratorTable(app.m_ghAccelTable);
+  //  curacctbl = app.m_ghAccelTable = NULL;
+  //}
+
   ACCEL *pacceltbl(NULL), *paccel(NULL);
   int numaccels;
 
@@ -864,7 +903,7 @@ exit:
     return;
 }
 
-// helps with MRU by allowing ON_UPDATE_COMMAND_UI
+// Helps with MRU by allowing ON_UPDATE_COMMAND_UI
 void DboxMain::OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL)
 {
   // Original OnInitMenu code
@@ -936,6 +975,24 @@ void DboxMain::OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL)
 
   if (bDoShortcuts || minfo.dwMenuData == ID_EDITMENU || minfo.dwMenuData == ID_VIEWMENU)
     CustomiseMenu(pPopupMenu, (UINT)minfo.dwMenuData, bDoShortcuts);
+
+  static int iLangPos = -1;
+  if (minfo.dwMenuData == ID_MANAGEMENU) {
+    // Process the Change Language sub-menu
+    // First get its position and then build it
+    // If no entries added (no language DLLs or back level language DLLs),
+    // disable the menu item.
+    if (iLangPos == -1)
+      iLangPos = app.FindMenuItem(pPopupMenu, ID_LANGUAGEMENU);
+
+    if (iLangPos >= 0) {
+      CMenu *pSubMenu = pPopupMenu->GetSubMenu(iLangPos);
+      const bool brc = ProcessLanguageMenu(pSubMenu);
+      pPopupMenu->EnableMenuItem(iLangPos, MF_BYPOSITION | (brc ? MF_ENABLED : MF_GRAYED));
+    }
+
+    return;
+  }
 
   // http://www4.ncsu.edu:8030/~jgbishop/codetips/dialog/updatecommandui_menu.html
   // This code comes from the MFC Documentation, and is adapted from
@@ -1353,4 +1410,36 @@ void DboxMain::SetupSpecialShortcuts()
   } else {
     m_wpAutotypeKey = 0;
   }
+}
+
+bool DboxMain::ProcessLanguageMenu(CMenu *pPopupMenu)
+{
+  app.GetLanguageFiles();
+
+  // Should always be 1 entry (for the embedded resources)
+  // Can't do anything if no other DLLs available
+  // This can also happen if they are back-level resoure only DLLs who have
+  // a language ID the same as the application.
+  if (app.m_vlanguagefiles.size() < 2)
+    return false;
+
+  size_t i;
+  const UINT numItems = pPopupMenu->GetMenuItemCount();
+
+  // Remove any existing menu items in case user has done something!
+  for (i = 0; i < numItems; i++) {
+    pPopupMenu->RemoveMenu(0, MF_BYPOSITION);
+  }
+
+  // Add new ones
+  UINT nID = ID_LANGUAGES;
+
+  // Add languages
+  for (i = 0; i < app.m_vlanguagefiles.size(); i++) {
+    UINT uiFlags = MF_STRING | MF_ENABLED | 
+       ((app.m_vlanguagefiles[i].xFlags & 0x80) == 0x80) ? MF_CHECKED : MF_UNCHECKED;
+    pPopupMenu->AppendMenu(uiFlags, nID++, app.m_vlanguagefiles[i].wsLanguage.c_str());
+  }
+
+  return true;
 }
