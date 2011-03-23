@@ -23,7 +23,7 @@ None
 
 Bugs fixed in 3.25.1
 ====================
-None
+[3234204] PasswordSafe no longer ends if the command flag is set to "-s <databasename>".
 
 New Features for 3.25
 =====================
