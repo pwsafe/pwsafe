@@ -36,6 +36,7 @@
 #define _tcscmp(s1, s2) wcscmp(s1, s2)
 #define _tcsncmp(s1, s2, n) wcsncmp(s1, s2, n)
 #define _tcschr(s, c) wcschr(s, c)
+#define _tcsdup(s) wcsdup(s)
 #define _tcsftime wcsftime
 #define _tasctime_s(s, N, st) pws_os::asctime(s, N, st)
 #define _vsctprintf(fmt, args) vswprintf(NULL, 0, fmt, args)
@@ -75,6 +76,7 @@
 #define _tcscmp(s1, s2) strcmp(s1, s2)
 #define _tcsncmp(s1, s2, n) strncmp(s1, s2, n)
 #define _tcschr(s, c) strchr(s, c)
+#define _tcsdup(s) strdup(s)
 #include <time.h>
 #define _tcsftime strftime
 #define _tasctime_s(s, N, st) (asctime_r(st, s) != NULL ? 0 : 1)

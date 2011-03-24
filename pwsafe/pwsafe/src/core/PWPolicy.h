@@ -67,7 +67,7 @@ struct PWPolicy {
   // Following calls CPasswordCharPool::MakePassword()
   // with arguments matching 'this' policy, or,
   // preference-defined policy if this->flags == 0
-  StringX MakeRandomPassword(stringT st_symbols) const;
+  StringX MakeRandomPassword(const stringT &st_symbols = _T("")) const;
 };
 
 #endif /* __PWPOLICY_H */

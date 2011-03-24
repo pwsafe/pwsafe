@@ -103,13 +103,13 @@ CPasswordCharPool::CPasswordCharPool(const uint pwlen,
     m_lengths[DIGIT] = m_usedigits ? std_digit_len : 0;
     m_lengths[HEXDIGIT] = m_usehexdigits ? std_hexdigit_len : 0;
 
-    if (_tcslen(ct_symbols) == 0) {
+    if (ct_symbols == NULL ||_tcslen(ct_symbols) == 0) {
       StringX sx_symbols = PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultSymbols);
-      if (sx_symbols.length() == 0) {
+      if (sx_symbols.empty()) {
         m_char_arrays[SYMBOL] = std_symbol_chars;
         m_lengths[SYMBOL] = m_usesymbols ? std_symbol_len : 0;
       } else {
-        m_char_arrays[SYMBOL] = _tcsdup(sx_symbols.c_str());
+        m_char_arrays[SYMBOL] = _tcsdup(sx_symbols.c_str()); // XXX memory leak?
         m_lengths[SYMBOL] = m_usesymbols ? sx_symbols.length() : 0;
       }
     } else {

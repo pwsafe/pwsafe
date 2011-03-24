@@ -34,7 +34,7 @@ bool PWPolicy::operator==(const PWPolicy &that) const
 // Following calls CPasswordCharPool::MakePassword()
 // with arguments matching 'this' policy, or,
 // preference-defined policy if this->flags == 0
-StringX PWPolicy::MakeRandomPassword(stringT st_symbols) const
+StringX PWPolicy::MakeRandomPassword(const stringT &st_symbols) const
 {
   bool pwuselowercase, pwuseuppercase;
   bool pwusedigits, pwusesymbols, pweasyvision, pwusehexdigits;
