@@ -6,8 +6,8 @@ RELEASENAME := 0.4
 
 DISTRO := $(shell echo $(word 2,$(shell lsb_release -d))|tr [:upper:] [:lower:])
 
-DEBNAME32 = passwordsafe-$(DISTRO)-$(RELEASENAME).i686.deb
-DEBNAME64 = passwordsafe-$(DISTRO)-$(RELEASENAME).amd64.deb
+DEBNAME32 = $(RELEASEDIR)passwordsafe-$(DISTRO)-$(RELEASENAME).i686.deb
+DEBNAME64 = $(RELEASEDIR)passwordsafe-$(DISTRO)-$(RELEASENAME).amd64.deb
 MKDIR = /bin/mkdir -p
 CAT = /bin/cat
 MV = /bin/mv

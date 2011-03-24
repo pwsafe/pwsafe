@@ -4,12 +4,11 @@
 RELEASENUM := 0.5.0
 RELEASE_SPECIAL := BETA
 
-# This should probably be overridden by invoker
-RELEASEDIR := .
-
 # Shouldn't change anything below here
 
 RELEASENAME := $(RELEASENUM)$(RELEASE_SPECIAL)
+
+RELEASEDIR := ./Releases/
 
 TMPDIR := /tmp/pwsrc-$(shell echo $$$$)
 MKDIR := mkdir -p
@@ -17,12 +16,19 @@ RM := /bin/rm -rf
 SVN := svn
 TAR := tar
 
-all clean unicodedebug unicoderelease:
+GPG := /usr/bin/gpg
+GPG_KEY := ronys@users.sourceforge.net
+GPG_SIGN := $(GPG) --detach-sign --default-key $(GPG_KEY)
+SHA1SUM := /usr/bin/sha1sum
+
+all: unicodedebug unicoderelease
+
+unicodedebug unicoderelease:
 	$(MAKE) -C src/os/linux $@
 	$(MAKE) -C src/core $@
 	$(MAKE) -C src/ui/wxWidgets $@
 
-dist: all deb tar sign
+dist: release deb tar signatures sha1sums
 
 debug:
 	$(MAKE) unicodedebug
@@ -30,12 +36,24 @@ debug:
 release:
 	$(MAKE) unicoderelease
 
-reallyclean:
-	$(MAKE) clean CONFIG=unicodedebug
-	$(MAKE) clean CONFIG=unicoderelease
+clean: debug-clean release-clean
+	$(MAKE) CONFIG=unicodedebug $@
+	$(MAKE) CONFIG=unicoderelease $@
+
+debug-clean:
+	$(MAKE) CONFIG=unicodedebug -C src/os/linux clean
+	$(MAKE) CONFIG=unicodedebug -C src/core clean
+	$(MAKE) CONFIG=unicodedebug -C src/ui/wxWidgets clean
+
+release-clean:
+	$(MAKE) CONFIG=unicoderelease -C src/os/linux clean
+	$(MAKE) CONFIG=unicoderelease -C src/core clean
+	$(MAKE) CONFIG=unicoderelease -C src/ui/wxWidgets clean
 
 deb:
-	$(MAKE) -C install/deb RELEASENAME=$(RELEASENAME)
+	@$(MKDIR) $(RELEASEDIR)
+	$(MAKE) -C install/deb \
+	RELEASENAME=$(RELEASENAME) RELEASEDIR=../../$(RELEASEDIR)
 
 tar:
 	@$(MKDIR) $(TMPDIR)
@@ -44,15 +62,22 @@ tar:
 # Prune windows-only code (not for now - provide as a reference?)
 #	@$(RM) $(TMPDIR)/pwsafe-$(RELEASENAME)/src/{ui/Windows,Tools/Windows}
 	@echo -n "Creating tarball..."
-	@$(TAR) czf pwsafe-$(RELEASENAME)-src.tgz  -C $(TMPDIR) .
+	@$(TAR) czf $(RELEASEDIR)pwsafe-$(RELEASENAME)-src.tgz  -C $(TMPDIR) .
 	@$(RM) $(TMPDIR)
 	@echo "Done."
 
-sign:
-	@echo "TBD: Add signing of deliverables"
+sha1sums:
+	(cd $(RELEASEDIR); \
+	 $(SHA1SUM) pwsafe-$(RELEASENAME)-src.tgz \
+	 *$(RELEASENAME)*.deb)
 
-.PHONY:	all clean reallyclean debug release unicodedebug unicoderelease \
-	 deb tar sign dist
+signatures:
+	$(GPG_SIGN) $(RELEASEDIR)pwsafe-$(RELEASENAME)-src.tgz
+	$(GPG_SIGN) $(RELEASEDIR)*$(RELEASENAME)*.deb
+
+.PHONY:	all clean debug-clean release-clean debug release \
+	unicodedebug unicoderelease deb tar signatures \
+	dist sha1sums
 # Local variables:
 # mode: makefile
 # End:
