@@ -30,7 +30,7 @@ LangString RESERVE_FIELD1 ${LANG_POLISH} "Normalny (u¿ywa rejestrów, przeznaczon
 LangString RESERVE_FIELD2 ${LANG_POLISH} "Zielony (klucz na dysku; nie u¿ywa rejestrów)"
 
 ; PROGRAM_FILES "Program Files"
-LangString PROGRAM_FILES ${LANG_POLISH} "Program Files"
+LangString PROGRAM_FILES ${LANG_POLISH} "Pliki programu"
 
 ; START_AUTO "Start automatically"
 LangString START_AUTO ${LANG_POLISH} "Uruchamiaæ automatycznie"
@@ -42,7 +42,7 @@ LangString START_SHOW ${LANG_POLISH} "Pokazaæ w Menu Start"
 LangString START_SHORTCUT ${LANG_POLISH} "Stworzyæ skrót na pulpicie"
 
 ; UNINSTALL_SHORTCUT "Uninstall shortcut"
-LangString UNINSTALL_SHORTCUT ${LANG_POLISH} "Odinstalowaæ skrót"
+LangString UNINSTALL_SHORTCUT ${LANG_POLISH} "Stworzyæ skrót do odinstalowania"
 
 ;--------------------------------
 ; Descriptions
