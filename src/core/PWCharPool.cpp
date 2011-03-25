@@ -73,7 +73,8 @@ CPasswordCharPool::CPasswordCharPool(const uint pwlen,
   m_useuppercase(numuppercase > 0 ? TRUE : FALSE),
   m_usedigits(numdigits > 0 ? TRUE : FALSE),
   m_usesymbols(numsymbols > 0 ? TRUE : FALSE),
-  m_usehexdigits(usehexdigits), m_pronounceable(pronounceable)
+  m_usehexdigits(usehexdigits), m_pronounceable(pronounceable),
+  m_bDefaultSymbols(false)
 {
   ASSERT(m_pwlen > 0);
   ASSERT(m_uselowercase || m_useuppercase || 
@@ -109,7 +110,8 @@ CPasswordCharPool::CPasswordCharPool(const uint pwlen,
         m_char_arrays[SYMBOL] = std_symbol_chars;
         m_lengths[SYMBOL] = m_usesymbols ? std_symbol_len : 0;
       } else {
-        m_char_arrays[SYMBOL] = _tcsdup(sx_symbols.c_str()); // XXX memory leak?
+        m_bDefaultSymbols = true;
+        m_char_arrays[SYMBOL] = _tcsdup(sx_symbols.c_str());
         m_lengths[SYMBOL] = m_usesymbols ? sx_symbols.length() : 0;
       }
     } else {
@@ -126,6 +128,12 @@ CPasswordCharPool::CPasswordCharPool(const uint pwlen,
     m_sumlengths += m_lengths[i];
   }
   ASSERT(m_sumlengths > 0);
+}
+
+CPasswordCharPool::~CPasswordCharPool()
+{
+  if (m_bDefaultSymbols)
+    delete m_char_arrays[SYMBOL];
 }
 
 CPasswordCharPool::CharType CPasswordCharPool::GetRandomCharType(unsigned int rand) const

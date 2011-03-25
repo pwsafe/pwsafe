@@ -46,6 +46,8 @@ public:
                     const charT *ct_symbols);
   StringX MakePassword() const;
 
+  ~CPasswordCharPool();
+
   static bool CheckPassword(const StringX &pwd, StringX &error);
   static void GetDefaultSymbols(stringT &symbols)
   {symbols = std_symbol_chars;}
@@ -102,6 +104,8 @@ private:
   const bool m_usesymbols;
   const bool m_usehexdigits;
   const bool m_pronounceable;
+
+  bool m_bDefaultSymbols;
 
   CPasswordCharPool &operator=(const CPasswordCharPool &);
 };
