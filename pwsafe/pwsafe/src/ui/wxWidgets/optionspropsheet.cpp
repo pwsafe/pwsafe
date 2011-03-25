@@ -820,9 +820,9 @@ void COptions::PrefsToPropSheet()
   // display-related preferences
   m_alwaysontop = prefs->GetPref(PWSprefs::AlwaysOnTop);
   m_showusernameintree = prefs->GetPref(PWSprefs::ShowUsernameInTree);
-  m_showpasswordintreeCB->SetValue(!m_showusernameintree && prefs->
+  m_showpasswordintreeCB->SetValue(m_showusernameintree && prefs->
                                    GetPref(PWSprefs::ShowPasswordInTree));
-  m_showpasswordintreeCB->Enable(!m_showusernameintree);
+  m_showpasswordintreeCB->Enable(m_showusernameintree);
   m_shownotesastipsinviews = prefs->
     GetPref(PWSprefs::ShowNotesAsTooltipsInViews);
   m_pwshowinedit = prefs->GetPref(PWSprefs::ShowPWDefault);
@@ -901,7 +901,6 @@ void COptions::PropSheetToPrefs()
 {
   PWSprefs *prefs = PWSprefs::GetInstance();
   // Backup-related preferences
-  prefs->SetPref(PWSprefs::SaveImmediately, m_saveimmediate);
   prefs->SetPref(PWSprefs::BackupBeforeEverySave, m_backupb4save);
   wxString buprefixValue;
   if (m_usrbuprefixRB->GetValue())
@@ -926,38 +925,17 @@ void COptions::PropSheetToPrefs()
     flags &= ~wxSTAY_ON_TOP;
   GetParent()->SetWindowStyleFlag(flags);
 
-  bool oldshowuserpref = prefs->GetPref(PWSprefs::ShowUsernameInTree);
-  bool oldshowpswdpref = prefs->GetPref(PWSprefs::ShowPasswordInTree);
-  prefs->SetPref(PWSprefs::ShowUsernameInTree, m_showusernameintree);
-  prefs->SetPref(PWSprefs::ShowPasswordInTree,
-                 m_showpasswordintreeCB->GetValue());
-
-  bool showprefchanged = (oldshowuserpref != prefs->
-                          GetPref(PWSprefs::ShowUsernameInTree) ||
-                          oldshowpswdpref != prefs->
-                          GetPref(PWSprefs::ShowPasswordInTree));
-  if (showprefchanged) {
-    PasswordSafeFrame *pwsframe = dynamic_cast<PasswordSafeFrame *>(GetParent());
-    wxASSERT(pwsframe != NULL);
-    if (pwsframe->IsTreeView())
-      pwsframe->RefreshViews();
-  }
-
   prefs->SetPref(PWSprefs::ShowNotesAsTooltipsInViews,
                  m_shownotesastipsinviews);
-  prefs->SetPref(PWSprefs::ShowPWDefault, m_pwshowinedit);
-  prefs->SetPref(PWSprefs::ShowNotesDefault, m_notesshowinedit);
   prefs->SetPref(PWSprefs::NotesWordWrap, m_wordwrapnotes);
   prefs->SetPref(PWSprefs::ExplorerTypeTree, m_putgroups1st);
   prefs->SetPref(PWSprefs::PreExpiryWarn, m_preexpirywarn);
   if (m_preexpirywarn)
     prefs->SetPref(PWSprefs::PreExpiryWarnDays,
                    m_preexpirywarndaysSB->GetValue());
-  prefs->SetPref(PWSprefs::TreeDisplayStatusAtOpen, m_inittreeview);
 
   // Misc. preferences
   prefs->SetPref(PWSprefs::DeleteQuestion, m_confirmdelete);
-  prefs->SetPref(PWSprefs::MaintainDateTimeStamps, m_maintaindatetimestamps);
   prefs->SetPref(PWSprefs::EscExits, m_escexits);
   const wxString dcaStr = m_DCACB->GetValue();
   for (int i = 0; i < int(sizeof(DCAStrings)/sizeof(DCAStrings[0])); ++i)
@@ -968,36 +946,14 @@ void COptions::PropSheetToPrefs()
 
   prefs->SetPref(PWSprefs::DoubleClickAction, m_doubleclickaction);
   prefs->SetPref(PWSprefs::MinimizeOnAutotype, m_minauto);
-  if (m_autotypeStr.empty() || m_autotypeStr == DEFAULT_AUTOTYPE)
-      prefs->SetPref(PWSprefs::DefaultAutotypeString, L"");
-  else prefs->SetPref(PWSprefs::DefaultAutotypeString, tostringx(m_autotypeStr));
-  prefs->SetPref(PWSprefs::UseDefaultUser, m_usedefuser);
-  prefs->SetPref(PWSprefs::DefaultUsername,
-                 tostringx(m_defusernameTXT->GetValue()));
   prefs->SetPref(PWSprefs::QuerySetDef, m_querysetdef);
   prefs->SetPref(PWSprefs::AltBrowser, tostringx(m_otherbrowser));
   prefs->SetPref(PWSprefs::AltBrowserCmdLineParms,
                  tostringx(m_otherbrowserparams));
 
   // Password Policy preferences:
-  prefs->SetPref(PWSprefs::PWDefaultLength, m_pwdefaultlength);
-  prefs->SetPref(PWSprefs::PWUseLowercase, m_pwpUseLowerCtrl->GetValue());
-  prefs->SetPref(PWSprefs::PWUseUppercase, m_pwpUseUpperCtrl->GetValue());
-  prefs->SetPref(PWSprefs::PWUseDigits, m_pwpUseDigitsCtrl->GetValue());
-  prefs->SetPref(PWSprefs::PWUseSymbols, m_pwpSymCtrl->GetValue());
-  prefs->SetPref(PWSprefs::PWUseHexDigits, m_pwpHexCtrl->GetValue());
-  prefs->SetPref(PWSprefs::PWUseEasyVision, m_pwpEasyCtrl->GetValue());
-  prefs->SetPref(PWSprefs::PWMakePronounceable, m_pwpPronounceCtrl->GetValue());
-  prefs->SetPref(PWSprefs::PWLowercaseMinLength, m_pwpLCSpin->GetValue());
-  prefs->SetPref(PWSprefs::PWUppercaseMinLength, m_pwpUCSpin->GetValue());
-  prefs->SetPref(PWSprefs::PWDigitMinLength, m_pwpDigSpin->GetValue());
-  prefs->SetPref(PWSprefs::PWSymbolMinLength, m_pwpSymSpin->GetValue());
 
   // Password History preferences
-  prefs->SetPref(PWSprefs::SavePasswordHistory,
-                 m_pwhistsaveCB->GetValue());
-  prefs->SetPref(PWSprefs::NumPWHistoryDefault,
-                 m_pwhistnumdfltSB->GetValue());
 
   // Security preferences
   prefs->SetPref(PWSprefs::ClearClipboardOnMinimize, m_secclrclponmin);
@@ -1005,8 +961,6 @@ void COptions::PropSheetToPrefs()
   prefs->SetPref(PWSprefs::DatabaseClear, m_seclockonmin);
   prefs->SetPref(PWSprefs::DontAskQuestion, m_secconfrmcpy);
   prefs->SetPref(PWSprefs::LockOnWindowLock, m_seclockonwinlock);
-  prefs->SetPref(PWSprefs::LockDBOnIdleTimeout, m_seclockonidleCB->GetValue());
-  prefs->SetPref(PWSprefs::IdleTimeout, m_secidletimeoutSB->GetValue());
 
   // System preferences
   prefs->SetPref(PWSprefs::MaxREItems, m_sysmaxREitemsSB->GetValue());
@@ -1020,6 +974,50 @@ void COptions::PropSheetToPrefs()
   prefs->SetPref(PWSprefs::UsePrimarySelectionForClipboard, m_usePrimarySelection);
   wxTheClipboard->UsePrimarySelection(m_usePrimarySelection);
 #endif
+
+  // Now do a bit of trickery to find the new preferences to be stored in
+  // the database as a string but without updating the actual preferences
+  // which needs to be done via a Command so that it can be Undone & Redone
+
+  // Initialise a copy of the DB preferences
+  prefs->SetUpCopyDBprefs();
+
+  // Update them - last parameter of SetPref and Store is: "bUseCopy = true"
+  // In PropertyPage alphabetic order
+  prefs->SetPref(PWSprefs::SaveImmediately, m_saveimmediate, true);
+  prefs->SetPref(PWSprefs::ShowPWDefault, m_pwshowinedit, true);
+
+  prefs->SetPref(PWSprefs::ShowUsernameInTree, m_showusernameintree, true);
+  prefs->SetPref(PWSprefs::ShowPasswordInTree, m_showpasswordintreeCB->GetValue(), true);
+
+  prefs->SetPref(PWSprefs::TreeDisplayStatusAtOpen, m_inittreeview, true);
+  prefs->SetPref(PWSprefs::ShowNotesDefault, m_notesshowinedit, true);
+  prefs->SetPref(PWSprefs::MaintainDateTimeStamps, m_maintaindatetimestamps, true);
+  prefs->SetPref(PWSprefs::UseDefaultUser, m_usedefuser, true);
+  prefs->SetPref(PWSprefs::DefaultUsername, tostringx(m_defusernameTXT->GetValue()), true);
+
+  if (m_autotypeStr.empty() || m_autotypeStr == DEFAULT_AUTOTYPE)
+      prefs->SetPref(PWSprefs::DefaultAutotypeString, L"", true);
+  else 
+    prefs->SetPref(PWSprefs::DefaultAutotypeString, tostringx(m_autotypeStr), true);
+
+  prefs->SetPref(PWSprefs::SavePasswordHistory, m_pwhistsaveCB->GetValue(), true);
+  prefs->SetPref(PWSprefs::NumPWHistoryDefault, m_pwhistnumdfltSB->GetValue(), true);
+  prefs->SetPref(PWSprefs::PWDefaultLength, m_pwdefaultlength, true);
+  prefs->SetPref(PWSprefs::PWUseLowercase, m_pwpUseLowerCtrl->GetValue(), true);
+  prefs->SetPref(PWSprefs::PWUseUppercase, m_pwpUseUpperCtrl->GetValue(), true);
+  prefs->SetPref(PWSprefs::PWUseDigits, m_pwpUseDigitsCtrl->GetValue(), true);
+  prefs->SetPref(PWSprefs::PWUseSymbols, m_pwpSymCtrl->GetValue(), true);
+  prefs->SetPref(PWSprefs::PWUseHexDigits, m_pwpHexCtrl->GetValue(), true);
+  prefs->SetPref(PWSprefs::PWUseEasyVision, m_pwpEasyCtrl->GetValue(), true);
+  prefs->SetPref(PWSprefs::PWMakePronounceable, m_pwpPronounceCtrl->GetValue(), true);
+  prefs->SetPref(PWSprefs::PWLowercaseMinLength, m_pwpLCSpin->GetValue(), true);
+  prefs->SetPref(PWSprefs::PWUppercaseMinLength, m_pwpUCSpin->GetValue(), true);
+  prefs->SetPref(PWSprefs::PWDigitMinLength, m_pwpDigSpin->GetValue(), true);
+  prefs->SetPref(PWSprefs::PWSymbolMinLength, m_pwpSymSpin->GetValue(), true);
+
+  prefs->SetPref(PWSprefs::LockDBOnIdleTimeout, m_seclockonidleCB->GetValue(), true);
+  prefs->SetPref(PWSprefs::IdleTimeout, m_secidletimeoutSB->GetValue(), true);
 }
 
 void COptions::OnOk(wxCommandEvent& /* evt */)
@@ -1146,9 +1144,9 @@ void COptions::OnBuDirRB( wxCommandEvent& /* evt */ )
 void COptions::OnShowUsernameInTreeCB( wxCommandEvent& /* evt */ )
 {
   if (Validate() && TransferDataFromWindow()) {
-    if (m_showusernameintree)
+    if (!m_showusernameintree)
       m_showpasswordintreeCB->SetValue(false);
-    m_showpasswordintreeCB->Enable(!m_showusernameintree);
+    m_showpasswordintreeCB->Enable(m_showusernameintree);
   }
 }
 

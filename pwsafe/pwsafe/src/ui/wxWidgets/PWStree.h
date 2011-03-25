@@ -88,6 +88,10 @@ public:
 ////@end PWSTreeCtrl event handler declarations
   void OnGetToolTip( wxTreeEvent& evt); // Added manually
 
+  //handler for DB's GUI preferences change notifications from core which are
+  //converted to an event by frame
+  void OnDBGUIPrefsChange(wxEvent& evt);
+
 ////@begin PWSTreeCtrl member function declarations
 
 ////@end PWSTreeCtrl member function declarations

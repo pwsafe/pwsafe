@@ -128,7 +128,8 @@ public:
   
   void Activate(void);
   void RefreshButtons(void);
-  
+  void Invalidate(void) { m_searchPointer.Clear(); }
+
 private:
   template <class Iter, class Accessor>
   void FindMatches(const StringX& searchText, bool fCaseSensitive, SearchPointer& searchPtr, Iter begin, Iter end, Accessor afn);

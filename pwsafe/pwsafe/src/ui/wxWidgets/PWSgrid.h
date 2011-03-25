@@ -100,6 +100,7 @@ public:
   /// wxEVT_CHAR event handler for ID_LISTBOX
   void OnChar( wxKeyEvent& evt);
 
+  void OnDBGUIPrefsChange(wxEvent& evt);
 ////@end PWSGrid event handler declarations
 
 ////@begin PWSGrid member function declarations
