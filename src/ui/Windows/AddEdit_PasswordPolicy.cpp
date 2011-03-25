@@ -137,6 +137,8 @@ BEGIN_MESSAGE_MAP(CAddEdit_PasswordPolicy, CAddEdit_PropertyPage)
   ON_EN_CHANGE(IDC_MINSYMBOLLENGTH, OnChanged)
   ON_EN_CHANGE(IDC_MINUPPERLENGTH, OnChanged)
 
+  ON_EN_CHANGE(IDC_OWNSYMBOLS, OnOwnSymbolsChanged)
+
   // Common
   ON_MESSAGE(PSM_QUERYSIBLINGS, OnQuerySiblings)
   //}}AFX_MSG_MAP
@@ -645,6 +647,53 @@ void CAddEdit_PasswordPolicy::OnResetPolicy()
   }
 
   SetPolicyControls();
+}
+
+void BubbleSort(std::wstring &str)
+{
+  wchar_t tmp;
+
+  for (size_t i = 0; i < str.size() - 1; ++i) {
+    for (size_t j = i + 1; j < str.size(); ++j) {
+      if (str[i] < str[j]) {
+        tmp = str[i];
+        str[i] = str[j];
+        str[j] = tmp;
+      }
+    }
+  }
+}
+
+void CAddEdit_PasswordPolicy::OnOwnSymbolsChanged()
+{
+  if (!m_bInitdone || m_AEMD.uicaller != IDS_EDITENTRY)
+    return;
+
+  UpdateData(TRUE);
+
+  bool bIsSymbolsChanged = false;
+
+  CString cs_symbols;
+  m_symbols.GetWindowText(cs_symbols);
+
+  std::wstring oldstr = M_symbols();
+  std::wstring newstr = cs_symbols;
+
+  // First check lengths the same
+  if (newstr.length() != oldstr.length()) {
+    bIsSymbolsChanged = true;
+  } else {
+    // We do not care if same string in different order:
+    //  so Bubble sort new string
+    BubbleSort(newstr);
+
+    //  then Bubble sort old string
+    BubbleSort(oldstr);
+
+    // Then compare
+    bIsSymbolsChanged = oldstr.compare(newstr) != 0;
+  }
+  m_ae_psh->SetSymbolsChanged(bIsSymbolsChanged);
 }
 
 void CAddEdit_PasswordPolicy::OnSymbols()

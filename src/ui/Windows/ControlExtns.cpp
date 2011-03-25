@@ -809,6 +809,7 @@ void CSecEditExtn::OnSecureUpdate()
 BEGIN_MESSAGE_MAP(CSymbolEdit, CEdit)
   //{{AFX_MSG_MAP(CSymbolEdit)
   ON_WM_CHAR()
+  ON_MESSAGE(WM_PASTE, OnPaste)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -829,4 +830,41 @@ void CSymbolEdit::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
     if (cs_text.Find(wChar) == -1)
       CEdit::OnChar(nChar, 0, nFlags);
   }
+}
+
+LRESULT CSymbolEdit::OnPaste(WPARAM , LPARAM )
+{
+  // Only allow symbols to be pasted and stop duplicates
+  if (!OpenClipboard() || !IsClipboardFormatAvailable(CF_UNICODETEXT))
+    return 0L; 
+ 
+  std::wstring cs_data;
+	HANDLE hData = GetClipboardData(CF_UNICODETEXT);
+  if (hData != NULL) {
+    wchar_t *buffer = (wchar_t *)GlobalLock(hData);
+    if (buffer != NULL) {
+      cs_data = buffer;
+      GlobalUnlock(hData);
+    }
+  }
+	CloseClipboard();
+
+  CString cs_text, cs_oldtext;;
+  GetWindowText(cs_text);
+  cs_oldtext = cs_text;
+
+  // Must not be alphanumeric
+  for (size_t i = 0; i < cs_data.length(); i++) {
+    wchar_t wChar = cs_data.at(i);
+    if ((_istalpha(wChar) == 0 && _istdigit(wChar) == 0)) {
+      // Must not have duplicates
+      if (cs_text.Find(wChar) == -1)
+        cs_text += wChar;
+    }
+  }
+
+  if (cs_text.Compare(cs_oldtext) != 0)
+    SetWindowText(cs_text);
+
+  return 0L;
 }
