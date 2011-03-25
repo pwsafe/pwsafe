@@ -79,6 +79,7 @@ public:
 	void OnActivate(wxActivateEvent& actEvent);
 	void OnActivityTimer(wxTimerEvent& timerEvent);
   void OnHelp(wxCommandEvent& evt);
+  void OnDBGUIPrefsChange(wxEvent& evt);
 
   void SaveFrameCoords(void);
   void RestoreFrameCoords(void);

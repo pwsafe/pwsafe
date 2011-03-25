@@ -162,10 +162,6 @@ public:
     // UIinterface concrete methods:
     virtual void DatabaseModified(bool bChanged);
 
-    virtual void UpdateGUI(UpdateGUICommand::GUI_Action ga,
-                           uuid_array_t &entry_uuid,
-                           CItemData::FieldType ft);
-
     virtual void GUISetupDisplayInfo(CItemData &ci);
 
     virtual void UpdateGUI(UpdateGUICommand::GUI_Action ga,
@@ -377,7 +373,7 @@ public:
     void Execute(Command *pcmd, PWScore *pcore = NULL);
 
     bool IsTreeView() const {return m_currentView == TREE;}
-    void RefreshViews() {if (IsTreeView()) ShowTree(); else ShowGrid();}
+    void RefreshViews();
     void FlattenTree(OrderedItemList& olist);
 
     void DispatchDblClickAction(CItemData &item); //called by grid/tree
@@ -487,6 +483,11 @@ public:
   wxString m_savedDBPrefs;
   enum {iListOnly = 1, iTreeOnly = 2, iBothViews = 3};
 };
+
+BEGIN_DECLARE_EVENT_TYPES()
+DECLARE_EVENT_TYPE(wxEVT_DB_PREFS_CHANGE, -1)
+DECLARE_EVENT_TYPE(wxEVT_GUI_DB_PREFS_CHANGE, -1)
+END_DECLARE_EVENT_TYPES()
 
 #endif
     // _PASSWORDSAFEFRAME_H_

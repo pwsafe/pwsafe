@@ -95,7 +95,7 @@ void PasswordSafeSearch::OnDoSearchT(Iter begin, Iter end, Accessor afn)
   if (searchText.IsEmpty())
     return;
     
-  if (m_criteria.IsDirty() || txtCtrl->IsModified())  {
+  if (m_criteria.IsDirty() || txtCtrl->IsModified() || m_searchPointer.IsEmpty())  {
       m_searchPointer.Clear();
    
       if (!m_fAdvancedSearch)

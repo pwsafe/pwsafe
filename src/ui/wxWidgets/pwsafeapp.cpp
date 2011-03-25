@@ -139,6 +139,7 @@ BEGIN_EVENT_TABLE( PwsafeApp, wxApp )
 ////@end PwsafeApp event table entries
     EVT_ACTIVATE_APP(PwsafeApp::OnActivate)
     EVT_TIMER(ACTIVITY_TIMER_ID, PwsafeApp::OnActivityTimer)
+    EVT_CUSTOM(wxEVT_GUI_DB_PREFS_CHANGE, wxID_ANY, PwsafeApp::OnDBGUIPrefsChange)
 END_EVENT_TABLE()
 
 
@@ -379,6 +380,14 @@ void PwsafeApp::OnActivityTimer(wxTimerEvent& /* timerEvent */)
 {
   if (!m_frame->GetCurrentSafe().IsEmpty())
     m_frame->HideUI(true);  //true => lock
+}
+
+void PwsafeApp::OnDBGUIPrefsChange(wxEvent& evt)
+{
+  if (m_activityTimer->IsRunning()) {
+    m_activityTimer->Stop();
+    m_activityTimer->Start(PWSprefs::GetInstance()->GetPref(PWSprefs::IdleTimeout)*60*1000, true);
+  }
 }
 
 CRecentDBList &PwsafeApp::recentDatabases()

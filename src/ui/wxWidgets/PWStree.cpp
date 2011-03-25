@@ -78,9 +78,9 @@ BEGIN_EVENT_TABLE( PWSTreeCtrl, wxTreeCtrl )
   EVT_TREE_ITEM_ACTIVATED( ID_TREECTRL, PWSTreeCtrl::OnTreectrlItemActivated )
   EVT_TREE_ITEM_MENU( ID_TREECTRL, PWSTreeCtrl::OnContextMenu )
   EVT_CHAR( PWSTreeCtrl::OnChar )
-
-////@end PWSTreeCtrl event table entries
+  EVT_CUSTOM(wxEVT_GUI_DB_PREFS_CHANGE, wxID_ANY, PWSTreeCtrl::OnDBGUIPrefsChange)
   EVT_TREE_ITEM_GETTOOLTIP( ID_TREECTRL, PWSTreeCtrl::OnGetToolTip )
+////@end PWSTreeCtrl event table entries
 END_EVENT_TABLE()
 
 
@@ -491,4 +491,12 @@ void PWSTreeCtrl::OnChar( wxKeyEvent& evt )
     GetParent()->Close();
   }
   evt.Skip();
+}
+
+void PWSTreeCtrl::OnDBGUIPrefsChange(wxEvent& evt)
+{
+  PasswordSafeFrame *pwsframe = dynamic_cast<PasswordSafeFrame *>(GetParent());
+  wxASSERT(pwsframe != NULL);
+  if (pwsframe->IsTreeView())
+    pwsframe->RefreshViews();
 }

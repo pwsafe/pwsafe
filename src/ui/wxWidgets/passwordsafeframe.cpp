@@ -75,6 +75,8 @@
 
 IMPLEMENT_CLASS( PasswordSafeFrame, wxFrame )
 
+DEFINE_EVENT_TYPE(wxEVT_DB_PREFS_CHANGE)
+DEFINE_EVENT_TYPE(wxEVT_GUI_DB_PREFS_CHANGE)
 
 /*!
  * PasswordSafeFrame event table definition
@@ -1344,8 +1346,31 @@ void PasswordSafeFrame::OnAboutClick( wxCommandEvent& /* evt */ )
 
 void PasswordSafeFrame::OnOptionsMClick( wxCommandEvent& /* evt */ )
 {
+  PWSprefs* prefs = PWSprefs::GetInstance();
+  const StringX sxOldDBPrefsString(prefs->Store());
   COptions *window = new COptions(this);
-  window->ShowModal();
+  if (window->ShowModal() == wxID_OK) {
+    StringX sxNewDBPrefsString(prefs->Store(true));
+
+    // Maybe needed if this causes changes to database
+    // Update the display through a command, so that any changes to DB can be UNDOne
+    MultiCommands *pmulticmds = MultiCommands::Create(&m_core);
+
+    if (pmulticmds && !m_core.GetCurFile().empty() && !m_core.IsReadOnly() &&
+        m_core.GetReadFileVersion() == PWSfile::VCURRENT) {
+      if (sxOldDBPrefsString != sxNewDBPrefsString) {
+        Command *pcmd = DBPrefsCommand::Create(&m_core, sxNewDBPrefsString);
+        if (pcmd) {
+            //I don't know why notifications should ever be suspended, but that's how
+            //things were before I messed with them, so I want to limit the damage by
+            //enabling notifications only as long as required and no more 
+            m_core.ResumeOnDBNotification();
+            Execute(pcmd);  //deleted automatically
+            m_core.SuspendOnDBNotification();
+        }
+      }
+    }
+  }
   window->Destroy();
 }
 
@@ -1803,27 +1828,35 @@ bool PasswordSafeFrame::IsClosed() const
 
 // Implementation of UIinterface methods
 
-void PasswordSafeFrame::DatabaseModified(bool)
+void PasswordSafeFrame::DatabaseModified(bool modified)
 {
-  if (m_currentView == TREE) {
-    if (m_grid != NULL)
-      m_grid->OnPasswordListModified();
-  } else {
+  if (!modified)
+    return;
+
+  if (m_core.HaveDBPrefsChanged()) {
+    wxCommandEvent evt(wxEVT_DB_PREFS_CHANGE, wxID_ANY);
+    evt.ResumePropagation(wxEVENT_PROPAGATE_MAX); //let it propagate through the entire window tree
+    if (m_tree) {
+      m_tree->AddPendingEvent(evt); 
+      evt.StopPropagation(); //or else it will come to the frame twice
+    }
+    if (m_grid) m_grid->AddPendingEvent(evt);
+  }
+  else if (m_core.IsChanged()) {  //"else if" => both DB and it's prefs can't change at the same time
+    if (m_search) m_search->Invalidate();
+    if (m_currentView == TREE) {
+      if (m_grid != NULL)
+        m_grid->OnPasswordListModified();
+    }
+    else {
 #if 0
     if (m_tree != NULL)
       m_tree->???
 #endif
+    }
+  } else {
+    wxFAIL_MSG(wxT("What changed in the DB if not entries or preferences?"));
   }
-}
-
-void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga,
-                                  uuid_array_t &entry_uuid,
-                                  CItemData::FieldType ft)
-{
-  UNREFERENCED_PARAMETER(ga);
-  UNREFERENCED_PARAMETER(entry_uuid);
-  UNREFERENCED_PARAMETER(ft);
-  // XXX TBD
 }
 
 void PasswordSafeFrame::GUISetupDisplayInfo(CItemData &ci)
@@ -1837,11 +1870,27 @@ void PasswordSafeFrame::RebuildGUI(const int iView /*= iBothViews*/)
   // assumption: the view get updated on switching between each other, 
   // so we don't need to update both at the same time
   if (IsTreeView() && (iView & iTreeOnly)) {
+    m_guiInfo->Save(this);
     ShowTree();
+    m_guiInfo->Restore(this);
   }
   else if (iView & iListOnly) {
+    m_guiInfo->Save(this);
     ShowGrid();
+    m_guiInfo->Restore(this);
   }
+}
+
+void PasswordSafeFrame::RefreshViews()
+{
+  m_guiInfo->Save(this);
+
+  if (IsTreeView())
+    ShowTree();
+  else
+    ShowGrid();
+    
+  m_guiInfo->Restore(this);
 }
 
 void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga,
@@ -1912,16 +1961,18 @@ void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga,
       ASSERT(pci != NULL);
       RefreshEntryPasswordInGUI(*pci);
       break;
-    case UpdateGUICommand::GUI_DB_PREFERENCES_CHANGED:
-      // Change any impact on the application due to a database preference change
-      // Currently - only Idle Timeout values
-      KillTimer(TIMER_LOCKDBONIDLETIMEOUT);
-      ResetIdleLockCounter();
-      if (prefs->GetPref(PWSprefs::LockDBOnIdleTimeout) == TRUE) {
-        SetTimer(TIMER_LOCKDBONIDLETIMEOUT, IDLE_CHECK_INTERVAL, NULL);
-      }
-      break;
 #endif
+    case UpdateGUICommand::GUI_DB_PREFERENCES_CHANGED:
+    {
+      wxCommandEvent evt(wxEVT_GUI_DB_PREFS_CHANGE, wxID_ANY);
+      evt.ResumePropagation(wxEVENT_PROPAGATE_MAX); //let it propagate through the entire window tree
+      if (m_tree) {
+        m_tree->AddPendingEvent(evt); 
+        evt.StopPropagation(); //or else it will come to the frame twice
+      }
+      if (m_grid) m_grid->AddPendingEvent(evt);
+      break;
+    }
     default:
       break;
   }

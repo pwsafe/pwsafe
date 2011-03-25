@@ -53,7 +53,7 @@ BEGIN_EVENT_TABLE( PWSGrid, wxGrid )
   EVT_GRID_CELL_LEFT_DCLICK( PWSGrid::OnLeftDClick )
   EVT_CHAR( PWSGrid::OnChar )
   EVT_CONTEXT_MENU(PWSGrid::OnContextMenu)
-
+  EVT_CUSTOM(wxEVT_GUI_DB_PREFS_CHANGE, wxID_ANY, PWSGrid::OnDBGUIPrefsChange)
 ////@end PWSGrid event table entries
 
 END_EVENT_TABLE()
@@ -424,4 +424,9 @@ void PWSGrid::SaveSettings(void) const
   PWSGridTable* table = dynamic_cast<PWSGridTable*>(GetTable());
   if (table)  //may not have been created/assigned
     table->SaveSettings();
+}
+
+void PWSGrid::OnDBGUIPrefsChange(wxEvent& evt)
+{
+  EnableGridLines(PWSprefs::GetInstance()->GetPref(PWSprefs::ListViewGridLines));
 }
