@@ -148,6 +148,10 @@ msgstr " '用户'"
 msgid " 'email'"
 msgstr " '电子邮箱'"
 
+#. Resource IDs: (366)
+msgid " 'symbols'"
+msgstr ""
+
 #. Resource IDs: (362)
 #, c-format
 msgid " / renamed %d"
@@ -1682,6 +1686,10 @@ msgstr "区分大小写查找"
 msgid "Change &Font"
 msgstr "更改字体(&F)"
 
+#. Resource IDs: (32158)
+msgid "Change &Language"
+msgstr ""
+
 #. Resource IDs: (1414)
 msgid "Change Base"
 msgstr "更改基本项目"
@@ -2218,6 +2226,10 @@ msgstr "默认用户名"
 msgid "Default number of saved password history entries must be between 1 and 255."
 msgstr "默认保存项目历史密码数量必须在 1 和 255 之间！"
 
+#. Resource IDs: (1438)
+msgid "Default set"
+msgstr ""
+
 #. Resource IDs: (352)
 msgid "Delete"
 msgstr "删除"
@@ -2433,6 +2445,10 @@ msgstr "组/标题或密码栏目缺少，没有导入记录！"
 #. Resource IDs: (354)
 msgid "Either unable to load the necessary DLL, or it is the incorrect version, to support Autotype during Launch of a Browser or Run a command.\n\nAutotype for these functions is disabled."
 msgstr "支持自动输入时运行的浏览器或运行命令必需的 DLL 无法加载，也许这是一个不正确的版本！\n\n自动输入功能被禁用！"
+
+#. Resource IDs: (366)
+msgid "Embedded resources"
+msgstr ""
 
 #. Resource IDs: (204)
 #, c-format
@@ -5153,6 +5169,10 @@ msgstr "西班牙语"
 msgid "Spanish Variation"
 msgstr "西班牙语(变种)"
 
+#. Resource IDs: (1439)
+msgid "Special set"
+msgstr ""
+
 #. Resource IDs: (1220)
 msgid "Start PasswordSafe at Login"
 msgstr "启动系统时自动运行 PasswordSafe "
@@ -5224,6 +5244,10 @@ msgstr "瑞士(法语)"
 #. Resource IDs: (517)
 msgid "Swiss German"
 msgstr "瑞士(德语)"
+
+#. Resource IDs: (192)
+msgid "Symbols"
+msgstr ""
 
 #. Resource IDs: (362)
 msgid "Synchronization failed"
@@ -6641,6 +6665,14 @@ msgstr "个冲突"
 msgid "contains"
 msgstr "包含"
 
+#. Resource IDs: (214)
+msgid "contains all of"
+msgstr ""
+
+#. Resource IDs: (214)
+msgid "contains any of"
+msgstr ""
+
 #. Resource IDs: (1093)
 msgid "databases."
 msgstr "个数据库"
@@ -6664,6 +6696,14 @@ msgstr "未开始"
 #. Resource IDs: (206)
 msgid "does not contain"
 msgstr "不包含"
+
+#. Resource IDs: (214)
+msgid "does not contain all of"
+msgstr ""
+
+#. Resource IDs: (214)
+msgid "does not contain any of"
+msgstr ""
 
 #. Resource IDs: (206)
 msgid "does not end with"
@@ -6882,6 +6922,10 @@ msgstr "static"
 #, c-format
 msgid "subset: '%s' field '%s' '%s' %s"
 msgstr "子集:“%s”字段“%s”“%s”“%s”"
+
+#. Resource IDs: (366)
+msgid "symbols"
+msgstr ""
 
 #. Resource IDs: (366)
 msgid "synchronized"

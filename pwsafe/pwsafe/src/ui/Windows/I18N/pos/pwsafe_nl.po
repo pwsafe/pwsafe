@@ -148,6 +148,10 @@ msgstr "'Gebruiker'"
 msgid " 'email'"
 msgstr "'e-mail'"
 
+#. Resource IDs: (366)
+msgid " 'symbols'"
+msgstr ""
+
 #. Resource IDs: (362)
 #, c-format
 msgid " / renamed %d"
@@ -1682,6 +1686,10 @@ msgstr ""
 msgid "Change &Font"
 msgstr ""
 
+#. Resource IDs: (32158)
+msgid "Change &Language"
+msgstr ""
+
 #. Resource IDs: (1414)
 msgid "Change Base"
 msgstr ""
@@ -1885,11 +1893,7 @@ msgstr ""
 #. Resource IDs: (335)
 #, c-format
 msgid "Compare complete of current database:\n\t %s\n and:\n\t %s"
-msgstr ""
-"Vergelijk van de aktuele database voltooid\n"
-"\t %s\n"
-" en:\n"
-"\t %s"
+msgstr "Vergelijk van de aktuele database voltooid\n\t %s\n en:\n\t %s"
 
 #. Resource IDs: (32019)
 msgid "Compare..."
@@ -2222,6 +2226,10 @@ msgstr ""
 msgid "Default number of saved password history entries must be between 1 and 255."
 msgstr ""
 
+#. Resource IDs: (1438)
+msgid "Default set"
+msgstr ""
+
 #. Resource IDs: (352)
 msgid "Delete"
 msgstr ""
@@ -2436,6 +2444,10 @@ msgstr ""
 
 #. Resource IDs: (354)
 msgid "Either unable to load the necessary DLL, or it is the incorrect version, to support Autotype during Launch of a Browser or Run a command.\n\nAutotype for these functions is disabled."
+msgstr ""
+
+#. Resource IDs: (366)
+msgid "Embedded resources"
 msgstr ""
 
 #. Resource IDs: (204)
@@ -5158,6 +5170,10 @@ msgstr ""
 msgid "Spanish Variation"
 msgstr ""
 
+#. Resource IDs: (1439)
+msgid "Special set"
+msgstr ""
+
 #. Resource IDs: (1220)
 msgid "Start PasswordSafe at Login"
 msgstr ""
@@ -5229,6 +5245,10 @@ msgstr "Zwitsers Frans"
 #. Resource IDs: (517)
 msgid "Swiss German"
 msgstr "Zwitsers Duits"
+
+#. Resource IDs: (192)
+msgid "Symbols"
+msgstr ""
 
 #. Resource IDs: (362)
 msgid "Synchronization failed"
@@ -6646,6 +6666,14 @@ msgstr "conflicten"
 msgid "contains"
 msgstr "bevat"
 
+#. Resource IDs: (214)
+msgid "contains all of"
+msgstr ""
+
+#. Resource IDs: (214)
+msgid "contains any of"
+msgstr ""
+
 #. Resource IDs: (1093)
 msgid "databases."
 msgstr "databases."
@@ -6669,6 +6697,14 @@ msgstr "begint niet met"
 #. Resource IDs: (206)
 msgid "does not contain"
 msgstr "bevat geen"
+
+#. Resource IDs: (214)
+msgid "does not contain all of"
+msgstr ""
+
+#. Resource IDs: (214)
+msgid "does not contain any of"
+msgstr ""
 
 #. Resource IDs: (206)
 msgid "does not end with"
@@ -6887,6 +6923,10 @@ msgstr "statisch"
 #, c-format
 msgid "subset: '%s' field '%s' '%s' %s"
 msgstr "deel van de set:'%s' veld '%s' '%s' %s"
+
+#. Resource IDs: (366)
+msgid "symbols"
+msgstr ""
 
 #. Resource IDs: (366)
 msgid "synchronized"
