@@ -22,7 +22,7 @@ CAddEdit_PropertySheet::CAddEdit_PropertySheet(UINT nID, CWnd* pParent,
                                                CItemData *pci_original, CItemData *pci,
                                                const StringX currentDB)
   : CPWPropertySheet(nID, pParent), m_bIsModified(false), m_bChanged(false),
-  m_bNotesChanged(false)
+  m_bNotesChanged(false), m_bSymbolsChanged(false)
 {
   m_AEMD.uicaller = nID;
 
@@ -164,11 +164,21 @@ BOOL CAddEdit_PropertySheet::OnInitDialog()
       GetDlgItem(IDCANCEL)->ShowWindow(SW_HIDE);
       break;
     case IDS_EDITENTRY:
-      GetDlgItem(IDOK)->EnableWindow((m_bChanged || m_AEMD.ucprotected != 0) ? TRUE : FALSE);
-      GetDlgItem(ID_APPLY_NOW)->EnableWindow(m_bChanged ? TRUE : FALSE);
+      GetDlgItem(IDOK)->EnableWindow((m_bChanged || m_bSymbolsChanged || m_AEMD.ucprotected != 0) ? TRUE : FALSE);
+      GetDlgItem(ID_APPLY_NOW)->EnableWindow(m_bChanged || m_bSymbolsChanged ? TRUE : FALSE);
       break;
   }
   return TRUE;
+}
+
+void CAddEdit_PropertySheet::SetSymbolsChanged(const bool bSymbolsChanged)
+{
+  m_bSymbolsChanged = bSymbolsChanged;
+  bool bChanged = m_bChanged || m_bSymbolsChanged;
+
+  GetDlgItem(IDOK)->EnableWindow(bChanged ? TRUE : FALSE);
+  if (m_AEMD.uicaller == IDS_EDITENTRY)
+    GetDlgItem(ID_APPLY_NOW)->EnableWindow(bChanged ? TRUE : FALSE);
 }
 
 void CAddEdit_PropertySheet::SetChanged(const bool bChanged)

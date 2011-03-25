@@ -81,6 +81,7 @@ protected:
   afx_msg void OnSetSpecificPWPolicy();
   afx_msg void OnResetPolicy();
   afx_msg void OnSymbols();
+  afx_msg void OnOwnSymbolsChanged();
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()

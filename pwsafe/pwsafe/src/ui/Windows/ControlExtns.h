@@ -240,6 +240,7 @@ public:
 protected:
   //{{AFX_MSG(CSymbolEdit)
   afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
+  afx_msg LRESULT OnPaste(WPARAM wParam, LPARAM lParam);
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
