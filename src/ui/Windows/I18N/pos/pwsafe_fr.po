@@ -148,6 +148,10 @@ msgstr "'Utilisateur'"
 msgid " 'email'"
 msgstr "'courriel'"
 
+#. Resource IDs: (366)
+msgid " 'symbols'"
+msgstr ""
+
 #. Resource IDs: (362)
 #, c-format
 msgid " / renamed %d"
@@ -1682,6 +1686,10 @@ msgstr "Recherche sensible à la casse"
 msgid "Change &Font"
 msgstr "Changer la  &Police"
 
+#. Resource IDs: (32158)
+msgid "Change &Language"
+msgstr ""
+
 #. Resource IDs: (1414)
 msgid "Change Base"
 msgstr "Changer de base"
@@ -2218,6 +2226,10 @@ msgstr "Nom d'utilisateur par défaut"
 msgid "Default number of saved password history entries must be between 1 and 255."
 msgstr "Le nombre par défaut des entrées de  l'historique doit être entre 1 et 255."
 
+#. Resource IDs: (1438)
+msgid "Default set"
+msgstr ""
+
 #. Resource IDs: (352)
 msgid "Delete"
 msgstr "Supprimer"
@@ -2433,6 +2445,10 @@ msgstr "Soit l'une ou les deux des colonnes Groupe/Titre et Mot de passe sont ma
 #. Resource IDs: (354)
 msgid "Either unable to load the necessary DLL, or it is the incorrect version, to support Autotype during Launch of a Browser or Run a command.\n\nAutotype for these functions is disabled."
 msgstr "Impossible de charger la DLL, ou version de DLL incorrecte, afin de supporter l'Autofrappe lors du lancement du navigateur ou de l'exécution d'une commande.\n\nL'Autofrappe pour ces fonctions est désactivée."
+
+#. Resource IDs: (366)
+msgid "Embedded resources"
+msgstr ""
 
 #. Resource IDs: (204)
 #, c-format
@@ -5153,6 +5169,10 @@ msgstr "Espagnol"
 msgid "Spanish Variation"
 msgstr "Espagnol Variation"
 
+#. Resource IDs: (1439)
+msgid "Special set"
+msgstr ""
+
 #. Resource IDs: (1220)
 msgid "Start PasswordSafe at Login"
 msgstr "Lancer PasswordSafe lors du démarrage"
@@ -5224,6 +5244,10 @@ msgstr "Français Suisse"
 #. Resource IDs: (517)
 msgid "Swiss German"
 msgstr "Allemand Suisse"
+
+#. Resource IDs: (192)
+msgid "Symbols"
+msgstr ""
 
 #. Resource IDs: (362)
 msgid "Synchronization failed"
@@ -6641,6 +6665,14 @@ msgstr "conflits"
 msgid "contains"
 msgstr "contient"
 
+#. Resource IDs: (214)
+msgid "contains all of"
+msgstr ""
+
+#. Resource IDs: (214)
+msgid "contains any of"
+msgstr ""
+
 #. Resource IDs: (1093)
 msgid "databases."
 msgstr "derniers fichiers ouverts."
@@ -6664,6 +6696,14 @@ msgstr "ne commence pas avec"
 #. Resource IDs: (206)
 msgid "does not contain"
 msgstr "ne contient pas"
+
+#. Resource IDs: (214)
+msgid "does not contain all of"
+msgstr ""
+
+#. Resource IDs: (214)
+msgid "does not contain any of"
+msgstr ""
 
 #. Resource IDs: (206)
 msgid "does not end with"
@@ -6882,6 +6922,10 @@ msgstr "statique"
 #, c-format
 msgid "subset: '%s' field '%s' '%s' %s"
 msgstr "sous-ensemble: '%s' field '%s' '%s' %s"
+
+#. Resource IDs: (366)
+msgid "symbols"
+msgstr ""
 
 #. Resource IDs: (366)
 msgid "synchronized"
