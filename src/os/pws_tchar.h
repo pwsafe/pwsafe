@@ -29,14 +29,16 @@
 #define _istdigit(x) iswdigit(x)
 #define _istspace(x) iswspace(x)
 #include <wchar.h>
+#ifdef __linux__
 #include "linux/pws_time.h"
+#define _tcsdup(s) wcsdup(s)
+#endif
 #define _tcsncpy(t, s, sc) wcsncpy(t, s, sc)
 #define _tcslen(s) wcslen(s)
 #define _tcsclen(s) wcslen(s)
 #define _tcscmp(s1, s2) wcscmp(s1, s2)
 #define _tcsncmp(s1, s2, n) wcsncmp(s1, s2, n)
 #define _tcschr(s, c) wcschr(s, c)
-#define _tcsdup(s) wcsdup(s)
 #define _tcsftime wcsftime
 #define _tasctime_s(s, N, st) pws_os::asctime(s, N, st)
 #define _vsctprintf(fmt, args) vswprintf(NULL, 0, fmt, args)
@@ -47,6 +49,7 @@
 #ifdef __PWS_MACINTOSH__
 # include "./mac/pws_str.h"
 #define _tcsicmp pws_os::wcscasecmp
+#define _tcsdup pws_os::wcsdup
 #else
 #define _tcsicmp(s1, s2) wcscasecmp(s1, s2)
 # include "linux/pws_str.h"
