@@ -333,7 +333,7 @@ void COptionsPasswordPolicy::do_easyorpronounceable(const bool bSet)
 
     GetDlgItem(IDC_USEDEFAULTSYMBOLS)->EnableWindow(FALSE);
     GetDlgItem(IDC_USEOWNSYMBOLS)->EnableWindow(FALSE);
-    GetDlgItem(IDC_STATIC_DEFAULTSYMBOLS)->EnableWindow(FALSE);
+    GetDlgItem(IDC_STATIC_DEFAULTSYMBOLS)->EnableWindow((IsDlgButtonChecked(IDC_USESYMBOLS) == BST_CHECKED) ? TRUE : FALSE);
     GetDlgItem(IDC_OWNSYMBOLS)->EnableWindow(FALSE);
 
     m_savelen[0] = m_pwlowerminlength; m_savelen[1] = m_pwupperminlength;
@@ -346,10 +346,11 @@ void COptionsPasswordPolicy::do_easyorpronounceable(const bool bSet)
       GetDlgItem(LenTxts[2*i + 1])->ShowWindow(SW_SHOW);
     }
 
-    GetDlgItem(IDC_USEDEFAULTSYMBOLS)->EnableWindow(TRUE);
-    GetDlgItem(IDC_USEOWNSYMBOLS)->EnableWindow(TRUE);
-    GetDlgItem(IDC_STATIC_DEFAULTSYMBOLS)->EnableWindow(TRUE);
-    GetDlgItem(IDC_OWNSYMBOLS)->EnableWindow(m_useownsymbols == OWN_SYMBOLS ?
+    BOOL bEnable = (IsDlgButtonChecked(IDC_USESYMBOLS) == BST_CHECKED) ? TRUE : FALSE;
+    GetDlgItem(IDC_USEDEFAULTSYMBOLS)->EnableWindow(bEnable);
+    GetDlgItem(IDC_USEOWNSYMBOLS)->EnableWindow(bEnable);
+    GetDlgItem(IDC_STATIC_DEFAULTSYMBOLS)->EnableWindow(bEnable);
+    GetDlgItem(IDC_OWNSYMBOLS)->EnableWindow((bEnable == TRUE && m_useownsymbols == OWN_SYMBOLS) ?
                                              TRUE : FALSE);
 
     m_pwlowerminlength = m_savelen[0]; m_pwupperminlength = m_savelen[1];
@@ -399,7 +400,9 @@ void COptionsPasswordPolicy::OnUseDigits()
 void COptionsPasswordPolicy::OnUseSymbols() 
 {
   UpdateData(TRUE);
-  BOOL bChecked = (IsDlgButtonChecked(IDC_USESYMBOLS) == BST_CHECKED) ? TRUE : FALSE;
+
+  BOOL bChecked = (IsDlgButtonChecked(IDC_USESYMBOLS) == BST_CHECKED &&
+                   m_pweasyvision == FALSE && m_pwmakepronounceable == FALSE) ? TRUE : FALSE;
 
   GetDlgItem(IDC_MINSYMBOLLENGTH)->EnableWindow(bChecked);
   GetDlgItem(IDC_SPINSYMBOLS)->EnableWindow(bChecked);
@@ -408,6 +411,7 @@ void COptionsPasswordPolicy::OnUseSymbols()
 
   GetDlgItem(IDC_USEDEFAULTSYMBOLS)->EnableWindow(bChecked);
   GetDlgItem(IDC_USEOWNSYMBOLS)->EnableWindow(bChecked);
+  GetDlgItem(IDC_STATIC_DEFAULTSYMBOLS)->EnableWindow((IsDlgButtonChecked(IDC_USESYMBOLS) == BST_CHECKED) ? TRUE : FALSE);
   GetDlgItem(IDC_OWNSYMBOLS)->EnableWindow((bChecked == TRUE && m_useownsymbols == OWN_SYMBOLS) ? TRUE : FALSE);
 
   m_pwsymbolminlength = bChecked;  // Based on FALSE=0 & TRUE=1

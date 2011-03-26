@@ -459,7 +459,7 @@ void CAddEdit_PasswordPolicy::do_easyorpronounceable(const bool bSet)
 
     GetDlgItem(IDC_USEDEFAULTSYMBOLS)->EnableWindow(FALSE);
     GetDlgItem(IDC_USEOWNSYMBOLS)->EnableWindow(FALSE);
-    GetDlgItem(IDC_STATIC_DEFAULTSYMBOLS)->EnableWindow(FALSE);
+    GetDlgItem(IDC_STATIC_DEFAULTSYMBOLS)->EnableWindow((IsDlgButtonChecked(IDC_USESYMBOLS) == BST_CHECKED) ? TRUE : FALSE);
     GetDlgItem(IDC_OWNSYMBOLS)->EnableWindow(FALSE);
   } else {
     // Show lengths
@@ -475,10 +475,11 @@ void CAddEdit_PasswordPolicy::do_easyorpronounceable(const bool bSet)
       GetDlgItem(LenTxts[i * 2 + 1])->ShowWindow(iShow);
     }
 
-    GetDlgItem(IDC_USEDEFAULTSYMBOLS)->EnableWindow(TRUE);
-    GetDlgItem(IDC_USEOWNSYMBOLS)->EnableWindow(TRUE);
-    GetDlgItem(IDC_STATIC_DEFAULTSYMBOLS)->EnableWindow(TRUE);
-    GetDlgItem(IDC_OWNSYMBOLS)->EnableWindow(m_useownsymbols == OWN_SYMBOLS ?
+    BOOL bEnable = (IsDlgButtonChecked(IDC_USESYMBOLS) == BST_CHECKED) ? TRUE : FALSE;
+    GetDlgItem(IDC_USEDEFAULTSYMBOLS)->EnableWindow(bEnable);
+    GetDlgItem(IDC_USEOWNSYMBOLS)->EnableWindow(bEnable);
+    GetDlgItem(IDC_STATIC_DEFAULTSYMBOLS)->EnableWindow(bEnable);
+    GetDlgItem(IDC_OWNSYMBOLS)->EnableWindow((bEnable == TRUE && m_useownsymbols == OWN_SYMBOLS) ?
                                              TRUE : FALSE);
   }
 }
@@ -565,7 +566,7 @@ void CAddEdit_PasswordPolicy::OnUseSymbols()
   GetDlgItem(IDC_STATIC_SY2)->ShowWindow(iShow);
   GetDlgItem(IDC_USEDEFAULTSYMBOLS)->EnableWindow(bEnable);
   GetDlgItem(IDC_USEOWNSYMBOLS)->EnableWindow(bEnable);
-  GetDlgItem(IDC_STATIC_DEFAULTSYMBOLS)->EnableWindow(TRUE);
+  GetDlgItem(IDC_STATIC_DEFAULTSYMBOLS)->EnableWindow((IsDlgButtonChecked(IDC_USESYMBOLS) == BST_CHECKED) ? TRUE : FALSE);
   GetDlgItem(IDC_OWNSYMBOLS)->EnableWindow((bEnable == TRUE && m_useownsymbols == OWN_SYMBOLS) ?
                                            TRUE : FALSE);
   m_pwsymbolminlength = IsDlgButtonChecked(IDC_USESYMBOLS);  // Based on FALSE=0 & TRUE=1
