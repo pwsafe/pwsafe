@@ -17,6 +17,7 @@ namespace pws_os {
     extern int wctoi(const wchar_t *s);
     extern double wctof(const wchar_t *s);
 	extern int wcscasecmp(const wchar_t* s1, const wchar_t* s2);
+    extern wchar_t* wcsdup(const wchar_t* src);
 };
 
 #endif /* __PWS_STR_H */

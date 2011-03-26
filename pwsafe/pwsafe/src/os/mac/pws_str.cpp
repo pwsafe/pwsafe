@@ -13,6 +13,7 @@
 #include <wchar.h>
 #include "pws_str.h"
 #include "../utf8conv.h"
+#include <errno.h>
 
 int pws_os::wctoi(const wchar_t *s)
 {
@@ -46,4 +47,14 @@ int pws_os::wcscasecmp(const wchar_t* s1, const wchar_t* s2)
   return wc1 - wc2; 
 }
 
-
+wchar_t* pws_os::wcsdup (const wchar_t *src)
+{
+  if (!src) return NULL;
+  const size_t len = wcslen(src) + 1;
+  wchar_t *dest = (wchar_t*)malloc(len*sizeof(wchar_t));
+  if (!dest) {
+    errno = ENOMEM;
+    return NULL;
+  }
+  return (wchar_t *)memcpy(dest, src, len*sizeof(wchar_t));
+}
