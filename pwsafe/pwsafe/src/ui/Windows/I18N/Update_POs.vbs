@@ -63,6 +63,11 @@ objStdOut.WriteLine " Updating French Language PO"
 Call UpdatePO("FR")
 objStdOut.WriteLine "   Done"
 End If
+If (DO_ALL = True Or DO_COUNTRY = "FR_CA") Then
+objStdOut.WriteLine " Updating French (Canadian) Language PO"
+Call UpdatePO("FR_CA")
+objStdOut.WriteLine "   Done"
+End If
 If (DO_ALL = True Or DO_COUNTRY = "IT") Then
 objStdOut.WriteLine " Updating Italian Language PO"
 Call UpdatePO("IT")
