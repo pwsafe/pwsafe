@@ -65,6 +65,11 @@ objStdOut.WriteLine " Creating French Language DLL"
 Call DoI18N("fr", "0x040c", "FR_FR", "FR")
 objStdOut.WriteLine "   Done"
 End If
+If (DO_ALL = True Or DO_COUNTRY = "FR_CA") Then
+objStdOut.WriteLine " Creating French (Canadian) Language DLL"
+Call DoI18N("fr", "0x0c0c", "FR_CA", "FR_CA")
+objStdOut.WriteLine "   Done"
+End If
 If (DO_ALL = True Or DO_COUNTRY = "IT") Then
 objStdOut.WriteLine " Creating Italian Language DLL"
 Call DoI18N("it", "0x0410", "IT_IT", "IT")
