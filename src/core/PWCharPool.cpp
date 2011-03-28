@@ -133,7 +133,7 @@ CPasswordCharPool::CPasswordCharPool(const uint pwlen,
 CPasswordCharPool::~CPasswordCharPool()
 {
   if (m_bDefaultSymbols)
-    delete m_char_arrays[SYMBOL];
+    free(const_cast<charT*>(m_char_arrays[SYMBOL]));
 }
 
 CPasswordCharPool::CharType CPasswordCharPool::GetRandomCharType(unsigned int rand) const
