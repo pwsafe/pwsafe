@@ -19,10 +19,10 @@ void ShowUsage()
 {
   _tprintf(_T("Update Password Safe Resource-Only DLL Version language information\n"));
   _tprintf(_T("USAGE:\n"));
-  _tprintf(_T("ResPWSL.exe list <FileName>\n\tLists the version information of a specified module\n\n"));
-  _tprintf(_T("ResPWSL.exe apply <FileName> LCID\n\tCreates pwsafeLL.dll or pwsafeLL_CC.dll from the supplied file.\n"));
+  _tprintf(_T("ResPWSL list <FileName>\n\tLists the version information of a specified module\n\n"));
+  _tprintf(_T("ResPWSL apply <FileName> LCID\n\tCreates pwsafeLL.dll or pwsafeLL_CC.dll from the supplied file.\n"));
   _tprintf(_T("\nIt also changes the OriginalFilename and ProductName version strings to reflect the language/location."));
-  _tprintf(_T("\nThe locale LCID value should be specified as \"0xnnnn\",\nas specified in \"http://www.microsoft.com/globaldev/nlsweb/default.mspx\""));
+  _tprintf(_T("\nThe locale LCID value should be specified as \"0xnnnn\",\nas specified in the Windows XP section of \"http://www.microsoft.com/globaldev/nlsweb/default.mspx\""));
   _tprintf(_T("\nUsing a LCID value \"0xmmnn\" where mm=00 will generate the pwsafeLL.dll version,\nwhereas any other value will produce the corresponding pwsafeLL_CC.dll version."));
   _tprintf(_T("\nFor example 0x0007 produces pwsafeEN.dll and 0x0407 produces pwsafeEN_US.dll"));
 }
