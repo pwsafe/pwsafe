@@ -2333,14 +2333,21 @@ LRESULT DboxMain::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
     // Process Language Selection
     const size_t iLang = wID - ID_LANGUAGES;
     if (iLang < app.m_vlanguagefiles.size()) {
-      StringX sxLL = app.m_vlanguagefiles[iLang].wsLL.c_str();
-      StringX sxCC = app.m_vlanguagefiles[iLang].wsCC.c_str();
-      if (!sxCC.empty()) {
-        sxLL += L"_";
-        sxLL += sxCC;
+      // Default is normal locale processing
+      StringX sxLL(L""), sxCC(L"");
+      LCID lcid(0);
+      if ((app.m_vlanguagefiles[iLang].xFlags & 0x80) != 0x80) {
+        // Wasn't checked - select it
+        sxLL = app.m_vlanguagefiles[iLang].wsLL.c_str();
+        sxCC = app.m_vlanguagefiles[iLang].wsCC.c_str();
+        if (!sxCC.empty()) {
+          sxLL += L"_";
+          sxLL += sxCC;
+        }
+        app.m_vlanguagefiles[iLang].lcid = app.m_vlanguagefiles[iLang].lcid;
       }
       PWSprefs::GetInstance()->SetPref(PWSprefs::LanguageFile, sxLL);
-      SetLanguage(app.m_vlanguagefiles[iLang].lcid);
+      SetLanguage(lcid);
     }
   }
 
