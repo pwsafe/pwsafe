@@ -327,8 +327,10 @@ void ThisMfcApp::LoadLocalizedStuff()
   defaulting to pwsafe.chm if not found.
   */
 
-  CString cs_LANG, cs_CTRY(L"");
-
+  CString cs_ResPath, cs_HelpPath, cs_LANG(L""), cs_CTRY(L"");
+  const CString cs_HelpDir(PWSdirs::GetHelpDir().c_str());
+  const CString cs_ExePath(PWSdirs::GetExeDir().c_str());
+  
   // See if user overridden default via Environmental Variable
   bool bPLRC(FALSE);
   
@@ -346,8 +348,32 @@ void ThisMfcApp::LoadLocalizedStuff()
       cs_CTRY = sxLL.substr(3,2).c_str();
     }
     bPLRC = true;
-  }    
-    
+  }
+
+  if (cs_LANG == L"EN" && cs_CTRY.IsEmpty()) {
+    // This means use the embedded resources!
+    if (m_hInstResDLL)
+      FreeLibrary(m_hInstResDLL);
+    m_hInstResDLL = NULL;
+    pws_os::Trace(L"Using embedded resources\n");
+
+    //  and supplied Help file
+    free((void *)m_pszHelpFilePath);
+
+    cs_HelpPath.Format(L"%spwsafe.chm", cs_HelpDir);
+    if (PathFileExists(cs_HelpPath)) {
+      m_pszHelpFilePath = _wcsdup(cs_HelpPath);
+      m_csHelpFile = cs_HelpPath;
+      pws_os::Trace(L"Using help file: %s\n", cs_HelpPath);
+    } else {
+      m_pszHelpFilePath = NULL;
+      m_csHelpFile = L"";
+      pws_os::Trace(L"Not using a help file!\n");
+    }
+
+    return;
+  }
+
   if (!bPLRC) {
     // no override, use Locale info
     int inum;
@@ -363,8 +389,7 @@ void ThisMfcApp::LoadLocalizedStuff()
     cs_LANG = szLang; cs_CTRY = szCtry;
   }
 
-  const CString cs_ExePath(PWSdirs::GetExeDir().c_str());
-  CString cs_ResPath;
+  // Find reseource-only DLL if requested
   const CString format_string = (cs_CTRY.IsEmpty()) ?
                       L"%spwsafe%s%s.dll" : L"%spwsafe%s_%s.dll";
   cs_ResPath.Format(format_string, cs_ExePath, cs_LANG, cs_CTRY);
@@ -401,13 +426,7 @@ void ThisMfcApp::LoadLocalizedStuff()
   if (m_hInstResDLL != NULL)
     AfxSetResourceHandle(m_hInstResDLL);
 
-  /**
-  * So far, we've handle the resource dll. Now go for the compiled helpfile
-  * in a similar manner.
-  */
-
-  CString cs_HelpPath;
-  const CString cs_HelpDir(PWSdirs::GetHelpDir().c_str());
+  // Find requested Help file
   bool helpFileFound = false;
 
   if (!cs_LANG.IsEmpty() && !cs_CTRY.IsEmpty()) {
@@ -431,7 +450,7 @@ void ThisMfcApp::LoadLocalizedStuff()
     }
   }
 
-  if (!helpFileFound && _tcslen(m_pszHelpFilePath) > 0) { // last resort
+  if (!helpFileFound && m_pszHelpFilePath != NULL && _tcslen(m_pszHelpFilePath) > 0) { // last resort
     wchar_t fname[_MAX_FNAME];
     wchar_t ext[_MAX_EXT];
 #if (_MSC_VER >= 1400)
@@ -451,9 +470,8 @@ void ThisMfcApp::LoadLocalizedStuff()
     free((void*)m_pszHelpFilePath);
 
     m_pszHelpFilePath = _wcsdup(cs_HelpPath);
-    pws_os::Trace(L"Using help file: %s\n", cs_HelpPath);
-
     m_csHelpFile = cs_HelpPath;
+    pws_os::Trace(L"Using help file: %s\n", cs_HelpPath);
   }
 }
 
@@ -1333,14 +1351,15 @@ void ThisMfcApp::GetLanguageFiles()
   // NOTE: Assumption that a Help file can only exist if a resource file also exists
   const CString cs_ExePath(PWSdirs::GetExeDir().c_str());
   CString cs_ResPath = cs_ExePath + L"pwsafe*.dll";
-  //     L"%wsafe%s%s.dll" : L"pwsafe%s_%s.dll";
+  //     L"pwsafeLL.dll" : L"pwsafeLL_CC.dll";
 
   // Find all language DLLs
   m_vlanguagefiles.clear();
 
   LANGHELPFILE st_lng;
+  const StringX sxLL = PWSprefs::GetInstance()->GetPref(PWSprefs::LanguageFile);
 
-  // Add default embedded language
+  // Add default embedded language - English
   const LCID AppLCID = MAKELCID(m_AppLangID, SORT_DEFAULT); // 0x0409 - English US
 
   wchar_t *szLanguage_Native(NULL);
@@ -1353,8 +1372,8 @@ void ThisMfcApp::GetLanguageFiles()
     cs_language.Format(L"%s (%s)", szLanguage_Native, cs_Embedded);
 
     st_lng.lcid = AppLCID;
-    st_lng.xFlags = (m_AppLangID == m_ResLangID) ? 0xC0 : 0x40;
-    st_lng.wsLL = L"";
+    st_lng.xFlags = (wcscmp(sxLL.c_str(), L"EN") == 0) ? 0xC0 : 0x40;
+    st_lng.wsLL = L"EN";
     st_lng.wsCC = L"";
     st_lng.wsLanguage = (LPCWSTR)cs_language;
 
