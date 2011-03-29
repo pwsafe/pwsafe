@@ -105,10 +105,14 @@ private:
 
   void do_hex(const bool bNonHex); // bNonHex == true enable non-hex
   void do_easyorpronounceable(const bool bSet); // bSet == true enable one of these options
+
+  // This must correspond to the order in the following UINT arrays
+  enum {SAVE_LOWERCASE = 0, SAVE_UPPERCASE, SAVE_DIGITS, SAVE_SYMBOLS, SAVE_EASYVISION, SAVE_PRONOUNCEABLE};
+
   // number of checkboxes & lengths disabled when hex chosen
   enum {N_NOHEX = 6, N_HEX_LENGTHS = 4};
   static const UINT nonHex[N_NOHEX]; // IDs of said checkboxes
-  static const UINT LenTxts[N_HEX_LENGTHS*2]; // IDs of text associated with length
+  static const UINT LenTxts[N_HEX_LENGTHS * 2]; // IDs of text associated with length
   static const UINT nonHexLengths[N_HEX_LENGTHS]; // IDs of said lengths
   static const UINT nonHexLengthSpins[N_HEX_LENGTHS]; // IDs of said lengths' spinboxes
   int m_save[N_NOHEX]; // save cb's state when disabling hex
