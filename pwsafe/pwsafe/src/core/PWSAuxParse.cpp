@@ -257,7 +257,7 @@ StringX PWSAuxParse::GetAutoTypeString(const StringX &sx_in_autotype,
     const StringX sxdelim = _T("\r\n");
     StringX sxline;
     while (st_end != StringX::npos) {
-      st_end = sxNotes.find(sxdelim, st_start);
+      st_end = sxNotes.find_first_of(sxdelim, st_start);
       sxline = (sxNotes.substr(st_start, (st_end == StringX::npos) ? 
                               StringX::npos : st_end - st_start));
       st_index = 0;
@@ -269,13 +269,18 @@ StringX PWSAuxParse::GetAutoTypeString(const StringX &sx_in_autotype,
         st_index += 1;
       }
       vsxnotes_lines.push_back(sxline);
-      st_start = ((st_end > (StringX::npos - sxdelim.size())) ?
-                         StringX::npos : st_end + sxdelim.size());
+      // If we just hit a "\r\n", move past it.  Or else, it is a "\r" without
+      // a following "\n" or a "\n", so just move past one single char
+      if (st_end != StringX::npos) {
+        st_start = st_end + (sxNotes.compare(st_end, 2, sxdelim) == 0 ? 2 : 1);
+        if (st_start >= sxNotes.length())
+          break;
+      }
     }
     // Now change '\n' to '\r' in the complete notes field
     st_index = 0;
     for (;;) {
-      st_index = sxNotes.find(_T("\r\n"), st_index);
+      st_index = sxNotes.find(sxdelim, st_index);
       if (st_index == StringX::npos)
         break;
       sxNotes.replace(st_index, 2, _T("\r"));
