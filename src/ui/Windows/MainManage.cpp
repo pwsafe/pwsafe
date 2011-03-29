@@ -435,10 +435,11 @@ void DboxMain::OnOptions()
     GetPref(PWSprefs::PWSymbolMinLength);
   passwordpolicy.m_pwupperminlength = prefs->
     GetPref(PWSprefs::PWUppercaseMinLength);
+
   CString cs_symbols(prefs->GetPref(PWSprefs::DefaultSymbols).c_str());
-  passwordpolicy.m_cs_symbols = passwordpolicy.m_cs_savesymbols = cs_symbols;
-  passwordpolicy.m_useownsymbols = passwordpolicy.m_saveuseownsymbols =
-                (cs_symbols.GetLength() == 0) ? DEFAULT_SYMBOLS : OWN_SYMBOLS;
+  passwordpolicy.m_cs_symbols = cs_symbols;
+  passwordpolicy.m_useownsymbols = 
+            (cs_symbols.GetLength() == 0) ? DEFAULT_SYMBOLS : OWN_SYMBOLS;
 
   security.m_clearclipboardonminimize = prefs->
     GetPref(PWSprefs::ClearClipboardOnMinimize) ? TRUE : FALSE;
