@@ -20,6 +20,26 @@ RESPWSL = TOOLS & "\respwsl\release\ResPWSL.exe"
 BASE_DLL = "..\..\..\..\build\bin\pwsafe\release\pwsafe_base.dll"
 DEST_DIR = "..\..\..\..\build\bin\pwsafe\I18N\"
 
+Set objFSO = CreateObject("Scripting.FileSystemObject")
+
+If (Not objFSO.FileExists(BASE_DLL)) Then
+  ' Check Base DLL exists
+  WScript.Echo "Can't find the Base DLL - pwsafe_base.dll"
+  WScript.Quit(99)
+End If
+
+If (Not objFSO.FileExists(RESTEXT)) Then
+  ' Check required program exists
+  WScript.Echo "Can't find Tool - ResText.exe"
+  WScript.Quit(99)
+End If
+
+If (Not objFSO.FileExists(RESPWSL)) Then
+  ' Check required program exists
+  WScript.Echo "Can't find Tool - ResPWSL.exe"
+  WScript.Quit(99)
+End If
+
 If Wscript.Arguments.Count = 0 Then
   DO_ALL = True
 Else
@@ -34,8 +54,6 @@ Else
   End If
 End If
 
-Set objFSO = CreateObject("Scripting.FileSystemObject")
-
 If (objFSO.FileExists("foo.dll")) Then
   'Delete intermediate DLL if still there
   objFSO.DeleteFile "foo.dll"
@@ -46,64 +64,52 @@ Set objStdOut = WScript.StdOut
 
 ' Now do them
 If (DO_ALL = True Or DO_COUNTRY = "DE") Then
-objStdOut.WriteLine " Creating German Language DLL"
-Call DoI18N("de", "0x0407", "DE_DE", "DE")
-objStdOut.WriteLine "   Done"
+  objStdOut.WriteLine " Creating German Language DLL"
+  Call DoI18N("de", "0x0407", "DE_DE", "DE")
 End If
 If (DO_ALL = True Or DO_COUNTRY = "DA") Then
-objStdOut.WriteLine " Creating Danish Language DLL"
-Call DoI18N("dk", "0x0406", "DA_DK", "DA")
-objStdOut.WriteLine "   Done"
+  objStdOut.WriteLine " Creating Danish Language DLL"
+  Call DoI18N("dk", "0x0406", "DA_DK", "DA")
 End If
 If (DO_ALL = True Or DO_COUNTRY = "ES") Then
-objStdOut.WriteLine " Creating Spanish Language DLL"
-Call DoI18N("es", "0x0c0a", "ES_ES", "ES")
-objStdOut.WriteLine "   Done"
+  objStdOut.WriteLine " Creating Spanish Language DLL"
+  Call DoI18N("es", "0x0c0a", "ES_ES", "ES")
 End If
 If (DO_ALL = True Or DO_COUNTRY = "FR") Then
-objStdOut.WriteLine " Creating French Language DLL"
-Call DoI18N("fr", "0x040c", "FR_FR", "FR")
-objStdOut.WriteLine "   Done"
+  objStdOut.WriteLine " Creating French Language DLL"
+  Call DoI18N("fr", "0x040c", "FR_FR", "FR")
 End If
 If (DO_ALL = True Or DO_COUNTRY = "FR_CA") Then
-objStdOut.WriteLine " Creating French (Canadian) Language DLL"
-Call DoI18N("fr", "0x0c0c", "FR_CA", "FR_CA")
-objStdOut.WriteLine "   Done"
+  objStdOut.WriteLine " Creating French (Canadian) Language DLL"
+  Call DoI18N("fr", "0x0c0c", "FR_CA", "FR_CA")
 End If
 If (DO_ALL = True Or DO_COUNTRY = "IT") Then
-objStdOut.WriteLine " Creating Italian Language DLL"
-Call DoI18N("it", "0x0410", "IT_IT", "IT")
-objStdOut.WriteLine "   Done"
+  objStdOut.WriteLine " Creating Italian Language DLL"
+  Call DoI18N("it", "0x0410", "IT_IT", "IT")
 End If
 If (DO_ALL = True Or DO_COUNTRY = "KR") Then
-objStdOut.WriteLine " Creating Korean Language DLL"
-Call DoI18N("kr", "0x0412", "KO_KR", "KR")
-objStdOut.WriteLine "   Done"
+  objStdOut.WriteLine " Creating Korean Language DLL"
+  Call DoI18N("kr", "0x0412", "KO_KR", "KR")
 End If
 If (DO_ALL = True Or DO_COUNTRY = "NL") Then
-objStdOut.WriteLine " Creating Dutch Language DLL"
-Call DoI18N("nl", "0x0413", "NL_NL", "NL")
-objStdOut.WriteLine "   Done"
+  objStdOut.WriteLine " Creating Dutch Language DLL"
+  Call DoI18N("nl", "0x0413", "NL_NL", "NL")
 End If
 If (DO_ALL = True Or DO_COUNTRY = "PL") Then
-objStdOut.WriteLine " Creating Polish Language DLL"
-Call DoI18N("pl", "0x0415", "PL_PL", "PL")
-objStdOut.WriteLine "   Done"
+  objStdOut.WriteLine " Creating Polish Language DLL"
+  Call DoI18N("pl", "0x0415", "PL_PL", "PL")
 End If
 If (DO_ALL = True Or DO_COUNTRY = "RU") Then
-objStdOut.WriteLine " Creating Russian Language DLL"
-Call DoI18N("ru", "0x0419", "RU_RU", "RU")
-objStdOut.WriteLine "   Done"
+  objStdOut.WriteLine " Creating Russian Language DLL"
+  Call DoI18N("ru", "0x0419", "RU_RU", "RU")
 End If
 If (DO_ALL = True Or DO_COUNTRY = "SV") Then
-objStdOut.WriteLine " Creating Swedish Language DLL"
-Call DoI18N("sv", "0x041d", "SV_SE", "SV")
-objStdOut.WriteLine "   Done"
+  objStdOut.WriteLine " Creating Swedish Language DLL"
+  Call DoI18N("sv", "0x041d", "SV_SE", "SV")
 End If
 If (DO_ALL = True Or DO_COUNTRY = "ZH") Then
-objStdOut.WriteLine " Creating Chinese Language DLL"
-Call DoI18N("zh", "0x0804", "ZH_CN", "ZH")
-objStdOut.WriteLine "   Done"
+  objStdOut.WriteLine " Creating Chinese (Simplified) Language DLL"
+  Call DoI18N("zh", "0x0804", "ZH_CN", "ZH")
 End If
 objStdOut.WriteLine " Processing Completed"
 
@@ -122,6 +128,13 @@ Sub DoI18N(PO, LCID, LL_CC, LL)
 '    http://www.microsoft.com/resources/msdn/goglobal/default.mspx
 '    as this generates the 2-character LL and CC values (later OSes can generate other values).
 ' 4. Final DLL name in form LL e.g. "ZH" for "pwsafeZH.dll"
+
+If (Not objFSO.FileExists("pos\pwsafe_" & PO & ".po")) Then
+  ' Check required PO file exists
+  WScript.Echo "   Can't find requested PO file - pos\pwsafe_" & PO & ".po"
+  objStdOut.WriteLine "   Skipped"
+  Exit Sub
+End If
 
 Dim WshShell, oExec
 Set WshShell = CreateObject("WScript.Shell")
@@ -157,6 +170,8 @@ End If
 
 ' Move and rename the new DLL
 objFSO.MoveFile "pwsafe" & LL_CC & ".dll", DEST_DIR & "pwsafe" & LL & ".dll"
+
+objStdOut.WriteLine "   Done"
 
 End Sub
 
