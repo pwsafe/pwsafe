@@ -16,31 +16,55 @@
 #include <Carbon/Carbon.h>
 #include "../sleep.h"
 #include "../../core/PwsPlatform.h"
+#include "../debug.h"
 
 void SendString(CFStringRef str, unsigned delayMS)
 {
-	CGEventRef keyDown = CGEventCreateKeyboardEvent(NULL, 0, true);
-	CGEventRef keyUp   = CGEventCreateKeyboardEvent(NULL, 0, false);
-
-	if (keyDown && keyUp) {
-		for (unsigned i = 0, len = CFStringGetLength(str); i < len; ++i) {
-			CGEventSetFlags(keyDown, 0);
-			CGEventSetFlags(keyUp, 0);
-			
-			UniChar c = CFStringGetCharacterAtIndex(str, i);
-			
-			CGEventKeyboardSetUnicodeString(keyDown, 1, &c);
-			CGEventKeyboardSetUnicodeString(keyUp, 1, &c);
-			
-			CGEventPost(kCGSessionEventTap, keyDown);
-			CGEventPost(kCGSessionEventTap, keyUp);
-
-			pws_os::sleep_ms(delayMS);
-		}
-	}
-	
-	if (keyDown) CFRelease(keyDown);
-	if (keyUp) CFRelease(keyUp);
+  //virtual keycodes copied from 10.6 SDK.  Could not find them in 10.4 SDK
+  enum { VK_RETURN = 0x24 /*KVK_Return*/, VK_TAB = 0x30 /*kVK_Tab*/, VK_SPACE = 0x31/*kVK_Space*/};
+  
+  //A list of chars for which we must specify the virtual keycode
+  static CFStringRef specialChars = CFSTR("\n\t ");
+  
+  //each keycode must correspond to the correct char in 'specialChars'
+  CGKeyCode specialKeyCodes[] = {VK_RETURN, VK_TAB, VK_SPACE };
+  
+  for (unsigned i = 0, len = CFStringGetLength(str); i < len; ++i) {
+    //The next char to send
+    UniChar c = CFStringGetCharacterAtIndex(str, i);
+    
+    //see if we need to specify the virtual ekycode for this char
+    CGKeyCode vKey = 0; //0 = kVK_ANSI_A, but I don't know of a more appropriate default value
+    for (unsigned j = 0, n = CFStringGetLength(specialChars); j < n; ++j) {
+      if ( CFStringGetCharacterAtIndex(specialChars, j) == c) {
+        vKey = specialKeyCodes[j];
+        break;
+      }
+    }
+    
+    CGEventRef keyDown = CGEventCreateKeyboardEvent(NULL, vKey, true);
+    CGEventRef keyUp   = CGEventCreateKeyboardEvent(NULL, vKey, false);
+    
+    if (keyDown && keyUp) {
+      //may be we should not do this if we found the virtual keycode?
+      CGEventKeyboardSetUnicodeString(keyDown, 1, &c);
+      CGEventKeyboardSetUnicodeString(keyUp, 1, &c);
+      
+      CGEventPost(kCGSessionEventTap, keyDown);
+      CGEventPost(kCGSessionEventTap, keyUp);
+      
+      pws_os::sleep_ms(delayMS);
+      
+      CFRelease(keyDown);
+      CFRelease(keyUp);
+    }
+    else {
+      if (keyDown) CFRelease(keyDown);
+      if (keyUp) CFRelease(keyUp);
+      pws_os::IssueError(_T("Out of memory trying to allocate CGEventRef"));
+      return;
+    }
+  }
 }
 
 void pws_os::SendString(const char* str, unsigned delayMS)
