@@ -121,7 +121,7 @@ msgstr " 'Время создания'"
 #. Resource IDs: (357)
 #, fuzzy
 msgid " 'DCA'"
-msgstr "'По дв. клику'"
+msgstr " 'По дв. клику'"
 
 #. Resource IDs: (347)
 msgid " 'Group'"
@@ -182,7 +182,7 @@ msgstr " 'Пользователь'"
 
 #. Resource IDs: (358)
 msgid " 'email'"
-msgstr "E-mail"
+msgstr " 'E-mail'"
 
 #. Resource IDs: (366)
 msgid " 'symbols'"
@@ -7090,7 +7090,7 @@ msgstr "пикселей"
 
 #. Resource IDs: (65535)
 msgid "previous passwords per entry"
-msgstr " предыдущих паролей для элемента"
+msgstr "предыдущих паролей для элемента"
 
 #. Resource IDs: (338)
 msgid "pwsafe"

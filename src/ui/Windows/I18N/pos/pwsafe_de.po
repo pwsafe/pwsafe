@@ -77,7 +77,7 @@ msgstr " 'Autom. Eingabe'"
 
 #. Resource IDs: (336)
 msgid " 'Creation Time'"
-msgstr "'Erstellungszeit'"
+msgstr " 'Erstellungszeit'"
 
 #. Resource IDs: (357)
 msgid " 'DCA'"
@@ -89,19 +89,19 @@ msgstr " 'Gruppe'"
 
 #. Resource IDs: (336)
 msgid " 'Last Access Time'"
-msgstr "'Letzter Zugriff'"
+msgstr " 'Letzter Zugriff'"
 
 #. Resource IDs: (336)
 msgid " 'Notes'"
-msgstr "'Anmerkungen'"
+msgstr " 'Anmerkungen'"
 
 #. Resource IDs: (356)
 msgid " 'Password Expiry Time Interval'"
-msgstr "'Passwortablauf-Intervall'"
+msgstr " 'Passwortablauf-Intervall'"
 
 #. Resource IDs: (336)
 msgid " 'Password Expiry Time'"
-msgstr "'Passwort Ablaufzeit'"
+msgstr " 'Passwort Ablaufzeit'"
 
 #. Resource IDs: (336)
 msgid " 'Password History'"
@@ -109,15 +109,15 @@ msgstr " 'Passworthistorie'"
 
 #. Resource IDs: (336)
 msgid " 'Password Modification Time'"
-msgstr "'Passwort Änderungszeit'"
+msgstr " 'Passwort Änderungszeit'"
 
 #. Resource IDs: (345)
 msgid " 'Password Policy'"
-msgstr "'Passwort Richtlinie'"
+msgstr " 'Passwort Richtlinie'"
 
 #. Resource IDs: (336)
 msgid " 'Password'"
-msgstr "'Passwort'"
+msgstr " 'Passwort'"
 
 #. Resource IDs: (336)
 msgid " 'Record Modification Time'"
@@ -125,7 +125,7 @@ msgstr " 'Datensatz Änderungszeit'"
 
 #. Resource IDs: (354)
 msgid " 'Run Command'"
-msgstr "'Kommando ausführen'"
+msgstr " 'Kommando ausführen'"
 
 #. Resource IDs: (347)
 msgid " 'Title'"
@@ -145,7 +145,7 @@ msgstr " 'Email'"
 
 #. Resource IDs: (366)
 msgid " 'symbols'"
-msgstr "'Symbole'"
+msgstr " 'Symbole'"
 
 #. Resource IDs: (362)
 #, c-format
@@ -155,7 +155,7 @@ msgstr " / umbenannt %d"
 #. Resource IDs: (362)
 #, c-format
 msgid " / skipped %d"
-msgstr "/ %d übersprungen"
+msgstr " / %d übersprungen"
 
 #. Resource IDs: (362)
 #, c-format
@@ -170,7 +170,7 @@ msgstr " Kopieren # %d"
 #. Resource IDs: (251)
 #, c-format
 msgid " Current default (%s)"
-msgstr "Aktueller Standard (%s)"
+msgstr " Aktueller Standard (%s)"
 
 #. Resource IDs: (339)
 #, c-format
@@ -180,7 +180,7 @@ msgstr " Drag # %d"
 #. Resource IDs: (212)
 #, c-format
 msgid " Duplicate # %d"
-msgstr "Doppelter Nr. %d"
+msgstr " Doppelter Nr. %d"
 
 #. Resource IDs: (203)
 #, c-format
