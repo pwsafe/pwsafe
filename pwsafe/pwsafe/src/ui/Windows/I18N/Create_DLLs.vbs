@@ -45,7 +45,7 @@ If Wscript.Arguments.Count = 0 Then
 Else
   DIM Arg1
   Arg1 = UCase(Wscript.Arguments(0))
- If Arg1 = "/HELP" Then
+ If Arg1 = "/HELP" Or Arg1 = "/H" Or Arg1 = "/?" Then
    Usage
    Wscript.Quit(0)
   Else
@@ -59,59 +59,81 @@ If (objFSO.FileExists("foo.dll")) Then
   objFSO.DeleteFile "foo.dll"
 End If
 
-Dim objStdOut
+Dim objStdOut, DoneSome
 Set objStdOut = WScript.StdOut
+
+DoneSome = false
 
 ' Now do them
 If (DO_ALL = True Or DO_COUNTRY = "DE") Then
   objStdOut.WriteLine " Creating German Language DLL"
   Call DoI18N("de", "0x0407", "DE_DE", "DE")
+  DoneSome = true
 End If
+
 If (DO_ALL = True Or DO_COUNTRY = "DA") Then
   objStdOut.WriteLine " Creating Danish Language DLL"
   Call DoI18N("dk", "0x0406", "DA_DK", "DA")
+  DoneSome = true
 End If
+
 If (DO_ALL = True Or DO_COUNTRY = "ES") Then
   objStdOut.WriteLine " Creating Spanish Language DLL"
   Call DoI18N("es", "0x0c0a", "ES_ES", "ES")
+  DoneSome = true
 End If
+
 If (DO_ALL = True Or DO_COUNTRY = "FR") Then
   objStdOut.WriteLine " Creating French Language DLL"
   Call DoI18N("fr", "0x040c", "FR_FR", "FR")
+  DoneSome = true
 End If
-If (DO_ALL = True Or DO_COUNTRY = "FR_CA") Then
-  objStdOut.WriteLine " Creating French (Canadian) Language DLL"
-  Call DoI18N("fr", "0x0c0c", "FR_CA", "FR_CA")
-End If
+
 If (DO_ALL = True Or DO_COUNTRY = "IT") Then
   objStdOut.WriteLine " Creating Italian Language DLL"
   Call DoI18N("it", "0x0410", "IT_IT", "IT")
+  DoneSome = true
 End If
+
 If (DO_ALL = True Or DO_COUNTRY = "KR") Then
   objStdOut.WriteLine " Creating Korean Language DLL"
   Call DoI18N("kr", "0x0412", "KO_KR", "KR")
+  DoneSome = true
 End If
+
 If (DO_ALL = True Or DO_COUNTRY = "NL") Then
   objStdOut.WriteLine " Creating Dutch Language DLL"
   Call DoI18N("nl", "0x0413", "NL_NL", "NL")
+  DoneSome = true
 End If
+
 If (DO_ALL = True Or DO_COUNTRY = "PL") Then
   objStdOut.WriteLine " Creating Polish Language DLL"
   Call DoI18N("pl", "0x0415", "PL_PL", "PL")
+  DoneSome = true
 End If
+
 If (DO_ALL = True Or DO_COUNTRY = "RU") Then
   objStdOut.WriteLine " Creating Russian Language DLL"
   Call DoI18N("ru", "0x0419", "RU_RU", "RU")
+  DoneSome = true
 End If
+
 If (DO_ALL = True Or DO_COUNTRY = "SV") Then
   objStdOut.WriteLine " Creating Swedish Language DLL"
   Call DoI18N("sv", "0x041d", "SV_SE", "SV")
+  DoneSome = true
 End If
+
 If (DO_ALL = True Or DO_COUNTRY = "ZH") Then
   objStdOut.WriteLine " Creating Chinese (Simplified) Language DLL"
   Call DoI18N("zh", "0x0804", "ZH_CN", "ZH")
+  DoneSome = true
 End If
-objStdOut.WriteLine " Processing Completed"
+
+If DoneSome = true Then
+  objStdOut.WriteLine " Processing Completed"
+End If
 
 ' Delete FileSystemObject
 Set objFSO = Nothing

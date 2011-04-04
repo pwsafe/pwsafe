@@ -37,7 +37,7 @@ If Wscript.Arguments.Count = 0 Then
 Else
   DIM Arg1
   Arg1 = UCase(Wscript.Arguments(0))
- If Arg1 = "/HELP" Then
+ If Arg1 = "/HELP" Or Arg1 = "/H" or Arg1 = "/?" Then
    Usage
    Wscript.Quit(0)
   Else
@@ -51,8 +51,10 @@ If (objFSO.FileExists("pos\Update_POs.log")) Then
   objFSO.DeleteFile "pos\Update_POs.log"
 End If
 
-Dim objStdOut
+Dim objStdOut, DoneSome
 Set objStdOut = WScript.StdOut
+
+DoneSome = false
 
 ' Now do them
 If (DO_ALL = True Or DO_COUNTRY = "DE") Then
@@ -62,7 +64,9 @@ If (DO_ALL = True Or DO_COUNTRY = "DE") Then
     objStdOut.WriteLine " Creating German Language PO"
   End If
   Call UpdatePO("DE")
+  DoneSome = true
 End If
+
 If (DO_ALL = True Or DO_COUNTRY = "DK") Then
   If (objFSO.FileExists("pos\pwsafe_dk.po")) Then
     objStdOut.WriteLine " Updating Danish Language PO"
@@ -70,7 +74,9 @@ If (DO_ALL = True Or DO_COUNTRY = "DK") Then
     objStdOut.WriteLine " Creating Danish Language PO"
   End If
   Call UpdatePO("DK")
+  DoneSome = true
 End If
+
 If (DO_ALL = True Or DO_COUNTRY = "ES") Then
   If (objFSO.FileExists("pos\pwsafe_es.po")) Then
     objStdOut.WriteLine " Updating Spanish Language PO"
@@ -78,7 +84,9 @@ If (DO_ALL = True Or DO_COUNTRY = "ES") Then
     objStdOut.WriteLine " Creating Spanish Language PO"
   End If
   Call UpdatePO("ES")
+  DoneSome = true
 End If
+
 If (DO_ALL = True Or DO_COUNTRY = "FR") Then
   If (objFSO.FileExists("pos\pwsafe_fr.po")) Then
     objStdOut.WriteLine " Updating French Language PO"
@@ -86,15 +94,9 @@ If (DO_ALL = True Or DO_COUNTRY = "FR") Then
     objStdOut.WriteLine " Creating French Language PO"
   End If
   Call UpdatePO("FR")
+  DoneSome = true
 End If
-If (DO_ALL = True Or DO_COUNTRY = "FR_CA") Then
-  If (objFSO.FileExists("pos\pwsafe_fr_ca.po")) Then
-    objStdOut.WriteLine " Updating French (Canadian) Language PO"
-  Else
-    objStdOut.WriteLine " Creating French (Canadian) Language PO"
-  End If
-  Call UpdatePO("FR_CA")
-End If
+
 If (DO_ALL = True Or DO_COUNTRY = "IT") Then
   If (objFSO.FileExists("pos\pwsafe_it.po")) Then
     objStdOut.WriteLine " Updating Italian Language PO"
@@ -102,7 +104,9 @@ If (DO_ALL = True Or DO_COUNTRY = "IT") Then
     objStdOut.WriteLine " Creating Italian Language PO"
   End If
   Call UpdatePO("IT")
+  DoneSome = true
 End If
+
 If (DO_ALL = True Or DO_COUNTRY = "KR") Then
   If (objFSO.FileExists("pos\pwsafe_kr.po")) Then
     objStdOut.WriteLine " Updating Korean Language PO"
@@ -110,7 +114,9 @@ If (DO_ALL = True Or DO_COUNTRY = "KR") Then
     objStdOut.WriteLine " Creating Korean Language PO"
   End If
   Call UpdatePO("KR")
+  DoneSome = true
 End If
+
 If (DO_ALL = True Or DO_COUNTRY = "NL") Then
   If (objFSO.FileExists("pos\pwsafe_nl.po")) Then
     objStdOut.WriteLine " Updating Dutch Language PO"
@@ -118,7 +124,9 @@ If (DO_ALL = True Or DO_COUNTRY = "NL") Then
     objStdOut.WriteLine " Creating Dutch Language PO"
   End If
   Call UpdatePO("NL")
+  DoneSome = true
 End If
+
 If (DO_ALL = True Or DO_COUNTRY = "PL") Then
   If (objFSO.FileExists("pos\pwsafe_pl.po")) Then
     objStdOut.WriteLine " Updating Polish Language PO"
@@ -126,7 +134,9 @@ If (DO_ALL = True Or DO_COUNTRY = "PL") Then
     objStdOut.WriteLine " Creating Polish Language PO"
   End If
   Call UpdatePO("PL")
+  DoneSome = true
 End If
+
 If (DO_ALL = True Or DO_COUNTRY = "RU") Then
   If (objFSO.FileExists("pos\pwsafe_ru.po")) Then
     objStdOut.WriteLine " Updating Russian Language PO"
@@ -134,7 +144,9 @@ If (DO_ALL = True Or DO_COUNTRY = "RU") Then
     objStdOut.WriteLine " Creating Russian Language PO"
   End If
   Call UpdatePO("RU")
+  DoneSome = true
 End If
+
 If (DO_ALL = True Or DO_COUNTRY = "SV") Then
   If (objFSO.FileExists("pos\pwsafe_sv.po")) Then
     objStdOut.WriteLine " Updating Swedish Language PO"
@@ -142,7 +154,9 @@ If (DO_ALL = True Or DO_COUNTRY = "SV") Then
     objStdOut.WriteLine " Creating Swedish Language PO"
   End If
   Call UpdatePO("SV")
+  DoneSome = true
 End If
+
 If (DO_ALL = True Or DO_COUNTRY = "ZH") Then
   If (objFSO.FileExists("pos\pwsafe_zh.po")) Then
     objStdOut.WriteLine " Updating Chinese (Simplified) Language PO"
@@ -150,8 +164,23 @@ If (DO_ALL = True Or DO_COUNTRY = "ZH") Then
     objStdOut.WriteLine " Creating Chinese (Simplified) Language PO"
   End If
   Call UpdatePO("ZH")
+  DoneSome = true
 End If
-objStdOut.WriteLine " Processing Completed"
+
+If (DoneSome = false) Then
+  ' Unknown country and no country yet processed - just do it
+  If (objFSO.FileExists("pos\pwsafe_" & DO_COUNTRY & ".po")) Then
+    objStdOut.WriteLine " Updating New Country '" & DO_COUNTRY & "' Language PO"
+  Else
+    objStdOut.WriteLine " Creating New Country '" & DO_COUNTRY & "' Language PO"
+  End If
+  Call UpdatePO(DO_COUNTRY)
+  DoneSome = true
+End If
+
+If DoneSome Then
+  objStdOut.WriteLine " Processing Completed"
+End If
 
 ' Delete FileSystemObject
 Set objFSO = Nothing
