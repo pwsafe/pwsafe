@@ -39,15 +39,15 @@ msgstr " "
 
 #. Resource IDs: (204)
 msgid "  All Password History ignored."
-msgstr " Ignoruj historię wprowadzonych haseł."
+msgstr "  Ignoruj historię wprowadzonych haseł."
 
 #. Resource IDs: (191)
 msgid "  Field is too long."
-msgstr "Pole jest zbyt długie."
+msgstr "  Pole jest zbyt długie."
 
 #. Resource IDs: (190)
 msgid "  Field is too short."
-msgstr "Pole jest zbyt krótkie."
+msgstr "  Pole jest zbyt krótkie."
 
 #. Resource IDs: (190)
 msgid "  Invalid date/time value."
@@ -55,7 +55,7 @@ msgstr "  Nieprawidłowa wartość daty/czasu."
 
 #. Resource IDs: (191)
 msgid "  Invalid field separator character found - only a single blank is allowed between fields."
-msgstr "Wykryto nieprawidłowy znak separatora - między polami może występować tylko pojedyncza luka."
+msgstr "  Wykryto nieprawidłowy znak separatora - między polami może występować tylko pojedyncza luka."
 
 #. Resource IDs: (190)
 #, c-format
@@ -70,7 +70,7 @@ msgstr "  Nieprawidłowa liczba zapisanych starych haseł %d."
 #. Resource IDs: (190)
 #, fuzzy
 msgid "  Invalid password length found."
-msgstr " Nieprawidłowa długość hasła."
+msgstr "  Nieprawidłowa długość hasła."
 
 #. Resource IDs: (190)
 #, c-format
@@ -80,7 +80,7 @@ msgstr "  Nieprawidłowa wartość statusu: %d"
 #. Resource IDs: (336)
 #, fuzzy
 msgid " 'Autotype'"
-msgstr "'Autouzupełnianie'"
+msgstr " 'Autouzupełnianie'"
 
 #. Resource IDs: (336)
 msgid " 'Creation Time'"
@@ -92,7 +92,7 @@ msgstr " 'DCA'"
 
 #. Resource IDs: (347)
 msgid " 'Group'"
-msgstr "'Grupa'"
+msgstr " 'Grupa'"
 
 #. Resource IDs: (336)
 msgid " 'Last Access Time'"
@@ -100,7 +100,7 @@ msgstr " 'Ostatnio otwarty'"
 
 #. Resource IDs: (336)
 msgid " 'Notes'"
-msgstr "'Notatki'"
+msgstr " 'Notatki'"
 
 #. Resource IDs: (356)
 msgid " 'Password Expiry Time Interval'"
@@ -109,12 +109,12 @@ msgstr " 'Czas wygaśnięcia hasła'"
 #. Resource IDs: (336)
 #, fuzzy
 msgid " 'Password Expiry Time'"
-msgstr "Termin wygaśnięcia hasła"
+msgstr " 'Termin wygaśnięcia hasła'"
 
 #. Resource IDs: (336)
 #, fuzzy
 msgid " 'Password History'"
-msgstr "'Historia Haseł'"
+msgstr " 'Historia Haseł'"
 
 #. Resource IDs: (336)
 #, fuzzy
@@ -128,12 +128,12 @@ msgstr " 'Polityka Haseł'"
 
 #. Resource IDs: (336)
 msgid " 'Password'"
-msgstr "'Hasło'"
+msgstr " 'Hasło'"
 
 #. Resource IDs: (336)
 #, fuzzy
 msgid " 'Record Modification Time'"
-msgstr "Data Modyfikacji Rekordu"
+msgstr " 'Data Modyfikacji Rekordu'"
 
 #. Resource IDs: (354)
 msgid " 'Run Command'"
@@ -141,15 +141,15 @@ msgstr " 'Uruchom polecenie'"
 
 #. Resource IDs: (347)
 msgid " 'Title'"
-msgstr "'Nazwa'"
+msgstr " 'Nazwa'"
 
 #. Resource IDs: (336)
 msgid " 'URL'"
-msgstr "'URL'"
+msgstr " 'URL'"
 
 #. Resource IDs: (347)
 msgid " 'User'"
-msgstr "'Użytkownik'"
+msgstr " 'Użytkownik'"
 
 #. Resource IDs: (358)
 msgid " 'email'"
@@ -1356,7 +1356,7 @@ msgstr "Alternatywny edytor notatek"
 #. Resource IDs: (1043)
 #, fuzzy
 msgid "Always keep Password Safe on top"
-msgstr " Password Safe zawsze na wierzchu"
+msgstr "Password Safe zawsze na wierzchu"
 
 #. Resource IDs: (314)
 msgid "Always on top"
