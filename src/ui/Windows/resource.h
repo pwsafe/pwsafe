@@ -725,6 +725,8 @@
 #define IDC_USEOWNSYMBOLS               1439
 #define IDC_OWNSYMBOLS                  1440
 #define IDC_STATIC_DEFAULTSYMBOLS       1441
+#define IDC_PWS_DEFAULTAUTOTYPE         1442
+#define IDC_DB_DEFAULTAUTOTYPE          1443
 
 // Next default values for new objects
 // 
@@ -732,7 +734,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        499
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1442
+#define _APS_NEXT_CONTROL_VALUE         1444
 #define _APS_NEXT_SYMED_VALUE           166
 #endif
 #endif

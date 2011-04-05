@@ -650,3 +650,4 @@
 #define IDS_EMBEDDEDRESOURCES           5841
 #define IDS_SYMBOLS                     5842
 #define IDS_COMPSYMBOLS                 5843
+#define IDS_NOTSET                      5844
