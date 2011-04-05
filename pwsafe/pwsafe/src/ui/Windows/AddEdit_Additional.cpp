@@ -119,6 +119,14 @@ BOOL CAddEdit_Additional::OnInitDialog()
 
   ModifyStyleEx (0, WS_EX_CONTROLPARENT);
 
+  CString cs_dats = PWSprefs::GetInstance()->
+                           GetPref(PWSprefs::DefaultAutotypeString).c_str();
+  if (cs_dats.IsEmpty())
+    cs_dats.LoadString(IDS_NOTSET);
+
+  GetDlgItem(IDC_PWS_DEFAULTAUTOTYPE)->SetWindowText(DEFAULT_AUTOTYPE);
+  GetDlgItem(IDC_DB_DEFAULTAUTOTYPE)->SetWindowText(cs_dats);
+
   if (M_uicaller() != IDS_ADDENTRY) {
     m_pToolTipCtrl = new CToolTipCtrl;
     if (!m_pToolTipCtrl->Create(this, TTS_BALLOON | TTS_NOPREFIX)) {
