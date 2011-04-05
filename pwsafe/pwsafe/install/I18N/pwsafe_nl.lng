@@ -9,13 +9,13 @@
 ; 2009 extended by Karlo Van der Gucht for multiple language use
 ; 2010 extended by Karlo Van der Gucht Danish language
 ; This script may be redistributed and/or modified under the Artistic
-; License 2.0 terms as available at 
+; License 2.0 terms as available at
 ; http://www.opensource.org/licenses/artistic-license-2.0.php
 ;
 ; This script is distributed AS IS.  All warranties are explicitly
 ; disclaimed, including, but not limited to, the implied warranties of
 ; MERCHANTABILITY and FITNESS FOR A PARTICULAR PURPOSE.
- 
+
 ;=================================================================
 
 ; RESERVE_TITLE "Choose Installation Type"
@@ -62,7 +62,7 @@ LangString DESC_DesktopShortcut ${LANG_DUTCH} "Maakt een snelkoppeling voor Pass
 
 ; DESC_UninstallMenu "Places a shortcut in the start menu to Uninstall Password Safe."
 LangString DESC_UninstallMenu ${LANG_DUTCH} "Maakt een snelkoppeling in het startmenu om Password Safe te verwijderen."
-  
+
 ; "LangString" (for "Function GreenOrRegular") are setup here because they cannot be defined in the function body
 ; TEXT_GC_TITLE "Installation Type"
 LangString TEXT_GC_TITLE ${LANG_DUTCH} "Installatietype"
@@ -96,9 +96,9 @@ LangString LANG_SELECT ${LANG_DUTCH} "Kies een taal voor de installatie"
 LangString LANGUAGE_SUPPORT ${LANG_DUTCH} "Taal support"
 LangString ENGLISH_SUPPORT ${LANG_DUTCH} "Engels"
 ; CHINESE_CN_SUPPORT "Chinese (Simplified)"
-LangString CHINESE_CN_SUPPORT ${LANG_NEW} "TRANSLATION"
+LangString CHINESE_CN_SUPPORT ${LANG_NEW} "en:Chinese (Simplified)"
 ; CHINESE_TW_SUPPORT "Chinese (Traditional)"
-LangString CHINESE_TW_SUPPORT ${LANG_NEW} "TRANSLATION"
+LangString CHINESE_TW_SUPPORT ${LANG_NEW} "en:Chinese (Traditional)"
 LangString GERMAN_SUPPORT ${LANG_DUTCH} "Duits"
 LangString SPANISH_SUPPORT ${LANG_DUTCH} "Spaans"
 LangString SWEDISH_SUPPORT ${LANG_DUTCH} "Zweeds"
@@ -109,7 +109,7 @@ LangString POLISH_SUPPORT ${LANG_DUTCH} "Pools"
 LangString ITALIAN_SUPPORT ${LANG_DUTCH} "Italiaans"
 LangString DANISH_SUPPORT ${LANG_DUTCH} "Deens"
 ; KOREAN_SUPPORT "Korean"
-LangString KOREAN_SUPPORT ${LANG_NEW} "TRANSLATION"
+LangString KOREAN_SUPPORT ${LANG_NEW} "en:Korean"
 
 ; LANG_PROGRAM "Program Language"
 LangString LANG_PROGRAM ${LANG_DUTCH} "Programma-taal"
