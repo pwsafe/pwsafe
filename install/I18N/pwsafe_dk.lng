@@ -9,13 +9,13 @@
 ; 2009 extended by Karlo Van der Gucht for multiple language use
 ; 2010 extended by Karlo Van der Gucht Danish language
 ; This script may be redistributed and/or modified under the Artistic
-; License 2.0 terms as available at 
+; License 2.0 terms as available at
 ; http://www.opensource.org/licenses/artistic-license-2.0.php
 ;
 ; This script is distributed AS IS.  All warranties are explicitly
 ; disclaimed, including, but not limited to, the implied warranties of
 ; MERCHANTABILITY and FITNESS FOR A PARTICULAR PURPOSE.
- 
+
 ;=================================================================
 
 ; RESERVE_TITLE "Choose Installation Type"
@@ -62,7 +62,7 @@ LangString DESC_DesktopShortcut ${LANG_DANISH} "Opretter en genvej til Password 
 
 ; DESC_UninstallMenu "Places a shortcut in the start menu to Uninstall Password Safe."
 LangString DESC_UninstallMenu ${LANG_DANISH} "Opretter en genvej i start menuen til Afinstallering af Password Safe."
-  
+
 ; "LangString" (for "Function GreenOrRegular") are setup here because they cannot be defined in the function body
 ; TEXT_GC_TITLE "Installation Type"
 LangString TEXT_GC_TITLE ${LANG_DANISH} "Installations Type"
@@ -92,33 +92,33 @@ LangString RUNNING_APPLICATION ${LANG_DANISH} "Afslut venligst alle kørende inst
 LangString LANG_INSTALL ${LANG_DANISH} "Installations Sprog"
 
 ; LANGUAGE_SUPPORT "Language Support"
-LangString LANGUAGE_SUPPORT ${LANG_DANISH} "TRANSLATION"
+LangString LANGUAGE_SUPPORT ${LANG_DANISH} "en:Language Support"
 ; ENGLISH_SUPPORT "English"
-LangString ENGLISH_SUPPORT ${LANG_DANISH} "TRANSLATION"
+LangString ENGLISH_SUPPORT ${LANG_DANISH} "en:English"
 ; CHINESE_CN_SUPPORT "Chinese (Simplified)"
-LangString CHINESE_CN_SUPPORT ${LANG_DANISH} "TRANSLATION"
+LangString CHINESE_CN_SUPPORT ${LANG_DANISH} "en:Chinese (Simplified)"
 ; CHINESE_TW_SUPPORT "Chinese (Traditional)"
-LangString CHINESE_TW_SUPPORT ${LANG_DANISH} "TRANSLATION"
+LangString CHINESE_TW_SUPPORT ${LANG_DANISH} "en:Chinese (Traditional)"
 ; GERMAN_SUPPORT "German"
-LangString GERMAN_SUPPORT ${LANG_DANISH} "TRANSLATION"
+LangString GERMAN_SUPPORT ${LANG_DANISH} "en:German"
 ; SPANISH_SUPPORT "Spanish"
-LangString SPANISH_SUPPORT ${LANG_DANISH} "TRANSLATION"
+LangString SPANISH_SUPPORT ${LANG_DANISH} "en:Spanish"
 ; SWEDISH_SUPPORT "Swedish"
-LangString SWEDISH_SUPPORT ${LANG_DANISH} "TRANSLATION"
+LangString SWEDISH_SUPPORT ${LANG_DANISH} "en:Swedish"
 ; DUTCH_SUPPORT "Dutch"
-LangString DUTCH_SUPPORT ${LANG_DANISH} "TRANSLATION"
+LangString DUTCH_SUPPORT ${LANG_DANISH} "en:Dutch"
 ; FRENCH_SUPPORT "French"
-LangString FRENCH_SUPPORT ${LANG_DANISH} "TRANSLATION"
+LangString FRENCH_SUPPORT ${LANG_DANISH} "en:French"
 ; RUSSIAN_SUPPORT "Russian"
-LangString RUSSIAN_SUPPORT ${LANG_DANISH} "TRANSLATION"
+LangString RUSSIAN_SUPPORT ${LANG_DANISH} "en:Russian"
 ; POLISH_SUPPORT "Polish"
-LangString POLISH_SUPPORT ${LANG_DANISH} "TRANSLATION"
+LangString POLISH_SUPPORT ${LANG_DANISH} "en:Polish"
 ; ITALIAN_SUPPORT "Italian"
-LangString ITALIAN_SUPPORT ${LANG_DANISH} "TRANSLATION"
+LangString ITALIAN_SUPPORT ${LANG_DANISH} "en:Italian"
 ; DANISH_SUPPORT "Danish"
-LangString DANISH_SUPPORT ${LANG_DANISH} "TRANSLATION"
+LangString DANISH_SUPPORT ${LANG_DANISH} "en:Danish"
 ; KOREAN_SUPPORT "Korean"
-LangString KOREAN_SUPPORT ${LANG_DANISH} "TRANSLATION"
+LangString KOREAN_SUPPORT ${LANG_DANISH} "en:Korean"
 
 ; LANG_SELECT "Please select the language for the installation"
 LangString LANG_SELECT ${LANG_DANISH} "Vælg venligst installations sprog"
