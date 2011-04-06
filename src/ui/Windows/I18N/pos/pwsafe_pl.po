@@ -2,6 +2,7 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# $Id$
 #
 #, fuzzy
 msgid ""
@@ -253,7 +254,7 @@ msgstr "%1 zawiera nieoczekiwany obiekt."
 #. Resource IDs: (3867)
 #, c-format
 msgid "%1 contains an incorrect path."
-msgstr "%1 zawiera nieprawidłową ścieżkę"
+msgstr "%1 zawiera nieprawidłową ścieżkę."
 
 #. Resource IDs: (3868)
 #, fuzzy, c-format
@@ -551,7 +552,7 @@ msgstr "Zakończ"
 
 #. Resource IDs: (1088)
 msgid "&Font:"
-msgstr "Czcionka"
+msgstr "Czcionka:"
 
 #. Resource IDs: (1025)
 msgid "&Generate"
@@ -603,7 +604,7 @@ msgstr "&Nowy"
 
 #. Resource IDs: (65535)
 msgid "&New "
-msgstr "&Nowy"
+msgstr "&Nowy "
 
 #. Resource IDs: (32104)
 msgid "&New Toolbar"
@@ -631,7 +632,7 @@ msgstr "&Otwórz"
 
 #. Resource IDs: (1024)
 msgid "&Open Another Database..."
-msgstr "&Otwórz Inną Bazę Danych"
+msgstr "&Otwórz Inną Bazę Danych..."
 
 #. Resource IDs: (32002)
 msgid "&Open..."
@@ -732,7 +733,7 @@ msgstr "&Pokaż"
 
 #. Resource IDs: (1090)
 msgid "&Size:"
-msgstr "&Wielkość"
+msgstr "&Wielkość:"
 
 #. Resource IDs: (32128)
 msgid "&Synchronize"
@@ -760,7 +761,7 @@ msgstr "Cofnij"
 
 #. Resource IDs: (1352, 65535)
 msgid "&Username:"
-msgstr "Nazwa użytkownika"
+msgstr "Nazwa użytkownika:"
 
 #. Resource IDs: (32123)
 msgid "&Validate"
@@ -1182,7 +1183,7 @@ msgstr "Kropka nie może być pierwszym znakiem w nazwie Grupy."
 
 #. Resource IDs: (326)
 msgid "A fatal error occured: "
-msgstr "Wystąpił błąd krytyczny:"
+msgstr "Wystąpił błąd krytyczny: "
 
 #. Resource IDs: (211)
 msgid "A filter was active. Export of data was restricted to include only those displayed."
@@ -1219,7 +1220,7 @@ msgstr ""
 #. Resource IDs: (3867)
 #, fuzzy, c-format
 msgid "Access to %1 was denied."
-msgstr "Dostęp do %1 został zabroniony"
+msgstr "Dostęp do %1 został zabroniony."
 
 #. Resource IDs: (350)
 #, fuzzy
@@ -1319,7 +1320,7 @@ msgstr "Wszystkie pliki (*.*)"
 #. Resource IDs: (339)
 #, fuzzy
 msgid "All available columns are being displayed."
-msgstr "Wszystkie dostępne kolumny są wyświetlane"
+msgstr "Wszystkie dostępne kolumny są wyświetlane."
 
 #. Resource IDs: (1333)
 msgid "Allow multiple instances (requires all instances to be restarted)"
@@ -1347,7 +1348,7 @@ msgstr "Alt+"
 
 #. Resource IDs: (65535)
 msgid "Alternate Browser "
-msgstr "Przeglądarka"
+msgstr "Przeglądarka "
 
 #. Resource IDs: (65535)
 msgid "Alternate Notes Text Editor"
@@ -1393,7 +1394,7 @@ msgstr "Nieprawidłowy uchwyt pliku został skojarzony z %1."
 
 #. Resource IDs: (3843)
 msgid "An unknown error has occurred."
-msgstr "Wystąpił nieznany błąd"
+msgstr "Wystąpił nieznany błąd."
 
 #. Resource IDs: (3867, 3868)
 #, c-format
@@ -1983,7 +1984,7 @@ msgstr "Potwierdź skopiowanie tego wpisu z bazy danych %s do bazy danych %s\n\n
 
 #. Resource IDs: (65535)
 msgid "Confirmation:"
-msgstr "Potwierdzenie"
+msgstr "Potwierdzenie:"
 
 #. Resource IDs: (335)
 #, c-format
@@ -2291,7 +2292,7 @@ msgstr "Odznacz niektóre wpisy"
 
 #. Resource IDs: (3859)
 msgid "Destination disk drive is full."
-msgstr "Dysk docelowy jest pełny"
+msgstr "Dysk docelowy jest pełny."
 
 #. Resource IDs: (337)
 #, fuzzy
@@ -2474,7 +2475,7 @@ msgstr ""
 
 #. Resource IDs: (203)
 msgid "Either or both of the Group/Title and Password columns are missing. No records imported."
-msgstr "Brak obydwu lub jednej z kolumn grupa/nazwa i hasło. Nie zaimportowano żadnych rekordów.  "
+msgstr "Brak obydwu lub jednej z kolumn grupa/nazwa i hasło. Nie zaimportowano żadnych rekordów."
 
 #. Resource IDs: (354)
 msgid "Either unable to load the necessary DLL, or it is the incorrect version, to support Autotype during Launch of a Browser or Run a command.\n\nAutotype for these functions is disabled."
@@ -2602,7 +2603,7 @@ msgstr "Wprowadź przykładowy tekst poniżej"
 #. Resource IDs: (336)
 #, fuzzy
 msgid "Entries in both databases but with differences:"
-msgstr "Wpisy istnieją w w obydwu bazach danych ale z różnicami"
+msgstr "Wpisy istnieją w w obydwu bazach danych ale z różnicami:"
 
 #. Resource IDs: (336)
 #, c-format
@@ -2702,7 +2703,7 @@ msgstr ""
 #. Resource IDs: (190)
 #, c-format
 msgid "Error in a Password History sub-field starting at position %d (within the History field): "
-msgstr "Błąd w pod-polu Historii Haseł na pozycji %d (w polu Historii):"
+msgstr "Błąd w pod-polu Historii Haseł na pozycji %d (w polu Historii): "
 
 #. Resource IDs: (354)
 msgid "Error parsing Run Command"
@@ -3682,7 +3683,7 @@ msgstr "Zablokuj"
 
 #. Resource IDs: (1077)
 msgid "Lock password database after "
-msgstr "Zablokuj bazę danych z hasłami po"
+msgstr "Zablokuj bazę danych z hasłami po "
 
 #. Resource IDs: (1026)
 msgid "Lock password database on minimize"
@@ -3727,7 +3728,7 @@ msgstr "Max."
 #. Resource IDs: (338)
 #, fuzzy
 msgid "Maximum number of backups kept using incremented number suffix\nmust be between 1 and 999."
-msgstr "Maksymalna liczba kopii zapasowych używa wartości przyrostowych między 1 i 999.\n"
+msgstr "Maksymalna liczba kopii zapasowych używa wartości przyrostowych\nz zakresu pomiędzy 1 i 999."
 
 #. Resource IDs: (338)
 #, c-format
@@ -3942,7 +3943,7 @@ msgstr "Nie zaznaczono pól do porównania!"
 #. Resource IDs: (348)
 #, fuzzy
 msgid "No fields selected to filter the display!"
-msgstr "Nie zaznaczono pól do filtrowania"
+msgstr "Nie zaznaczono pól do filtrowania!"
 
 #. Resource IDs: (360)
 msgid "No fields selected to synchronize!"
@@ -4136,7 +4137,7 @@ msgstr "Otwórz"
 
 #. Resource IDs: (65535)
 msgid "Open Password Database:"
-msgstr "Otwórz bazę danych z hasłami"
+msgstr "Otwórz bazę danych z hasłami:"
 
 #. Resource IDs: (1086)
 msgid "Open as read-only"
@@ -4319,7 +4320,7 @@ msgstr "Hasło [Pole Wymagane]"
 
 #. Resource IDs: (341)
 msgid "Password implies this is an alias entry, but "
-msgstr "Hasło wskazuje, że wpis jest aliasem, ale"
+msgstr "Hasło wskazuje, że wpis jest aliasem, ale "
 
 #. Resource IDs: (342)
 msgid "Password implies this is an alias entry, but specifies a base entry with no title.\r\nA title is mandatory for every entry."
@@ -4413,7 +4414,7 @@ msgstr "Wybierz plik tekstowy KeePass do zaimportowania"
 
 #. Resource IDs: (336)
 msgid "Please Choose a Name for this Backup:"
-msgstr "Wybierz nazwę dla tej kopii bezpieczeństwa"
+msgstr "Wybierz nazwę dla tej kopii bezpieczeństwa:"
 
 #. Resource IDs: (334)
 msgid "Please Choose a Text File to Import"
@@ -4442,7 +4443,7 @@ msgstr ""
 #. Resource IDs: (353)
 #, c-format
 msgid "Please confirm you wish to delete the %s filter %s?"
-msgstr "Potwierdź skasowanie %s filtra %s."
+msgstr "Potwierdź: Czy chcesz skasować %s filtra %s?"
 
 #. Resource IDs: (330)
 #, fuzzy
@@ -4496,7 +4497,7 @@ msgstr "Wybierz tekst"
 
 #. Resource IDs: (337)
 msgid "Please specify the destination location to contain all backups."
-msgstr "Wybierz folder docelowy dla kopii zapasowych"
+msgstr "Wybierz folder docelowy dla kopii zapasowych."
 
 #. Resource IDs: (345)
 #, c-format
@@ -4927,7 +4928,7 @@ msgstr "Bezpieczeństwo"
 #. Resource IDs: (65535)
 #, fuzzy
 msgid "See LICENSE for open source details."
-msgstr "Zobacz LICENCJĘ po szczególy open source"
+msgstr "Zobacz LICENCJĘ po szczególy open source."
 
 #. Resource IDs: (208)
 msgid "See Password History filters"
@@ -5507,7 +5508,7 @@ msgstr ""
 
 #. Resource IDs: (204)
 msgid "The following columns will be processed: "
-msgstr "Następujące kolumny zostaną przetworzone:"
+msgstr "Następujące kolumny zostaną przetworzone: "
 
 #. Resource IDs: (205)
 msgid "The following entries had an invalid Password History.  This has been rebuilt with available data.  There may be some loss of history."
@@ -5928,7 +5929,7 @@ msgstr ""
 
 #. Resource IDs: (329)
 msgid "Unknown            "
-msgstr "Nieznany"
+msgstr "Nieznany            "
 
 #. Resource IDs: (350)
 msgid "Unknown fields"
@@ -6727,7 +6728,7 @@ msgstr "jako domyślna nazwa użytkownika"
 
 #. Resource IDs: (190)
 msgid "autotype:"
-msgstr "autouzupełnianie"
+msgstr "autouzupełnianie:"
 
 #. Resource IDs: (207)
 msgid "before"
@@ -6971,7 +6972,7 @@ msgstr "nie ma wpisu w katalogu głównym z nazwą=%s i nazwą użytkownika=%s."
 #. Resource IDs: (342)
 #, c-format
 msgid "no entry exists with group=%s, title=%s and empty username."
-msgstr "nie ma wpisu z grupą=%s, nazwą=%s i pustą nazwą użytkownika"
+msgstr "nie ma wpisu z grupą=%s, nazwą=%s i pustą nazwą użytkownika."
 
 #. Resource IDs: (342)
 #, c-format
@@ -6986,7 +6987,7 @@ msgstr "nie ma wpisu z nazwą=%s i nazwą użytkownika=%s lub z grupą=%s i nazw
 #. Resource IDs: (342)
 #, c-format
 msgid "no entry exists with title=%s."
-msgstr "nie ma wpisu o nazwie=%s"
+msgstr "nie ma wpisu o nazwie=%s."
 
 #. Resource IDs: (204)
 #, c-format
