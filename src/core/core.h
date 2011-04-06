@@ -4,7 +4,6 @@
 
 #define IDSC_PASSWORDTOOSHORT           3000
 #define IDSC_PASSWORDPOOR               3001
-#define IDSC_EXPORTHEADER               3002
 #define IDSC_FLDNMGROUPTITLE            3003
 #define IDSC_FLDNMUSERNAME              3004
 #define IDSC_FLDNMPASSWORD              3005
@@ -48,7 +47,6 @@
 #define IDSC_XMLVALIDATION              3045
 #define IDSC_XMLIMPORT                  3046
 #define IDSC_NOMSXMLREADER              3047
-#define IDSC_XMLHEADER                  3048
 #define IDSC_XMLFILEERROR               3049
 #define IDSC_XMLLOADFAILURE             3050
 #define IDSC_XMLSAVEFAILURE             3051

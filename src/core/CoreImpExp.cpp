@@ -45,6 +45,8 @@
 #include <algorithm>
 #include <set>
 
+const TCHAR *EXPORTHEADER  = _T("Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tPassword Expiry Interval\tRecord Modified Time\tPassword Policy\tHistory\tRun Command\tDCA\te-mail\tProtected\tSymbols\tNotes");
+
 using namespace std;
 
 // hide w_char/char differences where possible:
@@ -302,8 +304,7 @@ int PWScore::WritePlaintextFile(const StringX &filename,
 
   if (bsFields.count() == bsFields.size()) {
     // all fields to be exported, use pre-built header
-    StringX exphdr;
-    LoadAString(exphdr, IDSC_EXPORTHEADER);
+    StringX exphdr = EXPORTHEADER;
     conv.ToUTF8(exphdr.c_str(), utf8, utf8Len);
     ofs.write(reinterpret_cast<const char *>(utf8), utf8Len);
     ofs << endl;
@@ -847,8 +848,8 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
 
   CItemData ci_temp;
   vector<string> vs_Header;
-  stringT cs_hdr;
-  LoadAString(cs_hdr, IDSC_EXPORTHEADER);
+  stringT cs_hdr = EXPORTHEADER;
+
   const unsigned char *hdr;
   size_t hdrlen;
   conv.ToUTF8(cs_hdr.c_str(), hdr, hdrlen);
