@@ -97,7 +97,7 @@ End If
 
 If (DO_ALL = True Or DO_COUNTRY = "KR") Then
   objStdOut.WriteLine " Creating Korean Language DLL"
-  Call DoI18N("kr", "0x0412", "KO_KR", "KR")
+  Call DoI18N("kr", "0x0412", "KO_KR", "KO")
   DoneSome = true
 End If
 
