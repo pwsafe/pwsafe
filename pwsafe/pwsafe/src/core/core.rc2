@@ -24,7 +24,6 @@ END
 
 STRINGTABLE
 BEGIN
-  IDSC_EXPORTHEADER      "Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tPassword Expiry Interval\tRecord Modified Time\tPassword Policy\tHistory\tRun Command\tDCA\te-mail\tProtected\tNotes"
   IDSC_FLDNMGROUPTITLE   "Group/Title"
   IDSC_FLDNMUUID         "UUID"
   IDSC_FLDNMUSERNAME     "Username"
@@ -125,7 +124,6 @@ BEGIN
   IDCS_XERCESOUTOFMEMORY  "OutOfMemoryException."
   IDSC_XMLVALIDATION      "validation"
   IDSC_XMLIMPORT          "import"
-  IDSC_XMLHEADER          "<?xml version=""1.0"" encoding=""UTF-8"" standalone=""yes""?>\n<Pwsafe_Settings></Pwsafe_Settings>"
   IDSC_XMLFILEERROR       "Configuration file error:\n%s\n%s\nline %d column %d"
   IDSC_XMLLOADFAILURE     "Unable to load configuration file"
   IDSC_XMLSAVEFAILURE     "Unable to save configuration file"

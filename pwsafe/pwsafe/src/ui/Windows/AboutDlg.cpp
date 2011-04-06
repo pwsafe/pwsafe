@@ -151,24 +151,27 @@ void CAboutDlg::CheckNewVer()
   m_newVerStatus.LoadString(IDS_TRYING2CONTACT_SERVER);
   UpdateData(FALSE);
   std::wstring latest;
+  wchar_t *html_redfont = L"<b><font color=\"red\">";
+  wchar_t *html_greenfont = L"<b><font color=\"green\">";
+  wchar_t *html_endfont = L"</font></b>";
   switch (CheckLatestVersion(latest)) {
     case CheckVersion::CANT_CONNECT:
-      m_newVerStatus.LoadString(IDS_CANT_CONTACT_SERVER);
+      m_newVerStatus.Format(IDS_CANT_CONTACT_SERVER, html_redfont, html_endfont);
       break;
     case CheckVersion::UP2DATE:
-      m_newVerStatus.LoadString(IDS_UP2DATE);
+      m_newVerStatus.Format(IDS_UP2DATE, html_greenfont, html_endfont);
       break;
     case CheckVersion::NEWER_AVAILABLE:
       {
       CString newer;
       newer.Format(SysInfo::IsUnderU3() ? IDS_NEWER_AVAILABLE_U3 : IDS_NEWER_AVAILABLE,
                    m_appversion, latest.c_str());
-      m_newVerStatus.LoadString(IDS_NEWER_AVAILABLE_SHORT);
+      m_newVerStatus.Format(IDS_NEWER_AVAILABLE_SHORT, html_redfont, html_endfont);
       gmb.MessageBox(newer, CString(MAKEINTRESOURCE(IDS_NEWER_CAPTION)), MB_ICONEXCLAMATION);
       break;
       }
     case CheckVersion::CANT_READ:
-      m_newVerStatus.LoadString(IDS_CANT_READ_VERINFO);
+      m_newVerStatus.Format(IDS_CANT_READ_VERINFO, html_redfont, html_endfont);
       break;
     default:
       break;
