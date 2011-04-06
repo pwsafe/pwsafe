@@ -357,6 +357,26 @@ msgstr "%s, 주제=\"%s\", 사용자=\"%s\" 가 이미 데이터베이스 혹은
 msgid "%s. Either try to save database with another name or exit without saving."
 msgstr "%s. 데이터베이스를 다른 이름으로 저장하거나, 저장하지 말고 종료해주십시오."
 
+#. Resource IDs: (343)
+#, c-format
+msgid "%sA newer release is available.%s"
+msgstr ""
+
+#. Resource IDs: (343)
+#, c-format
+msgid "%sCould not read server version data.%s"
+msgstr ""
+
+#. Resource IDs: (342)
+#, c-format
+msgid "%sCouldn't contact server.%s"
+msgstr ""
+
+#. Resource IDs: (343)
+#, c-format
+msgid "%sThis is the latest release!%s"
+msgstr ""
+
 #. Resource IDs: (333)
 #, c-format
 msgid "%s\n\nCould not open file for reading!"
@@ -1132,30 +1152,6 @@ msgstr "<"
 #. Resource IDs: (1157)
 msgid "<<"
 msgstr "<<"
-
-#. Resource IDs: (191)
-msgid "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<Pwsafe_Settings></Pwsafe_Settings>"
-msgstr "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<Pwsafe_Settings></Pwsafe_Settings>"
-
-#. Resource IDs: (343)
-msgid "<b><font color=\"green\">This is the latest release!</font></b>"
-msgstr "<b><font color=\"green\">가장 최신의 버전입니다!</font></b>"
-
-#. Resource IDs: (343)
-msgid "<b><font color=\"red\">A newer release is available.</font></b>"
-msgstr "<b><font color=\"red\">새로운 버전을 이용할 수 있습니다.</font></b>"
-
-#. Resource IDs: (343)
-msgid "<b><font color=\"red\">Could not read server version data.</font></b>"
-msgstr "<b><font color=\"red\">서버에서 버전 정보을 읽을 수 없습니다.</font></b>"
-
-#. Resource IDs: (342)
-msgid "<b><font color=\"red\">Couldn't contact server.</font></b>"
-msgstr "<b><font color=\"red\">서버에 연결할 수 없습니다.</font></b>"
-
-#. Resource IDs: (360)
-msgid "<b><font color=\"red\">WARNING</font></b> If you continue, fields will be updated in your existing database from your selected input database.  The OK button on the password entry dialog for your input database will not be enabled <b>until you have accessed the Advanced dialog to confirm what you will be updating.</b>"
-msgstr "<b><font color=\"red\">경고</font></b> 계속 진행하면, 필드는 당신이 선택했던 입력 데이터베이스로부터 현재의 데이터베이스로 갱신 될 것입니다.  <b>추가적인 메뉴에 접근하여 당신이 갱신할 대상을 확실하게 알기 전 까지</b>당신의 입력 데이터베이스의 확인 버튼을 사용할 수 없습니다."
 
 #. Resource IDs: (1154)
 msgid ">"
@@ -2187,6 +2183,10 @@ msgid "Database Unique ID:"
 msgstr "데이터베이스 고유 번호:"
 
 #. Resource IDs: (65535)
+msgid "Database default:"
+msgstr ""
+
+#. Resource IDs: (65535)
 msgid "Database format:"
 msgstr "데이터베이스 버전:"
 
@@ -3056,10 +3056,6 @@ msgstr "그룹 복사됨"
 #. Resource IDs: (327)
 msgid "Group/Title"
 msgstr "그룹/주제"
-
-#. Resource IDs: (188)
-msgid "Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tPassword Expiry Interval\tRecord Modified Time\tPassword Policy\tHistory\tRun Command\tDCA\te-mail\tProtected\tNotes"
-msgstr "그룹/제목\t사용자 이름\t비밀번호\tURL\t자동 입력\t생성 시간\t비밀번호 수정 시간\t최종 접근 시간\t비밀번호 만료 일자\t비밀번호 만료 간격\t기록 수정 시간\t비밀번호 정책\t내역\t명령 실행\tDCA\t전자 우편\t보호 내역\t노트"
 
 #. Resource IDs: (1350, 65535)
 msgid "Group:"
@@ -3947,6 +3943,10 @@ msgstr "Norwegian"
 msgid "Norwegian with Sami"
 msgstr "Norwegian with Sami"
 
+#. Resource IDs: (366)
+msgid "Not Set"
+msgstr ""
+
 #. Resource IDs: (3857)
 msgid "Not all of the system registry entries (or INI file) were removed."
 msgstr "시스템 레지스트리 항목(혹은 INI)파일이 완전히 삭제되지 않았습니다."
@@ -4285,6 +4285,10 @@ msgstr "비밀번호가 반드시 대소문자를 혼합하고, 최소한 1개�
 #, c-format
 msgid "PasswordSafe V%d.%d.%d (Build %s) has had an error."
 msgstr "PasswordSafe V%d.%d.%d (빌드 %s) 가 에러를 가지고 있습니다."
+
+#. Resource IDs: (65535)
+msgid "PasswordSafe default:"
+msgstr ""
 
 #. Resource IDs: (364)
 msgid "PasswordSafe: Entries exist with expired or about to be expired passwords"
@@ -5470,13 +5474,13 @@ msgstr "이전 보안 비밀번호가 일치하지 않습니다"
 
 #. Resource IDs: (333)
 #, c-format
-msgid "The original database, \"%s\", is in pre-3.0 format. It will be unchanged.\nYour changes will be written as \"%s\" in the new format, which is unusable by old versions of PasswordSafe. To save your changes in the old format, use the \"File->Export To-> Old (1.x or 2) format\" command."
-msgstr "원본 데이터베이스 \"%s\" 가 버전 3.0 이전의 형식입니다. 이것은 바뀌지 않을 것입니다.\n새로운 변경사항은 \"%s\"의 이름으로 이전 Password Safe 버전에서 사용할 수 없는 새 형식으로 저장됩니다. 이전 형식으로 저장하기를 원하신다면 \"파일->내보내기-> 이전(1.x 혹은 2) 형식\" 명령을 이용해 주십시오."
+msgid "The original database, \"%s\", is in pre-3.0 format. It will be unchanged.\nYour changes will be written as \"%s\" in the new format, which is unusable by old versions of PasswordSafe. To save your changes in the old format, use the \"File->Export To->Old (1.x or 2) format\" command."
+msgstr ""
 
 #. Resource IDs: (333)
 #, c-format
-msgid "The original database, \"%s\", is in pre-3.0 format. The data will now be written in the new format, which is unusable by old versions of PasswordSafe. To save the data in the old format, use the \"File->Export To-> Old (1.x or 2) format\" command."
-msgstr "원본 데이터베이스 \"%s\" 가 버전 3.0 이전의 형식입니다. 이 데이터는 이전 Password Safe 버전에서 사용할 수 없는 새 형식으로 저장됩니다. 이전 형식으로 저장하기를 원하신다면 \"파일->내보내기-> 이전(1.x 혹은 2) 형식\" 명령을 이용해 주십시오."
+msgid "The original database, \"%s\", is in pre-3.0 format. The data will now be written in the new format, which is unusable by old versions of PasswordSafe. To save the data in the old format, use the \"File->Export To->Old (1.x or 2) format\" command."
+msgstr ""
 
 #. Resource IDs: (342)
 #, c-format

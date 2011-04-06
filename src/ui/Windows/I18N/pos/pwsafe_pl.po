@@ -2,7 +2,6 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# $Id$
 #
 #, fuzzy
 msgid ""
@@ -10,8 +9,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2011-03-24\n"
-"Last-Translator: Michał Niklas <michal.niklas@wp.pl>\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -365,6 +364,26 @@ msgstr "%s, nazwa=\"%s\", użytkownik=\"%s\" już jest w Twojej bazie danych lub
 #, c-format
 msgid "%s. Either try to save database with another name or exit without saving."
 msgstr "%s. Zapisz bazę danych używając innej nazwy lub wyjdź bez zapisywania danych."
+
+#. Resource IDs: (343)
+#, c-format
+msgid "%sA newer release is available.%s"
+msgstr ""
+
+#. Resource IDs: (343)
+#, c-format
+msgid "%sCould not read server version data.%s"
+msgstr ""
+
+#. Resource IDs: (342)
+#, c-format
+msgid "%sCouldn't contact server.%s"
+msgstr ""
+
+#. Resource IDs: (343)
+#, c-format
+msgid "%sThis is the latest release!%s"
+msgstr ""
 
 #. Resource IDs: (333)
 #, fuzzy, c-format
@@ -1144,31 +1163,6 @@ msgstr "<"
 msgid "<<"
 msgstr "<<"
 
-#. Resource IDs: (191)
-#, fuzzy
-msgid "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<Pwsafe_Settings></Pwsafe_Settings>"
-msgstr "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<Pwsafe_Settings></Pwsafe_Settings>"
-
-#. Resource IDs: (343)
-msgid "<b><font color=\"green\">This is the latest release!</font></b>"
-msgstr "<b><font color=\"green\">To jest najnowsza wersja!</font></b>"
-
-#. Resource IDs: (343)
-msgid "<b><font color=\"red\">A newer release is available.</font></b>"
-msgstr "<b><font color=\"red\">Nowa wersja jest dostępna.</font></b>"
-
-#. Resource IDs: (343)
-msgid "<b><font color=\"red\">Could not read server version data.</font></b>"
-msgstr "<b><font color=\"red\">Nie można odczytać danych o wersji z serwera</font></b>"
-
-#. Resource IDs: (342)
-msgid "<b><font color=\"red\">Couldn't contact server.</font></b>"
-msgstr "<b><font color=\"red\">Nie można połączyć się z serwerem.</font></b>"
-
-#. Resource IDs: (360)
-msgid "<b><font color=\"red\">WARNING</font></b> If you continue, fields will be updated in your existing database from your selected input database.  The OK button on the password entry dialog for your input database will not be enabled <b>until you have accessed the Advanced dialog to confirm what you will be updating.</b>"
-msgstr "<b><font color=\"red\">OSTRZEŻENIE</font></b> Jeśli kontynuujesz, pola w istniejącej bazie danych będą uaktualnione danymi z wybranej bazy danych.  Przycisk OK na dialogach wpisów bazy wejściowej nie będa dostępne <b>dopóki nie zatwierdzisz w dialogu zaawansowanym danych które uaktualniasz.</b>"
-
 #. Resource IDs: (1154)
 msgid ">"
 msgstr ">"
@@ -1709,6 +1703,10 @@ msgstr "Uwzględniaj wielkość liter"
 msgid "Change &Font"
 msgstr "Zmień &font"
 
+#. Resource IDs: (32158)
+msgid "Change &Language"
+msgstr ""
+
 #. Resource IDs: (1414)
 msgid "Change Base"
 msgstr "Zmień bazę"
@@ -2214,6 +2212,10 @@ msgstr ""
 #, fuzzy
 msgid "Database Unique ID:"
 msgstr "ID Bazy Danych:"
+
+#. Resource IDs: (65535)
+msgid "Database default:"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Database format:"
@@ -3105,10 +3107,6 @@ msgstr ""
 #. Resource IDs: (327)
 msgid "Group/Title"
 msgstr "Grupa/Nazwa"
-
-#. Resource IDs: (188)
-msgid "Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tPassword Expiry Interval\tRecord Modified Time\tPassword Policy\tHistory\tRun Command\tDCA\te-mail\tProtected\tNotes"
-msgstr "Grupa/Nazwa\tNazwa użytkownika\tHasło\tURL\tAutouzupełnianie\tCzas utworzenia\tCzas zmiany hasła\tCzas ostatniego dostępu\tData wygaśnięcia hasła\tCzas wygasania hasła\tData zamiany rekordu\tUstawienia hasła\tHistoria\tKomenda\tDCA\te-mail\tChronione\tNotes"
 
 #. Resource IDs: (1350, 65535)
 msgid "Group:"
@@ -4012,6 +4010,10 @@ msgstr ""
 msgid "Norwegian with Sami"
 msgstr ""
 
+#. Resource IDs: (366)
+msgid "Not Set"
+msgstr ""
+
 #. Resource IDs: (3857)
 msgid "Not all of the system registry entries (or INI file) were removed."
 msgstr "Nie wszystkie wpisy w rejestrze (lub pliku INI) zostały usunięte."
@@ -4357,6 +4359,10 @@ msgstr "W haśle powinny występować wielki i małe litery, przynajmnej jedna c
 #. Resource IDs: (358)
 #, c-format
 msgid "PasswordSafe V%d.%d.%d (Build %s) has had an error."
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "PasswordSafe default:"
 msgstr ""
 
 #. Resource IDs: (364)
@@ -5559,13 +5565,13 @@ msgstr "Stare hasło jest niepoprawne"
 
 #. Resource IDs: (333)
 #, c-format
-msgid "The original database, \"%s\", is in pre-3.0 format. It will be unchanged.\nYour changes will be written as \"%s\" in the new format, which is unusable by old versions of PasswordSafe. To save your changes in the old format, use the \"File->Export To-> Old (1.x or 2) format\" command."
-msgstr "Oryginalna baza danych, \"%s\", jest w formacie przed-3.0. Pozostanie niezmieniona.\nZmiany zostaną zapisane jako \"%s\" w nowym formacie, którego nie używają starsze wersje PasswordSafe. Żeby zapisać dane w starym formacie użyj menu \"Plik->Eksportuj do-> Stary (1.x or 2) format\"."
+msgid "The original database, \"%s\", is in pre-3.0 format. It will be unchanged.\nYour changes will be written as \"%s\" in the new format, which is unusable by old versions of PasswordSafe. To save your changes in the old format, use the \"File->Export To->Old (1.x or 2) format\" command."
+msgstr ""
 
 #. Resource IDs: (333)
 #, c-format
-msgid "The original database, \"%s\", is in pre-3.0 format. The data will now be written in the new format, which is unusable by old versions of PasswordSafe. To save the data in the old format, use the \"File->Export To-> Old (1.x or 2) format\" command."
-msgstr "Oryginalna baza danych, \"%s\", jest w formacie przed-3.0. Dane zostaną zapisane w nowym formacie, którego nie używają starsze wersje PasswordSafe. Żeby zapisać dane w starym formacie użyj menu \"Plik->Eksportuj do-> Stary (1.x or 2) format\"."
+msgid "The original database, \"%s\", is in pre-3.0 format. The data will now be written in the new format, which is unusable by old versions of PasswordSafe. To save the data in the old format, use the \"File->Export To->Old (1.x or 2) format\" command."
+msgstr ""
 
 #. Resource IDs: (342)
 #, c-format
@@ -7108,3 +7114,4 @@ msgstr "w przeciągu %d dni"
 #. Resource IDs: (8004)
 msgid "xxxxxx"
 msgstr "xxxxxx"
+
