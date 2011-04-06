@@ -357,6 +357,26 @@ msgstr "%s, Titel=\"%s\", Användare=\"%s\" finns redan i din databas eller i im
 msgid "%s. Either try to save database with another name or exit without saving."
 msgstr "%s. Försök antingen spara databasen med ett annat namn eller avsluta utan att spara."
 
+#. Resource IDs: (343)
+#, c-format
+msgid "%sA newer release is available.%s"
+msgstr ""
+
+#. Resource IDs: (343)
+#, c-format
+msgid "%sCould not read server version data.%s"
+msgstr ""
+
+#. Resource IDs: (342)
+#, c-format
+msgid "%sCouldn't contact server.%s"
+msgstr ""
+
+#. Resource IDs: (343)
+#, c-format
+msgid "%sThis is the latest release!%s"
+msgstr ""
+
 #. Resource IDs: (333)
 #, c-format
 msgid "%s\n\nCould not open file for reading!"
@@ -1132,30 +1152,6 @@ msgstr "<"
 #. Resource IDs: (1157)
 msgid "<<"
 msgstr "<<"
-
-#. Resource IDs: (191)
-msgid "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<Pwsafe_Settings></Pwsafe_Settings>"
-msgstr "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<Pwsafe_Settings></Pwsafe_Settings>"
-
-#. Resource IDs: (343)
-msgid "<b><font color=\"green\">This is the latest release!</font></b>"
-msgstr "<b><font color=\"green\">Detta är den senaste versionen!</font></b>"
-
-#. Resource IDs: (343)
-msgid "<b><font color=\"red\">A newer release is available.</font></b>"
-msgstr "<b><font color=\"red\">En senare version finns tillgänglig.</font></b>"
-
-#. Resource IDs: (343)
-msgid "<b><font color=\"red\">Could not read server version data.</font></b>"
-msgstr "<b><font color=\"red\">Kunde inte läsa serverns versionsdata.</font></b>"
-
-#. Resource IDs: (342)
-msgid "<b><font color=\"red\">Couldn't contact server.</font></b>"
-msgstr "<b><font color=\"red\">Kunde inte kontakta servern.</font></b>"
-
-#. Resource IDs: (360)
-msgid "<b><font color=\"red\">WARNING</font></b> If you continue, fields will be updated in your existing database from your selected input database.  The OK button on the password entry dialog for your input database will not be enabled <b>until you have accessed the Advanced dialog to confirm what you will be updating.</b>"
-msgstr "<b><font color=\"red\">WARNING</font></b> Om du fortsätter, kommer fält i din nuvarande databas att uppdateras från din valda indatabas. OK-knappen på lösenordsmenyn till din indatabas kommer inte att vara tillgänglig <b>förrän du har öppnat den avancerade menyn för att bekräfta vad du skall uppdatera.</b>"
 
 #. Resource IDs: (1154)
 msgid ">"
@@ -2187,6 +2183,10 @@ msgid "Database Unique ID:"
 msgstr "Databasens unika ID:"
 
 #. Resource IDs: (65535)
+msgid "Database default:"
+msgstr ""
+
+#. Resource IDs: (65535)
 msgid "Database format:"
 msgstr "Databasformat:"
 
@@ -3056,10 +3056,6 @@ msgstr "Gruppen kopierad"
 #. Resource IDs: (327)
 msgid "Group/Title"
 msgstr "Grupp/Titel"
-
-#. Resource IDs: (188)
-msgid "Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tPassword Expiry Interval\tRecord Modified Time\tPassword Policy\tHistory\tRun Command\tDCA\te-mail\tProtected\tNotes"
-msgstr "Grupp/Titel\tAnvändarnamn\tLösenord\tURL\tAutoskriv\tSkapat den\tLösenordets ändringstidpunkt\tSenast använt den\tLösenordets utgångsdatum\tLösenordets utgångsperiod\tRegistreringens ändringstidpunkt\tLösenordspolicy\tHistorik\tKörkommande\tDCA\te-post\tSkyddad\tNoteringar"
 
 #. Resource IDs: (1350, 65535)
 msgid "Group:"
@@ -3947,6 +3943,10 @@ msgstr "Norskt"
 msgid "Norwegian with Sami"
 msgstr "Norskt med Samiska"
 
+#. Resource IDs: (366)
+msgid "Not Set"
+msgstr ""
+
 #. Resource IDs: (3857)
 msgid "Not all of the system registry entries (or INI file) were removed."
 msgstr "Inte alla systemets registerposter (eller INI-fil) togs bort."
@@ -4285,6 +4285,10 @@ msgstr "Lösenordet borde bestå av blandade tecken med åtminståne en siffra e
 #, c-format
 msgid "PasswordSafe V%d.%d.%d (Build %s) has had an error."
 msgstr "PasswordSafe V%d.%d.%d (Build %s) har orsakat ett fel."
+
+#. Resource IDs: (65535)
+msgid "PasswordSafe default:"
+msgstr ""
 
 #. Resource IDs: (364)
 msgid "PasswordSafe: Entries exist with expired or about to be expired passwords"
@@ -5470,13 +5474,13 @@ msgstr "Den gamla Safe-nyckeln är felaktig"
 
 #. Resource IDs: (333)
 #, c-format
-msgid "The original database, \"%s\", is in pre-3.0 format. It will be unchanged.\nYour changes will be written as \"%s\" in the new format, which is unusable by old versions of PasswordSafe. To save your changes in the old format, use the \"File->Export To-> Old (1.x or 2) format\" command."
-msgstr "Den nuvarande databasen, \"%s\", har ett  före 3.0-format. Den kommer inte att ändras.\nDina ändringar kommer att sparas som \"%s\" i det nya formatet, som inte kan användas av gamla versioner av PasswordSafe. För att spara dina ändringar i det gamla formatet, använd kommandot \"Arkiv->Exportera till->1.x or 2 formatet\"."
+msgid "The original database, \"%s\", is in pre-3.0 format. It will be unchanged.\nYour changes will be written as \"%s\" in the new format, which is unusable by old versions of PasswordSafe. To save your changes in the old format, use the \"File->Export To->Old (1.x or 2) format\" command."
+msgstr ""
 
 #. Resource IDs: (333)
 #, c-format
-msgid "The original database, \"%s\", is in pre-3.0 format. The data will now be written in the new format, which is unusable by old versions of PasswordSafe. To save the data in the old format, use the \"File->Export To-> Old (1.x or 2) format\" command."
-msgstr "Den nuvarande databasen, \"%s\", har ett före 3.0-format. Data kommer inte att skrivas i det nya formatet, som inte kan användas av äldre versioner av PasswordSafe. För att spara data i det äldre formatet används kommandot \"Arkiv->Exportera till->1.x or 2 formatet\"."
+msgid "The original database, \"%s\", is in pre-3.0 format. The data will now be written in the new format, which is unusable by old versions of PasswordSafe. To save the data in the old format, use the \"File->Export To->Old (1.x or 2) format\" command."
+msgstr ""
 
 #. Resource IDs: (342)
 #, c-format

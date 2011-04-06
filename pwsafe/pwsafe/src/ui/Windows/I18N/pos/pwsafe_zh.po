@@ -357,6 +357,26 @@ msgstr "%s, 标题=“%s”，用户=“%s”已存在你的数据库或导入�
 msgid "%s. Either try to save database with another name or exit without saving."
 msgstr "%s. 选择尝试保存数据库为其它名称或退出不保存！"
 
+#. Resource IDs: (343)
+#, c-format
+msgid "%sA newer release is available.%s"
+msgstr ""
+
+#. Resource IDs: (343)
+#, c-format
+msgid "%sCould not read server version data.%s"
+msgstr ""
+
+#. Resource IDs: (342)
+#, c-format
+msgid "%sCouldn't contact server.%s"
+msgstr ""
+
+#. Resource IDs: (343)
+#, c-format
+msgid "%sThis is the latest release!%s"
+msgstr ""
+
 #. Resource IDs: (333)
 #, c-format
 msgid "%s\n\nCould not open file for reading!"
@@ -1132,30 +1152,6 @@ msgstr "<"
 #. Resource IDs: (1157)
 msgid "<<"
 msgstr "<<"
-
-#. Resource IDs: (191)
-msgid "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<Pwsafe_Settings></Pwsafe_Settings>"
-msgstr "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<Pwsafe_Settings></Pwsafe_Settings>"
-
-#. Resource IDs: (343)
-msgid "<b><font color=\"green\">This is the latest release!</font></b>"
-msgstr "<b><font color=\"green\">已经为最新版本！</font></b>"
-
-#. Resource IDs: (343)
-msgid "<b><font color=\"red\">A newer release is available.</font></b>"
-msgstr "<b><font color=\"red\">发现有新版本可用！</font></b>"
-
-#. Resource IDs: (343)
-msgid "<b><font color=\"red\">Could not read server version data.</font></b>"
-msgstr "<b><font color=\"red\">无法读取服务器版本数据！</font></b>"
-
-#. Resource IDs: (342)
-msgid "<b><font color=\"red\">Couldn't contact server.</font></b>"
-msgstr "<b><font color=\"red\">未能连接服务器！</font></b>"
-
-#. Resource IDs: (360)
-msgid "<b><font color=\"red\">WARNING</font></b> If you continue, fields will be updated in your existing database from your selected input database.  The OK button on the password entry dialog for your input database will not be enabled <b>until you have accessed the Advanced dialog to confirm what you will be updating.</b>"
-msgstr "<b><font color=\"red\">警告:</font></b>     如果继续，你所选输入的数据库字段在当前数据库中将被更新。你所输入数据库的密码项目对话上的“确定”按钮将不被启用"
 
 #. Resource IDs: (1154)
 msgid ">"
@@ -2187,6 +2183,10 @@ msgid "Database Unique ID:"
 msgstr "数据库唯一ID:"
 
 #. Resource IDs: (65535)
+msgid "Database default:"
+msgstr ""
+
+#. Resource IDs: (65535)
 msgid "Database format:"
 msgstr "数据库格式:"
 
@@ -3056,10 +3056,6 @@ msgstr "复制组"
 #. Resource IDs: (327)
 msgid "Group/Title"
 msgstr "组/标题"
-
-#. Resource IDs: (188)
-msgid "Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tPassword Expiry Interval\tRecord Modified Time\tPassword Policy\tHistory\tRun Command\tDCA\te-mail\tProtected\tNotes"
-msgstr "组/标题\t用户名称\t密码\t网址\t自动输入\t创建时间\t密码修改时间\t最后访问时间\t密码失效日期\t密码失效间隔\t档案修改时间\t密码策略\t历史密码\t运行命令\tDCA\t电子邮件\t保护\t备注"
 
 #. Resource IDs: (1350, 65535)
 msgid "Group:"
@@ -3947,6 +3943,10 @@ msgstr "挪威语"
 msgid "Norwegian with Sami"
 msgstr "挪威语(萨米)"
 
+#. Resource IDs: (366)
+msgid "Not Set"
+msgstr ""
+
 #. Resource IDs: (3857)
 msgid "Not all of the system registry entries (or INI file) were removed."
 msgstr "系统注册表项目 (或 INI 文件)  删除不全！"
@@ -4285,6 +4285,10 @@ msgstr "密码应该混合大小写和至少一个数字或标点字符！"
 #, c-format
 msgid "PasswordSafe V%d.%d.%d (Build %s) has had an error."
 msgstr "PasswordSafe V%d.%d.%d (编译 %s) 已有一个错误！"
+
+#. Resource IDs: (65535)
+msgid "PasswordSafe default:"
+msgstr ""
 
 #. Resource IDs: (364)
 msgid "PasswordSafe: Entries exist with expired or about to be expired passwords"
@@ -5470,13 +5474,13 @@ msgstr "旧密码不正确！"
 
 #. Resource IDs: (333)
 #, c-format
-msgid "The original database, \"%s\", is in pre-3.0 format. It will be unchanged.\nYour changes will be written as \"%s\" in the new format, which is unusable by old versions of PasswordSafe. To save your changes in the old format, use the \"File->Export To-> Old (1.x or 2) format\" command."
-msgstr "原始数据库 “%s” 为 3.0 版本之前的旧格式，它将不被更改；\n如果你把它更改为 “%s” 的新格式，在新格式状态下，该数据库将不可再用于旧版本的本应用程序。需要保存你的更改为旧格式，请使用“文件->导出->旧版本(v1.x 或 v2 )格式”命令。"
+msgid "The original database, \"%s\", is in pre-3.0 format. It will be unchanged.\nYour changes will be written as \"%s\" in the new format, which is unusable by old versions of PasswordSafe. To save your changes in the old format, use the \"File->Export To->Old (1.x or 2) format\" command."
+msgstr ""
 
 #. Resource IDs: (333)
 #, c-format
-msgid "The original database, \"%s\", is in pre-3.0 format. The data will now be written in the new format, which is unusable by old versions of PasswordSafe. To save the data in the old format, use the \"File->Export To-> Old (1.x or 2) format\" command."
-msgstr "原始数据库 “%s” 为 3.0 版本之前的旧格式，该数据库将立刻被写入更改成新格式；该数据库将不可再用于旧版本的本应用程序。需要保存你的更改为旧格式，请使用“文件->导出->旧版本(v1.x 或 v2)格式”命令。"
+msgid "The original database, \"%s\", is in pre-3.0 format. The data will now be written in the new format, which is unusable by old versions of PasswordSafe. To save the data in the old format, use the \"File->Export To->Old (1.x or 2) format\" command."
+msgstr ""
 
 #. Resource IDs: (342)
 #, c-format

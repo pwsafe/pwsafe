@@ -357,6 +357,26 @@ msgstr "%s, Titel=\"%s\", Gebruiker=\"%s\" bestaat al in uw databse of in het Im
 msgid "%s. Either try to save database with another name or exit without saving."
 msgstr "%s. Probeer het bestand met een andere naam op te slaan of beeindig sonder op te slaan."
 
+#. Resource IDs: (343)
+#, c-format
+msgid "%sA newer release is available.%s"
+msgstr ""
+
+#. Resource IDs: (343)
+#, c-format
+msgid "%sCould not read server version data.%s"
+msgstr ""
+
+#. Resource IDs: (342)
+#, c-format
+msgid "%sCouldn't contact server.%s"
+msgstr ""
+
+#. Resource IDs: (343)
+#, c-format
+msgid "%sThis is the latest release!%s"
+msgstr ""
+
 #. Resource IDs: (333)
 #, c-format
 msgid "%s\n\nCould not open file for reading!"
@@ -1131,30 +1151,6 @@ msgstr ""
 
 #. Resource IDs: (1157)
 msgid "<<"
-msgstr ""
-
-#. Resource IDs: (191)
-msgid "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<Pwsafe_Settings></Pwsafe_Settings>"
-msgstr ""
-
-#. Resource IDs: (343)
-msgid "<b><font color=\"green\">This is the latest release!</font></b>"
-msgstr ""
-
-#. Resource IDs: (343)
-msgid "<b><font color=\"red\">A newer release is available.</font></b>"
-msgstr ""
-
-#. Resource IDs: (343)
-msgid "<b><font color=\"red\">Could not read server version data.</font></b>"
-msgstr ""
-
-#. Resource IDs: (342)
-msgid "<b><font color=\"red\">Couldn't contact server.</font></b>"
-msgstr ""
-
-#. Resource IDs: (360)
-msgid "<b><font color=\"red\">WARNING</font></b> If you continue, fields will be updated in your existing database from your selected input database.  The OK button on the password entry dialog for your input database will not be enabled <b>until you have accessed the Advanced dialog to confirm what you will be updating.</b>"
 msgstr ""
 
 #. Resource IDs: (1154)
@@ -2187,6 +2183,10 @@ msgid "Database Unique ID:"
 msgstr ""
 
 #. Resource IDs: (65535)
+msgid "Database default:"
+msgstr ""
+
+#. Resource IDs: (65535)
 msgid "Database format:"
 msgstr ""
 
@@ -3056,10 +3056,6 @@ msgstr "Groep gekopieerd"
 #. Resource IDs: (327)
 msgid "Group/Title"
 msgstr "Groep/Titel"
-
-#. Resource IDs: (188)
-msgid "Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tPassword Expiry Interval\tRecord Modified Time\tPassword Policy\tHistory\tRun Command\tDCA\te-mail\tProtected\tNotes"
-msgstr ""
 
 #. Resource IDs: (1350, 65535)
 msgid "Group:"
@@ -3947,6 +3943,10 @@ msgstr ""
 msgid "Norwegian with Sami"
 msgstr ""
 
+#. Resource IDs: (366)
+msgid "Not Set"
+msgstr ""
+
 #. Resource IDs: (3857)
 msgid "Not all of the system registry entries (or INI file) were removed."
 msgstr ""
@@ -4284,6 +4284,10 @@ msgstr ""
 #. Resource IDs: (358)
 #, c-format
 msgid "PasswordSafe V%d.%d.%d (Build %s) has had an error."
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "PasswordSafe default:"
 msgstr ""
 
 #. Resource IDs: (364)
@@ -5471,13 +5475,13 @@ msgstr "De oude kluis combinatie is niet correct."
 
 #. Resource IDs: (333)
 #, c-format
-msgid "The original database, \"%s\", is in pre-3.0 format. It will be unchanged.\nYour changes will be written as \"%s\" in the new format, which is unusable by old versions of PasswordSafe. To save your changes in the old format, use the \"File->Export To-> Old (1.x or 2) format\" command."
-msgstr "De originele database. \"%s\", is in de opmaak van een versie voor 3.0. Deze database zal niet verandert worden.\nUw wijzigingen zullen als \"%s\"  opgeslagen worden in de nieuwe opmaak. Deze opmaak is niet te gebruiken door oudere versies van Password Safe. Om uw wijzigingen in de oude opmaak op te slaan gebruikt u het \"Bestand->Exporteer naar->Oud(1.x of 2) opmaak\" commando."
+msgid "The original database, \"%s\", is in pre-3.0 format. It will be unchanged.\nYour changes will be written as \"%s\" in the new format, which is unusable by old versions of PasswordSafe. To save your changes in the old format, use the \"File->Export To->Old (1.x or 2) format\" command."
+msgstr ""
 
 #. Resource IDs: (333)
 #, c-format
-msgid "The original database, \"%s\", is in pre-3.0 format. The data will now be written in the new format, which is unusable by old versions of PasswordSafe. To save the data in the old format, use the \"File->Export To-> Old (1.x or 2) format\" command."
-msgstr "De originele database. \"%s\", is in de opmaak van een versie voor 3.0. De data wordt nu geschreven in de nieuwe opmaak. Deze nieuwe opmaak is niet te gebruiken door oudere versies van Password Safe. Om de data in de oude opmaak op te slaan gebruikt u het \"Bestand->Exporteer naar->Oud(1.x of 2) opmaak\" commando."
+msgid "The original database, \"%s\", is in pre-3.0 format. The data will now be written in the new format, which is unusable by old versions of PasswordSafe. To save the data in the old format, use the \"File->Export To->Old (1.x or 2) format\" command."
+msgstr ""
 
 #. Resource IDs: (342)
 #, c-format

@@ -357,6 +357,26 @@ msgstr "%s, Titulo=\"%s\", Usuario=\"%s\" ya existe en tu base de datos o en el 
 msgid "%s. Either try to save database with another name or exit without saving."
 msgstr "%s. Trata de grabar la base de datos con otro nombre o salir sin grabar."
 
+#. Resource IDs: (343)
+#, c-format
+msgid "%sA newer release is available.%s"
+msgstr ""
+
+#. Resource IDs: (343)
+#, c-format
+msgid "%sCould not read server version data.%s"
+msgstr ""
+
+#. Resource IDs: (342)
+#, c-format
+msgid "%sCouldn't contact server.%s"
+msgstr ""
+
+#. Resource IDs: (343)
+#, c-format
+msgid "%sThis is the latest release!%s"
+msgstr ""
+
 #. Resource IDs: (333)
 #, c-format
 msgid "%s\n\nCould not open file for reading!"
@@ -1132,30 +1152,6 @@ msgstr "<"
 #. Resource IDs: (1157)
 msgid "<<"
 msgstr "<<"
-
-#. Resource IDs: (191)
-msgid "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<Pwsafe_Settings></Pwsafe_Settings>"
-msgstr "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<Pwsafe_Settings></Pwsafe_Settings>"
-
-#. Resource IDs: (343)
-msgid "<b><font color=\"green\">This is the latest release!</font></b>"
-msgstr "<b><font color=\"green\">¡Esta es la última versión!</font></b>"
-
-#. Resource IDs: (343)
-msgid "<b><font color=\"red\">A newer release is available.</font></b>"
-msgstr "<b><font color=\"red\">Hay una nueva versión disponible.</font></b>"
-
-#. Resource IDs: (343)
-msgid "<b><font color=\"red\">Could not read server version data.</font></b>"
-msgstr "<b><font color=\"red\">No es posible acceder a los datos de versión del servidor.</font></b>"
-
-#. Resource IDs: (342)
-msgid "<b><font color=\"red\">Couldn't contact server.</font></b>"
-msgstr "<b><font color=\"red\">Error al conectar con el servidor.</font></b>"
-
-#. Resource IDs: (360)
-msgid "<b><font color=\"red\">WARNING</font></b> If you continue, fields will be updated in your existing database from your selected input database.  The OK button on the password entry dialog for your input database will not be enabled <b>until you have accessed the Advanced dialog to confirm what you will be updating.</b>"
-msgstr "<b><font color=\"red\">ATENCIÓN</font></b> Si continuas, se actualizarán los campos de tu base de datos con los de la base de datos seleccionada.  El botón Aceptar en el diálogo de base de datos de entrada no se activará <b>hasta que accedas al dialogo Avanzado a confirmar qué campos se actualizará.</b>"
 
 #. Resource IDs: (1154)
 msgid ">"
@@ -2187,6 +2183,10 @@ msgid "Database Unique ID:"
 msgstr "ID único de base de datos:"
 
 #. Resource IDs: (65535)
+msgid "Database default:"
+msgstr ""
+
+#. Resource IDs: (65535)
 msgid "Database format:"
 msgstr "Formato de la base de datos:"
 
@@ -3056,12 +3056,6 @@ msgstr "Grupo copiado"
 #. Resource IDs: (327)
 msgid "Group/Title"
 msgstr "Grupo/Título"
-
-#. Resource IDs: (188)
-# Se trata de encabezados para importar / exportar, casi mejor no tocarlos
-#, fuzzy
-msgid "Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tPassword Expiry Interval\tRecord Modified Time\tPassword Policy\tHistory\tRun Command\tDCA\te-mail\tProtected\tNotes"
-msgstr "Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tPassword Expiry Interval\tRecord Modified Time\tPassword Policy\tHistory\tRun Command\tDCA\te-mail\tProtected\tNotes"
 
 #. Resource IDs: (1350, 65535)
 msgid "Group:"
@@ -3949,6 +3943,10 @@ msgstr "Noruego"
 msgid "Norwegian with Sami"
 msgstr "Noruego con Sami"
 
+#. Resource IDs: (366)
+msgid "Not Set"
+msgstr ""
+
 #. Resource IDs: (3857)
 msgid "Not all of the system registry entries (or INI file) were removed."
 msgstr "No se borraron todas las entradas del registro del sistema (o ficheros INI)."
@@ -4287,6 +4285,10 @@ msgstr "La contraseña debería tener mayúsculas y minúsculas con al menos un 
 #, c-format
 msgid "PasswordSafe V%d.%d.%d (Build %s) has had an error."
 msgstr "PasswordSafe V%d.%d.%d (Build %s) ha sufrido un error."
+
+#. Resource IDs: (65535)
+msgid "PasswordSafe default:"
+msgstr ""
 
 #. Resource IDs: (364)
 msgid "PasswordSafe: Entries exist with expired or about to be expired passwords"
@@ -5474,13 +5476,13 @@ msgstr "La contraseña de seguridad antigua no es correcta"
 
 #. Resource IDs: (333)
 #, c-format
-msgid "The original database, \"%s\", is in pre-3.0 format. It will be unchanged.\nYour changes will be written as \"%s\" in the new format, which is unusable by old versions of PasswordSafe. To save your changes in the old format, use the \"File->Export To-> Old (1.x or 2) format\" command."
-msgstr "La base de datos original, \"%s\", está en un formato previo al 3.0 y no se cargará.\nLos cambios serán escritos como \"%s\" en el nuevo formato, que no es compatible con versiones anteriores de PasswordSafe. Para guardar los cambios en el formato antiguo, usar \"Archivo->Exportar A-> Formato antiguo (1.x or 2)\"."
+msgid "The original database, \"%s\", is in pre-3.0 format. It will be unchanged.\nYour changes will be written as \"%s\" in the new format, which is unusable by old versions of PasswordSafe. To save your changes in the old format, use the \"File->Export To->Old (1.x or 2) format\" command."
+msgstr ""
 
 #. Resource IDs: (333)
 #, c-format
-msgid "The original database, \"%s\", is in pre-3.0 format. The data will now be written in the new format, which is unusable by old versions of PasswordSafe. To save the data in the old format, use the \"File->Export To-> Old (1.x or 2) format\" command."
-msgstr "La base de datos original, \"%s\", está en un formato previo al 3.0. Los datos serán escritos en el nuevo formato, que es incompatible con anteriores versiones de PasswordSafe. Para guardar los datos en el formato antiguo, usar \"Archivo->Exportar A-> Formato antiguo (1.x or 2)\"."
+msgid "The original database, \"%s\", is in pre-3.0 format. The data will now be written in the new format, which is unusable by old versions of PasswordSafe. To save the data in the old format, use the \"File->Export To->Old (1.x or 2) format\" command."
+msgstr ""
 
 #. Resource IDs: (342)
 #, c-format
