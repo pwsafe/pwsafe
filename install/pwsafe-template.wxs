@@ -89,8 +89,8 @@
 	    <File Id='file21' Name='pwsafeZH.dll' DiskId='1'
 	      Source='build\bin\pwsafe\I18N\pwsafeZH.dll' Vital='yes'> 
 	    </File>
-	    <File Id='file22' Name='pwsafeKR.dll' DiskId='1'
-	      Source='build\bin\pwsafe\I18N\pwsafeKR.dll' Vital='yes'> 
+	    <File Id='file22' Name='pwsafeKO.dll' DiskId='1'
+	      Source='build\bin\pwsafe\I18N\pwsafeKO.dll' Vital='yes'> 
 	    </File>
 	    <File Id='file23' Name='pwsafeNL.dll' DiskId='1'
 	      Source='build\bin\pwsafe\I18N\pwsafeNL.dll' Vital='yes'> 

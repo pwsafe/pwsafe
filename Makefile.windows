@@ -63,7 +63,7 @@ I18N_MANIFEST := help/pwsafeDE/pwsafeDE.chm help/pwsafeZH/pwsafeZH.chm \
 								$(I18N_DLL_DIR)/pwsafePL.dll $(I18N_DLL_DIR)/pwsafeRU.dll \
 	              $(I18N_DLL_DIR)/pwsafeSV.dll $(I18N_DLL_DIR)/pwsafeZH.dll \
 								$(I18N_DLL_DIR)/pwsafeFR.dll $(I18N_DLL_DIR)/pwsafeDA.dll \
-								$(I18N_DLL_DIR)/pwsafeKR.dll $(I18N_DLL_DIR)/pwsafeNL.dll
+								$(I18N_DLL_DIR)/pwsafeKO.dll $(I18N_DLL_DIR)/pwsafeNL.dll
 
 .PHONY: all release bin-release src-release installables signatures \
 	upload sha1sums msi nsis upload-latest updat-pos i18n save-map help \

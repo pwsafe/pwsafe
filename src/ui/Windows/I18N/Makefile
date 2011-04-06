@@ -23,7 +23,7 @@ POS = pwsafe.pot pos/pwsafe_sv.po pos/pwsafe_es.po pos/pwsafe_de.po \
 
 DLL_LIST = pwsafeSV.dll pwsafeES.dll pwsafeDE.dll \
 	pwsafePL.dll pwsafeZH.dll pwsafeRU.dll pwsafeIT.dll pwsafeFR.dll \
-	pwsafeDA.dll pwsafeKR.dll pwsafeNL.dll
+	pwsafeDA.dll pwsafeKO.dll pwsafeNL.dll
 
 DEST_DIR = ../../../../build/bin/pwsafe/I18N
 DLLS = $(DLL_LIST:%=$(DEST_DIR)/%)
@@ -93,10 +93,10 @@ $(DEST_DIR)/pwsafeDA.dll : pos/pwsafe_dk.po
 	$(RM) foo.dll; $(MV) pwsafeDA_DK.dll $(DEST_DIR)/pwsafeDA.dll
 	$(CHMOD) 755 $@
 
-$(DEST_DIR)/pwsafeKR.dll : pos/pwsafe_kr.po
+$(DEST_DIR)/pwsafeKO.dll : pos/pwsafe_kr.po
 	$(RESTEXT) apply $(BASE_DLL) foo.dll ./$^; \
 	$(RESPWSL) apply foo.dll 0x0412; \
-	$(RM) foo.dll; $(MV) pwsafeKO_KR.dll $(DEST_DIR)/pwsafeKR.dll
+	$(RM) foo.dll; $(MV) pwsafeKO_KR.dll $(DEST_DIR)/pwsafeKO.dll
 	$(CHMOD) 755 $@
 
 $(DEST_DIR)/pwsafeNL.dll : pos/pwsafe_nl.po

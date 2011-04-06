@@ -327,8 +327,8 @@ Section "$(PROGRAM_FILES)" ProgramFiles
   File /nonfatal "..\help\pwsafeIT\pwsafeIT.chm"
   File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeDA.dll"
   File /nonfatal "..\help\pwsafeDA\pwsafeDA.chm"
-  File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeKR.dll"
-  File /nonfatal "..\help\pwsafeDA\pwsafeKR.chm"
+  File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeKO.dll"
+  File /nonfatal "..\help\pwsafeDA\pwsafeKO.chm"
 
   Goto dont_install_Win98
   ; If installing under Windows98, delete pwsafe.exe, rename
