@@ -465,23 +465,23 @@ void CPWToolBar::RefreshImages()
   ChangeImages(m_toolbarMode);
 }
 
-void CPWToolBar::OnToolBarQueryInsert(NMHDR* /* pNotifyStruct */, LRESULT *pResult)
+void CPWToolBar::OnToolBarQueryInsert(NMHDR *, LRESULT *pLResult)
 {
-  *pResult = TRUE;
+  *pLResult = TRUE;
 }
 
-void CPWToolBar::OnToolBarQueryDelete(NMHDR* pNotifyStruct, LRESULT *pResult)
+void CPWToolBar::OnToolBarQueryDelete(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
   NMTOOLBAR* pNMToolbar = (NMTOOLBAR *)pNotifyStruct;
 
   if ((pNMToolbar->tbButton.idCommand != ID_SEPARATOR) &&
     GetToolBarCtrl().IsButtonHidden(pNMToolbar->tbButton.idCommand))
-    *pResult = FALSE;
+    *pLResult = FALSE;
   else
-    *pResult = TRUE;
+    *pLResult = TRUE;
 }
 
-void CPWToolBar::OnToolBarQueryInfo(NMHDR* pNotifyStruct, LRESULT *pResult)
+void CPWToolBar::OnToolBarQueryInfo(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
   NMTOOLBAR* pNMToolbar = (NMTOOLBAR *)pNotifyStruct;
 
@@ -490,13 +490,13 @@ void CPWToolBar::OnToolBarQueryInfo(NMHDR* pNotifyStruct, LRESULT *pResult)
   if ((pNMToolbar->iItem >= 0) &&
     (pNMToolbar->iItem < m_iMaxNumButtons)) {
       pNMToolbar->tbButton = m_pOriginalTBinfo[pNMToolbar->iItem];
-      *pResult = TRUE;
+      *pLResult = TRUE;
   } else {
-    *pResult = FALSE;
+    *pLResult = FALSE;
   }
 }
 
-void CPWToolBar::OnToolBarGetButtonInfo(NMHDR *pNotifyStruct, LRESULT *pResult)
+void CPWToolBar::OnToolBarGetButtonInfo(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
   NMTOOLBAR* pNMToolbar = (NMTOOLBAR *)pNotifyStruct;
 
@@ -506,13 +506,13 @@ void CPWToolBar::OnToolBarGetButtonInfo(NMHDR *pNotifyStruct, LRESULT *pResult)
   if ((pNMToolbar->iItem >= 0) && (pNMToolbar->iItem < m_iMaxNumButtons)) {
     // copy the stored button structure
     pNMToolbar->tbButton = m_pOriginalTBinfo[pNMToolbar->iItem];
-    *pResult = TRUE;
+    *pLResult = TRUE;
   } else {
-    *pResult = FALSE;
+    *pLResult = FALSE;
   }
 }
 
-void CPWToolBar::OnToolBarReset(NMHDR* /* pNotifyStruct */, LRESULT* /* pResult */)
+void CPWToolBar::OnToolBarReset(NMHDR *, LRESULT *)
 {
   Reset();
 }

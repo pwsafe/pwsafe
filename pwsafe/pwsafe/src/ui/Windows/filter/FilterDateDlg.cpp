@@ -435,10 +435,10 @@ void CFilterDateDlg::OnBnClickedOk()
   CFilterBaseDlg::OnOK();
 }
 
-void CFilterDateDlg::OnDtnDatetime1Change(NMHDR *pNMHDR, LRESULT *pResult)
+void CFilterDateDlg::OnDtnDatetime1Change(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
-  LPNMDATETIMECHANGE pDTChange = reinterpret_cast<LPNMDATETIMECHANGE>(pNMHDR);
-  *pResult = 0;
+  LPNMDATETIMECHANGE pDTChange = reinterpret_cast<LPNMDATETIMECHANGE>(pNotifyStruct);
+  *pLResult = 0;
 
   if ((pDTChange->dwFlags & GDT_VALID) != GDT_VALID)
     return;

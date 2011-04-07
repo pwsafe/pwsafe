@@ -87,18 +87,18 @@ public:
 
 protected:
   //{{AFX_MSG(CPWTreeCtrl)
-  afx_msg void OnBeginLabelEdit(NMHDR *pNMHDR, LRESULT *pLResult);
-  afx_msg void OnEndLabelEdit(NMHDR *pNMHDR, LRESULT *pLResult);
-  afx_msg void OnExpandCollapse(NMHDR *pNMHDR, LRESULT *pLResult);
-  afx_msg void OnBeginDrag(NMHDR *pNMHDR, LRESULT *pLResult);
-  afx_msg void OnSelectionChanged(NMHDR *pNMHDR, LRESULT *pLResult);
-  afx_msg void OnDeleteItem(NMHDR *pNMHDR, LRESULT *pLResult);
+  afx_msg void OnBeginLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult);
+  afx_msg void OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult);
+  afx_msg void OnExpandCollapse(NMHDR *pNotifyStruct, LRESULT *pLResult);
+  afx_msg void OnBeginDrag(NMHDR *pNotifyStruct, LRESULT *pLResult);
+  afx_msg void OnSelectionChanged(NMHDR *pNotifyStruct, LRESULT *pLResult);
+  afx_msg void OnDeleteItem(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnDestroy();
   afx_msg LRESULT OnMouseLeave(WPARAM, LPARAM);
   afx_msg void OnMouseMove(UINT nFlags, CPoint point);
   afx_msg void OnTimer(UINT_PTR nIDEvent);
   afx_msg BOOL OnEraseBkgnd(CDC* pDC);
-  afx_msg void OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult);
+  afx_msg void OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnPaint();
   afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar);
   //}}AFX_MSG

@@ -45,7 +45,7 @@ protected:
   afx_msg void OnContinue();
   afx_msg void OnSelect();
   afx_msg void OnDelete();
-  afx_msg void OnItemSelected(NMHDR *pNMHDR, LRESULT *pLResult);
+  afx_msg void OnItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult);
 
   DECLARE_MESSAGE_MAP()
 

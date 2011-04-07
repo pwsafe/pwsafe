@@ -20,8 +20,7 @@ public:
   enum {PP_DATA_CHANGED = 0,
         PP_UPDATE_VARIABLES,
         PP_UPDATE_PWPOLICY,
-        PP_UPDATE_TIMES,
-        PP_PROTECT_CHANGED};
+        PP_UPDATE_TIMES};
 
   DECLARE_DYNAMIC(CPWPropertyPage)
 };

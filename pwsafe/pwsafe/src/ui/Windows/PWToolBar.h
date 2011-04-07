@@ -40,11 +40,11 @@ public:
 
 protected:
   //{{AFX_MSG(CPWToolBar)
-  afx_msg void OnToolBarGetButtonInfo(NMHDR *pNotifyStruct, LRESULT* pResult);
-  afx_msg void OnToolBarQueryInsert(NMHDR* pNotifyStruct, LRESULT* pResult);
-  afx_msg void OnToolBarQueryDelete(NMHDR* pNotifyStruct, LRESULT* pResult);
-  afx_msg void OnToolBarQueryInfo(NMHDR* pNotifyStruct, LRESULT* pResult);
-  afx_msg void OnToolBarReset(NMHDR* pNotifyStruct, LRESULT* pResult);
+  afx_msg void OnToolBarGetButtonInfo(NMHDR *pNotifyStruct, LRESULT *pLResult);
+  afx_msg void OnToolBarQueryInsert(NMHDR *pNotifyStruct, LRESULT *pLResult);
+  afx_msg void OnToolBarQueryDelete(NMHDR *pNotifyStruct, LRESULT *pLResult);
+  afx_msg void OnToolBarQueryInfo(NMHDR *pNotifyStruct, LRESULT *pLResult);
+  afx_msg void OnToolBarReset(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnDestroy();
   //}}AFX_MSG
 

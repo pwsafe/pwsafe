@@ -460,9 +460,9 @@ void CPWTreeCtrl::UpdateLeafsGroup(MultiCommands *pmulticmds, HTREEITEM hItem, C
   }
 }
 
-void CPWTreeCtrl::OnBeginLabelEdit(NMHDR *pNMHDR, LRESULT *pLResult)
+void CPWTreeCtrl::OnBeginLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
-  NMTVDISPINFO *ptvinfo = (NMTVDISPINFO *)pNMHDR;
+  NMTVDISPINFO *ptvinfo = (NMTVDISPINFO *)pNotifyStruct;
 
   *pLResult = TRUE; // TRUE cancels label editing
 
@@ -626,29 +626,29 @@ final_check:
   return bRC;
 }
 
-void CPWTreeCtrl::OnSelectionChanged(NMHDR *pNMHDR, LRESULT *pLResult)
+void CPWTreeCtrl::OnSelectionChanged(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
   *pLResult = 0;
   // Don't bother if no entries or not via the keyboard (check this first
   // as more likely than no entries).
   // Note: Selection via mouse handled in DboxMain via NM_CLICK notification.
-  if (((NMTREEVIEW *)pNMHDR)->action != TVC_BYKEYBOARD || GetCount() == 0)
+  if (((NMTREEVIEW *)pNotifyStruct)->action != TVC_BYKEYBOARD || GetCount() == 0)
     return;
 
-  m_pDbx->OnItemSelected(pNMHDR, pLResult);
+  m_pDbx->OnItemSelected(pNotifyStruct, pLResult);
 }
 
-void CPWTreeCtrl::OnDeleteItem(NMHDR *pNMHDR, LRESULT *pLResult)
+void CPWTreeCtrl::OnDeleteItem(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
   *pLResult = 0;
   // Clear pointer to CItemData of item being deleted so no other
   // routine has a problem with an invalid value.
-  HTREEITEM hItem = ((NMTREEVIEW *)pNMHDR)->itemOld.hItem;
+  HTREEITEM hItem = ((NMTREEVIEW *)pNotifyStruct)->itemOld.hItem;
   if (hItem != NULL)
     SetItemData(hItem, 0);
 }
 
-void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNMHDR, LRESULT *pLResult)
+void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
   if (m_pDbx->IsDBReadOnly())
     return; // don't edit in read-only mode
@@ -678,7 +678,7 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNMHDR, LRESULT *pLResult)
   these fields cannot be empty.
   */
 
-  NMTVDISPINFO *ptvinfo = (NMTVDISPINFO *)pNMHDR;
+  NMTVDISPINFO *ptvinfo = (NMTVDISPINFO *)pNotifyStruct;
   HTREEITEM ti = ptvinfo->item.hItem;
   if (ptvinfo->item.pszText == NULL ||     // NULL if edit cancelled,
       ptvinfo->item.pszText[0] == L'\0') { // empty if text deleted - not allowed
@@ -1406,17 +1406,17 @@ exit:
   return retval;
 }
 
-void CPWTreeCtrl::OnBeginDrag(NMHDR *pNMHDR, LRESULT *pLResult)
+void CPWTreeCtrl::OnBeginDrag(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
   // This sets the whole D&D mechanism in motion...
-  if (pNMHDR->code == TVN_BEGINDRAG)
+  if (pNotifyStruct->code == TVN_BEGINDRAG)
     m_DDType = FROMTREE_L; // Left  mouse D&D
   else
     m_DDType = FROMTREE_R; // Right mouse D&D
 
   CPoint ptAction;
 
-  NM_TREEVIEW* pNMTreeView = (NM_TREEVIEW*)pNMHDR;
+  NM_TREEVIEW* pNMTreeView = (NM_TREEVIEW*)pNotifyStruct;
   *pLResult = 0L;
 
   GetCursorPos(&ptAction);
@@ -2251,11 +2251,11 @@ HFONT CPWTreeCtrl::GetFontBasedOnStatus(HTREEITEM &hItem, CItemData *pci, COLORR
   return NULL;
 }
 
-void CPWTreeCtrl::OnCustomDraw(NMHDR *pNMHDR, LRESULT *pResult)
+void CPWTreeCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
-  NMLVCUSTOMDRAW *pNMLVCUSTOMDRAW = (NMLVCUSTOMDRAW *)pNMHDR;
+  NMLVCUSTOMDRAW *pNMLVCUSTOMDRAW = (NMLVCUSTOMDRAW *)pNotifyStruct;
 
-  *pResult = CDRF_DODEFAULT;
+  *pLResult = CDRF_DODEFAULT;
 
   static bool bchanged_item_font(false);
   HFONT hfont;
@@ -2267,7 +2267,7 @@ void CPWTreeCtrl::OnCustomDraw(NMHDR *pNMHDR, LRESULT *pResult)
     case CDDS_PREPAINT:
       // PrePaint
       bchanged_item_font = false;
-      *pResult = CDRF_NOTIFYITEMDRAW;
+      *pLResult = CDRF_NOTIFYITEMDRAW;
       break;
 
     case CDDS_ITEMPREPAINT:
@@ -2279,7 +2279,7 @@ void CPWTreeCtrl::OnCustomDraw(NMHDR *pNMHDR, LRESULT *pResult)
           SelectObject(pNMLVCUSTOMDRAW->nmcd.hdc, hfont);
           if (pci == NULL || GetItemState(hItem, TVIS_SELECTED) == 0)
             pNMLVCUSTOMDRAW->clrText = cf;
-          *pResult |= (CDRF_NOTIFYPOSTPAINT | CDRF_NEWFONT);
+          *pLResult |= (CDRF_NOTIFYPOSTPAINT | CDRF_NEWFONT);
         }
       }
       break;
@@ -2289,7 +2289,7 @@ void CPWTreeCtrl::OnCustomDraw(NMHDR *pNMHDR, LRESULT *pResult)
       if (bchanged_item_font) {
         bchanged_item_font = false;
         SelectObject(pNMLVCUSTOMDRAW->nmcd.hdc, (HFONT)m_fonts.m_pCurrentFont);
-        *pResult |= CDRF_NEWFONT;
+        *pLResult |= CDRF_NEWFONT;
       }
       break;
 

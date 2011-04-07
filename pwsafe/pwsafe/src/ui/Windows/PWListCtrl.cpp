@@ -304,17 +304,17 @@ BOOL CPWListCtrl::OnEraseBkgnd(CDC* pDC)
   return TRUE;
 }
 
-void CPWListCtrl::OnSelectionChanged(NMHDR *pNMHDR, LRESULT *pLResult)
+void CPWListCtrl::OnSelectionChanged(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
   if (GetItemCount() == 0)
     return;
 
-  LPNMLVKEYDOWN pLVKeyDown = reinterpret_cast<LPNMLVKEYDOWN>(pNMHDR);
+  LPNMLVKEYDOWN pLVKeyDown = reinterpret_cast<LPNMLVKEYDOWN>(pNotifyStruct);
 
   switch(pLVKeyDown->wVKey) {
     case VK_UP:
     case VK_DOWN:
-      m_pDbx->OnItemSelected(pNMHDR, pLResult);
+      m_pDbx->OnItemSelected(pNotifyStruct, pLResult);
       break;
     default:
       break;
@@ -337,11 +337,11 @@ HFONT CPWListCtrl::GetFontBasedOnStatus(CItemData *pci, COLORREF &cf)
   return NULL;
 }
 
-void CPWListCtrl::OnCustomDraw(NMHDR *pNMHDR, LRESULT *pResult)
+void CPWListCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
-  NMLVCUSTOMDRAW *pNMLVCUSTOMDRAW = (NMLVCUSTOMDRAW *)pNMHDR;
+  NMLVCUSTOMDRAW *pNMLVCUSTOMDRAW = (NMLVCUSTOMDRAW *)pNotifyStruct;
 
-  *pResult = CDRF_DODEFAULT;
+  *pLResult = CDRF_DODEFAULT;
 
   static bool bitem_selected(false);
   static bool bchanged_item_font(false), bchanged_subitem_font(false);
@@ -354,7 +354,7 @@ void CPWListCtrl::OnCustomDraw(NMHDR *pNMHDR, LRESULT *pResult)
     case CDDS_PREPAINT:
       // PrePaint
       bchanged_item_font = bchanged_subitem_font = false;
-      *pResult = CDRF_NOTIFYITEMDRAW;
+      *pLResult = CDRF_NOTIFYITEMDRAW;
       break;
 
     case CDDS_ITEMPREPAINT:
@@ -367,9 +367,9 @@ void CPWListCtrl::OnCustomDraw(NMHDR *pNMHDR, LRESULT *pResult)
           SelectObject(pNMLVCUSTOMDRAW->nmcd.hdc, hfont);
           if (!bitem_selected)
             pNMLVCUSTOMDRAW->clrText = cf;
-          *pResult |= (CDRF_NOTIFYPOSTPAINT | CDRF_NEWFONT);
+          *pLResult |= (CDRF_NOTIFYPOSTPAINT | CDRF_NEWFONT);
         }
-        *pResult |= CDRF_NOTIFYSUBITEMDRAW;
+        *pLResult |= CDRF_NOTIFYSUBITEMDRAW;
       }
       break;
 
@@ -378,7 +378,7 @@ void CPWListCtrl::OnCustomDraw(NMHDR *pNMHDR, LRESULT *pResult)
       if (bchanged_item_font) {
         bchanged_item_font = false;
         SelectObject(pNMLVCUSTOMDRAW->nmcd.hdc, (HFONT)m_fonts.m_pCurrentFont);
-        *pResult |= CDRF_NEWFONT;
+        *pLResult |= CDRF_NEWFONT;
       }
       break;
 
@@ -392,7 +392,7 @@ void CPWListCtrl::OnCustomDraw(NMHDR *pNMHDR, LRESULT *pResult)
           SelectObject(pNMLVCUSTOMDRAW->nmcd.hdc, hfont);
           if (!bitem_selected)
             pNMLVCUSTOMDRAW->clrText = cf;
-          *pResult |= (CDRF_NOTIFYPOSTPAINT | CDRF_NEWFONT);
+          *pLResult |= (CDRF_NOTIFYPOSTPAINT | CDRF_NEWFONT);
         }
       }
       break;
@@ -404,7 +404,7 @@ void CPWListCtrl::OnCustomDraw(NMHDR *pNMHDR, LRESULT *pResult)
       if (bchanged_subitem_font) {
         bchanged_subitem_font = false;
         SelectObject(pNMLVCUSTOMDRAW->nmcd.hdc, (HFONT)m_fonts.m_pCurrentFont);
-        *pResult |= CDRF_NEWFONT;
+        *pLResult |= CDRF_NEWFONT;
       }
       break;
 

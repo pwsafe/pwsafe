@@ -461,7 +461,7 @@ BOOL CGeneralMsgBox::OnInitDialog()
 }
 
 BOOL CGeneralMsgBox::OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, 
-                              LRESULT* pResult)
+                              LRESULT* pLResult)
 {
   if (message == WM_NOTIFY) {
     REQRESIZE *prr = (REQRESIZE *)lParam;
@@ -472,7 +472,7 @@ BOOL CGeneralMsgBox::OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam,
       m_dimMsg.cx = prr->rc.right - prr->rc.left;
       m_dimMsg.cy = prr->rc.bottom - prr->rc.top;
 
-      *pResult = NULL;
+      *pLResult = NULL;
       return TRUE;
     }
   } else if (message == WM_CLOSE) {
@@ -482,7 +482,7 @@ BOOL CGeneralMsgBox::OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam,
     return TRUE;
   }
 
-  return CDialog::OnWndMsg(message, wParam, lParam, pResult);
+  return CDialog::OnWndMsg(message, wParam, lParam, pLResult);
 }
 
 BOOL CGeneralMsgBox::OnCmdMsg(UINT uiID, int nCode, void* pExtra, 

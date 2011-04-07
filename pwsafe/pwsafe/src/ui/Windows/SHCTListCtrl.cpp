@@ -246,21 +246,21 @@ BOOL CSHCTListCtrl::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
   return brc;
 }
 
-void CSHCTListCtrl::OnCustomDraw(NMHDR* pNotifyStruct, LRESULT* pResult)
+void CSHCTListCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
   NMLVCUSTOMDRAW* pLVCD = reinterpret_cast<NMLVCUSTOMDRAW *>(pNotifyStruct);
 
-  *pResult = CDRF_DODEFAULT;
+  *pLResult = CDRF_DODEFAULT;
   const int iSubItem = pLVCD->iSubItem;
   const UINT id = (UINT)LOWORD(pLVCD->nmcd.lItemlParam);
   MapMenuShortcutsIter iter;
 
   switch(pLVCD->nmcd.dwDrawStage) {
     case CDDS_PREPAINT:
-      *pResult = CDRF_NOTIFYITEMDRAW;
+      *pLResult = CDRF_NOTIFYITEMDRAW;
       break;
     case CDDS_ITEMPREPAINT:
-      *pResult = CDRF_NOTIFYSUBITEMDRAW;
+      *pLResult = CDRF_NOTIFYSUBITEMDRAW;
       break;
     case CDDS_ITEMPREPAINT | CDDS_SUBITEM:
       pLVCD->clrText = m_crWindowText;
@@ -316,9 +316,9 @@ INT_PTR CSHCTListCtrl::OnToolHitTest(CPoint point, TOOLINFO *pTI) const
   }
 }
 
-BOOL CSHCTListCtrl::OnToolTipText(UINT /*id*/, NMHDR * pNMHDR, LRESULT * pResult)
+BOOL CSHCTListCtrl::OnToolTipText(UINT /*id*/, NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
-  UINT_PTR nID = pNMHDR->idFrom;
+  UINT_PTR nID = pNotifyStruct->idFrom;
 
   // check if this is the automatic tooltip of the control
   if (nID == 0) 
@@ -326,10 +326,10 @@ BOOL CSHCTListCtrl::OnToolTipText(UINT /*id*/, NMHDR * pNMHDR, LRESULT * pResult
                   // or our tooltip will disappear
 
   // handle both ANSI and UNICODE versions of the message
-  TOOLTIPTEXTA* pTTTA = (TOOLTIPTEXTA*)pNMHDR;
-  TOOLTIPTEXTW* pTTTW = (TOOLTIPTEXTW*)pNMHDR;
+  TOOLTIPTEXTA* pTTTA = (TOOLTIPTEXTA*)pNotifyStruct;
+  TOOLTIPTEXTW* pTTTW = (TOOLTIPTEXTW*)pNotifyStruct;
 
-  *pResult = 0;
+  *pLResult = 0;
 
   // get the mouse position
   const MSG* pMessage;
@@ -373,7 +373,7 @@ BOOL CSHCTListCtrl::OnToolTipText(UINT /*id*/, NMHDR * pNMHDR, LRESULT * pResult
 #define LONG_TOOLTIPS
 
 #ifdef LONG_TOOLTIPS
-    if (pNMHDR->code == TTN_NEEDTEXTA) {
+    if (pNotifyStruct->code == TTN_NEEDTEXTA) {
       delete m_pchTip;
 
       m_pchTip = new char[cs_TipText.GetLength() + 1];
@@ -398,7 +398,7 @@ BOOL CSHCTListCtrl::OnToolTipText(UINT /*id*/, NMHDR * pNMHDR, LRESULT * pResult
       pTTTW->lpszText = (LPWSTR)m_pwchTip;
     }
 #else // Short Tooltips!
-    if (pNMHDR->code == TTN_NEEDTEXTA) {
+    if (pNotifyStruct->code == TTN_NEEDTEXTA) {
       int n = WideCharToMultiByte(CP_ACP, 0, cs_TipText, -1,
                                   pTTTA->szText,
                                   _countof(pTTTA->szText),

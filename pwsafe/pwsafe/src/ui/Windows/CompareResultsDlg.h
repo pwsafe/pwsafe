@@ -100,9 +100,9 @@ protected:
   virtual void OnOK();
   afx_msg void OnHelp();
   afx_msg void OnShowIdenticalEntries();
-  afx_msg void OnColumnClick(NMHDR* pNMHDR, LRESULT* pResult);
-  afx_msg void OnItemDoubleClick(NMHDR* pNotifyStruct, LRESULT* result);
-  afx_msg void OnItemRightClick(NMHDR* pNotifyStruct, LRESULT* result);
+  afx_msg void OnColumnClick(NMHDR *pNotifyStruct, LRESULT *pLResult);
+  afx_msg void OnItemDoubleClick(NMHDR *pNotifyStruct, LRESULT *pLResult);
+  afx_msg void OnItemRightClick(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnCompareViewEdit();
   afx_msg void OnCompareSynchronize();
   afx_msg void OnCompareCopyToOriginalDB();

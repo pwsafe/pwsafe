@@ -52,7 +52,7 @@ protected:
   afx_msg void OnBnClickedOk();
   afx_msg void OnAbsolute();
   afx_msg void OnRelative();
-  afx_msg void OnDtnDatetime1Change(NMHDR *pNMHDR, LRESULT *pResult);
+  afx_msg void OnDtnDatetime1Change(NMHDR *pNotifyStruct, LRESULT *pLResult);
 
   DECLARE_MESSAGE_MAP()
 

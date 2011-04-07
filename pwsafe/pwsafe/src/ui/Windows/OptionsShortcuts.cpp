@@ -237,10 +237,10 @@ void COptionsShortcuts::OnBnClickedResetAll()
   m_ShortcutLC.UpdateWindow();
 }
 
-void COptionsShortcuts::OnHeaderNotify(NMHDR* pNMHDR, LRESULT *pResult)
+void COptionsShortcuts::OnHeaderNotify(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
-  NMHEADER *phdn = (NMHEADER *) pNMHDR;
-  *pResult = FALSE;
+  NMHEADER *phdn = (NMHEADER *) pNotifyStruct;
+  *pLResult = FALSE;
 
   if (phdn->pitem == NULL)
     return;
@@ -261,7 +261,7 @@ void COptionsShortcuts::OnHeaderNotify(NMHDR* pNMHDR, LRESULT *pResult)
   }
 }
 
-void COptionsShortcuts::OnHeaderRClick(NMHDR* /* pNMHDR */, LRESULT *pResult)
+void COptionsShortcuts::OnHeaderRClick(NMHDR *, LRESULT *pLResult)
 {
   if (m_iColWidth == m_iDefColWidth)
     return;
@@ -283,7 +283,7 @@ void COptionsShortcuts::OnHeaderRClick(NMHDR* /* pNMHDR */, LRESULT *pResult)
 
     pPopup->TrackPopupMenu(dwTrackPopupFlags, ptMousePos.x, ptMousePos.y, this);
   }
-  *pResult = TRUE;
+  *pLResult = TRUE;
 }
 
 void COptionsShortcuts::OnResetColumnWidth()

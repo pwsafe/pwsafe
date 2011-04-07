@@ -1346,7 +1346,7 @@ void DboxMain::FixListIndexes()
   }
 }
 
-void DboxMain::OnItemDoubleClick(NMHDR * /* pNotifyStruct */, LRESULT *pLResult)
+void DboxMain::OnItemDoubleClick(NMHDR *, LRESULT *pLResult)
 {
   *pLResult = 0L;
   UnFindItem();
@@ -1803,27 +1803,25 @@ void DboxMain::CancelPendingPasswordDialog()
     dbox_pkentry->SendMessage(WM_CLOSE);
 }
 
-BOOL DboxMain::OnToolTipText(UINT,
-                             NMHDR *pNMHDR,
-                             LRESULT *pResult)
+BOOL DboxMain::OnToolTipText(UINT, NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
   // This code is copied from the DLGCBR32 example that comes with MFC
   // Updated by MS on 25/09/2005
 #if !defined(POCKET_PC)
-  ASSERT(pNMHDR->code == TTN_NEEDTEXTA || pNMHDR->code == TTN_NEEDTEXTW);
+  ASSERT(pNotifyStruct->code == TTN_NEEDTEXTA || pNotifyStruct->code == TTN_NEEDTEXTW);
 
   // allow top level routing frame to handle the message
   if (GetRoutingFrame() != NULL)
     return FALSE;
 
   // need to handle both ANSI and UNICODE versions of the message
-  TOOLTIPTEXTA* pTTTA = (TOOLTIPTEXTA*)pNMHDR;
-  TOOLTIPTEXTW* pTTTW = (TOOLTIPTEXTW*)pNMHDR;
+  TOOLTIPTEXTA* pTTTA = (TOOLTIPTEXTA*)pNotifyStruct;
+  TOOLTIPTEXTW* pTTTW = (TOOLTIPTEXTW*)pNotifyStruct;
   wchar_t tc_FullText[4096];  // Maxsize of a string in a resource file
   CString cs_TipText;
-  UINT nID = (UINT)pNMHDR->idFrom;
-  if (pNMHDR->code == TTN_NEEDTEXTA && (pTTTA->uFlags & TTF_IDISHWND) ||
-      pNMHDR->code == TTN_NEEDTEXTW && (pTTTW->uFlags & TTF_IDISHWND)) {
+  UINT nID = (UINT)pNotifyStruct->idFrom;
+  if (pNotifyStruct->code == TTN_NEEDTEXTA && (pTTTA->uFlags & TTF_IDISHWND) ||
+      pNotifyStruct->code == TTN_NEEDTEXTW && (pTTTW->uFlags & TTF_IDISHWND)) {
     // idFrom is actually the HWND of the tool
     nID = ((UINT)(WORD)::GetDlgCtrlID((HWND)nID));
   }
@@ -1848,7 +1846,7 @@ BOOL DboxMain::OnToolTipText(UINT,
 #define LONG_TOOLTIPS
 
 #ifdef LONG_TOOLTIPS
-  if (pNMHDR->code == TTN_NEEDTEXTA) {
+  if (pNotifyStruct->code == TTN_NEEDTEXTA) {
     delete m_pchTip;
 
     m_pchTip = new char[cs_TipText.GetLength() + 1];
@@ -1873,7 +1871,7 @@ BOOL DboxMain::OnToolTipText(UINT,
     pTTTW->lpszText = (LPWSTR)m_pwchTip;
   }
 #else // Short Tooltips!
-  if (pNMHDR->code == TTN_NEEDTEXTA) {
+  if (pNotifyStruct->code == TTN_NEEDTEXTA) {
     int n = WideCharToMultiByte(CP_ACP, 0, cs_TipText, -1,
                                 pTTTA->szText,
                                 _countof(pTTTA->szText),
@@ -1890,10 +1888,10 @@ BOOL DboxMain::OnToolTipText(UINT,
   }
 #endif // LONG_TOOLTIPS
 
-  *pResult = 0;
+  *pLResult = 0;
 
   // bring the tooltip window above other popup windows
-  ::SetWindowPos(pNMHDR->hwndFrom, HWND_TOP, 0, 0, 0, 0,
+  ::SetWindowPos(pNotifyStruct->hwndFrom, HWND_TOP, 0, 0, 0, 0,
                  SWP_NOACTIVATE|SWP_NOSIZE|SWP_NOMOVE);
 #endif  // POCKET_PC
   return TRUE;    // message was handled

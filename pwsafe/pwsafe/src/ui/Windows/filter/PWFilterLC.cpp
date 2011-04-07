@@ -1854,11 +1854,11 @@ void CPWFilterLC::DeleteEntry(FieldType ftype)
     vWCFcbx_data.erase(Fcbxdata_iter);
 }
 
-void CPWFilterLC::OnCustomDraw(NMHDR* pNotifyStruct, LRESULT* pResult)
+void CPWFilterLC::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
   NMLVCUSTOMDRAW* pLVCD = reinterpret_cast<NMLVCUSTOMDRAW *>(pNotifyStruct);
 
-  *pResult = CDRF_DODEFAULT;
+  *pLResult = CDRF_DODEFAULT;
   const int iItem = (int)pLVCD->nmcd.dwItemSpec;
   const int iSubItem = pLVCD->iSubItem;
   const DWORD_PTR dwData = pLVCD->nmcd.lItemlParam;
@@ -1869,17 +1869,17 @@ void CPWFilterLC::OnCustomDraw(NMHDR* pNotifyStruct, LRESULT* pResult)
 
   switch(pLVCD->nmcd.dwDrawStage) {
     case CDDS_PREPAINT:
-      *pResult = CDRF_NOTIFYITEMDRAW;
+      *pLResult = CDRF_NOTIFYITEMDRAW;
       break;
     case CDDS_ITEMPREPAINT:
-      *pResult = CDRF_NOTIFYSUBITEMDRAW;
+      *pLResult = CDRF_NOTIFYSUBITEMDRAW;
       break;
     case CDDS_ITEMPREPAINT | CDDS_SUBITEM:
       {
         CRect rect;
         GetSubItemRect(iItem, iSubItem, LVIR_BOUNDS, rect);
         if (rect.top < 0) {
-          *pResult = CDRF_SKIPDEFAULT;
+          *pLResult = CDRF_SKIPDEFAULT;
           break;
         }
         if (iSubItem == 0) {
@@ -1900,7 +1900,7 @@ void CPWFilterLC::OnCustomDraw(NMHDR* pNotifyStruct, LRESULT* pResult)
                             m_iItem == iItem ? m_crRedText : m_crWindowText, 
                             m_crButtonFace, inner_rect, 
                             m_iItem == iItem, true);
-            *pResult = CDRF_SKIPDEFAULT;
+            *pLResult = CDRF_SKIPDEFAULT;
             break;
           case FLC_ENABLE_BUTTON:
             // Draw checked/unchecked image
@@ -1909,14 +1909,14 @@ void CPWFilterLC::OnCustomDraw(NMHDR* pNotifyStruct, LRESULT* pResult)
             // The '7' below is ~ half the bitmap size of 13.
             inner_rect.SetRect(ix - 7, iy - 7, ix + 7, iy + 7);
             DrawImage(pDC, inner_rect, bFilterActive ? 0 : 1);
-            *pResult = CDRF_SKIPDEFAULT;
+            *pLResult = CDRF_SKIPDEFAULT;
             break;
           case FLC_ADD_BUTTON:
           case FLC_REM_BUTTON:
             // Always bold
             DrawSubItemText(iItem, iSubItem, pDC, m_crWindowText, m_crWindow,
                             inner_rect, true, false);
-            *pResult = CDRF_SKIPDEFAULT;
+            *pLResult = CDRF_SKIPDEFAULT;
             break;
           case FLC_LGC_COMBOBOX:
             // Greyed out if filter inactive or logic not set
@@ -2074,9 +2074,9 @@ INT_PTR CPWFilterLC::OnToolHitTest(CPoint point, TOOLINFO *pTI) const
   }
 }
 
-BOOL CPWFilterLC::OnToolTipText(UINT /*id*/, NMHDR * pNMHDR, LRESULT * pResult)
+BOOL CPWFilterLC::OnToolTipText(UINT /*id*/, NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
-  UINT_PTR nID = pNMHDR->idFrom;
+  UINT_PTR nID = pNotifyStruct->idFrom;
 
   // check if this is the automatic tooltip of the control
   if (nID == 0) 
@@ -2084,10 +2084,10 @@ BOOL CPWFilterLC::OnToolTipText(UINT /*id*/, NMHDR * pNMHDR, LRESULT * pResult)
                   // or our tooltip will disappear
 
   // handle both ANSI and UNICODE versions of the message
-  TOOLTIPTEXTA* pTTTA = (TOOLTIPTEXTA*)pNMHDR;
-  TOOLTIPTEXTW* pTTTW = (TOOLTIPTEXTW*)pNMHDR;
+  TOOLTIPTEXTA* pTTTA = (TOOLTIPTEXTA*)pNotifyStruct;
+  TOOLTIPTEXTW* pTTTW = (TOOLTIPTEXTW*)pNotifyStruct;
 
-  *pResult = 0;
+  *pLResult = 0;
 
   // get the mouse position
   const MSG* pMessage;
@@ -2146,7 +2146,7 @@ BOOL CPWFilterLC::OnToolTipText(UINT /*id*/, NMHDR * pNMHDR, LRESULT * pResult)
 #define LONG_TOOLTIPS
 
 #ifdef LONG_TOOLTIPS
-    if (pNMHDR->code == TTN_NEEDTEXTA) {
+    if (pNotifyStruct->code == TTN_NEEDTEXTA) {
       delete m_pchTip;
 
       m_pchTip = new char[cs_TipText.GetLength() + 1];
@@ -2171,7 +2171,7 @@ BOOL CPWFilterLC::OnToolTipText(UINT /*id*/, NMHDR * pNMHDR, LRESULT * pResult)
       pTTTW->lpszText = (LPWSTR)m_pwchTip;
     }
 #else // Short Tooltips!
-    if (pNMHDR->code == TTN_NEEDTEXTA) {
+    if (pNotifyStruct->code == TTN_NEEDTEXTA) {
       int n = WideCharToMultiByte(CP_ACP, 0, cs_TipText, -1,
                                   pTTTA->szText, _countof(pTTTA->szText),
                                   NULL, NULL);

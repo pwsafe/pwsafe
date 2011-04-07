@@ -25,8 +25,8 @@ protected:
   //{{AFX_MSG(CPWHdrCtrlNoChng)
   afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
   afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
-  afx_msg void OnBeginTrack(NMHDR * pNotifyStruct, LRESULT* pResult);
-  afx_msg void OnItemChanging(NMHDR * pNotifyStruct, LRESULT* pResult);
+  afx_msg void OnBeginTrack(NMHDR *pNotifyStruct, LRESULT *pLResult);
+  afx_msg void OnItemChanging(NMHDR *pNotifyStruct, LRESULT *pLResult);
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()

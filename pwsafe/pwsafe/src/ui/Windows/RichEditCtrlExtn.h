@@ -86,7 +86,7 @@ public:
   // Generated message map functions
 protected:
   //{{AFX_MSG(CRichEditCtrlExtn)
-  afx_msg void OnLink(NMHDR *pNotifyStruct, LRESULT *pResult);
+  afx_msg void OnLink(NMHDR *pNotifyStruct, LRESULT *pLResult);
   //}}AFX_MSG
   DECLARE_MESSAGE_MAP()
 };

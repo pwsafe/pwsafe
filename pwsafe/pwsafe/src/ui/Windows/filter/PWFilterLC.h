@@ -103,8 +103,8 @@ protected:
 
   //{{AFX_MSG(CPWFilterLC)
   afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
-  afx_msg void OnCustomDraw(NMHDR* pNotifyStruct, LRESULT* pResult);
-  virtual afx_msg BOOL OnToolTipText(UINT id, NMHDR * pNMHDR, LRESULT * pResult);
+  afx_msg void OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult);
+  virtual afx_msg BOOL OnToolTipText(UINT id, NMHDR *pNotifyStruct, LRESULT *pLResult);
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()

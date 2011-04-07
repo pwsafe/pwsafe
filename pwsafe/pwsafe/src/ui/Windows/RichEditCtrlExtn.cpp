@@ -91,12 +91,12 @@ struct StartEndMatch {
   const int m_iEnd;
 };
 
-void CRichEditCtrlExtn::OnLink(NMHDR* pNotifyStruct, LRESULT* pResult)
+void CRichEditCtrlExtn::OnLink(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
   ENLINK* pENLink = (ENLINK*)pNotifyStruct;
   CString cs_FName, cs_URL;
   CHARRANGE saveRange;
-  *pResult = 0;
+  *pLResult = 0;
 
   if (pNotifyStruct->code == EN_LINK) {
     if (pENLink->msg == WM_LBUTTONDOWN || pENLink->msg == WM_LBUTTONDBLCLK) {
@@ -135,18 +135,18 @@ void CRichEditCtrlExtn::OnLink(NMHDR* pNotifyStruct, LRESULT* pResult)
       }
 
       if (bCallbackProcessed) {
-        *pResult = 1;
+        *pLResult = 1;
       } else {
         // We do it!
         if (!cs_URL.IsEmpty()) {
           ::ShellExecute(NULL, NULL, cs_URL, NULL, NULL, SW_SHOWNORMAL);
-          *pResult = 1;
+          *pLResult = 1;
         }
       }
       SetSel(-1, -1);
     } else 
       if (pENLink->msg == WM_LBUTTONUP) {
-        *pResult = 1;
+        *pLResult = 1;
       }
   }
 }
