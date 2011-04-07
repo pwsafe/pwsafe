@@ -101,10 +101,10 @@ void CEBListCtrl::OnMouseMove(UINT nFlags, CPoint point)
   CListCtrl::OnMouseMove(nFlags, point);
 }
 
-BOOL CEBListCtrl::OnToolTipText(UINT /*id*/, NMHDR * pNMHDR, LRESULT * pResult)
+BOOL CEBListCtrl::OnToolTipText(UINT /*id*/, NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
-  UINT_PTR nID = pNMHDR->idFrom;
-  *pResult = 0;
+  UINT_PTR nID = pNotifyStruct->idFrom;
+  *pLResult = 0;
 
   // check if this is the automatic tooltip of the control
   if (nID == 0) 
@@ -112,8 +112,8 @@ BOOL CEBListCtrl::OnToolTipText(UINT /*id*/, NMHDR * pNMHDR, LRESULT * pResult)
                   // or our tooltip will disappear
 
   // handle both ANSI and UNICODE versions of the message
-  TOOLTIPTEXTA* pTTTA = (TOOLTIPTEXTA*)pNMHDR;
-  TOOLTIPTEXTW* pTTTW = (TOOLTIPTEXTW*)pNMHDR;
+  TOOLTIPTEXTA* pTTTA = (TOOLTIPTEXTA*)pNotifyStruct;
+  TOOLTIPTEXTW* pTTTW = (TOOLTIPTEXTW*)pNotifyStruct;
 
   CString cs_tooltip;
 
@@ -138,7 +138,7 @@ BOOL CEBListCtrl::OnToolTipText(UINT /*id*/, NMHDR * pNMHDR, LRESULT * pResult)
 #define LONG_TOOLTIPS
 
 #ifdef LONG_TOOLTIPS
-  if (pNMHDR->code == TTN_NEEDTEXTA) {
+  if (pNotifyStruct->code == TTN_NEEDTEXTA) {
     delete m_pchTip;
 
     m_pchTip = new char[cs_tooltip.GetLength() + 1];
@@ -163,7 +163,7 @@ BOOL CEBListCtrl::OnToolTipText(UINT /*id*/, NMHDR * pNMHDR, LRESULT * pResult)
     pTTTW->lpszText = (LPWSTR)m_pwchTip;
   }
 #else // Short Tooltips!
-  if (pNMHDR->code == TTN_NEEDTEXTA) {
+  if (pNotifyStruct->code == TTN_NEEDTEXTA) {
     int n = WideCharToMultiByte(CP_ACP, 0, cs_tooltip, -1,
                                 pTTTA->szText, _countof(pTTTA->szText),
                                 NULL, NULL);

@@ -1245,17 +1245,17 @@ void DboxMain::OnRestore()
   TellUserAboutExpiredPasswords();
 }
 
-void DboxMain::OnListItemSelected(NMHDR *pNMHDR, LRESULT *pLResult)
+void DboxMain::OnListItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
-  OnItemSelected(pNMHDR, pLResult);
+  OnItemSelected(pNotifyStruct, pLResult);
 }
 
-void DboxMain::OnTreeItemSelected(NMHDR *pNMHDR, LRESULT *pLResult)
+void DboxMain::OnTreeItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
-  OnItemSelected(pNMHDR, pLResult);
+  OnItemSelected(pNotifyStruct, pLResult);
 }
 
-void DboxMain::OnItemSelected(NMHDR *pNMHDR, LRESULT *pLResult)
+void DboxMain::OnItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
   *pLResult = 0L;
   CItemData *pci(NULL);
@@ -1272,7 +1272,7 @@ void DboxMain::OnItemSelected(NMHDR *pNMHDR, LRESULT *pLResult)
     HTREEITEM hItem(NULL);
 
     UnFindItem();
-    switch (pNMHDR->code) {
+    switch (pNotifyStruct->code) {
       case NM_CLICK:
       {
         // Mouseclick - Need to find the item clicked via HitTest
@@ -1303,7 +1303,7 @@ void DboxMain::OnItemSelected(NMHDR *pNMHDR, LRESULT *pLResult)
       }
       case TVN_SELCHANGED:
         // Keyboard - We are given the new selected entry
-        hItem = ((NMTREEVIEW *)pNMHDR)->itemNew.hItem;
+        hItem = ((NMTREEVIEW *)pNotifyStruct)->itemNew.hItem;
         break;
       default:
         // No idea how we got here!
@@ -1322,16 +1322,16 @@ void DboxMain::OnItemSelected(NMHDR *pNMHDR, LRESULT *pLResult)
     // ListView
 
     int iItem(-1);
-    switch (pNMHDR->code) {
+    switch (pNotifyStruct->code) {
       case NM_CLICK:
       {
-        LPNMITEMACTIVATE pLVItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
+        LPNMITEMACTIVATE pLVItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNotifyStruct);
         iItem = pLVItemActivate->iItem;
         break;
       }
       case LVN_KEYDOWN:
       {
-        LPNMLVKEYDOWN pLVKeyDown = reinterpret_cast<LPNMLVKEYDOWN>(pNMHDR);
+        LPNMLVKEYDOWN pLVKeyDown = reinterpret_cast<LPNMLVKEYDOWN>(pNotifyStruct);
         iItem = m_ctlItemList.GetNextItem(-1, LVNI_SELECTED);
         int nCount = m_ctlItemList.GetItemCount();
         if (pLVKeyDown->wVKey == VK_DOWN)
@@ -1357,12 +1357,12 @@ void DboxMain::OnItemSelected(NMHDR *pNMHDR, LRESULT *pLResult)
   m_LastFoundListItem = -1;
 }
 
-void DboxMain::OnKeydownItemlist(NMHDR* pNMHDR, LRESULT* pResult)
+void DboxMain::OnKeydownItemlist(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
-  LPNMLVKEYDOWN pLVKeyDown = reinterpret_cast<LPNMLVKEYDOWN>(pNMHDR);
+  LPNMLVKEYDOWN pLVKeyDown = reinterpret_cast<LPNMLVKEYDOWN>(pNotifyStruct);
 
   // TRUE = we have processed the key stroke - don't call anyone else
-  *pResult = TRUE;
+  *pLResult = TRUE;
 
   switch (pLVKeyDown->wVKey) {
     case VK_DELETE:
@@ -1382,7 +1382,7 @@ void DboxMain::OnKeydownItemlist(NMHDR* pNMHDR, LRESULT* pResult)
   }
 
   // FALSE = call next in line to process event
-  *pResult = FALSE;
+  *pLResult = FALSE;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1569,9 +1569,9 @@ void DboxMain::ClearData(const bool clearMRE)
   m_bDBNeedsReading = true;
 }
 
-void DboxMain::OnColumnClick(NMHDR* pNMHDR, LRESULT* pResult) 
+void DboxMain::OnColumnClick(NMHDR *pNotifyStruct, LRESULT *pLResult) 
 {
-  NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
+  NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNotifyStruct;
 
   // Get column index to CItemData value
   int iIndex = pNMListView->iSubItem;
@@ -1609,7 +1609,7 @@ void DboxMain::OnColumnClick(NMHDR* pNMHDR, LRESULT* pResult)
   SortListView();
   OnHideFindToolBar();
 
-  *pResult = TRUE;
+  *pLResult = TRUE;
 }
 
 void DboxMain::SortListView()
@@ -1633,7 +1633,7 @@ void DboxMain::SortListView()
     OnHideFindToolBar();
 }
 
-void DboxMain::OnHeaderRClick(NMHDR* /* pNMHDR */, LRESULT *pResult)
+void DboxMain::OnHeaderRClick(NMHDR *, LRESULT *pLResult)
 {
 #if defined(POCKET_PC)
   const DWORD dwTrackPopupFlags = TPM_LEFTALIGN;
@@ -1661,46 +1661,46 @@ void DboxMain::OnHeaderRClick(NMHDR* /* pNMHDR */, LRESULT *pResult)
 
     pPopup->TrackPopupMenu(dwTrackPopupFlags, ptMousePos.x, ptMousePos.y, this);
   }
-  *pResult = TRUE;
+  *pLResult = TRUE;
 }
 
-void DboxMain::OnHeaderBeginDrag(NMHDR* pNMHDR, LRESULT *pResult)
+void DboxMain::OnHeaderBeginDrag(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
   // Called for HDN_BEGINDRAG which changes the column order when CC not visible
   // Stop drag of first column (image)
 
-  NMHEADER *phdn = (NMHEADER *) pNMHDR;
+  NMHEADER *phdn = (NMHEADER *)pNotifyStruct;
 
-  *pResult = (m_bImageInLV && phdn->iItem == 0) ? TRUE : FALSE;
+  *pLResult = (m_bImageInLV && phdn->iItem == 0) ? TRUE : FALSE;
 }
 
-void DboxMain::OnHeaderEndDrag(NMHDR* pNMHDR, LRESULT *pResult)
+void DboxMain::OnHeaderEndDrag(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
   // Called for HDN_ENDDRAG which changes the column order when CC not visible
   // Unfortunately the changes are only really done when this call returns,
   // hence the PostMessage to get the information later
 
   // Get control after operation is really complete
-  NMHEADER *phdn = (NMHEADER *) pNMHDR;
+  NMHEADER *phdn = (NMHEADER *)pNotifyStruct;
 
   // Stop drag of first column (image)
   if (m_bImageInLV && 
       (phdn->iItem == 0 || 
        (((phdn->pitem->mask & HDI_ORDER) == HDI_ORDER) && 
         phdn->pitem->iOrder == 0))) {
-    *pResult = TRUE;
+    *pLResult = TRUE;
     return;
   }
 
   // Otherwise allow
   PostMessage(PWS_MSG_HDR_DRAG_COMPLETE);
-  *pResult = FALSE;
+  *pLResult = FALSE;
 }
 
-void DboxMain::OnHeaderNotify(NMHDR* pNMHDR, LRESULT *pResult)
+void DboxMain::OnHeaderNotify(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
-  NMHEADER *phdn = (NMHEADER *) pNMHDR;
-  *pResult = FALSE;
+  NMHEADER *phdn = (NMHEADER *)pNotifyStruct;
+  *pLResult = FALSE;
 
   if (m_nColumnWidthByIndex == NULL || phdn->pitem == NULL)
     return;

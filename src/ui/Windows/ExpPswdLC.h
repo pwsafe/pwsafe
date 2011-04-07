@@ -23,7 +23,7 @@ protected:
 
   //{{AFX_MSG(CEBListCtrl)
   afx_msg void OnMouseMove(UINT nFlags, CPoint point);
-  afx_msg BOOL OnToolTipText(UINT id, NMHDR * pNMHDR, LRESULT * pResult);
+  afx_msg BOOL OnToolTipText(UINT id, NMHDR *pNotifyStruct, LRESULT *pLResult);
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()

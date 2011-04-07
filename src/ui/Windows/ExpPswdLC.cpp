@@ -105,10 +105,10 @@ void CExpPswdLC::OnMouseMove(UINT nFlags, CPoint point)
   CListCtrl::OnMouseMove(nFlags, point);
 }
 
-BOOL CExpPswdLC::OnToolTipText(UINT /*id*/, NMHDR * pNMHDR, LRESULT * pResult)
+BOOL CExpPswdLC::OnToolTipText(UINT /*id*/, NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
-  UINT_PTR nID = pNMHDR->idFrom;
-  *pResult = 0;
+  UINT_PTR nID = pNotifyStruct->idFrom;
+  *pLResult = 0;
 
   // check if this is the automatic tooltip of the control
   if (nID == 0) 
@@ -116,8 +116,8 @@ BOOL CExpPswdLC::OnToolTipText(UINT /*id*/, NMHDR * pNMHDR, LRESULT * pResult)
                   // or our tooltip will disappear
 
   // handle both ANSI and UNICODE versions of the message
-  TOOLTIPTEXTA* pTTTA = (TOOLTIPTEXTA*)pNMHDR;
-  TOOLTIPTEXTW* pTTTW = (TOOLTIPTEXTW*)pNMHDR;
+  TOOLTIPTEXTA* pTTTA = (TOOLTIPTEXTA*)pNotifyStruct;
+  TOOLTIPTEXTW* pTTTW = (TOOLTIPTEXTW*)pNotifyStruct;
 
   CString cs_tooltip;
 
@@ -179,7 +179,7 @@ BOOL CExpPswdLC::OnToolTipText(UINT /*id*/, NMHDR * pNMHDR, LRESULT * pResult)
     return FALSE;  // no ooltip
   }
 
-  if (pNMHDR->code == TTN_NEEDTEXTA) {
+  if (pNotifyStruct->code == TTN_NEEDTEXTA) {
     int n = WideCharToMultiByte(CP_ACP, 0, cs_tooltip, -1,
                                 pTTTA->szText, _countof(pTTTA->szText),
                                 NULL, NULL);

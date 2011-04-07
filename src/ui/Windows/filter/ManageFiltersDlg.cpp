@@ -248,17 +248,17 @@ BOOL CManageFiltersDlg::OnInitDialog()
   return FALSE;
 }
 
-void CManageFiltersDlg::OnClick(NMHDR *pNotifyStruct, LRESULT *pResult)
+void CManageFiltersDlg::OnClick(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
   LPNMITEMACTIVATE pNMLV = reinterpret_cast<LPNMITEMACTIVATE>(pNotifyStruct);
 
   // Ignore clicks on Properties ListCtrl (doesn't seem to do much though!)
   if (pNMLV->hdr.idFrom == IDC_FILTERPROPERTIES) {
-    *pResult = TRUE;
+    *pLResult = TRUE;
     return;
   }
 
-  *pResult = FALSE;
+  *pLResult = FALSE;
 
   if (pNMLV->iItem < 0) {
     return;
@@ -867,17 +867,17 @@ void CManageFiltersDlg::ResetColumns()
   m_FLCHeader.SetStopChangeFlag(bSave);
 }
 
-void CManageFiltersDlg::OnItemChanging(NMHDR* pNotifyStruct, LRESULT* pResult)
+void CManageFiltersDlg::OnItemChanging(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
   NMLISTVIEW* pNMLV = reinterpret_cast<NMLISTVIEW *>(pNotifyStruct);
 
   // Ignore clicks on Properties ListCtrl (doesn't seem to do much though!)
   if (pNMLV->hdr.idFrom == IDC_FILTERPROPERTIES) {
-    *pResult = TRUE;
+    *pLResult = TRUE;
     return;
   }
 
-  *pResult = FALSE;
+  *pLResult = FALSE;
 
   // Has the state changed?
   if (pNMLV->iItem < 0)
@@ -886,23 +886,23 @@ void CManageFiltersDlg::OnItemChanging(NMHDR* pNotifyStruct, LRESULT* pResult)
   if ((pNMLV->uChanged & LVIF_STATE) == LVIF_STATE) {
     UINT uiChangedState = pNMLV->uOldState & ~pNMLV->uNewState;
     if ((uiChangedState & LVIS_FOCUSED) == LVIS_FOCUSED) {
-      *pResult = TRUE;
+      *pLResult = TRUE;
     }
     if ((pNMLV->uNewState & LVIS_SELECTED) == LVIS_SELECTED) {
       m_selectedfilter = pNMLV->iItem;
-      *pResult = TRUE;
+      *pLResult = TRUE;
     }
     if ((pNMLV->uOldState & LVIS_SELECTED) == LVIS_SELECTED) {
-      *pResult = TRUE;
+      *pLResult = TRUE;
     }
   }
 }
 
-void CManageFiltersDlg::OnCustomDraw(NMHDR* pNotifyStruct, LRESULT* pResult)
+void CManageFiltersDlg::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
   NMLVCUSTOMDRAW* pLVCD = reinterpret_cast<NMLVCUSTOMDRAW *>(pNotifyStruct);
 
-  *pResult = CDRF_DODEFAULT;
+  *pLResult = CDRF_DODEFAULT;
   const int iItem = (int)pLVCD->nmcd.dwItemSpec;
   const int iSubItem = pLVCD->iSubItem;
 
@@ -927,7 +927,7 @@ void CManageFiltersDlg::OnCustomDraw(NMHDR* pNotifyStruct, LRESULT* pResult)
 
   switch(pLVCD->nmcd.dwDrawStage) {
     case CDDS_PREPAINT:
-      *pResult = CDRF_NOTIFYITEMDRAW;
+      *pLResult = CDRF_NOTIFYITEMDRAW;
       break;
     case CDDS_ITEMPREPAINT:
       pLVCD->clrText = ::GetSysColor(COLOR_WINDOWTEXT);
@@ -937,14 +937,14 @@ void CManageFiltersDlg::OnCustomDraw(NMHDR* pNotifyStruct, LRESULT* pResult)
       } else {
         pLVCD->clrTextBk = m_FilterLC.GetTextBkColor();
       }
-      *pResult = CDRF_NOTIFYSUBITEMDRAW;
+      *pLResult = CDRF_NOTIFYSUBITEMDRAW;
       break;
     case CDDS_ITEMPREPAINT | CDDS_SUBITEM:
       {
         CRect rect;
         m_FilterLC.GetSubItemRect(iItem, iSubItem, LVIR_BOUNDS, rect);
         if (rect.top < 0) {
-          *pResult = CDRF_SKIPDEFAULT;
+          *pLResult = CDRF_SKIPDEFAULT;
           break;
         }
         if (iSubItem == 0) {
@@ -972,7 +972,7 @@ void CManageFiltersDlg::OnCustomDraw(NMHDR* pNotifyStruct, LRESULT* pResult)
             // The '7' below is ~ half the bitmap size of 13.
             inner_rect.SetRect(ix - 7, iy - 7, ix + 7, iy + 7);
             DrawImage(pDC, inner_rect, bActive ? 0 : 2);
-            *pResult = CDRF_SKIPDEFAULT;
+            *pLResult = CDRF_SKIPDEFAULT;
             break;
           case MFLC_COPYTODATABASE:
             // Make text 'invisible'
@@ -981,7 +981,7 @@ void CManageFiltersDlg::OnCustomDraw(NMHDR* pNotifyStruct, LRESULT* pResult)
             if (iItem == m_selectedfilter) {
               pDC->FillSolidRect(&first_rect, crLightGreen);
             }
-            *pResult = CDRF_SKIPDEFAULT;
+            *pLResult = CDRF_SKIPDEFAULT;
             // If already a database filter - don't need any image
             if (pflt_idata->flt_key.fpool == FPOOL_DATABASE)
               break;
@@ -1005,7 +1005,7 @@ void CManageFiltersDlg::OnCustomDraw(NMHDR* pNotifyStruct, LRESULT* pResult)
             // The '7' below is ~ half the bitmap size of 13.
             inner_rect.SetRect(ix - 7, iy - 7, ix + 7, iy + 7);
             DrawImage(pDC, inner_rect, bExport ? 0 : 2);
-            *pResult = CDRF_SKIPDEFAULT;
+            *pLResult = CDRF_SKIPDEFAULT;
             break;
           default:
             break;
@@ -1216,9 +1216,9 @@ int CALLBACK CManageFiltersDlg::FLTCompareFunc(LPARAM lParam1,
   return iResult;
 }
 
-void CManageFiltersDlg::OnColumnClick(NMHDR* pNMHDR, LRESULT* pResult) 
+void CManageFiltersDlg::OnColumnClick(NMHDR *pNotifyStruct, LRESULT *pLResult) 
 {
-  NM_LISTVIEW* pNMLV = reinterpret_cast<NM_LISTVIEW *>(pNMHDR);
+  NM_LISTVIEW* pNMLV = reinterpret_cast<NM_LISTVIEW *>(pNotifyStruct);
 
   // Get column index to CItemData value
   int iIndex = pNMLV->iSubItem;
@@ -1243,7 +1243,7 @@ void CManageFiltersDlg::OnColumnClick(NMHDR* pNMHDR, LRESULT* pResult)
   }
 
   SortFilterView();
-  *pResult = TRUE;
+  *pLResult = TRUE;
 }
 
 void CManageFiltersDlg::SortFilterView()

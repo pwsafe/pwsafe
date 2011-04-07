@@ -61,7 +61,7 @@ protected:
   afx_msg void OnHelp();
   virtual void OnOK();
   afx_msg void OnReset();
-  afx_msg void OnSelectedItemChanging(NMHDR *pNMHDR, LRESULT *pResult);
+  afx_msg void OnSelectedItemChanging(NMHDR *pNotifyStruct, LRESULT *pLResult);
 
   //}}AFX_MSG
   DECLARE_MESSAGE_MAP()

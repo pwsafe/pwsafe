@@ -276,15 +276,15 @@ void CDisplayFSBkupFiles::OnDelete()
   }
 }
 
-void CDisplayFSBkupFiles::OnItemSelected(NMHDR *pNMHDR, LRESULT *pLResult)
+void CDisplayFSBkupFiles::OnItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
   *pLResult = 0L;
 
   m_iSelectedItem = -1;
-  switch (pNMHDR->code) {
+  switch (pNotifyStruct->code) {
     case NM_CLICK:
     {
-      LPNMITEMACTIVATE pLVItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
+      LPNMITEMACTIVATE pLVItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNotifyStruct);
       int iItem = pLVItemActivate->iItem;
       if (iItem < 0) {
         m_RFListCtrl.SetItemState(m_iSelectedItem, 0, LVIS_SELECTED | LVIS_DROPHILITED);
@@ -297,7 +297,7 @@ void CDisplayFSBkupFiles::OnItemSelected(NMHDR *pNMHDR, LRESULT *pLResult)
     }
     case LVN_KEYDOWN:
     {
-      LPNMLVKEYDOWN pLVKeyDown = reinterpret_cast<LPNMLVKEYDOWN>(pNMHDR);
+      LPNMLVKEYDOWN pLVKeyDown = reinterpret_cast<LPNMLVKEYDOWN>(pNotifyStruct);
       m_iSelectedItem = m_RFListCtrl.GetNextItem(-1, LVNI_SELECTED);
       int nCount = m_RFListCtrl.GetItemCount();
       if (pLVKeyDown->wVKey == VK_DOWN)

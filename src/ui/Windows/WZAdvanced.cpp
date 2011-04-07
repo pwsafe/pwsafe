@@ -929,17 +929,17 @@ void CWZAdvanced::OnDeselectAll()
   m_pLC_List->SortItems(AdvCompareFunc, NULL);
 }
 
-void CWZAdvanced::OnSelectedItemChanging(NMHDR *pNMHDR, LRESULT *pResult)
+void CWZAdvanced::OnSelectedItemChanging(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
   // Prevent mandatory fields being deselected
-  NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
+  NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNotifyStruct;
 
   if (m_bsMandatoryFields.test(pNMListView->lParam & 0xff) &&
       (pNMListView->uNewState & LVIS_SELECTED)) {
     pNMListView->uNewState &= ~LVIS_SELECTED;
-    *pResult = TRUE;
+    *pLResult = TRUE;
   } else
-    *pResult = FALSE;
+    *pLResult = FALSE;
 }
 
 // Override PreTranslateMessage() so RelayEvent() can be

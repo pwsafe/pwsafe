@@ -48,14 +48,14 @@ void CPWHdrCtrlNoChng::OnLButtonDblClk(UINT /* nFlags */, CPoint /* point */)
   //  CHeaderCtrl::OnLButtonDblClk(nFlags, point);
 }
 
-void CPWHdrCtrlNoChng::OnBeginTrack(NMHDR * /*pNotifyStruct*/, LRESULT* pResult)
+void CPWHdrCtrlNoChng::OnBeginTrack(NMHDR *, LRESULT *pLResult)
 {
   // Don't allow user to change the size of any columns!
-  *pResult = TRUE;
+  *pLResult = TRUE;
 }
 
 
-void CPWHdrCtrlNoChng::OnItemChanging(NMHDR * /* pNotifyStruct */, LRESULT* pResult)
+void CPWHdrCtrlNoChng::OnItemChanging(NMHDR *, LRESULT *pLResult)
 {
-  *pResult = m_bStopChange ? TRUE : FALSE;
+  *pLResult = m_bStopChange ? TRUE : FALSE;
 }

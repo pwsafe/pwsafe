@@ -1293,17 +1293,17 @@ void ThisMfcApp::GetApplicationVersionData()
 
 BOOL CALLBACK ThisMfcApp::searcher(HWND hWnd, LPARAM lParam)
 {
-  DWORD_PTR result;
+  DWORD_PTR dwresult;
   LRESULT ok = ::SendMessageTimeout(hWnd,
                                     m_uiRegMsg,
                                     0, 0, 
                                     SMTO_BLOCK | SMTO_ABORTIFHUNG,
                                     200,
-                                    &result);
+                                    &dwresult);
   if (ok == 0)
     return TRUE; // ignore this and continue
 
-  if (result == m_uiRegMsg) { /* found it */
+  if (dwresult == m_uiRegMsg) { /* found it */
     HWND *target = (HWND *)lParam;
     *target = hWnd;
     return FALSE; // stop search

@@ -189,9 +189,9 @@ void CPWHistDlg::OnCheckedSavePasswordHistory()
   GetDlgItem(IDC_MAXPWHISTORY)->EnableWindow(m_SavePWHistory ? TRUE : FALSE);
 }
 
-void CPWHistDlg::OnHistListClick(NMHDR* pNMHDR, LRESULT*)
+void CPWHistDlg::OnHistListClick(NMHDR *pNotifyStruct, LRESULT *)
 {
-  LPNMITEMACTIVATE lpnmitem = (LPNMITEMACTIVATE) pNMHDR;
+  LPNMITEMACTIVATE lpnmitem = (LPNMITEMACTIVATE) pNotifyStruct;
   ASSERT(lpnmitem != NULL);
   int item = lpnmitem->iItem;
   if (item == -1)
@@ -203,9 +203,9 @@ void CPWHistDlg::OnHistListClick(NMHDR* pNMHDR, LRESULT*)
   pDbx->SetClipboardData(pwhentry.password);
 }
 
-void CPWHistDlg::OnHeaderClicked(NMHDR* pNMHDR, LRESULT* pResult)
+void CPWHistDlg::OnHeaderClicked(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
-  HD_NOTIFY *phdn = (HD_NOTIFY *) pNMHDR;
+  HD_NOTIFY *phdn = (HD_NOTIFY *) pNotifyStruct;
 
   if (phdn->iButton == 0) {
     // User clicked on header using left mouse button
@@ -238,7 +238,7 @@ void CPWHistDlg::OnHeaderClicked(NMHDR* pNMHDR, LRESULT* pResult)
     m_PWHistListCtrl.GetHeaderCtrl()->SetItem(m_iSortedColumn, &HeaderItem);
   }
 
-  *pResult = 0;
+  *pLResult = 0;
 }
 
 int CALLBACK CPWHistDlg::PWHistCompareFunc(LPARAM lParam1, LPARAM lParam2,

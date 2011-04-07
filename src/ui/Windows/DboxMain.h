@@ -636,14 +636,14 @@ protected:
   afx_msg void OnSendEmail();
   afx_msg void OnCopyUsername();
   afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
-  afx_msg void OnListItemSelected(NMHDR *pNMHDR, LRESULT *pLResult);
-  afx_msg void OnTreeItemSelected(NMHDR *pNMHDR, LRESULT *pLResult);
-  afx_msg void OnKeydownItemlist(NMHDR *pNMHDR, LRESULT *pResult);
-  afx_msg void OnItemDoubleClick(NMHDR* pNotifyStruct, LRESULT* result);
-  afx_msg void OnHeaderRClick(NMHDR* pNotifyStruct, LRESULT* result);
-  afx_msg void OnHeaderNotify(NMHDR* pNotifyStruct, LRESULT* result);
-  afx_msg void OnHeaderBeginDrag(NMHDR* pNotifyStruct, LRESULT* result);
-  afx_msg void OnHeaderEndDrag(NMHDR* pNotifyStruct, LRESULT* result);
+  afx_msg void OnListItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult);
+  afx_msg void OnTreeItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult);
+  afx_msg void OnKeydownItemlist(NMHDR *pNotifyStruct, LRESULT *pLResult);
+  afx_msg void OnItemDoubleClick(NMHDR *pNotifyStruct, LRESULT *pLResult);
+  afx_msg void OnHeaderRClick(NMHDR *pNotifyStruct, LRESULT *pLResult);
+  afx_msg void OnHeaderNotify(NMHDR *pNotifyStruct, LRESULT *pLResult);
+  afx_msg void OnHeaderBeginDrag(NMHDR *pNotifyStruct, LRESULT *pLResult);
+  afx_msg void OnHeaderEndDrag(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnCopyPassword();
   afx_msg void OnCopyPasswordMinimize();
   afx_msg void OnDisplayPswdSubset();
@@ -715,13 +715,13 @@ protected:
 #else
   afx_msg void OnDropFiles(HDROP hDrop);
 #endif
-  afx_msg void OnColumnClick(NMHDR* pNMHDR, LRESULT* pResult);
+  afx_msg void OnColumnClick(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnUpdateNSCommand(CCmdUI *pCmdUI);  // Make entry unsupported (grayed out)
   afx_msg void OnInitMenuPopup(CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu);
   afx_msg void OnSizing(UINT fwSide, LPRECT pRect);
   //}}AFX_MSG
 
-  afx_msg BOOL OnToolTipText(UINT, NMHDR* pNMHDR, LRESULT* pResult);
+  afx_msg BOOL OnToolTipText(UINT, NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnExportVx(UINT nID);
   afx_msg void OnExportText();
   afx_msg void OnExportXML();

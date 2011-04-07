@@ -143,15 +143,15 @@ BOOL CInfoDisplay::Create(int /* x */, int /* y */, LPCWSTR sztext, CWnd * paren
    
   CRect r(0, 0, 10, 10); // meaningless values, will be recomputed after creation
 
-  BOOL result = CreateEx(WS_EX_NOACTIVATE,   // extended styles
+  BOOL bresult = CreateEx(WS_EX_NOACTIVATE,   // extended styles
                          NDclass,
                          sztext,
                          /* not WS_VISIBLE */ WS_POPUP | WS_BORDER,
                          r,
                          parent,
                          NULL);
-  ASSERT(result);
-  if (!result)
+  ASSERT(bresult);
+  if (!bresult)
     return FALSE;
 
   SetFont(f);

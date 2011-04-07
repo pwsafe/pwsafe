@@ -81,8 +81,8 @@ protected:
   virtual BOOL OnInitDialog();
   afx_msg void OnDestroy();
   afx_msg void OnIconHelp();
-  afx_msg void OnHeaderClicked(NMHDR* pNMHDR, LRESULT* pResult);
-  afx_msg void OnItemDoubleClick(NMHDR* pNotifyStruct, LRESULT* result);
+  afx_msg void OnHeaderClicked(NMHDR *pNotifyStruct, LRESULT *pLResult);
+  afx_msg void OnItemDoubleClick(NMHDR *pNotifyStruct, LRESULT *pLResult);
   virtual void OnOK();
 
   DECLARE_MESSAGE_MAP()

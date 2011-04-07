@@ -208,9 +208,9 @@ void CExpPWListDlg::OnOK()
   CPWDialog::OnOK();
 }
 
-void CExpPWListDlg::OnHeaderClicked(NMHDR* pNMHDR, LRESULT* pResult)
+void CExpPWListDlg::OnHeaderClicked(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
-  HD_NOTIFY *phdn = (HD_NOTIFY *) pNMHDR;
+  HD_NOTIFY *phdn = (HD_NOTIFY *) pNotifyStruct;
 
   if (phdn->iButton == 0) {
     // User clicked on header using left mouse button
@@ -243,7 +243,7 @@ void CExpPWListDlg::OnHeaderClicked(NMHDR* pNMHDR, LRESULT* pResult)
     m_expPWListCtrl.GetHeaderCtrl()->SetItem(m_iSortedColumn, &HeaderItem);
   }
 
-  *pResult = 0;
+  *pLResult = 0;
 }
 
 int CALLBACK CExpPWListDlg::ExpPWCompareFunc(LPARAM lParam1, LPARAM lParam2,
@@ -296,9 +296,9 @@ int CALLBACK CExpPWListDlg::ExpPWCompareFunc(LPARAM lParam1, LPARAM lParam2,
   return iResult;
 }
 
-void CExpPWListDlg::OnItemDoubleClick(NMHDR* /* pNMHDR */, LRESULT *pResult)
+void CExpPWListDlg::OnItemDoubleClick(NMHDR *, LRESULT *pLResult)
 {
-  *pResult = 0;
+  *pLResult = 0;
 
   int irow = m_expPWListCtrl.GetNextItem(-1, LVNI_SELECTED);
   if (irow == -1)

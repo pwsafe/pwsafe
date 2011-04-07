@@ -51,8 +51,8 @@ private:
   bool m_ClearPWHistory;
 
   afx_msg void OnCheckedSavePasswordHistory();
-  afx_msg void OnHeaderClicked(NMHDR* pNMHDR, LRESULT* pResult);
-  afx_msg void OnHistListClick(NMHDR* pNMHDR, LRESULT* pResult);
+  afx_msg void OnHeaderClicked(NMHDR *pNotifyStruct, LRESULT *pLResult);
+  afx_msg void OnHistListClick(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnBnClickedPwhCopyAll();
 
   DECLARE_MESSAGE_MAP()

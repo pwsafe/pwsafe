@@ -676,9 +676,9 @@ bool CCompareResultsDlg::CopyLeftOrRight(const bool bCopyLeft)
   return true;
 }
 
-void CCompareResultsDlg::OnItemDoubleClick(NMHDR* /* pNMHDR */, LRESULT *pResult)
+void CCompareResultsDlg::OnItemDoubleClick(NMHDR *, LRESULT *pLResult)
 {
-  *pResult = 0;
+  *pLResult = 0;
 
   m_row = m_LCResults.GetNextItem(-1, LVNI_SELECTED);
 
@@ -700,9 +700,9 @@ void CCompareResultsDlg::OnItemDoubleClick(NMHDR* /* pNMHDR */, LRESULT *pResult
   OnCompareViewEdit();
 }
 
-void CCompareResultsDlg::OnItemRightClick(NMHDR* /* pNMHDR */, LRESULT *pResult)
+void CCompareResultsDlg::OnItemRightClick(NMHDR *, LRESULT *pLResult)
 {
-  *pResult = 0;
+  *pLResult = 0;
 
   m_row = m_LCResults.GetNextItem(-1, LVNI_SELECTED);
 
@@ -774,9 +774,9 @@ void CCompareResultsDlg::OnItemRightClick(NMHDR* /* pNMHDR */, LRESULT *pResult)
   }
 }
 
-void CCompareResultsDlg::OnColumnClick(NMHDR* pNMHDR, LRESULT* pResult)
+void CCompareResultsDlg::OnColumnClick(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
-  NMHEADER *pNMHeaderCtrl  = (NMHEADER *)pNMHDR;
+  NMHEADER *pNMHeaderCtrl  = (NMHEADER *)pNotifyStruct;
 
   // Get column number to CItemData value
   int isortcolumn = pNMHeaderCtrl->iItem;
@@ -816,7 +816,7 @@ void CCompareResultsDlg::OnColumnClick(NMHDR* pNMHDR, LRESULT* pResult)
   hdi.fmt |= ((m_bSortAscending == TRUE) ? HDF_SORTUP : HDF_SORTDOWN);
   pHDRCtrl->SetItem(isortcolumn, &hdi);
 
-  *pResult = TRUE;
+  *pLResult = TRUE;
 }
 
 /*

@@ -35,8 +35,8 @@ protected:
   INT_PTR OnToolHitTest(CPoint point, TOOLINFO * pTI) const;
 
   //{{AFX_MSG(CSHCTListCtrl)
-  afx_msg BOOL OnToolTipText(UINT id, NMHDR * pNMHDR, LRESULT * pResult);
-  afx_msg void OnCustomDraw(NMHDR* pNotifyStruct, LRESULT* pResult);
+  afx_msg BOOL OnToolTipText(UINT id, NMHDR *pNotifyStruct, LRESULT *pLResult);
+  afx_msg void OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
   afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
   afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
