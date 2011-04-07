@@ -49,6 +49,8 @@ def check_str(msgid, msgstr):
 
 def check_po(fn):
 	warn_cnt = 0
+	item_cnt = 0
+	empty_item_cnt = 0
 	f = open(fn, 'r')
 	lines = f.readlines()
 	f.close()
@@ -59,19 +61,22 @@ def check_po(fn):
 		line_no += 1
 		line = line.strip()
 		if line.startswith('msgid '):
+			item_cnt += 1
 			msgid = line[6:]
 			msgstr = ''
 		if line.startswith('msgstr '):
 			msgstr = line[7:]
 			msgid = msgid.strip('"')
 			msgstr = msgstr.strip('"')
-			wc = check_str(msgid, msgstr)
-			if wc:
-				print('%s:%d: [%s] [%s]' % (fn, line_no, msgid, msgstr))
-			warn_cnt += wc
+			if not msgstr:
+				empty_item_cnt += 1
+			else:
+				wc = check_str(msgid, msgstr)
+				if wc:
+					print('%s:%d: [%s] [%s]' % (fn, line_no, msgid, msgstr))
+					warn_cnt += wc
 			msg_str = ''
-	if warn_cnt > 0:
-		print('%s: warning cnt: %d' % (fn, warn_cnt))
+	print('%s: items: %d; empty items: %d; warning cnt: %d' % (fn, item_cnt, empty_item_cnt, warn_cnt))
 
 
 
