@@ -3470,7 +3470,7 @@ msgstr ""
 
 #. Resource IDs: (8085)
 msgid "Insert"
-msgstr ""
+msgstr "Wstaw"
 
 #. Resource IDs: (3857)
 msgid "Insufficient memory to perform operation."
@@ -3514,7 +3514,7 @@ msgstr "Nieprawidłowy schemat Filtra."
 
 #. Resource IDs: (1388)
 msgid "Invalid Parameter"
-msgstr ""
+msgstr "Nieprawidłowy parametr"
 
 #. Resource IDs: (189)
 #, c-format
@@ -3523,27 +3523,27 @@ msgstr "Nieprawidłowe dane wejściowe na linii %d. Liczba pól rozdzielonych '%
 
 #. Resource IDs: (356)
 msgid "Invalid shortcut ignored."
-msgstr ""
+msgstr "Zignorowano nieprawidłowy skrót."
 
 #. Resource IDs: (518)
 msgid "Irish"
-msgstr ""
+msgstr "Irlandzki"
 
 #. Resource IDs: (514)
 msgid "Italian"
-msgstr ""
+msgstr "Włoski"
 
 #. Resource IDs: (518)
 msgid "Italian (142)"
-msgstr ""
+msgstr "Włoski (142)"
 
 #. Resource IDs: (521)
 msgid "Japanese"
-msgstr ""
+msgstr "Japoński"
 
 #. Resource IDs: (1412)
 msgid "KBytes"
-msgstr ""
+msgstr "KBajtów"
 
 #. Resource IDs: (516)
 msgid "Kannada"
@@ -3551,11 +3551,11 @@ msgstr ""
 
 #. Resource IDs: (516)
 msgid "Kazakh"
-msgstr ""
+msgstr "Kazaski"
 
 #. Resource IDs: (32017)
 msgid "KeePass..."
-msgstr ""
+msgstr "KeePass..."
 
 #. Resource IDs: (1143)
 msgid "Keep"
@@ -3563,23 +3563,23 @@ msgstr "Zachowaj"
 
 #. Resource IDs: (65535)
 msgid "Keyboard type:"
-msgstr ""
+msgstr "Typ klawiatury:"
 
 #. Resource IDs: (521)
 msgid "Korean"
-msgstr ""
+msgstr "Koreański"
 
 #. Resource IDs: (516)
 msgid "Kyrgyz Cyrillic"
-msgstr ""
+msgstr "Kirgiski cyrylica"
 
 #. Resource IDs: (8009)
 msgid "L Ctrl"
-msgstr ""
+msgstr "L Ctrl"
 
 #. Resource IDs: (189)
 msgid "Last Access Time"
-msgstr ""
+msgstr "Czas ostatniego dostępu"
 
 #. Resource IDs: (327)
 msgid "Last Accessed"
@@ -3608,19 +3608,19 @@ msgstr "Najnowsza wersja? Sprawdź <a href=\"%s\">tutaj</a>."
 
 #. Resource IDs: (517)
 msgid "Latin American"
-msgstr ""
+msgstr "Amerykański łaciński"
 
 #. Resource IDs: (515)
 msgid "Latvian"
-msgstr ""
+msgstr "Łotewski"
 
 #. Resource IDs: (519)
 msgid "Latvian (QWERTY)"
-msgstr ""
+msgstr "Łotweski (QWERTY)"
 
 #. Resource IDs: (510)
 msgid "Left Ctrl key"
-msgstr ""
+msgstr "Lewy klawisz Ctrl"
 
 #. Resource IDs: (356)
 msgid "Left click here to change. Right click here to reset or remove it. After selecting the shortcut key combination, press Enter to set it."
@@ -3771,7 +3771,7 @@ msgstr "Scalanie tej bazy danych z aktualną bazą danych:"
 
 #. Resource IDs: (1421)
 msgid "Migrate PasswordSafe configuration to user directory"
-msgstr ""
+msgstr "Przenieś konfigurację PasswordSafe do katalogu użytkownika"
 
 #. Resource IDs: (1250)
 msgid "Minimize after Autotype"
@@ -3804,15 +3804,15 @@ msgstr "Brak pliku XSD"
 
 #. Resource IDs: (210)
 msgid "Missing ending curly bracket for variable name"
-msgstr ""
+msgstr "W nazwie zmiennej brakuje zamykającego nawiasu okrągłego"
 
 #. Resource IDs: (211)
 msgid "Missing ending round bracket for Autotype value"
-msgstr "Brakujący okrągły nawiaz zamykający dla wartości autouzupełniania"
+msgstr "Brakujący okrągły nawias zamykający dla wartości autouzupełniania"
 
 #. Resource IDs: (210)
 msgid "Missing ending square bracket for index value"
-msgstr ""
+msgstr "Brakujący okrągły nawias kwadratowy dla wartości indeksu"
 
 #. Resource IDs: (3887)
 #, fuzzy
@@ -3821,11 +3821,11 @@ msgstr "Mieszane"
 
 #. Resource IDs: (517)
 msgid "Mongolian Cyrillic"
-msgstr ""
+msgstr "Mongolski cyrylica"
 
 #. Resource IDs: (32271)
 msgid "Move Here"
-msgstr ""
+msgstr "Przenieś tu"
 
 #. Resource IDs: (348)
 #, c-format
@@ -3834,7 +3834,7 @@ msgstr "Nie mniej niż %d"
 
 #. Resource IDs: (357)
 msgid "N/A"
-msgstr ""
+msgstr "N/A"
 
 #. Resource IDs: (65535)
 msgid "NOTE: Changing this entry's own password will make this a normal entry and break the link with its base?"
@@ -3883,7 +3883,7 @@ msgstr "Nowe hasło i jego potwierdzenie nie są identyczne"
 
 #. Resource IDs: (364)
 msgid "Next >"
-msgstr ""
+msgstr "Dalej >"
 
 #. Resource IDs: (340, 1083)
 msgid "No"
@@ -3909,11 +3909,11 @@ msgstr "Nie otwarto bazy danych z którą można porównać inną bazę danych!"
 #. Resource IDs: (359)
 #, c-format
 msgid "No entries satisfied your selection criteria and so none can be %s!"
-msgstr ""
+msgstr "Brak wpisów spełniających warunki i żaden nie może być %s!"
 
 #. Resource IDs: (359)
 msgid "No entries selected"
-msgstr ""
+msgstr "Nie wybrano wpisów"
 
 #. Resource IDs: (345)
 msgid "No entry exists within this database matching your specifications."
@@ -3946,7 +3946,7 @@ msgstr "Nie zaznaczono pól do filtrowania!"
 
 #. Resource IDs: (360)
 msgid "No fields selected to synchronize!"
-msgstr ""
+msgstr "Żadne pole nie zostało wybrano do synchronizacji!"
 
 #. Resource IDs: (330)
 #, fuzzy
@@ -3984,7 +3984,7 @@ msgstr "Nie wybrano reguły"
 
 #. Resource IDs: (359)
 msgid "Non-saved changes"
-msgstr ""
+msgstr "Nie zachowane zmiany"
 
 #. Resource IDs: (337)
 #, fuzzy
@@ -3993,27 +3993,27 @@ msgstr "Żaden"
 
 #. Resource IDs: (364)
 msgid "Normal entry"
-msgstr ""
+msgstr "Wpis zwykły"
 
 #. Resource IDs: (365)
 msgid "Normal entry - password expired"
-msgstr ""
+msgstr "Wpis zwykły - hasło wygasło"
 
 #. Resource IDs: (365)
 msgid "Normal entry - warning password will expire"
-msgstr ""
+msgstr "Wpis zwykły - ostrzeżenie o wygaśnięciu hasła"
 
 #. Resource IDs: (514)
 msgid "Norwegian"
-msgstr ""
+msgstr "Norweski"
 
 #. Resource IDs: (516)
 msgid "Norwegian with Sami"
-msgstr ""
+msgstr "Norweski z Sami"
 
 #. Resource IDs: (366)
 msgid "Not Set"
-msgstr ""
+msgstr "Nie ustawiony"
 
 #. Resource IDs: (3857)
 msgid "Not all of the system registry entries (or INI file) were removed."
@@ -4025,7 +4025,7 @@ msgstr ""
 
 #. Resource IDs: (33150)
 msgid "Note: Empty fields are shown as »*»"
-msgstr ""
+msgstr "Uwaga: puste pola są pokazywane jako »*»"
 
 #. Resource IDs: (33126)
 msgid "Note: Entry format is »Group»Title»Username»"
@@ -4041,7 +4041,7 @@ msgstr "Notatki"
 
 #. Resource IDs: (355)
 msgid "Notes copied "
-msgstr ""
+msgstr "Notatki skopiowano "
 
 #. Resource IDs: (348)
 #, fuzzy
@@ -4055,7 +4055,7 @@ msgstr "Liczba ma minimalną wartość. 'Mniejsza niż' jest niedostępna."
 
 #. Resource IDs: (361)
 msgid "Number of Entries"
-msgstr ""
+msgstr "Liczba wpisów"
 
 #. Resource IDs: (65535)
 msgid "Number of Entries:"
@@ -4063,7 +4063,7 @@ msgstr "Liczba wpisów:"
 
 #. Resource IDs: (360)
 msgid "Number of Groups"
-msgstr ""
+msgstr "Liczba grup"
 
 #. Resource IDs: (65535)
 msgid "Number of Groups:"
@@ -4071,7 +4071,7 @@ msgstr "Liczba grup:"
 
 #. Resource IDs: (361)
 msgid "Number of Unknownfields"
-msgstr ""
+msgstr "Liczba pól nieznanych"
 
 #. Resource IDs: (190)
 #, c-format
@@ -4103,7 +4103,7 @@ msgstr "Zapisano liczbę"
 
 #. Resource IDs: (65535)
 msgid "Numeric Pad"
-msgstr ""
+msgstr "Klawiatura numeryczna"
 
 #. Resource IDs: (1, 351)
 msgid "OK"
@@ -4123,11 +4123,11 @@ msgstr "Wł."
 
 #. Resource IDs: (359)
 msgid "One of more preferences have been changed. Are you sure you wish to cancel?"
-msgstr ""
+msgstr "Preferencja została zmieniona. Jesteś pewien, że chcesz to odrzucić?"
 
 #. Resource IDs: (3887)
 msgid "One or more auto-saved documents were found."
-msgstr ""
+msgstr "Znaleziono automatycznie zachowany dokument."
 
 #. Resource IDs: (340)
 #, c-format
@@ -4174,7 +4174,7 @@ msgstr "Pierwotna baza danych:"
 
 #. Resource IDs: (1401)
 msgid "Original Value:"
-msgstr ""
+msgstr "Wartość oryginalna:"
 
 #. Resource IDs: (516)
 msgid "Oriya"
@@ -4187,7 +4187,7 @@ msgstr "Inny:"
 
 #. Resource IDs: (1207)
 msgid "Other: "
-msgstr ""
+msgstr "Inny: "
 
 #. Resource IDs: (3843)
 #, fuzzy
@@ -4229,7 +4229,7 @@ msgstr "Hasło"
 
 #. Resource IDs: (364)
 msgid "Password Database:"
-msgstr ""
+msgstr "Baza danych z hasłami:"
 
 #. Resource IDs: (1114)
 msgid "Password Expires on:"
@@ -4237,7 +4237,7 @@ msgstr "Hasło wygasa:"
 
 #. Resource IDs: (1123)
 msgid "Password Expiry"
-msgstr ""
+msgstr "Wygaśniecie hasła"
 
 #. Resource IDs: (327)
 msgid "Password Expiry Date"
@@ -4266,7 +4266,7 @@ msgstr "Haslo zmodyfikowano"
 
 #. Resource IDs: (189)
 msgid "Password Modified Time"
-msgstr ""
+msgstr "Czas modyfikacji hasła"
 
 #. Resource IDs: (141, 345)
 msgid "Password Policy"
@@ -4381,15 +4381,15 @@ msgstr "Użyj Auto&uzupełniania"
 
 #. Resource IDs: (32075)
 msgid "Perform Auto&type"
-msgstr ""
+msgstr "Użyj Au&touzupełniania"
 
 #. Resource IDs: (515)
 msgid "Persian"
-msgstr ""
+msgstr "Perski"
 
 #. Resource IDs: (65535)
 msgid "Physical Keyboard:"
-msgstr ""
+msgstr "Klawiatura fizyczna:"
 
 #. Resource IDs: (337)
 msgid "Please Choose a Backup to restore:"
@@ -4409,11 +4409,11 @@ msgstr "Wybierz bazę danych do otwarcia:"
 
 #. Resource IDs: (360)
 msgid "Please Choose a Database to Synchronize with current database"
-msgstr ""
+msgstr "Proszę wybrać bazę danych do synchronizacji z aktualną bazą"
 
 #. Resource IDs: (362)
 msgid "Please Choose a Database to Validate:"
-msgstr ""
+msgstr "prosze wybrać bazę danych do weryfikacji:"
 
 #. Resource IDs: (334)
 msgid "Please Choose a KeePass Text File to Import"
@@ -4566,7 +4566,7 @@ msgstr "Właściwości"
 
 #. Resource IDs: (361)
 msgid "Properties of the currently selected database."
-msgstr ""
+msgstr "Właściwości aktualnie wybranej bazy."
 
 #. Resource IDs: (32089)
 msgid "Protect All Entries"
@@ -4607,7 +4607,7 @@ msgstr "Zapytanie o domyślną nazwę użytkownika"
 
 #. Resource IDs: (8010)
 msgid "R Ctrl"
-msgstr ""
+msgstr "R Ctrl"
 
 #. Resource IDs: (315)
 #, fuzzy
@@ -4768,7 +4768,7 @@ msgstr ""
 
 #. Resource IDs: (510)
 msgid "Right Ctrl key"
-msgstr ""
+msgstr "Prawy klawisz Ctrl"
 
 #. Resource IDs: (65535)
 msgid "Right-click on the 'Y' in either of the first 2 columns for additional functions"
@@ -4776,15 +4776,15 @@ msgstr ""
 
 #. Resource IDs: (514)
 msgid "Romanian (Legacy)"
-msgstr ""
+msgstr "Rumuński (tradycyjny)"
 
 #. Resource IDs: (520)
 msgid "Romanian (Programmers)"
-msgstr ""
+msgstr "Rumuński (programisty)"
 
 #. Resource IDs: (519)
 msgid "Romanian (Standard)"
-msgstr ""
+msgstr "Rumuński (standardowy)"
 
 #. Resource IDs: (348)
 #, fuzzy, c-format
@@ -4805,15 +4805,15 @@ msgstr "Reguła:"
 
 #. Resource IDs: (1357)
 msgid "Run Cmd:"
-msgstr ""
+msgstr "Komenda Run:"
 
 #. Resource IDs: (354)
 msgid "Run Command"
-msgstr ""
+msgstr "Komenda Run"
 
 #. Resource IDs: (355)
 msgid "RunCmd copied "
-msgstr ""
+msgstr "Komenda Run skopiowana "
 
 #. Resource IDs: (514)
 msgid "Russian"
@@ -5511,7 +5511,7 @@ msgstr "Brak wersji XML filtra."
 
 #. Resource IDs: (211)
 msgid "The following columns were recognised but only Group/Title, Username and Password will be processed:"
-msgstr ""
+msgstr "Następujące kolumny zostały rozpoznane, ale tylgo Grupa/Tytuł, nazwa użytkownika i hasło będą przetwarzane:"
 
 #. Resource IDs: (204)
 msgid "The following columns will be processed: "
@@ -5519,24 +5519,24 @@ msgstr "Następujące kolumny zostaną przetworzone: "
 
 #. Resource IDs: (205)
 msgid "The following entries had an invalid Password History.  This has been rebuilt with available data.  There may be some loss of history."
-msgstr ""
+msgstr "Następujące wpisy miały nieprawidłową historię haseł. Zostało to odbudowane z dostępnych danych. Część historii może być utracona."
 
 #. Resource IDs: (205)
 msgid "The following entries had an invalid UUID field.  This has been corrected."
-msgstr ""
+msgstr "Następujące wpisy mają nieprawidłowe pole UUID, co zostało to skorygowane."
 
 #. Resource IDs: (212)
 #, c-format
 msgid "The following entries have one or more text fields too long to display or edit (longer than %d characters)."
-msgstr ""
+msgstr "Następujące wpisy mają pola tekstowe zbyt długie by je pokazac lub edytować (powyżej %d znaków)."
 
 #. Resource IDs: (212)
 msgid "The following entries were duplicates of an existing entry."
-msgstr ""
+msgstr "Następujące wpisy były duplikatami istniejącego wpisu."
 
 #. Resource IDs: (65535)
 msgid "The following entries' passwords are about to expire or expired:"
-msgstr ""
+msgstr "Hasła następujące wpisów wygasną lub wygasły:"
 
 #. Resource IDs: (343)
 #, c-format
@@ -5545,7 +5545,7 @@ msgstr "Następujący wpis został skopiowany do bazy danych %s: '%s:%s:%s'"
 
 #. Resource IDs: (362)
 msgid "The following records had errors in their Password History:"
-msgstr ""
+msgstr "Nastepujące rekordy miały błędy w historii haseł:"
 
 #. Resource IDs: (362)
 msgid "The following records were renamed as an entry already exists in your database or in the Import file:"
