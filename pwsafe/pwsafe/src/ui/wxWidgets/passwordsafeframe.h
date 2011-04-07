@@ -462,7 +462,7 @@ public:
   void DoCopyUsername(CItemData &item);
   void DoCopyURL(CItemData &item);
   void DoCopyEmail(CItemData &item);
-  void DoEdit(CItemData &item);
+  void DoEdit(CItemData item);
   void DoAutotype(CItemData &item);
   void DoAutotype(const StringX& sx_autotype, const std::vector<size_t>& vactionverboffsets);
   void DoBrowse(CItemData &item, bool bAutotype);
