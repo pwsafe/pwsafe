@@ -35,6 +35,7 @@
 #include "editshortcut.h"
 #include "createshortcutdlg.h"
 #include "wxutils.h"
+#include "guiinfo.h"
 
 #include "../../core/PWSAuxParse.h"
 #include "../../core/Util.h"
@@ -467,8 +468,10 @@ void PasswordSafeFrame::DoAutotype(CItemData &ci)
     Iconize(true);
     while (!IsIconized())
       wxSafeYield();
-  } else
+  } else {
+    m_guiInfo->Save(this);
     Hide();
+  }
  
   std::vector<size_t> vactionverboffsets;
   const StringX sxautotype = PWSAuxParse::GetAutoTypeString(ci, m_core,
@@ -484,8 +487,10 @@ void PasswordSafeFrame::DoAutotype(CItemData &ci)
     /* TODO - figure out how to keep a wxWidgets window always on top */
     if (IsIconized())
       Iconize(false);
-    else
+    else {
       Show();
+      m_guiInfo->Restore(this);
+    }
   }
 }
 
