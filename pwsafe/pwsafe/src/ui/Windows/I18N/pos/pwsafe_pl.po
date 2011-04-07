@@ -5541,7 +5541,7 @@ msgstr ""
 #. Resource IDs: (343)
 #, c-format
 msgid "The following entry was copied to the %s database: '%s:%s:%s'"
-msgstr "Następujący wpis został skopiowany do bazy danych %s:  '%s:%s:%s'"
+msgstr "Następujący wpis został skopiowany do bazy danych %s: '%s:%s:%s'"
 
 #. Resource IDs: (362)
 msgid "The following records had errors in their Password History:"
@@ -5553,7 +5553,7 @@ msgstr ""
 
 #. Resource IDs: (362)
 msgid "The following records were skipped:"
-msgstr ""
+msgstr "Następujące rekordy zostały ominięte:"
 
 #. Resource IDs: (363)
 #, c-format
@@ -5631,7 +5631,7 @@ msgstr "Baza danych jest taka sama jak bieżąca baza danych!"
 
 #. Resource IDs: (354)
 msgid "This entry has been changed. Are you sure you wish to cancel?"
-msgstr ""
+msgstr "Wpis został zmieniony. Jesteś pewny, że chcesz anulować operację?"
 
 #. Resource IDs: (341)
 #, c-format
@@ -5650,7 +5650,7 @@ msgstr "Wpis ma następujące %d %s:\r\n%s\r\nPotwierdź kontynuowanie(hasła al
 
 #. Resource IDs: (1429)
 msgid "This entry is protected."
-msgstr ""
+msgstr "Ten wpis jest chroniony."
 
 #. Resource IDs: (329)
 msgid "This entry must have a password."
@@ -5674,16 +5674,16 @@ msgstr ""
 
 #. Resource IDs: (357)
 msgid "This is a shortcut base entry."
-msgstr ""
+msgstr "To jest skrót do wpisu bazowego."
 
 #. Resource IDs: (357)
 msgid "This is an alias base entry."
-msgstr ""
+msgstr "To jest alias wpisu bazowego."
 
 #. Resource IDs: (357)
 #, c-format
 msgid "This is an alias of: '%s'"
-msgstr ""
+msgstr "To jest alias: '%s'"
 
 #. Resource IDs: (3857)
 #, fuzzy, c-format
@@ -5762,7 +5762,7 @@ msgstr ""
 
 #. Resource IDs: (32106)
 msgid "Toolbar &visible"
-msgstr ""
+msgstr "Widoczny pasek narzędzi"
 
 #. Resource IDs: (1284)
 msgid "Treat fields that only contain 'whitespace' as empty"
@@ -5792,19 +5792,19 @@ msgstr "Próba połączenia z serwerem..."
 
 #. Resource IDs: (519)
 msgid "Turkish F"
-msgstr ""
+msgstr "Turecki F"
 
 #. Resource IDs: (515)
 msgid "Turkish Q"
-msgstr ""
+msgstr "Turecki Q"
 
 #. Resource IDs: (516)
 msgid "Turkmen"
-msgstr ""
+msgstr "Turkmeński"
 
 #. Resource IDs: (1355)
 msgid "U&RL:"
-msgstr ""
+msgstr "U&RL:"
 
 #. Resource IDs: (327)
 msgid "URL"
@@ -5812,23 +5812,23 @@ msgstr "URL"
 
 #. Resource IDs: (355)
 msgid "URL copied "
-msgstr ""
+msgstr "URL skopiowany "
 
 #. Resource IDs: (513)
 msgid "US"
-msgstr ""
+msgstr "US"
 
 #. Resource IDs: (192)
 msgid "UUID"
-msgstr ""
+msgstr "UUID"
 
 #. Resource IDs: (515)
 msgid "Ukrainian"
-msgstr ""
+msgstr "Ukraiński"
 
 #. Resource IDs: (520)
 msgid "Ukrainian (Enhanced)"
-msgstr ""
+msgstr "Ukraiński (ulepszony)"
 
 #. Resource IDs: (190)
 msgid "Unable to create a new XML configuration file or add your settings to an existing XML configuration file.\n\nAll application configuration settings will be saved in your registry entry on this computer.\n\nDatabase related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
@@ -5875,7 +5875,7 @@ msgstr "Niemożliwe odczytanie właściwości tylko do odczytu."
 
 #. Resource IDs: (354)
 msgid "Unable to run command"
-msgstr ""
+msgstr "Nie można uruchomić komendy"
 
 #. Resource IDs: (191)
 msgid "Unable to save configuration file"
@@ -5920,19 +5920,19 @@ msgstr "Nieoczekiwany format pliku."
 
 #. Resource IDs: (517)
 msgid "United Kingdom"
-msgstr ""
+msgstr "Zjednoczone Królestwo"
 
 #. Resource IDs: (517)
 msgid "United Kingdom Extended"
-msgstr ""
+msgstr "Zjednoczone Królestwo Rozszerzone"
 
 #. Resource IDs: (520)
 msgid "United States-International"
-msgstr ""
+msgstr "Stany Zjednoczone-Międzynarodowy"
 
 #. Resource IDs: (211)
 msgid "Unknown"
-msgstr ""
+msgstr "Nieznany"
 
 #. Resource IDs: (329)
 msgid "Unknown            "
@@ -5948,15 +5948,15 @@ msgstr "Nieznane pola:"
 
 #. Resource IDs: (211)
 msgid "Unknown function"
-msgstr ""
+msgstr "Nieznana funkcja"
 
 #. Resource IDs: (211)
 msgid "Unknown object"
-msgstr ""
+msgstr "Nieznany obiekt"
 
 #. Resource IDs: (32251)
 msgid "Unlock"
-msgstr ""
+msgstr "Odblokuj"
 
 #. Resource IDs: (329)
 msgid "Unlock Safe"
@@ -5964,11 +5964,11 @@ msgstr "Odblokuj"
 
 #. Resource IDs: (32090)
 msgid "Unprotect All Entries"
-msgstr ""
+msgstr "Zdejmij ochronę wszystkich wpisów"
 
 #. Resource IDs: (32088)
 msgid "Unprotect Entry"
-msgstr ""
+msgstr "Zdejmij ochronę wpisu"
 
 #. Resource IDs: (358)
 #, c-format
@@ -5982,7 +5982,7 @@ msgstr "Bez nazwy"
 #. Resource IDs: (359)
 #, c-format
 msgid "Updated %d %s"
-msgstr ""
+msgstr "Uaktualniony %d %s"
 
 #. Resource IDs: (515)
 msgid "Urdu"
@@ -5999,27 +5999,27 @@ msgstr "Używaj"
 
 #. Resource IDs: (1049)
 msgid "Use &Digits"
-msgstr ""
+msgstr "Uzyj cyfr"
 
 #. Resource IDs: (1070)
 msgid "Use &Hexadecimal digits only (0-9,a-f)"
-msgstr ""
+msgstr "Użyj cyfr szesnastkowych (0-9,a-f)"
 
 #. Resource IDs: (1047)
 msgid "Use &Lowercase letters"
-msgstr ""
+msgstr "Użyj małych &liter"
 
 #. Resource IDs: (1050)
 msgid "Use &Symbols (i.e. &&, %, $, etc.)"
-msgstr ""
+msgstr "Użyj &symboli (np. &&, %, $, itd.))"
 
 #. Resource IDs: (1050)
 msgid "Use &Symbols (i.e., &, %, $, etc.)"
-msgstr ""
+msgstr "Użyj &symboli (np. , &, %, $, itd.)"
 
 #. Resource IDs: (1048)
 msgid "Use &UPPERCASE letters"
-msgstr ""
+msgstr "Uzyj D&UŻYCH liter"
 
 #. Resource IDs: (1375)
 msgid "Use Database De&faults"
@@ -6056,11 +6056,11 @@ msgstr "Użytkownik [Pole Wymagane]"
 
 #. Resource IDs: (355)
 msgid "User copied "
-msgstr ""
+msgstr "Użytkownik skopiowany "
 
 #. Resource IDs: (188)
 msgid "Username"
-msgstr ""
+msgstr "Nazwa użytkownika"
 
 #. Resource IDs: (65535)
 msgid "Using application:"
@@ -6072,7 +6072,7 @@ msgstr ""
 
 #. Resource IDs: (518)
 msgid "Uzbek Cyrillic"
-msgstr ""
+msgstr "Uzbecki cyrylica"
 
 #. Resource IDs: (206, 347)
 msgid "Validate"
@@ -6089,11 +6089,11 @@ msgstr "Wartość:"
 
 #. Resource IDs: (210)
 msgid "Variable name is empty"
-msgstr ""
+msgstr "Nazwa zmiennej jest pusta"
 
 #. Resource IDs: (210)
 msgid "Variable name must be alphanumeric"
-msgstr ""
+msgstr "Nazwa zmiennej musi być alfanumeryczna"
 
 #. Resource IDs: (65535)
 msgid "Verify Key:"
@@ -6109,7 +6109,7 @@ msgstr ""
 
 #. Resource IDs: (515)
 msgid "Vietnamese"
-msgstr ""
+msgstr "Wietnamski"
 
 #. Resource IDs: (352)
 msgid "View"
@@ -6150,7 +6150,7 @@ msgstr "Pokaż/Edytuj wybrany wpis"
 
 #. Resource IDs: (32201)
 msgid "Visit Password Safe &website..."
-msgstr ""
+msgstr "Odwiedź stronę Pass&word Safe ..."
 
 #. Resource IDs: (363)
 msgid "WARNING: If you continue, fields will be updated in entries in your existing database from your selected input database."
@@ -6190,11 +6190,11 @@ msgstr "Słabe hasło:\n\n %s"
 
 #. Resource IDs: (361)
 msgid "What saved"
-msgstr ""
+msgstr "Co zachowano"
 
 #. Resource IDs: (361)
 msgid "When saved"
-msgstr ""
+msgstr "Kiedy zachowano"
 
 #. Resource IDs: (1105, 1109, 1111, 1113, 1115, 1117)
 msgid "Whenever"
@@ -6202,7 +6202,7 @@ msgstr "Kiedykolwiek"
 
 #. Resource IDs: (361)
 msgid "Who saved"
-msgstr ""
+msgstr "Kto zachował"
 
 #. Resource IDs: (1385)
 msgid "Win32 Unhandled Exception"
@@ -6210,7 +6210,7 @@ msgstr ""
 
 #. Resource IDs: (363)
 msgid "Windows Registry"
-msgstr ""
+msgstr "Rejest Windows"
 
 #. Resource IDs: (517)
 msgid "Wolof"
@@ -6231,7 +6231,7 @@ msgstr "Czy chcesz ustawić \"%s\" jako domyślną nazwę użytkownika?\n\nNazwa
 
 #. Resource IDs: (333)
 msgid "Write Error"
-msgstr ""
+msgstr "Błąd zapisu"
 
 #. Resource IDs: (359)
 msgid "Write operation failed!\nFile may have been corrupted.\nTry saving in a different location"
@@ -6244,7 +6244,7 @@ msgstr "Zapis w czasie gdy wpis był udostępniany. Ignorowane w trybie tylko do
 
 #. Resource IDs: (8003)
 msgid "X"
-msgstr ""
+msgstr "X"
 
 #. Resource IDs: (347)
 msgid "XML"
@@ -6257,19 +6257,19 @@ msgstr "XML %s: wiersz %d znak %d: %s"
 
 #. Resource IDs: (316)
 msgid "XML files (*.xml)|*.xml|All files (*.*)|*.*||"
-msgstr ""
+msgstr "Pliki XML (*.xml)|*.xml|Wszystkie pliki (*.*)|*.*||"
 
 #. Resource IDs: (316)
 msgid "XML files (*.xml)|*.xml||"
-msgstr ""
+msgstr "Pliki XML (*.xml)|*.xml||"
 
 #. Resource IDs: (358)
 msgid "YYMMDD_HHMMSS"
-msgstr ""
+msgstr "YYMMDD_HHMMSS"
 
 #. Resource IDs: (212)
 msgid "Yes"
-msgstr ""
+msgstr "Tak"
 
 #. Resource IDs: (1084)
 msgid "Yes:"
@@ -6307,7 +6307,7 @@ msgstr "[Notatki są ukryte - kliknij tutaj żeby je zobaczyć]"
 
 #. Resource IDs: (2005)
 msgid "\nAdd Group"
-msgstr ""
+msgstr "\nDodaj grupę"
 
 #. Resource IDs: (2004)
 #, fuzzy
@@ -6389,15 +6389,15 @@ msgstr "\nWyświetl podzbiór Hasła"
 
 #. Resource IDs: (2004)
 msgid "\nDuplicate Entry"
-msgstr ""
+msgstr "\nZduplikuj wpis"
 
 #. Resource IDs: (2006)
 msgid "\nDuplicate Group"
-msgstr ""
+msgstr "\nZduplikuj grupę"
 
 #. Resource IDs: (2006)
 msgid "\nEdit Base entry"
-msgstr ""
+msgstr "\nEdytuj wpis bazowy"
 
 #. Resource IDs: (2007)
 msgid "\nEdit Filters"
@@ -6436,19 +6436,19 @@ msgstr "\nEksportuj do XML"
 
 #. Resource IDs: (2004)
 msgid "\nFind Next"
-msgstr ""
+msgstr "\nZnajdz następny"
 
 #. Resource IDs: (2004)
 msgid "\nFind Previous"
-msgstr ""
+msgstr "\nZnajdź poprzedni"
 
 #. Resource IDs: (2010)
 msgid "\nGenerate Password"
-msgstr ""
+msgstr "\nGeneruj hasło"
 
 #. Resource IDs: (2005)
 msgid "\nGo to Base entry"
-msgstr ""
+msgstr "\nIdź do wpisu bazowego"
 
 #. Resource IDs: (3605)
 msgid "\nHelp"
@@ -6501,11 +6501,11 @@ msgstr "\nProgram zakończy działanie."
 
 #. Resource IDs: (2006)
 msgid "\nProtect All Entries"
-msgstr ""
+msgstr "\nChroń wszystkie wpisy"
 
 #. Resource IDs: (2006)
 msgid "\nProtect Entry"
-msgstr ""
+msgstr "\nChroń wpis"
 
 #. Resource IDs: (2006)
 msgid "\nRedo"
@@ -6514,7 +6514,7 @@ msgstr ""
 #. Resource IDs: (362)
 #, c-format
 msgid "\nRenamed %d %s"
-msgstr ""
+msgstr "\nZmieniono nazwę %d %s"
 
 #. Resource IDs: (2005)
 msgid "\nRun Command"
@@ -6530,11 +6530,11 @@ msgstr "\nZapisz bazę danych jako..."
 
 #. Resource IDs: (2016)
 msgid "\nSelect Entry"
-msgstr ""
+msgstr "\nWybierz wpis"
 
 #. Resource IDs: (2005)
 msgid "\nSend email"
-msgstr ""
+msgstr "\nWyślij email"
 
 #. Resource IDs: (2008)
 #, fuzzy
@@ -6556,11 +6556,11 @@ msgstr ""
 #. Resource IDs: (334)
 #, c-format
 msgid "\nSkipped %d %s"
-msgstr ""
+msgstr "\nOminięto %d %s"
 
 #. Resource IDs: (2002)
 msgid "\nSynchronize Databases"
-msgstr ""
+msgstr "\nSynchronizuj bazy danych"
 
 #. Resource IDs: (2006)
 msgid "\nUndo"
@@ -6572,11 +6572,11 @@ msgstr "\nNieoczekiwany wyjątek podczas parsowania."
 
 #. Resource IDs: (2006)
 msgid "\nUnprotect All Entries"
-msgstr ""
+msgstr "\nZdejmij ochronę wszystkich wpisów"
 
 #. Resource IDs: (2006)
 msgid "\nUnprotect Entry"
-msgstr ""
+msgstr "\nZdejmij ochronę wpisu"
 
 #. Resource IDs: (331)
 #, fuzzy
@@ -6638,7 +6638,7 @@ msgstr "\r\n\r\nWybierz Tak by kontynuować z tym hasłwm lub Nie by anulować."
 
 #. Resource IDs: (345)
 msgid "\r\nemail: "
-msgstr ""
+msgstr "\r\nemail: "
 
 #. Resource IDs: (346)
 #, c-format
