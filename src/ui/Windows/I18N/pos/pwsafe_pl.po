@@ -5068,7 +5068,7 @@ msgstr "Ustaw Właściwości Hasła dla wpisu"
 #. Resource IDs: (349)
 #, c-format
 msgid "Set Password History Filters: %d Added; %d Active"
-msgstr "Filtry Historii Haseł: %d dodano; % aktywnych"
+msgstr "Filtry Historii Haseł: %d dodano; %d aktywnych"
 
 #. Resource IDs: (349)
 #, c-format

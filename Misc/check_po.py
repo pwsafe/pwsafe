@@ -21,6 +21,7 @@ msgstr "  Pole jest zbyt długie."
 import sys
 import glob
 import re
+import string
 
 RE_START = re.compile('^([^\w&]+)\w+')
 RE_STOP = re.compile('(\W)$')
@@ -28,6 +29,7 @@ RE_ACCELERATOR = re.compile('(&.)')
 
 
 def check_re(rx, s1, s2):
+	"""checks if regular expresion match from s1 is equal to match from s2"""
 	rx1 = rx.search(s1)
 	if rx1:
 		rx2 = rx.search(s2)
@@ -38,16 +40,66 @@ def check_re(rx, s1, s2):
 	return 0
 
 
+def check_quotes(msgid, msgstr):
+	"""check if quote count is the same"""
+	r = 0
+	if msgid.count('"') != msgstr.count('"'):
+		r += 1
+	#if msgid.count("'") / 2 != msgstr.count("'") / 2:
+	#	r += 1
+	return r
+
+
+def get_patterns(s):
+	"""get %s patterns from s"""
+	patterns = []
+	in_pattern = 0
+	patt = ''
+	pattern_end = string.letters + string.whitespace
+	for c in s:
+		if in_pattern:
+			if c in pattern_end:
+				patt += c
+				patterns.append(patt)
+				patt = ''
+				in_pattern = 0
+				continue
+		if c == '%':
+			in_pattern = 1
+		if in_pattern:
+			patt += c
+	if patt:
+		patterns.append(patt)
+	return patterns
+
+
+def check_cpatterns(msgid, msgstr):
+	"""check if %s, %d etc patterns from msgid matches patterns from msgstr"""
+	patts1 = get_patterns(msgid)
+	patts2 = get_patterns(msgstr)
+	if len(patts1) != len(patts2):
+		return 1
+	patts1.sort()
+	patts2.sort()
+	if patts1 != patts2:
+		return 1
+	return 0
+
+
 def check_str(msgid, msgstr):
+	"""checks is msgstr had the same leading blanks, etc"""
 	warn_cnt = 0
 	if msgid and msgstr:
 		warn_cnt += check_re(RE_START, msgid, msgstr)
 		warn_cnt += check_re(RE_STOP, msgid, msgstr)
 		#warn_cnt += check_re(RE_ACCELERATOR, msgid, msgstr)
+		warn_cnt += check_quotes(msgid, msgstr)
+		warn_cnt += check_cpatterns(msgid, msgstr)
 	return warn_cnt
 
 
 def check_po(fn):
+	"""checks .po file"""
 	warn_cnt = 0
 	item_cnt = 0
 	empty_item_cnt = 0
@@ -75,7 +127,7 @@ def check_po(fn):
 				if wc:
 					print('%s:%d: [%s] [%s]' % (fn, line_no, msgid, msgstr))
 					warn_cnt += wc
-			msg_str = ''
+			msgstr = ''
 	print('%s: items: %d; empty items: %d; warning cnt: %d' % (fn, item_cnt, empty_item_cnt, warn_cnt))
 
 
