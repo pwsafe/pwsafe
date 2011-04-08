@@ -455,7 +455,7 @@ msgstr "Zmień Hasło Sejfu..."
 
 #. Resource IDs: (32105)
 msgid "&Classic Toolbar"
-msgstr "Klasyczny pasek narzędzi"
+msgstr "Klasy&czny pasek narzędzi"
 
 #. Resource IDs: (1118)
 #, fuzzy
@@ -472,7 +472,7 @@ msgstr "Wy&czyść listę ostanich sejfów"
 
 #. Resource IDs: (351)
 msgid "&Clear current"
-msgstr "Usuń bieżący"
+msgstr "Usuń bieżą&cy"
 
 #. Resource IDs: (32004)
 msgid "&Close"
@@ -492,15 +492,15 @@ msgstr "Kopiuj"
 
 #. Resource IDs: (32058)
 msgid "&Copy Password to Clipboard"
-msgstr "Kopiuj hasło do schowka"
+msgstr "Kopiuj hasło do s&chowka"
 
 #. Resource IDs: (332)
 msgid "&Copy Password to clipboard"
-msgstr "Kopiuj hasło do schowka"
+msgstr "Kopiuj hasło do s&chowka"
 
 #. Resource IDs: (1041)
 msgid "&Create a New Database"
-msgstr "Utwórz nową Bazę Danych"
+msgstr "Utwórz nową Bazę Dany&ch"
 
 #. Resource IDs: (1344)
 msgid "&Delete"
@@ -580,7 +580,7 @@ msgstr "&Generuj"
 
 #. Resource IDs: (32069)
 msgid "&Go to Base entry"
-msgstr "Idź do wpisu podstawowego"
+msgstr "Idź do wpisu podstawowe&go"
 
 #. Resource IDs: (9, 32200, 57670)
 msgid "&Help"
@@ -712,7 +712,7 @@ msgstr "&Reset"
 
 #. Resource IDs: (32254)
 msgid "&Restore"
-msgstr "Odtwórz"
+msgstr "Odtwó&rz"
 
 #. Resource IDs: (359)
 msgid "&Retry"
@@ -724,7 +724,7 @@ msgstr "Wykonaj polecenie"
 
 #. Resource IDs: (32005)
 msgid "&Save"
-msgstr "Zapisz"
+msgstr "Zapi&sz"
 
 #. Resource IDs: (1)
 msgid "&Save to Disk"
@@ -765,7 +765,7 @@ msgstr "&Nazwa:"
 
 #. Resource IDs: (32115)
 msgid "&Tree/List Font"
-msgstr "Font drzew/list"
+msgstr "Fon&t drzew/list"
 
 #. Resource IDs: (1022)
 msgid "&Try Again"
@@ -781,7 +781,7 @@ msgstr "Cofnij"
 
 #. Resource IDs: (1352, 65535)
 msgid "&Username:"
-msgstr "Nazwa użytkownika:"
+msgstr "Nazwa &użytkownika:"
 
 #. Resource IDs: (32123)
 msgid "&Validate"
@@ -2008,7 +2008,7 @@ msgstr "Kopiuj nazwę &użytkownika do schowka"
 
 #. Resource IDs: (332)
 msgid "Copy &Username to clipboard"
-msgstr "Kopiuj Nazwę Użytkownika do Schowka"
+msgstr "Kopiuj nazwę &użytkownika do schowka"
 
 #. Resource IDs: (1174)
 msgid "Copy All"
@@ -2763,7 +2763,7 @@ msgstr "Eksportuj &tekst"
 
 #. Resource IDs: (32009)
 msgid "Export &To"
-msgstr "Eksportuj do"
+msgstr "Ekspor&tuj do"
 
 #. Resource IDs: (32130)
 msgid "Export &XML"
@@ -4887,7 +4887,7 @@ msgstr "Zapisz"
 
 #. Resource IDs: (32006)
 msgid "Save &As..."
-msgstr "Zachow&aj jako..."
+msgstr "Zachow&zaj jako..."
 
 #. Resource IDs: (3841)
 msgid "Save As"
@@ -6003,7 +6003,7 @@ msgstr "Uzyj cyfr"
 
 #. Resource IDs: (1070)
 msgid "Use &Hexadecimal digits only (0-9,a-f)"
-msgstr "Użyj cyfr szesnastkowych (0-9,a-f)"
+msgstr "Użyj cyfr szesnastkowyc&h (0-9,a-f)"
 
 #. Resource IDs: (1047)
 msgid "Use &Lowercase letters"
