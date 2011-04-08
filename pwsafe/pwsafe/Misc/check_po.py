@@ -25,7 +25,6 @@ import string
 
 RE_START = re.compile('^([^\w&]+)\w+')
 RE_STOP = re.compile('(\W)$')
-RE_ACCELERATOR = re.compile('(&.)')
 
 
 def check_re(rx, s1, s2):
@@ -86,15 +85,35 @@ def check_cpatterns(msgid, msgstr):
 	return 0
 
 
+def check_accelerator(msgid, msgstr):
+	"""check if accelrator &x is the same in both strings"""
+	msgid = msgid.lower()
+	msgstr = msgstr.lower()
+	p1 = msgid.find('&')
+	if p1 >= 0:
+		a1 = msgid[p1:p1 + 2]
+		p2 = msgstr.find('&')
+		if p2 < 0 and len(a1) > 1:
+			if a1[-1] in msgstr:
+				# warn if there is no accelerator in translated version
+				# but "accelerated" letter is available
+				return 1
+		else:
+			a2 = msgstr[p2:p2 + 2]
+			if a1 != a2:
+				return 0 # ok they can be different
+	return 0
+
+
 def check_str(msgid, msgstr):
 	"""checks is msgstr had the same leading blanks, etc"""
 	warn_cnt = 0
 	if msgid and msgstr:
 		warn_cnt += check_re(RE_START, msgid, msgstr)
 		warn_cnt += check_re(RE_STOP, msgid, msgstr)
-		#warn_cnt += check_re(RE_ACCELERATOR, msgid, msgstr)
 		warn_cnt += check_quotes(msgid, msgstr)
 		warn_cnt += check_cpatterns(msgid, msgstr)
+		warn_cnt += check_accelerator(msgid, msgstr)
 	return warn_cnt
 
 
@@ -129,8 +148,6 @@ def check_po(fn):
 					warn_cnt += wc
 			msgstr = ''
 	print('%s: items: %d; empty items: %d; warning cnt: %d' % (fn, item_cnt, empty_item_cnt, warn_cnt))
-
-
 
 
 if '--version' in sys.argv:
