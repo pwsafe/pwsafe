@@ -475,42 +475,6 @@ LRESULT CAddEdit_Basic::OnQuerySiblings(WPARAM wParam, LPARAM )
       if (OnApply() == FALSE)
         return 1L;
       break;
-    case PP_PROTECT_CHANGED:
-    {
-      const BOOL bProtect = M_protected() != 0 ? TRUE : FALSE;
-      // Change 'OK' to 'Close' and disable 'Cancel'
-      if (bProtect == TRUE) {
-        CString cs_Close(MAKEINTRESOURCE(IDS_CLOSE));
-        m_ae_psh->GetDlgItem(IDOK)->SetWindowText(cs_Close);
-        m_ae_psh->GetDlgItem(IDCANCEL)->EnableWindow(TRUE);
-        m_ae_psh->GetDlgItem(ID_APPLY_NOW)->EnableWindow(FALSE);
-      } else {
-        // There isn't a "CloseToCancel()" function - do it ourselves!
-        if (m_ae_psh != NULL && IsWindow(m_ae_psh->m_hWnd)) {
-          CString cs_OK(MAKEINTRESOURCE(IDS_OK));
-          m_ae_psh->GetDlgItem(IDOK)->SetWindowText(cs_OK);
-          m_ae_psh->GetDlgItem(IDCANCEL)->EnableWindow(TRUE);
-          m_ae_psh->GetDlgItem(ID_APPLY_NOW)->EnableWindow(TRUE);
-        }
-      }
-
-      // Enable/Disable Group Combo
-      GetDlgItem(IDC_GROUP)->EnableWindow(1 - bProtect);
-
-      // Enable/Disable normal Edit controls
-      GetDlgItem(IDC_TITLE)->SendMessage(EM_SETREADONLY, bProtect, 0);
-      GetDlgItem(IDC_USERNAME)->SendMessage(EM_SETREADONLY, bProtect, 0);
-      GetDlgItem(IDC_PASSWORD)->SendMessage(EM_SETREADONLY, bProtect, 0);
-      GetDlgItem(IDC_PASSWORD2)->SendMessage(EM_SETREADONLY, bProtect, 0);
-      GetDlgItem(IDC_NOTES)->SendMessage(EM_SETREADONLY, bProtect, 0);
-      GetDlgItem(IDC_NOTESWW)->SendMessage(EM_SETREADONLY, bProtect, 0);
-      GetDlgItem(IDC_URL)->SendMessage(EM_SETREADONLY, bProtect, 0);
-      GetDlgItem(IDC_EMAIL)->SendMessage(EM_SETREADONLY, bProtect, 0);
-
-      // Enable/Disable Button
-      GetDlgItem(IDC_RANDOM)->EnableWindow(1 - bProtect);
-      break;
-    }
   }
   return 0L;
 }

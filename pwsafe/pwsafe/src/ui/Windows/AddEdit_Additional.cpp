@@ -420,25 +420,6 @@ LRESULT CAddEdit_Additional::OnQuerySiblings(WPARAM wParam, LPARAM )
       if (OnApply() == FALSE)
         return 1L;
       break;
-    case PP_PROTECT_CHANGED:
-    {
-      const BOOL bProtect = M_protected() != 0 ? TRUE : FALSE;
-
-      // Enable/Disable normal Edit controls
-      GetDlgItem(IDC_AUTOTYPE)->SendMessage(EM_SETREADONLY, bProtect, 0);
-      GetDlgItem(IDC_RUNCMD)->SendMessage(EM_SETREADONLY, bProtect, 0);
-
-      // Enable/Disable DCA Checkbox  (assuming TRUE=1 & FALSE=0)
-      GetDlgItem(IDC_DCA_DEFAULT)->EnableWindow(1 - bProtect);
-      GetDlgItem(IDC_DOUBLE_CLICK_ACTION)->EnableWindow(1 - bProtect);
-
-      // Enable/Disable Password History controls (assuming TRUE=1 & FALSE=0)
-      GetDlgItem(IDC_MAXPWHISTORY)->EnableWindow(1 - bProtect);
-      GetDlgItem(IDC_PWHSPIN)->EnableWindow(1 - bProtect);
-      GetDlgItem(IDC_SAVE_PWHIST)->EnableWindow(1 - bProtect);
-      GetDlgItem(IDC_CLEAR_PWHIST)->EnableWindow(1 - bProtect);
-      break;
-    }
   }
   return 0L;
 }

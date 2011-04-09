@@ -335,22 +335,6 @@ LRESULT CAddEdit_DateTimes::OnQuerySiblings(WPARAM wParam, LPARAM )
       UpdateTimes();
       UpdateWindow();
       break;
-    case PP_PROTECT_CHANGED:
-    {
-      const BOOL bProtect = M_protected() != 0 ? FALSE : TRUE;
-      // Enable/Disable Buttons
-      GetDlgItem(IDC_XTIME_CLEAR)->EnableWindow(bProtect);
-      GetDlgItem(IDC_XTIME_SET)->EnableWindow(bProtect);
-      GetDlgItem(IDC_SELECTBYDATETIME)->EnableWindow(bProtect);
-      GetDlgItem(IDC_SELECTBYDAYS)->EnableWindow(bProtect);
-      GetDlgItem(IDC_REUSE_ON_CHANGE)->EnableWindow(bProtect);
-      GetDlgItem(IDC_EXPIRYDATE)->EnableWindow(bProtect);
-      GetDlgItem(IDC_EXPIRYTIME)->EnableWindow(bProtect);
-      GetDlgItem(IDC_STATIC_LTINTERVAL_NOW)->EnableWindow(bProtect);
-      GetDlgItem(IDC_EXPIRYDATE)->EnableWindow(bProtect);
-      GetDlgItem(IDC_EXPIRYTIME)->EnableWindow(bProtect);
-      break;
-    }
   }
   return 0L;
 }
