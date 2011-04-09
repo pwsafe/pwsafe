@@ -3,23 +3,23 @@
 # Really just a wrapper around VCBUILD
 #
 
-VCBUILD = /cygdrive/c/local/MSVS10/vc/vcpackages/vcbuild.exe
+VCBUILD = /cygdrive/c/WINDOWS/Microsoft.NET/Framework/v4.0.30319/MSBuild.exe
 
 TOOLS_DIR = ../../../../build/bin
 RESTEXT = $(TOOLS_DIR)/restext/release/ResText.exe
 RESPWSL = $(TOOLS_DIR)/respwsl/release/ResPWSL.exe
 
-.PHONY: all clean
+.PHONY: all clean  $(RESTEXT) $(RESPWSL)
 
 all : $(RESTEXT) $(RESPWSL)
 
 $(RESTEXT) :
-	(cd ./ResText; $(VCBUILD) ResText.sln Release\|Win32)
+	(cd ./ResText; $(VCBUILD) /t:rebuild /p:Configuration=Release ResText.vcxproj)
 
 $(RESPWSL) :
-	(cd ./ResPWSL; $(VCBUILD) ResPWSL.sln Release\|Win32)
+	(cd ./ResPWSL; $(VCBUILD) /t:rebuild /p:Configuration=Release ResPWSL.vcxproj)
 
 clean :
-	(cd ./ResText; $(VCBUILD) /clean ResText.sln)
-	(cd ./ResPWSL; $(VCBUILD) /clean ResPWSL.sln)
+	(cd ./ResText; $(VCBUILD) /t:clean ResText.vcxproj)
+	(cd ./ResPWSL; $(VCBUILD) /t:clean ResPWSL.vcxproj)
 
