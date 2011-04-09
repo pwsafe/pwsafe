@@ -335,17 +335,6 @@ LRESULT CAddEdit_PasswordPolicy::OnQuerySiblings(WPARAM wParam, LPARAM )
       if (OnApply() == FALSE)
         return 1L;
       break;
-    case PP_PROTECT_CHANGED:
-    {
-      const BOOL bProtect = M_protected() != 0 ? TRUE : FALSE;
-
-      // Enable/Disable Buttons not already disabled in SetPolicyControls
-      GetDlgItem(IDC_USEDEFAULTPWPOLICY)->EnableWindow(1 - bProtect);
-      GetDlgItem(IDC_ENTRYPWPOLICY)->EnableWindow(1 - bProtect);
-      GetDlgItem(IDC_STATIC_PWLEN)->EnableWindow(1 - bProtect);
-      GetDlgItem(IDC_STATIC_OR)->EnableWindow(1 - bProtect);
-      break;
-    }
   }
   return 0L;
 }
