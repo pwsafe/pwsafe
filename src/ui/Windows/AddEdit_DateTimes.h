@@ -37,12 +37,13 @@ public:
   //{{AFX_DATA(CAddEdit_DateTimes)
   enum { IDD = IDD_ADDEDIT_DATETIMES };
 
-  enum {ABSOLUTE_EXP = 0, RELATIVE_EXP = 1}; // m_how's values DEFAULT_SYMBOLS
+  // m_how's values DEFAULT_SYMBOLS - in Radio button order
+  enum {ABSOLUTE_EXP = 0, RELATIVE_EXP = 1, NONE_EXP = 2};
 
   CDateTimeCtrl m_pTimeCtl;    // time picker control
   CDateTimeCtrl m_pDateCtl;    // date picker control
 
-  BOOL m_ReuseOnPswdChange;     // e.g., is interval recurring or 1-shot.
+  BOOL m_bRecurringPswdExpiry;   // e.g., is interval recurring or 1-shot.
   int m_how;                    // is expiration absolute or relative? (int for DDX)
   int m_numDays;                // interval (in days) to expiration when m_how == RELATIVE
   int m_maxDays;                // limited s.t. time_t can't overflow
@@ -66,18 +67,18 @@ protected:
   afx_msg LRESULT OnQuerySiblings(WPARAM wParam, LPARAM);
 
   afx_msg void OnChanged();
-  afx_msg void OnNotifyChanged(NMHDR *, LRESULT *);
+  afx_msg void OnNotifyChanged(NMHDR *pNotifyStruct, LRESULT *pLResult);
 
   afx_msg void OnClearXTime();
-  afx_msg void OnSetXTime();
   afx_msg void OnDateTime();
   afx_msg void OnDays();
-  afx_msg void OnReuseOnPswdChange();
+  afx_msg void OnRecurringPswdExpiry();
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
 
 private:
+  void SetXTime();
   void UpdateTimes();
   bool m_bInitdone;
 };

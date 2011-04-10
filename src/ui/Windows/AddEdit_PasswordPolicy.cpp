@@ -224,6 +224,7 @@ BOOL CAddEdit_PasswordPolicy::OnInitDialog()
     CPasswordCharPool::GetDefaultSymbols(st_symbols);
     sx_symbols = st_symbols.c_str();
   }
+
   GetDlgItem(IDC_STATIC_DEFAULTSYMBOLS)->SetWindowText(sx_symbols.c_str());
   m_symbols.SetWindowText(M_symbols());
 
@@ -342,7 +343,7 @@ LRESULT CAddEdit_PasswordPolicy::OnQuerySiblings(WPARAM wParam, LPARAM )
 BOOL CAddEdit_PasswordPolicy::OnApply()
 {
   if (M_uicaller() == IDS_VIEWENTRY || M_protected() != 0)
-    return CAddEdit_PropertyPage::OnApply();
+    return FALSE; //CAddEdit_PropertyPage::OnApply();
 
   UpdateData(TRUE);
   CWnd *pFocus(NULL);

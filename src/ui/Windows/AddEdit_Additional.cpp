@@ -119,13 +119,15 @@ BOOL CAddEdit_Additional::OnInitDialog()
 
   ModifyStyleEx (0, WS_EX_CONTROLPARENT);
 
-  CString cs_dats = PWSprefs::GetInstance()->
-                           GetPref(PWSprefs::DefaultAutotypeString).c_str();
-  if (cs_dats.IsEmpty())
-    cs_dats.LoadString(IDS_NOTSET);
+  CString cs_dats;
+  StringX sx_dats = PWSprefs::GetInstance()->
+                           GetPref(PWSprefs::DefaultAutotypeString);
+  if (sx_dats.empty())
+    cs_dats = DEFAULT_AUTOTYPE;
+  else
+    cs_dats.Format(IDS_DEFAULTAUTOTYPE, sx_dats.c_str());
 
-  GetDlgItem(IDC_PWS_DEFAULTAUTOTYPE)->SetWindowText(DEFAULT_AUTOTYPE);
-  GetDlgItem(IDC_DB_DEFAULTAUTOTYPE)->SetWindowText(cs_dats);
+  GetDlgItem(IDC_DEFAULTAUTOTYPE)->SetWindowText(cs_dats);
 
   if (M_uicaller() != IDS_ADDENTRY) {
     m_pToolTipCtrl = new CToolTipCtrl;
@@ -427,7 +429,7 @@ LRESULT CAddEdit_Additional::OnQuerySiblings(WPARAM wParam, LPARAM )
 BOOL CAddEdit_Additional::OnApply()
 {
   if (M_uicaller() == IDS_VIEWENTRY || M_protected() != 0)
-    return CAddEdit_PropertyPage::OnApply();
+    return FALSE; //CAddEdit_PropertyPage::OnApply();
 
   CWnd *pFocus(NULL);
   CGeneralMsgBox gmb;
@@ -618,9 +620,9 @@ void CAddEdit_Additional::OnClearPWHist()
   m_ae_psh->SetChanged(true);
 }
 
-void CAddEdit_Additional::OnHistListClick(NMHDR *pNMHDR, LRESULT *)
+void CAddEdit_Additional::OnHistListClick(NMHDR *pNotifyStruct, LRESULT *)
 {
-  LPNMITEMACTIVATE lpnmitem = (LPNMITEMACTIVATE) pNMHDR;
+  LPNMITEMACTIVATE lpnmitem = (LPNMITEMACTIVATE) pNotifyStruct;
   ASSERT(lpnmitem != NULL);
   int item = lpnmitem->iItem;
   if (item == -1)
@@ -631,9 +633,9 @@ void CAddEdit_Additional::OnHistListClick(NMHDR *pNMHDR, LRESULT *)
   M_pDbx()->SetClipboardData(pwhentry.password);
 }
 
-void CAddEdit_Additional::OnHeaderClicked(NMHDR *pNMHDR, LRESULT *pResult)
+void CAddEdit_Additional::OnHeaderClicked(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
-  HD_NOTIFY *phdn = (HD_NOTIFY *) pNMHDR;
+  HD_NOTIFY *phdn = (HD_NOTIFY *) pNotifyStruct;
 
   if (phdn->iButton == 0) {
     // User clicked on header using left mouse button
@@ -666,7 +668,7 @@ void CAddEdit_Additional::OnHeaderClicked(NMHDR *pNMHDR, LRESULT *pResult)
     m_PWHistListCtrl.GetHeaderCtrl()->SetItem(m_iSortedColumn, &HeaderItem);
   }
 
-  *pResult = 0;
+  *pLResult = 0;
 }
 
 int CALLBACK CAddEdit_Additional::PWHistCompareFunc(LPARAM lParam1, LPARAM lParam2,

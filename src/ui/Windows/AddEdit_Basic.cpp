@@ -201,8 +201,10 @@ BOOL CAddEdit_Basic::OnInitDialog()
   ApplyPasswordFont(GetDlgItem(IDC_PASSWORD));
   ApplyPasswordFont(GetDlgItem(IDC_PASSWORD2));
 
-  if (M_uicaller() != IDS_EDITENTRY || M_protected() == 0)
-    GetDlgItem(IDC_STATIC_PROTECTED)->ShowWindow(SW_HIDE);
+  if (M_uicaller() == IDS_EDITENTRY && M_protected() != 0) {
+    GetDlgItem(IDC_STATIC_PROTECTED)->ShowWindow(SW_SHOW);
+    m_stc_protected.SetColour(RGB(255,0,0));
+  }
 
   if (M_uicaller() != IDS_ADDENTRY) {
     m_pToolTipCtrl = new CToolTipCtrl;
@@ -234,7 +236,6 @@ BOOL CAddEdit_Basic::OnInitDialog()
       if (M_uicaller() == IDS_EDITENTRY && M_protected() != 0) {
         cs_ToolTip.LoadString(IDS_UNPROTECT);
         m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_PROTECTED), cs_ToolTip);
-        m_stc_protected.SetColour(RGB(255,0,0));
       }
 
       m_pToolTipCtrl->Activate(TRUE);
@@ -253,12 +254,11 @@ BOOL CAddEdit_Basic::OnInitDialog()
   GetDlgItem(IDC_LAUNCH)->EnableWindow(M_URL().IsEmpty() ? FALSE : TRUE);
   GetDlgItem(IDC_SENDEMAIL)->EnableWindow(M_email().IsEmpty() ? FALSE : TRUE);
 
-  if (M_uicaller() == IDS_VIEWENTRY || (M_uicaller() == IDS_EDITENTRY && M_protected() != 0)) {
+  if (M_uicaller() == IDS_VIEWENTRY ||
+      (M_uicaller() == IDS_EDITENTRY && M_protected() != 0)) {
     // Change 'OK' to 'Close' and disable 'Cancel'
     CancelToClose();
-  }
 
-  if (M_uicaller() == IDS_VIEWENTRY) {
     // Disable Group Combo
     GetDlgItem(IDC_GROUP)->EnableWindow(FALSE);
 
@@ -520,7 +520,7 @@ BOOL CAddEdit_Basic::PreTranslateMessage(MSG* pMsg)
 BOOL CAddEdit_Basic::OnApply()
 {
   if (M_uicaller() == IDS_VIEWENTRY || M_protected() != 0)
-    return CAddEdit_PropertyPage::OnApply();
+    return FALSE; //CAddEdit_PropertyPage::OnApply();
 
   CWnd *pFocus(NULL);
   CGeneralMsgBox gmb;

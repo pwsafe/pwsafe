@@ -450,8 +450,6 @@
 #define IDC_XTIME                       1115
 #define IDC_STATIC_RMTIME               1116
 #define IDC_RMTIME                      1117
-#define IDC_XTIME_CLEAR                 1118
-#define IDC_XTIME_SET                   1119
 #define IDC_MAINTAINDATETIMESTAMPS      1121
 #define IDC_STATIC_DTGROUP              1122
 #define IDC_STATIC_DTEXPGROUP           1123
@@ -531,8 +529,9 @@
 #define IDC_DATABASECOMBO               1222
 #define IDC_BTN_BROWSE                  1223
 #define IDC_SPCL_TXT                    1225
-#define IDC_SELECTBYDATETIME            1228
-#define IDC_SELECTBYDAYS                1229
+#define IDC_SELECTBYDATETIME            1227
+#define IDC_SELECTBYDAYS                1228
+#define IDC_SELECTBYNONE                1229
 #define IDC_EXPDAYS                     1230
 #define IDC_EXPDAYSSPIN                 1231
 #define IDC_PREWARNEXPIRY               1232
@@ -542,7 +541,7 @@
 #define IDC_DEFENABLEGRIDLINES          1246
 #define IDC_LIST_HEADER                 1247
 #define IDC_CPLIST                      1248
-#define IDC_DEFAULTAUTOTYPE             1249
+#define IDC_DB_DEFAULTAUTOTYPE          1249
 #define IDC_MINIMIZEONAUTOTYPE          1250
 #define IDC_ALTBROWSER_CMDLINE          1251
 #define IDC_DEFUNSHOWINTREE             1254
@@ -725,8 +724,7 @@
 #define IDC_USEOWNSYMBOLS               1439
 #define IDC_OWNSYMBOLS                  1440
 #define IDC_STATIC_DEFAULTSYMBOLS       1441
-#define IDC_PWS_DEFAULTAUTOTYPE         1442
-#define IDC_DB_DEFAULTAUTOTYPE          1443
+#define IDC_DEFAULTAUTOTYPE             1442
 
 // Next default values for new objects
 // 
@@ -734,7 +732,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        499
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1444
+#define _APS_NEXT_CONTROL_VALUE         1443
 #define _APS_NEXT_SYMED_VALUE           166
 #endif
 #endif

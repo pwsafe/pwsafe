@@ -147,7 +147,9 @@ BOOL CAddEdit_PropertySheet::OnInitDialog()
         sx_user = m_AEMD.pci->GetUser();
 
       // Set up and pass Propertysheet caption showing entry being edited/viewed
-      cs_title.Format(m_AEMD.uicaller, sx_group.c_str(), sx_title.c_str(), sx_user.c_str());
+      // If entry is protected, set to 'View' even if DB is in R/W mode
+      cs_title.Format(m_AEMD.ucprotected != 0 ? IDS_PROTECTEDENTRY : m_AEMD.uicaller,
+                      sx_group.c_str(), sx_title.c_str(), sx_user.c_str());
       SetWindowText(cs_title);
       break;
       }
@@ -204,8 +206,14 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
     // loaded - i.e. the user has selected to view them, since obviously
     // the user would not have changed their values if not displayed. Duh!
     if (SendMessage(PSM_QUERYSIBLINGS,
-                (WPARAM)CPWPropertyPage::PP_UPDATE_VARIABLES, 0L) != 0)
-      return TRUE;
+                (WPARAM)CPWPropertyPage::PP_UPDATE_VARIABLES, 0L) != 0) {
+      if (iCID == IDOK) {
+        // Just end it
+        CPWPropertySheet::EndDialog(IDOK);
+      } else {
+        return TRUE;
+      }
+    }
 
     time_t t;
     bool bIsPSWDModified;
