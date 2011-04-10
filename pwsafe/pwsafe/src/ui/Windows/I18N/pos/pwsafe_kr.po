@@ -302,6 +302,11 @@ msgstr "%d 항목"
 msgid "%d of %d matches."
 msgstr "%d 가 전체 %d 중에서 일치합니다."
 
+#. Resource IDs: (366)
+#, c-format
+msgid "%s (database-specific)"
+msgstr ""
+
 #. Resource IDs: (3887)
 #, c-format
 msgid "%s [Recovered]"
@@ -448,10 +453,6 @@ msgstr "보안 비밀번호 바꾸기(&C)"
 msgid "&Classic Toolbar"
 msgstr "구식 스타일 툴바(&C)"
 
-#. Resource IDs: (1118)
-msgid "&Clear"
-msgstr "지우기(&C)"
-
 #. Resource IDs: (32252)
 msgid "&Clear Recent History"
 msgstr "최근 내역 삭제(&C)"
@@ -588,6 +589,10 @@ msgstr "무시(&I)"
 msgid "&Import"
 msgstr "불러오기(&I)"
 
+#. Resource IDs: (1228)
+msgid "&In"
+msgstr ""
+
 #. Resource IDs: (1143)
 msgid "&Keep"
 msgstr "유지(&K)"
@@ -632,9 +637,17 @@ msgstr "필터 생성/편집하기(&N)"
 msgid "&No"
 msgstr "아니오(&N)"
 
+#. Resource IDs: (1229)
+msgid "&None"
+msgstr ""
+
 #. Resource IDs: (1354, 65535)
 msgid "&Notes:"
 msgstr "메모(&N):"
+
+#. Resource IDs: (1227)
+msgid "&On"
+msgstr ""
 
 #. Resource IDs: (360)
 msgid "&Open"
@@ -1710,10 +1723,6 @@ msgstr "최근 비밀번호의 내역 저장횟수가 적다면, 현재 저장�
 msgid "Changes to existing entries will be applied on pressing OK"
 msgstr "확인을 누르면 존재하는 항목에 변경 사항이 적용됩니다"
 
-#. Resource IDs: (65535)
-msgid "Changing the values/settings below does not become effective until the 'Set' button is pressed"
-msgstr "'설정' 버튼을 누르기 전 까지, 값/설정을 변경하더라도 반영되지 않습니다"
-
 #. Resource IDs: (210)
 msgid "Characters present between end of index ']' and '}'"
 msgstr "인덱서 ']' 와 '}' 의 끝이 나타나기 전에 문자열이 존재합니다."
@@ -2183,10 +2192,6 @@ msgid "Database Unique ID:"
 msgstr "데이터베이스 고유 번호:"
 
 #. Resource IDs: (65535)
-msgid "Database default:"
-msgstr ""
-
-#. Resource IDs: (65535)
 msgid "Database format:"
 msgstr "데이터베이스 버전:"
 
@@ -2213,6 +2218,10 @@ msgstr "날짜/시각 정보"
 #. Resource IDs: (467)
 msgid "Dates and Times"
 msgstr "요일 및 시간"
+
+#. Resource IDs: (65535)
+msgid "Default"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Default Autotype string:"
@@ -2445,10 +2454,6 @@ msgstr "그룹/제목 항목과 비밀번호 항목 중 적어도 하나 이상�
 #. Resource IDs: (354)
 msgid "Either unable to load the necessary DLL, or it is the incorrect version, to support Autotype during Launch of a Browser or Run a command.\n\nAutotype for these functions is disabled."
 msgstr "필수 DLL 을 불러오는데 실패하였거나, 잘못된 버전이거나, 브라우저 실행 중 자동입력 상태일 수 있습니다.\n\n이런 기능들의 자동 입력이 비활성화됩니다."
-
-#. Resource IDs: (366)
-msgid "Embedded resources"
-msgstr ""
 
 #. Resource IDs: (204)
 #, c-format
@@ -3351,10 +3356,6 @@ msgstr "불러옴"
 msgid "Imported %d %s"
 msgstr "%d %s 불러옴"
 
-#. Resource IDs: (1229)
-msgid "In"
-msgstr "In"
-
 #. Resource IDs: (340)
 #, c-format
 msgid "In Headers(%s)/In Entries("
@@ -3943,10 +3944,6 @@ msgstr "Norwegian"
 msgid "Norwegian with Sami"
 msgstr "Norwegian with Sami"
 
-#. Resource IDs: (366)
-msgid "Not Set"
-msgstr ""
-
 #. Resource IDs: (3857)
 msgid "Not all of the system registry entries (or INI file) were removed."
 msgstr "시스템 레지스트리 항목(혹은 INI)파일이 완전히 삭제되지 않았습니다."
@@ -4286,10 +4283,6 @@ msgstr "비밀번호가 반드시 대소문자를 혼합하고, 최소한 1개�
 msgid "PasswordSafe V%d.%d.%d (Build %s) has had an error."
 msgstr "PasswordSafe V%d.%d.%d (빌드 %s) 가 에러를 가지고 있습니다."
 
-#. Resource IDs: (65535)
-msgid "PasswordSafe default:"
-msgstr ""
-
 #. Resource IDs: (364)
 msgid "PasswordSafe: Entries exist with expired or about to be expired passwords"
 msgstr "PasswordSafe: 비밀번호가 만료되었거나 만료 될 예정인 항목들이 있습니다"
@@ -4499,6 +4492,11 @@ msgstr "항목 보호하기"
 #. Resource IDs: (192, 363)
 msgid "Protected"
 msgstr "보호됨"
+
+#. Resource IDs: (366)
+#, c-format
+msgid "Protected Entry:   «%s» «%s» «%s»"
+msgstr ""
 
 #. Resource IDs: (355)
 msgid "Pswd copied "
@@ -4743,10 +4741,6 @@ msgstr "Russian (Typewriter)"
 #. Resource IDs: (328)
 msgid "S"
 msgstr "S"
-
-#. Resource IDs: (1119)
-msgid "S&et"
-msgstr "설정(&S)"
 
 #. Resource IDs: (32022)
 msgid "S&ynchronize..."
@@ -6179,10 +6173,6 @@ msgstr "Yes:"
 #. Resource IDs: (517)
 msgid "Yoruba"
 msgstr "Yoruba"
-
-#. Resource IDs: (363)
-msgid "You may not set a password expiry date in the past."
-msgstr "이전에 비밀번호 만료 일자를 설정하지 않았습니다."
 
 #. Resource IDs: (362)
 #, c-format

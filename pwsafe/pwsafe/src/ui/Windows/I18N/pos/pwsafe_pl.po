@@ -2,7 +2,6 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# $Id$
 #
 #, fuzzy
 msgid ""
@@ -10,8 +9,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2011-04-07\n"
-"Last-Translator: Michał Niklas <michal.niklas@wp.pl>\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -311,6 +310,11 @@ msgstr "%d pozycje"
 msgid "%d of %d matches."
 msgstr "%d z %d jest identycznych."
 
+#. Resource IDs: (366)
+#, c-format
+msgid "%s (database-specific)"
+msgstr ""
+
 #. Resource IDs: (3887)
 #, c-format
 msgid "%s [Recovered]"
@@ -457,11 +461,6 @@ msgstr "Zmień Hasło Sejfu..."
 msgid "&Classic Toolbar"
 msgstr "Klasy&czny pasek narzędzi"
 
-#. Resource IDs: (1118)
-#, fuzzy
-msgid "&Clear"
-msgstr "Wy&czyść"
-
 #. Resource IDs: (32252)
 msgid "&Clear Recent History"
 msgstr "Wy&czyść ostatnią historię"
@@ -598,6 +597,10 @@ msgstr "Pom&iń"
 msgid "&Import"
 msgstr "&Importuj"
 
+#. Resource IDs: (1228)
+msgid "&In"
+msgstr ""
+
 #. Resource IDs: (1143)
 msgid "&Keep"
 msgstr "Zachowaj"
@@ -642,9 +645,17 @@ msgstr "&Nowy/Edytuj filtr"
 msgid "&No"
 msgstr "&Nie"
 
+#. Resource IDs: (1229)
+msgid "&None"
+msgstr ""
+
 #. Resource IDs: (1354, 65535)
 msgid "&Notes:"
 msgstr "&Notatki:"
+
+#. Resource IDs: (1227)
+msgid "&On"
+msgstr ""
 
 #. Resource IDs: (360)
 msgid "&Open"
@@ -1732,10 +1743,6 @@ msgstr "Zmień maksymalną liczbę zapisanych haseł dla wpisów aktualnie zapis
 msgid "Changes to existing entries will be applied on pressing OK"
 msgstr "Zmiany do istniejących wpisów zostaną wprowadzone po naciśnięciu OK"
 
-#. Resource IDs: (65535)
-msgid "Changing the values/settings below does not become effective until the 'Set' button is pressed"
-msgstr "Zmiany poniższych wartości/ustawień zajdą gdy zostanie wciśnięty przycisk 'Ustaw'"
-
 #. Resource IDs: (210)
 msgid "Characters present between end of index ']' and '}'"
 msgstr "Znaki pomiędzy końcem indeksu  ']' i '}'"
@@ -2215,10 +2222,6 @@ msgid "Database Unique ID:"
 msgstr "ID Bazy Danych:"
 
 #. Resource IDs: (65535)
-msgid "Database default:"
-msgstr "Domyślna baza danych:"
-
-#. Resource IDs: (65535)
 msgid "Database format:"
 msgstr "Format Bazy Danych:"
 
@@ -2245,6 +2248,10 @@ msgstr "Data/Czas"
 #. Resource IDs: (467)
 msgid "Dates and Times"
 msgstr "Daty i czas"
+
+#. Resource IDs: (65535)
+msgid "Default"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Default Autotype string:"
@@ -2483,10 +2490,6 @@ msgstr "Brak obydwu lub jednej z kolumn grupa/nazwa i hasło. Nie zaimportowano 
 #. Resource IDs: (354)
 msgid "Either unable to load the necessary DLL, or it is the incorrect version, to support Autotype during Launch of a Browser or Run a command.\n\nAutotype for these functions is disabled."
 msgstr "Nie można załadować niezbędnej biblioteki DLL, lub jest ona w nieprawidłowej wersji by wspierać autouzupełnianie podczas uruchamioania przeglądarki lub wykoywania komendy.\n\nAutouzupełnianie dla tej funkcji jest wyłączone."
-
-#. Resource IDs: (366)
-msgid "Embedded resources"
-msgstr "Zasoby osadzone"
 
 #. Resource IDs: (204)
 #, c-format
@@ -3406,10 +3409,6 @@ msgstr "Zaimportowano"
 msgid "Imported %d %s"
 msgstr "Zaimportowano %d %s"
 
-#. Resource IDs: (1229)
-msgid "In"
-msgstr "W"
-
 #. Resource IDs: (340)
 #, c-format
 msgid "In Headers(%s)/In Entries("
@@ -4011,10 +4010,6 @@ msgstr "Norweski"
 msgid "Norwegian with Sami"
 msgstr "Norweski z Sami"
 
-#. Resource IDs: (366)
-msgid "Not Set"
-msgstr "Nie ustawiony"
-
 #. Resource IDs: (3857)
 msgid "Not all of the system registry entries (or INI file) were removed."
 msgstr "Nie wszystkie wpisy w rejestrze (lub pliku INI) zostały usunięte."
@@ -4362,10 +4357,6 @@ msgstr "W haśle powinny występować wielki i małe litery, przynajmnej jedna c
 msgid "PasswordSafe V%d.%d.%d (Build %s) has had an error."
 msgstr ""
 
-#. Resource IDs: (65535)
-msgid "PasswordSafe default:"
-msgstr ""
-
 #. Resource IDs: (364)
 msgid "PasswordSafe: Entries exist with expired or about to be expired passwords"
 msgstr ""
@@ -4579,6 +4570,11 @@ msgstr "Chroń wpis"
 #. Resource IDs: (192, 363)
 msgid "Protected"
 msgstr "Chroniony"
+
+#. Resource IDs: (366)
+#, c-format
+msgid "Protected Entry:   «%s» «%s» «%s»"
+msgstr ""
 
 #. Resource IDs: (355)
 msgid "Pswd copied "
@@ -4826,10 +4822,6 @@ msgstr "Rosyjski (maszyna do pisania)"
 #. Resource IDs: (328)
 msgid "S"
 msgstr "S"
-
-#. Resource IDs: (1119)
-msgid "S&et"
-msgstr "Zbiór"
 
 #. Resource IDs: (32022)
 msgid "S&ynchronize..."
@@ -6277,10 +6269,6 @@ msgstr "Tak:"
 
 #. Resource IDs: (517)
 msgid "Yoruba"
-msgstr ""
-
-#. Resource IDs: (363)
-msgid "You may not set a password expiry date in the past."
 msgstr ""
 
 #. Resource IDs: (362)

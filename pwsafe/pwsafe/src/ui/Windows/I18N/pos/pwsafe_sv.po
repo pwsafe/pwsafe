@@ -302,6 +302,11 @@ msgstr "%d punkter"
 msgid "%d of %d matches."
 msgstr "%d av %d matchar."
 
+#. Resource IDs: (366)
+#, c-format
+msgid "%s (database-specific)"
+msgstr ""
+
 #. Resource IDs: (3887)
 #, c-format
 msgid "%s [Recovered]"
@@ -448,10 +453,6 @@ msgstr "&Byt Safe-nyckel..."
 msgid "&Classic Toolbar"
 msgstr "&Klassisk verktygslist"
 
-#. Resource IDs: (1118)
-msgid "&Clear"
-msgstr "&Rensa"
-
 #. Resource IDs: (32252)
 msgid "&Clear Recent History"
 msgstr "&Rensa aktuell historik"
@@ -588,6 +589,10 @@ msgstr "&Ignorera"
 msgid "&Import"
 msgstr "&Importera"
 
+#. Resource IDs: (1228)
+msgid "&In"
+msgstr ""
+
 #. Resource IDs: (1143)
 msgid "&Keep"
 msgstr "&Behåll"
@@ -632,9 +637,17 @@ msgstr "&Nytt/redigera filter"
 msgid "&No"
 msgstr "&Nej"
 
+#. Resource IDs: (1229)
+msgid "&None"
+msgstr ""
+
 #. Resource IDs: (1354, 65535)
 msgid "&Notes:"
 msgstr "&Noteringar:"
+
+#. Resource IDs: (1227)
+msgid "&On"
+msgstr ""
 
 #. Resource IDs: (360)
 msgid "&Open"
@@ -1710,10 +1723,6 @@ msgstr "Ändra det maximala antalet sparade lösenord till poster, som nu sparar
 msgid "Changes to existing entries will be applied on pressing OK"
 msgstr "Ändringar av befintliga poster utförs efter OK"
 
-#. Resource IDs: (65535)
-msgid "Changing the values/settings below does not become effective until the 'Set' button is pressed"
-msgstr "Ändring av värdena/inställningarna nedan blir inte verksamma förrän 'Välj'-knappen har trycks"
-
 #. Resource IDs: (210)
 msgid "Characters present between end of index ']' and '}'"
 msgstr "Tecken som finns mellan indexslutet ']' och '}'"
@@ -2183,10 +2192,6 @@ msgid "Database Unique ID:"
 msgstr "Databasens unika ID:"
 
 #. Resource IDs: (65535)
-msgid "Database default:"
-msgstr ""
-
-#. Resource IDs: (65535)
 msgid "Database format:"
 msgstr "Databasformat:"
 
@@ -2213,6 +2218,10 @@ msgstr "Datum/tidsinformation"
 #. Resource IDs: (467)
 msgid "Dates and Times"
 msgstr "Datum och tider"
+
+#. Resource IDs: (65535)
+msgid "Default"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Default Autotype string:"
@@ -2445,10 +2454,6 @@ msgstr "Endera av eller både grupp-/titel- och lösenords-kolumner saknas. Inge
 #. Resource IDs: (354)
 msgid "Either unable to load the necessary DLL, or it is the incorrect version, to support Autotype during Launch of a Browser or Run a command.\n\nAutotype for these functions is disabled."
 msgstr "Antingen kan inte den nödvändiga DLL-filen läsas in, eller så är det fel version, för att stödja autoskrivning då browsern startas eller under kommandokörning.\n\nAutoskrivning av dessa funktioner är avstängd."
-
-#. Resource IDs: (366)
-msgid "Embedded resources"
-msgstr ""
 
 #. Resource IDs: (204)
 #, c-format
@@ -3351,10 +3356,6 @@ msgstr "Importerad"
 msgid "Imported %d %s"
 msgstr "Importerat %d %s"
 
-#. Resource IDs: (1229)
-msgid "In"
-msgstr "i"
-
 #. Resource IDs: (340)
 #, c-format
 msgid "In Headers(%s)/In Entries("
@@ -3943,10 +3944,6 @@ msgstr "Norskt"
 msgid "Norwegian with Sami"
 msgstr "Norskt med Samiska"
 
-#. Resource IDs: (366)
-msgid "Not Set"
-msgstr ""
-
 #. Resource IDs: (3857)
 msgid "Not all of the system registry entries (or INI file) were removed."
 msgstr "Inte alla systemets registerposter (eller INI-fil) togs bort."
@@ -4286,10 +4283,6 @@ msgstr "Lösenordet borde bestå av blandade tecken med åtminståne en siffra e
 msgid "PasswordSafe V%d.%d.%d (Build %s) has had an error."
 msgstr "PasswordSafe V%d.%d.%d (Build %s) har orsakat ett fel."
 
-#. Resource IDs: (65535)
-msgid "PasswordSafe default:"
-msgstr ""
-
 #. Resource IDs: (364)
 msgid "PasswordSafe: Entries exist with expired or about to be expired passwords"
 msgstr "PasswordSafe: Poster finns med utgågna eller snart utgågna lösenord"
@@ -4499,6 +4492,11 @@ msgstr "Skydda post"
 #. Resource IDs: (192, 363)
 msgid "Protected"
 msgstr "Skyddad"
+
+#. Resource IDs: (366)
+#, c-format
+msgid "Protected Entry:   «%s» «%s» «%s»"
+msgstr ""
 
 #. Resource IDs: (355)
 msgid "Pswd copied "
@@ -4743,10 +4741,6 @@ msgstr "Ryskt (Typewriter)"
 #. Resource IDs: (328)
 msgid "S"
 msgstr "S"
-
-#. Resource IDs: (1119)
-msgid "S&et"
-msgstr "V&älj"
 
 #. Resource IDs: (32022)
 msgid "S&ynchronize..."
@@ -6179,10 +6173,6 @@ msgstr "Ja:"
 #. Resource IDs: (517)
 msgid "Yoruba"
 msgstr "Yoruba"
-
-#. Resource IDs: (363)
-msgid "You may not set a password expiry date in the past."
-msgstr "Du kan inte ange ett lösenords utgångsdatum i svunnen tid."
 
 #. Resource IDs: (362)
 #, c-format

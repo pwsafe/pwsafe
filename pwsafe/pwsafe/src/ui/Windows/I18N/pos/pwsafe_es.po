@@ -302,6 +302,11 @@ msgstr "%d elementos"
 msgid "%d of %d matches."
 msgstr "%d de %d coincidencias."
 
+#. Resource IDs: (366)
+#, c-format
+msgid "%s (database-specific)"
+msgstr ""
+
 #. Resource IDs: (3887)
 #, c-format
 msgid "%s [Recovered]"
@@ -448,10 +453,6 @@ msgstr "&Cambiar contraseña maestra..."
 msgid "&Classic Toolbar"
 msgstr "Barra de herramientas &clásica"
 
-#. Resource IDs: (1118)
-msgid "&Clear"
-msgstr "&Limpiar"
-
 #. Resource IDs: (32252)
 msgid "&Clear Recent History"
 msgstr "&Limpiar el historial reciente"
@@ -588,6 +589,10 @@ msgstr "&Ignorar"
 msgid "&Import"
 msgstr "&Importar"
 
+#. Resource IDs: (1228)
+msgid "&In"
+msgstr ""
+
 #. Resource IDs: (1143)
 msgid "&Keep"
 msgstr "&Mantener"
@@ -632,9 +637,17 @@ msgstr "&Nuevo/editar filtro"
 msgid "&No"
 msgstr "&No"
 
+#. Resource IDs: (1229)
+msgid "&None"
+msgstr ""
+
 #. Resource IDs: (1354, 65535)
 msgid "&Notes:"
 msgstr "&Notas:"
+
+#. Resource IDs: (1227)
+msgid "&On"
+msgstr ""
 
 #. Resource IDs: (360)
 msgid "&Open"
@@ -1710,10 +1723,6 @@ msgstr "Cambiar el máximo de contraseñas guardadas por entrada guardando el hi
 msgid "Changes to existing entries will be applied on pressing OK"
 msgstr "Se aplicarán cambios en las entradas al pulsar Aceptar"
 
-#. Resource IDs: (65535)
-msgid "Changing the values/settings below does not become effective until the 'Set' button is pressed"
-msgstr "Cambiar los valores/ajustes de más abajo no tiene efecto hasta que se pulse el botón 'Fijar'"
-
 #. Resource IDs: (210)
 msgid "Characters present between end of index ']' and '}'"
 msgstr "Caracteres presentes entre el final del índice de ']' y ')'"
@@ -2183,10 +2192,6 @@ msgid "Database Unique ID:"
 msgstr "ID único de base de datos:"
 
 #. Resource IDs: (65535)
-msgid "Database default:"
-msgstr ""
-
-#. Resource IDs: (65535)
 msgid "Database format:"
 msgstr "Formato de la base de datos:"
 
@@ -2213,6 +2218,10 @@ msgstr "Información de fecha y hora"
 #. Resource IDs: (467)
 msgid "Dates and Times"
 msgstr "Fechas y horas"
+
+#. Resource IDs: (65535)
+msgid "Default"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Default Autotype string:"
@@ -2445,10 +2454,6 @@ msgstr "Alguna o ambas columnas Grupo/Título y Contraseña no existen. No se ha
 #. Resource IDs: (354)
 msgid "Either unable to load the necessary DLL, or it is the incorrect version, to support Autotype during Launch of a Browser or Run a command.\n\nAutotype for these functions is disabled."
 msgstr "No se puede cargar la DLL necesaria o no es la versión correcta para permitir autoescritura tras lanzar el navegado o ejecutar un comando.\n\nAutoescritura desactivada para estas funciones."
-
-#. Resource IDs: (366)
-msgid "Embedded resources"
-msgstr ""
 
 #. Resource IDs: (204)
 #, c-format
@@ -3351,10 +3356,6 @@ msgstr "Importado"
 msgid "Imported %d %s"
 msgstr "Importado %d %s"
 
-#. Resource IDs: (1229)
-msgid "In"
-msgstr "En"
-
 #. Resource IDs: (340)
 #, c-format
 msgid "In Headers(%s)/In Entries("
@@ -3943,10 +3944,6 @@ msgstr "Noruego"
 msgid "Norwegian with Sami"
 msgstr "Noruego con Sami"
 
-#. Resource IDs: (366)
-msgid "Not Set"
-msgstr ""
-
 #. Resource IDs: (3857)
 msgid "Not all of the system registry entries (or INI file) were removed."
 msgstr "No se borraron todas las entradas del registro del sistema (o ficheros INI)."
@@ -4286,10 +4283,6 @@ msgstr "La contraseña debería tener mayúsculas y minúsculas con al menos un 
 msgid "PasswordSafe V%d.%d.%d (Build %s) has had an error."
 msgstr "PasswordSafe V%d.%d.%d (Build %s) ha sufrido un error."
 
-#. Resource IDs: (65535)
-msgid "PasswordSafe default:"
-msgstr ""
-
 #. Resource IDs: (364)
 msgid "PasswordSafe: Entries exist with expired or about to be expired passwords"
 msgstr "PasswordSafe: Existen entradas con contraseñas caducadas o a punto de caducar"
@@ -4499,6 +4492,11 @@ msgstr "Entrada protegida"
 #. Resource IDs: (192, 363)
 msgid "Protected"
 msgstr "Protegido"
+
+#. Resource IDs: (366)
+#, c-format
+msgid "Protected Entry:   «%s» «%s» «%s»"
+msgstr ""
 
 #. Resource IDs: (355)
 msgid "Pswd copied "
@@ -4743,10 +4741,6 @@ msgstr "Ruso (máquina de escribir)"
 #. Resource IDs: (328)
 msgid "S"
 msgstr "S"
-
-#. Resource IDs: (1119)
-msgid "S&et"
-msgstr "&Fijar"
 
 #. Resource IDs: (32022)
 msgid "S&ynchronize..."
@@ -6181,10 +6175,6 @@ msgstr "Sí:"
 #. Resource IDs: (517)
 msgid "Yoruba"
 msgstr "Yoruba"
-
-#. Resource IDs: (363)
-msgid "You may not set a password expiry date in the past."
-msgstr "No puedes fijar un fecha pasada como caducidad de contraseña."
 
 #. Resource IDs: (362)
 #, c-format
