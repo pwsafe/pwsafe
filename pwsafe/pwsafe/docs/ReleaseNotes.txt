@@ -22,10 +22,14 @@ for EasyVision and Pronounceable passwords can not be overriden in either case.
 Changes to Existing Features in 3.25.1
 ======================================
 [] Polish installation texts added thanks to Michal Niklas.
+[] An entry's password exipry date is set or cleared directly rather than using
+the Set and Clear buttons after changing values.
 
 Bugs fixed in 3.25.1
 ====================
 [3234204] PasswordSafe no longer ends if the command flag is set to "-s <databasename>".
+[] Controls in Edit are now disabled if entry is protected, even though the user could
+not have saved any changes.
 
 New Features for 3.25
 =====================
@@ -64,7 +68,7 @@ thanks to pm_kan.
 [] Karlo has updated the German texts.
 [] Francois has updated the French texts.
 [] Bjorne has updated the Swedish version.
-[] freedoctor has updated the Chinese texts.
+[] Freedoctor has updated the Chinese texts.
 
 Bugs fixed in 3.25
 ==================

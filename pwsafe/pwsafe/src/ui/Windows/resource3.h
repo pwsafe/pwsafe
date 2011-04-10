@@ -600,7 +600,6 @@
 #define IDS_TRUNCATETEXT                5792
 #define IDS_WARNINGTEXTLENGTH           5793
 #define IDS_ENTRYSIZE                   5794
-#define IDS_INVALIDEXPIRYDATE           5795
 #define IDS_NOIBACKUP2                  5796
 #define IDS_SAVEAS                      5797
 #define IDS_INVALIDFUTUREDATE           5798
@@ -646,7 +645,7 @@
 #define IDS_NONE_EXPORTED               5838
 #define IDS_NONE_COMPARED               5839
 #define IDS_NONE_SYNCHRONIZED           5840
-#define IDS_EMBEDDEDRESOURCES           5841
+#define IDS_DEFAULTAUTOTYPE             5841
 #define IDS_SYMBOLS                     5842
 #define IDS_COMPSYMBOLS                 5843
-#define IDS_NOTSET                      5844
+#define IDS_PROTECTEDENTRY              5844

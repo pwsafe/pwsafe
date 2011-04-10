@@ -67,8 +67,8 @@ protected:
   afx_msg void OnSetDCACheck();
   afx_msg void OnSTCExClicked(UINT nId);
   afx_msg void OnCheckedSavePasswordHistory();
-  afx_msg void OnHeaderClicked(NMHDR* pNMHDR, LRESULT* pResult);
-  afx_msg void OnHistListClick(NMHDR* pNMHDR, LRESULT* pResult);
+  afx_msg void OnHeaderClicked(NMHDR *pNotifyStruct, LRESULT *pLResult);
+  afx_msg void OnHistListClick(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnPWHCopyAll();
   afx_msg void OnClearPWHist();
   //}}AFX_MSG
