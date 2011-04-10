@@ -355,6 +355,11 @@ msgstr "%d элементов"
 msgid "%d of %d matches."
 msgstr "%d из %d совпадений."
 
+#. Resource IDs: (366)
+#, c-format
+msgid "%s (database-specific)"
+msgstr ""
+
 #. Resource IDs: (3887)
 #, c-format
 msgid "%s [Recovered]"
@@ -503,10 +508,6 @@ msgstr "&Изменить пароль для контейнера..."
 msgid "&Classic Toolbar"
 msgstr "&Классическая панель инструментов"
 
-#. Resource IDs: (1118)
-msgid "&Clear"
-msgstr "&Очистить"
-
 #. Resource IDs: (32252)
 msgid "&Clear Recent History"
 msgstr "&Очистить историю"
@@ -649,6 +650,10 @@ msgstr "&Игнорировать"
 msgid "&Import"
 msgstr "&Импорт"
 
+#. Resource IDs: (1228)
+msgid "&In"
+msgstr ""
+
 #. Resource IDs: (1143)
 # Хранить n предыдущих паролей
 msgid "&Keep"
@@ -695,9 +700,17 @@ msgstr "&Создать/Редактировать фильтр"
 msgid "&No"
 msgstr "&Нет"
 
+#. Resource IDs: (1229)
+msgid "&None"
+msgstr ""
+
 #. Resource IDs: (1354)
 msgid "&Notes:"
 msgstr "&Заметки:"
+
+#. Resource IDs: (1227)
+msgid "&On"
+msgstr ""
 
 #. Resource IDs: (360)
 msgid "&Open"
@@ -1792,10 +1805,6 @@ msgstr "Изменить количество запоминаемых паро�
 msgid "Changes to existing entries will be applied on pressing OK"
 msgstr "Изменения для существующих элементов будут приняты после нажатия кнопки OK"
 
-#. Resource IDs: (65535)
-msgid "Changing the values/settings below does not become effective until the 'Set' button is pressed"
-msgstr "Изменение значений/настроек вступает в силу только после нажатия кнопки «Задать»"
-
 #. Resource IDs: (210)
 msgid "Characters present between end of index ']' and '}'"
 msgstr "Символы после индекса (между ']' и '}') недопустимы"
@@ -2278,10 +2287,6 @@ msgid "Database Unique ID:"
 msgstr "UID контейнера:"
 
 #. Resource IDs: (65535)
-msgid "Database default:"
-msgstr ""
-
-#. Resource IDs: (65535)
 msgid "Database format:"
 msgstr "Формат контейнера:"
 
@@ -2309,6 +2314,10 @@ msgstr "Информация о дате/времени"
 # закладка в диалоге создания/редактирования элемента
 msgid "Dates and Times"
 msgstr "Дата и время"
+
+#. Resource IDs: (65535)
+msgid "Default"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Default Autotype string:"
@@ -2543,11 +2552,6 @@ msgstr "Столбец с группой/заголовком и/или паро
 #. Resource IDs: (354)
 msgid "Either unable to load the necessary DLL, or it is the incorrect version, to support Autotype during Launch of a Browser or Run a command.\n\nAutotype for these functions is disabled."
 msgstr "Невозможно загрузить необходимую DLL, или она имеет неверную версию.\n\n Автонабор в браузере или при выполнении команды отключён."
-
-#. Resource IDs: (366)
-#, fuzzy
-msgid "Embedded resources"
-msgstr "Встроенный ресурс"
 
 #. Resource IDs: (204)
 #, c-format
@@ -3476,11 +3480,6 @@ msgstr "Импортировано"
 msgid "Imported %d %s"
 msgstr "Импортировано %d %s"
 
-#. Resource IDs: (1229)
-# Ex.: Password expires In 5 days
-msgid "In"
-msgstr "Через"
-
 #. Resource IDs: (212)
 #, c-format
 msgid "In Headers(%s)/In Entries("
@@ -4081,10 +4080,6 @@ msgstr "Норвежская"
 msgid "Norwegian with Sami"
 msgstr "Норвежская (с саамским)"
 
-#. Resource IDs: (366)
-msgid "Not Set"
-msgstr ""
-
 #. Resource IDs: (3857)
 msgid "Not all of the system registry entries (or INI file) were removed."
 msgstr "Не все записи в реестре (или ini-файле) были удалены"
@@ -4439,10 +4434,6 @@ msgstr "Пароль должен содержать буквы обоих ре�
 msgid "PasswordSafe V%d.%d.%d (Build %s) has had an error."
 msgstr "В PasswordSafe V%d.%d.%d (Сборка %s) обнаружена ошибка."
 
-#. Resource IDs: (65535)
-msgid "PasswordSafe default:"
-msgstr ""
-
 #. Resource IDs: (364)
 # урезано (заголовок окна)
 msgid "PasswordSafe: Entries exist with expired or about to be expired passwords"
@@ -4655,6 +4646,11 @@ msgstr "Защитить элемент"
 #. Resource IDs: (192, 363)
 msgid "Protected"
 msgstr "Защищён"
+
+#. Resource IDs: (366)
+#, c-format
+msgid "Protected Entry:   «%s» «%s» «%s»"
+msgstr ""
 
 #. Resource IDs: (355)
 msgid "Pswd copied "
@@ -4908,10 +4904,6 @@ msgstr "Русская (машинопись)"
 #. Resource IDs: (328)
 msgid "S"
 msgstr "S"
-
-#. Resource IDs: (1119)
-msgid "S&et"
-msgstr "&Задать"
 
 #. Resource IDs: (32022)
 msgid "S&ynchronize..."
@@ -6384,10 +6376,6 @@ msgstr "Да:"
 #. Resource IDs: (517)
 msgid "Yoruba"
 msgstr "Йоруба"
-
-#. Resource IDs: (363)
-msgid "You may not set a password expiry date in the past."
-msgstr "При указании даты истечения пароля нельзя использовать даты из прошлого."
 
 #. Resource IDs: (362)
 # %s2= exported | validated

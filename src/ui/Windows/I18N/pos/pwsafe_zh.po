@@ -302,6 +302,11 @@ msgstr "%d 个项目"
 msgid "%d of %d matches."
 msgstr "%d 中 %d 个相匹配！"
 
+#. Resource IDs: (366)
+#, c-format
+msgid "%s (database-specific)"
+msgstr ""
+
 #. Resource IDs: (3887)
 #, c-format
 msgid "%s [Recovered]"
@@ -448,10 +453,6 @@ msgstr "更改保险箱密码(&C)..."
 msgid "&Classic Toolbar"
 msgstr "经典工具栏(&C)"
 
-#. Resource IDs: (1118)
-msgid "&Clear"
-msgstr "清除(&C)"
-
 #. Resource IDs: (32252)
 msgid "&Clear Recent History"
 msgstr "清除最近历史密码(&C)"
@@ -588,6 +589,10 @@ msgstr "忽略(&I)"
 msgid "&Import"
 msgstr "导入(&I)"
 
+#. Resource IDs: (1228)
+msgid "&In"
+msgstr ""
+
 #. Resource IDs: (1143)
 msgid "&Keep"
 msgstr "保存(&K)"
@@ -632,9 +637,17 @@ msgstr "新建/编辑筛选(&N)"
 msgid "&No"
 msgstr "否(&N)"
 
+#. Resource IDs: (1229)
+msgid "&None"
+msgstr ""
+
 #. Resource IDs: (1354, 65535)
 msgid "&Notes:"
 msgstr "备注(&N):"
+
+#. Resource IDs: (1227)
+msgid "&On"
+msgstr ""
 
 #. Resource IDs: (360)
 msgid "&Open"
@@ -1710,10 +1723,6 @@ msgstr "如果当前存储数量较少，更改当前项目保存历史密码数
 msgid "Changes to existing entries will be applied on pressing OK"
 msgstr "点击“确定”将更改应用到现有项目！"
 
-#. Resource IDs: (65535)
-msgid "Changing the values/settings below does not become effective until the 'Set' button is pressed"
-msgstr "在未按下列“设定”按钮之前，所更改的 值/设置 将不生效"
-
 #. Resource IDs: (210)
 msgid "Characters present between end of index ']' and '}'"
 msgstr "符号显示在索引 ']' 和 '}' 之间结束！"
@@ -2183,10 +2192,6 @@ msgid "Database Unique ID:"
 msgstr "数据库唯一ID:"
 
 #. Resource IDs: (65535)
-msgid "Database default:"
-msgstr ""
-
-#. Resource IDs: (65535)
 msgid "Database format:"
 msgstr "数据库格式:"
 
@@ -2213,6 +2218,10 @@ msgstr "日期/时间信息"
 #. Resource IDs: (467)
 msgid "Dates and Times"
 msgstr "日期和时间"
+
+#. Resource IDs: (65535)
+msgid "Default"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Default Autotype string:"
@@ -2445,10 +2454,6 @@ msgstr "组/标题或密码栏目缺少，没有导入记录！"
 #. Resource IDs: (354)
 msgid "Either unable to load the necessary DLL, or it is the incorrect version, to support Autotype during Launch of a Browser or Run a command.\n\nAutotype for these functions is disabled."
 msgstr "支持自动输入时运行的浏览器或运行命令必需的 DLL 无法加载，也许这是一个不正确的版本！\n\n自动输入功能被禁用！"
-
-#. Resource IDs: (366)
-msgid "Embedded resources"
-msgstr ""
 
 #. Resource IDs: (204)
 #, c-format
@@ -3351,10 +3356,6 @@ msgstr "导入"
 msgid "Imported %d %s"
 msgstr "导入 %d %s"
 
-#. Resource IDs: (1229)
-msgid "In"
-msgstr "在"
-
 #. Resource IDs: (340)
 #, c-format
 msgid "In Headers(%s)/In Entries("
@@ -3943,10 +3944,6 @@ msgstr "挪威语"
 msgid "Norwegian with Sami"
 msgstr "挪威语(萨米)"
 
-#. Resource IDs: (366)
-msgid "Not Set"
-msgstr ""
-
 #. Resource IDs: (3857)
 msgid "Not all of the system registry entries (or INI file) were removed."
 msgstr "系统注册表项目 (或 INI 文件)  删除不全！"
@@ -4286,10 +4283,6 @@ msgstr "密码应该混合大小写和至少一个数字或标点字符！"
 msgid "PasswordSafe V%d.%d.%d (Build %s) has had an error."
 msgstr "PasswordSafe V%d.%d.%d (编译 %s) 已有一个错误！"
 
-#. Resource IDs: (65535)
-msgid "PasswordSafe default:"
-msgstr ""
-
 #. Resource IDs: (364)
 msgid "PasswordSafe: Entries exist with expired or about to be expired passwords"
 msgstr "PasswordSafe: 项目存在失效或涉及到期密码"
@@ -4499,6 +4492,11 @@ msgstr "保护项目"
 #. Resource IDs: (192, 363)
 msgid "Protected"
 msgstr "保护"
+
+#. Resource IDs: (366)
+#, c-format
+msgid "Protected Entry:   «%s» «%s» «%s»"
+msgstr ""
 
 #. Resource IDs: (355)
 msgid "Pswd copied "
@@ -4743,10 +4741,6 @@ msgstr "俄语(打字机)"
 #. Resource IDs: (328)
 msgid "S"
 msgstr "S"
-
-#. Resource IDs: (1119)
-msgid "S&et"
-msgstr "设定(&E)"
 
 #. Resource IDs: (32022)
 msgid "S&ynchronize..."
@@ -6179,10 +6173,6 @@ msgstr "是:"
 #. Resource IDs: (517)
 msgid "Yoruba"
 msgstr "约鲁巴语"
-
-#. Resource IDs: (363)
-msgid "You may not set a password expiry date in the past."
-msgstr "你不能设定一个密码有效期日期在过去！"
 
 #. Resource IDs: (362)
 #, c-format

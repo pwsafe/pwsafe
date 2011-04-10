@@ -302,6 +302,11 @@ msgstr "%d poster"
 msgid "%d of %d matches."
 msgstr "%d af %d passer sammen."
 
+#. Resource IDs: (366)
+#, c-format
+msgid "%s (database-specific)"
+msgstr ""
+
 #. Resource IDs: (3887)
 #, c-format
 msgid "%s [Recovered]"
@@ -448,10 +453,6 @@ msgstr "&Ændre Sikkerheds Adgangskoden..."
 msgid "&Classic Toolbar"
 msgstr "&Klassisk Værktøjslinie"
 
-#. Resource IDs: (1118)
-msgid "&Clear"
-msgstr "&Slet"
-
 #. Resource IDs: (32252)
 msgid "&Clear Recent History"
 msgstr "&Slet Seneste Historik"
@@ -588,6 +589,10 @@ msgstr "&Ignorer"
 msgid "&Import"
 msgstr "&Importer"
 
+#. Resource IDs: (1228)
+msgid "&In"
+msgstr ""
+
 #. Resource IDs: (1143)
 msgid "&Keep"
 msgstr "&Behold"
@@ -632,9 +637,17 @@ msgstr "&Ny/Rediger Filter"
 msgid "&No"
 msgstr "&Nej"
 
+#. Resource IDs: (1229)
+msgid "&None"
+msgstr ""
+
 #. Resource IDs: (1354, 65535)
 msgid "&Notes:"
 msgstr "&Notater:"
+
+#. Resource IDs: (1227)
+msgid "&On"
+msgstr ""
 
 #. Resource IDs: (360)
 msgid "&Open"
@@ -1710,10 +1723,6 @@ msgstr "Ændre det maximale antal af gemte adgangskoder for poster i for øjebli
 msgid "Changes to existing entries will be applied on pressing OK"
 msgstr "Ændringer til eksisterende poster vil blive anvendt ved tryk på OK"
 
-#. Resource IDs: (65535)
-msgid "Changing the values/settings below does not become effective until the 'Set' button is pressed"
-msgstr "Ændring af værdier/indstillinger herunder bliver ikke effektive før der bliver trykket på 'Sæt' knappen"
-
 #. Resource IDs: (210)
 msgid "Characters present between end of index ']' and '}'"
 msgstr "Nuværende tegn mellen enden af index ']' og '}'"
@@ -2183,10 +2192,6 @@ msgid "Database Unique ID:"
 msgstr "Databasens enestående ID:"
 
 #. Resource IDs: (65535)
-msgid "Database default:"
-msgstr ""
-
-#. Resource IDs: (65535)
 msgid "Database format:"
 msgstr "Database format:"
 
@@ -2213,6 +2218,10 @@ msgstr "Dato/Tids Oplysninger"
 #. Resource IDs: (467)
 msgid "Dates and Times"
 msgstr "Datoer og Tider"
+
+#. Resource IDs: (65535)
+msgid "Default"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Default Autotype string:"
@@ -2445,10 +2454,6 @@ msgstr "Den ene eller begge af Grupoe/Titel og Adgangskode kolonner mangler. Int
 #. Resource IDs: (354)
 msgid "Either unable to load the necessary DLL, or it is the incorrect version, to support Autotype during Launch of a Browser or Run a command.\n\nAutotype for these functions is disabled."
 msgstr "Den ene kan ikke indlæse den nødvendige DLL, eller det er en ukorrekt version, til understøttelse af Autoindsæt under start af en Browser eller Køre en kommando.\n\nAutoindsæt for disse funktioner er deaktiveret."
-
-#. Resource IDs: (366)
-msgid "Embedded resources"
-msgstr ""
 
 #. Resource IDs: (204)
 #, c-format
@@ -3351,10 +3356,6 @@ msgstr "Importeret"
 msgid "Imported %d %s"
 msgstr "Importeret%d %s"
 
-#. Resource IDs: (1229)
-msgid "In"
-msgstr "I"
-
 #. Resource IDs: (340)
 #, c-format
 msgid "In Headers(%s)/In Entries("
@@ -3943,10 +3944,6 @@ msgstr "Norwegian"
 msgid "Norwegian with Sami"
 msgstr "Norwegian with Sami"
 
-#. Resource IDs: (366)
-msgid "Not Set"
-msgstr ""
-
 #. Resource IDs: (3857)
 msgid "Not all of the system registry entries (or INI file) were removed."
 msgstr "Ikke alle system registrerings poster (eller INI filen) blev fjernet."
@@ -4286,10 +4283,6 @@ msgstr "Adgangskode bør være mixede tegn, med mindst et tal eller tegnsætning
 msgid "PasswordSafe V%d.%d.%d (Build %s) has had an error."
 msgstr "PasswordSafe V%d.%d.%d (Build %s) har haft en fejl."
 
-#. Resource IDs: (65535)
-msgid "PasswordSafe default:"
-msgstr ""
-
 #. Resource IDs: (364)
 msgid "PasswordSafe: Entries exist with expired or about to be expired passwords"
 msgstr ""
@@ -4498,6 +4491,11 @@ msgstr ""
 
 #. Resource IDs: (192, 363)
 msgid "Protected"
+msgstr ""
+
+#. Resource IDs: (366)
+#, c-format
+msgid "Protected Entry:   «%s» «%s» «%s»"
 msgstr ""
 
 #. Resource IDs: (355)
@@ -4743,10 +4741,6 @@ msgstr "Russian (Typewriter)"
 #. Resource IDs: (328)
 msgid "S"
 msgstr "S"
-
-#. Resource IDs: (1119)
-msgid "S&et"
-msgstr "S&æt"
 
 #. Resource IDs: (32022)
 msgid "S&ynchronize..."
@@ -6179,10 +6173,6 @@ msgstr "Ja:"
 #. Resource IDs: (517)
 msgid "Yoruba"
 msgstr "Yoruba"
-
-#. Resource IDs: (363)
-msgid "You may not set a password expiry date in the past."
-msgstr "Du må ikke sætte en adgangskodes udløbs dato i fortid."
 
 #. Resource IDs: (362)
 #, c-format
