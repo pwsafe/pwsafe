@@ -1,21 +1,22 @@
-# SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: 3.25.1.4096\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2011-04-10 12:47+0100\n"
+"Last-Translator: De Nederlanders <Samen@example.org>\n"
+"Language-Team: Nederlands <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
+"Project-Id-Version: \n"
+"X-Poedit-Language: Dutch\n"
+"X-Poedit-Country: NETHERLANDS\n"
+"X-Poedit-Bookmarks: 0,-1,-1,-1,-1,-1,-1,-1,-1,-1\n"
 
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
@@ -26,16 +27,25 @@ msgstr ""
 #    S = Shift key   (or blank if not used)
 #    X = upper case character
 # e.g. "V CS+Q" == Ctrl + Shift + 'Q'
-
 # ONLY Accelerator Keys with corresponding alphanumeric characters can be
 # updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
-
 # ONLY change the msgstr field. Do NOT change any other.
 # If you do not want to change an Accelerator Key, copy msgid to msgstr
-
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
 #. Resource IDs: (315)
 msgid " "
-msgstr ""
+msgstr " "
 
 #. Resource IDs: (204)
 msgid "  All Password History ignored."
@@ -78,75 +88,75 @@ msgstr "Ongeldige status waarde: %d"
 
 #. Resource IDs: (336)
 msgid " 'Autotype'"
-msgstr "'Automatische invoer'"
+msgstr " 'Automatische invoer' "
 
 #. Resource IDs: (336)
 msgid " 'Creation Time'"
-msgstr "'Tijd van aanmaken'"
+msgstr ""
 
 #. Resource IDs: (357)
 msgid " 'DCA'"
-msgstr "'DCA'"
+msgstr " 'DCA'"
 
 #. Resource IDs: (347)
 msgid " 'Group'"
-msgstr "'Groep'"
+msgstr ""
 
 #. Resource IDs: (336)
 msgid " 'Last Access Time'"
-msgstr "'Tijdstip van laatste gebruik'"
+msgstr ""
 
 #. Resource IDs: (336)
 msgid " 'Notes'"
-msgstr "'Aantekeningen'"
+msgstr ""
 
 #. Resource IDs: (356)
 msgid " 'Password Expiry Time Interval'"
-msgstr "'Tijdsinterval waarop wachtwoord verloopt'"
+msgstr ""
 
 #. Resource IDs: (336)
 msgid " 'Password Expiry Time'"
-msgstr "'Tijdstip waarop wachtwoord verloopt'"
+msgstr ""
 
 #. Resource IDs: (336)
 msgid " 'Password History'"
-msgstr "'Wachtwoord Geschiedenis'"
+msgstr ""
 
 #. Resource IDs: (336)
 msgid " 'Password Modification Time'"
-msgstr " 'Tijdstip waarop Wachtwoord gewijzigd is'"
+msgstr ""
 
 #. Resource IDs: (345)
 msgid " 'Password Policy'"
-msgstr " 'Wachtwoord Beleid'"
+msgstr ""
 
 #. Resource IDs: (336)
 msgid " 'Password'"
-msgstr "Wachtwoord"
+msgstr ""
 
 #. Resource IDs: (336)
 msgid " 'Record Modification Time'"
-msgstr "'Tijdstip waarop record gewijzigd is'"
+msgstr ""
 
 #. Resource IDs: (354)
 msgid " 'Run Command'"
-msgstr " 'Voer Commando uit'"
+msgstr ""
 
 #. Resource IDs: (347)
 msgid " 'Title'"
-msgstr "'Titel'"
+msgstr ""
 
 #. Resource IDs: (336)
 msgid " 'URL'"
-msgstr "'URL'"
+msgstr " 'URL'"
 
 #. Resource IDs: (347)
 msgid " 'User'"
-msgstr "'Gebruiker'"
+msgstr ""
 
 #. Resource IDs: (358)
 msgid " 'email'"
-msgstr "'e-mail'"
+msgstr ""
 
 #. Resource IDs: (366)
 msgid " 'symbols'"
@@ -185,7 +195,7 @@ msgstr "Sleep # %d"
 #. Resource IDs: (212)
 #, c-format
 msgid " Duplicate # %d"
-msgstr "Verdubbel # %d"
+msgstr "Dubbele # %d"
 
 #. Resource IDs: (203)
 #, c-format
@@ -264,13 +274,23 @@ msgstr "%1 werd niet gevonden."
 
 #. Resource IDs: (3860)
 #, c-format
-msgid "%1: %2\nContinue running script?"
-msgstr "%1: %2\nDoorgaan met uitvoer van script?"
+msgid ""
+"%1: %2\n"
+"Continue running script?"
+msgstr ""
+"%1: %2\n"
+"Doorgaan met uitvoer van script?"
 
 #. Resource IDs: (3859)
 #, c-format
-msgid "%1\nCannot find this file.\nVerify that the correct path and file name are given."
-msgstr "%1\nKan dit bestand niet vinden. \nControleer of goede pad en bestandsnaam zijn opgegeven."
+msgid ""
+"%1\n"
+"Cannot find this file.\n"
+"Verify that the correct path and file name are given."
+msgstr ""
+"%1\n"
+"Kan dit bestand niet vinden. \n"
+"Controleer of goede pad en bestandsnaam zijn opgegeven."
 
 #. Resource IDs: (341)
 #, c-format
@@ -309,8 +329,14 @@ msgstr "%s [Hersteld]"
 
 #. Resource IDs: (333)
 #, c-format
-msgid "%s \n\nCan't open file. Please choose another."
-msgstr "%s \n\nKan bestand niet openen. Kies een ander."
+msgid ""
+"%s \n"
+"\n"
+"Can't open file. Please choose another."
+msgstr ""
+"%s \n"
+"\n"
+"Kan bestand niet openen. Kies een ander."
 
 #. Resource IDs: (341)
 #, c-format
@@ -335,7 +361,7 @@ msgstr "%s is een folder"
 #. Resource IDs: (211)
 #, c-format
 msgid "%s not found. Cannot update entry's password.\r\n"
-msgstr "%s niet gevonden. Kan wachtwoord van element niet wijzigen.\r\n"
+msgstr "%s niet gevonden. Kan wachtwoord van vermelding niet wijzigen.\r\n"
 
 #. Resource IDs: (212)
 #, c-format
@@ -350,7 +376,7 @@ msgstr "%s%s%s_Rapport.txt"
 #. Resource IDs: (212)
 #, c-format
 msgid "%s, Title=\"%s\", User=\"%s\" already exists in your database or in the Import file. Added imported entry with title=\"%s\".\r\n"
-msgstr "%s, Titel=\"%s\", Gebruiker=\"%s\" bestaat al in uw databse of in het Importeer bestand. Element geimporteerd met titel=\"%s\".\r\n"
+msgstr "%s, Titel=\"%s\", Gebruiker=\"%s\" bestaat al in uw databse of in het Importeer bestand. Vermelding geimporteerd met titel=\"%s\".\r\n"
 
 #. Resource IDs: (363)
 #, c-format
@@ -379,38 +405,84 @@ msgstr ""
 
 #. Resource IDs: (333)
 #, c-format
-msgid "%s\n\nCould not open file for reading!"
-msgstr "%s\n\nKon bestand niet openen voor lezen!"
+msgid ""
+"%s\n"
+"\n"
+"Could not open file for reading!"
+msgstr ""
+"%s\n"
+"\n"
+"Kon bestand niet openen voor lezen!"
 
 #. Resource IDs: (333)
 #, c-format
-msgid "%s\n\nCould not open file for writing!"
-msgstr "%s\n\nKon bestand niet openen voor schrijven!"
+msgid ""
+"%s\n"
+"\n"
+"Could not open file for writing!"
+msgstr ""
+"%s\n"
+"\n"
+"Kon bestand niet openen voor schrijven!"
 
 #. Resource IDs: (333)
 #, c-format
-msgid "%s\n\nFile corrupt or truncated!\nData may have been lost or modified.\nContinue anyway?"
-msgstr "%s\n\nBestand beschadigd of onvolledig!\nGegevens kunnen verloren of gewijzigd zijn.\nToch doorgaan?"
+msgid ""
+"%s\n"
+"\n"
+"File corrupt or truncated!\n"
+"Data may have been lost or modified.\n"
+"Continue anyway?"
+msgstr ""
+"%s\n"
+"\n"
+"Bestand beschadigd of onvolledig!\n"
+"Gegevens kunnen verloren of gewijzigd zijn.\n"
+"Toch doorgaan?"
 
 #. Resource IDs: (334)
 #, c-format
-msgid "%s\n\nFile is currently locked by %s"
-msgstr "%s\n\nBestand is momenteel in gebruik door %s"
+msgid ""
+"%s\n"
+"\n"
+"File is currently locked by %s"
+msgstr ""
+"%s\n"
+"\n"
+"Bestand is momenteel in gebruik door %s"
 
 #. Resource IDs: (334)
 #, c-format
-msgid "%s\n\nInvalid format"
-msgstr "%s\n\nOnjuist formaat"
+msgid ""
+"%s\n"
+"\n"
+"Invalid format"
+msgstr ""
+"%s\n"
+"\n"
+"Onjuist formaat"
 
 #. Resource IDs: (190)
 #, c-format
-msgid "%s\n\nThe configuration file will not be used."
-msgstr "%s\n\nHet configuratiebestand zal niet gebruikt worden."
+msgid ""
+"%s\n"
+"\n"
+"The configuration file will not be used."
+msgstr ""
+"%s\n"
+"\n"
+"Het configuratiebestand zal niet gebruikt worden."
 
 #. Resource IDs: (333)
 #, c-format
-msgid "%s\n\nUnknown error"
-msgstr "%s\n\nOnbekende fout"
+msgid ""
+"%s\n"
+"\n"
+"Unknown error"
+msgstr ""
+"%s\n"
+"\n"
+"Onbekende fout"
 
 #. Resource IDs: (359)
 msgid "&Abort"
@@ -422,7 +494,7 @@ msgstr "&Over Password Safe..."
 
 #. Resource IDs: (32051)
 msgid "&Add Entry..."
-msgstr "&Voeg element to..."
+msgstr "&Voeg vermelding to..."
 
 #. Resource IDs: (1026, 1306)
 msgid "&Apply"
@@ -434,7 +506,7 @@ msgstr "&Pas huidige toe"
 
 #. Resource IDs: (1356)
 msgid "&Autotype:"
-msgstr "&Automatisch invoeren:"
+msgstr "&Automatische invoer:"
 
 #. Resource IDs: (332, 32062)
 msgid "&Browse to URL"
@@ -458,87 +530,87 @@ msgstr "&Wis Recente Geschiedenis"
 
 #. Resource IDs: (32008)
 msgid "&Clear Recent Safe List"
-msgstr ""
+msgstr "&Wis lijst Recente Kluizen"
 
 #. Resource IDs: (351)
 msgid "&Clear current"
-msgstr ""
+msgstr "&Wis huidig"
 
 #. Resource IDs: (32004)
 msgid "&Close"
-msgstr "&Sluiten"
+msgstr "&Afsluiten"
 
 #. Resource IDs: (32118)
 msgid "&Compare"
-msgstr "&Vergelijken"
+msgstr "&Vergelijk"
 
 #. Resource IDs: (347)
 msgid "&Continue"
-msgstr ""
+msgstr "&Doorgaan"
 
 #. Resource IDs: (1343)
 msgid "&Copy"
-msgstr ""
+msgstr "&Kopieer"
 
 #. Resource IDs: (32058)
 msgid "&Copy Password to Clipboard"
-msgstr "&Kopieer wachtwoord naar klembord"
+msgstr "&Kopieer Wachtwoord naar Klembord"
 
 #. Resource IDs: (332)
 msgid "&Copy Password to clipboard"
-msgstr "&Kopieer wachtwoord naar klembord"
+msgstr "&Kopieer Wachtwoord naar klembord"
 
 #. Resource IDs: (1041)
 msgid "&Create a New Database"
-msgstr ""
+msgstr "&Maak een Nieuwe Database"
 
 #. Resource IDs: (1344)
 msgid "&Delete"
-msgstr ""
+msgstr "&Verwijder"
 
 #. Resource IDs: (32056)
 msgid "&Delete Entry"
-msgstr ""
+msgstr "&Verwijder Vermelding"
 
 #. Resource IDs: (32053)
 msgid "&Delete Group"
-msgstr ""
+msgstr "&Verwijder Groep"
 
 #. Resource IDs: (332)
 msgid "&Delete from Recent Entry List"
-msgstr ""
+msgstr "&Verwijder van Lijst Recente Vermeldingen"
 
 #. Resource IDs: (1015, 1038)
 msgid "&Don't ask me again"
-msgstr ""
+msgstr "&Niet opnieuw vragen"
 
 #. Resource IDs: (1015)
 msgid "&Don't remind me again"
-msgstr ""
+msgstr "&Niet opnieuw herinneren"
 
 #. Resource IDs: (32107)
 msgid "&Dragbar visible"
-msgstr ""
+msgstr "&Sleepbalk zichtbaar"
 
 #. Resource IDs: (32056)
 msgid "&Duplicate Entry"
-msgstr "&Verdubbel element"
+msgstr "&Verdubbel Vermelding"
 
 #. Resource IDs: (32086)
 msgid "&Duplicate Group"
-msgstr "&Verdubbel groep"
+msgstr "&Verdubbel Groep"
 
 #. Resource IDs: (1342, 32050)
 msgid "&Edit"
-msgstr "&Bewerken"
+msgstr "&Bewerk"
 
 #. Resource IDs: (32081)
 msgid "&Edit Base entry"
-msgstr ""
+msgstr "&Bewerk Basis vermelding"
 
 #. Resource IDs: (1346)
 msgid "&Export"
-msgstr ""
+msgstr "&Exporteer"
 
 #. Resource IDs: (32001)
 msgid "&File"
@@ -546,67 +618,67 @@ msgstr "&Bestand"
 
 #. Resource IDs: (32110)
 msgid "&Filters"
-msgstr ""
+msgstr "&Filters"
 
 #. Resource IDs: (32119)
 msgid "&Find"
-msgstr ""
+msgstr "&Zoek"
 
 #. Resource IDs: (32079)
 msgid "&Find..."
-msgstr ""
+msgstr "&Zoek..."
 
 #. Resource IDs: (2)
 msgid "&Finish"
-msgstr ""
+msgstr "&Beeindig"
 
 #. Resource IDs: (1088)
 msgid "&Font:"
-msgstr ""
+msgstr "&Lettertype:"
 
 #. Resource IDs: (1025)
 msgid "&Generate"
-msgstr ""
+msgstr "&Genereer"
 
 #. Resource IDs: (32069)
 msgid "&Go to Base entry"
-msgstr ""
+msgstr "&Ga naar Basis vermelding"
 
 #. Resource IDs: (9, 32200, 57670)
 msgid "&Help"
-msgstr ""
+msgstr "&Help"
 
 #. Resource IDs: (328, 3842)
 msgid "&Hide"
-msgstr ""
+msgstr "&Verberg"
 
 #. Resource IDs: (359)
 msgid "&Ignore"
-msgstr ""
+msgstr "&Negeer"
 
 #. Resource IDs: (1345)
 msgid "&Import"
-msgstr ""
+msgstr "&Importeren"
 
 #. Resource IDs: (1143)
 msgid "&Keep"
-msgstr ""
+msgstr "&Behoud"
 
 #. Resource IDs: (32150)
 msgid "&Manage"
-msgstr ""
+msgstr "&Beheer"
 
 #. Resource IDs: (32113)
 msgid "&Manage..."
-msgstr ""
+msgstr "&Beheer..."
 
 #. Resource IDs: (32122)
 msgid "&Merge"
-msgstr ""
+msgstr "&Samenvoegen"
 
 #. Resource IDs: (32253)
 msgid "&Minimize"
-msgstr ""
+msgstr "&Minimaliseren"
 
 #. Resource IDs: (1341)
 msgid "&New"
@@ -626,27 +698,27 @@ msgstr "&Nieuw..."
 
 #. Resource IDs: (32111)
 msgid "&New/Edit Filter"
-msgstr "&Nieuw/Bewerken filter"
+msgstr "&Nieuw/Bewerk Filter"
 
 #. Resource IDs: (2)
 msgid "&No"
-msgstr ""
+msgstr "&Nee"
 
 #. Resource IDs: (1354, 65535)
 msgid "&Notes:"
-msgstr ""
+msgstr "&Notities:"
 
 #. Resource IDs: (360)
 msgid "&Open"
-msgstr ""
+msgstr "&Open"
 
 #. Resource IDs: (1024)
 msgid "&Open Another Database..."
-msgstr ""
+msgstr "&Open Andere Database..."
 
 #. Resource IDs: (32002)
 msgid "&Open..."
-msgstr ""
+msgstr "&Open..."
 
 #. Resource IDs: (32154)
 msgid "&Options..."
@@ -654,23 +726,23 @@ msgstr "&Opties..."
 
 #. Resource IDs: (32116)
 msgid "&Password Font"
-msgstr ""
+msgstr "&Wachtwoord Lettertype"
 
 #. Resource IDs: (1353, 65535)
 msgid "&Password:"
-msgstr ""
+msgstr "&Wachtwoord:"
 
 #. Resource IDs: (2132)
 msgid "&Paste"
-msgstr ""
+msgstr "&Plakken"
 
 #. Resource IDs: (32010)
 msgid "&Plain Text (tab separated)..."
-msgstr ""
+msgstr "&Gewone Tekst (tab gescheiden)"
 
 #. Resource IDs: (32016)
 msgid "&Plain Text..."
-msgstr ""
+msgstr "&Gewone Tekst..."
 
 #. Resource IDs: (32020)
 msgid "&Properties"
@@ -678,15 +750,15 @@ msgstr "&Eigenschappen"
 
 #. Resource IDs: (1023)
 msgid "&Quit"
-msgstr ""
+msgstr "&Afsluiten"
 
 #. Resource IDs: (65535)
 msgid "&Recent Entries History"
-msgstr ""
+msgstr "Geschiedenis &Recente Vermeldingen"
 
 #. Resource IDs: (327)
 msgid "&Recent Safes"
-msgstr ""
+msgstr "&Recente Kluizen"
 
 #. Resource IDs: (32111)
 msgid "&Refresh"
@@ -694,123 +766,123 @@ msgstr "&Verversen"
 
 #. Resource IDs: (32117)
 msgid "&Reports"
-msgstr ""
+msgstr "&Rapporten"
 
 #. Resource IDs: (1374)
 msgid "&Reset"
-msgstr ""
+msgstr "&Opnieuw Instellen"
 
 #. Resource IDs: (32254)
 msgid "&Restore"
-msgstr ""
+msgstr "&Terugzetten"
 
 #. Resource IDs: (359)
 msgid "&Retry"
-msgstr ""
+msgstr "&Opnieuw proberen"
 
 #. Resource IDs: (354, 32065)
 msgid "&Run Command"
-msgstr ""
+msgstr "&Commando Uitvoeren"
 
 #. Resource IDs: (32005)
 msgid "&Save"
-msgstr ""
+msgstr "&Opslaan"
 
 #. Resource IDs: (1)
 msgid "&Save to Disk"
-msgstr ""
+msgstr "&Opslaan naar Schijf"
 
 #. Resource IDs: (348)
 msgid "&Search"
-msgstr ""
+msgstr "&Zoeken"
 
 #. Resource IDs: (1404)
 msgid "&Select"
-msgstr ""
+msgstr "&Selecteer"
 
 #. Resource IDs: (358)
 msgid "&Send email"
-msgstr ""
+msgstr "&Verzend e-mail"
 
 #. Resource IDs: (351)
 msgid "&Set current"
-msgstr ""
+msgstr "&Stel huidig"
 
 #. Resource IDs: (328, 1014)
 msgid "&Show"
-msgstr ""
+msgstr "&Toon"
 
 #. Resource IDs: (1090)
 msgid "&Size:"
-msgstr ""
+msgstr "&Grootte:"
 
 #. Resource IDs: (32128)
 msgid "&Synchronize"
-msgstr ""
+msgstr "&Synchroniseer"
 
 #. Resource IDs: (1351, 65535)
 msgid "&Title:"
-msgstr ""
+msgstr "&Titel:"
 
 #. Resource IDs: (32115)
 msgid "&Tree/List Font"
-msgstr ""
+msgstr "&Boom/Lijst Font"
 
 #. Resource IDs: (1022)
 msgid "&Try Again"
-msgstr ""
+msgstr "&Probeer Nogmaals"
 
 #. Resource IDs: (359)
 msgid "&Try again"
-msgstr ""
+msgstr "&Probeer nogmaals"
 
 #. Resource IDs: (2132)
 msgid "&Undo"
-msgstr ""
+msgstr "&Ongedaan maken"
 
 #. Resource IDs: (1352, 65535)
 msgid "&Username:"
-msgstr ""
+msgstr "&Gebruikersnaam:"
 
 #. Resource IDs: (32123)
 msgid "&Validate"
-msgstr ""
+msgstr "&Valideren"
 
 #. Resource IDs: (32156)
 msgid "&Validate..."
-msgstr ""
+msgstr "&Valideren...."
 
 #. Resource IDs: (32101)
 msgid "&View"
-msgstr ""
+msgstr "&Bekijk"
 
 #. Resource IDs: (1268)
 msgid "&View Aliases"
-msgstr ""
+msgstr "&Bekijk Aliassen"
 
 #. Resource IDs: (32053)
 msgid "&View Entry..."
-msgstr ""
+msgstr "&Bekijk Vermelding...."
 
 #. Resource IDs: (347)
 msgid "&View Report"
-msgstr ""
+msgstr "&Bekijk Rapport"
 
 #. Resource IDs: (32126)
 msgid "&Virtual Keyboard Font"
-msgstr ""
+msgstr "&Virtueel Toetsenbord Lettertype"
 
 #. Resource IDs: (32013, 32015)
 msgid "&XML format..."
-msgstr ""
+msgstr "&XML Opmaak...."
 
 #. Resource IDs: (1)
 msgid "&Yes"
-msgstr ""
+msgstr "&Ja"
 
 #. Resource IDs: (1356)
 msgid "&email:"
-msgstr ""
+msgstr "&e-mail:"
 
 #. Resource IDs: (510)
 msgid "'Alt Gr' (right Alt) key"
@@ -821,12 +893,21 @@ msgid "'Clear Clipboard on Minimize' and the Double Click Action of 'Copy Passwo
 msgstr ""
 
 #. Resource IDs: (358)
-msgid "'\n\nIf you would like to report this error, please reply 'Yes' below and upload this file to your Bug Report. If you reply 'No', the file will be deleted.\n\nThe diagnostic information in this file does not include any of your personal data nor any information from the database open at the time of the error.\n\nHowever, if you prefer (and the problem is repeatable with a test database), you may send us that minidump file as well as the test database.\n\nThank you for your help to improve PasswordSafe."
+msgid ""
+"'\n"
+"\n"
+"If you would like to report this error, please reply 'Yes' below and upload this file to your Bug Report. If you reply 'No', the file will be deleted.\n"
+"\n"
+"The diagnostic information in this file does not include any of your personal data nor any information from the database open at the time of the error.\n"
+"\n"
+"However, if you prefer (and the problem is repeatable with a test database), you may send us that minidump file as well as the test database.\n"
+"\n"
+"Thank you for your help to improve PasswordSafe."
 msgstr ""
 
 #. Resource IDs: (65535)
 msgid "(Also used to replace periods in Title field)"
-msgstr ""
+msgstr "(Ook gebruikt om spaties te vervangen in het Titel veld)"
 
 #. Resource IDs: (65535)
 msgid "(Double-click an entry to edit it)"
@@ -834,23 +915,23 @@ msgstr ""
 
 #. Resource IDs: (1097)
 msgid "(Requires a restart of PasswordSafe to take effect.)"
-msgstr ""
+msgstr "(Vereist een herstart van PasswordSafe om effectief te worden.)"
 
 #. Resource IDs: (1285, 1287, 1289, 1291)
 msgid "(at least"
-msgstr ""
+msgstr "(minimaal"
 
 #. Resource IDs: (207, 346)
 msgid "(case insensitive)"
-msgstr ""
+msgstr "(niet hoofdlettergevoelig)"
 
 #. Resource IDs: (207, 346)
 msgid "(case sensitive)"
-msgstr ""
+msgstr "(hoofdlettergevoelig)"
 
 #. Resource IDs: (1286, 1288, 1290, 1292)
 msgid ")"
-msgstr ""
+msgstr ")"
 
 #. Resource IDs: (213)
 #, c-format
@@ -859,11 +940,11 @@ msgstr ""
 
 #. Resource IDs: (513)
 msgid "- Physical -"
-msgstr ""
+msgstr "- Fysiek - "
 
 #. Resource IDs: (204)
 msgid "--------------------------------------------------------------------------------"
-msgstr ""
+msgstr "--------------------------------------------------------------------------------"
 
 #. Resource IDs: (214)
 msgid "-merged-"
@@ -871,319 +952,324 @@ msgstr ""
 
 #. Resource IDs: (1223)
 msgid "..."
-msgstr ""
+msgstr "..."
 
 #. Resource IDs: (1017)
 msgid "...."
-msgstr ""
+msgstr "...."
 
 #. Resource IDs: (1293, 1294)
 msgid "....."
-msgstr ""
+msgstr "....."
 
 #. Resource IDs: (1260, 1261)
 msgid "......."
-msgstr ""
+msgstr "......."
 
 #. Resource IDs: (358)
-msgid ".dmp'\n\nin your temporary directory: \n\n\t'"
+msgid ""
+".dmp'\n"
+"\n"
+"in your temporary directory: \n"
+"\n"
+"\t'"
 msgstr ""
 
 #. Resource IDs: (8020)
 msgid "0"
-msgstr ""
+msgstr "0"
 
 #. Resource IDs: (8030)
 msgid "01"
-msgstr ""
+msgstr "01"
 
 #. Resource IDs: (8031)
 msgid "02"
-msgstr ""
+msgstr "02"
 
 #. Resource IDs: (8032)
 msgid "03"
-msgstr ""
+msgstr "03"
 
 #. Resource IDs: (8033)
 msgid "04"
-msgstr ""
+msgstr "04"
 
 #. Resource IDs: (8034)
 msgid "05"
-msgstr ""
+msgstr "05"
 
 #. Resource IDs: (8035)
 msgid "06"
-msgstr ""
+msgstr "06"
 
 #. Resource IDs: (8036)
 msgid "07"
-msgstr ""
+msgstr "07"
 
 #. Resource IDs: (8037)
 msgid "08"
-msgstr ""
+msgstr "08"
 
 #. Resource IDs: (8038)
 msgid "09"
-msgstr ""
+msgstr "09"
 
 #. Resource IDs: (8021)
 msgid "1"
-msgstr ""
+msgstr "1"
 
 #. Resource IDs: (8039)
 msgid "10"
-msgstr ""
+msgstr "10"
 
 #. Resource IDs: (511, 8081)
 msgid "101 Keys"
-msgstr ""
+msgstr "101 Toetsen"
 
 #. Resource IDs: (511, 8082)
 msgid "102 Keys"
-msgstr ""
+msgstr "102 Toetsen"
 
 #. Resource IDs: (511, 8083)
 msgid "106 Keys"
-msgstr ""
+msgstr "106 Toetsen"
 
 #. Resource IDs: (8040)
 msgid "11"
-msgstr ""
+msgstr "11"
 
 #. Resource IDs: (8041)
 msgid "12"
-msgstr ""
+msgstr "12"
 
 #. Resource IDs: (8042)
 msgid "13"
-msgstr ""
+msgstr "13"
 
 #. Resource IDs: (8043)
 msgid "14"
-msgstr ""
+msgstr "14"
 
 #. Resource IDs: (8044)
 msgid "15"
-msgstr ""
+msgstr "15"
 
 #. Resource IDs: (8045)
 msgid "16"
-msgstr ""
+msgstr "16"
 
 #. Resource IDs: (8046)
 msgid "17"
-msgstr ""
+msgstr "17"
 
 #. Resource IDs: (8047)
 msgid "18"
-msgstr ""
+msgstr "18"
 
 #. Resource IDs: (8048)
 msgid "19"
-msgstr ""
+msgstr "19"
 
 #. Resource IDs: (8022)
 msgid "2"
-msgstr ""
+msgstr "2"
 
 #. Resource IDs: (8049)
 msgid "20"
-msgstr ""
+msgstr "20"
 
 #. Resource IDs: (8050)
 msgid "21"
-msgstr ""
+msgstr "21"
 
 #. Resource IDs: (8051)
 msgid "22"
-msgstr ""
+msgstr "22"
 
 #. Resource IDs: (8052)
 msgid "23"
-msgstr ""
+msgstr "23"
 
 #. Resource IDs: (8053)
 msgid "24"
-msgstr ""
+msgstr "24"
 
 #. Resource IDs: (8054)
 msgid "25"
-msgstr ""
+msgstr "25"
 
 #. Resource IDs: (8055)
 msgid "26"
-msgstr ""
+msgstr "26"
 
 #. Resource IDs: (8056)
 msgid "27"
-msgstr ""
+msgstr "27"
 
 #. Resource IDs: (8057)
 msgid "28"
-msgstr ""
+msgstr "28"
 
 #. Resource IDs: (8058)
 msgid "29"
-msgstr ""
+msgstr "29"
 
 #. Resource IDs: (8023)
 msgid "3"
-msgstr ""
+msgstr "3"
 
 #. Resource IDs: (8059)
 msgid "30"
-msgstr ""
+msgstr "30"
 
 #. Resource IDs: (8060)
 msgid "31"
-msgstr ""
+msgstr "31"
 
 #. Resource IDs: (8061)
 msgid "32"
-msgstr ""
+msgstr "32"
 
 #. Resource IDs: (8062)
 msgid "33"
-msgstr ""
+msgstr "33"
 
 #. Resource IDs: (8063)
 msgid "34"
-msgstr ""
+msgstr "34"
 
 #. Resource IDs: (8064)
 msgid "35"
-msgstr ""
+msgstr "35"
 
 #. Resource IDs: (8065)
 msgid "36"
-msgstr ""
+msgstr "36"
 
 #. Resource IDs: (8066)
 msgid "37"
-msgstr ""
+msgstr "37"
 
 #. Resource IDs: (8067)
 msgid "38"
-msgstr ""
+msgstr "38"
 
 #. Resource IDs: (8068)
 msgid "39"
-msgstr ""
+msgstr "39"
 
 #. Resource IDs: (8024)
 msgid "4"
-msgstr ""
+msgstr "4"
 
 #. Resource IDs: (8069)
 msgid "40"
-msgstr ""
+msgstr "40"
 
 #. Resource IDs: (8070)
 msgid "41"
-msgstr ""
+msgstr "41"
 
 #. Resource IDs: (8071)
 msgid "42"
-msgstr ""
+msgstr "42"
 
 #. Resource IDs: (8072)
 msgid "43"
-msgstr ""
+msgstr "43"
 
 #. Resource IDs: (8073)
 msgid "44"
-msgstr ""
+msgstr "44"
 
 #. Resource IDs: (8074)
 msgid "45"
-msgstr ""
+msgstr "45"
 
 #. Resource IDs: (8075)
 msgid "46"
-msgstr ""
+msgstr "46"
 
 #. Resource IDs: (8076)
 msgid "47"
-msgstr ""
+msgstr "47"
 
 #. Resource IDs: (8077)
 msgid "48"
-msgstr ""
+msgstr "48"
 
 #. Resource IDs: (8078)
 msgid "49"
-msgstr ""
+msgstr "49"
 
 #. Resource IDs: (8025)
 msgid "5"
-msgstr ""
+msgstr "5"
 
 #. Resource IDs: (8079)
 msgid "50"
-msgstr ""
+msgstr "50"
 
 #. Resource IDs: (8080)
 msgid "51"
-msgstr ""
+msgstr "51"
 
 #. Resource IDs: (8026)
 msgid "6"
-msgstr ""
+msgstr "6"
 
 #. Resource IDs: (8027)
 msgid "7"
-msgstr ""
+msgstr "7"
 
 #. Resource IDs: (8028)
 msgid "8"
-msgstr ""
+msgstr "8"
 
 #. Resource IDs: (8029)
 msgid "9"
-msgstr ""
+msgstr "9"
 
 #. Resource IDs: (1156)
 msgid "<"
-msgstr ""
+msgstr "<"
 
 #. Resource IDs: (1157)
 msgid "<<"
-msgstr ""
+msgstr "<<"
 
 #. Resource IDs: (1154)
 msgid ">"
-msgstr ""
+msgstr ">"
 
 #. Resource IDs: (1155)
 msgid ">>"
-msgstr ""
+msgstr ">>"
 
 #. Resource IDs: (329)
 msgid "A dot is invalid as the first character of the Group field."
-msgstr ""
+msgstr "Een stip is niet geldig als het eerste teken van een Groep veld."
 
 #. Resource IDs: (326)
 msgid "A fatal error occured: "
-msgstr ""
+msgstr "Een fatale fout heeft zich voorgedaan:"
 
 #. Resource IDs: (211)
 msgid "A filter was active. Export of data was restricted to include only those displayed."
-msgstr ""
+msgstr "Een filter was actief. De geëxporteerde data was beperkt tot alleen de getoonde data."
 
 #. Resource IDs: (363)
 msgid "A future date is not valid for this field"
-msgstr ""
+msgstr "Een datum in de toekomst is niet geldig voor dit veld."
 
 #. Resource IDs: (65535)
 msgid "A new password database will be created. The safe combination you enter will be used to encrypt the password database file. The Safe Combination can use any keyboard character and is case-sensitive."
-msgstr ""
+msgstr "Een nieuw wachtwoord database zal gemaakt worden. De kluis combinatie die u ingevoerd heeft zal gebruikt worden om het wachtwoord database bestand te versleutelen. De Kluis Combinatie kan bestaan uit alle toetsenbord tekens en is hoofdletter gevoelig."
 
 #. Resource IDs: (3843)
 msgid "A required resource was unavailable."
-msgstr ""
+msgstr "De benodigde bron was niet beschikbaar"
 
 #. Resource IDs: (364)
 msgid "ALL of the passwords and data"
@@ -1191,68 +1277,68 @@ msgstr ""
 
 #. Resource IDs: (345, 1092)
 msgid "AaBbYyZz 0O1lIL"
-msgstr ""
+msgstr "AaBbYyZz 0O1lIL"
 
 #. Resource IDs: (110)
 msgid "About Password Safe"
-msgstr ""
+msgstr "Over Password Safe"
 
 #. Resource IDs: (1228)
 msgid "Absolute"
-msgstr ""
+msgstr "Absoluut"
 
 #. Resource IDs: (3867)
 #, c-format
 msgid "Access to %1 was denied."
-msgstr ""
+msgstr "Toegang tot %1 was geweigerd."
 
 #. Resource IDs: (350)
 msgid "Active"
-msgstr ""
+msgstr "Aktief"
 
 #. Resource IDs: (32051)
 msgid "Add &Entry"
-msgstr ""
+msgstr "&Vermelding Toevoegen"
 
 #. Resource IDs: (32057)
 msgid "Add &Group"
-msgstr ""
+msgstr "&Groep Toevoegen"
 
 #. Resource IDs: (111)
 msgid "Add Entry"
-msgstr ""
+msgstr "Vermelding Toevoegen"
 
 #. Resource IDs: (32057)
 msgid "Add Group"
-msgstr "Groep toevoegen"
+msgstr "Groep Toevoegen"
 
 #. Resource IDs: (466)
 msgid "Additional"
-msgstr ""
+msgstr "Additioneel"
 
 #. Resource IDs: (340, 1123)
 msgid "Advanced"
-msgstr ""
+msgstr "Geavanceerd "
 
 #. Resource IDs: (339)
 msgid "Advanced Compare Options"
-msgstr ""
+msgstr "Geavanceerde Opties voor Vergelijken"
 
 #. Resource IDs: (341)
 msgid "Advanced Find Options"
-msgstr ""
+msgstr "Geavanceerde Opties voor Zoeken"
 
 #. Resource IDs: (113)
 msgid "Advanced Merge Extra"
-msgstr ""
+msgstr "Geavanceerde Samenvoegen Extra"
 
 #. Resource IDs: (339)
 msgid "Advanced Merge Options"
-msgstr ""
+msgstr "Geavanceerde Opties voor Samenvoegen"
 
 #. Resource IDs: (360)
 msgid "Advanced Synchronize Options"
-msgstr ""
+msgstr "Geavanceerde Opties voor Synchronisatie"
 
 #. Resource IDs: (363)
 msgid "Advanced Text 'Single Entry' Export Options"
@@ -1260,7 +1346,7 @@ msgstr ""
 
 #. Resource IDs: (339)
 msgid "Advanced Text Export Options"
-msgstr ""
+msgstr "Geavanceerde Opties voor Tekst Exporteren"
 
 #. Resource IDs: (364)
 msgid "Advanced XML 'Single Entry' Export Options"
@@ -1268,7 +1354,7 @@ msgstr ""
 
 #. Resource IDs: (339)
 msgid "Advanced XML Export Options"
-msgstr ""
+msgstr "Geavanceerde Opties voor XML Exporteren"
 
 #. Resource IDs: (1071)
 msgid "Advanced field selection criteria"
@@ -1276,7 +1362,7 @@ msgstr ""
 
 #. Resource IDs: (514)
 msgid "Albanian"
-msgstr ""
+msgstr "Albanees"
 
 #. Resource IDs: (365)
 msgid "Alias Base entry"
@@ -1292,161 +1378,165 @@ msgstr ""
 
 #. Resource IDs: (478)
 msgid "Alias Password Change"
-msgstr ""
+msgstr "Wijzingen Alias Wachtwoord"
 
 #. Resource IDs: (3841)
 msgid "All Files (*.*)"
-msgstr "Alle bestanden (*.*)"
+msgstr "Alle Bestanden(*.*)"
 
 #. Resource IDs: (339)
 msgid "All available columns are being displayed."
-msgstr ""
+msgstr "Alle beschikbare kolommen worden getoond."
 
 #. Resource IDs: (1333)
 msgid "Allow multiple instances (requires all instances to be restarted)"
-msgstr ""
+msgstr "Sta meerdere exemplaren toe (vereist een herstart van alle exemplaren)"
 
 #. Resource IDs: (65535)
 msgid "Also used to replace periods in the Title field."
-msgstr ""
+msgstr "Ook gebruikt om spaties te vervangen in het Titel veld."
 
 #. Resource IDs: (8012)
 msgid "Alt"
-msgstr ""
+msgstr "Alt"
 
 #. Resource IDs: (8013)
 msgid "Alt Gr"
-msgstr ""
+msgstr "Alt Gr"
 
 #. Resource IDs: (8014)
 msgid "Alt Num"
-msgstr ""
+msgstr "Alt Num"
 
 #. Resource IDs: (356)
 msgid "Alt+"
-msgstr ""
+msgstr "Alt+"
 
 #. Resource IDs: (65535)
 msgid "Alternate Browser "
-msgstr ""
+msgstr "Andere Browser"
 
 #. Resource IDs: (65535)
 msgid "Alternate Notes Text Editor"
-msgstr ""
+msgstr "Andere Tekst Bewerker voor Notities"
 
 #. Resource IDs: (1043)
 msgid "Always keep Password Safe on top"
-msgstr ""
+msgstr "Houd Password Safe altijd in zicht."
 
 #. Resource IDs: (314)
 msgid "Always on top"
-msgstr ""
+msgstr "Altijd in zicht"
 
 #. Resource IDs: (342)
 msgid "An alias cannot refer to itself!"
-msgstr ""
+msgstr "Een Alias kan niet naar zichzelf verwijzen!"
 
 #. Resource IDs: (329)
 #, c-format
 msgid "An entry with Group \"%s\", Title \"%s\" and User Name \"%s\" already exists."
-msgstr ""
+msgstr "Een vermelding met Groep \"%s\", Titel \"%s\" en Gebruikers Naam \"%s\" bestaat al."
 
 #. Resource IDs: (356)
 #, c-format
 msgid "An entry with Group \"%s\", Title \"%s\" and empty User Name already exists."
-msgstr ""
+msgstr "Een vermelding met Groep \"%s\", Titel \"%s\" en een lege Gebruikers Naam bestaat al."
 
 #. Resource IDs: (339)
 #, c-format
 msgid "An entry with an empty Group, Title \"%s\" and User Name \"%s\" already exists."
-msgstr ""
+msgstr "Een vermelding met een lege Groep, Titel \"%s\" en Gebruikers Naam \"%s\" bestaat al."
 
 #. Resource IDs: (357)
 #, c-format
 msgid "An entry with an empty Group, Title \"%s\" and empty User Name already exists."
-msgstr ""
+msgstr "Een vermelding met een lege Groep, Titel \"%s\" en een lege Gebruikers Naam bestaat al."
 
 #. Resource IDs: (3867)
 #, c-format
 msgid "An incorrect file handle was associated with %1."
-msgstr ""
+msgstr "Een verkeerde bestandsverwijzing was gebruikt bij %1."
 
 #. Resource IDs: (3843)
 msgid "An unknown error has occurred."
-msgstr ""
+msgstr "Een onbekende fout is opgetreden."
 
 #. Resource IDs: (3867, 3868)
 #, c-format
 msgid "An unknown error occurred while accessing %1."
-msgstr ""
+msgstr "Een onbekende fout trad op tijdens de toegang tot %1."
 
 #. Resource IDs: (208)
 msgid "And"
-msgstr ""
+msgstr "En"
 
 #. Resource IDs: (351)
 msgid "And / Or"
-msgstr ""
+msgstr "En / Of"
 
 #. Resource IDs: (1116)
 msgid "Any field last changed on:"
-msgstr ""
+msgstr "Willekeurig veld laatst gewijzigd op:"
 
 #. Resource IDs: (353, 1187, 1216)
 msgid "Apply"
-msgstr ""
+msgstr "Toepassen"
 
 #. Resource IDs: (513)
 msgid "Arabic (101)"
-msgstr ""
+msgstr "Arabisch (101)"
 
 #. Resource IDs: (341)
 msgid "Are you sure you want to delete the selected entry?"
-msgstr ""
+msgstr "Weet u zeker dat u de gekozen vermelding wilt verwijderen?"
 
 #. Resource IDs: (355)
 msgid "Are you sure you want to delete the selected group?"
-msgstr ""
+msgstr "Weet u zeker dat u de gekozen groep wilt verwijderen?"
 
 #. Resource IDs: (515)
 msgid "Armenian Eastern"
-msgstr ""
+msgstr "Oost Armeens"
 
 #. Resource IDs: (519)
 msgid "Armenian Western"
-msgstr ""
+msgstr "West Armeens"
 
 #. Resource IDs: (330)
 msgid "As the double quotation character is used to delimit the whole notes field, it cannot be used within it to delimit multiple lines. Please enter another character."
-msgstr ""
+msgstr "De dubbele aanhalingstekens zijn gebruikt om het gehele notitie veld af te bakenen. Daarom kunnen ze niet gebruikt worden om meerdere regels af te bakenen. Hiervoor  alstublieft een ander teken invoeren."
 
 #. Resource IDs: (331)
-msgid "At least one type of character (lowercase, uppercase, digits,\nsymbols, hexadecimal) must be permitted."
+msgid ""
+"At least one type of character (lowercase, uppercase, digits,\n"
+"symbols, hexadecimal) must be permitted."
 msgstr ""
+"Minstens een type teken (kleine letter, hoofdletter, cijfers,\n"
+"symbolen, hexadecimaal) moet toegestaan worden."
 
 #. Resource IDs: (340)
 #, c-format
 msgid "At least one unknown %s field is now in use.  Any found have been ignored."
-msgstr ""
+msgstr "Minstens een onbekend %s veld is nu in gebruik. Eventuele gevonden velden zijn genegeerd."
 
 #. Resource IDs: (3843)
 msgid "Attempted an unsupported operation."
-msgstr ""
+msgstr "Deed een poging tot een niet ondersteunde operatie."
 
 #. Resource IDs: (3867, 3868)
 #, c-format
 msgid "Attempted to access %1 past its end."
-msgstr ""
+msgstr "Deed een poging tot toegang voorbij het einde van %1."
 
 #. Resource IDs: (3868)
 #, c-format
 msgid "Attempted to read from the writing %1."
-msgstr ""
+msgstr "Deed een poging te lezen van het schrijven %1."
 
 #. Resource IDs: (3868)
 #, c-format
 msgid "Attempted to write to the reading %1."
-msgstr ""
+msgstr "Deed een poging tot schrijven van het lezen %1."
 
 #. Resource IDs: (188)
 msgid "AutoType"
@@ -1454,127 +1544,127 @@ msgstr ""
 
 #. Resource IDs: (353)
 msgid "Autoload"
-msgstr ""
+msgstr "Automatisch laden"
 
 #. Resource IDs: (325, 340, 65535)
 msgid "Autotype"
-msgstr ""
+msgstr "Automatische invoer"
 
 #. Resource IDs: (355)
 msgid "Autotype copied "
-msgstr ""
+msgstr "Automatische invoer gekopieerd"
 
 #. Resource IDs: (65535)
 msgid "Available Fields:"
-msgstr ""
+msgstr "Beschikbare Velden:"
 
 #. Resource IDs: (65535)
 msgid "Available Filters:"
-msgstr ""
+msgstr "Beschikbare Filters:"
 
 #. Resource IDs: (518)
 msgid "Azeri Cyrillic"
-msgstr ""
+msgstr "Azerbeidzjaans Cyrillisch"
 
 #. Resource IDs: (515)
 msgid "Azeri Latin"
-msgstr ""
+msgstr "Azerbeidzjaans Latijns"
 
 #. Resource IDs: (65535)
 msgid "Backup Directory:"
-msgstr ""
+msgstr "Backup Folder:"
 
 #. Resource IDs: (65535)
 msgid "Backup Name"
-msgstr ""
+msgstr "Backup Naam"
 
 #. Resource IDs: (137)
 msgid "Backups"
-msgstr ""
+msgstr "Backups"
 
 #. Resource IDs: (65535)
 msgid "Base entry:"
-msgstr ""
+msgstr "Basis vermelding:"
 
 #. Resource IDs: (65535)
 msgid "Base:"
-msgstr ""
+msgstr "Basis:"
 
 #. Resource IDs: (465)
 msgid "Basic"
-msgstr ""
+msgstr "Eenvoudig"
 
 #. Resource IDs: (515)
 msgid "Belarusian"
-msgstr ""
+msgstr "Wit-Russisch"
 
 #. Resource IDs: (519)
 msgid "Belgian (Comma)"
-msgstr ""
+msgstr "Belgisch (Komma)"
 
 #. Resource IDs: (517)
 msgid "Belgian (Period)"
-msgstr ""
+msgstr "Belgisch (Punt)"
 
 #. Resource IDs: (517)
 msgid "Belgian French"
-msgstr ""
+msgstr "Waals"
 
 #. Resource IDs: (516)
 msgid "Bengali"
-msgstr ""
+msgstr "Bengaals"
 
 #. Resource IDs: (520)
 msgid "Bengali - INSCRIPT"
-msgstr ""
+msgstr "Bengaals - INSCRIPT"
 
 #. Resource IDs: (519)
 msgid "Bengali - INSCRIPT (Legacy)"
-msgstr ""
+msgstr "Bengaals - INSCRIPT (Verouderd)"
 
 #. Resource IDs: (8006)
 msgid "BkSpc"
-msgstr ""
+msgstr "BkSpc"
 
 #. Resource IDs: (518)
 msgid "Bosnian (Cyrillic)"
-msgstr ""
+msgstr "Bosnisch (Cyrillisch)"
 
 #. Resource IDs: (1213)
 msgid "Browse"
-msgstr ""
+msgstr "Brows"
 
 #. Resource IDs: (325)
 msgid "Browse to URL"
-msgstr ""
+msgstr "Brows naar URL"
 
 #. Resource IDs: (32072)
 msgid "Browse to URL + &Autotype"
-msgstr ""
+msgstr "Brows naar URL + &Automatisch invoer"
 
 #. Resource IDs: (32073)
 msgid "Browse to URL + Autotype"
-msgstr ""
+msgstr "Brows naar URL + Automatisch invoer"
 
 #. Resource IDs: (65535)
 msgid "Browser Command Line parameters"
-msgstr ""
+msgstr "Parameters voor opstarten Browser vanaf de opdrachtregel."
 
 #. Resource IDs: (520)
 msgid "Bulgarian"
-msgstr ""
+msgstr "Bulgaars"
 
 #. Resource IDs: (518)
 msgid "Bulgarian (Latin)"
-msgstr ""
+msgstr "Bulgaars (Latijns)"
 
 #. Resource IDs: (521)
 msgid "Bulgarian (Phonetic Traditional)"
-msgstr ""
+msgstr "Bulgaars (Fonetisch Traditioneel)"
 
 #. Resource IDs: (513)
 msgid "Bulgarian (Typewriter)"
-msgstr ""
+msgstr "Bulgaars (Typemachine)"
 
 #. Resource IDs: (1411)
 msgid "Bytes"
@@ -1582,56 +1672,60 @@ msgstr "Bytes"
 
 #. Resource IDs: (32061)
 msgid "C&lear Clipboard"
-msgstr "&Wis klembord"
+msgstr "&Leeg Klembord"
 
 #. Resource IDs: (1386)
 msgid "C++ Terminate"
-msgstr ""
+msgstr "C++ Beëindig"
 
 #. Resource IDs: (1387)
 msgid "C++ Unexpected"
-msgstr ""
+msgstr "C++ Onverwacht"
 
 #. Resource IDs: (203)
 msgid "C:F[R-O]"
-msgstr ""
+msgstr "C:F[R-O]"
 
 #. Resource IDs: (203)
 msgid "C:F[R/W]"
-msgstr ""
+msgstr "C:F[R/W]"
 
 #. Resource IDs: (202)
 msgid "C:None  "
-msgstr ""
+msgstr "C:Geen"
 
 #. Resource IDs: (202)
 msgid "C:Reg   "
-msgstr ""
+msgstr "C:Reg   "
 
 #. Resource IDs: (339)
 msgid "Can only warn between 1 and 30 days before passwords expire"
-msgstr ""
+msgstr "Kan alleen tussen 1 en 30 dagen voor het wachtwoord verloop waarschuwen"
 
 #. Resource IDs: (210)
 #, c-format
-msgid "Can't find XML Schema Definition file (%s) in your PasswordSafe Application Directory.\r\nPlease copy it from your installation file, or re-install PasswordSafe."
+msgid ""
+"Can't find XML Schema Definition file (%s) in your PasswordSafe Application Directory.\r\n"
+"Please copy it from your installation file, or re-install PasswordSafe."
 msgstr ""
+"Kan XML Schema Definitie bestand (%s) niet vinden in uw PasswordSafe programma folder.\r\n"
+"SVP kopieer het van uw installatie folder of herinstalleer PasswordSafe."
 
 #. Resource IDs: (208)
 msgid "Can't obtain the schema version."
-msgstr ""
+msgstr "Kan schema versie niet verkrijgen."
 
 #. Resource IDs: (518)
 msgid "Canadian French"
-msgstr ""
+msgstr "Canadees Frans"
 
 #. Resource IDs: (518)
 msgid "Canadian French (Legacy)"
-msgstr ""
+msgstr "Canadees Frans (Verouderd)"
 
 #. Resource IDs: (520)
 msgid "Canadian Multilingual Standard"
-msgstr ""
+msgstr "Canadees Meertalig Standaard"
 
 #. Resource IDs: (2, 347, 32273)
 msgid "Cancel"
@@ -1648,11 +1742,11 @@ msgstr "Kan niet meer zijn dan %d"
 
 #. Resource IDs: (189)
 msgid "Cannot create lock file - no permission in directory?"
-msgstr ""
+msgstr "Kan vergrendel bestand niet maken -  geen toestemming in folder?"
 
 #. Resource IDs: (332)
 msgid "Cannot process as this entry has been deleted from the open database."
-msgstr ""
+msgstr "Kan niet verwerken omdat deze vermelding verwijderd is van de open database."
 
 #. Resource IDs: (213)
 msgid "Cannot read file. Please check file permissions."
@@ -1660,27 +1754,27 @@ msgstr "Kan bestand niet lezen. Controleer bestandspermissies"
 
 #. Resource IDs: (331)
 msgid "Cannot verify old safe combination - file gone?"
-msgstr ""
+msgstr "Kan oude kluis combinatie niet controleren - bestand weg?"
 
 #. Resource IDs: (8015)
 msgid "Caps Lock"
-msgstr ""
+msgstr "Caps Lock"
 
 #. Resource IDs: (1162, 1310)
 msgid "Case Sensitive"
-msgstr ""
+msgstr "Hoofdlettergevoelig"
 
 #. Resource IDs: (343)
 msgid "Case insensitive search"
-msgstr ""
+msgstr "Niet-hoofdlettergevoelig zoeken"
 
 #. Resource IDs: (343)
 msgid "Case sensitive search"
-msgstr ""
+msgstr "Hoofdlettergevoelig zoeken"
 
 #. Resource IDs: (32114)
 msgid "Change &Font"
-msgstr ""
+msgstr "Wijzig &Lettertype"
 
 #. Resource IDs: (32158)
 msgid "Change &Language"
@@ -1688,31 +1782,37 @@ msgstr ""
 
 #. Resource IDs: (1414)
 msgid "Change Base"
-msgstr ""
+msgstr "Wijzig Basis"
 
 #. Resource IDs: (349)
 msgid "Change Date"
-msgstr ""
+msgstr "Wijzig Datum"
 
 #. Resource IDs: (127)
 msgid "Change Safe Combination"
-msgstr ""
+msgstr "Wijzig Kluis Combinatie"
 
 #. Resource IDs: (1415)
 msgid "Change This"
-msgstr ""
+msgstr "Wijzig Dit"
 
 #. Resource IDs: (319)
-msgid "Change the maximum number of saved passwords for entries currently saving password history to the new maximum, if currently saving fewer.\n\nEntries with more than this new maximum already saved will remain unchanged."
+msgid ""
+"Change the maximum number of saved passwords for entries currently saving password history to the new maximum, if currently saving fewer.\n"
+"\n"
+"Entries with more than this new maximum already saved will remain unchanged."
 msgstr ""
+"Wijzig het maximaal aantal opgeslagen wachtwoorden naar het nieuwe aantal opgeslagen wachtwoorden voor vermeldingen waar de wachtwoord geschiedenis voor bewaard wordt. Wijzig het aantal alleen als het oude aantal kleiner is dan het nieuwe aantal.\n"
+"\n"
+"Vermeldingen waar meer dan het nieuwe maximale aantal oude wachtwoorden bewaard werden zullen niet aangepast worden."
 
 #. Resource IDs: (1187)
 msgid "Changes to existing entries will be applied on pressing OK"
-msgstr ""
+msgstr "Wijzigigen van bestaande vermeldingen zullen toegepast worden zodra op OK gedrukt wordt."
 
 #. Resource IDs: (65535)
 msgid "Changing the values/settings below does not become effective until the 'Set' button is pressed"
-msgstr ""
+msgstr "Wijzigingen van de waarden/instellingen hieronder worden pas effectief nadat de 'Stel In' knop is ingedrukt."
 
 #. Resource IDs: (210)
 msgid "Characters present between end of index ']' and '}'"
@@ -1720,31 +1820,31 @@ msgstr ""
 
 #. Resource IDs: (3887)
 msgid "Check"
-msgstr ""
+msgstr "Controleer"
 
 #. Resource IDs: (521)
 msgid "Chinese Bopomofo"
-msgstr ""
+msgstr "Chinees Bopomofo"
 
 #. Resource IDs: (521)
 msgid "Chinese ChaJei"
-msgstr ""
+msgstr "Chinees ChaJei"
 
 #. Resource IDs: (8001)
 msgid "Clear Buffer"
-msgstr ""
+msgstr "Buffer Wissen"
 
 #. Resource IDs: (128, 145)
 msgid "Clear Clipboard"
-msgstr "Wis klembord"
+msgstr "Klembord Wissen"
 
 #. Resource IDs: (32302)
 msgid "Clear Find"
-msgstr ""
+msgstr "Vinden Wissen"
 
 #. Resource IDs: (1141)
 msgid "Clear History"
-msgstr ""
+msgstr "Geschiedenis Wissen"
 
 #. Resource IDs: (1062)
 msgid "Clear clipboard upon exit"
@@ -1752,99 +1852,99 @@ msgstr "Klembord wissen bij afsluiten"
 
 #. Resource IDs: (1061)
 msgid "Clear clipboard upon minimize"
-msgstr "Klembord wissen bij minimeren"
+msgstr "Klembord wissen bij minimaliseren"
 
 #. Resource IDs: (351)
 msgid "Click here to pick field"
-msgstr ""
+msgstr "Hier klikken om een veld te kiezen"
 
 #. Resource IDs: (510)
 msgid "Click to change case."
-msgstr ""
+msgstr "Klik om wisselen tussen hoofd- en kleine letters."
 
 #. Resource IDs: (353)
 msgid "Click to copy to clipboard"
-msgstr "Klik om klembord to kopieren"
+msgstr "Klim om naar het klembord te kopiëeren"
 
 #. Resource IDs: (358)
 msgid "Click to copy to clipboard, Ctrl+Click to also set URL field to this value"
-msgstr ""
+msgstr "Klim om naar het klembord te kopiëeren, Ctrl+klik om ook het URL veld deze waarde te geven."
 
 #. Resource IDs: (351)
 msgid "Click to enable/disable this row"
-msgstr ""
+msgstr "Klik om deze rij aan of uit te zetten"
 
 #. Resource IDs: (510)
 msgid "Click to enter a character code via virtual numeric keypad. The character is added when this button is clicked again."
-msgstr ""
+msgstr "Klik om een een teken code in te voeren via het virtuele numeriek toetsenblok. Het teken wordt toegevoegd als deze knop opnieuw aangeklikt wordt."
 
 #. Resource IDs: (354)
 msgid "Click to expand and copy to clipboard, Ctrl+Click to copy unexpanded"
-msgstr ""
+msgstr "Klik om uit te vouwen en te kopiëeren naar klembord, Ctrl+Klik om ingevouwen te kopiëeren"
 
 #. Resource IDs: (355)
 msgid "Click to go to link, Ctrl+Click to go and Autotype"
-msgstr ""
+msgstr "Klik om naar te link te gaan, Ctrl+klik om te gaan en Auto invoer "
 
 #. Resource IDs: (352)
 msgid "Click to insert a new row below"
-msgstr ""
+msgstr "Klik om een nieuwe regel er onder toe te voegen."
 
 #. Resource IDs: (510)
 msgid "Click to randomise the characters in the virtual keypad."
-msgstr ""
+msgstr "Klik om de tekens in het virtuele toetsenbord te randomiseren"
 
 #. Resource IDs: (352)
 msgid "Click to remove this row"
-msgstr ""
+msgstr "Klik om deze rij te verwijderen"
 
 #. Resource IDs: (358)
 msgid "Click to send email to this address"
-msgstr ""
+msgstr "Klik om een e-mail te versturen naar dit adres"
 
 #. Resource IDs: (352)
 msgid "Click to set criteria for matching the field"
-msgstr ""
+msgstr "Klik om de kriteria te zetten waar het veld aan moet voldoen"
 
 #. Resource IDs: (352)
 msgid "Click to set the field to filter by"
-msgstr ""
+msgstr "Klik om het veld in te stellen waarmee gefilterd wordt"
 
 #. Resource IDs: (511)
 msgid "Click to switch to English"
-msgstr ""
+msgstr "Klik om te veranderen naar het Engels"
 
 #. Resource IDs: (511)
 msgid "Click to switch to Full-width"
-msgstr ""
+msgstr "Klik om te veranderen naar Volle breedte"
 
 #. Resource IDs: (511)
 msgid "Click to switch to Half-width"
-msgstr ""
+msgstr "Klik om te veranderen naar Halve breedte"
 
 #. Resource IDs: (511)
 msgid "Click to switch to Hiragana"
-msgstr ""
+msgstr "Klik om te veranderen naar het Hiranga"
 
 #. Resource IDs: (511)
 msgid "Click to switch to Kana"
-msgstr ""
+msgstr "Klik om te veranderen naar het Kana"
 
 #. Resource IDs: (511)
 msgid "Click to switch to Katakana"
-msgstr ""
+msgstr "Klik om te veranderen naar het Katakana"
 
 #. Resource IDs: (511)
 msgid "Click to switch to Korean"
-msgstr ""
+msgstr "Klik om te veranderen naar het Koreaans"
 
 #. Resource IDs: (510)
 msgid "Click to toggle Caps Lock key."
-msgstr ""
+msgstr "Klik om de Caps Lock toets aan/uit te zetten"
 
 #. Resource IDs: (352)
 msgid "Click to toggle and/or relation to previous row"
-msgstr ""
+msgstr "Klik om te wisselen tussen en/of relatie naar vorige regel"
 
 #. Resource IDs: (1)
 msgid "Close"
@@ -1852,48 +1952,56 @@ msgstr "Sluiten"
 
 #. Resource IDs: (32301)
 msgid "Close Find Bar"
-msgstr ""
+msgstr "Sluiten Vind Balk"
 
 #. Resource IDs: (32110)
 msgid "Collapse All"
-msgstr "Alles samenvouwen"
+msgstr "Alles Samenvouwen"
 
 #. Resource IDs: (114, 32210)
 msgid "Column Picker"
-msgstr ""
+msgstr "Kolom Kiezer"
 
 #. Resource IDs: (203)
 msgid "Column header row not recognised as first record. No records imported."
-msgstr ""
+msgstr "Regel met Kolom titels niet herkend als eerste rij. Geen rijen geïmporteerd"
 
 #. Resource IDs: (1080)
 msgid "Comma"
-msgstr ""
+msgstr "Komma"
 
 #. Resource IDs: (3857)
 msgid "Command failed."
-msgstr ""
+msgstr "Opdracht is mislukt"
 
 #. Resource IDs: (346)
 msgid "Compare"
-msgstr "Vergelijken"
+msgstr "Vergelijk"
 
 #. Resource IDs: (335)
 msgid "Compare Complete"
-msgstr "Vergelijk voltooid"
+msgstr "Vergelijk Volledig"
 
 #. Resource IDs: (115)
 msgid "Compare Database Results"
-msgstr ""
+msgstr "Vergelijk Database Resultaten"
 
 #. Resource IDs: (335)
 #, c-format
-msgid "Compare complete of current database:\n\t %s\n and:\n\t %s"
-msgstr "Vergelijk van de aktuele database voltooid\n\t %s\n en:\n\t %s"
+msgid ""
+"Compare complete of current database:\n"
+"\t %s\n"
+" and:\n"
+"\t %s"
+msgstr ""
+"Vergelijk volledig van huidige database:\n"
+"\t %s\n"
+" en:\n"
+"\t %s"
 
 #. Resource IDs: (32019)
 msgid "Compare..."
-msgstr "Vergelijken..."
+msgstr "Vergelijk..."
 
 #. Resource IDs: (364)
 msgid "Comparing current database with:"
@@ -1914,15 +2022,15 @@ msgstr "Te vergelijken database"
 
 #. Resource IDs: (362)
 msgid "Completed but ...."
-msgstr ""
+msgstr "Volledig maar ..."
 
 #. Resource IDs: (362)
 msgid "Completed successfully"
-msgstr ""
+msgstr "Met succes uitgevoerd"
 
 #. Resource IDs: (65535)
 msgid "Con&firm Password:"
-msgstr ""
+msgstr "Be&vestig Wachtwoord"
 
 #. Resource IDs: (1422)
 msgid "Configuration File:"
@@ -1930,37 +2038,51 @@ msgstr "Configuratie bestand:"
 
 #. Resource IDs: (1221)
 msgid "Configuration Information"
-msgstr ""
+msgstr "Configuratie Informatie"
 
 #. Resource IDs: (191)
 #, c-format
-msgid "Configuration file error:\n%s\n%s\nline %d column %d"
+msgid ""
+"Configuration file error:\n"
+"%s\n"
+"%s\n"
+"line %d column %d"
 msgstr ""
+"Configuratie bestand fout:\n"
+"%s\n"
+"%s\n"
+"regel %d kolom %d"
 
 #. Resource IDs: (342)
 msgid "Confirm Close Dialog"
-msgstr ""
+msgstr "Bevestig Sluiten Dialoog"
 
 #. Resource IDs: (1019)
 msgid "Confirm deletion of items"
-msgstr ""
+msgstr "Bevestig verwijdering van onderdelen"
 
 #. Resource IDs: (1021)
 msgid "Confirm item copy to clipboard"
-msgstr "Bevestige het kopieren van een element naar het klembord"
+msgstr ""
 
 #. Resource IDs: (340)
 #, c-format
-msgid "Confirm that you wish to copy this entry from the %s database to the %s database?\n\nIf already present in the target database, it will be replaced!"
+msgid ""
+"Confirm that you wish to copy this entry from the %s database to the %s database?\n"
+"\n"
+"If already present in the target database, it will be replaced!"
 msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Confirmation:"
 msgstr ""
 
-#. Resource IDs: (214)
+#. Resource IDs: (335)
 #, c-format
-msgid "Conflicting entries for «%s» «%s» «%s».\r\n  Added merged entry as «%s» «%s» «%s».\r\n    Differing field(s): %s"
+msgid ""
+"Conflicting entries for «%s» «%s» «%s».\r\n"
+"  Added merged entry as «%s» «%s» «%s».\r\n"
+"    Differing field(s): %s"
 msgstr ""
 
 #. Resource IDs: (1, 347)
@@ -2118,11 +2240,11 @@ msgstr ""
 
 #. Resource IDs: (8011)
 msgid "Ctrl"
-msgstr ""
+msgstr "Ctrl"
 
 #. Resource IDs: (356)
 msgid "Ctrl+"
-msgstr ""
+msgstr "Ctrl+"
 
 #. Resource IDs: (2132)
 msgid "Cu&t"
@@ -2130,12 +2252,21 @@ msgstr ""
 
 #. Resource IDs: (343)
 #, c-format
-msgid "Current version:\t%s\r\nLatest version:\t%s\r\n\r\nPlease visit the PasswordSafe website to download the latest version."
+msgid ""
+"Current version:\t%s\r\n"
+"Latest version:\t%s\r\n"
+"\r\n"
+"Please visit the PasswordSafe website to download the latest version."
 msgstr ""
 
 #. Resource IDs: (343)
 #, c-format
-msgid "Current version:\t%s\r\nLatest version:\t%s\r\n\r\nYour purchase includes free upgrades for one year.\r\nPlease contact the PasswordSafe Administrator for your upgrade."
+msgid ""
+"Current version:\t%s\r\n"
+"Latest version:\t%s\r\n"
+"\r\n"
+"Your purchase includes free upgrades for one year.\r\n"
+"Please contact the PasswordSafe Administrator for your upgrade."
 msgstr ""
 
 #. Resource IDs: (32320)
@@ -2164,7 +2295,7 @@ msgstr ""
 
 #. Resource IDs: (357)
 msgid "DCA"
-msgstr ""
+msgstr "DCA"
 
 #. Resource IDs: (513)
 msgid "Danish"
@@ -2324,11 +2455,18 @@ msgstr "Wilt u het vervangen?"
 
 #. Resource IDs: (328)
 #, c-format
-msgid "Do you wish to save the changes made to database:\r\n\r\n%s\r\n\r\nor Cancel the shutdown\\restart\\logoff?"
+msgid ""
+"Do you wish to save the changes made to database:\r\n"
+"\r\n"
+"%s\r\n"
+"\r\n"
+"or Cancel the shutdown\\restart\\logoff?"
 msgstr ""
 
 #. Resource IDs: (3887)
-msgid "Don't recover the auto-saved documents\nUse the last explicitly saved versions of the documents"
+msgid ""
+"Don't recover the auto-saved documents\n"
+"Use the last explicitly saved versions of the documents"
 msgstr ""
 
 #. Resource IDs: (359)
@@ -2390,12 +2528,15 @@ msgstr "Sleep dit plaatje naar een ander scherm om het  '%s' veld te plakken."
 
 #. Resource IDs: (342)
 #, c-format
-msgid "Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\r\n\r\nThe dropped entry now references that entry's base entry."
+msgid ""
+"Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\r\n"
+"\r\n"
+"The dropped entry now references that entry's base entry."
 msgstr ""
 
 #. Resource IDs: (32086)
 msgid "Duplicate Group"
-msgstr "Verdubbel groep"
+msgstr ""
 
 #. Resource IDs: (514)
 msgid "Dutch"
@@ -2443,7 +2584,10 @@ msgid "Either or both of the Group/Title and Password columns are missing. No re
 msgstr ""
 
 #. Resource IDs: (354)
-msgid "Either unable to load the necessary DLL, or it is the incorrect version, to support Autotype during Launch of a Browser or Run a command.\n\nAutotype for these functions is disabled."
+msgid ""
+"Either unable to load the necessary DLL, or it is the incorrect version, to support Autotype during Launch of a Browser or Run a command.\n"
+"\n"
+"Autotype for these functions is disabled."
 msgstr ""
 
 #. Resource IDs: (366)
@@ -2609,10 +2753,11 @@ msgstr ""
 msgid "Entry of line %d has an invalid \"%s\" field. It has been ignored."
 msgstr ""
 
+# egin vertaling fred
 #. Resource IDs: (205)
 #, c-format
 msgid "Entry on line %d with Group=\"%s\""
-msgstr "Element op regel %d met Groep=\"%s\""
+msgstr "Vermelding op regel %d met Groep=\"%s\""
 
 #. Resource IDs: (205)
 #, c-format
@@ -2654,13 +2799,29 @@ msgid "Error (%08X): line %d character %d %s"
 msgstr "Fout code (%08X): regel %d positie %d %s"
 
 #. Resource IDs: (190)
-msgid "Error - unable to determine settings configuration!\n\nNo application settings will be saved.\n\nDatabase related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
-msgstr "Fout - het is niet mogelijk om de configuratie instellingen te bepalen!\n\nDe programma voorkeuren worden niet opgeslagen.\n\nDatabase gerelateerde voorkeuren zullen in de geopende database worden opgeslagen, mits deze niet in alleen lezen modus is en ook niet in gebruik door een andere gebruiker."
+msgid ""
+"Error - unable to determine settings configuration!\n"
+"\n"
+"No application settings will be saved.\n"
+"\n"
+"Database related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
+msgstr ""
+"Fout - het is niet mogelijk om de configuratie instellingen te bepalen!\n"
+"\n"
+"De programma voorkeuren worden niet opgeslagen.\n"
+"\n"
+"Database gerelateerde voorkeuren zullen in de geopende database worden opgeslagen, mits deze niet in alleen lezen modus is en ook niet in gebruik door een andere gebruiker."
 
 #. Resource IDs: (354)
 #, c-format
-msgid "Error at column %d:\n\n%s"
-msgstr "Fout in kolom %d:\n\n%s"
+msgid ""
+"Error at column %d:\n"
+"\n"
+"%s"
+msgstr ""
+"Fout in kolom %d:\n"
+"\n"
+"%s"
 
 #. Resource IDs: (190)
 #, c-format
@@ -2721,7 +2882,7 @@ msgstr ""
 
 #. Resource IDs: (32009)
 msgid "Export &To"
-msgstr "Exporteren &naar"
+msgstr "Exporteren &Naar"
 
 #. Resource IDs: (32130)
 msgid "Export &XML"
@@ -2749,7 +2910,7 @@ msgstr "Export XML"
 
 #. Resource IDs: (364)
 msgid "Export file:"
-msgstr "Export bestand:"
+msgstr ""
 
 #. Resource IDs: (211)
 msgid "Export of data was restricted to certain fields by the user."
@@ -2765,7 +2926,7 @@ msgstr ""
 
 #. Resource IDs: (364)
 msgid "Exporting to file:"
-msgstr "Exporteren naar bestand:"
+msgstr ""
 
 #. Resource IDs: (516)
 msgid "Faeroese"
@@ -2862,13 +3023,25 @@ msgstr "Bestand versie waarschuwing"
 
 #. Resource IDs: (335)
 #, c-format
-msgid "File: %s failed validation against XML Schema:\r\n\r\n%s"
-msgstr "Bestand: %s kon niet gevalideerd worden met XML Schema:\r\n\r\n%s"
+msgid ""
+"File: %s failed validation against XML Schema:\r\n"
+"\r\n"
+"%s"
+msgstr ""
+"Bestand: %s kon niet gevalideerd worden met XML Schema:\r\n"
+"\r\n"
+"%s"
 
 #. Resource IDs: (335)
 #, c-format
-msgid "File: %s passed Validation but had the following errors during import:\r\n\r\n%s"
-msgstr "Bestand: %s is gevalideerd maar tijdens het inlezen zijn de volgende fouten opgetreden:\r\n\r\n%s"
+msgid ""
+"File: %s passed Validation but had the following errors during import:\r\n"
+"\r\n"
+"%s"
+msgstr ""
+"Bestand: %s is gevalideerd maar tijdens het inlezen zijn de volgende fouten opgetreden:\r\n"
+"\r\n"
+"%s"
 
 #. Resource IDs: (335)
 #, c-format
@@ -2933,8 +3106,12 @@ msgid "Font st&yle:"
 msgstr "Font &Stijl"
 
 #. Resource IDs: (342)
-msgid "For security, the database must be closed before connecting to the Internet.\r\nPress OK to close database and continue (Changes will be saved)"
-msgstr "De databse moet afgesloten worden voordat verbinding gemaakt wordt met Internet.\r\nDruk op OK om de databse te sluiten en verder te gaan (Wijzigingen worden bewaard)"
+msgid ""
+"For security, the database must be closed before connecting to the Internet.\r\n"
+"Press OK to close database and continue (Changes will be saved)"
+msgstr ""
+"De databse moet afgesloten worden voordat verbinding gemaakt wordt met Internet.\r\n"
+"Druk op OK om de databse te sluiten en verder te gaan (Wijzigingen worden bewaard)"
 
 #. Resource IDs: (203)
 #, c-format
@@ -3287,8 +3464,14 @@ msgstr "PasswordSafe zal stoppen als dit de eerste database is die geopend wordt
 
 #. Resource IDs: (510)
 #, c-format
-msgid "If this keyboard supports characters via the %s, then this key will be enabled and can be used to select them.\n\nYou may need to also select the Shift key to see them."
-msgstr "Als dit toetsenbord letters ondersteund met de %s, dan zal deze toets worden geactiveerd en kan gebruikt worden om deze te selecteren.\n\nHet kan zijn dat ook de Shift toets gebruikt moet worden om ze te zien."
+msgid ""
+"If this keyboard supports characters via the %s, then this key will be enabled and can be used to select them.\n"
+"\n"
+"You may need to also select the Shift key to see them."
+msgstr ""
+"Als dit toetsenbord letters ondersteund met de %s, dan zal deze toets worden geactiveerd en kan gebruikt worden om deze te selecteren.\n"
+"\n"
+"Het kan zijn dat ook de Shift toets gebruikt moet worden om ze te zien."
 
 #. Resource IDs: (517)
 msgid "Igbo"
@@ -3572,8 +3755,12 @@ msgid "Left click here to change. Right click here to reset or remove it. After 
 msgstr "Linkermuis klik hier om aan te passen. Rechtermuis klik hier om te herstellen of te verwijderen. Na selectie van de snel toets combinatie op enter drukken om deze in te stellen."
 
 #. Resource IDs: (331)
-msgid "Length of passwords generated in hexadecimal format must be even\nas each byte is two hexadecimal digits."
-msgstr "De lengte van wachtwoorden die gegeneerd worden in hexadecimaal formaat moet even zijn\nomdat elke byte twee hexadecimale cijfers geeft."
+msgid ""
+"Length of passwords generated in hexadecimal format must be even\n"
+"as each byte is two hexadecimal digits."
+msgstr ""
+"De lengte van wachtwoorden die gegeneerd worden in hexadecimaal formaat moet even zijn\n"
+"omdat elke byte twee hexadecimale cijfers geeft."
 
 #. Resource IDs: (204)
 #, c-format
@@ -3668,8 +3855,12 @@ msgid "Max."
 msgstr "Max."
 
 #. Resource IDs: (338)
-msgid "Maximum number of backups kept using incremented number suffix\nmust be between 1 and 999."
-msgstr "Maximum aantal back-ups dat bewaard wordt, bij het gebruik van een achtervoegsel met een getal dat opgehoogd wordt,\nmoet tussen 1 en 999 liggen."
+msgid ""
+"Maximum number of backups kept using incremented number suffix\n"
+"must be between 1 and 999."
+msgstr ""
+"Maximum aantal back-ups dat bewaard wordt, bij het gebruik van een achtervoegsel met een getal dat opgehoogd wordt,\n"
+"moet tussen 1 en 999 liggen."
 
 #. Resource IDs: (338)
 #, c-format
@@ -3686,7 +3877,7 @@ msgstr ""
 
 #. Resource IDs: (356)
 msgid "Menu Item"
-msgstr "Menu-item"
+msgstr "Menu onderdeel"
 
 #. Resource IDs: (347)
 msgid "Merge"
@@ -3776,7 +3967,7 @@ msgstr "N.v.t."
 
 #. Resource IDs: (65535)
 msgid "NOTE: Changing this entry's own password will make this a normal entry and break the link with its base?"
-msgstr "LET OP: Wijzigen van het eigen wachtwoord van dit element maakt er een gewone element van en verbreekt de relatie met zijn basis?"
+msgstr "LET OP: Wijzigen van het eigen wachtwoord van dit vermelding maakt er een gewone vermelding van en verbreekt de relatie met zijn basis"
 
 #. Resource IDs: (353)
 msgid "Name"
@@ -3812,7 +4003,7 @@ msgstr ""
 
 #. Resource IDs: (343)
 msgid "New Version Found!"
-msgstr "Nieuwe versie gevonden!"
+msgstr ""
 
 #. Resource IDs: (331)
 msgid "New safe combination and confirmation do not match"
@@ -3820,7 +4011,7 @@ msgstr ""
 
 #. Resource IDs: (364)
 msgid "Next >"
-msgstr "Volgende >"
+msgstr ""
 
 #. Resource IDs: (340, 1083)
 msgid "No"
@@ -3873,7 +4064,7 @@ msgstr ""
 
 #. Resource IDs: (340)
 msgid "No fields selected to compare!"
-msgstr "Geen veld uitgezocht om te vergelijken!"
+msgstr ""
 
 #. Resource IDs: (348)
 msgid "No fields selected to filter the display!"
@@ -4005,7 +4196,20 @@ msgstr ""
 
 #. Resource IDs: (190)
 #, c-format
-msgid "Number of entries processed: %d\n\nNumber of UUIDs fixed: %d\n\nNumber of Password Histories fixed: %d\n\nNumber of non-unique Group/Title/User fixed: %d\n\nNumber of Alias warnings issued: %d\n\nNumber of Shortcut warnings issued: %d\n\nNumber of entries with fields that cannot be fully displayed: %d"
+msgid ""
+"Number of entries processed: %d\n"
+"\n"
+"Number of UUIDs fixed: %d\n"
+"\n"
+"Number of Password Histories fixed: %d\n"
+"\n"
+"Number of non-unique Group/Title/User fixed: %d\n"
+"\n"
+"Number of Alias warnings issued: %d\n"
+"\n"
+"Number of Shortcut warnings issued: %d\n"
+"\n"
+"Number of entries with fields that cannot be fully displayed: %d"
 msgstr ""
 
 #. Resource IDs: (337)
@@ -4037,7 +4241,7 @@ msgstr ""
 
 #. Resource IDs: (1, 351)
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 #. Resource IDs: (330)
 msgid "Off"
@@ -4086,7 +4290,7 @@ msgstr ""
 
 #. Resource IDs: (327)
 msgid "Options"
-msgstr "Opties"
+msgstr ""
 
 #. Resource IDs: (208, 65535)
 msgid "Or"
@@ -4126,11 +4330,11 @@ msgstr ""
 
 #. Resource IDs: (339)
 msgid "PWS_CPF_CDD"
-msgstr ""
+msgstr "PWS_CPF_CDD"
 
 #. Resource IDs: (341)
 msgid "PWS_CPF_TVDD"
-msgstr ""
+msgstr "PWS_CPF_TVDD"
 
 #. Resource IDs: (334)
 msgid "Passkey incorrect"
@@ -4222,11 +4426,11 @@ msgstr ""
 
 #. Resource IDs: (316)
 msgid "Password Safe Databases (*.psafe3)|*.psafe3|All files (*.*)|*.*||"
-msgstr "Password Safe Databases (*.psafe3)|*.psafe3|Alle bestanden (*.*)|*.*||"
+msgstr ""
 
 #. Resource IDs: (316)
 msgid "Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|All files (*.*)|*.*||"
-msgstr "Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|Alle bestanden (*.*)|*.*||"
+msgstr ""
 
 #. Resource IDs: (316)
 msgid "Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All files (*.*)|*.*||"
@@ -4234,7 +4438,9 @@ msgstr ""
 
 #. Resource IDs: (326)
 #, c-format
-msgid "Password Safe has been compiled as %s but CPU is really %s.\nYou may not be able to open files or saved files may be incompatible with other platforms."
+msgid ""
+"Password Safe has been compiled as %s but CPU is really %s.\n"
+"You may not be able to open files or saved files may be incompatible with other platforms."
 msgstr ""
 
 #. Resource IDs: (1000)
@@ -4250,7 +4456,9 @@ msgid "Password implies this is an alias entry, but "
 msgstr ""
 
 #. Resource IDs: (342)
-msgid "Password implies this is an alias entry, but specifies a base entry with no title.\r\nA title is mandatory for every entry."
+msgid ""
+"Password implies this is an alias entry, but specifies a base entry with no title.\r\n"
+"A title is mandatory for every entry."
 msgstr ""
 
 #. Resource IDs: (188)
@@ -4367,7 +4575,9 @@ msgid "Please choose a new name for the current database:"
 msgstr ""
 
 #. Resource IDs: (331)
-msgid "Please confirm that you wish to delete PasswordSafe configuration information for the current user from the Windows registry.\n\n"
+msgid ""
+"Please confirm that you wish to delete PasswordSafe configuration information for the current user from the Windows registry.\n"
+"\n"
 msgstr ""
 
 #. Resource IDs: (353)
@@ -4461,7 +4671,10 @@ msgid "Press to delete all added characters."
 msgstr ""
 
 #. Resource IDs: (65535)
-msgid "Pressing OK will copy the password of the selected item to the clipboard. The clipboard will be securely cleared when Password Safe is closed.\r\n\r\nPressing Cancel stops the password being copied."
+msgid ""
+"Pressing OK will copy the password of the selected item to the clipboard. The clipboard will be securely cleared when Password Safe is closed.\r\n"
+"\r\n"
+"Pressing Cancel stops the password being copied."
 msgstr ""
 
 #. Resource IDs: (349)
@@ -4482,11 +4695,11 @@ msgstr ""
 
 #. Resource IDs: (136)
 msgid "Properties"
-msgstr "Eigenschappen"
+msgstr ""
 
 #. Resource IDs: (361)
 msgid "Properties of the currently selected database."
-msgstr "Eigenschappen van de aktueel geselecteerde database"
+msgstr ""
 
 #. Resource IDs: (32089)
 msgid "Protect All Entries"
@@ -4526,15 +4739,15 @@ msgstr ""
 
 #. Resource IDs: (8010)
 msgid "R Ctrl"
-msgstr ""
+msgstr "R Ctrl"
 
 #. Resource IDs: (315)
 msgid "R/O"
-msgstr ""
+msgstr "R/O"
 
 #. Resource IDs: (315)
 msgid "R/W"
-msgstr ""
+msgstr "R/W"
 
 #. Resource IDs: (65535)
 msgid "Random password generation rules"
@@ -4577,7 +4790,9 @@ msgid "Record last access times"
 msgstr ""
 
 #. Resource IDs: (3887)
-msgid "Recover the auto-saved documents\nOpen the auto-saved versions instead of the explicitly saved versions"
+msgid ""
+"Recover the auto-saved documents\n"
+"Open the auto-saved versions instead of the explicitly saved versions"
 msgstr ""
 
 #. Resource IDs: (1297)
@@ -4615,15 +4830,15 @@ msgstr ""
 
 #. Resource IDs: (32058)
 msgid "Rename"
-msgstr "Naam wijzigen"
+msgstr ""
 
 #. Resource IDs: (32054)
 msgid "Rename Entry"
-msgstr "Naam van een element wijzigen"
+msgstr ""
 
 #. Resource IDs: (32054)
 msgid "Rename Group"
-msgstr "Naam van een groep wijzigen"
+msgstr ""
 
 #. Resource IDs: (347)
 msgid "Report created"
@@ -4639,7 +4854,10 @@ msgid "Requested Values:"
 msgstr ""
 
 #. Resource IDs: (356)
-msgid "Required Unicode font is not installed on this system.\n\nUnable to provide Virtual Keyboard."
+msgid ""
+"Required Unicode font is not installed on this system.\n"
+"\n"
+"Unable to provide Virtual Keyboard."
 msgstr ""
 
 #. Resource IDs: (1377)
@@ -4742,7 +4960,7 @@ msgstr ""
 
 #. Resource IDs: (328)
 msgid "S"
-msgstr ""
+msgstr "S"
 
 #. Resource IDs: (1119)
 msgid "S&et"
@@ -4754,7 +4972,9 @@ msgstr ""
 
 #. Resource IDs: (192)
 #, c-format
-msgid "SAX Parse Error during %s\r\n%s."
+msgid ""
+"SAX Parse Error during %s\r\n"
+"%s."
 msgstr ""
 
 #. Resource IDs: (191)
@@ -5103,36 +5323,35 @@ msgstr ""
 
 #. Resource IDs: (360)
 msgid "Shutdown, Restart or Logoff in progress"
-msgstr ""
+msgstr "Afsluiten, Herstart of Uitloggen wordt uitgevoerd"
 
 #. Resource IDs: (1391)
-# Einde vertaling Fred
 msgid "Signal Abort"
-msgstr ""
+msgstr "Afbreek Signaal"
 
 #. Resource IDs: (1389)
 msgid "Signal Illegal Instruction"
-msgstr ""
+msgstr "Ongeldige Opdracht Signaal"
 
 #. Resource IDs: (1390)
 msgid "Signal Terminate"
-msgstr ""
+msgstr "Beëindig Signaal"
 
 #. Resource IDs: (514)
 msgid "Slovak"
-msgstr ""
+msgstr "Slowaaks"
 
 #. Resource IDs: (519)
 msgid "Slovak (QWERTY)"
-msgstr ""
+msgstr "Slowaaks (QWERTY)"
 
 #. Resource IDs: (515)
 msgid "Slovenian"
-msgstr ""
+msgstr "Sloveens"
 
 #. Resource IDs: (1383)
 msgid "Some characters may be missing or not be displayed correctly, as we were unable to find the Arial Unicode MS font."
-msgstr ""
+msgstr "Sommige tekens kunnen ontbreken of verkeerd getoond worden, omdat het Arial Unicode MS font niet gevonden is."
 
 #. Resource IDs: (364)
 msgid "Some of the entries in this database have passwords that have expired or are about to.  Do you wish to list them and possibly update them?"
@@ -5140,39 +5359,54 @@ msgstr ""
 
 #. Resource IDs: (520)
 msgid "Sorbian Standard"
-msgstr ""
+msgstr "Standaard Sorbisch"
 
 #. Resource IDs: (515)
 msgid "Sorbian Standard (Legacy)"
-msgstr ""
+msgstr "Standaard Sorbisch (Verouderd)"
 
 #. Resource IDs: (331)
-msgid "Sorry - your requested HotKey is already being used.\n\nThis feature has been temporarily disabled.\n\nTo re-enable in this session, please select a different key combination."
+msgid ""
+"Sorry - your requested HotKey is already being used.\n"
+"\n"
+"This feature has been temporarily disabled.\n"
+"\n"
+"To re-enable in this session, please select a different key combination."
 msgstr ""
+"Sorry, de door u verzochte SnelToets is al in gebruik.\n"
+"\n"
+"Deze mogelijkheid is tijdelijk uit gezet.\n"
+"\n"
+"Het kan in deze sessie weer aan gezet worden door een andere toetscombinatie te kiezen. "
 
 #. Resource IDs: (358)
-msgid "Sorry but PasswordSafe has had a problem.\n\nMinimal diagnostic information has been written to file: \n\n\t'"
+msgid ""
+"Sorry but PasswordSafe has had a problem.\n"
+"\n"
+"Minimal diagnostic information has been written to file: \n"
+"\n"
+"\t'"
 msgstr ""
 
 #. Resource IDs: (345)
 msgid "Sorry, 'pronounceable' and 'easy-to-read' are not supported together"
-msgstr ""
+msgstr "Sorry, 'uitspreekbare' of 'makkelijk te lezen' opties zijn niet samen mogelijk. "
 
 #. Resource IDs: (345)
 msgid "Sorry, can't specify a minimum number of characters with 'pronounceable' or 'easy-to-read' options. Specified values ignored."
-msgstr ""
+msgstr "Sorry, een minimum aantal tekens kan niet opgegeven worden als ook 'uitspreekbare' of 'makkelijk te lezen' opties aan staan. Opgegeven waarden worden genegeerd."
 
 #. Resource IDs: (353)
 msgid "Source"
-msgstr ""
+msgstr "Bron"
 
 #. Resource IDs: (514)
 msgid "Spanish"
-msgstr ""
+msgstr "Spaans"
 
 #. Resource IDs: (518)
 msgid "Spanish Variation"
-msgstr ""
+msgstr "Spaanse variatie"
 
 #. Resource IDs: (1439)
 msgid "Special set"
@@ -5180,59 +5414,65 @@ msgstr ""
 
 #. Resource IDs: (1220)
 msgid "Start PasswordSafe at Login"
-msgstr ""
+msgstr "Open PasswordSafe na het inloggen"
 
 #. Resource IDs: (204)
 msgid "Start Report"
-msgstr ""
+msgstr "Begin Rapport"
 
 #. Resource IDs: (319)
 msgid "Start saving password history for all entries, to the above number of entries."
-msgstr ""
+msgstr "Begin met opslaan wachtwoordgeschiedenis voor alle waarden, met het bovenvermelde maximale aantal."
 
 #. Resource IDs: (1185)
 msgid "Start saving previous passwords"
-msgstr ""
+msgstr "Begin met opslaan vorige wachtwoorden"
 
 #. Resource IDs: (1264)
 msgid "Static"
-msgstr ""
+msgstr "Statisch"
 
 #. Resource IDs: (1037)
 msgid "Static_Static"
-msgstr ""
+msgstr "Statisch_Statisch"
 
 #. Resource IDs: (1380)
 msgid "Statistics"
-msgstr ""
+msgstr "Statistieken"
 
 #. Resource IDs: (334)
 msgid "Status"
 msgstr "Status"
 
 #. Resource IDs: (319)
-msgid "Stop saving password history for all entries.\n\nSaved histories will not be touched, but password changes will no longer be stored by default."
+msgid ""
+"Stop saving password history for all entries.\n"
+"\n"
+"Saved histories will not be touched, but password changes will no longer be stored by default."
 msgstr ""
+"Stop met opslaan wachtwoord geschiedenis voor alle vermeldingen:\n"
+"\n"
+"Opgeslagen geschiedenissen zullen niet veranderen, maar wijzigingen van wachtwoorden worden niet meer standaard opgeslagen."
 
 #. Resource IDs: (1184)
 msgid "Stop saving previous passwords"
-msgstr ""
+msgstr "Stop met het opslaan van vorige wachtwoorden"
 
 #. Resource IDs: (210)
 msgid "Stored filters will be unusable until the file's restored."
-msgstr ""
+msgstr "Opgeslagen filters zijn onbruikbaar totdat het bestand hersteld is."
 
 #. Resource IDs: (1322)
 msgid "String value:"
-msgstr ""
+msgstr "Tekst waarde:"
 
 #. Resource IDs: (211)
 msgid "Subset of entries restricted by the following rule:"
-msgstr ""
+msgstr "Deel van de vermeldingen beperkt door de volgende regel:"
 
 #. Resource IDs: (65535)
 msgid "Suffix:"
-msgstr ""
+msgstr "Achtervoegsel:"
 
 #. Resource IDs: (515)
 msgid "Swedish"
@@ -5264,7 +5504,7 @@ msgstr "Synchroniseren"
 
 #. Resource IDs: (121)
 msgid "Synchronize Entries"
-msgstr ""
+msgstr "Vermeldingen synchroniseren"
 
 #. Resource IDs: (364)
 msgid "Synchronizing current database with:"
@@ -5273,7 +5513,7 @@ msgstr ""
 #. Resource IDs: (360)
 #, c-format
 msgid "Synchronizing from database: %s\r\n"
-msgstr ""
+msgstr "Synchroniseren vanaf database: %s\r\n"
 
 #. Resource IDs: (143)
 msgid "System"
@@ -5281,15 +5521,15 @@ msgstr "Systeem"
 
 #. Resource IDs: (189)
 msgid "System error: No more file handles available"
-msgstr ""
+msgstr "Systeem fout: Geen bestands verwijzing beschikbaar"
 
 #. Resource IDs: (3857)
 msgid "System registry entries have been removed and the INI file (if any) was deleted."
-msgstr ""
+msgstr "Vermeldingen in het register zijn verwijderd en de (eventuele) INI bestand is weggegooid."
 
 #. Resource IDs: (65535)
 msgid "SystemTray"
-msgstr ""
+msgstr "Systeemvak"
 
 #. Resource IDs: (8018)
 msgid "Sz"
@@ -5297,7 +5537,7 @@ msgstr "Sz"
 
 #. Resource IDs: (338)
 msgid "TRIAL"
-msgstr ""
+msgstr "TEST"
 
 #. Resource IDs: (1079)
 msgid "Tab"
@@ -5305,23 +5545,23 @@ msgstr "Tab"
 
 #. Resource IDs: (515)
 msgid "Tajik"
-msgstr ""
+msgstr "Tadzjieks"
 
 #. Resource IDs: (516)
 msgid "Tamil"
-msgstr ""
+msgstr "Tamil"
 
 #. Resource IDs: (1110)
 msgid "Target last changed on:"
-msgstr ""
+msgstr "Doel laatst gewijzigd op:"
 
 #. Resource IDs: (516)
 msgid "Tatar"
-msgstr ""
+msgstr "Tataars"
 
 #. Resource IDs: (516)
 msgid "Telugu"
-msgstr ""
+msgstr "Telugu"
 
 #. Resource IDs: (347)
 msgid "Text"
@@ -5329,11 +5569,11 @@ msgstr "Tekst"
 
 #. Resource IDs: (316)
 msgid "Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*)|*.*||"
-msgstr ""
+msgstr "Tekst bestanden (*.txt)|*.txt|CSV bestanden (*.csv)|*.csv|Alle bestanden (*.*)|*.*||"
 
 #. Resource IDs: (356)
 msgid "Text will be red if the shortcut is different to its default value."
-msgstr ""
+msgstr "De tekst zal rood zijn als de snelkoppeling anders is dan de standaard waarde."
 
 #. Resource IDs: (1322)
 msgid "Text:"
@@ -5341,19 +5581,19 @@ msgstr "Tekst"
 
 #. Resource IDs: (515)
 msgid "Thai Kedmanee"
-msgstr ""
+msgstr "Thais Kedmanee"
 
 #. Resource IDs: (520)
 msgid "Thai Kedmanee (non-ShiftLock)"
-msgstr ""
+msgstr "Thais Kedmanee (zonder shiftlock)"
 
 #. Resource IDs: (519)
 msgid "Thai Pattachote"
-msgstr ""
+msgstr "Thais Pattachote"
 
 #. Resource IDs: (520)
 msgid "Thai Pattachote (non-ShiftLock)"
-msgstr ""
+msgstr "Thais Pattachote (zonder ShiftLock)"
 
 #. Resource IDs: (333)
 msgid "That file is already open."
@@ -5362,11 +5602,11 @@ msgstr "Dat bestand is al open."
 #. Resource IDs: (205)
 #, c-format
 msgid "The %s entry \"%s, %s, %s\" doesn't point to a normal or existing %s base entry. It cannot be imported."
-msgstr ""
+msgstr "De %s vermelding \"%s, %s, %s\" wijst niet naar een gewone of bestaande %s basis vermelding. Het kan niet geïmporteerd worden."
 
 #. Resource IDs: (510)
 msgid "The ALT key is not used on any keyboard to select characters. Use the 'Alt Num' key to enter a character via its decimal value."
-msgstr ""
+msgstr "De ALT toest wordt bij geen enkele toetsenbord gebruikt om tekens te selecteren. Gebruik de \"ALT NUM\" toets om een teken via de decimale waarde in te voeren."
 
 #. Resource IDs: (330)
 msgid "The combination cannot be blank."
@@ -5374,27 +5614,79 @@ msgstr "De combinatie kan niet leeg zijn."
 
 #. Resource IDs: (332)
 #, c-format
-msgid "The database %s couldn't be opened.\nDo you wish to look for it elsewhere (Search), create a new database (New), or Exit?"
-msgstr "De database %s kan niet geopend worden.  \n Wilt u de database elders zoeken, een nieuwe aanmaken of afsluiten?"
+msgid ""
+"The database %s couldn't be opened.\n"
+"Do you wish to look for it elsewhere (Search), create a new database (New), or Exit?"
+msgstr ""
+"De database %s kan niet geopend worden.  \n"
+" Wilt u de database elders zoeken, een nieuwe aanmaken of afsluiten?"
 
 #. Resource IDs: (339)
 #, c-format
-msgid "The database:\n%s\n\nis apparently being used by:\n%s%s.\n\nOpen the database for Read-Only or Exit?\r\n\r\nNote: Only one user at a time can open the database for writing."
+msgid ""
+"The database:\n"
+"%s\n"
+"\n"
+"is apparently being used by:\n"
+"%s%s.\n"
+"\n"
+"Open the database for Read-Only or Exit?\r\n"
+"\r\n"
+"Note: Only one user at a time can open the database for writing."
 msgstr ""
+"De database:\n"
+"%s\n"
+"\n"
+"isblijkbaar in gebruik door:\n"
+"%s%s.\n"
+"\n"
+"De database openen als Alleen-Lezen of verlaat database?\r\n"
+"\r\n"
+"Opmerking: Slechts een gebruiker kan de database openen om te bewerken."
 
 #. Resource IDs: (328)
 #, c-format
-msgid "The database:\n%s\n\nis apparently being used by:\n%s%s.\n\nOpen the database for Read-Only, Read-Write, or Exit?\r\n\r\nNote: Choose \"Read-Write\" only if you are certain that the file is in fact not being used by anyone else,\nincluding another copy of Password Safe running on your machine."
+msgid ""
+"The database:\n"
+"%s\n"
+"\n"
+"is apparently being used by:\n"
+"%s%s.\n"
+"\n"
+"Open the database for Read-Only, Read-Write, or Exit?\r\n"
+"\r\n"
+"Note: Choose \"Read-Write\" only if you are certain that the file is in fact not being used by anyone else,\n"
+"including another copy of Password Safe running on your machine."
 msgstr ""
+"De database:\n"
+"%s\n"
+"\n"
+"is blijkbaar in gebruik door:\n"
+"%s%s.\n"
+"\n"
+"De database openen als Alleen-Lezen, Lezen-Schrijven, of verlaat database?\r\n"
+"\r\n"
+"Opmerkingen: kies \"Lezen-Schrijven\" alleen als u zeker weet dat de database door niemand anders geopend is,\n"
+"ook niet door een andere kopie van Password Safe wat actief is op uw computer."
 
 #. Resource IDs: (361)
 #, c-format
-msgid "The database:\n\n%s\n\nhas duplicate entries with the same group/title/user combination. Please fix by validating database."
+msgid ""
+"The database:\n"
+"\n"
+"%s\n"
+"\n"
+"has duplicate entries with the same group/title/user combination. Please fix by validating database."
 msgstr ""
+"De database:\n"
+"\n"
+"%s\n"
+"\n"
+"heeft dubbelele vermeldingen met dezelfde groep/titel/gebruiker combinatie. SVP dit oplossen door de database te valideren."
 
 #. Resource IDs: (329)
 msgid "The entered passwords do not match.  Please re-enter them."
-msgstr ""
+msgstr "De ingevoerde wachtwoorden komen niet overeen. SVP opnieuw invoeren."
 
 #. Resource IDs: (3857)
 msgid "The file is too large to open."
@@ -5407,12 +5699,12 @@ msgstr "Het bestand is niet gevonden."
 #. Resource IDs: (208)
 #, c-format
 msgid "The filter XML version (%d) is greater than that supported by this instance of PasswordSafe (%d)."
-msgstr ""
+msgstr "Het filter XML versie (%d) is groter dan ondersteund wordt door deze versie van PasswordSafe (%d)."
 
 #. Resource IDs: (208)
 #, c-format
 msgid "The filter XML version (%d) is greater than the current schema (%d)."
-msgstr ""
+msgstr "Het filter XML versie (%d) is groter dan het huidige schema (%d)"
 
 #. Resource IDs: (208)
 msgid "The filter XML version is missing."
@@ -5420,7 +5712,7 @@ msgstr "De versie van de XML filter ontbreekt."
 
 #. Resource IDs: (211)
 msgid "The following columns were recognised but only Group/Title, Username and Password will be processed:"
-msgstr ""
+msgstr "De volgende kolommen waren herkend maar alleen Groep/Titel, Gebruikersnaam en Wachtwoord worden bewerkt:"
 
 #. Resource IDs: (204)
 msgid "The following columns will be processed: "
@@ -5428,20 +5720,20 @@ msgstr "De volgende kolommen worden bewerkt:"
 
 #. Resource IDs: (205)
 msgid "The following entries had an invalid Password History.  This has been rebuilt with available data.  There may be some loss of history."
-msgstr ""
+msgstr "De volgende vermeldingen hadden een ongeldig Wachtwoord Geschiedenis. Dit is hersteld met beschikbare gegevens. Een deel van de geschiedenis kan hierdoor verloren zijn."
 
 #. Resource IDs: (205)
 msgid "The following entries had an invalid UUID field.  This has been corrected."
-msgstr ""
+msgstr "De volgende vermeldingen hadden een ongeldige UUID waarde. Dit is aangepast."
 
 #. Resource IDs: (212)
 #, c-format
 msgid "The following entries have one or more text fields too long to display or edit (longer than %d characters)."
-msgstr ""
+msgstr "De volgende vermeldingen hebben een of meer text velden die te lang zijn om te tonen of te bewerken (meer dan %d tekens)."
 
 #. Resource IDs: (212)
 msgid "The following entries were duplicates of an existing entry."
-msgstr ""
+msgstr "De volgende vermeldingen zijn een kopie van een bestaande vermelding."
 
 #. Resource IDs: (65535)
 msgid "The following entries' passwords are about to expire or expired:"
@@ -5450,7 +5742,7 @@ msgstr ""
 #. Resource IDs: (343)
 #, c-format
 msgid "The following entry was copied to the %s database: '%s:%s:%s'"
-msgstr "Het volgende element is gekopieerd naar de %s database: '%s:%s:%s'"
+msgstr ""
 
 #. Resource IDs: (362)
 msgid "The following records had errors in their Password History:"
@@ -5458,7 +5750,7 @@ msgstr "De volgende records hadden fouten in hun Wachtwoord Geschiedenis"
 
 #. Resource IDs: (362)
 msgid "The following records were renamed as an entry already exists in your database or in the Import file:"
-msgstr "De volgende records hebben een andere naam gekregen. Het element bestaat al in uw database of in het import bestand:"
+msgstr "De volgende records hebben een andere naam gekregen. De vermelding bestaat al in uw database of in het import bestand:"
 
 #. Resource IDs: (362)
 msgid "The following records were skipped:"
@@ -5467,7 +5759,7 @@ msgstr "De volgende records zijn overgeslagen:"
 #. Resource IDs: (363)
 #, c-format
 msgid "The notes field of this entry has more text than can be displayed. Changing this field and saving the entry will result in this field being truncated after %d characters.  To view the full contents, either copy it to an editor via the clipboard or export this entry to XML before changing it."
-msgstr "De notities veld van dit element heeft meer tekst dat getoond kan worden. Veranderen van dit veld en het opslaan van het element zal resulteren in het afbreken van inhoud van dit veld na %d tekens. Om de gehele notitie te zien kunt u deze naar een tekst editor kopiÃ«ren of naar XML exporteren voordat u de notitie wijzigt."
+msgstr "De notities veld van deze vermelding heeft meer tekst dat getoond kan worden. Veranderen van dit veld en het opslaan van de vermelding zal resulteren in het afbreken van inhoud van dit veld na %d tekens. Om de gehele notitie te zien kunt u deze naar een tekst editor kopiÃ«ren of naar XML exporteren voordat u de notitie wijzigt."
 
 #. Resource IDs: (331)
 msgid "The old safe combination is not correct"
@@ -5475,7 +5767,9 @@ msgstr "De oude kluis combinatie is niet correct."
 
 #. Resource IDs: (333)
 #, c-format
-msgid "The original database, \"%s\", is in pre-3.0 format. It will be unchanged.\nYour changes will be written as \"%s\" in the new format, which is unusable by old versions of PasswordSafe. To save your changes in the old format, use the \"File->Export To->Old (1.x or 2) format\" command."
+msgid ""
+"The original database, \"%s\", is in pre-3.0 format. It will be unchanged.\n"
+"Your changes will be written as \"%s\" in the new format, which is unusable by old versions of PasswordSafe. To save your changes in the old format, use the \"File->Export To->Old (1.x or 2) format\" command."
 msgstr ""
 
 #. Resource IDs: (333)
@@ -5485,13 +5779,29 @@ msgstr ""
 
 #. Resource IDs: (342)
 #, c-format
-msgid "The password is in 'alias' form but the referenced entry '%s:%s:%s' is itself an alias.\r\n\r\nDo you wish this entry to point to the 'real' base entry?"
-msgstr "Het wachtwoord is in de vorm van een 'alias'. Maar het element waar naar verwezen wordt,  '%s:%s:%s', is zelf een alias.\r\n\r\nWilt u dat dit element verwijst naar de 'werkelijke' basis element?"
+msgid ""
+"The password is in 'alias' form but the referenced entry '%s:%s:%s' is itself an alias.\r\n"
+"\r\n"
+"Do you wish this entry to point to the 'real' base entry?"
+msgstr ""
+"Het wachtwoord is in de vorm van een 'alias'. Maar de vermelding waar naar verwezen wordt,  '%s:%s:%s', is zelf een alias.\r\n"
+"\r\n"
+"Wilt u dat deze vermelding verwijst naar de 'werkelijke' basis vermelding?"
 
 #. Resource IDs: (360)
 #, c-format
-msgid "The password\r\n\r\n\"%s\"\r\n\r\nhas been copied to the clipboard."
-msgstr "Het wachtwoord\r\n\r\n\"%s\"\r\n\r\nis naar het klemboard gekopieerd."
+msgid ""
+"The password\r\n"
+"\r\n"
+"\"%s\"\r\n"
+"\r\n"
+"has been copied to the clipboard."
+msgstr ""
+"Het wachtwoord\r\n"
+"\r\n"
+"\"%s\"\r\n"
+"\r\n"
+"is naar het klembord gekopieerd."
 
 #. Resource IDs: (65535)
 msgid "The safe combination has been entered three times without success. If you don't know the safe combination, you can either try to open another password database, or create a new blank password database."
@@ -5503,7 +5813,7 @@ msgstr "De gekozen Veilige Back-up bestand zal geopend worden inplaats van de ge
 
 #. Resource IDs: (329)
 msgid "The two entries do not match."
-msgstr "De twee waarden komen niet overeen/"
+msgstr "De twee waarden komen niet overeen."
 
 #. Resource IDs: (211)
 msgid "The user specified that the following fields be excluded from the export:"
@@ -5511,7 +5821,7 @@ msgstr "De gebruiker gaf op dat de volgende velden uitgesloten moeten worden van
 
 #. Resource IDs: (345)
 msgid "There are more than one entry that fits your selection. Please be more specific."
-msgstr "Er is meer dan een element dat voldoet aan uw selectie. Wees svp iets specifieker."
+msgstr "Er is meer dan een vermelding dat voldoet aan uw selectie. Wees svp iets specifieker."
 
 #. Resource IDs: (210)
 msgid "There are unmatched quotes in the run command"
@@ -5528,7 +5838,7 @@ msgstr "Deze zijn recenter opgeslagen dan de huidige open documenten en ze bevat
 #. Resource IDs: (344)
 #, c-format
 msgid "This alias' target [%s:%s:%s] is not a normal entry or already an alias base."
-msgstr "Het doel van deze alias [%s:%s:%s] is geen normaal element of is al het doel van een snelkoppeling"
+msgstr "Het doel van deze alias [%s:%s:%s] is geen normale vermelding of is al het doel van een snelkoppeling"
 
 #. Resource IDs: (320)
 msgid "This allows you to keep backups in a separate location. Make sure that you have write permission to the directory you specify."
@@ -5540,22 +5850,38 @@ msgstr "Deze database is het hetzelfde als de huidige database!"
 
 #. Resource IDs: (354)
 msgid "This entry has been changed. Are you sure you wish to cancel?"
-msgstr "Dit element is veranderd. Weet u zeker dat u wilt annuleren?"
+msgstr "Deze vermelding is veranderd. Weet u zeker dat u wilt annuleren?"
 
 #. Resource IDs: (341)
 #, c-format
-msgid "This entry has the following %d %s:\r\n%s"
-msgstr "Dit element heeft de volgende %d %s:\r\n%s"
+msgid ""
+"This entry has the following %d %s:\r\n"
+"%s"
+msgstr ""
+"Deze vermelding heeft de volgende %d %s:\r\n"
+"%s"
 
 #. Resource IDs: (345)
 #, c-format
-msgid "This entry has the following %d %s:\r\n%s\r\nPlease confirm you wish to continue (All shortcuts to this entry will be deleted)?"
-msgstr "Dit element heeft de volgende %d %s:\r\n%s\r\nSVP bevestig dat u door wilt gaan (alle snelkoppelingen naar dit element zullen verwijderd worden)?"
+msgid ""
+"This entry has the following %d %s:\r\n"
+"%s\r\n"
+"Please confirm you wish to continue (All shortcuts to this entry will be deleted)?"
+msgstr ""
+"Deze vermelding heeft de volgende %d %s:\r\n"
+"%s\r\n"
+"SVP bevestig dat u door wilt gaan (alle snelkoppelingen naar deze vermelding zullen verwijderd worden)?"
 
 #. Resource IDs: (341)
 #, c-format
-msgid "This entry has the following %d %s:\r\n%s\r\nPlease confirm you wish to continue (alias entry's passwords will be replaced by this entry's password)?"
-msgstr "Dit element heeft de volgende %d %s:\r\n%s\r\nSVP bevestig dat u door wilt gaan (wachtwoord van de alias element wordt vervangen door het wachtwoord van dit element)?"
+msgid ""
+"This entry has the following %d %s:\r\n"
+"%s\r\n"
+"Please confirm you wish to continue (alias entry's passwords will be replaced by this entry's password)?"
+msgstr ""
+"Deze vermelding heeft de volgende %d %s:\r\n"
+"%s\r\n"
+"SVP bevestig dat u door wilt gaan (wachtwoord van de alias vermelding wordt vervangen door het wachtwoord van deze vermelding)?"
 
 #. Resource IDs: (1429)
 msgid "This entry is protected."
@@ -5563,15 +5889,15 @@ msgstr ""
 
 #. Resource IDs: (329)
 msgid "This entry must have a password."
-msgstr "Dit element moet een wachtwoord hebben."
+msgstr "Deze vermelding moet een wachtwoord hebben."
 
 #. Resource IDs: (328)
 msgid "This entry must have a title."
-msgstr "Dit element moet een titel hebben."
+msgstr "Deze vermelding moet een titel hebben."
 
 #. Resource IDs: (344)
 msgid "This entry must have a valid target entry."
-msgstr "Dit element moet een geldig doel element hebben."
+msgstr "Deze vermelding moet een geldig doel vermelding hebben."
 
 #. Resource IDs: (353)
 msgid "This filter already exists"
@@ -5583,16 +5909,16 @@ msgstr "Dit is een dode toets. Druk deze in en daarna een van de combinatie toet
 
 #. Resource IDs: (357)
 msgid "This is a shortcut base entry."
-msgstr "Dit is een snelkoppeling naar een basis element."
+msgstr "Dit is een snelkoppeling naar een basis vermelding."
 
 #. Resource IDs: (357)
 msgid "This is an alias base entry."
-msgstr "Dit is een alias voor een basis element."
+msgstr "Dit is een alias voor een basis vermelding."
 
 #. Resource IDs: (357)
 #, c-format
 msgid "This is an alias of: '%s'"
-msgstr "Dit is een alias van: '%s'"
+msgstr ""
 
 #. Resource IDs: (3857)
 #, c-format
@@ -5607,17 +5933,31 @@ msgstr "Dit programma vereist het bestand %s, welke niet gevonden werd op deze c
 #. Resource IDs: (344)
 #, c-format
 msgid "This shortcut's target [%s:%s:%s] is not a normal entry or already a shortcut base."
-msgstr "Het doel van deze snelkoppeling [%s:%s:%s] is geen normaal element of is al het doel van een snelkoppeling"
+msgstr "Het doel van deze snelkoppeling [%s:%s:%s] is geen normale vermelding of is al het doel van een snelkoppeling"
 
 #. Resource IDs: (338)
 #, c-format
-msgid "This version of PasswordSafe does not support more than %d entries in a database.\nTo get an unlimited version for the U3 platform, please visit http://software.u3.com\nDo you want to open this database anyway?\n(Saving this database will result in the removal of unread entries!)"
-msgstr "Deze versie van PasswordSafe kan niet meer dan %d elementen bevatten in de database.\nEen versie voor het U3 platform zonder deze beperking kunt u verkrijgen op http://software.u3.com\nWilt u deze database toch openen?\n(Opslaan van deze database heeft tot gevolg dat alle ongelezen elementen verwijderd worden!)"
+msgid ""
+"This version of PasswordSafe does not support more than %d entries in a database.\n"
+"To get an unlimited version for the U3 platform, please visit http://software.u3.com\n"
+"Do you want to open this database anyway?\n"
+"(Saving this database will result in the removal of unread entries!)"
+msgstr ""
+"Deze versie van PasswordSafe kan niet meer dan %d vermeldingen bevatten in de database.\n"
+"Een versie voor het U3 platform zonder deze beperking kunt u verkrijgen op http://software.u3.com\n"
+"Wilt u deze database toch openen?\n"
+"(Opslaan van deze database heeft tot gevolg dat alle ongelezen vermeldingen verwijderd worden!)"
 
 #. Resource IDs: (338)
 #, c-format
-msgid "This version of PasswordSafe does not support more than %d entries in a database.\nTo get an unlimited version for the U3 platform, please visit http://software.u3.com\nNote: Saving this database will result in the removal of unread entries!"
-msgstr "Deze versie van PasswordSafe kan niet meer dan %d elementen bevatten in de database.\nEen versie voor het U3 platform zonder deze beperking kunt u verkrijgen op http://software.u3.com\nOpmerking: Opslaan van deze database heeft tot gevolg dat alle ongelezen elementen verwijderd worden!"
+msgid ""
+"This version of PasswordSafe does not support more than %d entries in a database.\n"
+"To get an unlimited version for the U3 platform, please visit http://software.u3.com\n"
+"Note: Saving this database will result in the removal of unread entries!"
+msgstr ""
+"Deze versie van PasswordSafe kan niet meer dan %d vermeldingen bevatten in de database.\n"
+"Een versie voor het U3 platform zonder deze beperking kunt u verkrijgen op http://software.u3.com\n"
+"Opmerking: Opslaan van deze database heeft tot gevolg dat alle ongelezen vermeldingen verwijderd worden!"
 
 #. Resource IDs: (320)
 msgid "This will allow you to migrate your settings from the configuration file in the PasswordSafe installation directory into a file in your own local Application Data directory at the next invocation of PasswordSafe."
@@ -5630,11 +5970,11 @@ msgstr "Dit verwijdert alle sporen van Password Safe van het register van deze c
 #. Resource IDs: (341)
 #, c-format
 msgid "This will delete %d entries which are within this group and its subgroups."
-msgstr "Hierdoor worden %d elementen verwijderd welke tot deze groep behoort en/of bijbehorende subgroepen."
+msgstr "Hierdoor worden %d vermeldingen verwijderd welke tot deze groep behoort en/of bijbehorende subgroepen."
 
 #. Resource IDs: (341)
 msgid "This will delete an entry which is within this group and/or its subgroups."
-msgstr "Hierdoor wordt een element verwijderd welke tot deze groep behoort en/of bijbehorende subgroepen"
+msgstr "Hierdoor wordt een vermelding verwijderd welke tot deze groep behoort en/of bijbehorende subgroepen"
 
 #. Resource IDs: (361)
 msgid "This will delete the selected Failsafe Backup file.  If Windows supports a Recycle Bin on this media (usually only local disks), it will be moved there.  If not, it will be permanently deleted."
@@ -5658,11 +5998,11 @@ msgstr "Titel gecopieerd"
 
 #. Resource IDs: (65535)
 msgid "To add a new entry, simply fill in the fields below. At least a title and a password are required. If you have set a default username, it will appear in the username field."
-msgstr "Om een nieuw element toe te voegen is het voldoende de velden hieronder in te vullen. Minimaal moet een titel en een wachtwoord op gegeven worden. Als u een standaard gebruikersnaam hebt gekozen zal deze te zien zijn in het gebruikersnaam veld."
+msgstr "Om een nieuw vermelding toe te voegen is het voldoende de velden hieronder in te vullen. Minimaal moet een titel en een wachtwoord op gegeven worden. Als u een standaard gebruikersnaam hebt gekozen zal deze te zien zijn in het gebruikersnaam veld."
 
 #. Resource IDs: (211)
 msgid "To replace passwords of existing entries, all the following columns must be present: Group/Title, Username and Password.  One or more are missing and no entries have been updated."
-msgstr "Om wachtwoorden te vervangen van bestande elementen, moeten de volgende kolommen zichtbaar zijn: Groep/Titel, Gebruikersnaam en Wachtwoord. Een of meer ontbreken en geen enkel element is aangepast."
+msgstr "Om wachtwoorden te vervangen van bestande vermeldingen, moeten de volgende kolommen zichtbaar zijn: Groep/Titel, Gebruikersnaam en Wachtwoord. Een of meer ontbreken en geen enkel vermelding is aangepast."
 
 #. Resource IDs: (363)
 msgid "To unprotect this entry, click on Close, use the Edit menu or right-click on the entry and select Unprotect."
@@ -5738,8 +6078,18 @@ msgid "Ukrainian (Enhanced)"
 msgstr "OekraÃƒÂ¯ens (Uitgebreid)"
 
 #. Resource IDs: (190)
-msgid "Unable to create a new XML configuration file or add your settings to an existing XML configuration file.\n\nAll application configuration settings will be saved in your registry entry on this computer.\n\nDatabase related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
-msgstr "Niet mogelijk om een nieuw XML configuratie bestand te creÃƒÂ«eren of om uw instellingen toe te voegen aan een bestaande XML configuratie bestand.\n\nAlle applicatie configuratie instellingen zullen op geslagen worden in uw register op deze computer.\n\nDatabase gerelateerde Instellingen zullen opgeslagen worden in de open database zodra deze afgesloten wordt. Aangenomen dat deze database niet alleen-lezen is of vergrendeld is door een andere gebruiker"
+msgid ""
+"Unable to create a new XML configuration file or add your settings to an existing XML configuration file.\n"
+"\n"
+"All application configuration settings will be saved in your registry entry on this computer.\n"
+"\n"
+"Database related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
+msgstr ""
+"Niet mogelijk om een nieuw XML configuratie bestand te creÃƒÂ«eren of om uw instellingen toe te voegen aan een bestaande XML configuratie bestand.\n"
+"\n"
+"Alle applicatie configuratie instellingen zullen op geslagen worden in uw register op deze computer.\n"
+"\n"
+"Database gerelateerde Instellingen zullen opgeslagen worden in de open database zodra deze afgesloten wordt. Aangenomen dat deze database niet alleen-lezen is of vergrendeld is door een andere gebruiker"
 
 #. Resource IDs: (337)
 msgid "Unable to create intermediate backup."
@@ -5750,13 +6100,25 @@ msgid "Unable to display URL"
 msgstr "Niet mogelijk om URL te tonen."
 
 #. Resource IDs: (190)
-msgid "Unable to get configuration file lock.\n\nWill use registry."
-msgstr "Niet mogelijk om vergrendeling van configuratie bestand te krijgen.\n\nZal register gebruiken."
+msgid ""
+"Unable to get configuration file lock.\n"
+"\n"
+"Will use registry."
+msgstr ""
+"Niet mogelijk om vergrendeling van configuratie bestand te krijgen.\n"
+"\n"
+"Zal register gebruiken."
 
 #. Resource IDs: (352)
 #, c-format
-msgid "Unable to import \"autoload_filters.xml\" filters.\n\n%s"
-msgstr "Niet mogelijk om \"autoload_filters.xml\" filters te importeren.\n\n%s"
+msgid ""
+"Unable to import \"autoload_filters.xml\" filters.\n"
+"\n"
+"%s"
+msgstr ""
+"Niet mogelijk om \"autoload_filters.xml\" filters te importeren.\n"
+"\n"
+"%s"
 
 #. Resource IDs: (191)
 msgid "Unable to load configuration file"
@@ -5792,8 +6154,18 @@ msgid "Unable to send email"
 msgstr "Niet mogelijk om e-mail te verzenden"
 
 #. Resource IDs: (190)
-msgid "Unable to update your entries in the existing XML configuration file.\n\nAll application configuration settings will be loaded from this file but no changes will be saved.\n\nDatabase related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
-msgstr "Niet mogelijk om uw elementen in de bestaande XML configuratie bestand bij te werken. \n\nAlle applicatie configuratie instellingen zullen geladen worden van dit bestand, maar wijzigingen kunnen niet opgeslagen worden.\n\nDe database gerelateerde instellingen zullen opgeslagen worden in de open database, zodra deze afgesloten wordt. Aangenomen dat deze database niet alleen-lezen is of vergrendeld is door een andere gebruiker."
+msgid ""
+"Unable to update your entries in the existing XML configuration file.\n"
+"\n"
+"All application configuration settings will be loaded from this file but no changes will be saved.\n"
+"\n"
+"Database related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
+msgstr ""
+"Niet mogelijk om uw vermeldingen in de bestaande XML configuratie bestand bij te werken. \n"
+"\n"
+"Alle applicatie configuratie instellingen zullen geladen worden van dit bestand, maar wijzigingen kunnen niet opgeslagen worden.\n"
+"\n"
+"De database gerelateerde instellingen zullen opgeslagen worden in de open database, zodra deze afgesloten wordt. Aangenomen dat deze database niet alleen-lezen is of vergrendeld is door een andere gebruiker."
 
 #. Resource IDs: (191)
 msgid "Unable to use a MS XML reader on your system.  Neither MS XML V3, V4 or V6 seems available."
@@ -5878,8 +6250,12 @@ msgstr ""
 
 #. Resource IDs: (358)
 #, c-format
-msgid "Unsaved changes have been made to database:\r\n %s."
-msgstr "Niet opgeslagen wijzigen gemaakt in de database:\r\n %s."
+msgid ""
+"Unsaved changes have been made to database:\r\n"
+" %s."
+msgstr ""
+"Niet opgeslagen wijzigen gemaakt in de database:\r\n"
+" %s."
 
 #. Resource IDs: (3841)
 msgid "Untitled"
@@ -5895,8 +6271,46 @@ msgid "Urdu"
 msgstr "Urdu"
 
 #. Resource IDs: (313)
-msgid "Usage: pwsafe [-r|-v] [password database]\nor pwsafe [-e|-d] filename\nor pwsafe [-c]\nor pwsafe [-s] [password database]\nor pwsafe -m\n\n where:\n  -r = open read-only\n  -v = validate & repair\n  -e/d = encrypt/decrypt file\n  -c = start closed i.e., no open database\n  -s = start silently (minimized)\n  -m = start minimized & closed\n\nIn addition, the following flags may be used:\n -u user (use user's preferences instead of login name)\n -h host (use host to look up preferences instead of the machine's name)\n -g config_file (use config_file instead of pwsafe.cfg)\n -q (don't complain about missing fonts, dlls, etc.)"
-msgstr "Gebruik: pwsafe [-r|-v] [wachtwoord database]\nof pwsafe [-e|-d] bestandsnaam\nof pwsafe [-c]\nof pwsafe [-s] [wachtwoord database]\nof pwsafe -m\n\n waarbij:\n  -r = open alleen lezen\n  -v = valideren & herstel\n  -e/d = encoderen/decoderen bestand\n  -c = start gesloten, d.w.z geen geopende database\n  -s = start stilzwijgend (geminimaliseerd)\n  -m = start  geminimaliseerd & gesloten\n\nAls toevoeging kunnen de volgende parameters gebruikt worden:\n -u gebruiker (gebruik gebruikers voorkeuren in plaats van login naam)\n -h host (gebruik de andere computers naam \"host\" in plaats van de naam van deze computer om de voorkeuren op te zoeken)\n -g config_bestand (gebruik  config_bestand in plaats van pwsafe.cfg)\n -q (niet klagen over ontbrekende fonts, dll's enzovoorts.)"
+msgid ""
+"Usage: pwsafe [-r|-v] [password database]\n"
+"or pwsafe [-e|-d] filename\n"
+"or pwsafe [-c]\n"
+"or pwsafe [-s] [password database]\n"
+"or pwsafe -m\n"
+"\n"
+" where:\n"
+"  -r = open read-only\n"
+"  -v = validate & repair\n"
+"  -e/d = encrypt/decrypt file\n"
+"  -c = start closed i.e., no open database\n"
+"  -s = start silently (minimized)\n"
+"  -m = start minimized & closed\n"
+"\n"
+"In addition, the following flags may be used:\n"
+" -u user (use user's preferences instead of login name)\n"
+" -h host (use host to look up preferences instead of the machine's name)\n"
+" -g config_file (use config_file instead of pwsafe.cfg)\n"
+" -q (don't complain about missing fonts, dlls, etc.)"
+msgstr ""
+"Gebruik: pwsafe [-r|-v] [wachtwoord database]\n"
+"of pwsafe [-e|-d] bestandsnaam\n"
+"of pwsafe [-c]\n"
+"of pwsafe [-s] [wachtwoord database]\n"
+"of pwsafe -m\n"
+"\n"
+" waarbij:\n"
+"  -r = open alleen lezen\n"
+"  -v = valideren & herstel\n"
+"  -e/d = encoderen/decoderen bestand\n"
+"  -c = start gesloten, d.w.z geen geopende database\n"
+"  -s = start stilzwijgend (geminimaliseerd)\n"
+"  -m = start  geminimaliseerd & gesloten\n"
+"\n"
+"Als toevoeging kunnen de volgende parameters gebruikt worden:\n"
+" -u gebruiker (gebruik gebruikers voorkeuren in plaats van login naam)\n"
+" -h host (gebruik de andere computers naam \"host\" in plaats van de naam van deze computer om de voorkeuren op te zoeken)\n"
+" -g config_bestand (gebruik  config_bestand in plaats van pwsafe.cfg)\n"
+" -q (niet klagen over ontbrekende fonts, dll's enzovoorts.)"
 
 #. Resource IDs: (1029)
 msgid "Use"
@@ -5944,7 +6358,7 @@ msgstr "Gebruik het onderstaande &Beleid:"
 
 #. Resource IDs: (320)
 msgid "Use the application specified here to browse when an entry's URL field starts with [alt], e.g., '[alt]http://foo.com'"
-msgstr "Gebruik de hier gespecificieerde applicatie als browser als een URL begint met [alt], bijvoorbeeld, '[alt]jttp://floo.com'"
+msgstr ""
 
 #. Resource IDs: (320)
 msgid "Use the application specified here to edit an entry's Notes field via the right-click context menu during Add/Edit."
@@ -5984,8 +6398,14 @@ msgstr "Valideren"
 
 #. Resource IDs: (335)
 #, c-format
-msgid "Validated %d %s\r\n\r\nImported %d %s"
-msgstr "Gevalideerd %d %s\r\n\r\nGeimporteerd %d %s"
+msgid ""
+"Validated %d %s\r\n"
+"\r\n"
+"Imported %d %s"
+msgstr ""
+"Gevalideerd %d %s\r\n"
+"\r\n"
+"Geomporteerd %d %s"
 
 #. Resource IDs: (1322)
 msgid "Value:"
@@ -6025,12 +6445,12 @@ msgstr "Bekijk Aliassen"
 
 #. Resource IDs: (330)
 msgid "View Entry"
-msgstr "Bekijk element"
+msgstr "Bekijk vermelding"
 
 #. Resource IDs: (330)
 #, c-format
 msgid "View Entry:   «%s» «%s» «%s»"
-msgstr ""
+msgstr "Bekijk vermelding: «%s» «%s» «%s»"
 
 #. Resource IDs: (157, 347)
 msgid "View Report"
@@ -6050,7 +6470,7 @@ msgstr "Bekijk een filter"
 
 #. Resource IDs: (325, 332)
 msgid "View/Edit selected entry"
-msgstr "Bekijk/Bewerk geselecteerd element"
+msgstr "Bekijk/Bewerk geselecteerd vermelding"
 
 #. Resource IDs: (32201)
 msgid "Visit Password Safe &website..."
@@ -6062,12 +6482,21 @@ msgstr ""
 
 #. Resource IDs: (363)
 #, c-format
-msgid "WARNING: This operation will create an unprotected copy of %s in the database. Deleting this copy after use is NOT sufficient.\r\n\r\nPlease do not use this option unless you understand and accept the risks. This option bypasses the security provided by this program."
+msgid ""
+"WARNING: This operation will create an unprotected copy of %s in the database. Deleting this copy after use is NOT sufficient.\r\n"
+"\r\n"
+"Please do not use this option unless you understand and accept the risks. This option bypasses the security provided by this program."
 msgstr ""
 
 #. Resource IDs: (341)
-msgid "WARNING: Use of an external editor may leave sensitive data on your hard disk.\n\nDo you wish to continue?"
-msgstr "Waarschuwing: door gebruik van een externe editor kan er gevoelige informaite op uw harde schijf komen.\n\nWilt u doorgaan?"
+msgid ""
+"WARNING: Use of an external editor may leave sensitive data on your hard disk.\n"
+"\n"
+"Do you wish to continue?"
+msgstr ""
+"Waarschuwing: door gebruik van een externe editor kan er gevoelige informaite op uw harde schijf komen.\n"
+"\n"
+"Wilt u doorgaan?"
 
 #. Resource IDs: (1232)
 msgid "Warn"
@@ -6079,8 +6508,18 @@ msgstr "Waarschuwing"
 
 #. Resource IDs: (213)
 #, c-format
-msgid "Warning - %d %s in your database may have one or more fields too large to display or edit.\r\n\r\nThe largest entry size found was ~%d %s.\r\n\r\nYou can use the Filter to selectively display these record(s)."
-msgstr "Waarschuwing - %d %s in de database kan een of meerdere velden hebben die te groot zijn om te tonen of te bewerken.\r\n\r\nDe grootste gevonden invoer was ~%d %s.\r\n\r\nU kunt de filter gebruiken om deze record(s) te selectief te tonen"
+msgid ""
+"Warning - %d %s in your database may have one or more fields too large to display or edit.\r\n"
+"\r\n"
+"The largest entry size found was ~%d %s.\r\n"
+"\r\n"
+"You can use the Filter to selectively display these record(s)."
+msgstr ""
+"Waarschuwing - %d %s in de database kan een of meerdere velden hebben die te groot zijn om te tonen of te bewerken.\r\n"
+"\r\n"
+"De grootste gevonden invoer was ~%d %s.\r\n"
+"\r\n"
+"U kunt de filter gebruiken om deze record(s) te selectief te tonen"
 
 #. Resource IDs: (363)
 msgid "Warning - excessive field contents"
@@ -6088,8 +6527,14 @@ msgstr "Waarschuwing -  extreme veld waardes"
 
 #. Resource IDs: (331)
 #, c-format
-msgid "Weak passphrase:\n\n %s"
-msgstr "Zwak wachtwoord: \n\n%s"
+msgid ""
+"Weak passphrase:\n"
+"\n"
+" %s"
+msgstr ""
+"Zwak wachtwoord: \n"
+"\n"
+"%s"
 
 #. Resource IDs: (361)
 msgid "What saved"
@@ -6129,20 +6574,32 @@ msgstr "Regelafbreuk Notities in Toevoegen && Bewerken"
 
 #. Resource IDs: (332)
 #, c-format
-msgid "Would you like to set \"%s\" as your default username?\n\nIt would then automatically be put in the dialog each time you add a new item."
-msgstr "Wilt u  \"%s\" gebruiken als uw standaard gebruikersnaam?\n\nDit wordt dan automatisch gebruikt elke keer dat u een nieuw element toevoegt"
+msgid ""
+"Would you like to set \"%s\" as your default username?\n"
+"\n"
+"It would then automatically be put in the dialog each time you add a new item."
+msgstr ""
+"Wilt u  \"%s\" gebruiken als uw standaard gebruikersnaam?\n"
+"\n"
+"Dit wordt dan automatisch gebruikt elke keer dat u een nieuwe vermelding toevoegt"
 
 #. Resource IDs: (333)
 msgid "Write Error"
 msgstr "Schrijf Fout"
 
 #. Resource IDs: (359)
-msgid "Write operation failed!\nFile may have been corrupted.\nTry saving in a different location"
-msgstr "Schrijf actie mislukt!\nBestand kan beschadigt zijn\nProbeer op te slaan in een andere folder"
+msgid ""
+"Write operation failed!\n"
+"File may have been corrupted.\n"
+"Try saving in a different location"
+msgstr ""
+"Schrijf actie mislukt!\n"
+"Bestand kan beschadigt zijn\n"
+"Probeer op te slaan in een andere folder"
 
 #. Resource IDs: (320)
 msgid "Write when an entry was accessed in the database. Ignored in read-only mode."
-msgstr "Schrijven nadat een element succesvol is bewerkt in de database. Genegeerd in alleen lezen modus."
+msgstr "Schrijven nadat een vermelding succesvol is bewerkt in de database. Genegeerd in alleen lezen modus."
 
 #. Resource IDs: (8003)
 msgid "X"
@@ -6208,332 +6665,652 @@ msgid "[Notes hidden - click here to display]"
 msgstr "[Notities verborgen - hier klikken om zichtbaar te maken]"
 
 #. Resource IDs: (2005)
-msgid "\nAdd Group"
-msgstr "\nGroep Toevoegen"
+msgid ""
+"\n"
+"Add Group"
+msgstr ""
+"\n"
+"Groep Toevoegen"
 
 #. Resource IDs: (2004)
-msgid "\nAdd New Entry"
-msgstr "\nNieuw element toevoegen"
+msgid ""
+"\n"
+"Add New Entry"
+msgstr ""
+"\n"
+"Nieuw vermelding toevoegen"
 
 #. Resource IDs: (2020)
-msgid "\nAdvanced Find Options"
-msgstr "\nGeavanceerde Zoek Opties"
+msgid ""
+"\n"
+"Advanced Find Options"
+msgstr ""
+"\n"
+"Geavanceerde Zoek Opties"
 
 #. Resource IDs: (2005)
-msgid "\nBrowse to URL"
-msgstr "\nURL bezoeken"
+msgid ""
+"\n"
+"Browse to URL"
+msgstr ""
+"\n"
+"URL bezoeken"
 
 #. Resource IDs: (2005)
-msgid "\nBrowse to URL + Autotype"
-msgstr "\nURL bezoeken en automatische invoer"
+msgid ""
+"\n"
+"Browse to URL + Autotype"
+msgstr ""
+"\n"
+"URL bezoeken en automatische invoer"
 
 #. Resource IDs: (2020)
-msgid "\nCase insensitive search"
-msgstr "\nHoofdletter ongevoelige zoekopdracht"
+msgid ""
+"\n"
+"Case insensitive search"
+msgstr ""
+"\n"
+"Hoofdletter ongevoelige zoekopdracht"
 
 #. Resource IDs: (2020)
-msgid "\nCase sensitive search"
-msgstr "\nHoofdletter gevoelige zoekopdracht"
+msgid ""
+"\n"
+"Case sensitive search"
+msgstr ""
+"\n"
+"Hoofdletter gevoelige zoekopdracht"
 
 #. Resource IDs: (2020)
-msgid "\nClear Find"
-msgstr "\nZoekveld wissen"
+msgid ""
+"\n"
+"Clear Find"
+msgstr ""
+"\n"
+"Zoekveld wissen"
 
 #. Resource IDs: (2004)
-msgid "\nClear the clipboard contents"
-msgstr "\nInhoud van het klemboard wissen"
+msgid ""
+"\n"
+"Clear the clipboard contents"
+msgstr ""
+"\n"
+"Inhoud van het klembord wissen"
 
 #. Resource IDs: (2001)
-msgid "\nClose Database"
-msgstr "\nDatabase afsluiten"
+msgid ""
+"\n"
+"Close Database"
+msgstr ""
+"\n"
+"Database afsluiten"
 
 #. Resource IDs: (2019)
-msgid "\nClose Find Bar"
-msgstr "\nZoek balk sluiten"
+msgid ""
+"\n"
+"Close Find Bar"
+msgstr ""
+"\n"
+"Zoek balk sluiten"
 
 #. Resource IDs: (2007)
-msgid "\nCollapse All"
-msgstr "\nAlles samenvouwen"
+msgid ""
+"\n"
+"Collapse All"
+msgstr ""
+"\n"
+"Alles samenvouwen"
 
 #. Resource IDs: (2002)
-msgid "\nCompare two Databases"
-msgstr "\nVergelijk twee databases"
+msgid ""
+"\n"
+"Compare two Databases"
+msgstr ""
+"\n"
+"Vergelijk twee databases"
 
 #. Resource IDs: (2004)
-msgid "\nCopy Notes to Clipboard"
-msgstr "\nKopieer Notities naar Klemboard"
+msgid ""
+"\n"
+"Copy Notes to Clipboard"
+msgstr ""
+"\n"
+"Kopieer Notities naar klembord"
 
 #. Resource IDs: (2004)
-msgid "\nCopy Password to Clipboard"
-msgstr "\nKopieer Wachtwoord naar Klemboard"
+msgid ""
+"\n"
+"Copy Password to Clipboard"
+msgstr ""
+"\n"
+"Kopieer Wachtwoord naar klembord"
 
 #. Resource IDs: (2006)
-msgid "\nCopy Run Command to Clipboard"
-msgstr "\nKopieer Commando Uitvoeren naar Klemboard"
+msgid ""
+"\n"
+"Copy Run Command to Clipboard"
+msgstr ""
+"\n"
+"Kopieer Commando Uitvoeren naar klembord"
 
 #. Resource IDs: (2004)
-msgid "\nCopy Username to Clipboard"
-msgstr "\nKopieer Gebruikersnaam naar Klemboard"
+msgid ""
+"\n"
+"Copy Username to Clipboard"
+msgstr ""
+"\n"
+"Kopieer Gebruikersnaam naar klembord"
 
 #. Resource IDs: (2020)
-msgid "\nCreate report of previous Find search"
-msgstr "\nCreÃƒÂ«er verslag van vorige zoek opdracht"
+msgid ""
+"\n"
+"Create report of previous Find search"
+msgstr ""
+"\n"
+"Creëer verslag van vorige zoek opdracht"
 
 #. Resource IDs: (2004)
-msgid "\nDelete an Entry"
-msgstr "\nVerwijder een element"
+msgid ""
+"\n"
+"Delete an Entry"
+msgstr ""
+"\n"
+"Verwijder een vermelding"
 
 #. Resource IDs: (2017)
-msgid "\nDisplay subset of Password"
-msgstr "\n Toon een deel van Wachtwoord"
+msgid ""
+"\n"
+"Display subset of Password"
+msgstr ""
+"\n"
+" Toon een deel van Wachtwoord"
 
 #. Resource IDs: (2004)
-msgid "\nDuplicate Entry"
-msgstr "\nDupliceer een element"
+msgid ""
+"\n"
+"Duplicate Entry"
+msgstr ""
+"\n"
+"Dupliceer een vermelding"
 
 #. Resource IDs: (2006)
-msgid "\nDuplicate Group"
-msgstr "\nVerdubbel Groep"
+msgid ""
+"\n"
+"Duplicate Group"
+msgstr ""
+"\n"
+"Verdubbel Groep"
 
 #. Resource IDs: (2006)
-msgid "\nEdit Base entry"
-msgstr "\nBewerk Basis element"
+msgid ""
+"\n"
+"Edit Base entry"
+msgstr ""
+"\n"
+"Bewerk Basis vermelding"
 
 #. Resource IDs: (2007)
-msgid "\nEdit Filters"
-msgstr "\nBewerk Filters"
+msgid ""
+"\n"
+"Edit Filters"
+msgstr ""
+"\n"
+"Bewerk Filters"
 
 #. Resource IDs: (2004)
-msgid "\nEdit an Entry"
-msgstr "\nBewerk een element"
+msgid ""
+"\n"
+"Edit an Entry"
+msgstr ""
+"\n"
+"Bewerk een vermelding"
 
 #. Resource IDs: (191)
 #, c-format
-msgid "\nError in Password History for entry: »%s»%s»%s»: "
+msgid ""
+"\n"
+"Error in Password History for entry: »%s»%s»%s»: "
 msgstr ""
+"\n"
+"Fout in Wachtwoord Geschiedenis voor vermelding: »%s»%s»%s»: "
 
 #. Resource IDs: (2007)
-msgid "\nExpand All"
-msgstr "\nAlles Tonen"
+msgid ""
+"\n"
+"Expand All"
+msgstr ""
+"\n"
+"Alles Tonen"
 
 #. Resource IDs: (2006)
-msgid "\nExport Entry in XML format..."
-msgstr "\nExporteer element in XML opmaak....."
+msgid ""
+"\n"
+"Export Entry in XML format..."
+msgstr ""
+"\n"
+"Exporteer vermelding in XML opmaak....."
 
 #. Resource IDs: (2006)
-msgid "\nExport Entry to Plain Text..."
-msgstr "\nExport element naar Gewone Tekst..."
+msgid ""
+"\n"
+"Export Entry to Plain Text..."
+msgstr ""
+"\n"
+"Export Vermelding naar Gewone Tekst..."
 
 #. Resource IDs: (2001)
-msgid "\nExport to Text"
-msgstr "\nExporteer naar Tekst"
+msgid ""
+"\n"
+"Export to Text"
+msgstr ""
+"\n"
+"Exporteer naar Tekst"
 
 #. Resource IDs: (2001)
-msgid "\nExport to XML"
-msgstr "\nExporteer naar XML"
+msgid ""
+"\n"
+"Export to XML"
+msgstr ""
+"\n"
+"Exporteer naar XML"
 
 #. Resource IDs: (2004)
-msgid "\nFind Next"
-msgstr "\nZoek Volgende"
+msgid ""
+"\n"
+"Find Next"
+msgstr ""
+"\n"
+"Zoek Volgende"
 
 #. Resource IDs: (2004)
-msgid "\nFind Previous"
-msgstr "\nZoek Vorige"
+msgid ""
+"\n"
+"Find Previous"
+msgstr ""
+"\n"
+"Zoek Vorige"
 
 #. Resource IDs: (2010)
-msgid "\nGenerate Password"
-msgstr "\nGenereer Wachtwoord"
+msgid ""
+"\n"
+"Generate Password"
+msgstr ""
+"\n"
+"Genereer Wachtwoord"
 
 #. Resource IDs: (2005)
-msgid "\nGo to Base entry"
-msgstr "\nGa naar Basis Onderwerp"
+msgid ""
+"\n"
+"Go to Base entry"
+msgstr ""
+"\n"
+"Ga naar Basis Onderwerp"
 
 #. Resource IDs: (3605)
-msgid "\nHelp"
-msgstr "\nHelp"
+msgid ""
+"\n"
+"Help"
+msgstr ""
+"\n"
+"Help"
 
 #. Resource IDs: (2002)
-msgid "\nImport Text"
-msgstr "\nImporteer Tekst"
+msgid ""
+"\n"
+"Import Text"
+msgstr ""
+"\n"
+"Importeer Tekst"
 
 #. Resource IDs: (2001)
-msgid "\nImport XML"
-msgstr "\nImporteer XML"
+msgid ""
+"\n"
+"Import XML"
+msgstr ""
+"\n"
+"Importeer XML"
 
 #. Resource IDs: (2017)
-msgid "\nList View/Tree View"
-msgstr "\nLijs tonen/Boomstructuur tonen"
+msgid ""
+"\n"
+"List View/Tree View"
+msgstr ""
+"\n"
+"Lijs tonen/Boomstructuur tonen"
 
 #. Resource IDs: (2001)
-msgid "\nMake New Database"
-msgstr "\nNieuwe Database Maken"
+msgid ""
+"\n"
+"Make New Database"
+msgstr ""
+"\n"
+"Nieuwe Database Maken"
 
 #. Resource IDs: (2008)
-msgid "\nManage Filters"
-msgstr "\nBeheer Filters"
+msgid ""
+"\n"
+"Manage Filters"
+msgstr ""
+"\n"
+"Beheer Filters"
 
 #. Resource IDs: (2002)
-msgid "\nMerge into Database"
-msgstr "\nSamenvoegen in Database"
+msgid ""
+"\n"
+"Merge into Database"
+msgstr ""
+"\n"
+"Samenvoegen in Database"
 
 #. Resource IDs: (2001)
-msgid "\nOpen Another Database"
-msgstr "\nOpen Andere Database"
+msgid ""
+"\n"
+"Open Another Database"
+msgstr ""
+"\n"
+"Open Andere Database"
 
 #. Resource IDs: (2010)
-msgid "\nOptions"
-msgstr "\nOpties"
+msgid ""
+"\n"
+"Options"
+msgstr ""
+"\n"
+"Opties"
 
 #. Resource IDs: (2004)
-msgid "\nPerform Autotype"
-msgstr "\nAuto Invoer uitvoeren"
+msgid ""
+"\n"
+"Perform Autotype"
+msgstr ""
+"\n"
+"Auto Invoer uitvoeren"
 
 #. Resource IDs: (331)
-msgid "\nPlease try another"
-msgstr "\nSVP een andere proberen"
+msgid ""
+"\n"
+"Please try another"
+msgstr ""
+"\n"
+"SVP een andere proberen"
 
 #. Resource IDs: (326)
-msgid "\nProgram will terminate."
-msgstr "\nProgramma wordt beÃƒÂ«indigd"
+msgid ""
+"\n"
+"Program will terminate."
+msgstr ""
+"\n"
+"Programma wordt beÃƒÂ«indigd"
 
 #. Resource IDs: (2006)
-msgid "\nProtect All Entries"
+msgid ""
+"\n"
+"Protect All Entries"
 msgstr ""
 
 #. Resource IDs: (2006)
-msgid "\nProtect Entry"
+msgid ""
+"\n"
+"Protect Entry"
 msgstr ""
 
 #. Resource IDs: (2006)
-msgid "\nRedo"
-msgstr "\nOpnieuw"
+msgid ""
+"\n"
+"Redo"
+msgstr ""
+"\n"
+"Opnieuw"
 
 #. Resource IDs: (362)
 #, c-format
-msgid "\nRenamed %d %s"
-msgstr "\nHernoemd %d %s"
+msgid ""
+"\n"
+"Renamed %d %s"
+msgstr ""
+"\n"
+"Hernoemd %d %s"
 
 #. Resource IDs: (2005)
-msgid "\nRun Command"
-msgstr "\nUitvoer Commando"
+msgid ""
+"\n"
+"Run Command"
+msgstr ""
+"\n"
+"Uitvoer Commando"
 
 #. Resource IDs: (2001)
-msgid "\nSave Database"
-msgstr "\nDatabase Opslaan"
+msgid ""
+"\n"
+"Save Database"
+msgstr ""
+"\n"
+"Database Opslaan"
 
 #. Resource IDs: (2001)
-msgid "\nSave Database As..."
-msgstr "\nDatabase Opslaan Als"
+msgid ""
+"\n"
+"Save Database As..."
+msgstr ""
+"\n"
+"Database Opslaan Als"
 
 #. Resource IDs: (2016)
-msgid "\nSelect Entry"
-msgstr "\nKies Invoer"
+msgid ""
+"\n"
+"Select Entry"
+msgstr ""
+"\n"
+"Kies Invoer"
 
 #. Resource IDs: (2005)
-msgid "\nSend email"
-msgstr "\nVerstuur email"
+msgid ""
+"\n"
+"Send email"
+msgstr ""
+"\n"
+"Verstuur email"
 
 #. Resource IDs: (2008)
-msgid "\nSet/Clear Filters"
-msgstr "\nInstellen/Verwijderen Filters"
+msgid ""
+"\n"
+"Set/Clear Filters"
+msgstr ""
+"\n"
+"Instellen/Verwijderen Filters"
 
 #. Resource IDs: (2007)
-msgid "\nShow Find Toolbar"
-msgstr "\nToon Zoeken Werkbalk"
+msgid ""
+"\n"
+"Show Find Toolbar"
+msgstr ""
+"\n"
+"Toon Zoeken Werkbalk"
 
 #. Resource IDs: (2008)
-msgid "\nShow Unsaved Changes"
-msgstr "\nToon Niet Opgeslagen Veranderingen"
+msgid ""
+"\n"
+"Show Unsaved Changes"
+msgstr ""
+"\n"
+"Toon Niet Opgeslagen Veranderingen"
 
 #. Resource IDs: (2009)
-msgid "\nShow entries with Password Expiry dates"
+msgid ""
+"\n"
+"Show entries with Password Expiry dates"
 msgstr ""
 
 #. Resource IDs: (334)
 #, c-format
-msgid "\nSkipped %d %s"
-msgstr "\nOvergeslagen %d %s"
+msgid ""
+"\n"
+"Skipped %d %s"
+msgstr ""
+"\n"
+"Overgeslagen %d %s"
 
 #. Resource IDs: (2002)
-msgid "\nSynchronize Databases"
+msgid ""
+"\n"
+"Synchronize Databases"
 msgstr ""
 
 #. Resource IDs: (2006)
-msgid "\nUndo"
-msgstr "\nOngedaan Maken"
+msgid ""
+"\n"
+"Undo"
+msgstr ""
+"\n"
+"Ongedaan Maken"
 
 #. Resource IDs: (192)
-msgid "\nUnexpected exception during parsing."
-msgstr "\nOnverwachte Uitzondering tijdens opdelen"
+msgid ""
+"\n"
+"Unexpected exception during parsing."
+msgstr ""
+"\n"
+"Onverwachte Uitzondering tijdens opdelen"
 
 #. Resource IDs: (2006)
-msgid "\nUnprotect All Entries"
+msgid ""
+"\n"
+"Unprotect All Entries"
 msgstr ""
 
 #. Resource IDs: (2006)
-msgid "\nUnprotect Entry"
+msgid ""
+"\n"
+"Unprotect Entry"
 msgstr ""
 
 #. Resource IDs: (331)
-msgid "\nUse it anyway?"
-msgstr "\nToch gebruiken?"
+msgid ""
+"\n"
+"Use it anyway?"
+msgstr ""
+"\n"
+"Toch gebruiken?"
 
 #. Resource IDs: (2017)
-msgid "\nView Reports"
-msgstr "\nBekijk Rapporten"
+msgid ""
+"\n"
+"View Reports"
+msgstr ""
+"\n"
+"Bekijk Rapporten"
 
 #. Resource IDs: (328)
-msgid "\n\nCannot open database. It probably does not exist.\nPlease select to Open another database, create a New database or Cancel."
-msgstr "\n\nKan database niet openen. Het bestaat waarschijnlijk niet. \nSVP kiezen uit Open een andere database, creÃƒÂ«er een Nieuwe database of Annuleren"
+msgid ""
+"\n"
+"\n"
+"Cannot open database. It probably does not exist.\n"
+"Please select to Open another database, create a New database or Cancel."
+msgstr ""
+"\n"
+"\n"
+"Kan database niet openen. Het bestaat waarschijnlijk niet. \n"
+"SVP kiezen uit Open een andere database, creÃƒÂ«er een Nieuwe database of Annuleren"
 
 #. Resource IDs: (354)
-msgid "\n\nIgnore this and save anyway - Yes/no?"
-msgstr "\n\nNegeer dit en toch opslaan - Ja/nee?"
+msgid ""
+"\n"
+"\n"
+"Ignore this and save anyway - Yes/no?"
+msgstr ""
+"\n"
+"\n"
+"Negeer dit en toch opslaan - Ja/nee?"
 
 #. Resource IDs: (335)
-msgid "\n\nThe databases are identical when comparing the selected or default fields!"
-msgstr "\n\nDe databases zijn identiek als de geselecteerde of standaard velden vergeleken worden!"
+msgid ""
+"\n"
+"\n"
+"The databases are identical when comparing the selected or default fields!"
+msgstr ""
+"\n"
+"\n"
+"De databases zijn identiek als de geselecteerde of standaard velden vergeleken worden!"
 
 #. Resource IDs: (341)
-msgid "\n\nUnknown fields will also be copied with the entry."
-msgstr "\n\nOnbekende velden worden ook gekopieerd met dit element"
+msgid ""
+"\n"
+"\n"
+"Unknown fields will also be copied with the entry."
+msgstr ""
+"\n"
+"\n"
+"Onbekende velden worden ook gekopieerd met deze vermelding"
 
 #. Resource IDs: (362)
 #, c-format
-msgid "\nwith Password History errors %d"
-msgstr "\nmet Wachtwoord Geschiedenis fouten %d"
+msgid ""
+"\n"
+"with Password History errors %d"
+msgstr ""
+"\n"
+"met Wachtwoord Geschiedenis fouten %d"
 
 #. Resource IDs: (214)
 #, c-format
-msgid "\r\nMerge completed: %d %s added (%d %s, %d %s, %d %s)"
+msgid ""
+"\r\n"
+"Merge completed: %d %s added (%d %s, %d %s, %d %s)"
 msgstr ""
 
 #. Resource IDs: (360)
 #, c-format
-msgid "\r\nSynchronize completed: %d %s updated"
-msgstr "\r\nSynchronisatie volledig: %d %s bijgewerkt"
+msgid ""
+"\r\n"
+"Synchronize completed: %d %s updated"
+msgstr ""
+"\r\n"
+"Synchronisatie volledig: %d %s bijgewerkt"
 
 #. Resource IDs: (360)
 #, c-format
-msgid "\r\nThe following %s %s updated:"
-msgstr "\r\nDe volgende %s %s bijgewerkt:"
+msgid ""
+"\r\n"
+"The following %s %s updated:"
+msgstr ""
+"\r\n"
+"De volgende %s %s bijgewerkt:"
 
 #. Resource IDs: (357)
 #, c-format
-msgid "\r\nThe following new %s %s merged into this database:"
-msgstr "\r\nDe volgende nieuwe %s %s samengevoegd in deze database:"
+msgid ""
+"\r\n"
+"The following new %s %s merged into this database:"
+msgstr ""
+"\r\n"
+"De volgende nieuwe %s %s samengevoegd in deze database:"
 
 #. Resource IDs: (341)
-msgid "\r\nThis field is being edited in your\r\ndefault text editor."
-msgstr "\r\nDit veld wordt bewerkt in uw\r\nstandaard tekst bewerker."
+msgid ""
+"\r\n"
+"This field is being edited in your\r\n"
+"default text editor."
+msgstr ""
+"\r\n"
+"Dit veld wordt bewerkt in uw\r\n"
+"standaard tekst bewerker."
 
 #. Resource IDs: (342)
-msgid "\r\n\r\nSelect Yes to continue with this password or No to cancel?"
-msgstr "\r\n\r\nKies Ja om door te gaan met dit wachtwoord of Nee om te annuleren?"
+msgid ""
+"\r\n"
+"\r\n"
+"Select Yes to continue with this password or No to cancel?"
+msgstr ""
+"\r\n"
+"\r\n"
+"Kies Ja om door te gaan met dit wachtwoord of Nee om te annuleren?"
 
 #. Resource IDs: (345)
-msgid "\r\nemail: "
-msgstr "\r\ne-mail: "
+msgid ""
+"\r\n"
+"email: "
+msgstr ""
+"\r\n"
+"e-mail: "
 
 #. Resource IDs: (346)
 #, c-format
@@ -6542,13 +7319,17 @@ msgstr "\t%s was beperkt tot de volgende velden:"
 
 #. Resource IDs: (336)
 #, c-format
-msgid "\tEntry - Group:\"%s\"; Title:\"%s\"; User:\"%s\"\r\n\t\thas differences in the following fields:"
-msgstr "\t Onderwerp-Groep:\"%s\";Titel:\"%s\";Gebruiker:\"%s\"\r\n\t\t heeft verschillen in de volgende velden:"
+msgid ""
+"\tEntry - Group:\"%s\"; Title:\"%s\"; User:\"%s\"\r\n"
+"\t\thas differences in the following fields:"
+msgstr ""
+"\t Onderwerp-Groep:\"%s\";Titel:\"%s\";Gebruiker:\"%s\"\r\n"
+"\t\t heeft verschillen in de volgende velden:"
 
 #. Resource IDs: (335)
 #, c-format
 msgid "\tGroup:'%s'; Title:'%s'; User:'%s'"
-msgstr "\tGroep:'%s'; Titel:'%s'; Gebruiker:'%s'"
+msgstr ""
 
 #. Resource IDs: (212)
 #, c-format
@@ -6558,41 +7339,45 @@ msgstr "\tGroep='%s', Titel='%s', Gebruiker='%s' %s"
 #. Resource IDs: (347)
 #, c-format
 msgid "\tNo entries were found containing search string : '%s'"
-msgstr "\tGeen elementen gevonden die de zoek tekst bevatten: '%s'"
+msgstr ""
 
 #. Resource IDs: (347)
 #, c-format
 msgid "\tThe following entries were found containing search string : '%s'"
-msgstr "\tDe volgende elementen werden gevonden die de zoek tekst bevatten: '%s'"
+msgstr ""
 
 #. Resource IDs: (346)
 #, c-format
-msgid "\tThe following restrictions were selected:\r\n\t\t %s"
-msgstr "\tDe volgende beperkingen zijn geselecteerd:\r\n\t\t %s"
+msgid ""
+"\tThe following restrictions were selected:\r\n"
+"\t\t %s"
+msgstr ""
+"\tDe volgende beperkingen zijn geselecteerd:\r\n"
+"\t\t %s"
 
 #. Resource IDs: (205)
 msgid "\tThis entry has been made an alias of associated base entry."
-msgstr "\tDit element is een alias gemaakt van het geassocieerde basis element"
+msgstr "\tDeze vermelding is een alias gemaakt van het geassocieerde basis vermelding"
 
 #. Resource IDs: (205)
 msgid "\tThis entry remains a normal entry and the password has not been changed."
-msgstr "\tDit element blijft een gewoon element en het wachtwoord is niet gewijzigd"
+msgstr "\tDeze vermelding blijft een gewone vermelding en het wachtwoord is niet gewijzigd"
 
 #. Resource IDs: (206)
 msgid "a base entry of a shortcut"
-msgstr "een basis element van een snelkoppeling"
+msgstr "een basis vermelding van een snelkoppeling"
 
 #. Resource IDs: (206)
 msgid "a base entry of an alias"
-msgstr "een basis element van een alias"
+msgstr "een basis vermelding van een alias"
 
 #. Resource IDs: (206)
 msgid "a normal entry"
-msgstr "een normaal element"
+msgstr "een normale vermelding"
 
 #. Resource IDs: (206)
 msgid "a shortcut entry"
-msgstr "een snelkoppeling element"
+msgstr "een snelkoppeling vermelding"
 
 #. Resource IDs: (211)
 msgid "added but not yet saved to database"
@@ -6612,7 +7397,7 @@ msgstr "aliassen"
 
 #. Resource IDs: (206)
 msgid "an alias entry"
-msgstr "een alias element"
+msgstr "een alias vermelding"
 
 #. Resource IDs: (3841)
 msgid "an unnamed file"
@@ -6628,7 +7413,7 @@ msgstr "als standaard gebruikersnaam"
 
 #. Resource IDs: (190)
 msgid "autotype:"
-msgstr "auto invoer:"
+msgstr "automatische invoer:"
 
 #. Resource IDs: (207)
 msgid "before"
@@ -6736,11 +7521,11 @@ msgstr "eindigt met"
 
 #. Resource IDs: (344)
 msgid "entries"
-msgstr "elemente"
+msgstr "vermeldingen"
 
 #. Resource IDs: (344)
 msgid "entry"
-msgstr "element"
+msgstr "vermelding"
 
 #. Resource IDs: (206)
 msgid "equals"
@@ -6849,37 +7634,37 @@ msgstr "minuten inactief"
 #. Resource IDs: (342)
 #, c-format
 msgid "multiple entries exist with title=%s and username=%s or with group=%s and title=%s."
-msgstr "meerdere elementen bestaan met titel=%s en gebruikersnaam=%s of met groep=%s en titel=%s."
+msgstr "meerdere vermeldingen bestaan met titel=%s en gebruikersnaam=%s of met groep=%s en titel=%s."
 
 #. Resource IDs: (342)
 #, c-format
 msgid "multiple entries exist with title=%s."
-msgstr "meerdere elementen bestaan met titel=%s"
+msgstr "meerdere vermeldingen bestaan met titel=%s"
 
 #. Resource IDs: (342)
 #, c-format
 msgid "no entry exists in the root with title=%s and username=%s."
-msgstr "in de basis bestaat geen element met titel=%s en gebruikersnaam=%s."
+msgstr "in de basis bestaat geen vermelding met titel=%s en gebruikersnaam=%s."
 
 #. Resource IDs: (342)
 #, c-format
 msgid "no entry exists with group=%s, title=%s and empty username."
-msgstr "er bestaat geen element met groep=%s, titel=%s en een lege gebruikersnaam."
+msgstr "er bestaat geen vermelding met groep=%s, titel=%s en een lege gebruikersnaam."
 
 #. Resource IDs: (342)
 #, c-format
 msgid "no entry exists with group=%s, title=%s and username=%s."
-msgstr "er bestaat geen element met groep=%s, titel=%s en gebruikersnaam=%s."
+msgstr "er bestaat geen vermelding met groep=%s, titel=%s en gebruikersnaam=%s."
 
 #. Resource IDs: (342)
 #, c-format
 msgid "no entry exists with title=%s and username=%s or with group=%s, title=%s."
-msgstr "er bestaat geen element met titel=%s en gebruikersnaam=%s of met groep=%s, titel=%s. "
+msgstr "er bestaat geen vermelding met titel=%s en gebruikersnaam=%s of met groep=%s, titel=%s. "
 
 #. Resource IDs: (342)
 #, c-format
 msgid "no entry exists with title=%s."
-msgstr "er bestaat geen element met titel=%s."
+msgstr "er bestaat geen vermelding met titel=%s."
 
 #. Resource IDs: (204)
 #, c-format
@@ -6896,7 +7681,7 @@ msgstr "pixels"
 
 #. Resource IDs: (65535)
 msgid "previous passwords per entry"
-msgstr "vorige wachtwoorden per element"
+msgstr "vorige wachtwoorden per vermelding"
 
 #. Resource IDs: (338)
 msgid "pwsafe"
@@ -6950,7 +7735,7 @@ msgstr "bovenkant"
 
 #. Resource IDs: (1098)
 msgid "used entries in System Tray menu."
-msgstr "gebruikte element in Taakbalk menu:"
+msgstr "gebruikte vermelding in Taakbalk menu:"
 
 #. Resource IDs: (32011)
 msgid "v&1.x format..."
