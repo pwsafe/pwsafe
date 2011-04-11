@@ -313,7 +313,7 @@ msgstr "%d z %d jest identycznych."
 #. Resource IDs: (366)
 #, c-format
 msgid "%s (database-specific)"
-msgstr ""
+msgstr "%s (specyficzny dla bazy danych)"
 
 #. Resource IDs: (3887)
 #, c-format
@@ -599,7 +599,7 @@ msgstr "&Importuj"
 
 #. Resource IDs: (1228)
 msgid "&In"
-msgstr ""
+msgstr "W"
 
 #. Resource IDs: (1143)
 msgid "&Keep"
@@ -647,7 +647,7 @@ msgstr "&Nie"
 
 #. Resource IDs: (1229)
 msgid "&None"
-msgstr ""
+msgstr "Żade&n"
 
 #. Resource IDs: (1354, 65535)
 msgid "&Notes:"
@@ -655,7 +655,7 @@ msgstr "&Notatki:"
 
 #. Resource IDs: (1227)
 msgid "&On"
-msgstr ""
+msgstr "Włącz&ony"
 
 #. Resource IDs: (360)
 msgid "&Open"
@@ -2251,7 +2251,7 @@ msgstr "Daty i czas"
 
 #. Resource IDs: (65535)
 msgid "Default"
-msgstr ""
+msgstr "Domyślny"
 
 #. Resource IDs: (65535)
 msgid "Default Autotype string:"
@@ -2267,7 +2267,7 @@ msgstr "Domyślna liczba zapisanych wpisów historii haseł musi być między 1 
 
 #. Resource IDs: (1438)
 msgid "Default set"
-msgstr "Zbiór domyślny"
+msgstr "Ustawienia domyślne"
 
 #. Resource IDs: (352)
 msgid "Delete"
@@ -2844,11 +2844,11 @@ msgstr "Nie udało się zapisać dokumentu."
 
 #. Resource IDs: (361)
 msgid "Failsafe Backup Deletion"
-msgstr ""
+msgstr "Kasowanie kopii zapasowej Failsafe"
 
 #. Resource IDs: (164)
 msgid "Failsafe Backup Files"
-msgstr ""
+msgstr "Pliki kopii zapasowej Failsafe"
 
 #. Resource IDs: (209)
 msgid "Fatal Error"
@@ -3337,36 +3337,36 @@ msgstr "Znak określający ogranicznik musi zostać wprowadzony!"
 
 #. Resource IDs: (361)
 msgid "If the passphrase is the same as the currently opened database, properties of this backup are shown."
-msgstr ""
+msgstr "Jeśli fraza hasła jest taka sama jak do aktualnie otworzonej bazy danych, właściwości tej kopii zapasowej są pokazane."
 
 #. Resource IDs: (361)
 msgid "If this is the first database opened on the startup of PasswordSafe, PasswordSafe will exit.  If not, the new open will be cancelled and the existing opened database, if any, will remain open."
-msgstr ""
+msgstr "Jeśli jest to pierwsza otworzona baza danych w czasie uruchamiania Password Safa, Passowrd safe zakończy pracę.  Jesli nie, nowe otworzonenie zostanie anulowane, a istniejąca, otworzona baza danych pozostanie otwarta."
 
 #. Resource IDs: (510)
 #, c-format
 msgid "If this keyboard supports characters via the %s, then this key will be enabled and can be used to select them.\n\nYou may need to also select the Shift key to see them."
-msgstr ""
+msgstr "Jeśli ta klawiatura obsługuje znaki poprzez %s, wtedy ten klawisz zostanie włąćzony i może być użyty do wyboru.\n\nMożesz także potrzebować klawisza Shift, by je zobaczyć."
 
 #. Resource IDs: (517)
 msgid "Igbo"
-msgstr ""
+msgstr "Igbo"
 
 #. Resource IDs: (361)
 msgid "Ignore all Failsafe Backup files and continue with the currently selected database."
-msgstr ""
+msgstr "Ignoruj wszystkie kopie zapasowe Failsafe i kontynuuj z obecnie wybraną bazą danych."
 
 #. Resource IDs: (32014)
 msgid "Import &From"
-msgstr ""
+msgstr "Import z"
 
 #. Resource IDs: (32120)
 msgid "Import &Text"
-msgstr ""
+msgstr "Import &tekstu"
 
 #. Resource IDs: (32121)
 msgid "Import &XML"
-msgstr ""
+msgstr "Import &XML"
 
 #. Resource IDs: (125)
 msgid "Import Text Settings"
@@ -3386,7 +3386,7 @@ msgstr "Import XML nie powiódł się"
 
 #. Resource IDs: (1398)
 msgid "Import to change passwords of existing entries ONLY"
-msgstr ""
+msgstr "Import by zmienić hasła TYLKO dla istniejących wpisów"
 
 #. Resource IDs: (65535)
 msgid "Import under Group?"
@@ -3424,7 +3424,7 @@ msgstr "Nieprawidłowe hasło"
 
 #. Resource IDs: (3857)
 msgid "Incorrect filename."
-msgstr ""
+msgstr "Nieprawidłowa nazwa pliku."
 
 #. Resource IDs: (331)
 msgid "Incorrect passkey, not a PasswordSafe database, or a corrupt database. (Backup database has same name as original, ending with '~')"
@@ -3445,7 +3445,7 @@ msgstr "Podana wartość jest większa od długości hasła (%d)."
 
 #. Resource IDs: (210)
 msgid "Index is invalid or missing"
-msgstr ""
+msgstr "Indeks jest nieprawidłowy"
 
 #. Resource IDs: (353)
 msgid "Index must be greater than or equal to 1."
@@ -3453,11 +3453,11 @@ msgstr "Wartość musi być większa lub równa 1."
 
 #. Resource IDs: (210)
 msgid "Index not numeric"
-msgstr ""
+msgstr "Indeks nie jest numeryczny"
 
 #. Resource IDs: (65535)
 msgid "Initial Tree View"
-msgstr ""
+msgstr "Wstępny widok drzewa"
 
 #. Resource IDs: (65535)
 msgid "Initial system tray icon"
@@ -3465,7 +3465,7 @@ msgstr "Ikona w zasobniku"
 
 #. Resource IDs: (210)
 msgid "Input string is empty"
-msgstr ""
+msgstr "Napis wejściowy jest pusty"
 
 #. Resource IDs: (8085)
 msgid "Insert"
@@ -3546,7 +3546,7 @@ msgstr "KBajtów"
 
 #. Resource IDs: (516)
 msgid "Kannada"
-msgstr ""
+msgstr "Kannada"
 
 #. Resource IDs: (516)
 msgid "Kazakh"
@@ -3633,7 +3633,7 @@ msgstr "Liczba znaków w haśle generowanym w formacie szesnastkowym musi być p
 #. Resource IDs: (204)
 #, c-format
 msgid "Line %d skipped - Only %d fields found, whereas parsing the Header says there should be %d."
-msgstr ""
+msgstr "Linia %d ominęta - znaleziono tylko %d pól, podczas gdy parsowanie nagłówka wykazało, że powinno ich być %d."
 
 #. Resource IDs: (205)
 #, c-format
@@ -3717,11 +3717,11 @@ msgstr "Maoryski"
 
 #. Resource IDs: (517)
 msgid "Marathi"
-msgstr ""
+msgstr "Maratki"
 
 #. Resource IDs: (1212)
 msgid "Max."
-msgstr "Max."
+msgstr "Maks."
 
 #. Resource IDs: (338)
 #, fuzzy
@@ -3837,7 +3837,7 @@ msgstr "N/A"
 
 #. Resource IDs: (65535)
 msgid "NOTE: Changing this entry's own password will make this a normal entry and break the link with its base?"
-msgstr ""
+msgstr "Uwaga: zmiana własnego hasła tego wpisu spowoduje, że będzie to normalny wpis z link z wpisem bazowym zostanie stracony."
 
 #. Resource IDs: (353)
 msgid "Name"
@@ -3849,7 +3849,7 @@ msgstr "Nazwa. Nazwa. Nazwa."
 
 #. Resource IDs: (32103)
 msgid "Nested &Tree"
-msgstr ""
+msgstr "Zagnieżdzone drzewo"
 
 #. Resource IDs: (328)
 msgid "Never"
@@ -4028,7 +4028,7 @@ msgstr "Uwaga: Format wpisu to »grupa»nazwa»nazwa użytkownika»"
 
 #. Resource IDs: (211)
 msgid "Note: These preferences are only used when importing into an empty database."
-msgstr ""
+msgstr "Uwaga: te ustawienia są używane wyłącznie podczas importu do pustej bazy."
 
 #. Resource IDs: (189, 327)
 msgid "Notes"
@@ -4173,7 +4173,7 @@ msgstr "Wartość oryginalna:"
 
 #. Resource IDs: (516)
 msgid "Oriya"
-msgstr ""
+msgstr "Orija"
 
 #. Resource IDs: (1081, 1201, 1207)
 #, fuzzy
@@ -4212,11 +4212,11 @@ msgstr ""
 
 #. Resource IDs: (360)
 msgid "Passphrase"
-msgstr ""
+msgstr "Fraza hasła"
 
 #. Resource IDs: (65535)
 msgid "Passphrase character count:"
-msgstr ""
+msgstr "Minimalna liczba znaków frazy hasła:"
 
 #. Resource IDs: (327)
 msgid "Password"
@@ -4244,7 +4244,7 @@ msgstr "Przedział wygasania Haseł"
 
 #. Resource IDs: (360)
 msgid "Password Generated based on displayed policy"
-msgstr ""
+msgstr "Hasło stworzone na podstawie wyświetlonej polisy"
 
 #. Resource IDs: (120, 140, 340, 350)
 msgid "Password History"
@@ -4285,23 +4285,23 @@ msgstr "Password Safe - <Przywrócona kopia zapasowa bez nazwy>"
 
 #. Resource IDs: (317)
 msgid "Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak||"
-msgstr ""
+msgstr "Kopie zapasowe Password Safe(*.bak)|*.bak|Pośrednie kopie zapasowe Password Safe (*.ibak)|*.ibak||"
 
 #. Resource IDs: (317)
 msgid "Password Safe Backups (*.bak)|*.bak||"
-msgstr ""
+msgstr "Kopie zapasowe Password Safe (*.bak)|*.bak||"
 
 #. Resource IDs: (316)
 msgid "Password Safe Databases (*.psafe3)|*.psafe3|All files (*.*)|*.*||"
-msgstr ""
+msgstr "Bazy danych Password Safe (*.psafe3)|*.psafe3|Wszystkie pliki (*.*)|*.*||"
 
 #. Resource IDs: (316)
 msgid "Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|All files (*.*)|*.*||"
-msgstr ""
+msgstr "Bazy danych Password Safe (*.psafe3; *.dat)|*.psafe3; *.dat|Wszystkie pliki (*.*)|*.*||"
 
 #. Resource IDs: (316)
 msgid "Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All files (*.*)|*.*||"
-msgstr ""
+msgstr "Bazy danych Password Safe (*.psafe3; *.dat)|*.psafe3; *.dat|Kopie zapasowe Password Safe (*.bak)|*.bak|Pośrednie kopie zapasowe Password Safe (*.ibak)|*.ibak|Wszystkie pliki (*.*)|*.*||"
 
 #. Resource IDs: (326)
 #, c-format
@@ -4355,7 +4355,7 @@ msgstr "W haśle powinny występować wielki i małe litery, przynajmnej jedna c
 #. Resource IDs: (358)
 #, c-format
 msgid "PasswordSafe V%d.%d.%d (Build %s) has had an error."
-msgstr ""
+msgstr "PasswordSafe V%d.%d.%d (Build %s) miał błąd."
 
 #. Resource IDs: (364)
 msgid "PasswordSafe: Entries exist with expired or about to be expired passwords"
@@ -4363,7 +4363,7 @@ msgstr ""
 
 #. Resource IDs: (32064)
 msgid "Perform Auto &Type"
-msgstr ""
+msgstr "Użyj au&touzupełniania"
 
 #. Resource IDs: (332)
 #, fuzzy
@@ -4436,7 +4436,7 @@ msgstr "Wybierz nową nazwę dla bieżącej bazy danych:"
 
 #. Resource IDs: (331)
 msgid "Please confirm that you wish to delete PasswordSafe configuration information for the current user from the Windows registry.\n\n"
-msgstr ""
+msgstr "Prosze potwierdzić chęć skasowania konfiguracji PasswordSage z rejestrów Windows dla aktualnego użytkownika.\n\n"
 
 #. Resource IDs: (353)
 #, c-format
@@ -4500,7 +4500,7 @@ msgstr "Wybierz folder docelowy dla kopii zapasowych."
 #. Resource IDs: (345)
 #, c-format
 msgid "Please specify the name && group for this shortcut to the base entry '%s':"
-msgstr ""
+msgstr "Proszę wpisać nazwę i grupę dla tego skrótu do spisu bazowego '%s':"
 
 #. Resource IDs: (337)
 #, fuzzy
@@ -4509,7 +4509,7 @@ msgstr "Wybierz podkatalog dla kopii bezpieczeństwa."
 
 #. Resource IDs: (344)
 msgid "Please visit the <a href=\"http://pwsafe.org/\">PasswordSafe website.</a>"
-msgstr ""
+msgstr "Proszę odwiedzić <a href=\"http://pwsafe.org/\">stronę PasswordSafe.</a>"
 
 #. Resource IDs: (519)
 msgid "Polish (214)"
@@ -4574,7 +4574,7 @@ msgstr "Chroniony"
 #. Resource IDs: (366)
 #, c-format
 msgid "Protected Entry:   «%s» «%s» «%s»"
-msgstr ""
+msgstr "Chroniony wpis:   «%s» «%s» «%s»"
 
 #. Resource IDs: (355)
 msgid "Pswd copied "
@@ -4582,7 +4582,7 @@ msgstr "Hasło skopiowane "
 
 #. Resource IDs: (516)
 msgid "Punjabi"
-msgstr ""
+msgstr "Pendżabski"
 
 #. Resource IDs: (339)
 msgid "Purchase unlimited &U3 version..."
@@ -4590,7 +4590,7 @@ msgstr "Zakup nielimitowaną wersję &U3..."
 
 #. Resource IDs: (1235)
 msgid "Put Groups first in Tree View"
-msgstr ""
+msgstr "Na początku widoku drzewa umieść grupy"
 
 #. Resource IDs: (1072)
 #, fuzzy
@@ -4620,7 +4620,7 @@ msgstr "Reguły tworzenia losowych haseł"
 
 #. Resource IDs: (8002)
 msgid "Randomize"
-msgstr ""
+msgstr "Losowo"
 
 #. Resource IDs: (203)
 msgid "Read Error"
@@ -4670,15 +4670,15 @@ msgstr "Okresowy (%d dni)"
 
 #. Resource IDs: (32083)
 msgid "Redo"
-msgstr ""
+msgstr "Wykonaj ponownie"
 
 #. Resource IDs: (1229)
 msgid "Relative"
-msgstr ""
+msgstr "Względny"
 
 #. Resource IDs: (1420)
 msgid "Relative dates are in days relative to today e.g. '-1' is yesterday and '1' is tomorrow"
-msgstr ""
+msgstr "Daty względne są datami zależnymi od dzisiejszego dnia, np. '-1' to wczoraj, a '1' to jutro"
 
 #. Resource IDs: (1295, 65535)
 msgid "Remember last"
@@ -4719,40 +4719,40 @@ msgstr "Szukane wartości:"
 
 #. Resource IDs: (356)
 msgid "Required Unicode font is not installed on this system.\n\nUnable to provide Virtual Keyboard."
-msgstr ""
+msgstr "Wymagany fornt Unicode nie jest zainstalowany na tym systemie.\n\nNie można uruchomić wirtualnej klawiatury."
 
 #. Resource IDs: (1377)
 msgid "Rese&t to Database Defaults"
-msgstr ""
+msgstr "Wróc do war&tości domyślnych dla bazy danych"
 
 #. Resource IDs: (356)
 #, c-format
 msgid "Reserved shortcut '%s' ignored."
-msgstr ""
+msgstr "Zarezerwowany skrót '%s' zignorowany."
 
 #. Resource IDs: (1427)
 msgid "Reset"
-msgstr ""
+msgstr "Reset"
 
 #. Resource IDs: (1368)
 msgid "Reset All"
-msgstr ""
+msgstr "Resetuj wszystko"
 
 #. Resource IDs: (32215)
 msgid "Reset Column Width"
-msgstr ""
+msgstr "Resetuj szerokość kolumn"
 
 #. Resource IDs: (32211)
 msgid "Reset Columns"
-msgstr ""
+msgstr "Resetuj kolumny"
 
 #. Resource IDs: (32290)
 msgid "Reset this shortcut"
-msgstr ""
+msgstr "Resetuj ten skrót"
 
 #. Resource IDs: (32153)
 msgid "Restore from Backup..."
-msgstr ""
+msgstr "Odzyskaj z kopii zapasowej..."
 
 #. Resource IDs: (1158)
 msgid "Restrict to a subset of entries:"
@@ -4760,7 +4760,7 @@ msgstr "Tylko w elementach wpisu:"
 
 #. Resource IDs: (65535)
 msgid "Result summary:"
-msgstr ""
+msgstr "Podsumowanie wyników:"
 
 #. Resource IDs: (510)
 msgid "Right Ctrl key"
@@ -4859,11 +4859,11 @@ msgstr "Tak jak ostatni zapis"
 
 #. Resource IDs: (520)
 msgid "Sami Extended Finland-Sweden"
-msgstr ""
+msgstr "Fiński-Szwedzi z rozszerzeniami Sami"
 
 #. Resource IDs: (519)
 msgid "Sami Extended Norway"
-msgstr ""
+msgstr "Norweski z rozszerzeniami Sami"
 
 #. Resource IDs: (1073)
 msgid "Sample"
@@ -4909,7 +4909,7 @@ msgstr "Schemat nie ma numeru wersji."
 #. Resource IDs: (330)
 #, c-format
 msgid "Search has wrapped, continuing from the %s."
-msgstr ""
+msgstr "Szukanie osiągnęło koniec, kontynuowanie od %s."
 
 #. Resource IDs: (348)
 #, fuzzy
@@ -5026,7 +5026,7 @@ msgstr "Serbski (łaciński)"
 
 #. Resource IDs: (517)
 msgid "Sesotho sa Leboa"
-msgstr ""
+msgstr "Północny sotho"
 
 #. Resource IDs: (353)
 msgid "Session"
@@ -5069,7 +5069,7 @@ msgstr "Filtry Ustawień Haseł: %d dodano; %d aktywnych"
 
 #. Resource IDs: (356)
 msgid "Set Password display font"
-msgstr ""
+msgstr "Ustaw font wyświetlania hasła"
 
 #. Resource IDs: (1038)
 #, fuzzy
@@ -5078,11 +5078,11 @@ msgstr "Ustaw Przykład & Tekst"
 
 #. Resource IDs: (356)
 msgid "Set Tree/List display font"
-msgstr ""
+msgstr "Ustaw font drzew/list"
 
 #. Resource IDs: (357)
 msgid "Set Virtual Keyboard font"
-msgstr ""
+msgstr "Ustaw font klawiatury wirtualnej"
 
 #. Resource IDs: (1186)
 msgid "Set maximum number of passwords saved to above value"
@@ -5090,7 +5090,7 @@ msgstr "Ustaw maksymalną liczbę zapisywanych haseł do powyższej wartości"
 
 #. Resource IDs: (516)
 msgid "Setswana"
-msgstr ""
+msgstr "Tswana"
 
 #. Resource IDs: (8007, 8008)
 msgid "Shift"
@@ -5107,63 +5107,63 @@ msgstr "Shift+klik żeby zobaczyć bieżące ustawienia"
 #. Resource IDs: (356)
 #, c-format
 msgid "Shortcut '%s' already assigned to menu item '%s'."
-msgstr ""
+msgstr "Skrót '%s' już został przydzieloony do menu '%s'."
 
 #. Resource IDs: (365)
 msgid "Shortcut Base entry"
-msgstr ""
+msgstr "Skrót do wpisu bazowego"
 
 #. Resource IDs: (365)
 msgid "Shortcut Base entry - password expired"
-msgstr ""
+msgstr "Wpis do wpisu bazowego - hasło wygasło"
 
 #. Resource IDs: (365)
 msgid "Shortcut Base entry - warning password will expire"
-msgstr ""
+msgstr "Wpis do wpisu bazowego - ostrzeżenie o wygaśnięciu hasła"
 
 #. Resource IDs: (356)
 msgid "Shortcut Key"
-msgstr ""
+msgstr "Klawisz skrótu"
 
 #. Resource IDs: (452)
 msgid "Shortcuts"
-msgstr "Skróy"
+msgstr "Skróty"
 
 #. Resource IDs: (32108)
 msgid "Show &Find Toolbar"
-msgstr ""
+msgstr "Pokaż pasek szukania"
 
 #. Resource IDs: (32127)
 msgid "Show &Unsaved Changes"
-msgstr ""
+msgstr "Pokaż niezachowane zmiany"
 
 #. Resource IDs: (354)
 msgid "Show Notes"
-msgstr ""
+msgstr "Pokaż notatki"
 
 #. Resource IDs: (1296)
 msgid "Show Notes as ToolTips in Tree && List views"
-msgstr ""
+msgstr "Pokaż notatki jako ToolTipsy w widokach drzew i list"
 
 #. Resource IDs: (1190)
 msgid "Show Notes in Edit"
-msgstr ""
+msgstr "Pokaż notatki w polu edycyjnym"
 
 #. Resource IDs: (1028)
 msgid "Show Password in Add && Edit"
-msgstr ""
+msgstr "Pokaż hasło w Dodaj i Edytuj"
 
 #. Resource IDs: (1031)
 msgid "Show Password in Tree View"
-msgstr ""
+msgstr "Pokaż hasło w widoku drzewa"
 
 #. Resource IDs: (1254)
 msgid "Show Username in Tree View"
-msgstr ""
+msgstr "Pokaż nazwę użytkownika w widoku drzewa"
 
 #. Resource IDs: (2132)
 msgid "Show Virtual Keyboard"
-msgstr ""
+msgstr "Pokaż klawiaturę wirtualną"
 
 #. Resource IDs: (159)
 msgid "Show a subset of the Password"
@@ -5171,7 +5171,7 @@ msgstr "Pokaż podzbiór hasła"
 
 #. Resource IDs: (32131)
 msgid "Show entries with E&xpiry dates"
-msgstr ""
+msgstr "Pokaż wpisy z datą wygaśnięcia"
 
 #. Resource IDs: (1262)
 msgid "Show entries with identical compared fields (Note: Unknown fields were not compared.)"
@@ -5179,23 +5179,23 @@ msgstr "Pokaż wpisy z identycznymi polami (Nieznane pola nie zostały porównan
 
 #. Resource IDs: (1246)
 msgid "Show grid lines in List View"
-msgstr ""
+msgstr "Pokaż linie siatki w widoku list"
 
 #. Resource IDs: (360)
 msgid "Shutdown, Restart or Logoff in progress"
-msgstr ""
+msgstr "Zamykanie, restart i wylogowanie w toku"
 
 #. Resource IDs: (1391)
 msgid "Signal Abort"
-msgstr ""
+msgstr "Sygnał Abort"
 
 #. Resource IDs: (1389)
 msgid "Signal Illegal Instruction"
-msgstr ""
+msgstr "Sygnał niedozwolonej instrukcji"
 
 #. Resource IDs: (1390)
 msgid "Signal Terminate"
-msgstr ""
+msgstr "Sygnał zakończenia"
 
 #. Resource IDs: (514)
 msgid "Slovak"
@@ -5255,7 +5255,7 @@ msgstr "Odmiana hiszpańskiego"
 
 #. Resource IDs: (1439)
 msgid "Special set"
-msgstr "Specjany zbiór"
+msgstr "Ustawienia specjane"
 
 #. Resource IDs: (1220)
 #, fuzzy
