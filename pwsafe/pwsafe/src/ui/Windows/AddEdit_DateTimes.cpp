@@ -134,6 +134,7 @@ BOOL CAddEdit_DateTimes::OnInitDialog()
     GetDlgItem(IDC_STATIC_CURRENTVALUE)->EnableWindow(FALSE);
     GetDlgItem(IDC_STATIC_CURRENT_XTIME)->EnableWindow(FALSE);
     GetDlgItem(IDC_STATIC_LTINTERVAL_NOW)->EnableWindow(FALSE);
+    GetDlgItem(IDC_REUSE_ON_CHANGE)->EnableWindow(FALSE);
   }
 
   if (M_uicaller() == IDS_ADDENTRY) {
@@ -196,6 +197,8 @@ void CAddEdit_DateTimes::UpdateTimes()
   int nIndex;            // index of the string, if found
 
   GetDlgItem(IDC_EXPDAYS)->EnableWindow(FALSE);
+  GetDlgItem(IDC_STATIC_LTINTERVAL_NOW)->EnableWindow(FALSE);
+  GetDlgItem(IDC_REUSE_ON_CHANGE)->EnableWindow(FALSE);
 
   // Last 32-bit date is 03:14:07 UTC on Tuesday, January 19, 2038
   // Find number of days from now to 2038/01/18 = max value here
@@ -228,6 +231,7 @@ void CAddEdit_DateTimes::UpdateTimes()
   // Note: Only enable if 'how' is the correct value, this will also
   // disable if the other option or NONE_EXP
   GetDlgItem(IDC_EXPDAYS)->EnableWindow(m_how == RELATIVE_EXP ? TRUE : FALSE);
+  GetDlgItem(IDC_STATIC_LTINTERVAL_NOW)->EnableWindow(m_how == RELATIVE_EXP ? TRUE : FALSE);
   GetDlgItem(IDC_REUSE_ON_CHANGE)->EnableWindow(m_how == RELATIVE_EXP ? TRUE : FALSE);
   GetDlgItem(IDC_EXPIRYDATE)->EnableWindow(m_how == ABSOLUTE_EXP ? TRUE : FALSE);
   GetDlgItem(IDC_EXPIRYTIME)->EnableWindow(m_how == ABSOLUTE_EXP ? TRUE : FALSE);
@@ -391,6 +395,12 @@ void CAddEdit_DateTimes::OnClearXTime()
   M_tttXTime() = (time_t)0;
   M_XTimeInt() = 0;
 
+  GetDlgItem(IDC_EXPDAYS)->EnableWindow(FALSE);
+  GetDlgItem(IDC_STATIC_LTINTERVAL_NOW)->EnableWindow(FALSE);
+  GetDlgItem(IDC_REUSE_ON_CHANGE)->EnableWindow(FALSE);
+  GetDlgItem(IDC_EXPIRYDATE)->EnableWindow(FALSE);
+  GetDlgItem(IDC_EXPIRYTIME)->EnableWindow(FALSE);
+
   m_how = NONE_EXP;
 }
 
@@ -430,6 +440,7 @@ void CAddEdit_DateTimes::OnDays()
   m_ae_psh->SetChanged(true);
 
   GetDlgItem(IDC_EXPDAYS)->EnableWindow(TRUE);
+  GetDlgItem(IDC_STATIC_LTINTERVAL_NOW)->EnableWindow(TRUE);
   GetDlgItem(IDC_REUSE_ON_CHANGE)->EnableWindow(TRUE);
   GetDlgItem(IDC_EXPIRYDATE)->EnableWindow(FALSE);
   GetDlgItem(IDC_EXPIRYTIME)->EnableWindow(FALSE);
@@ -444,6 +455,7 @@ void CAddEdit_DateTimes::OnDateTime()
   m_ae_psh->SetChanged(true);
 
   GetDlgItem(IDC_EXPDAYS)->EnableWindow(FALSE);
+  GetDlgItem(IDC_STATIC_LTINTERVAL_NOW)->EnableWindow(FALSE);
   GetDlgItem(IDC_REUSE_ON_CHANGE)->EnableWindow(FALSE);
   GetDlgItem(IDC_EXPIRYDATE)->EnableWindow(TRUE);
   GetDlgItem(IDC_EXPIRYTIME)->EnableWindow(TRUE);
