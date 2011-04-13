@@ -1454,7 +1454,7 @@ msgstr "Przynajmniej jeden rodzaj znaków (małe lub wielkie litery, cyfry,\nsym
 #. Resource IDs: (340)
 #, c-format
 msgid "At least one unknown %s field is now in use.  Any found have been ignored."
-msgstr "Przynajmniej jedno nieznane pole %s jest w użyciu. Jakiekolwiek znalezione zostały zignorowane."
+msgstr "Przynajmniej jedno nieznane pole %s jest w użyciu.  Jakiekolwiek znalezione zostały zignorowane."
 
 #. Resource IDs: (3843)
 msgid "Attempted an unsupported operation."
@@ -1745,7 +1745,7 @@ msgstr "Zmiany do istniejących wpisów zostaną wprowadzone po naciśnięciu OK
 
 #. Resource IDs: (210)
 msgid "Characters present between end of index ']' and '}'"
-msgstr "Znaki pomiędzy końcem indeksu  ']' i '}'"
+msgstr "Znaki pomiędzy końcem indeksu ']' i '}'"
 
 #. Resource IDs: (3887)
 msgid "Check"
@@ -2090,7 +2090,7 @@ msgstr "Nie można uzyskać dostępu do pliku: %s"
 #. Resource IDs: (3867)
 #, c-format
 msgid "Could not create %1 because the directory is full."
-msgstr "Nie można stworzyć  %1 ponieważ katalog jest pełny."
+msgstr "Nie można stworzyć %1 ponieważ katalog jest pełny."
 
 #. Resource IDs: (3867)
 #, c-format
@@ -2372,7 +2372,7 @@ msgstr "Zapisać zmiany wprowadzone do bazy danych:\r\n\r\n%s\r\n\r\nlub Anuluj 
 
 #. Resource IDs: (3887)
 msgid "Don't recover the auto-saved documents\nUse the last explicitly saved versions of the documents"
-msgstr "Nie odzyskuj automatycznie zachowanych dokumentów\nUżywaj ostatnio zachowanej w sposób jawny wersji dokumentów"
+msgstr "Nie odzyskuj automatycznie zachowanych dokumentów\nUżywaj ostatnio samodzielnie zachowanej wersji dokumentów"
 
 #. Resource IDs: (359)
 msgid "Double Click Action"
@@ -3518,7 +3518,7 @@ msgstr "Nieprawidłowy parametr"
 #. Resource IDs: (189)
 #, c-format
 msgid "Invalid input on line %d.  Number of fields separated by '%c' is not as expected."
-msgstr "Nieprawidłowe dane wejściowe na linii %d. Liczba pól rozdzielonych '%c' nie jest taka jak oczekiwana."
+msgstr "Nieprawidłowe dane wejściowe na linii %d.  Liczba pól rozdzielonych '%c' nie jest taka jak oczekiwana."
 
 #. Resource IDs: (356)
 msgid "Invalid shortcut ignored."
@@ -4016,7 +4016,7 @@ msgstr "Nie wszystkie wpisy w rejestrze (lub pliku INI) zostały usunięte."
 
 #. Resource IDs: (3887)
 msgid "Note that if you choose to recover the auto-saved documents, you must explicitly save them to overwrite the original documents.  If you choose to not recover the auto-saved versions, they will be deleted."
-msgstr ""
+msgstr "Uwaga: jeżeli wybierzesz odzyskiwanie automatycznie zachowanych dokumentów, to musisz zapisywać je samodzielnie by nadpisac oryginalne documenty.  Jeśli wybierzesz by nie odzyskiwać automatycznie zachowanych dokumentów, zostaną one skasowane."
 
 #. Resource IDs: (33150)
 msgid "Note: Empty fields are shown as »*»"
@@ -4041,12 +4041,12 @@ msgstr "Notatki skopiowano "
 #. Resource IDs: (348)
 #, fuzzy
 msgid "Number is set to the maximum value.  'Greater than' is not allowed."
-msgstr "Liczba ma maksymalną wartość. 'Większa niż' jest niedostępna."
+msgstr "Liczba ma maksymalną wartość.  'Większa niż' jest niedostępna."
 
 #. Resource IDs: (348)
 #, fuzzy
 msgid "Number is set to the minimum value.  'Less than' is not allowed."
-msgstr "Liczba ma minimalną wartość. 'Mniejsza niż' jest niedostępna."
+msgstr "Liczba ma minimalną wartość.  'Mniejsza niż' jest niedostępna."
 
 #. Resource IDs: (361)
 msgid "Number of Entries"
@@ -4071,7 +4071,7 @@ msgstr "Liczba pól nieznanych"
 #. Resource IDs: (190)
 #, c-format
 msgid "Number of entries processed: %d\n\nNumber of UUIDs fixed: %d\n\nNumber of Password Histories fixed: %d\n\nNumber of non-unique Group/Title/User fixed: %d\n\nNumber of Alias warnings issued: %d\n\nNumber of Shortcut warnings issued: %d\n\nNumber of entries with fields that cannot be fully displayed: %d"
-msgstr ""
+msgstr "Liczba przetworzonych wpisów: %d\n\nLiczba poprawionych UUID: %d\n\nLiczba poprawionych historii hasła: %d\n\nLiczna Number poprawionych group/tytułów/użytkowników: %d\n\nLiczba ostrzeżeń dotyczących aliasów: %d\n\nLiczba ostrzeżeń dotyczących skrótów: %d\n\nLiczba wpisów z polami, które nie mogą być w pełni wyświetlone: %d"
 
 #. Resource IDs: (337)
 #, c-format
@@ -4204,11 +4204,11 @@ msgstr "PWS_CPF_TVDD"
 #. Resource IDs: (334)
 #, fuzzy
 msgid "Passkey incorrect"
-msgstr "Nieprawidłowe hasło"
+msgstr "Nieprawidłowy Passkey"
 
 #. Resource IDs: (363)
 msgid "Passkey needed to save. Please unlock database and try again"
-msgstr ""
+msgstr "Passkey powinien być zapisany. Proszę odblokować bazę danych i spróbować ponownie"
 
 #. Resource IDs: (360)
 msgid "Passphrase"
@@ -4359,7 +4359,7 @@ msgstr "PasswordSafe V%d.%d.%d (Build %s) miał błąd."
 
 #. Resource IDs: (364)
 msgid "PasswordSafe: Entries exist with expired or about to be expired passwords"
-msgstr ""
+msgstr "PasswordSafe: wpisy z hasłami wygasłymi, lub których hasła wygasaną wkrótce"
 
 #. Resource IDs: (32064)
 msgid "Perform Auto &Type"
@@ -4454,7 +4454,7 @@ msgstr "Wprowadź klucz szyfrujący lub deszyfrujący"
 
 #. Resource IDs: (65535)
 msgid "Please enter the current combination, followed by a new combination.  Type the new combination once again to confirm it."
-msgstr "Wprowadź obecne hasło a następnie nowe hasło. Powtórz nowe hasło by je potwierdzić."
+msgstr "Wprowadź obecne hasło a następnie nowe hasło.  Powtórz nowe hasło by je potwierdzić."
 
 #. Resource IDs: (329)
 msgid "Please enter the key and verify it."
@@ -4533,7 +4533,7 @@ msgstr "Naciśnij by skasować wszystkie dodane znaki."
 
 #. Resource IDs: (65535)
 msgid "Pressing OK will copy the password of the selected item to the clipboard. The clipboard will be securely cleared when Password Safe is closed.\r\n\r\nPressing Cancel stops the password being copied."
-msgstr ""
+msgstr "Wybranie OK skopiuje hasła wybranego wpisu do schowka. Schowek zostanie w bezpieczny sposób wyczyszczony kiedy Password Safe będzie zamykany.\r\n\r\nWybranie Anuluj zatrzyma kopiowanie hasła."
 
 #. Resource IDs: (349)
 msgid "Previous Passwords"
@@ -4657,7 +4657,7 @@ msgstr "Ostatnie czasy dostępu do rekordu"
 
 #. Resource IDs: (3887)
 msgid "Recover the auto-saved documents\nOpen the auto-saved versions instead of the explicitly saved versions"
-msgstr ""
+msgstr "Odzyskuj automatycznie zachowane dokumenty\nOtwórz automatycznie zachowane wersje zamiast samodzielnie zapisanych"
 
 #. Resource IDs: (1297)
 msgid "Recurring"
@@ -4969,7 +4969,7 @@ msgstr "Wybierz katalog dla tymczasowych kopii zapasowych"
 
 #. Resource IDs: (474)
 msgid "Select Test Dump Type"
-msgstr ""
+msgstr "Wybierz Test Dump Type"
 
 #. Resource IDs: (3858)
 msgid "Select a button."
@@ -5211,19 +5211,19 @@ msgstr "Słoweński"
 
 #. Resource IDs: (1383)
 msgid "Some characters may be missing or not be displayed correctly, as we were unable to find the Arial Unicode MS font."
-msgstr ""
+msgstr "Niektórych znaków może brakować, lub nie będą wyświetlane poprawnie, ponieważ nie można znaleźć fontu MS Arial Unicode."
 
 #. Resource IDs: (364)
 msgid "Some of the entries in this database have passwords that have expired or are about to.  Do you wish to list them and possibly update them?"
-msgstr ""
+msgstr "Niektóre wpisy w tej bazie danych mają hasła które wygasły, lub wkrótce wygasną.  Czy chcesz je wylistować i ewentualnie zaktualizować?"
 
 #. Resource IDs: (520)
 msgid "Sorbian Standard"
-msgstr ""
+msgstr "Łużycki standardowy"
 
 #. Resource IDs: (515)
 msgid "Sorbian Standard (Legacy)"
-msgstr ""
+msgstr "Łużycki standardowy (Legacy)"
 
 #. Resource IDs: (331)
 msgid "Sorry - your requested HotKey is already being used.\n\nThis feature has been temporarily disabled.\n\nTo re-enable in this session, please select a different key combination."
@@ -5231,7 +5231,7 @@ msgstr "Proponowany skrót klawiszowy jest już w użyciu.\n\nFunkcja została c
 
 #. Resource IDs: (358)
 msgid "Sorry but PasswordSafe has had a problem.\n\nMinimal diagnostic information has been written to file: \n\n\t'"
-msgstr ""
+msgstr "Przepraszamy, ale PasswordSafe ma problem.\n\nMinimalna informacja diagnostyczna została zapisana w pliku: \n\n\t'"
 
 #. Resource IDs: (345)
 msgid "Sorry, 'pronounceable' and 'easy-to-read' are not supported together"
@@ -5239,7 +5239,7 @@ msgstr "'łatwe do wymówienia' i 'łatwe do przeczytania' nie mogą być zaznac
 
 #. Resource IDs: (345)
 msgid "Sorry, can't specify a minimum number of characters with 'pronounceable' or 'easy-to-read' options. Specified values ignored."
-msgstr ""
+msgstr "Nie można podać minimalnej liczby znaków w trybie 'wymawialne' lub 'łatwe-do-czytania'. Podane wartości zostały zignorowane.'"
 
 #. Resource IDs: (353)
 msgid "Source"
@@ -5300,7 +5300,7 @@ msgstr "Zakończ zapisywanie wcześniejszych haseł"
 
 #. Resource IDs: (210)
 msgid "Stored filters will be unusable until the file's restored."
-msgstr ""
+msgstr "Zapisane filtry będą niedostępne aż do odzyskania pliku."
 
 #. Resource IDs: (1322)
 #, fuzzy
@@ -5309,7 +5309,7 @@ msgstr "Wartość łańcucha znaków:"
 
 #. Resource IDs: (211)
 msgid "Subset of entries restricted by the following rule:"
-msgstr ""
+msgstr "Podzbiór wpisów zawężony przez nastepujące reguły:"
 
 #. Resource IDs: (65535)
 msgid "Suffix:"
@@ -5349,12 +5349,12 @@ msgstr "Synchronizuj wpisy"
 
 #. Resource IDs: (364)
 msgid "Synchronizing current database with:"
-msgstr ""
+msgstr "Synchronizacja aktualnej bazy z:"
 
 #. Resource IDs: (360)
 #, c-format
 msgid "Synchronizing from database: %s\r\n"
-msgstr ""
+msgstr "Synchronizacja aktualnej bazy: %s\r\n"
 
 #. Resource IDs: (143)
 msgid "System"
@@ -5374,7 +5374,7 @@ msgstr "Zasobnik Systemowy"
 
 #. Resource IDs: (8018)
 msgid "Sz"
-msgstr ""
+msgstr "Sz"
 
 #. Resource IDs: (338)
 msgid "TRIAL"
@@ -5386,7 +5386,7 @@ msgstr "Tab"
 
 #. Resource IDs: (515)
 msgid "Tajik"
-msgstr ""
+msgstr "Tadżycki"
 
 #. Resource IDs: (516)
 msgid "Tamil"
@@ -5402,7 +5402,7 @@ msgstr "Tatarski"
 
 #. Resource IDs: (516)
 msgid "Telugu"
-msgstr ""
+msgstr "Telugu"
 
 #. Resource IDs: (347)
 msgid "Text"
@@ -5410,11 +5410,11 @@ msgstr "Tekst"
 
 #. Resource IDs: (316)
 msgid "Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*)|*.*||"
-msgstr ""
+msgstr "Pliki tekstowe (*.txt)|*.txt|Pliki CSV (*.csv)|*.csv|Wszystkie pliki (*.*)|*.*||"
 
 #. Resource IDs: (356)
 msgid "Text will be red if the shortcut is different to its default value."
-msgstr ""
+msgstr "Tekst będzie czerwony jeśli skrót różni się od swojej wartości domyślnej."
 
 #. Resource IDs: (1322)
 msgid "Text:"
@@ -5422,19 +5422,19 @@ msgstr "Tekst:"
 
 #. Resource IDs: (515)
 msgid "Thai Kedmanee"
-msgstr ""
+msgstr "Tajski Kedmanee"
 
 #. Resource IDs: (520)
 msgid "Thai Kedmanee (non-ShiftLock)"
-msgstr ""
+msgstr "Tajski Kedmanee (bez ShiftLocj)"
 
 #. Resource IDs: (519)
 msgid "Thai Pattachote"
-msgstr ""
+msgstr "Tajski Pattachote"
 
 #. Resource IDs: (520)
 msgid "Thai Pattachote (non-ShiftLock)"
-msgstr ""
+msgstr "Tajski Pattachote (bez ShiftLock)"
 
 #. Resource IDs: (333)
 #, fuzzy
@@ -5448,7 +5448,7 @@ msgstr "Wpis %s \"%s, %s, %s\" nie wskazuje na normalny lub istniejący wpis baz
 
 #. Resource IDs: (510)
 msgid "The ALT key is not used on any keyboard to select characters. Use the 'Alt Num' key to enter a character via its decimal value."
-msgstr ""
+msgstr "Klawisz ALT nie jest używany na żadnej klawiaturze do wyboru znaków. Użyj 'Aln Num' by wprowadzić znak poprzez jego wartość numeryczną."
 
 #. Resource IDs: (330)
 msgid "The combination cannot be blank."
@@ -5476,7 +5476,7 @@ msgstr ""
 
 #. Resource IDs: (329)
 msgid "The entered passwords do not match.  Please re-enter them."
-msgstr "Wprowadzone hasła nie są identyczne. Spróbuj ponownie."
+msgstr "Wprowadzone hasła nie są identyczne.  Spróbuj ponownie."
 
 #. Resource IDs: (3857)
 #, fuzzy
@@ -5511,7 +5511,7 @@ msgstr "Następujące kolumny zostaną przetworzone: "
 
 #. Resource IDs: (205)
 msgid "The following entries had an invalid Password History.  This has been rebuilt with available data.  There may be some loss of history."
-msgstr "Następujące wpisy miały nieprawidłową historię haseł. Zostało to odbudowane z dostępnych danych. Część historii może być utracona."
+msgstr "Następujące wpisy miały nieprawidłową historię haseł.  Zostało to odbudowane z dostępnych danych.  Część historii może być utracona."
 
 #. Resource IDs: (205)
 msgid "The following entries had an invalid UUID field.  This has been corrected."
@@ -5541,7 +5541,7 @@ msgstr "Nastepujące rekordy miały błędy w historii haseł:"
 
 #. Resource IDs: (362)
 msgid "The following records were renamed as an entry already exists in your database or in the Import file:"
-msgstr ""
+msgstr "Następującym rekordom zostały zmienione nazwy ponieważ wpisy już istniały w Twojej bazie lub pliku importowanym:"
 
 #. Resource IDs: (362)
 msgid "The following records were skipped:"
@@ -5574,7 +5574,7 @@ msgstr "Hasło ma formę 'aliasu' ale odpowiadający mu wpis '%s:%s:%s' sam jest
 #. Resource IDs: (360)
 #, c-format
 msgid "The password\r\n\r\n\"%s\"\r\n\r\nhas been copied to the clipboard."
-msgstr ""
+msgstr "Hasło\r\n\r\n\"%s\"\r\n\r\nzostało skopiowane do schowka."
 
 #. Resource IDs: (65535)
 msgid "The safe combination has been entered three times without success. If you don't know the safe combination, you can either try to open another password database, or create a new blank password database."
@@ -5582,7 +5582,7 @@ msgstr "Hasło zostało wprowadzone niepoprawnie trzy razy. Jeśli nie znasz has
 
 #. Resource IDs: (361)
 msgid "The selected Failsafe Backup file will be opened instead of selected database."
-msgstr ""
+msgstr "Wybrana kopia zapasowa Failsafe będzie otwarta zamiast wybranej bazy danych."
 
 #. Resource IDs: (329)
 msgid "The two entries do not match."
@@ -5590,7 +5590,7 @@ msgstr "Wpisy nie są identyczne."
 
 #. Resource IDs: (211)
 msgid "The user specified that the following fields be excluded from the export:"
-msgstr ""
+msgstr "Użytkownik wybrał, że następujące pola będą wyłączone z eksportu:"
 
 #. Resource IDs: (345)
 msgid "There are more than one entry that fits your selection. Please be more specific."
@@ -5841,7 +5841,7 @@ msgstr "Niemożliwy dostęp do blokady pliku konfiguracyjnego.\n\nWykorzystany z
 #. Resource IDs: (352)
 #, c-format
 msgid "Unable to import \"autoload_filters.xml\" filters.\n\n%s"
-msgstr "Niemożliwe zaimportowanie filtrów  \"autoload_filters.xml\".\n\n%s"
+msgstr "Niemożliwe zaimportowanie filtrów \"autoload_filters.xml\".\n\n%s"
 
 #. Resource IDs: (191)
 msgid "Unable to load configuration file"
@@ -5883,7 +5883,7 @@ msgstr "Niemożliwa aktualizacji wpisów w istniejącym pliku konfiguracyjnym XM
 
 #. Resource IDs: (191)
 msgid "Unable to use a MS XML reader on your system.  Neither MS XML V3, V4 or V6 seems available."
-msgstr "Niemożliwe wykorzystaine systemowego czytnika MS XML. Nie wykryto MS XML V3, V4 lub V6."
+msgstr "Niemożliwe wykorzystaine systemowego czytnika MS XML.  Nie wykryto MS XML V3, V4 lub V6."
 
 #. Resource IDs: (191)
 msgid "Unable to validate a XML file using a XML Schema (XSD) on your system."
@@ -6011,32 +6011,32 @@ msgstr "Użyj &symboli (np. , &, %, $, itd.)"
 
 #. Resource IDs: (1048)
 msgid "Use &UPPERCASE letters"
-msgstr "Uzyj D&UŻYCH liter"
+msgstr "Użyj D&UŻYCH liter"
 
 #. Resource IDs: (1375)
 msgid "Use Database De&faults"
-msgstr ""
+msgstr "Użyj wartości domyslnej bazy danych"
 
 #. Resource IDs: (1378)
 msgid "Use Default"
-msgstr ""
+msgstr "Użyj wartości domyślnej"
 
 #. Resource IDs: (1051)
 msgid "Use only &Easy-to-read characters (i.e., no  'l', '1', etc.)"
-msgstr ""
+msgstr "Użyj tylko łatwych-do-czytania znaków (np. b&ez 'l', '1', itp.)"
 
 #. Resource IDs: (1376)
 msgid "Use the P&olicy below:"
-msgstr ""
+msgstr "Użyj nastepującej p&olisy:"
 
 #. Resource IDs: (320)
 #, fuzzy
 msgid "Use the application specified here to browse when an entry's URL field starts with [alt], e.g., '[alt]http://foo.com'"
-msgstr "Używaj wskazanej aplikacji do przejścia pod adres URL gdy pole wpisu zaczyna się na  [alt], e.g., '[alt]http://foo.com'"
+msgstr "Użyj wskazanej aplikacji do przejścia pod adres URL gdy pole wpisu zaczyna się na [alt], e.g., '[alt]http://foo.com'"
 
 #. Resource IDs: (320)
 msgid "Use the application specified here to edit an entry's Notes field via the right-click context menu during Add/Edit."
-msgstr ""
+msgstr "Użyj aplikacji wskazanej tu by edytować notatkę dla wpisu przez menu konteksowe (prawe klinknięcie) poczas dodawania lub edycji."
 
 #. Resource IDs: (327)
 msgid "User Name"
@@ -6060,7 +6060,7 @@ msgstr "Wersja programu:"
 
 #. Resource IDs: (519)
 msgid "Uyghur"
-msgstr ""
+msgstr "Ujgurski"
 
 #. Resource IDs: (518)
 msgid "Uzbek Cyrillic"
@@ -6097,7 +6097,7 @@ msgstr "Powtórz:"
 
 #. Resource IDs: (356)
 msgid "Version mismatch with On Screen Keyboard DLL. Please install version that came with this version of Password Safe."
-msgstr ""
+msgstr "Niezgodność wersji z On Screen Keyboard DLL. Prosze zainstalować wersję jaka towarzyszy tej wersji Password Safe."
 
 #. Resource IDs: (515)
 msgid "Vietnamese"
@@ -6113,12 +6113,12 @@ msgstr "Pokaż aliasy"
 
 #. Resource IDs: (329, 32220)
 msgid "View Entry"
-msgstr ""
+msgstr "Przeglądaj wpis"
 
 #. Resource IDs: (330)
 #, c-format
 msgid "View Entry:   «%s» «%s» «%s»"
-msgstr ""
+msgstr "Przeglądaj wpis:   «%s» «%s» «%s»"
 
 #. Resource IDs: (157, 347)
 msgid "View Report"
