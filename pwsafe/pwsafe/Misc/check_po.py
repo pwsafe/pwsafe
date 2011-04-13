@@ -39,14 +39,18 @@ def check_re(rx, s1, s2):
 	return 0
 
 
+def check_count(msgid, msgstr, s):
+	"""check if count of 's' is the same"""
+	r = 0
+	if msgid.count(s) != msgstr.count(s):
+		r += 1
+	return r
+
+
+
 def check_quotes(msgid, msgstr):
 	"""check if quote count is the same"""
-	r = 0
-	if msgid.count('"') != msgstr.count('"'):
-		r += 1
-	#if msgid.count("'") / 2 != msgstr.count("'") / 2:
-	#	r += 1
-	return r
+	return check_count(msgid, msgstr, '"')
 
 
 def get_patterns(s):
@@ -114,6 +118,8 @@ def check_str(msgid, msgstr):
 		warn_cnt += check_quotes(msgid, msgstr)
 		warn_cnt += check_cpatterns(msgid, msgstr)
 		warn_cnt += check_accelerator(msgid, msgstr)
+		for t in ('\\r', '\\n', '\\t', '|', '  ', '\\\"', '«', '»'):
+			warn_cnt += check_count(msgid, msgstr, t)
 	return warn_cnt
 
 
