@@ -77,9 +77,9 @@ BEGIN_MESSAGE_MAP(CAddEdit_DateTimes, CAddEdit_PropertyPage)
   ON_BN_CLICKED(IDC_SELECTBYDAYS, OnDays)
   ON_BN_CLICKED(IDC_REUSE_ON_CHANGE, OnRecurringPswdExpiry)
 
-  ON_EN_CHANGE(IDC_EXPDAYS, OnChanged)
-  ON_NOTIFY(DTN_DATETIMECHANGE, IDC_EXPIRYDATE, OnNotifyChanged)
-  ON_NOTIFY(DTN_DATETIMECHANGE, IDC_EXPIRYTIME, OnNotifyChanged)
+  ON_EN_CHANGE(IDC_EXPDAYS, OnDaysChanged)
+  ON_NOTIFY(DTN_DATETIMECHANGE, IDC_EXPIRYDATE, OnDateTimeChanged)
+  ON_NOTIFY(DTN_DATETIMECHANGE, IDC_EXPIRYTIME, OnDateTimeChanged)
 
   // Common
   ON_MESSAGE(PSM_QUERYSIBLINGS, OnQuerySiblings)
@@ -361,18 +361,23 @@ BOOL CAddEdit_DateTimes::OnApply()
   return CAddEdit_PropertyPage::OnApply();
 }
 
-void CAddEdit_DateTimes::OnNotifyChanged(NMHDR *, LRESULT *pLResult)
+void CAddEdit_DateTimes::OnDateTimeChanged(NMHDR *, LRESULT *pLResult)
 {
   *pLResult = 0;
+  if (!m_bInitdone || m_AEMD.uicaller != IDS_EDITENTRY)
+    return;
 
-  OnChanged();
+  SetXTime();
+  UpdateData(TRUE);
+  m_ae_psh->SetChanged(true);
 }
 
-void CAddEdit_DateTimes::OnChanged()
+void CAddEdit_DateTimes::OnDaysChanged()
 {
   if (!m_bInitdone || m_AEMD.uicaller != IDS_EDITENTRY)
     return;
 
+  SetXTime();
   UpdateData(TRUE);
   m_ae_psh->SetChanged(true);
 }
