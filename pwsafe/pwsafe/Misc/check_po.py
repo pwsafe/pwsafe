@@ -27,30 +27,33 @@ RE_START = re.compile('^([^\w&]+)\w+')
 RE_STOP = re.compile('(\W)$')
 
 
-def check_re(rx, s1, s2):
+def check_re(rx, s1, s2, line_warns):
 	"""checks if regular expresion match from s1 is equal to match from s2"""
 	rx1 = rx.search(s1)
 	if rx1:
 		rx2 = rx.search(s2)
 		if not rx2:
+			line_warns.append('re1(%s)' % rx.pattern)
 			return 1
 		if rx1.group(1) != rx2.group(1):
+			line_warns.append('re2(%s)' % rx.pattern)
 			return 1
 	return 0
 
 
-def check_count(msgid, msgstr, s):
+def check_count(msgid, msgstr, s, line_warns):
 	"""check if count of 's' is the same"""
 	r = 0
 	if msgid.count(s) != msgstr.count(s):
+		line_warns.append('cnt(%s)' % (s))
 		r += 1
 	return r
 
 
 
-def check_quotes(msgid, msgstr):
+def check_quotes(msgid, msgstr, line_warns):
 	"""check if quote count is the same"""
-	return check_count(msgid, msgstr, '"')
+	return check_count(msgid, msgstr, '"', line_warns)
 
 
 def get_patterns(s):
@@ -76,20 +79,22 @@ def get_patterns(s):
 	return patterns
 
 
-def check_cpatterns(msgid, msgstr):
+def check_cpatterns(msgid, msgstr, line_warns):
 	"""check if %s, %d etc patterns from msgid matches patterns from msgstr"""
 	patts1 = get_patterns(msgid)
 	patts2 = get_patterns(msgstr)
 	if len(patts1) != len(patts2):
+		line_warns.append('cpatterns1')
 		return 1
 	patts1.sort()
 	patts2.sort()
 	if patts1 != patts2:
+		line_warns.append('cpatterns2')
 		return 1
 	return 0
 
 
-def check_accelerator(msgid, msgstr):
+def check_accelerator(msgid, msgstr, line_warns):
 	"""check if accelrator &x is the same in both strings"""
 	msgid = msgid.lower()
 	msgstr = msgstr.lower()
@@ -101,25 +106,27 @@ def check_accelerator(msgid, msgstr):
 			if a1[-1] in msgstr:
 				# warn if there is no accelerator in translated version
 				# but "accelerated" letter is available
+				line_warns.append('acc1')
 				return 1
 		else:
 			a2 = msgstr[p2:p2 + 2]
 			if a1 != a2:
+				#line_warns.append('acc2')
 				return 0 # ok they can be different
 	return 0
 
 
-def check_str(msgid, msgstr):
+def check_str(msgid, msgstr, line_warns):
 	"""checks is msgstr had the same leading blanks, etc"""
 	warn_cnt = 0
 	if msgid and msgstr:
-		warn_cnt += check_re(RE_START, msgid, msgstr)
-		warn_cnt += check_re(RE_STOP, msgid, msgstr)
-		warn_cnt += check_quotes(msgid, msgstr)
-		warn_cnt += check_cpatterns(msgid, msgstr)
-		warn_cnt += check_accelerator(msgid, msgstr)
+		warn_cnt += check_re(RE_START, msgid, msgstr, line_warns)
+		warn_cnt += check_re(RE_STOP, msgid, msgstr, line_warns)
+		warn_cnt += check_quotes(msgid, msgstr, line_warns)
+		warn_cnt += check_cpatterns(msgid, msgstr, line_warns)
+		warn_cnt += check_accelerator(msgid, msgstr, line_warns)
 		for t in ('\\r', '\\n', '\\t', '|', '  ', '\\\"', '«', '»'):
-			warn_cnt += check_count(msgid, msgstr, t)
+			warn_cnt += check_count(msgid, msgstr, t, line_warns)
 	return warn_cnt
 
 
@@ -148,9 +155,10 @@ def check_po(fn):
 			if not msgstr:
 				empty_item_cnt += 1
 			else:
-				wc = check_str(msgid, msgstr)
+				line_warns = []
+				wc = check_str(msgid, msgstr, line_warns)
 				if wc:
-					print('%s:%d: [%s] [%s]' % (fn, line_no, msgid, msgstr))
+					print('%s:%d:%s: [%s] [%s]' % (fn, line_no, ','.join(line_warns), msgid, msgstr))
 					warn_cnt += wc
 			msgstr = ''
 	print('%s: items: %d; empty items: %d; warning cnt: %d' % (fn, item_cnt, empty_item_cnt, warn_cnt))
