@@ -24,6 +24,9 @@ Changes to Existing Features in 3.25.1
 [] Polish installation texts added thanks to Michal Niklas.
 [] An entry's password exipry date is set or cleared directly rather than using
 the Set and Clear buttons after changing values.
+[] The default password generation policy is now for 12 character
+passwords that include symbol characters (previous default was 8, no
+symbols).
 
 Bugs fixed in 3.25.1
 ====================
