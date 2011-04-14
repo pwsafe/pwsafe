@@ -66,8 +66,8 @@ protected:
   afx_msg BOOL OnKillActive();
   afx_msg LRESULT OnQuerySiblings(WPARAM wParam, LPARAM);
 
-  afx_msg void OnChanged();
-  afx_msg void OnNotifyChanged(NMHDR *pNotifyStruct, LRESULT *pLResult);
+  afx_msg void OnDaysChanged();
+  afx_msg void OnDateTimeChanged(NMHDR *pNotifyStruct, LRESULT *pLResult);
 
   afx_msg void OnClearXTime();
   afx_msg void OnDateTime();
