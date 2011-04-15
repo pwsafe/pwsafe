@@ -1101,7 +1101,7 @@ BOOL DboxMain::OnInitDialog()
       ShowWindow(SW_SHOW);
   }
 
-  BOOL bOOI(FALSE);
+  BOOL bOOI(TRUE);
   if (!m_IsStartClosed && !m_IsStartSilent) {
     if (m_bSetup) { // --setup flag passed?
       // If default dbase exists, DO NOT overwrite it, else
