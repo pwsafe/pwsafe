@@ -127,6 +127,8 @@ def check_str(msgid, msgstr, line_warns):
 		warn_cnt += check_accelerator(msgid, msgstr, line_warns)
 		for t in ('\\r', '\\n', '\\t', '|', '  ', '\\\"', '«', '»'):
 			warn_cnt += check_count(msgid, msgstr, t, line_warns)
+		for c in string.digits:
+			warn_cnt += check_count(msgid, msgstr, c, line_warns)
 	return warn_cnt
 
 
