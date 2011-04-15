@@ -5598,15 +5598,15 @@ msgstr "Więcej niż jeden wpis odpowiada zaznaczeniu. Doprecyzuj."
 
 #. Resource IDs: (210)
 msgid "There are unmatched quotes in the run command"
-msgstr ""
+msgstr "W komendzie Run są niedopasowane cudzysłowa"
 
 #. Resource IDs: (361)
 msgid "There does not appear to be a Recycle Bin on the media containing this Failsafe Backup file. If you delete it, it will be permanent. Do you wish to continue?"
-msgstr ""
+msgstr "Wygląda na to, że na nośniku z tą kopią bezpieczeństwa Failsafe nie ma kosza. Jeśli ją skasujesz, nie będzie można jej odzystać. Czy chcesz kontunuować?"
 
 #. Resource IDs: (3887)
 msgid "These are more recently saved than the currently open documents and contain changes that were made before the application closed."
-msgstr ""
+msgstr "Są nowsze dokumenty niż aktualnie otwarte i zawierają zmiany dokonane przed zamknięciem aplikacji."
 
 #. Resource IDs: (344)
 #, c-format
@@ -5662,7 +5662,7 @@ msgstr "Filtr już isnieje"
 
 #. Resource IDs: (511)
 msgid "This is a DeadKey. Press it and then one of the combined keys then shown to add that new character to the Passphrase."
-msgstr ""
+msgstr "To jest DeadKey. Naciśnij go i potem jeden z klawiszy które sie pokażą by dodać nowy znak do frazy hasła."
 
 #. Resource IDs: (357)
 msgid "This is a shortcut base entry."
@@ -5904,7 +5904,7 @@ msgstr "Odznacz"
 
 #. Resource IDs: (32082)
 msgid "Undo"
-msgstr ""
+msgstr "Cofnij zmiany"
 
 #. Resource IDs: (3859)
 msgid "Unexpected file format."
@@ -5965,7 +5965,7 @@ msgstr "Zdejmij ochronę wpisu"
 #. Resource IDs: (358)
 #, c-format
 msgid "Unsaved changes have been made to database:\r\n %s."
-msgstr ""
+msgstr "Niezachowane zmiany były zrobione w bazie danych:\r\n %s."
 
 #. Resource IDs: (3841)
 msgid "Untitled"
@@ -5978,7 +5978,7 @@ msgstr "Uaktualniony %d %s"
 
 #. Resource IDs: (515)
 msgid "Urdu"
-msgstr ""
+msgstr "Urdu"
 
 #. Resource IDs: (313)
 msgid "Usage: pwsafe [-r|-v] [password database]\nor pwsafe [-e|-d] filename\nor pwsafe [-c]\nor pwsafe [-s] [password database]\nor pwsafe -m\n\n where:\n  -r = open read-only\n  -v = validate & repair\n  -e/d = encrypt/decrypt file\n  -c = start closed i.e., no open database\n  -s = start silently (minimized)\n  -m = start minimized & closed\n\nIn addition, the following flags may be used:\n -u user (use user's preferences instead of login name)\n -h host (use host to look up preferences instead of the machine's name)\n -g config_file (use config_file instead of pwsafe.cfg)\n -q (don't complain about missing fonts, dlls, etc.)"
@@ -6146,7 +6146,7 @@ msgstr "Odwiedź stronę Pass&word Safe ..."
 
 #. Resource IDs: (363)
 msgid "WARNING: If you continue, fields will be updated in entries in your existing database from your selected input database."
-msgstr ""
+msgstr "UWAGA: jeśli kontynnujesz, pola będą zmienione we wpisach w istniejącej bazie danych polami z wybranej, wejściowej bazy danych."
 
 #. Resource IDs: (363)
 #, c-format
@@ -6173,7 +6173,7 @@ msgstr ""
 
 #. Resource IDs: (363)
 msgid "Warning - excessive field contents"
-msgstr ""
+msgstr "Uwaga - nadmierna zawartość pola"
 
 #. Resource IDs: (331)
 #, fuzzy, c-format
@@ -6198,7 +6198,7 @@ msgstr "Kto zachował"
 
 #. Resource IDs: (1385)
 msgid "Win32 Unhandled Exception"
-msgstr ""
+msgstr "Nieobsłużony wyjątek Win32"
 
 #. Resource IDs: (363)
 msgid "Windows Registry"
@@ -6206,15 +6206,15 @@ msgstr "Rejest Windows"
 
 #. Resource IDs: (517)
 msgid "Wolof"
-msgstr ""
+msgstr "Wolof"
 
 #. Resource IDs: (354)
 msgid "Word Wrap"
-msgstr ""
+msgstr "Zawijanie słów"
 
 #. Resource IDs: (1362)
 msgid "Word Wrap Notes in Add && Edit"
-msgstr ""
+msgstr "Zawijaj słowa w notatkach podczas dodawania i edycji"
 
 #. Resource IDs: (332)
 #, c-format
@@ -6227,7 +6227,7 @@ msgstr "Błąd zapisu"
 
 #. Resource IDs: (359)
 msgid "Write operation failed!\nFile may have been corrupted.\nTry saving in a different location"
-msgstr ""
+msgstr "Błąd operacji zapisu!\nPlik może byc uszkodzony.\nSpróbuj go zachować w innym miejscu"
 
 #. Resource IDs: (320)
 #, fuzzy
@@ -6269,12 +6269,12 @@ msgstr "Tak:"
 
 #. Resource IDs: (517)
 msgid "Yoruba"
-msgstr ""
+msgstr "Joruba"
 
 #. Resource IDs: (362)
 #, c-format
 msgid "You must save this database%s before it can be %s."
-msgstr ""
+msgstr "Musisz zapisac tę bazę danych %s nim będzie mogła być %s."
 
 #. Resource IDs: (361)
 msgid "Your currently opened database will be in the first row.  Failsafe Backup files will be displayed below this.  If the passphrase is the same as the current database, the properties of these backups will also be shown.  If you are unable to chose, continue with the current database and use the database Compare function to view the differences between the versions."
@@ -6283,7 +6283,7 @@ msgstr ""
 #. Resource IDs: (357)
 #, c-format
 msgid "Your requested font '%s' is not installed on this system, using '%s' instead."
-msgstr ""
+msgstr "Font '%s' nie jest zainstalowany w systemie, zamiast niego zostanie użyty '%s'."
 
 #. Resource IDs: (330)
 msgid "[No current database]"
