@@ -186,7 +186,7 @@ BOOL CPasskeyEntry::OnInitDialog(void)
 
   switch(m_index) {
     case GCP_FIRST:
-      // At start up - give the user the option unless file is R/O
+      // At start up - give the user the option unless file is R-O
       GetDlgItem(IDC_READONLY)->EnableWindow(m_bForceReadOnly ? FALSE : TRUE);
       GetDlgItem(IDC_READONLY)->ShowWindow(SW_SHOW);
       GetDlgItem(IDC_VERSION)->SetWindowText(m_appversion);
@@ -196,7 +196,7 @@ BOOL CPasskeyEntry::OnInitDialog(void)
 #endif
       break;
     case GCP_NORMAL:
-      // otherwise during open - user can - again unless file is R/O
+      // otherwise during open - user can - again unless file is R-O
       if (m_bHideReadOnly) {
         GetDlgItem(IDC_READONLY)->EnableWindow(FALSE);
         GetDlgItem(IDC_READONLY)->ShowWindow(SW_HIDE);

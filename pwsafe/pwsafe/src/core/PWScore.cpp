@@ -2510,3 +2510,49 @@ void PWScore::UpdateExpiryEntry(const uuid_array_t &uuid, const CItemData::Field
     ASSERT(0);
   }
 }
+
+bool PWScore::ChangeMode(stringT &locker)
+{
+  // We do not have to close or re-open the database as the database is closed after processing.
+  /*
+   So what do we need to do?
+
+   If currently R/W, we need to unlock the database.
+
+   If currently R/O, we need to lock the database.
+  */
+  locker = _T(""); // Important!
+
+  if (m_IsReadOnly) {
+    // Need to lock it
+    bool brc = pws_os::LockFile(m_currfile.c_str(), locker, 
+                                m_lockFileHandle, m_LockCount);
+    if (!brc)
+      return false;
+  } else {
+    // In R/W mode
+    if (m_LockCount != 1)
+      return false;
+
+    // Try to unlock file
+    pws_os::UnlockFile(m_currfile.c_str(), 
+                       m_lockFileHandle, m_LockCount);
+
+    // If successful - should be invalid handle and lock count is zero
+    if (m_lockFileHandle != INVALID_HANDLE_VALUE || m_LockCount != 0) {
+      // Try to put lock back
+      stringT locker = _T("");
+      bool brc = pws_os::LockFile(m_currfile.c_str(), locker, 
+                                  m_lockFileHandle, m_LockCount);
+
+      // No idea what to do if we can't put it back :-(
+      ASSERT(brc);
+      return false;
+    }
+  }
+
+  // Swap Read/Write : Read/Only status
+  m_IsReadOnly = !m_IsReadOnly;
+
+  return true;
+}

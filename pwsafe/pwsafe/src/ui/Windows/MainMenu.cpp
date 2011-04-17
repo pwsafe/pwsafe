@@ -592,12 +592,20 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
     SetUpMenuStrings(pPopupMenu);
 
   // We have done for all except the Edit and View menus
-  if (uiMenuID != ID_EDITMENU && uiMenuID != ID_VIEWMENU)
+  if (uiMenuID != ID_FILEMENU && uiMenuID != ID_EDITMENU && uiMenuID != ID_VIEWMENU)
     return;
 
   if (bItemSelected) {
     pci = getSelectedItem();
     ASSERT(pci != NULL);
+  }
+
+  // Change the 'Change Mode' text as appropriate
+  if (uiMenuID == ID_FILEMENU) {
+    pPopupMenu->ModifyMenu(ID_MENUITEM_CHANGEMODE, MF_BYCOMMAND,
+                           ID_MENUITEM_CHANGEMODE,
+                           bReadOnly ? CS_READWRITE : CS_READONLY);
+    return;
   }
 
   // If View menu selected (contains 'Flattened &List' menu item)
@@ -973,7 +981,10 @@ void DboxMain::OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL)
       break;
   }
 
-  if (bDoShortcuts || minfo.dwMenuData == ID_EDITMENU || minfo.dwMenuData == ID_VIEWMENU)
+  if (bDoShortcuts ||
+      minfo.dwMenuData == ID_FILEMENU ||
+      minfo.dwMenuData == ID_EDITMENU ||
+      minfo.dwMenuData == ID_VIEWMENU)
     CustomiseMenu(pPopupMenu, (UINT)minfo.dwMenuData, bDoShortcuts);
 
   static int iLangPos = -1;

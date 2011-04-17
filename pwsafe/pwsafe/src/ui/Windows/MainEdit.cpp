@@ -915,7 +915,7 @@ bool DboxMain::EditItem(CItemData *pci, PWScore *pcore)
   // in the current database.
   // The one except is when the user wishes to View an entry from the comparison
   // database via "CompareResultsDlg" (the Compare Database results dialog).
-  // Note: In this instance, the comparison database is R/O and hence the user may
+  // Note: In this instance, the comparison database is R-O and hence the user may
   // only View these entries and any database preferences can be obtain from the
   // copy of the header within that instance of PWScore - see below when changing the
   // default username.

@@ -96,6 +96,8 @@ const wchar_t *EYE_CATCHER = L"DBXM";
 
 CString DboxMain::CS_SETFILTERS;
 CString DboxMain::CS_CLEARFILTERS;
+CString DboxMain::CS_READWRITE;
+CString DboxMain::CS_READONLY;
 
 LOGFONT dfltTreeListFont;
 
@@ -108,6 +110,8 @@ void DboxMain::SetLocalStrings()
   // VdG set the local strings to the language dependant values
   CS_SETFILTERS.LoadString(IDS_SETFILTERS);
   CS_CLEARFILTERS.LoadString(IDS_CLEARFILTERS);
+  CS_READWRITE.LoadString(IDS_CHANGE_READWRITE);
+  CS_READONLY.LoadString(IDS_CHANGE_READONLY);
 }
 
 //-----------------------------------------------------------------------------
@@ -384,6 +388,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_MERGE, OnMerge)
   ON_COMMAND(ID_MENUITEM_COMPARE, OnCompare)
   ON_COMMAND(ID_MENUITEM_SYNCHRONIZE, OnSynchronize)
+  ON_COMMAND(ID_MENUITEM_CHANGEMODE, OnChangeMode)
   ON_COMMAND(ID_MENUITEM_PROPERTIES, OnProperties)
 
   // Edit Menu
@@ -465,6 +470,8 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
 
   // Others
   ON_COMMAND(ID_MENUITEM_VALIDATE, OnValidate)
+  // Double-click on R-O R/W indicator on StatusBar
+  ON_COMMAND(IDS_READ_ONLY, OnChangeModeSB)
 
 #if defined(POCKET_PC)
   ON_WM_CREATE()
@@ -595,6 +602,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_MERGE, true, false, true, false},
   {ID_MENUITEM_COMPARE, true, true, false, false},
   {ID_MENUITEM_SYNCHRONIZE, true, false, false, false},
+  {ID_MENUITEM_CHANGEMODE, true, true, false, false},
   {ID_MENUITEM_PROPERTIES, true, true, true, false},
   {ID_MENUITEM_EXIT, true, true, true, true},
   // Edit menu

@@ -658,6 +658,8 @@ protected:
   afx_msg void OnMerge();
   afx_msg void OnCompare();
   afx_msg void OnSynchronize();
+  afx_msg void OnChangeMode();
+  afx_msg void OnChangeModeSB();
   afx_msg void OnProperties();
   afx_msg void OnRestoreSafe();
   afx_msg void OnSaveAs();
@@ -768,7 +770,7 @@ private:
   static int CALLBACK CompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
 
   // Only need these if not on default menus
-  static CString CS_SETFILTERS, CS_CLEARFILTERS;
+  static CString CS_SETFILTERS, CS_CLEARFILTERS,  CS_READWRITE, CS_READONLY;
 
   StringX m_BrowseURL; // set by OnContextMenu(), used by OnBrowse()
   PWScore &m_core;

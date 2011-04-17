@@ -140,8 +140,11 @@ int DboxMain::RestoreSafe()
     PWSprefs::GetInstance()->GetPref(PWSprefs::CurrentBackup);
 
   rc = SaveIfChanged();
-  if (rc != PWScore::SUCCESS)
+  if (rc != PWScore::SUCCESS && rc != PWScore::USER_DECLINED_SAVE)
     return rc;
+   
+  // Reset changed flag to stop being asked again (only if rc == PWScore::USER_DECLINED_SAVE)
+  SetChanged(Clear);
 
   CString cs_text, cs_temp, cs_title;
   cs_text.LoadString(IDS_PICKRESTORE);
