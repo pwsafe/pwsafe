@@ -132,7 +132,7 @@ bool PerformConfigMigration()
     } // Load failed
 
     // Now remove this hostname/username from old configuration file in the
-    // installation directory (as long as everything OK and it is not R/O)
+    // installation directory (as long as everything OK and it is not R-O)
     if (rc && !bExecCFRO) {
       rc = oldXMLConfig.RemoveHostnameUsername(si->GetEffectiveHost(),
                                                si->GetEffectiveUser(), bNoMoreNodes);

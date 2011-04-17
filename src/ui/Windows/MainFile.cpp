@@ -458,8 +458,11 @@ int DboxMain::Close(const bool bTrySave)
     if (m_bOpen) {
       // try and save it first
       int rc = SaveIfChanged();
-      if (rc != PWScore::SUCCESS)
+      if (rc != PWScore::SUCCESS && rc != PWScore::USER_DECLINED_SAVE)
         return rc;
+
+      // Reset changed flag to stop being asked again (only if rc == PWScore::USER_DECLINED_SAVE)
+      SetChanged(Clear);
     }
   }
 
@@ -666,8 +669,11 @@ int DboxMain::Open(const StringX &sx_Filename, const bool bReadOnly,  const bool
   }
 
   rc = SaveIfChanged();
-  if (rc != PWScore::SUCCESS)
+  if (rc != PWScore::SUCCESS && rc != PWScore::USER_DECLINED_SAVE)
     return rc;
+
+  // Reset changed flag to stop being asked again (only if rc == PWScore::USER_DECLINED_SAVE)
+  SetChanged(Clear);
 
   // If we were using a different file, unlock it do this before 
   // GetAndCheckPassword() as that routine gets a lock on the new file
@@ -965,7 +971,7 @@ int DboxMain::CheckEmergencyBackupFiles(StringX sx_Filename, StringX &passkey)
   // Close original - don't save anything
   Close(false);
 
-  // Now open the one selected by the user in R/O mode
+  // Now open the one selected by the user in R-O mode
   sx_fullfilename = vValidEBackupfiles[-dsprc].dbp.database;
   rc = m_core.ReadFile(sx_fullfilename, passkey);
   ASSERT(rc == PWScore::SUCCESS);
@@ -1157,9 +1163,8 @@ int DboxMain::SaveIfChanged()
         else
           return PWScore::CANT_OPEN_FILE;
       case IDNO:
-        // Reset changed flag to stop being asked again
-        SetChanged(Clear);
-        break;
+        // It is a success but we need to know that the user said no!
+        return PWScore::USER_DECLINED_SAVE;
     }
   }
   return PWScore::SUCCESS;
@@ -2008,6 +2013,84 @@ void DboxMain::OnProperties()
   dlg.DoModal();
 }
 
+void DboxMain::OnChangeModeSB()
+{
+  // Ask if user meant to double-click on Status Bar
+  CGeneralMsgBox gmb;
+  CString cs_msg, cs_title;
+  CString cs_mode1(MAKEINTRESOURCE(IsDBReadOnly() ? IDS_CHANGEMODE_RO : IDS_CHANGEMODE_RW));
+  CString cs_mode2(MAKEINTRESOURCE(IsDBReadOnly() ? IDS_CHANGEMODE_RW : IDS_CHANGEMODE_RO));
+  cs_title.Format(IDS_CHANGEMODE, cs_mode2);
+  cs_msg.Format(IDS_CHANGEMODE_CONFIRM, cs_mode1, cs_mode2);
+
+  if (gmb.MessageBox(cs_msg, cs_title, MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2) == IDYES)
+    OnChangeMode();
+}
+
+void DboxMain::OnChangeMode()
+{
+  const bool bWasRO = IsDBReadOnly();
+
+  // Try to save if any changes done to database
+  // SaveIfChanged just returns if currently in R-O mode.
+
+  int rc = SaveIfChanged();
+  if (rc != PWScore::SUCCESS && rc != PWScore::USER_DECLINED_SAVE)
+    return;
+
+  if (rc == PWScore::USER_DECLINED_SAVE) {
+    // User said No to the save - so we must back-out all changes since last save
+    // But ask just in case
+    CGeneralMsgBox gmb;
+    CString cs_msg(MAKEINTRESOURCE(IDS_BACKOUT_CHANGES)), cs_title(MAKEINTRESOURCE(IDS_CHANGEMODE));
+    rc = gmb.MessageBox(cs_msg, cs_title, MB_YESNO | MB_ICONQUESTION);
+
+    if (rc == IDNO)
+      return;
+
+    while (m_core.IsChanged()) {
+      OnUndo();
+    }
+  }
+ 
+  // Reset changed flag to stop being asked again (only if rc == PWScore::USER_DECLINED_SAVE)
+  SetChanged(Clear);
+
+  // Clear the Commands
+  m_core.ClearCommands();
+
+  std::wstring locker = L"";
+  bool brc = m_core.ChangeMode(locker);
+  if (brc) {
+    UpdateStatusBar();
+  } else {
+    // Better give them the bad news!
+    CGeneralMsgBox gmb;
+    CString cs_msg, cs_title(MAKEINTRESOURCE(IDS_CHANGEMODE_FAILED));
+    if (bWasRO) {
+      CString cs_user_and_host, cs_PID;
+      cs_user_and_host = (CString)locker.c_str();
+      int i_pid = cs_user_and_host.ReverseFind(L':');
+      if (i_pid > -1) {
+        // If PID present then it is ":%08d" = 9 chars in length
+        ASSERT((cs_user_and_host.GetLength() - i_pid) == 9);
+        cs_PID.Format(IDS_PROCESSID, cs_user_and_host.Right(8));
+        cs_user_and_host = cs_user_and_host.Left(i_pid);
+      } else
+        cs_PID = L"";
+
+      cs_msg.Format(IDS_CM_FAIL_REASON1, cs_user_and_host, cs_PID);
+    }else {
+      cs_msg.LoadString(IDS_CM_FAIL_REASON2);
+    }
+    gmb.SetTitle(cs_title);
+    gmb.SetMsg(cs_msg);
+    gmb.SetStandardIcon(MB_ICONWARNING);
+    gmb.AddButton(IDS_CLOSE, IDS_CLOSE);
+    gmb.DoModal();
+  }
+}
+
 void DboxMain::OnCompare()
 {
   if (m_core.GetCurFile().empty() || m_core.GetNumEntries() == 0) {
@@ -2449,7 +2532,7 @@ LRESULT DboxMain::ViewCompareResult(PWScore *pcore, uuid_array_t &entryUUID)
   ASSERT(pos != pcore->GetEntryEndIter());
   CItemData *pci = &pos->second;
 
-  // View the correct entry and make sure R/O
+  // View the correct entry and make sure R-O
   bool bSaveRO = pcore->IsReadOnly();
   pcore->SetReadOnly(true);
 

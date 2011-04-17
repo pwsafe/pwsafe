@@ -59,6 +59,7 @@ public:
   enum {
     SUCCESS = 0,
     FAILURE = 1,
+    USER_DECLINED_SAVE = 1,
     CANT_OPEN_FILE = PWSfile::CANT_OPEN_FILE, // -10 - ensure the same value
     USER_CANCEL = -9,                         // -9
     WRONG_PASSWORD = PWSfile::WRONG_PASSWORD, //  5 - ensure the same value
@@ -310,6 +311,8 @@ public:
   void SetDBPrefsChanged(bool bDBprefschanged)
   {m_bDBPrefsChanged = bDBprefschanged;
    NotifyDBModified();}
+
+  bool ChangeMode(stringT &locker);
 
   bool IsChanged() const {return m_bDBChanged;}
   bool HaveDBPrefsChanged() const {return m_bDBPrefsChanged;}

@@ -10,6 +10,9 @@ releases may be found in the file ChangeLog.txt.
 
 New Features for 3.25.1
 =======================
+[3286721] User can now toggle the database between read-only and read-write
+mode (and vice versa) via a menu item or by double-clicking on the current
+R-O or R/W indicator in the StausBar.
 [3203152] The language can changed 'on-the-fly'. It requires that the
 resource-only DLLs be built with V2.0 or later of ResPWSL (i.e. supplied
 with PasswordSafe V3.25.1 or later).

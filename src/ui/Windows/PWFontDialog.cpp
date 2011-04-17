@@ -92,7 +92,7 @@ static UINT_PTR CALLBACK CFHookProc(HWND hdlg, UINT uiMsg,
 
       EnableWindow(GetDlgItem(hdlg, cmb3), FALSE); // size
       EnableWindow(GetDlgItem(hdlg, stc3), FALSE); // size
-      // Make Edit in Size ComboBox R/O
+      // Make Edit in Size ComboBox R-O
       SendMessage(GetDlgItem(GetDlgItem(hdlg, cmb3), 1001), 
                      EM_SETREADONLY, TRUE, 0);
 

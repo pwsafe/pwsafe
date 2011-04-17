@@ -54,6 +54,7 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 #define ID_MENUITEM_PROPERTIES          32020
 #define ID_MENUITEM_EXIT                32021
 #define ID_MENUITEM_SYNCHRONIZE         32022
+#define ID_MENUITEM_CHANGEMODE          32023
 
 // Edit menu
 #define ID_EDITMENU                     32050

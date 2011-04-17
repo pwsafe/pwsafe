@@ -8,7 +8,25 @@
 
 #pragma once
 
+#include "InfoDisplay.h"      // for Tooltips
+
 // CPWStatusBar
+
+// timer event numbers used to by ControlExtns for ListBox tooltips.
+#define TIMER_SB_HOVER     0x0A
+#define TIMER_SB_SHOWING   0x0B 
+
+/*
+HOVER_TIME_SB       The length of time the pointer must remain stationary
+                    within a tool's bounding rectangle before the tool tip
+                    window appears.
+
+TIMEINT_SB_SHOWING The length of time the tool tip window remains visible
+                   if the pointer is stationary within a tool's bounding
+                   rectangle.
+*/
+#define HOVER_TIME_SB      1000
+#define TIMEINT_SB_SHOWING 5000
 
 class CPWStatusBar : public CStatusBar
 {
@@ -25,8 +43,9 @@ public:
   CPWStatusBar();
   virtual ~CPWStatusBar();
   virtual void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);
+  virtual BOOL OnChildNotify(UINT message, WPARAM wParam, LPARAM lParam, LRESULT *pResult);
 
-  void SetFilterStatus(bool bStatus)
+  void SetFilterStatus(const bool bStatus)
   {m_bFilterStatus = bStatus;}
 
   int GetBitmapWidth()
@@ -34,12 +53,24 @@ public:
 
 protected:
   //{{AFX_MSG(CPWStatusBar)
+  afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+  afx_msg void OnTimer(UINT_PTR nIDEvent);
+  afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+  afx_msg LRESULT OnMouseLeave(WPARAM, LPARAM);
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
 
 private:
+  bool ShowToolTip(int nPane, const bool bVisible);
+
+  CInfoDisplay *m_pSBToolTips;
   bool m_bFilterStatus;
   int m_bmHeight, m_bmWidth;
   CBitmap m_FilterBitmap;
+
+  UINT_PTR m_nHoverSBTimerID, m_nShowSBTimerID;
+  CPoint m_HoverSBPoint;
+  int m_HoverSBnPane;
+  bool m_bUseToolTips, m_bMouseInWindow;
 };

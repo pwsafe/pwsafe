@@ -3224,10 +3224,10 @@ void DboxMain::SetToolBarPositions()
       ScreenToClient(&stb_rect);
       // Move FindToolBar up by the height of the Statusbar
       m_FindToolBar.MoveWindow(ftb_rect.left, ftb_rect.top - stb_rect.Height(),
-        ftb_rect.Width(), ftb_rect.Height());
+                               ftb_rect.Width(), ftb_rect.Height());
       // Move Statusbar down by the height of the FindToolBar
       m_statusBar.MoveWindow(stb_rect.left, stb_rect.top + ftb_rect.Height(),
-        stb_rect.Width(), stb_rect.Height());
+                             stb_rect.Width(), stb_rect.Height());
       m_FindToolBar.Invalidate();
       m_statusBar.Invalidate();
     }
