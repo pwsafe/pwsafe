@@ -5564,7 +5564,7 @@ msgstr "Oryginalna baza danych, \"%s\", jest w formacie pre-3.0. To nie zostanie
 #. Resource IDs: (333)
 #, c-format
 msgid "The original database, \"%s\", is in pre-3.0 format. The data will now be written in the new format, which is unusable by old versions of PasswordSafe. To save the data in the old format, use the \"File->Export To->Old (1.x or 2) format\" command."
-msgstr ""
+msgstr "Oryginalna baza danych, \"%s\", jest w formacie pre-3.0. Dane zostaną zapisane w nowym formacie, który nie jest wspierany przez starsze wersje PasswordSafe. By zachować dane w starym formacie użyj komendy \"Plik->Eksport do->Stary format (1.x lub 2) format\"."
 
 #. Resource IDs: (342)
 #, c-format
@@ -5771,7 +5771,7 @@ msgstr "Ograniczenie wersji testowej"
 
 #. Resource IDs: (208)
 msgid "Trouble reading stored filters (version mismatch?). Filters will be unusable."
-msgstr ""
+msgstr "Problem podczas odczytu zapisanych filtrów (inna wersja?). Filtry nie będą użyte."
 
 #. Resource IDs: (203)
 #, c-format
@@ -5982,7 +5982,7 @@ msgstr "Urdu"
 
 #. Resource IDs: (313)
 msgid "Usage: pwsafe [-r|-v] [password database]\nor pwsafe [-e|-d] filename\nor pwsafe [-c]\nor pwsafe [-s] [password database]\nor pwsafe -m\n\n where:\n  -r = open read-only\n  -v = validate & repair\n  -e/d = encrypt/decrypt file\n  -c = start closed i.e., no open database\n  -s = start silently (minimized)\n  -m = start minimized & closed\n\nIn addition, the following flags may be used:\n -u user (use user's preferences instead of login name)\n -h host (use host to look up preferences instead of the machine's name)\n -g config_file (use config_file instead of pwsafe.cfg)\n -q (don't complain about missing fonts, dlls, etc.)"
-msgstr ""
+msgstr "Użycie: pwsafe [-r|-v] [baza danych z hasłami]\nlub pwsafe [-e|-d] nazwa_pliku\nlub pwsafe [-c]\nlub pwsafe [-s] [nazwa pliku z hasłami]\nlub pwsafe -m\n\n gdzie:\n  -r = otwórz w trybie tylko do odczytu\n  -v = sprawdź i napraw\n  -e/d = zaszyfruj/odszyfruj plik\n  -c = uruchom w trybie zamkniętym, tj. bez otwartej bazy danych z hasłami\n  -s = uruchom cichaczem (zminimalizowany)\n  -m = uruchom zminimalizowany w trybie zamkniętym\n\nDodatkowo następujące opcje mogą być użyte:\n -u użytkownik (użyj ustawień użytkownika zamiast ustawień wynikających z nazwy użytkownika zalogowanego)\n -h host (użyj komputera host by znaleźć ustawienia zamiast ustawieńwynikających z nazwy komputera)\n -g plik_konfiguracyjny (użyj plik_konfiguracyjny zamiast pwsafe.cfg)\n -q (nie narzekaj o brakujących fontach, bibliotekach dll itp.)"
 
 #. Resource IDs: (1029)
 #, fuzzy
@@ -6151,11 +6151,11 @@ msgstr "UWAGA: jeśli kontynnujesz, pola będą zmienione we wpisach w istnieją
 #. Resource IDs: (363)
 #, c-format
 msgid "WARNING: This operation will create an unprotected copy of %s in the database. Deleting this copy after use is NOT sufficient.\r\n\r\nPlease do not use this option unless you understand and accept the risks. This option bypasses the security provided by this program."
-msgstr ""
+msgstr "UWAGA: Ta operacja stworzy niechronioną kopię %s w bazie danych. Skasowanie tej kopii po użyciu NIE jest wystarczające.\r\n\r\nProsze nie używać tej opcji jeślni nie rozumiesz ryzyka. Ta opcja obchodzi bezpieczeństwo dostarczane przez ten program."
 
 #. Resource IDs: (341)
 msgid "WARNING: Use of an external editor may leave sensitive data on your hard disk.\n\nDo you wish to continue?"
-msgstr "OSTRZEŻENIE: Użycie zewnętrznego edytora może pozostawić poufne dane na twardym dysku.\n\nKontynuować?"
+msgstr "UWAGA: Użycie zewnętrznego edytora może pozostawić poufne dane na twardym dysku.\n\nKontynuować?"
 
 #. Resource IDs: (1232)
 #, fuzzy
@@ -6169,7 +6169,7 @@ msgstr "Ostrzeżenie"
 #. Resource IDs: (213)
 #, c-format
 msgid "Warning - %d %s in your database may have one or more fields too large to display or edit.\r\n\r\nThe largest entry size found was ~%d %s.\r\n\r\nYou can use the Filter to selectively display these record(s)."
-msgstr ""
+msgstr "Uwaga - %d %s w Twojej bazie danych może mieć pola zbyt duże by je pokazać lub edytować.\r\n\r\nNajwiększy rozmiar znalezionego wpisu to ~%d %s.\r\n\r\nMożesz użyć filtra, by wybrać rekordzy do pokazania."
 
 #. Resource IDs: (363)
 msgid "Warning - excessive field contents"
@@ -6278,7 +6278,7 @@ msgstr "Musisz zapisac tę bazę danych %s nim będzie mogła być %s."
 
 #. Resource IDs: (361)
 msgid "Your currently opened database will be in the first row.  Failsafe Backup files will be displayed below this.  If the passphrase is the same as the current database, the properties of these backups will also be shown.  If you are unable to chose, continue with the current database and use the database Compare function to view the differences between the versions."
-msgstr ""
+msgstr "Aktualnie otwarta baza danych będzie w pierwszym rzędzie.  Kopia zapasowa Failsafe będzie poniżej.  Jeśli fraza hasła jest taka sama jak do aktualnej bazy danych, włąściwości tych kopii będą także pokazane.  Jeśli nie możesz wybrać, kontunuuje z aktualną bazą danych i użyj funkcji Porównaj, by zobaczyć różnice między wersjami."
 
 #. Resource IDs: (357)
 #, c-format
