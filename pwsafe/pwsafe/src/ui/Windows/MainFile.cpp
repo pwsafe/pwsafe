@@ -2013,8 +2013,9 @@ void DboxMain::OnProperties()
   dlg.DoModal();
 }
 
-void DboxMain::OnChangeModeSB()
+void DboxMain::OnChangeMode()	 
 {
+  // From StatusBar and menu
   const bool bWasRO = IsDBReadOnly();
 
   // Try to save if any changes done to database
@@ -2025,6 +2026,14 @@ void DboxMain::OnChangeModeSB()
     return;
 
   if (rc == PWScore::USER_DECLINED_SAVE) {
+	   // But ask just in case	 
+     CGeneralMsgBox gmb;	 
+     CString cs_msg(MAKEINTRESOURCE(IDS_BACKOUT_CHANGES)), cs_title(MAKEINTRESOURCE(IDS_CHANGEMODE));	 
+     rc = gmb.MessageBox(cs_msg, cs_title, MB_YESNO | MB_ICONQUESTION);	 
+ 	 
+     if (rc == IDNO)	 
+       return;
+
     // User said No to the save - so we must back-out all changes since last save
     while (m_core.IsChanged()) {
       OnUndo();
