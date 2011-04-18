@@ -2015,20 +2015,6 @@ void DboxMain::OnProperties()
 
 void DboxMain::OnChangeModeSB()
 {
-  // Ask if user meant to double-click on Status Bar
-  CGeneralMsgBox gmb;
-  CString cs_msg, cs_title;
-  CString cs_mode1(MAKEINTRESOURCE(IsDBReadOnly() ? IDS_CHANGEMODE_RO : IDS_CHANGEMODE_RW));
-  CString cs_mode2(MAKEINTRESOURCE(IsDBReadOnly() ? IDS_CHANGEMODE_RW : IDS_CHANGEMODE_RO));
-  cs_title.Format(IDS_CHANGEMODE, cs_mode2);
-  cs_msg.Format(IDS_CHANGEMODE_CONFIRM, cs_mode1, cs_mode2);
-
-  if (gmb.MessageBox(cs_msg, cs_title, MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2) == IDYES)
-    OnChangeMode();
-}
-
-void DboxMain::OnChangeMode()
-{
   const bool bWasRO = IsDBReadOnly();
 
   // Try to save if any changes done to database
@@ -2040,25 +2026,17 @@ void DboxMain::OnChangeMode()
 
   if (rc == PWScore::USER_DECLINED_SAVE) {
     // User said No to the save - so we must back-out all changes since last save
-    // But ask just in case
-    CGeneralMsgBox gmb;
-    CString cs_msg(MAKEINTRESOURCE(IDS_BACKOUT_CHANGES)), cs_title(MAKEINTRESOURCE(IDS_CHANGEMODE));
-    rc = gmb.MessageBox(cs_msg, cs_title, MB_YESNO | MB_ICONQUESTION);
-
-    if (rc == IDNO)
-      return;
-
     while (m_core.IsChanged()) {
       OnUndo();
     }
   }
- 
+    
   // Reset changed flag to stop being asked again (only if rc == PWScore::USER_DECLINED_SAVE)
   SetChanged(Clear);
 
   // Clear the Commands
   m_core.ClearCommands();
-
+    
   std::wstring locker = L"";
   bool brc = m_core.ChangeMode(locker);
   if (brc) {
