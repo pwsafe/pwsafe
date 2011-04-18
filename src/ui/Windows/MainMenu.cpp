@@ -600,6 +600,14 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
     ASSERT(pci != NULL);
   }
 
+	// Change the 'Change Mode' text as appropriate	 
+  if (uiMenuID == ID_FILEMENU) {	 
+    pPopupMenu->ModifyMenu(ID_MENUITEM_CHANGEMODE, MF_BYCOMMAND,	 
+                           ID_MENUITEM_CHANGEMODE,	 
+                           bReadOnly ? CS_READWRITE : CS_READONLY);	 
+    return;	 
+  }
+
   // If View menu selected (contains 'Flattened &List' menu item)
   if (uiMenuID == ID_VIEWMENU) {
     // Delete Show Find Toolbar menu item - don't know if there or previously deleted
