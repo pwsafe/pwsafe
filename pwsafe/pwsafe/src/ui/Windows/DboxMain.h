@@ -658,7 +658,6 @@ protected:
   afx_msg void OnMerge();
   afx_msg void OnCompare();
   afx_msg void OnSynchronize();
-  afx_msg void OnChangeMode();
   afx_msg void OnChangeModeSB();
   afx_msg void OnProperties();
   afx_msg void OnRestoreSafe();

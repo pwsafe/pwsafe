@@ -652,13 +652,9 @@
 #define IDS_CHANGE_READWRITE            5845
 #define IDS_CHANGE_READONLY             5846
 #define IDS_BACKOUT_CHANGES             5847
-#define IDS_CHANGEMODE                  5848
-#define IDS_CHANGEMODE_RO               5849
-#define IDS_CHANGEMODE_RW               5850
 #define IDS_CHANGEMODE_FAILED           5851
 #define IDS_CM_FAIL_REASON1             5852
 #define IDS_CM_FAIL_REASON2             5853
-#define IDS_CHANGEMODE_CONFIRM          5854
 #define IDS_SB_TT_DBCLICK               5855
 #define IDS_SB_TT_CBACTION              5856
 #define IDS_SB_TT_CONFIG                5857

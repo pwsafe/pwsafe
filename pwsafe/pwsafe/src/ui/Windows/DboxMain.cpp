@@ -388,7 +388,6 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_MERGE, OnMerge)
   ON_COMMAND(ID_MENUITEM_COMPARE, OnCompare)
   ON_COMMAND(ID_MENUITEM_SYNCHRONIZE, OnSynchronize)
-  ON_COMMAND(ID_MENUITEM_CHANGEMODE, OnChangeMode)
   ON_COMMAND(ID_MENUITEM_PROPERTIES, OnProperties)
 
   // Edit Menu
@@ -602,7 +601,6 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_MERGE, true, false, true, false},
   {ID_MENUITEM_COMPARE, true, true, false, false},
   {ID_MENUITEM_SYNCHRONIZE, true, false, false, false},
-  {ID_MENUITEM_CHANGEMODE, true, true, false, false},
   {ID_MENUITEM_PROPERTIES, true, true, true, false},
   {ID_MENUITEM_EXIT, true, true, true, true},
   // Edit menu
