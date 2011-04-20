@@ -116,13 +116,13 @@ bool CUUIDGen::operator==(const CUUIDGen &that) const
 #endif
 }
 
-bool CUUIDGen::ltuuid::operator()(const CUUIDGen &u1, const CUUIDGen &u2) const
+bool CUUIDGen::operator<(const CUUIDGen &that) const
 {
 #ifdef _WIN32
-  return std::memcmp(&u1.uuid,
-                     &u2.uuid, sizeof(u1.uuid)) < 0;
+  return std::memcmp(&uuid,
+                     &that.uuid, sizeof(uuid)) < 0;
 #else
-  return uuid_compare(u1.uuid, u2.uuid) < 0;
+  return uuid_compare(uuid, that.uuid) < 0;
 #endif
 }
 

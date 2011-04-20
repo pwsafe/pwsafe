@@ -90,27 +90,27 @@ struct st_UUID {
   }
 };
 
-typedef std::map<CUUIDGen, CItemData, CUUIDGen::ltuuid> ItemList;
+typedef std::map<CUUIDGen, CItemData, std::less<CUUIDGen> > ItemList;
 typedef ItemList::iterator ItemListIter;
 typedef ItemList::const_iterator ItemListConstIter;
 typedef std::pair<CUUIDGen, CItemData> ItemList_Pair;
 
 typedef std::vector<CItemData> OrderedItemList;
 
-typedef std::multimap<CUUIDGen, CUUIDGen, CUUIDGen::ltuuid> ItemMMap;
+typedef std::multimap<CUUIDGen, CUUIDGen, std::less<CUUIDGen> > ItemMMap;
 typedef ItemMMap::iterator ItemMMapIter;
 typedef ItemMMap::const_iterator ItemMMapConstIter;
 typedef std::pair<CUUIDGen, CUUIDGen> ItemMMap_Pair;
 
-typedef std::map<CUUIDGen, CUUIDGen, CUUIDGen::ltuuid> ItemMap;
+typedef std::map<CUUIDGen, CUUIDGen, std::less<CUUIDGen> > ItemMap;
 typedef ItemMap::iterator ItemMapIter;
 typedef ItemMap::const_iterator ItemMapConstIter;
 typedef std::pair<CUUIDGen, CUUIDGen> ItemMap_Pair;
 
-typedef std::map<CUUIDGen, st_SaveTypePW, CUUIDGen::ltuuid> SaveTypePWMap;
+typedef std::map<CUUIDGen, st_SaveTypePW, std::less<CUUIDGen> > SaveTypePWMap;
 typedef std::pair<CUUIDGen, st_SaveTypePW> SaveTypePWMap_Pair;
 
-typedef std::map<CUUIDGen, StringX, CUUIDGen::ltuuid> SavePWHistoryMap;
+typedef std::map<CUUIDGen, StringX, std::less<CUUIDGen> > SavePWHistoryMap;
 
 typedef std::set<st_GroupTitleUser> GTUSet;
 typedef std::pair< std::set<st_GroupTitleUser>::iterator, bool > GTUSetPair;
