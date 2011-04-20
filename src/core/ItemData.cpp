@@ -188,8 +188,7 @@ StringX CItemData::GetFieldValue(const FieldType &ft) const
     {
       uuid_array_t uuid_array = {0};
       GetUUID(uuid_array);
-      const CUUIDGen cuuid(uuid_array, true);
-      str = cuuid.GetHexStr();
+      str = CUUIDGen(uuid_array, true);
       break;
     }
     case GROUP:      /* 02 */

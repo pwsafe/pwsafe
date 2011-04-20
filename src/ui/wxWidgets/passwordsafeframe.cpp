@@ -1918,7 +1918,7 @@ void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga,
              ga == UpdateGUICommand::GUI_REFRESH_ENTRYFIELD ||
              ga == UpdateGUICommand::GUI_REFRESH_ENTRYPASSWORD) {
     pws_os::Trace(_("Couldn't find uuid %s"),
-          CUUIDGen(entry_uuid).GetHexStr().c_str());
+                  StringX(CUUIDGen(entry_uuid)).c_str());
   }
 
 #ifdef NOTYET
