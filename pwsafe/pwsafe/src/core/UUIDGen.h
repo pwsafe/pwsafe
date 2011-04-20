@@ -41,10 +41,7 @@ public:
   StringX GetHexStr() const; // e.g., "204012e6600f4e01a5eb515267cb0d50"
   bool operator==(const CUUIDGen &that) const;
   bool operator!=(const CUUIDGen &that) const { return !(*this == that); }
-  // Following is for map<> compare function
-  struct ltuuid {
-    bool operator()(const CUUIDGen &u1, const CUUIDGen &u2) const;
-  };
+  bool operator<(const CUUIDGen &that) const;
 
   friend std::ostream &operator<<(std::ostream &os, const CUUIDGen &uuid);
   friend std::wostream &operator<<(std::wostream &os, const CUUIDGen &uuid);

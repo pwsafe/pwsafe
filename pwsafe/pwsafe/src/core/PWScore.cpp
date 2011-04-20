@@ -2267,7 +2267,7 @@ struct HistoryUpdater {
 
 protected:
   int &m_num_altered;
-  std::map<CUUIDGen, StringX, CUUIDGen::ltuuid> &m_mapSavedHistory;
+  SavePWHistoryMap &m_mapSavedHistory;
 
 private:
   HistoryUpdater& operator=(const HistoryUpdater&); // Do not implement
