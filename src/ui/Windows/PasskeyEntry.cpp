@@ -432,7 +432,7 @@ void CPasskeyEntry::ProcessPhrase()
 {
   CGeneralMsgBox gmb;
   if (m_pDbx->CheckPasskey(LPCWSTR(m_filespec), LPCWSTR(m_passkey)) != PWScore::SUCCESS) {
-    if (m_tries >= 2) {
+    if (m_tries >= 4) {
       CTryAgainDlg errorDlg(this);
 
       INT_PTR nResponse = errorDlg.DoModal();

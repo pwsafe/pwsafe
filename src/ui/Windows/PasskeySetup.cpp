@@ -166,7 +166,7 @@ void CPasskeySetup::OnOK()
 #else
     cs_text.LoadString(IDS_TRYANOTHER);
     cs_msg += cs_text;
-    gmb.AfxMessageBox(cs_msg, MB_OK | MB_ICONSTOP);
+    gmb.AfxMessageBox(cs_msg, NULL, MB_OK | MB_ICONSTOP);
     return;
 #endif // PWS_FORCE_STRONG_PASSPHRASE
   }

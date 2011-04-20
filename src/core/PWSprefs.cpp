@@ -99,7 +99,7 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("MRUOnFileMenu"), true, ptApplication},               // application
   {_T("DisplayExpandedAddEditDlg"), true, ptObsolete},      // obsolete in 3.18
   {_T("MaintainDateTimeStamps"), false, ptDatabase},        // database
-  {_T("SavePasswordHistory"), false, ptDatabase},           // database
+  {_T("SavePasswordHistory"), true, ptDatabase},           // database
   {_T("FindWraps"), false, ptObsolete},                     // obsolete in 3.11
   {_T("ShowNotesDefault"), false, ptDatabase},              // database
   {_T("BackupBeforeEverySave"), true, ptApplication},       // application
@@ -145,7 +145,7 @@ const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {
   {_T("MaxREItems"), 25, ptApplication, 0, 25},                     // application
   {_T("TreeDisplayStatusAtOpen"), AllCollapsed, ptDatabase,
                                   minTDS, maxTDS},                  // database
-  {_T("NumPWHistoryDefault"), 3, ptDatabase, 0, 255},               // database
+  {_T("NumPWHistoryDefault"), 10, ptDatabase, 0, 255},               // database
   // Specified by supported masks
   {_T("BackupSuffix"), BKSFX_None, ptApplication, minBKSFX, maxBKSFX}, // application
   {_T("BackupMaxIncremented"), 1, ptApplication, 1, 999},           // application
