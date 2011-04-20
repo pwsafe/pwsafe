@@ -3649,7 +3649,7 @@ bool DboxMain::SetNotesWindow(const CPoint point, const bool bVisible)
       pci = (CItemData *)m_ctlItemList.GetItemData(nItem);
     }
   }
-  target.y += ::GetSystemMetrics(SM_CYCURSOR); // height of cursor
+  target.y += ::GetSystemMetrics(SM_CYCURSOR) / 2; // half-height of cursor
 
   if (pci != NULL) {
     if (pci->IsShortcut())

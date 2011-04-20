@@ -158,7 +158,7 @@ bool CPWStatusBar::ShowToolTip(int nPane, const bool bVisible)
   CPoint pt;
   ::GetCursorPos(&pt);
 
-  pt.y += ::GetSystemMetrics(SM_CYCURSOR); // height of cursor
+  pt.y += ::GetSystemMetrics(SM_CYCURSOR) / 2; // half-height of cursor
 
   m_pSBToolTips->SetWindowPos(&wndTopMost, pt.x, pt.y, 0, 0,
                               SWP_NOSIZE | SWP_NOACTIVATE | SWP_SHOWWINDOW);

@@ -21,7 +21,10 @@
 
 // CInfoDisplay
 
+extern HRGN GetWorkAreaRegion();
+
 IMPLEMENT_DYNAMIC(CInfoDisplay, CWnd)
+
 CInfoDisplay::CInfoDisplay()
 {
 }
@@ -44,8 +47,8 @@ void CInfoDisplay::OnPaint()
 {
   CPaintDC dc(this); // device context for painting
 
-  CFont *f = GetFont();
-  dc.SelectObject(f);
+  CFont *pFont = GetFont();
+  dc.SelectObject(pFont);
 
   // First, we compute the maximum line width, and set the rectangle wide enough to
   // hold this.  Then we use DrawText/DT_CALCRECT to compute the height
@@ -81,13 +84,38 @@ void CInfoDisplay::OnPaint()
     box.cx += 2 * inf;
     box.cy += 2 * inf;
 
-    CRect r(0, 0, 0, 0);
-    r.right = box.cx;
-    r.bottom = box.cy;
+    CRect rc(0, 0, 0, 0);
+    rc.right = box.cx;
+    rc.bottom = box.cy;
+
+    bool bMoveWindow(false);
+    int x = 0, y = 0;
+    // Get area of potentially multiple monitors! - defined in  DboxMain.cpp as extern
+    HRGN hrgn = GetWorkAreaRegion();
+
+    if (hrgn != NULL) {
+      // Test that all tip window is visible in the desktop rectangle.
+      CRect rs(rc);
+      // Convert to screen co-ordinates
+      ClientToScreen(rs);
+      if (!PtInRegion(hrgn, rs.right, rs.bottom)) {
+        // Not in region - move Window
+        x = rs.left - rc.Width();
+        y = rs.top;
+        bMoveWindow = true;
+      }
+
+      // Better check we haven't lost the start - if we have put it back and
+      // the user will just have to put up with a truncated window!
+      if (bMoveWindow && !PtInRegion(hrgn, x, y)) {
+        bMoveWindow = false;
+      }
+      DeleteObject(hrgn);
+    }
 
     // Set the window size
-    SetWindowPos(NULL, 0, 0, r.Width(), r.Height(), 
-                 SWP_NOMOVE | SWP_NOZORDER | SWP_NOACTIVATE);
+    SetWindowPos(NULL, x, y, rc.Width(), rc.Height(), 
+                 (bMoveWindow ? 0: SWP_NOMOVE) |  SWP_NOZORDER | SWP_NOACTIVATE);
   } /* compute box size */     
 
   CRect r;
@@ -101,9 +129,9 @@ void CInfoDisplay::OnPaint()
   while(TRUE) { /* scan string */
     CString line;
     int p = s.Find(L"\n");
-    if (p < 0)
+    if (p < 0) {
       line = s;
-    else { /* one line */
+    } else { /* one line */
       line = s.Left(p);
       s = s.Mid(p + 1);
     } /* one line */
@@ -144,12 +172,12 @@ BOOL CInfoDisplay::Create(int /* x */, int /* y */, LPCWSTR sztext, CWnd * paren
   CRect r(0, 0, 10, 10); // meaningless values, will be recomputed after creation
 
   BOOL bresult = CreateEx(WS_EX_NOACTIVATE,   // extended styles
-                         NDclass,
-                         sztext,
-                         /* not WS_VISIBLE */ WS_POPUP | WS_BORDER,
-                         r,
-                         parent,
-                         NULL);
+                          NDclass,
+                          sztext,
+                          /* not WS_VISIBLE */ WS_POPUP | WS_BORDER,
+                          r,
+                          parent,
+                          NULL);
   ASSERT(bresult);
   if (!bresult)
     return FALSE;
