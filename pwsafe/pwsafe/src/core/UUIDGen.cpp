@@ -73,7 +73,7 @@ CUUIDGen::CUUIDGen(const uuid_array_t &uuid_array, bool canonic) : m_canonic(can
 #endif
 }
 
-CUUIDGen::CUUIDGen(const StringX &s) // s is a hex string as returned by GetHexStr()
+CUUIDGen::CUUIDGen(const StringX &s) // s is a hex string as returned by cast to StringX
 {
   ASSERT(s.length() == 32);
 #ifdef _WIN32
@@ -151,7 +151,7 @@ wostream &operator<<(wostream &os, const CUUIDGen &uuid)
   return os;
 }
 
-StringX CUUIDGen::GetHexStr() const
+CUUIDGen::operator StringX() const
 {
   oStringXStream os;
   bool sc = m_canonic;

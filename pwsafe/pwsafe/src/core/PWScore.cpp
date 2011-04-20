@@ -356,9 +356,8 @@ struct RecordWriter {
       p.second.GetUUID(item_uuid);
       m_pcore->GetDependentEntryBaseUUID(item_uuid, base_uuid, CItemData::ET_ALIAS);
 
-      const CUUIDGen buuid(base_uuid);
       StringX uuid_str(_T("[["));
-      uuid_str += buuid.GetHexStr();
+      uuid_str += CUUIDGen(base_uuid);
       uuid_str += _T("]]");
       p.second.SetPassword(uuid_str);
     } else if (p.second.IsShortcut()) {
@@ -366,9 +365,8 @@ struct RecordWriter {
       p.second.GetUUID(item_uuid);
       m_pcore->GetDependentEntryBaseUUID(item_uuid, base_uuid, CItemData::ET_SHORTCUT);
 
-      const CUUIDGen buuid(base_uuid);
       StringX uuid_str(_T("[~"));
-      uuid_str += buuid.GetHexStr();
+      uuid_str += CUUIDGen(base_uuid);
       uuid_str += _T("~]");
       p.second.SetPassword(uuid_str);
     }
