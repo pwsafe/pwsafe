@@ -81,6 +81,10 @@ struct AdvancedMergeOptions {
   static bool ShowFieldSelection() {
     return false;
   }
+
+  static wxString GetTaskWord() {
+    return _("merge");
+  }
 };
 
 IMPLEMENT_CLASS_TEMPLATE( AdvancedSelectionDlg, wxDialog, AdvancedMergeOptions )

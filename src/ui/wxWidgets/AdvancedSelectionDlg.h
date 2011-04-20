@@ -5,11 +5,7 @@
 #include "../../core/ItemData.h"
 #include "./wxutils.h"
 
-struct _subgroups {
-  const charT* name;
-  CItemData::FieldType type;
-};
-extern struct _subgroups subgroups[];
+extern CItemData::FieldType subgroups[];
 
 struct _subgroupFunctions {
   const charT* name;
@@ -53,7 +49,7 @@ struct SelectionCriteria
   bool IsDirty(void) const { return m_fDirty; }
   void Clean(void) { m_fDirty = false; }
   
-  CItemData::FieldType SubgroupObject() const {return subgroups[m_subgroupObject].type;}
+  CItemData::FieldType SubgroupObject() const {return subgroups[m_subgroupObject];}
   PWSMatch::MatchRule  SubgroupFunction() const {return subgroupFunctions[m_subgroupFunction].function;}
   int  SubgroupFunctionWithCase() const {return m_fCaseSensitive? -SubgroupFunction(): SubgroupFunction();}
   bool MatchesSubgroupText(const CItemData& item) const {
@@ -119,6 +115,7 @@ public:
 protected:
   virtual bool IsMandatoryField(CItemData::FieldType field) const = 0;
   virtual bool ShowFieldSelection() const = 0;
+  virtual wxString GetTaskWord() const = 0;
   
 public:
   SelectionCriteria m_criteria;
@@ -139,6 +136,10 @@ public:
   
   virtual bool ShowFieldSelection() const {
     return DlgType::ShowFieldSelection();
+  }
+  
+  virtual wxString GetTaskWord() const {
+    return DlgType::GetTaskWord();
   }
 };
 

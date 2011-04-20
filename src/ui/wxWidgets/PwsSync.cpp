@@ -123,6 +123,9 @@ struct SyncFieldSelection {
   static bool ShowFieldSelection() {
     return true;
   }
+  static wxString GetTaskWord() {
+    return _("synchronize");
+  }
 };
 
 /*!

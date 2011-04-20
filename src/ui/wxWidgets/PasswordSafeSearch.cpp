@@ -196,6 +196,10 @@ struct FindDlgType {
   static bool ShowFieldSelection() {
     return true;
   }
+
+  static wxString GetTaskWord() {
+    return _("search");
+  }
 };
 
 IMPLEMENT_CLASS_TEMPLATE( AdvancedSelectionDlg, wxDialog, FindDlgType )
