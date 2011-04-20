@@ -82,6 +82,10 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+// Also needed by CInfoDisplay
+extern HRGN GetWorkAreaRegion();
+extern BOOL CALLBACK EnumScreens(HMONITOR hMonitor, HDC , LPRECT , LPARAM lParam);
+
 IMPLEMENT_DYNAMIC(DboxMain, CDialog)
 
 /*
@@ -3213,7 +3217,7 @@ void DboxMain::PlaceWindow(CWnd *pWnd, CRect *pRect, UINT uiShowCmd)
   ::DeleteObject(hrgnWork);
 }
 
-HRGN DboxMain::GetWorkAreaRegion()
+HRGN GetWorkAreaRegion()
 {
   HRGN hrgn = CreateRectRgn(0, 0, 0, 0);
 
@@ -3222,6 +3226,23 @@ HRGN DboxMain::GetWorkAreaRegion()
   ::ReleaseDC(NULL, hdc);
 
   return hrgn;
+}
+
+BOOL CALLBACK EnumScreens(HMONITOR hMonitor, HDC , LPRECT , LPARAM lParam)
+{
+  MONITORINFO mi;
+  HRGN hrgn2;
+
+  HRGN *phrgn = (HRGN *)lParam;
+
+  mi.cbSize = sizeof(mi);
+  GetMonitorInfo(hMonitor, &mi);
+
+  hrgn2 = CreateRectRgnIndirect(&mi.rcWork);
+  CombineRgn(*phrgn, *phrgn, hrgn2, RGN_OR);
+  ::DeleteObject(hrgn2);
+
+  return TRUE;
 }
 
 void DboxMain::GetMonitorRect(HWND hwnd, RECT *prc, BOOL fWork)
@@ -3258,24 +3279,6 @@ void DboxMain::ClipRectToMonitor(HWND hwnd, RECT *prc, BOOL fWork)
   prc->top = max(rc.top, min(rc.bottom-h, prc->top));
   prc->right = prc->left + w;
   prc->bottom = prc->top + h;
-}
-
-BOOL CALLBACK DboxMain::EnumScreens(HMONITOR hMonitor, HDC /* hdc */, 
-                                    LPRECT /* prc */, LPARAM lParam)
-{
-  MONITORINFO mi;
-  HRGN hrgn2;
-
-  HRGN *phrgn = (HRGN *)lParam;
-
-  mi.cbSize = sizeof(mi);
-  GetMonitorInfo(hMonitor, &mi);
-
-  hrgn2 = CreateRectRgnIndirect(&mi.rcWork);
-  CombineRgn(*phrgn, *phrgn, hrgn2, RGN_OR);
-  ::DeleteObject(hrgn2);
-
-  return TRUE;
 }
 
 void DboxMain::UpdateSystemMenu()

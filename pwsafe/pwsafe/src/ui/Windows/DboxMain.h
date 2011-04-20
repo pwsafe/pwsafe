@@ -570,10 +570,8 @@ protected:
   void SetFindToolBar(bool bShow);
   void ApplyFilters();
 
-  HRGN GetWorkAreaRegion();
   void GetMonitorRect(HWND hwnd, RECT *prc, BOOL fWork);
   void ClipRectToMonitor(HWND hwnd, RECT *prc, BOOL fWork);
-  static BOOL CALLBACK EnumScreens(HMONITOR hMonitor, HDC hdc, LPRECT prc, LPARAM lParam);
   bool PassesFiltering(const CItemData &ci, const st_filters &filters);
   bool PassesPWHFiltering(const CItemData *pci,
                           const st_filters &filters) const;
