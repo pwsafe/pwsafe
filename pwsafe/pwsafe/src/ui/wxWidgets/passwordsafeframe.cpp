@@ -2753,6 +2753,10 @@ struct ExportFullText
   static bool ShowFieldSelection() {
     return true;
   }
+
+  static wxString GetTaskWord() {
+    return _("export");
+  }
 };
 
 void PasswordSafeFrame::OnExportPlainText(wxCommandEvent& evt)
@@ -2789,6 +2793,9 @@ struct ExportFullXml {
   
   static bool ShowFieldSelection() {
     return true;
+  }
+  static wxString GetTaskWord() {
+    return _("export");
   }
 };
 
