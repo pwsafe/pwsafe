@@ -482,8 +482,7 @@ int PWScore::Execute(Command *pcmd)
   int rc = pcmd->Execute();
   m_undo_iter--;
 
-  uuid_array_t entry_uuid = {'0'};  // Valid value not required for this particular call.
-  NotifyGUINeedsUpdating(UpdateGUICommand::GUI_UPDATE_STATUSBAR, entry_uuid);
+  NotifyGUINeedsUpdating(UpdateGUICommand::GUI_UPDATE_STATUSBAR, CUUIDGen::NullUUID());
   return rc;
 }
 
@@ -499,8 +498,7 @@ void PWScore::Undo()
   else
     m_undo_iter--;
 
-  uuid_array_t entry_uuid = {'0'};  // Valid value not required for this particular call.
-  NotifyGUINeedsUpdating(UpdateGUICommand::GUI_UPDATE_STATUSBAR, entry_uuid);
+  NotifyGUINeedsUpdating(UpdateGUICommand::GUI_UPDATE_STATUSBAR, CUUIDGen::NullUUID());
 }
 
 void PWScore::Redo()
@@ -513,8 +511,7 @@ void PWScore::Redo()
   if (m_redo_iter != m_vpcommands.end())
     m_redo_iter++;
 
-  uuid_array_t entry_uuid = {'0'};  // Valid value not required for this particular call.
-  NotifyGUINeedsUpdating(UpdateGUICommand::GUI_UPDATE_STATUSBAR, entry_uuid);
+  NotifyGUINeedsUpdating(UpdateGUICommand::GUI_UPDATE_STATUSBAR, CUUIDGen::NullUUID());
 }
 
 bool PWScore::AnyToUndo() const
@@ -1526,8 +1523,8 @@ bool PWScore::MakeEntryUnique(GTUSet &setGTU,
   return retval; // false iff we had to modify sxtitle
 }
 
-void PWScore::DoAddDependentEntry(const uuid_array_t &base_uuid, 
-                                  const uuid_array_t &entry_uuid, 
+void PWScore::DoAddDependentEntry(const CUUIDGen &base_uuid, 
+                                  const CUUIDGen &entry_uuid, 
                                   const CItemData::EntryType type)
 {
   ItemMMap *pmmap;
@@ -1541,7 +1538,7 @@ void PWScore::DoAddDependentEntry(const uuid_array_t &base_uuid,
   } else
     return;
 
-  ItemListIter iter = m_pwlist.find(base_uuid);
+  ItemListIter iter = m_pwlist.find(*base_uuid.GetUUID());
   ASSERT(iter != m_pwlist.end());
 
   bool baseWasNormal = iter->second.IsNormal();
@@ -1560,12 +1557,12 @@ void PWScore::DoAddDependentEntry(const uuid_array_t &base_uuid,
   }
 
   // Add to both the base->type multimap and the type->base map
-  pmmap->insert(ItemMMap_Pair(base_uuid, entry_uuid));
-  pmap->insert(ItemMap_Pair(entry_uuid, base_uuid));
+  pmmap->insert(ItemMMap_Pair(*base_uuid.GetUUID(), *entry_uuid.GetUUID()));
+  pmap->insert(ItemMap_Pair(*entry_uuid.GetUUID(), *base_uuid.GetUUID()));
 }
 
-void PWScore::DoRemoveDependentEntry(const uuid_array_t &base_uuid, 
-                                     const uuid_array_t &entry_uuid,
+void PWScore::DoRemoveDependentEntry(const CUUIDGen &base_uuid, 
+                                     const CUUIDGen &entry_uuid,
                                      const CItemData::EntryType type)
 {
   ItemMMap *pmmap;
@@ -1580,30 +1577,30 @@ void PWScore::DoRemoveDependentEntry(const uuid_array_t &base_uuid,
     return;
 
   // Remove from entry -> base map
-  pmap->erase(entry_uuid);
+  pmap->erase(*entry_uuid.GetUUID());
 
   // Remove from base -> entry multimap
   ItemMMapIter mmiter;
   ItemMMapIter mmlastElement;
 
-  mmiter = pmmap->find(base_uuid);
+  mmiter = pmmap->find(*base_uuid.GetUUID());
   if (mmiter == pmmap->end())
     return;
 
-  mmlastElement = pmmap->upper_bound(base_uuid);
-  uuid_array_t mmiter_uuid;
+  mmlastElement = pmmap->upper_bound(*base_uuid.GetUUID());
+  CUUIDGen mmiter_uuid;
 
   for ( ; mmiter != mmlastElement; mmiter++) {
-    mmiter->second.GetUUID(mmiter_uuid);
-    if (memcmp(entry_uuid, mmiter_uuid, sizeof(uuid_array_t)) == 0) {
+    mmiter_uuid = *mmiter->second.GetUUID();
+    if (entry_uuid == mmiter_uuid) {
       pmmap->erase(mmiter);
       break;
     }
   }
 
   // Reset base entry to normal if it has no more aliases
-  if (pmmap->find(base_uuid) == pmmap->end()) {
-    ItemListIter iter = m_pwlist.find(base_uuid);
+  if (pmmap->find(*base_uuid.GetUUID()) == pmmap->end()) {
+    ItemListIter iter = m_pwlist.find(*base_uuid.GetUUID());
     if (iter != m_pwlist.end()) {
       iter->second.SetNormal();
       GUIRefreshEntry(iter->second);
@@ -1611,7 +1608,7 @@ void PWScore::DoRemoveDependentEntry(const uuid_array_t &base_uuid,
   }
 }
 
-void PWScore::DoRemoveAllDependentEntries(const uuid_array_t &base_uuid, 
+void PWScore::DoRemoveAllDependentEntries(const CUUIDGen &base_uuid, 
                                           const CItemData::EntryType type)
 {
   ItemMMap *pmmap;
@@ -1629,30 +1626,28 @@ void PWScore::DoRemoveAllDependentEntries(const uuid_array_t &base_uuid,
   ItemMMapIter itr;
   ItemMMapIter lastElement;
 
-  itr = pmmap->find(base_uuid);
+  itr = pmmap->find(*base_uuid.GetUUID());
   if (itr == pmmap->end())
     return;
 
   lastElement = pmmap->upper_bound(base_uuid);
-  uuid_array_t itr_uuid;
 
   for ( ; itr != lastElement; itr++) {
-    itr->second.GetUUID(itr_uuid);
     // Remove from entry -> base map
-    pmap->erase(itr_uuid);
+    pmap->erase(*itr->second.GetUUID());
   }
 
   // Remove from base -> entry multimap
-  pmmap->erase(base_uuid);
+  pmmap->erase(*base_uuid.GetUUID());
 
   // Reset base entry to normal
-  ItemListIter iter = m_pwlist.find(base_uuid);
+  ItemListIter iter = m_pwlist.find(*base_uuid.GetUUID());
   if (iter != m_pwlist.end())
     iter->second.SetNormal();
 }
 
-void PWScore::DoMoveDependentEntries(const uuid_array_t &from_baseuuid,
-                                     const uuid_array_t &to_baseuuid, 
+void PWScore::DoMoveDependentEntries(const CUUIDGen &from_baseuuid,
+                                     const CUUIDGen &to_baseuuid, 
                                      const CItemData::EntryType type)
 {
   ItemMMap *pmmap;
@@ -1669,23 +1664,23 @@ void PWScore::DoMoveDependentEntries(const uuid_array_t &from_baseuuid,
   ItemMMapIter from_itr;
   ItemMMapIter lastfromElement;
 
-  from_itr = pmmap->find(from_baseuuid);
+  from_itr = pmmap->find(*from_baseuuid.GetUUID());
   if (from_itr == pmmap->end())
     return;
 
-  lastfromElement = pmmap->upper_bound(from_baseuuid);
+  lastfromElement = pmmap->upper_bound(*from_baseuuid.GetUUID());
 
   for ( ; from_itr != lastfromElement; from_itr++) {
     // Add to new base in base -> entry multimap
-    pmmap->insert(ItemMMap_Pair(to_baseuuid, from_itr->second));
+    pmmap->insert(ItemMMap_Pair(*to_baseuuid.GetUUID(), from_itr->second));
     // Remove from entry -> base map
     pmap->erase(from_itr->second);
     // Add to entry -> base map (new base)
-    pmap->insert(ItemMap_Pair(from_itr->second, to_baseuuid));    
+    pmap->insert(ItemMap_Pair(from_itr->second, *to_baseuuid.GetUUID()));    
   }
 
   // Now delete all old base entries
-  pmmap->erase(from_baseuuid);
+  pmmap->erase(*from_baseuuid.GetUUID());
 }
 
 int PWScore::DoAddDependentEntries(UUIDVector &dependentlist, CReport *pRpt,
@@ -2165,7 +2160,7 @@ void PWScore::NotifyDBModified()
 }
 
 void PWScore::NotifyGUINeedsUpdating(UpdateGUICommand::GUI_Action ga, 
-                                     uuid_array_t &entry_uuid,
+                                     const CUUIDGen &entry_uuid,
                                      CItemData::FieldType ft,
                                      bool bUpdateGUI)
 {
@@ -2486,11 +2481,13 @@ void PWScore::GetDBProperties(st_DBProperties &st_dbp)
   }
 }
 
-void PWScore::UpdateExpiryEntry(const uuid_array_t &uuid, const CItemData::FieldType ft, const StringX &value)
+void PWScore::UpdateExpiryEntry(const CUUIDGen &uuid, const CItemData::FieldType ft,
+                                const StringX &value)
 {
   ExpiredList::iterator iter;
 
-  iter = std::find_if(m_ExpireCandidates.begin(), m_ExpireCandidates.end(), ee_equal_uuid(uuid));
+  iter = std::find_if(m_ExpireCandidates.begin(), m_ExpireCandidates.end(),
+                      ee_equal_uuid(uuid));
   if (iter == m_ExpireCandidates.end())
     return;
 

@@ -29,15 +29,6 @@
 
 using namespace std;
 
-CUUIDGen::CUUIDGen() : m_canonic(false)
-{
-#ifdef _WIN32
-  UuidCreate(&uuid);
-#else
-  uuid_generate(uuid);
-#endif
-}
-
 #ifdef _WIN32
 static void array2UUUID(const uuid_array_t &uuid_array, UUID &uuid)
 {
@@ -64,22 +55,72 @@ static void UUID2array(const UUID &uuid, uuid_array_t &uuid_array)
 }
 #endif
 
-CUUIDGen::CUUIDGen(const uuid_array_t &uuid_array, bool canonic) : m_canonic(canonic)
+static CUUIDGen nullUUID;
+
+const CUUIDGen &CUUIDGen::NullUUID()
+{
+  static bool inited = false;
+  if (!inited) {
+    inited = true;
+    uuid_array_t zua;
+    memset(zua, 0, sizeof(zua));
+    CUUIDGen zu(zua);
+    nullUUID = zu;
+  }
+  return nullUUID;
+}
+
+CUUIDGen::CUUIDGen() : m_ua(NULL), m_canonic(false)
 {
 #ifdef _WIN32
-  array2UUUID(uuid_array, uuid);
+  UuidCreate(&m_uuid);
 #else
-  uuid_copy(uuid, uuid_array);
+  uuid_generate(m_uuid);
+#endif
+}
+
+CUUIDGen::CUUIDGen(const CUUIDGen &uuid)
+  : m_ua(NULL), m_canonic(uuid.m_canonic)
+{
+#ifdef _WIN32
+  std::memcpy(&m_uuid, &uuid.m_uuid, sizeof(m_uuid));
+#else
+  uuid_copy(m_uuid, uuid.m_uuid);
+#endif
+}
+
+CUUIDGen &CUUIDGen::operator=(const CUUIDGen &that)
+{
+  if (this != &that) {
+#ifdef _WIN32
+    std::memcpy(&m_uuid, &that.m_uuid, sizeof(m_uuid));
+#else
+    uuid_copy(m_uuid, that.m_uuid);
+#endif
+    m_ua = NULL;
+    m_canonic = that.m_canonic;
+  }
+  return *this;
+}
+
+CUUIDGen::CUUIDGen(const uuid_array_t &uuid_array, bool canonic)
+  : m_canonic(canonic), m_ua(NULL)
+{
+#ifdef _WIN32
+  array2UUUID(uuid_array, m_uuid);
+#else
+  uuid_copy(m_uuid, uuid_array);
 #endif
 }
 
 CUUIDGen::CUUIDGen(const StringX &s) // s is a hex string as returned by cast to StringX
+  : m_ua(NULL), m_canonic(false)
 {
   ASSERT(s.length() == 32);
 #ifdef _WIN32
   uuid_array_t uu;
 #else
-  unsigned char *uu = uuid;
+  unsigned char *uu = m_uuid;
 #endif
 
   int x;
@@ -89,40 +130,53 @@ CUUIDGen::CUUIDGen(const StringX &s) // s is a hex string as returned by cast to
     uu[i] = static_cast<unsigned char>(x);
   }
 #ifdef _WIN32
-  array2UUUID(uu, uuid);
+  array2UUUID(uu, m_uuid);
 #endif
 }
 
 CUUIDGen::~CUUIDGen()
 {
-  trashMemory(reinterpret_cast<unsigned char *>(&uuid), sizeof(uuid));
+  trashMemory(reinterpret_cast<unsigned char *>(&m_uuid), sizeof(m_uuid));
+  if (m_ua) {
+    trashMemory(m_ua, sizeof(uuid_array_t));
+    delete[] m_ua;
+  }
 }
 
 void CUUIDGen::GetUUID(uuid_array_t &uuid_array) const
 {
 #ifdef _WIN32
-  UUID2array(uuid, uuid_array);
+  UUID2array(m_uuid, uuid_array);
 #else
-  uuid_copy(uuid_array, uuid);
+  uuid_copy(uuid_array, m_uuid);
 #endif
+}
+
+const uuid_array_t *CUUIDGen::GetUUID() const
+{
+  if (m_ua == NULL) {
+    m_ua = (uuid_array_t *)(new uuid_array_t);
+    GetUUID(*m_ua);
+  }
+  return m_ua;
 }
 
 bool CUUIDGen::operator==(const CUUIDGen &that) const
 {
 #ifdef _WIN32
-  return std::memcmp(&this->uuid, &that.uuid, sizeof(uuid)) == 0;
+  return std::memcmp(&this->m_uuid, &that.m_uuid, sizeof(m_uuid)) == 0;
 #else
-  return uuid_compare(this->uuid, that.uuid) == 0;
+  return uuid_compare(this->m_uuid, that.m_uuid) == 0;
 #endif
 }
 
 bool CUUIDGen::operator<(const CUUIDGen &that) const
 {
 #ifdef _WIN32
-  return std::memcmp(&uuid,
-                     &that.uuid, sizeof(uuid)) < 0;
+  return std::memcmp(&m_uuid,
+                     &that.m_uuid, sizeof(m_uuid)) < 0;
 #else
-  return uuid_compare(uuid, that.uuid) < 0;
+  return uuid_compare(m_uuid, that.m_uuid) < 0;
 #endif
 }
 

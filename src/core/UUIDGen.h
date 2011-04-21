@@ -34,10 +34,14 @@ class CUUIDGen
 {
 public:
   CUUIDGen(); // UUID generated at creation time
+  CUUIDGen(const CUUIDGen &uuid);
   CUUIDGen(const uuid_array_t &uuid_array, bool canonic = false); // for storing an existing UUID
   CUUIDGen(const StringX &s); // s is a hex string as returned by cast to StringX
+  static const CUUIDGen &NullUUID(); // singleton all-zero
   ~CUUIDGen();
   void GetUUID(uuid_array_t &uuid_array) const;
+  const uuid_array_t *GetUUID() const; // internally allocated, deleted in d'tor
+  CUUIDGen &operator=(const CUUIDGen &that);
   operator StringX() const; // GetHexStr, e.g., "204012e6600f4e01a5eb515267cb0d50"
   bool operator==(const CUUIDGen &that) const;
   bool operator!=(const CUUIDGen &that) const { return !(*this == that); }
@@ -47,7 +51,8 @@ public:
   friend std::wostream &operator<<(std::wostream &os, const CUUIDGen &uuid);
 
 private:
-  UUID uuid;
+  UUID m_uuid;
+  mutable uuid_array_t *m_ua; // for GetUUID();
   mutable bool m_canonic;
 };
 
