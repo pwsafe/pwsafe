@@ -23,12 +23,6 @@
 #include "./PWSgrid.h"
 #include <functional>
 
-void ClearUUID(uuid_array_t uu)
-{
-  memset(uu, 0, sizeof(uu));
-}
-
-
 void GUIInfo::Save(PasswordSafeFrame* frame)
 {
   SaveTreeViewInfo(frame->m_tree);
@@ -48,7 +42,7 @@ void GUIInfo::SaveTreeViewInfo(PWSTreeCtrl* tree)
   if (treeItem.IsOk()) {
     CItemData* item = tree->GetItem(treeItem);
     if (item) {
-      item->GetUUID(m_treeTop);
+      m_treeTop = item->GetUUID();
     }
     else if (tree->ItemHasChildren(treeItem)) {
       m_treeTop = tree->GetItemText(treeItem);
@@ -94,7 +88,7 @@ void GUIInfo::SaveTreeViewInfo(PWSTreeCtrl* tree)
     else {
       CItemData* item = tree->GetItem(selection);
       if (item) {
-        item->GetUUID(m_treeSelection);
+        m_treeSelection = item->GetUUID();
       }
       else {
         m_treeSelection.Clear();
@@ -113,30 +107,30 @@ void GUIInfo::SaveGridViewInfo(PWSGrid* grid)
   if (row != wxNOT_FOUND) {
     CItemData* item = grid->GetItem(row);
     if (item) {
-      item->GetUUID(m_gridTop);
+      m_gridTop = item->GetUUID();
     }
     else {
       wxFAIL_MSG(wxString(wxT("Top grid row ")) << row << wxT(" has no CItemData attached"));
-      ClearUUID(m_gridTop);
+      m_gridTop = CUUIDGen::NullUUID();
     }
   }
   else {
-    ClearUUID(m_gridTop);
+    m_gridTop = CUUIDGen::NullUUID();
   }
 
   const int selection = grid->GetGridCursorRow();
   if (selection != wxNOT_FOUND) {
     CItemData* item = grid->GetItem(selection);
     if (item) {
-      item->GetUUID(m_gridSelection);
+      m_gridSelection = item->GetUUID();
     }
     else {
       wxFAIL_MSG(wxString(wxT("Selected grid row ")) << selection << wxT(" has no CItemData attached"));
-      ClearUUID(m_gridSelection);
+      m_gridSelection = CUUIDGen::NullUUID();
     }
   }
   else {
-    ClearUUID(m_gridSelection);
+    m_gridSelection = CUUIDGen::NullUUID();
   }
 }
 

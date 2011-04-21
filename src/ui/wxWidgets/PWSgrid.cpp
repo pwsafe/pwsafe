@@ -219,9 +219,9 @@ struct moveup : public std::binary_function<UUIDRowMapT::value_type, int, void> 
   }
 };
 
-void PWSGrid::Remove(const uuid_array_t &uuid)
+void PWSGrid::Remove(const CUUIDGen &uuid)
 {
-  UUIDRowMapT::iterator iter = m_uuid_map.find(CUUIDGen(uuid));
+  UUIDRowMapT::iterator iter = m_uuid_map.find(uuid);
   if (iter != m_uuid_map.end()) {
     
     const int row = iter->second;
@@ -396,9 +396,9 @@ void PWSGrid::OnLeftDClick( wxGridEvent& evt )
      }
  }
 
-int  PWSGrid::FindItemRow(const uuid_array_t& uu)
+int  PWSGrid::FindItemRow(const CUUIDGen& uu)
 {
-     UUIDRowMapT::const_iterator itr = m_uuid_map.find(CUUIDGen(uu));
+     UUIDRowMapT::const_iterator itr = m_uuid_map.find(uu);
      if (itr != m_uuid_map.end()) {
        return itr->second;
      }

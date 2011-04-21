@@ -1894,7 +1894,7 @@ void PasswordSafeFrame::RefreshViews()
 }
 
 void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga,
-                                  uuid_array_t &entry_uuid,
+                                  const CUUIDGen &entry_uuid,
                                   CItemData::FieldType ft,
                                   bool bUpdateGUI)
 {
