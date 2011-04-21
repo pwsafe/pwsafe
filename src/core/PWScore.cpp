@@ -56,7 +56,7 @@ PWScore::PWScore() :
                      m_bDBChanged(false), m_bDBPrefsChanged(false),
                      m_IsReadOnly(false), m_bUniqueGTUValidated(false), 
                      m_nRecordsWithUnknownFields(0),
-                     m_bNotifyDB(false), m_pUIIF(NULL), m_fileSig(NULL)
+                     m_bNotifyDB(false), m_pUIIF(NULL), m_pFileSig(NULL)
 {
   // following should ideally be wrapped in a mutex
   if (!PWScore::m_session_initialized) {
@@ -85,7 +85,7 @@ PWScore::~PWScore()
   m_UHFL.clear();
   m_vnodes_modified.clear();
 
-  delete m_fileSig;
+  delete m_pFileSig;
 }
 
 void PWScore::SetApplicationNameAndVersion(const stringT &appName,
@@ -394,8 +394,8 @@ int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version)
 
   // since we're writing a new file, the previous sig's
   // about to be invalidated
-  delete m_fileSig;
-  m_fileSig = NULL;
+  delete m_pFileSig;
+  m_pFileSig = NULL;
 
   m_hdr.m_prefString = PWSprefs::GetInstance()->Store();
   m_hdr.m_whatlastsaved = m_AppNameAndVersion.c_str();
@@ -748,8 +748,8 @@ int PWScore::ReadFile(const StringX &a_filename,
   // Setup file signature for checking file integrity upon backup.
   // Goal is to prevent overwriting a good backup with a corrupt file.
   if (a_filename == m_currfile) {
-    delete m_fileSig;
-    m_fileSig = new PWSFileSig(a_filename.c_str());
+    delete m_pFileSig;
+    m_pFileSig = new PWSFileSig(a_filename.c_str());
   }
 
   if (numlarge > 0 && 
@@ -837,9 +837,9 @@ bool PWScore::BackupCurFile(int maxNumIncBackups, int backupSuffix,
 
   // Check if the file we're about to backup is unchanged since
   // we opened it, to avoid overwriting a good file with a bad one
-  if (m_fileSig != NULL) {
+  if (m_pFileSig != NULL) {
     PWSFileSig curSig(m_currfile.c_str());
-    bool passed = (curSig == *m_fileSig);
+    bool passed = (curSig == *m_pFileSig);
     if (!passed) // XXX yell scream & shout
       return false;
   }
@@ -2506,24 +2506,40 @@ void PWScore::UpdateExpiryEntry(const CUUIDGen &uuid, const CItemData::FieldType
   }
 }
 
-bool PWScore::ChangeMode(stringT &locker)
+bool PWScore::ChangeMode(stringT &locker, int &iFailCode)
 {
   // We do not have to close or re-open the database as the database is closed after processing.
   /*
    So what do we need to do?
 
-   If currently R/W, we need to unlock the database.
-
    If currently R/O, we need to lock the database.
+   If currently R/W, we need to unlock the database.
   */
+  iFailCode = SUCCESS;
   locker = _T(""); // Important!
 
   if (m_IsReadOnly) {
     // Need to lock it
     bool brc = pws_os::LockFile(m_currfile.c_str(), locker, 
                                 m_lockFileHandle, m_LockCount);
-    if (!brc)
+    if (!brc) {
+      iFailCode = CANT_GET_LOCK;
       return false;
+    }
+
+    // It was R-O, better check no-one has changed anything from in-memory copy
+    // The one calculated when we read it in is 'm_pFileSig' (R-O - so we haven't changed it)
+    // This is the new one
+    PWSFileSig newFileSig = PWSFileSig(m_currfile.c_str());
+    if (*m_pFileSig != newFileSig || !newFileSig.IsValid()) {
+      // Oops - someone else has changed this user will need to close and open properly.
+      // Or the file signature is invalid e.g. file not there or fie size too small.
+      // Tell them the bad news after unlocking file and not changing mode
+      pws_os::UnlockFile(m_currfile.c_str(), 
+                         m_lockFileHandle, m_LockCount);
+      iFailCode = DB_HAS_CHANGED;
+      return false;
+    }
   } else {
     // In R/W mode
     if (m_LockCount != 1)

@@ -142,11 +142,15 @@ public:
   PWSFileSig(const stringT &fname);
   PWSFileSig(const PWSFileSig &pfs);
   PWSFileSig &operator=(const PWSFileSig &that);
+
+  bool IsValid() {return m_bError;}
+
   bool operator==(const PWSFileSig &other);
   bool operator!=(const PWSFileSig &other) {return !(*this == other);}
 
 private:
-  long m_length; // 0 if file doesn't exist
+  long m_length; // -1 if file doesn't exist or zero length
   unsigned char m_digest[SHA256::HASHLEN];
+  bool m_bError;
 };
 #endif /* __PWSFILE_H */

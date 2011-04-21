@@ -444,34 +444,48 @@ bool PWSfile::Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess
 
 //-----------------------------------------------------------------
 // A quick way to determine if two files are equal, or if a given
-// file has been modified. For large files, this may miss changes
-//  made to the middle. This is due to a performance trade-off.
+// file has been modified.
+
+// For large files (>2K), we only hash the head & tail of the file.
+// This is due to a performance trade-off.
+
+// For unencrypted file, only checking the head & tail of large files may
+// cause changes made to the middle of the file to be missed.
+// However, since we write encrypted in CBC mode, this means that if the file
+// was modified at offset X, then everything from X to the end of the file will
+// be modified and the digests would be different.
 
 PWSFileSig::PWSFileSig(const stringT &fname)
 {
   const long THRESHOLD = 2048; // if file's longer than this, hash only head & tail
 
+  m_length = 0;
+  m_bError = true;
   memset(m_digest, 0, sizeof(m_digest));
   FILE *fp = pws_os::FOpen(fname, _T("rb"));
-  if (fp == NULL) {
-    m_length = 0;
-  } else {
+  if (fp != NULL) {
     SHA256 hash;
     unsigned char buf[THRESHOLD];
     m_length = pws_os::fileLength(fp);
-    if (m_length <= THRESHOLD) {
-      if (fread(buf, m_length, 1, fp) == 1) {
-        hash.Update(buf, m_length);
-        hash.Final(m_digest);
+    // Minimum size for an empty DB is 360 bytes - so less than 256 is invalid!
+    if (m_length > 255) {
+      if (m_length <= THRESHOLD) {
+        if (fread(buf, m_length, 1, fp) == 1) {
+          hash.Update(buf, m_length);
+          hash.Final(m_digest);
+          m_bError = false;
+        }
+      } else { // m_length > THRESHOLD
+        if (fread(buf, THRESHOLD / 2, 1, fp) == 1 &&
+            fseek(fp, -THRESHOLD / 2, SEEK_END) == 0 &&
+            fread(buf + THRESHOLD / 2, THRESHOLD / 2, 1, fp) == 1) {
+          hash.Update(buf, THRESHOLD);
+          hash.Final(m_digest);
+          m_bError = false;
+        }
       }
-    } else { // m_length > THRESHOLD
-      if (fread(buf, THRESHOLD/2, 1, fp) == 1 &&
-          fseek(fp, -THRESHOLD/2, SEEK_END) == 0 &&
-          fread(buf + THRESHOLD/2, THRESHOLD/2, 1, fp) == 1) {
-        hash.Update(buf, THRESHOLD);
-        hash.Final(m_digest);
-      }      
     }
+
     fclose(fp);
   }
 }
@@ -479,6 +493,7 @@ PWSFileSig::PWSFileSig(const stringT &fname)
 PWSFileSig::PWSFileSig(const PWSFileSig &pfs)
 {
   m_length = pfs.m_length;
+  m_bError = pfs.m_bError;
   memcpy(m_digest, pfs.m_digest, sizeof(m_digest));
 }
 
@@ -486,6 +501,7 @@ PWSFileSig &PWSFileSig::operator=(const PWSFileSig &that)
 {
   if (this != &that) {
     m_length = that.m_length;
+    m_bError = that.m_bError;
     memcpy(m_digest, that.m_digest, sizeof(m_digest));
   }
   return *this;
