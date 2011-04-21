@@ -36,15 +36,10 @@ public:
 };
 
 struct ee_equal_uuid {
-  ee_equal_uuid(uuid_array_t const& uuid)
-  {
-    memcpy(m_uuid, uuid, sizeof(uuid_array_t));
-  }
-
+ee_equal_uuid(CUUIDGen const& uuid) : m_uuid(uuid) {}
   bool operator()(const ExpPWEntry &ee) const
-  { return memcmp(m_uuid, ee.uuid, sizeof(uuid_array_t)) == 0; }
-
-  uuid_array_t m_uuid;
+  { return m_uuid == ee.uuid; }
+  const CUUIDGen m_uuid;
 };
 
 #endif /* __EXPIREDLIST_H */

@@ -63,11 +63,8 @@ void ExpiredList::Add(const CItemData &ci)
 
 void ExpiredList::Remove(const CItemData &ci)
 {
-  uuid_array_t uuid;
-  ci.GetUUID(uuid);
-  ExpiredList::iterator iter;
-
-  iter = std::find_if(begin(), end(), ee_equal_uuid(uuid));
+  ExpiredList::iterator iter = std::find_if(begin(), end(),
+                                            ee_equal_uuid(ci.GetUUID()));
   if (iter != end())
     erase(iter);
 }

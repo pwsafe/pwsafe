@@ -293,10 +293,9 @@ AddEntryCommand::AddEntryCommand(CommandInterface *pcomInt, const CItemData &ci,
 }
 
 AddEntryCommand::AddEntryCommand(CommandInterface *pcomInt, const CItemData &ci,
-                                 const uuid_array_t base_uuid, const Command *pcmd)
-  : Command(pcomInt), m_ci(ci)
+                                 const CUUIDGen &base_uuid, const Command *pcmd)
+  : Command(pcomInt), m_ci(ci), m_base_uuid(base_uuid)
 {
-  memcpy(m_base_uuid, base_uuid, sizeof(uuid_array_t));
   if (pcmd != NULL)
     m_bNotifyGUI = pcmd->GetGUINotify();
 }
@@ -316,16 +315,13 @@ int AddEntryCommand::Execute()
   m_pcomInt->AddChangedNodes(m_ci.GetGroup());
 
   if (m_ci.IsDependent()) {
-    uuid_array_t entry_uuid;
-    m_ci.GetUUID(entry_uuid);
-    m_pcomInt->DoAddDependentEntry(m_base_uuid, entry_uuid, m_ci.GetEntryType());
+    m_pcomInt->DoAddDependentEntry(m_base_uuid, *m_ci.GetUUID().GetUUID(),
+                                   m_ci.GetEntryType());
   }
 
   if (m_bNotifyGUI) {
-    uuid_array_t entry_uuid;
-    m_ci.GetUUID(entry_uuid);
     m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_ADD_ENTRY,
-                                      entry_uuid);
+                                      *m_ci.GetUUID().GetUUID());
   }
 
   time_t tttXTime;
@@ -351,7 +347,8 @@ void AddEntryCommand::Undo()
   if (m_ci.IsDependent()) {
     uuid_array_t entry_uuid;
     m_ci.GetUUID(entry_uuid);
-    m_pcomInt->DoRemoveDependentEntry(m_base_uuid, entry_uuid, m_ci.GetEntryType());
+    m_pcomInt->DoRemoveDependentEntry(m_base_uuid, *m_ci.GetUUID().GetUUID(),
+                                      m_ci.GetEntryType());
   }
 
   RestoreState();
@@ -371,17 +368,16 @@ DeleteEntryCommand::DeleteEntryCommand(CommandInterface *pcomInt,
   }
 
   if (ci.IsNormal())
-    memset(m_base_uuid, 0, sizeof(uuid_array_t));
+    m_base_uuid = CUUIDGen::NullUUID();
   else {
-    uuid_array_t uuid;
-    ci.GetUUID(uuid);
+    const CUUIDGen uuid = ci.GetUUID();
     // If ci is not a normal entry, gather the related entry
     // info for undo
     if (ci.IsDependent()) {
       // For aliases or shortcuts, we just need the uuid of the base entry
       const ItemMap &imap = (ci.IsAlias() ? pcomInt->GetAlias2BaseMap() :
                              pcomInt->GetShortcuts2BaseMap());
-      imap.find(CUUIDGen(uuid))->second.GetUUID(m_base_uuid);
+      m_base_uuid = *imap.find(uuid)->second.GetUUID();
     } else if (ci.IsBase()) {
       /**
        * When a shortcut base is deleted, we need to save all
@@ -393,10 +389,9 @@ DeleteEntryCommand::DeleteEntryCommand(CommandInterface *pcomInt,
       const ItemMMap &immap = 
         ci.IsShortcutBase() ? pcomInt->GetBase2ShortcutsMmap() : pcomInt->GetBase2AliasesMmap();
       ItemMMapConstIter iter;
-      for (iter = immap.lower_bound(CUUIDGen(uuid));
-           iter != immap.upper_bound(CUUIDGen(uuid)); iter++) {
-        uuid_array_t dep_uuid;
-        iter->second.GetUUID(dep_uuid);
+      for (iter = immap.lower_bound(uuid);
+           iter != immap.upper_bound(uuid); iter++) {
+        const CUUIDGen dep_uuid(*iter->second.GetUUID());
         ItemListIter itemIter = pcomInt->Find(dep_uuid);
         ASSERT(itemIter != pcomInt->GetEntryEndIter());
         if (itemIter != pcomInt->GetEntryEndIter())
@@ -418,10 +413,8 @@ int DeleteEntryCommand::Execute()
     return 0;
 
   if (m_bNotifyGUI) {
-    uuid_array_t entry_uuid;
-    m_ci.GetUUID(entry_uuid);
     m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_DELETE_ENTRY,
-                                      entry_uuid);
+                                      *m_ci.GetUUID().GetUUID());
   }
 
   m_pcomInt->DoDeleteEntry(m_ci);
@@ -438,8 +431,7 @@ int DeleteEntryCommand::Redo()
 
 void DeleteEntryCommand::Undo()
 {
-  uuid_array_t uuid;
-  m_ci.GetUUID(uuid);
+  CUUIDGen uuid = m_ci.GetUUID();
   if (m_ci.IsDependent()) {
     Command *pcmd = AddEntryCommand::Create(m_pcomInt, m_ci, m_base_uuid, this);
     pcmd->Execute();
@@ -450,7 +442,8 @@ void DeleteEntryCommand::Undo()
     if (m_ci.IsShortcutBase()) { // restore dependents
       for (std::vector<CItemData>::iterator iter = m_dependents.begin();
            iter != m_dependents.end(); iter++) {
-        Command *pcmd = AddEntryCommand::Create(m_pcomInt, *iter, uuid);
+        Command *pcmd = AddEntryCommand::Create(m_pcomInt, *iter,
+                                                *uuid.GetUUID());
         pcmd->Execute();
         delete pcmd;
       }
@@ -462,9 +455,8 @@ void DeleteEntryCommand::Undo()
            iter != m_dependents.end(); iter++) {
         DeleteEntryCommand delExAlias(m_pcomInt, *iter, this);
         delExAlias.Execute(); // out with the old...
-        uuid_array_t alias_uuid;
-        iter->GetUUID(alias_uuid);
-        Command *pcmd = AddEntryCommand::Create(m_pcomInt, *iter, uuid, this);
+        Command *pcmd = AddEntryCommand::Create(m_pcomInt, *iter,
+                                                *uuid.GetUUID(), this);
         pcmd->Execute(); // in with the new!
         delete pcmd;
       }
@@ -486,10 +478,7 @@ EditEntryCommand::EditEntryCommand(CommandInterface *pcomInt,
 {
   // We're only supposed to operate on entries
   // with same uuids, and possibly different fields
-  uuid_array_t old_uuid, new_uuid;
-  m_old_ci.GetUUID(old_uuid);
-  m_new_ci.GetUUID(new_uuid);
-  ASSERT(CUUIDGen(old_uuid) == CUUIDGen(new_uuid));
+  ASSERT(m_old_ci.GetUUID() == m_new_ci.GetUUID());
 }
 
 EditEntryCommand::~EditEntryCommand()
@@ -509,12 +498,11 @@ int EditEntryCommand::Execute()
   m_pcomInt->AddChangedNodes(m_new_ci.GetGroup());
 
   if (m_bNotifyGUI) {
-    uuid_array_t entry_uuid;
-    m_old_ci.GetUUID(entry_uuid);
+    const CUUIDGen entry_uuid = m_old_ci.GetUUID();
     // if the group's changed, refresh the entire tree, otherwise, just the field
     UpdateGUICommand::GUI_Action gac = (m_old_ci.GetGroup() != m_new_ci.GetGroup()) ?
       UpdateGUICommand::GUI_REFRESH_TREE : UpdateGUICommand::GUI_REFRESH_ENTRYFIELD;
-    m_pcomInt->NotifyGUINeedsUpdating(gac, entry_uuid);
+    m_pcomInt->NotifyGUINeedsUpdating(gac, *entry_uuid.GetUUID());
   }
 
   m_bState = true;
@@ -534,12 +522,11 @@ void EditEntryCommand::Undo()
   m_pcomInt->DoReplaceEntry(m_new_ci, m_old_ci);
 
   if (m_bNotifyGUI) {
-    uuid_array_t entry_uuid;
-    m_old_ci.GetUUID(entry_uuid);
+    const CUUIDGen entry_uuid = m_old_ci.GetUUID();
     // if the group's changed, refresh the entire tree, otherwise, just the field
     UpdateGUICommand::GUI_Action gac = (m_old_ci.GetGroup() != m_new_ci.GetGroup()) ?
       UpdateGUICommand::GUI_REFRESH_TREE : UpdateGUICommand::GUI_REFRESH_ENTRYFIELD;
-    m_pcomInt->NotifyGUINeedsUpdating(gac, entry_uuid);
+    m_pcomInt->NotifyGUINeedsUpdating(gac, *entry_uuid.GetUUID());
   }
 
   RestoreState();
@@ -556,12 +543,12 @@ UpdateEntryCommand::UpdateEntryCommand(CommandInterface *pcomInt,
                                        const StringX &value)
   : Command(pcomInt), m_ftype(ftype), m_value(value)
 {
-  ci.GetUUID(m_entry_uuid);
+  m_entry_uuid = ci.GetUUID();
   m_old_status = ci.GetStatus();
   m_old_value = ci.GetFieldValue(m_ftype);
 }
 
-void UpdateEntryCommand::Doit(const uuid_array_t &entry_uuid,
+void UpdateEntryCommand::Doit(const CUUIDGen &entry_uuid,
                               CItemData::FieldType ftype,
                               const StringX &value,
                               CItemData::EntryStatus es,
@@ -637,7 +624,7 @@ UpdatePasswordCommand::UpdatePasswordCommand(CommandInterface *pcomInt,
                                              const StringX sxNewPassword)
   : Command(pcomInt), m_sxNewPassword(sxNewPassword)
 {
-  ci.GetUUID(m_entry_uuid);
+  m_entry_uuid = ci.GetUUID();
   m_old_status = ci.GetStatus();
   m_sxOldPassword = ci.GetPassword();
   m_sxOldPWHistory = ci.GetPWHistory();
@@ -703,13 +690,12 @@ void UpdatePasswordCommand::Undo()
 // ------------------------------------------------
 
 AddDependentEntryCommand::AddDependentEntryCommand(CommandInterface *pcomInt,
-                                                   const uuid_array_t &base_uuid,
-                                                   const uuid_array_t &entry_uuid,
+                                                   const CUUIDGen &base_uuid,
+                                                   const CUUIDGen &entry_uuid,
                                                    const CItemData::EntryType type)
-  : Command(pcomInt), m_type(type)
+  : Command(pcomInt), m_base_uuid(base_uuid),
+    m_entry_uuid(entry_uuid), m_type(type)
 {
-  memcpy(static_cast<void *>(m_base_uuid), static_cast<const void *>(base_uuid), sizeof(uuid_array_t));
-  memcpy(static_cast<void *>(m_entry_uuid), static_cast<const void *>(entry_uuid), sizeof(uuid_array_t));
 }
 
 int AddDependentEntryCommand::Execute()
@@ -811,13 +797,12 @@ void AddDependentEntriesCommand::Undo()
 // ------------------------------------------------
 
 RemoveDependentEntryCommand::RemoveDependentEntryCommand(CommandInterface *pcomInt,
-                                                         const uuid_array_t &base_uuid,
-                                                         const uuid_array_t &entry_uuid,
+                                                         const CUUIDGen &base_uuid,
+                                                         const CUUIDGen &entry_uuid,
                                                          const CItemData::EntryType type)
-  : Command(pcomInt), m_type(type)
+  : Command(pcomInt), m_base_uuid(base_uuid),
+    m_entry_uuid(entry_uuid), m_type(type)
 {
-  memcpy(static_cast<void *>(m_base_uuid), static_cast<const void *>(base_uuid), sizeof(uuid_array_t));
-  memcpy(static_cast<void *>(m_entry_uuid), static_cast<const void *>(entry_uuid), sizeof(uuid_array_t));
 }
 
 int RemoveDependentEntryCommand::Execute()
@@ -852,13 +837,12 @@ void RemoveDependentEntryCommand::Undo()
 // ------------------------------------------------
 
 MoveDependentEntriesCommand::MoveDependentEntriesCommand(CommandInterface *pcomInt,
-                                                         const uuid_array_t &from_baseuuid,
-                                                         const uuid_array_t &to_baseuuid,
+                                                         const CUUIDGen &from_baseuuid,
+                                                         const CUUIDGen &to_baseuuid,
                                                          const CItemData::EntryType type)
-  : Command(pcomInt), m_type(type)
+  : Command(pcomInt), m_from_baseuuid(from_baseuuid),
+    m_to_baseuuid(to_baseuuid), m_type(type)
 {
-  memcpy(static_cast<void *>(m_from_baseuuid), static_cast<const void *>(from_baseuuid), sizeof(uuid_array_t));
-  memcpy(static_cast<void *>(m_to_baseuuid), static_cast<const void *>(to_baseuuid), sizeof(uuid_array_t));
 }
 
 int MoveDependentEntriesCommand::Execute()

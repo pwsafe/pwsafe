@@ -756,13 +756,13 @@ protected:
 
 private:
   // UIInterFace implementations:
-  void DatabaseModified(bool bChanged);
-  void UpdateGUI(UpdateGUICommand::GUI_Action ga,
-                 uuid_array_t &entry_uuid,
-                 CItemData::FieldType ft, bool bUpdateGUI);
-  void GUISetupDisplayInfo(CItemData &ci);
-  void GUIRefreshEntry(const CItemData &ci);
-  void UpdateWizard(const stringT &s);
+  virtual void DatabaseModified(bool bChanged);
+  virtual void UpdateGUI(UpdateGUICommand::GUI_Action ga,
+                         const CUUIDGen &entry_uuid,
+                         CItemData::FieldType ft, bool bUpdateGUI);
+  virtual void GUISetupDisplayInfo(CItemData &ci);
+  virtual void GUIRefreshEntry(const CItemData &ci);
+  virtual void UpdateWizard(const stringT &s);
 
   static int CALLBACK CompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
 

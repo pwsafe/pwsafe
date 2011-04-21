@@ -271,6 +271,10 @@ public:
   {return m_pwlist.find(entry_uuid);}
   ItemListConstIter Find(const uuid_array_t &entry_uuid) const
   {return m_pwlist.find(entry_uuid);}
+  ItemListIter Find(const CUUIDGen &entry_uuid)
+  {return m_pwlist.find(*entry_uuid.GetUUID());}
+  ItemListConstIter Find(const CUUIDGen &entry_uuid) const
+  {return m_pwlist.find(*entry_uuid.GetUUID());}
 
   bool ConfirmDelete(const CItemData *pci); // ask user when about to delete a base,
   //                                           otherwise just return true
@@ -370,13 +374,13 @@ private:
   virtual void DoReplaceEntry(const CItemData &old_ci, const CItemData &new_ci);
 
   // General routines for aliases and shortcuts
-  virtual void DoAddDependentEntry(const uuid_array_t &base_uuid,
-                                   const uuid_array_t &entry_uuid,
+  virtual void DoAddDependentEntry(const CUUIDGen &base_uuid,
+                                   const CUUIDGen &entry_uuid,
                                    const CItemData::EntryType type);
-  virtual void DoRemoveDependentEntry(const uuid_array_t &base_uuid,
-                                      const uuid_array_t &entry_uuid, 
+  virtual void DoRemoveDependentEntry(const CUUIDGen &base_uuid,
+                                      const CUUIDGen &entry_uuid, 
                                       const CItemData::EntryType type);
-  virtual void DoRemoveAllDependentEntries(const uuid_array_t &base_uuid, 
+  virtual void DoRemoveAllDependentEntries(const CUUIDGen &base_uuid, 
                                            const CItemData::EntryType type);
   virtual int DoAddDependentEntries(UUIDVector &dependentslist, CReport *pRpt, 
                                     const CItemData::EntryType type, 
@@ -385,8 +389,8 @@ private:
                                     SaveTypePWMap *pmapSaveTypePW = NULL);
   virtual void UndoAddDependentEntries(ItemList *pmapDeletedItems,
                                        SaveTypePWMap *pmapSaveTypePW);
-  virtual void DoMoveDependentEntries(const uuid_array_t &from_baseuuid, 
-                                      const uuid_array_t &to_baseuuid, 
+  virtual void DoMoveDependentEntries(const CUUIDGen &from_baseuuid, 
+                                      const CUUIDGen &to_baseuuid, 
                                       const CItemData::EntryType type);
 
   virtual int DoUpdatePasswordHistory(int iAction, int new_default_max,
@@ -474,7 +478,7 @@ private:
   UIInterFace *m_pUIIF; // pointer to UI interface abtraction
   std::bitset<UIInterFace::NUM_SUPPORTED> m_bsSupportedFunctions;
   
-  void NotifyGUINeedsUpdating(UpdateGUICommand::GUI_Action, uuid_array_t &,
+  void NotifyGUINeedsUpdating(UpdateGUICommand::GUI_Action, const CUUIDGen &,
                               CItemData::FieldType ft = CItemData::START,
                               bool bUpdateGUI = true);
 
@@ -496,7 +500,7 @@ private:
   {m_ExpireCandidates.Add(ci);}
   void UpdateExpiryEntry(const CItemData &ci)
   {m_ExpireCandidates.Update(ci);}
-  void UpdateExpiryEntry(const uuid_array_t &uuid, const CItemData::FieldType ft,
+  void UpdateExpiryEntry(const CUUIDGen &uuid, const CItemData::FieldType ft,
                          const StringX &value);
   void RemoveExpiryEntry(const CItemData &ci)
   {m_ExpireCandidates.Remove(ci);}

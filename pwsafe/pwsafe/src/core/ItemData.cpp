@@ -463,6 +463,20 @@ void CItemData::GetUUID(uuid_array_t &uuid_array) const
   GetField(m_UUID, static_cast<unsigned char *>(uuid_array), length);
 }
 
+const CUUIDGen CItemData::GetUUID() const
+{
+  // Ideally we'd like to return a uuid_array_t, but C++ doesn't
+  // allow array return values.
+  // If we returned the uuid_array_t pointer, we'd have a scope problem,
+  // as the pointer's owner would be deleted too soon.
+  // Frustrating, but that's life...
+
+  uuid_array_t ua;
+  GetUUID(ua);
+  return CUUIDGen(ua);
+}
+
+
 static void String2PWPolicy(const stringT &cs_pwp, PWPolicy &pwp)
 {
   // should really be a c'tor of PWPolicy - later...

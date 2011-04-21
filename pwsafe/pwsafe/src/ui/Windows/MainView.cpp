@@ -98,7 +98,7 @@ void DboxMain::DatabaseModified(bool bChanged)
 }
 
 void DboxMain::UpdateGUI(UpdateGUICommand::GUI_Action ga, 
-                         uuid_array_t &entry_uuid, CItemData::FieldType ft,
+                         const CUUIDGen &entry_uuid, CItemData::FieldType ft,
                          bool bUpdateGUI)
 {
   // Callback from PWScore if GUI needs updating
@@ -109,7 +109,7 @@ void DboxMain::UpdateGUI(UpdateGUICommand::GUI_Action ga,
   // the GUI should not be updated until after the Add.
   CItemData *pci(NULL);
 
-  ItemListIter pos = Find(entry_uuid);
+  ItemListIter pos = Find(*entry_uuid.GetUUID());
   if (pos != End()) {
     pci = &pos->second;
   }

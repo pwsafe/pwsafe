@@ -119,6 +119,7 @@ public:
   StringX GetPassword() const;
   StringX GetNotes(TCHAR delimiter = 0) const;
   void GetUUID(uuid_array_t &) const; // V20
+  const CUUIDGen GetUUID() const; // V20 - see comment in .cpp re return type
   StringX GetGroup() const; // V20
   StringX GetURL() const; // V30
   StringX GetAutoType() const; // V30

@@ -31,8 +31,8 @@ class CommandInterface {
   virtual void SetUniqueGTUValidated(bool bState) = 0;
   virtual bool GetUniqueGTUValidated() const = 0;
 
-  virtual ItemListIter Find(const uuid_array_t &entry_uuid) = 0;
-  virtual ItemListConstIter Find(const uuid_array_t &entry_uuid) const = 0;
+  virtual ItemListIter Find(const CUUIDGen &entry_uuid) = 0;
+  virtual ItemListConstIter Find(const CUUIDGen &entry_uuid) const = 0;
   virtual ItemListIter GetEntryIter() = 0;
   virtual ItemListConstIter GetEntryIter() const = 0;
   virtual ItemListIter GetEntryEndIter() = 0;
@@ -44,13 +44,13 @@ class CommandInterface {
   virtual void DoReplaceEntry(const CItemData &old_ci, const CItemData &new_ci) = 0;
 
   // General routines for aliases and shortcuts
-  virtual void DoAddDependentEntry(const uuid_array_t &base_uuid,
-                                   const uuid_array_t &entry_uuid,
+  virtual void DoAddDependentEntry(const CUUIDGen &base_uuid,
+                                   const CUUIDGen &entry_uuid,
                                    const CItemData::EntryType type) = 0;
-  virtual void DoRemoveDependentEntry(const uuid_array_t &base_uuid,
-                                      const uuid_array_t &entry_uuid, 
+  virtual void DoRemoveDependentEntry(const CUUIDGen &base_uuid,
+                                      const CUUIDGen &entry_uuid, 
                                       const CItemData::EntryType type) = 0;
-  virtual void DoRemoveAllDependentEntries(const uuid_array_t &base_uuid, 
+  virtual void DoRemoveAllDependentEntries(const CUUIDGen &base_uuid, 
                                            const CItemData::EntryType type) = 0;
   virtual int DoAddDependentEntries(UUIDVector &dependentslist, CReport *rpt, 
                                     const CItemData::EntryType type, 
@@ -59,8 +59,8 @@ class CommandInterface {
                                     SaveTypePWMap *pmapSaveTypePW = NULL) = 0;
   virtual void UndoAddDependentEntries(ItemList *pmapDeletedItems,
                                        SaveTypePWMap *pmapSaveTypePW) = 0;
-  virtual void DoMoveDependentEntries(const uuid_array_t &from_baseuuid, 
-                                      const uuid_array_t &to_baseuuid, 
+  virtual void DoMoveDependentEntries(const CUUIDGen &from_baseuuid, 
+                                      const CUUIDGen &to_baseuuid, 
                                       const CItemData::EntryType type) = 0;
 
   virtual int DoUpdatePasswordHistory(int iAction, int new_default_max,
@@ -82,13 +82,13 @@ class CommandInterface {
   virtual void SetShortcuts2BaseMap(const ItemMap &) = 0;
 
   virtual void NotifyGUINeedsUpdating(UpdateGUICommand::GUI_Action,
-                                      uuid_array_t &,
+                                      const CUUIDGen &,
                                       CItemData::FieldType ft = CItemData::START,
                                       bool bUpdateGUI = true) = 0;
 
   virtual void AddExpiryEntry(const CItemData &ci) = 0;
   virtual void UpdateExpiryEntry(const CItemData &ci) = 0;
-  virtual void UpdateExpiryEntry(const uuid_array_t &uuid, const CItemData::FieldType ft,
+  virtual void UpdateExpiryEntry(const CUUIDGen &uuid, const CItemData::FieldType ft,
                                  const StringX &value) = 0;
   virtual void RemoveExpiryEntry(const CItemData &ci) = 0;
 
