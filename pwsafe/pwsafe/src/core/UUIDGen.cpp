@@ -104,7 +104,7 @@ CUUIDGen &CUUIDGen::operator=(const CUUIDGen &that)
 }
 
 CUUIDGen::CUUIDGen(const uuid_array_t &uuid_array, bool canonic)
-  : m_canonic(canonic), m_ua(NULL)
+  : m_ua(NULL), m_canonic(canonic)
 {
 #ifdef _WIN32
   array2UUUID(uuid_array, m_uuid);

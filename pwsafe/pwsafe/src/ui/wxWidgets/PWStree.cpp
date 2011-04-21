@@ -361,11 +361,10 @@ int PWSTreeCtrl::OnCompareItems(const wxTreeItemId& item1, const wxTreeItemId& i
   return text1.CmpNoCase(text2);
 }
 
-wxTreeItemId PWSTreeCtrl::Find(const uuid_array_t &uuid) const
+wxTreeItemId PWSTreeCtrl::Find(const CUUIDGen &uuid) const
 {
   wxTreeItemId fail;
-  CUUIDGen cuuid(uuid);
-  UUIDTIMapT::const_iterator iter = m_item_map.find(cuuid);
+  UUIDTIMapT::const_iterator iter = m_item_map.find(uuid);
   if (iter != m_item_map.end())
     return iter->second;
   else
@@ -379,11 +378,11 @@ wxTreeItemId PWSTreeCtrl::Find(const CItemData &item) const
   return Find(uuid);
 }
 
-bool PWSTreeCtrl::Remove(const uuid_array_t &uuid)
+bool PWSTreeCtrl::Remove(const CUUIDGen &uuid)
 {
   wxTreeItemId id = Find(uuid);
   if (id.IsOk()) {
-    m_item_map.erase(CUUIDGen(uuid));
+    m_item_map.erase(uuid);
     // if item's the only leaf of  group, delete parent
     // group as well. repeat up the tree...
     wxTreeItemId parentId = GetItemParent(id);

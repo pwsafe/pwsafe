@@ -46,7 +46,7 @@ class PWSGrid;
 ////@end control identifiers
 
 typedef std::map<int, CUUIDGen> RowUUIDMapT;
-typedef std::map<CUUIDGen, int, CUUIDGen::ltuuid> UUIDRowMapT;
+typedef std::map<CUUIDGen, int, std::less<CUUIDGen> > UUIDRowMapT;
 
 
 /*!
@@ -82,7 +82,7 @@ public:
 
   void AddItem(const CItemData &item, int row = -1);
   void UpdateItem(const CItemData &item);
-  void Remove(const uuid_array_t &uuid);
+  void Remove(const CUUIDGen &uuid);
   size_t GetNumItems() const;
   void DeleteItems(int row, size_t numItems);
   void DeleteAllItems();
@@ -119,7 +119,7 @@ public:
   
   void SelectItem(const CUUIDGen& uuid);
 
-  int  FindItemRow(const uuid_array_t& uu);
+  int  FindItemRow(const CUUIDGen& uu);
 
   void SaveSettings(void) const;
 

@@ -45,7 +45,7 @@ class PWSTreeCtrl;
 #define SYMBOL_PWSTREECTRL_POSITION wxDefaultPosition
 ////@end control identifiers
 
-typedef std::map<CUUIDGen, wxTreeItemId, CUUIDGen::ltuuid> UUIDTIMapT;
+typedef std::map<CUUIDGen, wxTreeItemId, std::less<CUUIDGen> > UUIDTIMapT;
 
 /*!
  * PWSTreeCtrl class declaration
@@ -99,9 +99,9 @@ public:
   void AddItem(const CItemData &item);
   void UpdateItem(const CItemData &item);
   CItemData *GetItem(const wxTreeItemId &id) const;
-  wxTreeItemId Find(const uuid_array_t &uuid) const;
+  wxTreeItemId Find(const CUUIDGen &uuid) const;
   wxTreeItemId Find(const CItemData &item) const;
-  bool Remove(const uuid_array_t &uuid); // only remove from tree, not from m_core
+  bool Remove(const CUUIDGen &uuid); // only remove from tree, not from m_core
   void SelectItem(const CUUIDGen& uuid);
 
  private:

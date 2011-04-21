@@ -165,7 +165,7 @@ public:
     virtual void GUISetupDisplayInfo(CItemData &ci);
 
     virtual void UpdateGUI(UpdateGUICommand::GUI_Action ga,
-                           uuid_array_t &entry_uuid,
+                           const CUUIDGen &entry_uuid,
                            CItemData::FieldType ft = CItemData::START,
                            bool bUpdateGUI = true);
     
