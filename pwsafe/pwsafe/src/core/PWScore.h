@@ -59,7 +59,9 @@ public:
   enum {
     SUCCESS = 0,
     FAILURE = 1,
-    USER_DECLINED_SAVE = 1,
+    USER_DECLINED_SAVE = 2,
+    CANT_GET_LOCK = 3,
+    DB_HAS_CHANGED = 4,
     CANT_OPEN_FILE = PWSfile::CANT_OPEN_FILE, // -10 - ensure the same value
     USER_CANCEL = -9,                         // -9
     WRONG_PASSWORD = PWSfile::WRONG_PASSWORD, //  5 - ensure the same value
@@ -316,7 +318,8 @@ public:
   {m_bDBPrefsChanged = bDBprefschanged;
    NotifyDBModified();}
 
-  bool ChangeMode(stringT &locker);
+  bool ChangeMode(stringT &locker, int &iFailCode);
+  PWSFileSig& GetCurrentFileSig() {return *m_pFileSig;}
 
   bool IsChanged() const {return m_bDBChanged;}
   bool HaveDBPrefsChanged() const {return m_bDBPrefsChanged;}
@@ -492,7 +495,7 @@ private:
 
   static Reporter *m_pReporter; // set as soon as possible to show errors
   static Asker *m_pAsker;
-  PWSFileSig *m_fileSig;
+  PWSFileSig *m_pFileSig;
 
   // Entries with an expiry date
   ExpiredList m_ExpireCandidates;

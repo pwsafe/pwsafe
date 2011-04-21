@@ -2018,56 +2018,76 @@ void DboxMain::OnChangeMode()
   // From StatusBar and menu
   const bool bWasRO = IsDBReadOnly();
 
-  // Try to save if any changes done to database
-  // SaveIfChanged just returns if currently in R-O mode.
+  if (!bWasRO) {
+    // Try to save if any changes done to database
+    int rc = SaveIfChanged();
+    if (rc != PWScore::SUCCESS && rc != PWScore::USER_DECLINED_SAVE)
+      return;
 
-  int rc = SaveIfChanged();
-  if (rc != PWScore::SUCCESS && rc != PWScore::USER_DECLINED_SAVE)
-    return;
-
-  if (rc == PWScore::USER_DECLINED_SAVE) {
-	   // But ask just in case	 
-     CGeneralMsgBox gmb;	 
-     CString cs_msg(MAKEINTRESOURCE(IDS_BACKOUT_CHANGES)), cs_title(MAKEINTRESOURCE(IDS_CHANGEMODE));	 
-     rc = gmb.MessageBox(cs_msg, cs_title, MB_YESNO | MB_ICONQUESTION);	 
+    if (rc == PWScore::USER_DECLINED_SAVE) {
+	     // But ask just in case	 
+       CGeneralMsgBox gmb;	 
+       CString cs_msg(MAKEINTRESOURCE(IDS_BACKOUT_CHANGES)), cs_title(MAKEINTRESOURCE(IDS_CHANGEMODE));	 
+       rc = gmb.MessageBox(cs_msg, cs_title, MB_YESNO | MB_ICONQUESTION);	 
  	 
-     if (rc == IDNO)	 
-       return;
+       if (rc == IDNO)	 
+         return;
 
-    // User said No to the save - so we must back-out all changes since last save
-    while (m_core.IsChanged()) {
-      OnUndo();
+      // User said No to the save - so we must back-out all changes since last save
+      while (m_core.IsChanged()) {
+        OnUndo();
+      }
     }
-  }
-    
-  // Reset changed flag to stop being asked again (only if rc == PWScore::USER_DECLINED_SAVE)
-  SetChanged(Clear);
+ 
+    // Reset changed flag to stop being asked again (only if rc == PWScore::USER_DECLINED_SAVE)
+    SetChanged(Clear);
 
-  // Clear the Commands
-  m_core.ClearCommands();
-    
+    // Clear the Commands
+    m_core.ClearCommands();
+  }
+
+  CGeneralMsgBox gmb;
+  CString cs_msg, cs_title(MAKEINTRESOURCE(IDS_CHANGEMODE_FAILED));
   std::wstring locker = L"";
-  bool brc = m_core.ChangeMode(locker);
+  int iFailCode;
+  bool brc = m_core.ChangeMode(locker, iFailCode);
   if (brc) {
     UpdateStatusBar();
   } else {
     // Better give them the bad news!
-    CGeneralMsgBox gmb;
-    CString cs_msg, cs_title(MAKEINTRESOURCE(IDS_CHANGEMODE_FAILED));
     if (bWasRO) {
-      CString cs_user_and_host, cs_PID;
-      cs_user_and_host = (CString)locker.c_str();
-      int i_pid = cs_user_and_host.ReverseFind(L':');
-      if (i_pid > -1) {
-        // If PID present then it is ":%08d" = 9 chars in length
-        ASSERT((cs_user_and_host.GetLength() - i_pid) == 9);
-        cs_PID.Format(IDS_PROCESSID, cs_user_and_host.Right(8));
-        cs_user_and_host = cs_user_and_host.Left(i_pid);
-      } else
-        cs_PID = L"";
+      switch (iFailCode) {
+        case PWScore::NOT_SUCCESS:
+          // We did get the lock but the DB has been changed
+          // Note: PWScore has already freed the lock
+          // The user must close and re-open it in R/W mode
+          cs_msg.LoadString(IDS_CM_FAIL_REASON3);
+          gmb.MessageBox(cs_msg, cs_title, MB_OK | MB_ICONWARNING);
+          return;
+        
+        case PWScore::CANT_GET_LOCK:
+        {
+          CString cs_user_and_host, cs_PID;
+          cs_user_and_host = (CString)locker.c_str();
+          int i_pid = cs_user_and_host.ReverseFind(L':');
+          if (i_pid > -1) {
+            // If PID present then it is ":%08d" = 9 chars in length
+            ASSERT((cs_user_and_host.GetLength() - i_pid) == 9);
+            cs_PID.Format(IDS_PROCESSID, cs_user_and_host.Right(8));
+            cs_user_and_host = cs_user_and_host.Left(i_pid);
+          } else {
+            cs_PID = L"";
+          }
 
-      cs_msg.Format(IDS_CM_FAIL_REASON1, cs_user_and_host, cs_PID);
-    }else {
+          cs_msg.Format(IDS_CM_FAIL_REASON1, cs_user_and_host, cs_PID);
+          break;
+        }
+        default:
+          ASSERT(0);
+      }
+    } else {
+      // Don't need fail code when going from R/W to R-O - only one issue -
+      // could not release the lock!
       cs_msg.LoadString(IDS_CM_FAIL_REASON2);
     }
     gmb.SetTitle(cs_title);
