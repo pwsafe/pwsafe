@@ -2093,7 +2093,7 @@ void DboxMain::OnChangeMode()
     } else {
       // Don't need fail code when going from R/W to R-O - only one issue -
       // could not release the lock!
-      cs_msg.LoadString(IDS_CM_FAIL_REASON2);
+      uiMsg = IDS_CM_FAIL_REASON2;
     }
     if (bInUse) {
       // Big message
