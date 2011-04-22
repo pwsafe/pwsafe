@@ -16,19 +16,6 @@
 
 using namespace std;
 
-RUEntry::RUEntry(const uuid_array_t &aRUEuuid)
-{
-  memcpy(RUEuuid, aRUEuuid, sizeof(RUEuuid));
-}
-
-bool RUEntry::operator()(const RUEntry &re)
-{
-  return ::memcmp(RUEuuid, re.RUEuuid,
-    sizeof(uuid_array_t)) == 0;
-}
-
-//-----------------------------------------------------------------------------
-
 CRUEList::CRUEList(PWScore& core) : m_core(core), m_maxentries(0)
 {
 }
@@ -53,7 +40,7 @@ bool CRUEList::GetAllMenuItemStrings(vector<RUEntryData> &ListofAllMenuStrings) 
   RUEListConstIter iter;
 
   for (iter = m_RUEList.begin(); iter != m_RUEList.end(); iter++) {
-    ItemListConstIter pw_listpos = m_core.Find(iter->RUEuuid);
+    ItemListConstIter pw_listpos = m_core.Find(*iter);
     if (pw_listpos == m_core.GetEntryEndIter()) {
       ruentrydata.string = L"";
       ruentrydata.image = -1;
@@ -87,7 +74,7 @@ bool CRUEList::GetAllMenuItemStrings(vector<RUEntryData> &ListofAllMenuStrings) 
   return retval;
 }
 
-bool CRUEList::AddRUEntry(const uuid_array_t &RUEuuid)
+bool CRUEList::AddRUEntry(const CUUIDGen &RUEuuid)
 {
   /*
   * If the entry's already there, do nothing, return true.
@@ -96,18 +83,16 @@ bool CRUEList::AddRUEntry(const uuid_array_t &RUEuuid)
   */
   if (m_maxentries == 0) return false;
 
-  RUEntry match_uuid(RUEuuid);
-
-  RUEListIter iter = find_if(m_RUEList.begin(), m_RUEList.end(), match_uuid);
+  RUEListIter iter = find(m_RUEList.begin(), m_RUEList.end(), RUEuuid);
 
   if (iter == m_RUEList.end()) {
     if (m_RUEList.size() == m_maxentries)  // if already maxed out - delete oldest entry
       m_RUEList.pop_back();
 
-    m_RUEList.push_front(match_uuid);  // put it at the top
+    m_RUEList.push_front(RUEuuid);  // put it at the top
   } else {
     m_RUEList.erase(iter);  // take it out
-    m_RUEList.push_front(match_uuid);  // put it at the top
+    m_RUEList.push_front(RUEuuid);  // put it at the top
   }
   return true;
 }
@@ -123,14 +108,12 @@ bool CRUEList::DeleteRUEntry(size_t index)
   return true;
 }
 
-bool CRUEList::DeleteRUEntry(const uuid_array_t &RUEuuid)
+bool CRUEList::DeleteRUEntry(const CUUIDGen &RUEuuid)
 {
   if ((m_maxentries == 0) || m_RUEList.empty())
     return false;
 
-  RUEntry match_uuid(RUEuuid);
-
-  RUEListIter iter = find_if(m_RUEList.begin(), m_RUEList.end(), match_uuid);
+  RUEListIter iter = find(m_RUEList.begin(), m_RUEList.end(), RUEuuid);
 
   if (iter != m_RUEList.end()) {
     m_RUEList.erase(iter);
@@ -144,9 +127,9 @@ bool CRUEList::GetPWEntry(size_t index, CItemData &ci){
      (index > (m_RUEList.size() - 1)))
     return false;
 
-  const RUEntry &re_FoundEntry = m_RUEList[index];
+  const CUUIDGen &re_FoundEntry = m_RUEList[index];
 
-  ItemListConstIter pw_listpos = m_core.Find(re_FoundEntry.RUEuuid);
+  ItemListConstIter pw_listpos = m_core.Find(re_FoundEntry);
   if (pw_listpos == m_core.GetEntryEndIter())
     return false;
 
@@ -154,12 +137,20 @@ bool CRUEList::GetPWEntry(size_t index, CItemData &ci){
   return true;
 }
 
-void CRUEList::GetRUEList(UUIDList &RUElist)
+void CRUEList::GetRUEList(UUIDList &RUElist) const
 {
   RUElist.clear();
-  for (RUEListIter iter = m_RUEList.begin(); iter != m_RUEList.end(); iter ++) {
-    RUElist.push_back(iter->RUEuuid);
-  }
+  RUElist.resize(m_RUEList.size());
+  std::copy(m_RUEList.begin(), m_RUEList.end(), RUElist.begin());
+}
+
+void CRUEList::SetRUEList(const UUIDList &RUElist)
+{
+  m_RUEList.clear();
+  m_RUEList.resize(RUElist.size());
+  std::copy(RUElist.rbegin(), RUElist.rend(), m_RUEList.begin());
+  if (m_RUEList.size() > m_maxentries)
+    m_RUEList.resize(m_maxentries);
 }
 
 CRUEList& CRUEList::operator=(const CRUEList &that)
