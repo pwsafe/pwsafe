@@ -1445,9 +1445,8 @@ void PasswordSafeFrame::OnGotoBase(wxCommandEvent& /*evt*/)
   CItemData* item = GetSelectedEntry();
   if (item && (item->IsAlias() || item->IsShortcut())) {
     item = m_core.GetBaseEntry(item);
-    uuid_array_t base_uuid;
-    item->GetUUID(base_uuid);
-    SelectItem(CUUIDGen(base_uuid));
+    CUUIDGen base_uuid = item->GetUUID();
+    SelectItem(base_uuid);
     UpdateAccessTime(*item);
   }
 }
@@ -1528,9 +1527,7 @@ void PasswordSafeFrame::UpdateAccessTime(CItemData &ci)
 {
   // Mark access time if so configured
   // First add to RUE List
-  uuid_array_t RUEuuid;
-  ci.GetUUID(RUEuuid);
-  m_RUEList.AddRUEntry(RUEuuid);
+  m_RUEList.AddRUEntry(ci.GetUUID());
   bool bMaintainDateTimeStamps = PWSprefs::GetInstance()->
               GetPref(PWSprefs::MaintainDateTimeStamps);
 

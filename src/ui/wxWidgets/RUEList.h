@@ -22,14 +22,6 @@
 * CRUEList is a class that contains the recently used entries
 */
 
-// Recent Entry structure for m_RUEList
-struct RUEntry {
-  RUEntry() {}
-  RUEntry(const uuid_array_t &RUEuuid);
-  bool operator() (const RUEntry &); // for find_if
-  uuid_array_t RUEuuid;
-};
-
 struct RUEntryData {
   StringX string;
   int image;
@@ -47,7 +39,7 @@ struct CRUEItemData {
   BOOL     IsRUEID() const { return magicNum == RUEMENUITEMID; }
 };
 
-typedef std::deque<RUEntry> RUEList;
+typedef std::deque<CUUIDGen> RUEList;
 typedef RUEList::iterator RUEListIter;
 typedef RUEList::const_iterator RUEListConstIter;
 
@@ -65,14 +57,15 @@ public:
   size_t GetMax() const {return m_maxentries;}
   bool GetAllMenuItemStrings(std::vector<RUEntryData> &) const;
   bool GetPWEntry(size_t, CItemData &); // NOT const!
-  void GetRUEList(UUIDList &RUElist);
+  void GetRUEList(UUIDList &RUElist) const;
 
   // Data setting
   void SetMax(size_t);
   void ClearEntries() {m_RUEList.clear();}
-  bool AddRUEntry(const uuid_array_t &);
+  bool AddRUEntry(const CUUIDGen &);
   bool DeleteRUEntry(size_t);
-  bool DeleteRUEntry(const uuid_array_t &);
+  bool DeleteRUEntry(const CUUIDGen &);
+  void SetRUEList(const UUIDList &RUElist);
 
 private:
   PWScore &m_core;    // Dboxmain's m_core (which = app.m_core!)

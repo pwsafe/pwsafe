@@ -387,8 +387,7 @@ void PasswordSafeFrame::OnDuplicateEntry(wxCommandEvent& /*evt*/)
 
       const CItemData *pbci = m_core.GetBaseEntry(pci);
       if (pbci != NULL) {
-        uuid_array_t base_uuid;
-        pbci->GetUUID(base_uuid);
+        CUUIDGen base_uuid = pbci->GetUUID();
         StringX cs_tmp;
         cs_tmp = L"[" +
           pbci->GetGroup() + L":" +
@@ -406,8 +405,7 @@ void PasswordSafeFrame::OnDuplicateEntry(wxCommandEvent& /*evt*/)
 
 //    pdi->list_index = -1; // so that InsertItemIntoGUITreeList will set new values
 
-    uuid_array_t uuid;
-    ci2.GetUUID(uuid);
+    CUUIDGen uuid = ci2.GetUUID();
     ItemListIter iter = m_core.Find(uuid);
     ASSERT(iter != m_core.GetEntryEndIter());
 
