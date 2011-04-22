@@ -460,6 +460,7 @@ PWSFileSig::PWSFileSig(const stringT &fname)
   const long THRESHOLD = 2048; // if file's longer than this, hash only head & tail
 
   m_length = 0;
+  m_iErrorCode = 0;
   m_bError = true;
   memset(m_digest, 0, sizeof(m_digest));
   FILE *fp = pws_os::FOpen(fname, _T("rb"));
@@ -467,7 +468,7 @@ PWSFileSig::PWSFileSig(const stringT &fname)
     SHA256 hash;
     unsigned char buf[THRESHOLD];
     m_length = pws_os::fileLength(fp);
-    // Minimum size for an empty DB is 360 bytes - so less than 256 is invalid!
+    // Minimum size for an empty V3 DB is 360 bytes - so less than 256 is invalid!
     if (m_length > 255) {
       if (m_length <= THRESHOLD) {
         if (fread(buf, m_length, 1, fp) == 1) {
@@ -484,15 +485,21 @@ PWSFileSig::PWSFileSig(const stringT &fname)
           m_bError = false;
         }
       }
+    } else {
+      // File too small
+      m_iErrorCode = PWSfile::END_OF_FILE;
     }
 
     fclose(fp);
+  } else {
+    m_iErrorCode = PWSfile::CANT_OPEN_FILE;
   }
 }
 
 PWSFileSig::PWSFileSig(const PWSFileSig &pfs)
 {
   m_length = pfs.m_length;
+  m_iErrorCode = pfs.m_iErrorCode;
   m_bError = pfs.m_bError;
   memcpy(m_digest, pfs.m_digest, sizeof(m_digest));
 }
@@ -501,6 +508,7 @@ PWSFileSig &PWSFileSig::operator=(const PWSFileSig &that)
 {
   if (this != &that) {
     m_length = that.m_length;
+    m_iErrorCode = that.m_iErrorCode;
     m_bError = that.m_bError;
     memcpy(m_digest, that.m_digest, sizeof(m_digest));
   }
@@ -509,6 +517,10 @@ PWSFileSig &PWSFileSig::operator=(const PWSFileSig &that)
 
 bool PWSFileSig::operator==(const PWSFileSig &other)
 {
+  // Check this first as digest may otherwise be invalid
+  if (m_iErrorCode != 0 || other.m_iErrorCode != 0)
+    return false;
+
   return (m_length == other.m_length &&
           memcmp(m_digest, other.m_digest, sizeof(m_digest)) == 0);
 }
