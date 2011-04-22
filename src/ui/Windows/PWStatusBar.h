@@ -25,7 +25,7 @@ TIMEINT_SB_SHOWING The length of time the tool tip window remains visible
                    if the pointer is stationary within a tool's bounding
                    rectangle.
 */
-#define HOVER_TIME_SB      1000
+#define HOVER_TIME_SB      5000
 #define TIMEINT_SB_SHOWING 5000
 
 class CPWStatusBar : public CStatusBar

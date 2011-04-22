@@ -123,4 +123,5 @@ protected:
 
 private:
   CWnd *m_pParent;
+  BOOL m_bCreated;
 };

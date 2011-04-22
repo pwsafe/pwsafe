@@ -2046,21 +2046,22 @@ void DboxMain::OnChangeMode()
   CGeneralMsgBox gmb;
   CString cs_msg, cs_title(MAKEINTRESOURCE(IDS_CHANGEMODE_FAILED));
   std::wstring locker = L"";
-  int iFailCode;
-  bool brc = m_core.ChangeMode(locker, iFailCode);
+  int iErrorCode;
+  bool brc = m_core.ChangeMode(locker, iErrorCode);
   if (brc) {
     UpdateStatusBar();
   } else {
     // Better give them the bad news!
+    bool bInUse = false;
+    UINT uiMsg = 0;
     if (bWasRO) {
-      switch (iFailCode) {
-        case PWScore::NOT_SUCCESS:
+      switch (iErrorCode) {
+        case PWScore::DB_HAS_CHANGED:
           // We did get the lock but the DB has been changed
           // Note: PWScore has already freed the lock
           // The user must close and re-open it in R/W mode
-          cs_msg.LoadString(IDS_CM_FAIL_REASON3);
-          gmb.MessageBox(cs_msg, cs_title, MB_OK | MB_ICONWARNING);
-          return;
+          uiMsg = IDS_CM_FAIL_REASON3;
+          break;
         
         case PWScore::CANT_GET_LOCK:
         {
@@ -2077,8 +2078,15 @@ void DboxMain::OnChangeMode()
           }
 
           cs_msg.Format(IDS_CM_FAIL_REASON1, cs_user_and_host, cs_PID);
+          bInUse = true;
           break;
         }
+        case PWSfile::CANT_OPEN_FILE:
+          uiMsg = IDS_CM_FAIL_REASON4;
+          break;
+        case PWSfile::END_OF_FILE:
+          uiMsg = IDS_CM_FAIL_REASON5;
+          break;
         default:
           ASSERT(0);
       }
@@ -2087,11 +2095,17 @@ void DboxMain::OnChangeMode()
       // could not release the lock!
       cs_msg.LoadString(IDS_CM_FAIL_REASON2);
     }
-    gmb.SetTitle(cs_title);
-    gmb.SetMsg(cs_msg);
-    gmb.SetStandardIcon(MB_ICONWARNING);
-    gmb.AddButton(IDS_CLOSE, IDS_CLOSE);
-    gmb.DoModal();
+    if (bInUse) {
+      // Big message
+      gmb.SetTitle(cs_title);
+      gmb.SetMsg(cs_msg);
+      gmb.SetStandardIcon(MB_ICONWARNING);
+      gmb.AddButton(IDS_CLOSE, IDS_CLOSE);
+      gmb.DoModal();
+    } else {
+      cs_msg.LoadString(uiMsg);
+      gmb.MessageBox(cs_msg, cs_title, MB_OK | MB_ICONWARNING);
+    }
   }
 }
 

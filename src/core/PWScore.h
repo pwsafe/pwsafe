@@ -317,7 +317,7 @@ public:
   {m_bDBPrefsChanged = bDBprefschanged;
    NotifyDBModified();}
 
-  bool ChangeMode(stringT &locker, int &iFailCode);
+  bool ChangeMode(stringT &locker, int &iErrorCode);
   PWSFileSig& GetCurrentFileSig() {return *m_pFileSig;}
 
   bool IsChanged() const {return m_bDBChanged;}

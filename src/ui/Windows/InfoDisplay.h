@@ -30,12 +30,10 @@ protected:
   DECLARE_MESSAGE_MAP()
   HFONT m_font;
 
-protected:
   afx_msg void OnPaint();
   afx_msg BOOL OnEraseBkgnd(CDC* pDC);
   afx_msg LRESULT OnSetFont(WPARAM, LPARAM);
   afx_msg LRESULT OnGetFont(WPARAM, LPARAM);
 
-protected:
   virtual void PostNcDestroy();
 };

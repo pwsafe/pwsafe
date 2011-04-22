@@ -2488,7 +2488,7 @@ void PWScore::UpdateExpiryEntry(const CUUIDGen &uuid, const CItemData::FieldType
   }
 }
 
-bool PWScore::ChangeMode(stringT &locker, int &iFailCode)
+bool PWScore::ChangeMode(stringT &locker, int &iErrorCode)
 {
   // We do not have to close or re-open the database as the database is closed after processing.
   /*
@@ -2497,7 +2497,7 @@ bool PWScore::ChangeMode(stringT &locker, int &iFailCode)
    If currently R/O, we need to lock the database.
    If currently R/W, we need to unlock the database.
   */
-  iFailCode = SUCCESS;
+  iErrorCode = SUCCESS;
   locker = _T(""); // Important!
 
   if (m_IsReadOnly) {
@@ -2505,7 +2505,7 @@ bool PWScore::ChangeMode(stringT &locker, int &iFailCode)
     bool brc = pws_os::LockFile(m_currfile.c_str(), locker, 
                                 m_lockFileHandle, m_LockCount);
     if (!brc) {
-      iFailCode = CANT_GET_LOCK;
+      iErrorCode = CANT_GET_LOCK;
       return false;
     }
 
@@ -2513,13 +2513,18 @@ bool PWScore::ChangeMode(stringT &locker, int &iFailCode)
     // The one calculated when we read it in is 'm_pFileSig' (R-O - so we haven't changed it)
     // This is the new one
     PWSFileSig newFileSig = PWSFileSig(m_currfile.c_str());
-    if (*m_pFileSig != newFileSig || !newFileSig.IsValid()) {
+    if (newFileSig.IsValid() && *m_pFileSig != newFileSig) {
       // Oops - someone else has changed this user will need to close and open properly.
       // Or the file signature is invalid e.g. file not there or fie size too small.
       // Tell them the bad news after unlocking file and not changing mode
+      iErrorCode = DB_HAS_CHANGED;
+    } else {
+      // Other error - e.g. can't open file or it is too small.
+      iErrorCode = newFileSig.GetErrorCode();
+    }
+    if (iErrorCode != 0) {
       pws_os::UnlockFile(m_currfile.c_str(), 
                          m_lockFileHandle, m_LockCount);
-      iFailCode = DB_HAS_CHANGED;
       return false;
     }
   } else {
