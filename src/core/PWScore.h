@@ -33,11 +33,12 @@ struct BaseEntryParms {
   StringX csPwdGroup;
   StringX csPwdTitle;
   StringX csPwdUser;
-  uuid_array_t base_uuid;
+  CUUIDGen base_uuid;
   CItemData::EntryType InputType;
   CItemData::EntryType TargetType;
   int ibasedata;
   bool bMultipleEntriesFound;
+  BaseEntryParms() : base_uuid(CUUIDGen::NullUUID()) {}
 };
 
 // Formatted Database properties
@@ -82,8 +83,6 @@ public:
 
   PWScore();
   ~PWScore();
-
-  static uuid_array_t NULL_UUID;
 
   bool SetUIInterFace(UIInterFace *pUIIF, size_t num_supported,
                       std::bitset<UIInterFace::NUM_SUPPORTED> bsSupportedFunctions);
@@ -282,11 +281,11 @@ public:
   //                                           otherwise just return true
 
   // General routines for aliases and shortcuts
-  void GetAllDependentEntries(const uuid_array_t &base_uuid,
+  void GetAllDependentEntries(const CUUIDGen &base_uuid,
                               UUIDVector &dependentslist, 
                               const CItemData::EntryType type);
-  bool GetDependentEntryBaseUUID(const uuid_array_t &entry_uuid,
-                                 uuid_array_t &base_uuid, 
+  bool GetDependentEntryBaseUUID(const CUUIDGen &entry_uuid,
+                                 CUUIDGen &base_uuid, 
                                  const CItemData::EntryType type) const;
   // Takes apart a 'special' password into its components:
   bool ParseBaseEntryPWD(const StringX &passwd, BaseEntryParms &pl);
@@ -296,9 +295,9 @@ public:
 
   // alias/base and shortcut/base handling
   void SortDependents(UUIDVector &dlist, StringX &csDependents);
-  size_t NumAliases(const uuid_array_t &base_uuid) const
+  size_t NumAliases(const CUUIDGen &base_uuid) const
   {return m_base2aliases_mmap.count(base_uuid);}
-  size_t NumShortcuts(const uuid_array_t &base_uuid) const
+  size_t NumShortcuts(const CUUIDGen &base_uuid) const
   {return m_base2shortcuts_mmap.count(base_uuid);}
 
   ItemListIter GetUniqueBase(const StringX &title, bool &bMultiple);
@@ -401,7 +400,7 @@ private:
   virtual void UndoUpdatePasswordHistory(SavePWHistoryMap &mapSavedHistory);
 
   // End of Command Interface implementations
-  void ResetAllAliasPasswords(const uuid_array_t &base_uuid);
+  void ResetAllAliasPasswords(const CUUIDGen &base_uuid);
   
   StringX GetPassKey() const; // returns cleartext - USE WITH CARE
   // Following used by SetPassKey

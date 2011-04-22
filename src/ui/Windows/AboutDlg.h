@@ -11,7 +11,6 @@
 //-----------------------------------------------------------------------------
 
 #include "PWDialog.h"
-#include "DboxMain.h"
 #include "RichEditCtrlExtn.h"
 #include "core/CheckVersion.h"
 

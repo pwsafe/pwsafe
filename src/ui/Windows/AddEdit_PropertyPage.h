@@ -48,8 +48,8 @@ struct st_AE_master_data {
 
   CSecString base;
   CSecString dependents;
-  uuid_array_t entry_uuid;
-  uuid_array_t base_uuid;
+  CUUIDGen entry_uuid;
+  CUUIDGen base_uuid;
   int num_dependents;
   int ibasedata;
   enum CItemData::EntryType original_entrytype;
@@ -120,8 +120,8 @@ public:
 
   inline CSecString &M_base() {return m_AEMD.base;}
   inline CSecString &M_dependents() {return m_AEMD.dependents;}
-  inline uuid_array_t &M_entry_uuid() {return m_AEMD.entry_uuid;}
-  inline uuid_array_t &M_base_uuid() {return m_AEMD.base_uuid;}
+  inline CUUIDGen &M_entry_uuid() {return m_AEMD.entry_uuid;}
+  inline CUUIDGen &M_base_uuid() {return m_AEMD.base_uuid;}
   inline int &M_num_dependents() {return m_AEMD.num_dependents;}
   inline int &M_ibasedata() {return m_AEMD.ibasedata;}
   inline CItemData::EntryType &M_original_entrytype() {return m_AEMD.original_entrytype;}

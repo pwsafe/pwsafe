@@ -480,10 +480,10 @@ int DboxMain::Close(const bool bTrySave)
   ClearData();
 
   // Zero entry UUID selected and first visible at minimize and group text
-  memset(m_LUUIDSelectedAtMinimize, 0, sizeof(uuid_array_t));
-  memset(m_TUUIDSelectedAtMinimize, 0, sizeof(uuid_array_t));
-  memset(m_LUUIDVisibleAtMinimize, 0, sizeof(uuid_array_t));
-  memset(m_TUUIDVisibleAtMinimize, 0, sizeof(uuid_array_t));
+  m_LUUIDSelectedAtMinimize = CUUIDGen::NullUUID();
+  m_TUUIDSelectedAtMinimize = CUUIDGen::NullUUID();
+  m_LUUIDVisibleAtMinimize = CUUIDGen::NullUUID();
+  m_TUUIDVisibleAtMinimize = CUUIDGen::NullUUID();
   m_sxSelectedGroup.clear();
   m_sxVisibleGroup.clear();
 
@@ -730,10 +730,10 @@ int DboxMain::Open(const StringX &sx_Filename, const bool bReadOnly,  const bool
   ClearData();
 
   // Zero entry UUID selected and first visible at minimize and group text
-  memset(m_LUUIDSelectedAtMinimize, 0, sizeof(uuid_array_t));
-  memset(m_TUUIDSelectedAtMinimize, 0, sizeof(uuid_array_t));
-  memset(m_LUUIDVisibleAtMinimize, 0, sizeof(uuid_array_t));
-  memset(m_TUUIDVisibleAtMinimize, 0, sizeof(uuid_array_t));
+  m_LUUIDSelectedAtMinimize = CUUIDGen::NullUUID();
+  m_TUUIDSelectedAtMinimize = CUUIDGen::NullUUID();
+  m_LUUIDVisibleAtMinimize = CUUIDGen::NullUUID();
+  m_TUUIDVisibleAtMinimize = CUUIDGen::NullUUID();
   m_sxSelectedGroup.clear();
   m_sxVisibleGroup.clear();
 
@@ -853,10 +853,7 @@ void DboxMain::PostOpenProcessing()
 
   UUIDList RUElist;
   m_core.GetRUEList(RUElist);
-  for (UUIDListRIter riter = RUElist.rbegin();
-             riter != RUElist.rend(); riter++) {
-    m_RUEList.AddRUEntry(riter->uuid);
-  }
+  m_RUEList.SetRUEList(RUElist);
 
   // Set timer for user-defined idle lockout, if selected (DB preference)
   KillTimer(TIMER_LOCKDBONIDLETIMEOUT);
@@ -2533,7 +2530,7 @@ LRESULT DboxMain::OnProcessCompareResultFunction(WPARAM wParam, LPARAM lFunction
   return lres;
 }
 
-LRESULT DboxMain::ViewCompareResult(PWScore *pcore, uuid_array_t &entryUUID)
+LRESULT DboxMain::ViewCompareResult(PWScore *pcore, const CUUIDGen &entryUUID)
 {  
   ItemListIter pos = pcore->Find(entryUUID);
   ASSERT(pos != pcore->GetEntryEndIter());
@@ -2550,7 +2547,7 @@ LRESULT DboxMain::ViewCompareResult(PWScore *pcore, uuid_array_t &entryUUID)
   return FALSE;
 }
 
-LRESULT DboxMain::EditCompareResult(PWScore *pcore, uuid_array_t &entryUUID)
+LRESULT DboxMain::EditCompareResult(PWScore *pcore, const CUUIDGen &entryUUID)
 {
   ItemListIter pos = pcore->Find(entryUUID);
   ASSERT(pos != pcore->GetEntryEndIter());
@@ -2561,7 +2558,7 @@ LRESULT DboxMain::EditCompareResult(PWScore *pcore, uuid_array_t &entryUUID)
 }
 
 LRESULT DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
-                                    uuid_array_t &fromUUID, uuid_array_t &toUUID)
+                                    const CUUIDGen &fromUUID, const CUUIDGen &toUUID)
 {
   bool bWasEmpty = ptocore->GetNumEntries() == 0;
 
@@ -2614,7 +2611,7 @@ LRESULT DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
 }
 
 LRESULT DboxMain::SynchCompareResult(PWScore *pfromcore, PWScore *ptocore,
-                                     uuid_array_t &fromUUID, uuid_array_t &toUUID)
+                                     const CUUIDGen &fromUUID, const CUUIDGen &toUUID)
 {
   // Synch 1 entry *pfromcore -> *ptocore
   CItemData::FieldBits bsFields;

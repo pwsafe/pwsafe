@@ -67,28 +67,6 @@ struct st_GroupTitleUser {
   }
 };
 
-// Used to verify uniqueness of UUID using std::set
-struct st_UUID {
-  uuid_array_t uuid;
-
-  st_UUID() {}
-
-  st_UUID(const uuid_array_t &u)
-  {memcpy(uuid, u, sizeof(uuid_array_t));}
-
-  st_UUID &operator=(const st_UUID &that) {
-    if (this != &that) {
-      memcpy(uuid, that.uuid, sizeof(uuid_array_t));
-    }
-    return *this;
-  }
-
-  friend bool operator< (const st_UUID &uuid1,
-                         const st_UUID &uuid2)
-  {
-    return (memcmp(uuid1.uuid, uuid2.uuid, sizeof(uuid_array_t)) < 0);
-  }
-};
 
 typedef std::map<CUUIDGen, CItemData, std::less<CUUIDGen> > ItemList;
 typedef ItemList::iterator ItemListIter;
@@ -115,10 +93,10 @@ typedef std::map<CUUIDGen, StringX, std::less<CUUIDGen> > SavePWHistoryMap;
 typedef std::set<st_GroupTitleUser> GTUSet;
 typedef std::pair< std::set<st_GroupTitleUser>::iterator, bool > GTUSetPair;
 
-typedef std::set<st_UUID> UUIDSet;
-typedef std::pair< std::set<st_UUID>::iterator, bool > UUIDSetPair;
+typedef std::set<CUUIDGen> UUIDSet;
+typedef std::pair<UUIDSet::iterator, bool > UUIDSetPair;
 
-typedef std::list<st_UUID> UUIDList;
+typedef std::list<CUUIDGen> UUIDList;
 typedef UUIDList::iterator UUIDListIter;
 typedef UUIDList::reverse_iterator UUIDListRIter;
 

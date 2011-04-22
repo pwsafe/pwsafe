@@ -44,8 +44,6 @@ unsigned char PWScore::m_session_initialized = false;
 Asker *PWScore::m_pAsker = NULL;
 Reporter *PWScore::m_pReporter = NULL;
 
-uuid_array_t PWScore::NULL_UUID = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-
 PWScore::PWScore() : 
                      m_currfile(_T("")),
                      m_passkey(NULL), m_passkey_len(0),
@@ -173,8 +171,7 @@ bool PWScore::ConfirmDelete(const CItemData *pci)
   ASSERT(pci != NULL);
   if (pci->IsBase() && m_pAsker != NULL) {
     UUIDVector dependentslist;
-    uuid_array_t entry_uuid;
-    pci->GetUUID(entry_uuid);
+    CUUIDGen entry_uuid = pci->GetUUID();
     CItemData::EntryType entrytype = pci->GetEntryType();
 
     // If we're deleting a base (entry with aliases or shortcuts
@@ -216,14 +213,13 @@ void PWScore::DoDeleteEntry(const CItemData &item)
   // Most of this will go away once the entry types
   // are implemented as subclasses.
 
-  uuid_array_t entry_uuid;
-  item.GetUUID(entry_uuid);
+  CUUIDGen entry_uuid = item.GetUUID();
   ItemListIter pos = m_pwlist.find(entry_uuid);
   if (pos != m_pwlist.end()) {
     // Simple cases first: Aliases or shortcuts, update maps
     // and refresh base's display, if changed
     CItemData::EntryType entrytype = item.GetEntryType();
-    uuid_array_t base_uuid;
+    CUUIDGen base_uuid(CUUIDGen::NullUUID());
     if (item.IsDependent()) {
       GetDependentEntryBaseUUID(entry_uuid, base_uuid, entrytype);
       DoRemoveDependentEntry(base_uuid, entry_uuid, entrytype);
@@ -348,29 +344,24 @@ struct RecordWriter {
   RecordWriter(PWSfile *pout, PWScore *pcore) : m_pout(pout), m_pcore(pcore) {}
   void operator()(pair<CUUIDGen const, CItemData> &p)
   {
-    StringX savePassword;
+    StringX savePassword = p.second.GetPassword();
+    StringX uuid_str(savePassword);
+    CUUIDGen base_uuid(CUUIDGen::NullUUID());
+    CUUIDGen item_uuid = p.second.GetUUID();
 
-    savePassword = p.second.GetPassword();
     if (p.second.IsAlias()) {
-      uuid_array_t item_uuid, base_uuid;
-      p.second.GetUUID(item_uuid);
       m_pcore->GetDependentEntryBaseUUID(item_uuid, base_uuid, CItemData::ET_ALIAS);
-
-      StringX uuid_str(_T("[["));
-      uuid_str += CUUIDGen(base_uuid);
+      uuid_str = _T("[[");
+      uuid_str += base_uuid;
       uuid_str += _T("]]");
-      p.second.SetPassword(uuid_str);
     } else if (p.second.IsShortcut()) {
-      uuid_array_t item_uuid, base_uuid;
-      p.second.GetUUID(item_uuid);
       m_pcore->GetDependentEntryBaseUUID(item_uuid, base_uuid, CItemData::ET_SHORTCUT);
-
-      StringX uuid_str(_T("[~"));
-      uuid_str += CUUIDGen(base_uuid);
+      uuid_str = _T("[~");
+      uuid_str += base_uuid;
       uuid_str += _T("~]");
-      p.second.SetPassword(uuid_str);
     }
  
+    p.second.SetPassword(uuid_str);
     m_pout->WriteRecord(p.second);
     p.second.SetPassword(savePassword);
     p.second.ClearStatus();
@@ -1484,10 +1475,8 @@ bool PWScore::InitialiseUUID(UUIDSet &setUUID)
   ItemListConstIter citer;
 
   setUUID.clear();
-  uuid_array_t entry_uuid;
   for (citer = m_pwlist.begin(); citer != m_pwlist.end(); citer++) {
-    citer->second.GetUUID(entry_uuid);
-    pr_uuid = setUUID.insert(st_UUID(entry_uuid));
+    pr_uuid = setUUID.insert(citer->second.GetUUID());
     if (!pr_uuid.second) {
       // Could happen if merging or synching a bad database!
       setUUID.clear();
@@ -1723,7 +1712,7 @@ int PWScore::DoAddDependentEntries(UUIDVector &dependentlist, CReport *pRpt,
     UUIDVectorIter paiter;
     ItemListIter iter;
     StringX csPwdGroup, csPwdTitle, csPwdUser, tmp;
-    uuid_array_t base_uuid, entry_uuid;
+    CUUIDGen base_uuid(CUUIDGen::NullUUID());
     bool bwarnings(false);
     stringT strError;
 
@@ -1734,7 +1723,7 @@ int PWScore::DoAddDependentEntries(UUIDVector &dependentlist, CReport *pRpt,
         return num_warnings;
 
       CItemData *pci_curitem = &iter->second;
-      pci_curitem->GetUUID(entry_uuid);
+      CUUIDGen entry_uuid = pci_curitem->GetUUID();
       GetDependentEntryBaseUUID(entry_uuid, base_uuid, type);
 
       // Delete it - we will put it back if it is an alias/shortcut
@@ -1806,8 +1795,7 @@ int PWScore::DoAddDependentEntries(UUIDVector &dependentlist, CReport *pRpt,
           if (iter->second.IsAlias()) {
             // This is an alias too!  Not allowed!  Make new one point to original base
             // Note: this may be random as who knows the order of reading records?
-            uuid_array_t temp_uuid;
-            iter->second.GetUUID(temp_uuid);
+            CUUIDGen temp_uuid = iter->second.GetUUID();
             GetDependentEntryBaseUUID(temp_uuid, base_uuid, type);
             if (pRpt != NULL) {
               if (!bwarnings) {
@@ -1830,7 +1818,7 @@ int PWScore::DoAddDependentEntries(UUIDVector &dependentlist, CReport *pRpt,
             num_warnings++;
           }
         }
-        iter->second.GetUUID(base_uuid);
+        base_uuid = iter->second.GetUUID();
         if (type == CItemData::ET_ALIAS) {
           if (pmapSaveTypePW != NULL) {
             st_typepw.et = iter->second.GetEntryType();
@@ -1928,13 +1916,12 @@ void PWScore::UndoAddDependentEntries(ItemList *pmapDeletedItems,
   }
 }
 
-void PWScore::ResetAllAliasPasswords(const uuid_array_t &base_uuid)
+void PWScore::ResetAllAliasPasswords(const CUUIDGen &base_uuid)
 {
   // Alias ONLY - no shortcut version needed
   ItemMMapIter itr;
   ItemMMapIter lastElement;
   ItemListIter base_itr, alias_itr;
-  uuid_array_t alias_uuid;
   StringX csBasePassword;
 
   itr = m_base2aliases_mmap.find(base_uuid);
@@ -1952,7 +1939,7 @@ void PWScore::ResetAllAliasPasswords(const uuid_array_t &base_uuid)
   lastElement = m_base2aliases_mmap.upper_bound(base_uuid);
 
   for ( ; itr != lastElement; itr++) {
-    itr->second.GetUUID(alias_uuid);
+    CUUIDGen alias_uuid = itr->second;
     alias_itr = m_pwlist.find(alias_uuid);
     if (alias_itr != m_pwlist.end()) {
       alias_itr->second.SetPassword(csBasePassword);
@@ -1963,7 +1950,7 @@ void PWScore::ResetAllAliasPasswords(const uuid_array_t &base_uuid)
   m_base2aliases_mmap.erase(base_uuid);
 }
 
-void PWScore::GetAllDependentEntries(const uuid_array_t &base_uuid, UUIDVector &tlist,
+void PWScore::GetAllDependentEntries(const CUUIDGen &base_uuid, UUIDVector &tlist,
                                      const CItemData::EntryType type)
 {
   ItemMMapIter itr;
@@ -2000,7 +1987,6 @@ bool PWScore::ParseBaseEntryPWD(const StringX &Password, BaseEntryParms &pl)
   // "bMultipleEntriesFound" is set if no "unique" base entry could be found and is only valid if n = -1 or -2.
 
   pl.bMultipleEntriesFound = false;
-  memset(pl.base_uuid, 0, sizeof(uuid_array_t));
 
   // Take a copy of the Password field to do the counting!
   StringX passwd(Password);
@@ -2052,12 +2038,11 @@ bool PWScore::ParseBaseEntryPWD(const StringX &Password, BaseEntryParms &pl)
       pl.TargetType = iter->second.GetEntryType();
       if (pl.InputType == CItemData::ET_ALIAS && pl.TargetType == CItemData::ET_ALIAS) {
         // Check if base is already an alias, if so, set this entry -> real base entry
-        uuid_array_t temp_uuid;
-        iter->second.GetUUID(temp_uuid);
+        CUUIDGen temp_uuid = iter->second.GetUUID();
         GetDependentEntryBaseUUID(temp_uuid, pl.base_uuid, CItemData::ET_ALIAS);
       } else {
         // This may not be a valid combination of source+target entries - sorted out by caller
-        iter->second.GetUUID(pl.base_uuid);
+        pl.base_uuid = iter->second.GetUUID();
       }
       // Valid and found
       pl.ibasedata = num_colonsP1;
@@ -2087,8 +2072,8 @@ CItemData *PWScore::GetBaseEntry(const CItemData *pAliasOrSC)
     return NULL;
   }
 
-  uuid_array_t dep_uuid, base_uuid;
-  pAliasOrSC->GetUUID(dep_uuid);
+  CUUIDGen base_uuid(CUUIDGen::NullUUID());
+  CUUIDGen dep_uuid = pAliasOrSC->GetUUID();
   if (!GetDependentEntryBaseUUID(dep_uuid, base_uuid, et)) {
    // pws_os::Trace(_T("PWScore::GetBaseEntry - couldn't find base uuid!\n"));
     return NULL;
@@ -2102,11 +2087,11 @@ CItemData *PWScore::GetBaseEntry(const CItemData *pAliasOrSC)
   return &iter->second;
 }
 
-bool PWScore::GetDependentEntryBaseUUID(const uuid_array_t &entry_uuid, 
-                                        uuid_array_t &base_uuid, 
+bool PWScore::GetDependentEntryBaseUUID(const CUUIDGen &entry_uuid, 
+                                        CUUIDGen &base_uuid, 
                                         const CItemData::EntryType type) const
 {
-  memset(base_uuid, 0, sizeof(uuid_array_t));
+  base_uuid = CUUIDGen::NullUUID();
 
   const ItemMap *pmap;
   if (type == CItemData::ET_ALIAS)
@@ -2118,7 +2103,7 @@ bool PWScore::GetDependentEntryBaseUUID(const uuid_array_t &entry_uuid,
 
   ItemMapConstIter iter = pmap->find(entry_uuid);
   if (iter != pmap->end()) {
-    iter->second.GetUUID(base_uuid);
+    base_uuid = iter->second;
     return true;
   } else {
     return false;
@@ -2447,14 +2432,11 @@ void PWScore::GetDBProperties(st_DBProperties &st_dbp)
   } else
     st_dbp.whatlastsaved = m_hdr.m_whatlastsaved;
 
-  uuid_array_t file_uuid_array;
-  memcpy(file_uuid_array, m_hdr.m_file_uuid_array, sizeof(uuid_array_t));
-
-  if (memcmp(file_uuid_array, NULL_UUID, sizeof(uuid_array_t)) == 0)
+  CUUIDGen huuid(m_hdr.m_file_uuid_array, true); // true for canonical format
+  if(huuid == CUUIDGen::NullUUID())
     st_dbp.file_uuid = _T("N/A");
   else {
     ostringstreamT os;
-    CUUIDGen huuid(file_uuid_array, true); // true for canonical format
     os << uppercase << huuid;
     st_dbp.file_uuid = os.str().c_str();
   }

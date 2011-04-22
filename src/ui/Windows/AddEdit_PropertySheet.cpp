@@ -425,7 +425,7 @@ void CAddEdit_PropertySheet::SetupInitialValues()
 {
   // Basic Data
   m_AEMD.entrysize = m_AEMD.pci->GetSize();
-  m_AEMD.pci->GetUUID(m_AEMD.entry_uuid);
+  m_AEMD.entry_uuid = m_AEMD.pci->GetUUID();
   m_AEMD.group = m_AEMD.pci->GetGroup();
   m_AEMD.title = m_AEMD.pci->GetTitle();
   m_AEMD.username = m_AEMD.pci->GetUser();
@@ -528,10 +528,10 @@ void CAddEdit_PropertySheet::SetupInitialValues()
   m_AEMD.oldpwp = m_AEMD.pwp;
 
   // Set up dependents
-  uuid_array_t original_uuid = {'\0'}, original_base_uuid = {'\0'};
+  CUUIDGen original_base_uuid(CUUIDGen::NullUUID());
   CItemData::EntryType entrytype = m_AEMD.pci_original->GetEntryType();
 
-  m_AEMD.pci_original->GetUUID(original_uuid);  // Edit doesn't change this!
+  CUUIDGen original_uuid = m_AEMD.pci_original->GetUUID();  // Edit doesn't change this!
   if (m_AEMD.pci_original->IsBase()) {
     UUIDVector dependentslist;
     StringX csDependents(L"");
@@ -554,8 +554,8 @@ void CAddEdit_PropertySheet::SetupInitialValues()
     const CItemData *pbci = m_AEMD.pcore->GetBaseEntry(m_AEMD.pci_original);
     ASSERT(pbci != NULL);
     if (pbci != NULL) {
-      pbci->GetUUID(original_base_uuid);
-      memcpy(m_AEMD.base_uuid, original_base_uuid, sizeof(uuid_array_t));
+      original_base_uuid = pbci->GetUUID();
+      m_AEMD.base_uuid = original_base_uuid;
       CSecString cs_base = L"[" +
                            pbci->GetGroup() + L":" +
                            pbci->GetTitle() + L":" +
