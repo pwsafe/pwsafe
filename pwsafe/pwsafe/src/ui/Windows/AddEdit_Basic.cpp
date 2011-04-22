@@ -604,11 +604,7 @@ BOOL CAddEdit_Basic::OnApply()
     // Edit entry
     if (listindex != M_pDbx()->End()) {
       const CItemData &listItem = M_pDbx()->GetEntryAt(listindex);
-      uuid_array_t list_uuid, elem_uuid;
-      listItem.GetUUID(list_uuid);
-      M_pci()->GetUUID(elem_uuid);
-      bool notSame = (memcmp(list_uuid, elem_uuid, sizeof(uuid_array_t)) != 0);
-      if (notSame) {
+      if (listItem.GetUUID() != M_pci()->GetUUID()) {
         CSecString temp;
         temp.Format(IDS_ENTRYEXISTS, M_group(), M_title(), M_username());
         gmb.AfxMessageBox(temp);
@@ -1178,7 +1174,7 @@ void CAddEdit_Basic::OnViewDependents()
 bool CAddEdit_Basic::CheckNewPassword(const StringX &group, const StringX &title,
                                       const StringX &user, const StringX &password,
                                       const bool bIsEdit, const CItemData::EntryType InputType, 
-                                      uuid_array_t &base_uuid, int &ibasedata, bool &b_msg_issued)
+                                      CUUIDGen &base_uuid, int &ibasedata, bool &b_msg_issued)
 {
   // b_msg_issued - whether this routine issued a message
   b_msg_issued = false;
@@ -1193,7 +1189,7 @@ bool CAddEdit_Basic::CheckNewPassword(const StringX &group, const StringX &title
 
   // Copy data back before possibly returning
   ibasedata = pl.ibasedata;
-  memcpy(base_uuid, pl.base_uuid, sizeof(uuid_array_t));
+  base_uuid = pl.base_uuid;
   if (!brc)    
     return false;
 

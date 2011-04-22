@@ -599,7 +599,7 @@ void XMLFileHandlers::AddEntries()
       memcpy(uuid_array, temp_uuid_array, sizeof(uuid_array_t));
       // Need to check uuid validity and uniqueness (in DB and already imported)
       if (nscanned == sizeof(uuid_array_t)) {
-        UUIDSetPair pr_uuid = setUUID.insert(st_UUID(uuid_array));
+        UUIDSetPair pr_uuid = setUUID.insert(uuid_array);
         if (pr_uuid.second) {
           ci_temp.SetUUID(uuid_array);
           bNewUUID = false;
@@ -610,9 +610,7 @@ void XMLFileHandlers::AddEntries()
     if (bNewUUID) {
       // Need to create new UUID (missing or duplicate in DB or import file)
       // and add to set
-      ci_temp.CreateUUID();
-      ci_temp.GetUUID(uuid_array);
-      setUUID.insert(st_UUID(uuid_array));
+      setUUID.insert(CUUIDGen());
     }
 
     StringX sxnewgroup, sxnewtitle(cur_entry->title);

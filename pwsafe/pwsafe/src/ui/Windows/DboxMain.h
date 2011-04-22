@@ -45,6 +45,7 @@
 #include "core/PwsPlatform.h"
 #include "core/PWSFilters.h"
 #include "core/Command.h"
+#include "core/UUIDGen.h"
 
 #include "os/run.h"
 
@@ -212,7 +213,7 @@ public:
   ItemListIter Find(int i);
 
   // Find entry by UUID
-  ItemListIter Find(const uuid_array_t &uuid)
+  ItemListIter Find(const CUUIDGen &uuid)
   {return m_core.Find(uuid);}
 
   // End of list markers
@@ -525,12 +526,12 @@ protected:
 
   LRESULT OnProcessCompareResultFunction(WPARAM wParam, LPARAM lParam);
   LRESULT OnEditExpiredPasswordEntry(WPARAM wParam, LPARAM lParam);
-  LRESULT ViewCompareResult(PWScore *pcore, uuid_array_t &uuid);
-  LRESULT EditCompareResult(PWScore *pcore, uuid_array_t &uuid);
+  LRESULT ViewCompareResult(PWScore *pcore, const CUUIDGen &uuid);
+  LRESULT EditCompareResult(PWScore *pcore, const CUUIDGen &uuid);
   LRESULT CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
-                            uuid_array_t &fromuuid, uuid_array_t &touuid);
+                            const CUUIDGen &fromuuid, const CUUIDGen &touuid);
   LRESULT SynchCompareResult(PWScore *pfromcore, PWScore *ptocore,
-                             uuid_array_t &fromuuid, uuid_array_t &touuid);
+                             const CUUIDGen &fromuuid, const CUUIDGen &touuid);
   LRESULT OnToolBarFindMessage(WPARAM wParam, LPARAM lParam);
   LRESULT OnExecuteFilters(WPARAM wParam, LPARAM lParam);
   LRESULT OnApplyEditChanges(WPARAM wParam, LPARAM lParam);
@@ -788,11 +789,11 @@ private:
   int m_iheadermaxwidth;
   CFont *m_pFontTree;
 
-  uuid_array_t m_LUUIDSelectedAtMinimize; // to restore List entry selection upon un-minimize
-  uuid_array_t m_TUUIDSelectedAtMinimize; // to restore Tree entry selection upon un-minimize
+  CUUIDGen m_LUUIDSelectedAtMinimize; // to restore List entry selection upon un-minimize
+  CUUIDGen m_TUUIDSelectedAtMinimize; // to restore Tree entry selection upon un-minimize
   StringX m_sxSelectedGroup;              // to restore Tree group selection upon un-minimize
-  uuid_array_t m_LUUIDVisibleAtMinimize;  // to restore List entry position  upon un-minimize
-  uuid_array_t m_TUUIDVisibleAtMinimize;  // to restore Tree entry position  upon un-minimize
+  CUUIDGen m_LUUIDVisibleAtMinimize;  // to restore List entry position  upon un-minimize
+  CUUIDGen m_TUUIDVisibleAtMinimize;  // to restore Tree entry position  upon un-minimize
   StringX m_sxVisibleGroup;               // to restore Tree group position  upon un-minimize
 
   bool m_inExit; // help U3ExitNow
@@ -960,26 +961,20 @@ private:
   // Might need to add more e.g. if filter is active and which one?
   struct st_SaveGUIInfo {
     bool blSelectedValid, btSelectedValid, btGroupValid;
-    uuid_array_t lSelected; // List selected item
-    uuid_array_t tSelected; // Tree selected item
+    CUUIDGen lSelected; // List selected item
+    CUUIDGen tSelected; // Tree selected item
     StringX sxGroupName;
     std::vector<bool> vGroupDisplayState;
 
     st_SaveGUIInfo()
-    : blSelectedValid(false), btSelectedValid(false), btGroupValid(false)
-    {
-      memset((void *)lSelected, 0, sizeof(uuid_array_t));
-      memset((void *)tSelected, 0, sizeof(uuid_array_t));
-    }
+    : blSelectedValid(false), btSelectedValid(false), btGroupValid(false),
+      lSelected(CUUIDGen::NullUUID()), tSelected(CUUIDGen::NullUUID()) {}
 
     st_SaveGUIInfo(const st_SaveGUIInfo &that)
     : blSelectedValid(that.blSelectedValid), btSelectedValid(that.btSelectedValid),
       btGroupValid(that.btGroupValid), vGroupDisplayState(that.vGroupDisplayState),
-      sxGroupName(that.sxGroupName)
-    {
-      memcpy((void *)lSelected, (void *)that.lSelected, sizeof(uuid_array_t));
-      memcpy((void *)tSelected, (void *)that.tSelected, sizeof(uuid_array_t));
-    }
+      lSelected(that.lSelected), tSelected(that.tSelected),
+      sxGroupName(that.sxGroupName) {}
 
     st_SaveGUIInfo &operator=(const st_SaveGUIInfo &that)
     {
@@ -987,8 +982,8 @@ private:
         blSelectedValid = that.blSelectedValid;
         btSelectedValid = that.blSelectedValid;
         btGroupValid = that.btGroupValid;
-        memcpy((void *)lSelected, (void *)that.lSelected, sizeof(uuid_array_t));
-        memcpy((void *)tSelected, (void *)that.tSelected, sizeof(uuid_array_t));
+        lSelected = that.lSelected;
+        tSelected = that.tSelected;
         sxGroupName = that.sxGroupName;
         vGroupDisplayState = that.vGroupDisplayState;
       }

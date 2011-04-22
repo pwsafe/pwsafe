@@ -19,6 +19,7 @@
 #include "RichEditCtrlExtn.h"
 #include "version.h"
 #include "DumpSelect.h"
+#include "DboxMain.h"
 
 #include "core/UTF8Conv.h"
 #include "core/SysInfo.h"

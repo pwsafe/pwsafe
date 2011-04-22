@@ -556,7 +556,7 @@ int PWSfileV3::WriteHeader()
     // Only save up to max as defined by FormatV3.
     for (size_t n = 0; n < num; n++) {
       for (size_t i = 0; i < sizeof(uuid_array_t); i++) {
-        oss << setw(2) << setfill('0') << hex << int(iter->uuid[i]);
+        oss << setw(2) << setfill('0') << hex << int(iter->GetUUID()[i]);
       }
       iter++;
     }
@@ -836,7 +836,7 @@ int PWSfileV3::ReadHeader()
           }
           // Now copy only the first 16 characters where we need them
           memcpy(uuid, pfield, sizeof(uuid_array_t));
-          m_hdr.m_RUEList.push_back(st_UUID(uuid));
+          m_hdr.m_RUEList.push_back(uuid);
         }
         delete [] pfield;
         break;

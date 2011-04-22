@@ -151,7 +151,11 @@ DboxMain::DboxMain(CWnd* pParent)
   m_bInAT(false), m_bInRestoreWindowsData(false), m_bSetup(false),
   m_bInRefresh(false), m_bInRestoreWindows(false), m_bExpireDisplayed(false),
   m_bTellUserExpired(false), m_bInRename(false), m_bWhitespaceRightClick(false),
-  m_ilastaction(0)
+  m_ilastaction(0),
+  m_LUUIDSelectedAtMinimize(CUUIDGen::NullUUID()),
+  m_TUUIDSelectedAtMinimize(CUUIDGen::NullUUID()),
+  m_LUUIDVisibleAtMinimize(CUUIDGen::NullUUID()),
+  m_TUUIDVisibleAtMinimize(CUUIDGen::NullUUID())
 {
   // Need to do the following as using the direct calls will fail for Windows versions before Vista
   // (Load Library using absolute path to avoid dll poisoning attacks)
@@ -190,11 +194,6 @@ DboxMain::DboxMain(CWnd* pParent)
   m_hIconSm = (HICON) ::LoadImage(app.m_hInstance, MAKEINTRESOURCE(IDI_CORNERICON),
                                   IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
 
-  // Zero entry UUID selected and first visible at minimize and group text
-  memset(m_LUUIDSelectedAtMinimize, 0, sizeof(uuid_array_t));
-  memset(m_TUUIDSelectedAtMinimize, 0, sizeof(uuid_array_t));
-  memset(m_LUUIDVisibleAtMinimize, 0, sizeof(uuid_array_t));
-  memset(m_TUUIDVisibleAtMinimize, 0, sizeof(uuid_array_t));
   m_sxSelectedGroup.clear();
   m_sxVisibleGroup.clear();
 

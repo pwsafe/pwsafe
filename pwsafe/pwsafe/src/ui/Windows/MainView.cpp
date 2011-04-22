@@ -3964,8 +3964,8 @@ void DboxMain::SaveGUIStatusEx(const int iView)
 
   // Note: User can have different entries selected/visible in Tree & List Views
   if ((iView & iListOnly) == iListOnly) {
-    memset(m_LUUIDSelectedAtMinimize, 0, sizeof(uuid_array_t));
-    memset(m_LUUIDVisibleAtMinimize, 0, sizeof(uuid_array_t));
+    m_LUUIDSelectedAtMinimize = CUUIDGen::NullUUID();
+    m_LUUIDVisibleAtMinimize = CUUIDGen::NullUUID();
 
     // List view
     // Get selected entry in CListCtrl
@@ -3976,7 +3976,7 @@ void DboxMain::SaveGUIStatusEx(const int iView)
       ASSERT(pci != NULL);  // No groups in List View
       DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
       ASSERT(pdi != NULL && pdi->list_index == i);
-      pci->GetUUID(m_LUUIDSelectedAtMinimize);
+      m_LUUIDSelectedAtMinimize = pci->GetUUID();
     } // p != 0
 
     // Get first entry visible in CListCtrl
@@ -3986,15 +3986,15 @@ void DboxMain::SaveGUIStatusEx(const int iView)
       ASSERT(pci != NULL);  // No groups in List View
       DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
       ASSERT(pdi != NULL && pdi->list_index == i);
-      pci->GetUUID(m_LUUIDVisibleAtMinimize);
+      m_LUUIDVisibleAtMinimize = pci->GetUUID();
     } // i >= 0
   }
   if ((iView & iTreeOnly) == iTreeOnly) {
     // Save expand/collapse status of groups
     m_vGroupDisplayState = GetGroupDisplayState();
 
-    memset(m_TUUIDSelectedAtMinimize, 0, sizeof(uuid_array_t));
-    memset(m_TUUIDVisibleAtMinimize, 0, sizeof(uuid_array_t));
+    m_LUUIDSelectedAtMinimize = CUUIDGen::NullUUID();
+    m_LUUIDVisibleAtMinimize = CUUIDGen::NullUUID();
 
     m_sxSelectedGroup.clear();
     m_sxVisibleGroup.clear();
@@ -4012,7 +4012,7 @@ void DboxMain::SaveGUIStatusEx(const int iView)
           pws_os::Trace(L"DboxMain::SaveGUIStatusEx: fixing pdi->tree_item!\n");
           pdi->tree_item = ti;
         }
-        pci->GetUUID(m_TUUIDSelectedAtMinimize);
+        m_TUUIDSelectedAtMinimize = pci->GetUUID();
       } else {
         // Group: save entry text
         m_sxSelectedGroup = m_ctlItemTree.GetGroup(ti);
@@ -4031,7 +4031,7 @@ void DboxMain::SaveGUIStatusEx(const int iView)
           pws_os::Trace(L"DboxMain::SaveGUIStatusEx: fixing pdi->tree_item!\n");
           pdi->tree_item = ti;
         }
-        pci->GetUUID(m_TUUIDVisibleAtMinimize);
+        m_TUUIDVisibleAtMinimize = pci->GetUUID();
       } else {
         // Group: save entry text
         m_sxVisibleGroup = m_ctlItemTree.GetGroup(ti);
@@ -4066,7 +4066,7 @@ void DboxMain::RestoreGUIStatusEx()
   CItemData *pci(NULL);
 
   // Process Tree - Selected
-  if (memcmp(m_TUUIDSelectedAtMinimize, PWScore::NULL_UUID, sizeof(uuid_array_t)) != 0) {
+  if (m_TUUIDSelectedAtMinimize != CUUIDGen::NullUUID()) {
     // Entry selected
     ItemListIter iter = Find(m_TUUIDSelectedAtMinimize);
     if (iter != End()) {
@@ -4099,7 +4099,7 @@ void DboxMain::RestoreGUIStatusEx()
   }
 
   // Process Tree - Visible
-  if (memcmp(m_TUUIDVisibleAtMinimize, PWScore::NULL_UUID, sizeof(uuid_array_t)) != 0) {
+  if (m_TUUIDVisibleAtMinimize != CUUIDGen::NullUUID()) {
     // Entry topmost visible
     ItemListIter iter = Find(m_TUUIDVisibleAtMinimize);
     if (iter != End()) {
@@ -4130,7 +4130,7 @@ void DboxMain::RestoreGUIStatusEx()
   }
 
   // Process List - selected
-  if (memcmp(m_LUUIDSelectedAtMinimize, PWScore::NULL_UUID, sizeof(uuid_array_t)) != 0) {
+  if (m_LUUIDSelectedAtMinimize != CUUIDGen::NullUUID()) {
     ItemListIter iter = Find(m_LUUIDSelectedAtMinimize);
     if (iter != End()) {
       DisplayInfo *pdi = ((DisplayInfo *)(iter->second.GetDisplayInfo()));
@@ -4148,7 +4148,7 @@ void DboxMain::RestoreGUIStatusEx()
   }
 
   // Process List - visible
-  if (memcmp(m_LUUIDVisibleAtMinimize, PWScore::NULL_UUID, sizeof(uuid_array_t)) != 0) {
+  if (m_LUUIDVisibleAtMinimize != CUUIDGen::NullUUID()) {
     ItemListIter iter = Find(m_LUUIDVisibleAtMinimize);
     if (iter != End()) {
       DisplayInfo *pdi = ((DisplayInfo *)(iter->second.GetDisplayInfo()));
@@ -4245,7 +4245,7 @@ void DboxMain::SaveGUIStatus()
   if (pos != NULL) {
     pci_list = (CItemData *)m_ctlItemList.GetItemData((int)pos - 1);
     if (pci_list != NULL) {
-      pci_list->GetUUID(SaveGUIInfo.lSelected);
+      SaveGUIInfo.lSelected = pci_list->GetUUID();
       SaveGUIInfo.blSelectedValid = true;
     }
   }
@@ -4255,7 +4255,7 @@ void DboxMain::SaveGUIStatus()
     pci_tree = (CItemData *)m_ctlItemTree.GetItemData(hi);
     if (pci_tree != pci_list) {
       if (pci_tree != NULL) {
-        pci_tree->GetUUID(SaveGUIInfo.tSelected);
+        SaveGUIInfo.tSelected = pci_tree->GetUUID();
         SaveGUIInfo.btSelectedValid = true;
       } else {
         StringX s(L"");
