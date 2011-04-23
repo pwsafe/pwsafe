@@ -12,22 +12,6 @@
 
 // CPWStatusBar
 
-// timer event numbers used to by ControlExtns for ListBox tooltips.
-#define TIMER_SB_HOVER     0x0A
-#define TIMER_SB_SHOWING   0x0B 
-
-/*
-HOVER_TIME_SB       The length of time the pointer must remain stationary
-                    within a tool's bounding rectangle before the tool tip
-                    window appears.
-
-TIMEINT_SB_SHOWING The length of time the tool tip window remains visible
-                   if the pointer is stationary within a tool's bounding
-                   rectangle.
-*/
-#define HOVER_TIME_SB      5000
-#define TIMEINT_SB_SHOWING 5000
-
 class CPWStatusBar : public CStatusBar
 {
   DECLARE_DYNAMIC(CPWStatusBar)

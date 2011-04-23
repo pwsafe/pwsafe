@@ -109,6 +109,11 @@ DECLARE_HANDLE(HDROP);
 #define PWS_MSG_INSERTBUFFER            (WM_APP + 70)
 */
 
+
+/*
+  Timer related values (note - all documented her but some defined only where needed.
+*/
+
 /* timer event number used to by PupText.  Here for doc. only
 #define TIMER_PUPTEXT             0x03 */
 // timer event number used to check if the workstation is locked
@@ -129,9 +134,12 @@ DECLARE_HANDLE(HDROP);
 #define TIMER_DRAGBAR             0x09
 /* timer event numbers used to by ControlExtns for ListBox tooltips.  Here for doc. only
 #define TIMER_LB_HOVER            0x0A
-#define TIMER_LB_SHOWING          0x0B */
+#define TIMER_LB_SHOWING          0x0B 
+/* timer event numbers used by StatusBar for tooltips.  Here for doc. only
+#define TIMER_SB_HOVER            0x0C
+#define TIMER_SB_SHOWING          0x0D */
 // Timer event for daily expired entries check
-#define TIMER_EXPENT              0x0C
+#define TIMER_EXPENT              0x0E
 
 /*
 HOVER_TIME_ND       The length of time the pointer must remain stationary

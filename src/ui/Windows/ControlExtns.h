@@ -18,22 +18,6 @@
 // Pick a number at the end of the WM_USER range
 #define EM_SELECTALL (WM_APP - 1)
 
-// timer event numbers used to by ControlExtns for ListBox tooltips.
-#define TIMER_LB_HOVER     0x0A
-#define TIMER_LB_SHOWING   0x0B 
-
-/*
-HOVER_TIME_LB       The length of time the pointer must remain stationary
-                    within a tool's bounding rectangle before the tool tip
-                    window appears.
-
-TIMEINT_LB_SHOWING The length of time the tool tip window remains visible
-                   if the pointer is stationary within a tool's bounding
-                   rectangle.
-*/
-#define HOVER_TIME_LB      1000
-#define TIMEINT_LB_SHOWING 5000
-
 class CStaticExtn : public CStatic
 {
   // Construction

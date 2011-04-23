@@ -28,6 +28,22 @@ const COLORREF crefInFocus = (RGB(222, 255, 222));  // Light green
 const COLORREF crefNoFocus = (RGB(255, 255, 255));  // White
 const COLORREF crefBlack   = (RGB(  0,   0,   0));  // Black
 
+// timer event numbers used to by ControlExtns for ListBox tooltips. See DboxMain.h
+#define TIMER_LB_HOVER     0x0A
+#define TIMER_LB_SHOWING   0x0B 
+
+/*
+HOVER_TIME_LB       The length of time the pointer must remain stationary
+                    within a tool's bounding rectangle before the tool tip
+                    window appears.
+
+TIMEINT_LB_SHOWING The length of time the tool tip window remains visible
+                   if the pointer is stationary within a tool's bounding
+                   rectangle.
+*/
+#define HOVER_TIME_LB      1000
+#define TIMEINT_LB_SHOWING 5000
+
 /////////////////////////////////////////////////////////////////////////////
 // CStaticExtn
 
