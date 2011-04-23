@@ -19,10 +19,27 @@
 
 // CPWStatusBar
 
+// Timer event numbers used by StatusBar for tooltips. See DboxMain.h
+#define TIMER_SB_HOVER     0x0C
+#define TIMER_SB_SHOWING   0x0D 
+
+/*
+HOVER_TIME_SB       The length of time the pointer must remain stationary
+                    within a tool's bounding rectangle before the tool tip
+                    window appears.
+
+TIMEINT_SB_SHOWING The length of time the tool tip window remains visible
+                   if the pointer is stationary within a tool's bounding
+                   rectangle.
+*/
+#define HOVER_TIME_SB      1000
+#define TIMEINT_SB_SHOWING 5000
+
 IMPLEMENT_DYNAMIC(CPWStatusBar, CStatusBar)
 
 CPWStatusBar::CPWStatusBar()
-  : m_bFilterStatus(false), m_pSBToolTips(NULL), m_bUseToolTips(false)
+  : m_bFilterStatus(false), m_pSBToolTips(NULL), m_bUseToolTips(false),
+  m_bMouseInWindow(false)
 {
   m_FilterBitmap.LoadBitmap(IDB_FILTER_ACTIVE);
   BITMAP bm;
@@ -60,7 +77,7 @@ int CPWStatusBar::OnCreate(LPCREATESTRUCT pCreateStruct)
     m_pSBToolTips = NULL;
   } else {
     m_pSBToolTips->ShowWindow(SW_HIDE);
-      m_bUseToolTips = true;
+    m_bUseToolTips = true;
   }
 
   return 0;
@@ -130,7 +147,7 @@ bool CPWStatusBar::ShowToolTip(int nPane, const bool bVisible)
   if (!m_bUseToolTips)
     return false;
 
-  if (nPane < 0 || nPane >= SB_TOTAL) {
+  if (nPane < 0 || nPane >= SB_TOTAL || !bVisible) {
     m_pSBToolTips->ShowWindow(SW_HIDE);
     return false;
   }
@@ -149,11 +166,6 @@ bool CPWStatusBar::ShowToolTip(int nPane, const bool bVisible)
   CString cs_ToolTip;
   cs_ToolTip.LoadString(uiMsg[nPane]);
   m_pSBToolTips->SetWindowText(cs_ToolTip);
-
-  if (!bVisible) {
-    m_pSBToolTips->ShowWindow(SW_HIDE);
-    return false;
-  }
 
   CPoint pt;
   ::GetCursorPos(&pt);
@@ -257,5 +269,6 @@ LRESULT CPWStatusBar::OnMouseLeave(WPARAM, LPARAM)
     ShowToolTip(m_HoverSBnPane, false);
     m_bMouseInWindow = false;
   }
+
   return 0L;
 }
