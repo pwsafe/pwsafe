@@ -340,6 +340,8 @@
 #define IDD_WZADVANCEDBOTTOM            496
 #define IDD_WZSELECTDB                  497
 #define IDD_WZFINISH                    498
+#define IDB_DRAGAUTOX_CLASSIC           499
+#define IDB_DRAGAUTOX_NEW               500
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_BROWSE                      1002
@@ -725,14 +727,15 @@
 #define IDC_OWNSYMBOLS                  1440
 #define IDC_STATIC_DEFAULTSYMBOLS       1441
 #define IDC_DEFAULTAUTOTYPE             1442
+#define IDC_STATIC_DRAGAUTO             1443
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        499
+#define _APS_NEXT_RESOURCE_VALUE        501
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1443
+#define _APS_NEXT_CONTROL_VALUE         1444
 #define _APS_NEXT_SYMED_VALUE           166
 #endif
 #endif

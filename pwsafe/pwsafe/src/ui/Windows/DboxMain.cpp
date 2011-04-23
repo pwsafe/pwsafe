@@ -454,7 +454,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_SHOW_ALL_EXPIRY, OnShowExpireList)
 
   // Manage Menu
-  ON_COMMAND(ID_MENUITEM_CHANGECOMBO, OnPasswordChange)
+  ON_COMMAND(ID_MENUITEM_CHANGECOMBO, OnPassphraseChange)
   ON_COMMAND(ID_MENUITEM_BACKUPSAFE, OnBackupSafe)
   ON_COMMAND(ID_MENUITEM_RESTORESAFE, OnRestoreSafe)
   ON_COMMAND(ID_MENUITEM_OPTIONS, OnOptions)
@@ -546,6 +546,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_MESSAGE(PWS_MSG_COMPARE_RESULT_FUNCTION, OnProcessCompareResultFunction)
   ON_MESSAGE(PWS_MSG_EXPIRED_PASSWORD_EDIT, OnEditExpiredPasswordEntry)
   ON_MESSAGE(PWS_MSG_TOOLBAR_FIND, OnToolBarFindMessage)
+  ON_MESSAGE(PWS_MSG_DRAGAUTOTYPE, OnDragAutoType)
   ON_MESSAGE(PWS_MSG_EXECUTE_FILTERS, OnExecuteFilters)
   ON_MESSAGE(PWS_MSG_EDIT_APPLY, OnApplyEditChanges)
   ON_MESSAGE(WM_QUERYENDSESSION, OnQueryEndSession)
@@ -1244,6 +1245,8 @@ void DboxMain::SetDragbarToolTips()
     cs_field.LoadString(IDS_EMAIL);
     cs_ToolTip.Format(IDS_DRAGTOCOPY, cs_field);
     m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_DRAGEMAIL), cs_ToolTip);
+    cs_ToolTip.Format(IDS_DRAGTOAUTOTYPE, cs_field);
+    m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_DRAGAUTO), cs_ToolTip);    
   }
 }
 

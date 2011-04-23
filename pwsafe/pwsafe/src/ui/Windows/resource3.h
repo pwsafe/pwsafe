@@ -666,3 +666,4 @@
 #define IDS_SB_TT_MODE                  5859
 #define IDS_SB_TT_NUMENTRIES            5860
 #define IDS_SB_TT_FILTER                5861
+#define IDS_DRAGTOAUTOTYPE              5862

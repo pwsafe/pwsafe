@@ -78,10 +78,10 @@ class CDDObList;
 DECLARE_HANDLE(HDROP);
 #endif
 
-// custom message event used for system tray handling.
+// Custom message event used for system tray handling
 #define PWS_MSG_ICON_NOTIFY             (WM_APP + 10)
 
-// to catch post Header drag
+// To catch post Header drag
 #define PWS_MSG_HDR_DRAG_COMPLETE       (WM_APP + 20)
 #define PWS_MSG_CCTOHDR_DD_COMPLETE     (WM_APP + 21)
 #define PWS_MSG_HDRTOCC_DD_COMPLETE     (WM_APP + 22)
@@ -101,6 +101,9 @@ DECLARE_HANDLE(HDROP);
 
 // Simulate Ctrl+F from Find Toolbar "enter"
 #define PWS_MSG_TOOLBAR_FIND            (WM_APP + 50)
+
+// Perform Drag Autotype
+#define PWS_MSG_DRAGAUTOTYPE            (WM_APP + 55)
 
 // Update current filters whilst SetFilters dialog is open
 #define PWS_MSG_EXECUTE_FILTERS         (WM_APP + 60)
@@ -295,7 +298,7 @@ public:
   void SetStartSilent(bool state);
   void SetStartClosed(bool state) {m_IsStartClosed = state;}
   void SetValidate(bool state) {m_bValidate = state;}
-  void MakeRandomPassword(StringX& password, PWPolicy &pwp, stringT st_symbols,
+  void MakeRandomPassword(StringX &password, PWPolicy &pwp, stringT st_symbols,
                           bool bIssueMsg = false);
   BOOL LaunchBrowser(const CString &csURL, const StringX &sxAutotype,
                      const std::vector<size_t> &vactionverboffsets,
@@ -414,7 +417,8 @@ public:
   CLVHdrCtrl m_LVHdrCtrl;
   CColumnChooserDlg *m_pCC;
   CPoint m_RCMousePos;
-  CDDStatic m_DDGroup, m_DDTitle, m_DDUser, m_DDPassword, m_DDNotes, m_DDURL, m_DDemail;
+  CDDStatic m_DDGroup, m_DDTitle, m_DDUser, m_DDPassword, m_DDNotes, m_DDURL, m_DDemail,
+            m_DDAutotype;
   //}}AFX_DATA
 
   CRUEList m_RUEList;   // recent entry lists
@@ -541,6 +545,7 @@ protected:
   LRESULT SynchCompareResult(PWScore *pfromcore, PWScore *ptocore,
                              const CUUIDGen &fromuuid, const CUUIDGen &touuid);
   LRESULT OnToolBarFindMessage(WPARAM wParam, LPARAM lParam);
+  LRESULT OnDragAutoType(WPARAM wParam, LPARAM lParam);
   LRESULT OnExecuteFilters(WPARAM wParam, LPARAM lParam);
   LRESULT OnApplyEditChanges(WPARAM wParam, LPARAM lParam);
 
@@ -673,7 +678,7 @@ protected:
   afx_msg void OnListView();
   afx_msg void OnTreeView();
   afx_msg void OnBackupSafe();
-  afx_msg void OnPasswordChange();
+  afx_msg void OnPassphraseChange();
   afx_msg void OnClearClipboard();
   afx_msg void OnDelete();
   afx_msg void OnEdit();

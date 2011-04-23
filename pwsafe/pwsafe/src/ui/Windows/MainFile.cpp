@@ -337,6 +337,7 @@ int DboxMain::New()
   m_DDNotes.SetStaticState(false);
   m_DDURL.SetStaticState(false);
   m_DDemail.SetStaticState(false);
+  m_DDAutotype.SetStaticState(false);
 
   UpdateMenuAndToolBar(true);
 
@@ -505,6 +506,7 @@ int DboxMain::Close(const bool bTrySave)
   m_DDNotes.SetStaticState(false);
   m_DDURL.SetStaticState(false);
   m_DDemail.SetStaticState(false);
+  m_DDAutotype.SetStaticState(false);
 
   app.SetTooltipText(L"PasswordSafe");
   UpdateSystemTray(CLOSED);

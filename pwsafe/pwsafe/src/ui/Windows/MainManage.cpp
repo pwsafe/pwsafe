@@ -44,7 +44,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 // Change the master password for the database.
-void DboxMain::OnPasswordChange()
+void DboxMain::OnPassphraseChange()
 {
   if (m_core.IsReadOnly()) // disable in read-only mode
     return;
