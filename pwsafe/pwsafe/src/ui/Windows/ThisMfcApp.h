@@ -70,10 +70,10 @@ public:
   void DisableAccelerator() { m_bUseAccelerator = false; }
   bool IsAcceleratorEnabled() { return m_bUseAccelerator;}
 
-  BOOL SetTooltipText(LPCWSTR ttt) {return m_TrayIcon->SetTooltipText(ttt);}
-  BOOL IsIconVisible() const {return m_TrayIcon->Visible();}
-  void ShowIcon() {m_TrayIcon->ShowIcon();}
-  void HideIcon() {m_TrayIcon->HideIcon();}
+  BOOL SetTooltipText(LPCWSTR ttt) {return m_pTrayIcon->SetTooltipText(ttt);}
+  BOOL IsIconVisible() const {return m_pTrayIcon->Visible();}
+  void ShowIcon() {m_pTrayIcon->ShowIcon();}
+  void HideIcon() {m_pTrayIcon->HideIcon();}
 
   // 'STATE' also defined in DboxMain.h - ensure identical
   enum STATE {LOCKED, UNLOCKED, CLOSED};
@@ -116,7 +116,7 @@ private:
   HICON m_LockedIcon;
   HICON m_UnLockedIcon;
   HICON m_ClosedIcon;
-  CSystemTray *m_TrayIcon; // DboxMain needs to be constructed first
+  CSystemTray *m_pTrayIcon; // DboxMain needs to be constructed first
   STATE m_TrayLockedState;
   bool m_HotKeyPressed, m_bACCEL_Table_Created;
   DWORD m_dwMajorMinor;
