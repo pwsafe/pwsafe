@@ -1535,7 +1535,7 @@ void DboxMain::OnAutoType()
 
 void DboxMain::AutoType(const CItemData &ci)
 {
-  // Called from OnAutoType and OnTrayAutoType
+  // Called from OnAutoType, OnTrayAutoType and OnDragAutoType
 
   // Rules are ("Minimize on Autotype" takes precedence):
   // 1. If "MinimizeOnAutotype" - minimize PWS during Autotype but do
@@ -1873,6 +1873,14 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
   SetChanged(Data);
   FixListIndexes();
   RefreshViews();
+}
+
+LRESULT DboxMain::OnDragAutoType(WPARAM wParam, LPARAM /* lParam */)
+{
+  const CItemData *pci = reinterpret_cast<const CItemData *>(wParam);
+
+  AutoType(*pci);
+  return 0L;
 }
 
 LRESULT DboxMain::OnToolBarFindMessage(WPARAM /* wParam */, LPARAM /* lParam */)

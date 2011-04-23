@@ -34,7 +34,7 @@ public:
   void ReInit(const UINT nImageID, const UINT nDisabledImageID); // to change images
   void SetStaticState(const bool state);
   BOOL OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal);
-  void EndDrop() {m_bDropped = true;}
+  void EndDrop();
 
 protected:
   //{{AFX_MSG(CDDStatic)

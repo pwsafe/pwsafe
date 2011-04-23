@@ -26,23 +26,29 @@ public:
   CStaticDropTarget(CDDStatic *parent)
     : m_DDstatic(*parent) {}
 
-  DROPEFFECT OnDragEnter(CWnd* /* pWnd */, COleDataObject* /* pDataObject */,
+  DROPEFFECT OnDragEnter(CWnd * /* pWnd */, COleDataObject * /* pDataObject */,
                          DWORD /* dwKeyState */, CPoint /* point */)
-  {// No one allowed to Drag onto me!
-   return DROPEFFECT_NONE;}
+  {
+    // No one allowed to Drag onto me!
+    return DROPEFFECT_NONE;
+  }
 
-  DROPEFFECT OnDragOver(CWnd* /* pWnd */, COleDataObject* /* pDataObject */,
+  DROPEFFECT OnDragOver(CWnd * /* pWnd */, COleDataObject * /* pDataObject */,
                         DWORD /* dwKeyState */, CPoint /* point */)
-  {// No one allowed to Drag onto me!
-   return DROPEFFECT_NONE;}
+  {
+    // No one allowed to Drag onto me!
+    return DROPEFFECT_NONE;
+  }
 
   void OnDragLeave(CWnd* pWnd)
   {COleDropTarget::OnDragLeave(pWnd);}
 
-  BOOL OnDrop(CWnd* /* pWnd */, COleDataObject* /* pDataObject */,
+  BOOL OnDrop(CWnd * /* pWnd */, COleDataObject * /* pDataObject */,
               DROPEFFECT /* dropEffect */, CPoint /* point*/)
-  {// No one allowed to Drop onto me!
-   return FALSE;}
+  {
+    // No one allowed to Drop onto me!
+    return FALSE;
+  }
 
 private:
   CDDStatic &m_DDstatic; // Not used as yet
@@ -67,7 +73,9 @@ public:
   }
 
   virtual SCODE GiveFeedback(DROPEFFECT /* dropEffect */)
-  {return DRAGDROP_S_USEDEFAULTCURSORS;}
+  {
+    return DRAGDROP_S_USEDEFAULTCURSORS;
+  }
 
 private:
   CDDStatic &m_DDstatic;
@@ -79,7 +87,7 @@ public:
   CStaticDataSource(CDDStatic *parent, COleDropSource *ds)
     : m_DDstatic(*parent), m_pDropSource(ds) {}
 
-  DROPEFFECT StartDragging(RECT* rClient)
+  DROPEFFECT StartDragging(RECT *rClient)
   {
     //pws_os::Trace(L"CStaticDataSource::StartDragging\n");
 
@@ -98,6 +106,7 @@ public:
       GlobalFree(m_DDstatic.m_hgDataTXT);
       m_DDstatic.m_hgDataTXT = NULL;
     }
+
     if (m_DDstatic.m_hgDataUTXT != NULL) {
       //pws_os::Trace(L"CStaticDataSource::StartDragging - Unlock/Free m_hgDataUTXT\n");
       GlobalUnlock(m_DDstatic.m_hgDataUTXT);
@@ -107,10 +116,12 @@ public:
     return dropEffect;
   }
 
-  BOOL OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
-  {return m_DDstatic.OnRenderGlobalData(lpFormatEtc, phGlobal);}
+  BOOL OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL *phGlobal)
+  {
+    return m_DDstatic.OnRenderGlobalData(lpFormatEtc, phGlobal);
+  }
 
-  private:
+private:
   CDDStatic &m_DDstatic;
   COleDropSource *m_pDropSource;
 };
@@ -377,7 +388,7 @@ void CDDStatic::SetBitmapBackground(CBitmap &bm, const COLORREF newbkgrndColour)
 
 void CDDStatic::SendToClipboard()
 {
-  if (m_pDbx == NULL)
+  if (m_pDbx == NULL || m_nID == IDC_STATIC_DRAGAUTO)
     return;
 
   if (m_pci == NULL) {
@@ -418,6 +429,7 @@ BOOL CDDStatic::OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
     GlobalFree(m_hgDataTXT);
     m_hgDataTXT = NULL;
   }
+
   if (m_hgDataUTXT != NULL) {
     pws_os::Trace(L"CDDStatic::OnRenderGlobalData - Unlock/Free m_hgDataUTXT\n");
     GlobalUnlock(m_hgDataUTXT);
@@ -444,12 +456,12 @@ BOOL CDDStatic::OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
       pci = m_pDbx->GetBaseEntry(pci);
     }
     cs_dragdata = GetData(pci);
-    if (cs_dragdata.empty())
+    if (cs_dragdata.empty() && m_nID != IDC_STATIC_DRAGAUTO)
       return FALSE;
   }
 
   const size_t ilen = cs_dragdata.length();
-  if (ilen == 0) {
+  if (ilen == 0 && m_nID != IDC_STATIC_DRAGAUTO) {
     // Nothing to do - why were we even called???
     return FALSE;
   }
@@ -463,21 +475,31 @@ BOOL CDDStatic::OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
     dwBufLen = (DWORD)((ilen + 1) * sizeof(wchar_t));
     lpszW = new WCHAR[ilen + 1];
     pws_os::Trace(L"lpszW allocated %p, size %d\n", lpszW, dwBufLen);
+    if (ilen == 0) {
+      lpszW[ilen] = L'\0';
+    } else {
 #if (_MSC_VER >= 1400)
-    (void) wcsncpy_s(lpszW, ilen + 1, cs_dragdata.c_str(), ilen);
+      (void) wcsncpy_s(lpszW, ilen + 1, cs_dragdata.c_str(), ilen);
 #else
-    (void)wcsncpy(lpszW, cs_dragdata, ilen);
-    lpszW[ilen] = L'\0';
+      (void)wcsncpy(lpszW, cs_dragdata, ilen);
+      lpszW[ilen] = L'\0';
 #endif
+    }
   } else {
     // They want it in ASCII - use lpszW temporarily
-    lpszW = const_cast<LPWSTR>(cs_dragdata.c_str());
-    dwBufLen = WideCharToMultiByte(CP_ACP, 0, lpszW, -1, NULL, 0, NULL, NULL);
-    ASSERT(dwBufLen != 0);
-    lpszA = new char[dwBufLen];
-    pws_os::Trace(L"lpszA allocated %p, size %d\n", lpszA, dwBufLen);
-    WideCharToMultiByte(CP_ACP, 0, lpszW, -1, lpszA, dwBufLen, NULL, NULL);
-    lpszW = NULL;
+    if (ilen == 0) {
+      dwBufLen = 1;
+      lpszA = new char[dwBufLen];
+      lpszA = '\0';
+    } else {
+      lpszW = const_cast<LPWSTR>(cs_dragdata.c_str());
+      dwBufLen = WideCharToMultiByte(CP_ACP, 0, lpszW, -1, NULL, 0, NULL, NULL);
+      ASSERT(dwBufLen != 0);
+      lpszA = new char[dwBufLen];
+      pws_os::Trace(L"lpszA allocated %p, size %d\n", lpszA, dwBufLen);
+      WideCharToMultiByte(CP_ACP, 0, lpszW, -1, lpszA, dwBufLen, NULL, NULL);
+      lpszW = NULL;
+    }
   }
 
   LPVOID lpData(NULL);
@@ -606,8 +628,23 @@ StringX CDDStatic::GetData(const CItemData *pci)
     case IDC_STATIC_DRAGEMAIL:
       cs_dragdata = pci->GetEmail();
       break;
+    case IDC_STATIC_DRAGAUTO:
+      cs_dragdata = L"";
+      break;
     default:
       break;
   }
   return cs_dragdata;
+}
+
+void CDDStatic::EndDrop()
+{
+  m_bDropped = true;
+
+  if (m_nID == IDC_STATIC_DRAGAUTO) {
+    if (m_pDbx != NULL && m_pci != NULL) {
+      m_pDbx->ClearClipboardData();
+      m_pDbx->SendMessage(PWS_MSG_DRAGAUTOTYPE, (WPARAM)m_pci);
+    }
+  }
 }

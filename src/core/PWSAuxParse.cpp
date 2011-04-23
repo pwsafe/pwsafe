@@ -607,7 +607,6 @@ void PWSAuxParse::SendAutoTypeString(const StringX &sx_autotype,
   ks.BlockInput(false);
 }
 
-
 //-----------------------------------------------------------------
 // Internal functions
 //-----------------------------------------------------------------

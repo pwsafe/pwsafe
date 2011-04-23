@@ -330,6 +330,7 @@ void DboxMain::DoDataExchange(CDataExchange* pDX)
   DDX_Control(pDX, IDC_STATIC_DRAGNOTES, m_DDNotes);
   DDX_Control(pDX, IDC_STATIC_DRAGURL, m_DDURL);
   DDX_Control(pDX, IDC_STATIC_DRAGEMAIL, m_DDemail);
+  DDX_Control(pDX, IDC_STATIC_DRAGAUTO, m_DDAutotype);
   //}}AFX_DATA_MAP
 }
 
@@ -413,6 +414,7 @@ void DboxMain::UpdateToolBarForSelectedItem(const CItemData *pci)
         m_DDNotes.SetStaticState(false);
         m_DDURL.SetStaticState(false);
         m_DDemail.SetStaticState(false);
+        m_DDAutotype.SetStaticState(false);
       } else {
         m_DDGroup.SetStaticState(!pci_entry->IsGroupEmpty());
         m_DDTitle.SetStaticState(true);
@@ -421,6 +423,7 @@ void DboxMain::UpdateToolBarForSelectedItem(const CItemData *pci)
         m_DDNotes.SetStaticState(!pci_entry->IsNotesEmpty());
         m_DDURL.SetStaticState(!pci_entry->IsURLEmpty());
         m_DDemail.SetStaticState(!pci_entry->IsEmailEmpty());
+        m_DDAutotype.SetStaticState(true);
       }
     }
   }
@@ -568,6 +571,8 @@ void DboxMain::setupBars()
   m_DDURL.ShowWindow(SW_SHOW);
   m_DDemail.EnableWindow(TRUE);
   m_DDemail.ShowWindow(SW_SHOW);
+  m_DDAutotype.EnableWindow(TRUE);
+  m_DDAutotype.ShowWindow(SW_SHOW);
 #endif
 }
 
@@ -1059,9 +1064,9 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
     bool bDragBarState = PWSprefs::GetInstance()->GetPref(PWSprefs::ShowDragbar);
     if (bDragBarState) {
       const int i = GetSystemMetrics(SM_CYBORDER);
+      const int j = rect.top + i;
       m_DDGroup.GetWindowRect(&dragrect);
       ScreenToClient(&dragrect);
-      const int j = rect.top + i;
       m_DDGroup.SetWindowPos(NULL, dragrect.left, j, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
 
       m_DDTitle.GetWindowRect(&dragrect);
@@ -1087,6 +1092,10 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
       m_DDemail.GetWindowRect(&dragrect);
       ScreenToClient(&dragrect);
       m_DDemail.SetWindowPos(NULL, dragrect.left, j, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
+
+      m_DDAutotype.GetWindowRect(&dragrect);
+      ScreenToClient(&dragrect);
+      m_DDAutotype.SetWindowPos(NULL, dragrect.left, j, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
       rect.top += dragrect.Height() + 2 * i;
     }
     m_ctlItemList.MoveWindow(&rect, TRUE);
@@ -1813,6 +1822,7 @@ void DboxMain::SetToolbar(const int menuItem, bool bInit)
       m_DDNotes.Init(IDB_DRAGNOTES_NEW, IDB_DRAGNOTESX_NEW);
       m_DDURL.Init(IDB_DRAGURL_NEW, IDB_DRAGURLX_NEW);
       m_DDemail.Init(IDB_DRAGEMAIL_NEW, IDB_DRAGEMAILX_NEW);
+      m_DDAutotype.ReInit(IDB_AUTOTYPE_NEW, IDB_DRAGAUTOX_NEW);
     } else if (menuItem == ID_MENUITEM_OLD_TOOLBAR) {
       m_DDGroup.Init(IDB_DRAGGROUP_CLASSIC, IDB_DRAGGROUPX_CLASSIC);
       m_DDTitle.Init(IDB_DRAGTITLE_CLASSIC, IDB_DRAGTITLEX_CLASSIC);
@@ -1821,6 +1831,7 @@ void DboxMain::SetToolbar(const int menuItem, bool bInit)
       m_DDNotes.Init(IDB_DRAGNOTES_CLASSIC, IDB_DRAGNOTESX_CLASSIC);
       m_DDURL.Init(IDB_DRAGURL_CLASSIC, IDB_DRAGURLX_CLASSIC);
       m_DDemail.Init(IDB_DRAGEMAIL_CLASSIC, IDB_DRAGEMAILX_CLASSIC);
+      m_DDAutotype.Init(IDB_AUTOTYPE_CLASSIC, IDB_DRAGAUTOX_CLASSIC);
     } else {
       ASSERT(0);
     }
@@ -1840,6 +1851,7 @@ void DboxMain::SetToolbar(const int menuItem, bool bInit)
       m_DDNotes.ReInit(IDB_DRAGNOTES_NEW, IDB_DRAGNOTESX_NEW);
       m_DDURL.ReInit(IDB_DRAGURL_NEW, IDB_DRAGURLX_NEW);
       m_DDemail.ReInit(IDB_DRAGEMAIL_NEW, IDB_DRAGEMAILX_NEW);
+      m_DDAutotype.ReInit(IDB_AUTOTYPE_NEW, IDB_DRAGAUTOX_NEW);
     } else if (menuItem == ID_MENUITEM_OLD_TOOLBAR) {
       m_DDGroup.ReInit(IDB_DRAGGROUP_CLASSIC, IDB_DRAGGROUPX_CLASSIC);
       m_DDTitle.ReInit(IDB_DRAGTITLE_CLASSIC, IDB_DRAGTITLEX_CLASSIC);
@@ -1848,12 +1860,14 @@ void DboxMain::SetToolbar(const int menuItem, bool bInit)
       m_DDNotes.ReInit(IDB_DRAGNOTES_CLASSIC, IDB_DRAGNOTESX_CLASSIC);
       m_DDURL.ReInit(IDB_DRAGURL_CLASSIC, IDB_DRAGURLX_CLASSIC);
       m_DDemail.ReInit(IDB_DRAGEMAIL_CLASSIC, IDB_DRAGEMAILX_CLASSIC);
+      m_DDAutotype.ReInit(IDB_AUTOTYPE_CLASSIC, IDB_DRAGAUTOX_CLASSIC);
     } else {
       ASSERT(0);
     }
     m_DDGroup.Invalidate(); m_DDTitle.Invalidate(); m_DDUser.Invalidate();
     m_DDPassword.Invalidate(); m_DDNotes.Invalidate(); m_DDURL.Invalidate();
     m_DDemail.Invalidate();
+    m_DDAutotype.Invalidate();
   }
   m_menuManager.SetImageList(&m_MainToolBar);
 
@@ -3168,7 +3182,8 @@ void DboxMain::SetToolBarPositions()
   RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0, reposQuery, &rect);
   bool bDragBarState = PWSprefs::GetInstance()->GetPref(PWSprefs::ShowDragbar);
   CDDStatic *DDs[] = { &m_DDGroup, &m_DDTitle, &m_DDUser,
-                       &m_DDPassword, &m_DDNotes, &m_DDURL, &m_DDemail, };
+                       &m_DDPassword, &m_DDNotes, &m_DDURL, &m_DDemail,
+                       &m_DDAutotype};
   if (bDragBarState) {
     // Get the image states just incase another entry selected
     // since last shown
@@ -3181,6 +3196,7 @@ void DboxMain::SetToolBarPositions()
       m_DDNotes.SetStaticState(false);
       m_DDURL.SetStaticState(false);
       m_DDemail.SetStaticState(false);
+      m_DDAutotype.SetStaticState(false);
     } else {
       m_DDGroup.SetStaticState(!entry->IsGroupEmpty());
       m_DDTitle.SetStaticState(true);
@@ -3189,6 +3205,7 @@ void DboxMain::SetToolBarPositions()
       m_DDNotes.SetStaticState(!entry->IsNotesEmpty());
       m_DDURL.SetStaticState(!entry->IsURLEmpty());
       m_DDemail.SetStaticState(!entry->IsEmailEmpty());
+      m_DDAutotype.SetStaticState(true);
     }
 
     const int i = GetSystemMetrics(SM_CYBORDER);

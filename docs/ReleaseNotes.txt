@@ -10,6 +10,8 @@ releases may be found in the file ChangeLog.txt.
 
 New Features for 3.25.1
 =======================
+[3288341] Autotype now added to the DragBar. Drag the image to an input area
+on another Window (e.g. Browser) and PasswordSafe will begin Autotype from there.
 [3286721] User can now toggle the database between read-only and read-write
 mode (and vice versa) via a menu item or by double-clicking on the current
 R-O or R/W indicator in the StausBar.
