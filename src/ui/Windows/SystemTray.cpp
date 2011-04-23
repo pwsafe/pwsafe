@@ -88,7 +88,7 @@ CSystemTray::CSystemTray(CWnd* pParent, UINT uCallbackMessage, LPCWSTR szToolTip
                          UINT uID, UINT menuID)
   : m_RUEList(RUEList), m_pParent(pParent), m_bEnabled(FALSE),
   m_bHidden(FALSE), m_uIDTimer(0), m_hSavedIcon(NULL), m_DefaultMenuItemID(ID_MENUITEM_RESTORE),
-  m_DefaultMenuItemByPos(FALSE), m_pTarget(NULL), m_menuID(0), m_bCreated(FALSE)
+  m_DefaultMenuItemByPos(FALSE), m_pTarget(NULL), m_menuID(0)
 {
   ASSERT(m_pParent != NULL);
   SecureZeroMemory(&m_tnd, sizeof(m_tnd));
@@ -113,7 +113,9 @@ BOOL CSystemTray::Create(CWnd *pParent, UINT uCallbackMessage, LPCWSTR szToolTip
   StringX ttt = PWSUtil::NormalizeTTT(szToolTip);
 
   // Create an invisible window
-  m_bCreated = CWnd::CreateEx(0, AfxRegisterWndClass(0), L"", WS_POPUP, 0,0,10,10, NULL, 0);
+  m_bEnabled = CWnd::CreateEx(0, AfxRegisterWndClass(0), L"", WS_POPUP, 0,0,10,10, NULL, 0);
+  if (!m_bEnabled)
+    return FALSE;
 
   // load up the NOTIFYICONDATA structure
   m_tnd.cbSize = sizeof(m_tnd);
@@ -141,9 +143,6 @@ CSystemTray::~CSystemTray()
   RemoveIcon();
   m_IconList.RemoveAll();
   ::DestroyIcon(m_hSavedIcon);
-
-  if (m_bCreated == TRUE)
-    CWnd::DestroyWindow();
 }
 
 /////////////////////////////////////////////////////////////////////////////

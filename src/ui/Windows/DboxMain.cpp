@@ -2069,7 +2069,7 @@ void DboxMain::OnShowPassword()
 LRESULT DboxMain::OnTrayNotification(WPARAM , LPARAM)
 {
 #if 0
-  return m_TrayIcon.OnTrayNotification(wParam, lParam);
+  return m_pTrayIcon.OnTrayNotification(wParam, lParam);
 #else
   return 0L;
 #endif

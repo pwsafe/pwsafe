@@ -95,7 +95,7 @@ ThisMfcApp::ThisMfcApp() :
 #else
   m_bUseAccelerator(true),
 #endif
-  m_pMRU(NULL), m_TrayLockedState(LOCKED), m_TrayIcon(NULL),
+  m_pMRU(NULL), m_TrayLockedState(LOCKED), m_pTrayIcon(NULL),
   m_HotKeyPressed(false), m_hMutexOneInstance(NULL),
   m_ghAccelTable(NULL), m_pMainMenu(NULL),
   m_bACCEL_Table_Created(false), m_noSysEnvWarnings(false),
@@ -173,7 +173,6 @@ ThisMfcApp::ThisMfcApp() :
 
 ThisMfcApp::~ThisMfcApp()
 {
-  delete m_TrayIcon;
   delete m_pMRU;
 
   // Remove MRU menu
@@ -1008,10 +1007,10 @@ BOOL ThisMfcApp::InitInstance()
   m_UnLockedIcon = app.LoadIcon(IDI_UNLOCKEDICON);
   int iData = prefs->GetPref(PWSprefs::ClosedTrayIconColour);
   SetClosedTrayIcon(iData);
-  m_TrayIcon = new CSystemTray((CWnd *)m_pMainDlg, PWS_MSG_ICON_NOTIFY, L"PasswordSafe",
-                               m_LockedIcon, dbox.m_RUEList,
-                               PWS_MSG_ICON_NOTIFY, IDR_POPTRAY);
-  m_TrayIcon->SetTarget(&dbox);
+  m_pTrayIcon = new CSystemTray((CWnd *)m_pMainDlg, PWS_MSG_ICON_NOTIFY, L"PasswordSafe",
+                                m_LockedIcon, dbox.m_RUEList,
+                                PWS_MSG_ICON_NOTIFY, IDR_POPTRAY);
+  m_pTrayIcon->SetTarget(&dbox);
 #endif
 
   // Set up an Accelerator table
@@ -1034,6 +1033,10 @@ BOOL ThisMfcApp::InitInstance()
 
   // Run dialog - note that we don't particularly care what the response was
   (void) dbox.DoModal();
+
+  if (m_pTrayIcon != NULL)
+    m_pTrayIcon->DestroyWindow();
+  delete m_pTrayIcon;
 
   ::DestroyIcon(m_LockedIcon);
   ::DestroyIcon(m_UnLockedIcon);
@@ -1138,9 +1141,9 @@ int ThisMfcApp::SetClosedTrayIcon(int &iData, bool bSet)
 
 void ThisMfcApp::SetSystemTrayState(STATE s)
 {
-  // need to protect against null m_TrayIcon due to
+  // need to protect against null m_pTrayIcon due to
   // tricky initialization order
-  if (m_TrayIcon != NULL && s != m_TrayLockedState) {
+  if (m_pTrayIcon != NULL && s != m_TrayLockedState) {
     m_TrayLockedState = s;
     HICON hIcon(m_LockedIcon);
     switch (s) {
@@ -1156,7 +1159,7 @@ void ThisMfcApp::SetSystemTrayState(STATE s)
       default:
         break;
     }
-    m_TrayIcon->SetIcon(hIcon);
+    m_pTrayIcon->SetIcon(hIcon);
   }
 }
 
