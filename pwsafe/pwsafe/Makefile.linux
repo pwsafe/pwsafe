@@ -37,8 +37,6 @@ release:
 	$(MAKE) unicoderelease
 
 clean: debug-clean release-clean
-	$(MAKE) CONFIG=unicodedebug $@
-	$(MAKE) CONFIG=unicoderelease $@
 
 debug-clean:
 	$(MAKE) CONFIG=unicodedebug -C src/os/linux clean
