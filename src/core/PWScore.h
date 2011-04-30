@@ -273,9 +273,9 @@ public:
   ItemListConstIter Find(const uuid_array_t &entry_uuid) const
   {return m_pwlist.find(entry_uuid);}
   ItemListIter Find(const CUUIDGen &entry_uuid)
-  {return m_pwlist.find(*entry_uuid.GetUUID());}
+  {return m_pwlist.find(entry_uuid);}
   ItemListConstIter Find(const CUUIDGen &entry_uuid) const
-  {return m_pwlist.find(*entry_uuid.GetUUID());}
+  {return m_pwlist.find(entry_uuid);}
 
   bool ConfirmDelete(const CItemData *pci); // ask user when about to delete a base,
   //                                           otherwise just return true
