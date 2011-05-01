@@ -191,26 +191,17 @@ bool PWSMatch::Match(const StringX &stValue, StringX sx_Object,
 
 bool PWSMatch::Match(const bool bValue, int iFunction)
 {
-  bool rc;
-
   if (bValue) {
-    if (iFunction == MR_EQUALS     ||
-        iFunction == MR_ACTIVE     ||
-        iFunction == MR_PRESENT    ||
-        iFunction == MR_IS)
-      rc = true;
-    else
-      rc = false;
+    return (iFunction == MR_EQUALS     ||
+            iFunction == MR_ACTIVE     ||
+            iFunction == MR_PRESENT    ||
+            iFunction == MR_IS);
   } else {
-    if (iFunction == MR_NOTEQUAL   ||
-        iFunction == MR_INACTIVE   ||
-        iFunction == MR_NOTPRESENT ||
-        iFunction == MR_ISNOT)
-      rc = true;
-    else
-      rc = false;
+    return (iFunction == MR_NOTEQUAL   ||
+            iFunction == MR_INACTIVE   ||
+            iFunction == MR_NOTPRESENT ||
+            iFunction == MR_ISNOT);
   }
-  return rc;
 }
 
 const char *PWSMatch::GetRuleString(const MatchRule rule)
@@ -253,9 +244,12 @@ const char *PWSMatch::GetRuleString(const MatchRule rule)
   return pszrule;
 }
 
-const UINT PWSMatch::GetRule(const MatchRule rule)
+const UINT PWSMatch::GetRule(MatchRule rule)
 {
   UINT id(0);
+  if (rule < 0)
+    rule = MatchRule(-rule);
+
   switch (rule) {
     case MR_INVALID:    id = IDSC_INVALID; break;
     case MR_EQUALS:     id = IDSC_EQUALS; break;
@@ -293,45 +287,48 @@ const UINT PWSMatch::GetRule(const MatchRule rule)
   return id;
 }
 
-const PWSMatch::MatchRule PWSMatch::GetRule(const StringX sx_mnemonic)
+const PWSMatch::MatchRule PWSMatch::GetRule(const StringX &sx_mnemonic)
 {
-  static const charT *mnemonics[] = {
-    _T("  "), 
-    _T("EQ"), _T("NE"), _T("AC"), _T("IA"), _T("PR"), _T("NP"),
-    _T("SE"), _T("NS"), _T("IS"), _T("NI"), _T("BE"), _T("NB"),
-    _T("EN"), _T("ND"), _T("CO"), _T("NC"), _T("CY"), _T("NY"),
-    _T("CA"), _T("NA"),
-    _T("BT"),
-    _T("LT"), _T("LE"), _T("GT"), _T("GE"), _T("BF"), _T("AF"),
-    _T("EX"), _T("WX")};
+  static const struct {charT *mnemonic; PWSMatch::MatchRule mr;} table[] = {
+    {_T("  "), MR_INVALID},
+    {_T("EQ"), MR_EQUALS},
+    {_T("NE"), MR_NOTEQUAL},
+    {_T("AC"), MR_ACTIVE},
+    {_T("IA"), MR_INACTIVE},
+    {_T("PR"), MR_PRESENT},
+    {_T("NP"), MR_NOTPRESENT},
+    {_T("SE"), MR_SET},
+    {_T("NS"), MR_NOTSET},
+    {_T("IS"), MR_IS},
+    {_T("NI"), MR_ISNOT},
+    {_T("BE"), MR_BEGINS},
+    {_T("NB"), MR_NOTBEGIN},
+    {_T("EN"), MR_ENDS},
+    {_T("ND"), MR_NOTEND},
+    {_T("CO"), MR_CONTAINS},
+    {_T("NC"), MR_NOTCONTAIN},
+    {_T("CY"), MR_CNTNANY},
+    {_T("NY"), MR_NOTCNTNANY},
+    {_T("CA"), MR_CNTNALL},
+    {_T("NA"), MR_NOTCNTNALL},
+    {_T("BT"), MR_BETWEEN},
+    {_T("LT"), MR_LT},
+    {_T("LE"), MR_LE},
+    {_T("GT"), MR_GT},
+    {_T("GE"), MR_GE},
+    {_T("BF"), MR_BEFORE},
+    {_T("AF"), MR_AFTER},
+    {_T("EX"), MR_EXPIRED},
+    {_T("WX"), MR_WILLEXPIRE},
+    {NULL, MR_INVALID}
+  };
 
-  static const PWSMatch::MatchRule mr[] = {
-    MR_INVALID,
-    MR_EQUALS,  MR_NOTEQUAL,   MR_ACTIVE,   MR_INACTIVE,   MR_PRESENT, MR_NOTPRESENT,
-    MR_SET,     MR_NOTSET,     MR_IS,       MR_ISNOT,      MR_BEGINS,  MR_NOTBEGIN,
-    MR_ENDS,    MR_NOTEND,     MR_CONTAINS, MR_NOTCONTAIN, MR_CNTNANY, MR_NOTCNTNANY,
-    MR_CNTNALL, MR_NOTCNTNALL,
-    MR_BETWEEN,
-    MR_LT,      MR_LE,         MR_GT,       MR_GE,         MR_BEFORE,  MR_AFTER,
-    MR_EXPIRED, MR_WILLEXPIRE};
-  
-  const size_t NUM_ITEMS = sizeof(mnemonics) / sizeof(mnemonics[0]);
-  ASSERT(NUM_ITEMS == sizeof(mr) / sizeof(mr[0]));
+  for (size_t i = 0; table[i].mnemonic != NULL; i++)
+    if (sx_mnemonic == table[i].mnemonic)
+      return table[i].mr;
 
-  PWSMatch::MatchRule rule = MR_INVALID;
-  
-  // Now find it!
-  size_t i = 0;
-  for (; _tcscmp(sx_mnemonic.c_str(), mnemonics[i]) != 0 && i < NUM_ITEMS; ++i);
-
-  bool found = i < NUM_ITEMS && _tcscmp(sx_mnemonic.c_str(), mnemonics[i]) == 0;
-
-  if (found)
-    rule = mr[i];
-  else
-    ASSERT(0);
-
-  return rule;
+  ASSERT(0);
+  return MR_INVALID;
 }
 
 void PWSMatch::GetMatchType(MatchType mtype,
