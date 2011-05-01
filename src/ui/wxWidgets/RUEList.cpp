@@ -15,6 +15,7 @@
 #include "RUEList.h"
 
 using namespace std;
+using pws_os::CUUID;
 
 CRUEList::CRUEList(PWScore& core) : m_core(core), m_maxentries(0)
 {
@@ -74,7 +75,7 @@ bool CRUEList::GetAllMenuItemStrings(vector<RUEntryData> &ListofAllMenuStrings) 
   return retval;
 }
 
-bool CRUEList::AddRUEntry(const CUUIDGen &RUEuuid)
+bool CRUEList::AddRUEntry(const CUUID &RUEuuid)
 {
   /*
   * If the entry's already there, do nothing, return true.
@@ -108,7 +109,7 @@ bool CRUEList::DeleteRUEntry(size_t index)
   return true;
 }
 
-bool CRUEList::DeleteRUEntry(const CUUIDGen &RUEuuid)
+bool CRUEList::DeleteRUEntry(const CUUID &RUEuuid)
 {
   if ((m_maxentries == 0) || m_RUEList.empty())
     return false;
@@ -127,7 +128,7 @@ bool CRUEList::GetPWEntry(size_t index, CItemData &ci){
      (index > (m_RUEList.size() - 1)))
     return false;
 
-  const CUUIDGen &re_FoundEntry = m_RUEList[index];
+  const CUUID &re_FoundEntry = m_RUEList[index];
 
   ItemListConstIter pw_listpos = m_core.Find(re_FoundEntry);
   if (pw_listpos == m_core.GetEntryEndIter())

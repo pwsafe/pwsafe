@@ -45,6 +45,8 @@
 #include "./graphics/sbase.xpm"
 #include "./graphics/shortcut.xpm"
 
+using pws_os::CUUID;
+
 /*!
  * PWSTreeCtrl type definition
  */
@@ -301,7 +303,7 @@ void PWSTreeCtrl::UpdateItem(const CItemData &item)
       uuid_array_t uuid;
       item.GetUUID(uuid);
       // remove old item
-      m_item_map.erase(CUUIDGen(uuid));
+      m_item_map.erase(CUUID(uuid));
       Delete(node);
       // add new group
       AddItem(item);
@@ -321,7 +323,7 @@ void PWSTreeCtrl::AddItem(const CItemData &item)
   SortChildren(gnode);
   uuid_array_t uuid;
   item.GetUUID(uuid);
-  m_item_map.insert(std::make_pair(CUUIDGen(uuid), titem));
+  m_item_map.insert(std::make_pair(CUUID(uuid), titem));
 }
 
 CItemData *PWSTreeCtrl::GetItem(const wxTreeItemId &id) const
@@ -361,7 +363,7 @@ int PWSTreeCtrl::OnCompareItems(const wxTreeItemId& item1, const wxTreeItemId& i
   return text1.CmpNoCase(text2);
 }
 
-wxTreeItemId PWSTreeCtrl::Find(const CUUIDGen &uuid) const
+wxTreeItemId PWSTreeCtrl::Find(const CUUID &uuid) const
 {
   wxTreeItemId fail;
   UUIDTIMapT::const_iterator iter = m_item_map.find(uuid);
@@ -378,7 +380,7 @@ wxTreeItemId PWSTreeCtrl::Find(const CItemData &item) const
   return Find(uuid);
 }
 
-bool PWSTreeCtrl::Remove(const CUUIDGen &uuid)
+bool PWSTreeCtrl::Remove(const CUUID &uuid)
 {
   wxTreeItemId id = Find(uuid);
   if (id.IsOk()) {
@@ -457,7 +459,7 @@ void PWSTreeCtrl::OnContextMenu( wxTreeEvent& evt )
   dynamic_cast<PasswordSafeFrame*>(GetParent())->OnContextMenu(GetItem(evt.GetItem()));
 }
 
-void PWSTreeCtrl::SelectItem(const CUUIDGen & uuid)
+void PWSTreeCtrl::SelectItem(const CUUID & uuid)
 {
   uuid_array_t uuid_array;
   uuid.GetUUID(uuid_array);

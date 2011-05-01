@@ -34,6 +34,7 @@
 ////@begin XPM images
 ////@end XPM images
 
+using pws_os::CUUID;
 
 /*!
  * PWSGrid type definition
@@ -195,8 +196,8 @@ void PWSGrid::AddItem(const CItemData &item, int row)
     row = nRows;
   uuid_array_t uuid;
   item.GetUUID(uuid);
-  m_row_map.insert(std::make_pair(row, CUUIDGen(uuid)));
-  m_uuid_map.insert(std::make_pair(CUUIDGen(uuid), row));
+  m_row_map.insert(std::make_pair(row, CUUID(uuid)));
+  m_uuid_map.insert(std::make_pair(CUUID(uuid), row));
   InsertRows(row);
 }
 
@@ -204,7 +205,7 @@ void PWSGrid::UpdateItem(const CItemData &item)
 {  
   uuid_array_t uuid;
   item.GetUUID(uuid);
-  UUIDRowMapT::iterator iter = m_uuid_map.find(CUUIDGen(uuid));
+  UUIDRowMapT::iterator iter = m_uuid_map.find(CUUID(uuid));
   if (iter != m_uuid_map.end()) {
     int row = iter->second;
     DeleteRows(row);
@@ -219,7 +220,7 @@ struct moveup : public std::binary_function<UUIDRowMapT::value_type, int, void> 
   }
 };
 
-void PWSGrid::Remove(const CUUIDGen &uuid)
+void PWSGrid::Remove(const CUUID &uuid)
 {
   UUIDRowMapT::iterator iter = m_uuid_map.find(uuid);
   if (iter != m_uuid_map.end()) {
@@ -387,7 +388,7 @@ void PWSGrid::OnLeftDClick( wxGridEvent& evt )
       DispatchDblClickAction(*item);
 }
 
- void PWSGrid::SelectItem(const CUUIDGen & uuid)
+ void PWSGrid::SelectItem(const CUUID & uuid)
  {
      UUIDRowMapT::const_iterator itr = m_uuid_map.find(uuid);
      if (itr != m_uuid_map.end()) {
@@ -396,7 +397,7 @@ void PWSGrid::OnLeftDClick( wxGridEvent& evt )
      }
  }
 
-int  PWSGrid::FindItemRow(const CUUIDGen& uu)
+int  PWSGrid::FindItemRow(const CUUID& uu)
 {
      UUIDRowMapT::const_iterator itr = m_uuid_map.find(uu);
      if (itr != m_uuid_map.end()) {

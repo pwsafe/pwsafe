@@ -22,7 +22,7 @@
 ////@end includes
 #include "core/ItemData.h"
 #include "core/PWScore.h"
-#include "core/UUIDGen.h"
+#include "os/UUID.h"
 #include <map>
 
 /*!
@@ -45,8 +45,8 @@ class PWSGrid;
 #define SYMBOL_PWSGRID_POSITION wxDefaultPosition
 ////@end control identifiers
 
-typedef std::map<int, CUUIDGen> RowUUIDMapT;
-typedef std::map<CUUIDGen, int, std::less<CUUIDGen> > UUIDRowMapT;
+typedef std::map<int, pws_os::CUUID> RowUUIDMapT;
+typedef std::map<pws_os::CUUID, int, std::less<pws_os::CUUID> > UUIDRowMapT;
 
 
 /*!
@@ -82,7 +82,7 @@ public:
 
   void AddItem(const CItemData &item, int row = -1);
   void UpdateItem(const CItemData &item);
-  void Remove(const CUUIDGen &uuid);
+  void Remove(const pws_os::CUUID &uuid);
   size_t GetNumItems() const;
   void DeleteItems(int row, size_t numItems);
   void DeleteAllItems();
@@ -117,9 +117,9 @@ public:
 
   CItemData *GetItem(int row) const;
   
-  void SelectItem(const CUUIDGen& uuid);
+  void SelectItem(const pws_os::CUUID& uuid);
 
-  int  FindItemRow(const CUUIDGen& uu);
+  int  FindItemRow(const pws_os::CUUID& uu);
 
   void SaveSettings(void) const;
 

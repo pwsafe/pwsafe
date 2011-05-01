@@ -68,6 +68,7 @@
 #include "./graphics/cpane.xpm"
 ////@end XPM images
 
+using pws_os::CUUID;
 
 /*!
  * PasswordSafeFrame type definition
@@ -1445,7 +1446,7 @@ void PasswordSafeFrame::OnGotoBase(wxCommandEvent& /*evt*/)
   CItemData* item = GetSelectedEntry();
   if (item && (item->IsAlias() || item->IsShortcut())) {
     item = m_core.GetBaseEntry(item);
-    CUUIDGen base_uuid = item->GetUUID();
+    CUUID base_uuid = item->GetUUID();
     SelectItem(base_uuid);
     UpdateAccessTime(*item);
   }
@@ -1462,7 +1463,7 @@ void PasswordSafeFrame::OnEditBase(wxCommandEvent& /*evt*/)
   }
 }
 
-void PasswordSafeFrame::SelectItem(const CUUIDGen& uuid)
+void PasswordSafeFrame::SelectItem(const CUUID& uuid)
 {
     if (m_currentView == GRID) {
       m_grid->SelectItem(uuid);
@@ -1891,7 +1892,7 @@ void PasswordSafeFrame::RefreshViews()
 }
 
 void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga,
-                                  const CUUIDGen &entry_uuid,
+                                  const CUUID &entry_uuid,
                                   CItemData::FieldType ft,
                                   bool bUpdateGUI)
 {
@@ -1915,7 +1916,7 @@ void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga,
              ga == UpdateGUICommand::GUI_REFRESH_ENTRYFIELD ||
              ga == UpdateGUICommand::GUI_REFRESH_ENTRYPASSWORD) {
     pws_os::Trace(_("Couldn't find uuid %s"),
-                  StringX(CUUIDGen(entry_uuid)).c_str());
+                  StringX(CUUID(entry_uuid)).c_str());
   }
 
 #ifdef NOTYET

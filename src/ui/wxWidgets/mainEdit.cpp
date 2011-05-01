@@ -44,6 +44,8 @@
 
 #include <algorithm>
 
+using pws_os::CUUID;
+
 /*!
  * wxEVT_COMMAND_MENU_SELECTED event handler for ID_EDIT
  */
@@ -387,7 +389,7 @@ void PasswordSafeFrame::OnDuplicateEntry(wxCommandEvent& /*evt*/)
 
       const CItemData *pbci = m_core.GetBaseEntry(pci);
       if (pbci != NULL) {
-        CUUIDGen base_uuid = pbci->GetUUID();
+        CUUID base_uuid = pbci->GetUUID();
         StringX cs_tmp;
         cs_tmp = L"[" +
           pbci->GetGroup() + L":" +
@@ -405,7 +407,7 @@ void PasswordSafeFrame::OnDuplicateEntry(wxCommandEvent& /*evt*/)
 
 //    pdi->list_index = -1; // so that InsertItemIntoGUITreeList will set new values
 
-    CUUIDGen uuid = ci2.GetUUID();
+    CUUID uuid = ci2.GetUUID();
     ItemListIter iter = m_core.Find(uuid);
     ASSERT(iter != m_core.GetEntryEndIter());
 
