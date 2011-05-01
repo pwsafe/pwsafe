@@ -309,9 +309,9 @@ void CAddEdit_DateTimes::UpdateStats()
   GetDlgItem(IDC_ENTRYSIZE)->Invalidate();
 
   CString cs_uuid(_T("N/A"));
-  if (M_entry_uuid() != CUUIDGen::NullUUID()) {
+  if (M_entry_uuid() != pws_os::CUUID::NullUUID()) {
     ostringstreamT os;
-    CUUIDGen huuid(*M_entry_uuid().GetUUID(), true); // true for canonical format
+    pws_os::CUUID huuid(*M_entry_uuid().GetUUID(), true); // true for canonical format
     os << std::uppercase << huuid;
     cs_uuid = os.str().c_str();
   }

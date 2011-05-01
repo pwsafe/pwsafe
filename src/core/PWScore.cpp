@@ -14,7 +14,6 @@
 #include "PWSprefs.h"
 #include "PWSrand.h"
 #include "Util.h"
-#include "UUIDGen.h"
 #include "SysInfo.h"
 #include "UTF8Conv.h"
 #include "Report.h"
@@ -37,6 +36,7 @@
 #include <iterator>
 
 using namespace std;
+using pws_os::CUUID;
 
 unsigned char PWScore::m_session_key[20];
 unsigned char PWScore::m_session_salt[20];
@@ -171,7 +171,7 @@ bool PWScore::ConfirmDelete(const CItemData *pci)
   ASSERT(pci != NULL);
   if (pci->IsBase() && m_pAsker != NULL) {
     UUIDVector dependentslist;
-    CUUIDGen entry_uuid = pci->GetUUID();
+    CUUID entry_uuid = pci->GetUUID();
     CItemData::EntryType entrytype = pci->GetEntryType();
 
     // If we're deleting a base (entry with aliases or shortcuts
@@ -213,13 +213,13 @@ void PWScore::DoDeleteEntry(const CItemData &item)
   // Most of this will go away once the entry types
   // are implemented as subclasses.
 
-  CUUIDGen entry_uuid = item.GetUUID();
+  CUUID entry_uuid = item.GetUUID();
   ItemListIter pos = m_pwlist.find(entry_uuid);
   if (pos != m_pwlist.end()) {
     // Simple cases first: Aliases or shortcuts, update maps
     // and refresh base's display, if changed
     CItemData::EntryType entrytype = item.GetEntryType();
-    CUUIDGen base_uuid(CUUIDGen::NullUUID());
+    CUUID base_uuid(CUUID::NullUUID());
     if (item.IsDependent()) {
       GetDependentEntryBaseUUID(entry_uuid, base_uuid, entrytype);
       DoRemoveDependentEntry(base_uuid, entry_uuid, entrytype);
@@ -342,12 +342,12 @@ void PWScore::NewFile(const StringX &passkey)
 // functor object type for for_each:
 struct RecordWriter {
   RecordWriter(PWSfile *pout, PWScore *pcore) : m_pout(pout), m_pcore(pcore) {}
-  void operator()(pair<CUUIDGen const, CItemData> &p)
+  void operator()(pair<CUUID const, CItemData> &p)
   {
     StringX savePassword = p.second.GetPassword();
     StringX uuid_str(savePassword);
-    CUUIDGen base_uuid(CUUIDGen::NullUUID());
-    CUUIDGen item_uuid = p.second.GetUUID();
+    CUUID base_uuid(CUUID::NullUUID());
+    CUUID item_uuid = p.second.GetUUID();
 
     if (p.second.IsAlias()) {
       m_pcore->GetDependentEntryBaseUUID(item_uuid, base_uuid, CItemData::ET_ALIAS);
@@ -473,7 +473,7 @@ int PWScore::Execute(Command *pcmd)
   int rc = pcmd->Execute();
   m_undo_iter--;
 
-  NotifyGUINeedsUpdating(UpdateGUICommand::GUI_UPDATE_STATUSBAR, CUUIDGen::NullUUID());
+  NotifyGUINeedsUpdating(UpdateGUICommand::GUI_UPDATE_STATUSBAR, CUUID::NullUUID());
   return rc;
 }
 
@@ -489,7 +489,7 @@ void PWScore::Undo()
   else
     m_undo_iter--;
 
-  NotifyGUINeedsUpdating(UpdateGUICommand::GUI_UPDATE_STATUSBAR, CUUIDGen::NullUUID());
+  NotifyGUINeedsUpdating(UpdateGUICommand::GUI_UPDATE_STATUSBAR, CUUID::NullUUID());
 }
 
 void PWScore::Redo()
@@ -502,7 +502,7 @@ void PWScore::Redo()
   if (m_redo_iter != m_vpcommands.end())
     m_redo_iter++;
 
-  NotifyGUINeedsUpdating(UpdateGUICommand::GUI_UPDATE_STATUSBAR, CUUIDGen::NullUUID());
+  NotifyGUINeedsUpdating(UpdateGUICommand::GUI_UPDATE_STATUSBAR, CUUID::NullUUID());
 }
 
 bool PWScore::AnyToUndo() const
@@ -684,7 +684,7 @@ int PWScore::ReadFile(const StringX &a_filename,
                  csMyPassword.substr(csMyPassword.length() - 2) == _T("~]"))) &&
                cs_possibleUUID.find_first_not_of(_T("0123456789abcdef")) == 
                StringX::npos) {
-             CUUIDGen buuid(cs_possibleUUID.c_str());
+             CUUID buuid(cs_possibleUUID.c_str());
              buuid.GetUUID(base_uuid);
              ci_temp.GetUUID(temp_uuid);
              if (csMyPassword.substr(1, 1) == _T("[")) {
@@ -698,12 +698,12 @@ int PWScore::ReadFile(const StringX &a_filename,
          } // uuid matching
 #ifdef DEMO
          if (m_pwlist.size() < MAXDEMO) {
-           m_pwlist.insert(make_pair(CUUIDGen(uuid), ci_temp));
+           m_pwlist.insert(make_pair(CUUID(uuid), ci_temp));
          } else {
            limited = true;
          }
 #else
-         m_pwlist.insert(make_pair(CUUIDGen(uuid), ci_temp));
+         m_pwlist.insert(make_pair(CUUID(uuid), ci_temp));
 #endif
          time_t tttXTime;
          ci_temp.GetXTime(tttXTime);
@@ -903,7 +903,7 @@ void PWScore::ChangePasskey(const StringX &newPasskey)
 
 // functor object type for find_if:
 struct FieldsMatch {
-  bool operator()(pair<CUUIDGen, CItemData> p) {
+  bool operator()(pair<CUUID, CItemData> p) {
     const CItemData &item = p.second;
     return (m_group == item.GetGroup() &&
             m_title == item.GetTitle() &&
@@ -932,7 +932,7 @@ ItemListIter PWScore::Find(const StringX &a_group,const StringX &a_title,
 }
 
 struct TitleMatch {
-  bool operator()(pair<CUUIDGen, CItemData> p) {
+  bool operator()(pair<CUUID, CItemData> p) {
     const CItemData &item = p.second;
     return (m_title == item.GetTitle());
   }
@@ -975,7 +975,7 @@ ItemListIter PWScore::GetUniqueBase(const StringX &a_title, bool &bMultiple)
 }
 
 struct GroupTitle_TitleUserMatch {
-  bool operator()(pair<CUUIDGen, CItemData> p) {
+  bool operator()(pair<CUUID, CItemData> p) {
     const CItemData &item = p.second;
     return ((m_gt == item.GetGroup() && m_tu == item.GetTitle()) ||
             (m_gt == item.GetTitle() && m_tu == item.GetUser()));
@@ -1288,7 +1288,7 @@ bool PWScore::Validate(stringT &status, CReport &rpt, const size_t iMAXCHARS)
            (csMyPassword.substr(0, 2) == _T("[~") &&
             csMyPassword.substr(csMyPassword.length() - 2) == _T("~]"))) &&
           cs_possibleUUID.find_first_not_of(_T("0123456789abcdef")) == StringX::npos) {
-        CUUIDGen uuid(cs_possibleUUID.c_str());
+        CUUID uuid(cs_possibleUUID.c_str());
         uuid.GetUUID(base_uuid);
         ci.GetUUID(temp_uuid);
         if (csMyPassword.substr(0, 2) == _T("[[")) {
@@ -1512,8 +1512,8 @@ bool PWScore::MakeEntryUnique(GTUSet &setGTU,
   return retval; // false iff we had to modify sxtitle
 }
 
-void PWScore::DoAddDependentEntry(const CUUIDGen &base_uuid, 
-                                  const CUUIDGen &entry_uuid, 
+void PWScore::DoAddDependentEntry(const CUUID &base_uuid, 
+                                  const CUUID &entry_uuid, 
                                   const CItemData::EntryType type)
 {
   ItemMMap *pmmap;
@@ -1550,8 +1550,8 @@ void PWScore::DoAddDependentEntry(const CUUIDGen &base_uuid,
   pmap->insert(ItemMap_Pair(*entry_uuid.GetUUID(), *base_uuid.GetUUID()));
 }
 
-void PWScore::DoRemoveDependentEntry(const CUUIDGen &base_uuid, 
-                                     const CUUIDGen &entry_uuid,
+void PWScore::DoRemoveDependentEntry(const CUUID &base_uuid, 
+                                     const CUUID &entry_uuid,
                                      const CItemData::EntryType type)
 {
   ItemMMap *pmmap;
@@ -1577,7 +1577,7 @@ void PWScore::DoRemoveDependentEntry(const CUUIDGen &base_uuid,
     return;
 
   mmlastElement = pmmap->upper_bound(*base_uuid.GetUUID());
-  CUUIDGen mmiter_uuid;
+  CUUID mmiter_uuid;
 
   for ( ; mmiter != mmlastElement; mmiter++) {
     mmiter_uuid = *mmiter->second.GetUUID();
@@ -1597,7 +1597,7 @@ void PWScore::DoRemoveDependentEntry(const CUUIDGen &base_uuid,
   }
 }
 
-void PWScore::DoRemoveAllDependentEntries(const CUUIDGen &base_uuid, 
+void PWScore::DoRemoveAllDependentEntries(const CUUID &base_uuid, 
                                           const CItemData::EntryType type)
 {
   ItemMMap *pmmap;
@@ -1635,8 +1635,8 @@ void PWScore::DoRemoveAllDependentEntries(const CUUIDGen &base_uuid,
     iter->second.SetNormal();
 }
 
-void PWScore::DoMoveDependentEntries(const CUUIDGen &from_baseuuid,
-                                     const CUUIDGen &to_baseuuid, 
+void PWScore::DoMoveDependentEntries(const CUUID &from_baseuuid,
+                                     const CUUID &to_baseuuid, 
                                      const CItemData::EntryType type)
 {
   ItemMMap *pmmap;
@@ -1712,7 +1712,7 @@ int PWScore::DoAddDependentEntries(UUIDVector &dependentlist, CReport *pRpt,
     UUIDVectorIter paiter;
     ItemListIter iter;
     StringX csPwdGroup, csPwdTitle, csPwdUser, tmp;
-    CUUIDGen base_uuid(CUUIDGen::NullUUID());
+    CUUID base_uuid(CUUID::NullUUID());
     bool bwarnings(false);
     stringT strError;
 
@@ -1723,7 +1723,7 @@ int PWScore::DoAddDependentEntries(UUIDVector &dependentlist, CReport *pRpt,
         return num_warnings;
 
       CItemData *pci_curitem = &iter->second;
-      CUUIDGen entry_uuid = pci_curitem->GetUUID();
+      CUUID entry_uuid = pci_curitem->GetUUID();
       GetDependentEntryBaseUUID(entry_uuid, base_uuid, type);
 
       // Delete it - we will put it back if it is an alias/shortcut
@@ -1795,7 +1795,7 @@ int PWScore::DoAddDependentEntries(UUIDVector &dependentlist, CReport *pRpt,
           if (iter->second.IsAlias()) {
             // This is an alias too!  Not allowed!  Make new one point to original base
             // Note: this may be random as who knows the order of reading records?
-            CUUIDGen temp_uuid = iter->second.GetUUID();
+            CUUID temp_uuid = iter->second.GetUUID();
             GetDependentEntryBaseUUID(temp_uuid, base_uuid, type);
             if (pRpt != NULL) {
               if (!bwarnings) {
@@ -1916,7 +1916,7 @@ void PWScore::UndoAddDependentEntries(ItemList *pmapDeletedItems,
   }
 }
 
-void PWScore::ResetAllAliasPasswords(const CUUIDGen &base_uuid)
+void PWScore::ResetAllAliasPasswords(const CUUID &base_uuid)
 {
   // Alias ONLY - no shortcut version needed
   ItemMMapIter itr;
@@ -1939,7 +1939,7 @@ void PWScore::ResetAllAliasPasswords(const CUUIDGen &base_uuid)
   lastElement = m_base2aliases_mmap.upper_bound(base_uuid);
 
   for ( ; itr != lastElement; itr++) {
-    CUUIDGen alias_uuid = itr->second;
+    CUUID alias_uuid = itr->second;
     alias_itr = m_pwlist.find(alias_uuid);
     if (alias_itr != m_pwlist.end()) {
       alias_itr->second.SetPassword(csBasePassword);
@@ -1950,7 +1950,7 @@ void PWScore::ResetAllAliasPasswords(const CUUIDGen &base_uuid)
   m_base2aliases_mmap.erase(base_uuid);
 }
 
-void PWScore::GetAllDependentEntries(const CUUIDGen &base_uuid, UUIDVector &tlist,
+void PWScore::GetAllDependentEntries(const CUUID &base_uuid, UUIDVector &tlist,
                                      const CItemData::EntryType type)
 {
   ItemMMapIter itr;
@@ -2038,7 +2038,7 @@ bool PWScore::ParseBaseEntryPWD(const StringX &Password, BaseEntryParms &pl)
       pl.TargetType = iter->second.GetEntryType();
       if (pl.InputType == CItemData::ET_ALIAS && pl.TargetType == CItemData::ET_ALIAS) {
         // Check if base is already an alias, if so, set this entry -> real base entry
-        CUUIDGen temp_uuid = iter->second.GetUUID();
+        CUUID temp_uuid = iter->second.GetUUID();
         GetDependentEntryBaseUUID(temp_uuid, pl.base_uuid, CItemData::ET_ALIAS);
       } else {
         // This may not be a valid combination of source+target entries - sorted out by caller
@@ -2072,8 +2072,8 @@ CItemData *PWScore::GetBaseEntry(const CItemData *pAliasOrSC)
     return NULL;
   }
 
-  CUUIDGen base_uuid(CUUIDGen::NullUUID());
-  CUUIDGen dep_uuid = pAliasOrSC->GetUUID();
+  CUUID base_uuid(CUUID::NullUUID());
+  CUUID dep_uuid = pAliasOrSC->GetUUID();
   if (!GetDependentEntryBaseUUID(dep_uuid, base_uuid, et)) {
    // pws_os::Trace(_T("PWScore::GetBaseEntry - couldn't find base uuid!\n"));
     return NULL;
@@ -2087,11 +2087,11 @@ CItemData *PWScore::GetBaseEntry(const CItemData *pAliasOrSC)
   return &iter->second;
 }
 
-bool PWScore::GetDependentEntryBaseUUID(const CUUIDGen &entry_uuid, 
-                                        CUUIDGen &base_uuid, 
+bool PWScore::GetDependentEntryBaseUUID(const CUUID &entry_uuid, 
+                                        CUUID &base_uuid, 
                                         const CItemData::EntryType type) const
 {
-  base_uuid = CUUIDGen::NullUUID();
+  base_uuid = CUUID::NullUUID();
 
   const ItemMap *pmap;
   if (type == CItemData::ET_ALIAS)
@@ -2145,7 +2145,7 @@ void PWScore::NotifyDBModified()
 }
 
 void PWScore::NotifyGUINeedsUpdating(UpdateGUICommand::GUI_Action ga, 
-                                     const CUUIDGen &entry_uuid,
+                                     const CUUID &entry_uuid,
                                      CItemData::FieldType ft,
                                      bool bUpdateGUI)
 {
@@ -2432,8 +2432,8 @@ void PWScore::GetDBProperties(st_DBProperties &st_dbp)
   } else
     st_dbp.whatlastsaved = m_hdr.m_whatlastsaved;
 
-  CUUIDGen huuid(m_hdr.m_file_uuid_array, true); // true for canonical format
-  if(huuid == CUUIDGen::NullUUID())
+  CUUID huuid(m_hdr.m_file_uuid_array, true); // true for canonical format
+  if(huuid == CUUID::NullUUID())
     st_dbp.file_uuid = _T("N/A");
   else {
     ostringstreamT os;
@@ -2463,7 +2463,7 @@ void PWScore::GetDBProperties(st_DBProperties &st_dbp)
   }
 }
 
-void PWScore::UpdateExpiryEntry(const CUUIDGen &uuid, const CItemData::FieldType ft,
+void PWScore::UpdateExpiryEntry(const CUUID &uuid, const CItemData::FieldType ft,
                                 const StringX &value)
 {
   ExpiredList::iterator iter;

@@ -17,7 +17,7 @@
 #include <vector>
 
 #include "ItemData.h"
-#include "UUIDGen.h"
+#include "os/UUID.h"
 #include "UnknownField.h"
 #include "StringX.h"
 #include "Proxy.h"

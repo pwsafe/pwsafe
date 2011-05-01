@@ -528,10 +528,10 @@ void CAddEdit_PropertySheet::SetupInitialValues()
   m_AEMD.oldpwp = m_AEMD.pwp;
 
   // Set up dependents
-  CUUIDGen original_base_uuid(CUUIDGen::NullUUID());
+  pws_os::CUUID original_base_uuid(pws_os::CUUID::NullUUID());
   CItemData::EntryType entrytype = m_AEMD.pci_original->GetEntryType();
 
-  CUUIDGen original_uuid = m_AEMD.pci_original->GetUUID();  // Edit doesn't change this!
+  pws_os::CUUID original_uuid = m_AEMD.pci_original->GetUUID();  // Edit doesn't change this!
   if (m_AEMD.pci_original->IsBase()) {
     UUIDVector dependentslist;
     StringX csDependents(L"");

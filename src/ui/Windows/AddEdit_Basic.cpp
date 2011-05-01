@@ -1174,7 +1174,7 @@ void CAddEdit_Basic::OnViewDependents()
 bool CAddEdit_Basic::CheckNewPassword(const StringX &group, const StringX &title,
                                       const StringX &user, const StringX &password,
                                       const bool bIsEdit, const CItemData::EntryType InputType, 
-                                      CUUIDGen &base_uuid, int &ibasedata, bool &b_msg_issued)
+                                      pws_os::CUUID &base_uuid, int &ibasedata, bool &b_msg_issued)
 {
   // b_msg_issued - whether this routine issued a message
   b_msg_issued = false;

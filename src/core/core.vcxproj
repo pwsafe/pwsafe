@@ -366,6 +366,8 @@
     <TargetName Condition="'$(Configuration)|$(Platform)'=='ReleaseX64|x64'">core</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">core</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release64|x64'">core</TargetName>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='DebugM|Win32'">C:\Program Files\Microsoft SDKs\Windows\v7.0A\Include;$(IncludePath)</IncludePath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='ReleaseM|Win32'">C:\Program Files\Microsoft SDKs\Windows\v7.0A\Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <PreBuildEvent>
@@ -1108,7 +1110,6 @@
     <ClCompile Include="UnknownField.cpp" />
     <ClCompile Include="UTF8Conv.cpp" />
     <ClCompile Include="Util.cpp" />
-    <ClCompile Include="UUIDGen.cpp" />
     <ClCompile Include="VerifyFormat.cpp" />
     <ClCompile Include="XML\XERCES\XFileSAX2Handlers.cpp" />
     <ClCompile Include="XML\Xerces\XFileValidator.cpp" />
@@ -1168,7 +1169,6 @@
     <ClInclude Include="UnknownField.h" />
     <ClInclude Include="UTF8Conv.h" />
     <ClInclude Include="Util.h" />
-    <ClInclude Include="UUIDGen.h" />
     <ClInclude Include="VerifyFormat.h" />
     <ClInclude Include="XML\XERCES\XFileSAX2Handlers.h" />
     <ClInclude Include="XML\Xerces\XFileValidator.h" />

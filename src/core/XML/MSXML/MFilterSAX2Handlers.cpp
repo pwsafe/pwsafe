@@ -17,7 +17,6 @@
 #include <msxml6.h>
 
 #include "../../util.h"
-#include "../../UUIDGen.h"
 #include "../../core.h"
 #include "../../PWSfileV3.h"
 #include "../../PWSFilters.h"

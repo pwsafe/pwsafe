@@ -52,6 +52,7 @@
 #include <vector>
 
 using namespace std;
+using pws_os::CUUID;
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -481,10 +482,10 @@ int DboxMain::Close(const bool bTrySave)
   ClearData();
 
   // Zero entry UUID selected and first visible at minimize and group text
-  m_LUUIDSelectedAtMinimize = CUUIDGen::NullUUID();
-  m_TUUIDSelectedAtMinimize = CUUIDGen::NullUUID();
-  m_LUUIDVisibleAtMinimize = CUUIDGen::NullUUID();
-  m_TUUIDVisibleAtMinimize = CUUIDGen::NullUUID();
+  m_LUUIDSelectedAtMinimize = CUUID::NullUUID();
+  m_TUUIDSelectedAtMinimize = CUUID::NullUUID();
+  m_LUUIDVisibleAtMinimize = CUUID::NullUUID();
+  m_TUUIDVisibleAtMinimize = CUUID::NullUUID();
   m_sxSelectedGroup.clear();
   m_sxVisibleGroup.clear();
 
@@ -732,10 +733,10 @@ int DboxMain::Open(const StringX &sx_Filename, const bool bReadOnly,  const bool
   ClearData();
 
   // Zero entry UUID selected and first visible at minimize and group text
-  m_LUUIDSelectedAtMinimize = CUUIDGen::NullUUID();
-  m_TUUIDSelectedAtMinimize = CUUIDGen::NullUUID();
-  m_LUUIDVisibleAtMinimize = CUUIDGen::NullUUID();
-  m_TUUIDVisibleAtMinimize = CUUIDGen::NullUUID();
+  m_LUUIDSelectedAtMinimize = CUUID::NullUUID();
+  m_TUUIDSelectedAtMinimize = CUUID::NullUUID();
+  m_LUUIDVisibleAtMinimize = CUUID::NullUUID();
+  m_TUUIDVisibleAtMinimize = CUUID::NullUUID();
   m_sxSelectedGroup.clear();
   m_sxVisibleGroup.clear();
 
@@ -2546,7 +2547,7 @@ LRESULT DboxMain::OnProcessCompareResultFunction(WPARAM wParam, LPARAM lFunction
   return lres;
 }
 
-LRESULT DboxMain::ViewCompareResult(PWScore *pcore, const CUUIDGen &entryUUID)
+LRESULT DboxMain::ViewCompareResult(PWScore *pcore, const CUUID &entryUUID)
 {  
   ItemListIter pos = pcore->Find(entryUUID);
   ASSERT(pos != pcore->GetEntryEndIter());
@@ -2563,7 +2564,7 @@ LRESULT DboxMain::ViewCompareResult(PWScore *pcore, const CUUIDGen &entryUUID)
   return FALSE;
 }
 
-LRESULT DboxMain::EditCompareResult(PWScore *pcore, const CUUIDGen &entryUUID)
+LRESULT DboxMain::EditCompareResult(PWScore *pcore, const CUUID &entryUUID)
 {
   ItemListIter pos = pcore->Find(entryUUID);
   ASSERT(pos != pcore->GetEntryEndIter());
@@ -2574,7 +2575,7 @@ LRESULT DboxMain::EditCompareResult(PWScore *pcore, const CUUIDGen &entryUUID)
 }
 
 LRESULT DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
-                                    const CUUIDGen &fromUUID, const CUUIDGen &toUUID)
+                                    const CUUID &fromUUID, const CUUID &toUUID)
 {
   bool bWasEmpty = ptocore->GetNumEntries() == 0;
 
@@ -2627,7 +2628,7 @@ LRESULT DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
 }
 
 LRESULT DboxMain::SynchCompareResult(PWScore *pfromcore, PWScore *ptocore,
-                                     const CUUIDGen &fromUUID, const CUUIDGen &toUUID)
+                                     const CUUID &fromUUID, const CUUID &toUUID)
 {
   // Synch 1 entry *pfromcore -> *ptocore
   CItemData::FieldBits bsFields;

@@ -6,7 +6,6 @@
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
 #include "PWSfileV3.h"
-#include "UUIDGen.h"
 #include "PWSrand.h"
 #include "Util.h"
 #include "SysInfo.h"
@@ -31,6 +30,7 @@
 #include <iomanip>
 
 using namespace std;
+using pws_os::CUUID;
 
 static unsigned char TERMINAL_BLOCK[TwoFish::BLOCKSIZE] = {
   'P', 'W', 'S', '3', '-', 'E', 'O', 'F',
@@ -480,7 +480,7 @@ int PWSfileV3::WriteHeader()
   // If not there or zeroed, create new
   if (memcmp(m_hdr.m_file_uuid_array,
              file_uuid_array, sizeof(uuid_array_t)) == 0) {
-    CUUIDGen uuid;
+    CUUID uuid;
     uuid.GetUUID(m_hdr.m_file_uuid_array);
   }
 

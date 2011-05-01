@@ -9,7 +9,6 @@
 #include "DDSupport.h"
 #include "SecString.h"
 #include "core/util.h"
-#include "core/UUIDGen.h"
 
 #include <vector>
 

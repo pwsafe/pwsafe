@@ -20,7 +20,6 @@
 #include "../../core.h"
 #include "../../PWScore.h"
 #include "../../util.h"
-#include "../../UUIDGen.h"
 #include "../../PWSfileV3.h"
 
 // Stop warnings about unused formal parameters!

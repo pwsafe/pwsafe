@@ -13,7 +13,7 @@
 
 #include "core/ItemData.h"
 #include "core/StringX.h"
-#include "core/UUIDGen.h"
+#include "../os/UUID.h"
 
 enum {BOTH = -1 , CURRENT = 0, COMPARE = 1};
 

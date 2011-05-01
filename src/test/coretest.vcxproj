@@ -86,6 +86,8 @@
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug64|x64'">coretest</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">coretest</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release64|x64'">coretest</TargetName>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Program Files\Microsoft SDKs\Windows\v7.0A\Include;$(IncludePath)</IncludePath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Program Files\Microsoft SDKs\Windows\v7.0A\Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Midl>
