@@ -34,7 +34,6 @@
 #include "XFilterSAX2Handlers.h"
 
 #include "../../Util.h"
-#include "../../UUIDGen.h"
 #include "../../core.h"
 #include "../../PWSFilters.h"
 #include "../../VerifyFormat.h"

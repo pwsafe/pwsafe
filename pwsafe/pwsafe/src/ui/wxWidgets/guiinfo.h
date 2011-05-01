@@ -9,7 +9,7 @@
 #ifndef __GUIINFO_H__
 #define __GUIINFO_H__
 
-#include "../../core/UUIDGen.h"
+#include "../../os/UUID.h"
 #include <wx/string.h>
 #include <wx/gdicmn.h>
 #include <wx/arrstr.h>
@@ -34,19 +34,19 @@ class string_or_uuid
       return *this;
     }
       
-    string_or_uuid& operator=(const CUUIDGen &uu) {
+    string_or_uuid& operator=(const pws_os::CUUID &uu) {
       m_uu = uu;
       m_type  = ITEM_NORMAL;
       return *this;
     }
 
     operator wxString () const { wxASSERT(m_type == ITEM_GROUP); return m_str; }
-    operator const CUUIDGen() const
-    { wxASSERT(m_type == ITEM_NORMAL); return CUUIDGen(m_uu); }
+    operator const pws_os::CUUID() const
+    { wxASSERT(m_type == ITEM_NORMAL); return pws_os::CUUID(m_uu); }
 
   private:
     wxString     m_str;
-    CUUIDGen     m_uu;
+    pws_os::CUUID     m_uu;
     ItemType     m_type;
 };
 
@@ -75,8 +75,8 @@ class GUIInfo
 
     wxArrayString      m_expanded;                      //expanded elements in treeview
 
-    CUUIDGen           m_gridTop;                       //top element in gridview
-    CUUIDGen           m_gridSelection;                 //selected elements, only one per view
+    pws_os::CUUID           m_gridTop;                       //top element in gridview
+    pws_os::CUUID           m_gridSelection;                 //selected elements, only one per view
 
 };
 
