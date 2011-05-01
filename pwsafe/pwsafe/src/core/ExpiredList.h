@@ -19,10 +19,16 @@
 
 struct ExpPWEntry {
   ExpPWEntry(const CItemData &ci);
-  ExpPWEntry(const ExpPWEntry &ee);
-  ExpPWEntry &operator=(const ExpPWEntry &that);
+  ExpPWEntry(const ExpPWEntry &ee) : uuid(ee.uuid), expirytttXTime(ee.expirytttXTime) {}
+  ExpPWEntry &operator=(const ExpPWEntry &that) {
+    if (this != &that) {
+      expirytttXTime = that.expirytttXTime;
+      uuid = that.uuid;
+    }
+    return *this;
+  };
 
-  uuid_array_t uuid;
+  pws_os::CUUID uuid;
   time_t expirytttXTime;
 };
 

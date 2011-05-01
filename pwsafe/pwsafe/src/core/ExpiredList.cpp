@@ -19,7 +19,7 @@ ExpPWEntry::ExpPWEntry(const CItemData &ci)
 {
   time_t tttXTime;
 
-  ci.GetUUID(uuid);
+  uuid = ci.GetUUID();
   ci.GetXTime(tttXTime);
 
   if (tttXTime > time_t(0) && tttXTime <= time_t(3650)) {
@@ -30,21 +30,6 @@ ExpPWEntry::ExpPWEntry(const CItemData &ci)
     tttXTime = (time_t)((long)tttCPMTime + (long)tttXTime * 86400);
   }
   expirytttXTime = tttXTime;
-}
-
-ExpPWEntry::ExpPWEntry(const ExpPWEntry &ee)
-  : expirytttXTime(ee.expirytttXTime)
-{
-  memcpy(uuid, ee.uuid, sizeof(uuid));
-}
-
-ExpPWEntry &ExpPWEntry::operator=(const ExpPWEntry &that)
-{
-  if (this != &that) {
-    expirytttXTime = that.expirytttXTime;
-    memcpy(uuid, that.uuid, sizeof(uuid));
-  }
-  return *this;
 }
 
 void ExpiredList::Add(const CItemData &ci)
