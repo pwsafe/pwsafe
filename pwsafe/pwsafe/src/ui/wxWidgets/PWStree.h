@@ -22,7 +22,7 @@
 ////@end includes
 #include "core/ItemData.h"
 #include "core/PWScore.h"
-#include "core/UUIDGen.h"
+#include "os/UUID.h"
 #include <map>
 
 /*!
@@ -45,7 +45,7 @@ class PWSTreeCtrl;
 #define SYMBOL_PWSTREECTRL_POSITION wxDefaultPosition
 ////@end control identifiers
 
-typedef std::map<CUUIDGen, wxTreeItemId, std::less<CUUIDGen> > UUIDTIMapT;
+typedef std::map<pws_os::CUUID, wxTreeItemId, std::less<pws_os::CUUID> > UUIDTIMapT;
 
 /*!
  * PWSTreeCtrl class declaration
@@ -99,10 +99,10 @@ public:
   void AddItem(const CItemData &item);
   void UpdateItem(const CItemData &item);
   CItemData *GetItem(const wxTreeItemId &id) const;
-  wxTreeItemId Find(const CUUIDGen &uuid) const;
+  wxTreeItemId Find(const pws_os::CUUID &uuid) const;
   wxTreeItemId Find(const CItemData &item) const;
-  bool Remove(const CUUIDGen &uuid); // only remove from tree, not from m_core
-  void SelectItem(const CUUIDGen& uuid);
+  bool Remove(const pws_os::CUUID &uuid); // only remove from tree, not from m_core
+  void SelectItem(const pws_os::CUUID& uuid);
 
  private:
   //overriden from base for case-insensitive sort

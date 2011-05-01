@@ -148,7 +148,7 @@ void CProperties::Init()
     m_file_uuid = _T("N/A");
   else {
     ostringstreamT os;
-    CUUIDGen huuid(file_uuid_array, true); // true for canonical format
+    pws_os::CUUID huuid(file_uuid_array, true); // true for canonical format
     os << huuid;
     m_file_uuid = os.str().c_str();
   }

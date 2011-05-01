@@ -68,7 +68,7 @@ private:
  */
 class SearchPointer
 {
-    typedef std::vector<CUUIDGen> SearchIndices;
+    typedef UUIDVector SearchIndices;
     SearchIndices m_indices;
 
     SearchIndices::const_iterator m_currentIndex;
@@ -82,14 +82,14 @@ public:
 
     void Clear() { m_indices.clear() ; m_currentIndex = m_indices.end(); m_label = wxT("No matches found"); }
     bool IsEmpty() const { return m_indices.empty(); }
-    const CUUIDGen& operator*() const { return *m_currentIndex; }
+    const pws_os::CUUID& operator*() const { return *m_currentIndex; }
     size_t Size() const { return m_indices.size(); }
 
     void InitIndex(void) { 
         m_currentIndex = m_indices.begin();
     }
 
-    void Add(const CUUIDGen& uuid) { m_indices.push_back(uuid); m_label.Printf(wxT("%d matches found"), m_indices.size());}
+    void Add(const pws_os::CUUID& uuid) { m_indices.push_back(uuid); m_label.Printf(wxT("%d matches found"), m_indices.size());}
 
     SearchPointer& operator++();
     SearchPointer& operator--();

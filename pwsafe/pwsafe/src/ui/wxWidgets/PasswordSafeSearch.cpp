@@ -419,7 +419,7 @@ void PasswordSafeSearch::FindMatches(const StringX& searchText, bool fCaseSensit
     if (found) {
         uuid_array_t uuid;
         afn(itr).GetUUID(uuid);
-        searchPtr.Add(CUUIDGen(uuid));
+        searchPtr.Add(pws_os::CUUID(uuid));
     }
   }
 }

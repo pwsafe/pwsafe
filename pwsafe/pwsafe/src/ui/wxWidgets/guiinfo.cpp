@@ -111,11 +111,11 @@ void GUIInfo::SaveGridViewInfo(PWSGrid* grid)
     }
     else {
       wxFAIL_MSG(wxString(wxT("Top grid row ")) << row << wxT(" has no CItemData attached"));
-      m_gridTop = CUUIDGen::NullUUID();
+      m_gridTop = pws_os::CUUID::NullUUID();
     }
   }
   else {
-    m_gridTop = CUUIDGen::NullUUID();
+    m_gridTop = pws_os::CUUID::NullUUID();
   }
 
   const int selection = grid->GetGridCursorRow();
@@ -126,11 +126,11 @@ void GUIInfo::SaveGridViewInfo(PWSGrid* grid)
     }
     else {
       wxFAIL_MSG(wxString(wxT("Selected grid row ")) << selection << wxT(" has no CItemData attached"));
-      m_gridSelection = CUUIDGen::NullUUID();
+      m_gridSelection = pws_os::CUUID::NullUUID();
     }
   }
   else {
-    m_gridSelection = CUUIDGen::NullUUID();
+    m_gridSelection = pws_os::CUUID::NullUUID();
   }
 }
 

@@ -165,7 +165,7 @@ public:
     virtual void GUISetupDisplayInfo(CItemData &ci);
 
     virtual void UpdateGUI(UpdateGUICommand::GUI_Action ga,
-                           const CUUIDGen &entry_uuid,
+                           const pws_os::CUUID &entry_uuid,
                            CItemData::FieldType ft = CItemData::START,
                            bool bUpdateGUI = true);
     
@@ -365,7 +365,7 @@ public:
     int Load(const wxString &passwd);
     
     // Hilites the item.  Used for search
-    void SelectItem(const CUUIDGen& uuid);
+    void SelectItem(const pws_os::CUUID& uuid);
 
     ItemListConstIter GetEntryIter() const {return m_core.GetEntryIter();}
     ItemListConstIter GetEntryEndIter() const {return m_core.GetEntryEndIter();}
