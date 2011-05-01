@@ -37,7 +37,6 @@
 // PWS includes
 #include "../../StringX.h"
 #include "../../ItemData.h"
-#include "../../UUIDGen.h"
 #include "../../UnknownField.h"
 #include "../../PWScore.h"
 

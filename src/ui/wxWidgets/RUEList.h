@@ -15,7 +15,7 @@
 #include "../../core/ItemData.h"
 #include "../../core/StringX.h"
 #include "../../core/PWScore.h"
-#include "../../core/UUIDGen.h"
+#include "../../os/UUID.h"
 //-----------------------------------------------------------------------------
 
 /*
@@ -62,9 +62,9 @@ public:
   // Data setting
   void SetMax(size_t);
   void ClearEntries() {m_RUEList.clear();}
-  bool AddRUEntry(const CUUIDGen &);
+  bool AddRUEntry(const pws_os:CUUID &);
   bool DeleteRUEntry(size_t);
-  bool DeleteRUEntry(const CUUIDGen &);
+  bool DeleteRUEntry(const pws_os:CUUID &);
   void SetRUEList(const UUIDList &RUElist);
 
 private:
