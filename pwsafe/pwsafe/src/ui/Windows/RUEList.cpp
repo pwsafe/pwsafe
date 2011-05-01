@@ -147,12 +147,11 @@ bool CRUEList::GetPWEntry(size_t index, CItemData &ci){
     CGeneralMsgBox gmb;
     m_RUEList.erase(m_RUEList.begin() + index);
     gmb.AfxMessageBox(IDS_CANTPROCESSENTRY);
-  }
-  if (pw_listpos == m_core.GetEntryEndIter())
     return false;
-
-  ci = m_core.GetEntry(pw_listpos);
-  return true;
+  } else { // valid pw_listpos
+    ci = m_core.GetEntry(pw_listpos);
+    return true;
+  }
 }
 
 void CRUEList::GetRUEList(UUIDList &RUElist) const
