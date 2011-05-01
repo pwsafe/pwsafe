@@ -58,8 +58,7 @@ CExpPWListDlg::CExpPWListDlg(CWnd* pParent,
     // Get entrytype (used for selecting image)
     elle.et = pci->GetEntryType();
     
-    // Copy entry uuid
-    memcpy(elle.uuid, m_expPWList[i].uuid, sizeof(elle.uuid));
+    elle.uuid = m_expPWList[i].uuid;
     
     // Save in local vector
     m_vExpLocalListEntries.push_back(elle);

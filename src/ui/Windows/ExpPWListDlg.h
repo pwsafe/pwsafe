@@ -22,18 +22,13 @@ class DboxMain;
 struct st_ExpLocalListEntry {
   st_ExpLocalListEntry()
   : sx_group(L""), sx_title(L""), sx_user(L""), sx_expirylocdate(L""),
-  expirytttXTime(time_t(0)), et(CItemData::ET_INVALID)
-  {
-    memset(uuid, 0, sizeof(uuid));
-  }
+    expirytttXTime(time_t(0)), et(CItemData::ET_INVALID),
+    uuid(pws_os::CUUID::NullUUID()) {}
 
   st_ExpLocalListEntry(const st_ExpLocalListEntry &elle)
-    : sx_group(elle.sx_group), sx_title(elle.sx_title), sx_user(elle.sx_user),
-    sx_expirylocdate(elle.sx_expirylocdate), expirytttXTime(elle.expirytttXTime),
-    et(elle.et)
-  {
-    memcpy(uuid, elle.uuid, sizeof(uuid));
-  }
+  : sx_group(elle.sx_group), sx_title(elle.sx_title), sx_user(elle.sx_user),
+    sx_expirylocdate(elle.sx_expirylocdate),
+    expirytttXTime(elle.expirytttXTime), et(elle.et), uuid(elle.uuid) {}
 
   st_ExpLocalListEntry &operator =(const st_ExpLocalListEntry &elle)
   {
@@ -44,7 +39,7 @@ struct st_ExpLocalListEntry {
       sx_expirylocdate = elle.sx_expirylocdate;
       expirytttXTime = elle.expirytttXTime;
       et = elle.et;
-      memcpy(uuid, elle.uuid, sizeof(uuid));
+      uuid = elle.uuid;
     }
     return *this;
   }
@@ -57,7 +52,7 @@ struct st_ExpLocalListEntry {
   CItemData::EntryType et; // Used to select image for display to user e.g.
                            // 'warn will expire' or 'has expired' &
                            // 'normal, aliasbase or shortcut base' entry
-  uuid_array_t uuid;
+  pws_os::CUUID uuid;
 };
 
 class CExpPWListDlg : public CPWDialog
