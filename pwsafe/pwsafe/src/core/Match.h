@@ -74,8 +74,8 @@ namespace PWSMatch {
 
   bool Match(bool bValue, int iFunction);  // bool - if field present or not
 
-  const UINT GetRule(const MatchRule rule);
-  const MatchRule GetRule(const StringX sx_mnemonic);
+  const UINT GetRule(MatchRule rule);
+  const MatchRule GetRule(const StringX &sx_mnemonic);
   const char *GetRuleString(const MatchRule rule);
   void GetMatchType(MatchType mtype,
                     int fnum1, int fnum2,

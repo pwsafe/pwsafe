@@ -9,7 +9,6 @@
 #include "PWSFilters.h"
 #include "PWHistory.h"
 #include "PWSprefs.h"
-#include "Match.h"
 #include "core.h"
 #include "PWScore.h"
 #include "StringX.h"
