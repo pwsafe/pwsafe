@@ -50,7 +50,7 @@ public:
   // UpdateGUI - used by GUI if one or more entries have changed
   // and the entry/entries needs refreshing in GUI:
   virtual void UpdateGUI(UpdateGUICommand::GUI_Action ga,
-                         const CUUIDGen &entry_uuid,
+                         const pws_os::CUUID &entry_uuid,
                          CItemData::FieldType ft = CItemData::START,
                          bool bUpdateGUI = true) = 0;
 

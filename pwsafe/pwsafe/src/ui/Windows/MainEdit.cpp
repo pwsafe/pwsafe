@@ -38,6 +38,8 @@
 #include <vector>
 #include <algorithm>
 
+using pws_os::CUUID;
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -397,8 +399,8 @@ void DboxMain::OnDuplicateGroup()
     // Note that we need to do this twice - once to get all the normal entries
     // and bases and then the dependents as we need the mapping between the old
     // base UUIDs and their new UUIDs
-    std::map<CUUIDGen, CUUIDGen> mapOldToNewBaseUUIDs;
-    std::map<CUUIDGen, CUUIDGen>::const_iterator citer;
+    std::map<CUUID, CUUID> mapOldToNewBaseUUIDs;
+    std::map<CUUID, CUUID>::const_iterator citer;
 
     // Process normal & base entries
     bool bDependentsExist(false);
@@ -983,9 +985,9 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
 
   StringX newPassword = pci_new->GetPassword();
 
-  CUUIDGen original_base_uuid = CUUIDGen::NullUUID();
-  CUUIDGen new_base_uuid = pentry_psh->GetBaseUUID();
-  CUUIDGen original_uuid = pci_original->GetUUID();
+  CUUID original_base_uuid = CUUID::NullUUID();
+  CUUID new_base_uuid = pentry_psh->GetBaseUUID();
+  CUUID original_uuid = pci_original->GetUUID();
 
   if (pci_original->IsDependent()) {
     const CItemData *pci_orig_base = m_core.GetBaseEntry(pci_original);
@@ -1072,7 +1074,7 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
     UpdateEntryImages(iter->second);
 
   // ... and the new base entry (only if different from the old one)
-  if (CUUIDGen(new_base_uuid) != CUUIDGen(original_base_uuid)) {
+  if (CUUID(new_base_uuid) != CUUID(original_base_uuid)) {
     iter = pcore->Find(new_base_uuid);
     if (iter != End())
       UpdateEntryImages(iter->second);

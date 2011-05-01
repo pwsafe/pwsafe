@@ -16,7 +16,7 @@
 #include "StringX.h"
 #include "PWSfile.h"
 #include "PWSFilters.h"
-#include "UUIDGen.h"
+#include "os/UUID.h"
 #include "Report.h"
 #include "Proxy.h"
 #include "UIinterface.h"
@@ -33,12 +33,12 @@ struct BaseEntryParms {
   StringX csPwdGroup;
   StringX csPwdTitle;
   StringX csPwdUser;
-  CUUIDGen base_uuid;
+  pws_os::CUUID base_uuid;
   CItemData::EntryType InputType;
   CItemData::EntryType TargetType;
   int ibasedata;
   bool bMultipleEntriesFound;
-  BaseEntryParms() : base_uuid(CUUIDGen::NullUUID()) {}
+  BaseEntryParms() : base_uuid(pws_os::CUUID::NullUUID()) {}
 };
 
 // Formatted Database properties
@@ -272,20 +272,20 @@ public:
   {return m_pwlist.find(entry_uuid);}
   ItemListConstIter Find(const uuid_array_t &entry_uuid) const
   {return m_pwlist.find(entry_uuid);}
-  ItemListIter Find(const CUUIDGen &entry_uuid)
+  ItemListIter Find(const pws_os::CUUID &entry_uuid)
   {return m_pwlist.find(entry_uuid);}
-  ItemListConstIter Find(const CUUIDGen &entry_uuid) const
+  ItemListConstIter Find(const pws_os::CUUID &entry_uuid) const
   {return m_pwlist.find(entry_uuid);}
 
   bool ConfirmDelete(const CItemData *pci); // ask user when about to delete a base,
   //                                           otherwise just return true
 
   // General routines for aliases and shortcuts
-  void GetAllDependentEntries(const CUUIDGen &base_uuid,
+  void GetAllDependentEntries(const pws_os::CUUID &base_uuid,
                               UUIDVector &dependentslist, 
                               const CItemData::EntryType type);
-  bool GetDependentEntryBaseUUID(const CUUIDGen &entry_uuid,
-                                 CUUIDGen &base_uuid, 
+  bool GetDependentEntryBaseUUID(const pws_os::CUUID &entry_uuid,
+                                 pws_os::CUUID &base_uuid, 
                                  const CItemData::EntryType type) const;
   // Takes apart a 'special' password into its components:
   bool ParseBaseEntryPWD(const StringX &passwd, BaseEntryParms &pl);
@@ -295,9 +295,9 @@ public:
 
   // alias/base and shortcut/base handling
   void SortDependents(UUIDVector &dlist, StringX &csDependents);
-  size_t NumAliases(const CUUIDGen &base_uuid) const
+  size_t NumAliases(const pws_os::CUUID &base_uuid) const
   {return m_base2aliases_mmap.count(base_uuid);}
-  size_t NumShortcuts(const CUUIDGen &base_uuid) const
+  size_t NumShortcuts(const pws_os::CUUID &base_uuid) const
   {return m_base2shortcuts_mmap.count(base_uuid);}
 
   ItemListIter GetUniqueBase(const StringX &title, bool &bMultiple);
@@ -376,13 +376,13 @@ private:
   virtual void DoReplaceEntry(const CItemData &old_ci, const CItemData &new_ci);
 
   // General routines for aliases and shortcuts
-  virtual void DoAddDependentEntry(const CUUIDGen &base_uuid,
-                                   const CUUIDGen &entry_uuid,
+  virtual void DoAddDependentEntry(const pws_os::CUUID &base_uuid,
+                                   const pws_os::CUUID &entry_uuid,
                                    const CItemData::EntryType type);
-  virtual void DoRemoveDependentEntry(const CUUIDGen &base_uuid,
-                                      const CUUIDGen &entry_uuid, 
+  virtual void DoRemoveDependentEntry(const pws_os::CUUID &base_uuid,
+                                      const pws_os::CUUID &entry_uuid, 
                                       const CItemData::EntryType type);
-  virtual void DoRemoveAllDependentEntries(const CUUIDGen &base_uuid, 
+  virtual void DoRemoveAllDependentEntries(const pws_os::CUUID &base_uuid, 
                                            const CItemData::EntryType type);
   virtual int DoAddDependentEntries(UUIDVector &dependentslist, CReport *pRpt, 
                                     const CItemData::EntryType type, 
@@ -391,8 +391,8 @@ private:
                                     SaveTypePWMap *pmapSaveTypePW = NULL);
   virtual void UndoAddDependentEntries(ItemList *pmapDeletedItems,
                                        SaveTypePWMap *pmapSaveTypePW);
-  virtual void DoMoveDependentEntries(const CUUIDGen &from_baseuuid, 
-                                      const CUUIDGen &to_baseuuid, 
+  virtual void DoMoveDependentEntries(const pws_os::CUUID &from_baseuuid, 
+                                      const pws_os::CUUID &to_baseuuid, 
                                       const CItemData::EntryType type);
 
   virtual int DoUpdatePasswordHistory(int iAction, int new_default_max,
@@ -400,7 +400,7 @@ private:
   virtual void UndoUpdatePasswordHistory(SavePWHistoryMap &mapSavedHistory);
 
   // End of Command Interface implementations
-  void ResetAllAliasPasswords(const CUUIDGen &base_uuid);
+  void ResetAllAliasPasswords(const pws_os::CUUID &base_uuid);
   
   StringX GetPassKey() const; // returns cleartext - USE WITH CARE
   // Following used by SetPassKey
@@ -480,7 +480,7 @@ private:
   UIInterFace *m_pUIIF; // pointer to UI interface abtraction
   std::bitset<UIInterFace::NUM_SUPPORTED> m_bsSupportedFunctions;
   
-  void NotifyGUINeedsUpdating(UpdateGUICommand::GUI_Action, const CUUIDGen &,
+  void NotifyGUINeedsUpdating(UpdateGUICommand::GUI_Action, const pws_os::CUUID &,
                               CItemData::FieldType ft = CItemData::START,
                               bool bUpdateGUI = true);
 
@@ -502,7 +502,7 @@ private:
   {m_ExpireCandidates.Add(ci);}
   void UpdateExpiryEntry(const CItemData &ci)
   {m_ExpireCandidates.Update(ci);}
-  void UpdateExpiryEntry(const CUUIDGen &uuid, const CItemData::FieldType ft,
+  void UpdateExpiryEntry(const pws_os::CUUID &uuid, const CItemData::FieldType ft,
                          const StringX &value);
   void RemoveExpiryEntry(const CItemData &ci)
   {m_ExpireCandidates.Remove(ci);}

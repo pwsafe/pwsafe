@@ -11,10 +11,10 @@
 
 // PWS includes
 #include "../ItemData.h"
-#include "../UUIDGen.h"
 #include "../UnknownField.h"
 #include "../Command.h"
 #include "../Report.h"
+#include "os/UUID.h"
 
 #include "XMLDefs.h"  // Required if testing "USE_XML_LIBRARY"
 

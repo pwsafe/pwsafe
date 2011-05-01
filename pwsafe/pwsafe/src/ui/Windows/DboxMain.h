@@ -45,9 +45,9 @@
 #include "core/PwsPlatform.h"
 #include "core/PWSFilters.h"
 #include "core/Command.h"
-#include "core/UUIDGen.h"
 
 #include "os/run.h"
+#include "os/UUID.h"
 
 #include <vector>
 #include <map>
@@ -224,7 +224,7 @@ public:
   ItemListIter Find(int i);
 
   // Find entry by UUID
-  ItemListIter Find(const CUUIDGen &uuid)
+  ItemListIter Find(const pws_os::CUUID &uuid)
   {return m_core.Find(uuid);}
 
   // End of list markers
@@ -538,12 +538,12 @@ protected:
 
   LRESULT OnProcessCompareResultFunction(WPARAM wParam, LPARAM lParam);
   LRESULT OnEditExpiredPasswordEntry(WPARAM wParam, LPARAM lParam);
-  LRESULT ViewCompareResult(PWScore *pcore, const CUUIDGen &uuid);
-  LRESULT EditCompareResult(PWScore *pcore, const CUUIDGen &uuid);
+  LRESULT ViewCompareResult(PWScore *pcore, const pws_os::CUUID &uuid);
+  LRESULT EditCompareResult(PWScore *pcore, const pws_os::CUUID &uuid);
   LRESULT CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
-                            const CUUIDGen &fromuuid, const CUUIDGen &touuid);
+                            const pws_os::CUUID &fromuuid, const pws_os::CUUID &touuid);
   LRESULT SynchCompareResult(PWScore *pfromcore, PWScore *ptocore,
-                             const CUUIDGen &fromuuid, const CUUIDGen &touuid);
+                             const pws_os::CUUID &fromuuid, const pws_os::CUUID &touuid);
   LRESULT OnToolBarFindMessage(WPARAM wParam, LPARAM lParam);
   LRESULT OnDragAutoType(WPARAM wParam, LPARAM lParam);
   LRESULT OnExecuteFilters(WPARAM wParam, LPARAM lParam);
@@ -772,7 +772,7 @@ private:
   // UIInterFace implementations:
   virtual void DatabaseModified(bool bChanged);
   virtual void UpdateGUI(UpdateGUICommand::GUI_Action ga,
-                         const CUUIDGen &entry_uuid,
+                         const pws_os::CUUID &entry_uuid,
                          CItemData::FieldType ft, bool bUpdateGUI);
   virtual void GUISetupDisplayInfo(CItemData &ci);
   virtual void GUIRefreshEntry(const CItemData &ci);
@@ -802,11 +802,11 @@ private:
   int m_iheadermaxwidth;
   CFont *m_pFontTree;
 
-  CUUIDGen m_LUUIDSelectedAtMinimize; // to restore List entry selection upon un-minimize
-  CUUIDGen m_TUUIDSelectedAtMinimize; // to restore Tree entry selection upon un-minimize
+  pws_os::CUUID m_LUUIDSelectedAtMinimize; // to restore List entry selection upon un-minimize
+  pws_os::CUUID m_TUUIDSelectedAtMinimize; // to restore Tree entry selection upon un-minimize
   StringX m_sxSelectedGroup;              // to restore Tree group selection upon un-minimize
-  CUUIDGen m_LUUIDVisibleAtMinimize;  // to restore List entry position  upon un-minimize
-  CUUIDGen m_TUUIDVisibleAtMinimize;  // to restore Tree entry position  upon un-minimize
+  pws_os::CUUID m_LUUIDVisibleAtMinimize;  // to restore List entry position  upon un-minimize
+  pws_os::CUUID m_TUUIDVisibleAtMinimize;  // to restore Tree entry position  upon un-minimize
   StringX m_sxVisibleGroup;               // to restore Tree group position  upon un-minimize
 
   bool m_inExit; // help U3ExitNow
@@ -974,14 +974,14 @@ private:
   // Might need to add more e.g. if filter is active and which one?
   struct st_SaveGUIInfo {
     bool blSelectedValid, btSelectedValid, btGroupValid;
-    CUUIDGen lSelected; // List selected item
-    CUUIDGen tSelected; // Tree selected item
+    pws_os::CUUID lSelected; // List selected item
+    pws_os::CUUID tSelected; // Tree selected item
     StringX sxGroupName;
     std::vector<bool> vGroupDisplayState;
 
     st_SaveGUIInfo()
     : blSelectedValid(false), btSelectedValid(false), btGroupValid(false),
-      lSelected(CUUIDGen::NullUUID()), tSelected(CUUIDGen::NullUUID()) {}
+      lSelected(pws_os::CUUID::NullUUID()), tSelected(pws_os::CUUID::NullUUID()) {}
 
     st_SaveGUIInfo(const st_SaveGUIInfo &that)
     : blSelectedValid(that.blSelectedValid), btSelectedValid(that.btSelectedValid),

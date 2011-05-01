@@ -25,7 +25,7 @@ LIBSRC          = BlowFish.cpp CheckVersion.cpp hmac.cpp \
                   sha1.cpp sha256.cpp core_st.cpp\
                   StringX.cpp SysInfo.cpp \
                   TwoFish.cpp UnknownField.cpp  \
-                  UTF8Conv.cpp Util.cpp UUIDGen.cpp \
+                  UTF8Conv.cpp Util.cpp \
                   VerifyFormat.cpp XMLprefs.cpp \
                   ExpiredList.cpp tinyxml/tinyxml.cpp \
                   tinyxml/tinyxmlerror.cpp tinyxml/tinyxmlparser.cpp \

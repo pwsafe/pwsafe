@@ -152,10 +152,10 @@ DboxMain::DboxMain(CWnd* pParent)
   m_bInRefresh(false), m_bInRestoreWindows(false), m_bExpireDisplayed(false),
   m_bTellUserExpired(false), m_bInRename(false), m_bWhitespaceRightClick(false),
   m_ilastaction(0),
-  m_LUUIDSelectedAtMinimize(CUUIDGen::NullUUID()),
-  m_TUUIDSelectedAtMinimize(CUUIDGen::NullUUID()),
-  m_LUUIDVisibleAtMinimize(CUUIDGen::NullUUID()),
-  m_TUUIDVisibleAtMinimize(CUUIDGen::NullUUID())
+    m_LUUIDSelectedAtMinimize(pws_os::CUUID::NullUUID()),
+  m_TUUIDSelectedAtMinimize(pws_os::CUUID::NullUUID()),
+  m_LUUIDVisibleAtMinimize(pws_os::CUUID::NullUUID()),
+  m_TUUIDVisibleAtMinimize(pws_os::CUUID::NullUUID())
 {
   // Need to do the following as using the direct calls will fail for Windows versions before Vista
   // (Load Library using absolute path to avoid dll poisoning attacks)

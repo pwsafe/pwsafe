@@ -122,9 +122,6 @@
     <ClCompile Include="Util.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UUIDGen.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="VerifyFormat.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -296,9 +293,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Util.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="UUIDGen.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="VerifyFormat.h">

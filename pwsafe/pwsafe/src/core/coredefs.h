@@ -68,35 +68,35 @@ struct st_GroupTitleUser {
 };
 
 
-typedef std::map<CUUIDGen, CItemData, std::less<CUUIDGen> > ItemList;
+typedef std::map<pws_os::CUUID, CItemData, std::less<pws_os::CUUID> > ItemList;
 typedef ItemList::iterator ItemListIter;
 typedef ItemList::const_iterator ItemListConstIter;
-typedef std::pair<CUUIDGen, CItemData> ItemList_Pair;
+typedef std::pair<pws_os::CUUID, CItemData> ItemList_Pair;
 
 typedef std::vector<CItemData> OrderedItemList;
 
-typedef std::multimap<CUUIDGen, CUUIDGen, std::less<CUUIDGen> > ItemMMap;
+typedef std::multimap<pws_os::CUUID, pws_os::CUUID, std::less<pws_os::CUUID> > ItemMMap;
 typedef ItemMMap::iterator ItemMMapIter;
 typedef ItemMMap::const_iterator ItemMMapConstIter;
-typedef std::pair<CUUIDGen, CUUIDGen> ItemMMap_Pair;
+typedef std::pair<pws_os::CUUID, pws_os::CUUID> ItemMMap_Pair;
 
-typedef std::map<CUUIDGen, CUUIDGen, std::less<CUUIDGen> > ItemMap;
+typedef std::map<pws_os::CUUID, pws_os::CUUID, std::less<pws_os::CUUID> > ItemMap;
 typedef ItemMap::iterator ItemMapIter;
 typedef ItemMap::const_iterator ItemMapConstIter;
-typedef std::pair<CUUIDGen, CUUIDGen> ItemMap_Pair;
+typedef std::pair<pws_os::CUUID, pws_os::CUUID> ItemMap_Pair;
 
-typedef std::map<CUUIDGen, st_SaveTypePW, std::less<CUUIDGen> > SaveTypePWMap;
-typedef std::pair<CUUIDGen, st_SaveTypePW> SaveTypePWMap_Pair;
+typedef std::map<pws_os::CUUID, st_SaveTypePW, std::less<pws_os::CUUID> > SaveTypePWMap;
+typedef std::pair<pws_os::CUUID, st_SaveTypePW> SaveTypePWMap_Pair;
 
-typedef std::map<CUUIDGen, StringX, std::less<CUUIDGen> > SavePWHistoryMap;
+typedef std::map<pws_os::CUUID, StringX, std::less<pws_os::CUUID> > SavePWHistoryMap;
 
 typedef std::set<st_GroupTitleUser> GTUSet;
 typedef std::pair< std::set<st_GroupTitleUser>::iterator, bool > GTUSetPair;
 
-typedef std::set<CUUIDGen> UUIDSet;
+typedef std::set<pws_os::CUUID> UUIDSet;
 typedef std::pair<UUIDSet::iterator, bool > UUIDSetPair;
 
-typedef std::list<CUUIDGen> UUIDList;
+typedef std::list<pws_os::CUUID> UUIDList;
 typedef UUIDList::iterator UUIDListIter;
 typedef UUIDList::reverse_iterator UUIDListRIter;
 

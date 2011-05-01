@@ -15,7 +15,6 @@
 #include "SecString.h"
 #include "core/PWScore.h"
 #include "core/Report.h"
-#include "core/uuidgen.h"
 #include "core/DBCompareData.h"
 
 class DboxMain;

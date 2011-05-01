@@ -27,7 +27,6 @@
 #include "VirtualKeyboard\VKeyBoardDlg.h"
 
 #include "core/pwsprefs.h"
-#include "core/UUIDGen.h"
 #include "core/core.h"
 #include "core/PWHistory.h"
 #include "core/StringXStream.h"
@@ -51,6 +50,7 @@
 #include <sys/stat.h>
 
 using namespace std;
+using pws_os::CUUID;
 
 extern const wchar_t *GROUP_SEP2;
 
@@ -98,7 +98,7 @@ void DboxMain::DatabaseModified(bool bChanged)
 }
 
 void DboxMain::UpdateGUI(UpdateGUICommand::GUI_Action ga, 
-                         const CUUIDGen &entry_uuid, CItemData::FieldType ft,
+                         const CUUID &entry_uuid, CItemData::FieldType ft,
                          bool bUpdateGUI)
 {
   // Callback from PWScore if GUI needs updating
@@ -3981,8 +3981,8 @@ void DboxMain::SaveGUIStatusEx(const int iView)
 
   // Note: User can have different entries selected/visible in Tree & List Views
   if ((iView & iListOnly) == iListOnly) {
-    m_LUUIDSelectedAtMinimize = CUUIDGen::NullUUID();
-    m_LUUIDVisibleAtMinimize = CUUIDGen::NullUUID();
+    m_LUUIDSelectedAtMinimize = CUUID::NullUUID();
+    m_LUUIDVisibleAtMinimize = CUUID::NullUUID();
 
     // List view
     // Get selected entry in CListCtrl
@@ -4010,8 +4010,8 @@ void DboxMain::SaveGUIStatusEx(const int iView)
     // Save expand/collapse status of groups
     m_vGroupDisplayState = GetGroupDisplayState();
 
-    m_LUUIDSelectedAtMinimize = CUUIDGen::NullUUID();
-    m_LUUIDVisibleAtMinimize = CUUIDGen::NullUUID();
+    m_LUUIDSelectedAtMinimize = CUUID::NullUUID();
+    m_LUUIDVisibleAtMinimize = CUUID::NullUUID();
 
     m_sxSelectedGroup.clear();
     m_sxVisibleGroup.clear();
@@ -4083,7 +4083,7 @@ void DboxMain::RestoreGUIStatusEx()
   CItemData *pci(NULL);
 
   // Process Tree - Selected
-  if (m_TUUIDSelectedAtMinimize != CUUIDGen::NullUUID()) {
+  if (m_TUUIDSelectedAtMinimize != CUUID::NullUUID()) {
     // Entry selected
     ItemListIter iter = Find(m_TUUIDSelectedAtMinimize);
     if (iter != End()) {
@@ -4116,7 +4116,7 @@ void DboxMain::RestoreGUIStatusEx()
   }
 
   // Process Tree - Visible
-  if (m_TUUIDVisibleAtMinimize != CUUIDGen::NullUUID()) {
+  if (m_TUUIDVisibleAtMinimize != CUUID::NullUUID()) {
     // Entry topmost visible
     ItemListIter iter = Find(m_TUUIDVisibleAtMinimize);
     if (iter != End()) {
@@ -4147,7 +4147,7 @@ void DboxMain::RestoreGUIStatusEx()
   }
 
   // Process List - selected
-  if (m_LUUIDSelectedAtMinimize != CUUIDGen::NullUUID()) {
+  if (m_LUUIDSelectedAtMinimize != CUUID::NullUUID()) {
     ItemListIter iter = Find(m_LUUIDSelectedAtMinimize);
     if (iter != End()) {
       DisplayInfo *pdi = ((DisplayInfo *)(iter->second.GetDisplayInfo()));
@@ -4165,7 +4165,7 @@ void DboxMain::RestoreGUIStatusEx()
   }
 
   // Process List - visible
-  if (m_LUUIDVisibleAtMinimize != CUUIDGen::NullUUID()) {
+  if (m_LUUIDVisibleAtMinimize != CUUID::NullUUID()) {
     ItemListIter iter = Find(m_LUUIDVisibleAtMinimize);
     if (iter != End()) {
       DisplayInfo *pdi = ((DisplayInfo *)(iter->second.GetDisplayInfo()));

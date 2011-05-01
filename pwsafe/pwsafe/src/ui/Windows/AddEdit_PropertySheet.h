@@ -49,7 +49,7 @@ public:
   CSecString &GetBase() {return m_AEMD.base;}
 
   int &GetIBasedata() {return m_AEMD.ibasedata;}
-  CUUIDGen &GetBaseUUID() {return m_AEMD.base_uuid;}
+  pws_os::CUUID &GetBaseUUID() {return m_AEMD.base_uuid;}
 
   CItemData *GetOriginalCI() {return m_AEMD.pci_original;}
   CItemData *GetNewCI() {return m_AEMD.pci;}

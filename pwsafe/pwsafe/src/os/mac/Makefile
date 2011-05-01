@@ -16,7 +16,7 @@ LIBSRC          = debug.cpp dir.cpp env.cpp \
                   pws_time.cpp rand.cpp run.cpp\
                   utf8conv.cpp KeySend.cpp\
                   sleep.cpp macsendstring.cpp\
-									registry.cpp
+									registry.cpp UUID.cpp
 
 SRC             = $(LIBSRC)
 

@@ -12,14 +12,12 @@
 #define __MFILEXMLPROCESSOR_H
 
 #include "../../UnknownField.h"
-#include "../../UUIDGen.h"
 #include "../../Command.h"
 
 #include "os/typedefs.h"
+#include "os/UUID.h"
 
 #include <vector>
-
-typedef std::vector<CUUIDGen> UUIDVector;
 
 class PWScore;
 

@@ -16,7 +16,6 @@
 #include "PWScore.h"
 #include "core.h"
 #include "Util.h"
-#include "UUIDGen.h"
 #include "Report.h"
 #include "StringXStream.h"
 #include "DBCompareData.h"

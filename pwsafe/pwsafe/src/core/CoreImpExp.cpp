@@ -15,7 +15,6 @@
 #include "core.h"
 #include "PWSprefs.h"
 #include "Util.h"
-#include "UUIDGen.h"
 #include "SysInfo.h"
 #include "UTF8Conv.h"
 #include "Report.h"
@@ -48,6 +47,7 @@
 const TCHAR *EXPORTHEADER  = _T("Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tPassword Expiry Interval\tRecord Modified Time\tPassword Policy\tHistory\tRun Command\tDCA\te-mail\tProtected\tSymbols\tNotes");
 
 using namespace std;
+using pws_os::CUUID;
 
 // hide w_char/char differences where possible:
 #ifdef UNICODE
@@ -67,7 +67,7 @@ struct ExportTester {
   {}
 
   // operator for ItemList
-  bool operator()(pair<CUUIDGen, CItemData> p)
+  bool operator()(pair<CUUID, CItemData> p)
   {return operator()(p.second);}
 
   // operator for OrderedItemList
@@ -216,7 +216,7 @@ struct TextRecordWriter {
   {}
 
   // operator for ItemList
-  void operator()(pair<CUUIDGen, CItemData> p)
+  void operator()(pair<CUUID, CItemData> p)
   {operator()(p.second);}
 
   // operator for OrderedItemList
@@ -342,7 +342,7 @@ struct XMLRecordWriter {
   {}
 
   // operator for ItemList
-  void operator()(pair<CUUIDGen, CItemData> p)
+  void operator()(pair<CUUID, CItemData> p)
   {operator()(p.second);}
 
   // operator for OrderedItemList
@@ -493,7 +493,7 @@ int PWScore::WriteXMLFile(const StringX &filename,
     ofs << "\"" << endl;
   }
 
-  CUUIDGen huuid(m_hdr.m_file_uuid_array, true); // true to print canoncally
+  CUUID huuid(m_hdr.m_file_uuid_array, true); // true to print canoncally
 
   ofs << "Database_uuid=\"" << huuid << "\"" << endl;
   ofs << "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"" << endl;

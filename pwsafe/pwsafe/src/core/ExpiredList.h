@@ -12,7 +12,7 @@
 #define __EXPIREDLIST_H
 
 #include "StringX.h"
-#include "UUIDGen.h"
+#include "os/UUID.h"
 #include "ItemData.h"
 
 #include <vector>
@@ -36,10 +36,10 @@ public:
 };
 
 struct ee_equal_uuid {
-ee_equal_uuid(CUUIDGen const& uuid) : m_uuid(uuid) {}
+ee_equal_uuid(pws_os::CUUID const& uuid) : m_uuid(uuid) {}
   bool operator()(const ExpPWEntry &ee) const
   { return m_uuid == ee.uuid; }
-  const CUUIDGen m_uuid;
+  const pws_os::CUUID m_uuid;
 };
 
 #endif /* __EXPIREDLIST_H */

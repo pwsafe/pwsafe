@@ -18,7 +18,6 @@
 
 #include "core/PWScore.h"
 #include "core/Report.h"
-#include "core/uuidgen.h"
 
 #include "resource.h"
 #include "resource2.h"

@@ -17,16 +17,17 @@
 #include "../core.h"
 #include "../ItemData.h"
 #include "../Util.h"
-#include "../UUIDGen.h"
 #include "../PWSprefs.h"
 #include "../PWScore.h"
 #include "../PWSfileV3.h"
 #include "../VerifyFormat.h"
 #include "../Command.h"
+#include "os/UUID.h"
 
 #include <algorithm>
 
 using namespace std;
+using pws_os::CUUID;
 
 XMLFileHandlers::XMLFileHandlers()
 {
@@ -610,7 +611,7 @@ void XMLFileHandlers::AddEntries()
     if (bNewUUID) {
       // Need to create new UUID (missing or duplicate in DB or import file)
       // and add to set
-      setUUID.insert(CUUIDGen());
+      setUUID.insert(CUUID());
     }
 
     StringX sxnewgroup, sxnewtitle(cur_entry->title);
