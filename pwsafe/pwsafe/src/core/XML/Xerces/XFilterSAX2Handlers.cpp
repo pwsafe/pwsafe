@@ -537,7 +537,7 @@ void XFilterSAX2Handlers::endElement(const XMLCh* const /* uri */,
 
   else if (XMLString::equals(qname, _A2X("rule"))) {
     ToUpper(m_strElemContent);
-    cur_filterentry->rule = PWSMatch::GetRule(m_strElemContent);
+    cur_filterentry->rule = PWSMatch::GetRule(m_strElemContent.c_str());
   }
 
   else if (XMLString::equals(qname, _A2X("logic"))) {

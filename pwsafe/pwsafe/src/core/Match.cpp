@@ -289,7 +289,9 @@ const UINT PWSMatch::GetRule(MatchRule rule)
 
 const PWSMatch::MatchRule PWSMatch::GetRule(const StringX &sx_mnemonic)
 {
-  static const struct {charT *mnemonic; PWSMatch::MatchRule mr;} table[] = {
+  static const struct {
+    const charT *mnemonic; PWSMatch::MatchRule mr;
+  } table[] = {
     {_T("  "), MR_INVALID},
     {_T("EQ"), MR_EQUALS},
     {_T("NE"), MR_NOTEQUAL},
