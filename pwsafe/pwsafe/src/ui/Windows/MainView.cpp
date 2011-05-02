@@ -24,7 +24,7 @@
 #include "ViewReport.h"
 #include "ExpPWListDlg.h"
 
-#include "VirtualKeyboard\VKeyBoardDlg.h"
+#include "VirtualKeyboard/VKeyBoardDlg.h"
 
 #include "core/pwsprefs.h"
 #include "core/core.h"
@@ -2155,8 +2155,8 @@ void DboxMain::OnChangeVKFont()
                              CF_LIMITSIZE | CF_NOSCRIPTSEL,
                              NULL, NULL, VKFONT);
 
-  fontdlg.m_cf.nSizeMin = 12;
-  fontdlg.m_cf.nSizeMax = 12;
+  fontdlg.m_cf.nSizeMin = 10;
+  fontdlg.m_cf.nSizeMax = 14;
 
   fontdlg.m_sampletext = cs_VKSampleText.c_str();
 

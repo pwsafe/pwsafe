@@ -89,13 +89,13 @@ static UINT_PTR CALLBACK CFHookProc(HWND hdlg, UINT uiMsg,
       // Disable things we don't allow changed
       EnableWindow(GetDlgItem(hdlg, cmb2), FALSE); // style
       EnableWindow(GetDlgItem(hdlg, stc2), FALSE); // style
-
+#if 0
       EnableWindow(GetDlgItem(hdlg, cmb3), FALSE); // size
       EnableWindow(GetDlgItem(hdlg, stc3), FALSE); // size
       // Make Edit in Size ComboBox R-O
       SendMessage(GetDlgItem(GetDlgItem(hdlg, cmb3), 1001), 
                      EM_SETREADONLY, TRUE, 0);
-
+#endif
       EnableWindow(GetDlgItem(hdlg, cmb5), FALSE); // script
       ShowWindow(GetDlgItem(hdlg, cmb5), SW_HIDE); // script
       ShowWindow(GetDlgItem(hdlg, stc7), SW_HIDE); // script
