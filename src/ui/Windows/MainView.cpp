@@ -2961,6 +2961,34 @@ void DboxMain::OnViewReports()
   return;
 }
 
+static UINT SetupViewReports(const int nID)
+{
+  switch (nID) {
+  case ID_MENUITEM_REPORT_COMPARE:
+    return IDS_RPTCOMPARE;
+  case ID_MENUITEM_REPORT_FIND:
+    return IDS_RPTFIND;
+  case ID_MENUITEM_REPORT_IMPORTTEXT:
+    return IDS_RPTIMPORTTEXT;
+  case ID_MENUITEM_REPORT_IMPORTXML:
+    return IDS_RPTIMPORTXML;
+  case ID_MENUITEM_REPORT_MERGE:
+    return IDS_RPTMERGE;
+  case ID_MENUITEM_REPORT_SYNCHRONIZE:
+    return IDS_RPTSYNCH;
+  case ID_MENUITEM_REPORT_EXPORTTEXT:
+    return IDS_RPTEXPORTTEXT;
+  case ID_MENUITEM_REPORT_EXPORTXML:
+    return IDS_RPTEXPORTXML;
+  case ID_MENUITEM_REPORT_VALIDATE:
+    return IDS_RPTVALIDATE;
+  default:
+    pws_os::Trace(L"ID=%d\n", nID);
+    ASSERT(0);
+    return 0;
+  }
+}
+
 void DboxMain::OnViewReports(UINT nID)
 {
   CString cs_filename, cs_path, csAction;
@@ -2969,39 +2997,7 @@ void DboxMain::OnViewReports(UINT nID)
   if (!GetDriveAndDirectory(m_core.GetCurFile(), cs_drive, cs_directory))
     return;
 
-  UINT uistring(0);
-  switch (nID) {
-    case ID_MENUITEM_REPORT_COMPARE:
-      uistring = IDS_RPTCOMPARE;
-      break;
-    case ID_MENUITEM_REPORT_FIND:
-      uistring = IDS_RPTFIND;
-      break;
-    case ID_MENUITEM_REPORT_IMPORTTEXT:
-      uistring = IDS_RPTIMPORTTEXT;
-      break;
-    case ID_MENUITEM_REPORT_IMPORTXML:
-      uistring = IDS_RPTIMPORTXML;
-      break;
-    case ID_MENUITEM_REPORT_MERGE:
-      uistring = IDS_RPTMERGE;
-      break;
-    case ID_MENUITEM_REPORT_SYNCHRONIZE:
-      uistring = IDS_RPTSYNCH;
-      break;
-    case ID_MENUITEM_REPORT_EXPORTTEXT:
-      uistring = IDS_RPTEXPORTTEXT;
-      break;
-    case ID_MENUITEM_REPORT_EXPORTXML:
-      uistring = IDS_RPTEXPORTXML;
-      break;
-    case ID_MENUITEM_REPORT_VALIDATE:
-      uistring = IDS_RPTVALIDATE;
-      break;
-    default:
-      ASSERT(0);
-  }
-  csAction.LoadString(uistring);
+  csAction.LoadString(SetupViewReports(nID));
   cs_filename.Format(IDSC_REPORTFILENAME, cs_drive, cs_directory, csAction);
 
   ViewReport(cs_filename);
@@ -3079,41 +3075,8 @@ int DboxMain::OnUpdateViewReports(const int nID)
   if (!GetDriveAndDirectory(cs_Database, cs_drive, cs_directory))
     return FALSE;
 
-  UINT uistring(0);
-  switch (nID) {
-    case ID_MENUITEM_REPORT_COMPARE:
-      uistring = IDS_RPTCOMPARE;
-      break;
-    case ID_MENUITEM_REPORT_FIND:
-      uistring = IDS_RPTFIND;
-      break;
-    case ID_MENUITEM_REPORT_IMPORTTEXT:
-      uistring = IDS_RPTIMPORTTEXT;
-      break;
-    case ID_MENUITEM_REPORT_IMPORTXML:
-      uistring = IDS_RPTIMPORTXML;
-      break;
-    case ID_MENUITEM_REPORT_EXPORTTEXT:
-      uistring = IDS_RPTEXPORTTEXT;
-      break;
-    case ID_MENUITEM_REPORT_EXPORTXML:
-      uistring = IDS_RPTEXPORTXML;
-      break;
-    case ID_MENUITEM_REPORT_MERGE:
-      uistring = IDS_RPTMERGE;
-      break;
-    case ID_MENUITEM_REPORT_SYNCHRONIZE:
-      uistring = IDS_RPTSYNCH;
-      break;
-    case ID_MENUITEM_REPORT_VALIDATE:
-      uistring = IDS_RPTVALIDATE;
-      break;
-    default:
-      pws_os::Trace(L"ID=%d\n", nID);
-      ASSERT(0);
-  }
 
-  csAction.LoadString(uistring);
+  csAction.LoadString(SetupViewReports(nID));
   cs_filename.Format(IDSC_REPORTFILENAME, cs_drive, cs_directory, csAction);
 
   struct _stat statbuf;
