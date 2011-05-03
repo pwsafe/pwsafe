@@ -1,4 +1,4 @@
-Password Safe 3.25 Release Notes - March 2011
+Password Safe 3.25VP Release Notes - May 2011
 =============================================
 
 This note describe the new features, fixed bugs and known problems
@@ -7,6 +7,14 @@ Password Safe, please see the accompanying README.txt file. For more
 information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
+
+3.25VP is a custom version with the following customizations
+============================================================
+[] Minimum master password length: 7 
+[] Default length of password history maintained: 10 
+[] Lockout threshold: 5 attempts
+[] Corporate logo branding
+Other that the above this is identical to 3.25
 
 New Features for 3.25
 =======================

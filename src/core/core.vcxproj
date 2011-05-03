@@ -366,6 +366,7 @@
     <TargetName Condition="'$(Configuration)|$(Platform)'=='ReleaseX64|x64'">core</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">core</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release64|x64'">core</TargetName>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='ReleaseM|Win32'">C:\Program Files\Microsoft SDKs\Windows\v7.0A\Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <PreBuildEvent>

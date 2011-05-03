@@ -300,6 +300,7 @@
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Template64|x64'">pwsafe</TargetName>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='DebugM|Win32'">C:\Program Files %28x86%29\Visual Leak Detector\include;$(IncludePath)</IncludePath>
     <LibraryPath Condition="'$(Configuration)|$(Platform)'=='DebugM|Win32'">C:\Program Files %28x86%29\Visual Leak Detector\lib\Win32;$(LibraryPath)</LibraryPath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='ReleaseM|Win32'">C:\Program Files\Microsoft SDKs\Windows\v7.0A\Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <PreBuildEvent>
