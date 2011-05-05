@@ -162,12 +162,10 @@ BOOL CWZSelectDB::OnInitDialog()
       cs_temp.LoadString((nID == ID_MENUITEM_EXPORT2PLAINTEXT || nID == ID_MENUITEM_EXPORT2XML) ?
                               IDS_WSSLCT_ALL : IDS_WSSLCT_ENTRY);
       cs_text.Format(IDS_WZSLCT_WARNING_EXP, cs_temp);
-      GetDlgItem(IDC_STATIC_WZWARNING)->SetWindowText(cs_text);
       break;
     case ID_MENUITEM_COMPARE:
     case ID_MENUITEM_MERGE:
       bWARNINGTEXT = false;
-      GetDlgItem(IDC_STATIC_WZWARNING)->ShowWindow(SW_HIDE);
       break;
     default:
       bWARNINGTEXT = false;
@@ -175,6 +173,7 @@ BOOL CWZSelectDB::OnInitDialog()
   }
 
   if (bWARNINGTEXT) {
+    GetDlgItem(IDC_STATIC_WZWARNING)->SetWindowText(cs_text);
     m_stc_warning.SetColour(RGB(255,0,0));
     if (nID != ID_MENUITEM_EXPORT2PLAINTEXT && nID != ID_MENUITEM_EXPORTENT2PLAINTEXT)
       GetDlgItem(IDC_STATIC_WZEXPDLM2)->ShowWindow(SW_HIDE);
@@ -186,7 +185,8 @@ BOOL CWZSelectDB::OnInitDialog()
 
     m_WarningFont.CreateFontIndirect(&LogFont);
     m_stc_warning.SetFont(&m_WarningFont);
-  }
+  } else
+    GetDlgItem(IDC_STATIC_WZWARNING)->ShowWindow(SW_HIDE);
 
   std::wstring ExportFileName;
   UINT uifilemsg(IDS_WZDATABASE);
