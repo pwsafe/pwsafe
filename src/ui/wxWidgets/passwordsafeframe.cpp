@@ -1244,8 +1244,7 @@ int PasswordSafeFrame::SaveAs()
   }
 
   // Save file UUID, clear it to generate new one, restore if necessary
-  uuid_array_t file_uuid_array;
-  m_core.GetFileUUID(file_uuid_array);
+  pws_os::CUUID file_uuid = m_core.GetFileUUID();
   m_core.ClearFileUUID();
 
   UUIDList RUElist;
@@ -1257,7 +1256,7 @@ int PasswordSafeFrame::SaveAs()
   m_core.ClearChangedNodes();
 
   if (rc != PWScore::SUCCESS) {
-    m_core.SetFileUUID(file_uuid_array);
+    m_core.SetFileUUID(file_uuid);
     m_core.UnlockFile2(newfile.c_str());
     DisplayFileWriteError(rc, newfile);
     return PWScore::CANT_OPEN_FILE;

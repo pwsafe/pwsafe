@@ -95,9 +95,9 @@ public:
   static bool IsReporterSet() {return m_pReporter != NULL;}
 
   // Get/Set File UUIDs
-  void ClearFileUUID();
-  void SetFileUUID(uuid_array_t &file_uuid_array);
-  void GetFileUUID(uuid_array_t &file_uuid_array) const;
+  void ClearFileUUID() { m_hdr.m_file_uuid = pws_os::CUUID::NullUUID(); }
+  void SetFileUUID(const pws_os::CUUID &fu) { m_hdr.m_file_uuid = fu; }
+  const pws_os::CUUID &GetFileUUID() const { return m_hdr.m_file_uuid; }
 
   // Get/Set Unknown Fields info
   bool HasHeaderUnknownFields() const

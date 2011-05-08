@@ -564,7 +564,7 @@ std::string PWSFilters::GetFilterXMLHeader(const StringX &currentfile,
       oss << "\"" << endl;
     }
 
-    CUUID huuid(hdr.m_file_uuid_array, true); // true to print canonically
+    CUUID huuid(*hdr.m_file_uuid.GetUUID(), true); // true to print canonically
 
     oss << "Database_uuid=\"" << huuid << "\"" << endl;
   }

@@ -865,6 +865,10 @@ msgstr "(tiene conto del maiuscolo)"
 msgid ")"
 msgstr ")"
 
+#. Resource IDs: (367)
+msgid "* means that the database has been modified since last save"
+msgstr ""
+
 #. Resource IDs: (213)
 #, c-format
 msgid "- Its title has been changed to:'%s'"
@@ -1193,6 +1197,10 @@ msgstr ""
 #. Resource IDs: (65535)
 msgid "A new password database will be created. The safe combination you enter will be used to encrypt the password database file. The Safe Combination can use any keyboard character and is case-sensitive."
 msgstr "Verrà creato un nuovo database di password. La combinazione di sicurezza che inserisci verrà utilizzata per criptare il file del database di password. La Combinazione di Sicurezza può contenere qualsiasi carattere della tastiera e tiene conto del maiuscolo. "
+
+#. Resource IDs: (367)
+msgid "A red and white indicator means that a filter is active"
+msgstr ""
 
 #. Resource IDs: (3843)
 msgid "A required resource was unavailable."
@@ -1691,6 +1699,14 @@ msgstr "Ricerca indifferente al maiuscolo"
 msgid "Case sensitive search"
 msgstr "Ricerca che tiene conto del maiuscolo"
 
+#. Resource IDs: (366)
+msgid "Chan&ge to R-O"
+msgstr ""
+
+#. Resource IDs: (366)
+msgid "Chan&ge to R/W"
+msgstr ""
+
 #. Resource IDs: (32114)
 msgid "Change &Font"
 msgstr "Cambia &Carattere"
@@ -1713,6 +1729,10 @@ msgstr "Cambia Combinazione di Sicurezza"
 
 #. Resource IDs: (1415)
 msgid "Change This"
+msgstr ""
+
+#. Resource IDs: (366)
+msgid "Change database mode?"
 msgstr ""
 
 #. Resource IDs: (319)
@@ -1945,6 +1965,10 @@ msgstr "Informazioni di configurazione"
 #, c-format
 msgid "Configuration file error:\n%s\n%s\nline %d column %d"
 msgstr "Errore di configurazione file:\n%s\n%s\nlinea %d colonna %d"
+
+#. Resource IDs: (367)
+msgid "Configuration file status"
+msgstr ""
 
 #. Resource IDs: (342)
 msgid "Confirm Close Dialog"
@@ -2203,6 +2227,10 @@ msgstr ""
 msgid "Database is read-only. Sorry, cannot save changed any database preferences."
 msgstr "Il Database è in modalità a sola lettura. Purtroppo non è possibile salvare alcuna modifica nelle preferenze per il database."
 
+#. Resource IDs: (367)
+msgid "Database mode: read-only (R-O) or read/write (R/W)\r\n(Doubleclick to toggle mode)"
+msgstr ""
+
 #. Resource IDs: (1200)
 msgid "Database name"
 msgstr "Nome Database"
@@ -2392,9 +2420,17 @@ msgstr "Doppio Click sulla scheda per Visualizzarla/Modificarla"
 msgid "Double-click action"
 msgstr "Azione di Doppio Click"
 
+#. Resource IDs: (366)
+msgid "Doubleclick action for current entry"
+msgstr ""
+
 #. Resource IDs: (357)
 #, c-format
 msgid "Drag this image onto a another window to paste the '%s' field."
+msgstr ""
+
+#. Resource IDs: (367)
+msgid "Drag this image onto a another window to start AutoType from there."
 msgstr ""
 
 #. Resource IDs: (342)
@@ -2798,6 +2834,23 @@ msgstr ""
 
 #. Resource IDs: (3857)
 msgid "Failed to save document."
+msgstr ""
+
+#. Resource IDs: (366)
+#, c-format
+msgid "Failed to switch from R-O to R/W because database is already open in R/W mode by:\r\n%s %s\r\n(Only one R/W access at a time is allowed)"
+msgstr ""
+
+#. Resource IDs: (366)
+msgid "Failed to switch from R-O to R/W: Could not open the database. It may have been deleted or renamed or there may be an issue with the device/network device containing it."
+msgstr ""
+
+#. Resource IDs: (366)
+msgid "Failed to switch from R-O to R/W: The file appears to be too short to be a valid database."
+msgstr ""
+
+#. Resource IDs: (366)
+msgid "Failed to switch from R/W to R-O: Could not release database lock.\r\nTry exiting and restarting program."
 msgstr ""
 
 #. Resource IDs: (361)
@@ -3539,6 +3592,10 @@ msgstr ""
 msgid "Last accessed on:"
 msgstr ""
 
+#. Resource IDs: (367)
+msgid "Last clipboard action"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Last saved by:"
 msgstr ""
@@ -3998,6 +4055,10 @@ msgstr ""
 
 #. Resource IDs: (361)
 msgid "Number of Unknownfields"
+msgstr ""
+
+#. Resource IDs: (367)
+msgid "Number of entries in database"
 msgstr ""
 
 #. Resource IDs: (190)
@@ -4527,7 +4588,7 @@ msgid "R Ctrl"
 msgstr ""
 
 #. Resource IDs: (315)
-msgid "R/O"
+msgid "R-O"
 msgstr ""
 
 #. Resource IDs: (315)
@@ -4634,6 +4695,10 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Requested Values:"
+msgstr ""
+
+#. Resource IDs: (366)
+msgid "Requested mode change failed"
 msgstr ""
 
 #. Resource IDs: (356)
@@ -5368,6 +5433,10 @@ msgstr ""
 #. Resource IDs: (332)
 #, c-format
 msgid "The database %s couldn't be opened.\nDo you wish to look for it elsewhere (Search), create a new database (New), or Exit?"
+msgstr ""
+
+#. Resource IDs: (366)
+msgid "The database has been changed since you opened it in R-O mode. It is not possible to just switch to R/W mode.\r\n\r\nTo do so, please close the database and re-open it in R/W mode."
 msgstr ""
 
 #. Resource IDs: (339)
@@ -6172,6 +6241,10 @@ msgstr ""
 
 #. Resource IDs: (517)
 msgid "Yoruba"
+msgstr ""
+
+#. Resource IDs: (366)
+msgid "You have elected not to save any changes - all unsaved changes will be lost. Do you wish to continue?"
 msgstr ""
 
 #. Resource IDs: (362)

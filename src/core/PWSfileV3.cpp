@@ -475,16 +475,13 @@ int PWSfileV3::WriteHeader()
   if (numWritten <= 0) { status = FAILURE; goto end; }
 
   // Write UUID
-  uuid_array_t file_uuid_array;
-  memset(file_uuid_array, 0, sizeof(uuid_array_t));
-  // If not there or zeroed, create new
-  if (memcmp(m_hdr.m_file_uuid_array,
-             file_uuid_array, sizeof(uuid_array_t)) == 0) {
+  if (m_hdr.m_file_uuid == pws_os::CUUID::NullUUID()) {
+    // If not there or zeroed, create new
     CUUID uuid;
-    uuid.GetUUID(m_hdr.m_file_uuid_array);
+    m_hdr.m_file_uuid = uuid;
   }
 
-  numWritten = WriteCBC(HDR_UUID, m_hdr.m_file_uuid_array,
+  numWritten = WriteCBC(HDR_UUID, *m_hdr.m_file_uuid.GetUUID(),
                         sizeof(uuid_array_t));
   if (numWritten <= 0) { status = FAILURE; goto end; }
 
@@ -658,8 +655,9 @@ int PWSfileV3::ReadHeader()
           Close();
           return FAILURE;
         }
-        memcpy(m_hdr.m_file_uuid_array, utf8,
-               sizeof(uuid_array_t));
+        uuid_array_t ua;
+        memcpy(ua, utf8, sizeof(ua));
+        m_hdr.m_file_uuid = pws_os::CUUID(ua);
         break;
 
       case HDR_NDPREFS: /* Non-default user preferences */

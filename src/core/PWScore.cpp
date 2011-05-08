@@ -1413,22 +1413,6 @@ bool PWScore::Validate(stringT &status, CReport &rpt, const size_t iMAXCHARS)
   }
 }
 
-void PWScore::ClearFileUUID()
-{
-  memset(m_hdr.m_file_uuid_array, 0, sizeof(uuid_array_t));
-}
-
-void PWScore::SetFileUUID(uuid_array_t &file_uuid_array)
-{
-  memcpy(m_hdr.m_file_uuid_array, file_uuid_array,
-         sizeof(uuid_array_t));
-}
-
-void PWScore::GetFileUUID(uuid_array_t &file_uuid_array) const
-{
-  memcpy(file_uuid_array, m_hdr.m_file_uuid_array, sizeof(uuid_array_t));
-}
-
 StringX PWScore::GetUniqueTitle(const StringX &group, const StringX &title,
                                 const StringX &user, const int IDS_MESSAGE)
 {
@@ -2432,10 +2416,11 @@ void PWScore::GetDBProperties(st_DBProperties &st_dbp)
   } else
     st_dbp.whatlastsaved = m_hdr.m_whatlastsaved;
 
-  CUUID huuid(m_hdr.m_file_uuid_array, true); // true for canonical format
-  if(huuid == CUUID::NullUUID())
+  if(m_hdr.m_file_uuid == CUUID::NullUUID())
     st_dbp.file_uuid = _T("N/A");
   else {
+    CUUID huuid(*m_hdr.m_file_uuid.GetUUID(),
+                true); // true for canonical format
     ostringstreamT os;
     os << uppercase << huuid;
     st_dbp.file_uuid = os.str().c_str();
