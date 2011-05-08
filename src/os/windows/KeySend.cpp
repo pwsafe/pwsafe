@@ -24,8 +24,10 @@ public:
   bool m_isOldOS;
 };
 
+// New default delay of 50ms (increased from 10ms) introduced 2011-05-08
+
 CKeySend::CKeySend(bool bForceOldMethod)
- : m_delayMS(10)
+ : m_delayMS(50)
 {
   m_impl = new CKeySendImpl;
   m_impl->m_delay = m_delayMS;
@@ -76,6 +78,11 @@ void CKeySendImpl::NewSendChar(TCHAR c)
 
   bool tabWait = false; // if sending tab\newline, wait a bit after send
   //                       for the dust to settle. Thanks to Larry...
+
+  // Again thanks to Larry - always delay by 100ms before a tab
+  if (c == L'\t')
+    ::Sleep(100);
+
   switch (c) {
     case L'\t':
     case L'\r':
@@ -98,7 +105,7 @@ void CKeySendImpl::NewSendChar(TCHAR c)
   if (status != 2)
     pws_os::Trace(L"CKeySend::SendChar: SendInput failed status=%d\n", status);
   // wait at least 200 mS if we just sent a tab, regardless of m_delay
-  int delay = ( m_delay < 200 && tabWait) ? 200 : m_delay;
+  int delay = (m_delay < 200 && tabWait) ? 200 : m_delay;
   ::Sleep(delay);
 }
 
