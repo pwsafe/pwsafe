@@ -865,6 +865,10 @@ msgstr "(区分大小写)"
 msgid ")"
 msgstr ")"
 
+#. Resource IDs: (367)
+msgid "* means that the database has been modified since last save"
+msgstr ""
+
 #. Resource IDs: (213)
 #, c-format
 msgid "- Its title has been changed to:'%s'"
@@ -1193,6 +1197,10 @@ msgstr "给该字段使用一个未来日期无效！"
 #. Resource IDs: (65535)
 msgid "A new password database will be created. The safe combination you enter will be used to encrypt the password database file. The Safe Combination can use any keyboard character and is case-sensitive."
 msgstr "即将创建一个新密码数据库，请输入你的保险箱数据库保护密码，保险箱密码可以使用所有键盘上区分大小写的字符。"
+
+#. Resource IDs: (367)
+msgid "A red and white indicator means that a filter is active"
+msgstr ""
 
 #. Resource IDs: (3843)
 msgid "A required resource was unavailable."
@@ -1691,6 +1699,14 @@ msgstr "不区分大小写查找"
 msgid "Case sensitive search"
 msgstr "区分大小写查找"
 
+#. Resource IDs: (366)
+msgid "Chan&ge to R-O"
+msgstr ""
+
+#. Resource IDs: (366)
+msgid "Chan&ge to R/W"
+msgstr ""
+
 #. Resource IDs: (32114)
 msgid "Change &Font"
 msgstr "更改字体(&F)"
@@ -1714,6 +1730,10 @@ msgstr "更改保险箱密码"
 #. Resource IDs: (1415)
 msgid "Change This"
 msgstr "更改这些"
+
+#. Resource IDs: (366)
+msgid "Change database mode?"
+msgstr ""
 
 #. Resource IDs: (319)
 msgid "Change the maximum number of saved passwords for entries currently saving password history to the new maximum, if currently saving fewer.\n\nEntries with more than this new maximum already saved will remain unchanged."
@@ -1945,6 +1965,10 @@ msgstr "配置信息"
 #, c-format
 msgid "Configuration file error:\n%s\n%s\nline %d column %d"
 msgstr "配置文件错误:\n%s\n%s\n行 %d 栏目 %d"
+
+#. Resource IDs: (367)
+msgid "Configuration file status"
+msgstr ""
 
 #. Resource IDs: (342)
 msgid "Confirm Close Dialog"
@@ -2203,6 +2227,10 @@ msgstr "数据库存在部分大项目！"
 msgid "Database is read-only. Sorry, cannot save changed any database preferences."
 msgstr "抱歉，数据库当前为只读模式，无法保存任何数据库首选项的更改！"
 
+#. Resource IDs: (367)
+msgid "Database mode: read-only (R-O) or read/write (R/W)\r\n(Doubleclick to toggle mode)"
+msgstr ""
+
 #. Resource IDs: (1200)
 msgid "Database name"
 msgstr "数据库名称"
@@ -2392,10 +2420,18 @@ msgstr "双击项目查看/编辑"
 msgid "Double-click action"
 msgstr "双击操作"
 
+#. Resource IDs: (366)
+msgid "Doubleclick action for current entry"
+msgstr ""
+
 #. Resource IDs: (357)
 #, c-format
 msgid "Drag this image onto a another window to paste the '%s' field."
 msgstr "拖放该图标粘贴“%s”字段到其它窗口"
+
+#. Resource IDs: (367)
+msgid "Drag this image onto a another window to start AutoType from there."
+msgstr ""
 
 #. Resource IDs: (342)
 #, c-format
@@ -2799,6 +2835,23 @@ msgstr "未能保存所更改的首选项！"
 #. Resource IDs: (3857)
 msgid "Failed to save document."
 msgstr "未能保存文档！"
+
+#. Resource IDs: (366)
+#, c-format
+msgid "Failed to switch from R-O to R/W because database is already open in R/W mode by:\r\n%s %s\r\n(Only one R/W access at a time is allowed)"
+msgstr ""
+
+#. Resource IDs: (366)
+msgid "Failed to switch from R-O to R/W: Could not open the database. It may have been deleted or renamed or there may be an issue with the device/network device containing it."
+msgstr ""
+
+#. Resource IDs: (366)
+msgid "Failed to switch from R-O to R/W: The file appears to be too short to be a valid database."
+msgstr ""
+
+#. Resource IDs: (366)
+msgid "Failed to switch from R/W to R-O: Could not release database lock.\r\nTry exiting and restarting program."
+msgstr ""
 
 #. Resource IDs: (361)
 msgid "Failsafe Backup Deletion"
@@ -3539,6 +3592,10 @@ msgstr "最后修改时间"
 msgid "Last accessed on:"
 msgstr "最后访问时间:"
 
+#. Resource IDs: (367)
+msgid "Last clipboard action"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Last saved by:"
 msgstr "最后保存用户:"
@@ -3999,6 +4056,10 @@ msgstr "组数量合计:"
 #. Resource IDs: (361)
 msgid "Number of Unknownfields"
 msgstr "未知字段数量"
+
+#. Resource IDs: (367)
+msgid "Number of entries in database"
+msgstr ""
 
 #. Resource IDs: (190)
 #, c-format
@@ -4527,8 +4588,8 @@ msgid "R Ctrl"
 msgstr "右 Ctrl"
 
 #. Resource IDs: (315)
-msgid "R/O"
-msgstr "只读"
+msgid "R-O"
+msgstr ""
 
 #. Resource IDs: (315)
 msgid "R/W"
@@ -4635,6 +4696,10 @@ msgstr "%s 的报告函数开始于 %s"
 #. Resource IDs: (65535)
 msgid "Requested Values:"
 msgstr "请求的值:"
+
+#. Resource IDs: (366)
+msgid "Requested mode change failed"
+msgstr ""
 
 #. Resource IDs: (356)
 msgid "Required Unicode font is not installed on this system.\n\nUnable to provide Virtual Keyboard."
@@ -5369,6 +5434,10 @@ msgstr "密码不可空缺！"
 #, c-format
 msgid "The database %s couldn't be opened.\nDo you wish to look for it elsewhere (Search), create a new database (New), or Exit?"
 msgstr "不能打开数据库“%s”！\n你是否需要在别处查找它(单击查找)，创建一个新数据库(单击新建)或退出？"
+
+#. Resource IDs: (366)
+msgid "The database has been changed since you opened it in R-O mode. It is not possible to just switch to R/W mode.\r\n\r\nTo do so, please close the database and re-open it in R/W mode."
+msgstr ""
 
 #. Resource IDs: (339)
 #, c-format
@@ -6173,6 +6242,10 @@ msgstr "是:"
 #. Resource IDs: (517)
 msgid "Yoruba"
 msgstr "约鲁巴语"
+
+#. Resource IDs: (366)
+msgid "You have elected not to save any changes - all unsaved changes will be lost. Do you wish to continue?"
+msgstr ""
 
 #. Resource IDs: (362)
 #, c-format

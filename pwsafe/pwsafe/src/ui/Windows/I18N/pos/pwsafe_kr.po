@@ -865,6 +865,10 @@ msgstr "(대소문자 구별)"
 msgid ")"
 msgstr ")"
 
+#. Resource IDs: (367)
+msgid "* means that the database has been modified since last save"
+msgstr ""
+
 #. Resource IDs: (213)
 #, c-format
 msgid "- Its title has been changed to:'%s'"
@@ -1193,6 +1197,10 @@ msgstr "이 필드에 미래의 날짜는 적합하지 않습니다"
 #. Resource IDs: (65535)
 msgid "A new password database will be created. The safe combination you enter will be used to encrypt the password database file. The Safe Combination can use any keyboard character and is case-sensitive."
 msgstr "새로운 비밀번호 데이터베이스가 만들어질 것입니다. 당신이 입력할 보안 비밀번호가 비밀번호 데이터베이스 파일을 암호화하는 데 사용됩니다. 보안 비밀번호는 키보드의 모든 문자를 사용할 수 있고, 대소문자를 구별합니다."
+
+#. Resource IDs: (367)
+msgid "A red and white indicator means that a filter is active"
+msgstr ""
 
 #. Resource IDs: (3843)
 msgid "A required resource was unavailable."
@@ -1691,6 +1699,14 @@ msgstr "대소문자 무시하고 검색"
 msgid "Case sensitive search"
 msgstr "대소문자 구별하고 검색"
 
+#. Resource IDs: (366)
+msgid "Chan&ge to R-O"
+msgstr ""
+
+#. Resource IDs: (366)
+msgid "Chan&ge to R/W"
+msgstr ""
+
 #. Resource IDs: (32114)
 msgid "Change &Font"
 msgstr "폰트 바꾸기(&F)"
@@ -1714,6 +1730,10 @@ msgstr "보안 비밀번호 바꾸기"
 #. Resource IDs: (1415)
 msgid "Change This"
 msgstr "이것을 변경"
+
+#. Resource IDs: (366)
+msgid "Change database mode?"
+msgstr ""
 
 #. Resource IDs: (319)
 msgid "Change the maximum number of saved passwords for entries currently saving password history to the new maximum, if currently saving fewer.\n\nEntries with more than this new maximum already saved will remain unchanged."
@@ -1945,6 +1965,10 @@ msgstr "설정 정보"
 #, c-format
 msgid "Configuration file error:\n%s\n%s\nline %d column %d"
 msgstr "설정 파일 오류:\n%s\n%s\n%d 행 %d 열"
+
+#. Resource IDs: (367)
+msgid "Configuration file status"
+msgstr ""
 
 #. Resource IDs: (342)
 msgid "Confirm Close Dialog"
@@ -2203,6 +2227,10 @@ msgstr "데이터베이스에 항목이 너무 많습니다!"
 msgid "Database is read-only. Sorry, cannot save changed any database preferences."
 msgstr "데이터베이스가 읽기 전용입니다. 죄송합니다만, 데이터베이스의 환경설정을 저장할 수 없습니다."
 
+#. Resource IDs: (367)
+msgid "Database mode: read-only (R-O) or read/write (R/W)\r\n(Doubleclick to toggle mode)"
+msgstr ""
+
 #. Resource IDs: (1200)
 msgid "Database name"
 msgstr "데이터베이스 이름"
@@ -2392,10 +2420,18 @@ msgstr "항목을 더블클릭하여 편집하기"
 msgid "Double-click action"
 msgstr "더블클릭 행동"
 
+#. Resource IDs: (366)
+msgid "Doubleclick action for current entry"
+msgstr ""
+
 #. Resource IDs: (357)
 #, c-format
 msgid "Drag this image onto a another window to paste the '%s' field."
 msgstr "'%s' 필드값을 복사하시려면 이 아이큰을 다른 윈도우 위로 드래그하십시오."
+
+#. Resource IDs: (367)
+msgid "Drag this image onto a another window to start AutoType from there."
+msgstr ""
 
 #. Resource IDs: (342)
 #, c-format
@@ -2799,6 +2835,23 @@ msgstr "변경된 환경설정을 저장하는 데 실패했습니다."
 #. Resource IDs: (3857)
 msgid "Failed to save document."
 msgstr "문서를 저장하는 데 실패했습니다."
+
+#. Resource IDs: (366)
+#, c-format
+msgid "Failed to switch from R-O to R/W because database is already open in R/W mode by:\r\n%s %s\r\n(Only one R/W access at a time is allowed)"
+msgstr ""
+
+#. Resource IDs: (366)
+msgid "Failed to switch from R-O to R/W: Could not open the database. It may have been deleted or renamed or there may be an issue with the device/network device containing it."
+msgstr ""
+
+#. Resource IDs: (366)
+msgid "Failed to switch from R-O to R/W: The file appears to be too short to be a valid database."
+msgstr ""
+
+#. Resource IDs: (366)
+msgid "Failed to switch from R/W to R-O: Could not release database lock.\r\nTry exiting and restarting program."
+msgstr ""
 
 #. Resource IDs: (361)
 msgid "Failsafe Backup Deletion"
@@ -3539,6 +3592,10 @@ msgstr "최종 수정"
 msgid "Last accessed on:"
 msgstr "최종 접근 시간:"
 
+#. Resource IDs: (367)
+msgid "Last clipboard action"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Last saved by:"
 msgstr "최종 편집자:"
@@ -3999,6 +4056,10 @@ msgstr "총 그룹 개수:"
 #. Resource IDs: (361)
 msgid "Number of Unknownfields"
 msgstr "알 수 없는 필드의 개수"
+
+#. Resource IDs: (367)
+msgid "Number of entries in database"
+msgstr ""
 
 #. Resource IDs: (190)
 #, c-format
@@ -4527,8 +4588,8 @@ msgid "R Ctrl"
 msgstr "R Ctrl"
 
 #. Resource IDs: (315)
-msgid "R/O"
-msgstr "읽기 전용"
+msgid "R-O"
+msgstr ""
 
 #. Resource IDs: (315)
 msgid "R/W"
@@ -4635,6 +4696,10 @@ msgstr "%s 의 보고서 기능이 %s에 시작했습니다."
 #. Resource IDs: (65535)
 msgid "Requested Values:"
 msgstr "요청된 값:"
+
+#. Resource IDs: (366)
+msgid "Requested mode change failed"
+msgstr ""
 
 #. Resource IDs: (356)
 msgid "Required Unicode font is not installed on this system.\n\nUnable to provide Virtual Keyboard."
@@ -5369,6 +5434,10 @@ msgstr "비밀번호 조합은 공백으로 남겨질 수 없습니다"
 #, c-format
 msgid "The database %s couldn't be opened.\nDo you wish to look for it elsewhere (Search), create a new database (New), or Exit?"
 msgstr "데이터베이스 %s 를 열 수 없었습니다.\n다른 곳에서 파일을 찾아보시겠습니까 (검색), 새 데이터베이스를 만드시겠습니까 (새로 만들기), 아니면 종료하시겠습니까?"
+
+#. Resource IDs: (366)
+msgid "The database has been changed since you opened it in R-O mode. It is not possible to just switch to R/W mode.\r\n\r\nTo do so, please close the database and re-open it in R/W mode."
+msgstr ""
 
 #. Resource IDs: (339)
 #, c-format
@@ -6173,6 +6242,10 @@ msgstr "Yes:"
 #. Resource IDs: (517)
 msgid "Yoruba"
 msgstr "Yoruba"
+
+#. Resource IDs: (366)
+msgid "You have elected not to save any changes - all unsaved changes will be lost. Do you wish to continue?"
+msgstr ""
 
 #. Resource IDs: (362)
 #, c-format

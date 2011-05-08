@@ -61,7 +61,7 @@ public:
     HeaderRecord &operator =(const HeaderRecord &hdr);
 
     unsigned short m_nCurrentMajorVersion, m_nCurrentMinorVersion;
-    uuid_array_t m_file_uuid_array;
+    pws_os::CUUID m_file_uuid;
     int m_nITER; // Formally not part of the header.
     std::vector<bool> m_displaystatus; // tree expansion  state vector
     StringX m_prefString; // prefererences stored in the file
