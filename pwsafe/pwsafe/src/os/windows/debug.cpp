@@ -45,7 +45,7 @@ void pws_os::Trace(LPCTSTR lpszFormat, ...)
 #else
   _tcscpy(szDebugString, sTimeStamp.c_str());
   _tcscat(szDebugString, _T(" "));
-  _tcscpy(szDebugString, nBuf > -1 ? szBuffer : szErrorMsg);
+  _tcscat(szDebugString, nBuf > -1 ? szBuffer : szErrorMsg);
 #endif
 
   OutputDebugString(szDebugString);
@@ -69,7 +69,7 @@ void pws_os::Trace0(LPCTSTR lpszFormat)
 #else
   _tcscpy(szDebugString, sTimeStamp.c_str());
   _tcscat(szDebugString, _T(" "));
-  _tcscpy(szDebugString, lpszFormat);
+  _tcscat(szDebugString, lpszFormat);
 #endif
 
   OutputDebugString(szDebugString);
