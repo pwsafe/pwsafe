@@ -1861,7 +1861,7 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
   ItemListIter iter;
   for (paiter = Possible_Shortcuts.begin();
        paiter != Possible_Shortcuts.end(); paiter++) {
-    paiter->GetUUID(entry_uuid);
+    paiter->GetARep(entry_uuid);
     iter = m_core.Find(entry_uuid);
     if (iter != End()) {
       // Still in pwlist - NOW add to Tree and List views

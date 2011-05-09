@@ -1093,9 +1093,7 @@ void CItemData::SetField(CItemField &field,
 void CItemData::CreateUUID()
 {
   CUUID uuid;
-  uuid_array_t uuid_array;
-  uuid.GetUUID(uuid_array);
-  SetUUID(uuid_array);
+  SetUUID(*uuid.GetARep());
 }
 
 void CItemData::SetName(const StringX &name, const StringX &defaultUsername)

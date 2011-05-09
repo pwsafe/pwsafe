@@ -206,9 +206,9 @@ void PWScore::Compare(PWScore *pothercore,
             currentItem.GetEmail() != compItem.GetSymbols())
           bsConflicts.flip(CItemData::SYMBOLS);
 
-        currentPos->first.GetUUID(xuuid);
+        currentPos->first.GetARep(xuuid);
         memcpy(st_data.uuid0, xuuid, sizeof(st_data.uuid0));
-        foundPos->first.GetUUID(xuuid);
+        foundPos->first.GetARep(xuuid);
         memcpy(st_data.uuid1, xuuid, sizeof(st_data.uuid1));
         st_data.bsDiffs = bsConflicts;
         st_data.indatabase = BOTH;
@@ -228,7 +228,7 @@ void PWScore::Compare(PWScore *pothercore,
       } else {
         // didn't find any match...
         numOnlyInCurrent++;
-        currentPos->first.GetUUID(xuuid);
+        currentPos->first.GetARep(xuuid);
         memcpy(st_data.uuid0, xuuid, sizeof(st_data.uuid0));
         memset(st_data.uuid1, 0, sizeof(st_data.uuid1));
         st_data.bsDiffs.reset();
@@ -267,7 +267,7 @@ void PWScore::Compare(PWScore *pothercore,
         // Didn't find any match...
         numOnlyInComp++;
         memset(st_data.uuid0, 0, sizeof(st_data.uuid0));
-        compPos->first.GetUUID(xuuid);
+        compPos->first.GetARep(xuuid);
         memcpy(st_data.uuid1, xuuid, sizeof(st_data.uuid1));
         st_data.bsDiffs.reset();
         st_data.indatabase = COMPARE;
@@ -637,7 +637,7 @@ int PWScore::MergeDependents(PWScore *pothercore, MultiCommands *pmulticmds,
   pothercore->GetAllDependentEntries(base_uuid, dependentslist, et);
   for (paiter = dependentslist.begin();
        paiter != dependentslist.end(); paiter++) {
-    paiter->GetUUID(entry_uuid);
+    paiter->GetARep(entry_uuid);
     iter = pothercore->Find(entry_uuid);
 
     if (iter == pothercore->GetEntryEndIter())
