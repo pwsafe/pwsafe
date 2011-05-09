@@ -40,8 +40,10 @@ public:
   CUUID(const StringX &s); // s is a hex string as returned by cast to StringX
   static const CUUID &NullUUID(); // singleton all-zero
   ~CUUID();
-  void GetUUID(uuid_array_t &uuid_array) const;
-  const uuid_array_t *GetUUID() const; // internally allocated, deleted in d'tor
+  // Following get Array Representation of the uuid:
+  void GetARep(uuid_array_t &uuid_array) const;
+  const uuid_array_t *GetARep() const; // internally allocated, deleted in d'tor
+  
   CUUID &operator=(const CUUID &that);
   operator StringX() const; // GetHexStr, e.g., "204012e6600f4e01a5eb515267cb0d50"
   bool operator==(const CUUID &that) const;

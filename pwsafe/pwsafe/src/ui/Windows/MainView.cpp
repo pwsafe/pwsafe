@@ -109,7 +109,7 @@ void DboxMain::UpdateGUI(UpdateGUICommand::GUI_Action ga,
   // the GUI should not be updated until after the Add.
   CItemData *pci(NULL);
 
-  ItemListIter pos = Find(*entry_uuid.GetUUID());
+  ItemListIter pos = Find(*entry_uuid.GetARep());
   if (pos != End()) {
     pci = &pos->second;
   }

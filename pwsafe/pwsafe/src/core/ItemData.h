@@ -200,7 +200,7 @@ public:
   void UpdatePassword(const StringX &password); // use when password changed!
   void SetNotes(const StringX &notes, TCHAR delimiter = 0);
   void SetUUID(const uuid_array_t &uuid); // V20
-  void SetUUID(const pws_os::CUUID &uuid) {SetUUID(*uuid.GetUUID());}
+  void SetUUID(const pws_os::CUUID &uuid) {SetUUID(*uuid.GetARep());}
   void SetGroup(const StringX &group); // V20
   void SetURL(const StringX &url); // V30
   void SetAutoType(const StringX &autotype); // V30

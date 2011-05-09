@@ -135,7 +135,7 @@ void PWScore::SortDependents(UUIDVector &dlist, StringX &csDependents)
 
   for (diter = dlist.begin(); diter != dlist.end(); diter++) {
     uuid_array_t dependent_uuid;
-    diter->GetUUID(dependent_uuid);
+    diter->GetARep(dependent_uuid);
     iter = Find(dependent_uuid);
     if (iter != GetEntryEndIter()) {
       cs_dependent = iter->second.GetGroup() + _T(":") +
@@ -231,7 +231,7 @@ void PWScore::DoDeleteEntry(const CItemData &item)
                     m_base2shortcuts_mmap.upper_bound(entry_uuid));
       for (ItemMMapIter iter = deps.begin(); iter != deps.end(); iter++) {
         uuid_array_t dep_uuid;
-        iter->second.GetUUID(dep_uuid);
+        iter->second.GetARep(dep_uuid);
         CItemData depItem = Find(dep_uuid)->second;
         DoDeleteEntry(depItem);
         // Set deleted for GUIRefreshEntry() which will remove from display
@@ -685,7 +685,7 @@ int PWScore::ReadFile(const StringX &a_filename,
                cs_possibleUUID.find_first_not_of(_T("0123456789abcdef")) == 
                StringX::npos) {
              CUUID buuid(cs_possibleUUID.c_str());
-             buuid.GetUUID(base_uuid);
+             buuid.GetARep(base_uuid);
              ci_temp.GetUUID(temp_uuid);
              if (csMyPassword.substr(1, 1) == _T("[")) {
                m_alias2base_map[temp_uuid] = base_uuid;
@@ -1289,7 +1289,7 @@ bool PWScore::Validate(stringT &status, CReport &rpt, const size_t iMAXCHARS)
             csMyPassword.substr(csMyPassword.length() - 2) == _T("~]"))) &&
           cs_possibleUUID.find_first_not_of(_T("0123456789abcdef")) == StringX::npos) {
         CUUID uuid(cs_possibleUUID.c_str());
-        uuid.GetUUID(base_uuid);
+        uuid.GetARep(base_uuid);
         ci.GetUUID(temp_uuid);
         if (csMyPassword.substr(0, 2) == _T("[[")) {
           m_alias2base_map[temp_uuid] = base_uuid;
@@ -1511,7 +1511,7 @@ void PWScore::DoAddDependentEntry(const CUUID &base_uuid,
   } else
     return;
 
-  ItemListIter iter = m_pwlist.find(*base_uuid.GetUUID());
+  ItemListIter iter = m_pwlist.find(*base_uuid.GetARep());
   ASSERT(iter != m_pwlist.end());
 
   bool baseWasNormal = iter->second.IsNormal();
@@ -1530,8 +1530,8 @@ void PWScore::DoAddDependentEntry(const CUUID &base_uuid,
   }
 
   // Add to both the base->type multimap and the type->base map
-  pmmap->insert(ItemMMap_Pair(*base_uuid.GetUUID(), *entry_uuid.GetUUID()));
-  pmap->insert(ItemMap_Pair(*entry_uuid.GetUUID(), *base_uuid.GetUUID()));
+  pmmap->insert(ItemMMap_Pair(*base_uuid.GetARep(), *entry_uuid.GetARep()));
+  pmap->insert(ItemMap_Pair(*entry_uuid.GetARep(), *base_uuid.GetARep()));
 }
 
 void PWScore::DoRemoveDependentEntry(const CUUID &base_uuid, 
@@ -1550,21 +1550,21 @@ void PWScore::DoRemoveDependentEntry(const CUUID &base_uuid,
     return;
 
   // Remove from entry -> base map
-  pmap->erase(*entry_uuid.GetUUID());
+  pmap->erase(*entry_uuid.GetARep());
 
   // Remove from base -> entry multimap
   ItemMMapIter mmiter;
   ItemMMapIter mmlastElement;
 
-  mmiter = pmmap->find(*base_uuid.GetUUID());
+  mmiter = pmmap->find(*base_uuid.GetARep());
   if (mmiter == pmmap->end())
     return;
 
-  mmlastElement = pmmap->upper_bound(*base_uuid.GetUUID());
+  mmlastElement = pmmap->upper_bound(*base_uuid.GetARep());
   CUUID mmiter_uuid;
 
   for ( ; mmiter != mmlastElement; mmiter++) {
-    mmiter_uuid = *mmiter->second.GetUUID();
+    mmiter_uuid = mmiter->second;
     if (entry_uuid == mmiter_uuid) {
       pmmap->erase(mmiter);
       break;
@@ -1572,8 +1572,8 @@ void PWScore::DoRemoveDependentEntry(const CUUID &base_uuid,
   }
 
   // Reset base entry to normal if it has no more aliases
-  if (pmmap->find(*base_uuid.GetUUID()) == pmmap->end()) {
-    ItemListIter iter = m_pwlist.find(*base_uuid.GetUUID());
+  if (pmmap->find(*base_uuid.GetARep()) == pmmap->end()) {
+    ItemListIter iter = m_pwlist.find(*base_uuid.GetARep());
     if (iter != m_pwlist.end()) {
       iter->second.SetNormal();
       GUIRefreshEntry(iter->second);
@@ -1599,7 +1599,7 @@ void PWScore::DoRemoveAllDependentEntries(const CUUID &base_uuid,
   ItemMMapIter itr;
   ItemMMapIter lastElement;
 
-  itr = pmmap->find(*base_uuid.GetUUID());
+  itr = pmmap->find(*base_uuid.GetARep());
   if (itr == pmmap->end())
     return;
 
@@ -1607,14 +1607,14 @@ void PWScore::DoRemoveAllDependentEntries(const CUUID &base_uuid,
 
   for ( ; itr != lastElement; itr++) {
     // Remove from entry -> base map
-    pmap->erase(*itr->second.GetUUID());
+    pmap->erase(*itr->second.GetARep());
   }
 
   // Remove from base -> entry multimap
-  pmmap->erase(*base_uuid.GetUUID());
+  pmmap->erase(*base_uuid.GetARep());
 
   // Reset base entry to normal
-  ItemListIter iter = m_pwlist.find(*base_uuid.GetUUID());
+  ItemListIter iter = m_pwlist.find(*base_uuid.GetARep());
   if (iter != m_pwlist.end())
     iter->second.SetNormal();
 }
@@ -1637,23 +1637,23 @@ void PWScore::DoMoveDependentEntries(const CUUID &from_baseuuid,
   ItemMMapIter from_itr;
   ItemMMapIter lastfromElement;
 
-  from_itr = pmmap->find(*from_baseuuid.GetUUID());
+  from_itr = pmmap->find(*from_baseuuid.GetARep());
   if (from_itr == pmmap->end())
     return;
 
-  lastfromElement = pmmap->upper_bound(*from_baseuuid.GetUUID());
+  lastfromElement = pmmap->upper_bound(*from_baseuuid.GetARep());
 
   for ( ; from_itr != lastfromElement; from_itr++) {
     // Add to new base in base -> entry multimap
-    pmmap->insert(ItemMMap_Pair(*to_baseuuid.GetUUID(), from_itr->second));
+    pmmap->insert(ItemMMap_Pair(*to_baseuuid.GetARep(), from_itr->second));
     // Remove from entry -> base map
     pmap->erase(from_itr->second);
     // Add to entry -> base map (new base)
-    pmap->insert(ItemMap_Pair(from_itr->second, *to_baseuuid.GetUUID()));    
+    pmap->insert(ItemMap_Pair(from_itr->second, *to_baseuuid.GetARep()));    
   }
 
   // Now delete all old base entries
-  pmmap->erase(*from_baseuuid.GetUUID());
+  pmmap->erase(*from_baseuuid.GetARep());
 }
 
 int PWScore::DoAddDependentEntries(UUIDVector &dependentlist, CReport *pRpt,
@@ -1956,7 +1956,7 @@ void PWScore::GetAllDependentEntries(const CUUID &base_uuid, UUIDVector &tlist,
   lastElement = pmmap->upper_bound(base_uuid);
 
   for ( ; itr != lastElement; itr++) {
-    itr->second.GetUUID(uuid);
+    itr->second.GetARep(uuid);
     tlist.push_back(uuid);
   }
 }
@@ -2419,7 +2419,7 @@ void PWScore::GetDBProperties(st_DBProperties &st_dbp)
   if(m_hdr.m_file_uuid == CUUID::NullUUID())
     st_dbp.file_uuid = _T("N/A");
   else {
-    CUUID huuid(*m_hdr.m_file_uuid.GetUUID(),
+    CUUID huuid(*m_hdr.m_file_uuid.GetARep(),
                 true); // true for canonical format
     ostringstreamT os;
     os << uppercase << huuid;

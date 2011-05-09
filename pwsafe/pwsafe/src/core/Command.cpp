@@ -317,13 +317,13 @@ int AddEntryCommand::Execute()
   m_pcomInt->AddChangedNodes(m_ci.GetGroup());
 
   if (m_ci.IsDependent()) {
-    m_pcomInt->DoAddDependentEntry(m_base_uuid, *m_ci.GetUUID().GetUUID(),
+    m_pcomInt->DoAddDependentEntry(m_base_uuid, m_ci.GetUUID(),
                                    m_ci.GetEntryType());
   }
 
   if (m_bNotifyGUI) {
     m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_ADD_ENTRY,
-                                      *m_ci.GetUUID().GetUUID());
+                                      m_ci.GetUUID());
   }
 
   time_t tttXTime;
@@ -349,7 +349,7 @@ void AddEntryCommand::Undo()
   if (m_ci.IsDependent()) {
     uuid_array_t entry_uuid;
     m_ci.GetUUID(entry_uuid);
-    m_pcomInt->DoRemoveDependentEntry(m_base_uuid, *m_ci.GetUUID().GetUUID(),
+    m_pcomInt->DoRemoveDependentEntry(m_base_uuid, m_ci.GetUUID(),
                                       m_ci.GetEntryType());
   }
 
@@ -379,7 +379,7 @@ DeleteEntryCommand::DeleteEntryCommand(CommandInterface *pcomInt,
       // For aliases or shortcuts, we just need the uuid of the base entry
       const ItemMap &imap = (ci.IsAlias() ? pcomInt->GetAlias2BaseMap() :
                              pcomInt->GetShortcuts2BaseMap());
-      m_base_uuid = *imap.find(uuid)->second.GetUUID();
+      m_base_uuid = imap.find(uuid)->second;
     } else if (ci.IsBase()) {
       /**
        * When a shortcut base is deleted, we need to save all
@@ -393,7 +393,7 @@ DeleteEntryCommand::DeleteEntryCommand(CommandInterface *pcomInt,
       ItemMMapConstIter iter;
       for (iter = immap.lower_bound(uuid);
            iter != immap.upper_bound(uuid); iter++) {
-        const CUUID dep_uuid(*iter->second.GetUUID());
+        const CUUID dep_uuid(iter->second);
         ItemListIter itemIter = pcomInt->Find(dep_uuid);
         ASSERT(itemIter != pcomInt->GetEntryEndIter());
         if (itemIter != pcomInt->GetEntryEndIter())
@@ -416,7 +416,7 @@ int DeleteEntryCommand::Execute()
 
   if (m_bNotifyGUI) {
     m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_DELETE_ENTRY,
-                                      *m_ci.GetUUID().GetUUID());
+                                      m_ci.GetUUID());
   }
 
   m_pcomInt->DoDeleteEntry(m_ci);
@@ -444,8 +444,7 @@ void DeleteEntryCommand::Undo()
     if (m_ci.IsShortcutBase()) { // restore dependents
       for (std::vector<CItemData>::iterator iter = m_dependents.begin();
            iter != m_dependents.end(); iter++) {
-        Command *pcmd = AddEntryCommand::Create(m_pcomInt, *iter,
-                                                *uuid.GetUUID());
+        Command *pcmd = AddEntryCommand::Create(m_pcomInt, *iter, uuid);
         pcmd->Execute();
         delete pcmd;
       }
@@ -457,8 +456,7 @@ void DeleteEntryCommand::Undo()
            iter != m_dependents.end(); iter++) {
         DeleteEntryCommand delExAlias(m_pcomInt, *iter, this);
         delExAlias.Execute(); // out with the old...
-        Command *pcmd = AddEntryCommand::Create(m_pcomInt, *iter,
-                                                *uuid.GetUUID(), this);
+        Command *pcmd = AddEntryCommand::Create(m_pcomInt, *iter, uuid, this);
         pcmd->Execute(); // in with the new!
         delete pcmd;
       }
@@ -504,7 +502,7 @@ int EditEntryCommand::Execute()
     // if the group's changed, refresh the entire tree, otherwise, just the field
     UpdateGUICommand::GUI_Action gac = (m_old_ci.GetGroup() != m_new_ci.GetGroup()) ?
       UpdateGUICommand::GUI_REFRESH_TREE : UpdateGUICommand::GUI_REFRESH_ENTRYFIELD;
-    m_pcomInt->NotifyGUINeedsUpdating(gac, *entry_uuid.GetUUID());
+    m_pcomInt->NotifyGUINeedsUpdating(gac, entry_uuid);
   }
 
   m_bState = true;
@@ -528,7 +526,7 @@ void EditEntryCommand::Undo()
     // if the group's changed, refresh the entire tree, otherwise, just the field
     UpdateGUICommand::GUI_Action gac = (m_old_ci.GetGroup() != m_new_ci.GetGroup()) ?
       UpdateGUICommand::GUI_REFRESH_TREE : UpdateGUICommand::GUI_REFRESH_ENTRYFIELD;
-    m_pcomInt->NotifyGUINeedsUpdating(gac, *entry_uuid.GetUUID());
+    m_pcomInt->NotifyGUINeedsUpdating(gac, entry_uuid);
   }
 
   RestoreState();

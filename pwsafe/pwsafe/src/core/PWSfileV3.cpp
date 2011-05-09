@@ -481,7 +481,7 @@ int PWSfileV3::WriteHeader()
     m_hdr.m_file_uuid = uuid;
   }
 
-  numWritten = WriteCBC(HDR_UUID, *m_hdr.m_file_uuid.GetUUID(),
+  numWritten = WriteCBC(HDR_UUID, *m_hdr.m_file_uuid.GetARep(),
                         sizeof(uuid_array_t));
   if (numWritten <= 0) { status = FAILURE; goto end; }
 
@@ -553,7 +553,7 @@ int PWSfileV3::WriteHeader()
     // Only save up to max as defined by FormatV3.
     for (size_t n = 0; n < num; n++) {
       for (size_t i = 0; i < sizeof(uuid_array_t); i++) {
-        oss << setw(2) << setfill('0') << hex << int(iter->GetUUID()[i]);
+        oss << setw(2) << setfill('0') << hex << int(iter->GetARep()[i]);
       }
       iter++;
     }
