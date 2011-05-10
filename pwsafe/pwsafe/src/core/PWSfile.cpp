@@ -99,8 +99,8 @@ PWSfile::HeaderRecord::HeaderRecord()
 
 PWSfile::HeaderRecord::HeaderRecord(const PWSfile::HeaderRecord &h) 
   : m_nCurrentMajorVersion(h.m_nCurrentMajorVersion),
-    m_file_uuid(h.m_file_uuid),
     m_nCurrentMinorVersion(h.m_nCurrentMinorVersion),
+    m_file_uuid(h.m_file_uuid),
     m_nITER(h.m_nITER), m_displaystatus(h.m_displaystatus),
     m_prefString(h.m_prefString), m_whenlastsaved(h.m_whenlastsaved),
     m_lastsavedby(h.m_lastsavedby), m_lastsavedon(h.m_lastsavedon),
