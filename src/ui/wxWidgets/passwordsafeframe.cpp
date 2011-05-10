@@ -3256,7 +3256,7 @@ int PasswordSafeFrame::MergeDependents(PWScore *pothercore, MultiCommands *pmult
   pothercore->GetAllDependentEntries(base_uuid, dependentslist, et);
   for (paiter = dependentslist.begin();
        paiter != dependentslist.end(); paiter++) {
-    paiter->GetUUID(entry_uuid);
+    paiter->GetARep(entry_uuid);
     iter = pothercore->Find(entry_uuid);
 
     if (iter == pothercore->GetEntryEndIter())

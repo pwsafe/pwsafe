@@ -140,15 +140,13 @@ void CProperties::Init()
   } else
     m_whatlastsaved = wls;
 
-  uuid_array_t file_uuid_array, ref_uuid_array;
-  memset(ref_uuid_array, 0x00, sizeof(ref_uuid_array));
-  m_core.GetFileUUID(file_uuid_array);
-
-  if (memcmp(file_uuid_array, ref_uuid_array, sizeof(file_uuid_array)) == 0)
+  pws_os::CUUID file_uuid = m_core.GetFileUUID();
+  if (file_uuid == pws_os::CUUID::NullUUID())
     m_file_uuid = _T("N/A");
   else {
     ostringstreamT os;
-    pws_os::CUUID huuid(file_uuid_array, true); // true for canonical format
+    pws_os::CUUID huuid(*file_uuid.GetARep(),
+			true); // true for canonical format
     os << huuid;
     m_file_uuid = os.str().c_str();
   }

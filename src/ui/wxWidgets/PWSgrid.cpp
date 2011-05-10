@@ -291,7 +291,7 @@ void PWSGrid::DeleteItems(int row, size_t numItems)
       m_row_map.erase(iter);    
       if (iter_uuid != m_uuid_map.end()) {
         uuid_array_t uuid;
-        iter_uuid->first.GetUUID(uuid);
+        iter_uuid->first.GetARep(uuid);
         m_uuid_map.erase(iter_uuid);
         ItemListIter citer = m_core.Find(uuid);
         if (citer != m_core.GetEntryEndIter()){
@@ -366,7 +366,7 @@ CItemData *PWSGrid::GetItem(int row) const
   RowUUIDMapT::const_iterator iter = m_row_map.find(row);
   if (iter != m_row_map.end()) {
     uuid_array_t uuid;
-    iter->second.GetUUID(uuid);
+    iter->second.GetARep(uuid);
     ItemListIter itemiter = m_core.Find(uuid);
     if (itemiter == m_core.GetEntryEndIter())
       return NULL;

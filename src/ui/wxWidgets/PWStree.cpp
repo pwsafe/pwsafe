@@ -462,7 +462,7 @@ void PWSTreeCtrl::OnContextMenu( wxTreeEvent& evt )
 void PWSTreeCtrl::SelectItem(const CUUID & uuid)
 {
   uuid_array_t uuid_array;
-  uuid.GetUUID(uuid_array);
+  uuid.GetARep(uuid_array);
   wxTreeItemId id = Find(uuid_array);
   if (id.IsOk())
       wxTreeCtrl::SelectItem(id);
