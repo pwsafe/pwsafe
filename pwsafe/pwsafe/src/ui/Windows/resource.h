@@ -728,6 +728,7 @@
 #define IDC_STATIC_DEFAULTSYMBOLS       1441
 #define IDC_DEFAULTAUTOTYPE             1442
 #define IDC_STATIC_DRAGAUTO             1443
+#define IDC_COPYPSWDURL                 1444
 
 // Next default values for new objects
 // 
@@ -735,7 +736,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        501
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1444
+#define _APS_NEXT_CONTROL_VALUE         1445
 #define _APS_NEXT_SYMED_VALUE           166
 #endif
 #endif

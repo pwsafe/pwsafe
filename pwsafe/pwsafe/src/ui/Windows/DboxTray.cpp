@@ -160,9 +160,14 @@ void DboxMain::OnTrayBrowse(UINT nID)
                                   ci.GetUser(), ci.GetPassword(), 
                                   ci.GetNotes(),
                                   vactionverboffsets);
+
     LaunchBrowser(ci.GetURL().c_str(), sxAutotype, vactionverboffsets, bDoAutotype);
-    SetClipboardData(ci.GetPassword());
-    UpdateLastClipboardAction(CItemData::PASSWORD);
+
+    if (PWSprefs::GetInstance()->GetPref(PWSprefs::CopyPasswordWhenBrowseToURL)) {
+      SetClipboardData(ci.GetPassword());
+      UpdateLastClipboardAction(CItemData::PASSWORD);
+    } else
+      UpdateLastClipboardAction(CItemData::URL);
   }
   UpdateAccessTime(&ci);
 }
@@ -253,6 +258,7 @@ void DboxMain::OnTraySendEmail(UINT nID)
   } else {
     cs_command = ci.GetURL().c_str();
   }
+
   if (!cs_command.IsEmpty()) {
     std::vector<size_t> vactionverboffsets;
     LaunchBrowser(cs_command, L"", vactionverboffsets, false);

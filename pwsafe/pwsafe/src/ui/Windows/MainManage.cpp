@@ -444,13 +444,13 @@ void DboxMain::OnOptions()
   passwordpolicy.m_useownsymbols = 
             (cs_symbols.GetLength() == 0) ? DEFAULT_SYMBOLS : OWN_SYMBOLS;
 
-  security.m_clearclipboardonminimize = prefs->
+  security.m_ClearClipboardOnMinimize = prefs->
     GetPref(PWSprefs::ClearClipboardOnMinimize) ? TRUE : FALSE;
-  security.m_clearclipboardonexit = prefs->
+  security.m_ClearClipboardOnExit = prefs->
     GetPref(PWSprefs::ClearClipboardOnExit) ? TRUE : FALSE;
   security.m_LockOnMinimize = prefs->
     GetPref(PWSprefs::DatabaseClear) ? TRUE : FALSE;
-  security.m_confirmcopy = prefs->
+  security.m_ConfirmCopy = prefs->
     GetPref(PWSprefs::DontAskQuestion) ? FALSE : TRUE;
   security.m_LockOnWindowLock = prevLockOWL = prefs->
     GetPref(PWSprefs::LockOnWindowLock) ? TRUE : FALSE;
@@ -458,6 +458,8 @@ void DboxMain::OnOptions()
     GetPref(PWSprefs::LockDBOnIdleTimeout) ? TRUE : FALSE;
   security.m_IdleTimeOut = prevLockInterval = prefs->
     GetPref(PWSprefs::IdleTimeout);
+  security.m_CopyPswdBrowseURL = prefs->
+    GetPref(PWSprefs::CopyPasswordWhenBrowseToURL) ? TRUE : FALSE;
 
   shortcuts.m_iColWidth = prefs->
     GetPref(PWSprefs::OptShortcutColumnWidth);
@@ -632,15 +634,17 @@ void DboxMain::OnOptions()
 #endif
 
     prefs->SetPref(PWSprefs::ClearClipboardOnMinimize,
-                   security.m_clearclipboardonminimize == TRUE);
+                   security.m_ClearClipboardOnMinimize == TRUE);
     prefs->SetPref(PWSprefs::ClearClipboardOnExit,
-                   security.m_clearclipboardonexit == TRUE);
+                   security.m_ClearClipboardOnExit == TRUE);
     prefs->SetPref(PWSprefs::DatabaseClear,
                    security.m_LockOnMinimize == TRUE);
     prefs->SetPref(PWSprefs::DontAskQuestion,
-                   security.m_confirmcopy == FALSE);
+                   security.m_ConfirmCopy == FALSE);
     prefs->SetPref(PWSprefs::LockOnWindowLock,
                    security.m_LockOnWindowLock == TRUE);
+    prefs->SetPref(PWSprefs::CopyPasswordWhenBrowseToURL,
+                   security.m_CopyPswdBrowseURL == TRUE);
 
     prefs->SetPref(PWSprefs::UseSystemTray,
                    system.m_usesystemtray == TRUE);

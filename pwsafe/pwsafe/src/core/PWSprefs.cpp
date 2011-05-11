@@ -124,6 +124,7 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("HighlightChanges"), true, ptApplication},            // application
   {_T("HideSystemTray"), false, ptApplication},             // application
   {_T("UsePrimarySelectionForClipboard"), false, ptApplication}, //application
+  {_T("CopyPasswordWhenBrowseToURL"), true, ptDatabase},    // database
 };
 
 // Default value = -1 means set at runtime

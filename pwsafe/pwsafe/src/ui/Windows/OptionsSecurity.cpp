@@ -53,13 +53,14 @@ void COptionsSecurity::DoDataExchange(CDataExchange* pDX)
   COptions_PropertyPage::DoDataExchange(pDX);
 
   //{{AFX_DATA_MAP(COptionsSecurity)
-  DDX_Check(pDX, IDC_CLEARBOARDONEXIT, m_clearclipboardonexit);
-  DDX_Check(pDX, IDC_CLEARBOARDONMINIMIZE, m_clearclipboardonminimize);
+  DDX_Check(pDX, IDC_CLEARBOARDONEXIT, m_ClearClipboardOnExit);
+  DDX_Check(pDX, IDC_CLEARBOARDONMINIMIZE, m_ClearClipboardOnMinimize);
   DDX_Check(pDX, IDC_LOCKONMINIMIZE, m_LockOnMinimize);
-  DDX_Check(pDX, IDC_CONFIRMCOPY, m_confirmcopy);
+  DDX_Check(pDX, IDC_CONFIRMCOPY, m_ConfirmCopy);
   DDX_Check(pDX, IDC_LOCKONSCREEN, m_LockOnWindowLock);
   DDX_Check(pDX, IDC_LOCK_TIMER, m_LockOnIdleTimeout);
   DDX_Text(pDX, IDC_IDLE_TIMEOUT, m_IdleTimeOut);
+  DDX_Check(pDX, IDC_COPYPSWDURL, m_CopyPswdBrowseURL);
   //}}AFX_DATA_MAP
 }
 
@@ -111,12 +112,13 @@ BOOL COptionsSecurity::OnInitDialog()
   pspin->SetBase(10);
   pspin->SetPos(m_IdleTimeOut);
 
-  m_saveclearclipboardonminimize = m_clearclipboardonminimize;
-  m_saveclearclipboardonexit = m_clearclipboardonexit;
+  m_saveClearClipboardOnMinimize = m_ClearClipboardOnMinimize;
+  m_saveClearClipboardOnExit = m_ClearClipboardOnExit;
   m_saveLockOnMinimize = m_LockOnMinimize;
-  m_saveconfirmcopy = m_confirmcopy;
+  m_saveConfirmCopy = m_ConfirmCopy;
   m_saveLockOnWindowLock = m_LockOnWindowLock;
   m_saveLockOnIdleTimeout = m_LockOnIdleTimeout;
+  m_saveCopyPswdBrowseURL = m_CopyPswdBrowseURL;
   m_saveIdleTimeOut = m_IdleTimeOut;
  
   return TRUE;  // return TRUE unless you set the focus to a control
@@ -133,16 +135,17 @@ LRESULT COptionsSecurity::OnQuerySiblings(WPARAM wParam, LPARAM lParam)
       {
       BOOL * pCCOM = (BOOL *)lParam;
       ASSERT(pCCOM != NULL);
-      *pCCOM = (BOOL)m_clearclipboardonminimize;
+      *pCCOM = (BOOL)m_ClearClipboardOnMinimize;
       }
       return 1L;
     case PP_DATA_CHANGED:
-      if (m_saveclearclipboardonminimize != m_clearclipboardonminimize ||
-          m_saveclearclipboardonexit     != m_clearclipboardonexit     ||
+      if (m_saveClearClipboardOnMinimize != m_ClearClipboardOnMinimize ||
+          m_saveClearClipboardOnExit     != m_ClearClipboardOnExit     ||
           m_saveLockOnMinimize           != m_LockOnMinimize           ||
-          m_saveconfirmcopy              != m_confirmcopy              ||
+          m_saveConfirmCopy              != m_ConfirmCopy              ||
           m_saveLockOnWindowLock         != m_LockOnWindowLock         ||
           m_saveLockOnIdleTimeout        != m_LockOnIdleTimeout        ||
+          m_saveCopyPswdBrowseURL        != m_CopyPswdBrowseURL        ||
           (m_LockOnIdleTimeout           == TRUE &&
            m_saveIdleTimeOut             != m_IdleTimeOut))
         return 1L;
@@ -184,7 +187,7 @@ BOOL COptionsSecurity::OnApply()
         PWSprefs::GetInstance()->GetPref(PWSprefs::DoubleClickAction);
   }
 
-  if (m_clearclipboardonminimize &&
+  if (m_ClearClipboardOnMinimize &&
       iDoubleClickAction == PWSprefs::DoubleClickCopyPasswordMinimize) {
     gmb.AfxMessageBox(IDS_MINIMIZECONFLICT);
 

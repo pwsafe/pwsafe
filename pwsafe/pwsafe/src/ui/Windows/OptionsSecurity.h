@@ -26,21 +26,23 @@ public:
   // Dialog Data
   //{{AFX_DATA(COptionsSecurity)
   enum { IDD = IDD_PS_SECURITY };
-  BOOL m_clearclipboardonminimize;
-  BOOL m_clearclipboardonexit;
+  BOOL m_ClearClipboardOnMinimize;
+  BOOL m_ClearClipboardOnExit;
   BOOL m_LockOnMinimize;
-  BOOL m_confirmcopy;
+  BOOL m_ConfirmCopy;
   BOOL m_LockOnWindowLock;
   BOOL m_LockOnIdleTimeout;
+  BOOL m_CopyPswdBrowseURL;
   UINT m_IdleTimeOut;
   //}}AFX_DATA
 
-  BOOL m_saveclearclipboardonminimize;
-  BOOL m_saveclearclipboardonexit;
+  BOOL m_saveClearClipboardOnMinimize;
+  BOOL m_saveClearClipboardOnExit;
   BOOL m_saveLockOnMinimize;
-  BOOL m_saveconfirmcopy;
+  BOOL m_saveConfirmCopy;
   BOOL m_saveLockOnWindowLock;
   BOOL m_saveLockOnIdleTimeout;
+  BOOL m_saveCopyPswdBrowseURL;
   UINT m_saveIdleTimeOut;
 
   // Overrides
