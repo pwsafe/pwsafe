@@ -28,6 +28,8 @@
 #include <shlwapi.h>
 #include <fstream>
 
+using pws_os::CUUID;
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE

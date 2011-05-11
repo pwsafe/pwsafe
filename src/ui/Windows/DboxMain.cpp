@@ -2477,9 +2477,7 @@ void DboxMain::UpdateAccessTime(CItemData *pci)
   ASSERT(pci != NULL);
 
   // First add to RUE List
-  uuid_array_t RUEuuid;
-  pci->GetUUID(RUEuuid);
-  m_RUEList.AddRUEntry(RUEuuid);
+  m_RUEList.AddRUEntry(pci->GetUUID());
 
   bool bMaintainDateTimeStamps = PWSprefs::GetInstance()->
               GetPref(PWSprefs::MaintainDateTimeStamps);

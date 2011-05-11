@@ -874,10 +874,7 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
     PWSUtil::WriteXMLField(oss, "notes", tmp, utf8conv);
   }
 
-  uuid_array_t uuid_array;
-  GetUUID(uuid_array);
-  const CUUID uuid(uuid_array);
-  oss << "\t\t<uuid><![CDATA[" << uuid << "]]></uuid>" << endl;
+  oss << "\t\t<uuid><![CDATA[" << GetUUID() << "]]></uuid>" << endl;
 
   time_t t;
   int i32;

@@ -737,12 +737,10 @@ void XMLFileHandlers::AddEntries()
 
     // If a potential alias, add to the vector for later verification and processing
     if (cur_entry->entrytype == ALIAS && !cur_entry->bforce_normal_entry) {
-      ci_temp.GetUUID(uuid_array);
-      m_pPossible_Aliases->push_back(uuid_array);
+      m_pPossible_Aliases->push_back(ci_temp.GetUUID());
     }
     if (cur_entry->entrytype == SHORTCUT && !cur_entry->bforce_normal_entry) {
-      ci_temp.GetUUID(uuid_array);
-      m_pPossible_Shortcuts->push_back(uuid_array);
+      m_pPossible_Shortcuts->push_back(ci_temp.GetUUID());
     }
 
     if (!bIntoEmpty) {

@@ -1233,15 +1233,13 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
     }
 
     if (Replace(csPassword, _T(':'), _T(';')) <= 2) {
-      uuid_array_t temp_uuid;
-      ci_temp.GetUUID(temp_uuid);
       if (csPassword.substr(0, 2) == _T("[[") &&
           csPassword.substr(csPassword.length() - 2) == _T("]]")) {
-        Possible_Aliases.push_back(temp_uuid);
+        Possible_Aliases.push_back(ci_temp.GetUUID());
       }
       if (csPassword.substr(0, 2) == _T("[~") &&
           csPassword.substr(csPassword.length() - 2) == _T("~]")) {
-        Possible_Shortcuts.push_back(temp_uuid);
+        Possible_Shortcuts.push_back(ci_temp.GetUUID());
       }
     }
 

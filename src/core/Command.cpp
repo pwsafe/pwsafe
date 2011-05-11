@@ -206,8 +206,7 @@ int UpdateGUICommand::Execute()
 {
   if (m_When == WN_EXECUTE || m_When == WN_EXECUTE_REDO || 
       m_When == WN_REDO || m_When == WN_ALL) {
-    uuid_array_t entry_uuid = {'0'}; // dummy
-    m_pcomInt->NotifyGUINeedsUpdating(m_ga, entry_uuid);
+    m_pcomInt->NotifyGUINeedsUpdating(m_ga, CUUID::NullUUID());
   }
   return 0;
 }
@@ -216,8 +215,7 @@ int UpdateGUICommand::Redo()
 {
   if (m_When == WN_EXECUTE || m_When == WN_EXECUTE_REDO || 
       m_When == WN_REDO || m_When == WN_ALL) {
-    uuid_array_t entry_uuid = {'0'}; // dummy
-    m_pcomInt->NotifyGUINeedsUpdating(m_ga, entry_uuid);
+    m_pcomInt->NotifyGUINeedsUpdating(m_ga, CUUID::NullUUID());
   }
   return 0;
 }
@@ -225,8 +223,7 @@ int UpdateGUICommand::Redo()
 void UpdateGUICommand::Undo()
 {
   if (m_When == WN_UNDO || m_When == WN_ALL) {
-    uuid_array_t entry_uuid = {'0'}; // dummy
-    m_pcomInt->NotifyGUINeedsUpdating(m_ga, entry_uuid);
+    m_pcomInt->NotifyGUINeedsUpdating(m_ga, CUUID::NullUUID());
   }
 }
 
@@ -250,9 +247,8 @@ int DBPrefsCommand::Execute()
   m_pcomInt->SetDBPrefsChanged(m_pcomInt->HaveHeaderPreferencesChanged(m_sxNewDBPrefs));
 
   if (m_bNotifyGUI) {
-    uuid_array_t entry_uuid = {'0'}; // dummy
     m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_DB_PREFERENCES_CHANGED,
-                                      entry_uuid);
+                                      CUUID::NullUUID());
   }
 
   m_bState = true;
@@ -273,9 +269,8 @@ void DBPrefsCommand::Undo()
   m_pcomInt->SetDBPrefsChanged(m_bOldState);
 
   if (m_bNotifyGUI) {
-    uuid_array_t entry_uuid = {'0'}; // dummy
     m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_DB_PREFERENCES_CHANGED,
-                                      entry_uuid);
+                                      CUUID::NullUUID());
   }
 
   m_bState = false;
@@ -347,8 +342,6 @@ void AddEntryCommand::Undo()
   dec.Execute();
 
   if (m_ci.IsDependent()) {
-    uuid_array_t entry_uuid;
-    m_ci.GetUUID(entry_uuid);
     m_pcomInt->DoRemoveDependentEntry(m_base_uuid, m_ci.GetUUID(),
                                       m_ci.GetEntryType());
   }

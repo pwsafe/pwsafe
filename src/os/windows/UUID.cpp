@@ -64,11 +64,7 @@ const pws_os::CUUID &pws_os::CUUID::NullUUID()
 
 pws_os::CUUID::CUUID() : m_ua(NULL), m_canonic(false)
 {
-#ifdef _WIN32
   UuidCreate(&m_uuid);
-#else
-  uuid_generate(m_uuid);
-#endif
 }
 
 pws_os::CUUID::CUUID(const CUUID &uuid)
@@ -146,10 +142,10 @@ bool pws_os::CUUID::operator<(const pws_os::CUUID &that) const
 
 std::ostream &pws_os::operator<<(std::ostream &os, const pws_os::CUUID &uuid)
 {
-  uuid_array_t uuid_a;
-  uuid.GetARep(uuid_a);
+  uuid_array_t ua;
+  uuid.GetARep(ua);
   for (size_t i = 0; i < sizeof(uuid_array_t); i++) {
-    os << setw(2) << setfill('0') << hex << int(uuid_a[i]);
+    os << setw(2) << setfill('0') << hex << int(ua[i]);
     if (uuid.m_canonic && (i == 3 || i == 5 || i == 7 || i == 9))
       os << "-";
   }
@@ -158,10 +154,10 @@ std::ostream &pws_os::operator<<(std::ostream &os, const pws_os::CUUID &uuid)
 
 std::wostream &pws_os::operator<<(std::wostream &os, const pws_os::CUUID &uuid)
 {
-  uuid_array_t uuid_a;
-  uuid.GetARep(uuid_a);
+  uuid_array_t ua;
+  uuid.GetARep(ua);
   for (size_t i = 0; i < sizeof(uuid_array_t); i++) {
-    os << setw(2) << setfill(wchar_t('0')) << hex << int(uuid_a[i]);
+    os << setw(2) << setfill(wchar_t('0')) << hex << int(ua[i]);
     if (uuid.m_canonic && (i == 3 || i == 5 || i == 7 || i == 9))
       os << L"-";
   }
@@ -184,17 +180,15 @@ pws_os::CUUID::operator StringX() const
 int main()
 {
   uuid_str_t str;
-  uuid_array_t uuid_array;
+  uuid_array_t ua;
 
   for (int i = 0; i< 10; i++) {
     CUUID uuid;
     printf("%s\n",str);
-    uuid.GetARep(uuid_array);
+    uuid.GetARep(ua);
     printf(_T("%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x\n"),
-              uuid_array[0], uuid_array[1], uuid_array[2], uuid_array[3], 
-              uuid_array[4], uuid_array[5], uuid_array[6], uuid_array[7], 
-              uuid_array[8], uuid_array[9], uuid_array[10], uuid_array[11], 
-              uuid_array[12], uuid_array[13], uuid_array[14], uuid_array[15]);
+              ua[0], ua[1], ua[2],  ua[3],  ua[4],  ua[5],  ua[6],  ua[7], 
+              ua[8], ua[9], ua[10], ua[11], ua[12], ua[13], ua[14], ua[15]);
   }
   return 0;
 }

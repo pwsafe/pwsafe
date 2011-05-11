@@ -2505,16 +2505,16 @@ LRESULT DboxMain::OnProcessCompareResultFunction(WPARAM wParam, LPARAM lFunction
   PWScore *pcore;
   st_CompareInfo *st_info;
   LRESULT lres(FALSE);
-  uuid_array_t entryUUID;
+  CUUID entryUUID;
 
   st_info = (st_CompareInfo *)wParam;
 
   if (st_info->clicked_column == CCompareResultsDlg::CURRENT) {
     pcore = st_info->pcore0;
-    memcpy(entryUUID, st_info->uuid0, sizeof(entryUUID));
+    entryUUID = st_info->uuid0;
   } else {
     pcore = st_info->pcore1;
-    memcpy(entryUUID, st_info->uuid1, sizeof(entryUUID));
+    entryUUID = st_info->uuid1;
   }
 
   switch ((int)lFunction) {

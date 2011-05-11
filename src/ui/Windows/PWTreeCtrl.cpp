@@ -1164,7 +1164,6 @@ bool CPWTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop,
     ci_temp.SetDisplayInfo(new DisplayInfo);
 
     Command *pcmd(NULL);
-    uuid_array_t base_uuid;
     CItemData::EntryType temp_et = ci_temp.GetEntryType();
     switch (temp_et) {
     case CItemData::ET_ALIASBASE:
@@ -1178,14 +1177,14 @@ bool CPWTreeCtrl::CopyItem(HTREEITEM hitemDrag, HTREEITEM hitemDrop,
     case CItemData::ET_ALIAS:
       ci_temp.SetPassword(CSecString(L"[Alias]"));
       // Get base of original alias and make this copy point to it
-      m_pDbx->GetBaseEntry(pci)->GetUUID(base_uuid);
-      pcmd = AddEntryCommand::Create(m_pDbx->GetCore(), ci_temp, base_uuid);
+      pcmd = AddEntryCommand::Create(m_pDbx->GetCore(), ci_temp,
+                                m_pDbx->GetBaseEntry(pci)->GetUUID());
       break;
     case CItemData::ET_SHORTCUT:
       ci_temp.SetPassword(CSecString(L"[Shortcut]"));
       // Get base of original shortcut and make this copy point to it
-      m_pDbx->GetBaseEntry(pci)->GetUUID(base_uuid);
-      pcmd = AddEntryCommand::Create(m_pDbx->GetCore(), ci_temp, base_uuid);
+      pcmd = AddEntryCommand::Create(m_pDbx->GetCore(), ci_temp,
+                                m_pDbx->GetBaseEntry(pci)->GetUUID());
       break;
     default:
       ASSERT(0);

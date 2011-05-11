@@ -134,9 +134,7 @@ void PWScore::SortDependents(UUIDVector &dlist, StringX &csDependents)
   StringX cs_dependent;
 
   for (diter = dlist.begin(); diter != dlist.end(); diter++) {
-    uuid_array_t dependent_uuid;
-    diter->GetARep(dependent_uuid);
-    iter = Find(dependent_uuid);
+    iter = Find(*diter);
     if (iter != GetEntryEndIter()) {
       cs_dependent = iter->second.GetGroup() + _T(":") +
                      iter->second.GetTitle() + _T(":") +
@@ -155,10 +153,8 @@ void PWScore::SortDependents(UUIDVector &dlist, StringX &csDependents)
 void PWScore::DoAddEntry(const CItemData &item)
 {
   // Also "UndoDeleteEntry" !
-  uuid_array_t entry_uuid;
-  item.GetUUID(entry_uuid);
-  ASSERT(m_pwlist.find(entry_uuid) == m_pwlist.end());
-  m_pwlist[entry_uuid] = item;
+  ASSERT(m_pwlist.find(item.GetUUID()) == m_pwlist.end());
+  m_pwlist[item.GetUUID()] = item;
 
   if (item.NumberUnknownFields() > 0)
     IncrementNumRecordsWithUnknownFields();
@@ -230,9 +226,7 @@ void PWScore::DoDeleteEntry(const CItemData &item)
       ItemMMap deps(m_base2shortcuts_mmap.lower_bound(entry_uuid),
                     m_base2shortcuts_mmap.upper_bound(entry_uuid));
       for (ItemMMapIter iter = deps.begin(); iter != deps.end(); iter++) {
-        uuid_array_t dep_uuid;
-        iter->second.GetARep(dep_uuid);
-        CItemData depItem = Find(dep_uuid)->second;
+        CItemData depItem = Find(iter->first)->second;
         DoDeleteEntry(depItem);
         // Set deleted for GUIRefreshEntry() which will remove from display
         depItem.SetStatus(CItemData::ES_DELETED);
@@ -252,11 +246,8 @@ void PWScore::DoDeleteEntry(const CItemData &item)
 void PWScore::DoReplaceEntry(const CItemData &old_ci, const CItemData &new_ci)
 {
   // Assumes that old_uuid == new_uuid
-  uuid_array_t old_uuid, new_uuid;
-  old_ci.GetUUID(old_uuid);
-  new_ci.GetUUID(new_uuid);
-  ASSERT(memcmp(old_uuid, new_uuid, sizeof(uuid_array_t)) == 0);
-  m_pwlist[old_uuid] = new_ci;
+  ASSERT(old_ci.GetUUID() == new_ci.GetUUID());
+  m_pwlist[old_ci.GetUUID()] = new_ci;
   if (old_ci.GetEntryType() != new_ci.GetEntryType() || old_ci.IsProtected() != new_ci.IsProtected())
     GUIRefreshEntry(new_ci);
 
@@ -619,7 +610,6 @@ int PWScore::ReadFile(const StringX &a_filename,
   SetPassKey(a_passkey); // so user won't be prompted for saves
 
   CItemData ci_temp;
-  uuid_array_t base_uuid, temp_uuid;
   StringX csMyPassword, cs_possibleUUID;
   bool go = true;
   bool limited = false;
@@ -654,15 +644,14 @@ int PWScore::ReadFile(const StringX &a_filename,
           numlarge++;
           uimaxsize = MAX(uimaxsize, ci_temp.GetSize());
         }
-        uuid_array_t uuid;
-        ci_temp.GetUUID(uuid);
+
         /*
          * If, for some reason, we're reading in a uuid that we already have
          * we will change the uuid, rather than overwrite an entry.
          * This is to protect the user from possible bugs that break
          * the uniqueness requirement of uuids.
          */
-         if (m_pwlist.find(uuid) != m_pwlist.end()) {
+         if (m_pwlist.find(ci_temp.GetUUID()) != m_pwlist.end()) {
 #if defined( _DEBUG ) || defined( DEBUG )
            pws_os::Trace0(_T("Non-Unique uuid detected:\n"));
            CItemData::FieldBits bf;
@@ -671,7 +660,6 @@ int PWScore::ReadFile(const StringX &a_filename,
            pws_os::Trace(_T("%s\n"), dump.c_str());
 #endif
            ci_temp.CreateUUID(); // replace duplicated uuid
-           ci_temp.GetUUID(uuid); // refresh uuid_array
          }
          // following is duplicated in Validate() - need to refactor
          csMyPassword = ci_temp.GetPassword();
@@ -685,14 +673,12 @@ int PWScore::ReadFile(const StringX &a_filename,
                cs_possibleUUID.find_first_not_of(_T("0123456789abcdef")) == 
                StringX::npos) {
              CUUID buuid(cs_possibleUUID.c_str());
-             buuid.GetARep(base_uuid);
-             ci_temp.GetUUID(temp_uuid);
              if (csMyPassword.substr(1, 1) == _T("[")) {
-               m_alias2base_map[temp_uuid] = base_uuid;
-               Possible_Aliases.push_back(temp_uuid);
+               m_alias2base_map[ci_temp.GetUUID()] = buuid;
+               Possible_Aliases.push_back(ci_temp.GetUUID());
              } else {
-               m_shortcut2base_map[temp_uuid] = base_uuid;
-               Possible_Shortcuts.push_back(temp_uuid);
+               m_shortcut2base_map[ci_temp.GetUUID()] = buuid;
+               Possible_Shortcuts.push_back(ci_temp.GetUUID());
              }
            }
          } // uuid matching
@@ -703,7 +689,7 @@ int PWScore::ReadFile(const StringX &a_filename,
            limited = true;
          }
 #else
-         m_pwlist.insert(make_pair(CUUID(uuid), ci_temp));
+         m_pwlist.insert(make_pair(ci_temp.GetUUID(), ci_temp));
 #endif
          time_t tttXTime;
          ci_temp.GetXTime(tttXTime);
@@ -1207,8 +1193,6 @@ bool PWScore::Validate(stringT &status, CReport &rpt, const size_t iMAXCHARS)
   // Also group/title/user must be unique.
   // Check that no text field has more than MAXCHARS, that can displayed
   // in the GUI's text control.
-
-  uuid_array_t uuid_array, base_uuid, temp_uuid;
   int n = -1;
   unsigned int num_PWH_fixed = 0;
   unsigned int num_uuid_fixed = 0;
@@ -1235,6 +1219,7 @@ bool PWScore::Validate(stringT &status, CReport &rpt, const size_t iMAXCHARS)
     CItemData fixedItem(ci);
     bool bFixed(false);
 
+    uuid_array_t uuid_array;
     ci.GetUUID(uuid_array);
     n++;
 
@@ -1288,15 +1273,13 @@ bool PWScore::Validate(stringT &status, CReport &rpt, const size_t iMAXCHARS)
            (csMyPassword.substr(0, 2) == _T("[~") &&
             csMyPassword.substr(csMyPassword.length() - 2) == _T("~]"))) &&
           cs_possibleUUID.find_first_not_of(_T("0123456789abcdef")) == StringX::npos) {
-        CUUID uuid(cs_possibleUUID.c_str());
-        uuid.GetARep(base_uuid);
-        ci.GetUUID(temp_uuid);
+        CUUID buuid(cs_possibleUUID.c_str());
         if (csMyPassword.substr(0, 2) == _T("[[")) {
-          m_alias2base_map[temp_uuid] = base_uuid;
-          Possible_Aliases.push_back(temp_uuid);
+          m_alias2base_map[ci.GetUUID()] = buuid;
+          Possible_Aliases.push_back(ci.GetUUID());
         } else {
-          m_shortcut2base_map[temp_uuid] = base_uuid;
-          Possible_Shortcuts.push_back(temp_uuid);
+          m_shortcut2base_map[ci.GetUUID()] = buuid;
+          Possible_Shortcuts.push_back(ci.GetUUID());
         }
       }
     }
@@ -1511,7 +1494,7 @@ void PWScore::DoAddDependentEntry(const CUUID &base_uuid,
   } else
     return;
 
-  ItemListIter iter = m_pwlist.find(*base_uuid.GetARep());
+  ItemListIter iter = m_pwlist.find(base_uuid);
   ASSERT(iter != m_pwlist.end());
 
   bool baseWasNormal = iter->second.IsNormal();
@@ -1530,8 +1513,8 @@ void PWScore::DoAddDependentEntry(const CUUID &base_uuid,
   }
 
   // Add to both the base->type multimap and the type->base map
-  pmmap->insert(ItemMMap_Pair(*base_uuid.GetARep(), *entry_uuid.GetARep()));
-  pmap->insert(ItemMap_Pair(*entry_uuid.GetARep(), *base_uuid.GetARep()));
+  pmmap->insert(ItemMMap_Pair(base_uuid, entry_uuid));
+  pmap->insert(ItemMap_Pair(entry_uuid, base_uuid));
 }
 
 void PWScore::DoRemoveDependentEntry(const CUUID &base_uuid, 
@@ -1550,17 +1533,17 @@ void PWScore::DoRemoveDependentEntry(const CUUID &base_uuid,
     return;
 
   // Remove from entry -> base map
-  pmap->erase(*entry_uuid.GetARep());
+  pmap->erase(entry_uuid);
 
   // Remove from base -> entry multimap
   ItemMMapIter mmiter;
   ItemMMapIter mmlastElement;
 
-  mmiter = pmmap->find(*base_uuid.GetARep());
+  mmiter = pmmap->find(base_uuid);
   if (mmiter == pmmap->end())
     return;
 
-  mmlastElement = pmmap->upper_bound(*base_uuid.GetARep());
+  mmlastElement = pmmap->upper_bound(base_uuid);
   CUUID mmiter_uuid;
 
   for ( ; mmiter != mmlastElement; mmiter++) {
@@ -1572,8 +1555,8 @@ void PWScore::DoRemoveDependentEntry(const CUUID &base_uuid,
   }
 
   // Reset base entry to normal if it has no more aliases
-  if (pmmap->find(*base_uuid.GetARep()) == pmmap->end()) {
-    ItemListIter iter = m_pwlist.find(*base_uuid.GetARep());
+  if (pmmap->find(base_uuid) == pmmap->end()) {
+    ItemListIter iter = m_pwlist.find(base_uuid);
     if (iter != m_pwlist.end()) {
       iter->second.SetNormal();
       GUIRefreshEntry(iter->second);
@@ -1599,7 +1582,7 @@ void PWScore::DoRemoveAllDependentEntries(const CUUID &base_uuid,
   ItemMMapIter itr;
   ItemMMapIter lastElement;
 
-  itr = pmmap->find(*base_uuid.GetARep());
+  itr = pmmap->find(base_uuid);
   if (itr == pmmap->end())
     return;
 
@@ -1607,14 +1590,14 @@ void PWScore::DoRemoveAllDependentEntries(const CUUID &base_uuid,
 
   for ( ; itr != lastElement; itr++) {
     // Remove from entry -> base map
-    pmap->erase(*itr->second.GetARep());
+    pmap->erase(itr->second);
   }
 
   // Remove from base -> entry multimap
-  pmmap->erase(*base_uuid.GetARep());
+  pmmap->erase(base_uuid);
 
   // Reset base entry to normal
-  ItemListIter iter = m_pwlist.find(*base_uuid.GetARep());
+  ItemListIter iter = m_pwlist.find(base_uuid);
   if (iter != m_pwlist.end())
     iter->second.SetNormal();
 }
@@ -1637,23 +1620,23 @@ void PWScore::DoMoveDependentEntries(const CUUID &from_baseuuid,
   ItemMMapIter from_itr;
   ItemMMapIter lastfromElement;
 
-  from_itr = pmmap->find(*from_baseuuid.GetARep());
+  from_itr = pmmap->find(from_baseuuid);
   if (from_itr == pmmap->end())
     return;
 
-  lastfromElement = pmmap->upper_bound(*from_baseuuid.GetARep());
+  lastfromElement = pmmap->upper_bound(from_baseuuid);
 
   for ( ; from_itr != lastfromElement; from_itr++) {
     // Add to new base in base -> entry multimap
-    pmmap->insert(ItemMMap_Pair(*to_baseuuid.GetARep(), from_itr->second));
+    pmmap->insert(ItemMMap_Pair(to_baseuuid, from_itr->second));
     // Remove from entry -> base map
     pmap->erase(from_itr->second);
     // Add to entry -> base map (new base)
-    pmap->insert(ItemMap_Pair(from_itr->second, *to_baseuuid.GetARep()));    
+    pmap->insert(ItemMap_Pair(from_itr->second, to_baseuuid));    
   }
 
   // Now delete all old base entries
-  pmmap->erase(*from_baseuuid.GetARep());
+  pmmap->erase(from_baseuuid);
 }
 
 int PWScore::DoAddDependentEntries(UUIDVector &dependentlist, CReport *pRpt,
@@ -1939,7 +1922,6 @@ void PWScore::GetAllDependentEntries(const CUUID &base_uuid, UUIDVector &tlist,
 {
   ItemMMapIter itr;
   ItemMMapIter lastElement;
-  uuid_array_t uuid;
 
   ItemMMap *pmmap;
   if (type == CItemData::ET_ALIAS)
@@ -1956,8 +1938,7 @@ void PWScore::GetAllDependentEntries(const CUUID &base_uuid, UUIDVector &tlist,
   lastElement = pmmap->upper_bound(base_uuid);
 
   for ( ; itr != lastElement; itr++) {
-    itr->second.GetARep(uuid);
-    tlist.push_back(uuid);
+    tlist.push_back(itr->second);
   }
 }
 
@@ -2241,11 +2222,9 @@ struct HistoryUpdateResetOff : public HistoryUpdater {
  : HistoryUpdater(num_altered, mapSavedHistory) {}
 
   void operator()(CItemData &ci) {
-    uuid_array_t item_uuid;
-    ci.GetUUID(item_uuid);
     StringX cs_tmp = ci.GetPWHistory();
     if (cs_tmp.length() >= 5 && cs_tmp[0] == L'1') {
-      m_mapSavedHistory[item_uuid] = cs_tmp;
+      m_mapSavedHistory[ci.GetUUID()] = cs_tmp;
       cs_tmp[0] = L'0';
       ci.SetPWHistory(cs_tmp);
       m_num_altered++;
@@ -2263,16 +2242,14 @@ struct HistoryUpdateResetOn : public HistoryUpdater {
   {Format(m_text, _T("1%02x00"), new_default_max);}
 
   void operator()(CItemData &ci) {
-    uuid_array_t item_uuid;
-    ci.GetUUID(item_uuid);
     StringX cs_tmp = ci.GetPWHistory();
     if (cs_tmp.length() < 5) {
-      m_mapSavedHistory[item_uuid] = cs_tmp;
+      m_mapSavedHistory[ci.GetUUID()] = cs_tmp;
       ci.SetPWHistory(m_text);
       m_num_altered++;
     } else {
       if (cs_tmp[0] == L'0') {
-        m_mapSavedHistory[item_uuid] = cs_tmp;
+        m_mapSavedHistory[ci.GetUUID()] = cs_tmp;
         cs_tmp[0] = L'1';
         ci.SetPWHistory(cs_tmp);
         m_num_altered++;
@@ -2293,13 +2270,11 @@ struct HistoryUpdateSetMax : public HistoryUpdater {
   {Format(m_text, _T("1%02x"), new_default_max);}
 
   void operator()(CItemData &ci) {
-    uuid_array_t item_uuid;
-    ci.GetUUID(item_uuid);
     StringX cs_tmp = ci.GetPWHistory();
 
     size_t len = cs_tmp.length();
     if (len >= 5) {
-      m_mapSavedHistory[item_uuid] = cs_tmp;
+      m_mapSavedHistory[ci.GetUUID()] = cs_tmp;
       int status, old_max, num_saved;
       const wchar_t *lpszPWHistory = cs_tmp.c_str();
 #if (_MSC_VER >= 1400)
@@ -2419,8 +2394,7 @@ void PWScore::GetDBProperties(st_DBProperties &st_dbp)
   if(m_hdr.m_file_uuid == CUUID::NullUUID())
     st_dbp.file_uuid = _T("N/A");
   else {
-    CUUID huuid(*m_hdr.m_file_uuid.GetARep(),
-                true); // true for canonical format
+    CUUID huuid(*m_hdr.m_file_uuid.GetARep(), true); // true for canonical format
     ostringstreamT os;
     os << uppercase << huuid;
     st_dbp.file_uuid = os.str().c_str();

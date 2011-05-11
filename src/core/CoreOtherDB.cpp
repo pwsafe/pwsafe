@@ -29,6 +29,8 @@
 
 using namespace std;
 
+using pws_os::CUUID;
+
 // hide w_char/char differences where possible:
 #ifdef UNICODE
 typedef std::wifstream ifstreamT;
@@ -86,7 +88,6 @@ void PWScore::Compare(PWScore *pothercore,
 
   CItemData::FieldBits bsConflicts(0);
   st_CompareData st_data;
-  uuid_array_t xuuid;
   int numOnlyInCurrent(0), numOnlyInComp(0), numConflicts(0), numIdentical(0);
 
   ItemListIter currentPos;
@@ -206,10 +207,9 @@ void PWScore::Compare(PWScore *pothercore,
             currentItem.GetEmail() != compItem.GetSymbols())
           bsConflicts.flip(CItemData::SYMBOLS);
 
-        currentPos->first.GetARep(xuuid);
-        memcpy(st_data.uuid0, xuuid, sizeof(st_data.uuid0));
-        foundPos->first.GetARep(xuuid);
-        memcpy(st_data.uuid1, xuuid, sizeof(st_data.uuid1));
+
+        st_data.uuid0 = currentPos->first;
+        st_data.uuid1 = foundPos->first;
         st_data.bsDiffs = bsConflicts;
         st_data.indatabase = BOTH;
         st_data.unknflds0 = currentItem.NumberUnknownFields() > 0;
@@ -228,9 +228,8 @@ void PWScore::Compare(PWScore *pothercore,
       } else {
         // didn't find any match...
         numOnlyInCurrent++;
-        currentPos->first.GetARep(xuuid);
-        memcpy(st_data.uuid0, xuuid, sizeof(st_data.uuid0));
-        memset(st_data.uuid1, 0, sizeof(st_data.uuid1));
+        st_data.uuid0 = currentPos->first;
+        st_data.uuid1 = CUUID::NullUUID();
         st_data.bsDiffs.reset();
         st_data.indatabase = CURRENT;
         st_data.unknflds0 = currentItem.NumberUnknownFields() > 0;
@@ -266,9 +265,8 @@ void PWScore::Compare(PWScore *pothercore,
           GetEntryEndIter()) {
         // Didn't find any match...
         numOnlyInComp++;
-        memset(st_data.uuid0, 0, sizeof(st_data.uuid0));
-        compPos->first.GetARep(xuuid);
-        memcpy(st_data.uuid1, xuuid, sizeof(st_data.uuid1));
+        st_data.uuid0 = CUUID::NullUUID();
+        st_data.uuid1 = compPos->first;
         st_data.bsDiffs.reset();
         st_data.indatabase = COMPARE;
         st_data.unknflds0 = false;
@@ -637,8 +635,7 @@ int PWScore::MergeDependents(PWScore *pothercore, MultiCommands *pmulticmds,
   pothercore->GetAllDependentEntries(base_uuid, dependentslist, et);
   for (paiter = dependentslist.begin();
        paiter != dependentslist.end(); paiter++) {
-    paiter->GetARep(entry_uuid);
-    iter = pothercore->Find(entry_uuid);
+    iter = pothercore->Find(*paiter);
 
     if (iter == pothercore->GetEntryEndIter())
       continue;
@@ -647,7 +644,7 @@ int PWScore::MergeDependents(PWScore *pothercore, MultiCommands *pmulticmds,
     ci_temp = (*pci);
 
     memcpy(new_entry_uuid, entry_uuid, sizeof(new_entry_uuid));
-    if (Find(entry_uuid) != GetEntryEndIter()) {
+    if (Find(*paiter) != GetEntryEndIter()) {
       ci_temp.CreateUUID();
       ci_temp.GetUUID(new_entry_uuid);
     }
@@ -748,10 +745,7 @@ void PWScore::Synchronize(PWScore *pothercore,
       CItemData updItem(curItem);
       updItem.SetDisplayInfo(NULL);
 
-      uuid_array_t current_uuid, other_uuid;
-      curItem.GetUUID(current_uuid);
-      otherItem.GetUUID(other_uuid);
-      if (memcmp(reinterpret_cast<void *>(current_uuid), reinterpret_cast<void *>(other_uuid), sizeof(uuid_array_t)) != 0) {
+      if (curItem.GetUUID() != otherItem.GetUUID()) {
         pws_os::Trace(_T("Synchronize: Mis-match UUIDs for [%s:%s:%s]\n"), sx_otherGroup.c_str(), sx_otherTitle.c_str(), sx_otherUser.c_str());
       }
 
