@@ -13,6 +13,8 @@ class CWZPropertySheet;
 class CWZPropertyPage : public CPropertyPage
 {
 public:
+  DECLARE_DYNAMIC(CWZPropertyPage)
+
   CWZPropertyPage(UINT nID, UINT nIDCaption = 0, const int nType = INVALID);
   ~CWZPropertyPage() {}
 
@@ -33,7 +35,6 @@ protected:
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
-  DECLARE_DYNAMIC(CWZPropertyPage)
 
 private:
   int m_nType;
