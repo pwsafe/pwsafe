@@ -1388,9 +1388,7 @@ void DboxMain::OnExportText()
   sx_temp = m_core.GetCurFile();
   if (sx_temp.empty()) {
     //  Database has not been saved - prompt user to do so first!
-    cs_temp.LoadString(IDS_SAVEBEFOREEXPORT);
-    cs_text.Format(IDS_SAVEBEFOREPROCESS, L"", cs_temp);
-    gmb.AfxMessageBox(cs_text);
+    gmb.AfxMessageBox(IDS_SAVEBEFOREPROCESS);
     return;
   }
 
@@ -1479,9 +1477,7 @@ void DboxMain::OnExportXML()
   sx_temp = m_core.GetCurFile();
   if (sx_temp.empty()) {
     //  Database has not been saved - prompt user to do so first!
-    cs_temp.LoadString(IDS_SAVEBEFOREEXPORT);
-    cs_text.Format(IDS_SAVEBEFOREPROCESS, L"", cs_temp);
-    gmb.AfxMessageBox(cs_text);
+    gmb.AfxMessageBox(IDS_SAVEBEFOREPROCESS);
     return;
   }
 

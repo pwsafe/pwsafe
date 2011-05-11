@@ -64,6 +64,7 @@ private:
   COLORREF m_syncwarning_cfOldColour;
 
   bool ProcessPhrase(const StringX &filename, const StringX &passkey);
+  bool m_bFileExistsUserAsked;
   CVKeyBoardDlg *m_pVKeyBoardDlg;
   st_SaveAdvValues *m_pst_SADV;
   CFont m_WarningFont;

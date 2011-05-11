@@ -341,7 +341,6 @@
 #define IDS_COPYEMAIL                   5517
 #define IDS_SHORTCUTEXPLANATION         5519
 #define IDS_SCTARGET                    5520
-#define IDS_SAVEBEFOREEXPORT            5521
 #define IDS_ADVANCEDOPTIONS             5522
 #define IDS_ADVANCEDSUBSET              5523
 #define IDS_ADVCASE_INSENSITIVE         5524
@@ -594,8 +593,6 @@
 #define IDS_TITLERENAMED                5786
 #define IDS_TITLEPWHERRORS              5787
 #define IDS_SAVEBEFOREPROCESS           5788
-#define IDS_SAVEBEFOREPROCESS2          5789
-#define IDS_SAVEBEFOREVALIDATE          5790
 #define IDS_CHOOSEDATABASEV             5791
 #define IDS_TRUNCATETEXT                5792
 #define IDS_WARNINGTEXTLENGTH           5793
@@ -667,3 +664,4 @@
 #define IDS_SB_TT_NUMENTRIES            5860
 #define IDS_SB_TT_FILTER                5861
 #define IDS_DRAGTOAUTOTYPE              5862
+#define IDS_REPLACEEXPORTFILE           5863
