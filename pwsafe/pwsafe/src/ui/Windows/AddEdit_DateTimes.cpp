@@ -21,6 +21,8 @@
 
 #include "resource3.h"
 
+using pws_os::CUUID;
+
 bool CAddEdit_DateTimes::m_bNumDaysFailed = false;
 bool CAddEdit_DateTimes::m_bShowUUID = false;
 

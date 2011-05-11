@@ -268,10 +268,6 @@ public:
   // Find in m_pwlist by group, title and user name, exact match
   ItemListIter Find(const StringX &a_group,
                     const StringX &a_title, const StringX &a_user);
-  ItemListIter Find(const uuid_array_t &entry_uuid)
-  {return m_pwlist.find(entry_uuid);}
-  ItemListConstIter Find(const uuid_array_t &entry_uuid) const
-  {return m_pwlist.find(entry_uuid);}
   ItemListIter Find(const pws_os::CUUID &entry_uuid)
   {return m_pwlist.find(entry_uuid);}
   ItemListConstIter Find(const pws_os::CUUID &entry_uuid) const

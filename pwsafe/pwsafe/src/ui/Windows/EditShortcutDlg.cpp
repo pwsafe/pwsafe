@@ -198,10 +198,7 @@ void CEditShortcutDlg::OnOK()
   */
   if (listindex != pDbx->End()) {
     const CItemData &listItem = pDbx->GetEntryAt(listindex);
-    uuid_array_t list_uuid, elem_uuid;
-    listItem.GetUUID(list_uuid);
-    m_pci->GetUUID(elem_uuid);
-    bool notSame = (memcmp(list_uuid, elem_uuid, sizeof(uuid_array_t)) != 0);
+    bool notSame = listItem.GetUUID() != m_pci->GetUUID();
     if (notSame) {
       CGeneralMsgBox gmb;
       CSecString temp;

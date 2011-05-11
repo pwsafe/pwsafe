@@ -240,7 +240,7 @@ public:
   void Clear();
   // check record for mandatory fields, silently fix if missing
   int ValidateUUID(const unsigned short &nMajor, const unsigned short &nMinor,
-    uuid_array_t &uuid_array);
+                   uuid_array_t &uuid_array);
   bool ValidatePWHistory(); // return true if OK, false if there's a problem
   bool IsExpired() const;
   bool WillExpire(const int numdays) const;

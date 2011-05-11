@@ -15,6 +15,8 @@
 #include "core/ItemData.h"
 #include "core/PWSprefs.h"
 
+using pws_os::CUUID;
+
 IMPLEMENT_DYNAMIC(CAddEdit_PropertySheet, CPWPropertySheet)
 
 CAddEdit_PropertySheet::CAddEdit_PropertySheet(UINT nID, CWnd* pParent,

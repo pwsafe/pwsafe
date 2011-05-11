@@ -24,8 +24,8 @@ class DboxMain;
 struct st_CompareInfo {
   PWScore *pcore0;     // original DB
   PWScore *pcore1;     // comparison DB
-  uuid_array_t uuid0;  // original DB
-  uuid_array_t uuid1;  // comparison DB
+  pws_os::CUUID uuid0; // original DB
+  pws_os::CUUID uuid1; // comparison DB
   int  clicked_column;
 };
 

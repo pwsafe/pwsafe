@@ -109,7 +109,7 @@ void DboxMain::UpdateGUI(UpdateGUICommand::GUI_Action ga,
   // the GUI should not be updated until after the Add.
   CItemData *pci(NULL);
 
-  ItemListIter pos = Find(*entry_uuid.GetARep());
+  ItemListIter pos = Find(entry_uuid);
   if (pos != End()) {
     pci = &pos->second;
   }
@@ -3823,9 +3823,7 @@ void DboxMain::UpdateToolBarDoUndo()
 
 void DboxMain::AddToGUI(CItemData &ci)
 {
-  uuid_array_t uuid;
-  ci.GetUUID(uuid);
-  int newpos = InsertItemIntoGUITreeList(m_core.GetEntry(m_core.Find(uuid)));
+  int newpos = InsertItemIntoGUITreeList(m_core.GetEntry(m_core.Find(ci.GetUUID())));
 
   if (newpos >= 0) {
     SelectEntry(newpos);
@@ -3840,9 +3838,7 @@ void DboxMain::RemoveFromGUI(CItemData &ci, bool bUpdateGUI)
   // RemoveFromGUI should always occur BEFORE the entry is deleted!
   // Note: Also called if a filter is active and an entry is changed and no longer
   // satisfies the filter criteria.
-  uuid_array_t entry_uuid;
-  ci.GetUUID(entry_uuid);
-  ItemListIter iter = m_core.Find(entry_uuid);
+  ItemListIter iter = m_core.Find(ci.GetUUID());
   if (iter == End()) {
     ASSERT(0);
     return;

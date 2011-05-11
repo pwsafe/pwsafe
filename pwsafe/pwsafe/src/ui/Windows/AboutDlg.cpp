@@ -30,6 +30,8 @@
 // for fetching xml file:
 #include <afxinet.h>
 
+using pws_os::CUUID;
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE

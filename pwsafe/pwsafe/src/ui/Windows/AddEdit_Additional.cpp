@@ -23,6 +23,8 @@
 #include "core/core.h"
 #include "resource3.h"
 
+using pws_os::CUUID;
+
 /////////////////////////////////////////////////////////////////////////////
 // CAddEdit_Additional property page
 

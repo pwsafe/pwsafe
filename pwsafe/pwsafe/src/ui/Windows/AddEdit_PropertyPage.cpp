@@ -12,6 +12,8 @@
 #include "DboxMain.h"
 #include "AddEdit_PropertyPage.h"
 
+using pws_os::CUUID;
+
 IMPLEMENT_DYNAMIC(CAddEdit_PropertyPage, CPWPropertyPage)
 
 COLORREF CAddEdit_PropertyPage::crefGreen = (RGB(222, 255, 222));
