@@ -23,6 +23,9 @@ current database's default Autotype string (if set via Manage->Options).
 [2964804] The user can specify the list of symbols valid for a database and can
 override this for any particular entry. Note: the inbuilt special symbols
 for EasyVision and Pronounceable passwords can not be overriden in either case.
+[] Allow user to control the copying password to clipboard when performing
+"Browse to URL" via an option in Options->Security. This is a database option
+i.e. you can have different setting for different databases.
 
 Changes to Existing Features in 3.25.1
 ======================================
