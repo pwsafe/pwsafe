@@ -1525,6 +1525,12 @@
     <None Include="graphics\toolbar\new\duplicategroup_disabled.bmp">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="graphics\dragbar\classic\AutotypeX.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="graphics\dragbar\new\AutotypeX.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="PasswordSafe.rc">

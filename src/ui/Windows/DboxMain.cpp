@@ -1484,8 +1484,13 @@ void DboxMain::DoBrowse(const bool bDoAutotype, const bool bSendEmail)
       StringX sxautotype = PWSAuxParse::GetAutoTypeString(*pci, m_core,
                                                           vactionverboffsets);
       LaunchBrowser(cs_command, sxautotype, vactionverboffsets, bDoAutotype);
-      SetClipboardData(sx_pswd);
-      UpdateLastClipboardAction(CItemData::PASSWORD);
+
+      if (PWSprefs::GetInstance()->GetPref(PWSprefs::CopyPasswordWhenBrowseToURL)) {
+        SetClipboardData(sx_pswd);
+        UpdateLastClipboardAction(CItemData::PASSWORD);
+      } else
+        UpdateLastClipboardAction(CItemData::URL);
+
       UpdateAccessTime(pci_original);
     }
   }

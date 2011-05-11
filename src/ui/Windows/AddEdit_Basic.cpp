@@ -973,11 +973,11 @@ void CAddEdit_Basic::OnLaunch()
                                                        M_realpassword(),
                                                        M_realnotes(),
                                                        vactionverboffsets);
-  int iaction = CItemData::URL;
+
   const bool bDoAutoType = (GetKeyState(VK_CONTROL) & 0x8000) != 0;
 
   M_pDbx()->LaunchBrowser(sx_url.c_str(), sx_autotype, vactionverboffsets, bDoAutoType);
-  M_pDbx()->UpdateLastClipboardAction(iaction);
+  M_pDbx()->UpdateLastClipboardAction(CItemData::URL);
 
   if (bDoAutoType) {
     // Reset button
