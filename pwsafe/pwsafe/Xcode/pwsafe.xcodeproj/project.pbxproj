@@ -22,6 +22,8 @@
 
 /* Begin PBXBuildFile section */
 		E60F25D812C4ACEB001E63C4 /* ExternalKeyboardButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E60F25D612C4ACEB001E63C4 /* ExternalKeyboardButton.cpp */; };
+		E6112A63131D720E00AA1454 /* ExpiredList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6112A61131D720E00AA1454 /* ExpiredList.cpp */; };
+		E6112A64131D720E00AA1454 /* ExpiredList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6112A61131D720E00AA1454 /* ExpiredList.cpp */; };
 		E61D6FA312617EFC0049FA2A /* MergeDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E61D6FA112617EFC0049FA2A /* MergeDlg.cpp */; };
 		E6391BC212FD21B9009BBB8D /* pwsafe_filter.xsd in Resources */ = {isa = PBXBuildFile; fileRef = E690B55C12984A1A007EA508 /* pwsafe_filter.xsd */; };
 		E6391BC312FD21B9009BBB8D /* pwsafe.xsd in Resources */ = {isa = PBXBuildFile; fileRef = E690B55D12984A1A007EA508 /* pwsafe.xsd */; };
@@ -116,6 +118,114 @@
 		E6BA47881216DB9C00193879 /* ExportTextWarningDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6BA47811216DB9C00193879 /* ExportTextWarningDlg.cpp */; };
 		E6BA47891216DB9C00193879 /* SafeCombinationCtrl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6BA47831216DB9C00193879 /* SafeCombinationCtrl.cpp */; };
 		E6BA478A1216DB9C00193879 /* ViewReport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6BA47851216DB9C00193879 /* ViewReport.cpp */; };
+		E6BF9E4C13348CA50084A011 /* pwsafe_filter.xsd in Resources */ = {isa = PBXBuildFile; fileRef = E690B55C12984A1A007EA508 /* pwsafe_filter.xsd */; };
+		E6BF9E4D13348CA50084A011 /* pwsafe.xsd in Resources */ = {isa = PBXBuildFile; fileRef = E690B55D12984A1A007EA508 /* pwsafe.xsd */; };
+		E6BF9E4E13348CA50084A011 /* pwsafe.xsl in Resources */ = {isa = PBXBuildFile; fileRef = E690B55E12984A1A007EA508 /* pwsafe.xsl */; };
+		E6BF9E4F13348CA50084A011 /* help.zip in Resources */ = {isa = PBXBuildFile; fileRef = E690B95612984B1D007EA508 /* help.zip */; };
+		E6BF9E5013348CA50084A011 /* pwsafe.icns in Resources */ = {isa = PBXBuildFile; fileRef = E6919C631298FB25001F96D9 /* pwsafe.icns */; };
+		E6BF9E5313348CA50084A011 /* about.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADB9A511957099004E2BE5 /* about.cpp */; };
+		E6BF9E5413348CA50084A011 /* addeditpropsheet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADB9A711957099004E2BE5 /* addeditpropsheet.cpp */; };
+		E6BF9E5513348CA50084A011 /* createshortcutdlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADB9AA11957099004E2BE5 /* createshortcutdlg.cpp */; };
+		E6BF9E5613348CA50084A011 /* deleteconfirmation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADB9AC11957099004E2BE5 /* deleteconfirmation.cpp */; };
+		E6BF9E5713348CA50084A011 /* editshortcut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADB9AE11957099004E2BE5 /* editshortcut.cpp */; };
+		E6BF9E5813348CA50084A011 /* mainEdit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADB9B011957099004E2BE5 /* mainEdit.cpp */; };
+		E6BF9E5913348CA50084A011 /* optionspropsheet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADB9B211957099004E2BE5 /* optionspropsheet.cpp */; };
+		E6BF9E5A13348CA50084A011 /* passwordsafeframe.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADB9B411957099004E2BE5 /* passwordsafeframe.cpp */; };
+		E6BF9E5B13348CA50084A011 /* PasswordSafeSearch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADB9B611957099004E2BE5 /* PasswordSafeSearch.cpp */; };
+		E6BF9E5C13348CA50084A011 /* properties.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADB9B911957099004E2BE5 /* properties.cpp */; };
+		E6BF9E5D13348CA50084A011 /* pwsafeapp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADBA1B1195709A004E2BE5 /* pwsafeapp.cpp */; };
+		E6BF9E5E13348CA50084A011 /* pwsclip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADBA1D1195709A004E2BE5 /* pwsclip.cpp */; };
+		E6BF9E5F13348CA50084A011 /* PWSgrid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADBA1F1195709A004E2BE5 /* PWSgrid.cpp */; };
+		E6BF9E6013348CA50084A011 /* PWSgridtable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADBA211195709A004E2BE5 /* PWSgridtable.cpp */; };
+		E6BF9E6113348CA50084A011 /* PWStree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADBA231195709A004E2BE5 /* PWStree.cpp */; };
+		E6BF9E6213348CA50084A011 /* RUEList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADBA251195709A004E2BE5 /* RUEList.cpp */; };
+		E6BF9E6313348CA50084A011 /* safecombinationchange.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADBA271195709A004E2BE5 /* safecombinationchange.cpp */; };
+		E6BF9E6413348CA50084A011 /* safecombinationentry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADBA291195709A004E2BE5 /* safecombinationentry.cpp */; };
+		E6BF9E6513348CA50084A011 /* safecombinationprompt.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADBA2B1195709A004E2BE5 /* safecombinationprompt.cpp */; };
+		E6BF9E6613348CA50084A011 /* safecombinationsetup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADBA2D1195709A004E2BE5 /* safecombinationsetup.cpp */; };
+		E6BF9E6713348CA50084A011 /* SystemTray.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADBA2F1195709A004E2BE5 /* SystemTray.cpp */; };
+		E6BF9E6813348CA50084A011 /* version.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6ADBA321195709A004E2BE5 /* version.cpp */; };
+		E6BF9E6913348CA50084A011 /* guiinfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6DA586311A701AE00D84199 /* guiinfo.cpp */; };
+		E6BF9E6A13348CA50084A011 /* ImportTextDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6AF167C11F1FD77002C253B /* ImportTextDlg.cpp */; };
+		E6BF9E6B13348CA50084A011 /* ImportXmlDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E69B7FA411F600BA0084F6C4 /* ImportXmlDlg.cpp */; };
+		E6BF9E6C13348CA50084A011 /* OpenFilePickerValidator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E69B7FA611F600BA0084F6C4 /* OpenFilePickerValidator.cpp */; };
+		E6BF9E6D13348CA50084A011 /* AdvancedSelectionDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6BA477F1216DB9C00193879 /* AdvancedSelectionDlg.cpp */; };
+		E6BF9E6E13348CA50084A011 /* ExportTextWarningDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6BA47811216DB9C00193879 /* ExportTextWarningDlg.cpp */; };
+		E6BF9E6F13348CA50084A011 /* SafeCombinationCtrl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6BA47831216DB9C00193879 /* SafeCombinationCtrl.cpp */; };
+		E6BF9E7013348CA50084A011 /* ViewReport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6BA47851216DB9C00193879 /* ViewReport.cpp */; };
+		E6BF9E7113348CA50084A011 /* dragbar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6B5C6411232B3D000AC8B45 /* dragbar.cpp */; };
+		E6BF9E7213348CA50084A011 /* PWSDragBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6B5C6431232B3D000AC8B45 /* PWSDragBar.cpp */; };
+		E6BF9E7313348CA50084A011 /* MergeDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E61D6FA112617EFC0049FA2A /* MergeDlg.cpp */; };
+		E6BF9E7413348CA50084A011 /* ExternalKeyboardButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E60F25D612C4ACEB001E63C4 /* ExternalKeyboardButton.cpp */; };
+		E6BF9E7513348CA50084A011 /* DbSelectionPanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6A7ECA912CDEAA40021D898 /* DbSelectionPanel.cpp */; };
+		E6BF9E7613348CA50084A011 /* PwsSync.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6A7ECAB12CDEAA40021D898 /* PwsSync.cpp */; };
+		E6BF9E7813348CA50084A011 /* libcore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6ADB80311956A93004E2BE5 /* libcore.a */; };
+		E6BF9E7913348CA50084A011 /* libos.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6ADB91C11956DD0004E2BE5 /* libos.a */; };
+		E6BF9E7A13348CA50084A011 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E69B800911F61CF20084F6C4 /* Carbon.framework */; };
+		E6BF9E7B13348CA50084A011 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B1448112B26CEE00415AAE /* OpenGL.framework */; };
+		E6BF9E7C13348CA50084A011 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B1448712B26D1500415AAE /* Cocoa.framework */; };
+		E6BF9E7D13348CA50084A011 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B1449312B26D7E00415AAE /* IOKit.framework */; };
+		E6BF9E7E13348CA50084A011 /* QuickTime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B144BA12B2707E00415AAE /* QuickTime.framework */; };
+		E6BF9E8A13348CDB0084A011 /* BlowFish.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE839211E87E9700B01518 /* BlowFish.cpp */; };
+		E6BF9E8B13348CDB0084A011 /* CheckVersion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE839411E87E9700B01518 /* CheckVersion.cpp */; };
+		E6BF9E8C13348CDB0084A011 /* Command.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE839611E87E9700B01518 /* Command.cpp */; };
+		E6BF9E8D13348CDB0084A011 /* CoreImpExp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE839E11E87E9700B01518 /* CoreImpExp.cpp */; };
+		E6BF9E8E13348CDB0084A011 /* core_st.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83A211E87E9700B01518 /* core_st.cpp */; };
+		E6BF9E8F13348CDB0084A011 /* hmac.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83A511E87E9700B01518 /* hmac.cpp */; };
+		E6BF9E9013348CDB0084A011 /* ItemData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83A711E87E9700B01518 /* ItemData.cpp */; };
+		E6BF9E9113348CDB0084A011 /* ItemField.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83A911E87E9700B01518 /* ItemField.cpp */; };
+		E6BF9E9213348CDB0084A011 /* Match.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83AC11E87E9700B01518 /* Match.cpp */; };
+		E6BF9E9313348CDB0084A011 /* PWCharPool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83B011E87E9700B01518 /* PWCharPool.cpp */; };
+		E6BF9E9413348CDB0084A011 /* PWHistory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83B211E87E9700B01518 /* PWHistory.cpp */; };
+		E6BF9E9513348CDB0084A011 /* PWPolicy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83B411E87E9700B01518 /* PWPolicy.cpp */; };
+		E6BF9E9613348CDB0084A011 /* PWSAuxParse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83B611E87E9700B01518 /* PWSAuxParse.cpp */; };
+		E6BF9E9713348CDB0084A011 /* PWScore.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83B811E87E9700B01518 /* PWScore.cpp */; };
+		E6BF9E9813348CDB0084A011 /* PWSdirs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83BA11E87E9700B01518 /* PWSdirs.cpp */; };
+		E6BF9E9913348CDB0084A011 /* PWSfile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83BC11E87E9700B01518 /* PWSfile.cpp */; };
+		E6BF9E9A13348CDB0084A011 /* PWSfileV1V2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83BE11E87E9700B01518 /* PWSfileV1V2.cpp */; };
+		E6BF9E9B13348CDB0084A011 /* PWSfileV3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83C011E87E9700B01518 /* PWSfileV3.cpp */; };
+		E6BF9E9C13348CDB0084A011 /* PWSFilters.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83C211E87E9700B01518 /* PWSFilters.cpp */; };
+		E6BF9E9D13348CDB0084A011 /* PWSprefs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83C511E87E9700B01518 /* PWSprefs.cpp */; };
+		E6BF9E9E13348CDB0084A011 /* PWSrand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83C711E87E9700B01518 /* PWSrand.cpp */; };
+		E6BF9E9F13348CDB0084A011 /* Report.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83C911E87E9700B01518 /* Report.cpp */; };
+		E6BF9EA013348CDB0084A011 /* sha1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83CB11E87E9700B01518 /* sha1.cpp */; };
+		E6BF9EA113348CDB0084A011 /* sha256.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83CD11E87E9700B01518 /* sha256.cpp */; };
+		E6BF9EA213348CDB0084A011 /* StringX.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83CF11E87E9700B01518 /* StringX.cpp */; };
+		E6BF9EA313348CDB0084A011 /* SysInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83D211E87E9700B01518 /* SysInfo.cpp */; };
+		E6BF9EA413348CDB0084A011 /* tinystr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83D511E87E9700B01518 /* tinystr.cpp */; };
+		E6BF9EA513348CDB0084A011 /* tinyxml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83D711E87E9700B01518 /* tinyxml.cpp */; };
+		E6BF9EA613348CDB0084A011 /* tinyxmlerror.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83D911E87E9700B01518 /* tinyxmlerror.cpp */; };
+		E6BF9EA713348CDB0084A011 /* tinyxmlparser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83DA11E87E9700B01518 /* tinyxmlparser.cpp */; };
+		E6BF9EA813348CDB0084A011 /* TwoFish.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83DC11E87E9700B01518 /* TwoFish.cpp */; };
+		E6BF9EA913348CDB0084A011 /* twofish_tab.c in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83DE11E87E9700B01518 /* twofish_tab.c */; };
+		E6BF9EAA13348CDB0084A011 /* UnknownField.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83E011E87E9700B01518 /* UnknownField.cpp */; };
+		E6BF9EAB13348CDB0084A011 /* UTF8Conv.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83E211E87E9700B01518 /* UTF8Conv.cpp */; };
+		E6BF9EAC13348CDB0084A011 /* Util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83E411E87E9800B01518 /* Util.cpp */; };
+		E6BF9EAE13348CDB0084A011 /* VerifyFormat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83E811E87E9800B01518 /* VerifyFormat.cpp */; };
+		E6BF9EAF13348CDB0084A011 /* XFileSAX2Handlers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE840811E87E9800B01518 /* XFileSAX2Handlers.cpp */; };
+		E6BF9EB013348CDB0084A011 /* XFileValidator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE840A11E87E9800B01518 /* XFileValidator.cpp */; };
+		E6BF9EB113348CDB0084A011 /* XFileXMLProcessor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE840C11E87E9800B01518 /* XFileXMLProcessor.cpp */; };
+		E6BF9EB213348CDB0084A011 /* XFilterSAX2Handlers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE840E11E87E9800B01518 /* XFilterSAX2Handlers.cpp */; };
+		E6BF9EB313348CDB0084A011 /* XFilterXMLProcessor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE841011E87E9800B01518 /* XFilterXMLProcessor.cpp */; };
+		E6BF9EB413348CDB0084A011 /* XSecMemMgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE841211E87E9800B01518 /* XSecMemMgr.cpp */; };
+		E6BF9EB513348CDB0084A011 /* XMLFileHandlers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE841511E87E9800B01518 /* XMLFileHandlers.cpp */; };
+		E6BF9EB613348CDB0084A011 /* XMLFileValidation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE841711E87E9800B01518 /* XMLFileValidation.cpp */; };
+		E6BF9EB713348CDB0084A011 /* XMLprefs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE841911E87E9800B01518 /* XMLprefs.cpp */; };
+		E6BF9EB813348CDB0084A011 /* ExpiredList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6112A61131D720E00AA1454 /* ExpiredList.cpp */; };
+		E6BF9EC113348CF00084A011 /* debug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6C1253611E1B2BA00D22D92 /* debug.cpp */; };
+		E6BF9EC213348CF00084A011 /* dir.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6C1253711E1B2BA00D22D92 /* dir.cpp */; };
+		E6BF9EC313348CF00084A011 /* env.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6C1253811E1B2BA00D22D92 /* env.cpp */; };
+		E6BF9EC413348CF00084A011 /* file.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6C1253911E1B2BA00D22D92 /* file.cpp */; };
+		E6BF9EC513348CF00084A011 /* KeySend.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6C1253A11E1B2BA00D22D92 /* KeySend.cpp */; };
+		E6BF9EC613348CF00084A011 /* mem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6C1253C11E1B2BA00D22D92 /* mem.cpp */; };
+		E6BF9EC713348CF00084A011 /* pws_str.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6C1253D11E1B2BA00D22D92 /* pws_str.cpp */; };
+		E6BF9EC813348CF00084A011 /* pws_time.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6C1253F11E1B2BA00D22D92 /* pws_time.cpp */; };
+		E6BF9EC913348CF00084A011 /* rand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6C1254111E1B2BA00D22D92 /* rand.cpp */; };
+		E6BF9ECA13348CF00084A011 /* registry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6C1254211E1B2BA00D22D92 /* registry.cpp */; };
+		E6BF9ECB13348CF00084A011 /* run.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6C1254311E1B2BA00D22D92 /* run.cpp */; };
+		E6BF9ECC13348CF00084A011 /* sleep.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6C1254411E1B2BA00D22D92 /* sleep.cpp */; };
+		E6BF9ECD13348CF00084A011 /* utf8conv.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6C1254511E1B2BA00D22D92 /* utf8conv.cpp */; };
+		E6BF9ECE13348CF00084A011 /* macsendstring.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6C1255911E1B35600D22D92 /* macsendstring.cpp */; };
 		E6C1254811E1B2BA00D22D92 /* debug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6C1253611E1B2BA00D22D92 /* debug.cpp */; };
 		E6C1254911E1B2BA00D22D92 /* dir.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6C1253711E1B2BA00D22D92 /* dir.cpp */; };
 		E6C1254A11E1B2BA00D22D92 /* env.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6C1253811E1B2BA00D22D92 /* env.cpp */; };
@@ -130,6 +240,9 @@
 		E6C1255411E1B2BA00D22D92 /* sleep.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6C1254411E1B2BA00D22D92 /* sleep.cpp */; };
 		E6C1255511E1B2BA00D22D92 /* utf8conv.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6C1254511E1B2BA00D22D92 /* utf8conv.cpp */; };
 		E6C1255B11E1B35600D22D92 /* macsendstring.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6C1255911E1B35600D22D92 /* macsendstring.cpp */; };
+		E6C6876E137C406300A916C1 /* UUID.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6C6876D137C406300A916C1 /* UUID.cpp */; };
+		E6C6876F137C406300A916C1 /* UUID.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6C6876D137C406300A916C1 /* UUID.cpp */; };
+		E6C68770137C406300A916C1 /* UUID.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6C6876D137C406300A916C1 /* UUID.cpp */; };
 		E6DA586511A701AE00D84199 /* guiinfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6DA586311A701AE00D84199 /* guiinfo.cpp */; };
 		E6E31A0E12FD6957001618AB /* debug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6C1253611E1B2BA00D22D92 /* debug.cpp */; };
 		E6E31A0F12FD6957001618AB /* dir.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6C1253711E1B2BA00D22D92 /* dir.cpp */; };
@@ -180,7 +293,6 @@
 		E6E31A4312FD69A0001618AB /* UnknownField.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83E011E87E9700B01518 /* UnknownField.cpp */; };
 		E6E31A4412FD69A0001618AB /* UTF8Conv.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83E211E87E9700B01518 /* UTF8Conv.cpp */; };
 		E6E31A4512FD69A0001618AB /* Util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83E411E87E9800B01518 /* Util.cpp */; };
-		E6E31A4612FD69A0001618AB /* UUIDGen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83E611E87E9800B01518 /* UUIDGen.cpp */; };
 		E6E31A4712FD69A0001618AB /* VerifyFormat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83E811E87E9800B01518 /* VerifyFormat.cpp */; };
 		E6E31A4812FD69A0001618AB /* XFileSAX2Handlers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE840811E87E9800B01518 /* XFileSAX2Handlers.cpp */; };
 		E6E31A4912FD69A0001618AB /* XFileValidator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE840A11E87E9800B01518 /* XFileValidator.cpp */; };
@@ -242,6 +354,7 @@
 		E6E31AA112FD6E76001618AB /* pwsafe-debug64.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = E6E31A9F12FD6E76001618AB /* pwsafe-debug64.xcconfig */; };
 		E6E31AA212FD6E76001618AB /* pwsafe-release64.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = E6E31AA012FD6E76001618AB /* pwsafe-release64.xcconfig */; };
 		E6E31AD312FDC90C001618AB /* untitled in Resources */ = {isa = PBXBuildFile; fileRef = E6E31AD212FDC90B001618AB /* untitled */; };
+		E6EBB01C133522D9007CA1F5 /* pwsafe-native-release32.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = E6EBB01B133522D9007CA1F5 /* pwsafe-native-release32.xcconfig */; };
 		E6EE841B11E87E9800B01518 /* BlowFish.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE839211E87E9700B01518 /* BlowFish.cpp */; };
 		E6EE841C11E87E9800B01518 /* CheckVersion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE839411E87E9700B01518 /* CheckVersion.cpp */; };
 		E6EE841D11E87E9800B01518 /* Command.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE839611E87E9700B01518 /* Command.cpp */; };
@@ -277,7 +390,6 @@
 		E6EE843C11E87E9800B01518 /* UnknownField.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83E011E87E9700B01518 /* UnknownField.cpp */; };
 		E6EE843D11E87E9800B01518 /* UTF8Conv.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83E211E87E9700B01518 /* UTF8Conv.cpp */; };
 		E6EE843E11E87E9800B01518 /* Util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83E411E87E9800B01518 /* Util.cpp */; };
-		E6EE843F11E87E9800B01518 /* UUIDGen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83E611E87E9800B01518 /* UUIDGen.cpp */; };
 		E6EE844011E87E9800B01518 /* VerifyFormat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83E811E87E9800B01518 /* VerifyFormat.cpp */; };
 		E6EE844D11E87E9800B01518 /* XFileSAX2Handlers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE840811E87E9800B01518 /* XFileSAX2Handlers.cpp */; };
 		E6EE844E11E87E9800B01518 /* XFileValidator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE840A11E87E9800B01518 /* XFileValidator.cpp */; };
@@ -333,6 +445,27 @@
 			remoteGlobalIDString = E6ADB91B11956DD0004E2BE5;
 			remoteInfo = os;
 		};
+		E6BF9E4A13348CA50084A011 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E6ADB7F0119569CC004E2BE5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E690B53012980BDD007EA508;
+			remoteInfo = "Help Files";
+		};
+		E6BF9ED313348D180084A011 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E6ADB7F0119569CC004E2BE5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E6BF9E8713348CDB0084A011;
+			remoteInfo = "core-native";
+		};
+		E6BF9ED513348D1F0084A011 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E6ADB7F0119569CC004E2BE5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E6BF9EBF13348CF00084A011;
+			remoteInfo = "os-native";
+		};
 		E6E31A5B12FD6A0A001618AB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = E6ADB7F0119569CC004E2BE5 /* Project object */;
@@ -359,6 +492,8 @@
 /* Begin PBXFileReference section */
 		E60F25D612C4ACEB001E63C4 /* ExternalKeyboardButton.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ExternalKeyboardButton.cpp; sourceTree = "<group>"; };
 		E60F25D712C4ACEB001E63C4 /* ExternalKeyboardButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExternalKeyboardButton.h; sourceTree = "<group>"; };
+		E6112A61131D720E00AA1454 /* ExpiredList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ExpiredList.cpp; sourceTree = "<group>"; };
+		E6112A62131D720E00AA1454 /* ExpiredList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExpiredList.h; sourceTree = "<group>"; };
 		E61D6FA112617EFC0049FA2A /* MergeDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MergeDlg.cpp; sourceTree = "<group>"; };
 		E61D6FA212617EFC0049FA2A /* MergeDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MergeDlg.h; sourceTree = "<group>"; };
 		E6391BF812FD21B9009BBB8D /* pwsafe-i386.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "pwsafe-i386.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -665,6 +800,9 @@
 		E6BA47841216DB9C00193879 /* SafeCombinationCtrl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SafeCombinationCtrl.h; sourceTree = "<group>"; };
 		E6BA47851216DB9C00193879 /* ViewReport.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ViewReport.cpp; sourceTree = "<group>"; };
 		E6BA47861216DB9C00193879 /* ViewReport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewReport.h; sourceTree = "<group>"; };
+		E6BF9E8213348CA50084A011 /* pwsafe-native.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "pwsafe-native.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E6BF9EBC13348CDB0084A011 /* libcore.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libcore.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		E6BF9ED213348CF00084A011 /* libos.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libos.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6C1253611E1B2BA00D22D92 /* debug.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = debug.cpp; sourceTree = "<group>"; };
 		E6C1253711E1B2BA00D22D92 /* dir.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = dir.cpp; sourceTree = "<group>"; };
 		E6C1253811E1B2BA00D22D92 /* env.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = env.cpp; sourceTree = "<group>"; };
@@ -682,6 +820,8 @@
 		E6C1254511E1B2BA00D22D92 /* utf8conv.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = utf8conv.cpp; sourceTree = "<group>"; };
 		E6C1255911E1B35600D22D92 /* macsendstring.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = macsendstring.cpp; sourceTree = "<group>"; };
 		E6C1255A11E1B35600D22D92 /* macsendstring.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = macsendstring.h; sourceTree = "<group>"; };
+		E6C6876C137C3EFA00A916C1 /* UUID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UUID.h; sourceTree = "<group>"; };
+		E6C6876D137C406300A916C1 /* UUID.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UUID.cpp; sourceTree = "<group>"; };
 		E6CFEE4311EA0AFB001402D8 /* RecentDBList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentDBList.h; sourceTree = "<group>"; };
 		E6DA586311A701AE00D84199 /* guiinfo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = guiinfo.cpp; sourceTree = "<group>"; };
 		E6DA586411A701AE00D84199 /* guiinfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = guiinfo.h; sourceTree = "<group>"; };
@@ -691,6 +831,7 @@
 		E6E31A9F12FD6E76001618AB /* pwsafe-debug64.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "pwsafe-debug64.xcconfig"; sourceTree = "<group>"; };
 		E6E31AA012FD6E76001618AB /* pwsafe-release64.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "pwsafe-release64.xcconfig"; sourceTree = "<group>"; };
 		E6E31AD212FDC90B001618AB /* untitled */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = untitled; sourceTree = "<group>"; };
+		E6EBB01B133522D9007CA1F5 /* pwsafe-native-release32.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "pwsafe-native-release32.xcconfig"; sourceTree = "<group>"; };
 		E6EE837F11E87DAC00B01518 /* debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = debug.h; sourceTree = "<group>"; };
 		E6EE838011E87DAC00B01518 /* dir.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dir.h; sourceTree = "<group>"; };
 		E6EE838111E87DAC00B01518 /* env.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = env.h; sourceTree = "<group>"; };
@@ -780,8 +921,6 @@
 		E6EE83E311E87E9800B01518 /* UTF8Conv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UTF8Conv.h; sourceTree = "<group>"; };
 		E6EE83E411E87E9800B01518 /* Util.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Util.cpp; sourceTree = "<group>"; };
 		E6EE83E511E87E9800B01518 /* Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Util.h; sourceTree = "<group>"; };
-		E6EE83E611E87E9800B01518 /* UUIDGen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UUIDGen.cpp; sourceTree = "<group>"; };
-		E6EE83E711E87E9800B01518 /* UUIDGen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UUIDGen.h; sourceTree = "<group>"; };
 		E6EE83E811E87E9800B01518 /* VerifyFormat.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VerifyFormat.cpp; sourceTree = "<group>"; };
 		E6EE83E911E87E9800B01518 /* VerifyFormat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VerifyFormat.h; sourceTree = "<group>"; };
 		E6EE840811E87E9800B01518 /* XFileSAX2Handlers.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = XFileSAX2Handlers.cpp; sourceTree = "<group>"; };
@@ -833,6 +972,20 @@
 				E6B1448812B26D1500415AAE /* Cocoa.framework in Frameworks */,
 				E6B1449412B26D7E00415AAE /* IOKit.framework in Frameworks */,
 				E6B144BB12B2707E00415AAE /* QuickTime.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E6BF9E7713348CA50084A011 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E6BF9E7813348CA50084A011 /* libcore.a in Frameworks */,
+				E6BF9E7913348CA50084A011 /* libos.a in Frameworks */,
+				E6BF9E7A13348CA50084A011 /* Carbon.framework in Frameworks */,
+				E6BF9E7B13348CA50084A011 /* OpenGL.framework in Frameworks */,
+				E6BF9E7C13348CA50084A011 /* Cocoa.framework in Frameworks */,
+				E6BF9E7D13348CA50084A011 /* IOKit.framework in Frameworks */,
+				E6BF9E7E13348CA50084A011 /* QuickTime.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1169,6 +1322,7 @@
 		E6ADB7EE119569CC004E2BE5 = {
 			isa = PBXGroup;
 			children = (
+				E6EBB01B133522D9007CA1F5 /* pwsafe-native-release32.xcconfig */,
 				E6E31A9F12FD6E76001618AB /* pwsafe-debug64.xcconfig */,
 				E6E31AA012FD6E76001618AB /* pwsafe-release64.xcconfig */,
 				E6F9A9F612B251A000F93140 /* pwsafe-debug.xcconfig */,
@@ -1197,6 +1351,9 @@
 				E6E31A1F12FD6957001618AB /* libos.a */,
 				E6E31A5412FD69A0001618AB /* libcore.a */,
 				E6E31A9312FD6A0A001618AB /* pwsafe-x86_64.app */,
+				E6BF9E8213348CA50084A011 /* pwsafe-native.app */,
+				E6BF9EBC13348CDB0084A011 /* libcore.a */,
+				E6BF9ED213348CF00084A011 /* libos.a */,
 			);
 			indentWidth = 2;
 			name = Products;
@@ -1295,6 +1452,7 @@
 		E6C1253511E1B2BA00D22D92 /* mac */ = {
 			isa = PBXGroup;
 			children = (
+				E6C6876D137C406300A916C1 /* UUID.cpp */,
 				E6C1255911E1B35600D22D92 /* macsendstring.cpp */,
 				E6C1255A11E1B35600D22D92 /* macsendstring.h */,
 				E6C1253611E1B2BA00D22D92 /* debug.cpp */,
@@ -1321,6 +1479,7 @@
 		E6EE837D11E87CD200B01518 /* os */ = {
 			isa = PBXGroup;
 			children = (
+				E6C6876C137C3EFA00A916C1 /* UUID.h */,
 				E6EE837F11E87DAC00B01518 /* debug.h */,
 				E6EE838011E87DAC00B01518 /* dir.h */,
 				E6EE838111E87DAC00B01518 /* env.h */,
@@ -1347,6 +1506,8 @@
 		E6EE839111E87E9700B01518 /* core */ = {
 			isa = PBXGroup;
 			children = (
+				E6112A61131D720E00AA1454 /* ExpiredList.cpp */,
+				E6112A62131D720E00AA1454 /* ExpiredList.h */,
 				E6EE839211E87E9700B01518 /* BlowFish.cpp */,
 				E6EE839311E87E9700B01518 /* BlowFish.h */,
 				E6EE839411E87E9700B01518 /* CheckVersion.cpp */,
@@ -1417,8 +1578,6 @@
 				E6EE83E311E87E9800B01518 /* UTF8Conv.h */,
 				E6EE83E411E87E9800B01518 /* Util.cpp */,
 				E6EE83E511E87E9800B01518 /* Util.h */,
-				E6EE83E611E87E9800B01518 /* UUIDGen.cpp */,
-				E6EE83E711E87E9800B01518 /* UUIDGen.h */,
 				E6EE83E811E87E9800B01518 /* VerifyFormat.cpp */,
 				E6EE83E911E87E9800B01518 /* VerifyFormat.h */,
 				E6EE83EA11E87E9800B01518 /* XML */,
@@ -1540,6 +1699,7 @@
 				E6CFEEF711EA3E2F001402D8 /* Generate version.h */,
 				E6ADB99B1195706A004E2BE5 /* Sources */,
 				E6ADBAF3119577A7004E2BE5 /* Frameworks */,
+				E6B14BC013499BAA007FA8AE /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -1552,6 +1712,58 @@
 			productName = pwsafe;
 			productReference = E6ADB99E1195706A004E2BE5 /* pwsafe.app */;
 			productType = "com.apple.product-type.application";
+		};
+		E6BF9E4413348CA50084A011 /* pwsafe-native */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E6BF9E7F13348CA50084A011 /* Build configuration list for PBXNativeTarget "pwsafe-native" */;
+			buildPhases = (
+				E6BF9E4B13348CA50084A011 /* Resources */,
+				E6BF9E5113348CA50084A011 /* Generate version.h */,
+				E6BF9E5213348CA50084A011 /* Sources */,
+				E6BF9E7713348CA50084A011 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E6BF9E4913348CA50084A011 /* PBXTargetDependency */,
+				E6BF9ED413348D180084A011 /* PBXTargetDependency */,
+				E6BF9ED613348D1F0084A011 /* PBXTargetDependency */,
+			);
+			name = "pwsafe-native";
+			productName = pwsafe;
+			productReference = E6BF9E8213348CA50084A011 /* pwsafe-native.app */;
+			productType = "com.apple.product-type.application";
+		};
+		E6BF9E8713348CDB0084A011 /* core-native */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E6BF9EB913348CDB0084A011 /* Build configuration list for PBXNativeTarget "core-native" */;
+			buildPhases = (
+				E6BF9E8813348CDB0084A011 /* Generate core_st */,
+				E6BF9E8913348CDB0084A011 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "core-native";
+			productName = core;
+			productReference = E6BF9EBC13348CDB0084A011 /* libcore.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		E6BF9EBF13348CF00084A011 /* os-native */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E6BF9ECF13348CF00084A011 /* Build configuration list for PBXNativeTarget "os-native" */;
+			buildPhases = (
+				E6BF9EC013348CF00084A011 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "os-native";
+			productName = os;
+			productReference = E6BF9ED213348CF00084A011 /* libos.a */;
+			productType = "com.apple.product-type.library.static";
 		};
 		E6E31A0C12FD6957001618AB /* os64 */ = {
 			isa = PBXNativeTarget;
@@ -1636,6 +1848,9 @@
 				E6E31A0C12FD6957001618AB /* os64 */,
 				E6E31A2012FD69A0001618AB /* core64 */,
 				E6E31A5512FD6A0A001618AB /* pwsafe-x86_64 */,
+				E6BF9E4413348CA50084A011 /* pwsafe-native */,
+				E6BF9E8713348CDB0084A011 /* core-native */,
+				E6BF9EBF13348CF00084A011 /* os-native */,
 			);
 		};
 /* End PBXProject section */
@@ -1664,6 +1879,20 @@
 				E690B56112984A1B007EA508 /* pwsafe.xsl in Resources */,
 				E690B95712984B1D007EA508 /* help.zip in Resources */,
 				E6919C641298FB25001F96D9 /* pwsafe.icns in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E6BF9E4B13348CA50084A011 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			comments = "Copy Help files into app bundle";
+			files = (
+				E6BF9E4C13348CA50084A011 /* pwsafe_filter.xsd in Resources */,
+				E6BF9E4D13348CA50084A011 /* pwsafe.xsd in Resources */,
+				E6BF9E4E13348CA50084A011 /* pwsafe.xsl in Resources */,
+				E6BF9E4F13348CA50084A011 /* help.zip in Resources */,
+				E6BF9E5013348CA50084A011 /* pwsafe.icns in Resources */,
+				E6EBB01C133522D9007CA1F5 /* pwsafe-native-release32.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1717,6 +1946,52 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "cd ../help/\nmake -f Makefile.linux";
+		};
+		E6B14BC013499BAA007FA8AE /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "";
+		};
+		E6BF9E5113348CA50084A011 /* Generate version.h */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				../src/ui/wxWidgets/version.in,
+			);
+			name = "Generate version.h";
+			outputPaths = (
+				../src/ui/wxWidgets/version.h,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "../Misc/mkversion.pl ../src/ui/wxWidgets/version.in ../src/ui/wxWidgets/version.h";
+		};
+		E6BF9E8813348CDB0084A011 /* Generate core_st */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				../src/core/core.rc2,
+			);
+			name = "Generate core_st";
+			outputPaths = (
+				../src/core/core_st.h,
+				../src/core/core_st.cpp,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "echo \"Generating coelib_st.cpp and core_st.h ...\"\n../Misc/rc2cpp.pl ../src/core/core.rc2";
 		};
 		E6CFEEF711EA3E2F001402D8 /* Generate version.h */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1869,7 +2144,6 @@
 				E6EE843C11E87E9800B01518 /* UnknownField.cpp in Sources */,
 				E6EE843D11E87E9800B01518 /* UTF8Conv.cpp in Sources */,
 				E6EE843E11E87E9800B01518 /* Util.cpp in Sources */,
-				E6EE843F11E87E9800B01518 /* UUIDGen.cpp in Sources */,
 				E6EE844011E87E9800B01518 /* VerifyFormat.cpp in Sources */,
 				E6EE844D11E87E9800B01518 /* XFileSAX2Handlers.cpp in Sources */,
 				E6EE844E11E87E9800B01518 /* XFileValidator.cpp in Sources */,
@@ -1880,6 +2154,7 @@
 				E6EE845311E87E9800B01518 /* XMLFileHandlers.cpp in Sources */,
 				E6EE845411E87E9800B01518 /* XMLFileValidation.cpp in Sources */,
 				E6EE845511E87E9800B01518 /* XMLprefs.cpp in Sources */,
+				E6112A64131D720E00AA1454 /* ExpiredList.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1901,6 +2176,7 @@
 				E6C1255411E1B2BA00D22D92 /* sleep.cpp in Sources */,
 				E6C1255511E1B2BA00D22D92 /* utf8conv.cpp in Sources */,
 				E6C1255B11E1B35600D22D92 /* macsendstring.cpp in Sources */,
+				E6C6876E137C406300A916C1 /* UUID.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1947,6 +2223,124 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E6BF9E5213348CA50084A011 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E6BF9E5313348CA50084A011 /* about.cpp in Sources */,
+				E6BF9E5413348CA50084A011 /* addeditpropsheet.cpp in Sources */,
+				E6BF9E5513348CA50084A011 /* createshortcutdlg.cpp in Sources */,
+				E6BF9E5613348CA50084A011 /* deleteconfirmation.cpp in Sources */,
+				E6BF9E5713348CA50084A011 /* editshortcut.cpp in Sources */,
+				E6BF9E5813348CA50084A011 /* mainEdit.cpp in Sources */,
+				E6BF9E5913348CA50084A011 /* optionspropsheet.cpp in Sources */,
+				E6BF9E5A13348CA50084A011 /* passwordsafeframe.cpp in Sources */,
+				E6BF9E5B13348CA50084A011 /* PasswordSafeSearch.cpp in Sources */,
+				E6BF9E5C13348CA50084A011 /* properties.cpp in Sources */,
+				E6BF9E5D13348CA50084A011 /* pwsafeapp.cpp in Sources */,
+				E6BF9E5E13348CA50084A011 /* pwsclip.cpp in Sources */,
+				E6BF9E5F13348CA50084A011 /* PWSgrid.cpp in Sources */,
+				E6BF9E6013348CA50084A011 /* PWSgridtable.cpp in Sources */,
+				E6BF9E6113348CA50084A011 /* PWStree.cpp in Sources */,
+				E6BF9E6213348CA50084A011 /* RUEList.cpp in Sources */,
+				E6BF9E6313348CA50084A011 /* safecombinationchange.cpp in Sources */,
+				E6BF9E6413348CA50084A011 /* safecombinationentry.cpp in Sources */,
+				E6BF9E6513348CA50084A011 /* safecombinationprompt.cpp in Sources */,
+				E6BF9E6613348CA50084A011 /* safecombinationsetup.cpp in Sources */,
+				E6BF9E6713348CA50084A011 /* SystemTray.cpp in Sources */,
+				E6BF9E6813348CA50084A011 /* version.cpp in Sources */,
+				E6BF9E6913348CA50084A011 /* guiinfo.cpp in Sources */,
+				E6BF9E6A13348CA50084A011 /* ImportTextDlg.cpp in Sources */,
+				E6BF9E6B13348CA50084A011 /* ImportXmlDlg.cpp in Sources */,
+				E6BF9E6C13348CA50084A011 /* OpenFilePickerValidator.cpp in Sources */,
+				E6BF9E6D13348CA50084A011 /* AdvancedSelectionDlg.cpp in Sources */,
+				E6BF9E6E13348CA50084A011 /* ExportTextWarningDlg.cpp in Sources */,
+				E6BF9E6F13348CA50084A011 /* SafeCombinationCtrl.cpp in Sources */,
+				E6BF9E7013348CA50084A011 /* ViewReport.cpp in Sources */,
+				E6BF9E7113348CA50084A011 /* dragbar.cpp in Sources */,
+				E6BF9E7213348CA50084A011 /* PWSDragBar.cpp in Sources */,
+				E6BF9E7313348CA50084A011 /* MergeDlg.cpp in Sources */,
+				E6BF9E7413348CA50084A011 /* ExternalKeyboardButton.cpp in Sources */,
+				E6BF9E7513348CA50084A011 /* DbSelectionPanel.cpp in Sources */,
+				E6BF9E7613348CA50084A011 /* PwsSync.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E6BF9E8913348CDB0084A011 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E6BF9E8A13348CDB0084A011 /* BlowFish.cpp in Sources */,
+				E6BF9E8B13348CDB0084A011 /* CheckVersion.cpp in Sources */,
+				E6BF9E8C13348CDB0084A011 /* Command.cpp in Sources */,
+				E6BF9E8D13348CDB0084A011 /* CoreImpExp.cpp in Sources */,
+				E6BF9E8E13348CDB0084A011 /* core_st.cpp in Sources */,
+				E6BF9E8F13348CDB0084A011 /* hmac.cpp in Sources */,
+				E6BF9E9013348CDB0084A011 /* ItemData.cpp in Sources */,
+				E6BF9E9113348CDB0084A011 /* ItemField.cpp in Sources */,
+				E6BF9E9213348CDB0084A011 /* Match.cpp in Sources */,
+				E6BF9E9313348CDB0084A011 /* PWCharPool.cpp in Sources */,
+				E6BF9E9413348CDB0084A011 /* PWHistory.cpp in Sources */,
+				E6BF9E9513348CDB0084A011 /* PWPolicy.cpp in Sources */,
+				E6BF9E9613348CDB0084A011 /* PWSAuxParse.cpp in Sources */,
+				E6BF9E9713348CDB0084A011 /* PWScore.cpp in Sources */,
+				E6BF9E9813348CDB0084A011 /* PWSdirs.cpp in Sources */,
+				E6BF9E9913348CDB0084A011 /* PWSfile.cpp in Sources */,
+				E6BF9E9A13348CDB0084A011 /* PWSfileV1V2.cpp in Sources */,
+				E6BF9E9B13348CDB0084A011 /* PWSfileV3.cpp in Sources */,
+				E6BF9E9C13348CDB0084A011 /* PWSFilters.cpp in Sources */,
+				E6BF9E9D13348CDB0084A011 /* PWSprefs.cpp in Sources */,
+				E6BF9E9E13348CDB0084A011 /* PWSrand.cpp in Sources */,
+				E6BF9E9F13348CDB0084A011 /* Report.cpp in Sources */,
+				E6BF9EA013348CDB0084A011 /* sha1.cpp in Sources */,
+				E6BF9EA113348CDB0084A011 /* sha256.cpp in Sources */,
+				E6BF9EA213348CDB0084A011 /* StringX.cpp in Sources */,
+				E6BF9EA313348CDB0084A011 /* SysInfo.cpp in Sources */,
+				E6BF9EA413348CDB0084A011 /* tinystr.cpp in Sources */,
+				E6BF9EA513348CDB0084A011 /* tinyxml.cpp in Sources */,
+				E6BF9EA613348CDB0084A011 /* tinyxmlerror.cpp in Sources */,
+				E6BF9EA713348CDB0084A011 /* tinyxmlparser.cpp in Sources */,
+				E6BF9EA813348CDB0084A011 /* TwoFish.cpp in Sources */,
+				E6BF9EA913348CDB0084A011 /* twofish_tab.c in Sources */,
+				E6BF9EAA13348CDB0084A011 /* UnknownField.cpp in Sources */,
+				E6BF9EAB13348CDB0084A011 /* UTF8Conv.cpp in Sources */,
+				E6BF9EAC13348CDB0084A011 /* Util.cpp in Sources */,
+				E6BF9EAE13348CDB0084A011 /* VerifyFormat.cpp in Sources */,
+				E6BF9EAF13348CDB0084A011 /* XFileSAX2Handlers.cpp in Sources */,
+				E6BF9EB013348CDB0084A011 /* XFileValidator.cpp in Sources */,
+				E6BF9EB113348CDB0084A011 /* XFileXMLProcessor.cpp in Sources */,
+				E6BF9EB213348CDB0084A011 /* XFilterSAX2Handlers.cpp in Sources */,
+				E6BF9EB313348CDB0084A011 /* XFilterXMLProcessor.cpp in Sources */,
+				E6BF9EB413348CDB0084A011 /* XSecMemMgr.cpp in Sources */,
+				E6BF9EB513348CDB0084A011 /* XMLFileHandlers.cpp in Sources */,
+				E6BF9EB613348CDB0084A011 /* XMLFileValidation.cpp in Sources */,
+				E6BF9EB713348CDB0084A011 /* XMLprefs.cpp in Sources */,
+				E6BF9EB813348CDB0084A011 /* ExpiredList.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E6BF9EC013348CF00084A011 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E6BF9EC113348CF00084A011 /* debug.cpp in Sources */,
+				E6BF9EC213348CF00084A011 /* dir.cpp in Sources */,
+				E6BF9EC313348CF00084A011 /* env.cpp in Sources */,
+				E6BF9EC413348CF00084A011 /* file.cpp in Sources */,
+				E6BF9EC513348CF00084A011 /* KeySend.cpp in Sources */,
+				E6BF9EC613348CF00084A011 /* mem.cpp in Sources */,
+				E6BF9EC713348CF00084A011 /* pws_str.cpp in Sources */,
+				E6BF9EC813348CF00084A011 /* pws_time.cpp in Sources */,
+				E6BF9EC913348CF00084A011 /* rand.cpp in Sources */,
+				E6BF9ECA13348CF00084A011 /* registry.cpp in Sources */,
+				E6BF9ECB13348CF00084A011 /* run.cpp in Sources */,
+				E6BF9ECC13348CF00084A011 /* sleep.cpp in Sources */,
+				E6BF9ECD13348CF00084A011 /* utf8conv.cpp in Sources */,
+				E6BF9ECE13348CF00084A011 /* macsendstring.cpp in Sources */,
+				E6C6876F137C406300A916C1 /* UUID.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E6E31A0D12FD6957001618AB /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1965,6 +2359,7 @@
 				E6E31A1912FD6957001618AB /* sleep.cpp in Sources */,
 				E6E31A1A12FD6957001618AB /* utf8conv.cpp in Sources */,
 				E6E31A1B12FD6957001618AB /* macsendstring.cpp in Sources */,
+				E6C68770137C406300A916C1 /* UUID.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2007,7 +2402,6 @@
 				E6E31A4312FD69A0001618AB /* UnknownField.cpp in Sources */,
 				E6E31A4412FD69A0001618AB /* UTF8Conv.cpp in Sources */,
 				E6E31A4512FD69A0001618AB /* Util.cpp in Sources */,
-				E6E31A4612FD69A0001618AB /* UUIDGen.cpp in Sources */,
 				E6E31A4712FD69A0001618AB /* VerifyFormat.cpp in Sources */,
 				E6E31A4812FD69A0001618AB /* XFileSAX2Handlers.cpp in Sources */,
 				E6E31A4912FD69A0001618AB /* XFileValidator.cpp in Sources */,
@@ -2018,6 +2412,7 @@
 				E6E31A4E12FD69A0001618AB /* XMLFileHandlers.cpp in Sources */,
 				E6E31A4F12FD69A0001618AB /* XMLFileValidation.cpp in Sources */,
 				E6E31A5012FD69A0001618AB /* XMLprefs.cpp in Sources */,
+				E6112A63131D720E00AA1454 /* ExpiredList.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2096,6 +2491,21 @@
 			isa = PBXTargetDependency;
 			target = E6ADB91B11956DD0004E2BE5 /* os */;
 			targetProxy = E6ADBAEE11957776004E2BE5 /* PBXContainerItemProxy */;
+		};
+		E6BF9E4913348CA50084A011 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E690B53012980BDD007EA508 /* Help Files */;
+			targetProxy = E6BF9E4A13348CA50084A011 /* PBXContainerItemProxy */;
+		};
+		E6BF9ED413348D180084A011 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E6BF9E8713348CDB0084A011 /* core-native */;
+			targetProxy = E6BF9ED313348D180084A011 /* PBXContainerItemProxy */;
+		};
+		E6BF9ED613348D1F0084A011 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E6BF9EBF13348CF00084A011 /* os-native */;
+			targetProxy = E6BF9ED513348D1F0084A011 /* PBXContainerItemProxy */;
 		};
 		E6E31A5A12FD6A0A001618AB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -2302,12 +2712,113 @@
 			};
 			name = Release;
 		};
+		E6BF9E8013348CA50084A011 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = i386;
+				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					UNICODE,
+					"_FILE_OFFSET_BITS=64",
+					_LARGE_FILES,
+					__WXDEBUG__,
+					__WXMAC__,
+				);
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				INFOPLIST_FILE = "pwsafe-Info-native32.plist";
+				PRODUCT_NAME = "pwsafe-native";
+				SDKROOT = macosx;
+				SYMROOT = "build-native";
+				USER_HEADER_SEARCH_PATHS = ../src;
+				VALID_ARCHS = i386;
+			};
+			name = Debug;
+		};
+		E6BF9E8113348CA50084A011 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E6EBB01B133522D9007CA1F5 /* pwsafe-native-release32.xcconfig */;
+			buildSettings = {
+				ARCHS = i386;
+				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					_LARGE_FILES,
+					UNICODE,
+					"_FILE_OFFSET_BITS=64",
+					__WXMAC__,
+				);
+				GCC_VERSION = 4.2;
+				INFOPLIST_FILE = "pwsafe-Info-native32.plist";
+				PRODUCT_NAME = "pwsafe-native";
+				SDKROOT = macosx;
+				SYMROOT = "build-native";
+				USER_HEADER_SEARCH_PATHS = ../src;
+				VALID_ARCHS = i386;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		E6BF9EBA13348CDB0084A011 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = i386;
+				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				HEADER_SEARCH_PATHS = ../src/;
+				PRODUCT_NAME = core;
+				SDKROOT = macosx;
+				SYMROOT = "build-native";
+			};
+			name = Debug;
+		};
+		E6BF9EBB13348CDB0084A011 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = i386;
+				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
+				GCC_VERSION = 4.2;
+				HEADER_SEARCH_PATHS = ../src/;
+				PRODUCT_NAME = core;
+				SDKROOT = macosx;
+				SYMROOT = "build-native";
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		E6BF9ED013348CF00084A011 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = i386;
+				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				PRODUCT_NAME = os;
+				SDKROOT = macosx;
+				SYMROOT = "build-native";
+			};
+			name = Debug;
+		};
+		E6BF9ED113348CF00084A011 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = i386;
+				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
+				GCC_VERSION = 4.2;
+				PRODUCT_NAME = os;
+				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.6.sdk";
+				SYMROOT = "build-native";
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
 		E6E31A1D12FD6957001618AB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_64_BIT_PRE_XCODE_3_1)";
 				ARCHS_STANDARD_64_BIT_PRE_XCODE_3_1 = x86_64;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				PRODUCT_NAME = os;
 				SYMROOT = build64;
 				VALID_ARCHS = x86_64;
@@ -2332,6 +2843,7 @@
 				ARCHS = "$(ARCHS_STANDARD_64_BIT_PRE_XCODE_3_1)";
 				ARCHS_STANDARD_64_BIT_PRE_XCODE_3_1 = x86_64;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = ../src/;
 				PRODUCT_NAME = core;
 				SYMROOT = build64;
@@ -2368,6 +2880,7 @@
 					__WXOSX__,
 					__WXOSX_COCOA__,
 				);
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "pwsafe-Info-x86_64.plist";
 				PRODUCT_NAME = "pwsafe-x86_64";
 				SYMROOT = build64;
@@ -2452,6 +2965,33 @@
 			buildConfigurations = (
 				E6ADB9A11195706B004E2BE5 /* Debug */,
 				E6ADB9A21195706B004E2BE5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E6BF9E7F13348CA50084A011 /* Build configuration list for PBXNativeTarget "pwsafe-native" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E6BF9E8013348CA50084A011 /* Debug */,
+				E6BF9E8113348CA50084A011 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E6BF9EB913348CDB0084A011 /* Build configuration list for PBXNativeTarget "core-native" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E6BF9EBA13348CDB0084A011 /* Debug */,
+				E6BF9EBB13348CDB0084A011 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E6BF9ECF13348CF00084A011 /* Build configuration list for PBXNativeTarget "os-native" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E6BF9ED013348CF00084A011 /* Debug */,
+				E6BF9ED113348CF00084A011 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
