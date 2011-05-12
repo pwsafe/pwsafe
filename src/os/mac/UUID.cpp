@@ -19,8 +19,6 @@
 #include <iomanip>
 #include <assert.h>
 
-/* currently here only for Cygwin test harness */
-#include <asm/byteorder.h> /* for htonl, htons */
 
 using namespace std;
 
@@ -83,23 +81,27 @@ pws_os::CUUID::CUUID(const StringX &s)
 
 pws_os::CUUID::~CUUID()
 {
+#ifndef TEST
   trashMemory(reinterpret_cast<unsigned char *>(&m_uuid), sizeof(m_uuid));
+#endif
   if (m_ua) {
+#ifndef TEST
     trashMemory(m_ua, sizeof(uuid_array_t));
+#endif
     delete[] m_ua;
   }
 }
 
-void pws_os::CUUID::GetUUID(uuid_array_t &uuid_array) const
+void pws_os::CUUID::GetARep(uuid_array_t &uuid_array) const
 {
   uuid_copy(uuid_array, m_uuid);
 }
 
-const uuid_array_t *pws_os::CUUID::GetUUID() const
+const uuid_array_t *pws_os::CUUID::GetARep() const
 {
   if (m_ua == NULL) {
     m_ua = (uuid_array_t *)(new uuid_array_t);
-    GetUUID(*m_ua);
+    GetARep(*m_ua);
   }
   return m_ua;
 }
@@ -118,7 +120,7 @@ bool pws_os::CUUID::operator<(const pws_os::CUUID &that) const
 std::ostream &pws_os::operator<<(std::ostream &os, const pws_os::CUUID &uuid)
 {
   uuid_array_t uuid_a;
-  uuid.GetUUID(uuid_a);
+  uuid.GetARep(uuid_a);
   for (size_t i = 0; i < sizeof(uuid_array_t); i++) {
     os << setw(2) << setfill('0') << hex << int(uuid_a[i]);
     if (uuid.m_canonic && (i == 3 || i == 5 || i == 7 || i == 9))
@@ -130,7 +132,7 @@ std::ostream &pws_os::operator<<(std::ostream &os, const pws_os::CUUID &uuid)
 std::wostream &pws_os::operator<<(std::wostream &os, const pws_os::CUUID &uuid)
 {
   uuid_array_t uuid_a;
-  uuid.GetUUID(uuid_a);
+  uuid.GetARep(uuid_a);
   for (size_t i = 0; i < sizeof(uuid_array_t); i++) {
     os << setw(2) << setfill(wchar_t('0')) << hex << int(uuid_a[i]);
     if (uuid.m_canonic && (i == 3 || i == 5 || i == 7 || i == 9))
@@ -154,13 +156,15 @@ pws_os::CUUID::operator StringX() const
 #include <stdio.h>
 int main()
 {
-  uuid_str_t str;
+  uuid_string_t str;
   uuid_array_t uuid_array;
 
   for (int i = 0; i< 10; i++) {
-    CUUID uuid;
+    pws_os::CUUID uuid;
+    uuid.GetARep(uuid_array);
+    uuid_unparse_lower(uuid_array, str);
     printf("%s\n",str);
-    uuid.GetUUID(uuid_array);
+    uuid.GetARep(uuid_array);
     printf(_T("%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x\n"),
               uuid_array[0], uuid_array[1], uuid_array[2], uuid_array[3], 
               uuid_array[4], uuid_array[5], uuid_array[6], uuid_array[7], 
