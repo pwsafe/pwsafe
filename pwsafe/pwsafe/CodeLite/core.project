@@ -81,7 +81,6 @@
     <File Name="../src/core/UTF8Conv.cpp"/>
     <File Name="../src/core/StringX.h"/>
     <File Name="../src/core/PWSfileV1V2.h"/>
-    <File Name="../src/core/UUIDGen.h"/>
     <File Name="../src/core/CoreImpExp.cpp"/>
     <File Name="../src/core/Util.h"/>
     <File Name="../src/core/BlowFish.h"/>
@@ -102,7 +101,6 @@
     <File Name="../src/core/UnknownField.cpp"/>
     <File Name="../src/core/Match.cpp"/>
     <File Name="../src/core/PwsPlatform.h"/>
-    <File Name="../src/core/UUIDGen.cpp"/>
     <File Name="../src/core/PWCharPool.cpp"/>
     <File Name="../src/core/ItemField.cpp"/>
     <File Name="../src/core/XMLprefs.h"/>
@@ -112,6 +110,10 @@
     <File Name="../src/core/PWSfile.cpp"/>
     <File Name="../src/core/BlowFish.cpp"/>
     <File Name="../src/core/PWSprefs.h"/>
+    <File Name="../src/core/ExpiredList.cpp"/>
+    <File Name="../src/core/ExpiredList.h"/>
+    <File Name="../src/core/CoreOtherDB.cpp"/>
+    <File Name="../src/core/DBCompareData.h"/>
   </VirtualDirectory>
   <Dependencies Name="Release"/>
   <Dependencies Name="Debug"/>

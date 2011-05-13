@@ -27,6 +27,7 @@
     <File Name="../src/os/linux/rand.cpp"/>
     <File Name="../src/os/linux/pws_str.cpp"/>
     <File Name="../src/os/linux/dir.cpp"/>
+    <File Name="../src/os/linux/UUID.cpp"/>
   </VirtualDirectory>
   <VirtualDirectory Name="os">
     <File Name="../src/os/env.h"/>
