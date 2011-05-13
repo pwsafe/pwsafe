@@ -2952,6 +2952,9 @@ void PasswordSafeFrame::Merge(const StringX &sx_Filename2, PWScore *pothercore, 
   /* Create report as we go */
   CReport rpt;
 
+  rpt.StartReport(_("Merge"), m_core.GetCurFile().c_str());
+  rpt.WriteLine(tostdstring(wxString(_("Merging database: ")) << towxstring(sx_Filename2) << wxT("\r\n")));
+  
   stringT result = m_core.Merge(pothercore, 
                                 selection.m_fUseSubgroups,
                                 tostdstring(selection.m_subgroupText),
