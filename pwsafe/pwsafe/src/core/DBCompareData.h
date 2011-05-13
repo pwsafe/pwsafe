@@ -23,19 +23,19 @@ enum {BOTH = -1 , CURRENT = 0, COMPARE = 1};
 // If entries made equal by copying, indatabase set to -1.
 struct st_CompareData {
   st_CompareData()
-    : bsDiffs(0), group(L""), title(L""), user(L""),
+    : uuid0(pws_os::CUUID::NullUUID()), uuid1(pws_os::CUUID::NullUUID()),
+    bsDiffs(0), group(L""), title(L""), user(L""),
     id(0), indatabase(0), listindex(0),
-    unknflds0(false), unknflds1(false), bIsProtected0(false),
-    uuid0(pws_os::CUUID::NullUUID()), uuid1(pws_os::CUUID::NullUUID())
+    unknflds0(false), unknflds1(false), bIsProtected0(false)
   {
   }
 
   st_CompareData(const st_CompareData &that)
-    : bsDiffs(that.bsDiffs), group(that.group), title(that.title), user(that.user),
+    : uuid0(that.uuid0), uuid1(that.uuid1), bsDiffs(that.bsDiffs),
+    group(that.group), title(that.title), user(that.user),
     id(that.id), indatabase(that.indatabase), listindex(that.listindex),
     unknflds0(that.unknflds0), unknflds1(that.unknflds1),
-    bIsProtected0(that.bIsProtected0), uuid0(that.uuid0),
-    uuid1(that.uuid1)
+    bIsProtected0(that.bIsProtected0)
   {
   }
 
