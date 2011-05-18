@@ -1539,7 +1539,7 @@ int DboxMain::DoExportXML(const StringX &sx_Filename, const bool bAll,
 
   ReportAdvancedOptions(prpt, bAdvanced, bAll ? WZAdvanced::EXPORT_XML : WZAdvanced::EXPORT_ENTRYXML);
 
-  // do the export
+  // Do the export
   int rc = m_core.WriteXMLFile(sx_Filename, bsFields, subgroup_name,
                                subgroup_object, subgroup_function,
                                delimiter, numExported, &orderedItemList,
@@ -1816,7 +1816,6 @@ void DboxMain::OnImportXML()
   const std::wstring XSDfn(L"pwsafe.xsd");
   std::wstring XSDFilename = PWSdirs::GetXMLDir() + XSDfn;
 
-#if USE_XML_LIBRARY == MSXML || USE_XML_LIBRARY == XERCES
   if (!pws_os::FileExists(XSDFilename)) {
     CGeneralMsgBox gmb;
     cs_temp.Format(IDSC_MISSINGXSD, XSDfn.c_str());
@@ -1824,7 +1823,6 @@ void DboxMain::OnImportXML()
     gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONSTOP);
     return;
   }
-#endif
 
   CImportXMLDlg dlg;
   INT_PTR status = dlg.DoModal();

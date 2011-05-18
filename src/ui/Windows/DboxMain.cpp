@@ -977,7 +977,6 @@ void DboxMain::InitPasswordSafe()
     std::wstring strErrors;
     std::wstring XSDFilename = PWSdirs::GetXMLDir() + L"pwsafe_filter.xsd";
 
-#if USE_XML_LIBRARY == MSXML || USE_XML_LIBRARY == XERCES
     if (!pws_os::FileExists(XSDFilename)) {
       CGeneralMsgBox gmb;
       CString cs_title, cs_msg, cs_temp;
@@ -987,7 +986,6 @@ void DboxMain::InitPasswordSafe()
       gmb.MessageBox(cs_msg, cs_title, MB_OK | MB_ICONSTOP);
       return;
     }
-#endif
 
     MFCAsker q;
     int rc;

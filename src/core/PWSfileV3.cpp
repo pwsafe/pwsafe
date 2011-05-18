@@ -764,7 +764,6 @@ int PWSfileV3::ReadHeader()
         if (utf8Len > 0) {
           stringT strErrors;
           stringT XSDFilename = PWSdirs::GetXMLDir() + _T("pwsafe_filter.xsd");
-#if USE_XML_LIBRARY == MSXML || USE_XML_LIBRARY == XERCES
           if (!pws_os::FileExists(XSDFilename)) {
             // No filter schema => user won't be able to access stored filters
             // Inform her of the fact (probably an installation problem).
@@ -782,7 +781,6 @@ int PWSfileV3::ReadHeader()
              m_UHFL.push_back(unkhfe);
             break;
           }
-#endif
           int rc = m_MapFilters.ImportFilterXMLFile(FPOOL_DATABASE, text.c_str(), _T(""),
                                                     XSDFilename.c_str(),
                                                     strErrors, m_pAsker);
