@@ -3269,87 +3269,87 @@ msgstr "ID:32051:V C +A"
 
 #. Accelerator Entry for Menu ID:32063; '&Duplicate Entry'
 msgid "ID:32063:V C +D"
-msgstr ""
+msgstr "ID:32063:V C +D"
 
 #. Accelerator Entry for Menu ID:32066; '&Copy Password to Clipboard'
 msgid "ID:32066:V C +C"
-msgstr ""
+msgstr "ID:32066:V C +C"
 
 #. Accelerator Entry for Menu ID:32067; 'Display subset of Password'
 msgid "ID:32067:V C +B"
-msgstr ""
+msgstr "ID:32067:V C +B"
 
 #. Accelerator Entry for Menu ID:32068; 'Copy &Username to Clipboard'
 msgid "ID:32068:V C +U"
-msgstr ""
+msgstr "ID:32068:V C +U"
 
 #. Accelerator Entry for Menu ID:32069; 'Copy &Notes to Clipboard'
 msgid "ID:32069:V C +G"
-msgstr ""
+msgstr "ID:32069:V C +G"
 
 #. Accelerator Entry for Menu ID:32070; 'Copy &URL to Clipboard'
 msgid "ID:32070:VAC +L"
-msgstr ""
+msgstr "ID:32070:VAC +L"
 
 #. Accelerator Entry for Menu ID:32072; '&Browse to URL'
 msgid "ID:32072:V C +L"
-msgstr ""
+msgstr "ID:32072:V C +L"
 
 #. Accelerator Entry for Menu ID:32073; 'Browse to URL + &Autotype'
 msgid "ID:32073:VA  +L"
-msgstr ""
+msgstr "ID:32073:VA  +L"
 
 #. Accelerator Entry for Menu ID:32074; 'Send &email'
 msgid "ID:32074:V C +E"
-msgstr ""
+msgstr "ID:32074:V C +E"
 
 #. Accelerator Entry for Menu ID:32075; 'Perform Auto &Type'
 msgid "ID:32075:V C +T"
-msgstr ""
+msgstr "ID:32075:V C +T"
 
 #. Accelerator Entry for Menu ID:32076; '&Run Command'
 msgid "ID:32076:V C +R"
-msgstr ""
+msgstr "ID:32076:V C +R"
 
 #. Accelerator Entry for Menu ID:32079; '&Find...'
 msgid "ID:32079:V C +F"
-msgstr ""
+msgstr "ID:32079:V C +F"
 
 #. Accelerator Entry for Menu ID:32080; 'Copy Run Command to Clipboard'
 msgid "ID:32080:VAC +R"
-msgstr ""
+msgstr "ID:32080:VAC +R"
 
 #. Accelerator Entry for Menu ID:32082; 'Undo'
 msgid "ID:32082:V C +Z"
-msgstr ""
+msgstr "ID:32082:V C +Z"
 
 #. Accelerator Entry for Menu ID:32083; 'Redo'
 msgid "ID:32083:V C +Y"
-msgstr ""
+msgstr "ID:32083:V C +Y"
 
 #. Accelerator Entry for Menu ID:32108; 'Show &Find Toolbar\tCtrl+F'
 msgid "ID:32108:V C +F"
-msgstr ""
+msgstr "ID:32108:V C +F"
 
 #. Accelerator Entry for Menu ID:32154; '&Options...'
 msgid "ID:32154:V C +M"
-msgstr ""
+msgstr "ID:32154:V C +M"
 
 #. Accelerator Entry for Menu ID:32157; 'Generate &Password'
 msgid "ID:32157:V C +P"
-msgstr ""
+msgstr "ID:32157:V C +P"
 
 #. Accelerator Entry for Menu ID:32302; 'Clear Find'
 msgid "ID:32302:VAC +C"
-msgstr ""
+msgstr "ID:32302:VAC +C"
 
 #. Accelerator Entry for Menu ID:32304; ''
 msgid "ID:32304:VAC +S"
-msgstr ""
+msgstr "ID:32304:VAC +S"
 
 #. Accelerator Entry for Menu ID:32307; 'Advanced Find Options'
 msgid "ID:32307:VAC +A"
-msgstr ""
+msgstr "ID:32307:VAC +A"
 
 #. Accelerator Entry for Menu ID:32500; ''
 msgid "ID:32500:V C +C"
@@ -7175,4 +7175,3 @@ msgstr "w przeciągu %d dni(a)"
 #. Resource IDs: (8004)
 msgid "xxxxxx"
 msgstr "xxxxxx"
-
