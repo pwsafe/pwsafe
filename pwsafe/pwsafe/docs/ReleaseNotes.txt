@@ -38,6 +38,8 @@ symbols).
 
 Bugs fixed in 3.25.1
 ====================
+[3303018] Filters with quotes in their name are now correctly exported, imported
+and displayed in the Manage Filters dialog.
 [3234204] PasswordSafe no longer ends if the command flag is set to "-s <databasename>".
 [] Controls in Edit are now disabled if entry is protected, even though the user could
 not have saved any changes.
