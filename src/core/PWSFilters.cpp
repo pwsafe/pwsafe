@@ -190,7 +190,13 @@ static string GetFilterXML(const st_filters &filters, bool bWithFormatting)
     szendl = "\0";
   }
 
-  utf8conv.ToUTF8(filters.fname.c_str(), utf8, utf8Len);
+  // Filter name is an element attribute and so must be a quoted string.
+  // Convert any embedded quotes to &quot;
+  stringT fname = filters.fname;
+  const stringT from = _T("\""), to = _T("&quot;");
+  Replace(fname, from, to);
+
+  utf8conv.ToUTF8(fname.c_str(), utf8, utf8Len);
   oss << sztab1 << "<filter filtername=\"" << reinterpret_cast<const char *>(utf8) 
       << "\">" << szendl;
 
