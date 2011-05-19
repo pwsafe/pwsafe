@@ -60,6 +60,7 @@
 #include <algorithm>
 #include "./PwsSync.h"
 #include "./SystemTrayMenuId.h"
+#include "./CompareDlg.h"
 
 // main toolbar images
 #include "./PwsToolbarButtons.h"
@@ -185,6 +186,7 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
 
   EVT_MENU(ID_MERGE,            PasswordSafeFrame::OnMergeAnotherSafe )
   EVT_MENU(ID_SYNCHRONIZE,      PasswordSafeFrame::OnSynchronize )
+  EVT_MENU(ID_COMPARE,          PasswordSafeFrame::OnCompare )
 
   EVT_MENU( ID_MENU_CLEAR_MRU, PasswordSafeFrame::OnClearRecentHistory )
   EVT_UPDATE_UI( ID_MENU_CLEAR_MRU, PasswordSafeFrame::OnUpdateClearRecentDBHistory )
@@ -2993,6 +2995,12 @@ void PasswordSafeFrame::OnSynchronize(wxCommandEvent& /*evt*/)
   
   if (wiz.ShowReport())
     ViewReport(*wiz.GetReport());
+}
+
+void PasswordSafeFrame::OnCompare(wxCommandEvent& /*evt*/)
+{
+  CompareDlg dlg(this, &m_core);
+  dlg.ShowModal();
 }
 
 //------------ Validation
