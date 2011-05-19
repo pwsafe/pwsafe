@@ -99,13 +99,14 @@ bool DbSelectionPanel::DoValidation()
     //Did he enter the same file that's currently open?
     if (wxfn.SameAs(wxFileName(towxstring(m_core->GetCurFile())))) {
       // It is the same damn file
-      wxMessageBox(_("That file is already open."), _("Synchronize error"), wxOK | wxICON_WARNING, this);
+      wxMessageBox(_("That file is already open."), _("Error"), wxOK | wxICON_WARNING, this);
       return false;
     }
     
     wxString combination = m_sc->textCtrl->GetValue();
     //Did he enter a combination?
     if (combination.empty()) {
+      m_sc->textCtrl->SetFocus();
       wxMessageBox(_("The combination cannot be blank."), _("Error"), wxOK | wxICON_EXCLAMATION, this);
       return false;
     }
