@@ -3332,6 +3332,8 @@ void DboxMain::OnToolBarFindReport()
       buffer += L"\t" + CString(MAKEINTRESOURCE(IDS_COMPURL));
     if (bsFFields.test(CItemData::EMAIL))
       buffer += L"\t" + CString(MAKEINTRESOURCE(IDS_COMPEMAIL));
+    if (bsFFields.test(CItemData::PROTECTED))
+      buffer += L"\t" + CString(MAKEINTRESOURCE(IDS_COMPPROTECTED));
     if (bsFFields.test(CItemData::SYMBOLS))
       buffer += L"\t" + CString(MAKEINTRESOURCE(IDS_COMPSYMBOLS));
     if (bsFFields.test(CItemData::RUNCMD))

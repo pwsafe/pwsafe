@@ -139,6 +139,7 @@ BOOL CCompareResultsDlg::OnInitDialog()
                  {CItemData::RUNCMD, IDS_RUNCOMMAND, RUNCMD},
                  {CItemData::DCA, IDS_DCA, DCA},
                  {CItemData::EMAIL, IDS_EMAIL, EMAIL},
+                 {CItemData::PROTECTED, IDS_PROTECTED, PROTECTED},
                  {CItemData::SYMBOLS, IDS_SYMBOLS, SYMBOLS},
   };
 
@@ -339,6 +340,8 @@ void CCompareResultsDlg::AddCompareEntries(const bool bAddIdentical)
         m_LCResults.SetItemText(iItem, icol++, st_data.bsDiffs.test(CItemData::DCA) ? L"X" : L"-");
       if (m_bsFields.test(CItemData::EMAIL))
         m_LCResults.SetItemText(iItem, icol++, st_data.bsDiffs.test(CItemData::EMAIL) ? L"X" : L"-");
+      if (m_bsFields.test(CItemData::PROTECTED))
+        m_LCResults.SetItemText(iItem, icol++, st_data.bsDiffs.test(CItemData::PROTECTED) ? L"X" : L"-");
       if (m_bsFields.test(CItemData::SYMBOLS))
         m_LCResults.SetItemText(iItem, icol++, st_data.bsDiffs.test(CItemData::SYMBOLS) ? L"X" : L"-");
 
@@ -898,6 +901,7 @@ void CCompareResultsDlg::WriteReportData()
     const CString csx_runcmd(MAKEINTRESOURCE(IDS_COMPRUNCOMMAND));
     const CString csx_dca(MAKEINTRESOURCE(IDS_COMPDCA));
     const CString csx_email(MAKEINTRESOURCE(IDS_COMPEMAIL));
+    const CString csx_protected(MAKEINTRESOURCE(IDS_COMPPROTECTED));
     const CString csx_symbols(MAKEINTRESOURCE(IDS_COMPSYMBOLS));
 
     for (cd_iter = m_Conflicts.begin(); cd_iter != m_Conflicts.end();
@@ -918,6 +922,7 @@ void CCompareResultsDlg::WriteReportData()
       if (st_data.bsDiffs.test(CItemData::RUNCMD)) buffer += csx_runcmd;
       if (st_data.bsDiffs.test(CItemData::DCA)) buffer += csx_dca;
       if (st_data.bsDiffs.test(CItemData::EMAIL)) buffer += csx_email;
+      if (st_data.bsDiffs.test(CItemData::PROTECTED)) buffer += csx_protected;
       if (st_data.bsDiffs.test(CItemData::SYMBOLS)) buffer += csx_symbols;
 
       // Time fields
