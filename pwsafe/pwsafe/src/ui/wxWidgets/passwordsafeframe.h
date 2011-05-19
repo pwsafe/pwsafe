@@ -334,6 +334,7 @@ public:
 
   void OnMergeAnotherSafe(wxCommandEvent& evt);
   void OnSynchronize(wxCommandEvent& evt);
+  void OnCompare(wxCommandEvent& evt);
   
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_TOOLBAR_CLASSIC and ID_TOOLBAR_NEW
   void OnChangeToolbarType(wxCommandEvent& /*evt*/);
