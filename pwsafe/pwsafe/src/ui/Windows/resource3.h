@@ -665,3 +665,4 @@
 #define IDS_SB_TT_FILTER                5861
 #define IDS_DRAGTOAUTOTYPE              5862
 #define IDS_REPLACEEXPORTFILE           5863
+#define IDS_COMPPROTECTED               5864

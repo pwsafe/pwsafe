@@ -201,10 +201,10 @@ void PWScore::Compare(PWScore *pothercore,
             currentItem.GetEmail() != compItem.GetEmail())
           bsConflicts.flip(CItemData::EMAIL);
         if (bsFields.test(CItemData::PROTECTED) &&
-            currentItem.GetEmail() != compItem.GetProtected())
+            currentItem.GetProtected() != compItem.GetProtected())
           bsConflicts.flip(CItemData::PROTECTED);
         if (bsFields.test(CItemData::SYMBOLS) &&
-            currentItem.GetEmail() != compItem.GetSymbols())
+            currentItem.GetSymbols() != compItem.GetSymbols())
           bsConflicts.flip(CItemData::SYMBOLS);
 
 
