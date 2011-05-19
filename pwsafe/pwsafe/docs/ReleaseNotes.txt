@@ -43,6 +43,8 @@ and displayed in the Manage Filters dialog.
 [3234204] PasswordSafe no longer ends if the command flag is set to "-s <databasename>".
 [] Controls in Edit are now disabled if entry is protected, even though the user could
 not have saved any changes.
+[] Compare databases now correctly compares the 'Protect' and password policy 'symbols'
+fields of entries.
 
 New Features for 3.25
 =====================
