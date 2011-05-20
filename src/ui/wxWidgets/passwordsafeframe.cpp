@@ -2901,48 +2901,14 @@ void PasswordSafeFrame::OnMergeAnotherSafe(wxCommandEvent& evt)
   UNREFERENCED_PARAMETER(evt);
   MergeDlg dlg(this, &m_core);
   if (dlg.ShowModal() == wxID_OK) {
-    //this code comes from DboxMain::DoOtherDBProcessing()
     PWScore othercore;
-    // Not really needed but...
-    othercore.ClearData();
-
-    // Reading a new file changes the preferences!
-    const StringX sxSavePrefString(PWSprefs::GetInstance()->Store());
-    const bool bDBPrefsChanged = PWSprefs::GetInstance()->IsDBprefsChanged();
-
-    StringX dbpath(tostringx(dlg.GetOtherSafePath()));
-    int rc = othercore.ReadFile(dbpath, tostringx(dlg.GetOtherSafeCombination()));
-
-    // Reset database preferences - first to defaults then add saved changes!
-    PWSprefs::GetInstance()->Load(sxSavePrefString);
-    PWSprefs::GetInstance()->SetDBprefsChanged(bDBPrefsChanged);
-
-    switch (rc) {
-      case PWScore::SUCCESS:
-        Merge(dbpath, &othercore, dlg.GetSelectionCriteria());
-        break;
-      case PWScore::CANT_OPEN_FILE:
-        wxMessageBox(dlg.GetOtherSafePath() << _("\n\nCould not open file for reading!"),
-                      _("File Read Error"), wxOK | wxICON_ERROR );
-        break;
-      case PWScore::BAD_DIGEST:
-        if (wxMessageBox(dlg.GetOtherSafePath() << _("\n\nFile corrupt or truncated!\nData may have been lost or modified.\nContinue anyway?"), 
-              _("File Read Error"), wxYES_NO | wxICON_QUESTION) == wxYES)
-          rc = PWScore::SUCCESS;
-        break;
-#ifdef DEMO
-      case PWScore::LIMIT_REACHED:
-        wxMessageBox(wxString::Format(_("This version of PasswordSafe does not support more than %d entries in a database.\nTo get an unlimited version for the U3 platform, please visit http://software.u3.com\nNote: Saving this database will result in the removal of unread entries!"), MAXDEMO),
-                          _("Trial Version Limitation"), wxOK | wxICON_WARNING);
-        break;
-#endif
-      default:
-        wxMessageBox( dlg.GetOtherSafePath() << _("\n\nUnknown error"), _("File Read Error"), wxOK | wxICON_ERROR);
-        break;
+    if (ReadCore(othercore,
+                 dlg.GetOtherSafePath(),
+                 tostringx(dlg.GetOtherSafeCombination()),
+                 true,
+                 this) == PWScore::SUCCESS) {
+        Merge(tostringx(dlg.GetOtherSafePath()), &othercore, dlg.GetSelectionCriteria());
     }
-    
-    othercore.ClearData();
-    othercore.SetCurFile(L"");
   }
 }
 

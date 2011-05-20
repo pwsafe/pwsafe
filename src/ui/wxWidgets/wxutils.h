@@ -95,5 +95,9 @@ public:
   }
 };
 
+class PWScore;
+int ReadCore(PWScore& othercore, const wxString& file, const StringX& combination, 
+                bool showMsgbox = true, wxWindow* msgboxParent = NULL);
+
 #endif
 
