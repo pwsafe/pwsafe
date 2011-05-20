@@ -429,5 +429,6 @@ void PWSGrid::SaveSettings(void) const
 
 void PWSGrid::OnDBGUIPrefsChange(wxEvent& evt)
 {
+  UNREFERENCED_PARAMETER(evt);
   EnableGridLines(PWSprefs::GetInstance()->GetPref(PWSprefs::ListViewGridLines));
 }

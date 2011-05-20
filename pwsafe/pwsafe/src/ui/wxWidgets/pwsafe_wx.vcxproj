@@ -449,6 +449,8 @@
   <ItemGroup>
     <ClInclude Include="about.h" />
     <ClInclude Include="addeditpropsheet.h" />
+    <ClInclude Include="AdvancedSelectionDlg.h" />
+    <ClInclude Include="CompareDlg.h" />
     <ClInclude Include="createshortcutdlg.h" />
     <ClInclude Include="DbSelectionPanel.h" />
     <ClInclude Include="deleteconfirmation.h" />
@@ -457,6 +459,7 @@
     <ClInclude Include="ExportTextWarningDlg.h" />
     <ClInclude Include="ExternalKeyboardButton.h" />
     <ClInclude Include="guiinfo.h" />
+    <ClInclude Include="helpmap.h" />
     <ClInclude Include="ImportTextDlg.h" />
     <ClInclude Include="ImportXmlDlg.h" />
     <ClInclude Include="MergeDlg.h" />
@@ -467,7 +470,6 @@
     <ClInclude Include="properties.h" />
     <ClInclude Include="pwsafeapp.h" />
     <ClInclude Include="pwsclip.h" />
-    <ClInclude Include="pwsdca.h" />
     <ClInclude Include="PWSDragBar.h" />
     <ClInclude Include="PWSgrid.h" />
     <ClInclude Include="PWSgridtable.h" />
@@ -494,6 +496,7 @@
     <ClCompile Include="about.cpp" />
     <ClCompile Include="addeditpropsheet.cpp" />
     <ClCompile Include="AdvancedSelectionDlg.cpp" />
+    <ClCompile Include="CompareDlg.cpp" />
     <ClCompile Include="createshortcutdlg.cpp" />
     <ClCompile Include="DbSelectionPanel.cpp" />
     <ClCompile Include="deleteconfirmation.cpp" />
@@ -527,6 +530,7 @@
     <ClCompile Include="SystemTray.cpp" />
     <ClCompile Include="version.cpp" />
     <ClCompile Include="ViewReport.cpp" />
+    <ClCompile Include="wxutils.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
