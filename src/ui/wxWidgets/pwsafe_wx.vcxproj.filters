@@ -63,9 +63,6 @@
     <ClInclude Include="pwsclip.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="pwsdca.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="PWSgrid.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -130,6 +127,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DbSelectionPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AdvancedSelectionDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CompareDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="helpmap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -245,6 +251,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DbSelectionPanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CompareDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="wxutils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -223,7 +223,6 @@ bool PWSTreeCtrl::ExistsInTree(wxTreeItemId node,
   return false;
 }
 
-
 wxTreeItemId PWSTreeCtrl::AddGroup(const StringX &group)
 {
   wxTreeItemId ti = GetRootItem();
@@ -312,7 +311,6 @@ void PWSTreeCtrl::UpdateItem(const CItemData &item)
   }
 }
 
-
 void PWSTreeCtrl::AddItem(const CItemData &item)
 {
   wxTreeItemData *data = new PWTreeItemData(item);
@@ -342,7 +340,6 @@ CItemData *PWSTreeCtrl::GetItem(const wxTreeItemId &id) const
   return &itemiter->second;
 
 }
-
 
 //overriden from base for case-insensitive sort
 int PWSTreeCtrl::OnCompareItems(const wxTreeItemId& item1, const wxTreeItemId& item2)
@@ -496,6 +493,7 @@ void PWSTreeCtrl::OnChar( wxKeyEvent& evt )
 
 void PWSTreeCtrl::OnDBGUIPrefsChange(wxEvent& evt)
 {
+  UNREFERENCED_PARAMETER(evt);
   PasswordSafeFrame *pwsframe = dynamic_cast<PasswordSafeFrame *>(GetParent());
   wxASSERT(pwsframe != NULL);
   if (pwsframe->IsTreeView())

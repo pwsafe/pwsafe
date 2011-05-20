@@ -384,6 +384,7 @@ void PwsafeApp::OnActivityTimer(wxTimerEvent& /* timerEvent */)
 
 void PwsafeApp::OnDBGUIPrefsChange(wxEvent& evt)
 {
+  UNREFERENCED_PARAMETER(evt);
   if (m_activityTimer->IsRunning()) {
     m_activityTimer->Stop();
     m_activityTimer->Start(PWSprefs::GetInstance()->GetPref(PWSprefs::IdleTimeout)*60*1000, true);

@@ -42,9 +42,12 @@ public:
 };
 
 struct ee_equal_uuid {
-ee_equal_uuid(pws_os::CUUID const& uuid) : m_uuid(uuid) {}
+  ee_equal_uuid(const pws_os::CUUID &uuid) : m_uuid(uuid) {}
+
   bool operator()(const ExpPWEntry &ee) const
   { return m_uuid == ee.uuid; }
+
+  ee_equal_uuid& operator=(const ee_equal_uuid&); // Do not implement
   const pws_os::CUUID m_uuid;
 };
 
