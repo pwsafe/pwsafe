@@ -534,20 +534,10 @@ void SyncStatusPage::OnPageEnter(PageDirection dir)
 
     FindWindow(ID_SHOW_REPORT)->Hide();
 
-    // Reading a new file changes the preferences!
-    const StringX sxSavePrefString(PWSprefs::GetInstance()->Store());
-    const bool bDBPrefsChanged = PWSprefs::GetInstance()->IsDBprefsChanged();
-
     PWScore* othercore = new PWScore;
     const wxString otherDBPath = m_syncData->otherDB.GetFullPath();
-    const StringX  sxOtherFile = tostringx(otherDBPath);
-    const int rc = othercore->ReadFile(sxOtherFile, tostringx(m_syncData->combination));
-    othercore->SetCurFile(sxOtherFile);
-
-    // Reset database preferences - first to defaults then add saved changes!
-    PWSprefs::GetInstance()->Load(sxSavePrefString);
-    PWSprefs::GetInstance()->SetDBprefsChanged(bDBPrefsChanged);
-    
+    const int rc = ReadCore(*othercore, otherDBPath, tostringx(m_syncData->combination),
+                                    false, this);
     if (rc == PWScore::SUCCESS) {
       if (DbHasNoDuplicates(othercore) && DbHasNoDuplicates(m_syncData->core)) {
         SetHeaderText(_("Your database is being synchronized with \"") + otherDBPath + _T('"'));
