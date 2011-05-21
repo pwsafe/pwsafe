@@ -527,17 +527,7 @@ int PWScore::CheckPasskey(const StringX &filename, const StringX &passkey)
     delete[] t_passkey;
   }
 
-  switch (status) {
-    case PWSfile::SUCCESS:
-      return SUCCESS;
-    case PWSfile::CANT_OPEN_FILE:
-      return CANT_OPEN_FILE;
-    case PWSfile::WRONG_PASSWORD:
-      return WRONG_PASSWORD;
-    default:
-      ASSERT(0);
-      return status; // should never happen
-  }
+  return status;
 }
 
 #define MRE_FS _T("\xbb")
@@ -577,7 +567,7 @@ int PWScore::ReadFile(const StringX &a_filename,
 
   if (status != PWSfile::SUCCESS) {
     delete in;
-    return CANT_OPEN_FILE;
+    return status;
   }
 
   if (m_ReadFileVersion == PWSfile::UNKNOWN_VERSION) {
