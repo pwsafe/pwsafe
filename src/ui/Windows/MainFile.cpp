@@ -1869,7 +1869,6 @@ void DboxMain::OnImportXML()
     std::wstring strXMLErrors, strSkippedList, strPWHErrorList, strRenameList;
     CString XMLFilename = fd.GetPathName();
     int numValidated, numImported, numSkipped, numRenamed, numPWHErrors;
-    bool bBadUnknownFileFields, bBadUnknownRecordFields;
     bool bImportPSWDsOnly = dlg.m_bImportPSWDsOnly == TRUE;
 
     CWaitCursor waitCursor;  // This may take a while!
@@ -1890,7 +1889,6 @@ void DboxMain::OnImportXML()
                               XSDFilename.c_str(), bImportPSWDsOnly,
                               strXMLErrors, strSkippedList, strPWHErrorList, strRenameList,
                               numValidated, numImported, numSkipped, numPWHErrors, numRenamed,
-                              bBadUnknownFileFields, bBadUnknownRecordFields,
                               rpt, pcmd);
     waitCursor.Restore();  // Restore normal cursor
 
@@ -1913,22 +1911,9 @@ void DboxMain::OnImportXML()
           Execute(pcmd);
 
         if (!strXMLErrors.empty() ||
-            bBadUnknownFileFields || bBadUnknownRecordFields ||
             numRenamed > 0 || numPWHErrors > 0) {
           if (!strXMLErrors.empty())
             csErrors = strXMLErrors + L"\n";
-
-          if (bBadUnknownFileFields) {
-            CString cs_type(MAKEINTRESOURCE(IDS_HEADER));
-            cs_temp.Format(IDS_XMLUNKNFLDIGNORED, cs_type);
-            csErrors += cs_temp + L"\n";
-          }
-
-          if (bBadUnknownRecordFields) {
-            CString cs_type(MAKEINTRESOURCE(IDS_RECORD));
-            cs_temp.Format(IDS_XMLUNKNFLDIGNORED, cs_type);
-            csErrors += cs_temp + L"\n";
-          }
 
           if (!csErrors.empty()) {
             rpt.WriteLine(csErrors.c_str());
@@ -3074,11 +3059,11 @@ void DboxMain::ReportAdvancedOptions(CReport *pRpt, const bool bAdvanced, const 
     int ifields[] = {CItemData::PASSWORD, CItemData::NOTES, CItemData::URL,
                      CItemData::AUTOTYPE, CItemData::PWHIST, CItemData::POLICY,
                      CItemData::RUNCMD, CItemData::DCA, CItemData::EMAIL,
-                     CItemData::SYMBOLS};
+                     CItemData::PROTECTED, CItemData::SYMBOLS};
     UINT uimsgids[] = {IDS_COMPPASSWORD, IDS_COMPNOTES, IDS_COMPURL,
                        IDS_COMPAUTOTYPE, IDS_COMPPWHISTORY, IDS_COMPPWPOLICY,
                        IDS_COMPRUNCOMMAND, IDS_COMPDCA, IDS_COMPEMAIL,
-                       IDS_COMPSYMBOLS};
+                       IDS_COMPPROTECTED, IDS_COMPSYMBOLS};
     ASSERT(_countof(ifields) == _countof(uimsgids));
 
     // Time fields

@@ -29,6 +29,7 @@
 #include "resource3.h"
 
 #include <iomanip>
+#include <shlobj.h>
 
 static wchar_t PSSWDCHAR = L'*';
 
@@ -339,6 +340,7 @@ LRESULT CWZSelectDB::OnWizardNext()
   const UINT nID = m_pWZPSH->GetID();
   bool bFileExists = pws_os::FileExists(m_filespec.GetString());
   bool bExportXML(true);
+
   switch (nID) {
     case ID_MENUITEM_COMPARE:
     case ID_MENUITEM_MERGE:
@@ -355,16 +357,35 @@ LRESULT CWZSelectDB::OnWizardNext()
       bExportXML = false; // Fall through on purpose
     case ID_MENUITEM_EXPORT2XML:
     case ID_MENUITEM_EXPORTENT2XML:
-      if (bFileExists && !m_bFileExistsUserAsked) {
+      if (bFileExists) {
         // Check if OK to overwrite existing file - if not already asked by user clicking
         // file browser button
-        CString cs_msg, cs_title(MAKEINTRESOURCE(bExportXML ? IDS_WZEXPORTXML : IDS_WZEXPORTTEXT));
-        cs_msg.Format(IDS_REPLACEEXPORTFILE, m_filespec);
-        INT_PTR rc = gmb.AfxMessageBox(cs_msg, cs_title,
-                       MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2);
-        if (rc == IDNO) {
-          m_pctlDB->SetFocus();
-          return -1;
+        if (!m_bFileExistsUserAsked) {
+          CString cs_msg, cs_title(MAKEINTRESOURCE(bExportXML ? IDS_WZEXPORTXML : IDS_WZEXPORTTEXT));
+          cs_msg.Format(IDS_REPLACEEXPORTFILE, m_filespec);
+          INT_PTR rc = gmb.AfxMessageBox(cs_msg, cs_title,
+                         MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2);
+          if (rc == IDNO) {
+            m_pctlDB->SetFocus();
+            return -1;
+          }
+        }
+      } else {
+        // File does not exist - but need to check if the path exists as
+        // pws_os::FOpen(...) cannot create any missing directories
+        std::wstring dir, cdrive, cdir, cfile, cextn;
+        pws_os::splitpath(m_filespec.GetString(), cdrive, cdir, cfile, cextn);
+        dir = cdrive + cdir;
+        int rc = ::SHCreateDirectoryEx(NULL, dir.c_str(), NULL);
+        switch (rc) {
+          case ERROR_SUCCESS:          // Path created
+          case ERROR_FILE_EXISTS:      // Directory already there
+          case ERROR_ALREADY_EXISTS:   // Directory already there
+            break;
+          default:
+            // Could not create path!
+            gmb.AfxMessageBox(IDS_CANNOTCREATEDIR);
+            return -1;
         }
       }
       break;

@@ -33,7 +33,6 @@ enum XLE_PASSWORDSAFE {
   XLE_PASSWORDSAFE            = 0,
   XLE_NUMBERHASHITERATIONS,
   XLE_PREFERENCES,
-  XLE_UNKNOWNHEADERFIELDS,
   XLE_ENTRY,
 
   // Preferences
@@ -69,9 +68,7 @@ enum XLE_PASSWORDSAFE {
   //   String
   XLE_DEFAULTUSERNAME,
   XLE_DEFAULTAUTOTYPESTRING,
-
-  // unknownheaderfields
-  XLE_HFIELD,
+  XLE_DEFAULTSYMBOLS,
 
   // entry
   XLE_GROUP,
@@ -94,8 +91,8 @@ enum XLE_PASSWORDSAFE {
   XLE_DCA,
   XLE_EMAIL,
   XLE_PROTECTED,
+  XLE_SYMBOLS,
   XLE_ENTRY_PASSWORDPOLICY,
-  XLE_UNKNOWNRECORDFIELDS,
 
   // pwhistory
   XLE_STATUS,
@@ -124,9 +121,6 @@ enum XLE_PASSWORDSAFE {
   XLE_ENTRY_PWUPPERCASEMINLENGTH,
   XLE_ENTRY_PWSYMBOLMINLENGTH,
 
-  // unknownrecordfields
-  XLE_RFIELD,
-
   // datetime fields
   XLE_DATE,
   XLE_TIME,
@@ -135,8 +129,8 @@ enum XLE_PASSWORDSAFE {
   XLE_LAST_ELEMENT
 };
 
-// Subtract duplicates (global/entry): header/record field(1), password policy fields(11)
-#define XLE_ELEMENTS (XLE_LAST_ELEMENT - 1 - 11)
+// Subtract duplicates (global/entry): password policy fields(11)
+#define XLE_ELEMENTS (XLE_LAST_ELEMENT - 11)
 
 // Number of Integer/Boolean Preferences
 #define NUMPREFSINXML (XLE_PREF_END - XLE_PREF_START + 1)

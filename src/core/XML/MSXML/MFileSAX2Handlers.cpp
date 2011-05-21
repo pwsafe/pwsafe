@@ -262,17 +262,6 @@ HRESULT STDMETHODCALLTYPE MFileSAX2ContentHandler::startElement(
     return S_OK;
 
   switch (icurrent_element) {
-    case XLE_HFIELD:
-    case XLE_RFIELD:
-      {
-        // Only interested in the ftype
-        TCHAR *lpValue = FileProcessAttributes(pAttributes, _T("ftype"));
-        if (lpValue != NULL) {
-          m_ctype = (unsigned char)_ttoi(lpValue);
-          free(lpValue);
-        }
-      }
-      break;
     case XLE_ENTRY:
       {
         TCHAR *lpValue1 = FileProcessAttributes(pAttributes, _T("normal"));

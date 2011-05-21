@@ -96,16 +96,6 @@ void XFileSAX2Handlers::startElement(const XMLCh* const /* uri */,
     return;
     
   switch (icurrent_element) {
-    case XLE_HFIELD:
-    case XLE_RFIELD:
-      {
-        // Only interested in the ftype attribute
-        XMLCh *szValue = (XMLCh *)attrs.getValue(_A2X("ftype"));
-        if (szValue != NULL) {
-          m_ctype = (unsigned char)XMLString::parseInt(szValue);
-        }
-      }
-      break;
     case XLE_ENTRY:
       {
         XMLCh *szValue1 = (XMLCh *)attrs.getValue(_A2X("normal"));

@@ -574,7 +574,7 @@ int PWSfileV3::WriteHeader()
     if (numWritten <= 0) { status = FAILURE; goto end; }
   }
   if (!m_MapFilters.empty()) {
-    ostringstream oss;
+    coStringXStream oss;  // XML is always char not wchar_t
     m_MapFilters.WriteFilterXMLFile(oss, m_hdr, _T(""));
     numWritten = WriteCBC(HDR_FILTERS,
                           reinterpret_cast<const unsigned char *>(oss.str().c_str()),
@@ -583,7 +583,7 @@ int PWSfileV3::WriteHeader()
   }
 
   if (!m_hdr.m_RUEList.empty()) {
-    ostringstream oss;
+    coStringXStream oss;
     size_t num = m_hdr.m_RUEList.size();
     if (num > 255)
       num = 255;  // Do not exceed 2 hex character length field
@@ -830,6 +830,7 @@ int PWSfileV3::ReadHeader()
             LoadAString(message, IDSC_CANTPROCESSDBFILTERS);
             if (m_pReporter != NULL)
               (*m_pReporter)(message);
+
             UnknownFieldEntry unkhfe(fieldType, utf8Len, utf8);
             m_UHFL.push_back(unkhfe);
           }

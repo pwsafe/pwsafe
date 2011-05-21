@@ -271,7 +271,6 @@
 #define IDS_ADVANCED                    5435
 #define IDS_YES                         5437
 #define IDS_NO                          5438
-#define IDS_XMLUNKNFLDIGNORED           5439
 #define IDS_XMLIMPORTFAILED             5440
 #define IDS_COPYUNKNOWNFIELDS           5441
 #define IDS_FINDX                       5442
@@ -541,8 +540,6 @@
 #define IDS_IGNORE                      5730
 #define IDS_TRYAGAIN                    5731
 #define IDS_AREYOUSURE_OPT              5732
-#define IDS_HEADER                      5733
-#define IDS_RECORD                      5734
 #define IDS_NO_ENTRIES_SELECTED         5736
 #define IDS_NO_ENTRIES_PROCESSED        5737
 #define IDS_DCALONG                     5738
@@ -666,3 +663,5 @@
 #define IDS_DRAGTOAUTOTYPE              5862
 #define IDS_REPLACEEXPORTFILE           5863
 #define IDS_COMPPROTECTED               5864
+#define IDS_WZACTIONFAILED              5865
+#define IDS_CANNOTCREATEDIR             5866

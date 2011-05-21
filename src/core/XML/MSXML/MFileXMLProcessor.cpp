@@ -45,7 +45,7 @@ MFileXMLProcessor::~MFileXMLProcessor()
 bool MFileXMLProcessor::Process(const bool &bvalidation, const stringT &ImportedPrefix,
                                 const stringT &strXMLFileName, const stringT &strXSDFileName,
                                 const bool &bImportPSWDsOnly,
-                                int &nITER, int &nRecordsWithUnknownFields, UnknownFieldList &uhfl)
+                                int &nITER)
 {
   HRESULT hr, hr0, hr60, hr40, hr30;
   bool b_ok = false;
@@ -215,15 +215,10 @@ bool MFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
           m_strPWHErrorList = pCH->getPWHErrorList();
           m_strRenameList = pCH->getRenameList();
 
-          m_bRecordHeaderErrors = pCH->m_bRecordHeaderErrors;
-          nRecordsWithUnknownFields = pCH->m_nRecordsWithUnknownFields;
-
           if (b_into_empty) {
-            m_bDatabaseHeaderErrors = pCH->m_bDatabaseHeaderErrors;
             nITER = pCH->m_nITER;
-            pCH->AddDBUnknownFieldsPreferences(uhfl);
-          } else
-            m_bDatabaseHeaderErrors = false;
+            pCH->AddDBPreferences();
+          }
         }
 
         b_ok = true;
