@@ -829,8 +829,6 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
 
   StringX tmp;
   CUTF8Conv utf8conv;
-  const unsigned char *utf8 = NULL;
-  size_t utf8Len = 0;
   unsigned char uc;
 
   tmp = GetGroup();
