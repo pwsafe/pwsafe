@@ -35,11 +35,19 @@ the Set and Clear buttons after changing values.
 [] The default password generation policy is now for 12 character
 passwords that include symbol characters (previous default was 8, no
 symbols).
+[] Unknown database header fields and unknown entry fields are no longer exported
+when a database is exported to XML as there is no mechanism to re-check them during
+import. Exporting to XML and then importing to a new database can be used to remove
+these unknown fields.
 
 Bugs fixed in 3.25.1
 ====================
 [3303018] Filters with quotes in their name are now correctly exported, imported
 and displayed in the Manage Filters dialog.
+[3301904] Export XML, export Text and the export of filters functions now process
+file names and paths containing non-Latin characters.  In addition, when the specified
+path does not exist because directories are not there, they are created in order to
+save the exported file.
 [3234204] PasswordSafe no longer ends if the command flag is set to "-s <databasename>".
 [] Controls in Edit are now disabled if entry is protected, even though the user could
 not have saved any changes.

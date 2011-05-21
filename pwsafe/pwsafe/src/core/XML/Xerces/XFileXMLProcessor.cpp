@@ -77,9 +77,7 @@ XFileXMLProcessor::~XFileXMLProcessor()
 // ---------------------------------------------------------------------------
 bool XFileXMLProcessor::Process(const bool &bvalidation, const stringT &ImportedPrefix,
                                 const stringT &strXMLFileName, const stringT &strXSDFileName,
-                                const bool &bImportPSWDsOnly,
-                                int &nITER, int &nRecordsWithUnknownFields, 
-                                UnknownFieldList &uhfl)
+                                const bool &bImportPSWDsOnly, int &nITER)
 {
   USES_XMLCH_STR
   
@@ -204,15 +202,11 @@ bool XFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
       m_strPWHErrorList = pSAX2Handler->getPWHErrorList();
       m_strRenameList = pSAX2Handler->getRenameList();
 
-      m_bRecordHeaderErrors = pSAX2Handler->getRecordHeaderErrors();
-      nRecordsWithUnknownFields = pSAX2Handler->getNumRecordsWithUnknownFields();
 
       if (b_into_empty) {
-        m_bDatabaseHeaderErrors = pSAX2Handler->getDatabaseHeaderErrors();
         nITER = pSAX2Handler->getNumIterations();
-        pSAX2Handler->AddDBUnknownFieldsPreferences(uhfl);
-      } else
-        m_bDatabaseHeaderErrors = false;
+        pSAX2Handler->AddDBPreferences();
+      }
     }
   }
 

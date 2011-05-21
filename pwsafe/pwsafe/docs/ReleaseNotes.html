@@ -91,8 +91,7 @@ for EasyVision and Pronounceable passwords can not be overriden in either case.<
 <td align="center" width="100">n/a</td>
 <td>Allow user to control the copying password to clipboard when performing
 "Browse to URL" via an option in Options->Security. This is a database option
-i.e. you can have different setting for different databases.
-</td>
+i.e. you can have different setting for different databases.</td>
 </tr>
 </tbody>
 </table>
@@ -110,10 +109,16 @@ the Set and Clear buttons after changing values.</td>
 </tr>
 <tr>
 <td align="center" width="100">n/a</td>
-<td>
-The default password generation policy is now for 12 character
+<td>The default password generation policy is now for 12 character
 passwords that include symbol characters (previous default was 8, no
 symbols).</td>
+</tr>
+<tr>
+<td align="center" width="100">n/a</td>
+<td>Unknown database header fields and unknown entry fields are no longer exported
+when a database is exported to XML as there is no mechanism to re-check them during
+import. Exporting to XML and then importing to a new database can be used to remove
+these unknown fields.</td>
 </tr>
 </tbody>
 </table>
@@ -124,6 +129,13 @@ symbols).</td>
 <td align="center" width="100"><a href="nojs.html" onclick="BR(3303018);return false;">3303018</a><br></td>
 <td>Filters with quotes in their name are now correctly exported, imported
 and displayed in the Manage Filters dialog.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(3301904);return false;">3301904</a><br></td>
+<td>Export XML, export Text and the export of filters functions now process
+file names and paths containing non-Latin characters.  In addition, when the specified
+path does not exist because directories are not there, they are created in order to
+save the exported file.</td>
 </tr>
 <tr>
 <td align="center" width="100"><a href="nojs.html" onclick="BR(3234204);return false;">3234204</a><br></td>
@@ -237,8 +249,7 @@ expiration daily. The display of expired and almost-expired entries
 has been redesigned, allowing users to update the entry directly. When
 an expired password is changed, the expiry date will be cleared unless
 there is a recurring password expiry interval, in which case a new
-expiry date will be calculated.
-</td>
+expiry date will be calculated.</td>
 </tr>
 <tr>
 <td align="center" width="100"><a href="nojs.html" onclick="FR(3131945);return false;">3131945</a><br></td>
@@ -295,13 +306,11 @@ thanks to pm_kan.</td>
 <tbody align="left" valign="top">
 <tr>
 <td align="center" width="100"><a href="nojs.html" onclick="BR(3194472);return false;">3194472</a><br></td>
-<td>
-Fix new group creation location. When a Group is selected, then
+<td>Fix new group creation location. When a Group is selected, then
 selecting 'Add Group' from the Edit menu or from the context menu displayed by
 right clicking on that Group, the new group will be a child of the selected group.
 However, when using the context menu displayed on right clicking on 'white space'
-below the last entry/group displayed, the group will be created at the topmost level.
-</td>
+below the last entry/group displayed, the group will be created at the topmost level.</td>
 </tr>
 <tr>
 <td align="center" width="100"><a href="nojs.html" onclick="BR(3165889);return false;">3165889</a><br></td>
@@ -317,8 +326,7 @@ below the last entry/group displayed, the group will be created at the topmost l
 "Show Desktop" feature.</td>
 </tr>
 <tr>
-<td align="center" width="100">n/a<br>
-</td>
+<td align="center" width="100">n/a<br></td>
 <td>No longer crashes when doing an Undo after a Merge.</td>
 </tr>
 <tr>
@@ -339,8 +347,7 @@ is opened in read-write mode. See 'Basic Tab' in Edit dialog. In Tree mode,
 a number sign (&#35;) after the name indicates the entry is protected. In List mode, the
 'Protected' column may be added to the list. A protected entry can not be
 edited, renamed or deleted and retains this property if Dragged &amp; Dropped onto
-another database.
-</td>
+another database.</td>
 </tr>
 </tbody>
 </table>
@@ -485,13 +492,11 @@ icon and the button on the Taskbar can be hidden.</td>
 <tbody align="left" valign="top">
 <tr>
 <td align="center" width="100"><a href="nojs.html" onclick="BR(3029576);return false;">3029576</a></td>
-<td>
-Ensure user specified backup directory ends with a slash.</td>
+<td>Ensure user specified backup directory ends with a slash.</td>
 </tr>
 <tr>
 <td align="center" width="100"><a href="nojs.html" onclick="BR(3028926);return false;">3028926</a></td>
-<td>
-Entries modified via Synchronize are now displayed correctly if the
+<td>Entries modified via Synchronize are now displayed correctly if the
 user checks the preference "Highlight changed entries" via
 Options-&gt;Display.</td>
 </tr>
@@ -808,8 +813,7 @@ due to workstation lock and terminal services running.</td>
 <tr>
 <td align="center" width="100"><a href="nojs.html" onclick="BR(2916338);return false;">2916338</a></td>
 <td>"Edit Base entry" now works for Alias entries as well
-as for Shortcuts.
-</td>
+as for Shortcuts.</td>
 </tr>
 <tr>
 <td align="center" width="100"><a href="nojs.html" onclick="BR(2913440);return false;">2913440</a></td>
@@ -844,8 +848,7 @@ are now reset.</td>
 </tr>
 <tr>
 <td align="center" width="100">n/a</td>
-<td>Finally fix issues running under pre-XP versions of Windows.
-</td>
+<td>Finally fix issues running under pre-XP versions of Windows.</td>
 </tr>
 <tr>
 <td align="center" width="100">n/a</td>
@@ -880,8 +883,7 @@ menu and/or by right-clicking on a shortcut entry.</td>
 'Password' fields are required.<br>
 &#8226;&nbsp;For XML import, the Title and Password elements are
 required. If the Group and Username elements are missing, they are
-assumed to be empty. All other fields or elements can be present but will be ignored.
-</td>
+assumed to be empty. All other fields or elements can be present but will be ignored.</td>
 </tr>
 <tr>
 <td align="center" width="100">n/a</td>

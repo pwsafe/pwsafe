@@ -42,9 +42,9 @@ struct pw_entry {
   StringX run_command;
   StringX dca;
   StringX email;
+  StringX symbols;
   unsigned char ucprotected;
   PWPolicy pwp;
-  UnknownFieldList uhrxl;  // Note: use header format for record unknown fields!
   int entrytype;
   bool bforce_normal_entry;
 };
@@ -96,7 +96,6 @@ public:
   int getNumSkipped() const {return m_numEntriesSkipped;}
   int getNumRenamed() const {return m_numEntriesRenamed;}
   int getNumPWHErrors() const {return m_numEntriesPWHErrors;}
-  int getNumRecordsWithUnknownFields() const {return m_nRecordsWithUnknownFields;}
  
   bool getDatabaseHeaderErrors() const {return m_bDatabaseHeaderErrors;}
   bool getRecordHeaderErrors() const {return m_bRecordHeaderErrors;}
@@ -105,7 +104,7 @@ protected:
   bool ProcessStartElement(const int icurrent_element);
   void ProcessEndElement(const int icurrent_element);
   void AddEntries();
-  void AddDBUnknownFieldsPreferences(UnknownFieldList &uhfl);
+  void AddDBPreferences();
 
   vdb_entries m_ventries;
   pw_entry *cur_entry;
@@ -123,7 +122,6 @@ protected:
   int m_numEntriesSkipped;
   int m_numEntriesRenamed;
   int m_numEntriesPWHErrors;
-  int m_nRecordsWithUnknownFields;
   int m_iErrorCode;
   TCHAR m_delimiter;
 
@@ -154,6 +152,7 @@ private:
   stringT m_ImportedPrefix;
   stringT m_sDefaultAutotypeString;
   stringT m_sDefaultUsername;
+  stringT m_sDefaultSymbols;
 };
 
 #endif /* __XMLFILEHANDLERS_H */

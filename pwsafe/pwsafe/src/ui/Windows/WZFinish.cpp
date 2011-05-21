@@ -330,6 +330,7 @@ LRESULT CWZFinish::OnExecuteThreadEnded(WPARAM wParam, LPARAM )
 
   m_pWZPSH->SetNumProcessed(pthdpms->numProcessed);
 
+  UINT nID = pthdpms->nID;
   m_status = pthdpms->status;
   delete pthdpms;
 
@@ -351,7 +352,36 @@ LRESULT CWZFinish::OnExecuteThreadEnded(WPARAM wParam, LPARAM )
 
   m_pWZPSH->WZPSHSetUpdateWizardWindow(NULL);
 
-  CString cs_text(MAKEINTRESOURCE(IDS_COMPLETE));
+  CString cs_text;
+  if (m_status != 0) {
+    UINT uiMsg(0);
+    switch (nID) {
+      case ID_MENUITEM_COMPARE:
+        uiMsg = IDS_WZCOMPARE;
+        break;
+      case ID_MENUITEM_MERGE:
+        uiMsg = IDS_WZMERGE;
+        break;
+      case ID_MENUITEM_SYNCHRONIZE:
+        uiMsg = IDS_WZSYNCH;
+        break;
+      case ID_MENUITEM_EXPORT2PLAINTEXT:
+      case ID_MENUITEM_EXPORTENT2PLAINTEXT:
+        uiMsg = IDS_WZEXPORTTEXT;
+        break;
+      case ID_MENUITEM_EXPORT2XML:
+      case ID_MENUITEM_EXPORTENT2XML:
+        uiMsg = IDS_WZEXPORTXML;
+        break;
+      default:
+        ASSERT(0);
+        break;
+    }
+    CString cs_temp(MAKEINTRESOURCE(uiMsg));
+    cs_text.Format(IDS_WZACTIONFAILED, cs_temp);
+  } else
+    cs_text.LoadString(IDS_COMPLETE);
+
   GetDlgItem(IDC_STATIC_WZPROCESSING)->SetWindowText(cs_text);
   GetDlgItem(IDC_ENTRY)->ShowWindow(SW_HIDE);
 

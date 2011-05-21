@@ -339,7 +339,6 @@ ImportXML(PWScore &core, const StringX &fname)
   std::wstring dir;
   std::wstring strXMLErrors, strSkippedList, strPWHErrorList, strRenameList;
   int numValidated, numImported, numSkipped, numRenamed, numPWHErrors;
-  bool bBadUnknownFileFields, bBadUnknownRecordFields;
   bool bImportPSWDsOnly = false;
 
   
@@ -359,7 +358,6 @@ ImportXML(PWScore &core, const StringX &fname)
                               strXMLErrors, strSkippedList, strPWHErrorList,
                               strRenameList, numValidated, numImported,
                               numSkipped, numPWHErrors, numRenamed,
-                              bBadUnknownFileFields, bBadUnknownRecordFields,
                               rpt, pcmd);
 
   switch (rc) {
@@ -383,19 +381,10 @@ ImportXML(PWScore &core, const StringX &fname)
       rc = core.Execute(pcmd);
 
     if (!strXMLErrors.empty() ||
-        bBadUnknownFileFields || bBadUnknownRecordFields ||
         numRenamed > 0 || numPWHErrors > 0) {
       wstring csErrors;
       if (!strXMLErrors.empty())
         csErrors = strXMLErrors + L"\n";
-
-      if (bBadUnknownFileFields) {
-        csErrors += L"At least one unknown header field is now in use. Any found have been ignored.\n";
-      }
-
-      if (bBadUnknownRecordFields) {
-        csErrors += L"At least one unknown record field is now in use. Any found have been ignored.\n";
-      }
 
       if (!csErrors.empty()) {
         rpt.WriteLine(csErrors.c_str());

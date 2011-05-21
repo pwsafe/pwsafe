@@ -829,6 +829,8 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
 
   StringX tmp;
   CUTF8Conv utf8conv;
+  const unsigned char *utf8 = NULL;
+  size_t utf8Len = 0;
   unsigned char uc;
 
   tmp = GetGroup();
@@ -957,7 +959,7 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
         PWHistList::iterator hiter;
         for (hiter = pwhistlist.begin(); hiter != pwhistlist.end();
              hiter++) {
-          const unsigned char * utf8 = NULL;
+          const unsigned char *utf8 = NULL;
           size_t utf8Len = 0;
 
           oss << "\t\t\t\t<history_entry num=\"" << num << "\">" << endl;
@@ -1005,39 +1007,6 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
   tmp = GetSymbols();
   if (bsExport.test(CItemData::SYMBOLS) && !tmp.empty())
     PWSUtil::WriteXMLField(oss, "symbols", tmp, utf8conv);
-
-  if (NumberUnknownFields() > 0) {
-    oss << "\t\t<unknownrecordfields>" << endl;
-    for (unsigned int i = 0; i != NumberUnknownFields(); i++) {
-      size_t length = 0;
-      unsigned char type;
-      unsigned char *pdata(NULL);
-      GetUnknownField(type, length, pdata, i);
-      if (length == 0)
-        continue;
-      // UNK_HEX_REP will represent unknown values
-      // as hexadecimal, rather than base64 encoding.
-      // Easier to debug.
-#ifndef UNK_HEX_REP
-      tmp = PWSUtil::Base64Encode(pdata, length).c_str();
-#else
-      tmp.clear();
-      String X sx_tmp;
-      unsigned char * pdata2(pdata);
-      unsigned char c;
-      for (int j = 0; j < reinterpret_cast<int &>(length); j++) {
-        c = *pdata2++;
-        Format(sx_tmp, _T("%02x"), c);
-        tmp += sx_tmp;
-      }
-#endif
-      oss << "\t\t\t<field ftype=\"" << int(type) << "\">"
-          << tmp.c_str() << "</field>" << endl;
-      trashMemory(pdata, length);
-      delete[] pdata;
-    } // iteration over unknown fields
-    oss << "\t\t</unknownrecordfields>" << endl;
-  } // if there are unknown fields
 
   oss << "\t</entry>" << endl << endl;
   return oss.str();
@@ -1382,6 +1351,11 @@ void CItemData::SetUnknownField(const unsigned char &type,
                                 const size_t &length,
                                 const unsigned char * &ufield)
 {
+  /**
+     TODO - check that this unknown field from the XML Import file is now
+     known and it should be added as that instead!
+  **/
+
   CItemField unkrfe(type);
   SetField(unkrfe, ufield, length);
   m_URFL.push_back(unkrfe);

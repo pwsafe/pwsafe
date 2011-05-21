@@ -63,8 +63,7 @@ public:
 
   bool Process(const bool &bvalidation, const stringT &ImportedPrefix, 
                const stringT &strXMLFileName, const stringT &strXSDFileName,
-               const bool &bImportPSWDsOnly,
-               int &nITER, int &nRecordsWithUnknownFields, UnknownFieldList &uhfl);
+               const bool &bImportPSWDsOnly, int &nITER);
 
   stringT getXMLErrors() {return m_strXMLErrors;}
   stringT getRenameList() {return m_strRenameList;}
@@ -76,9 +75,6 @@ public:
   int getNumEntriesSkipped() {return m_numEntriesSkipped;}
   int getNumEntriesRenamed() {return m_numEntriesRenamed;}
   int getNumEntriesPWHErrors() {return m_numEntriesPWHErrors;}
-
-  bool getIfDatabaseHeaderErrors() {return m_bDatabaseHeaderErrors;}
-  bool getIfRecordHeaderErrors() {return m_bRecordHeaderErrors;}
 
 private:
   PWScore *m_pXMLcore;
@@ -92,7 +88,6 @@ private:
   int m_numEntriesPWHErrors, m_numEntriesRenamed;
   TCHAR m_delimiter;
   bool m_bValidation;
-  bool m_bDatabaseHeaderErrors, m_bRecordHeaderErrors;
 };
 
 #endif /* __XFILEXMLPROCESSOR_H */

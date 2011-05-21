@@ -16,6 +16,7 @@
  */
 
 #include "StringX.h"
+#include "StringXStream.h"
 #include "PWSfile.h"
 #include "Match.h"
 #include "ItemData.h"
@@ -284,7 +285,7 @@ class PWSFilters : public std::map<st_Filterkey, st_filters, ltfk> {
 
   int WriteFilterXMLFile(const StringX &filename, const PWSfile::HeaderRecord hdr,
                          const StringX &currentfile);
-  int WriteFilterXMLFile(std::ostream &os, PWSfile::HeaderRecord hdr,
+  int WriteFilterXMLFile(coStringXStream &os, PWSfile::HeaderRecord hdr,
                          const StringX &currentfile, const bool bWithFormatting = false);
   int ImportFilterXMLFile(const FilterPool fpool,
                           const StringX &strXMLData,

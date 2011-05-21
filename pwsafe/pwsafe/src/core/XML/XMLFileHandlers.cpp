@@ -48,7 +48,6 @@ XMLFileHandlers::XMLFileHandlers()
   m_bErrors = false;
 
   m_nITER = MIN_HASH_ITERATIONS;
-  m_nRecordsWithUnknownFields = 0;
 
   // Following are user preferences stored in the database
   for (int i = 0; i < NUMPREFSINXML; i++) {
@@ -86,12 +85,7 @@ bool XMLFileHandlers::ProcessStartElement(const int icurrent_element)
       m_numEntriesSkipped = 0;
       m_numEntriesRenamed = 0;
       m_numEntriesPWHErrors = 0;
-      m_nRecordsWithUnknownFields = 0;
       m_bEntryBeingProcessed = false;
-      break;
-    case XLE_UNKNOWNHEADERFIELDS:
-      m_ukhxl.clear();
-      m_bheader = true;
       break;
     case XLE_ENTRY:
       m_bEntryBeingProcessed = true;
@@ -120,6 +114,7 @@ bool XMLFileHandlers::ProcessStartElement(const int icurrent_element)
       cur_entry->run_command = _T("");
       cur_entry->dca = _T("");
       cur_entry->email = _T("");
+      cur_entry->symbols = _T("");
       cur_entry->ucprotected = 0;
       cur_entry->entrytype = NORMAL;
       cur_entry->bforce_normal_entry = false;
@@ -160,9 +155,6 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
       if (i > MIN_HASH_ITERATIONS) {
         m_nITER = i;
       }
-      break;
-    case XLE_UNKNOWNHEADERFIELDS:
-      m_bheader = false;
       break;
     case XLE_ENTRY:
       m_ventries.push_back(cur_entry);
@@ -210,64 +202,6 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
       break;
     case XLE_DEFAULTAUTOTYPESTRING:
       m_sDefaultAutotypeString = m_strElemContent.c_str();
-      break;
-    case XLE_HFIELD:
-    case XLE_RFIELD:
-      {
-        // _stscanf_s always outputs to an "int" using %x even though
-        // target is only 1.  Read into larger buffer to prevent data being
-        // overwritten and then copy to where we want it!
-        const size_t length = m_strElemContent.length();
-        // UNK_HEX_REP will represent unknown values
-        // as hexadecimal, rather than base64 encoding.
-        // Easier to debug.
-#ifndef UNK_HEX_REP
-        size_t out_len = (length / 3) * 4 + 4;
-        m_pfield = new unsigned char[out_len];
-        PWSUtil::Base64Decode(m_strElemContent, m_pfield, out_len);
-        m_fieldlen = reinterpret_cast<int &>(out_len);
-#else
-        m_fieldlen = length / 2;
-        m_pfield = new unsigned char[m_fieldlen + sizeof(int32)];
-        int nscanned = 0;
-        TCHAR *lpsz_string = m_strElemContent.GetBuffer(length);
-        for (int i = 0; i < m_fieldlen; i++) {
-#if (_MSC_VER >= 1400)
-          nscanned += _stscanf_s(lpsz_string, _T("%02x"), &m_pfield[i]);
-#else
-          nscanned += _stscanf(lpsz_string, _T("%02x"), &m_pfield[i]);
-#endif
-          lpsz_string += 2;
-        }
-        m_strElemContent.ReleaseBuffer();
-#endif
-        // We will use header field entry and add into proper record field
-        // when we create the complete record entry
-        UnknownFieldEntry ukxfe(m_ctype, m_fieldlen, m_pfield);
-        if (m_bheader) {
-          if (m_ctype >= PWSfileV3::HDR_LAST) {
-            m_ukhxl.push_back(ukxfe);
-#ifdef NOTDEF // _DEBUG
-            stringT stimestamp;
-            PWSUtil::GetTimeStamp(stimestamp);
-            pws_os::Trace(_T("Header has unknown field: %02x, length %d/0x%04x, value:\n",
-                          m_ctype, m_fieldlen, m_fieldlen);
-            pws_os::HexDump(m_pfield, m_fieldlen, stimestamp);
-#endif /* _DEBUG */
-          } else {
-            m_bDatabaseHeaderErrors = true;
-          }
-        } else {
-          if (m_ctype >= CItemData::LAST) {
-            cur_entry->uhrxl.push_back(ukxfe);
-          } else {
-            m_bRecordHeaderErrors = true;
-          }
-        }
-        trashMemory(m_pfield, m_fieldlen);
-        delete[] m_pfield;
-        m_pfield = NULL;
-      }
       break;
     // MUST be in the same order as enum beginning STR_GROUP...
     case XLE_GROUP:
@@ -341,9 +275,8 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
       if (m_strElemContent == _T("1"))
         cur_entry->ucprotected = 1;
       break;
-    case XLE_UNKNOWNRECORDFIELDS:
-      if (!cur_entry->uhrxl.empty())
-        m_nRecordsWithUnknownFields++;
+    case XLE_SYMBOLS:
+      cur_entry->symbols = m_strElemContent;
       break;
     case XLE_STATUS:
       i = _ttoi(m_strElemContent.c_str());
@@ -526,6 +459,7 @@ void XMLFileHandlers::AddEntries()
     pw_entry *cur_entry = *entry_iter;
     StringX sxtitle(cur_entry->title);
     EmptyIfOnlyWhiteSpace(sxtitle);
+    // Title and Password are mandatory fields!
     if (sxtitle.empty() || cur_entry->password.empty()) {
       stringT cs_error, cs_temp, cs_id, cs_tp, cs_t(_T("")), cs_p(_T(""));
       int num = 0;
@@ -679,6 +613,8 @@ void XMLFileHandlers::AddEntries()
       ci_temp.SetEmail(cur_entry->email);
     if (cur_entry->ucprotected)
       ci_temp.SetProtected(cur_entry->ucprotected != 0);
+    if (!cur_entry->symbols.empty())
+      ci_temp.SetSymbols(cur_entry->symbols);
 
     StringX newPWHistory;
     stringT strPWHErrorList;
@@ -714,26 +650,6 @@ void XMLFileHandlers::AddEntries()
     EmptyIfOnlyWhiteSpace(cur_entry->notes);
     if (!cur_entry->notes.empty())
       ci_temp.SetNotes(cur_entry->notes, m_delimiter);
-
-    if (!cur_entry->uhrxl.empty()) {
-      UnknownFieldList::const_iterator vi_IterUXRFE;
-      for (vi_IterUXRFE = cur_entry->uhrxl.begin();
-        vi_IterUXRFE != cur_entry->uhrxl.end();
-        vi_IterUXRFE++) {
-          const UnknownFieldEntry unkrfe = *vi_IterUXRFE;
-#ifdef NOTDEF // _DEBUG
-          stringT stimestamp;
-          PWSUtil::GetTimeStamp(stimestamp);
-          pws_os::Trace(_T("Record %s, %s, %s has unknown field: %02x, length %d/0x%04x, value:\n",
-                        cur_entry->group, cur_entry->title, cur_entry->username,
-                        unkrfe.uc_Type, reinterpret_cast<int &>(unkrfe.st_length),
-                        reinterpret_cast<int &>(unkrfe.st_length));
-          pws_os::HexDump(unkrfe.uc_pUField, reinterpret_cast<int &>(unkrfe.st_length), stimestamp);
-#endif /* _DEBUG */
-                        ci_temp.SetUnknownField(unkrfe.uc_Type, unkrfe.st_length,
-                                                (const unsigned char* &)unkrfe.uc_pUField);
-      }
-    }
 
     // If a potential alias, add to the vector for later verification and processing
     if (cur_entry->entrytype == ALIAS && !cur_entry->bforce_normal_entry) {
@@ -771,18 +687,8 @@ void XMLFileHandlers::AddEntries()
   m_pmulticmds->Add(pcmd2);
 }
 
-void XMLFileHandlers::AddDBUnknownFieldsPreferences(UnknownFieldList &uhfl)
+void XMLFileHandlers::AddDBPreferences()
 {
-  UnknownFieldList::const_iterator vi_IterUXFE;
-  for (vi_IterUXFE = m_ukhxl.begin();
-       vi_IterUXFE != m_ukhxl.end();
-       vi_IterUXFE++) {
-    UnknownFieldEntry ukxfe = *vi_IterUXFE;
-    if (ukxfe.st_length > 0) {
-      uhfl.push_back(ukxfe);
-    }
-  }
-
   PWSprefs *prefs = PWSprefs::GetInstance();
   int ivalue;
   // Integer/Boolean preferences
@@ -842,12 +748,15 @@ void XMLFileHandlers::AddDBUnknownFieldsPreferences(UnknownFieldList &uhfl)
     prefs->SetPref(PWSprefs::UseDefaultUser, ivalue == 1);
 
   // String preferences
-  if (!m_sDefaultAutotypeString.empty())
-    prefs->SetPref(PWSprefs::DefaultAutotypeString,
-                   m_sDefaultAutotypeString.c_str());
   if (!m_sDefaultUsername.empty())
     prefs->SetPref(PWSprefs::DefaultUsername,
                    m_sDefaultUsername.c_str());
+  if (!m_sDefaultAutotypeString.empty())
+    prefs->SetPref(PWSprefs::DefaultAutotypeString,
+                   m_sDefaultAutotypeString.c_str());
+  if (!m_sDefaultSymbols.empty())
+    prefs->SetPref(PWSprefs::DefaultSymbols,
+                   m_sDefaultSymbols.c_str());
 }
 
 #endif /* USE_XML_LIBRARY */

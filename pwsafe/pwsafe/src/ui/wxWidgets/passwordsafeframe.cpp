@@ -2554,7 +2554,6 @@ void PasswordSafeFrame::OnImportXML(wxCommandEvent& evt)
   std::wstring strXMLErrors, strSkippedList, strPWHErrorList, strRenameList;
   wxString XMLFilename = dlg.filepath;
   int numValidated, numImported, numSkipped, numRenamed, numPWHErrors;
-  bool bBadUnknownFileFields, bBadUnknownRecordFields;
   bool bImportPSWDsOnly = dlg.importPasswordsOnly;
 
   wxBeginBusyCursor();  // This may take a while!
@@ -2571,7 +2570,6 @@ void PasswordSafeFrame::OnImportXML(wxCommandEvent& evt)
                             tostdstring(XSDFilename.GetFullPath()), bImportPSWDsOnly,
                             strXMLErrors, strSkippedList, strPWHErrorList, strRenameList,
                             numValidated, numImported, numSkipped, numPWHErrors, numRenamed,
-                            bBadUnknownFileFields, bBadUnknownRecordFields,
                             rpt, pcmd);
   wxEndBusyCursor();  // Restore normal cursor
 
@@ -2599,21 +2597,9 @@ void PasswordSafeFrame::OnImportXML(wxCommandEvent& evt)
         Execute(pcmd);
 
       if (!strXMLErrors.empty() ||
-          bBadUnknownFileFields || bBadUnknownRecordFields ||
           numRenamed > 0 || numPWHErrors > 0) {
         if (!strXMLErrors.empty())
           csErrors = strXMLErrors + wxT("\n");
-
-        if (bBadUnknownFileFields) {
-          cs_temp.Printf(_("At least one unknown %s field is now in use.  Any found have been ignored."), 
-                    _("header"));
-          csErrors += cs_temp + wxT("\n");
-        }
-        if (bBadUnknownRecordFields) {
-          cs_temp.Printf( _("At least one unknown %s field is now in use.  Any found have been ignored."),
-                            _("record"));
-          csErrors += cs_temp + wxT("\n");
-        }
 
         if (!csErrors.empty()) {
           rpt.WriteLine(csErrors.c_str());

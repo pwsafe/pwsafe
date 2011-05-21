@@ -456,7 +456,7 @@ static string GetFilterXML(const st_filters &filters, bool bWithFormatting)
 }
 
 struct XMLFilterWriterToString {
-  XMLFilterWriterToString(ostream &os, bool bWithFormatting) :
+  XMLFilterWriterToString(coStringXStream &os, bool bWithFormatting) :
   m_os(os), m_bWithFormatting(bWithFormatting)
   {}
   // operator
@@ -467,7 +467,7 @@ struct XMLFilterWriterToString {
   }
 private:
   XMLFilterWriterToString& operator=(const XMLFilterWriterToString&); // Do not implement
-  ostream &m_os;
+  coStringXStream &m_os;
   bool m_bWithFormatting;
 };
 
@@ -475,33 +475,33 @@ int PWSFilters::WriteFilterXMLFile(const StringX &filename,
                                    const PWSfile::HeaderRecord hdr,
                                    const StringX &currentfile)
 {
-#ifdef UNICODE
-  CUTF8Conv conv;
-  size_t fnamelen;
-  const unsigned char *fname = NULL;
-  conv.ToUTF8(filename, fname, fnamelen); 
-#else
-  const char *fname = filename.c_str();
-#endif
-  ofstream of(reinterpret_cast<const char *>(fname));
-  if (!of)
+  FILE *xmlfile = pws_os::FOpen(filename.c_str(), _T("wt"));
+  if (xmlfile == NULL)
     return PWScore::CANT_OPEN_FILE;
-  else
-    return WriteFilterXMLFile(of, hdr, currentfile, true);
+
+  coStringXStream oss;
+  int irc = WriteFilterXMLFile(oss, hdr, currentfile, true);
+
+  // Write it out to the file, clear string stream, close file
+  fwrite(oss.str().c_str(), 1, oss.str().length(), xmlfile);
+  oss.str("");
+  fclose(xmlfile);
+
+  return irc;
 }
 
-int PWSFilters::WriteFilterXMLFile(ostream &os,
+int PWSFilters::WriteFilterXMLFile(coStringXStream &oss,
                                    const PWSfile::HeaderRecord hdr,
                                    const StringX &currentfile,
                                    const bool bWithFormatting)
 {
   string str_hdr = GetFilterXMLHeader(currentfile, hdr);
-  os << str_hdr;
+  oss << str_hdr;
 
-  XMLFilterWriterToString put_filterxml(os, bWithFormatting);
+  XMLFilterWriterToString put_filterxml(oss, bWithFormatting);
   for_each(this->begin(), this->end(), put_filterxml);
 
-  os << "</filters>";
+  oss << "</filters>";
 
   return PWScore::SUCCESS;
 }

@@ -205,8 +205,6 @@ public:
                     stringT &strPWHErrorList, stringT &strRenameList, 
                     int &numValidated, int &numImported, int &numSkipped,
                     int &numPWHErrors, int &numRenamed, 
-                    bool &bBadUnknownFileFields,
-                    bool &bBadUnknownRecordFields,
                     CReport &rpt, Command *&pcommand);
   int ImportKeePassTextFile(const StringX &filename, Command *&pcommand);
 
