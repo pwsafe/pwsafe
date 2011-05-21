@@ -545,7 +545,9 @@ void XMLFileHandlers::AddEntries()
     if (bNewUUID) {
       // Need to create new UUID (missing or duplicate in DB or import file)
       // and add to set
-      setUUID.insert(CUUID());
+      CUUID uuid;
+      setUUID.insert(uuid);
+      ci_temp.SetUUID(uuid);
     }
 
     StringX sxnewgroup, sxnewtitle(cur_entry->title);
