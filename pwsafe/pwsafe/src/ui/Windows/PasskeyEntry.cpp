@@ -21,6 +21,7 @@ down the streetsky.  [Groucho Marx]
 #include "core/PwsPlatform.h"
 #include "core/Pwsdirs.h"
 #include "core/pwsprefs.h"
+#include "core/core.h"
 
 #include "os/file.h"
 #include "os/env.h"
@@ -431,8 +432,13 @@ void CPasskeyEntry::OnOK()
 void CPasskeyEntry::ProcessPhrase()
 {
   CGeneralMsgBox gmb;
-  if (m_pDbx->CheckPasskey(LPCWSTR(m_filespec), LPCWSTR(m_passkey)) != PWScore::SUCCESS) {
-    if (m_tries >= 2) {
+
+  switch (m_pDbx->CheckPasskey(LPCWSTR(m_filespec), LPCWSTR(m_passkey))) {
+  case PWScore::SUCCESS:
+    CPWDialog::OnOK();
+    break;
+  case PWScore::WRONG_PASSWORD:
+    if (m_tries >= 2) { // too many tries
       CTryAgainDlg errorDlg(this);
 
       INT_PTR nResponse = errorDlg.DoModal();
@@ -441,21 +447,31 @@ void CPasskeyEntry::ProcessPhrase()
         m_status = errorDlg.GetCancelReturnValue();
         if (m_status == TAR_OPEN) { // open another
           PostMessage(WM_COMMAND, IDC_BTN_BROWSE);
-          return;
         } else if (m_status == TAR_NEW) { // create new
           PostMessage(WM_COMMAND, IDC_CREATE_DB);
-          return;
         }
         CPWDialog::OnCancel();
       }
-    } else {
+    } else { // try again
       m_tries++;
       gmb.AfxMessageBox(IDS_INCORRECTKEY);
       m_pctlPasskey->SetSel(MAKEWORD(-1, 0));
       m_pctlPasskey->SetFocus();
     }
-  } else {
-    CPWDialog::OnOK();
+    break;
+  case PWScore::READ_FAIL:
+    gmb.AfxMessageBox(IDSC_FILE_UNREADABLE);
+    CPWDialog::OnCancel();
+    break;
+  case PWScore::TRUNCATED_FILE:
+    gmb.AfxMessageBox(IDSC_FILE_TRUNCATED);
+    CPWDialog::OnCancel();
+    break;
+  default:
+    ASSERT(0);
+    gmb.AfxMessageBox(IDSC_UNKNOWN_ERROR);
+    CPWDialog::OnCancel();
+    break;
   }
 }
 

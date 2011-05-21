@@ -205,11 +205,13 @@ BOOL DboxMain::OpenOnInit()
 
   bool go_ahead = false;
   /*
-   * If BAD_DIGEST or LIMIT_REACHED,
+   * If file's corrupted, read error or LIMIT_REACHED (demo),
    * the we prompt the user, and continue or not per user's input.
    * A bit too subtle for switch/case on rc2...
    */
-  if (rc2 == PWScore::BAD_DIGEST) {
+  if (rc2 == PWScore::BAD_DIGEST ||
+      rc2 == PWScore::TRUNCATED_FILE ||
+      rc2 == PWScore:: READ_FAIL) {
     CGeneralMsgBox gmb;
     CString cs_title(MAKEINTRESOURCE(IDS_FILEREADERROR)), cs_msg;
     cs_msg.Format(IDS_FILECORRUPT, m_core.GetCurFile().c_str());
@@ -218,7 +220,7 @@ BOOL DboxMain::OpenOnInit()
       goto exit;
     }
     go_ahead = true;
-  } // BAD_DIGEST
+  } // read error
 #ifdef DEMO
   if (rc2 == PWScore::LIMIT_REACHED) {
     CGeneralMsgBox gmb;

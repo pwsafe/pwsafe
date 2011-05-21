@@ -85,7 +85,7 @@ BEGIN
   IDSC_INTERNALLOCKERROR  "Internal error: Invalid oflag or pmode argument"
   IDSC_SYSTEMLOCKERROR    "System error: No more file handles available"
   IDSC_LOCKFILEPATHNF     "File or path not found"
-  IDSC_LOCKUNKNOWNERROR   "Internal error: Unexpected error number"
+  IDSC_UNKNOWN_ERROR      "Internal error: Unexpected error number"
 END
 
 STRINGTABLE
@@ -151,6 +151,7 @@ BEGIN
   IDSC_BADPASSWORD        "Incorrect password"
   IDSC_FILEWRITEERROR     "Error while writing file! Try saving in a different location"
   IDSC_FILE_UNREADABLE    "Cannot read file. Please check file permissions."
+  IDSC_FILE_TRUNCATED     "File is truncated or otherwise corrupted. Please use backup database."
 END
 
 // Status Bar

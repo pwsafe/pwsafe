@@ -24,7 +24,7 @@
 #define IDSC_INTERNALLOCKERROR          3022
 #define IDSC_SYSTEMLOCKERROR            3023
 #define IDSC_LOCKFILEPATHNF             3024
-#define IDSC_LOCKUNKNOWNERROR           3025
+#define IDSC_UNKNOWN_ERROR              3025
 #define IDSC_NUMPROCESSED               3026
 #define IDSC_AUTOTYPE                   3027
 #define IDSC_NOCONFIGLOCK               3028
@@ -218,6 +218,7 @@
 #define IDSC_LARGEENTRIES               3396
 #define IDSC_RELATIVE                   3397
 #define IDSC_FILE_UNREADABLE            3398
+#define IDSC_FILE_TRUNCATED             3399
 
 #define IDSC_DELETEBASET                3400
 #define IDSC_DELETEABASE                3401

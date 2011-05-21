@@ -272,7 +272,7 @@ bool pws_os::LockFile(const stringT &filename, stringT &locker,
       LoadAString(locker, IDSC_LOCKFILEPATHNF);
       break;
     default:
-      LoadAString(locker, IDSC_LOCKUNKNOWNERROR);
+      LoadAString(locker, IDSC_UNKNOWN_ERROR);
       break;
     } // switch (errno)
     retval = false;

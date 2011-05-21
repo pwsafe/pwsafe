@@ -113,6 +113,47 @@ int PWSfileV3::Close()
 
 const char V3TAG[4] = {'P','W','S','3'}; // ASCII chars, not wchar
 
+int PWSfileV3::SanityCheck(FILE *stream)
+{
+  int retval = SUCCESS;
+  ASSERT(stream != NULL);
+
+  // Is file too small?
+  const long min_file_length = 232; // pre + post, no hdr or records
+  if (pws_os::fileLength(stream) < min_file_length)
+    return TRUNCATED_FILE;
+
+  long pos = ftell(stream); // restore when we're done
+  // Does file have a valid header?
+  char tag[sizeof(V3TAG)];
+  int nread = fread(tag, sizeof(tag), 1, stream);
+  if (nread != 1) {
+    retval = READ_FAIL;
+    goto err;
+  }
+  if (memcmp(tag, V3TAG, sizeof(tag)) != 0) {
+    retval = NOT_PWS3_FILE;
+    goto err;
+  }
+
+  // Does file have a valid EOF block?
+  unsigned char eof_block[sizeof(TERMINAL_BLOCK)];
+  if (fseek(stream, -48, SEEK_END) != 0) {
+    retval = READ_FAIL; // actually, seek error, but that's too nuanced
+    goto err;
+  }
+  nread = fread(eof_block, sizeof(eof_block), 1, stream);
+  if (nread != 1) {
+    retval = READ_FAIL;
+    goto err;
+  }
+  if (memcmp(eof_block, TERMINAL_BLOCK, sizeof(TERMINAL_BLOCK)) != 0)
+    retval = TRUNCATED_FILE;
+ err:
+  fseek(stream, pos, SEEK_SET);
+  return retval;
+}
+
 int PWSfileV3::CheckPasskey(const StringX &filename,
                             const StringX &passkey, FILE *a_fd,
                             unsigned char *aPtag, int *nITER)
@@ -127,13 +168,11 @@ int PWSfileV3::CheckPasskey(const StringX &filename,
   if (fd == NULL)
     return CANT_OPEN_FILE;
 
-  char tag[sizeof(V3TAG)];
-  fread(tag, 1, sizeof(tag), fd);
-  if (memcmp(tag, V3TAG, sizeof(tag)) != 0) {
-    retval = NOT_PWS3_FILE;
+  retval = SanityCheck(fd);
+  if (retval != SUCCESS)
     goto err;
-  }
 
+  fseek(fd, sizeof(V3TAG), SEEK_SET); // skip over tag
   unsigned char salt[SaltLengthV3];
   fread(salt, 1, sizeof(salt), fd);
 

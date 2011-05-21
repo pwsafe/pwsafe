@@ -63,22 +63,25 @@ public:
     USER_DECLINED_SAVE = 2,
     CANT_GET_LOCK = 3,
     DB_HAS_CHANGED = 4,
-    CANT_OPEN_FILE = PWSfile::CANT_OPEN_FILE, // -10 - ensure the same value
+    CANT_OPEN_FILE = PWSfile::CANT_OPEN_FILE, // -10
     USER_CANCEL = -9,                         // -9
-    WRONG_PASSWORD = PWSfile::WRONG_PASSWORD, //  5 - ensure the same value
-    BAD_DIGEST = PWSfile::BAD_DIGEST,         //  6 - ensure the same value
-    UNKNOWN_VERSION,                          //  7
-    NOT_SUCCESS,                              //  8
-    ALREADY_OPEN,                             //  9
-    INVALID_FORMAT,                           // 10
-    USER_EXIT,                                // 11
-    XML_FAILED_VALIDATION,                    // 12
-    XML_FAILED_IMPORT,                        // 13
-    LIMIT_REACHED,                            // 14
-    UNIMPLEMENTED,                            // 15
-    NO_ENTRIES_EXPORTED,                      // 16
-    DB_HAS_DUPLICATES,                        // 17
-    OK_WITH_ERRORS                            // 18
+    WRONG_PASSWORD = PWSfile::WRONG_PASSWORD, //  5
+    BAD_DIGEST = PWSfile::BAD_DIGEST,         //  6
+    TRUNCATED_FILE = PWSfile::TRUNCATED_FILE, //  8 (or maybe corrupt?)
+    READ_FAIL = PWSfile::READ_FAIL,           //  9
+    WRITE_FAIL = PWSfile::WRITE_FAIL,         //  10
+    UNKNOWN_VERSION,                          //  11
+    NOT_SUCCESS,                              //  12
+    ALREADY_OPEN,                             //  13
+    INVALID_FORMAT,                           //  14
+    USER_EXIT,                                //  15
+    XML_FAILED_VALIDATION,                    //  16
+    XML_FAILED_IMPORT,                        //  17
+    LIMIT_REACHED,                            //  18
+    UNIMPLEMENTED,                            //  19
+    NO_ENTRIES_EXPORTED,                      //  20
+    DB_HAS_DUPLICATES,                        //  21
+    OK_WITH_ERRORS                            //  22
   };
 
   PWScore();
