@@ -1822,7 +1822,7 @@ void DboxMain::SetToolbar(const int menuItem, bool bInit)
       m_DDNotes.Init(IDB_DRAGNOTES_NEW, IDB_DRAGNOTESX_NEW);
       m_DDURL.Init(IDB_DRAGURL_NEW, IDB_DRAGURLX_NEW);
       m_DDemail.Init(IDB_DRAGEMAIL_NEW, IDB_DRAGEMAILX_NEW);
-      m_DDAutotype.ReInit(IDB_AUTOTYPE_NEW, IDB_DRAGAUTOX_NEW);
+      m_DDAutotype.Init(IDB_AUTOTYPE_NEW, IDB_DRAGAUTOX_NEW);
     } else if (menuItem == ID_MENUITEM_OLD_TOOLBAR) {
       m_DDGroup.Init(IDB_DRAGGROUP_CLASSIC, IDB_DRAGGROUPX_CLASSIC);
       m_DDTitle.Init(IDB_DRAGTITLE_CLASSIC, IDB_DRAGTITLEX_CLASSIC);
@@ -1866,8 +1866,7 @@ void DboxMain::SetToolbar(const int menuItem, bool bInit)
     }
     m_DDGroup.Invalidate(); m_DDTitle.Invalidate(); m_DDUser.Invalidate();
     m_DDPassword.Invalidate(); m_DDNotes.Invalidate(); m_DDURL.Invalidate();
-    m_DDemail.Invalidate();
-    m_DDAutotype.Invalidate();
+    m_DDemail.Invalidate(); m_DDAutotype.Invalidate();
   }
   m_menuManager.SetImageList(&m_MainToolBar);
 
