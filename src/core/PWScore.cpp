@@ -417,6 +417,9 @@ int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version)
 
   m_ReadFileVersion = version; // needed when saving a V17 as V20 1st time [871893]
 
+  // Create new signature
+  m_pFileSig = new PWSFileSig(filename.c_str());
+
   return SUCCESS;
 }
 

@@ -343,6 +343,7 @@ int DboxMain::New()
   m_DDAutotype.SetStaticState(false);
 
   UpdateMenuAndToolBar(true);
+  UpdateStatusBar();
 
   // Set timer for user-defined idle lockout, if selected (DB preference)
   KillTimer(TIMER_LOCKDBONIDLETIMEOUT);
