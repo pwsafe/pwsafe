@@ -154,7 +154,6 @@ BOOL CWZAdvanced::OnInitDialog()
       cs_text.LoadString(IDS_MERGEX);
       break;
     case WZAdvanced::SYNCH:
-    case WZAdvanced::COMPARESYNCH:
       cs_text.LoadString(IDS_SYNCHRONIZEX);
       break;
     case WZAdvanced::EXPORT_TEXT:
@@ -310,7 +309,6 @@ BOOL CWZAdvanced::OnInitDialog()
       m_bsAllowedFields.set(CItemData::PROTECTED);
       break;
     case WZAdvanced::SYNCH:
-    case WZAdvanced::COMPARESYNCH:
     case WZAdvanced::EXPORT_TEXT:
     case WZAdvanced::EXPORT_ENTRYTEXT:
     case WZAdvanced::EXPORT_XML:
@@ -482,7 +480,6 @@ BOOL CWZAdvanced::OnInitDialog()
       m_bsDefaultSelectedFields.set(CItemData::PASSWORD);
       break;
     case WZAdvanced::SYNCH:
-    case WZAdvanced::COMPARESYNCH:
       cs_text.LoadString(IDS_PASSWORD);
       iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
       m_pLC_Selected->SetItemData(iItem, CItemData::PASSWORD | NORMALFIELD);
@@ -528,13 +525,11 @@ BOOL CWZAdvanced::OnInitDialog()
 
   if (dialog_lookup[m_iIndex] == IDD_WZADVANCED) {
     // IDC_TREATWHITESPACEASEMPTY is only in the full Wizard dialog
-    if (m_iIndex != WZAdvanced::COMPARESYNCH) {
-      if (m_iIndex != WZAdvanced::COMPARE) {
-        GetDlgItem(IDC_TREATWHITESPACEASEMPTY)->EnableWindow(FALSE);
-        GetDlgItem(IDC_TREATWHITESPACEASEMPTY)->ShowWindow(SW_HIDE);
-      } else {
-        ((CButton *)GetDlgItem(IDC_TREATWHITESPACEASEMPTY))->SetCheck(BST_CHECKED);
-      }
+    if (m_iIndex != WZAdvanced::COMPARE) {
+      GetDlgItem(IDC_TREATWHITESPACEASEMPTY)->EnableWindow(FALSE);
+      GetDlgItem(IDC_TREATWHITESPACEASEMPTY)->ShowWindow(SW_HIDE);
+    } else {
+      ((CButton *)GetDlgItem(IDC_TREATWHITESPACEASEMPTY))->SetCheck(BST_CHECKED);
     }
   }
 
@@ -675,7 +670,6 @@ LRESULT CWZAdvanced::OnWizardNext()
           cs_error_msg.LoadString(IDS_NOFIELDSFORCOMPARE);
           break;
         case WZAdvanced::SYNCH:
-        case WZAdvanced::COMPARESYNCH:
           cs_error_msg.LoadString(IDS_NOFIELDSFORSYNCH);
           break;
         case WZAdvanced::EXPORT_TEXT:

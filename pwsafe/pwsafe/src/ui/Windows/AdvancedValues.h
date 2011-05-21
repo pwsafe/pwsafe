@@ -23,7 +23,6 @@ namespace WZAdvanced {
                 EXPORT_ENTRYTEXT,
                 EXPORT_XML,
                 EXPORT_ENTRYXML,
-                COMPARESYNCH,
                 LAST};
 }
 
