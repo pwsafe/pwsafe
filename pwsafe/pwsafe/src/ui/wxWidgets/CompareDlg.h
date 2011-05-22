@@ -13,11 +13,10 @@
 #define _COMPAREDLG_H_
 
 #include <wx/dialog.h>
+#include <wx/collpane.h>
 
 class PWScore;
-class wxCollapsiblePane;
 struct SelectionCriteria;
-class wxCollapsiblePaneEvent;
 
 class CompareDlg: public wxDialog
 {
