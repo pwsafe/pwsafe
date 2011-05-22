@@ -57,8 +57,7 @@ public:
   
   static PWSprefs *GetInstance(); // singleton
   static void DeleteInstance();
-  static void SetConfigFile(const stringT &fn)
-  {m_configfilename = fn; m_userSetCfgFile = true;}
+  static bool SetConfigFile(const stringT &fn);
   static stringT GetConfigFile(ConfigOption &configoption)
   {configoption = m_ConfigOption; return m_configfilename;}
   static void SetReporter(Reporter *pReporter) {m_pReporter = pReporter;}
