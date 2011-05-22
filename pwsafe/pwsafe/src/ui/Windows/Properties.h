@@ -7,7 +7,7 @@
 */
 #pragma once
 
-// CProperties dialog
+// CProperties dialog - this is what's displayed when user selects File->Properties
 
 #include "PWDialog.h"
 #include "core/PWScore.h"
@@ -17,29 +17,17 @@ class CProperties : public CPWDialog
   DECLARE_DYNAMIC(CProperties)
 
 public:
-  CProperties(const st_DBProperties &st_dbp,
-              CWnd* pParent = NULL);
-  virtual ~CProperties();
+  CProperties(const st_DBProperties &st_dbp, CWnd* pParent = NULL)
+    : CPWDialog(CProperties::IDD, pParent), m_dbp(st_dbp) {}
 
-  afx_msg void OnOK();
   virtual BOOL OnInitDialog();
 
   // Dialog Data
   enum { IDD = IDD_PROPERTIES };
 
 protected:
-  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-
-  DECLARE_MESSAGE_MAP()
+DECLARE_MESSAGE_MAP()
 
 private:
-  CString m_database;
-  CString m_databaseformat;
-  CString m_numgroups;
-  CString m_numentries;
-  CString m_whenlastsaved;
-  CString m_wholastsaved;
-  CString m_whatlastsaved;
-  CString m_file_uuid;
-  CString m_unknownfields;
+  const st_DBProperties m_dbp;
 };
