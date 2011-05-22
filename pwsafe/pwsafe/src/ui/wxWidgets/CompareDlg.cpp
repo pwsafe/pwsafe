@@ -154,7 +154,7 @@ void CompareDlg::OnPaneCollapse(wxCollapsiblePaneEvent& evt)
   evt.Skip();
 }
 
-void CompareDlg::OnReLayout(wxCommandEvent& evt)
+void CompareDlg::OnReLayout(wxCommandEvent& /*evt*/)
 {
   GetSizer()->RecalcSizes();
   Fit();
