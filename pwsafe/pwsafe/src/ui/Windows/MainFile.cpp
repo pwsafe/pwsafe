@@ -2009,7 +2009,7 @@ void DboxMain::OnChangeMode()
 	     // But ask just in case	 
        CGeneralMsgBox gmb;	 
        CString cs_msg(MAKEINTRESOURCE(IDS_BACKOUT_CHANGES)), cs_title(MAKEINTRESOURCE(IDS_CHANGEMODE));	 
-       rc = gmb.MessageBox(cs_msg, cs_title, MB_YESNO | MB_ICONQUESTION);	 
+       INT_PTR rc = gmb.MessageBox(cs_msg, cs_title, MB_YESNO | MB_ICONQUESTION);	 
  	 
        if (rc == IDNO)	 
          return;
@@ -2079,6 +2079,7 @@ void DboxMain::OnChangeMode()
       // could not release the lock!
       uiMsg = IDS_CM_FAIL_REASON2;
     }
+
     if (bInUse) {
       // Big message
       gmb.SetTitle(cs_title);

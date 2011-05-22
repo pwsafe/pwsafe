@@ -184,7 +184,7 @@ int CWZFinish::ExecuteAction()
       break;
   }
 
-  INT_PTR rc(PWScore::SUCCESS);
+  int rc(PWScore::SUCCESS);
   const StringX sx_Filename2 = m_pWZPSH->GetOtherDBFile();
 
   if (bOtherIsDB) {
