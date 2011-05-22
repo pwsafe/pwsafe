@@ -264,8 +264,7 @@ public:
   BOOL SelectFindEntry(const int i, BOOL MakeVisible = FALSE);
   void SelectFirstEntry();
 
-  int CheckPasskey(const StringX &filename, const StringX &passkey)
-  {return m_core.CheckPasskey(filename, passkey);}
+  int CheckPasskey(const StringX &filename, const StringX &passkey, PWScore *pcore = NULL);
   enum ChangeType {Clear, Data, TimeStamp, DBPrefs, ClearDBPrefs};
   void SetChanged(ChangeType changed);
   void ChangeOkUpdate();

@@ -1605,6 +1605,16 @@ void DboxMain::OnU3ShopWebsite()
 #endif
 }
 
+int DboxMain::CheckPasskey(const StringX &filename, const StringX &passkey,
+                           PWScore *pcore)
+{
+  // To ensure values in current core are not overwritten when checking the passkey
+  if (pcore == NULL)
+    return m_core.CheckPasskey(filename, passkey);
+  else
+    return pcore->CheckPasskey(filename, passkey);
+}
+
 static CPasskeyEntry *dbox_pkentry = NULL;
 
 int DboxMain::GetAndCheckPassword(const StringX &filename,
