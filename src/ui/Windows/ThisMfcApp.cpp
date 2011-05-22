@@ -837,7 +837,20 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
             return FALSE;
           } else {
             arg++;
-            PWSprefs::SetConfigFile(std::wstring(*arg));
+            if (!PWSprefs::SetConfigFile(std::wstring(*arg))) {
+              // SetConfigFile fails if specified file not found
+              CGeneralMsgBox gmb;
+              CString missing_cfg;
+              // Classic chicken-and-egg here: Since the local
+              // language could be specified in the config file, and since
+              // the desired config file can't be found, it seems
+              // safest to keep this particular error message in English
+              // and out of the language-specific dlls.
+              missing_cfg.Format(L"Cannot find configuration file %s",
+                                 *arg);
+              gmb.AfxMessageBox(missing_cfg, L"Error", MB_OK|MB_ICONSTOP);
+              return FALSE;
+            }
           }
           break;
         case L'Q': case L'q': // be Quiet re missing fonts, dlls, etc.
@@ -905,15 +918,12 @@ BOOL ThisMfcApp::InitInstance()
   // (since user/host/config file may be overriden!)
   bool allDone = false;
 
-  LoadLocalizedStuff();
-#ifndef _DEBUG
-  if (m_hInstResDLL != NULL)
-    LocalizeFaultHandler(m_hInstResDLL);
-#endif
   // Note: Even though PWSprefs has not yet been created, parsing the command line
   // will (via DboxMain) fill in values within it!
   bool parseVal = ParseCommandLine(dbox, allDone);
 
+  // allDone will be true iff -e or -d options given, in which case
+  // we're just a batch encryptor/decryptor
   if (allDone)
     return parseVal ? TRUE : FALSE;
   else if (!parseVal) // bad command line args
@@ -923,6 +933,12 @@ BOOL ThisMfcApp::InitInstance()
   // Ensures all things like saving locations etc. are set up.
 
   PWSprefs *prefs = PWSprefs::GetInstance();
+
+  LoadLocalizedStuff();
+#ifndef _DEBUG
+  if (m_hInstResDLL != NULL)
+    LocalizeFaultHandler(m_hInstResDLL);
+#endif
 
   // Update Quiet value if via environmental variable rather than 
   // command line flag

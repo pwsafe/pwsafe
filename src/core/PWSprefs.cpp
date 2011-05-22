@@ -200,6 +200,16 @@ void PWSprefs::DeleteInstance()
   SysInfo::DeleteInstance();
 }
 
+bool PWSprefs::SetConfigFile(const stringT &fn)
+{
+  if (pws_os::FileExists(fn)) {
+    m_configfilename = fn;
+    m_userSetCfgFile = true;
+    return true;
+  } else
+    return false;
+}
+
 PWSprefs::PWSprefs() : m_pXML_Config(NULL)
 {
   int i;
