@@ -645,7 +645,6 @@ int PWScore::ImportXMLFile(const stringT &, const stringT &,
                            const stringT &, const bool &,
                            stringT &, stringT &, stringT &, stringT &,
                            int &, int &, int &, int &, int &,
-                           bool &, bool &, 
                            CReport &, Command *&)
 {
   return UNIMPLEMENTED;
