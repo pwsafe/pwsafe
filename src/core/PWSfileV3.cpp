@@ -126,7 +126,7 @@ int PWSfileV3::SanityCheck(FILE *stream)
   long pos = ftell(stream); // restore when we're done
   // Does file have a valid header?
   char tag[sizeof(V3TAG)];
-  int nread = fread(tag, sizeof(tag), 1, stream);
+  size_t nread = fread(tag, sizeof(tag), 1, stream);
   if (nread != 1) {
     retval = READ_FAIL;
     goto err;
@@ -591,8 +591,9 @@ int PWSfileV3::WriteHeader()
     UUIDListIter iter = m_hdr.m_RUEList.begin();
     // Only save up to max as defined by FormatV3.
     for (size_t n = 0; n < num; n++) {
+      const uuid_array_t *rep = iter->GetARep();
       for (size_t i = 0; i < sizeof(uuid_array_t); i++) {
-        oss << setw(2) << setfill('0') << hex << int(iter->GetARep()[i]);
+        oss << setw(2) << setfill('0') << hex <<  static_cast<unsigned int>((*rep)[i]);
       }
       iter++;
     }
