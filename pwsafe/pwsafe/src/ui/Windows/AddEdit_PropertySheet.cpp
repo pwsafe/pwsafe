@@ -131,7 +131,7 @@ CAddEdit_PropertySheet::~CAddEdit_PropertySheet()
 
 BOOL CAddEdit_PropertySheet::OnInitDialog()
 {
-  CPropertySheet::OnInitDialog();
+  CPWPropertySheet::OnInitDialog();
 
   // Change the Window title for Edit/View
   switch (m_AEMD.uicaller) {

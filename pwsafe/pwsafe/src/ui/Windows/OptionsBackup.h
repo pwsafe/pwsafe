@@ -12,59 +12,51 @@
 
 /////////////////////////////////////////////////////////////////////////////
 // COptionsBackup dialog
+#include "resource.h"
 #include "Options_PropertyPage.h"
+#include "core/PWSprefs.h"
 
 class COptionsBackup : public COptions_PropertyPage
 {
-  DECLARE_DYNCREATE(COptionsBackup)
+public:
+  DECLARE_DYNAMIC(COptionsBackup)
 
   // Construction
-public:
-  COptionsBackup();
+  COptionsBackup(CWnd *pParent, st_Opt_master_data *pOPTMD);
   ~COptionsBackup();
 
-  // Should be part of ctor, but MFC doesn't requires
-  // default ctor. Grrr.
-  void SetCurFile(const CString &currentFile);
-
+protected:
   // Dialog Data
   //{{AFX_DATA(COptionsBackup)
   enum { IDD = IDD_PS_BACKUP };
+
   CComboBox m_backupsuffix_cbox;
-  CString m_userbackupprefix;
-  CString m_userbackupotherlocation;
-  BOOL m_saveimmediately;
-  BOOL m_backupbeforesave;
-  int m_backupprefix;
-  int m_backuplocation;
-  int m_maxnumincbackups;
+
+  CString m_UserBackupPrefix;
+  CString m_UserBackupOtherLocation;
+  BOOL m_SaveImmediately;
+  BOOL m_BackupBeforeSave;
+  int m_BackupPrefix;
+  int m_BackupLocation;
+  int m_MaxNumIncBackups;
+  int m_BackupSuffix;
   //}}AFX_DATA
-
-  CString m_saveuserbackupprefix;
-  CString m_saveuserbackupotherlocation;
-  BOOL m_savesaveimmediately;
-  BOOL m_savebackupbeforesave;
-  int m_savebackupprefix;
-  int m_savebackuplocation;
-  int m_savemaxnumincbackups;
-  int m_savebackupsuffix;
-
-  int m_backupsuffix;
+ 
   int m_BKSFX_to_Index[PWSprefs::maxBKSFX + 1];
+  CString m_currentFile;
   CString m_currentFileDir;
   CString m_currentFileBasename;
 
   // Overrides
   // ClassWizard generate virtual function overrides
   //{{AFX_VIRTUAL(COptionsBackup)
-protected:
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
   virtual BOOL OnInitDialog();
   BOOL PreTranslateMessage(MSG* pMsg);
+  virtual BOOL OnApply();
   //}}AFX_VIRTUAL
 
   // Implementation
-protected:
   // Generated message map functions
   //{{AFX_MSG(COptionsBackup)
   afx_msg LRESULT OnQuerySiblings(WPARAM wParam, LPARAM);

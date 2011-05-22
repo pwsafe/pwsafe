@@ -1136,7 +1136,7 @@ BOOL DboxMain::OnInitDialog()
           return FALSE;
         }
         m_core.SetCurFile(fname.c_str());
-        m_core.NewFile(dbox_pksetup.m_passkey);
+        m_core.NewFile(dbox_pksetup.GetPassKey());
         m_core.SetReadOnly(false); 
         rc = m_core.WriteCurFile();
         if (rc == PWScore::CANT_OPEN_FILE) {
@@ -1639,7 +1639,8 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
     // original thread will continue processing
   }
 
-  if (pcore == 0) pcore = &m_core;
+  if (pcore == 0)
+    pcore = &m_core;
 
   if (!filename.empty()) {
     bool exists = pws_os::FileExists(filename.c_str(), bFileIsReadOnly);
@@ -1690,29 +1691,32 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
     pcore->SetCurFile(curFile);
     std::wstring locker(L""); // null init is important here
     passkey = LPCWSTR(dbox_pkentry->GetPasskey());
+
     // This dialog's setting of read-only overrides file dialog
     bool bIsReadOnly = dbox_pkentry->IsReadOnly();
     pcore->SetReadOnly(bIsReadOnly);
+
     // Set read-only mode if user explicitly requested it OR
     // we could not create a lock file.
     switch (index) {
-    case GCP_FIRST: // if first, then m_IsReadOnly is set in Open
-      pcore->SetReadOnly(bIsReadOnly || !pcore->LockFile(curFile.c_str(), locker));
-      break;
-    case GCP_NORMAL:
-      if (!bIsReadOnly) // !first, lock if !bIsReadOnly
-        pcore->SetReadOnly(!pcore->LockFile(curFile.c_str(), locker));
-      else
-        pcore->SetReadOnly(bIsReadOnly);
-      break;
-    case GCP_RESTORE:
-    case GCP_WITHEXIT:
-    default:
-      // user can't change R-O status
-      break;
+      case GCP_FIRST: // if first, then m_IsReadOnly is set in Open
+        pcore->SetReadOnly(bIsReadOnly || !pcore->LockFile(curFile.c_str(), locker));
+        break;
+      case GCP_NORMAL:
+        if (!bIsReadOnly) // !first, lock if !bIsReadOnly
+          pcore->SetReadOnly(!pcore->LockFile(curFile.c_str(), locker));
+        else
+          pcore->SetReadOnly(bIsReadOnly);
+        break;
+      case GCP_RESTORE:
+      case GCP_WITHEXIT:
+      default:
+        // user can't change R-O status
+        break;
     }
 
     UpdateToolBarROStatus(bIsReadOnly);
+
     // locker won't be null IFF tried to lock and failed, in which case
     // it shows the current file locker
     if (!locker.empty()) {
@@ -1747,22 +1751,22 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
 #endif
       INT_PTR user_choice = gmb.DoModal();
       switch (user_choice) {
-      case IDS_READONLY:
-        pcore->SetReadOnly(true);
-        UpdateToolBarROStatus(true);
-        retval = PWScore::SUCCESS;
-        break;
-      case IDS_READWRITE:
-        pcore->SetReadOnly(false); // Caveat Emptor!
-        UpdateToolBarROStatus(false);
-        retval = PWScore::SUCCESS;
-        break;
-      case IDS_EXIT:
-        retval = PWScore::USER_CANCEL;
-        break;
-      default:
-        ASSERT(false);
-        retval = PWScore::USER_CANCEL;
+        case IDS_READONLY:
+          pcore->SetReadOnly(true);
+          UpdateToolBarROStatus(true);
+          retval = PWScore::SUCCESS;
+          break;
+        case IDS_READWRITE:
+          pcore->SetReadOnly(false); // Caveat Emptor!
+          UpdateToolBarROStatus(false);
+          retval = PWScore::SUCCESS;
+          break;
+        case IDS_EXIT:
+          retval = PWScore::USER_CANCEL;
+          break;
+        default:
+          ASSERT(false);
+          retval = PWScore::USER_CANCEL;
       }
     } else { // locker.IsEmpty() means no lock needed or lock was successful
       if (dbox_pkentry->GetStatus() == TAR_NEW) {
@@ -1787,19 +1791,19 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
   } else {/*if (rc==IDCANCEL) */ //Determine reason for cancel
     int cancelreturn = dbox_pkentry->GetStatus();
     switch (cancelreturn) {
-    case TAR_OPEN:
-      ASSERT(0); // now handled entirely in CPasskeyEntry
-    case TAR_CANCEL:
-    case TAR_NEW:
-      retval = PWScore::USER_CANCEL;
-      break;
-    case TAR_EXIT:
-      retval = PWScore::USER_EXIT;
-      break;
-    default:
-      DBGMSG("Default to WRONG_PASSWORD\n");
-      retval = PWScore::WRONG_PASSWORD;  //Just a normal cancel
-      break;
+      case TAR_OPEN:
+        ASSERT(0); // now handled entirely in CPasskeyEntry
+      case TAR_CANCEL:
+      case TAR_NEW:
+        retval = PWScore::USER_CANCEL;
+        break;
+      case TAR_EXIT:
+        retval = PWScore::USER_EXIT;
+        break;
+      default:
+        DBGMSG("Default to WRONG_PASSWORD\n");
+        retval = PWScore::WRONG_PASSWORD;  //Just a normal cancel
+        break;
     }
   }
   delete dbox_pkentry;

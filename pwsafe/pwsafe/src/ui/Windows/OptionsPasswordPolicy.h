@@ -21,65 +21,51 @@ class DboxMain;
 
 class COptionsPasswordPolicy : public COptions_PropertyPage
 {
-  DECLARE_DYNCREATE(COptionsPasswordPolicy)
+public:
+  DECLARE_DYNAMIC(COptionsPasswordPolicy)
 
   // Construction
-public:
-  COptionsPasswordPolicy(bool bFromOptions = true);
+  COptionsPasswordPolicy(CWnd *pParent, st_Opt_master_data *pOPTMD);
   ~COptionsPasswordPolicy();
-  DboxMain *m_pDbx;
 
+protected:
   // Dialog Data
   //{{AFX_DATA(COptionsPasswordPolicy)
   enum { IDD = IDD_PS_PASSWORDPOLICY };
  
-  CSymbolEdit m_symbols;
+  CSymbolEdit m_SymbolsEdit;
 
-  UINT m_pwdefaultlength;
-  BOOL m_pwuselowercase;
-  BOOL m_pwuseuppercase;
-  BOOL m_pwusedigits;
-  BOOL m_pwusesymbols;
-  BOOL m_pweasyvision;
-  BOOL m_pwusehexdigits;
-  BOOL m_pwmakepronounceable;
-  UINT m_pwdigitminlength;
-  UINT m_pwlowerminlength;
-  UINT m_pwsymbolminlength;
-  UINT m_pwupperminlength;
+  BOOL m_PWUseLowercase;
+  BOOL m_PWUseUppercase;
+  BOOL m_PWUseDigits;
+  BOOL m_PWUseSymbols;
+  BOOL m_PWUseHexdigits;
+  BOOL m_PWEasyVision;
+  BOOL m_PWMakePronounceable;
+  int m_PWDefaultLength;
+  int m_PWDigitMinLength;
+  int m_PWLowerMinLength;
+  int m_PWSymbolMinLength;
+  int m_PWUpperMinLength;
   //}}AFX_DATA
-
-  UINT m_savepwdefaultlength;
-  BOOL m_savepwuselowercase;
-  BOOL m_savepwuseuppercase;
-  BOOL m_savepwusedigits;
-  BOOL m_savepwusesymbols;
-  BOOL m_savepweasyvision;
-  BOOL m_savepwusehexdigits;
-  BOOL m_savepwmakepronounceable;
-  UINT m_savepwdigitminlength;
-  UINT m_savepwlowerminlength;
-  UINT m_savepwsymbolminlength;
-  UINT m_savepwupperminlength;
 
   PWPolicy m_default_pwp;
   CSecString m_password;
   CSecEditExtn m_ex_password;
   
-  int m_useownsymbols, m_saveuseownsymbols;
-  CString m_cs_symbols, m_cs_savesymbols;
+  int m_UseOwnSymbols;
+  CString m_Symbols;
 
   // Overrides
   // ClassWizard generate virtual function overrides
   //{{AFX_VIRTUAL(COptionsPasswordPolicy)
-protected:
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
   virtual BOOL OnInitDialog();
   BOOL PreTranslateMessage(MSG* pMsg);
+  virtual BOOL OnApply();
   //}}AFX_VIRTUAL
 
   // Implementation
-protected:
   // Generated message map functions
   //{{AFX_MSG(COptionsPasswordPolicy)
   afx_msg LRESULT OnQuerySiblings(WPARAM wParam, LPARAM);

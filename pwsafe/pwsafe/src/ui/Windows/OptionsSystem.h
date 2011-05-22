@@ -16,53 +16,41 @@
 
 class COptionsSystem : public COptions_PropertyPage
 {
-  DECLARE_DYNCREATE(COptionsSystem)
+public:
+  DECLARE_DYNAMIC(COptionsSystem)
 
   // Construction
-public:
-  COptionsSystem();
+  COptionsSystem(CWnd *pParent, st_Opt_master_data *pOPTMD);
   ~COptionsSystem();
 
+protected:
   // Dialog Data
   //{{AFX_DATA(COptionsSystem)
   enum { IDD = IDD_PS_SYSTEM };
-  int m_maxreitems;
-  BOOL m_usesystemtray;
-  BOOL m_hidesystemtray;
-  BOOL m_startup;
-  int m_maxmruitems;
-  BOOL m_mruonfilemenu;
-  BOOL m_deleteregistry;
-  BOOL m_defaultopenro;
-  BOOL m_multipleinstances;
-  BOOL m_migrate2appdata;
-  BOOL m_initialhotkeystate;
+  BOOL m_UseSystemTray;
+  BOOL m_HideSystemTray;
+  BOOL m_Startup;
+  BOOL m_MRUOnFileMenu;
+  BOOL m_DefaultOpenRO;
+  BOOL m_MultipleInstances;
+  int m_MaxREItems;
+  int m_MaxMRUItems;
+
+  BOOL m_DeleteRegistry, m_saveDeleteRegistry;
+  BOOL m_Migrate2Appdata, m_saveMigrate2Appdata;
+  BOOL m_InitialHotkeyState;
   //}}AFX_DATA
-
-  int m_savemaxreitems;
-  BOOL m_saveusesystemtray;
-  BOOL m_savehidesystemtray;
-  BOOL m_savestartup;
-  int m_savemaxmruitems;
-  BOOL m_savemruonfilemenu;
-  BOOL m_savedeleteregistry;
-  BOOL m_savemigrate2appdata;
-  BOOL m_savedefaultopenro;
-  BOOL m_savemultipleinstances;
-
-  static bool m_bShowConfigFile;
 
   // Overrides
   // ClassWizard generate virtual function overrides
   //{{AFX_VIRTUAL(COptionsSystem)
-protected:
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
   virtual BOOL OnInitDialog();
   BOOL PreTranslateMessage(MSG* pMsg);
+  virtual BOOL OnApply();
   //}}AFX_VIRTUAL
 
   // Implementation
-protected:
   // Generated message map functions
   //{{AFX_MSG(COptionsSystem)
   afx_msg LRESULT OnQuerySiblings(WPARAM wParam, LPARAM);
@@ -81,4 +69,5 @@ protected:
 
 private:
   CToolTipCtrl* m_pToolTipCtrl;
+  static bool m_bShowConfigFile;
 };

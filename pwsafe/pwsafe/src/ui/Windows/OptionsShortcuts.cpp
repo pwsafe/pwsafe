@@ -28,12 +28,12 @@
 
 IMPLEMENT_DYNAMIC(COptionsShortcuts, COptions_PropertyPage)
 
-COptionsShortcuts::COptionsShortcuts()
-  : COptions_PropertyPage(COptionsShortcuts::IDD),
+COptionsShortcuts::COptionsShortcuts(CWnd *pParent, st_Opt_master_data *pOPTMD)
+  : COptions_PropertyPage(pParent, COptionsShortcuts::IDD, pOPTMD),
   m_bShortcutsChanged(false)
 {
-  //{{AFX_DATA_INIT(COptionsShortcuts)
-  //}}AFX_DATA_INIT
+  m_iColWidth = M_ColWidth();
+  m_iDefColWidth = M_DefColWidth();
 }
 
 COptionsShortcuts::~COptionsShortcuts()
@@ -59,7 +59,7 @@ BEGIN_MESSAGE_MAP(COptionsShortcuts, COptions_PropertyPage)
   ON_WM_MEASUREITEM()
   ON_BN_CLICKED(ID_HELP, OnHelp)
 
-  ON_BN_CLICKED(IDC_RESETALLSHORTCUTS, OnBnClickedResetAll)
+  ON_BN_CLICKED(IDC_RESETALLSHORTCUTS, OnResetAll)
   ON_MESSAGE(PSM_QUERYSIBLINGS, OnQuerySiblings)
   ON_NOTIFY(HDN_ENDTRACK, IDC_LIST_HEADER, OnHeaderNotify)
   ON_NOTIFY(NM_RCLICK, IDC_LIST_HEADER, OnHeaderRClick)
@@ -69,50 +69,6 @@ END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // COptionsShortcuts message handlers
-
-void COptionsShortcuts::InitialSetup(const MapMenuShortcuts MapMenuShortcuts,
-                    const MapKeyNameID MapKeyNameID,
-                    const std::vector<UINT> &ExcludedMenuItems,
-                    const std::vector<st_MenuShortcut> &ReservedShortcuts)
-{
-  m_MapMenuShortcuts = m_MapSaveMenuShortcuts = MapMenuShortcuts;
-
-  // Need to make our own copy as KNIDciter->second is a pointer to whar_t variable
-  MapKeyNameIDConstIter KNIDciter;
-  std::pair< MapKeyNameIDIter, bool > prMKNID;
-
-  for (KNIDciter = MapKeyNameID.begin(); KNIDciter != MapKeyNameID.end(); KNIDciter++) {
-    prMKNID = m_MapKeyNameID.insert(MapKeyNameIDPair(KNIDciter->first,  _wcsdup(KNIDciter->second)));
-  }
-
-  m_ExcludedMenuItems = ExcludedMenuItems;
-  m_ReservedShortcuts = ReservedShortcuts;
-}
-
-BOOL COptionsShortcuts::PreTranslateMessage(MSG* pMsg)
-{
-  // If HotKey active, allow Enter key to set instead of close
-  // Property Page (OK button)
-  if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_RETURN &&
-      m_ShortcutLC.IsHotKeyActive()) {
-    m_ShortcutLC.SaveHotKey();
-    return TRUE;
-  }
-
-  if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
-    PostMessage(WM_COMMAND, MAKELONG(ID_HELP, BN_CLICKED), NULL);
-    return TRUE;
-  }
-
-  return COptions_PropertyPage::PreTranslateMessage(pMsg);
-}
-
-void COptionsShortcuts::OnHelp()
-{
-  CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + L"::/html/shortcuts_tab.html";
-  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
-}
 
 BOOL COptionsShortcuts::OnInitDialog()
 {
@@ -197,6 +153,80 @@ BOOL COptionsShortcuts::OnInitDialog()
   return TRUE;
 }
 
+
+bool shortcutmaps_equal (MapMenuShortcutsPair p1, MapMenuShortcutsPair p2 )
+{
+  return (p1.first == p2.first && 
+          p1.second.cModifier == p2.second.cModifier &&
+          p1.second.cVirtKey == p2.second.cVirtKey);
+}
+
+LRESULT COptionsShortcuts::OnQuerySiblings(WPARAM wParam, LPARAM )
+{
+  UpdateData(TRUE);
+
+  // Have any of my fields been changed?
+  switch (wParam) {
+    case PP_DATA_CHANGED:
+      if (m_MapMenuShortcuts.size() != m_MapSaveMenuShortcuts.size() ||
+          !std::equal(m_MapMenuShortcuts.begin(), m_MapMenuShortcuts.end(), m_MapSaveMenuShortcuts.begin(),
+                   shortcutmaps_equal)) {
+        m_bShortcutsChanged = true;
+        return 1L;
+      } else
+        m_bShortcutsChanged = false;
+      break;
+    case PP_UPDATE_VARIABLES:
+      // Since OnOK calls OnApply after we need to verify and/or
+      // copy data into the entry - we do it ourselfs here first
+      if (OnApply() == FALSE)
+        return 1L;
+  }
+  return 0L;
+}
+
+BOOL COptionsShortcuts::OnApply()
+{
+  UpdateData(TRUE);
+
+  if (m_MapMenuShortcuts.size() != m_MapSaveMenuShortcuts.size() ||
+      !std::equal(m_MapMenuShortcuts.begin(), m_MapMenuShortcuts.end(), m_MapSaveMenuShortcuts.begin(),
+                  shortcutmaps_equal))
+     m_bShortcutsChanged = true;
+   else
+     m_bShortcutsChanged = false;
+
+  M_ColWidth() = m_iColWidth;
+  M_DefColWidth() = m_iDefColWidth;
+
+  return COptions_PropertyPage::OnApply();
+}
+
+BOOL COptionsShortcuts::PreTranslateMessage(MSG* pMsg)
+{
+  // If HotKey active, allow Enter key to set instead of close
+  // Property Page (OK button)
+  if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_RETURN &&
+      m_ShortcutLC.IsHotKeyActive()) {
+    m_ShortcutLC.SaveHotKey();
+    return TRUE;
+  }
+
+  if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
+    PostMessage(WM_COMMAND, MAKELONG(ID_HELP, BN_CLICKED), NULL);
+    return TRUE;
+  }
+
+  return COptions_PropertyPage::PreTranslateMessage(pMsg);
+}
+
+void COptionsShortcuts::OnHelp()
+{
+  CString cs_HelpTopic;
+  cs_HelpTopic = app.GetHelpFileName() + L"::/html/shortcuts_tab.html";
+  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
+}
+
 void COptionsShortcuts::OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMIS)
 {
    // If this is our list control then increase height
@@ -205,7 +235,7 @@ void COptionsShortcuts::OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMIS)
    }
 }
 
-void COptionsShortcuts::OnBnClickedResetAll()
+void COptionsShortcuts::OnResetAll()
 {
   MapMenuShortcutsIter iter;
   MapKeyNameIDConstIter citer;
@@ -293,6 +323,25 @@ void COptionsShortcuts::OnResetColumnWidth()
   m_iColWidth = m_iDefColWidth;
 }
 
+void COptionsShortcuts::InitialSetup(const MapMenuShortcuts MapMenuShortcuts,
+                    const MapKeyNameID MapKeyNameID,
+                    const std::vector<UINT> &ExcludedMenuItems,
+                    const std::vector<st_MenuShortcut> &ReservedShortcuts)
+{
+  m_MapMenuShortcuts = m_MapSaveMenuShortcuts = MapMenuShortcuts;
+
+  // Need to make our own copy as KNIDciter->second is a pointer to whar_t variable
+  MapKeyNameIDConstIter KNIDciter;
+  std::pair< MapKeyNameIDIter, bool > prMKNID;
+
+  for (KNIDciter = MapKeyNameID.begin(); KNIDciter != MapKeyNameID.end(); KNIDciter++) {
+    prMKNID = m_MapKeyNameID.insert(MapKeyNameIDPair(KNIDciter->first,  _wcsdup(KNIDciter->second)));
+  }
+
+  m_ExcludedMenuItems = ExcludedMenuItems;
+  m_ReservedShortcuts = ReservedShortcuts;
+}
+
 // Functor for find_if to see if shortcut is reserved
 struct reserved {
   reserved(st_MenuShortcut& st_mst) : m_st_mst(st_mst) {}
@@ -374,49 +423,6 @@ void COptionsShortcuts::OnHotKeyKillFocus(const int item, const UINT id,
 set_warning:
   m_stc_warning.SetWindowText(cs_warning);
   m_stc_warning.ShowWindow(SW_SHOW);
-}
-
-bool shortcutmaps_equal (MapMenuShortcutsPair p1, MapMenuShortcutsPair p2 )
-{
-  return (p1.first == p2.first && 
-          p1.second.cModifier == p2.second.cModifier &&
-          p1.second.cVirtKey == p2.second.cVirtKey);
-}
-
-BOOL COptionsShortcuts::OnApply()
-{
-  if (m_MapMenuShortcuts.size() != m_MapSaveMenuShortcuts.size() ||
-      !std::equal(m_MapMenuShortcuts.begin(), m_MapMenuShortcuts.end(), m_MapSaveMenuShortcuts.begin(),
-                  shortcutmaps_equal))
-     m_bShortcutsChanged = true;
-   else
-     m_bShortcutsChanged = false;
-
-  return COptions_PropertyPage::OnApply();
-}
-
-LRESULT COptionsShortcuts::OnQuerySiblings(WPARAM wParam, LPARAM )
-{
-  UpdateData(TRUE);
-
-  // Have any of my fields been changed?
-  switch (wParam) {
-    case PP_DATA_CHANGED:
-      if (m_MapMenuShortcuts.size() != m_MapSaveMenuShortcuts.size() ||
-          !std::equal(m_MapMenuShortcuts.begin(), m_MapMenuShortcuts.end(), m_MapSaveMenuShortcuts.begin(),
-                   shortcutmaps_equal)) {
-        m_bShortcutsChanged = true;
-        return 1L;
-      } else
-        m_bShortcutsChanged = false;
-      break;
-    case PP_UPDATE_VARIABLES:
-      // Since OnOK calls OnApply after we need to verify and/or
-      // copy data into the entry - we do it ourselfs here first
-      if (OnApply() == FALSE)
-        return 1L;
-  }
-  return 0L;
 }
 
 int CALLBACK COptionsShortcuts::CompareFunc(LPARAM lParam1, LPARAM lParam2,

@@ -382,15 +382,15 @@ void CPasskeyEntry::OnCreateDb()
   }
 
   // 2. Get a password
-  CPasskeySetup dbox_pksetup(this);
-  rc = dbox_pksetup.DoModal();
+  CPasskeySetup pksetup(this);
+  rc = pksetup.DoModal();
 
   if (rc != IDOK)
     return;  //User cancelled password entry
 
   // 3. Set m_filespec && m_passkey to returned value!
   m_filespec = newfile;
-  m_passkey = dbox_pksetup.m_passkey;
+  m_passkey = pksetup.GetPassKey();
   ((CEdit*)GetDlgItem(IDC_PASSKEY))->SetWindowText(m_passkey);
   m_status = TAR_NEW;
   CPWDialog::OnOK();

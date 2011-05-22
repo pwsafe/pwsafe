@@ -11,7 +11,9 @@
 #include "stdafx.h"
 #include "PasswordSafe.h"
 #include "ThisMfcApp.h"
+#include "DboxMain.h"
 #include "GeneralMsgBox.h"
+#include "Options_PropertySheet.H"
 
 #include "core/PWCharPool.h" // for CheckPassword()
 #include "core/PwsPlatform.h"
@@ -45,10 +47,12 @@ static char THIS_FILE[] = __FILE__;
 static wchar_t PSSWDCHAR = L'*';
 
 //-----------------------------------------------------------------------------
-CPasskeySetup::CPasskeySetup(CWnd* pParent)
+CPasskeySetup::CPasskeySetup(CWnd *pParent)
   : CPWDialog(CPasskeySetup::IDD, pParent), m_pVKeyBoardDlg(NULL),
-  m_OSK_module(NULL), m_LastFocus(IDC_PASSKEY)
+  m_LastFocus(IDC_PASSKEY)
 {
+  m_pDbx = static_cast<DboxMain *>(pParent);
+
   m_passkey = L"";
   m_verify = L"";
 
@@ -60,13 +64,6 @@ CPasskeySetup::~CPasskeySetup()
 {
   delete m_pctlPasskey;
   delete m_pctlVerify;
-
-  if (m_OSK_module != NULL) {
-    BOOL brc = FreeLibrary(m_OSK_module);
-    pws_os::Trace(L"CPasskeySetup::~CPasskeySetup - Free OSK DLL: %s\n",
-                  brc == TRUE ? L"OK" : L"FAILED");
-    m_OSK_module = NULL;
-  }
 
   if (m_pVKeyBoardDlg != NULL) {
     // Save Last Used Keyboard

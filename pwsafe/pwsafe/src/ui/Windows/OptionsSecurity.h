@@ -16,16 +16,18 @@
 
 class COptionsSecurity : public COptions_PropertyPage
 {
-  DECLARE_DYNCREATE(COptionsSecurity)
+public:
+  DECLARE_DYNAMIC(COptionsSecurity)
 
   // Construction
-public:
-  COptionsSecurity();
+  COptionsSecurity(CWnd *pParent, st_Opt_master_data *pOPTMD);
   ~COptionsSecurity();
 
+protected:
   // Dialog Data
   //{{AFX_DATA(COptionsSecurity)
   enum { IDD = IDD_PS_SECURITY };
+
   BOOL m_ClearClipboardOnMinimize;
   BOOL m_ClearClipboardOnExit;
   BOOL m_LockOnMinimize;
@@ -33,22 +35,12 @@ public:
   BOOL m_LockOnWindowLock;
   BOOL m_LockOnIdleTimeout;
   BOOL m_CopyPswdBrowseURL;
-  UINT m_IdleTimeOut;
+  int m_IdleTimeOut;
   //}}AFX_DATA
-
-  BOOL m_saveClearClipboardOnMinimize;
-  BOOL m_saveClearClipboardOnExit;
-  BOOL m_saveLockOnMinimize;
-  BOOL m_saveConfirmCopy;
-  BOOL m_saveLockOnWindowLock;
-  BOOL m_saveLockOnIdleTimeout;
-  BOOL m_saveCopyPswdBrowseURL;
-  UINT m_saveIdleTimeOut;
 
   // Overrides
   // ClassWizard generate virtual function overrides
   //{{AFX_VIRTUAL(COptionsSecurity)
-protected:
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
   virtual BOOL OnInitDialog();
   BOOL PreTranslateMessage(MSG* pMsg);
@@ -56,7 +48,6 @@ protected:
   //}}AFX_VIRTUAL
 
   // Implementation
-protected:
   // Generated message map functions
   //{{AFX_MSG(COptionsSecurity)
   afx_msg LRESULT OnQuerySiblings(WPARAM wParam, LPARAM lParam);

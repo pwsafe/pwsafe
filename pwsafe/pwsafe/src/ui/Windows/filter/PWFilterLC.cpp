@@ -69,7 +69,7 @@ BEGIN_MESSAGE_MAP(CPWFilterLC, CListCtrl)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-void CPWFilterLC::Init(CWnd * pParent, st_filters *pfilters, const int &filtertype)
+void CPWFilterLC::Init(CWnd *pParent, st_filters *pfilters, const int &filtertype)
 {
   m_pPWF = static_cast<CPWFiltersDlg *>(pParent);
   m_iType = filtertype;

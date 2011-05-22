@@ -104,7 +104,7 @@ void DboxMain::OnAdd()
         bSetDefaultUser = true;
 
         // Initialise a copy of the DB preferences
-        prefs->SetUpCopyDBprefs();
+        prefs->SetupCopyPrefs();
 
         // Update Copy with new values
         prefs->SetPref(PWSprefs::UseDefaultUser, true, true);
@@ -201,7 +201,7 @@ void DboxMain::OnCreateShortcut()
       INT_PTR rc2 = defDlg.DoModal();
       if (rc2 == IDOK) {
         // Initialise a copy of the DB preferences
-        prefs->SetUpCopyDBprefs();
+        prefs->SetupCopyPrefs();
         // Update Copy with new values
         prefs->SetPref(PWSprefs::UseDefaultUser, true, true);
         prefs->SetPref(PWSprefs::DefaultUsername, dlg_createshortcut.m_username, true);

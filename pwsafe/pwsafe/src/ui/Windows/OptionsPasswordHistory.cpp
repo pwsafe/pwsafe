@@ -35,14 +35,15 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // COptionsPasswordHistory property page
 
-IMPLEMENT_DYNCREATE(COptionsPasswordHistory, COptions_PropertyPage)
+IMPLEMENT_DYNAMIC(COptionsPasswordHistory, COptions_PropertyPage)
 
-COptionsPasswordHistory::COptionsPasswordHistory()
-  : COptions_PropertyPage(COptionsPasswordHistory::IDD),
-  m_pToolTipCtrl(NULL), m_pDboxMain(NULL), m_pwhaction(0)
+COptionsPasswordHistory::COptionsPasswordHistory(CWnd *pParent, st_Opt_master_data *pOPTMD)
+  : COptions_PropertyPage(pParent, COptionsPasswordHistory::IDD, pOPTMD),
+  m_pToolTipCtrl(NULL), m_PWHAction(0)
 {
-  //{{AFX_DATA_INIT(COptionsPasswordHistory)
-  //}}AFX_DATA_INIT
+  m_SavePWHistory = M_SavePWHistory();
+  m_PWHistoryNumDefault = M_PWHistoryNumDefault();
+  m_PWHAction = M_PWHAction();
 }
 
 COptionsPasswordHistory::~COptionsPasswordHistory()
@@ -55,10 +56,10 @@ void COptionsPasswordHistory::DoDataExchange(CDataExchange* pDX)
   COptions_PropertyPage::DoDataExchange(pDX);
 
   //{{AFX_DATA_MAP(COptionsPasswordHistory)
-  DDX_Check(pDX, IDC_SAVEPWHISTORY, m_savepwhistory);
-  DDX_Text(pDX, IDC_DEFPWHNUM, m_pwhistorynumdefault);
+  DDX_Check(pDX, IDC_SAVEPWHISTORY, m_SavePWHistory);
+  DDX_Text(pDX, IDC_DEFPWHNUM, m_PWHistoryNumDefault);
+  DDX_Radio(pDX, IDC_PWHISTORYNOACTION, m_PWHAction);
   //}}AFX_DATA_MAP
-  DDX_Radio(pDX, IDC_PWHISTORYNOACTION, m_pwhaction);
 }
 
 BEGIN_MESSAGE_MAP(COptionsPasswordHistory, COptions_PropertyPage)
@@ -77,26 +78,6 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // COptionsPasswordHistory message handlers
 
-BOOL COptionsPasswordHistory::PreTranslateMessage(MSG* pMsg)
-{
-  if (m_pToolTipCtrl != NULL)
-    m_pToolTipCtrl->RelayEvent(pMsg);
-
-  if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
-    PostMessage(WM_COMMAND, MAKELONG(ID_HELP, BN_CLICKED), NULL);
-    return TRUE;
-  }
-
-  return COptions_PropertyPage::PreTranslateMessage(pMsg);
-}
-
-void COptionsPasswordHistory::OnHelp()
-{
-  CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + L"::/html/password_history_tab.html";
-  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
-}
-
 BOOL COptionsPasswordHistory::OnInitDialog() 
 {
   COptions_PropertyPage::OnInitDialog();
@@ -106,13 +87,10 @@ BOOL COptionsPasswordHistory::OnInitDialog()
   pspin->SetBuddy(GetDlgItem(IDC_DEFPWHNUM));
   pspin->SetRange(1, 255);
   pspin->SetBase(10);
-  pspin->SetPos(m_pwhistorynumdefault);
+  pspin->SetPos(m_PWHistoryNumDefault);
 
-  GetDlgItem(IDC_PWHSPIN)->EnableWindow(m_savepwhistory);
-  GetDlgItem(IDC_DEFPWHNUM)->EnableWindow(m_savepwhistory);
-
-  m_savesavepwhistory = m_savepwhistory;
-  m_savepwhistorynumdefault = m_pwhistorynumdefault;
+  GetDlgItem(IDC_PWHSPIN)->EnableWindow(m_SavePWHistory);
+  GetDlgItem(IDC_DEFPWHNUM)->EnableWindow(m_SavePWHistory);
 
   // Disable text re: PWHistory changes on existing entries to start
   GetDlgItem(IDC_STATIC_UPDATEPWHISTORY)->EnableWindow(FALSE);
@@ -149,37 +127,19 @@ BOOL COptionsPasswordHistory::OnInitDialog()
   // EXCEPTION: OCX Property Pages should return FALSE
 }
 
-BOOL COptionsPasswordHistory::OnKillActive()
-{
-  CGeneralMsgBox gmb;
-  // Check that options, as set, are valid.
-  if (m_savepwhistory && ((m_pwhistorynumdefault < 1) || (m_pwhistorynumdefault > 255))) {
-    gmb.AfxMessageBox(IDS_DEFAULTNUMPWH);
-    ((CEdit*)GetDlgItem(IDC_DEFPWHNUM))->SetFocus();
-    return FALSE;
-  }
-  //End check
-
-  return COptions_PropertyPage::OnKillActive();;
-}
-
-void COptionsPasswordHistory::OnSavePWHistory() 
-{
-  BOOL enable = (((CButton*)GetDlgItem(IDC_SAVEPWHISTORY))->GetCheck() == 1) ? TRUE : FALSE;
-  GetDlgItem(IDC_PWHSPIN)->EnableWindow(enable);
-  GetDlgItem(IDC_DEFPWHNUM)->EnableWindow(enable);
-}
-
 LRESULT COptionsPasswordHistory::OnQuerySiblings(WPARAM wParam, LPARAM )
 {
   UpdateData(TRUE);
 
+  // Save current value
+  M_PWHAction() = m_PWHAction;
+
   // Have any of my fields been changed?
   switch (wParam) {
     case PP_DATA_CHANGED:
-      if (m_savesavepwhistory        != m_savepwhistory        ||
-          (m_savepwhistory           == TRUE &&
-           m_savepwhistorynumdefault != m_pwhistorynumdefault))
+      if (M_SavePWHistory()        != m_SavePWHistory        ||
+          (m_SavePWHistory         == TRUE &&
+           M_PWHistoryNumDefault() != m_PWHistoryNumDefault))
         return 1L;
       break;
     case PP_UPDATE_VARIABLES:
@@ -189,6 +149,58 @@ LRESULT COptionsPasswordHistory::OnQuerySiblings(WPARAM wParam, LPARAM )
         return 1L;
   }
   return 0L;
+}
+
+BOOL COptionsPasswordHistory::OnApply()
+{
+  UpdateData(TRUE);
+
+  M_SavePWHistory() = m_SavePWHistory;
+  M_PWHistoryNumDefault() = m_PWHistoryNumDefault;
+  M_PWHAction() = m_PWHAction;
+
+  return COptions_PropertyPage::OnApply();
+}
+
+BOOL COptionsPasswordHistory::PreTranslateMessage(MSG* pMsg)
+{
+  if (m_pToolTipCtrl != NULL)
+    m_pToolTipCtrl->RelayEvent(pMsg);
+
+  if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
+    PostMessage(WM_COMMAND, MAKELONG(ID_HELP, BN_CLICKED), NULL);
+    return TRUE;
+  }
+
+  return COptions_PropertyPage::PreTranslateMessage(pMsg);
+}
+
+BOOL COptionsPasswordHistory::OnKillActive()
+{
+  CGeneralMsgBox gmb;
+  // Check that options, as set, are valid.
+  if (m_SavePWHistory && ((m_PWHistoryNumDefault < 1) || (m_PWHistoryNumDefault > 255))) {
+    gmb.AfxMessageBox(IDS_DEFAULTNUMPWH);
+    ((CEdit*)GetDlgItem(IDC_DEFPWHNUM))->SetFocus();
+    return FALSE;
+  }
+  //End check
+
+  return COptions_PropertyPage::OnKillActive();;
+}
+
+void COptionsPasswordHistory::OnHelp()
+{
+  CString cs_HelpTopic;
+  cs_HelpTopic = app.GetHelpFileName() + L"::/html/password_history_tab.html";
+  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
+}
+
+void COptionsPasswordHistory::OnSavePWHistory() 
+{
+  BOOL enable = (((CButton*)GetDlgItem(IDC_SAVEPWHISTORY))->GetCheck() == 1) ? TRUE : FALSE;
+  GetDlgItem(IDC_PWHSPIN)->EnableWindow(enable);
+  GetDlgItem(IDC_DEFPWHNUM)->EnableWindow(enable);
 }
 
 void COptionsPasswordHistory::OnPWHistoryNoAction()
