@@ -88,8 +88,9 @@ public:
   bool WZPSHExitRequested() const
   {return m_pDbx->ExitRequested();}
 
-  int WZPSHCheckPasskey(const StringX &filename, const StringX &passkey)
-  {return m_pDbx->CheckPasskey(filename, passkey);}
+  int WZPSHCheckPasskey(const StringX &filename, const StringX &passkey,
+                        PWScore *pcore)
+  {return m_pDbx->CheckPasskey(filename, passkey, pcore);}
 
   void WZPSHUpdateGUIDisplay()
   {m_pDbx->UpdateGUIDisplay();}
