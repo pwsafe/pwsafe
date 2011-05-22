@@ -197,6 +197,7 @@ enum {GCP_READONLY = 1,
       GCP_HIDEREADONLY = 4};
 
 class ExpiredList;
+
 //-----------------------------------------------------------------------------
 class DboxMain : public CDialog, public UIInterFace
 {
@@ -446,6 +447,11 @@ public:
   // Needed public function for ComapreResultsDialog
   void CPRInitMenuPopup(CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu)
   {OnInitMenuPopup(pPopupMenu, nIndex, bSysMenu);}
+
+  const MapMenuShortcuts &GetMapMenuShortcuts() {return m_MapMenuShortcuts;}
+  const MapKeyNameID &GetMapKeyNameID() {return m_MapKeyNameID;}
+  const std::vector<UINT> &GetExcludedMenuItems() {return m_ExcludedMenuItems;}
+  const std::vector<st_MenuShortcut> &GetReservedShortcuts() {return m_ReservedShortcuts;}
   
   // ClassWizard generated virtual function overrides
   //{{AFX_VIRTUAL(DboxMain)

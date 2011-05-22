@@ -150,12 +150,18 @@ public:
     PWPolicyMakePronounceable   = 0x0200,
     PWPolicyUnused              = 0x01ff};
 
+  // Preferences changed (Database or Application or Shortcuts)
+  enum {DB_PREF = 0, APP_PREF = 1, SHC_PREF = 2};
+
+  // Preference types - values are powers of 2, except ptAll = sum of previous values
+  enum PrefType {ptObsolete = 0, ptDatabase = 1, ptApplication = 2, ptAll = 3};
+
   bool IsDBprefsChanged() const {return m_prefs_changed[DB_PREF];}
   bool IsAPPprefsChanged() const {return m_prefs_changed[APP_PREF];}
   void ClearDBprefsChanged() {m_prefs_changed[DB_PREF] = false;}
   void ClearAPPprefsChanged() {m_prefs_changed[APP_PREF] = false;}
   void SetDBprefsChanged(const bool bChanged) {m_prefs_changed[DB_PREF] = bChanged;}
-  void SetDatabasePrefsToDefaults();
+  void SetDatabasePrefsToDefaults(const bool bUseCopy = false);
   void ForceWriteApplicationPreferences()
   {m_prefs_changed[APP_PREF] = true; m_prefs_changed[SHC_PREF] = true;}
 
@@ -177,10 +183,11 @@ public:
   int GetMRUList(stringT *MRUFiles);
   int SetMRUList(const stringT *MRUFiles, int n, int max_MRU);
 
-  void SetUpCopyDBprefs();
-  void SetPref(BoolPrefs pref_enum, bool value, bool bUseCopy = false);
-  void SetPref(IntPrefs pref_enum, unsigned int value, bool bUseCopy = false);
-  void SetPref(StringPrefs pref_enum, const StringX &value, bool bUseCopy = false);
+  void SetupCopyPrefs();
+  void UpdateFromCopyPrefs(const PWSprefs::PrefType ptype);
+  void SetPref(BoolPrefs pref_enum, bool value, const bool bUseCopy = false);
+  void SetPref(IntPrefs pref_enum, unsigned int value, const bool bUseCopy = false);
+  void SetPref(StringPrefs pref_enum, const StringX &value, const bool bUseCopy = false);
 
   void ResetPref(BoolPrefs pref_enum);
   void ResetPref(IntPrefs pref_enum);
@@ -215,9 +222,6 @@ private:
   PWSprefs();
   ~PWSprefs();
 
-  // Preferences changed (Database or Application or Shortcuts)
-  enum {DB_PREF = 0, APP_PREF = 1, SHC_PREF = 2};
-
   bool WritePref(const StringX &name, bool val);
   bool WritePref(const StringX &name, unsigned int val);
   bool WritePref(const StringX &name, const StringX &val);
@@ -247,13 +251,12 @@ private:
 
   bool m_prefs_changed[3];  // 0 - DB stored pref; 1 - App related pref; 2 - Shortcut
 
-  enum PrefType {ptObsolete = 0, ptDatabase, ptApplication};
   static const struct boolPref {
-    const TCHAR *name; bool defVal; PrefType pt;} m_bool_prefs[NumBoolPrefs];
+    const TCHAR *name; bool defVal; PrefType ptype;} m_bool_prefs[NumBoolPrefs];
   static const struct intPref {
-    const TCHAR *name; unsigned int defVal; PrefType pt; int minVal; int maxVal;} m_int_prefs[NumIntPrefs];
+    const TCHAR *name; unsigned int defVal; PrefType ptype; int minVal; int maxVal;} m_int_prefs[NumIntPrefs];
   static const struct stringPref {
-    const TCHAR *name; const TCHAR *defVal; PrefType pt;} m_string_prefs[NumStringPrefs];
+    const TCHAR *name; const TCHAR *defVal; PrefType ptype;} m_string_prefs[NumStringPrefs];
 
   // current values
   bool m_boolValues[NumBoolPrefs];

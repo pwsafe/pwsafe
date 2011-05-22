@@ -18,36 +18,33 @@
 
 class COptionsPasswordHistory : public COptions_PropertyPage
 {
-  DECLARE_DYNCREATE(COptionsPasswordHistory)
+public:
+  DECLARE_DYNAMIC(COptionsPasswordHistory)
 
   // Construction
-public:
-  COptionsPasswordHistory();
+  COptionsPasswordHistory(CWnd *pParent, st_Opt_master_data *pOPTMD);
   ~COptionsPasswordHistory();
-  DboxMain *m_pDboxMain;
 
+protected:
   // Dialog Data
   //{{AFX_DATA(COptionsPasswordHistory)
   enum { IDD = IDD_PS_PASSWORDHISTORY };
-  BOOL m_savepwhistory;
-  UINT m_pwhistorynumdefault;
-  int  m_pwhaction;
-  //}}AFX_DATA
 
-  BOOL m_savesavepwhistory;
-  UINT m_savepwhistorynumdefault;
+  BOOL m_SavePWHistory;
+  int m_PWHistoryNumDefault;
+  int  m_PWHAction;
+  //}}AFX_DATA
 
   // Overrides
   // ClassWizard generate virtual function overrides
   //{{AFX_VIRTUAL(COptionsPasswordHistory)
-protected:
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
   virtual BOOL OnInitDialog();
   BOOL PreTranslateMessage(MSG* pMsg);
+  virtual BOOL OnApply();
   //}}AFX_VIRTUAL
 
   // Implementation
-protected:
   // Generated message map functions
   //{{AFX_MSG(COptionsPasswordHistory)
   afx_msg LRESULT OnQuerySiblings(WPARAM wParam, LPARAM);

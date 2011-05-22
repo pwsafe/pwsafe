@@ -40,13 +40,29 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // COptionsMisc property page
 
-IMPLEMENT_DYNCREATE(COptionsMisc, COptions_PropertyPage)
+IMPLEMENT_DYNAMIC(COptionsMisc, COptions_PropertyPage)
 
-COptionsMisc::COptionsMisc()
-  : COptions_PropertyPage(COptionsMisc::IDD), m_pToolTipCtrl(NULL)
+COptionsMisc::COptionsMisc(CWnd *pParent, st_Opt_master_data *pOPTMD)
+  : COptions_PropertyPage(pParent, COptionsMisc::IDD, pOPTMD), m_pToolTipCtrl(NULL)
 {
-  //{{AFX_DATA_INIT(COptionsMisc)
-  //}}AFX_DATA_INIT
+  m_DefUsername = (CString)M_DefUsername();
+  m_OtherBrowserLocation = M_OtherBrowserLocation();
+  m_OtherEditorLocation = M_OtherEditorLocation();
+  m_BrowserCmdLineParms = M_BrowserCmdLineParms();
+  m_Autotype = M_Autotype();
+  m_HotkeyValue = M_Hotkey_Value();
+  m_ConfirmDelete = M_ConfirmDelete();
+  m_MaintainDatetimeStamps = M_MaintainDatetimeStamps();
+  m_EscExits = M_EscExits();
+  m_HotkeyEnabled = M_Hotkey_Enabled();
+  m_UseDefUsername = M_UseDefUsername();
+  m_QuerySetDefUsername = M_QuerySetDefUsername();
+  m_AutotypeMinimize = M_AutotypeMinimize();
+  m_DoubleClickAction = M_DoubleClickAction();
+  
+  if (m_DoubleClickAction < PWSprefs::minDCA ||
+      m_DoubleClickAction > PWSprefs::maxDCA)
+    m_DoubleClickAction = M_DoubleClickAction() = PWSprefs::DoubleClickCopyPassword;
 }
 
 COptionsMisc::~COptionsMisc()
@@ -59,23 +75,20 @@ void COptionsMisc::DoDataExchange(CDataExchange* pDX)
   COptions_PropertyPage::DoDataExchange(pDX);
 
   //{{AFX_DATA_MAP(COptionsMisc)
-  DDX_Check(pDX, IDC_CONFIRMDELETE, m_confirmdelete);
-  DDX_Check(pDX, IDC_MAINTAINDATETIMESTAMPS, m_maintaindatetimestamps);
-  DDX_Check(pDX, IDC_ESC_EXITS, m_escexits);
+  DDX_Check(pDX, IDC_MAINTAINDATETIMESTAMPS, m_MaintainDatetimeStamps);
+  DDX_Check(pDX, IDC_USEDEFUSER, m_UseDefUsername);
+  DDX_Text(pDX, IDC_DEFUSERNAME, m_DefUsername);
+  DDX_Text(pDX, IDC_DB_DEFAULTAUTOTYPE, m_Autotype);
+  DDX_Check(pDX, IDC_CONFIRMDELETE, m_ConfirmDelete);
+  DDX_Check(pDX, IDC_ESC_EXITS, m_EscExits);
   DDX_Control(pDX, IDC_DOUBLE_CLICK_ACTION, m_dblclk_cbox);
-  DDX_Check(pDX, IDC_HOTKEY_ENABLE, m_hotkey_enabled);
-  // JHF class CHotKeyCtrl not defined under WinCE
-#if !defined(POCKET_PC)
-  DDX_Control(pDX, IDC_HOTKEY_CTRL, m_hotkey);
-#endif
-  DDX_Check(pDX, IDC_USEDEFUSER, m_usedefuser);
-  DDX_Check(pDX, IDC_QUERYSETDEF, m_querysetdef);
-  DDX_Text(pDX, IDC_DEFUSERNAME, m_defusername);
-  DDX_Text(pDX, IDC_OTHERBROWSERLOCATION, m_otherbrowserlocation);
-  DDX_Text(pDX, IDC_OTHEREDITORLOCATION, m_othereditorlocation);
-  DDX_Text(pDX, IDC_ALTBROWSER_CMDLINE, m_csBrowserCmdLineParms);
-  DDX_Text(pDX, IDC_DB_DEFAULTAUTOTYPE, m_csAutotype);
-  DDX_Check(pDX, IDC_MINIMIZEONAUTOTYPE, m_minauto);
+  DDX_Check(pDX, IDC_HOTKEY_ENABLE, m_HotkeyEnabled);
+  DDX_Control(pDX, IDC_HOTKEY_CTRL, m_HotkeyCtrl);
+  DDX_Check(pDX, IDC_QUERYSETDEF, m_QuerySetDefUsername);
+  DDX_Text(pDX, IDC_OTHERBROWSERLOCATION, m_OtherBrowserLocation);
+  DDX_Text(pDX, IDC_OTHEREDITORLOCATION, m_OtherEditorLocation);
+  DDX_Text(pDX, IDC_ALTBROWSER_CMDLINE, m_BrowserCmdLineParms);
+  DDX_Check(pDX, IDC_MINIMIZEONAUTOTYPE, m_AutotypeMinimize);
   //}}AFX_DATA_MAP
 }
 
@@ -84,7 +97,7 @@ BEGIN_MESSAGE_MAP(COptionsMisc, COptions_PropertyPage)
   ON_BN_CLICKED(ID_HELP, OnHelp)
 
   ON_BN_CLICKED(IDC_HOTKEY_ENABLE, OnEnableHotKey)
-  ON_BN_CLICKED(IDC_USEDEFUSER, OnUsedefuser)
+  ON_BN_CLICKED(IDC_USEDEFUSER, OnUseDefUser)
   ON_COMMAND_RANGE(IDC_BROWSEFORLOCATION_BROWSER, 
                    IDC_BROWSEFORLOCATION_EDITOR, OnBrowseForLocation)
   ON_CBN_SELCHANGE(IDC_DOUBLE_CLICK_ACTION, OnComboChanged)
@@ -92,29 +105,11 @@ BEGIN_MESSAGE_MAP(COptionsMisc, COptions_PropertyPage)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-BOOL COptionsMisc::PreTranslateMessage(MSG* pMsg)
-{
-  if (m_pToolTipCtrl != NULL)
-    m_pToolTipCtrl->RelayEvent(pMsg);
-
-  if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
-    PostMessage(WM_COMMAND, MAKELONG(ID_HELP, BN_CLICKED), NULL);
-    return TRUE;
-  }
-
-  return COptions_PropertyPage::PreTranslateMessage(pMsg);
-}
-
-void COptionsMisc::OnHelp()
-{
-  CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + L"::/html/misc_tab.html";
-  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
-}
-
 BOOL COptionsMisc::OnInitDialog() 
 {
   COptions_PropertyPage::OnInitDialog();
+
+  OnUseDefUser();
 
   // For some reason, MFC calls us twice when initializing.
   // Populate the combo box only once.
@@ -169,38 +164,14 @@ BOOL COptionsMisc::OnInitDialog()
     }
   }
 
-  if (m_doubleclickaction < PWSprefs::minDCA ||
-      m_doubleclickaction > PWSprefs::maxDCA)
-    m_doubleclickaction = PWSprefs::DoubleClickCopyPassword;
+  m_dblclk_cbox.SetCurSel(m_DCA_to_Index[m_DoubleClickAction]);
 
-  m_dblclk_cbox.SetCurSel(m_DCA_to_Index[m_doubleclickaction]);
+  m_HotkeyCtrl.SetHotKey(LOWORD(m_HotkeyValue),HIWORD(m_HotkeyValue));
+  if (m_HotkeyEnabled == FALSE)
+    m_HotkeyCtrl.EnableWindow(FALSE);
 
-  // JHF ditto here
-#if !defined(POCKET_PC)
-  m_hotkey.SetHotKey(LOWORD(m_hotkey_value),HIWORD(m_hotkey_value));
-  if (m_hotkey_enabled == FALSE)
-    m_hotkey.EnableWindow(FALSE);
-#endif
-
-  GetDlgItem(IDC_OTHERBROWSERLOCATION)->SetWindowText(m_otherbrowserlocation);
-  GetDlgItem(IDC_OTHEREDITORLOCATION)->SetWindowText(m_othereditorlocation);
-
-  OnUsedefuser();
-
-  m_saveconfirmdelete = m_confirmdelete;
-  m_savemaintaindatetimestamps = m_maintaindatetimestamps;
-  m_saveescexits = m_escexits;
-  m_savehotkey_enabled = m_hotkey_enabled;
-  m_saveusedefuser = m_usedefuser;
-  m_savequerysetdef = m_querysetdef;
-  m_savedefusername = m_defusername;
-  m_saveotherbrowserlocation = m_otherbrowserlocation;
-  m_saveothereditorlocation = m_othereditorlocation;
-  m_savehotkey_value = m_hotkey_value;
-  m_savedoubleclickaction = m_doubleclickaction;
-  m_saveBrowserCmdLineParms = m_csBrowserCmdLineParms;
-  m_saveAutotype = m_csAutotype;
-  m_saveminauto = m_minauto;
+  GetDlgItem(IDC_OTHERBROWSERLOCATION)->SetWindowText(m_OtherBrowserLocation);
+  GetDlgItem(IDC_OTHEREDITORLOCATION)->SetWindowText(m_OtherEditorLocation);
 
   m_pToolTipCtrl = new CToolTipCtrl;
   if (!m_pToolTipCtrl->Create(this, TTS_BALLOON | TTS_NOPREFIX)) {
@@ -229,6 +200,120 @@ BOOL COptionsMisc::OnInitDialog()
 
   return TRUE;
 }
+
+LRESULT COptionsMisc::OnQuerySiblings(WPARAM wParam, LPARAM lParam)
+{
+  UpdateData(TRUE);
+
+  // Security asked for DoubleClickAction value
+  switch (wParam) {
+    case PPOPT_GET_DCA:
+      {
+      int * pDCA = (int *)lParam;
+      ASSERT(pDCA != NULL);
+      *pDCA = (int)m_DoubleClickAction;
+      return 1L;
+      }
+    case PP_DATA_CHANGED:
+      if (M_ConfirmDelete()          != m_ConfirmDelete            || 
+          M_MaintainDatetimeStamps() != m_MaintainDatetimeStamps   ||
+          M_EscExits()               != m_EscExits                 ||
+          M_Hotkey_Enabled()         != m_HotkeyEnabled            ||
+          M_UseDefUsername()         != m_UseDefUsername           ||
+          (M_UseDefUsername()        == TRUE &&
+           M_DefUsername()           != CSecString(m_DefUsername)) ||
+          M_QuerySetDefUsername()    != m_QuerySetDefUsername      ||
+          M_Hotkey_Value()           != m_HotkeyValue              ||
+          M_DoubleClickAction()      != m_DoubleClickAction        ||
+          M_OtherBrowserLocation()   != m_OtherBrowserLocation     ||
+          M_OtherEditorLocation()    != m_OtherEditorLocation      ||
+          M_BrowserCmdLineParms()    != m_BrowserCmdLineParms      ||
+          M_Autotype()               != m_Autotype                 ||
+          M_AutotypeMinimize()       != m_AutotypeMinimize)
+        return 1L;
+      break;
+    case PPOPT_HOTKEY_SET:
+      return (m_HotkeyEnabled == TRUE) ? 1L : 0L;
+    case PP_UPDATE_VARIABLES:
+      // Since OnOK calls OnApply after we need to verify and/or
+      // copy data into the entry - we do it ourselfs here first
+      if (OnApply() == FALSE)
+        return 1L;
+    default:
+      break;
+  }
+  return 0L;
+}
+
+BOOL COptionsMisc::OnApply() 
+{
+  UpdateData(TRUE);
+
+  WORD wVirtualKeyCode, wModifiers;
+  m_HotkeyCtrl.GetHotKey(wVirtualKeyCode, wModifiers);
+  DWORD v = wVirtualKeyCode | (wModifiers << 16);
+  m_HotkeyValue = v;
+
+  // Go ask Security for ClearClipboardOnMinimize value
+  BOOL bClearClipboardOnMinimize;
+  if (QuerySiblings(PPOPT_GET_CCOM, (LPARAM)&bClearClipboardOnMinimize) == 0L) {
+    // Security not loaded - get from Prefs
+    bClearClipboardOnMinimize = 
+        PWSprefs::GetInstance()->GetPref(PWSprefs::ClearClipboardOnMinimize);
+  }
+
+  if (m_DoubleClickAction == PWSprefs::DoubleClickCopyPasswordMinimize &&
+      bClearClipboardOnMinimize) {
+    CGeneralMsgBox gmb;
+    gmb.AfxMessageBox(IDS_MINIMIZECONFLICT);
+
+    // Are we the current page, if not activate this page
+    COptions_PropertySheet *pPS = (COptions_PropertySheet *)GetParent();
+    if (pPS->GetActivePage() != (COptions_PropertyPage *)this)
+      pPS->SetActivePage(this);
+
+    m_dblclk_cbox.SetFocus();
+    return FALSE;
+  }
+
+  M_DefUsername() = (CSecString)m_DefUsername;
+  M_OtherBrowserLocation() = m_OtherBrowserLocation;
+  M_OtherEditorLocation() = m_OtherEditorLocation;
+  M_BrowserCmdLineParms() = m_BrowserCmdLineParms;
+  M_Autotype() = m_Autotype;
+  M_Hotkey_Value() = m_HotkeyValue;
+  M_ConfirmDelete() = m_ConfirmDelete;
+  M_MaintainDatetimeStamps() = m_MaintainDatetimeStamps;
+  M_EscExits() = m_EscExits;
+  M_Hotkey_Enabled() = m_HotkeyEnabled;
+  M_UseDefUsername() = m_UseDefUsername;
+  M_QuerySetDefUsername() = m_QuerySetDefUsername;
+  M_AutotypeMinimize() = m_AutotypeMinimize;
+  M_DoubleClickAction() = m_DoubleClickAction;
+
+  return COptions_PropertyPage::OnApply();
+}
+
+BOOL COptionsMisc::PreTranslateMessage(MSG* pMsg)
+{
+  if (m_pToolTipCtrl != NULL)
+    m_pToolTipCtrl->RelayEvent(pMsg);
+
+  if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
+    PostMessage(WM_COMMAND, MAKELONG(ID_HELP, BN_CLICKED), NULL);
+    return TRUE;
+  }
+
+  return COptions_PropertyPage::PreTranslateMessage(pMsg);
+}
+
+void COptionsMisc::OnHelp()
+{
+  CString cs_HelpTopic;
+  cs_HelpTopic = app.GetHelpFileName() + L"::/html/misc_tab.html";
+  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
+}
+
 /////////////////////////////////////////////////////////////////////////////
 // COptionsMisc message handlers
 
@@ -247,10 +332,10 @@ void COptionsMisc::OnEnableHotKey()
 void COptionsMisc::OnComboChanged()
 {
   int nIndex = m_dblclk_cbox.GetCurSel();
-  m_doubleclickaction = (int)m_dblclk_cbox.GetItemData(nIndex);
+  m_DoubleClickAction = (int)m_dblclk_cbox.GetItemData(nIndex);
 }
 
-void COptionsMisc::OnUsedefuser()
+void COptionsMisc::OnUseDefUser()
 {
   if (((CButton*)GetDlgItem(IDC_USEDEFUSER))->GetCheck() == 1) {
     GetDlgItem(IDC_DEFUSERNAME)->EnableWindow(TRUE);
@@ -263,87 +348,6 @@ void COptionsMisc::OnUsedefuser()
   }
 }
 
-LRESULT COptionsMisc::OnQuerySiblings(WPARAM wParam, LPARAM lParam)
-{
-  UpdateData(TRUE);
-
-  // Security asked for DoubleClickAction value
-  switch (wParam) {
-    case PPOPT_GET_DCA:
-      {
-      int * pDCA = (int *)lParam;
-      ASSERT(pDCA != NULL);
-      *pDCA = (int)m_doubleclickaction;
-      return 1L;
-      }
-    case PP_DATA_CHANGED:
-      if (m_saveconfirmdelete          != m_confirmdelete          || 
-          m_savemaintaindatetimestamps != m_maintaindatetimestamps ||
-          m_saveescexits               != m_escexits               ||
-          m_savehotkey_enabled         != m_hotkey_enabled         ||
-          m_saveusedefuser             != m_usedefuser             ||
-          (m_usedefuser                == TRUE &&
-           m_savedefusername           != m_defusername)           ||
-          m_savequerysetdef            != m_querysetdef            ||
-          m_savehotkey_value           != m_hotkey_value           ||
-          m_savedoubleclickaction      != m_doubleclickaction      ||
-          m_saveotherbrowserlocation   != m_otherbrowserlocation   ||
-          m_saveothereditorlocation    != m_othereditorlocation    ||
-          m_saveBrowserCmdLineParms    != m_csBrowserCmdLineParms  ||
-          m_saveAutotype               != m_csAutotype             ||
-          m_saveminauto                != m_minauto)
-        return 1L;
-      break;
-    case PPOPT_HOTKEY_SET:
-      return (m_hotkey_enabled == TRUE) ? 1L : 0L;
-    case PP_UPDATE_VARIABLES:
-      // Since OnOK calls OnApply after we need to verify and/or
-      // copy data into the entry - we do it ourselfs here first
-      if (OnApply() == FALSE)
-        return 1L;
-    default:
-      break;
-  }
-  return 0L;
-}
-
-BOOL COptionsMisc::OnApply() 
-{
-  UpdateData(TRUE);
-
-  // JHF ditto
-#if !defined(POCKET_PC)
-  WORD wVirtualKeyCode, wModifiers;
-  m_hotkey.GetHotKey(wVirtualKeyCode, wModifiers);
-  DWORD v = wVirtualKeyCode | (wModifiers << 16);
-  m_hotkey_value = v;
-#endif
-
-  // Go ask Security for ClearClipboardOnMinimize value
-  BOOL bClearClipboardOnMinimize;
-  if (QuerySiblings(PPOPT_GET_CCOM, (LPARAM)&bClearClipboardOnMinimize) == 0L) {
-    // Security not loaded - get from Prefs
-    bClearClipboardOnMinimize = 
-        PWSprefs::GetInstance()->GetPref(PWSprefs::ClearClipboardOnMinimize);
-  }
-
-  if (m_doubleclickaction == PWSprefs::DoubleClickCopyPasswordMinimize &&
-      bClearClipboardOnMinimize) {
-    CGeneralMsgBox gmb;
-    gmb.AfxMessageBox(IDS_MINIMIZECONFLICT);
-
-    // Are we the current page, if not activate this page
-    COptions_PropertySheet *pPS = (COptions_PropertySheet *)GetParent();
-    if (pPS->GetActivePage() != (COptions_PropertyPage *)this)
-      pPS->SetActivePage(this);
-
-    m_dblclk_cbox.SetFocus();
-    return FALSE;
-  }
-
-  return COptions_PropertyPage::OnApply();
-}
-
 void COptionsMisc::OnBrowseForLocation(UINT nID)
 {
   CString cs_initiallocation, cs_title;
@@ -351,9 +355,9 @@ void COptionsMisc::OnBrowseForLocation(UINT nID)
   INT_PTR rc;
 
   if (nID == IDC_BROWSEFORLOCATION_BROWSER)
-    path = m_otherbrowserlocation;
+    path = m_OtherBrowserLocation;
   else
-    path = m_othereditorlocation;
+    path = m_OtherEditorLocation;
  
   if (path.empty())
     cs_initiallocation = L"C:\\";
@@ -378,9 +382,9 @@ void COptionsMisc::OnBrowseForLocation(UINT nID)
 
   if (rc == IDOK) {
     if (nID == IDC_BROWSEFORLOCATION_BROWSER)
-      m_otherbrowserlocation = fd.GetPathName();
+      m_OtherBrowserLocation = fd.GetPathName();
     else
-      m_othereditorlocation = fd.GetPathName();
+      m_OtherEditorLocation = fd.GetPathName();
 
     GetDlgItem(nID == IDC_BROWSEFORLOCATION_BROWSER ? IDC_OTHERBROWSERLOCATION :
                         IDC_OTHEREDITORLOCATION)->SetWindowText(fd.GetPathName());

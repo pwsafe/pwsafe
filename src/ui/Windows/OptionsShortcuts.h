@@ -27,10 +27,11 @@
 
 class COptionsShortcuts : public COptions_PropertyPage
 {
+public:
   DECLARE_DYNAMIC(COptionsShortcuts)
 
-public:
-  COptionsShortcuts();   // standard constructor
+  // Construction
+  COptionsShortcuts(CWnd *pParent, st_Opt_master_data *pOPTMD);   // standard constructor
   ~COptionsShortcuts();
 
   bool HaveShortcutsChanged() {return m_bShortcutsChanged;}
@@ -53,6 +54,7 @@ public:
 
   void ClearWarning() {m_stc_warning.ShowWindow(SW_HIDE);}
 
+protected:
   // Dialog Data
   //{{AFX_DATA(COptionsShortcuts)
   enum { IDD = IDD_PS_SHORTCUTS };
@@ -65,11 +67,11 @@ public:
   // Overrides
   // ClassWizard generate virtual function overrides
   //{{AFX_VIRTUAL(COptionsShortcuts)
-protected:
+
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
   virtual BOOL OnInitDialog();
-  virtual BOOL OnApply();
   BOOL PreTranslateMessage(MSG* pMsg);
+  virtual BOOL OnApply();
   //}}AFX_VIRTUAL
 
   // Implementation
@@ -78,7 +80,7 @@ protected:
   afx_msg LRESULT OnQuerySiblings(WPARAM wParam, LPARAM);
   afx_msg void OnHelp();
   afx_msg void OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMIS);
-  afx_msg void OnBnClickedResetAll();
+  afx_msg void OnResetAll();
   afx_msg void OnHeaderNotify(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnHeaderRClick(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnResetColumnWidth();

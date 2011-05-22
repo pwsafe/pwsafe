@@ -407,9 +407,8 @@ int DboxMain::NewFile(StringX &newfilename)
       return PWScore::USER_CANCEL;
   }
 
-  CPasskeySetup dbox_pksetup(this);
-  //app.m_pMainWnd = &dbox_pksetup;
-  rc = dbox_pksetup.DoModal();
+  CPasskeySetup pksetup(this);
+  rc = pksetup.DoModal();
 
   if (rc == IDCANCEL)
     return PWScore::USER_CANCEL;  //User cancelled password entry
@@ -418,7 +417,7 @@ int DboxMain::NewFile(StringX &newfilename)
   m_core.ReInit(true);
 
   ClearData();
-  PWSprefs::GetInstance()->SetDatabasePrefsToDefaults();
+
   const StringX &oldfilename = m_core.GetCurFile();
   // The only way we're the locker is if it's locked & we're !readonly
   if (!oldfilename.empty() &&
@@ -433,7 +432,7 @@ int DboxMain::NewFile(StringX &newfilename)
   m_core.LockFile(newfilename.c_str(), locker);
 
   m_core.SetReadOnly(false); // new file can't be read-only...
-  m_core.NewFile(dbox_pksetup.m_passkey);
+  m_core.NewFile(pksetup.GetPassKey());
   m_bDBNeedsReading = false;
   
   // Tidy up filters

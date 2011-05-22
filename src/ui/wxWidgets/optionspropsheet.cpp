@@ -980,7 +980,7 @@ void COptions::PropSheetToPrefs()
   // which needs to be done via a Command so that it can be Undone & Redone
 
   // Initialise a copy of the DB preferences
-  prefs->SetUpCopyDBprefs();
+  prefs->SetupCopyPrefs();
 
   // Update them - last parameter of SetPref and Store is: "bUseCopy = true"
   // In PropertyPage alphabetic order

@@ -15,6 +15,7 @@
 #include "ControlExtns.h"
 
 class CVKeyBoardDlg;
+class DboxMain;
 
 class CPasskeySetup : public CPWDialog
 {
@@ -23,8 +24,9 @@ public:
   CPasskeySetup(CWnd* pParent = NULL);   // standard constructor
   ~CPasskeySetup();
 
-  HINSTANCE m_OSK_module;
+  CSecString GetPassKey() {return m_passkey;}
 
+protected:
   // Dialog Data
   //{{AFX_DATA(CPasskeySetup)
   enum { IDD = IDD_PASSKEYSETUP };
@@ -32,14 +34,12 @@ public:
   CSecString m_verify;
   //}}AFX_DATA
 
-protected:
   virtual BOOL OnInitDialog();
   //{{AFX_VIRTUAL(CPasskeySetup)
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
   //}}AFX_VIRTUAL
 
   // Implementation
-protected:
   // Generated message map functions
   //{{AFX_MSG(CPasskeySetup)
   virtual void OnCancel();
@@ -57,8 +57,9 @@ protected:
   DECLARE_MESSAGE_MAP()
 
 private:
-  CSecEditExtn * m_pctlPasskey;
-  CSecEditExtn * m_pctlVerify;
+  DboxMain *m_pDbx;
+  CSecEditExtn *m_pctlPasskey;
+  CSecEditExtn *m_pctlVerify;
   CVKeyBoardDlg *m_pVKeyBoardDlg;
   UINT m_CtrlID;
   UINT m_LastFocus;

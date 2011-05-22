@@ -15,7 +15,6 @@
 
 IMPLEMENT_DYNAMIC(CProperties, CPWDialog)
 
-
 BEGIN_MESSAGE_MAP(CProperties, CPWDialog)
   ON_BN_CLICKED(IDOK, &CPWDialog::OnOK)
 END_MESSAGE_MAP()

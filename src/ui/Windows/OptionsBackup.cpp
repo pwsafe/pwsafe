@@ -43,45 +43,28 @@ int CALLBACK SetSelProc(HWND hWnd, UINT uMsg, LPARAM , LPARAM lpData);
 /////////////////////////////////////////////////////////////////////////////
 // COptionsBackup property page
 
-IMPLEMENT_DYNCREATE(COptionsBackup, COptions_PropertyPage)
+IMPLEMENT_DYNAMIC(COptionsBackup, COptions_PropertyPage)
 
-COptionsBackup::COptionsBackup()
-  : COptions_PropertyPage(COptionsBackup::IDD),
+COptionsBackup::COptionsBackup(CWnd *pParent, st_Opt_master_data *pOPTMD)
+  : COptions_PropertyPage(pParent, COptionsBackup::IDD, pOPTMD),
   m_pToolTipCtrl(NULL)
 {
-  //{{AFX_DATA_INIT(COptionsBackup)
-  //}}AFX_DATA_INIT
-}
+  m_currentFile = (CString)M_CurrentFile();
+  m_UserBackupPrefix = M_UserBackupPrefix();
+  m_BackupSuffix = M_BackupSuffix();
+  m_BackupLocation = M_BackupLocation();
+  m_UserBackupOtherLocation = M_UserBackupOtherLocation();
+  m_SaveImmediately = M_SaveImmediately();
+  m_BackupBeforeSave = M_BackupBeforeSave();
+  m_BackupPrefix = M_BackupPrefix();
+  m_MaxNumIncBackups = M_MaxNumIncBackups();
 
-COptionsBackup::~COptionsBackup()
-{
-  delete m_pToolTipCtrl;
-}
+  if (m_BackupSuffix < PWSprefs::minBKSFX ||
+      m_BackupSuffix > PWSprefs::maxBKSFX)
+    m_BackupSuffix = M_BackupPrefix() = PWSprefs::BKSFX_None;
 
-BOOL COptionsBackup::PreTranslateMessage(MSG* pMsg)
-{
-  if (m_pToolTipCtrl != NULL)
-    m_pToolTipCtrl->RelayEvent(pMsg);
-
-  if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
-    PostMessage(WM_COMMAND, MAKELONG(ID_HELP, BN_CLICKED), NULL);
-    return TRUE;
-  }
-
-  return COptions_PropertyPage::PreTranslateMessage(pMsg);
-}
-
-void COptionsBackup::OnHelp()
-{
-  CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + L"::/html/backups_tab.html";
-  ::HtmlHelp(this->GetSafeHwnd(), (LPCWSTR)cs_HelpTopic, HH_DISPLAY_TOPIC, 0);
-}
-
-void COptionsBackup::SetCurFile(const CString &currentFile)
-{
   // derive current db's directory and basename:
-  std::wstring path(currentFile);
+  std::wstring path(m_currentFile);
   std::wstring drive, dir, base, ext;
 
   pws_os::splitpath(path, drive, dir, base, ext);
@@ -90,19 +73,24 @@ void COptionsBackup::SetCurFile(const CString &currentFile)
   m_currentFileBasename = base.c_str();
 }
 
+COptionsBackup::~COptionsBackup()
+{
+  delete m_pToolTipCtrl;
+}
+
 void COptionsBackup::DoDataExchange(CDataExchange* pDX)
 {
   COptions_PropertyPage::DoDataExchange(pDX);
 
   //{{AFX_DATA_MAP(COptionsBackup)
-  DDX_Check(pDX, IDC_SAVEIMMEDIATELY, m_saveimmediately);
-  DDX_Check(pDX, IDC_BACKUPBEFORESAVE, m_backupbeforesave);
-  DDX_Radio(pDX, IDC_DFLTBACKUPPREFIX, m_backupprefix); // only first!
-  DDX_Text(pDX, IDC_USERBACKUPPREFIXVALUE, m_userbackupprefix);
+  DDX_Check(pDX, IDC_SAVEIMMEDIATELY, m_SaveImmediately);
+  DDX_Check(pDX, IDC_BACKUPBEFORESAVE, m_BackupBeforeSave);
+  DDX_Radio(pDX, IDC_DFLTBACKUPPREFIX, m_BackupPrefix); // only first!
+  DDX_Text(pDX, IDC_USERBACKUPPREFIXVALUE, m_UserBackupPrefix);
   DDX_Control(pDX, IDC_BACKUPSUFFIX, m_backupsuffix_cbox);
-  DDX_Radio(pDX, IDC_DFLTBACKUPLOCATION, m_backuplocation); // only first!
-  DDX_Text(pDX, IDC_USERBACKUPOTHRLOCATIONVALUE, m_userbackupotherlocation);
-  DDX_Text(pDX, IDC_BACKUPMAXINC, m_maxnumincbackups);
+  DDX_Radio(pDX, IDC_DFLTBACKUPLOCATION, m_BackupLocation); // only first!
+  DDX_Text(pDX, IDC_USERBACKUPOTHRLOCATIONVALUE, m_UserBackupOtherLocation);
+  DDX_Text(pDX, IDC_BACKUPMAXINC, m_MaxNumIncBackups);
   //}}AFX_DATA_MAP
 }
 
@@ -145,11 +133,7 @@ BOOL COptionsBackup::OnInitDialog()
     m_BKSFX_to_Index[PWSprefs::BKSFX_IncNumber] = nIndex;
   }
 
-  if (m_backupsuffix < PWSprefs::minBKSFX ||
-      m_backupsuffix > PWSprefs::maxBKSFX)
-    m_backupsuffix = PWSprefs::BKSFX_None;
-
-  m_backupsuffix_cbox.SetCurSel(m_BKSFX_to_Index[m_backupsuffix]);
+  m_backupsuffix_cbox.SetCurSel(m_BKSFX_to_Index[m_BackupSuffix]);
 
   GetDlgItem(IDC_BACKUPEXAMPLE)->SetWindowText(L"");
 
@@ -158,19 +142,10 @@ BOOL COptionsBackup::OnInitDialog()
   pspin->SetBuddy(GetDlgItem(IDC_BACKUPMAXINC));
   pspin->SetRange(1, 999);
   pspin->SetBase(10);
-  pspin->SetPos(m_maxnumincbackups);
+  pspin->SetPos(m_MaxNumIncBackups);
 
   OnComboChanged();
   OnBackupBeforeSave();
-
-  m_saveuserbackupprefix = m_userbackupprefix;
-  m_saveuserbackupotherlocation = m_userbackupotherlocation;
-  m_savesaveimmediately = m_saveimmediately;
-  m_savebackupbeforesave = m_backupbeforesave;
-  m_savebackupprefix = m_backupprefix;
-  m_savebackuplocation = m_backuplocation;
-  m_savemaxnumincbackups = m_maxnumincbackups;
-  m_savebackupsuffix = m_backupsuffix;
 
   m_pToolTipCtrl = new CToolTipCtrl;
   if (!m_pToolTipCtrl->Create(this, TTS_BALLOON | TTS_NOPREFIX)) {
@@ -201,14 +176,123 @@ BOOL COptionsBackup::OnInitDialog()
   return TRUE;
 }
 
+LRESULT COptionsBackup::OnQuerySiblings(WPARAM wParam, LPARAM )
+{
+  UpdateData(TRUE);
+
+  // Have any of my fields been changed?
+  switch (wParam) {
+    case PP_DATA_CHANGED:
+      if (M_UserBackupPrefix()        != m_UserBackupPrefix        ||
+          M_UserBackupOtherLocation() != m_UserBackupOtherLocation ||
+          M_SaveImmediately()         != m_SaveImmediately         ||
+          M_BackupBeforeSave()        != m_BackupBeforeSave        ||
+          M_BackupPrefix()            != m_BackupPrefix            ||
+          M_BackupSuffix()            != m_BackupSuffix            ||
+          M_BackupLocation()          != m_BackupLocation          ||
+          M_MaxNumIncBackups()        != m_MaxNumIncBackups)
+        return 1L;
+      break;
+    case PP_UPDATE_VARIABLES:
+      // Since OnOK calls OnApply after we need to verify and/or
+      // copy data into the entry - we do it ourselfs here first
+      if (OnApply() == FALSE)
+        return 1L;
+  }
+  return 0L;
+}
+
+BOOL COptionsBackup::OnApply()
+{
+  UpdateData(TRUE);
+
+  M_UserBackupPrefix() = m_UserBackupPrefix;
+  M_BackupSuffix() = m_BackupSuffix;
+  M_BackupLocation() = m_BackupLocation;
+  M_UserBackupOtherLocation() = m_UserBackupOtherLocation;
+  M_SaveImmediately() = m_SaveImmediately;
+  M_BackupBeforeSave() = m_BackupBeforeSave;
+  M_BackupPrefix() = m_BackupPrefix;
+  M_MaxNumIncBackups() = m_MaxNumIncBackups;
+
+  return COptions_PropertyPage::OnApply();
+}
+
+BOOL COptionsBackup::PreTranslateMessage(MSG* pMsg)
+{
+  if (m_pToolTipCtrl != NULL)
+    m_pToolTipCtrl->RelayEvent(pMsg);
+
+  if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
+    PostMessage(WM_COMMAND, MAKELONG(ID_HELP, BN_CLICKED), NULL);
+    return TRUE;
+  }
+
+  return COptions_PropertyPage::PreTranslateMessage(pMsg);
+}
+
+
+BOOL COptionsBackup::OnKillActive()
+{
+  COptions_PropertyPage::OnKillActive();
+
+  if (m_BackupBeforeSave != TRUE)
+    return TRUE;
+
+  CGeneralMsgBox gmb;
+  // Check that correct fields are non-blank.
+  if (m_BackupPrefix == 1  && m_UserBackupPrefix.IsEmpty()) {
+    gmb.AfxMessageBox(IDS_OPTBACKUPPREF);
+    ((CEdit*)GetDlgItem(IDC_USERBACKUPPREFIXVALUE))->SetFocus();
+    return FALSE;
+  }
+
+  if (m_BackupLocation == 1) {
+    if (m_UserBackupOtherLocation.IsEmpty()) {
+      gmb.AfxMessageBox(IDS_OPTBACKUPLOCATION);
+      ((CEdit*)GetDlgItem(IDC_USERBACKUPOTHRLOCATIONVALUE))->SetFocus();
+      return FALSE;
+    }
+
+    if (m_UserBackupOtherLocation.Right(1) != L"\\") {
+      m_UserBackupOtherLocation += L"\\";
+      UpdateData(FALSE);
+    }
+
+    if (PathIsDirectory(m_UserBackupOtherLocation) == FALSE) {
+      gmb.AfxMessageBox(IDS_OPTBACKUPNOLOC);
+      ((CEdit*)GetDlgItem(IDC_USERBACKUPOTHRLOCATIONVALUE))->SetFocus();
+      return FALSE;
+    }
+  }
+
+  if (m_BackupSuffix == PWSprefs::BKSFX_IncNumber &&
+    ((m_MaxNumIncBackups < 1) || (m_MaxNumIncBackups > 999))) {
+      gmb.AfxMessageBox(IDS_OPTBACKUPMAXNUM);
+      ((CEdit*)GetDlgItem(IDC_BACKUPMAXINC))->SetFocus();
+      return FALSE;
+  }
+
+  //End check
+
+  return TRUE;
+}
+
+void COptionsBackup::OnHelp()
+{
+  CString cs_HelpTopic;
+  cs_HelpTopic = app.GetHelpFileName() + L"::/html/backups_tab.html";
+  ::HtmlHelp(this->GetSafeHwnd(), (LPCWSTR)cs_HelpTopic, HH_DISPLAY_TOPIC, 0);
+}
+
 /////////////////////////////////////////////////////////////////////////////
 // COptionsBackup message handlers
 
 void COptionsBackup::OnComboChanged()
 {
   int nIndex = m_backupsuffix_cbox.GetCurSel();
-  m_backupsuffix = (int)m_backupsuffix_cbox.GetItemData(nIndex);
-  if (m_backupsuffix == PWSprefs::BKSFX_IncNumber) {
+  m_BackupSuffix = (int)m_backupsuffix_cbox.GetItemData(nIndex);
+  if (m_BackupSuffix == PWSprefs::BKSFX_IncNumber) {
     GetDlgItem(IDC_BACKUPMAXINC)->EnableWindow(TRUE);
     GetDlgItem(IDC_BKPMAXINCSPIN)->EnableWindow(TRUE);
     GetDlgItem(IDC_BACKUPMAX)->EnableWindow(TRUE);
@@ -223,10 +307,10 @@ void COptionsBackup::OnComboChanged()
 void COptionsBackup::OnBackupPrefix()
 {
   UpdateData(TRUE);
-  switch (m_backupprefix) {
+  switch (m_BackupPrefix) {
     case 0:
       GetDlgItem(IDC_USERBACKUPPREFIXVALUE)->EnableWindow(FALSE);
-      m_userbackupprefix = L"";
+      m_UserBackupPrefix = L"";
       break;
     case 1:
       GetDlgItem(IDC_USERBACKUPPREFIXVALUE)->EnableWindow(TRUE);
@@ -242,11 +326,11 @@ void COptionsBackup::OnBackupPrefix()
 void COptionsBackup::OnBackupDirectory()
 {
   UpdateData(TRUE);
-  switch (m_backuplocation) {
+  switch (m_BackupLocation) {
     case 0:
       GetDlgItem(IDC_USERBACKUPOTHRLOCATIONVALUE)->EnableWindow(FALSE);
       GetDlgItem(IDC_BROWSEFORLOCATION)->EnableWindow(FALSE);
-      m_userbackupotherlocation = L"";
+      m_UserBackupOtherLocation = L"";
       break;
     case 1:
       GetDlgItem(IDC_USERBACKUPOTHRLOCATIONVALUE)->EnableWindow(TRUE);
@@ -263,15 +347,15 @@ void COptionsBackup::OnBackupBeforeSave()
 {
   UpdateData(TRUE);
 
-  GetDlgItem(IDC_DFLTBACKUPPREFIX)->EnableWindow(m_backupbeforesave);
-  GetDlgItem(IDC_USERBACKUPPREFIX)->EnableWindow(m_backupbeforesave);
-  GetDlgItem(IDC_USERBACKUPPREFIXVALUE)->EnableWindow(m_backupbeforesave);
-  GetDlgItem(IDC_BACKUPSUFFIX)->EnableWindow(m_backupbeforesave);
-  GetDlgItem(IDC_DFLTBACKUPLOCATION)->EnableWindow(m_backupbeforesave);
-  GetDlgItem(IDC_USERBACKUPOTHERLOCATION)->EnableWindow(m_backupbeforesave);
-  GetDlgItem(IDC_USERBACKUPOTHRLOCATIONVALUE)->EnableWindow(m_backupbeforesave);
+  GetDlgItem(IDC_DFLTBACKUPPREFIX)->EnableWindow(m_BackupBeforeSave);
+  GetDlgItem(IDC_USERBACKUPPREFIX)->EnableWindow(m_BackupBeforeSave);
+  GetDlgItem(IDC_USERBACKUPPREFIXVALUE)->EnableWindow(m_BackupBeforeSave);
+  GetDlgItem(IDC_BACKUPSUFFIX)->EnableWindow(m_BackupBeforeSave);
+  GetDlgItem(IDC_DFLTBACKUPLOCATION)->EnableWindow(m_BackupBeforeSave);
+  GetDlgItem(IDC_USERBACKUPOTHERLOCATION)->EnableWindow(m_BackupBeforeSave);
+  GetDlgItem(IDC_USERBACKUPOTHRLOCATIONVALUE)->EnableWindow(m_BackupBeforeSave);
 
-  if (m_backupbeforesave == TRUE) {
+  if (m_BackupBeforeSave == TRUE) {
     OnBackupPrefix();
     OnBackupDirectory();
     SetExample();
@@ -282,20 +366,20 @@ void COptionsBackup::SetExample()
 {
   CString cs_example;
   UpdateData(TRUE);
-  switch (m_backupprefix) {
-  case 0:
-    cs_example = m_currentFileBasename;
-    break;
-  case 1:
-    cs_example = m_userbackupprefix;
-    break;
-  default:
-    ASSERT(0);
-    break;
+  switch (m_BackupPrefix) {
+    case 0:
+      cs_example = m_currentFileBasename;
+      break;
+    case 1:
+      cs_example = m_UserBackupPrefix;
+      break;
+    default:
+      ASSERT(0);
+      break;
   }
 
-  switch (m_backupsuffix) {
-  case 1:
+  switch (m_BackupSuffix) {
+    case 1:
     {
       time_t now;
       time(&now);
@@ -311,62 +395,16 @@ void COptionsBackup::SetExample()
         cs_datetime.Mid(17,2);   // SS
       break;
     }
-  case 2:
-    cs_example += L"_001";
-    break;
-  case 0:
-  default:
-    break;
+    case 2:
+      cs_example += L"_001";
+      break;
+    case 0:
+    default:
+      break;
   }
 
   cs_example += L".ibak";
   GetDlgItem(IDC_BACKUPEXAMPLE)->SetWindowText(cs_example);
-}
-
-BOOL COptionsBackup::OnKillActive()
-{
-  COptions_PropertyPage::OnKillActive();
-
-  if (m_backupbeforesave != TRUE)
-    return TRUE;
-
-  CGeneralMsgBox gmb;
-  // Check that correct fields are non-blank.
-  if (m_backupprefix == 1  && m_userbackupprefix.IsEmpty()) {
-    gmb.AfxMessageBox(IDS_OPTBACKUPPREF);
-    ((CEdit*)GetDlgItem(IDC_USERBACKUPPREFIXVALUE))->SetFocus();
-    return FALSE;
-  }
-
-  if (m_backuplocation == 1) {
-    if (m_userbackupotherlocation.IsEmpty()) {
-      gmb.AfxMessageBox(IDS_OPTBACKUPLOCATION);
-      ((CEdit*)GetDlgItem(IDC_USERBACKUPOTHRLOCATIONVALUE))->SetFocus();
-      return FALSE;
-    }
-
-    if (m_userbackupotherlocation.Right(1) != L"\\") {
-      m_userbackupotherlocation += L"\\";
-      UpdateData(FALSE);
-    }
-
-    if (PathIsDirectory(m_userbackupotherlocation) == FALSE) {
-      gmb.AfxMessageBox(IDS_OPTBACKUPNOLOC);
-      ((CEdit*)GetDlgItem(IDC_USERBACKUPOTHRLOCATIONVALUE))->SetFocus();
-      return FALSE;
-    }
-  }
-
-  if (m_backupsuffix == PWSprefs::BKSFX_IncNumber &&
-    ((m_maxnumincbackups < 1) || (m_maxnumincbackups > 999))) {
-      gmb.AfxMessageBox(IDS_OPTBACKUPMAXNUM);
-      ((CEdit*)GetDlgItem(IDC_BACKUPMAXINC))->SetFocus();
-      return FALSE;
-  }
-
-  //End check
-
-  return TRUE;
 }
 
 void COptionsBackup::OnUserPrefixKillfocus()
@@ -374,39 +412,13 @@ void COptionsBackup::OnUserPrefixKillfocus()
   SetExample();
 }
 
-LRESULT COptionsBackup::OnQuerySiblings(WPARAM wParam, LPARAM )
-{
-  UpdateData(TRUE);
-
-  // Have any of my fields been changed?
-  switch (wParam) {
-    case PP_DATA_CHANGED:
-      if (m_saveuserbackupprefix        != m_userbackupprefix        ||
-          m_saveuserbackupotherlocation != m_userbackupotherlocation ||
-          m_savesaveimmediately         != m_saveimmediately         ||
-          m_savebackupbeforesave        != m_backupbeforesave        ||
-          m_savebackupprefix            != m_backupprefix            ||
-          m_savebackupsuffix            != m_backupsuffix            ||
-          m_savebackuplocation          != m_backuplocation          ||
-          m_savemaxnumincbackups        != m_maxnumincbackups)
-        return 1L;
-      break;
-    case PP_UPDATE_VARIABLES:
-      // Since OnOK calls OnApply after we need to verify and/or
-      // copy data into the entry - we do it ourselfs here first
-      if (OnApply() == FALSE)
-        return 1L;
-  }
-  return 0L;
-}
-
 void COptionsBackup::OnBrowseForLocation()
 {
   CString cs_initiallocation;
-  if (m_userbackupotherlocation.IsEmpty()) {
+  if (m_UserBackupOtherLocation.IsEmpty()) {
     cs_initiallocation = m_currentFileDir;
   } else
-    cs_initiallocation = m_userbackupotherlocation;
+    cs_initiallocation = m_UserBackupOtherLocation;
 
   // The BROWSEINFO struct tells the shell
   // how it should display the dialog.
@@ -429,9 +441,9 @@ void COptionsBackup::OnBrowseForLocation()
     // get the path.
     wchar_t buffer[_MAX_PATH] = { 0 };
     if (::SHGetPathFromIDList(pIDL, buffer) != 0)
-      m_userbackupotherlocation = CString(buffer);
+      m_UserBackupOtherLocation = CString(buffer);
     else
-      m_userbackupotherlocation = L"";
+      m_UserBackupOtherLocation = L"";
 
     UpdateData(FALSE);
 

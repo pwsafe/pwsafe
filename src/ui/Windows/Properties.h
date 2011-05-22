@@ -26,7 +26,7 @@ public:
   enum { IDD = IDD_PROPERTIES };
 
 protected:
-DECLARE_MESSAGE_MAP()
+  DECLARE_MESSAGE_MAP()
 
 private:
   const st_DBProperties m_dbp;
