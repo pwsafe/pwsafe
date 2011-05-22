@@ -26,7 +26,6 @@
 #include "../../core/PWScore.h"
 #include "./AdvancedSelectionDlg.h"
 
-#include <wx/collpane.h>
 #include <wx/statline.h>
 
 DECLARE_EVENT_TYPE(wxEVT_RELAYOUT, -1)
