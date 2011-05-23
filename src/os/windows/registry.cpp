@@ -194,7 +194,8 @@ bool pws_os::RegCloseSubtree()
 bool pws_os::DeleteRegistryEntries()
 {
   HKEY hSubkey;
-  const stringT csSubkey = _T("Software\\") + stringT(::AfxGetApp()->m_pszRegistryKey);
+  const stringT csSubkey = _T("Software\\");
+  bool retval = true;
 
   LONG dw = RegOpenKeyEx(HKEY_CURRENT_USER,
                          csSubkey.c_str(),
@@ -208,13 +209,14 @@ bool pws_os::DeleteRegistryEntries()
   dw = ::AfxGetApp()->DelRegTree(hSubkey, ::AfxGetApp()->m_pszAppName);
   if (dw != ERROR_SUCCESS) {
     pws_os::Trace0(_T("pws_os::DeleteRegistryEntries: DelRegTree() failed\n"));
+    retval = false;
   }
 
   dw = RegCloseKey(hSubkey);
   if (dw != ERROR_SUCCESS) {
     pws_os::Trace0(_T("pws_os::DeleteRegistryEntries: RegCloseKey() failed\n"));
   }
-  return true;
+  return retval;
 }
 
 #else /* __WX__ */
