@@ -2,6 +2,7 @@
 #define __MERGEDLG_H__
 
 #include <wx/dialog.h>
+#include "../../core/StringX.h"
 
 class PWScore;
 struct SelectionCriteria;
@@ -19,7 +20,7 @@ public:
   void OnAdvancedSelection( wxCommandEvent& evt );
 
   wxString GetOtherSafePath() const;
-  wxString GetOtherSafeCombination() const;
+  StringX GetOtherSafeCombination() const;
   SelectionCriteria GetSelectionCriteria() const;
   
 private:

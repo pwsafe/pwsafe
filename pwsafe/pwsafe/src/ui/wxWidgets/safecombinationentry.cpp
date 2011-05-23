@@ -38,6 +38,7 @@
 #include "pwsafeapp.h"
 #include "SafeCombinationCtrl.h"
 #include <wx/filename.h>
+#include "./SafeCombinationCtrl.h"
 
 /*!
  * CSafeCombinationEntry type definition
@@ -196,7 +197,7 @@ void CSafeCombinationEntry::CreateControls()
 
   // Set validators
   m_filenameCB->SetValidator( wxGenericValidator(& m_filename) );
-  combinationEntry->textCtrl->SetValidator( wxGenericValidator(& m_password) );
+  combinationEntry->SetValidatorTarget(& m_password);
   itemCheckBox15->SetValidator( wxGenericValidator(& m_readOnly) );
 ////@end CSafeCombinationEntry content construction
 #if (REVISION == 0)
@@ -285,7 +286,7 @@ void CSafeCombinationEntry::OnOk( wxCommandEvent& )
       err.ShowModal();
       return;
     }
-    int status = m_core.CheckPasskey(tostringx(m_filename), tostringx(m_password));
+    int status = m_core.CheckPasskey(tostringx(m_filename), m_password);
     wxString errmess;
     switch (status) {
     case PWScore::SUCCESS:

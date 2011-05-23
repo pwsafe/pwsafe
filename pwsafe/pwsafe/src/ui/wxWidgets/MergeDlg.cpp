@@ -101,7 +101,7 @@ wxString MergeDlg::GetOtherSafePath() const
   return m_dbPanel->m_filepath; 
 }
 
-wxString MergeDlg::GetOtherSafeCombination() const
+StringX MergeDlg::GetOtherSafeCombination() const
 { 
   return m_dbPanel->m_combination; 
 }

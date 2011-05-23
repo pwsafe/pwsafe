@@ -44,7 +44,7 @@
 struct SyncData {
   SelectionCriteria selCriteria;
   wxFileName        otherDB;
-  wxString          combination;
+  StringX           combination;
   PWScore*          core;
   size_t            numUpdated;
   CReport           syncReport;
@@ -536,7 +536,7 @@ void SyncStatusPage::OnPageEnter(PageDirection dir)
 
     PWScore* othercore = new PWScore;
     const wxString otherDBPath = m_syncData->otherDB.GetFullPath();
-    const int rc = ReadCore(*othercore, otherDBPath, tostringx(m_syncData->combination),
+    const int rc = ReadCore(*othercore, otherDBPath, m_syncData->combination,
                                     false, this);
     if (rc == PWScore::SUCCESS) {
       if (DbHasNoDuplicates(othercore) && DbHasNoDuplicates(m_syncData->core)) {

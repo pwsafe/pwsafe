@@ -84,7 +84,7 @@ public:
   /// Creates the controls and sizers
   void CreateControls();
 
-  wxString GetPassword() const {return m_password;}
+  StringX GetPassword() const {return m_password;}
   
 ////@begin CSafeCombinationEntry event handler declarations
 
@@ -120,7 +120,7 @@ public:
 ////@end CSafeCombinationEntry member variables
  private:
   wxString m_filename;
-  wxString m_password;
+  StringX m_password;
   bool m_readOnly;
   PWScore &m_core;
   unsigned m_tries;
