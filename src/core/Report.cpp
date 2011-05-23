@@ -51,21 +51,24 @@ void CReport::StartReport(LPCTSTR tcAction, const stringT &csDataBase)
 
 static bool isFileUnicode(const stringT &fname)
 {
-#ifdef UNICODE
-  char *fn = NULL;
-  size_t fnlen = 0;
-  fnlen = pws_os::wcstombs(fn, fnlen, fname.c_str(), fname.length()) + 1;
-  fn = new char[fnlen];
-  fnlen = pws_os::wcstombs(fn, fnlen, fname.c_str(), fname.length());
-  std::ifstream is(fn);
-  delete[] fn;
-#else
-  std::ifstream is(fname.c_str());
-#endif /* UNICODE */
-  unsigned char buffer[] = {0x00, 0x00};
-  const unsigned char BOM[] = {0xff, 0xfe};
-  if (!is.read(reinterpret_cast<char *>(buffer), sizeof(buffer)))
+  struct _stat statbuf;
+
+  int status = _tstat(fname.c_str(), &statbuf);
+  // Need file to exist and length at least 2 for BOM
+  if (status != 0 || statbuf.st_size < 2)
     return false;
+
+  const unsigned char BOM[] = {0xff, 0xfe};
+  unsigned char buffer[] = {0x00, 0x00};
+
+  // Check if the first 2 characters are the BOM
+  // Need to use FOpen as cannot pass wchar_t filename to a std::istream
+  // and cannot convert a wchar_t filename/path to char if non-Latin characters
+  // present
+  FILE *fn = pws_os::FOpen(fname.c_str(), _T("rb"));
+  fread(buffer, 1, 2, fn);
+  fclose(fn);
+
   return (buffer[0] == BOM[0] && buffer[1] == BOM[1]);
 }
 
@@ -110,7 +113,6 @@ bool CReport::SaveToDisk()
   } else
     if (!bFileIsUnicode) {
       // Convert ASCII contents to UNICODE
-
       // Close original first
       fclose(fd);
 
@@ -204,7 +206,8 @@ bool CReport::SaveToDisk()
   }
 #endif
   StringX sx = m_osxs.rdbuf()->str();
-  fwrite(reinterpret_cast<const void *>(sx.c_str()), sizeof(BYTE), sx.length() * sizeof(TCHAR), fd);
+  fwrite(reinterpret_cast<const void *>(sx.c_str()), sizeof(BYTE),
+             sx.length() * sizeof(TCHAR), fd);
   fclose(fd);
 
   return true;
@@ -219,7 +222,7 @@ void CReport::WriteLine(const stringT &cs_line, bool bCRLF)
   }
 }
 
-// Write a record with(default) or without a CRLF
+// Write a record with (default) or without a CRLF
 void CReport::WriteLine(const LPTSTR &tc_line, bool bCRLF)
 {
   m_osxs << tc_line;
@@ -234,9 +237,7 @@ void CReport::WriteLine()
   m_osxs << CRLF;
 }
 
-/*
-  EndReport writes a "End Report" record and closes the report file.
-*/
+//  EndReport writes a "End Report" record and closes the report file.
 void CReport::EndReport()
 {
   WriteLine();

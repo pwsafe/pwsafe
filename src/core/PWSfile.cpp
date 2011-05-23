@@ -230,9 +230,7 @@ void PWSfile::SetUnknownHeaderFields(UnknownFieldList &UHFL)
 // this is for the undocumented 'command line file encryption'
 static const stringT CIPHERTEXT_SUFFIX(_S(".PSF"));
 
-
-static stringT
-ErrorMessages()
+static stringT ErrorMessages()
 {
   stringT cs_text;
 

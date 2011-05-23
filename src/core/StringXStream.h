@@ -74,9 +74,11 @@ typedef cStringXStream   StringXStream;
 #ifdef UNICODE
 typedef std::wistringstream istringstreamT;
 typedef std::wostringstream ostringstreamT;
+typedef std::wstringstream   stringstreamT;
 #else
 typedef std::istringstream istringstreamT;
 typedef std::ostringstream ostringstreamT;
+typedef std::stringstream   stringstreamT;
 #endif
 
 #endif /* __STRINGXSTREAM_H */
