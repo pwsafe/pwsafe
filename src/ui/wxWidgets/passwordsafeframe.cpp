@@ -483,8 +483,7 @@ void PasswordSafeFrame::CreateMainToolbar()
 
   RefreshToolbarButtons();
   
-  if (!toolbar->Realize())
-    wxMessageBox(wxT("Could not create main toolbar"));
+  wxCHECK_RET(toolbar->Realize(), wxT("Could not create main toolbar"));
   
   const bool bShow = PWSprefs::GetInstance()->GetPref(PWSprefs::ShowToolbar);
   if (!bShow) {
@@ -816,19 +815,19 @@ int PasswordSafeFrame::Save(SaveType st /* = ST_INVALID*/)
           switch (st) {
             case ST_NORMALEXIT:
               if (wxMessageBox(_("Unable to create intermediate backup.  Save database elsewhere or with another name?\n\nClick 'No' to exit without saving."), 
-                               _("Write Error"), wxYES_NO | wxICON_EXCLAMATION) == wxID_NO)
+                               _("Write Error"), wxYES_NO | wxICON_EXCLAMATION, this) == wxID_NO)
                 return PWScore::SUCCESS;
               else
                 return SaveAs();
             case ST_INVALID:
               // No particular end of PWS exit i.e. user clicked Save or
               // saving a changed database before opening another
-              wxMessageBox(_("Unable to create intermediate backup."), _("Write Error"), wxOK|wxICON_ERROR);
+              wxMessageBox(_("Unable to create intermediate backup."), _("Write Error"), wxOK|wxICON_ERROR, this);
               return PWScore::USER_CANCEL;
             default:
               break;
           }
-          wxMessageBox(_("Unable to create intermediate backup."), _("Write Error"), wxOK|wxICON_ERROR);
+          wxMessageBox(_("Unable to create intermediate backup."), _("Write Error"), wxOK|wxICON_ERROR, this);
           return SaveAs();
         } // BackupCurFile failed
       } // BackupBeforeEverySave
@@ -840,7 +839,7 @@ int PasswordSafeFrame::Save(SaveType st /* = ST_INVALID*/)
 
       wxString msg( wxString::Format(_("The original database, \"%s\", is in pre-3.0 format. It will be unchanged.\nYour changes will be written as \"%s\" in the new format, which is unusable by old versions of PasswordSafe. To save your changes in the old format, use the \"File->Export To-> Old (1.x or 2) format\" command."),
                                      m_core.GetCurFile().c_str(), NewName.c_str()));
-      if (wxMessageBox(msg, _("File version warning"), wxOK|wxCANCEL|wxICON_INFORMATION) == wxID_CANCEL)
+      if (wxMessageBox(msg, _("File version warning"), wxOK|wxCANCEL|wxICON_INFORMATION, this) == wxID_CANCEL)
         return PWScore::USER_CANCEL;
 
       m_core.SetCurFile(NewName.c_str());
@@ -1032,7 +1031,7 @@ int PasswordSafeFrame::Open(const wxString &fname)
   //Check that this file isn't already open
   if (wxFileName(fname).SameAs(towxstring(m_core.GetCurFile()))) {
     //It is the same damn file
-    wxMessageBox(wxT("That file is already open."), wxT("Open database"), wxOK|wxICON_EXCLAMATION);
+    wxMessageBox(wxT("That file is already open."), wxT("Open database"), wxOK|wxICON_EXCLAMATION, this);
     return PWScore::ALREADY_OPEN;
   }
 
@@ -1208,7 +1207,7 @@ int PasswordSafeFrame::SaveAs()
       m_core.GetReadFileVersion() != PWSfile::UNKNOWN_VERSION) {
     if (wxMessageBox( wxString::Format(_("The original database, '%s', is in pre-3.0 format. The data will now be written in the new format, which is unusable by old versions of PasswordSafe. To save the data in the old format, use the 'File->Export To-> Old (1.x or 2) format' command."),
                                         m_core.GetCurFile().c_str()), _("File version warning"), 
-                                        wxOK | wxCANCEL | wxICON_EXCLAMATION) == wxCANCEL) {
+                                        wxOK | wxCANCEL | wxICON_EXCLAMATION, this) == wxCANCEL) {
       return PWScore::USER_CANCEL;
     }
   }
@@ -1241,7 +1240,7 @@ int PasswordSafeFrame::SaveAs()
   // Note: We have to lock the new file before releasing the old (on success)
   if (!m_core.LockFile2(newfile.c_str(), locker)) {
     wxMessageBox(wxString::Format(_("%s\n\nFile is currently locked by %s"), newfile.c_str(), locker.c_str()),
-                    _("File lock error"), wxOK | wxICON_ERROR);
+                    _("File lock error"), wxOK | wxICON_ERROR, this);
     return PWScore::CANT_OPEN_FILE;
   }
 
@@ -1589,7 +1588,7 @@ void PasswordSafeFrame::DispatchDblClickAction(CItemData &item)
     wxString action;
     action.Printf(_("Unknown code: %d"),
                   PWSprefs::GetInstance()->GetPref(PWSprefs::DoubleClickAction));
-    wxMessageBox(action);
+    wxMessageBox(action, _("Error"), wxOK|wxICON_ERROR, this);
     break;
   }
   }
@@ -2215,7 +2214,7 @@ void PasswordSafeFrame::CleanupAfterReloadFailure(bool tellUser)
   //TODO: must clear db prefs, UI states, RUE items etc here
   if (tellUser) {
     wxMessageBox(wxString(wxT("Could not re-load database: ")) << towxstring(m_core.GetCurFile()), 
-                     wxT("Error re-loading last database"), wxOK|wxICON_ERROR);
+                     wxT("Error re-loading last database"), wxOK|wxICON_ERROR, this);
   }
   m_sysTray->SetTrayStatus(SystemTray::TRAY_CLOSED);
 }
@@ -2353,7 +2352,7 @@ void PasswordSafeFrame::OnOpenRecentDB(wxCommandEvent& evt)
       //fall through
     default:
       wxMessageBox(wxString(wxT("There was an error loading the database: ")) << dbfile, 
-                     wxT("Could not load database"), wxOK|wxICON_ERROR);
+                     wxT("Could not load database"), wxOK|wxICON_ERROR, this);
       db.RemoveFileFromHistory(index);
       break;
   }
@@ -2367,7 +2366,7 @@ void PasswordSafeFrame::OnImportText(wxCommandEvent& evt)
   UNREFERENCED_PARAMETER(evt);
   if (m_core.IsReadOnly()) {// disable in read-only mode
     wxMessageBox(wxT("The current database was opened in read-only mode.  You cannot import into it."),
-                  wxT("Import text"), wxOK | wxICON_EXCLAMATION);
+                  wxT("Import text"), wxOK | wxICON_EXCLAMATION, this);
     return;
   }
 
@@ -2378,7 +2377,7 @@ void PasswordSafeFrame::OnImportText(wxCommandEvent& evt)
     wxMessageBox(wxString() << wxT("The database:\n\n") << m_core.GetCurFile() << wxT("\n\n")
                             << wxT("has duplicate entries with the same group/title/user combination.")
                             << wxT("  Please fix by validating database."),
-                            wxT("Import Text failed"), wxOK | wxICON_ERROR );
+                            wxT("Import Text failed"), wxOK | wxICON_ERROR, this);
     return;
   }
 
@@ -2475,7 +2474,7 @@ void PasswordSafeFrame::OnImportText(wxCommandEvent& evt)
 
   const int iconType = (rc == PWScore::SUCCESS ? wxICON_INFORMATION : wxICON_EXCLAMATION);
   cs_temp << wxT("\n\nDo you want to see a detailed report?");
-  if (wxMessageBox(cs_temp, cs_title, wxYES_NO | iconType) == wxYES) {
+  if (wxMessageBox(cs_temp, cs_title, wxYES_NO | iconType, this) == wxYES) {
     ViewReport(rpt);
   }
 }
@@ -2501,13 +2500,13 @@ void PasswordSafeFrame::OnImportKeePass(wxCommandEvent& evt)
     case PWScore::CANT_OPEN_FILE:
     {
       wxMessageBox( wxString::Format(_("%s\n\nCould not open file for reading!"), KPsFileName.c_str()),
-                    _("File open error"), wxOK | wxICON_ERROR );
+                    _("File open error"), wxOK | wxICON_ERROR, this);
       break;
     }
     case PWScore::INVALID_FORMAT:
     {
       wxMessageBox( wxString::Format(_("%s\n\nInvalid format"), KPsFileName.c_str()),
-                    _("File Read Error"), wxOK | wxICON_ERROR );
+                    _("File Read Error"), wxOK | wxICON_ERROR, this);
       break;
     }
     case PWScore::SUCCESS:
@@ -2530,7 +2529,7 @@ void PasswordSafeFrame::OnImportXML(wxCommandEvent& evt)
   if (!m_core.GetUniqueGTUValidated() && !m_core.InitialiseGTU(setGTU)) {
     // Database is not unique to start with - tell user to validate it first
     wxMessageBox(wxString::Format( _("The database:\n\n%s\n\nhas duplicate entries with the same group/title/user combination. Please fix by validating database."),
-                                    m_core.GetCurFile().c_str()), _("Import XML failed"), wxOK | wxICON_ERROR);
+                                    m_core.GetCurFile().c_str()), _("Import XML failed"), wxOK | wxICON_ERROR, this);
     return;
   }
 
@@ -2541,7 +2540,7 @@ void PasswordSafeFrame::OnImportXML(wxCommandEvent& evt)
   if (!XSDFilename.FileExists()) {
     wxString filepath(XSDFilename.GetFullPath());
     wxMessageBox(wxString::Format(_("Can't find XML Schema Definition file (%s) in your PasswordSafe Application Directory.\r\nPlease copy it from your installation file, or re-install PasswordSafe."), filepath.c_str()), 
-                          wxString(_("Missing XSD File - ")) + wxSTRINGIZE_T(USE_XML_LIBRARY) + _(" Build"), wxOK | wxICON_ERROR);
+                          wxString(_("Missing XSD File - ")) + wxSTRINGIZE_T(USE_XML_LIBRARY) + _(" Build"), wxOK | wxICON_ERROR, this);
     return;
   }
 #endif
@@ -2655,7 +2654,7 @@ void PasswordSafeFrame::OnImportXML(wxCommandEvent& evt)
   const int iconType = (rc != PWScore::SUCCESS || !strXMLErrors.empty()) ? wxICON_EXCLAMATION : wxICON_INFORMATION;
 
   cs_temp << _("\n\nDo you wish to see a detailed report?");
-  if ( wxMessageBox(cs_temp, cs_title, wxYES_NO | iconType) == wxYES) {
+  if ( wxMessageBox(cs_temp, cs_title, wxYES_NO | iconType, this) == wxYES) {
     ViewReport(rpt);
   }
 }
@@ -2804,7 +2803,7 @@ void PasswordSafeFrame::DoExportText()
   //to use core.GetcurFile() later 
   if (sx_temp.empty()) {
     //  Database has not been saved - prompt user to do so first!
-    wxMessageBox(_T("You must save this database before it can be exported."), title, wxOK|wxICON_EXCLAMATION);
+    wxMessageBox(_T("You must save this database before it can be exported."), title, wxOK|wxICON_EXCLAMATION, this);
     return;
   }
 
@@ -2862,7 +2861,7 @@ void PasswordSafeFrame::DoExportText()
       case PWScore::NO_ENTRIES_EXPORTED:
       {
         wxMessageBox(_("No entries satisfied your selection criteria and so none were exported!"),
-                      ExportType::GetFailureMsgTitle(), wxOK | wxICON_WARNING);
+                      ExportType::GetFailureMsgTitle(), wxOK | wxICON_WARNING, this);
         break;
       }
       
@@ -2874,7 +2873,7 @@ void PasswordSafeFrame::DoExportText()
     orderedItemList.clear(); // cleanup soonest
 
   } else {
-    wxMessageBox(_("Passkey incorrect"), title);
+    wxMessageBox(_("Passkey incorrect"), title, wxOK|wxICON_ERROR, this);
     pws_os::sleep_ms(3000); // against automatic attacks
   }
 }
