@@ -1836,10 +1836,10 @@ void PasswordSafeFrame::DatabaseModified(bool modified)
     wxCommandEvent evt(wxEVT_DB_PREFS_CHANGE, wxID_ANY);
     evt.ResumePropagation(wxEVENT_PROPAGATE_MAX); //let it propagate through the entire window tree
     if (m_tree) {
-      m_tree->AddPendingEvent(evt); 
+      m_tree->GetEventHandler()->AddPendingEvent(evt); 
       evt.StopPropagation(); //or else it will come to the frame twice
     }
-    if (m_grid) m_grid->AddPendingEvent(evt);
+    if (m_grid) m_grid->GetEventHandler()->AddPendingEvent(evt);
   }
   else if (m_core.IsChanged()) {  //"else if" => both DB and it's prefs can't change at the same time
     if (m_search) m_search->Invalidate();
@@ -1966,10 +1966,10 @@ void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga,
       wxCommandEvent evt(wxEVT_GUI_DB_PREFS_CHANGE, wxID_ANY);
       evt.ResumePropagation(wxEVENT_PROPAGATE_MAX); //let it propagate through the entire window tree
       if (m_tree) {
-        m_tree->AddPendingEvent(evt); 
+        m_tree->GetEventHandler()->AddPendingEvent(evt); 
         evt.StopPropagation(); //or else it will come to the frame twice
       }
-      if (m_grid) m_grid->AddPendingEvent(evt);
+      if (m_grid) m_grid->GetEventHandler()->AddPendingEvent(evt);
       break;
     }
     default:
