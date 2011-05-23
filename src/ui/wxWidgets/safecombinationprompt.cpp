@@ -227,7 +227,7 @@ void CSafeCombinationPrompt::OnOkClick( wxCommandEvent& /* evt */ )
       return;
     }
     if (m_core.CheckPasskey(tostringx(m_filename),
-                            tostringx(m_password)) != PWScore::SUCCESS) {
+                            m_password) != PWScore::SUCCESS) {
       wxString errmess;
       if (m_tries >= 2) {
         errmess = _("Three strikes - yer out!");

@@ -592,9 +592,9 @@ void PasswordSafeFrame::SetTitle(const wxString& title)
   wxFrame::SetTitle(newtitle);
 }
 
-int PasswordSafeFrame::Load(const wxString &passwd)
+int PasswordSafeFrame::Load(const StringX &passwd)
 {
-  int status = m_core.ReadCurFile(tostringx(passwd));
+  int status = m_core.ReadCurFile(passwd);
   if (status == PWScore::SUCCESS) {
     SetTitle(m_core.GetCurFile().c_str());
     m_sysTray->SetTrayStatus(SystemTray::TRAY_UNLOCKED);
@@ -1043,7 +1043,7 @@ int PasswordSafeFrame::Open(const wxString &fname)
   CSafeCombinationPrompt pwdprompt(this, m_core, fname);
   if (pwdprompt.ShowModal() == wxID_OK) {
     m_core.SetCurFile(tostringx(fname));
-    wxString password = pwdprompt.GetPassword();
+    StringX password = pwdprompt.GetPassword();
     int retval = Load(password);
     if (retval == PWScore::SUCCESS) {
       Show();
@@ -2204,7 +2204,7 @@ bool PasswordSafeFrame::SaveAndClearDatabase()
   return false;
 }
 
-bool PasswordSafeFrame::ReloadDatabase(const wxString& password)
+bool PasswordSafeFrame::ReloadDatabase(const StringX& password)
 {
   return Load(password) == PWScore::SUCCESS;
 }
@@ -2221,7 +2221,7 @@ void PasswordSafeFrame::CleanupAfterReloadFailure(bool tellUser)
 
 void PasswordSafeFrame::UnlockSafe(bool restoreUI)
 {
-  wxString password;
+  StringX password;
   if (m_sysTray->IsLocked()) {
     if (VerifySafeCombination(password)) {
       if (ReloadDatabase(password)) {
@@ -2256,7 +2256,7 @@ void PasswordSafeFrame::UnlockSafe(bool restoreUI)
   }
 }
 
-bool PasswordSafeFrame::VerifySafeCombination(wxString& password)
+bool PasswordSafeFrame::VerifySafeCombination(StringX& password)
 {
   CSafeCombinationPrompt scp(NULL, m_core, towxstring(m_core.GetCurFile()));
   if (scp.ShowModal() == wxID_OK) {
@@ -2282,7 +2282,7 @@ void PasswordSafeFrame::OnIconize(wxIconizeEvent& evt)
 #else
   if (!evt.Iconized() && m_sysTray->IsLocked()){
 #endif
-    wxString password;
+    StringX password;
     if (VerifySafeCombination(password)) {
       if (ReloadDatabase(password)) {
         Show();
@@ -2889,7 +2889,7 @@ void PasswordSafeFrame::OnMergeAnotherSafe(wxCommandEvent& evt)
     PWScore othercore;
     if (ReadCore(othercore,
                  dlg.GetOtherSafePath(),
-                 tostringx(dlg.GetOtherSafeCombination()),
+                 dlg.GetOtherSafeCombination(),
                  true,
                  this) == PWScore::SUCCESS) {
         Merge(tostringx(dlg.GetOtherSafePath()), &othercore, dlg.GetSelectionCriteria());
@@ -3086,7 +3086,7 @@ void PasswordSafeFrame::OnRestoreSafe(wxCommandEvent& /*evt*/)
 
   CSafeCombinationPrompt pwdprompt(this, m_core, wxbf);
   if (pwdprompt.ShowModal() == wxID_OK) {
-    const wxString passkey = pwdprompt.GetPassword();
+    const StringX passkey = pwdprompt.GetPassword();
     // unlock the file we're leaving
     if (!m_core.GetCurFile().empty()) {
       m_core.UnlockFile(m_core.GetCurFile().c_str());
@@ -3095,7 +3095,7 @@ void PasswordSafeFrame::OnRestoreSafe(wxCommandEvent& /*evt*/)
     // clear the data before restoring
     ClearData();
 
-    if (m_core.ReadFile(tostringx(wxbf), tostringx(passkey), MAXTEXTCHARS) == PWScore::CANT_OPEN_FILE) {
+    if (m_core.ReadFile(tostringx(wxbf), passkey, MAXTEXTCHARS) == PWScore::CANT_OPEN_FILE) {
       wxMessageBox(wxbf << _("\n\nCould not open file for reading!"), 
                       _("File Read Error"), wxOK | wxICON_ERROR, this);
       return /*PWScore::CANT_OPEN_FILE*/;

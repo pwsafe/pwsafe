@@ -2,6 +2,7 @@
 #define __DBSELECTIONPANEL_H__
 
 #include <wx/panel.h>
+#include "../../core/StringX.h"
 
 class wxFilePickerCtrl;
 class CSafeCombinationCtrl;
@@ -46,7 +47,7 @@ public:
   bool DoValidation();
 
   wxString m_filepath;
-  wxString m_combination;
+  StringX m_combination;
 };
 
 #endif // __DBSELECTIONPANEL_H__

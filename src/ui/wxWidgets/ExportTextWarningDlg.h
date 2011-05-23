@@ -19,7 +19,7 @@ public:
   virtual void DoAdvancedSelection() = 0;
 
   SelectionCriteria selCriteria;
-  wxString          passKey;
+  StringX           passKey;
   wxString          delimiter;
 };
 
