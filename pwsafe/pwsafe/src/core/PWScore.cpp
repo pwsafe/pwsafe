@@ -124,30 +124,30 @@ static bool GTUCompare(const StringX &elem1, const StringX &elem2)
   return u1.compare(u2) < 0;
 }
 
-void PWScore::SortDependents(UUIDVector &dlist, StringX &csDependents)
+void PWScore::SortDependents(UUIDVector &dlist, StringX &sxDependents)
 {
   std::vector<StringX> sorted_dependents;
   std::vector<StringX>::iterator sd_iter;
 
   ItemListIter iter;
   UUIDVectorIter diter;
-  StringX cs_dependent;
+  StringX sx_dependent;
 
   for (diter = dlist.begin(); diter != dlist.end(); diter++) {
     iter = Find(*diter);
     if (iter != GetEntryEndIter()) {
-      cs_dependent = iter->second.GetGroup() + _T(":") +
+      sx_dependent = iter->second.GetGroup() + _T(":") +
                      iter->second.GetTitle() + _T(":") +
                      iter->second.GetUser();
-      sorted_dependents.push_back(cs_dependent);
+      sorted_dependents.push_back(sx_dependent);
     }
   }
 
   std::sort(sorted_dependents.begin(), sorted_dependents.end(), GTUCompare);
-  csDependents.clear();
+  sxDependents.clear();
 
   for (sd_iter = sorted_dependents.begin(); sd_iter != sorted_dependents.end(); sd_iter++)
-    csDependents += _T("\t[") +  *sd_iter + _T("]\r\n");
+    sxDependents += _T("\t[") +  *sd_iter + _T("]\r\n");
 }
 
 void PWScore::DoAddEntry(const CItemData &item)
@@ -180,8 +180,8 @@ bool PWScore::ConfirmDelete(const CItemData *pci)
     size_t num_dependents = dependentslist.size();
     ASSERT(num_dependents > 0); // otherwise pci shouldn't be a base!
     if (num_dependents > 0) {
-      StringX csDependents;
-      SortDependents(dependentslist, csDependents);
+      StringX sxDependents;
+      SortDependents(dependentslist, sxDependents);
 
       stringT cs_msg, cs_type;
       stringT cs_title;
@@ -189,11 +189,11 @@ bool PWScore::ConfirmDelete(const CItemData *pci)
       if (entrytype == CItemData::ET_ALIASBASE) {
         LoadAString(cs_type, num_dependents == 1 ? IDSC_ALIAS : IDSC_ALIASES);
         Format(cs_msg, IDSC_DELETEABASE, dependentslist.size(),
-               cs_type.c_str(), csDependents.c_str());
+               cs_type.c_str(), sxDependents.c_str());
       } else {
         LoadAString(cs_type, num_dependents == 1 ? IDSC_SHORTCUT : IDSC_SHORTCUTS);
         Format(cs_msg, IDSC_DELETESBASE, dependentslist.size(),
-               cs_type.c_str(), csDependents.c_str());
+               cs_type.c_str(), sxDependents.c_str());
       }
         return (*m_pAsker)(cs_title, cs_msg);
     } // num_dependents > 0

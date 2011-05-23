@@ -138,7 +138,7 @@ int PWSfileV3::SanityCheck(FILE *stream)
 
   // Does file have a valid EOF block?
   unsigned char eof_block[sizeof(TERMINAL_BLOCK)];
-  if (fseek(stream, -48, SEEK_END) != 0) {
+  if (fseek(stream, -int(sizeof(TERMINAL_BLOCK) + HMAC_SHA256::HASHLEN), SEEK_END) != 0) {
     retval = READ_FAIL; // actually, seek error, but that's too nuanced
     goto err;
   }
@@ -149,7 +149,8 @@ int PWSfileV3::SanityCheck(FILE *stream)
   }
   if (memcmp(eof_block, TERMINAL_BLOCK, sizeof(TERMINAL_BLOCK)) != 0)
     retval = TRUNCATED_FILE;
- err:
+
+err:
   fseek(stream, pos, SEEK_SET);
   return retval;
 }
@@ -842,40 +843,34 @@ int PWSfileV3::ReadHeader()
       case HDR_RUE:
       {
         if (utf8 != NULL) utf8[utf8Len] = '\0';
-        utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
-        if (!utf8status)
-          break;
+        // All data is character representation of hex - i.e. 0-9a-f
+        // No need to convert from char.
+        std::string temp = (char *)utf8;
 
+        // Get number of entries
         int num(0);
-        StringX tlen = text.substr(0, 2);
-        iStringXStream is(tlen);
+        std::istringstream is(temp.substr(0, 2));
         is >> hex >> num;
 
-        if (text.length() != num * sizeof(uuid_array_t) * 2 + 2)
+        // verify we have enough data
+        if (utf8Len != num * sizeof(uuid_array_t) * 2 + 2)
           break;
 
-        LPCTSTR lpsz_string = text.c_str();
-        lpsz_string += 2;
-        unsigned char *pfield;
-        // sscanf always outputs to an "int" using %x even though
-        // target is only 1.  Read into larger buffer to prevent data being
-        // overwritten and then copy to where we want it!
-        pfield = new unsigned char[sizeof(uuid_array_t) + sizeof(int32)];
+        // Get the entries and save them
+        size_t j = 2;
         for (int n = 0; n < num; n++) {
-          uuid_array_t uuid;
-          for (size_t i = 0; i < sizeof(uuid_array_t); i++) {
-#if (_MSC_VER >= 1400)
-            _stscanf_s(lpsz_string, _T("%02x"), &pfield[i]);
-#else
-            _stscanf(lpsz_string, _T("%02x"), &pfield[i]);
-#endif
-            lpsz_string += 2;
+          unsigned int x(0);
+          uuid_array_t ua;
+          for (size_t i = 0; i < sizeof(uuid_array_t); i++, j += 2) {
+            stringstream ss;
+            ss.str(temp.substr(j, 2));
+            ss >> hex >> x;
+            ua[i] = static_cast<unsigned char>(x);
           }
-          // Now copy only the first 16 characters where we need them
-          memcpy(uuid, pfield, sizeof(uuid_array_t));
-          m_hdr.m_RUEList.push_back(uuid);
+          const CUUID uuid(ua);
+          if (uuid != CUUID::NullUUID())
+            m_hdr.m_RUEList.push_back(uuid);
         }
-        delete [] pfield;
         break;
       }
 

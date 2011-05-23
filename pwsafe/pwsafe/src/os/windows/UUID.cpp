@@ -23,46 +23,40 @@
 
 using namespace std;
 
-static void array2UUUID(const uuid_array_t &uuid_array, UUID &uuid)
+static void array2UUUID(const uuid_array_t &ua, UUID &uuid)
 {
-  unsigned long *p0 = (unsigned long *)uuid_array;
+  unsigned long *p0 = (unsigned long *)ua;
   uuid.Data1 = htonl(*p0);
-  unsigned short *p1 = (unsigned short *)&uuid_array[4];
+  unsigned short *p1 = (unsigned short *)&ua[4];
   uuid.Data2 = htons(*p1);
-  unsigned short *p2 = (unsigned short *)&uuid_array[6];
+  unsigned short *p2 = (unsigned short *)&ua[6];
   uuid.Data3 = htons(*p2);
   for (int i = 0; i < 8; i++)
-    uuid.Data4[i] = uuid_array[i + 8];
+    uuid.Data4[i] = ua[i + 8];
 }
 
-static void UUID2array(const UUID &uuid, uuid_array_t &uuid_array)
+static void UUID2array(const UUID &uuid, uuid_array_t &ua)
 {
-  unsigned long *p0 = (unsigned long *)uuid_array;
+  unsigned long *p0 = (unsigned long *)ua;
   *p0 = htonl(uuid.Data1);
-  unsigned short *p1 = (unsigned short *)&uuid_array[4];
+  unsigned short *p1 = (unsigned short *)&ua[4];
   *p1 = htons(uuid.Data2);
-  unsigned short *p2 = (unsigned short *)&uuid_array[6];
+  unsigned short *p2 = (unsigned short *)&ua[6];
   *p2 = htons(uuid.Data3);
   for (int i = 0; i < 8; i++)
-    uuid_array[i + 8] = uuid.Data4[i];
+    ua[i + 8] = uuid.Data4[i];
 }
 
-static pws_os::CUUID nullUUID;
+static const uuid_array_t zua = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+static pws_os::CUUID nullUUID(zua);
 
 const pws_os::CUUID &pws_os::CUUID::NullUUID()
 {
-  static bool inited = false;
-  if (!inited) {
-    inited = true;
-    uuid_array_t zua;
-    memset(zua, 0, sizeof(zua));
-    CUUID zu(zua);
-    nullUUID = zu;
-  }
   return nullUUID;
 }
 
-pws_os::CUUID::CUUID() : m_ua(NULL), m_canonic(false)
+pws_os::CUUID::CUUID()
+  : m_ua(NULL), m_canonic(false)
 {
   UuidCreate(&m_uuid);
 }
@@ -71,6 +65,37 @@ pws_os::CUUID::CUUID(const CUUID &uuid)
   : m_ua(NULL), m_canonic(uuid.m_canonic)
 {
   std::memcpy(&m_uuid, &uuid.m_uuid, sizeof(m_uuid));
+}
+
+pws_os::CUUID::CUUID(const uuid_array_t &ua, bool canonic)
+  : m_ua(NULL), m_canonic(canonic)
+{
+  array2UUUID(ua, m_uuid);
+}
+
+pws_os::CUUID::CUUID(const StringX &s)
+  : m_ua(NULL), m_canonic(false)
+{
+  // s is a hex string as returned by cast to StringX
+  ASSERT(s.length() == 32);
+  uuid_array_t ua;
+
+  unsigned int x(0);
+  for (size_t i = 0; i < 16; i++) {
+    iStringXStream is(s.substr(i * 2, 2));
+    is >> hex >> x;
+    ua[i] = static_cast<unsigned char>(x);
+  }
+  array2UUUID(ua, m_uuid);
+}
+
+pws_os::CUUID::~CUUID()
+{
+  trashMemory(reinterpret_cast<unsigned char *>(&m_uuid), sizeof(m_uuid));
+  if (m_ua) {
+    trashMemory(m_ua, sizeof(uuid_array_t));
+    delete[] m_ua;
+  }
 }
 
 pws_os::CUUID &pws_os::CUUID::operator=(const CUUID &that)
@@ -83,40 +108,9 @@ pws_os::CUUID &pws_os::CUUID::operator=(const CUUID &that)
   return *this;
 }
 
-pws_os::CUUID::CUUID(const uuid_array_t &uuid_array, bool canonic)
-  : m_ua(NULL), m_canonic(canonic)
+void pws_os::CUUID::GetARep(uuid_array_t &ua) const
 {
-  array2UUUID(uuid_array, m_uuid);
-}
-
-pws_os::CUUID::CUUID(const StringX &s)
-  : m_ua(NULL), m_canonic(false)
-{
-  // s is a hex string as returned by cast to StringX
-  ASSERT(s.length() == 32);
-  uuid_array_t uu;
-
-  int x;
-  for (int i = 0; i < 16; i++) {
-    iStringXStream is(s.substr(i*2, 2));
-    is >> hex >> x;
-    uu[i] = static_cast<unsigned char>(x);
-  }
-  array2UUUID(uu, m_uuid);
-}
-
-pws_os::CUUID::~CUUID()
-{
-  trashMemory(reinterpret_cast<unsigned char *>(&m_uuid), sizeof(m_uuid));
-  if (m_ua) {
-    trashMemory(m_ua, sizeof(uuid_array_t));
-    delete[] m_ua;
-  }
-}
-
-void pws_os::CUUID::GetARep(uuid_array_t &uuid_array) const
-{
-  UUID2array(m_uuid, uuid_array);
+  UUID2array(m_uuid, ua);
 }
 
 const uuid_array_t *pws_os::CUUID::GetARep() const
@@ -128,17 +122,15 @@ const uuid_array_t *pws_os::CUUID::GetARep() const
   return m_ua;
 }
 
-bool pws_os::CUUID::operator==(const CUUID &that) const
+bool pws_os::CUUID::operator==(const pws_os::CUUID &that) const
 {
   return std::memcmp(&this->m_uuid, &that.m_uuid, sizeof(m_uuid)) == 0;
 }
 
 bool pws_os::CUUID::operator<(const pws_os::CUUID &that) const
 {
-  return std::memcmp(&m_uuid,
-                     &that.m_uuid, sizeof(m_uuid)) < 0;
+  return std::memcmp(&this->m_uuid, &that.m_uuid, sizeof(m_uuid)) < 0;
 }
-
 
 std::ostream &pws_os::operator<<(std::ostream &os, const pws_os::CUUID &uuid)
 {
@@ -174,18 +166,20 @@ pws_os::CUUID::operator StringX() const
   return os.str();
 }
 
-
 #ifdef TEST
 #include <stdio.h>
 int main()
 {
-  uuid_str_t str;
+  //uuid_str_t str;
   uuid_array_t ua;
 
-  for (int i = 0; i< 10; i++) {
-    CUUID uuid;
-    printf("%s\n",str);
+  for (int i = 0; i < 10; i++) {
+    pws_os::CUUID uuid;
     uuid.GetARep(ua);
+    /* Need a Windows equivalent to the Linux/Mac "uuid_unparse_lower" !!!
+    uuid_unparse_lower(ua, str);
+    printf(_T("%s\n"), str);
+    */
     printf(_T("%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x\n"),
               ua[0], ua[1], ua[2],  ua[3],  ua[4],  ua[5],  ua[6],  ua[7], 
               ua[8], ua[9], ua[10], ua[11], ua[12], ua[13], ua[14], ua[15]);

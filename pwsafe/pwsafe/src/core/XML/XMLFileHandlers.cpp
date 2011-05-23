@@ -513,31 +513,27 @@ void XMLFileHandlers::AddEntries()
       continue;
     }
 
-    uuid_array_t uuid_array;
+    uuid_array_t ua;
     ci_temp.Clear();
     bool bNewUUID(true);
     if (!cur_entry->uuid.empty()) {
-      // _stscanf_s always outputs to an "int" using %x even though
-      // target is only 1.  Read into larger buffer to prevent data being
-      // overwritten and then copy to where we want it!
-      unsigned char temp_uuid_array[sizeof(uuid_array_t) + sizeof(int32)];
-      int nscanned = 0;
-      const TCHAR *lpszuuid = cur_entry->uuid.c_str();
-      for (unsigned i = 0; i < sizeof(uuid_array_t); i++) {
-#if (_MSC_VER >= 1400)
-        nscanned += _stscanf_s(lpszuuid, _T("%02x"), &temp_uuid_array[i]);
-#else
-        nscanned += _stscanf(lpszuuid, _T("%02x"), &temp_uuid_array[i]);
-#endif
-        lpszuuid += 2;
-      }
-      memcpy(uuid_array, temp_uuid_array, sizeof(uuid_array_t));
-      // Need to check uuid validity and uniqueness (in DB and already imported)
-      if (nscanned == sizeof(uuid_array_t)) {
-        UUIDSetPair pr_uuid = setUUID.insert(uuid_array);
-        if (pr_uuid.second) {
-          ci_temp.SetUUID(uuid_array);
-          bNewUUID = false;
+      stringT temp = cur_entry->uuid.c_str();
+      // Verify it is the correct length (should be or the schema is wrong!)
+      if (temp.length() == sizeof(uuid_array_t) * 2) {
+        unsigned int x(0);
+        for (size_t i = 0; i < sizeof(uuid_array_t); i++) {
+          stringstreamT ss;
+          ss.str(temp.substr(i * 2, 2));
+          ss >> hex >> x;
+          ua[i] = static_cast<unsigned char>(x);
+        }
+        const CUUID uuid(ua);
+        if (uuid != CUUID::NullUUID()) {
+          UUIDSetPair pr_uuid = setUUID.insert(uuid);
+          if (pr_uuid.second) {
+            ci_temp.SetUUID(uuid);
+            bNewUUID = false;
+          }
         }
       }
     }
