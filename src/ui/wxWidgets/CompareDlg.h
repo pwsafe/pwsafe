@@ -17,6 +17,7 @@
 
 class PWScore;
 struct SelectionCriteria;
+class DbSelectionPanel;
 
 class CompareDlg: public wxDialog
 {
@@ -35,6 +36,7 @@ public:
 private:
   PWScore* m_currentCore;
   SelectionCriteria* m_selCriteria;
+  DbSelectionPanel* m_dbPanel;
 
   //DECLARE_CLASS( MergeDlg )
   DECLARE_EVENT_TABLE()

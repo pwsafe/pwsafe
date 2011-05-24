@@ -102,9 +102,9 @@ void PasswordSafeSearch::OnDoSearchT(Iter begin, Iter end, Accessor afn)
         FindMatches(tostringx(searchText), m_toolbar->GetToolState(ID_FIND_IGNORE_CASE), m_searchPointer, begin, end, afn);
       else
         FindMatches(tostringx(searchText), m_toolbar->GetToolState(ID_FIND_IGNORE_CASE), m_searchPointer, 
-                      m_criteria.m_bsFields, m_criteria.m_fUseSubgroups, m_criteria.m_subgroupText,
+                      m_criteria.GetSelectedFields(), m_criteria.HasSubgroupRestriction(), m_criteria.SubgroupSearchText(),
                       m_criteria.SubgroupObject(), m_criteria.SubgroupFunction(), 
-                      m_criteria.m_fCaseSensitive, begin, end, afn);
+                      m_criteria.CaseSensitive(), begin, end, afn);
 
       m_criteria.Clean();
       txtCtrl->SetModified(false);

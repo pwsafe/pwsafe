@@ -206,15 +206,15 @@ PwsSyncWizard::PwsSyncWizard(wxWindow* parent, PWScore* core):
                 m_page1(0), m_syncData(new SyncData)
 {
   //select all fields, except those below
-  m_syncData->selCriteria.m_bsFields.set();
+  m_syncData->selCriteria.SelectAllFields();
 
   //Other than these, all fields are selected for sync by default, as in
-  m_syncData->selCriteria.m_bsFields.reset(CItemData::NAME);
-  m_syncData->selCriteria.m_bsFields.reset(CItemData::UUID);
-  m_syncData->selCriteria.m_bsFields.reset(CItemData::GROUP);
-  m_syncData->selCriteria.m_bsFields.reset(CItemData::TITLE);
-  m_syncData->selCriteria.m_bsFields.reset(CItemData::USER);
-  m_syncData->selCriteria.m_bsFields.reset(CItemData::RESERVED);
+  m_syncData->selCriteria.ResetField(CItemData::NAME);
+  m_syncData->selCriteria.ResetField(CItemData::UUID);
+  m_syncData->selCriteria.ResetField(CItemData::GROUP);
+  m_syncData->selCriteria.ResetField(CItemData::TITLE);
+  m_syncData->selCriteria.ResetField(CItemData::USER);
+  m_syncData->selCriteria.ResetField(CItemData::RESERVED);
 
   m_syncData->core = core;
   m_syncData->numUpdated = 0;
@@ -639,7 +639,7 @@ void SyncStatusPage::Synchronize(PWScore* currentCore, const PWScore *otherCore)
                                             UpdateGUICommand::GUI_UNDO_MERGESYNC);
   pmulticmds->Add(pcmd1);
   const SelectionCriteria& criteria = m_syncData->selCriteria;
-  const stringT subgroup_name = tostdstring(criteria.m_subgroupText);
+  const stringT subgroup_name = tostdstring(criteria.SubgroupSearchText());
   
   wxGauge* gauge = wxDynamicCast(FindWindow(ID_GAUGE), wxGauge);
   gauge->SetRange(int(otherCore->GetNumEntries()));
@@ -670,7 +670,7 @@ void SyncStatusPage::Synchronize(PWScore* currentCore, const PWScore *otherCore)
     SetProgressText((wxString() << currentIndex << wxT(": ")) + towxstring(sx_updated));
     wxSafeYield();
 
-    if (criteria.m_fUseSubgroups && !otherItem.Matches(subgroup_name, criteria.SubgroupObject(), criteria.SubgroupFunctionWithCase())) 
+    if (criteria.HasSubgroupRestriction() && !otherItem.Matches(subgroup_name, criteria.SubgroupObject(), criteria.SubgroupFunctionWithCase())) 
       continue;
     
     ItemListConstIter foundPos = currentCore->Find(otherGroup, otherTitle, otherUser);
@@ -689,12 +689,13 @@ void SyncStatusPage::Synchronize(PWScore* currentCore, const PWScore *otherCore)
       }
 
       bool bUpdated(false);
-      for (int i = 0; i < (int)criteria.m_bsFields.count(); i++) {
-        if (criteria.m_bsFields.test(i)) {
-          const StringX sxValue = otherItem.GetFieldValue((CItemData::FieldType)i);
-          if (sxValue != updItem.GetFieldValue((CItemData::FieldType)i)) {
+      for (int i = 0; i < (int)criteria.TotalFieldsCount(); i++) {
+        CItemData::FieldType ft = (CItemData::FieldType)i;
+        if (criteria.IsFieldSelected(ft)) {
+          const StringX sxValue = otherItem.GetFieldValue(ft);
+          if (sxValue != updItem.GetFieldValue(ft)) {
             bUpdated = true;
-            updItem.SetFieldValue((CItemData::FieldType)i, sxValue);
+            updItem.SetFieldValue(ft, sxValue);
           }
         }
       }

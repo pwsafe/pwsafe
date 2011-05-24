@@ -2814,8 +2814,8 @@ void PasswordSafeFrame::DoExportText()
   StringX newfile;
   StringX pw(et.passKey);
   if (m_core.CheckPasskey(sx_temp, pw) == PWScore::SUCCESS) {
-    const CItemData::FieldBits bsExport = et.selCriteria.m_bsFields;
-    const std::wstring subgroup_name = tostdstring(et.selCriteria.m_subgroupText);
+    const CItemData::FieldBits bsExport = et.selCriteria.GetSelectedFields();
+    const std::wstring subgroup_name = tostdstring(et.selCriteria.SubgroupSearchText());
     const int subgroup_object = et.selCriteria.SubgroupObject();
     const int subgroup_function = et.selCriteria.SubgroupFunctionWithCase();
     wchar_t delimiter = et.delimiter.IsEmpty()? wxT('\xbb') : et.delimiter[0];
@@ -2909,10 +2909,10 @@ void PasswordSafeFrame::Merge(const StringX &sx_Filename2, PWScore *pothercore, 
   rpt.WriteLine(tostdstring(wxString(_("Merging database: ")) << towxstring(sx_Filename2) << wxT("\r\n")));
   
   stringT result = m_core.Merge(pothercore, 
-                                selection.m_fUseSubgroups,
-                                tostdstring(selection.m_subgroupText),
-                                selection.m_subgroupObject,
-                                selection.m_subgroupFunction,
+                                selection.HasSubgroupRestriction(),
+                                tostdstring(selection.SubgroupSearchText()),
+                                selection.SubgroupObject(),
+                                selection.SubgroupFunction(),
                                 &rpt);
   
   ::wxEndBusyCursor();
