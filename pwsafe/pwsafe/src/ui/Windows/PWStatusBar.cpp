@@ -129,8 +129,8 @@ BOOL CPWStatusBar::OnChildNotify(UINT message, WPARAM wParam, LPARAM lParam, LRE
         if (pNMMouse->dwItemSpec >= 0 &&
             pNMMouse->dwItemSpec < (unsigned int)m_nCount) {
           UINT uCommandId = GetItemID(pNMMouse->dwItemSpec);
-          // Only Interested in double-click on R-O or R/W indicator
-          if (uCommandId == IDS_READ_ONLY)
+          // Only Interested in double-click on R-O or R/W indicator or filter bitmap
+          if (uCommandId == IDS_READ_ONLY || uCommandId == IDS_FILTER1)
             GetParent()->SendMessage(WM_COMMAND, uCommandId, 0);
         }
       }

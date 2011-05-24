@@ -475,6 +475,8 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_VALIDATE, OnValidate)
   // Double-click on R-O R/W indicator on StatusBar
   ON_COMMAND(IDS_READ_ONLY, OnChangeMode)
+  // Double-click on filter indicator on StatusBar
+  ON_COMMAND(IDS_FILTER1, OnCancelFilter)
 
 #if defined(POCKET_PC)
   ON_WM_CREATE()
@@ -3156,18 +3158,18 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
                            ID_TOOLBUTTON_FINDCASE_S : ID_TOOLBUTTON_FINDCASE_I, 
                            m_FindToolBar.IsFindCaseSet());
       return -1;
-    case ID_FILTERMENU:
-      if (m_bUnsavedDisplayed)
-        iEnable = FALSE;
-      break;
     case ID_MENUITEM_SHOWHIDE_UNSAVED:
+      // Filter sub-menu mutally exclusive with use of inernal filters for
+      // display of unsaved entries or expired entries
       if (!m_core.IsChanged() || 
-          (m_core.IsChanged() && m_bFilterActive && !m_bUnsavedDisplayed && !m_bExpireDisplayed))
+          (m_bFilterActive && !m_bUnsavedDisplayed))
         iEnable = FALSE;
       break;
     case ID_MENUITEM_SHOW_ALL_EXPIRY:
+      // Filter sub-menu mutally exclusive with use of inernal filters for
+      // display of unsaved entries or expired entries
       if (m_core.GetExpirySize() == 0 ||
-          (m_core.GetExpirySize() == 0 && m_bFilterActive && !m_bUnsavedDisplayed && !m_bExpireDisplayed))
+          (m_bFilterActive && !m_bExpireDisplayed))
         iEnable = FALSE;
       break;
     case ID_MENUITEM_CLEAR_MRU:

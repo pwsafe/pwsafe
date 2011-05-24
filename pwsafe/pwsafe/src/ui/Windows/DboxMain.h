@@ -712,6 +712,7 @@ protected:
   afx_msg void OnViewReports(UINT nID);  // From View->Reports menu
   afx_msg void OnViewReports();
   afx_msg void OnManageFilters(); // From Toolbar button
+  afx_msg void OnCancelFilter();
   afx_msg void OnApplyFilter();
   afx_msg void OnSetFilter();
   afx_msg void OnRefreshWindow();
