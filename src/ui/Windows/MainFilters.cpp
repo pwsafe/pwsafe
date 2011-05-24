@@ -49,6 +49,20 @@ using namespace std;
 static char THIS_FILE[] = __FILE__;
 #endif
 
+void DboxMain::OnCancelFilter()
+{
+  // Deal with the 2 internal filters before user defined ones
+  if (m_bExpireDisplayed) {
+    OnShowExpireList();
+  } else
+  if (m_bUnsavedDisplayed) {
+    OnShowUnsavedEntries();
+  } else
+  if (m_bFilterActive) {
+    ApplyFilter();
+  }
+}
+
 void DboxMain::OnApplyFilter()
 {
   ApplyFilter();
