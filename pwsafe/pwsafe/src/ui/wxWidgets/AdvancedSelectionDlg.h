@@ -37,7 +37,8 @@ struct SelectionCriteria
                                                       m_subgroupFunction(other.m_subgroupFunction),
                                                       m_fDirty(false)
   {}
-  
+
+private:
   bool                  m_fCaseSensitive;
   CItemData::FieldBits  m_bsFields;
   wxString              m_subgroupText;
@@ -46,12 +47,24 @@ struct SelectionCriteria
   int                   m_subgroupFunction;
   bool                  m_fDirty;
 
+public:
   bool IsDirty(void) const { return m_fDirty; }
   void Clean(void) { m_fDirty = false; }
   
-  CItemData::FieldType SubgroupObject() const {return subgroups[m_subgroupObject];}
-  PWSMatch::MatchRule  SubgroupFunction() const {return subgroupFunctions[m_subgroupFunction].function;}
-  int  SubgroupFunctionWithCase() const {return m_fCaseSensitive? -SubgroupFunction(): SubgroupFunction();}
+  bool HasSubgroupRestriction() const             { return m_fUseSubgroups; }
+  CItemData::FieldBits GetSelectedFields() const  { return m_bsFields; }
+  wxString SubgroupSearchText() const             { return m_subgroupText; }
+  bool CaseSensitive() const                      { return m_fCaseSensitive; }
+  CItemData::FieldType SubgroupObject() const     { return subgroups[m_subgroupObject];}
+  PWSMatch::MatchRule  SubgroupFunction() const   { return subgroupFunctions[m_subgroupFunction].function; }
+  int  SubgroupFunctionWithCase() const           { return m_fCaseSensitive? -SubgroupFunction(): SubgroupFunction(); }
+  void SelectAllFields()                          { m_bsFields.set(); }
+  void SelectField(CItemData::FieldType ft)       { m_bsFields.set(ft); }
+  void ResetField(CItemData::FieldType ft)        { m_bsFields.reset(ft); }
+  size_t SelectedFieldsCount() const              { return m_bsFields.count(); }
+  size_t TotalFieldsCount() const                 { return m_bsFields.size(); }
+  bool IsFieldSelected(CItemData::FieldType ft) const { return m_bsFields.test(ft); }
+
   bool MatchesSubgroupText(const CItemData& item) const {
     //could be very inefficient in a loop across the entire DB
     return !m_fUseSubgroups || item.Matches(tostdstring(m_subgroupText), SubgroupObject(), SubgroupFunction());
@@ -73,6 +86,8 @@ SelectionCriteria& operator=(const SelectionCriteria& data) {
     
     return *this;
   }
+  friend class AdvancedSelectionPanel;
+  friend bool operator!=(const SelectionCriteria& a, const SelectionCriteria& b);
 };
 
 inline bool operator!=(const SelectionCriteria& a, const SelectionCriteria& b)

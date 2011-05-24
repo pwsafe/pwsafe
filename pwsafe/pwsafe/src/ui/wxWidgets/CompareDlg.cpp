@@ -25,6 +25,7 @@
 #include "./wxutils.h"
 #include "../../core/PWScore.h"
 #include "./AdvancedSelectionDlg.h"
+#include "../../core/DBCompareData.h"
 
 #include <wx/statline.h>
 
@@ -44,12 +45,13 @@ CompareDlg::CompareDlg(wxWindow* parent, PWScore* currentCore): wxDialog(parent,
                                                                 wxDefaultSize,
                                                                 wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER|wxMAXIMIZE_BOX),
                                                                 m_currentCore(currentCore),
-                                                                m_selCriteria(new SelectionCriteria)
+                                                                m_selCriteria(new SelectionCriteria),
+                                                                m_dbPanel(0)
 {
   SetExtraStyle(wxWS_EX_VALIDATE_RECURSIVELY);
 
   //compare all fields by default
-  m_selCriteria->m_bsFields.set();
+  m_selCriteria->SelectAllFields();
 
   CreateControls();
   Connect(GetId(), wxEVT_RELAYOUT, wxCommandEventHandler(CompareDlg::OnReLayout));
@@ -104,11 +106,12 @@ wxCollapsiblePane* CompareDlg::CreateDBSelectionPanel(wxSizer* dlgSizer)
   wxWindow* paneWindow = pane->GetPane();
 
   wxBoxSizer* dbPanelSizer = new wxBoxSizer(wxVERTICAL);
-  dbPanelSizer->Add(new DbSelectionPanel(paneWindow, wxString(_("Password Database")),
+  m_dbPanel = new DbSelectionPanel(paneWindow, wxString(_("Password Database")),
                                                wxString(_("Select a PasswordSafe database to compare")),
                                                true,
                                                m_currentCore,
-                                               1), wxSizerFlags().Expand().Proportion(1));
+                                               1);
+  dbPanelSizer->Add(m_dbPanel, wxSizerFlags().Expand().Proportion(1));
 
   dlgSizer->Add(pane, wxSizerFlags().Proportion(0).Expand().Border(wxLEFT|wxRIGHT, SideMargin/2));
   dlgSizer->AddSpacer(RowSeparation);
@@ -175,5 +178,21 @@ void CompareDlg::OnCompare(wxCommandEvent& )
 
 void CompareDlg::DoCompare()
 {
+  PWScore otherCore;
+  if (ReadCore(otherCore, m_dbPanel->m_filepath, m_dbPanel->m_combination, true, this)) {
+    CompareData current, comparison, conflicts, identical;
+    bool treatWhitespacesAsEmpty = false;
+    m_currentCore->Compare(&otherCore, 
+                           m_selCriteria->GetSelectedFields(),
+                           m_selCriteria->HasSubgroupRestriction(),
+                           treatWhitespacesAsEmpty,
+                           tostdstring(m_selCriteria->SubgroupSearchText()),
+                           m_selCriteria->SubgroupObject(),
+                           m_selCriteria->SubgroupFunction(),
+                           current,
+                           comparison,
+                           conflicts,
+                           identical);
+  }
   
 }
