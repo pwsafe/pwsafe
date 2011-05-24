@@ -24,18 +24,11 @@
 
 using namespace std;
 
-static pws_os::CUUID nullUUID;
+static const uuid_array_t zua = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+static pws_os::CUUID nullUUID(zua);
 
 const pws_os::CUUID &pws_os::CUUID::NullUUID()
 {
-  static bool inited = false;
-  if (!inited) {
-    inited = true;
-    uuid_array_t zua;
-    memset(zua, 0, sizeof(zua));
-    CUUID zu(zua);
-    nullUUID = zu;
-  }
   return nullUUID;
 }
 
