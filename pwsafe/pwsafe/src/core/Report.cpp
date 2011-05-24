@@ -18,7 +18,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/stat.h>
 #include <errno.h>
 
 #include <sstream>
@@ -51,25 +50,26 @@ void CReport::StartReport(LPCTSTR tcAction, const stringT &csDataBase)
 
 static bool isFileUnicode(const stringT &fname)
 {
-  struct _stat statbuf;
-
-  int status = _tstat(fname.c_str(), &statbuf);
-  // Need file to exist and length at least 2 for BOM
-  if (status != 0 || statbuf.st_size < 2)
-    return false;
-
-  const unsigned char BOM[] = {0xff, 0xfe};
-  unsigned char buffer[] = {0x00, 0x00};
-
   // Check if the first 2 characters are the BOM
+  // (Need file to exist and length at least 2 for BOM)
   // Need to use FOpen as cannot pass wchar_t filename to a std::istream
   // and cannot convert a wchar_t filename/path to char if non-Latin characters
   // present
-  FILE *fn = pws_os::FOpen(fname.c_str(), _T("rb"));
-  fread(buffer, 1, 2, fn);
-  fclose(fn);
+  const unsigned char BOM[] = {0xff, 0xfe};
+  unsigned char buffer[] = {0x00, 0x00};
+  bool retval = false;
 
-  return (buffer[0] == BOM[0] && buffer[1] == BOM[1]);
+  FILE *fn = pws_os::FOpen(fname, _T("rb"));
+  if (fn == NULL)
+    return false;
+  if (pws_os::fileLength(fn) < 2)
+    retval = false;
+  else {
+    fread(buffer, 1, 2, fn);
+    retval = (buffer[0] == BOM[0] && buffer[1] == BOM[1]);
+  }
+  fclose(fn);
+  return retval;
 }
 
 /*
