@@ -28,11 +28,10 @@
 #include "../../core/DBCompareData.h"
 
 #include <wx/statline.h>
+#include <wx/grid.h>
 
-DECLARE_EVENT_TYPE(wxEVT_RELAYOUT, -1)
-DEFINE_EVENT_TYPE(wxEVT_RELAYOUT)
-
-enum {ID_BTN_COMPARE = 100 };
+enum {ID_BTN_COMPARE = 100,
+    };
 
 BEGIN_EVENT_TABLE( CompareDlg, wxDialog )
   EVT_BUTTON( ID_BTN_COMPARE,  CompareDlg::OnCompare )
@@ -46,7 +45,11 @@ CompareDlg::CompareDlg(wxWindow* parent, PWScore* currentCore): wxDialog(parent,
                                                                 wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER|wxMAXIMIZE_BOX),
                                                                 m_currentCore(currentCore),
                                                                 m_selCriteria(new SelectionCriteria),
-                                                                m_dbPanel(0)
+                                                                m_dbPanel(0),
+                                                                m_dbSelectionPane(0),
+                                                                m_optionsPane(0),
+                                                                m_conflictsPane(0),
+                                                                m_conflictsGrid(0)
 {
   SetExtraStyle(wxWS_EX_VALIDATE_RECURSIVELY);
 
@@ -54,7 +57,6 @@ CompareDlg::CompareDlg(wxWindow* parent, PWScore* currentCore): wxDialog(parent,
   m_selCriteria->SelectAllFields();
 
   CreateControls();
-  Connect(GetId(), wxEVT_RELAYOUT, wxCommandEventHandler(CompareDlg::OnReLayout));
 }
 
 CompareDlg::~CompareDlg()
@@ -67,10 +69,15 @@ void CompareDlg::CreateControls()
   wxBoxSizer* dlgSizer = new wxBoxSizer(wxVERTICAL);
   dlgSizer->AddSpacer(TopMargin);  //add a margin at the top
 
-  wxCollapsiblePane* topPane = CreateDBSelectionPanel(dlgSizer);
-  topPane->Expand();
-
+  m_dbSelectionPane = CreateDBSelectionPanel(dlgSizer);
   dlgSizer->AddSpacer(RowSeparation);
+  m_optionsPane = CreateOptionsPanel(dlgSizer);
+  dlgSizer->AddSpacer(RowSeparation)->GetPosition();
+  m_conflictsPane = CreateConflictsPanel(dlgSizer);
+  m_conflictsPane->Hide();
+
+  m_dbSelectionPane->Expand();
+
   dlgSizer->Add(new wxStaticLine(this), wxSizerFlags().Center().Expand().Border(wxLEFT|wxRIGHT, SideMargin).Proportion(0));
   dlgSizer->AddSpacer(RowSeparation);
   wxStdDialogButtonSizer* buttons = new wxStdDialogButtonSizer;
@@ -114,60 +121,43 @@ wxCollapsiblePane* CompareDlg::CreateDBSelectionPanel(wxSizer* dlgSizer)
   dbPanelSizer->Add(m_dbPanel, wxSizerFlags().Expand().Proportion(1));
 
   dlgSizer->Add(pane, wxSizerFlags().Proportion(0).Expand().Border(wxLEFT|wxRIGHT, SideMargin/2));
-  dlgSizer->AddSpacer(RowSeparation);
-  
-  //Create another collapsible pane to be nested within the top collapsible pane
-  wxCollapsiblePane* nestedPane = new wxCollapsiblePane(this, wxID_ANY, _("Advanced Options..."));
-  //Create the Advanced Selection Options panel with the pane's window as parent
-  AdvancedSelectionPanel* advPanel = new AdvancedSelectionImpl<CompareDlgType>(nestedPane->GetPane(), *m_selCriteria, true);
-  advPanel->CreateControls(nestedPane->GetPane());
-  //Create a vertical box sizer
-  wxBoxSizer* nestedSizer = new wxBoxSizer(wxVERTICAL);
-  //and add the panel to it
-  nestedSizer->Add(advPanel, wxSizerFlags().Expand().Proportion(1));
-  //Set it as the nested pane's sizer
-  nestedPane->GetPane()->SetSizer(nestedSizer);
-  //Connect our event handler to resize the dialog when the inner pane collapses/expands
-  nestedPane->Connect(nestedPane->GetId(), wxEVT_COMMAND_COLLPANE_CHANGED, 
-                      wxCollapsiblePaneEventHandler(CompareDlg::OnPaneCollapse), 
-                      NULL, this);
-  
-  pane->Connect(pane->GetId(), wxEVT_COMMAND_COLLPANE_CHANGED, 
-                      wxCollapsiblePaneEventHandler(CompareDlg::OnTopPaneCollapse), 
-                      NULL, this);
-
-  dlgSizer->Add(nestedPane, wxSizerFlags().Proportion(0).Expand().Border(wxLEFT|wxRIGHT, SideMargin/2));
 
   paneWindow->SetSizer(dbPanelSizer);
-  dbPanelSizer->SetSizeHints(paneWindow);
-
 
   return pane;
 }
 
-void CompareDlg::OnTopPaneCollapse(wxCollapsiblePaneEvent& evt)
+wxCollapsiblePane* CompareDlg::CreateOptionsPanel(wxSizer* dlgSizer)
 {
-  evt.Skip();
+  //Create another collapsible pane to be nested within the top collapsible pane
+  wxCollapsiblePane* optionsPane = new wxCollapsiblePane(this, wxID_ANY, _("Advanced Options..."));
+  //Create the Advanced Selection Options panel with the pane's window as parent
+  AdvancedSelectionPanel* advPanel = new AdvancedSelectionImpl<CompareDlgType>(optionsPane->GetPane(),
+                                                                               *m_selCriteria,
+                                                                               true);
+  advPanel->CreateControls(optionsPane->GetPane());
+  //Create a vertical box sizer
+  wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
+  //and add the panel to it
+  sizer->Add(advPanel, wxSizerFlags().Expand().Proportion(1));
+  //Set it as the nested pane's sizer
+  optionsPane->GetPane()->SetSizer(sizer);
+
+  dlgSizer->Add(optionsPane, wxSizerFlags().Proportion(0).Expand().Border(wxLEFT|wxRIGHT, SideMargin/2));
+  return optionsPane;
 }
 
-void CompareDlg::OnPaneCollapse(wxCollapsiblePaneEvent& evt)
+wxCollapsiblePane* CompareDlg::CreateConflictsPanel(wxSizer* dlgSizer)
 {
-  wxCommandEvent cmdEvt(wxEVT_RELAYOUT, GetId());
-  GetEventHandler()->AddPendingEvent(cmdEvt);
-  evt.Skip();
-}
+  wxCollapsiblePane* gridPane = new wxCollapsiblePane(this, wxID_ANY, _("Conflicting items"));
+  m_conflictsGrid = new wxGrid(gridPane->GetPane(), wxID_ANY);
+  wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
+  sizer->Add(m_conflictsGrid, wxSizerFlags().Expand().Proportion(1));
+  gridPane->GetPane()->SetSizer(sizer);
 
-void CompareDlg::OnReLayout(wxCommandEvent& /*evt*/)
-{
-  GetSizer()->RecalcSizes();
-  Fit();
-  /*
-  const wxSize size = GetSize();
-  wxSizeEvent event( size, GetId() );
-  event.SetEventObject( this );
-  GetEventHandler()->AddPendingEvent( event );
-   */
-//  GetSizer()->Layout();
+  dlgSizer->Add(gridPane, wxSizerFlags().Proportion(0).Expand().Border(wxLEFT|wxRIGHT, SideMargin/2));
+
+  return gridPane;
 }
 
 void CompareDlg::OnCompare(wxCommandEvent& )
@@ -179,7 +169,10 @@ void CompareDlg::OnCompare(wxCommandEvent& )
 void CompareDlg::DoCompare()
 {
   PWScore otherCore;
-  if (ReadCore(otherCore, m_dbPanel->m_filepath, m_dbPanel->m_combination, true, this)) {
+  if (ReadCore(otherCore, m_dbPanel->m_filepath,
+                          m_dbPanel->m_combination,
+                          true,
+                          this) == PWScore::SUCCESS) {
     CompareData current, comparison, conflicts, identical;
     bool treatWhitespacesAsEmpty = false;
     m_currentCore->Compare(&otherCore, 
@@ -193,6 +186,11 @@ void CompareDlg::DoCompare()
                            comparison,
                            conflicts,
                            identical);
+
+    m_dbSelectionPane->Collapse();
+    m_optionsPane->Collapse();
+    m_conflictsPane->Show();
+    m_conflictsPane->Expand();
+    Layout();
   }
-  
 }
