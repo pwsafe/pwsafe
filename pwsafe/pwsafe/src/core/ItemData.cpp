@@ -756,6 +756,7 @@ StringX CItemData::GetPlaintext(const TCHAR &separator,
            GetDCA() + separator +
            GetEmail() + separator +
            sxProtected + separator +
+           GetSymbols() + separator +
            _T("\"") + notes + _T("\""));
   } else {
     // Not everything
