@@ -18,13 +18,14 @@
 class PWScore;
 struct SelectionCriteria;
 class DbSelectionPanel;
+class wxGrid;
 
 class CompareDlg: public wxDialog
 {
   void CreateControls();
   wxCollapsiblePane* CreateDBSelectionPanel(wxSizer* sizer);
-  void OnPaneCollapse(wxCollapsiblePaneEvent& evt);
-  void OnTopPaneCollapse(wxCollapsiblePaneEvent& evt);
+  wxCollapsiblePane* CreateOptionsPanel(wxSizer* dlgSizer);
+  wxCollapsiblePane* CreateConflictsPanel(wxSizer* dlgSizer);
   void OnReLayout(wxCommandEvent& evt);
   void OnCompare(wxCommandEvent& );
   void DoCompare();
@@ -34,9 +35,14 @@ public:
   ~CompareDlg();
 
 private:
-  PWScore* m_currentCore;
-  SelectionCriteria* m_selCriteria;
-  DbSelectionPanel* m_dbPanel;
+  PWScore*            m_currentCore;
+  SelectionCriteria*  m_selCriteria;
+  DbSelectionPanel*   m_dbPanel;
+  wxCollapsiblePane*  m_dbSelectionPane;
+  wxCollapsiblePane*  m_optionsPane;
+  wxCollapsiblePane*  m_conflictsPane;
+  wxGrid*             m_conflictsGrid;
+  size_t              m_gridIndex;      //index of grids in dlgSizer
 
   //DECLARE_CLASS( MergeDlg )
   DECLARE_EVENT_TABLE()
