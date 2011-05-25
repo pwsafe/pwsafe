@@ -37,7 +37,9 @@ public:
   enum VERSION {V17, V20, V30, VCURRENT = V30,
     NEWFILE = 98,
     UNKNOWN_VERSION = 99}; // supported file versions: V17 is last pre-2.0
+
   enum RWmode {Read, Write};
+
   enum {SUCCESS = 0, FAILURE = 1, 
     UNSUPPORTED_VERSION,                     //  2
     WRONG_VERSION,                           //  3
@@ -146,7 +148,7 @@ public:
   PWSFileSig(const PWSFileSig &pfs);
   PWSFileSig &operator=(const PWSFileSig &that);
 
-  bool IsValid() {return !m_bError;}
+  bool IsValid() {return m_iErrorCode == PWSfile::SUCCESS;}
   int GetErrorCode() {return m_iErrorCode;}
 
   bool operator==(const PWSFileSig &other);
@@ -156,6 +158,5 @@ private:
   long m_length; // -1 if file doesn't exist or zero length
   unsigned char m_digest[SHA256::HASHLEN];
   int m_iErrorCode;
-  bool m_bError;
 };
 #endif /* __PWSFILE_H */
