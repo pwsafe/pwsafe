@@ -226,7 +226,7 @@ void PWScore::DoDeleteEntry(const CItemData &item)
       ItemMMap deps(m_base2shortcuts_mmap.lower_bound(entry_uuid),
                     m_base2shortcuts_mmap.upper_bound(entry_uuid));
       for (ItemMMapIter iter = deps.begin(); iter != deps.end(); iter++) {
-        CItemData depItem = Find(iter->first)->second;
+        CItemData depItem = Find(iter->second)->second;
         DoDeleteEntry(depItem);
         // Set deleted for GUIRefreshEntry() which will remove from display
         depItem.SetStatus(CItemData::ES_DELETED);
