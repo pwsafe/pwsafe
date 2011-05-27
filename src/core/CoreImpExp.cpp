@@ -729,23 +729,44 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
                                  CReport &rpt, Command *&pcommand)
 {
   stringT cs_error;
-#ifdef UNICODE
-  const unsigned char *fname = NULL;
   CUTF8Conv conv;
-  size_t fnamelen;
-  conv.ToUTF8(filename, fname, fnamelen); 
-#else
-  const char *fname = filename.c_str();
-#endif
   pcommand = NULL;
 
-  // following's a stream of chars, as the header row's straight ASCII, and
-  // we need to handle rest as utf-8
-  ifstream ifs(reinterpret_cast<const char *>(fname));
-
-  if (!ifs)
+  // We need to use FOpen as the file name/file path may contain non-Latin
+  // characters even though we need the file to contain ASCII and UTF-8 characters
+  // and not Unicode (wchar_t).
+  FILE *fs = pws_os::FOpen(filename.c_str(), _T("rt"));
+  if (fs == NULL)
     return CANT_OPEN_FILE;
 
+  // We need to use file stream I/O but can't with standard FILE I/O
+  // so read in whole file and put it in a StringXStream (may contain sensitive data).
+  // Hopefully, an import text file is not too large!
+  const size_t IMPORT_BUFFER_SIZE = 4096;
+
+  cStringXStream iss;
+  unsigned char buffer[IMPORT_BUFFER_SIZE + 1];
+  bool bError(false);
+  size_t total(0);
+  while(!feof(fs)) {
+    size_t count = fread(buffer, 1, IMPORT_BUFFER_SIZE, fs);
+    if (ferror(fs)) {
+      bError = true;
+      break;
+    }
+    buffer[count] = '\0';
+    iss << buffer;
+    total += count;
+  }
+
+  // Close the file
+  fclose(fs);
+
+  if (bError)
+    return FAILURE;
+
+  // The following's a stream of chars.  We need to process the header row 
+  // as straight ASCII, and we need to handle rest as utf-8
   numImported = numSkipped = numRenamed = numPWHErrors = 0;
   int numlines = 0;
 
@@ -753,6 +774,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   vector<string> vs_Header;
   stringT cs_hdr = EXPORTHEADER;
 
+  // Parse the header
   const unsigned char *hdr;
   size_t hdrlen;
   conv.ToUTF8(cs_hdr.c_str(), hdr, hdrlen);
@@ -785,13 +807,13 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   } while (to != string::npos);
 
   // Following fails if a field was added in enum but not in
-  // IDSC_EXPORTHEADER, or vice versa.
+  // EXPORTHEADER, or vice versa.
   ASSERT(vs_Header.size() == NUMFIELDS);
 
   string s_header, linebuf;
 
   // Get header record
-  if (!getline(ifs, s_header, '\n')) {
+  if (!getline(iss, s_header, '\n')) {
     LoadAString(strError, IDSC_IMPORTNOHEADER);
     rpt.WriteLine(strError);
     return FAILURE;  // not even a title record!
@@ -877,7 +899,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
 
   for (;;) {
     // read a single line.
-    if (!getline(ifs, linebuf, '\n')) break;
+    if (!getline(iss, linebuf, '\n')) break;
     numlines++;
 
     // remove MS-DOS linebreaks, if needed.
@@ -893,9 +915,10 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
       continue;
     }
 
-    // convert linebuf from UTF-8 to stringX
+    // convert linebuf from UTF-8 to StringX
     StringX slinebuf;
-    if (!conv.FromUTF8(reinterpret_cast<const unsigned char *>(linebuf.c_str()), linebuf.length(), slinebuf)) {
+    if (!conv.FromUTF8(reinterpret_cast<const unsigned char *>(linebuf.c_str()),
+                       linebuf.length(), slinebuf)) {
       // XXX add an appropriate error message
       numSkipped++;
       continue;
@@ -914,8 +937,8 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
         if (itoken != i_Offset[NOTES]) {
           const StringX tsx(slinebuf.substr(startpos, nextchar - startpos));
           tokens.push_back(tsx.c_str());
-        } else { // Notes field
-          // Notes may be double-quoted, and
+        } else { 
+          // Notes field which may be double-quoted, and
           // if they are, they may span more than one line.
           stringT note(slinebuf.substr(startpos).c_str());
           size_t first_quote = note.find_first_of('\"');
@@ -924,10 +947,9 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
             //there was exactly one quote, meaning that we've a multi-line Note
             bool noteClosed = false;
             do {
-              if (!getline(ifs, linebuf, '\n')) {
+              if (!getline(iss, linebuf, '\n')) {
                 Format(cs_error, IDSC_IMPMISSINGQUOTE, numlines);
                 rpt.WriteLine(cs_error);
-                ifs.close(); // file ends before note closes
                 return (numImported > 0) ? SUCCESS : INVALID_FORMAT;
               }
               numlines++;
@@ -936,8 +958,8 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
                 linebuf.resize(linebuf.size() - 1);
               }
               note += _T("\r\n");
-              if (!conv.FromUTF8(reinterpret_cast<const unsigned char *>(linebuf.c_str()), linebuf.length(),
-                                 slinebuf)) {
+              if (!conv.FromUTF8(reinterpret_cast<const unsigned char *>(linebuf.c_str()),
+                                 linebuf.length(), slinebuf)) {
                 // XXX add an appropriate error message
                 numSkipped++;
                 continue;
@@ -952,7 +974,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
           break;
         } // Notes handling
       } // nextchar > 0
-      startpos = nextchar + 1; // too complex for for statement
+      startpos = nextchar + 1; // too complex for the 'for statement'
       itoken++;
     } // tokenization for loop
 
@@ -1053,8 +1075,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
     if (i_Offset[USER] >= 0 && tokens.size() > static_cast<size_t>(i_Offset[USER]))
       ci_temp.SetUser(tokens[i_Offset[USER]].c_str());
     StringX csPassword = tokens[i_Offset[PASSWORD]].c_str();
-    if (i_Offset[PASSWORD] >= 0)
-      ci_temp.SetPassword(csPassword);
+    ci_temp.SetPassword(csPassword);
 
     // The group and title field are concatenated.
     // If the title field has periods, then they have been changed to the delimiter
@@ -1213,9 +1234,6 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
     numImported++;
   } // file processing for (;;) loop
 
-  // Close file
-  ifs.close();
-
   Command *pcmdA = AddDependentEntriesCommand::Create(this,
                                                       Possible_Aliases, &rpt, 
                                                       CItemData::ET_ALIAS,
@@ -1253,20 +1271,13 @@ that is imports.  Both are pretty easy things to live with.
 --jah
 */
 
-int
-PWScore::ImportKeePassTextFile(const StringX &filename, Command *&pcommand)
+int PWScore::ImportKeePassTextFile(const StringX &filename, Command *&pcommand)
 {
   static const TCHAR *ImportedPrefix = { _T("ImportedKeePass") };
-#ifdef UNICODE
   CUTF8Conv conv;
-  const unsigned char *fname = NULL;
-  size_t fnamelen;
-  conv.ToUTF8(filename, fname, fnamelen); 
-#else
-  const char *fname = filename.c_str();
-#endif
   pcommand = NULL;
-  ifstreamT ifs(reinterpret_cast<const char *>(fname));
+
+  ifstreamT ifs(filename.c_str());
 
   if (!ifs)
     return CANT_OPEN_FILE;
