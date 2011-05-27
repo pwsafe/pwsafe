@@ -1527,6 +1527,9 @@ int DboxMain::InsertItemIntoGUITreeList(CItemData &ci, int iIndex,
 CItemData *DboxMain::getSelectedItem()
 {
   CItemData *pci = NULL;
+  if (m_core.GetNumEntries() == 0)
+    return pci;
+
   if (m_ctlItemList.IsWindowVisible()) { // list view
     POSITION p = m_ctlItemList.GetFirstSelectedItemPosition();
     if (p) {

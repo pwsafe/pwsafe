@@ -1273,109 +1273,198 @@ that is imports.  Both are pretty easy things to live with.
 
 int PWScore::ImportKeePassTextFile(const StringX &filename, Command *&pcommand)
 {
-  static const TCHAR *ImportedPrefix = { _T("ImportedKeePass") };
+  static const char *ImportedPrefix = "ImportedKeePass";
   CUTF8Conv conv;
   pcommand = NULL;
 
-  ifstreamT ifs(filename.c_str());
-
-  if (!ifs)
+  // We need to use FOpen as the file name/file path may contain non-Latin
+  // characters even though we need the file to contain ASCII and UTF-8 characters
+  // and not Unicode (wchar_t).
+  FILE *fs = pws_os::FOpen(filename.c_str(), _T("rt"));
+  if (fs == NULL)
     return CANT_OPEN_FILE;
 
-  stringT linebuf;
-  stringT group, title, user, passwd, notes;
+  // We need to use file stream I/O but can't with standard FILE I/O
+  // so read in whole file and put it in a StringXStream (may contain sensitive data).
+  // Hopefully, an import text file is not too large!
+  const size_t IMPORT_BUFFER_SIZE = 4096;
 
-  // read a single line.
-  if (!getline(ifs, linebuf, TCHAR('\n')) || linebuf.empty()) {
-    return INVALID_FORMAT;
+  cStringXStream iss;
+  unsigned char buffer[IMPORT_BUFFER_SIZE + 1];
+  bool bError(false);
+  size_t total(0);
+  while(!feof(fs)) {
+    size_t count = fread(buffer, 1, IMPORT_BUFFER_SIZE, fs);
+    if (ferror(fs)) {
+      bError = true;
+      break;
+    }
+    buffer[count] = '\0';
+    iss << buffer;
+    total += count;
   }
+
+  // Close the file
+  fclose(fs);
+
+  if (bError)
+    return FAILURE;
+
+  string linebuf;
+  string group, title, user, passwd, url, notes;
+  string::size_type pos;
 
   MultiCommands *pmulticmds = MultiCommands::Create(this);
   pcommand = pmulticmds;
+  bool bFirst(true);
 
-  // the first line of the keepass text file contains a few garbage characters
-  linebuf = linebuf.erase(0, linebuf.find(_T("[")));
-
-  stringT::size_type pos = stringT::npos;
   for (;;) {
-    if (!ifs)
+    // read a single line.
+    getline(iss, linebuf, '\n');
+    // Check if blank line
+    if (iss.eof())
       break;
-    notes.erase();
+
+    if (linebuf.empty())
+      continue;
+
+    // the first line of the Keepass text file contains BOM characters
+    if (bFirst) {
+      pos = linebuf.find("[");
+      if (pos != string::npos)
+        linebuf = linebuf.erase(0, pos);
+      bFirst = false;
+    }
 
     // this line should always be a title contained in []'s
-    if (*(linebuf.begin()) != '[' || *(linebuf.end() - 1) != TCHAR(']')) {
+    if (*(linebuf.begin()) != '[' || *(linebuf.end() - 1) != ']') {
       return INVALID_FORMAT;
     }
 
-    // set the title: line pattern: [<group>]
-    title = linebuf.substr(linebuf.find(_T("[")) + 1, linebuf.rfind(_T("]")) - 1).c_str();
+    // set the title: line pattern: [<title>]
+    title = linebuf.substr(linebuf.find("[") + 1, linebuf.rfind("]") - 1).c_str();
 
-    // set the group: line pattern: Group: <user>
-    if (!getline(ifs, linebuf, TCHAR('\n')) ||
-        (pos = linebuf.find(_T("Group: "))) == stringT::npos) {
-      return INVALID_FORMAT;
-    }
-    group = ImportedPrefix;
-    if (!linebuf.empty()) {
-      group.append(_T("."));
-      group.append(linebuf.substr(pos + 7));
-    }
-
-    // set the user: line pattern: UserName: <user>
-    if (!getline(ifs, linebuf, TCHAR('\n')) ||
-        (pos = linebuf.find(_T("UserName: "))) == stringT::npos) {
-      return INVALID_FORMAT;
-    }
-    user = linebuf.substr(pos + 10);
-
-    // set the url: line pattern: URL: <url>
-    if (!getline(ifs, linebuf, TCHAR('\n')) ||
-        (pos = linebuf.find(_T("URL: "))) == stringT::npos) {
-      return INVALID_FORMAT;
-    }
-    if (!linebuf.substr(pos + 5).empty()) {
-      notes.append(linebuf.substr(pos + 5));
-      notes.append(_T("\r\n\r\n"));
-    }
-
-    // set the password: line pattern: Password: <passwd>
-    if (!getline(ifs, linebuf, TCHAR('\n')) ||
-        (pos = linebuf.find(_T("Password: "))) == stringT::npos) {
-      return INVALID_FORMAT;
-    }
-    passwd = linebuf.substr(pos + 10);
-
-    // set the first line of notes: line pattern: Notes: <notes>
-    if (!getline(ifs, linebuf, TCHAR('\n')) ||
-        (pos = linebuf.find(_T("Notes: "))) == stringT::npos) {
-      return INVALID_FORMAT;
-    }
-    notes.append(linebuf.substr(pos + 7));
-
-    // read in any remaining new notes and set up the next record
+    bool bTitleFound(false);
     for (;;) {
-      // see if we hit the end of the file
-      if (!getline(ifs, linebuf, TCHAR('\n'))) {
+      streamoff currentpos = iss.tellg();
+      getline(iss, linebuf, '\n');
+      // Check if blank line
+      if (linebuf.empty())
+        break;
+
+      // Check if new entry
+      if (*(linebuf.begin()) == '[' && *(linebuf.end() - 1) == ']') {
+        // Ooops - go back
+        iss.seekg(currentpos);
+        bTitleFound = true;
         break;
       }
 
-      // see if we hit a new record
-      if (linebuf.find(_T("[")) == 0 && linebuf.rfind(_T("]")) == linebuf.length() - 1) {
-        break;
+      if (linebuf.substr(0, 7) == "Group: ") {
+        // set the group: line pattern: Group: <user>
+        group = ImportedPrefix;
+        if (!linebuf.empty()) {
+          group.append(".");
+          group.append(linebuf.substr(7));
+        }
       }
 
-      notes.append(_T("\r\n"));
-      notes.append(linebuf);
+      else if (linebuf.substr(0, 11) == "User Name: ") {
+        // set the user: line pattern: UserName: <user>
+        user = linebuf.substr(11);
+      }
+
+      else if (linebuf.substr(0, 5) == "URL: ") {
+        // set the url: line pattern: URL: <url>
+        url = linebuf.substr(5);
+      }
+      
+      else if (linebuf.substr(0, 10) == "Password: ") {
+        // set the password: line pattern: Password: <passwd>
+        passwd = linebuf.substr(10);
+      }
+
+      // set the first line of notes: line pattern: Notes: <notes>
+      else if (linebuf.substr(0, 7) == "Notes: ") {
+        notes = linebuf.substr(7);
+
+        // read in any remaining new notes and set up the next record
+        for (;;) {
+          // see if we hit the end of the file
+          if (iss.eof())
+            break;
+
+          streamoff currentpos = iss.tellg();
+          if (!getline(iss, linebuf, '\n')) {
+            break;
+          }
+          // Check if new entry
+          if (linebuf.empty()) {
+            notes.append("\r\n");
+            continue;
+          }
+
+          if (*(linebuf.begin()) == '[' && *(linebuf.end() - 1) == ']') {
+            // Ooops - go back
+            iss.seekg(currentpos);
+            bTitleFound = true;
+            break;
+          }
+
+          if (linebuf.substr(0, 12) == "Group Tree: "        ||
+              linebuf.substr(0, 6)  == "UUID: "              ||
+              linebuf.substr(0, 6)  == "Icon: "              ||
+              linebuf.substr(0, 15) == "Creation Time: "     ||
+              linebuf.substr(0, 13) == "Last Access: "       ||
+              linebuf.substr(0, 19) == "Last Modification: " ||
+              linebuf.substr(0, 9)  == "Expires: ") {
+            break;
+          }
+          notes.append("\r\n");
+          notes.append(linebuf);
+        }
+      }
+
+      // Ignore any other text lines e.g. GroupTree, UUID, Icon, 
+      // Creation Time, Last Access, Last Modification & Expires
+      else
+      if (linebuf.substr(0, 12) == "Group Tree: "        ||
+          linebuf.substr(0, 6)  == "UUID: "              ||
+          linebuf.substr(0, 6)  == "Icon: "              ||
+          linebuf.substr(0, 15) == "Creation Time: "     ||
+          linebuf.substr(0, 13) == "Last Access: "       ||
+          linebuf.substr(0, 19) == "Last Modification: " ||
+          linebuf.substr(0, 9)  == "Expires: ") {
+        continue;
+      }
+
+      if (bTitleFound)
+        break;
     }
 
     // Create & append the new record.
+    StringX sxGroup, sxTitle, sxUser, sxPassword, sxURL, sxNotes;
+    conv.FromUTF8((unsigned char *)group.c_str(), group.length(), sxGroup);
+    conv.FromUTF8((unsigned char *)title.c_str(), title.length(), sxTitle);
+    conv.FromUTF8((unsigned char *)user.c_str(), user.length(), sxUser);
+    conv.FromUTF8((unsigned char *)passwd.c_str(), passwd.length(), sxPassword);
+    conv.FromUTF8((unsigned char *)notes.c_str(), notes.length(), sxNotes);
+    conv.FromUTF8((unsigned char *)url.c_str(), url.length(), sxURL);
+
     CItemData ci_temp;
     ci_temp.CreateUUID();
-    ci_temp.SetTitle(title.empty() ? group.c_str() : title.c_str());
-    ci_temp.SetGroup(group.c_str());
-    ci_temp.SetUser(user.empty() ? _T(" ") : user.c_str());
-    ci_temp.SetPassword(passwd.empty() ? _T(" ") : passwd.c_str());
-    ci_temp.SetNotes(notes.empty() ? _T("") : notes.c_str());
+
+    if (!sxGroup.empty())
+      ci_temp.SetGroup(sxGroup);
+    ci_temp.SetTitle(sxTitle.empty() ? sxGroup : sxTitle);
+    if (!sxUser.empty())
+      ci_temp.SetUser(sxUser);
+    ci_temp.SetPassword(sxPassword.empty() ? _T("Unknown") : sxPassword);
+    if (!sxNotes.empty())
+      ci_temp.SetNotes(sxNotes.c_str());
+    if (!sxURL.empty())
+      ci_temp.SetURL(sxURL);
+
     ci_temp.SetStatus(CItemData::ES_ADDED);
 
     GUISetupDisplayInfo(ci_temp);
@@ -1383,7 +1472,6 @@ int PWScore::ImportKeePassTextFile(const StringX &filename, Command *&pcommand)
     pcmd->SetNoGUINotify();
     pmulticmds->Add(pcmd);
   }
-  ifs.close();
 
   // TODO: maybe return an error if the full end of the file was not reached?
 
