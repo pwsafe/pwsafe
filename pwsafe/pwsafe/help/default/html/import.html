@@ -23,7 +23,7 @@ text editor.</p>
 <ul>
 <li><a href="#text">Text</a></li>
 <li><a href="#XML">XML</a></li>
-<li>KeePass (another password management utility)</li>
+<li>KeePass V1 (another password management utility)</li>
 </ul>
 
 <p>In addition, to 'import' a subset of entries from another Password Safe
@@ -80,6 +80,37 @@ data between applications. <span style="font-weight: bold;">Password Safe</span>
 can import XML files that were generated according to the schema defined in
 the file <span style="font-style: italic;">pwsafe.xsd</span>,
 which is provided as part of the distribution.</p>
+
+<h3><a name="Keepass"></a>Keepass V1</h3>
+
+<p>You may also import a TXT file exported from Keepass V1 (tested on files created
+by V1.19b).</p>
+
+<p>The following fields are converted to the PasswordSafe equivalents:</p>
+<ul>
+<li>"Group: "</li>
+<li>"User Name: "</li>
+<li>"URL: "</li>
+<li>"Password: "</li>
+<li>"Notes: "</li>
+<li>"UUID: "</li>
+<li>"Creation Time: "</li>
+<li>"Last Access: "</li>
+<li>"Last Modification: "</li>
+<li>"Expires: "</li>
+</ul>
+<p>The following fields are ignored:</p>
+<ul>
+<li>"Group Tree: "</li>
+<li>"Icon"</li>
+</ul>
+<p><b><i>Please note, the import will fail and may give unexpected results if:</i></b></p>
+<ul>
+<li>Any line in the Notes field starts with the name of any exported field
+listed above, or</li>
+<li>Any line in the Notes field starts with '[' and ends with ']'</li>
+</ul>
+</div>
 </div>
 
 <!-- Added some white space at the bottom for natural scrolling -->

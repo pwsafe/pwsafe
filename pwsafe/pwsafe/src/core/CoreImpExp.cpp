@@ -1257,18 +1257,17 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
 }
 
 /*
-Thought this might be useful to others...
-I made the mistake of using another password safe for a while...
-Glad I came back before it was too late, but I still needed to bring in those passwords.
+  The format of the source file is from doing an export to TXT file in keepass.
 
-The format of the source file is from doing an export to TXT file in keepass.
-I tested it using my password DB from KeePass.
+  Things to note - import will fail and may give unexpected results if:
+    1. Any line in the Notes field starts with the name of any exported field
+      i.e. 'Group: ', 'Group Tree: ', 'User Name: ', 'URL: ', 'Password: ',
+           'Notes: ', 'UUID: ', 'Icon: ', 'Creation Time: ', 'Last Access: ',
+           'Last Modification: ' or 'Expires: '
+    2. Any line in the Notes field starts with '[' and ends with ']'
 
-There are two small things: if you have a line that is enclosed by square brackets in the
-notes, it will stop processing.  Also, it adds a single, extra newline character to any notes
-that is imports.  Both are pretty easy things to live with.
+  "Group Tree: ", "Icon" are ignored.
 
---jah
 */
 
 int PWScore::ImportKeePassTextFile(const StringX &filename, Command *&pcommand)
@@ -1310,15 +1309,25 @@ int PWScore::ImportKeePassTextFile(const StringX &filename, Command *&pcommand)
   if (bError)
     return FAILURE;
 
+  UUIDSet setUUID;
   string linebuf;
-  string group, title, user, passwd, url, notes;
+  string str_group, str_title, str_user, str_passwd, str_url, str_notes, str_uuid;
+  time_t ctime, atime, mtime, xtime;
+  uuid_array_t ua;
   string::size_type pos;
 
   MultiCommands *pmulticmds = MultiCommands::Create(this);
   pcommand = pmulticmds;
   bool bFirst(true);
 
+  InitialiseUUID(setUUID);
+
   for (;;) {
+    // Clear out old stuff!
+    str_group = str_title = str_user = str_passwd = str_url = str_notes = str_uuid = "";
+    ctime = atime = mtime = xtime = (time_t)0;
+    memset(ua, 0, sizeof(ua));
+
     // read a single line.
     getline(iss, linebuf, '\n');
     // Check if blank line
@@ -1342,7 +1351,7 @@ int PWScore::ImportKeePassTextFile(const StringX &filename, Command *&pcommand)
     }
 
     // set the title: line pattern: [<title>]
-    title = linebuf.substr(linebuf.find("[") + 1, linebuf.rfind("]") - 1).c_str();
+    str_title = linebuf.substr(linebuf.find("[") + 1, linebuf.rfind("]") - 1).c_str();
 
     bool bTitleFound(false);
     for (;;) {
@@ -1362,31 +1371,103 @@ int PWScore::ImportKeePassTextFile(const StringX &filename, Command *&pcommand)
 
       if (linebuf.substr(0, 7) == "Group: ") {
         // set the group: line pattern: Group: <user>
-        group = ImportedPrefix;
+        str_group = ImportedPrefix;
         if (!linebuf.empty()) {
-          group.append(".");
-          group.append(linebuf.substr(7));
+          str_group.append(".");
+          str_group.append(linebuf.substr(7));
         }
       }
 
       else if (linebuf.substr(0, 11) == "User Name: ") {
         // set the user: line pattern: UserName: <user>
-        user = linebuf.substr(11);
+        str_user = linebuf.substr(11);
       }
 
       else if (linebuf.substr(0, 5) == "URL: ") {
         // set the url: line pattern: URL: <url>
-        url = linebuf.substr(5);
+        str_url = linebuf.substr(5);
       }
       
       else if (linebuf.substr(0, 10) == "Password: ") {
         // set the password: line pattern: Password: <passwd>
-        passwd = linebuf.substr(10);
+        str_passwd = linebuf.substr(10);
+      }
+
+      else if (linebuf.substr(0, 6) == "UUID: ") {
+        str_uuid = linebuf.substr(6);
+        // Verify it is the correct length (should be or the schema is wrong!)
+        if (str_uuid.length() == sizeof(uuid_array_t) * 2) {
+          unsigned int x(0);
+          for (size_t i = 0; i < sizeof(uuid_array_t); i++) {
+            stringstream ss;
+            ss.str(str_uuid.substr(i * 2, 2));
+            ss >> hex >> x;
+            ua[i] = static_cast<unsigned char>(x);
+          }
+        } else
+          str_uuid.clear();
+      }
+      // VerifyXMLDateTimeString(const stringT &time_str, time_t &t)
+      // "yyyy-mm-ddThh:mm:ss"
+      else if (linebuf.substr(0, 15) == "Creation Time: ") {
+        string str_ctime = linebuf.substr(15);
+        if (str_ctime.length() != 19)
+          continue;
+        str_ctime.replace(10, 1, "T");
+#ifdef UNICODE
+        std::wstring temp(str_ctime.length(),L' ');
+        std::copy(str_ctime.begin(), str_ctime.end(), temp.begin());
+#else
+        std::string temp = str_ctime;
+#endif
+        VerifyXMLDateTimeString(temp, ctime);
+      }
+
+      else if (linebuf.substr(0, 13) == "Last Access: ") {
+        string str_atime = linebuf.substr(13);
+        if (str_atime.length() != 19)
+          continue;
+        str_atime.replace(10, 1, "T");
+#ifdef UNICODE
+        std::wstring temp(str_atime.length(),L' ');
+        std::copy(str_atime.begin(), str_atime.end(), temp.begin());
+#else
+        std::string temp = str_ctime;
+#endif
+        VerifyXMLDateTimeString(temp, atime);
+      }
+
+      else if (linebuf.substr(0, 19) == "Last Modification: ") {
+        string str_mtime = linebuf.substr(19);
+        if (str_mtime.length() != 19)
+          continue;
+        str_mtime.replace(10, 1, "T");
+#ifdef UNICODE
+        std::wstring temp(str_mtime.length(),L' ');
+        std::copy(str_mtime.begin(), str_mtime.end(), temp.begin());
+#else
+        std::string temp = str_ctime;
+#endif
+        VerifyXMLDateTimeString(temp, mtime);
+      }
+
+      else if (linebuf.substr(0, 9) == "Expires: ") {
+        string str_xtime = linebuf.substr(9);
+        if (str_xtime.length() != 19)
+          continue;
+        str_xtime.replace(10, 1, "T");
+#ifdef UNICODE
+        std::wstring temp(str_xtime.length(),L' ');
+        std::copy(str_xtime.begin(), str_xtime.end(), temp.begin());
+#else
+        std::string temp = str_ctime;
+#endif
+        VerifyXMLDateTimeString(temp, xtime);
       }
 
       // set the first line of notes: line pattern: Notes: <notes>
       else if (linebuf.substr(0, 7) == "Notes: ") {
-        notes = linebuf.substr(7);
+        str_notes = linebuf.substr(7);
 
         // read in any remaining new notes and set up the next record
         for (;;) {
@@ -1400,7 +1481,7 @@ int PWScore::ImportKeePassTextFile(const StringX &filename, Command *&pcommand)
           }
           // Check if new entry
           if (linebuf.empty()) {
-            notes.append("\r\n");
+            str_notes.append("\r\n");
             continue;
           }
 
@@ -1418,23 +1499,18 @@ int PWScore::ImportKeePassTextFile(const StringX &filename, Command *&pcommand)
               linebuf.substr(0, 13) == "Last Access: "       ||
               linebuf.substr(0, 19) == "Last Modification: " ||
               linebuf.substr(0, 9)  == "Expires: ") {
+            iss.seekg(currentpos);
             break;
           }
-          notes.append("\r\n");
-          notes.append(linebuf);
+          str_notes.append("\r\n");
+          str_notes.append(linebuf);
         }
       }
 
-      // Ignore any other text lines e.g. GroupTree, UUID, Icon, 
-      // Creation Time, Last Access, Last Modification & Expires
+      // Ignore any other text lines e.g. GroupTree & Icon, 
       else
-      if (linebuf.substr(0, 12) == "Group Tree: "        ||
-          linebuf.substr(0, 6)  == "UUID: "              ||
-          linebuf.substr(0, 6)  == "Icon: "              ||
-          linebuf.substr(0, 15) == "Creation Time: "     ||
-          linebuf.substr(0, 13) == "Last Access: "       ||
-          linebuf.substr(0, 19) == "Last Modification: " ||
-          linebuf.substr(0, 9)  == "Expires: ") {
+      if (linebuf.substr(0, 12) == "Group Tree: " ||
+          linebuf.substr(0, 6)  == "Icon: ") {
         continue;
       }
 
@@ -1444,15 +1520,28 @@ int PWScore::ImportKeePassTextFile(const StringX &filename, Command *&pcommand)
 
     // Create & append the new record.
     StringX sxGroup, sxTitle, sxUser, sxPassword, sxURL, sxNotes;
-    conv.FromUTF8((unsigned char *)group.c_str(), group.length(), sxGroup);
-    conv.FromUTF8((unsigned char *)title.c_str(), title.length(), sxTitle);
-    conv.FromUTF8((unsigned char *)user.c_str(), user.length(), sxUser);
-    conv.FromUTF8((unsigned char *)passwd.c_str(), passwd.length(), sxPassword);
-    conv.FromUTF8((unsigned char *)notes.c_str(), notes.length(), sxNotes);
-    conv.FromUTF8((unsigned char *)url.c_str(), url.length(), sxURL);
+    conv.FromUTF8((unsigned char *)str_group.c_str(), str_group.length(), sxGroup);
+    conv.FromUTF8((unsigned char *)str_title.c_str(), str_title.length(), sxTitle);
+    conv.FromUTF8((unsigned char *)str_user.c_str(), str_user.length(), sxUser);
+    conv.FromUTF8((unsigned char *)str_passwd.c_str(), str_passwd.length(), sxPassword);
+    conv.FromUTF8((unsigned char *)str_notes.c_str(), str_notes.length(), sxNotes);
+    conv.FromUTF8((unsigned char *)str_url.c_str(), str_url.length(), sxURL);
 
     CItemData ci_temp;
-    ci_temp.CreateUUID();
+    bool bNewUUID(true);
+    if (!str_uuid.empty()) {
+      const CUUID uuid(ua);
+      if (uuid != CUUID::NullUUID()) {
+        UUIDSetPair pr_uuid = setUUID.insert(uuid);
+        if (pr_uuid.second) {
+          ci_temp.SetUUID(uuid);
+          bNewUUID = false;
+        }
+      }
+    }
+
+    if (bNewUUID)
+      ci_temp.CreateUUID();
 
     if (!sxGroup.empty())
       ci_temp.SetGroup(sxGroup);
@@ -1464,6 +1553,16 @@ int PWScore::ImportKeePassTextFile(const StringX &filename, Command *&pcommand)
       ci_temp.SetNotes(sxNotes.c_str());
     if (!sxURL.empty())
       ci_temp.SetURL(sxURL);
+    if (ctime > 0)
+      ci_temp.SetCTime(ctime);
+    if (atime > 0)
+      ci_temp.SetATime(atime);
+    if (mtime > 0) {
+      ci_temp.SetPMTime(mtime);
+      ci_temp.SetRMTime(mtime);
+    }
+    if (xtime > 0)
+      ci_temp.SetXTime(xtime);
 
     ci_temp.SetStatus(CItemData::ES_ADDED);
 
