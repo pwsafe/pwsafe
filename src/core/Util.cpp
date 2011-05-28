@@ -539,8 +539,8 @@ void PWSUtil::WriteXMLField(ostream &os, const char *fname,
 {
   const unsigned char * utf8 = NULL;
   size_t utf8Len = 0;
-  string::size_type p = value.find(_T("]]>")); // special handling required
-  if (p == string::npos) {
+  StringX::size_type p = value.find(_T("]]>")); // special handling required
+  if (p == StringX::npos) {
     // common case
     os << tabs << "<" << fname << "><![CDATA[";
     if (utf8conv.ToUTF8(value, utf8, utf8Len))
@@ -564,7 +564,7 @@ void PWSUtil::WriteXMLField(ostream &os, const char *fname,
       os << "]]><![CDATA[";
       from = to;
       p = value.find(_T("]]>"), from); // are there more?
-      if (p == string::npos) {
+      if (p == StringX::npos) {
         to = value.length();
         slice = value.substr(from, (to - from));
       } else {

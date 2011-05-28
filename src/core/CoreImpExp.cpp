@@ -931,7 +931,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
          startpos < slinebuf.size(); 
          /* startpos advanced in body */) {
       size_t nextchar = slinebuf.find_first_of(fieldSeparator, startpos);
-      if (nextchar == stringT::npos)
+      if (nextchar == StringX::npos)
         nextchar = slinebuf.size();
       if (nextchar > 0) {
         if (itoken != i_Offset[NOTES]) {
@@ -943,7 +943,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
           stringT note(slinebuf.substr(startpos).c_str());
           size_t first_quote = note.find_first_of('\"');
           size_t last_quote = note.find_last_of('\"');
-          if (first_quote == last_quote && first_quote != string::npos) {
+          if (first_quote == last_quote && first_quote != stringT::npos) {
             //there was exactly one quote, meaning that we've a multi-line Note
             bool noteClosed = false;
             do {
@@ -1024,7 +1024,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
       const stringT &grouptitle = tokens[i_Offset[GROUPTITLE]];
       stringT entrytitle;
       size_t lastdot = grouptitle.find_last_of(TCHAR('.'));
-      if (lastdot != string::npos) {
+      if (lastdot != stringT::npos) {
         sxgroup = grouptitle.substr(0, lastdot).c_str();
         sxtitle = grouptitle.substr(lastdot + 1).c_str();
       } else {
@@ -1082,7 +1082,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
     const stringT &grouptitle = tokens[i_Offset[GROUPTITLE]];
     stringT entrytitle;
     size_t lastdot = grouptitle.find_last_of(TCHAR('.'));
-    if (lastdot != string::npos) {
+    if (lastdot != stringT::npos) {
       StringX newgroup(ImportedPrefix.empty() ?
                          _T("") : ImportedPrefix + _T("."));
       newgroup += grouptitle.substr(0, lastdot).c_str();
@@ -1199,7 +1199,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
         }
         size_t frompos = 0, pos;
         stringT fixedNotes;
-        while (string::npos != (pos = quotedNotes.find(delimiter, frompos))) {
+        while (stringT::npos != (pos = quotedNotes.find(delimiter, frompos))) {
           fixedNotes += quotedNotes.substr(frompos, (pos - frompos));
           fixedNotes += _T("\r\n");
           frompos = pos + 1;
