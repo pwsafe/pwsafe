@@ -1695,13 +1695,17 @@ int PWScore::DoAddDependentEntries(UUIDVector &dependentlist, CReport *pRpt,
         tmp = pci_curitem->GetPassword();
         // Remove leading '[['/'[~' & trailing ']]'/'~]'
         tmp = tmp.substr(2, tmp.length() - 4);
-        csPwdGroup = tmp.substr(0, tmp.find_first_of(_T(":")));
-        // Skip over 'group:'
-        tmp = tmp.substr(csPwdGroup.length() + 1);
-        csPwdTitle = tmp.substr(0, tmp.find_first_of(_T(":")));
-        // Skip over 'title:'
-        csPwdUser = tmp.substr(csPwdTitle.length() + 1);
-        iter = Find(csPwdGroup, csPwdTitle, csPwdUser);
+        if (std::count(tmp.begin(), tmp.end(), _T(':')) == 2) {
+          csPwdGroup = tmp.substr(0, tmp.find_first_of(_T(":")));
+          // Skip over 'group:'
+          tmp = tmp.substr(csPwdGroup.length() + 1);
+          csPwdTitle = tmp.substr(0, tmp.find_first_of(_T(":")));
+          // Skip over 'title:'
+          csPwdUser = tmp.substr(csPwdTitle.length() + 1);
+          iter = Find(csPwdGroup, csPwdTitle, csPwdUser);
+        } else {
+          iter = m_pwlist.end();
+        }
       }
 
       if (iter != m_pwlist.end()) {

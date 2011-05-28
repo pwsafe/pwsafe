@@ -1623,7 +1623,7 @@ void DboxMain::OnImportText()
     bool bWasEmpty = m_core.GetNumEntries() == 0;
     std::wstring strError;
     StringX TxtFileName = fd.GetPathName();
-    int numImported(0), numSkipped(0), numPWHErrors(0), numRenamed(0);
+    int numImported(0), numSkipped(0), numPWHErrors(0), numRenamed(0), numWarnings(0);
     wchar_t delimiter = dlg.m_defimpdelim[0];
     bool bImportPSWDsOnly = dlg.m_bImportPSWDsOnly == TRUE;
 
@@ -1665,8 +1665,15 @@ void DboxMain::OnImportText()
         // deliberate fallthru
       default:
       {
-        if (pcmd != NULL)
+        if (pcmd != NULL) {
           Execute(pcmd);
+          const size_t n = ((MultiCommands *)pcmd)->GetSize();
+          for (size_t i = 0; i < n; i++) {
+            int iw;
+            if (((MultiCommands *)pcmd)->GetRC(i, iw))
+              numWarnings += iw;
+          }
+        }
 
         rpt.WriteLine();
         CString cs_type;
@@ -1696,6 +1703,11 @@ void DboxMain::OnImportText()
           cs_type.LoadString(numRenamed == 1 ? IDSC_ENTRY : IDSC_ENTRIES);
           cs_tmp.Format(IDS_RECORDSRENAMED, numRenamed, cs_type);
           rpt.WriteLine((LPCWSTR)cs_tmp);
+          cs_temp += cs_tmp;
+        }
+
+        if (numWarnings != 0) {
+          CString cs_tmp(MAKEINTRESOURCE(IDS_WITHWARNINGS));
           cs_temp += cs_tmp;
         }
 

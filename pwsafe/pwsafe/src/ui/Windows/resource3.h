@@ -665,3 +665,5 @@
 #define IDS_COMPPROTECTED               5864
 #define IDS_WZACTIONFAILED              5865
 #define IDS_CANNOTCREATEDIR             5866
+#define IDS_WITHWARNINGS                5867
+
