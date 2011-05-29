@@ -9,9 +9,13 @@
 # unicoderelease
 ################################################################################
 
+ifneq ("$(CONFIG)", "")
 CONFIG=unicodedebug
+endif
 
+ifneq ("$(WX_CONFIG)", "")
 WX_CONFIG=/usr/bin/wx-config
+endif
 
 # debug
 ifeq ($(CONFIG),debug)
@@ -156,7 +160,7 @@ SOURCES= passwordsafeframe.cpp \
 	AdvancedSelectionDlg.cpp ViewReport.cpp dragbar.cpp \
 	PWSDragBar.cpp MergeDlg.cpp ExternalKeyboardButton.cpp \
 	PwsSync.cpp DbSelectionPanel.cpp CompareDlg.cpp \
-	wxutils.cpp
+	wxutils.cpp ComparisonGridTable.cpp
 
 
 OBJECTS=$(SOURCES:%.cpp=$(OBJECTPATH)/%.o)
@@ -164,6 +168,7 @@ OBJECTS += $(RESOURCEOBJECT)
 
 
 all:	$(BUILDPATHS) $(MACPACKAGEINFO) $(OUTPUTPATH)/$(PROGRAM)
+	@echo building "$(CONFIG)" "$@"
 
 debug release unicodedebug unicoderelease:
 	$(MAKE) all CONFIG=$@

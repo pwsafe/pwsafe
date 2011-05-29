@@ -25,13 +25,12 @@
 #include "./wxutils.h"
 #include "../../core/PWScore.h"
 #include "./AdvancedSelectionDlg.h"
-#include "../../core/DBCompareData.h"
+#include "./ComparisonGridTable.h"
 
 #include <wx/statline.h>
 #include <wx/grid.h>
 
-enum {ID_BTN_COMPARE = 100,
-    };
+enum {ID_BTN_COMPARE = 100 };
 
 BEGIN_EVENT_TABLE( CompareDlg, wxDialog )
   EVT_BUTTON( ID_BTN_COMPARE,  CompareDlg::OnCompare )
@@ -44,12 +43,17 @@ CompareDlg::CompareDlg(wxWindow* parent, PWScore* currentCore): wxDialog(parent,
                                                                 wxDefaultSize,
                                                                 wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER|wxMAXIMIZE_BOX),
                                                                 m_currentCore(currentCore),
+                                                                m_otherCore(new PWScore),
                                                                 m_selCriteria(new SelectionCriteria),
                                                                 m_dbPanel(0),
                                                                 m_dbSelectionPane(0),
                                                                 m_optionsPane(0),
                                                                 m_conflictsPane(0),
-                                                                m_conflictsGrid(0)
+                                                                m_conflictsGrid(0),
+                                                                m_current(new CompareData),
+                                                                m_comparison(new CompareData),
+                                                                m_conflicts(new CompareData),
+                                                                m_identical(new CompareData)
 {
   SetExtraStyle(wxWS_EX_VALIDATE_RECURSIVELY);
 
@@ -61,7 +65,12 @@ CompareDlg::CompareDlg(wxWindow* parent, PWScore* currentCore): wxDialog(parent,
 
 CompareDlg::~CompareDlg()
 {
+  delete m_otherCore;
   delete m_selCriteria;
+  delete m_current;
+  delete m_comparison;
+  delete m_conflicts;
+  delete m_identical;
 }
 
 void CompareDlg::CreateControls()
@@ -168,28 +177,27 @@ void CompareDlg::OnCompare(wxCommandEvent& )
 
 void CompareDlg::DoCompare()
 {
-  PWScore otherCore;
-  if (ReadCore(otherCore, m_dbPanel->m_filepath,
+  if (ReadCore(*m_otherCore, m_dbPanel->m_filepath,
                           m_dbPanel->m_combination,
                           true,
                           this) == PWScore::SUCCESS) {
-    CompareData current, comparison, conflicts, identical;
     bool treatWhitespacesAsEmpty = false;
-    m_currentCore->Compare(&otherCore, 
+    m_currentCore->Compare(m_otherCore, 
                            m_selCriteria->GetSelectedFields(),
                            m_selCriteria->HasSubgroupRestriction(),
                            treatWhitespacesAsEmpty,
                            tostdstring(m_selCriteria->SubgroupSearchText()),
                            m_selCriteria->SubgroupObject(),
                            m_selCriteria->SubgroupFunction(),
-                           current,
-                           comparison,
-                           conflicts,
-                           identical);
+                           *m_current,
+                           *m_comparison,
+                           *m_conflicts,
+                           *m_identical);
 
     m_dbSelectionPane->Collapse();
     m_optionsPane->Collapse();
     m_conflictsPane->Show();
+    m_conflictsGrid->SetTable(new ComparisonGridTable(m_selCriteria, m_conflicts, m_currentCore, m_otherCore));
     m_conflictsPane->Expand();
     Layout();
   }

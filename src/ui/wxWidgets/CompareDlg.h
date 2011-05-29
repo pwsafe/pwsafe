@@ -14,6 +14,7 @@
 
 #include <wx/dialog.h>
 #include <wx/collpane.h>
+#include "../../core/DBCompareData.h"
 
 class PWScore;
 struct SelectionCriteria;
@@ -36,13 +37,14 @@ public:
 
 private:
   PWScore*            m_currentCore;
+  PWScore*            m_otherCore;
   SelectionCriteria*  m_selCriteria;
   DbSelectionPanel*   m_dbPanel;
   wxCollapsiblePane*  m_dbSelectionPane;
   wxCollapsiblePane*  m_optionsPane;
   wxCollapsiblePane*  m_conflictsPane;
   wxGrid*             m_conflictsGrid;
-  size_t              m_gridIndex;      //index of grids in dlgSizer
+  CompareData        *m_current, *m_comparison, *m_conflicts, *m_identical;
 
   //DECLARE_CLASS( MergeDlg )
   DECLARE_EVENT_TABLE()
