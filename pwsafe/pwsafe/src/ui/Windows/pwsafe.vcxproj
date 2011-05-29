@@ -1258,7 +1258,6 @@
     <ClInclude Include="PasskeyChangeDlg.h" />
     <ClInclude Include="PasskeyEntry.h" />
     <ClInclude Include="PasskeySetup.h" />
-    <ClInclude Include="PasswordDb.h" />
     <ClInclude Include="PasswordSafe.h" />
     <ClInclude Include="PasswordSubsetDlg.h" />
     <ClInclude Include="Properties.h" />
