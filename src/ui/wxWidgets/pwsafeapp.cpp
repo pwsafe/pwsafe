@@ -53,9 +53,6 @@ using namespace std;
 #include <wx/snglinst.h>
 
 ////@begin XPM images
-#ifndef __WXOSX_COCOA__
-#include "./graphics/pwsafe8.xpm"
-#endif
 #include "./graphics/pwsafe16.xpm"
 #include "./graphics/pwsafe32.xpm"
 #include "./graphics/pwsafe48.xpm"
