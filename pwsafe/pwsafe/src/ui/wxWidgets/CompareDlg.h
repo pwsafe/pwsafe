@@ -20,16 +20,16 @@ class PWScore;
 struct SelectionCriteria;
 class DbSelectionPanel;
 class wxGrid;
+struct ComparisonData;
 
 class CompareDlg: public wxDialog
 {
   void CreateControls();
   wxCollapsiblePane* CreateDBSelectionPanel(wxSizer* sizer);
   wxCollapsiblePane* CreateOptionsPanel(wxSizer* dlgSizer);
-  wxCollapsiblePane* CreateConflictsPanel(wxSizer* dlgSizer);
-  void OnReLayout(wxCommandEvent& evt);
+  wxCollapsiblePane* CreateDataPanel(wxSizer* dlgSizer, const wxString& title, ComparisonData* cd);
   void OnCompare(wxCommandEvent& );
-  void DoCompare();
+  void OnPaneCollapse(wxCollapsiblePaneEvent& evt);
 
 public:
   CompareDlg(wxWindow* parent, PWScore* core);
@@ -42,11 +42,10 @@ private:
   DbSelectionPanel*   m_dbPanel;
   wxCollapsiblePane*  m_dbSelectionPane;
   wxCollapsiblePane*  m_optionsPane;
-  wxCollapsiblePane*  m_conflictsPane;
-  wxGrid*             m_conflictsGrid;
-  CompareData        *m_current, *m_comparison, *m_conflicts, *m_identical;
+  ComparisonData      *m_current, *m_comparison, *m_conflicts, *m_identical;
 
-  //DECLARE_CLASS( MergeDlg )
+  void DoCompare();
+
   DECLARE_EVENT_TABLE()
 };
 

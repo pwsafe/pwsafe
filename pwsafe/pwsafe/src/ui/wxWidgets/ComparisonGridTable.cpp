@@ -34,14 +34,15 @@ ComparisonGridTable::ComparisonGridTable(SelectionCriteria* criteria,
                                                           m_compData(data),
                                                           m_currentCore(current),
                                                           m_otherCore(other),
-                                                          m_colFields(new CItemData::FieldType[criteria->GetSelectedFields().count()])
+                                                          m_colFields(new CItemData::FieldType[criteria->GetNumSelectedFields()-1])
 {
   //this is the order in which we want to display the comparison grids
   const CItemData::FieldType fields[] = { CItemData::PASSWORD, CItemData::URL, 
                                           CItemData::AUTOTYPE, CItemData::PWHIST, 
                                           CItemData::RUNCMD, CItemData::EMAIL, CItemData::NOTES };
-  for(size_t col = 0, idx = 0; idx < WXSIZEOF(fields) && col > 0; idx++) {
-    if (m_criteria->GetSelectedFields().test(fields[idx]))
+  const size_t ncols = size_t(GetNumberCols());
+  for(size_t col = 0, idx = 0; (idx < WXSIZEOF(fields)) && (col < ncols); idx++) {
+    if (m_criteria->IsFieldSelected(fields[idx]))
       m_colFields[col++] = fields[idx];
   }
 }
@@ -59,7 +60,7 @@ int ComparisonGridTable::GetNumberCols()
   //GetSelectedFields() will return at-least G+T+U
   //We club T & U and display only Group + title[user] + fields
   //Hence return one less
-  return m_criteria->GetSelectedFields().count() - 1; 
+  return m_criteria->GetNumSelectedFields() - 1; 
 }
 
 bool ComparisonGridTable::IsEmptyCell(int row, int col)
@@ -109,8 +110,10 @@ wxString ComparisonGridTable::GetValue(int row, int col)
       case 0:
         return towxstring(m_compData->at(row).group);
       case 1:
-        return wxString() << towxstring(m_compData->at(row).title) << wxT('[')
-                            << towxstring(m_compData->at(row).user) << wxT(']');
+      {
+        wxString ret;
+        return ret << m_compData->at(row).title << wxT('[') <<  m_compData->at(row).user << wxT(']');
+      }
       default:
       {
         st_CompareData cd = m_compData->at(row);
@@ -126,9 +129,9 @@ wxString ComparisonGridTable::GetValue(int row, int col)
           ItemListConstIter itr1 = m_otherCore->Find(cd.uuid1);
           wxString val;
           if (itr0 != m_currentCore->GetEntryEndIter())
-            val << towxstring(itr0->second.GetFieldValue(m_colFields[col-2]));
+            val << itr0->second.GetFieldValue(m_colFields[col-2]);
           if (itr1 != m_otherCore->GetEntryEndIter())
-            val << wxT('\n') << towxstring(itr1->second.GetFieldValue(m_colFields[col-2]));
+            val << wxT('\n') << itr1->second.GetFieldValue(m_colFields[col-2]);
           return val;
         }
       }
@@ -139,4 +142,21 @@ wxString ComparisonGridTable::GetValue(int row, int col)
 
 void ComparisonGridTable::SetValue(int /*row*/, int /*col*/, const wxString& /*value*/)
 {
+}
+
+wxString ComparisonGridTable::GetColLabelValue(int col)
+{
+  switch(col) {
+    case 0:
+      return towxstring(CItemData::FieldName(CItemData::GROUP));
+    case 1:
+    {
+      wxString label;
+      label << CItemData::FieldName(CItemData::TITLE) << wxT('[') 
+                        << CItemData::FieldName(CItemData::USER) << wxT(']');
+      return label;
+    }
+    default:
+      return towxstring(CItemData::FieldName(m_colFields[col-2]));
+  }
 }

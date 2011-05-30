@@ -17,10 +17,6 @@ inline wxString& operator << ( wxString& str, const wxSize& sz) {
   return str << wxT('[') << sz.GetWidth() << wxT(',') << sz.GetHeight() << wxT(']');
 }
 
-inline wxString& operator << ( wxString& str, const StringX& s) {
-  return str << s.c_str();
-}
-
 inline wxString towxstring(const StringX& str) {
   return wxString(str.data(), str.size());
 }
@@ -39,6 +35,14 @@ inline stringT tostdstring(const wxString& str) {
 
 inline StringX tostringx(const wxString& str) {
   return StringX(str.data(), str.size());
+}
+
+inline wxString& operator<<(wxString& w, const StringX& s) {
+  return w << towxstring(s);
+}
+
+inline wxString& operator<<(wxString& w, const stringT& s) {
+  return w << towxstring(s);
 }
 
 inline void ApplyPasswordFont(wxWindow* win)

@@ -6,6 +6,8 @@
 #include "./wxutils.h"
 
 extern CItemData::FieldType subgroups[];
+size_t GetNumFieldsSelectable();
+CItemData::FieldType GetSelectableField(size_t idx);
 
 struct _subgroupFunctions {
   const charT* name;
@@ -26,7 +28,7 @@ struct SelectionCriteria
                         m_subgroupFunction(0),          // index into subgroupFunctions array defined in .cpp
                         m_fDirty(false)
   {
-    m_bsFields.set();
+    SelectAllFields();
   }
   
   SelectionCriteria(const SelectionCriteria& other):  m_fCaseSensitive(other.m_fCaseSensitive),
@@ -53,12 +55,15 @@ public:
   
   bool HasSubgroupRestriction() const             { return m_fUseSubgroups; }
   CItemData::FieldBits GetSelectedFields() const  { return m_bsFields; }
+  size_t GetNumSelectedFields() const             { return m_bsFields.count(); }
   wxString SubgroupSearchText() const             { return m_subgroupText; }
   bool CaseSensitive() const                      { return m_fCaseSensitive; }
   CItemData::FieldType SubgroupObject() const     { return subgroups[m_subgroupObject];}
   PWSMatch::MatchRule  SubgroupFunction() const   { return subgroupFunctions[m_subgroupFunction].function; }
   int  SubgroupFunctionWithCase() const           { return m_fCaseSensitive? -SubgroupFunction(): SubgroupFunction(); }
-  void SelectAllFields()                          { m_bsFields.set(); }
+  void SelectAllFields()                          { for(size_t idx = 0; idx < GetNumFieldsSelectable(); ++idx) 
+                                                      m_bsFields.set(GetSelectableField(idx));
+                                                  }
   void SelectField(CItemData::FieldType ft)       { m_bsFields.set(ft); }
   void ResetField(CItemData::FieldType ft)        { m_bsFields.reset(ft); }
   size_t SelectedFieldsCount() const              { return m_bsFields.count(); }
