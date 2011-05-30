@@ -39,6 +39,7 @@ public:
   bool IsEmptyCell(int row, int col);
   virtual wxString GetValue(int row, int col);
   virtual void SetValue(int row, int col, const wxString& value);
+  virtual wxString GetColLabelValue(int col);
   
 };
 
