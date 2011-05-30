@@ -312,9 +312,6 @@ bool PwsafeApp::OnInit()
     _("Error initializing help"), wxOK | wxICON_ERROR);
   m_controller->SetParentWindow(NULL); // try to de-modalize. Partially (?) successful
 
-#ifndef __WXOSX_COCOA__
-  m_appIcons.AddIcon(pwsafe8);
-#endif
   m_appIcons.AddIcon(pwsafe16);
   m_appIcons.AddIcon(pwsafe32);
   m_appIcons.AddIcon(pwsafe48);
