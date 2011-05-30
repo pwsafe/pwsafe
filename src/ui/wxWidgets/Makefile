@@ -9,13 +9,9 @@
 # unicoderelease
 ################################################################################
 
-ifneq ("$(CONFIG)", "")
-CONFIG=unicodedebug
-endif
+CONFIG?=unicodedebug
 
-ifneq ("$(WX_CONFIG)", "")
-WX_CONFIG=/usr/bin/wx-config
-endif
+WX_CONFIG?=/usr/bin/wx-config
 
 # debug
 ifeq ($(CONFIG),debug)
