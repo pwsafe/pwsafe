@@ -497,25 +497,25 @@ st_CompareData * CCompareResultsDlg::GetCompareData(const LONG_PTR dwItemData, C
   switch (iList) {
     case IDENTICAL:
       cd_iter = std::find_if(self->m_Identical.begin(), self->m_Identical.end(),
-        equal_id(id));
+                             std::bind2nd(std::equal_to<int>(), id));
       if (cd_iter != self->m_Identical.end())
         retval = &*cd_iter;
       break;
     case BOTH:
       cd_iter = std::find_if(self->m_Conflicts.begin(), self->m_Conflicts.end(),
-        equal_id(id));
+                             std::bind2nd(std::equal_to<int>(), id));
       if (cd_iter != self->m_Conflicts.end())
         retval = &*cd_iter;
       break;
     case CURRENT:
       cd_iter = std::find_if(self->m_OnlyInCurrent.begin(), self->m_OnlyInCurrent.end(),
-        equal_id(id));
+                             std::bind2nd(std::equal_to<int>(), id));
       if (cd_iter != self->m_OnlyInCurrent.end())
         retval = &*cd_iter;
       break;
     case COMPARE:
       cd_iter = std::find_if(self->m_OnlyInComp.begin(), self->m_OnlyInComp.end(),
-        equal_id(id));
+                             std::bind2nd(std::equal_to<int>(), id));
       if (cd_iter != self->m_OnlyInComp.end())
         retval = &*cd_iter;
       break;
@@ -648,19 +648,22 @@ bool CCompareResultsDlg::CopyLeftOrRight(const bool bCopyLeft)
   switch (indatabase) {
     case BOTH:
       m_numConflicts--;
-      cd_iter = std::find_if(m_Conflicts.begin(), m_Conflicts.end(), equal_id(id));
+      cd_iter = std::find_if(m_Conflicts.begin(), m_Conflicts.end(),
+                             std::bind2nd(std::equal_to<int>(), id));
       if (cd_iter != m_Conflicts.end())
         m_Conflicts.erase(cd_iter);
       break;
     case CURRENT:
       m_numOnlyInCurrent--;
-      cd_iter = std::find_if(m_OnlyInCurrent.begin(), m_OnlyInCurrent.end(), equal_id(id));
+      cd_iter = std::find_if(m_OnlyInCurrent.begin(), m_OnlyInCurrent.end(),
+                             std::bind2nd(std::equal_to<int>(), id));
       if (cd_iter != m_OnlyInCurrent.end())
         m_OnlyInCurrent.erase(cd_iter);
       break;
     case COMPARE:
       m_numOnlyInComp--;
-      cd_iter = std::find_if(m_OnlyInComp.begin(), m_OnlyInComp.end(), equal_id(id));
+      cd_iter = std::find_if(m_OnlyInComp.begin(), m_OnlyInComp.end(),
+                             std::bind2nd(std::equal_to<int>(), id));
       if (cd_iter != m_OnlyInComp.end())
         m_OnlyInComp.erase(cd_iter);
       break;

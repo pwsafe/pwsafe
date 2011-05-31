@@ -57,7 +57,9 @@ struct st_CompareData {
     }
     return *this;
   }
-
+    
+  operator int() {return id;}
+    
   pws_os::CUUID uuid0;  // original DB
   pws_os::CUUID uuid1;  // comparison DB
   CItemData::FieldBits bsDiffs;  // list of items compared
@@ -70,15 +72,6 @@ struct st_CompareData {
   bool unknflds0;    // original DB
   bool unknflds1;    // comparison DB
   bool bIsProtected0;
-};
-
-struct equal_id {
-  equal_id(int const& id) : m_id(id) {}
-
-  bool operator()(st_CompareData const& rdata) const
-  { return (rdata.id == m_id); }
-
-  int m_id;
 };
 
 // Vector of entries passed from DboxMain::Compare to CompareResultsDlg
