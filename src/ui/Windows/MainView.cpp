@@ -921,10 +921,18 @@ void DboxMain::RefreshViews(const int iView)
 
   if (m_core.GetNumEntries() == 0) {
     if (iView & iListOnly) {
+      if (m_ctlItemList.GetItemCount() > 0) {
+        m_ctlItemList.SetRedraw(FALSE);
+        m_ctlItemList.DeleteAllItems();
+      }
       m_ctlItemList.SetRedraw(TRUE); 
       m_ctlItemList.Invalidate();
     }
     if (iView & iTreeOnly) {
+      if (m_ctlItemTree.GetCount () > 0) {
+        m_ctlItemTree.SetRedraw(FALSE);
+        m_ctlItemTree.DeleteAllItems();
+      }
       m_ctlItemTree.SetRedraw(TRUE);
       m_ctlItemTree.Invalidate();
     }
