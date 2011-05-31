@@ -38,7 +38,7 @@ class Command
 public:
   virtual ~Command();
   virtual int Execute() = 0;
-  virtual int Redo() = 0;
+  virtual int Redo() {return Execute();} // common case
   virtual void Undo() = 0;
 
   void SetNoGUINotify() {m_bNotifyGUI = false;}
@@ -100,7 +100,6 @@ public:
                                   ExecuteFn When, GUI_Action ga)
   { return new UpdateGUICommand(pcomInt, When, ga); }
   int Execute();
-  int Redo();
   void Undo();
 
 private:
@@ -120,7 +119,6 @@ public:
                                 StringX &sxNewDBPrefs)
   { return new DBPrefsCommand(pcomInt, sxNewDBPrefs); }
   int Execute();
-  int Redo();
   void Undo();
 
 private:
@@ -145,7 +143,6 @@ public:
   { return new AddEntryCommand(pcomInt, ci, base_uuid, pcmd); }
   ~AddEntryCommand();
   int Execute();
-  int Redo();
   void Undo();
   friend class DeleteEntryCommand; // allow access to c'tor
 
@@ -168,7 +165,6 @@ public:
   { return new DeleteEntryCommand(pcomInt, ci, pcmd); }
   ~DeleteEntryCommand();
   int Execute();
-  int Redo();
   void Undo();
   friend class AddEntryCommand; // allow access to c'tor
 
@@ -190,7 +186,6 @@ public:
   { return new EditEntryCommand(pcomInt, old_ci, new_ci); }
   ~EditEntryCommand();
   int Execute();
-  int Redo();
   void Undo();
 
 private:
@@ -209,7 +204,6 @@ public:
                                     const StringX &value)
   { return new UpdateEntryCommand(pcomInt, ci, ftype, value); }
   int Execute();
-  int Redo();
   void Undo();
 
 private:
@@ -237,7 +231,6 @@ public:
                                        const StringX sxNewPassword)
   { return new UpdatePasswordCommand(pcomInt, ci, sxNewPassword); }
   int Execute();
-  int Redo();
   void Undo();
 
 private:
@@ -258,7 +251,6 @@ public:
                                           const CItemData::EntryType type)
   { return new AddDependentEntryCommand(pcomInt, base_uuid, entry_uuid, type); }
   int Execute();
-  int Redo();
   void Undo();
 
 private:
@@ -283,7 +275,6 @@ public:
                                           type, iVia); }
   ~AddDependentEntriesCommand();
   int Execute();
-  int Redo();
   void Undo();
 
 private:
@@ -318,7 +309,6 @@ public:
   { return new RemoveDependentEntryCommand(pcomInt, base_uuid, entry_uuid,
                                            type); }
   int Execute();
-  int Redo();
   void Undo();
 
 private:
@@ -341,7 +331,6 @@ public:
   { return new MoveDependentEntriesCommand(pcomInt, from_baseuuid, to_baseuuid,
                                            type); }
   int Execute();
-  int Redo();
   void Undo();
 
 private:
@@ -363,7 +352,6 @@ public:
   { return new UpdatePasswordHistoryCommand(pcomInt, iAction,
                                             new_default_max); }
   int Execute();
-  int Redo();
   void Undo();
 
 private:
@@ -382,7 +370,6 @@ public:
   { return new MultiCommands(pcomInt); }
   ~MultiCommands();
   int Execute();
-  int Redo();
   void Undo();
 
   void Add(Command *pcmd);
