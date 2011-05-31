@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="iso-8859-1" standalone="yes"?>
-<xs:schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="3.18">
+<xs:schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+attributeFormDefault="unqualified" elementFormDefault="qualified"
+xmlns:xs="http://www.w3.org/2001/XMLSchema" version="3.18">
 
 <xs:annotation>
   <xs:documentation xml:lang="en">
@@ -10,7 +12,11 @@
     Either is currently allowed, although future updates may remove the 'ltime' choice and therefore
     errors will be issued during XML Import if the 'ltime' element is present in the XML file.
     In V3.18, preference "DisplayExpandedAddEditDlg" was made obsolete and will now be ignored if present.
-    In V3.26, support for importing database and entry 'Unknown Fields' has been removed as they cannot be processed.
+    In V3.26, support for importing database and entry 'Unknown Fields' has been removed as they cannot be
+    processed. In addition, fields ctime, ltime, xtime, pmtime and rmtime are being depreciated in favour
+    of the XML standard for representing datetimes (fields ctimex, ltimex, xtimex, pmtimex and rmtimex).
+    In a future release, the old fields will no longer be supported making this schema 'cleaner' and
+    'simpler'.
   </xs:documentation>
 </xs:annotation>
 
@@ -170,15 +176,12 @@
               <xs:element name="autotype" type="stringType" minOccurs="0" maxOccurs="1" />
               <xs:element name="notes" type="stringType" minOccurs="0" maxOccurs="1" />
               <xs:element name="uuid" type="uuidType" minOccurs="0" maxOccurs="1" />
-              <xs:element name="ctime" type="datetimestampType" minOccurs="0" maxOccurs="1" />
-              <xs:element name="atime" type="datetimestampType" minOccurs="0" maxOccurs="1" />
-              <!-- ltime is depreciated and replaced by xtime 
-                   If both present, xtime values take precedence -->
-              <xs:element name="ltime" type="datetimestampType" minOccurs="0" maxOccurs="1" />
-              <xs:element name="xtime" type="datetimestampType" minOccurs="0" maxOccurs="1" />
+              <xs:element ref="typeCtime" minOccurs="0" maxOccurs="1" />
+              <xs:element ref="typeAtime" minOccurs="0" maxOccurs="1" />
+              <xs:element ref="typeXtime" minOccurs="0" maxOccurs="1" />
+              <xs:element ref="typePMtime" minOccurs="0" maxOccurs="1" />
+              <xs:element ref="typeRMtime" minOccurs="0" maxOccurs="1" />
               <xs:element name="xtime_interval" type="expirydaysType" minOccurs="0" maxOccurs="1" />
-              <xs:element name="pmtime" type="datetimestampType" minOccurs="0" maxOccurs="1" />
-              <xs:element name="rmtime" type="datetimestampType" minOccurs="0" maxOccurs="1" />
               <xs:element name="pwhistory" minOccurs="0" maxOccurs="1">
               <!-- Start Password History Fields -->
                 <xs:complexType>
@@ -250,5 +253,25 @@
     </xs:complexType>
   <!-- End Database -->
   </xs:element>
+
+  <!-- Since cannot have xs:choice within a xs:all section - do it this way.
+       Once the old fields are obsolete, we ca just have the new fields in
+       place of the 'ref' entries above. -->
+  <xs:element name="typeCtime" abstract="true" />
+  <xs:element name="ctime" type="datetimestampType" substitutionGroup="typeCtime" />
+  <xs:element name="ctimex" type="xs:dateTime"  substitutionGroup="typeCtime" />
+  <xs:element name="typeAtime" abstract="true" />
+  <xs:element name="atime" type="datetimestampType" substitutionGroup="typeAtime" />
+  <xs:element name="atimex" type="xs:dateTime"  substitutionGroup="typeAtime" />
+  <xs:element name="typeXtime" abstract="true" />
+  <xs:element name="ltime" type="datetimestampType" substitutionGroup="typeXtime" />
+  <xs:element name="xtime" type="datetimestampType" substitutionGroup="typeXtime" />
+  <xs:element name="xtimex" type="xs:dateTime"  substitutionGroup="typeXtime" />
+  <xs:element name="typePMtime" abstract="true" />
+  <xs:element name="pmtime" type="datetimestampType" substitutionGroup="typePMtime" />
+  <xs:element name="pmtimex" type="xs:dateTime"  substitutionGroup="typePMtime" />
+  <xs:element name="typeRMtime" abstract="true" />
+  <xs:element name="rmtime" type="datetimestampType" substitutionGroup="typeRMtime" />
+  <xs:element name="rmtimex" type="xs:dateTime"  substitutionGroup="typeRMtime" />
 </xs:schema>
 <!-- End of proper Password Safe validation XSD -->

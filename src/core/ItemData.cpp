@@ -883,15 +883,15 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
 
   GetCTime(t);
   if (bsExport.test(CItemData::CTIME) && t)
-    oss << PWSUtil::GetXMLTime(2, "ctime", t, utf8conv);
+    oss << PWSUtil::GetXMLTime(2, "ctimex", t, utf8conv);
 
   GetATime(t);
   if (bsExport.test(CItemData::ATIME) && t)
-    oss << PWSUtil::GetXMLTime(2, "atime", t, utf8conv);
+    oss << PWSUtil::GetXMLTime(2, "atimex", t, utf8conv);
 
   GetXTime(t);
   if (bsExport.test(CItemData::XTIME) && t)
-    oss << PWSUtil::GetXMLTime(2, "xtime", t, utf8conv);
+    oss << PWSUtil::GetXMLTime(2, "xtimex", t, utf8conv);
 
   GetXTimeInt(i32);
   if (bsExport.test(CItemData::XTIME_INT) && i32 > 0 && i32 <= 3650)
@@ -899,11 +899,11 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
 
   GetPMTime(t);
   if (bsExport.test(CItemData::PMTIME) && t)
-    oss << PWSUtil::GetXMLTime(2, "pmtime", t, utf8conv);
+    oss << PWSUtil::GetXMLTime(2, "pmtimex", t, utf8conv);
 
   GetRMTime(t);
   if (bsExport.test(CItemData::RMTIME) && t)
-    oss << PWSUtil::GetXMLTime(2, "rmtime", t, utf8conv);
+    oss << PWSUtil::GetXMLTime(2, "rmtimex", t, utf8conv);
 
   PWPolicy pwp;
   GetPWPolicy(pwp);
