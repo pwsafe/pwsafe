@@ -28,6 +28,7 @@ struct ExpPWEntry {
     return *this;
   };
 
+  operator pws_os::CUUID() {return uuid;}
   pws_os::CUUID uuid;
   time_t expirytttXTime;
 };
@@ -39,16 +40,6 @@ public:
   void Update(const CItemData &ci) {Remove(ci); Add(ci);}
   void Remove(const CItemData &ci);
   ExpiredList GetExpired(const int &idays); // return a subset
-};
-
-struct ee_equal_uuid {
-  ee_equal_uuid(const pws_os::CUUID &uuid) : m_uuid(uuid) {}
-
-  bool operator()(const ExpPWEntry &ee) const
-  { return m_uuid == ee.uuid; }
-
-  ee_equal_uuid& operator=(const ee_equal_uuid&); // Do not implement
-  const pws_os::CUUID m_uuid;
 };
 
 #endif /* __EXPIREDLIST_H */

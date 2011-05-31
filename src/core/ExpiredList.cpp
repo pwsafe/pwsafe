@@ -49,7 +49,8 @@ void ExpiredList::Add(const CItemData &ci)
 void ExpiredList::Remove(const CItemData &ci)
 {
   ExpiredList::iterator iter = std::find_if(begin(), end(),
-                                            ee_equal_uuid(ci.GetUUID()));
+                                            std::bind2nd(std::equal_to<pws_os::CUUID>(),
+                                                         ci.GetUUID()));
   if (iter != end())
     erase(iter);
 }
