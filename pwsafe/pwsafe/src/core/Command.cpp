@@ -103,11 +103,6 @@ int MultiCommands::Execute()
   return 0;
 }
 
-int MultiCommands::Redo()
-{
-  return Execute();
-}
-
 void MultiCommands::Undo()
 {
   std::vector<Command *>::reverse_iterator cmd_rIter;
@@ -211,15 +206,6 @@ int UpdateGUICommand::Execute()
   return 0;
 }
 
-int UpdateGUICommand::Redo()
-{
-  if (m_When == WN_EXECUTE || m_When == WN_EXECUTE_REDO || 
-      m_When == WN_REDO || m_When == WN_ALL) {
-    m_pcomInt->NotifyGUINeedsUpdating(m_ga, CUUID::NullUUID());
-  }
-  return 0;
-}
-
 void UpdateGUICommand::Undo()
 {
   if (m_When == WN_UNDO || m_When == WN_ALL) {
@@ -253,11 +239,6 @@ int DBPrefsCommand::Execute()
 
   m_bState = true;
   return 0;
-}
-
-int DBPrefsCommand::Redo()
-{
-  return Execute();
 }
 
 void DBPrefsCommand::Undo()
@@ -329,11 +310,6 @@ int AddEntryCommand::Execute()
 
   m_bState = true;
   return 0;
-}
-
-int AddEntryCommand::Redo()
-{
-  return Execute();
 }
 
 void AddEntryCommand::Undo()
@@ -419,11 +395,6 @@ int DeleteEntryCommand::Execute()
   return 0;
 }
 
-int DeleteEntryCommand::Redo()
-{
-  return Execute();
-}
-
 void DeleteEntryCommand::Undo()
 {
   CUUID uuid = m_ci.GetUUID();
@@ -500,11 +471,6 @@ int EditEntryCommand::Execute()
 
   m_bState = true;
   return 0;
-}
-
-int EditEntryCommand::Redo()
-{
-  return Execute();
 }
 
 void EditEntryCommand::Undo()
@@ -592,11 +558,6 @@ int UpdateEntryCommand::Execute()
   return 0;
 }
 
-int UpdateEntryCommand::Redo()
-{
-  return Execute();
-}
-
 void UpdateEntryCommand::Undo()
 {
   Doit(m_entry_uuid, m_ftype, m_old_value, m_old_status, UpdateGUICommand::WN_UNDO);
@@ -652,11 +613,6 @@ int UpdatePasswordCommand::Execute()
   return 0;
 }
 
-int UpdatePasswordCommand::Redo()
-{
-  return Execute();
-}
-
 void UpdatePasswordCommand::Undo()
 {
   if (m_pcomInt->IsReadOnly())
@@ -701,11 +657,6 @@ int AddDependentEntryCommand::Execute()
   m_pcomInt->DoAddDependentEntry(m_base_uuid, m_entry_uuid, m_type);
   m_bState = true;
   return 0;
-}
-
-int AddDependentEntryCommand::Redo()
-{
-  return Execute();
 }
 
 void AddDependentEntryCommand::Undo()
@@ -762,11 +713,6 @@ int AddDependentEntriesCommand::Execute()
   return rc;
 }
 
-int AddDependentEntriesCommand::Redo()
-{
-  return Execute();
-}
-
 void AddDependentEntriesCommand::Undo()
 {
   if (m_pcomInt->IsReadOnly())
@@ -810,11 +756,6 @@ int RemoveDependentEntryCommand::Execute()
   return 0;
 }
 
-int RemoveDependentEntryCommand::Redo()
-{
-  return Execute();
-}
-
 void RemoveDependentEntryCommand::Undo()
 {
   if (m_pcomInt->IsReadOnly())
@@ -850,11 +791,6 @@ int MoveDependentEntriesCommand::Execute()
   return 0;
 }
 
-int MoveDependentEntriesCommand::Redo()
-{
-  return Execute();
-}
-
 void MoveDependentEntriesCommand::Undo()
 {
   if (m_pcomInt->IsReadOnly())
@@ -886,11 +822,6 @@ int UpdatePasswordHistoryCommand::Execute()
                                               m_mapSavedHistory);
   m_bState = true;
   return rc;
-}
-
-int UpdatePasswordHistoryCommand::Redo()
-{
-  return Execute();
 }
 
 void UpdatePasswordHistoryCommand::Undo()
