@@ -129,6 +129,12 @@ bool XMLFileHandlers::ProcessStartElement(const int icurrent_element)
       cur_pwhistory_entry->changed = _T("");
       cur_pwhistory_entry->oldpassword = _T("");
       break;
+    case XLE_CTIMEX:
+    case XLE_ATIMEX:
+    case XLE_XTIMEX:
+    case XLE_PMTIMEX:
+    case XLE_RMTIMEX:
+      break;
     case XLE_CTIME:
     case XLE_ATIME:
     case XLE_LTIME:
@@ -237,6 +243,12 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
             cur_entry->entrytype = SHORTCUT;
         }
       }
+      break;
+    case XLE_CTIMEX:
+    case XLE_ATIMEX:
+    case XLE_XTIMEX:
+    case XLE_PMTIMEX:
+    case XLE_RMTIMEX:
       break;
     case XLE_CTIME:
       Replace(cur_entry->ctime, _T('-'), _T('/'));

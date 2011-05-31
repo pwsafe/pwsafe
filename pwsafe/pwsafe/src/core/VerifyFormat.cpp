@@ -175,27 +175,53 @@ bool VerifyASCDateTimeString(const stringT &time_str, time_t &t)
 bool VerifyXMLDateTimeString(const stringT &time_str, time_t &t)
 {
   //  String format must be "yyyy-mm-ddThh:mm:ss"
-  //                        "0123456789012345678"
+  //                    or  "yyyy-mm-ddThh:mm:ssZ"
+  //                    or  "yyyy-mm-ddThh:mm:ss+hh:mm"
+  //                    or  "yyyy-mm-ddThh:mm:ss-hh:mm"
+  //                        "0123456789012345678901234"
+  
   // e.g.,                  "2008-10-06T21:20:56"
+  //                        "2008-10-06T21:20:56Z"
+  //                        "2008-10-06T21:20:56+01:00"
+  //                        "2008-10-06T21:20:56-01:00"
 
   stringT xtime_str;
 
-  const int ndigits = 14;
-  const int idigits[ndigits] = {0, 1, 2, 3, 5, 6, 8, 9, 11, 12, 14, 15, 17, 18};
-  int yyyy, mon, dd, hh, min, ss;
+  int ndigits(14);
+  const int idigits[18] = {0, 1, 2, 3, 5, 6, 8, 9, 11, 12, 14, 15, 17, 18, 20, 21, 23, 24};
+  int yyyy, mon, dd, hh, min, ss, tz_hh(0), tz_mm(0);
 
   t = time_t(-1);
 
-  if (time_str.length() != 19)
+  const size_t len = time_str.length();
+  if (len < 19)
     return false;
 
   // Validate time_str
-  if (time_str[4] != TCHAR('-') ||
-      time_str[7] != TCHAR('-') ||
+  if (time_str[4] != TCHAR('-')  ||
+      time_str[7] != TCHAR('-')  ||
       time_str[10] != TCHAR('T') ||
       time_str[13] != TCHAR(':') ||
       time_str[16] != TCHAR(':'))
     return false;
+
+  switch (len) {
+    case 19:
+      break;
+    case 20:
+      if (time_str[19] != TCHAR('Z'))
+        return false;
+      break;
+    case 25:
+      if (time_str[22] != TCHAR(':')  &&
+          (time_str[19] != TCHAR('+') &&
+           time_str[19] != TCHAR('-')))
+        return false;
+      ndigits = 18;
+      break;
+    default:
+      return false;
+  }
 
   for (int i = 0; i < ndigits; i++) {
     if (!isdigit(time_str[idigits[i]]))
@@ -205,7 +231,15 @@ bool VerifyXMLDateTimeString(const stringT &time_str, time_t &t)
   istringstreamT is(time_str);
   TCHAR dummy;
   is >> yyyy >> dummy >> mon >> dummy >> dd >> dummy
-      >> hh >> dummy >> min >> dummy >> ss;
+     >>  hh  >> dummy >> min >> dummy >> ss;
+
+  if (len == 25) {
+    is >> tz_hh >> dummy >> tz_mm;
+
+    if (tz_mm > 59 || abs(tz_hh) > 14 ||
+        (abs(tz_hh) == 14 && tz_mm != 0))
+      tz_hh = tz_mm = 0; 
+  }
 
   if (!verifyDTvalues(yyyy, mon, dd, hh, min, ss))
     return false;
@@ -227,6 +261,11 @@ bool VerifyXMLDateTimeString(const stringT &time_str, time_t &t)
   xtm.tm_sec = ss;
   xtm.tm_isdst = -1;
   t = mktime(&xtm);
+
+  // Add timezone offsets
+  if (tz_hh != 0 || tz_mm != 0) {
+    t += (tz_hh < 0 ? -1 : -1) * (tz_hh * 60 + tz_mm) * 60;
+  }
 
   return true;
 }

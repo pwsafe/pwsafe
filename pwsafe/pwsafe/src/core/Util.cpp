@@ -594,18 +594,12 @@ string PWSUtil::GetXMLTime(int indent, const char *name,
 
 
   for (i = 0; i < indent; i++) oss << "\t";
-  oss << "<" << name << ">" << endl;
-  for (i = 0; i <= indent; i++) oss << "\t";
+  oss << "<" << name << ">" ;
   utf8conv.ToUTF8(tmp.substr(0, 10), utf8, utf8Len);
-  oss << "<date>";
   oss.write(reinterpret_cast<const char *>(utf8), utf8Len);
-  oss << "</date>" << endl;
-  for (i = 0; i <= indent; i++) oss << "\t";
+  oss << "T";
   utf8conv.ToUTF8(tmp.substr(tmp.length() - 8), utf8, utf8Len);
-  oss << "<time>";
   oss.write(reinterpret_cast<const char *>(utf8), utf8Len);
-  oss << "</time>" << endl;
-  for (i = 0; i < indent; i++) oss << "\t";
   oss << "</" << name << ">" << endl;
   return oss.str();
 }

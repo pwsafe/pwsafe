@@ -79,13 +79,18 @@ enum XLE_PASSWORDSAFE {
   XLE_AUTOTYPE,
   XLE_NOTES,
   XLE_UUID,
-  XLE_CTIME,
-  XLE_ATIME,
-  XLE_LTIME,
-  XLE_XTIME,
+  XLE_CTIME,    // Using old PWS format
+  XLE_ATIME,    // Using old PWS format
+  XLE_LTIME,    // Using old PWS format
+  XLE_XTIME,    // Using old PWS format
+  XLE_PMTIME,   // Using old PWS format
+  XLE_RMTIME,   // Using old PWS format
+  XLE_CTIMEX,   // Using standard XML format
+  XLE_ATIMEX,   // Using standard XML format
+  XLE_XTIMEX,   // Using standard XML format
+  XLE_PMTIMEX,  // Using standard XML format
+  XLE_RMTIMEX,  // Using standard XML format
   XLE_XTIME_INTERVAL,
-  XLE_PMTIME,
-  XLE_RMTIME,
   XLE_PWHISTORY,
   XLE_RUNCOMMAND,
   XLE_DCA,

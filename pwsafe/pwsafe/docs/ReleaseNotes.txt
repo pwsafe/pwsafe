@@ -39,6 +39,9 @@ symbols).
 when a database is exported to XML as there is no mechanism to re-check them during
 import. Exporting to XML and then importing to a new database can be used to remove
 these unknown fields.
+[] Date time fields, when exported to XML, now are in the W3C dateTime standard format
+instead of PasswordSafe's.  This release can import XML files with date time fields in
+either of these forms. The next release will only be able to process the W3C standard.
 
 Bugs fixed in 3.25.1
 ====================
