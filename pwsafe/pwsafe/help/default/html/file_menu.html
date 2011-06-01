@@ -1,468 +1,129 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-
-
-
-
-
-
-
-
-
-		
-		
-		
-
-		
-		
-  
-
-  
-  
-
-  
-  
-
-  
-  
-
-  
-  
-
-  
-  
-
-  
-  
-
-  
-  
-
-  
   <title>File Menu</title>
 <!-- pwsafe version: 2.11--><!-- Modified: 15/06/2005 --><!--Popup control -->
   <script language="javascript" src="html/popups.js">
 		</script>
-  
-  
-  
-  
-  
-  
-  
-  
+
   <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
-
 <body>
-
-
-
-
-
-
-
 
 <object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11">
 		</object>
-		
-		<!-- Popup Source File -->
-		
 
-		
-	
-		
+		<!-- Popup Source File -->
+
 <h2>File Menu</h2>
 
-
-
-
-
-
-
-
-
 		<img alt="file menu" src="images/file_menu.jpg">
-		
+
 <p>The <b>File Menu</b> contains options related to managing and creating new <span style="font-weight: bold;">Password Safe</span> databases.</p>
 
 
-
-
-
-
-
-
-
-
-		
 <div class="instr">
-			
+
 <h3>New</h3>
 
-
-
-
-
-
-
-
-
-			
 <p>Create a new blank password safe database.</p>
 
-
-
-
-
-
-
-
-
-
-			
 <h3>Open</h3>
 
-
-
-
-
-
-
-
-
-			
 <p>Open an existing password safe database.</p>
 
-
-
-
-
-
-
-
-
-
-			
 <h3>Close</h3>
 
-
-
-
-
-
-
-
-
-			
 <p>Closes the currently open password safe database without exiting the application.</p>
-
 
 <h3>Recent</h3>
 
-
-
-
-
-
-
-
-
-			
 <p>This section of the file menu may list the recently
 opened database files. This section will be blank if this is the first
 time <b>Password Safe</b> has been used.</p>
 
 
-
-
-
-
 <hr style="width: 100%; height: 2px;">
 <p><small><span style="font-weight: bold;">Notes:</span></small></p>
 
-
-
-
-
-
 <ul>
-
-
-
-
-  <small>
-
-  </small><li><small>The list of recently opened files may be cleared by selecting "<span style="font-weight: bold;">Clear Recent Safe List</span>"</small></li>
-
-
-
-
-  <small>
-
-  </small><li><small>The number of recent files that <span style="font-weight: bold;">Password Safe</span> will keep may be configured via the <a href="system_tab.html">Manage-&gt;Options-&gt;System</a> dialog box, where you may also configure if you prefer to see the recent files in the File menu, or as a submenu.</small></li>
-
-
-
-
+<li><small>The list of recently opened files may be cleared by selecting "<span style="font-weight: bold;">Clear Recent Safe List</span>"</small></li>
+<li><small>The number of recent files that <span style="font-weight: bold;">Password Safe</span> will keep may be configured via the <a href="system_tab.html">Manage-&gt;Options-&gt;System</a> dialog box, where you may also configure if you prefer to see the recent files in the File menu, or as a submenu.</small></li>
 </ul>
-
-
-
 
 <hr style="width: 100%; height: 2px;">
-<ul>
 
-
-
-
-
-
-</ul>
-
-
-
-
-
-
-
-
-
-
-			
 <h3>Save</h3>
 
-
-
-
-
-
-
-
-
-			
 <p>Save any changes to the current safe. If no changes have been made
 since the previous save, or if the database was opened read-only, this
 choice will be greyed-out.</p>
 
-
-
-
-
-
-
-
-
-
-			
 <h3>Save As</h3>
 
-
-
-
-
-
-
-
-
-			
 <p>Save a copy of the current safe under a new name or location.</p>
 
-
-
-
-
-
-
-
-
-
-			
 <h3>Export To</h3>
 
 
+<p>Export the contents of the current database to an <a href="JavaScript:popup.TextPopup(strExternalFile,popFont,9,9,-1,-1)">external
+file</a> in either an old <span style="font-weight: bold;">Password Safe</span> database&nbsp;format, XML, or as text. See <a href="export.html">here</a> for
+more information on exporting the database to other formats.</p>
 
-
-
-
-
-
-
-			
-<p>Export the contents of the current database to
-			an <a href="JavaScript:popup.TextPopup(strExternalFile,popFont,9,9,-1,-1)">external
-			file</a> in either an old <span style="font-weight: bold;">Password Safe</span> database&nbsp;format, XML, or as text. See <a href="export.html">here</a> for
-			more information on exporting the database to other formats.
-			</p>
-
-
-
-
-
-
-
-
-
-
-			
 <h3>Import From</h3>
 
-
-
-
-
-
-
-
-
-			
 <p>Import the contents of a previously <a href="export.html">exported</a> or
-			correctly formatted text file, XML, or a KeePass V1 password
-			database into the current database. See <a href="import.html">here</a> for 
-			more information on importing text files.</p>
+correctly formatted text file, XML, or a KeePass V1 password
+database into the current database. See <a href="import.html">here</a> for 
+more information on importing text files.</p>
 
-
-
-
-
-
-
-
- 
-
-			
 <h3>Merge</h3>
 
-
-
-
-
-
-			
 <p>Merge a <b>Password Safe</b> database or backup file (.bak) into the current database. Disabled in read-only mode.</p>
-
-
-
-
-
 
 <h3>Compare</h3>
 
-
-
-
-
-
 <p>Compare the currently opened database with another.</p>
-
-
-
-
-
 
 <h3>Synchronize</h3>
 
-
-
-
-
-
 <p>Synchronize the currently opened database with another.</p>
-<p>The main difference between Merge and Synchronize is that during a Merge, all elements of the merging database will be taken to the currently opened database. During synchronizing however, only elements in the currently opened database will be updated.</p>
-
-
-
-
+<p>The main difference between Merge and Synchronize is that during a Merge, all elements of the merging
+database will be taken to the currently opened database. During synchronizing however, only elements
+in the currently opened database will be updated.</p>
 
 <hr style="width: 100%; height: 2px;">
 <p><small><b>Note:</b> The Merge, Compare and Synchronize operations may take a long
   time, especially for large databases.</small></p>
 
-
-
-
 <hr style="width: 100%; height: 2px;">
 
-
-			
 <h3>Properties</h3>
 
-
-
-
-Display information about the currently opened password safe database, such as: format
+<p>Display information about the currently opened password safe database, such as: format
 version, number of groups, number of entries, and information about
-when it was last saved and by whom.
+when it was last saved and by whom.</p>
+
 <h3>Exit</h3>
 
+<p>Closes the <b>Password Safe</b> program. If changes were made to the database since the last
+save, you will be prompted to save the database.</p>
 
 
+</div>
 
-
-
-
-
-
-			
-<p>Closes the <b>Password Safe</b> program. If changes were made to the database since the last save, you will be prompted to save the database.</p>
-
-
-
-
-
-
-
-
-
-		</div>
-
-
-
-
-
-
-
-
-
-
-		<!-- Added some white space at the bottom for natural scrolling -->
-		<br>
-
-
-
-
-
-
-
-
+<!-- Added some white space at the bottom for natural scrolling -->
+<br>
+<br>
 <br>
 
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="Keyword" value="File Menu">
+<param name="Keyword" value="KeePass">
+<param name="Keyword" value="Export">
+<param name="Keyword" value="Import">
+</object>
 
-
-
-
-
-
-
-<br>
-
-
-
-
-
-
-
-
-
-		
-		<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
-			<param name="Keyword" value="File Menu">
-			<param name="Keyword" value="KeePass">
-			<param name="Keyword" value="Export">
-			<param name="Keyword" value="Import">
-		</object>
-	
 </body>
 </html>

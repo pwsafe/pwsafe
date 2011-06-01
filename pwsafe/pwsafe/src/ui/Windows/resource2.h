@@ -48,13 +48,14 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 #define ID_IMPORTMENU                   32014
 #define ID_MENUITEM_IMPORT_XML          32015
 #define ID_MENUITEM_IMPORT_PLAINTEXT    32016
-#define ID_MENUITEM_IMPORT_KEEPASS      32017
+#define ID_MENUITEM_IMPORT_KEEPASSV1TXT 32017
 #define ID_MENUITEM_MERGE               32018
 #define ID_MENUITEM_COMPARE             32019
 #define ID_MENUITEM_PROPERTIES          32020
 #define ID_MENUITEM_EXIT                32021
 #define ID_MENUITEM_SYNCHRONIZE         32022
 #define ID_MENUITEM_CHANGEMODE          32023
+#define ID_MENUITEM_IMPORT_KEEPASSV1CSV 32024
 
 // Edit menu
 #define ID_EDITMENU                     32050
@@ -131,6 +132,8 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 #define ID_MENUITEM_REPORT_EXPORTTEXT   32129
 #define ID_MENUITEM_REPORT_EXPORTXML    32130
 #define ID_MENUITEM_SHOW_ALL_EXPIRY     32131
+#define ID_MENUITEM_REPORT_IMPORTKP1TXT 32132
+#define ID_MENUITEM_REPORT_IMPORTKP1CSV 32133
 
 // Manage menu
 #define ID_MANAGEMENU                   32150

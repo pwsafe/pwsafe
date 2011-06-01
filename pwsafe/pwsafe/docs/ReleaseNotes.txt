@@ -26,6 +26,10 @@ for EasyVision and Pronounceable passwords can not be overriden in either case.
 [] Allow user to control the copying password to clipboard when performing
 "Browse to URL" via an option in Options->Security. This is a database option
 i.e. you can have different setting for different databases.
+[] Support importing of CSV files exported from KeePass V1. Note that KeePass V2's
+export in the V1 format is does not conform to their own format as specified by their
+V1 product and can not be imported. Please review our Help file for the settings in
+KeePass required during their export.
 
 Changes to Existing Features in 3.25.1
 ======================================
@@ -42,6 +46,10 @@ these unknown fields.
 [] Date time fields, when exported to XML, now are in the W3C dateTime standard format
 instead of PasswordSafe's.  This release can import XML files with date time fields in
 either of these forms. The next release will only be able to process the W3C standard.
+[] Fully support importing of TXT files exported from KeePass V1 including the Group Tree
+structure, URL and date time fields. Please review our Help file for the settings in
+KeePass required during their 
+export.
 
 Bugs fixed in 3.25.1
 ====================

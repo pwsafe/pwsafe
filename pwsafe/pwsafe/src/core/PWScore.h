@@ -206,7 +206,12 @@ public:
                     int &numValidated, int &numImported, int &numSkipped,
                     int &numPWHErrors, int &numRenamed, 
                     CReport &rpt, Command *&pcommand);
-  int ImportKeePassTextFile(const StringX &filename, Command *&pcommand);
+  int ImportKeePassV1TXTFile(const StringX &filename,
+                             int &numImported, int &numSkipped, int &numRenamed,
+                             CReport &rpt, Command *&pcommand);
+  int ImportKeePassV1CSVFile(const StringX &filename,
+                             int &numImported, int &numSkipped, int &numRenamed,
+                             CReport &rpt, Command *&pcommand);
 
   // Locking files open in R/W mode
   bool LockFile(const stringT &filename, stringT &locker);

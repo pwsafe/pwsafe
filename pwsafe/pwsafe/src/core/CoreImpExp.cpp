@@ -45,7 +45,9 @@
 #include <set>
 
 const TCHAR *EXPORTHEADER  = _T("Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tPassword Expiry Interval\tRecord Modified Time\tPassword Policy\tHistory\tRun Command\tDCA\te-mail\tProtected\tSymbols\tNotes");
-
+const TCHAR *KPEXPORTHEADER  = _T("Password Groups\tGroup Tree\tAccount\tLogin Name\tPassword\tWeb Site\tComments\tUUID\tIcon\tCreation Time\tLast Access\tLast Modification\tExpires\tAttachment Description\tAttachment");
+const TCHAR *KPIMPORTEDPREFIX = _T("ImportedKeePass");
+  
 using namespace std;
 using pws_os::CUUID;
 
@@ -789,8 +791,9 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
                NUMFIELDS};
 
   int i_Offset[NUMFIELDS];
-  for (int i = 0; i < NUMFIELDS; i++)
+  for (int i = 0; i < NUMFIELDS; i++) {
     i_Offset[i] = -1;
+  }
 
   pSeps[0] = static_cast<const char>(fieldSeparator);
 
@@ -1104,22 +1107,23 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
     ci_temp.SetTitle(entrytitle.c_str());
 
     // Now make sure it is unique
-    const StringX sxgroup = ci_temp.GetGroup();
-    const StringX sxtitle = ci_temp.GetTitle();
-    const StringX sxuser = ci_temp.GetUser();
-    StringX sxnewtitle(sxtitle);
-    bool conflict = !MakeEntryUnique(setGTU, sxgroup, sxnewtitle, sxuser, IDSC_IMPORTNUMBER);
+    const StringX sx_group = ci_temp.GetGroup();
+    StringX sx_title = ci_temp.GetTitle();
+    const StringX sx_user = ci_temp.GetUser();
+    StringX sxnewtitle(sx_title);
+    bool conflict = !MakeEntryUnique(setGTU, sx_group, sxnewtitle, sx_user, IDSC_IMPORTNUMBER);
     if (conflict) {
       ci_temp.SetTitle(sxnewtitle);
       stringT cs_header;
-      if (sxgroup.empty())
+      if (sx_group.empty())
         Format(cs_header, IDSC_IMPORTCONFLICTS2, numlines);
       else
-        Format(cs_header, IDSC_IMPORTCONFLICTS1, numlines, sxgroup.c_str());
+        Format(cs_header, IDSC_IMPORTCONFLICTS1, numlines, sx_group.c_str());
 
       Format(cs_error, IDSC_IMPORTCONFLICTS0, cs_header.c_str(),
-               sxtitle.c_str(), sxuser.c_str(), sxnewtitle.c_str());
+               sx_title.c_str(), sx_user.c_str(), sxnewtitle.c_str());
       rpt.WriteLine(cs_error);
+      sx_title = sxnewtitle;
       numRenamed++;
     }
 
@@ -1232,6 +1236,12 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
     pcmd->SetNoGUINotify();
     pmulticmds->Add(pcmd);
     numImported++;
+
+    StringX sx_imported = StringX(L"\xab") + 
+                             sx_group + StringX(L"\xbb \xab") + 
+                             sx_title + StringX(L"\xbb \xab") +
+                             sx_user  + StringX(L"\xbb");
+    rpt.WriteLine(sx_imported.c_str());
   } // file processing for (;;) loop
 
   Command *pcmdA = AddDependentEntriesCommand::Create(this,
@@ -1256,25 +1266,32 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   return ((numSkipped + numRenamed + numPWHErrors)) == 0 ? SUCCESS : OK_WITH_ERRORS;
 }
 
-/*
-  The format of the source file is from doing an export to TXT file in keepass.
-
-  Things to note - import will fail and may give unexpected results if:
-    1. Any line in the Notes field starts with the name of any exported field
-      i.e. 'Group: ', 'Group Tree: ', 'User Name: ', 'URL: ', 'Password: ',
-           'Notes: ', 'UUID: ', 'Icon: ', 'Creation Time: ', 'Last Access: ',
-           'Last Modification: ' or 'Expires: '
-    2. Any line in the Notes field starts with '[' and ends with ']'
-
-  "Group Tree: ", "Icon" are ignored.
-
-*/
-
-int PWScore::ImportKeePassTextFile(const StringX &filename, Command *&pcommand)
+int PWScore::ImportKeePassV1TXTFile(const StringX &filename,
+                                    int &numImported, int &numSkipped, int &numRenamed,
+                                    CReport &rpt, Command *&pcommand)
 {
-  static const char *ImportedPrefix = "ImportedKeePass";
+
+  /*
+  The format of the source file is from doing an export to TXT file in Keepass.
+
+  The checkbox "Encode/replace newline characters by '\n'" MUST be selected bu the
+  user during the export or this import will fail and may give unexpected results.
+
+  The line that starts with '[' and ends with ']' is equivalant to the Title field.
+
+  The following entries are supported:
+     "Group: ", "Group Tree: ", "User Name: ", "URL: ", "Password: ",
+     "Notes: ", "UUID: ", "Creation Time: ", "Last Access: ",
+     "Last Modification: " or "Expires: "
+  The following entries are ignored:
+      "Attachment: ", Attachment Description: " & "Icon"
+
+  */
+
+  stringT cs_error;
   CUTF8Conv conv;
   pcommand = NULL;
+  numImported  = numSkipped = numRenamed = 0;
 
   // We need to use FOpen as the file name/file path may contain non-Latin
   // characters even though we need the file to contain ASCII and UTF-8 characters
@@ -1309,39 +1326,56 @@ int PWScore::ImportKeePassTextFile(const StringX &filename, Command *&pcommand)
   if (bError)
     return FAILURE;
 
-  UUIDSet setUUID;
   string linebuf;
-  string str_group, str_title, str_user, str_passwd, str_url, str_notes, str_uuid;
   time_t ctime, atime, mtime, xtime;
   uuid_array_t ua;
-  string::size_type pos;
+
+  int numlines(0);
+  const StringX fwdslash = _T("/");
+  const StringX dot = _T(".");
+  const StringX txtCRLF = _T("\\r\\n");
+  const StringX CRLF = _T("\r\n");
 
   MultiCommands *pmulticmds = MultiCommands::Create(this);
   pcommand = pmulticmds;
+  Command *pcmd1 = UpdateGUICommand::Create(this, UpdateGUICommand::WN_UNDO,
+                                            UpdateGUICommand::GUI_UNDO_IMPORT);
+  pmulticmds->Add(pcmd1);
+
   bool bFirst(true);
 
+  // Initialize set
+  GTUSet setGTU;
+  InitialiseGTU(setGTU);
+  UUIDSet setUUID;
   InitialiseUUID(setUUID);
 
   for (;;) {
     // Clear out old stuff!
-    str_group = str_title = str_user = str_passwd = str_url = str_notes = str_uuid = "";
+    StringX sx_group, sx_title, sx_user, sx_password, sx_URL, sx_notes, sx_Parent_Groups;
+    string str_uuid, temp;
     ctime = atime = mtime = xtime = (time_t)0;
     memset(ua, 0, sizeof(ua));
 
     // read a single line.
     getline(iss, linebuf, '\n');
-    // Check if blank line
+
+    // Check if end of file
     if (iss.eof())
       break;
 
+    // Check if blank line
     if (linebuf.empty())
       continue;
 
     // the first line of the Keepass text file contains BOM characters
-    if (bFirst) {
-      pos = linebuf.find("[");
-      if (pos != string::npos)
-        linebuf = linebuf.erase(0, pos);
+    if (bFirst && linebuf.length() > 3) {
+      if((static_cast<unsigned char>(linebuf[0]) == 0xEF) &&
+         (static_cast<unsigned char>(linebuf[1]) == 0xBB) &&
+         (static_cast<unsigned char>(linebuf[2]) == 0xBF)) {
+        // Remove BOM
+        linebuf = linebuf.erase(0, 3);
+      }
       bFirst = false;
     }
 
@@ -1351,7 +1385,8 @@ int PWScore::ImportKeePassTextFile(const StringX &filename, Command *&pcommand)
     }
 
     // set the title: line pattern: [<title>]
-    str_title = linebuf.substr(linebuf.find("[") + 1, linebuf.rfind("]") - 1).c_str();
+    temp = linebuf.substr(linebuf.find("[") + 1, linebuf.rfind("]") - 1).c_str();
+    conv.FromUTF8((unsigned char *)temp.c_str(),  temp.length(), sx_title);
 
     bool bTitleFound(false);
     for (;;) {
@@ -1370,27 +1405,64 @@ int PWScore::ImportKeePassTextFile(const StringX &filename, Command *&pcommand)
       }
 
       if (linebuf.substr(0, 7) == "Group: ") {
-        // set the group: line pattern: Group: <user>
-        str_group = ImportedPrefix;
-        if (!linebuf.empty()) {
-          str_group.append(".");
-          str_group.append(linebuf.substr(7));
+        // set the initial group: line pattern: Group: <group>
+        temp = linebuf.substr(7);
+        conv.FromUTF8((unsigned char *)temp.c_str(), temp.length(), sx_group);
+
+        // Replace any '.' by a '/'
+        size_t pos = 0;
+        while((pos = sx_group.find(dot, pos)) != StringX::npos) {
+          sx_group.replace(pos, 1, fwdslash);
+          pos++;
+        }
+      }
+
+      else if (linebuf.substr(0, 12) == "Group Tree: ") {
+        // set the parent groups str_parent_groups
+        // Groups are in order separated by '\'
+        // Groups with a '\' have it changed to a '/'
+        // Groups with a '/' are unchanged
+        // Group names can have dots in them and these will be replaced by a '/'
+
+        temp = linebuf.substr(12);
+        conv.FromUTF8((unsigned char *)temp.c_str(), temp.length(), sx_Parent_Groups);
+        // Replace and '.' by a '/'
+        size_t pos = 0;
+        while((pos = sx_Parent_Groups.find(dot, pos)) != StringX::npos) {
+          sx_Parent_Groups.replace(pos, 1, fwdslash);
+          pos++;
+        }
+
+        // Tokenize by '\'
+        vector<StringX> pgs;
+        StringXStream ss(sx_Parent_Groups.c_str());
+        StringX item;
+        while (getline(ss, item, _T('\\'))) {
+          pgs.push_back(item);
+        }
+        // Construct the parent groups
+        sx_Parent_Groups.clear();
+        for (size_t i = 0; i < pgs.size(); i++) {
+          sx_Parent_Groups = sx_Parent_Groups + pgs[i] + dot;
         }
       }
 
       else if (linebuf.substr(0, 11) == "User Name: ") {
         // set the user: line pattern: UserName: <user>
-        str_user = linebuf.substr(11);
+        temp = linebuf.substr(11);
+        conv.FromUTF8((unsigned char *)temp.c_str(), temp.length(), sx_user);
       }
 
       else if (linebuf.substr(0, 5) == "URL: ") {
         // set the url: line pattern: URL: <url>
-        str_url = linebuf.substr(5);
+        temp = linebuf.substr(5);
+        conv.FromUTF8((unsigned char *)temp.c_str(), temp.length(), sx_URL);
       }
       
       else if (linebuf.substr(0, 10) == "Password: ") {
         // set the password: line pattern: Password: <passwd>
-        str_passwd = linebuf.substr(10);
+        temp = linebuf.substr(10);
+        conv.FromUTF8((unsigned char *)temp.c_str(), temp.length(), sx_password);
       }
 
       else if (linebuf.substr(0, 6) == "UUID: ") {
@@ -1407,8 +1479,7 @@ int PWScore::ImportKeePassTextFile(const StringX &filename, Command *&pcommand)
         } else
           str_uuid.clear();
       }
-      // VerifyXMLDateTimeString(const stringT &time_str, time_t &t)
-      // "yyyy-mm-ddThh:mm:ss"
+
       else if (linebuf.substr(0, 15) == "Creation Time: ") {
         string str_ctime = linebuf.substr(15);
         if (str_ctime.length() != 19)
@@ -1467,49 +1538,19 @@ int PWScore::ImportKeePassTextFile(const StringX &filename, Command *&pcommand)
 
       // set the first line of notes: line pattern: Notes: <notes>
       else if (linebuf.substr(0, 7) == "Notes: ") {
-        str_notes = linebuf.substr(7);
-
-        // read in any remaining new notes and set up the next record
-        for (;;) {
-          // see if we hit the end of the file
-          if (iss.eof())
-            break;
-
-          streamoff currentpos = iss.tellg();
-          if (!getline(iss, linebuf, '\n')) {
-            break;
-          }
-          // Check if new entry
-          if (linebuf.empty()) {
-            str_notes.append("\r\n");
-            continue;
-          }
-
-          if (*(linebuf.begin()) == '[' && *(linebuf.end() - 1) == ']') {
-            // Ooops - go back
-            iss.seekg(currentpos);
-            bTitleFound = true;
-            break;
-          }
-
-          if (linebuf.substr(0, 12) == "Group Tree: "        ||
-              linebuf.substr(0, 6)  == "UUID: "              ||
-              linebuf.substr(0, 6)  == "Icon: "              ||
-              linebuf.substr(0, 15) == "Creation Time: "     ||
-              linebuf.substr(0, 13) == "Last Access: "       ||
-              linebuf.substr(0, 19) == "Last Modification: " ||
-              linebuf.substr(0, 9)  == "Expires: ") {
-            iss.seekg(currentpos);
-            break;
-          }
-          str_notes.append("\r\n");
-          str_notes.append(linebuf);
+        temp = linebuf.substr(7);
+        conv.FromUTF8((unsigned char *)temp.c_str(), temp.length(), sx_notes);
+        size_t pos = 0;
+        while((pos = sx_notes.find(txtCRLF, pos)) != StringX::npos) {
+          sx_notes.replace(pos, txtCRLF.length(), CRLF);
+          pos += CRLF.length();
         }
       }
 
       // Ignore any other text lines e.g. GroupTree & Icon, 
       else
-      if (linebuf.substr(0, 12) == "Group Tree: " ||
+      if (linebuf.substr(0, 24) == "Attachment Description: " ||
+          linebuf.substr(0, 12) == "Attachment: " ||
           linebuf.substr(0, 6)  == "Icon: ") {
         continue;
       }
@@ -1518,15 +1559,15 @@ int PWScore::ImportKeePassTextFile(const StringX &filename, Command *&pcommand)
         break;
     }
 
-    // Create & append the new record.
-    StringX sxGroup, sxTitle, sxUser, sxPassword, sxURL, sxNotes;
-    conv.FromUTF8((unsigned char *)str_group.c_str(), str_group.length(), sxGroup);
-    conv.FromUTF8((unsigned char *)str_title.c_str(), str_title.length(), sxTitle);
-    conv.FromUTF8((unsigned char *)str_user.c_str(), str_user.length(), sxUser);
-    conv.FromUTF8((unsigned char *)str_passwd.c_str(), str_passwd.length(), sxPassword);
-    conv.FromUTF8((unsigned char *)str_notes.c_str(), str_notes.length(), sxNotes);
-    conv.FromUTF8((unsigned char *)str_url.c_str(), str_url.length(), sxURL);
+    // set up the group tree
+    if (!sx_Parent_Groups.empty())
+      sx_group = sx_Parent_Groups + sx_group;
+    if (!sx_group.empty())
+      sx_group = KPIMPORTEDPREFIX + dot + sx_group;
+    else
+      sx_group = KPIMPORTEDPREFIX;
 
+    // Create & append the new record.
     CItemData ci_temp;
     bool bNewUUID(true);
     if (!str_uuid.empty()) {
@@ -1543,16 +1584,16 @@ int PWScore::ImportKeePassTextFile(const StringX &filename, Command *&pcommand)
     if (bNewUUID)
       ci_temp.CreateUUID();
 
-    if (!sxGroup.empty())
-      ci_temp.SetGroup(sxGroup);
-    ci_temp.SetTitle(sxTitle.empty() ? sxGroup : sxTitle);
-    if (!sxUser.empty())
-      ci_temp.SetUser(sxUser);
-    ci_temp.SetPassword(sxPassword.empty() ? _T("Unknown") : sxPassword);
-    if (!sxNotes.empty())
-      ci_temp.SetNotes(sxNotes.c_str());
-    if (!sxURL.empty())
-      ci_temp.SetURL(sxURL);
+    if (!sx_group.empty())
+      ci_temp.SetGroup(sx_group);
+    ci_temp.SetTitle(sx_title.empty() ? _T("Unknown") : sx_title);
+    if (!sx_user.empty())
+      ci_temp.SetUser(sx_user);
+    ci_temp.SetPassword(sx_password.empty() ? _T("Unknown") : sx_password);
+    if (!sx_notes.empty())
+      ci_temp.SetNotes(sx_notes.c_str());
+    if (!sx_URL.empty())
+      ci_temp.SetURL(sx_URL);
     if (ctime > 0)
       ci_temp.SetCTime(ctime);
     if (atime > 0)
@@ -1564,16 +1605,528 @@ int PWScore::ImportKeePassTextFile(const StringX &filename, Command *&pcommand)
     if (xtime > 0)
       ci_temp.SetXTime(xtime);
 
+    // Now make sure it is unique
+    StringX sxnewtitle(sx_title);
+    bool conflict = !MakeEntryUnique(setGTU, sx_group, sxnewtitle, sx_user, IDSC_IMPORTNUMBER);
+    if (conflict) {
+      ci_temp.SetTitle(sxnewtitle);
+      stringT cs_header;
+      if (sx_group.empty())
+        Format(cs_header, IDSC_IMPORTCONFLICTS2, numlines);
+      else
+        Format(cs_header, IDSC_IMPORTCONFLICTS1, numlines, sx_group.c_str());
+
+      Format(cs_error, IDSC_IMPORTCONFLICTS0, cs_header.c_str(),
+               sx_title.c_str(), sx_user.c_str(), sxnewtitle.c_str());
+      rpt.WriteLine(cs_error);
+      numRenamed++;
+      sx_title = sxnewtitle;
+    }
+
     ci_temp.SetStatus(CItemData::ES_ADDED);
 
     GUISetupDisplayInfo(ci_temp);
     Command *pcmd = AddEntryCommand::Create(this, ci_temp);
     pcmd->SetNoGUINotify();
     pmulticmds->Add(pcmd);
-  }
+    numImported++;
 
-  // TODO: maybe return an error if the full end of the file was not reached?
+    StringX sx_imported = StringX(L"\xab") + 
+                             sx_group + StringX(L"\xbb \xab") + 
+                             sx_title + StringX(L"\xbb \xab") +
+                             sx_user  + StringX(L"\xbb");
+    rpt.WriteLine(sx_imported.c_str());
+  }
 
   SetDBChanged(true);
   return SUCCESS;
+}
+
+void ProcessKeePassCSVLine(const string &linebuf, std::vector<StringX> &tokens)
+{
+  char ch;
+  bool bInField = false;
+  CUTF8Conv conv;
+
+  StringX item;
+  StringX sxdata;
+  
+  for(size_t i = 0; i < linebuf.length(); i++ ) {
+    ch = linebuf[i];
+
+    if(ch == 0)
+      continue;
+    else
+    if (ch == '\\' && linebuf[i + 1] != 0) {
+      i++; // Skip escape character
+      if (linebuf[i + 1] == 'r')
+        item += '\r'; // Write escaped symbol
+      else 
+      if (linebuf[i + 1] == 'n')
+        item += '\n'; // Write escaped symbol
+      else
+        item += linebuf[i]; // Write escaped symbol
+    }
+    else
+    if (!bInField && ch == ',' && linebuf[i + 1] == ',') {
+      conv.FromUTF8((unsigned char *)item.c_str(), item.length(), sxdata);
+      tokens.push_back(sxdata); item.clear(); sxdata.clear();
+    }
+    else
+    if (!bInField && ch == ',' && linebuf[i + 1] == '\r') {
+      conv.FromUTF8((unsigned char *)item.c_str(), item.length(), sxdata);
+      tokens.push_back(sxdata); item.clear(); sxdata.clear();
+    }
+    else
+    if (!bInField && ch == ',' && linebuf[i + 1] == '\n') {
+      conv.FromUTF8((unsigned char *)item.c_str(), item.length(), sxdata);
+      tokens.push_back(sxdata); item.clear(); sxdata.clear();
+    }
+    else
+    if (ch == '\"') {
+      if (bInField) {
+        tokens.push_back(item); item.clear();
+        bInField = false;
+      }
+      else bInField = true;
+    }
+    else {
+      if (bInField) {
+        item += ch;
+      }
+    }
+  }
+}
+
+int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
+                                    int &numImported, int &numSkipped, int &numRenamed,
+                                    CReport &rpt, Command *&pcommand)
+{
+  stringT strError;
+  stringT cs_error;
+  CUTF8Conv conv;
+  pcommand = NULL;
+  numImported  = numSkipped = numRenamed = 0;
+
+  // We need to use FOpen as the file name/file path may contain non-Latin
+  // characters even though we need the file to contain ASCII and UTF-8 characters
+  // and not Unicode (wchar_t).
+  FILE *fs = pws_os::FOpen(filename.c_str(), _T("rt"));
+  if (fs == NULL)
+    return CANT_OPEN_FILE;
+
+  // We need to use file stream I/O but can't with standard FILE I/O
+  // so read in whole file and put it in a StringXStream (may contain sensitive data).
+  // Hopefully, an import text file is not too large!
+  const size_t IMPORT_BUFFER_SIZE = 4096;
+
+  cStringXStream iss;
+  unsigned char buffer[IMPORT_BUFFER_SIZE + 1];
+  bool bError(false);
+  size_t total(0);
+  while(!feof(fs)) {
+    size_t count = fread(buffer, 1, IMPORT_BUFFER_SIZE, fs);
+    if (ferror(fs)) {
+      bError = true;
+      break;
+    }
+    buffer[count] = '\0';
+    iss << buffer;
+    total += count;
+  }
+
+  // Close the file
+  fclose(fs);
+
+  if (bError)
+    return FAILURE;
+
+  // The following's a stream of chars.  We need to process the header row 
+  // as straight ASCII, and we need to handle rest as utf-8
+  int numlines = 0;
+
+  CItemData ci_temp;
+  vector<StringX> vs_Header;
+
+  // Parse the header
+  const StringX s_hdr = KPEXPORTHEADER;
+  const TCHAR pTab[] = _T("\t");
+
+  enum Fields {GROUP, PARENTGROUPS, TITLE, USER, PASSWORD, URL, NOTES, UUID, ICON,
+               CTIME, ATIME, PMTIME, XTIME, ATTACHMENTDESCR, ATTACHMENT, NUMFIELDS};
+
+  int i_Offset[NUMFIELDS];
+  for (int i = 0; i < NUMFIELDS; i++) {
+    i_Offset[i] = -1;
+  }
+
+  // Capture individual column titles:
+  StringX::size_type to = 0, from;
+  do {
+    from = s_hdr.find_first_not_of(pTab, to);
+    if (from == string::npos)
+      break;
+    to = s_hdr.find_first_of(pTab, from);
+    vs_Header.push_back(s_hdr.substr(from,
+                                     ((to == string::npos) ?
+                                      string::npos : to - from)));
+  } while (to != string::npos);
+
+  // Following fails if a field was added in enum but not in
+  // EXPORTHEADER, or vice versa.
+  ASSERT(vs_Header.size() == NUMFIELDS);
+
+  string s_header, linebuf;
+
+  if (!getline(iss, s_header, '\n'))
+    return FAILURE;
+
+  // the first line of the Keepass text file contains BOM characters
+  if (s_header.length() > 3) {
+    if((static_cast<unsigned char>(s_header[0]) == 0xEF) &&
+       (static_cast<unsigned char>(s_header[1]) == 0xBB) &&
+       (static_cast<unsigned char>(s_header[2]) == 0xBF)) {
+      // Remove BOM
+      s_header = s_header.erase(0, 3);
+    }
+  }
+
+  // Parse the header line
+  std::vector<StringX> hdr_tokens;
+  ProcessKeePassCSVLine(s_header, hdr_tokens);
+  
+  // Capture individual column titles from s_header:
+  // Set i_Offset[field] to column in which field is found in text file,
+  // or leave at -1 if absent from text.
+  unsigned num_found = 0;
+
+  for (size_t i = 0; i < hdr_tokens.size(); i++) {
+    vector<StringX>::iterator it(std::find(vs_Header.begin(), vs_Header.end(), hdr_tokens[i]));
+    if (it != vs_Header.end()) {
+      i_Offset[it - vs_Header.begin()] = i;
+      num_found++;
+    }
+  }
+
+  if (num_found == 0) {
+    LoadAString(strError, IDSC_IMPORTNOCOLS);
+    rpt.WriteLine(strError);
+    return FAILURE;
+  }
+
+  // These are "must haves"!
+  if (i_Offset[PASSWORD] == -1 || i_Offset[TITLE] == -1) {
+    LoadAString(strError, IDSC_IMPORTMISSINGCOLS);
+    rpt.WriteLine(strError);
+    return FAILURE;
+  }
+
+  if (num_found < vs_Header.size()) {
+    Format(cs_error, IDSC_IMPORTHDR, num_found);
+    rpt.WriteLine(cs_error);
+    LoadAString(cs_error, IDSC_IMPORTKNOWNHDRS);
+    rpt.WriteLine(cs_error);
+    for (int i = 0; i < NUMFIELDS; i++) {
+      if (i_Offset[i] >= 0) {
+        Format(cs_error, _T(" %s,"), vs_Header[i].c_str());
+        rpt.WriteLine(cs_error, false);
+      }
+    }
+    rpt.WriteLine();
+    rpt.WriteLine();
+  }
+
+  MultiCommands *pmulticmds = MultiCommands::Create(this);
+  pcommand = pmulticmds;
+  Command *pcmd1 = UpdateGUICommand::Create(this, UpdateGUICommand::WN_UNDO,
+                                            UpdateGUICommand::GUI_UNDO_IMPORT);
+  pmulticmds->Add(pcmd1);
+
+  // Finished parsing header, go get the data!
+  // Initialize set
+  GTUSet setGTU;
+  InitialiseGTU(setGTU);
+  UUIDSet setUUID;
+  InitialiseUUID(setUUID);
+
+  StringX sx_group, sx_title, sx_user, sx_parent_groups, sx_notes, sx_uuid;
+  time_t ctime, atime, mtime, xtime;
+  uuid_array_t ua;
+
+  const StringX fwdslash = _T("/");
+  const StringX bwdslash = _T("\\");
+  const StringX dot = _T(".");
+  const StringX txtCRLF = _T("\\r\\n");
+  const StringX CRLF = _T("\r\n");
+
+  for (;;) {
+    // Clear out old stuff!
+    sx_group = sx_title = sx_user = sx_parent_groups = sx_notes = sx_uuid = _T("");
+    ctime = atime = mtime = xtime = (time_t)0;
+    memset(ua, 0, sizeof(ua));
+
+    // read a single line.
+    if (!getline(iss, linebuf, '\n')) break;
+    
+    // Check if end of file
+    if (iss.eof())
+      break;
+
+    // skip blank lines
+    if (linebuf.empty()) {
+      Format(cs_error, IDSC_IMPORTEMPTYLINESKIPPED, numlines);
+      rpt.WriteLine(cs_error);
+      numSkipped++;
+      continue;
+    }
+
+    std::vector<StringX> tokens;
+    ProcessKeePassCSVLine(linebuf, tokens);
+    numlines++;
+
+    // Sanity check
+    if (tokens.size() < num_found) {
+      Format(cs_error, IDSC_IMPORTLINESKIPPED, numlines, tokens.size(), num_found);
+      rpt.WriteLine(cs_error);
+      numSkipped++;
+      continue;
+    }
+
+    if (static_cast<size_t>(i_Offset[PASSWORD]) >= tokens.size() ||
+        tokens[i_Offset[PASSWORD]].empty()) {
+      Format(cs_error, IDSC_IMPORTNOPASSWORD, numlines);
+      rpt.WriteLine(cs_error);
+      numSkipped++;
+      continue;
+    }
+    if (static_cast<size_t>(i_Offset[TITLE]) >= tokens.size() ||
+        tokens[i_Offset[TITLE]].empty()) {
+      Format(cs_error, IDSC_IMPORTNOTITLE, numlines);
+      rpt.WriteLine(cs_error);
+      numSkipped++;
+      continue;
+    }
+    
+    if (!tokens[i_Offset[GROUP]].empty()) {
+      sx_group = tokens[i_Offset[GROUP]];
+      // Replace any '.' by a '/'
+      size_t pos = 0;
+      while((pos = sx_group.find(dot, pos)) != StringX::npos) {
+        sx_group.replace(pos, 1, fwdslash);
+        pos++;
+      }
+      // Replace any '\' by a '/'
+      while((pos = sx_group.find(bwdslash, pos)) != StringX::npos) {
+        sx_group.replace(pos, 1, fwdslash);
+        pos++;
+      }
+    }
+
+    if (!tokens[i_Offset[TITLE]].empty()) {
+      sx_title = tokens[i_Offset[TITLE]];
+      // Replace any '.' by a '/'
+      size_t pos = 0;
+      while((pos = sx_title.find(dot, pos)) != StringX::npos) {
+        sx_title.replace(pos, 1, fwdslash);
+        pos++;
+      }
+    }
+
+    if (!tokens[i_Offset[USER]].empty()) {
+      sx_user = tokens[i_Offset[USER]];
+    }
+
+    if (!tokens[i_Offset[PARENTGROUPS]].empty()) {
+      // set the parent groups sx_parent_groups
+      // Groups are in order separated by '\'
+      // Groups with a '/' are unchanged
+      // Group names can have dots in them and these will be replaced by a '/'
+
+      StringX temp = tokens[i_Offset[PARENTGROUPS]];
+      // Replace a '.' by a '/'
+      size_t pos = 0;
+      while((pos = temp.find(dot, pos)) != StringX::npos) {
+        temp.replace(pos, 1, fwdslash);
+        pos++;
+      }
+
+      // Tokenize by '\'
+      vector<stringT> parent_groups;
+      stringstreamT ss(temp.c_str());
+      stringT item;
+      while (getline(ss, item, _T('\\'))) {
+        parent_groups.push_back(item);
+      }
+
+      // Construct the parent groups
+      sx_parent_groups.clear();
+      for (size_t i = 0; i < parent_groups.size(); i++) {
+        sx_parent_groups = sx_parent_groups + parent_groups[i].c_str() + dot;
+      }
+    }
+
+    if (!tokens[i_Offset[UUID]].empty()) {
+      sx_uuid = tokens[i_Offset[UUID]];
+      if (sx_uuid.length() == sizeof(uuid_array_t) * 2) {
+        unsigned int x(0);
+        for (size_t i = 0; i < sizeof(uuid_array_t); i++) {
+          StringXStream ss;
+          ss.str(sx_uuid.substr(i * 2, 2));
+          ss >> hex >> x;
+          ua[i] = static_cast<unsigned char>(x);
+        }
+      } else
+        sx_uuid.clear();
+    }
+
+    if (!tokens[i_Offset[CTIME]].empty()) {
+      StringX sx_ctime = tokens[i_Offset[CTIME]];
+      if (sx_ctime.length() != 19)
+        continue;
+      sx_ctime.replace(10, 1, _T("T"));
+#ifdef UNICODE
+      std::wstring temp(sx_ctime.length(), L' ');
+      std::copy(sx_ctime.begin(), sx_ctime.end(), temp.begin());
+#else
+      std::string temp = sx_ctime;
+#endif
+      VerifyXMLDateTimeString(temp, ctime);
+    }
+
+    if (!tokens[i_Offset[ATIME]].empty()) {
+      StringX sx_atime = tokens[i_Offset[ATIME]];
+      if (sx_atime.length() != 19)
+        continue;
+      sx_atime.replace(10, 1, _T("T"));
+#ifdef UNICODE
+      std::wstring temp(sx_atime.length(), L' ');
+      std::copy(sx_atime.begin(), sx_atime.end(), temp.begin());
+#else
+      std::string temp = sx_ctime;
+#endif
+      VerifyXMLDateTimeString(temp, atime);
+    }
+
+    if (!tokens[i_Offset[PMTIME]].empty()) {
+      StringX sx_mtime = tokens[i_Offset[PMTIME]];
+      if (sx_mtime.length() != 19)
+        continue;
+      sx_mtime.replace(10, 1, _T("T"));
+#ifdef UNICODE
+      std::wstring temp(sx_mtime.length(), L' ');
+      std::copy(sx_mtime.begin(), sx_mtime.end(), temp.begin());
+#else
+      std::string temp = sx_ctime;
+#endif
+      VerifyXMLDateTimeString(temp, mtime);
+    }
+
+    if (!tokens[i_Offset[XTIME]].empty()) {
+      StringX sx_xtime = tokens[i_Offset[XTIME]];
+      if (sx_xtime.length() != 19)
+        continue;
+      sx_xtime.replace(10, 1, _T("T"));
+#ifdef UNICODE
+      std::wstring temp(sx_xtime.length(), L' ');
+      std::copy(sx_xtime.begin(), sx_xtime.end(), temp.begin());
+#else
+      std::string temp = sx_ctime;
+#endif
+      VerifyXMLDateTimeString(temp, xtime);
+    }
+
+    if (!tokens[i_Offset[NOTES]].empty()) {
+      sx_notes = tokens[i_Offset[NOTES]];
+      size_t pos = 0;
+      while((pos = sx_notes.find(txtCRLF, pos)) != StringX::npos) {
+        sx_notes.replace(pos, txtCRLF.length(), CRLF);
+        pos += CRLF.length();
+      }
+    }
+
+    // set up the group tree
+    if (!sx_parent_groups.empty())
+      sx_group = sx_parent_groups + sx_group;
+    if (!sx_group.empty())
+      sx_group = KPIMPORTEDPREFIX + dot + sx_group;
+    else
+      sx_group = KPIMPORTEDPREFIX;
+
+    // Create & append the new record.
+    CItemData ci_temp;
+    bool bNewUUID(true);
+    if (!sx_uuid.empty()) {
+      const CUUID uuid(ua);
+      if (uuid != CUUID::NullUUID()) {
+        UUIDSetPair pr_uuid = setUUID.insert(uuid);
+        if (pr_uuid.second) {
+          ci_temp.SetUUID(uuid);
+          bNewUUID = false;
+        }
+      }
+    }
+
+    if (bNewUUID)
+      ci_temp.CreateUUID();
+
+    if (!sx_group.empty())
+      ci_temp.SetGroup(sx_group);
+    ci_temp.SetTitle(sx_title.empty() ? _T("Unknown") : sx_title);
+    if (!sx_user.empty())
+      ci_temp.SetUser(sx_user);
+    ci_temp.SetPassword(tokens[i_Offset[PASSWORD]].empty() ? _T("Unknown") : tokens[i_Offset[PASSWORD]]);
+    if (!sx_notes.empty())
+      ci_temp.SetNotes(sx_notes.c_str());
+    if (!tokens[i_Offset[URL]].empty())
+      ci_temp.SetURL(tokens[i_Offset[URL]]);
+    if (ctime > 0)
+      ci_temp.SetCTime(ctime);
+    if (atime > 0)
+      ci_temp.SetATime(atime);
+    if (mtime > 0) {
+      ci_temp.SetPMTime(mtime);
+      ci_temp.SetRMTime(mtime);
+    }
+    if (xtime > 0)
+      ci_temp.SetXTime(xtime);
+
+    // Now make sure it is unique
+    StringX sxnewtitle(sx_title);
+    bool conflict = !MakeEntryUnique(setGTU, sx_group, sxnewtitle, sx_user, IDSC_IMPORTNUMBER);
+    if (conflict) {
+      ci_temp.SetTitle(sxnewtitle);
+      stringT cs_header;
+      if (sx_group.empty())
+        Format(cs_header, IDSC_IMPORTCONFLICTS2, numlines);
+      else
+        Format(cs_header, IDSC_IMPORTCONFLICTS1, numlines, sx_group.c_str());
+
+      Format(cs_error, IDSC_IMPORTCONFLICTS0, cs_header.c_str(),
+               sx_title.c_str(), sx_user.c_str(), sxnewtitle.c_str());
+      rpt.WriteLine(cs_error);
+      sx_title = sxnewtitle;
+      numRenamed++;
+    }
+
+    ci_temp.SetStatus(CItemData::ES_ADDED);
+
+    // Get GUI to populate its field
+    GUISetupDisplayInfo(ci_temp);
+
+    // Add to commands to execute
+    Command *pcmd = AddEntryCommand::Create(this, ci_temp);
+    pcmd->SetNoGUINotify();
+    pmulticmds->Add(pcmd);
+    numImported++;
+    StringX sx_imported = StringX(L"\xab") + 
+                             sx_group + StringX(L"\xbb \xab") + 
+                             sx_title + StringX(L"\xbb \xab") +
+                             sx_user  + StringX(L"\xbb");
+    rpt.WriteLine(sx_imported.c_str());
+  } // file processing for (;;) loop
+
+  if (numImported > 0)
+    SetDBChanged(true);
+
+  return ((numSkipped + numRenamed)) == 0 ? SUCCESS : OK_WITH_ERRORS;
 }

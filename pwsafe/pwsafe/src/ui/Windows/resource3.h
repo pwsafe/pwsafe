@@ -36,6 +36,8 @@
 #define IDS_FDF_BU                      5056
 #define IDS_FDF_BUS                     5057
 #define IDS_FDF_PR_ALL                  5058
+#define IDS_FDF_TXT_ALL                 5059
+#define IDS_FDF_CSV_ALL                 5060
 
 // Tooltips
 #define IDS_RESETPWHISTORYOFF           5100
@@ -666,4 +668,5 @@
 #define IDS_WZACTIONFAILED              5865
 #define IDS_CANNOTCREATEDIR             5866
 #define IDS_WITHWARNINGS                5867
-
+#define IDS_RPTIMPORTKPV1TXT            5868
+#define IDS_RPTIMPORTKPV1CSV            5869
