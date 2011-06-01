@@ -29,7 +29,6 @@ class CompareDlg: public wxDialog
   wxCollapsiblePane* CreateOptionsPanel(wxSizer* dlgSizer);
   wxCollapsiblePane* CreateDataPanel(wxSizer* dlgSizer, const wxString& title, ComparisonData* cd);
   void OnCompare(wxCommandEvent& );
-  void OnPaneCollapse(wxCollapsiblePaneEvent& evt);
 
 public:
   CompareDlg(wxWindow* parent, PWScore* core);
