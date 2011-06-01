@@ -709,7 +709,7 @@ protected:
   afx_msg void OnChangeTreeFont();
   afx_msg void OnChangePswdFont();
   afx_msg void OnChangeVKFont();
-  afx_msg void OnViewReports(UINT nID);  // From View->Reports menu
+  afx_msg void OnViewReportsByID(UINT nID);  // From View->Reports menu
   afx_msg void OnViewReports();
   afx_msg void OnManageFilters(); // From Toolbar button
   afx_msg void OnCancelFilter();
@@ -747,7 +747,8 @@ protected:
   afx_msg void OnExportEntryText();
   afx_msg void OnExportEntryXML();
   afx_msg void OnImportText();
-  afx_msg void OnImportKeePass();
+  afx_msg void OnImportKeePassV1CSV();
+  afx_msg void OnImportKeePassV1TXT();
   afx_msg void OnImportXML();
 
   afx_msg void OnToolBarFind();

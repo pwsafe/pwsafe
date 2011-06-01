@@ -2925,6 +2925,7 @@ void DboxMain::OnViewReports()
 
   int Reports[] = {
     IDS_RPTCOMPARE, IDS_RPTFIND, IDS_RPTIMPORTTEXT, IDS_RPTIMPORTXML,
+    IDS_RPTIMPORTKPV1CSV, IDS_RPTIMPORTKPV1TXT,
     IDS_RPTEXPORTTEXT, IDS_RPTEXPORTXML,
     IDS_RPTMERGE, IDS_RPTSYNCH, IDS_RPTVALIDATE,
   };
@@ -2954,6 +2955,8 @@ void DboxMain::OnViewReports()
     case IDS_RPTFIND:
     case IDS_RPTIMPORTTEXT:
     case IDS_RPTIMPORTXML:
+    case IDS_RPTIMPORTKPV1CSV:
+    case IDS_RPTIMPORTKPV1TXT:
     case IDS_RPTEXPORTTEXT:
     case IDS_RPTEXPORTXML:
     case IDS_RPTMERGE:
@@ -2982,6 +2985,10 @@ static UINT SetupViewReports(const int nID)
     return IDS_RPTIMPORTTEXT;
   case ID_MENUITEM_REPORT_IMPORTXML:
     return IDS_RPTIMPORTXML;
+  case ID_MENUITEM_REPORT_IMPORTKP1CSV:
+    return IDS_RPTIMPORTKPV1CSV;
+  case ID_MENUITEM_REPORT_IMPORTKP1TXT:
+    return IDS_RPTIMPORTKPV1TXT;
   case ID_MENUITEM_REPORT_MERGE:
     return IDS_RPTMERGE;
   case ID_MENUITEM_REPORT_SYNCHRONIZE:
@@ -2999,7 +3006,7 @@ static UINT SetupViewReports(const int nID)
   }
 }
 
-void DboxMain::OnViewReports(UINT nID)
+void DboxMain::OnViewReportsByID(UINT nID)
 {
   CString cs_filename, cs_path, csAction;
   CString cs_drive, cs_directory;

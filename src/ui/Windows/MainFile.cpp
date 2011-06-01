@@ -1736,7 +1736,7 @@ void DboxMain::OnImportText()
   }
 }
 
-void DboxMain::OnImportKeePass()
+void DboxMain::OnImportKeePassV1CSV()
 {
   if (m_core.IsReadOnly()) // disable in read-only mode
     return;
@@ -1753,10 +1753,10 @@ void DboxMain::OnImportKeePass()
   }
 
   CPWFileDialog fd(TRUE,
-                   L"txt",
+                   L"csv",
                    NULL,
                    OFN_FILEMUSTEXIST | OFN_HIDEREADONLY | OFN_LONGNAMES,
-                   CString(MAKEINTRESOURCE(IDS_FDF_T_C_ALL)),
+                   CString(MAKEINTRESOURCE(IDS_FDF_CSV_ALL)),
                    this);
 
   fd.m_ofn.lpstrTitle = cs_text;
@@ -1778,7 +1778,20 @@ void DboxMain::OnImportKeePass()
     bool bWasEmpty = m_core.GetNumEntries() == 0;
     Command *pcmd = NULL;
     StringX KPsFileName = fd.GetPathName();
-    rc = m_core.ImportKeePassTextFile(KPsFileName, pcmd);
+    int numImported, numSkipped, numRenamed;
+
+    // Create report as we go
+    CReport rpt;
+    std::wstring str_text;
+    LoadAString(str_text, IDS_RPTIMPORTKPV1CSV);
+    rpt.StartReport(str_text.c_str(), m_core.GetCurFile().c_str());
+    LoadAString(str_text, IDS_TEXT);
+    cs_temp.Format(IDS_IMPORTFILE, str_text.c_str(), KPsFileName.c_str());
+    rpt.WriteLine((LPCWSTR)cs_temp);
+    rpt.WriteLine();
+
+    rc = m_core.ImportKeePassV1CSVFile(KPsFileName, numImported, numSkipped, numRenamed,
+                                       rpt, pcmd);
     switch (rc) {
       case PWScore::CANT_OPEN_FILE:
       {
@@ -1805,8 +1818,135 @@ void DboxMain::OnImportKeePass()
         // May need to update menu/toolbar if original database was empty
         if (bWasEmpty)
           UpdateMenuAndToolBar(m_bOpen);
+
+        rpt.WriteLine();
+        CString cs_type;
+        cs_type.LoadString(numImported == 1 ? IDSC_ENTRY : IDSC_ENTRIES);
+        cs_temp.Format(IDS_RECORDSIMPORTED, numImported, cs_type);
+        rpt.WriteLine((LPCWSTR)cs_temp);
+
+        cs_title.LoadString(rc == PWScore::SUCCESS ? IDS_COMPLETE : IDS_OKWITHERRORS);
         break;
     } // switch
+    rpt.EndReport();
+
+    gmb.SetTitle(cs_title);
+    gmb.SetMsg(cs_temp);
+    gmb.SetStandardIcon(rc == PWScore::SUCCESS ? MB_ICONINFORMATION : MB_ICONEXCLAMATION);
+    gmb.AddButton(IDS_OK, IDS_OK, TRUE, TRUE);
+    gmb.AddButton(IDS_VIEWREPORT, IDS_VIEWREPORT);
+    INT_PTR rc = gmb.DoModal();
+    if (rc == IDS_VIEWREPORT)
+      ViewReport(rpt);
+  }
+}
+
+void DboxMain::OnImportKeePassV1TXT()
+{
+  if (m_core.IsReadOnly()) // disable in read-only mode
+    return;
+
+  CString cs_text, cs_title, cs_temp;
+  cs_text.LoadString(IDS_PICKKEEPASSFILE);
+  std::wstring dir;
+  if (m_core.GetCurFile().empty())
+    dir = PWSdirs::GetSafeDir();
+  else {
+    std::wstring cdrive, cdir, dontCare;
+    pws_os::splitpath(m_core.GetCurFile().c_str(), cdrive, cdir, dontCare, dontCare);
+    dir = cdrive + cdir;
+  }
+
+  CPWFileDialog fd(TRUE,
+                   L"txt",
+                   NULL,
+                   OFN_FILEMUSTEXIST | OFN_HIDEREADONLY | OFN_LONGNAMES,
+                   CString(MAKEINTRESOURCE(IDS_FDF_TXT_ALL)),
+                   this);
+
+  fd.m_ofn.lpstrTitle = cs_text;
+
+  if (!dir.empty())
+    fd.m_ofn.lpstrInitialDir = dir.c_str();
+
+  INT_PTR rc = fd.DoModal();
+
+  if (m_inExit) {
+    // If U3ExitNow called while in CPWFileDialog,
+    // PostQuitMessage makes us return here instead
+    // of exiting the app. Try resignalling 
+    PostQuitMessage(0);
+    return;
+  }
+
+  if (rc == IDOK) {
+    CGeneralMsgBox gmb;
+    bool bWasEmpty = m_core.GetNumEntries() == 0;
+    Command *pcmd = NULL;
+    StringX KPsFileName = fd.GetPathName();
+    int numImported, numSkipped, numRenamed;
+
+    // Create report as we go
+    CReport rpt;
+    std::wstring str_text;
+    LoadAString(str_text, IDS_RPTIMPORTKPV1TXT);
+    rpt.StartReport(str_text.c_str(), m_core.GetCurFile().c_str());
+    LoadAString(str_text, IDS_TEXT);
+    cs_temp.Format(IDS_IMPORTFILE, str_text.c_str(), KPsFileName.c_str());
+    rpt.WriteLine((LPCWSTR)cs_temp);
+    rpt.WriteLine();
+
+    rc = m_core.ImportKeePassV1TXTFile(KPsFileName, numImported, numSkipped, numRenamed,
+                                       rpt, pcmd);
+    switch (rc) {
+      case PWScore::CANT_OPEN_FILE:
+      {
+        cs_temp.Format(IDS_CANTOPENREADING, KPsFileName.c_str());
+        cs_title.LoadString(IDS_FILEOPENERROR);
+        gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
+        delete [] pcmd;
+        break;
+      }
+      case PWScore::INVALID_FORMAT:
+      {
+        cs_temp.Format(IDS_INVALIDFORMAT, KPsFileName.c_str());
+        cs_title.LoadString(IDS_FILEREADERROR);
+        gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
+        delete [] pcmd;
+        break;
+      }
+      case PWScore::SUCCESS:
+      default: // deliberate fallthru
+        if (pcmd != NULL)
+          Execute(pcmd);
+
+        RefreshViews();
+        ChangeOkUpdate();
+        // May need to update menu/toolbar if original database was empty
+        if (bWasEmpty)
+          UpdateMenuAndToolBar(m_bOpen);
+
+        rpt.WriteLine();
+        CString cs_type;
+        cs_type.LoadString(numImported == 1 ? IDSC_ENTRY : IDSC_ENTRIES);
+        cs_temp.Format(IDS_RECORDSIMPORTED, numImported, cs_type);
+        rpt.WriteLine((LPCWSTR)cs_temp);
+
+        cs_title.LoadString(rc == PWScore::SUCCESS ? IDS_COMPLETE : IDS_OKWITHERRORS);
+
+        break;
+    } // switch
+    // Finish Report
+    rpt.EndReport();
+
+    gmb.SetTitle(cs_title);
+    gmb.SetMsg(cs_temp);
+    gmb.SetStandardIcon(rc == PWScore::SUCCESS ? MB_ICONINFORMATION : MB_ICONEXCLAMATION);
+    gmb.AddButton(IDS_OK, IDS_OK, TRUE, TRUE);
+    gmb.AddButton(IDS_VIEWREPORT, IDS_VIEWREPORT);
+    INT_PTR rc = gmb.DoModal();
+    if (rc == IDS_VIEWREPORT)
+      ViewReport(rpt);
   }
 }
 

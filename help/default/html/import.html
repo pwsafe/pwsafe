@@ -83,33 +83,78 @@ which is provided as part of the distribution.</p>
 
 <h3><a name="Keepass"></a>Keepass V1</h3>
 
+<h4>TXT File</h4>
+
 <p>You may also import a TXT file exported from Keepass V1 (tested on files created
 by V1.19b).</p>
 
 <p>The following fields are converted to the PasswordSafe equivalents:</p>
+Each new entry starts with a line beginning with '[' and ending with as ']'. The text 
+between these will be imported as the 'Title' of this entry.<p>
+<p>Each piece of information is on one line and the following tags are at the beginning
+of each line:</p>
 <ul>
-<li>"Group: "</li>
-<li>"User Name: "</li>
-<li>"URL: "</li>
-<li>"Password: "</li>
-<li>"Notes: "</li>
-<li>"UUID: "</li>
-<li>"Creation Time: "</li>
-<li>"Last Access: "</li>
-<li>"Last Modification: "</li>
-<li>"Expires: "</li>
+<li>"Group: " becomes the entry's Group</li>
+<li>"Group Tree: " becomes the entry's group hierachy to the root</li>
+<li>"User Name: " becomes the entry's User Name</li>
+<li>"Password: " becomes the entry's Password</li>
+<li>"URL: " becomes the entry's URL</li>
+<li>"Notes: " becomes the entry's Notes</li>
+<li>"UUID: " becomes the internal unique ID of the PasswordSafe entry</li>
+<li>"Creation Time: " becomes the entry's creation time</li>
+<li>"Last Access: " becomes the entry's last accessed time</li>
+<li>"Last Modification: " becomes the entry's password and the entry's last modification time</li>
+<li>"Expires: " becomes the entry's expiry date</li>
 </ul>
+
+<p>The following fields are ignored:</p>
+
+<ul>
+<li>"Icon"</li>
+<li>"Attachment Description"</li>
+<li>"Attachment" - do <b><u>NOT</u></b> export this field as it can make the export file extremely large.</li>
+</ul>
+
+<p>Note that times in PasswordSafe must be earlier than January 19, 2038.  Any time greater than this is
+treated as invalid and that the associated field is unset.</p>
+
+<p>Please note, you <b><u>MUST</u></b> check the box <i>"Encode/replace newline characters by '\n'"</i>
+during the export from Keepass V1 or <u>the import may fail or give unexpected results.</u></p>
+
+<h4>CSV File</h4>
+
+<p>You may also import a CSV (Comma Separated Values) file exported from Keepass V1 (tested on files created
+by V1.19b).</p>
+
+<p>The following fields are converted to the PasswordSafe equivalents:</p>
+<ul>
+<li>"Password Groups" becomes the entry's Group</li>
+<li>"Group Tree" becomes the entry's group hierachy to the root</li>
+<li>"Account" becomes the entry's Title</li>
+<li>"Login Name" becomes the entry's User Name</li>
+<li>"Password" becomes the entry's Password</li>
+<li>"Web Site" becomes the entry's URL</li>
+<li>"Comments" becomes the entry's Notes</li>
+<li>"UUID" becomes the internal unique ID of the PasswordSafe entry</li>
+<li>"Creation Time" becomes the entry's creation time</li>
+<li>"Last Access" becomes the entry's last accessed time</li>
+<li>"Last Modification" becomes the entry's password and the entry's last modification time</li>
+<li>"Expires" becomes the entry's expiry date</li>
+</ul>
+
 <p>The following fields are ignored:</p>
 <ul>
-<li>"Group Tree: "</li>
 <li>"Icon"</li>
+<li>"Attachment Description"</li>
+<li>"Attachment" - do <b><u>NOT</u></b> export this field as it can make the export file extremely large.</li>
 </ul>
-<p><b><i>Please note, the import will fail and may give unexpected results if:</i></b></p>
-<ul>
-<li>Any line in the Notes field starts with the name of any exported field
-listed above, or</li>
-<li>Any line in the Notes field starts with '[' and ends with ']'</li>
-</ul>
+
+<p>Note that times in PasswordSafe must be earlier than January 19, 2038.  Any time greater than this is
+treated as invalid and that the associated field is unset.</p>
+
+<p>Please note, you <b><u>MUST</u></b> check the box <i>"Encode/replace newline characters by '\n'"</i>
+during the export from Keepass V1 or <u>the import may fail or give unexpected results.</u></p>
+
 </div>
 </div>
 
