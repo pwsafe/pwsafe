@@ -10,8 +10,25 @@
 #include "core.h"
 #include "StringXStream.h"
 
-#include <time.h>
-#include <stdio.h>
+#include <ctime>
+
+// Our own mktime, differs from libc's via argument overloading
+static time_t mktime(int yyyy, int mon, int dd, int hh = 0, int min = 0, int sec = 0, int *dow = NULL)
+{
+  struct tm xtm;
+  memset(&xtm, 0, sizeof(tm));
+  xtm.tm_year = yyyy - 1900;
+  xtm.tm_mon = mon - 1;
+  xtm.tm_mday = dd;
+  xtm.tm_hour = hh;
+  xtm.tm_min = min;
+  xtm.tm_sec = sec;
+  xtm.tm_isdst = -1;
+  time_t retval = std::mktime(&xtm);
+  if (dow != NULL)
+    *dow = xtm.tm_wday + 1;
+  return retval;
+}
 
 bool verifyDTvalues(int yyyy, int mon, int dd,
                     int hh, int min, int ss)
@@ -85,17 +102,7 @@ bool VerifyImportDateTimeString(const stringT &time_str, time_t &t)
     return true;
   }
 
-  struct tm xtm;
-  memset(&xtm, 0, sizeof(tm));
-  xtm.tm_year = yyyy - 1900;
-  xtm.tm_mon = mon - 1;
-  xtm.tm_mday = dd;
-  xtm.tm_hour = hh;
-  xtm.tm_min = min;
-  xtm.tm_sec = ss;
-  xtm.tm_isdst = -1;
-  t = mktime(&xtm);
-
+  t = mktime(yyyy, mon, dd, hh, min, ss);
   return true;
 }
 
@@ -147,28 +154,18 @@ bool VerifyASCDateTimeString(const stringT &time_str, time_t &t)
     return true;
   }
 
-  time_t xt;
-  struct tm xtm;
-  memset(&xtm, 0, sizeof(xtm));
-  xtm.tm_year = yyyy - 1900;
-  xtm.tm_mon = mon - 1;
-  xtm.tm_mday = dd;
-  xtm.tm_hour = hh;
-  xtm.tm_min = min;
-  xtm.tm_sec = ss;
-  xtm.tm_isdst = -1;
-  xt = mktime(&xtm);
+  int  mktime_dow;
+  time_t xt = mktime(yyyy, mon, dd, hh, min, ss, &mktime_dow);
 
   iDOW = str_days.find(dow);
   if (iDOW == stringT::npos)
     return false;
 
   iDOW = (iDOW / 3) + 1;
-  if (iDOW != stringT::size_type(xtm.tm_wday + 1))
+  if (iDOW != stringT::size_type(mktime_dow))
     return false;
 
   t = xt;
-
   return true;
 }
 
@@ -251,16 +248,7 @@ bool VerifyXMLDateTimeString(const stringT &time_str, time_t &t)
     return true;
   }
 
-  struct tm xtm;
-  memset(&xtm, 0, sizeof(xtm));
-  xtm.tm_year = yyyy - 1900;
-  xtm.tm_mon = mon - 1;
-  xtm.tm_mday = dd;
-  xtm.tm_hour = hh;
-  xtm.tm_min = min;
-  xtm.tm_sec = ss;
-  xtm.tm_isdst = -1;
-  t = mktime(&xtm);
+  t = mktime(yyyy, mon, dd, hh, min, ss);
 
   // Add timezone offsets
   if (tz_hh != 0 || tz_mm != 0) {
@@ -310,14 +298,7 @@ bool VerifyXMLDateString(const stringT &time_str, time_t &t)
     return true;
   }
 
-  struct tm xtm;
-  memset(&xtm, 0, sizeof(xtm));
-  xtm.tm_year = yyyy - 1900;
-  xtm.tm_mon = mon - 1;
-  xtm.tm_mday = dd;
-  xtm.tm_isdst = -1;
-  t = mktime(&xtm);
-
+  t = mktime(yyyy, mon, dd);
   return true;
 }
 
