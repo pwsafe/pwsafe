@@ -34,16 +34,15 @@ enum {ID_BTN_COMPARE = 100 };
 
 BEGIN_EVENT_TABLE( CompareDlg, wxDialog )
   EVT_BUTTON( ID_BTN_COMPARE,  CompareDlg::OnCompare )
-  EVT_COLLAPSIBLEPANE_CHANGED( wxID_ANY, CompareDlg::OnPaneCollapse )
 END_EVENT_TABLE()
 
 struct ComparisonData {
   wxCollapsiblePane* pane;
   wxGrid* grid;
   CompareData data;
-  wxSizerItem* item;  //for managing the spacers in between
+  wxSizerItem* sizerBelow;  //for managing the spacers in between
   
-  ComparisonData(): pane(0), grid(0), item(0){}
+  ComparisonData(): pane(0), grid(0), sizerBelow(0){}
   ~ComparisonData() { /*nothing to do.  All window objects deleted automatically */ }
 };
 
@@ -93,13 +92,19 @@ void CompareDlg::CreateControls()
   dlgSizer->AddSpacer(RowSeparation);
 
   CreateDataPanel(dlgSizer, _("Conflicting items"), m_conflicts)->Hide();
-  m_current->item = dlgSizer->AddSpacer(RowSeparation);
+  m_conflicts->sizerBelow = dlgSizer->AddSpacer(RowSeparation);
+  m_conflicts->sizerBelow->Show(false);
+
   CreateDataPanel(dlgSizer, wxString() << _("Only in current database: ") << m_currentCore->GetCurFile(),
                         m_current)->Hide();
-  m_comparison->item = dlgSizer->AddSpacer(RowSeparation);
+  m_current->sizerBelow = dlgSizer->AddSpacer(RowSeparation);
+  m_current->sizerBelow->Show(false);
+
   CreateDataPanel(dlgSizer, wxString() << _("Only in comparison database: ") << m_otherCore->GetCurFile(),
                         m_comparison)->Hide();
-  m_identical->item = dlgSizer->AddSpacer(RowSeparation);
+  m_comparison->sizerBelow = dlgSizer->AddSpacer(RowSeparation);
+  m_comparison->sizerBelow->Show(false);
+
   CreateDataPanel(dlgSizer, _("Identical items"), m_identical)->Hide();
 
   dlgSizer->AddSpacer(RowSeparation);
@@ -114,6 +119,12 @@ void CompareDlg::CreateControls()
   buttons->Realize();
   dlgSizer->Add(buttons, wxSizerFlags().Center().Expand().Border(wxLEFT|wxRIGHT, SideMargin).Proportion(0));
   dlgSizer->AddSpacer(BottomMargin);
+
+  int captionHeight = ::wxSystemSettings::GetMetric(wxSYS_CAPTION_Y);
+  if (captionHeight < 0)  captionHeight = 100;
+  wxSize sz = ::wxGetDisplaySize();
+  sz -= wxSize(0, captionHeight);
+  SetMaxSize(sz);
 
   SetSizerAndFit(dlgSizer);
 }
@@ -183,7 +194,7 @@ wxCollapsiblePane* CompareDlg::CreateDataPanel(wxSizer* dlgSizer, const wxString
   sizer->Add(cd->grid, wxSizerFlags().Expand().Proportion(1));
   cd->pane->GetPane()->SetSizer(sizer);
 
-  dlgSizer->Add(cd->pane, wxSizerFlags().Proportion(1).Expand().Border(wxLEFT|wxRIGHT, SideMargin/2));
+  dlgSizer->Add(cd->pane, wxSizerFlags().Proportion(0).Expand().Border(wxLEFT|wxRIGHT, SideMargin/2));
 
   return cd->pane;
 }
@@ -215,29 +226,33 @@ void CompareDlg::DoCompare()
 
     m_dbSelectionPane->Collapse();
     m_optionsPane->Collapse();
-    ComparisonData* cds[] = {m_conflicts, m_current, m_comparison, m_identical };
-    bool prevSizer = false;
-    for(size_t idx =0; idx < WXSIZEOF(cds); ++idx) {
-      if (!cds[idx]->data.empty()) {
-        cds[idx]->pane->Show();
-        cds[idx]->grid->SetTable(new ComparisonGridTable(m_selCriteria, &cds[idx]->data, m_currentCore, m_otherCore));
-        cds[idx]->pane->Expand();
-        if (idx && cds[idx-1]->item)
-          cds[idx-1]->item->Show(prevSizer);
-        prevSizer = true; //show the sizer after this item in next iteration
+    struct {
+      ComparisonData* cd;
+      bool expand;
+    } panes[] = { {m_conflicts,  true},
+                  {m_current,    true},
+                  {m_comparison, true},
+                  {m_identical,  false}
+                };
+    wxSizerItem* prevSizer = 0;
+    for(size_t idx =0; idx < WXSIZEOF(panes); ++idx) {
+      if (!panes[idx].cd->data.empty()) {
+        if (prevSizer)
+          prevSizer->Show(true);
+        panes[idx].cd->grid->SetTable(new ComparisonGridTable(m_selCriteria, &panes[idx].cd->data, m_currentCore, m_otherCore));
+        panes[idx].cd->pane->Show();
+        if (panes[idx].expand) {
+          //GetSizer()->GetItem(panes[idx].cd->pane)->SetProportion(0);
+          panes[idx].cd->pane->Expand();
+        }
+        else {
+          //GetSizer()->GetItem(panes[idx].cd->pane)->SetProportion(0);
+          panes[idx].cd->pane->Collapse();
+        }
+        //if the next pane is displayed, show the sizer below this pane
+        prevSizer = panes[idx].cd->sizerBelow; 
       }
-      else
-        prevSizer = false;
     }
-    Layout();
-  }
-}
-
-void CompareDlg::OnPaneCollapse(wxCollapsiblePaneEvent& evt)
-{
-  wxCollapsiblePane* pane = wxDynamicCast(evt.GetEventObject(), wxCollapsiblePane);
-  if (pane) {
-    GetSizer()->GetItem(pane)->SetProportion(0);
     Layout();
   }
 }

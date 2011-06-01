@@ -75,7 +75,7 @@ bool ComparisonGridTable::IsEmptyCell(int row, int col)
   if (cd.indatabase == CURRENT || cd.indatabase == COMPARE) {
     PWScore* core = cd.indatabase == CURRENT? m_currentCore: m_otherCore;
     ItemListConstIter itr = core->Find(cd.uuid0);
-    if (itr != m_currentCore->GetEntryEndIter()) {
+    if (itr != core->GetEntryEndIter()) {
       if (col == 0)
         return itr->second.IsGroupEmpty();
       else if (col == 1)
@@ -120,7 +120,7 @@ wxString ComparisonGridTable::GetValue(int row, int col)
         if (cd.indatabase == CURRENT || cd.indatabase == COMPARE) {
           PWScore* core = cd.indatabase == CURRENT? m_currentCore: m_otherCore;
           ItemListConstIter itr = core->Find(cd.uuid0);
-          if (itr != m_currentCore->GetEntryEndIter())
+          if (itr != core->GetEntryEndIter())
             return towxstring(itr->second.GetFieldValue(m_colFields[col-2]));
           break;
         }
