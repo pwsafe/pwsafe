@@ -23,7 +23,8 @@ text editor.</p>
 <ul>
 <li><a href="#text">Text</a></li>
 <li><a href="#XML">XML</a></li>
-<li>KeePass V1 (another password management utility)</li>
+<li><a href="#KeePassV1">KeePass V1</a> (another password management utility)</li>
+<li><a href="#KeePassV2">KeePass V2</a> (another password management utility)</li>
 </ul>
 
 <p>In addition, to 'import' a subset of entries from another Password Safe
@@ -81,7 +82,7 @@ can import XML files that were generated according to the schema defined in
 the file <span style="font-style: italic;">pwsafe.xsd</span>,
 which is provided as part of the distribution.</p>
 
-<h3><a name="Keepass"></a>Keepass V1</h3>
+<h3><a name="KeePassV1"></a>KeePass V1</h3>
 
 <h4>TXT File</h4>
 
@@ -154,6 +155,42 @@ treated as invalid and that the associated field is unset.</p>
 
 <p>Please note, you <b><u>MUST</u></b> check the box <i>"Encode/replace newline characters by '\n'"</i>
 during the export from Keepass V1 or <u>the import may fail or give unexpected results.</u></p>
+
+<h4>XML File</h4>
+
+<p>PasswordSafe cannot directly import a XML file exported by KeePass V1 as the fields are too different.
+However, we have provided a XSL Transfom file (KPV1_to_PWS.xslt).  Once exported from KeePass V1, the
+programs below be used to process it with this XSLT file to produce a PasswordSafe compatible XML file
+that can then be imported in PasswordSafe <b>V3.26 or later</b>.</p>
+
+<p>This XSLT file conforms to V1.0 of XSLT as described in <a target="blank" href="http://www.w3.org/TR/xslt">
+http://www.w3.org/TR/xslt</a></p>
+
+<p>During testing under Windows, the following was found:</p>
+<ol>
+<li>It appears that the old command line program from Microsoft (msxml.exe V1.1.0.1
+dated 2001) cannot process this XSLT file.</li>
+<li>The command line progam NSLT2 (V2.2 dated 2005) can correctly process this XSLT
+file but it no longer seems to be under active development and, although can be
+found on the web, the home web site no longer allows downloads.</li>
+<li>AltovaXML Community Edition (current version 2011r2sp1) can also correctly process
+this XSLT file. See <a target="blank" href="http://www.altova.com/altovaxml.html">
+http://www.altova.com/altovaxml.html</a>.</li>
+<li>Saxon-HE (Home Edition) (current version 9.3.0.5) may support this XSLT file but
+has not yet been tested. See <a target="blank" href="http://saxon.sourceforge.net/">
+http://saxon.sourceforge.net/</a>.</li>
+</ol>
+<p>All four programs are free.</p>
+
+
+<h3><a name="KeePassV2"></a>KeePass V2</h3>
+
+<p>PasswordSafe cannot import any file created by KeePass V2 - even the KeePass V1 CSV format
+available from this program, as it does not allow the important setting of the 
+<i>"Encode/replace newline characters by '\n'"</i> requirement.  However, it is possible to
+export a KeePass V2 database as a KeePass V1 database.  You may then export this to either a
+TXT, CSV or XML file and imported as described <a href="#KeePassV1">above</a>.</p>
+
 
 </div>
 </div>
