@@ -1907,7 +1907,7 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
       continue;
     }
     
-    if (!tokens[i_Offset[GROUP]].empty()) {
+    if (i_Offset[GROUP] >= 0 && !tokens[i_Offset[GROUP]].empty()) {
       sx_group = tokens[i_Offset[GROUP]];
       // Replace any '.' by a '/'
       size_t pos = 0;
@@ -1922,7 +1922,7 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
       }
     }
 
-    if (!tokens[i_Offset[TITLE]].empty()) {
+    if (i_Offset[TITLE] >= 0 && !tokens[i_Offset[TITLE]].empty()) {
       sx_title = tokens[i_Offset[TITLE]];
       // Replace any '.' by a '/'
       size_t pos = 0;
@@ -1932,11 +1932,11 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
       }
     }
 
-    if (!tokens[i_Offset[USER]].empty()) {
+    if (i_Offset[USER] >= 0 && !tokens[i_Offset[USER]].empty()) {
       sx_user = tokens[i_Offset[USER]];
     }
 
-    if (!tokens[i_Offset[PARENTGROUPS]].empty()) {
+    if (i_Offset[PARENTGROUPS] >= 0 && !tokens[i_Offset[PARENTGROUPS]].empty()) {
       // set the parent groups sx_parent_groups
       // Groups are in order separated by '\'
       // Groups with a '/' are unchanged
@@ -1965,7 +1965,7 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
       }
     }
 
-    if (!tokens[i_Offset[UUID]].empty()) {
+    if (i_Offset[UUID] >= 0 && !tokens[i_Offset[UUID]].empty()) {
       sx_uuid = tokens[i_Offset[UUID]];
       if (sx_uuid.length() == sizeof(uuid_array_t) * 2) {
         unsigned int x(0);
@@ -1979,7 +1979,7 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
         sx_uuid.clear();
     }
 
-    if (!tokens[i_Offset[CTIME]].empty()) {
+    if (i_Offset[CTIME] >= 0 && !tokens[i_Offset[CTIME]].empty()) {
       StringX sx_ctime = tokens[i_Offset[CTIME]];
       if (sx_ctime.length() != 19)
         continue;
@@ -1993,7 +1993,7 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
       VerifyXMLDateTimeString(temp, ctime);
     }
 
-    if (!tokens[i_Offset[ATIME]].empty()) {
+    if (i_Offset[ATIME] >= 0 && !tokens[i_Offset[ATIME]].empty()) {
       StringX sx_atime = tokens[i_Offset[ATIME]];
       if (sx_atime.length() != 19)
         continue;
@@ -2007,7 +2007,7 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
       VerifyXMLDateTimeString(temp, atime);
     }
 
-    if (!tokens[i_Offset[PMTIME]].empty()) {
+    if (i_Offset[PMTIME] >= 0 && !tokens[i_Offset[PMTIME]].empty()) {
       StringX sx_mtime = tokens[i_Offset[PMTIME]];
       if (sx_mtime.length() != 19)
         continue;
@@ -2021,7 +2021,7 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
       VerifyXMLDateTimeString(temp, mtime);
     }
 
-    if (!tokens[i_Offset[XTIME]].empty()) {
+    if (i_Offset[XTIME] >= 0 && !tokens[i_Offset[XTIME]].empty()) {
       StringX sx_xtime = tokens[i_Offset[XTIME]];
       if (sx_xtime.length() != 19)
         continue;
@@ -2035,7 +2035,7 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
       VerifyXMLDateTimeString(temp, xtime);
     }
 
-    if (!tokens[i_Offset[NOTES]].empty()) {
+    if (i_Offset[NOTES] >= 0 && !tokens[i_Offset[NOTES]].empty()) {
       sx_notes = tokens[i_Offset[NOTES]];
       size_t pos = 0;
       while((pos = sx_notes.find(txtCRLF, pos)) != StringX::npos) {
