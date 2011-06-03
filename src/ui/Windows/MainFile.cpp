@@ -1797,15 +1797,14 @@ void DboxMain::OnImportKeePassV1CSV()
       {
         cs_temp.Format(IDS_CANTOPENREADING, KPsFileName.c_str());
         cs_title.LoadString(IDS_FILEOPENERROR);
-        gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
         delete [] pcmd;
         break;
       }
       case PWScore::INVALID_FORMAT:
+      case PWScore::FAILURE:
       {
         cs_temp.Format(IDS_INVALIDFORMAT, KPsFileName.c_str());
-        cs_title.LoadString(IDS_FILEREADERROR);
-        gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
+        cs_title.LoadString(IDS_ERROR);
         delete [] pcmd;
         break;
       }
