@@ -240,6 +240,7 @@
 #define IDSC_DOESNOTCONTAINANY          3421
 #define IDSC_CONTAINSALL                3422
 #define IDSC_DOESNOTCONTAINALL          3423
+#define IDSC_IMPORTBADFORMAT            3424
 
 // Keep DCA together
 #define IDSC_CURRENTDEFAULTDCA          4000

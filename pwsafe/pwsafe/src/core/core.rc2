@@ -61,6 +61,7 @@ BEGIN
   IDSC_IMPORTNOCOLS       "Column header row not recognised as first record. No records imported."
   IDSC_IMPORTNOHEADER     "No records in import file!"
   IDSC_IMPORTLINESKIPPED  "Line %d skipped - Only %d fields found, whereas parsing the Header says there should be %d."
+  IDSC_IMPORTBADFORMAT    "The TXT or CSV file was not exported as required as entry records span multiple lines in the CSV file.\r\n\r\nImport aborted."
   IDSC_IMPORTEMPTYLINESKIPPED "Empty line %d skipped"
   IDSC_IMPORTINVALIDFIELD "Entry of line %d has an invalid ""%s"" field. It has been ignored."
   IDSC_IMPORTNOPASSWORD   "Line %d skipped. It has an empty mandatory Password field."

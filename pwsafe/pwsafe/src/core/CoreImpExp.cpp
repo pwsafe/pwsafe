@@ -1551,6 +1551,8 @@ int PWScore::ImportKeePassV1TXTFile(const StringX &filename,
       else
       if (linebuf.substr(0, 24) == "Attachment Description: " ||
           linebuf.substr(0, 12) == "Attachment: " ||
+          linebuf.substr(0, 11) == "Auto-Type: " ||
+          linebuf.substr(0, 18) == "Auto-Type-Window: " ||
           linebuf.substr(0, 6)  == "Icon: ") {
         continue;
       }
@@ -1703,7 +1705,6 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
                                     CReport &rpt, Command *&pcommand)
 {
   stringT strError;
-  stringT cs_error;
   CUTF8Conv conv;
   pcommand = NULL;
   numImported  = numSkipped = numRenamed = 0;
@@ -1779,7 +1780,7 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
   string s_header, linebuf;
 
   if (!getline(iss, s_header, '\n'))
-    return FAILURE;
+    return INVALID_FORMAT;
 
   // the first line of the Keepass text file contains BOM characters
   if (s_header.length() > 3) {
@@ -1811,25 +1812,25 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
   if (num_found == 0) {
     LoadAString(strError, IDSC_IMPORTNOCOLS);
     rpt.WriteLine(strError);
-    return FAILURE;
+    return INVALID_FORMAT;
   }
 
   // These are "must haves"!
   if (i_Offset[PASSWORD] == -1 || i_Offset[TITLE] == -1) {
     LoadAString(strError, IDSC_IMPORTMISSINGCOLS);
     rpt.WriteLine(strError);
-    return FAILURE;
+    return INVALID_FORMAT;
   }
 
   if (num_found < vs_Header.size()) {
-    Format(cs_error, IDSC_IMPORTHDR, num_found);
-    rpt.WriteLine(cs_error);
-    LoadAString(cs_error, IDSC_IMPORTKNOWNHDRS);
-    rpt.WriteLine(cs_error);
+    Format(strError, IDSC_IMPORTHDR, num_found);
+    rpt.WriteLine(strError);
+    LoadAString(strError, IDSC_IMPORTKNOWNHDRS);
+    rpt.WriteLine(strError);
     for (int i = 0; i < NUMFIELDS; i++) {
       if (i_Offset[i] >= 0) {
-        Format(cs_error, _T(" %s,"), vs_Header[i].c_str());
-        rpt.WriteLine(cs_error, false);
+        Format(strError, _T(" %s,"), vs_Header[i].c_str());
+        rpt.WriteLine(strError, false);
       }
     }
     rpt.WriteLine();
@@ -1874,10 +1875,22 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
 
     // skip blank lines
     if (linebuf.empty()) {
-      Format(cs_error, IDSC_IMPORTEMPTYLINESKIPPED, numlines);
-      rpt.WriteLine(cs_error);
+      Format(strError, IDSC_IMPORTEMPTYLINESKIPPED, numlines);
+      rpt.WriteLine(strError);
       numSkipped++;
       continue;
+    }
+
+    // Count the number of double quotes.  If odd, then the user has not followed the
+    // instructions in the Help entry - i.e.
+    //   Please note, you MUST check the box "Encode/replace newline characters by '\n'" 
+    //   during the export from Keepass V1 or the import may fail or give unexpected results.
+    int numdq = std::count(linebuf.begin(), linebuf.end(), '"');
+    if (numdq % 2 != 0) {
+      // Tell user
+      LoadAString(strError, IDSC_IMPORTBADFORMAT);
+      rpt.WriteLine(strError.c_str());
+      return INVALID_FORMAT;
     }
 
     std::vector<StringX> tokens;
@@ -1886,23 +1899,23 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
 
     // Sanity check
     if (tokens.size() < num_found) {
-      Format(cs_error, IDSC_IMPORTLINESKIPPED, numlines, tokens.size(), num_found);
-      rpt.WriteLine(cs_error);
+      Format(strError, IDSC_IMPORTLINESKIPPED, numlines, tokens.size(), num_found);
+      rpt.WriteLine(strError);
       numSkipped++;
       continue;
     }
 
     if (static_cast<size_t>(i_Offset[PASSWORD]) >= tokens.size() ||
         tokens[i_Offset[PASSWORD]].empty()) {
-      Format(cs_error, IDSC_IMPORTNOPASSWORD, numlines);
-      rpt.WriteLine(cs_error);
+      Format(strError, IDSC_IMPORTNOPASSWORD, numlines);
+      rpt.WriteLine(strError);
       numSkipped++;
       continue;
     }
     if (static_cast<size_t>(i_Offset[TITLE]) >= tokens.size() ||
         tokens[i_Offset[TITLE]].empty()) {
-      Format(cs_error, IDSC_IMPORTNOTITLE, numlines);
-      rpt.WriteLine(cs_error);
+      Format(strError, IDSC_IMPORTNOTITLE, numlines);
+      rpt.WriteLine(strError);
       numSkipped++;
       continue;
     }
@@ -2095,15 +2108,15 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
     bool conflict = !MakeEntryUnique(setGTU, sx_group, sxnewtitle, sx_user, IDSC_IMPORTNUMBER);
     if (conflict) {
       ci_temp.SetTitle(sxnewtitle);
-      stringT cs_header;
+      stringT str_header;
       if (sx_group.empty())
-        Format(cs_header, IDSC_IMPORTCONFLICTS2, numlines);
+        Format(str_header, IDSC_IMPORTCONFLICTS2, numlines);
       else
-        Format(cs_header, IDSC_IMPORTCONFLICTS1, numlines, sx_group.c_str());
+        Format(str_header, IDSC_IMPORTCONFLICTS1, numlines, sx_group.c_str());
 
-      Format(cs_error, IDSC_IMPORTCONFLICTS0, cs_header.c_str(),
+      Format(strError, IDSC_IMPORTCONFLICTS0, str_header.c_str(),
                sx_title.c_str(), sx_user.c_str(), sxnewtitle.c_str());
-      rpt.WriteLine(cs_error);
+      rpt.WriteLine(strError);
       sx_title = sxnewtitle;
       numRenamed++;
     }
