@@ -208,10 +208,10 @@ public:
                     CReport &rpt, Command *&pcommand);
   int ImportKeePassV1TXTFile(const StringX &filename,
                              int &numImported, int &numSkipped, int &numRenamed,
-                             CReport &rpt, Command *&pcommand);
+                             UINT &uiReasonCode, CReport &rpt, Command *&pcommand);
   int ImportKeePassV1CSVFile(const StringX &filename,
                              int &numImported, int &numSkipped, int &numRenamed,
-                             CReport &rpt, Command *&pcommand);
+                             UINT &uiReasonCode, CReport &rpt, Command *&pcommand);
 
   // Locking files open in R/W mode
   bool LockFile(const stringT &filename, stringT &locker);

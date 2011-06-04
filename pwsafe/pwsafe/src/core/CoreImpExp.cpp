@@ -1268,7 +1268,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
 
 int PWScore::ImportKeePassV1TXTFile(const StringX &filename,
                                     int &numImported, int &numSkipped, int &numRenamed,
-                                    CReport &rpt, Command *&pcommand)
+                                    UINT &uiReasonCode, CReport &rpt, Command *&pcommand)
 {
 
   /*
@@ -1292,6 +1292,7 @@ int PWScore::ImportKeePassV1TXTFile(const StringX &filename,
   CUTF8Conv conv;
   pcommand = NULL;
   numImported  = numSkipped = numRenamed = 0;
+  uiReasonCode = 0;
 
   // We need to use FOpen as the file name/file path may contain non-Latin
   // characters even though we need the file to contain ASCII and UTF-8 characters
@@ -1323,8 +1324,10 @@ int PWScore::ImportKeePassV1TXTFile(const StringX &filename,
   // Close the file
   fclose(fs);
 
-  if (bError)
+  if (bError) {
+    uiReasonCode = IDSC_READ_ERROR;
     return FAILURE;
+  }
 
   string linebuf;
   time_t ctime, atime, mtime, xtime;
@@ -1381,6 +1384,9 @@ int PWScore::ImportKeePassV1TXTFile(const StringX &filename,
 
     // this line should always be a title contained in []'s
     if (*(linebuf.begin()) != '[' || *(linebuf.end() - 1) != ']') {
+      LoadAString(cs_error, IDSC_IMPORTMISSINGTITLE);
+      rpt.WriteLine(cs_error);
+      uiReasonCode = IDSC_IMPORTABORTED;
       return INVALID_FORMAT;
     }
 
@@ -1392,9 +1398,13 @@ int PWScore::ImportKeePassV1TXTFile(const StringX &filename,
     for (;;) {
       streamoff currentpos = iss.tellg();
       getline(iss, linebuf, '\n');
+
+      if (iss.eof())
+        break;
+
       // Check if blank line
       if (linebuf.empty())
-        break;
+        continue;
 
       // Check if new entry
       if (*(linebuf.begin()) == '[' && *(linebuf.end() - 1) == ']') {
@@ -1702,12 +1712,13 @@ void ProcessKeePassCSVLine(const string &linebuf, std::vector<StringX> &tokens)
 
 int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
                                     int &numImported, int &numSkipped, int &numRenamed,
-                                    CReport &rpt, Command *&pcommand)
+                                    UINT &uiReasonCode, CReport &rpt, Command *&pcommand)
 {
   stringT strError;
   CUTF8Conv conv;
   pcommand = NULL;
   numImported  = numSkipped = numRenamed = 0;
+  uiReasonCode = 0;
 
   // We need to use FOpen as the file name/file path may contain non-Latin
   // characters even though we need the file to contain ASCII and UTF-8 characters
@@ -1739,8 +1750,10 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
   // Close the file
   fclose(fs);
 
-  if (bError)
+  if (bError) {
+    uiReasonCode = IDSC_READ_ERROR;
     return FAILURE;
+  }
 
   // The following's a stream of chars.  We need to process the header row 
   // as straight ASCII, and we need to handle rest as utf-8
@@ -1779,8 +1792,12 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
 
   string s_header, linebuf;
 
-  if (!getline(iss, s_header, '\n'))
+  if (!getline(iss, s_header, '\n')) {
+    LoadAString(strError, IDSC_IMPORTNOCOLS);
+    rpt.WriteLine(strError);
+    uiReasonCode = IDSC_IMPORTABORTED;
     return INVALID_FORMAT;
+  }
 
   // the first line of the Keepass text file contains BOM characters
   if (s_header.length() > 3) {
@@ -1812,6 +1829,7 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
   if (num_found == 0) {
     LoadAString(strError, IDSC_IMPORTNOCOLS);
     rpt.WriteLine(strError);
+    uiReasonCode = IDSC_IMPORTABORTED;
     return INVALID_FORMAT;
   }
 
@@ -1819,6 +1837,7 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
   if (i_Offset[PASSWORD] == -1 || i_Offset[TITLE] == -1) {
     LoadAString(strError, IDSC_IMPORTMISSINGCOLS);
     rpt.WriteLine(strError);
+    uiReasonCode = IDSC_IMPORTABORTED;
     return INVALID_FORMAT;
   }
 
@@ -1881,28 +1900,22 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
       continue;
     }
 
-    // Count the number of double quotes.  If odd, then the user has not followed the
-    // instructions in the Help entry - i.e.
-    //   Please note, you MUST check the box "Encode/replace newline characters by '\n'" 
-    //   during the export from Keepass V1 or the import may fail or give unexpected results.
-    int numdq = std::count(linebuf.begin(), linebuf.end(), '"');
-    if (numdq % 2 != 0) {
-      // Tell user
-      LoadAString(strError, IDSC_IMPORTBADFORMAT);
-      rpt.WriteLine(strError.c_str());
-      return INVALID_FORMAT;
-    }
-
     std::vector<StringX> tokens;
     ProcessKeePassCSVLine(linebuf, tokens);
     numlines++;
 
-    // Sanity check
-    if (tokens.size() < num_found) {
+    // Sanity check - if ot enough fields, user may not have done as instructed
+    //   Please note, you MUST check the box "Encode/replace newline characters by '\n'" 
+    //   during the export from Keepass V1 or the import may fail or give unexpected results.
+    // Also, the last character must have been a double quote as all items are quoted strings
+    if (tokens.size() < num_found || linebuf[linebuf.length() -1] != '"') {
       Format(strError, IDSC_IMPORTLINESKIPPED, numlines, tokens.size(), num_found);
       rpt.WriteLine(strError);
-      numSkipped++;
-      continue;
+      rpt.WriteLine();
+      LoadAString(strError, IDSC_IMPORTBADFORMAT);
+      rpt.WriteLine(strError.c_str());
+      uiReasonCode = IDSC_IMPORTABORTED;
+      return INVALID_FORMAT;
     }
 
     if (static_cast<size_t>(i_Offset[PASSWORD]) >= tokens.size() ||
