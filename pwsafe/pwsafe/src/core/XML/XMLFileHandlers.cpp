@@ -325,6 +325,9 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
       }
       m_whichtime = -1;
       break;
+    case XLE_CHANGEDX:
+      cur_pwhistory_entry->changed = m_strElemContent;
+      break;
     case XLE_OLDPASSWORD:
       ASSERT(cur_pwhistory_entry != NULL);
       cur_pwhistory_entry->oldpassword = m_strElemContent;

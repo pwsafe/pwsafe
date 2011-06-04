@@ -99,6 +99,7 @@ const XMLFileValidation::st_file_elements XMLFileValidation::m_file_elements[XLE
   {_T("history_entries"), {0, XLE_HISTORY_ENTRIES}},
   {_T("history_entry"), {0, XLE_HISTORY_ENTRY}},
   {_T("changed"), {0, XLE_CHANGED}},
+  {_T("changedx"), {0, XLE_CHANGEDX}},
   {_T("oldpassword"), {0, XLE_OLDPASSWORD}},
   {_T("PWLength"), {0, XLE_ENTRY_PWLENGTH}},
   {_T("date"), {0, XLE_DATE}},

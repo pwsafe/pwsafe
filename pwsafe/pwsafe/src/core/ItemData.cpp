@@ -963,17 +963,18 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
 
           oss << "\t\t\t\t<history_entry num=\"" << num << "\">" << endl;
           const PWHistEntry &pwshe = *hiter;
-          oss << "\t\t\t\t\t<changed>" << endl;
-          oss << "\t\t\t\t\t\t<date>";
+          oss << "\t\t\t\t\t<changedx>";
           if (utf8conv.ToUTF8(pwshe.changedate.substr(0, 10), utf8, utf8Len))
             oss.write(reinterpret_cast<const char *>(utf8), utf8Len);
-          oss << "</date>" << endl;
-          oss << "\t\t\t\t\t\t<time>";
-          if (utf8conv.ToUTF8(pwshe.changedate.substr(pwshe.changedate.length()-8),
+          else
+            oss << "1970-01-01";
+          oss << "T";
+          if (utf8conv.ToUTF8(pwshe.changedate.substr(pwshe.changedate.length() - 8),
                               utf8, utf8Len))
             oss.write(reinterpret_cast<const char *>(utf8), utf8Len);
-          oss << "</time>" << endl;
-          oss << "\t\t\t\t\t</changed>" << endl;
+          else
+            oss << "00:00";
+          oss << "</changedx>" << endl;
           PWSUtil::WriteXMLField(oss, "oldpassword", pwshe.password,
                         utf8conv, "\t\t\t\t\t");
           oss << "\t\t\t\t</history_entry>" << endl;

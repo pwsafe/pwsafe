@@ -77,7 +77,7 @@ bool VerifyImportDateTimeString(const stringT &time_str, time_t &t)
   // Validate time_str
   if (time_str[4] != TCHAR('/') ||
       time_str[7] != TCHAR('/') ||
-      time_str[10] != TCHAR(' ') ||
+      (time_str[10] != TCHAR(' ') && time_str[10] != TCHAR('T')) ||
       time_str[13] != TCHAR(':') ||
       time_str[16] != TCHAR(':'))
     return false;
@@ -384,7 +384,12 @@ int VerifyImportPWHistoryString(const StringX &PWHistory,
     if (tmp.substr(0, 10) == _T("1970-01-01"))
       t = 0;
     else {
-      if (!VerifyImportDateTimeString(tmp.c_str(), t)) {
+      // Replacing a blank between date & time fields is only
+      // needed until we get rid of <changed> in favour of <changedx>
+      if (tmp[11] == _T(' '))
+        tmp[11] = _T('T');
+      if (!VerifyXMLDateTimeString(tmp.c_str(), t) ||
+          (t == time_t(-1))) {
         rc = PWH_INVALID_DATETIME;
         goto exit;
       }
