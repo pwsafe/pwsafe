@@ -195,7 +195,7 @@ xmlns:xs="http://www.w3.org/2001/XMLSchema" version="3.18">
                           <xs:element name="history_entry" minOccurs="0" maxOccurs="255">
                             <xs:complexType>
                               <xs:all>
-                                <xs:element name="changed" type="datetimestampType" minOccurs="1" maxOccurs="1" />
+                                <xs:element ref="typePWChanged" minOccurs="1" maxOccurs="1" />
                                 <xs:element name="oldpassword" type="stringType" minOccurs="1" maxOccurs="1" />
                               </xs:all>
                               <xs:attribute name="num" type="xs:int" use="optional" />
@@ -273,5 +273,8 @@ xmlns:xs="http://www.w3.org/2001/XMLSchema" version="3.18">
   <xs:element name="typeRMtime" abstract="true" />
   <xs:element name="rmtime" type="datetimestampType" substitutionGroup="typeRMtime" />
   <xs:element name="rmtimex" type="xs:dateTime"  substitutionGroup="typeRMtime" />
+  <xs:element name="typePWChanged" abstract="true" />
+  <xs:element name="changed" type="datetimestampType" substitutionGroup="typePWChanged" />
+  <xs:element name="changedx" type="xs:dateTime"  substitutionGroup="typePWChanged" />
 </xs:schema>
 <!-- End of proper Password Safe validation XSD -->

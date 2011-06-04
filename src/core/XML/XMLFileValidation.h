@@ -109,7 +109,8 @@ enum XLE_PASSWORDSAFE {
   XLE_HISTORY_ENTRY,
 
   // history_entry
-  XLE_CHANGED,
+  XLE_CHANGED,   // Using old PWS format
+  XLE_CHANGEDX,  // Using standard XML format
   XLE_OLDPASSWORD,
 
   // entry_PasswordPolicy
