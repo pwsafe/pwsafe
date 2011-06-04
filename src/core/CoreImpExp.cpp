@@ -1660,7 +1660,7 @@ void ProcessKeePassCSVLine(const string &linebuf, std::vector<StringX> &tokens)
   bool bInField = false;
   CUTF8Conv conv;
 
-  StringX item;
+  string item;
   StringX sxdata;
   
   for(size_t i = 0; i < linebuf.length(); i++ ) {
@@ -1697,7 +1697,8 @@ void ProcessKeePassCSVLine(const string &linebuf, std::vector<StringX> &tokens)
     else
     if (ch == '\"') {
       if (bInField) {
-        tokens.push_back(item); item.clear();
+        conv.FromUTF8((unsigned char *)item.c_str(), item.length(), sxdata);
+        tokens.push_back(sxdata); item.clear(); sxdata.clear();
         bInField = false;
       }
       else bInField = true;
