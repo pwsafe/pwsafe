@@ -241,6 +241,8 @@
 #define IDSC_CONTAINSALL                3422
 #define IDSC_DOESNOTCONTAINALL          3423
 #define IDSC_IMPORTBADFORMAT            3424
+#define IDSC_IMPORTABORTED              3425
+#define IDSC_IMPORTMISSINGTITLE         3426
 
 // Keep DCA together
 #define IDSC_CURRENTDEFAULTDCA          4000

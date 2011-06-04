@@ -77,6 +77,8 @@ BEGIN
   IDSC_IMPORTCONFLICTS2   "Entry on line %d with no group"
   IDSC_IMPORTCONFLICTSX1  "Entry with Group=""%s"""
   IDSC_IMPORTCONFLICTSX2  "Entry with no group"
+  IDSC_IMPORTABORTED      "Import aborted. Please see report."
+  IDSC_IMPORTMISSINGTITLE "Could not find the next entry's title field in the KeePass V1 TXT (should be within square brackets)."
 END
 
 STRINGTABLE
