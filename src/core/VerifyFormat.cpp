@@ -473,7 +473,7 @@ int VerifyImportPWHistoryString(const StringX &PWHistory,
     default:
       ASSERT(0);
   }
-  strErrors = buffer + temp;
+  strErrors = buffer + temp + _T("\r\n");
   if (rc != PWH_OK)
     newPWHistory = _T("");
 

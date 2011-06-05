@@ -105,14 +105,14 @@ END
 STRINGTABLE
 BEGIN
   IDSC_PWHERROR           "Error in a Password History sub-field starting at position %d (within the History field): "
-  IDSC_INVALIDHEADER      "  Invalid header: ""%s"".\n"
-  IDSC_INVALIDPWHSTATUS   "  Invalid status value: %d\n"
-  IDSC_INVALIDNUMOLDPW    "  Invalid number of saved old passwords %d.\n"
-  IDSC_INVALIDDATETIME    "  Invalid date/time value.\n"
-  IDSC_INVALIDPWLENGTH    "  Invalid password length found.\n"
-  IDSC_FIELDTOOSHORT      "  Field is too short.\n"
-  IDSC_FIELDTOOLONG       "  Field is too long.\n"
-  IDSC_INVALIDSEPARATER   "  Invalid field separator character found - only a single blank is allowed between fields.\n"
+  IDSC_INVALIDHEADER      "  Invalid header: ""%s""."
+  IDSC_INVALIDPWHSTATUS   "  Invalid status value: %d"
+  IDSC_INVALIDNUMOLDPW    "  Invalid number of saved old passwords %d."
+  IDSC_INVALIDDATETIME    "  Invalid date/time value."
+  IDSC_INVALIDPWLENGTH    "  Invalid password length found."
+  IDSC_FIELDTOOSHORT      "  Field is too short."
+  IDSC_FIELDTOOLONG       "  Field is too long."
+  IDSC_INVALIDSEPARATER   "  Invalid field separator character found - only a single blank is allowed between fields."
   IDSC_PWHISTORYSKIPPED   "  All Password History ignored."
 END
 

@@ -245,10 +245,19 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
       }
       break;
     case XLE_CTIMEX:
+      cur_entry->ctime = m_strElemContent;
+      break;
     case XLE_ATIMEX:
+      cur_entry->atime = m_strElemContent;
+      break;
     case XLE_XTIMEX:
+      cur_entry->xtime = m_strElemContent;
+      break;
     case XLE_PMTIMEX:
+      cur_entry->pmtime = m_strElemContent;
+      break;
     case XLE_RMTIMEX:
+      cur_entry->rmtime = m_strElemContent;
       break;
     case XLE_CTIME:
       Replace(cur_entry->ctime, _T('-'), _T('/'));
