@@ -305,6 +305,7 @@ Section "$(PROGRAM_FILES)" ProgramFiles
   File "..\xml\pwsafe.xsd"
   File "..\xml\pwsafe.xsl"
   File "..\xml\pwsafe_filter.xsd"
+  File "..\xml\KPV1_to_PWS.xslt"
 
 ; Language-specific files  
   File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeZH.dll"
@@ -519,6 +520,7 @@ Section "Uninstall"
   Delete "$INSTDIR\pwsafe.xsd"
   Delete "$INSTDIR\pwsafe.xsl"
   Delete "$INSTDIR\pwsafe_filter.xsd"
+  Delete "$INSTDIR\KPV1_to_PWS.xslt"
   Delete "$INSTDIR\LICENSE"
   Delete "$INSTDIR\README.TXT"
   Delete "$INSTDIR\ReleaseNotes.txt"

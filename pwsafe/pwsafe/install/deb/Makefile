@@ -16,16 +16,18 @@ RM = /bin/rm -rf
 SED = /bin/sed
 ZIP = /usr/bin/zip
 
-RELDIR = ../../src/ui/wxWidgets/GCCUnicodeRelease
-DOCSDIR = ../../docs
-XMLDIR = ../../xml
-HELPDIR = ../../help
+RELDIR := ../../src/ui/wxWidgets/GCCUnicodeRelease
+DOCSDIR := ../../docs
+XMLDIR := ../../xml
+HELPDIR := ../../help
 
-PWSAFE-BIN = $(RELDIR)/pwsafe
-DOCS = ../../README.txt $(DOCSDIR)/ReleaseNotes.txt \
+PWSAFE-BIN := $(RELDIR)/pwsafe
+DOCS := ../../README.txt $(DOCSDIR)/ReleaseNotes.txt \
 	$(DOCSDIR)/ChangeLog.txt
-MANPAGE = $(DOCSDIR)/pwsafe.1
-XMLFILES = $(XMLDIR)/pwsafe.xsd $(XMLDIR)/pwsafe_filter.xsd $(XMLDIR)/pwsafe.xsl
+MANPAGE := $(DOCSDIR)/pwsafe.1
+XMLFILES := $(foreach i,\
+						  pwsafe.xsd pwsafe_filter.xsd pwsafe.xsl KPV1_to_PWS.xslt,\
+				  		$(XMLDIR)/$i)
 HELPFILES = $(HELPDIR)/help.zip
 
 INFILES = $(PWSAFE-BIN) $(DOCS) $(MANPAGE) $(XMLFILES) $(HELPFILES)

@@ -52,18 +52,23 @@ BIN_DIR := ./build/bin/pwsafe/releasem
 TMPDIR := /cygdrive/c/tmp
 RELNOTES := $(CURDIR)/docs/ReleaseNotes.txt
 
+XMLS := $(foreach i,\
+				  pwsafe.xsd pwsafe_filter.xsd pwsafe.xsl KPV1_to_PWS.xslt,\
+				  xml/$i)
+I18N_HELPS := $(foreach i,\
+								DE ZH ES,\
+								help/pwsafe$(i)/pwsafe$(i).chm)
+I18N_DLLS := $(foreach i,\
+								DE ES PL RU SV ZH FR DA KO NL,\
+								$(I18N_DLL_DIR/pwsafe$(i).dll))
+
 BIN_MANIFEST = README.txt docs/ReleaseNotes.txt docs/ReleaseNotes.html LICENSE \
-    xml/pwsafe.xsd xml/pwsafe_filter.xsd xml/pwsafe.xsl \
+    $(XMLS) \
 		docs/ChangeLog.txt $(BIN_DIR)/pwsafe.exe $(BIN_DIR)/pws_at.dll \
 		$(BIN_DIR)/pws_osk.dll help/default/pwsafe.chm \
 		docs/pad_file.xml
-I18N_MANIFEST := help/pwsafeDE/pwsafeDE.chm help/pwsafeZH/pwsafeZH.chm \
-								 help/pwsafeES/pwsafeES.chm\
-								$(I18N_DLL_DIR)/pwsafeDE.dll $(I18N_DLL_DIR)/pwsafeES.dll \
-								$(I18N_DLL_DIR)/pwsafePL.dll $(I18N_DLL_DIR)/pwsafeRU.dll \
-	              $(I18N_DLL_DIR)/pwsafeSV.dll $(I18N_DLL_DIR)/pwsafeZH.dll \
-								$(I18N_DLL_DIR)/pwsafeFR.dll $(I18N_DLL_DIR)/pwsafeDA.dll \
-								$(I18N_DLL_DIR)/pwsafeKO.dll $(I18N_DLL_DIR)/pwsafeNL.dll
+
+I18N_MANIFEST := $(I18N_HELPS) $(I18N_DLLS)
 
 .PHONY: all release bin-release src-release installables signatures \
 	upload sha1sums msi nsis upload-latest updat-pos i18n save-map help \
