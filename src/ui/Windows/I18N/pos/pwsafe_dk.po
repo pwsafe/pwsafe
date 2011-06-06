@@ -49,6 +49,10 @@ msgstr "Feltet er for langt."
 msgid "  Field is too short."
 msgstr "Feltet er for kort."
 
+#. Resource IDs: (192)
+msgid "  Field length is incorrect."
+msgstr ""
+
 #. Resource IDs: (190)
 msgid "  Invalid date/time value."
 msgstr "Ugyldig dato/tids værdi."
@@ -59,22 +63,26 @@ msgstr "Ugyldig felt adskilleses karakter fundet - kun et enkelt tomt er tilladt
 
 #. Resource IDs: (190)
 #, c-format
-msgid "  Invalid header: \"%s\"."
-msgstr "Ugyldig overskrift: \"%s\"."
+msgid "  Invalid header: '%s' (must be 5 hexadecimal characters)."
+msgstr ""
 
 #. Resource IDs: (190)
 #, c-format
 msgid "  Invalid number of saved old passwords %d."
 msgstr "Ugyldigt antal af ældre gemte adgangskoder %d"
 
+#. Resource IDs: (192)
+msgid "  Invalid password length found (differs from length of following password)."
+msgstr ""
+
 #. Resource IDs: (190)
-msgid "  Invalid password length found."
-msgstr "Ugyldig adgangskode længde fundet."
+msgid "  Invalid password length found (not a hexadecimal number)."
+msgstr ""
 
 #. Resource IDs: (190)
 #, c-format
-msgid "  Invalid status value: %d"
-msgstr "Ugyldig status værdi: %d"
+msgid "  Invalid status value: %d (must be either 0 or 1)."
+msgstr ""
 
 #. Resource IDs: (336)
 msgid " 'Autotype'"
@@ -2721,8 +2729,8 @@ msgstr "Fejl i kolonne %d:\n\n%s"
 
 #. Resource IDs: (190)
 #, c-format
-msgid "Error in a Password History sub-field starting at position %d (within the History field): "
-msgstr "Fejl i et Adgangskode Historik under-felt start ved positionen %d (indeni Historik feltet): "
+msgid "Error in a Password History %s:"
+msgstr ""
 
 #. Resource IDs: (354)
 msgid "Error parsing Run Command"
@@ -7040,6 +7048,11 @@ msgstr "genveje"
 #. Resource IDs: (1265)
 msgid "static"
 msgstr "statisk"
+
+#. Resource IDs: (215)
+#, c-format
+msgid "sub-field starting at position %d (within the History field): "
+msgstr ""
 
 #. Resource IDs: (346)
 #, c-format

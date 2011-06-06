@@ -49,6 +49,10 @@ msgstr "필드 값이 너무 깁니다."
 msgid "  Field is too short."
 msgstr "필드 값이 너무 짧습니다."
 
+#. Resource IDs: (192)
+msgid "  Field length is incorrect."
+msgstr ""
+
 #. Resource IDs: (190)
 msgid "  Invalid date/time value."
 msgstr "잘못된 날짜/시간 값입니다."
@@ -59,22 +63,26 @@ msgstr "잘못된 필드 구분자가 발견되었습니다 - 필드 사이에�
 
 #. Resource IDs: (190)
 #, c-format
-msgid "  Invalid header: \"%s\"."
-msgstr "\"%s\" 헤더가 잘못되었습니다."
+msgid "  Invalid header: '%s' (must be 5 hexadecimal characters)."
+msgstr ""
 
 #. Resource IDs: (190)
 #, c-format
 msgid "  Invalid number of saved old passwords %d."
 msgstr "저장된 과거 비밀번호의 수 %d가 잘못되었습니다."
 
+#. Resource IDs: (192)
+msgid "  Invalid password length found (differs from length of following password)."
+msgstr ""
+
 #. Resource IDs: (190)
-msgid "  Invalid password length found."
-msgstr "잘못된 비밀번호 길이가 발견되었습니다."
+msgid "  Invalid password length found (not a hexadecimal number)."
+msgstr ""
 
 #. Resource IDs: (190)
 #, c-format
-msgid "  Invalid status value: %d"
-msgstr "잘못된 상태값: %d"
+msgid "  Invalid status value: %d (must be either 0 or 1)."
+msgstr ""
 
 #. Resource IDs: (336)
 msgid " 'Autotype'"
@@ -2721,8 +2729,8 @@ msgstr "%d행에서 오류 발생:\n\n%s"
 
 #. Resource IDs: (190)
 #, c-format
-msgid "Error in a Password History sub-field starting at position %d (within the History field): "
-msgstr "%d 위치에서 비밀번호 내역의 세부 항목의 오류 발생(내역 항목): "
+msgid "Error in a Password History %s:"
+msgstr ""
 
 #. Resource IDs: (354)
 msgid "Error parsing Run Command"
@@ -7040,6 +7048,11 @@ msgstr "shortcuts"
 #. Resource IDs: (1265)
 msgid "static"
 msgstr "정적"
+
+#. Resource IDs: (215)
+#, c-format
+msgid "sub-field starting at position %d (within the History field): "
+msgstr ""
 
 #. Resource IDs: (346)
 #, c-format

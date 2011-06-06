@@ -49,6 +49,10 @@ msgstr "  字段太长！"
 msgid "  Field is too short."
 msgstr "  字段太短！"
 
+#. Resource IDs: (192)
+msgid "  Field length is incorrect."
+msgstr ""
+
 #. Resource IDs: (190)
 msgid "  Invalid date/time value."
 msgstr "  无效的日期/时间值！"
@@ -59,22 +63,26 @@ msgstr "  无效字段分隔符建立 - 在字段之间只允许一个空格！"
 
 #. Resource IDs: (190)
 #, c-format
-msgid "  Invalid header: \"%s\"."
-msgstr "  无效标题:“%s”！"
+msgid "  Invalid header: '%s' (must be 5 hexadecimal characters)."
+msgstr ""
 
 #. Resource IDs: (190)
 #, c-format
 msgid "  Invalid number of saved old passwords %d."
 msgstr "  保存的旧密码 %d 数量无效！"
 
+#. Resource IDs: (192)
+msgid "  Invalid password length found (differs from length of following password)."
+msgstr ""
+
 #. Resource IDs: (190)
-msgid "  Invalid password length found."
-msgstr "  建立的密码长度无效！"
+msgid "  Invalid password length found (not a hexadecimal number)."
+msgstr ""
 
 #. Resource IDs: (190)
 #, c-format
-msgid "  Invalid status value: %d"
-msgstr "  无效状态值: %d！"
+msgid "  Invalid status value: %d (must be either 0 or 1)."
+msgstr ""
 
 #. Resource IDs: (336)
 msgid " 'Autotype'"
@@ -2721,8 +2729,8 @@ msgstr "错误在栏目%d:\n\n%s"
 
 #. Resource IDs: (190)
 #, c-format
-msgid "Error in a Password History sub-field starting at position %d (within the History field): "
-msgstr "在一个历史密码子字段起始位置错误 %d (在历史密码字段里): "
+msgid "Error in a Password History %s:"
+msgstr ""
 
 #. Resource IDs: (354)
 msgid "Error parsing Run Command"
@@ -7040,6 +7048,11 @@ msgstr "快捷方式"
 #. Resource IDs: (1265)
 msgid "static"
 msgstr "static"
+
+#. Resource IDs: (215)
+#, c-format
+msgid "sub-field starting at position %d (within the History field): "
+msgstr ""
 
 #. Resource IDs: (346)
 #, c-format

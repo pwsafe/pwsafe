@@ -49,6 +49,10 @@ msgstr "  Pole jest zbyt długie."
 msgid "  Field is too short."
 msgstr "  Pole jest zbyt krótkie."
 
+#. Resource IDs: (192)
+msgid "  Field length is incorrect."
+msgstr ""
+
 #. Resource IDs: (190)
 msgid "  Invalid date/time value."
 msgstr "  Nieprawidłowa wartość daty/czasu."
@@ -59,23 +63,26 @@ msgstr "  Wykryto nieprawidłowy znak separatora - między polami może występo
 
 #. Resource IDs: (190)
 #, c-format
-msgid "  Invalid header: \"%s\"."
-msgstr "  Nieprawidłowy nagłówek: \"%s\"."
+msgid "  Invalid header: '%s' (must be 5 hexadecimal characters)."
+msgstr ""
 
 #. Resource IDs: (190)
 #, fuzzy, c-format
 msgid "  Invalid number of saved old passwords %d."
 msgstr "  Nieprawidłowa liczba zapisanych starych haseł %d."
 
+#. Resource IDs: (192)
+msgid "  Invalid password length found (differs from length of following password)."
+msgstr ""
+
 #. Resource IDs: (190)
-#, fuzzy
-msgid "  Invalid password length found."
-msgstr "  Nieprawidłowa długość hasła."
+msgid "  Invalid password length found (not a hexadecimal number)."
+msgstr ""
 
 #. Resource IDs: (190)
 #, c-format
-msgid "  Invalid status value: %d"
-msgstr "  Nieprawidłowa wartość statusu: %d"
+msgid "  Invalid status value: %d (must be either 0 or 1)."
+msgstr ""
 
 #. Resource IDs: (336)
 #, fuzzy
@@ -2760,8 +2767,8 @@ msgstr "Błąd w kolumnie %d:\n\n%s"
 
 #. Resource IDs: (190)
 #, c-format
-msgid "Error in a Password History sub-field starting at position %d (within the History field): "
-msgstr "Błąd w pod-polu Historii Haseł na pozycji %d (w polu Historii): "
+msgid "Error in a Password History %s:"
+msgstr ""
 
 #. Resource IDs: (354)
 msgid "Error parsing Run Command"
@@ -7154,6 +7161,11 @@ msgstr "skróty"
 #, fuzzy
 msgid "static"
 msgstr "statyczny"
+
+#. Resource IDs: (215)
+#, c-format
+msgid "sub-field starting at position %d (within the History field): "
+msgstr ""
 
 #. Resource IDs: (346)
 #, fuzzy, c-format

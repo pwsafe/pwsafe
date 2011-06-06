@@ -49,6 +49,10 @@ msgstr "  Campo demasiado largo."
 msgid "  Field is too short."
 msgstr "  Campo demasiado corto."
 
+#. Resource IDs: (192)
+msgid "  Field length is incorrect."
+msgstr ""
+
 #. Resource IDs: (190)
 msgid "  Invalid date/time value."
 msgstr "  Fecha u hora incorrectas."
@@ -59,22 +63,26 @@ msgstr "  Encontrado carácter de separación de campos no válido - sólo se pe
 
 #. Resource IDs: (190)
 #, c-format
-msgid "  Invalid header: \"%s\"."
-msgstr "  Cabecera no válida: \"%s\"."
+msgid "  Invalid header: '%s' (must be 5 hexadecimal characters)."
+msgstr ""
 
 #. Resource IDs: (190)
 #, c-format
 msgid "  Invalid number of saved old passwords %d."
 msgstr "  Numero de contraseñas guardadas no válido %d."
 
+#. Resource IDs: (192)
+msgid "  Invalid password length found (differs from length of following password)."
+msgstr ""
+
 #. Resource IDs: (190)
-msgid "  Invalid password length found."
-msgstr "  Encontrada longitud de contraseña incorrecta."
+msgid "  Invalid password length found (not a hexadecimal number)."
+msgstr ""
 
 #. Resource IDs: (190)
 #, c-format
-msgid "  Invalid status value: %d"
-msgstr "  Estado incorrecto: %d"
+msgid "  Invalid status value: %d (must be either 0 or 1)."
+msgstr ""
 
 #. Resource IDs: (336)
 msgid " 'Autotype'"
@@ -2721,8 +2729,8 @@ msgstr "Error en la columna %d:\n\n%s"
 
 #. Resource IDs: (190)
 #, c-format
-msgid "Error in a Password History sub-field starting at position %d (within the History field): "
-msgstr "Error en un subcampo del historial de contraseñas en la posición %d (en el campo Historial): "
+msgid "Error in a Password History %s:"
+msgstr ""
 
 #. Resource IDs: (354)
 msgid "Error parsing Run Command"
@@ -7044,6 +7052,11 @@ msgstr "atajos"
 #. Resource IDs: (1265)
 msgid "static"
 msgstr "estático"
+
+#. Resource IDs: (215)
+#, c-format
+msgid "sub-field starting at position %d (within the History field): "
+msgstr ""
 
 #. Resource IDs: (346)
 #, c-format

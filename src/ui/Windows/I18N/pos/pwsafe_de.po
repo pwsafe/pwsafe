@@ -62,6 +62,10 @@ msgstr "  Feld ist zu lang."
 msgid "  Field is too short."
 msgstr "  Feld ist zu kurz."
 
+#. Resource IDs: (192)
+msgid "  Field length is incorrect."
+msgstr ""
+
 #. Resource IDs: (190)
 msgid "  Invalid date/time value."
 msgstr "  Datum bzw. Uhrzeit ungültig."
@@ -72,22 +76,26 @@ msgstr "  Ungültiges Feldtrennzeichen gefunden - nur ein einzelnes Leerzeichen 
 
 #. Resource IDs: (190)
 #, c-format
-msgid "  Invalid header: \"%s\"."
-msgstr "  Ungültiger Header: \"%s\"."
+msgid "  Invalid header: '%s' (must be 5 hexadecimal characters)."
+msgstr ""
 
 #. Resource IDs: (190)
 #, c-format
 msgid "  Invalid number of saved old passwords %d."
 msgstr "  Ungültige Anzahl alter gespeicherter Passwörter %d."
 
+#. Resource IDs: (192)
+msgid "  Invalid password length found (differs from length of following password)."
+msgstr ""
+
 #. Resource IDs: (190)
-msgid "  Invalid password length found."
-msgstr "  Ungültige Passwortlänge gefunden."
+msgid "  Invalid password length found (not a hexadecimal number)."
+msgstr ""
 
 #. Resource IDs: (190)
 #, c-format
-msgid "  Invalid status value: %d"
-msgstr "  Ungültiger Statuswert: %d"
+msgid "  Invalid status value: %d (must be either 0 or 1)."
+msgstr ""
 
 #. Resource IDs: (336)
 msgid " 'Autotype'"
@@ -2734,8 +2742,8 @@ msgstr "Fehler bei Spalte %d:\n\n%s"
 
 #. Resource IDs: (190)
 #, c-format
-msgid "Error in a Password History sub-field starting at position %d (within the History field): "
-msgstr "Fehler im Unterfeld der Passworthistorie beginnend bei Position %d (im Feld Historie): "
+msgid "Error in a Password History %s:"
+msgstr ""
 
 #. Resource IDs: (354)
 msgid "Error parsing Run Command"
@@ -7053,6 +7061,11 @@ msgstr "Verknüpfungen"
 #. Resource IDs: (1265)
 msgid "static"
 msgstr "statisch"
+
+#. Resource IDs: (215)
+#, c-format
+msgid "sub-field starting at position %d (within the History field): "
+msgstr ""
 
 #. Resource IDs: (346)
 #, c-format
