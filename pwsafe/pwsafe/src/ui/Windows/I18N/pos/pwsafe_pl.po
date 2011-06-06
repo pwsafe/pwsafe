@@ -848,8 +848,8 @@ msgid "'Browse to URL' copies password to clipboard"
 msgstr ""
 
 #. Resource IDs: (353)
-msgid "'Clear Clipboard on Minimize' and the Double Click Action of 'Copy Password and Minimize' conflict. Please change one or both."
-msgstr "Konflikt 'Wyczyść schowek przy minimalizacji' i dwuklik 'Kopiuj hasło przy minimalizacji'. Proszę zmienić opcje."
+msgid "'Clear Clipboard on Minimize' and Double Click Action 'Copy Password and Minimize' conflict. Please change one or both."
+msgstr ""
 
 #. Resource IDs: (358)
 msgid "'\n\nIf you would like to report this error, please reply 'Yes' below and upload this file to your Bug Report. If you reply 'No', the file will be deleted.\n\nThe diagnostic information in this file does not include any of your personal data nor any information from the database open at the time of the error.\n\nHowever, if you prefer (and the problem is repeatable with a test database), you may send us that minidump file as well as the test database.\n\nThank you for your help to improve PasswordSafe."
@@ -1217,7 +1217,7 @@ msgid "A new password database will be created. The safe combination you enter w
 msgstr "Zostanie utworzona nowa baza danych szyfrowana hasłem. Hasło może zawierać każdy znak wprowadzany z klawiatury. Rozróżniane są wielkie i małe litery."
 
 #. Resource IDs: (367)
-msgid "A red and white indicator means that a filter is active\r\n(If indicator visible, double click to clear current filter)"
+msgid "A red and white indicator means that a filter is active\r\n(double click to clear filter)"
 msgstr ""
 
 #. Resource IDs: (3843)
@@ -2905,8 +2905,8 @@ msgid "Failed to switch from R-O to R/W because database is already open in R/W 
 msgstr "Zawiodła zmiana z R-O na R/W ponieważ baza danych jest już otwarta w trybie R/W przez:\r\n%s %s\r\n(W danej chwili jest dostępny tylko jeden dostęp R/W)"
 
 #. Resource IDs: (366)
-msgid "Failed to switch from R-O to R/W: Could not open the database. It may have been deleted or renamed or there may be an issue with the device/network device containing it."
-msgstr "Zawiodła zmiana z R-O na R/W: Nie można otworzyć bazy danych. Mogła zostać skasowana lub zmieniono jej nazwę, lub też jest problem z urządzeniem/siecią na której jest umieszczona baza."
+msgid "Failed to switch from R-O to R/W: Could not open the database. It may have been deleted or renamed or there may be a problem with its drive."
+msgstr ""
 
 #. Resource IDs: (366)
 msgid "Failed to switch from R-O to R/W: The file appears to be too short to be a valid database."
@@ -2959,7 +2959,7 @@ msgid "File ends on line %d before ending double quote of last entry's note fiel
 msgstr "Plik kończy się na linii %d przed zakończeniem podwójnego cudzysłowia pola notatek ostatniego wpisu."
 
 #. Resource IDs: (213)
-msgid "File is truncated or otherwise corrupted. Please use backup database."
+msgid "File is truncated or otherwise corrupt. Please use backup database."
 msgstr ""
 
 #. Resource IDs: (334)
@@ -3529,8 +3529,8 @@ msgid "Incorrect filename."
 msgstr "Nieprawidłowa nazwa pliku."
 
 #. Resource IDs: (331)
-msgid "Incorrect passkey, not a PasswordSafe database, or a corrupt database. (Backup database has same name as original, ending with '~')"
-msgstr "Nieprawidłowe hasło, baza danych innego programu lub uszkodzona baza danych. (Kopia zapasowa bazy danych ma taką samą nazwę ale kończy się na '~')"
+msgid "Incorrect passkey, not a PasswordSafe database, or a corrupt database."
+msgstr ""
 
 #. Resource IDs: (204)
 msgid "Incorrect password"
@@ -4017,8 +4017,8 @@ msgstr "Nie otwarto bazy danych z którą można porównać inną bazę danych!"
 
 #. Resource IDs: (359)
 #, c-format
-msgid "No entries satisfied your selection criteria and so none can be %s!"
-msgstr "Brak wpisów spełniających warunki i żaden nie może być %s!"
+msgid "No entries satisfied your selection criteria, so none can be %s!"
+msgstr ""
 
 #. Resource IDs: (359)
 msgid "No entries selected"
@@ -4090,10 +4090,6 @@ msgstr "Nie wybrano żadnego wiersza."
 #. Resource IDs: (349)
 msgid "No rule selected"
 msgstr "Nie wybrano reguły"
-
-#. Resource IDs: (359)
-msgid "Non-saved changes"
-msgstr "Nie zachowane zmiany"
 
 #. Resource IDs: (337)
 #, fuzzy
@@ -4175,8 +4171,8 @@ msgid "Number of Groups:"
 msgstr "Liczba grup:"
 
 #. Resource IDs: (361)
-msgid "Number of Unknownfields"
-msgstr "Liczba pól nieznanych"
+msgid "Number of Unknown Fields"
+msgstr ""
 
 #. Resource IDs: (367)
 msgid "Number of entries in database"
@@ -4435,8 +4431,8 @@ msgid "Password implies this is an alias entry, but "
 msgstr "Hasło wskazuje, że wpis jest aliasem, ale "
 
 #. Resource IDs: (342)
-msgid "Password implies this is an alias entry, but specifies a base entry with no title.\r\nA title is mandatory for every entry."
-msgstr "Hasło wskazuje, że wpis jest aliasem, ale odnosi się do wpisu bazowego bez nazwy.\r\nNazwa jest wymagana dla każdego wpisu."
+msgid "Password implies this is an alias entry, but specifies a base entry with no title.\r\nEvery entry must have a title."
+msgstr ""
 
 #. Resource IDs: (188)
 msgid "Password is too short"
@@ -4472,8 +4468,8 @@ msgid "PasswordSafe V%d.%d.%d (Build %s) has had an error."
 msgstr "PasswordSafe V%d.%d.%d (Build %s) miał błąd."
 
 #. Resource IDs: (364)
-msgid "PasswordSafe: Entries exist with expired or about to be expired passwords"
-msgstr "PasswordSafe: wpisy z hasłami wygasłymi, lub których hasła wygasaną wkrótce"
+msgid "PasswordSafe: Entries exist with expired or soon-to-expire passwords"
+msgstr ""
 
 #. Resource IDs: (32064)
 msgid "Perform Auto &Type"
@@ -4504,17 +4500,9 @@ msgstr "Wybierz kopie zapasową do przywrócenia:"
 msgid "Please Choose a Database to Compare with current open database"
 msgstr "Wybierz Bazę danych do porównania z bieżącą bazą danych"
 
-#. Resource IDs: (335)
-msgid "Please Choose a Database to Merge into current database"
-msgstr "Proszę wybrać bazę danych do scalenia z aktualną bazą"
-
 #. Resource IDs: (333)
 msgid "Please Choose a Database to Open:"
 msgstr "Wybierz bazę danych do otwarcia:"
-
-#. Resource IDs: (360)
-msgid "Please Choose a Database to Synchronize with current database"
-msgstr "Proszę wybrać bazę danych do synchronizacji z aktualną bazą"
 
 #. Resource IDs: (362)
 msgid "Please Choose a Database to Validate:"
@@ -4536,6 +4524,14 @@ msgstr "Wybierz plik tekstowy do zaimportowania"
 msgid "Please Choose a XML File to Import"
 msgstr "Wybierz plik XML do zaimportowania"
 
+#. Resource IDs: (335)
+msgid "Please choose a database to merge into current database"
+msgstr ""
+
+#. Resource IDs: (360)
+msgid "Please choose a database to synchronize with current database"
+msgstr ""
+
 #. Resource IDs: (333)
 msgid "Please choose a name for the current (Untitled) database:"
 msgstr "Wybierz nazwę dla bieżącej (bez nazwy) bazy danych:"
@@ -4549,8 +4545,8 @@ msgid "Please choose a new name for the current database:"
 msgstr "Wybierz nową nazwę dla bieżącej bazy danych:"
 
 #. Resource IDs: (331)
-msgid "Please confirm that you wish to delete PasswordSafe configuration information for the current user from the Windows registry.\n\n"
-msgstr "Prosze potwierdzić chęć skasowania konfiguracji PasswordSage z rejestrów Windows dla aktualnego użytkownika.\n\n"
+msgid "Please confirm that you wish to delete current user's PasswordSafe configuration information from the Windows registry.\n\n"
+msgstr ""
 
 #. Resource IDs: (353)
 #, c-format
@@ -4900,9 +4896,9 @@ msgid "Romanian (Standard)"
 msgstr "Rumuński (standardowy)"
 
 #. Resource IDs: (348)
-#, fuzzy, c-format
-msgid "Row %d is incomplete. Please ensure both Field and Criteria are set."
-msgstr "Wiersz %d jest niekompletny. Upewnij się, że Pole i Kryteria są ustawione."
+#, c-format
+msgid "Row %d is incomplete. Please set both Field and Criteria."
+msgstr ""
 
 #. Resource IDs: (351)
 msgid "Row number"
@@ -5534,8 +5530,8 @@ msgid "Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*)|*.*||"
 msgstr "Pliki tekstowe (*.txt)|*.txt|Pliki CSV (*.csv)|*.csv|Wszystkie pliki (*.*)|*.*||"
 
 #. Resource IDs: (356)
-msgid "Text will be red if the shortcut is different to its default value."
-msgstr "Tekst będzie czerwony jeśli skrót różni się od swojej wartości domyślnej."
+msgid "Text will be red if the shortcut differs from its default value."
+msgstr ""
 
 #. Resource IDs: (1322)
 msgid "Text:"
@@ -5585,8 +5581,8 @@ msgid "The database %s couldn't be opened.\nDo you wish to look for it elsewhere
 msgstr "Baza danych %s nie mogła zostać otwarta.\nCzy chcesz poszukać jej gdzie indziej (Szukaj), utworzyć nową bazę danych (New), czy zakończyć program?"
 
 #. Resource IDs: (366)
-msgid "The database has been changed since you opened it in R-O mode. It is not possible to just switch to R/W mode.\r\n\r\nTo do so, please close the database and re-open it in R/W mode."
-msgstr "Baza danych została zmieniona od czasu jej otwarcia w trybie R-O. Przełącznie na tryb R/W nie jest możliwe.\r\n\r\nBy to zrobić prosze zamknąć bazę danych i ponownie ją otworzyć w trybie R/W."
+msgid "The database has been changed since you opened it in R-O mode, so it is not possible to switch to R/W mode.\r\n\r\nPlease close the database and re-open it in R/W mode."
+msgstr ""
 
 #. Resource IDs: (339)
 #, c-format
@@ -5648,8 +5644,8 @@ msgstr "Następujące wpisy mają nieprawidłowe pole UUID, co zostało to skory
 
 #. Resource IDs: (212)
 #, c-format
-msgid "The following entries have one or more text fields too long to display or edit (longer than %d characters)."
-msgstr "Następujące wpisy mają pola tekstowe zbyt długie by je pokazac lub edytować (powyżej %d znaków)."
+msgid "The following entries have one or more text fields too long to display or edit (over %d characters)."
+msgstr ""
 
 #. Resource IDs: (212)
 msgid "The following entries were duplicates of an existing entry."
@@ -5730,8 +5726,8 @@ msgid "There are unmatched quotes in the run command"
 msgstr "W komendzie Run są niedopasowane cudzysłowa"
 
 #. Resource IDs: (361)
-msgid "There does not appear to be a Recycle Bin on the media containing this Failsafe Backup file. If you delete it, it will be permanent. Do you wish to continue?"
-msgstr "Wygląda na to, że na nośniku z tą kopią bezpieczeństwa Failsafe nie ma kosza. Jeśli ją skasujesz, nie będzie można jej odzystać. Czy chcesz kontunuować?"
+msgid "There does not appear to be a Recycle Bin on the media containing this Failsafe Backup file. You will not be able to undo deletes. Do you wish to continue?"
+msgstr ""
 
 #. Resource IDs: (3887)
 msgid "These are more recently saved than the currently open documents and contain changes that were made before the application closed."
@@ -5759,15 +5755,15 @@ msgstr "Wpis został zmieniony. Jesteś pewny, że chcesz anulować operację?"
 msgid "This entry has the following %d %s:\r\n%s"
 msgstr "Ten wpis ma następujące %d %s:\r\n%s"
 
-#. Resource IDs: (345)
+#. Resource IDs: (213)
 #, c-format
-msgid "This entry has the following %d %s:\r\n%s\r\nPlease confirm you wish to continue (All shortcuts to this entry will be deleted)?"
-msgstr "Ten wpis ma następujące %d %s:\r\n%s\r\nKontynuować (Wszystkie skróty do tego wpisu zostaną skasowane)?"
+msgid "This entry has the following %d %s:\r\n%s\r\nPlease confirm to continue (All shortcuts to this entry will be deleted)?"
+msgstr ""
 
-#. Resource IDs: (341)
+#. Resource IDs: (213)
 #, c-format
-msgid "This entry has the following %d %s:\r\n%s\r\nPlease confirm you wish to continue (alias entry's passwords will be replaced by this entry's password)?"
-msgstr "Wpis ma następujące %d %s:\r\n%s\r\nPotwierdź kontynuowanie(hasła aliasu zostaną zastąpione przez hasła tego wpisu)?"
+msgid "This entry has the following %d %s:\r\n%s\r\nPlease confirm to continue (alias entry's passwords will be replaced by this entry's password)?"
+msgstr ""
 
 #. Resource IDs: (1429)
 msgid "This entry is protected."
@@ -5849,8 +5845,8 @@ msgid "This will delete an entry which is within this group and/or its subgroups
 msgstr "Zostanie usunięty wpis znajdujący się w tej grupie i/lub jej podgrupach."
 
 #. Resource IDs: (361)
-msgid "This will delete the selected Failsafe Backup file.  If Windows supports a Recycle Bin on this media (usually only local disks), it will be moved there.  If not, it will be permanently deleted."
-msgstr "To skasuje wybraną kopie zapasową FailSafe.  Jeśli Windows spiera Kosz na tym nośniku (zwykle tylko dyski lokalne), zostanie tam przeniesiony.  Jeśli nie, zostanie usunięty na dobre."
+msgid "This will delete the selected Failsafe Backup file.  If the current drive has a Recycle Bin, it will be moved there. If not, it will be permanently deleted."
+msgstr ""
 
 #. Resource IDs: (331)
 msgid "Time out period must be between 1 and 120 minutes."
@@ -6090,6 +6086,10 @@ msgstr "Zdejmij ochronę wszystkich wpisów"
 #. Resource IDs: (32088)
 msgid "Unprotect Entry"
 msgstr "Zdejmij ochronę wpisu"
+
+#. Resource IDs: (359)
+msgid "Unsaved changes"
+msgstr ""
 
 #. Resource IDs: (358)
 #, c-format
@@ -6401,16 +6401,16 @@ msgid "Yoruba"
 msgstr "Joruba"
 
 #. Resource IDs: (366)
-msgid "You have elected not to save any changes - all unsaved changes will be lost. Do you wish to continue?"
-msgstr "Wybrano, by nie zapisywać żadnych zmian - wszystkie niezachowane zmiany będą stracone. Czy chcesz kontynuować?"
+msgid "You have chosen not to save your changes, which will be lost. Do you wish to continue?"
+msgstr ""
 
 #. Resource IDs: (362)
 msgid "You must save this database before it can be exported."
 msgstr ""
 
 #. Resource IDs: (361)
-msgid "Your currently opened database will be in the first row.  Failsafe Backup files will be displayed below this.  If the passphrase is the same as the current database, the properties of these backups will also be shown.  If you are unable to chose, continue with the current database and use the database Compare function to view the differences between the versions."
-msgstr "Aktualnie otwarta baza danych będzie w pierwszym rzędzie.  Kopia zapasowa Failsafe będzie poniżej.  Jeśli fraza hasła jest taka sama jak do aktualnej bazy danych, włąściwości tych kopii będą także pokazane.  Jeśli nie możesz wybrać, kontunuuje z aktualną bazą danych i użyj funkcji Porównaj, by zobaczyć różnice między wersjami."
+msgid "Your currently opened database will be in the first row.  Failsafe Backup files will be displayed below this.  If the passphrase is the same as the current database, the properties of these backups will also be shown.  If you aren't sure, continue with the current database and use the database Compare function to view the differences between the versions."
+msgstr ""
 
 #. Resource IDs: (357)
 #, c-format
@@ -6786,13 +6786,13 @@ msgstr "\tGrupa='%s', Nazwa='%s', Użytkownik='%s' %s"
 
 #. Resource IDs: (347)
 #, c-format
-msgid "\tNo entries were found containing search string : '%s'"
-msgstr "\tNie znaleziono wpisów zawierających szukaną frazę : '%s'"
+msgid "\tNo entries were found containing search string '%s'"
+msgstr ""
 
 #. Resource IDs: (347)
 #, c-format
-msgid "\tThe following entries were found containing search string : '%s'"
-msgstr "\tZnaleziono następujące wpisy zawierające szukaną frazę : '%s'"
+msgid "\tThe following entries contain search string '%s'"
+msgstr ""
 
 #. Resource IDs: (346)
 #, c-format
