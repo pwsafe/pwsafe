@@ -47,7 +47,8 @@
 const TCHAR *EXPORTHEADER  = _T("Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tPassword Expiry Interval\tRecord Modified Time\tPassword Policy\tHistory\tRun Command\tDCA\te-mail\tProtected\tSymbols\tNotes");
 const TCHAR *KPEXPORTHEADER  = _T("Password Groups\tGroup Tree\tAccount\tLogin Name\tPassword\tWeb Site\tComments\tUUID\tIcon\tCreation Time\tLast Access\tLast Modification\tExpires\tAttachment Description\tAttachment");
 const TCHAR *KPIMPORTEDPREFIX = _T("ImportedKeePass");
-  
+const TCHAR *FORMATIMPORTED = _T("\xab%s\xbb \xab%s\xbb \xab%s\xbb");
+
 using namespace std;
 using pws_os::CUUID;
 
@@ -230,10 +231,10 @@ struct TextRecordWriter {
       const StringX line = item.GetPlaintext(TCHAR('\t'),
                                              m_bsFields, m_delimiter, pcibase);
       if (!line.empty()) {
-        StringX sx_exported = StringX(L"\xab") + 
-                             item.GetGroup() + StringX(L"\xbb \xab") + 
-                             item.GetTitle() + StringX(L"\xbb \xab") +
-                             item.GetUser()  + StringX(L"\xbb");
+        StringX sx_exported = StringX(_T("\xab")) + 
+                             item.GetGroup() + StringX(_T("\xbb \xab")) + 
+                             item.GetTitle() + StringX(_T("\xbb \xab")) +
+                             item.GetUser()  + StringX(_T("\xbb"));
 
         if (m_prpt != NULL)
           m_prpt->WriteLine(sx_exported.c_str());
@@ -356,10 +357,10 @@ struct XMLRecordWriter {
     if (m_subgroup_name.empty() ||
         item.Matches(m_subgroup_name,
                      m_subgroup_object, m_subgroup_function)) {
-      StringX sx_exported = StringX(L"\xab") + 
-                             item.GetGroup() + StringX(L"\xbb \xab") + 
-                             item.GetTitle() + StringX(L"\xbb \xab") +
-                             item.GetUser()  + StringX(L"\xbb");
+      StringX sx_exported = StringX(_T("\xab")) + 
+                             item.GetGroup() + StringX(_T("\xbb \xab")) + 
+                             item.GetTitle() + StringX(_T("\xbb \xab")) +
+                             item.GetUser()  + StringX(_T("\xbb"));
       bool bforce_normal_entry(false);
       if (item.IsNormal()) {
         //  Check password doesn't incorrectly imply alias or shortcut entry
@@ -1156,7 +1157,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
       StringX newPWHistory;
       stringT strPWHErrorList;
       Format(cs_error, IDSC_IMPINVALIDPWH, numlines);
-      switch (VerifyImportPWHistoryString(tokens[i_Offset[HISTORY]].c_str(),
+      switch (VerifyTextImportPWHistoryString(tokens[i_Offset[HISTORY]].c_str(),
                                           newPWHistory, strPWHErrorList)) {
         case PWH_OK:
           ci_temp.SetPWHistory(newPWHistory.c_str());
@@ -1167,13 +1168,12 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
         case PWH_INVALID_STATUS:
         case PWH_INVALID_NUM:
         case PWH_INVALID_DATETIME:
-        case PWH_INVALID_PSWD_LENGTH:
-        case PWH_TOO_SHORT:
-        case PWH_TOO_LONG:
-        case PWH_INVALID_CHARACTER:
+        case PWH_PSWD_LENGTH_NOTHEX:
+        case PWH_INVALID_PSWD_LENGTH: 
+        case PWH_INVALID_FIELD_LENGTH:
         default:
-          rpt.WriteLine(cs_error, false);
-          rpt.WriteLine(strPWHErrorList, false);
+          rpt.WriteLine(cs_error);
+          rpt.WriteLine(strPWHErrorList);
           LoadAString(cs_error, IDSC_PWHISTORYSKIPPED);
           rpt.WriteLine(cs_error);
           numPWHErrors++;
@@ -1237,10 +1237,9 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
     pmulticmds->Add(pcmd);
     numImported++;
 
-    StringX sx_imported = StringX(L"\xab") + 
-                             sx_group + StringX(L"\xbb \xab") + 
-                             sx_title + StringX(L"\xbb \xab") +
-                             sx_user  + StringX(L"\xbb");
+    StringX sx_imported;
+    Format(sx_imported, FORMATIMPORTED,
+                        sx_group.c_str(), sx_title.c_str(), sx_user.c_str());
     rpt.WriteLine(sx_imported.c_str());
   } // file processing for (;;) loop
 
@@ -1643,10 +1642,9 @@ int PWScore::ImportKeePassV1TXTFile(const StringX &filename,
     pmulticmds->Add(pcmd);
     numImported++;
 
-    StringX sx_imported = StringX(L"\xab") + 
-                             sx_group + StringX(L"\xbb \xab") + 
-                             sx_title + StringX(L"\xbb \xab") +
-                             sx_user  + StringX(L"\xbb");
+    StringX sx_imported;
+    Format(sx_imported, FORMATIMPORTED,
+                        sx_group.c_str(), sx_title.c_str(), sx_user.c_str());
     rpt.WriteLine(sx_imported.c_str());
   }
 
@@ -2145,10 +2143,9 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
     pcmd->SetNoGUINotify();
     pmulticmds->Add(pcmd);
     numImported++;
-    StringX sx_imported = StringX(L"\xab") + 
-                             sx_group + StringX(L"\xbb \xab") + 
-                             sx_title + StringX(L"\xbb \xab") +
-                             sx_user  + StringX(L"\xbb");
+    StringX sx_imported;
+    Format(sx_imported, FORMATIMPORTED,
+                        sx_group.c_str(), sx_title.c_str(), sx_user.c_str());
     rpt.WriteLine(sx_imported.c_str());
   } // file processing for (;;) loop
 

@@ -24,7 +24,7 @@ enum {BOTH = -1 , CURRENT = 0, COMPARE = 1};
 struct st_CompareData {
   st_CompareData()
     : uuid0(pws_os::CUUID::NullUUID()), uuid1(pws_os::CUUID::NullUUID()),
-    bsDiffs(0), group(L""), title(L""), user(L""),
+    bsDiffs(0), group(_T("")), title(_T("")), user(_T("")),
     id(0), indatabase(0), listindex(0),
     unknflds0(false), unknflds1(false), bIsProtected0(false)
   {

@@ -66,6 +66,8 @@
 #define IDSC_FLDNMPROTECTED             3066
 #define IDSC_FLDNMUUID                  3067
 #define IDSC_FLDNMSYMBOLS               3068
+#define IDSC_INVALIDFIELDLENGTH         3069
+#define IDSC_INVALIDPWLENGTHX           3070
 
 #define IDSC_CONFIG_NONE                3230
 #define IDSC_CONFIG_REGISTRY            3231
@@ -243,6 +245,7 @@
 #define IDSC_IMPORTBADFORMAT            3424
 #define IDSC_IMPORTABORTED              3425
 #define IDSC_IMPORTMISSINGTITLE         3426
+#define IDSC_PWHERRORTEXT               3427
 
 // Keep DCA together
 #define IDSC_CURRENTDEFAULTDCA          4000
