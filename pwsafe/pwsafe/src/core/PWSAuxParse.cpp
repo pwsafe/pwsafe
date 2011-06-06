@@ -459,7 +459,7 @@ StringX PWSAuxParse::GetAutoTypeString(const CItemData &ci,
         if (!sxuser.empty())
           sxautotype = DEFAULT_AUTOTYPE;
         else
-          sxautotype = L"\\p\\n";
+          sxautotype = _T("\\p\\n");
       }
     }
   }
@@ -476,13 +476,13 @@ void PWSAuxParse::SendAutoTypeString(const StringX &sx_autotype,
   // as returned by GetAutoTypeString()
   // processes the later whilst sending the former
   // Commands parsed here involve time (\d, \w, \W) or old-method override (\z)
-  StringX sxtmp(L"");
+  StringX sxtmp(_T(""));
   StringX sxautotype(sx_autotype);
   wchar_t curChar;
  
   bool bForceOldMethod(false), bCapsLock(false);
  
-  StringX::size_type st_index = sxautotype.find(L"\\z");
+  StringX::size_type st_index = sxautotype.find(_T("\\z"));
 
   while (st_index != StringX::npos) {
     if (std::find(vactionverboffsets.begin(), vactionverboffsets.end(), st_index) !=
@@ -490,7 +490,7 @@ void PWSAuxParse::SendAutoTypeString(const StringX &sx_autotype,
       bForceOldMethod = true;
       break;
     }
-    st_index = sxautotype.find(L"\\z", st_index + 1);
+    st_index = sxautotype.find(_T("\\z"), st_index + 1);
   }
 
   const size_t N = sxautotype.length();
@@ -505,7 +505,7 @@ void PWSAuxParse::SendAutoTypeString(const StringX &sx_autotype,
   ks.ResetKeyboardState();
 
   // Stop Keyboard/Mouse Input
-  pws_os::Trace(L"PWSAuxParse::SendAutoTypeString - BlockInput set\n");
+  pws_os::Trace(_T("PWSAuxParse::SendAutoTypeString - BlockInput set\n"));
   ks.BlockInput(true);
 
   pws_os::sleep_ms(1000); // Karl Student's suggestion, to ensure focus set correctly on minimize.
@@ -513,7 +513,7 @@ void PWSAuxParse::SendAutoTypeString(const StringX &sx_autotype,
   size_t gNumIts;
   for (size_t n = 0; n < N; n++){
     curChar = sxautotype[n];
-    if (curChar == L'\\') {
+    if (curChar == _T('\\')) {
       n++;
       if (n < N)
         curChar = sxautotype[n];
@@ -549,7 +549,7 @@ void PWSAuxParse::SendAutoTypeString(const StringX &sx_autotype,
           // Delay is going to change - send what we have with old delay
           ks.SendString(sxtmp);
           // start collecting new delay
-          sxtmp = L"";
+          sxtmp = _T("");
           int newdelay = 0;
           gNumIts = 0;
           for (n++; n < N && (gNumIts < 3); ++gNumIts, n++) {
@@ -603,7 +603,7 @@ void PWSAuxParse::SendAutoTypeString(const StringX &sx_autotype,
   pws_os::sleep_ms(100);
 
   // Reset Keyboard/Mouse Input
-  pws_os::Trace(L"PWSAuxParse::SendAutoTypeString - BlockInput reset\n");
+  pws_os::Trace(_T("PWSAuxParse::SendAutoTypeString - BlockInput reset\n"));
   ks.BlockInput(false);
 }
 

@@ -316,7 +316,7 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
       break;
     case XLE_HISTORY_ENTRY:
       ASSERT(cur_pwhistory_entry != NULL);
-      Format(buffer, _T(" %s %04x %s"),
+      Format(buffer, _T("\xff%s\xff%04x\xff%s"),
              cur_pwhistory_entry->changed.c_str(),
              cur_pwhistory_entry->oldpassword.length(),
              cur_pwhistory_entry->oldpassword.c_str());
@@ -640,8 +640,8 @@ void XMLFileHandlers::AddEntries()
 
     StringX newPWHistory;
     stringT strPWHErrorList;
-    switch (VerifyImportPWHistoryString(cur_entry->pwhistory,
-                                        newPWHistory, strPWHErrorList)) {
+    switch (VerifyXMLImportPWHistoryString(cur_entry->pwhistory,
+                                           newPWHistory, strPWHErrorList)) {
       case PWH_OK:
         ci_temp.SetPWHistory(newPWHistory.c_str());
         break;
@@ -651,10 +651,9 @@ void XMLFileHandlers::AddEntries()
       case PWH_INVALID_STATUS:
       case PWH_INVALID_NUM:
       case PWH_INVALID_DATETIME:
-      case PWH_INVALID_PSWD_LENGTH:
-      case PWH_TOO_SHORT:
-      case PWH_TOO_LONG:
-      case PWH_INVALID_CHARACTER:
+      case PWH_PSWD_LENGTH_NOTHEX:
+      case PWH_INVALID_PSWD_LENGTH: 
+      case PWH_INVALID_FIELD_LENGTH:
       {
         stringT buffer;
         Format(buffer, IDSC_SAXERRORPWH, cur_entry->group.c_str(),

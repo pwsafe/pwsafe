@@ -11,9 +11,11 @@
 #include "StringXStream.h"
 
 #include <ctime>
+#include <vector>
 
 // Our own mktime, differs from libc's via argument overloading
-static time_t mktime(int yyyy, int mon, int dd, int hh = 0, int min = 0, int sec = 0, int *dow = NULL)
+static time_t mktime(int yyyy, int mon, int dd,
+                     int hh = 0, int min = 0, int sec = 0, int *dow = NULL)
 {
   struct tm xtm;
   memset(&xtm, 0, sizeof(tm));
@@ -241,7 +243,7 @@ bool VerifyXMLDateTimeString(const stringT &time_str, time_t &t)
   if (!verifyDTvalues(yyyy, mon, dd, hh, min, ss))
     return false;
 
-  // Accept 01/01/1970 as a special 'unset' value, otherwise there can be
+  // Accept 1970-01-01 as a special 'unset' value, otherwise there can be
   // issues with mktime after apply daylight savings offset.
   if (yyyy == 1970 && mon == 1 && dd == 1) {
     t = time_t(0);
@@ -302,8 +304,8 @@ bool VerifyXMLDateString(const stringT &time_str, time_t &t)
   return true;
 }
 
-int VerifyImportPWHistoryString(const StringX &PWHistory,
-                                StringX &newPWHistory, stringT &strErrors)
+int VerifyTextImportPWHistoryString(const StringX &PWHistory,
+                                    StringX &newPWHistory, stringT &strErrors)
 {
   // Format is (! == mandatory blank, unless at the end of the record):
   //    sxx00
@@ -312,11 +314,12 @@ int VerifyImportPWHistoryString(const StringX &PWHistory,
   // Note:
   //    !yyyy/mm/dd!hh:mm:ss! may be !1970-01-01 00:00:00! meaning unknown
 
-  stringT buffer;
+  StringX sxBuffer;
   size_t ipwlen, pwleft = 0;
   int s = -1, m = -1, n = -1;
   int rc = PWH_OK;
   time_t t;
+  const TCHAR *sHex = _T("0123456789abcdefABCDEF");
 
   newPWHistory = _T("");
   strErrors = _T("");
@@ -341,6 +344,13 @@ int VerifyImportPWHistoryString(const StringX &PWHistory,
     goto exit;
   }
 
+  size_t found = PWHistory.substr(0, 4).find_first_not_of(sHex);
+  if (found != StringX::npos) {
+    // Header not hex!
+    rc = PWH_INVALID_HDR;
+    goto exit;
+  }
+
   {
     StringX s1 (pwh.substr(1, 2));
     StringX s2 (pwh.substr(3, 4));
@@ -362,8 +372,8 @@ int VerifyImportPWHistoryString(const StringX &PWHistory,
     goto exit;
   }
 
-  Format(buffer, _T("%01d%02x%02x"), s, m, n);
-  newPWHistory = buffer.c_str();
+  Format(sxBuffer, _T("%01d%02x%02x"), s, m, n);
+  newPWHistory = sxBuffer;
 
   for (int i = 0; i < n; i++) {
     if (pwleft < 26) {  //  blank + date(10) + blank + time(8) + blank + pw_length(4) + blank
@@ -384,11 +394,7 @@ int VerifyImportPWHistoryString(const StringX &PWHistory,
     if (tmp.substr(0, 10) == _T("1970-01-01"))
       t = 0;
     else {
-      // Replacing a blank between date & time fields is only
-      // needed until we get rid of <changed> in favour of <changedx>
-      if (tmp[11] == _T(' '))
-        tmp[11] = _T('T');
-      if (!VerifyXMLDateTimeString(tmp.c_str(), t) ||
+      if (!VerifyImportDateTimeString(tmp.c_str(), t) ||
           (t == time_t(-1))) {
         rc = PWH_INVALID_DATETIME;
         goto exit;
@@ -427,9 +433,9 @@ int VerifyImportPWHistoryString(const StringX &PWHistory,
     }
 
     tmp = StringX(lpszPWHistory, ipwlen);
-    Format(buffer, _T("%08x%04x%s"), static_cast<long>(t), ipwlen, tmp.c_str());
-    newPWHistory += buffer.c_str();
-    buffer.clear();
+    Format(sxBuffer, _T("%08x%04x%s"), static_cast<long>(t), ipwlen, tmp.c_str());
+    newPWHistory += sxBuffer;
+    sxBuffer.clear();
     lpszPWHistory += ipwlen;
     pwleft -= ipwlen;
   }
@@ -437,9 +443,10 @@ int VerifyImportPWHistoryString(const StringX &PWHistory,
   if (pwleft > 0)
     rc = PWH_TOO_LONG;
 
- exit:
-  Format(buffer, IDSC_PWHERROR, len - pwleft + 1);
-  stringT temp;
+exit:
+  stringT buffer, temp(_T(""));
+  Format(temp, IDSC_PWHERRORTEXT, buffer.c_str(), len - pwleft + 1);
+  Format(buffer, IDSC_PWHERROR, temp.c_str());
   switch (rc) {
     case PWH_OK:
     case PWH_IGNORE:
@@ -473,9 +480,220 @@ int VerifyImportPWHistoryString(const StringX &PWHistory,
     default:
       ASSERT(0);
   }
-  strErrors = buffer + temp + _T("\r\n");
+  strErrors = buffer + temp;
   if (rc != PWH_OK)
     newPWHistory = _T("");
+
+  return rc;
+}
+
+int VerifyXMLImportPWHistoryString(const StringX &PWHistory,
+                                   StringX &newPWHistory, stringT &strErrors)
+{
+  // Format is (! == mandatory blank, unless at the end of the record):
+  //    sxx00
+  // or
+  //    sxxnn!<time field>!llll!pppp...pppp!<time field>!llll!pppp...pppp!.........
+  //
+  // Note:
+  //   For Plain text input the <time field> is fixed as "yyyy/mm/dd!hh:mm:ss"
+  //   For XML input the <time field> is defined by the W3C xs:dateTime specification
+  //   of: "yyyy-mm-ddThh:mm:ss", "yyyy-mm-ddThh:mm:ssZ", 
+  //       "yyyy-mm-ddThh:mm:ss+hh:mm" or "yyyy-mm-ddThh:mm:ss-hh:mm"
+  //
+  // A date value of '1970-01-01' (irrespective of the time value) is interpreted 
+  // as 'unknown'.
+
+  StringX sxBuffer, tmp;
+  std::vector<StringX> in_tokens, out_entries;
+  size_t ipwlen;
+  int s = -1, m = -1, n = -1, nerror(-1);
+  int rc = PWH_OK;
+  time_t t;
+
+  const TCHAR *sHex = _T("0123456789abcdefABCDEF");
+
+  newPWHistory = _T("");
+  strErrors = _T("");
+
+  if (PWHistory.empty())
+    return PWH_OK;
+
+  const size_t len = PWHistory.length();
+
+  if (len < 5) {
+    rc = PWH_INVALID_HDR;
+    goto exit;
+  }
+
+  size_t found = PWHistory.substr(0, 4).find_first_not_of(sHex);
+  if (found != StringX::npos) {
+    // Header not hex!
+    rc = PWH_INVALID_HDR;
+    goto exit;
+  }
+
+  if (PWHistory[0] == TCHAR('0')) s = 0;
+  else if (PWHistory[0] == TCHAR('1')) s = 1;
+  else {
+    rc = PWH_INVALID_STATUS;
+    goto exit;
+  }
+
+  {
+    size_t found = PWHistory.substr(1, 4).find_first_not_of(sHex);
+    if (found != StringX::npos) {
+      // Password length not hex!
+      rc = PWH_PSWD_LENGTH_NOTHEX;
+      goto exit;
+    }
+    StringX s1(PWHistory.substr(1, 2));
+    StringX s2(PWHistory.substr(3, 4));
+    iStringXStream is1(s1), is2(s2);
+    is1 >> std::hex >> m;
+    is2 >> std::hex >> n;
+  }
+
+  if (n > m) {
+    rc = PWH_INVALID_NUM;
+    goto exit;
+  }
+
+  if (len == 5 && s == 0 && m == 0 && n == 0) {
+    rc = PWH_IGNORE;
+    goto exit;
+  }
+
+  if (len <= 6) {
+    // Really invalid but just set n == 0 and return
+    Format(sxBuffer, _T("%01d%02x00"), s, m);
+    newPWHistory = sxBuffer;
+    return PWH_OK;
+  }
+
+  // Now tokenize the rest using a blank as a delimiter
+  {
+    StringX item(PWHistory.substr(6));
+    StringXStream ss(item);
+    while (getline(ss, item, _T('\xff'))) {
+      in_tokens.push_back(item);
+    }
+  }
+
+  // We need to handle these in 3s or 4s depending on whether we are doing it for
+  // plain text input (4 - date, time, length, password) or 
+  // XML input (3 - datetime, length, password).
+
+  // Check we have enough
+  if ((int)in_tokens.size() != n * 3) {
+    // too few or too many - set number to number of complete entries
+    n = (in_tokens.size() % 3);
+  }
+
+  // Now only verify them and create out_tokens for processing
+  size_t it = 0;  // token counter
+  size_t ie;      // entry counter
+  for (ie = 0; ie < (size_t)n; ie++) {
+    StringX sxDatetime, sxPWLen, sxPassword;
+    // Check datetime and password length fields
+    size_t idtlen = in_tokens[it].length();
+    if ((idtlen != 19 && idtlen != 20 && idtlen != 25) ||
+        in_tokens[it + 1].length() != 4) {
+      // Bad lengths
+      rc = PWH_INVALID_FIELD_LENGTH;
+      break;
+    }
+    sxDatetime = in_tokens[it];
+    sxPWLen = in_tokens[it + 1];
+    sxPassword = in_tokens[it + 2];
+      
+    // Get password length
+    {
+      size_t found = sxPWLen.find_first_not_of(sHex);
+      if (found != StringX::npos) {
+        // Password length not hex!
+        rc = PWH_PSWD_LENGTH_NOTHEX;
+        break;
+      }
+      iStringXStream iss_pwlen(sxPWLen.c_str());
+      iss_pwlen >> std::hex >> ipwlen;
+    }
+
+    // Check password field length
+    if (sxPassword.length() != ipwlen) {
+      // Bad entry - stop with what we have
+      rc = PWH_INVALID_PSWD_LENGTH;
+      break;
+    }
+
+    // Verify datetime field
+    if (!VerifyXMLDateTimeString(sxDatetime.c_str(), t) ||
+        (t == time_t(-1))) {
+       rc = PWH_INVALID_DATETIME;
+      break;
+    }
+
+    Format(sxBuffer, _T("%08x%04x%s"), static_cast<long>(t), ipwlen, 
+                 sxPassword.c_str());
+    out_entries.push_back(sxBuffer);
+    sxBuffer.clear();
+    it += 3;
+  }
+
+  if (rc != PWH_OK)
+    nerror = ie;
+
+  n = out_entries.size();
+  Format(sxBuffer, _T("%01d%02x%02x"), s, m, n);
+  newPWHistory = sxBuffer;
+
+  for (size_t i = 0; i < out_entries.size(); i++)
+    newPWHistory += out_entries[i];
+
+ exit:
+  stringT buffer, temp(_T(""));
+  if (nerror >= 0) {
+    // Need to add information about which PWH entry is in error
+    LoadAString(buffer, IDSC_ENTRY);
+    Format(temp, _T("%s %d"), buffer.c_str(), nerror);
+  }
+  Format(buffer, IDSC_PWHERROR, temp.c_str());
+  switch (rc) {
+    case PWH_OK:
+    case PWH_IGNORE:
+      temp.clear();
+      buffer.clear();
+      break;
+    case PWH_INVALID_HDR:
+      Format(temp, IDSC_INVALIDHEADER, PWHistory.substr(0, 5).c_str());
+      break;
+    case PWH_INVALID_STATUS:
+      Format(temp, IDSC_INVALIDPWHSTATUS, s);
+      break;
+    case PWH_INVALID_NUM:
+      Format(temp, IDSC_INVALIDNUMOLDPW, n, m);
+      break;
+    case PWH_INVALID_DATETIME:
+      LoadAString(temp, IDSC_INVALIDDATETIME);
+      break;
+    case PWH_INVALID_PSWD_LENGTH:
+      LoadAString(temp, IDSC_INVALIDPWLENGTH);
+      break;
+    case PWH_PSWD_LENGTH_NOTHEX:
+      LoadAString(temp, IDSC_INVALIDPWLENGTHX);
+      break;
+    case PWH_INVALID_FIELD_LENGTH:
+      LoadAString(temp, IDSC_INVALIDFIELDLENGTH);
+      break;
+    default:
+      ASSERT(0);
+  }
+
+  if (rc != PWH_OK) {
+    strErrors = buffer.c_str();
+    strErrors += temp;
+    newPWHistory = _T("");
+  }
 
   return rc;
 }
