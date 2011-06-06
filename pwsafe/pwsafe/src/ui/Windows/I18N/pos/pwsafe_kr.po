@@ -148,6 +148,10 @@ msgstr " '사용자 이름'"
 msgid " 'email'"
 msgstr " '전자우편'"
 
+#. Resource IDs: (367)
+msgid " 'protected'"
+msgstr ""
+
 #. Resource IDs: (366)
 msgid " 'symbols'"
 msgstr ""
@@ -196,10 +200,6 @@ msgstr "# %d 을(를) 불러오기"
 #, c-format
 msgid " [Process ID=%s]"
 msgstr " [프로세스 ID=%s]"
-
-#. Resource IDs: (362)
-msgid " or undo all changes"
-msgstr "또는 모든 변경사항 취소"
 
 #. Resource IDs: (354)
 msgid "! Edit externally"
@@ -316,6 +316,11 @@ msgstr "%s [복구됨]"
 #, c-format
 msgid "%s \n\nCan't open file. Please choose another."
 msgstr "%s \n\n파일을 열 수 없습니다. 다른 파일을 선택하십시오."
+
+#. Resource IDs: (367)
+#, c-format
+msgid "%s failed"
+msgstr ""
 
 #. Resource IDs: (341)
 #, c-format
@@ -829,6 +834,10 @@ msgstr "전자우편(&E)"
 msgid "'Alt Gr' (right Alt) key"
 msgstr "'Alt Gr' (right Alt) key"
 
+#. Resource IDs: (1444)
+msgid "'Browse to URL' copies password to clipboard"
+msgstr ""
+
 #. Resource IDs: (353)
 msgid "'Clear Clipboard on Minimize' and the Double Click Action of 'Copy Password and Minimize' conflict. Please change one or both."
 msgstr "'창 최소화 시에 클립보드 초기화' 와 '비밀번호를 복사하고 창 최소화' 명령이 충돌합니다. 명령 하나 혹은 모두 변경해 주십시오."
@@ -1199,7 +1208,7 @@ msgid "A new password database will be created. The safe combination you enter w
 msgstr "새로운 비밀번호 데이터베이스가 만들어질 것입니다. 당신이 입력할 보안 비밀번호가 비밀번호 데이터베이스 파일을 암호화하는 데 사용됩니다. 보안 비밀번호는 키보드의 모든 문자를 사용할 수 있고, 대소문자를 구별합니다."
 
 #. Resource IDs: (367)
-msgid "A red and white indicator means that a filter is active"
+msgid "A red and white indicator means that a filter is active\r\n(If indicator visible, double click to clear current filter)"
 msgstr ""
 
 #. Resource IDs: (3843)
@@ -1445,11 +1454,6 @@ msgstr "쌍따옴표 문자가 전체 노트항목의 폐행문자이기 때문�
 msgid "At least one type of character (lowercase, uppercase, digits,\nsymbols, hexadecimal) must be permitted."
 msgstr "최소 한 글자(소문자, 대문자, 숫자,\n특수문자, 16진수) 이상 입력해야 합니다."
 
-#. Resource IDs: (340)
-#, c-format
-msgid "At least one unknown %s field is now in use.  Any found have been ignored."
-msgstr "적어도 하나 이상의 알려지지 않은 %s 필드가 사용중입니다. 검색된 나머지 모두 무시됩니다."
-
 #. Resource IDs: (3843)
 msgid "Attempted an unsupported operation."
 msgstr "지원되지 않는 기능을 시도했습니다."
@@ -1629,6 +1633,10 @@ msgstr "C:None  "
 msgid "C:Reg   "
 msgstr "C:Reg   "
 
+#. Resource IDs: (317)
+msgid "CSV files (*.csv)|*.csv|All files (*.*)|*.*||"
+msgstr ""
+
 #. Resource IDs: (339)
 msgid "Can only warn between 1 and 30 days before passwords expire"
 msgstr "비밀번호 만료 전 1~30일 사이에만 경고할 수 있습니다."
@@ -1670,6 +1678,10 @@ msgstr "%d 보다 많을 수 없습니다"
 #. Resource IDs: (189)
 msgid "Cannot create lock file - no permission in directory?"
 msgstr "잠금 파일을 만들 수 없습니다 - 디렉터리 권한이 없습니까?"
+
+#. Resource IDs: (367)
+msgid "Cannot create missing directories in path to the export file."
+msgstr ""
 
 #. Resource IDs: (332)
 msgid "Cannot process as this entry has been deleted from the open database."
@@ -2089,6 +2101,10 @@ msgstr "파일에 액세스할 수 없었습니다: %s"
 #, c-format
 msgid "Could not create %1 because the directory is full."
 msgstr "디렉토리가 꽉 차서 %1을 생성할 수 없었습니다."
+
+#. Resource IDs: (215)
+msgid "Could not find the next entry's title field in the KeePass V1 TXT (should be within square brackets)."
+msgstr ""
 
 #. Resource IDs: (3867)
 #, c-format
@@ -2792,6 +2808,11 @@ msgstr "XML 보내기"
 msgid "Export file:"
 msgstr "파일로 내보내기:"
 
+#. Resource IDs: (367)
+#, c-format
+msgid "Export file: '%s' already exists.\r\nDo you want to replace it?"
+msgstr ""
+
 #. Resource IDs: (211)
 msgid "Export of data was restricted to certain fields by the user."
 msgstr "사용자에 의해 특정 필드값의 데이터가 제한되어 내보내졌습니다."
@@ -2893,6 +2914,10 @@ msgstr "파일 읽기 오류"
 #, c-format
 msgid "File ends on line %d before ending double quote of last entry's note field."
 msgstr "파일의 %d번째 줄에서 마지막 항목의 메모 노트에 포함된 쌍따옴표가 나타나기 전에 파일의 끝에 도착했습니다."
+
+#. Resource IDs: (213)
+msgid "File is truncated or otherwise corrupted. Please use backup database."
+msgstr ""
 
 #. Resource IDs: (334)
 msgid "File lock error"
@@ -3368,6 +3393,14 @@ msgstr "텍스트 불러오기(&T)"
 msgid "Import &XML"
 msgstr "&XML 불러오기"
 
+#. Resource IDs: (32133)
+msgid "Import KeePass V1 CSV"
+msgstr ""
+
+#. Resource IDs: (32132)
+msgid "Import KeePass V1 TXT"
+msgstr ""
+
 #. Resource IDs: (125)
 msgid "Import Text Settings"
 msgstr "텍스트 설정 불러오기"
@@ -3384,6 +3417,14 @@ msgstr "XML 설정 불러오기"
 msgid "Import XML failed"
 msgstr "XML 설정 불러오기 실패"
 
+#. Resource IDs: (215)
+msgid "Import aborted. Please see report."
+msgstr ""
+
+#. Resource IDs: (367)
+msgid "Import failed"
+msgstr ""
+
 #. Resource IDs: (1398)
 msgid "Import to change passwords of existing entries ONLY"
 msgstr "현재 존재하는 항목들의 비밀번호만을 변경하기 위해 불러오기"
@@ -3391,6 +3432,14 @@ msgstr "현재 존재하는 항목들의 비밀번호만을 변경하기 위해 
 #. Resource IDs: (65535)
 msgid "Import under Group?"
 msgstr "아래 그룹을 불러오시겠습니까?"
+
+#. Resource IDs: (367)
+msgid "Import_KeePassV1_CSV"
+msgstr ""
+
+#. Resource IDs: (367)
+msgid "Import_KeePassV1_TXT"
+msgstr ""
 
 #. Resource IDs: (346)
 msgid "Import_Text"
@@ -3552,9 +3601,13 @@ msgstr "Kannada"
 msgid "Kazakh"
 msgstr "Kazakh"
 
+#. Resource IDs: (32024)
+msgid "KeePass V1 CSV File..."
+msgstr ""
+
 #. Resource IDs: (32017)
-msgid "KeePass..."
-msgstr "KeePass..."
+msgid "KeePass V1 TXT File..."
+msgstr ""
 
 #. Resource IDs: (1143)
 msgid "Keep"
@@ -5385,6 +5438,10 @@ msgstr "Telugu"
 msgid "Text"
 msgstr "텍스트"
 
+#. Resource IDs: (317)
+msgid "Text files (*.txt)|*.txt|All files (*.*)|*.*||"
+msgstr ""
+
 #. Resource IDs: (316)
 msgid "Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*)|*.*||"
 msgstr "텍스트 파일 (*.txt)|*.txt|CSV 파일 (*.csv)|*.csv|모든 파일 (*.*)|*.*||"
@@ -5425,6 +5482,10 @@ msgstr "%s \"%s, %s, %s\" 항목이 일반항목 혹은 존재하는 기본항�
 #. Resource IDs: (510)
 msgid "The ALT key is not used on any keyboard to select characters. Use the 'Alt Num' key to enter a character via its decimal value."
 msgstr "ALT 키는 문자열을 선택하는 데에 사용되지 않습니다. 10진수를 입력하시려면 'Alt Num' 키를 대신 사용하십시오."
+
+#. Resource IDs: (215)
+msgid "The TXT or CSV file was not exported as required as entry records span multiple lines in the CSV file.\r\n\r\nImport aborted."
+msgstr ""
 
 #. Resource IDs: (330)
 msgid "The combination cannot be blank."
@@ -6248,9 +6309,8 @@ msgid "You have elected not to save any changes - all unsaved changes will be lo
 msgstr ""
 
 #. Resource IDs: (362)
-#, c-format
-msgid "You must save this database%s before it can be %s."
-msgstr "이 데이터베이스를 %s 하기 전에 반드시 %s 하셔야 합니다."
+msgid "You must save this database before it can be exported."
+msgstr ""
 
 #. Resource IDs: (361)
 msgid "Your currently opened database will be in the first row.  Failsafe Backup files will be displayed below this.  If the passphrase is the same as the current database, the properties of these backups will also be shown.  If you are unable to chose, continue with the current database and use the database Compare function to view the differences between the versions."
@@ -6565,6 +6625,10 @@ msgstr "\n\n알려지지 않은 필드 또한 항목들과 함께 복사되었�
 msgid "\nwith Password History errors %d"
 msgstr "\n와 %d 비밀번호 내역 오류"
 
+#. Resource IDs: (367)
+msgid "\nwith warnings"
+msgstr ""
+
 #. Resource IDs: (214)
 #, c-format
 msgid "\r\nMerge completed: %d %s added (%d %s, %d %s, %d %s)"
@@ -6828,10 +6892,6 @@ msgstr "greater than or equal to"
 msgid "has expired"
 msgstr "has expired"
 
-#. Resource IDs: (359)
-msgid "header"
-msgstr "header"
-
 #. Resource IDs: (314)
 msgid "http://pwsafe.org/"
 msgstr "http://pwsafe.org/"
@@ -6964,10 +7024,6 @@ msgstr "항목별 비밀번호 내역의 수"
 msgid "pwsafe"
 msgstr "pwsafe"
 
-#. Resource IDs: (359)
-msgid "record"
-msgstr "record"
-
 #. Resource IDs: (344)
 msgid "shortcut"
 msgstr "바로가기"
@@ -7021,10 +7077,6 @@ msgstr "v1.x 형식...(&V)"
 #. Resource IDs: (32012)
 msgid "v&2 format..."
 msgstr "v2 형식...(&V)"
-
-#. Resource IDs: (362)
-msgid "validated"
-msgstr "validated"
 
 #. Resource IDs: (191)
 msgid "validation"

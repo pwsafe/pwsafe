@@ -148,6 +148,10 @@ msgstr "'Utente'"
 msgid " 'email'"
 msgstr ""
 
+#. Resource IDs: (367)
+msgid " 'protected'"
+msgstr ""
+
 #. Resource IDs: (366)
 msgid " 'symbols'"
 msgstr ""
@@ -196,10 +200,6 @@ msgstr "Importa # %d"
 #, c-format
 msgid " [Process ID=%s]"
 msgstr "[ID del Processo=%s]"
-
-#. Resource IDs: (362)
-msgid " or undo all changes"
-msgstr ""
 
 #. Resource IDs: (354)
 msgid "! Edit externally"
@@ -316,6 +316,11 @@ msgstr ""
 #, c-format
 msgid "%s \n\nCan't open file. Please choose another."
 msgstr "%s \n\nImpossibile aprire il file. Si prega di effettuare un'altra scelta."
+
+#. Resource IDs: (367)
+#, c-format
+msgid "%s failed"
+msgstr ""
 
 #. Resource IDs: (341)
 #, c-format
@@ -829,6 +834,10 @@ msgstr ""
 msgid "'Alt Gr' (right Alt) key"
 msgstr ""
 
+#. Resource IDs: (1444)
+msgid "'Browse to URL' copies password to clipboard"
+msgstr ""
+
 #. Resource IDs: (353)
 msgid "'Clear Clipboard on Minimize' and the Double Click Action of 'Copy Password and Minimize' conflict. Please change one or both."
 msgstr ""
@@ -1199,7 +1208,7 @@ msgid "A new password database will be created. The safe combination you enter w
 msgstr "Verrà creato un nuovo database di password. La combinazione di sicurezza che inserisci verrà utilizzata per criptare il file del database di password. La Combinazione di Sicurezza può contenere qualsiasi carattere della tastiera e tiene conto del maiuscolo. "
 
 #. Resource IDs: (367)
-msgid "A red and white indicator means that a filter is active"
+msgid "A red and white indicator means that a filter is active\r\n(If indicator visible, double click to clear current filter)"
 msgstr ""
 
 #. Resource IDs: (3843)
@@ -1445,11 +1454,6 @@ msgstr "Essendo il carattere della doppia virgoletta utilizzato per delimitare l
 msgid "At least one type of character (lowercase, uppercase, digits,\nsymbols, hexadecimal) must be permitted."
 msgstr "Almeno una tipologia di carattere (minuscolo, maiuscolo, numero, \n simbolo, esadecimale) deve essere consentito."
 
-#. Resource IDs: (340)
-#, c-format
-msgid "At least one unknown %s field is now in use.  Any found have been ignored."
-msgstr "Almeno un campo %s sconosciuto è attualmente usato. Ogni ritrovamento è stato ignorato."
-
 #. Resource IDs: (3843)
 msgid "Attempted an unsupported operation."
 msgstr ""
@@ -1629,6 +1633,10 @@ msgstr "C:Nessuno"
 msgid "C:Reg   "
 msgstr "C:Reg   "
 
+#. Resource IDs: (317)
+msgid "CSV files (*.csv)|*.csv|All files (*.*)|*.*||"
+msgstr ""
+
 #. Resource IDs: (339)
 msgid "Can only warn between 1 and 30 days before passwords expire"
 msgstr "Avviso possibile solo tra 1 e 30 giorni prima della scadenza della password"
@@ -1670,6 +1678,10 @@ msgstr "Non può essere superiore a %d"
 #. Resource IDs: (189)
 msgid "Cannot create lock file - no permission in directory?"
 msgstr "Impossibile creare il file \"lucchettato\" - mancanza di permessi nella cartella?"
+
+#. Resource IDs: (367)
+msgid "Cannot create missing directories in path to the export file."
+msgstr ""
 
 #. Resource IDs: (332)
 msgid "Cannot process as this entry has been deleted from the open database."
@@ -2088,6 +2100,10 @@ msgstr "Impossibile accedere al file: %s"
 #. Resource IDs: (3867)
 #, c-format
 msgid "Could not create %1 because the directory is full."
+msgstr ""
+
+#. Resource IDs: (215)
+msgid "Could not find the next entry's title field in the KeePass V1 TXT (should be within square brackets)."
 msgstr ""
 
 #. Resource IDs: (3867)
@@ -2792,6 +2808,11 @@ msgstr ""
 msgid "Export file:"
 msgstr ""
 
+#. Resource IDs: (367)
+#, c-format
+msgid "Export file: '%s' already exists.\r\nDo you want to replace it?"
+msgstr ""
+
 #. Resource IDs: (211)
 msgid "Export of data was restricted to certain fields by the user."
 msgstr ""
@@ -2892,6 +2913,10 @@ msgstr ""
 #. Resource IDs: (189)
 #, c-format
 msgid "File ends on line %d before ending double quote of last entry's note field."
+msgstr ""
+
+#. Resource IDs: (213)
+msgid "File is truncated or otherwise corrupted. Please use backup database."
 msgstr ""
 
 #. Resource IDs: (334)
@@ -3368,6 +3393,14 @@ msgstr ""
 msgid "Import &XML"
 msgstr ""
 
+#. Resource IDs: (32133)
+msgid "Import KeePass V1 CSV"
+msgstr ""
+
+#. Resource IDs: (32132)
+msgid "Import KeePass V1 TXT"
+msgstr ""
+
 #. Resource IDs: (125)
 msgid "Import Text Settings"
 msgstr ""
@@ -3384,12 +3417,28 @@ msgstr ""
 msgid "Import XML failed"
 msgstr ""
 
+#. Resource IDs: (215)
+msgid "Import aborted. Please see report."
+msgstr ""
+
+#. Resource IDs: (367)
+msgid "Import failed"
+msgstr ""
+
 #. Resource IDs: (1398)
 msgid "Import to change passwords of existing entries ONLY"
 msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Import under Group?"
+msgstr ""
+
+#. Resource IDs: (367)
+msgid "Import_KeePassV1_CSV"
+msgstr ""
+
+#. Resource IDs: (367)
+msgid "Import_KeePassV1_TXT"
 msgstr ""
 
 #. Resource IDs: (346)
@@ -3552,8 +3601,12 @@ msgstr ""
 msgid "Kazakh"
 msgstr ""
 
+#. Resource IDs: (32024)
+msgid "KeePass V1 CSV File..."
+msgstr ""
+
 #. Resource IDs: (32017)
-msgid "KeePass..."
+msgid "KeePass V1 TXT File..."
 msgstr ""
 
 #. Resource IDs: (1143)
@@ -5385,6 +5438,10 @@ msgstr ""
 msgid "Text"
 msgstr ""
 
+#. Resource IDs: (317)
+msgid "Text files (*.txt)|*.txt|All files (*.*)|*.*||"
+msgstr ""
+
 #. Resource IDs: (316)
 msgid "Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*)|*.*||"
 msgstr ""
@@ -5424,6 +5481,10 @@ msgstr ""
 
 #. Resource IDs: (510)
 msgid "The ALT key is not used on any keyboard to select characters. Use the 'Alt Num' key to enter a character via its decimal value."
+msgstr ""
+
+#. Resource IDs: (215)
+msgid "The TXT or CSV file was not exported as required as entry records span multiple lines in the CSV file.\r\n\r\nImport aborted."
 msgstr ""
 
 #. Resource IDs: (330)
@@ -6248,8 +6309,7 @@ msgid "You have elected not to save any changes - all unsaved changes will be lo
 msgstr ""
 
 #. Resource IDs: (362)
-#, c-format
-msgid "You must save this database%s before it can be %s."
+msgid "You must save this database before it can be exported."
 msgstr ""
 
 #. Resource IDs: (361)
@@ -6565,6 +6625,10 @@ msgstr ""
 msgid "\nwith Password History errors %d"
 msgstr ""
 
+#. Resource IDs: (367)
+msgid "\nwith warnings"
+msgstr ""
+
 #. Resource IDs: (214)
 #, c-format
 msgid "\r\nMerge completed: %d %s added (%d %s, %d %s, %d %s)"
@@ -6828,10 +6892,6 @@ msgstr ""
 msgid "has expired"
 msgstr ""
 
-#. Resource IDs: (359)
-msgid "header"
-msgstr ""
-
 #. Resource IDs: (314)
 msgid "http://pwsafe.org/"
 msgstr ""
@@ -6964,10 +7024,6 @@ msgstr ""
 msgid "pwsafe"
 msgstr ""
 
-#. Resource IDs: (359)
-msgid "record"
-msgstr ""
-
 #. Resource IDs: (344)
 msgid "shortcut"
 msgstr ""
@@ -7020,10 +7076,6 @@ msgstr ""
 
 #. Resource IDs: (32012)
 msgid "v&2 format..."
-msgstr ""
-
-#. Resource IDs: (362)
-msgid "validated"
 msgstr ""
 
 #. Resource IDs: (191)

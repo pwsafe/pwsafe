@@ -9,9 +9,9 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2011-05-19 08:20:00+0200\n"
-"Last-Translator: Michał Niklas <michal.niklas@wp.pl>\n"
-"Language-Team: Polish <LL@li.org>\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -155,6 +155,10 @@ msgstr " 'Użytkownik'"
 msgid " 'email'"
 msgstr " 'email'"
 
+#. Resource IDs: (367)
+msgid " 'protected'"
+msgstr ""
+
 #. Resource IDs: (366)
 msgid " 'symbols'"
 msgstr " 'symbole'"
@@ -203,10 +207,6 @@ msgstr " Importuj # %d"
 #, c-format
 msgid " [Process ID=%s]"
 msgstr " [ID Procesu=%s]"
-
-#. Resource IDs: (362)
-msgid " or undo all changes"
-msgstr " lub odwróć wszystkie zmiany"
 
 #. Resource IDs: (354)
 msgid "! Edit externally"
@@ -324,6 +324,11 @@ msgstr "%s [Odzyskany]"
 #, fuzzy, c-format
 msgid "%s \n\nCan't open file. Please choose another."
 msgstr "%s \n\nNie można otworzyć pliku. Wybierz inny."
+
+#. Resource IDs: (367)
+#, c-format
+msgid "%s failed"
+msgstr ""
 
 #. Resource IDs: (341)
 #, c-format
@@ -838,6 +843,10 @@ msgstr "&email:"
 msgid "'Alt Gr' (right Alt) key"
 msgstr "klawisz 'Alt Gr' (prawy Alt)"
 
+#. Resource IDs: (1444)
+msgid "'Browse to URL' copies password to clipboard"
+msgstr ""
+
 #. Resource IDs: (353)
 msgid "'Clear Clipboard on Minimize' and the Double Click Action of 'Copy Password and Minimize' conflict. Please change one or both."
 msgstr "Konflikt 'Wyczyść schowek przy minimalizacji' i dwuklik 'Kopiuj hasło przy minimalizacji'. Proszę zmienić opcje."
@@ -1208,8 +1217,8 @@ msgid "A new password database will be created. The safe combination you enter w
 msgstr "Zostanie utworzona nowa baza danych szyfrowana hasłem. Hasło może zawierać każdy znak wprowadzany z klawiatury. Rozróżniane są wielkie i małe litery."
 
 #. Resource IDs: (367)
-msgid "A red and white indicator means that a filter is active"
-msgstr "Czerwony i biały znacznik oznaczają, że filtr jest aktywny"
+msgid "A red and white indicator means that a filter is active\r\n(If indicator visible, double click to clear current filter)"
+msgstr ""
 
 #. Resource IDs: (3843)
 msgid "A required resource was unavailable."
@@ -1459,11 +1468,6 @@ msgstr "znak podwójnego cudzysłowia jest używany jako delimiter pola notatek 
 msgid "At least one type of character (lowercase, uppercase, digits,\nsymbols, hexadecimal) must be permitted."
 msgstr "Przynajmniej jeden rodzaj znaków (małe lub wielkie litery, cyfry,\nsymbole, hex) musi być zaznaczony."
 
-#. Resource IDs: (340)
-#, c-format
-msgid "At least one unknown %s field is now in use.  Any found have been ignored."
-msgstr "Przynajmniej jedno nieznane pole %s jest w użyciu.  Jakiekolwiek znalezione zostały zignorowane."
-
 #. Resource IDs: (3843)
 msgid "Attempted an unsupported operation."
 msgstr "Próba wykonania nieobsługiwanej operacji."
@@ -1647,6 +1651,10 @@ msgstr "C:None  "
 msgid "C:Reg   "
 msgstr "C:Reg   "
 
+#. Resource IDs: (317)
+msgid "CSV files (*.csv)|*.csv|All files (*.*)|*.*||"
+msgstr ""
+
 #. Resource IDs: (339)
 msgid "Can only warn between 1 and 30 days before passwords expire"
 msgstr "Ostrzeżenia są tylko możliwe w okresie od 1 do 30 dni zanim hasło wygaśnie"
@@ -1690,6 +1698,10 @@ msgstr "Nie może być większe niż %d"
 #, fuzzy
 msgid "Cannot create lock file - no permission in directory?"
 msgstr "Nie można utworzyć blokady pliku - brak uprawnień w katalogu?"
+
+#. Resource IDs: (367)
+msgid "Cannot create missing directories in path to the export file."
+msgstr ""
 
 #. Resource IDs: (332)
 msgid "Cannot process as this entry has been deleted from the open database."
@@ -2115,6 +2127,10 @@ msgstr "Nie można uzyskać dostępu do pliku: %s"
 #, c-format
 msgid "Could not create %1 because the directory is full."
 msgstr "Nie można stworzyć %1 ponieważ katalog jest pełny."
+
+#. Resource IDs: (215)
+msgid "Could not find the next entry's title field in the KeePass V1 TXT (should be within square brackets)."
+msgstr ""
 
 #. Resource IDs: (3867)
 #, c-format
@@ -2832,6 +2848,11 @@ msgstr "Eksportuj XML"
 msgid "Export file:"
 msgstr "Plik eksportu:"
 
+#. Resource IDs: (367)
+#, c-format
+msgid "Export file: '%s' already exists.\r\nDo you want to replace it?"
+msgstr ""
+
 #. Resource IDs: (211)
 msgid "Export of data was restricted to certain fields by the user."
 msgstr "Eksport danych jest zawężony przez użytkownika do wskazanych pól."
@@ -2936,6 +2957,10 @@ msgstr "Błąd odczytu pliku"
 #, c-format
 msgid "File ends on line %d before ending double quote of last entry's note field."
 msgstr "Plik kończy się na linii %d przed zakończeniem podwójnego cudzysłowia pola notatek ostatniego wpisu."
+
+#. Resource IDs: (213)
+msgid "File is truncated or otherwise corrupted. Please use backup database."
+msgstr ""
 
 #. Resource IDs: (334)
 msgid "File lock error"
@@ -3421,6 +3446,14 @@ msgstr "Import &tekstu"
 msgid "Import &XML"
 msgstr "Import &XML"
 
+#. Resource IDs: (32133)
+msgid "Import KeePass V1 CSV"
+msgstr ""
+
+#. Resource IDs: (32132)
+msgid "Import KeePass V1 TXT"
+msgstr ""
+
 #. Resource IDs: (125)
 msgid "Import Text Settings"
 msgstr "Importuj Ustawienia tekstowe"
@@ -3437,6 +3470,14 @@ msgstr "Importuj ustawienia XML"
 msgid "Import XML failed"
 msgstr "Import XML nie powiódł się"
 
+#. Resource IDs: (215)
+msgid "Import aborted. Please see report."
+msgstr ""
+
+#. Resource IDs: (367)
+msgid "Import failed"
+msgstr ""
+
 #. Resource IDs: (1398)
 msgid "Import to change passwords of existing entries ONLY"
 msgstr "Import by zmienić hasła TYLKO dla istniejących wpisów"
@@ -3444,6 +3485,14 @@ msgstr "Import by zmienić hasła TYLKO dla istniejących wpisów"
 #. Resource IDs: (65535)
 msgid "Import under Group?"
 msgstr "Import do Grupy?"
+
+#. Resource IDs: (367)
+msgid "Import_KeePassV1_CSV"
+msgstr ""
+
+#. Resource IDs: (367)
+msgid "Import_KeePassV1_TXT"
+msgstr ""
 
 #. Resource IDs: (346)
 msgid "Import_Text"
@@ -3605,9 +3654,13 @@ msgstr "Kannada"
 msgid "Kazakh"
 msgstr "Kazaski"
 
+#. Resource IDs: (32024)
+msgid "KeePass V1 CSV File..."
+msgstr ""
+
 #. Resource IDs: (32017)
-msgid "KeePass..."
-msgstr "KeePass..."
+msgid "KeePass V1 TXT File..."
+msgstr ""
 
 #. Resource IDs: (1143)
 msgid "Keep"
@@ -5472,6 +5525,10 @@ msgstr "Telugu"
 msgid "Text"
 msgstr "Tekst"
 
+#. Resource IDs: (317)
+msgid "Text files (*.txt)|*.txt|All files (*.*)|*.*||"
+msgstr ""
+
 #. Resource IDs: (316)
 msgid "Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*)|*.*||"
 msgstr "Pliki tekstowe (*.txt)|*.txt|Pliki CSV (*.csv)|*.csv|Wszystkie pliki (*.*)|*.*||"
@@ -5513,6 +5570,10 @@ msgstr "Wpis %s \"%s, %s, %s\" nie wskazuje na normalny lub istniejący wpis baz
 #. Resource IDs: (510)
 msgid "The ALT key is not used on any keyboard to select characters. Use the 'Alt Num' key to enter a character via its decimal value."
 msgstr "Klawisz ALT nie jest używany na żadnej klawiaturze do wyboru znaków. Użyj 'Aln Num' by wprowadzić znak poprzez jego wartość numeryczną."
+
+#. Resource IDs: (215)
+msgid "The TXT or CSV file was not exported as required as entry records span multiple lines in the CSV file.\r\n\r\nImport aborted."
+msgstr ""
 
 #. Resource IDs: (330)
 msgid "The combination cannot be blank."
@@ -6344,9 +6405,8 @@ msgid "You have elected not to save any changes - all unsaved changes will be lo
 msgstr "Wybrano, by nie zapisywać żadnych zmian - wszystkie niezachowane zmiany będą stracone. Czy chcesz kontynuować?"
 
 #. Resource IDs: (362)
-#, c-format
-msgid "You must save this database%s before it can be %s."
-msgstr "Musisz zapisac tę bazę danych %s nim będzie mogła być %s."
+msgid "You must save this database before it can be exported."
+msgstr ""
 
 #. Resource IDs: (361)
 msgid "Your currently opened database will be in the first row.  Failsafe Backup files will be displayed below this.  If the passphrase is the same as the current database, the properties of these backups will also be shown.  If you are unable to chose, continue with the current database and use the database Compare function to view the differences between the versions."
@@ -6668,6 +6728,10 @@ msgstr "\n\nNieznane pola zostaną skopiowane razem z wpisem."
 msgid "\nwith Password History errors %d"
 msgstr "\nz %d błędami historii hasła"
 
+#. Resource IDs: (367)
+msgid "\nwith warnings"
+msgstr ""
+
 #. Resource IDs: (214)
 #, c-format
 msgid "\r\nMerge completed: %d %s added (%d %s, %d %s, %d %s)"
@@ -6938,10 +7002,6 @@ msgstr "większy lub równy"
 msgid "has expired"
 msgstr "wygasło"
 
-#. Resource IDs: (359)
-msgid "header"
-msgstr "nagłówek"
-
 #. Resource IDs: (314)
 msgid "http://pwsafe.org/"
 msgstr "http://pwsafe.org/"
@@ -7077,10 +7137,6 @@ msgstr "wcześniejsze hasła dla każdego wpisu"
 msgid "pwsafe"
 msgstr "pwsafe"
 
-#. Resource IDs: (359)
-msgid "record"
-msgstr "rekord"
-
 #. Resource IDs: (344)
 msgid "shortcut"
 msgstr "skrót"
@@ -7137,10 +7193,6 @@ msgstr "format v&1.x ..."
 msgid "v&2 format..."
 msgstr "format v&2..."
 
-#. Resource IDs: (362)
-msgid "validated"
-msgstr "sprawdzony"
-
 #. Resource IDs: (191)
 msgid "validation"
 msgstr "sprawdzenie"
@@ -7175,3 +7227,4 @@ msgstr "w przeciągu %d dni(a)"
 #. Resource IDs: (8004)
 msgid "xxxxxx"
 msgstr "xxxxxx"
+
