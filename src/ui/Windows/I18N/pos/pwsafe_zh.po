@@ -839,8 +839,8 @@ msgid "'Browse to URL' copies password to clipboard"
 msgstr ""
 
 #. Resource IDs: (353)
-msgid "'Clear Clipboard on Minimize' and the Double Click Action of 'Copy Password and Minimize' conflict. Please change one or both."
-msgstr "“清除剪贴板并最小化”和双击操作“复制密码并最小化”冲突，请更改其中一个！"
+msgid "'Clear Clipboard on Minimize' and Double Click Action 'Copy Password and Minimize' conflict. Please change one or both."
+msgstr ""
 
 #. Resource IDs: (358)
 msgid "'\n\nIf you would like to report this error, please reply 'Yes' below and upload this file to your Bug Report. If you reply 'No', the file will be deleted.\n\nThe diagnostic information in this file does not include any of your personal data nor any information from the database open at the time of the error.\n\nHowever, if you prefer (and the problem is repeatable with a test database), you may send us that minidump file as well as the test database.\n\nThank you for your help to improve PasswordSafe."
@@ -1208,7 +1208,7 @@ msgid "A new password database will be created. The safe combination you enter w
 msgstr "即将创建一个新密码数据库，请输入你的保险箱数据库保护密码，保险箱密码可以使用所有键盘上区分大小写的字符。"
 
 #. Resource IDs: (367)
-msgid "A red and white indicator means that a filter is active\r\n(If indicator visible, double click to clear current filter)"
+msgid "A red and white indicator means that a filter is active\r\n(double click to clear filter)"
 msgstr ""
 
 #. Resource IDs: (3843)
@@ -2863,7 +2863,7 @@ msgid "Failed to switch from R-O to R/W because database is already open in R/W 
 msgstr ""
 
 #. Resource IDs: (366)
-msgid "Failed to switch from R-O to R/W: Could not open the database. It may have been deleted or renamed or there may be an issue with the device/network device containing it."
+msgid "Failed to switch from R-O to R/W: Could not open the database. It may have been deleted or renamed or there may be a problem with its drive."
 msgstr ""
 
 #. Resource IDs: (366)
@@ -2916,7 +2916,7 @@ msgid "File ends on line %d before ending double quote of last entry's note fiel
 msgstr "文件结尾行 %d 在最后项目备注字段的双引号之前结束！"
 
 #. Resource IDs: (213)
-msgid "File is truncated or otherwise corrupted. Please use backup database."
+msgid "File is truncated or otherwise corrupt. Please use backup database."
 msgstr ""
 
 #. Resource IDs: (334)
@@ -3476,8 +3476,8 @@ msgid "Incorrect filename."
 msgstr "错误文件名！"
 
 #. Resource IDs: (331)
-msgid "Incorrect passkey, not a PasswordSafe database, or a corrupt database. (Backup database has same name as original, ending with '~')"
-msgstr "错误密匙！也有可能无密码保险箱数据库或数据库被损坏 (如果文件真的被损坏，你可以选择打开在原来所指定备份路径文件夹中的另一相同名称后缀为“.bak”的备份文件！)"
+msgid "Incorrect passkey, not a PasswordSafe database, or a corrupt database."
+msgstr ""
 
 #. Resource IDs: (204)
 msgid "Incorrect password"
@@ -3955,8 +3955,8 @@ msgstr "没有打开哪个数据库与其它数据库相比较！"
 
 #. Resource IDs: (359)
 #, c-format
-msgid "No entries satisfied your selection criteria and so none can be %s!"
-msgstr "没有满足你所选择的条件和任何可以执行的 %s！"
+msgid "No entries satisfied your selection criteria, so none can be %s!"
+msgstr ""
 
 #. Resource IDs: (359)
 msgid "No entries selected"
@@ -4025,10 +4025,6 @@ msgstr "未激活行！"
 #. Resource IDs: (349)
 msgid "No rule selected"
 msgstr "未选定规则！"
-
-#. Resource IDs: (359)
-msgid "Non-saved changes"
-msgstr "未保存更改！"
 
 #. Resource IDs: (337)
 msgid "None"
@@ -4107,8 +4103,8 @@ msgid "Number of Groups:"
 msgstr "组数量合计:"
 
 #. Resource IDs: (361)
-msgid "Number of Unknownfields"
-msgstr "未知字段数量"
+msgid "Number of Unknown Fields"
+msgstr ""
 
 #. Resource IDs: (367)
 msgid "Number of entries in database"
@@ -4361,8 +4357,8 @@ msgid "Password implies this is an alias entry, but "
 msgstr "密码暗示这是一个别名项目，但"
 
 #. Resource IDs: (342)
-msgid "Password implies this is an alias entry, but specifies a base entry with no title.\r\nA title is mandatory for every entry."
-msgstr "密码暗示这是一个别名项目，但指定的基本项目没有标题。\r\n每个项目规定必须有一个标题！"
+msgid "Password implies this is an alias entry, but specifies a base entry with no title.\r\nEvery entry must have a title."
+msgstr ""
 
 #. Resource IDs: (188)
 msgid "Password is too short"
@@ -4398,8 +4394,8 @@ msgid "PasswordSafe V%d.%d.%d (Build %s) has had an error."
 msgstr "PasswordSafe V%d.%d.%d (编译 %s) 已有一个错误！"
 
 #. Resource IDs: (364)
-msgid "PasswordSafe: Entries exist with expired or about to be expired passwords"
-msgstr "PasswordSafe: 项目存在失效或涉及到期密码"
+msgid "PasswordSafe: Entries exist with expired or soon-to-expire passwords"
+msgstr ""
 
 #. Resource IDs: (32075)
 msgid "Perform Auto &Type"
@@ -4429,17 +4425,9 @@ msgstr "请选定一个备份恢复:"
 msgid "Please Choose a Database to Compare with current open database"
 msgstr "请选定一个数据库和当前打开数据库相比较"
 
-#. Resource IDs: (335)
-msgid "Please Choose a Database to Merge into current database"
-msgstr "请选择一个合并到当前数据库中的数据库"
-
 #. Resource IDs: (333)
 msgid "Please Choose a Database to Open:"
 msgstr "请选择打开一个数据库"
-
-#. Resource IDs: (360)
-msgid "Please Choose a Database to Synchronize with current database"
-msgstr "请选择一个与当前数据库同步的数据库"
 
 #. Resource IDs: (362)
 msgid "Please Choose a Database to Validate:"
@@ -4461,6 +4449,14 @@ msgstr "请选择一个要导入的文本文件"
 msgid "Please Choose a XML File to Import"
 msgstr "请选择一个要导入的 XML 文件"
 
+#. Resource IDs: (335)
+msgid "Please choose a database to merge into current database"
+msgstr ""
+
+#. Resource IDs: (360)
+msgid "Please choose a database to synchronize with current database"
+msgstr ""
+
 #. Resource IDs: (333)
 msgid "Please choose a name for the current (Untitled) database:"
 msgstr "请选择作为当前(未命名)数据库的名称"
@@ -4474,8 +4470,8 @@ msgid "Please choose a new name for the current database:"
 msgstr "请选择作为当前数据库的新名称"
 
 #. Resource IDs: (331)
-msgid "Please confirm that you wish to delete PasswordSafe configuration information for the current user from the Windows registry.\n\n"
-msgstr "请确认你想要从 Windows 注册表删除的 PasswordSafe 当前用户配置信息。\n\n"
+msgid "Please confirm that you wish to delete current user's PasswordSafe configuration information from the Windows registry.\n\n"
+msgstr ""
 
 #. Resource IDs: (353)
 #, c-format
@@ -4821,8 +4817,8 @@ msgstr "罗马尼亚语(标准)"
 
 #. Resource IDs: (348)
 #, c-format
-msgid "Row %d is incomplete. Please ensure both Field and Criteria are set."
-msgstr "第 %d 行未完成设置，请确保字段与规则\n两个栏目都已设好筛选必需的条件！"
+msgid "Row %d is incomplete. Please set both Field and Criteria."
+msgstr ""
 
 #. Resource IDs: (351)
 msgid "Row number"
@@ -5447,8 +5443,8 @@ msgid "Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*)|*.*||"
 msgstr "文本文件 (*.txt)|*.txt|CSV 文件 (*.csv)|*.csv|所有文件 (*.*)|*.*||"
 
 #. Resource IDs: (356)
-msgid "Text will be red if the shortcut is different to its default value."
-msgstr "如果快捷方式与它的默认值不同时文字将显示为红色。"
+msgid "Text will be red if the shortcut differs from its default value."
+msgstr ""
 
 #. Resource IDs: (1322)
 msgid "Text:"
@@ -5497,7 +5493,7 @@ msgid "The database %s couldn't be opened.\nDo you wish to look for it elsewhere
 msgstr "不能打开数据库“%s”！\n你是否需要在别处查找它(单击查找)，创建一个新数据库(单击新建)或退出？"
 
 #. Resource IDs: (366)
-msgid "The database has been changed since you opened it in R-O mode. It is not possible to just switch to R/W mode.\r\n\r\nTo do so, please close the database and re-open it in R/W mode."
+msgid "The database has been changed since you opened it in R-O mode, so it is not possible to switch to R/W mode.\r\n\r\nPlease close the database and re-open it in R/W mode."
 msgstr ""
 
 #. Resource IDs: (339)
@@ -5559,8 +5555,8 @@ msgstr "下列项目有一个无效 UUID 字段，这些已得到纠正！"
 
 #. Resource IDs: (212)
 #, c-format
-msgid "The following entries have one or more text fields too long to display or edit (longer than %d characters)."
-msgstr "下列项目有一个或多个文本字段显示或编辑太长(大于 %d 字符)"
+msgid "The following entries have one or more text fields too long to display or edit (over %d characters)."
+msgstr ""
 
 #. Resource IDs: (212)
 msgid "The following entries were duplicates of an existing entry."
@@ -5641,8 +5637,8 @@ msgid "There are unmatched quotes in the run command"
 msgstr "运行命令不匹配引号！"
 
 #. Resource IDs: (361)
-msgid "There does not appear to be a Recycle Bin on the media containing this Failsafe Backup file. If you delete it, it will be permanent. Do you wish to continue?"
-msgstr "这里好像没有被包含故障保护备份文件媒体回收站。如果你删除它，这将是永久性的！你是否想继续？"
+msgid "There does not appear to be a Recycle Bin on the media containing this Failsafe Backup file. You will not be able to undo deletes. Do you wish to continue?"
+msgstr ""
 
 #. Resource IDs: (3887)
 msgid "These are more recently saved than the currently open documents and contain changes that were made before the application closed."
@@ -5670,15 +5666,15 @@ msgstr "该项目已被更改，你是否确认需要取消它？"
 msgid "This entry has the following %d %s:\r\n%s"
 msgstr "该项目已有下列 %d %s:\r\n%s"
 
-#. Resource IDs: (345)
+#. Resource IDs: (213)
 #, c-format
-msgid "This entry has the following %d %s:\r\n%s\r\nPlease confirm you wish to continue (All shortcuts to this entry will be deleted)?"
-msgstr "该项目已有下列 %d %s:\r\n%s\r\n请确认你是否需要继续 (所有该项目的快捷方式将被删除)？"
+msgid "This entry has the following %d %s:\r\n%s\r\nPlease confirm to continue (All shortcuts to this entry will be deleted)?"
+msgstr ""
 
-#. Resource IDs: (341)
+#. Resource IDs: (213)
 #, c-format
-msgid "This entry has the following %d %s:\r\n%s\r\nPlease confirm you wish to continue (alias entry's passwords will be replaced by this entry's password)?"
-msgstr "该项目已有下列 %d %s:\r\n%s\r\n请确认你是否需要继续 (别名项目密码将被替换为该项目密码)？"
+msgid "This entry has the following %d %s:\r\n%s\r\nPlease confirm to continue (alias entry's passwords will be replaced by this entry's password)?"
+msgstr ""
 
 #. Resource IDs: (1429)
 msgid "This entry is protected."
@@ -5760,8 +5756,8 @@ msgid "This will delete an entry which is within this group and/or its subgroups
 msgstr "该操作将删除组 和/或 它的分组中的一个项目！"
 
 #. Resource IDs: (361)
-msgid "This will delete the selected Failsafe Backup file.  If Windows supports a Recycle Bin on this media (usually only local disks), it will be moved there.  If not, it will be permanently deleted."
-msgstr "该操作将删除所选的故障保护备份文件。如果 Windows 支持在该媒体(通常仅在本地磁盘)的回收站，它将被移动到那里。如果不，它将被永久删除！"
+msgid "This will delete the selected Failsafe Backup file.  If the current drive has a Recycle Bin, it will be moved there. If not, it will be permanently deleted."
+msgstr ""
 
 #. Resource IDs: (331)
 msgid "Time out period must be between 1 and 120 minutes."
@@ -5998,6 +5994,10 @@ msgstr "解除所有保护项目"
 #. Resource IDs: (32088)
 msgid "Unprotect Entry"
 msgstr "解除保护项目"
+
+#. Resource IDs: (359)
+msgid "Unsaved changes"
+msgstr ""
 
 #. Resource IDs: (358)
 #, c-format
@@ -6305,7 +6305,7 @@ msgid "Yoruba"
 msgstr "约鲁巴语"
 
 #. Resource IDs: (366)
-msgid "You have elected not to save any changes - all unsaved changes will be lost. Do you wish to continue?"
+msgid "You have chosen not to save your changes, which will be lost. Do you wish to continue?"
 msgstr ""
 
 #. Resource IDs: (362)
@@ -6313,8 +6313,8 @@ msgid "You must save this database before it can be exported."
 msgstr ""
 
 #. Resource IDs: (361)
-msgid "Your currently opened database will be in the first row.  Failsafe Backup files will be displayed below this.  If the passphrase is the same as the current database, the properties of these backups will also be shown.  If you are unable to chose, continue with the current database and use the database Compare function to view the differences between the versions."
-msgstr "你当前所打开的数据库将被排列在首行，安全保障备份文件将被显示在下列其中某个。如果密码与当前数据库相同，这些备份文件的属性也同样被显示；如果你不选择，可以继续当前的数据库以及使用数据库比较功能在不同版本之间查看。"
+msgid "Your currently opened database will be in the first row.  Failsafe Backup files will be displayed below this.  If the passphrase is the same as the current database, the properties of these backups will also be shown.  If you aren't sure, continue with the current database and use the database Compare function to view the differences between the versions."
+msgstr ""
 
 #. Resource IDs: (357)
 #, c-format
@@ -6683,13 +6683,13 @@ msgstr "\t组='%s', 标题='%s', 用户='%s' %s"
 
 #. Resource IDs: (347)
 #, c-format
-msgid "\tNo entries were found containing search string : '%s'"
-msgstr "\t项目没有查找到包含的字串: '%s'！"
+msgid "\tNo entries were found containing search string '%s'"
+msgstr ""
 
 #. Resource IDs: (347)
 #, c-format
-msgid "\tThe following entries were found containing search string : '%s'"
-msgstr "\t下列项目找到包含查找的字串: '%s'！"
+msgid "\tThe following entries contain search string '%s'"
+msgstr ""
 
 #. Resource IDs: (346)
 #, c-format
