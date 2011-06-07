@@ -51,7 +51,7 @@ msgstr "  Pole jest zbyt krótkie."
 
 #. Resource IDs: (192)
 msgid "  Field length is incorrect."
-msgstr ""
+msgstr "  Długość pola nie jest prawidłowa."
 
 #. Resource IDs: (190)
 msgid "  Invalid date/time value."
@@ -64,7 +64,7 @@ msgstr "  Wykryto nieprawidłowy znak separatora - między polami może występo
 #. Resource IDs: (190)
 #, c-format
 msgid "  Invalid header: '%s' (must be 5 hexadecimal characters)."
-msgstr ""
+msgstr "  Nieprawidłowy nagłówek: '%s' (powinno być 5 znaków szesnastkowych)"
 
 #. Resource IDs: (190)
 #, fuzzy, c-format
@@ -73,16 +73,16 @@ msgstr "  Nieprawidłowa liczba zapisanych starych haseł %d."
 
 #. Resource IDs: (192)
 msgid "  Invalid password length found (differs from length of following password)."
-msgstr ""
+msgstr "  Nieprawidłowa długość hasła (różni się od długości następnego hasła)."
 
 #. Resource IDs: (190)
 msgid "  Invalid password length found (not a hexadecimal number)."
-msgstr ""
+msgstr "  Nieprawidłowa długość hasła (nie jest liczbą szesnastkową)."
 
 #. Resource IDs: (190)
 #, c-format
 msgid "  Invalid status value: %d (must be either 0 or 1)."
-msgstr ""
+msgstr "  Nieprawidłowy status: %d (musi to być 0 lub 1)."
 
 #. Resource IDs: (336)
 #, fuzzy
@@ -164,7 +164,7 @@ msgstr " 'email'"
 
 #. Resource IDs: (367)
 msgid " 'protected'"
-msgstr ""
+msgstr " 'chronione'"
 
 #. Resource IDs: (366)
 msgid " 'symbols'"
@@ -335,7 +335,7 @@ msgstr "%s \n\nNie można otworzyć pliku. Wybierz inny."
 #. Resource IDs: (367)
 #, c-format
 msgid "%s failed"
-msgstr ""
+msgstr "%s zawiodło"
 
 #. Resource IDs: (341)
 #, c-format
@@ -852,11 +852,11 @@ msgstr "klawisz 'Alt Gr' (prawy Alt)"
 
 #. Resource IDs: (1444)
 msgid "'Browse to URL' copies password to clipboard"
-msgstr ""
+msgstr "'Idź do URL' kopiuje hasło do schowka'"
 
 #. Resource IDs: (353)
 msgid "'Clear Clipboard on Minimize' and Double Click Action 'Copy Password and Minimize' conflict. Please change one or both."
-msgstr ""
+msgstr "Konflikt 'Wyczyść schowek przy minimalizacji' i akcji na dwuklik 'Kopiuj hasło i minimalizj'. Proszę zmienić jeden lub oba."
 
 #. Resource IDs: (358)
 msgid "'\n\nIf you would like to report this error, please reply 'Yes' below and upload this file to your Bug Report. If you reply 'No', the file will be deleted.\n\nThe diagnostic information in this file does not include any of your personal data nor any information from the database open at the time of the error.\n\nHowever, if you prefer (and the problem is repeatable with a test database), you may send us that minidump file as well as the test database.\n\nThank you for your help to improve PasswordSafe."
@@ -1225,7 +1225,7 @@ msgstr "Zostanie utworzona nowa baza danych szyfrowana hasłem. Hasło może zaw
 
 #. Resource IDs: (367)
 msgid "A red and white indicator means that a filter is active\r\n(double click to clear filter)"
-msgstr ""
+msgstr "Czerwony i biały wskaźnik oznacza, że filtr jest aktywny\r\n(dwukliknij by ściągnąć filtr)"
 
 #. Resource IDs: (3843)
 msgid "A required resource was unavailable."
@@ -1660,7 +1660,7 @@ msgstr "C:Reg   "
 
 #. Resource IDs: (317)
 msgid "CSV files (*.csv)|*.csv|All files (*.*)|*.*||"
-msgstr ""
+msgstr "Pliki CSV (*.csv)|*.csv|Wszystkie pliki (*.*)|*.*||"
 
 #. Resource IDs: (339)
 msgid "Can only warn between 1 and 30 days before passwords expire"
@@ -1708,7 +1708,7 @@ msgstr "Nie można utworzyć blokady pliku - brak uprawnień w katalogu?"
 
 #. Resource IDs: (367)
 msgid "Cannot create missing directories in path to the export file."
-msgstr ""
+msgstr "Nie można stworzyć brakującego katalogu na ścieżce do pliku eksportu."
 
 #. Resource IDs: (332)
 msgid "Cannot process as this entry has been deleted from the open database."
@@ -2137,7 +2137,7 @@ msgstr "Nie można stworzyć %1 ponieważ katalog jest pełny."
 
 #. Resource IDs: (215)
 msgid "Could not find the next entry's title field in the KeePass V1 TXT (should be within square brackets)."
-msgstr ""
+msgstr "Nie można znaleźć tytułu następnego pola w KeePass V1 TXT (powinien być w nawiasach kwadratowych)."
 
 #. Resource IDs: (3867)
 #, c-format
@@ -2768,7 +2768,7 @@ msgstr "Błąd w kolumnie %d:\n\n%s"
 #. Resource IDs: (190)
 #, c-format
 msgid "Error in a Password History %s:"
-msgstr ""
+msgstr "Błąd w historii hasła %s:"
 
 #. Resource IDs: (354)
 msgid "Error parsing Run Command"
@@ -2858,7 +2858,7 @@ msgstr "Plik eksportu:"
 #. Resource IDs: (367)
 #, c-format
 msgid "Export file: '%s' already exists.\r\nDo you want to replace it?"
-msgstr ""
+msgstr "Pli eksportu: '%s' już istnieje.\r\nChcesz go zastąpić?"
 
 #. Resource IDs: (211)
 msgid "Export of data was restricted to certain fields by the user."
