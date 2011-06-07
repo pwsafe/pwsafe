@@ -18,7 +18,6 @@
 #include "./graphics/findtoolbar/new/findcase_i.xpm"
 #include "./graphics/findtoolbar/new/findcase_s.xpm"
 #include "./graphics/findtoolbar/new/findclear.xpm"
-#include "./graphics/findtoolbar/new/findclose.xpm"
 //-- classic bitmaps...
 #include "./graphics/findtoolbar/classic/find.xpm"
 #include "./graphics/findtoolbar/classic/findreport.xpm"
@@ -27,10 +26,10 @@
 #include "./graphics/findtoolbar/classic/findcase_i.xpm"
 #include "./graphics/findtoolbar/classic/findcase_s.xpm"
 #include "./graphics/findtoolbar/classic/findclear.xpm"
-#include "./graphics/findtoolbar/classic/findclose.xpm"
 ////@end XPM images
 #include <wx/statline.h> 
 #include <wx/valgen.h>
+#include <wx/srchctrl.h>
 
 #include <functional>
 
@@ -87,7 +86,7 @@ void PasswordSafeSearch::OnDoSearchT(Iter begin, Iter end, Accessor afn)
 {
   wxASSERT(m_toolbar);
 
-  wxTextCtrl* txtCtrl = wxDynamicCast(m_toolbar->FindControl(ID_FIND_EDITBOX), wxTextCtrl);
+  wxSearchCtrl* txtCtrl = wxDynamicCast(m_toolbar->FindControl(ID_FIND_EDITBOX), wxSearchCtrl);
   wxASSERT(txtCtrl);
 
   const wxString searchText = txtCtrl->GetLineText(0);
@@ -229,7 +228,6 @@ void PasswordSafeSearch::RefreshButtons(void)
     const char** bitmap_classic;
     const char** bitmap_classic_disabled;
   } SearchBarButtons[] = {
-          { ID_FIND_CLOSE,            findclose_xpm,    NULL,               classic_findclose_xpm,    NULL                      },
           { ID_FIND_NEXT,             find_xpm,         find_disabled_xpm,  classic_find_xpm,         classic_find_disabled_xpm },
           { ID_FIND_IGNORE_CASE,      findcase_i_xpm,   findcase_s_xpm,     classic_findcase_i_xpm,   classic_findcase_s_xpm    },
           { ID_FIND_ADVANCED_OPTIONS, findadvanced_xpm, NULL,               classic_findadvanced_xpm, NULL                      },
@@ -266,9 +264,12 @@ void PasswordSafeSearch::CreateSearchBar()
 
   m_toolbar = new wxToolBar(m_parentFrame, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBORDER_NONE | wxTB_BOTTOM | wxTB_HORIZONTAL,  wxT("SearchBar"));
 
-  m_toolbar->AddTool(ID_FIND_CLOSE, wxT(""), wxBitmap(findclose_xpm), wxNullBitmap, wxITEM_NORMAL, _("Close Find Bar"));
-  wxTextCtrl* edit = new wxTextCtrl(m_toolbar, ID_FIND_EDITBOX, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER);
-  m_toolbar->AddControl(edit);
+  wxSize srchCtrlSize(m_parentFrame->GetSize().GetWidth()/5, wxDefaultSize.GetHeight());
+  wxSearchCtrl* srchCtrl = new wxSearchCtrl(m_toolbar, ID_FIND_EDITBOX, wxEmptyString, wxDefaultPosition, srchCtrlSize, wxTE_PROCESS_ENTER);
+  srchCtrl->ShowCancelButton(true);
+  srchCtrl->ShowSearchButton(true);
+
+  m_toolbar->AddControl(srchCtrl);
   m_toolbar->AddTool(ID_FIND_NEXT, wxT(""), wxBitmap(find_xpm), wxBitmap(find_disabled_xpm), wxITEM_NORMAL, _("Find Next"));
   m_toolbar->AddCheckTool(ID_FIND_IGNORE_CASE, wxT(""), wxBitmap(findcase_i_xpm), wxBitmap(findcase_s_xpm), _("Case Insensitive Search"));
   m_toolbar->AddTool(ID_FIND_ADVANCED_OPTIONS, wxT(""), wxBitmap(findadvanced_xpm), wxNullBitmap, wxITEM_NORMAL, _("Advanced Find Options"));
@@ -290,9 +291,25 @@ void PasswordSafeSearch::CreateSearchBar()
   if (!m_toolbar->Show(true) && !m_toolbar->IsShownOnScreen())
     wxMessageBox(wxT("Could not display searchbar"));
  
-  //we need to filter out the ESCAPE key and also receive the toolbar notifications 
-  edit->Connect(wxEVT_CHAR, wxCharEventHandler(PasswordSafeSearch::OnSearchBarTextChar), NULL, this);
-  edit->Connect(wxEVT_COMMAND_TEXT_ENTER, wxTextEventHandler(PasswordSafeSearch::OnDoSearch), NULL, this);
+  //This gross hack is the only way I could think of to get ESC keystrokes from the text ctrl user is typing into
+  if (wxDynamicCast(srchCtrl, wxTextCtrl)) {
+    //searchCtrl is a wxTextCtrl derivative, like on Mac OS X 10.3+
+    wxDynamicCast(srchCtrl, wxTextCtrl)->Connect(wxEVT_CHAR, wxCharEventHandler(PasswordSafeSearch::OnSearchBarTextChar), NULL, this);
+  }
+  else {
+    //The wxTextCtrl is buried inside the wxSearchCtrl
+    wxWindowList& srchChildren = srchCtrl->GetChildren();
+    for( wxWindowList::const_iterator itr = srchChildren.begin(); itr != srchChildren.end(); ++itr) {
+      wxTextCtrl* txtCtrl = wxDynamicCast(*itr, wxTextCtrl);
+      if (txtCtrl) {
+        txtCtrl->Connect(wxEVT_CHAR, wxCharEventHandler(PasswordSafeSearch::OnSearchBarTextChar), NULL, this);
+        break;
+      }
+    }
+  }
+  srchCtrl->Connect(wxEVT_COMMAND_SEARCHCTRL_SEARCH_BTN, wxCommandEventHandler(PasswordSafeSearch::OnDoSearch), NULL, this);
+  srchCtrl->Connect(wxEVT_COMMAND_SEARCHCTRL_CANCEL_BTN, wxCommandEventHandler(PasswordSafeSearch::OnSearchClose), NULL, this);
+  srchCtrl->Connect(wxEVT_COMMAND_TEXT_ENTER, wxTextEventHandler(PasswordSafeSearch::OnDoSearch), NULL, this);
   m_toolbar->Connect(ID_FIND_CLOSE, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(PasswordSafeSearch::OnSearchClose), NULL, this);
   m_toolbar->Connect(ID_FIND_ADVANCED_OPTIONS, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(PasswordSafeSearch::OnAdvancedSearchOptions), NULL, this);
   m_toolbar->Connect(ID_FIND_NEXT, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(PasswordSafeSearch::OnDoSearch), NULL, this);
@@ -317,6 +334,8 @@ void PasswordSafeSearch::Activate(void)
     CreateSearchBar();
   else {
     if (m_toolbar->Show(true)) {
+      wxSize srchCtrlSize(m_parentFrame->GetSize().GetWidth()/5, wxDefaultSize.GetHeight());
+      m_toolbar->FindControl(ID_FIND_EDITBOX)->SetSize(srchCtrlSize);
       m_parentFrame->GetSizer()->Layout();
     }
     else {
