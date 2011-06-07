@@ -1,5 +1,5 @@
-Password Safe 3.25.1 Release Notes - March 2011
-===============================================
+Password Safe 3.26 Release Notes - June 2011
+============================================
 
 This note describe the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -8,8 +8,8 @@ information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
 
-New Features for 3.25.1
-=======================
+New Features for 3.26
+=====================
 [3288341] Autotype now added to the DragBar. Drag the image to an input area
 on another Window (e.g. Browser) and PasswordSafe will begin Autotype from there.
 [3286721] User can now toggle the database between read-only and read-write
@@ -31,8 +31,8 @@ export in the V1 format is does not conform to their own format as specified by 
 V1 product and can not be imported. Please review our Help file for the settings in
 KeePass required during their export.
 
-Changes to Existing Features in 3.25.1
-======================================
+Changes to Existing Features in 3.26
+====================================
 [] Polish installation texts added thanks to Michal Niklas.
 [] An entry's password exipry date is set or cleared directly rather than using
 the Set and Clear buttons after changing values.
@@ -51,8 +51,8 @@ structure, URL and date time fields. Please review our Help file for the setting
 KeePass required during their 
 export.
 
-Bugs fixed in 3.25.1
-====================
+Bugs fixed in 3.26
+==================
 [3303018] Filters with quotes in their name are now correctly exported, imported
 and displayed in the Manage Filters dialog.
 [3301904] Export XML, export Text and the export of filters functions now process
