@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"PO-Revision-Date: 2011-06-08 13:16:50\n"
+"Last-Translator: Michal Niklas <michal.niklas@wp.pl>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -64,7 +64,7 @@ msgstr "  Wykryto nieprawidłowy znak separatora - między polami może występo
 #. Resource IDs: (190)
 #, c-format
 msgid "  Invalid header: '%s' (must be 5 hexadecimal characters)."
-msgstr "  Nieprawidłowy nagłówek: '%s' (powinno być 5 znaków szesnastkowych)"
+msgstr "  Nieprawidłowy nagłówek: '%s' (powinno być 5 znaków szesnastkowych)."
 
 #. Resource IDs: (190)
 #, fuzzy, c-format
@@ -2913,7 +2913,7 @@ msgstr "Zawiodła zmiana z R-O na R/W ponieważ baza danych jest już otwarta w 
 
 #. Resource IDs: (366)
 msgid "Failed to switch from R-O to R/W: Could not open the database. It may have been deleted or renamed or there may be a problem with its drive."
-msgstr ""
+msgstr "Zawiodała zmiana z R-O na R/W: Nie można otworzyć bazy danych. Mogła zostać skasowana, zmieniono jej nazwę, lub jest problem w dyskiem."
 
 #. Resource IDs: (366)
 msgid "Failed to switch from R-O to R/W: The file appears to be too short to be a valid database."
@@ -2967,7 +2967,7 @@ msgstr "Plik kończy się na linii %d przed zakończeniem podwójnego cudzysłow
 
 #. Resource IDs: (213)
 msgid "File is truncated or otherwise corrupt. Please use backup database."
-msgstr ""
+msgstr "Plik został obcięty lub uszkodzony w inny sposób. Proszę użyć kopii zapasowej."
 
 #. Resource IDs: (334)
 msgid "File lock error"
@@ -3455,11 +3455,11 @@ msgstr "Import &XML"
 
 #. Resource IDs: (32133)
 msgid "Import KeePass V1 CSV"
-msgstr ""
+msgstr "Import KeePass V1 CSV"
 
 #. Resource IDs: (32132)
 msgid "Import KeePass V1 TXT"
-msgstr ""
+msgstr "Import KeePass V1 TXT"
 
 #. Resource IDs: (125)
 msgid "Import Text Settings"
@@ -3479,11 +3479,11 @@ msgstr "Import XML nie powiódł się"
 
 #. Resource IDs: (215)
 msgid "Import aborted. Please see report."
-msgstr ""
+msgstr "Import przerwany. Proszę zobaczyć raport."
 
 #. Resource IDs: (367)
 msgid "Import failed"
-msgstr ""
+msgstr "Import się nie powiódł"
 
 #. Resource IDs: (1398)
 msgid "Import to change passwords of existing entries ONLY"
@@ -3495,11 +3495,11 @@ msgstr "Import do Grupy?"
 
 #. Resource IDs: (367)
 msgid "Import_KeePassV1_CSV"
-msgstr ""
+msgstr "Import_KeePassV1_CSV"
 
 #. Resource IDs: (367)
 msgid "Import_KeePassV1_TXT"
-msgstr ""
+msgstr "Import_KeePassV1_TXT"
 
 #. Resource IDs: (346)
 msgid "Import_Text"
@@ -3537,7 +3537,7 @@ msgstr "Nieprawidłowa nazwa pliku."
 
 #. Resource IDs: (331)
 msgid "Incorrect passkey, not a PasswordSafe database, or a corrupt database."
-msgstr ""
+msgstr "Nieprawidłowe hasło, baza nie jest PasswordSafe lub jest uszkodzona."
 
 #. Resource IDs: (204)
 msgid "Incorrect password"
@@ -3663,11 +3663,11 @@ msgstr "Kazaski"
 
 #. Resource IDs: (32024)
 msgid "KeePass V1 CSV File..."
-msgstr ""
+msgstr "KeePass V1 CSV plik..."
 
 #. Resource IDs: (32017)
 msgid "KeePass V1 TXT File..."
-msgstr ""
+msgstr "KeePass V1 TXT plik..."
 
 #. Resource IDs: (1143)
 msgid "Keep"
@@ -4025,7 +4025,7 @@ msgstr "Nie otwarto bazy danych z którą można porównać inną bazę danych!"
 #. Resource IDs: (359)
 #, c-format
 msgid "No entries satisfied your selection criteria, so none can be %s!"
-msgstr ""
+msgstr "Żaden z wpisów nie spełnia kryteriów, więć żaden nie może być %s!"
 
 #. Resource IDs: (359)
 msgid "No entries selected"
@@ -4179,7 +4179,7 @@ msgstr "Liczba grup:"
 
 #. Resource IDs: (361)
 msgid "Number of Unknown Fields"
-msgstr ""
+msgstr "Liczba nieznanych pól"
 
 #. Resource IDs: (367)
 msgid "Number of entries in database"
@@ -4439,7 +4439,7 @@ msgstr "Hasło wskazuje, że wpis jest aliasem, ale "
 
 #. Resource IDs: (342)
 msgid "Password implies this is an alias entry, but specifies a base entry with no title.\r\nEvery entry must have a title."
-msgstr ""
+msgstr "Hasło wskazuje, że jest to alias wpisu, ale specyfikuje wpis bazowy bez tytułu.\r\nKażdy wpis musi mieć tytuł."
 
 #. Resource IDs: (188)
 msgid "Password is too short"
@@ -4476,7 +4476,7 @@ msgstr "PasswordSafe V%d.%d.%d (Build %s) miał błąd."
 
 #. Resource IDs: (364)
 msgid "PasswordSafe: Entries exist with expired or soon-to-expire passwords"
-msgstr ""
+msgstr "PasswordSafe: Istnieją wpisy z hasłem wygasłym lub które wkrótce wygaśnie"
 
 #. Resource IDs: (32064)
 msgid "Perform Auto &Type"
@@ -4533,11 +4533,11 @@ msgstr "Wybierz plik XML do zaimportowania"
 
 #. Resource IDs: (335)
 msgid "Please choose a database to merge into current database"
-msgstr ""
+msgstr "Proszę wybrać bazę danych do połączenia z aktualną bazą"
 
 #. Resource IDs: (360)
 msgid "Please choose a database to synchronize with current database"
-msgstr ""
+msgstr "Proszę wybrac bazę danych do synchronizacji z aktualną bazą"
 
 #. Resource IDs: (333)
 msgid "Please choose a name for the current (Untitled) database:"
@@ -4553,7 +4553,7 @@ msgstr "Wybierz nową nazwę dla bieżącej bazy danych:"
 
 #. Resource IDs: (331)
 msgid "Please confirm that you wish to delete current user's PasswordSafe configuration information from the Windows registry.\n\n"
-msgstr ""
+msgstr "Proszę potwierdzić, że należy skasować informacje konfiguracyjne aktualnego użytkownika PasswordSafe z rejestrów Windows.\n\n"
 
 #. Resource IDs: (353)
 #, c-format
@@ -4905,7 +4905,7 @@ msgstr "Rumuński (standardowy)"
 #. Resource IDs: (348)
 #, c-format
 msgid "Row %d is incomplete. Please set both Field and Criteria."
-msgstr ""
+msgstr "Rząd %d nie jest w całości. Proszę ustawić i Pole, i Kryteria."
 
 #. Resource IDs: (351)
 msgid "Row number"
@@ -5530,7 +5530,7 @@ msgstr "Tekst"
 
 #. Resource IDs: (317)
 msgid "Text files (*.txt)|*.txt|All files (*.*)|*.*||"
-msgstr ""
+msgstr "Pliki tekstowe (*.txt)|*.txt|Wszystkie pliki (*.*)|*.*||"
 
 #. Resource IDs: (316)
 msgid "Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*)|*.*||"
@@ -5538,7 +5538,7 @@ msgstr "Pliki tekstowe (*.txt)|*.txt|Pliki CSV (*.csv)|*.csv|Wszystkie pliki (*.
 
 #. Resource IDs: (356)
 msgid "Text will be red if the shortcut differs from its default value."
-msgstr ""
+msgstr "Tekst będzie czerwony jeśli skrót różni się od swojej wartości domyślnej."
 
 #. Resource IDs: (1322)
 msgid "Text:"
@@ -5576,7 +5576,7 @@ msgstr "Klawisz ALT nie jest używany na żadnej klawiaturze do wyboru znaków. 
 
 #. Resource IDs: (215)
 msgid "The TXT or CSV file was not exported as required as entry records span multiple lines in the CSV file.\r\n\r\nImport aborted."
-msgstr ""
+msgstr "Plik TXT lub CSV nie został wyeksportowany jak należy, gdyż rekordy wpisów są wieloliniowe w pliku CSV.\r\n\r\nImport przerwany."
 
 #. Resource IDs: (330)
 msgid "The combination cannot be blank."
@@ -5589,7 +5589,7 @@ msgstr "Baza danych %s nie mogła zostać otwarta.\nCzy chcesz poszukać jej gdz
 
 #. Resource IDs: (366)
 msgid "The database has been changed since you opened it in R-O mode, so it is not possible to switch to R/W mode.\r\n\r\nPlease close the database and re-open it in R/W mode."
-msgstr ""
+msgstr "Baza danych została zmieniona, ale ponieważ otworzona jest w trybie R-O, nie jest możliwe przejście na tryb R/W.\r\n\r\nProsze zamknąć bazę i otworzyc ją ponownie w trybie R/W."
 
 #. Resource IDs: (339)
 #, c-format
@@ -5652,7 +5652,7 @@ msgstr "Następujące wpisy mają nieprawidłowe pole UUID, co zostało to skory
 #. Resource IDs: (212)
 #, c-format
 msgid "The following entries have one or more text fields too long to display or edit (over %d characters)."
-msgstr ""
+msgstr "Następujące wpisy mają jedno lub więcej pól tekstowych zbyt długich by je wyświetlić lub edytować (ponad %d znaków)."
 
 #. Resource IDs: (212)
 msgid "The following entries were duplicates of an existing entry."
@@ -5734,7 +5734,7 @@ msgstr "W komendzie Run są niedopasowane cudzysłowa"
 
 #. Resource IDs: (361)
 msgid "There does not appear to be a Recycle Bin on the media containing this Failsafe Backup file. You will not be able to undo deletes. Do you wish to continue?"
-msgstr ""
+msgstr "Wygląda na to, że nie dysk zawierający kopię zapasową Failsafe nie ma Kosza. Nie będzie można przywrócić rzeczy skasowanych. Czy kontynuować?"
 
 #. Resource IDs: (3887)
 msgid "These are more recently saved than the currently open documents and contain changes that were made before the application closed."
@@ -5765,12 +5765,12 @@ msgstr "Ten wpis ma następujące %d %s:\r\n%s"
 #. Resource IDs: (213)
 #, c-format
 msgid "This entry has the following %d %s:\r\n%s\r\nPlease confirm to continue (All shortcuts to this entry will be deleted)?"
-msgstr ""
+msgstr "Ten wpis ma następujące %d %s:\r\n%s\r\nProszę potwiedzić by kontunuować (wszystkie skróty do tego wpisu będą usunięte)?"
 
 #. Resource IDs: (213)
 #, c-format
 msgid "This entry has the following %d %s:\r\n%s\r\nPlease confirm to continue (alias entry's passwords will be replaced by this entry's password)?"
-msgstr ""
+msgstr "Ten wpis ma następujące %d %s:\r\n%s\r\nProszę potwiedzić by kontunuować (hasła do aliasu zostaną zamienione przez hasło tego wpisu)?"
 
 #. Resource IDs: (1429)
 msgid "This entry is protected."
@@ -5853,7 +5853,7 @@ msgstr "Zostanie usunięty wpis znajdujący się w tej grupie i/lub jej podgrupa
 
 #. Resource IDs: (361)
 msgid "This will delete the selected Failsafe Backup file.  If the current drive has a Recycle Bin, it will be moved there. If not, it will be permanently deleted."
-msgstr ""
+msgstr "To skasuje wybraną kopię zapasową Failsafe.  Jeśli aktualny dysk ma Kosz, kopia zostanie tam przeniesiona. Jeśli nie, zostanie usunięta na zawsze."
 
 #. Resource IDs: (331)
 msgid "Time out period must be between 1 and 120 minutes."
@@ -6096,7 +6096,7 @@ msgstr "Zdejmij ochronę wpisu"
 
 #. Resource IDs: (359)
 msgid "Unsaved changes"
-msgstr ""
+msgstr "Niezachowane zmiany"
 
 #. Resource IDs: (358)
 #, c-format
@@ -6409,15 +6409,15 @@ msgstr "Joruba"
 
 #. Resource IDs: (366)
 msgid "You have chosen not to save your changes, which will be lost. Do you wish to continue?"
-msgstr ""
+msgstr "Wybrano, by nie zachować zmian i będą one stracone. Czy kontynuować?"
 
 #. Resource IDs: (362)
 msgid "You must save this database before it can be exported."
-msgstr ""
+msgstr "Musisz zachować tę bazę danych przed jej wyeksportowanie,."
 
 #. Resource IDs: (361)
 msgid "Your currently opened database will be in the first row.  Failsafe Backup files will be displayed below this.  If the passphrase is the same as the current database, the properties of these backups will also be shown.  If you aren't sure, continue with the current database and use the database Compare function to view the differences between the versions."
-msgstr ""
+msgstr "Twoja aktualnie otwarta baza danych będzie w pierwszym rzędzie.  Kopia zapasowa Failsafe będzie pokazana poniżej.  Jeśli hasło jest takie jak do aktualnej bazy danych będą także pokazane jej właściwiści.  W razie wątpliwości kontynuuj z aktualną bazą danych i użyj funkcji Porównaj, by zobaczyć różnice między wersjami."
 
 #. Resource IDs: (357)
 #, c-format
@@ -6737,7 +6737,7 @@ msgstr "\nz %d błędami historii hasła"
 
 #. Resource IDs: (367)
 msgid "\nwith warnings"
-msgstr ""
+msgstr "\nz ostrzeżeniami"
 
 #. Resource IDs: (214)
 #, c-format
@@ -6794,12 +6794,12 @@ msgstr "\tGrupa='%s', Nazwa='%s', Użytkownik='%s' %s"
 #. Resource IDs: (347)
 #, c-format
 msgid "\tNo entries were found containing search string '%s'"
-msgstr ""
+msgstr "\tNie znaleziono żadnego wpisu zawierającego szukany ciąg '%s'"
 
 #. Resource IDs: (347)
 #, c-format
 msgid "\tThe following entries contain search string '%s'"
-msgstr ""
+msgstr "\tNastępujące wpisy zawierają szukany ciąg '%s'"
 
 #. Resource IDs: (346)
 #, c-format
@@ -7165,7 +7165,7 @@ msgstr "statyczny"
 #. Resource IDs: (215)
 #, c-format
 msgid "sub-field starting at position %d (within the History field): "
-msgstr ""
+msgstr "podpole zaczynające się na pozycji %d (w historio pola): "
 
 #. Resource IDs: (346)
 #, fuzzy, c-format
