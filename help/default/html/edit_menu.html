@@ -1,61 +1,41 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head>
-  
-
-
-
-  <title>Edit Menu</title><!-- pwsafe version: 2.14--><!-- Modified: 18/11/2005 --><!--Popup control --><script language="javascript" src="html/popups.js">
-  </script>
-  <link rel="stylesheet" type="text/css" href="style.css"></head>
-
+<html>
+<head>
+<title>Edit Menu</title>
+<!-- pwsafe version: 2.14--><!-- Modified: 18/11/2005 --><!--Popup control -->
+<script language="javascript" src="html/popups.js">
+</script>
+<link rel="stylesheet" type="text/css" href="style.css"></head>
 <body>
-
-<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"> </object>
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"></object>
 <!-- Popup Source File -->
+
 <h2><a name="edit_menu"></a>Edit Menu</h2>
 
 <table class="MsoNormalTable" style="border: medium none ; border-collapse: collapse;" border="0" cellpadding="0" cellspacing="0">
-
-  <tbody>
-
-    <tr>
-
-      <td ;="" align="center">Entry</td>
-
-      <td style="width: 10px;"></td>
-
-      <td ;="" align="center">Alias</td>
-
-      <td style="width: 10px;"></td>
-
-      <td ;="" align="center">Group</td>
-
-    </tr>
-
-    <tr>
-
-      <td><img alt="Menu Edit Entry" src="images/edit_menu.jpg"></td>
-
-      <td></td>
-
-      <td><img alt="Menu Edit Alias" src="images/edit_x_menu.jpg"></td>
-
-      <td></td>
-
-      <td><img alt="Menu Edit Group" src="images/edit_g_menu.jpg"></td>
-
-    </tr>
-
-  </tbody>
+<tbody>
+<tr>
+<td ;="" align="center">Entry</td>
+<td style="width: 10px;"></td>
+<td ;="" align="center">Alias</td>
+<td style="width: 10px;"></td>
+<td ;="" align="center">Group</td>
+</tr>
+<tr>
+<td><img alt="Menu Edit Entry" src="images/edit_menu.jpg"></td>
+<td></td>
+<td><img alt="Menu Edit Alias" src="images/edit_x_menu.jpg"></td>
+<td></td>
+<td><img alt="Menu Edit Group" src="images/edit_g_menu.jpg"></td>
+</tr>
+</tbody>
 </table>
 
-<p>Through the <b>Edit Menu</b> you can add, edit,
-use and organize
+<p>Through the <b>Edit Menu</b> you can add, edit, use and organize
 user names and passwords. Note that the contents of this menu change
 according to what's selected in the main view (e.g., if you've selected
 an entry or a group). Also, some items may be disabled, as noted below.</p>
 
-<div class="instr">
 <h3>Add Entry</h3>
 
 <p>Add a new user name and password. This is disabled if the
@@ -66,8 +46,7 @@ Names, Passwords, and Groups</a> for more information.</i></small></p>
 
 <h3>Edit Entry / Expand/Collapse Group</h3>
 
-<p>When an entry is selected, Edit the selected user name and
-password.
+<p>When an entry is selected, Edit the selected user name and password.
 When a Group is selected (in Tree view), this will expand or collapse
 the display of entries under the selected group. Editing an entry is
 disabled if the database is opened read-only.<br>
@@ -77,8 +56,7 @@ Names, Passwords, and Groups</a> for more information.</i></small></p>
 
 <h3>Delete Entry / Delete Group</h3>
 
-<p>When an entry is selected, this will delete it.&nbsp;When
-a Group is
+<p>When an entry is selected, this will delete it. When a Group is
 selected (in Tree view), this will delete all entries under the
 selected group. Confirmation is requested if there is more than one
 entry in the selected group. This is disabled if the database
@@ -94,8 +72,8 @@ view). This is disabled if the database is opened read-only. </p>
 <p>Find an entry containing a given text. By default, all fields
 except the Password field are searched.<br>
 
-<small style="font-style: italic;">See <a href="searching.html">Searching</a> for more
-information.</small></p>
+<small><i>See <a href="searching.html">Searching</a> for more
+information.</i></small></p>
 
 <h3>Duplicate Entry</h3>
 
@@ -109,15 +87,18 @@ Passwords). This is disabled if the database is opened
 read-only.</p>
 
 <h3>Undo</h3>
-<p>The last action will be reset. Repeating undos will undo the actions in reverse order, from last to earliest.</p>
+
+<p>The last action will be reversed. Repeating Undo will undo the actions
+in reverse order, from last to earliest.</p>
+
 <h3>Redo</h3>
 <p>The last undone action(s) will be executed again.</p>
+
 <h3>Clear Clipboard</h3>
 
 <p>Clear the clipboard's memory. This clears the clipboard of
-anything that was pasted there by <span style="font-weight: bold;">Password
-Safe</span> (password, username, notes, etc.).
-If the current contents of the clipboard did not come from <span style="font-weight: bold;">Password Safe</span>, then
+anything that was pasted there by <b>Password Safe</b> (password, username, notes, etc.).
+If the current contents of the clipboard did not come from <b>Password Safe</b>, then
 this will have no effect.</p>
 
 <h3>Copy Password to Clipboard</h3>
@@ -165,38 +146,39 @@ with it, then this will invoke the default browser to the URL. If no entry
 is selected, or the selected entry's URL is blank, this command will be
 disabled.</p>
 
+<p><small><b>Unless changed via the
+<a href="misc_tab.html">"Manage&nbsp;&rarr;&nbsp;Options&nbsp;&rarr;&nbsp;Security"</a>
+tab, the entry's password will automatically be copied into the Clipboard.</b></small></p>
+
 <h3>Browse to URL + Autotype</h3>
 
 <p>When an entry is selected, and the entry has a URL associated
 with it, then this will invoke the default browser to the URL. If no entry
 is selected, or the selected entry's URL is blank, this command will be
 disabled.</p>
+
 <p>Automatically input user name and password into the selected
 input field.<br>
 
-<small><i>See <a href="autotype.html">Using
-Auto Type</a> for more information.</i></small></p>
+<small><i>See <a href="autotype.html">Using Auto Type</a> for more information.</i></small></p>
 
 <h3>Send email</h3>
 
-<p>Prepare an email to be sent with the data in the current selection's email field.<br>
-<small><i>See <a href="entering_pwd.html">User
-Names, Passwords, and Groups</a> for more information.</i></small></p>
+<p>Prepare an email to be sent with the data in the current selection's email field.
+Please ensure that you have an email client installed on your computer.<br>
+<small><i>See <a href="entering_pwd.html">User Names, Passwords, and Groups</a>
+for more information.</i></small></p>
 
 <h3>Perform Auto Type</h3>
 
-<p>Automatically input user name and password into the selected
-input field.<br>
+<p>Automatically input user name and password into the selected input field.<br>
 
-<small><i>See <a href="autotype.html">Using
-Auto Type</a> for more information.</i></small></p>
+<small><i>See <a href="autotype.html">Using Auto Type</a> for more information.</i></small></p>
 
 <h3>Run Command</h3>
 
 <p>This will execute the command in the field <i>Run Cmd</i> of the selected entry.<br>
-<small><i>See <a href="run_command.html">Using
-Run Command</a> for more information.</i></small></p>
-
+<small><i>See <a href="run_command.html">Using Run Command</a> for more information.</i></small></p>
 
 <h3>Create Shortcut</h3>
 
@@ -204,9 +186,8 @@ Run Command</a> for more information.</i></small></p>
 reference to the entry, typically in another group. This is useful if
 you have an entry that "belongs" under more than one group, but you
 don't wish to duplicate data. A shortcut has a distinct icon associated
-with it, <img style="width: 16px; height: 16px;" alt="shortcut" src="images/shortcut.jpg">, and by
-default has the name "shortcut to <span style="font-style: italic;">x</span>",
-where <span style="font-style: italic;">x </span>is
+with it, <img style="width: 16px; height: 16px;" alt="shortcut" src="images/shortcut.jpg">,
+and by default has the name "shortcut to <i>x</i>", where <i>x</i> is
 the title of the original entry. Of course, you can edit the name, move
 or delete the shortcut, just like a regular entry.</p>
 
@@ -223,79 +204,74 @@ After clicking <b>Edit Base entry</b> you can edit the corresponding
 base entry to this shortcut or alias.</p>
 
 <h3>Export Entry to Plain Text</h3>
-<p>
-The selected entry will be exported as plain text. Before exporting,
+
+<p>The selected entry will be exported as plain text. Before exporting,
 you will be asked to input the Master Password as confirmation that
 you intend to export data from the the database into an unencrypted
 text file.<br>
 <small><i>See also <a href="export.html">Exporting Entries</a> for more information.</i></small>
 
 </p>
+
 <h3>Export Entry in XML format</h3>
-<p>
-The selected entry will be exported in XML format. Before exporting,
+
+<p>The selected entry will be exported in XML format. Before exporting,
 you will be asked to input the Master password as confirmation that
 you intend to export data from the database into an unencrypted XML
-file..<br>
+file.<br>
+
 <small><i>See also <a href="export.html">Exporting Entries</a> for more information.</i></small>
 </p>
+
 <h3>Protect entry / Protect All Entries</h3>
+
 <p>The selected entry or group of entries will be protected. A
-  protected entry cannot be modified until it is unprotected.</p>
-<p>Protected entries are marked with a '#'.</p>
-</div>
+protected entry cannot be modified until it is unprotected. Protected entries
+are marked with a '#'.</p>
 
 <h2>Right mouse click actions </h2>
+
 <p>All functions in the <b>Edit</b> menu can
 also be reached by clicking the right mouse button on the corresponding
 entry, alias or group.</p>
+
 <table class="MsoNormalTable" style="border: medium none ; border-collapse: collapse;" border="0" cellpadding="0" cellspacing="0">
-
-  <tbody>
-
-    <tr>
-
-      <td ;="" align="center">Entry</td>
-
-      <td style="width: 10px;"></td>
-
-      <td ;="" align="center">Alias</td>
-
-      <td style="width: 10px;"></td>
-
-      <td ;="" align="center">Group</td>
-
-    </tr>
-
-    <tr>
-
-      <td><img alt="Right click Edit Entry" src="images/rightclick_edit_e.jpg"></td>
-
-      <td></td>
-
-      <td><img alt="Right click Edit Alias" src="images/rightclick_edit_ex.jpg"></td>
-
-      <td></td>
-
-      <td><img alt="Right click Edit Group" src="images/rightclick_edit_g.jpg"></td>
-
-    </tr>
-
-  </tbody>
+<tbody>
+<tr>
+<td ;="" align="center">Entry</td>
+<td style="width: 10px;"></td>
+<td ;="" align="center">Alias</td>
+<td style="width: 10px;"></td>
+<td ;="" align="center">Group</td>
+</tr>
+<tr>
+<td><img alt="Right click Edit Entry" src="images/rightclick_edit_e.jpg"></td>
+<td></td>
+<td><img alt="Right click Edit Alias" src="images/rightclick_edit_ex.jpg"></td>
+<td></td>
+<td><img alt="Right click Edit Group" src="images/rightclick_edit_g.jpg"></td>
+</tr>
+</tbody>
 </table>
 
 <p>All functionality is described in the <a href="#edit_menu">previous
 section</a>.</p>
 
-<div class="instr">
-</div>
-
 <!-- Added some white space at the bottom for natural scrolling -->
 <br>
-
+<br>
 <br>
 
-<br>
-
-<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e"> <param name="Keyword" value="Edit Menu"> <param name="Keyword" value="Edit Password Entries"> <param name="Keyword" value="View Password Entries"> <param name="Keyword" value="Add Password Entries"> <param name="Keyword" value="Deleting Password Entries"> <param name="Keyword" value="Renaming Password Entries"> <param name="Keyword" value="Shortcut"> <param name="Keyword" value="Password Subset"> <param name="Keyword" value="Finding Password Entries"> </object>
-</body></html>
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="Keyword" value="Edit Menu">
+<param name="Keyword" value="Edit Password Entries">
+<param name="Keyword" value="View Password Entries">
+<param name="Keyword" value="Add Password Entries">
+<param name="Keyword" value="Deleting Password Entries">
+<param name="Keyword" value="Renaming Password Entries">
+<param name="Keyword" value="Shortcut">
+<param name="Keyword" value="Password Subset">
+<param name="Keyword" value="Finding Password Entries">
+</object>
+</body>
+</html>

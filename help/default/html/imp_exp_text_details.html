@@ -1,314 +1,338 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-  <title>Plain Text Export &amp; Import Format</title>
+<title>Plain Text Export &amp; Import Format</title>
 <!-- pwsafe version: 3.06--><!-- Modified: 21/02/2007 --><!--Popup control -->
-  <script language="javascript" src="html/popups.js">
-  </script>
-  <link rel="stylesheet" type="text/css" href="style.css">
+<script language="javascript" src="html/popups.js">
+</script>
+<link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"> </object>
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"></object>
 <!-- Popup Source File -->
-<h1><span style="font-size: 14pt;" lang="EN-GB">Notes
-on Plain Text
-Export &amp; Import</span></h1>
+
+<h1>Notes on Plain Text Export &amp; Import</h1>
+
 <hr style="width: 100%; height: 2px;">
-<p class="MsoNormal" style="text-align: justify;"><b style="color: rgb(255, 0, 0);"><i><u><span style="font-size: 11pt;" lang="EN-GB">Warning</span></u></i></b><span style="font-size: 11pt;" lang="EN-GB"><span style="color: rgb(255, 0, 0);">: The Export of sensitive
-information from
-a Password Safe database to a text file has serious security
-consequences.&nbsp; This operation will create an unprotected
-copy of&nbsp;</span><b style="color: rgb(255, 0, 0);"></b><span style="color: rgb(255, 0, 0);">the passwords in the
-database.&nbsp; Deleting this copy after use is </span><b style="color: rgb(255, 0, 0);">not</b><span style="color: rgb(255, 0, 0);">
+
+<p><style="color: rgb(255, 0, 0);">
+<b><i><u>Warning</u></i></b>: The Export of sensitive information from a
+<b>Password Safe</b> database to a text file has serious security
+consequences. This operation will create an unprotected copy of
+the passwords in the database. Deleting this copy after use is <b>not</b>
 sufficient and other actions should be taken to properly erase the data
-(e.g. third
-party &ldquo;shredding&rdquo; utilities).&nbsp; The export
-of sensitive data effectively bypasses the security of the Password Safe program.</span></span></p>
+(e.g. third party 'shredding' utilities). The export
+of sensitive data effectively bypasses the security of the Password Safe program.</p>
+
 <hr style="width: 100%; height: 2px;">
-<small>Note: The
-Export and Import to/from&nbsp;text files feature has been changed
+
+<small>Note: The Export and Import to/from text files feature has been changed
 in V3.06. This page describes the current format.</small>
+
 <hr style="width: 100%; height: 2px;">
-<p class="MsoNormal" style="text-align: justify;"><span style="font-size: 11pt;" lang="EN-GB">Exported text
-will:</span></p>
+
+<p>Exported text will:</p>
 <ul>
-  <li><span style="font-size: 11pt; font-family: Symbol;" lang="EN-GB"><span style=""><span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;"></span></span></span><span dir="ltr"><span style="font-size: 11pt;" lang="EN-GB">Begin with&nbsp;a Title Row as the first
-record in the
-text file</span></span></li>
-  <li><span style="font-size: 11pt; font-family: Symbol;" lang="EN-GB"><span style=""></span></span><span dir="ltr"><span style="font-size: 11pt;" lang="EN-GB">Use a delimiter to replace the
-&ldquo;newline&rdquo; character in a
-multi-line Notes field and the period (&lsquo;.&rsquo;) if
-present in the Title field.<span style="">&nbsp; </span>The
-default is &lsquo;&raquo;&rsquo; [Alt+0187], which may be
-overridden if needed.</span></span></li>
+<li>Begin with a Title Row as the first record in the text file</li>
+<li>Use a delimiter to replace the 'newline' character in a
+multi-line Notes field and the period ('.') if present in the Title
+field. The default is '&raquo;' [Alt+0187], which may be
+overridden if needed.</li>
 </ul>
-<p class="MsoListBullet" style="margin-left: 0in; text-align: justify; text-indent: 0in;"><span style="font-size: 11pt;" lang="EN-GB">Imported text
-is assumed to &nbsp;have:<span style=""></span></span></p>
+<p>Imported text is assumed to have:</p>
 <ul>
-  <li><span style="font-size: 11pt; font-family: Symbol;" lang="EN-GB"><span style=""><span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;"></span></span></span><span dir="ltr"><span style="font-size: 11pt;" lang="EN-GB">A Title Row as the first record in the text
-file.</span></span></li>
-  <li><span style="font-size: 11pt; font-family: Symbol;" lang="EN-GB"><span style=""><span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;"></span></span></span><span dir="ltr"><span style="font-size: 11pt;" lang="EN-GB">A delimiter to reinstate the
-&ldquo;newline&rdquo; character in a multi-line Notes
-field and the period (&lsquo;.&rsquo;), if present, in the
-Title field.<span style="">&nbsp;&nbsp;</span></span></span><span dir="ltr"><span style="font-size: 11pt;" lang="EN-GB">The default is
-&lsquo;&raquo;&rsquo; [Alt+0187], which may be overridden
-if needed.</span></span></li>
+<li>A Title Row as the first record in the text file.</li>
+<li>A delimiter to reinstate the 'newline' character in a multi-line Notes
+field and the period ('.'), if present, in the Title field. The default is
+'&raquo;' [Alt+0187], which may be overridden if needed.></li>
 </ul>
-<p class="CitiChangeSummarybullet" style="margin-left: 0in; text-align: justify;"><span style="font-size: 11pt;" lang="EN-GB">The
-Title Row for full data export currently contains&nbsp;the
+<p>The Title Row for full data export currently contains the
 following fields by default, separated by a tab.</span></p>
 <ul>
-  <li><span style="font-size: 11pt;" lang="EN-GB">Group/Title</span></li>
-  <li><span style="font-size: 11pt;" lang="EN-GB">Username</span></li>
-  <li><span style="font-size: 11pt;" lang="EN-GB">Password</span></li>
-  <li><span style="font-size: 11pt;" lang="EN-GB">URL</span></li>
-  <li><span style="font-size: 11pt;" lang="EN-GB">AutoType</span></li>
-  <li><span style="font-size: 11pt;" lang="EN-GB">Created Time</span></li>
-  <li><span style="font-size: 11pt;" lang="EN-GB">Password Modified Time</span></li>
-  <li><span style="font-size: 11pt;" lang="EN-GB">Last Access Time</span></li>
-  <li><span style="font-size: 11pt;" lang="EN-GB">Password Expiry Date</span></li>
-  <li><span style="font-size: 11pt;" lang="EN-GB">Password Expiry Interval</span></li>
-  <li><span style="font-size: 11pt;" lang="EN-GB">Record Modified Time</span></li>
-  <li><span style="font-size: 11pt;" lang="EN-GB">Password Policy</span></li>
-  <li><span style="font-size: 11pt;" lang="EN-GB">History</span></li>
-  <li><span style="font-size: 11pt;" lang="EN-GB">Run Command</span></li>
-  <li><span style="font-size: 11pt;" lang="EN-GB">DCA</span></li>
-  <li><span style="font-size: 11pt;" lang="EN-GB">e-mail</span></li>
-  <li><span style="font-size: 11pt;" lang="EN-GB">Notes</span></li>
+<li>Group/Title</li>
+<li>Username</li>
+<li>Password</li>
+<li>URL</li>
+<li>AutoType</li>
+<li>Created Time</li>
+<li>Password Modified Time</li>
+<li>Last Access Time</li>
+<li>Password Expiry Date</li>
+<li>Password Expiry Interval</li>
+<li>Record Modified Time</li>
+<li>Password Policy</li>
+<li>History</li>
+<li>Run Command</li>
+<li>DCA</li>
+<li>e-mail</li>
+<li>Protected Status</li>
+<li>Symbol list for password generation</li>
+<li>Notes</li>
 </ul>
-<p class="CitiChangeSummarybullet" style="margin-left: 0in; text-align: justify;"><span style="font-size: 11pt;" lang="EN-GB"><span style=""></span>When
-exporting data, you
-may use the &ldquo;Advanced&rdquo; feature to exclude
-any number of these fields from the Title Row and records. &nbsp;The
-Advanced &nbsp;option also allows you to specify a subset of the
-entries to export, as shown below.</span></p>
-<p class="CitiChangeSummarybullet" style="margin-left: 0in; text-align: justify;"><img alt="Advanced Text Export dialog box" src="images/adv_txt_ex.jpg"><span style="font-size: 11pt;" lang="EN-GB"><u></u></span></p>
-<p class="CitiChangeSummarybullet" style="margin-left: 0in; text-align: justify;"><span style="font-size: 11pt;" lang="EN-GB">During
-Import, the supplied Title Row must include &ldquo;column
-headings&rdquo; that match
-exactly one of the above.<span style="">&nbsp; </span>If any &ldquo;column
-heading&rdquo; is repeated, only the data in the last one will be added to the
-entries during import.<span style="">&nbsp; </span>If a &ldquo;column
-heading&rdquo; does not match one of the above, the data in that column will be
-ignored during import.<span style="">&nbsp;</span>The fields must be&nbsp;separated with the field separator specified for the data in the Import Text dialog box.</span></p>
+
+<p>When exporting data, you may use the 'Advanced' feature to exclude
+any number of these fields from the Title Row and records. The
+Advanced option also allows you to specify a subset of the
+entries to export, as shown below.</p>
+
+<p><img alt="Advanced Text Export dialog box" src="images/adv_txt_ex.jpg"></p>
+
+<p>During Import, the supplied Title Row must include 'column headings' that match
+exactly one of the above. If any 'column heading' is repeated, only the data in the
+last one will be added to the entries during import. If a 'column
+heading' does not match one of the above, the data in that column will be
+ignored during import. The fields must be separated with the field separator
+specified for the data in the Import Text dialog box.</p>
+
 <hr style="width: 100%; height: 2px;">
+
 <small>Notes:<br>
+<ul>
+<li>To import any data into Password Safe, the Title and Password fields <i><u>must</u></i>
+be present and neither blank nor empty, as it would be if adding a new entry to an existing database.</li>
+</ul>
+<ul>
+<li>There is no restriction on the order of the 'column headings'.&nbsp; Password Safe will use
+the supplied Title Row to correctly add the specified data to the right field.</li>
+</ul>
 </small>
+
+<hr style="width: 100%; height: 2px;">
+
+<h2><u>Data Formats</u></h2>
+
+<table border="1" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td style="border: 1pt solid windowtext; padding: 0in 5.4pt; width: 143.4pt;" valign="top" width="191">
+<b>Column Heading/Field</b>
+</td>
+<td style="border-style: solid solid solid none; border-color: windowtext windowtext windowtext -moz-use-text-color; border-width: 1pt 1pt 1pt medium; padding: 0in 5.4pt; width: 4.75in;" valign="top" width="456">
+<b>Comments</b>
+</td>
+</tr>
+<tr>
+<td style="padding: 0in 5.4pt;">Column Heading/Field</td>
+<td style="padding: 0in 5.4pt;">If present, groups are separated by periods ('.').
+The Title field cannot be blank, empty or contain the delimiter character.</td>
+</tr>
+<tr>
+<td style="padding: 0in 5.4pt;">Username</td>
+<td style="padding: 0in 5.4pt;"> </td>
+</tr>
+<tr>
+<td style="padding: 0in 5.4pt;">Password</td>
+<td style="padding: 0in 5.4pt;">Cannot be blank or empty.</td>
+</tr>
+<tr>
+<td style="padding: 0in 5.4pt;">URL</td>
+<td style="padding: 0in 5.4pt;"> </td>
+</tr>
+<tr>
+<td style="padding: 0in 5.4pt;">Autotype</td>
+<td style="padding: 0in 5.4pt;"> </td>
+</tr>
+<tr>
+<td style="padding: 0in 5.4pt;">Created Time</td>
+<td style="padding: 0in 5.4pt;">See note <a href="#1"><sup>1</sup></a> below</td>
+</tr>
+<tr>
+<td style="padding: 0in 5.4pt;">Password Modified Time</td>
+<td style="padding: 0in 5.4pt;">See note <a href="#1"><sup>1</sup></a> below</td>
+</tr>
+<tr>
+<td style="padding: 0in 5.4pt;">Last Access Time</td>
+<td style="padding: 0in 5.4pt;">See note <a href="#1"><sup>1</sup></a> below</td>
+</tr>
+<tr>
+<td style="padding: 0in 5.4pt;">Password Expiry Date</td>
+<td style="padding: 0in 5.4pt;">See note <a href="#1"><sup>1</sup></a> below</td>
+</tr>
+<tr>
+<td style="padding: 0in 5.4pt;">Password Expiry Interval</td>
+<td style="padding: 0in 5.4pt;">See note <a href="#1"><sup>1</sup></a> below</td>
+</tr>
+<tr>
+<td style="padding: 0in 5.4pt;">Record Modified Time</td>
+<td style="padding: 0in 5.4pt;">See note <a href="#1"><sup>1</sup></a> below</td>
+</tr>
+<tr>
+<td style="padding: 0in 5.4pt;">Password Policy</td>
+<td style="padding: 0in 5.4pt;">See note <a href="#3"><sup>3</sup></a> below</td>
+</tr>
+<tr>
+<td style="padding: 0in 5.4pt;">History</td>
+<td style="padding: 0in 5.4pt;">See note <a href="#2"><sup>2</sup></a> below</td>
+</tr>
+<tr>
+<td style="padding: 0in 5.4pt;">Run command</td>
+<td style="padding: 0in 5.4pt;"></td>
+</tr>
+<tr>
+<td style="padding: 0in 5.4pt;">DCA</td>
+<td style="padding: 0in 5.4pt;"> = 'Double Click Action'. See note <a href="#4"><sup>4</sup></a> below</td>
+</tr>
+<tr>
+<td style="padding: 0in 5.4pt;">e-mail</td>
+<td style="padding: 0in 5.4pt;"></td>
+</tr>
+<tr>
+<td style="padding: 0in 5.4pt;">Protect</td>
+<td style="padding: 0in 5.4pt;"></td>
+</tr>
+<tr>
+<td style="padding: 0in 5.4pt;">Symbols</td>
+<td style="padding: 0in 5.4pt;"></td>
+</tr>
+<tr>
+<td style="padding: 0in 5.4pt;">Notes</td>
+<td style="padding: 0in 5.4pt;">
 <ul>
-  <li><small>To import any data into Password Safe, the Title and Password fields <i><u>must</u></i> be present and neither blank nor empty, as it would be if adding a new entry to an existing database.</small></li>
+<li>The Notes field should be enclosed by double quotes ("like this").</li>
+<li>The Notes field should not contain the delimiter character since on import it will be translated to a newline.</li>
 </ul>
-<ul>
-  <li><small>There is no restriction on the order of the &ldquo;column headings&rdquo;.&nbsp; Password Safe will use
-the supplied Title Row to correctly add the specified data to the right field.</small></li>
-</ul>
-<hr style="width: 100%; height: 2px;"><span style="font-size: 11pt;" lang="EN-GB"></span><span style="font-size: 11pt; font-family: &quot;Times New Roman&quot;;" lang="EN-GB"></span>
-<h2><u><span style="font-size: 11pt;" lang="EN-GB">Data Formats</span></u></h2>
-<table class="MsoNormalTable" style="border: medium none ; border-collapse: collapse;" border="1" cellpadding="0" cellspacing="0">
-  <tbody>
-    <tr>
-      <td style="border: 1pt solid windowtext; padding: 0in 5.4pt; width: 143.4pt;" valign="top" width="191">
-      <b>Column Heading/Field</b>
-      </td>
-      <td style="border-style: solid solid solid none; border-color: windowtext windowtext windowtext -moz-use-text-color; border-width: 1pt 1pt 1pt medium; padding: 0in 5.4pt; width: 4.75in;" valign="top" width="456">
-      <b>Comments</b>
-      </td>
-    </tr>
-    <tr>
-      <td style="padding: 0in 5.4pt;">Column Heading/Field</td>
-      <td style="padding: 0in 5.4pt;">If present, groups are separated by periods (&lsquo;.&rsquo;). The Title field cannot be
-blank, empty or contain the delimiter character.</td>
-    </tr>
-    <tr>
-      <td style="padding: 0in 5.4pt;">Username</td>
-      <td style="padding: 0in 5.4pt;"> </td>
-    </tr>
-    <tr>
-      <td style="padding: 0in 5.4pt;">Password</td>
-      <td style="padding: 0in 5.4pt;">Cannot be blank or empty.</td>
-    </tr>
-    <tr>
-      <td style="padding: 0in 5.4pt;">URL</td>
-      <td style="padding: 0in 5.4pt;"> </td>
-    </tr>
-    <tr>
-      <td style="padding: 0in 5.4pt;">Autotype</td>
-      <td style="padding: 0in 5.4pt;"> </td>
-    </tr>
-    <tr>
-      <td style="padding: 0in 5.4pt;">Created Time</td>
-      <td style="padding: 0in 5.4pt;">See note <a href="#1"><sup>1</sup></a> below</td>
-    </tr>
-    <tr>
-      <td style="padding: 0in 5.4pt;">Password Modified Time</td>
-      <td style="padding: 0in 5.4pt;">See note <a href="#1"><sup>1</sup></a> below</td>
-    </tr>
-    <tr>
-      <td style="padding: 0in 5.4pt;">Last Access Time</td>
-      <td style="padding: 0in 5.4pt;">See note <a href="#1"><sup>1</sup></a> below</td>
-    </tr>
-    <tr>
-      <td style="padding: 0in 5.4pt;">Password Expiry Date</td>
-      <td style="padding: 0in 5.4pt;">See note <a href="#1"><sup>1</sup></a> below</td>
-    </tr>
-    <tr>
-      <td style="padding: 0in 5.4pt;">Password Expiry Interval</td>
-      <td style="padding: 0in 5.4pt;">See note <a href="#1"><sup>1</sup></a> below</td>
-    </tr>
-    <tr>
-      <td style="padding: 0in 5.4pt;">Record Modified Time</td>
-      <td style="padding: 0in 5.4pt;">See note <a href="#1"><sup>1</sup></a> below</td>
-    </tr>
-    <tr>
-      <td style="padding: 0in 5.4pt;">Password Policy</td>
-      <td style="padding: 0in 5.4pt;">See note <a href="#3"><sup>3</sup></a> below</td>
-    </tr>
-    <tr>
-      <td style="padding: 0in 5.4pt;">History</td>
-      <td style="padding: 0in 5.4pt;">See note <a href="#2"><sup>2</sup></a> below</td>
-    </tr>
-    <tr>
-      <td style="padding: 0in 5.4pt;">Run command</td>
-      <td style="padding: 0in 5.4pt;"></td>
-    </tr>
-    <tr>
-      <td style="padding: 0in 5.4pt;">DCA</td>
-      <td style="padding: 0in 5.4pt;"> = &lsquo;Double Click Action&rsquo;. See note <a href="#4"><sup>4</sup></a> below</td>
-    </tr>
-    <tr>
-      <td style="padding: 0in 5.4pt;">e-mail</td>
-      <td style="padding: 0in 5.4pt;"></td>
-    </tr>
-    <tr>
-      <td style="padding: 0in 5.4pt;">Notes</td>
-      <td style="padding: 0in 5.4pt;">
-      <ul>
-        <li>The Notes field should be enclosed by double quotes ("like this").</li>
-        <li>The Notes field should not contain the delimiter character since on import it will be translated to a newline.</li>
-      </ul>
-      </td>
-    </tr>
-  </tbody>
+</td>
+</tr>
+</tbody>
 </table>
+
+<br>
 
 <table border="0" cellpadding="0" cellspacing="0">
-  <tbody>
-    <tr>
-      <td style="padding: 0in 5.4pt; width: 80pt;" valign="top">
-      <p><a name="1"></a><b><u>Notes:</u> <sup>1</sup></b></p>
-      </td>
-      <td style="padding: 0in 5.4pt;" valign="top">
-      <p>Time fields can be one of the following 5 formats:</p>
-      </td>
-    </tr>
-  </tbody>
+<tbody>
+<tr>
+<td style="padding: 0in 5.4pt; width: 80pt;">
+<p><a name="1"></a><b><u>Notes:</u> <sup>1</sup></b></p>
+</td>
+<td style="padding: 0in 5.4pt;">
+<p>Time fields can be one of the following 7 formats:</p>
+</td>
+</tr>
+</tbody>
 </table>
+
+<br>
 
 <table border="0" cellpadding="0" cellspacing="0">
-  <tbody>
-    <tr>
-  <td style="padding: 0in 15.4pt;">1.</td>
-  <td style="padding: 0in 15.4pt; font-size: 11pt; font-family: 'Courier New'">yyyy/mm/dd hh:mm:ss</td>
-  <td style="padding: 0in 15.4pt;">e.g., 2007/01/26 19:31:25</td>
-    </tr>
-    <tr>
-  <td style="padding: 0in 15.4pt;">2.</td>
-  <td style="padding: 0in 15.4pt; font-size: 11pt; font-family: 'Courier New'">ddd MMM dd hh:mm:ss yyyy</td>
-  <td style="padding: 0in 15.4pt;">e.g., Fri Jan 26 19:31:25 2007</td>
-    </tr>
-    <tr>
-  <td style="padding: 0in 15.4pt;">3.</td>
-  <td style="padding: 0in 15.4pt; font-size: 11pt; font-family: 'Courier New'">yyyy-mm-ddThh:mm:ss</td>
-  <td style="padding: 0in 15.4pt;">e.g., 2007-01-26T19:31:25</td>
-    </tr>
-    <tr>
-  <td style="padding: 0in 15.4pt;">4.</td>
-  <td style="padding: 0in 15.4pt;">0</td>
-  <td style="padding: 0in 15.4pt;">Leave the field unset</td>
-    </tr>
-    <tr>
-  <td style="padding: 0in 15.4pt;">5.</td>
-  <td style="padding: 0in 15.4pt;">now</td>
-  <td style="padding: 0in 15.4pt;">Use the time of the import operation</td>
-    </tr>
-  </tbody>
+<tbody>
+<tr>
+<td style="padding: 0in 15.4pt;">1.</td>
+<td style="padding: 0in 15.4pt; font-size: 11pt; font-family: 'Courier New'">yyyy/mm/dd hh:mm:ss</td>
+<td style="padding: 0in 15.4pt;">e.g., 2007/01/26 19:31:25</td>
+</tr>
+<tr>
+<td style="padding: 0in 15.4pt;">2.</td>
+<td style="padding: 0in 15.4pt; font-size: 11pt; font-family: 'Courier New'">ddd MMM dd hh:mm:ss yyyy</td>
+<td style="padding: 0in 15.4pt;">e.g., Fri Jan 26 19:31:25 2007</td>
+</tr>
+<tr>
+<td style="padding: 0in 15.4pt;">3.</td>
+<td style="padding: 0in 15.4pt; font-size: 11pt; font-family: 'Courier New'">yyyy-mm-ddThh:mm:ss</td>
+<td style="padding: 0in 15.4pt;">e.g., 2007-01-26T19:31:25</td>
+</tr>
+<tr>
+<td style="padding: 0in 15.4pt;">4.</td>
+<td style="padding: 0in 15.4pt; font-size: 11pt; font-family: 'Courier New'">yyyy-mm-ddThh:mm:ssZ (XML only)</td>
+<td style="padding: 0in 15.4pt;">e.g., 2007-01-26T19:31:25Z</td>
+</tr>
+<tr>
+<td style="padding: 0in 15.4pt;">5.</td>
+<td style="padding: 0in 15.4pt; font-size: 11pt; font-family: 'Courier New'">yyyy-mm-ddThh:mm:ss&plusmn;hh:mm (XML only)</td>
+<td style="padding: 0in 15.4pt;">e.g., 2007-01-26T19:31:25+01:00</td>
+</tr>
+<tr>
+<td style="padding: 0in 15.4pt;">6.</td>
+<td style="padding: 0in 15.4pt;">0</td>
+<td style="padding: 0in 15.4pt;">Leave the field unset</td>
+</tr>
+<tr>
+<td style="padding: 0in 15.4pt;">7.</td>
+<td style="padding: 0in 15.4pt;">now</td>
+<td style="padding: 0in 15.4pt;">Use the time of the import operation</td>
+</tr>
+</tbody>
 </table>
-
 
 <p>where:</p>
 <table border="0" cellpadding="0" cellspacing="0">
-  <tbody>
-  <tr>
-    <td style="padding: 0in 15.4pt;">yyyy</td><td>The year in full. Value is between 1970 and 2038.</td>
-    </tr>
-    <tr>
-    <td style="padding: 0in 15.4pt;">mm</td><td>The month; e.g. 01 = January, 02 = February etc.</td>
-    </tr>
-    <tr>
-    <td style="padding: 0in 15.4pt;">dd</td><td>The day of the month</td>
-    </tr>
-    <tr>
-    <td style="padding: 0in 15.4pt;">MMM</td><td>The short form of the month; e.g. Jan = January, Feb = February etc.</td>
-    </tr>
-    <tr>
-    <td style="padding: 0in 15.4pt;">ddd</td><td>The short form of the day of the week; e.g. Mon = Monday, Tue = Tuesday, etc.</td>
-    </tr>
-    <tr>
-    <td style="padding: 0in 15.4pt;">hh</td><td>The hour using a 24-hour clock.</td>
-    </tr>
-    <tr>
-    <td style="padding: 0in 15.4pt;">mm</td><td>The minutes</td>
-    </tr>
-    <tr>
-    <td style="padding: 0in 15.4pt;">ss</td><td>The seconds</td>
-    </tr>
-  </tbody>
+<tbody>
+<tr>
+<td style="padding: 0in 15.4pt;">yyyy</td><td>The year in full. Value is between 1970 and 2038.</td>
+</tr>
+<tr>
+<td style="padding: 0in 15.4pt;">mm</td><td>The month; e.g. 01 = January, 02 = February etc.</td>
+</tr>
+<tr>
+<td style="padding: 0in 15.4pt;">dd</td><td>The day of the month</td>
+</tr>
+<tr>
+<td style="padding: 0in 15.4pt;">MMM</td><td>The short form of the month; e.g. Jan = January, Feb = February etc.</td>
+</tr>
+<tr>
+<td style="padding: 0in 15.4pt;">ddd</td><td>The short form of the day of the week; e.g. Mon = Monday, Tue = Tuesday, etc.</td>
+</tr>
+<tr>
+<td style="padding: 0in 15.4pt;">hh</td><td>The hour using a 24-hour clock.</td>
+</tr>
+<tr>
+<td style="padding: 0in 15.4pt;">mm</td><td>The minutes</td>
+</tr>
+<tr>
+<td style="padding: 0in 15.4pt;">ss</td><td>The seconds</td>
+</tr>
+</tbody>
 </table>
 
-<p>
-<small>Note: Format &lsquo;2&rsquo; is the output from the ANSI C function <big><a name="asctime">&lsquo;</a><code>asctime</code>&rsquo;</big> and format
-&lsquo;3&rsquo; conforms to the ISO 8601 standard.</small>
-</p>
+<p><small>Note: Format '2' is the output from the ANSI C function <big><a name="asctime">'</a><code>asctime</code>'</big> and format
+'3' conforms to the ISO 8601 standard.</small></p>
+
 <hr style="width: 100%; height: 2px;">
-<table class="MsoTableGrid" style="border-collapse: collapse;" border="0" cellpadding="0" cellspacing="0">
-  <tbody>
-    <tr style="">
-      <td style="padding: 0in 5.4pt; width: 80pt;" valign="top" width="47">
-      <p class="CitiChangeSummarybullet" style="margin-left: 0in; text-align: justify;"><a name="2"></a><b><u>Notes:</u> <sup>2</sup></b></p>
-      </td>
-      <td style="padding: 0in 5.4pt; " valign="top">
-      <p class="CitiChangeSummarybullet" style="margin-left: 0in; text-align: justify;"><span style="font-size: 11pt;" lang="EN-GB">Password history is represented in the exported entry record as a text field
-comprising a header followed by the required number of entries of old passwords:</span></p>
-      </td>
-    </tr>
-  </tbody>
-</table>
-<p class="CitiChangeSummarybullet" style="margin-left: 0.5in; text-align: justify;"><span style="font-size: 11pt;" lang="EN-GB">Password History Header:</span></p>
-<ul>
-  <li><span style="font-size: 11pt;" lang="EN-GB">1 hexadecimal digit<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;     </span>status for saving PWH for this entry (0 = no; 1 = yes)</span></li>
-  <li><span style="font-size: 11pt;" lang="EN-GB">2 hexadecimal digits<span style="">&nbsp;&nbsp;&nbsp;     </span>maximum number of entries in this entry</span></li>
-  <li><span style="font-size: 11pt;" lang="EN-GB">2 hexadecimal digits<span style="">&nbsp;&nbsp;&nbsp;     </span>number of entries currently saved</span></li>
-</ul>
-<p class="CitiChangeSummarybullet" style="margin-left: 0.5in; text-align: justify;"><span style="font-size: 11pt;" lang="EN-GB">Each Password History Entry:</span></p>
-<ul>
-  <li><span style="font-size: 11pt;" lang="EN-GB">8 hexadecimal digits<span style="">&nbsp;&nbsp;&nbsp;    </span>time oldpassword was set</span></li>
-  <li><span style="font-size: 11pt;" lang="EN-GB">4 hexadecimal digits<span style="">&nbsp;&nbsp;&nbsp;     </span>length of old password</span></li>
-  <li><span style="font-size: 11pt;" lang="EN-GB">character string<span style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style=""></span>old password</span></li>
-</ul>
-<!-- Added some white space at the bottom for natural scrolling --><br>
-<hr>
+
 <table border="0" cellpadding="0" cellspacing="0">
-  <tbody>
-    <tr>
-      <td style="padding: 0in 5.4pt; width: 80pt;" valign="top">
-      <p><a name="3"></a><b><u>Notes:</u> <sup>3</sup></b></p>
-      </td>
-      <td style="padding: 0in 5.4pt;" valign="top">
-      <p>The Password Policy is represented in the exported entry record as a text field 'ffffnnnllluuudddsss' in hexadecimal format, e.g. 'F000010004002005003'. 
-      6 hexadecimal values are contained in this format. The first value has 4 digits, all other 3.</p>
+<tbody>
+<tr style="">
+<td style="padding: 0in 5.4pt; width: 80pt;" valign="top" width="47">
+<p><a name="2"></a><b><u>Notes:</u> <sup>2</sup></b></p>
+</td>
+<td style="padding: 0in 5.4pt; ">
+<p>Password history is represented in the exported entry record as a text field
+comprising a header followed by the required number of entries of old passwords:</p>
+</td>
+</tr>
+</tbody>
+</table>
+
+<p>Password History Header:</p>
+
+<ul>
+<li>1 hexadecimal digit - status for saving PWH for this entry (0 = no; 1 = yes)</li>
+<li>2 hexadecimal digits - maximum number of entries in this entry</li>
+<li>2 hexadecimal digits - number of entries currently saved</li>
+</ul>
+<p>Each Password History Entry:</p>
+<ul>
+<li>8 hexadecimal digits - time oldpassword was set</li>
+<li>4 hexadecimal digits - length of old password</li>
+<li>character string - old password></li>
+</ul>
+
+<hr>
+
+<table border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td style="padding: 0in 5.4pt; width: 80pt;">
+<p><a name="3"></a><b><u>Notes:</u> <sup>3</sup></b></p>
+</td>
+<td style="padding: 0in 5.4pt;">
+<p>The Password Policy is represented in the exported entry record as a text field 'ffffnnnllluuudddsss'
+in hexadecimal format, e.g. 'F000010004002005003'.
+6 hexadecimal values are contained in this format. The first value has 4 digits, all other 3.</p>
 <p>'ffffnnnllluuudddsss' means in detail:</p>
+
 <ul>
 <li>ffff : 4 hexadecimal digits representing the following flags
-  <ul>
+<ul>
 <li>0x8000: use lower case characters</li>
 <li>0x4000: use upper case characters</li>
 <li>0x2000: use digits</li>
@@ -317,15 +341,19 @@ comprising a header followed by the required number of entries of old passwords:
 <li>0x0400: use EasyVision password characters</li>
 <li>0x0200: use pronounceable password characters</li>
 <li>0x01FF: not used</li>
-              </ul></li>
+</ul>
+</li>
 <li>nnn  : 3 hexadecimal digits : total length of password</li>
 <li>lll  : 3 hexadecimal digits : password minimum number of lowercase characters</li>
 <li>uuu  : 3 hexadecimal digits : password minimum number of uppercase characters</li>
 <li>ddd  : 3 hexadecimal digits : password minimum number of digit characters</li>
 <li>sss  : 3 hexadecimal digits : password minimum number of symbol characters</li>
 </ul>
+
 <p>The Password Policy 'F000010004002005003' means</p>
-<ul><li>F000 : use lowercase, uppercase, digit and symbol characters</li>
+
+<ul>
+<li>F000 : use lowercase, uppercase, digit and symbol characters</li>
 <li>010  : use at least 16 (dec) characters</li>
 <li>004  : use at least 4 lowercase characters</li>
 <li>002  : use at least 2 uppercase characters</li>
@@ -333,38 +361,50 @@ comprising a header followed by the required number of entries of old passwords:
 <li>003  : use at least 3 symbol characters</li>
 </ul>
 
-      </td>
-    </tr>
-  </tbody>
+</td>
+</tr>
+</tbody>
 </table>
+
 <hr>
+
 <table border="0" cellpadding="0" cellspacing="0">
-  <tbody>
-    <tr>
-      <td style="padding: 0in 5.4pt; width: 80pt;" valign="top">
-      <p><a name="4"></a><b><u>Notes:</u> <sup>4</sup></b></p>
-      </td>
-      <td style="padding: 0in 5.4pt;" valign="top">
-      <p>The following values for <i><b>Double Click Action</b></i> are availble:</p>
-<ul><li>-1:&nbsp;Default</li>
-<li>0:&nbsp;&nbsp;Copy password to clipboard</li>
-<li>1:&nbsp;&nbsp;View/Edit selected entry</li>
-<li>2:&nbsp;&nbsp;Autotype</li>
-<li>3:&nbsp;&nbsp;Browse to URL</li>
-<li>4:&nbsp;&nbsp;Copy notes to clipboard</li>
-<li>5:&nbsp;&nbsp;Copy username to clipboard</li>
-<li>6:&nbsp;&nbsp;Copy password to clipboard, minimize</li>
-<li>7:&nbsp;&nbsp;Browse to URL + Autotype</li>
-<li>8:&nbsp;&nbsp;Run Command</li>
-<li>9:&nbsp;&nbsp;Send email</li>
+<tbody>
+<tr>
+<td style="padding: 0in 5.4pt; width: 80pt;">
+<p><a name="4"></a><b><u>Notes:</u> <sup>4</sup></b></p>
+</td>
+<td style="padding: 0in 5.4pt;">
+<p>The following values for <i><b>Double Click Action</b></i> are availble:</p>
+<ul>
+<li>-1: Use the database default</li>
+<li>0: Copy password to clipboard</li>
+<li>1: View/Edit selected entry</li>
+<li>2: Autotype</li>
+<li>3: Browse to URL</li>
+<li>4: Copy notes to clipboard</li>
+<li>5: Copy username to clipboard</li>
+<li>6: Copy password to clipboard, minimize</li>
+<li>7: Browse to URL + Autotype</li>
+<li>8: Run Command</li>
+<li>9: Send email</li>
 </ul>
-      </td>
-    </tr>
-  </tbody>
+</td>
+</tr>
+</tbody>
 </table>
+
+<!-- Added some white space at the bottom for natural scrolling -->
 <br>
 <br>
-<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e"> <param name="Keyword" value="Export Password Entries"> <param name="Keyword" value="Import Password Entries"> <param name="Keyword" valuetext="" password="" data="">
-<param name="Keyword" value="Converting Existing Password Data"></object>
+<br>
+
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="Keyword" value="Export Password Entries">
+<param name="Keyword" value="Import Password Entries">
+<param name="Keyword" valuetext="" password="" data="">
+<param name="Keyword" value="Converting Existing Password Data">
+</object>
+
 </body>
 </html>
