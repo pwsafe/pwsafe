@@ -2,14 +2,12 @@
 <html>
 <head>
 <title>Wizard Select Database or File</title>
-<!-- pwsafe version: 3.25-->
-<!-- Modified: 04/02/2011 -->
-<!--Popup control -->
+<!-- pwsafe version: 3.25--><!-- Modified: 04/02/2011 --><!--Popup control -->
 <script language="javascript" src="html/popups.js">
 </script>
 <link rel="stylesheet" type="text/css" href="style.css"></head>
 <body>
-<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"> </object>
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"></object>
 <!-- Popup Source File -->
 
 <h1>Wizard Select Database or File</h1>
@@ -22,6 +20,7 @@ Merge into the currently open database or Synchronize with  the currently open d
 <p>The password requested is that of this new database and not the currently open database.</p>
 
 <h3>Export to Text or XML</h3>
+
 <p>When performing an Export of the current database to a clear Text or XML file, you must
 provide the name of the file to create or overwrite (you will be asked to confirm if
 you wish to replace an existing file).</p>
@@ -30,14 +29,18 @@ you wish to replace an existing file).</p>
 
 <p>You should also provide the character to be used to denote a line break in the Notes
 field so that it can be correctly processed when imported. When exporting to a plain text
-file, this character is also used to replace a dot (.) in a Title field so that the
-correct Tree structure is rebuilt on Import (note a dot is used to separate groups).</p>
+file, this character is also used to replace a period (.) in a Title field so that the
+correct Tree structure is rebuilt on Import (Note: a period is used to separate groups).</p>
 
 <h3>Advanced field selection criteria</h3>
+
 <p>In all cases, you have the option to select the "Advanced field selection criteria",
 which will show an extra Advanced page allowing you to restrict what these functions do
 based on the contents of the Group, Title, User Name, URL or Notes fields and/or which
 fields to Compare, Merge, Synchronize or Export.</p>
+
+<p>Selecting 'Back' will return to the first Wizard tab where you may unselect the
+"Advanced field selection" if you wish to export all entries and all their fields.</p>
 
 <p>Note 1: When exporting a single entry via the Edit Menu or Context Menu (by right
 clicking on the entry), the option to restrict the export based on the contents of
@@ -46,10 +49,15 @@ the Group, Title, User Name, URL or Notes fields is obviously not available.</p>
 <p>Note 2: When Merging a database into the currently open database, you will not be able
 to restrict which fields of the entries being merged are copied.  If an entry passes your
 selection criteria, then the complete entry will be merged into the current database.</p>
+
+<!-- Added some white space at the bottom for natural scrolling -->
 <br>
 <br>
 <br>
+
 <object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
-<param name="Keyword" value="Wizard Select Database or File"> </object>
+<param name="Keyword" value="Wizard Select Database or File">
+</object>
+
 </body>
 </html>

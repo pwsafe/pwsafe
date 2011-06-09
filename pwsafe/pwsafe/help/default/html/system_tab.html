@@ -1,149 +1,143 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head>
-
-  
-
-
-
-  
-  
-
-  <title>System Tab</title><!-- pwsafe version: 3.03--><!-- Modified: 10/10/2006 --><!--Popup control --><script language="javascript" src="html/popups.js">
-  </script>
-  
-  <link rel="stylesheet" type="text/css" href="style.css"></head>
-
+<html>
+<head>
+<title>System Tab</title>
+<!-- pwsafe version: 3.03--><!-- Modified: 10/10/2006 --><!--Popup control -->
+<script language="javascript" src="html/popups.js">
+</script>
+<link rel="stylesheet" type="text/css" href="style.css"></head>
 <body>
-
-
-<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"> </object>
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"></object>
 <!-- Popup Source File -->
+
 <h2>System Tab</h2>
 
-
 <img alt="system tab" src="images/options/system_tab.jpg">
+
 <p>The System Tab provides access to settings that are related to
 Password Safe's interaction with the system on which it is running.</p>
 
-
-<div class="instr">
 <h3>Put icon in System Tray</h3>
-
 
 <p>If checked, <b>Password Safe</b> will minimize to
 the the System Tray area. If unchecked, the program will minimize to
 the task bar.</p>
 
-
-<p>The icon in the system tray indicates whether the password
-database is locked (<img style="width: 32px; height: 32px;" alt="locked" src="images/locked_tray.jpg">) or
-unlocked (<img style="width: 32px; height: 32px;" alt="unlocked" src="images/unlocked_tray.jpg">). If
-it is locked, you will be prompted for the master combination when you
+<p>The icon in the system tray indicates whether the password database is locked
+(<img style="width: 32px; height: 32px;" alt="locked" src="images/locked_tray.jpg">) or
+unlocked (<img style="width: 32px; height: 32px;" alt="unlocked" src="images/unlocked_tray.jpg">).
+If it is locked, you will be prompted for the master combination when you
 try to unminimize it.</p>
 
+<h3>Remember last <i>N</i> used entries in System Tray menu</h3>
 
-<h3>Remember last <span style="font-style: italic;">N</span>
-used entries in System Tray menu</h3>
-
-
-If the&nbsp;<span style="font-weight: bold;">Put icon in System Tray</span> option is enabled, you can right-click
+<p>If the <b>Put icon in System Tray</b> option is enabled, you can right-click
 on the system tray icon to get to the most recently used entries
 directly, without going through the application's main screen. This
 option allows you to configure how many recent entries you wish to
-keep in the system tray icon's list.
+keep in the system tray icon's list.</p>
+
 <h3>Hide System Tray icon (Hot Key MUST be active)</h3>
-If checked, this will cause Password Safe to hide his icon in the system tray. This functionaltity will only be enabled if the Hot Key to start or reopen Password Safe is avtive.
+
+<p>If checked, this will cause <b>Password Safe</b> to hide his icon in the
+system tray. This functionaltity will only be enabled if the Hot Key to start
+or reopen <b>Password Safe</b> is active.</p>
 
 <h3>Start Password Safe at Login</h3>
 
-If checked, this will cause Password Safe to start automatically in the
+<p>If checked, this will cause <b>Password Safe</b> to start automatically in the
 System tray when you log on. Note that you will be prompted for the
 Safe combination the first time you double-click on the System Tray
-icon, <span style="font-weight: bold;">not <span style="font-weight: bold;">before.</span></span><span style="font-weight: bold;"></span>
-<h3>Recent Passwordsafe Databases</h3>
+icon, <b>not before</b>.</p>
 
+<h3>Recent <b>Password Safe</b> Databases</h3>
 
 <p>These controls allow you to configure how many
-recently opened databases are displayed in the File menu. Note that you need to exit and restart
-<b>Password Safe</b> for changes in this control to take
-effect.</p>
-
+recently opened databases are displayed in the File menu. Note that
+you need to exit and restart <b>Password Safe</b> for changes in
+this control to take effect.</p>
 
 <h3>Recent Databases on File Menu rather than as a sub-menu</h3>
 
-
-This option determines how the recently opened databases are presented
-in the File menu - directly on the menu, or as a sub-menu.<br>
+<p>This option determines how the recently opened databases are presented
+in the File menu - directly on the menu, or as a sub-menu.</p>
 
 <h3>Open database read-only by default</h3>
-Setting this option will cause <span style="font-weight: bold;">Password Safe</span> to open databases in read-only mode by default. This may be useful in a multi-user environment, as by default <span style="font-weight: bold;">Password Safe</span>
-allows write access to the first person who opens the database, and
+
+<p>Setting this option will cause <b>Password Safe</b> to open databases 
+in read-only mode by default. This may be useful in a multi-user environment, as by default
+<b>Password Safe</b> allows write access to the first person who opens the database, and
 restricts others to read-only mode. With this option, you can determine
 by site policy who will have write-access to a given database.
+
 <h3>Allow multiple instances (requires all instances to be restarted)</h3>
+
 <h3>Remove Password Safe data from Registry</h3>
 
-Prior to version 3.05, <span style="font-weight: bold;">Password Safe</span>
+<p>Prior to version 3.05, <b>Password Safe</b>
 used the Registry to store configuration data, such as non-default
 options settings, last database opened, etc. As of this release, this
 information is split into database-specific and user/machine specific
 settings, with the latter being stored in a separate configuration
-file. Selecting this option and clicking on the <span style="font-weight: bold;">Apply </span>button will cause the registry settings to be cleared. This is useful if you wish to remove traces of <span style="font-weight: bold;">Password Safe</span> on your PC. Note, however, that this means that older versions of <span style="font-weight: bold;">Password Safe</span> will revert to default value for some of the settings.<br>
+file. Selecting this option and clicking on the <b>Apply</b> button
+will cause the registry settings to be cleared. This is useful if you
+wish to remove traces of <b>Password Safe</b> on your PC. Note, however,
+that this means that older versions of <b>Password Safe</b> will revert
+to default value for some of the settings.</p>
 
-<span style="font-weight: bold;"></span>
-<hr style="width: 100%; height: 2px;"><span style="font-weight: bold;">Notes:<br>
+<hr style="width: 100%; height: 2px;">
 
-</span>
+<p><b>Notes:</b></p>
+
 <ul>
-
-  <li>If previous versions of <span style="font-weight: bold;">Password Safe</span> have never been installed, or if the data has already been removed, then the checkbox and <span style="font-weight: bold;">Apply </span>button will not be displayed.</li>
-
-  <li>In rare circumstances, where <span style="font-weight: bold;">Password Safe</span> is unable to create or write to the configuration file, the registry will be used.</li>
-
+<li>If previous versions of <b>Password Safe</b> have never been installed,
+or if the data has already been removed, then the checkbox and <b>Apply</b>
+button will not be displayed.</li>
+<li>In rare circumstances, where <b>Password Safe</b> is unable to create or write
+to the configuration file, the registry will be used.</li>
 </ul>
 
 <hr style="width: 100%; height: 2px;">
 
-<h3>Migrate PasswordSafe configuration to user directory</h3>Prior to
-version 3.22, PasswordSafe kept application preferences (such as some
+<h3>Migrate <b>Password Safe</b> configuration to user directory</h3>
+
+<p>Prior to version 3.22, <b>Password Safe</b> kept application preferences (such as some
 of the user options, last files opened, window size and location, etc.)
-in a file in the same directory as the PasswordSafe executable. This
+in a file in the same directory as the <b>Password Safe</b> executable. This
 has caused problems with recent versions of Windows when users were not
 given write access to this directory. Therefore, as of version 3.22,
 the configuration file (pwsafe.cfg) will be created in the standard
-location for such files (in the user's 'Application Data' directory).<br>By
-default, upgrades to existing installations will not change the
+location for such files (in the user's 'Application Data' directory).<br>
+
+<p>By default, upgrades to existing installations will not change the
 existing preference file ("if it ain't broke, don't fix it"). However,
 if a user wishes to switch to the new setting manually, selecting this
-checkbox and clicking on 'Apply' will do so.<br><br>In more detail: The
-configuration file is designed to support multiple users from multiple
+checkbox and clicking on 'Apply' will do so.</p>
+
+<p>In more detail: The configuration file is designed to support multiple users from multiple
 machines. The migration function will move the current user's settings
 (associated with the current PC) from the configuration file to the new
 location. If there are other user/machine specific configurations in
 the file, they will be left untouched. If, on the other hand, there are
-none left after migration, the empty file will be deleted.<br>If you
-wish to share a common configuration file between users and/or across
+none left after migration, the empty file will be deleted.</p>
+
+<p>If you wish to share a common configuration file between users and/or across
 different PCs, you can either keep the file in the executable
-directory, or specify its location explicitly using the '-g <span style="font-style: italic;">config-file</span>' option, as described in <a href="cli.html">command line arguments</a>.
+directory, or specify its location explicitly using the '-g <i>config-file</i>'
+option, as described in <a href="cli.html">command line arguments</a>.
+</p>
 
-
-
-
-</div>
-
-
-
-
+<!-- Added some white space at the bottom for natural scrolling -->
 <br>
-
-
 <br>
-
+<br>
 
 <object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
-  <param name="Keyword" value="Security Tab">
-  <param name="Keyword" value="Lock Database">
-  <param name="Keyword" value="Confirm Copy to Clipboard">
-  <param name="Keyword" value="Clearing the Clipboard">
+<param name="Keyword" value="Security Tab">
+<param name="Keyword" value="Lock Database">
+<param name="Keyword" value="Confirm Copy to Clipboard">
+<param name="Keyword" value="Clearing the Clipboard">
 </object>
-</body></html>
+
+</body>
+</html>

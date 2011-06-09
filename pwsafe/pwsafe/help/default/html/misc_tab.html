@@ -1,312 +1,129 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-
-
-
-
-
-
-
-		
-		
-		
-		
-		
-		
-  
-
-  
-  
-
-  
-  
-
-  
-  
-
-  
-  
-
-  
-  
-
-  
-  <title>Misc Tab</title>
+<title>Misc Tab</title>
 <!-- pwsafe version: 2.11--><!-- Modified: 15/06/2005 --><!--Popup control -->
-  <script language="javascript" src="html/popups.js">
-		</script>
-  
-  
-  
-  
-  
-  
-  <link rel="stylesheet" type="text/css" href="style.css">
+<script language="javascript" src="html/popups.js">
+</script>
+<link rel="stylesheet" type="text/css" href="style.css">
 </head>
-
-
 <body>
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"></object>
+<!-- Popup Source File -->
 
-
-
-
-
-
-<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11">
-		</object>
-		
-		<!-- Popup Source File -->
-		
-		
-		
-	
-		
 <h2>Misc Tab</h2>
 
+<img src="images/options/misc_tab.jpg" alt="Misc tab"><br>
 
-
-
-
-
-
-		<img src="images/options/misc_tab.jpg" alt="Misc tab"><br>
-
-
-
-
-
-
-
-
-		
 <p>Various miscellaneous program defaults are displayed in the <b>Misc Tab</b>.</p>
 
-
-
-
-
-
-
-
-		
-<div class="instr">
-			
 <h3>Confirm deletion of items</h3>
 
-When checked, a user prompt requesting confirmation will be displayed every time you try to delete a password entry.
+<p>When checked, a user prompt requesting confirmation will be displayed every
+time you try to delete a password entry.<p>
+
 <h3>Record last access times</h3>
 
+<p>When checked, <b>Password Safe</b> records the time
+each entry was accessed (e.g., when the password was copied, or when the entry's details were
+viewed, etc.). The time is stored with the entry, and may be viewed in the entry's dialog box.</p>
 
+<b>Notes:<br></b>
 
-
-
-When checked, <span style="font-weight: bold;">Password Safe</span> records the time each entry was accessed
-(e.g., when the password was copied, or when the entry's details were
-viewed, etc.). The time is stored with the entry, and may be viewed in the entry's dialog box.<br>
-
-
-
-
-
-<span style="font-weight: bold;">Notes:<br>
-
-
-
-
-
-</span>
+<small>
 <ul>
-
-
-
-
-
-  <li><small>When this is enabled, the database will be modified even
+<li>When this is enabled, the database will be modified even
 when no entry was edited. This means you may be prompted to save the
-database upon exit, even though you didn't explicitly change anything.</small></li>
+database upon exit, even though you didn't explicitly change anything.</li>
 
-
-
-
-
-  <li><small>When the database is opened in read-only mode, the access times are <span style="font-weight: bold;">not </span>updated.</small></li>
-
-
-
-
-
+<li>When the database is opened in read-only mode, the access times are
+<b>not</b> updated.</li>
 </ul>
-
-
-
-
+</small>
 
 <h3>Escape key closes application</h3>
 
+<p>When checked, <b>Esc</b> can be used to close <b>Password Safe</b>
+when the program is maximized. Note that if the System Tray is enabled
+(via the Put Icon in System Tray option), then <b>Esc</b> just closes
+the main window, which can be re-opened by double-clicking on the icon
+in the System Tray.</p>
 
-
-
-
-
-
-			
-<p>When checked, <b>Esc</b> can be used to close
-			<b>Password Safe</b> when the program is
-			maximized. Note that if the System Tray is enabled
-			(via the Put Icon in System Tray option), then
-			<b>Esc</b> just closes the main window, which can
-			be re-opened by double-clicking on the icon in the
-			System Tray.</p>
-
-
-
-
-
-
-
-
-			
 <h3>Hot Key</h3>
 
-
-
-
-
-
-
-			
 <p>When checked, pressing the keys in the sequence to the right will
-restore PasswordSafe from the system tray, if minimized, or bring it to
+restore <b>Password Safe</b> from the system tray, if minimized, or bring it to
 the front, if obscured by other applications. The sequence may be
 changed when the option is checked.</p>
 
-
-
-
-
-
-
-
-			
 <h3>Double click action</h3>
 
-
-
-
-
-
-
-			
-<p>This allows you to define what action PasswordSafe will take when
+<p>This allows you to define what action <b>Password Safe</b> will take when
 you double-click on an entry. The default is to copy the entry's
 password to the clipboard. &nbsp;The available actions are:</p>
-<p></p>
+
 <ul>
-  <li>Autotype</li>
-  <li>Browse to URL</li>
-  <li>Browse to URL + Autotype</li>
-  <li>Copy notes to clipboard</li>
-  <li>Copy password to clipboard</li>
-  <li>Copy password to clipboard, minimize</li>
-  <li>Copy username to clipboard</li>
-  <li>Run Command</li>
-  <li>Send email</li>
-  <li>View/Edit selected entry</li>
+<li>Autotype</li>
+<li>Browse to URL</li>
+<li>Browse to URL + Autotype</li>
+<li>Copy notes to clipboard</li>
+<li>Copy password to clipboard</li>
+<li>Copy password to clipboard, minimize</li>
+<li>Copy username to clipboard</li>
+<li>Run Command</li>
+<li>Send email</li>
+<li>View/Edit selected entry</li>
 </ul>
-<p>Note that last item, copy password and then minimize, won't work as
+<p>Note th
+at last item, copy password and then minimize, won't work as
 expected if the "Clear clipboard on minimize" option is selected in the
 <a href="security_tab.html">Security Options tab</a>.</p>
 
-
-
-
 <h3>Autotype</h3>
 
-
 <ul>
-
-
-  <li><span style="font-weight: bold;">Minimize after autotype</span> By default, <span style="font-weight: bold;">Password Safe</span> minimizes when autotyping. If this checkbox is cleared, <span style="font-weight: bold;">Password Safe</span> will move "behind" all displayed windows instead.</li>
-
-
-  <li><span style="font-weight: bold;">Default Autotype String</span>
-Here you can specify the autotype string to use by default for all
-entries. Note that you can override this on a per-entry basis. This
-option is useful, for example, if you wish to change the delays for all
-entries. See <a href="autotype.html">here</a> for more details on autotype.</li>
-
-
+<li><b>Minimize after autotype</b> By default, <b>Password Safe</b>
+minimizes when autotyping. If this checkbox is cleared, <b>Password Safe</b>
+will move "behind" all displayed windows instead.</li>
+<li><b>Default Autotype String</b> Here you can specify the autotype
+string to use by default for all entries. Note that you can override
+this on a per-entry basis. This option is useful, for example, if you
+wish to change the delays for all entries. See <a href="autotype.html">here</a>
+for more details on autotype.</li>
 </ul>
-
 
 <h3>Default Username</h3>
 
-
-
-
-This allows you to set a default user name that will be used
-automatically every time a new password entry is generated. when checked, the name entered
-will be inserted into new entries' user name field as the default. Of course, you can edit it if needed.<br>
-
-
+<p>This allows you to set a default user name that will be used
+automatically every time a new password entry is generated. when checked,
+the name entered will be inserted into new entries' user name field as the
+default. Of course, you can edit it if needed.<br></p>
 
 <h3><a name="AltBrowser"></a>Alternate Browser</h3>
 
-
-
-The browser you specify in this field &nbsp;will be used when using the
+<p>The browser you specify in this field &nbsp;will be used when using the
 "Browse To" function for a selected entry, when the entry's URL has
 "[alt]" before the URL, e.g., "[alt]http://www.foo.net". This is
-useful, for example, if your
-default browser is Firefox, and you wish to access a website that works
-best with Internet Explorer, in which case you should specify the
-Internet Explorer as your alternate browser (typically "C:\Program
-Files\Internet Explorer\iexplorer.exe).<br>
+useful, for example, if your default browser is Firefox, and you wish
+to access a website that works best with Internet Explorer, in which case you
+should specify the Internet Explorer as your alternate browser (typically
+"C:\Program Files\Internet Explorer\iexplorer.exe).</p>
 
 
-You can specify command line options to the browser via the Browser command line parameters field. 
+<p>You can specify command line options to the browser via the Browser
+command line parameters field.</p>
 
-
-		</div>
-
-
-
-
-
-
-
-
-		<!-- Added some white space at the bottom for natural scrolling -->
-		<br>
-
-
-
-
-
-
+<!-- Added some white space at the bottom for natural scrolling -->
+<br>
+<br>
 <br>
 
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="Keyword" value="Misc Tab">
+<param name="Keyword" value="Confirm Delete">
+<param name="Keyword" value="Confirm Save">
+<param name="Keyword" value="Auto Save Changes">
+</object>
 
-
-
-
-
-<br>
-
-
-
-
-
-
-
-
-		<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
-			<param name="Keyword" value="Misc Tab">
-			<param name="Keyword" value="Confirm Delete">
-			<param name="Keyword" value="Confirm Save">
-			<param name="Keyword" value="Auto Save Changes">
-		</object>
-	
 </body>
 </html>

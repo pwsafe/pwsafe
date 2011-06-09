@@ -1,29 +1,22 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-  <title>File Menu</title>
+<title>File Menu</title>
 <!-- pwsafe version: 2.11--><!-- Modified: 15/06/2005 --><!--Popup control -->
-  <script language="javascript" src="html/popups.js">
-		</script>
-
-  <link rel="stylesheet" type="text/css" href="style.css">
+<script language="javascript" src="html/popups.js">
+</script>
+<link rel="stylesheet" type="text/css" href="style.css">
 </head>
-
 <body>
-
-<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11">
-		</object>
-
-		<!-- Popup Source File -->
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"></object>
+<!-- Popup Source File -->
 
 <h2>File Menu</h2>
 
-		<img alt="file menu" src="images/file_menu.jpg">
+<img alt="file menu" src="images/file_menu.jpg">
 
-<p>The <b>File Menu</b> contains options related to managing and creating new <span style="font-weight: bold;">Password Safe</span> databases.</p>
-
-
-<div class="instr">
+<p>The <b>File Menu</b> contains options related to managing and creating new
+<b>Password Safe</b> databases.</p>
 
 <h3>New</h3>
 
@@ -31,7 +24,14 @@
 
 <h3>Open</h3>
 
-<p>Open an existing password safe database.</p>
+<p>Open an existing password safe database. When presented with the Open
+dialog, you may specify to open an existing database in Read/Write of
+Read-Only mode. After opening, the current status will be shown in the
+Status Bar at the bottom of the <b>Password Safe</b> window. At any
+time after this, the user may double-click on that part of the Status
+Bar to switch between these two modes or use a menu item on the "File"
+menu.  It may not be possible to switch a database to Read-Write mode
+if another user currently has the database open in Read/Write mode.</p>
 
 <h3>Close</h3>
 
@@ -43,14 +43,18 @@
 opened database files. This section will be blank if this is the first
 time <b>Password Safe</b> has been used.</p>
 
-
 <hr style="width: 100%; height: 2px;">
-<p><small><span style="font-weight: bold;">Notes:</span></small></p>
 
+<small>
+<p><b>Notes:</b></p>
 <ul>
-<li><small>The list of recently opened files may be cleared by selecting "<span style="font-weight: bold;">Clear Recent Safe List</span>"</small></li>
-<li><small>The number of recent files that <span style="font-weight: bold;">Password Safe</span> will keep may be configured via the <a href="system_tab.html">Manage-&gt;Options-&gt;System</a> dialog box, where you may also configure if you prefer to see the recent files in the File menu, or as a submenu.</small></li>
+<li>The list of recently opened files may be cleared by selecting "<b>Clear Recent Safe List</b>"</li>
+<li>The number of recent files that <b>Password Safe</b> will keep may be configured via the
+<a href="system_tab.html">"Manage&nbsp;&rarr;&nbsp;Options&nbsp;&rarr;&nbsp;System"</a>
+tab, where you may also configure if you prefer to see the recent files in the File menu,
+or as a submenu.</li>
 </ul>
+</small>
 
 <hr style="width: 100%; height: 2px;">
 
@@ -66,36 +70,44 @@ choice will be greyed-out.</p>
 
 <h3>Export To</h3>
 
-
-<p>Export the contents of the current database to an <a href="JavaScript:popup.TextPopup(strExternalFile,popFont,9,9,-1,-1)">external
-file</a> in either an old <span style="font-weight: bold;">Password Safe</span> database&nbsp;format, XML, or as text. See <a href="export.html">here</a> for
+<p>Export the contents of the current database to an
+<a href="JavaScript:popup.TextPopup(strExternalFile,popFont,9,9,-1,-1)">external
+file</a> in either an old <b>Password Safe</b> database format,
+XML, or as text. See <a href="export.html">here</a> for
 more information on exporting the database to other formats.</p>
 
 <h3>Import From</h3>
 
 <p>Import the contents of a previously <a href="export.html">exported</a> or
 correctly formatted text file, XML, or a KeePass V1 password
-database into the current database. See <a href="import.html">here</a> for 
+database into the current database. See <a href="import.html">here</a> for
 more information on importing text files.</p>
 
 <h3>Merge</h3>
 
-<p>Merge a <b>Password Safe</b> database or backup file (.bak) into the current database. Disabled in read-only mode.</p>
+<p>Merge a <b>Password Safe</b> database or backup file (.bak) into the current database.
+Disabled in read-only mode.  Merge uses a Wizard interface. You may also select the Advanced
+field selection in order to restrict which entries you merge into your current database.</p>
 
 <h3>Compare</h3>
 
-<p>Compare the currently opened database with another.</p>
+<p>Compare the currently opened database with another. Compare uses a Wizard interface.
+You may also select the Advanced field selection in order to restrict which entries and
+which fields of these entries you compare between the two databases.</p>
 
 <h3>Synchronize</h3>
 
 <p>Synchronize the currently opened database with another.</p>
-<p>The main difference between Merge and Synchronize is that during a Merge, all elements of the merging
-database will be taken to the currently opened database. During synchronizing however, only elements
-in the currently opened database will be updated.</p>
+<p>The main difference between Merge and Synchronize is that during a Merge,
+all elements of the merging database will be taken to the currently
+opened database. During synchronizing however, only elements
+in the currently opened database will be updated. Synchronize uses a Wizard interface.
+You may also select the Advanced field selection in order to restrict which entries and
+which fields of these entries you synchronize between the two databases.</p>
 
 <hr style="width: 100%; height: 2px;">
-<p><small><b>Note:</b> The Merge, Compare and Synchronize operations may take a long
-  time, especially for large databases.</small></p>
+<p style="color=red;"><b>Note:</b> The Merge, Compare and Synchronize operations may take a long
+time, especially for large databases.</p>
 
 <hr style="width: 100%; height: 2px;">
 
@@ -110,8 +122,19 @@ when it was last saved and by whom.</p>
 <p>Closes the <b>Password Safe</b> program. If changes were made to the database since the last
 save, you will be prompted to save the database.</p>
 
+<hr>
 
-</div>
+<h4>Reports</h4>
+
+<p><b>Note:</b> Compare, Export, Import, Merge and Synchronize all produce a report
+that can be viewed in a dialog and then copied to the clipboard or saved to disk
+as a text file in the same directory as the database. The 
+"View&nbsp;&rarr;&nbsp;Reports" menu item may then be used to
+view the reports at a later date. The name of the report file is fixed and
+dependent on the function that created it. If the same function is repeated
+and its report saved to disk, any existing report for this function will be
+overwritten. <span style="color=red;">Note: The report may contain sensitive data and
+care should be taken when selecting the "save to disk" option.</span></p>
 
 <!-- Added some white space at the bottom for natural scrolling -->
 <br>
@@ -123,6 +146,9 @@ save, you will be prompted to save the database.</p>
 <param name="Keyword" value="KeePass">
 <param name="Keyword" value="Export">
 <param name="Keyword" value="Import">
+<param name="Keyword" value="Merge">
+<param name="Keyword" value="Compare">
+<param name="Keyword" value="Synchronize">
 </object>
 
 </body>
