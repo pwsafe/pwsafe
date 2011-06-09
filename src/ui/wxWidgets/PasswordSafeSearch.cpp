@@ -292,9 +292,9 @@ void PasswordSafeSearch::CreateSearchBar()
     wxMessageBox(wxT("Could not display searchbar"));
  
   //This gross hack is the only way I could think of to get ESC keystrokes from the text ctrl user is typing into
-  if (wxDynamicCast(srchCtrl, wxTextCtrl)) {
+  if (wxDynamicCast(static_cast<wxControl*>(srchCtrl), wxTextCtrl)) {
     //searchCtrl is a wxTextCtrl derivative, like on Mac OS X 10.3+
-    wxDynamicCast(srchCtrl, wxTextCtrl)->Connect(wxEVT_CHAR, wxCharEventHandler(PasswordSafeSearch::OnSearchBarTextChar), NULL, this);
+    wxDynamicCast(static_cast<wxControl*>(srchCtrl), wxTextCtrl)->Connect(wxEVT_CHAR, wxCharEventHandler(PasswordSafeSearch::OnSearchBarTextChar), NULL, this);
   }
   else {
     //The wxTextCtrl is buried inside the wxSearchCtrl
