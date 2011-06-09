@@ -674,7 +674,7 @@ msgstr "&Importieren"
 
 #. Resource IDs: (1228)
 msgid "&In"
-msgstr "$in"
+msgstr "&In"
 
 #. Resource IDs: (1143)
 msgid "&Keep"
@@ -730,7 +730,7 @@ msgstr "&Notizen:"
 
 #. Resource IDs: (1227)
 msgid "&On"
-msgstr "$Ein"
+msgstr "&Am"
 
 #. Resource IDs: (360)
 msgid "&Open"
@@ -4716,7 +4716,7 @@ msgstr "Wählen Sie eine Sicherungsdatei zum Wiederherstellen aus:"
 
 #. Resource IDs: (335)
 msgid "Please Choose a Database to Compare with current open database"
-msgstr "Bitte wählen Sie eine Datenbank zum Vergleich mit der aktuell geöffneten aus"
+msgstr "Auswahl einer Datenbank zum Vergleich mit der aktuell geöffneten"
 
 #. Resource IDs: (333)
 msgid "Please Choose a Database to Open:"
@@ -4744,11 +4744,11 @@ msgstr "Bitte wählen sie eine XML-Datei zum Importieren aus"
 
 #. Resource IDs: (335)
 msgid "Please choose a database to merge into current database"
-msgstr "Bitte wählen Sie eine Datenbank zum Zusammenführen in die aktuellen Datenbank"
+msgstr "Auswahl einer Datenbank zum Zusammenführen in die aktuellen DB"
 
 #. Resource IDs: (360)
 msgid "Please choose a database to synchronize with current database"
-msgstr "Bitte wählen Sie eine Datenbank zum Synchronisieren mit der aktuellen Datenbank"
+msgstr "Auswahl einer Datenbank zum Synchronisieren mit der aktuellen"
 
 #. Resource IDs: (333)
 msgid "Please choose a name for the current (Untitled) database:"
