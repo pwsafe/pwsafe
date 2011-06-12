@@ -21,28 +21,33 @@
 
   This XSLT file conforms to V1.0 of XSLT as described in http://www.w3.org/TR/xslt
 
-  During testing under Windows,
-  a. It appears that the old command line program from Microsoft (msxml.exe V1.1.0.1
-     dated 2001) cannot process this XSLT file.
-  b. The command line progam NSLT2 (V2.2 dated 2005) can correctly process this XSLT
-     file but it no longer seems to be under active development and, although can be
-     found on the web, the home web site no longer allows downloads.
-  c. AltovaXML Community Edition (current version 2011r2sp1) can also correctly process
-     this XSLT file. See http://www.altova.com/altovaxml.html.
-  d. Saxon-HE (Home Edition) (current version 9.3.0.5) may support this XSLT file but
-     has not yet been tested. See http://saxon.sourceforge.net/.
+  Under Windows, the following 3 programs can process this file:
+  a. Command line program msxml.exe from Microsoft (Note: the executable states it
+     is V1.1.0.1 but the website says it is V2.0).
+  b. AltovaXML Community Edition (current version 2011r3). 
+     See http://www.altova.com/altovaxml.html.
+  c. Saxon-HE (Home Edition) (current version 9.3.0.5).
+     See http://saxon.sourceforge.net/.
+     There is also a graphical front-end for Saxon called Kernow.
+     See http://kernowforsaxon.sourceforge.net
 
-  All four programs are free.
+  All programs are free.
 -->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
          xmlns:xs="http://www.w3.org/2001/XMLSchema" exclude-result-prefixes="xs">
   <xsl:output method="xml" encoding="UTF-8" indent="yes"
          cdata-section-elements="group title password username url notes uuid"/>
+
+  <xsl:variable name="delimiter" select="'&#0187;'" />
+  <xsl:variable name="crlf" select="'&#0013;&#0010;'"/>
+ 
   <xsl:template match="/">
-    <passwordsafe delimiter="&#0187;">
+    <passwordsafe>
       <xsl:attribute name="xsi:noNamespaceSchemaLocation"
             namespace="http://www.w3.org/2001/XMLSchema-instance">pwsafe.xsd</xsl:attribute>
+      <xsl:attribute name="delimiter"><xsl:value-of select="$delimiter" /></xsl:attribute>
+
       <xsl:for-each select="pwlist/pwentry">
         <xsl:variable name="vgroup" select="translate(group, '.', '/')"/>
         <xsl:variable name="vtemp1" select="string(group/@tree)"/>
@@ -53,6 +58,9 @@
         <xsl:variable name="vexpiretime" select="expiretime"/>
         <xsl:variable name="vexpires" select="string($vexpiretime/@expires)"/>
         <xsl:variable name="vlastmodtime" select="string(lastmodtime)"/>
+        <xsl:value-of select="$crlf" disable-output-escaping="yes"/>
+        <xsl:value-of select="$crlf" disable-output-escaping="yes"/>
+
         <entry>
           <xsl:attribute name="id">
             <xsl:value-of select="position()"/>
@@ -83,14 +91,42 @@
             <xsl:value-of select="string(url)"/>
           </url>
           <notes>
-            <xsl:variable name="vnotes_nocrlf">
+            <!-- Here we have to remove character \r and string &#xD;
+                 and replace character \n and string &#xA; by the delimiter
+                 Which ones actually do the work depends on how the user exported
+                 the XML. Checking "Encode/Replace newline characters with '\n'"
+                 gives an XML file with the strings '\r\n', unchecking this option
+                 gives an XML file with the strings '&#xD;&#xA;'.
+            -->
+            <xsl:variable name="vnotes_1">
               <xsl:call-template name="string-replace-all">
                 <xsl:with-param name="text" select="$vnotes"/>
-                <xsl:with-param name="replace" select="'\r\n'"/>
-                <xsl:with-param name="by" select="'&#0187;'"/>
+                <xsl:with-param name="replace" select="'\n'"/>
+                <xsl:with-param name="by" select="$delimiter"/>
               </xsl:call-template>
             </xsl:variable>
-            <xsl:value-of select="string($vnotes_nocrlf)"/>
+            <xsl:variable name="vnotes_2">
+              <xsl:call-template name="string-replace-all">
+                <xsl:with-param name="text" select="$vnotes_1"/>
+                <xsl:with-param name="replace" select="'\r'"/>
+                <xsl:with-param name="by" select="''"/>
+              </xsl:call-template>
+            </xsl:variable>
+            <xsl:variable name="vnotes_3">
+              <xsl:call-template name="string-replace-all">
+                <xsl:with-param name="text" select="$vnotes_2"/>
+                <xsl:with-param name="replace" select="'&#xA;'"/>
+                <xsl:with-param name="by" select="$delimiter"/>
+              </xsl:call-template>
+            </xsl:variable>
+            <xsl:variable name="vnotes_4">
+              <xsl:call-template name="string-replace-all">
+                <xsl:with-param name="text" select="$vnotes_3"/>
+                <xsl:with-param name="replace" select="'&#xD;'"/>
+                <xsl:with-param name="by" select="''"/>
+              </xsl:call-template>
+            </xsl:variable>
+            <xsl:value-of select="string($vnotes_4)"/>
           </notes>
           <uuid>
             <xsl:value-of select="string(uuid)"/>
@@ -114,6 +150,8 @@
           </rmtimex>
         </entry>
       </xsl:for-each>
+      <xsl:value-of select="$crlf" disable-output-escaping="yes"/>
+      <xsl:value-of select="$crlf" disable-output-escaping="yes"/>
     </passwordsafe>
   </xsl:template>
 
