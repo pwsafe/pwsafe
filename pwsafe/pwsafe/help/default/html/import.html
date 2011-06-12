@@ -28,21 +28,23 @@ text editor.</p>
 <li><a href="#KeePassXML">KeePass V1 and V2 XML Files</a></li>
 </ul>
 
-<p>In addition, to 'import' a subset of entries from another <b>Password Safe</b>
-database, just start <b>Password Safe</b> (assuming you permit multiple instances via
-<a href="system_tab.html">"Manage&nbsp;&rarr;&nbsp;Options&nbsp;&rarr;&nbsp;System"</a>
-tab) and open the other database, whilst having your normal database open in another
-instance. Then you can simply drag and drop any entries or groups to your open database
-from this 'import' database. </p>
-
-<p>A report of the actions taken will be available on completion and this may
-be copied to the clipboard or saved to disk as a text file in the same directory
-as the database. The "View&nbsp;&rarr;&nbsp;Reports" menu item may then be used to
+<p>At the end of the import operation, a report will be available
+  summarizing what was done and noting any problems that may have
+  occurred. This report may be copied to the clipboard or saved to
+  disk as a text file in the same directory as the database.
+  The "View&nbsp;&rarr;&nbsp;Reports" menu item may then be used to
 view the reports at a later date. The name of the report file is fixed and
 dependent on the function that created it. If the same function is repeated
 and its report saved to disk, any existing report for this function will be
 overwritten. <span style="color=red;">Note: The report may contain sensitive data and
 care should be taken when selecting the "save to disk" option.</span></p>
+
+<p><b>Note:</b> You can also 'import' a subset of entries from another <b>Password Safe</b>
+database, by  opening the other database with <b>Password Safe</b>
+  (assuming you permit multiple instances via 
+<a href="system_tab.html">"Manage&nbsp;&rarr;&nbsp;Options&nbsp;&rarr;&nbsp;System"</a>
+tab). Then you can simply drag and drop any entries or groups to your open database
+from this 'import' database. </p>
 
 <h3><a name="text"></a>Text Format</h3>
 
@@ -130,8 +132,9 @@ of each line:</p>
 <li>"Attachment" - do <b><u>NOT</u></b> export this field as it can make the export file extremely large.</li>
 </ul>
 
-<p>Note that times in <b>Password Safe</b> must be earlier than January 19, 2038.  Any time greater than this is
-treated as invalid and that the associated field is unset.</p>
+<p>Note that times in <b>Password Safe</b> must be earlier than
+  January 19, 2038.  Any time later than this is currently
+treated as invalid and the associated field is unset.</p>
 
 <p>Please note, you <b><u>MUST</u></b> check the box <i>"Encode/replace newline characters by '\n'"</i>
 during the export from Keepass V1 or <u>the import may fail or give unexpected results.</u></p>
@@ -166,8 +169,9 @@ by V1.19b).</p>
 <li>"Attachment" - do <b><u>NOT</u></b> export this field as it can make the export file extremely large.</li>
 </ul>
 
-<p>Note that times in <b>Password Safe</b> must be earlier than January 19, 2038.  Any time greater than this is
-treated as invalid and that the associated field is unset.</p>
+<p>Note that times in <b>Password Safe</b> must be earlier than
+  January 19, 2038.  Any time later than this is currently
+  treated as invalid and that the associated field is unset.</p>
 
 <p>Please note, you <b><u>MUST</u></b> check the box <i>"Encode/replace newline characters by '\n'"</i>
 during the export from Keepass V1 or <u>the import may fail or give unexpected results.</u></p>
@@ -178,23 +182,22 @@ during the export from Keepass V1 or <u>the import may fail or give unexpected r
 <a href="#KeePassXML">below</a></u>.</p>
 
 <p><b>Password Safe</b> cannot import any file created by KeePass V2 - even the KeePass V1 CSV format
-available from this program, as it does not allow the important setting of the 
-<i>"Encode/replace newline characters by '\n'"</i> requirement.  However, it is possible to
+available from this program.  However, it is possible to
 export a KeePass V2 database as a KeePass V1 database.  You may then export this to either a
 TXT or CSV file and imported as described <a href="#KeePassV1_TXTCSV">above</a>.</p>
 
 <h3><a name="KeePassXML"></a>KeePass V1 and V2 XML Files</h3>
 
 <p><b>Password Safe</b> cannot directly import a XML file exported by KeePass V1 or V2 as the fields are
-too different. However, we have provided XSL Transfom files (KPV1_to_PWS.xslt and KPV2_to_PWS.xslt).
-Once exported from KeePass to an XML file, the programs below be used to process it with one
-of these XSLT files to produce a <b>Password Safe</b> compatible XML file that can then be imported
-in <b>Password Safe</b> <u>V3.26 or later</u>.</p>
+too different. However, we have provided XSL Transform files (KPV1_to_PWS.xslt and KPV2_to_PWS.xslt).
+The programs listed below may be used to process the exported XML file with one of these XSLT files to produce a <b>Password Safe</b> compatible XML file that can then be imported
+to <b>Password Safe</b> <u>V3.26 or later</u>.</p>
 
 <p>The XSLT files conform to V1.0 of XSLT as described in <a target="blank" href="http://www.w3.org/TR/xslt">
 http://www.w3.org/TR/xslt</a> and have been tested with XML files created by KeePass V1.19b and KeePass V2.15.</p>
 
-<p>Note that times in <b>Password Safe</b> must be earlier than January 19, 2038.  Any time greater than this is
+<p>Note that times in <b>Password Safe</b> must be earlier than
+  January 19, 2038.  Any time later than this is currently
 treated as invalid and that the associated field is unset.</p>
 
 <p>Under Windows, the following XSLT processors support the supplied XSL Transform files. The example
@@ -205,7 +208,7 @@ KPV2_to_PWS.xslt.</li>
 <li>The input KeePass V1 or V2 XML file is: KeePassV1.xml or KeePassV2.xml</li>
 <li>The output <b>Password Safe</b> XML file will be: PWS.xml</li>
 <li>All input and output files are in the same directory as the XSLT processor. If not, you will need to
-enter the full path of these files when using the suggested command line invocation of these processors below.</li>
+specify enter the full path of these files.</li>
 </ul>
 <ol>
 <li>The command line program from Microsoft (XSLT Processor Version 4.0). The properties of the file msxsl.exe state that it is V1.1.0.1 and dated 2001, although the web site states that it is V2.0 and dated 19 September 2004.
