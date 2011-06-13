@@ -96,8 +96,8 @@ the file <i>pwsafe.xsd</i>, which is provided as part of the distribution.</p>
 
 <h3><a name="KeePassV1_TXTCSV"></a>KeePass V1 TXT and CSV Files</h3>
 
-<p><u>The recommended import of KeePass V1 database entries is via XML as described
-<a href="#KeePassXML">below</a></u>.</p>
+<p><u>The recommended import of KeePass V1 database entries is via XML as described </u>
+<a href="#KeePassXML"><u>below</u></a>.</p>
 
 <h4>TXT File</h4>
 
@@ -178,8 +178,8 @@ during the export from Keepass V1 or <u>the import may fail or give unexpected r
 
 <h3><a name="KeePassV2_CSV"></a>KeePass V2 via KeePass V1 CSV Files</h3>
 
-<p><u>The recommended import of KeePass V2 database entries is via XML as described
-<a href="#KeePassXML">below</a></u>.</p>
+<p><u>The recommended import of KeePass V2 database entries is via XML as described </u>
+<a href="#KeePassXML"><u>below</u></a>.</p>
 
 <p><b>Password Safe</b> cannot import any file created by KeePass V2 - even the KeePass V1 CSV format
 available from this program.  However, it is possible to
@@ -241,17 +241,173 @@ AltovaXML -xslt1 KPV2_to_PWS.xslt -in KeePassV2.xml -out PWS.xml
 See <a target="blank" href="http://saxon.sourceforge.net/">http://saxon.sourceforge.net/</a>.
 There is also a graphical front-end for Saxon called Kernow.
 See <a target="blank" href="http://kernowforsaxon.sourceforge.net/">http://kernowforsaxon.sourceforge.net/</a>.
-The format of the command depends on whether you use the Java or .Net version of Saxon-HE and/or Kernow.  Please
-refer to the product's documentation for further information.</li>
+The format of the command depends on whether you use the Java or .Net version of
+Saxon-HE and/or Kernow.  Please refer to the product's documentation for further information.</li>
 </ol>
 
 <p>All these programs are free, although Kernow needs to be registered if used more than 100 times.</p>
 
-<h4>KeePass V2 XML Auto-type</h4>
+<h4>KeePass V1 XML Special Processing</h4>
+
+<ul>
+<li>If a KeePass group contains a dot ('.'), it is converted to a forward slash ('/') when added to
+<b>Password Safe</b>, since dots are used as group delimiters by <b>Password Safe</b>.</li>
+
+<li>All 'carriage return' characters are removed from the Notes field and all 'newline' characters
+are converted to the normal <b>Password Safe</b> delimiter '&raquo;' used to denote new lines within
+the Notes field.</li>
+
+<li>The KeePass entry's UUID will be transferred to the <b>Password Safe</b> entry unless it is already
+used within that database (which is very unlikely), in which case a new value will be calculated during
+import.</li>
+</ul>
+
+<table border="1" cellpadding="2" cellspacing="2 width="80%">
+<col align="left" width="30%" />
+<col align="center" width="70%" />
+<thead>
+<tr>
+<th>KeePass V1 XML Elements</th>
+<th>Password Safe XML Element Equivalent</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>&lt;group&gt;</td><td>&lt;group&gt;</td></tr>
+<tr><td>&lt;title&gt;</td><td>&lt;title&gt;</td></tr>
+<tr><td>&lt;username&gt;</td><td>&lt;username&gt;</td></tr>
+<tr><td>&lt;password&gt;</td><td>&lt;password</td></tr>
+<tr><td>&lt;url&gt;</td><td>&lt;url&gt;</td></tr>
+<tr><td>&lt;notes&gt;</td><td>&lt;notes&gt;</td></tr>
+<tr><td>&lt;lastmodtime&gt;</td><td>&lt;pmtimex&gt; <u>and</u> &lt;rmtimex&gt;</td></tr>
+<tr><td>&lt;creationtime&gt;</td><td>&lt;ctimex&gt;</td></tr>
+<tr><td>&lt;lastaccesstime&gt;</td><td>&lt;atimex&gt;</td></tr>
+<tr><td>&lt;expiretime&gt;</td><td>&lt;xtimex&gt;, if the KeePass &lt;expiretime&gt; attribute "expires"
+is 'true'</td></tr>
+<tr><td>&lt;image&gt;<br>&lt;attachdesc&gt;<br>&lt;attachment&gt;</td><td><br>These have no <b>Password Safe</b>
+equivalent and are ignored</td></tr>
+</tbody>
+</table>
+
+<h4>KeePass V2 XML Special Processing</h4>
+
+<ul>
+<li>The '&lt;HistoryMaxItems&gt;' field from the '&lt;Meta&gt;' section of the KeePass V2 XML file
+is used as the maximum number of passwords to be saved in an <b>Password Safe</b>'s entry password
+history.  All other fields in this section are ignored.</li>
+
+<li>If a KeePass group contains a dot ('.'), it is converted to a forward slash ('/') when added to
+<b>Password Safe</b>, since dots are used as group delimiters by <b>to Password Safe</b>.</li>
+
+<li>All 'carriage return' characters are removed from the Notes field and all 'newline' characters
+are converted to the normal <b>Password Safe</b> delimiter '&raquo;' used to denote new lines within
+the Notes field.</li>
+
+<li>The KeePass entry's UUID will be transferred to the <b>Password Safe</b> entry unless it is already
+used within that database (which is very unlikely), in which case a new value will be calculated during
+import.</li>
+
+<li>If the '&lt;DefaultAutoTypeSequence&gt;' field is present within a KeePass group is used
+as the default <b>Password Safe</b> Autotype field for entries within that group.</li>
+
+<li>If an entry's '&lt;AutoType&gt;' field is set to 'True' and the '&lt;DefaultSequence&gt;'
+is not empty, then this is used as the <b>Password Safe</b>'s entry's Autotype sequence. If it is
+'True' but '&lt;DefaultSequence&gt;' is empty, then the '&lt;DefaultAutoTypeSequence&gt;' field from 
+the parent group is used as the <b>Password Safe</b>'s entry's Autotype sequence.</li>
+
+<li>If the '&lt;OverrideURL&gt;' field is not empty, its value is inserted into the Notes field and
+prefixed by "OverrideURL:" and the URL field is prefixed by "[alt]".</li>
+
+<li>If the URL string begins with "\\" or "cmd://" (case insensitve) the field is placed in the
+<b>Password Safe</b>'s entry's Run Command field and Placeholder substitution is performed (see below).
+If neither of these prefixes appear in the URL string, it is placed in the <b>Password Safe</b>'s
+entry's URL field with only {S:FieldName} substitution.</li>
+
+<li>If the '&lt;Tags&gt;' field is not empty, its value is inserted into the Notes field and
+prefixed by "Tags:".</li>
+</ul>
+
+<p>KeePass V2 exports all strings, e.g. Title, in a "String" section with "Key" and "Value" sub-elements.
+For example:
+<pre>
+&lt;String&gt;
+	&lt;Key&gt;Title&lt;/Key&gt;
+	&lt;Value&gt;Test title&lt;/Value&gt;
+&lt;/String&gt;
+</pre>
+<p>The following table shows the conversion of these to the <b>Password Save</b> equivalent XML
+element.</p>
+
+<table border="1" cellpadding="2" cellspacing="2 width="80%">
+<col align="left" width="30%" />
+<col align="center" width="70%" />
+<thead>
+<tr>
+<th>KeePass V2 String Keys</th>
+<th>Password Safe Entry XML Element Equivalent</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>[Key='Title']: Value</td><td>&lt;title&gt;</td></tr>
+<tr><td>[Key='Username']: Value</td><td>&lt;username&gt;</td></tr>
+<tr><td>[Key='Password']: Value</td><td>&lt;password&gt;</td></tr>
+<tr><td>[Key='URL']: Value</td><td>&lt;url&gt;</td></tr>
+<tr><td>[Key='Notes']: Value</td><td>&lt;notes&gt;</td></tr>
+<tr><td>All others</td><td>Inserted into the <b>Password Safe</b> Notes field in the form:<br> "Key: Value"</td></tr>
+</tbody>
+</table>
+
+<p>KeePass V2 exports all date/time fields, e.g. creation time, in a "Times" section. For example:</p>
+<pre>
+&lt;Times&gt;
+  &lt;LastModificationTime&gt;2011-05-30T14:20:57Z&lt;/LastModificationTime&gt;
+  &lt;CreationTime&gt;2011-05-27T18:09:29Z&lt;/CreationTime&gt;
+  &lt;LastAccessTime&gt;2011-05-30T14:20:57Z&lt;/LastAccessTime&gt;
+  &lt;ExpiryTime&gt;2999-12-28T23:59:59Z&lt;/ExpiryTime&gt;
+  &lt;Expires&gt;False&lt;/Expires&gt;
+&lt;/Times&gt;
+</pre>
+<p>The following table shows the conversion of these to the <b>Password Save</b> equivalent XML
+element.</p>
+
+<table border="1" cellpadding="2" cellspacing="2 width="80%">
+<col align="left" width="30%" />
+<col align="center" width="70%" />
+<thead>
+<tr>
+<th>KeePass V2 Time Values</th>
+<th>Password Safe Entry XML Element Equivalent</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>&lt;Times&gt;/&lt;LastModificationTime&gt;</td><td>&lt;pmtimex&gt; <u>and</u> &lt;pmtimex&gt;</td></tr>
+<tr><td>&lt;Times&gt;/&lt;CreationTime&gt;</td><td>&lt;ctimex&gt;</td></tr>
+<tr><td>&lt;Times&gt;/&lt;LastAccessTime&gt;</td><td>&lt;atimex&gt;</td></tr>
+<tr><td>&lt;Times&gt;/&lt;ExpiryTime&gt;</td><td>&lt;xtimex&gt; if &lt;Times&gt;/&lt;Expires&gt; is 'True'</td></tr>
+</tbody>
+</table>
+
+<p>KeePass V2 can create an history section when anything is changed in an entry. <b>Password Safe</b>
+only saves password changes.  All other saved changed fields in the KeePass XML element are ignored.</p>
+
+<table border="1" cellpadding="2" cellspacing="2 width="80%">
+<col align="left" width="30%" />
+<col align="center" width="70%" />
+<thead>
+<tr>
+<th>KeePass V2 History</th>
+<th>Password Safe Entry XML Element Equivalent</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>&lt;Times&gt;/&lt;LastModificationTime&gt;</td><td>&lt;history_entry&gt;/&lt;changedx&gt;</td></tr>
+<tr><td>&lt;String[Key='Password']&gt;</td><td>&lt;history_entry&gt;/&lt;oldpassword&gt;</td></tr>
+<tr><td>All other tags from &lt;History&gt;</td><td>Ignored</td></tr>
+</tbody>
+</table>
 
 <p>The following KeePass V2 Auto-type special codes (see
 <a target="blank" href="http://keepass.info/help/base/autotype.html">http://keepass.info/help/base/autotype.html</a>) 
-are translated as follows.  All codes not listed are copied across as-is.</p>
+are translated as follows.  <i>All codes not listed are copied across as-is.</i></p>
 
 <table border="1" cellpadding="2" cellspacing="2 width="80%">
 <col align="left" width="75%" />
@@ -263,6 +419,7 @@ are translated as follows.  All codes not listed are copied across as-is.</p>
 </tr>
 </thead>
 <tbody>
+<tr><td>\\</td><td>\</td></tr>
 <tr><td>Tab {TAB}</td><td>\t</td></tr>
 <tr><td>Enter {ENTER} or ~</td><td>\n</td></tr>
 <tr><td>Backspace {BACKSPACE}, {BS} or {BKSP}</td><td>\b</td></tr>
@@ -274,15 +431,18 @@ are translated as follows.  All codes not listed are copied across as-is.</p>
 <tr><td>^ {^}</td><td>^</td></tr>
 <tr><td>% {%}</td><td>%</td></tr>
 <tr><td>~ {~}</td><td>~</td></tr>
+<tr><td>(, )  {(}, {)}</td><td>(, )</td></tr>
 <tr><td>{DELAY X} Delays X milliseconds.</td><td>\wX (\WX)</td></tr>
 <tr><td>{DELAY=X} Sets the default delay to X milliseconds for all standard keypresses in this sequence.</td><td>\dX</td></tr>
-<tr><td>\</td><td>\\</td></tr>
 </tbody>
 </table>
 
 <p>The following KeePass V2 Placeholders (see 
 <a target="blank" href="http://keepass.info/help/base/placeholders.html">http://keepass.info/help/base/placeholders.html</a>)
-are translated as follows.  All codes not listed are copied across as-is.</p>
+are translated as follows.  <i>All codes not listed are copied across as-is</i>.</p>
+
+<p>Placeholders are case-insensitive. Custom strings can be referenced using {S:Name}. For example,
+if the database has a custom string named "eMail", it can be referenced via the placeholder {S:eMail}.</p>
 
 <table border="1" cellpadding="2" cellspacing="2 width="80%">
 <col align="left" width="33%" />
@@ -296,13 +456,11 @@ are translated as follows.  All codes not listed are copied across as-is.</p>
 </tr>
 </thead>
 <tbody>
-<tr><td>{GROUP}</td><td>\g</td><td>$G</td></tr>
-<tr><td>{GROUPPATH}</td><td>-</td><td>$g</td></tr>
-<tr><td>{TITLE}</td><td>\i</td><td>$t</td></tr>
-<tr><td>{USERNAME}</td><td>\u</td><td>$u</td></tr>
-<tr><td>{PASSWORD}</td><td>\p</td><td>$p</td></tr>
-<tr><td>{URL}</td><td>-</td><td>$url</td></tr>
-<tr><td>{NOTES}</td><td>\o</td><td>$n</td></tr>
+<tr><td>{GROUP}</td><td>\g</td><td>${G}</td></tr>
+<tr><td>{TITLE}</td><td>\i</td><td>${t}</td></tr>
+<tr><td>{USERNAME}</td><td>\u</td><td>${u}</td></tr>
+<tr><td>{PASSWORD}</td><td>\p</td><td>${p}</td></tr>
+<tr><td>{NOTES}</td><td>\o</td><td>${n}</td></tr>
 <tbody>
 </table>
 
@@ -318,12 +476,18 @@ are translated as follows.  All codes not listed are copied across as-is.</p>
 </tr>
 </thead>
 <tbody>
-<tr><td>{APPDIR}</td><td>$appdir</td></tr>
-<tr><td>{DB_PATH}</td><td>$fulldb</td></tr>
-<tr><td>{DB_DIR}</td><td>$dbdir</td></tr>
-<tr><td>{DB_NAME}</td><td>$dbname.$dbextn</td></tr>
-<tr><td>{DB_BASENAME}</td><td>$dbname</td></tr>
-<tr><td>{DB_EXT}</td><td>$dbextn</td></tr>
+<tr><td>\{</td><td>\\{ (escaping \)</td></tr>
+<tr><td>$</td><td>\$ (escaping $)</td></tr>
+<tr><td>{GROUPPATH}</td><td>${g}</td></tr>
+<tr><td>{URL}</td><td>${url}</td></tr>
+<tr><td>{URL:RMVSCM}</td><td>${url}</td></tr>
+<tr><td>{APPDIR}</td><td>${appdir}</td></tr>
+<tr><td>{DB_PATH}</td><td>${fulldb}</td></tr>
+<tr><td>{DB_DIR}</td><td>${dbdir</td></tr>
+<tr><td>{DB_NAME}</td><td>${dbname}.${dbextn}</td></tr>
+<tr><td>{DB_BASENAME}</td><td>${dbname}</td></tr>
+<tr><td>{DB_EXT}</td><td>${dbextn}</td></tr>
+<tr><td>All others</td><td>Copied unchanged</td></tr>
 <tbody>
 </table>
 
