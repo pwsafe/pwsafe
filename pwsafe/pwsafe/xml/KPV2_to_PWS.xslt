@@ -133,7 +133,7 @@
       <username>
         <xsl:value-of select="String[Key='UserName']/Value"/>
       </username>
-      <!-- passowrd -->
+      <!-- password -->
       <password>
         <xsl:value-of select="String[Key='Password']/Value"/>
       </password>
@@ -604,7 +604,7 @@
           <xsl:call-template name="substSequence">
             <xsl:with-param name="str" select="$substPassword"/>
             <xsl:with-param name="tag" select="'NOTES'"/>
-            <xsl:with-param name="by" select="'${o}'"/>
+            <xsl:with-param name="by" select="'${n}'"/>
           </xsl:call-template>
         </xsl:variable>
         <!-- {URL} -->

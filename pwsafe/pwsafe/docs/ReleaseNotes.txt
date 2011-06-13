@@ -60,6 +60,8 @@ file names and paths containing non-Latin characters.  In addition, when the spe
 path does not exist because directories are not there, they are created in order to
 save the exported file.
 [3234204] PasswordSafe no longer ends if the command flag is set to "-s <databasename>".
+[3088187] Correct entry in List View is now used for Autotype when using the keyboard
+to select the entry when PasswordSafe first opens.
 [] Controls in Edit are now disabled if entry is protected, even though the user could
 not have saved any changes.
 [] Compare databases now correctly compares the 'Protect' and password policy 'symbols'
