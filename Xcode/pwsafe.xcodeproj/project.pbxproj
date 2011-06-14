@@ -73,6 +73,10 @@
 		E6391BF212FD21B9009BBB8D /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B1448712B26D1500415AAE /* Cocoa.framework */; };
 		E6391BF312FD21B9009BBB8D /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B1449312B26D7E00415AAE /* IOKit.framework */; };
 		E6391BF412FD21B9009BBB8D /* QuickTime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B144BA12B2707E00415AAE /* QuickTime.framework */; };
+		E66EE0B313921B30005C10C5 /* ComparisonGridTable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66EE0B113921B30005C10C5 /* ComparisonGridTable.cpp */; };
+		E66EE0B413921B30005C10C5 /* ComparisonGridTable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66EE0B113921B30005C10C5 /* ComparisonGridTable.cpp */; };
+		E66EE0B513921B30005C10C5 /* ComparisonGridTable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66EE0B113921B30005C10C5 /* ComparisonGridTable.cpp */; };
+		E66EE0B613921B30005C10C5 /* ComparisonGridTable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66EE0B113921B30005C10C5 /* ComparisonGridTable.cpp */; };
 		E690B55F12984A1B007EA508 /* pwsafe_filter.xsd in Resources */ = {isa = PBXBuildFile; fileRef = E690B55C12984A1A007EA508 /* pwsafe_filter.xsd */; };
 		E690B56012984A1B007EA508 /* pwsafe.xsd in Resources */ = {isa = PBXBuildFile; fileRef = E690B55D12984A1A007EA508 /* pwsafe.xsd */; };
 		E690B56112984A1B007EA508 /* pwsafe.xsl in Resources */ = {isa = PBXBuildFile; fileRef = E690B55E12984A1A007EA508 /* pwsafe.xsl */; };
@@ -244,6 +248,17 @@
 		E6C6876F137C406300A916C1 /* UUID.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6C6876D137C406300A916C1 /* UUID.cpp */; };
 		E6C68770137C406300A916C1 /* UUID.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6C6876D137C406300A916C1 /* UUID.cpp */; };
 		E6DA586511A701AE00D84199 /* guiinfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6DA586311A701AE00D84199 /* guiinfo.cpp */; };
+		E6DDC6FB138911CB00F0C0D1 /* CompareDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6DDC6F9138911CB00F0C0D1 /* CompareDlg.cpp */; };
+		E6DDC6FC138911CB00F0C0D1 /* CompareDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6DDC6F9138911CB00F0C0D1 /* CompareDlg.cpp */; };
+		E6DDC6FD138911CB00F0C0D1 /* CompareDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6DDC6F9138911CB00F0C0D1 /* CompareDlg.cpp */; };
+		E6DDC6FE138911CB00F0C0D1 /* CompareDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6DDC6F9138911CB00F0C0D1 /* CompareDlg.cpp */; };
+		E6DDC7011389120E00F0C0D1 /* CoreOtherDB.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6DDC6FF1389120E00F0C0D1 /* CoreOtherDB.cpp */; };
+		E6DDC7021389120E00F0C0D1 /* CoreOtherDB.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6DDC6FF1389120E00F0C0D1 /* CoreOtherDB.cpp */; };
+		E6DDC7031389120E00F0C0D1 /* CoreOtherDB.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6DDC6FF1389120E00F0C0D1 /* CoreOtherDB.cpp */; };
+		E6DDC714138914B700F0C0D1 /* wxutils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6DDC713138914B700F0C0D1 /* wxutils.cpp */; };
+		E6DDC715138914B700F0C0D1 /* wxutils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6DDC713138914B700F0C0D1 /* wxutils.cpp */; };
+		E6DDC716138914B700F0C0D1 /* wxutils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6DDC713138914B700F0C0D1 /* wxutils.cpp */; };
+		E6DDC717138914B700F0C0D1 /* wxutils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6DDC713138914B700F0C0D1 /* wxutils.cpp */; };
 		E6E31A0E12FD6957001618AB /* debug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6C1253611E1B2BA00D22D92 /* debug.cpp */; };
 		E6E31A0F12FD6957001618AB /* dir.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6C1253711E1B2BA00D22D92 /* dir.cpp */; };
 		E6E31A1012FD6957001618AB /* env.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6C1253811E1B2BA00D22D92 /* env.cpp */; };
@@ -497,6 +512,8 @@
 		E61D6FA112617EFC0049FA2A /* MergeDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MergeDlg.cpp; sourceTree = "<group>"; };
 		E61D6FA212617EFC0049FA2A /* MergeDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MergeDlg.h; sourceTree = "<group>"; };
 		E6391BF812FD21B9009BBB8D /* pwsafe-i386.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "pwsafe-i386.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E66EE0B113921B30005C10C5 /* ComparisonGridTable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ComparisonGridTable.cpp; sourceTree = "<group>"; };
+		E66EE0B213921B30005C10C5 /* ComparisonGridTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComparisonGridTable.h; sourceTree = "<group>"; };
 		E690B55C12984A1A007EA508 /* pwsafe_filter.xsd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = pwsafe_filter.xsd; path = ../xml/pwsafe_filter.xsd; sourceTree = SOURCE_ROOT; };
 		E690B55D12984A1A007EA508 /* pwsafe.xsd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = pwsafe.xsd; path = ../xml/pwsafe.xsd; sourceTree = SOURCE_ROOT; };
 		E690B55E12984A1A007EA508 /* pwsafe.xsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = pwsafe.xsl; path = ../xml/pwsafe.xsl; sourceTree = SOURCE_ROOT; };
@@ -825,6 +842,11 @@
 		E6CFEE4311EA0AFB001402D8 /* RecentDBList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentDBList.h; sourceTree = "<group>"; };
 		E6DA586311A701AE00D84199 /* guiinfo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = guiinfo.cpp; sourceTree = "<group>"; };
 		E6DA586411A701AE00D84199 /* guiinfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = guiinfo.h; sourceTree = "<group>"; };
+		E6DDC6F9138911CB00F0C0D1 /* CompareDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CompareDlg.cpp; sourceTree = "<group>"; };
+		E6DDC6FA138911CB00F0C0D1 /* CompareDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompareDlg.h; sourceTree = "<group>"; };
+		E6DDC6FF1389120E00F0C0D1 /* CoreOtherDB.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CoreOtherDB.cpp; sourceTree = "<group>"; };
+		E6DDC7001389120E00F0C0D1 /* DBCompareData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBCompareData.h; sourceTree = "<group>"; };
+		E6DDC713138914B700F0C0D1 /* wxutils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxutils.cpp; sourceTree = "<group>"; };
 		E6E31A1F12FD6957001618AB /* libos.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libos.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6E31A5412FD69A0001618AB /* libcore.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libcore.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6E31A9312FD6A0A001618AB /* pwsafe-x86_64.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "pwsafe-x86_64.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1364,6 +1386,11 @@
 		E6ADB9A411957099004E2BE5 /* wxWidgets */ = {
 			isa = PBXGroup;
 			children = (
+				E66EE0B113921B30005C10C5 /* ComparisonGridTable.cpp */,
+				E66EE0B213921B30005C10C5 /* ComparisonGridTable.h */,
+				E6DDC713138914B700F0C0D1 /* wxutils.cpp */,
+				E6DDC6F9138911CB00F0C0D1 /* CompareDlg.cpp */,
+				E6DDC6FA138911CB00F0C0D1 /* CompareDlg.h */,
 				E6E31AD212FDC90B001618AB /* untitled */,
 				E6A7ECA912CDEAA40021D898 /* DbSelectionPanel.cpp */,
 				E6A7ECAA12CDEAA40021D898 /* DbSelectionPanel.h */,
@@ -1506,6 +1533,8 @@
 		E6EE839111E87E9700B01518 /* core */ = {
 			isa = PBXGroup;
 			children = (
+				E6DDC6FF1389120E00F0C0D1 /* CoreOtherDB.cpp */,
+				E6DDC7001389120E00F0C0D1 /* DBCompareData.h */,
 				E6112A61131D720E00AA1454 /* ExpiredList.cpp */,
 				E6112A62131D720E00AA1454 /* ExpiredList.h */,
 				E6EE839211E87E9700B01518 /* BlowFish.cpp */,
@@ -2102,6 +2131,9 @@
 				E6391BEA12FD21B9009BBB8D /* ExternalKeyboardButton.cpp in Sources */,
 				E6391BEB12FD21B9009BBB8D /* DbSelectionPanel.cpp in Sources */,
 				E6391BEC12FD21B9009BBB8D /* PwsSync.cpp in Sources */,
+				E6DDC6FB138911CB00F0C0D1 /* CompareDlg.cpp in Sources */,
+				E6DDC715138914B700F0C0D1 /* wxutils.cpp in Sources */,
+				E66EE0B413921B30005C10C5 /* ComparisonGridTable.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2155,6 +2187,7 @@
 				E6EE845411E87E9800B01518 /* XMLFileValidation.cpp in Sources */,
 				E6EE845511E87E9800B01518 /* XMLprefs.cpp in Sources */,
 				E6112A64131D720E00AA1454 /* ExpiredList.cpp in Sources */,
+				E6DDC7011389120E00F0C0D1 /* CoreOtherDB.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2220,6 +2253,9 @@
 				E60F25D812C4ACEB001E63C4 /* ExternalKeyboardButton.cpp in Sources */,
 				E6A7ECAE12CDEAA40021D898 /* DbSelectionPanel.cpp in Sources */,
 				E6A7ECAF12CDEAA40021D898 /* PwsSync.cpp in Sources */,
+				E6DDC6FC138911CB00F0C0D1 /* CompareDlg.cpp in Sources */,
+				E6DDC714138914B700F0C0D1 /* wxutils.cpp in Sources */,
+				E66EE0B313921B30005C10C5 /* ComparisonGridTable.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2263,6 +2299,9 @@
 				E6BF9E7413348CA50084A011 /* ExternalKeyboardButton.cpp in Sources */,
 				E6BF9E7513348CA50084A011 /* DbSelectionPanel.cpp in Sources */,
 				E6BF9E7613348CA50084A011 /* PwsSync.cpp in Sources */,
+				E6DDC6FE138911CB00F0C0D1 /* CompareDlg.cpp in Sources */,
+				E6DDC717138914B700F0C0D1 /* wxutils.cpp in Sources */,
+				E66EE0B613921B30005C10C5 /* ComparisonGridTable.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2316,6 +2355,7 @@
 				E6BF9EB613348CDB0084A011 /* XMLFileValidation.cpp in Sources */,
 				E6BF9EB713348CDB0084A011 /* XMLprefs.cpp in Sources */,
 				E6BF9EB813348CDB0084A011 /* ExpiredList.cpp in Sources */,
+				E6DDC7031389120E00F0C0D1 /* CoreOtherDB.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2413,6 +2453,7 @@
 				E6E31A4F12FD69A0001618AB /* XMLFileValidation.cpp in Sources */,
 				E6E31A5012FD69A0001618AB /* XMLprefs.cpp in Sources */,
 				E6112A63131D720E00AA1454 /* ExpiredList.cpp in Sources */,
+				E6DDC7021389120E00F0C0D1 /* CoreOtherDB.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2456,6 +2497,9 @@
 				E6E31A8512FD6A0A001618AB /* ExternalKeyboardButton.cpp in Sources */,
 				E6E31A8612FD6A0A001618AB /* DbSelectionPanel.cpp in Sources */,
 				E6E31A8712FD6A0A001618AB /* PwsSync.cpp in Sources */,
+				E6DDC6FD138911CB00F0C0D1 /* CompareDlg.cpp in Sources */,
+				E6DDC716138914B700F0C0D1 /* wxutils.cpp in Sources */,
+				E66EE0B513921B30005C10C5 /* ComparisonGridTable.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
