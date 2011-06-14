@@ -836,10 +836,7 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
 
 void AddEditPropSheet::OnGoButtonClick( wxCommandEvent& /* evt */ )
 {
-////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_GO_BTN in AddEditPropSheet.
-  // Before editing this code, remove the block markers.
-  wxMessageBox(_("'Go' placeholder"));
-////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_GO_BTN in AddEditPropSheet.
+  ::wxLaunchDefaultBrowser(m_url, wxBROWSER_NEW_WINDOW);
 }
 
 
