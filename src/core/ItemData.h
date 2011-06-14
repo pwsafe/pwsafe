@@ -262,6 +262,29 @@ public:
   bool IsURLEmpty() const {return m_URL.IsEmpty();}
   bool IsRunCommandEmpty() const {return m_RunCommand.IsEmpty();}
   bool IsEmailEmpty() const {return m_email.IsEmpty();}
+
+  bool IsGroupSet() const                     { return !m_Group.IsEmpty();        }
+  bool IsUserSet() const                      { return !m_User.IsEmpty();         }
+  bool IsNotesSet() const                     { return !m_Notes.IsEmpty();        }
+  bool IsURLSet() const                       { return !m_URL.IsEmpty();          }
+  bool IsRunCommandSet() const                { return !m_RunCommand.IsEmpty();   }
+  bool IsEmailSet() const                     { return !m_email.IsEmpty();        }
+  bool IsUUIDSet() const                      { return !m_UUID.IsEmpty();         }
+  bool IsTitleSet() const                     { return !m_Title.IsEmpty();        }
+  bool IsPasswordSet() const                  { return !m_Password.IsEmpty();     }
+  bool IsCreationTimeSet() const              { return !m_tttCTime.IsEmpty();     }
+  bool IsModificationTimeSet() const          { return !m_tttPMTime.IsEmpty();    }
+  bool IsLastAccessTimeSet() const            { return !m_tttATime.IsEmpty();     }
+  bool IsExpiryDateSet() const                { return !m_tttXTime.IsEmpty();     }
+  bool IsRecordModificationTimeSet() const    { return !m_tttRMTime.IsEmpty();    }
+  bool IsAutoTypeSet() const                  { return !m_AutoType.IsEmpty();     }
+  bool IsPasswordHistorySet() const           { return !m_PWHistory.IsEmpty();    }
+  bool IsPasswordPolicySet() const            { return !m_PWPolicy.IsEmpty();     }
+  bool IsPasswordExpiryIntervalSet() const    { return !m_XTimeInterval.IsEmpty();}
+  bool IsDCASet() const                       { return !m_DCA.IsEmpty();          }
+  bool IsProtectionSet() const                { return !m_protected.IsEmpty();    }
+  bool IsSymbolsSet() const                   { return !m_symbols.IsEmpty();      }
+    
   void SerializePlainText(std::vector<char> &v,
                           const CItemData *pcibase = NULL) const;
   bool DeserializePlainText(const std::vector<char> &v);

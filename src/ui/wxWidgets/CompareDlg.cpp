@@ -69,6 +69,13 @@ CompareDlg::CompareDlg(wxWindow* parent, PWScore* currentCore): wxDialog(parent,
   m_selCriteria->SelectAllFields();
 
   CreateControls();
+  wxSize screenSize = ::wxGetClientDisplayRect().GetSize();
+
+  //assume taskbar/appbar/menubar is horizontal (at top or bottom)
+  int captionHeight = ::wxSystemSettings::GetMetric(wxSYS_CAPTION_Y);
+  if (captionHeight < 0)  captionHeight = 50;
+  screenSize -= wxSize(0, captionHeight);
+  SetMaxSize(screenSize);
 }
 
 CompareDlg::~CompareDlg()
@@ -91,7 +98,7 @@ void CompareDlg::CreateControls()
   m_optionsPane = CreateOptionsPanel(dlgSizer);
   dlgSizer->AddSpacer(RowSeparation);
 
-  CreateDataPanel(dlgSizer, _("Conflicting items"), m_conflicts)->Hide();
+  CreateDataPanel(dlgSizer, _("Conflicting items"), m_conflicts, true)->Hide();
   m_conflicts->sizerBelow = dlgSizer->AddSpacer(RowSeparation);
   m_conflicts->sizerBelow->Show(false);
 
@@ -120,13 +127,11 @@ void CompareDlg::CreateControls()
   dlgSizer->Add(buttons, wxSizerFlags().Center().Expand().Border(wxLEFT|wxRIGHT, SideMargin).Proportion(0));
   dlgSizer->AddSpacer(BottomMargin);
 
-  int captionHeight = ::wxSystemSettings::GetMetric(wxSYS_CAPTION_Y);
-  if (captionHeight < 0)  captionHeight = 100;
-  wxSize sz = ::wxGetDisplaySize();
-  sz -= wxSize(0, captionHeight);
-  SetMaxSize(sz);
+  Connect(wxEVT_SIZE, wxSizeEventHandler(CompareDlg::OnSize));
 
   SetSizerAndFit(dlgSizer);
+
+  
 }
 
 struct CompareDlgType {
@@ -186,10 +191,14 @@ wxCollapsiblePane* CompareDlg::CreateOptionsPanel(wxSizer* dlgSizer)
   return optionsPane;
 }
 
-wxCollapsiblePane* CompareDlg::CreateDataPanel(wxSizer* dlgSizer, const wxString& title, ComparisonData* cd)
+wxCollapsiblePane* CompareDlg::CreateDataPanel(wxSizer* dlgSizer, const wxString& title, ComparisonData* cd,
+                                                      bool customGrid /*=false*/)
 {
   cd->pane = new wxCollapsiblePane(this, wxID_ANY, title);
-  cd->grid = new wxGrid(cd->pane->GetPane(), wxID_ANY);
+  if (customGrid)
+    cd->grid = new ComparisonGrid(cd->pane->GetPane(), wxID_ANY);
+  else
+    cd->grid = new wxGrid(cd->pane->GetPane(), wxID_ANY);
   wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
   sizer->Add(cd->grid, wxSizerFlags().Expand().Proportion(1));
   cd->pane->GetPane()->SetSizer(sizer);
@@ -229,30 +238,86 @@ void CompareDlg::DoCompare()
     struct {
       ComparisonData* cd;
       bool expand;
-    } panes[] = { {m_conflicts,  true},
-                  {m_current,    true},
-                  {m_comparison, true},
-                  {m_identical,  false}
+      bool multiSource;
+      bool useComparisonSafe; ////unused if multisource is true
+    } sections[] = { {m_conflicts,  true,  true,  false}, 
+                     {m_current,    true,  false, false},
+                     {m_comparison, true,  false, true},
+                     {m_identical,  false, false, false}
                 };
     wxSizerItem* prevSizer = 0;
-    for(size_t idx =0; idx < WXSIZEOF(panes); ++idx) {
-      if (!panes[idx].cd->data.empty()) {
+    for(size_t idx =0; idx < WXSIZEOF(sections); ++idx) {
+      if (!sections[idx].cd->data.empty()) {
         if (prevSizer)
           prevSizer->Show(true);
-        panes[idx].cd->grid->SetTable(new ComparisonGridTable(m_selCriteria, &panes[idx].cd->data, m_currentCore, m_otherCore));
-        panes[idx].cd->pane->Show();
-        if (panes[idx].expand) {
-          //GetSizer()->GetItem(panes[idx].cd->pane)->SetProportion(0);
-          panes[idx].cd->pane->Expand();
+        ComparisonGridTable* table;
+        if (sections[idx].multiSource) {
+          table = new MultiSafeCompareGridTable(m_selCriteria,
+                                                &sections[idx].cd->data,
+                                                m_currentCore,
+                                                m_otherCore);
         }
         else {
-          //GetSizer()->GetItem(panes[idx].cd->pane)->SetProportion(0);
-          panes[idx].cd->pane->Collapse();
+          table = new UniSafeCompareGridTable(m_selCriteria,
+                                              &sections[idx].cd->data,
+                                              sections[idx].useComparisonSafe? m_otherCore: m_currentCore,
+                                              sections[idx].useComparisonSafe? &st_CompareData::uuid1: &st_CompareData::uuid0,
+                                              sections[idx].useComparisonSafe? ComparisonBackgroundColor: CurrentBackgroundColor);
+        }
+        sections[idx].cd->grid->SetTable(table);
+        wxCollapsiblePane* pane = sections[idx].cd->pane;
+        /*
+        // wxCollapsiblePane::GetLabel() doesn't work 
+        wxString newLabel(pane->GetLabel());
+        newLabel << wxT(" (") << sections[idx].cd->data.size() << wxT(")");
+        pane->SetLabel(newLabel);
+        */
+        pane->Show();
+        if (sections[idx].expand) {
+          pane->Expand();
+        }
+        else {
+          pane->Collapse();
         }
         //if the next pane is displayed, show the sizer below this pane
-        prevSizer = panes[idx].cd->sizerBelow; 
+        prevSizer = sections[idx].cd->sizerBelow; 
       }
     }
     Layout();
+  }
+}
+
+void CompareDlg::OnSize(wxSizeEvent& evt)
+{
+  wxSize screenSize = ::wxGetClientDisplayRect().GetSize();
+
+  //assume taskbar/appbar/menubar is horizontal (at top or bottom)
+  int captionHeight = ::wxSystemSettings::GetMetric(wxSYS_CAPTION_Y);
+  if (captionHeight < 0)  captionHeight = 50;
+  screenSize -= wxSize(0, captionHeight);
+
+  const wxSize evtSize = evt.GetSize();
+  if (evtSize.GetWidth() < screenSize.GetWidth() && evtSize.GetHeight() < screenSize.GetHeight())
+    evt.Skip();
+  else {
+    wxSize bestSize = wxDialog::DoGetBestSize();
+
+    if (bestSize.GetWidth() > screenSize.GetWidth())
+      bestSize.SetWidth(screenSize.GetWidth()-1);
+
+    if (bestSize.GetHeight() > screenSize.GetHeight())
+      bestSize.SetHeight(screenSize.GetHeight()-1);
+
+    wxSize windowSize = GetSize(), clientSize = GetClientSize();
+    int horizOffset = windowSize.GetWidth() - clientSize.GetWidth();
+    int vertOffset = windowSize.GetHeight() - clientSize.GetHeight();
+    //GetSizer()->SetDimension(0, 0, bestSize.GetWidth() - horizOffset, bestSize.GetHeight() - vertOffset);
+//    wxRect winRect = this->GetRect();
+//    winRect.SetSize(bestSize);
+//    SetSize(winRect);
+    
+    wxSizeEvent szEvt(bestSize, GetId());
+    AddPendingEvent(szEvt);
+//    Layout();
   }
 }
