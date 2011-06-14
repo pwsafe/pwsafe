@@ -13,11 +13,10 @@
   marks" and any carriage returns/line feeds in the Notes field will be converted this
   character to enable the Notes field to be processed correctly by PasswordSafe during import.
 
-  KeePass exports the Group Tree structure using a backward slash('\') as a delimiter
-  between groups.  PasswordSafe uses a dot ('.').  Therefore this XSLT code first
-  changes any dot in the group or title files to a forward slash ('/') and then any
-  backward slashes to dots.  This will create the correct group path in PasswordSafe but
-  any dots in the original group and title fields will remain a forward slash.
+  KeePass exports the Group Tree structure using nested groups. PasswordSafe uses a dot ('.').
+  Therefore this XSLT code first changes any dot in the group field to a forward slash ('/')
+  and then any backward slashes to dots.  This will create the correct group path in
+  Password Safe but any dots in the original group field will remain a forward slash.
 
   This XSLT file conforms to V1.0 of XSLT as described in http://www.w3.org/TR/xslt
 
@@ -53,7 +52,6 @@
         <xsl:variable name="vtemp1" select="string(group/@tree)"/>
         <xsl:variable name="vtemp2" select="translate($vtemp1, '.', '/')"/>
         <xsl:variable name="vgrouptree" select="translate($vtemp2, '\', '.')"/>
-        <xsl:variable name="vtitle" select="translate(title, '.', '/')"/>
         <xsl:variable name="vnotes" select="notes"/>
         <xsl:variable name="vexpiretime" select="expiretime"/>
         <xsl:variable name="vexpires" select="string($vexpiretime/@expires)"/>
@@ -79,7 +77,7 @@
             </xsl:otherwise>
           </xsl:choose>
           <title>
-            <xsl:value-of select="string($vtitle)"/>
+            <xsl:value-of select="string(title)"/>
           </title>
           <username>
             <xsl:value-of select="string(username)"/>
