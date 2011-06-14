@@ -53,7 +53,8 @@ TMPDIR := /cygdrive/c/tmp
 RELNOTES := $(CURDIR)/docs/ReleaseNotes.txt
 
 XMLS := $(foreach i,\
-				  pwsafe.xsd pwsafe_filter.xsd pwsafe.xsl KPV1_to_PWS.xslt,\
+				  pwsafe.xsd pwsafe_filter.xsd pwsafe.xsl \
+					KPV1_to_PWS.xslt KPV2_to_PWS.xslt,\
 				  xml/$i)
 I18N_HELPS := $(foreach i,\
 								DE ZH ES,\

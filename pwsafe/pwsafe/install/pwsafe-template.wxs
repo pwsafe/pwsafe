@@ -106,6 +106,8 @@
 	    Source='xml\pwsafe_filter.xsd' Vital='yes' />
 	    <File Id='file27' Name='KPV1_to_PWS.xslt' DiskId='1'
 	    Source='xml\KPV1_to_PWS.xslt' Vital='yes' />
+	    <File Id='file28' Name='KPV2_to_PWS.xslt' DiskId='1'
+	    Source='xml\KPV2_to_PWS.xslt' Vital='yes' />
 	  </Component>
 	</Directory>
       </Directory>
