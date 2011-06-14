@@ -61,6 +61,7 @@
 #include "./PwsSync.h"
 #include "./SystemTrayMenuId.h"
 #include "./CompareDlg.h"
+#include "../../core/core.h"
 
 // main toolbar images
 #include "./PwsToolbarButtons.h"
@@ -2492,21 +2493,52 @@ void PasswordSafeFrame::OnImportKeePass(wxCommandEvent& evt)
 
   if (fd.ShowModal() != wxID_OK )
     return;
-    
+
+  const wxString KPsFileName(fd.GetPath());
+  CReport rpt;
+
+  enum { KeePassCSV, KeePassTXT } ImportType = wxFileName(KPsFileName).GetExt() == wxT("csv")? KeePassCSV: KeePassTXT;
+
+  if (ImportType == KeePassCSV)
+    rpt.StartReport(_("Import_KeePassV1_CSV"), m_core.GetCurFile().c_str());
+  else
+    rpt.StartReport(_("Import_KeePassV1_TXT"), m_core.GetCurFile().c_str());
+
+  rpt.WriteLine(wxString::Format(_("Text file being imported: %s"), KPsFileName.GetData()).GetData());
+  rpt.WriteLine();
+
+  int numImported, numSkipped, numRenamed;
+  unsigned int uiReasonCode = 0;
+  int rc;
   Command *pcmd = NULL;
-  StringX KPsFileName = tostringx(fd.GetPath());
-  int rc = m_core.ImportKeePassTextFile(KPsFileName, pcmd);
+
+  if (ImportType == KeePassCSV)
+    rc = m_core.ImportKeePassV1CSVFile(tostringx(KPsFileName), numImported, numSkipped, numRenamed,
+                                       uiReasonCode, rpt, pcmd);
+  else
+    rc = m_core.ImportKeePassV1TXTFile(tostringx(KPsFileName), numImported, numSkipped, numRenamed,
+                                       uiReasonCode, rpt, pcmd);
   switch (rc) {
     case PWScore::CANT_OPEN_FILE:
     {
-      wxMessageBox( wxString::Format(_("%s\n\nCould not open file for reading!"), KPsFileName.c_str()),
+      wxMessageBox( wxString::Format(_("%s\n\nCould not open file for reading!"), KPsFileName.GetData()),
                     _("File open error"), wxOK | wxICON_ERROR, this);
+      delete [] pcmd;
       break;
     }
     case PWScore::INVALID_FORMAT:
+    case PWScore::FAILURE:
     {
-      wxMessageBox( wxString::Format(_("%s\n\nInvalid format"), KPsFileName.c_str()),
-                    _("File Read Error"), wxOK | wxICON_ERROR, this);
+      wxString msg;
+      if (uiReasonCode > 0) {
+        stringT s;
+        LoadAString(s, uiReasonCode);
+        msg = towxstring(s);
+      }
+      else
+        msg = wxString::Format(_("%s\n\nInvalid format"), KPsFileName.GetData());
+      wxMessageBox(msg, _("Import failed"), wxOK | wxICON_ERROR, this);
+      delete [] pcmd;
       break;
     }
     case PWScore::SUCCESS:
@@ -2514,6 +2546,19 @@ void PasswordSafeFrame::OnImportKeePass(wxCommandEvent& evt)
       if (pcmd != NULL)
         Execute(pcmd);
       RefreshViews();
+#ifdef NOT_YET
+      ChangeOkUpdate();
+#endif
+      rpt.WriteLine();
+      wxString cs_type(numImported == 1 ? _("entry") : _("entries"));
+      wxString cs_msg = wxString::Format(_("Imported %d %s"), numImported, cs_type.GetData());
+      rpt.WriteLine(cs_msg.GetData());
+      rpt.EndReport();
+      wxString title(rc == PWScore::SUCCESS ? _("Completed successfully") : _("Completed but ...."));
+      int icon = (rc == PWScore::SUCCESS ? wxICON_INFORMATION : wxICON_EXCLAMATION);
+      cs_msg << _("\n\nDo you wish to see a detailed report?");
+      if (wxMessageBox(cs_msg, title, icon|wxYES_NO, this) == wxYES)
+        ViewReport(rpt);
       break;
   } // switch
 }
