@@ -275,7 +275,7 @@ import.</li>
 <tr><td>&lt;group&gt;</td><td>&lt;group&gt;</td></tr>
 <tr><td>&lt;title&gt;</td><td>&lt;title&gt;</td></tr>
 <tr><td>&lt;username&gt;</td><td>&lt;username&gt;</td></tr>
-<tr><td>&lt;password&gt;</td><td>&lt;password</td></tr>
+<tr><td>&lt;password&gt;</td><td>&lt;password&gt;</td></tr>
 <tr><td>&lt;url&gt;</td><td>&lt;url&gt;</td></tr>
 <tr><td>&lt;notes&gt;</td><td>&lt;notes&gt;</td></tr>
 <tr><td>&lt;lastmodtime&gt;</td><td>&lt;pmtimex&gt; <u>and</u> &lt;rmtimex&gt;</td></tr>
@@ -347,11 +347,11 @@ element.</p>
 </tr>
 </thead>
 <tbody>
-<tr><td>[Key='Title']: Value</td><td>&lt;title&gt;</td></tr>
-<tr><td>[Key='Username']: Value</td><td>&lt;username&gt;</td></tr>
-<tr><td>[Key='Password']: Value</td><td>&lt;password&gt;</td></tr>
-<tr><td>[Key='URL']: Value</td><td>&lt;url&gt;</td></tr>
-<tr><td>[Key='Notes']: Value</td><td>&lt;notes&gt;</td></tr>
+<tr><td>Title</td><td>&lt;title&gt;</td></tr>
+<tr><td>Username</td><td>&lt;username&gt;</td></tr>
+<tr><td>Password</td><td>&lt;password&gt;</td></tr>
+<tr><td>URL</td><td>&lt;url&gt; or &lt;runcommand&gt;<br>depending on the prefix (see notes above)</td></tr>
+<tr><td>Notes</td><td>&lt;notes&gt;</td></tr>
 <tr><td>All others</td><td>Inserted into the <b>Password Safe</b> Notes field in the form:<br> "Key: Value"</td></tr>
 </tbody>
 </table>
@@ -379,7 +379,7 @@ element.</p>
 </tr>
 </thead>
 <tbody>
-<tr><td>&lt;Times&gt;/&lt;LastModificationTime&gt;</td><td>&lt;pmtimex&gt; <u>and</u> &lt;pmtimex&gt;</td></tr>
+<tr><td>&lt;Times&gt;/&lt;LastModificationTime&gt;</td><td>&lt;pmtimex&gt; <u>and</u> &lt;rmtimex&gt;</td></tr>
 <tr><td>&lt;Times&gt;/&lt;CreationTime&gt;</td><td>&lt;ctimex&gt;</td></tr>
 <tr><td>&lt;Times&gt;/&lt;LastAccessTime&gt;</td><td>&lt;atimex&gt;</td></tr>
 <tr><td>&lt;Times&gt;/&lt;ExpiryTime&gt;</td><td>&lt;xtimex&gt; if &lt;Times&gt;/&lt;Expires&gt; is 'True'</td></tr>
@@ -419,7 +419,7 @@ are translated as follows.  <i>All codes not listed are copied across as-is.</i>
 </tr>
 </thead>
 <tbody>
-<tr><td>\\</td><td>\</td></tr>
+<tr><td>\</td><td>\\ (escaping '\')</td></tr>
 <tr><td>Tab {TAB}</td><td>\t</td></tr>
 <tr><td>Enter {ENTER} or ~</td><td>\n</td></tr>
 <tr><td>Backspace {BACKSPACE}, {BS} or {BKSP}</td><td>\b</td></tr>
@@ -483,7 +483,7 @@ if the database has a custom string named "eMail", it can be referenced via the 
 <tr><td>{URL:RMVSCM}</td><td>${url}</td></tr>
 <tr><td>{APPDIR}</td><td>${appdir}</td></tr>
 <tr><td>{DB_PATH}</td><td>${fulldb}</td></tr>
-<tr><td>{DB_DIR}</td><td>${dbdir</td></tr>
+<tr><td>{DB_DIR}</td><td>${dbdir}</td></tr>
 <tr><td>{DB_NAME}</td><td>${dbname}.${dbextn}</td></tr>
 <tr><td>{DB_BASENAME}</td><td>${dbname}</td></tr>
 <tr><td>{DB_EXT}</td><td>${dbextn}</td></tr>
