@@ -27,8 +27,12 @@ class CompareDlg: public wxDialog
   void CreateControls();
   wxCollapsiblePane* CreateDBSelectionPanel(wxSizer* sizer);
   wxCollapsiblePane* CreateOptionsPanel(wxSizer* dlgSizer);
-  wxCollapsiblePane* CreateDataPanel(wxSizer* dlgSizer, const wxString& title, ComparisonData* cd);
+  wxCollapsiblePane* CreateDataPanel(wxSizer* dlgSizer, const wxString& title, ComparisonData* cd,
+                                              bool customGrid = false);
   void OnCompare(wxCommandEvent& );
+
+  //to prevent the dialog getting bigger than the screen
+  void OnSize(wxSizeEvent& evt);
 
 public:
   CompareDlg(wxWindow* parent, PWScore* core);
