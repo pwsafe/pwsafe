@@ -344,7 +344,8 @@ int VerifyTextImportPWHistoryString(const StringX &PWHistory,
     goto exit;
   }
 
-  size_t found = PWHistory.substr(0, 4).find_first_not_of(sHex);
+  size_t found;
+  found = PWHistory.substr(0, 4).find_first_not_of(sHex);
   if (found != StringX::npos) {
     // Header not hex!
     rc = PWH_INVALID_HDR;
@@ -526,7 +527,8 @@ int VerifyXMLImportPWHistoryString(const StringX &PWHistory,
     goto exit;
   }
 
-  size_t found = PWHistory.substr(0, 4).find_first_not_of(sHex);
+  size_t found;
+  found = PWHistory.substr(0, 4).find_first_not_of(sHex);
   if (found != StringX::npos) {
     // Header not hex!
     rc = PWH_INVALID_HDR;
@@ -591,7 +593,8 @@ int VerifyXMLImportPWHistoryString(const StringX &PWHistory,
   }
 
   // Now only verify them and create out_tokens for processing
-  size_t it = 0;  // token counter
+  size_t it;
+  it = 0;  // token counter
   size_t ie;      // entry counter
   for (ie = 0; ie < (size_t)n; ie++) {
     StringX sxDatetime, sxPWLen, sxPassword;
