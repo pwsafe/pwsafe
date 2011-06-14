@@ -42,6 +42,19 @@ src/ui/wxWidgets/GCCUnicodeDebug (*)
 "wx-config --debug=yes --unicode=yes" so just "make" fails. The
 workaround is to use "make CONFIG=unicoderelease"
 
+Create a Debian Package
+=======================
+Extract the source tree into some directory and change into this
+directory, i.e. where Makefile.linux is present.
+
+* make -f Makefile.linux
+* make -f Makefile.linux deb
+
+
+Install the Debian package
+==========================
+* sudo dpkg -i Releases/passwordsafe-debian-<version>.<arch>.deb
+
 TBD:
 1. Improve .deb building script
 2. Add support for .rpm building
