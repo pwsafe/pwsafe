@@ -14,9 +14,9 @@
   character to enable the Notes field to be processed correctly by PasswordSafe during import.
 
   KeePass exports the Group Tree structure using nested groups. PasswordSafe uses a dot ('.').
-  Therefore this XSLT code first changes any dot in the group field to a forward slash ('/')
-  and then any backward slashes to dots.  This will create the correct group path in
-  Password Safe but any dots in the original group field will remain a forward slash.
+  Therefore this XSLT code first changes any dot in the group field to a forward slash ('/').
+  This will create the correct group path in Password Safe but any dots in the original
+  group field will remain a forward slash.
 
   This XSLT file conforms to V1.0 of XSLT as described in http://www.w3.org/TR/xslt
 
