@@ -26,6 +26,7 @@
 #include "PWFileDialog.h"
 #include "DisplayFSBkupFiles.h"
 #include "ExpPWListDlg.h"
+#include "AddEdit_DateTimes.h"
 
 #include "WZPropertySheet.h"
 
