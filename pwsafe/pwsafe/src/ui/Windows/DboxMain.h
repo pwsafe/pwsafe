@@ -35,7 +35,6 @@
 #include "DDStatic.h"
 #include "MenuShortcuts.h"
 #include "AdvancedDlg.h"
-#include "AddEdit_PropertySheet.h"
 #include "CompareResultsDlg.h"
 
 #include "core/UIinterface.h"
@@ -71,8 +70,6 @@
 #define WTS_SESSION_REMOTE_CONTROL         0x9
 
 #endif  /* WINVER < 0x0501 */
-
-class CDDObList;
 
 #if defined(POCKET_PC) || (_MFC_VER <= 1200)
 DECLARE_HANDLE(HDROP);
@@ -196,8 +193,9 @@ enum {GCP_READONLY = 1,
       GCP_FORCEREADONLY = 2,
       GCP_HIDEREADONLY = 4};
 
+class CDDObList;
 class ExpiredList;
-
+class CAddEdit_PropertySheet;
 //-----------------------------------------------------------------------------
 class DboxMain : public CDialog, public UIInterFace
 {

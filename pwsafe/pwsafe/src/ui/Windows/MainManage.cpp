@@ -28,6 +28,7 @@
 #include "OptionsMisc.h"
 #include "OptionsBackup.h"
 #include "OptionsShortcuts.h"
+#include "AddEdit_DateTimes.h"
 
 #include "core/pwsprefs.h"
 #include "core/PWSdirs.h"
