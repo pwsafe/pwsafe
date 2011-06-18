@@ -45,24 +45,45 @@ void CSysColStatic::ReloadBitmap(int nImageID)
   if (m_nImageID == -1)
     return;
 
-  HBITMAP hBmpOld;
-  HBITMAP hBmp = (HBITMAP)::LoadImage(AfxGetInstanceHandle(), 
-                                      MAKEINTRESOURCE(m_nImageID),
-                                      IMAGE_BITMAP,
-                                      0, 0,
-#if defined(POCKET_PC)
-                                      0);  // WinCE only {kjp}
-#else
-                                      LR_LOADMAP3DCOLORS);  // not WinCE {kjp}
-#endif
+  // Need to convert the background colour to the user's
+  // selected dialog colour.
+  const COLORREF cr = GetSysColor(COLOR_3DFACE);
+  const COLORREF cr192 = RGB(192, 192, 192);
 
-  if (hBmp == NULL)
-    return;
+  m_imt.LoadFromResource(AfxGetInstanceHandle(), m_nImageID);
 
-  hBmpOld = SetBitmap(hBmp);
+  // Need to handle images with <= 8bpp (colour tables) and
+  // those with higher colour information
+  const int noOfCTableEntries = m_imt.GetMaxColorTableEntries();
+  if (noOfCTableEntries > 0) {
+    RGBQUAD *ctable = new RGBQUAD[noOfCTableEntries]; 
+    m_imt.GetColorTable(0, noOfCTableEntries, ctable);
+
+    for (int ic = 0; ic < noOfCTableEntries; ic++) {
+      if (ctable[ic].rgbBlue  == 192 &&
+          ctable[ic].rgbGreen == 192 &&
+          ctable[ic].rgbRed   == 192) {
+        ctable[ic].rgbBlue  = GetBValue(cr);
+        ctable[ic].rgbGreen = GetGValue(cr);
+        ctable[ic].rgbRed   = GetRValue(cr);
+        break;
+      }
+    }
+    m_imt.SetColorTable(0, noOfCTableEntries, ctable);
+    delete ctable;
+  } else {
+    for (int x = 0; x < m_imt.GetWidth(); x++) {
+      for (int y = 0; y < m_imt.GetHeight(); y++) {
+        if (m_imt.GetPixel(x, y) == cr192)
+          m_imt.SetPixel(x, y, cr);
+      }
+    }
+  }
+
+  HBITMAP hBmpOld = SetBitmap(HBITMAP(m_imt));
   ::DeleteObject(hBmpOld);
   ::DeleteObject(m_hBmp);
-  m_hBmp = hBmp;
+  m_hBmp = HBITMAP(m_imt);
 }
 
 BEGIN_MESSAGE_MAP(CSysColStatic, CStatic)
