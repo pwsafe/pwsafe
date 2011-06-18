@@ -90,7 +90,7 @@ CWZPropertySheet::~CWZPropertySheet()
   delete m_pp_finish;
 }
 
-BEGIN_MESSAGE_MAP(CWZPropertySheet, CPWPropertySheet)
+BEGIN_MESSAGE_MAP(CWZPropertySheet, CPropertySheet)
   //{{AFX_MSG_MAP(CWZPropertySheet)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()

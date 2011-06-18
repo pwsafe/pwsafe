@@ -2013,7 +2013,7 @@ BOOL CPWTreeCtrl::RenderTextData(CLIPFORMAT &cfFormat, HGLOBAL* phGlobal)
     // So is requested data!
     dwBufLen = (ilen + 1) * sizeof(wchar_t);
     lpszW = new WCHAR[ilen + 1];
-    pws_os::Trace(L"lpszW allocated %p, size %d\n", lpszW, dwBufLen);
+    //pws_os::Trace(L"lpszW allocated %p, size %d\n", lpszW, dwBufLen);
 #if (_MSC_VER >= 1400)
     (void) wcsncpy_s(lpszW, ilen + 1, cs_dragdata, ilen);
 #else
@@ -2086,9 +2086,9 @@ bad_return:
   // Finished with buffer - trash it
   trashMemory(lpDataBuffer, dwBufLen);
   // Free the strings (only one is actually in use)
-  pws_os::Trace(L"lpszA freed %p\n", lpszA);
+  //pws_os::Trace(L"lpszA freed %p\n", lpszA);
   delete[] lpszA;
-  pws_os::Trace(L"lpszW freed %p\n", lpszW);
+  //pws_os::Trace(L"lpszW freed %p\n", lpszW);
   delete[] lpszW;
   // Since lpDataBuffer pointed to one of the above - just zero the pointer
   lpDataBuffer = NULL;
