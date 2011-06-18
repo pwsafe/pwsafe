@@ -31,9 +31,6 @@ class CompareDlg: public wxDialog
                                               bool customGrid = false);
   void OnCompare(wxCommandEvent& );
 
-  //to prevent the dialog getting bigger than the screen
-  void OnSize(wxSizeEvent& evt);
-
 public:
   CompareDlg(wxWindow* parent, PWScore* core);
   ~CompareDlg();

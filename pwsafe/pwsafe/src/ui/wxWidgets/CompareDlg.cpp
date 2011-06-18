@@ -26,6 +26,7 @@
 #include "../../core/PWScore.h"
 #include "./AdvancedSelectionDlg.h"
 #include "./ComparisonGridTable.h"
+#include "./SizeRestrictedPanel.h"
 
 #include <wx/statline.h>
 #include <wx/grid.h>
@@ -69,13 +70,6 @@ CompareDlg::CompareDlg(wxWindow* parent, PWScore* currentCore): wxDialog(parent,
   m_selCriteria->SelectAllFields();
 
   CreateControls();
-  wxSize screenSize = ::wxGetClientDisplayRect().GetSize();
-
-  //assume taskbar/appbar/menubar is horizontal (at top or bottom)
-  int captionHeight = ::wxSystemSettings::GetMetric(wxSYS_CAPTION_Y);
-  if (captionHeight < 0)  captionHeight = 50;
-  screenSize -= wxSize(0, captionHeight);
-  SetMaxSize(screenSize);
 }
 
 CompareDlg::~CompareDlg()
@@ -122,12 +116,12 @@ void CompareDlg::CreateControls()
   dlgSizer->AddSpacer(RowSeparation);
   wxStdDialogButtonSizer* buttons = new wxStdDialogButtonSizer;
   buttons->Add(new wxButton(this, wxID_CANCEL));
-  buttons->SetAffirmativeButton(new wxButton(this, ID_BTN_COMPARE, _("&Compare")));
+  wxButton* compareButton = new wxButton(this, ID_BTN_COMPARE, _("&Compare"));
+  compareButton->SetDefault();
+  buttons->SetAffirmativeButton(compareButton);
   buttons->Realize();
   dlgSizer->Add(buttons, wxSizerFlags().Center().Expand().Border(wxLEFT|wxRIGHT, SideMargin).Proportion(0));
   dlgSizer->AddSpacer(BottomMargin);
-
-  Connect(wxEVT_SIZE, wxSizeEventHandler(CompareDlg::OnSize));
 
   SetSizerAndFit(dlgSizer);
 
@@ -195,13 +189,28 @@ wxCollapsiblePane* CompareDlg::CreateDataPanel(wxSizer* dlgSizer, const wxString
                                                       bool customGrid /*=false*/)
 {
   cd->pane = new wxCollapsiblePane(this, wxID_ANY, title);
+  SizeRestrictedPanel* sizedPanel = new SizeRestrictedPanel(cd->pane->GetPane(), cd->pane);
+
+  //create the grid with SizeRestrictedPanel as the parent
   if (customGrid)
-    cd->grid = new ComparisonGrid(cd->pane->GetPane(), wxID_ANY);
+    cd->grid = new ComparisonGrid(sizedPanel, wxID_ANY);
   else
-    cd->grid = new wxGrid(cd->pane->GetPane(), wxID_ANY);
-  wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
-  sizer->Add(cd->grid, wxSizerFlags().Expand().Proportion(1));
-  cd->pane->GetPane()->SetSizer(sizer);
+    cd->grid = new wxGrid(sizedPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0); //don't have wxWANTS_CHARS
+#ifndef __WXMSW__
+  wxFont monospacedFont(10, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+  if (monospacedFont.IsFixedWidth())
+    cd->grid->SetDefaultCellFont(monospacedFont);
+#else
+  cd->grid->SetDefaultCellFont(wxSystemSettings::GetFont(wxSYS_OEM_FIXED_FONT));
+#endif
+  cd->grid->SetColLabelAlignment(wxALIGN_LEFT, wxALIGN_BOTTOM);
+  wxBoxSizer* gridSizer = new wxBoxSizer(wxVERTICAL);
+  gridSizer->Add(cd->grid, wxSizerFlags().Expand().Proportion(1));
+  sizedPanel->SetSizer(gridSizer);
+
+  wxSizer* sizedPanelSizer = new wxBoxSizer(wxVERTICAL);
+  sizedPanelSizer->Add(sizedPanel, wxSizerFlags().Expand().Proportion(1));
+  cd->pane->GetPane()->SetSizer(sizedPanelSizer);
 
   dlgSizer->Add(cd->pane, wxSizerFlags().Proportion(0).Expand().Border(wxLEFT|wxRIGHT, SideMargin/2));
 
@@ -221,6 +230,10 @@ void CompareDlg::DoCompare()
                           true,
                           this) == PWScore::SUCCESS) {
     bool treatWhitespacesAsEmpty = false;
+    m_current->data.clear();
+    m_comparison->data.clear();
+    m_conflicts->data.clear();
+    m_identical->data.clear();
     m_currentCore->Compare(m_otherCore, 
                            m_selCriteria->GetSelectedFields(),
                            m_selCriteria->HasSubgroupRestriction(),
@@ -266,6 +279,11 @@ void CompareDlg::DoCompare()
         }
         sections[idx].cd->grid->SetTable(table);
         wxCollapsiblePane* pane = sections[idx].cd->pane;
+        //expand the columns to show these fields fully, as these are usually small(er) strings
+        table->AutoSizeField(CItemData::GROUP);
+        table->AutoSizeField(CItemData::TITLE);
+        table->AutoSizeField(CItemData::USER);
+        table->AutoSizeField(CItemData::PASSWORD);
         /*
         // wxCollapsiblePane::GetLabel() doesn't work 
         wxString newLabel(pane->GetLabel());
@@ -282,42 +300,11 @@ void CompareDlg::DoCompare()
         //if the next pane is displayed, show the sizer below this pane
         prevSizer = sections[idx].cd->sizerBelow; 
       }
+      else {
+        sections[idx].cd->pane->Hide();
+      }
     }
     Layout();
   }
 }
 
-void CompareDlg::OnSize(wxSizeEvent& evt)
-{
-  wxSize screenSize = ::wxGetClientDisplayRect().GetSize();
-
-  //assume taskbar/appbar/menubar is horizontal (at top or bottom)
-  int captionHeight = ::wxSystemSettings::GetMetric(wxSYS_CAPTION_Y);
-  if (captionHeight < 0)  captionHeight = 50;
-  screenSize -= wxSize(0, captionHeight);
-
-  const wxSize evtSize = evt.GetSize();
-  if (evtSize.GetWidth() < screenSize.GetWidth() && evtSize.GetHeight() < screenSize.GetHeight())
-    evt.Skip();
-  else {
-    wxSize bestSize = wxDialog::DoGetBestSize();
-
-    if (bestSize.GetWidth() > screenSize.GetWidth())
-      bestSize.SetWidth(screenSize.GetWidth()-1);
-
-    if (bestSize.GetHeight() > screenSize.GetHeight())
-      bestSize.SetHeight(screenSize.GetHeight()-1);
-
-    wxSize windowSize = GetSize(), clientSize = GetClientSize();
-    int horizOffset = windowSize.GetWidth() - clientSize.GetWidth();
-    int vertOffset = windowSize.GetHeight() - clientSize.GetHeight();
-    //GetSizer()->SetDimension(0, 0, bestSize.GetWidth() - horizOffset, bestSize.GetHeight() - vertOffset);
-//    wxRect winRect = this->GetRect();
-//    winRect.SetSize(bestSize);
-//    SetSize(winRect);
-    
-    wxSizeEvent szEvt(bestSize, GetId());
-    AddPendingEvent(szEvt);
-//    Layout();
-  }
-}

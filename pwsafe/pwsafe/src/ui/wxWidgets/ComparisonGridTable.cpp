@@ -97,6 +97,30 @@ wxString ComparisonGridTable::GetColLabelValue(int col)
   }
 }
 
+int ComparisonGridTable::FieldToColumn(CItemData::FieldType ft)
+{
+  switch(ft) {
+    case CItemData::GROUP:
+      return 0;
+    case CItemData::USER:
+    case CItemData::TITLE:
+      return 1;
+    default:
+      for( int col = 0; col < GetNumberCols(); ++col)
+        if (m_colFields[col].ft == ft)
+          return col + 2;
+      break;
+  }
+  return -1;
+}
+
+void ComparisonGridTable::AutoSizeField(CItemData::FieldType ft)
+{
+  int col = FieldToColumn(ft);
+  if (col > 0 && col < GetNumberCols())
+    GetView()->AutoSizeColumn(col);
+}
+
 
 ///////////////////////////////////////////////////////////////
 //UniSafeCompareGridTable

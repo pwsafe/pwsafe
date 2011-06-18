@@ -31,7 +31,6 @@ public:
 };
 
 
-
 class ComparisonGridTable: public wxGridTableBase
 {
 public:
@@ -42,6 +41,8 @@ public:
   int GetNumberCols();
   void SetValue(int row, int col, const wxString& value);
   wxString GetColLabelValue(int col);
+  void AutoSizeField(CItemData::FieldType ft);
+  int FieldToColumn(CItemData::FieldType ft);
 
 protected:
   SelectionCriteria*      m_criteria;

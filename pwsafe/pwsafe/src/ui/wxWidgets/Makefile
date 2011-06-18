@@ -156,7 +156,7 @@ SOURCES= passwordsafeframe.cpp \
 	AdvancedSelectionDlg.cpp ViewReport.cpp dragbar.cpp \
 	PWSDragBar.cpp MergeDlg.cpp ExternalKeyboardButton.cpp \
 	PwsSync.cpp DbSelectionPanel.cpp CompareDlg.cpp \
-	wxutils.cpp ComparisonGridTable.cpp
+	wxutils.cpp ComparisonGridTable.cpp SizeRestrictedPanel.cpp
 
 
 OBJECTS=$(SOURCES:%.cpp=$(OBJECTPATH)/%.o)
