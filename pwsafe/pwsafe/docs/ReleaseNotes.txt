@@ -34,6 +34,7 @@ KeePass required during their export.
 
 Changes to Existing Features in 3.26
 ====================================
+[] New image on start-up dialog in 24-bit colour - courtesy of user Prinz_Eugen.
 [] Polish installation texts added thanks to Michal Niklas.
 [] An entry's password exipry date is set or cleared directly rather than using
 the Set and Clear buttons after changing values.

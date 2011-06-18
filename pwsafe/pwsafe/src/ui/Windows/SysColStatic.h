@@ -16,6 +16,8 @@ http://www.codeguru.com/staticctrl/syscol_static.shtml
 and was written by Pål K. Tønder 
 */
 
+#include <atlimage.h>
+
 //-----------------------------------------------------------------------------
 class CSysColStatic : public CStatic
 {
@@ -24,29 +26,18 @@ public:
   CSysColStatic();
   ~CSysColStatic();
   void ReloadBitmap(int nImageID = -1);
-  // Attributes
-public:
-
-  // Operations
-public:
-
-  // Overrides
-  // ClassWizard generated virtual function overrides
-  //{{AFX_VIRTUAL(CSysColStatic)
-  //}}AFX_VIRTUAL
-
-  // Implementation
-public:
-  // Generated message map functions
 
 protected:
-  int m_nImageID;
-  HBITMAP m_hBmp;
   //{{AFX_MSG(CSysColStatic)
   afx_msg void OnSysColorChange();
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
+
+private:
+  CImage m_imt;
+  int m_nImageID;
+  HBITMAP m_hBmp;
 };
 
 //-----------------------------------------------------------------------------
