@@ -318,6 +318,9 @@ StringX PWSAuxParse::GetAutoTypeString(const StringX &sx_in_autotype,
         case TCHAR('t'):
           sxtmp += TCHAR('\t');
           break;
+        case TCHAR('s'):
+          sxtmp += TCHAR('\v');
+          break;
         case TCHAR('g'):
           sxtmp += sx_group;
           break;
@@ -470,7 +473,8 @@ StringX PWSAuxParse::GetAutoTypeString(const CItemData &ci,
 }
 
 void PWSAuxParse::SendAutoTypeString(const StringX &sx_autotype,
-                                     const std::vector<size_t> &vactionverboffsets)
+                                     const std::vector<size_t> &vactionverboffsets,
+                                     const bool bDragBarAutoType)
 {
   // Accepts string and vector indicating location(s) of command(s)
   // as returned by GetAutoTypeString()
@@ -508,7 +512,23 @@ void PWSAuxParse::SendAutoTypeString(const StringX &sx_autotype,
   pws_os::Trace(_T("PWSAuxParse::SendAutoTypeString - BlockInput set\n"));
   ks.BlockInput(true);
 
-  pws_os::sleep_ms(1000); // Karl Student's suggestion, to ensure focus set correctly on minimize.
+  // Karl Student's suggestion, to ensure focus set correctly on minimize.
+  pws_os::sleep_ms(1000);
+
+  // The following is for Windows ONLY as no other code sets bDragBarAutoType = true
+  // and no other environment runs MS's IE!
+  if (bDragBarAutoType && !bForceOldMethod) {
+    // Send "Tab" then "Shift+Tab" keys first of all fix issue in IE.
+    // Side-effect: user can't use DragBar Autotype image to type anywhere else but
+    // at the end of any characters in the selected window text box
+    sxtmp = _T("\t");  // Horizontal tab
+    ks.SendString(sxtmp);
+    ::Sleep(50);
+    sxtmp = _T("\v");  // Vertical Tab == converted to Shift+Tab
+    ks.SendString(sxtmp);
+    ::Sleep(50);
+    sxtmp.clear();
+  }
 
   size_t gNumIts;
   for (size_t n = 0; n < N; n++){

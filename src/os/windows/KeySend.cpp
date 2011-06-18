@@ -14,7 +14,8 @@
 #include "../env.h"
 #include "../debug.h"
 
-class CKeySendImpl {
+class CKeySendImpl
+{
 public:
   void SendChar(TCHAR c);
   void OldSendChar(TCHAR c);
@@ -24,9 +25,22 @@ public:
   bool m_isOldOS;
 };
 
+static INPUT cinput;
+static bool bFirst = true;
+
 CKeySend::CKeySend(bool bForceOldMethod)
  : m_delayMS(10)
 {
+  if (bFirst) {
+    cinput.type = INPUT_KEYBOARD;
+    cinput.ki.wVk = 0;
+    cinput.ki.wScan = 0;
+    cinput.ki.dwFlags = 0;
+    cinput.ki.time = 0;
+    cinput.ki.dwExtraInfo = 0;
+    bFirst = false;
+  }
+
   m_impl = new CKeySendImpl;
   m_impl->m_delay = m_delayMS;
   // We want to use keybd_event (OldSendChar) for Win2K & older,
@@ -68,89 +82,115 @@ void CKeySendImpl::SendChar(TCHAR c)
 void CKeySendImpl::NewSendChar(TCHAR c)
 {
   UINT status;
-  INPUT input[2];
-  input[0].ki.time = input[1].ki.time = 0; //probably needed
-  input[0].ki.dwExtraInfo = input[1].ki.dwExtraInfo = 0; //probably not
-  
-  input[0].type = input[1].type = INPUT_KEYBOARD;
+  INPUT input[4] = {cinput, cinput, cinput, cinput};
+  UINT num_events(2);
 
   bool tabWait = false; // if sending tab\newline, wait a bit after send
   //                       for the dust to settle. Thanks to Larry...
-  
+
   switch (c) {
     case L'\t':
     case L'\r':
-      input[0].ki.wVk = c == L'\t' ? VK_TAB : VK_RETURN;
-      input[0].ki.wScan = 0;
-      input[0].ki.dwFlags = 0;
+      /*
+        For Tab or Carriage Return equivalent to:
+          keybd_event(VK_TAB or VK_RETURN, 0, 0, 0);
+          keybd_event(VK_TAB or VK_RETURN, 0, KEYEVENTF_KEYUP, 0);
+      */
+      input[0].ki.wVk = input[1].ki.wVk = (c == L'\t') ? VK_TAB : VK_RETURN;
+      input[1].ki.dwFlags = KEYEVENTF_KEYUP;
+      tabWait = true;
+      break;
+    case L'\v':
+      /*
+        Special case for Shift+Tab equivalent to:
+        (assumes Shift key is not down to start!
+          keybd_event(VK_SHIFT, 0, 0, 0);
+          keybd_event(VK_TAB,   0, 0, 0);
+          keybd_event(VK_TAB,   0, KEYEVENTF_KEYUP, 0);
+          keybd_event(VK_SHIFT, 0, KEYEVENTF_KEYUP, 0);
+      */
+      num_events = 4;
+      input[0].ki.wVk = input[3].ki.wVk = VK_SHIFT;
+      input[1].ki.wVk = input[2].ki.wVk = VK_TAB;
+      input[2].ki.dwFlags = KEYEVENTF_KEYUP;
+      input[3].ki.dwFlags = KEYEVENTF_KEYUP;
       tabWait = true;
       break;
     default:
-      input[0].ki.wVk = 0;
-      input[0].ki.wScan = c;
+      /*
+        For all others equivalent to:
+          keybd_event(0, c, KEYEVENTF_UNICODE, 0);
+          keybd_event(0, c, KEYEVENTF_UNICODE | KEYEVENTF_KEYUP, 0);
+      */
+      input[0].ki.wScan = input[1].ki.wScan = c;
       input[0].ki.dwFlags = KEYEVENTF_UNICODE;
+      input[1].ki.dwFlags = KEYEVENTF_UNICODE | KEYEVENTF_KEYUP;
       break;
   }
-  // add the key-up event
-  input[1].ki = input[0].ki;
-  input[1].ki.dwFlags |= KEYEVENTF_KEYUP;
-
-  status = ::SendInput(2, input, sizeof(INPUT));
-  if (status != 2)
+  
+  status = ::SendInput(num_events, input, sizeof(INPUT));
+  if (status != num_events)
     pws_os::Trace(L"CKeySend::SendChar: SendInput failed status=%d\n", status);
-  // wait at least 200 mS if we just sent a tab, regardless of m_delay
+
+  // wait at least 200 ms if we just sent a tab, regardless of m_delay
   int delay = (m_delay < 200 && tabWait) ? 200 : m_delay;
   ::Sleep(delay);
 }
 
 void CKeySendImpl::OldSendChar(TCHAR c)
 {
-  BOOL shiftDown = false; //assume shift key is up at start.
+  BOOL shiftDown = false; // Assume shift key is up at start.
   BOOL ctrlDown = false;
   BOOL altDown = false;
   SHORT keyScanCode = VkKeyScanEx(c, m_hlocale);
   // high order byte of keyscancode indicates if SHIFT, CTRL etc keys should be down 
   if (keyScanCode & 0x100) {
-    shiftDown=true;      
-    //send a shift down
-    keybd_event(VK_SHIFT, (BYTE) MapVirtualKeyEx(VK_SHIFT, 0, m_hlocale), 0, 3); //Fixes bug #1208955
+    shiftDown = true;      
+    //send a shift down -  Fixes bug #1208955
+    keybd_event(VK_SHIFT, (BYTE) MapVirtualKeyEx(VK_SHIFT, 0, m_hlocale), 0, 3);
   } 
 
   if (keyScanCode & 0x200) {
-    ctrlDown=true;       
+    ctrlDown = true;       
     //send a ctrl down
-    keybd_event(VK_CONTROL, (BYTE) MapVirtualKeyEx(VK_CONTROL, 0, m_hlocale), KEYEVENTF_EXTENDEDKEY, 0); 
+    keybd_event(VK_CONTROL, (BYTE) MapVirtualKeyEx(VK_CONTROL, 0, m_hlocale),
+               KEYEVENTF_EXTENDEDKEY, 0); 
   } 
 
   if (keyScanCode & 0x400) {
-    altDown=true; 
+    altDown = true; 
     //send a alt down
-    keybd_event(VK_MENU, (BYTE) MapVirtualKeyEx(VK_MENU, 0, m_hlocale), KEYEVENTF_EXTENDEDKEY, 0);    
+    keybd_event(VK_MENU, (BYTE) MapVirtualKeyEx(VK_MENU, 0, m_hlocale),
+                KEYEVENTF_EXTENDEDKEY, 0);    
   } 
 
   // the lower order byte has the key scan code we need.
-  keyScanCode =(SHORT)(keyScanCode & 0xFF);
+  keyScanCode = (SHORT)(keyScanCode & 0xFF);
 
-  keybd_event((BYTE)keyScanCode, (BYTE) MapVirtualKeyEx(keyScanCode, 0, m_hlocale), 0, 0);      
-  keybd_event((BYTE)keyScanCode, (BYTE) MapVirtualKeyEx(keyScanCode, 0, m_hlocale), KEYEVENTF_KEYUP, 0);    
+  keybd_event((BYTE)keyScanCode, (BYTE) MapVirtualKeyEx(keyScanCode, 0, m_hlocale),
+              0, 0);      
+  keybd_event((BYTE)keyScanCode, (BYTE) MapVirtualKeyEx(keyScanCode, 0, m_hlocale),
+              KEYEVENTF_KEYUP, 0);    
 
   if (shiftDown) {
     //send a shift up
-    keybd_event(VK_SHIFT, (BYTE) MapVirtualKeyEx(VK_SHIFT, 0, m_hlocale), KEYEVENTF_KEYUP, 3); //Fixes bug #1208955
-    shiftDown=false;
+    keybd_event(VK_SHIFT, (BYTE) MapVirtualKeyEx(VK_SHIFT, 0, m_hlocale),
+                KEYEVENTF_KEYUP, 3); //Fixes bug #1208955
+    shiftDown = false;
   }
 
   if (ctrlDown) {
     //send a ctrl up
     keybd_event(VK_CONTROL, (BYTE) MapVirtualKeyEx(VK_CONTROL, 0, m_hlocale),
                 KEYEVENTF_KEYUP |KEYEVENTF_EXTENDEDKEY, 0); 
-    ctrlDown=false;
+    ctrlDown = false;
   } 
 
   if (altDown) {
     //send a alt up
-    keybd_event(VK_MENU, (BYTE) MapVirtualKeyEx(VK_MENU, 0, m_hlocale), KEYEVENTF_KEYUP |KEYEVENTF_EXTENDEDKEY, 0); 
-    altDown=false;       
+    keybd_event(VK_MENU, (BYTE) MapVirtualKeyEx(VK_MENU, 0, m_hlocale),
+                KEYEVENTF_KEYUP |KEYEVENTF_EXTENDEDKEY, 0); 
+    altDown = false;       
   } 
   ::Sleep(m_delay);
 }
@@ -158,12 +198,8 @@ void CKeySendImpl::OldSendChar(TCHAR c)
 static void newSendVK(WORD vk)
 {
   UINT status;
-  INPUT input[2];
-  input[0].ki.time = input[1].ki.time = 0; //probably needed
-  input[0].ki.dwExtraInfo = input[1].ki.dwExtraInfo = 0; //probably not
-  input[0].type = input[1].type = INPUT_KEYBOARD;
+  INPUT input[2] = {cinput, cinput};
   input[0].ki.wVk = input[1].ki.wVk = vk;
-  input[0].ki.dwFlags = 0;
   input[1].ki.dwFlags = KEYEVENTF_KEYUP;
   status = ::SendInput(2, input, sizeof(INPUT));
   if (status != 2)
@@ -277,4 +313,3 @@ void CKeySend::BlockInput(bool bi) const
 {
   ::BlockInput(bi ? TRUE : FALSE);
 }
-

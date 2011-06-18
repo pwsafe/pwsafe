@@ -354,7 +354,9 @@ public:
   void ClearFilter();
   void ExportFilters(PWSFilters &MapFilters);
 
-  void DoAutoType(const StringX &sx_autotype, const std::vector<size_t> &vactionverboffsets);
+  void DoAutoType(const StringX &sx_autotype, 
+                  const std::vector<size_t> &vactionverboffsets,
+                  const bool bDragBarAutoType = false);
   void UpdateLastClipboardAction(const int iaction);
   void PlaceWindow(CWnd *pWnd, CRect *pRect, UINT uiShowCmd);
   void SetDCAText(CItemData * pci = NULL);
@@ -580,7 +582,7 @@ protected:
   int RestoreSafe(void);
   int New(void);
 
-  void AutoType(const CItemData &ci);
+  void AutoType(const CItemData &ci, const bool bDragBarAutoType = false);
   bool EditItem(CItemData *pci, PWScore *pcore = NULL);
   void UpdateEntry(CAddEdit_PropertySheet *pentry_psh);
   bool EditShortcut(CItemData *pci, PWScore *pcore = NULL);

@@ -20,9 +20,10 @@ resource-only DLLs be built with V2.0 or later of ResPWSL (i.e. supplied
 with PasswordSafe V3.25.1 or later).
 [3065111] Add/Edit now displays both the Application's (PasswordSafe) and the
 current database's default Autotype string (if set via Manage->Options).
-[2964804] The user can specify the list of symbols valid for a database and can
+[2964804, 1855389] The user can specify the list of symbols valid for a database and can
 override this for any particular entry. Note: the inbuilt special symbols
 for EasyVision and Pronounceable passwords can not be overriden in either case.
+[1831893, 1471134] Provide Autotype code "\s" to send "Shift+Tab".
 [] Allow user to control the copying password to clipboard when performing
 "Browse to URL" via an option in Options->Security. This is a database option
 i.e. you can have different setting for different databases.

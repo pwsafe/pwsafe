@@ -474,7 +474,7 @@ BOOL CDDStatic::OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
     // So is requested data!
     dwBufLen = (DWORD)((ilen + 1) * sizeof(wchar_t));
     lpszW = new WCHAR[ilen + 1];
-    pws_os::Trace(L"lpszW allocated %p, size %d\n", lpszW, dwBufLen);
+    //pws_os::Trace(L"lpszW allocated %p, size %d\n", lpszW, dwBufLen);
     if (ilen == 0) {
       lpszW[ilen] = L'\0';
     } else {
@@ -555,9 +555,9 @@ bad_return:
   // Finished with buffer - trash it
   trashMemory(lpDataBuffer, dwBufLen);
   // Free the strings (only one is actually in use)
-  pws_os::Trace(L"lpszA freed %p\n", lpszA);
+  //pws_os::Trace(L"lpszA freed %p\n", lpszA);
   delete[] lpszA;
-  pws_os::Trace(L"lpszW freed %p\n", lpszW);
+  //pws_os::Trace(L"lpszW freed %p\n", lpszW);
   delete[] lpszW;
   // Since lpDataBuffer pointed to one of the above - just zero the pointer
   lpDataBuffer = NULL;
@@ -644,7 +644,7 @@ void CDDStatic::EndDrop()
   if (m_nID == IDC_STATIC_DRAGAUTO) {
     if (m_pDbx != NULL && m_pci != NULL) {
       m_pDbx->ClearClipboardData();
-      m_pDbx->SendMessage(PWS_MSG_DRAGAUTOTYPE, (WPARAM)m_pci);
+      m_pDbx->PostMessage(PWS_MSG_DRAGAUTOTYPE, (WPARAM)m_pci);
     }
   }
 }
