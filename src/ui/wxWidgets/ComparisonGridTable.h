@@ -16,8 +16,8 @@
 
 #include "../../core/DBCompareData.h"
 
-#define CurrentBackgroundColor    wxColour(244, 244, 244)
-#define ComparisonBackgroundColor wxColour(225, 225, 225)
+#define CurrentBackgroundColor    *wxWHITE
+#define ComparisonBackgroundColor *wxWHITE
 
 
 struct SelectionCriteria;

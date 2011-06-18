@@ -327,6 +327,6 @@ ComparisonGrid::ComparisonGrid(wxWindow* parent, wxWindowID id): wxGrid(parent, 
 
 wxPen ComparisonGrid::GetRowGridLinePen(int row)
 {
-  return row%2 == 0? wxPen(CurrentBackgroundColor, 1, wxSOLID): *wxBLACK_PEN;
+  return row%2 == 0? wxPen(CurrentBackgroundColor) : wxGrid::GetRowGridLinePen(row);
 }
 
