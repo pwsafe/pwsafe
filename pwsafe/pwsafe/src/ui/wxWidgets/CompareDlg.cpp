@@ -27,7 +27,7 @@
 #include "./AdvancedSelectionDlg.h"
 #include "./ComparisonGridTable.h"
 #include "./SizeRestrictedPanel.h"
-
+#include "../../core/core.h"
 #include <wx/statline.h>
 #include <wx/grid.h>
 
@@ -35,6 +35,7 @@ enum {ID_BTN_COMPARE = 100 };
 
 BEGIN_EVENT_TABLE( CompareDlg, wxDialog )
   EVT_BUTTON( ID_BTN_COMPARE,  CompareDlg::OnCompare )
+  EVT_GRID_CELL_RIGHT_CLICK(CompareDlg::OnGridCellLeftClick)
 END_EVENT_TABLE()
 
 struct ComparisonData {
@@ -277,7 +278,7 @@ void CompareDlg::DoCompare()
                                               sections[idx].useComparisonSafe? &st_CompareData::uuid1: &st_CompareData::uuid0,
                                               sections[idx].useComparisonSafe? ComparisonBackgroundColor: CurrentBackgroundColor);
         }
-        sections[idx].cd->grid->SetTable(table);
+        sections[idx].cd->grid->SetTable(table, true, wxGrid::wxGridSelectRows);
         wxCollapsiblePane* pane = sections[idx].cd->pane;
         //expand the columns to show these fields fully, as these are usually small(er) strings
         table->AutoSizeField(CItemData::GROUP);
@@ -308,3 +309,56 @@ void CompareDlg::DoCompare()
   }
 }
 
+enum {
+  ID_COPY_FIELD_TO_CURRENT_DB = 100,
+  ID_MERGE_ITEMS_WITH_CURRENT_DB,
+  ID_COPY_ITEMS_TO_CURRENT_DB,
+  ID_EDIT_IN_CURRENT_DB,
+  ID_VIEW_IN_COMPARISON_DB
+};
+
+void CompareDlg::OnGridCellLeftClick(wxGridEvent& evt)
+{
+  wxGrid* sourceGrid;
+  if (evt.GetId() == m_conflicts->grid->GetId())
+    sourceGrid = m_conflicts->grid;
+  else if (evt.GetId() == m_comparison->grid->GetId())
+    sourceGrid = m_comparison->grid;
+  else if (evt.GetId() == m_current->grid->GetId())
+    sourceGrid = m_current->grid;
+  else if (evt.GetId() == m_identical->grid->GetId())
+    sourceGrid = m_comparison->grid;
+  else {
+    evt.Skip();
+    wxFAIL_MSG(wxT("Unexpected grid id in CompareDlg's grid event handler"));
+    return;
+  }
+  
+  wxMenu itemEditMenu;
+  wxString strCopyFieldMenu;
+  ComparisonGridTable* table = wxDynamicCast(sourceGrid->GetTable(), ComparisonGridTable);
+  strCopyFieldMenu << _("&Copy ") << towxstring(CItemData::FieldName(table->ColumnToField(evt.GetCol()))) << _(" to current db");
+  itemEditMenu.Append(ID_COPY_FIELD_TO_CURRENT_DB, strCopyFieldMenu);
+  
+  itemEditMenu.AppendSeparator();
+  
+  const int selectionCount = sourceGrid->GetSelectedRows().GetCount();
+  stringT itemStr;
+  LoadAString(itemStr, selectionCount > 1? IDSC_ENTRIES: IDSC_ENTRY);
+  
+  wxString strMergeItemsMenu;
+  strMergeItemsMenu << _("Merge ") << selectionCount << wxT(' ') << towxstring(itemStr) << _(" with current db");
+  itemEditMenu.Append(ID_MERGE_ITEMS_WITH_CURRENT_DB, strMergeItemsMenu);
+
+  wxString strCopyItemsMenu;
+  strCopyItemsMenu << _("Copy ") << selectionCount << wxT(' ') << towxstring(itemStr) << _(" to current db");
+  itemEditMenu.Append(ID_COPY_ITEMS_TO_CURRENT_DB, strCopyItemsMenu);
+  
+  itemEditMenu.AppendSeparator();
+  
+  itemEditMenu.Append(ID_EDIT_IN_CURRENT_DB,   wxT("&Edit item in current db"));
+  itemEditMenu.Append(ID_VIEW_IN_COMPARISON_DB,   wxT("&View item in comparison db"));
+  
+  sourceGrid->PopupMenu(&itemEditMenu);
+  
+}

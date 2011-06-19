@@ -21,6 +21,7 @@ struct SelectionCriteria;
 class DbSelectionPanel;
 class wxGrid;
 struct ComparisonData;
+class wxGridEvent;
 
 class CompareDlg: public wxDialog
 {
@@ -30,6 +31,7 @@ class CompareDlg: public wxDialog
   wxCollapsiblePane* CreateDataPanel(wxSizer* dlgSizer, const wxString& title, ComparisonData* cd,
                                               bool customGrid = false);
   void OnCompare(wxCommandEvent& );
+  void OnGridCellLeftClick(wxGridEvent& evt);
 
 public:
   CompareDlg(wxWindow* parent, PWScore* core);
