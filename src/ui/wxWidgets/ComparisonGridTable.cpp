@@ -114,6 +114,21 @@ int ComparisonGridTable::FieldToColumn(CItemData::FieldType ft)
   return -1;
 }
 
+CItemData::FieldType ComparisonGridTable::ColumnToField(int col)
+{
+  switch(col) {
+    case 0:
+      return CItemData::GROUP;
+    case 1:
+      return CItemData::USER;
+    default:
+      if (col > 0 && col < GetNumberCols())
+        return m_colFields[col-2].ft;
+      break;
+  }
+  return CItemData::LAST;
+}
+
 void ComparisonGridTable::AutoSizeField(CItemData::FieldType ft)
 {
   int col = FieldToColumn(ft);

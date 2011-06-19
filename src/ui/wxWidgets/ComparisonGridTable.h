@@ -43,6 +43,7 @@ public:
   wxString GetColLabelValue(int col);
   void AutoSizeField(CItemData::FieldType ft);
   int FieldToColumn(CItemData::FieldType ft);
+  CItemData::FieldType ColumnToField(int col);
 
 protected:
   SelectionCriteria*      m_criteria;
