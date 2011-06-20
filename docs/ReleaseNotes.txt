@@ -26,10 +26,10 @@ for EasyVision and Pronounceable passwords cannot be overriden in either case.
 [] Allow user to control copying of the password to clipboard when performing
 "Browse to URL" via an option in Options->Security. This is a database option
 i.e., you can have different setting for different databases.
-[] Support importing of CSV files exported from KeePass V1. Note that KeePass V2's
-export in the V1 format is does not conform to their own format as specified by their
-V1 product and cannot be imported. Please review the online file for
-more details.
+[] Support importing of TXT, CSV files and XML exported from KeePass V1 and KeePass V2
+XML files. Note that KeePass V2's export in the V1 format is does not conform to their
+own format as specified by their V1 product and can not be imported. Please review our
+Help file for the settings in KeePass required during their export.
 
 Changes to Existing Features in 3.26
 ====================================
