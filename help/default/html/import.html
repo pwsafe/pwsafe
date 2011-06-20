@@ -28,13 +28,13 @@ text editor.</p>
 <li><a href="#KeePassXML">KeePass V1 and V2 XML Files</a></li>
 </ul>
 
-<p>At the end of the import operation, a report will be available
+<p><b>Password Safe</b> generate a report at the end of the import operation, 
   summarizing what was done and noting any problems that may have
   occurred. This report may be copied to the clipboard or saved to
   disk as a text file in the same directory as the database.
   The "View&nbsp;&rarr;&nbsp;Reports" menu item may then be used to
 view the reports at a later date. The name of the report file is fixed and
-dependent on the function that created it. If the same function is repeated
+depends on the function that created it. If the same function is repeated
 and its report saved to disk, any existing report for this function will be
 overwritten. <span style="color=red;">Note: The report may contain sensitive data and
 care should be taken when selecting the "save to disk" option.</span></p>
@@ -124,7 +124,7 @@ of each line:</p>
 <li>"Expires: " becomes the entry's expiry date</li>
 </ul>
 
-<p>The following fields are ignored:</p>
+<p>The following fields are currently ignored:</p>
 
 <ul>
 <li>"Icon"</li>
@@ -161,7 +161,7 @@ by V1.19b).</p>
 <li>"Expires" becomes the entry's expiry date</li>
 </ul>
 
-<p>The following fields are ignored:</p>
+<p>The following fields are currently ignored:</p>
 
 <ul>
 <li>"Icon"</li>
@@ -208,11 +208,12 @@ KPV2_to_PWS.xslt.</li>
 <li>The input KeePass V1 or V2 XML file is: KeePassV1.xml or KeePassV2.xml</li>
 <li>The output <b>Password Safe</b> XML file will be: PWS.xml</li>
 <li>All input and output files are in the same directory as the XSLT processor. If not, you will need to
-specify enter the full path of these files.</li>
+enter the full path of these files.</li>
 </ul>
 <ol>
 <li>The command line program from Microsoft (XSLT Processor Version 4.0). The properties of the file msxsl.exe state that
-it is V1.1.0.1 and dated 2001, although the web site states that it is V2.0 and dated 19 September 2004. It can be found at
+it is V1.1.0.1 and dated 2001, although the web site states that it is
+  V2.0 and dated 19 September 2004. It can currently be found at
 <a target="blank" href="http://www.microsoft.com/downloads/en/details.aspx?familyid=2fb55371-c94e-4373-b0e9-db4816552e41&displaylang=en">http://www.microsoft.com/downloads</a>.
 It requires Microsoft Core XML Services (MSXML) V4.0 to be installed.  Whilst the latest MSXML version is V6, V4
 is normally installed on all versions of Windows supported by <b>Password Safe</b>.
@@ -258,7 +259,7 @@ are converted to the normal <b>Password Safe</b> delimiter '&raquo;' used to den
 the Notes field.</li>
 
 <li>The KeePass entry's UUID will be transferred to the <b>Password Safe</b> entry unless it is already
-used within that database (which is very unlikely), in which case a new value will be calculated during
+used within that database (which is <em>very</em> unlikely), in which case a new value will be calculated during
 import.</li>
 </ul>
 
