@@ -41,14 +41,14 @@ wxSize SizeRestrictedPanel::GetWindowSizeForVirtualSize(const wxSize& size) cons
     wxSize sizeDiff = parentSize - currentSize;
 
   if (bestSize.GetWidth() > (screenSize.GetWidth() - sizeDiff.GetWidth())) {
-    wxLogDebug(wxT("Adjusting best width from %d, screen width is %d, parent width is %d, current width is %d, diff is %d"),
-                    bestSize.GetWidth(), screenSize.GetWidth(), parentSize.GetWidth(), currentSize.GetWidth(), sizeDiff.GetWidth());
+//    wxLogDebug(wxT("Adjusting best width from %d, screen width is %d, parent width is %d, current width is %d, diff is %d"),
+//                    bestSize.GetWidth(), screenSize.GetWidth(), parentSize.GetWidth(), currentSize.GetWidth(), sizeDiff.GetWidth());
     bestSize.SetWidth(screenSize.GetWidth()-sizeDiff.GetWidth());
   }
 
   if (bestSize.GetHeight() > (screenSize.GetHeight() - sizeDiff.GetHeight())) {
-    wxLogDebug(wxT("Adjusting best height from %d, screen height is %d, parent height is %d, current height is %d, diff is %d"),
-                    bestSize.GetHeight(), screenSize.GetHeight(), parentSize.GetHeight(), currentSize.GetHeight(), sizeDiff.GetHeight());
+//    wxLogDebug(wxT("Adjusting best height from %d, screen height is %d, parent height is %d, current height is %d, diff is %d"),
+//                    bestSize.GetHeight(), screenSize.GetHeight(), parentSize.GetHeight(), currentSize.GetHeight(), sizeDiff.GetHeight());
     bestSize.SetHeight(screenSize.GetHeight()-sizeDiff.GetHeight());
   }
   return bestSize;
