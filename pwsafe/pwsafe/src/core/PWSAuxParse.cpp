@@ -523,10 +523,10 @@ void PWSAuxParse::SendAutoTypeString(const StringX &sx_autotype,
     // at the end of any characters in the selected window text box
     sxtmp = _T("\t");  // Horizontal tab
     ks.SendString(sxtmp);
-    ::Sleep(50);
+    pws_os::sleep_ms(50);
     sxtmp = _T("\v");  // Vertical Tab == converted to Shift+Tab
     ks.SendString(sxtmp);
-    ::Sleep(50);
+    pws_os::sleep_ms(50);
     sxtmp.clear();
   }
 
