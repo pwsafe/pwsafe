@@ -31,7 +31,8 @@ class CompareDlg: public wxDialog
   wxCollapsiblePane* CreateDataPanel(wxSizer* dlgSizer, const wxString& title, ComparisonData* cd,
                                               bool customGrid = false);
   void OnCompare(wxCommandEvent& );
-  void OnGridCellLeftClick(wxGridEvent& evt);
+  void OnGridCellRightClick(wxGridEvent& evt);
+  void OnGridCellSelection(wxGridEvent& evt);
 
 public:
   CompareDlg(wxWindow* parent, PWScore* core);
@@ -47,6 +48,7 @@ private:
   ComparisonData      *m_current, *m_comparison, *m_conflicts, *m_identical;
 
   void DoCompare();
+  wxGrid* GetEventSourceGrid(int id);
 
   DECLARE_EVENT_TABLE()
 };
