@@ -35,7 +35,7 @@ autotype is too fast for your machine.</p>
 <li>Place cursor in the form's user name field</li>
 <li>Maximize or open <b>Password Safe</b></li>
 <li>Select a password entry</li>
-<li><b>Ctrl -T</b> or right-click and select <b>Perform Auto Type</b>
+<li><b>Ctrl+T</b> or right-click and select <b>Perform Auto Type</b>
 or click on the Toolbar button to initiate.</li>
 </ol>
 
@@ -55,8 +55,8 @@ with text that specifies the desired behavior as follows:</p>
 <li>Any end of line characters '\n', '\r' or '\r\n' are converted to '\r'
 (carriage return).</li>
 <li>No substitution is made to escape sequences within the Notes field 
-(e.g. '\u', '\p' etc.) except for the '\t' sequence which is
-replaced by the tab character.</li>
+(e.g. '\u', '\p' etc.) except for the '\t' sequence, which is replaced by
+the Tab character and '\s' sequence, which is replaced by "Shift+Tab".</li>
 </ul>
 <li><b>\o<i>NNN</i></b> is replaced by the contents of the n<sup>th</sup>
 line of the Notes field</li>
@@ -76,6 +76,7 @@ arbitrary text as part of the authentication process.</small>
 <hr>
 <li><b>\b</b> is replaced by the backspace key.</li>
 <li><b>\t</b> is replaced by the Tab key, in effect skipping a field.</li>
+<li><b>\s</b> is replaced by the "Shift+Tab", in effect back-tabbing to the previous field.</li>
 <li><b>\n</b> is replaced by the enter key, in effect pressing a button.</li>
 <li><b>\\</b> is replaced by the backslash (\) key.</li>
 <li><b>\d<i>NNN</i></b> sets the delay between characters to <i>NNN</i>
