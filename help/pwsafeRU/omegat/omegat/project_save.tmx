@@ -1919,6 +1919,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>&lt;b0&gt;&lt;i1&gt;&lt;u2&gt;Warning&lt;/u2&gt;&lt;/i1&gt;&lt;/b0&gt;: The Export of sensitive information from a &lt;b3&gt;Password Safe&lt;/b3&gt; database to a text file has serious security consequences.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20110622T173908Z" changeid="pm_kan">
+        <seg>&lt;b0&gt;&lt;i1&gt;&lt;u2&gt;Внимание!&lt;/u2&gt;&lt;/i1&gt;&lt;/b0&gt; Экспорт важной информации из контейнера &lt;b3&gt;Password Safe&lt;/b3&gt; в текстовый файл может привести к серьёзным последствиям, связанным с безопасностью.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>&lt;b0&gt;&lt;i1&gt;Additional&lt;/i1&gt;:&lt;/b0&gt; additional specifications, including history</seg>
       </tuv>
       <tuv lang="RU-RU" changedate="20110209T230538Z" changeid="pm_kan">
@@ -2393,8 +2401,8 @@
       <tuv lang="EN-US">
         <seg>&lt;b0&gt;Note:&lt;/b0&gt;&lt;i1&gt;There appears to be an issue using the new Autotype Dragbar image with Internet Explorer (tested with V7, V8 &amp; V9) in that any characters typed before the first tab character are lost.</seg>
       </tuv>
-      <tuv lang="RU-RU" changedate="20110621T205811Z" changeid="pm_kan">
-        <seg>&lt;b0&gt;Примечание.&lt;/b0&gt;&lt;i1&gt;Похоже, что в Internet Explorer (V7, V8 и V9) автонабор с панели «Dragbar» работает не совсем корректно: теряются символы до первой табуляции.</seg>
+      <tuv lang="RU-RU" changedate="20110622T174915Z" changeid="pm_kan">
+        <seg>&lt;b0&gt;Примечание.&lt;/b0&gt; &lt;i1&gt;Похоже, что в Internet Explorer (V7, V8 и V9) автонабор с панели «Dragbar» работает не совсем корректно: теряются символы до первой табуляции.</seg>
       </tuv>
     </tu>
     <tu>
@@ -2626,8 +2634,8 @@
       <tuv lang="EN-US">
         <seg>&lt;b0&gt;Password Safe&lt;/b0&gt; generate a report at the end of the import operation, summarizing what was done and noting any problems that may have occurred.</seg>
       </tuv>
-      <tuv lang="RU-RU" changedate="20110620T172907Z" changeid="pm_kan">
-        <seg>По окончании операции импорта &lt;b0&gt;Password Safe&lt;/b0&gt; создёт отчёт, содержащий информацию о выполненной работе и возникших проблемах (если такие были).</seg>
+      <tuv lang="RU-RU" changedate="20110622T164252Z" changeid="pm_kan">
+        <seg>По окончании операции импорта &lt;b0&gt;Password Safe&lt;/b0&gt; создаёт отчёт, содержащий информацию о выполненной работе и возникших проблемах (если такие были).</seg>
       </tuv>
     </tu>
     <tu>
@@ -6785,6 +6793,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Deleting this copy after use is &lt;b4&gt;not&lt;/b4&gt; sufficient and other actions should be taken to properly erase the data (e.g. third party 'shredding' utilities).</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20110622T173923Z" changeid="pm_kan">
+        <seg>Простого удаления данной копии &lt;b4&gt;недостаточно&lt;/b4&gt;, и требуется использование дополнительных утилит для гарантированного удаления данных.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Depending on your translation, certain keys with the Alt key are reserved.</seg>
       </tuv>
       <tuv lang="RU-RU" changedate="20110215T201353Z" changeid="pm_kan">
@@ -8291,8 +8307,8 @@
       <tuv lang="EN-US">
         <seg>Group names can be &quot;nested&quot; i.e. placing a group name within/under another group name.</seg>
       </tuv>
-      <tuv lang="RU-RU" changedate="20110620T140520Z" changeid="pm_kan">
-        <seg>Группы могуть быть вложенными.</seg>
+      <tuv lang="RU-RU" changedate="20110622T165259Z" changeid="pm_kan">
+        <seg>Группы могут быть вложенными.</seg>
       </tuv>
     </tu>
     <tu>
@@ -9139,8 +9155,8 @@
       <tuv lang="EN-US">
         <seg>If the entry is protected, you will not be able to change any fields until you unprotect the entry via the Edit menu or right-click context menu.</seg>
       </tuv>
-      <tuv lang="RU-RU" changedate="20110622T140558Z" changeid="pm_kan">
-        <seg>Поля в защищенных элементах не могут быть изменены. Чтобы снять защиту с выберите в контекстном меню элемента (или в меню «Изменить») «Снять защиту».</seg>
+      <tuv lang="RU-RU" changedate="20110622T164211Z" changeid="pm_kan">
+        <seg>Поля в защищённых элементах не могут быть изменены. Чтобы снять защиту с выберите в контекстном меню элемента (или в меню «Изменить») «Снять защиту».</seg>
       </tuv>
     </tu>
     <tu>
@@ -10387,8 +10403,8 @@
       <tuv lang="EN-US">
         <seg>KeePass V2 can create an history section when anything is changed in an entry.</seg>
       </tuv>
-      <tuv lang="RU-RU" changedate="20110620T195627Z" changeid="pm_kan">
-        <seg>KeePass V2 создает запись в истории при изменении любого поля элемента.</seg>
+      <tuv lang="RU-RU" changedate="20110622T164242Z" changeid="pm_kan">
+        <seg>KeePass V2 создаёт запись в истории при изменении любого поля элемента.</seg>
       </tuv>
     </tu>
     <tu>
@@ -11699,8 +11715,8 @@
       <tuv lang="EN-US">
         <seg>Note:There is no mechanism within Password Safe to retrieve lost or forgotten safe passwords.</seg>
       </tuv>
-      <tuv lang="RU-RU" changedate="20110620T111924Z" changeid="pm_kan">
-        <seg>Примечание. Password Safe не существует механизма для восстановления потерянных (забытых) мастер-паролей.</seg>
+      <tuv lang="RU-RU" changedate="20110622T164650Z" changeid="pm_kan">
+        <seg>Примечание. В Password Safe не существует механизма для восстановления потерянных (забытых) мастер-паролей.</seg>
       </tuv>
     </tu>
     <tu>
@@ -11939,8 +11955,8 @@
       <tuv lang="EN-US">
         <seg>Only able to be set if the user has already set a Hot Key</seg>
       </tuv>
-      <tuv lang="RU-RU" changedate="20110621T183235Z" changeid="pm_kan">
-        <seg>Используется только если назначена горячая клавиша для вызова Pasword Safe</seg>
+      <tuv lang="RU-RU" changedate="20110622T174238Z" changeid="pm_kan">
+        <seg>Используется только если назначена горячая клавиша для вызова Password Safe</seg>
       </tuv>
     </tu>
     <tu>
@@ -14843,6 +14859,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>The Export of sensitive information from a &lt;b0&gt;Password Safe&lt;/b0&gt; database to a text file has serious security consequences.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20110622T172752Z" changeid="pm_kan">
+        <seg>Экспорт важной информации из контейнера &lt;b0&gt;Password Safe&lt;/b0&gt; в текстовый файл может привести к серьёзным последствиям, связанным с безопасностью.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>The F3 key performs the repeat find.</seg>
       </tuv>
       <tuv lang="RU-RU" changedate="20101105T164811Z" changeid="pm_kan">
@@ -15453,8 +15477,8 @@
       <tuv lang="EN-US">
         <seg>The following table shows the conversion of these to the &lt;b0&gt;Password Save&lt;/b0&gt; equivalent XML element.</seg>
       </tuv>
-      <tuv lang="RU-RU" changedate="20110620T195446Z" changeid="pm_kan">
-        <seg>В таблице указаны преобразования элементов этого разделов при импорте в &lt;b0&gt;Password Save&lt;/b0&gt;.</seg>
+      <tuv lang="RU-RU" changedate="20110622T173703Z" changeid="pm_kan">
+        <seg>В таблице указаны преобразования элементов этого разделов при импорте в &lt;b0&gt;Password Safe&lt;/b0&gt;.</seg>
       </tuv>
     </tu>
     <tu>
@@ -19062,8 +19086,8 @@
       <tuv lang="EN-US">
         <seg>You can create versions of the database that are readable by older versions of &lt;b0&gt;Password Safe&lt;/b0&gt; by explicitly exporting to the desired format (&lt;b1&gt;File → Export To&lt;/b1&gt; and select &lt;b2&gt;V1 format... &lt;/b2&gt;or &lt;b3&gt;V2 format...&lt;/b3&gt;&lt;b4&gt;)&lt;/b4&gt;.</seg>
       </tuv>
-      <tuv lang="RU-RU" changedate="20110621T204505Z" changeid="pm_kan">
-        <seg>Вы можете создать копии контейнера, читаемые в предыдущих версиях &lt;b0&gt;Password Safe&lt;/b0&gt; используя экспорт в требуемый формат (&lt;b1&gt;Файл→Экспортировать в&lt;/b1&gt;а затем &lt;b2&gt;Формат v1.x&lt;/b2&gt; или &lt;b3&gt;Формат v2.x&lt;/b3&gt;).</seg>
+      <tuv lang="RU-RU" changedate="20110622T174802Z" changeid="pm_kan">
+        <seg>Вы можете создать копии контейнера, читаемые в предыдущих версиях &lt;b0&gt;Password Safe&lt;/b0&gt; используя экспорт в требуемый формат (&lt;b1&gt;Файл→Экспортировать в&lt;/b1&gt;, а затем &lt;b2&gt;Формат v1.x&lt;/b2&gt; или &lt;b3&gt;Формат v2.x&lt;/b3&gt;).</seg>
       </tuv>
     </tu>
     <tu>
