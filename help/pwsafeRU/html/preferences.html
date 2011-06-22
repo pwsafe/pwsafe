@@ -1,550 +1,791 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head>
-  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Настройки</title><!-- pwsafe version: 3.06--><!-- Modified: 21/02/2007 --><!--Popup control -->
 
-  
-
-
-
-  
-  
-
-  <title>Настройки</title><!-- pwsafe version: 3.06--><!-- Modified: 21/02/2007 --><!--Popup control --><script language="javascript" src="html/popups.js">
-  </script>
-  
-  <link rel="stylesheet" type="text/css" href="style.css"></head>
+<script language="javascript" src="html/popups.js">
+</script>
+<link rel="stylesheet" type="text/css" href="style.css"></head>
 <body>
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"></object><!-- Popup Source File -->
 
 
-<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"> </object><!-- Popup Source File -->
+<h1>Настройки <b>Password Safe</b>
+</h1>
 
-<h1><span style="font-size: 14pt;" lang="RU-RU">Настройки Password Safe<o:p></o:p></span></h1>
-
-
-<hr style="width: 100%; height: 2px;">Как и многие другие приложения, Password Safe позволяет настроить свой вид и поведение согласно предпочтениям пользователя. Некоторые приложения используют для этих целей реестр Windows. Предыдущие версии Password Safe тоже использовали реестр, но это приводило к ряду проблем:<br> 1.  Некоторые настройки связаны с обеспечением безопасности, и хранение их в доступных местах может привести к получению злоумышленником несанкционированного доступа к контейнеру (например, если он отключит блокировку контейнера по истечении указанного времени, а пользователь не заметит этого и уйдёт на обед).<br> 2. Многие пользователи используют один и тот же контейнер Password Safe на разных машинах (запускают со съёмного диска или сетевого ресурса). В данном случае хранение в реестре затрудняет использование общих настроек.<br> <br> Настройки в Password Safe имеют предопределённое «значение по умолчанию». Когда пользователь изменяет ту или иную настройку, её новое значение (отличное от значения по умолчанию) сохраняется.<br> Настройки в Password Safe делятся на «связанные с обеспечением безопасности» и «не связанные с обеспечением безопасности». Первые хранятся в контейнере и шифруются с помощью того же ключа, что и остальные данные.<br> Оставшиеся настройки хранятся в файле pwsafe.cfg. Данный файл имеет формат XML. Для каждого пользователя и машины создаются отдельные элементы, чтобы несколько пользователей могли использовать один и тот же файл на различных машинах.<br> По умолчанию pwsafe.cfg сохраняется в том же каталоге, что и pwsafe.exe. Но, если задана переменная окружения PWS_PREFSDIR, Password Safe будет использовать файл настроек, указанный в ней. Это может быть использовано в случае, если у пользователя нет прав на изменение файлов в каталоге установки pwsafe.exe.<br> <br> Таблица описывает настраиваемые параметры. Большинство из них задаются в диалоге, открываемом через пункт меню <a href="manage_menu.html">Управление→Настройки</a>.<br>
 <hr style="width: 100%; height: 2px;">
-<h4><span style="font-size: 11pt;" lang="RU-RU"><o:p></o:p></span><span style="font-size: 11pt; font-family: &quot;Times New Roman&quot;;" lang="RU-RU"></span>Настройки с логическими значениями (true[истина]/false[ложь]) </h4>
-<table style="width: 640px;" border="1" cellpadding="2" cellspacing="2" width="100%">
 
-  <tbody>
-    <tr>
-      <td style="font-weight: bold; width: 214px;" align="center" valign="middle">Настройка</td>
-      <td style="font-weight: bold; width: 68px;" align="center" valign="middle">Значение по умолчанию</td>
-      <td style="font-weight: bold; width: 140px;" align="center" valign="middle">Где хранится</td>
-      <td style="width: 200px;" align="center" valign="middle"><span style="font-weight: bold;">Примечание</span></td>
-    </tr>
-    <tr>
-      <td style="width: 214px;">alwaysontop</td>
-      <td style="width: 68px;">  false</td>
-      <td style="width: 140px;">  pwsafe.cfg</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small>Отображать Password Safe поверх всех окон</small></td>
-    </tr>
+<p>Как и многие другие приложения, <b>Password Safe</b> позволяет настроить свой вид и поведение согласно предпочтениям пользователя. Некоторые приложения используют для этих целей реестр Windows. Предыдущие версии <b>Password Safe</b> тоже использовали реестр, но это приводило к ряду проблем:</p>
 
-    <tr>
-      <td style="width: 214px;">showpwdefault</td>
-      <td style="width: 68px;">  false</td>
-      <td style="width: 140px;"> контейнер</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small>&nbsp;</small></td>
-    </tr>
+<ul>
+<li>Некоторые настройки связаны с обеспечением безопасности, и хранение их в доступных местах может привести к получению злоумышленником несанкционированного доступа к контейнеру (например, если он отключит блокировку контейнера по истечении указанного времени, а пользователь не заметит этого и уйдёт на обед).</li>
 
-    <tr>
-      <td style="width: 214px;">showpwinlist</td>
-      <td style="width: 68px;">  false</td>
-      <td style="width: 140px;"> контейнер</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small>&nbsp;</small></td>
-    </tr>
+<li>Многие пользователи используют один и тот же контейнер <b>Password Safe</b> на разных машинах (запускают со съёмного диска или сетевого ресурса). В данном случае хранение в реестре затрудняет использование общих настроек.</li>
+</ul>
 
-    <tr>
-      <td style="width: 214px;">sortascending</td>
-      <td style="width: 68px;">  true</td>
-      <td style="width: 140px;"> контейнер</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small>&nbsp;</small></td>
-    </tr>
+<p>Настройки в <b>Password Safe</b> имеют предопределённое «значение по умолчанию». Когда пользователь изменяет ту или иную настройку, её новое значение (отличное от значения по умолчанию) сохраняется.</p>
 
-    <tr>
-      <td style="width: 214px;">usedefuser</td>
-      <td style="width: 68px;">  false</td>
-      <td style="width: 140px;"> контейнер</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small>&nbsp;</small></td>
-    </tr>
+<p>Настройки в <b>Password Safe</b> делятся на «связанные с обеспечением безопасности» и «не связанные с обеспечением безопасности». Первые хранятся в контейнере и шифруются с помощью того же ключа, что и остальные данные.</p>
 
-    <tr>
-      <td style="width: 214px;">saveimmediately</td>
-      <td style="width: 68px;">  true</td>
-      <td style="width: 140px;"> контейнер</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small>&nbsp;</small></td>
-    </tr>
+<p>Оставшиеся настройки хранятся в файле pwsafe.cfg. Файл имеет формат XML. Для каждого пользователя и машины создаются отдельные элементы, чтобы несколько пользователей могли использовать один и тот же файл на различных машинах.</p>
 
-    <tr>
-      <td style="width: 214px;">pwuselowercase</td>
-      <td style="width: 68px;">  true</td>
-      <td style="width: 140px;"> контейнер</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small>Политика создания паролей</small></td>
-    </tr>
+<p>По умолчанию pwsafe.cfg сохраняется в том же каталоге, что и pwsafe.exe. Но, если задана переменная окружения PWS_PREFSDIR, Password Safe будет использовать файл настроек, указанный в ней. Это может быть использовано в случае, если у пользователя нет прав на изменение файлов в каталоге установки pwsafe.exe.</p>
 
-    <tr>
-      <td style="width: 214px;">pwuseuppercase</td>
-      <td style="width: 68px;">  true</td>
-      <td style="width: 140px;"> контейнер</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small>Политика создания паролей</small></td>
-    </tr>
+<p>Таблица описывает настраиваемые параметры. Большинство из них задаются в диалоге, открываемом через пункт меню <a href="manage_menu.html">Управление→Настройки</a>. Т. к. используется XML-формат, имена полей чувствительны к регистру. Настройки из файла «pwsafe.cfg» применяются ко всем открытым контейнерам. Настройки, сохраняемые в контейнере, применяются только к нему. В Windows Vista и Windows 7 файл «pwsafe.cfg» находится в каталоге «C:\Users\&lt;имя_пользователя&gt;\AppData\Local\PasswordSafe», а в Windows XP — в каталоге «C:\Documents and Settings\&lt;имя_пользователя&gt;\Application Data\PasswordSafe». Данные каталоги могут быть скрытыми, и для их отображения может потребоваться изменение настроек Проводника. Устаревшие настройки не перечислены.</p>
 
-    <tr>
-      <td style="width: 214px;">pwusedigits</td>
-      <td style="width: 68px;">  true</td>
-      <td style="width: 140px;"> контейнер</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small>Политика создания паролей</small></td>
-    </tr>
+<p>Обратите внимание, что значения, совпадающие со «значением по умолчанию» не сохраняются. </p>
 
-    <tr>
-      <td style="width: 214px;">pwusesymbols</td>
-      <td style="width: 68px;">  false</td>
-      <td style="width: 140px;"> контейнер</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small>Политика создания паролей</small></td>
-    </tr>
+<p><big><b>Примечание.</b> <b>Не рекомендуется</b> изменять файл настроек вручную, т. к. это может привести к непредвиденным результатам. Несмотря на то, что значения настроек проверяются при чтении, мы не можем гарантировать, что параметры, заданные вручную, не вызовут проблем.</p>
 
-    <tr>
-      <td style="width: 214px;">pwusehexdigits</td>
-      <td style="width: 68px;">  false</td>
-      <td style="width: 140px;"> контейнер</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small>Политика создания паролей</small></td>
-    </tr>
+<hr style="width: 100%; height: 2px;">
 
-    <tr>
-      <td style="width: 214px;">pweasyvision</td>
-      <td style="width: 68px;">  false</td>
-      <td style="width: 140px;"> контейнер</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small>Политика создания паролей</small></td>
-    </tr>
+<h4>Настройки с логическими значениями (true («1») [истина]/false («0») [ложь])</h4>
 
-    <tr>
-      <td style="width: 214px;">dontaskquestion</td>
-      <td style="width: 68px;">  false</td>
-      <td style="width: 140px;">  pwsafe.cfg</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small>&nbsp;</small></td>
-    </tr>
-
-    <tr>
-      <td style="width: 214px;">deletequestion</td>
-      <td style="width: 68px;">  false</td>
-      <td style="width: 140px;">  pwsafe.cfg</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small>&nbsp;</small></td>
-    </tr>
-
-    <tr>
-      <td style="width: 214px;">DCShowsPassword</td>
-      <td style="width: 68px;">  false</td>
-      <td style="width: 140px;">  pwsafe.cfg</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small>&nbsp;</small></td>
-    </tr>
-
-    <tr>
-      <td style="width: 214px;">DontAskMinimizeClearYesNo</td>
-      <td style="width: 68px;">  true</td>
-      <td style="width: 140px;">  pwsafe.cfg</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small>&nbsp;</small></td>
-    </tr>
-
-    <tr>
-      <td style="width: 214px;">DatabaseClear</td>
-      <td style="width: 68px;">  false</td>
-      <td style="width: 140px;">  pwsafe.cfg</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small>&nbsp;</small></td>
-    </tr>
-
-    <tr>
-      <td style="width: 214px;">DontAskSaveMinimize</td>
-      <td style="width: 68px;">  false</td>
-      <td style="width: 140px;">  pwsafe.cfg</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small>&nbsp;</small></td>
-    </tr>
-
-    <tr>
-      <td style="width: 214px;">QuerySetDef</td>
-      <td style="width: 68px;">  true</td>
-      <td style="width: 140px;">  pwsafe.cfg</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small>&nbsp;</small></td>
-    </tr>
-
-    <tr>
-      <td style="width: 214px;">UseNewToolbar</td>
-      <td style="width: 68px;">  true</td>
-      <td style="width: 140px;">  pwsafe.cfg</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small>&nbsp;</small></td>
-    </tr>
-
-    <tr>
-      <td style="width: 214px;">UseSystemTray</td>
-      <td style="width: 68px;">  true</td>
-      <td style="width: 140px;">  pwsafe.cfg</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small>&nbsp;</small></td>
-    </tr>
-
-    <tr>
-      <td style="width: 214px;">LockOnWindowLock</td>
-      <td style="width: 68px;">  true</td>
-      <td style="width: 140px;">  pwsafe.cfg</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small>&nbsp;</small></td>
-    </tr>
-
-    <tr>
-      <td style="width: 214px;">LockOnIdleTimeout</td>
-      <td style="width: 68px;">  true</td>
-      <td style="width: 140px;">контейнер</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small>&nbsp;Блокировать по истечении&nbsp;<span style="font-weight: bold;">IdleTimeout</span> минут</small></td>
-    </tr>
-
-    <tr>
-      <td style="width: 214px;">EscExits</td>
-      <td style="width: 68px;">  true</td>
-      <td style="width: 140px;">  pwsafe.cfg</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small>&nbsp;</small></td>
-    </tr>
-
-
-    <tr>
-      <td style="width: 214px;">HotKeyEnabled</td>
-      <td style="width: 68px;">  false</td>
-      <td style="width: 140px;">  pwsafe.cfg</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small>&nbsp;</small></td>
-    </tr>
-
-    <tr>
-      <td style="width: 214px;">MRUOnFileMenu</td>
-      <td style="width: 68px;">  true</td>
-      <td style="width: 140px;">  pwsafe.cfg</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small>Недавно использованные контейнеры</small></td>
-    </tr>
-
-    <tr>
-      <td style="width: 214px;">MaintainDateTimeStamps</td>
-      <td style="width: 68px;">  false</td>
-      <td style="width: 140px;"> контейнер</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small>&nbsp;</small></td>
-    </tr>
-
-    <tr>
-      <td style="width: 214px;">SavePasswordHistory</td>
-      <td style="width: 68px;">  false</td>
-      <td style="width: 140px;"> контейнер</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small>&nbsp;</small></td>
-    </tr>
-
-    <tr>
-      <td style="width: 214px;">FindWraps</td>
-      <td style="width: 68px;">  false</td>
-      <td style="width: 140px;">  pwsafe.cfg</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small>&nbsp;</small></td>
-    </tr>
-
-    <tr>
-      <td style="width: 214px;">ShowNotesDefault</td>
-      <td style="width: 68px;">  false</td>
-      <td style="width: 140px;"> контейнер</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small>&nbsp;</small></td>
-    </tr>
-
-    <tr>
-      <td style="width: 214px;">BackupBeforeEverySave</td>
-      <td style="width: 68px;">  true</td>
-      <td style="width: 140px;">  pwsafe.cfg</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small>&nbsp;</small></td>
-    </tr>
-
-    <tr>
-      <td style="width: 214px;">PreExpiryWarn</td>
-      <td style="width: 68px;">  false</td>
-      <td style="width: 140px;">  pwsafe.cfg</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small>&nbsp;</small></td>
-    </tr>
-
-    <tr>
-      <td style="width: 214px;">ExplorerTypeTree</td>
-      <td style="width: 68px;">  false</td>
-      <td style="width: 140px;">  pwsafe.cfg</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small>Отображать группы вверху дерева</small></td>
-    </tr>
-
-    <tr>
-      <td style="width: 214px;">ListViewGridLines</td>
-      <td style="width: 68px;">  false</td>
-      <td style="width: 140px;">  pwsafe.cfg</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small>Отображать сетку списка</small></td>
-    </tr>
-
-    <tr>
-      <td style="width: 214px;">MinimizeOnAutotype</td>
-      <td style="width: 68px;">  true</td>
-      <td style="width: 140px;">  pwsafe.cfg</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small>&nbsp;</small></td>
-    </tr>
-
-  </tbody>
-</table>
-<br>
-<h4>Настройки с числовыми значениями</h4>
-<table style="width: 780px;" border="1" cellpadding="2" cellspacing="2" width="100%">
-
-  <tbody>
-    <tr>
-      <td style="width: 185px; font-weight: bold;" align="center" valign="middle">Настройка</td>
-      <td style="width: 194px; font-weight: bold;" align="center" valign="middle">Значение по умолчанию</td>
-      <td style="width: 115px; font-weight: bold;" align="center" valign="middle">Где хранится</td>
-      <td style="width: 40px; font-weight: bold;" align="center" valign="middle">Мин.</td>
-      <td style="width: 40px; font-weight: bold;" align="center" valign="middle">Макс.</td>
-      <td style="width: 180px; font-weight: bold;" align="center" valign="middle">Примечание</td>
-    </tr>
-    <tr>
-      <td style="width: 185px;">column1width</td>
-      <td style="width: 194px;">не задано</td>
-      <td style="width: 115px;">  pwsafe.cfg</td>
-      <td style="width: 40px;">не задано</td>
-      <td style="width: 40px;">не задано</td>
-      <td style="width: 180px;"><small>&nbsp;</small></td>
-    </tr>
-
-    <tr>
-      <td style="width: 185px;">column2width</td>
-      <td style="width: 194px;"> не задано</td>
-      <td style="width: 115px;">  pwsafe.cfg</td>
-      <td style="width: 40px;">не задано</td>
-      <td style="width: 40px;">не задано</td>
-      <td style="width: 180px;"><small>&nbsp;</small></td>
-    </tr>
-
-    <tr>
-      <td style="width: 185px;">column3width</td>
-      <td style="width: 194px;"> не задано</td>
-      <td style="width: 115px;">  pwsafe.cfg</td>
-      <td style="width: 40px;">не задано</td>
-      <td style="width: 40px;">не задано</td>
-      <td style="width: 180px;"><small>&nbsp;</small></td>
-    </tr>
-
-    <tr>
-      <td style="width: 185px;">column4width</td>
-      <td style="width: 194px;"> не задано</td>
-      <td style="width: 115px;">  pwsafe.cfg</td>
-      <td style="width: 40px;">не задано</td>
-      <td style="width: 40px;">не задано</td>
-      <td style="width: 180px;"><small>&nbsp;</small></td>
-    </tr>
-
-    <tr>
-      <td style="width: 185px;">sortedcolumn</td>
-      <td style="width: 194px;">  0</td>
-      <td style="width: 115px;">  pwsafe.cfg</td>
-      <td style="width: 40px;">  0</td>
-      <td style="width: 40px;">  15</td>
-      <td style="width: 180px;"><small>&nbsp;</small></td>
-    </tr>
-
-    <tr>
-      <td style="width: 185px;">pwlendefault</td>
-      <td style="width: 194px;">  8</td>
-      <td style="width: 115px;">контейнер</td>
-      <td style="width: 40px;">  4</td>
-      <td style="width: 40px;">  1024</td>
-      <td style="width: 180px;"><small>Длина пароля по умолчанию</small></td>
-    </tr>
-
-    <tr>
-      <td style="width: 185px;">maxmruitems</td>
-      <td style="width: 194px;">  4</td>
-      <td style="width: 115px;">  pwsafe.cfg</td>
-      <td style="width: 40px;">  0</td>
-      <td style="width: 40px;">  20</td>
-      <td style="width: 180px;"><small>Недавно использованные контейнеры</small></td>
-    </tr>
-
-    <tr>
-      <td style="width: 185px;">IdleTimeout</td>
-      <td style="width: 194px;">  5</td>
-      <td style="width: 115px;">контейнер</td>
-      <td style="width: 40px;">  1</td>
-      <td style="width: 40px;">  120</td>
-      <td style="width: 180px;"><small>&nbsp;В минутах</small></td>
-    </tr>
-
-    <tr>
-      <td style="width: 185px;">DoubleClickAction</td>
-      <td style="width: 194px;">  DoubleClickCopyPassword</td>
-      <td style="width: 115px;">  pwsafe.cfg</td>
-      <td style="width: 40px;">не задано</td>
-      <td style="width: 40px;">не задано</td>
-      <td style="width: 180px;"><small>&nbsp;</small></td>
-    </tr>
-
-    <tr>
-      <td style="width: 185px;">HotKey</td>
-      <td style="width: 194px;">  none</td>
-      <td style="width: 115px;">  pwsafe.cfg</td>
-      <td style="width: 40px;"> не задано</td>
-      <td style="width: 40px;"> не задано</td>
-      <td style="width: 180px;"><small>&nbsp;</small></td>
-    </tr>
-
-    <tr>
-      <td style="width: 185px;">MaxREItems</td>
-      <td style="width: 194px;">  25</td>
-      <td style="width: 115px;">  pwsafe.cfg</td>
-      <td style="width: 40px;">  0</td>
-      <td style="width: 40px;">  25</td>
-      <td style="width: 180px;"><small>Недавно использованные элементы</small></td>
-    </tr>
-
-    <tr>
-      <td style="width: 185px;">TreeDisplayStatusAtOpen</td>
-      <td style="width: 194px;">  AllCollapsed</td>
-      <td style="width: 115px;">контейнер</td>
-      <td style="width: 40px;">не задано</td>
-      <td style="width: 40px;">не задано</td>
-      <td style="width: 180px;"><small>&nbsp;</small></td>
-    </tr>
-
-    <tr>
-      <td style="width: 185px;">NumPWHistoryDefault</td>
-      <td style="width: 194px;">  3</td>
-      <td style="width: 115px;">контейнер</td>
-      <td style="width: 40px;">  0</td>
-      <td style="width: 40px;">  255</td>
-      <td style="width: 180px;"><small>Количество паролей, сохраняемых в истории</small></td>
-    </tr>
-
-    <tr>
-      <td style="width: 185px;">BackupSuffix</td>
-      <td style="width: 194px;">  0</td>
-      <td style="width: 115px;">  pwsafe.cfg</td>
-      <td style="width: 40px;">не задано</td>
-      <td style="width: 40px;"> не задано</td>
-      <td style="width: 180px;"><small>&nbsp;</small></td>
-    </tr>
-
-    <tr>
-      <td style="width: 185px;">BackupMaxIncremented</td>
-      <td style="width: 194px;">  1</td>
-      <td style="width: 115px;">  pwsafe.cfg</td>
-      <td style="width: 40px;">  1</td>
-      <td style="width: 40px;">  999</td>
-      <td style="width: 180px;"><small>&nbsp;</small></td>
-    </tr>
-
-    <tr>
-      <td style="width: 185px;">PreExpiryWarnDays</td>
-      <td style="width: 194px;">  1</td>
-      <td style="width: 115px;">  pwsafe.cfg</td>
-      <td style="width: 40px;">  1</td>
-      <td style="width: 40px;">  30</td>
-      <td style="width: 180px;"><small>Предупреждение о сроке истечения паролей</small></td>
-    </tr>
-
-  </tbody>
-</table>
-<br>
-<h4>Настройки с текстовыми значениями</h4>
 <table border="1" cellpadding="2" cellspacing="2" width="100%">
+<col style="font-size:10pt;" align="left" width="240px;" />
+<col style="font-size:10pt;" align="center" width="110px;" />
+<col style="font-size:10pt;" align="center" width="100px;" />
+<col style="font-size:10pt;" align="left" />
 
-  <tbody>
-    <tr>
-      <td style="font-weight: bold;" align="center" valign="middle">Настройка</td>
-      <td style="font-weight: bold;" align="center" valign="middle">Значение по умолчанию</td>
-      <td style="font-weight: bold;" align="center" valign="middle">Где хранится</td>
-      <td style="font-weight: bold;" align="center" valign="middle">Примечание</td>
-    </tr>
-    <tr>
-      <td style="width: 185px;">currentbackup</td>
-      <td style="width: 80px;"> &lt;не задано&gt;</td>
-      <td style="width: 110px;">  pwsafe.cfg</td>
-      <td style="width: 399px;"><small>Путь и имя последней резервной копии</small></td>
-    </tr>
+<thead>
+<th>Настройка</th>
+<th>Значение по умолчанию</th>
+<th>Где хранится</th>
+<th>Примечание</th>
+</thead>
 
-    <tr>
-      <td style="width: 185px;">currentfile</td>
-      <td style="width: 80px;"> &lt;не задано&gt;</td>
-      <td style="width: 110px;">  pwsafe.cfg</td>
-      <td style="width: 399px;"><small>Текущий (последний) открытый файл</small></td>
-    </tr>
+<tbody>
+<tr>
+<td>AlwaysOnTop</td>
+<td>false</td>
+<td>pwsafe.cfg</td>
+<td>Отображать Password Safe поверх всех окон</td>
+</tr>
 
-    <tr>
-      <td style="width: 185px;">lastview</td>
-      <td style="width: 80px;">  tree</td>
-      <td style="width: 110px;">  pwsafe.cfg</td>
-      <td style="width: 399px;"><small>Последний выбранный стиль отображения: tree (дерево) или list (список)</small></td>
-    </tr>
+<tr>
+<td>ShowPWDefault</td>
+<td>false</td>
+<td>контейнер</td>
+<td>Отображение пароля при добавлении и редактировании</td>
+</tr>
 
-    <tr>
-      <td style="width: 185px;">defusername</td>
-      <td style="width: 80px;"> &lt;не задано&gt;</td>
-      <td style="width: 110px;">контейнер</td>
-      <td style="width: 399px;"><small>&nbsp;</small></td>
-    </tr>
+<tr>
+<td>ShowUsernameInTree</td>
+<td>true</td>
+<td>контейнер</td>
+<td>Отображение имени пользователя в древовидном списке</td>
+</tr>
 
-    <tr>
-      <td style="width: 185px;">treefont</td>
-      <td style="width: 80px;"> &lt;не задано&gt;</td>
-      <td style="width: 110px;">  pwsafe.cfg</td>
-      <td style="width: 399px;"><small>&nbsp;</small></td>
-    </tr>
+<tr>
+<td>ShowPasswordInTree</td>
+<td>false</td>
+<td>контейнер</td>
+<td>Отображение пароля в древовидном списке (необходимо, чтобы имя пользователя тоже было отображено)</td>
+</tr>
 
-    <tr>
-      <td style="width: 185px;">BackupPrefixValue</td>
-      <td style="width: 80px;"> &lt;не задано&gt;</td>
-      <td style="width: 110px;">  pwsafe.cfg</td>
-      <td style="width: 399px;"><small>&nbsp;</small></td>
-    </tr>
+<tr>
+<td>ShowNotesDefault</td>
+<td>false</td>
+<td>контейнер</td>
+<td>Отображение заметок при добавлении и редактировании
+</td>
+</tr>
 
-    <tr>
-      <td style="width: 185px;">BackupDir</td>
-      <td style="width: 80px;"> &lt;не задано&gt;</td>
-      <td style="width: 110px;">  pwsafe.cfg</td>
-      <td style="width: 399px;"><small>&nbsp;</small></td>
-    </tr>
+<tr>
+<td>ShowNotesAsToolTipsInViews</td>
+<td>false</td>
+<td>pwsafe.cfg</td>
+<td>Отображать заметки во всплывающей подсказке (только первые 250 символов)</td>
+</tr>
 
-    <tr>
-      <td style="width: 185px;">AltBrowser</td>
-      <td style="width: 80px;"> &lt;не задано&gt;</td>
-      <td style="width: 110px;">  pwsafe.cfg</td>
-      <td style="width: 399px;"><small>Альтернативный браузер </small></td>
-    </tr>
+<tr>
+<td>SortAscending</td>
+<td>true</td>
+<td>контейнер</td>
+<td>Направление сортировки при просмотре в виде списка (по возрастанию или убыванию)</td>
+</tr>
 
-    <tr>
-      <td style="width: 185px;">ListColumns</td>
-      <td style="width: 80px;"> &lt;не задано&gt;</td>
-      <td style="width: 110px;">  pwsafe.cfg</td>
-      <td style="width: 399px;"><small>Порядок столбцов</small></td>
-    </tr>
+<tr>
+<td>UseDefaultUser</td>
+<td>false</td>
+<td>контейнер</td>
+<td>Использование имени пользователя по умолчанию</td>
+</tr>
 
-    <tr>
-      <td style="width: 185px;">ColumnWidths</td>
-      <td style="width: 80px;"> &lt;не задано&gt;</td>
-      <td style="width: 110px;">  pwsafe.cfg</td>
-      <td style="width: 399px;"><small>Ширина столбцов</small></td>
-    </tr>
+<tr>
+<td>SaveImmediately</td>
+<td>true</td>
+<td>контейнер</td>
+<td>Сохранять контейнер после вставки или редактирования</td>
+</tr>
 
-    <tr>
-      <td style="width: 185px;">DefaultAutotypeString</td>
-      <td style="width: 80px;">\u\t\p\t\n</td>
-      <td style="width: 110px;">контейнер</td>
-      <td style="width: 399px;"><small>&nbsp;</small></td>
-    </tr>
+<tr>
+<td>PWUseLowercase</td>
+<td>true</td>
+<td>контейнер</td>
+<td>Политика создания паролей: использовать строчные буквы</td>
+</tr>
 
-  </tbody>
+<tr>
+<td>PWUseUppercase</td>
+<td>true</td>
+<td>контейнер</td>
+<td>Политика создания паролей: использовать прописные буквы</td>
+</tr>
+
+<tr>
+<td>PWUseDigits</td>
+<td>true</td>
+<td>контейнер</td>
+<td>Политика создания паролей: использовать цифры</td>
+</tr>
+
+<tr>
+<td>PWUseSymbols</td>
+<td>true</td>
+<td>контейнер</td>
+<td>Политика создания паролей: использовать символы</td>
+</tr>
+
+<tr>
+<td>PWUseHexDigits</td>
+<td>false</td>
+<td>контейнер</td>
+<td>Политика создания паролей: использовать только шестнадцатеричные цифры (всегда чётное количество)</td>
+</tr>
+
+<tr>
+<td>PWUseEasyVision</td>
+<td>false</td>
+<td>контейнер</td>
+<td>Политика создания паролей: использовать только легкоотличимые символы</td>
+</tr>
+
+<tr>
+<td>PWMakePronounceable</td>
+<td>false</td>
+<td>контейнер</td>
+<td>Политика создания паролей: создавать произносимые пароли</td>
+</tr>
+
+<tr>
+<td>dontaskquestion</td>
+<td>false</td>
+<td>pwsafe.cfg</td>
+<td>Не спрашивать подтверждения при копировании в буфер обмена</td>
+</tr>
+
+<tr>
+<td>deletequestion</td>
+<td>false</td>
+<td>pwsafe.cfg</td>
+<td>Не спрашивать подтверждения при удалении одного элемента</td>
+</tr>
+
+<tr>
+<td>DatabaseClear</td>
+<td>false</td>
+<td>pwsafe.cfg</td>
+<td>Блокировать (выгружать из памяти) контейнер при сворачивании</td>
+</tr>
+
+<tr>
+<td>QuerySetDef</td>
+<td>true</td>
+<td>pwsafe.cfg</td>
+<td>При создании нового элемента запрашивать установку имени пользователя по умолчанию</td>
+</tr>
+
+<tr>
+<td>UseNewToolbar</td>
+<td>true</td>
+<td>pwsafe.cfg</td>
+<td>Использовать «классическую» или «современную» панель инструментов</td>
+</tr>
+
+<tr>
+<td>UseSystemTray</td>
+<td>true</td>
+<td>pwsafe.cfg</td>
+<td>Отображать значок <b>Password Safe</b> в области уведомлений</td>
+</tr>
+
+<tr>
+<td>LockOnWindowLock</td>
+<td>true</td>
+<td>pwsafe.cfg</td>
+<td>Блокировать контейнер <b>Password Safe</b> при блокировке компьютера</td>
+</tr>
+
+<tr>
+<td>EscExits</td>
+<td>true</td>
+<td>pwsafe.cfg</td>
+<td>Использовать Esc для закрытия контейнера и выхода из <b>Password Safe</b> (если не используется значок в области уведомлений)</td>
+</tr>
+
+<tr>
+<td>HotKeyEnabled</td>
+<td>false</td>
+<td>pwsafe.cfg</td>
+<td>True [истина], если назначена горячая клавиша для вызова Pasword Safe</td>
+</tr>
+
+<tr>
+<td>MRUOnFileMenu</td>
+<td>true</td>
+<td>pwsafe.cfg</td>
+<td>Отображать недавно использованные контейнеры в меню Файл, а не в подменю</td>
+</tr>
+
+<tr>
+<td>MaintainDateTimeStamps</td>
+<td>false</td>
+<td>контейнер</td>
+<td>Записывать дату последнего обращения к элементу, если контейнер открыт в режиме «чтение/запись»</td>
+</tr>
+
+<tr>
+<td>SavePasswordHistory</td>
+<td>false</td>
+<td>контейнер</td>
+<td>Сохранять предыдущее значение при изменении пароля элемента</td>
+</tr>
+
+<tr>
+<td>BackupBeforeEverySave</td>
+<td>true</td>
+<td>pwsafe.cfg</td>
+<td>Создавать резервные копии при сохранении контейнера</td>
+</tr>
+
+<tr>
+<td>PreExpiryWarn</td>
+<td>false</td>
+<td>pwsafe.cfg</td>
+<td>При открытии контейнера предупреждать об истёкших или истекающих паролях</td>
+</tr>
+
+<tr>
+<td>ExplorerTypeTree</td>
+<td>false</td>
+<td>pwsafe.cfg</td>
+<td>Отображать группы вверху дерева</td>
+</tr>
+
+<tr>
+<td>ListViewGridLines</td>
+<td>false</td>
+<td>pwsafe.cfg</td>
+<td>Отображать сетку списка</td>
+</tr>
+
+<tr>
+<td>MinimizeOnAutotype</td>
+<td>true</td>
+<td>pwsafe.cfg</td>
+<td>Сворачивать окно <b>Password Safe</b> при выполнении автонабора В зависимости от настроек, при сворачивании программы возможна блокировка контейнера</td>
+</tr>
+
+<tr>
+<td>ShowToolbar</td>
+<td>true</td>
+<td>pwsafe.cfg</td>
+<td>Отображать панель инструментов</td>
+</tr>
+
+<tr>
+<td>ShowDragbar</td>
+<td>true</td>
+<td>pwsafe.cfg</td>
+<td>Отображать «панель Dragbar»</td>
+</tr>
+
+<tr>
+<td>ShowFindToolBarOnOpen</td>
+<td>true</td>
+<td>pwsafe.cfg</td>
+<td>При запуске <b>Password Safe</b> отображать панель поиска Определяется состоянием панели поиска при последнем закрытии <b>Password Safe</b></td>
+</tr>
+
+<tr>
+<td>DefaultOpenRO</td>
+<td>false</td>
+<td>pwsafe.cfg</td>
+<td>При открытии контейнера по умолчанию устанавливать флажок «только для чтения»</td>
+</tr>
+
+<tr>
+<td>MultipleInstances</td>
+<td>true</td>
+<td>pwsafe.cfg</td>
+<td>Разрешить одновременный запуск нескольких копий Password Safe Для применения требуется перезапуск всех копий <b>Password Safe</b></td>
+</tr>
+
+<tr>
+<td>ClearClipboardOnMinimize</td>
+<td>true</td>
+<td>pwsafe.cfg</td>
+<td>Очищать буфер обмена при сворачивании <b>Password Safe</b></td>
+</tr>
+<tr>
+
+<td>ClearClipboardOnExit</td>
+<td>true</td>
+<td>pwsafe.cfg</td>
+<td>Очищать буфер обмена при завершении работы <b>Password Safe</b></td>
+</tr>
+
+<tr>
+<td>NotesWordWrap</td>
+<td>true</td>
+<td>pwsafe.cfg</td>
+<td>При редактировании переносить заметки по словам</td>
+</tr>
+
+<tr>
+<td>LockDBOnIdleTimeout</td>
+<td>true</td>
+<td>контейнер</td>
+<td>Блокировать контейнер по истечении указанного времени с момента выполнения последнего действия с программой. Время указывается в параметре «IdleTimeout»</td>
+</tr>
+
+<tr>
+<td>HighlightChanges</td>
+<td>true</td>
+<td>pwsafe.cfg</td>
+<td>Подсветить изменённые элементы</td>
+</tr>
+
+<tr>
+<td>HideSystemTray</td>
+<td>false</td>
+<td>pwsafe.cfg</td>
+<td>Скрывать значок <b>Password Safe</b> в области уведомлений. Используется только если назначена горячая клавиша для вызова Pasword Safe</td>
+</tr>
+
+<tr>
+<td>UsePrimarySelectionForClipboard</td>
+<td>false</td>
+<td>pwsafe.cfg</td>
+<td>Использовать основной буфер обмена (только в Linux)</td>
+</tr>
+
+<tr>
+<td>CopyPasswordWhenBrowseToURL</td>
+<td>true</td>
+<td>контейнер</td>
+<td>При переходе по ссылке копировать пароль в буфер обмена
+---------</td>
+</tr>
+
+</tbody>
 </table>
+
+<h4>Настройки с числовыми значениями</h4>
+
+<table border="1" cellpadding="2" cellspacing="2" width="100%">
+<col style="font-size:10pt;" align="left" width="240px;" />
+<col style="font-size:10pt;" align="center" width="110px;" />
+<col style="font-size:10pt;" align="center" width="100px;" />
+<col style="font-size:10pt;" align="center" width="40px;" />
+<col style="font-size:10pt;" align="center" width="40px;" />
+<col style="font-size:10pt;" align="left" />
+
+<thead>
+<th>Настройка</th>
+<th>Значение по умолчанию</th>
+<th>Где хранится</th>
+<th>Мин.</th>
+<th>Макс.</th>
+<th>Примечание</th>
+</thead>
+
+<tbody>
+<tr>
+<td>column1width</td>
+<td>не задано</td>
+<td>pwsafe.cfg</td>
+<td>не задано</td>
+<td>не задано</td>
+<td>Ширина первого столбца при прошлом выходе из <b>Password Safe</b></td>
+</tr>
+
+<tr>
+<td>column2width</td>
+<td>не задано</td>
+<td>pwsafe.cfg</td>
+<td>не задано</td>
+<td>не задано</td>
+<td>Ширина второго столбца при прошлом выходе из <b>Password Safe</b></td>
+</tr>
+
+<tr>
+<td>column3width</td>
+<td>не задано</td>
+<td>pwsafe.cfg</td>
+<td>не задано</td>
+<td>не задано</td>
+<td>Ширина третьего столбца при прошлом выходе из <b>Password Safe</b></td>
+</tr>
+
+<tr>
+<td>column4width</td>
+<td>не задано</td>
+<td>pwsafe.cfg</td>
+<td>не задано</td>
+<td>не задано</td>
+<td>Ширина четвёртого столбца при прошлом выходе из <b>Password Safe</b></td>
+</tr>
+
+<tr>
+<td>sortedcolumn</td>
+<td>0</td>
+<td>pwsafe.cfg</td>
+<td>0</td>
+<td>15</td>
+<td>Столбец для сортировки списка</td>
+</tr>
+
+<tr>
+<td>PWDefaultLength</td>
+<td>12</td>
+<td>контейнер</td>
+<td>4</td>
+<td>1024</td>
+<td>Длина пароля по умолчанию</td>
+</tr>
+
+<tr>
+<td>maxmruitems</td>
+<td>4</td>
+<td>pwsafe.cfg</td>
+<td>0</td>
+<td>20</td>
+<td>Количество запоминаемых контейнеров, отображаемых в меню «Файл»</td>
+</tr>
+
+<tr>
+<td>IdleTimeout</td>
+<td>5</td>
+<td>контейнер</td>
+<td>1</td>
+<td>120</td>
+<td>Время простоя, по истечении которого <b>Password Safe</b> будет блокироваться (если включено)</td>
+</tr>
+
+<tr>
+<td>DoubleClickAction</td>
+<td>Копирование пароля</td>
+<td>pwsafe.cfg</td>
+<td>не задано</td>
+<td>не задано</td>
+<td>Для получения дополнительной информации см. <a href="imp_exp_text_details.html">Перечень значений для действия по двойному клику</a></td>
+</tr>
+
+<tr>
+<td>HotKey</td>
+<td>none</td>
+<td>pwsafe.cfg</td>
+<td>не задано</td>
+<td>не задано</td>
+<td>Горячая клавиша</td>
+</tr>
+
+<tr>
+<td>MaxREItems</td>
+<td>25</td>
+<td>pwsafe.cfg</td>
+<td>0</td>
+<td>25</td>
+<td>Количество недавно использованных элементов, отображаемых в списке значка в области уведомлений</td>
+</tr>
+
+<tr>
+<td>TreeDisplayStatusAtOpen</td>
+<td>AllCollapsed</td>
+<td>контейнер</td>
+<td>не задано</td>
+<td>не задано</td>
+<td>Возможные значения: «AllColpased» [полностью свёрнуто], «AllExpanded» [полностью развёрнуто] или «AsPerLastSave» [как в прошлый раз]</td>
+</tr>
+
+<tr>
+<td>NumPWHistoryDefault</td>
+<td>3</td>
+<td>контейнер</td>
+<td>0</td>
+<td>255</td>
+<td>Количество паролей, сохраняемых в истории</td>
+</tr>
+
+<tr>
+<td>BackupSuffix</td>
+<td>0</td>
+<td>pwsafe.cfg</td>
+<td>не задано</td>
+<td>не задано</td>
+<td>Возможные значения: «None» [нет], «datetime» [дата и время] или «incremental number» [по счётчику]</td>
+</tr>
+
+<tr>
+<td>BackupMaxIncremented</td>
+<td>1</td>
+<td>pwsafe.cfg</td>
+<td>1</td>
+<td>999</td>
+<td>Используется только если BackupSuffix имеет значение incremental number</td>
+</tr>
+
+<tr>
+<td>PreExpiryWarnDays</td>
+<td>1</td>
+<td>pwsafe.cfg</td>
+<td>1</td>
+<td>30</td>
+<td>Предупреждение о сроке истечения паролей</td>
+</tr>
+
+<tr>
+<td>ClosedTrayIconColour</td>
+<td>0</td>
+<td>pwsafe.cfg</td>
+<td>0</td>
+<td>0</td>
+<td>Цвет значка в области уведомлений для заблокированного контейнера <b>Password Safe</b>.<br> 0 — Чёрный, 1 — Голубой, 2 — Белый, 3 — Жёлтый</td>
+</tr>
+
+<tr>
+<td>PWDigitMinLength</td>
+<td>0</td>
+<td>контейнер</td>
+<td>0</td>
+<td>1024</td>
+<td>Минимальное количество цифр в создаваемом пароле</td>
+</tr>
+
+<tr>
+<td>PWLowercaseMinLength</td>
+<td>0</td>
+<td>контейнер</td>
+<td>0</td>
+<td>1024</td>
+<td>Минимальное количество строчных букв в создаваемом пароле</td>
+</tr>
+
+<tr>
+<td>PWUppercaseMinLength</td>
+<td>0</td>
+<td>контейнер</td>
+<td>0</td>
+<td>1024</td>
+<td>Минимальное количество прописных букв в создаваемом пароле</td>
+</tr>
+
+<tr>
+<td>PWSymbolMinLength</td>
+<td>0</td>
+<td>контейнер</td>
+<td>0</td>
+<td>1024</td>
+<td>Минимальное количество символов в создаваемом пароле</td>
+</tr>
+
+<tr>
+<td>OptShortcutColumnWidth</td>
+<td>92</td>
+<td>pwsafe.cfg</td>
+<td>10</td>
+<td>512</td>
+<td>Размеры столбцов на вкладке <a href="shortcuts_tab.html">Управление→Настройки→Комбинации клавиш</a></td>
+</tr>
+
+</tbody>
+</table>
+
+<h4>Настройки с текстовыми значениями</h4>
+
+<table border="1" cellpadding="2" cellspacing="2" width="100%">
+<col style="font-size:10pt;" align="left" width="240px;" />
+<col style="font-size:10pt;" align="center" width="110px;" />
+<col style="font-size:10pt;" align="center" width="100px;" />
+<col style="font-size:10pt;" align="left" />
+
+<thead>
+<th>Настройка</th>
+<th>Значение по умолчанию</th>
+<th>Где хранится</th>
+<th>Примечание</th>
+</thead>
+
+<tbody>
+<tr>
+<td>currentbackup</td>
+<td>&lt;не задано&gt;</td>
+<td>pwsafe.cfg</td>
+<td>Путь и имя последней резервной копии</td>
+</tr>
+
+<tr>
+<td>currentfile</td>
+<td>&lt;не задано&gt;</td>
+<td>pwsafe.cfg</td>
+<td>Текущий (последний) открытый файл</td>
+</tr>
+
+<tr>
+<td>lastview</td>
+<td>tree</td>
+<td>pwsafe.cfg</td>
+<td>Последний выбранный стиль отображения: «tree» (дерево) или «list» (список)</td>
+</tr>
+
+<tr>
+<td>DefaultUsername</td>
+<td>&lt;не задано&gt;</td>
+<td>контейнер</td>
+<td>Имя пользователя по умолчанию</td>
+</tr>
+
+<tr>
+<td>treefont</td>
+<td>&lt;не задано&gt;</td>
+<td>pwsafe.cfg</td>
+<td>Шрифт, используемый в древовидном списке</td>
+</tr>
+
+<tr>
+<td>PasswordFont</td>
+<td>&lt;не задано&gt;</td>
+<td>pwsafe.cfg</td>
+<td>Шрифт, используемый для отображения пароля</td>
+</tr>
+
+<tr>
+<td>BackupPrefixValue</td>
+<td>&lt;не задано&gt;</td>
+<td>pwsafe.cfg</td>
+<td>По умолчанию приставка для имён резервных копий контейнеров совпадает с именем контейнера. Здесь можно переопределить её значение.</td>
+</tr>
+
+<tr>
+<td>BackupDir</td>
+<td>&lt;не задано&gt;</td>
+<td>pwsafe.cfg</td>
+<td>По умолчанию резервные копии создаются в том же каталоге, где находится открытый в настоящий момент контейнер. Здесь можно переопределить её значение.</td>
+</tr>
+
+<tr>
+<td>AltBrowser</td>
+<td>&lt;не задано&gt;</td>
+<td>pwsafe.cfg</td>
+<td>Полный путь к альтернативному браузеру</td>
+</tr>
+
+<tr>
+<td>ListColumns</td>
+<td>&lt;не задано&gt;</td>
+<td>pwsafe.cfg</td>
+<td>Порядок столбцов при отображении в виде списка. Через запятую перечислены используемые внутри программы номера столбцов.</td>
+</tr>
+
+<tr>
+<td>ColumnWidths</td>
+<td>&lt;не задано&gt;</td>
+<td>pwsafe.cfg</td>
+<td>Ширина столбцов при отображении в виде списка</td>
+</tr>
+
+<tr>
+<td>DefaultAutotypeString</td>
+<td>\u\t\p\t\n</td>
+<td>контейнер</td>
+<td>Строка автонабора по умолчанию. Данное значение может быть переопределено в свойствах элемента.</td>
+</tr>
+
+<tr>
+<td>AltBrowserCmdLineParms</td>
+<td>&lt;не задано&gt;</td>
+<td>pwsafe.cfg</td>
+<td>Параметры командной строки для альтернативного браузера</td>
+</tr>
+
+<tr>
+<td>MainToolBarButtons</td>
+<td>&lt;не задано&gt;</td>
+<td>pwsafe.cfg</td>
+<td>Перечень и порядок кнопок, отображаемых на панели инструментов. В качестве разделителя используется символ «~»</td>
+</tr>
+
+<tr>
+<td>TreeListSampleText</td>
+<td>«AaBbYyZzАаБбЖжЯя 0O1lIL»</td>
+<td>pwsafe.cfg</td>
+<td>Текст образца для шрифта, используемого в древовидном списке</td>
+</tr>
+
+<tr>
+<td>PswdSampleText</td>
+<td>«AaBbYyZzАаБбЖжЯя 0O1lIL»</td>
+<td>pwsafe.cfg</td>
+<td>Текст образца для шрифта, используемого при отображении паролей</td>
+</tr>
+
+<tr>
+<td>VKSampleText</td>
+<td>«AaBbYyZzАаБбЖжЯя 0O1lIL»</td>
+<td>pwsafe.cfg</td>
+<td>Текст образца для шрифта, используемого в экранной клавиатуре</td>
+</tr>
+
+<tr>
+<td>VKeyboardFontName</td>
+<td>&lt;не задано&gt;</td>
+<td>pwsafe.cfg</td>
+<td>Имя шрифта с поддержкой Unicode, используемого для отображения символов на экранной клавиатуре. Используется как для латинских, так и для всех остальных символов</td>
+</tr>
+
+<tr>
+<td>LastUsedKeyboard</td>
+<td>&lt;не задано&gt;</td>
+<td>pwsafe.cfg</td>
+<td>Идентификатор раскладки экранной клавиатуры, использованной в последний раз</td>
+</tr>
+
+<tr>
+<td>AltNotesEditor</td>
+<td>&lt;не задано&gt;</td>
+<td>pwsafe.cfg</td>
+<td>Полный путь к внешнему редактору для изменения заметок.</td>
+</tr>
+
+<tr>
+<td>LanguageFile</td>
+<td>&lt;не задано&gt;</td>
+<td>pwsafe.cfg</td>
+<td>Идентификатор используемого языкового файла. Имеет вид «LL» или «LL_CC», где LL — двухсимвольный код языка по ISO 639-1, например, «EN», «FR», «DE», «RU», ... (см. <a href="http://www.loc.gov/standards/iso639-2/">http://www.loc.gov/standards/iso639-2/</a>), а CC — двухсимвольный  код страны по ISO 3166-1, например, «US», «GB», «FR», «CA», ... (см. <a href="http://www.iso.org/iso/en/prods-services/iso3166ma/index.html">http://www.iso.org/iso/en/prods-services/iso3166ma/index.html</a>)
+</td>
+</tr>
+
+<tr>
+<td>DefaultSymbols</td>
+<td>&lt;не задано&gt;</td>
+<td>контейнер</td>
+<td>Набор символов по умолчанию для создания пароля. <b>Примечание.</b> Данное значение может быть переопределено в свойствах элемента.</td>
+</tr>
+</tbody>
+</table><!-- Added some white space at the bottom for natural scrolling -->
+
+
 <br>
 <br>
-
-&nbsp;<!-- Added some white space at the bottom for natural scrolling --><br>
-
-
 <br>
-
-
-<br>
-
 
 <object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
-  <param name="Keyword" value="Preferences">
-  <param name="Keyword" value="Configuration">
-  <param name="Keyword" valuetext="" password="" data="">
+<param name="Keyword" value="Preferences">
+<param name="Keyword" value="Configuration">
+<param name="Keyword" valuetext="" password="" data="">
 </object>
-</body></html>
+
+</body>
+</html>
