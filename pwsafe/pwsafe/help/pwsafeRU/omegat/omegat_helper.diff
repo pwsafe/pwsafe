@@ -95,7 +95,16 @@ diff -bNau ../../default/html/images.html ./source/html/images.html
  <p class="indented"><img src="images/node.png"/>Node or Group [Tree View <i>only</i>]</p>
 diff -bNau ../../default/html/imp_exp_text_details.html ./source/html/imp_exp_text_details.html
 --- ../../default/html/imp_exp_text_details.html	2011-06-20 13:14:58.000000000 +0400
-+++ ./source/html/imp_exp_text_details.html	2011-06-22 17:45:46.000000000 +0400
++++ ./source/html/imp_exp_text_details.html	2011-06-22 21:38:05.000000000 +0400
+@@ -15,7 +15,7 @@
+ 
+ <hr style="width: 100%; height: 2px;">
+ 
+-<p><style="color: rgb(255, 0, 0);">
++<p style="color: rgb(255, 0, 0);">
+ <b><i><u>Warning</u></i></b>: The Export of sensitive information from a
+ <b>Password Safe</b> database to a text file has serious security
+ consequences. This operation will create an unprotected copy of
 @@ -26,7 +26,7 @@
  
  <hr style="width: 100%; height: 2px;">

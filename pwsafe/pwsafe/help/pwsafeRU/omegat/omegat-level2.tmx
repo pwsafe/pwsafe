@@ -14,18 +14,18 @@
   <body>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>The <bpt i='1' x='1'>&lt;a1&gt;</bpt>&quot;View → Reports&quot;<ept i='1'>&lt;/a1&gt;</ept>menu item may then be used to view the reports at a later date.</seg>
-      </tuv>
-      <tuv xml:lang="RU-RU" changedate="20110622T151115Z" changeid="pm_kan">
-        <seg>Отчёт можно посмотреть позже с помощью меню <bpt i='1' x='1'>&lt;a1&gt;</bpt>Просмотр→Отчёты<ept i='1'>&lt;/a1&gt;</ept>.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="EN-US">
         <seg>Filters may be either stored along with the database, or externally, for sharing the same filter across several databases.</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20101031T171616Z" changeid="pm_kan">
         <seg>Фильтры могут быть сохранены внутри контейнера или во внешнем файле (для использования с разными контейнерами).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>The <bpt i='1' x='1'>&lt;a1&gt;</bpt>&quot;View → Reports&quot;<ept i='1'>&lt;/a1&gt;</ept>menu item may then be used to view the reports at a later date.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changedate="20110622T151115Z" changeid="pm_kan">
+        <seg>Отчёт можно посмотреть позже с помощью меню <bpt i='1' x='1'>&lt;a1&gt;</bpt>Просмотр→Отчёты<ept i='1'>&lt;/a1&gt;</ept>.</seg>
       </tuv>
     </tu>
     <tu>
@@ -806,18 +806,18 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>Note that this font must be able to display Unicode characters.</seg>
-      </tuv>
-      <tuv xml:lang="RU-RU" changedate="20110622T152557Z" changeid="pm_kan">
-        <seg>Этот шрифт должен поддерживать символы Unicode.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="EN-US">
         <seg><bpt i='0' x='0'>&lt;b0&gt;</bpt>Password Safe<ept i='0'>&lt;/b0&gt;</ept> has a built in check for what it considers to be weak master passwords.</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20110209T110909Z" changeid="pm_kan">
         <seg><bpt i='0' x='0'>&lt;b0&gt;</bpt>Password Safe<ept i='0'>&lt;/b0&gt;</ept> имеет встроенные средства проверки сложности мастер-пароля.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>Note that this font must be able to display Unicode characters.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changedate="20110622T152557Z" changeid="pm_kan">
+        <seg>Этот шрифт должен поддерживать символы Unicode.</seg>
       </tuv>
     </tu>
     <tu>
@@ -1390,18 +1390,18 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>Protected Entries</seg>
-      </tuv>
-      <tuv xml:lang="RU-RU" changedate="20110622T140350Z" changeid="pm_kan">
-        <seg>Защищённые элементы</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="EN-US">
         <seg>A+C+S+K</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20110215T202422Z" changeid="pm_kan">
         <seg>A+C+S+K</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>Protected Entries</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changedate="20110622T140350Z" changeid="pm_kan">
+        <seg>Защищённые элементы</seg>
       </tuv>
     </tu>
     <tu>
@@ -2222,6 +2222,14 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg>Deleting this copy after use is <bpt i='4' x='4'>&lt;b4&gt;</bpt>not<ept i='4'>&lt;/b4&gt;</ept> sufficient and other actions should be taken to properly erase the data (e.g. third party 'shredding' utilities).</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changedate="20110622T173923Z" changeid="pm_kan">
+        <seg>Простого удаления данной копии <bpt i='4' x='4'>&lt;b4&gt;</bpt>недостаточно<ept i='4'>&lt;/b4&gt;</ept>, и требуется использование дополнительных утилит для гарантированного удаления данных.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg>Recent Databases on File Menu rather than as a sub-menu</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20101105T192133Z" changeid="pm_kan">
@@ -2328,8 +2336,8 @@
       <tuv xml:lang="EN-US">
         <seg>KeePass V2 can create an history section when anything is changed in an entry.</seg>
       </tuv>
-      <tuv xml:lang="RU-RU" changedate="20110620T195627Z" changeid="pm_kan">
-        <seg>KeePass V2 создает запись в истории при изменении любого поля элемента.</seg>
+      <tuv xml:lang="RU-RU" changedate="20110622T164242Z" changeid="pm_kan">
+        <seg>KeePass V2 создаёт запись в истории при изменении любого поля элемента.</seg>
       </tuv>
     </tu>
     <tu>
@@ -2718,18 +2726,18 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg><bpt i='0' x='0'>&lt;b0&gt;</bpt><bpt i='1' x='1'>&lt;i1&gt;</bpt><bpt i='2' x='2'>&lt;a2&gt;</bpt>Basic<ept i='2'>&lt;/a2&gt;</ept><ept i='1'>&lt;/i1&gt;</ept>:<ept i='0'>&lt;/b0&gt;</ept> all necesarry elements for password management</seg>
-      </tuv>
-      <tuv xml:lang="RU-RU" changedate="20110209T213234Z" changeid="pm_kan">
-        <seg><bpt i='0' x='0'>&lt;b0&gt;</bpt><bpt i='1' x='1'>&lt;i1&gt;</bpt><bpt i='2' x='2'>&lt;a2&gt;</bpt>Основные<ept i='2'>&lt;/a2&gt;</ept>:<ept i='1'>&lt;/i1&gt;</ept><ept i='0'>&lt;/b0&gt;</ept> все необходимые элементы, связанные с управлением паролями</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="EN-US">
         <seg>The field separator used in the text file being imported and a default group name to import the new entries into can be configured before processing the file.</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20110215T145628Z" changeid="pm_kan">
         <seg>Разделитель полей используется для выделения полей в текстовых строках. Также можно указать имя группы, в которую будут помещены все импортированные элементы.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg><bpt i='0' x='0'>&lt;b0&gt;</bpt><bpt i='1' x='1'>&lt;i1&gt;</bpt><bpt i='2' x='2'>&lt;a2&gt;</bpt>Basic<ept i='2'>&lt;/a2&gt;</ept><ept i='1'>&lt;/i1&gt;</ept>:<ept i='0'>&lt;/b0&gt;</ept> all necesarry elements for password management</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changedate="20110209T213234Z" changeid="pm_kan">
+        <seg><bpt i='0' x='0'>&lt;b0&gt;</bpt><bpt i='1' x='1'>&lt;i1&gt;</bpt><bpt i='2' x='2'>&lt;a2&gt;</bpt>Основные<ept i='2'>&lt;/a2&gt;</ept>:<ept i='1'>&lt;/i1&gt;</ept><ept i='0'>&lt;/b0&gt;</ept> все необходимые элементы, связанные с управлением паролями</seg>
       </tuv>
     </tu>
     <tu>
@@ -2912,8 +2920,8 @@
       <tuv xml:lang="EN-US">
         <seg>If the entry is protected, you will not be able to change any fields until you unprotect the entry via the Edit menu or right-click context menu.</seg>
       </tuv>
-      <tuv xml:lang="RU-RU" changedate="20110622T140558Z" changeid="pm_kan">
-        <seg>Поля в защищенных элементах не могут быть изменены. Чтобы снять защиту с выберите в контекстном меню элемента (или в меню «Изменить») «Снять защиту».</seg>
+      <tuv xml:lang="RU-RU" changedate="20110622T164211Z" changeid="pm_kan">
+        <seg>Поля в защищённых элементах не могут быть изменены. Чтобы снять защиту с выберите в контекстном меню элемента (или в меню «Изменить») «Снять защиту».</seg>
       </tuv>
     </tu>
     <tu>
@@ -2966,14 +2974,6 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>: The Export of sensitive information from a <bpt i='0' x='0'>&lt;b0&gt;</bpt>Password Safe<ept i='0'>&lt;/b0&gt;</ept> database to a text file has serious security consequences.</seg>
-      </tuv>
-      <tuv xml:lang="RU-RU" changedate="20110620T161735Z" changeid="pm_kan">
-        <seg>Экспорт важной информации из контейнера <bpt i='0' x='0'>&lt;b0&gt;</bpt>Password Safe<ept i='0'>&lt;/b0&gt;</ept> в текстовый файл может привести к серьёзным последствиям, связанным с безопасностью.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="EN-US">
         <seg><bpt i='0' x='0'>&lt;b0&gt;</bpt>Minimize after autotype<ept i='0'>&lt;/b0&gt;</ept> By default, <bpt i='1' x='1'>&lt;b1&gt;</bpt>Password Safe<ept i='1'>&lt;/b1&gt;</ept> minimizes when autotyping.</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20110620T202942Z" changeid="pm_kan">
@@ -2982,18 +2982,18 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>'+' - Click on this to insert a new row below a given row.</seg>
-      </tuv>
-      <tuv xml:lang="RU-RU" changedate="20110215T105600Z" changeid="pm_kan">
-        <seg>«+» — щелчок по данному полю добавляет новую строку  после текущей.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="EN-US">
         <seg>A single <bpt i='3' x='3'>&lt;b3&gt;</bpt>Master Password<ept i='3'>&lt;/b3&gt;</ept> unlocks them all for your use.</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20110215T215835Z" changeid="pm_kan">
         <seg>Для доступа к ним вам необходимо запомнить лишь один <bpt i='3' x='3'>&lt;b3&gt;</bpt>мастер-пароль<ept i='3'>&lt;/b3&gt;</ept>.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>'+' - Click on this to insert a new row below a given row.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changedate="20110215T105600Z" changeid="pm_kan">
+        <seg>«+» — щелчок по данному полю добавляет новую строку  после текущей.</seg>
       </tuv>
     </tu>
     <tu>
@@ -3334,18 +3334,18 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg><bpt i='0' x='0'>&lt;b0&gt;</bpt>\s<ept i='0'>&lt;/b0&gt;</ept> is replaced by the &quot;Shift+Tab&quot;, in effect back-tabbing to the previous field.</seg>
-      </tuv>
-      <tuv xml:lang="RU-RU" changedate="20110622T140200Z" changeid="pm_kan">
-        <seg><bpt i='0' x='0'>&lt;b0&gt;</bpt>\s<ept i='0'>&lt;/b0&gt;</ept> заменяется комбинацией «Shift+Tab» и используется для перехода в предыдущее поле.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="EN-US">
         <seg>The links that follow lead to various pages on the SourceForge web site related to the <bpt i='0' x='0'>&lt;b0&gt;</bpt>Password Safe<ept i='0'>&lt;/b0&gt;</ept> project:</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20110209T182827Z" changeid="pm_kan">
         <seg>Ниже указаны ссылки на различные страницы сайта SourceForge, связанные с проектом <bpt i='0' x='0'>&lt;b0&gt;</bpt>Password Safe<ept i='0'>&lt;/b0&gt;</ept>:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg><bpt i='0' x='0'>&lt;b0&gt;</bpt>\s<ept i='0'>&lt;/b0&gt;</ept> is replaced by the &quot;Shift+Tab&quot;, in effect back-tabbing to the previous field.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changedate="20110622T140200Z" changeid="pm_kan">
+        <seg><bpt i='0' x='0'>&lt;b0&gt;</bpt>\s<ept i='0'>&lt;/b0&gt;</ept> заменяется комбинацией «Shift+Tab» и используется для перехода в предыдущее поле.</seg>
       </tuv>
     </tu>
     <tu>
@@ -5214,18 +5214,18 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>Find Advanced</seg>
-      </tuv>
-      <tuv xml:lang="RU-RU" changedate="20110622T135630Z" changeid="pm_kan">
-        <seg>Поиск: расширенные настройки</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="EN-US">
         <seg>Create Shortcut</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20101004T190006Z" changeid="pm_kan">
         <seg>Создать ярлык</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>Find Advanced</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changedate="20110622T135630Z" changeid="pm_kan">
+        <seg>Поиск: расширенные настройки</seg>
       </tuv>
     </tu>
     <tu>
@@ -6312,6 +6312,14 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg>When performing the database Compare, Merge or Synchronize function, you must provide the name of the database that you wish to Compare with the currently open database, Merge into the currently open database or Synchronize with the currently open database.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changedate="20110208T213639Z" changeid="pm_kan">
+        <seg>При сравнении (слиянии, синхронизации) контейнеров требуется указать имя контейнера, который нужно  сравнить (объединить, синхронизировать) с открытым в настоящий момент контейнером.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg>Overview of all changed entries:</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20110622T152323Z" changeid="pm_kan">
@@ -6320,10 +6328,10 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>When performing the database Compare, Merge or Synchronize function, you must provide the name of the database that you wish to Compare with the currently open database, Merge into the currently open database or Synchronize with the currently open database.</seg>
+        <seg>The dollar ('$') sign is used to indicate a variable.</seg>
       </tuv>
-      <tuv xml:lang="RU-RU" changedate="20110208T213639Z" changeid="pm_kan">
-        <seg>При сравнении (слиянии, синхронизации) контейнеров требуется указать имя контейнера, который нужно  сравнить (объединить, синхронизировать) с открытым в настоящий момент контейнером.</seg>
+      <tuv xml:lang="RU-RU" changedate="20110215T185318Z" changeid="pm_kan">
+        <seg>Символ доллара («$») используется для указания переменных.</seg>
       </tuv>
     </tu>
     <tu>
@@ -6340,14 +6348,6 @@
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20101031T194308Z" changeid="pm_kan">
         <seg>См. примечание <bpt i='0' x='0'>&lt;a0&gt;</bpt><bpt i='1' x='1'>&lt;s1&gt;</bpt>2<ept i='1'>&lt;/s1&gt;</ept><ept i='0'>&lt;/a0&gt;</ept></seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="EN-US">
-        <seg>The dollar ('$') sign is used to indicate a variable.</seg>
-      </tuv>
-      <tuv xml:lang="RU-RU" changedate="20110215T185318Z" changeid="pm_kan">
-        <seg>Символ доллара («$») используется для указания переменных.</seg>
       </tuv>
     </tu>
     <tu>
@@ -7170,18 +7170,18 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg><bpt i='0' x='0'>&lt;b0&gt;</bpt>\u<ept i='0'>&lt;/b0&gt;</ept> is replaced by the username associated with the entry.</seg>
-      </tuv>
-      <tuv xml:lang="RU-RU" changedate="20110620T113659Z" changeid="pm_kan">
-        <seg><bpt i='0' x='0'>&lt;b0&gt;</bpt>\u<ept i='0'>&lt;/b0&gt;</ept> заменяется именем пользователя, связанным с элементом.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="EN-US">
         <seg>The default list of symbols to be used when generating a password with symbols.</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20110621T195617Z" changeid="pm_kan">
         <seg>Набор символов по умолчанию для создания пароля.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg><bpt i='0' x='0'>&lt;b0&gt;</bpt>\u<ept i='0'>&lt;/b0&gt;</ept> is replaced by the username associated with the entry.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changedate="20110620T113659Z" changeid="pm_kan">
+        <seg><bpt i='0' x='0'>&lt;b0&gt;</bpt>\u<ept i='0'>&lt;/b0&gt;</ept> заменяется именем пользователя, связанным с элементом.</seg>
       </tuv>
     </tu>
     <tu>
@@ -7461,8 +7461,8 @@
       <tuv xml:lang="EN-US">
         <seg>Group names can be &quot;nested&quot; i.e. placing a group name within/under another group name.</seg>
       </tuv>
-      <tuv xml:lang="RU-RU" changedate="20110620T140520Z" changeid="pm_kan">
-        <seg>Группы могуть быть вложенными.</seg>
+      <tuv xml:lang="RU-RU" changedate="20110622T165259Z" changeid="pm_kan">
+        <seg>Группы могут быть вложенными.</seg>
       </tuv>
     </tu>
     <tu>
@@ -9219,14 +9219,6 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>Deleting this copy after use is <bpt i='1' x='1'>&lt;b1&gt;</bpt>not<ept i='1'>&lt;/b1&gt;</ept> sufficient and other actions should be taken to properly erase the data (e.g. third party 'shredding' utilities).</seg>
-      </tuv>
-      <tuv xml:lang="RU-RU" changedate="20110620T161919Z" changeid="pm_kan">
-        <seg>Простого удаления данной копии <bpt i='1' x='1'>&lt;b1&gt;</bpt>недостаточно<ept i='1'>&lt;/b1&gt;</ept>, и требуется использование дополнительных утилит для гарантированного удаления данных.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="EN-US">
         <seg>If saved to disk, you can view it again via the <bpt i='0' x='0'>&lt;a0&gt;</bpt>&quot;View → Reports&quot;<ept i='0'>&lt;/a0&gt;</ept> menu.</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20110621T211203Z" changeid="pm_kan">
@@ -9419,6 +9411,14 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg><bpt i='0' x='0'>&lt;i0&gt;</bpt>NNN<ept i='0'>&lt;/i0&gt;</ept> can be one to three digits (e.g., \o5 for the 5<bpt i='1' x='1'>&lt;s1&gt;</bpt>th<ept i='1'>&lt;/s1&gt;</ept> line, \o45 for the 45<bpt i='2' x='2'>&lt;s2&gt;</bpt>th<ept i='2'>&lt;/s2&gt;</ept>, etc.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changedate="20110620T114019Z" changeid="pm_kan">
+        <seg><bpt i='0' x='0'>&lt;i0&gt;</bpt>NNN<ept i='0'>&lt;/i0&gt;</ept> может состоять из одной, двух или трёх цифр (например, \o5 для 5-й строки, \o45 для 45-й, и т. д.);</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg>In addition, the displayed entries are shown in red.</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20110622T151927Z" changeid="pm_kan">
@@ -9427,10 +9427,10 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg><bpt i='0' x='0'>&lt;i0&gt;</bpt>NNN<ept i='0'>&lt;/i0&gt;</ept> can be one to three digits (e.g., \o5 for the 5<bpt i='1' x='1'>&lt;s1&gt;</bpt>th<ept i='1'>&lt;/s1&gt;</ept> line, \o45 for the 45<bpt i='2' x='2'>&lt;s2&gt;</bpt>th<ept i='2'>&lt;/s2&gt;</ept>, etc.</seg>
+        <seg>The following images are used to show the type of entry in the Tree and List views.</seg>
       </tuv>
-      <tuv xml:lang="RU-RU" changedate="20110620T114019Z" changeid="pm_kan">
-        <seg><bpt i='0' x='0'>&lt;i0&gt;</bpt>NNN<ept i='0'>&lt;/i0&gt;</ept> может состоять из одной, двух или трёх цифр (например, \o5 для 5-й строки, \o45 для 45-й, и т. д.);</seg>
+      <tuv xml:lang="RU-RU" changedate="20110215T124121Z" changeid="pm_kan">
+        <seg>Ниже приведены значки, используемые для отображения типов элементов в древовидном и простом списках.</seg>
       </tuv>
     </tu>
     <tu>
@@ -9455,14 +9455,6 @@
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20110215T184554Z" changeid="pm_kan">
         <seg>Щёлкните на элементе правой кнопкой мыши и в контекстном меню выберите <bpt i='0' x='0'>&lt;b0&gt;</bpt>Копировать пароль в буфер обмена<ept i='0'>&lt;/b0&gt;</ept><it pos='begin' x='1'>&lt;br1&gt;</it></seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="EN-US">
-        <seg>The following images are used to show the type of entry in the Tree and List views.</seg>
-      </tuv>
-      <tuv xml:lang="RU-RU" changedate="20110215T124121Z" changeid="pm_kan">
-        <seg>Ниже приведены значки, используемые для отображения типов элементов в древовидном и простом списках.</seg>
       </tuv>
     </tu>
     <tu>
@@ -9982,8 +9974,8 @@
       <tuv xml:lang="EN-US">
         <seg>Only able to be set if the user has already set a Hot Key</seg>
       </tuv>
-      <tuv xml:lang="RU-RU" changedate="20110621T183235Z" changeid="pm_kan">
-        <seg>Используется только если назначена горячая клавиша для вызова Pasword Safe</seg>
+      <tuv xml:lang="RU-RU" changedate="20110622T174238Z" changeid="pm_kan">
+        <seg>Используется только если назначена горячая клавиша для вызова Password Safe</seg>
       </tuv>
     </tu>
     <tu>
@@ -10790,8 +10782,8 @@
       <tuv xml:lang="EN-US">
         <seg>The following table shows the conversion of these to the <bpt i='0' x='0'>&lt;b0&gt;</bpt>Password Save<ept i='0'>&lt;/b0&gt;</ept> equivalent XML element.</seg>
       </tuv>
-      <tuv xml:lang="RU-RU" changedate="20110620T195446Z" changeid="pm_kan">
-        <seg>В таблице указаны преобразования элементов этого разделов при импорте в <bpt i='0' x='0'>&lt;b0&gt;</bpt>Password Save<ept i='0'>&lt;/b0&gt;</ept>.</seg>
+      <tuv xml:lang="RU-RU" changedate="20110622T173703Z" changeid="pm_kan">
+        <seg>В таблице указаны преобразования элементов этого разделов при импорте в <bpt i='0' x='0'>&lt;b0&gt;</bpt>Password Safe<ept i='0'>&lt;/b0&gt;</ept>.</seg>
       </tuv>
     </tu>
     <tu>
@@ -10832,6 +10824,14 @@
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20110209T180113Z" changeid="pm_kan">
         <seg><bpt i='0' x='0'>&lt;b0&gt;</bpt>Password Safe<ept i='0'>&lt;/b0&gt;</ept> позволяет хранить все пароли в одном или нескольких контейнерах (например, один для рабочих записей, другой — для личных данных).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg><bpt i='0' x='0'>&lt;b0&gt;</bpt><bpt i='1' x='1'>&lt;i1&gt;</bpt><bpt i='2' x='2'>&lt;u2&gt;</bpt>Warning<ept i='2'>&lt;/u2&gt;</ept><ept i='1'>&lt;/i1&gt;</ept><ept i='0'>&lt;/b0&gt;</ept>: The Export of sensitive information from a <bpt i='3' x='3'>&lt;b3&gt;</bpt>Password Safe<ept i='3'>&lt;/b3&gt;</ept> database to a text file has serious security consequences.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changedate="20110622T173908Z" changeid="pm_kan">
+        <seg><bpt i='0' x='0'>&lt;b0&gt;</bpt><bpt i='1' x='1'>&lt;i1&gt;</bpt><bpt i='2' x='2'>&lt;u2&gt;</bpt>Внимание!<ept i='2'>&lt;/u2&gt;</ept><ept i='1'>&lt;/i1&gt;</ept><ept i='0'>&lt;/b0&gt;</ept> Экспорт важной информации из контейнера <bpt i='3' x='3'>&lt;b3&gt;</bpt>Password Safe<ept i='3'>&lt;/b3&gt;</ept> в текстовый файл может привести к серьёзным последствиям, связанным с безопасностью.</seg>
       </tuv>
     </tu>
     <tu>
@@ -11196,18 +11196,18 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>If you save the results of Compare, Export, Find, Import, Merge, Synchronize and Validate operations to disk, they are stored in the same directory as the database.</seg>
-      </tuv>
-      <tuv xml:lang="RU-RU" changedate="20110622T154634Z" changeid="pm_kan">
-        <seg>Сохранённые отчёты об операциях сравнения, экспорта, импорта, поиска, слияния и синхронизации создаются в том же каталоге, где находится контейнер.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="EN-US">
         <seg>During Import, the supplied Title Row must include 'column headings' that match exactly one of the above.</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20110620T162824Z" changeid="pm_kan">
         <seg>При импорте из текстового файла строка с заголовками должна содержать имена столбцов, совпадающие с именами из указанного списка.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>If you save the results of Compare, Export, Find, Import, Merge, Synchronize and Validate operations to disk, they are stored in the same directory as the database.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changedate="20110622T154634Z" changeid="pm_kan">
+        <seg>Сохранённые отчёты об операциях сравнения, экспорта, импорта, поиска, слияния и синхронизации создаются в том же каталоге, где находится контейнер.</seg>
       </tuv>
     </tu>
     <tu>
@@ -11836,18 +11836,18 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>MMM</seg>
-      </tuv>
-      <tuv xml:lang="RU-RU" changedate="20110215T141534Z" changeid="pm_kan">
-        <seg>МММ</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="EN-US">
         <seg>The email address is according to the standard rules (per RFC 2368):</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20110620T134149Z" changeid="pm_kan">
         <seg>Адрес электронной почты обрабатывается согласно правилам, указанным в RFC 2368.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>MMM</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changedate="20110215T141534Z" changeid="pm_kan">
+        <seg>МММ</seg>
       </tuv>
     </tu>
     <tu>
@@ -13078,8 +13078,8 @@
       <tuv xml:lang="EN-US">
         <seg>Note:There is no mechanism within Password Safe to retrieve lost or forgotten safe passwords.</seg>
       </tuv>
-      <tuv xml:lang="RU-RU" changedate="20110620T111924Z" changeid="pm_kan">
-        <seg>Примечание. Password Safe не существует механизма для восстановления потерянных (забытых) мастер-паролей.</seg>
+      <tuv xml:lang="RU-RU" changedate="20110622T164650Z" changeid="pm_kan">
+        <seg>Примечание. В Password Safe не существует механизма для восстановления потерянных (забытых) мастер-паролей.</seg>
       </tuv>
     </tu>
     <tu>
@@ -14487,8 +14487,8 @@
       <tuv xml:lang="EN-US">
         <seg>You can create versions of the database that are readable by older versions of <bpt i='0' x='0'>&lt;b0&gt;</bpt>Password Safe<ept i='0'>&lt;/b0&gt;</ept> by explicitly exporting to the desired format (<bpt i='1' x='1'>&lt;b1&gt;</bpt>File → Export To<ept i='1'>&lt;/b1&gt;</ept> and select <bpt i='2' x='2'>&lt;b2&gt;</bpt>V1 format... <ept i='2'>&lt;/b2&gt;</ept>or <bpt i='3' x='3'>&lt;b3&gt;</bpt>V2 format...<ept i='3'>&lt;/b3&gt;</ept><bpt i='4' x='4'>&lt;b4&gt;</bpt>)<ept i='4'>&lt;/b4&gt;</ept>.</seg>
       </tuv>
-      <tuv xml:lang="RU-RU" changedate="20110621T204505Z" changeid="pm_kan">
-        <seg>Вы можете создать копии контейнера, читаемые в предыдущих версиях <bpt i='0' x='0'>&lt;b0&gt;</bpt>Password Safe<ept i='0'>&lt;/b0&gt;</ept> используя экспорт в требуемый формат (<bpt i='1' x='1'>&lt;b1&gt;</bpt>Файл→Экспортировать в<ept i='1'>&lt;/b1&gt;</ept>а затем <bpt i='2' x='2'>&lt;b2&gt;</bpt>Формат v1.x<ept i='2'>&lt;/b2&gt;</ept> или <bpt i='3' x='3'>&lt;b3&gt;</bpt>Формат v2.x<ept i='3'>&lt;/b3&gt;</ept>).</seg>
+      <tuv xml:lang="RU-RU" changedate="20110622T174802Z" changeid="pm_kan">
+        <seg>Вы можете создать копии контейнера, читаемые в предыдущих версиях <bpt i='0' x='0'>&lt;b0&gt;</bpt>Password Safe<ept i='0'>&lt;/b0&gt;</ept> используя экспорт в требуемый формат (<bpt i='1' x='1'>&lt;b1&gt;</bpt>Файл→Экспортировать в<ept i='1'>&lt;/b1&gt;</ept>, а затем <bpt i='2' x='2'>&lt;b2&gt;</bpt>Формат v1.x<ept i='2'>&lt;/b2&gt;</ept> или <bpt i='3' x='3'>&lt;b3&gt;</bpt>Формат v2.x<ept i='3'>&lt;/b3&gt;</ept>).</seg>
       </tuv>
     </tu>
     <tu>
@@ -14878,6 +14878,14 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg>The first value has 4 digits, all other 3.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changedate="20110215T143312Z" changeid="pm_kan">
+        <seg>Первое из них состоит из 4-х цифр, остальные — из 3-х.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg>Deletes the currently selected safe entry.</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20101104T100002Z" changeid="pm_kan">
@@ -14890,14 +14898,6 @@
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20110620T200356Z" changeid="pm_kan">
         <seg>(, ) {(}, {)}</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="EN-US">
-        <seg>The first value has 4 digits, all other 3.</seg>
-      </tuv>
-      <tuv xml:lang="RU-RU" changedate="20110215T143312Z" changeid="pm_kan">
-        <seg>Первое из них состоит из 4-х цифр, остальные — из 3-х.</seg>
       </tuv>
     </tu>
     <tu>
@@ -15868,18 +15868,18 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>Note that you can also customize the <bpt i='1' x='1'>&lt;i1&gt;</bpt><bpt i='2' x='2'>&lt;a2&gt;</bpt>default<ept i='2'>&lt;/a2&gt;</ept><ept i='1'>&lt;/i1&gt;</ept> autotype text via the <bpt i='3' x='3'>&lt;i3&gt;</bpt><bpt i='4' x='4'>&lt;a4&gt;</bpt>Misc.<ept i='4'>&lt;/a4&gt;</ept><ept i='3'>&lt;/i3&gt;</ept> tab in the Options dialog box.</seg>
-      </tuv>
-      <tuv xml:lang="RU-RU" changedate="20110620T134044Z" changeid="pm_kan">
-        <seg>Заметьте, что для автонабора <bpt i='1' x='1'>&lt;i1&gt;</bpt><bpt i='2' x='2'>&lt;a2&gt;</bpt>последовательность по умолчанию<ept i='2'>&lt;/a2&gt;</ept><ept i='1'>&lt;/i1&gt;</ept> может быть переопределена на вкладке <bpt i='3' x='3'>&lt;i3&gt;</bpt><bpt i='4' x='4'>&lt;a4&gt;</bpt>Управление→Настройки→Разное<ept i='4'>&lt;/a4&gt;</ept><ept i='3'>&lt;/i3&gt;</ept>.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="EN-US">
         <seg>The fields must be separated with the field separator specified for the data in the Import Text dialog box.</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20110620T162931Z" changeid="pm_kan">
         <seg>Поля должны быть разделены определённым символом, который указывается в диалоге импорта.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>Note that you can also customize the <bpt i='1' x='1'>&lt;i1&gt;</bpt><bpt i='2' x='2'>&lt;a2&gt;</bpt>default<ept i='2'>&lt;/a2&gt;</ept><ept i='1'>&lt;/i1&gt;</ept> autotype text via the <bpt i='3' x='3'>&lt;i3&gt;</bpt><bpt i='4' x='4'>&lt;a4&gt;</bpt>Misc.<ept i='4'>&lt;/a4&gt;</ept><ept i='3'>&lt;/i3&gt;</ept> tab in the Options dialog box.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changedate="20110620T134044Z" changeid="pm_kan">
+        <seg>Заметьте, что для автонабора <bpt i='1' x='1'>&lt;i1&gt;</bpt><bpt i='2' x='2'>&lt;a2&gt;</bpt>последовательность по умолчанию<ept i='2'>&lt;/a2&gt;</ept><ept i='1'>&lt;/i1&gt;</ept> может быть переопределена на вкладке <bpt i='3' x='3'>&lt;i3&gt;</bpt><bpt i='4' x='4'>&lt;a4&gt;</bpt>Управление→Настройки→Разное<ept i='4'>&lt;/a4&gt;</ept><ept i='3'>&lt;/i3&gt;</ept>.</seg>
       </tuv>
     </tu>
     <tu>
@@ -16062,8 +16062,8 @@
       <tuv xml:lang="EN-US">
         <seg><bpt i='0' x='0'>&lt;b0&gt;</bpt>Note:<ept i='0'>&lt;/b0&gt;</ept><it pos='begin' x='1'>&lt;i1&gt;</it>There appears to be an issue using the new Autotype Dragbar image with Internet Explorer (tested with V7, V8 &amp; V9) in that any characters typed before the first tab character are lost.</seg>
       </tuv>
-      <tuv xml:lang="RU-RU" changedate="20110621T205811Z" changeid="pm_kan">
-        <seg><bpt i='0' x='0'>&lt;b0&gt;</bpt>Примечание.<ept i='0'>&lt;/b0&gt;</ept><it pos='begin' x='1'>&lt;i1&gt;</it>Похоже, что в Internet Explorer (V7, V8 и V9) автонабор с панели «Dragbar» работает не совсем корректно: теряются символы до первой табуляции.</seg>
+      <tuv xml:lang="RU-RU" changedate="20110622T174915Z" changeid="pm_kan">
+        <seg><bpt i='0' x='0'>&lt;b0&gt;</bpt>Примечание.<ept i='0'>&lt;/b0&gt;</ept> <it pos='begin' x='1'>&lt;i1&gt;</it>Похоже, что в Internet Explorer (V7, V8 и V9) автонабор с панели «Dragbar» работает не совсем корректно: теряются символы до первой табуляции.</seg>
       </tuv>
     </tu>
     <tu>
@@ -16420,14 +16420,6 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>images/filter_active.jpg</seg>
-      </tuv>
-      <tuv xml:lang="RU-RU" changedate="20110622T151503Z" changeid="pm_kan">
-        <seg>images/filter_active.jpg</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="EN-US">
         <seg>{NOTES}</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20110620T201221Z" changeid="pm_kan">
@@ -16436,10 +16428,10 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>F12</seg>
+        <seg>images/filter_active.jpg</seg>
       </tuv>
-      <tuv xml:lang="RU-RU" changedate="20110215T202700Z" changeid="pm_kan">
-        <seg>F12</seg>
+      <tuv xml:lang="RU-RU" changedate="20110622T151503Z" changeid="pm_kan">
+        <seg>images/filter_active.jpg</seg>
       </tuv>
     </tu>
     <tu>
@@ -16448,6 +16440,14 @@
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20110620T195937Z" changeid="pm_kan">
         <seg>Ниже описаны преобразования кодов автонабора KeePass V2 (см. <bpt i='0' x='0'>&lt;a0&gt;</bpt>http://keepass.info/help/base/autotype.html<ept i='0'>&lt;/a0&gt;</ept>) в коды Password Safe.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>F12</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changedate="20110215T202700Z" changeid="pm_kan">
+        <seg>F12</seg>
       </tuv>
     </tu>
     <tu>
@@ -17140,18 +17140,18 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>When a filter is active, the number of entries shown compared to the total number in the database is shown in the Status Bar and a small red and white box (<it pos='begin' x='0'>&lt;i0&gt;</it>) appears in the far right of that bar.</seg>
-      </tuv>
-      <tuv xml:lang="RU-RU" changedate="20110622T151835Z" changeid="pm_kan">
-        <seg>Когда фильтр активен, в строке состояния отображается количество показанных элементов и, в скобках, общее количество элементов контейнера. Кроме того,  в правом углу появляется значок (<it pos='begin' x='0'>&lt;i0&gt;</it>).</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="EN-US">
         <seg>| unless <bpt i='1' x='1'>&lt;b1&gt;</bpt>use only easy-to-read characters<ept i='1'>&lt;/b1&gt;</ept> is selected as well, in which case the characters are only: + - = _ @ # $ % ^ &amp; &lt; &gt; / ~ \ ?</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20110621T170920Z" changeid="pm_kan">
         <seg>|. Если установлен флажок <bpt i='1' x='1'>&lt;b1&gt;</bpt>Только удобочитаемые символы<ept i='1'>&lt;/b1&gt;</ept>, набор символов сокращается до + - = _ @ # $ % ^ &amp; &lt; &gt; / ~ \ ?</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>When a filter is active, the number of entries shown compared to the total number in the database is shown in the Status Bar and a small red and white box (<it pos='begin' x='0'>&lt;i0&gt;</it>) appears in the far right of that bar.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changedate="20110622T151835Z" changeid="pm_kan">
+        <seg>Когда фильтр активен, в строке состояния отображается количество показанных элементов и, в скобках, общее количество элементов контейнера. Кроме того,  в правом углу появляется значок (<it pos='begin' x='0'>&lt;i0&gt;</it>).</seg>
       </tuv>
     </tu>
     <tu>
@@ -17574,8 +17574,8 @@
       <tuv xml:lang="EN-US">
         <seg><bpt i='0' x='0'>&lt;b0&gt;</bpt>Password Safe<ept i='0'>&lt;/b0&gt;</ept> generate a report at the end of the import operation, summarizing what was done and noting any problems that may have occurred.</seg>
       </tuv>
-      <tuv xml:lang="RU-RU" changedate="20110620T172907Z" changeid="pm_kan">
-        <seg>По окончании операции импорта <bpt i='0' x='0'>&lt;b0&gt;</bpt>Password Safe<ept i='0'>&lt;/b0&gt;</ept> создёт отчёт, содержащий информацию о выполненной работе и возникших проблемах (если такие были).</seg>
+      <tuv xml:lang="RU-RU" changedate="20110622T164252Z" changeid="pm_kan">
+        <seg>По окончании операции импорта <bpt i='0' x='0'>&lt;b0&gt;</bpt>Password Safe<ept i='0'>&lt;/b0&gt;</ept> создаёт отчёт, содержащий информацию о выполненной работе и возникших проблемах (если такие были).</seg>
       </tuv>
     </tu>
     <tu>
