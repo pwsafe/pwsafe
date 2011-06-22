@@ -2,271 +2,279 @@
 <html>
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  
-  
-  <title>Панель инструментов</title><!-- pwsafe version: 2.11--><!-- Modified: 15/06/2005 --><!--Popup control -->
+<title>Панель инструментов</title><!-- pwsafe version: 2.11--><!-- Modified: 15/06/2005 --><!--Popup control -->
 
-  <script language="javascript" src="html/popups.js">
-  </script>
-  
-  <link rel="stylesheet" type="text/css" href="style.css">
+<script language="javascript" src="html/popups.js">
+</script>
+<link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"> </object><!-- Popup Source File -->
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"></object><!-- Popup Source File -->
+
 
 <h2>Панель инструментов</h2>
+
 <p>Доступно два стиля отображения значков на панели инструментов: «современный» и «классический». Для каждого значка на панели инструментов доступны всплывающие подсказки. Для отображения подсказки достаточно навести мышку на значок. Для удобства ниже приведено краткое описание значков.</p>
+
 <p>Начиная с версии 3.11 можно изменить набор значков и порядок их отображения на панели.</p>
-<div class="instr">
+
 <h3>Переключение между стилями отображения значков</h3>
+
 <ol>
-  <li>Откройте меню <b>Просмотр</b>.</li>
-  <li>Выберите <b>Классическая панель инструментов</b> или <b>Современная панель инструментов</b>.</li>
+<li>Откройте меню <b>Просмотр</b>.</li>
+<li>Выберите <b>Классическая панель инструментов</b> или <b>Современная панель инструментов</b>.</li>
 </ol>
+
 <h3>Список значков</h3>
 <table align="center" cellspacing="5">
-  <tbody>
-    <tr bgcolor="#003333">
-      <td align="center" width="10%"><b><font color="white">Классический стиль</font></b></td>
-      <td align="center" width="10%"><b><font color="white">Современный стиль</font></b></td>
-      <td align="center" width="10%"><b><font color="white">Значение по умолчанию</font></b></td>
-      <td><b><font color="white">Описание</font></b></td>
-    </tr>
-    <tr>
-      <td align="center"><img src="images/toolbar/classic/new.jpg"></td>
-      <td align="center"><img src="images/toolbar/new/new.jpg"></td>
-      <td align="center">X</td>
-      <td><i>Создать новый контейнер</i></td>
-    </tr>
-    <tr>
-      <td align="center"><img src="images/toolbar/classic/open.jpg"></td>
-      <td align="center"><img src="images/toolbar/new/open.jpg"></td>
-      <td align="center">X</td>
-      <td><i>Открыть другой контейнер</i></td>
-    </tr>
-    <tr>
-      <td align="center"><img src="images/toolbar/classic/close.jpg"></td>
-      <td align="center"><img src="images/toolbar/new/close.jpg"></td>
-      <td align="center">X</td>
-      <td><i>Закрыть текущий контейнер</i></td>
-    </tr>
-    <tr>
-      <td align="center"><img src="images/toolbar/classic/save.jpg"></td>
-      <td align="center"><img src="images/toolbar/new/save.jpg"></td>
-      <td align="center">X</td>
-      <td><i>Сохранить изменения в текущем контейнере</i></td>
-    </tr>
-    <tr>
-      <td align="center"><img src="images/toolbar/classic/saveas.jpg"></td>
-      <td align="center"><img src="images/toolbar/new/saveas.jpg"></td>
-      <td align="center"></td>
-      <td><i>Сохранить изменения в контейнере с другим именем</i></td>
-    </tr>
-    <tr>
-      <td align="center"><img src="images/toolbar/classic/copypassword.jpg"></td>
-      <td align="center"><img src="images/toolbar/new/copypassword.jpg"></td>
-      <td align="center">X</td>
-      <td><i>Скопировать пароль выбранного элемента в <b>буфер обмена</b></i></td>
-    </tr>
-    <tr>
-      <td align="center"><img src="images/toolbar/classic/copyuser.jpg"></td>
-      <td align="center"><img src="images/toolbar/new/copyuser.jpg"></td>
-      <td align="center">X</td>
-      <td><i>Скопировать имя пользователя в <b>буфер обмена</b></i></td>
-    </tr>
-    <tr>
-      <td align="center"><img src="images/toolbar/classic/copynotes.jpg"></td>
-      <td align="center"><img src="images/toolbar/new/copynotes.jpg"></td>
-      <td align="center">X</td>
-      <td><i>Скопировать заметки для текущего элемента в <b>буфер обмена</b></i></td>
-    </tr>
-    <tr>
-      <td align="center"><img src="images/toolbar/classic/clearclipboard.jpg"></td>
-      <td align="center"><img src="images/toolbar/new/clearclipboard.jpg"></td>
-      <td align="center">X</td>
-      <td><i>Очистить <b>буфер обмена</b> </i></td>
-    </tr>
-    <tr>
-      <td align="center"><img src="images/toolbar/classic/autotype.jpg"></td>
-      <td align="center"><img src="images/toolbar/new/autotype.jpg"></td>
-      <td align="center">X</td>
-      <td><i>Выполнить <a href="autotype.html">автонабор</a> для текущего элемента </i></td>
-    </tr>
-    <tr>
-      <td align="center"><img src="images/toolbar/classic/browseurl.jpg"></td>
-      <td align="center"><img src="images/toolbar/new/browseurl.jpg"></td>
-      <td align="center">X</td>
-      <td><i>Перейти по ссылке, указанной в элементе</i></td>
-    </tr>
-    <tr>
-      <td align="center"><img src="images/toolbar/classic/browseurlplus.jpg"></td>
-      <td align="center"><img src="images/toolbar/new/browseurlplus.jpg"></td>
-      <td align="center"></td>
-      <td><i>Перейти по ссылке, указанной в элементе, и выполнить автонабор</i></td>
-    </tr>
-    <tr>
-      <td align="center"><img src="images/toolbar/classic/add.jpg"></td>
-      <td align="center"><img src="images/toolbar/new/add.jpg"></td>
-      <td align="center">X</td>
-      <td><i>Создать новый элемент в текущем контейнере</i></td>
-    </tr>
-    <tr>
-      <td align="center"><img src="images/toolbar/classic/viewedit.jpg"></td>
-      <td align="center"><img src="images/toolbar/new/viewedit.jpg"></td>
-      <td align="center">X</td>
-      <td><i>Открыть выбранный элемент для редактирования</i></td>
-    </tr>
-    <tr>
-      <td align="center"><img src="images/toolbar/classic/delete.jpg"></td>
-      <td align="center"><img src="images/toolbar/new/delete.jpg"></td>
-      <td align="center">X</td>
-      <td><i>Удалить выбранный элемент</i></td>
-    </tr>
-    <tr>
-      <td align="center"><img src="images/toolbar/classic/listtree.jpg"></td>
-      <td align="center"><img src="images/toolbar/new/listtree.jpg"></td>
-      <td align="center"></td>
-      <td><i>Переключить режима просмотра (список/дерево)</i></td>
-    </tr>
-    <tr>
-      <td align="center"><img src="images/toolbar/classic/collapseall.jpg"></td>
-      <td align="center"><img src="images/toolbar/new/collapseall.jpg"></td>
-      <td align="center">X</td>
-      <td><i>Свернуть все группы (при древовидном просмотре)</i></td>
-    </tr>
-    <tr>
-      <td align="center"><img src="images/toolbar/classic/expandall.jpg"></td>
-      <td align="center"><img src="images/toolbar/new/expandall.jpg"></td>
-      <td align="center">X</td>
-      <td><i>Развернуть все группы (при древовидном просмотре)</i></td>
-    </tr>
-    <tr>
-      <td align="center"><img src="images/toolbar/classic/compare.jpg"></td>
-      <td align="center"><img src="images/toolbar/new/compare.jpg"></td>
-      <td align="center"></td>
-      <td><i>Сравнить текущий контейнер с другим</i></td>
-    </tr>
-    <tr>
-      <td align="center"><img src="images/toolbar/classic/merge.jpg"></td>
-      <td align="center"><img src="images/toolbar/new/merge.jpg"></td>
-      <td align="center"></td>
-      <td><i>Слияние текущего контейнера с другим</i></td>
-    </tr>
-    <tr>
-      <td align="center"><img src="images/toolbar/classic/exporttext.jpg"></td>
-      <td align="center"><img src="images/toolbar/new/exporttext.jpg"></td>
-      <td align="center"></td>
-      <td><i>Экспортировать в текстовый файл</i></td>
-    </tr>
-    <tr>
-      <td align="center"><img src="images/toolbar/classic/exportXML.jpg"></td>
-      <td align="center"><img src="images/toolbar/new/exportXML.jpg"></td>
-      <td align="center"></td>
-      <td><i>Экспортировать в XML-файл</i></td>
-    </tr>
-    <tr>
-      <td align="center"><img src="images/toolbar/classic/importtext.jpg"></td>
-      <td align="center"><img src="images/toolbar/new/importtext.jpg"></td>
-      <td align="center"></td>
-      <td><i>Импортировать данные из текстового файла</i></td>
-    </tr>
-    <tr>
-      <td align="center"><img src="images/toolbar/classic/importXML.jpg"></td>
-      <td align="center"><img src="images/toolbar/new/importXML.jpg"></td>
-      <td align="center"></td>
-      <td><i>Импортировать данные из XML-файла</i></td>
-    </tr>
-    <tr>
-      <td align="center"><img src="images/toolbar/classic/viewreports.jpg"></td>
-      <td align="center"><img src="images/toolbar/new/viewreports.jpg"></td>
-      <td align="center"></td>
-      <td><i>Просмотр отчётов об операциях импорта и слияния</i></td>
-    </tr>
-    <tr>
-      <td align="center"><img src="images/toolbar/classic/options.jpg"></td>
-      <td align="center"><img src="images/toolbar/new/options.jpg"></td>
-      <td align="center">X</td>
-      <td><i>Изменить настройки</i></td>
-    </tr>
-    <tr>
-      <td align="center"><img src="images/toolbar/classic/help.jpg"></td>
-      <td align="center"><img src="images/toolbar/new/help.jpg"></td>
-      <td align="center">X</td>
-      <td><i>Открыть файл справки</i></td>
-    </tr>
-    <tr>
-      <td align="center"><img src="images/toolbar/classic/runcmd.jpg"></td>
-      <td align="center"><img src="images/toolbar/new/runcmd.jpg"></td>
-      <td align="center"></td>
-      <td><i>Выполнить команду</i></td>
-    </tr>
-    <tr>
-      <td align="center"><img src="images/toolbar/classic/passwordchars.jpg"></td>
-      <td align="center"><img src="images/toolbar/new/passwordchars.jpg"></td>
-      <td align="center"></td>
-      <td><i>Показать часть пароля</i></td>
-    </tr>
-    <tr>
-      <td align="center"><img src="images/toolbar/classic/managefilters.jpg"></td>
-      <td align="center"><img src="images/toolbar/new/managefilters.jpg"></td>
-      <td align="center"></td>
-      <td><i>Управление фильтрами</i></td>
-    </tr>
-    <tr>
-      <td align="center"><img src="images/toolbar/classic/setfilter.jpg"></td>
-      <td align="center"><img src="images/toolbar/new/setfilter.jpg"></td>
-      <td align="center"></td>
-      <td><i>Редактировать фильтры</i></td>
-    </tr>
-    <tr>
-      <td align="center"><img src="images/toolbar/classic/applyfilter.jpg"></td>
-      <td align="center"><img src="images/toolbar/new/applyfilter.jpg"></td>
-      <td align="center"></td>
-      <td><i>Задать/очистить фильтры</i></td>
-    </tr>
-    <tr>
-      <td align="center"><img src="images/toolbar/classic/find.jpg"></td>
-      <td align="center"><img src="images/toolbar/new/find.jpg"></td>
-      <td align="center"></td>
-      <td><i>Отобразить панель поиска</i></td>
-    </tr>
-    <tr>
-      <td align="center"><img src="images/toolbar/classic/sendemail.jpg"></td>
-      <td align="center"><img src="images/toolbar/new/sendemail.jpg"></td>
-      <td align="center"></td>
-      <td><i>Отправить письмо</i></td>
-    </tr>
-    <tr>
-      <td align="center"><img src="images/toolbar/classic/synchronize.jpg"></td>
-      <td align="center"><img src="images/toolbar/new/synchronize.jpg"></td>
-      <td align="center"></td>
-      <td><i>Синхронизировать текущий контейнер с другим</i></td>
-    </tr>
-    <tr>
-      <td align="center"><img src="images/toolbar/classic/undo.jpg"></td>
-      <td align="center"><img src="images/toolbar/new/undo.jpg"></td>
-      <td align="center"></td>
-      <td><i>Отменить последнее действие</i></td>
-    </tr>
-    <tr>
-      <td align="center"><img src="images/toolbar/classic/redo.jpg"></td>
-      <td align="center"><img src="images/toolbar/new/redo.jpg"></td>
-      <td align="center"></td>
-      <td><i>Повторить последнее отменённое действие</i></td>
-    </tr>
-    <tr>
-      <td align="center"><img src="images/toolbar/classic/addgroup.jpg"></td>
-      <td align="center"><img src="images/toolbar/new/addgroup.jpg"></td>
-      <td align="center"></td>
-      <td><i>Добавить новую группу в текущий контейнер</i></td>
-    </tr>
-  </tbody>
-</table>
-</div><!-- Added some white space at the bottom for natural scrolling -->
+<tbody>
+<tr bgcolor="#003333">
+<td align="center" width="10%"><b><font color="white">Классический стиль</font></b></td>
+<td align="center" width="10%"><b><font color="white">Современный стиль</font></b></td>
+<td align="center" width="10%"><b><font color="white">Значение по умолчанию</font></b></td>
+<td><b><font color="white">Описание</font></b></td>
+</tr>
+<tr>
+<td align="center"><img src="images/toolbar/classic/new.jpg"></td>
+<td align="center"><img src="images/toolbar/new/new.jpg"></td>
+<td align="center">X</td>
+<td><i>Создать новый контейнер</i></td>
+</tr>
+<tr>
+<td align="center"><img src="images/toolbar/classic/open.jpg"></td>
+<td align="center"><img src="images/toolbar/new/open.jpg"></td>
+<td align="center">X</td>
+<td><i>Открыть другой контейнер</i></td>
+</tr>
+<tr>
+<td align="center"><img src="images/toolbar/classic/close.jpg"></td>
+<td align="center"><img src="images/toolbar/new/close.jpg"></td>
+<td align="center">X</td>
+<td><i>Закрыть текущий контейнер</i></td>
+</tr>
+<tr>
+<td align="center"><img src="images/toolbar/classic/save.jpg"></td>
+<td align="center"><img src="images/toolbar/new/save.jpg"></td>
+<td align="center">X</td>
+<td><i>Сохранить изменения в текущем контейнере</i></td>
+</tr>
+<tr>
+<td align="center"><img src="images/toolbar/classic/saveas.jpg"></td>
+<td align="center"><img src="images/toolbar/new/saveas.jpg"></td>
+<td align="center"></td>
+<td><i>Сохранить изменения в контейнере с другим именем</i></td>
+</tr>
+<tr>
+<td align="center"><img src="images/toolbar/classic/copypassword.jpg"></td>
+<td align="center"><img src="images/toolbar/new/copypassword.jpg"></td>
+<td align="center">X</td>
+<td><i>Скопировать пароль выбранного элемента в <b>буфер обмена</b></i></td>
+</tr>
+<tr>
+<td align="center"><img src="images/toolbar/classic/copyuser.jpg"></td>
+<td align="center"><img src="images/toolbar/new/copyuser.jpg"></td>
+<td align="center">X</td>
+<td><i>Скопировать имя пользователя в <b>буфер обмена</b></i></td>
+</tr>
+<tr>
+<td align="center"><img src="images/toolbar/classic/copynotes.jpg"></td>
+<td align="center"><img src="images/toolbar/new/copynotes.jpg"></td>
+<td align="center">X</td>
+<td><i>Скопировать заметки для текущего элемента в <b>буфер обмена</b></i></td>
+</tr>
+<tr>
+<td align="center"><img src="images/toolbar/classic/clearclipboard.jpg"></td>
+<td align="center"><img src="images/toolbar/new/clearclipboard.jpg"></td>
+<td align="center">X</td>
+<td><i>Очистить <b>буфер обмена</b></i></td>
+</tr>
+<tr>
+<td align="center"><img src="images/toolbar/classic/autotype.jpg"></td>
+<td align="center"><img src="images/toolbar/new/autotype.jpg"></td>
+<td align="center">X</td>
+<td><i>Выполнить <a href="autotype.html">автонабор</a> для текущего элемента </i></td>
+</tr>
+<tr>
+<td align="center"><img src="images/toolbar/classic/browseurl.jpg"></td>
+<td align="center"><img src="images/toolbar/new/browseurl.jpg"></td>
+<td align="center">X</td>
+<td><i>Перейти по ссылке, указанной в элементе</i></td>
+</tr>
+<tr>
+<td align="center"><img src="images/toolbar/classic/browseurlplus.jpg"></td>
+<td align="center"><img src="images/toolbar/new/browseurlplus.jpg"></td>
+<td align="center"></td>
+<td><i>Перейти по ссылке, указанной в элементе, и выполнить автонабор</i></td>
+</tr>
+<tr>
+<td align="center"><img src="images/toolbar/classic/add.jpg"></td>
+<td align="center"><img src="images/toolbar/new/add.jpg"></td>
+<td align="center">X</td>
+<td><i>Создать новый элемент в текущем контейнере</i></td>
+</tr>
+<tr>
+<td align="center"><img src="images/toolbar/classic/viewedit.jpg"></td>
+<td align="center"><img src="images/toolbar/new/viewedit.jpg"></td>
+<td align="center">X</td>
+<td><i>Открыть выбранный элемент для редактирования</i></td>
+</tr>
+<tr>
+<td align="center"><img src="images/toolbar/classic/delete.jpg"></td>
+<td align="center"><img src="images/toolbar/new/delete.jpg"></td>
+<td align="center">X</td>
+<td><i>Удалить выбранный элемент</i></td>
+</tr>
+<tr>
+<td align="center"><img src="images/toolbar/classic/listtree.jpg"></td>
+<td align="center"><img src="images/toolbar/new/listtree.jpg"></td>
+<td align="center"></td>
+<td><i>Переключить режима просмотра (список/дерево)</i></td>
+</tr>
+<tr>
+<td align="center"><img src="images/toolbar/classic/collapseall.jpg"></td>
+<td align="center"><img src="images/toolbar/new/collapseall.jpg"></td>
+<td align="center">X</td>
+<td><i>Свернуть все группы (при древовидном просмотре)</i></td>
+</tr>
+<tr>
+<td align="center"><img src="images/toolbar/classic/expandall.jpg"></td>
+<td align="center"><img src="images/toolbar/new/expandall.jpg"></td>
+<td align="center">X</td>
+<td><i>Развернуть все группы (при древовидном просмотре)</i></td>
+</tr>
+<tr>
+<td align="center"><img src="images/toolbar/classic/compare.jpg"></td>
+<td align="center"><img src="images/toolbar/new/compare.jpg"></td>
+<td align="center"></td>
+<td><i>Сравнить текущий контейнер с другим</i></td>
+</tr>
+<tr>
+<td align="center"><img src="images/toolbar/classic/merge.jpg"></td>
+<td align="center"><img src="images/toolbar/new/merge.jpg"></td>
+<td align="center"></td>
+<td><i>Слияние текущего контейнера с другим</i></td>
+</tr>
+<tr>
+<td align="center"><img src="images/toolbar/classic/exporttext.jpg"></td>
+<td align="center"><img src="images/toolbar/new/exporttext.jpg"></td>
+<td align="center"></td>
+<td><i>Экспортировать в текстовый файл</i></td>
+</tr>
+<tr>
+<td align="center"><img src="images/toolbar/classic/exportXML.jpg"></td>
+<td align="center"><img src="images/toolbar/new/exportXML.jpg"></td>
+<td align="center"></td>
+<td><i>Экспортировать в XML-файл</i></td>
+</tr>
+<tr>
+<td align="center"><img src="images/toolbar/classic/importtext.jpg"></td>
+<td align="center"><img src="images/toolbar/new/importtext.jpg"></td>
+<td align="center"></td>
+<td><i>Импортировать данные из текстового файла</i></td>
+</tr>
+<tr>
+<td align="center"><img src="images/toolbar/classic/importXML.jpg"></td>
+<td align="center"><img src="images/toolbar/new/importXML.jpg"></td>
+<td align="center"></td>
+<td><i>Импортировать данные из XML-файла</i></td>
+</tr>
+<tr>
+<td align="center"><img src="images/toolbar/classic/viewreports.jpg"></td>
+<td align="center"><img src="images/toolbar/new/viewreports.jpg"></td>
+<td align="center"></td>
+<td><i>Просмотр отчётов об операциях импорта и слияния</i></td>
+</tr>
+<tr>
+<td align="center"><img src="images/toolbar/classic/options.jpg"></td>
+<td align="center"><img src="images/toolbar/new/options.jpg"></td>
+<td align="center">X</td>
+<td><i>Изменить настройки</i></td>
+</tr>
+<tr>
+<td align="center"><img src="images/toolbar/classic/help.jpg"></td>
+<td align="center"><img src="images/toolbar/new/help.jpg"></td>
+<td align="center">X</td>
+<td><i>Открыть файл справки</i></td>
+</tr>
+<tr>
+<td align="center"><img src="images/toolbar/classic/runcmd.jpg"></td>
+<td align="center"><img src="images/toolbar/new/runcmd.jpg"></td>
+<td align="center"></td>
+<td><i>Выполнить команду</i></td>
+</tr>
+<tr>
+<td align="center"><img src="images/toolbar/classic/passwordchars.jpg"></td>
+<td align="center"><img src="images/toolbar/new/passwordchars.jpg"></td>
+<td align="center"></td>
+<td><i>Показать часть пароля</i></td>
+</tr>
+<tr>
+<td align="center"><img src="images/toolbar/classic/managefilters.jpg"></td>
+<td align="center"><img src="images/toolbar/new/managefilters.jpg"></td>
+<td align="center"></td>
+<td><i>Управление фильтрами</i></td>
+</tr>
+<tr>
+<td align="center"><img src="images/toolbar/classic/setfilter.jpg"></td>
+<td align="center"><img src="images/toolbar/new/setfilter.jpg"></td>
+<td align="center"></td>
+<td><i>Редактировать фильтры</i></td>
+</tr>
+<tr>
+<td align="center"><img src="images/toolbar/classic/applyfilter.jpg"></td>
+<td align="center"><img src="images/toolbar/new/applyfilter.jpg"></td>
+<td align="center"></td>
+<td><i>Задать/очистить фильтры</i></td>
+</tr>
+<tr>
+<td align="center"><img src="images/toolbar/classic/find.jpg"></td>
+<td align="center"><img src="images/toolbar/new/find.jpg"></td>
+<td align="center"></td>
+<td><i>Отобразить панель поиска</i></td>
+</tr>
+<tr>
+<td align="center"><img src="images/toolbar/classic/sendemail.jpg"></td>
+<td align="center"><img src="images/toolbar/new/sendemail.jpg"></td>
+<td align="center"></td>
+<td><i>Отправить письмо</i></td>
+</tr>
+<tr>
+<td align="center"><img src="images/toolbar/classic/synchronize.jpg"></td>
+<td align="center"><img src="images/toolbar/new/synchronize.jpg"></td>
+<td align="center"></td>
+<td><i>Синхронизировать текущий контейнер с другим</i></td>
+</tr>
+<tr>
+<td align="center"><img src="images/toolbar/classic/undo.jpg"></td>
+<td align="center"><img src="images/toolbar/new/undo.jpg"></td>
+<td align="center"></td>
+<td><i>Отменить последнее действие</i></td>
+</tr>
+<tr>
+<td align="center"><img src="images/toolbar/classic/redo.jpg"></td>
+<td align="center"><img src="images/toolbar/new/redo.jpg"></td>
+<td align="center"></td>
+<td><i>Повторить последнее отменённое действие</i></td>
+</tr>
+<tr>
+<td align="center"><img src="images/toolbar/classic/addgroup.jpg"></td>
+<td align="center"><img src="images/toolbar/new/addgroup.jpg"></td>
+<td align="center"></td>
+<td><i>Добавить новую группу в текущий контейнер</i></td>
+</tr>
+</tbody>
+</table><!-- Added some white space at the bottom for natural scrolling -->
+
 
 <br>
 <br>
 <br>
-<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e"> <param name="Keyword" value="Toolbar Icons"> <param name="Keyword" value="Menu Toolbar"> <param name="Keyword" value="Switching Toolbar Views"> </object>
+
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="Keyword" value="Toolbar Icons">
+<param name="Keyword" value="Menu Toolbar">
+<param name="Keyword" value="Switching Toolbar Views">
+</object>
+
 </body>
 </html>

@@ -9,34 +9,39 @@
 <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11">
-</object><!-- Popup Source File -->
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"></object><!-- Popup Source File -->
 
 
 <h2>Импорт элементов</h2>
-<p><span style="font-weight: bold;">Password Safe</span> позволяет импортировать данные о паролях из других форматов. Данные файлы могут быть сформированы другими приложениями, экспортированы из таблиц, или даже составлены вручную в текстовом редакторе.</p>
 
-<p><span style="font-weight: bold;">Password Safe</span> поддерживает следующие форматы:</p>
+<p><b>Password Safe</b> позволяет импортировать данные о паролях из файлов других форматов. Данные файлы могут быть сформированы другими приложениями, экспортированы из таблиц, или даже составлены вручную в текстовом редакторе.</p>
+
+<p><b>Password Safe</b> поддерживает следующие форматы:</p>
 
 <ul>
 <li><a href="#text">Простой текст</a></li>
 <li><a href="#XML">XML</a></li>
-<li>KeePass (другая программа для управления паролями)</li>
+<li><a href="
+#KeePassV1_TXTCSV">TXT- и CSV-файлы KeePass V1</a></li>
+<li><a href="#KeePassV2_CSV">KeePass V2 через CSV-файлы KeePass V1</a></li>
+<li><a href="#KeePassXML">XML-файлы KeePass V1 и V2</a></li>
 </ul>
 
-<p>Чтобы импортировать элементы из другого контейнера Password Safe, запустите ещё одну копию Password Safe (должен быть разрешён запуск нескольких экземпляров на вкладке «Управление→Настройки→Система») и откройте нужный контейнер. Затем перетяните из него необходимые элементы или группы в первый контейнер. </p>
+<p>По окончании операции импорта <b>Password Safe</b> создёт отчёт, содержащий информацию о выполненной работе и возникших проблемах (если такие были). Содержимое отчёта может быть скопировано в буфер обмена или сохранено на диск в том же каталоге, где находится контейнер. Отчёт можно посмотреть позже с помощью меню «Просмотр»→«Отчёты». Отчёт имеет фиксированное имя, зависящее от его типа. При повторении действия и сохранении отчёта на диск, предыдущий отчёт для этого действия перезаписывается. <span style="color=red;"><b>Примечание.</b> Отчёт может содержать важные данные, поэтому возможность сохранения на диск следует использовать с осторожностью.</span></p>
 
-<div class="instr">
+<p><b>Примечание.</b> Чтобы импортировать элементы из другого контейнера <b>Password Safe</b>, запустите ещё одну копию <b>Password Safe</b> (должен быть разрешён запуск нескольких экземпляров на вкладке <a href="system_tab.html">Управление→Настройки→Система</a>) и откройте нужный контейнер. Затем перетяните из него необходимые элементы или группы в первый контейнер. </p>
 
 <h3><a name="text"></a>Текстовый формат</h3>
+
 <p>Импортируемые текстовые файлы содержат одну или несколько записей о паролях. Поля внутри элемента разделяются специальным символом. Информация об элементе может быть записана в одну или несколько строк. Описание формата импорта из текстового файла находится в разделе <a href="imp_exp_text_details.html">Формат текстового экспорта и импорта</a>.</p>
 
 <h3>Настройки импорта из простого текста</h3>
+
 <p>Разделитель полей используется для выделения полей в текстовых строках. Также можно указать имя группы, в которую будут помещены все импортированные элементы.</p>
 
 <p><img alt="Настройки импорта из простого текста" src="images/import.jpg"></p>
 <ol>
-<li><b>Файл→Импортировать из.</b></li>
+<li><b>Файл→Импортировать из</b></li>
 <li>Выберите <b>Простой текст</b>.</li>
 <li>Укажите параметры импорта из данного файла.</li>
 <li>Если при экспорте заметок был использован разделитель строк, укажите его, чтобы при импорте он был заменён на перенос строки.</li>
@@ -46,14 +51,345 @@
 </ol>
 
 <hr>
-<small><b><span style="color: rgb(255, 0, 0);">Внимание!</span> </b> Первая строка импортируемого файла должна содержать список имён столбцов, разделённых табуляцией. Эта строка создаётся автоматически при <a href="export.html">экспорте из Password Safe</a>. Для файлов, созданных вручную (или с помощью других утилит), её нужно заполнить или отредактировать в соответствии с форматом.<br>
+<small><b style="color: rgb(255, 0, 0);">Внимание!</b> Первая строка импортируемого файла должна содержать список имён столбцов, разделённых табуляцией. Эта строка создаётся автоматически при <a href="export.html">экспорте в текст</a>. Для файлов, созданных вручную (или с помощью других утилит), её нужно заполнить или отредактировать в соответствии с форматом.<br>
 </small>
+
 <hr style="width: 100%; height: 2px;">
 
 <h3><a name="XML"></a>XML</h3>
 
-<p>XML (eXtensible Markup Language) — распространённый формат для передачи данных между приложениями. <span style="font-weight: bold;">Password Safe</span> может импортировать XML-файлы, соответствующие схеме <span style="font-style: italic;">pwsafe.xsd</span>, распространяемой вместе с Password Safe.</p>
-</div><!-- Added some white space at the bottom for natural scrolling -->
+<p>XML (eXtensible Markup Language) — распространённый формат для передачи данных между приложениями. <b>Password Safe</b> может импортировать XML-файлы, соответствующие схеме <i>pwsafe.xsd</i>, распространяемой вместе с <b>Password Safe</b>.</p>
+
+<h3><a name="KeePassV1_TXTCSV"></a>TXT- и CSV-файлы KeePass V1</h3>
+
+<p><u>Рекомендуемый способ импорта контейнеров KeePass V1 через XML-файл описан </u> <a href="#KeePassXML"><u>ниже</u></a>.</p>
+
+<h4>Текстовый файл</h4>
+
+<p>Поддерживается импорт TXT-файлов KeePass V1 (проверено на файлах созданных KeePass V1.19b).</p>
+
+<p>Перечисленные поля преобразуются в соответствующие поля <b>Password Safe</b>.</p>
+Каждый элемент начинается со строки заключённой в квадратные скобки («[»,«]»). Текст из этой строки считается заголовком элемента.<p>
+
+<p>Каждое поле начинается с новой строки. Его содержание определяется по заголовку , указанному в начале строки.</p>
+<ul>
+<li>«Group» — группа элемента.</li>
+<li>«Group Tree» — перечень родительских групп до корня.</li>
+<li>«User Name» — имя пользователя.</li>
+<li>«Password» — пароль.</li>
+<li>«URL» — ссылка.</li>
+<li>«Notes» — заметки.</li>
+<li>«UUID» — уникальный идентификатор элемента.</li>
+<li>«Creation Time» — время создания элемента.</li>
+<li>«Last Access» — время последнего доступа к элементу.</li>
+<li>«Last Modification» — время изменения пароля и время последнего изменения.</li>
+<li>«Expires» — дата истечения пароля.</li>
+</ul>
+
+<p>Следующие поля игнорируются:</p>
+
+<ul>
+<li>«Icon»</li>
+<li>«Attachment Description»</li>
+<li>«Attachment» — <b><u>не экспортируйте</u></b> данное поле, т. к. это приводит значительному увеличению размера файла.</li>
+</ul>
+
+<p>Обратите внимание, что в <b>Password Safe</b> значение даты и времени должны быть не позднее 19 января 2038 г. Более поздние даты считаются некорректными, и соответствующие поля не заполняются.</p>
+
+<p>Обратите внимание, что при экспорте из KeePass <b><u>необходимо</u></b> поставить флажок <i>Encode/replace newline characters by '\n'</i>, иначе операция импорта может <u>завершиться с ошибкой или привести к неожиданным результатам.</u></p>
+
+<h4>CSV-файл</h4>
+
+<p>Поддерживается импорт CSV-файлов KeePass V1 (проверено на файлах созданных KeePass V1.19b).</p>
+
+<p>Перечисленные поля преобразуются в соответствующие поля <b>Password Safe</b>.</p>
+
+<ul>
+<li>«Password Groups» — группа элемента.</li>
+<li>«Group Tree» — перечень родительских групп до корня.</li>
+<li>«Account» — заголовок элемента.</li>
+<li>«Login Name» — имя пользователя.</li>
+<li>«Password» — пароль.</li>
+<li>«Web Site» — ссылка.</li>
+<li>«Comments» — заметки.</li>
+<li>«UUID» — уникальный идентификатор элемента.</li>
+<li>«Creation Time» — время создания элемента.</li>
+<li>«Last Access» — время последнего доступа к элементу.</li>
+<li>«Last Modification» — время изменения пароля и время последнего изменения.</li>
+<li>«Expires» — дата истечения пароля.</li>
+</ul>
+
+<p>Следующие поля игнорируются:</p>
+
+<ul>
+<li>«Icon»</li>
+<li>«Attachment Description»</li>
+<li>«Attachment» — <b><u>не экспортируйте</u></b> данное поле, т. к. это приводит значительному увеличению размера файла.</li>
+</ul>
+
+<p>Обратите внимание, что в <b>Password Safe</b> значение даты и времени должны быть не позднее 19 января 2038 г. Более поздние даты считаются некорректными, и соответствующие поля не заполняются.</p>
+
+<p>Обратите внимание, что при экспорте из KeePass <b><u>необходимо</u></b> поставить флажок <i>Encode/replace newline characters by '\n'</i>, иначе операция импорта может <u>завершиться с ошибкой или привести к неожиданным результатам.</u></p>
+
+<h3><a name="KeePassV2_CSV"></a>KeePass V2 через CSV-файлы KeePass V1</h3>
+
+<p><u>Рекомендуемый способ импорта контейнеров KeePass V2 через XML-файл описан </u> <a href="#KeePassXML"><u>ниже</u></a>.</p>
+
+<p><b>Password Safe</b> не может напрямую импортировать файлы, созданные KeePass V2 (даже файлы экспорта в KeePass V1 CSV из KeePass V2). Но существует возможность экспортировать контейнер KeePass V2 в формат KeePass V1. После этого можно экспортировать данные в TXT- или CSV-формат и импортировать их как описано <a href="
+#KeePassV1_TXTCSV">выше</a>.</p>
+
+<h3><a name="KeePassXML"></a>XML-файлы KeePass V1 и V2</h3>
+
+<p><b>Password Safe</b> не может напрямую импортировать XML-файлы, созданные KeePass V1 и KeePass V2, т. к. их формат сильно отличается от используемого в <b>Password Safe</b>. Но мы предоставляем XSL-файлы для преобразования их в совместимый формат (KPV1_to_PWS.xslt и KPV2_to_PWS.xslt). Указанны ниже программы могут быть использованы для обработки экспортированных XML-файлов с помощью XSLT-шаблонов. Полученные в результате преобразования файлы совместимы с импортируемыми <b>Password Safe</b> XML-файлами (для <b>Password Safe</b> <u>V3.26 или новее</u>).</p>
+
+<p>XSLT-файлы соответствуют стандарту XSLT V1.0, описанному на <a target="blank" href="http://www.w3.org/TR/xslt"> http://www.w3.org/TR/xslt</a>, и были проверены на файлах, созданных с помощью KeePass V1.19b и KeePass V2.15.</p>
+
+<p>Обратите внимание, что в <b>Password Safe</b> значение даты и времени должны быть не позднее 19 января 2038 г. Более поздние даты считаются некорректными, и соответствующие поля не заполняются.</p>
+
+<p>Для данных шаблонов на ОС Windows можно использовать следующие XSLT-процессоры. Приведённые в примерах командные строки предполагают, что<p>
+<ul>
+<li>Имя шаблона для преобразования XML-файла KeePass в XML-файл <b>Password Safe</b>: KPV1_to_PWS.xslt или KPV2_to_PWS.xslt.</li>
+<li>Имя входного XML-файла KeePass V1 или V2: KeePassV1.xml или KeePassV2.xml.</li>
+<li>Имя выходного XML-файла <b>Password Safe</b>: PWS.xml.</li>
+<li>Все входные или выходные файлы находятся в том же каталоге, что и XSLT-процессор. В противном случае необходимо указать полные пути к файлам.</li>
+</ul>
+<ol>
+<li>Утилита командной строки от Microsoft (XSLT Processor Version 4.0). В свойствах файла msxsl.exe указана версия V1.1.0.1 и дата 2001 г., хотя на web-сайте указана версия V2.0 с датой 19 сентября 2004 г. Утилиту можно загрузить с <a target="blank" href="http://www.microsoft.com/downloads/en/details.aspx?familyid=2fb55371-c94e-4373-b0e9-db4816552e41&amp;displaylang=en">http://www.microsoft.com/downloads</a>. Для работы утилиты требуется Microsoft Core XML Services (MSXML) V4.0. Текущая версия MSXML V6, но V4 обычно присутствует на всех версиях Windows, поддерживаемых <b>Password Safe</b>.
+<p>Для XML-файлов KeePass V1 используется команда:</p>
+<pre>
+msxsl KeePassV1.xml KPV1_to_PWS.xslt -o PWS.xml
+</pre>
+Для XML-файлов KeePass V2 используется команда:
+<pre>
+msxsl KeePassV2.xml KPV2_to_PWS.xslt -o PWS.xml
+</pre>
+</li>
+<li>AltovaXML Community Edition (текущая версия 2011r3). См. <a target="blank" href="http://www.altova.com/altovaxml.html"> http://www.altova.com/altovaxml.html</a>.
+<p>Для XML-файлов KeePass V1 используется команда:</p>
+<pre>
+AltovaXML -xslt1 KPV1_to_PWS.xslt -in KeePassV1.xml -out PWS.xml
+</pre>
+Для XML-файлов KeePass V2 используется команда:
+<pre>
+AltovaXML -xslt1 KPV2_to_PWS.xslt -in KeePassV2.xml -out PWS.xml
+</pre>
+</li>
+<li>Saxon-HE (Home Edition) (текущая версия 9.3.0.5). См. <a target="blank" href="http://saxon.sourceforge.net/">http://saxon.sourceforge.net/</a>. Для Saxon также существует графическая оболочка Kernow. См. <a target="blank" href="http://kernowforsaxon.sourceforge.net/">http://kernowforsaxon.sourceforge.net/</a>. Формат команды зависит от того, какая используется версия Saxon-HE и/или Kernow (Java или .Net). Для получения дополнительной информации см. документацию к программам.</li>
+</ol>
+
+<p>Все перечисленные программы бесплатны для использования, но Kernow требует регистрации после стократного использования.</p>
+
+<h4>Особенности обработки XML-файлов KeePass V1</h4>
+
+<ul>
+<li>Если имя группы в KeePass содержит точку («.»), то при импорте в <b>Password Safe</b> она будет заменена на косую черту («/»), т. к. в <b>Password Safe</b> точка используется в качестве разделителя групп.</li>
+
+<li>Из поля заметок удаляются все символы возврата каретки, а символы новой строки преобразуются в используемый <b>Password Safe</b> разделитель строк '»'.</li>
+
+<li>Уникальные идентификаторы (UUID) элементов KeePass переносятся в <b>Password Safe</b>, если только они уже не используются для других элементов, в противном случае будет создан новый идентификатор.</li>
+</ul>
+
+<table border="1" cellpadding="2" cellspacing="2 width="80%">
+<col align="left" width="30%" />
+<col align="center" width="70%" />
+<thead>
+<tr>
+<th>XML-элементы KeePass V1</th>
+<th>Эквивалентные XML-элементы Password Safe</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>&lt;group&gt;</td><td>&lt;group&gt;</td></tr>
+<tr><td>&lt;title&gt;</td><td>&lt;title&gt;</td></tr>
+<tr><td>&lt;username&gt;</td><td>&lt;username&gt;</td></tr>
+<tr><td>&lt;password&gt;</td><td>&lt;password&gt;</td></tr>
+<tr><td>&lt;url&gt;</td><td>&lt;url&gt;</td></tr>
+<tr><td>&lt;notes&gt;</td><td>&lt;notes&gt;</td></tr>
+<tr><td>&lt;lastmodtime&gt;</td><td>&lt;pmtimex&gt; <u>и</u> &lt;rmtimex&gt;</td></tr>
+<tr><td>&lt;creationtime&gt;</td><td>&lt;ctimex&gt;</td></tr>
+<tr><td>&lt;lastaccesstime&gt;</td><td>&lt;atimex&gt;</td></tr>
+<tr><td>&lt;expiretime&gt;</td><td>&lt;xtimex&gt;, если в KeePass значение атрибута "expires" тега &lt;expiretime&gt; равно «true»</td></tr>
+<tr><td>&lt;image&gt;<br>&lt;attachdesc&gt;<br>&lt;attachment&gt;</td><td><br>В <b>Password Safe</b> отсутствуют схожие поля, поэтому они игнорируются</td></tr>
+</tbody>
+</table>
+
+<h4>Особенности обработки XML-файлов KeePass V2</h4>
+
+<ul>
+<li>Значение &lt;HistoryMaxItems&gt; из раздела &lt;Meta&gt; в XML-файле KeePass V2 используется в качестве максимального количества паролей, сохраняемых в истории элемента в <b>Password Safe</b>. Оставшиеся поля из этого раздела игнорируются.</li>
+
+<li>Если имя группы в KeePass содержит точку («.»), то при импорте в <b>Password Safe</b> она будет заменена на косую черту («/»), т. к. в <b>Password Safe</b> точка используется в качестве разделителя групп.</li>
+
+<li>Из поля заметок удаляются все символы возврата каретки, а символы новой строки преобразуются в используемый <b>Password Safe</b> разделитель строк '»'.</li>
+
+<li>Уникальные идентификаторы (UUID) элементов KeePass переносятся в <b>Password Safe</b>, если только они уже не используются для других элементов, в противном случае будет создан новый идентификатор.</li>
+
+<li>Если для группы KeePass задано значение &lt;DefaultAutoTypeSequence&gt;, то для элементов этой группы в <b>Password Safe</b> оно используется как значение автонабора по умолчанию.</li>
+
+<li>Если для элемента значение &lt;AutoType&gt; равно «True» и значение &lt;DefaultSequence&gt; не пусто, то последнее используется в <b>Password Safe</b> как последовательность для автонабора. Если для элемента значение &lt;AutoType&gt; равно «True», но значение &lt;DefaultSequence&gt; пусто, то используется значение &lt;DefaultAutoTypeSequence&gt; от родительской группы.</li>
+
+<li>Если значение &lt;OverrideURL&gt; не пусто, то оно помещается в заметки с префиксом «OverrideURL:», а к  значению поля URL добавляется приставка «[alt]».</li>
+
+<li>Если строка URL начинается с «\\» или «cmd://» (независимо от регистра), то значение помещается в поле «Выполнить», но перед этим производится подстановка ключевых последовательностей (см. ниже). В противном случае строка URL подставляется в поле «Ссылка» с предварительной заменой только последовательностей вида {S:FieldName}.</li>
+
+<li>Если значение &lt;Tags&gt; не пусто, то оно помещается в заметки с префиксом «Tags:».</li>
+</ul>
+
+<p>KeePass V2 экспортирует значения строковых полей (например, заголовок) в раздел &lt;String&gt; с элементами &lt;Key&gt; и &lt;Value&gt;. Пример:
+<pre>
+&lt;String&gt;
+	&lt;Key&gt;Title&lt;/Key&gt;
+	&lt;Value&gt;Заголовок элемента&lt;/Value&gt;
+&lt;/String&gt;
+</pre>
+<p>В таблице указаны преобразования элементов этого разделов при импорте в <b>Password Save</b>.</p>
+
+<table border="1" cellpadding="2" cellspacing="2 width="80%">
+<col align="left" width="40%" />
+<col align="center" width="60%" />
+<thead>
+<tr>
+<th>Значение &lt;String&gt;/&lt;Key&gt; в KeePass V2</th>
+<th>Эквивалент в Password Safe</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>Title (заголовок)</td><td>&lt;title&gt;</td></tr>
+<tr><td>Username (имя пользователя)</td><td>&lt;username&gt;</td></tr>
+<tr><td>Password (пароль)</td><td>&lt;password&gt;</td></tr>
+<tr><td>URL (ссылка)</td><td>&lt;url&gt; или &lt;runcommand&gt;<br>в зависимости от префикса (см. выше)</td></tr>
+<tr><td>Notes (заметки)</td><td>&lt;notes&gt;</td></tr>
+<tr><td>Все остальные</td><td>Добавляются в поле «Заметки» в виде:<br> «Key: Value»</td></tr>
+</tbody>
+</table>
+
+<p>KeePass V2 экспортирует все поля, связанные со временем в раздел &lt;Times&gt;. Пример:</p>
+<pre>
+&lt;Times&gt;
+  &lt;LastModificationTime&gt;2011-05-30T14:20:57Z&lt;/LastModificationTime&gt;
+  &lt;CreationTime&gt;2011-05-27T18:09:29Z&lt;/CreationTime&gt;
+  &lt;LastAccessTime&gt;2011-05-30T14:20:57Z&lt;/LastAccessTime&gt;
+  &lt;ExpiryTime&gt;2999-12-28T23:59:59Z&lt;/ExpiryTime&gt;
+  &lt;Expires&gt;False&lt;/Expires&gt;
+&lt;/Times&gt;
+</pre>
+<p>В таблице указаны преобразования элементов этого разделов при импорте в <b>Password Save</b>.</p>
+
+<table border="1" cellpadding="2" cellspacing="2 width="80%">
+<col align="left" width="30%" />
+<col align="center" width="70%" />
+<thead>
+<tr>
+<th>Значения времени в KeePass V2</th>
+<th>Эквивалент в Password Safe</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>&lt;Times&gt;/&lt;LastModificationTime&gt;</td><td>&lt;pmtimex&gt; <u>и</u> &lt;rmtimex&gt;</td></tr>
+<tr><td>&lt;Times&gt;/&lt;CreationTime&gt;</td><td>&lt;ctimex&gt;</td></tr>
+<tr><td>&lt;Times&gt;/&lt;LastAccessTime&gt;</td><td>&lt;atimex&gt;</td></tr>
+<tr><td>&lt;Times&gt;/&lt;ExpiryTime&gt;</td><td>&lt;xtimex&gt;, если &lt;Times&gt;/&lt;Expires&gt; равно «True»</td></tr>
+</tbody>
+</table>
+
+<p>KeePass V2 создает запись в истории при изменении любого поля элемента. <b>Password Safe</b> отслеживает только изменения пароля. Все остальные изменения, сохранённые в записях истории KeePass, игнорируются.</p>
+
+<table border="1" cellpadding="2" cellspacing="2 width="80%">
+<col align="left" width="30%" />
+<col align="center" width="70%" />
+<thead>
+<tr>
+<th>История KeePass V2</th>
+<th>Эквивалент в Password Safe</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>&lt;Times&gt;/&lt;LastModificationTime&gt;</td><td>&lt;history_entry&gt;/&lt;changedx&gt;</td></tr>
+<tr><td>&lt;String[Key='Password']&gt;</td><td>&lt;history_entry&gt;/&lt;oldpassword&gt;</td></tr>
+<tr><td>Все остальные значения из &lt;History&gt;</td><td>Игнорируются</td></tr>
+</tbody>
+</table>
+
+<p>Ниже описаны преобразования кодов автонабора KeePass V2 (см. <a target="blank" href="http://keepass.info/help/base/autotype.html">http://keepass.info/help/base/autotype.html</a>) в коды Password Safe. <i>Все неуказанные коды копируются без изменений.</i></p>
+
+<table border="1" cellpadding="2" cellspacing="2 width="80%">
+<col align="left" width="75%" />
+<col align="center" width="25%" />
+<thead>
+<tr>
+<th>Коды автонабора KeePass V2</th>
+<th>Эквивалент в Password Safe</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>\</td><td>\\ (экранирование символа «\»)</td></tr>
+<tr><td>Табуляция {TAB}</td><td>\t</td></tr>
+<tr><td>Enter {ENTER} или ~</td><td>\n</td></tr>
+<tr><td>Забой {BACKSPACE}, {BS} или {BKSP}</td><td>\b</td></tr>
+<tr><td>«+» на цифровой клавиатуре {ADD}</td><td>+</td></tr>
+<tr><td>«-» на цифровой клавиатуре {SUBTRACT}</td><td>-</td></tr>
+<tr><td>«*» на цифровой клавиатуре {MULTIPLY}</td><td>*</td></tr>
+<tr><td>«/» на цифровой клавиатуре {DIVIDE}</td><td>/</td></tr>
+<tr><td>+ {+}</td><td>+</td></tr>
+<tr><td>^ {^}</td><td>^</td></tr>
+<tr><td>% {%}</td><td>%</td></tr>
+<tr><td>~ {~}</td><td>~</td></tr>
+<tr><td>(, )  {(}, {)}</td><td>(, )</td></tr>
+<tr><td>{DELAY X} Задержка в X мс.</td><td>\wX (\WX)</td></tr>
+<tr><td>{DELAY=X} Установка задержки в X мс между нажатиями кнопок в последовательности.</td><td>\dX</td></tr>
+</tbody>
+</table>
+
+<p>Ниже описаны ключевые последовательности подстановок KeePass V2 (см. <a target="blank" href="http://keepass.info/help/base/placeholders.html">http://keepass.info/help/base/placeholders.html</a>) в коды Password Safe. <i>Все неуказанные коды копируются без изменений.</i></p>
+
+<p>Ключевые подстановки регистронезависимы. Ссылки на пользовательские строки имеют вид  {S:FieldName}. Например, если у элемента задана пользовательская строка «eMail», на неё можно сослаться используя подстановку {S:eMail}.</p>
+
+<table border="1" cellpadding="2" cellspacing="2 width="80%">
+<col align="left" width="33%" />
+<col align="center" width="33%" />
+<col align="center" width="33%" />
+<thead>
+<tr>
+<th>Подстановки KeePass V2</th>
+<th>Ключи автонабора в Password Safe</th>
+<th>Ключи для команд в Password Safe</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>{GROUP}</td><td>\g</td><td>${G}</td></tr>
+<tr><td>{TITLE}</td><td>\i</td><td>${t}</td></tr>
+<tr><td>{USERNAME}</td><td>\u</td><td>${u}</td></tr>
+<tr><td>{PASSWORD}</td><td>\p</td><td>${p}</td></tr>
+<tr><td>{NOTES}</td><td>\o</td><td>${n}</td></tr>
+<tbody>
+</table>
+
+<p></p>
+
+<table border="1" cellpadding="2" cellspacing="2 width="80%">
+<col align="left" width="50%" />
+<col align="center" width="50%" />
+<thead>
+<tr>
+<th>Подстановки KeePass V2</th>
+<th>Ключи для команд в Password Safe</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>\{</td><td>\\{ (экранирование «\»)</td></tr>
+<tr><td>$</td><td>\$ (экранирование «$»)</td></tr>
+<tr><td>{GROUPPATH}</td><td>${g}</td></tr>
+<tr><td>{URL}</td><td>${url}</td></tr>
+<tr><td>{URL:RMVSCM}</td><td>${url}</td></tr>
+<tr><td>{APPDIR}</td><td>${appdir}</td></tr>
+<tr><td>{DB_PATH}</td><td>${fulldb}</td></tr>
+<tr><td>{DB_DIR}</td><td>${dbdir}</td></tr>
+<tr><td>{DB_NAME}</td><td>${dbname}.${dbextn}</td></tr>
+<tr><td>{DB_BASENAME}</td><td>${dbname}</td></tr>
+<tr><td>{DB_EXT}</td><td>${dbextn}</td></tr>
+<tr><td>Все остальные</td><td>Копируются без изменений</td></tr>
+<tbody>
+</table><!-- Added some white space at the bottom for natural scrolling -->
 
 
 <br>
@@ -61,10 +397,11 @@
 <br>
 
 <object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
-  <param name="Keyword" value="Import Password Entries">
-  <param name="Keyword" value="Export Password Entries">
-  <param name="Keyword" value="Excel Password Data">
-  <param name="Keyword" value="Converting Existing Password Data">
+<param name="Keyword" value="Import Password Entries">
+<param name="Keyword" value="Export Password Entries">
+<param name="Keyword" value="Excel Password Data">
+<param name="Keyword" value="Import KeePass Entries">
+<param name="Keyword" value="Converting Existing Password Data">
 </object>
 
 </body>

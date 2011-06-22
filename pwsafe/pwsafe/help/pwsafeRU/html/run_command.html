@@ -1,445 +1,204 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-
-
-
-
-  
-  
-
-  
-  
-
-  <title>Выполнение команд</title><!-- pwsafe version: 3.17--><!-- Modified: 11/03/2009 --><!--Popup control --><script language="javascript" src="html/popups.js">
-  </script>
-  
-  
-  
-  <link rel="stylesheet" type="text/css" href="style.css"></head>
-
+<title>Выполнение команд</title><!-- pwsafe version: 3.17--><!-- Modified: 11/03/2009 --><!--Popup control -->
+<script language="javascript" src="html/popups.js">
+</script>
+<link rel="stylesheet" type="text/css" href="style.css"></head>
 <body>
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"></object><!-- Popup Source File -->
 
-
-
-<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"> </object><!-- Popup Source File -->
 
 <h1>Выполнение команд</h1>
 
-
-
 <p>В поле «Выполнить» можно указать команду, выполняемую при выборе действия «Выполнить команду». Можно указать любую команду, которая может быть выполнена в ОС Windows через меню «Пуск»→«Выполнить».</p>
 
-
-
-<p>Также, <span style="font-weight: bold;">Password Safe</span> может передать в параметры команды имя пользователя, пароль и некоторые другие данные, описанные ниже. Это позволяет производить некоторые сложные действия, например, запустить программу удалённого доступа (например, <a target="_blank" href="http://www.chiark.greenend.org.uk/%7Esgtatham/putty/">PuTTY</a>) и передать ей имя пользователя и пароль, связанные с элементом.</p>
-
-
+<p>Также, <b>Password Safe</b> может передать в параметры команды имя пользователя, пароль и некоторые другие данные, описанные ниже. Это позволяет производить некоторые сложные действия, например, запустить программу удалённого доступа (например, <a target="_blank" href="http://www.chiark.greenend.org.uk/%7Esgtatham/putty/">PuTTY</a>) и передать ей имя пользователя и пароль, связанные с элементом.</p>
 
 <p>«Переменные» заменяются соответствующими значениями перед выполнением команды. Символ доллара («$») используется для указания переменных.</p>
 
-
-
+<ul>
+<li>Имена переменных имеют вид «$name» и <i>являются регистрозависимыми.</i> Имя переменной должно начинаться с буквы, в последующих символах имени можно использовать буквы и цифры. Имя переменной заканчивается перед символом отличным от буквы и цифры (например, пробел) или концом команды.</li>
 <ul>
 
+<li>В случае, если требуется добавить букву или цифру сразу после значения переменной, заключите имя переменной в фигурные скобки, например, «${varname}строка».</li>
 
-  <li>Имена переменных имеют вид «$name» и <i>являются регистрозависимыми.</i> Имя переменной должно начинаться с буквы, в последующих символах имени можно использовать буквы и цифры. Имя переменной заканчивается перед символом отличным от буквы и цифры (например, пробел) или концом команды.</li>
+<li>Для использования знака «$» как обычного символа в строке (чтобы он не указывал на имя переменной), экранируйте его символом «\». Например, «\$text» рассматривается как «$text», а не как переменная с именем «text».</li>
 
+<li>Для того чтобы вставить «\» перед символом «$», экранируйте его с помощью символа «\». «\\$name» рассматривается как «\$name» в конечном тексте, при этом «$name» считается переменной. Символ «\» не нужно экранировать, если он не идёт перед символом «$».</li>
 
-  
-  <ul>
-
-
-    <li>В случае, если требуется добавить букву или цифру сразу после значения переменной, заключите имя переменной в фигурные скобки, например, «${varname}строка».</li>
-
-
-
-    <li>Для использования знака «$» как обычного символа в строке (чтобы он не указывал на имя переменной), экранируйте его символом «\». Например, «\$text» рассматривается как «$text», а не как переменная с именем «text».</li>
-
-
-
-    <li>Для того чтобы вставить «\» перед символом «$», экранируйте его с помощью символа «\». «\\$name» рассматривается как «\$name» в конечном тексте, при этом «$name» считается переменной. Символ «\» не нужно экранировать, если он не идёт перед символом «$».</li>
-
-    <li>После переменной может указываться числовое значение в квадратных скобках, называемое «индексом». Значение индекса «n» может предваряться символом «+» или «-», например, [-2], [2] или [+2]. <span style="font-weight: bold;">Password Safe</span> считает нулевой индекс соответствующим значению всего поля.
-    </li>
-
-
-  
-  </ul>
-
-
-
-  <br>
-
-
-
-  <li>В настоящий момент распознаются следующие переменные:</li>
-
-
-
-  <br>
-
-
-
-  
-  <ul>
-
-
-    <li>Связанные с приложением:</li>
-
-
-
-    
-    <table border="0" cellpadding="10" cellspacing="0" width="90%">
-
-
- <colgroup><col width="15%"><col width="85%"></colgroup>
- <tbody>
-
-        <tr>
-
-          <td style="font-weight: bold;">appdir</td>
-
-          <td>Каталог, содержащий исполняемый файл <span style="font-weight: bold;">Password Safe</span> (pwsafe.exe). См. примечания <a href="#n1">1</a> и <a href="#n2">2</a>.</td>
-
-        </tr>
-
-
-      
-      </tbody>
-    
-    </table>
-
-
-
-    <br>
-
-
-
-    <li>Связанные с текущим контейнером:</li>
-
-
-
-    
-    <table border="0" cellpadding="10" cellspacing="0" width="90%">
-
-
- <colgroup><col width="15%"><col width="85%"></colgroup>
- <tbody>
-
-        <tr>
-
-          <td style="font-weight: bold;">dbdir</td>
-
-          <td>Каталог, содержащий текущий контейнер. См. примечания <a href="#n1">1</a> и <a href="#n2">2</a>.</td>
-
-        </tr>
-
-
- <tr>
-
-          <td style="font-weight: bold;">fulldb</td>
-
-          <td>Полный путь, имя файла и расширение текущего контейнера. См. примечание <a href="#n2">2</a>.</td>
-
-        </tr>
-
-
- <tr>
-
-          <td style="font-weight: bold;">dbname</td>
-
-          <td>Имя файла текущего контейнера.</td>
-
-        </tr>
-
-
- <tr>
-
-          <td style="font-weight: bold;">dbextn</td>
-
-          <td>Расширение файла текущего контейнера.</td>
-
-        </tr>
-
-
-      
-      </tbody>
-    
-    </table>
-
-
-
-    <br>
-
-
-
-    <li>Связанные с текущим элементом:</li>
-
-
-
-    
-    <table border="0" cellpadding="10" cellspacing="0" width="90%">
-
-
- <colgroup><col width="15%"><col width="85%"></colgroup>
- <tbody>
-
-        <tr>
-
-          <td style="font-weight: bold;">g <span style="font-weight: normal;">или</span> group</td>
-
-          <td>Группа (полный путь до корня, разделённый точками).</td>
-
-        </tr>
-
-
- <tr>
-
-          <td style="font-weight: bold;">G <span style="font-weight: normal;">или</span> GROUP</td>
-
-          <td>Только имя группы, содержащей текущий элемент.</td>
-
-        </tr>
-
-
- <tr>
-
-          <td style="font-weight: bold;">t <span style="font-weight: normal;">или</span> title</td>
-
-          <td>Заголовок</td>
-
-        </tr>
-
-
- <tr>
-
-          <td style="font-weight: bold;">u <span style="font-weight: normal;">или</span> user</td>
-
-          <td>Имя пользователя</td>
-
-        </tr>
-
-
- <tr>
-
-          <td style="font-weight: bold;">p <span style="font-weight: normal;">or</span> password</td>
-
-          <td>Пароль</td>
-
-        </tr>
-
-
- <tr>
-
-          <td style="font-weight: bold;">a <span style="font-weight: normal;">или</span> autotype</td>
-
-          <td>Автонабор. См. примечание <a href="#n5">5</a>.</td>
-
-        </tr>
-
-
- <tr>
-
-          <td style="font-weight: bold;">url</td>
-
-          <td>Ссылка</td>
-
-        </tr>
-
-
- <tr>
-
-          <td><span style="font-weight: bold;">n</span> или <span style="font-weight: bold;">n[0]</span></td>
-
-          <td>Содержание всего поля заметок (также: notes или notes[0]). См. примечание <a href="#n3">3</a>.</td>
-
-        </tr>
-
-
- <tr>
-
-          <td><span style="font-weight: bold;">n[i]</span> или <span style="font-weight: bold;">notes[i]</span></td>
-
-          <td>i-я<sup></sup> строка заметок, считая с начала: i=1 — первая строка, i=2 — вторая и т. д. См. примечание <a href="#n4">4</a>.</td>
-
-        </tr>
-
-
- <tr>
-
-          <td><span style="font-weight: bold;">n[-i]</span> или <span style="font-weight: bold;">notes[-i]</span></td>
-
-          <td>i-я<sup></sup> строка заметок, считая с конца: i=1 — последняя строка, i=2 — предпоследняя и т. д. См. примечание <a href="#n4">4</a>.</td>
-
-        </tr>
-
-
-      
-      </tbody>
-    
-    </table>
-
-
-
-    <br>
-
-
-
-    
-    <table border="0" cellpadding="10" cellspacing="0" width="90%">
-
-
- <colgroup><col width="5%"><col width="95%"></colgroup>
- <tbody>
-
-        <tr>
-
-          <th align="center">Заметки</th>
-
-          <th>&nbsp;</th>
-
-        </tr>
-
-
- <tr>
-
-          <td align="center">1<a name="n1"></a></td>
-
-          <td>Имена каталогов (appdir или dbdir) не содержат конечного обратного слэша («\»). Не забудьте добавить его, если это требуется в параметрах программы.</td>
-
-        </tr>
-
-
- <tr>
-
-          <td align="center">2<a name="n2"></a></td>
-
-          <td>В значении переменной (включая имена каталогов и полные пути) могут присутствовать пробелы. Для корректного выполнения команды может потребовать заключение переменной в кавычки.</td>
-
-        </tr>
-
-
- <tr>
-
-          <td align="center">3<a name="n3"></a></td>
-
-          <td>Если поле заметок состоит из нескольких строк, значение переменной также будет содержать имеющиеся там символы возврата каретки (CR) и переноса строки (LF). Это может привести к ситуации когда CR и/или LF будут расценены как нажатие клавиши «Enter».</td>
-
-        </tr>
-
-
- <tr>
-
-          <td align="center">4<a name="n4"></a></td>
-
-          <td>При указании одиночных строк заметок конечные символы CR и/или LF отбрасываются.</td>
-
-        </tr>
-
-
- <tr>
-
-          <td align="center">5<a name="n5"></a></td>
-
-          <td>Если в команде присутствует переменная автонабора, операция автонабора будет выполнена, как только окно приложения станет активным. При этом переменная и её значение будут убраны из строки параметров. Данная переменная может быть написана в любом месте поля «Выполнить», так как она указывает, что должен сделать <span style="font-weight: bold;">Password Safe</span> после выполнения команды. В отличие от других переменных, она может принимать дополнительный параметр для изменения значения по умолчанию. Используется следующий формат (в указанных примерах «$a» можно заменить на «$autotype»):<br>
-
-
-  
-          
-          <table border="0" cellpadding="10" cellspacing="0">
-
-
-   <colgroup><col width="20%"><col width="80%"></colgroup>
-   <tbody>
-
-              <tr>
-
-                <td>$a</td>
-
-                <td>Использовать значение из текущего элемента.</td>
-
-              </tr>
-
-
-   <tr>
-
-                <td>${a}</td>
-
-                <td>Использовать значение из текущего элемента (фигурные скобки нужны, если за «$a» следует текст).</td>
-
-              </tr>
-
-
-   <tr>
-
-                <td>$a(значение)</td>
-
-                <td>Использовать строку автонабора, указанную в круглых скобках.</td>
-
-              </tr>
-
-
-   <tr>
-
-                <td>${a}(значение)</td>
-
-                <td>Использовать строку автонабора, указанную в круглых скобках.</td>
-
-              </tr>
-
-
-  
-            
-            </tbody>
-          
-          </table>
-
-
-  </td>
-
-        </tr>
-
-
-      
-      </tbody>
-    
-    </table>
-
-
-
-    
-    <p><b>Примечание.</b> Не забудьте окружить строки кавычками, если это требуется. Например, если путь к контейнеру содержит пробелы, путь к текстовому файлу в данном каталоге следует писать так (с кавычками):<br> "$dbdir\\$dbname.txt"<br> Обратите внимание, что для того, чтобы «$dbname» было распознано как переменная, обратный слэш экранирован.</p>
-
-
-
-    
-    <p>В ОС Windows также можно подставлять переменные окружения (как обычно, имя переменной окружается символами «%», например, %variable_name%). Пример: «%windir%\notepad.exe» преобразуется в «C:\Windows\notepad.exe» (зависит от каталога установки Windows). Текущие значения переменных можно определить, запустив «cmd.exe» и выполнив в консоли команду «set» без параметров. Имена неопознанных переменных окружения остаются без изменений. Например, "%xyz%\notepad.exe" останется равным "%xyz%\notepad.exe", если переменная окружения «xyz» не определена. В ОС Windows переменные окружения <span style="font-weight: bold;">регистронезависимы.</span></p><p></p></ul></ul><hr style="width: 100%; height: 2px;"><h3>Пример</h3>Для подключения к myHost с именем пользователя и пароля из текущего элемента через <a href="http://www.chiark.greenend.org.uk/%7Esgtatham/putty/" target="_blank">PuTTY</a>, нужно указать в поле «Выполнить» следующее значение:<br><div style="text-align: center;"><span style="font-family: monospace;">"C:\Program Files\PuTTY\putty.exe" -ssh ${u}@myHost 22&nbsp;-pw $p</span></div><ul><ul><p></p>
-
-
-
-    
-    <hr>
-
-    <br>
-
-
-    <br>
-
-
-    <br>
-
-
-    <br>
-
-
-
-
-    <object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
-    <param name="Keyword" value="Run Command"> <param name="Keyword" value="Using Run Command"> </object>
-  
-  </ul>
-
+<li>После переменной может указываться числовое значение в квадратных скобках, называемое «индексом». Значение индекса «n» может предваряться символом «+» или «-», например, [-2], [2] или [+2]. <b>Password Safe</b> считает нулевой индекс соответствующим значению всего поля.
+</li>
 </ul>
 
-</body></html>
+<li>В настоящий момент распознаются следующие переменные:</li>
+
+<ul>
+<li>Связанные с приложением:</li>
+
+<table border="0" cellpadding="10" cellspacing="0" width="90%">
+<colgroup><col width="15%"><col width="85%"></colgroup>
+<tbody>
+<tr>
+<td style="font-weight: bold;">appdir</td>
+<td>Каталог, содержащий исполняемый файл <b>Password Safe</b> (pwsafe.exe). См. примечания <a href="#n1">1</a> и <a href="#n2">2</a>.</td>
+</tr>
+</tbody>
+</table>
+
+<li>Связанные с текущим контейнером:</li>
+
+<table border="0" cellpadding="10" cellspacing="0" width="90%">
+<colgroup><col width="15%"><col width="85%"></colgroup>
+<tbody>
+<tr>
+<td style="font-weight: bold;">dbdir</td>
+<td>Каталог, содержащий текущий контейнер. См. примечания <a href="#n1">1</a> и <a href="#n2">2</a>.</td>
+</tr>
+<tr>
+<td style="font-weight: bold;">fulldb</td>
+<td>Полный путь, имя файла и расширение текущего контейнера. См. примечание <a href="#n2">2</a>.</td>
+</tr>
+<tr>
+<td style="font-weight: bold;">dbname</td>
+<td>Имя файла текущего контейнера.</td>
+</tr>
+<tr>
+<td style="font-weight: bold;">dbextn</td>
+<td>Расширение файла текущего контейнера.</td>
+</tr>
+</tbody>
+</table>
+
+<li>Связанные с текущим элементом:</li>
+
+<table border="0" cellpadding="10" cellspacing="0" width="90%">
+<colgroup><col width="15%"><col width="85%"></colgroup>
+<tbody>
+<tr>
+<td style="font-weight: bold;">g <span style="font-weight: normal;">или</span> group</td>
+<td>Группа (полный путь до корня, разделённый точками).</td>
+</tr>
+<tr>
+<td style="font-weight: bold;">G <span style="font-weight: normal;">или</span> GROUP</td>
+<td>Только имя группы, содержащей текущий элемент.</td>
+</tr>
+<tr>
+<td style="font-weight: bold;">t <span style="font-weight: normal;">или</span> title</td>
+<td>Заголовок</td>
+</tr>
+<tr>
+<td style="font-weight: bold;">u <span style="font-weight: normal;">или</span> user</td>
+<td>Имя пользователя</td>
+</tr>
+<tr>
+<td style="font-weight: bold;">p <span style="font-weight: normal;">or</span> password</td>
+<td>Пароль</td>
+</tr>
+<tr>
+<td style="font-weight: bold;">a <span style="font-weight: normal;">или</span> autotype</td>
+<td>Автонабор. См. примечание <a href="#n5">5</a>.</td>
+</tr>
+<tr>
+<td style="font-weight: bold;">url</td>
+<td>Ссылка</td>
+</tr>
+<tr>
+<td><b>n</b> или <b>n[0]</b></td>
+<td>Содержание всего поля заметок (также: notes или notes[0]). См. примечание <a href="#n3">3</a>.</td>
+</tr>
+<tr>
+<td><b>n[i]</b> или <b>notes[i]</b></td>
+<td>i-я<sup></sup> строка заметок, считая с начала: i=1 — первая строка, i=2 — вторая и т. д. См. примечание <a href="#n4">4</a>.</td>
+</tr>
+<tr>
+<td><b>n[-i]</b> или <b>notes[-i]</b></td>
+<td>i-я<sup></sup> строка заметок, считая с конца: i=1 — последняя строка, i=2 — предпоследняя и т. д. См. примечание <a href="#n4">4</a>.</td>
+</tr>
+</tbody>
+</table>
+
+<table border="0" cellpadding="10" cellspacing="0" width="90%">
+<colgroup><col width="5%"><col width="95%"></colgroup>
+<tbody>
+<tr>
+<th align="center">Заметки</th>
+<th>&nbsp;</th>
+</tr>
+<tr>
+<td align="center">1<a name="n1"></a></td>
+<td>Имена каталогов (appdir или dbdir) не содержат конечного обратного слэша («\»). Не забудьте добавить его, если это требуется в параметрах программы.</td>
+</tr>
+<tr>
+<td align="center">2<a name="n2"></a></td>
+<td>В значении переменной (включая имена каталогов и полные пути) могут присутствовать пробелы. Для корректного выполнения команды может потребовать заключение переменной в кавычки.</td>
+</tr>
+<tr>
+<td align="center">3<a name="n3"></a></td>
+<td>Если поле заметок состоит из нескольких строк, значение переменной также будет содержать имеющиеся там символы возврата каретки (CR) и переноса строки (LF). Это может привести к ситуации когда CR и/или LF будут расценены как нажатие клавиши «Enter».</td>
+</tr>
+<tr>
+<td align="center">4<a name="n4"></a></td>
+<td>При указании одиночных строк заметок конечные символы CR и/или LF отбрасываются.</td>
+</tr>
+<tr>
+<td align="center">5<a name="n5"></a></td>
+<td>Если в команде присутствует переменная автонабора, операция автонабора будет выполнена, как только окно приложения станет активным. При этом переменная и её значение будут убраны из строки параметров. Данная переменная может быть написана в любом месте поля «Выполнить», так как она указывает, что должен сделать <b>Password Safe</b> после выполнения команды. В отличие от других переменных, она может принимать дополнительный параметр для изменения значения по умолчанию. Используется следующий формат (в указанных примерах «$a» можно заменить на «$autotype»):<br>
+
+<table border="0" cellpadding="10" cellspacing="0">
+<colgroup><col width="20%"><col width="80%"></colgroup>
+<tbody>
+<tr>
+<td>$a</td>
+<td>Использовать значение из текущего элемента.</td>
+</tr>
+<tr>
+<td>${a}</td>
+<td>Использовать значение из текущего элемента (фигурные скобки нужны, если за «$a» следует текст).</td>
+</tr>
+<tr>
+<td>$a(значение)</td>
+<td>Использовать строку автонабора, указанную в круглых скобках.</td>
+</tr>
+<tr>
+<td>${a}(значение)</td>
+<td>Использовать строку автонабора, указанную в круглых скобках.</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+
+<p><b>Примечание.</b> Не забудьте окружить строки кавычками, если это требуется. Например, если путь к контейнеру содержит пробелы, путь к текстовому файлу в данном каталоге следует писать так (с кавычками):</p>
+<pre>
+'$dbdir\\$dbname.txt'
+</pre>
+<p>Обратите внимание, что для того, чтобы «$dbname» было распознано как переменная, обратный слэш экранирован.</p>
+
+<p>В ОС Windows также можно подставлять переменные окружения (как обычно, имя переменной окружается символами «%», например, %variable_name%). Пример: «%windir%\notepad.exe» преобразуется в «C:\Windows\notepad.exe» (зависит от каталога установки Windows). Текущие значения переменных можно определить, запустив «cmd.exe» и выполнив в консоли команду «set» без параметров. Имена неопознанных переменных окружения остаются без изменений. Например, "%xyz%\notepad.exe" останется равным "%xyz%\notepad.exe", если переменная окружения «xyz» не определена.</p> <p><b>Примечание.</b> В ОС Windows переменные окружения <b>регистронезависимы.</b></p>
+</ul>
+</ul>
+
+<hr style="width: 100%; height: 2px;">
+
+<h3>Пример</h3>Для подключения к myHost с именем пользователя и пароля из текущего элемента через <a href="http://www.chiark.greenend.org.uk/%7Esgtatham/putty/" target="_blank">PuTTY</a>, нужно указать в поле «Выполнить» следующее значение:<br>
+<pre>
+"C:\Program Files\PuTTY\putty.exe" -ssh ${u}@myHost 22 -pw $p
+</pre>
+
+<hr><!-- Added some white space at the bottom for natural scrolling -->
+
+
+<br>
+<br>
+<br>
+
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="Keyword" value="Run Command">
+<param name="Keyword" value="Using Run Command">
+</object>
+
+</body>
+</html>
