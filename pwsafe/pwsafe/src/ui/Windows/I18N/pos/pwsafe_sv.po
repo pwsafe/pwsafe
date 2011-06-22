@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2011-06-20 23:51+0100\n"
+"PO-Revision-Date: 2011-06-21 22:40+0100\n"
 "Last-Translator: Björn Nordwall <pro.bn@telia.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -690,7 +690,7 @@ msgstr "&Hantera..."
 
 #. Resource IDs: (32122)
 msgid "&Merge"
-msgstr "&Slå ihop"
+msgstr "Slå &ihop"
 
 #. Resource IDs: (32253)
 msgid "&Minimize"
@@ -2990,7 +2990,7 @@ msgstr "Exportera"
 
 #. Resource IDs: (32129)
 msgid "Export &Text"
-msgstr "Exporterad &Text"
+msgstr "Exporterad T&ext"
 
 #. Resource IDs: (32009)
 msgid "Export &To"
@@ -2998,7 +2998,7 @@ msgstr "Exportera &till"
 
 #. Resource IDs: (32130)
 msgid "Export &XML"
-msgstr "Exporterad &XML"
+msgstr "Exporterad X&ML"
 
 #. Resource IDs: (32085)
 msgid "Export Entry in XML format..."
@@ -3639,7 +3639,7 @@ msgstr "Importera &från"
 
 #. Resource IDs: (32120)
 msgid "Import &Text"
-msgstr "Importera &text"
+msgstr "Importerad &text"
 
 #. Resource IDs: (32121)
 msgid "Import &XML"
@@ -5424,7 +5424,7 @@ msgstr "Välj urvaletl &text"
 
 #. Resource IDs: (356)
 msgid "Set Tree/List display font"
-msgstr "Välj font för träd/tabell"
+msgstr "Välj font för Träd/Tabell"
 
 #. Resource IDs: (357)
 msgid "Set Virtual Keyboard font"
@@ -5545,7 +5545,7 @@ msgstr "Simulera avbryt"
 
 #. Resource IDs: (514)
 msgid "Slovak"
-msgstr "Slovakiskt"
+msgstr "Slovakiska"
 
 #. Resource IDs: (519)
 msgid "Slovak (QWERTY)"
@@ -5553,7 +5553,7 @@ msgstr "Slovakiskt (QWERTY)"
 
 #. Resource IDs: (515)
 msgid "Slovenian"
-msgstr "Slovenskt"
+msgstr "Slovenska"
 
 #. Resource IDs: (1383)
 msgid "Some characters may be missing or not be displayed correctly, as we were unable to find the Arial Unicode MS font."
@@ -5565,11 +5565,11 @@ msgstr "Några av posterna i denna databas har lösenord som har gått ut eller 
 
 #. Resource IDs: (520)
 msgid "Sorbian Standard"
-msgstr "Sorbian Standard"
+msgstr "Serbiska Standard"
 
 #. Resource IDs: (515)
 msgid "Sorbian Standard (Legacy)"
-msgstr "Sorbian Standard (Legacy)"
+msgstr "Serbiska Standard (Legacy)"
 
 #. Resource IDs: (331)
 msgid ""
@@ -5617,7 +5617,7 @@ msgstr "Spanskt"
 
 #. Resource IDs: (518)
 msgid "Spanish Variation"
-msgstr "Spanskt Variation"
+msgstr "Spansk variant"
 
 #. Resource IDs: (1439)
 msgid "Special set"
@@ -5687,19 +5687,19 @@ msgstr "Suffix:"
 
 #. Resource IDs: (515)
 msgid "Swedish"
-msgstr "Svenska"
+msgstr "Svenskt"
 
 #. Resource IDs: (518)
 msgid "Swedish with Sami"
-msgstr "Svenskt med Samiska"
+msgstr "Svenskt med samiska"
 
 #. Resource IDs: (518)
 msgid "Swiss French"
-msgstr "Schweiziskt Franskt"
+msgstr "Schweiziskt franskt"
 
 #. Resource IDs: (517)
 msgid "Swiss German"
-msgstr "Schweiziskt Tyskt"
+msgstr "Schweiziskt tyskt"
 
 #. Resource IDs: (192)
 msgid "Symbols"
@@ -5756,11 +5756,11 @@ msgstr "Tab"
 
 #. Resource IDs: (515)
 msgid "Tajik"
-msgstr "Tajikiska"
+msgstr "Tajikiskt"
 
 #. Resource IDs: (516)
 msgid "Tamil"
-msgstr "Tamilska"
+msgstr "Tamilskt"
 
 #. Resource IDs: (1110)
 msgid "Target last changed on:"
@@ -5772,7 +5772,7 @@ msgstr "Tatariskt"
 
 #. Resource IDs: (516)
 msgid "Telugu"
-msgstr "Telugu"
+msgstr "Telugiskt"
 
 #. Resource IDs: (347)
 msgid "Text"
@@ -7218,7 +7218,7 @@ msgid ""
 "List View/Tree View"
 msgstr ""
 "\n"
-"Tabellvy/trädvy"
+"Tabell/Trädstruktur"
 
 #. Resource IDs: (2001)
 msgid ""
