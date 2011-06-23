@@ -1023,7 +1023,7 @@ BOOL ThisMfcApp::InitInstance()
   m_UnLockedIcon = app.LoadIcon(IDI_UNLOCKEDICON);
   int iData = prefs->GetPref(PWSprefs::ClosedTrayIconColour);
   SetClosedTrayIcon(iData);
-  m_pTrayIcon = new CSystemTray((CWnd *)m_pMainDlg, PWS_MSG_ICON_NOTIFY, L"PasswordSafe",
+  m_pTrayIcon = new CSystemTray(m_pMainDlg, PWS_MSG_ICON_NOTIFY, L"PasswordSafe",
                                 m_LockedIcon, dbox.m_RUEList,
                                 PWS_MSG_ICON_NOTIFY, IDR_POPTRAY);
   m_pTrayIcon->SetTarget(&dbox);

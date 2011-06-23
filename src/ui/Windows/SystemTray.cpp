@@ -62,10 +62,13 @@
 #include "stdafx.h"
 #include "SystemTray.h"
 #include "ThisMfcApp.h"
+#include "DboxMain.h"
 #include "PWDialog.h" // for access to CPWDialogTracker
+
 #include "resource.h"
 #include "resource2.h"  // Menu, Toolbar & Accelerator resources
 #include "resource3.h"  // String resources
+
 #include "core/StringX.h"
 #include "core/ItemData.h"
 
@@ -83,16 +86,16 @@ const UINT CSystemTray::m_nTaskbarCreatedMsg = ::RegisterWindowMessage(L"Taskbar
 /////////////////////////////////////////////////////////////////////////////
 // CSystemTray construction/creation/destruction
 
-CSystemTray::CSystemTray(CWnd* pParent, UINT uCallbackMessage, LPCWSTR szToolTip,
+CSystemTray::CSystemTray(DboxMain *pDbx, UINT uCallbackMessage, LPCWSTR szToolTip,
                          HICON icon, CRUEList &RUEList,
                          UINT uID, UINT menuID)
-  : m_RUEList(RUEList), m_pParent(pParent), m_bEnabled(FALSE),
+  : m_RUEList(RUEList), m_pDbx(pDbx), m_bEnabled(FALSE),
   m_bHidden(FALSE), m_uIDTimer(0), m_hSavedIcon(NULL), m_DefaultMenuItemID(ID_MENUITEM_RESTORE),
   m_DefaultMenuItemByPos(FALSE), m_pTarget(NULL), m_menuID(0)
 {
-  ASSERT(m_pParent != NULL);
+  ASSERT(m_pDbx != NULL);
   SecureZeroMemory(&m_tnd, sizeof(m_tnd));
-  Create(pParent, uCallbackMessage, szToolTip, icon, uID, menuID);
+  Create((CWnd *)pDbx, uCallbackMessage, szToolTip, icon, uID, menuID);
 }
 
 BOOL CSystemTray::Create(CWnd *pParent, UINT uCallbackMessage, LPCWSTR szToolTip,
@@ -531,7 +534,7 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
     switch (app_state) {
       case ThisMfcApp::UNLOCKED:
       {
-        if (m_pParent->IsWindowVisible()) {
+        if (m_pDbx->IsWindowVisible()) {
           // unlocked & visible, remove "Unlock" menu item
           pContextMenu->RemoveMenu(0, MF_BYPOSITION); // Unlock
           pContextMenu->RemoveMenu(0, MF_BYPOSITION); // Separator
@@ -613,6 +616,7 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
         typedef CMenu* CMenuPtr;
         ppNewRecentEntryMenu = new CMenuPtr[num_recent_entries];
         m_RUEList.GetAllMenuItemStrings(m_menulist);
+        const bool bGUIEmpty = m_pDbx->m_ctlItemTree.GetCount() == 0;
 
         for (size_t i = 0; i < num_recent_entries; i++) {
           ppNewRecentEntryMenu[i] = NULL;  // Ensure empty
@@ -628,6 +632,9 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
           if (brc == 0) {
             pws_os::Trace(L"CSystemTray::OnTrayNotification: SetupRecentEntryMenu - ppNewRecentEntryMenu[%d] failed\n", i);
             continue;
+          } else {
+            // Disable select entry if GUI not yet re-populated
+            ppNewRecentEntryMenu[i]->EnableMenuItem(0, MF_BYPOSITION | (bGUIEmpty ? MF_GRAYED : MF_ENABLED));
           }
 
           // Insert new popup menu at the bottom of the list
