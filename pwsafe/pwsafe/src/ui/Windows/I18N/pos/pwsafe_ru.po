@@ -2576,7 +2576,7 @@ msgstr "Щёлкните дважды для просмотра/редактир
 # урезано из-за ограничения длины
 #. Resource IDs: (65535)
 msgid "Double-click action"
-msgstr "По двойному щелчку"
+msgstr "По дв. клику"
 
 # хинт в статустной строке
 #. Resource IDs: (366)
@@ -3613,10 +3613,10 @@ msgstr "Импорт прерван. Причина указана в отчёт
 msgid "Import failed"
 msgstr "Сбой при импорте"
 
+# Диалог импорта из текста
 #. Resource IDs: (1398)
-#, fuzzy
 msgid "Import to change passwords of existing entries ONLY"
-msgstr "При импорте будут изменены пароли только существующих элементов"
+msgstr "При импорте только изменить пароли у существующих элементов"
 
 #. Resource IDs: (65535)
 msgid "Import under Group?"
@@ -3968,7 +3968,7 @@ msgstr "Управление фильтрами"
 
 #. Resource IDs: (65535)
 msgid "Manage password history of current entries"
-msgstr "Управление историей паролей для текущих элементов"
+msgstr "Управление историей паролей для существующих элементов"
 
 #. Resource IDs: (517)
 msgid "Maori"
