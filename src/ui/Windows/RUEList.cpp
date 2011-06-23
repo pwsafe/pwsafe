@@ -150,6 +150,7 @@ bool CRUEList::GetPWEntry(size_t index, CItemData &ci){
     return false;
   } else { // valid pw_listpos
     ci = m_core.GetEntry(pw_listpos);
+    ASSERT(ci.GetUUID() == re_FoundEntry);
     return true;
   }
 }
