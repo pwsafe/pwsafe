@@ -279,7 +279,10 @@ void DboxMain::OnTraySelect(UINT nID)
       return;
 
   DisplayInfo *pdi = (DisplayInfo *)ci.GetDisplayInfo();
-  SelectEntry(pdi->list_index,TRUE);
+  if (pdi != NULL)
+    SelectEntry(pdi->list_index,TRUE);
+  else
+    ASSERT(0);
 }
 
 void DboxMain::OnUpdateTraySelect(CCmdUI *)
