@@ -744,8 +744,8 @@
       <tuv xml:lang="EN-US">
         <seg>Manage password history of current entries</seg>
       </tuv>
-      <tuv xml:lang="RU-RU" changedate="20101104T181625Z" changeid="pm_kan">
-        <seg>Управление историей паролей для текущих элементов</seg>
+      <tuv xml:lang="RU-RU" changedate="20110623T161128Z" changeid="pm_kan">
+        <seg>Управление историей паролей для существующих элементов</seg>
       </tuv>
     </tu>
     <tu>
@@ -12086,8 +12086,8 @@
       <tuv xml:lang="EN-US">
         <seg>Highlight changed entries</seg>
       </tuv>
-      <tuv xml:lang="RU-RU" changedate="20110209T200312Z" changeid="pm_kan">
-        <seg>Подсветить изменённые элементы</seg>
+      <tuv xml:lang="RU-RU" changedate="20110623T161228Z" changeid="pm_kan">
+        <seg>Выделить изменённые элементы</seg>
       </tuv>
     </tu>
     <tu>
@@ -16236,18 +16236,18 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>Opens the currently selected password entry for editing.</seg>
-      </tuv>
-      <tuv xml:lang="RU-RU" changedate="20101104T100011Z" changeid="pm_kan">
-        <seg>Открыть выбранный элемент для редактирования</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="EN-US">
         <seg>The default action is set in <bpt i='2' x='2'>&lt;a2&gt;</bpt> &quot;Manage → Options → Misc.&quot;<ept i='2'>&lt;/a2&gt;</ept> tab.</seg>
       </tuv>
       <tuv xml:lang="RU-RU" changedate="20110620T125352Z" changeid="pm_kan">
         <seg>Действие по умолчанию задаётся на вкладке <bpt i='2' x='2'>&lt;a2&gt;</bpt>Управление→Настройки→Разное<ept i='2'>&lt;/a2&gt;</ept>.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>Opens the currently selected password entry for editing.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU" changedate="20101104T100011Z" changeid="pm_kan">
+        <seg>Открыть выбранный элемент для редактирования</seg>
       </tuv>
     </tu>
     <tu>
