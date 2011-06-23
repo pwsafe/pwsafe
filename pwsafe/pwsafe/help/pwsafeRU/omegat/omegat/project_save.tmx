@@ -8403,8 +8403,8 @@
       <tuv lang="EN-US">
         <seg>Highlight changed entries</seg>
       </tuv>
-      <tuv lang="RU-RU" changedate="20110209T200312Z" changeid="pm_kan">
-        <seg>Подсветить изменённые элементы</seg>
+      <tuv lang="RU-RU" changedate="20110623T161228Z" changeid="pm_kan">
+        <seg>Выделить изменённые элементы</seg>
       </tuv>
     </tu>
     <tu>
@@ -10819,8 +10819,8 @@
       <tuv lang="EN-US">
         <seg>Manage password history of current entries</seg>
       </tuv>
-      <tuv lang="RU-RU" changedate="20101104T181625Z" changeid="pm_kan">
-        <seg>Управление историей паролей для текущих элементов</seg>
+      <tuv lang="RU-RU" changedate="20110623T161128Z" changeid="pm_kan">
+        <seg>Управление историей паролей для существующих элементов</seg>
       </tuv>
     </tu>
     <tu>
