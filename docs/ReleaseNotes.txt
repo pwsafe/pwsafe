@@ -53,6 +53,8 @@ more details.
 
 Bugs fixed in 3.26
 ==================
+[3325116] No longer crashes when selecting system tray's more recent
+entry immediately after unlock.
 [3303018] Filters with quotes in their name are now correctly exported, imported
 and displayed in the Manage Filters dialog.
 [3301904] Export XML, export Text and the export of filters functions now process

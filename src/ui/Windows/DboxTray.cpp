@@ -279,10 +279,13 @@ void DboxMain::OnTraySelect(UINT nID)
       return;
 
   DisplayInfo *pdi = (DisplayInfo *)ci.GetDisplayInfo();
-  if (pdi != NULL)
+  if (pdi != NULL) { // could be null if RefreshViews not called,
+    // in which case we've no display to select to.
+    // An alternate solution would be to force the main window
+    // to display, along with a call to RefreshViews(), before
+    // calling GetDisplayInfo().
     SelectEntry(pdi->list_index,TRUE);
-  else
-    ASSERT(0);
+  }
 }
 
 void DboxMain::OnUpdateTraySelect(CCmdUI *)
