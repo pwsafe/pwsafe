@@ -262,6 +262,11 @@ void pws_os::SendString(const StringX& str, AutotypeMethod method, unsigned dela
 
   for (StringX::const_iterator srcIter = str.begin(); srcIter != str.end(); ++srcIter) {
 
+    //throw away 'vertical tab' chars which are only used on Windows to send a shift+tab
+    //as a workaround for some issues with IE 
+    if (*srcIter == _T('\v'))
+      continue;
+    
     //This array holds the multibyte representation of the current (wide) char, plus NULL
     char keystring[MB_LEN_MAX + 1] = {0};
 
