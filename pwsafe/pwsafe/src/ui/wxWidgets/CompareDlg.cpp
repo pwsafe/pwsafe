@@ -35,7 +35,7 @@ enum {ID_BTN_COMPARE = 100 };
 
 BEGIN_EVENT_TABLE( CompareDlg, wxDialog )
   EVT_BUTTON( ID_BTN_COMPARE,  CompareDlg::OnCompare )
-  EVT_GRID_CELL_RIGHT_CLICK(CompareDlg::OnGridCellRightClick)
+//  EVT_GRID_CELL_RIGHT_CLICK(CompareDlg::OnGridCellRightClick)
   EVT_GRID_CELL_LEFT_CLICK(CompareDlg::OnGridCellSelection)
 END_EVENT_TABLE()
 
