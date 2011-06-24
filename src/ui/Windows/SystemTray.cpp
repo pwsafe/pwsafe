@@ -86,16 +86,16 @@ const UINT CSystemTray::m_nTaskbarCreatedMsg = ::RegisterWindowMessage(L"Taskbar
 /////////////////////////////////////////////////////////////////////////////
 // CSystemTray construction/creation/destruction
 
-CSystemTray::CSystemTray(DboxMain *pDbx, UINT uCallbackMessage, LPCWSTR szToolTip,
+CSystemTray::CSystemTray(CWnd* pParent, UINT uCallbackMessage, LPCWSTR szToolTip,
                          HICON icon, CRUEList &RUEList,
                          UINT uID, UINT menuID)
-  : m_RUEList(RUEList), m_pDbx(pDbx), m_bEnabled(FALSE),
+  : m_RUEList(RUEList), m_pParent(pParent), m_bEnabled(FALSE),
   m_bHidden(FALSE), m_uIDTimer(0), m_hSavedIcon(NULL), m_DefaultMenuItemID(ID_MENUITEM_RESTORE),
   m_DefaultMenuItemByPos(FALSE), m_pTarget(NULL), m_menuID(0)
 {
-  ASSERT(m_pDbx != NULL);
+  ASSERT(m_pParent != NULL);
   SecureZeroMemory(&m_tnd, sizeof(m_tnd));
-  Create((CWnd *)pDbx, uCallbackMessage, szToolTip, icon, uID, menuID);
+  Create(pParent, uCallbackMessage, szToolTip, icon, uID, menuID);
 }
 
 BOOL CSystemTray::Create(CWnd *pParent, UINT uCallbackMessage, LPCWSTR szToolTip,
@@ -534,7 +534,7 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
     switch (app_state) {
       case ThisMfcApp::UNLOCKED:
       {
-        if (m_pDbx->IsWindowVisible()) {
+        if (m_pParent->IsWindowVisible()) {
           // unlocked & visible, remove "Unlock" menu item
           pContextMenu->RemoveMenu(0, MF_BYPOSITION); // Unlock
           pContextMenu->RemoveMenu(0, MF_BYPOSITION); // Separator
@@ -612,11 +612,13 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
 
       // No point in doing Recent Entries if database is locked
       if (num_recent_entries != 0 && app_state == ThisMfcApp::UNLOCKED) {
+        DboxMain *pDbx = dynamic_cast<DboxMain *>(m_pParent);
+        ASSERT(pDbx != NULL); // fail safely in release build later
         // Build extra popup menus (1 per entry in list)
         typedef CMenu* CMenuPtr;
         ppNewRecentEntryMenu = new CMenuPtr[num_recent_entries];
         m_RUEList.GetAllMenuItemStrings(m_menulist);
-        const bool bGUIEmpty = m_pDbx->m_ctlItemTree.GetCount() == 0;
+        const bool bGUIEmpty = pDbx == NULL || pDbx->m_ctlItemTree.GetCount() == 0;
 
         for (size_t i = 0; i < num_recent_entries; i++) {
           ppNewRecentEntryMenu[i] = NULL;  // Ensure empty

@@ -37,8 +37,6 @@
 #include <afxdisp.h>
 #include <vector>
 
-class DboxMain;
-
 /////////////////////////////////////////////////////////////////////////////
 // CSystemTray window
 
@@ -47,7 +45,7 @@ class CSystemTray : public CWnd
   // Construction/destruction
 public:
   //    CSystemTray();
-  CSystemTray(DboxMain *pDbx, UINT uCallbackMessage, LPCWSTR szTip, HICON icon,
+  CSystemTray(CWnd *pWnd, UINT uCallbackMessage, LPCWSTR szTip, HICON icon,
               CRUEList &RUEList, UINT uID, UINT menuID);
   virtual ~CSystemTray();
 
@@ -124,5 +122,5 @@ protected:
   DECLARE_MESSAGE_MAP()
 
 private:
-  DboxMain *m_pDbx;
+  CWnd *m_pParent;
 };
