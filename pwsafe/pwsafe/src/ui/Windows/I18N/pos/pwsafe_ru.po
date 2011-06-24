@@ -1592,7 +1592,7 @@ msgstr "Автонабор"
 
 #. Resource IDs: (355)
 msgid "Autotype copied "
-msgstr "«Автонабор» скопирован"
+msgstr "«Автонабор» скопирован "
 
 #. Resource IDs: (65535)
 msgid "Available Fields:"
@@ -3271,7 +3271,7 @@ msgstr "Перейти"
 
 #. Resource IDs: (355)
 msgid "Go "
-msgstr "Перейти"
+msgstr "Перейти "
 
 #. Resource IDs: (355)
 #, fuzzy
@@ -6044,7 +6044,7 @@ msgstr "Заголовок [Обязательное поле]"
 
 #. Resource IDs: (355)
 msgid "Title copied "
-msgstr "Заголовок скопирован"
+msgstr "Заголовок скопирован "
 
 #. Resource IDs: (65535)
 msgid "To add a new entry, simply fill in the fields below. At least a title and a password are required. If you have set a default username, it will appear in the username field."
@@ -6111,7 +6111,7 @@ msgstr "Ссылка"
 # не 'ссылка', т.к. коллизия со ссылками на пароли
 #. Resource IDs: (355)
 msgid "URL copied "
-msgstr "URL скопирован"
+msgstr "URL скопирован "
 
 #. Resource IDs: (513)
 msgid "US"
@@ -7167,7 +7167,7 @@ msgstr "E-mail"
 
 #. Resource IDs: (358)
 msgid "email copied "
-msgstr "E-mail скопирован"
+msgstr "E-mail скопирован "
 
 #. Resource IDs: (206)
 msgid "ends with"
@@ -7336,7 +7336,7 @@ msgstr "в контейнере %s"
 #. Resource IDs: (212)
 #, fuzzy
 msgid "on line "
-msgstr "в строке"
+msgstr "в строке "
 
 # AFX_IDS_OCC_SCALEUNITS_PIXELS
 #. Resource IDs: (3869)
