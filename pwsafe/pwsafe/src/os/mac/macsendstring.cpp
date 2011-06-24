@@ -26,12 +26,19 @@ void SendString(CFStringRef str, unsigned delayMS)
   //A list of chars for which we must specify the virtual keycode
   static CFStringRef specialChars = CFSTR("\n\t ");
   
+  CFStringRef verticalTab = CFSTR("\v");
+
   //each keycode must correspond to the correct char in 'specialChars'
   CGKeyCode specialKeyCodes[] = {VK_RETURN, VK_TAB, VK_SPACE };
   
   for (unsigned i = 0, len = CFStringGetLength(str); i < len; ++i) {
     //The next char to send
     UniChar c = CFStringGetCharacterAtIndex(str, i);
+    
+    //throw away 'vertical tab' chars which are only used on Windows to send a shift+tab
+    //as a workaround for some issues with IE 
+    if (CFStringGetCharacterAtIndex(verticalTab, 0) == c)
+      continue;
     
     //see if we need to specify the virtual ekycode for this char
     CGKeyCode vKey = 0; //0 = kVK_ANSI_A, but I don't know of a more appropriate default value
