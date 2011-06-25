@@ -201,8 +201,8 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
   // so we make our own!
   const int iCID = LOWORD(wParam);
   if (iCID == IDOK || iCID == ID_APPLY_NOW) {
-    // Don't care what user has done if entry is protected.
-    if (m_AEMD.ucprotected != 0)
+    // Don't care what user has done if entry is protected or DB R-O.
+    if (m_AEMD.ucprotected != 0 || m_AEMD.uicaller == IDS_VIEWENTRY)
       CPWPropertySheet::EndDialog(IDOK);
 
     // First send a message to all loaded pages using base class function.
