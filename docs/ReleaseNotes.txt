@@ -56,6 +56,9 @@ Bugs fixed in 3.26
 [3325116] Users can no longer select an entry via the System Tray
 icon's Recent Entry list if the display has not been restored after
 minimize or unlock.
+[3306357, 3062632, 2888026] User preference changes no longer lost. This also allows
+user to change database preferences even if database is read-only, although can't be
+saved with the database.
 [3303018] Filters with quotes in their name are now correctly exported, imported
 and displayed in the Manage Filters dialog.
 [3301904] Export XML, export Text and the export of filters functions now process
