@@ -486,9 +486,10 @@ void DboxMain::OnOptions()
     MultiCommands *pmulticmds = MultiCommands::Create(&m_core);
 
     // Set up Command to update string in database, if necessary & possible
-    // (i.e. ignore if R-O)
-    if (!m_core.GetCurFile().empty() && !m_core.IsReadOnly() &&
-        m_core.GetReadFileVersion() == PWSfile::VCURRENT) {
+    // Allow even if no entries (yet) in database and if the database is R-O.
+    // In the latter case - just won't be saved but will do what the user wants
+    // in this session with this database, until the database is closed.
+    if (m_core.GetReadFileVersion() == PWSfile::VCURRENT) {
       if (sxOldDBPrefsString != sxNewDBPrefsString) {
         // Determine whether Tree needs redisplayng due to change
         // in what is shown (e.g. usernames/passwords)

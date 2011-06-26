@@ -226,11 +226,9 @@ DBPrefsCommand::DBPrefsCommand(CommandInterface *pcomInt, StringX &sxDBPrefs)
 
 int DBPrefsCommand::Execute()
 {
-  if (m_pcomInt->IsReadOnly())
-    return 0;
-
   PWSprefs::GetInstance()->Load(m_sxNewDBPrefs);
-  m_pcomInt->SetDBPrefsChanged(m_pcomInt->HaveHeaderPreferencesChanged(m_sxNewDBPrefs));
+  if (!m_pcomInt->IsReadOnly())
+    m_pcomInt->SetDBPrefsChanged(m_pcomInt->HaveHeaderPreferencesChanged(m_sxNewDBPrefs));
 
   if (m_bNotifyGUI) {
     m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_DB_PREFERENCES_CHANGED,
@@ -243,11 +241,9 @@ int DBPrefsCommand::Execute()
 
 void DBPrefsCommand::Undo()
 {
-  if (m_pcomInt->IsReadOnly())
-    return;
-
   PWSprefs::GetInstance()->Load(m_sxOldDBPrefs);
-  m_pcomInt->SetDBPrefsChanged(m_bOldState);
+  if (!m_pcomInt->IsReadOnly())
+    m_pcomInt->SetDBPrefsChanged(m_bOldState);
 
   if (m_bNotifyGUI) {
     m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_DB_PREFERENCES_CHANGED,
