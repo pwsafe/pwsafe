@@ -158,11 +158,24 @@
         </tr>
       </tbody>
     </table>
-    <p><b>Note:</b> Stellen sie sicher das das Kommando gegebenenfalls in G&auml;nsef&uuml;&szlig;chen eingeschlossen ist. Z.B. wenn das Datenbankverzeichnis Leerzeichen enth&auml;lt, ist f&uuml;r den Zugriff auf eine Textdatei mit dem Namen der aktuellen Datenbank folgendes notwendig (inkl. Hochkomma):<br>
-'$dbdir\\$dbname.txt'<br>
+    <p><b>Hinweis:</b> Stellen sie sicher das das Kommando gegebenenfalls in G&auml;nsef&uuml;&szlig;chen eingeschlossen ist. Z.B. wenn das Datenbankverzeichnis Leerzeichen enth&auml;lt, ist f&uuml;r den Zugriff auf eine Textdatei mit dem Namen der aktuellen Datenbank folgendes notwendig (inkl. Hochkomma):</p>
+<pre>
+'$dbdir\\$dbname.txt'
+</pre>
+<p>
 Bemerken sie dass der umgekehrter Schr&auml;gstrich ('\\') zweimal eingesetzt ist, um '$dbname' als Variable zu erkennen.</p>
-    <p>F&uuml;r Windows werden Umgebungsvariable (definiert als %Variablenname%) normal ersetzt. Z.B., '%windir%\notepad.exe' wird (abh&auml;ngig von der Installation) in 'C:\Windows\notepad.exe' umgewandelt. Die aktuellen Werte der Umgebungsvariablen k&ouml;nnen ermittelt werden durch Ausf&uuml;hren von 'cmd.exe' und Absetzen des Befehles 'set' ohne Parameter. S&auml;mtliche unbekannte Umgebungsvariablen bleiben unver&auml;ndert im auszuf&uuml;hrenden Kommando, z.B. %xyz%\notepad.exe bleibt %xyz%\notepad.exe wenn die Variable 'xyz' nicht besteht. Note: Windows Umgebungsvariablen sind <b>nicht</b> case sensitive.</p>
+    <p>F&uuml;r Windows werden Umgebungsvariable (definiert als %Variablenname%) normal ersetzt. Z.B., '%windir%\notepad.exe' wird (abh&auml;ngig von der Installation) in 'C:\Windows\notepad.exe' umgewandelt. Die aktuellen Werte der Umgebungsvariablen k&ouml;nnen ermittelt werden durch Ausf&uuml;hren von 'cmd.exe' und Absetzen des Befehles 'set' ohne Parameter. S&auml;mtliche unbekannte Umgebungsvariablen bleiben unver&auml;ndert im auszuf&uuml;hrenden Kommando, z.B. %xyz%\notepad.exe bleibt %xyz%\notepad.exe wenn die Variable 'xyz' nicht besteht. Hinweis: Windows Umgebungsvariablen sind <b>nicht</b> case sensitive.</p>
     <br>
+
+<hr style="width: 100%; height: 2px;">
+
+<h3>Beispiel</h3>
+<p>Das folgende ausf&uuml;hrbare Kommando 
+wird das Program <a href="http://www.chiark.greenend.org.uk/%7Esgtatham/putty/" target="_blank">Putty</a> veranlassen eine Verbindung zu myHost  zu machen, mit Benutzername und Passwort:</p>
+<pre>
+"C:\Program Files\PuTTY\putty.exe" -ssh ${u}@myHost 22 -pw $p
+</pre>
+
 <object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
     <param name="Keyword" value="Kommando ausf&uuml;hren">
 </object>

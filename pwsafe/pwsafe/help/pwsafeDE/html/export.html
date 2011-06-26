@@ -20,12 +20,19 @@
 </ul>
 <p>F&uuml;r fr&uuml;here Versionen von <b>Password Safe</b> w&auml;hlen Sie einfach das gew&uuml;nschte Format und definieren Sie den Namen der Passwortdatenbank.</p>
 <p>Zus&auml;tzlich k&ouml;nnen Sie auch folgendes machen, um eine Untermenge an Eintr&auml;ge und/oder Gruppen in eine anderen Datenbank zu 'exportieren'. Vorausgesetzt Sie haben mehrere Instanzen erlaubt -siehe hierzu Verwalten-&gt;Optionen-&gt;System-, starten Sie <b>Password Safe</b> nochmal, und erstellen die neue Datenbank. Die andere Datenbank ist w&auml;hrend dessen auch ge&ouml;ffnet. Sie k&ouml;nnen dann einfach per <i>Drag</i> und <i>Drop</i> jeden Eintrag bzw. Gruppe von der <i>alten</i> in die <i>neue</i> Datenbank 'exportieren'.</p>
+
+
+<p>Export verwendet ein Wizard Schnittstelle 
+Sie k&onnen auch <i>"Erweitertes Feld f&uuml;r Auswahlkriterien"</i> ausw&auml;hlen um die zu exportierende Eintr&auml;ge und dessen Felder einzuschr&auml;nken.
+Siehe <a href="wzselectdb.html">hier</a> f&uuml;r mehr Information.</p>
+
+<p>Ein Bericht zu den ausgef&uuml;hrten Aktionen steht nach dem Abschlu&szlig; zur Verf&uuml;gung. Dieser Bericht kann dann als Textdatei in die Zwischenablage oder auf Festplatte kopiert werden, im selben Verzeichnis wie die Datenbank. Mit dem Men&uuml;punkt <a href="view_menu.html">"Ansicht&nbsp;&rarr;&nbsp;Berichte"</a> k&ouml;nnen die Berichte tu einem sp&auml;teren Zeitpubkt angeschaut werden. Der Name des Berichtes ist festgelegt, und h&auml;ngt ab von der Funktion mit der er erzeugt wurde. Wenn dieselbe Funktion ausgeführt, und der entsprechende Bericht auf die Festplatte abgespeichert wird, wird jegliche Bericht zu dieser Funktion &uuml;berschrieben. <span style="color=red;">Hinweis: Der Bericht kann sensible Daten enthalten, so Vorsicht ist geboten beim Abspeichern auf die Festplatte.</span></p>
+
 <h3><a name="te"></a>Text Export</h3>
-<hr><small><span style="color: rgb(255, 0, 0);"><b>Hinweis:</b> Der exportierte Text ist eine ungesch&uuml;tzte Kopie der Passworteintr&auml;ge. Das L&ouml;schen dieser Datei nach deren Verwendung ist <b>nicht</b> ausreichend, um Sie f&uuml;r einen Angreifer unzug&auml;nglich zu machen. Im Gegenteil, hiermit umgehen Sie bewusst die Sicherheit der Anwendung.<br>Bitte verwenden Sie diese M&ouml;glichkeit <b>NICHT</b>, au&szlig;er Sie verstehen und akzeptieren die Risiken.</span>
+<hr><small><span style="color: red;"><b>Hinweis:</b> Der exportierte Text ist eine ungesch&uuml;tzte Kopie der Passworteintr&auml;ge. Das L&ouml;schen dieser Datei nach deren Verwendung ist <b>nicht</b> ausreichend, um Sie f&uuml;r einen Angreifer unzug&auml;nglich zu machen. Im Gegenteil, hiermit umgehen Sie bewusst die Sicherheit der Anwendung.<br>Bitte verwenden Sie diese M&ouml;glichkeit <b>NICHT</b>, au&szlig;er Sie verstehen und akzeptieren die Risiken.</span>
 </small>
 <hr>
-<p><b>Password Safe</b> unterst&uuml;tzt das Exportieren von Passworteintr&auml;gen in Textdateien. Diese Dateien k&ouml;nnen dann von anderen Anwendungen verwendet und  bearbeitet werden.<br> Zuerst werden Sie aufgefordert das Master-Passwort als Best&auml;tigung, dass Sie die Datenbank in eine unverschl&uuml;sselte reine Textdatei exportieren m&ouml;chten, einzugeben.<br>
-<br>
+<p><b>Password Safe</b> unterst&uuml;tzt das Exportieren von Passworteintr&auml;gen in Textdateien. Diese Dateien k&ouml;nnen dann von anderen Anwendungen verwendet und  bearbeitet werden.<br><br>Zuerst werden Sie aufgefordert das Master-Passwort als Best&auml;tigung, dass Sie die Datenbank in eine unverschl&uuml;sselte reine Textdatei exportieren m&ouml;chten, einzugeben. Sie werden ebenfalls nach dem Namen einer neuen Datei gefragt, und ev. um eine Best&auml;tigung das &Uuml;berschreiben zu erlauben, wenn die Datei schon besteht im angegebenen Verzeichnis.
 </p>
 <img alt="Export Text" src="images/export.jpg">
 <p>Sie k&ouml;nnen einige Optionen angeben:</p>
@@ -36,28 +43,27 @@ Wenn gew&uuml;nscht, k&ouml;nnen Sie ankreuzen, ob Sie alle getrennten Zeilen im
 </p>
   </li>
 </ul>
-<ul>
-  <li>Erweiterte Kontrolle zum exportierten Format k&ouml;nnen Sie durch Klicken auf "Erweitert" festlegen. Folgender Dialog wird angezeigt:</li>
-</ul>
-<p><img alt="Erweiterte Text Export Optionen" src="images/export_text_adv.jpg"></p>
-<p>Abh&auml;ngig von vorhandenem Text in einem bestimmten Feld bietet dieser Dialog die M&ouml;glichkeit nur einige der Eintr&auml;ge auszuw&auml;hlen. Ebenfalls k&ouml;nnen die zu exportierenden Felder festgelegt werden. Klicken Sie auf OK, wenn Sie fertig sind, oder Abbrechen, um ohne &Auml;nderung zum Dialog "Text Exportieren" zur&uuml;ckzukehren.</p>
-<p>Sie werden aufgefordert den Namen und den Pfad der neuen Datei einzugeben und eventuell zu best&auml;tigen, ob Sie eine Datei, die bereits vorhanden ist, mit demselben Namen &uuml;berschreiben m&ouml;chten.</p>
+<p> <img alt="Erweiterte Optionen f&uml;r Text Export " src="images/export_text_adv.jpg"> </p>
+
+
+
+<p>Nach dem Markieren von "Erweitertes Feld f&uuml;r Auswahlkriterien" wird dieser Assistent ge&ouml;ffnet. Er hilft beim Festlegen der Texte zur Auswahl der Eintr&auml;ge und/oder beim Spezifizieren welche Felder exportiert werden sollen. Siehe <a href="wzselectdb.html">hier</a> f&uuml;r mehr Information.</p>
+
+
 <hr><small>Hinweis: Details zum Format der exportierten Textdatei finden Sie im Kapitel "<a href="imp_exp_text_details.html">Text Export &amp; Import Format</a>".</small>
 <hr>
 <p></p>
 <h3><a name="xml"></a>XML</h3>
 XML (eXtensible Markup Language) ist ein popul&auml;res Format, um Daten zwischen Anwendungen zu &uuml;bertragen.
 <b>Password Safe</b> kann Datenbankeintr&auml;ge in diesem Format exportieren (und importieren). Die Struktur (oder <i>Schema</i>) womit die Daten exportiert und validiert werden, steht in der Datei <i>pwsafe.xsd</i>. Sie ist Teil dieser Distribution. Diese Datei wird verwendet, wenn <b>Password Safe</b> XML Daten importiert und sollte den Anwendungen,  die diese exportierten Daten verwenden wollen, zur Verf&uuml;gung gestellt werden.<br>
-<hr><small><b style="color: rgb(255, 0, 0);">Hinweis:</b> Der exportierte Text ist eine ungesch&uuml;tzte Kopie der Passworteintr&auml;ge. Das L&ouml;schen dieser Datei nach deren Verwendung ist <b>nicht</b> ausreichend, um sie f&uuml;r einen Angreifer unzug&auml;nglich zu machen. Im Gegenteil, hiermit umgehen Sie bewusst die Sicherheit dieser Anwendung.<br>Bitte verwenden Sie diese M&ouml;glichkeit <b>NICHT</b>, au&szlig;er Sie verstehen und akzeptieren die Risiken.</small></span>
+<hr><small><span style="color: red;"><b>Hinweis:</b> Der exportierte Text ist eine ungesch&uuml;tzte Kopie der Passworteintr&auml;ge. Das L&ouml;schen dieser Datei nach deren Verwendung ist <b>nicht</b> ausreichend, um sie f&uuml;r einen Angreifer unzug&auml;nglich zu machen. Im Gegenteil, hiermit umgehen Sie bewusst die Sicherheit dieser Anwendung.<br>Bitte verwenden Sie diese M&ouml;glichkeit <b>NICHT</b>, au&szlig;er Sie verstehen und akzeptieren die Risiken.</small></span>
 <hr>
 Die Ansicht der XML Dateien ist festgelegt in <i>pwsafe.xsl</i> - eine eXtensible Stylesheet Language Datei. Eine Beispieldatei ist der Distribution beigef&uuml;gt. Sie k&ouml;nnen diese nach eigenen Bed&uuml;rfnissen ab&auml;ndern. Diese Datei ist nur ein Beispiel, und sie ist einfach zu &auml;ndern, um die Felder anzuzeigen, die Sie brauchen. Weil dies nur die Anzeige der Daten und nicht die Daten selbst &auml;ndert, sind Sie immer noch in der Lage es in <b>Password Safe</b> zu einem sp&auml;teren Zeitpunkt zu importieren.<br>
 <br>
 Wie beim Text Exportieren k&ouml;nnen Sie definieren welche Eintr&auml;ge und Felder zur XML Datei exportiert werden sollen: durch Klicken auf "Erweitert" im Export Dialog. Dies wird folgender Dialog aufmachen:<br>
 <img alt="Erweiterte XML Export Optionen" src="images/export_xml_adv.jpg"><br>
 <br>
-<p>Dieser Dialog erlaubt es nur ein Teil der Eintr&auml;ge, basierend auf einen Text in spezifischen Feldern, auszuw&auml;hlen. Auch die Felder k&ouml;nnen spezifiziert werden. Klicken Sie auf OK, wenn Sie fertig sind oder Abbrechen, um ohne jegliche &Auml;nderung zum vorherigen Dialog zur&uuml;ckzukehren. Bemerkung: Das XML Schema setzt Titel und Passwort zwingend voraus. Aus diesem Grund k&ouml;nnen diese nicht abgew&auml;hlt werden.</p>
-<p>
-Sie werden dann aufgefordert, den Namen der neuen Datei anzugeben und gegebenenfalls zu best&auml;tigen, ob Sie eine bereits vorhandene Datei mit demselben Namen  &uuml;berschreiben m&ouml;chten.</p>
+<p>Nach dem Markieren von "Erweitertes Feld f&uuml;r Auswahlkriterien" wird dieser Assistent ge&ouml;ffnet. Er hilft beim Festlegen der Texte zur Auswahl der Eintr&auml;ge und/oder beim Spezifizieren welche Felder exportiert werden sollen. Bemerkung: Das XML Schema setzt Titel und Passwort zwingend voraus. Aus diesem Grund k&ouml;nnen diese nicht abgew&auml;hlt werden. Siehe <a href="wzselectdb.html">hier</a> f&uuml;r mehr Information</p>
 <!-- Added some white space at the bottom for natural scrolling -->
 <br>
 <br>

@@ -9,17 +9,30 @@
 </head>
 <body>
 <object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11">
-		</object>
-		<!-- Popup Source File -->
+</object>
+<!-- Popup Source File -->
 <h2>Eintr&auml;ge importieren</h2>
 <p><b>Password Safe</b> bietet an, Passwortinformationen aus anderen Formaten zu importieren. Diese Formate/Dateien k&ouml;nnen mit Hilfe anderer Anwendungen entstanden sein z.B. exportiert aus einer Tabelle, oder sogar von Hand geschrieben mit Notepad oder &auml;hnlichem Texteditor.</p>
 <p>Die von <b>Password Safe</b> unterst&uuml;tzten Formate sind:</p>
 <ul>
   <li><a href="#text">Text</a></li>
   <li><a href="#XML">XML</a></li>
-  <li>KeePass (eine andere Anwendung zur Passwortverwaltung)</li>
+<li><a href="#KeePassV1_TXTCSV">KeePass V1 TXT und CSV Dateien</a></li>
+<li><a href="#KeePassV2_CSV">KeePass V2 via KeePass V1 CSV Dateien</a></li>
+<li><a href="#KeePassXML">KeePass V1 und V2 XML Dateien</a></li>
 </ul>
-<div class="instr">
+
+<p><b>Password Safe</b> generiert am Ende eines Importes einen Bericht mit einer &Uuml;bersicht &uuml;ber die ausgef&uuml;hrten Operationen und dabei ev. aufgetretene Probleme.
+Dieser Bericht kann in die Zwischenablage kopiert werden, oder auf die Festplatte als Textdatei im selben Verzeichnis wie die Datenbank  abgespeichert werden.
+Unter dem Menupunkt "Ansicht&nbsp;&rarr;&nbsp;Berichte" k&ouml;nnen die Berichte zu einem sp&auml;teren Zeitpunkt angeschaut werden.
+Der Name des Berichtes ist festgelegt, und h&auml;ngt ab von der Funktion mit der er erzeugt wurde.
+Wenn dieselbe Funktion ausgeführt, und der entsprechende Bericht auf die Festplatte abgespeichert wird, wird jegliche Bericht zu dieser Funktion &uuml;berschrieben. 
+<span style="color=red;">Hinweis: Der Bericht kann sensible Daten enthalten, so Vorsicht ist geboten beim Abspeichern auf die Festplatte.</span></p>
+
+<p><b>Hinweis:</b> Sie k&ouml;nnen auch Untermengen aus einer anderen <b>Password Safe</b> Datenbank importieren. Sie &ouml;ffnen eine andere Datenbank mit <b>Password Safe</b>
+  (vorausgesetzt sie erlauben mehrere Instanzen in <a href="system_tab.html">"Verwalten&nbsp;&rarr;&nbsp;Optionen&nbsp;&rarr;&nbsp;System"</a>). Sie k&ouml;nnen per Drag und Drop Eintr&auml;ge oder Gruppen aus der 'import'-Datenbank in Ihre Datenbank ziehen.</p>
+
+
 <h3><a name="text"></a>Text Format</h3>
 <p>Textdateien, aus welchen die Passworteintr&auml;ge importiert werden k&ouml;nnen bestehen aus einem oder mehreren Passworteintr&auml;gen. Jedes Feld innerhalb eines Eintrages ist mit einem Feldtrennzeichen getrennt und jeder Eintrag besteht aus einer oder mehreren Zeilen. Details zum erwarteten Format der zu importierende Textdatei finden Sie im "<a href="imp_exp_text_details.html">Text Export &amp; Import Format</a>" Kapitel.</p>
 <h3>Text-Einstellungen importieren</h3>
@@ -27,30 +40,424 @@
 <p><img alt="Text Einstellungen importieren" src="images/import.jpg"></p>
 <p> </p>
 <ol>
-				<li><b>Datei-&gt;Importieren von</b></li>
-				<li>W&auml;hlen Sie <b>Nur Text...</b></li>
-				<li>Stellen Sie die Einstellungen und Parameter f&uuml;r die zu importierende Textdatei ein</li>
-				<li>Wenn in dem Notizenfeld ein Zeichen zur Erkennung von mehreren Zeilen benutzt wurde (entweder von einem fr&uuml;heren Export oder mit einem Texteditor) geben Sie es hier an, sodass w&auml;hrend des Importierens des Notizenfeldes dieses in mehreren Zeilen zerlegt werden kann, durch Austauschen dieses Zeichens mit einem Wagenr&uuml;cklauf-Zeichen.</li>
-				<li>Klicken Sie auf <b>OK</b></li>
-				<li>W&auml;hlen Sie die Textdatei zum Importieren aus.</li>
-  <li>Am Ende des Importierens &ouml;ffnet sich ein kleines Fenster, in dem die Gesamtanzahl sowie die Anzahl der fehlerhaft verarbeiteten Eintr&auml;ge gemeldet werden.</li>
+<li><b>Datei-&gt;Importieren von</b></li>
+<li>W&auml;hlen Sie <b>Nur Text...</b></li>
+<li>Stellen Sie die Einstellungen und Parameter f&uuml;r die zu importierende Textdatei ein</li>
+<li>Wenn in dem Notizenfeld ein Zeichen zur Erkennung von mehreren Zeilen benutzt wurde (entweder von einem fr&uuml;heren Export oder mit einem Texteditor) geben Sie es hier an, sodass w&auml;hrend des Importierens des Notizenfeldes dieses in mehreren Zeilen zerlegt werden kann, durch Austauschen dieses Zeichens mit einem Wagenr&uuml;cklauf-Zeichen.</li>
+<li>Klicken Sie auf <b>OK</b></li>
+<li>W&auml;hlen Sie die Textdatei zum Importieren aus.</li>
+<li>Am Ende des Importierens &ouml;ffnet sich ein kleines Fenster, in dem die Gesamtanzahl sowie die Anzahl der fehlerhaft verarbeiteten Eintr&auml;ge gemeldet werden.</li>
 </ol>
 <hr>
-			<small><b><span style="color: rgb(255, 0, 0);">WICHTIG</span>:</b> Die erste Zeile der importierten Datei muss eine durch TAB getrennte Namensliste der Felder enthalten, die die Elemente im jeweiligen Eintrag beschreiben z.B. "Gruppe/Titel  Benutzername  Passwort  URL", usw. Diese Zeile wird automatisch erzeugt beim Aufruf der Funktion "<a href="export.html">Export Text</a>" erzeugt, muss aber in Dateien, die in anderen Anwendungen erstellt wurden, eventuell von Hand eingef&uuml;gt werden.<br>
+<small><b><span style="color: rgb(255, 0, 0);">WICHTIG</span>:</b> Die erste Zeile der importierten Datei muss eine durch TAB getrennte Namensliste der Felder enthalten, die die Elemente im jeweiligen Eintrag beschreiben z.B. "Gruppe/Titel  Benutzername  Passwort  URL", usw. Diese Zeile wird automatisch erzeugt beim Aufruf der Funktion "<a href="export.html">Export Text</a>" erzeugt, muss aber in Dateien, die in anderen Anwendungen erstellt wurden, eventuell von Hand eingef&uuml;gt werden.<br>
 </small>
 <hr>
 <h3><a name="XML"></a>XML</h3>
 XML (eXtensible Markup Language) ist ein popul&auml;res Format, um Daten zwischen Anwendungen zu transportieren. <b>Password Safe</b> kann XML-Dateien importieren,  die nach den in der Datei <i>pwsafe.xsd</i> festgelegten Vorgaben erstellt wurden. Diese Datei ist Bestandteil dieser Distribution.
+
+<h3><a name="KeePassV1_TXTCSV"></a>KeePass V1 TXT und CSV Files</h3>
+
+<p><u>Der empfohlene Import von KeePass V1 Datenbankeintr&auml;ge geht mit XML wie <a href="#KeePassXML"><u>unten</u></a> beschrieben</u>.</p>
+
+<h4>TXT Datei</h4>
+
+<p>Sie k&ouml;nnen auch TXT-Dateien exportiert aus Keepass V1 importieren (getestet mir Dateien erzeugt in V1.19b).</p>
+<p>Folgende Felder werden umgesetzt zu <b>Password Safe</b> Equivalente:</p>
+Jeder neuer Eintrag  beginnt mit einer Zeile beginnend mit  '[' und endend mit ']'. Der Text  dazwischen wird als 'Titel' f&uuml;r diesen Eintrag verwendet.<p>
+<div style="color=red;">
+
+<p>Jeder Informationsteil ist in einer Zeile und folgende Tags stehen am Anfang jeder Zeile:</p>
+<ul>
+<li>"Group: " becomes the entry's Group</li>
+<li>"Group Tree: " becomes the entry's group hierachy to the root</li>
+<li>"User Name: " becomes the entry's User Name</li>
+<li>"Password: " becomes the entry's Password</li>
+<li>"URL: " becomes the entry's URL</li>
+<li>"Notes: " becomes the entry's Notes</li>
+<li>"UUID: " becomes the internal unique ID of the <b>Password Safe</b> entry</li>
+<li>"Creation Time: " becomes the entry's creation time</li>
+<li>"Last Access: " becomes the entry's last accessed time</li>
+<li>"Last Modification: " becomes the entry's password and the entry's last modification time</li>
+<li>"Expires: " becomes the entry's expiry date</li>
+</ul>
+
+<p>The following fields are currently ignored:</p>
+
+<ul>
+<li>"Icon"</li>
+<li>"Attachment Description"</li>
+<li>"Attachment" - do <b><u>NOT</u></b> export this field as it can make the export file extremely large.</li>
+</ul>
+
+<p>Note that times in <b>Password Safe</b> must be earlier than
+  January 19, 2038.  Any time later than this is currently
+treated as invalid and the associated field is unset.</p>
+
+<p>Please note, you <b><u>MUST</u></b> check the box <i>"Encode/replace newline characters by '\n'"</i>
+during the export from Keepass V1 or <u>the import may fail or give unexpected results.</u></p>
+
+<h4>CSV Datei</h4>
+
+<p>You may also import a CSV (Comma Separated Values) file exported from Keepass V1 (tested on files created
+by V1.19b).</p>
+
+<p>The following fields are converted to the <b>Password Safe</b> equivalents:</p>
+
+<ul>
+<li>"Password Groups" becomes the entry's Group</li>
+<li>"Group Tree" becomes the entry's group hierachy to the root</li>
+<li>"Account" becomes the entry's Title</li>
+<li>"Login Name" becomes the entry's User Name</li>
+<li>"Password" becomes the entry's Password</li>
+<li>"Web Site" becomes the entry's URL</li>
+<li>"Comments" becomes the entry's Notes</li>
+<li>"UUID" becomes the internal unique ID of the <b>Password Safe</b> entry</li>
+<li>"Creation Time" becomes the entry's creation time</li>
+<li>"Last Access" becomes the entry's last accessed time</li>
+<li>"Last Modification" becomes the entry's password and the entry's last modification time</li>
+<li>"Expires" becomes the entry's expiry date</li>
+</ul>
+
+<p>The following fields are currently ignored:</p>
+
+<ul>
+<li>"Icon"</li>
+<li>"Attachment Description"</li>
+<li>"Attachment" - do <b><u>NOT</u></b> export this field as it can make the export file extremely large.</li>
+</ul>
+
+<p>Note that times in <b>Password Safe</b> must be earlier than
+  January 19, 2038.  Any time later than this is currently
+  treated as invalid and that the associated field is unset.</p>
+
+<p>Please note, you <b><u>MUST</u></b> check the box <i>"Encode/replace newline characters by '\n'"</i>
+during the export from Keepass V1 or <u>the import may fail or give unexpected results.</u></p>
+
+<h3><a name="KeePassV2_CSV"></a>KeePass V2 via KeePass V1 CSV Dateien</h3>
+
+<p><u>The recommended import of KeePass V2 database entries is via XML as described </u>
+<a href="#KeePassXML"><u>below</u></a>.</p>
+
+<p><b>Password Safe</b> cannot import any file created by KeePass V2 - even the KeePass V1 CSV format
+available from this program.  However, it is possible to
+export a KeePass V2 database as a KeePass V1 database.  You may then export this to either a
+TXT or CSV file and imported as described <a href="#KeePassV1_TXTCSV">above</a>.</p>
+
+<h3><a name="KeePassXML"></a>KeePass V1 und V2 XML Dateien</h3>
+
+<p><b>Password Safe</b> cannot directly import a XML file exported by KeePass V1 or V2 as the fields are
+too different. However, we have provided XSL Transform files (KPV1_to_PWS.xslt and KPV2_to_PWS.xslt).
+The programs listed below may be used to process the exported XML file with one of these XSLT files to produce a <b>Password Safe</b> compatible XML file that can then be imported
+to <b>Password Safe</b> <u>V3.26 or later</u>.</p>
+
+<p>The XSLT files conform to V1.0 of XSLT as described in <a target="blank" href="http://www.w3.org/TR/xslt">
+http://www.w3.org/TR/xslt</a> and have been tested with XML files created by KeePass V1.19b and KeePass V2.15.</p>
+
+<p>Note that times in <b>Password Safe</b> must be earlier than
+  January 19, 2038.  Any time later than this is currently
+treated as invalid and that the associated field is unset.</p>
+
+<p>Under Windows, the following XSLT processors support the supplied XSL Transform files. The example
+command line execution of these processors assume:<p>
+<ul>
+<li>The style sheet to convert the KeePass XML file to a <b>Password Safe</b> XML file is: KPV1_to_PWS.xslt or
+KPV2_to_PWS.xslt.</li>
+<li>The input KeePass V1 or V2 XML file is: KeePassV1.xml or KeePassV2.xml</li>
+<li>The output <b>Password Safe</b> XML file will be: PWS.xml</li>
+<li>All input and output files are in the same directory as the XSLT processor. If not, you will need to
+enter the full path of these files.</li>
+</ul>
+<ol>
+<li>The command line program from Microsoft (XSLT Processor Version 4.0). The properties of the file msxsl.exe state that
+it is V1.1.0.1 and dated 2001, although the web site states that it is
+  V2.0 and dated 19 September 2004. It can currently be found at
+<a target="blank" href="http://www.microsoft.com/downloads/en/details.aspx?familyid=2fb55371-c94e-4373-b0e9-db4816552e41&displaylang=en">http://www.microsoft.com/downloads</a>.
+It requires Microsoft Core XML Services (MSXML) V4.0 to be installed.  Whilst the latest MSXML version is V6, V4
+is normally installed on all versions of Windows supported by <b>Password Safe</b>.
+<p>For KeePass V1 XML file use the command:</p>
+<pre>
+msxsl KeePassV1.xml KPV1_to_PWS.xslt -o PWS.xml
+</pre>
+For KeePass V2 XML file use the command:
+<pre>
+msxsl KeePassV2.xml KPV2_to_PWS.xslt -o PWS.xml
+</pre>
+</li>
+<li>AltovaXML Community Edition (current version 2011r3).
+See <a target="blank" href="http://www.altova.com/altovaxml.html">
+http://www.altova.com/altovaxml.html</a>.
+<p>For KeePass V1 XML file use the command:</p>
+<pre>
+AltovaXML -xslt1 KPV1_to_PWS.xslt -in KeePassV1.xml -out PWS.xml
+</pre>
+For KeePass V2 XML file use the command:
+<pre>
+AltovaXML -xslt1 KPV2_to_PWS.xslt -in KeePassV2.xml -out PWS.xml
+</pre>
+</li>
+<li>Saxon-HE (Home Edition) (current version 9.3.0.5).
+See <a target="blank" href="http://saxon.sourceforge.net/">http://saxon.sourceforge.net/</a>.
+There is also a graphical front-end for Saxon called Kernow.
+See <a target="blank" href="http://kernowforsaxon.sourceforge.net/">http://kernowforsaxon.sourceforge.net/</a>.
+The format of the command depends on whether you use the Java or .Net version of
+Saxon-HE and/or Kernow.  Please refer to the product's documentation for further information.</li>
+</ol>
+
+<p>All these programs are free, although Kernow needs to be registered if used more than 100 times.</p>
+
+<h4>KeePass V1 XML Spezialverarbeitung</h4>
+
+<ul>
+<li>If a KeePass group contains a dot ('.'), it is converted to a forward slash ('/') when added to
+<b>Password Safe</b>, since dots are used as group delimiters by <b>Password Safe</b>.</li>
+
+<li>All 'carriage return' characters are removed from the Notes field and all 'newline' characters
+are converted to the normal <b>Password Safe</b> delimiter '&raquo;' used to denote new lines within
+the Notes field.</li>
+
+<li>The KeePass entry's UUID will be transferred to the <b>Password Safe</b> entry unless it is already
+used within that database (which is <em>very</em> unlikely), in which case a new value will be calculated during
+import.</li>
+</ul>
+
+<table border="1" cellpadding="2" cellspacing="2 width="80%">
+<col align="left" width="30%" />
+<col align="center" width="70%" />
+<thead>
+<tr>
+<th>KeePass V1 XML Elements</th>
+<th>Password Safe XML Element Equivalent</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>&lt;group&gt;</td><td>&lt;group&gt;</td></tr>
+<tr><td>&lt;title&gt;</td><td>&lt;title&gt;</td></tr>
+<tr><td>&lt;username&gt;</td><td>&lt;username&gt;</td></tr>
+<tr><td>&lt;password&gt;</td><td>&lt;password&gt;</td></tr>
+<tr><td>&lt;url&gt;</td><td>&lt;url&gt;</td></tr>
+<tr><td>&lt;notes&gt;</td><td>&lt;notes&gt;</td></tr>
+<tr><td>&lt;lastmodtime&gt;</td><td>&lt;pmtimex&gt; <u>and</u> &lt;rmtimex&gt;</td></tr>
+<tr><td>&lt;creationtime&gt;</td><td>&lt;ctimex&gt;</td></tr>
+<tr><td>&lt;lastaccesstime&gt;</td><td>&lt;atimex&gt;</td></tr>
+<tr><td>&lt;expiretime&gt;</td><td>&lt;xtimex&gt;, if the KeePass &lt;expiretime&gt; attribute "expires"
+is 'true'</td></tr>
+<tr><td>&lt;image&gt;<br>&lt;attachdesc&gt;<br>&lt;attachment&gt;</td><td><br>These have no <b>Password Safe</b>
+equivalent and are ignored</td></tr>
+</tbody>
+</table>
+
+<h4>KeePass V2 XML Spezialverarbeitung</h4>
+
+<ul>
+<li>The '&lt;HistoryMaxItems&gt;' field from the '&lt;Meta&gt;' section of the KeePass V2 XML file
+is used as the maximum number of passwords to be saved in an <b>Password Safe</b>'s entry password
+history.  All other fields in this section are ignored.</li>
+
+<li>If a KeePass group contains a dot ('.'), it is converted to a forward slash ('/') when added to
+<b>Password Safe</b>, since dots are used as group delimiters by <b>to Password Safe</b>.</li>
+
+<li>All 'carriage return' characters are removed from the Notes field and all 'newline' characters
+are converted to the normal <b>Password Safe</b> delimiter '&raquo;' used to denote new lines within
+the Notes field.</li>
+
+<li>The KeePass entry's UUID will be transferred to the <b>Password Safe</b> entry unless it is already
+used within that database (which is very unlikely), in which case a new value will be calculated during
+import.</li>
+
+<li>If the '&lt;DefaultAutoTypeSequence&gt;' field is present within a KeePass group is used
+as the default <b>Password Safe</b> Autotype field for entries within that group.</li>
+
+<li>If an entry's '&lt;AutoType&gt;' field is set to 'True' and the '&lt;DefaultSequence&gt;'
+is not empty, then this is used as the <b>Password Safe</b>'s entry's Autotype sequence. If it is
+'True' but '&lt;DefaultSequence&gt;' is empty, then the '&lt;DefaultAutoTypeSequence&gt;' field from 
+the parent group is used as the <b>Password Safe</b>'s entry's Autotype sequence.</li>
+
+<li>If the '&lt;OverrideURL&gt;' field is not empty, its value is inserted into the Notes field and
+prefixed by "OverrideURL:" and the URL field is prefixed by "[alt]".</li>
+
+<li>If the URL string begins with "\\" or "cmd://" (case insensitve) the field is placed in the
+<b>Password Safe</b>'s entry's Run Command field and Placeholder substitution is performed (see below).
+If neither of these prefixes appear in the URL string, it is placed in the <b>Password Safe</b>'s
+entry's URL field with only {S:FieldName} substitution.</li>
+
+<li>If the '&lt;Tags&gt;' field is not empty, its value is inserted into the Notes field and
+prefixed by "Tags:".</li>
+</ul>
+
+<p>KeePass V2 exports all strings, e.g. Title, in a "String" section with "Key" and "Value" sub-elements.
+For example:
+<pre>
+&lt;String&gt;
+	&lt;Key&gt;Title&lt;/Key&gt;
+	&lt;Value&gt;Test title&lt;/Value&gt;
+&lt;/String&gt;
+</pre>
+<p>The following table shows the conversion of these to the <b>Password Save</b> equivalent XML
+element.</p>
+
+<table border="1" cellpadding="2" cellspacing="2 width="80%">
+<col align="left" width="40%" />
+<col align="center" width="60%" />
+<thead>
+<tr>
+<th>KeePass V2 String Keys</th>
+<th>Password Safe Entry XML Element Equivalent</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>Title</td><td>&lt;title&gt;</td></tr>
+<tr><td>Username</td><td>&lt;username&gt;</td></tr>
+<tr><td>Password</td><td>&lt;password&gt;</td></tr>
+<tr><td>URL</td><td>&lt;url&gt; or &lt;runcommand&gt;<br>depending on the prefix (see notes above)</td></tr>
+<tr><td>Notes</td><td>&lt;notes&gt;</td></tr>
+<tr><td>All others</td><td>Inserted into the <b>Password Safe</b> Notes field in the form:<br> "Key: Value"</td></tr>
+</tbody>
+</table>
+
+<p>KeePass V2 exports all date/time fields, e.g. creation time, in a "Times" section. For example:</p>
+<pre>
+&lt;Times&gt;
+  &lt;LastModificationTime&gt;2011-05-30T14:20:57Z&lt;/LastModificationTime&gt;
+  &lt;CreationTime&gt;2011-05-27T18:09:29Z&lt;/CreationTime&gt;
+  &lt;LastAccessTime&gt;2011-05-30T14:20:57Z&lt;/LastAccessTime&gt;
+  &lt;ExpiryTime&gt;2999-12-28T23:59:59Z&lt;/ExpiryTime&gt;
+  &lt;Expires&gt;False&lt;/Expires&gt;
+&lt;/Times&gt;
+</pre>
+<p>The following table shows the conversion of these to the <b>Password Save</b> equivalent XML
+element.</p>
+
+<table border="1" cellpadding="2" cellspacing="2 width="80%">
+<col align="left" width="30%" />
+<col align="center" width="70%" />
+<thead>
+<tr>
+<th>KeePass V2 Time Values</th>
+<th>Password Safe Entry XML Element Equivalent</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>&lt;Times&gt;/&lt;LastModificationTime&gt;</td><td>&lt;pmtimex&gt; <u>and</u> &lt;rmtimex&gt;</td></tr>
+<tr><td>&lt;Times&gt;/&lt;CreationTime&gt;</td><td>&lt;ctimex&gt;</td></tr>
+<tr><td>&lt;Times&gt;/&lt;LastAccessTime&gt;</td><td>&lt;atimex&gt;</td></tr>
+<tr><td>&lt;Times&gt;/&lt;ExpiryTime&gt;</td><td>&lt;xtimex&gt; if &lt;Times&gt;/&lt;Expires&gt; is 'True'</td></tr>
+</tbody>
+</table>
+
+<p>KeePass V2 can create an history section when anything is changed in an entry. <b>Password Safe</b>
+only saves password changes.  All other saved changed fields in the KeePass XML element are ignored.</p>
+
+<table border="1" cellpadding="2" cellspacing="2 width="80%">
+<col align="left" width="30%" />
+<col align="center" width="70%" />
+<thead>
+<tr>
+<th>KeePass V2 History</th>
+<th>Password Safe Entry XML Element Equivalent</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>&lt;Times&gt;/&lt;LastModificationTime&gt;</td><td>&lt;history_entry&gt;/&lt;changedx&gt;</td></tr>
+<tr><td>&lt;String[Key='Password']&gt;</td><td>&lt;history_entry&gt;/&lt;oldpassword&gt;</td></tr>
+<tr><td>All other tags from &lt;History&gt;</td><td>Ignored</td></tr>
+</tbody>
+</table>
+
+<p>The following KeePass V2 Auto-type special codes (see
+<a target="blank" href="http://keepass.info/help/base/autotype.html">http://keepass.info/help/base/autotype.html</a>) 
+are translated as follows.  <i>All codes not listed are copied across as-is.</i></p>
+
+<table border="1" cellpadding="2" cellspacing="2 width="80%">
+<col align="left" width="75%" />
+<col align="center" width="25%" />
+<thead>
+<tr>
+<th>KeePass V2 Auto-type</th>
+<th>Password Safe Equivalent</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>\</td><td>\\ (escaping '\')</td></tr>
+<tr><td>Tab {TAB}</td><td>\t</td></tr>
+<tr><td>Enter {ENTER} or ~</td><td>\n</td></tr>
+<tr><td>Backspace {BACKSPACE}, {BS} or {BKSP}</td><td>\b</td></tr>
+<tr><td>Keypad + {ADD}</td><td>+</td></tr>
+<tr><td>Keypad - {SUBTRACT}</td><td>-</td></tr>
+<tr><td>Keypad * {MULTIPLY}</td><td>*</td></tr>
+<tr><td>Keypad / {DIVIDE}</td><td>/</td></tr>
+<tr><td>+ {+}</td><td>+</td></tr>
+<tr><td>^ {^}</td><td>^</td></tr>
+<tr><td>% {%}</td><td>%</td></tr>
+<tr><td>~ {~}</td><td>~</td></tr>
+<tr><td>(, )  {(}, {)}</td><td>(, )</td></tr>
+<tr><td>{DELAY X} Delays X milliseconds.</td><td>\wX (\WX)</td></tr>
+<tr><td>{DELAY=X} Sets the default delay to X milliseconds for all standard keypresses in this sequence.</td><td>\dX</td></tr>
+</tbody>
+</table>
+
+<p>The following KeePass V2 Placeholders (see 
+<a target="blank" href="http://keepass.info/help/base/placeholders.html">http://keepass.info/help/base/placeholders.html</a>)
+are translated as follows.  <i>All codes not listed are copied across as-is</i>.</p>
+
+<p>Placeholders are case-insensitive. Custom strings can be referenced using {S:Name}. For example,
+if the database has a custom string named "eMail", it can be referenced via the placeholder {S:eMail}.</p>
+
+<table border="1" cellpadding="2" cellspacing="2 width="80%">
+<col align="left" width="33%" />
+<col align="center" width="33%" />
+<col align="center" width="33%" />
+<thead>
+<tr>
+<th>KeePass V2 Placeholder</th>
+<th>Password Safe AutoType</th>
+<th>Password Safe Run Command</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>{GROUP}</td><td>\g</td><td>${G}</td></tr>
+<tr><td>{TITLE}</td><td>\i</td><td>${t}</td></tr>
+<tr><td>{USERNAME}</td><td>\u</td><td>${u}</td></tr>
+<tr><td>{PASSWORD}</td><td>\p</td><td>${p}</td></tr>
+<tr><td>{NOTES}</td><td>\o</td><td>${n}</td></tr>
+<tbody>
+</table>
+
+<p></p>
+
+<table border="1" cellpadding="2" cellspacing="2 width="80%">
+<col align="left" width="50%" />
+<col align="center" width="50%" />
+<thead>
+<tr>
+<th>KeePass V2 Placeholder</th>
+<th>Password Safe Run Command</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>\{</td><td>\\{ (escaping \)</td></tr>
+<tr><td>$</td><td>\$ (escaping $)</td></tr>
+<tr><td>{GROUPPATH}</td><td>${g}</td></tr>
+<tr><td>{URL}</td><td>${url}</td></tr>
+<tr><td>{URL:RMVSCM}</td><td>${url}</td></tr>
+<tr><td>{APPDIR}</td><td>${appdir}</td></tr>
+<tr><td>{DB_PATH}</td><td>${fulldb}</td></tr>
+<tr><td>{DB_DIR}</td><td>${dbdir}</td></tr>
+<tr><td>{DB_NAME}</td><td>${dbname}.${dbextn}</td></tr>
+<tr><td>{DB_BASENAME}</td><td>${dbname}</td></tr>
+<tr><td>{DB_EXT}</td><td>${dbextn}</td></tr>
+<tr><td>All others</td><td>Copied unchanged</td></tr>
+<tbody>
+</table>
 </div>
-		<!-- Added some white space at the bottom for natural scrolling -->
-		<br>
+<!-- Added some white space at the bottom for natural scrolling -->
 <br>
 <br>
-		<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
-			<param name="Keyword" value="Import von Passworteintr&auml;ge">
-			<param name="Keyword" value="Export von Passworteintr&auml;ge">
-			<param name="Keyword" value="Excel Passwort Daten">
-			<param name="Keyword" value="Konvertieren von bestehenden Passwort Daten">
-		</object>
+<br>
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="Keyword" value="Import von Passworteintr&auml;ge">
+<param name="Keyword" value="Export von Passworteintr&auml;ge">
+<param name="Keyword" value="Excel Passwort Daten">
+<param name="Keyword" value="Konvertieren von bestehenden Passwort Daten">
+</object>
 </body>
 </html>
