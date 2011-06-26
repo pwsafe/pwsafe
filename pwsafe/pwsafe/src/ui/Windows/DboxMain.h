@@ -196,6 +196,7 @@ enum {GCP_READONLY = 1,
 class CDDObList;
 class ExpiredList;
 class CAddEdit_PropertySheet;
+
 //-----------------------------------------------------------------------------
 class DboxMain : public CDialog, public UIInterFace
 {
@@ -246,6 +247,9 @@ public:
 
   // Count the number of total entries.
   size_t GetNumEntries() const {return m_core.GetNumEntries();}
+
+  // Has the GUI been built and has entries
+  bool IsGUIEmpty() const { return m_ctlItemTree.GetCount() == 0;}
 
   // Get CItemData @ position
   CItemData &GetEntryAt(ItemListIter iter) const

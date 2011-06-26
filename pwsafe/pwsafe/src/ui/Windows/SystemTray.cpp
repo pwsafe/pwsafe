@@ -393,7 +393,8 @@ void CSystemTray::OnTimer(UINT_PTR )
 }
 
 // Helper function to set up recent entry submenu based on entry's attributes
-static BOOL SetupRecentEntryMenu(CMenu *&pMenu, const int i, const CItemData *pci)
+static BOOL SetupRecentEntryMenu(CMenu *&pMenu, const int i, const CItemData *pci,
+                                 const DboxMain *pDbx)
 {
   BOOL brc;
   CString cs_text, cs_select;
@@ -420,6 +421,14 @@ static BOOL SetupRecentEntryMenu(CMenu *&pMenu, const int i, const CItemData *pc
                           cs_text);
   if (brc == 0) goto exit;
   ipos++;
+
+  if (pci->IsShortcut() && pDbx != NULL) {
+    // Shortcut has no data of itself - for all other menu items
+    // use base entry's fields
+    const CItemData *pBase = pDbx->GetBaseEntry(pci);
+    if (pBase != NULL)
+      pci = pBase;
+  }
 
   if (!pci->IsUserEmpty()) {
     cs_text.LoadString(IDS_TRAYCOPYUSERNAME);
@@ -618,7 +627,7 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
         typedef CMenu* CMenuPtr;
         ppNewRecentEntryMenu = new CMenuPtr[num_recent_entries];
         m_RUEList.GetAllMenuItemStrings(m_menulist);
-        const bool bGUIEmpty = pDbx == NULL || pDbx->m_ctlItemTree.GetCount() == 0;
+        const bool bGUIEmpty = pDbx == NULL || pDbx->IsGUIEmpty();
 
         for (size_t i = 0; i < num_recent_entries; i++) {
           ppNewRecentEntryMenu[i] = NULL;  // Ensure empty
@@ -630,7 +639,7 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
             continue;
           }
 
-          BOOL brc = SetupRecentEntryMenu(ppNewRecentEntryMenu[i], (int)i, pci);
+          BOOL brc = SetupRecentEntryMenu(ppNewRecentEntryMenu[i], (int)i, pci, pDbx);
           if (brc == 0) {
             pws_os::Trace(L"CSystemTray::OnTrayNotification: SetupRecentEntryMenu - ppNewRecentEntryMenu[%d] failed\n", i);
             continue;

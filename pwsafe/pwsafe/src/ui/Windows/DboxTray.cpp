@@ -34,11 +34,11 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-static bool SafeGetBaseEntry(const DboxMain *dbm, const CItemData &dep, CItemData &base)
+static bool SafeGetBaseEntry(const DboxMain *pDbx, const CItemData &dep, CItemData &base)
 {
-  // Asserts in debug build if GetBase(dep) fails
+  // Asserts in debug build if GetBaseEntry(dependent) fails
   // returns false in release build
-  const CItemData *pBase = dbm->GetBaseEntry(&dep);
+  const CItemData *pBase = pDbx->GetBaseEntry(&dep);
   ASSERT(pBase != NULL);
   if (pBase != NULL) {
     base = *pBase;
@@ -298,8 +298,9 @@ void DboxMain::OnTraySelect(UINT nID)
       return;
 
   DisplayInfo *pdi = (DisplayInfo *)ci.GetDisplayInfo();
-  if (pdi != NULL) { // could be null if RefreshViews not called,
-    // in which case we've no display to select to.
+  if (pdi != NULL) {
+    // Could be null if RefreshViews not called,
+    // In which case we've no display to select to.
     // An alternate solution would be to force the main window
     // to display, along with a call to RefreshViews(), before
     // calling GetDisplayInfo().
