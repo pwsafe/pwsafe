@@ -27,8 +27,8 @@ Die wichtigsten Elemente sind im <b>Reiter <i>Basis</i></b> zusammengefasst.</p>
   <li><b>Benutzername</b>: der eigentliche Benutzername</li>
   <li><b>Passwort</b>: das dazugeh&ouml;rige Passwort</li>
   <li><b>Notizen</b>: allgemeine Notizen zu diesem Eintrag</li>
-  <li><small>Nur das <b>Titel</b>- und das <b>Passwort</b>feld sind Pflichtfelder. Alle anderen sind optional.</small></li>
 </ul>
+<i>Nur das <b>Titel</b>- und das <b>Passwort</b>feld sind Pflichtfelder. Alle anderen sind optional.</i>
 <p>In diesem Reiter kann auch die URL eingestellt werden:</p>
 <ul>
   <li><b>URL:</b> Die URL die sich auf diesen Eintrag bezieht. Wenn dieses Feld nicht leer ist, dann ist die "Los" Taste aktiviert.
@@ -95,9 +95,17 @@ Passw&ouml;rter mit ge&auml;ndert. Diese werden "Alias" Eintr&auml;ge genannt, u
 <ul>
   <li>Rechtsklick auf die Gruppe und w&auml;hlen Sie <b>Gruppe umbenennen</b> aus der Liste aus</li>
 </ul>
-<small><b>Hinweis:</b> Gruppennamen k&ouml;nnen verschachtelt werden, durch Setzen eines Gruppennamens in einer anderen Gruppe.<br>
+<small><b>Hinweis:</b>
+<ol>
+<li>Gruppennamen k&ouml;nnen verschachtelt werden, durch Setzen eines Gruppennamens in einer anderen Gruppe.</li>
+<li>Gruppen bestehen nicht f&uuml; sich selbst. Sie bestehen nur als Wirt eines Eintrages oder einer anderen Gruppe. Darum wird eine leere (d.h. ohne Eintrag und ohne Untergruppe) Gruppe verschwinden wenn sie gesichert wird in die Datenbank. Die einfachste M&ouml;glichkeit um sicherzustellen dass eine neue Gruppe bestehen bleibt, ist ein neuer Eintrag zu machen und die neue Gruppe im Gruppenfeld einzugeben (Gruppen werden dabei mit einem '.' getrennt).</li>
+</ol>
 </small>
-<br>
+<h3>Gesch&uuml;tzte Eintr&auml;ge</h3>
+<p>Wenn ein Eintrag gesch&uuml;tzt ist, sind Sie nicht in der Lage irgendein Feld zu ver&auml;ndern. Erst nachdem der Schutz weggenommen ist, sind wieder &Auml;nderungen m&ouml;glich. Gesch&uuml;tzte Eintr&auml;ge sind Rot gekennzeichnet (unten links).</p>
+<img alt="Edit/View Entry" src="images/edit_protected.jpg">
+
+
  </div>
 <!-- Added some white space at the bottom for natural scrolling -->
 <br>

@@ -12,464 +12,777 @@
 <object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"> </object>
 <!-- Popup Source File -->
 <h2>Password Safe Voreinstellungen</h2>
-<hr>Wie manche andere Anwendungen auch hat <b>Password Safe</b> die M&ouml;glichkeit sein Verhalten und Aussehen einzustellen, um sich so gut wie m&ouml;glich auf Ihre N&ouml;te und W&uuml;nsche einzustellen. Viele Anwendungen speichern solche Voreinstellungen in die Windows Registry ab, eine Art von Gewohnheit und Bequemlichkeit. Fr&uuml;here Versionen von <b>Password Safe</b> haben die Registry auch eingesetzt, dies brachte aber folgende Probleme mit sich:<br>
-1. Einige der konfigurierbaren Voreinstellungen sind sicherheitsrelevant, und das Abspeichern in einer offenen Ablage wie die Windows Registry k&ouml;nnte einem Angreifer beim Zugang zur Datenbank helfen (z.B. wenn der Angreifer nach Ablauf der Pause auf die Datenbank zugreift, wo der Anwender selber weiterhin von einer Datenbanksperrung ausgeht).<br>
-2. Einige Leute betreiben <b>Password Safe</b> von einer disk-on-key. Oder Sie betreiben eine Datenbank gemeinsam von mehreren Maschinen aus. In diesem Falle w&auml;re es ung&uuml;nstig die Registry zu verwenden.<br>
-<br>
-<b>Password Safe</b> hat eine Anzahl Voreinstellungen, jeder mit einem sinnvollen Wert besetzt. Wenn ein Benutzer diesen Wert auf einem anderen Wert einstellt, wird dieser neue Wert von <b>Password Safe</b> gespeichert.<br>
-<b>Password Safe</b> kennt sicherheitsrelevante und nicht sicherheitsrelevante Voreinstellungen.  Die ersteren werden in der Datenbank abgespeichert, verschl&uuml;sselt mit demselben Schl&uuml;ssel womit auch die Daten vom Benutzer abgelegt sind.<br>
-Die anderen, nicht sicherheitsrelevante Daten werden in der Konfigurationsdatei pwsafe.cfg abgespeichert. Diese Datei ist in XML Format abgelegt, mit Aufteilung der Daten per Host Maschine und Benutzer. Somit kann diese Datei von verschiedenen Benutzer und Maschinen gemeinsam benutzt werden.<br>
-Standardm&auml;&szlig;ig wird die Datei pwsafe.cfg im selben Verzeichnis wie die ausf&uuml;hrbare Anwendung pwsafe.exe abgelegt. Wenn hingegen die Umgebungsvariable PWS_PREFSDIR gesetzt ist, wird <b>Passowrd Safe</b> die Datei verwenden die dort angegeben ist. Dies ist dann sinnvoll, wenn der Schreibzugriff zum Verzeichnis wo pwsafe.exe liegt eingeschr&auml;nkt ist.<br>
-<br>
-Die folgenden Tabellen beschreiben die Konfigurationselemente. Die meisten k&ouml;nnen mit dem Dialog <b><a href="manage_menu.html">Verwalten-&gt;Optionen</a></b> konfiguriert werden.<br>
 <hr>
-<h4>Boolesche (wahr/falsch) Voreinstellungen</h4>
-<table style="width: 640px;" border="1" cellpadding="2" cellspacing="2" width="100%">
-  <tbody>
-    <tr>
-      <td style="font-weight: bold; width: 214px;" align="center" valign="middle">Voreinstellung</td>
-      <td style="font-weight: bold; width: 68px;" align="center" valign="middle">Standard</td>
-      <td style="font-weight: bold; width: 140px;" align="center" valign="middle">Wo gespeichert</td>
-      <td style="width: 200px;" align="center" valign="middle"><b>Kommentar</b></td>
-    </tr>
-    <tr>
-      <td style="width: 214px;">alwaysontop</td>
-      <td style="width: 68px;"> falsch</td>
-      <td style="width: 140px;">pwsafe.cfg</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small>Hauptfenster immer im Vordergrund</small></td>
-    </tr>
-    <tr>
-      <td style="width: 214px;">showpwdefault</td>
-      <td style="width: 68px;"> falsch</td>
-      <td style="width: 140px;">Datenbank</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small></small></td>
-    </tr>
-    <tr>
-      <td style="width: 214px;">showpwinlist</td>
-      <td style="width: 68px;"> falsch</td>
-      <td style="width: 140px;">Datenbank</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small></small></td>
-    </tr>
-    <tr>
-      <td style="width: 214px;">sortascending</td>
-      <td style="width: 68px;"> wahr</td>
-      <td style="width: 140px;">Datenbank</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small></small></td>
-    </tr>
-    <tr>
-      <td style="width: 214px;">usedefuser</td>
-      <td style="width: 68px;"> falsch</td>
-      <td style="width: 140px;">Datenbank</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small></small></td>
-    </tr>
-    <tr>
-      <td style="width: 214px;">saveimmediately</td>
-      <td style="width: 68px;"> wahr</td>
-      <td style="width: 140px;">Datenbank</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small></small></td>
-    </tr>
-    <tr>
-      <td style="width: 214px;">pwuselowercase</td>
-      <td style="width: 68px;"> wahr</td>
-      <td style="width: 140px;">Datenbank</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small>Passwortrichtlinie</small></td>
-    </tr>
-    <tr>
-      <td style="width: 214px;">pwuseuppercase</td>
-      <td style="width: 68px;"> wahr</td>
-      <td style="width: 140px;">Datenbank</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small>Passwortrichtlinie</small></td>
-    </tr>
-    <tr>
-      <td style="width: 214px;">pwusedigits</td>
-      <td style="width: 68px;"> wahr</td>
-      <td style="width: 140px;">Datenbank</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small>Passwortrichtlinie</small></td>
-    </tr>
-    <tr>
-      <td style="width: 214px;">pwusesymbols</td>
-      <td style="width: 68px;"> falsch</td>
-      <td style="width: 140px;">Datenbank</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small>Passwortrichtlinie</small></td>
-    </tr>
-    <tr>
-      <td style="width: 214px;">pwusehexdigits</td>
-      <td style="width: 68px;"> falsch</td>
-      <td style="width: 140px;">Datenbank</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small>Passwortrichtlinie</small></td>
-    </tr>
-    <tr>
-      <td style="width: 214px;">pweasyvision</td>
-      <td style="width: 68px;"> falsch</td>
-      <td style="width: 140px;">Datenbank</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small>Passwortrichtlinie</small></td>
-    </tr>
-    <tr>
-      <td style="width: 214px;">dontaskquestion</td>
-      <td style="width: 68px;"> falsch</td>
-      <td style="width: 140px;">pwsafe.cfg</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small></small></td>
-    </tr>
-    <tr>
-      <td style="width: 214px;">deletequestion</td>
-      <td style="width: 68px;"> falsch</td>
-      <td style="width: 140px;">pwsafe.cfg</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small></small></td>
-    </tr>
-    <tr>
-      <td style="width: 214px;">DCShowsPassword</td>
-      <td style="width: 68px;"> falsch</td>
-      <td style="width: 140px;">pwsafe.cfg</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small></small></td>
-    </tr>
-    <tr>
-      <td style="width: 214px;">DontAskMinimizeClearYesNo</td>
-      <td style="width: 68px;"> wahr</td>
-      <td style="width: 140px;">pwsafe.cfg</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small></small></td>
-    </tr>
-    <tr>
-      <td style="width: 214px;">DatabaseClear</td>
-      <td style="width: 68px;"> falsch</td>
-      <td style="width: 140px;">pwsafe.cfg</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small></small></td>
-    </tr>
-    <tr>
-      <td style="width: 214px;">DontAskSaveMinimize</td>
-      <td style="width: 68px;"> falsch</td>
-      <td style="width: 140px;">pwsafe.cfg</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small></small></td>
-    </tr>
-    <tr>
-      <td style="width: 214px;">QuerySetDef</td>
-      <td style="width: 68px;"> wahr</td>
-      <td style="width: 140px;">pwsafe.cfg</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small></small></td>
-    </tr>
-    <tr>
-      <td style="width: 214px;">UseNewToolbar</td>
-      <td style="width: 68px;"> wahr</td>
-      <td style="width: 140px;">pwsafe.cfg</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small></small></td>
-    </tr>
-    <tr>
-      <td style="width: 214px;">UseSystemTray</td>
-      <td style="width: 68px;"> wahr</td>
-      <td style="width: 140px;">pwsafe.cfg</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small></small></td>
-    </tr>
-    <tr>
-      <td style="width: 214px;">LockOnWindowLock</td>
-      <td style="width: 68px;"> wahr</td>
-      <td style="width: 140px;">pwsafe.cfg</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small></small></td>
-    </tr>
-    <tr>
-      <td style="width: 214px;">LockOnIdleTimeout</td>
-      <td style="width: 68px;"> wahr</td>
-      <td style="width: 140px;">pwsafe.cfg</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small></small></td>
-    </tr>
-    <tr>
-      <td style="width: 214px;">EscExits</td>
-      <td style="width: 68px;"> wahr</td>
-      <td style="width: 140px;">pwsafe.cfg</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small></small></td>
-    </tr>
-    <tr>
-      <td style="width: 214px;">HotKeyEnabled</td>
-      <td style="width: 68px;"> falsch</td>
-      <td style="width: 140px;">pwsafe.cfg</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small></small></td>
-    </tr>
-    <tr>
-      <td style="width: 214px;">MRUOnFileMenu</td>
-      <td style="width: 68px;"> wahr</td>
-      <td style="width: 140px;">pwsafe.cfg</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small>Zuletzt benutzte Datenbanken</small></td>
-    </tr>
-    <tr>
-      <td style="width: 214px;">DisplayExpandedAddEditDlg</td>
-      <td style="width: 68px;"> wahr</td>
-      <td style="width: 140px;">Datenbank</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small>Standard Mehr/Weniger Details</small></td>
-    </tr>
-    <tr>
-      <td style="width: 214px;">MaintainDateTimeStamps</td>
-      <td style="width: 68px;"> falsch</td>
-      <td style="width: 140px;">Datenbank</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small></small></td>
-    </tr>
-    <tr>
-      <td style="width: 214px;">SavePasswordHistory</td>
-      <td style="width: 68px;"> falsch</td>
-      <td style="width: 140px;">Datenbank</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small></small></td>
-    </tr>
-    <tr>
-      <td style="width: 214px;">FindWraps</td>
-      <td style="width: 68px;"> falsch</td>
-      <td style="width: 140px;">pwsafe.cfg</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small></small></td>
-    </tr>
-    <tr>
-      <td style="width: 214px;">ShowNotesDefault</td>
-      <td style="width: 68px;">falsch</td>
-      <td style="width: 140px;">Datenbank</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small></small></td>
-    </tr>
-    <tr>
-      <td style="width: 214px;">BackupBeforeEverySave</td>
-      <td style="width: 68px;"> wahr</td>
-      <td style="width: 140px;">pwsafe.cfg</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small></small></td>
-    </tr>
-    <tr>
-      <td style="width: 214px;">PreExpiryWarn</td>
-      <td style="width: 68px;"> falsch</td>
-      <td style="width: 140px;">pwsafe.cfg</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small></small></td>
-    </tr>
-    <tr>
-      <td style="width: 214px;">ExplorerTypeTree</td>
-      <td style="width: 68px;"> falsch</td>
-      <td style="width: 140px;">pwsafe.cfg</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small>Zeige Gruppen zuerst in Baumdarstellung an</small></td>
-    </tr>
-    <tr>
-      <td style="width: 214px;">ListViewGridLines</td>
-      <td style="width: 68px;"> falsch</td>
-      <td style="width: 140px;">pwsafe.cfg</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small>Zeige Rasterlinien in der Tabelle</small></td>
-    </tr>
-    <tr>
-      <td style="width: 214px;">MinimizeOnAutotype</td>
-      <td style="width: 68px;"> wahr</td>
-      <td style="width: 140px;">pwsafe.cfg</td>
-      <td style="width: 200px; text-align: left;" valign="middle"><small></small></td>
-    </tr>
-  </tbody>
-</table>
-<br>
-<h4>Numerische Voreinstellungen</h4>
-<table style="width: 780px;" border="1" cellpadding="2" cellspacing="2" width="100%">
-  <tbody>
-    <tr>
-      <td style="width: 185px; font-weight: bold;" align="center" valign="middle">Voreinstellung</td>
-      <td style="width: 194px; font-weight: bold;" align="center" valign="middle">Standard</td>
-      <td style="width: 115px; font-weight: bold;" align="center" valign="middle">Wo gespeichert</td>
-      <td style="width: 40px; font-weight: bold;" align="center" valign="middle">Min</td>
-      <td style="width: 40px; font-weight: bold;" align="center" valign="middle">Max</td>
-      <td style="width: 180px; font-weight: bold;" align="center" valign="middle">Kommentar</td>
-    </tr>
-    <tr>
-      <td style="width: 185px;">column1width</td>
-      <td style="width: 194px;">n/a</td>
-      <td style="width: 115px;">pwsafe.cfg</td>
-      <td style="width: 40px;">n/a</td>
-      <td style="width: 40px;">n/a</td>
-      <td style="width: 180px;"><small></small></td>
-    </tr>
-    <tr>
-      <td style="width: 185px;">column2width</td>
-      <td style="width: 194px;"> n/a</td>
-      <td style="width: 115px;">pwsafe.cfg</td>
-      <td style="width: 40px;">n/a</td>
-      <td style="width: 40px;">n/a</td>
-      <td style="width: 180px;"><small></small></td>
-    </tr>
-    <tr>
-      <td style="width: 185px;">column3width</td>
-      <td style="width: 194px;"> n/a</td>
-      <td style="width: 115px;">pwsafe.cfg</td>
-      <td style="width: 40px;">n/a</td>
-      <td style="width: 40px;">n/a</td>
-      <td style="width: 180px;"><small></small></td>
-    </tr>
-    <tr>
-      <td style="width: 185px;">column4width</td>
-      <td style="width: 194px;"> n/a</td>
-      <td style="width: 115px;">pwsafe.cfg</td>
-      <td style="width: 40px;">n/a</td>
-      <td style="width: 40px;">n/a</td>
-      <td style="width: 180px;"><small></small></td>
-    </tr>
-    <tr>
-      <td style="width: 185px;">sortedcolumn</td>
-      <td style="width: 194px;"> 0</td>
-      <td style="width: 115px;">pwsafe.cfg</td>
-      <td style="width: 40px;"> 0</td>
-      <td style="width: 40px;"> 15</td>
-      <td style="width: 180px;"><small></small></td>
-    </tr>
-    <tr>
-      <td style="width: 185px;">pwlendefault</td>
-      <td style="width: 194px;"> 8</td>
-      <td style="width: 115px;">Datenbank</td>
-      <td style="width: 40px;"> 4</td>
-      <td style="width: 40px;"> 1024</td>
-      <td style="width: 180px;"><small>Standard Passwortl&auml;nge</small></td>
-    </tr>
-    <tr>
-      <td style="width: 185px;">maxmruitems</td>
-      <td style="width: 194px;"> 4</td>
-      <td style="width: 115px;">pwsafe.cfg</td>
-      <td style="width: 40px;"> 0</td>
-      <td style="width: 40px;"> 20</td>
-      <td style="width: 180px;"><small>Zuletzt benutzte Datenbanken</small></td>
-    </tr>
-    <tr>
-      <td style="width: 185px;">IdleTimeout</td>
-      <td style="width: 194px;"> 5</td>
-      <td style="width: 115px;">Datenbank</td>
-      <td style="width: 40px;"> 1</td>
-      <td style="width: 40px;"> 120</td>
-      <td style="width: 180px;"><small></small></td>
-    </tr>
-    <tr>
-      <td style="width: 185px;">DoubleClickAction</td>
-      <td style="width: 194px;"> DoubleClickCopyPassword</td>
-      <td style="width: 115px;">pwsafe.cfg</td>
-      <td style="width: 40px;">n/a</td>
-      <td style="width: 40px;">n/a</td>
-      <td style="width: 180px;"><small></small></td>
-    </tr>
-    <tr>
-      <td style="width: 185px;">HotKey</td>
-      <td style="width: 194px;"> 0</td>
-      <td style="width: 115px;">pwsafe.cfg</td>
-      <td style="width: 40px;"> n/a</td>
-      <td style="width: 40px;"> n/a</td>
-      <td style="width: 180px;"><small></small></td>
-    </tr>
-    <tr>
-      <td style="width: 185px;">MaxREItems</td>
-      <td style="width: 194px;"> 25</td>
-      <td style="width: 115px;">pwsafe.cfg</td>
-      <td style="width: 40px;"> 0</td>
-      <td style="width: 40px;"> 25</td>
-      <td style="width: 180px;"><small>Letzte Eintr&auml;ge</small></td>
-    </tr>
-    <tr>
-      <td style="width: 185px;">TreeDisplayStatusAtOpen</td>
-      <td style="width: 194px;"> Alles zugeklappt</td>
-      <td style="width: 115px;">Datenbank</td>
-      <td style="width: 40px;">n/a</td>
-      <td style="width: 40px;">n/a</td>
-      <td style="width: 180px;"><small></small></td>
-    </tr>
-    <tr>
-      <td style="width: 185px;">NumPWHistoryDefault</td>
-      <td style="width: 194px;"> 3</td>
-      <td style="width: 115px;">Datenbank</td>
-      <td style="width: 40px;"> 0</td>
-      <td style="width: 40px;"> 255</td>
-      <td style="width: 180px;"><small>Wie viele Passw&ouml;rter in der Historie behalten</small></td>
-    </tr>
-    <tr>
-      <td style="width: 185px;">BackupSuffix</td>
-      <td style="width: 194px;"> 0</td>
-      <td style="width: 115px;">pwsafe.cfg</td>
-      <td style="width: 40px;">n/a</td>
-      <td style="width: 40px;"> n/a</td>
-      <td style="width: 180px;"><small></small></td>
-    </tr>
-    <tr>
-      <td style="width: 185px;">BackupMaxIncremented</td>
-      <td style="width: 194px;"> 1</td>
-      <td style="width: 115px;">pwsafe.cfg</td>
-      <td style="width: 40px;"> 1</td>
-      <td style="width: 40px;"> 999</td>
-      <td style="width: 180px;"><small></small></td>
-    </tr>
-    <tr>
-      <td style="width: 185px;">PreExpiryWarnDays</td>
-      <td style="width: 194px;"> 1</td>
-      <td style="width: 115px;">pwsafe.cfg</td>
-      <td style="width: 40px;"> 1</td>
-      <td style="width: 40px;"> 30</td>
-      <td style="width: 180px;"><small>Wann ein Warnung abgeben bei Passw&ouml;rtern die bald ablaufen</small></td>
-    </tr>
-  </tbody>
-</table>
-<br>
-<h4>Textuelle Voreinstellungen</h4>
+<p>Wie manche andere Anwendungen auch hat <b>Password Safe</b> die M&ouml;glichkeit sein Verhalten und Aussehen einzustellen, um sich so gut wie m&ouml;glich auf Ihre N&ouml;te und W&uuml;nsche einzustellen. Viele Anwendungen speichern solche Voreinstellungen in die Windows Registry ab, eine Art von Gewohnheit und Bequemlichkeit. Fr&uuml;here Versionen von <b>Password Safe</b> haben die Registry auch eingesetzt, dies brachte aber folgende Probleme mit sich:</p>
+<ol>
+<li>Einige der konfigurierbaren Voreinstellungen sind sicherheitsrelevant, und das Abspeichern in einer offenen Ablage wie die Windows Registry k&ouml;nnte einem Angreifer beim Zugang zur Datenbank helfen (z.B. wenn der Angreifer nach Ablauf der Pause auf die Datenbank zugreift, wo der Anwender selber weiterhin von einer Datenbanksperrung ausgeht).</li>
+<li>Einige Leute betreiben <b>Password Safe</b> von einer disk-on-key. Oder Sie betreiben eine Datenbank gemeinsam von mehreren Maschinen aus. In diesem Falle w&auml;re es ung&uuml;nstig die Registry zu verwenden.</li>
+</ol>
+<p><b>Password Safe</b> hat eine Anzahl Voreinstellungen, jeder mit einem sinnvollen Wert besetzt. Wenn ein Benutzer diesen Wert auf einem anderen Wert einstellt, wird dieser neue Wert von <b>Password Safe</b> gespeichert.</p>
+<p><b>Password Safe</b> kennt sicherheitsrelevante und nicht sicherheitsrelevante Voreinstellungen.  Die ersteren werden in der Datenbank abgespeichert, verschl&uuml;sselt mit demselben Schl&uuml;ssel womit auch die Daten vom Benutzer abgelegt sind.</p>
+<p>Die anderen, nicht sicherheitsrelevante Daten werden in der Konfigurationsdatei pwsafe.cfg abgespeichert. Diese Datei ist in XML Format abgelegt, mit Aufteilung der Daten per Host Maschine und Benutzer. Somit kann diese Datei von verschiedenen Benutzer und Maschinen gemeinsam benutzt werden.</p>
+<p>Standardm&auml;&szlig;ig wird die Datei pwsafe.cfg im selben Verzeichnis wie die ausf&uuml;hrbare Anwendung pwsafe.exe abgelegt. Wenn hingegen die Umgebungsvariable PWS_PREFSDIR gesetzt ist, wird <b>Passowrd Safe</b> die Datei verwenden die dort angegeben ist. Dies ist dann sinnvoll, wenn der Schreibzugriff zum Verzeichnis wo pwsafe.exe liegt eingeschr&auml;nkt ist.<br>
+</p>
+<p>Die folgenden Tabellen beschreiben die Konfigurationselemente. Die meisten k&ouml;nnen mit dem Dialog <b><a href="manage_menu.html">Verwalten-&gt;Optionen</a></b> konfiguriert werden.
+Weil wir XML einsetzen, sind die Namen f&uuml;r Werte und Felder case sensitif. Voreinstellungen die in der Datei "pwsafe.cfg" abgespeichert sind, treffen auf alle Datenbanken zu. Diese die nur in der Datenbank abgespeichert sind, sind nur f&uuml;r diese Datenbank relevant. In Windows Vista oder Windows 7, kann man die Datei pwsafe.cfg in folgendem Verzeichn is finden: "C:\Users\<username>\AppData\Local\PasswordSafe" und in Windows XP, finden Sie es in: "C:\Documente und Einstellungen\<benutzername>\Application Data\PasswordSafe". Beachten Sie das beide Verzeichnisse versteckt sein k&ouml;nnen, und ev. sollten Sie die Verzeichniseigenschaften so ab&auml;ndern, dass Sie sie sehen k&ouml;nnen. Veraltete Voreinstellungen werden nicht aufgelistet.</p>
+<p>Beachten Sie dass nur die nicht standardm&auml;&szlig;en Voreinstellungen in die Konfigurationsdatei oder die Datenbank abgelegt werden.</p>
+<p>
+<B>Hinweis: &auml;ndern sie KEINE der Voreinstellungen in der Datei pwsafe.cfg von Hand. 
+Dies k&onnte unerwartete und nicht voraussagbare Folgen haben. Auch wenn wir uns viel M&uuml;he geben alle Werte die wir einlesen zu verifizieren, gibt es keine Garantie daf&uuml;r dass h&auml;ndisch ge&auml;nderte Werte nicht zu Probleme f&uuml;hren k&ouml;nnen.</B></p>
+
+<hr>
+<h4>Boolesche (wahr ('1')/falsch('0')) Voreinstellungen</h4>
+
+
 <table border="1" cellpadding="2" cellspacing="2" width="100%">
-  <tbody>
-    <tr>
-      <td style="font-weight: bold;" align="center" valign="middle">Voreinstellung</td>
-      <td style="font-weight: bold;" align="center" valign="middle">Standard</td>
-      <td style="font-weight: bold;" align="center" valign="middle">Wo gespeichert</td>
-      <td style="font-weight: bold;" align="center" valign="middle">Kommentar</td>
-    </tr>
-    <tr>
-      <td style="width: 185px;">currentbackup</td>
-      <td style="width: 80px;"> &lt;keine&gt;</td>
-      <td style="width: 110px;">pwsafe.cfg</td>
-      <td style="width: 399px;"><small>Pfad und Name der letzten Zwischen-Sicherung</small></td>
-    </tr>
-    <tr>
-      <td style="width: 185px;">currentfile</td>
-      <td style="width: 80px;"> &lt;keine&gt;</td>
-      <td style="width: 110px;">pwsafe.cfg</td>
-      <td style="width: 399px;"><small>Zuletzt ge&ouml;ffnete Datei</small></td>
-    </tr>
-    <tr>
-      <td style="width: 185px;">lastview</td>
-      <td style="width: 80px;"> Baum</td>
-      <td style="width: 110px;">pwsafe.cfg</td>
-      <td style="width: 399px;"><small>Letzte ausgew&auml;hlte Ansicht: Baum oder Tabelle</small></td>
-    </tr>
-    <tr>
-      <td style="width: 185px;">defusername</td>
-      <td style="width: 80px;"> &lt;keine&gt;</td>
-      <td style="width: 110px;">Datenbank</td>
-      <td style="width: 399px;"><small></small></td>
-    </tr>
-    <tr>
-      <td style="width: 185px;">treefont</td>
-      <td style="width: 80px;"> &lt;keine&gt;</td>
-      <td style="width: 110px;">pwsafe.cfg</td>
-      <td style="width: 399px;"><small></small></td>
-    </tr>
-    <tr>
-      <td style="width: 185px;">BackupPrefixValue</td>
-      <td style="width: 80px;"> &lt;keine&gt;</td>
-      <td style="width: 110px;">pwsafe.cfg</td>
-      <td style="width: 399px;"><small></small></td>
-    </tr>
-    <tr>
-      <td style="width: 185px;">BackupDir</td>
-      <td style="width: 80px;"> &lt;keine&gt;</td>
-      <td style="width: 110px;">pwsafe.cfg</td>
-      <td style="width: 399px;"><small></small></td>
-    </tr>
-    <tr>
-      <td style="width: 185px;">AltBrowser</td>
-      <td style="width: 80px;"> &lt;keine&gt;</td>
-      <td style="width: 110px;">pwsafe.cfg</td>
-      <td style="width: 399px;"><small>Alternativer Browser</small></td>
-    </tr>
-    <tr>
-      <td style="width: 185px;">ListColumns</td>
-      <td style="width: 80px;"> &lt;keine&gt;</td>
-      <td style="width: 110px;">pwsafe.cfg</td>
-      <td style="width: 399px;"><small>Nicht-Standardm&auml;&szlig;ige Spaltenreihenfolge</small></td>
-    </tr>
-    <tr>
-      <td style="width: 185px;">ColumnWidths</td>
-      <td style="width: 80px;"> &lt;keine&gt;</td>
-      <td style="width: 110px;">pwsafe.cfg</td>
-      <td style="width: 399px;"><small>Nicht-Standardm&auml;&szlig;ige Spaltenbreite</small></td>
-    </tr>
-    <tr>
-      <td style="width: 185px;">DefaultAutotypeString</td>
-      <td style="width: 80px;">\u\t\p\t\n</td>
-      <td style="width: 110px;">Datenbank</td>
-      <td style="width: 399px;"><small></small></td>
-    </tr>
-  </tbody>
+<col style="font-size:10pt;" align="left"  />
+<col style="font-size:10pt;" align="center"  />
+<col style="font-size:10pt;" align="center"  />
+<col style="font-size:10pt;" align="left" />
+
+<thead>
+<th>Voreinstellung</th>
+<th>Standard</th>
+<th>Wo gespeichert</th>
+<th>Kommentar</th>
+</thead>
+
+<tbody>
+<tr>
+<td>AlwaysOnTop</td>
+<td>falsch</td>
+<td>pwsafe.cfg</td>
+<td>Hauptfenster immer im Vordergrund</td>
+</tr>
+
+<tr>
+<td>ShowPWDefault</td>
+<td>falsch</td>
+<td>Datenbank</td>
+<td>Das Passwort wird standardm&auml;&szlig;ig bei Einf&uuml;gen/Bearbeiten angezeigt</td>
+</tr>
+
+<tr>
+<td>ShowUsernameInTree</td>
+<td>wahr</td>
+<td>Datenbank</td>
+<td>Der Benutzername wird in Ansicht 'Baumstruktur' angezeigt</td>
+</tr>
+
+<tr>
+<td>ShowPasswordInTree</td>
+<td>falsch</td>
+<td>Datenbank</td>
+<td>Das Passwort wird in Ansicht 'Baumstruktur' angezeigt (Der Benutzername MUSS auch angezeigt werden)</td>
+</tr>
+
+<tr>
+<td>ShowNotesDefault</td>
+<td>falsch</td>
+<td>Datenbank</td>
+<td>Die Notizen werden bei Einf&uuml;gen/Bearbeiten angezeigt</td>
+</tr>
+
+<tr>
+<td>ShowNotesAsToolTipsInViews</td>
+<td>falsch</td>
+<td>pwsafe.cfg</td>
+<td>Die Notizen eine Eintrages werden als Tip angezeigt in Tabellen- und Baum-Ansicht (nur die ersten 250 Zeichen werden angezeigt)</td>
+</tr>
+
+<tr>
+<td>SortAscending</td>
+<td>wahr</td>
+<td>Datenbank</td>
+<td>Die letzte Sortierrichtung in Ansicht Tabelle (aufsteigend oder abfallend)</td>
+</tr>
+
+<tr>
+<td>UseDefaultUser</td>
+<td>falsch</td>
+<td>Datenbank</td>
+<td>Der Standardtext f&uuml;r den Benutzer wird benutzt beim Einf&uuml;gen eines neuen Eintrages</td>
+</tr>
+
+<tr>
+<td>SaveImmediately</td>
+<td>wahr</td>
+<td>Datenbank</td>
+<td>Die Datenbank wird gesichert nach jedem Einf&uuml;gen und Bearbeiten</td>
+</tr>
+
+<tr>
+<td>PWUseLowercase</td>
+<td>wahr</td>
+<td>Datenbank</td>
+<td>Passwortrichtlinie - verwende Kleinbuchstaben</td>
+</tr>
+
+<tr>
+<td>PWUseUppercase</td>
+<td>wahr</td>
+<td>Datenbank</td>
+<td>Passwortrichtlinie - verwende Gro&szlig;buchstaben</td>
+</tr>
+
+<tr>
+<td>PWUseDigits</td>
+<td>wahr</td>
+<td>Datenbank</td>
+<td>Passwortrichtlinie - verwende Zahlen</td>
+</tr>
+
+<tr>
+<td>PWUseSymbols</td>
+<td>wahr</td>
+<td>Datenbank</td>
+<td>Passwortrichtlinie - verwende Symbole</td>
+</tr>
+
+<tr>
+<td>PWUseHexDigits</td>
+<td>falsch</td>
+<td>Datenbank</td>
+<td>Passwortrichtlinie - generiere ein Passwort mit ausschlie&szlig;lich hexadezimale Zeichen (immer eine gerade Anzahl)</td>
+</tr>
+
+<tr>
+<td>PWUseEasyVision</td>
+<td>falsch</td>
+<td>Datenbank</td>
+<td>Passwortrichtlinie - verwende Easy-Vision (leicht zu lesende) Zeichen, sodass kein Zeichen mit einem anderen verwechselt werden kann (z.B. Nummer 0 (Null) und Buchstabe 0 (Gro&szlig;buchstabe O) usw.</td>
+</tr>
+
+<tr>
+<td>PWMakePronounceable</td>
+<td>falsch</td>
+<td>Datenbank</td>
+<td>Passwortrichtlinie - konvertiere das generierte Passwort besser aussprechbar</td>
+</tr>
+
+<tr>
+<td>dontaskquestion</td>
+<td>falsch</td>
+<td>pwsafe.cfg</td>
+<td>Keine Best&auml;tigung beim Kopieren des Passwortes in die Zwischanablage</td>
+</tr>
+
+<tr>
+<td>deletequestion</td>
+<td>falsch</td>
+<td>pwsafe.cfg</td>
+<td>Keine Best&auml;tigung beim L&ouml;schen eines einzelnen Eintrages</td>
+</tr>
+
+<tr>
+<td>DatabaseClear</td>
+<td>falsch</td>
+<td>pwsafe.cfg</td>
+<td>Sperre die Datenbank beim Minimieren. Dies impliziert ein L&ouml;schen der Datenbank im Arbeitsspeicher</td>
+</tr>
+
+<tr>
+<td>QuerySetDef</td>
+<td>wahr</td>
+<td>pwsafe.cfg</td>
+<td>Frage den Benutzer jedesmal beim Einf&uuml;gen oder Bearbeiten eines Eintrages, ob der Benutzername als Standard f&uuml; alle Neueintr&auml;ge &uuml;bernommen werden soll</td>
+</tr>
+
+<tr>
+<td>UseNewToolbar</td>
+<td>wahr</td>
+<td>pwsafe.cfg</td>
+<td>Benutze die Moderne oder Klassische Toolleiste</td>
+</tr>
+
+<tr>
+<td>UseSystemTray</td>
+<td>wahr</td>
+<td>pwsafe.cfg</td>
+<td>Stelle ein <b>Password Safe</b> Symbol im Windows Infobereich</td>
+</tr>
+
+<tr>
+<td>LockOnWindowLock</td>
+<td>wahr</td>
+<td>pwsafe.cfg</td>
+<td>Sperre die <b>Password Safe</b> Datenbank wenn der Benutzer die Windows Session sperrt</td>
+</tr>
+
+<tr>
+<td>EscExits</td>
+<td>wahr</td>
+<td>pwsafe.cfg</td>
+<td>Die ESC Taste schlie&szlig;t die Datenbank und beendet <b>Password Safe</b> (wenn der Windows Infobereich nicht benutzt wird)</td>
+</tr>
+
+<tr>
+<td>HotKeyEnabled</td>
+<td>falsch</td>
+<td>pwsafe.cfg</td>
+<td>Wahr wenn der Benutzer ein Hotkey definiert hat um schnell auf <b>Password Safe</b> zuzugreifen</td>
+</tr>
+
+<tr>
+<td>MRUOnFileMenu</td>
+<td>wahr</td>
+<td>pwsafe.cfg</td>
+<td>Die zuletzt benutzten Datenbanken werden im Menu Datei (oder ein Untermenu) angezeigt</td>
+</tr>
+
+<tr>
+<td>MaintainDateTimeStamps</td>
+<td>falsch</td>
+<td>Datenbank</td>
+<td>Der letzte Zugriff auf ein Eintrag wird gespeichert, wenn die Datenbank in Schreibmodus ist</td>
+</tr>
+
+<tr>
+<td>SavePasswordHistory</td>
+<td>falsch</td>
+<td>Datenbank</td>
+<td>Speichere die alten Passw&ouml;rter eines Eintrages beim Zuweisen eines neuen Passwortes</td>
+</tr>
+
+<tr>
+<td>BackupBeforeEverySave</td>
+<td>wahr</td>
+<td>pwsafe.cfg</td>
+<td>Benenne die aktuelle Datenbank um nach den Sicherungsregeln bevor &Auml;nderungen gespeichert werden.</td>
+</tr>
+
+<tr>
+<td>PreExpiryWarn</td>
+<td>falsch</td>
+<td>pwsafe.cfg</td>
+<td>Warne den Benutzer beim &Ouml;ffnen einer Datenbank falls irgendwelche Eintr&auml;ge abgelaufen sind oder bald ablaufen</td>
+</tr>
+
+<tr>
+<td>ExplorerTypeTree</td>
+<td>falsch</td>
+<td>pwsafe.cfg</td>
+<td>Zeige die Gruppe zuerst an in Baum-Ansicht</td>
+</tr>
+
+<tr>
+<td>ListViewGridLines</td>
+<td>falsch</td>
+<td>pwsafe.cfg</td>
+<td>Zeige Gitterlinien in Tabellen-Ansicht</td>
+</tr>
+
+<tr>
+<td>MinimizeOnAutotype</td>
+<td>wahr</td>
+<td>pwsafe.cfg</td>
+<td>Minimiere <b>Password Safe</b> w&auml;hrend Autom. Eingabe. Die Datenbank kann auch gesperrt werden, abh&auml;ngig von den Einstellungenzum Minimieren</td>
+</tr>
+
+<tr>
+<td>ShowToolbar</td>
+<td>wahr</td>
+<td>pwsafe.cfg</td>
+<td>Ziege die Toolleiste</td>
+</tr>
+
+<tr>
+<td>ShowDragbar</td>
+<td>wahr</td>
+<td>pwsafe.cfg</td>
+<td>Zeige die Dragleiste</td>
+</tr>
+
+<tr>
+<td>ShowFindToolBarOnOpen</td>
+<td>wahr</td>
+<td>pwsafe.cfg</td>
+<td>Zeige die Suchleiste wenn <b>Password Safe</b> startet. Dies wird festgelegt an Hand des Zustandes von <b>Password Safe</b> beim letzten Beenden</td>
+</tr>
+
+<tr>
+<td>DefaultOpenRO</td>
+<td>falsch</td>
+<td>pwsafe.cfg</td>
+<td>Setze standardm&auml;&szlig;g auf Nur-Lesen der Datenbank beom &Ouml;ffnen</td>
+</tr>
+
+<tr>
+<td>MultipleInstances</td>
+<td>wahr</td>
+<td>pwsafe.cfg</td>
+<td>Erlaube mehrere Instanzen von <b>Password Safe</b>. Eine &Auml;nderung dieses Wertes wirkt sich erst aus nach einem Neustart von <b>Password Safe</b></td>
+</tr>
+
+<tr>
+<td>ClearClipboardOnMinimize</td>
+<td>wahr</td>
+<td>pwsafe.cfg</td>
+<td>L&ouml;sche die Zwischenablage mit <b>Password Safe</b> Information beim Minimieren</td>
+</tr>
+<tr>
+
+<td>ClearClipboardOnExit</td>
+<td>wahr</td>
+<td>pwsafe.cfg</td>
+<td>L&ouml;sche die Zwischenablage mit <b>Password Safe</b> Information beim Beenden</td>
+</tr>
+
+<tr>
+<td>NotesWordWrap</td>
+<td>wahr</td>
+<td>pwsafe.cfg</td>
+<td>Notizen werden umgebrochen in der Anzeige w&auml;hrend Einf&uuml;gen/Bearbeiten</td>
+</tr>
+
+<tr>
+<td>LockDBOnIdleTimeout</td>
+<td>wahr</td>
+<td>Datenbank</td>
+<td>Sperren der Datenbank wenn der Benutzer den PC f&uuml;r eine Anzahl Minuten nicht verwendet hat. Siehe "IdleTimeout"
+Integer Voreinstellung f&uuml;r den Grenzwert in Minuten</td>
+</tr>
+
+<tr>
+<td>HighlightChanges</td>
+<td>wahr</td>
+<td>pwsafe.cfg</td>
+<td>Hervorheben von ge&auml;nderte und nicht abgespeicherte Eintr&auml;ge in blau</td>
+</tr>
+
+<tr>
+<td>HideSystemTray</td>
+<td>falsch</td>
+<td>pwsafe.cfg</td>
+<td>Verstecken des Symbol <b>Password Safe</b> im Infobereich. Dies kann nur gesetzt werden, wenn schon der Hotkey gesetzt wurde</td>
+</tr>
+
+<tr>
+<td>UsePrimarySelectionForClipboard</td>
+<td>falsch</td>
+<td>pwsafe.cfg</td>
+<td>Festlegung welche Zwischenablage verwendet wird (nur Linux)</td>
+</tr>
+
+<tr>
+<td>CopyPasswordWhenBrowseToURL</td>
+<td>wahr</td>
+<td>Datenbank</td>
+<td>Kopiere das Passwort vom Eintrag in die Zwischenablage beim Aufruf von "Gehe zu URL"</td>
+</tr>
+
+</tbody>
 </table>
+
+<h4>Numerische Voreinstellungen</h4>
+
+<table border="1" cellpadding="2" cellspacing="2" width="100%">
+<col style="font-size:10pt;" align="left"/>
+<col style="font-size:10pt;" align="center"/>
+<col style="font-size:10pt;" align="center"/>
+<col style="font-size:10pt;" align="center"/>
+<col style="font-size:10pt;" align="center"/>
+<col style="font-size:10pt;" align="left" />
+
+<thead>
+<th>Voreinstellung</th>
+<th>Standard</th>
+<th>Wo gespeichert</th>
+<th>Min</th>
+<th>Max</th>
+<th>Kommentar</th>
+</thead>
+
+<tbody>
+<tr>
+<td>column1width</td>
+<td>n/a</td>
+<td>pwsafe.cfg</td>
+<td>n/a</td>
+<td>n/a</td>
+<td>Die Breite der 1. Spalte in der Ansicht Tabelle beim letzten Beenden von <b>Password Safe</b></td>
+</tr>
+
+<tr>
+<td>column2width</td>
+<td>n/a</td>
+<td>pwsafe.cfg</td>
+<td>n/a</td>
+<td>n/a</td>
+<td>Die Breite der 2. Spalte in der Ansicht Tabelle beim letzten Beenden von <b>Password Safe</b></td>
+</tr>
+
+<tr>
+<td>column3width</td>
+<td>n/a</td>
+<td>pwsafe.cfg</td>
+<td>n/a</td>
+<td>n/a</td>
+<td>Die Breite der 3. Spalte in der Ansicht Tabelle beim letzten Beenden von <b>Password Safe</b></td>
+</tr>
+
+<tr>
+<td>column4width</td>
+<td>n/a</td>
+<td>pwsafe.cfg</td>
+<td>n/a</td>
+<td>n/a</td>
+<td>Die Breite der 4. Spalte in der Ansicht Tabelle beim letzten Beenden von <b>Password Safe</b></td>
+</tr>
+
+<tr>
+<td>sortedcolumn</td>
+<td>0</td>
+<td>pwsafe.cfg</td>
+<td>0</td>
+<td>15</td>
+<td>Zuletzt verwendete Spalte um die Ansicht Tabelle zu sortieren</td>
+</tr>
+
+<tr>
+<td>PWDefaultLength</td>
+<td>12</td>
+<td>Datenbank</td>
+<td>4</td>
+<td>1024</td>
+<td>Standard Passwortl&auml;nge</td>
+</tr>
+
+<tr>
+<td>maxmruitems</td>
+<td>4</td>
+<td>pwsafe.cfg</td>
+<td>0</td>
+<td>20</td>
+<td>Anzahl zuletzt benutzte Datenbanken gesichert im Menu Datei</td>
+</tr>
+
+<tr>
+<td>IdleTimeout</td>
+<td>5</td>
+<td>Datenbank</td>
+<td>1</td>
+<td>120</td>
+<td>Grenzwert in Minuten um festzulegen wann <b>Password Safe</b> nach inaktiver Zeit gesperrt wird</td>
+</tr>
+
+<tr>
+<td>DoubleClickAction</td>
+<td>Kopiere Password</td>
+<td>pwsafe.cfg</td>
+<td>n/a</td>
+<td>n/a</td>
+<td>Siehe Hilfe Eintrag <a href="imp_exp_text_details.html">DCA Werte Export</a></td>
+</tr>
+
+<tr>
+<td>HotKey</td>
+<td>keine</td>
+<td>pwsafe.cfg</td>
+<td>n/a</td>
+<td>n/a</td>
+<td>Wert vom Hotkey</td>
+</tr>
+
+<tr>
+<td>MaxREItems</td>
+<td>25</td>
+<td>pwsafe.cfg</td>
+<td>0</td>
+<td>25</td>
+<td>Maximum Anzahl "letzte Einträge" zum Speichern in die Datenbank und zur Anzeige im Infobereich, um einen schnelleren Zugriff zu erm&ouml;glichen</td>
+</tr>
+
+<tr>
+<td>TreeDisplayStatusAtOpen</td>
+<td>AllCollapsed</td>
+<td>Datenbank</td>
+<td>n/a</td>
+<td>n/a</td>
+<td>Werte sind: Alles zugeklappt, Alles aufgeklappt oder Wert bei der letzten Sicherung</td>
+</tr>
+
+<tr>
+<td>NumPWHistoryDefault</td>
+<td>3</td>
+<td>Datenbank</td>
+<td>0</td>
+<td>255</td>
+<td>Wie viele Passwörter werden in der Historie beibehalten</td>
+</tr>
+
+<tr>
+<td>BackupSuffix</td>
+<td>0</td>
+<td>pwsafe.cfg</td>
+<td>n/a</td>
+<td>n/a</td>
+<td>Wete sind: keine, DatumUhrzeit oder eine inkrementelle Nummer</td>
+</tr>
+
+<tr>
+<td>BackupMaxIncremented</td>
+<td>1</td>
+<td>pwsafe.cfg</td>
+<td>1</td>
+<td>999</td>
+<td>Nur g&uuml;ltig wenn 'BackupSuffix' eine inkrementelle Nummer ist</td>
+</tr>
+
+<tr>
+<td>PreExpiryWarnDays</td>
+<td>1</td>
+<td>pwsafe.cfg</td>
+<td>1</td>
+<td>30</td>
+<td>Gegebenenfalls warnen wenn Passw&ouml;rter bald ablaufen</td>
+</tr>
+
+<tr>
+<td>ClosedTrayIconColour</td>
+<td>0</td>
+<td>pwsafe.cfg</td>
+<td>0</td>
+<td>0</td>
+<td>Stelle die Farbe des <b>Password Safe</b> Symbol einer geschlossenen Datenbank im Infobereich ein:<br>
+0 = Schwwarz, 1 - Blau, 2 = Wei&szlig; und 3 = Gelb</td>
+</tr>
+
+<tr>
+<td>PWDigitMinLength</td>
+<td>0</td>
+<td>Datenbank</td>
+<td>0</td>
+<td>1024</td>
+<td>Standard minimal Anzahl Nummern in einem generierten Passwort</td>
+</tr>
+
+<tr>
+<td>PWLowercaseMinLength</td>
+<td>0</td>
+<td>Datenbank</td>
+<td>0</td>
+<td>1024</td>
+<td>Standard minimal Anzahl Kleinbuchstaben in einem generierten Passwort</td>
+</tr>
+
+<tr>
+<td>PWUppercaseMinLength</td>
+<td>0</td>
+<td>Datenbank</td>
+<td>0</td>
+<td>1024</td>
+<td>Standard minimal Anzahl Gro&szlig;buchstaben in einem generierten Passwort</td>
+</tr>
+
+<tr>
+<td>PWSymbolMinLength</td>
+<td>0</td>
+<td>Datenbank</td>
+<td>0</td>
+<td>1024</td>
+<td>Standard minimal Anzahl Symbole in einem generierten Passwort</td>
+</tr>
+
+<tr>
+<td>OptShortcutColumnWidth</td>
+<td>92</td>
+<td>pwsafe.cfg</td>
+<td>10</td>
+<td>512</td>
+<td>Gr&ouml;&szlig;e der Spalten in
+<a href="shortcuts_tab.html">Verwalten&nbsp;&rarr;&nbsp;Optionen&nbsp;&rarr;&nbsp;Schnelltasten</a></td>
+</tr>
+
+</tbody>
+</table>
+
+<h4>Textuelle Voreinstellungen</h4>
+
+<table border="1" cellpadding="2" cellspacing="2" width="100%">
+<col style="font-size:10pt;" align="left"/>
+<col style="font-size:10pt;" align="center"/>
+<col style="font-size:10pt;" align="center"/>
+<col style="font-size:10pt;" align="left" />
+
+<thead>
+<th>Voreinstellung</th>
+<th>Standard</th>
+<th>Wo gespeichert</th>
+<th>Kommentar</th>
+</thead>
+
+<tbody>
+<tr>
+<td>currentbackup</td>
+<td>&lt;keine&gt;</td>
+<td>pwsafe.cfg</td>
+<td>Pfad und Name der letzten Zwischen-Sicherung</td>
+</tr>
+
+<tr>
+<td>currentfile</td>
+<td>&lt;keine&gt;</td>
+<td>pwsafe.cfg</td>
+<td>Aktuel (d.h. zuletzt) ge&ouml;ffnete Datei</td>
+</tr>
+
+<tr>
+<td>lastview</td>
+<td>tree</td>
+<td>pwsafe.cfg</td>
+<td>Letzte ausgewählte Ansicht: Baum oder Tabelle</td>
+</tr>
+
+<tr>
+<td>DefaultUsername</td>
+<td>&lt;keine&gt;</td>
+<td>Datenbank</td>
+<td>Standardwert f&uuml;r den Benutzername beim Erstellen eines neuen Eintrages</td>
+</tr>
+
+<tr>
+<td>treefont</td>
+<td>&lt;keine&gt;</td>
+<td>pwsafe.cfg</td>
+<td>Information &uuml;ber den verwendeten Font in der Baumansicht</td>
+</tr>
+
+<tr>
+<td>PasswordFont</td>
+<td>&lt;keine&gt;</td>
+<td>pwsafe.cfg</td>
+<td>Information &uuml;ber den verwendeten Font um Passw&ouml;rter anzuzeigen</td>
+</tr>
+
+<tr>
+<td>BackupPrefixValue</td>
+<td>&lt;keine&gt;</td>
+<td>pwsafe.cfg</td>
+<td>Normalerweise wird der Name der aktuellen Datenbank als Vorspann f&uuml;r die Sicherungsdatei verwendet. 
+Mit dieser Auswahl kann das &uuml;berschrieben werden.</td>
+</tr>
+
+<tr>
+<td>BackupDir</td>
+<td>&lt;keine&gt;</td>
+<td>pwsafe.cfg</td>
+<td>Normalerweise wird die Sicherungsdatei im selben Verzeichnis wie die aktuelle Datenbank abgespeichert. 
+Mit dieser Auswahl kann das &uuml;berschrieben werden</td>
+</tr>
+
+<tr>
+<td>AltBrowser</td>
+<td>&lt;keine&gt;</td>
+<td>pwsafe.cfg</td>
+<td>Voller Pfad zum alternativen Browser</td>
+</tr>
+
+<tr>
+<td>ListColumns</td>
+<td>&lt;keine&gt;</td>
+<td>pwsafe.cfg</td>
+<td>Nicht-standardm&auml;&szlig;ige Spaltenreihenfolge in Ansicht Tabelle.
+Beachten Sie dass die Liste von mit Komma getrennten Werte eine interne Nummernschema folgt, 
+und nicht von Hand ge&auml;dert werden soll</td>
+</tr>
+
+<tr>
+<td>ColumnWidths</td>
+<td>&lt;keine&gt;</td>
+<td>pwsafe.cfg</td>
+<td>Nicht-standardm&auml;&szlig;ige Spaltenbreite in Ansicht Tabelle</td>
+</tr>
+
+<tr>
+<td>DefaultAutotypeString</td>
+<td>\u\t\p\t\n</td>
+<td>Datenbank</td>
+<td>Der standardm&auml;&szlig;ige Satz f&uuml;r die Autom. Eingabe. Beachten Sie dass jeder Eintrag diesen Wert &uuml;berschreiben kann</td>
+</tr>
+
+<tr>
+<td>AltBrowserCmdLineParms</td>
+<td>&lt;keine&gt;</td>
+<td>pwsafe.cfg</td>
+<td>Spezielle Zeilenparameter f&uuml;r den alternativen Browser, wenn spezifiert</td>
+</tr>
+
+<tr>
+<td>MainToolBarButtons</td>
+<td>&lt;keine&gt;</td>
+<td>pwsafe.cfg</td>
+<td>Eine Liste der Tasten in der Toolleiste und deren Reihenfolge, wie vom Benutzer eingestellt. Ein Trennzeichen sieht so &#126; aus</td>
+</tr>
+
+<tr>
+<td>TreeListSampleText</td>
+<td>"AaBbYyZz&nbsp;0O1IlL"</td>
+<td>pwsafe.cfg</td>
+<td>Beispieltext zur Verwendung bei der Entscheidung welcher Font bei der Baumstruktur verwendet werden soll</td>
+</tr>
+
+<tr>
+<td>PswdSampleText</td>
+<td>"AaBbYyZz&nbsp;0O1IlL"</td>
+<td>pwsafe.cfg</td>
+<td>Beispieltext zur Verwendung bei der Entscheidung welcher Font bei der Anzeige von Passw&ouml;rter verwendet werden soll</td>
+</tr>
+
+<tr>
+<td>VKSampleText</td>
+<td>"AaBbYyZz&nbsp;0O1IlL"</td>
+<td>pwsafe.cfg</td>
+<td>Beispieltext zur Verwendung bei der Entscheidung welcher Font in der virtuellen Tastatur verwendet werden soll</td>
+</tr>
+
+<tr>
+<td>VKeyboardFontName</td>
+<td>&lt;keine&gt;</td>
+<td>pwsafe.cfg</td>
+<td>Name des Unicode Font der verwendet wird um alle Zeichen in der virtuellen Tastatur anzuzeigen.
+Dies schlie&szlig;t Lateinische und nicht-Lateinische Zeichen ein</td>
+</tr>
+
+<tr>
+<td>LastUsedKeyboard</td>
+<td>&lt;keine&gt;</td>
+<td>pwsafe.cfg</td>
+<td>Speichere den Kode von der zuletzt verwendeten virtuellen Tatatur</td>
+</tr>
+
+<tr>
+<td>AltNotesEditor</td>
+<td>&lt;keine&gt;</td>
+<td>pwsafe.cfg</td>
+<td>Voller Pfadangabe vom Texteditor der beim Editieren vom Notizenfeld (anstelle der standardm&auml&szlig;en Windows-Anwendung)</td>
+</tr>
+
+<tr>
+<td>LanguageFile</td>
+<td>&lt;keine&gt;</td>
+<td>pwsafe.cfg</td>
+<td>Der Kode der zuletzt vom Benutzer eingesetzte Sprachendatei. 
+Es ist wie "LL" oder "LL_CC", wo LL = ISO 639-1 2-Zeichen Sprachenkode z.B.. EN, FR, DE, HE... siehe
+<a href="http://www.loc.gov/standards/iso639-2/">http://www.loc.gov/standards/iso639-2/</a>
+und CC = ISO 3166-1 2-Zeichen L&auml;nderkode z.B. US, GB, FR, CA... siehe
+<a href="http://www.iso.org/iso/en/prods-services/iso3166ma/index.html">http://www.iso.org/iso/en/prods-services/iso3166ma/index.html</a>
+</td>
+</tr>
+
+<tr>
+<td>DefaultSymbols</td>
+<td>&lt;keine&gt;</td>
+<td>Datenbank</td>
+<td>Die Standardliste der Symbole zur Verwendung beim Generieren von Passw&ouml;rter mit Symbole.
+Beachten Sie dass jeder Eintrag diesen Wert &uuml;berschreiben kann
+</td>
+</tr>
+</tbody>
+</table>
+
+
+
 <br>
 <br>
 &nbsp;<!-- Added some white space at the bottom for natural scrolling --><br>

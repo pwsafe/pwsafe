@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta content="text/html;charset=ISO-8859-1" http-equiv="Content-Type">
-  <title>Eintr&auml;ge filtern</title>
+  <title>Filter</title>
 <!-- pwsafe version: 2.14--><!-- Modified: 18/11/2005 --><!--Popup control --><!-- VdG 3.15 DE 31/01/2009 -->
   <script language="javascript" src="html/popups.js">
   </script>
@@ -10,24 +10,27 @@
 </head>
 <body>
 <object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"></object>
-<h2>Eintr&auml;ge filtern</h2>
-<div class="instr"><br>
-Ein "Filter" ist ein Kriterium (oder ein Satz an Kriterien), ob ein Eintrag dem Filter entspricht oder auch nicht. <b>Password Safe</b> erlaubt es Filter zu definieren, um nur die Eintr&auml;ge anzuzeigen, die dem gegebenen Filter entsprechen. Sie k&ouml;nnen das Filter f&uuml;r eine einmalige Abfrage hernehmen, oder Sie k&ouml;nnen die Filter mit Namen versehen und dauerhaft abspeichern. Filter k&ouml;nnen in der Datenbank abgelegt werden, oder extern, um die Filter f&uuml;r mehrere Datenbanken gemeinsam verwenden zu k&ouml;nnen.<br>
-<h3>Filter definieren</h3>
-Um ein neues Filter zu definieren, w&auml;hlen Sie das Men&uuml; <b>Ansicht-&gt;Filter-&gt;Filter neu/bearbeiten</b> aus. Folgender Dialog wird angezeigt:<br>
+<h1>Filter</h1>
+
+<p>Filter k&ouml;nnen im Ansicht erreicht werden.</p>
+<img alt="Filter Menu" src="images/filter_menu.jpg">
+
+<p>Ein "Filter" ist ein Kriterium (oder ein Satz an Kriterien), ob ein Eintrag dem Filter entspricht oder auch nicht. <b>Password Safe</b> erlaubt es Filter zu definieren, um nur die Eintr&auml;ge anzuzeigen, die dem gegebenen Filter entsprechen. Sie k&ouml;nnen das Filter f&uuml;r eine einmalige Abfrage hernehmen, oder Sie k&ouml;nnen die Filter mit Namen versehen und dauerhaft abspeichern. Filter k&ouml;nnen in der Datenbank abgelegt werden, oder extern, um die Filter f&uuml;r mehrere Datenbanken gemeinsam verwenden zu k&ouml;nnen.</p>
+<h2>Filter definieren</h2>
+<p>Um ein neues Filter zu definieren, w&auml;hlen Sie das Men&uuml; <b>Ansicht-&gt;Filter-&gt;Filter neu/bearbeiten</b> aus. Folgender Dialog wird angezeigt:</p>
 <img alt="Dialog Anzeigefilter setzen" src="images/filter.jpg"><br>
-<br>
-Wie Sie sehen, besteht jedes Filter aus einer oder mehreren <b>Zeilen</b>, wobei jede dieser Zeilen ein <b>Kriterium</b> f&uuml;r ein gegebenes <b>Feld</b> umfasst. Die Bedingungen, die in jeder Zeile definiert sind, k&ouml;nnen entweder "und" oder "oder" der Bedingung in der vorherigen Zeile sein. Auf diese Weise k&ouml;nnen Sie Filter zusammenstellen wie:<br><br>
-1. Alle Eintr&auml;ge mit dem Benutzernamen "josef" oder "Josef" oder "JOSEF":<br>
-<img alt="Beispiel 1" src="images/filter-ex1.jpg"><br><br>
-2. Alle Eintr&auml;ge mit dem Benutzernamen "Josef" erstellt nach dem 18ten Januar 2009<br>
-<img alt="Beispiel 2" src="images/filter-ex2.jpg"><br><br>
-3. Alle Eintr&auml;ge mit den Benutzernamen "Josef" oder "Maria"<br>
-<img alt="Beispiel 3" src="images/filter-ex3.jpg"><br>
-<br>
-Wie Sie sehen k&ouml;nnen, k&ouml;nnen Filter einigerma&szlig;en komplex werden.<br>
-<br>
-Die Spalten im Filter sehen wie folgt aus:<br>
+<p>
+Wie Sie sehen, besteht jedes Filter aus einer oder mehreren <b>Zeilen</b>, wobei jede dieser Zeilen ein <b>Kriterium</b> f&uuml;r ein gegebenes <b>Feld</b> umfasst. Die Bedingungen, die in jeder Zeile definiert sind, k&ouml;nnen entweder "und" oder "oder" der Bedingung in der vorherigen Zeile sein. Auf diese Weise k&ouml;nnen Sie Filter zusammenstellen wie:</p>
+<ol>
+<li>Alle Eintr&auml;ge mit dem Benutzernamen "josef" oder "Josef" oder "JOSEF":<br>
+<img alt="Beispiel 1" src="images/filter-ex1.jpg"></li>
+<li>Alle Eintr&auml;ge mit dem Benutzernamen "Josef" erstellt nach dem 18ten Januar 2009<br>
+<img alt="Beispiel 2" src="images/filter-ex2.jpg"></li>
+<li>Alle Eintr&auml;ge mit den Benutzernamen "Josef" oder "Maria"<br>
+<img alt="Beispiel 3" src="images/filter-ex3.jpg"></li>
+</ol>
+<p>Wie Sie sehen k&ouml;nnen, k&ouml;nnen Filter einigerma&szlig;en komplex werden.</p>
+<p>Die Spalten im Filter sehen wie folgt aus:</p>
 <ul>
   <li>'#' - Dies ist die Zeilennummer. Sie wird nur aus Bequemlichkeit angezeigt, und kann nicht ge&auml;ndert werden.</li>
   <li>'?' - Dies markiert, ob die Zeile <b>aktiv</b> ist oder nicht. Nur aktive Zeilen werden angewandt, wenn das Filter eingesetzt wird. Mit Klicken kann die Markierung f&uuml;r die jeweilige Zeile ein- bzw. ausgeschaltet werden.</li>
@@ -37,12 +40,14 @@ Die Spalten im Filter sehen wie folgt aus:<br>
   <li>'Feld' - W&auml;hlt das gew&uuml;nschte Feld aus, z.B. Benutzername, Titel, Gruppe, Notizen, usw.</li>
   <li>'Kriterien' - Stellt den gew&uuml;nschten Wert f&uuml;r das ausgew&auml;hlte Feld ein. Wenn Sie einmal ein Feld ausgew&auml;hlt haben, klicken Sie darauf und ein Dialog wird dann angezeigt womit Sie die erforderlichen Kriterien festlegen k&ouml;nnen.</li>
 </ul>
-</div>
-<h3>Filter anwenden</h3>
-Nach der Definition eines Filters, gen&uuml;gt das Anklicken von '&Uuml;bernehmen', damit das Filter auf die Eintr&auml;ge in der Datenbank angewendet wird. Der Filterdialog bleibt offen. Dies ist n&uuml;tzlich, um die Filterung basierend auf den erreichten Ergebnissen anzupassen und zu verfeinern. Mit Klicken auf 'OK' wird das Filter ausgef&uuml;hrt und der Filterdialog verlassen.<br>
-<br>
-<h3><a name="ManagingFilters"></a>Verwalten</h3>
-Filter definieren und editieren ist ein einfacher und bequemer Weg sie anzuwenden, aber nur f&uuml;r einmal. Wenn Sie allerdings w&uuml;nschen, &ouml;fter mehrere Filter anzuwenden, dann k&ouml;nnen Sie diese abspeichern und im Dialog <b>Ansicht-&gt;Filter-&gt;Verwalten</b> auf einfache Art und Weise verwalten.<br>
+
+<h2>Filter anwenden</h2>
+<p>Nach der Definition eines Filters, gen&uuml;gt das Anklicken von '&Uuml;bernehmen', damit das Filter auf die Eintr&auml;ge in der Datenbank angewendet wird. Der Filterdialog bleibt offen. Dies ist n&uuml;tzlich, um die Filterung basierend auf den erreichten Ergebnissen anzupassen und zu verfeinern. Mit Klicken auf 'OK' wird das Filter ausgef&uuml;hrt und der Filterdialog verlassen.</p>
+<p>Wenn ein Filter aktiv ist, wird die gefilterte und die gesamte Anzahl Eintr&auml;ge in der Datenbank in der Statuszeile angezeigt. Ein rot-weißes Symbol (<img alt="Filter aktiv" src="images/filter_active.jpg">) erscheint ganz rechts. Die Eintr&auml;ge selber werden rot dargestellt.</p>
+<img alt="Filter abgelaufene Passw&ouml;rter" src="images/expired_password_filter.jpg">
+
+<h2><a name="ManagingFilters"></a>Filter Verwalten</h2>
+<p>Filter definieren und editieren ist ein einfacher und bequemer Weg sie anzuwenden, aber nur f&uuml;r einmal. Wenn Sie allerdings w&uuml;nschen, &ouml;fter mehrere Filter anzuwenden, dann k&ouml;nnen Sie diese abspeichern und im Dialog <b>Ansicht-&gt;Filter-&gt;Verwalten</b> auf einfache Art und Weise verwalten.</p>
 <img alt="Filter verwalten" src="images/filter_mng.jpg"><br>
 <br>
 Der Dialog 'Verwalte Filter' hat zwei Tabellen. Die obere listet die Filter auf, und die untere listet die Elemente des ausgew&auml;hlten Filters auf.<br>
