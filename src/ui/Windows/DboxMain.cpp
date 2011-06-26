@@ -2509,15 +2509,19 @@ void DboxMain::UpdateAccessTime(CItemData *pci)
   if (!m_core.IsReadOnly() && bMaintainDateTimeStamps) {
     pci->SetATime();
     SetChanged(TimeStamp);
-    // Need to update view if there
-    if (m_nColumnIndexByType[CItemData::ATIME] != -1) {
-      // Get index of entry
-      DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
-      // Get value in correct format
-      CString cs_atime = pci->GetATimeL().c_str();
-      // Update it
-      m_ctlItemList.SetItemText(pdi->list_index,
-        m_nColumnIndexByType[CItemData::ATIME], cs_atime);
+
+    if (!IsGUIEmpty()) {
+      // Need to update view if there and the display has been
+      // rebuilt/restored after unlocking or minimized
+      if (m_nColumnIndexByType[CItemData::ATIME] != -1) {
+        // Get index of entry
+        DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
+        // Get value in correct format
+        CString cs_atime = pci->GetATimeL().c_str();
+        // Update it
+        m_ctlItemList.SetItemText(pdi->list_index,
+                 m_nColumnIndexByType[CItemData::ATIME], cs_atime);
+      }
     }
   }
 }
