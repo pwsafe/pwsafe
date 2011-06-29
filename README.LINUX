@@ -7,7 +7,7 @@ this is good enough to release as an early beta to gather feedback
 from a wider audience.
 
 2. Supported Distributions:
-Currently Debian 5.0 and Ubuntu 10.04.1 are supported.
+Currently Debian 6.0 and Ubuntu 11.04 are supported.
 
 3. Installation:
 3.1 Download the .deb file that corresponds to your distribution.
