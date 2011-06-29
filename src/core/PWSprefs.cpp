@@ -365,7 +365,7 @@ void PWSprefs::UpdateFromCopyPrefs(const PWSprefs::PrefType ptype)
 {
   // Update real preferences from copy values
   for (int i = 0; i < NumBoolPrefs; i++) {
-    if ((ptype & m_bool_prefs[i].ptype) == m_bool_prefs[i].ptype) {
+    if (ptype == ptAll || m_string_prefs[i].ptype == ptype) {
       // ONLY save in memory - written out at database save (to database and config destination)
       m_prefs_changed[m_bool_prefs[i].ptype == ptDatabase ? DB_PREF : APP_PREF] |=
                                (m_boolValues[i] != m_boolCopyValues[i]);
@@ -378,7 +378,7 @@ void PWSprefs::UpdateFromCopyPrefs(const PWSprefs::PrefType ptype)
   }
 
   for (int i = 0; i < NumIntPrefs; i++) {
-    if ((ptype & m_int_prefs[i].ptype) == m_int_prefs[i].ptype) {
+    if (ptype == ptAll || m_string_prefs[i].ptype == ptype) {
       // ONLY save in memory - written out at database save (to database and config destination)
       m_prefs_changed[m_int_prefs[i].ptype == ptDatabase ? DB_PREF : APP_PREF] |=
                                (m_intValues[i] != m_intCopyValues[i]);
@@ -391,7 +391,7 @@ void PWSprefs::UpdateFromCopyPrefs(const PWSprefs::PrefType ptype)
   }
 
   for (int i = 0; i < NumStringPrefs; i++) {
-    if ((ptype && m_string_prefs[i].ptype) == m_string_prefs[i].ptype) {
+    if (ptype == ptAll || m_string_prefs[i].ptype == ptype) {
       // ONLY save in memory - written out at database save (to database and config destination)
       m_prefs_changed[m_string_prefs[i].ptype == ptDatabase ? DB_PREF : APP_PREF] |=
                                (m_stringValues[i] != m_stringCopyValues[i]);

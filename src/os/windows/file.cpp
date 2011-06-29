@@ -29,6 +29,9 @@
 #include "../dir.h"
 #include "../env.h"
 
+#include "../../core/StringX.h"
+#include "../../core/core.h"
+
 const TCHAR pws_os::PathSeparator = _T('\\');
 
 bool pws_os::FileExists(const stringT &filename)
@@ -289,7 +292,7 @@ bool pws_os::LockFile(const stringT &filename, stringT &locker,
       locker = s_locker.c_str();
       break;
     default:
-      locker = _T("Cannot create lock file - no permission in directory?");
+      LoadAString(locker, IDSC_NOLOCKACCESS);
       break;
     } // switch (error)
     return false;
