@@ -34,9 +34,9 @@
 	</Company_Info>
 	<Program_Info>
 		<Program_Name>PasswordSafe</Program_Name>
-		<Program_Version>3.25</Program_Version>
-		<Program_Release_Month>03</Program_Release_Month>
-		<Program_Release_Day>18</Program_Release_Day>
+		<Program_Version>3.26</Program_Version>
+		<Program_Release_Month>06</Program_Release_Month>
+		<Program_Release_Day>30</Program_Release_Day>
 		<Program_Release_Year>2011</Program_Release_Year>
 		<Program_Cost_Dollars>0</Program_Cost_Dollars>
 		<Program_Cost_Other_Code />
@@ -89,7 +89,7 @@ Oh, and the desktop version of Password Safe is freely available under an Open S
 			<Application_XML_File_URL>http://pwsafe.org/padfiles/pwsafe.xml</Application_XML_File_URL>
 		</Application_URLs>
 		<Download_URLs>
-			<Primary_Download_URL>http://sourceforge.net/projects/passwordsafe/files/passwordsafe/3.25/pwsafe-3.25.exe/download</Primary_Download_URL>
+			<Primary_Download_URL>https://sourceforge.net/projects/passwordsafe/files/passwordsafe/3.26/pwsafe-3.26.exe/download</Primary_Download_URL>
 			<Secondary_Download_URL />
 			<Additional_Download_URL_1 />
 			<Additional_Download_URL_2 />
@@ -97,8 +97,9 @@ Oh, and the desktop version of Password Safe is freely available under an Open S
 	</Web_Info>
 	<Permissions>
 		<Distribution_Permissions>Password Safe is distributed under the Artistic License 2.0, as described in http://www.opensource.org/licenses/artistic-license-2.0.php
-		</Distribution_Permissions>
+
+</Distribution_Permissions>
 		<EULA>Password Safe is distributed under the Artistic License 2.0, as described in http://www.opensource.org/licenses/artistic-license-2.0.php
-		</EULA>
+</EULA>
 	</Permissions>
 </XML_DIZ_INFO>

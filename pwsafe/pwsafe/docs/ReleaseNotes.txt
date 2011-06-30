@@ -10,26 +10,29 @@ releases may be found in the file ChangeLog.txt.
 
 New Features for 3.26
 =====================
-[3288341] Autotype now added to the DragBar. Drag the image to an input area
-on another Window (e.g. Browser) and PasswordSafe will begin Autotype from there.
-[3286721] User can now toggle the database between read-only and read-write
-mode (and vice versa) via a menu item or by double-clicking on the current
-R-O or R/W indicator in the Status Bar.
-[3203152] The displayed language can be changed 'on-the-fly'.
+[3288341] Autotype has been added to the DragBar. Drag the image to an
+input area on another Window (e.g., Browser) and PasswordSafe will
+begin Autotype from there. 
+[3286721] User can now toggle between read-only and read-write modes
+via a menu item or by double-clicking on the current R-O or R/W
+indicator in the Status Bar.
+[3203152] The displayed language can now be changed via the new
+Manage->Change Language menu.
 [3065111] Add/Edit now displays both the Application's (PasswordSafe) and the
 current database's default Autotype string (if set via Manage->Options).
 [2964804, 1855389] The user can specify the list of symbols valid for
 password generation, and can override this for any particular
-entry. Note: the inbuilt special symbols 
-for EasyVision and Pronounceable passwords cannot be overriden in either case.
+entry (except when EasyVision or Pronounceable passwords are chosen).
 [1831893, 1471134] Added Autotype code "\s" to send "Shift+Tab" (back tab).
-[] Allow user to control copying of the password to clipboard when performing
-"Browse to URL" via an option in Options->Security. This is a database option
-i.e., you can have different setting for different databases.
-[] Support importing of TXT, CSV files and XML exported from KeePass V1 and KeePass V2
-XML files. Note that KeePass V2's export in the V1 format is does not conform to their
-own format as specified by their V1 product and can not be imported. Please review our
-Help file for the settings in KeePass required during their export.
+[] Allow user to control copying of the password to clipboard when
+performing "Browse to URL" via an option in Options->Security. This is
+a database option i.e., you can have different setting for different
+databases.
+[] Support importing of TXT, CSV files and XML exported from KeePass
+V1 and KeePass V2 XML files. Note that KeePass V2's export in the V1
+format is does not conform to their own format as specified by their
+V1 product and can not be imported. Please review our Help file for
+the settings in KeePass required during their export. 
 
 Changes to Existing Features in 3.26
 ====================================
@@ -40,38 +43,40 @@ the Set and Clear buttons after changing values.
 [] The default password generation policy is now for 12 character
 passwords that include symbol characters (previous default was 8, no
 symbols).
-[] Unknown database header fields and unknown entry fields are no longer exported
-when a database is exported to XML as there is no mechanism to re-check them during
-import. Exporting to XML and then importing to a new database can be used to remove
-these unknown fields.
-[] Date time fields, when exported to XML, now are in the W3C dateTime standard format
-instead of PasswordSafe's.  This release can import XML files with date time fields in
-either of these forms. The next release will only be able to process the W3C standard.
-[] Fully support importing of TXT files exported from KeePass V1 including the Group Tree
-structure, URL and date time fields. Please review the online file for
-more details.
+[] Unknown database header fields and unknown entry fields are no
+longer exported when a database is exported to XML as there is no
+mechanism to re-check them during import. Exporting to XML and then
+importing to a new database can be used to remove these unknown
+fields.
+[] Date time fields, when exported to XML, now are in the W3C dateTime
+standard format instead of PasswordSafe's.  This release can import
+XML files with date time fields in either of these forms. The next
+release will only be able to process the W3C standard.
+[] Fully support importing of TXT files exported from KeePass V1
+including the Group Tree structure, URL and date time fields. Please
+review the online help for more details.
 
 Bugs fixed in 3.26
 ==================
 [3325116] Users can no longer select an entry via the System Tray
-icon's Recent Entry list if the display has not been restored after
+icon's Recent Entry menu if the display has not been restored after
 minimize or unlock.
-[3306357, 3062632, 2888026] User preference changes no longer lost. This also allows
-user to change database preferences even if database is read-only, although can't be
-saved with the database.
-[3303018] Filters with quotes in their name are now correctly exported, imported
-and displayed in the Manage Filters dialog.
-[3301904] Export XML, export Text and the export of filters functions now process
-file names and paths containing non-Latin characters.  In addition, when the specified
-path does not exist because of missing directories, they are created
-as neeeded.
-[3234204] PasswordSafe no longer ends if the command flag is set to "-s <databasename>".
-[3088187] Correct entry in List View is now used for Autotype when using the keyboard
-to select the entry when PasswordSafe first opens.
-[] Controls in Edit are now disabled if entry is protected, even though the user could
-not have saved any changes.
-[] Compare databases now correctly compares the 'Protect' and password policy 'symbols'
-fields of entries.
+[3306357, 3062632, 2888026] User preference changes are now correctly
+saved. This includes allowing user to change database preferences when
+the database is read-only.
+[3303018] Filters with quotes in their name are now correctly
+exported, imported and displayed in the Manage Filters dialog.
+[3301904] Export XML, export Text and the export of filters functions
+now process file names and paths containing non-Latin characters.  In
+addition, missing directories in the specified path are created as
+neeeded.
+[3234204] PasswordSafe no longer exits if the command flag is set to
+"-s <databasename>".
+[3088187] The correct entry in List View is now used for Autotype when
+using the keyboard to select the entry when PasswordSafe first opens.
+[] Controls in Edit are now disabled if entry is protected.
+[] Compare databases now correctly compares the 'Protect' and password
+policy 'symbols' fields of entries.
 
 New Features for 3.25
 =====================
