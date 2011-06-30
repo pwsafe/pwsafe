@@ -2457,6 +2457,15 @@ bool PWScore::ChangeMode(stringT &locker, int &iErrorCode)
   locker = _T(""); // Important!
 
   if (m_IsReadOnly) {
+    // We know the file did exist but this will also determine if it is R-O
+    bool isRO;
+    if (pws_os::FileExists(m_currfile.c_str(), isRO) && isRO) {
+      // OK - still exists but is R-O - can't change mode!
+      // Need new return code but not this close to release - later
+      iErrorCode = READ_FAIL;
+      return false;
+    }
+
     // Need to lock it
     bool brc = pws_os::LockFile(m_currfile.c_str(), locker, 
                                 m_lockFileHandle, m_LockCount);
