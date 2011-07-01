@@ -145,6 +145,7 @@ xmlns:xs="http://www.w3.org/2001/XMLSchema" version="3.18">
               <xs:element name="ShowUsernameInTree" type="boolType" minOccurs="0" maxOccurs="1" />
               <xs:element name="SortAscending" type="boolType" minOccurs="0" maxOccurs="1" />
               <xs:element name="UseDefaultUser" type="boolType" minOccurs="0" maxOccurs="1" />
+              <xs:element name="CopyPasswordWhenBrowseToURL" type="boolType" minOccurs="0" maxOccurs="1" />
   
               <!-- Integer Preferences -->
               <xs:element name="PWDefaultLength" type="passwordlengthType" minOccurs="0" maxOccurs="1" />
