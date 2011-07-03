@@ -77,7 +77,7 @@ protected:
   int m_status;
   int m_index;
 
-  static int dialog_lookup[4];
+  static int dialog_lookup[5];
 
   HICON m_hIcon;
 

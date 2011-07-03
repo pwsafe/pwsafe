@@ -54,11 +54,12 @@ down the streetsky.  [Groucho Marx]
 static wchar_t PSSWDCHAR = L'*';
 
 // See DboxMain.h for the relevant enum
-int CPasskeyEntry::dialog_lookup[4] = {
+int CPasskeyEntry::dialog_lookup[5] = {
   IDD_PASSKEYENTRY_FIRST,          // GCP_FIRST
   IDD_PASSKEYENTRY,                // GCP_NORMAL
   IDD_PASSKEYENTRY,                // GCP_RESTORE
-  IDD_PASSKEYENTRY_WITHEXIT};      // GCP_WITHEXIT
+  IDD_PASSKEYENTRY_WITHEXIT,       // GCP_WITHEXIT
+  IDD_PASSKEYENTRY};               // GCP_CHANGEMODE
 
 //-----------------------------------------------------------------------------
 CPasskeyEntry::CPasskeyEntry(CWnd* pParent, const CString& a_filespec, int index,
@@ -208,6 +209,7 @@ BOOL CPasskeyEntry::OnInitDialog(void)
       break;
     case GCP_RESTORE:
     case GCP_WITHEXIT:
+    case GCP_CHANGEMODE:
       // on Restore - user can't change status
       GetDlgItem(IDC_READONLY)->EnableWindow(FALSE);
       GetDlgItem(IDC_READONLY)->ShowWindow(SW_HIDE);
@@ -454,7 +456,7 @@ void CPasskeyEntry::ProcessPhrase()
       }
     } else { // try again
       m_tries++;
-      gmb.AfxMessageBox(IDS_INCORRECTKEY);
+      gmb.AfxMessageBox(m_index == GCP_CHANGEMODE ? IDS_BADPASSKEY : IDS_INCORRECTKEY);
       m_pctlPasskey->SetSel(MAKEWORD(-1, 0));
       m_pctlPasskey->SetFocus();
     }
