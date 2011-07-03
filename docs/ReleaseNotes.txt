@@ -10,7 +10,7 @@ releases may be found in the file ChangeLog.txt.
 
 New Features for 3.26.1
 =======================
-None
+[3349458] Allow filters to match on rules based on the password's length.
 
 Changes to Existing Features in 3.26.1
 ======================================

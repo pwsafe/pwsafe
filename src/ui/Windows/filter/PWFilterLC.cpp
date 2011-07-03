@@ -759,6 +759,9 @@ bool CPWFilterLC::SetField(const int iItem)
           // Password MUST be present - no need to add that check
           mt = PWSMatch::MT_PASSWORD;
           break;
+        case FT_PASSWORDLEN:
+          mt = PWSMatch::MT_INTEGER;
+          break;
         case FT_GROUP:
         case FT_USER:
         case FT_NOTES:
@@ -1489,6 +1492,10 @@ void CPWFilterLC::SetUpComboBoxData()
 
         stf.cs_text = CItemData::FieldName(CItemData::POLICY).c_str();
         stf.ftype = FT_POLICY;
+        vFcbx_data.push_back(stf);
+
+        stf.cs_text.LoadString(IDS_PASSWORDLEN);
+        stf.ftype = FT_PASSWORDLEN;
         vFcbx_data.push_back(stf);
 
         stf.cs_text.LoadString(IDS_ENTRYTYPE);

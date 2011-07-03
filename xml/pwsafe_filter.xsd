@@ -480,6 +480,7 @@
     <xs:element name="policy_pronounceable" type="booleansetfilterentry" minOccurs="1" maxOccurs="1" />
     <xs:element name="policy_hexadecimal" type="booleansetfilterentry" minOccurs="1" maxOccurs="1" />
 
+    <xs:element name="password_length" type="integerfilterentry" minOccurs="1" maxOccurs="1" />
     <xs:element name="entrysize" type="sizefilterentry" minOccurs="1" maxOccurs="1" />
     <xs:element name="entrytype" type="entrytypefilterentry" minOccurs="1" maxOccurs="1" />
     <xs:element name="entrystatus" type="entrystatusfilterentry" minOccurs="1" maxOccurs="1" />

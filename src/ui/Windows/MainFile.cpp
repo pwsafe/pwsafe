@@ -737,6 +737,11 @@ int DboxMain::Open(const StringX &sx_Filename, const bool bReadOnly,  const bool
   // clear the data before loading the new file
   ClearData();
 
+  // Tidy up filters
+  m_currentfilter.Empty();
+  m_bFilterActive = false;
+  ApplyFilters();
+
   // Zero entry UUID selected and first visible at minimize and group text
   m_LUUIDSelectedAtMinimize = CUUID::NullUUID();
   m_TUUIDSelectedAtMinimize = CUUID::NullUUID();

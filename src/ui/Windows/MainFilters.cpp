@@ -280,6 +280,9 @@ bool DboxMain::PassesFiltering(const CItemData &ci,
           bValue = ci.IsProtected();
           mt = PWSMatch::MT_BOOL;
           break;
+        case FT_PASSWORDLEN:
+          mt = PWSMatch::MT_INTEGER;
+          break;
         case FT_ENTRYTYPE:
           mt = PWSMatch::MT_ENTRYTYPE;
           break;

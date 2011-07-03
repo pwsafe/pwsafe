@@ -573,6 +573,12 @@ HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::endElement (
     cur_filterentry->ftype = FT_XTIME_INT;
   }
 
+  else if (_tcscmp(szCurElement, _T("password_length")) == 0) {
+    m_type = DFTYPE_MAIN;
+    cur_filterentry->mtype = PWSMatch::MT_INTEGER;
+    cur_filterentry->ftype = FT_PASSWORDLEN;
+  }
+
   else if (_tcscmp(szCurElement, _T("entrytype")) == 0) {
     m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_ENTRYTYPE;

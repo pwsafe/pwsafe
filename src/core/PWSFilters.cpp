@@ -284,6 +284,9 @@ static string GetFilterXML(const st_filters &filters, bool bWithFormatting)
         pszfieldtype = "password_policy";
         break;
       // Other!
+      case FT_PASSWORDLEN:
+        pszfieldtype = "password_length";
+        break;
       case FT_UNKNOWNFIELDS:
         pszfieldtype = "unknownfields";
         break;
