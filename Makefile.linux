@@ -6,6 +6,10 @@ RELEASE_SPECIAL := BETA
 
 # Shouldn't change anything below here
 
+.PHONY:	all clean debug-clean release-clean debug release \
+	unicodedebug unicoderelease deb tar signatures \
+	dist sha1sums upload
+
 RELEASENAME := $(RELEASENUM)$(RELEASE_SPECIAL)
 
 RELEASEDIR := ./Releases/
@@ -20,6 +24,8 @@ GPG := /usr/bin/gpg
 GPG_KEY := ronys@users.sourceforge.net
 GPG_SIGN := $(GPG) --detach-sign --default-key $(GPG_KEY)
 SHA1SUM := /usr/bin/sha1sum
+UPLOAD_CMD := /usr/bin/rsync -avP -e ssh
+UPLOAD_DST :=  ronys@frs.sourceforge.net:/home/frs/project/p/pa/passwordsafe/Linux-BETA/$(RELEASENUM)
 
 all: unicodedebug unicoderelease
 
@@ -28,7 +34,6 @@ unicodedebug unicoderelease:
 	$(MAKE) -C src/core $@
 	$(MAKE) -C src/ui/wxWidgets $@
 
-dist: release deb tar signatures sha1sums
 
 debug:
 	$(MAKE) unicodedebug
@@ -47,6 +52,9 @@ release-clean:
 	$(MAKE) CONFIG=unicoderelease -C src/os/linux clean
 	$(MAKE) CONFIG=unicoderelease -C src/core clean
 	$(MAKE) CONFIG=unicoderelease -C src/ui/wxWidgets clean
+
+# dist prepares stuff for upload
+dist: release deb tar signatures sha1sums
 
 deb:
 	@$(MKDIR) $(RELEASEDIR)
@@ -73,9 +81,13 @@ signatures:
 	$(GPG_SIGN) $(RELEASEDIR)pwsafe-$(RELEASENAME)-src.tgz
 	$(GPG_SIGN) $(RELEASEDIR)*$(RELEASENAME)*.deb
 
-.PHONY:	all clean debug-clean release-clean debug release \
-	unicodedebug unicoderelease deb tar signatures \
-	dist sha1sums
+upload:
+	$(UPLOAD_CMD) \
+	$(wildcard $(RELEASEDIR)/passwordsafe-$(RELEASENAME)*) \
+	$(wildcard $(RELEASEDIR)/pwsafe-$(RELEASENAME)*) \
+	README.LINUX \
+	$(UPLOAD_DST)
+
 # Local variables:
 # mode: makefile
 # End:
