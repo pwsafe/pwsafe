@@ -69,8 +69,9 @@ public:
     LAST,        // Start of unknown fields!
     END = 0xff,
     // Internal fields only - used in filters
-    ENTRYSIZE = 0x100, ENTRYTYPE = 0x101, ENTRYSTATUS  = 0x102, UNKNOWNFIELDS = 0x103,
-    PASSWORDLEN = 0x104};
+    ENTRYSIZE = 0x100, ENTRYTYPE = 0x101, ENTRYSTATUS  = 0x102, PASSWORDLEN = 0x103,
+    // 'UNKNOWNFIELDS' should be last
+    UNKNOWNFIELDS = 0x104};
 
   // SubGroup Object - same as FieldType
 
