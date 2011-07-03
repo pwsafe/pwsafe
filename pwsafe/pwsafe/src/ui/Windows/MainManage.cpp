@@ -282,7 +282,7 @@ void DboxMain::OnValidate()
   CAddEdit_DateTimes::m_bShowUUID = true;
 }
 
-void DboxMain::OnOptions() 
+void DboxMain::OnOptions()
 {
   PWSprefs *prefs = PWSprefs::GetInstance();
 

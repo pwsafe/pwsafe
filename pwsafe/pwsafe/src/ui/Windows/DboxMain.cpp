@@ -2671,6 +2671,7 @@ void DboxMain::UpdateStatusBar()
     CFont *pFont = m_statusBar.GetFont();
     ASSERT(pFont);
     dc.SelectObject(pFont);
+    const int iBMWidth = m_statusBar.GetBitmapWidth();
 
     if (m_bOpen) {
       dc.DrawText(m_lastclipboardaction, &rectPane, DT_CALCRECT);
@@ -2700,6 +2701,9 @@ void DboxMain::UpdateStatusBar()
       m_statusBar.GetPaneInfo(CPWStatusBar::SB_NUM_ENT, uiID, uiStyle, iWidth);
       m_statusBar.SetPaneInfo(CPWStatusBar::SB_NUM_ENT, uiID, uiStyle, rectPane.Width());
       m_statusBar.SetPaneText(CPWStatusBar::SB_NUM_ENT, s);
+
+      m_statusBar.GetPaneInfo(CPWStatusBar::SB_FILTER, uiID, uiStyle, iWidth);
+      m_statusBar.SetPaneInfo(CPWStatusBar::SB_FILTER, uiID, uiStyle | SBT_OWNERDRAW, iBMWidth);
     } else {
       s.LoadString(IDS_STATCOMPANY);
       m_statusBar.SetPaneText(CPWStatusBar::SB_DBLCLICK, s);
@@ -2721,8 +2725,14 @@ void DboxMain::UpdateStatusBar()
       m_statusBar.GetPaneInfo(CPWStatusBar::SB_NUM_ENT, uiID, uiStyle, iWidth);
       m_statusBar.SetPaneInfo(CPWStatusBar::SB_NUM_ENT, uiID, uiStyle, rectPane.Width());
       m_statusBar.SetPaneText(CPWStatusBar::SB_NUM_ENT, L" ");
+
+      m_statusBar.GetPaneInfo(CPWStatusBar::SB_FILTER, uiID, uiStyle, iWidth);
+      m_statusBar.SetPaneInfo(CPWStatusBar::SB_FILTER, uiID, uiStyle | SBT_OWNERDRAW, iBMWidth);
     }
   }
+
+  m_statusBar.Invalidate();
+  m_statusBar.UpdateWindow();
 
   /*
   This doesn't exactly belong here, but it makes sure that the

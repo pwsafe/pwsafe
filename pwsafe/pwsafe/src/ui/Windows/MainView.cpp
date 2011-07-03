@@ -482,7 +482,7 @@ void DboxMain::setupBars()
     // Set up the rest - all but one empty as pane now re-sized according to contents
     statustext[CPWStatusBar::SB_MODIFIED] = IDS_BLANK;
     statustext[CPWStatusBar::SB_NUM_ENT] = IDS_BLANK;
-    statustext[CPWStatusBar::SB_FILTER] = IDS_FILTER1;
+    statustext[CPWStatusBar::SB_FILTER] = IDS_BLANK;
     statustext[CPWStatusBar::SB_READONLY] = IDS_READ_ONLY;
 
     // And show
