@@ -27,6 +27,8 @@
 #include "DisplayFSBkupFiles.h"
 #include "ExpPWListDlg.h"
 #include "AddEdit_DateTimes.h"
+#include "PasskeyEntry.h"
+#include "version.h"
 
 #include "WZPropertySheet.h"
 
@@ -2185,6 +2187,35 @@ void DboxMain::OnChangeMode()
 
     // Clear the Commands
     m_core.ClearCommands();
+  } else {
+    // Taken from GetAndCheckPassword.
+    // We don't wanr all the other processing that GetAndCheckPassword does
+    CPasskeyEntry *dbox_pkentry = new CPasskeyEntry(this,
+                                   m_core.GetCurFile().c_str(),
+                                   GCP_CHANGEMODE, true,
+                                   false,
+                                   true);
+
+    int nMajor(0), nMinor(0), nBuild(0);
+    DWORD dwMajorMinor = app.GetFileVersionMajorMinor();
+    DWORD dwBuildRevision = app.GetFileVersionBuildRevision();
+
+    if (dwMajorMinor > 0) {
+      nMajor = HIWORD(dwMajorMinor);
+      nMinor = LOWORD(dwMajorMinor);
+      nBuild = HIWORD(dwBuildRevision);
+    }
+    if (nBuild == 0)
+      dbox_pkentry->m_appversion.Format(L"Version %d.%02d%s",
+                                        nMajor, nMinor, SPECIAL_BUILD);
+    else
+      dbox_pkentry->m_appversion.Format(L"Version %d.%02d.%02d%s",
+                                        nMajor, nMinor, nBuild, SPECIAL_BUILD);
+
+    INT_PTR rc = dbox_pkentry->DoModal();
+    delete dbox_pkentry;
+    if (rc != IDOK)
+      return;
   }
 
   CGeneralMsgBox gmb;

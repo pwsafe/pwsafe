@@ -186,7 +186,8 @@ enum PopupMenus {FILEMENU = 0, EXPORTMENU, IMPORTMENU,
 enum {GCP_FIRST      = 0,   // At startup of PWS
       GCP_NORMAL     = 1,   // Only OK, CANCEL & HELP buttons
       GCP_RESTORE    = 2,   // Only OK, CANCEL & HELP buttons
-      GCP_WITHEXIT   = 3};  // OK, CANCEL, EXIT & HELP buttons
+      GCP_WITHEXIT   = 3,   // OK, CANCEL, EXIT & HELP buttons
+      GCP_CHANGEMODE = 4};  // Only OK, CANCEL & HELP buttons
 
 // GCP read only flags - tested via AND, set via OR, must be power of 2.
 enum {GCP_READONLY = 1,

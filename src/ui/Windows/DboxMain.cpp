@@ -1635,6 +1635,7 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
   //  GCP_NORMAL     (1) OK, CANCEL & HELP buttons
   //  GCP_RESTORE    (2) OK, CANCEL & HELP buttons
   //  GCP_WITHEXIT   (3) OK, CANCEL, EXIT & HELP buttons
+  //  GCB_CHANGEMODE (4) OK, CANCEL & HELP buttons
 
   // for adv_type values, see enum in AdvancedDlg.h
 
@@ -1727,6 +1728,7 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
         break;
       case GCP_RESTORE:
       case GCP_WITHEXIT:
+      case GCP_CHANGEMODE:
       default:
         // user can't change R-O status
         break;
