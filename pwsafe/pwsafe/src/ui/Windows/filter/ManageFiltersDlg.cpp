@@ -1074,28 +1074,29 @@ CString CManageFiltersDlg::GetFieldTypeName(FieldType ft)
 {
   int nID = IDSC_UNKNOWN;
   switch (ft) {
-  case FT_GROUP:      return CItemData::FieldName(CItemData::GROUP).c_str();
-  case FT_TITLE:      return CItemData::FieldName(CItemData::TITLE).c_str();
-  case FT_GROUPTITLE: return CItemData::FieldName(CItemData::GROUPTITLE).c_str();
-  case FT_USER:       return CItemData::FieldName(CItemData::USER).c_str();
-  case FT_PASSWORD:   return CItemData::FieldName(CItemData::PASSWORD).c_str();
-  case FT_NOTES:      return CItemData::FieldName(CItemData::NOTES).c_str();
-  case FT_AUTOTYPE:   return CItemData::FieldName(CItemData::AUTOTYPE).c_str();
-  case FT_URL:        return CItemData::FieldName(CItemData::URL).c_str();
-  case FT_RUNCMD:     return CItemData::FieldName(CItemData::RUNCMD).c_str();
-  case FT_DCA:        return CItemData::FieldName(CItemData::DCA).c_str();
-  case FT_EMAIL:      return CItemData::FieldName(CItemData::EMAIL).c_str();
-  case FT_PROTECTED:  return CItemData::FieldName(CItemData::PROTECTED).c_str();
-  case FT_SYMBOLS:    return CItemData::FieldName(CItemData::SYMBOLS).c_str();
-  case FT_CTIME:      return CItemData::FieldName(CItemData::CTIME).c_str();
-  case FT_ATIME:      return CItemData::FieldName(CItemData::ATIME).c_str();
-  case FT_PMTIME:     return CItemData::FieldName(CItemData::PMTIME).c_str();
-  case FT_XTIME:      return CItemData::FieldName(CItemData::XTIME).c_str();
-  case FT_XTIME_INT:  return CItemData::FieldName(CItemData::XTIME_INT).c_str();
-  case FT_RMTIME:     return CItemData::FieldName(CItemData::RMTIME).c_str();
-  case FT_PWHIST:     return CItemData::FieldName(CItemData::PWHIST).c_str();
-  case FT_POLICY:     return CItemData::FieldName(CItemData::POLICY).c_str();
-  
+  case FT_GROUP:        return CItemData::FieldName(CItemData::GROUP).c_str();
+  case FT_TITLE:        return CItemData::FieldName(CItemData::TITLE).c_str();
+  case FT_GROUPTITLE:   return CItemData::FieldName(CItemData::GROUPTITLE).c_str();
+  case FT_USER:         return CItemData::FieldName(CItemData::USER).c_str();
+  case FT_PASSWORD:     return CItemData::FieldName(CItemData::PASSWORD).c_str();
+  case FT_NOTES:        return CItemData::FieldName(CItemData::NOTES).c_str();
+  case FT_AUTOTYPE:     return CItemData::FieldName(CItemData::AUTOTYPE).c_str();
+  case FT_URL:          return CItemData::FieldName(CItemData::URL).c_str();
+  case FT_RUNCMD:       return CItemData::FieldName(CItemData::RUNCMD).c_str();
+  case FT_DCA:          return CItemData::FieldName(CItemData::DCA).c_str();
+  case FT_EMAIL:        return CItemData::FieldName(CItemData::EMAIL).c_str();
+  case FT_PROTECTED:    return CItemData::FieldName(CItemData::PROTECTED).c_str();
+  case FT_SYMBOLS:      return CItemData::FieldName(CItemData::SYMBOLS).c_str();
+  case FT_CTIME:        return CItemData::FieldName(CItemData::CTIME).c_str();
+  case FT_ATIME:        return CItemData::FieldName(CItemData::ATIME).c_str();
+  case FT_PMTIME:       return CItemData::FieldName(CItemData::PMTIME).c_str();
+  case FT_XTIME:        return CItemData::FieldName(CItemData::XTIME).c_str();
+  case FT_XTIME_INT:    return CItemData::FieldName(CItemData::XTIME_INT).c_str();
+  case FT_RMTIME:       return CItemData::FieldName(CItemData::RMTIME).c_str();
+  case FT_PWHIST:       return CItemData::FieldName(CItemData::PWHIST).c_str();
+  case FT_POLICY:       return CItemData::FieldName(CItemData::POLICY).c_str();
+
+  case FT_PASSWORDLEN:   nID = IDS_PASSWORDLEN; break;
   case FT_ENTRYSIZE:     nID = IDS_ENTRYSIZE; break;
   case FT_ENTRYTYPE:     nID = IDS_ENTRYTYPE; break;
   case FT_ENTRYSTATUS:   nID = IDS_ENTRYSTATUS; break;

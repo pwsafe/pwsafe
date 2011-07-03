@@ -69,7 +69,8 @@ public:
     LAST,        // Start of unknown fields!
     END = 0xff,
     // Internal fields only - used in filters
-    ENTRYSIZE = 0x100, ENTRYTYPE = 0x101, ENTRYSTATUS  = 0x102, UNKNOWNFIELDS = 0x103};
+    ENTRYSIZE = 0x100, ENTRYTYPE = 0x101, ENTRYSTATUS  = 0x102, UNKNOWNFIELDS = 0x103,
+    PASSWORDLEN = 0x104};
 
   // SubGroup Object - same as FieldType
 
@@ -117,6 +118,7 @@ public:
   StringX GetTitle() const; // V20
   StringX GetUser() const; // V20
   StringX GetPassword() const;
+  size_t GetPasswordLength() const {return GetField(m_Password).length();}
   StringX GetNotes(TCHAR delimiter = 0) const;
   void GetUUID(uuid_array_t &) const; // V20
   const pws_os::CUUID GetUUID() const; // V20 - see comment in .cpp re return type

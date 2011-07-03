@@ -1709,6 +1709,9 @@ bool CItemData::Matches(int num1, int num2, int iObject,
     case ENTRYSIZE:
       GetSize(reinterpret_cast<size_t &>(iValue));
       break;
+    case PASSWORDLEN:
+      iValue = GetPasswordLength();
+      break;
     default:
       ASSERT(0);
       return false;
@@ -2231,28 +2234,28 @@ stringT CItemData::FieldName(FieldType ft)
 {
   stringT retval(_T(""));
   switch (ft) {
-  case GROUPTITLE: LoadAString(retval, IDSC_FLDNMGROUPTITLE); break;
-  case UUID:       LoadAString(retval, IDSC_FLDNMUUID); break;
-  case GROUP:      LoadAString(retval, IDSC_FLDNMGROUP); break;
-  case TITLE:      LoadAString(retval, IDSC_FLDNMTITLE); break;
-  case USER:       LoadAString(retval, IDSC_FLDNMUSERNAME); break;
-  case NOTES:      LoadAString(retval, IDSC_FLDNMNOTES); break;
-  case PASSWORD:   LoadAString(retval, IDSC_FLDNMPASSWORD); break;
-  case CTIME:      LoadAString(retval, IDSC_FLDNMCTIME); break;
-  case PMTIME:     LoadAString(retval, IDSC_FLDNMPMTIME); break;
-  case ATIME:      LoadAString(retval, IDSC_FLDNMATIME); break;
-  case XTIME:      LoadAString(retval, IDSC_FLDNMXTIME); break;
-  case RMTIME:     LoadAString(retval, IDSC_FLDNMRMTIME); break;
-  case URL:        LoadAString(retval, IDSC_FLDNMURL); break;
-  case AUTOTYPE:   LoadAString(retval, IDSC_FLDNMAUTOTYPE); break;
-  case PWHIST:     LoadAString(retval, IDSC_FLDNMPWHISTORY); break;
-  case POLICY:     LoadAString(retval, IDSC_FLDNMPWPOLICY); break;
-  case XTIME_INT:  LoadAString(retval, IDSC_FLDNMXTIMEINT); break;
-  case RUNCMD:     LoadAString(retval, IDSC_FLDNMRUNCOMMAND); break;
-  case DCA:        LoadAString(retval, IDSC_FLDNMDCA); break;
-  case EMAIL:      LoadAString(retval, IDSC_FLDNMEMAIL); break;
-  case PROTECTED:  LoadAString(retval, IDSC_FLDNMPROTECTED); break;
-  case SYMBOLS:    LoadAString(retval, IDSC_FLDNMSYMBOLS); break;
+  case GROUPTITLE:   LoadAString(retval, IDSC_FLDNMGROUPTITLE); break;
+  case UUID:         LoadAString(retval, IDSC_FLDNMUUID); break;
+  case GROUP:        LoadAString(retval, IDSC_FLDNMGROUP); break;
+  case TITLE:        LoadAString(retval, IDSC_FLDNMTITLE); break;
+  case USER:         LoadAString(retval, IDSC_FLDNMUSERNAME); break;
+  case NOTES:        LoadAString(retval, IDSC_FLDNMNOTES); break;
+  case PASSWORD:     LoadAString(retval, IDSC_FLDNMPASSWORD); break;
+  case CTIME:        LoadAString(retval, IDSC_FLDNMCTIME); break;
+  case PMTIME:       LoadAString(retval, IDSC_FLDNMPMTIME); break;
+  case ATIME:        LoadAString(retval, IDSC_FLDNMATIME); break;
+  case XTIME:        LoadAString(retval, IDSC_FLDNMXTIME); break;
+  case RMTIME:       LoadAString(retval, IDSC_FLDNMRMTIME); break;
+  case URL:          LoadAString(retval, IDSC_FLDNMURL); break;
+  case AUTOTYPE:     LoadAString(retval, IDSC_FLDNMAUTOTYPE); break;
+  case PWHIST:       LoadAString(retval, IDSC_FLDNMPWHISTORY); break;
+  case POLICY:       LoadAString(retval, IDSC_FLDNMPWPOLICY); break;
+  case XTIME_INT:    LoadAString(retval, IDSC_FLDNMXTIMEINT); break;
+  case RUNCMD:       LoadAString(retval, IDSC_FLDNMRUNCOMMAND); break;
+  case DCA:          LoadAString(retval, IDSC_FLDNMDCA); break;
+  case EMAIL:        LoadAString(retval, IDSC_FLDNMEMAIL); break;
+  case PROTECTED:    LoadAString(retval, IDSC_FLDNMPROTECTED); break;
+  case SYMBOLS:      LoadAString(retval, IDSC_FLDNMSYMBOLS); break;
   default:
     ASSERT(0);
   };
