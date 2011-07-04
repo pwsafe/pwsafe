@@ -4999,7 +4999,7 @@ msgstr "Zapisz"
 
 #. Resource IDs: (32006)
 msgid "Save &As..."
-msgstr "Zachow&zaj jako..."
+msgstr "Zachow&aj jako..."
 
 #. Resource IDs: (3841)
 msgid "Save As"
