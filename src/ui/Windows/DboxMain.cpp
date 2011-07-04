@@ -1186,6 +1186,9 @@ BOOL DboxMain::OnInitDialog()
   // Set up DragBar Tooltips
   SetDragbarToolTips();
 
+  // Update Minidump user streams
+  app.SetMinidumpUserStreams(m_bOpen, !IsDBReadOnly());
+
   return TRUE;  // return TRUE unless you set the focus to a control
 }
 
@@ -2429,6 +2432,9 @@ void DboxMain::SetLanguage(LCID lcid)
 
   // Set up DragBar Tooltips
   SetDragbarToolTips();
+
+  // Update Minidump user streams - language is a string preference
+  app.SetMinidumpUserStreams(m_bOpen, !IsDBReadOnly(), us3);
 
   // Remove wait cursor
   wait.Restore();

@@ -13,10 +13,13 @@
 
 #include "PasswordSafe.h"
 #include "stdafx.h"
-#include "core/Util.h"
-#include "core/PWScore.h"
 #include "SystemTray.h"
 #include "PWSRecentFileList.h"
+#include "PWSFaultHandler.h"
+
+#include "core/Util.h"
+#include "core/PWScore.h"
+
 #include "os/run.h"
 
 #include <afxmt.h>
@@ -98,6 +101,8 @@ public:
   DWORD GetBaseThreadID() {return m_nBaseThreadID;}
   void GetLanguageFiles();
   void SetLanguage();
+
+  void SetMinidumpUserStreams(const bool bOpen, const bool bRW, UserStream iStream = usAll);
 
   DECLARE_MESSAGE_MAP()
 

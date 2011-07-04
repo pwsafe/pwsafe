@@ -21,7 +21,9 @@
 
 #ifndef _DEBUG
 
-#include "stdafx.h"
+#include "PWSFaultHandler.h"
+
+#include "core\StringX.h"
 
 #include "resource3.h"
 
@@ -30,57 +32,19 @@
 #include <time.h>
 #include <new.h>
 
-#include "Dbghelp.h"
 #include <eh.h>
 #include <signal.h>
 
  // Use for size of static arrays, in case heap gets corrupted
-#define MSGSIZE   1024
-#define MSGSIZEx4 4096
-
-typedef BOOL (WINAPI *PMDWD) (HANDLE, DWORD, HANDLE, MINIDUMP_TYPE,
-                              PMINIDUMP_EXCEPTION_INFORMATION,
-                              PMINIDUMP_USER_STREAM_INFORMATION,
-                              PMINIDUMP_CALLBACK_INFORMATION);
+#define MSGSIZE        1024
+#define MSGSIZEx4      4096
+#define USERSTREAMSIZE 1024
 
 static PMDWD pfcnMiniDumpWriteDump(NULL);
 static HMODULE hDbgHelp(NULL);
 
-// Function call definitions
-LONG TakeMiniDump(struct _EXCEPTION_POINTERS *ExInfo, const int type,
-                  struct st_invp *pinvp = NULL);
-
-LONG Win32FaultHandler(struct _EXCEPTION_POINTERS *ExInfo);
-void RemoveFaultHandler(bool bFreeLibrary = true);
-
-static void __cdecl terminate_dumphandler();
-static void __cdecl unexpected_dumphandler();
-static void __cdecl purecall_dumphandler();
-static int  __cdecl new_dumphandler(size_t);
-static void __cdecl bad_parameter_dumphandler(const wchar_t* expression,
-                const wchar_t* function, const wchar_t* file,
-                unsigned int line, uintptr_t pReserved);
-static void signal_dumphandler(int);
-
-// Exception types
-enum {WIN32_STRUCTURED_EXCEPTION, TERMINATE_CALL, UNEXPECTED_CALL,
-      NEW_OPERATOR_ERROR, PURE_CALL_ERROR, INVALID_PARAMETER_ERROR,
-      SIGNAL_ABORT, SIGNAL_ILLEGAL_INST_FAULT, SIGNAL_TERMINATION,
-      END_FAULTS};
-
 // Make nearly everything static so that it is available when needed and
 // we do not have to allocate memory
-static wchar_t *wcType[END_FAULTS] = {
-                L"WIN32_STRUCTURED_EXCEPTION",
-                L"TERMINATE_CALL",
-                L"UNEXPECTED_CALL",
-                L"NEW_OPERATOR_ERROR",
-                L"PURE_CALL_ERROR",
-                L"INVALID_PARAMETER_ERROR",
-                L"SIGNAL_ABORT",
-                L"SIGNAL_ILLEGAL_INST_FAULT",
-                L"SIGNAL_TERMINATION"};
-
 struct st_invp {
   const wchar_t *expression;
   const wchar_t *function;
@@ -98,14 +62,29 @@ static _PNH                       old_new_handler(NULL);
 static _invalid_parameter_handler old_bad_parameter_handler(NULL);
 static int old_new_mode(0);
 
-static DWORD dwTimeStamp;
-static int iMajor, iMinor, iBuild;
-static wchar_t wcRevision[MSGSIZE];
-
 static wchar_t wcMsg1[MSGSIZE];
 static wchar_t wcMsg2[MSGSIZE];
 static wchar_t wcMsg3[MSGSIZE];
 static wchar_t wcCaption[MSGSIZE];
+
+// Minidump User streams - fixed storage just incase heap damaged
+// 0 - Module information, DB open and R/W status + a few others
+// 1 - Boolean preferences
+// 2 - Integer preferences
+// 3 - String  preferences
+static wchar_t szUserStream0[USERSTREAMSIZE];
+static wchar_t szUserStream1[USERSTREAMSIZE];
+static wchar_t szUserStream2[USERSTREAMSIZE];
+static wchar_t szUserStream3[USERSTREAMSIZE];
+
+// User stream 0 data
+static DWORD dwTimeStamp;
+static int iMajor, iMinor, iBuild;
+static wchar_t wcRevision[MSGSIZE];
+
+static bool st_bOpen;
+static bool st_bRW;
+static int st_cfgloc;
 
 void LocalizeFaultHandler(HINSTANCE inst) {
   LoadString(inst, IDS_MD_MSG1, wcMsg1, MSGSIZE);
@@ -118,15 +97,15 @@ void InstallFaultHandler(const int major, const int minor, const int build,
                          const wchar_t *revision, const DWORD timestamp)
 {
   // (Load Library using absolute path to avoid dll poisoning attacks)
-  TCHAR szFileName[ MAX_PATH ];
-  memset( szFileName, 0, MAX_PATH );
-  GetSystemDirectory( szFileName, MAX_PATH );
+  TCHAR szFileName[MAX_PATH];
+  memset(szFileName, 0, MAX_PATH);
+  GetSystemDirectory(szFileName, MAX_PATH);
   size_t nLen = _tcslen( szFileName );
   if (nLen > 0) {
     if (szFileName[ nLen - 1 ] != '\\')
-      _tcscat_s( szFileName, MAX_PATH, L"\\" );
+      _tcscat_s(szFileName, MAX_PATH, L"\\");
   }
-  _tcscat_s( szFileName, MAX_PATH, L"DbgHelp.dll" );
+  _tcscat_s(szFileName, MAX_PATH, L"DbgHelp.dll");
   hDbgHelp = ::LoadLibrary(szFileName);
   if (hDbgHelp == NULL)
     return;
@@ -249,6 +228,57 @@ void signal_dumphandler(int isignal)
   exit(1); // Terminate program
 }
 
+void PopulateMinidumpUserStreams(PWSprefs *prefs, bool bOpen, bool bRW, UserStream iStream)
+{
+  /*
+    See PWSprefs::GetAllBoolPrefs, PWSprefs::GetAllIntPrefs & PWSprefs::GetAllStringPrefs
+    Space delimiter strings
+    Boolean preferences:
+      # (1-byte), PrefType (1-byte), value (1-byte: 0 = false; 1 = true)
+    Integer preferences:
+      # (1-byte), PrefType (1-byte), value (4-hex bytes)
+    String  preferences (only a safe subset):
+      # (1-byte), PrefType (1-byte), value (n-bytes) - first/last char == delimiter
+  */
+
+  // Save information for user stream 0 later
+  if (iStream == usAll || iStream == us0) {
+    st_bOpen = bOpen;
+    st_bRW = bRW;
+    st_cfgloc = prefs->GetConfigOption();
+  }
+
+  StringX sx_Buffer;
+  int len;
+
+  if (iStream == usAll || iStream == usPrefs || iStream == us1) {
+    // Get all Boolean preferences
+    sx_Buffer = prefs->PWSprefs::GetAllBoolPrefs();
+    len = min(sx_Buffer.length(), USERSTREAMSIZE - 5 - 1);
+    SecureZeroMemory(szUserStream1, sizeof(szUserStream1));
+    swprintf_s(szUserStream1, USERSTREAMSIZE,
+               L"US01 %s", sx_Buffer.substr(0, len).c_str());
+  }
+  
+  if (iStream == usAll || iStream == usPrefs || iStream == us2) {
+    // Get all Integer preferences
+    sx_Buffer = prefs->PWSprefs::GetAllIntPrefs();
+    len = min(sx_Buffer.length(), USERSTREAMSIZE - 5 - 1);
+    SecureZeroMemory(szUserStream2, sizeof(szUserStream1));
+    swprintf_s(szUserStream2, USERSTREAMSIZE,
+               L"US02 %s", sx_Buffer.substr(0, len).c_str());
+  }
+
+  if (iStream == usAll || iStream == usPrefs || iStream == us3) {
+    // Get SOME String preferences (do not include user data)
+    sx_Buffer = prefs->PWSprefs::GetAllStringPrefs();
+    len = min(sx_Buffer.length(), USERSTREAMSIZE - 5 - 1);
+    SecureZeroMemory(szUserStream3, sizeof(szUserStream1));
+    swprintf_s(szUserStream3, USERSTREAMSIZE,
+               L"US03 %s", sx_Buffer.substr(0, len).c_str());
+  }
+}
+
 LONG TakeMiniDump(struct _EXCEPTION_POINTERS *pExInfo, const int itype,
                   st_invp *pinvp)
 {
@@ -292,16 +322,16 @@ LONG TakeMiniDump(struct _EXCEPTION_POINTERS *pExInfo, const int itype,
   SecureZeroMemory(sz_TempName, sizeof(sz_TempName));
   _wmakepath_s(sz_TempName, MAX_PATH + 1, sz_Drive, sz_Dir, sz_FName, L"dmp");
 
-  wchar_t sz_UserData[MAX_PATH];
-
-  SecureZeroMemory(sz_UserData, sizeof(sz_UserData));
-  swprintf_s(sz_UserData, MAX_PATH,
-                        L"PasswordSafe V%d.%d.%d(%s). Module timestamp: %08x; Type: %s",
-                        iMajor, iMinor, iBuild, wcRevision, dwTimeStamp,
-                        wcType[itype]);
+  SecureZeroMemory(szUserStream0, sizeof(szUserStream0));
+  swprintf_s(szUserStream0, USERSTREAMSIZE,
+             L"US00 %d %d %d %d %s %08x %d %d %d %d", IVERSION,
+             iMajor, iMinor, iBuild, wcRevision, dwTimeStamp,
+             st_bOpen ? 1 : 0,
+             st_bOpen ? (st_bRW ? 1 : 0) : -1,
+             st_cfgloc, itype);
 
   wchar_t sz_errormsg[MSGSIZEx4]; // not a good place for malloc, as the heap
-                                    // may be corrupt...should be big enough!
+                                  // may be corrupt...should be big enough!
   SecureZeroMemory(sz_errormsg, sizeof(sz_errormsg));
 
   wcscpy_s(sz_errormsg, MSGSIZEx4, wcMsg1);       // Max size 'MSGSIZE'
@@ -323,14 +353,23 @@ LONG TakeMiniDump(struct _EXCEPTION_POINTERS *pExInfo, const int itype,
     excpInfo.ExceptionPointers = pExInfo;
     excpInfo.ThreadId = GetCurrentThreadId();
 
-    MINIDUMP_USER_STREAM UserStreams[1];
+    MINIDUMP_USER_STREAM UserStreams[4];
 
     UserStreams[0].Type = LastReservedStream + 1;
-    UserStreams[0].Buffer = (void *)&sz_UserData[0];
-    UserStreams[0].BufferSize = (ULONG)(wcslen(sz_UserData) * sizeof(wchar_t));
+    UserStreams[0].Buffer = (void *)&szUserStream0[0];
+    UserStreams[0].BufferSize = (ULONG)((wcslen(szUserStream0) + 1) * sizeof(wchar_t));
+    UserStreams[1].Type = LastReservedStream + 2;
+    UserStreams[1].Buffer = (void *)&szUserStream1[0];
+    UserStreams[1].BufferSize = (ULONG)((wcslen(szUserStream1) + 1) * sizeof(wchar_t));
+    UserStreams[2].Type = LastReservedStream + 3;
+    UserStreams[2].Buffer = (void *)&szUserStream2[0];
+    UserStreams[2].BufferSize = (ULONG)((wcslen(szUserStream2) + 1) * sizeof(wchar_t));
+    UserStreams[3].Type = LastReservedStream + 4;
+    UserStreams[3].Buffer = (void *)&szUserStream3[0];
+    UserStreams[3].BufferSize = (ULONG)((wcslen(szUserStream3) + 1) * sizeof(wchar_t));
 
     MINIDUMP_USER_STREAM_INFORMATION musi;
-    musi.UserStreamCount = 1;
+    musi.UserStreamCount = 4;
     musi.UserStreamArray = UserStreams;
 
     pfcnMiniDumpWriteDump(GetCurrentProcess(), GetCurrentProcessId(), hFile,

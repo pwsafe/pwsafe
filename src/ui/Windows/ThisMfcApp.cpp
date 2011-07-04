@@ -17,7 +17,6 @@
 
 #include "PasswordSafe.h"
 
-
 #if defined(POCKET_PC)
 #include "pocketpc/PocketPC.h"
 #include "pocketpc/resource.h"
@@ -34,6 +33,7 @@
 #include "PWSRecentFileList.h"
 #include "MFCMessages.h"
 #include "GeneralMsgBox.h"
+#include "PWSFaultHandler.h"
 
 #include "core/Util.h"
 #include "core/BlowFish.h"
@@ -57,10 +57,6 @@
 // Only produce minidumps in release code
 #ifndef _DEBUG
 #include "Dbghelp.h"
-void InstallFaultHandler(const int major, const int minor, const int build,
-                         const TCHAR * revision, const DWORD dwTimeStamp);
-void LocalizeFaultHandler(HINSTANCE inst);
-void RemoveFaultHandler(bool bFreeLibrary = true);
 #endif
 
 using namespace std;
@@ -237,8 +233,22 @@ static bool CheckFile(const CString &fn)
     return false;
   }
 }
-
 #endif // !POCKET_PC
+
+void ThisMfcApp::SetMinidumpUserStreams(const bool bOpen, const bool bRW, UserStream iStream)
+{
+#ifndef _DEBUG
+  PWSprefs *prefs = PWSprefs::GetInstance();
+  if (prefs != NULL) {
+    PopulateMinidumpUserStreams(prefs, bOpen, bRW, iStream);
+  }
+#else
+  UNREFERENCED_PARAMETER(bOpen);
+  UNREFERENCED_PARAMETER(bRW);
+  UNREFERENCED_PARAMETER(iStream);
+#endif
+}  
+
 int ThisMfcApp::ExitInstance()
 {
   if (m_hInstResDLL != NULL && m_hInstResDLL != m_hInstance)

@@ -1276,6 +1276,7 @@
     <ClInclude Include="PWPropertySheet.h" />
     <ClInclude Include="PWResizeDialog.h" />
     <ClInclude Include="PWSclipboard.h" />
+    <ClInclude Include="PWSFaultHandler.h" />
     <ClInclude Include="PWSRecentFileList.h" />
     <ClInclude Include="PWStatusBar.h" />
     <ClInclude Include="PWToolBar.h" />

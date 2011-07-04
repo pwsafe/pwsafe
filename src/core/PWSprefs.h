@@ -63,6 +63,7 @@ public:
   static void SetReporter(Reporter *pReporter) {m_pReporter = pReporter;}
   static void XMLify(charT t, stringT &name);
   static bool UserSetCfgFile() {return m_userSetCfgFile;}
+  ConfigOption GetConfigOption() {return m_ConfigOption;}
 
   // prefString is stored in database file, format described in PWSprefs.cpp
   void Load(const StringX &prefString, bool bUseCopy = false);
@@ -174,6 +175,11 @@ public:
   bool GetPrefDefVal(BoolPrefs pref_enum) const;
   unsigned int GetPrefDefVal(IntPrefs pref_enum) const;
   StringX GetPrefDefVal(StringPrefs pref_enum) const;
+
+  // Get all preferences for minidump user stream
+  StringX GetAllBoolPrefs();
+  StringX GetAllIntPrefs();
+  StringX GetAllStringPrefs();
 
   // Special cases
   void GetPrefRect(long &top, long &bottom, long &left, long &right) const;

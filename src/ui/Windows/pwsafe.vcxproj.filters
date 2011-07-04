@@ -734,6 +734,9 @@
     <ClInclude Include="ExpPswdLC.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PWSFaultHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\core\core.rc2">
