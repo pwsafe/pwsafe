@@ -25,6 +25,7 @@
 
 #include <fstream>
 #include <algorithm>
+#include <iomanip>
 
 #ifdef _WIN32
 #include <LMCons.h> // for UNLEN
@@ -270,6 +271,62 @@ StringX PWSprefs::GetPrefDefVal(StringPrefs pref_enum) const
   return m_string_prefs[pref_enum].defVal;
 }
 
+StringX PWSprefs::GetAllBoolPrefs()
+{
+  oStringXStream osxs;
+  for (int i = 0; i < NumBoolPrefs; i++) {
+    osxs << setw(1) << i << _T(' ')
+         << setw(1) << m_bool_prefs[i].ptype << _T(' ')
+         << setw(1) << (m_boolValues[i] ? 1 : 0) << _T(' ');
+  }
+  return osxs.str();
+}  
+
+StringX PWSprefs::GetAllIntPrefs()
+{
+  oStringXStream osxs;
+  for (int i = 0; i < NumIntPrefs; i++) {
+    osxs << setw(1) << i << _T(' ')
+         << setw(1) << m_int_prefs[i].ptype << _T(' ')
+         << setw(4) << setfill(_T('0')) << hex << m_intValues[i] << dec << _T(' ');
+  }
+  return osxs.str();
+}  
+
+StringX PWSprefs::GetAllStringPrefs()
+{
+  // Here we must restrict most string preferences as they contain user data
+  int SafeStringPrefs[] = {
+    LastView, TreeFont, BackupPrefixValue, ListColumns,
+    ColumnWidths, MainToolBarButtons, PasswordFont,
+    TreeListSampleText, PswdSampleText,
+    LastUsedKeyboard, VKeyboardFontName, VKSampleText, LanguageFile
+  };
+
+  TCHAR delim;
+  const TCHAR Delimiters[] = _T("\"\'#?!%&*+=:;@~<>?,.{}[]()\xab\xbb");
+  const int NumDelimiters = sizeof(Delimiters) / sizeof(Delimiters[0]) - 1;
+
+  oStringXStream osxs;
+  for (int i = 0; i < sizeof(SafeStringPrefs) / sizeof(SafeStringPrefs[0]); i++) {
+    const int k = SafeStringPrefs[i];
+    delim = _T(' ');
+    for (int j = 0; j < NumDelimiters; j++) {
+      if (m_stringValues[k].find(Delimiters[j]) == StringX::npos) {
+        delim = Delimiters[j];
+        break;
+      }
+    }
+    if (delim == _T(' '))
+      continue;  // We tried, but just can't save it!
+ 
+    osxs << setw(1) << k << _T(' ')
+         << setw(1) << m_string_prefs[k].ptype << _T(' ')
+         << delim << m_stringValues[k].c_str() << delim << _T(' ');
+  }
+  return osxs.str();
+}  
+  
 // Following for case where default value is determined at runtime
 unsigned int PWSprefs::GetPref(IntPrefs pref_enum, unsigned int defVal) const
 {

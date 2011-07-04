@@ -28,6 +28,7 @@
 #include "ExpPWListDlg.h"
 #include "AddEdit_DateTimes.h"
 #include "PasskeyEntry.h"
+#include "PWSFaultHandler.h"
 #include "version.h"
 
 #include "WZPropertySheet.h"
@@ -536,6 +537,9 @@ int DboxMain::Close(const bool bTrySave)
   KillTimer(TIMER_EXPENT);
   RegisterSessionNotification(false);
 
+  // Update Minidump user streams
+  app.SetMinidumpUserStreams(m_bOpen, !IsDBReadOnly());
+
   return PWScore::SUCCESS;
 }
 
@@ -878,6 +882,9 @@ void DboxMain::PostOpenProcessing()
   // Set up notification of desktop state, one way or another
   startLockCheckTimer();
   RegisterSessionNotification(true);
+  
+  // Update Minidump user streams
+  app.SetMinidumpUserStreams(m_bOpen, !IsDBReadOnly());
 }
 
 int DboxMain::CheckEmergencyBackupFiles(StringX sx_Filename, StringX &passkey)
@@ -2293,6 +2300,9 @@ void DboxMain::OnChangeMode()
       gmb.MessageBox(cs_msg, cs_title, MB_OK | MB_ICONWARNING);
     }
   }
+
+  // Update Minidump user streams - mode is in user stream 0
+  app.SetMinidumpUserStreams(m_bOpen, !IsDBReadOnly(), us0);
 }
 
 void DboxMain::OnCompare()

@@ -297,7 +297,7 @@ public:
   void InvalidateSearch() {m_FindToolBar.InvalidateSearch();}
   void ResumeOnDBNotification() {m_core.ResumeOnDBNotification();}
   void SuspendOnDBNotification() {m_core.SuspendOnDBNotification();}
-  bool IsDBReadOnly() const {return m_core.IsReadOnly();};
+  bool IsDBReadOnly() const {return m_core.IsReadOnly();}
   void SetStartSilent(bool state);
   void SetStartClosed(bool state) {m_IsStartClosed = state;}
   void SetValidate(bool state) {m_bValidate = state;}

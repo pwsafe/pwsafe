@@ -81,7 +81,7 @@ stringT pws_os::getusername()
   TCHAR user[UNLEN + sizeof(TCHAR)];
   //  ulen INCLUDES the trailing blank
   DWORD ulen = UNLEN + sizeof(TCHAR);
-  if (::GetUserName(user, &ulen)== FALSE) {
+  if (::GetUserName(user, &ulen) == FALSE) {
     user[0] = TCHAR('?');
     user[1] = TCHAR('\0');
     ulen = 2;

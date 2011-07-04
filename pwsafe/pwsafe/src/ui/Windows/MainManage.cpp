@@ -585,6 +585,9 @@ void DboxMain::OnOptions()
       gmb.AfxMessageBox(IDS_NOHOTKEY, MB_OK);
     }
   }
+
+  // Update Minidump user streams
+  app.SetMinidumpUserStreams(m_bOpen, !IsDBReadOnly(), usPrefs);
 }
 
 void DboxMain::OnGeneratePassword()
