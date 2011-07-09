@@ -82,6 +82,7 @@ protected:
   afx_msg void OnCopyPassword();
   afx_msg void OnENChangePassword();
   afx_msg void OnSymbols();
+  afx_msg HBRUSH OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor);
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
@@ -98,6 +99,7 @@ private:
   // number of checkboxes & lengths disabled when hex chosen
   enum {N_NOHEX = 6, N_HEX_LENGTHS = 4};
   static const UINT nonHex[N_NOHEX]; // IDs of said checkboxes
+  BOOL *pnonHex[N_NOHEX]; // Addresses of said checkbox variables
   static const UINT LenTxts[N_HEX_LENGTHS * 2]; // IDs of text associated with length
   static const UINT nonHexLengths[N_HEX_LENGTHS]; // IDs of said lengths
   static const UINT nonHexLengthSpins[N_HEX_LENGTHS]; // IDs of said lengths' spinboxes
@@ -105,4 +107,6 @@ private:
   UINT m_savelen[N_HEX_LENGTHS];
 
   bool m_bFromOptions;  // True if called by Options, false if called from GeneratePassword
+
+  static const UINT uiDBPrefs[];
 };

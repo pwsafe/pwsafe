@@ -31,6 +31,12 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+const UINT COptionsDisplay::uiDBPrefs[] = {
+  IDC_DEFUNSHOWINTREE, IDC_DEFPWSHOWINTREE, IDC_DEFPWSHOWINEDIT,
+  IDC_DEFNOTESSHOWINEDIT, IDC_TREE_DISPLAY_COLLAPSED,
+  IDC_TREE_DISPLAY_EXPANDED, IDC_TREE_DISPLAY_LASTSAVE
+};
+
 /////////////////////////////////////////////////////////////////////////////
 // COptionsDisplay property page
 
@@ -84,6 +90,7 @@ void COptionsDisplay::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(COptionsDisplay, COptions_PropertyPage)
   //{{AFX_MSG_MAP(COptionsDisplay)
+  ON_WM_CTLCOLOR()
   ON_BN_CLICKED(ID_HELP, OnHelp)
 
   ON_BN_CLICKED(IDC_PREWARNEXPIRY, OnPreWarn)
@@ -98,6 +105,10 @@ END_MESSAGE_MAP()
 BOOL COptionsDisplay::OnInitDialog() 
 {
   COptions_PropertyPage::OnInitDialog();
+
+  for (int i = 0; i < sizeof(uiDBPrefs) / sizeof(uiDBPrefs[0]); i++) {
+    SetWindowTheme(GetDlgItem(uiDBPrefs[i])->GetSafeHwnd(), L"", L"");
+  }
 
   if (m_ShowUsernameInTree == FALSE) {
     m_ShowPasswordInTree = FALSE;
@@ -215,4 +226,23 @@ void COptionsDisplay::OnDisplayUserInTree()
     ((CButton*)GetDlgItem(IDC_DEFPWSHOWINTREE))->SetCheck(BST_UNCHECKED);
   } else
     GetDlgItem(IDC_DEFPWSHOWINTREE)->EnableWindow(TRUE);
+}
+
+HBRUSH COptionsDisplay::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
+{
+  // Database preferences - controls + associated static text
+  switch (pWnd->GetDlgCtrlID()) {
+    case IDC_DEFUNSHOWINTREE:
+    case IDC_DEFPWSHOWINTREE:
+    case IDC_DEFPWSHOWINEDIT:
+    case IDC_DEFNOTESSHOWINEDIT:
+    case IDC_TREE_DISPLAY_COLLAPSED:
+    case IDC_TREE_DISPLAY_EXPANDED:
+    case IDC_TREE_DISPLAY_LASTSAVE:
+      pDC->SetTextColor(CR_DATABASE_OPTIONS);
+      pDC->SetBkMode(TRANSPARENT);
+      break;
+  }
+
+  return CPWPropertyPage::OnCtlColor(pDC, pWnd, nCtlColor);
 }

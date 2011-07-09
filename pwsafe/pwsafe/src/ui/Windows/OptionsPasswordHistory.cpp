@@ -32,6 +32,8 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+const UINT COptionsPasswordHistory::uiDBPrefs[] = {IDC_SAVEPWHISTORY};
+
 /////////////////////////////////////////////////////////////////////////////
 // COptionsPasswordHistory property page
 
@@ -64,6 +66,7 @@ void COptionsPasswordHistory::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(COptionsPasswordHistory, COptions_PropertyPage)
   //{{AFX_MSG_MAP(COptionsPasswordHistory)
+  ON_WM_CTLCOLOR()
   ON_BN_CLICKED(ID_HELP, OnHelp)
 
   ON_BN_CLICKED(IDC_SAVEPWHISTORY, OnSavePWHistory)
@@ -82,6 +85,10 @@ BOOL COptionsPasswordHistory::OnInitDialog()
 {
   COptions_PropertyPage::OnInitDialog();
 
+  for (int i = 0; i < sizeof(uiDBPrefs) / sizeof(uiDBPrefs[0]); i++) {
+    SetWindowTheme(GetDlgItem(uiDBPrefs[i])->GetSafeHwnd(), L"", L"");
+  }
+
   CSpinButtonCtrl *pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_PWHSPIN);
 
   pspin->SetBuddy(GetDlgItem(IDC_DEFPWHNUM));
@@ -91,6 +98,7 @@ BOOL COptionsPasswordHistory::OnInitDialog()
 
   GetDlgItem(IDC_PWHSPIN)->EnableWindow(m_SavePWHistory);
   GetDlgItem(IDC_DEFPWHNUM)->EnableWindow(m_SavePWHistory);
+  GetDlgItem(IDC_STATIC_NUMPWSDHIST)->EnableWindow(m_SavePWHistory);
 
   // Disable text re: PWHistory changes on existing entries to start
   GetDlgItem(IDC_STATIC_UPDATEPWHISTORY)->EnableWindow(FALSE);
@@ -201,6 +209,7 @@ void COptionsPasswordHistory::OnSavePWHistory()
   BOOL enable = (((CButton*)GetDlgItem(IDC_SAVEPWHISTORY))->GetCheck() == 1) ? TRUE : FALSE;
   GetDlgItem(IDC_PWHSPIN)->EnableWindow(enable);
   GetDlgItem(IDC_DEFPWHNUM)->EnableWindow(enable);
+  GetDlgItem(IDC_STATIC_NUMPWSDHIST)->EnableWindow(enable);
 }
 
 void COptionsPasswordHistory::OnPWHistoryNoAction()
@@ -211,4 +220,18 @@ void COptionsPasswordHistory::OnPWHistoryNoAction()
 void COptionsPasswordHistory::OnPWHistoryDoAction() 
 {
   GetDlgItem(IDC_STATIC_UPDATEPWHISTORY)->EnableWindow(TRUE);
+}
+
+HBRUSH COptionsPasswordHistory::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
+{
+  // Database preferences - controls + associated static text
+  switch (pWnd->GetDlgCtrlID()) {
+    case IDC_STATIC_NUMPWSDHIST:
+    case IDC_SAVEPWHISTORY:
+      pDC->SetTextColor(CR_DATABASE_OPTIONS);
+      pDC->SetBkMode(TRANSPARENT);
+      break;
+  }
+
+  return CPWPropertyPage::OnCtlColor(pDC, pWnd, nCtlColor);
 }

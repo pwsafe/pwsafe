@@ -729,6 +729,14 @@
 #define IDC_DEFAULTAUTOTYPE             1442
 #define IDC_STATIC_DRAGAUTO             1443
 #define IDC_COPYPSWDURL                 1444
+#define IDC_STATIC_IDLEMINS             1445
+#define IDC_STATIC_NUMPWSDHIST          1446
+#define IDC_STATIC_DEFAUTOTYPE          1447
+#define IDC_STATIC_PSWDLENGTH           1448
+#define IDC_SHIFT_DOUBLE_CLICK_ACTION   1449
+#define IDC_SHIFT_DCA_DEFAULT           1450
+#define IDC_HELP_PREFERENCES            1452
+#define IDC_STATIC_PREFERENCES          1453
 
 // Next default values for new objects
 // 
@@ -736,7 +744,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        501
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1445
+#define _APS_NEXT_CONTROL_VALUE         1454
 #define _APS_NEXT_SYMED_VALUE           166
 #endif
 #endif

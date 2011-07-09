@@ -68,10 +68,13 @@ protected:
   afx_msg void OnUseDefUser();
   afx_msg void OnBrowseForLocation(UINT nID);
   afx_msg void OnComboChanged();
+  afx_msg HBRUSH OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor);
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
 
 private:
   CToolTipCtrl* m_pToolTipCtrl;
+
+  static const UINT uiDBPrefs[];
 };
