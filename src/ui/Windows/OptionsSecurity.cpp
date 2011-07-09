@@ -32,6 +32,10 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+const UINT COptionsSecurity::uiDBPrefs[] = {
+  IDC_COPYPSWDURL, IDC_LOCK_TIMER
+};
+
 /////////////////////////////////////////////////////////////////////////////
 // COptionsSecurity property page
 
@@ -72,6 +76,7 @@ void COptionsSecurity::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(COptionsSecurity, COptions_PropertyPage)
   //{{AFX_MSG_MAP(COptionsSecurity)
+  ON_WM_CTLCOLOR()
   ON_BN_CLICKED(ID_HELP, OnHelp)
 
   ON_BN_CLICKED(IDC_LOCK_TIMER, OnLockOnIdleTimeout)
@@ -85,6 +90,10 @@ END_MESSAGE_MAP()
 BOOL COptionsSecurity::OnInitDialog() 
 {
   COptions_PropertyPage::OnInitDialog();
+
+  for (int i = 0; i < sizeof(uiDBPrefs) / sizeof(uiDBPrefs[0]); i++) {
+    SetWindowTheme(GetDlgItem(uiDBPrefs[i])->GetSafeHwnd(), L"", L"");
+  }
 
   OnLockOnIdleTimeout();
   CSpinButtonCtrl* pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_IDLESPIN);
@@ -207,4 +216,20 @@ void COptionsSecurity::OnLockOnIdleTimeout()
   BOOL enable = (((CButton*)GetDlgItem(IDC_LOCK_TIMER))->GetCheck() == 1) ? TRUE : FALSE;
   GetDlgItem(IDC_IDLESPIN)->EnableWindow(enable);
   GetDlgItem(IDC_IDLE_TIMEOUT)->EnableWindow(enable);
+  GetDlgItem(IDC_STATIC_IDLEMINS)->EnableWindow(enable);
+}
+
+HBRUSH COptionsSecurity::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
+{
+  // Database preferences - controls + associated static text
+  switch (pWnd->GetDlgCtrlID()) {
+    case IDC_STATIC_IDLEMINS:
+    case IDC_COPYPSWDURL:
+    case IDC_LOCK_TIMER:
+      pDC->SetTextColor(CR_DATABASE_OPTIONS);
+      pDC->SetBkMode(TRANSPARENT);
+      break;
+  }
+
+  return CPWPropertyPage::OnCtlColor(pDC, pWnd, nCtlColor);
 }

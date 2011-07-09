@@ -15,6 +15,9 @@ class COptions_PropertySheet;
 class DboxMain;
 class PWScore;
 
+// Database option text colour (COLORREF) - equivalent to RGB(0, 0, 128)
+#define CR_DATABASE_OPTIONS 0x800000
+
 struct st_Opt_master_data {
   UINT uicaller;   // Options, New Database, Generate
 

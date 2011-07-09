@@ -37,6 +37,10 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+const UINT COptionsMisc::uiDBPrefs[] = {
+  IDC_USERNAME, IDC_MAINTAINDATETIMESTAMPS, IDC_USEDEFUSER
+};
+
 /////////////////////////////////////////////////////////////////////////////
 // COptionsMisc property page
 
@@ -94,6 +98,7 @@ void COptionsMisc::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(COptionsMisc, COptions_PropertyPage)
   //{{AFX_MSG_MAP(COptionsMisc)
+  ON_WM_CTLCOLOR()
   ON_BN_CLICKED(ID_HELP, OnHelp)
 
   ON_BN_CLICKED(IDC_HOTKEY_ENABLE, OnEnableHotKey)
@@ -108,6 +113,10 @@ END_MESSAGE_MAP()
 BOOL COptionsMisc::OnInitDialog() 
 {
   COptions_PropertyPage::OnInitDialog();
+
+  for (int i = 0; i < sizeof(uiDBPrefs) / sizeof(uiDBPrefs[0]); i++) {
+    SetWindowTheme(GetDlgItem(uiDBPrefs[i])->GetSafeHwnd(), L"", L"");
+  }
 
   OnUseDefUser();
 
@@ -391,3 +400,19 @@ void COptionsMisc::OnBrowseForLocation(UINT nID)
   }
 }
 
+HBRUSH COptionsMisc::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
+{
+  // Database preferences - controls + associated static text
+  switch (pWnd->GetDlgCtrlID()) {
+    case IDC_USERNAME:
+    case IDC_STATIC_USERNAME:
+    case IDC_STATIC_DEFAUTOTYPE:
+    case IDC_MAINTAINDATETIMESTAMPS:
+    case IDC_USEDEFUSER:
+      pDC->SetTextColor(CR_DATABASE_OPTIONS);
+      pDC->SetBkMode(TRANSPARENT);
+      break;
+  }
+
+  return CPWPropertyPage::OnCtlColor(pDC, pWnd, nCtlColor);
+}

@@ -34,6 +34,12 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+const UINT COptionsPasswordPolicy::uiDBPrefs[] = {
+  IDC_USELOWERCASE, IDC_USEUPPERCASE, IDC_USEDIGITS,
+  IDC_USESYMBOLS, IDC_EASYVISION, IDC_PRONOUNCEABLE,
+  IDC_USEHEXDIGITS, IDC_USEDEFAULTSYMBOLS, IDC_USEOWNSYMBOLS
+};
+
 /////////////////////////////////////////////////////////////////////////////
 // COptionsPasswordPolicy property page
 
@@ -73,6 +79,15 @@ COptionsPasswordPolicy::COptionsPasswordPolicy(CWnd *pParent, st_Opt_master_data
   m_PWSymbolMinLength = M_PWSymbolMinLength();
   m_PWUpperMinLength = M_PWUpperMinLength();
   m_UseOwnSymbols = M_UseOwnSymbols();
+
+  // These must be in the same order as their respective Control IDs
+  // in COptionsPasswordPolicy::nonHex
+  pnonHex[0] = &m_PWUseLowercase;
+  pnonHex[1] = &m_PWUseUppercase;
+  pnonHex[2] = &m_PWUseDigits;
+  pnonHex[3] = &m_PWUseSymbols;
+  pnonHex[4] = &m_PWEasyVision;
+  pnonHex[5] = &m_PWMakePronounceable;
 }
 
 COptionsPasswordPolicy::~COptionsPasswordPolicy()
@@ -107,6 +122,7 @@ void COptionsPasswordPolicy::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(COptionsPasswordPolicy, COptions_PropertyPage)
   //{{AFX_MSG_MAP(COptionsPasswordPolicy)
+  ON_WM_CTLCOLOR()
   ON_BN_CLICKED(ID_HELP, OnHelp)
 
   ON_BN_CLICKED(IDC_USEHEXDIGITS, OnUseHexdigits)
@@ -135,6 +151,10 @@ END_MESSAGE_MAP()
 BOOL COptionsPasswordPolicy::OnInitDialog() 
 {
   COptions_PropertyPage::OnInitDialog();
+
+  for (int i = 0; i < sizeof(uiDBPrefs) / sizeof(uiDBPrefs[0]); i++) {
+    SetWindowTheme(GetDlgItem(uiDBPrefs[i])->GetSafeHwnd(), L"", L"");
+  }
 
   if (m_bFromOptions) {
     // These are only used in Manage -> Generate Password
@@ -344,6 +364,7 @@ void COptionsPasswordPolicy::do_hex(const bool bHex)
       m_save[i] = ((CButton*)GetDlgItem(id))->GetCheck();
       ((CButton*)GetDlgItem(id))->SetCheck(BST_UNCHECKED);
       GetDlgItem(id)->EnableWindow(FALSE);
+      (*pnonHex[i]) = 0; // zero variable - otherwise Hexcheck wont work
     }
 
     for (i = 0; i < N_HEX_LENGTHS; i++) {
@@ -372,6 +393,7 @@ void COptionsPasswordPolicy::do_hex(const bool bHex)
       UINT id = nonHex[i];
       GetDlgItem(id)->EnableWindow(TRUE);
       ((CButton*)GetDlgItem(id))->SetCheck(m_save[i]);
+      (*pnonHex[i]) = m_save[i]; // Restore variable
     }
 
     for (i = 0; i < N_HEX_LENGTHS; i++) {
@@ -667,4 +689,39 @@ void COptionsPasswordPolicy::OnENChangePassword()
   UpdateData(TRUE);
 
   m_ex_password.GetWindowText((CString &)m_password);
+}
+
+HBRUSH COptionsPasswordPolicy::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
+{
+  // Database preferences - controls + associated static text
+  HBRUSH hbr = CPWPropertyPage::OnCtlColor(pDC, pWnd, nCtlColor);
+
+  if (M_uicaller() == IDS_GENERATEPASSWORD)
+    return hbr;
+
+  switch (pWnd->GetDlgCtrlID()) {
+    case IDC_STATIC_PSWDLENGTH:
+    case IDC_USELOWERCASE:
+    case IDC_USEUPPERCASE:
+    case IDC_USEDIGITS:
+    case IDC_USESYMBOLS:
+    case IDC_EASYVISION:
+    case IDC_PRONOUNCEABLE:
+    case IDC_USEHEXDIGITS:
+    case IDC_USEDEFAULTSYMBOLS:
+    case IDC_USEOWNSYMBOLS:
+    case IDC_STATIC_LC1:
+    case IDC_STATIC_LC2:
+    case IDC_STATIC_UC1:
+    case IDC_STATIC_UC2:
+    case IDC_STATIC_DG1:
+    case IDC_STATIC_DG2:
+    case IDC_STATIC_SY1:
+    case IDC_STATIC_SY2:
+      pDC->SetTextColor(CR_DATABASE_OPTIONS);
+      pDC->SetBkMode(TRANSPARENT);
+      break;
+  }
+
+  return hbr;
 }

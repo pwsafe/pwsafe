@@ -40,6 +40,8 @@ static char THIS_FILE[] = __FILE__;
 
 int CALLBACK SetSelProc(HWND hWnd, UINT uMsg, LPARAM , LPARAM lpData);
 
+const UINT COptionsBackup::uiDBPrefs[] = {IDC_SAVEIMMEDIATELY};
+
 /////////////////////////////////////////////////////////////////////////////
 // COptionsBackup property page
 
@@ -96,6 +98,7 @@ void COptionsBackup::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(COptionsBackup, COptions_PropertyPage)
   //{{AFX_MSG_MAP(COptionsBackup)
+  ON_WM_CTLCOLOR()
   ON_BN_CLICKED(ID_HELP, OnHelp)
 
   ON_BN_CLICKED(IDC_BACKUPBEFORESAVE, OnBackupBeforeSave)
@@ -104,6 +107,7 @@ BEGIN_MESSAGE_MAP(COptionsBackup, COptions_PropertyPage)
   ON_BN_CLICKED(IDC_DFLTBACKUPLOCATION, OnBackupDirectory)
   ON_BN_CLICKED(IDC_USERBACKUPOTHERLOCATION, OnBackupDirectory)
   ON_BN_CLICKED(IDC_BROWSEFORLOCATION, OnBrowseForLocation)
+  ON_STN_CLICKED(IDC_STATIC_PREFERENCES, OnPreferencesHelp)
   ON_CBN_SELCHANGE(IDC_BACKUPSUFFIX, OnComboChanged)
   ON_EN_KILLFOCUS(IDC_USERBACKUPPREFIXVALUE, OnUserPrefixKillfocus)
   ON_MESSAGE(PSM_QUERYSIBLINGS, OnQuerySiblings)
@@ -113,6 +117,10 @@ END_MESSAGE_MAP()
 BOOL COptionsBackup::OnInitDialog()
 {
   COptions_PropertyPage::OnInitDialog();
+
+  for (int i = 0; i < sizeof(uiDBPrefs) / sizeof(uiDBPrefs[0]); i++) {
+    SetWindowTheme(GetDlgItem(uiDBPrefs[i])->GetSafeHwnd(), L"", L"");
+  }
 
   if (m_backupsuffix_cbox.GetCount() == 0) {
     // add the strings in alphabetical order
@@ -282,6 +290,13 @@ void COptionsBackup::OnHelp()
 {
   CString cs_HelpTopic;
   cs_HelpTopic = app.GetHelpFileName() + L"::/html/backups_tab.html";
+  ::HtmlHelp(this->GetSafeHwnd(), (LPCWSTR)cs_HelpTopic, HH_DISPLAY_TOPIC, 0);
+}
+
+void COptionsBackup::OnPreferencesHelp()
+{
+  CString cs_HelpTopic;
+  cs_HelpTopic = app.GetHelpFileName() + L"::/html/preferences.html";
   ::HtmlHelp(this->GetSafeHwnd(), (LPCWSTR)cs_HelpTopic, HH_DISPLAY_TOPIC, 0);
 }
 
@@ -460,4 +475,21 @@ int CALLBACK SetSelProc(HWND hWnd, UINT uMsg, LPARAM , LPARAM lpData)
     ::SendMessage(hWnd, BFFM_SETSELECTION, TRUE, lpData);
   }
   return 0;
+}
+
+HBRUSH COptionsBackup::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
+{
+  // Database preferences - controls + associated static text
+  switch (pWnd->GetDlgCtrlID()) {
+    case IDC_SAVEIMMEDIATELY:
+      pDC->SetTextColor(CR_DATABASE_OPTIONS);
+      pDC->SetBkMode(TRANSPARENT);
+      break;
+    case IDC_STATIC_PREFERENCES:
+      pDC->SetTextColor(RGB(0, 0, 255));
+      pDC->SetBkMode(TRANSPARENT);
+      break;
+  }
+
+  return CPWPropertyPage::OnCtlColor(pDC, pWnd, nCtlColor);
 }

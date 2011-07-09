@@ -53,10 +53,13 @@ protected:
   afx_msg void OnSavePWHistory();
   afx_msg void OnPWHistoryNoAction();
   afx_msg void OnPWHistoryDoAction();
+  afx_msg HBRUSH OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor);
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
 
 private:
   CToolTipCtrl* m_pToolTipCtrl;
+
+  static const UINT uiDBPrefs[];
 };

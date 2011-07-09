@@ -55,7 +55,12 @@ protected:
   afx_msg void OnLockOnIdleTimeout();
   afx_msg void OnLockOnMinimize();
   afx_msg BOOL OnKillActive();
+  afx_msg HBRUSH OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor);
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
+
+private:
+  static const UINT uiDBPrefs[];
 };
+

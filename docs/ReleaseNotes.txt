@@ -11,6 +11,7 @@ releases may be found in the file ChangeLog.txt.
 New Features for 3.26.1
 =======================
 [3349458] Allow filters to match on rules based on the password's length.
+[] Preferences stored in the database are shown in blue in the Options dialogs.
 
 Changes to Existing Features in 3.26.1
 ======================================
@@ -20,6 +21,8 @@ Bugs fixed in 3.26.1
 ====================
 [] Filter image in Status bar is no longer replaced by 'Filter1' after changing
 preferences via Manage->Options.
+[] Selecting hexadecimal passwords as the database policy no longer causes validation
+to fail.
 
 New Features for 3.26
 =====================
