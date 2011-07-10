@@ -57,7 +57,7 @@ XMLS := $(foreach i,\
 					KPV1_to_PWS.xslt KPV2_to_PWS.xslt,\
 				  xml/$i)
 I18N_HELPS := $(foreach i,\
-								DE ZH ES,\
+								DE ES FR RU ZH,\
 								help/pwsafe$(i)/pwsafe$(i).chm)
 I18N_DLLS := $(foreach i,\
 								DE ES PL RU SV ZH FR DA KO NL,\
