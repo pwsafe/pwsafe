@@ -264,6 +264,7 @@
     Autotype: http://keepass.info/help/base/autotype.html
     + Special key codes are case-insensitive
     + Tab  {TAB} => \t
+    + +{TAB} => \s (Shift-Tab)
     + Enter  {ENTER} or ~ => \n
     * Arrow Up  {UP} 
     * Arrow Down  {DOWN}
@@ -345,10 +346,18 @@
         <xsl:with-param name="by" select="'\t'"/>
       </xsl:call-template>
     </xsl:variable>
+    <!-- +\t -->
+    <xsl:variable name="repSTab">
+      <xsl:call-template name="replaceSubstring">
+        <xsl:with-param name="str" select="$substTab"/>
+        <xsl:with-param name="replace" select="'+\t'"/>
+        <xsl:with-param name="by" select="'\s'"/>
+      </xsl:call-template>
+    </xsl:variable>
     <!-- {BACKSPACE} -->
     <xsl:variable name="substBs">
       <xsl:call-template name="substSequence">
-        <xsl:with-param name="str" select="$substTab"/>
+        <xsl:with-param name="str" select="$repSTab"/>
         <xsl:with-param name="tag" select="'BACKSPACE'"/>
         <xsl:with-param name="by" select="'\b'"/>
       </xsl:call-template>
