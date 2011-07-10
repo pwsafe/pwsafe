@@ -13,6 +13,8 @@
 #include <ctime>
 #include <vector>
 
+static const TCHAR *sHex = _T("0123456789abcdefABCDEF");
+
 // Our own mktime, differs from libc's via argument overloading
 static time_t mktime(int yyyy, int mon, int dd,
                      int hh = 0, int min = 0, int sec = 0, int *dow = NULL)
@@ -319,7 +321,6 @@ int VerifyTextImportPWHistoryString(const StringX &PWHistory,
   int s = -1, m = -1, n = -1;
   int rc = PWH_OK;
   time_t t;
-  const TCHAR *sHex = _T("0123456789abcdefABCDEF");
 
   newPWHistory = _T("");
   strErrors = _T("");
@@ -344,9 +345,7 @@ int VerifyTextImportPWHistoryString(const StringX &PWHistory,
     goto exit;
   }
 
-  size_t found;
-  found = PWHistory.substr(0, 4).find_first_not_of(sHex);
-  if (found != StringX::npos) {
+  if (PWHistory.substr(0, 4).find_first_not_of(sHex) != StringX::npos) {
     // Header not hex!
     rc = PWH_INVALID_HDR;
     goto exit;
@@ -512,8 +511,6 @@ int VerifyXMLImportPWHistoryString(const StringX &PWHistory,
   int rc = PWH_OK;
   time_t t;
 
-  const TCHAR *sHex = _T("0123456789abcdefABCDEF");
-
   newPWHistory = _T("");
   strErrors = _T("");
 
@@ -527,9 +524,7 @@ int VerifyXMLImportPWHistoryString(const StringX &PWHistory,
     goto exit;
   }
 
-  size_t found;
-  found = PWHistory.substr(0, 4).find_first_not_of(sHex);
-  if (found != StringX::npos) {
+  if (PWHistory.substr(0, 4).find_first_not_of(sHex) != StringX::npos) {
     // Header not hex!
     rc = PWH_INVALID_HDR;
     goto exit;
@@ -542,13 +537,11 @@ int VerifyXMLImportPWHistoryString(const StringX &PWHistory,
     goto exit;
   }
 
-  {
-    size_t found = PWHistory.substr(1, 4).find_first_not_of(sHex);
-    if (found != StringX::npos) {
-      // Password length not hex!
-      rc = PWH_PSWD_LENGTH_NOTHEX;
-      goto exit;
-    }
+  if (PWHistory.substr(1, 4).find_first_not_of(sHex) != StringX::npos) {
+    // Password length not hex!
+    rc = PWH_PSWD_LENGTH_NOTHEX;
+    goto exit;
+  } else {
     StringX s1(PWHistory.substr(1, 2));
     StringX s2(PWHistory.substr(3, 4));
     iStringXStream is1(s1), is2(s2);
@@ -611,13 +604,11 @@ int VerifyXMLImportPWHistoryString(const StringX &PWHistory,
     sxPassword = in_tokens[it + 2];
       
     // Get password length
-    {
-      size_t found = sxPWLen.find_first_not_of(sHex);
-      if (found != StringX::npos) {
-        // Password length not hex!
-        rc = PWH_PSWD_LENGTH_NOTHEX;
-        break;
-      }
+    if (sxPWLen.find_first_not_of(sHex) != StringX::npos) {
+      // Password length not hex!
+      rc = PWH_PSWD_LENGTH_NOTHEX;
+      break;
+    } else {
       iStringXStream iss_pwlen(sxPWLen.c_str());
       iss_pwlen >> std::hex >> ipwlen;
     }
