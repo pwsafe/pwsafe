@@ -113,6 +113,7 @@ bool XMLFileHandlers::ProcessStartElement(const int icurrent_element)
       cur_entry->pwp.Empty();
       cur_entry->run_command = _T("");
       cur_entry->dca = _T("");
+      cur_entry->shiftdca = _T("");
       cur_entry->email = _T("");
       cur_entry->symbols = _T("");
       cur_entry->ucprotected = 0;
@@ -288,6 +289,9 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
       break;
     case XLE_DCA:
       cur_entry->dca = Trim(m_strElemContent);
+      break;
+    case XLE_SHIFTDCA:
+      cur_entry->shiftdca = Trim(m_strElemContent);
       break;
     case XLE_EMAIL:
       cur_entry->email = m_strElemContent;
@@ -631,6 +635,8 @@ void XMLFileHandlers::AddEntries()
       ci_temp.SetPWPolicy(cur_entry->pwp);
     if (!cur_entry->dca.empty())
       ci_temp.SetDCA(cur_entry->dca.c_str());
+    if (!cur_entry->shiftdca.empty())
+      ci_temp.SetShiftDCA(cur_entry->shiftdca.c_str());
     if (!cur_entry->email.empty())
       ci_temp.SetEmail(cur_entry->email);
     if (cur_entry->ucprotected)

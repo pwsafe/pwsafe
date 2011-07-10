@@ -231,6 +231,7 @@ xmlns:xs="http://www.w3.org/2001/XMLSchema" version="3.18">
               </xs:element>
               <xs:element name="runcommand" type="stringType" minOccurs="0" maxOccurs="1" />
               <xs:element name="dca" type="dcaType" minOccurs="0" maxOccurs="1" />
+              <xs:element name="shiftdca" type="dcaType" minOccurs="0" maxOccurs="1" />
               <xs:element name="email" type="stringType" minOccurs="0" maxOccurs="1" />
               <xs:element name="protected" type="boolType" minOccurs="0" maxOccurs="1" />
               <xs:element name="symbols" type="stringType" minOccurs="0" maxOccurs="1" />

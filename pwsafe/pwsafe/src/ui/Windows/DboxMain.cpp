@@ -1387,7 +1387,6 @@ void DboxMain::OnItemDoubleClick(NMHDR *, LRESULT *pLResult)
   *pLResult = 1L;
 
   // Continue if in ListView or Leaf in TreeView
-
 #if defined(POCKET_PC)
   if (app.GetProfileInt(PWS_REG_OPTIONS, L"dcshowspassword", FALSE) == FALSE) {
     OnCopyPassword();
@@ -1405,9 +1404,12 @@ void DboxMain::OnItemDoubleClick(NMHDR *, LRESULT *pLResult)
   }
 
   short iDCA;
-  pci->GetDCA(iDCA);
+  const bool m_bShiftKey = ((GetKeyState(VK_SHIFT) & 0x8000) == 0x8000);
+  pci->GetDCA(iDCA, m_bShiftKey);
+
   if (iDCA < PWSprefs::minDCA || iDCA > PWSprefs::maxDCA)
-    iDCA = (short)PWSprefs::GetInstance()->GetPref(PWSprefs::DoubleClickAction);
+    iDCA = (short)PWSprefs::GetInstance()->GetPref(m_bShiftKey ? 
+              PWSprefs::ShiftDoubleClickAction : PWSprefs::DoubleClickAction);
 
   switch (iDCA) {
     case PWSprefs::DoubleClickAutoType:
@@ -2755,7 +2757,7 @@ void DboxMain::SetDCAText(CItemData *pci)
 {
   const short si_dca_default = short(PWSprefs::GetInstance()->
                        GetPref(PWSprefs::DoubleClickAction));
-  short si_dca;
+  short si_dca(0);
   if (pci == NULL) {
     si_dca = -1;
   } else {

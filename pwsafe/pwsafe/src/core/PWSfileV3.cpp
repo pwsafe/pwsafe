@@ -298,6 +298,9 @@ int PWSfileV3::WriteRecord(const CItemData &item)
   item.GetDCA(i16);
   if (i16 >= PWSprefs::minDCA && i16 <= PWSprefs::maxDCA)
     WriteCBC(CItemData::DCA, reinterpret_cast<unsigned char *>(&i16), sizeof(short));
+  item.GetShiftDCA(i16);
+  if (i16 >= PWSprefs::minDCA && i16 <= PWSprefs::maxDCA)
+    WriteCBC(CItemData::SHIFTDCA, reinterpret_cast<unsigned char *>(&i16), sizeof(short));
   tmp = item.GetEmail();
   if (!tmp.empty())
     WriteCBC(CItemData::EMAIL, tmp);

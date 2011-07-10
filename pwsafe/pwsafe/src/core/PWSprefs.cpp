@@ -159,6 +159,8 @@ const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {
   {_T("PWSymbolMinLength"), 0, ptDatabase, 0, 1024},                // database
   {_T("PWUppercaseMinLength"), 0, ptDatabase, 0, 1024},             // database
   {_T("OptShortcutColumnWidth"), 92, ptApplication, 10, 512},       // application
+  {_T("ShiftDoubleClickAction"), DoubleClickCopyUsername, ptApplication,
+                            minDCA, maxDCA},                        // application
 };
 
 const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {

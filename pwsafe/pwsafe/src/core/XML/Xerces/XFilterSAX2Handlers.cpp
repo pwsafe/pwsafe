@@ -355,6 +355,12 @@ void XFilterSAX2Handlers::endElement(const XMLCh* const /* uri */,
     cur_filterentry->ftype = FT_DCA;
   }
 
+  else if (XMLString::equals(qname, _A2X("shiftdca"))) {
+    m_type = DFTYPE_MAIN;
+    cur_filterentry->mtype = PWSMatch::MT_SHIFTDCA;
+    cur_filterentry->ftype = FT_SHIFTDCA;
+  }
+
   else if (XMLString::equals(qname, _A2X("email"))) {
     m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_STRING;

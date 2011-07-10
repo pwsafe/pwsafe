@@ -11,6 +11,8 @@ releases may be found in the file ChangeLog.txt.
 New Features for 3.26.1
 =======================
 [3349458] Allow filters to match on rules based on the password's length.
+[3316779] Shift + "left mouse button 'Double-Click'" now configurable for user.
+Default is copy the username to the clipboard.
 [] Preferences stored in the database are shown in blue in the Options dialogs.
 
 Changes to Existing Features in 3.26.1

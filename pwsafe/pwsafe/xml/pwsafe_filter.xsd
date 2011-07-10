@@ -456,6 +456,7 @@
     <xs:element name="runcommand" type="stringpresentfilterentry" minOccurs="1" maxOccurs="1" />
     <xs:element name="email" type="stringpresentfilterentry" minOccurs="1" maxOccurs="1" />
     <xs:element name="DCA" type="dcafilterentry" minOccurs="1" maxOccurs="1" />
+    <xs:element name="ShiftDCA" type="dcafilterentry" minOccurs="1" maxOccurs="1" />
     <xs:element name="autotype" type="stringpresentfilterentry" minOccurs="1" maxOccurs="1" />
     <xs:element name="password_expiry_interval" type="integerfilterentry" minOccurs="1" maxOccurs="1" />
     <xs:element name="protected" type="booleanisfilterentry" minOccurs="1" maxOccurs="1" />

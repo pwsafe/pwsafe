@@ -168,6 +168,7 @@ PasswordSafe V3.19 introduced Format 0x0306
 PasswordSafe V3.22 introduced Format 0x0307
 PasswordSafe V3.25 introduced Format 0x0308
 PasswordSafe V3.26 introduced Format 0x0309
+PasswordSafe V3.27 introduced Format 0x0310
 
 [2] A universally unique identifier is needed in order to synchronize
 databases, e.g., between a handheld pocketPC device and a
@@ -283,6 +284,7 @@ Double-Click Action         0x13        2 bytes       Y              [15]
 EMail address               0x14        Text          Y              [16]
 Protected Entry             0x15        1 byte        Y              [17]
 Own symbols for password    0x16        Text          Y              [18]
+Shift Double-Click Action   0x17        2 bytes       Y              [15]
 End of Entry                0xff        [empty]       Y              [19]
 
 [1] Per-record UUID to assist in sync, merge, etc. Representation is
@@ -386,8 +388,8 @@ the password is changed, until this value is unset.  Valid values are 1-3650
 corresponding to up to approximately 10 years.  A value of zero is equivalent to
 this field not being set.
 
-[15] A two byte field contain the value of the Double-Click Action 'preference 
-value' (0xff means use the current Application default):
+[15] A two byte field contain the value of the Double-Click Action and Shift
+Double-Click Action'preference value' (0xff means use the current Application default):
 Current 'preference values' are:
     CopyPassword           0
     ViewEdit               1
@@ -397,6 +399,8 @@ Current 'preference values' are:
     CopyUsername           5
     CopyPasswordMinimize   6
     BrowsePlus             7
+    Run Command            8
+    Send email             9
 
 [16] Separate Email address field as per RFC 2368 (without the 'mailto:'
 prefix. This field was introduced in version 0x0306 (PasswordSafe V3.19).

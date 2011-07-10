@@ -57,7 +57,7 @@ struct st_AE_master_data {
   // Addtitional related stuff
   CSecString autotype;
   CSecString runcommand;
-  short DCA, oldDCA;
+  short DCA, oldDCA, ShiftDCA, oldShiftDCA;
 
   // Date & Time related stuff
   CSecString locCTime;
@@ -131,7 +131,9 @@ public:
   inline CSecString &M_runcommand() {return m_AEMD.runcommand;}
   inline short &M_DCA() {return m_AEMD.DCA;}
   inline short &M_oldDCA() {return m_AEMD.oldDCA;}
-
+  inline short &M_ShiftDCA() {return m_AEMD.ShiftDCA;}
+  inline short &M_oldShiftDCA() {return m_AEMD.oldShiftDCA;}
+  
   // Date & Time related stuff
   inline CSecString &M_locCTime() {return m_AEMD.locCTime;}
   inline CSecString &M_locPMTime() {return m_AEMD.locPMTime;}

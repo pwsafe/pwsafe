@@ -53,7 +53,7 @@ struct st_Opt_master_data {
   BOOL ConfirmDelete;
   BOOL MaintainDatetimeStamps;
   BOOL EscExits;
-  int DoubleClickAction;
+  int DoubleClickAction, ShiftDoubleClickAction;
 
   DWORD Hotkey_Value;
   BOOL Hotkey_Enabled;
@@ -163,6 +163,7 @@ public:
   inline BOOL &M_MaintainDatetimeStamps() {return m_OPTMD.MaintainDatetimeStamps;}
   inline BOOL &M_EscExits() {return m_OPTMD.EscExits;}
   inline int &M_DoubleClickAction() {return m_OPTMD.DoubleClickAction;}
+  inline int &M_ShiftDoubleClickAction() {return m_OPTMD.ShiftDoubleClickAction;}
 
   inline DWORD &M_Hotkey_Value() {return m_OPTMD.Hotkey_Value;}
   inline BOOL &M_Hotkey_Enabled() {return m_OPTMD.Hotkey_Enabled;}

@@ -68,6 +68,7 @@
 #define IDSC_FLDNMSYMBOLS               3068
 #define IDSC_INVALIDFIELDLENGTH         3069
 #define IDSC_INVALIDPWLENGTHX           3070
+#define IDSC_FLDNMSHIFTDCA              3071
 
 #define IDSC_CONFIG_NONE                3230
 #define IDSC_CONFIG_REGISTRY            3231

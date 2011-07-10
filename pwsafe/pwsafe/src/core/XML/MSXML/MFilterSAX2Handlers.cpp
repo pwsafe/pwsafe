@@ -518,6 +518,12 @@ HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::endElement (
     cur_filterentry->ftype = FT_DCA;
   }
 
+  else if (_tcscmp(szCurElement, _T("ShiftDCA")) == 0) {
+    m_type = DFTYPE_MAIN;
+    cur_filterentry->mtype = PWSMatch::MT_SHIFTDCA;
+    cur_filterentry->ftype = FT_SHIFTDCA;
+  }
+
   else if (_tcscmp(szCurElement, _T("email")) == 0) {
     m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_STRING;
@@ -759,6 +765,10 @@ HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::endElement (
   }
 
   else if (_tcscmp(szCurElement, _T("dca")) == 0) {
+    cur_filterentry->fdca = (short)_ttoi(m_strElemContent.c_str());
+  }
+
+  else if (_tcscmp(szCurElement, _T("shiftdca")) == 0) {
     cur_filterentry->fdca = (short)_ttoi(m_strElemContent.c_str());
   }
 

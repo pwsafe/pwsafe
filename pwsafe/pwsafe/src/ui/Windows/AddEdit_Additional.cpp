@@ -32,8 +32,8 @@ IMPLEMENT_DYNAMIC(CAddEdit_Additional, CAddEdit_PropertyPage)
 
 CAddEdit_Additional::CAddEdit_Additional(CWnd * pParent, st_AE_master_data *pAEMD)
   : CAddEdit_PropertyPage(pParent, CAddEdit_Additional::IDD, pAEMD),
-  m_UseDefaultDCA(TRUE), m_ClearPWHistory(false), m_bSortAscending(true),
-  m_pToolTipCtrl(NULL), m_bInitdone(false)
+  m_UseDefaultDCA(TRUE), m_UseDefaultShiftDCA(TRUE), m_ClearPWHistory(false),
+  m_bSortAscending(true), m_pToolTipCtrl(NULL), m_bInitdone(false)
 {
   if (M_MaxPWHistory() == 0)
     M_MaxPWHistory() = PWSprefs::GetInstance()->
@@ -54,10 +54,12 @@ void CAddEdit_Additional::DoDataExchange(CDataExchange* pDX)
   DDX_Text(pDX, IDC_RUNCMD, (CString&)M_runcommand());
 
   DDX_Check(pDX, IDC_DCA_DEFAULT, m_UseDefaultDCA);
+  DDX_Check(pDX, IDC_SHIFT_DCA_DEFAULT, m_UseDefaultShiftDCA);
 
   DDX_Control(pDX, IDC_AUTOTYPE, m_ex_autotype);
   DDX_Control(pDX, IDC_RUNCMD, m_ex_runcommand);
   DDX_Control(pDX, IDC_DOUBLE_CLICK_ACTION, m_dblclk_cbox);
+  DDX_Control(pDX, IDC_SHIFT_DOUBLE_CLICK_ACTION, m_shiftdblclk_cbox);
 
   if (M_uicaller() != IDS_ADDENTRY) {
     DDX_Control(pDX, IDC_STATIC_AUTO, m_stc_autotype);
@@ -80,9 +82,11 @@ BEGIN_MESSAGE_MAP(CAddEdit_Additional, CAddEdit_PropertyPage)
   ON_EN_CHANGE(IDC_MAXPWHISTORY, OnChanged)
   ON_EN_CHANGE(IDC_RUNCMD, OnChanged)
 
-  ON_BN_CLICKED(IDC_DCA_DEFAULT, OnSetDCACheck)
   ON_CONTROL_RANGE(STN_CLICKED, IDC_STATIC_AUTO, IDC_STATIC_RUNCMD, OnSTCExClicked)
+  ON_BN_CLICKED(IDC_DCA_DEFAULT, OnSetDCACheck)
   ON_CBN_SELCHANGE(IDC_DOUBLE_CLICK_ACTION, OnDCAComboChanged)
+  ON_BN_CLICKED(IDC_SHIFT_DCA_DEFAULT, OnSetShiftDCACheck)
+  ON_CBN_SELCHANGE(IDC_SHIFT_DOUBLE_CLICK_ACTION, OnShiftDCAComboChanged)
 
   // Password History
   ON_BN_CLICKED(IDC_CLEAR_PWHIST, OnClearPWHist)
@@ -170,56 +174,8 @@ BOOL CAddEdit_Additional::OnInitDialog()
 
   // For some reason, MFC calls us twice when initializing.
   // Populate the combo box only once.
-  if (m_dblclk_cbox.GetCount() == 0) {
-    // ComboBox now sorted - no need to add in English alphabetical order
-    int nIndex;
-    CString cs_text;
-
-    cs_text.LoadString(IDSC_DCAAUTOTYPE);
-    nIndex = m_dblclk_cbox.AddString(cs_text);
-    m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickAutoType);
-
-    cs_text.LoadString(IDSC_DCABROWSE);
-    nIndex = m_dblclk_cbox.AddString(cs_text);
-    m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickBrowse);
-
-    cs_text.LoadString(IDSC_DCABROWSEPLUS);
-    nIndex = m_dblclk_cbox.AddString(cs_text);
-    m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickBrowsePlus);
-
-    cs_text.LoadString(IDSC_DCACOPYNOTES);
-    nIndex = m_dblclk_cbox.AddString(cs_text);
-    m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickCopyNotes);
-
-    cs_text.LoadString(IDSC_DCACOPYPASSWORD);
-    nIndex = m_dblclk_cbox.AddString(cs_text);
-    m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickCopyPassword);
-
-    cs_text.LoadString(IDSC_DCACOPYPASSWORDMIN);
-    nIndex = m_dblclk_cbox.AddString(cs_text);
-    m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickCopyPasswordMinimize);
-
-    cs_text.LoadString(IDSC_DCACOPYUSERNAME);
-    nIndex = m_dblclk_cbox.AddString(cs_text);
-    m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickCopyUsername);
-
-    cs_text.LoadString(IDSC_DCAVIEWEDIT);
-    nIndex = m_dblclk_cbox.AddString(cs_text);
-    m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickViewEdit);
-
-    cs_text.LoadString(IDSC_DCARUN);
-    nIndex = m_dblclk_cbox.AddString(cs_text);
-    m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickRun);
-
-    cs_text.LoadString(IDSC_DCASENDEMAIL);
-    nIndex = m_dblclk_cbox.AddString(cs_text);
-    m_dblclk_cbox.SetItemData(nIndex, PWSprefs::DoubleClickSendEmail);
-
-    for (int i = 0; i < m_dblclk_cbox.GetCount(); i++) {
-      int ival = (int)m_dblclk_cbox.GetItemData(i);
-      m_DCA_to_Index[ival] = i;
-    }
-  }
+  SetupDCAComboBoxes(&m_dblclk_cbox);
+  SetupDCAComboBoxes(&m_shiftdblclk_cbox);
 
   if (M_DCA() < PWSprefs::minDCA || M_DCA() > PWSprefs::maxDCA) {
     short iDCA = (short)PWSprefs::GetInstance()->
@@ -231,6 +187,18 @@ BOOL CAddEdit_Additional::OnInitDialog()
     m_dblclk_cbox.SetCurSel(m_DCA_to_Index[M_DCA()]);
     m_dblclk_cbox.EnableWindow(TRUE);
     m_UseDefaultDCA = FALSE;
+  }
+
+  if (M_ShiftDCA() < PWSprefs::minDCA || M_ShiftDCA() > PWSprefs::maxDCA) {
+    short iDCA = (short)PWSprefs::GetInstance()->
+                      GetPref(PWSprefs::ShiftDoubleClickAction);
+    m_shiftdblclk_cbox.SetCurSel(m_DCA_to_Index[iDCA]);
+    m_shiftdblclk_cbox.EnableWindow(FALSE);
+    m_UseDefaultShiftDCA = TRUE;
+  } else {
+    m_shiftdblclk_cbox.SetCurSel(m_DCA_to_Index[M_ShiftDCA()]);
+    m_shiftdblclk_cbox.EnableWindow(TRUE);
+    m_UseDefaultShiftDCA = FALSE;
   }
 
   // Password History
@@ -323,6 +291,59 @@ BOOL CAddEdit_Additional::OnInitDialog()
   return TRUE;
 }
 
+void CAddEdit_Additional::SetupDCAComboBoxes(CComboBox *pcbox)
+{
+  if (pcbox->GetCount() == 0) {
+    // ComboBox now sorted - no need to add in English alphabetical order
+    int nIndex;
+    CString cs_text;
+
+    cs_text.LoadString(IDSC_DCAAUTOTYPE);
+    nIndex = pcbox->AddString(cs_text);
+    pcbox->SetItemData(nIndex, PWSprefs::DoubleClickAutoType);
+
+    cs_text.LoadString(IDSC_DCABROWSE);
+    nIndex = pcbox->AddString(cs_text);
+    pcbox->SetItemData(nIndex, PWSprefs::DoubleClickBrowse);
+
+    cs_text.LoadString(IDSC_DCABROWSEPLUS);
+    nIndex = pcbox->AddString(cs_text);
+    pcbox->SetItemData(nIndex, PWSprefs::DoubleClickBrowsePlus);
+
+    cs_text.LoadString(IDSC_DCACOPYNOTES);
+    nIndex = pcbox->AddString(cs_text);
+    pcbox->SetItemData(nIndex, PWSprefs::DoubleClickCopyNotes);
+
+    cs_text.LoadString(IDSC_DCACOPYPASSWORD);
+    nIndex = pcbox->AddString(cs_text);
+    pcbox->SetItemData(nIndex, PWSprefs::DoubleClickCopyPassword);
+
+    cs_text.LoadString(IDSC_DCACOPYPASSWORDMIN);
+    nIndex = pcbox->AddString(cs_text);
+    pcbox->SetItemData(nIndex, PWSprefs::DoubleClickCopyPasswordMinimize);
+
+    cs_text.LoadString(IDSC_DCACOPYUSERNAME);
+    nIndex = pcbox->AddString(cs_text);
+    pcbox->SetItemData(nIndex, PWSprefs::DoubleClickCopyUsername);
+
+    cs_text.LoadString(IDSC_DCAVIEWEDIT);
+    nIndex = pcbox->AddString(cs_text);
+    pcbox->SetItemData(nIndex, PWSprefs::DoubleClickViewEdit);
+
+    cs_text.LoadString(IDSC_DCARUN);
+    nIndex = pcbox->AddString(cs_text);
+    pcbox->SetItemData(nIndex, PWSprefs::DoubleClickRun);
+
+    cs_text.LoadString(IDSC_DCASENDEMAIL);
+    nIndex = pcbox->AddString(cs_text);
+    pcbox->SetItemData(nIndex, PWSprefs::DoubleClickSendEmail);
+
+    for (int i = 0; i < pcbox->GetCount(); i++) {
+      int ival = (int)pcbox->GetItemData(i);
+      m_DCA_to_Index[ival] = i;
+    }
+  }
+}
 void CAddEdit_Additional::OnChanged()
 {
   if (!m_bInitdone || m_AEMD.uicaller != IDS_EDITENTRY)
@@ -407,13 +428,15 @@ LRESULT CAddEdit_Additional::OnQuerySiblings(WPARAM wParam, LPARAM )
         case IDS_EDITENTRY:
           if (M_autotype()    != M_pci()->GetAutoType()   ||
               M_runcommand()  != M_pci()->GetRunCommand() ||
-              M_DCA()         != M_oldDCA())
+              M_DCA()         != M_oldDCA()               ||
+              M_ShiftDCA()    != M_oldShiftDCA())
             return 1L;
           break;
         case IDS_ADDENTRY:
-          if (!M_autotype().IsEmpty()   ||
-              !M_runcommand().IsEmpty() ||
-              M_DCA() != M_oldDCA())
+          if (!M_autotype().IsEmpty()     ||
+              !M_runcommand().IsEmpty()   ||
+              M_DCA()      != M_oldDCA()  ||
+              M_ShiftDCA() != M_oldShiftDCA())
             return 1L;
           break;
       }
@@ -545,12 +568,36 @@ void CAddEdit_Additional::OnSetDCACheck()
     OnDCAComboChanged();
 }
 
+void CAddEdit_Additional::OnSetShiftDCACheck()
+{
+  m_ae_psh->SetChanged(true);
+
+  BOOL bEnable = ((CButton *)GetDlgItem(IDC_SHIFT_DCA_DEFAULT))->GetCheck() == BST_CHECKED ?
+                   FALSE : TRUE;
+
+  // Assuming FALSE = 0 & TRUE = 1
+  m_UseDefaultShiftDCA = 1 - bEnable;
+  m_shiftdblclk_cbox.EnableWindow(bEnable);
+  if (bEnable == FALSE)
+    M_ShiftDCA() = -1;
+  else
+    OnShiftDCAComboChanged();
+}
+
 void CAddEdit_Additional::OnDCAComboChanged()
 {
   m_ae_psh->SetChanged(true);
 
   int nIndex = m_dblclk_cbox.GetCurSel();
   M_DCA() = (short)m_dblclk_cbox.GetItemData(nIndex);
+}
+
+void CAddEdit_Additional::OnShiftDCAComboChanged()
+{
+  m_ae_psh->SetChanged(true);
+
+  int nIndex = m_shiftdblclk_cbox.GetCurSel();
+  M_ShiftDCA() = (short)m_shiftdblclk_cbox.GetItemData(nIndex);
 }
 
 void CAddEdit_Additional::OnSTCExClicked(UINT nID)

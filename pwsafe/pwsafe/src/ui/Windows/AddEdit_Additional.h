@@ -34,7 +34,8 @@ public:
   CStaticExtn m_stc_runcommand;
 
   CComboBox m_dblclk_cbox;
-  BOOL m_UseDefaultDCA;
+  CComboBox m_shiftdblclk_cbox;
+  BOOL m_UseDefaultDCA, m_UseDefaultShiftDCA;
   int m_DCA_to_Index[PWSprefs::maxDCA + 1];
 
   CListCtrl m_PWHistListCtrl;
@@ -62,9 +63,11 @@ protected:
   afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 
   afx_msg void OnDCAComboChanged();
+  afx_msg void OnShiftDCAComboChanged();
   afx_msg void OnChanged();
 
   afx_msg void OnSetDCACheck();
+  afx_msg void OnSetShiftDCACheck();
   afx_msg void OnSTCExClicked(UINT nId);
   afx_msg void OnCheckedSavePasswordHistory();
   afx_msg void OnHeaderClicked(NMHDR *pNotifyStruct, LRESULT *pLResult);
@@ -78,6 +81,7 @@ protected:
 private:
   static int CALLBACK PWHistCompareFunc(LPARAM lParam1, LPARAM lParam2,
                                         LPARAM lParamSort);
+  void SetupDCAComboBoxes(CComboBox *pcbox);
   CToolTipCtrl *m_pToolTipCtrl;
 
   COLORREF m_autotype_cfOldColour, m_runcmd_cfOldColour;
