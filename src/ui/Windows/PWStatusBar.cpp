@@ -221,8 +221,10 @@ void CPWStatusBar::OnMouseMove(UINT nFlags, CPoint point)
       for (int i = 0; i < SB_TOTAL; i++) {
         GetItemRect(i, &rc);
 
-        if(PtInRect(&rc, point))
+        if (PtInRect(&rc, point)) {
           nPane = i;
+          break;
+        }
       }
     }
 

@@ -56,6 +56,10 @@ void CInfoDisplay::OnPaint()
   GetWindowText(text);
   CSize box = CSize(0, 0);
 
+  // First replace all "\r\n" by"\n" then any remaining "\r" to "\n"
+  text.Replace(L"\r\n", L"\n");
+  text.Replace(L'\r', L'\n');
+
   TEXTMETRIC tm;
   dc.GetTextMetrics(&tm); 
 
