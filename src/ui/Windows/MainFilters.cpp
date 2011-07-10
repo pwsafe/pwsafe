@@ -256,6 +256,9 @@ bool DboxMain::PassesFiltering(const CItemData &ci,
         case FT_DCA:
           mt = PWSMatch::MT_DCA;
           break;
+        case FT_SHIFTDCA:
+          mt = PWSMatch::MT_SHIFTDCA;
+          break;
         case FT_CTIME:
         case FT_PMTIME:
         case FT_ATIME:
@@ -376,7 +379,8 @@ bool DboxMain::PassesFiltering(const CItemData &ci,
           tests++;
           break;
         case PWSMatch::MT_DCA:
-          thistest_rc = pci->Matches(st_fldata.fdca, ifunction);
+        case PWSMatch::MT_SHIFTDCA:
+          thistest_rc = pci->Matches(st_fldata.fdca, ifunction, mt == PWSMatch::MT_SHIFTDCA);
           tests++;
           break;
         case PWSMatch::MT_ENTRYSTATUS:

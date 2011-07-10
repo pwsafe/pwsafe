@@ -43,6 +43,7 @@ BEGIN
   IDSC_FLDNMXTIMEINT     "Password Expiry Interval"
   IDSC_FLDNMRUNCOMMAND   "Run Command"
   IDSC_FLDNMDCA          "DCA"
+  IDSC_FLDNMSHIFTDCA     "Shift+DCA"
   IDSC_FLDNMEMAIL        "e-mail"
   IDSC_FLDNMPROTECTED    "Protected"
   IDSC_FLDNMSYMBOLS      "Symbols"

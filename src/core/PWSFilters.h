@@ -55,6 +55,7 @@ enum FieldType {
   FT_XTIME_INT     = CItemData::XTIME_INT,
   FT_RUNCMD        = CItemData::RUNCMD,
   FT_DCA           = CItemData::DCA,
+  FT_SHIFTDCA      = CItemData::SHIFTDCA,
   FT_EMAIL         = CItemData::EMAIL,
   FT_PROTECTED     = CItemData::PROTECTED,
   FT_SYMBOLS       = CItemData::SYMBOLS,
@@ -121,7 +122,7 @@ struct st_FilterRow {
   // if filter type is a string
   StringX fstring;
   bool fcase; // case sensitive?
-  // if filter type is Double-Click Action
+  // if filter type is Double-Click Action or Shift-Double-Click Action
   short fdca;
   // if filter type is a entrytype
   CItemData::EntryType etype;

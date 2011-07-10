@@ -58,7 +58,7 @@ public:
     NumPWHistoryDefault, BackupSuffix, BackupMaxIncremented,
     PreExpiryWarnDays, ClosedTrayIconColour, PWDigitMinLength,
     PWLowercaseMinLength, PWSymbolMinLength, PWUppercaseMinLength,
-    OptShortcutColumnWidth,
+    OptShortcutColumnWidth, ShiftDoubleClickAction,
     NumIntPrefs};
   enum StringPrefs {CurrentBackup, CurrentFile, LastView, DefaultUsername,
     TreeFont, BackupPrefixValue, BackupDir, AltBrowser, ListColumns,
@@ -68,7 +68,7 @@ public:
     LanguageFile, DefaultSymbols,
     NumStringPrefs};
 
-  // for DoubleClickAction
+  // for DoubleClickAction and ShiftDoubleClickAction
   // NOTE: When adding items, update the pwsafe.xsd & pwsafe_filter.xsd schemas
   //       to increase the maximum value in "dcaType"
   enum {minDCA = 0, DoubleClickCopyPassword = 0, DoubleClickViewEdit = 1,

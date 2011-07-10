@@ -197,6 +197,9 @@ void PWScore::Compare(PWScore *pothercore,
         if (bsFields.test(CItemData::DCA) &&
             currentItem.GetDCA() != compItem.GetDCA())
           bsConflicts.flip(CItemData::DCA);
+        if (bsFields.test(CItemData::SHIFTDCA) &&
+            currentItem.GetShiftDCA() != compItem.GetShiftDCA())
+          bsConflicts.flip(CItemData::SHIFTDCA);
         if (bsFields.test(CItemData::EMAIL) &&
             currentItem.GetEmail() != compItem.GetEmail())
           bsConflicts.flip(CItemData::EMAIL);

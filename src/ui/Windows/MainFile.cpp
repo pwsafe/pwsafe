@@ -3271,11 +3271,11 @@ void DboxMain::ReportAdvancedOptions(CReport *pRpt, const bool bAdvanced, const 
     // Non-time fields
     int ifields[] = {CItemData::PASSWORD, CItemData::NOTES, CItemData::URL,
                      CItemData::AUTOTYPE, CItemData::PWHIST, CItemData::POLICY,
-                     CItemData::RUNCMD, CItemData::DCA, CItemData::EMAIL,
+                     CItemData::RUNCMD, CItemData::DCA, CItemData::SHIFTDCA, CItemData::EMAIL,
                      CItemData::PROTECTED, CItemData::SYMBOLS};
     UINT uimsgids[] = {IDS_COMPPASSWORD, IDS_COMPNOTES, IDS_COMPURL,
                        IDS_COMPAUTOTYPE, IDS_COMPPWHISTORY, IDS_COMPPWPOLICY,
-                       IDS_COMPRUNCOMMAND, IDS_COMPDCA, IDS_COMPEMAIL,
+                       IDS_COMPRUNCOMMAND, IDS_COMPDCA, IDS_COMPSHIFTDCA, IDS_COMPEMAIL,
                        IDS_COMPPROTECTED, IDS_COMPSYMBOLS};
     ASSERT(_countof(ifields) == _countof(uimsgids));
 

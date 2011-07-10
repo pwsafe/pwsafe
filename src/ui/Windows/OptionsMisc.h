@@ -29,7 +29,7 @@ protected:
   //{{AFX_DATA(COptionsMisc)
   enum { IDD = IDD_PS_MISC };
 
-  CComboBox m_dblclk_cbox;
+  CComboBox m_dblclk_cbox, m_shiftdblclk_cbox;
   CHotKeyCtrl m_HotkeyCtrl;
 
   CString m_DefUsername;
@@ -45,7 +45,7 @@ protected:
   BOOL m_UseDefUsername;
   BOOL m_QuerySetDefUsername;
   BOOL m_AutotypeMinimize;
-  int m_DoubleClickAction;
+  int m_DoubleClickAction, m_ShiftDoubleClickAction;
   //}}AFX_DATA
 
   int m_DCA_to_Index[PWSprefs::maxDCA + 1];
@@ -67,13 +67,16 @@ protected:
   afx_msg void OnEnableHotKey();
   afx_msg void OnUseDefUser();
   afx_msg void OnBrowseForLocation(UINT nID);
-  afx_msg void OnComboChanged();
+  afx_msg void OnDCAComboChanged();
+  afx_msg void OnShiftDCAComboChanged();
   afx_msg HBRUSH OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor);
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
 
 private:
+  void SetupCombo(CComboBox *pcbox);
+
   CToolTipCtrl* m_pToolTipCtrl;
 
   static const UINT uiDBPrefs[];

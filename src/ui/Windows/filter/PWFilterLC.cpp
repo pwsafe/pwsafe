@@ -774,6 +774,7 @@ bool CPWFilterLC::SetField(const int iItem)
           mt = PWSMatch::MT_STRING;
           break;
         case FT_DCA:
+        case FT_SHIFTDCA:
           mt = PWSMatch::MT_DCA;
           break;
         case FT_CTIME:
@@ -1298,6 +1299,7 @@ bool CPWFilterLC::GetCriterion()
       }
       break;
     case PWSMatch::MT_DCA:
+    case PWSMatch::MT_SHIFTDCA:
       m_fDCA.m_title = cs_selected;
       if (!vcbxChanged[m_iItem] &&
           st_fldata.rule != PWSMatch::MR_INVALID) {
@@ -1448,6 +1450,10 @@ void CPWFilterLC::SetUpComboBoxData()
 
         stf.cs_text = CItemData::FieldName(CItemData::DCA).c_str();
         stf.ftype = FT_DCA;
+        vFcbx_data.push_back(stf);
+
+        stf.cs_text = CItemData::FieldName(CItemData::SHIFTDCA).c_str();
+        stf.ftype = FT_SHIFTDCA;
         vFcbx_data.push_back(stf);
 
         stf.cs_text = CItemData::FieldName(CItemData::EMAIL).c_str();

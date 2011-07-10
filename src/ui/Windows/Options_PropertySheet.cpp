@@ -197,6 +197,8 @@ void COptions_PropertySheet::SetupInitialValues()
         prefs->GetPref(PWSprefs::EscExits) ? TRUE : FALSE;
     m_OPTMD.DoubleClickAction =
         prefs->GetPref(PWSprefs::DoubleClickAction);
+    m_OPTMD.ShiftDoubleClickAction =
+        prefs->GetPref(PWSprefs::ShiftDoubleClickAction);
   
     m_OPTMD.Hotkey_Value = DWORD(prefs->GetPref(PWSprefs::HotKey));
     // Can't be enabled if not set!
@@ -371,6 +373,8 @@ void COptions_PropertySheet::UpdateCopyPreferences()
   // of the radio buttons in the following :-)
   prefs->SetPref(PWSprefs::DoubleClickAction,
                  (unsigned int)m_OPTMD.DoubleClickAction, true);
+  prefs->SetPref(PWSprefs::ShiftDoubleClickAction,
+                 (unsigned int)m_OPTMD.ShiftDoubleClickAction, true);
 
   prefs->SetPref(PWSprefs::HotKey,
                  m_OPTMD.Hotkey_Value, true);

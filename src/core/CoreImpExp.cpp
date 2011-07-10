@@ -44,7 +44,7 @@
 #include <algorithm>
 #include <set>
 
-const TCHAR *EXPORTHEADER  = _T("Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tPassword Expiry Interval\tRecord Modified Time\tPassword Policy\tHistory\tRun Command\tDCA\te-mail\tProtected\tSymbols\tNotes");
+const TCHAR *EXPORTHEADER  = _T("Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tPassword Expiry Interval\tRecord Modified Time\tPassword Policy\tHistory\tRun Command\tDCA\tShift DCA\te-mail\tProtected\tSymbols\tNotes");
 const TCHAR *KPEXPORTHEADER  = _T("Password Groups\tGroup Tree\tAccount\tLogin Name\tPassword\tWeb Site\tComments\tUUID\tIcon\tCreation Time\tLast Access\tLast Modification\tExpires\tAttachment Description\tAttachment");
 const TCHAR *KPIMPORTEDPREFIX = _T("ImportedKeePass");
 const TCHAR *FORMATIMPORTED = _T("\xab%s\xbb \xab%s\xbb \xab%s\xbb");
@@ -183,6 +183,12 @@ StringX PWScore::BuildHeader(const CItemData::FieldBits &bsFields, const bool bI
   }
   if (bittest(bsFields, CItemData::DCA, bIncluded)) {
     hdr += CItemData::FieldName(CItemData::DCA) + TAB;
+  }
+  if (bittest(bsFields, CItemData::SHIFTDCA, bIncluded)) {
+    hdr += CItemData::FieldName(CItemData::SHIFTDCA) + TAB;
+  }
+  if (bittest(bsFields, CItemData::SHIFTDCA, bIncluded)) {
+    hdr += CItemData::FieldName(CItemData::SHIFTDCA) + TAB;
   }
   if (bittest(bsFields, CItemData::EMAIL, bIncluded)) {
     hdr += CItemData::FieldName(CItemData::EMAIL) + TAB;
@@ -788,7 +794,8 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   // Order of fields determined in CItemData::GetPlaintext()
   enum Fields {GROUPTITLE, USER, PASSWORD, URL, AUTOTYPE,
                CTIME, PMTIME, ATIME, XTIME, XTIME_INT, RMTIME,
-               POLICY, HISTORY, RUNCMD, DCA, EMAIL, PROTECTED, SYMBOLS, NOTES, 
+               POLICY, HISTORY, RUNCMD, DCA, SHIFTDCA, EMAIL,
+               PROTECTED, SYMBOLS, NOTES, 
                NUMFIELDS};
 
   int i_Offset[NUMFIELDS];
@@ -1184,6 +1191,8 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
       ci_temp.SetRunCommand(tokens[i_Offset[RUNCMD]].c_str());
     if (i_Offset[DCA] >= 0 && tokens.size() > static_cast<size_t>(i_Offset[DCA]))
       ci_temp.SetDCA(tokens[i_Offset[DCA]].c_str());
+    if (i_Offset[SHIFTDCA] >= 0 && tokens.size() > static_cast<size_t>(i_Offset[SHIFTDCA]))
+      ci_temp.SetShiftDCA(tokens[i_Offset[SHIFTDCA]].c_str());
     if (i_Offset[EMAIL] >= 0 && tokens.size() > static_cast<size_t>(i_Offset[EMAIL]))
       ci_temp.SetEmail(tokens[i_Offset[EMAIL]].c_str());
     if (i_Offset[PROTECTED] >= 0 && tokens.size() > static_cast<size_t>(i_Offset[PROTECTED]))

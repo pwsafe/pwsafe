@@ -222,6 +222,12 @@ BOOL CAdvancedDlg::OnInitDialog()
     m_bsAllowedFields.set(CItemData::DCA);
     m_bsDefaultSelectedFields.set(CItemData::DCA);
 
+    cs_text.LoadString(IDS_SHIFTDCALONG);
+    iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
+    m_pLC_Selected->SetItemData(iItem, CItemData::SHIFTDCA | NORMALFIELD);
+    m_bsAllowedFields.set(CItemData::SHIFTDCA);
+    m_bsDefaultSelectedFields.set(CItemData::SHIFTDCA);
+
     cs_text.LoadString(IDS_PROTECTED);
     iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
     m_pLC_Selected->SetItemData(iItem, CItemData::PROTECTED | NORMALFIELD);

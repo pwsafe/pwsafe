@@ -404,6 +404,7 @@ void PWSMatch::GetMatchType(MatchType mtype,
       LoadAString(cs1, id);
       break;
     case MT_DCA:
+    case MT_SHIFTDCA:
       switch (fdca) {
         case -1:                                        id = IDSC_CURRENTDEFAULTDCA;  break;
         case PWSprefs::DoubleClickCopyPassword:         id = IDSC_DCACOPYPASSWORD;    break;

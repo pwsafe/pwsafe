@@ -138,6 +138,7 @@ BOOL CCompareResultsDlg::OnInitDialog()
                  {CItemData::POLICY, IDS_PWPOLICY, POLICY},
                  {CItemData::RUNCMD, IDS_RUNCOMMAND, RUNCMD},
                  {CItemData::DCA, IDS_DCA, DCA},
+                 {CItemData::SHIFTDCA, IDS_SHIFTDCA, SHIFTDCA},
                  {CItemData::EMAIL, IDS_EMAIL, EMAIL},
                  {CItemData::PROTECTED, IDS_PROTECTED, PROTECTED},
                  {CItemData::SYMBOLS, IDS_SYMBOLS, SYMBOLS},
@@ -903,6 +904,7 @@ void CCompareResultsDlg::WriteReportData()
     const CString csx_policy(MAKEINTRESOURCE(IDS_COMPPWPOLICY));
     const CString csx_runcmd(MAKEINTRESOURCE(IDS_COMPRUNCOMMAND));
     const CString csx_dca(MAKEINTRESOURCE(IDS_COMPDCA));
+    const CString csx_shiftdca(MAKEINTRESOURCE(IDS_COMPSHIFTDCA));
     const CString csx_email(MAKEINTRESOURCE(IDS_COMPEMAIL));
     const CString csx_protected(MAKEINTRESOURCE(IDS_COMPPROTECTED));
     const CString csx_symbols(MAKEINTRESOURCE(IDS_COMPSYMBOLS));
@@ -924,6 +926,7 @@ void CCompareResultsDlg::WriteReportData()
       if (st_data.bsDiffs.test(CItemData::POLICY)) buffer += csx_policy;
       if (st_data.bsDiffs.test(CItemData::RUNCMD)) buffer += csx_runcmd;
       if (st_data.bsDiffs.test(CItemData::DCA)) buffer += csx_dca;
+      if (st_data.bsDiffs.test(CItemData::SHIFTDCA)) buffer += csx_shiftdca;
       if (st_data.bsDiffs.test(CItemData::EMAIL)) buffer += csx_email;
       if (st_data.bsDiffs.test(CItemData::PROTECTED)) buffer += csx_protected;
       if (st_data.bsDiffs.test(CItemData::SYMBOLS)) buffer += csx_symbols;

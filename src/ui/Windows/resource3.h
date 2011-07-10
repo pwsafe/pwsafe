@@ -672,3 +672,6 @@
 #define IDS_RPTIMPORTKPV1CSV            5869
 #define IDS_IMPORTFAILED                5870
 #define IDS_PASSWORDLEN                 5871
+#define IDS_SHIFTDCA                    5872
+#define IDS_SHIFTDCALONG                5873
+#define IDS_COMPSHIFTDCA                5874

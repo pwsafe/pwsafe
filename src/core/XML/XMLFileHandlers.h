@@ -41,6 +41,7 @@ struct pw_entry {
   StringX uuid;
   StringX run_command;
   StringX dca;
+  StringX shiftdca;
   StringX email;
   StringX symbols;
   unsigned char ucprotected;

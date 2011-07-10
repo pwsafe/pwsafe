@@ -81,7 +81,7 @@ CAddEdit_PropertySheet::CAddEdit_PropertySheet(UINT nID, CWnd* pParent,
     // Additional initialisation
     m_AEMD.autotype = L"";
     m_AEMD.runcommand = L"";
-    m_AEMD.oldDCA = m_AEMD.DCA = -1;
+    m_AEMD.oldDCA = m_AEMD.DCA = m_AEMD.oldShiftDCA = m_AEMD.ShiftDCA = -1;
 
     // Date & Time initialisation
     m_AEMD.locCTime.LoadString(IDS_NA);
@@ -218,7 +218,7 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
 
     time_t t;
     bool bIsPSWDModified;
-    short iDCA;
+    short iDCA, iShiftDCA;
 
     switch (m_AEMD.uicaller) {
       case IDS_EDITENTRY:
@@ -227,6 +227,7 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
           break;
 
         m_AEMD.pci->GetDCA(iDCA);
+        m_AEMD.pci->GetShiftDCA(iShiftDCA);
         // Check if modified
         m_bIsModified = (m_AEMD.group       != m_AEMD.pci->GetGroup()      ||
                          m_AEMD.title       != m_AEMD.pci->GetTitle()      ||
@@ -236,6 +237,7 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
                          m_AEMD.autotype    != m_AEMD.pci->GetAutoType()   ||
                          m_AEMD.runcommand  != m_AEMD.pci->GetRunCommand() ||
                          m_AEMD.DCA         != iDCA                        ||
+                         m_AEMD.ShiftDCA    != iShiftDCA                   ||
                          m_AEMD.email       != m_AEMD.pci->GetEmail()      ||
                          m_AEMD.symbols     != m_AEMD.oldsymbols           ||
                          m_AEMD.PWHistory   != m_AEMD.pci->GetPWHistory()  ||
@@ -271,6 +273,7 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
 
           m_AEMD.pci->SetRunCommand(m_AEMD.runcommand);
           m_AEMD.pci->SetDCA(m_AEMD.DCA);
+          m_AEMD.pci->SetShiftDCA(m_AEMD.ShiftDCA);
           m_AEMD.pci->SetEmail(m_AEMD.email);
           m_AEMD.pci->SetSymbols(m_AEMD.symbols);
           m_AEMD.pci->SetProtected(m_AEMD.ucprotected != 0);
@@ -321,6 +324,7 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
         m_AEMD.pci->SetAutoType(m_AEMD.autotype);
         m_AEMD.pci->SetRunCommand(m_AEMD.runcommand);
         m_AEMD.pci->SetDCA(m_AEMD.DCA);
+        m_AEMD.pci->SetShiftDCA(m_AEMD.ShiftDCA);
         m_AEMD.pci->SetEmail(m_AEMD.email);
         m_AEMD.pci->SetSymbols(m_AEMD.symbols);
         m_AEMD.pci->SetProtected(m_AEMD.ucprotected != 0);
@@ -463,6 +467,8 @@ void CAddEdit_PropertySheet::SetupInitialValues()
   m_AEMD.runcommand = m_AEMD.pci->GetRunCommand();
   m_AEMD.pci->GetDCA(m_AEMD.DCA);
   m_AEMD.oldDCA = m_AEMD.DCA;
+  m_AEMD.pci->GetShiftDCA(m_AEMD.ShiftDCA);
+  m_AEMD.oldShiftDCA = m_AEMD.ShiftDCA;
 
   // Date Time fields
   m_AEMD.locCTime = m_AEMD.pci->GetCTimeL();

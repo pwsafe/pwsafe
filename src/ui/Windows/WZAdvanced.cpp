@@ -303,6 +303,11 @@ BOOL CWZAdvanced::OnInitDialog()
       m_pLC_List->SetItemData(iItem, CItemData::DCA | NORMALFIELD);
       m_bsAllowedFields.set(CItemData::DCA);
 
+      cs_text.LoadString(IDS_SHIFTDCALONG);
+      iItem = m_pLC_List->InsertItem(++iItem, cs_text);
+      m_pLC_List->SetItemData(iItem, CItemData::SHIFTDCA | NORMALFIELD);
+      m_bsAllowedFields.set(CItemData::SHIFTDCA);
+
       cs_text.LoadString(IDS_PROTECTED);
       iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
       m_pLC_Selected->SetItemData(iItem, CItemData::PROTECTED | NORMALFIELD);
@@ -366,6 +371,12 @@ BOOL CWZAdvanced::OnInitDialog()
       m_pLC_Selected->SetItemData(iItem, CItemData::DCA | NORMALFIELD);
       m_bsAllowedFields.set(CItemData::DCA);
       m_bsDefaultSelectedFields.set(CItemData::DCA);
+
+      cs_text.LoadString(IDS_SHIFTDCALONG);
+      iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
+      m_pLC_Selected->SetItemData(iItem, CItemData::SHIFTDCA | NORMALFIELD);
+      m_bsAllowedFields.set(CItemData::SHIFTDCA);
+      m_bsDefaultSelectedFields.set(CItemData::SHIFTDCA);
 
       cs_text.LoadString(IDS_PROTECTED);
       iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
@@ -793,6 +804,13 @@ LRESULT CWZAdvanced::OnWizardNext()
       return -1;
     }
   }
+
+  // If there are none left in the allowed ListCtrl, then the user must have selected
+  // all items - so set the ones he/she couldn't. This will be the same as if the user
+  // never came to the WSAdvanced dialog
+  m_bsFields.set(CItemData::GROUPTITLE);
+  m_bsFields.set(CItemData::UUID);
+  m_bsFields.set(CItemData::RESERVED);
 
   m_pst_SADV->bsFields = m_bsFields;
   m_pst_SADV->subgroup_name = m_subgroup_name;
