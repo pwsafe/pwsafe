@@ -308,30 +308,6 @@ Section "$(PROGRAM_FILES)" ProgramFiles
   File "..\xml\KPV1_to_PWS.xslt"
   File "..\xml\KPV2_to_PWS.xslt"
 
-; Language-specific files  
-  File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeZH.dll"
-  File /nonfatal "..\help\pwsafeZH\pwsafeZH.chm"
-  File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeDE.dll"
-  File /nonfatal "..\help\pwsafeDE\pwsafeDE.chm"
-  File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeES.dll"
-  File /nonfatal "..\help\pwsafeES\pwsafeES.chm"
-  File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeSV.dll"
-  File /nonfatal "..\help\pwsafeSV\pwsafeSV.chm"
-  File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeNL.dll"
-  File /nonfatal "..\help\pwsafeNL\pwsafeNL.chm"
-  File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeFR.dll"
-  File /nonfatal "..\help\pwsafeFR\pwsafeFR.chm"
-  File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeRU.dll"
-  File /nonfatal "..\help\pwsafeRU\pwsafeRU.chm"
-  File /nonfatal "..\build\bin\pwsafe\I18N\pwsafePL.dll"
-  File /nonfatal "..\help\pwsafePL\pwsafePL.chm"
-  File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeIT.dll"
-  File /nonfatal "..\help\pwsafeIT\pwsafeIT.chm"
-  File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeDA.dll"
-  File /nonfatal "..\help\pwsafeDA\pwsafeDA.chm"
-  File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeKO.dll"
-  File /nonfatal "..\help\pwsafeDA\pwsafeKO.chm"
-
   Goto dont_install_Win98
   ; If installing under Windows98, delete pwsafe.exe, rename
   ; p98.exe pwsafe.exe
@@ -381,66 +357,71 @@ SectionEnd
 SectionGroup /e "$(LANGUAGE_SUPPORT)" LanguageSupport
 Section  "$(ENGLISH_SUPPORT)" EnglishSection
   SectionIn RO ; mandatory
-  SetOutPath "$INSTDIR\Program"  
+  SetOutPath "$INSTDIR"  
   File "..\help\default\pwsafe.chm"
 SectionEnd
 Section /o "$(CHINESE_CN_SUPPORT)" ChineseSection
-  SetOutPath "$INSTDIR\Program"  
+  SetOutPath "$INSTDIR"  
   File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeZH.dll"
   File /nonfatal "..\help\pwsafeZH\pwsafeZH.chm"
 SectionEnd
 Section /o "$(CHINESE_TW_SUPPORT)" ChineseTWSection
-  SetOutPath "$INSTDIR\Program"  
+  SetOutPath "$INSTDIR"  
   File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeZH_TW.dll"
   File /nonfatal "..\help\pwsafeZH\pwsafeZH_TW.chm"
 SectionEnd
 Section /o "$(GERMAN_SUPPORT)" GermanSection
-  SetOutPath "$INSTDIR\Program"  
+  SetOutPath "$INSTDIR"  
   File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeDE.dll"
   File /nonfatal "..\help\pwsafeDE\pwsafeDE.chm"
 SectionEnd
 Section /o "$(SPANISH_SUPPORT)" SpanishSection
-  SetOutPath "$INSTDIR\Program"  
+  SetOutPath "$INSTDIR"  
   File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeES.dll"
   File /nonfatal "..\help\pwsafeES\pwsafeES.chm"
 SectionEnd
 Section /o "$(SWEDISH_SUPPORT)" SwedishSection
-  SetOutPath "$INSTDIR\Program"  
+  SetOutPath "$INSTDIR"  
   File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeSV.dll"
   File /nonfatal "..\help\pwsafeSV\pwsafeSV.chm"
 SectionEnd
 ; ******************** Dutch isn't supported yet ********************
 !if 0
 Section /o "$(DUTCH_SUPPORT)" DutchSection
-  SetOutPath "$INSTDIR\Program"  
+  SetOutPath "$INSTDIR"  
   File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeNL.dll"
   File /nonfatal "..\help\pwsafeNL\pwsafeNL.chm"
 SectionEnd
 !endif
 Section /o "$(FRENCH_SUPPORT)" FrenchSection
-  SetOutPath "$INSTDIR\Program"  
+  SetOutPath "$INSTDIR"  
   File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeFR.dll"
   File /nonfatal "..\help\pwsafeFR\pwsafeFR.chm"
 SectionEnd
 Section /o "$(RUSSIAN_SUPPORT)" RussianSection
-  SetOutPath "$INSTDIR\Program"  
+  SetOutPath "$INSTDIR"  
   File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeRU.dll"
   File /nonfatal "..\help\pwsafeRU\pwsafeRU.chm"
 SectionEnd
 Section /o "$(POLISH_SUPPORT)" PolishSection
-  SetOutPath "$INSTDIR\Program"  
+  SetOutPath "$INSTDIR"  
   File /nonfatal "..\build\bin\pwsafe\I18N\pwsafePL.dll"
   File /nonfatal "..\help\pwsafePL\pwsafePL.chm"
 SectionEnd
 Section /o "$(ITALIAN_SUPPORT)" ItalianSection
-  SetOutPath "$INSTDIR\Program"  
+  SetOutPath "$INSTDIR"  
   File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeIT.dll"
   File /nonfatal "..\help\pwsafeIT\pwsafeIT.chm"
 SectionEnd
 Section /o "$(DANISH_SUPPORT)" DanishSection
-  SetOutPath "$INSTDIR\Program"  
+  SetOutPath "$INSTDIR"  
   File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeDA.dll"
   File /nonfatal "..\help\pwsafeDA\pwsafeDA.chm"
+SectionEnd
+Section /o "$(KOREAN_SUPPORT)" KoreanSection
+  SetOutPath "$INSTDIR"  
+  File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeKO.dll"
+  File /nonfatal "..\help\pwsafeDA\pwsafeKO.chm"
 SectionEnd
 SectionGroupEnd
 
@@ -513,6 +494,8 @@ Section "Uninstall"
 	MessageBox MB_OK $(RUNNING_APPLICATION)
   Abort
 	${nsProcess::Unload}
+  ; Always delete uninstaller first
+  Delete "$INSTDIR\Uninstall.exe"
   ; Delete all installed files in the directory
   Delete "$INSTDIR\pwsafe.exe"
   Delete "$INSTDIR\pws_at.dll"
@@ -548,6 +531,9 @@ Section "Uninstall"
   Delete "$INSTDIR\pwsafeIT.chm"
   Delete "$INSTDIR\pwsafeDA.dll"
   Delete "$INSTDIR\pwsafeDA.chm"
+  Delete "$INSTDIR\pwsafeKO.dll"
+  Delete "$INSTDIR\pwsafeKO.chm"
+
 
   ; remove directory if it's empty
   RMDir  "$INSTDIR"
