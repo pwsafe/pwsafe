@@ -48,29 +48,28 @@ typedef StringX (CItemData::*ItemDataFuncT)() const;
 
 struct PWSGridCellDataType {
     CItemData::FieldType ft;
-    ItemDataFuncT func;
     bool visible;
     int width;
     int position;
 } PWSGridCellData[] = {
-                        { CItemData::GROUP,       &CItemData::GetGroup,       true,     wxDefaultCoord,     0},
-                        { CItemData::TITLE,       &CItemData::GetTitle,       true,     wxDefaultCoord,     1},
-                        { CItemData::USER,        &CItemData::GetUser,        true,     wxDefaultCoord,     2},
-                        { CItemData::URL,         &CItemData::GetURL,         true,     wxDefaultCoord,     3},
-                        { CItemData::EMAIL,       &CItemData::GetEmail,       true,     wxDefaultCoord,     4},
-                        { CItemData::AUTOTYPE,    &CItemData::GetAutoType,    true,     wxDefaultCoord,     5},
-                        { CItemData::RUNCMD,      &CItemData::GetRunCommand,  true,     wxDefaultCoord,     6},
-                        { CItemData::PROTECTED,   &CItemData::GetProtected,   true,     wxDefaultCoord,     7},
-                        { CItemData::CTIME,       &CItemData::GetCTimeL,      true,     wxDefaultCoord,     8},
-                        { CItemData::PMTIME,      &CItemData::GetPMTimeL,     true,     wxDefaultCoord,     9},
-                        { CItemData::ATIME,       &CItemData::GetATimeL,      true,     wxDefaultCoord,     10},
-                        { CItemData::XTIME,       &CItemData::GetXTimeL,      true,     wxDefaultCoord,     11},
-                        { CItemData::XTIME_INT,   &CItemData::GetXTimeInt,    true,     wxDefaultCoord,     12},
-                        { CItemData::RMTIME,      &CItemData::GetRMTimeL,     true,     wxDefaultCoord,     13},
-                        { CItemData::PASSWORD,    &CItemData::GetPassword,    false,    wxDefaultCoord,     14},
-                        { CItemData::PWHIST,      &CItemData::GetPWHistory,   true,     wxDefaultCoord,     15},
-                        { CItemData::POLICY,      &CItemData::GetPWPolicy,    true,     wxDefaultCoord,     16},
-                        { CItemData::DCA,         &CItemData::GetDCA,         true,     wxDefaultCoord,     17},
+                        { CItemData::GROUP,     true,     wxDefaultCoord,     0},
+                        { CItemData::TITLE,     true,     wxDefaultCoord,     1},
+                        { CItemData::USER,      true,     wxDefaultCoord,     2},
+                        { CItemData::URL,       true,     wxDefaultCoord,     3},
+                        { CItemData::EMAIL,     true,     wxDefaultCoord,     4},
+                        { CItemData::AUTOTYPE,  true,     wxDefaultCoord,     5},
+                        { CItemData::RUNCMD,    true,     wxDefaultCoord,     6},
+                        { CItemData::PROTECTED, true,     wxDefaultCoord,     7},
+                        { CItemData::CTIME,     true,     wxDefaultCoord,     8},
+                        { CItemData::PMTIME,    true,     wxDefaultCoord,     9},
+                        { CItemData::ATIME,     true,     wxDefaultCoord,     10},
+                        { CItemData::XTIME,     true,     wxDefaultCoord,     11},
+                        { CItemData::XTIME_INT, true,     wxDefaultCoord,     12},
+                        { CItemData::RMTIME,    true,     wxDefaultCoord,     13},
+                        { CItemData::PASSWORD,  false,    wxDefaultCoord,     14},
+                        { CItemData::PWHIST,    true,     wxDefaultCoord,     15},
+                        { CItemData::POLICY,    true,     wxDefaultCoord,     16},
+                        { CItemData::DCA,       true,     wxDefaultCoord,     17},
                       };
 
 /*!
@@ -134,7 +133,7 @@ wxString PWSGridTable::GetValue(int row, int col)
       size_t(col) < NumberOf(PWSGridCellData)) {
 		const CItemData* item = m_pwsgrid->GetItem(row);
     if (item != NULL) {
-			return towxstring((item->*PWSGridCellData[col].func)());
+			return towxstring(item->GetFieldValue(PWSGridCellData[col].ft));
 		}
 	}
 	return wxEmptyString;
