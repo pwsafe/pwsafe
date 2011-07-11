@@ -220,7 +220,15 @@ void CPWStatusBar::OnMouseMove(UINT nFlags, CPoint point)
       RECT rc;
       for (int i = 0; i < SB_TOTAL; i++) {
         GetItemRect(i, &rc);
-
+        // Fix width for the last Panel under Windows XP (not later versions)
+        // http://stackoverflow.com/questions/628933/cstatusbarctrl-getitemrect-xp-manifest
+        if (i == SB_TOTAL - 1) {
+           UINT uiID, uiStyle;
+           int cxWidth;
+           GetPaneInfo(i, uiID, uiStyle, cxWidth);
+           if (rc.right - rc.left < cxWidth)
+             rc.right = rc.left + ::GetSystemMetrics(SM_CXVSCROLL) + ::GetSystemMetrics(SM_CXBORDER) * 2;
+        }
         if (PtInRect(&rc, point)) {
           nPane = i;
           break;
