@@ -28,7 +28,8 @@ public:
 
   // Dialog Data
   //{{AFX_DATA(CAddEdit_PasswordPolicy)
-  enum { IDD = IDD_ADDEDIT_PASSWORDPOLICY };
+  enum { IDD = IDD_ADDEDIT_PASSWORDPOLICY,
+         IDD_SHORT = IDD_ADDEDIT_PASSWORDPOLICY_SHORT };
 
   CSymbolEdit m_symbols;
 

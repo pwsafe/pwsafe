@@ -25,7 +25,8 @@ public:
 
   // Dialog Data
   //{{AFX_DATA(CAddEdit_Additional)
-  enum { IDD = IDD_ADDEDIT_ADDITIONAL };
+  enum { IDD = IDD_ADDEDIT_ADDITIONAL,
+         IDD_SHORT = IDD_ADDEDIT_ADDITIONAL_SHORT };
 
   CEditExtn m_ex_autotype;
   CEditExtn m_ex_runcommand;

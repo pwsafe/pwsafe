@@ -341,7 +341,12 @@
 #define IDD_WZSELECTDB                  497
 #define IDD_WZFINISH                    498
 #define IDB_DRAGAUTOX_CLASSIC           499
+#define IDD_ADDEDIT_BASIC_SHORT         499
 #define IDB_DRAGAUTOX_NEW               500
+#define IDD_ADDEDIT_DATETIMES_SHORT     500
+#define IDD_ADDEDIT_PASSWORDPOLICY_SHORT 501
+#define IDD_ADDEDIT_ADDITIONAL1         502
+#define IDD_ADDEDIT_ADDITIONAL_SHORT    502
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_BROWSE                      1002
