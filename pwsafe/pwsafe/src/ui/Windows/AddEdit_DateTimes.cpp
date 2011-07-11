@@ -35,7 +35,8 @@ static void AFXAPI DDV_CheckMaxDays(CDataExchange* pDX, const int &how,
 IMPLEMENT_DYNAMIC(CAddEdit_DateTimes, CAddEdit_PropertyPage)
 
 CAddEdit_DateTimes::CAddEdit_DateTimes(CWnd *pParent, st_AE_master_data *pAEMD)
-  : CAddEdit_PropertyPage(pParent, CAddEdit_DateTimes::IDD, pAEMD),
+  : CAddEdit_PropertyPage(pParent, CAddEdit_DateTimes::IDD,
+                          CAddEdit_DateTimes::IDD_SHORT, pAEMD),
   m_how(NONE_EXP), m_numDays(1), m_bRecurringPswdExpiry(FALSE), m_bInitdone(false)
 {
 #ifdef _DEBUG

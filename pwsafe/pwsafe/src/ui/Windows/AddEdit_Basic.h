@@ -32,7 +32,7 @@ public:
 
     // Dialog Data
   //{{AFX_DATA(CAddEdit_Basic)
-  enum { IDD = IDD_ADDEDIT_BASIC };
+  enum { IDD = IDD_ADDEDIT_BASIC, IDD_SHORT = IDD_ADDEDIT_BASIC_SHORT };
 
   CSecString m_password, m_password2;
   CSecString m_notes, m_notesww;

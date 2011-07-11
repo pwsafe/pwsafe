@@ -35,7 +35,7 @@ public:
 
   // Dialog Data
   //{{AFX_DATA(CAddEdit_DateTimes)
-  enum { IDD = IDD_ADDEDIT_DATETIMES };
+  enum { IDD = IDD_ADDEDIT_DATETIMES, IDD_SHORT = IDD_ADDEDIT_DATETIMES_SHORT };
 
   // m_how's values DEFAULT_SYMBOLS - in Radio button order
   enum {ABSOLUTE_EXP = 0, RELATIVE_EXP = 1, NONE_EXP = 2};
