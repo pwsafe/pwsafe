@@ -77,6 +77,10 @@
 		E66EE0B413921B30005C10C5 /* ComparisonGridTable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66EE0B113921B30005C10C5 /* ComparisonGridTable.cpp */; };
 		E66EE0B513921B30005C10C5 /* ComparisonGridTable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66EE0B113921B30005C10C5 /* ComparisonGridTable.cpp */; };
 		E66EE0B613921B30005C10C5 /* ComparisonGridTable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66EE0B113921B30005C10C5 /* ComparisonGridTable.cpp */; };
+		E66FB84D13ACA5C3004DBB97 /* SizeRestrictedPanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66FB84B13ACA5C3004DBB97 /* SizeRestrictedPanel.cpp */; };
+		E66FB84E13ACA5C3004DBB97 /* SizeRestrictedPanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66FB84B13ACA5C3004DBB97 /* SizeRestrictedPanel.cpp */; };
+		E66FB84F13ACA5C3004DBB97 /* SizeRestrictedPanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66FB84B13ACA5C3004DBB97 /* SizeRestrictedPanel.cpp */; };
+		E66FB85013ACA5C3004DBB97 /* SizeRestrictedPanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66FB84B13ACA5C3004DBB97 /* SizeRestrictedPanel.cpp */; };
 		E690B55F12984A1B007EA508 /* pwsafe_filter.xsd in Resources */ = {isa = PBXBuildFile; fileRef = E690B55C12984A1A007EA508 /* pwsafe_filter.xsd */; };
 		E690B56012984A1B007EA508 /* pwsafe.xsd in Resources */ = {isa = PBXBuildFile; fileRef = E690B55D12984A1A007EA508 /* pwsafe.xsd */; };
 		E690B56112984A1B007EA508 /* pwsafe.xsl in Resources */ = {isa = PBXBuildFile; fileRef = E690B55E12984A1A007EA508 /* pwsafe.xsl */; };
@@ -514,6 +518,8 @@
 		E6391BF812FD21B9009BBB8D /* pwsafe-i386.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "pwsafe-i386.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E66EE0B113921B30005C10C5 /* ComparisonGridTable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ComparisonGridTable.cpp; sourceTree = "<group>"; };
 		E66EE0B213921B30005C10C5 /* ComparisonGridTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComparisonGridTable.h; sourceTree = "<group>"; };
+		E66FB84B13ACA5C3004DBB97 /* SizeRestrictedPanel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SizeRestrictedPanel.cpp; sourceTree = "<group>"; };
+		E66FB84C13ACA5C3004DBB97 /* SizeRestrictedPanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SizeRestrictedPanel.h; sourceTree = "<group>"; };
 		E690B55C12984A1A007EA508 /* pwsafe_filter.xsd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = pwsafe_filter.xsd; path = ../xml/pwsafe_filter.xsd; sourceTree = SOURCE_ROOT; };
 		E690B55D12984A1A007EA508 /* pwsafe.xsd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = pwsafe.xsd; path = ../xml/pwsafe.xsd; sourceTree = SOURCE_ROOT; };
 		E690B55E12984A1A007EA508 /* pwsafe.xsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = pwsafe.xsl; path = ../xml/pwsafe.xsl; sourceTree = SOURCE_ROOT; };
@@ -1386,6 +1392,8 @@
 		E6ADB9A411957099004E2BE5 /* wxWidgets */ = {
 			isa = PBXGroup;
 			children = (
+				E66FB84C13ACA5C3004DBB97 /* SizeRestrictedPanel.h */,
+				E66FB84B13ACA5C3004DBB97 /* SizeRestrictedPanel.cpp */,
 				E66EE0B113921B30005C10C5 /* ComparisonGridTable.cpp */,
 				E66EE0B213921B30005C10C5 /* ComparisonGridTable.h */,
 				E6DDC713138914B700F0C0D1 /* wxutils.cpp */,
@@ -1946,7 +1954,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		E6391BC712FD21B9009BBB8D /* Generate version.h */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 8;
 			files = (
 			);
 			inputPaths = (
@@ -1956,7 +1964,7 @@
 			outputPaths = (
 				../src/ui/wxWidgets/version.h,
 			);
-			runOnlyForDeploymentPostprocessing = 0;
+			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
 			shellScript = "../Misc/mkversion.pl ../src/ui/wxWidgets/version.in ../src/ui/wxWidgets/version.h";
 		};
@@ -2134,6 +2142,7 @@
 				E6DDC6FB138911CB00F0C0D1 /* CompareDlg.cpp in Sources */,
 				E6DDC715138914B700F0C0D1 /* wxutils.cpp in Sources */,
 				E66EE0B413921B30005C10C5 /* ComparisonGridTable.cpp in Sources */,
+				E66FB84E13ACA5C3004DBB97 /* SizeRestrictedPanel.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2256,6 +2265,7 @@
 				E6DDC6FC138911CB00F0C0D1 /* CompareDlg.cpp in Sources */,
 				E6DDC714138914B700F0C0D1 /* wxutils.cpp in Sources */,
 				E66EE0B313921B30005C10C5 /* ComparisonGridTable.cpp in Sources */,
+				E66FB84D13ACA5C3004DBB97 /* SizeRestrictedPanel.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2302,6 +2312,7 @@
 				E6DDC6FE138911CB00F0C0D1 /* CompareDlg.cpp in Sources */,
 				E6DDC717138914B700F0C0D1 /* wxutils.cpp in Sources */,
 				E66EE0B613921B30005C10C5 /* ComparisonGridTable.cpp in Sources */,
+				E66FB85013ACA5C3004DBB97 /* SizeRestrictedPanel.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2500,6 +2511,7 @@
 				E6DDC6FD138911CB00F0C0D1 /* CompareDlg.cpp in Sources */,
 				E6DDC716138914B700F0C0D1 /* wxutils.cpp in Sources */,
 				E66EE0B513921B30005C10C5 /* ComparisonGridTable.cpp in Sources */,
+				E66FB84F13ACA5C3004DBB97 /* SizeRestrictedPanel.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2582,6 +2594,8 @@
 					_LARGE_FILES,
 					__WXDEBUG__,
 					__WXMAC__,
+					DEBUG,
+					_DEBUG,
 				);
 				GCC_VERSION = 4.0;
 				INFOPLIST_FILE = "pwsafe-Info-i386.plist";
@@ -2603,6 +2617,7 @@
 					UNICODE,
 					"_FILE_OFFSET_BITS=64",
 					__WXMAC__,
+					NDEBUG,
 				);
 				GCC_VERSION = 4.0;
 				INFOPLIST_FILE = "pwsafe-Info-i386.plist";
@@ -2663,6 +2678,13 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1)";
 				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					UNICODE,
+					"_FILE_OFFSET_BITS=64",
+					_LARGE_FILES,
+					DEBUG,
+					_DEBUG,
+				);
 				GCC_VERSION = 4.0;
 				HEADER_SEARCH_PATHS = ../src/;
 				PRODUCT_NAME = core;
@@ -2676,6 +2698,12 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1)";
 				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					UNICODE,
+					"_FILE_OFFSET_BITS=64",
+					_LARGE_FILES,
+					NDEBUG,
+				);
 				GCC_VERSION = 4.0;
 				HEADER_SEARCH_PATHS = ../src/;
 				PRODUCT_NAME = core;
@@ -2691,6 +2719,13 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1)";
 				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					UNICODE,
+					"_FILE_OFFSET_BITS=64",
+					_LARGE_FILES,
+					DEBUG,
+					_DEBUG,
+				);
 				GCC_VERSION = 4.0;
 				PRODUCT_NAME = os;
 				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
@@ -2703,6 +2738,12 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1)";
 				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					UNICODE,
+					"_FILE_OFFSET_BITS=64",
+					_LARGE_FILES,
+					NDEBUG,
+				);
 				GCC_VERSION = 4.0;
 				PRODUCT_NAME = os;
 				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
@@ -2724,6 +2765,8 @@
 					_LARGE_FILES,
 					__WXDEBUG__,
 					__WXMAC__,
+					DEBUG,
+					_DEBUG,
 				);
 				GCC_VERSION = 4.0;
 				INFOPLIST_FILE = "pwsafe-Info.plist";
@@ -2745,6 +2788,7 @@
 					UNICODE,
 					"_FILE_OFFSET_BITS=64",
 					__WXMAC__,
+					NDEBUG,
 				);
 				GCC_VERSION = 4.0;
 				INFOPLIST_FILE = "pwsafe-Info.plist";
@@ -2768,6 +2812,8 @@
 					_LARGE_FILES,
 					__WXDEBUG__,
 					__WXMAC__,
+					DEBUG,
+					_DEBUG,
 				);
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "pwsafe-Info-native32.plist";
@@ -2790,6 +2836,7 @@
 					UNICODE,
 					"_FILE_OFFSET_BITS=64",
 					__WXMAC__,
+					NDEBUG,
 				);
 				GCC_VERSION = 4.2;
 				INFOPLIST_FILE = "pwsafe-Info-native32.plist";
@@ -2808,6 +2855,13 @@
 				ARCHS = i386;
 				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					UNICODE,
+					"_FILE_OFFSET_BITS=64",
+					_LARGE_FILES,
+					DEBUG,
+					_DEBUG,
+				);
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = ../src/;
 				PRODUCT_NAME = core;
@@ -2821,6 +2875,12 @@
 			buildSettings = {
 				ARCHS = i386;
 				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					UNICODE,
+					"_FILE_OFFSET_BITS=64",
+					_LARGE_FILES,
+					NDEBUG,
+				);
 				GCC_VERSION = 4.2;
 				HEADER_SEARCH_PATHS = ../src/;
 				PRODUCT_NAME = core;
@@ -2836,6 +2896,13 @@
 				ARCHS = i386;
 				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					UNICODE,
+					"_FILE_OFFSET_BITS=64",
+					_LARGE_FILES,
+					DEBUG,
+					_DEBUG,
+				);
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				PRODUCT_NAME = os;
 				SDKROOT = macosx;
@@ -2848,6 +2915,12 @@
 			buildSettings = {
 				ARCHS = i386;
 				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					UNICODE,
+					"_FILE_OFFSET_BITS=64",
+					_LARGE_FILES,
+					NDEBUG,
+				);
 				GCC_VERSION = 4.2;
 				PRODUCT_NAME = os;
 				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.6.sdk";
@@ -2862,6 +2935,13 @@
 				ARCHS = "$(ARCHS_STANDARD_64_BIT_PRE_XCODE_3_1)";
 				ARCHS_STANDARD_64_BIT_PRE_XCODE_3_1 = x86_64;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					UNICODE,
+					"_FILE_OFFSET_BITS=64",
+					_LARGE_FILES,
+					DEBUG,
+					_DEBUG,
+				);
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				PRODUCT_NAME = os;
 				SYMROOT = build64;
@@ -2874,6 +2954,12 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_64_BIT_PRE_XCODE_3_1)";
 				ARCHS_STANDARD_64_BIT_PRE_XCODE_3_1 = x86_64;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					UNICODE,
+					"_FILE_OFFSET_BITS=64",
+					_LARGE_FILES,
+					NDEBUG,
+				);
 				PRODUCT_NAME = os;
 				SYMROOT = build64;
 				VALID_ARCHS = x86_64;
@@ -2887,6 +2973,13 @@
 				ARCHS = "$(ARCHS_STANDARD_64_BIT_PRE_XCODE_3_1)";
 				ARCHS_STANDARD_64_BIT_PRE_XCODE_3_1 = x86_64;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					UNICODE,
+					"_FILE_OFFSET_BITS=64",
+					_LARGE_FILES,
+					DEBUG,
+					_DEBUG,
+				);
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = ../src/;
 				PRODUCT_NAME = core;
@@ -2900,6 +2993,12 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_64_BIT_PRE_XCODE_3_1)";
 				ARCHS_STANDARD_64_BIT_PRE_XCODE_3_1 = x86_64;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					UNICODE,
+					"_FILE_OFFSET_BITS=64",
+					_LARGE_FILES,
+					NDEBUG,
+				);
 				HEADER_SEARCH_PATHS = ../src/;
 				PRODUCT_NAME = core;
 				SYMROOT = build64;
@@ -2923,6 +3022,8 @@
 					__WXMAC__,
 					__WXOSX__,
 					__WXOSX_COCOA__,
+					DEBUG,
+					_DEBUG,
 				);
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "pwsafe-Info-x86_64.plist";
@@ -2946,6 +3047,7 @@
 					__WXMAC__,
 					__WXOSX__,
 					__WXOSX_COCOA__,
+					NDEBUG,
 				);
 				INFOPLIST_FILE = "pwsafe-Info-x86_64.plist";
 				PRODUCT_NAME = "pwsafe-x86_64";

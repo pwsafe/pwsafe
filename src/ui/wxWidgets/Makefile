@@ -64,7 +64,7 @@ WARNINGFLAGS=-Wall
 OPTFLAGS=-O
 DEBUGFLAGS=
 LIBPATH=../../../lib/release
-CPPINC=`$(WX_CONFIG) --debug=no --unicode=no --inplace --cxxflags`
+CPPINC=`$(WX_CONFIG) --debug=no --unicode=no --inplace --cxxflags` -DNDEBUG
 GCCFLAGS=
 LIBDIRNAME=$(WXWIN)/GCCBuildReleaseGTK2/lib
 RESPATH=--include-dir "$(WXWIN)/include" --include-dir "$(WXWIN)/contrib/include" --include-dir "$(WXWIN)/GCCBuildReleaseGTK2/lib/wx/include/gtk2-ansi-release-static-2.6"
@@ -121,7 +121,7 @@ WARNINGFLAGS=-Wall
 OPTFLAGS=-O
 DEBUGFLAGS=
 LIBPATH=../../../lib/unicoderelease
-CPPINC=`$(WX_CONFIG) --debug=no --unicode=yes --inplace --cxxflags` -DUNICODE
+CPPINC=`$(WX_CONFIG) --debug=no --unicode=yes --inplace --cxxflags` -DUNICODE -DNDEBUG
 XERCESCPPFLAGS=-DUSE_XML_LIBRARY=XERCES -DWCHAR_INCOMPATIBLE_XMLCH
 XERCESLIBFLAGS=-lxerces-c
 GCCFLAGS=
