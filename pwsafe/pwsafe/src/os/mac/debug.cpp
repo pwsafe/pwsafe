@@ -14,6 +14,21 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <syslog.h>
+#include <iostream>
+
+enum {MAX_LOG_STATEMENT = 1024*64, STARTING_LOG_STATEMENT = 256};
+
+#if defined(UNICODE) || defined(_UNICODE)
+# define vstprintf vswprintf
+# define _stprintf_s swprintf
+# define _tout wcout
+# define _terr wcerr
+#else
+# define vstprintf vsprintf
+# define _stprintf_s snprintf
+# define _tout cout
+# define _terr cerr
+#endif
 
 // Debug output - Same usage as MFC TRACE
 void pws_os::Trace(LPCTSTR lpszFormat, ...)
@@ -22,28 +37,30 @@ void pws_os::Trace(LPCTSTR lpszFormat, ...)
   va_list args;
   va_start(args, lpszFormat);
 
-  int num_required, num_written;
+  TCHAR* buf = 0;
+  int nwritten, len = STARTING_LOG_STATEMENT;
+  do {
+    len *= 2;
+    delete [] buf;
+    buf = new TCHAR[len+1];
+    memset(buf, 0, sizeof(TCHAR)*(len+1));
+    nwritten = vstprintf(buf, len, lpszFormat, args);
+    //apple's documentation doesn't say if nwritten is +ve, -ve, 0 or if errno is set in case of overflow
+  }
+  while(!(nwritten > 0 && nwritten < len) && len <= MAX_LOG_STATEMENT);
+
 #ifdef UNICODE
-  num_required = _vscwprintf(lpszFormat, args);
-  wchar_t *wcbuffer = new wchar_t[num_required + 1];
-  num_written = vswprintf(wcbuffer, num_required, lpszFormat, args);
-  assert(num_required == num_written);
-  wcbuffer[num_required] = L'\0';
-
-  size_t N = wcstombs(NULL, wcbuffer, 0) + 1;
-  char *szbuffer = new char[N];
-  wcstombs(szbuffer, wcbuffer, N);
-  delete[] wcbuffer;
+  size_t N = wcstombs(NULL, buf, 0) + 1;
+  char *message = new char[N];
+  wcstombs(message, buf, N);
+  delete[] buf;
 #else
-  num_required = _vscprintf(lpszFormat, args);
-  char *szbuffer = new char[num_required + 1];
-  num_written = vsprintf(szbuffer, num_required, lpszFormat, args);
-  assert(num_required == num_written);
-  szbuffer[num_required] = '\0';
+  char* message = buf;
 #endif
-  syslog(LOG_DEBUG, szbuffer);
+  
+  syslog(LOG_DEBUG, message);
 
-  delete[] szbuffer;
+  delete[] message;
   closelog();
 
   va_end(args);
@@ -86,9 +103,9 @@ void pws_os::IssueError(const stringT &csFunction, bool bMsgBox)
 {
   // Stub?
   if (bMsgBox)
-    cout << csFunction;
+    std::_tout << csFunction;
   else
-    cerr << csFunction;
+    std::_terr << csFunction;
 }
 
 void pws_os::HexDump(unsigned char *pmemory, const int &length,
