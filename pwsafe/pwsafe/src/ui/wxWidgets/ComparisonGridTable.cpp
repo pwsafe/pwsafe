@@ -25,6 +25,8 @@
 #include "./AdvancedSelectionDlg.h"
 #include "../../core/PWScore.h"
 #include "./wxutils.h"
+#include "./addeditpropsheet.h"
+#include <algorithm>
 
 class ComparisonGridCellAttr: public wxGridCellAttr
 {
@@ -38,6 +40,14 @@ public:
 
 private:
   ComparisonGridTable* m_table;
+};
+
+struct st_CompareData_match : public std::binary_function<st_CompareData, pws_os::CUUID, bool>
+{
+  result_type operator()(const first_argument_type& arg1, const second_argument_type& arg2) const
+  {
+    return arg1.uuid0 == arg2 || arg1.uuid1 == arg2;
+  }
 };
 
 ///////////////////////////////////////////////////////////
@@ -137,6 +147,46 @@ void ComparisonGridTable::AutoSizeField(CItemData::FieldType ft)
 }
 
 
+// UIinterface overrides
+//------------------------------------------------------------
+void ComparisonGridTable::DatabaseModified(bool /*bChanged*/)
+{
+}
+
+// UpdateGUI - used by GUI if one or more entries have changed
+// and the entry/entries needs refreshing in GUI:
+void ComparisonGridTable::UpdateGUI(UpdateGUICommand::GUI_Action /*ga*/,
+                                     const pws_os::CUUID &/*entry_uuid*/,
+                                     CItemData::FieldType /*ft*/ /*= CItemData::START*/,
+                                     bool /*bUpdateGUI*/ /*= true*/)
+{
+}
+
+// GUISetupDisplayInfo: let GUI populate DisplayInfo field in an entry
+void ComparisonGridTable::GUISetupDisplayInfo(CItemData &/*ci*/)
+{
+}
+
+// GUIRefreshEntry: called when the entry's graphic representation
+// may have changed - GUI should update and invalidate its display.
+void ComparisonGridTable::GUIRefreshEntry(const CItemData &ci)
+{
+  int row = GetItemRow(ci.GetUUID());
+  if (row != wxNOT_FOUND) {
+    wxRect rect( GetView()->CellToRect( row, 0 ) );
+    rect.x = 0;
+    rect.width = GetView()->GetGridWindow()->GetClientSize().GetWidth();
+    int dummy;
+    GetView()->CalcScrolledPosition(0, rect.y, &dummy, &rect.y);
+    GetView()->GetGridWindow()->Refresh( false, &rect );
+  }
+}
+
+// UpdateWizard: called to update text in Wizard during export Text/XML.
+void ComparisonGridTable::UpdateWizard(const stringT &/*s*/)
+{
+}
+
 ///////////////////////////////////////////////////////////////
 //UniSafeCompareGridTable
 //
@@ -216,6 +266,29 @@ wxGridCellAttr* UniSafeCompareGridTable::GetAttr(int row, int col, wxGridCellAtt
   //wxLogDebug(wxT("UniSafeCompareGridTable::GetAttr called for %d, %d"), row, col);
   m_gridAttr->IncRef();
   return m_gridAttr;
+}
+
+void UniSafeCompareGridTable::EditEntry(int idx, wxWindow* parent, bool readonly)
+{
+  wxCHECK_RET(readonly, wxT("Trying to edit entry in non-conflicting grids, which are read-only"));
+  AddEditPropSheet ae(parent, 
+                        *m_core,
+                        AddEditPropSheet::VIEW,
+                        &m_core->Find(m_compData->at(idx).*m_uuidptr)->second);
+  ae.ShowModal();
+}
+
+
+
+int UniSafeCompareGridTable::GetItemRow(const pws_os::CUUID& uuid)
+{
+  CompareData::iterator itr = std::find_if(m_compData->begin(),
+                                            m_compData->end(),
+                                            std::bind2nd(st_CompareData_match(), uuid));
+  if (itr != m_compData->end())
+    return std::distance(m_compData->begin(), itr);
+  else
+    return wxNOT_FOUND;
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -329,6 +402,38 @@ wxString MultiSafeCompareGridTable::GetRowLabelValue(int row)
   if (row%2 == 1)
     return wxEmptyString;
   return wxGridTableBase::GetRowLabelValue(row/2);
+}
+
+void MultiSafeCompareGridTable::EditEntry(int idx, wxWindow* parent, bool readonly)
+{
+  int realIndex = idx/2;
+
+  if (readonly) {
+    AddEditPropSheet ae(parent, 
+                        *m_otherCore,
+                        AddEditPropSheet::VIEW,
+                        &m_otherCore->Find(m_compData->at(realIndex).uuid1)->second);
+    ae.ShowModal();
+  }
+  else {
+    AddEditPropSheet ae(parent, 
+                        *m_currentCore,
+                        AddEditPropSheet::EDIT,
+                          &m_currentCore->Find(m_compData->at(realIndex).uuid0)->second,
+                          this);
+    ae.ShowModal();
+  }
+}
+
+int MultiSafeCompareGridTable::GetItemRow(const pws_os::CUUID& uuid)
+{
+  CompareData::iterator itr = std::find_if(m_compData->begin(),
+                                            m_compData->end(),
+                                            std::bind2nd(st_CompareData_match(), uuid));
+  if (itr != m_compData->end())
+    return std::distance(m_compData->begin(), itr)*2 + (itr->uuid0 == uuid? 0: 1);
+  else
+    return wxNOT_FOUND;
 }
 
 //////////////////////////////////////////////////////////////////
