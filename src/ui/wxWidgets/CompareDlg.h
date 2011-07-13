@@ -32,7 +32,8 @@ class CompareDlg: public wxDialog
                                               bool customGrid = false);
   void OnCompare(wxCommandEvent& );
   void OnGridCellRightClick(wxGridEvent& evt);
-  void OnGridCellSelection(wxGridEvent& evt);
+  void OnEditInCurrentDB(wxCommandEvent& evt);
+  void OnViewInComparisonDB(wxCommandEvent& evt);
 
 public:
   CompareDlg(wxWindow* parent, PWScore* core);
@@ -49,6 +50,7 @@ private:
 
   void DoCompare();
   wxGrid* GetEventSourceGrid(int id);
+  void ViewSelectedEntry(wxGrid* sourceGrid, bool readOnly);
 
   DECLARE_EVENT_TABLE()
 };

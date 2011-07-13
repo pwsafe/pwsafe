@@ -15,6 +15,7 @@
 #include <wx/grid.h>
 
 #include "../../core/DBCompareData.h"
+#include "../../core/UIinterface.h"
 
 #define CurrentBackgroundColor    *wxWHITE
 #define ComparisonBackgroundColor *wxWHITE
@@ -31,7 +32,7 @@ public:
 };
 
 
-class ComparisonGridTable: public wxGridTableBase
+class ComparisonGridTable: public wxGridTableBase, public UIInterFace
 {
 public:
   ComparisonGridTable(SelectionCriteria* criteria);
@@ -41,9 +42,17 @@ public:
   int GetNumberCols();
   void SetValue(int row, int col, const wxString& value);
   wxString GetColLabelValue(int col);
+
+  //common to all derived classes
   void AutoSizeField(CItemData::FieldType ft);
   int FieldToColumn(CItemData::FieldType ft);
   CItemData::FieldType ColumnToField(int col);
+
+  //derived classes must override these
+
+  //should return wxNOT_FOUND on error
+  virtual int GetItemRow(const pws_os::CUUID& uuid) = 0;
+  virtual void EditEntry(int idx, wxWindow* parent, bool readonly) = 0;
 
 protected:
   SelectionCriteria*      m_criteria;
@@ -53,6 +62,17 @@ protected:
     AvailableFunction available;
   } ColumnData;
   ColumnData*   m_colFields;
+
+  //UIinterface overrides
+public:
+  virtual void DatabaseModified(bool bChanged);
+  virtual void UpdateGUI(UpdateGUICommand::GUI_Action ga,
+                         const pws_os::CUUID &entry_uuid,
+                         CItemData::FieldType ft = CItemData::START,
+                         bool bUpdateGUI = true);
+  virtual void GUISetupDisplayInfo(CItemData &ci);
+  virtual void GUIRefreshEntry(const CItemData &ci);
+  virtual void UpdateWizard(const stringT &s);
 };
 
 ///////////////////////////////////////////////////////////////
@@ -81,6 +101,10 @@ public:
   bool IsEmptyCell(int row, int col);
   wxString GetValue(int row, int col);
   wxGridCellAttr* GetAttr(int row, int col, wxGridCellAttr::wxAttrKind kind);
+  
+  //virtual override from ComparisonGridTable
+  void EditEntry(int idx, wxWindow* parent, bool readonly);
+  int GetItemRow(const pws_os::CUUID& uuid);
 };
 
 ///////////////////////////////////////////////////////////////////
@@ -110,6 +134,9 @@ public:
   wxString GetRowLabelValue(int row);
   wxGridCellAttr* GetAttr(int row, int col, wxGridCellAttr::wxAttrKind kind);
 
+  //virtual override from ComparisonGridTable
+  void EditEntry(int idx, wxWindow* parent, bool readonly);
+  int GetItemRow(const pws_os::CUUID& uuid);
 private:
   
   PWScore* GetRowCore(int row);

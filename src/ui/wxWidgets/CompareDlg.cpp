@@ -33,10 +33,20 @@
 
 enum {ID_BTN_COMPARE = 100 };
 
+enum {
+  ID_COPY_FIELD_TO_CURRENT_DB = 100,
+  ID_MERGE_ITEMS_WITH_CURRENT_DB,
+  ID_COPY_ITEMS_TO_CURRENT_DB,
+  ID_EDIT_IN_CURRENT_DB,
+  ID_VIEW_IN_COMPARISON_DB,
+  ID_DELETE_ITEMS_FROM_CURRENT_DB
+};
+
 BEGIN_EVENT_TABLE( CompareDlg, wxDialog )
   EVT_BUTTON( ID_BTN_COMPARE,  CompareDlg::OnCompare )
-//  EVT_GRID_CELL_RIGHT_CLICK(CompareDlg::OnGridCellRightClick)
-  EVT_GRID_CELL_LEFT_CLICK(CompareDlg::OnGridCellSelection)
+  EVT_GRID_CELL_RIGHT_CLICK(CompareDlg::OnGridCellRightClick)
+  EVT_MENU(ID_EDIT_IN_CURRENT_DB, CompareDlg::OnEditInCurrentDB)
+  EVT_MENU(ID_VIEW_IN_COMPARISON_DB, CompareDlg::OnViewInComparisonDB)
 END_EVENT_TABLE()
 
 struct ComparisonData {
@@ -279,7 +289,7 @@ void CompareDlg::DoCompare()
                                               sections[idx].useComparisonSafe? &st_CompareData::uuid1: &st_CompareData::uuid0,
                                               sections[idx].useComparisonSafe? ComparisonBackgroundColor: CurrentBackgroundColor);
         }
-        sections[idx].cd->grid->SetTable(table, true, wxGrid::wxGridSelectRows);
+        sections[idx].cd->grid->SetTable(table, true);
         wxCollapsiblePane* pane = sections[idx].cd->pane;
         //expand the columns to show these fields fully, as these are usually small(er) strings
         table->AutoSizeField(CItemData::GROUP);
@@ -309,15 +319,6 @@ void CompareDlg::DoCompare()
     Layout();
   }
 }
-
-enum {
-  ID_COPY_FIELD_TO_CURRENT_DB = 100,
-  ID_MERGE_ITEMS_WITH_CURRENT_DB,
-  ID_COPY_ITEMS_TO_CURRENT_DB,
-  ID_EDIT_IN_CURRENT_DB,
-  ID_VIEW_IN_COMPARISON_DB,
-  ID_DELETE_ITEMS_FROM_CURRENT_DB
-};
 
 wxGrid* CompareDlg::GetEventSourceGrid(int id)
 {
@@ -352,24 +353,30 @@ void CompareDlg::OnGridCellRightClick(wxGridEvent& evt)
   stringT itemStr;
   LoadAString(itemStr, selectionCount > 1? IDSC_ENTRIES: IDSC_ENTRY);
 
+  wxString selCountStr(wxT(" "));
+  if (selectionCount > 1)
+    selCountStr << selectionCount << wxT(" ");
+
   wxMenu itemEditMenu;
 
   wxString strMergeItemsMenu;
-  strMergeItemsMenu << _("Merge ") << selectionCount << wxT(" selected ") << towxstring(itemStr) << _(" with current db");
+  strMergeItemsMenu << _("Merge") << selCountStr << wxT("selected ") << towxstring(itemStr) << _(" with current db");
   itemEditMenu.Append(ID_MERGE_ITEMS_WITH_CURRENT_DB, strMergeItemsMenu);
 
   wxString strCopyItemsMenu;
-  strCopyItemsMenu << _("Copy ") << selectionCount << wxT(" selected ") << towxstring(itemStr) << _(" to current db");
+  strCopyItemsMenu << _("Copy") << selCountStr << wxT("selected ") << towxstring(itemStr) << _(" to current db");
   itemEditMenu.Append(ID_COPY_ITEMS_TO_CURRENT_DB, strCopyItemsMenu);
 
   wxString strDeleteItemsMenu;
-  strDeleteItemsMenu << _("Delete ") << selectionCount << wxT(" selected ") << towxstring(itemStr) << _(" from current db");
+  strDeleteItemsMenu << _("Delete") << selCountStr << wxT("selected ") << towxstring(itemStr) << _(" from current db");
   itemEditMenu.Append(ID_DELETE_ITEMS_FROM_CURRENT_DB, strDeleteItemsMenu);
 
-  itemEditMenu.AppendSeparator();
+  if (selectionCount == 1) {
+    itemEditMenu.AppendSeparator();
 
-  itemEditMenu.Append(ID_EDIT_IN_CURRENT_DB,   wxT("&Edit entry in current db"));
-  itemEditMenu.Append(ID_VIEW_IN_COMPARISON_DB,   wxT("&View entry in comparison db"));
+    itemEditMenu.Append(ID_EDIT_IN_CURRENT_DB,   wxT("&Edit entry in current db"));
+    itemEditMenu.Append(ID_VIEW_IN_COMPARISON_DB,   wxT("&View entry in comparison db"));
+  }
 
   if (sourceGrid == m_conflicts->grid) {
     wxString strCopyFieldMenu;
@@ -396,13 +403,34 @@ void CompareDlg::OnGridCellRightClick(wxGridEvent& evt)
   sourceGrid->PopupMenu(&itemEditMenu);
 }
 
-void CompareDlg::OnGridCellSelection(wxGridEvent& evt)
+wxGrid* GetGridFromEvent(wxCommandEvent& evt)
 {
-  wxGrid* sourceGrid = GetEventSourceGrid(evt.GetId());
-  if (!sourceGrid) {
-    evt.Skip();
-    return;
-  }
-
-  sourceGrid->SelectRow(evt.GetRow(), evt.ControlDown() || evt.ShiftDown());
+  wxMenu* sourceMenu = wxDynamicCast(evt.GetEventObject(), wxMenu);
+  if (sourceMenu)
+    return wxDynamicCast(sourceMenu->GetInvokingWindow(), wxGrid);
+  else
+    return 0;
 }
+
+void CompareDlg::OnEditInCurrentDB(wxCommandEvent& evt)
+{
+  ViewSelectedEntry(GetGridFromEvent(evt), false);
+}
+
+void CompareDlg::OnViewInComparisonDB(wxCommandEvent& evt)
+{
+  ViewSelectedEntry(GetGridFromEvent(evt), true);
+}
+
+void CompareDlg::ViewSelectedEntry(wxGrid* sourceGrid, bool readOnly)
+{
+  if (sourceGrid) {
+    wxArrayInt selection = sourceGrid->GetSelectedRows();
+    if (selection.GetCount() == 1) {
+      const int selectedRow = selection.Item(0);
+      wxDynamicCast(sourceGrid->GetTable(), ComparisonGridTable)->EditEntry(selectedRow, this, readOnly);
+    }
+  }
+}
+
+
