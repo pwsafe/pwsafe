@@ -124,7 +124,7 @@ public:
   /// Constructor
   // item is NULL for ADD, otherwise its values are retrieved and displayed
   AddEditPropSheet(wxWindow* parent, PWScore &core,
-                   AddOrEdit type, const CItemData *item = NULL,
+                   AddOrEdit type, const CItemData *item = NULL,  UIInterFace* ui = 0,
                    const wxString& selectedGroup = wxEmptyString,
                    wxWindowID id = SYMBOL_ADDEDITPROPSHEET_IDNAME,
                    const wxString& caption = SYMBOL_ADDEDITPROPSHEET_TITLE,
