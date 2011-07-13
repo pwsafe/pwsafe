@@ -101,7 +101,7 @@ void PasswordSafeFrame::OnAddClick( wxCommandEvent& /* evt */ )
     selectedGroup = m_tree->GetItemText(selection);
   }
 
-  AddEditPropSheet addDbox(this, m_core, AddEditPropSheet::ADD, NULL, selectedGroup);
+  AddEditPropSheet addDbox(this, m_core, AddEditPropSheet::ADD, NULL, this, selectedGroup);
   if (addDbox.ShowModal() == wxID_OK) {
     const CItemData &item = addDbox.GetItem();
     m_core.Execute(AddEntryCommand::Create(&m_core, item));
