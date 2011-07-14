@@ -31,7 +31,7 @@ public:
 protected:
   // Dialog Data
   //{{AFX_DATA(COptionsPasswordPolicy)
-  enum { IDD = IDD_PS_PASSWORDPOLICY };
+  enum { IDD = IDD_PS_PASSWORDPOLICY, IDD_SHORT = IDD_PS_PASSWORDPOLICY_SHORT };
  
   CSymbolEdit m_SymbolsEdit;
 

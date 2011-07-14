@@ -351,6 +351,10 @@
 #define IDD_PS_SHORTCUTS_SHORT          504
 #define IDD_PS_SYSTEM1                  505
 #define IDD_PS_SYSTEM_SHORT             505
+#define IDD_PS_BACKUP_SHORT             506
+#define IDD_PS_DISPLAY_SHORT            507
+#define IDD_PS_PASSWORDPOLICY1          508
+#define IDD_PS_PASSWORDPOLICY_SHORT     508
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_BROWSE                      1002

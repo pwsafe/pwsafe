@@ -59,8 +59,12 @@ const UINT COptionsPasswordPolicy::nonHexLengths[COptionsPasswordPolicy::N_HEX_L
 const UINT COptionsPasswordPolicy::nonHexLengthSpins[COptionsPasswordPolicy::N_HEX_LENGTHS] = {
   IDC_SPINLOWERCASE, IDC_SPINUPPERCASE, IDC_SPINDIGITS, IDC_SPINSYMBOLS};
 
-COptionsPasswordPolicy::COptionsPasswordPolicy(CWnd *pParent, st_Opt_master_data *pOPTMD)
-  : COptions_PropertyPage(pParent, COptionsPasswordPolicy::IDD, pOPTMD),
+COptionsPasswordPolicy::COptionsPasswordPolicy(CWnd *pParent,
+                                               st_Opt_master_data *pOPTMD)
+  : COptions_PropertyPage(pParent,
+                          COptionsPasswordPolicy::IDD,
+                          COptionsPasswordPolicy::IDD_SHORT,
+                          pOPTMD),
   m_password(L"")
 {
   m_bFromOptions = m_OPTMD.uicaller != IDS_GENERATEPASSWORD;
