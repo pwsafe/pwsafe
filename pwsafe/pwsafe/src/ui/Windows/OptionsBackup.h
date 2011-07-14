@@ -28,7 +28,7 @@ public:
 protected:
   // Dialog Data
   //{{AFX_DATA(COptionsBackup)
-  enum { IDD = IDD_PS_BACKUP };
+  enum { IDD = IDD_PS_BACKUP, IDD_SHORT = IDD_PS_BACKUP_SHORT };
 
   CComboBox m_backupsuffix_cbox;
 

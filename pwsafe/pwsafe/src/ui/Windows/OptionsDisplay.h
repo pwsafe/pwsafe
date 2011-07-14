@@ -27,7 +27,7 @@ public:
 protected:
   // Dialog Data
   //{{AFX_DATA(COptionsDisplay)
-  enum { IDD = IDD_PS_DISPLAY };
+  enum { IDD = IDD_PS_DISPLAY, IDD_SHORT = IDD_PS_DISPLAY_SHORT };
 
   BOOL m_AlwaysOnTop;
   BOOL m_ShowUsernameInTree;
