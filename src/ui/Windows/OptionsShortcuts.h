@@ -57,7 +57,7 @@ public:
 protected:
   // Dialog Data
   //{{AFX_DATA(COptionsShortcuts)
-  enum { IDD = IDD_PS_SHORTCUTS };
+  enum { IDD = IDD_PS_SHORTCUTS, IDD_SHORT = IDD_PS_SHORTCUTS_SHORT };
   CSHCTListCtrl m_ShortcutLC;
   CStaticExtn m_stc_warning;
   //}}AFX_DATA

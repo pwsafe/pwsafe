@@ -19,19 +19,10 @@ IMPLEMENT_DYNAMIC(CAddEdit_PropertyPage, CPWPropertyPage)
 COLORREF CAddEdit_PropertyPage::crefGreen = (RGB(222, 255, 222));
 COLORREF CAddEdit_PropertyPage::crefWhite = (RGB(255, 255, 255));
 
-static UINT chooseResource(UINT nID, UINT shortID)
-{
-  // based on current screen height, decide if we want to display
-  // the normal (tall) page, or the "short" version (for netbooks)
-  int Y = ::GetSystemMetrics(SM_CYSCREEN);
-  const int THRESHOLD = 600;
-  return (Y > THRESHOLD) ? nID : shortID;
-}
-
 CAddEdit_PropertyPage::CAddEdit_PropertyPage(CWnd *pParent,
                                              UINT nID, UINT shortID,
                                              st_AE_master_data *pAEMD)
-  : CPWPropertyPage(chooseResource(nID, shortID)), m_AEMD(*pAEMD)
+  : CPWPropertyPage(nID, shortID), m_AEMD(*pAEMD)
 {
   // Save pointer to my PropertySheet
   m_ae_psh = (CAddEdit_PropertySheet *)pParent;

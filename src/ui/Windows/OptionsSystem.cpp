@@ -44,7 +44,9 @@ bool COptionsSystem::m_bShowConfigFile = false;
 IMPLEMENT_DYNAMIC(COptionsSystem, COptions_PropertyPage)
 
 COptionsSystem::COptionsSystem(CWnd *pParent, st_Opt_master_data *pOPTMD) 
-  : COptions_PropertyPage(pParent, COptionsSystem::IDD, pOPTMD), m_pToolTipCtrl(NULL),
+: COptions_PropertyPage(pParent,
+                        COptionsSystem::IDD, COptionsSystem::IDD_SHORT, pOPTMD),
+  m_pToolTipCtrl(NULL),
   m_DeleteRegistry(FALSE), m_saveDeleteRegistry(FALSE),
   m_Migrate2Appdata(FALSE), m_saveMigrate2Appdata(FALSE)
 {

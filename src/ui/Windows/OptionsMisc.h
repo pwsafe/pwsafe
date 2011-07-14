@@ -27,7 +27,7 @@ public:
 protected:
   // Dialog Data
   //{{AFX_DATA(COptionsMisc)
-  enum { IDD = IDD_PS_MISC };
+  enum { IDD = IDD_PS_MISC, IDD_SHORT = IDD_PS_MISC_SHORT };
 
   CComboBox m_dblclk_cbox, m_shiftdblclk_cbox;
   CHotKeyCtrl m_HotkeyCtrl;

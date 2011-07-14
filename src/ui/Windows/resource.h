@@ -347,6 +347,10 @@
 #define IDD_ADDEDIT_PASSWORDPOLICY_SHORT 501
 #define IDD_ADDEDIT_ADDITIONAL1         502
 #define IDD_ADDEDIT_ADDITIONAL_SHORT    502
+#define IDD_PS_MISC_SHORT               503
+#define IDD_PS_SHORTCUTS_SHORT          504
+#define IDD_PS_SYSTEM1                  505
+#define IDD_PS_SYSTEM_SHORT             505
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_BROWSE                      1002
