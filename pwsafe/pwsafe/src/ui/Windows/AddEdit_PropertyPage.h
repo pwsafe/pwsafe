@@ -85,8 +85,6 @@ struct st_AE_master_data {
 class CAddEdit_PropertyPage : public CPWPropertyPage
 {
 public:
-  // accepts two resids, choose which one to display based
-  // on screen dimensions @ invoke time
   CAddEdit_PropertyPage(CWnd *pParent, UINT nID, UINT shortID,
                         st_AE_master_data *pAEMD);
   virtual ~CAddEdit_PropertyPage() {}

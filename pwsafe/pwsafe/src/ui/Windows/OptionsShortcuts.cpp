@@ -29,7 +29,9 @@
 IMPLEMENT_DYNAMIC(COptionsShortcuts, COptions_PropertyPage)
 
 COptionsShortcuts::COptionsShortcuts(CWnd *pParent, st_Opt_master_data *pOPTMD)
-  : COptions_PropertyPage(pParent, COptionsShortcuts::IDD, pOPTMD),
+: COptions_PropertyPage(pParent,
+                        COptionsShortcuts::IDD, COptionsShortcuts::IDD_SHORT,
+                        pOPTMD),
   m_bShortcutsChanged(false)
 {
   m_iColWidth = M_ColWidth();

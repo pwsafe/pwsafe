@@ -12,6 +12,9 @@ class CPWPropertyPage : public CPropertyPage
 {
 public:
   CPWPropertyPage(UINT nID);
+  // accepts two resids, choose which one to display based
+  // on screen dimensions @ invoke time
+  CPWPropertyPage(UINT nID, UINT shortID);
   virtual ~CPWPropertyPage() {}
 
   // Following override to reset idle timeout on any event

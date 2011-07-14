@@ -117,6 +117,8 @@ class COptions_PropertyPage : public CPWPropertyPage
 {
 public:
   COptions_PropertyPage(CWnd *pParent, UINT nID, st_Opt_master_data *pOPTMD);
+  COptions_PropertyPage(CWnd *pParent, UINT nID, UINT shortID,
+                        st_Opt_master_data *pOPTMD);
   virtual ~COptions_PropertyPage() {}
 
   virtual BOOL OnQueryCancel();

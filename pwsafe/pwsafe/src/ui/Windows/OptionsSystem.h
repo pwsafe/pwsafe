@@ -26,7 +26,7 @@ public:
 protected:
   // Dialog Data
   //{{AFX_DATA(COptionsSystem)
-  enum { IDD = IDD_PS_SYSTEM };
+  enum { IDD = IDD_PS_SYSTEM, IDD_SHORT = IDD_PS_SYSTEM_SHORT };
   BOOL m_UseSystemTray;
   BOOL m_HideSystemTray;
   BOOL m_Startup;

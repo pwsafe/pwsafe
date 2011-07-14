@@ -47,7 +47,9 @@ const UINT COptionsMisc::uiDBPrefs[] = {
 IMPLEMENT_DYNAMIC(COptionsMisc, COptions_PropertyPage)
 
 COptionsMisc::COptionsMisc(CWnd *pParent, st_Opt_master_data *pOPTMD)
-  : COptions_PropertyPage(pParent, COptionsMisc::IDD, pOPTMD), m_pToolTipCtrl(NULL)
+  : COptions_PropertyPage(pParent,
+                          COptionsMisc::IDD, COptionsMisc::IDD_SHORT,
+                          pOPTMD), m_pToolTipCtrl(NULL)
 {
   m_DefUsername = (CString)M_DefUsername();
   m_OtherBrowserLocation = M_OtherBrowserLocation();

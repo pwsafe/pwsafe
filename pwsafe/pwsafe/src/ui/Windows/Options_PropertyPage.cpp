@@ -15,11 +15,20 @@
 
 IMPLEMENT_DYNAMIC(COptions_PropertyPage, CPWPropertyPage)
 
-COptions_PropertyPage::COptions_PropertyPage(CWnd *pParent, UINT nID, st_Opt_master_data *pOPTMD)
- : CPWPropertyPage(nID), m_OPTMD(*pOPTMD)
+COptions_PropertyPage::COptions_PropertyPage(CWnd *pParent,
+                                             UINT nID,
+                                             st_Opt_master_data *pOPTMD)
+: CPWPropertyPage(nID),
+  m_options_psh((COptions_PropertySheet *)pParent), m_OPTMD(*pOPTMD)
 {
-  // Save pointer to my PropertySheet
-  m_options_psh = (COptions_PropertySheet *)pParent;
+}
+
+COptions_PropertyPage::COptions_PropertyPage(CWnd *pParent,
+                                             UINT nID, UINT shortID,
+                                             st_Opt_master_data *pOPTMD)
+: CPWPropertyPage(nID, shortID),
+  m_options_psh((COptions_PropertySheet *)pParent), m_OPTMD(*pOPTMD)
+{
 }
 
 BOOL COptions_PropertyPage::OnInitDialog()

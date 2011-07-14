@@ -19,7 +19,22 @@ extern const wchar_t *EYE_CATCHER;
 IMPLEMENT_DYNAMIC(CPWPropertyPage, CPropertyPage)
 
 CPWPropertyPage::CPWPropertyPage(UINT nID)
-  : CPropertyPage(nID)
+: CPropertyPage(nID)
+{
+  m_psp.dwFlags |= PSP_HASHELP;
+}
+
+static UINT chooseResource(UINT nID, UINT shortID)
+{
+  // based on current screen height, decide if we want to display
+  // the normal (tall) page, or the "short" version (for netbooks)
+  int Y = ::GetSystemMetrics(SM_CYSCREEN);
+  const int THRESHOLD = 600;
+  return (Y > THRESHOLD) ? nID : shortID;
+}
+
+CPWPropertyPage::CPWPropertyPage(UINT nID, UINT shortID)
+  : CPropertyPage(chooseResource(nID, shortID))
 {
   m_psp.dwFlags |= PSP_HASHELP;
 }
