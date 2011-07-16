@@ -39,6 +39,7 @@ CResModule::CResModule(void)
 	, m_hUpdateRes(NULL)
 	, m_bQuiet(false)
 	, m_bRTL(false)
+   , m_bShowDefault(false)
 {
 }
 

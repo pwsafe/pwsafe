@@ -521,10 +521,11 @@ void ThisMfcApp::SetupMenu()
 
   pMenu1 = m_pMainMenu->GetSubMenu(pos1);
   minfo.dwMenuData = ID_FILEMENU;
-  pMenu1->SetMenuInfo(&minfo);
-
-  if (pMenu1 != NULL) // Look for "Close Database"
+  
+  if (pMenu1 != NULL) { // Look for "Close Database"
+    pMenu1->SetMenuInfo(&minfo);
     pos2 = FindMenuItem(pMenu1, ID_MENUITEM_CLOSE);
+  }
   else
     pos2 = -1;
 
@@ -1404,7 +1405,7 @@ void ThisMfcApp::GetLanguageFiles()
     st_lng.wsLanguage = szLanguage_Native;
 
     m_vlanguagefiles.push_back(st_lng);
-    delete szLanguage_Native;
+    delete[] szLanguage_Native;
   }
 
   CFileFind finder;
@@ -1487,7 +1488,7 @@ void ThisMfcApp::GetLanguageFiles()
           // Works for Russian Cyrillic alphabet though. Can't promise for future languages!
           szLanguage_Native[0] = szLanguage_NativeUpper[0];
         }
-        delete szLanguage_NativeUpper;
+        delete[] szLanguage_NativeUpper;
       }
       // Get language name in Englsh
       int lnum = ::GetLocaleInfo(lcid, LOCALE_SENGLANGUAGE, NULL, 0);
@@ -1516,10 +1517,10 @@ void ThisMfcApp::GetLanguageFiles()
       st_lng.wsLanguage = (LPCWSTR)cs_language;
 
       m_vlanguagefiles.push_back(st_lng);
-      delete szLanguage_Native;
-      delete szLanguage_English;
-      delete szCountry_Native;
-      delete szCountry_English;
+      delete[] szLanguage_Native;
+      delete[] szLanguage_English;
+      delete[] szCountry_Native;
+      delete[] szCountry_English;
     }
   }
   finder.Close();
