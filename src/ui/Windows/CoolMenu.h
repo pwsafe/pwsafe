@@ -42,7 +42,7 @@ struct CMenuItemData {
   CString  text;          // item text
   UINT     fType;         // original item type flags
   int      iButton;       // index of button image in image list
-  CMenuItemData()         { magicNum = COOLMENUITEMID; }
+  CMenuItemData()         { magicNum = COOLMENUITEMID; iButton = -1; fType = 0; }
   BOOL     IsCMID()       { return magicNum == COOLMENUITEMID; }
 };
 

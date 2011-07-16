@@ -34,7 +34,7 @@ CAddEdit_Additional::CAddEdit_Additional(CWnd * pParent, st_AE_master_data *pAEM
   : CAddEdit_PropertyPage(pParent, CAddEdit_Additional::IDD,
                           CAddEdit_Additional::IDD_SHORT, pAEMD),
   m_UseDefaultDCA(TRUE), m_UseDefaultShiftDCA(TRUE), m_ClearPWHistory(false),
-  m_bSortAscending(true), m_pToolTipCtrl(NULL), m_bInitdone(false)
+  m_bSortAscending(true), m_pToolTipCtrl(NULL), m_bInitdone(false), m_iSortedColumn(-1)
 {
   if (M_MaxPWHistory() == 0)
     M_MaxPWHistory() = PWSprefs::GetInstance()->

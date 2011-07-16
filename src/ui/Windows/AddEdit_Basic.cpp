@@ -52,7 +52,7 @@ CAddEdit_Basic::CAddEdit_Basic(CWnd *pParent, st_AE_master_data *pAEMD)
   : CAddEdit_PropertyPage(pParent,
                           CAddEdit_Basic::IDD, CAddEdit_Basic::IDD_SHORT,
                           pAEMD),
-  m_pToolTipCtrl(NULL), m_bInitdone(false)
+  m_pToolTipCtrl(NULL), m_bInitdone(false), m_thread(NULL)
 {
   if (CS_SHOW.IsEmpty()) { // one-time initializations
     HIDDEN_NOTES.LoadString(IDS_HIDDENNOTES);

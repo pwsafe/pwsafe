@@ -36,7 +36,7 @@ struct CRUEItemData {
   unsigned long magicNum;      // magic number identifying me
   int           nImage;        // index of button image in image list
 
-  CRUEItemData() {magicNum = RUEMENUITEMID;}
+  CRUEItemData() {magicNum = RUEMENUITEMID; nImage = -1;}
   bool IsRUEID() const {return magicNum == RUEMENUITEMID;}
 };
 

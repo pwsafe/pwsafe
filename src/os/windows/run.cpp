@@ -75,7 +75,7 @@ struct st_run_impl {
   }
 
   st_run_impl(const st_run_impl &that)
-    : pInit(that.pInit), pUnInit(that.pUnInit),
+    : pInit(that.pInit), pUnInit(that.pUnInit), pGetVer(that.pGetVer),
       hCBWnd(that.hCBWnd), m_AT_HK_module(that.m_AT_HK_module) {}
 
   st_run_impl &operator=(const st_run_impl &that)
@@ -83,6 +83,7 @@ struct st_run_impl {
     if (this != &that) {
       pInit = that.pInit;
       pUnInit = that.pUnInit;
+      pGetVer = that.pGetVer;
       hCBWnd = that.hCBWnd;
       m_AT_HK_module = that.m_AT_HK_module;
     }

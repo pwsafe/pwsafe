@@ -70,7 +70,7 @@ void CSysColStatic::ReloadBitmap(int nImageID)
       }
     }
     m_imt.SetColorTable(0, noOfCTableEntries, ctable);
-    delete ctable;
+    delete[] ctable;
   } else {
     for (int x = 0; x < m_imt.GetWidth(); x++) {
       for (int y = 0; y < m_imt.GetHeight(); y++) {

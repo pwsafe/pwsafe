@@ -26,7 +26,7 @@ public:
   DROPEFFECT OnDragOver(CWnd* pWnd, COleDataObject* pDataObject, 
     DWORD dwKeyState, CPoint point);
 
-  static int CALLBACK CColumnChooserLC::CCLCCompareProc(LPARAM , LPARAM , LPARAM );
+  static int CALLBACK CCLCCompareProc(LPARAM , LPARAM , LPARAM );
 
 public:
   void operator delete(void* p)
