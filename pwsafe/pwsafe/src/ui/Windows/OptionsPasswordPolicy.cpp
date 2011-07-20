@@ -62,8 +62,7 @@ const UINT COptionsPasswordPolicy::nonHexLengthSpins[COptionsPasswordPolicy::N_H
 COptionsPasswordPolicy::COptionsPasswordPolicy(CWnd *pParent,
                                                st_Opt_master_data *pOPTMD)
   : COptions_PropertyPage(pParent,
-                          COptionsPasswordPolicy::IDD,
-                          COptionsPasswordPolicy::IDD_SHORT,
+                          pOPTMD->bLongPPs ? COptionsPasswordPolicy::IDD : COptionsPasswordPolicy::IDD_SHORT,
                           pOPTMD),
   m_password(L"")
 {

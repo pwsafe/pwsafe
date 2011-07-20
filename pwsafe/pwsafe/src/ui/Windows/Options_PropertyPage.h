@@ -19,6 +19,7 @@ class PWScore;
 #define CR_DATABASE_OPTIONS 0x800000
 
 struct st_Opt_master_data {
+  bool bLongPPs;   // Long or Wide PropertyPages
   UINT uicaller;   // Options, New Database, Generate
 
   DboxMain *pDbx;
@@ -117,8 +118,6 @@ class COptions_PropertyPage : public CPWPropertyPage
 {
 public:
   COptions_PropertyPage(CWnd *pParent, UINT nID, st_Opt_master_data *pOPTMD);
-  COptions_PropertyPage(CWnd *pParent, UINT nID, UINT shortID,
-                        st_Opt_master_data *pOPTMD);
   virtual ~COptions_PropertyPage() {}
 
   virtual BOOL OnQueryCancel();

@@ -20,9 +20,9 @@ COLORREF CAddEdit_PropertyPage::crefGreen = (RGB(222, 255, 222));
 COLORREF CAddEdit_PropertyPage::crefWhite = (RGB(255, 255, 255));
 
 CAddEdit_PropertyPage::CAddEdit_PropertyPage(CWnd *pParent,
-                                             UINT nID, UINT shortID,
+                                             UINT nID,
                                              st_AE_master_data *pAEMD)
-  : CPWPropertyPage(nID, shortID), m_AEMD(*pAEMD)
+  : CPWPropertyPage(nID), m_AEMD(*pAEMD)
 {
   // Save pointer to my PropertySheet
   m_ae_psh = (CAddEdit_PropertySheet *)pParent;
