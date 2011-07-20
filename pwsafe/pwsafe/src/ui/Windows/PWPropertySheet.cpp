@@ -14,7 +14,7 @@ extern const wchar_t *EYE_CATCHER;
 
 IMPLEMENT_DYNAMIC(CPWPropertySheet, CPropertySheet)
 
-CPWPropertySheet::CPWPropertySheet(UINT nID, CWnd* pParent)
+CPWPropertySheet::CPWPropertySheet(UINT nID, CWnd *pParent)
   : CPropertySheet(nID, pParent)
 {
   m_psh.dwFlags |= PSH_HASHELP;
@@ -29,10 +29,13 @@ CPWPropertySheet::CPWPropertySheet(LPCTSTR pszCaption, CWnd* pParent)
 bool CPWPropertySheet::chooseResource()
 {
   // based on current screen height, decide if we want to display
-  // the normal (tall) page, or the "short" version (for netbooks)
-  int Y = ::GetSystemMetrics(SM_CYSCREEN);
+  // the normal "tall/long" page, or the "wide/short" version (for netbooks)
+  MONITORINFO mi;
+  mi.cbSize = sizeof(mi);
+  GetMonitorInfo(MonitorFromWindow(m_psh.hwndParent, MONITOR_DEFAULTTONEAREST), &mi);
+  const int Y = abs(mi.rcWork.bottom - mi.rcWork.top);
 
-  return (Y > 600); // THRESHOLD = 600;
+  return (Y > 600); // THRESHOLD = 600 - pixels or virtual-screen coordinates?
 }
 
 LRESULT CPWPropertySheet::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
