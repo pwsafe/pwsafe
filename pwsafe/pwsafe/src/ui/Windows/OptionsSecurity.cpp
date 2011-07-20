@@ -221,6 +221,8 @@ void COptionsSecurity::OnLockOnIdleTimeout()
 
 HBRUSH COptionsSecurity::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
 {
+  HBRUSH hbr = CPWPropertyPage::OnCtlColor(pDC, pWnd, nCtlColor);
+
   // Database preferences - controls + associated static text
   switch (pWnd->GetDlgCtrlID()) {
     case IDC_STATIC_IDLEMINS:
@@ -231,5 +233,5 @@ HBRUSH COptionsSecurity::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
       break;
   }
 
-  return CPWPropertyPage::OnCtlColor(pDC, pWnd, nCtlColor);
+  return hbr;
 }

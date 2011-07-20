@@ -481,6 +481,8 @@ int CALLBACK SetSelProc(HWND hWnd, UINT uMsg, LPARAM , LPARAM lpData)
 
 HBRUSH COptionsBackup::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
 {
+  HBRUSH hbr = CPWPropertyPage::OnCtlColor(pDC, pWnd, nCtlColor);
+
   // Database preferences - controls + associated static text
   switch (pWnd->GetDlgCtrlID()) {
     case IDC_SAVEIMMEDIATELY:
@@ -493,5 +495,5 @@ HBRUSH COptionsBackup::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
       break;
   }
 
-  return CPWPropertyPage::OnCtlColor(pDC, pWnd, nCtlColor);
+  return hbr;
 }
