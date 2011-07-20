@@ -23,7 +23,7 @@ public:
 protected:
   DECLARE_DYNAMIC(CPWPropertySheet)
 
-  static bool chooseResource();
+  bool chooseResource();
 };
 
 //-----------------------------------------------------------------------------
