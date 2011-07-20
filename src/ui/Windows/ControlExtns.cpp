@@ -608,6 +608,8 @@ END_MESSAGE_MAP()
 
 HBRUSH CComboBoxExtn::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 {
+  HBRUSH hbr = CComboBox::OnCtlColor(pDC, pWnd, nCtlColor);
+
   if (nCtlColor == CTLCOLOR_EDIT) {
     // Extended Edit control
     if (m_edit.GetSafeHwnd() == NULL)
@@ -624,7 +626,7 @@ HBRUSH CComboBoxExtn::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
     }
   }
 
-  return CComboBox::OnCtlColor(pDC, pWnd, nCtlColor);
+  return hbr;
 }
 
 void CComboBoxExtn::OnDestroy()

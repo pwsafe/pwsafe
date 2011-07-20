@@ -1917,6 +1917,7 @@ HBRUSH CVKeyBoardDlg::OnCtlColor(CDC* pDC, CWnd *pWnd, UINT nCtlColor)
     return (HBRUSH)NULL;
 
   HBRUSH hbr = CPWDialog::OnCtlColor(pDC, pWnd, nCtlColor);
+
   switch (nCtlColor) {
     case CTLCOLOR_STATIC:
     case CTLCOLOR_DLG:

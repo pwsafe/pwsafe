@@ -185,11 +185,13 @@ void CViewReport::Finish()
 
 HBRUSH CViewReport::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 {
+  HBRUSH hbr = CPWResizeDialog::OnCtlColor(pDC, pWnd, nCtlColor);
+
   if (pWnd->GetDlgCtrlID() == IDC_EDITREPORT) {
     pDC->SetBkColor(m_backgroundcolour);
     pDC->SetTextColor(m_textcolor);
     return (HBRUSH) m_backgroundbrush;
   }
   
-  return CPWResizeDialog::OnCtlColor(pDC, pWnd, nCtlColor);
+  return hbr;
 }
