@@ -341,20 +341,17 @@
 #define IDD_WZSELECTDB                  497
 #define IDD_WZFINISH                    498
 #define IDB_DRAGAUTOX_CLASSIC           499
-#define IDD_ADDEDIT_BASIC_SHORT         499
 #define IDB_DRAGAUTOX_NEW               500
-#define IDD_ADDEDIT_DATETIMES_SHORT     500
-#define IDD_ADDEDIT_PASSWORDPOLICY_SHORT 501
-#define IDD_ADDEDIT_ADDITIONAL1         502
-#define IDD_ADDEDIT_ADDITIONAL_SHORT    502
-#define IDD_PS_MISC_SHORT               503
-#define IDD_PS_SHORTCUTS_SHORT          504
-#define IDD_PS_SYSTEM1                  505
-#define IDD_PS_SYSTEM_SHORT             505
-#define IDD_PS_BACKUP_SHORT             506
-#define IDD_PS_DISPLAY_SHORT            507
-#define IDD_PS_PASSWORDPOLICY1          508
+#define IDD_ADDEDIT_BASIC_SHORT         501
+#define IDD_ADDEDIT_DATETIMES_SHORT     502
+#define IDD_ADDEDIT_PASSWORDPOLICY_SHORT 503
+#define IDD_ADDEDIT_ADDITIONAL_SHORT    504
+#define IDD_PS_BACKUP_SHORT             505
+#define IDD_PS_DISPLAY_SHORT            506
+#define IDD_PS_MISC_SHORT               507
 #define IDD_PS_PASSWORDPOLICY_SHORT     508
+#define IDD_PS_SHORTCUTS_SHORT          509
+#define IDD_PS_SYSTEM_SHORT             510
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_BROWSE                      1002
@@ -755,7 +752,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        501
+#define _APS_NEXT_RESOURCE_VALUE        511
 #define _APS_NEXT_COMMAND_VALUE         30001
 #define _APS_NEXT_CONTROL_VALUE         1454
 #define _APS_NEXT_SYMED_VALUE           166
