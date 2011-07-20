@@ -57,8 +57,9 @@ const UINT CAddEdit_PasswordPolicy::nonHexLengthSpins[CAddEdit_PasswordPolicy::N
 
 CAddEdit_PasswordPolicy::CAddEdit_PasswordPolicy(CWnd *pParent,
                                                  st_AE_master_data *pAEMD)
-  : CAddEdit_PropertyPage(pParent, CAddEdit_PasswordPolicy::IDD,
-                          CAddEdit_PasswordPolicy::IDD_SHORT, pAEMD),
+  : CAddEdit_PropertyPage(pParent,
+                          pAEMD->bLongPPs ? CAddEdit_PasswordPolicy::IDD : CAddEdit_PasswordPolicy::IDD_SHORT,
+                          pAEMD),
     m_useownsymbols(DEFAULT_SYMBOLS), m_bInitdone(false)
 {
   // We are given the Policy - set Dialog variables

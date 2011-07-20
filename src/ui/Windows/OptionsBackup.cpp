@@ -49,7 +49,7 @@ IMPLEMENT_DYNAMIC(COptionsBackup, COptions_PropertyPage)
 
 COptionsBackup::COptionsBackup(CWnd *pParent, st_Opt_master_data *pOPTMD)
   : COptions_PropertyPage(pParent,
-                          COptionsBackup::IDD, COptionsBackup::IDD_SHORT,
+                          pOPTMD->bLongPPs ? COptionsBackup::IDD : COptionsBackup::IDD_SHORT,
                           pOPTMD),
   m_pToolTipCtrl(NULL)
 {

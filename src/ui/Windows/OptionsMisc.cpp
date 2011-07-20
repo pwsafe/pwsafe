@@ -48,7 +48,7 @@ IMPLEMENT_DYNAMIC(COptionsMisc, COptions_PropertyPage)
 
 COptionsMisc::COptionsMisc(CWnd *pParent, st_Opt_master_data *pOPTMD)
   : COptions_PropertyPage(pParent,
-                          COptionsMisc::IDD, COptionsMisc::IDD_SHORT,
+                          pOPTMD->bLongPPs ? COptionsMisc::IDD : COptionsMisc::IDD_SHORT,
                           pOPTMD), m_pToolTipCtrl(NULL)
 {
   m_DefUsername = (CString)M_DefUsername();

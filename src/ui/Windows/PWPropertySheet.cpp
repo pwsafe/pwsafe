@@ -26,6 +26,15 @@ CPWPropertySheet::CPWPropertySheet(LPCTSTR pszCaption, CWnd* pParent)
   m_psh.dwFlags |= PSH_HASHELP;
 }
 
+bool CPWPropertySheet::chooseResource()
+{
+  // based on current screen height, decide if we want to display
+  // the normal (tall) page, or the "short" version (for netbooks)
+  int Y = ::GetSystemMetrics(SM_CYSCREEN);
+
+  return (Y > 600); // THRESHOLD = 600;
+}
+
 LRESULT CPWPropertySheet::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {
   CWnd *pParent = GetParent();

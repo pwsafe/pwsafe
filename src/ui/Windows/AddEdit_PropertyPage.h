@@ -22,6 +22,7 @@ class PWScore;
 class CItemData;
 
 struct st_AE_master_data {
+  bool bLongPPs;   // Long or Wide PropertyPages
   UINT uicaller;   // Add, Edit or View
 
   PWScore *pcore;
@@ -85,7 +86,7 @@ struct st_AE_master_data {
 class CAddEdit_PropertyPage : public CPWPropertyPage
 {
 public:
-  CAddEdit_PropertyPage(CWnd *pParent, UINT nID, UINT shortID,
+  CAddEdit_PropertyPage(CWnd *pParent, UINT nID,
                         st_AE_master_data *pAEMD);
   virtual ~CAddEdit_PropertyPage() {}
 

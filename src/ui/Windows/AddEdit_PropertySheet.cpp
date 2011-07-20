@@ -26,6 +26,7 @@ CAddEdit_PropertySheet::CAddEdit_PropertySheet(UINT nID, CWnd* pParent,
   : CPWPropertySheet(nID, pParent), m_bIsModified(false), m_bChanged(false),
   m_bNotesChanged(false), m_bSymbolsChanged(false)
 {
+  m_AEMD.bLongPPs = chooseResource();
   m_AEMD.uicaller = nID;
 
   ASSERT(pParent != NULL);

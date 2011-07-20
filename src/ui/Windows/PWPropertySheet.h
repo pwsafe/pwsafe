@@ -20,8 +20,12 @@ public:
   // Following override to stop accelerators interfering
   virtual INT_PTR DoModal();
 
+protected:
   DECLARE_DYNAMIC(CPWPropertySheet)
+
+  static bool chooseResource();
 };
+
 //-----------------------------------------------------------------------------
 // Local variables:
 // mode: c++

@@ -41,6 +41,7 @@ COptions_PropertySheet::COptions_PropertySheet(UINT nID, CWnd* pParent)
 
   // Only now allocate the PropertyPages - after all data there
   // to be used by their c'tors
+  m_OPTMD.bLongPPs = chooseResource();
 
   switch (nID) {
     case IDS_OPTIONS:
@@ -51,7 +52,7 @@ COptions_PropertySheet::COptions_PropertySheet(UINT nID, CWnd* pParent)
       m_pp_passwordpolicy  = new COptionsPasswordPolicy(this, &m_OPTMD);
       m_pp_security        = new COptionsSecurity(this, &m_OPTMD);
       m_pp_shortcuts       = new COptionsShortcuts(this, &m_OPTMD);
-      m_pp_system        = new COptionsSystem(this, &m_OPTMD);
+      m_pp_system          = new COptionsSystem(this, &m_OPTMD);
 
       m_pp_shortcuts->InitialSetup(m_OPTMD.pDbx->GetMapMenuShortcuts(),
                                    m_OPTMD.pDbx->GetMapKeyNameID(),
