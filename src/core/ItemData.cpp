@@ -292,6 +292,8 @@ StringX CItemData::GetFieldValue(const FieldType &ft) const
     }
     case SYMBOLS:    /* 16 */
       return GetSymbols();
+    case SHIFTDCA:   /* 17 */
+      return GetShiftDCA();
     default:
       ASSERT(0);
   }
