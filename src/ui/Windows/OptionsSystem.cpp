@@ -45,7 +45,7 @@ IMPLEMENT_DYNAMIC(COptionsSystem, COptions_PropertyPage)
 
 COptionsSystem::COptionsSystem(CWnd *pParent, st_Opt_master_data *pOPTMD) 
 : COptions_PropertyPage(pParent,
-                        pOPTMD->bLongPPs ? COptionsSystem::IDD : COptionsSystem::IDD_SHORT,
+                        COptionsSystem::IDD, COptionsSystem::IDD_SHORT,
                         pOPTMD),
   m_pToolTipCtrl(NULL),
   m_DeleteRegistry(FALSE), m_saveDeleteRegistry(FALSE),

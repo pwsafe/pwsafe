@@ -36,7 +36,7 @@ IMPLEMENT_DYNAMIC(CAddEdit_DateTimes, CAddEdit_PropertyPage)
 
 CAddEdit_DateTimes::CAddEdit_DateTimes(CWnd *pParent, st_AE_master_data *pAEMD)
   : CAddEdit_PropertyPage(pParent, 
-                          pAEMD->bLongPPs ? CAddEdit_DateTimes::IDD : CAddEdit_DateTimes::IDD_SHORT,
+                          CAddEdit_DateTimes::IDD, CAddEdit_DateTimes::IDD_SHORT,
                           pAEMD),
   m_how(NONE_EXP), m_numDays(1), m_bRecurringPswdExpiry(FALSE), m_bInitdone(false)
 {

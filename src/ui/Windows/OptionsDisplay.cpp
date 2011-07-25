@@ -44,7 +44,7 @@ IMPLEMENT_DYNAMIC(COptionsDisplay, COptions_PropertyPage)
 
 COptionsDisplay::COptionsDisplay(CWnd *pParent, st_Opt_master_data *pOPTMD)
   : COptions_PropertyPage(pParent,
-                          pOPTMD->bLongPPs ? COptionsDisplay::IDD : COptionsDisplay::IDD_SHORT,
+                          COptionsDisplay::IDD, COptionsDisplay::IDD_SHORT,
                           pOPTMD)
 {
   m_AlwaysOnTop = M_AlwaysOnTop();
