@@ -23,6 +23,14 @@ COptions_PropertyPage::COptions_PropertyPage(CWnd *pParent,
 {
 }
 
+COptions_PropertyPage::COptions_PropertyPage(CWnd *pParent,
+                                             UINT nID, UINT nID_Short,
+                                             st_Opt_master_data *pOPTMD)
+  : CPWPropertyPage(pOPTMD->bLongPPs ? nID : nID_Short),
+    m_options_psh((COptions_PropertySheet *)pParent), m_OPTMD(*pOPTMD)
+{
+}
+
 BOOL COptions_PropertyPage::OnInitDialog()
 {
   CPWPropertyPage::OnInitDialog();

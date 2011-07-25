@@ -22,10 +22,17 @@ COLORREF CAddEdit_PropertyPage::crefWhite = (RGB(255, 255, 255));
 CAddEdit_PropertyPage::CAddEdit_PropertyPage(CWnd *pParent,
                                              UINT nID,
                                              st_AE_master_data *pAEMD)
-  : CPWPropertyPage(nID), m_AEMD(*pAEMD)
+  : CPWPropertyPage(nID), m_AEMD(*pAEMD),
+    m_ae_psh((CAddEdit_PropertySheet *)pParent)
 {
-  // Save pointer to my PropertySheet
-  m_ae_psh = (CAddEdit_PropertySheet *)pParent;
+}
+
+CAddEdit_PropertyPage::CAddEdit_PropertyPage(CWnd *pParent,
+                                             UINT nID, UINT nID_Short,
+                                             st_AE_master_data *pAEMD)
+  : CPWPropertyPage(pAEMD->bLongPPs ? nID : nID_Short), m_AEMD(*pAEMD),
+    m_ae_psh((CAddEdit_PropertySheet *)pParent)
+{
 }
 
 BOOL CAddEdit_PropertyPage::OnQueryCancel()
