@@ -25,6 +25,7 @@ Bugs fixed in 3.26.1
 preferences via Manage->Options.
 [] Selecting hexadecimal passwords as the database policy no longer causes validation
 to fail.
+[] Toolbar now updated to reflect R/W or R-O mode when user dynamically changes mode.
 
 New Features for 3.26
 =====================
