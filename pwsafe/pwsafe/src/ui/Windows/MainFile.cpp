@@ -103,7 +103,7 @@ BOOL DboxMain::OpenOnInit()
   }
 
   const StringX sxOriginalFileName = m_core.GetCurFile();
-  const int flags = (bReadOnly ? GCP_READONLY : 0) | 
+  const int flags = (bReadOnly ? GCP_READONLY : 0) |
                     (m_core.IsReadOnly() ? GCP_FORCEREADONLY : 0);
   int rc = GetAndCheckPassword(m_core.GetCurFile(),
                                passkey, GCP_FIRST,
@@ -438,7 +438,7 @@ int DboxMain::NewFile(StringX &newfilename)
   m_core.SetReadOnly(false); // new file can't be read-only...
   m_core.NewFile(pksetup.GetPassKey());
   m_bDBNeedsReading = false;
-  
+
   // Tidy up filters
   m_currentfilter.Empty();
   m_bFilterActive = false;
@@ -571,7 +571,7 @@ void DboxMain::OnOpenMRU(UINT nID)
   const bool last_ro = m_core.IsReadOnly();
   m_core.SetReadOnly(false);
   // Read-only status can be overriden by GetAndCheckPassword
-  int rc = Open(LPCWSTR(mruItem), 
+  int rc = Open(LPCWSTR(mruItem),
                 PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultOpenRO));
   if (rc == PWScore::SUCCESS) {
     UpdateSystemTray(UNLOCKED);
@@ -635,7 +635,7 @@ int DboxMain::Open(const UINT uiTitle)
     if (m_inExit) {
       // If U3ExitNow called while in CPWFileDialog,
       // PostQuitMessage makes us return here instead
-      // of exiting the app. Try resignalling 
+      // of exiting the app. Try resignalling
       PostQuitMessage(0);
       return PWScore::USER_CANCEL;
     }
@@ -687,7 +687,7 @@ int DboxMain::Open(const StringX &sx_Filename, const bool bReadOnly,  const bool
   // Reset changed flag to stop being asked again (only if rc == PWScore::USER_DECLINED_SAVE)
   SetChanged(Clear);
 
-  // If we were using a different file, unlock it do this before 
+  // If we were using a different file, unlock it do this before
   // GetAndCheckPassword() as that routine gets a lock on the new file
   if (!m_core.GetCurFile().empty()) {
     m_core.UnlockFile(m_core.GetCurFile().c_str());
@@ -769,7 +769,7 @@ int DboxMain::Open(const StringX &sx_Filename, const bool bReadOnly,  const bool
   if (rc == PWScore::SUCCESS) {
     // Verify if any recovery databases exist
     INT_PTR chkrc = CheckEmergencyBackupFiles(sx_Filename, passkey);
-    
+
     if (chkrc == IDCANCEL) {
       // Cancel Open
       rc = PWScore::USER_CANCEL;
@@ -882,7 +882,7 @@ void DboxMain::PostOpenProcessing()
   // Set up notification of desktop state, one way or another
   startLockCheckTimer();
   RegisterSessionNotification(true);
-  
+
   // Update Minidump user streams
   app.SetMinidumpUserStreams(m_bOpen, !IsDBReadOnly());
 }
@@ -1254,7 +1254,7 @@ int DboxMain::SaveAs()
     if (m_inExit) {
       // If U3ExitNow called while in CPWFileDialog,
       // PostQuitMessage makes us return here instead
-      // of exiting the app. Try resignalling 
+      // of exiting the app. Try resignalling
       PostQuitMessage(0);
       return PWScore::USER_CANCEL;
     }
@@ -1368,7 +1368,7 @@ void DboxMain::OnExportVx(UINT nID)
     if (m_inExit) {
       // If U3ExitNow called while in CPWFileDialog,
       // PostQuitMessage makes us return here instead
-      // of exiting the app. Try resignalling 
+      // of exiting the app. Try resignalling
       PostQuitMessage(0);
       return;
     }
@@ -1431,7 +1431,7 @@ void DboxMain::OnExportEntryText()
 }
 
 int DboxMain::DoExportText(const StringX &sx_Filename, const bool bAll,
-                           const wchar_t &delimiter, const bool bAdvanced, 
+                           const wchar_t &delimiter, const bool bAdvanced,
                            int &numExported, CReport *prpt)
 {
   CGeneralMsgBox gmb;
@@ -1453,9 +1453,9 @@ int DboxMain::DoExportText(const StringX &sx_Filename, const bool bAll,
   cs_temp.Format(IDS_EXPORTFILE, str_text.c_str(), sx_Filename.c_str());
   prpt->WriteLine((LPCWSTR)cs_temp);
   prpt->WriteLine();
- 
+
   if (bAll) {
-    // Note: MakeOrderedItemList gets its members by walking the 
+    // Note: MakeOrderedItemList gets its members by walking the
     // tree therefore, if a filter is active, it will ONLY export
     // those being displayed.
     MakeOrderedItemList(orderedItemList);
@@ -1499,7 +1499,7 @@ void DboxMain::OnExportXML()
   }
 
   CWZPropertySheet wizard(ID_MENUITEM_EXPORT2XML,
-                          this, WZAdvanced::EXPORT_XML, 
+                          this, WZAdvanced::EXPORT_XML,
                           &m_SaveWZAdvValues[WZAdvanced::EXPORT_XML]);
 
   // Don't care about the return code: ID_WIZFINISH or IDCANCEL
@@ -1526,7 +1526,7 @@ int DboxMain::DoExportXML(const StringX &sx_Filename, const bool bAll,
   CGeneralMsgBox gmb;
   OrderedItemList orderedItemList;
   CString cs_temp;
- 
+
   st_SaveAdvValues *pst_ADV = &m_SaveWZAdvValues[bAll ? WZAdvanced::EXPORT_XML : WZAdvanced::EXPORT_ENTRYXML];
 
   CItemData::FieldBits bsAllFields; bsAllFields.set();
@@ -1544,7 +1544,7 @@ int DboxMain::DoExportXML(const StringX &sx_Filename, const bool bAll,
   prpt->WriteLine();
 
   if (bAll) {
-    // Note: MakeOrderedItemList gets its members by walking the 
+    // Note: MakeOrderedItemList gets its members by walking the
     // tree therefore, if a filter is active, it will ONLY export
     // those being displayed.
     MakeOrderedItemList(orderedItemList);
@@ -1629,7 +1629,7 @@ void DboxMain::OnImportText()
   if (m_inExit) {
     // If U3ExitNow called while in CPWFileDialog,
     // PostQuitMessage makes us return here instead
-    // of exiting the app. Try resignalling 
+    // of exiting the app. Try resignalling
     PostQuitMessage(0);
     return;
   }
@@ -1693,7 +1693,7 @@ void DboxMain::OnImportText()
         rpt.WriteLine();
         CString cs_type;
         cs_type.LoadString(numImported == 1 ? IDSC_ENTRY : IDSC_ENTRIES);
-        cs_temp.Format(bImportPSWDsOnly ? IDS_RECORDSUPDATED : IDS_RECORDSIMPORTED, 
+        cs_temp.Format(bImportPSWDsOnly ? IDS_RECORDSUPDATED : IDS_RECORDSIMPORTED,
                        numImported, cs_type);
         rpt.WriteLine((LPCWSTR)cs_temp);
 
@@ -1785,7 +1785,7 @@ void DboxMain::OnImportKeePassV1CSV()
   if (m_inExit) {
     // If U3ExitNow called while in CPWFileDialog,
     // PostQuitMessage makes us return here instead
-    // of exiting the app. Try resignalling 
+    // of exiting the app. Try resignalling
     PostQuitMessage(0);
     return;
   }
@@ -1894,7 +1894,7 @@ void DboxMain::OnImportKeePassV1TXT()
   if (m_inExit) {
     // If U3ExitNow called while in CPWFileDialog,
     // PostQuitMessage makes us return here instead
-    // of exiting the app. Try resignalling 
+    // of exiting the app. Try resignalling
     PostQuitMessage(0);
     return;
   }
@@ -2034,7 +2034,7 @@ void DboxMain::OnImportXML()
   if (m_inExit) {
     // If U3ExitNow called while in CPWFileDialog,
     // PostQuitMessage makes us return here instead
-    // of exiting the app. Try resignalling 
+    // of exiting the app. Try resignalling
     PostQuitMessage(0);
     return;
   }
@@ -2168,7 +2168,7 @@ void DboxMain::OnProperties()
   dlg.DoModal();
 }
 
-void DboxMain::OnChangeMode()	 
+void DboxMain::OnChangeMode()
 {
   // From StatusBar and menu
   const bool bWasRO = IsDBReadOnly();
@@ -2180,12 +2180,12 @@ void DboxMain::OnChangeMode()
       return;
 
     if (rc == PWScore::USER_DECLINED_SAVE) {
-	     // But ask just in case	 
-       CGeneralMsgBox gmb;	 
-       CString cs_msg(MAKEINTRESOURCE(IDS_BACKOUT_CHANGES)), cs_title(MAKEINTRESOURCE(IDS_CHANGEMODE));	 
-       INT_PTR rc = gmb.MessageBox(cs_msg, cs_title, MB_YESNO | MB_ICONQUESTION);	 
- 	 
-       if (rc == IDNO)	 
+       // But ask just in case
+       CGeneralMsgBox gmb;
+       CString cs_msg(MAKEINTRESOURCE(IDS_BACKOUT_CHANGES)), cs_title(MAKEINTRESOURCE(IDS_CHANGEMODE));
+       INT_PTR rc = gmb.MessageBox(cs_msg, cs_title, MB_YESNO | MB_ICONQUESTION);
+
+       if (rc == IDNO)
          return;
 
       // User said No to the save - so we must back-out all changes since last save
@@ -2193,7 +2193,7 @@ void DboxMain::OnChangeMode()
         OnUndo();
       }
     }
- 
+
     // Reset changed flag to stop being asked again (only if rc == PWScore::USER_DECLINED_SAVE)
     SetChanged(Clear);
 
@@ -2237,6 +2237,7 @@ void DboxMain::OnChangeMode()
   bool brc = m_core.ChangeMode(locker, iErrorCode);
   if (brc) {
     UpdateStatusBar();
+    UpdateToolBarROStatus(!bWasRO);
   } else {
     // Better give them the bad news!
     bool bInUse = false;
@@ -2249,7 +2250,7 @@ void DboxMain::OnChangeMode()
           // The user must close and re-open it in R/W mode
           uiMsg = IDS_CM_FAIL_REASON3;
           break;
-        
+
         case PWScore::CANT_GET_LOCK:
         {
           CString cs_user_and_host, cs_PID;
@@ -2327,7 +2328,7 @@ void DboxMain::OnMerge()
     return;
 
   CWZPropertySheet wizard(ID_MENUITEM_MERGE,
-                          this, WZAdvanced::MERGE, 
+                          this, WZAdvanced::MERGE,
                           &m_SaveWZAdvValues[WZAdvanced::MERGE]);
 
   INT_PTR rc = wizard.DoModal();
@@ -2386,7 +2387,7 @@ stringT DboxMain::DoMerge(PWScore *pothercore,
   cs_temp.Format(IDS_MERGINGDATABASE, pothercore->GetCurFile().c_str());
   prpt->WriteLine((LPCWSTR)cs_temp);
   prpt->WriteLine();
- 
+
   std::vector<StringX> vs_added;
   std::vector<StringX> vs_AliasesAdded;
   std::vector<StringX> vs_ShortcutsAdded;
@@ -2411,12 +2412,12 @@ stringT DboxMain::DoMerge(PWScore *pothercore,
   }
 
   ReportAdvancedOptions(prpt, bAdvanced, WZAdvanced::MERGE);
- 
+
   // Put up hourglass...this might take a while
   CWaitCursor waitCursor;
 
   // Do the Merge
-  std::wstring str_result = m_core.Merge(pothercore, subgroup_bset, 
+  std::wstring str_result = m_core.Merge(pothercore, subgroup_bset,
              subgroup_name, subgroup_object, subgroup_function, prpt);
 
   // restore normal cursor
@@ -2508,7 +2509,7 @@ bool DboxMain::DoCompare(PWScore *pothercore,
 
   m_core.Compare(pothercore,
                  bsFields, subgroup_bset, bTreatWhiteSpaceasEmpty,
-                 subgroup_name, subgroup_object, 
+                 subgroup_name, subgroup_object,
                  subgroup_function,
                  m_list_OnlyInCurrent, m_list_OnlyInComp,
                  m_list_Conflicts, m_list_Identical);
@@ -2540,8 +2541,8 @@ CString DboxMain::ShowCompareResults(const StringX sx_Filename1, const StringX s
                                      PWScore *pothercore, CReport *prpt)
 {
   // Can't do UI from a worker thread!
-  CCompareResultsDlg CmpRes(this, m_list_OnlyInCurrent, m_list_OnlyInComp, 
-                            m_list_Conflicts, m_list_Identical, 
+  CCompareResultsDlg CmpRes(this, m_list_OnlyInCurrent, m_list_OnlyInComp,
+                            m_list_Conflicts, m_list_Identical,
                             m_bsFields, &m_core, pothercore, prpt);
 
   CmpRes.m_scFilename1 = sx_Filename1;
@@ -2718,7 +2719,7 @@ LRESULT DboxMain::OnProcessCompareResultFunction(WPARAM wParam, LPARAM lFunction
   switch ((int)lFunction) {
     case CCompareResultsDlg::EDIT:
       lres = EditCompareResult(pcore, entryUUID);
-      break;      
+      break;
     case CCompareResultsDlg::VIEW:
       lres = ViewCompareResult(pcore, entryUUID);
       break;
@@ -2741,7 +2742,7 @@ LRESULT DboxMain::OnProcessCompareResultFunction(WPARAM wParam, LPARAM lFunction
 }
 
 LRESULT DboxMain::ViewCompareResult(PWScore *pcore, const CUUID &entryUUID)
-{  
+{
   ItemListIter pos = pcore->Find(entryUUID);
   ASSERT(pos != pcore->GetEntryEndIter());
   CItemData *pci = &pos->second;
@@ -2788,7 +2789,7 @@ LRESULT DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
     ci_temp.SetUUID(toUUID);
 
   Command *pcmd(NULL);
-  
+
   // Is it already there:?
   const StringX sxgroup(ci_temp.GetGroup()), sxtitle(ci_temp.GetTitle()),
     sxuser(ci_temp.GetUser());
@@ -2865,7 +2866,7 @@ LRESULT DboxMain::SynchCompareResult(PWScore *pfromcore, PWScore *ptocore,
   return FALSE;
 }
 
-void DboxMain::OnOK() 
+void DboxMain::OnOK()
 {
   SavePreferencesOnExit();
 
@@ -2976,7 +2977,7 @@ int DboxMain::SaveDatabaseOnExit(const SaveType saveType)
     time_t now;
     time(&now);
     StringX cs_datetime = PWSUtil::ConvertToDateTimeString(now, TMC_EXPORT_IMPORT);
-    StringX nf = cs_temp.c_str() + 
+    StringX nf = cs_temp.c_str() +
                      cs_datetime.substr( 0, 4) +  // YYYY
                      cs_datetime.substr( 5, 2) +  // MM
                      cs_datetime.substr( 8, 2) +  // DD
@@ -2991,11 +2992,11 @@ int DboxMain::SaveDatabaseOnExit(const SaveType saveType)
   }
 
   if (saveType == ST_NORMALEXIT) {
-    bool bAutoSave = true; // false if user saved or decided not to 
+    bool bAutoSave = true; // false if user saved or decided not to
     if (m_core.IsChanged() || m_core.HaveDBPrefsChanged()) {
       CGeneralMsgBox gmb;
       CString cs_msg(MAKEINTRESOURCE(IDS_SAVEFIRST));
-      rc = gmb.MessageBox(cs_msg, AfxGetAppName(), 
+      rc = gmb.MessageBox(cs_msg, AfxGetAppName(),
                         MB_YESNOCANCEL | MB_ICONQUESTION);
 
       switch (rc) {
@@ -3038,7 +3039,7 @@ int DboxMain::SaveDatabaseOnExit(const SaveType saveType)
     }
     return PWScore::SUCCESS;
   } // ST_NORMALEXIT
-  
+
   if (saveType == ST_ENDSESSIONEXIT || saveType == ST_WTSLOGOFFEXIT) {
     // ST_ENDSESSIONEXIT: Windows XP or earlier
     // ST_WTSLOGOFFEXIT:  Windows XP or later (if OnQueryEndSession not called)
@@ -3084,7 +3085,7 @@ void DboxMain::CleanUpAndExit(const bool bNormalExit)
 
 void DboxMain::OnCancel()
 {
-  // If system tray is enabled, cancel (escape) 
+  // If system tray is enabled, cancel (escape)
   // minimizes to the system tray, else exit application
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray)) {
     ShowWindow(SW_MINIMIZE);
