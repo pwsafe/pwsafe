@@ -232,13 +232,13 @@ BOOL COptionsPasswordPolicy::OnInitDialog()
   m_save[SAVE_PRONOUNCEABLE] = m_PWMakePronounceable;
 
   if (m_PWUseLowercase == TRUE && m_PWLowerMinLength == 0)
-    m_PWLowerMinLength = 1;
+    M_PWLowerMinLength() = m_PWLowerMinLength = 1;
   if (m_PWUseUppercase == TRUE && m_PWUpperMinLength == 0)
-    m_PWUpperMinLength = 1;
+    M_PWUpperMinLength() = m_PWUpperMinLength = 1;
   if (m_PWUseDigits == TRUE && m_PWDigitMinLength == 0)
-    m_PWDigitMinLength = 1;
+    M_PWDigitMinLength() = m_PWDigitMinLength = 1;
   if (m_PWUseSymbols == TRUE && m_PWSymbolMinLength == 0)
-    m_PWSymbolMinLength = 1;
+    M_PWSymbolMinLength() = m_PWSymbolMinLength = 1;
 
   m_savelen[SAVE_LOWERCASE] = m_PWLowerMinLength;
   m_savelen[SAVE_UPPERCASE] = m_PWUpperMinLength;
