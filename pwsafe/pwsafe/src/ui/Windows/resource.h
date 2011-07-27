@@ -747,6 +747,7 @@
 #define IDC_SHIFT_DCA_DEFAULT           1450
 #define IDC_HELP_PREFERENCES            1452
 #define IDC_STATIC_PREFERENCES          1453
+#define IDC_STATIC_DB_PREFS_RO_WARNING  1454
 
 // Next default values for new objects
 // 
@@ -754,7 +755,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        511
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1454
+#define _APS_NEXT_CONTROL_VALUE         1455
 #define _APS_NEXT_SYMED_VALUE           166
 #endif
 #endif
