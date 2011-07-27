@@ -27,6 +27,7 @@
 
 class DboxMain;
 class CVKeyBoardDlg;
+struct Yubi;
 
 class CPasskeyEntry : public CPWDialog
 {
@@ -98,6 +99,7 @@ protected:
   afx_msg void OnOpenFileBrowser();
   afx_msg void OnVirtualKeyboard();
   afx_msg LRESULT OnInsertBuffer(WPARAM, LPARAM);
+  afx_msg void OnDestroy();
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
@@ -109,6 +111,7 @@ private:
   void UpdateRO();
   void ProcessPhrase();
   CVKeyBoardDlg *m_pVKeyBoardDlg;
+  Yubi *m_yubi;
 };
 //-----------------------------------------------------------------------------
 // Local variables:

@@ -17,6 +17,7 @@ down the streetsky.  [Groucho Marx]
 #include "PWFileDialog.h"
 #include "ThisMfcApp.h"
 #include "GeneralMsgBox.h"
+#include "Yubi.h"
 
 #include "core/PwsPlatform.h"
 #include "core/Pwsdirs.h"
@@ -89,13 +90,15 @@ CPasskeyEntry::CPasskeyEntry(CWnd* pParent, const CString& a_filespec, int index
   m_pctlPasskey = new CSecEditExtn;
   if (pws_os::getenv("PWS_PW_MODE", false) == L"NORMAL")
     m_pctlPasskey->SetSecure(false);
+  m_yubi = new Yubi(this);
 }
 
 CPasskeyEntry::~CPasskeyEntry()
 {
   ::DestroyIcon(m_hIcon);
   delete m_pctlPasskey;
-  
+  delete m_yubi;
+
   if (m_pVKeyBoardDlg != NULL) {
     // Save Last Used Keyboard
     UINT uiKLID = m_pVKeyBoardDlg->GetKLID();
@@ -139,6 +142,7 @@ void CPasskeyEntry::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CPasskeyEntry, CPWDialog)
   //{{AFX_MSG_MAP(CPasskeyEntry)
+  ON_WM_DESTROY()
   ON_BN_CLICKED(ID_HELP, OnHelp)
   ON_BN_CLICKED(IDC_CREATE_DB, OnCreateDb)
   ON_BN_CLICKED(IDC_EXIT, OnExit)
@@ -185,6 +189,7 @@ BOOL CPasskeyEntry::OnInitDialog(void)
   ApplyPasswordFont(GetDlgItem(IDC_PASSKEY));
 
   m_pctlPasskey->SetPasswordChar(PSSWDCHAR);
+  m_yubi->Init();
 
   switch(m_index) {
     case GCP_FIRST:
@@ -676,4 +681,10 @@ LRESULT CPasskeyEntry::OnInsertBuffer(WPARAM, LPARAM)
                         nStartChar + vkbuffer.GetLength());
 
   return 0L;
+}
+
+void CPasskeyEntry::OnDestroy()
+{
+  m_yubi->Destroy();
+  CPWDialog::OnDestroy();
 }

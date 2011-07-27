@@ -163,7 +163,9 @@ ThisMfcApp::ThisMfcApp() :
   PWScore::SetReporter(&aReporter);
   PWScore::SetAsker(&anAsker);
   EnableHtmlHelp();
-  CoInitialize(NULL); // Initializes the COM library (for XML processing)
+  CoInitializeEx(NULL, COINIT_APARTMENTTHREADED); // Initializes the COM library
+  //                                                 (for XML and Yubikeyprocessing)
+  AfxEnableControlContainer();
   AfxOleInit();
 }
 
