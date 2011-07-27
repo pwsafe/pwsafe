@@ -113,7 +113,10 @@ private:
   void UpdateRO();
   void ProcessPhrase();
   CVKeyBoardDlg *m_pVKeyBoardDlg;
+  // Yubico-related:
   Yubi *m_yubi;
+	void yubiInserted(void);
+	void yubiRemoved(void);
 };
 //-----------------------------------------------------------------------------
 // Local variables:

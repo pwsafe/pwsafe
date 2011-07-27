@@ -22,6 +22,9 @@ struct Yubi {
   ycENCODING m_encoding;
   void putVariant(_variant_t va, UINT dataField);
   void getVariant(_variant_t *va, UINT dataField);
+  bool isEnabled() const { return m_isInit; }
+  bool isInserted() const;
 private:
   CCmdTarget *m_owner;
+  bool m_isInit;
 };

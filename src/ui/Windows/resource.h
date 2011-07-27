@@ -747,6 +747,9 @@
 #define IDC_SHIFT_DCA_DEFAULT           1450
 #define IDC_HELP_PREFERENCES            1452
 #define IDC_STATIC_PREFERENCES          1453
+#define IDC_BUTTON1                     1454
+#define IDC_YUBIKEY_BTN                 1455
+#define IDC_YUBIKEY_STATUS              1456
 
 // Next default values for new objects
 // 
@@ -754,7 +757,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        511
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1454
+#define _APS_NEXT_CONTROL_VALUE         1457
 #define _APS_NEXT_SYMED_VALUE           166
 #endif
 #endif

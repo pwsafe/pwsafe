@@ -16,25 +16,35 @@
 #include "Yubi.h"
 
 Yubi::Yubi(CCmdTarget *owner)
-  : m_owner(owner), m_obj(0)
+  : m_obj(0), m_owner(owner), m_isInit(false)
 {
   m_owner->EnableAutomation();
 }
 
 void Yubi::Init()
 {
+  m_isInit = false;
 	HRESULT hr = CoCreateInstance(CLSID_YubiClient, 0, CLSCTX_ALL,
                                 IID_IYubiClient, reinterpret_cast<void **>(&m_obj));
 
 	if (FAILED(hr)) {
+#ifdef DEBUG
 		_com_error er(hr);
 		AfxMessageBox(er.ErrorMessage());
+#endif
 	} else {
 		if (!AfxConnectionAdvise(m_obj, DIID__IYubiClientEvents,
                              m_owner->GetIDispatch(FALSE),
-                             FALSE, &m_eventCookie))
+                             FALSE, &m_eventCookie)) {
+#ifdef DEBUG
       AfxMessageBox(_T("Advise failed"));
-	}
+#endif
+      Destroy();
+    } else {
+      m_obj->enableNotifications = ycNOTIFICATION_ON;
+      m_isInit = true;
+    }
+  }
 }
 
 void Yubi::Destroy()
@@ -45,4 +55,9 @@ void Yubi::Destroy()
     m_obj->Release();
     m_obj = 0;
   }
+}
+
+bool Yubi::isInserted() const
+{
+  return (m_obj != NULL && m_obj->GetisInserted() == ycRETCODE_OK);
 }

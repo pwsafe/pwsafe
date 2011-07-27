@@ -162,9 +162,9 @@ BEGIN_DISPATCH_MAP(CPasskeyEntry, CPWDialog)
 	//{{AFX_DISPATCH_MAP(CPasskeyEntry)
 		// NOTE - the ClassWizard will add and remove mapping macros here.
 	//}}AFX_DISPATCH_MAP
+	DISP_FUNCTION_ID(CPasskeyEntry, "deviceInserted", 1, yubiInserted, VT_EMPTY, VTS_NONE)
+	DISP_FUNCTION_ID(CPasskeyEntry, "deviceRemoved", 2, yubiRemoved, VT_EMPTY, VTS_NONE)
 #ifdef notyet
-	DISP_FUNCTION_ID(CPasskeyEntry, "deviceInserted", 1, deviceInserted, VT_EMPTY, VTS_NONE)
-	DISP_FUNCTION_ID(CPasskeyEntry, "deviceRemoved", 2, deviceRemoved, VT_EMPTY, VTS_NONE)
 	DISP_FUNCTION_ID(CPasskeyEntry, "operationCompleted", 3, operationCompleted, VT_EMPTY, VTS_I2)
   DISP_FUNCTION_ID(CPasskeyEntry, "userWait", 4, userWait, VT_EMPTY, VTS_I2)
 #endif
@@ -206,6 +206,12 @@ BOOL CPasskeyEntry::OnInitDialog(void)
 
   m_pctlPasskey->SetPasswordChar(PSSWDCHAR);
   m_yubi->Init();
+
+  bool yubiEnabled = m_yubi->isEnabled();
+  GetDlgItem(IDC_YUBIKEY_BTN)->ShowWindow(yubiEnabled ? SW_SHOW : SW_HIDE);
+  GetDlgItem(IDC_YUBIKEY_STATUS)->ShowWindow(yubiEnabled ? SW_SHOW : SW_HIDE);
+  bool yubiInserted = m_yubi->isInserted();
+  GetDlgItem(IDC_YUBIKEY_BTN)->EnableWindow(yubiInserted ? TRUE : FALSE);
 
   switch(m_index) {
     case GCP_FIRST:
@@ -703,4 +709,14 @@ void CPasskeyEntry::OnDestroy()
 {
   m_yubi->Destroy();
   CPWDialog::OnDestroy();
+}
+
+void CPasskeyEntry::yubiInserted(void)
+{
+  GetDlgItem(IDC_YUBIKEY_BTN)->EnableWindow(TRUE);
+}
+
+void CPasskeyEntry::yubiRemoved(void)
+{
+  GetDlgItem(IDC_YUBIKEY_BTN)->EnableWindow(FALSE);
 }
