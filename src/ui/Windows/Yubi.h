@@ -13,18 +13,19 @@
 
 #import <YubiClientAPI.dll> no_namespace, named_guids
 
-struct Yubi {
+class Yubi {
+ public:
   Yubi(CCmdTarget *owner);
   void Init(); // Call in owner's OnInit
   void Destroy(); // Call in Owner's OnDestroy
+  bool isEnabled() const { return m_isInit; }
+  bool isInserted() const;
+  void RequestHMACSha1(void *data, int len); // send async request
+  void RetrieveHMACSha1(char *hash); // get when request completed
+private:
   IYubiClient *m_obj;
   DWORD m_eventCookie;
   ycENCODING m_encoding;
-  void putVariant(_variant_t va, UINT dataField);
-  void getVariant(_variant_t *va, UINT dataField);
-  bool isEnabled() const { return m_isInit; }
-  bool isInserted() const;
-private:
   CCmdTarget *m_owner;
   bool m_isInit;
 };

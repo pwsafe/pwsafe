@@ -61,3 +61,121 @@ bool Yubi::isInserted() const
 {
   return (m_obj != NULL && m_obj->GetisInserted() == ycRETCODE_OK);
 }
+
+void Yubi::RequestHMACSha1(void *data, int len)
+{
+  ASSERT(m_obj != NULL);
+  ASSERT(data != NULL);
+  bool setBufOK = true;
+  try {
+    _variant_t va;
+
+    va.parray = SafeArrayCreateVectorEx(VT_UI1, 0, len, 0);
+    BYTE HUGEP *pb;
+
+    SafeArrayAccessData(va.parray, (void HUGEP **) &pb);
+    memcpy(pb, data, len);
+    SafeArrayUnaccessData(va.parray);
+    va.vt = VT_ARRAY | VT_UI1;
+
+    m_obj->dataBuffer = va;
+  }
+#ifdef DEBUG
+  catch (_com_error e) {
+    setBufOK = false;
+    AfxMessageBox(e.ErrorMessage());
+  }
+
+  catch (...) {
+    setBufOK = false;
+    AfxMessageBox(_T("Other error"));
+  }
+#else
+  catch (...) {
+    setBufOK = false;
+  }
+#endif
+  // 1 - for second yubikey configuration
+  if (setBufOK) {
+    ycRETCODE rc = m_obj->GethmacSha1(1, ycCALL_ASYNC);
+  }
+}
+
+void Yubi::RetrieveHMACSha1(char *hash)
+{
+  ASSERT(m_obj != NULL);
+  ASSERT(hash != NULL);
+  try {
+    variant_t va = m_obj->dataBuffer;
+
+    switch (va.vt) {
+    case VT_NULL:
+      TRACE(_T("Yubi::RetrieveHMACSha1: av.vt = VT_NULL\n"));
+      *hash = 0;
+      break;
+
+    case VT_UI2:
+      TRACE(_T("Yubi::RetrieveHMACSha1: av.vt = VT_UI2\n"));
+      break;
+
+    case VT_UI4:
+      TRACE(_T("Yubi::RetrieveHMACSha1: av.vt = VT_UI4\n"));
+      break;
+
+    case VT_BSTR:
+      TRACE(_T("Yubi::RetrieveHMACSha1: av.vt = VT_BSTR: %s\n"),
+            (LPCTSTR)(_bstr_t)va);
+      break;
+
+    case (VT_UI1 | VT_ARRAY):
+      {
+        if (SafeArrayGetDim(va.parray) != 1) {
+          TRACE(_T("Invalid return dimension (should never get here)"));
+          ASSERT(0);
+          goto fail;
+        }   
+
+        LONG lbound = 0, hbound = -1;
+
+        SafeArrayGetLBound(va.parray, 1, &lbound);
+        SafeArrayGetUBound(va.parray, 1, &hbound);
+
+        BYTE HUGEP *pb;
+        HRESULT hr;
+
+        hr = SafeArrayAccessData(va.parray, (void HUGEP **) &pb);
+        if (FAILED(hr)) {
+          TRACE(_T("Failed (1)"));
+          ASSERT(0);
+          goto fail;
+        }
+        if (hbound - lbound != 20) {
+          TRACE(_T("Returned value not sizeof(SHA1): %d\n"), hbound-lbound);
+        } else {
+          memcpy(hash, pb, hbound - lbound);
+        }
+        SafeArrayUnaccessData(va.parray);
+      }
+      break;
+
+    default:
+      TRACE(_T("Invalid VARIANT return type %u (0x%04x)"), va.vt, va.vt);
+      break;
+    }
+  fail:
+    VariantClear(&va);
+
+  }
+#ifdef DEBUG
+  catch (_com_error e) {
+    AfxMessageBox(e.ErrorMessage());
+  }
+
+  catch (...) {
+    AfxMessageBox(_T("Other error"));
+  }
+#else
+  catch (...) {
+  }
+#endif
+}

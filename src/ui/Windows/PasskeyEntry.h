@@ -15,7 +15,9 @@
 #include "SecString.h"
 #include "core/PwsPlatform.h"
 #include "PWDialog.h"
+#include "afxcmn.h"
 
+#include "Yubi.h"
 //-----------------------------------------------------------------------------
 /**
 * This class is a bit schizophrenic - it has multiple personalities,
@@ -27,7 +29,6 @@
 
 class DboxMain;
 class CVKeyBoardDlg;
-struct Yubi;
 
 class CPasskeyEntry : public CPWDialog
 {
@@ -98,6 +99,7 @@ protected:
   afx_msg void OnComboSelChange();
   afx_msg void OnOpenFileBrowser();
   afx_msg void OnVirtualKeyboard();
+  afx_msg void OnYubikeyBtn();
   afx_msg LRESULT OnInsertBuffer(WPARAM, LPARAM);
   afx_msg void OnDestroy();
   //}}AFX_MSG
@@ -117,6 +119,10 @@ private:
   Yubi *m_yubi;
 	void yubiInserted(void);
 	void yubiRemoved(void);
+  void yubiCompleted(ycRETCODE rc);
+  void yubiWait(WORD seconds);
+  // Indicate that we're waiting for user to activate YubiKey
+  CProgressCtrl m_yubi_timeout;
 };
 //-----------------------------------------------------------------------------
 // Local variables:

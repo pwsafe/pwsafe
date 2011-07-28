@@ -115,29 +115,30 @@ CPasskeyEntry::~CPasskeyEntry()
 
 void CPasskeyEntry::DoDataExchange(CDataExchange* pDX)
 {
-  CPWDialog::DoDataExchange(pDX);
+    CPWDialog::DoDataExchange(pDX);
 
-  // Can't use DDX_Text for CSecEditExtn
-  m_pctlPasskey->DoDDX(pDX, m_passkey);
+    // Can't use DDX_Text for CSecEditExtn
+    m_pctlPasskey->DoDDX(pDX, m_passkey);
 
 #if !defined(POCKET_PC)
-  if (m_index == GCP_FIRST)
-    DDX_Control(pDX, IDC_STATIC_LOGOTEXT, m_ctlLogoText);
+    if (m_index == GCP_FIRST)
+        DDX_Control(pDX, IDC_STATIC_LOGOTEXT, m_ctlLogoText);
 #endif
 
-  //{{AFX_DATA_MAP(CPasskeyEntry)
+    //{{AFX_DATA_MAP(CPasskeyEntry)
 #if !defined(POCKET_PC)
-  DDX_Control(pDX, IDC_STATIC_LOGO, m_ctlLogo);
-  DDX_Control(pDX, IDOK, m_ctlOK);
+    DDX_Control(pDX, IDC_STATIC_LOGO, m_ctlLogo);
+    DDX_Control(pDX, IDOK, m_ctlOK);
 #endif
-  DDX_Control(pDX, IDC_PASSKEY, *m_pctlPasskey);
-  DDX_Text(pDX, IDC_MESSAGE, m_message);
-  DDX_Check(pDX, IDC_READONLY, m_PKE_ReadOnly);
+    DDX_Control(pDX, IDC_PASSKEY, *m_pctlPasskey);
+    DDX_Text(pDX, IDC_MESSAGE, m_message);
+    DDX_Check(pDX, IDC_READONLY, m_PKE_ReadOnly);
 
-  if (m_index == GCP_FIRST)
-    DDX_Control(pDX, IDC_DATABASECOMBO, m_MRU_combo);
+    if (m_index == GCP_FIRST)
+        DDX_Control(pDX, IDC_DATABASECOMBO, m_MRU_combo);
 
-  //}}AFX_DATA_MAP
+    //}}AFX_DATA_MAP
+    DDX_Control(pDX, IDC_YUBI_PROGRESS, m_yubi_timeout);
 }
 
 BEGIN_MESSAGE_MAP(CPasskeyEntry, CPWDialog)
@@ -151,6 +152,7 @@ BEGIN_MESSAGE_MAP(CPasskeyEntry, CPWDialog)
   ON_BN_CLICKED(IDC_BTN_BROWSE, OnOpenFileBrowser)
   ON_MESSAGE(PWS_MSG_INSERTBUFFER, OnInsertBuffer)
   ON_STN_CLICKED(IDC_VKB, OnVirtualKeyboard)
+  ON_BN_CLICKED(IDC_YUBIKEY_BTN, OnYubikeyBtn)
 #if defined(POCKET_PC)
   ON_EN_SETFOCUS(IDC_PASSKEY, OnPasskeySetfocus)
   ON_EN_KILLFOCUS(IDC_PASSKEY, OnPasskeyKillfocus)
@@ -164,10 +166,8 @@ BEGIN_DISPATCH_MAP(CPasskeyEntry, CPWDialog)
 	//}}AFX_DISPATCH_MAP
 	DISP_FUNCTION_ID(CPasskeyEntry, "deviceInserted", 1, yubiInserted, VT_EMPTY, VTS_NONE)
 	DISP_FUNCTION_ID(CPasskeyEntry, "deviceRemoved", 2, yubiRemoved, VT_EMPTY, VTS_NONE)
-#ifdef notyet
-	DISP_FUNCTION_ID(CPasskeyEntry, "operationCompleted", 3, operationCompleted, VT_EMPTY, VTS_I2)
-  DISP_FUNCTION_ID(CPasskeyEntry, "userWait", 4, userWait, VT_EMPTY, VTS_I2)
-#endif
+	DISP_FUNCTION_ID(CPasskeyEntry, "operationCompleted", 3, yubiCompleted, VT_EMPTY, VTS_I2)
+  DISP_FUNCTION_ID(CPasskeyEntry, "userWait", 4, yubiWait, VT_EMPTY, VTS_I2)
 END_DISPATCH_MAP()
 
 BEGIN_INTERFACE_MAP(CPasskeyEntry, CPWDialog)
@@ -209,7 +209,8 @@ BOOL CPasskeyEntry::OnInitDialog(void)
 
   bool yubiEnabled = m_yubi->isEnabled();
   GetDlgItem(IDC_YUBIKEY_BTN)->ShowWindow(yubiEnabled ? SW_SHOW : SW_HIDE);
-  GetDlgItem(IDC_YUBIKEY_STATUS)->ShowWindow(yubiEnabled ? SW_SHOW : SW_HIDE);
+  m_yubi_timeout.ShowWindow(yubiEnabled ? SW_SHOW : SW_HIDE);
+  m_yubi_timeout.SetRange(0, 15);
   bool yubiInserted = m_yubi->isInserted();
   GetDlgItem(IDC_YUBIKEY_BTN)->EnableWindow(yubiInserted ? TRUE : FALSE);
 
@@ -719,4 +720,52 @@ void CPasskeyEntry::yubiInserted(void)
 void CPasskeyEntry::yubiRemoved(void)
 {
   GetDlgItem(IDC_YUBIKEY_BTN)->EnableWindow(FALSE);
+}
+
+void CPasskeyEntry::yubiCompleted(ycRETCODE rc)
+{
+  char hash[20];
+  switch (rc) {
+  case ycRETCODE_OK:
+    m_yubi_timeout.SetPos(0);
+    TRACE(_T("yubiCompleted(ycRETCODE_OK)"));
+    // Get hmac, process it, synthesize OK event
+    m_yubi->RetrieveHMACSha1(hash);
+    break;
+  case ycRETCODE_NO_DEVICE:
+    // device removed while waiting?
+    TRACE(_T("yubiCompleted(ycRETCODE_NO_DEVICE)\n"));
+    break;
+  case ycRETCODE_TIMEOUT:
+    // waited, no user input
+    TRACE(_T("yubiCompleted(ycRETCODE_TIMEOUT)\n"));
+    break;
+  case ycRETCODE_MORE_THAN_ONE:
+    TRACE(_T("yubiCompleted(ycRETCODE_MORE_THAN_ONE)\n"));
+    break;
+  case ycRETCODE_REENTRANT_CALL:
+    TRACE(_T("yubiCompleted(ycRETCODE_REENTRANT_CALL)\n"));
+    break;
+  case ycRETCODE_FAILED:
+    TRACE(_T("yubiCompleted(ycRETCODE_FAILED)\n"));
+    break;
+  default:
+    // Generic error message
+    TRACE(_T("yubiCompleted(%d)\n"), rc);
+    break;
+  }
+}
+
+void CPasskeyEntry::yubiWait(WORD seconds)
+{
+  // Update progress bar
+  m_yubi_timeout.SetPos(seconds);
+  TRACE(_T("CPasskeyEntry::yubiWait(%d)\n"), seconds);
+}
+
+void CPasskeyEntry::OnYubikeyBtn()
+{
+  m_yubi_timeout.SetPos(0);
+  m_yubi_timeout.SetWindowText(_T("Please activate your YubiKey"));
+  m_yubi->RequestHMACSha1("2345", 5);
 }
