@@ -21,6 +21,7 @@ Changes to Existing Features in 3.26.1
 
 Bugs fixed in 3.26.1
 ====================
+[3380714] User can now save database after manually taking a bakup.
 [3380424] System Menu 'X' now closes the Edit/View PropertyPages when the database
 is in R-O mode or the entry is protected.
 [] Filter image in Status bar is no longer replaced by 'Filter1' after changing

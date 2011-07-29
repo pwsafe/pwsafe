@@ -114,7 +114,7 @@ int DboxMain::BackupSafe()
       return PWScore::USER_CANCEL;
   }
 
-  rc = m_core.WriteFile(tempname);
+  rc = m_core.WriteFile(tempname, false);
   if (rc == PWScore::CANT_OPEN_FILE) {
     CGeneralMsgBox gmb;
     cs_temp.Format(IDS_CANTOPENWRITING, tempname);
