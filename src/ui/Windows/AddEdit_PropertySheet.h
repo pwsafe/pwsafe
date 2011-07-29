@@ -69,6 +69,10 @@ public:
 protected:
   st_AE_master_data m_AEMD;
 
+  afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
+
+  DECLARE_MESSAGE_MAP()
+
 private:
   void SetupInitialValues();
 

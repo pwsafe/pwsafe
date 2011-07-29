@@ -261,6 +261,9 @@ BOOL CAddEdit_Basic::OnInitDialog()
   if (M_uicaller() == IDS_VIEWENTRY ||
       (M_uicaller() == IDS_EDITENTRY && M_protected() != 0)) {
     // Change 'OK' to 'Close' and disable 'Cancel'
+    // "CancelToClose"  disables the System Command SC_CLOSE
+    // from clicking X on PropertySheet so have implemented
+    // CAddEdit_PropertySheet::OnSysCommand to deal with it
     CancelToClose();
 
     // Disable Group Combo

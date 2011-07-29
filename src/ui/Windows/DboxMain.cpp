@@ -1996,7 +1996,7 @@ void DboxMain::OnSysCommand(UINT nID, LPARAM lParam)
     return;
   }
 
-  UINT const nSysID = nID & 0xFFFF;
+  UINT const nSysID = nID & 0xFFF0;
   switch (nSysID) {
     case SC_MINIMIZE:
       break;
