@@ -14,14 +14,16 @@
 #pragma once
 
 #include "PWDialog.h"
+#include "ControlExtns.h"
 #include "Yubi.h"
 
 class CPKBaseDlg : public CPWDialog {
  public:
- CPKBaseDlg(int id, CWnd *pParent) : CPWDialog(id, pParent) {}
+  CPKBaseDlg(int id, CWnd *pParent);
   virtual ~CPKBaseDlg();
  protected:
   CSecString m_passkey;
+  CSecEditExtn *m_pctlPasskey;
   virtual void ProcessPhrase() = 0; // Check the passphrase, call OnOK, OnCancel or just return
   // Yubico-related:
   Yubi *m_yubi;

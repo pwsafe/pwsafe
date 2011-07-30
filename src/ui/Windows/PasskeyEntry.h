@@ -11,10 +11,8 @@
 //-----------------------------------------------------------------------------
 
 #include "SysColStatic.h"
-#include "ControlExtns.h"
 #include "SecString.h"
 #include "core/PwsPlatform.h"
-#include "PWDialog.h"
 #include "afxcmn.h"
 
 #include "PKBaseDlg.h"
@@ -58,7 +56,6 @@ protected:
   CSysColStatic m_ctlLogoText;
   CButton m_ctlOK;
 #endif
-  CSecEditExtn *m_pctlPasskey;
   BOOL m_PKE_ReadOnly;
   bool m_bForceReadOnly;
   bool m_bHideReadOnly;

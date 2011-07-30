@@ -24,7 +24,6 @@ down the streetsky.  [Groucho Marx]
 #include "core/core.h"
 
 #include "os/file.h"
-#include "os/env.h"
 #include "os/dir.h"
 
 #include "VirtualKeyboard/VKeyBoardDlg.h"
@@ -79,23 +78,16 @@ CPasskeyEntry::CPasskeyEntry(CWnd* pParent, const CString& a_filespec, int index
     DBGMSG("** FIRST **\n");
   }
 
-  m_passkey = L"";
   m_hIcon = app.LoadIcon(IDI_CORNERICON);
   m_message = a_filespec;
 
   m_pDbx = dynamic_cast<DboxMain *>(pParent);
   ASSERT(m_pDbx != NULL);
-
-  m_pctlPasskey = new CSecEditExtn;
-  if (pws_os::getenv("PWS_PW_MODE", false) == L"NORMAL")
-    m_pctlPasskey->SetSecure(false);
-  m_yubi = new Yubi(this);
 }
 
 CPasskeyEntry::~CPasskeyEntry()
 {
   ::DestroyIcon(m_hIcon);
-  delete m_pctlPasskey;
 
   if (m_pVKeyBoardDlg != NULL) {
     // Save Last Used Keyboard

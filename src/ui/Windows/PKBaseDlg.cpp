@@ -9,10 +9,20 @@
 #include "stdafx.h"
 #include "PKBaseDlg.h"
 #include "resource.h"
+#include "os/env.h"
+
+CPKBaseDlg::CPKBaseDlg(int id, CWnd *pParent)
+  : CPWDialog(id, pParent), m_passkey(L""), m_yubi(new Yubi(this))
+{
+  m_pctlPasskey = new CSecEditExtn;
+  if (pws_os::getenv("PWS_PW_MODE", false) == L"NORMAL")
+    m_pctlPasskey->SetSecure(false);
+}
 
 CPKBaseDlg::~CPKBaseDlg()
 {
   delete m_yubi;
+  delete m_pctlPasskey;
 }
 
 void CPKBaseDlg::yubiInserted(void)
