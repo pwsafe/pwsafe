@@ -62,19 +62,18 @@ bool Yubi::isInserted() const
   return (m_obj != NULL && m_obj->GetisInserted() == ycRETCODE_OK);
 }
 
-void Yubi::RequestHMACSha1(void *data, int len)
+bool Yubi::RequestHMACSha1(const CSecString &value)
 {
   ASSERT(m_obj != NULL);
-  ASSERT(data != NULL);
   bool setBufOK = true;
   try {
     _variant_t va;
-
+    int len = value.GetLength()*sizeof(TCHAR);
     va.parray = SafeArrayCreateVectorEx(VT_UI1, 0, len, 0);
     BYTE HUGEP *pb;
 
     SafeArrayAccessData(va.parray, (void HUGEP **) &pb);
-    memcpy(pb, data, len);
+    memcpy(pb, LPCWSTR(value), len);
     SafeArrayUnaccessData(va.parray);
     va.vt = VT_ARRAY | VT_UI1;
 
@@ -98,20 +97,22 @@ void Yubi::RequestHMACSha1(void *data, int len)
   // 1 - for second yubikey configuration
   if (setBufOK) {
     ycRETCODE rc = m_obj->GethmacSha1(1, ycCALL_ASYNC);
+    return (rc == ycRETCODE_OK);
+  } else {
+    return false;
   }
 }
 
-void Yubi::RetrieveHMACSha1(char *hash)
+void Yubi::RetrieveHMACSha1(CSecString &value)
 {
   ASSERT(m_obj != NULL);
-  ASSERT(hash != NULL);
+  value = _T("");
   try {
     variant_t va = m_obj->dataBuffer;
 
     switch (va.vt) {
     case VT_NULL:
       TRACE(_T("Yubi::RetrieveHMACSha1: av.vt = VT_NULL\n"));
-      *hash = 0;
       break;
 
     case VT_UI2:
@@ -125,9 +126,12 @@ void Yubi::RetrieveHMACSha1(char *hash)
     case VT_BSTR:
       TRACE(_T("Yubi::RetrieveHMACSha1: av.vt = VT_BSTR: %s\n"),
             (LPCTSTR)(_bstr_t)va);
+      value = (LPCTSTR)(_bstr_t)va;
       break;
 
     case (VT_UI1 | VT_ARRAY):
+      TRACE(_T("Yubi::RetrieveHMACSha1: av.vt = VT_UI1 | VT_ARRAY\n"));
+#if 0      
       {
         if (SafeArrayGetDim(va.parray) != 1) {
           TRACE(_T("Invalid return dimension (should never get here)"));
@@ -156,13 +160,16 @@ void Yubi::RetrieveHMACSha1(char *hash)
         }
         SafeArrayUnaccessData(va.parray);
       }
+#endif
       break;
 
     default:
       TRACE(_T("Invalid VARIANT return type %u (0x%04x)"), va.vt, va.vt);
       break;
     }
+#if 0
   fail:
+#endif
     VariantClear(&va);
 
   }

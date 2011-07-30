@@ -724,13 +724,14 @@ void CPasskeyEntry::yubiRemoved(void)
 
 void CPasskeyEntry::yubiCompleted(ycRETCODE rc)
 {
-  char hash[20];
   switch (rc) {
   case ycRETCODE_OK:
     m_yubi_timeout.SetPos(0);
     TRACE(_T("yubiCompleted(ycRETCODE_OK)"));
     // Get hmac, process it, synthesize OK event
-    m_yubi->RetrieveHMACSha1(hash);
+    m_yubi->RetrieveHMACSha1(m_passkey);
+    // The returned hash is the passkey
+    ProcessPhrase();
     break;
   case ycRETCODE_NO_DEVICE:
     // device removed while waiting?
@@ -765,7 +766,15 @@ void CPasskeyEntry::yubiWait(WORD seconds)
 
 void CPasskeyEntry::OnYubikeyBtn()
 {
+  UpdateData(TRUE);
+  if (!pws_os::FileExists(m_filespec.GetString())) {
+    CGeneralMsgBox gmb;
+    gmb.AfxMessageBox(IDS_FILEPATHNOTFOUND);
+    if (m_MRU_combo.IsWindowVisible())
+      m_MRU_combo.SetFocus();
+    return;
+  }
   m_yubi_timeout.SetPos(0);
   m_yubi_timeout.SetWindowText(_T("Please activate your YubiKey"));
-  m_yubi->RequestHMACSha1("2345", 5);
+  m_yubi->RequestHMACSha1(m_passkey);
 }

@@ -13,6 +13,8 @@
 
 #import <YubiClientAPI.dll> no_namespace, named_guids
 
+#include "SecString.h"
+
 class Yubi {
  public:
   Yubi(CCmdTarget *owner);
@@ -20,8 +22,8 @@ class Yubi {
   void Destroy(); // Call in Owner's OnDestroy
   bool isEnabled() const { return m_isInit; }
   bool isInserted() const;
-  void RequestHMACSha1(void *data, int len); // send async request
-  void RetrieveHMACSha1(char *hash); // get when request completed
+  bool RequestHMACSha1(const CSecString &value); // send async request
+  void RetrieveHMACSha1(CSecString &value); // get when request completed
 private:
   IYubiClient *m_obj;
   DWORD m_eventCookie;
