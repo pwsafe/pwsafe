@@ -44,27 +44,29 @@ LIBOBJ    = $(addprefix $(OBJPATH)/,$(subst .cpp,.o,$(LIBSRC)))
 LIB       = $(LIBPATH)/libcore.a
 OBJ       = $(LIBOBJ)
 
-CXXFLAGS +=  -Wall -I.. -DLINUX
+CPPFLAGS = $(CXXFLAGS) -Wall -I.. -DLINUX
 
 ifeq ($(CONFIG),debug)
-CXXFLAGS += -O0 -ggdb -D_DEBUG -DDEBUG
+CPPFLAGS += -O0 -g -ggdb -D_DEBUG -DDEBUG
+
 else ifeq ($(CONFIG),release)
-CXXFLAGS += -O -DNDEBUG
+CPPFLAGS += -O -DNDEBUG
 else ifeq ($(CONFIG),unicodedebug)
-CXXFLAGS += -O0 -ggdb -DUNICODE -DUSE_XML_LIBRARY=XERCES -DWCHAR_INCOMPATIBLE_XMLCH \
+CPPFLAGS += -O0 -g -ggdb -DUNICODE -DUSE_XML_LIBRARY=XERCES -DWCHAR_INCOMPATIBLE_XMLCH \
 			-D_DEBUG -DDEBUG
+CFLAGS += -g
 else ifeq ($(CONFIG),unicoderelease)
-CXXFLAGS += -O -DUNICODE -DUSE_XML_LIBRARY=XERCES -DWCHAR_INCOMPATIBLE_XMLCH -DNDEBUG
+CPPFLAGS += -O -DUNICODE -DUSE_XML_LIBRARY=XERCES -DWCHAR_INCOMPATIBLE_XMLCH -DNDEBUG
 endif
 
 # rules
 .PHONY: all debug release unicodedebug unicoderelease clean setup
 
 $(OBJPATH)/%.o : %.c
-	$(CC) -g  $(CFLAGS)   -c $< -o $@
+	$(CC) $(CFLAGS)   -c $< -o $@
 
 $(OBJPATH)/%.o : %.cpp
-	$(CXX) -g $(CXXFLAGS) -c $< -o $@
+	$(CXX) $(CPPFLAGS) -c $< -o $@
 
 all : setup $(LIB)
 
@@ -89,7 +91,7 @@ $(DEPDIR)/%.d: %.cpp
 	@set -e; mkdir -p $(DEPDIR) $(DEPDIR)/tinyxml; \
 	mkdir -p $(DEPDIR)/XML/Xerces; \
 	$(RM) $@; \
-	$(CXX) -MM $(CXXFLAGS) $< > $@.$$$$; \
+	$(CXX) -MM $(CPPFLAGS) $< > $@.$$$$; \
 	sed 's,\($*\)\.o[ :]*,$(OBJECTPATH)/\1.o $@ : ,g' < $@.$$$$ > $@; \
 	$(RM) $@.$$$$
 
