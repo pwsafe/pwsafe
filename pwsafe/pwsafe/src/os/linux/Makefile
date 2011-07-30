@@ -28,25 +28,27 @@ LIBOBJ    = $(addprefix $(OBJPATH)/,$(subst .cpp,.o,$(LIBSRC)))
 LIB       = $(LIBPATH)/libos.a
 OBJ       = $(LIBOBJ)
 
-CXXFLAGS =  -Wall -I../../core -I../..
+CPPFLAGS = $(CXXFLAGS) -Wall -I../../core -I../..
 ifeq ($(CONFIG),debug)
-CXXFLAGS += -O0 -ggdb -DDEBUG
+CPPFLAGS += -O0 -g -ggdb -DDEBUG
+CFLAGS += -g
 else ifeq ($(CONFIG),release)
-CXXFLAGS += -O -DNDEBUG
+CPPFLAGS += -O -DNDEBUG
 else ifeq ($(CONFIG),unicodedebug)
-CXXFLAGS += -O0 -ggdb -DUNICODE -DDEBUG
+CPPFLAGS += -O0 -g -ggdb -DUNICODE -DDEBUG
+CFLAGS += -g
 else ifeq ($(CONFIG),unicoderelease)
-CXXFLAGS += -O -DUNICODE -DNDEBUG
+CPPFLAGS += -O -DUNICODE -DNDEBUG
 endif
 
 # rules
 .PHONY: all debug release unicodedebug unicoderelease clean setup
 
 $(OBJPATH)/%.o : %.c
-	$(CC) -g  $(CFLAGS)   -c $< -o $@
+	$(CC)  $(CFLAGS)   -c $< -o $@
 
 $(OBJPATH)/%.o : %.cpp
-	$(CXX) -g $(CXXFLAGS) -c $< -o $@
+	$(CXX) $(CPPFLAGS) -c $< -o $@
 
 all : setup $(LIB)
 
@@ -65,7 +67,7 @@ setup:
 
 $(DEPDIR)/%.d: %.cpp
 	@set -e; mkdir -p $(DEPDIR); $(RM) $@; \
-	$(CXX) -MM $(CXXFLAGS) $< > $@.$$$$; \
+	$(CXX) -MM $(CPPFLAGS) $< > $@.$$$$; \
 	sed 's,\($*\)\.o[ :]*,$(OBJECTPATH)/\1.o $@ : ,g' < $@.$$$$ > $@; \
 	$(RM) $@.$$$$
 
