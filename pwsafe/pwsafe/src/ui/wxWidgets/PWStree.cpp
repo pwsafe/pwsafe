@@ -318,7 +318,7 @@ void PWSTreeCtrl::AddItem(const CItemData &item)
   const wxString disp = ItemDisplayString(item);
   wxTreeItemId titem = AppendItem(gnode, disp, -1, -1, data);
   SetItemImage(titem, item);
-  SortChildren(gnode);
+  SortChildrenRecursively(gnode);
   uuid_array_t uuid;
   item.GetUUID(uuid);
   m_item_map.insert(std::make_pair(CUUID(uuid), titem));
@@ -358,6 +358,18 @@ int PWSTreeCtrl::OnCompareItems(const wxTreeItemId& item1, const wxTreeItemId& i
   const wxString text1 = GetItemText(item1);
   const wxString text2 = GetItemText(item2);
   return text1.CmpNoCase(text2);
+}
+
+void PWSTreeCtrl::SortChildrenRecursively(const wxTreeItemId& item)
+{
+  SortChildren(item);
+  
+  wxTreeItemIdValue cookie;
+  for( wxTreeItemId childId = GetFirstChild(item, cookie); childId.IsOk(); childId = GetNextChild(item, cookie)) {
+    if (ItemHasChildren(childId)) {
+      SortChildrenRecursively(childId);
+    }
+  }
 }
 
 wxTreeItemId PWSTreeCtrl::Find(const CUUID &uuid) const

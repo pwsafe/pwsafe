@@ -658,7 +658,7 @@ void PasswordSafeFrame::ShowTree(bool show)
       m_tree->AddItem(iter->second);
     }
     if (!m_tree->IsEmpty()) // avoid assertion!
-      m_tree->SortChildren(m_tree->GetRootItem());
+      m_tree->SortChildrenRecursively(m_tree->GetRootItem());
   }
 
   m_tree->Show(show);
