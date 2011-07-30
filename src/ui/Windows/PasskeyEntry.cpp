@@ -17,7 +17,6 @@ down the streetsky.  [Groucho Marx]
 #include "PWFileDialog.h"
 #include "ThisMfcApp.h"
 #include "GeneralMsgBox.h"
-#include "Yubi.h"
 
 #include "core/PwsPlatform.h"
 #include "core/Pwsdirs.h"
@@ -65,7 +64,7 @@ int CPasskeyEntry::dialog_lookup[5] = {
 //-----------------------------------------------------------------------------
 CPasskeyEntry::CPasskeyEntry(CWnd* pParent, const CString& a_filespec, int index,
                              bool bReadOnly, bool bForceReadOnly, bool bHideReadOnly)
-  : CPWDialog(dialog_lookup[index], pParent),
+  : CPKBaseDlg(dialog_lookup[index], pParent),
   m_index(index),
   m_filespec(a_filespec), m_orig_filespec(a_filespec),
   m_tries(0),
@@ -97,7 +96,6 @@ CPasskeyEntry::~CPasskeyEntry()
 {
   ::DestroyIcon(m_hIcon);
   delete m_pctlPasskey;
-  delete m_yubi;
 
   if (m_pVKeyBoardDlg != NULL) {
     // Save Last Used Keyboard
@@ -139,9 +137,10 @@ void CPasskeyEntry::DoDataExchange(CDataExchange* pDX)
 
     //}}AFX_DATA_MAP
     DDX_Control(pDX, IDC_YUBI_PROGRESS, m_yubi_timeout);
+    DDX_Control(pDX, IDC_YUBI_STATUS, m_yubi_status);
 }
 
-BEGIN_MESSAGE_MAP(CPasskeyEntry, CPWDialog)
+BEGIN_MESSAGE_MAP(CPasskeyEntry, CPKBaseDlg)
   //{{AFX_MSG_MAP(CPasskeyEntry)
   ON_WM_DESTROY()
   ON_BN_CLICKED(ID_HELP, OnHelp)
@@ -160,7 +159,7 @@ BEGIN_MESSAGE_MAP(CPasskeyEntry, CPWDialog)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-BEGIN_DISPATCH_MAP(CPasskeyEntry, CPWDialog)
+BEGIN_DISPATCH_MAP(CPasskeyEntry, CPKBaseDlg)
 	//{{AFX_DISPATCH_MAP(CPasskeyEntry)
 		// NOTE - the ClassWizard will add and remove mapping macros here.
 	//}}AFX_DISPATCH_MAP
@@ -170,7 +169,7 @@ BEGIN_DISPATCH_MAP(CPasskeyEntry, CPWDialog)
   DISP_FUNCTION_ID(CPasskeyEntry, "userWait", 4, yubiWait, VT_EMPTY, VTS_I2)
 END_DISPATCH_MAP()
 
-BEGIN_INTERFACE_MAP(CPasskeyEntry, CPWDialog)
+BEGIN_INTERFACE_MAP(CPasskeyEntry, CPKBaseDlg)
 	INTERFACE_PART(CPasskeyEntry, DIID__IYubiClientEvents, Dispatch)
 END_INTERFACE_MAP()
 
@@ -209,10 +208,16 @@ BOOL CPasskeyEntry::OnInitDialog(void)
 
   bool yubiEnabled = m_yubi->isEnabled();
   GetDlgItem(IDC_YUBIKEY_BTN)->ShowWindow(yubiEnabled ? SW_SHOW : SW_HIDE);
-  m_yubi_timeout.ShowWindow(yubiEnabled ? SW_SHOW : SW_HIDE);
+  m_yubi_status.ShowWindow(yubiEnabled ? SW_SHOW : SW_HIDE);
+  m_yubi_timeout.ShowWindow(SW_HIDE);
   m_yubi_timeout.SetRange(0, 15);
   bool yubiInserted = m_yubi->isInserted();
   GetDlgItem(IDC_YUBIKEY_BTN)->EnableWindow(yubiInserted ? TRUE : FALSE);
+  if (yubiInserted)
+    m_yubi_status.SetWindowText(_T("Click, then activate your YubiKey"));
+  else
+    m_yubi_status.SetWindowText(_T("Please insert your YubiKey"));
+
 
   switch(m_index) {
     case GCP_FIRST:
@@ -712,57 +717,6 @@ void CPasskeyEntry::OnDestroy()
   CPWDialog::OnDestroy();
 }
 
-void CPasskeyEntry::yubiInserted(void)
-{
-  GetDlgItem(IDC_YUBIKEY_BTN)->EnableWindow(TRUE);
-}
-
-void CPasskeyEntry::yubiRemoved(void)
-{
-  GetDlgItem(IDC_YUBIKEY_BTN)->EnableWindow(FALSE);
-}
-
-void CPasskeyEntry::yubiCompleted(ycRETCODE rc)
-{
-  switch (rc) {
-  case ycRETCODE_OK:
-    m_yubi_timeout.SetPos(0);
-    TRACE(_T("yubiCompleted(ycRETCODE_OK)"));
-    // Get hmac, process it, synthesize OK event
-    m_yubi->RetrieveHMACSha1(m_passkey);
-    // The returned hash is the passkey
-    ProcessPhrase();
-    break;
-  case ycRETCODE_NO_DEVICE:
-    // device removed while waiting?
-    TRACE(_T("yubiCompleted(ycRETCODE_NO_DEVICE)\n"));
-    break;
-  case ycRETCODE_TIMEOUT:
-    // waited, no user input
-    TRACE(_T("yubiCompleted(ycRETCODE_TIMEOUT)\n"));
-    break;
-  case ycRETCODE_MORE_THAN_ONE:
-    TRACE(_T("yubiCompleted(ycRETCODE_MORE_THAN_ONE)\n"));
-    break;
-  case ycRETCODE_REENTRANT_CALL:
-    TRACE(_T("yubiCompleted(ycRETCODE_REENTRANT_CALL)\n"));
-    break;
-  case ycRETCODE_FAILED:
-    TRACE(_T("yubiCompleted(ycRETCODE_FAILED)\n"));
-    break;
-  default:
-    // Generic error message
-    TRACE(_T("yubiCompleted(%d)\n"), rc);
-    break;
-  }
-}
-
-void CPasskeyEntry::yubiWait(WORD seconds)
-{
-  // Update progress bar
-  m_yubi_timeout.SetPos(seconds);
-  TRACE(_T("CPasskeyEntry::yubiWait(%d)\n"), seconds);
-}
 
 void CPasskeyEntry::OnYubikeyBtn()
 {
@@ -774,7 +728,9 @@ void CPasskeyEntry::OnYubikeyBtn()
       m_MRU_combo.SetFocus();
     return;
   }
-  m_yubi_timeout.SetPos(0);
-  m_yubi_timeout.SetWindowText(_T("Please activate your YubiKey"));
+  m_yubi_status.ShowWindow(SW_HIDE);
+  m_yubi_status.SetWindowText(_T(""));
+  m_yubi_timeout.ShowWindow(SW_SHOW);
+  m_yubi_timeout.SetPos(15);
   m_yubi->RequestHMACSha1(m_passkey);
 }

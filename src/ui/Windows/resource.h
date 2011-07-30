@@ -752,6 +752,8 @@
 #define IDC_YUBIKEY_STATUS              1456
 #define IDC_PROGRESS1                   1457
 #define IDC_YUBI_PROGRESS               1457
+#define IDC_EDIT1                       1458
+#define IDC_YUBI_STATUS                 1458
 
 // Next default values for new objects
 // 
@@ -759,7 +761,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        511
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1458
+#define _APS_NEXT_CONTROL_VALUE         1459
 #define _APS_NEXT_SYMED_VALUE           166
 #endif
 #endif

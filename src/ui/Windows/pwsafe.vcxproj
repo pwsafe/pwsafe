@@ -1145,6 +1145,7 @@
     <ClCompile Include="PasskeyEntry.cpp" />
     <ClCompile Include="PasskeySetup.cpp" />
     <ClCompile Include="PasswordSubsetDlg.cpp" />
+    <ClCompile Include="PKBaseDlg.cpp" />
     <ClCompile Include="Properties.cpp" />
     <ClCompile Include="PupText.cpp" />
     <ClCompile Include="PWDialog.cpp" />
@@ -1261,6 +1262,7 @@
     <ClInclude Include="PasskeySetup.h" />
     <ClInclude Include="PasswordSafe.h" />
     <ClInclude Include="PasswordSubsetDlg.h" />
+    <ClInclude Include="PKBaseDlg.h" />
     <ClInclude Include="Properties.h" />
     <ClInclude Include="PupText.h" />
     <ClInclude Include="PWDialog.h" />
@@ -1317,6 +1319,7 @@
     <ClInclude Include="WZPropertyPage.h" />
     <ClInclude Include="WZPropertySheet.h" />
     <ClInclude Include="WZSelectDB.h" />
+    <ClInclude Include="Yubi.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="graphics\abase.bmp" />

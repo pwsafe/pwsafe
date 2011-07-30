@@ -17,7 +17,7 @@
 #include "PWDialog.h"
 #include "afxcmn.h"
 
-#include "Yubi.h"
+#include "PKBaseDlg.h"
 //-----------------------------------------------------------------------------
 /**
 * This class is a bit schizophrenic - it has multiple personalities,
@@ -30,7 +30,7 @@
 class DboxMain;
 class CVKeyBoardDlg;
 
-class CPasskeyEntry : public CPWDialog
+class CPasskeyEntry : public CPKBaseDlg
 {
   // Construction
 public:
@@ -59,7 +59,6 @@ protected:
   CButton m_ctlOK;
 #endif
   CSecEditExtn *m_pctlPasskey;
-  CSecString m_passkey;
   BOOL m_PKE_ReadOnly;
   bool m_bForceReadOnly;
   bool m_bHideReadOnly;
@@ -115,14 +114,6 @@ private:
   void UpdateRO();
   void ProcessPhrase();
   CVKeyBoardDlg *m_pVKeyBoardDlg;
-  // Yubico-related:
-  Yubi *m_yubi;
-	void yubiInserted(void);
-	void yubiRemoved(void);
-  void yubiCompleted(ycRETCODE rc);
-  void yubiWait(WORD seconds);
-  // Indicate that we're waiting for user to activate YubiKey
-  CProgressCtrl m_yubi_timeout;
 };
 //-----------------------------------------------------------------------------
 // Local variables:
