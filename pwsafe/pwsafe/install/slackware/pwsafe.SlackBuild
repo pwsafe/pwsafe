@@ -2,7 +2,7 @@
 
 # Password Safe build script 
 #--
-# Last edited: 11.07.2010
+# Last edited: 13.07.2011
 #--
 
 if [ $UID = 0 ]; then
@@ -15,9 +15,9 @@ if [ $UID = 0 ]; then
 fi
 
 PRGNAM=pwsafe
-VERSION=${VERSION:-0.1}
-ARCH=${ARCH:-i686}
-BUILD_ID=${BUILD_ID:-1}
+VERSION=${VERSION:-0.6}
+ARCH=${ARCH:-x86_64} # i[345]6 or x86_64
+BUILD_ID=${BUILD_ID:-3}
 BUILDER_ID=${BUILDER_ID:-kan}
 OUTPUT=${OUTPUT:-$(pwd)/packages}
 LOGS=${LOGS:-$(pwd)/logs}
@@ -26,20 +26,24 @@ MAKEDIR=$(pwd)/../..
 BINDIR=$(pwd)/../../src/ui/wxWidgets/GCCUnicodeRelease
 DOCSRCDIR=$(pwd)/../../docs
 XMLSRCDIR=$(pwd)/../../xml
+HELPSRCDIR=$(pwd)/../../help
 ##
 PKGNAME=${PRGNAM}-${VERSION/-/.}-$ARCH-$BUILD_ID$BUILDER_ID
 ##
 PREFIX="/usr"
-DOCDIR=$PREFIX/doc/$PRGNAM-$VERSION
+DOCDIR=$PREFIX/share/doc/$PRGNAM-$VERSION
+HELPDIR=$PREFIX/share/doc/$PRGNAM-$VERSION/help
 XMLDIR=$PREFIX/share/$PRGNAM/xml
 MANDIR=$PREFIX/man
+PIXMAPDIR=$PREFIX/share/pixmaps
+APPDIR=$PREFIX/share/applications
 ##
 OPTIMIZE="-O2"
 DATE=$(LC_ALL=C /bin/date +%d-%b-%Y)
 PKG=$(pwd)/package-${PRGNAM}
 MYDIR=$(pwd)
 
-MAKE_OPTIONS="-j3 unicoderelease"
+MAKE_OPTIONS="-j3 release"
 
 #exit after errors
 set -e
@@ -75,18 +79,25 @@ export LDFLAGS="$SLKLDFLAGS"
 export CXXFLAGS="$SLKCFLAGS"
 export CFLAGS="$SLKCFLAGS"
 
+#make binaries
 cd $MAKEDIR
 make clean
 make $MAKE_OPTIONS 2>&1 | tee $LOGS/make-${PRGNAM}.log || exit 1
+#make help
+cd $HELPSRCDIR
+make
 
 #collect files before packaging
 #copy binaries
 mkdir -p $PKG/$PREFIX/bin
 cp $BINDIR/pwsafe $PKG/$PREFIX/bin
 #copy docs
-mkdir -p $PKG/$DOCDIR
+mkdir -p $PKG/$DOCDIR/help
 cp $DOCSRCDIR/* $PKG/$DOCDIR
-cp $DOCSRCDIR/../README* $PKG/$DOCDIR
+cp $MAKEDIR/README* $MAKEDIR/LICENSE $PKG/$DOCDIR
+cp $MYDIR/../deb/copyright $PKG/$DOCDIR
+mkdir -p $PKG/$HELPDIR
+cp $HELPSRCDIR/help*.zip $PKG/$HELPDIR
 #move man pages to mandir
 mkdir -p $PKG/$MANDIR/man1
 mv $PKG/$DOCDIR/*.1 $PKG/$MANDIR/man1
@@ -96,6 +107,10 @@ cp $XMLSRCDIR/* $PKG/$XMLDIR
 #copy buildscript
 mkdir -p $PKG/usr/src/slackbuild
 cp -a $MYDIR/$PRGNAM.SlackBuild $PKG/usr/src/slackbuild/
+mkdir -p $PKG/$PIXMAPDIR
+cp $MYDIR/../graphics/pwsafe.png $PKG/$PIXMAPDIR
+mkdir -p $PKG/$APPDIR
+cp $MYDIR/../desktop/pwsafe.desktop $PKG/$APPDIR
 #prepare package
 cd $PKG
 # remove debugging symbols
@@ -103,9 +118,7 @@ find . -print0 | xargs -0 file | grep "executable" | grep ELF | cut -f 1 -d : | 
 find . -print0 | xargs -0 file | grep "shared object" | grep ELF | cut -f 1 -d : | xargs -0 strip --strip-unneeded 2> /dev/null || true
 
 # fix permissions
-chmod 644 $PKG/$DOCDIR/*
-chmod 644 $PKG/$MANDIR/man1/*
-chmod 644 $PKG/$XMLDIR/*
+find $PKG -type f -print0 | xargs -0 --no-run-if-empty chmod 644 
 chmod 755 $PKG/$PREFIX/bin/*
 
 # compress doc files > 4 kB
