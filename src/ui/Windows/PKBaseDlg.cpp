@@ -8,8 +8,15 @@
 
 #include "stdafx.h"
 #include "PKBaseDlg.h"
+#include "PwFont.h"
 #include "resource.h"
 #include "os/env.h"
+
+static wchar_t PSSWDCHAR = L'*';
+
+BEGIN_INTERFACE_MAP(CPKBaseDlg, CPWDialog)
+	INTERFACE_PART(CPKBaseDlg, DIID__IYubiClientEvents, Dispatch)
+END_INTERFACE_MAP()
 
 CPKBaseDlg::CPKBaseDlg(int id, CWnd *pParent)
   : CPWDialog(id, pParent), m_passkey(L""), m_yubi(new Yubi(this))
@@ -24,6 +31,46 @@ CPKBaseDlg::~CPKBaseDlg()
   delete m_yubi;
   delete m_pctlPasskey;
 }
+
+void CPKBaseDlg::OnDestroy()
+{
+  m_yubi->Destroy();
+  CPWDialog::OnDestroy();
+}
+
+void CPKBaseDlg::DoDataExchange(CDataExchange* pDX)
+{
+  CPWDialog::DoDataExchange(pDX);
+
+  // Can't use DDX_Text for CSecEditExtn
+  m_pctlPasskey->DoDDX(pDX, m_passkey);
+  DDX_Control(pDX, IDC_PASSKEY, *m_pctlPasskey);
+  DDX_Control(pDX, IDC_YUBI_PROGRESS, m_yubi_timeout);
+  DDX_Control(pDX, IDC_YUBI_STATUS, m_yubi_status);
+}
+
+BOOL CPKBaseDlg::OnInitDialog(void)
+{
+  CPWDialog::OnInitDialog();
+  ApplyPasswordFont(GetDlgItem(IDC_PASSKEY));
+
+  m_pctlPasskey->SetPasswordChar(PSSWDCHAR);
+  m_yubi->Init();
+
+  bool yubiEnabled = m_yubi->isEnabled();
+  GetDlgItem(IDC_YUBIKEY_BTN)->ShowWindow(yubiEnabled ? SW_SHOW : SW_HIDE);
+  m_yubi_status.ShowWindow(yubiEnabled ? SW_SHOW : SW_HIDE);
+  m_yubi_timeout.ShowWindow(SW_HIDE);
+  m_yubi_timeout.SetRange(0, 15);
+  bool yubiInserted = m_yubi->isInserted();
+  GetDlgItem(IDC_YUBIKEY_BTN)->EnableWindow(yubiInserted ? TRUE : FALSE);
+  if (yubiInserted)
+    m_yubi_status.SetWindowText(_T("Click, then activate your YubiKey"));
+  else
+    m_yubi_status.SetWindowText(_T("Please insert your YubiKey"));
+  return TRUE;
+}
+
 
 void CPKBaseDlg::yubiInserted(void)
 {
@@ -88,4 +135,13 @@ void CPKBaseDlg::yubiWait(WORD seconds)
   // Update progress bar
   m_yubi_timeout.SetPos(seconds);
   TRACE(_T("CPKBaseDlg::yubiWait(%d)\n"), seconds);
+}
+
+void CPKBaseDlg::yubiRequestHMACSha1()
+{
+  m_yubi_status.ShowWindow(SW_HIDE);
+  m_yubi_status.SetWindowText(_T(""));
+  m_yubi_timeout.ShowWindow(SW_SHOW);
+  m_yubi_timeout.SetPos(15);
+  m_yubi->RequestHMACSha1(m_passkey);
 }

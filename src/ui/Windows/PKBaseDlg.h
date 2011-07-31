@@ -21,18 +21,25 @@ class CPKBaseDlg : public CPWDialog {
  public:
   CPKBaseDlg(int id, CWnd *pParent);
   virtual ~CPKBaseDlg();
+  BOOL OnInitDialog(void);
  protected:
   CSecString m_passkey;
   CSecEditExtn *m_pctlPasskey;
-  virtual void ProcessPhrase() = 0; // Check the passphrase, call OnOK, OnCancel or just return
+  virtual void ProcessPhrase() {}; // Check the passphrase, call OnOK, OnCancel or just return
+  virtual void DoDataExchange(CDataExchange* pDX);
+  afx_msg void OnDestroy();
   // Yubico-related:
-  Yubi *m_yubi;
-	void yubiInserted(void);
-	void yubiRemoved(void);
-  void yubiCompleted(ycRETCODE rc);
-  void yubiWait(WORD seconds);
+  // Callbacks:
+	void yubiInserted(void); // called when Yubikey's inserted
+	void yubiRemoved(void);  // called when Yubikey's removed
+  void yubiCompleted(ycRETCODE rc); // called when done with request
+  void yubiWait(WORD seconds); // called when waiting for user activation
+
+  void yubiRequestHMACSha1(); // request HMAC of m_passkey
+  Yubi *m_yubi; // Interface to Yubikey API  
   // Indicate that we're waiting for user to activate YubiKey:
   CProgressCtrl m_yubi_timeout;
   // Show user what's going on / what we're waiting for:
   CEdit m_yubi_status;
+	DECLARE_INTERFACE_MAP()
 };

@@ -97,13 +97,10 @@ protected:
   afx_msg void OnVirtualKeyboard();
   afx_msg void OnYubikeyBtn();
   afx_msg LRESULT OnInsertBuffer(WPARAM, LPARAM);
-  afx_msg void OnDestroy();
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
 	DECLARE_DISPATCH_MAP()
-	DECLARE_INTERFACE_MAP()
-
 private:
   DboxMain *m_pDbx;
 

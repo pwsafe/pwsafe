@@ -41,7 +41,6 @@ down the streetsky.  [Groucho Marx]
 #include "SysColStatic.h"
 
 #include "PasskeyEntry.h"
-#include "PwFont.h"
 #include "TryAgainDlg.h"
 #include "DboxMain.h" // for CheckPasskey()
 #include "PasskeySetup.h"
@@ -49,8 +48,6 @@ down the streetsky.  [Groucho Marx]
 #include "core/Util.h"
 
 #include <iomanip>  // For setbase and setw
-
-static wchar_t PSSWDCHAR = L'*';
 
 // See DboxMain.h for the relevant enum
 int CPasskeyEntry::dialog_lookup[5] = {
@@ -105,31 +102,24 @@ CPasskeyEntry::~CPasskeyEntry()
 
 void CPasskeyEntry::DoDataExchange(CDataExchange* pDX)
 {
-    CPWDialog::DoDataExchange(pDX);
-
-    // Can't use DDX_Text for CSecEditExtn
-    m_pctlPasskey->DoDDX(pDX, m_passkey);
-
+  CPKBaseDlg::DoDataExchange(pDX);
 #if !defined(POCKET_PC)
-    if (m_index == GCP_FIRST)
-        DDX_Control(pDX, IDC_STATIC_LOGOTEXT, m_ctlLogoText);
+  if (m_index == GCP_FIRST)
+    DDX_Control(pDX, IDC_STATIC_LOGOTEXT, m_ctlLogoText);
 #endif
 
-    //{{AFX_DATA_MAP(CPasskeyEntry)
+  //{{AFX_DATA_MAP(CPasskeyEntry)
 #if !defined(POCKET_PC)
-    DDX_Control(pDX, IDC_STATIC_LOGO, m_ctlLogo);
-    DDX_Control(pDX, IDOK, m_ctlOK);
+  DDX_Control(pDX, IDC_STATIC_LOGO, m_ctlLogo);
+  DDX_Control(pDX, IDOK, m_ctlOK);
 #endif
-    DDX_Control(pDX, IDC_PASSKEY, *m_pctlPasskey);
-    DDX_Text(pDX, IDC_MESSAGE, m_message);
-    DDX_Check(pDX, IDC_READONLY, m_PKE_ReadOnly);
+  DDX_Text(pDX, IDC_MESSAGE, m_message);
+  DDX_Check(pDX, IDC_READONLY, m_PKE_ReadOnly);
 
-    if (m_index == GCP_FIRST)
-        DDX_Control(pDX, IDC_DATABASECOMBO, m_MRU_combo);
+  if (m_index == GCP_FIRST)
+    DDX_Control(pDX, IDC_DATABASECOMBO, m_MRU_combo);
 
-    //}}AFX_DATA_MAP
-    DDX_Control(pDX, IDC_YUBI_PROGRESS, m_yubi_timeout);
-    DDX_Control(pDX, IDC_YUBI_STATUS, m_yubi_status);
+  //}}AFX_DATA_MAP
 }
 
 BEGIN_MESSAGE_MAP(CPasskeyEntry, CPKBaseDlg)
@@ -161,10 +151,6 @@ BEGIN_DISPATCH_MAP(CPasskeyEntry, CPKBaseDlg)
   DISP_FUNCTION_ID(CPasskeyEntry, "userWait", 4, yubiWait, VT_EMPTY, VTS_I2)
 END_DISPATCH_MAP()
 
-BEGIN_INTERFACE_MAP(CPasskeyEntry, CPKBaseDlg)
-	INTERFACE_PART(CPasskeyEntry, DIID__IYubiClientEvents, Dispatch)
-END_INTERFACE_MAP()
-
 static CString NarrowPathText(const CString &text)
 {
   const int Width = 48;
@@ -190,26 +176,8 @@ BOOL CPasskeyEntry::OnInitDialog(void)
     CPWDialog::OnInitDialog();
   }
 #else
-  CPWDialog::OnInitDialog();
+  CPKBaseDlg::OnInitDialog();
 #endif
-
-  ApplyPasswordFont(GetDlgItem(IDC_PASSKEY));
-
-  m_pctlPasskey->SetPasswordChar(PSSWDCHAR);
-  m_yubi->Init();
-
-  bool yubiEnabled = m_yubi->isEnabled();
-  GetDlgItem(IDC_YUBIKEY_BTN)->ShowWindow(yubiEnabled ? SW_SHOW : SW_HIDE);
-  m_yubi_status.ShowWindow(yubiEnabled ? SW_SHOW : SW_HIDE);
-  m_yubi_timeout.ShowWindow(SW_HIDE);
-  m_yubi_timeout.SetRange(0, 15);
-  bool yubiInserted = m_yubi->isInserted();
-  GetDlgItem(IDC_YUBIKEY_BTN)->EnableWindow(yubiInserted ? TRUE : FALSE);
-  if (yubiInserted)
-    m_yubi_status.SetWindowText(_T("Click, then activate your YubiKey"));
-  else
-    m_yubi_status.SetWindowText(_T("Please insert your YubiKey"));
-
 
   switch(m_index) {
     case GCP_FIRST:
@@ -670,8 +638,6 @@ void CPasskeyEntry::OnVirtualKeyboard()
 
   // Now show it and make it top
   m_pVKeyBoardDlg->SetWindowPos(&wndTop , 0, 0, 0, 0, SWP_SHOWWINDOW | SWP_NOMOVE | SWP_NOSIZE);
-
-  return;
 }
 
 LRESULT CPasskeyEntry::OnInsertBuffer(WPARAM, LPARAM)
@@ -703,13 +669,6 @@ LRESULT CPasskeyEntry::OnInsertBuffer(WPARAM, LPARAM)
   return 0L;
 }
 
-void CPasskeyEntry::OnDestroy()
-{
-  m_yubi->Destroy();
-  CPWDialog::OnDestroy();
-}
-
-
 void CPasskeyEntry::OnYubikeyBtn()
 {
   UpdateData(TRUE);
@@ -720,9 +679,5 @@ void CPasskeyEntry::OnYubikeyBtn()
       m_MRU_combo.SetFocus();
     return;
   }
-  m_yubi_status.ShowWindow(SW_HIDE);
-  m_yubi_status.SetWindowText(_T(""));
-  m_yubi_timeout.ShowWindow(SW_SHOW);
-  m_yubi_timeout.SetPos(15);
-  m_yubi->RequestHMACSha1(m_passkey);
+  yubiRequestHMACSha1(); // request HMAC of m_passkey
 }
