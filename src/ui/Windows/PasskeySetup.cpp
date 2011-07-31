@@ -13,7 +13,7 @@
 #include "ThisMfcApp.h"
 #include "DboxMain.h"
 #include "GeneralMsgBox.h"
-#include "Options_PropertySheet.H"
+#include "Options_PropertySheet.h"
 
 #include "core/PWCharPool.h" // for CheckPassword()
 #include "core/PwsPlatform.h"
@@ -34,7 +34,6 @@
 #include "core/util.h"
 
 #include "PasskeySetup.h"
-#include "PwFont.h"
 
 #include <iomanip>  // For setbase and setw
 
@@ -44,25 +43,20 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-static wchar_t PSSWDCHAR = L'*';
 
 //-----------------------------------------------------------------------------
 CPasskeySetup::CPasskeySetup(CWnd *pParent)
-  : CPWDialog(CPasskeySetup::IDD, pParent), m_pVKeyBoardDlg(NULL),
+  : CPKBaseDlg(CPasskeySetup::IDD, pParent), m_pVKeyBoardDlg(NULL),
   m_LastFocus(IDC_PASSKEY)
 {
   m_pDbx = static_cast<DboxMain *>(pParent);
 
-  m_passkey = L"";
   m_verify = L"";
-
-  m_pctlPasskey = new CSecEditExtn;
   m_pctlVerify = new CSecEditExtn;
 }
 
 CPasskeySetup::~CPasskeySetup()
 {
-  delete m_pctlPasskey;
   delete m_pctlVerify;
 
   if (m_pVKeyBoardDlg != NULL) {
@@ -81,35 +75,42 @@ CPasskeySetup::~CPasskeySetup()
 
 void CPasskeySetup::DoDataExchange(CDataExchange* pDX)
 {
-  CPWDialog::DoDataExchange(pDX);
+  CPKBaseDlg::DoDataExchange(pDX);
   
   // Can't use DDX_Text for CSecEditExtn
-  m_pctlPasskey->DoDDX(pDX, m_passkey);
   m_pctlVerify->DoDDX(pDX, m_verify);
 
-  DDX_Control(pDX, IDC_PASSKEY, *m_pctlPasskey);
   DDX_Control(pDX, IDC_VERIFY, *m_pctlVerify);
 }
 
-BEGIN_MESSAGE_MAP(CPasskeySetup, CPWDialog)
+BEGIN_MESSAGE_MAP(CPasskeySetup, CPKBaseDlg)
   ON_BN_CLICKED(ID_HELP, OnHelp)
   ON_STN_CLICKED(IDC_VKB, OnVirtualKeyboard)
   ON_MESSAGE(PWS_MSG_INSERTBUFFER, OnInsertBuffer)
   ON_EN_SETFOCUS(IDC_PASSKEY, OnPasskeySetfocus)
   ON_EN_SETFOCUS(IDC_VERIFY, OnVerifykeySetfocus)
+  ON_BN_CLICKED(IDC_YUBIKEY_BTN, OnYubikeyBtn)
 #if defined(POCKET_PC)
   ON_EN_KILLFOCUS(IDC_PASSKEY, OnPasskeyKillfocus)
   ON_EN_KILLFOCUS(IDC_VERIFY, OnPasskeyKillfocus)
 #endif
 END_MESSAGE_MAP()
 
+BEGIN_DISPATCH_MAP(CPasskeySetup, CPKBaseDlg)
+	//{{AFX_DISPATCH_MAP(CPasskeySetup)
+		// NOTE - the ClassWizard will add and remove mapping macros here.
+	//}}AFX_DISPATCH_MAP
+	DISP_FUNCTION_ID(CPasskeySetup, "deviceInserted", 1, yubiInserted, VT_EMPTY, VTS_NONE)
+	DISP_FUNCTION_ID(CPasskeySetup, "deviceRemoved", 2, yubiRemoved, VT_EMPTY, VTS_NONE)
+	DISP_FUNCTION_ID(CPasskeySetup, "operationCompleted", 3, yubiCompleted, VT_EMPTY, VTS_I2)
+  DISP_FUNCTION_ID(CPasskeySetup, "userWait", 4, yubiWait, VT_EMPTY, VTS_I2)
+END_DISPATCH_MAP()
+
 BOOL CPasskeySetup::OnInitDialog() 
 {
-  CPWDialog::OnInitDialog();
-  ApplyPasswordFont(GetDlgItem(IDC_PASSKEY));
+  CPKBaseDlg::OnInitDialog();
   ApplyPasswordFont(GetDlgItem(IDC_VERIFY));
 
-  m_pctlPasskey->SetPasswordChar(PSSWDCHAR);
   m_pctlVerify->SetPasswordChar(PSSWDCHAR);
 
   // Only show virtual Keyboard menu if we can load DLL
@@ -123,7 +124,7 @@ BOOL CPasskeySetup::OnInitDialog()
 
 void CPasskeySetup::OnCancel() 
 {
-  CPWDialog::OnCancel();
+  CPKBaseDlg::OnCancel();
 }
 
 void CPasskeySetup::OnOK()
@@ -169,7 +170,7 @@ void CPasskeySetup::OnOK()
   }
 #endif // _DEBUG
 
-  CPWDialog::OnOK();
+  CPKBaseDlg::OnOK();
 }
 
 void CPasskeySetup::OnHelp() 
@@ -292,4 +293,29 @@ LRESULT CPasskeySetup::OnInsertBuffer(WPARAM, LPARAM)
                     nStartChar + vkbuffer.GetLength());
 
   return 0L;
+}
+
+void CPasskeySetup::OnYubikeyBtn()
+{
+  UpdateData(TRUE);
+  // Check that password and verification are same.
+  // unlike non-Yubi usage, here we accept empty passwords,
+  // which will give token-based authentication.
+  // A non-empty password with Yubikey is 2-factor auth.
+  CGeneralMsgBox gmb;
+  if (m_passkey != m_verify) {
+    gmb.AfxMessageBox(IDS_ENTRIESDONOTMATCH);
+    ((CEdit*)GetDlgItem(IDC_VERIFY))->SetFocus();
+    return;
+  }
+  yubiRequestHMACSha1(); // request HMAC of m_passkey
+}
+
+void CPasskeySetup::ProcessPhrase()
+{
+  // OnOK clears the passkey, so we save it
+  const CSecString save_passkey = m_passkey;
+  TRACE(_T("CPasskeySetup::ProcessPhrase(%s)\n"), m_passkey);
+  CPKBaseDlg::OnOK();
+  m_passkey = save_passkey;
 }

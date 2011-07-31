@@ -11,26 +11,23 @@
 //-----------------------------------------------------------------------------
 
 #include "core/PwsPlatform.h"
-#include "PWDialog.h"
+#include "PKBaseDlg.h"
 #include "ControlExtns.h"
 
 class CVKeyBoardDlg;
 class DboxMain;
 
-class CPasskeySetup : public CPWDialog
+class CPasskeySetup : public CPKBaseDlg
 {
   // Construction
 public:
   CPasskeySetup(CWnd* pParent = NULL);   // standard constructor
   ~CPasskeySetup();
 
-  CSecString GetPassKey() {return m_passkey;}
-
 protected:
   // Dialog Data
   //{{AFX_DATA(CPasskeySetup)
   enum { IDD = IDD_PASSKEYSETUP };
-  CSecString m_passkey;
   CSecString m_verify;
   //}}AFX_DATA
 
@@ -51,14 +48,15 @@ protected:
   afx_msg void OnPasskeyKillfocus();
 #endif
   afx_msg void OnVirtualKeyboard();
+  afx_msg void OnYubikeyBtn();
+  void ProcessPhrase(); // Check the passphrase, call OnOK, OnCancel or just return
   afx_msg LRESULT OnInsertBuffer(WPARAM, LPARAM);
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
-
+	DECLARE_DISPATCH_MAP()
 private:
   DboxMain *m_pDbx;
-  CSecEditExtn *m_pctlPasskey;
   CSecEditExtn *m_pctlVerify;
   CVKeyBoardDlg *m_pVKeyBoardDlg;
   UINT m_CtrlID;

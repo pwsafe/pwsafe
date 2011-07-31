@@ -12,7 +12,7 @@
 #include "resource.h"
 #include "os/env.h"
 
-static wchar_t PSSWDCHAR = L'*';
+const wchar_t CPKBaseDlg::PSSWDCHAR = L'*';
 
 BEGIN_INTERFACE_MAP(CPKBaseDlg, CPWDialog)
 	INTERFACE_PART(CPKBaseDlg, DIID__IYubiClientEvents, Dispatch)

@@ -429,8 +429,12 @@ void CPasskeyEntry::ProcessPhrase()
   CGeneralMsgBox gmb;
 
   switch (m_pDbx->CheckPasskey(LPCWSTR(m_filespec), LPCWSTR(m_passkey))) {
-  case PWScore::SUCCESS:
+  case PWScore::SUCCESS: {
+    // OnOK clears the passkey, so we save it
+    const CSecString save_passkey = m_passkey;
     CPWDialog::OnOK();
+    m_passkey = save_passkey;
+  }
     break;
   case PWScore::WRONG_PASSWORD:
     if (m_tries >= 2) { // too many tries

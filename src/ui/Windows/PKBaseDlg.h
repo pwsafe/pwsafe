@@ -22,9 +22,14 @@ class CPKBaseDlg : public CPWDialog {
   CPKBaseDlg(int id, CWnd *pParent);
   virtual ~CPKBaseDlg();
   BOOL OnInitDialog(void);
+
+  CSecString GetPassKey() const {return m_passkey;}
+
  protected:
   CSecString m_passkey;
   CSecEditExtn *m_pctlPasskey;
+  static const wchar_t PSSWDCHAR;
+
   virtual void ProcessPhrase() {}; // Check the passphrase, call OnOK, OnCancel or just return
   virtual void DoDataExchange(CDataExchange* pDX);
   afx_msg void OnDestroy();
