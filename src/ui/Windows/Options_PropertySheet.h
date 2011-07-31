@@ -25,7 +25,7 @@ class PWScore;
 class COptions_PropertySheet : public CPWPropertySheet
 {
 public:
-  COptions_PropertySheet(UINT nID, CWnd *pDbx);
+  COptions_PropertySheet(UINT nID, CWnd *pDbx, const bool bLongPPs);
   ~COptions_PropertySheet();
 
   virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);

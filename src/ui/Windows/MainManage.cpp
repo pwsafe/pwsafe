@@ -289,7 +289,9 @@ void DboxMain::OnOptions()
   // Get old DB preferences String value for use later
   const StringX sxOldDBPrefsString(prefs->Store());
 
-  COptions_PropertySheet optionsPS(IDS_OPTIONS, this);
+  bool bLongPPs = LongPPs();
+
+  COptions_PropertySheet optionsPS(IDS_OPTIONS, this, bLongPPs);
 
   // Remove the "Apply Now" button.
   optionsPS.m_psh.dwFlags |= PSH_NOAPPLYNOW;
@@ -592,7 +594,9 @@ void DboxMain::OnOptions()
 
 void DboxMain::OnGeneratePassword()
 {
-  COptions_PropertySheet GenPswdPS(IDS_GENERATEPASSWORD, this);
+  bool bLongPPs = LongPPs();
+
+  COptions_PropertySheet GenPswdPS(IDS_GENERATEPASSWORD, this, bLongPPs);
 
   GenPswdPS.m_psh.dwFlags |= PSH_NOAPPLYNOW;
 

@@ -4312,3 +4312,15 @@ void DboxMain::GetAllGroups(std::vector<std::wstring> &vGroups) const
     vGroups.push_back(iter->first.c_str());
   }
 }
+
+bool DboxMain::LongPPs()
+{
+  // Based on current screen height, decide if we want to display.
+  // The normal "tall/long" page, or the "wide/short" version (for netbooks)
+  MONITORINFO mi;
+  mi.cbSize = sizeof(mi);
+  GetMonitorInfo(MonitorFromWindow(GetSafeHwnd(), MONITOR_DEFAULTTONEAREST), &mi);
+  const int Y = abs(mi.rcWork.bottom - mi.rcWork.top);
+
+  return (Y > 600); // THRESHOLD = 600 - pixels or virtual-screen coordinates?
+}

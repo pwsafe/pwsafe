@@ -15,7 +15,7 @@
 
 IMPLEMENT_DYNAMIC(COptions_PropertySheet, CPWPropertySheet)
 
-COptions_PropertySheet::COptions_PropertySheet(UINT nID, CWnd* pParent)
+COptions_PropertySheet::COptions_PropertySheet(UINT nID, CWnd* pParent, const bool bLongPPs)
   : CPWPropertySheet(nID, pParent), m_save_bSymbols(L""),
   m_save_iUseOwnSymbols(DEFAULT_SYMBOLS), m_save_iPreExpiryWarnDays(0),
   m_bIsModified(false), m_bChanged(false),
@@ -41,7 +41,7 @@ COptions_PropertySheet::COptions_PropertySheet(UINT nID, CWnd* pParent)
 
   // Only now allocate the PropertyPages - after all data there
   // to be used by their c'tors
-  m_OPTMD.bLongPPs = chooseResource();
+  m_OPTMD.bLongPPs = bLongPPs; // chooseResource();
 
   switch (nID) {
     case IDS_OPTIONS:
