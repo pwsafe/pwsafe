@@ -52,7 +52,9 @@ void DboxMain::OnAdd()
   CItemData ci;
   ci.CreateUUID();
 
-  CAddEdit_PropertySheet add_entry_psh(IDS_ADDENTRY, this, &m_core, NULL, &ci, L""); 
+  bool bLongPPs = LongPPs();
+
+  CAddEdit_PropertySheet add_entry_psh(IDS_ADDENTRY, this, &m_core, NULL, &ci, bLongPPs,  L""); 
 
   PWSprefs *prefs = PWSprefs::GetInstance();
   if (prefs->GetPref(PWSprefs::UseDefaultUser)) {
@@ -914,8 +916,10 @@ bool DboxMain::EditItem(CItemData *pci, PWScore *pcore)
   pci = NULL; // Set to NULL - should use ci_original
 
   const UINT uicaller = pcore->IsReadOnly() ? IDS_VIEWENTRY : IDS_EDITENTRY;
+  bool bLongPPs = LongPPs();
   CAddEdit_PropertySheet edit_entry_psh(uicaller, this, pcore,
-                                        &ci_original, &ci_edit, pcore->GetCurFile()); 
+                                        &ci_original, &ci_edit, 
+                                        bLongPPs, pcore->GetCurFile()); 
 
   // List might be cleared if db locked.
   // Need to take care that we handle a rebuilt list.

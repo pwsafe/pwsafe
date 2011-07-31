@@ -982,6 +982,8 @@ private:
   int m_ilastaction;  // Last action
   void SetDragbarToolTips();
 
+  bool LongPPs();
+
   // The following is for saving information over an execute/undo/redo
   // Might need to add more e.g. if filter is active and which one?
   struct st_SaveGUIInfo {
