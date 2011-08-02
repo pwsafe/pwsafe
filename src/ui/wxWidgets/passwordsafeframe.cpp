@@ -2247,13 +2247,14 @@ void PasswordSafeFrame::UnlockSafe(bool restoreUI)
   
   if (restoreUI) {
     if (!IsShown()) {
-      Show();
+      ShowWindowRecursively(hiddenWindows);
     }
     if (IsIconized()) {
       Iconize(false);
     }
-    Raise();
+    Show(true); //show the grid/tree
     m_guiInfo->Restore(this);
+    Raise();
   }
 }
 
@@ -2286,9 +2287,10 @@ void PasswordSafeFrame::OnIconize(wxIconizeEvent& evt)
     StringX password;
     if (VerifySafeCombination(password)) {
       if (ReloadDatabase(password)) {
-        Show();
+        ShowWindowRecursively(hiddenWindows);
         //On Linux, the UI is already restored, so just set the status flag
         m_sysTray->SetTrayStatus(SystemTray::TRAY_UNLOCKED);
+        Show(true); //show the tree/grid
         m_guiInfo->Restore(this);
       }
       else {
@@ -2328,7 +2330,8 @@ void PasswordSafeFrame::HideUI(bool lock)
     //We should not have to show up the icon manually if m_sysTray
     //can be notified of changes to PWSprefs::UseSystemTray
     m_sysTray->ShowIcon();  
-    Hide();                 
+    hiddenWindows.clear();
+    HideWindowRecursively(this, hiddenWindows);                 
   }  
 }
 
