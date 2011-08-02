@@ -80,3 +80,35 @@ int ReadCore(PWScore& othercore, const wxString& file, const StringX& combinatio
   
   return rc;
 }
+
+
+void HideWindowRecursively(wxTopLevelWindow* win, wxWindowList& hiddenWindows)
+{
+  if (!win)
+    return;
+
+  wxWindowList& children = win->GetChildren();
+  for(wxWindowList::iterator itr = children.begin(); itr != children.end(); ++itr) {
+    if ((*itr)->IsTopLevel() && (*itr)->IsShown()) {
+      HideWindowRecursively(wxDynamicCast(*itr, wxTopLevelWindow), hiddenWindows);
+    }
+  }
+  //Don't call Hide() here, which just calls Show(false), which is overriden in 
+  //derived classes, and wxDialog actually cancels the modal loop and closes the window
+  win->wxWindow::Show(false);
+  //push_front ensures we Show() in the reverse order of Hide()'ing
+  hiddenWindows.push_front(win);
+}
+
+void ShowWindowRecursively(wxWindowList& hiddenWindows)
+{
+  for(wxWindowList::iterator itr = hiddenWindows.begin(); itr != hiddenWindows.end(); ++itr) {
+    wxWindow* win = (*itr);
+    //Show is virtual, and dialog windows assume the window is just starting up when Show()
+    //is called.  Make sure to call the base version
+    win->wxWindow::Show(true);
+    win->Raise();
+    win->Update();
+  }
+  hiddenWindows.clear();
+}
