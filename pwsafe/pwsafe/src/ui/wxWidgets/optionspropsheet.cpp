@@ -1225,6 +1225,8 @@ void COptions::OnPwPolUseClick( wxCommandEvent& evt )
   m_pwNumDigbox->Show(showAtLeasts);
   m_pwNumSymbox->Show(showAtLeasts);
 
+  m_pwMinsGSzr->Layout();
+
   m_pwpUseLowerCtrl->Enable(!useHex);
   m_pwpUseUpperCtrl->Enable(!useHex);
   m_pwpUseDigitsCtrl->Enable(!useHex);
