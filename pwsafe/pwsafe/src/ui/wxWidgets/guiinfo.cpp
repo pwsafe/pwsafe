@@ -103,6 +103,10 @@ void GUIInfo::SaveTreeViewInfo(PWSTreeCtrl* tree)
 
 void GUIInfo::SaveGridViewInfo(PWSGrid* grid)
 {
+  //has the grid been initialized?
+  if (grid->GetNumItems() == 0)
+    return;
+
   const int row = grid->YToRow(0);
   if (row != wxNOT_FOUND) {
     CItemData* item = grid->GetItem(row);
