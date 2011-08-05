@@ -36,6 +36,8 @@
 #include "core/PWSprefs.h"
 #include "core/Util.h" // for datetime string
 #include "core/PWSAuxParse.h" // for DEFAULT_AUTOTYPE
+#include "./wxutils.h"
+
 ////@begin XPM images
 ////@end XPM images
 
@@ -109,6 +111,7 @@ EVT_BUTTON( wxID_OK, COptions::OnOk )
 
 ////@end COptions event table entries
 
+  EVT_BOOKCTRL_PAGE_CHANGING(wxID_ANY, COptions::OnPageChanging)
 END_EVENT_TABLE()
 
 const wxChar *BUSuffix[] = {
@@ -573,6 +576,10 @@ void COptions::CreateControls()
   m_pwpHexCtrl->SetValue(false);
   itemStaticBoxSizer71->Add(m_pwpHexCtrl, 0, wxALIGN_LEFT|wxALL, 5);
 
+  int checkbox_ids[] = {ID_CHECKBOX3, ID_CHECKBOX4, ID_CHECKBOX5, ID_CHECKBOX6, ID_CHECKBOX9};
+  itemPanel70->SetValidator(MultiCheckboxValidator(checkbox_ids, WXSIZEOF(checkbox_ids),
+                            _("At least one type of character (lowercase, uppercase, digits,\nsymbols, hexadecimal) must be permitted."),
+                            _("Password Policy")));
   GetBookCtrl()->AddPage(itemPanel70, _("Password Policy"));
 
   wxPanel* itemPanel102 = new wxPanel( GetBookCtrl(), ID_PANEL4, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER|wxTAB_TRAVERSAL );
@@ -1001,16 +1008,17 @@ void COptions::PropSheetToPrefs()
   else 
     prefs->SetPref(PWSprefs::DefaultAutotypeString, tostringx(m_autotypeStr), true);
 
+  const bool usehex = m_pwpHexCtrl->GetValue();
   prefs->SetPref(PWSprefs::SavePasswordHistory, m_pwhistsaveCB->GetValue(), true);
   prefs->SetPref(PWSprefs::NumPWHistoryDefault, m_pwhistnumdfltSB->GetValue(), true);
   prefs->SetPref(PWSprefs::PWDefaultLength, m_pwdefaultlength, true);
-  prefs->SetPref(PWSprefs::PWUseLowercase, m_pwpUseLowerCtrl->GetValue(), true);
-  prefs->SetPref(PWSprefs::PWUseUppercase, m_pwpUseUpperCtrl->GetValue(), true);
-  prefs->SetPref(PWSprefs::PWUseDigits, m_pwpUseDigitsCtrl->GetValue(), true);
-  prefs->SetPref(PWSprefs::PWUseSymbols, m_pwpSymCtrl->GetValue(), true);
-  prefs->SetPref(PWSprefs::PWUseHexDigits, m_pwpHexCtrl->GetValue(), true);
-  prefs->SetPref(PWSprefs::PWUseEasyVision, m_pwpEasyCtrl->GetValue(), true);
-  prefs->SetPref(PWSprefs::PWMakePronounceable, m_pwpPronounceCtrl->GetValue(), true);
+  prefs->SetPref(PWSprefs::PWUseLowercase, m_pwpUseLowerCtrl->GetValue() && !usehex, true);
+  prefs->SetPref(PWSprefs::PWUseUppercase, m_pwpUseUpperCtrl->GetValue() && !usehex, true);
+  prefs->SetPref(PWSprefs::PWUseDigits, m_pwpUseDigitsCtrl->GetValue() && !usehex, true);
+  prefs->SetPref(PWSprefs::PWUseSymbols, m_pwpSymCtrl->GetValue() && !usehex, true);
+  prefs->SetPref(PWSprefs::PWUseHexDigits, usehex, true);
+  prefs->SetPref(PWSprefs::PWUseEasyVision, m_pwpEasyCtrl->GetValue() && !usehex, true);
+  prefs->SetPref(PWSprefs::PWMakePronounceable, m_pwpPronounceCtrl->GetValue() && !usehex, true);
   prefs->SetPref(PWSprefs::PWLowercaseMinLength, m_pwpLCSpin->GetValue(), true);
   prefs->SetPref(PWSprefs::PWUppercaseMinLength, m_pwpUCSpin->GetValue(), true);
   prefs->SetPref(PWSprefs::PWDigitMinLength, m_pwpDigSpin->GetValue(), true);
@@ -1024,8 +1032,8 @@ void COptions::OnOk(wxCommandEvent& /* evt */)
 {
   if (Validate() && TransferDataFromWindow()) {
     PropSheetToPrefs();
+    EndModal(wxID_OK);
   }
-  EndModal(wxID_OK);
 }
 
 
@@ -1302,3 +1310,15 @@ void COptions::OnUseSystrayClick( wxCommandEvent& /* evt */)
   m_sysmaxREitemsSB->Enable(m_sysusesystrayCB->GetValue());
 }
 
+void COptions::OnPageChanging(wxBookCtrlEvent& evt)
+{
+  const int from = evt.GetOldSelection();
+  if (from != -1) {
+    wxWindow* page = GetBookCtrl()->GetPage(from);
+    //note that wxWindow::Validate() validates child windows
+    //we need to validate the page itself, so we call its Validator directly
+    wxValidator* validator = page->GetValidator();
+    if (validator && !validator->Validate(this))
+      evt.Veto();
+  }
+}

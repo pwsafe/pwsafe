@@ -33,6 +33,7 @@
 class wxSpinCtrl;
 class wxGridSizer;
 class wxBoxSizer;
+class wxBookCtrlEvent;
 ////@end forward declarations
 
 /*!
@@ -206,6 +207,9 @@ public:
 
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX30
   void OnUseSystrayClick( wxCommandEvent& evt );
+
+  /// wxEVT_COMMAND_BOOKCTRL_PAGE_CHANGING event handler for all pages (wxID_ANY)
+  void OnPageChanging(wxBookCtrlEvent& evt);
 
 ////@end COptions event handler declarations
 
