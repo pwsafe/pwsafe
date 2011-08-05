@@ -112,3 +112,62 @@ void ShowWindowRecursively(wxWindowList& hiddenWindows)
   }
   hiddenWindows.clear();
 }
+
+/////////////////////////////////////////////////////////////
+// MultiCheckboxValidator
+//
+MultiCheckboxValidator::MultiCheckboxValidator(int ids[],
+                                               size_t num,
+                                               const wxString& msg,
+                                               const wxString& title): m_ids(new int[num]),
+                                                                       m_count(num),
+                                                                       m_msg(msg),
+                                                                       m_title(title)
+
+{
+  memcpy(m_ids, ids, sizeof(m_ids[0])*m_count);
+}
+
+MultiCheckboxValidator::MultiCheckboxValidator(const MultiCheckboxValidator& other):
+                                                                        m_ids(new int[other.m_count]),
+                                                                        m_count(other.m_count),
+                                                                        m_msg(other.m_msg),
+                                                                        m_title(other.m_title)
+{
+  memcpy(m_ids, other.m_ids, sizeof(m_ids[0])*m_count);
+}
+
+MultiCheckboxValidator::~MultiCheckboxValidator()
+{
+  delete [] m_ids;
+}
+
+wxObject* MultiCheckboxValidator::Clone() const
+{
+  return new MultiCheckboxValidator(m_ids, m_count, m_msg, m_title);
+}
+
+bool MultiCheckboxValidator::Validate(wxWindow* parent)
+{
+  for(size_t idx = 0; idx < m_count; ++idx) {
+    wxWindow* win = GetWindow()->FindWindow(m_ids[idx]);
+    if (win) {
+      if (win->IsEnabled()) {
+        wxCheckBox* cb = wxDynamicCast(win, wxCheckBox);
+        if (cb) {
+          if (cb->IsChecked()) {
+            return true;
+          }
+        }
+        else {
+          wxFAIL_MSG(wxString::Format(wxT("Child(id %d) is not a checkbox"), m_ids[idx]));
+        }
+      }
+    }
+    else {
+      wxFAIL_MSG(wxString::Format(wxT("No child with id (%d) found in MultiCheckboxValidator"), m_ids[idx]));
+    }
+  }
+  wxMessageBox(m_msg, m_title, wxOK|wxICON_EXCLAMATION, parent);
+  return false;
+}
