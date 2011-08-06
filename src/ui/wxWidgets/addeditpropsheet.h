@@ -176,17 +176,17 @@ public:
   /// wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_RADIOBUTTON2
   void OnPWPRBSelected( wxCommandEvent& evt);
 
-  /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX7
-  void OnEZreadCBClick( wxCommandEvent& evt);
-
-  /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX8
-  void OnPronouceableCBClick( wxCommandEvent& evt);
+  /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX7 & ID_CHECKBOX8
+  void OnEZreadOrProounceable( wxCommandEvent& evt);
 
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX9
   void OnUseHexCBClick( wxCommandEvent& evt);
 
 ////@end AddEditPropSheet event handler declarations
   void OnOk(wxCommandEvent& evt);
+  void OnResetPWPolicy(wxCommandEvent& evt);
+  void OnUpdateResetPWPolicyButton(wxUpdateUIEvent& evt);
+  void OnAtLeastChars(wxSpinEvent& evt);
 ////@begin AddEditPropSheet member function declarations
 
   wxString GetTitle() const { return m_title ; }
@@ -315,8 +315,6 @@ private:
   wxString m_PWHistory; // string as stored in CItemData
   StringX m_password;
   bool m_isPWHidden;
-  bool m_origPWPdefault;
-  PWPolicy m_PWP;
   PWScore &m_core;
   UIInterFace *m_ui;
   wxString m_selectedGroup;  //Group title in tree view user right-clicked on to add an item
@@ -324,11 +322,16 @@ private:
   AddOrEdit m_type;
   CItemData m_item;
   void ItemFieldsToPropSheet();
-  void UpdatePWPolicyControls(bool useDefault);
+  void UpdatePWPolicyControls(const PWPolicy& pwp);
+  void EnablePWPolicyControls(bool enable);
+  PWPolicy GetPWPolicyFromUI() const;
+  PWPolicy GetPWPolicyFromPrefs() const;
+  PWPolicy GetSelectedPWPolicy() const;
   void ShowPWPSpinners(bool show);
   void EnableNonHexCBs(bool enable);
   void ShowPassword();
   void HidePassword();
+  int GetRequiredPWLength() const;
 };
 
 #endif

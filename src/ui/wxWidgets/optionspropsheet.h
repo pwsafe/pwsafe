@@ -211,6 +211,8 @@ public:
   /// wxEVT_COMMAND_BOOKCTRL_PAGE_CHANGING event handler for all pages (wxID_ANY)
   void OnPageChanging(wxBookCtrlEvent& evt);
 
+  void OnAtLeastChars(wxSpinEvent& evt);
+
 ////@end COptions event handler declarations
 
 ////@begin COptions member function declarations
@@ -401,6 +403,7 @@ private:
  private:
   void PrefsToPropSheet();
   void PropSheetToPrefs();
+  int GetRequiredPWLength() const;
 };
 
 #endif

@@ -76,13 +76,20 @@ BEGIN_EVENT_TABLE( AddEditPropSheet, wxPropertySheetDialog )
 
   EVT_RADIOBUTTON( ID_RADIOBUTTON3, AddEditPropSheet::OnPWPRBSelected )
 
-  EVT_CHECKBOX( ID_CHECKBOX7, AddEditPropSheet::OnEZreadCBClick )
+  EVT_CHECKBOX( ID_CHECKBOX7, AddEditPropSheet::OnEZreadOrProounceable )
 
-  EVT_CHECKBOX( ID_CHECKBOX8, AddEditPropSheet::OnPronouceableCBClick )
+  EVT_CHECKBOX( ID_CHECKBOX8, AddEditPropSheet::OnEZreadOrProounceable )
 
   EVT_CHECKBOX( ID_CHECKBOX9, AddEditPropSheet::OnUseHexCBClick )
 
+  EVT_BUTTON( ID_BUTTON7, AddEditPropSheet::OnResetPWPolicy )
+
+  EVT_UPDATE_UI(ID_BUTTON7, AddEditPropSheet::OnUpdateResetPWPolicyButton)
 ////@end AddEditPropSheet event table entries
+  EVT_SPINCTRL(ID_SPINCTRL5, AddEditPropSheet::OnAtLeastChars)
+  EVT_SPINCTRL(ID_SPINCTRL6, AddEditPropSheet::OnAtLeastChars)
+  EVT_SPINCTRL(ID_SPINCTRL7, AddEditPropSheet::OnAtLeastChars)
+  EVT_SPINCTRL(ID_SPINCTRL8, AddEditPropSheet::OnAtLeastChars)
 
 END_EVENT_TABLE()
 
@@ -671,34 +678,38 @@ static void EnableSizerChildren(wxSizer *sizer, bool enable)
   }
 }
 
-void AddEditPropSheet::UpdatePWPolicyControls(bool useDefault)
+void AddEditPropSheet::UpdatePWPolicyControls(const PWPolicy& pwp)
 {
-  m_pwpLenCtrl->Enable(!useDefault);
-  EnableSizerChildren(m_pwMinsGSzr, !useDefault);
-  m_pwpHexCtrl->Enable(!useDefault);
-  if (!useDefault) { // policy override - get values
-    bool bUseVal; // keep picky compiler happy, code readable
-    m_item.GetPWPolicy(m_PWP);
-    m_pwpLenCtrl->SetValue(m_PWP.length);
-    bUseVal = (m_PWP.flags & PWSprefs::PWPolicyUseLowercase) != 0;
-    m_pwpUseLowerCtrl->SetValue(bUseVal);
-    m_pwpLCSpin->SetValue(m_PWP.lowerminlength);
-    bUseVal = (m_PWP.flags & PWSprefs::PWPolicyUseUppercase) != 0;
-    m_pwpUseUpperCtrl->SetValue(bUseVal);
-    m_pwpUCSpin->SetValue(m_PWP.upperminlength);
-    bUseVal = (m_PWP.flags & PWSprefs::PWPolicyUseDigits) != 0;
-    m_pwpUseDigitsCtrl->SetValue(bUseVal);
-    m_pwpDigSpin->SetValue(m_PWP.digitminlength);
-    bUseVal = (m_PWP.flags & PWSprefs::PWPolicyUseSymbols) != 0;
-    m_pwpSymCtrl->SetValue(bUseVal);
-    m_pwpSymSpin->SetValue(m_PWP.symbolminlength);
-    bUseVal = (m_PWP.flags & PWSprefs::PWPolicyUseEasyVision) != 0;
-    m_pwpEasyCtrl->SetValue(bUseVal);
-    bUseVal = (m_PWP.flags & PWSprefs::PWPolicyMakePronounceable) != 0;
-    m_pwpPronounceCtrl->SetValue(bUseVal);
-    bUseVal = (m_PWP.flags & PWSprefs::PWPolicyUseHexDigits) != 0;
-    m_pwpHexCtrl->SetValue(bUseVal);
-  }
+  bool bUseVal; // keep picky compiler happy, code readable
+  m_pwpLenCtrl->SetValue(pwp.length);
+  bUseVal = (pwp.flags & PWSprefs::PWPolicyUseLowercase) != 0;
+  m_pwpUseLowerCtrl->SetValue(bUseVal);
+  m_pwpLCSpin->SetValue(pwp.lowerminlength);
+  bUseVal = (pwp.flags & PWSprefs::PWPolicyUseUppercase) != 0;
+  m_pwpUseUpperCtrl->SetValue(bUseVal);
+  m_pwpUCSpin->SetValue(pwp.upperminlength);
+  bUseVal = (pwp.flags & PWSprefs::PWPolicyUseDigits) != 0;
+  m_pwpUseDigitsCtrl->SetValue(bUseVal);
+  m_pwpDigSpin->SetValue(pwp.digitminlength);
+  bUseVal = (pwp.flags & PWSprefs::PWPolicyUseSymbols) != 0;
+  m_pwpSymCtrl->SetValue(bUseVal);
+  m_pwpSymSpin->SetValue(pwp.symbolminlength);
+  bUseVal = (pwp.flags & PWSprefs::PWPolicyUseEasyVision) != 0;
+  m_pwpEasyCtrl->SetValue(bUseVal);
+  bUseVal = (pwp.flags & PWSprefs::PWPolicyMakePronounceable) != 0;
+  m_pwpPronounceCtrl->SetValue(bUseVal);
+  bUseVal = (pwp.flags & PWSprefs::PWPolicyUseHexDigits) != 0;
+  m_pwpHexCtrl->SetValue(bUseVal);
+
+  EnableSizerChildren(m_pwMinsGSzr, !m_pwpHexCtrl->GetValue());
+  ShowPWPSpinners(!m_pwpPronounceCtrl->GetValue() && !m_pwpEasyCtrl->GetValue());
+}
+
+void AddEditPropSheet::EnablePWPolicyControls(bool enable)
+{
+  m_pwpLenCtrl->Enable(enable);
+  EnableSizerChildren(m_pwMinsGSzr, enable && !m_pwpHexCtrl->GetValue());
+  m_pwpHexCtrl->Enable(enable);
 }
 
 void AddEditPropSheet::ItemFieldsToPropSheet()
@@ -827,7 +838,15 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
   bool defPwPolicy = m_item.GetPWPolicy().empty();
   m_defPWPRB->SetValue(defPwPolicy);
   m_ourPWPRB->SetValue(!defPwPolicy);
-  UpdatePWPolicyControls(defPwPolicy);
+  if (!defPwPolicy) {
+    PWPolicy pwp;
+    m_item.GetPWPolicy(pwp);
+    UpdatePWPolicyControls(pwp);
+    m_pwpLenCtrl->Enable(true);
+  }
+  else {
+    EnablePWPolicyControls(false);
+  }
 }
 
 /*!
@@ -846,8 +865,7 @@ void AddEditPropSheet::OnGoButtonClick( wxCommandEvent& /* evt */ )
 
 void AddEditPropSheet::OnGenerateButtonClick( wxCommandEvent& /* evt */ )
 {
-  PWPolicy pwp;
-  m_item.GetPWPolicy(pwp);
+  PWPolicy pwp = GetSelectedPWPolicy();
   StringX password = pwp.MakeRandomPassword();
 
 
@@ -976,6 +994,7 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
         m_notes = m_item.GetNotes().c_str();
 
 
+      PWPolicy pwp;
       bIsModified = (group        != m_item.GetGroup().c_str()       ||
                      m_title      != m_item.GetTitle().c_str()       ||
                      m_user       != m_item.GetUser().c_str()        ||
@@ -987,8 +1006,8 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
                      m_PWHistory  != m_item.GetPWHistory().c_str()   ||
                      m_tttXTime   != lastXtime                       ||
                      m_XTimeInt   != lastXTimeInt                    ||
-                     m_origPWPdefault != isPWPDefault                ||
-                     (!isPWPDefault && (m_PWP != oldPWP)));
+                     (!isPWPDefault && ((pwp = GetPWPolicyFromUI()) != oldPWP)) ||
+                     (isPWPDefault && oldPWP != PWPolicy()));
 
       bIsPSWDModified = (password != m_item.GetPassword());
 
@@ -1004,37 +1023,7 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
         m_item.SetAutoType(tostringx(m_autotype));
         m_item.SetRunCommand(tostringx(m_runcmd));
         m_item.SetPWHistory(tostringx(m_PWHistory));
-        if (m_defPWPRB->GetValue())
-          m_item.SetPWPolicy(_T(""));
-        else {
-          m_PWP.length = m_pwpLenCtrl->GetValue();
-          m_PWP.flags = 0;
-          m_PWP.lowerminlength = m_PWP.upperminlength =
-            m_PWP.digitminlength = m_PWP.symbolminlength = 0;
-          if (m_pwpUseLowerCtrl->GetValue()) {
-            m_PWP.flags |= PWSprefs::PWPolicyUseLowercase;
-            m_PWP.lowerminlength = m_pwpLCSpin->GetValue();
-          }
-          if (m_pwpUseUpperCtrl->GetValue()) {
-            m_PWP.flags |= PWSprefs::PWPolicyUseUppercase;
-            m_PWP.upperminlength = m_pwpUCSpin->GetValue();
-          }
-          if (m_pwpUseDigitsCtrl->GetValue()) {
-            m_PWP.flags |= PWSprefs::PWPolicyUseDigits;
-            m_PWP.digitminlength = m_pwpDigSpin->GetValue();
-          }
-          if (m_pwpSymCtrl->GetValue()) {
-            m_PWP.flags |= PWSprefs::PWPolicyUseSymbols;
-            m_PWP.symbolminlength = m_pwpSymSpin->GetValue();
-          }
-          if (m_pwpEasyCtrl->GetValue())
-            m_PWP.flags |= PWSprefs::PWPolicyUseEasyVision;
-          if (m_pwpPronounceCtrl->GetValue())
-            m_PWP.flags |= PWSprefs::PWPolicyMakePronounceable;
-          if (m_pwpHexCtrl->GetValue())
-            m_PWP.flags |= PWSprefs::PWPolicyUseHexDigits;
-          m_item.SetPWPolicy(m_PWP);
-        }
+        m_item.SetPWPolicy(pwp);
         m_item.SetDCA(m_useDefaultDCA ? -1 : m_DCA);
       } // bIsModified
 
@@ -1083,6 +1072,8 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
       m_item.SetXTime(m_tttXTime);
       if (m_XTimeInt > 0 && m_XTimeInt <= 3650)
         m_item.SetXTimeInt(m_XTimeInt);
+      if (m_ourPWPRB->GetValue())
+        m_item.SetPWPolicy(GetPWPolicyFromUI());
 
 #ifdef NOTYET
 if (m_AEMD.ibasedata > 0) {
@@ -1244,7 +1235,7 @@ void AddEditPropSheet::OnRadiobuttonSelected( wxCommandEvent& evt )
 
 void AddEditPropSheet::OnPWPRBSelected( wxCommandEvent& evt )
 {
-  UpdatePWPolicyControls(evt.GetEventObject() == m_defPWPRB);
+  EnablePWPolicyControls(evt.GetEventObject() != m_defPWPRB);
 }
 
 void AddEditPropSheet::ShowPWPSpinners(bool show)
@@ -1260,24 +1251,24 @@ void AddEditPropSheet::ShowPWPSpinners(bool show)
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX8
  */
 
-void AddEditPropSheet::OnPronouceableCBClick( wxCommandEvent& /* evt */ )
-{
- if (Validate() && TransferDataFromWindow()) {
-   bool wantsPronouceable = m_pwpPronounceCtrl->GetValue();
-   ShowPWPSpinners(!wantsPronouceable);
- }
-}
-
-
 /*!
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX7
  */
 
-void AddEditPropSheet::OnEZreadCBClick( wxCommandEvent& /* evt */ )
+void AddEditPropSheet::OnEZreadOrProounceable(wxCommandEvent& evt)
 {
  if (Validate() && TransferDataFromWindow()) {
-   bool wantsEZread = m_pwpEasyCtrl->GetValue();
-   ShowPWPSpinners(!wantsEZread);
+   if (m_pwpEasyCtrl->GetValue() && m_pwpPronounceCtrl->GetValue()) {
+    wxMessageBox(_("Sorry, 'pronounceable' and 'easy-to-read' are not supported together"),
+                        _("Password Policy"), wxOK | wxICON_EXCLAMATION, this);
+    if (evt.GetEventObject() == m_pwpPronounceCtrl)
+      m_pwpPronounceCtrl->SetValue(false);
+    else
+      m_pwpEasyCtrl->SetValue(false);
+   }
+   else {
+     ShowPWPSpinners(!evt.IsChecked());
+   }
  }
 }
 
@@ -1312,3 +1303,113 @@ void AddEditPropSheet::OnNoteSetFocus( wxFocusEvent& /* evt */ )
   }
 }
 
+/*!
+ * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_BUTTON7
+ */
+void AddEditPropSheet::OnResetPWPolicy(wxCommandEvent& /*evt*/)
+{
+  UpdatePWPolicyControls(GetPWPolicyFromPrefs());
+}
+
+PWPolicy AddEditPropSheet::GetPWPolicyFromUI() const
+{
+  wxASSERT_MSG(m_ourPWPRB->GetValue() && !m_defPWPRB->GetValue(), wxT("Trying to get Password policy from UI when db defaults are to be used"));
+  
+  PWPolicy pwp;
+
+  pwp.length = m_pwpLenCtrl->GetValue();
+  pwp.flags = 0;
+  pwp.lowerminlength = pwp.upperminlength =
+    pwp.digitminlength = pwp.symbolminlength = 0;
+  if (m_pwpUseLowerCtrl->GetValue()) {
+    pwp.flags |= PWSprefs::PWPolicyUseLowercase;
+    pwp.lowerminlength = m_pwpLCSpin->GetValue();
+  }
+  if (m_pwpUseUpperCtrl->GetValue()) {
+    pwp.flags |= PWSprefs::PWPolicyUseUppercase;
+    pwp.upperminlength = m_pwpUCSpin->GetValue();
+  }
+  if (m_pwpUseDigitsCtrl->GetValue()) {
+    pwp.flags |= PWSprefs::PWPolicyUseDigits;
+    pwp.digitminlength = m_pwpDigSpin->GetValue();
+  }
+  if (m_pwpSymCtrl->GetValue()) {
+    pwp.flags |= PWSprefs::PWPolicyUseSymbols;
+    pwp.symbolminlength = m_pwpSymSpin->GetValue();
+  }
+
+  wxASSERT_MSG(!m_pwpEasyCtrl->GetValue() || !m_pwpPronounceCtrl->GetValue(), wxT("UI Bug: both pronounceable and easy-to-read are set"));
+
+  if (m_pwpEasyCtrl->GetValue())
+    pwp.flags |= PWSprefs::PWPolicyUseEasyVision;
+  else if (m_pwpPronounceCtrl->GetValue())
+    pwp.flags |= PWSprefs::PWPolicyMakePronounceable;
+  if (m_pwpHexCtrl->GetValue())
+    pwp.flags = PWSprefs::PWPolicyUseHexDigits; //yes, its '=' and not '|='
+
+  return pwp;
+}
+
+PWPolicy AddEditPropSheet::GetPWPolicyFromPrefs() const
+{
+  PWPolicy pwp;
+  PWSprefs *prefs = PWSprefs::GetInstance();
+
+  pwp.length = prefs->GetPref(PWSprefs::PWDefaultLength);
+  pwp.flags = 0;
+  pwp.flags |= (prefs->GetPref(PWSprefs::PWUseLowercase)     ? PWSprefs::PWPolicyUseLowercase:      0);
+  pwp.flags |= (prefs->GetPref(PWSprefs::PWUseUppercase)     ? PWSprefs::PWPolicyUseUppercase:      0);
+  pwp.flags |= (prefs->GetPref(PWSprefs::PWUseDigits)        ? PWSprefs::PWPolicyUseDigits   :      0);
+  pwp.flags |= (prefs->GetPref(PWSprefs::PWUseSymbols)       ? PWSprefs::PWPolicyUseSymbols  :      0);
+  pwp.flags |= (prefs->GetPref(PWSprefs::PWUseHexDigits)     ? PWSprefs::PWPolicyUseHexDigits:      0);
+  pwp.flags |= (prefs->GetPref(PWSprefs::PWUseEasyVision)    ? PWSprefs::PWPolicyUseEasyVision:     0);
+  pwp.flags |= (prefs->GetPref(PWSprefs::PWMakePronounceable)? PWSprefs::PWPolicyMakePronounceable: 0);
+  pwp.lowerminlength = prefs->GetPref(PWSprefs::PWLowercaseMinLength);
+  pwp.upperminlength = prefs->GetPref(PWSprefs::PWUppercaseMinLength);
+  pwp.digitminlength = prefs->GetPref(PWSprefs::PWDigitMinLength);
+  pwp.symbolminlength = prefs->GetPref(PWSprefs::PWSymbolMinLength);
+
+  return pwp;
+}
+
+PWPolicy AddEditPropSheet::GetSelectedPWPolicy() const
+{
+  if (m_defPWPRB->GetValue())
+    return GetPWPolicyFromPrefs();
+  else
+    return GetPWPolicyFromUI();
+}
+
+void AddEditPropSheet::OnUpdateResetPWPolicyButton(wxUpdateUIEvent& evt)
+{
+  evt.Enable(m_ourPWPRB->GetValue());
+}
+
+/*
+ * Just trying to give the user some visual indication that
+ * the password length has to be bigger than the sum of all
+ * "at least" lengths.  This is not comprehensive & foolproof
+ * since there are far too many ways to make the password length
+ * smaller than the sum of "at least" lengths, to even think of.
+ * 
+ * In OnOk(), we just ensure the password length is greater than
+ * the sum of all enabled "at least" lengths.  We have to do this in the
+ * UI, or else password generation crashes
+ */
+void AddEditPropSheet::OnAtLeastChars(wxSpinEvent& evt)
+{
+  const int min = GetRequiredPWLength();
+  //m_pwpLenCtrl->SetRange(min, pwlenCtrl->GetMax());
+  if (min > m_pwpLenCtrl->GetValue())
+    m_pwpLenCtrl->SetValue(min);
+}
+
+int AddEditPropSheet::GetRequiredPWLength() const {
+  wxSpinCtrl* spinCtrls[] = {m_pwpUCSpin, m_pwpLCSpin, m_pwpDigSpin, m_pwpSymSpin};
+  int total = 0;
+  for (size_t idx = 0; idx < WXSIZEOF(spinCtrls); ++idx) {
+    if (spinCtrls[idx]->IsEnabled())
+      total += spinCtrls[idx]->GetValue();
+  }
+  return total;
+}
