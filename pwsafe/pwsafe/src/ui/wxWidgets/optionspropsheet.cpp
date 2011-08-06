@@ -112,6 +112,11 @@ EVT_BUTTON( wxID_OK, COptions::OnOk )
 ////@end COptions event table entries
 
   EVT_BOOKCTRL_PAGE_CHANGING(wxID_ANY, COptions::OnPageChanging)
+  EVT_BOOKCTRL_PAGE_CHANGING(wxID_ANY, COptions::OnPageChanging)
+  EVT_SPINCTRL(ID_SPINCTRL5, COptions::OnAtLeastChars)
+  EVT_SPINCTRL(ID_SPINCTRL6, COptions::OnAtLeastChars)
+  EVT_SPINCTRL(ID_SPINCTRL7, COptions::OnAtLeastChars)
+  EVT_SPINCTRL(ID_SPINCTRL8, COptions::OnAtLeastChars)
 END_EVENT_TABLE()
 
 const wxChar *BUSuffix[] = {
@@ -1011,7 +1016,8 @@ void COptions::PropSheetToPrefs()
   const bool usehex = m_pwpHexCtrl->GetValue();
   prefs->SetPref(PWSprefs::SavePasswordHistory, m_pwhistsaveCB->GetValue(), true);
   prefs->SetPref(PWSprefs::NumPWHistoryDefault, m_pwhistnumdfltSB->GetValue(), true);
-  prefs->SetPref(PWSprefs::PWDefaultLength, m_pwdefaultlength, true);
+  int pwlenRequired = GetRequiredPWLength();
+  prefs->SetPref(PWSprefs::PWDefaultLength, wxMax(pwlenRequired, m_pwdefaultlength), true);
   prefs->SetPref(PWSprefs::PWUseLowercase, m_pwpUseLowerCtrl->GetValue() && !usehex, true);
   prefs->SetPref(PWSprefs::PWUseUppercase, m_pwpUseUpperCtrl->GetValue() && !usehex, true);
   prefs->SetPref(PWSprefs::PWUseDigits, m_pwpUseDigitsCtrl->GetValue() && !usehex, true);
@@ -1321,4 +1327,34 @@ void COptions::OnPageChanging(wxBookCtrlEvent& evt)
     if (validator && !validator->Validate(this))
       evt.Veto();
   }
+}
+
+/*
+ * Just trying to give the user some visual indication that
+ * the password length has to be bigger than the sum of all
+ * "at least" lengths.  This is not comprehensive & foolproof
+ * since there are far too many ways to make the password length
+ * smaller than the sum of "at least" lengths, to even think of.
+ * 
+ * In OnOk(), we just ensure the password length is greater than
+ * the sum of all enabled "at least" lengths.  We have to do this in the
+ * UI, or else password generation crashes
+ */
+void COptions::OnAtLeastChars(wxSpinEvent& evt)
+{
+  const int min = GetRequiredPWLength();
+  wxSpinCtrl* pwlenCtrl = wxDynamicCast(FindWindow(ID_SPINCTRL3), wxSpinCtrl);
+  //pwlenCtrl->SetRange(min, pwlenCtrl->GetMax());
+  if (min > pwlenCtrl->GetValue())
+    pwlenCtrl->SetValue(min);
+}
+
+int COptions::GetRequiredPWLength() const {
+  wxSpinCtrl* spinCtrls[] = {m_pwpUCSpin, m_pwpLCSpin, m_pwpDigSpin, m_pwpSymSpin};
+  int total = 0;
+  for (size_t idx = 0; idx < WXSIZEOF(spinCtrls); ++idx) {
+    if (spinCtrls[idx]->IsEnabled())
+      total += spinCtrls[idx]->GetValue();
+  }
+  return total;
 }
