@@ -11,12 +11,12 @@
 //-----------------------------------------------------------------------------
 
 #include "core/PwsPlatform.h"
-#include "PWDialog.h"
+#include "PKBaseDlg.h"
 #include "ControlExtns.h"
 
 class CVKeyBoardDlg;
 
-class CPasskeyChangeDlg : public CPWDialog
+class CPasskeyChangeDlg : public CPKBaseDlg
 {
   // Construction
 public:
@@ -28,7 +28,6 @@ public:
   enum { IDD = IDD_KEYCHANGE_DIALOG };
   CSecString m_confirmnew;
   CSecString m_newpasskey;
-  CSecString m_oldpasskey;
   //}}AFX_DATA
 
   // Overrides
@@ -62,7 +61,6 @@ protected:
   DECLARE_MESSAGE_MAP()
 
 private:
-  CSecEditExtn *m_pctlOldPasskey;
   CSecEditExtn *m_pctlNewPasskey;
   CSecEditExtn *m_pctlConfirmNew;
   CVKeyBoardDlg *m_pVKeyBoardDlg;

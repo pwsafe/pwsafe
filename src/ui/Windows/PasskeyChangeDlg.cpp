@@ -40,25 +40,20 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-static wchar_t PSSWDCHAR = L'*';
-
 //-----------------------------------------------------------------------------
 CPasskeyChangeDlg::CPasskeyChangeDlg(CWnd* pParent)
-  : CPWDialog(CPasskeyChangeDlg::IDD, pParent), m_pVKeyBoardDlg(NULL),
-  m_LastFocus(IDC_OLDPASSKEY)
+  : CPKBaseDlg(CPasskeyChangeDlg::IDD, pParent), m_pVKeyBoardDlg(NULL),
+  m_LastFocus(IDC_PASSKEY)
 {
-  m_oldpasskey = L"";
   m_newpasskey = L"";
   m_confirmnew = L"";
 
   m_pctlNewPasskey = new CSecEditExtn;
-  m_pctlOldPasskey = new CSecEditExtn;
   m_pctlConfirmNew = new CSecEditExtn;
 }
 
 CPasskeyChangeDlg::~CPasskeyChangeDlg()
 {
-  delete m_pctlOldPasskey;
   delete m_pctlNewPasskey;
   delete m_pctlConfirmNew;
 
@@ -78,25 +73,24 @@ CPasskeyChangeDlg::~CPasskeyChangeDlg()
 
 void CPasskeyChangeDlg::DoDataExchange(CDataExchange* pDX)
 {
-  CPWDialog::DoDataExchange(pDX);
+  CPKBaseDlg::DoDataExchange(pDX);
 
   // Can't use DDX_Text for CSecEditExtn
-  m_pctlOldPasskey->DoDDX(pDX, m_oldpasskey);
   m_pctlNewPasskey->DoDDX(pDX, m_newpasskey);
   m_pctlConfirmNew->DoDDX(pDX, m_confirmnew);
 
   DDX_Control(pDX, IDC_CONFIRMNEW, *m_pctlConfirmNew);
   DDX_Control(pDX, IDC_NEWPASSKEY, *m_pctlNewPasskey);
-  DDX_Control(pDX, IDC_OLDPASSKEY, *m_pctlOldPasskey);
+  DDX_Control(pDX, IDC_PASSKEY, *m_pctlPasskey);
 }
 
-BEGIN_MESSAGE_MAP(CPasskeyChangeDlg, CPWDialog)
+BEGIN_MESSAGE_MAP(CPasskeyChangeDlg, CPKBaseDlg)
   ON_BN_CLICKED(ID_HELP, OnHelp)
-  ON_EN_SETFOCUS(IDC_OLDPASSKEY, OnPasskeySetfocus)
+  ON_EN_SETFOCUS(IDC_PASSKEY, OnPasskeySetfocus)
   ON_EN_SETFOCUS(IDC_NEWPASSKEY, OnNewPasskeySetfocus)
   ON_EN_SETFOCUS(IDC_CONFIRMNEW, OnConfirmNewSetfocus)
 #if defined(POCKET_PC)
-  ON_EN_KILLFOCUS(IDC_OLDPASSKEY, OnPasskeyKillfocus)
+  ON_EN_KILLFOCUS(IDC_PASSKEY, OnPasskeyKillfocus)
   ON_EN_KILLFOCUS(IDC_NEWPASSKEY, OnPasskeyKillfocus)
   ON_EN_KILLFOCUS(IDC_CONFIRMNEW, OnPasskeyKillfocus)
 #endif
@@ -106,13 +100,11 @@ END_MESSAGE_MAP()
 
 BOOL CPasskeyChangeDlg::OnInitDialog()
 {
-  CPWDialog::OnInitDialog();
+  CPKBaseDlg::OnInitDialog();
 
-  ApplyPasswordFont(GetDlgItem(IDC_OLDPASSKEY));
   ApplyPasswordFont(GetDlgItem(IDC_NEWPASSKEY));
   ApplyPasswordFont(GetDlgItem(IDC_CONFIRMNEW));
 
-  m_pctlOldPasskey->SetPasswordChar(PSSWDCHAR);
   m_pctlNewPasskey->SetPasswordChar(PSSWDCHAR);
   m_pctlConfirmNew->SetPasswordChar(PSSWDCHAR);
 
@@ -132,7 +124,7 @@ void CPasskeyChangeDlg::OnOK()
 
   UpdateData(TRUE);
   CGeneralMsgBox gmb;
-  int rc = app.m_core.CheckPasskey(app.m_core.GetCurFile(), m_oldpasskey);
+  int rc = app.m_core.CheckPasskey(app.m_core.GetCurFile(), m_passkey);
   if (rc == PWScore::WRONG_PASSWORD)
     gmb.AfxMessageBox(IDS_WRONGOLDPHRASE);
   else if (rc == PWScore::CANT_OPEN_FILE)
@@ -167,7 +159,7 @@ void CPasskeyChangeDlg::OnOK()
 
 void CPasskeyChangeDlg::OnCancel() 
 {
-  CPWDialog::OnCancel();
+  CPKBaseDlg::OnCancel();
 }
 
 void CPasskeyChangeDlg::OnHelp() 
@@ -194,7 +186,7 @@ void CPasskeyChangeDlg::OnPasskeyKillfocus()
 
 void CPasskeyChangeDlg::OnPasskeySetfocus()
 {
-  m_LastFocus = IDC_OLDPASSKEY;
+  m_LastFocus = IDC_PASSKEY;
 
 #if defined(POCKET_PC)
 /************************************************************************/
@@ -270,9 +262,9 @@ LRESULT CPasskeyChangeDlg::OnInsertBuffer(WPARAM, LPARAM)
   CSecString *m_pSecString;
 
   switch (m_LastFocus) {
-    case IDC_OLDPASSKEY:
-      m_pSecCtl = m_pctlOldPasskey;
-      m_pSecString = &m_oldpasskey;
+    case IDC_PASSKEY:
+      m_pSecCtl = m_pctlPasskey;
+      m_pSecString = &m_passkey;
       break;
     case IDC_NEWPASSKEY:
       m_pSecCtl = m_pctlNewPasskey;
