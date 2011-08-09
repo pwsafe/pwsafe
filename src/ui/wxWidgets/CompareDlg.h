@@ -34,6 +34,7 @@ class CompareDlg: public wxDialog
   void OnGridCellRightClick(wxGridEvent& evt);
   void OnEditInCurrentDB(wxCommandEvent& evt);
   void OnViewInComparisonDB(wxCommandEvent& evt);
+  void OnExpandDataPanels(wxCommandEvent& evt);
 
 public:
   CompareDlg(wxWindow* parent, PWScore* core);
