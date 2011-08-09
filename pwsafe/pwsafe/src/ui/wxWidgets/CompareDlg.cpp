@@ -42,11 +42,15 @@ enum {
   ID_DELETE_ITEMS_FROM_CURRENT_DB
 };
 
+DECLARE_EVENT_TYPE(EVT_EXPAND_DATA_PANELS, -1)
+DEFINE_EVENT_TYPE(EVT_EXPAND_DATA_PANELS)
+
 BEGIN_EVENT_TABLE( CompareDlg, wxDialog )
   EVT_BUTTON( ID_BTN_COMPARE,  CompareDlg::OnCompare )
   EVT_GRID_CELL_RIGHT_CLICK(CompareDlg::OnGridCellRightClick)
   EVT_MENU(ID_EDIT_IN_CURRENT_DB, CompareDlg::OnEditInCurrentDB)
   EVT_MENU(ID_VIEW_IN_COMPARISON_DB, CompareDlg::OnViewInComparisonDB)
+  EVT_COMMAND(wxID_ANY, EVT_EXPAND_DATA_PANELS, CompareDlg::OnExpandDataPanels)
 END_EVENT_TABLE()
 
 struct ComparisonData {
@@ -258,8 +262,6 @@ void CompareDlg::DoCompare()
                            m_conflicts->data,
                            m_identical->data);
 
-    m_dbSelectionPane->Collapse();
-    m_optionsPane->Collapse();
     struct {
       ComparisonData* cd;
       bool expand;
@@ -303,12 +305,6 @@ void CompareDlg::DoCompare()
         pane->SetLabel(newLabel);
         */
         pane->Show();
-        if (sections[idx].expand) {
-          pane->Expand();
-        }
-        else {
-          pane->Collapse();
-        }
         //if the next pane is displayed, show the sizer below this pane
         prevSizer = sections[idx].cd->sizerBelow; 
       }
@@ -316,7 +312,8 @@ void CompareDlg::DoCompare()
         sections[idx].cd->pane->Hide();
       }
     }
-    Layout();
+    wxCommandEvent cmdEvent(EVT_EXPAND_DATA_PANELS, GetId());
+    GetEventHandler()->AddPendingEvent(cmdEvent);
   }
 }
 
@@ -434,3 +431,28 @@ void CompareDlg::ViewSelectedEntry(wxGrid* sourceGrid, bool readOnly)
 }
 
 
+void CompareDlg::OnExpandDataPanels(wxCommandEvent& evt)
+{
+  m_dbSelectionPane->Collapse();
+  m_optionsPane->Collapse();
+
+  if (m_conflicts->pane->IsShown())
+    m_conflicts->pane->Expand();
+  else
+    m_conflicts->pane->Collapse();
+
+  if (m_current->pane->IsShown())
+    m_current->pane->Expand();
+  else
+    m_current->pane->Collapse();
+
+  if (m_comparison->pane->IsShown())
+    m_comparison->pane->Expand();
+  else
+    m_comparison->pane->Collapse();
+
+  if (m_identical->pane->IsShown())
+    m_identical->pane->Collapse();
+
+  Layout();
+}
