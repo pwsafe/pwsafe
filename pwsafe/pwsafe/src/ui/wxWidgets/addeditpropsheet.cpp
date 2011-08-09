@@ -950,6 +950,18 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
     const wxString group = m_groupCtrl->GetValue();
     const StringX password = tostringx(m_PasswordCtrl->GetValue());
 
+    if (m_title.IsEmpty() || password.empty()) {
+      GetBookCtrl()->SetSelection(0);
+      if (m_title.IsEmpty())
+        FindWindow(ID_TEXTCTRL5)->SetFocus();
+      else
+        m_PasswordCtrl->SetFocus();
+
+      wxMessageBox(wxString(_("This entry must have a ")) << (m_title.IsEmpty() ? _("title"): _("password")),
+                    _("Error"), wxOK|wxICON_INFORMATION, this);
+      return;
+    }
+
     if (m_isPWHidden) { // hidden passwords - compare both values
       const StringX p2 = tostringx(m_Password2Ctrl->GetValue());
       if (password != p2) {
