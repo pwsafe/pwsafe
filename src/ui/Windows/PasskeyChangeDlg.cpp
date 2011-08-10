@@ -96,6 +96,8 @@ BEGIN_MESSAGE_MAP(CPasskeyChangeDlg, CPKBaseDlg)
 #endif
   ON_STN_CLICKED(IDC_VKB, OnVirtualKeyboard)
   ON_MESSAGE(PWS_MSG_INSERTBUFFER, OnInsertBuffer)
+  ON_BN_CLICKED(IDC_YUBIKEY2_BTN, &CPasskeyChangeDlg::OnYubikey2Btn)
+  ON_BN_CLICKED(IDC_YUBIKEY_BTN, &CPasskeyChangeDlg::OnYubikeyBtn)
 END_MESSAGE_MAP()
 
 BOOL CPasskeyChangeDlg::OnInitDialog()
@@ -300,3 +302,20 @@ LRESULT CPasskeyChangeDlg::OnInsertBuffer(WPARAM, LPARAM)
 
   return 0L;
 }
+
+
+void CPasskeyChangeDlg::OnYubikey2Btn()
+{
+  UpdateData(TRUE);
+}
+
+
+void CPasskeyChangeDlg::OnYubikeyBtn()
+{
+  UpdateData(TRUE);
+}
+
+void CPasskeyChangeDlg::ProcessPhrase()
+{
+}
+

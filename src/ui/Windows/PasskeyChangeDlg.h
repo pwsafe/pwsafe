@@ -57,7 +57,7 @@ protected:
   afx_msg void OnVirtualKeyboard();
   afx_msg LRESULT OnInsertBuffer(WPARAM, LPARAM);
   //}}AFX_MSG
-
+  void ProcessPhrase();
   DECLARE_MESSAGE_MAP()
 
 private:
@@ -66,6 +66,9 @@ private:
   CVKeyBoardDlg *m_pVKeyBoardDlg;
   UINT m_CtrlID;
   UINT m_LastFocus;
+public:
+    afx_msg void OnYubikey2Btn();
+    afx_msg void OnYubikeyBtn();
 };
 //-----------------------------------------------------------------------------
 // Local variables:

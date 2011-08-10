@@ -750,6 +750,8 @@
 #define IDC_BUTTON1                     1454
 #define IDC_YUBIKEY_BTN                 1455
 #define IDC_YUBIKEY_STATUS              1456
+#define IDC_YUBIKEY_BTN2                1456
+#define IDC_YUBIKEY2_BTN                1456
 #define IDC_PROGRESS1                   1457
 #define IDC_YUBI_PROGRESS               1457
 #define IDC_EDIT1                       1458
