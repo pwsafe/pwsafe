@@ -43,7 +43,7 @@ static char THIS_FILE[] = __FILE__;
 //-----------------------------------------------------------------------------
 CPasskeyChangeDlg::CPasskeyChangeDlg(CWnd* pParent)
   : CPKBaseDlg(CPasskeyChangeDlg::IDD, pParent), m_pVKeyBoardDlg(NULL),
-  m_LastFocus(IDC_PASSKEY)
+    m_LastFocus(IDC_PASSKEY), m_Yubi1pressed(false), m_Yubi2pressed(false)
 {
   m_newpasskey = L"";
   m_confirmnew = L"";
@@ -100,6 +100,16 @@ BEGIN_MESSAGE_MAP(CPasskeyChangeDlg, CPKBaseDlg)
   ON_BN_CLICKED(IDC_YUBIKEY_BTN, &CPasskeyChangeDlg::OnYubikeyBtn)
 END_MESSAGE_MAP()
 
+BEGIN_DISPATCH_MAP(CPasskeyChangeDlg, CPKBaseDlg)
+	//{{AFX_DISPATCH_MAP(CPasskeyChangeDlg)
+		// NOTE - the ClassWizard will add and remove mapping macros here.
+	//}}AFX_DISPATCH_MAP
+	DISP_FUNCTION_ID(CPasskeyChangeDlg, "deviceInserted", 1, yubiInserted, VT_EMPTY, VTS_NONE)
+	DISP_FUNCTION_ID(CPasskeyChangeDlg, "deviceRemoved", 2, yubiRemoved, VT_EMPTY, VTS_NONE)
+	DISP_FUNCTION_ID(CPasskeyChangeDlg, "operationCompleted", 3, yubiCompleted, VT_EMPTY, VTS_I2)
+  DISP_FUNCTION_ID(CPasskeyChangeDlg, "userWait", 4, yubiWait, VT_EMPTY, VTS_I2)
+END_DISPATCH_MAP()
+
 BOOL CPasskeyChangeDlg::OnInitDialog()
 {
   CPKBaseDlg::OnInitDialog();
@@ -125,6 +135,9 @@ void CPasskeyChangeDlg::OnOK()
   CString cs_msg, cs_text;
 
   UpdateData(TRUE);
+  if (!m_oldpasskey.IsEmpty()) {
+    m_passkey = m_oldpasskey; // old passkey is from Yubikey
+  }
   CGeneralMsgBox gmb;
   int rc = app.m_core.CheckPasskey(app.m_core.GetCurFile(), m_passkey);
   if (rc == PWScore::WRONG_PASSWORD)
@@ -304,18 +317,49 @@ LRESULT CPasskeyChangeDlg::OnInsertBuffer(WPARAM, LPARAM)
 }
 
 
+void CPasskeyChangeDlg::OnYubikeyBtn()
+{
+  // This is for existing password verification
+  UpdateData(TRUE);
+  m_Yubi1pressed = true;
+  yubiRequestHMACSha1(); // request HMAC of m_passkey
+}
+
 void CPasskeyChangeDlg::OnYubikey2Btn()
 {
   UpdateData(TRUE);
+  if (m_confirmnew != m_newpasskey) {
+    CGeneralMsgBox gmb;
+    gmb.AfxMessageBox(IDS_NEWOLDDONOTMATCH);
+  } else {
+    m_Yubi2pressed = true;
+    m_passkey = m_newpasskey;
+    yubiRequestHMACSha1(); // request HMAC of m_passkey
+  }
 }
 
-
-void CPasskeyChangeDlg::OnYubikeyBtn()
-{
-  UpdateData(TRUE);
-}
 
 void CPasskeyChangeDlg::ProcessPhrase()
 {
+  if (m_Yubi1pressed) { // verify existing password
+    m_Yubi1pressed = false;
+    CGeneralMsgBox gmb;
+    int rc = app.m_core.CheckPasskey(app.m_core.GetCurFile(), m_passkey);
+    if (rc == PWScore::WRONG_PASSWORD)
+      gmb.AfxMessageBox(IDS_WRONGOLDPHRASE);
+    else if (rc == PWScore::CANT_OPEN_FILE)
+      gmb.AfxMessageBox(IDS_CANTVERIFY);
+    else {
+      m_oldpasskey = m_passkey;
+    }
+  } else if (m_Yubi2pressed) { // set new yubi-passwd
+    m_Yubi2pressed = false;
+    // OnOK clears the passkey, so we save it
+    const CSecString save_passkey = m_passkey;
+    CPKBaseDlg::OnOK(); // skip our OnOK(), irrelevant
+    m_newpasskey = save_passkey;
+  } else {
+    ASSERT(0);
+  }
 }
 

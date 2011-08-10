@@ -26,8 +26,9 @@ public:
   // Dialog Data
   //{{AFX_DATA(CPasskeyChangeDlg)
   enum { IDD = IDD_KEYCHANGE_DIALOG };
-  CSecString m_confirmnew;
+  CSecString m_oldpasskey;
   CSecString m_newpasskey;
+  CSecString m_confirmnew;
   //}}AFX_DATA
 
   // Overrides
@@ -59,6 +60,7 @@ protected:
   //}}AFX_MSG
   void ProcessPhrase();
   DECLARE_MESSAGE_MAP()
+	DECLARE_DISPATCH_MAP()
 
 private:
   CSecEditExtn *m_pctlNewPasskey;
@@ -66,6 +68,8 @@ private:
   CVKeyBoardDlg *m_pVKeyBoardDlg;
   UINT m_CtrlID;
   UINT m_LastFocus;
+  bool m_Yubi1pressed; // implies old password was Yubi-based
+  bool m_Yubi2pressed; // implies new password to be -"-.
 public:
     afx_msg void OnYubikey2Btn();
     afx_msg void OnYubikeyBtn();
