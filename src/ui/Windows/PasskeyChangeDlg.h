@@ -70,6 +70,7 @@ private:
   UINT m_LastFocus;
   bool m_Yubi1pressed; // implies old password was Yubi-based
   bool m_Yubi2pressed; // implies new password to be -"-.
+  bool m_oldpasskeyConfirmed;
 public:
     afx_msg void OnYubikey2Btn();
     afx_msg void OnYubikeyBtn();

@@ -43,7 +43,8 @@ static char THIS_FILE[] = __FILE__;
 //-----------------------------------------------------------------------------
 CPasskeyChangeDlg::CPasskeyChangeDlg(CWnd* pParent)
   : CPKBaseDlg(CPasskeyChangeDlg::IDD, pParent), m_pVKeyBoardDlg(NULL),
-    m_LastFocus(IDC_PASSKEY), m_Yubi1pressed(false), m_Yubi2pressed(false)
+    m_LastFocus(IDC_PASSKEY), m_Yubi1pressed(false), m_Yubi2pressed(false),
+    m_oldpasskeyConfirmed(false)
 {
   m_newpasskey = L"";
   m_confirmnew = L"";
@@ -333,6 +334,7 @@ void CPasskeyChangeDlg::OnYubikey2Btn()
     gmb.AfxMessageBox(IDS_NEWOLDDONOTMATCH);
   } else {
     m_Yubi2pressed = true;
+    m_oldpasskey = m_passkey; // might need for confirmation
     m_passkey = m_newpasskey;
     yubiRequestHMACSha1(); // request HMAC of m_passkey
   }
@@ -351,13 +353,23 @@ void CPasskeyChangeDlg::ProcessPhrase()
       gmb.AfxMessageBox(IDS_CANTVERIFY);
     else {
       m_oldpasskey = m_passkey;
+      m_oldpasskeyConfirmed = true;
     }
   } else if (m_Yubi2pressed) { // set new yubi-passwd
     m_Yubi2pressed = false;
-    // OnOK clears the passkey, so we save it
-    const CSecString save_passkey = m_passkey;
-    CPKBaseDlg::OnOK(); // skip our OnOK(), irrelevant
-    m_newpasskey = save_passkey;
+    if (!m_oldpasskeyConfirmed) {
+      // perhaps old passkey's w/o yubikey - check it that way
+      int rc = app.m_core.CheckPasskey(app.m_core.GetCurFile(), m_oldpasskey);
+      m_oldpasskeyConfirmed = rc == PWScore::SUCCESS;
+    }
+    if (m_oldpasskeyConfirmed) {
+      // OnOK clears the passkey, so we save it
+      const CSecString save_passkey = m_passkey;
+      CPKBaseDlg::OnOK(); // skip our OnOK(), irrelevant
+      m_newpasskey = save_passkey;
+    } else {
+      m_yubi_status.SetWindowText(_T("Please confirm old passphrase"));
+    }
   } else {
     ASSERT(0);
   }
