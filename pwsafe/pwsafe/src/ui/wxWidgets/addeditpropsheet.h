@@ -102,7 +102,10 @@ class UIInterFace;
 #else
 #define SYMBOL_ADDEDITPROPSHEET_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX
 #endif
-#define SYMBOL_ADDEDITPROPSHEET_TITLE _("Edit Entry")
+#define SYMBOL_ADDPROPSHEET_TITLE _("Add Entry")
+#define SYMBOL_EDITPROPSHEET_TITLE _("Edit Entry")
+#define SYMBOL_VIEWPROPSHEET_TITLE _("View Entry")
+#define SYMBOL_AUTOPROPSHEET_TITLE _("Add, Edit or View Entry")
 #define SYMBOL_ADDEDITPROPSHEET_IDNAME ID_ADDEDITPROPSHEET
 #define SYMBOL_ADDEDITPROPSHEET_SIZE wxSize(400, 300)
 #define SYMBOL_ADDEDITPROPSHEET_POSITION wxDefaultPosition
@@ -127,13 +130,13 @@ public:
                    AddOrEdit type, const CItemData *item = NULL,  UIInterFace* ui = 0,
                    const wxString& selectedGroup = wxEmptyString,
                    wxWindowID id = SYMBOL_ADDEDITPROPSHEET_IDNAME,
-                   const wxString& caption = SYMBOL_ADDEDITPROPSHEET_TITLE,
+                   const wxString& caption = SYMBOL_AUTOPROPSHEET_TITLE,
                    const wxPoint& pos = SYMBOL_ADDEDITPROPSHEET_POSITION,
                    const wxSize& size = SYMBOL_ADDEDITPROPSHEET_SIZE,
                    long style = SYMBOL_ADDEDITPROPSHEET_STYLE );
 
   /// Creation
-  bool Create( wxWindow* parent, wxWindowID id = SYMBOL_ADDEDITPROPSHEET_IDNAME, const wxString& caption = SYMBOL_ADDEDITPROPSHEET_TITLE, const wxPoint& pos = SYMBOL_ADDEDITPROPSHEET_POSITION, const wxSize& size = SYMBOL_ADDEDITPROPSHEET_SIZE, long style = SYMBOL_ADDEDITPROPSHEET_STYLE );
+  bool Create( wxWindow* parent, wxWindowID id = SYMBOL_ADDEDITPROPSHEET_IDNAME, const wxString& caption = SYMBOL_AUTOPROPSHEET_TITLE, const wxPoint& pos = SYMBOL_ADDEDITPROPSHEET_POSITION, const wxSize& size = SYMBOL_ADDEDITPROPSHEET_SIZE, long style = SYMBOL_ADDEDITPROPSHEET_STYLE );
 
   /// Destructor
   ~AddEditPropSheet();
