@@ -9,7 +9,7 @@
 # Oh, this works with GNU make under Cygwin. YMMV on other makes...
 
 RELEASENUM := 3.26.1
-RELEASE_SPECIAL := "Y"
+RELEASE_SPECIAL := Y
 RELEASENAME= $(RELEASENUM)$(RELEASE_SPECIAL)
 
 RELEASEDIR := /cygdrive/c/local/src/PasswordSafe/Releases
