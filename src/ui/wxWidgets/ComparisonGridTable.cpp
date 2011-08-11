@@ -25,7 +25,6 @@
 #include "./AdvancedSelectionDlg.h"
 #include "../../core/PWScore.h"
 #include "./wxutils.h"
-#include "./addeditpropsheet.h"
 #include <algorithm>
 
 class ComparisonGridCellAttr: public wxGridCellAttr
@@ -268,16 +267,6 @@ wxGridCellAttr* UniSafeCompareGridTable::GetAttr(int row, int col, wxGridCellAtt
   return m_gridAttr;
 }
 
-void UniSafeCompareGridTable::EditEntry(int idx, wxWindow* parent, bool readonly)
-{
-  wxCHECK_RET(readonly, wxT("Trying to edit entry in non-conflicting grids, which are read-only"));
-  AddEditPropSheet ae(parent, 
-                        *m_core,
-                        AddEditPropSheet::VIEW,
-                        &m_core->Find(m_compData->at(idx).*m_uuidptr)->second);
-  ae.ShowModal();
-}
-
 
 
 int UniSafeCompareGridTable::GetItemRow(const pws_os::CUUID& uuid)
@@ -289,6 +278,16 @@ int UniSafeCompareGridTable::GetItemRow(const pws_os::CUUID& uuid)
     return std::distance(m_compData->begin(), itr);
   else
     return wxNOT_FOUND;
+}
+
+pws_os::CUUID UniSafeCompareGridTable::GetSelectedItemId(bool readOnly)
+{
+  wxArrayInt selection = GetView()->GetSelectedRows();
+  wxCHECK_MSG(!selection.IsEmpty(), pws_os::CUUID::NullUUID(), wxT("Trying to retrieve selected item id when nothing is selected"));
+  if (readOnly)
+    return m_compData->at(selection[0]).uuid1;
+  else
+    return m_compData->at(selection[0]).uuid0;
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -404,27 +403,6 @@ wxString MultiSafeCompareGridTable::GetRowLabelValue(int row)
   return wxGridTableBase::GetRowLabelValue(row/2);
 }
 
-void MultiSafeCompareGridTable::EditEntry(int idx, wxWindow* parent, bool readonly)
-{
-  int realIndex = idx/2;
-
-  if (readonly) {
-    AddEditPropSheet ae(parent, 
-                        *m_otherCore,
-                        AddEditPropSheet::VIEW,
-                        &m_otherCore->Find(m_compData->at(realIndex).uuid1)->second);
-    ae.ShowModal();
-  }
-  else {
-    AddEditPropSheet ae(parent, 
-                        *m_currentCore,
-                        AddEditPropSheet::EDIT,
-                          &m_currentCore->Find(m_compData->at(realIndex).uuid0)->second,
-                          this);
-    ae.ShowModal();
-  }
-}
-
 int MultiSafeCompareGridTable::GetItemRow(const pws_os::CUUID& uuid)
 {
   CompareData::iterator itr = std::find_if(m_compData->begin(),
@@ -434,6 +412,16 @@ int MultiSafeCompareGridTable::GetItemRow(const pws_os::CUUID& uuid)
     return std::distance(m_compData->begin(), itr)*2 + (itr->uuid0 == uuid? 0: 1);
   else
     return wxNOT_FOUND;
+}
+
+pws_os::CUUID MultiSafeCompareGridTable::GetSelectedItemId(bool readOnly)
+{
+  wxArrayInt selection = GetView()->GetSelectedRows();
+  wxCHECK_MSG(!selection.IsEmpty(), pws_os::CUUID::NullUUID(), wxT("Trying to retrieve selected item id when nothing is selected"));
+  if (readOnly)
+    return m_compData->at(selection[0]/2).uuid1;
+  else
+    return m_compData->at(selection[0]/2).uuid0;
 }
 
 //////////////////////////////////////////////////////////////////

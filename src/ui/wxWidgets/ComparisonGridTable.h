@@ -52,7 +52,7 @@ public:
 
   //should return wxNOT_FOUND on error
   virtual int GetItemRow(const pws_os::CUUID& uuid) = 0;
-  virtual void EditEntry(int idx, wxWindow* parent, bool readonly) = 0;
+  virtual pws_os::CUUID GetSelectedItemId(bool readOnly) = 0;
 
 protected:
   SelectionCriteria*      m_criteria;
@@ -103,8 +103,8 @@ public:
   wxGridCellAttr* GetAttr(int row, int col, wxGridCellAttr::wxAttrKind kind);
   
   //virtual override from ComparisonGridTable
-  void EditEntry(int idx, wxWindow* parent, bool readonly);
   int GetItemRow(const pws_os::CUUID& uuid);
+  virtual pws_os::CUUID GetSelectedItemId(bool readOnly);
 };
 
 ///////////////////////////////////////////////////////////////////
@@ -135,8 +135,8 @@ public:
   wxGridCellAttr* GetAttr(int row, int col, wxGridCellAttr::wxAttrKind kind);
 
   //virtual override from ComparisonGridTable
-  void EditEntry(int idx, wxWindow* parent, bool readonly);
   int GetItemRow(const pws_os::CUUID& uuid);
+  virtual pws_os::CUUID GetSelectedItemId(bool readOnly);
 private:
   
   PWScore* GetRowCore(int row);
