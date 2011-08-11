@@ -51,7 +51,8 @@ private:
 
   void DoCompare();
   wxGrid* GetEventSourceGrid(int id);
-  void ViewSelectedEntry(wxGrid* sourceGrid, bool readOnly);
+  pws_os::CUUID GetSelectedItemId(const wxGrid* grid, bool readOnly) const;
+  void ViewEditSelectedEntry(wxGrid* sourceGrid, PWScore* core, bool readOnly);
 
   DECLARE_EVENT_TABLE()
 };

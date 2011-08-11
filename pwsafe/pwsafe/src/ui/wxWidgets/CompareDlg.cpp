@@ -28,6 +28,7 @@
 #include "./ComparisonGridTable.h"
 #include "./SizeRestrictedPanel.h"
 #include "../../core/core.h"
+#include "./addeditpropsheet.h"
 #include <wx/statline.h>
 #include <wx/grid.h>
 
@@ -405,29 +406,36 @@ wxGrid* GetGridFromEvent(wxCommandEvent& evt)
   wxMenu* sourceMenu = wxDynamicCast(evt.GetEventObject(), wxMenu);
   if (sourceMenu)
     return wxDynamicCast(sourceMenu->GetInvokingWindow(), wxGrid);
-  else
+  else {
+    wxFAIL_MSG(wxT("Could not determine source grid from event"));
     return 0;
+  }
+}
+
+pws_os::CUUID CompareDlg::GetSelectedItemId(const wxGrid* grid, bool readOnly) const
+{
+  ComparisonGridTable* table = wxDynamicCast(grid->GetTable(), ComparisonGridTable);
+  wxCHECK_MSG(table, pws_os::CUUID::NullUUID(), wxT("Comparison grid doesnot have ComparisonGridTable derived grid table"));
+  return table->GetSelectedItemId(readOnly);
 }
 
 void CompareDlg::OnEditInCurrentDB(wxCommandEvent& evt)
 {
-  ViewSelectedEntry(GetGridFromEvent(evt), false);
+  ViewEditSelectedEntry(GetGridFromEvent(evt), m_currentCore, false);
 }
 
 void CompareDlg::OnViewInComparisonDB(wxCommandEvent& evt)
 {
-  ViewSelectedEntry(GetGridFromEvent(evt), true);
+  ViewEditSelectedEntry(GetGridFromEvent(evt), m_otherCore, true);
 }
 
-void CompareDlg::ViewSelectedEntry(wxGrid* sourceGrid, bool readOnly)
+void CompareDlg::ViewEditSelectedEntry(wxGrid* sourceGrid, PWScore* core, bool readOnly)
 {
-  if (sourceGrid) {
-    wxArrayInt selection = sourceGrid->GetSelectedRows();
-    if (selection.GetCount() == 1) {
-      const int selectedRow = selection.Item(0);
-      wxDynamicCast(sourceGrid->GetTable(), ComparisonGridTable)->EditEntry(selectedRow, this, readOnly);
-    }
-  }
+  AddEditPropSheet ae(this, 
+                      *core,
+                      readOnly? AddEditPropSheet::VIEW: AddEditPropSheet::EDIT,
+                      &core->Find(GetSelectedItemId(sourceGrid, readOnly))->second);
+  ae.ShowModal();
 }
 
 
