@@ -111,7 +111,24 @@ AddEditPropSheet::AddEditPropSheet(wxWindow* parent, PWScore &core,
   else
     m_item.CreateUUID(); // We're adding a new entry
   Init();
-  Create(parent, id, caption, pos, size, style);
+  wxString dlgTitle;
+  if (caption == SYMBOL_AUTOPROPSHEET_TITLE) {
+    switch(m_type) {
+      case ADD:
+        dlgTitle = SYMBOL_ADDPROPSHEET_TITLE;
+        break;
+      case EDIT:
+        dlgTitle = SYMBOL_EDITPROPSHEET_TITLE;
+        break;
+      case VIEW:
+        dlgTitle = SYMBOL_VIEWPROPSHEET_TITLE;
+        break;
+      default:
+        dlgTitle = caption;
+        break;
+    }
+  }
+  Create(parent, id, dlgTitle, pos, size, style);
 }
 
 
