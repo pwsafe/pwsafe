@@ -1340,7 +1340,7 @@ void COptions::OnPageChanging(wxBookCtrlEvent& evt)
  * the sum of all enabled "at least" lengths.  We have to do this in the
  * UI, or else password generation crashes
  */
-void COptions::OnAtLeastChars(wxSpinEvent& evt)
+void COptions::OnAtLeastChars(wxSpinEvent& /*evt*/)
 {
   const int min = GetRequiredPWLength();
   wxSpinCtrl* pwlenCtrl = wxDynamicCast(FindWindow(ID_SPINCTRL3), wxSpinCtrl);

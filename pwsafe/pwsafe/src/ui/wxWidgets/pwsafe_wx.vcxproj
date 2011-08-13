@@ -497,6 +497,7 @@
     <ClCompile Include="addeditpropsheet.cpp" />
     <ClCompile Include="AdvancedSelectionDlg.cpp" />
     <ClCompile Include="CompareDlg.cpp" />
+    <ClCompile Include="ComparisonGridTable.cpp" />
     <ClCompile Include="createshortcutdlg.cpp" />
     <ClCompile Include="DbSelectionPanel.cpp" />
     <ClCompile Include="deleteconfirmation.cpp" />
@@ -527,6 +528,7 @@
     <ClCompile Include="safecombinationentry.cpp" />
     <ClCompile Include="safecombinationprompt.cpp" />
     <ClCompile Include="safecombinationsetup.cpp" />
+    <ClCompile Include="SizeRestrictedPanel.cpp" />
     <ClCompile Include="SystemTray.cpp" />
     <ClCompile Include="version.cpp" />
     <ClCompile Include="ViewReport.cpp" />
