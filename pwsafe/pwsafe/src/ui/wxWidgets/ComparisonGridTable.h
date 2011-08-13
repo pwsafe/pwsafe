@@ -53,6 +53,7 @@ public:
   //should return wxNOT_FOUND on error
   virtual int GetItemRow(const pws_os::CUUID& uuid) = 0;
   virtual pws_os::CUUID GetSelectedItemId(bool readOnly) = 0;
+  virtual const st_CompareData& operator[](size_t index) const = 0;
 
 protected:
   SelectionCriteria*      m_criteria;
@@ -105,6 +106,9 @@ public:
   //virtual override from ComparisonGridTable
   int GetItemRow(const pws_os::CUUID& uuid);
   virtual pws_os::CUUID GetSelectedItemId(bool readOnly);
+  virtual const st_CompareData& operator[](size_t index) const {
+    return m_compData->at(index);
+  }
 };
 
 ///////////////////////////////////////////////////////////////////
@@ -137,6 +141,9 @@ public:
   //virtual override from ComparisonGridTable
   int GetItemRow(const pws_os::CUUID& uuid);
   virtual pws_os::CUUID GetSelectedItemId(bool readOnly);
+  virtual const st_CompareData& operator[](size_t index) const {
+    return m_compData->at(index/2);
+  }
 private:
   
   PWScore* GetRowCore(int row);
