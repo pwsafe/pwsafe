@@ -675,3 +675,6 @@
 #define IDS_SHIFTDCA                    5872
 #define IDS_SHIFTDCALONG                5873
 #define IDS_COMPSHIFTDCA                5874
+#define IDS_ENTER_NEW_DB_NAME           5875
+#define IDS_ENTER_NEW_DB_DESCRIPTION    5876
+#define IDS_INPUTBOX_CHAR_COUNT         5877

@@ -10,6 +10,8 @@ releases may be found in the file ChangeLog.txt.
 
 New Features for 3.26.1
 =======================
+[3367590] User can now add a database name and description via the Properties
+diaolg.
 [3349458] Allow filters to match on rules based on the password's length.
 [3316779] Shift + "left mouse button 'Double-Click'" now configurable for user.
 Default is copy the username to the clipboard.
