@@ -135,5 +135,30 @@ public:
 
 };
 
+/*
+ * This class injects context data from the time a popup menu
+ * is created, into the wxCommandEvent objects arising out of menu
+ * clicks
+ */
+class MenuEventModifier: public wxEvtHandler
+{
+  void* m_clientData;
+public:
+  MenuEventModifier(wxMenu* menu, void* clientData): m_clientData(clientData)
+  {    
+    menu->Connect(wxID_ANY,
+                  wxEVT_COMMAND_MENU_SELECTED,
+                  wxCommandEventHandler(MenuEventModifier::OnCommandEvent),
+                  NULL, //this is for wxWidgets' private use only
+                  this);
+  }
+
+  void OnCommandEvent(wxCommandEvent& evt) {
+    evt.Skip();
+    wxCHECK_RET(!evt.GetClientData(), wxT("Command event already has client data"));
+    evt.SetClientData(m_clientData);
+  }
+};
+
 #endif
 

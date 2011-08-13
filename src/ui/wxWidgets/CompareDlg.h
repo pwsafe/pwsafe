@@ -35,6 +35,9 @@ class CompareDlg: public wxDialog
   void OnEditInCurrentDB(wxCommandEvent& evt);
   void OnViewInComparisonDB(wxCommandEvent& evt);
   void OnExpandDataPanels(wxCommandEvent& evt);
+  void OnCopyItemsToCurrentDB(wxCommandEvent& evt);
+  void OnDeleteItemsFromCurrentDB(wxCommandEvent& evt);
+  void OnCopyFieldsToCurrentDB(wxCommandEvent& evt);
 
 public:
   CompareDlg(wxWindow* parent, PWScore* core);
@@ -52,7 +55,7 @@ private:
   void DoCompare();
   wxGrid* GetEventSourceGrid(int id);
   pws_os::CUUID GetSelectedItemId(const wxGrid* grid, bool readOnly) const;
-  void ViewEditSelectedEntry(wxGrid* sourceGrid, PWScore* core, bool readOnly);
+  void ViewEditEntry(PWScore* core, const pws_os::CUUID& uuid, bool readOnly);
 
   DECLARE_EVENT_TABLE()
 };
