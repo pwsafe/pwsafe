@@ -1425,7 +1425,7 @@ void AddEditPropSheet::OnUpdateResetPWPolicyButton(wxUpdateUIEvent& evt)
  * the sum of all enabled "at least" lengths.  We have to do this in the
  * UI, or else password generation crashes
  */
-void AddEditPropSheet::OnAtLeastChars(wxSpinEvent& evt)
+void AddEditPropSheet::OnAtLeastChars(wxSpinEvent& /*evt*/)
 {
   const int min = GetRequiredPWLength();
   //m_pwpLenCtrl->SetRange(min, pwlenCtrl->GetMax());

@@ -260,7 +260,7 @@ wxString UniSafeCompareGridTable::GetValue(int row, int col)
   return retval;
 }
 
-wxGridCellAttr* UniSafeCompareGridTable::GetAttr(int row, int col, wxGridCellAttr::wxAttrKind /*kind*/)
+wxGridCellAttr* UniSafeCompareGridTable::GetAttr(int /*row*/, int /*col*/, wxGridCellAttr::wxAttrKind /*kind*/)
 {
   //wxLogDebug(wxT("UniSafeCompareGridTable::GetAttr called for %d, %d"), row, col);
   m_gridAttr->IncRef();
@@ -387,7 +387,7 @@ wxString MultiSafeCompareGridTable::GetValue(int row, int col)
   return retval;
 }
 
-wxGridCellAttr* MultiSafeCompareGridTable::GetAttr(int row, int col, wxGridCellAttr::wxAttrKind /*kind*/)
+wxGridCellAttr* MultiSafeCompareGridTable::GetAttr(int row, int /*col*/, wxGridCellAttr::wxAttrKind /*kind*/)
 {
   //wxLogDebug(wxT("MultiSafeCompareGridTable::GetAttr called for %d, %d"), row, col);
   wxGridCellAttr* attr = ( row%2 == 0? m_currentAttr: m_comparisonAttr );

@@ -461,7 +461,7 @@ void CompareDlg::ViewEditEntry(PWScore* core, const pws_os::CUUID& uuid, bool re
 }
 
 
-void CompareDlg::OnExpandDataPanels(wxCommandEvent& evt)
+void CompareDlg::OnExpandDataPanels(wxCommandEvent& /*evt*/)
 {
   m_dbSelectionPane->Collapse();
   m_optionsPane->Collapse();
