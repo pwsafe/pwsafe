@@ -161,8 +161,8 @@ bool CUTF8Conv::FromUTF8(const unsigned char *utf8, size_t utf8Len,
       ASSERT(0);
     }
   }
-#endif /* _WIN32 */
   ASSERT(wcLen != 0);
+#endif /* _WIN32 */
 #ifdef UNICODE
   if (wcLen != 0) {
     m_wc[wcLen - 1] = TCHAR('\0');
