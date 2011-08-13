@@ -2421,6 +2421,18 @@ void PWScore::GetDBProperties(st_DBProperties &st_dbp)
   } else {
     LoadAString(st_dbp.unknownfields, IDSC_NONE);
   }
+  
+  st_dbp.db_name = m_hdr.m_dbname;
+  st_dbp.db_description = m_hdr.m_dbdesc;
+}
+
+void PWScore::SetHeaderUserFields(st_DBProperties &st_dbp)
+{
+  // Currently only 2 user fields in DB header
+  m_hdr.m_dbname = st_dbp.db_name;
+  m_hdr.m_dbdesc = st_dbp.db_description;
+
+  SetDBChanged(true);
 }
 
 void PWScore::UpdateExpiryEntry(const CUUID &uuid, const CItemData::FieldType ft,
