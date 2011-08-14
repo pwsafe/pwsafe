@@ -207,6 +207,11 @@ UniSafeCompareGridTable::UniSafeCompareGridTable(SelectionCriteria* criteria,
   m_gridAttr->SetOverflow(false);
 }
 
+UniSafeCompareGridTable::~UniSafeCompareGridTable()
+{
+  m_gridAttr->DecRef();
+}
+
 int UniSafeCompareGridTable::GetNumberRows()
 {
   const size_t N = m_compData->size();
@@ -317,6 +322,11 @@ MultiSafeCompareGridTable::MultiSafeCompareGridTable(SelectionCriteria* criteria
   m_comparisonAttr->SetAlignment(wxALIGN_LEFT, wxALIGN_TOP);
 }
 
+MultiSafeCompareGridTable::~MultiSafeCompareGridTable()
+{
+  m_currentAttr->DecRef();
+  m_comparisonAttr->DecRef();
+}
 
 int MultiSafeCompareGridTable::GetNumberRows()
 {
