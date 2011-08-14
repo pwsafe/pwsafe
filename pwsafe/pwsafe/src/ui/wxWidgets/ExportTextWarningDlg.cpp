@@ -25,6 +25,10 @@
 
 #include <wx/statline.h>
 
+#ifdef __WXMSW__
+#include <wx/msw/msvcrt.h>
+#endif
+
 enum { ID_COMBINATION = 100, ID_VKBD, ID_LINE_DELIMITER, ID_ADVANCED };
 
 IMPLEMENT_CLASS( CExportTextWarningDlgBase, wxDialog )

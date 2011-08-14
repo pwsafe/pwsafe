@@ -22,6 +22,10 @@
 
 #include "./SizeRestrictedPanel.h"
 
+#ifdef __WXMSW__
+#include <wx/msw/msvcrt.h>
+#endif
+
 SizeRestrictedPanel::SizeRestrictedPanel(wxWindow* parent, wxWindow* sizingParent, wxWindowID id /*= wxID_ANY*/):
               wxPanel(parent, id), m_sizingParent(sizingParent)
 {

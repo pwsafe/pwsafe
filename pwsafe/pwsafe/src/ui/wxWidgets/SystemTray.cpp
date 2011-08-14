@@ -23,6 +23,10 @@
 
 #include <wx/menu.h>
 
+#ifdef __WXMSW__
+#include <wx/msw/msvcrt.h>
+#endif
+
 #include "./graphics/tray.xpm"
 #include "./graphics/locked_tray.xpm"
 #include "./graphics/unlocked_tray.xpm"

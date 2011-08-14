@@ -10,6 +10,10 @@
 #include <wx/valgen.h>
 #include <wx/statline.h>
 
+#ifdef __WXMSW__
+#include <wx/msw/msvcrt.h>
+#endif
+
 IMPLEMENT_CLASS( CImportXMLDlg, wxDialog )
 
 CImportXMLDlg::CImportXMLDlg(wxWindow* parent) : wxDialog(parent, wxID_ANY, wxString(_("Import XML Settings"))),

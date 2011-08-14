@@ -12,6 +12,10 @@
 
 #include "version.h"
 
+#ifdef __WXMSW__
+#include <wx/msw/msvcrt.h>
+#endif
+
 const wxString pwsafeAppName(APPNAME);
 #ifndef _DEBUG
 const wxString pwsafeVersionString = wxString::Format(_T("v%d.%d (%s) %s"),

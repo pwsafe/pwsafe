@@ -24,6 +24,10 @@
 #include "./wxutils.h"
 #include "./ExternalKeyboardButton.h"
 
+#ifdef __WXMSW__
+#include <wx/msw/msvcrt.h>
+#endif
+
 /*
  * This serves to transfer the data from wxTextCtrl directly into a StringX.
  * Maybe it should also check if the combination is valid...

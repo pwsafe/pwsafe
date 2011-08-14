@@ -27,6 +27,10 @@
 #include "./wxutils.h"
 #include <algorithm>
 
+#ifdef __WXMSW__
+#include <wx/msw/msvcrt.h>
+#endif
+
 class ComparisonGridCellAttr: public wxGridCellAttr
 {
   ComparisonGridCellAttr();

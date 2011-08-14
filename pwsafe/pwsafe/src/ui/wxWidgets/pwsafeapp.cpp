@@ -52,6 +52,10 @@ using namespace std;
 #endif
 #include <wx/snglinst.h>
 
+#ifdef __WXMSW__
+#include <wx/msw/msvcrt.h>
+#endif
+
 ////@begin XPM images
 #include "./graphics/pwsafe16.xpm"
 #include "./graphics/pwsafe32.xpm"

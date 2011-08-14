@@ -29,6 +29,10 @@
 #include <wx/dnd.h>
 ////@end includes
 
+#ifdef __WXMSW__
+#include <wx/msw/msvcrt.h>
+#endif
+
 BEGIN_EVENT_TABLE( CDragBar, wxControl )
   EVT_LEFT_DOWN(CDragBar::OnLeftDown)
   EVT_PAINT(CDragBar::OnPaint)

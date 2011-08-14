@@ -23,6 +23,10 @@
 #include "./PWSgrid.h"
 #include <functional>
 
+#ifdef __WXMSW__
+#include <wx/msw/msvcrt.h>
+#endif
+
 void GUIInfo::Save(PasswordSafeFrame* frame)
 {
   SaveTreeViewInfo(frame->m_tree);

@@ -36,6 +36,10 @@
 #include <algorithm>
 #include <iterator>
 
+#ifdef __WXMSW__
+#include <wx/msw/msvcrt.h>
+#endif
+
 /*!
  * SyncData class declaration
  * 
