@@ -36,7 +36,7 @@ class ComparisonGridTable: public wxGridTableBase, public UIInterFace
 {
 public:
   ComparisonGridTable(SelectionCriteria* criteria);
-  ~ComparisonGridTable();
+  virtual ~ComparisonGridTable();
 
   //virtual overrides
   int GetNumberCols();
@@ -96,6 +96,7 @@ public:
                           PWScore* core,
                           uuid_ptr pu,
                           const wxColour& backgroundColour);
+  virtual ~UniSafeCompareGridTable();
   
   //virtual overrides
   int GetNumberRows();
@@ -130,6 +131,7 @@ public:
                                CompareData* data,
                                PWScore* current,
                                PWScore* other);
+  virtual ~MultiSafeCompareGridTable();
   
   //virtual overrides
   int GetNumberRows();
