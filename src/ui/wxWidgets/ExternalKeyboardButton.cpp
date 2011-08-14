@@ -24,6 +24,10 @@
 
 #include "./graphics/vkbd.xpm"
 
+#ifdef __WXMSW__
+#include <wx/msw/msvcrt.h>
+#endif
+
 ExternalKeyboardButton::ExternalKeyboardButton( wxWindow* parent, 
                                                 wxWindowID id, 
                                                 const wxPoint& pos,

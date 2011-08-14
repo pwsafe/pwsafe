@@ -25,6 +25,9 @@
 
 #include "AdvancedSelectionDlg.h"
 
+#ifdef __WXMSW__
+#include <wx/msw/msvcrt.h>
+#endif
 
 CItemData::FieldType subgroups[] = {  CItemData::GROUP,
                                       CItemData::GROUPTITLE,

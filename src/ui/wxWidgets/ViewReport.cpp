@@ -11,6 +11,10 @@
 
 #include <wx/clipbrd.h>
 
+#ifdef __WXMSW__
+#include <wx/msw/msvcrt.h>
+#endif
+
 CViewReport::CViewReport(wxWindow* parent, CReport* pRpt) : 
                 wxDialog(parent, wxID_ANY, _("View Report"), wxDefaultPosition, wxDefaultSize, 
                       wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER),  m_pRpt(pRpt)

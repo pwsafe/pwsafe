@@ -20,6 +20,10 @@
 
 #include <wx/statline.h>
 
+#ifdef __WXMSW__
+#include <wx/msw/msvcrt.h>
+#endif
+
 enum {ID_ADVANCED = 5126, ID_COMBINATION = 6982};
 
 IMPLEMENT_CLASS( MergeDlg, wxDialog )

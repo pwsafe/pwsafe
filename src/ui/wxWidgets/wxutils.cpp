@@ -25,6 +25,10 @@
 #include "../../core/PWScore.h"
 #include "./wxutils.h"
 
+#ifdef __WXMSW__
+#include <wx/msw/msvcrt.h>
+#endif
+
 /*
  * Reads a file into a PWScore object, and displays an appropriate msgbox
  * in case of failure.  Returns PWScore::SUCCESS on success

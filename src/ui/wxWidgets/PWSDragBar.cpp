@@ -29,6 +29,10 @@
 #include "./wxutils.h"
 ////@end includes
 
+#ifdef __WXMSW__
+#include <wx/msw/msvcrt.h>
+#endif
+
 ////@begin XPM images
 #include "./graphics/dragbar/new/Email.xpm"
 #include "./graphics/dragbar/new/EmailX.xpm"

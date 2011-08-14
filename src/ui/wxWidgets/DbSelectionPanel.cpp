@@ -28,6 +28,10 @@
 
 #include <wx/filename.h>
 
+#ifdef __WXMSW__
+#include <wx/msw/msvcrt.h>
+#endif
+
 DbSelectionPanel::DbSelectionPanel(wxWindow* parent, 
                                     const wxString& filePrompt,
                                     const wxString& filePickerCtrlTitle,

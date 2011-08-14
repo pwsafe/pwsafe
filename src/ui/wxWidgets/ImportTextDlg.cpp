@@ -31,6 +31,10 @@
 #include "../../os/file.h"
 #include "./OpenFilePickerValidator.h"
 
+#ifdef __WXMSW__
+#include <wx/msw/msvcrt.h>
+#endif
+
 IMPLEMENT_CLASS( CImportTextDlg, wxDialog )
 
 BEGIN_EVENT_TABLE( CImportTextDlg, wxDialog )

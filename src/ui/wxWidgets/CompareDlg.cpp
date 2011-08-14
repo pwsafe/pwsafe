@@ -32,6 +32,10 @@
 #include <wx/statline.h>
 #include <wx/grid.h>
 
+#ifdef __WXMSW__
+#include <wx/msw/msvcrt.h>
+#endif
+
 enum {ID_BTN_COMPARE = 100 };
 
 enum {

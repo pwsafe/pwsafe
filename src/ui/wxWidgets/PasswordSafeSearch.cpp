@@ -33,6 +33,10 @@
 
 #include <functional>
 
+#ifdef __WXMSW__
+#include <wx/msw/msvcrt.h>
+#endif
+
 enum { FIND_MENU_POSITION = 4 } ;
 
 ////////////////////////////////////////////////////////////////////////////

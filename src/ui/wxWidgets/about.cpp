@@ -29,6 +29,11 @@
 #include "version.h"
 #include "passwordsafeframe.h"
 #include "core/CheckVersion.h"
+
+#ifdef __WXMSW__
+#include <wx/msw/msvcrt.h>
+#endif
+
 ////@begin XPM images
 #include "./graphics/cpane.xpm"
 ////@end XPM images
