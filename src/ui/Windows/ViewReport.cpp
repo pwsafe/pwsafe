@@ -24,8 +24,12 @@ CViewReport::CViewReport(CWnd* pParent /*=NULL*/,
   : CPWResizeDialog(CViewReport::IDD, pParent),
   m_pRpt(pRpt), m_bMemoryAllocOK(false)
 {
-
+  // Convert LF to CRLF
+  StringX sxCRLF(L"\r\n"), sxLF(L"\n");
   m_pString = m_pRpt->GetString(); 
+  Replace(m_pString, sxCRLF, sxLF);
+  Replace(m_pString, sxLF, sxCRLF);
+  
   m_dwDatasize = (DWORD)(m_pString.length() * sizeof(wchar_t));
 
   m_backgroundcolour = RGB(255, 255, 255);
