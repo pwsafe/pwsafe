@@ -205,7 +205,12 @@ bool CReport::SaveToDisk()
     }
   }
 #endif
+  // Convert LF to CRLF
+  StringX sxCRLF(L"\r\n"), sxLF(L"\n");
   StringX sx = m_osxs.rdbuf()->str();
+  Replace(sx, sxCRLF, sxLF);
+  Replace(sx, sxLF, sxCRLF);
+  
   fwrite(reinterpret_cast<const void *>(sx.c_str()), sizeof(BYTE),
              sx.length() * sizeof(TCHAR), fd);
   fclose(fd);
