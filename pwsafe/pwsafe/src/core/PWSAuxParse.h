@@ -43,8 +43,7 @@ namespace PWSAuxParse {
   // Do some runtime parsing (mainly delay commands) and send it to PC
   // as keystrokes:
   void SendAutoTypeString(const StringX &sx_autotype,
-                          const std::vector<size_t> &vactionverboffsets,
-                          const bool bDragBarAutoType = false);
+                          const std::vector<size_t> &vactionverboffsets);
 }
 
 #endif /* __PWSAUXPARSE_H */
