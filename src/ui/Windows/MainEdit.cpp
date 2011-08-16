@@ -1523,7 +1523,7 @@ void DboxMain::OnAutoType()
   AutoType(*pci);
 }
 
-void DboxMain::AutoType(const CItemData &ci, const bool bDragBarAutoType)
+void DboxMain::AutoType(const CItemData &ci)
 {
   // Called from OnAutoType, OnTrayAutoType and OnDragAutoType
 
@@ -1554,7 +1554,7 @@ void DboxMain::AutoType(const CItemData &ci, const bool bDragBarAutoType)
     ShowWindow(SW_HIDE);
   }
 
-  DoAutoType(sxautotype, vactionverboffsets, bDragBarAutoType);
+  DoAutoType(sxautotype, vactionverboffsets);
 
   // If we minimized it, exit. If we only hid it, now show it
   if (bMinOnAuto)
@@ -1569,10 +1569,9 @@ void DboxMain::AutoType(const CItemData &ci, const bool bDragBarAutoType)
 }
 
 void DboxMain::DoAutoType(const StringX &sx_autotype,
-                          const std::vector<size_t> &vactionverboffsets,
-                          const bool bDragBarAutoType)
+                          const std::vector<size_t> &vactionverboffsets)
 {
-  PWSAuxParse::SendAutoTypeString(sx_autotype, vactionverboffsets, bDragBarAutoType);
+  PWSAuxParse::SendAutoTypeString(sx_autotype, vactionverboffsets);
 }
 
 void DboxMain::OnGotoBaseEntry()
@@ -1866,7 +1865,7 @@ LRESULT DboxMain::OnDragAutoType(WPARAM wParam, LPARAM /* lParam */)
 {
   const CItemData *pci = reinterpret_cast<const CItemData *>(wParam);
 
-  AutoType(*pci, true);
+  AutoType(*pci);
   return 0L;
 }
 
