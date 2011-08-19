@@ -24,7 +24,7 @@ void CMenuShortcut::InitStrings()
   CS_SHIFTP.LoadString(IDS_SHIFTP);
 }
 
-CString CMenuShortcut::FormatShortcut(unsigned char cModifier, MapKeyNameIDConstIter citer)
+CString CMenuShortcut::FormatShortcut(unsigned char cModifier, const wchar_t *key)
 {
   CString str(L"");
 
@@ -35,7 +35,8 @@ CString CMenuShortcut::FormatShortcut(unsigned char cModifier, MapKeyNameIDConst
   if ((cModifier & HOTKEYF_SHIFT) == HOTKEYF_SHIFT)
     str += CS_SHIFTP;
 
-  str += citer->second;
+  if (key)
+    str += key;
 
   return str;
 }

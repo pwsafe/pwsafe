@@ -2387,7 +2387,7 @@ LRESULT DboxMain::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
           sxLL += L"_";
           sxLL += sxCC;
         }
-        app.m_vlanguagefiles[iLang].lcid = app.m_vlanguagefiles[iLang].lcid;
+        lcid = app.m_vlanguagefiles[iLang].lcid = app.m_vlanguagefiles[iLang].lcid;
       }
       PWSprefs::GetInstance()->SetPref(PWSprefs::LanguageFile, sxLL);
       SetLanguage(lcid);

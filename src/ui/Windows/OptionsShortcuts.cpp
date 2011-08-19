@@ -255,7 +255,7 @@ void COptionsShortcuts::OnResetAll()
     iter->second.cVirtKey = iter->second.cdefVirtKey;
     iter->second.cModifier = iter->second.cdefModifier;
   
-    if (citer != m_MapKeyNameID.end() || iter->second.cdefVirtKey != 0) {
+    if (citer != m_MapKeyNameID.end() && iter->second.cdefVirtKey != 0) {
       str = CMenuShortcut::FormatShortcut(iter, citer);
     } else {
       str = L"";
@@ -432,4 +432,16 @@ int CALLBACK COptionsShortcuts::CompareFunc(LPARAM lParam1, LPARAM lParam2,
 {
   // HIWORD is the menu position
   return (int)(HIWORD(lParam1) - HIWORD(lParam2));
+}
+
+bool COptionsShortcuts::GetMapMenuShortcutsIter(const UINT &id, MapMenuShortcutsIter &iter)
+{
+  iter=m_MapMenuShortcuts.find(id);
+  return iter!=m_MapMenuShortcuts.end();
+}
+
+bool COptionsShortcuts::GetMapKeyNameIDConstIter(const st_KeyIDExt &st_KIDEx, MapKeyNameIDConstIter &iter)
+{
+  iter=m_MapKeyNameID.find(st_KIDEx);
+  return iter!=m_MapKeyNameID.end();
 }
