@@ -43,12 +43,10 @@ public:
 
   MapMenuShortcuts GetMaps() {return m_MapMenuShortcuts;}
 
-  MapMenuShortcutsIter GetMapMenuShortcutsIter(const UINT &id)
-  {return m_MapMenuShortcuts.find(id);}
-
-  MapKeyNameIDConstIter GetMapKeyNameIDConstIter(const st_KeyIDExt &st_KIDEx)
-  {return m_MapKeyNameID.find(st_KIDEx);}
-
+  bool GetMapMenuShortcutsIter(const UINT &id, MapMenuShortcutsIter &iter);
+  
+  bool GetMapKeyNameIDConstIter(const st_KeyIDExt &st_KIDEx, MapKeyNameIDConstIter &iter);
+  
   void OnHotKeyKillFocus(const int item, const UINT id,
                          const WORD wVirtualKeyCode, const WORD wModifiers);
 

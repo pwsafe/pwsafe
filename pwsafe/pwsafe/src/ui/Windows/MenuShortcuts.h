@@ -115,17 +115,20 @@ public:
 
   static void InitStrings();
 
+  static CString FormatShortcut(MapMenuShortcutsIter iter)
+  {return FormatShortcut(iter->second.cModifier, NULL);}
+
   static CString FormatShortcut(MapMenuShortcutsIter iter, 
                                 MapKeyNameIDConstIter citer)
-  {return FormatShortcut(iter->second.cModifier, citer);}
+  {return FormatShortcut(iter->second.cModifier, citer->second);}
 
   static CString FormatShortcut(const st_MenuShortcut &mst, 
                                 MapKeyNameIDConstIter citer)
-  {return FormatShortcut(mst.cModifier, citer);}
+  {return FormatShortcut(mst.cModifier, citer->second);}
 
 private:
   static CString FormatShortcut(unsigned char cModifier,
-                                MapKeyNameIDConstIter citer);
+                                const wchar_t *key);
   static CString CS_CTRLP, CS_ALTP, CS_SHIFTP;
 };
 
