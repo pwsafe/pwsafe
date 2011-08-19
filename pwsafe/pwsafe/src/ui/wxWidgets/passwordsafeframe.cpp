@@ -1956,6 +1956,7 @@ void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga,
       UpdateToolBarDoUndo();
       UpdateStatusBar();
       break;
+#endif
     case UpdateGUICommand::GUI_REFRESH_ENTRYFIELD:
       ASSERT(pci != NULL);
       RefreshEntryFieldInGUI(*pci, ft);
@@ -1964,7 +1965,6 @@ void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga,
       ASSERT(pci != NULL);
       RefreshEntryPasswordInGUI(*pci);
       break;
-#endif
     case UpdateGUICommand::GUI_DB_PREFERENCES_CHANGED:
     {
       wxCommandEvent evt(wxEVT_GUI_DB_PREFS_CHANGE, wxID_ANY);
@@ -1981,6 +1981,29 @@ void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga,
   }
 }
     
+void PasswordSafeFrame::RefreshEntryFieldInGUI(const CItemData& item, CItemData::FieldType ft)
+{
+  if (m_currentView == GRID) {
+    m_grid->RefreshItemField(item.GetUUID(), ft);
+  }
+  else {
+    //even though the sort order might have changed, don't change the position yet
+    //as it could be too distracting, and the item may even move off the screen
+    m_tree->UpdateItemField(item, ft);
+  }
+}
+
+void PasswordSafeFrame::RefreshEntryPasswordInGUI(const CItemData& item)
+{
+  if (m_currentView == GRID) {
+    RefreshEntryFieldInGUI(item, CItemData::PASSWORD);
+    //TODO: Update password history
+  }
+  else {
+    RefreshEntryFieldInGUI(item, CItemData::PASSWORD);
+  }
+}
+
 void PasswordSafeFrame::GUIRefreshEntry(const CItemData& item)
 {
   if (item.GetStatus() ==CItemData::ES_DELETED) {

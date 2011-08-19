@@ -217,6 +217,33 @@ void PWSGrid::UpdateItem(const CItemData &item)
   }
 }
 
+void PWSGrid::RefreshRow(int row)
+{
+  wxRect rect(CellToRect( row, 0 ));
+  rect.x = 0;
+  rect.width = GetGridWindow()->GetClientSize().GetWidth();
+  int dummy;
+  CalcScrolledPosition(0, rect.y, &dummy, &rect.y);
+  GetGridWindow()->Refresh( false, &rect );
+}
+
+void PWSGrid::RefreshItemRow(const pws_os::CUUID& uuid)
+{
+  const int row = FindItemRow(uuid);
+  if (row != wxNOT_FOUND)
+    RefreshRow(row);
+}
+
+void PWSGrid::RefreshItemField(const pws_os::CUUID& uuid, CItemData::FieldType ft)
+{
+  int row = FindItemRow(uuid);
+  int col = PWSGridTable::Field2Column(ft);
+  if (row != wxNOT_FOUND && col != wxNOT_FOUND && IsVisible(row, col, false)) {
+    //last param is false to check if the required cell is even partially visible
+    RefreshItemRow(uuid);
+  }
+}
+
 struct moveup : public std::binary_function<UUIDRowMapT::value_type, int, void> {
   void operator()(UUIDRowMapT::value_type& v, int rowDeleted) const {
     if (v.second > rowDeleted)

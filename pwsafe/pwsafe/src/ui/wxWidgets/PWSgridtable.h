@@ -75,6 +75,7 @@ public:
   virtual void SetView(wxGrid* grid);
 
   static int GetColumnFieldType(int colID);
+  static int Field2Column(int fieldType);
   void SaveSettings(void) const;
   void RestoreSettings(void) const;
 
