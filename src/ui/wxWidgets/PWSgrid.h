@@ -82,6 +82,9 @@ public:
 
   void AddItem(const CItemData &item, int row = -1);
   void UpdateItem(const CItemData &item);
+  void RefreshRow(int row);
+  void RefreshItemRow(const pws_os::CUUID& uuid);
+  void RefreshItemField(const pws_os::CUUID& uuid, CItemData::FieldType ft);
   void Remove(const pws_os::CUUID &uuid);
   size_t GetNumItems() const;
   void DeleteItems(int row, size_t numItems);

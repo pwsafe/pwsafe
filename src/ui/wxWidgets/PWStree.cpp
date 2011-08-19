@@ -315,6 +315,27 @@ void PWSTreeCtrl::UpdateItem(const CItemData &item)
   }
 }
 
+//Just update the item's text, don't move it into its sorted position
+void PWSTreeCtrl::UpdateItemField(const CItemData &item, CItemData::FieldType ft)
+{
+  PWSprefs* prefs = PWSprefs::GetInstance();
+  if (ft == CItemData::GROUP) {
+    //remove & add again
+    UpdateItem(item);
+  }
+  //these are the only items ever shown in the tree
+  else if (ft == CItemData::TITLE ||
+       (ft == CItemData::USER && prefs->GetPref(PWSprefs::ShowUsernameInTree)) ||
+       (ft == CItemData::PASSWORD && prefs->GetPref(PWSprefs::ShowPasswordInTree))) {
+    wxRect rc;
+    wxTreeItemId ti = Find(item);
+    if (ti.IsOk() && GetBoundingRect(ti, rc, true)) { //true => only text, not the icon
+      rc.Intersect(GetClientRect());
+      RefreshRect(rc, true);
+    }
+  }
+}
+
 void PWSTreeCtrl::AddItem(const CItemData &item)
 {
   wxTreeItemData *data = new PWTreeItemData(item);

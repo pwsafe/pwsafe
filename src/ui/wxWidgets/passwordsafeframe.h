@@ -442,6 +442,8 @@ public:
   long GetEventRUEIndex(const wxCommandEvent& evt) const;
   bool IsRUEEvent(const wxCommandEvent& evt) const;
   void RebuildGUI(const int iView = iBothViews);
+  void RefreshEntryFieldInGUI(const CItemData& item, CItemData::FieldType ft);
+  void RefreshEntryPasswordInGUI(const CItemData& item);
   void CreateDragBar();
   void RefreshToolbarButtons();
   PWSDragBar* GetDragBar();

@@ -98,6 +98,7 @@ public:
   void Clear() {DeleteAllItems(); m_item_map.clear();} // consistent name w/PWSgrid
   void AddItem(const CItemData &item);
   void UpdateItem(const CItemData &item);
+  void UpdateItemField(const CItemData &item, CItemData::FieldType ft);
   CItemData *GetItem(const wxTreeItemId &id) const;
   wxTreeItemId Find(const pws_os::CUUID &uuid) const;
   wxTreeItemId Find(const CItemData &item) const;

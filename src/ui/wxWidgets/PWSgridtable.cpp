@@ -259,6 +259,16 @@ int PWSGridTable::GetColumnFieldType(int colID)
   return PWSGridCellData[colID].ft;
 }
 
+//static
+int PWSGridTable::Field2Column(int fieldType)
+{
+  for(int n = 0; n < int(WXSIZEOF(PWSGridCellData)); ++n) {
+    if (PWSGridCellData[n].ft == fieldType)
+      return n; //or it might be the position: PWSGridCellData[n].position
+  }
+  return wxNOT_FOUND;
+}
+
 void PWSGridTable::SaveSettings(void) const
 {
   wxString colWidths, colShown;
