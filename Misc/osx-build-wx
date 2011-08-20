@@ -17,11 +17,11 @@
 #
 if [ "$1" == "DEBUG" ]; then
 
-../configure --prefix=`pwd` CC=gcc-4.0 CXX=g++-4.0 LD=g++-4.0 --enable-debug --with-macosx-version-min=10.4 --with-macosx-sdk=/Developer/SDKs/MacOSX10.4u.sdk --disable-shared --disable-compat24 --enable-unicode --enable-universal-binary CXXFLAGS="-fvisibility=hidden -fvisibility-inlines-hidden" 
+../configure --prefix=`pwd` CC=gcc-4.0 CXX=g++-4.0 LD=g++-4.0 --enable-debug --with-macosx-version-min=10.4 --with-macosx-sdk=/Developer/SDKs/MacOSX10.4u.sdk --disable-shared --disable-compat24 --enable-unicode --enable-universal-binary CPPFLAGS="-fvisibility=hidden -fvisibility-inlines-hidden" CFLAGS="-fvisibility=hidden" 
 
 else
 
-../configure --prefix=`pwd` CC=gcc-4.0 CXX=g++-4.0 LD=g++-4.0 --disable-debug --with-macosx-version-min=10.4 --with-macosx-sdk=/Developer/SDKs/MacOSX10.4u.sdk --disable-shared --disable-compat24 --enable-unicode --enable-universal-binary CXXFLAGS="-fvisibility=hidden -fvisibility-inlines-hidden" 
+../configure --prefix=`pwd` CC=gcc-4.0 CXX=g++-4.0 LD=g++-4.0 --disable-debug --with-macosx-version-min=10.4 --with-macosx-sdk=/Developer/SDKs/MacOSX10.4u.sdk --disable-shared --disable-compat24 --enable-unicode --enable-universal-binary CPPFLAGS="-fvisibility=hidden -fvisibility-inlines-hidden" CFLAGS="-fvisibility=hidden" 
 
 fi
 
