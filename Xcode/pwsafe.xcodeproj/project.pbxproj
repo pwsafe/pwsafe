@@ -372,7 +372,6 @@
 		E6E31A8F12FD6A0A001618AB /* QuickTime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B144BA12B2707E00415AAE /* QuickTime.framework */; };
 		E6E31AA112FD6E76001618AB /* pwsafe-debug64.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = E6E31A9F12FD6E76001618AB /* pwsafe-debug64.xcconfig */; };
 		E6E31AA212FD6E76001618AB /* pwsafe-release64.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = E6E31AA012FD6E76001618AB /* pwsafe-release64.xcconfig */; };
-		E6E31AD312FDC90C001618AB /* untitled in Resources */ = {isa = PBXBuildFile; fileRef = E6E31AD212FDC90B001618AB /* untitled */; };
 		E6EBB01C133522D9007CA1F5 /* pwsafe-native-release32.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = E6EBB01B133522D9007CA1F5 /* pwsafe-native-release32.xcconfig */; };
 		E6EE841B11E87E9800B01518 /* BlowFish.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE839211E87E9700B01518 /* BlowFish.cpp */; };
 		E6EE841C11E87E9800B01518 /* CheckVersion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE839411E87E9700B01518 /* CheckVersion.cpp */; };
@@ -591,7 +590,6 @@
 		E6A11A6B1293D20E0060FB35 /* pwsafe16.xpm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = pwsafe16.xpm; sourceTree = "<group>"; };
 		E6A11A6C1293D20E0060FB35 /* pwsafe32.xpm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = pwsafe32.xpm; sourceTree = "<group>"; };
 		E6A11A6D1293D20E0060FB35 /* pwsafe48.xpm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = pwsafe48.xpm; sourceTree = "<group>"; };
-		E6A11A6E1293D20E0060FB35 /* pwsafe8.xpm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = pwsafe8.xpm; sourceTree = "<group>"; };
 		E6A11A6F1293D20E0060FB35 /* sbase.xpm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = sbase.xpm; sourceTree = "<group>"; };
 		E6A11A701293D20E0060FB35 /* sbase_exp.xpm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = sbase_exp.xpm; sourceTree = "<group>"; };
 		E6A11A711293D20E0060FB35 /* sbase_warn.xpm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = sbase_warn.xpm; sourceTree = "<group>"; };
@@ -1068,7 +1066,6 @@
 				E6A11A6B1293D20E0060FB35 /* pwsafe16.xpm */,
 				E6A11A6C1293D20E0060FB35 /* pwsafe32.xpm */,
 				E6A11A6D1293D20E0060FB35 /* pwsafe48.xpm */,
-				E6A11A6E1293D20E0060FB35 /* pwsafe8.xpm */,
 				E6A11A6F1293D20E0060FB35 /* sbase.xpm */,
 				E6A11A701293D20E0060FB35 /* sbase_exp.xpm */,
 				E6A11A711293D20E0060FB35 /* sbase_warn.xpm */,
@@ -1945,7 +1942,6 @@
 				E6E31A6112FD6A0A001618AB /* pwsafe.icns in Resources */,
 				E6E31AA112FD6E76001618AB /* pwsafe-debug64.xcconfig in Resources */,
 				E6E31AA212FD6E76001618AB /* pwsafe-release64.xcconfig in Resources */,
-				E6E31AD312FDC90C001618AB /* untitled in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
