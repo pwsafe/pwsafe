@@ -288,42 +288,43 @@ void CompareDlg::DoCompare()
                 };
     wxSizerItem* prevSizer = 0;
     for(size_t idx =0; idx < WXSIZEOF(sections); ++idx) {
-      if (!sections[idx].cd->data.empty()) {
-        if (prevSizer)
-          prevSizer->Show(true);
-        ComparisonGridTable* table;
-        if (sections[idx].multiSource) {
-          table = new MultiSafeCompareGridTable(m_selCriteria,
-                                                &sections[idx].cd->data,
-                                                m_currentCore,
-                                                m_otherCore);
-        }
-        else {
-          table = new UniSafeCompareGridTable(m_selCriteria,
+      ComparisonGridTable* table;
+      if (sections[idx].multiSource) {
+        table = new MultiSafeCompareGridTable(m_selCriteria,
                                               &sections[idx].cd->data,
-                                              sections[idx].useComparisonSafe? m_otherCore: m_currentCore,
-                                              sections[idx].useComparisonSafe? &st_CompareData::uuid1: &st_CompareData::uuid0,
-                                              sections[idx].useComparisonSafe? ComparisonBackgroundColor: CurrentBackgroundColor);
-        }
-        sections[idx].cd->grid->SetTable(table, true);
-        wxCollapsiblePane* pane = sections[idx].cd->pane;
-        //expand the columns to show these fields fully, as these are usually small(er) strings
-        table->AutoSizeField(CItemData::GROUP);
-        table->AutoSizeField(CItemData::TITLE);
-        table->AutoSizeField(CItemData::USER);
-        table->AutoSizeField(CItemData::PASSWORD);
-        /*
-        // wxCollapsiblePane::GetLabel() doesn't work 
-        wxString newLabel(pane->GetLabel());
-        newLabel << wxT(" (") << sections[idx].cd->data.size() << wxT(")");
-        pane->SetLabel(newLabel);
-        */
+                                              m_currentCore,
+                                              m_otherCore);
+      }
+      else {
+        table = new UniSafeCompareGridTable(m_selCriteria,
+                                            &sections[idx].cd->data,
+                                            sections[idx].useComparisonSafe? m_otherCore: m_currentCore,
+                                            sections[idx].useComparisonSafe? &st_CompareData::uuid1: &st_CompareData::uuid0,
+                                            sections[idx].useComparisonSafe? ComparisonBackgroundColor: CurrentBackgroundColor);
+      }
+      sections[idx].cd->grid->SetTable(table, true);
+      wxCollapsiblePane* pane = sections[idx].cd->pane;
+      //expand the columns to show these fields fully, as these are usually small(er) strings
+      table->AutoSizeField(CItemData::GROUP);
+      table->AutoSizeField(CItemData::TITLE);
+      table->AutoSizeField(CItemData::USER);
+      table->AutoSizeField(CItemData::PASSWORD);
+      /*
+      // wxCollapsiblePane::GetLabel() doesn't work 
+      wxString newLabel(pane->GetLabel());
+      newLabel << wxT(" (") << sections[idx].cd->data.size() << wxT(")");
+      pane->SetLabel(newLabel);
+      */
+      if (!sections[idx].cd->data.empty()) {
         pane->Show();
         //if the next pane is displayed, show the sizer below this pane
+        if (prevSizer)
+          prevSizer->Show(true);
         prevSizer = sections[idx].cd->sizerBelow; 
       }
       else {
-        sections[idx].cd->pane->Hide();
+        pane->Collapse();
+        pane->Hide();
       }
     }
     wxCommandEvent cmdEvent(EVT_EXPAND_DATA_PANELS, GetId());
@@ -472,18 +473,12 @@ void CompareDlg::OnExpandDataPanels(wxCommandEvent& /*evt*/)
 
   if (m_conflicts->pane->IsShown())
     m_conflicts->pane->Expand();
-  else
-    m_conflicts->pane->Collapse();
 
   if (m_current->pane->IsShown())
     m_current->pane->Expand();
-  else
-    m_current->pane->Collapse();
 
   if (m_comparison->pane->IsShown())
     m_comparison->pane->Expand();
-  else
-    m_comparison->pane->Collapse();
 
   if (m_identical->pane->IsShown())
     m_identical->pane->Collapse();
@@ -494,35 +489,147 @@ void CompareDlg::OnExpandDataPanels(wxCommandEvent& /*evt*/)
 void CompareDlg::OnCopyItemsToCurrentDB(wxCommandEvent& evt)
 {
   ContextMenuData* menuContext = reinterpret_cast<ContextMenuData*>(evt.GetClientData());
-  ComparisonGridTable* ptable = wxDynamicCast(menuContext->sourceGrid->GetTable(), ComparisonGridTable);
+  wxGridTableBase* baseTable = menuContext->sourceGrid->GetTable();
+  ComparisonGridTable* ptable = wxDynamicCast(baseTable, ComparisonGridTable);
+  wxCHECK_RET(ptable, wxT("Could not find ComparisonGridTable derived object in comparison grid"));
   const ComparisonGridTable& table = *ptable;
   MultiCommands *pmulticmds = MultiCommands::Create(m_currentCore);
   for( size_t idx = 0; idx < menuContext->selectedRows.Count(); ++idx) {
-    const CItemData& item = m_otherCore->Find(table[idx].uuid1)->second;
-    AddEntryCommand* cmd = AddEntryCommand::Create(m_currentCore, item);
-    pmulticmds->Add(cmd);
+    const int row = menuContext->selectedRows[idx];
+    ItemListIter itrOther = m_otherCore->Find(table[row].uuid1);
+    if (itrOther != m_otherCore->GetEntryEndIter()) {
+      if (m_currentCore->Find(itrOther->second.GetUUID()) != m_currentCore->GetEntryEndIter()) {
+        // if you copy an item from comparison grid to current db, edit the copy in current db and
+        // change its GTU, it will appear in a different grid if you compare again, but have
+        // the same UUID.  Then if you try to add the item from comparison db again, you'll get
+        // an Assert failure.  I think it will work anyway in Release build, but abort in Debug
+        CItemData newItem(itrOther->second);
+        newItem.CreateUUID();
+        AddEntryCommand* cmd = AddEntryCommand::Create(m_currentCore, newItem);
+        pmulticmds->Add(cmd);
+      }
+      else {
+        const CItemData& item = itrOther->second;
+        AddEntryCommand* cmd = AddEntryCommand::Create(m_currentCore, item);
+        pmulticmds->Add(cmd);
+      }
+    }
+    else {
+      wxFAIL_MSG(wxT("Could not find item to be added in comparison core"));
+      delete pmulticmds;
+      return;
+    }
   }
   if (pmulticmds->GetSize() > 0) {
     m_currentCore->Execute(pmulticmds);
+    for( size_t idx = 0; idx < menuContext->selectedRows.Count(); ++idx) {
+      const int row = menuContext->selectedRows[idx]-idx;
+      st_CompareData data = table[row];
+      data.uuid0 = data.uuid1; //so far, uuid0 was NULL since it was not found in current db
+      m_identical->data.push_back(data);
+      m_identical->grid->AppendRows(1);
+      menuContext->sourceGrid->DeleteRows(row);
+    }
+    //Move copied items from comparison grid to identicals grid
+    bool relayout = false;
+    if (!m_identical->pane->IsShown()) {
+      if (m_identical->sizerBelow)
+        m_identical->sizerBelow->Show(true);
+      m_identical->pane->Show();
+      m_identical->pane->Expand();
+      relayout = true;
+    }
+    if (m_comparison->grid->GetNumberRows() == 0) {
+      if (m_comparison->sizerBelow)
+        m_comparison->sizerBelow->Show(false);
+      m_comparison->pane->Collapse();
+      m_comparison->pane->Hide();
+      relayout = true;
+    }
+    if (relayout)
+      Layout();
   }
   else {
     delete pmulticmds;
   }
 }
 
+int pless(int* first, int* second) { return *first - *second; }
+
 void CompareDlg::OnDeleteItemsFromCurrentDB(wxCommandEvent& evt)
 {
   ContextMenuData* menuContext = reinterpret_cast<ContextMenuData*>(evt.GetClientData());
-  ComparisonGridTable* ptable = wxDynamicCast(menuContext->sourceGrid->GetTable(), ComparisonGridTable);
+  wxGridTableBase* baseTable = menuContext->sourceGrid->GetTable();
+  ComparisonGridTable* ptable = wxDynamicCast(baseTable, ComparisonGridTable);
+  wxCHECK_RET(ptable, wxT("Could not find ComparisonGridTable derived object in comparison grid"));
   const ComparisonGridTable& table = *ptable;
   MultiCommands *pmulticmds = MultiCommands::Create(m_currentCore);
   for( size_t idx = 0; idx < menuContext->selectedRows.Count(); ++idx) {
-    const CItemData& item = m_currentCore->Find(table[idx].uuid0)->second;
-    DeleteEntryCommand* cmd = DeleteEntryCommand::Create(m_currentCore, item);
-    pmulticmds->Add(cmd);
+    const int row = menuContext->selectedRows[idx];
+    ItemListIter itr = m_currentCore->Find(table[row].uuid0);
+    if ( itr != m_currentCore->GetEntryEndIter()) {
+      DeleteEntryCommand* cmd = DeleteEntryCommand::Create(m_currentCore, itr->second);
+      pmulticmds->Add(cmd);
+    }
+    else {
+      wxFAIL_MSG(wxT("Could not find item to be deleted in current core"));
+      //something wrong - don't delete anything
+      delete pmulticmds;
+      return;
+    }
   }
   if (pmulticmds->GetSize() > 0) {
     m_currentCore->Execute(pmulticmds);
+
+    //need to delete the rows in order
+    menuContext->selectedRows.Sort(&pless);
+
+    bool relayout = false;
+    if (menuContext->sourceGrid == m_current->grid) {
+      //just delete them from the grid
+      for( size_t idx = 0; idx < menuContext->selectedRows.Count(); ++idx) {
+        const int row = menuContext->selectedRows[idx] - idx;
+        menuContext->sourceGrid->DeleteRows(row);
+      }
+    }
+    else {
+      wxCHECK_RET(menuContext->sourceGrid == m_identical->grid 
+                    || menuContext->sourceGrid == m_conflicts->grid,
+                      wxT("If deleted item was not in comparison grid, it should have been in conflicts or identicals grid"));
+      // move items to comparison grid, and then delete the item
+      for( size_t idx = 0; idx < menuContext->selectedRows.Count(); ++idx) {
+        const int row = menuContext->selectedRows[idx] - idx;
+        st_CompareData data = table[row];
+        data.uuid0 = pws_os::CUUID::NullUUID(); //removed from current db, so make it null
+        m_comparison->data.push_back(data);
+        m_comparison->grid->AppendRows(1);
+        menuContext->sourceGrid->DeleteRows(row);
+      }
+      if (!m_comparison->pane->IsShown()) {
+        m_comparison->pane->Show();
+        m_comparison->pane->Expand();
+        relayout = true;
+      }
+    }
+    if (menuContext->sourceGrid->GetNumberRows() == 0) {
+      relayout = true;
+      //hide the pane
+      if (menuContext->sourceGrid == m_identical->grid) {
+        m_identical->pane->Collapse();
+        m_identical->pane->Hide();
+      }
+      else if (menuContext->sourceGrid == m_conflicts->grid) {
+        m_conflicts->pane->Collapse();
+        m_conflicts->pane->Hide();
+      }
+      else {
+        wxCHECK_RET(menuContext->sourceGrid == m_current->grid, wxT("source grid is neither identicals, nor current, nor conflicts for deleting items!"));
+        m_current->pane->Collapse();
+        m_current->pane->Hide();
+      }
+    }
+    if (relayout)
+      Layout();
   }
   else {
     delete pmulticmds;
@@ -533,18 +640,40 @@ void CompareDlg::OnCopyFieldsToCurrentDB(wxCommandEvent& evt)
 {
   ContextMenuData* menuContext = reinterpret_cast<ContextMenuData*>(evt.GetClientData());
   ComparisonGridTable* ptable = wxDynamicCast(menuContext->sourceGrid->GetTable(), ComparisonGridTable);
+  wxCHECK_RET(ptable, wxT("Could not find ComparisonGridTable derived object in comparison grid"));
   const ComparisonGridTable& table = *ptable;
   MultiCommands *pmulticmds = MultiCommands::Create(m_currentCore);
   for( size_t idx = 0; idx < menuContext->selectedRows.Count(); ++idx) {
-    const CItemData& otherItem = m_otherCore->Find(table[idx].uuid1)->second;
-    const CItemData& currentItem = m_currentCore->Find(table[idx].uuid0)->second;
-    UpdateEntryCommand* cmd = UpdateEntryCommand::Create(m_currentCore, currentItem,
-                                                          menuContext->field,
-                                                          otherItem.GetFieldValue(menuContext->field));
-    pmulticmds->Add(cmd);
+    const int row = menuContext->selectedRows[idx];
+    ItemListIter itrOther = m_otherCore->Find(table[row].uuid1);
+    if ( itrOther != m_otherCore->GetEntryEndIter()) {
+      const CItemData& otherItem = itrOther->second;
+      ItemListIter itrCurrent = m_currentCore->Find(table[row].uuid0);
+      if (itrCurrent != m_currentCore->GetEntryEndIter()) {
+        const CItemData& currentItem = itrCurrent->second;
+        UpdateEntryCommand* cmd = UpdateEntryCommand::Create(m_currentCore, currentItem,
+                                                            menuContext->field,
+                                                            otherItem.GetFieldValue(menuContext->field));
+        pmulticmds->Add(cmd);
+      }
+      else {
+        wxFAIL_MSG(wxT("Could not find item to be modified in current core"));
+        delete pmulticmds;
+        return;
+      }
+    }
+    else {
+      wxFAIL_MSG(wxT("Could not find item to be modified in current core"));
+      delete pmulticmds;
+      return;
+    }
   }
   if (pmulticmds->GetSize() > 0) {
     m_currentCore->Execute(pmulticmds);
+    for( size_t idx = 0; idx < menuContext->selectedRows.Count(); ++idx) {
+      //refresh the row just above the selected one
+      table.RefreshRow(menuContext->selectedRows[idx]-1);
+    }
   }
   else {
     delete pmulticmds;

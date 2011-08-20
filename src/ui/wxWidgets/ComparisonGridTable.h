@@ -32,7 +32,7 @@ public:
 };
 
 
-class ComparisonGridTable: public wxGridTableBase, public UIInterFace
+class ComparisonGridTable: public wxGridTableBase
 {
 public:
   ComparisonGridTable(SelectionCriteria* criteria);
@@ -66,14 +66,7 @@ protected:
 
   //UIinterface overrides
 public:
-  virtual void DatabaseModified(bool bChanged);
-  virtual void UpdateGUI(UpdateGUICommand::GUI_Action ga,
-                         const pws_os::CUUID &entry_uuid,
-                         CItemData::FieldType ft = CItemData::START,
-                         bool bUpdateGUI = true);
-  virtual void GUISetupDisplayInfo(CItemData &ci);
-  virtual void GUIRefreshEntry(const CItemData &ci);
-  virtual void UpdateWizard(const stringT &s);
+  void RefreshRow(int row) const;
 };
 
 ///////////////////////////////////////////////////////////////
@@ -110,6 +103,8 @@ public:
   virtual const st_CompareData& operator[](size_t index) const {
     return m_compData->at(index);
   }
+  bool DeleteRows(size_t pos, size_t numRows);
+  bool AppendRows(size_t numRows = 1);
 };
 
 ///////////////////////////////////////////////////////////////////
@@ -146,6 +141,7 @@ public:
   virtual const st_CompareData& operator[](size_t index) const {
     return m_compData->at(index/2);
   }
+  bool DeleteRows(size_t pos, size_t numRows);
 private:
   
   PWScore* GetRowCore(int row);
