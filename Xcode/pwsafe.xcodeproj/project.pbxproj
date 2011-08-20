@@ -21,6 +21,8 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		E60273B913FFDF570022C368 /* pwsafe-llvm-debug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = E60273B813FFDF570022C368 /* pwsafe-llvm-debug.xcconfig */; };
+		E60273BC13FFE25C0022C368 /* pwsafe-llvm-release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = E60273BB13FFE25C0022C368 /* pwsafe-llvm-release.xcconfig */; };
 		E60F25D812C4ACEB001E63C4 /* ExternalKeyboardButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E60F25D612C4ACEB001E63C4 /* ExternalKeyboardButton.cpp */; };
 		E6112A63131D720E00AA1454 /* ExpiredList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6112A61131D720E00AA1454 /* ExpiredList.cpp */; };
 		E6112A64131D720E00AA1454 /* ExpiredList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6112A61131D720E00AA1454 /* ExpiredList.cpp */; };
@@ -73,6 +75,8 @@
 		E6391BF212FD21B9009BBB8D /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B1448712B26D1500415AAE /* Cocoa.framework */; };
 		E6391BF312FD21B9009BBB8D /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B1449312B26D7E00415AAE /* IOKit.framework */; };
 		E6391BF412FD21B9009BBB8D /* QuickTime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B144BA12B2707E00415AAE /* QuickTime.framework */; };
+		E63E37CE14002ABB00994022 /* pwsafe64-debug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = E63E37CC14002ABB00994022 /* pwsafe64-debug.xcconfig */; };
+		E63E37CF14002ABB00994022 /* pwsafe64-release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = E63E37CD14002ABB00994022 /* pwsafe64-release.xcconfig */; };
 		E66EE0B313921B30005C10C5 /* ComparisonGridTable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66EE0B113921B30005C10C5 /* ComparisonGridTable.cpp */; };
 		E66EE0B413921B30005C10C5 /* ComparisonGridTable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66EE0B113921B30005C10C5 /* ComparisonGridTable.cpp */; };
 		E66EE0B513921B30005C10C5 /* ComparisonGridTable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66EE0B113921B30005C10C5 /* ComparisonGridTable.cpp */; };
@@ -370,9 +374,6 @@
 		E6E31A8D12FD6A0A001618AB /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B1448712B26D1500415AAE /* Cocoa.framework */; };
 		E6E31A8E12FD6A0A001618AB /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B1449312B26D7E00415AAE /* IOKit.framework */; };
 		E6E31A8F12FD6A0A001618AB /* QuickTime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B144BA12B2707E00415AAE /* QuickTime.framework */; };
-		E6E31AA112FD6E76001618AB /* pwsafe-debug64.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = E6E31A9F12FD6E76001618AB /* pwsafe-debug64.xcconfig */; };
-		E6E31AA212FD6E76001618AB /* pwsafe-release64.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = E6E31AA012FD6E76001618AB /* pwsafe-release64.xcconfig */; };
-		E6EBB01C133522D9007CA1F5 /* pwsafe-native-release32.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = E6EBB01B133522D9007CA1F5 /* pwsafe-native-release32.xcconfig */; };
 		E6EE841B11E87E9800B01518 /* BlowFish.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE839211E87E9700B01518 /* BlowFish.cpp */; };
 		E6EE841C11E87E9800B01518 /* CheckVersion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE839411E87E9700B01518 /* CheckVersion.cpp */; };
 		E6EE841D11E87E9800B01518 /* Command.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE839611E87E9700B01518 /* Command.cpp */; };
@@ -508,6 +509,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E60273B813FFDF570022C368 /* pwsafe-llvm-debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "pwsafe-llvm-debug.xcconfig"; sourceTree = "<group>"; };
+		E60273BB13FFE25C0022C368 /* pwsafe-llvm-release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "pwsafe-llvm-release.xcconfig"; sourceTree = "<group>"; };
 		E60F25D612C4ACEB001E63C4 /* ExternalKeyboardButton.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ExternalKeyboardButton.cpp; sourceTree = "<group>"; };
 		E60F25D712C4ACEB001E63C4 /* ExternalKeyboardButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExternalKeyboardButton.h; sourceTree = "<group>"; };
 		E6112A61131D720E00AA1454 /* ExpiredList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ExpiredList.cpp; sourceTree = "<group>"; };
@@ -515,6 +518,8 @@
 		E61D6FA112617EFC0049FA2A /* MergeDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MergeDlg.cpp; sourceTree = "<group>"; };
 		E61D6FA212617EFC0049FA2A /* MergeDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MergeDlg.h; sourceTree = "<group>"; };
 		E6391BF812FD21B9009BBB8D /* pwsafe-i386.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "pwsafe-i386.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E63E37CC14002ABB00994022 /* pwsafe64-debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "pwsafe64-debug.xcconfig"; sourceTree = "<group>"; };
+		E63E37CD14002ABB00994022 /* pwsafe64-release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "pwsafe64-release.xcconfig"; sourceTree = "<group>"; };
 		E66EE0B113921B30005C10C5 /* ComparisonGridTable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ComparisonGridTable.cpp; sourceTree = "<group>"; };
 		E66EE0B213921B30005C10C5 /* ComparisonGridTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComparisonGridTable.h; sourceTree = "<group>"; };
 		E66FB84B13ACA5C3004DBB97 /* SizeRestrictedPanel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SizeRestrictedPanel.cpp; sourceTree = "<group>"; };
@@ -821,7 +826,7 @@
 		E6BA47841216DB9C00193879 /* SafeCombinationCtrl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SafeCombinationCtrl.h; sourceTree = "<group>"; };
 		E6BA47851216DB9C00193879 /* ViewReport.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ViewReport.cpp; sourceTree = "<group>"; };
 		E6BA47861216DB9C00193879 /* ViewReport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewReport.h; sourceTree = "<group>"; };
-		E6BF9E8213348CA50084A011 /* pwsafe-native.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "pwsafe-native.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E6BF9E8213348CA50084A011 /* pwsafe-llvm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "pwsafe-llvm.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6BF9EBC13348CDB0084A011 /* libcore.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libcore.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6BF9ED213348CF00084A011 /* libos.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libos.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6C1253611E1B2BA00D22D92 /* debug.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = debug.cpp; sourceTree = "<group>"; };
@@ -853,11 +858,8 @@
 		E6DDC713138914B700F0C0D1 /* wxutils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxutils.cpp; sourceTree = "<group>"; };
 		E6E31A1F12FD6957001618AB /* libos.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libos.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6E31A5412FD69A0001618AB /* libcore.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libcore.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		E6E31A9312FD6A0A001618AB /* pwsafe-x86_64.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "pwsafe-x86_64.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		E6E31A9F12FD6E76001618AB /* pwsafe-debug64.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "pwsafe-debug64.xcconfig"; sourceTree = "<group>"; };
-		E6E31AA012FD6E76001618AB /* pwsafe-release64.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "pwsafe-release64.xcconfig"; sourceTree = "<group>"; };
+		E6E31A9312FD6A0A001618AB /* pwsafe64.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = pwsafe64.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6E31AD212FDC90B001618AB /* untitled */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = untitled; sourceTree = "<group>"; };
-		E6EBB01B133522D9007CA1F5 /* pwsafe-native-release32.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "pwsafe-native-release32.xcconfig"; sourceTree = "<group>"; };
 		E6EE837F11E87DAC00B01518 /* debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = debug.h; sourceTree = "<group>"; };
 		E6EE838011E87DAC00B01518 /* dir.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dir.h; sourceTree = "<group>"; };
 		E6EE838111E87DAC00B01518 /* env.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = env.h; sourceTree = "<group>"; };
@@ -1347,9 +1349,10 @@
 		E6ADB7EE119569CC004E2BE5 = {
 			isa = PBXGroup;
 			children = (
-				E6EBB01B133522D9007CA1F5 /* pwsafe-native-release32.xcconfig */,
-				E6E31A9F12FD6E76001618AB /* pwsafe-debug64.xcconfig */,
-				E6E31AA012FD6E76001618AB /* pwsafe-release64.xcconfig */,
+				E63E37CC14002ABB00994022 /* pwsafe64-debug.xcconfig */,
+				E63E37CD14002ABB00994022 /* pwsafe64-release.xcconfig */,
+				E60273BB13FFE25C0022C368 /* pwsafe-llvm-release.xcconfig */,
+				E60273B813FFDF570022C368 /* pwsafe-llvm-debug.xcconfig */,
 				E6F9A9F612B251A000F93140 /* pwsafe-debug.xcconfig */,
 				E6F9A9F712B251A000F93140 /* pwsafe-release.xcconfig */,
 				E690B1031297D76E007EA508 /* Resources */,
@@ -1375,8 +1378,8 @@
 				E6391BF812FD21B9009BBB8D /* pwsafe-i386.app */,
 				E6E31A1F12FD6957001618AB /* libos.a */,
 				E6E31A5412FD69A0001618AB /* libcore.a */,
-				E6E31A9312FD6A0A001618AB /* pwsafe-x86_64.app */,
-				E6BF9E8213348CA50084A011 /* pwsafe-native.app */,
+				E6E31A9312FD6A0A001618AB /* pwsafe64.app */,
+				E6BF9E8213348CA50084A011 /* pwsafe-llvm.app */,
 				E6BF9EBC13348CDB0084A011 /* libcore.a */,
 				E6BF9ED213348CF00084A011 /* libos.a */,
 			);
@@ -1747,9 +1750,9 @@
 			productReference = E6ADB99E1195706A004E2BE5 /* pwsafe.app */;
 			productType = "com.apple.product-type.application";
 		};
-		E6BF9E4413348CA50084A011 /* pwsafe-native */ = {
+		E6BF9E4413348CA50084A011 /* pwsafe-llvm */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E6BF9E7F13348CA50084A011 /* Build configuration list for PBXNativeTarget "pwsafe-native" */;
+			buildConfigurationList = E6BF9E7F13348CA50084A011 /* Build configuration list for PBXNativeTarget "pwsafe-llvm" */;
 			buildPhases = (
 				E6BF9E4B13348CA50084A011 /* Resources */,
 				E6BF9E5113348CA50084A011 /* Generate version.h */,
@@ -1763,14 +1766,14 @@
 				E6BF9ED413348D180084A011 /* PBXTargetDependency */,
 				E6BF9ED613348D1F0084A011 /* PBXTargetDependency */,
 			);
-			name = "pwsafe-native";
+			name = "pwsafe-llvm";
 			productName = pwsafe;
-			productReference = E6BF9E8213348CA50084A011 /* pwsafe-native.app */;
+			productReference = E6BF9E8213348CA50084A011 /* pwsafe-llvm.app */;
 			productType = "com.apple.product-type.application";
 		};
-		E6BF9E8713348CDB0084A011 /* core-native */ = {
+		E6BF9E8713348CDB0084A011 /* core-llvm */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E6BF9EB913348CDB0084A011 /* Build configuration list for PBXNativeTarget "core-native" */;
+			buildConfigurationList = E6BF9EB913348CDB0084A011 /* Build configuration list for PBXNativeTarget "core-llvm" */;
 			buildPhases = (
 				E6BF9E8813348CDB0084A011 /* Generate core_st */,
 				E6BF9E8913348CDB0084A011 /* Sources */,
@@ -1779,14 +1782,14 @@
 			);
 			dependencies = (
 			);
-			name = "core-native";
+			name = "core-llvm";
 			productName = core;
 			productReference = E6BF9EBC13348CDB0084A011 /* libcore.a */;
 			productType = "com.apple.product-type.library.static";
 		};
-		E6BF9EBF13348CF00084A011 /* os-native */ = {
+		E6BF9EBF13348CF00084A011 /* os-llvm */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E6BF9ECF13348CF00084A011 /* Build configuration list for PBXNativeTarget "os-native" */;
+			buildConfigurationList = E6BF9ECF13348CF00084A011 /* Build configuration list for PBXNativeTarget "os-llvm" */;
 			buildPhases = (
 				E6BF9EC013348CF00084A011 /* Sources */,
 			);
@@ -1794,7 +1797,7 @@
 			);
 			dependencies = (
 			);
-			name = "os-native";
+			name = "os-llvm";
 			productName = os;
 			productReference = E6BF9ED213348CF00084A011 /* libos.a */;
 			productType = "com.apple.product-type.library.static";
@@ -1830,9 +1833,9 @@
 			productReference = E6E31A5412FD69A0001618AB /* libcore.a */;
 			productType = "com.apple.product-type.library.static";
 		};
-		E6E31A5512FD6A0A001618AB /* pwsafe-x86_64 */ = {
+		E6E31A5512FD6A0A001618AB /* pwsafe64 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E6E31A9012FD6A0A001618AB /* Build configuration list for PBXNativeTarget "pwsafe-x86_64" */;
+			buildConfigurationList = E6E31A9012FD6A0A001618AB /* Build configuration list for PBXNativeTarget "pwsafe64" */;
 			buildPhases = (
 				E6E31A5C12FD6A0A001618AB /* Resources */,
 				E6E31A6212FD6A0A001618AB /* Generate version.h */,
@@ -1846,9 +1849,9 @@
 				E6E31A9712FD6A28001618AB /* PBXTargetDependency */,
 				E6E31A9912FD6A2D001618AB /* PBXTargetDependency */,
 			);
-			name = "pwsafe-x86_64";
+			name = pwsafe64;
 			productName = pwsafe;
-			productReference = E6E31A9312FD6A0A001618AB /* pwsafe-x86_64.app */;
+			productReference = E6E31A9312FD6A0A001618AB /* pwsafe64.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -1881,10 +1884,10 @@
 				E6391BBA12FD21B9009BBB8D /* pwsafe-i386 */,
 				E6E31A0C12FD6957001618AB /* os64 */,
 				E6E31A2012FD69A0001618AB /* core64 */,
-				E6E31A5512FD6A0A001618AB /* pwsafe-x86_64 */,
-				E6BF9E4413348CA50084A011 /* pwsafe-native */,
-				E6BF9E8713348CDB0084A011 /* core-native */,
-				E6BF9EBF13348CF00084A011 /* os-native */,
+				E6E31A5512FD6A0A001618AB /* pwsafe64 */,
+				E6BF9E4413348CA50084A011 /* pwsafe-llvm */,
+				E6BF9E8713348CDB0084A011 /* core-llvm */,
+				E6BF9EBF13348CF00084A011 /* os-llvm */,
 			);
 		};
 /* End PBXProject section */
@@ -1926,7 +1929,8 @@
 				E6BF9E4E13348CA50084A011 /* pwsafe.xsl in Resources */,
 				E6BF9E4F13348CA50084A011 /* help.zip in Resources */,
 				E6BF9E5013348CA50084A011 /* pwsafe.icns in Resources */,
-				E6EBB01C133522D9007CA1F5 /* pwsafe-native-release32.xcconfig in Resources */,
+				E60273B913FFDF570022C368 /* pwsafe-llvm-debug.xcconfig in Resources */,
+				E60273BC13FFE25C0022C368 /* pwsafe-llvm-release.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1940,8 +1944,8 @@
 				E6E31A5F12FD6A0A001618AB /* pwsafe.xsl in Resources */,
 				E6E31A6012FD6A0A001618AB /* help.zip in Resources */,
 				E6E31A6112FD6A0A001618AB /* pwsafe.icns in Resources */,
-				E6E31AA112FD6E76001618AB /* pwsafe-debug64.xcconfig in Resources */,
-				E6E31AA212FD6E76001618AB /* pwsafe-release64.xcconfig in Resources */,
+				E63E37CE14002ABB00994022 /* pwsafe64-debug.xcconfig in Resources */,
+				E63E37CF14002ABB00994022 /* pwsafe64-release.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2551,12 +2555,12 @@
 		};
 		E6BF9ED413348D180084A011 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = E6BF9E8713348CDB0084A011 /* core-native */;
+			target = E6BF9E8713348CDB0084A011 /* core-llvm */;
 			targetProxy = E6BF9ED313348D180084A011 /* PBXContainerItemProxy */;
 		};
 		E6BF9ED613348D1F0084A011 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = E6BF9EBF13348CF00084A011 /* os-native */;
+			target = E6BF9EBF13348CF00084A011 /* os-llvm */;
 			targetProxy = E6BF9ED513348D1F0084A011 /* PBXContainerItemProxy */;
 		};
 		E6E31A5A12FD6A0A001618AB /* PBXTargetDependency */ = {
@@ -2594,7 +2598,7 @@
 					_DEBUG,
 				);
 				GCC_VERSION = 4.0;
-				INFOPLIST_FILE = "pwsafe-Info-i386.plist";
+				INFOPLIST_FILE = "pwsafe-i386.plist";
 				PRODUCT_NAME = "pwsafe-i386";
 				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 				USER_HEADER_SEARCH_PATHS = ../src;
@@ -2616,7 +2620,7 @@
 					NDEBUG,
 				);
 				GCC_VERSION = 4.0;
-				INFOPLIST_FILE = "pwsafe-Info-i386.plist";
+				INFOPLIST_FILE = "pwsafe-i386.plist";
 				PRODUCT_NAME = "pwsafe-i386";
 				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 				USER_HEADER_SEARCH_PATHS = ../src;
@@ -2765,7 +2769,7 @@
 					_DEBUG,
 				);
 				GCC_VERSION = 4.0;
-				INFOPLIST_FILE = "pwsafe-Info.plist";
+				INFOPLIST_FILE = pwsafe.plist;
 				PRODUCT_NAME = pwsafe;
 				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 				USER_HEADER_SEARCH_PATHS = ../src;
@@ -2787,7 +2791,7 @@
 					NDEBUG,
 				);
 				GCC_VERSION = 4.0;
-				INFOPLIST_FILE = "pwsafe-Info.plist";
+				INFOPLIST_FILE = pwsafe.plist;
 				PRODUCT_NAME = pwsafe;
 				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 				USER_HEADER_SEARCH_PATHS = ../src;
@@ -2798,6 +2802,7 @@
 		};
 		E6BF9E8013348CA50084A011 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E60273B813FFDF570022C368 /* pwsafe-llvm-debug.xcconfig */;
 			buildSettings = {
 				ARCHS = i386;
 				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
@@ -2812,10 +2817,10 @@
 					_DEBUG,
 				);
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				INFOPLIST_FILE = "pwsafe-Info-native32.plist";
-				PRODUCT_NAME = "pwsafe-native";
+				INFOPLIST_FILE = "pwsafe-llvm.plist";
+				PRODUCT_NAME = "pwsafe-llvm";
 				SDKROOT = macosx;
-				SYMROOT = "build-native";
+				SYMROOT = "build-llvm";
 				USER_HEADER_SEARCH_PATHS = ../src;
 				VALID_ARCHS = i386;
 			};
@@ -2823,7 +2828,7 @@
 		};
 		E6BF9E8113348CA50084A011 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E6EBB01B133522D9007CA1F5 /* pwsafe-native-release32.xcconfig */;
+			baseConfigurationReference = E60273BB13FFE25C0022C368 /* pwsafe-llvm-release.xcconfig */;
 			buildSettings = {
 				ARCHS = i386;
 				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
@@ -2835,10 +2840,10 @@
 					NDEBUG,
 				);
 				GCC_VERSION = 4.2;
-				INFOPLIST_FILE = "pwsafe-Info-native32.plist";
-				PRODUCT_NAME = "pwsafe-native";
+				INFOPLIST_FILE = "pwsafe-llvm.plist";
+				PRODUCT_NAME = "pwsafe-llvm";
 				SDKROOT = macosx;
-				SYMROOT = "build-native";
+				SYMROOT = "build-llvm";
 				USER_HEADER_SEARCH_PATHS = ../src;
 				VALID_ARCHS = i386;
 				ZERO_LINK = NO;
@@ -2862,7 +2867,7 @@
 				HEADER_SEARCH_PATHS = ../src/;
 				PRODUCT_NAME = core;
 				SDKROOT = macosx;
-				SYMROOT = "build-native";
+				SYMROOT = "build-llvm";
 			};
 			name = Debug;
 		};
@@ -2881,7 +2886,7 @@
 				HEADER_SEARCH_PATHS = ../src/;
 				PRODUCT_NAME = core;
 				SDKROOT = macosx;
-				SYMROOT = "build-native";
+				SYMROOT = "build-llvm";
 				ZERO_LINK = NO;
 			};
 			name = Release;
@@ -2902,7 +2907,7 @@
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				PRODUCT_NAME = os;
 				SDKROOT = macosx;
-				SYMROOT = "build-native";
+				SYMROOT = "build-llvm";
 			};
 			name = Debug;
 		};
@@ -2920,7 +2925,7 @@
 				GCC_VERSION = 4.2;
 				PRODUCT_NAME = os;
 				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.6.sdk";
-				SYMROOT = "build-native";
+				SYMROOT = "build-llvm";
 				ZERO_LINK = NO;
 			};
 			name = Release;
@@ -3005,7 +3010,7 @@
 		};
 		E6E31A9112FD6A0A001618AB /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E6E31A9F12FD6E76001618AB /* pwsafe-debug64.xcconfig */;
+			baseConfigurationReference = E63E37CC14002ABB00994022 /* pwsafe64-debug.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_64_BIT_PRE_XCODE_3_1)";
 				ARCHS_STANDARD_64_BIT_PRE_XCODE_3_1 = x86_64;
@@ -3022,8 +3027,8 @@
 					_DEBUG,
 				);
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				INFOPLIST_FILE = "pwsafe-Info-x86_64.plist";
-				PRODUCT_NAME = "pwsafe-x86_64";
+				INFOPLIST_FILE = pwsafe64.plist;
+				PRODUCT_NAME = pwsafe64;
 				SYMROOT = build64;
 				USER_HEADER_SEARCH_PATHS = ../src;
 				VALID_ARCHS = x86_64;
@@ -3032,7 +3037,7 @@
 		};
 		E6E31A9212FD6A0A001618AB /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E6E31AA012FD6E76001618AB /* pwsafe-release64.xcconfig */;
+			baseConfigurationReference = E63E37CD14002ABB00994022 /* pwsafe64-release.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_64_BIT_PRE_XCODE_3_1)";
 				ARCHS_STANDARD_64_BIT_PRE_XCODE_3_1 = x86_64;
@@ -3045,8 +3050,8 @@
 					__WXOSX_COCOA__,
 					NDEBUG,
 				);
-				INFOPLIST_FILE = "pwsafe-Info-x86_64.plist";
-				PRODUCT_NAME = "pwsafe-x86_64";
+				INFOPLIST_FILE = pwsafe64.plist;
+				PRODUCT_NAME = pwsafe64;
 				SYMROOT = build64;
 				USER_HEADER_SEARCH_PATHS = ../src;
 				VALID_ARCHS = x86_64;
@@ -3111,7 +3116,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E6BF9E7F13348CA50084A011 /* Build configuration list for PBXNativeTarget "pwsafe-native" */ = {
+		E6BF9E7F13348CA50084A011 /* Build configuration list for PBXNativeTarget "pwsafe-llvm" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E6BF9E8013348CA50084A011 /* Debug */,
@@ -3120,7 +3125,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E6BF9EB913348CDB0084A011 /* Build configuration list for PBXNativeTarget "core-native" */ = {
+		E6BF9EB913348CDB0084A011 /* Build configuration list for PBXNativeTarget "core-llvm" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E6BF9EBA13348CDB0084A011 /* Debug */,
@@ -3129,7 +3134,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E6BF9ECF13348CF00084A011 /* Build configuration list for PBXNativeTarget "os-native" */ = {
+		E6BF9ECF13348CF00084A011 /* Build configuration list for PBXNativeTarget "os-llvm" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E6BF9ED013348CF00084A011 /* Debug */,
@@ -3156,7 +3161,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E6E31A9012FD6A0A001618AB /* Build configuration list for PBXNativeTarget "pwsafe-x86_64" */ = {
+		E6E31A9012FD6A0A001618AB /* Build configuration list for PBXNativeTarget "pwsafe64" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E6E31A9112FD6A0A001618AB /* Debug */,
