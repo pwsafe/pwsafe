@@ -38,15 +38,7 @@ COptionsShortcuts::COptionsShortcuts(CWnd *pParent, st_Opt_master_data *pOPTMD)
   m_iDefColWidth = M_DefColWidth();
 }
 
-COptionsShortcuts::~COptionsShortcuts()
-{
-  MapKeyNameIDIter iter;
-  for (iter = m_MapKeyNameID.begin(); iter != m_MapKeyNameID.end(); iter++) {
-    free((void *)iter->second);
-    iter->second = NULL;
-  }
-  m_MapKeyNameID.clear();
-}
+COptionsShortcuts::~COptionsShortcuts(){ }
 
 void COptionsShortcuts::DoDataExchange(CDataExchange* pDX)
 {
@@ -93,7 +85,6 @@ BOOL COptionsShortcuts::OnInitDialog()
   m_ShortcutLC.InsertColumn(1, cs_colname);  // SHCT_MENUITEMTEXT
 
   MapMenuShortcutsIter iter, iter_parent;
-  MapKeyNameIDConstIter citer;
   CString str;
   int iItem(0);
 
@@ -109,15 +100,7 @@ BOOL COptionsShortcuts::OnInitDialog()
                   iter->first) != m_ExcludedMenuItems.end())
         continue;
 
-    str = L"";
-    if (iter->second.cVirtKey != 0) {
-       st_KeyIDExt st_KIDEx;
-       st_KIDEx.id = iter->second.cVirtKey;
-       st_KIDEx.bExtended = (iter->second.cModifier & HOTKEYF_EXT) == HOTKEYF_EXT;
-       citer = m_MapKeyNameID.find(st_KIDEx);
-       if (citer != m_MapKeyNameID.end())
-         str = CMenuShortcut::FormatShortcut(iter, citer);
-    }
+    str = CMenuShortcut::FormatShortcut(iter);
 
     iter_parent = m_MapMenuShortcuts.find(iter->second.uiParentID);
     ASSERT(iter_parent != m_MapMenuShortcuts.end());
@@ -240,26 +223,17 @@ void COptionsShortcuts::OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMIS)
 void COptionsShortcuts::OnResetAll()
 {
   MapMenuShortcutsIter iter;
-  MapKeyNameIDConstIter citer;
   CString str;
   UINT id;
-  st_KeyIDExt st_KIDEx;
 
   for (int i = 0; i < m_ShortcutLC.GetItemCount(); i++) {
     id = (UINT)LOWORD(m_ShortcutLC.GetItemData(i));
 
     iter = m_MapMenuShortcuts.find(id);
-    st_KIDEx.id = iter->second.cdefVirtKey;
-    st_KIDEx.bExtended = (iter->second.cModifier & HOTKEYF_EXT) == HOTKEYF_EXT;
-    citer = m_MapKeyNameID.find(st_KIDEx);
     iter->second.cVirtKey = iter->second.cdefVirtKey;
     iter->second.cModifier = iter->second.cdefModifier;
   
-    if (citer != m_MapKeyNameID.end() && iter->second.cdefVirtKey != 0) {
-      str = CMenuShortcut::FormatShortcut(iter, citer);
-    } else {
-      str = L"";
-    }
+    str = CMenuShortcut::FormatShortcut(iter);
     m_ShortcutLC.SetItemText(i, 0, str);  // SHCT_SHORTCUTKEYS
   }
 
@@ -326,20 +300,10 @@ void COptionsShortcuts::OnResetColumnWidth()
 }
 
 void COptionsShortcuts::InitialSetup(const MapMenuShortcuts MapMenuShortcuts,
-                    const MapKeyNameID MapKeyNameID,
                     const std::vector<UINT> &ExcludedMenuItems,
                     const std::vector<st_MenuShortcut> &ReservedShortcuts)
 {
   m_MapMenuShortcuts = m_MapSaveMenuShortcuts = MapMenuShortcuts;
-
-  // Need to make our own copy as KNIDciter->second is a pointer to whar_t variable
-  MapKeyNameIDConstIter KNIDciter;
-  std::pair< MapKeyNameIDIter, bool > prMKNID;
-
-  for (KNIDciter = MapKeyNameID.begin(); KNIDciter != MapKeyNameID.end(); KNIDciter++) {
-    prMKNID = m_MapKeyNameID.insert(MapKeyNameIDPair(KNIDciter->first,  _wcsdup(KNIDciter->second)));
-  }
-
   m_ExcludedMenuItems = ExcludedMenuItems;
   m_ReservedShortcuts = ReservedShortcuts;
 }
@@ -365,29 +329,21 @@ void COptionsShortcuts::OnHotKeyKillFocus(const int item, const UINT id,
   CString str(L"");
   CString cs_warning;
   MapMenuShortcutsIter iter, inuse_iter;
-  MapKeyNameIDConstIter citer;
   st_MenuShortcut st_mst;
-  st_KeyIDExt st_KIDEx;
 
   st_mst.cVirtKey  = (unsigned char)wVirtualKeyCode;
   st_mst.cModifier = wVirtualKeyCode == 0 ? 0 : (unsigned char)wModifiers;
 
-  st_KIDEx.id = (unsigned char)wVirtualKeyCode;
-  st_KIDEx.bExtended = (wModifiers & HOTKEYF_EXT) == HOTKEYF_EXT;
-  citer = m_MapKeyNameID.find(st_KIDEx);
-
   // Stop compiler complaining - put this here even if not needed
   already_inuse inuse(st_mst);
 
-  if (citer == m_MapKeyNameID.end()) {
+  if (!CMenuShortcut::IsNormalShortcut(st_mst)) {
     // Invalid shortcut
     cs_warning.LoadString(IDS_SHCT_WARNING1);
     goto set_warning;
   }
 
-  if (st_mst.cVirtKey != 0) {
-    str = CMenuShortcut::FormatShortcut(st_mst, citer);
-  }
+  str = CMenuShortcut::FormatShortcut(st_mst);
 
   if (std::find_if(m_ReservedShortcuts.begin(),
                    m_ReservedShortcuts.end(),
@@ -438,10 +394,4 @@ bool COptionsShortcuts::GetMapMenuShortcutsIter(const UINT &id, MapMenuShortcuts
 {
   iter=m_MapMenuShortcuts.find(id);
   return iter!=m_MapMenuShortcuts.end();
-}
-
-bool COptionsShortcuts::GetMapKeyNameIDConstIter(const st_KeyIDExt &st_KIDEx, MapKeyNameIDConstIter &iter)
-{
-  iter=m_MapKeyNameID.find(st_KIDEx);
-  return iter!=m_MapKeyNameID.end();
 }

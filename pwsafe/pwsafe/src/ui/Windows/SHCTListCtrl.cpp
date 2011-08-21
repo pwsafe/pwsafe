@@ -117,7 +117,6 @@ void CSHCTListCtrl::OnRButtonDown(UINT , CPoint point)
 {
   CMenu PopupMenu;
   MapMenuShortcutsIter iter;
-  MapKeyNameIDConstIter citer;
   CString str;
   CPoint pt;
   int iSubItem = -1;
@@ -140,9 +139,6 @@ void CSHCTListCtrl::OnRButtonDown(UINT , CPoint point)
   if (!m_pParent->GetMapMenuShortcutsIter(m_id, iter)) {
      goto exit;
   }
-  st_KeyIDExt st_KIDEx;
-  st_KIDEx.id = iter->second.cVirtKey;
-  st_KIDEx.bExtended = (iter->second.cModifier & HOTKEYF_EXT) == HOTKEYF_EXT;
 
   PopupMenu.LoadMenu(IDR_POPRESETSHORTCUT);
   CMenu* pContextMenu = PopupMenu.GetSubMenu(0);
@@ -175,14 +171,7 @@ void CSHCTListCtrl::OnRButtonDown(UINT , CPoint point)
   iter->second.cVirtKey = iter->second.cdefVirtKey;
   iter->second.cModifier = iter->second.cdefModifier;
 
-  if (m_pParent->GetMapKeyNameIDConstIter(st_KIDEx, citer) && (iter->second.cVirtKey != 0)) {
-    st_KeyIDExt st_KIDEx;
-    st_KIDEx.id = iter->second.cVirtKey;
-    st_KIDEx.bExtended = (iter->second.cModifier & HOTKEYF_EXT) == HOTKEYF_EXT;
-    str = CMenuShortcut::FormatShortcut(iter, citer);
-  } else {
-    str = L"";
-  }
+  str = CMenuShortcut::FormatShortcut(iter);
 
 update:
   SetItemText(m_item, SHCT_SHORTCUTKEYS, str);

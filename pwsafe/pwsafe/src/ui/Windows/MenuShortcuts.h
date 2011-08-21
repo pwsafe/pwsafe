@@ -21,35 +21,12 @@ struct st_MenuShortcut {
   unsigned char cModifier;
 };
 
-struct st_KeyIDExt {
-  unsigned char id;
-  bool bExtended;
-
-  bool operator < (const st_KeyIDExt & rhs) const {
-    return id < rhs.id;
-  }
-
-  bool operator == (const st_KeyIDExt & rhs) const {
-    return (id == rhs.id && bExtended == rhs.bExtended) ;
-  }
-
-  bool operator != (const st_KeyIDExt & rhs) const {
-    return (id != rhs.id || bExtended != rhs.bExtended) ;
-  }
-};
-
 class CMenuShortcut;
 
 // Key is the Control ID
 typedef std::map<unsigned int, CMenuShortcut> MapMenuShortcuts;
 typedef std::pair<unsigned int, CMenuShortcut> MapMenuShortcutsPair;
 typedef MapMenuShortcuts::iterator MapMenuShortcutsIter;
-
-// Key is the virtual key
-typedef std::map<const st_KeyIDExt, const wchar_t *> MapKeyNameID;
-typedef std::pair<const st_KeyIDExt, const wchar_t *> MapKeyNameIDPair;
-typedef MapKeyNameID::const_iterator MapKeyNameIDConstIter;
-typedef MapKeyNameID::iterator MapKeyNameIDIter;
 
 class CMenuShortcut
 {
@@ -116,19 +93,18 @@ public:
   static void InitStrings();
 
   static CString FormatShortcut(MapMenuShortcutsIter iter)
-  {return FormatShortcut(iter->second.cModifier, NULL);}
+  {return FormatShortcut(iter->second.cModifier, iter->second.cVirtKey);}
 
-  static CString FormatShortcut(MapMenuShortcutsIter iter, 
-                                MapKeyNameIDConstIter citer)
-  {return FormatShortcut(iter->second.cModifier, citer->second);}
-
-  static CString FormatShortcut(const st_MenuShortcut &mst, 
-                                MapKeyNameIDConstIter citer)
-  {return FormatShortcut(mst.cModifier, citer->second);}
-
+  static CString FormatShortcut(const st_MenuShortcut &mst)
+  {return FormatShortcut(mst.cModifier, mst.cVirtKey);}
+  static bool IsNormalShortcut(const st_MenuShortcut &mst)
+  {return IsNormalShortcut(mst.cModifier, mst.cVirtKey);}
+  
 private:
+  static bool IsNormalShortcut(unsigned char cModifier,
+                                unsigned char cVirtKey);  
   static CString FormatShortcut(unsigned char cModifier,
-                                const wchar_t *key);
+                                unsigned char cVirtKey);
   static CString CS_CTRLP, CS_ALTP, CS_SHIFTP;
 };
 

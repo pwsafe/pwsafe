@@ -132,7 +132,7 @@ void InsertShortcuts(CMenu *pMenu, MapMenuShortcuts &mms,
   }
 }
 
-void DboxMain::SetUpInitialMenuStrings(LCID lcid)
+void DboxMain::SetUpInitialMenuStrings()
 {
   CMenu *pMainMenu, *pSubMenu;
   int isubmenu_pos;
@@ -140,9 +140,6 @@ void DboxMain::SetUpInitialMenuStrings(LCID lcid)
 
   CHotKeyCtrl cHKC;
   CString sKeyName;
-  LPCWSTR ptcKeyName;
-  wchar_t *pname;
-  st_KeyIDExt st_KIDEx;
   BOOL brc;
 
   // Following are excluded from list of user-configurable
@@ -174,81 +171,6 @@ void DboxMain::SetUpInitialMenuStrings(LCID lcid)
   m_ExcludedMenuItems.clear();
   m_ExcludedMenuItems.assign(excludedMenuItems,
                              excludedMenuItems + _countof(excludedMenuItems));
-
-  std::pair< MapKeyNameIDIter, bool > prMKNID;
-
-  // Clear out any there
-  MapKeyNameIDIter KNIDiter;
-  for (KNIDiter = m_MapKeyNameID.begin(); KNIDiter != m_MapKeyNameID.end(); KNIDiter++) {
-    free((void *)KNIDiter->second);
-    KNIDiter->second = NULL;
-  }
-  m_MapKeyNameID.clear();
-
-  // Add in the zero/None entry
-  pname = _wcsdup(L"");
-  st_KIDEx.id = 0;
-  st_KIDEx.bExtended = false;
-  prMKNID = m_MapKeyNameID.insert(MapKeyNameIDPair(st_KIDEx, pname));
-  ASSERT(prMKNID.second == true);
-
-  HKL hkl(NULL), prevhkl(NULL);
-  if (lcid != 0) {
-    // This won't work for Japanese, Korean or Chinese as they use IMEs and not keyboard layouts :-(
-    CString csKLID;
-    csKLID.Format(L"%08x", lcid);
-
-    // Load new keyboard layout
-    hkl = LoadKeyboardLayout(csKLID, KLF_NOTELLSHELL);
-    // Activate it so that we get the correct names for things like "Scroll-Lock", "Nackspace" etc.
-    prevhkl = ActivateKeyboardLayout(hkl, KLF_SETFORPROCESS);
-  }
-
-  // Now add in locale key names (note range 0xE0-0xFF not used)
-  for (int i = 1; i < 0xE0; i++) {
-    // Following are reserved or unassigned by Windows
-    if ( i == 0x07 || i == 0x0A  || 
-         i == 0x0B || i == 0x1B  ||
-        (i >= 0x3A && i <= 0x40) ||
-        (i >= 0x5B && i <= 0x5F) ||
-        (i >= 0x88 && i <= 0x8F) ||
-        (i >= 0x92 && i <= 0x9F) ||
-        (i >= 0xA6 && i <= 0xB9) ||
-        (i >= 0xC1 && i <= 0xDA))
-      continue;
-
-    st_KIDEx.id = (unsigned char)i;
-    st_KIDEx.bExtended = IsExtended(i);
-    sKeyName = cHKC.GetKeyName((UINT)i, IsExtended(i) ? TRUE : FALSE);
-    if (!sKeyName.IsEmpty()) {
-      // Make value into "Sentence Case" e.g. "Enter" or "Num Plus" etc.
-      CString cstoken, sKeyName2(L"");
-      int curPos = 0;
-      sKeyName.Trim();
-      cstoken = sKeyName.Tokenize(L" ", curPos);
-      while (!cstoken.IsEmpty()) {
-        CString cstemp1 = cstoken.Left(1);
-        CString cstemp2 = cstoken.Right(cstoken.GetLength() - 1);
-        cstemp1.MakeUpper();
-        cstemp2.MakeLower();
-        sKeyName2 += cstemp1 + cstemp2 + CString(L" ");
-        cstoken = sKeyName.Tokenize(L" ", curPos);
-      };
-      sKeyName2.Trim();
-      ptcKeyName = sKeyName2.GetBuffer(sKeyName2.GetLength());
-      pname = _wcsdup(ptcKeyName);
-      sKeyName2.ReleaseBuffer();
-      prMKNID = m_MapKeyNameID.insert(MapKeyNameIDPair(st_KIDEx, pname));
-      ASSERT(prMKNID.second == true);
-    }
-  }
-
-  if (hkl != NULL) {
-    // Put keyboard layout back as it was.
-    UnloadKeyboardLayout(hkl);
-    if (prevhkl != NULL)
-      ActivateKeyboardLayout(prevhkl, KLF_SETFORPROCESS);
-  }
 
   pMainMenu = new CMenu;
   brc = pMainMenu->LoadMenu(IDR_MAINMENU);
@@ -528,8 +450,6 @@ void DboxMain::SetUpMenuStrings(CMenu *pPopupMenu)
   MENUITEMINFO miteminfo = {0};
 
   MapMenuShortcutsIter iter;
-  MapKeyNameIDConstIter citer;
-  st_KeyIDExt st_KIDEx;
 
   UINT uiCount = pPopupMenu->GetMenuItemCount();
   ASSERT((int)uiCount >= 0);
@@ -549,15 +469,8 @@ void DboxMain::SetUpMenuStrings(CMenu *pPopupMenu)
       if (iter != m_MapMenuShortcuts.end()) {
         CString str;
         if (iter->second.cVirtKey != 0) {
-          st_KIDEx.id = iter->second.cVirtKey;
-          st_KIDEx.bExtended = (iter->second.cModifier & HOTKEYF_EXT) == HOTKEYF_EXT;
-          citer = m_MapKeyNameID.find(st_KIDEx);
-          if (citer != m_MapKeyNameID.end()) {
-            str.Format(L"%s\t%s", iter->second.name.c_str(), 
-                       CMenuShortcut::FormatShortcut(iter, citer));
-          } else
-            continue;
-
+          str.Format(L"%s\t%s", iter->second.name.c_str(), 
+                       CMenuShortcut::FormatShortcut(iter));
         } else {
           str = iter->second.name.c_str();
         }
@@ -945,44 +858,16 @@ void DboxMain::OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL)
   bool bDoShortcuts(false);
   switch (minfo.dwMenuData) {
     case ID_FILEMENU:
-      bDoShortcuts = m_bDoShortcuts[FILEMENU];
-      m_bDoShortcuts[FILEMENU] = false;
-      break;
     case ID_EXPORTMENU:
-      bDoShortcuts = m_bDoShortcuts[EXPORTMENU];
-      m_bDoShortcuts[EXPORTMENU] = false;
-      break;
     case ID_IMPORTMENU:
-      bDoShortcuts = m_bDoShortcuts[IMPORTMENU];
-      m_bDoShortcuts[IMPORTMENU] = false;
-      break;
     case ID_EDITMENU:
-      bDoShortcuts = m_bDoShortcuts[EDITMENU];
-      m_bDoShortcuts[EDITMENU] = false;
-      break;
     case ID_VIEWMENU:
-      bDoShortcuts = m_bDoShortcuts[VIEWMENU];
-      m_bDoShortcuts[VIEWMENU] = false;
-      break;
     case ID_FILTERMENU:
-      bDoShortcuts = m_bDoShortcuts[FILTERMENU];
-      m_bDoShortcuts[FILTERMENU] = false;
-      break;
     case ID_CHANGEFONTMENU:
-      bDoShortcuts = m_bDoShortcuts[CHANGEFONTMENU];
-      m_bDoShortcuts[CHANGEFONTMENU] = false;
-      break;
     case ID_REPORTSMENU:
-      bDoShortcuts = m_bDoShortcuts[REPORTSMENU];
-      m_bDoShortcuts[REPORTSMENU] = false;
-      break;
     case ID_MANAGEMENU:
-      bDoShortcuts = m_bDoShortcuts[MANAGEMENU];
-      m_bDoShortcuts[MANAGEMENU] = false;
-      break;
-    case ID_HELPMENU:
-      bDoShortcuts = m_bDoShortcuts[HELPMENU];
-      m_bDoShortcuts[HELPMENU] = false;
+    case ID_HELPMENU://main menu items' shortuct should be always updated because keyboard layout could be changed
+      bDoShortcuts = true;
       break;
     default:
       break;
