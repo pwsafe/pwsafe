@@ -37,15 +37,12 @@ public:
   bool HaveShortcutsChanged() {return m_bShortcutsChanged;}
 
   void InitialSetup(const MapMenuShortcuts MapMenuShortcuts,
-                    const MapKeyNameID MapKeyNameID,
                     const std::vector<UINT> &ExcludedMenuItems,
                     const std::vector<st_MenuShortcut> &ReservedShortcuts);
 
   MapMenuShortcuts GetMaps() {return m_MapMenuShortcuts;}
 
   bool GetMapMenuShortcutsIter(const UINT &id, MapMenuShortcutsIter &iter);
-  
-  bool GetMapKeyNameIDConstIter(const st_KeyIDExt &st_KIDEx, MapKeyNameIDConstIter &iter);
   
   void OnHotKeyKillFocus(const int item, const UINT id,
                          const WORD wVirtualKeyCode, const WORD wModifiers);
@@ -90,7 +87,6 @@ private:
   static int CALLBACK CompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
 
   MapMenuShortcuts m_MapMenuShortcuts, m_MapSaveMenuShortcuts;
-  MapKeyNameID m_MapKeyNameID;
   std::vector<UINT> m_ExcludedMenuItems;
   std::vector<st_MenuShortcut> m_ReservedShortcuts;
 

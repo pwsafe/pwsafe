@@ -452,7 +452,6 @@ public:
   {OnInitMenuPopup(pPopupMenu, nIndex, bSysMenu);}
 
   const MapMenuShortcuts &GetMapMenuShortcuts() {return m_MapMenuShortcuts;}
-  const MapKeyNameID &GetMapKeyNameID() {return m_MapKeyNameID;}
   const std::vector<UINT> &GetExcludedMenuItems() {return m_ExcludedMenuItems;}
   const std::vector<st_MenuShortcut> &GetReservedShortcuts() {return m_ReservedShortcuts;}
   
@@ -855,7 +854,7 @@ private:
   void RegistryAnonymity();
   void CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID, const bool bDoShortcuts);
   void SetUpMenuStrings(CMenu *pPopupMenu);
-  void SetUpInitialMenuStrings(LCID lcid = 0);
+  void SetUpInitialMenuStrings();
   void UpdateAccelTable();
   void SetupSpecialShortcuts();
   bool ProcessLanguageMenu(CMenu *pPopupMenu);
@@ -916,9 +915,6 @@ private:
 
   // Menu Shortcuts
   MapMenuShortcuts m_MapMenuShortcuts;
-
-  // Mapping of virtual key to key name in user's locale
-  MapKeyNameID m_MapKeyNameID;
 
   // Menu items we don't allow the user to modify or see in Options
   // Shortcuts CListCtrl

@@ -55,7 +55,6 @@ COptions_PropertySheet::COptions_PropertySheet(UINT nID, CWnd* pParent, const bo
       m_pp_system          = new COptionsSystem(this, &m_OPTMD);
 
       m_pp_shortcuts->InitialSetup(m_OPTMD.pDbx->GetMapMenuShortcuts(),
-                                   m_OPTMD.pDbx->GetMapKeyNameID(),
                                    m_OPTMD.pDbx->GetExcludedMenuItems(),
                                    m_OPTMD.pDbx->GetReservedShortcuts());
 
