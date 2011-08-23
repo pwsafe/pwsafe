@@ -22,6 +22,7 @@ class DbSelectionPanel;
 class wxGrid;
 struct ComparisonData;
 class wxGridEvent;
+class wxGridRangeSelectEvent;
 
 class CompareDlg: public wxDialog
 {
@@ -38,6 +39,8 @@ class CompareDlg: public wxDialog
   void OnCopyItemsToCurrentDB(wxCommandEvent& evt);
   void OnDeleteItemsFromCurrentDB(wxCommandEvent& evt);
   void OnCopyFieldsToCurrentDB(wxCommandEvent& evt);
+  void OnGridRangeSelect(wxGridRangeSelectEvent& evt);
+  void OnAutoSelectGridRow(wxCommandEvent& evt);
 
 public:
   CompareDlg(wxWindow* parent, PWScore* core);
