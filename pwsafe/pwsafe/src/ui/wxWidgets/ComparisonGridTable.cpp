@@ -504,8 +504,29 @@ ComparisonGrid::ComparisonGrid(wxWindow* parent, wxWindowID id): wxGrid(parent, 
   SetRowLabelAlignment(horiz, wxALIGN_BOTTOM);
 }
 
+bool ComparisonGrid::IsRowSelected(int row) const
+{
+  //this works only if we are in wxGridSelectRows mode
+  return IsInSelection(row, 0);
+}
+
+//remove the grid line between every other row to make two rows appear as one
 wxPen ComparisonGrid::GetRowGridLinePen(int row)
 {
-  return row%2 == 0? wxPen(CurrentBackgroundColor) : wxGrid::GetRowGridLinePen(row);
+  if (row%2 == 0) {
+    if (IsRowSelected(row)) {
+      if (wxWindow::FindFocus() == GetGridWindow()) {
+        return wxPen(GetSelectionBackground());
+      }
+      else {
+        //just like it is hard-coded in wxGridCellRenderer::Draw()
+        return wxPen(wxSystemSettings::GetColour(wxSYS_COLOUR_BTNSHADOW));
+      }
+    }
+    else {
+      return wxPen(GetCellBackgroundColour(row,0));
+    }
+  }
+  return wxGrid::GetRowGridLinePen(row);
 }
 

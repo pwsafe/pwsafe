@@ -29,6 +29,7 @@ class ComparisonGrid: public wxGrid
 public:
   ComparisonGrid(wxWindow* parent, wxWindowID id);
   wxPen GetRowGridLinePen(int row);
+  bool IsRowSelected(int row) const;
 };
 
 

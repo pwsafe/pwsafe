@@ -50,12 +50,16 @@ enum {
 DECLARE_EVENT_TYPE(EVT_EXPAND_DATA_PANELS, -1)
 DEFINE_EVENT_TYPE(EVT_EXPAND_DATA_PANELS)
 
+DECLARE_EVENT_TYPE(EVT_SELECT_GRID_ROW, -1)
+DEFINE_EVENT_TYPE(EVT_SELECT_GRID_ROW)
+
 BEGIN_EVENT_TABLE( CompareDlg, wxDialog )
   EVT_BUTTON( ID_BTN_COMPARE,  CompareDlg::OnCompare )
   EVT_GRID_CELL_RIGHT_CLICK(CompareDlg::OnGridCellRightClick)
   EVT_MENU(ID_EDIT_IN_CURRENT_DB, CompareDlg::OnEditInCurrentDB)
   EVT_MENU(ID_VIEW_IN_COMPARISON_DB, CompareDlg::OnViewInComparisonDB)
   EVT_COMMAND(wxID_ANY, EVT_EXPAND_DATA_PANELS, CompareDlg::OnExpandDataPanels)
+  EVT_COMMAND(wxID_ANY, EVT_SELECT_GRID_ROW, CompareDlg::OnAutoSelectGridRow)
   EVT_MENU(ID_COPY_ITEMS_TO_CURRENT_DB, CompareDlg::OnCopyItemsToCurrentDB)
   EVT_MENU(ID_DELETE_ITEMS_FROM_CURRENT_DB, CompareDlg::OnDeleteItemsFromCurrentDB)
   EVT_MENU(ID_COPY_FIELD_TO_CURRENT_DB, CompareDlg::OnCopyFieldsToCurrentDB)
@@ -126,6 +130,10 @@ void CompareDlg::CreateControls()
   m_conflicts->sizerBelow = dlgSizer->AddSpacer(RowSeparation);
   m_conflicts->sizerBelow->Show(false);
 
+  m_conflicts->grid->Connect(wxEVT_GRID_RANGE_SELECT,
+                             wxGridRangeSelectEventHandler(CompareDlg::OnGridRangeSelect),
+                             NULL,
+                             this);
   CreateDataPanel(dlgSizer, wxString() << _("Only in current database: ") << m_currentCore->GetCurFile(),
                         m_current)->Hide();
   m_current->sizerBelow = dlgSizer->AddSpacer(RowSeparation);
@@ -302,7 +310,7 @@ void CompareDlg::DoCompare()
                                             sections[idx].useComparisonSafe? &st_CompareData::uuid1: &st_CompareData::uuid0,
                                             sections[idx].useComparisonSafe? ComparisonBackgroundColor: CurrentBackgroundColor);
       }
-      sections[idx].cd->grid->SetTable(table, true);
+      sections[idx].cd->grid->SetTable(table, true, wxGrid::wxGridSelectRows);
       wxCollapsiblePane* pane = sections[idx].cd->pane;
       //expand the columns to show these fields fully, as these are usually small(er) strings
       table->AutoSizeField(CItemData::GROUP);
@@ -348,6 +356,30 @@ wxGrid* CompareDlg::GetEventSourceGrid(int id)
   }
 }
 
+void CompareDlg::OnGridRangeSelect(wxGridRangeSelectEvent& evt)
+{
+  wxCHECK_RET(evt.GetId() == m_conflicts->grid->GetId(), wxT("OnGridRangeSelect should be plugged-in only with conflicts grid"));
+  wxGrid* grid = GetEventSourceGrid(evt.GetId());
+  //select grids asynchronously, or else we get in an infinite loop of selections & their notifications
+  if (evt.GetTopRow()%2 != 0) {
+    wxCommandEvent cmdEvent(EVT_SELECT_GRID_ROW);
+    cmdEvent.SetEventObject(grid);
+    cmdEvent.SetInt(evt.GetTopRow()-1);
+    GetEventHandler()->AddPendingEvent(cmdEvent);
+  }
+  if (evt.GetBottomRow()%2 == 0) {
+    wxCommandEvent cmdEvent(EVT_SELECT_GRID_ROW);
+    cmdEvent.SetEventObject(grid);
+    cmdEvent.SetInt(evt.GetBottomRow()+1);
+    GetEventHandler()->AddPendingEvent(cmdEvent);
+  }
+}
+
+void CompareDlg::OnAutoSelectGridRow(wxCommandEvent& evt)
+{
+  m_conflicts->grid->SelectRow(evt.GetInt(), true);
+}
+
 void CompareDlg::OnGridCellRightClick(wxGridEvent& evt)
 {
   ContextMenuData menuContext;
@@ -360,6 +392,11 @@ void CompareDlg::OnGridCellRightClick(wxGridEvent& evt)
   if (!menuContext.sourceGrid->IsInSelection(evt.GetRow(), evt.GetCol())) {
     menuContext.sourceGrid->SelectRow(evt.GetRow(), false);
   }
+
+  if (menuContext.sourceGrid == m_conflicts->grid) {
+    menuContext.sourceGrid->SelectRow(evt.GetRow()%2 == 0? evt.GetRow()+1: evt.GetRow()-1, true);
+  }
+
   menuContext.sourceGrid->SetGridCursor(evt.GetRow(), evt.GetCol());
 
   menuContext.selectedRows = menuContext.sourceGrid->GetSelectedRows();
