@@ -54,20 +54,20 @@ the platform (hardware & OS) on which you want to run your build of PasswordSafe
 can be built in four flavours (four different Xcode targets):
 
                 wxWidgets
- Target         required      xcconfig files               Binary types     Deployment target
- ----------------------------------------------------------------------------------------------------
- pwsafe           2.8     pwsafe-debug.xcconfig             i386 + ppc       10.4+
+ Target         required      xcconfig files               Binary types     Deployment target    Base SDK
+ --------------------------------------------------------------------------------------------------------
+ pwsafe           2.8     pwsafe-debug.xcconfig             i386 + ppc       10.4+                10.4
                           pwsafe-release.xcconfig           
 
- pwsafe-i386      2.8     pwsafe-i386-debug.xcconfig        i386             10.4+
+ pwsafe-i386      2.8     pwsafe-i386-debug.xcconfig        i386             10.4+                10.4
                           pwsafe-i386-release.xcconfig      
 
- pwsafe64         2.9     pwsafe64-debug.xcconfig           X86_64           Same as build platform
+ pwsafe64         2.9     pwsafe64-debug.xcconfig           X86_64           Compiler Default     Current Mac OS
                           pwsafe64-release.xcconfig         
 
- pwsafe-llvm      2.8     pwsafe-llvm-debug.xcconfig        i386             Same as build platform
+ pwsafe-llvm      2.8     pwsafe-llvm-debug.xcconfig        i386             Compiler Default     Current Mac OS
                           pwsafe-llvm-release.xcconfig      
- -----------------------------------------------------------------------------------------------------
+ --------------------------------------------------------------------------------------------------------
 
 
 If you want to run PasswordSafe on older versions of Mac OS X (10.4+), including the ppc 
