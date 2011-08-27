@@ -247,7 +247,7 @@ wxGridCellAttr* UniSafeCompareGridTable::GetAttr(int /*row*/, int /*col*/, wxGri
 
 
 
-int UniSafeCompareGridTable::GetItemRow(const pws_os::CUUID& uuid)
+int UniSafeCompareGridTable::GetItemRow(const pws_os::CUUID& uuid) const
 {
   CompareData::iterator itr = std::find_if(m_compData->begin(),
                                             m_compData->end(),
@@ -434,7 +434,7 @@ wxString MultiSafeCompareGridTable::GetRowLabelValue(int row)
   return wxGridTableBase::GetRowLabelValue(row/2);
 }
 
-int MultiSafeCompareGridTable::GetItemRow(const pws_os::CUUID& uuid)
+int MultiSafeCompareGridTable::GetItemRow(const pws_os::CUUID& uuid) const
 {
   CompareData::iterator itr = std::find_if(m_compData->begin(),
                                             m_compData->end(),

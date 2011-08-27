@@ -67,7 +67,7 @@ END_EVENT_TABLE()
 
 struct ComparisonData {
   wxCollapsiblePane* pane;
-  wxGrid* grid;
+  wxGrid* grid;              //the grid is linked back to this object using SetClientData()
   CompareData data;
   wxSizerItem* sizerBelow;  //for managing the spacers in between
   
@@ -76,7 +76,7 @@ struct ComparisonData {
 };
 
 struct ContextMenuData {
-  wxGrid* sourceGrid;
+  ComparisonData* cdata;
   wxArrayInt selectedRows;
   CItemData::FieldType field;
 };
@@ -234,6 +234,9 @@ wxCollapsiblePane* CompareDlg::CreateDataPanel(wxSizer* dlgSizer, const wxString
     cd->grid = new ComparisonGrid(sizedPanel, wxID_ANY);
   else
     cd->grid = new wxGrid(sizedPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0); //don't have wxWANTS_CHARS
+  //create a way to get to the ComparisonData object from the grid, which is the only thing we have in events
+  wxASSERT_MSG(cd->grid->GetClientData() == 0, wxT("wxGrid::ClientData is not NULL on creation.  Need to use that for our purposes"));
+  cd->grid->SetClientData(cd);
 #ifndef __WXMSW__
   wxFont monospacedFont(10, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
   if (monospacedFont.IsFixedWidth())
@@ -340,36 +343,19 @@ void CompareDlg::DoCompare()
   }
 }
 
-wxGrid* CompareDlg::GetEventSourceGrid(int id)
-{
-  if (id == m_conflicts->grid->GetId())
-    return m_conflicts->grid;
-  else if (id == m_comparison->grid->GetId())
-    return m_comparison->grid;
-  else if (id == m_current->grid->GetId())
-    return m_current->grid;
-  else if (id == m_identical->grid->GetId())
-    return m_identical->grid;
-  else {
-    wxFAIL_MSG(wxT("Unexpected grid id in CompareDlg's grid event handler"));
-    return 0;
-  }
-}
-
 void CompareDlg::OnGridRangeSelect(wxGridRangeSelectEvent& evt)
 {
   wxCHECK_RET(evt.GetId() == m_conflicts->grid->GetId(), wxT("OnGridRangeSelect should be plugged-in only with conflicts grid"));
-  wxGrid* grid = GetEventSourceGrid(evt.GetId());
   //select grids asynchronously, or else we get in an infinite loop of selections & their notifications
   if (evt.GetTopRow()%2 != 0) {
     wxCommandEvent cmdEvent(EVT_SELECT_GRID_ROW);
-    cmdEvent.SetEventObject(grid);
+    cmdEvent.SetEventObject(evt.GetEventObject());
     cmdEvent.SetInt(evt.GetTopRow()-1);
     GetEventHandler()->AddPendingEvent(cmdEvent);
   }
   if (evt.GetBottomRow()%2 == 0) {
     wxCommandEvent cmdEvent(EVT_SELECT_GRID_ROW);
-    cmdEvent.SetEventObject(grid);
+    cmdEvent.SetEventObject(evt.GetEventObject());
     cmdEvent.SetInt(evt.GetBottomRow()+1);
     GetEventHandler()->AddPendingEvent(cmdEvent);
   }
@@ -382,26 +368,30 @@ void CompareDlg::OnAutoSelectGridRow(wxCommandEvent& evt)
 
 void CompareDlg::OnGridCellRightClick(wxGridEvent& evt)
 {
-  ContextMenuData menuContext;
-  menuContext.sourceGrid = GetEventSourceGrid(evt.GetId());
-  if (!menuContext.sourceGrid) {
+  wxGrid* grid = wxDynamicCast(evt.GetEventObject(), wxGrid);
+  if (!grid) {
     evt.Skip();
     return;
   }
+  ComparisonData* cd = reinterpret_cast<ComparisonData*>(grid->GetClientData());
+  wxCHECK_RET(cd, wxT("ClientData object not found in grid"));
 
-  if (!menuContext.sourceGrid->IsInSelection(evt.GetRow(), evt.GetCol())) {
-    menuContext.sourceGrid->SelectRow(evt.GetRow(), false);
+  ContextMenuData menuContext;
+  menuContext.cdata = cd;
+
+  if (!menuContext.cdata->grid->IsInSelection(evt.GetRow(), evt.GetCol())) {
+    menuContext.cdata->grid->SelectRow(evt.GetRow(), false);
   }
 
-  if (menuContext.sourceGrid == m_conflicts->grid) {
-    menuContext.sourceGrid->SelectRow(evt.GetRow()%2 == 0? evt.GetRow()+1: evt.GetRow()-1, true);
+  if (menuContext.cdata == m_conflicts) {
+    menuContext.cdata->grid->SelectRow(evt.GetRow()%2 == 0? evt.GetRow()+1: evt.GetRow()-1, true);
   }
 
-  menuContext.sourceGrid->SetGridCursor(evt.GetRow(), evt.GetCol());
+  menuContext.cdata->grid->SetGridCursor(evt.GetRow(), evt.GetCol());
 
-  menuContext.selectedRows = menuContext.sourceGrid->GetSelectedRows();
+  menuContext.selectedRows = menuContext.cdata->grid->GetSelectedRows();
   int selectionCount = menuContext.selectedRows.GetCount();
-  if (menuContext.sourceGrid == m_conflicts->grid) selectionCount /= 2;
+  if (menuContext.cdata == m_conflicts) selectionCount /= 2;
 
   stringT itemStr;
   LoadAString(itemStr, selectionCount > 1? IDSC_ENTRIES: IDSC_ENTRY);
@@ -431,9 +421,9 @@ void CompareDlg::OnGridCellRightClick(wxGridEvent& evt)
     itemEditMenu.Append(ID_VIEW_IN_COMPARISON_DB,   wxT("&View entry in comparison db"));
   }
 
-  if (menuContext.sourceGrid == m_conflicts->grid) {
+  if (menuContext.cdata == m_conflicts) {
     wxString strCopyFieldMenu;
-    ComparisonGridTable* table = wxDynamicCast(menuContext.sourceGrid->GetTable(), ComparisonGridTable);
+    ComparisonGridTable* table = wxDynamicCast(menuContext.cdata->grid->GetTable(), ComparisonGridTable);
     menuContext.field = table->ColumnToField(evt.GetCol());
     if (selectionCount > 1)
       strCopyFieldMenu << _("&Copy ") << selectionCount << wxT(" selected ") << 
@@ -447,19 +437,19 @@ void CompareDlg::OnGridCellRightClick(wxGridEvent& evt)
     itemEditMenu.InsertSeparator(1);
     itemEditMenu.Delete(ID_COPY_ITEMS_TO_CURRENT_DB);
   }
-  else if (menuContext.sourceGrid == m_current->grid) {
+  else if (menuContext.cdata == m_current) {
     itemEditMenu.Delete(ID_SYNC_ITEMS_WITH_CURRENT_DB);
     itemEditMenu.Delete(ID_COPY_ITEMS_TO_CURRENT_DB);
     if (selectionCount == 1)
       itemEditMenu.Delete(ID_VIEW_IN_COMPARISON_DB);
   }
-  else if (menuContext.sourceGrid == m_comparison->grid) {
+  else if (menuContext.cdata == m_comparison) {
     itemEditMenu.Delete(ID_SYNC_ITEMS_WITH_CURRENT_DB);
     itemEditMenu.Delete(ID_DELETE_ITEMS_FROM_CURRENT_DB);
     if (selectionCount == 1)
       itemEditMenu.Delete(ID_EDIT_IN_CURRENT_DB);
   }
-  else if (menuContext.sourceGrid == m_identical->grid) {
+  else if (menuContext.cdata == m_identical) {
     itemEditMenu.Delete(ID_SYNC_ITEMS_WITH_CURRENT_DB);
     itemEditMenu.Delete(ID_COPY_ITEMS_TO_CURRENT_DB);
   }
@@ -467,39 +457,57 @@ void CompareDlg::OnGridCellRightClick(wxGridEvent& evt)
   // Make the menuContext object available to the handlers
   MenuEventModifier cem(&itemEditMenu, &menuContext);
 
-  menuContext.sourceGrid->PopupMenu(&itemEditMenu);
-}
-
-pws_os::CUUID CompareDlg::GetSelectedItemId(const wxGrid* grid, bool readOnly) const
-{
-  ComparisonGridTable* table = wxDynamicCast(grid->GetTable(), ComparisonGridTable);
-  wxCHECK_MSG(table, pws_os::CUUID::NullUUID(), wxT("Comparison grid doesnot have ComparisonGridTable derived grid table"));
-  return table->GetSelectedItemId(readOnly);
+  menuContext.cdata->grid->PopupMenu(&itemEditMenu);
 }
 
 void CompareDlg::OnEditInCurrentDB(wxCommandEvent& evt)
 {
   ContextMenuData* menuContext = reinterpret_cast<ContextMenuData*>(evt.GetClientData());
-  const ComparisonGridTable& table = *wxDynamicCast(menuContext->sourceGrid->GetTable(), ComparisonGridTable);
+  const ComparisonGridTable& table = *wxDynamicCast(menuContext->cdata->grid->GetTable(), ComparisonGridTable);
   const pws_os::CUUID& uuid = table[menuContext->selectedRows[0]].uuid0;
-  ViewEditEntry(m_currentCore, uuid, false);
+  if (ViewEditEntry(m_currentCore, uuid, false)) {
+    int idx = menuContext->selectedRows[0];
+    if (menuContext->cdata == m_conflicts)
+      idx = idx/2;
+    ItemListIter itr = m_currentCore->Find(uuid);
+    if (itr != m_currentCore->GetEntryEndIter()) {
+      const CItemData& item = itr->second;
+      //we update these in the grid directly from st_CompareData, so keep track
+      if (item.IsGroupSet())
+        menuContext->cdata->data[idx].group = item.GetGroup();
+      else
+        menuContext->cdata->data[idx].group.clear();
+      if (item.IsTitleSet())
+        menuContext->cdata->data[idx].title = item.GetTitle();
+      else
+        menuContext->cdata->data[idx].title.clear();
+      if (item.IsUserSet())
+        menuContext->cdata->data[idx].user = item.GetUser();
+      else
+        menuContext->cdata->data[idx].user.clear();
+      table.RefreshRow(table.GetItemRow(uuid));
+    }
+    else {
+      wxFAIL_MSG(wxT("Could not find entry in core after editing it"));
+    }
+  }
 }
 
 void CompareDlg::OnViewInComparisonDB(wxCommandEvent& evt)
 {
   ContextMenuData* menuContext = reinterpret_cast<ContextMenuData*>(evt.GetClientData());
-  const ComparisonGridTable& table = *wxDynamicCast(menuContext->sourceGrid->GetTable(), ComparisonGridTable);
+  const ComparisonGridTable& table = *wxDynamicCast(menuContext->cdata->grid->GetTable(), ComparisonGridTable);
   const pws_os::CUUID& uuid = table[menuContext->selectedRows[0]].uuid1;
-  ViewEditEntry(m_otherCore, uuid, true);
+  wxCHECK_RET(ViewEditEntry(m_otherCore, uuid, true) == false, wxT("Should not need to refresh grid for just viewing entry"));
 }
 
-void CompareDlg::ViewEditEntry(PWScore* core, const pws_os::CUUID& uuid, bool readOnly)
+bool CompareDlg::ViewEditEntry(PWScore* core, const pws_os::CUUID& uuid, bool readOnly)
 {
   AddEditPropSheet ae(this, 
                       *core,
                       readOnly? AddEditPropSheet::VIEW: AddEditPropSheet::EDIT,
                       &core->Find(uuid)->second);
-  ae.ShowModal();
+  return ae.ShowModal() == wxID_OK && !readOnly;
 }
 
 
@@ -526,7 +534,7 @@ void CompareDlg::OnExpandDataPanels(wxCommandEvent& /*evt*/)
 void CompareDlg::OnCopyItemsToCurrentDB(wxCommandEvent& evt)
 {
   ContextMenuData* menuContext = reinterpret_cast<ContextMenuData*>(evt.GetClientData());
-  wxGridTableBase* baseTable = menuContext->sourceGrid->GetTable();
+  wxGridTableBase* baseTable = menuContext->cdata->grid->GetTable();
   ComparisonGridTable* ptable = wxDynamicCast(baseTable, ComparisonGridTable);
   wxCHECK_RET(ptable, wxT("Could not find ComparisonGridTable derived object in comparison grid"));
   const ComparisonGridTable& table = *ptable;
@@ -565,7 +573,7 @@ void CompareDlg::OnCopyItemsToCurrentDB(wxCommandEvent& evt)
       data.uuid0 = data.uuid1; //so far, uuid0 was NULL since it was not found in current db
       m_identical->data.push_back(data);
       m_identical->grid->AppendRows(1);
-      menuContext->sourceGrid->DeleteRows(row);
+      menuContext->cdata->grid->DeleteRows(row);
     }
     //Move copied items from comparison grid to identicals grid
     bool relayout = false;
@@ -596,7 +604,7 @@ int pless(int* first, int* second) { return *first - *second; }
 void CompareDlg::OnDeleteItemsFromCurrentDB(wxCommandEvent& evt)
 {
   ContextMenuData* menuContext = reinterpret_cast<ContextMenuData*>(evt.GetClientData());
-  wxGridTableBase* baseTable = menuContext->sourceGrid->GetTable();
+  wxGridTableBase* baseTable = menuContext->cdata->grid->GetTable();
   ComparisonGridTable* ptable = wxDynamicCast(baseTable, ComparisonGridTable);
   wxCHECK_RET(ptable, wxT("Could not find ComparisonGridTable derived object in comparison grid"));
   const ComparisonGridTable& table = *ptable;
@@ -622,16 +630,15 @@ void CompareDlg::OnDeleteItemsFromCurrentDB(wxCommandEvent& evt)
     menuContext->selectedRows.Sort(&pless);
 
     bool relayout = false;
-    if (menuContext->sourceGrid == m_current->grid) {
+    if (menuContext->cdata == m_current) {
       //just delete them from the grid
       for( size_t idx = 0; idx < menuContext->selectedRows.Count(); ++idx) {
         const int row = menuContext->selectedRows[idx] - idx;
-        menuContext->sourceGrid->DeleteRows(row);
+        menuContext->cdata->grid->DeleteRows(row);
       }
     }
     else {
-      wxCHECK_RET(menuContext->sourceGrid == m_identical->grid 
-                    || menuContext->sourceGrid == m_conflicts->grid,
+      wxCHECK_RET(menuContext->cdata == m_identical || menuContext->cdata == m_conflicts,
                       wxT("If deleted item was not in comparison grid, it should have been in conflicts or identicals grid"));
       // move items to comparison grid, and then delete the item
       for( size_t idx = 0; idx < menuContext->selectedRows.Count(); ++idx) {
@@ -640,7 +647,7 @@ void CompareDlg::OnDeleteItemsFromCurrentDB(wxCommandEvent& evt)
         data.uuid0 = pws_os::CUUID::NullUUID(); //removed from current db, so make it null
         m_comparison->data.push_back(data);
         m_comparison->grid->AppendRows(1);
-        menuContext->sourceGrid->DeleteRows(row);
+        menuContext->cdata->grid->DeleteRows(row);
       }
       if (!m_comparison->pane->IsShown()) {
         m_comparison->pane->Show();
@@ -648,22 +655,11 @@ void CompareDlg::OnDeleteItemsFromCurrentDB(wxCommandEvent& evt)
         relayout = true;
       }
     }
-    if (menuContext->sourceGrid->GetNumberRows() == 0) {
+    if (menuContext->cdata->grid->GetNumberRows() == 0) {
       relayout = true;
       //hide the pane
-      if (menuContext->sourceGrid == m_identical->grid) {
-        m_identical->pane->Collapse();
-        m_identical->pane->Hide();
-      }
-      else if (menuContext->sourceGrid == m_conflicts->grid) {
-        m_conflicts->pane->Collapse();
-        m_conflicts->pane->Hide();
-      }
-      else {
-        wxCHECK_RET(menuContext->sourceGrid == m_current->grid, wxT("source grid is neither identicals, nor current, nor conflicts for deleting items!"));
-        m_current->pane->Collapse();
-        m_current->pane->Hide();
-      }
+      menuContext->cdata->pane->Collapse();
+      menuContext->cdata->pane->Hide();
     }
     if (relayout)
       Layout();
@@ -676,7 +672,7 @@ void CompareDlg::OnDeleteItemsFromCurrentDB(wxCommandEvent& evt)
 void CompareDlg::OnCopyFieldsToCurrentDB(wxCommandEvent& evt)
 {
   ContextMenuData* menuContext = reinterpret_cast<ContextMenuData*>(evt.GetClientData());
-  ComparisonGridTable* ptable = wxDynamicCast(menuContext->sourceGrid->GetTable(), ComparisonGridTable);
+  ComparisonGridTable* ptable = wxDynamicCast(menuContext->cdata->grid->GetTable(), ComparisonGridTable);
   wxCHECK_RET(ptable, wxT("Could not find ComparisonGridTable derived object in comparison grid"));
   const ComparisonGridTable& table = *ptable;
   MultiCommands *pmulticmds = MultiCommands::Create(m_currentCore);
