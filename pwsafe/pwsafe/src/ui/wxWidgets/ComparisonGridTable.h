@@ -52,7 +52,7 @@ public:
   //derived classes must override these
 
   //should return wxNOT_FOUND on error
-  virtual int GetItemRow(const pws_os::CUUID& uuid) = 0;
+  virtual int GetItemRow(const pws_os::CUUID& uuid) const = 0;
   virtual pws_os::CUUID GetSelectedItemId(bool readOnly) = 0;
   virtual const st_CompareData& operator[](size_t index) const = 0;
 
@@ -99,7 +99,7 @@ public:
   wxGridCellAttr* GetAttr(int row, int col, wxGridCellAttr::wxAttrKind kind);
   
   //virtual override from ComparisonGridTable
-  int GetItemRow(const pws_os::CUUID& uuid);
+  int GetItemRow(const pws_os::CUUID& uuid) const;
   virtual pws_os::CUUID GetSelectedItemId(bool readOnly);
   virtual const st_CompareData& operator[](size_t index) const {
     return m_compData->at(index);
@@ -137,7 +137,7 @@ public:
   wxGridCellAttr* GetAttr(int row, int col, wxGridCellAttr::wxAttrKind kind);
 
   //virtual override from ComparisonGridTable
-  int GetItemRow(const pws_os::CUUID& uuid);
+  int GetItemRow(const pws_os::CUUID& uuid) const;
   virtual pws_os::CUUID GetSelectedItemId(bool readOnly);
   virtual const st_CompareData& operator[](size_t index) const {
     return m_compData->at(index/2);

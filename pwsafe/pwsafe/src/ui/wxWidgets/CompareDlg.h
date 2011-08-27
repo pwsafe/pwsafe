@@ -56,9 +56,7 @@ private:
   ComparisonData      *m_current, *m_comparison, *m_conflicts, *m_identical;
 
   void DoCompare();
-  wxGrid* GetEventSourceGrid(int id);
-  pws_os::CUUID GetSelectedItemId(const wxGrid* grid, bool readOnly) const;
-  void ViewEditEntry(PWScore* core, const pws_os::CUUID& uuid, bool readOnly);
+  bool ViewEditEntry(PWScore* core, const pws_os::CUUID& uuid, bool readOnly);
 
   DECLARE_EVENT_TABLE()
 };
