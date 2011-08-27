@@ -138,7 +138,7 @@ class wxBookCtrlEvent;
 
 class COptions: public wxPropertySheetDialog
 {    
-  DECLARE_CLASS( COptions )
+  DECLARE_DYNAMIC_CLASS( COptions )
   DECLARE_EVENT_TABLE()
 
 public:
