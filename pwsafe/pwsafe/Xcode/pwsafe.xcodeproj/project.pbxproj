@@ -2868,6 +2868,7 @@
 				PRODUCT_NAME = core;
 				SDKROOT = macosx;
 				SYMROOT = "build-llvm";
+				VALID_ARCHS = i386;
 			};
 			name = Debug;
 		};
@@ -2887,6 +2888,7 @@
 				PRODUCT_NAME = core;
 				SDKROOT = macosx;
 				SYMROOT = "build-llvm";
+				VALID_ARCHS = i386;
 				ZERO_LINK = NO;
 			};
 			name = Release;
@@ -2908,6 +2910,7 @@
 				PRODUCT_NAME = os;
 				SDKROOT = macosx;
 				SYMROOT = "build-llvm";
+				VALID_ARCHS = i386;
 			};
 			name = Debug;
 		};
@@ -2926,6 +2929,7 @@
 				PRODUCT_NAME = os;
 				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.6.sdk";
 				SYMROOT = "build-llvm";
+				VALID_ARCHS = i386;
 				ZERO_LINK = NO;
 			};
 			name = Release;
