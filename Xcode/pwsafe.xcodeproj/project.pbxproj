@@ -2819,7 +2819,6 @@
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "pwsafe-llvm.plist";
 				PRODUCT_NAME = "pwsafe-llvm";
-				SDKROOT = macosx;
 				SYMROOT = "build-llvm";
 				USER_HEADER_SEARCH_PATHS = ../src;
 				VALID_ARCHS = i386;
@@ -2842,7 +2841,6 @@
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "pwsafe-llvm.plist";
 				PRODUCT_NAME = "pwsafe-llvm";
-				SDKROOT = macosx;
 				SYMROOT = "build-llvm";
 				USER_HEADER_SEARCH_PATHS = ../src;
 				VALID_ARCHS = i386;
@@ -2866,7 +2864,6 @@
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = ../src/;
 				PRODUCT_NAME = core;
-				SDKROOT = macosx;
 				SYMROOT = "build-llvm";
 				VALID_ARCHS = i386;
 			};
@@ -2886,7 +2883,6 @@
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = ../src/;
 				PRODUCT_NAME = core;
-				SDKROOT = macosx;
 				SYMROOT = "build-llvm";
 				VALID_ARCHS = i386;
 				ZERO_LINK = NO;
@@ -2908,7 +2904,6 @@
 				);
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				PRODUCT_NAME = os;
-				SDKROOT = macosx;
 				SYMROOT = "build-llvm";
 				VALID_ARCHS = i386;
 			};
@@ -2927,7 +2922,6 @@
 				);
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				PRODUCT_NAME = os;
-				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.6.sdk";
 				SYMROOT = "build-llvm";
 				VALID_ARCHS = i386;
 				ZERO_LINK = NO;
