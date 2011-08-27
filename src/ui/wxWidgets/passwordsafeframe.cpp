@@ -2534,7 +2534,7 @@ void PasswordSafeFrame::OnImportKeePass(wxCommandEvent& evt)
   else
     rpt.StartReport(_("Import_KeePassV1_TXT"), m_core.GetCurFile().c_str());
 
-  rpt.WriteLine(wxString::Format(_("Text file being imported: %s"), KPsFileName.GetData()).GetData());
+  rpt.WriteLine(static_cast<const TCHAR *>(wxString::Format(_("Text file being imported: %s"), static_cast<const TCHAR *>(KPsFileName))));
   rpt.WriteLine();
 
   int numImported, numSkipped, numRenamed;
@@ -2582,7 +2582,7 @@ void PasswordSafeFrame::OnImportKeePass(wxCommandEvent& evt)
       rpt.WriteLine();
       wxString cs_type(numImported == 1 ? _("entry") : _("entries"));
       wxString cs_msg = wxString::Format(_("Imported %d %s"), numImported, cs_type.GetData());
-      rpt.WriteLine(cs_msg.GetData());
+      rpt.WriteLine(static_cast<const TCHAR*>(cs_msg));
       rpt.EndReport();
       wxString title(rc == PWScore::SUCCESS ? _("Completed successfully") : _("Completed but ...."));
       int icon = (rc == PWScore::SUCCESS ? wxICON_INFORMATION : wxICON_EXCLAMATION);
