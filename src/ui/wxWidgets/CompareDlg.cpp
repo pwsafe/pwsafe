@@ -40,7 +40,7 @@ enum {ID_BTN_COMPARE = 100 };
 
 enum {
   ID_COPY_FIELD_TO_CURRENT_DB = 100,
-  ID_MERGE_ITEMS_WITH_CURRENT_DB,
+  ID_SYNC_ITEMS_WITH_CURRENT_DB,
   ID_COPY_ITEMS_TO_CURRENT_DB,
   ID_EDIT_IN_CURRENT_DB,
   ID_VIEW_IN_COMPARISON_DB,
@@ -413,8 +413,8 @@ void CompareDlg::OnGridCellRightClick(wxGridEvent& evt)
   wxMenu itemEditMenu;
 
   wxString strMergeItemsMenu;
-  strMergeItemsMenu << _("Merge") << selCountStr << wxT("selected ") << towxstring(itemStr) << _(" with current db");
-  itemEditMenu.Append(ID_MERGE_ITEMS_WITH_CURRENT_DB, strMergeItemsMenu);
+  strMergeItemsMenu << _("Synchronize") << selCountStr << wxT("selected ") << towxstring(itemStr) << _(" with current db");
+  itemEditMenu.Append(ID_SYNC_ITEMS_WITH_CURRENT_DB, strMergeItemsMenu);
 
   wxString strCopyItemsMenu;
   strCopyItemsMenu << _("Copy") << selCountStr << wxT("selected ") << towxstring(itemStr) << _(" to current db");
@@ -448,19 +448,19 @@ void CompareDlg::OnGridCellRightClick(wxGridEvent& evt)
     itemEditMenu.Delete(ID_COPY_ITEMS_TO_CURRENT_DB);
   }
   else if (menuContext.sourceGrid == m_current->grid) {
-    itemEditMenu.Delete(ID_MERGE_ITEMS_WITH_CURRENT_DB);
+    itemEditMenu.Delete(ID_SYNC_ITEMS_WITH_CURRENT_DB);
     itemEditMenu.Delete(ID_COPY_ITEMS_TO_CURRENT_DB);
     if (selectionCount == 1)
       itemEditMenu.Delete(ID_VIEW_IN_COMPARISON_DB);
   }
   else if (menuContext.sourceGrid == m_comparison->grid) {
-    itemEditMenu.Delete(ID_MERGE_ITEMS_WITH_CURRENT_DB);
+    itemEditMenu.Delete(ID_SYNC_ITEMS_WITH_CURRENT_DB);
     itemEditMenu.Delete(ID_DELETE_ITEMS_FROM_CURRENT_DB);
     if (selectionCount == 1)
       itemEditMenu.Delete(ID_EDIT_IN_CURRENT_DB);
   }
   else if (menuContext.sourceGrid == m_identical->grid) {
-    itemEditMenu.Delete(ID_MERGE_ITEMS_WITH_CURRENT_DB);
+    itemEditMenu.Delete(ID_SYNC_ITEMS_WITH_CURRENT_DB);
     itemEditMenu.Delete(ID_COPY_ITEMS_TO_CURRENT_DB);
   }
 
