@@ -73,8 +73,6 @@
 		E6391BF212FD21B9009BBB8D /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B1448712B26D1500415AAE /* Cocoa.framework */; };
 		E6391BF312FD21B9009BBB8D /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B1449312B26D7E00415AAE /* IOKit.framework */; };
 		E6391BF412FD21B9009BBB8D /* QuickTime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B144BA12B2707E00415AAE /* QuickTime.framework */; };
-		E63E37CE14002ABB00994022 /* pwsafe64-debug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = E63E37CC14002ABB00994022 /* pwsafe64-debug.xcconfig */; };
-		E63E37CF14002ABB00994022 /* pwsafe64-release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = E63E37CD14002ABB00994022 /* pwsafe64-release.xcconfig */; };
 		E66EE0B313921B30005C10C5 /* ComparisonGridTable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66EE0B113921B30005C10C5 /* ComparisonGridTable.cpp */; };
 		E66EE0B413921B30005C10C5 /* ComparisonGridTable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66EE0B113921B30005C10C5 /* ComparisonGridTable.cpp */; };
 		E66EE0B513921B30005C10C5 /* ComparisonGridTable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66EE0B113921B30005C10C5 /* ComparisonGridTable.cpp */; };
@@ -1940,8 +1938,6 @@
 				E6E31A5F12FD6A0A001618AB /* pwsafe.xsl in Resources */,
 				E6E31A6012FD6A0A001618AB /* help.zip in Resources */,
 				E6E31A6112FD6A0A001618AB /* pwsafe.icns in Resources */,
-				E63E37CE14002ABB00994022 /* pwsafe64-debug.xcconfig in Resources */,
-				E63E37CF14002ABB00994022 /* pwsafe64-release.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
