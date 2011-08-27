@@ -2583,6 +2583,7 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1)";
 				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					UNICODE,
@@ -2593,6 +2594,7 @@
 					DEBUG,
 					_DEBUG,
 				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = 4.0;
 				INFOPLIST_FILE = "pwsafe-i386.plist";
 				PRODUCT_NAME = "pwsafe-i386";
@@ -2608,6 +2610,7 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1)";
 				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					_LARGE_FILES,
 					UNICODE,
@@ -2615,6 +2618,7 @@
 					__WXMAC__,
 					NDEBUG,
 				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = 4.0;
 				INFOPLIST_FILE = "pwsafe-i386.plist";
 				PRODUCT_NAME = "pwsafe-i386";
@@ -2754,6 +2758,7 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1)";
 				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					UNICODE,
@@ -2764,6 +2769,7 @@
 					DEBUG,
 					_DEBUG,
 				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = 4.0;
 				INFOPLIST_FILE = pwsafe.plist;
 				PRODUCT_NAME = pwsafe;
@@ -2779,6 +2785,7 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1)";
 				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					_LARGE_FILES,
 					UNICODE,
@@ -2786,6 +2793,7 @@
 					__WXMAC__,
 					NDEBUG,
 				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = 4.0;
 				INFOPLIST_FILE = pwsafe.plist;
 				PRODUCT_NAME = pwsafe;
@@ -2802,6 +2810,7 @@
 			buildSettings = {
 				ARCHS = i386;
 				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					UNICODE,
@@ -2812,6 +2821,7 @@
 					DEBUG,
 					_DEBUG,
 				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "pwsafe-llvm.plist";
 				PRODUCT_NAME = "pwsafe-llvm";
@@ -2827,6 +2837,7 @@
 			buildSettings = {
 				ARCHS = i386;
 				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					_LARGE_FILES,
 					UNICODE,
@@ -2834,6 +2845,7 @@
 					__WXMAC__,
 					NDEBUG,
 				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "pwsafe-llvm.plist";
 				PRODUCT_NAME = "pwsafe-llvm";
@@ -3006,6 +3018,7 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_64_BIT_PRE_XCODE_3_1)";
 				ARCHS_STANDARD_64_BIT_PRE_XCODE_3_1 = x86_64;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					UNICODE,
@@ -3018,6 +3031,7 @@
 					DEBUG,
 					_DEBUG,
 				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = pwsafe64.plist;
 				PRODUCT_NAME = pwsafe64;
 				SYMROOT = build64;
@@ -3032,6 +3046,7 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_64_BIT_PRE_XCODE_3_1)";
 				ARCHS_STANDARD_64_BIT_PRE_XCODE_3_1 = x86_64;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					_LARGE_FILES,
 					UNICODE,
@@ -3041,6 +3056,7 @@
 					__WXOSX_COCOA__,
 					NDEBUG,
 				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = pwsafe64.plist;
 				PRODUCT_NAME = pwsafe64;
 				SYMROOT = build64;
