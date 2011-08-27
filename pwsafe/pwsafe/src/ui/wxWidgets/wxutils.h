@@ -104,7 +104,12 @@ int ReadCore(PWScore& othercore, const wxString& file, const StringX& combinatio
                 bool showMsgbox = true, wxWindow* msgboxParent = NULL);
 
 inline const wxChar* ToStr(const wxString& s) {
-  return s == wxEmptyString? wxT("wxEmptyString"): s.GetData();
+  if (s == wxEmptyString) {
+    return wxT("wxEmptyString");
+  }
+  else {
+    return s.GetData();
+  }
 }
 
 inline const wxChar* ToStr(bool b) {
