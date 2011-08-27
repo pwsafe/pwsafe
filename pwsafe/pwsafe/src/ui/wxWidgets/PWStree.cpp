@@ -324,14 +324,13 @@ void PWSTreeCtrl::UpdateItemField(const CItemData &item, CItemData::FieldType ft
     UpdateItem(item);
   }
   //these are the only items ever shown in the tree
-  else if (ft == CItemData::TITLE ||
+  else if (ft == CItemData::TITLE || ft == CItemData::START ||
        (ft == CItemData::USER && prefs->GetPref(PWSprefs::ShowUsernameInTree)) ||
        (ft == CItemData::PASSWORD && prefs->GetPref(PWSprefs::ShowPasswordInTree))) {
     wxRect rc;
     wxTreeItemId ti = Find(item);
-    if (ti.IsOk() && GetBoundingRect(ti, rc, true)) { //true => only text, not the icon
-      rc.Intersect(GetClientRect());
-      RefreshRect(rc, true);
+    if (ti.IsOk()) {
+      SetItemText(ti, ItemDisplayString(item));
     }
   }
 }
