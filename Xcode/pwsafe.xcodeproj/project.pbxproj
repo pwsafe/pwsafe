@@ -21,8 +21,6 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		E60273B913FFDF570022C368 /* pwsafe-llvm-debug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = E60273B813FFDF570022C368 /* pwsafe-llvm-debug.xcconfig */; };
-		E60273BC13FFE25C0022C368 /* pwsafe-llvm-release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = E60273BB13FFE25C0022C368 /* pwsafe-llvm-release.xcconfig */; };
 		E60F25D812C4ACEB001E63C4 /* ExternalKeyboardButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E60F25D612C4ACEB001E63C4 /* ExternalKeyboardButton.cpp */; };
 		E6112A63131D720E00AA1454 /* ExpiredList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6112A61131D720E00AA1454 /* ExpiredList.cpp */; };
 		E6112A64131D720E00AA1454 /* ExpiredList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6112A61131D720E00AA1454 /* ExpiredList.cpp */; };
@@ -1929,8 +1927,6 @@
 				E6BF9E4E13348CA50084A011 /* pwsafe.xsl in Resources */,
 				E6BF9E4F13348CA50084A011 /* help.zip in Resources */,
 				E6BF9E5013348CA50084A011 /* pwsafe.icns in Resources */,
-				E60273B913FFDF570022C368 /* pwsafe-llvm-debug.xcconfig in Resources */,
-				E60273BC13FFE25C0022C368 /* pwsafe-llvm-release.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
