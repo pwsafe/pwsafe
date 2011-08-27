@@ -2839,7 +2839,7 @@
 					__WXMAC__,
 					NDEBUG,
 				);
-				GCC_VERSION = 4.2;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "pwsafe-llvm.plist";
 				PRODUCT_NAME = "pwsafe-llvm";
 				SDKROOT = macosx;
@@ -2882,7 +2882,7 @@
 					_LARGE_FILES,
 					NDEBUG,
 				);
-				GCC_VERSION = 4.2;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = ../src/;
 				PRODUCT_NAME = core;
 				SDKROOT = macosx;
@@ -2922,7 +2922,7 @@
 					_LARGE_FILES,
 					NDEBUG,
 				);
-				GCC_VERSION = 4.2;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				PRODUCT_NAME = os;
 				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.6.sdk";
 				SYMROOT = "build-llvm";
