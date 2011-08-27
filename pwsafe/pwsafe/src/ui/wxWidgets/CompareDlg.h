@@ -41,6 +41,7 @@ class CompareDlg: public wxDialog
   void OnCopyFieldsToCurrentDB(wxCommandEvent& evt);
   void OnGridRangeSelect(wxGridRangeSelectEvent& evt);
   void OnAutoSelectGridRow(wxCommandEvent& evt);
+  void OnSyncItemsWithCurrentDB(wxCommandEvent& evt);
 
 public:
   CompareDlg(wxWindow* parent, PWScore* core);

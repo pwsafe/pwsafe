@@ -63,6 +63,7 @@ BEGIN_EVENT_TABLE( CompareDlg, wxDialog )
   EVT_MENU(ID_COPY_ITEMS_TO_CURRENT_DB, CompareDlg::OnCopyItemsToCurrentDB)
   EVT_MENU(ID_DELETE_ITEMS_FROM_CURRENT_DB, CompareDlg::OnDeleteItemsFromCurrentDB)
   EVT_MENU(ID_COPY_FIELD_TO_CURRENT_DB, CompareDlg::OnCopyFieldsToCurrentDB)
+  EVT_MENU(ID_SYNC_ITEMS_WITH_CURRENT_DB, CompareDlg::OnSyncItemsWithCurrentDB)
 END_EVENT_TABLE()
 
 struct ComparisonData {
@@ -711,4 +712,8 @@ void CompareDlg::OnCopyFieldsToCurrentDB(wxCommandEvent& evt)
   else {
     delete pmulticmds;
   }
+}
+
+void CompareDlg::OnSyncItemsWithCurrentDB(wxCommandEvent& evt)
+{
 }
