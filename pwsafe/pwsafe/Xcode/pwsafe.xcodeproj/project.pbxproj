@@ -855,7 +855,6 @@
 		E6E31A1F12FD6957001618AB /* libos.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libos.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6E31A5412FD69A0001618AB /* libcore.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libcore.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6E31A9312FD6A0A001618AB /* pwsafe64.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = pwsafe64.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		E6E31AD212FDC90B001618AB /* untitled */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = untitled; sourceTree = "<group>"; };
 		E6EE837F11E87DAC00B01518 /* debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = debug.h; sourceTree = "<group>"; };
 		E6EE838011E87DAC00B01518 /* dir.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dir.h; sourceTree = "<group>"; };
 		E6EE838111E87DAC00B01518 /* env.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = env.h; sourceTree = "<group>"; };
@@ -1395,7 +1394,6 @@
 				E6DDC713138914B700F0C0D1 /* wxutils.cpp */,
 				E6DDC6F9138911CB00F0C0D1 /* CompareDlg.cpp */,
 				E6DDC6FA138911CB00F0C0D1 /* CompareDlg.h */,
-				E6E31AD212FDC90B001618AB /* untitled */,
 				E6A7ECA912CDEAA40021D898 /* DbSelectionPanel.cpp */,
 				E6A7ECAA12CDEAA40021D898 /* DbSelectionPanel.h */,
 				E6A7ECAB12CDEAA40021D898 /* PwsSync.cpp */,
