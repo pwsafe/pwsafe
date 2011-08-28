@@ -82,8 +82,7 @@ need wxWidgets 2.9 release and also build it appropriately (see below).
 the 'pwsafe-llvm' is an experimental target to build PasswordSafe with the llvm compiler.
 This is only of interest if you are developing PasswordSafe on OS X and want to use
 the static analysis abilities of clang (which are not available for C++ with the stock
-llvm 1.7 shipped with OS X 10.6 or Xcode 3.2.x).  But the builds seem faster and binaries smaller
-using llvm.
+llvm 1.7 shipped with OS X 10.6 or Xcode 3.2.x).  But the builds seem faster using llvm.
 
 
 Building wxWidgets for pwsafe & pwsafe-i386 targets
