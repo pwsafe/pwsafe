@@ -3049,6 +3049,7 @@
 					__WXOSX__,
 					__WXOSX_COCOA__,
 					NDEBUG,
+					"wxDEBUG_LEVEL=0",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = pwsafe64.plist;
