@@ -47,4 +47,6 @@ class CPKBaseDlg : public CPWDialog {
   // Show user what's going on / what we're waiting for:
   CEdit m_yubi_status;
 	DECLARE_INTERFACE_MAP()
+ private:
+  bool m_waited; // needed to discern between timeout and unconfigured yubikey
 };

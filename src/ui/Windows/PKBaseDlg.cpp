@@ -19,9 +19,9 @@ BEGIN_INTERFACE_MAP(CPKBaseDlg, CPWDialog)
 END_INTERFACE_MAP()
 
 CPKBaseDlg::CPKBaseDlg(int id, CWnd *pParent)
-  : CPWDialog(id, pParent), m_passkey(L""), m_yubi(new Yubi(this))
+: CPWDialog(id, pParent), m_passkey(L""), m_pctlPasskey(new CSecEditExtn),
+  m_yubi(new Yubi(this)), m_waited(false)
 {
-  m_pctlPasskey = new CSecEditExtn;
   if (pws_os::getenv("PWS_PW_MODE", false) == L"NORMAL")
     m_pctlPasskey->SetSecure(false);
 }
@@ -76,6 +76,7 @@ void CPKBaseDlg::yubiInserted(void)
 {
   GetDlgItem(IDC_YUBIKEY_BTN)->EnableWindow(TRUE);
   m_yubi_status.SetWindowText(_T("Click, then activate your YubiKey"));
+  m_waited = false;
 }
 
 void CPKBaseDlg::yubiRemoved(void)
@@ -120,7 +121,11 @@ void CPKBaseDlg::yubiCompleted(ycRETCODE rc)
     break;
   case ycRETCODE_FAILED:
     TRACE(_T("yubiCompleted(ycRETCODE_FAILED)\n"));
-    m_yubi_status.SetWindowText(_T("YubiKey timed out: Click to try again"));
+    if (m_waited) {
+      m_yubi_status.SetWindowText(_T("YubiKey timed out: Click to try again"));
+      m_waited = false;
+    } else
+      m_yubi_status.SetWindowText(_T("YubiKey returned an error. Unconfigured?"));
     break;
   default:
     // Generic error message
@@ -135,6 +140,11 @@ void CPKBaseDlg::yubiWait(WORD seconds)
   // Update progress bar
   m_yubi_timeout.SetPos(seconds);
   TRACE(_T("CPKBaseDlg::yubiWait(%d)\n"), seconds);
+  // If yubikey is not configured, we never get here.
+  // This allows us to discern between ycRETCODE_FAILED due
+  // to timeout (which for some reason is not returned)
+  // and ycRETCODE_FAILED due to unconfigured key.
+  m_waited = true;
 }
 
 void CPKBaseDlg::yubiRequestHMACSha1()
