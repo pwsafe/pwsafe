@@ -137,6 +137,18 @@ BOOL CPasskeyChangeDlg::OnInitDialog()
   return TRUE;
 }
 
+void CPasskeyChangeDlg::yubiInserted(void)
+{
+  CPKBaseDlg::yubiInserted();
+  GetDlgItem(IDC_YUBIKEY2_BTN)->EnableWindow(TRUE);
+}
+
+void CPasskeyChangeDlg::yubiRemoved(void)
+{
+  CPKBaseDlg::yubiRemoved();
+  GetDlgItem(IDC_YUBIKEY2_BTN)->EnableWindow(FALSE);
+}
+
 void CPasskeyChangeDlg::OnOK() 
 {
   StringX errmess;

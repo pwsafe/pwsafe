@@ -37,8 +37,8 @@ class CPKBaseDlg : public CPWDialog {
   bool IsYubiEnabled() const {return m_yubi->isEnabled();}
   bool IsYubiInserted() const {return m_yubi->isInserted();}
   // Callbacks:
-	void yubiInserted(void); // called when Yubikey's inserted
-	void yubiRemoved(void);  // called when Yubikey's removed
+	virtual void yubiInserted(void); // called when Yubikey's inserted
+	virtual void yubiRemoved(void);  // called when Yubikey's removed
   void yubiCompleted(ycRETCODE rc); // called when done with request
   void yubiWait(WORD seconds); // called when waiting for user activation
 

@@ -59,6 +59,9 @@ protected:
   afx_msg LRESULT OnInsertBuffer(WPARAM, LPARAM);
   //}}AFX_MSG
   void ProcessPhrase();
+  // Override base class yubi callbacks:
+	void yubiInserted(void);
+	void yubiRemoved(void);
   DECLARE_MESSAGE_MAP()
 	DECLARE_DISPATCH_MAP()
 
