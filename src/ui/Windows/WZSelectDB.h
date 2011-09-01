@@ -10,6 +10,7 @@
 
 #include "WZPropertyPage.h"
 #include "ControlExtns.h"
+#include "Yubi.h"
 
 #include "resource.h"
 
@@ -68,6 +69,29 @@ private:
   CVKeyBoardDlg *m_pVKeyBoardDlg;
   st_SaveAdvValues *m_pst_SADV;
   CFont m_WarningFont;
+
+  // Following should be private inheritance of CPKBaseDlg,
+  // but MFC doesn't allow us to do this. So much for OOD.
+  static const wchar_t PSSWDCHAR;
+
+  afx_msg void OnDestroy();
+  // Yubico-related:
+  bool IsYubiEnabled() const {return m_yubi->isEnabled();}
+  bool IsYubiInserted() const {return m_yubi->isInserted();}
+  // Callbacks:
+  void yubiInserted(void); // called when Yubikey's inserted
+  void yubiRemoved(void);  // called when Yubikey's removed
+  void yubiCompleted(ycRETCODE rc); // called when done with request
+  void yubiWait(WORD seconds); // called when waiting for user activation
+
+  void yubiRequestHMACSha1(); // request HMAC of m_passkey
+  // Indicate that we're waiting for user to activate YubiKey:
+  CProgressCtrl m_yubi_timeout;
+  // Show user what's going on / what we're waiting for:
+  CEdit m_yubi_status;
+	DECLARE_INTERFACE_MAP()
+  Yubi *m_yubi; // Interface to Yubikey API  
+  bool m_waited; // needed to discern between timeout and unconfigured yubikey
 };
 //-----------------------------------------------------------------------------
 // Local variables:

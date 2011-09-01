@@ -31,29 +31,32 @@
 #include <iomanip>
 #include <shlobj.h>
 
-static wchar_t PSSWDCHAR = L'*';
+const wchar_t CWZSelectDB::PSSWDCHAR = L'*';
 
 IMPLEMENT_DYNAMIC(CWZSelectDB, CWZPropertyPage)
 
+BEGIN_INTERFACE_MAP(CWZSelectDB, CPWDialog)
+	INTERFACE_PART(CWZSelectDB, DIID__IYubiClientEvents, Dispatch)
+END_INTERFACE_MAP()
+
+
 CWZSelectDB::CWZSelectDB(CWnd *pParent, UINT nIDCaption, const int nType)
- : CWZPropertyPage(IDD, nIDCaption, nType), m_tries(0), m_state(0), m_pVKeyBoardDlg(NULL),
- m_bAdvanced(BST_UNCHECKED), m_bFileExistsUserAsked(false)
+ : CWZPropertyPage(IDD, nIDCaption, nType), m_tries(0), m_state(0),
+  m_pVKeyBoardDlg(NULL), m_bAdvanced(BST_UNCHECKED),
+  m_bFileExistsUserAsked(false),
+  m_filespec(L""), m_passkey(L""),
+  m_defexpdelim(L"\xbb"), m_pctlDB(new CEditExtn),
+  m_pctlPasskey(new CSecEditExtn),
+  m_yubi(new Yubi(this)), m_waited(false)
 {
-  // Save pointer to my PropertySheet
   m_pWZPSH = (CWZPropertySheet *)pParent;
-
-  m_filespec = L"";
-  m_passkey = L"";
-  m_defexpdelim = L"\xbb";
-  m_pctlDB = new CEditExtn;
-  m_pctlPasskey = new CSecEditExtn;
-
   if (pws_os::getenv("PWS_PW_MODE", false) == L"NORMAL")
     m_pctlPasskey->SetSecure(false);
 }
 
 CWZSelectDB::~CWZSelectDB()
 {
+  delete m_yubi;
   delete m_pctlDB;
   delete m_pctlPasskey;
 
@@ -71,6 +74,12 @@ CWZSelectDB::~CWZSelectDB()
   }
 }
 
+void CWZSelectDB::OnDestroy()
+{
+  m_yubi->Destroy();
+  CWZPropertyPage::OnDestroy();
+}
+
 void CWZSelectDB::DoDataExchange(CDataExchange* pDX)
 {
   CWZPropertyPage::DoDataExchange(pDX);
@@ -84,6 +93,8 @@ void CWZSelectDB::DoDataExchange(CDataExchange* pDX)
   DDX_Control(pDX, IDC_PASSKEY, *m_pctlPasskey);
   DDX_Control(pDX, IDC_DATABASE, *m_pctlDB);
   DDX_Check(pDX, IDC_ADVANCED, m_bAdvanced);
+  DDX_Control(pDX, IDC_YUBI_PROGRESS, m_yubi_timeout);
+  DDX_Control(pDX, IDC_YUBI_STATUS, m_yubi_status);
 
   const UINT nID = m_pWZPSH->GetID();
 
@@ -143,9 +154,7 @@ void CWZSelectDB::OnHelp()
 BOOL CWZSelectDB::OnInitDialog()
 {
   CWZPropertyPage::OnInitDialog();
-
   ApplyPasswordFont(GetDlgItem(IDC_PASSKEY));
-
   m_pctlPasskey->SetPasswordChar(PSSWDCHAR);
 
   const UINT nID = m_pWZPSH->GetID();
@@ -235,6 +244,20 @@ BOOL CWZSelectDB::OnInitDialog()
   m_pWZPSH->GetDlgItem(ID_WIZNEXT)->SetWindowText(cs_tmp);
 
   GetDlgItem(IDC_DATABASE)->SetFocus();
+
+  // Yubi-related initializations:
+  bool yubiEnabled = IsYubiEnabled();
+  GetDlgItem(IDC_YUBIKEY_BTN)->ShowWindow(yubiEnabled ? SW_SHOW : SW_HIDE);
+  m_yubi_status.ShowWindow(yubiEnabled ? SW_SHOW : SW_HIDE);
+  m_yubi_timeout.ShowWindow(SW_HIDE);
+  m_yubi_timeout.SetRange(0, 15);
+  bool yubiInserted = IsYubiInserted();
+  GetDlgItem(IDC_YUBIKEY_BTN)->EnableWindow(yubiInserted ? TRUE : FALSE);
+  if (yubiInserted)
+    m_yubi_status.SetWindowText(_T("Click, then activate your YubiKey"));
+  else
+    m_yubi_status.SetWindowText(_T("Please insert your YubiKey"));
+
   return FALSE;
 }
 
@@ -601,4 +624,89 @@ LRESULT CWZSelectDB::OnInsertBuffer(WPARAM, LPARAM)
                         nStartChar + vkbuffer.GetLength());
 
   return 0L;
+}
+
+// Yubi-related stuff, copied from PKBaseDlg because MFC broke multiple-inheritance
+void CWZSelectDB::yubiInserted(void)
+{
+  GetDlgItem(IDC_YUBIKEY_BTN)->EnableWindow(TRUE);
+  m_yubi_status.SetWindowText(_T("Click, then activate your YubiKey"));
+  m_waited = false;
+}
+
+void CWZSelectDB::yubiRemoved(void)
+{
+  GetDlgItem(IDC_YUBIKEY_BTN)->EnableWindow(FALSE);
+  m_yubi_status.SetWindowText(_T("Please insert your YubiKey"));
+}
+
+void CWZSelectDB::yubiCompleted(ycRETCODE rc)
+{
+  m_yubi_status.ShowWindow(SW_SHOW);
+  m_yubi_timeout.ShowWindow(SW_HIDE);
+  switch (rc) {
+  case ycRETCODE_OK:
+    m_yubi_timeout.SetPos(0);
+    m_yubi_status.SetWindowText(_T(""));
+    TRACE(_T("yubiCompleted(ycRETCODE_OK)"));
+    // Get hmac, process it, synthesize OK event
+    m_yubi->RetrieveHMACSha1(m_passkey);
+    // The returned hash is the passkey
+    ProcessPhrase(m_filespec.GetString(), m_passkey);
+    // If we returned from above, reset status:
+    m_yubi_status.SetWindowText(_T("Click, then activate your YubiKey"));
+    break;
+  case ycRETCODE_NO_DEVICE:
+    // device removed while waiting?
+    TRACE(_T("yubiCompleted(ycRETCODE_NO_DEVICE)\n"));
+    m_yubi_status.SetWindowText(_T("Error: YubiKey removed"));
+    break;
+  case ycRETCODE_TIMEOUT:
+    // waited, no user input
+    TRACE(_T("yubiCompleted(ycRETCODE_TIMEOUT)\n"));
+    m_yubi_status.SetWindowText(_T("YubiKey timed out"));
+    break;
+  case ycRETCODE_MORE_THAN_ONE:
+    TRACE(_T("yubiCompleted(ycRETCODE_MORE_THAN_ONE)\n"));
+    m_yubi_status.SetWindowText(_T("More than one YubiKey detected"));
+    break;
+  case ycRETCODE_REENTRANT_CALL:
+    TRACE(_T("yubiCompleted(ycRETCODE_REENTRANT_CALL)\n"));
+    m_yubi_status.SetWindowText(_T("Internal error: Reentrant call"));
+    break;
+  case ycRETCODE_FAILED:
+    TRACE(_T("yubiCompleted(ycRETCODE_FAILED)\n"));
+    if (m_waited) {
+      m_yubi_status.SetWindowText(_T("YubiKey timed out: Click to try again"));
+      m_waited = false;
+    } else
+      m_yubi_status.SetWindowText(_T("YubiKey returned an error. Unconfigured?"));
+    break;
+  default:
+    // Generic error message
+    TRACE(_T("yubiCompleted(%d)\n"), rc);
+    m_yubi_status.SetWindowText(_T("Internal error: Unknown return code"));
+    break;
+  }
+}
+
+void CWZSelectDB::yubiWait(WORD seconds)
+{
+  // Update progress bar
+  m_yubi_timeout.SetPos(seconds);
+  TRACE(_T("CWZSelectDB::yubiWait(%d)\n"), seconds);
+  // If yubikey is not configured, we never get here.
+  // This allows us to discern between ycRETCODE_FAILED due
+  // to timeout (which for some reason is not returned)
+  // and ycRETCODE_FAILED due to unconfigured key.
+  m_waited = true;
+}
+
+void CWZSelectDB::yubiRequestHMACSha1()
+{
+  m_yubi_status.ShowWindow(SW_HIDE);
+  m_yubi_status.SetWindowText(_T(""));
+  m_yubi_timeout.ShowWindow(SW_SHOW);
+  m_yubi_timeout.SetPos(15);
+  m_yubi->RequestHMACSha1(m_passkey);
 }
