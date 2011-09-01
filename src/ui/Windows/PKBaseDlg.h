@@ -34,6 +34,8 @@ class CPKBaseDlg : public CPWDialog {
   virtual void DoDataExchange(CDataExchange* pDX);
   afx_msg void OnDestroy();
   // Yubico-related:
+  bool IsYubiEnabled() const {return m_yubi->isEnabled();}
+  bool IsYubiInserted() const {return m_yubi->isInserted();}
   // Callbacks:
 	void yubiInserted(void); // called when Yubikey's inserted
 	void yubiRemoved(void);  // called when Yubikey's removed
@@ -41,12 +43,12 @@ class CPKBaseDlg : public CPWDialog {
   void yubiWait(WORD seconds); // called when waiting for user activation
 
   void yubiRequestHMACSha1(); // request HMAC of m_passkey
-  Yubi *m_yubi; // Interface to Yubikey API  
   // Indicate that we're waiting for user to activate YubiKey:
   CProgressCtrl m_yubi_timeout;
   // Show user what's going on / what we're waiting for:
   CEdit m_yubi_status;
 	DECLARE_INTERFACE_MAP()
  private:
+  Yubi *m_yubi; // Interface to Yubikey API  
   bool m_waited; // needed to discern between timeout and unconfigured yubikey
 };

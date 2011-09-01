@@ -121,6 +121,13 @@ BOOL CPasskeyChangeDlg::OnInitDialog()
   m_pctlNewPasskey->SetPasswordChar(PSSWDCHAR);
   m_pctlConfirmNew->SetPasswordChar(PSSWDCHAR);
 
+  // Base class handles 1 Yubi btn, here we have 2, so we have to manage the
+  // 2nd on our lonely.
+  // Hide 2nd Yubi btn if Yubi API not detected
+  GetDlgItem(IDC_YUBIKEY2_BTN)->ShowWindow(IsYubiEnabled() ? SW_SHOW : SW_HIDE);
+  // Enable 2nd Yubi btn iff Yubi's connected
+  GetDlgItem(IDC_YUBIKEY2_BTN)->EnableWindow(IsYubiInserted() ? TRUE : FALSE);
+ 
   // Only show virtual Keyboard menu if we can load DLL
   if (!CVKeyBoardDlg::IsOSKAvailable()) {
     GetDlgItem(IDC_VKB)->ShowWindow(SW_HIDE);

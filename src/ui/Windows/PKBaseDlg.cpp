@@ -57,12 +57,12 @@ BOOL CPKBaseDlg::OnInitDialog(void)
   m_pctlPasskey->SetPasswordChar(PSSWDCHAR);
   m_yubi->Init();
 
-  bool yubiEnabled = m_yubi->isEnabled();
+  bool yubiEnabled = IsYubiEnabled();
   GetDlgItem(IDC_YUBIKEY_BTN)->ShowWindow(yubiEnabled ? SW_SHOW : SW_HIDE);
   m_yubi_status.ShowWindow(yubiEnabled ? SW_SHOW : SW_HIDE);
   m_yubi_timeout.ShowWindow(SW_HIDE);
   m_yubi_timeout.SetRange(0, 15);
-  bool yubiInserted = m_yubi->isInserted();
+  bool yubiInserted = IsYubiInserted();
   GetDlgItem(IDC_YUBIKEY_BTN)->EnableWindow(yubiInserted ? TRUE : FALSE);
   if (yubiInserted)
     m_yubi_status.SetWindowText(_T("Click, then activate your YubiKey"));
