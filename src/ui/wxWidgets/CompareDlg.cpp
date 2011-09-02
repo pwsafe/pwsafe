@@ -600,7 +600,6 @@ void CompareDlg::OnCopyItemsToCurrentDB(wxCommandEvent& evt)
   }
 }
 
-int pless(int* first, int* second) { return *first - *second; }
 
 void CompareDlg::OnDeleteItemsFromCurrentDB(wxCommandEvent& evt)
 {

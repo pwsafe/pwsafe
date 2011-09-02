@@ -165,5 +165,7 @@ public:
   }
 };
 
+int pless(int* first, int* second);
+
 #endif
 

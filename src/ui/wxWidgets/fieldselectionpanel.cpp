@@ -51,6 +51,13 @@ public:
   operator CItemData::FieldType() const { return m_ft; }
 };
 
+BEGIN_EVENT_TABLE( FieldSelectionPanel, wxPanel )
+  EVT_BUTTON( ID_SELECT_SOME, FieldSelectionPanel::OnSelectSome )
+  EVT_BUTTON( ID_SELECT_ALL, FieldSelectionPanel::OnSelectAll )
+  EVT_BUTTON( ID_REMOVE_SOME, FieldSelectionPanel::OnRemoveSome )
+  EVT_BUTTON( ID_REMOVE_ALL, FieldSelectionPanel::OnRemoveAll )
+END_EVENT_TABLE()
+
 FieldSelectionPanel::FieldSelectionPanel(wxWindow* parent): wxPanel(parent),
                                                             m_lbSelected(0),
                                                             m_lbAvailable(0)
@@ -133,7 +140,7 @@ void FieldSelectionPanel::AddField(CItemData::FieldType ft, bool selected, bool 
   lb->Append(title, data);
 }
 
-int FieldSelectionPanel::FindField(CItemData::FieldType ft, wxListBox* lb)
+int FieldSelectionPanel::FindField(CItemData::FieldType ft, wxListBox* lb) const
 {
   unsigned int count = lb->GetCount();
   for (int idx = 0; (unsigned int)idx < count; ++idx) {
@@ -149,12 +156,76 @@ size_t FieldSelectionPanel::GetNumSelectedFields() const
   return m_lbSelected->GetCount();
 }
 
+bool FieldSelectionPanel::ItemIsMandatory(size_t index) const
+{
+  if (m_lbSelected->GetCount() > index) {
+    FieldData* data = dynamic_cast<FieldData*>(m_lbSelected->GetClientObject(index));
+    return data && data->IsMandatory();
+  }
+  return false;
+}
+
 CItemData::FieldType FieldSelectionPanel::GetSelectedFieldAt(size_t index) const
 {
   FieldData* data = dynamic_cast<FieldData*>(m_lbSelected->GetClientObject(index));
   if (data)
     return *data;
   return CItemData::END;
+}
+
+void FieldSelectionPanel::MoveItem(int index, wxListBox* from, wxListBox* to)
+{
+  FieldData* data = dynamic_cast<FieldData*>(from->GetClientObject(index));
+  if (data) {
+    from->SetClientObject(index, 0);
+  }
+  to->Append(from->GetString(index), data);
+  from->Delete(index);
+}
+
+void FieldSelectionPanel::OnSelectSome( wxCommandEvent& /* evt */ )
+{
+  wxArrayInt aSelected;
+  if (m_lbAvailable->GetSelections(aSelected)) {
+    aSelected.Sort(pless);
+    for (size_t idx = 0; idx < aSelected.GetCount(); ++idx) {
+      MoveItem(aSelected[idx] - idx, m_lbAvailable, m_lbSelected);
+    }
+  }
+}
+
+void FieldSelectionPanel::OnSelectAll( wxCommandEvent& /* evt */ )
+{
+  while (m_lbAvailable->GetCount()) {
+    MoveItem(0, m_lbAvailable, m_lbSelected);
+  }
+}
+
+void FieldSelectionPanel::OnRemoveSome( wxCommandEvent& /* evt */ )
+{
+  wxArrayInt aSelected;
+  if (m_lbSelected->GetSelections(aSelected)) {
+    aSelected.Sort(pless);
+    for (size_t idx = 0, nRemoved = 0; idx < aSelected.GetCount(); ++idx) {
+      const int listIndex = aSelected[idx] - nRemoved;
+      if (!ItemIsMandatory(listIndex)) {
+        MoveItem(listIndex, m_lbSelected, m_lbAvailable);
+        nRemoved++;
+      }
+    }
+  }
+}
+
+void FieldSelectionPanel::OnRemoveAll( wxCommandEvent& /* evt */ )
+{
+  for(size_t itemsLeft = m_lbSelected->GetCount(), idx = 0; idx < itemsLeft; ) {
+    if (!ItemIsMandatory(idx)) {
+      MoveItem(idx, m_lbSelected, m_lbAvailable);
+      --itemsLeft;
+    }
+    else
+      ++idx;
+  }
 }
 
 
