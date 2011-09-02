@@ -40,6 +40,7 @@ protected:
   BOOL OnInitDialog();
   void DoDataExchange(CDataExchange* pDX);
   LRESULT OnWizardNext();
+  afx_msg void OnYubikeyBtn();
 
   // Generated message map functions
   //{{AFX_MSG(CWZSelectDB)
@@ -56,6 +57,7 @@ protected:
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
+	DECLARE_DISPATCH_MAP()
 
 private:
   void AFXAPI DDV_CheckExpDelimiter(CDataExchange* pDX,

@@ -40,6 +40,16 @@ BEGIN_INTERFACE_MAP(CWZSelectDB, CPWDialog)
 END_INTERFACE_MAP()
 
 
+BEGIN_DISPATCH_MAP(CWZSelectDB, CWZPropertyPage)
+	//{{AFX_DISPATCH_MAP(CWZSelectDB)
+		// NOTE - the ClassWizard will add and remove mapping macros here.
+	//}}AFX_DISPATCH_MAP
+	DISP_FUNCTION_ID(CWZSelectDB, "deviceInserted", 1, yubiInserted, VT_EMPTY, VTS_NONE)
+	DISP_FUNCTION_ID(CWZSelectDB, "deviceRemoved", 2, yubiRemoved, VT_EMPTY, VTS_NONE)
+	DISP_FUNCTION_ID(CWZSelectDB, "operationCompleted", 3, yubiCompleted, VT_EMPTY, VTS_I2)
+  DISP_FUNCTION_ID(CWZSelectDB, "userWait", 4, yubiWait, VT_EMPTY, VTS_I2)
+END_DISPATCH_MAP()
+
 CWZSelectDB::CWZSelectDB(CWnd *pParent, UINT nIDCaption, const int nType)
  : CWZPropertyPage(IDD, nIDCaption, nType), m_tries(0), m_state(0),
   m_pVKeyBoardDlg(NULL), m_bAdvanced(BST_UNCHECKED),
@@ -143,6 +153,7 @@ BEGIN_MESSAGE_MAP(CWZSelectDB, CWZPropertyPage)
   ON_BN_CLICKED(ID_HELP, OnHelp)
   ON_BN_CLICKED(IDC_ADVANCED, OnAdvanced)
   //}}AFX_MSG_MAP
+  ON_BN_CLICKED(IDC_YUBIKEY_BTN, OnYubikeyBtn)
 END_MESSAGE_MAP()
 
 void CWZSelectDB::OnHelp()
@@ -151,11 +162,13 @@ void CWZSelectDB::OnHelp()
   ::HtmlHelp(this->GetSafeHwnd(), (LPCWSTR)cs_HelpTopic, HH_DISPLAY_TOPIC, 0);
 }
 
+
 BOOL CWZSelectDB::OnInitDialog()
 {
   CWZPropertyPage::OnInitDialog();
   ApplyPasswordFont(GetDlgItem(IDC_PASSKEY));
   m_pctlPasskey->SetPasswordChar(PSSWDCHAR);
+  m_yubi->Init();
 
   const UINT nID = m_pWZPSH->GetID();
   CString cs_text,cs_temp;
@@ -451,14 +464,11 @@ LRESULT CWZSelectDB::OnWizardNext()
 
 bool CWZSelectDB::ProcessPhrase(const StringX &filename, const StringX &passkey)
 {
-  PWScore *pothercore = new PWScore;
-  if (m_pWZPSH->WZPSHCheckPasskey(filename, passkey, pothercore) == PWScore::SUCCESS) {
+  PWScore othercore;
+  if (m_pWZPSH->WZPSHCheckPasskey(filename, passkey, &othercore) == PWScore::SUCCESS) {
     m_tries = 0;
-    delete pothercore;
     return true;
   }
-
-  delete pothercore;
 
   if (m_tries >= 2) {
     CTryAgainDlg errorDlg(this);
@@ -652,9 +662,11 @@ void CWZSelectDB::yubiCompleted(ycRETCODE rc)
     // Get hmac, process it, synthesize OK event
     m_yubi->RetrieveHMACSha1(m_passkey);
     // The returned hash is the passkey
-    ProcessPhrase(m_filespec.GetString(), m_passkey);
-    // If we returned from above, reset status:
-    m_yubi_status.SetWindowText(_T("Click, then activate your YubiKey"));
+    m_pWZPSH->SetWizardButtons(PSWIZB_NEXT); // enable 
+    m_yubi_status.SetWindowText(_T("YubiKey data received")); // shouldn't really show
+    // This will check the password, etc.:
+    UpdateData(FALSE); // passwd -> control
+    PostMessage(WM_COMMAND, MAKELONG(ID_WIZNEXT, BN_CLICKED), 0);
     break;
   case ycRETCODE_NO_DEVICE:
     // device removed while waiting?
@@ -709,4 +721,10 @@ void CWZSelectDB::yubiRequestHMACSha1()
   m_yubi_timeout.ShowWindow(SW_SHOW);
   m_yubi_timeout.SetPos(15);
   m_yubi->RequestHMACSha1(m_passkey);
+}
+
+void CWZSelectDB::OnYubikeyBtn()
+{
+  UpdateData(TRUE);
+  yubiRequestHMACSha1(); // request HMAC of m_passkey
 }
