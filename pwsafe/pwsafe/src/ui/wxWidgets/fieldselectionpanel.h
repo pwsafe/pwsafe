@@ -26,9 +26,12 @@
  
 class FieldSelectionPanel : public wxPanel {
 
+  DECLARE_EVENT_TABLE()
+
   //returns wxNOT_FOUND if the field is not found in the listbox
-  int FindField(CItemData::FieldType ft, wxListBox* lb);
-  int MoveItem(int index, wxListBox* from, wxListBox* to);
+  int FindField(CItemData::FieldType ft, wxListBox* lb) const;
+  void MoveItem(int index, wxListBox* from, wxListBox* to);
+  bool ItemIsMandatory(size_t index) const;
 
 public:
   FieldSelectionPanel(wxWindow* parent);
@@ -37,6 +40,11 @@ public:
   void AddField(CItemData::FieldType ft, bool selected, bool mandatory);
   size_t GetNumSelectedFields() const;
   CItemData::FieldType GetSelectedFieldAt(size_t index) const;
+
+  void OnSelectSome( wxCommandEvent& evt );
+  void OnSelectAll( wxCommandEvent& evt );
+  void OnRemoveSome( wxCommandEvent& evt );
+  void OnRemoveAll( wxCommandEvent& evt );
 
 private:
   wxListBox *m_lbSelected, *m_lbAvailable;

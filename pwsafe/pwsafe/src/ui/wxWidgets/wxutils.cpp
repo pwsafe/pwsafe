@@ -175,3 +175,5 @@ bool MultiCheckboxValidator::Validate(wxWindow* parent)
   wxMessageBox(m_msg, m_title, wxOK|wxICON_EXCLAMATION, parent);
   return false;
 }
+
+int pless(int* first, int* second) { return *first - *second; }
