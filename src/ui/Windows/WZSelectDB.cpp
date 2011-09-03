@@ -666,7 +666,7 @@ void CWZSelectDB::yubiCompleted(ycRETCODE rc)
     m_yubi_status.SetWindowText(_T("YubiKey data received")); // shouldn't really show
     // This will check the password, etc.:
     UpdateData(FALSE); // passwd -> control
-    PostMessage(WM_COMMAND, MAKELONG(ID_WIZNEXT, BN_CLICKED), 0);
+    m_pWZPSH->PostMessage(WM_COMMAND, MAKELONG(ID_WIZNEXT, BN_CLICKED), 0);
     break;
   case ycRETCODE_NO_DEVICE:
     // device removed while waiting?
