@@ -105,6 +105,7 @@ public:
   bool Remove(const pws_os::CUUID &uuid); // only remove from tree, not from m_core
   void SelectItem(const pws_os::CUUID& uuid);
   void SortChildrenRecursively(const wxTreeItemId& item);
+  wxString GetItemGroup(const wxTreeItemId& item) const;
 
  private:
   //overriden from base for case-insensitive sort
