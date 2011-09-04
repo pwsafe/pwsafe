@@ -292,6 +292,22 @@ wxString PWSTreeCtrl::GetPath(const wxTreeItemId &node) const
   return retval;
 }
 
+wxString PWSTreeCtrl::GetItemGroup(const wxTreeItemId& item) const
+{
+  if (!item.IsOk() || item == GetRootItem())
+    return wxEmptyString;
+  else if (ItemHasChildren(item)) {
+    const wxString path = GetPath(item);
+    const wxString name = GetItemText(item);
+    if (path.IsEmpty())//parent is root
+      return name; //group under root
+    else
+      return path + _(".") + name; //sub-group of some (non-root) group
+  }
+  else
+    return GetPath(item); 
+}
+
 void PWSTreeCtrl::UpdateItem(const CItemData &item)
 {
   const wxTreeItemId node = Find(item);

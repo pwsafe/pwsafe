@@ -102,7 +102,7 @@ void PasswordSafeFrame::OnAddClick( wxCommandEvent& /* evt */ )
   wxString selectedGroup = wxEmptyString;
   wxTreeItemId selection;
   if (IsTreeView() && (selection = m_tree->GetSelection()).IsOk() && m_tree->ItemHasChildren(selection)) {
-    selectedGroup = m_tree->GetItemText(selection);
+    selectedGroup = m_tree->GetItemGroup(selection);
   }
 
   AddEditPropSheet addDbox(this, m_core, AddEditPropSheet::ADD, NULL, this, selectedGroup);
