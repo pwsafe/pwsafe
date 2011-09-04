@@ -29,6 +29,7 @@
 #include "./SizeRestrictedPanel.h"
 #include "../../core/core.h"
 #include "./addeditpropsheet.h"
+#include "./fieldselectiondlg.h"
 #include <wx/statline.h>
 #include <wx/grid.h>
 
@@ -715,4 +716,20 @@ void CompareDlg::OnCopyFieldsToCurrentDB(wxCommandEvent& evt)
 
 void CompareDlg::OnSyncItemsWithCurrentDB(wxCommandEvent& evt)
 {
+  CItemData::FieldType syncFields[] = {
+    CItemData::NOTES, CItemData::PASSWORD, CItemData::CTIME, CItemData::PMTIME, CItemData::ATIME, CItemData::XTIME,
+    CItemData::RMTIME, CItemData::URL, CItemData::AUTOTYPE, CItemData::PWHIST, CItemData::POLICY, CItemData::XTIME_INT,
+    CItemData::RUNCMD, CItemData::DCA, CItemData::EMAIL, CItemData::PROTECTED, CItemData::SYMBOLS, CItemData::SHIFTDCA,
+    
+  };
+  
+  FieldSet userSelection(syncFields, syncFields + WXSIZEOF(syncFields));
+  
+  FieldSelectionDlg dlg(this,
+                        NULL, 0, //nothing is unselected by default
+                        NULL, 0, //nothing is mandatory, either
+                        userSelection,
+                        _T("Synchronize"));
+  if (dlg.ShowModal() == wxID_OK) {
+  }
 }

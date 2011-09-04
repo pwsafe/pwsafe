@@ -17,6 +17,8 @@
 #include "../../core/ItemData.h"
 #include <set>
 
+typedef std::set<CItemData::FieldType> FieldSet;
+
 /*
  * This class implements a re-usable panel which lets user select
  * multiple item fields (CItemData::FieldType). Its meant to be
@@ -56,10 +58,6 @@ private:
  */
 class FieldSelectionPanelValidator: public wxValidator
 {
-public:
-  typedef std::set<CItemData::FieldType> FieldSet;
-
-private:
   //private: used internally by Clone
   FieldSelectionPanelValidator(const FieldSet& available,
                                const FieldSet& mandatory,
@@ -69,8 +67,8 @@ private:
 
 public:
   //userSelection must include all fields that are automatically selected
-  FieldSelectionPanelValidator(CItemData::FieldType* available, size_t navail,
-                               CItemData::FieldType* mandatory, size_t nmandatory,
+  FieldSelectionPanelValidator(const CItemData::FieldType* available, size_t navail,
+                               const CItemData::FieldType* mandatory, size_t nmandatory,
                                FieldSet& userSelection,
                                const wxString& validationMessage,
                                const wxString& validationTitle);

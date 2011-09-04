@@ -10,7 +10,6 @@
 * 
 */
 // For compilers that support precompilation, includes "wx/wx.h".
-#include "wx/wxprec.h"
 #include <wx/wxprec.h>
 
 #ifdef __BORLANDC__
@@ -98,7 +97,7 @@ FieldSelectionPanel::FieldSelectionPanel(wxWindow* parent): wxPanel(parent),
                                         wxDefaultSize, 0, NULL, wxLB_EXTENDED);
   grid->Add(m_lbSelected, wxSizerFlags().Expand());
 
-  SetSizerAndFit(grid);
+  SetSizer(grid);
 }
 
 FieldSelectionPanel::~FieldSelectionPanel()
@@ -175,11 +174,10 @@ CItemData::FieldType FieldSelectionPanel::GetSelectedFieldAt(size_t index) const
 
 void FieldSelectionPanel::MoveItem(int index, wxListBox* from, wxListBox* to)
 {
-  FieldData* data = dynamic_cast<FieldData*>(from->GetClientObject(index));
-  if (data) {
-    from->SetClientObject(index, 0);
-  }
-  to->Append(from->GetString(index), data);
+  
+  FieldData* oldData = dynamic_cast<FieldData*>(from->GetClientObject(index));
+  FieldData* newData = oldData? new FieldData(*oldData): 0;
+  to->Append(from->GetString(index), newData);
   from->Delete(index);
 }
 
@@ -233,8 +231,8 @@ void FieldSelectionPanel::OnRemoveAll( wxCommandEvent& /* evt */ )
 // FieldSelectionPanelValidator
 //
 #define A2ITR(a, n) a, a + (a? n: 0)
-FieldSelectionPanelValidator::FieldSelectionPanelValidator(CItemData::FieldType* available, size_t navail,
-                                                           CItemData::FieldType* mandatory, size_t nmand,
+FieldSelectionPanelValidator::FieldSelectionPanelValidator(const CItemData::FieldType* available, size_t navail,
+                                                           const CItemData::FieldType* mandatory, size_t nmand,
                                                            FieldSet& userSelection,
                                                            const wxString& validationMessage,
                                                            const wxString& validationTitle)
