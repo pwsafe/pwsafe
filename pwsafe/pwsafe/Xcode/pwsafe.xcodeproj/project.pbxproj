@@ -86,6 +86,10 @@
 		E690B56112984A1B007EA508 /* pwsafe.xsl in Resources */ = {isa = PBXBuildFile; fileRef = E690B55E12984A1A007EA508 /* pwsafe.xsl */; };
 		E690B95712984B1D007EA508 /* help.zip in Resources */ = {isa = PBXBuildFile; fileRef = E690B95612984B1D007EA508 /* help.zip */; };
 		E6919C641298FB25001F96D9 /* pwsafe.icns in Resources */ = {isa = PBXBuildFile; fileRef = E6919C631298FB25001F96D9 /* pwsafe.icns */; };
+		E691FB57140D551F00925F96 /* fieldselectionpanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E691FB55140D551E00925F96 /* fieldselectionpanel.cpp */; };
+		E691FB58140D551F00925F96 /* fieldselectionpanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E691FB55140D551E00925F96 /* fieldselectionpanel.cpp */; };
+		E691FB59140D551F00925F96 /* fieldselectionpanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E691FB55140D551E00925F96 /* fieldselectionpanel.cpp */; };
+		E691FB5A140D551F00925F96 /* fieldselectionpanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E691FB55140D551E00925F96 /* fieldselectionpanel.cpp */; };
 		E69B7FA811F600BA0084F6C4 /* ImportXmlDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E69B7FA411F600BA0084F6C4 /* ImportXmlDlg.cpp */; };
 		E69B7FA911F600BA0084F6C4 /* OpenFilePickerValidator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E69B7FA611F600BA0084F6C4 /* OpenFilePickerValidator.cpp */; };
 		E6A7ECAE12CDEAA40021D898 /* DbSelectionPanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6A7ECA912CDEAA40021D898 /* DbSelectionPanel.cpp */; };
@@ -251,6 +255,10 @@
 		E6C6876E137C406300A916C1 /* UUID.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6C6876D137C406300A916C1 /* UUID.cpp */; };
 		E6C6876F137C406300A916C1 /* UUID.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6C6876D137C406300A916C1 /* UUID.cpp */; };
 		E6C68770137C406300A916C1 /* UUID.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6C6876D137C406300A916C1 /* UUID.cpp */; };
+		E6D17CEC1411156D003BDBE7 /* fieldselectiondlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6D17CEB1411156D003BDBE7 /* fieldselectiondlg.cpp */; };
+		E6D17CED1411156D003BDBE7 /* fieldselectiondlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6D17CEB1411156D003BDBE7 /* fieldselectiondlg.cpp */; };
+		E6D17CEE1411156D003BDBE7 /* fieldselectiondlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6D17CEB1411156D003BDBE7 /* fieldselectiondlg.cpp */; };
+		E6D17CEF1411156D003BDBE7 /* fieldselectiondlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6D17CEB1411156D003BDBE7 /* fieldselectiondlg.cpp */; };
 		E6DA586511A701AE00D84199 /* guiinfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6DA586311A701AE00D84199 /* guiinfo.cpp */; };
 		E6DDC6FB138911CB00F0C0D1 /* CompareDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6DDC6F9138911CB00F0C0D1 /* CompareDlg.cpp */; };
 		E6DDC6FC138911CB00F0C0D1 /* CompareDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6DDC6F9138911CB00F0C0D1 /* CompareDlg.cpp */; };
@@ -525,6 +533,8 @@
 		E690B55E12984A1A007EA508 /* pwsafe.xsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = pwsafe.xsl; path = ../xml/pwsafe.xsl; sourceTree = SOURCE_ROOT; };
 		E690B95612984B1D007EA508 /* help.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; name = help.zip; path = ../help/help.zip; sourceTree = SOURCE_ROOT; };
 		E6919C631298FB25001F96D9 /* pwsafe.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = pwsafe.icns; path = ../src/ui/wxWidgets/graphics/pwsafe.icns; sourceTree = SOURCE_ROOT; };
+		E691FB55140D551E00925F96 /* fieldselectionpanel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = fieldselectionpanel.cpp; sourceTree = "<group>"; };
+		E691FB56140D551F00925F96 /* fieldselectionpanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fieldselectionpanel.h; sourceTree = "<group>"; };
 		E69B7FA411F600BA0084F6C4 /* ImportXmlDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ImportXmlDlg.cpp; sourceTree = "<group>"; };
 		E69B7FA511F600BA0084F6C4 /* ImportXmlDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImportXmlDlg.h; sourceTree = "<group>"; };
 		E69B7FA611F600BA0084F6C4 /* OpenFilePickerValidator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OpenFilePickerValidator.cpp; sourceTree = "<group>"; };
@@ -845,6 +855,8 @@
 		E6C6876C137C3EFA00A916C1 /* UUID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UUID.h; sourceTree = "<group>"; };
 		E6C6876D137C406300A916C1 /* UUID.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UUID.cpp; sourceTree = "<group>"; };
 		E6CFEE4311EA0AFB001402D8 /* RecentDBList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentDBList.h; sourceTree = "<group>"; };
+		E6D17CEA1411156D003BDBE7 /* fieldselectiondlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fieldselectiondlg.h; sourceTree = "<group>"; };
+		E6D17CEB1411156D003BDBE7 /* fieldselectiondlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = fieldselectiondlg.cpp; sourceTree = "<group>"; };
 		E6DA586311A701AE00D84199 /* guiinfo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = guiinfo.cpp; sourceTree = "<group>"; };
 		E6DA586411A701AE00D84199 /* guiinfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = guiinfo.h; sourceTree = "<group>"; };
 		E6DDC6F9138911CB00F0C0D1 /* CompareDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CompareDlg.cpp; sourceTree = "<group>"; };
@@ -1387,6 +1399,10 @@
 		E6ADB9A411957099004E2BE5 /* wxWidgets */ = {
 			isa = PBXGroup;
 			children = (
+				E691FB55140D551E00925F96 /* fieldselectionpanel.cpp */,
+				E691FB56140D551F00925F96 /* fieldselectionpanel.h */,
+				E6D17CEA1411156D003BDBE7 /* fieldselectiondlg.h */,
+				E6D17CEB1411156D003BDBE7 /* fieldselectiondlg.cpp */,
 				E66FB84C13ACA5C3004DBB97 /* SizeRestrictedPanel.h */,
 				E66FB84B13ACA5C3004DBB97 /* SizeRestrictedPanel.cpp */,
 				E66EE0B113921B30005C10C5 /* ComparisonGridTable.cpp */,
@@ -2133,6 +2149,8 @@
 				E6DDC715138914B700F0C0D1 /* wxutils.cpp in Sources */,
 				E66EE0B413921B30005C10C5 /* ComparisonGridTable.cpp in Sources */,
 				E66FB84E13ACA5C3004DBB97 /* SizeRestrictedPanel.cpp in Sources */,
+				E691FB59140D551F00925F96 /* fieldselectionpanel.cpp in Sources */,
+				E6D17CED1411156D003BDBE7 /* fieldselectiondlg.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2256,6 +2274,8 @@
 				E6DDC714138914B700F0C0D1 /* wxutils.cpp in Sources */,
 				E66EE0B313921B30005C10C5 /* ComparisonGridTable.cpp in Sources */,
 				E66FB84D13ACA5C3004DBB97 /* SizeRestrictedPanel.cpp in Sources */,
+				E691FB5A140D551F00925F96 /* fieldselectionpanel.cpp in Sources */,
+				E6D17CEE1411156D003BDBE7 /* fieldselectiondlg.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2303,6 +2323,8 @@
 				E6DDC717138914B700F0C0D1 /* wxutils.cpp in Sources */,
 				E66EE0B613921B30005C10C5 /* ComparisonGridTable.cpp in Sources */,
 				E66FB85013ACA5C3004DBB97 /* SizeRestrictedPanel.cpp in Sources */,
+				E691FB58140D551F00925F96 /* fieldselectionpanel.cpp in Sources */,
+				E6D17CEC1411156D003BDBE7 /* fieldselectiondlg.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2502,6 +2524,8 @@
 				E6DDC716138914B700F0C0D1 /* wxutils.cpp in Sources */,
 				E66EE0B513921B30005C10C5 /* ComparisonGridTable.cpp in Sources */,
 				E66FB84F13ACA5C3004DBB97 /* SizeRestrictedPanel.cpp in Sources */,
+				E691FB57140D551F00925F96 /* fieldselectionpanel.cpp in Sources */,
+				E6D17CEF1411156D003BDBE7 /* fieldselectiondlg.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
