@@ -743,13 +743,18 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
   }
   // select relevant group
   const StringX group = (m_type == ADD? tostringx(m_selectedGroup): m_item.GetGroup());
-  if (!group.empty())
-    for (size_t igrp = 0; igrp < aryGroups.size(); igrp++)
+  if (!group.empty()) {
+    bool foundGroup = false;
+    for (size_t igrp = 0; igrp < aryGroups.size(); igrp++) {
       if (group == aryGroups[igrp].c_str()) {
         m_groupCtrl->SetSelection((int)igrp);
+        foundGroup =true;
         break;
       }
-
+    }
+    if (!foundGroup)
+      m_groupCtrl->SetValue(m_selectedGroup);
+  }
   m_title = m_item.GetTitle().c_str();
   m_user = m_item.GetUser().c_str();
   m_url = m_item.GetURL().c_str();
