@@ -21,7 +21,8 @@ static char THIS_FILE[] = __FILE__;
 
 static CFont *pPasswordFont(NULL);
 
-/* Only the following set:
+/*
+  Only the following set:
     lf.lfHeight = -16;
     lf.lfWeight = FW_NORMAL;
     lf.lfPitchAndFamily = FF_MODERN | FIXED_PITCH;
@@ -31,6 +32,12 @@ static LOGFONT dfltPWFont = {
   -16, 0, 0, 0, FW_NORMAL, 0, 0, 0, 0, 0, 0, 0, FF_MODERN | FIXED_PITCH,
   L'C', L'o', L'u', L'r', L'i', L'e', L'r', L'\0'};
 
+// Bug in MS TreeCtrl and CreateDragImage.  During Drag, it doesn't show
+// the entry's text as well as the drag image if the font is not MS Sans Serif !!!!
+static LOGFONT DragFixPWFont = {
+  -16, 0, 0, 0, FW_NORMAL, 0, 0, 0, 0, 0, 0, 0, DEFAULT_PITCH | FF_SWISS,
+  L'M', L'S', L' ', L'S', L'a', L'n', L's', L' ', L'S', L'e', L'r', L'i', L'f', L'\0'};
+  
 void GetPasswordFont(LOGFONT *plogfont)
 {
   ASSERT(plogfont != NULL);
@@ -130,14 +137,20 @@ void PWFonts::SetUpFont(CWnd *pWnd, CFont *pfont)
   m_pCurrentFont = pfont;
   pWnd->SetFont(pfont);
 
+  // Set up special fonts
   delete m_pModifiedFont;
-
   m_pModifiedFont = new CFont;
 
-  // Set up special fonts
   LOGFONT lf;
   pfont->GetLogFont(&lf);
 
   lf.lfItalic = TRUE;
   m_pModifiedFont->CreateFontIndirect(&lf);
+  
+  delete m_pDragFixFont;
+  m_pDragFixFont = new CFont;
+  // Make same height as user selected font
+  DragFixPWFont.lfHeight = lf.lfHeight;
+  // Create it
+  m_pDragFixFont->CreateFontIndirect(&DragFixPWFont);
 }
