@@ -18,11 +18,16 @@ void DeletePasswordFont();
 void ExtractFont(const CString& str, LOGFONT &logfont);
 
 struct PWFonts {
-  PWFonts() : m_pCurrentFont(NULL), m_pModifiedFont(NULL) {}
-  ~PWFonts() {delete m_pModifiedFont;}
+  PWFonts() : m_pCurrentFont(NULL), m_pModifiedFont(NULL), m_pDragFixFont(NULL) {}
+  ~PWFonts() {delete m_pModifiedFont; delete m_pDragFixFont;}
+
   void SetUpFont(CWnd *pWnd, CFont *pfont);
+  CFont *GetCurrentFont() {return m_pCurrentFont;}
+  CFont *GetDragFixFont() {return m_pDragFixFont;}
+
   CFont *m_pCurrentFont;  // Do NOT delete - done in DboxMain
   CFont *m_pModifiedFont;
+  CFont *m_pDragFixFont;  // Fix for lack of text during drag!
   static const COLORREF MODIFIED_COLOR;
 };
 

@@ -1424,7 +1424,12 @@ void CPWTreeCtrl::OnBeginDrag(NMHDR *pNotifyStruct, LRESULT *pLResult)
   m_hitemDrop = NULL;
   SelectItem(m_hitemDrag);
 
+  // Bug in MS TreeCtrl and CreateDragImage.  During Drag, it doesn't show
+  // the entry's text as well as the drag image if the font is not MS Sans Serif !!!!
+  SetFont(m_fonts.GetDragFixFont(), false);
   CImageList *pil = CreateDragImage(m_hitemDrag);
+  SetFont(m_fonts.GetCurrentFont(), false);
+
   pil->SetDragCursorImage(0, CPoint(0, 0));
   pil->BeginDrag(0, CPoint(0,0));
   pil->DragMove(ptAction);
