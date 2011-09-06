@@ -91,7 +91,7 @@ upload: upload-latest
 upload-latest: latest.xml
 	echo "cd htdocs" > putlatest.tmp
 	echo "put $<" >> putlatest.tmp
-  echo "cd padfiles" >> putlatest.tmp
+	echo "cd padfiles" >> putlatest.tmp
 	echo "put docs/pad_file.xml pwsafe.xml"
 	sftp -b putlatest.tmp ronys,passwordsafe@web.sourceforge.net
 	$(RM) putlatest.tmp
