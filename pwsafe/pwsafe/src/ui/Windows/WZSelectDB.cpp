@@ -428,14 +428,12 @@ LRESULT CWZSelectDB::OnWizardNext()
 
 bool CWZSelectDB::ProcessPhrase(const StringX &filename, const StringX &passkey)
 {
-  PWScore *pothercore = new PWScore;
-  if (m_pWZPSH->WZPSHCheckPasskey(filename, passkey, pothercore) == PWScore::SUCCESS) {
+  PWScore tmpcore;
+  if (m_pWZPSH->WZPSHCheckPasskey(filename, passkey,
+                                  &tmpcore) == PWScore::SUCCESS) {
     m_tries = 0;
-    delete pothercore;
     return true;
   }
-
-  delete pothercore;
 
   if (m_tries >= 2) {
     CTryAgainDlg errorDlg(this);
