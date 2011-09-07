@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>Password Safe and YubiKey</title>
+    <!-- pwsafe version: 3.26.1Y--><!-- Modified: 7/09/2011 --><!--Popup control -->
+    <script language="javascript" src="html/popups.js">
+</script><link rel="stylesheet" type="text/css" href="style.css">
+  </head>
+  <body> <object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"></object>
+    <!-- Popup Source File -->
+    <h1>Password Safe and YubiKey</h1>
+    <a href="http://www.yubico.com/yubikey">YubiKey</a>
+    <!-- Added some white space at the bottom for natural scrolling -->
+    is an innovative hardware authentication device developed and sold
+    by <a href="http://www.yubico.com/">Yubico</a>. To the user, it
+    looks like a small, thin, disk-on-key with a button on top. To
+    PasswordSafe, it functions as an authentication token, providing
+    strong physical security to the password database. Here we describe
+    the steps needed to enable YubiKey authentication for PasswordSafe.<br>
+    <br>
+    <h2> Getting YubiKey</h2>
+    Obviously, you need a YubiKey device to start. YubiKeys can be
+    purchased online from here. Note that PasswordSafe requires YubiKeys
+    with firmware version <strong>2.2</strong> and above.<br>
+    <br>
+    <h2> Installing the Windows Client API</h2>
+    For PasswordSafe to communicate with your YubiKey, the Windows
+    Client API needs to be installed on your PC. You can download the
+    binary installer for the Windows Client API free of charge from <a
+      href="http://static.yubico.com/var/uploads/files/Yubikey%20Server%20API%20Installer.msi">here</a>.
+    After downloading, just double-click on the downloaded file and
+    follow instructions. Note that without the client API, this version
+    of PasswordSafe cannot recognize your YubiKey, and will only offer
+    Password-based authentication.<br>
+    <br>
+    <h2> Configuring your YubiKey</h2>
+    Your YubiKey needs to be configured properly in order to work with
+    PasswordSafe. Yubico provides several personalization tools that can
+    be used to configure YubiKey devices <a href="http://www.yubico.com/personalization-tool">here</a>.
+    The following instructions refer to the <a href="http://static.yubico.com/var/uploads/files/Yubikey%20Configuration%20COM%20API%20Installer.msi">Windows
+
+
+      Configuration Utility</a>.<br>
+    <ol>
+      <li>Start the YubiKey Personalization Tool</li>
+      <li>Insert your YubiKey into a free USB slot on your PC</li>
+      <li>From the top bar of tha application window, click on <strong>Challenge-Response</strong>.</li>
+      <li>Click on <strong>Configuration Slot 2</strong></li>
+      <li>Check "<strong>Require user input (button press)</strong>"</li>
+      <li>Select HMAC-SHA1 Mode "<strong>Fixed 64 byte input</strong>"</li>
+      <li>Click on the <strong>Generate </strong>button to create a
+        unique Secret Key</li>
+      <li>Click on <strong>Write Configuration</strong> and make sure
+        that the status in the Results window shows "YubiKey has been
+        successfully configured"</li>
+      <li>Your YubiKey is now ready to be used with PasswordSafe</li>
+    </ol>
+    <strong>Note</strong>: The Secret Key generated in step 7 is what
+    makes your YubiKey unique. If you wish, you can create a spare
+    YubiKey with the same secret key to use in case of loss of the
+    original YubiKey. Just remove the original YubiKey, insert the
+    spare, and click on Write Configuration <em>without </em>changing
+    the Secret Key.<br>
+    <br>
+    The following image shows the relevant screen and settings:<br>
+    <br>
+    <img alt="YubiKey Personalization Tool" src="images/yubi-config.jpg"><br>
+    <br>
+    <br>
+    <object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+      <param name="Keyword" value="Twofish"> <param name="Keyword" value="Bruce Schneier">
+      <param name="Keyword" value="Artistic License"> <param name="Keyword"
+        value="License Restrictions"> <param name="Keyword" value="About Password Safe">
+      <param name="Keyword" value="Password Safe Project Page"> </object>
+  </body>
+</html>
