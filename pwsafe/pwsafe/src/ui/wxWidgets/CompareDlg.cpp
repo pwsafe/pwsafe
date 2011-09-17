@@ -457,7 +457,7 @@ void CompareDlg::OnGridCellRightClick(wxGridEvent& evt)
   }
 
   // Make the menuContext object available to the handlers
-  MenuEventModifier cem(&itemEditMenu, &menuContext);
+  EventDataInjector<wxCommandEvent> inject(&itemEditMenu, &menuContext, wxEVT_COMMAND_MENU_SELECTED);
 
   menuContext.cdata->grid->PopupMenu(&itemEditMenu);
 }
