@@ -141,27 +141,44 @@ public:
 };
 
 /*
- * This class injects context data from the time a popup menu
- * is created, into the wxCommandEvent objects arising out of menu
- * clicks
+ * This class injects context data into an event, to avoid having
+ * to "remember" that data in member variables.  It does that by
+ * hooking itself in as a dynamic event handler entry into the
+ * event source, which are called before other types of handlers
  */
-class MenuEventModifier: public wxEvtHandler
+template <class evtClass>
+class EventDataInjector: public wxEvtHandler
 {
+  wxEvtHandler* m_evtSource;
   void* m_clientData;
+  wxEventType m_eventType;
+  int m_windowId;
+  bool  m_oneShot;
 public:
-  MenuEventModifier(wxMenu* menu, void* clientData): m_clientData(clientData)
+  EventDataInjector(wxEvtHandler* evtSource, void* clientData,
+                    wxEventType evtType, int winid = wxID_ANY,
+                    bool oneShot = true): m_evtSource(evtSource),
+                                          m_clientData(clientData),
+                                          m_eventType(evtType),
+                                          m_windowId(winid),
+                                          m_oneShot(oneShot)
   {    
-    menu->Connect(wxID_ANY,
-                  wxEVT_COMMAND_MENU_SELECTED,
-                  wxCommandEventHandler(MenuEventModifier::OnCommandEvent),
+    evtSource->Connect(winid, evtType, 
+                  evtType,
+                  (wxObjectEventFunction)&EventDataInjector::OnHookedEvent,
                   NULL, //this is for wxWidgets' private use only
                   this);
   }
 
-  void OnCommandEvent(wxCommandEvent& evt) {
+  void OnHookedEvent(evtClass& evt) {
     evt.Skip();
     wxCHECK_RET(!evt.GetClientData(), wxT("Command event already has client data"));
     evt.SetClientData(m_clientData);
+    if (m_oneShot) {
+      wxCHECK_RET(m_evtSource->Disconnect(m_windowId, m_eventType,
+                              (wxObjectEventFunction)&EventDataInjector::OnHookedEvent,
+                              NULL, this), wxT("Could not remove dynamic event parameter injection hook"));
+    }
   }
 };
 
