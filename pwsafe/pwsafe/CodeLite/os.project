@@ -44,6 +44,7 @@
     <File Name="../src/os/KeySend.h"/>
     <File Name="../src/os/registry.h"/>
     <File Name="../src/os/typedefs.h"/>
+    <File Name="../src/os/UUID.h"/>
   </VirtualDirectory>
   <Dependencies Name="Release">
     <Project Name="core"/>
