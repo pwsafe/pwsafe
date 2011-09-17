@@ -41,7 +41,8 @@ enum {ID_BTN_COMPARE = 100 };
 
 enum {
   ID_COPY_FIELD_TO_CURRENT_DB = 100,
-  ID_SYNC_ITEMS_WITH_CURRENT_DB,
+  ID_SYNC_SELECTED_ITEMS_WITH_CURRENT_DB,
+  ID_SYNC_ALL_ITEMS_WITH_CURRENT_DB,
   ID_COPY_ITEMS_TO_CURRENT_DB,
   ID_EDIT_IN_CURRENT_DB,
   ID_VIEW_IN_COMPARISON_DB,
@@ -64,7 +65,8 @@ BEGIN_EVENT_TABLE( CompareDlg, wxDialog )
   EVT_MENU(ID_COPY_ITEMS_TO_CURRENT_DB, CompareDlg::OnCopyItemsToCurrentDB)
   EVT_MENU(ID_DELETE_ITEMS_FROM_CURRENT_DB, CompareDlg::OnDeleteItemsFromCurrentDB)
   EVT_MENU(ID_COPY_FIELD_TO_CURRENT_DB, CompareDlg::OnCopyFieldsToCurrentDB)
-  EVT_MENU(ID_SYNC_ITEMS_WITH_CURRENT_DB, CompareDlg::OnSyncItemsWithCurrentDB)
+  EVT_MENU(ID_SYNC_SELECTED_ITEMS_WITH_CURRENT_DB, CompareDlg::OnSyncItemsWithCurrentDB)
+  EVT_MENU(ID_SYNC_ALL_ITEMS_WITH_CURRENT_DB, CompareDlg::OnSyncItemsWithCurrentDB)
 END_EVENT_TABLE()
 
 struct ComparisonData {
@@ -392,8 +394,23 @@ void CompareDlg::OnGridCellRightClick(wxGridEvent& evt)
   menuContext.cdata->grid->SetGridCursor(evt.GetRow(), evt.GetCol());
 
   menuContext.selectedRows = menuContext.cdata->grid->GetSelectedRows();
-  int selectionCount = menuContext.selectedRows.GetCount();
-  if (menuContext.cdata == m_conflicts) selectionCount /= 2;
+  size_t selectionCount = menuContext.selectedRows.GetCount();
+  if (menuContext.cdata == m_conflicts) {
+    selectionCount /= 2;
+    wxCHECK_RET(menuContext.selectedRows.GetCount()%2 ==0, wxT("Conflicts grid should always select an even numer of rows"));
+    //Our alogo requires the indexes to be in order, and sometimes these are actually unsorted
+    menuContext.selectedRows.Sort(pless);
+    for( size_t idx = 1; idx <= selectionCount; ++idx) {
+      wxCHECK_RET(menuContext.selectedRows[idx]%2 != 0, wxT("Selection indexes not in expected order"));
+      wxLogDebug(wxT("Removing index %d from selection at index %u\n"), menuContext.selectedRows.Item(idx), idx);
+      menuContext.selectedRows.RemoveAt(idx, 1);
+    }
+    for( size_t idx = 0; idx < selectionCount; ++idx) {
+      wxLogDebug(wxT("Found index %d from selection at %u\n"), menuContext.selectedRows.Item(idx), idx);
+      wxCHECK_RET(menuContext.selectedRows[idx]%2 == 0, wxT("Conflicts grid selection should only have even indexes after normalization"));
+      menuContext.selectedRows[idx] /= 2;
+    }
+  }
 
   stringT itemStr;
   LoadAString(itemStr, selectionCount > 1? IDSC_ENTRIES: IDSC_ENTRY);
@@ -404,9 +421,14 @@ void CompareDlg::OnGridCellRightClick(wxGridEvent& evt)
 
   wxMenu itemEditMenu;
 
-  wxString strMergeItemsMenu;
-  strMergeItemsMenu << _("Synchronize") << selCountStr << wxT("selected ") << towxstring(itemStr) << _(" with current db");
-  itemEditMenu.Append(ID_SYNC_ITEMS_WITH_CURRENT_DB, strMergeItemsMenu);
+  wxString strSyncSelectedItemsMenu;
+  if (selectionCount == 1)
+    strSyncSelectedItemsMenu << _("Synchronize this item...");
+  else
+    strSyncSelectedItemsMenu << _("Synchronize") << selCountStr << wxT("selected ") << towxstring(itemStr) << _("...");
+  itemEditMenu.Append(ID_SYNC_SELECTED_ITEMS_WITH_CURRENT_DB, strSyncSelectedItemsMenu);
+
+  itemEditMenu.Append(ID_SYNC_ALL_ITEMS_WITH_CURRENT_DB, _("Synchronize all items..."));
 
   wxString strCopyItemsMenu;
   strCopyItemsMenu << _("Copy") << selCountStr << wxT("selected ") << towxstring(itemStr) << _(" to current db");
@@ -440,19 +462,22 @@ void CompareDlg::OnGridCellRightClick(wxGridEvent& evt)
     itemEditMenu.Delete(ID_COPY_ITEMS_TO_CURRENT_DB);
   }
   else if (menuContext.cdata == m_current) {
-    itemEditMenu.Delete(ID_SYNC_ITEMS_WITH_CURRENT_DB);
+    itemEditMenu.Delete(ID_SYNC_SELECTED_ITEMS_WITH_CURRENT_DB);
+    itemEditMenu.Delete(ID_SYNC_ALL_ITEMS_WITH_CURRENT_DB);
     itemEditMenu.Delete(ID_COPY_ITEMS_TO_CURRENT_DB);
     if (selectionCount == 1)
       itemEditMenu.Delete(ID_VIEW_IN_COMPARISON_DB);
   }
   else if (menuContext.cdata == m_comparison) {
-    itemEditMenu.Delete(ID_SYNC_ITEMS_WITH_CURRENT_DB);
+    itemEditMenu.Delete(ID_SYNC_SELECTED_ITEMS_WITH_CURRENT_DB);
+    itemEditMenu.Delete(ID_SYNC_ALL_ITEMS_WITH_CURRENT_DB);
     itemEditMenu.Delete(ID_DELETE_ITEMS_FROM_CURRENT_DB);
     if (selectionCount == 1)
       itemEditMenu.Delete(ID_EDIT_IN_CURRENT_DB);
   }
   else if (menuContext.cdata == m_identical) {
-    itemEditMenu.Delete(ID_SYNC_ITEMS_WITH_CURRENT_DB);
+    itemEditMenu.Delete(ID_SYNC_SELECTED_ITEMS_WITH_CURRENT_DB);
+    itemEditMenu.Delete(ID_SYNC_ALL_ITEMS_WITH_CURRENT_DB);
     itemEditMenu.Delete(ID_COPY_ITEMS_TO_CURRENT_DB);
   }
 
@@ -673,6 +698,7 @@ void CompareDlg::OnDeleteItemsFromCurrentDB(wxCommandEvent& evt)
 void CompareDlg::OnCopyFieldsToCurrentDB(wxCommandEvent& evt)
 {
   ContextMenuData* menuContext = reinterpret_cast<ContextMenuData*>(evt.GetClientData());
+  wxCHECK_RET(menuContext, wxT("No menu context available"));
   ComparisonGridTable* ptable = wxDynamicCast(menuContext->cdata->grid->GetTable(), ComparisonGridTable);
   wxCHECK_RET(ptable, wxT("Could not find ComparisonGridTable derived object in comparison grid"));
   const ComparisonGridTable& table = *ptable;
@@ -716,20 +742,84 @@ void CompareDlg::OnCopyFieldsToCurrentDB(wxCommandEvent& evt)
 
 void CompareDlg::OnSyncItemsWithCurrentDB(wxCommandEvent& evt)
 {
-  CItemData::FieldType syncFields[] = {
-    CItemData::NOTES, CItemData::PASSWORD, CItemData::CTIME, CItemData::PMTIME, CItemData::ATIME, CItemData::XTIME,
-    CItemData::RMTIME, CItemData::URL, CItemData::AUTOTYPE, CItemData::PWHIST, CItemData::POLICY, CItemData::XTIME_INT,
-    CItemData::RUNCMD, CItemData::DCA, CItemData::EMAIL, CItemData::PROTECTED, CItemData::SYMBOLS, CItemData::SHIFTDCA,
-    
+  if (m_currentCore->IsReadOnly()) {
+    wxMessageBox(_("Current safe was opened read-only"), _("Synchronize"), wxOK|wxICON_INFORMATION, this);
+    return;
+  }
+
+  GTUSet setGTU;
+  if (!m_currentCore->GetUniqueGTUValidated() && !m_currentCore->InitialiseGTU(setGTU)) {
+    // Database is not unique to start with - tell user to validate it first
+    wxMessageBox(wxString::Format(_("The database:\n\n%s\n\nhas duplicate entries with the same group/title/user combination. Please fix by validating database."), m_currentCore->GetCurFile().c_str()),
+                  _("Synchronization failed"), wxOK|wxICON_EXCLAMATION, this);
+    return;
+  }
+  setGTU.clear();  // Don't need it anymore - so clear it now
+
+  //we only synchronize these fields
+  const CItemData::FieldType syncFields[] = {
+    CItemData::PASSWORD, CItemData::URL, CItemData::EMAIL, CItemData::AUTOTYPE, CItemData::NOTES,
+    CItemData::PWHIST, CItemData::POLICY, CItemData::CTIME, CItemData::PMTIME, CItemData::ATIME,
+    CItemData::XTIME, CItemData::RMTIME, CItemData::XTIME_INT,
+    CItemData::RUNCMD, CItemData::DCA, CItemData::PROTECTED, CItemData::SYMBOLS, CItemData::SHIFTDCA,
   };
   
   FieldSet userSelection(syncFields, syncFields + WXSIZEOF(syncFields));
-  
+
+  //let the user choose which fields to synchronize
   FieldSelectionDlg dlg(this,
-                        NULL, 0, //nothing is unselected by default
-                        NULL, 0, //nothing is mandatory, either
+                        NULL, 0, //no fields are left unselected by default
+                        NULL, 0, //But no fields are mandatory
                         userSelection,
                         _T("Synchronize"));
   if (dlg.ShowModal() == wxID_OK) {
+    wxCHECK_RET(userSelection.size() > 0, wxT("User did not select any fields to sync?"));
+    ContextMenuData* menuContext = reinterpret_cast<ContextMenuData*>(evt.GetClientData());
+    wxCHECK_RET(menuContext, wxT("No menu context available"));
+    //start with the selected items
+    wxArrayInt syncIndexes(menuContext->selectedRows);
+    if (evt.GetId() == ID_SYNC_ALL_ITEMS_WITH_CURRENT_DB) {
+      //add all items to the sync Index list
+      syncIndexes.Empty();
+      const size_t numIndexes = menuContext->cdata->data.size();
+      syncIndexes.Alloc(numIndexes);
+      for(size_t i = 0; i < numIndexes; ++i)
+        syncIndexes.Add(i);
+    }
+    else {
+      wxCHECK_RET(evt.GetId() == ID_SYNC_SELECTED_ITEMS_WITH_CURRENT_DB, wxT("Sync menu id is neither for all nor for selected items"));
+    }
+
+    //use an auto_ptr to clean up the heap object if we trip on any of the wxCHECK_RETs below
+    std::auto_ptr<MultiCommands> pMultiCmds(MultiCommands::Create(m_currentCore));
+    for (size_t idx = 0; idx < syncIndexes.Count(); ++idx) {
+      ItemListIter fromPos = m_otherCore->Find(menuContext->cdata->data[syncIndexes[idx]].uuid1);
+      wxCHECK_RET(fromPos != m_otherCore->GetEntryEndIter(), wxT("Could not find sync item in other db"));
+      const CItemData *pfromEntry = &fromPos->second;
+
+      ItemListIter toPos = m_currentCore->Find(menuContext->cdata->data[syncIndexes[idx]].uuid0);
+      wxCHECK_RET(toPos != m_currentCore->GetEntryEndIter(), wxT("Could not find sync item in current db"));
+      CItemData *ptoEntry = &toPos->second;
+      CItemData updtEntry(*ptoEntry);
+
+      //create a copy of the "to" object, with only the to-be-sync'ed fields changed
+      bool bUpdated(false);
+      for (FieldSet::const_iterator itr = userSelection.begin(); itr != userSelection.end(); ++itr) {
+        const StringX sxValue = pfromEntry->GetFieldValue(*itr);
+        if (sxValue != updtEntry.GetFieldValue(*itr)) {
+          bUpdated = true;
+          updtEntry.SetFieldValue(*itr, sxValue);
+        }
+      }
+      //Don't change anything yet.  Just keep track of the differences.  
+      if (bUpdated) {
+        updtEntry.SetStatus(CItemData::ES_MODIFIED);
+        Command *pcmd = EditEntryCommand::Create(m_currentCore, *ptoEntry, updtEntry);
+        pMultiCmds->Add(pcmd);
+      }
+    }
+    //Update all or nothing.  And there's no way of knowing if any of the sub-commands
+    //inside MultiCommands failed
+    m_currentCore->Execute(pMultiCmds.release());
   }
 }
