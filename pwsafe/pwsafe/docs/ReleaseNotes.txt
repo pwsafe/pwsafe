@@ -23,6 +23,7 @@ Changes to Existing Features in 3.26.1
 
 Bugs fixed in 3.26.1
 ====================
+[3395549] PasswordSafe now displays forms correctly on Netbooks.
 [3382422] Toolbar now updated to reflect R/W or R-O mode when user dynamically changes mode.
 [3380714] User can now save database after manually taking a bakup.
 [3380424] System Menu 'X' now closes the Edit/View PropertyPages when the database
