@@ -32,6 +32,7 @@
 #include "./fieldselectiondlg.h"
 #include <wx/statline.h>
 #include <wx/grid.h>
+#include <wx/ptr_scpd.h>
 
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
@@ -85,6 +86,8 @@ struct ContextMenuData {
   wxArrayInt selectedItems;   //indexes into the table
   CItemData::FieldType field;
 };
+
+wxDEFINE_SCOPED_PTR_TYPE(MultiCommands);
 
 CompareDlg::CompareDlg(wxWindow* parent, PWScore* currentCore): wxDialog(parent, 
                                                                 wxID_ANY, 
@@ -567,35 +570,29 @@ void CompareDlg::OnCopyItemsToCurrentDB(wxCommandEvent& evt)
   ComparisonGridTable* ptable = wxDynamicCast(baseTable, ComparisonGridTable);
   wxCHECK_RET(ptable, wxT("Could not find ComparisonGridTable derived object in comparison grid"));
   const ComparisonGridTable& table = *ptable;
-  MultiCommands *pmulticmds = MultiCommands::Create(m_currentCore);
+  MultiCommandsPtr pmulticmds(MultiCommands::Create(m_currentCore));
   for( size_t idx = 0; idx < menuContext->selectedRows.Count(); ++idx) {
     const int row = menuContext->selectedRows[idx];
     ItemListIter itrOther = m_otherCore->Find(table[row].uuid1);
-    if (itrOther != m_otherCore->GetEntryEndIter()) {
-      if (m_currentCore->Find(itrOther->second.GetUUID()) != m_currentCore->GetEntryEndIter()) {
-        // if you copy an item from comparison grid to current db, edit the copy in current db and
-        // change its GTU, it will appear in a different grid if you compare again, but have
-        // the same UUID.  Then if you try to add the item from comparison db again, you'll get
-        // an Assert failure.  I think it will work anyway in Release build, but abort in Debug
-        CItemData newItem(itrOther->second);
-        newItem.CreateUUID();
-        AddEntryCommand* cmd = AddEntryCommand::Create(m_currentCore, newItem);
-        pmulticmds->Add(cmd);
-      }
-      else {
-        const CItemData& item = itrOther->second;
-        AddEntryCommand* cmd = AddEntryCommand::Create(m_currentCore, item);
-        pmulticmds->Add(cmd);
-      }
+    wxCHECK_RET(itrOther != m_otherCore->GetEntryEndIter(), wxT("Could not find item to be added in comparison core"));
+    if (m_currentCore->Find(itrOther->second.GetUUID()) != m_currentCore->GetEntryEndIter()) {
+      // if you copy an item from comparison grid to current db, edit the copy in current db and
+      // change its GTU, it will appear in a different grid if you compare again, but have
+      // the same UUID.  Then if you try to add the item from comparison db again, you'll get
+      // an Assert failure.  I think it will work anyway in Release build, but abort in Debug
+      CItemData newItem(itrOther->second);
+      newItem.CreateUUID();
+      AddEntryCommand* cmd = AddEntryCommand::Create(m_currentCore, newItem);
+      pmulticmds->Add(cmd);
     }
     else {
-      wxFAIL_MSG(wxT("Could not find item to be added in comparison core"));
-      delete pmulticmds;
-      return;
+      const CItemData& item = itrOther->second;
+      AddEntryCommand* cmd = AddEntryCommand::Create(m_currentCore, item);
+      pmulticmds->Add(cmd);
     }
   }
   if (pmulticmds->GetSize() > 0) {
-    m_currentCore->Execute(pmulticmds);
+    m_currentCore->Execute(pmulticmds.release());
     for( size_t idx = 0; idx < menuContext->selectedRows.Count(); ++idx) {
       const int row = menuContext->selectedRows[idx]-idx;
       st_CompareData data = table[row];
@@ -623,9 +620,6 @@ void CompareDlg::OnCopyItemsToCurrentDB(wxCommandEvent& evt)
     if (relayout)
       Layout();
   }
-  else {
-    delete pmulticmds;
-  }
 }
 
 
@@ -636,23 +630,16 @@ void CompareDlg::OnDeleteItemsFromCurrentDB(wxCommandEvent& evt)
   ComparisonGridTable* ptable = wxDynamicCast(baseTable, ComparisonGridTable);
   wxCHECK_RET(ptable, wxT("Could not find ComparisonGridTable derived object in comparison grid"));
   const ComparisonGridTable& table = *ptable;
-  MultiCommands *pmulticmds = MultiCommands::Create(m_currentCore);
+  MultiCommandsPtr pmulticmds(MultiCommands::Create(m_currentCore));
   for( size_t idx = 0; idx < menuContext->selectedRows.Count(); ++idx) {
     const int row = menuContext->selectedRows[idx];
     ItemListIter itr = m_currentCore->Find(table[row].uuid0);
-    if ( itr != m_currentCore->GetEntryEndIter()) {
-      DeleteEntryCommand* cmd = DeleteEntryCommand::Create(m_currentCore, itr->second);
-      pmulticmds->Add(cmd);
-    }
-    else {
-      wxFAIL_MSG(wxT("Could not find item to be deleted in current core"));
-      //something wrong - don't delete anything
-      delete pmulticmds;
-      return;
-    }
+    wxCHECK_RET( itr != m_currentCore->GetEntryEndIter(), wxT("Could not find item to be deleted in current core"));
+    DeleteEntryCommand* cmd = DeleteEntryCommand::Create(m_currentCore, itr->second);
+    pmulticmds->Add(cmd);
   }
   if (pmulticmds->GetSize() > 0) {
-    m_currentCore->Execute(pmulticmds);
+    m_currentCore->Execute(pmulticmds.release());
 
     //need to delete the rows in order
     menuContext->selectedRows.Sort(&pless);
@@ -692,9 +679,6 @@ void CompareDlg::OnDeleteItemsFromCurrentDB(wxCommandEvent& evt)
     if (relayout)
       Layout();
   }
-  else {
-    delete pmulticmds;
-  }
 }
 
 void CompareDlg::OnCopyFieldsToCurrentDB(wxCommandEvent& evt)
@@ -704,41 +688,26 @@ void CompareDlg::OnCopyFieldsToCurrentDB(wxCommandEvent& evt)
   ComparisonGridTable* ptable = wxDynamicCast(menuContext->cdata->grid->GetTable(), ComparisonGridTable);
   wxCHECK_RET(ptable, wxT("Could not find ComparisonGridTable derived object in comparison grid"));
   const ComparisonGridTable& table = *ptable;
-  MultiCommands *pmulticmds = MultiCommands::Create(m_currentCore);
+  MultiCommandsPtr pmulticmds(MultiCommands::Create(m_currentCore));
   for( size_t idx = 0; idx < menuContext->selectedRows.Count(); ++idx) {
     const int row = menuContext->selectedRows[idx];
     ItemListIter itrOther = m_otherCore->Find(table[row].uuid1);
-    if ( itrOther != m_otherCore->GetEntryEndIter()) {
-      const CItemData& otherItem = itrOther->second;
-      ItemListIter itrCurrent = m_currentCore->Find(table[row].uuid0);
-      if (itrCurrent != m_currentCore->GetEntryEndIter()) {
-        const CItemData& currentItem = itrCurrent->second;
-        UpdateEntryCommand* cmd = UpdateEntryCommand::Create(m_currentCore, currentItem,
-                                                            menuContext->field,
-                                                            otherItem.GetFieldValue(menuContext->field));
-        pmulticmds->Add(cmd);
-      }
-      else {
-        wxFAIL_MSG(wxT("Could not find item to be modified in current core"));
-        delete pmulticmds;
-        return;
-      }
-    }
-    else {
-      wxFAIL_MSG(wxT("Could not find item to be modified in current core"));
-      delete pmulticmds;
-      return;
-    }
+    wxCHECK_RET( itrOther != m_otherCore->GetEntryEndIter(), wxT("Could not find item to be modified in current core"));
+    const CItemData& otherItem = itrOther->second;
+    ItemListIter itrCurrent = m_currentCore->Find(table[row].uuid0);
+    wxCHECK_RET(itrCurrent != m_currentCore->GetEntryEndIter(), wxT("Could not find item to be modified in current core"));
+    const CItemData& currentItem = itrCurrent->second;
+    UpdateEntryCommand* cmd = UpdateEntryCommand::Create(m_currentCore, currentItem,
+                                                        menuContext->field,
+                                                        otherItem.GetFieldValue(menuContext->field));
+    pmulticmds->Add(cmd);
   }
   if (pmulticmds->GetSize() > 0) {
-    m_currentCore->Execute(pmulticmds);
+    m_currentCore->Execute(pmulticmds.release());
     for( size_t idx = 0; idx < menuContext->selectedRows.Count(); ++idx) {
       //refresh the row just above the selected one
       table.RefreshRow(menuContext->selectedRows[idx]-1);
     }
-  }
-  else {
-    delete pmulticmds;
   }
 }
 
@@ -792,8 +761,8 @@ void CompareDlg::OnSyncItemsWithCurrentDB(wxCommandEvent& evt)
       wxCHECK_RET(evt.GetId() == ID_SYNC_SELECTED_ITEMS_WITH_CURRENT_DB, wxT("Sync menu id is neither for all nor for selected items"));
     }
 
-    //use an auto_ptr to clean up the heap object if we trip on any of the wxCHECK_RETs below
-    std::auto_ptr<MultiCommands> pMultiCmds(MultiCommands::Create(m_currentCore));
+    //use a wxScopedPtr to clean up the heap object if we trip on any of the wxCHECK_RETs below
+    MultiCommandsPtr pMultiCmds(MultiCommands::Create(m_currentCore));
     for (size_t idx = 0; idx < syncIndexes.Count(); ++idx) {
       ItemListIter fromPos = m_otherCore->Find(menuContext->cdata->data[syncIndexes[idx]].uuid1);
       wxCHECK_RET(fromPos != m_otherCore->GetEntryEndIter(), wxT("Could not find sync item in other db"));
