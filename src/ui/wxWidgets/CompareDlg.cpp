@@ -81,7 +81,8 @@ struct ComparisonData {
 
 struct ContextMenuData {
   ComparisonData* cdata;
-  wxArrayInt selectedRows;
+  wxArrayInt selectedRows;    //indexes into the grid
+  wxArrayInt selectedItems;   //indexes into the table
   CItemData::FieldType field;
 };
 
@@ -394,21 +395,22 @@ void CompareDlg::OnGridCellRightClick(wxGridEvent& evt)
   menuContext.cdata->grid->SetGridCursor(evt.GetRow(), evt.GetCol());
 
   menuContext.selectedRows = menuContext.cdata->grid->GetSelectedRows();
+  menuContext.selectedItems = menuContext.selectedRows;
   size_t selectionCount = menuContext.selectedRows.GetCount();
   if (menuContext.cdata == m_conflicts) {
     selectionCount /= 2;
-    wxCHECK_RET(menuContext.selectedRows.GetCount()%2 ==0, wxT("Conflicts grid should always select an even numer of rows"));
+    wxCHECK_RET(menuContext.selectedItems.GetCount()%2 ==0, wxT("Conflicts grid should always select an even numer of items"));
     //Our alogo requires the indexes to be in order, and sometimes these are actually unsorted
-    menuContext.selectedRows.Sort(pless);
+    menuContext.selectedItems.Sort(pless);
     for( size_t idx = 1; idx <= selectionCount; ++idx) {
-      wxCHECK_RET(menuContext.selectedRows[idx]%2 != 0, wxT("Selection indexes not in expected order"));
-      wxLogDebug(wxT("Removing index %d from selection at index %u\n"), menuContext.selectedRows.Item(idx), idx);
-      menuContext.selectedRows.RemoveAt(idx, 1);
+      wxCHECK_RET(menuContext.selectedItems[idx]%2 != 0, wxT("Selection indexes not in expected order"));
+      wxLogDebug(wxT("Removing index %d from selection at index %u\n"), menuContext.selectedItems.Item(idx), idx);
+      menuContext.selectedItems.RemoveAt(idx, 1);
     }
     for( size_t idx = 0; idx < selectionCount; ++idx) {
-      wxLogDebug(wxT("Found index %d from selection at %u\n"), menuContext.selectedRows.Item(idx), idx);
-      wxCHECK_RET(menuContext.selectedRows[idx]%2 == 0, wxT("Conflicts grid selection should only have even indexes after normalization"));
-      menuContext.selectedRows[idx] /= 2;
+      wxLogDebug(wxT("Found index %d from selection at %u\n"), menuContext.selectedItems.Item(idx), idx);
+      wxCHECK_RET(menuContext.selectedItems[idx]%2 == 0, wxT("Conflicts grid selection should only have even indexes after normalization"));
+      menuContext.selectedItems[idx] /= 2;
     }
   }
 
@@ -777,7 +779,7 @@ void CompareDlg::OnSyncItemsWithCurrentDB(wxCommandEvent& evt)
     ContextMenuData* menuContext = reinterpret_cast<ContextMenuData*>(evt.GetClientData());
     wxCHECK_RET(menuContext, wxT("No menu context available"));
     //start with the selected items
-    wxArrayInt syncIndexes(menuContext->selectedRows);
+    wxArrayInt syncIndexes(menuContext->selectedItems);
     if (evt.GetId() == ID_SYNC_ALL_ITEMS_WITH_CURRENT_DB) {
       //add all items to the sync Index list
       syncIndexes.Empty();
