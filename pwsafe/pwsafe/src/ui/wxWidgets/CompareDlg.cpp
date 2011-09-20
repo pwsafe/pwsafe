@@ -50,6 +50,9 @@ enum {
   ID_DELETE_ITEMS_FROM_CURRENT_DB
 };
 
+DECLARE_EVENT_TYPE(EVT_START_COMPARISON, -1)
+DEFINE_EVENT_TYPE(EVT_START_COMPARISON)
+
 DECLARE_EVENT_TYPE(EVT_EXPAND_DATA_PANELS, -1)
 DEFINE_EVENT_TYPE(EVT_EXPAND_DATA_PANELS)
 
@@ -63,6 +66,7 @@ BEGIN_EVENT_TABLE( CompareDlg, wxDialog )
   EVT_MENU(ID_VIEW_IN_COMPARISON_DB, CompareDlg::OnViewInComparisonDB)
   EVT_COMMAND(wxID_ANY, EVT_EXPAND_DATA_PANELS, CompareDlg::OnExpandDataPanels)
   EVT_COMMAND(wxID_ANY, EVT_SELECT_GRID_ROW, CompareDlg::OnAutoSelectGridRow)
+  EVT_COMMAND(wxID_ANY, EVT_START_COMPARISON, CompareDlg::DoCompare)
   EVT_MENU(ID_COPY_ITEMS_TO_CURRENT_DB, CompareDlg::OnCopyItemsToCurrentDB)
   EVT_MENU(ID_DELETE_ITEMS_FROM_CURRENT_DB, CompareDlg::OnDeleteItemsFromCurrentDB)
   EVT_MENU(ID_COPY_FIELD_TO_CURRENT_DB, CompareDlg::OnCopyFieldsToCurrentDB)
@@ -268,87 +272,96 @@ wxCollapsiblePane* CompareDlg::CreateDataPanel(wxSizer* dlgSizer, const wxString
 
 void CompareDlg::OnCompare(wxCommandEvent& )
 {
-  if ( Validate() && TransferDataFromWindow())
-    DoCompare();
+  if ( Validate() && TransferDataFromWindow()) {
+    const int readResult = ReadCore(*m_otherCore, m_dbPanel->m_filepath,
+                            m_dbPanel->m_combination,
+                            true,
+                            this);
+    if ( readResult == PWScore::SUCCESS) {
+      m_current->data.clear();
+      m_comparison->data.clear();
+      m_conflicts->data.clear();
+      m_identical->data.clear();
+
+      m_conflicts->pane->Collapse();
+      m_current->pane->Collapse();
+      m_comparison->pane->Collapse();
+      m_identical->pane->Collapse();
+
+      wxCommandEvent cmdEvent(EVT_START_COMPARISON, GetId());
+      GetEventHandler()->AddPendingEvent(cmdEvent);
+    }
+  }
 }
 
-void CompareDlg::DoCompare()
+void CompareDlg::DoCompare(wxCommandEvent& /*evt*/)
 {
-  if (ReadCore(*m_otherCore, m_dbPanel->m_filepath,
-                          m_dbPanel->m_combination,
-                          true,
-                          this) == PWScore::SUCCESS) {
-    bool treatWhitespacesAsEmpty = false;
-    m_current->data.clear();
-    m_comparison->data.clear();
-    m_conflicts->data.clear();
-    m_identical->data.clear();
-    m_currentCore->Compare(m_otherCore, 
-                           m_selCriteria->GetSelectedFields(),
-                           m_selCriteria->HasSubgroupRestriction(),
-                           treatWhitespacesAsEmpty,
-                           tostdstring(m_selCriteria->SubgroupSearchText()),
-                           m_selCriteria->SubgroupObject(),
-                           m_selCriteria->SubgroupFunction(),
-                           m_current->data,
-                           m_comparison->data,
-                           m_conflicts->data,
-                           m_identical->data);
+  bool treatWhitespacesAsEmpty = false;
+  m_currentCore->Compare(m_otherCore, 
+                         m_selCriteria->GetSelectedFields(),
+                         m_selCriteria->HasSubgroupRestriction(),
+                         treatWhitespacesAsEmpty,
+                         tostdstring(m_selCriteria->SubgroupSearchText()),
+                         m_selCriteria->SubgroupObject(),
+                         m_selCriteria->SubgroupFunction(),
+                         m_current->data,
+                         m_comparison->data,
+                         m_conflicts->data,
+                         m_identical->data);
 
-    struct {
-      ComparisonData* cd;
-      bool expand;
-      bool multiSource;
-      bool useComparisonSafe; ////unused if multisource is true
-    } sections[] = { {m_conflicts,  true,  true,  false}, 
-                     {m_current,    true,  false, false},
-                     {m_comparison, true,  false, true},
-                     {m_identical,  false, false, false}
-                };
-    wxSizerItem* prevSizer = 0;
-    for(size_t idx =0; idx < WXSIZEOF(sections); ++idx) {
-      ComparisonGridTable* table;
-      if (sections[idx].multiSource) {
-        table = new MultiSafeCompareGridTable(m_selCriteria,
-                                              &sections[idx].cd->data,
-                                              m_currentCore,
-                                              m_otherCore);
-      }
-      else {
-        table = new UniSafeCompareGridTable(m_selCriteria,
+  struct {
+    ComparisonData* cd;
+    bool expand;
+    bool multiSource;
+    bool useComparisonSafe; ////unused if multisource is true
+  } sections[] = { {m_conflicts,  true,  true,  false}, 
+                   {m_current,    true,  false, false},
+                   {m_comparison, true,  false, true},
+                   {m_identical,  false, false, false}
+              };
+  wxSizerItem* prevSizer = 0;
+  for(size_t idx =0; idx < WXSIZEOF(sections); ++idx) {
+    ComparisonGridTable* table;
+    if (sections[idx].multiSource) {
+      table = new MultiSafeCompareGridTable(m_selCriteria,
                                             &sections[idx].cd->data,
-                                            sections[idx].useComparisonSafe? m_otherCore: m_currentCore,
-                                            sections[idx].useComparisonSafe? &st_CompareData::uuid1: &st_CompareData::uuid0,
-                                            sections[idx].useComparisonSafe? ComparisonBackgroundColor: CurrentBackgroundColor);
-      }
-      sections[idx].cd->grid->SetTable(table, true, wxGrid::wxGridSelectRows);
-      wxCollapsiblePane* pane = sections[idx].cd->pane;
-      //expand the columns to show these fields fully, as these are usually small(er) strings
-      table->AutoSizeField(CItemData::GROUP);
-      table->AutoSizeField(CItemData::TITLE);
-      table->AutoSizeField(CItemData::USER);
-      table->AutoSizeField(CItemData::PASSWORD);
-      /*
-      // wxCollapsiblePane::GetLabel() doesn't work 
-      wxString newLabel(pane->GetLabel());
-      newLabel << wxT(" (") << sections[idx].cd->data.size() << wxT(")");
-      pane->SetLabel(newLabel);
-      */
-      if (!sections[idx].cd->data.empty()) {
-        pane->Show();
-        //if the next pane is displayed, show the sizer below this pane
-        if (prevSizer)
-          prevSizer->Show(true);
-        prevSizer = sections[idx].cd->sizerBelow; 
-      }
-      else {
-        pane->Collapse();
-        pane->Hide();
-      }
+                                            m_currentCore,
+                                            m_otherCore);
     }
-    wxCommandEvent cmdEvent(EVT_EXPAND_DATA_PANELS, GetId());
-    GetEventHandler()->AddPendingEvent(cmdEvent);
+    else {
+      table = new UniSafeCompareGridTable(m_selCriteria,
+                                          &sections[idx].cd->data,
+                                          sections[idx].useComparisonSafe? m_otherCore: m_currentCore,
+                                          sections[idx].useComparisonSafe? &st_CompareData::uuid1: &st_CompareData::uuid0,
+                                          sections[idx].useComparisonSafe? ComparisonBackgroundColor: CurrentBackgroundColor);
+    }
+    sections[idx].cd->grid->SetTable(table, true, wxGrid::wxGridSelectRows);
+    wxCollapsiblePane* pane = sections[idx].cd->pane;
+    //expand the columns to show these fields fully, as these are usually small(er) strings
+    table->AutoSizeField(CItemData::GROUP);
+    table->AutoSizeField(CItemData::TITLE);
+    table->AutoSizeField(CItemData::USER);
+    table->AutoSizeField(CItemData::PASSWORD);
+    /*
+    // wxCollapsiblePane::GetLabel() doesn't work 
+    wxString newLabel(pane->GetLabel());
+    newLabel << wxT(" (") << sections[idx].cd->data.size() << wxT(")");
+    pane->SetLabel(newLabel);
+    */
+    if (!sections[idx].cd->data.empty()) {
+      pane->Show();
+      //if the next pane is displayed, show the sizer below this pane
+      if (prevSizer)
+        prevSizer->Show(true);
+      prevSizer = sections[idx].cd->sizerBelow; 
+    }
+    else {
+      pane->Collapse();
+      pane->Hide();
+    }
   }
+  wxCommandEvent cmdEvent(EVT_EXPAND_DATA_PANELS, GetId());
+  GetEventHandler()->AddPendingEvent(cmdEvent);
 }
 
 void CompareDlg::OnGridRangeSelect(wxGridRangeSelectEvent& evt)

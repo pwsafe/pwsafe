@@ -56,7 +56,7 @@ private:
   wxCollapsiblePane*  m_optionsPane;
   ComparisonData      *m_current, *m_comparison, *m_conflicts, *m_identical;
 
-  void DoCompare();
+  void DoCompare(wxCommandEvent& evt);
   bool ViewEditEntry(PWScore* core, const pws_os::CUUID& uuid, bool readOnly);
 
   DECLARE_EVENT_TABLE()
