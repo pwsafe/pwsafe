@@ -33,6 +33,7 @@
 #include <wx/statline.h>
 #include <wx/grid.h>
 #include <wx/ptr_scpd.h>
+#include <wx/filename.h>
 
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
@@ -273,11 +274,12 @@ wxCollapsiblePane* CompareDlg::CreateDataPanel(wxSizer* dlgSizer, const wxString
 void CompareDlg::OnCompare(wxCommandEvent& )
 {
   if ( Validate() && TransferDataFromWindow()) {
-    const int readResult = ReadCore(*m_otherCore, m_dbPanel->m_filepath,
-                            m_dbPanel->m_combination,
-                            true,
-                            this);
-    if ( readResult == PWScore::SUCCESS) {
+    if (wxFileName(m_dbPanel->m_filepath).SameAs(towxstring(m_otherCore->GetCurFile())) ||
+            ReadCore(*m_otherCore, m_dbPanel->m_filepath, m_dbPanel->m_combination,
+                            true, this) == PWScore::SUCCESS) {
+      m_otherCore->SetCurFile(tostringx(m_dbPanel->m_filepath));
+      m_otherCore->SetReadOnly(true);
+
       m_current->data.clear();
       m_comparison->data.clear();
       m_conflicts->data.clear();
@@ -291,6 +293,9 @@ void CompareDlg::OnCompare(wxCommandEvent& )
       wxCommandEvent cmdEvent(EVT_START_COMPARISON, GetId());
       GetEventHandler()->AddPendingEvent(cmdEvent);
     }
+  }
+  else {
+    m_otherCore->SetCurFile(StringX());
   }
 }
 
@@ -804,6 +809,16 @@ void CompareDlg::OnSyncItemsWithCurrentDB(wxCommandEvent& evt)
     }
     //Update all or nothing.  And there's no way of knowing if any of the sub-commands
     //inside MultiCommands failed
-    m_currentCore->Execute(pMultiCmds.release());
+    if (pMultiCmds->GetSize() > 0) {
+      m_currentCore->Execute(pMultiCmds.release());
+      ComparisonGridTable* ptable = wxDynamicCast(menuContext->cdata->grid->GetTable(), ComparisonGridTable);
+      wxCHECK_RET(ptable, wxT("Could not find ComparisonGridTable derived object in comparison grid"));
+      const ComparisonGridTable& table = *ptable;
+      wxCHECK_RET(menuContext->cdata == m_conflicts, wxT("Sync happened in unexpected grid"));
+      for( size_t idx = 0; idx < syncIndexes.Count(); ++idx) {
+        //refresh every even-numbered row
+        table.RefreshRow(syncIndexes[idx]*2);
+      }
+    }
   }
 }
