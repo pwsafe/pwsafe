@@ -80,6 +80,8 @@ static char THIS_FILE[] = __FILE__;
 
 IMPLEMENT_DYNAMIC(CSystemTray, CWnd)
 
+static const size_t MAX_TTT_LEN = 40; // Max tooltip text length for systray TT
+
 UINT CSystemTray::m_nIDEvent = 4567;
 const UINT CSystemTray::m_nTaskbarCreatedMsg = ::RegisterWindowMessage(L"TaskbarCreated");
 
@@ -113,7 +115,7 @@ BOOL CSystemTray::Create(CWnd *pParent, UINT uCallbackMessage, LPCWSTR szToolTip
   // Make sure we avoid conflict with other messages
   ASSERT(uCallbackMessage >= WM_USER);
 
-  StringX ttt = PWSUtil::NormalizeTTT(szToolTip);
+  StringX ttt = PWSUtil::NormalizeTTT(szToolTip, MAX_TTT_LEN);
 
   // Create an invisible window
   m_bEnabled = CWnd::CreateEx(0, AfxRegisterWndClass(0), L"", WS_POPUP, 0,0,10,10, NULL, 0);
@@ -315,7 +317,7 @@ BOOL CSystemTray::SetTooltipText(LPCWSTR pszTip)
   if (!m_bEnabled)
     return FALSE;
 
-  StringX ttt = PWSUtil::NormalizeTTT(pszTip);
+  StringX ttt = PWSUtil::NormalizeTTT(pszTip, MAX_TTT_LEN);
   m_tnd.uFlags = NIF_TIP;
 #if (_MSC_VER >= 1400)
   wcsncpy_s(m_tnd.szTip, sizeof(m_tnd.szTip), ttt.c_str(), ttt.length());
