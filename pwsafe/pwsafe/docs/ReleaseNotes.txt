@@ -27,6 +27,8 @@ read/write.
 
 Bugs fixed in 3.26.1
 ====================
+[3411210] No longer crashes when unlocking with Subset Password dialog
+box opened.
 [3395549] PasswordSafe now displays forms correctly on Netbooks.
 [3382422] Toolbar now updated to reflect R/W or R-O mode when user
 dynamically changes mode. 

@@ -1272,20 +1272,22 @@ void DboxMain::OnDisplayPswdSubset()
   CItemData *pci = getSelectedItem();
   ASSERT(pci != NULL);
 
-  CItemData *pci_original(pci);
 
   if (pci->IsDependent()) {
     pci = GetBaseEntry(pci);
     ASSERT(pci != NULL);
   }
 
+  const CUUID uuid = pci->GetUUID();
+
   CPasswordSubsetDlg DisplaySubsetDlg(this, pci->GetPassword());
 
   if (DisplaySubsetDlg.DoModal() != IDCANCEL) {
-    // Just in case PasswordSafe was locked and pci_original is invalid
-    ItemListIter iter = Find(pci_original->GetUUID());
-    pci_original = &iter->second;
-    UpdateAccessTime(pci_original);
+    // get pci again, in case PasswordSafe was locked and pci is invalidated
+    ItemListIter iter = Find(uuid);
+    if (iter != End()) { // can happen if dbox didn't minimize
+      UpdateAccessTime(&iter->second);
+    }
   }
 }
 
