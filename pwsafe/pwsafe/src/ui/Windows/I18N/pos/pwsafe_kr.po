@@ -217,6 +217,15 @@ msgstr " [프로세스 ID=%s]"
 msgid "! Edit externally"
 msgstr "외부에서 편집"
 
+#. Resource IDs: (368)
+#, c-format
+msgid "# characters: %d"
+msgstr ""
+
+#. Resource IDs: (1456)
+msgid "#description"
+msgstr ""
+
 #. Resource IDs: (1194)
 msgid "#entries"
 msgstr "#entries"
@@ -228,6 +237,10 @@ msgstr "#format"
 #. Resource IDs: (1193)
 msgid "#groups"
 msgstr "#groups"
+
+#. Resource IDs: (1455)
+msgid "#name"
+msgstr ""
 
 #. Resource IDs: (1256)
 msgid "#unkflds"
@@ -2327,6 +2340,10 @@ msgstr "기본 항목 삭제 확인"
 msgid "Delete a filter"
 msgstr "필터 삭제"
 
+#. Resource IDs: (65535)
+msgid "Description:"
+msgstr ""
+
 #. Resource IDs: (340)
 msgid "Deselect all entries"
 msgstr "모든 항목 선택취소"
@@ -3921,6 +3938,10 @@ msgstr "이름"
 msgid "Name. Name. Name."
 msgstr "이름. 이름. 이름."
 
+#. Resource IDs: (65535)
+msgid "Name:"
+msgstr ""
+
 #. Resource IDs: (32103)
 msgid "Nested &Tree"
 msgstr "중첩된 트리(&T)"
@@ -4521,6 +4542,14 @@ msgstr "현재 보안 비밀번호를 입력하신 후, 새 보안 비밀번호�
 #. Resource IDs: (329)
 msgid "Please enter the key and verify it."
 msgstr "비밀번호를 입력하시고 검사해보세요."
+
+#. Resource IDs: (368)
+msgid "Please enter the new database description"
+msgstr ""
+
+#. Resource IDs: (368)
+msgid "Please enter the new database name"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Please enter the safe combination for this password database."

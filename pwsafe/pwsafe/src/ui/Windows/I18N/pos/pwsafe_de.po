@@ -243,6 +243,15 @@ msgstr " [Prozess ID=%s]"
 msgid "! Edit externally"
 msgstr "! Extern bearbeiten"
 
+#. Resource IDs: (368)
+#, c-format
+msgid "# characters: %d"
+msgstr ""
+
+#. Resource IDs: (1456)
+msgid "#description"
+msgstr ""
+
 #. Resource IDs: (1194)
 msgid "#entries"
 msgstr "#entries"
@@ -254,6 +263,10 @@ msgstr "#format"
 #. Resource IDs: (1193)
 msgid "#groups"
 msgstr "#groups"
+
+#. Resource IDs: (1455)
+msgid "#name"
+msgstr ""
 
 #. Resource IDs: (1256)
 msgid "#unkflds"
@@ -2353,6 +2366,10 @@ msgstr "Bestätigung für Basiseintrag löschen?"
 msgid "Delete a filter"
 msgstr "Filter löschen"
 
+#. Resource IDs: (65535)
+msgid "Description:"
+msgstr ""
+
 #. Resource IDs: (340)
 msgid "Deselect all entries"
 msgstr "Alle Einträge abwählen"
@@ -3947,6 +3964,10 @@ msgstr "Name"
 msgid "Name. Name. Name."
 msgstr "Name. Name. Name."
 
+#. Resource IDs: (65535)
+msgid "Name:"
+msgstr ""
+
 #. Resource IDs: (32103)
 msgid "Nested &Tree"
 msgstr "&Baumstruktur"
@@ -4547,6 +4568,14 @@ msgstr "Bitte das aktuelle Master-Passwort eingeben, gefolgt von dem neuen. Gebe
 #. Resource IDs: (329)
 msgid "Please enter the key and verify it."
 msgstr "Bitte den Schlüssel eingeben und überprüfen Sie ihn."
+
+#. Resource IDs: (368)
+msgid "Please enter the new database description"
+msgstr ""
+
+#. Resource IDs: (368)
+msgid "Please enter the new database name"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Please enter the safe combination for this password database."

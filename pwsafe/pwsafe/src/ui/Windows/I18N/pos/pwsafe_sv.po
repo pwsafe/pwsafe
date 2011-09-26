@@ -243,6 +243,15 @@ msgstr " [Process ID=%s]"
 msgid "! Edit externally"
 msgstr "! Redigera externt"
 
+#. Resource IDs: (368)
+#, c-format
+msgid "# characters: %d"
+msgstr ""
+
+#. Resource IDs: (1456)
+msgid "#description"
+msgstr ""
+
 #. Resource IDs: (1194)
 msgid "#entries"
 msgstr "#poster"
@@ -254,6 +263,10 @@ msgstr "#format"
 #. Resource IDs: (1193)
 msgid "#groups"
 msgstr "#grupper"
+
+#. Resource IDs: (1455)
+msgid "#name"
+msgstr ""
 
 #. Resource IDs: (1256)
 msgid "#unkflds"
@@ -2353,6 +2366,10 @@ msgstr "Radera en basposts ?"
 msgid "Delete a filter"
 msgstr "Radera ett filter"
 
+#. Resource IDs: (65535)
+msgid "Description:"
+msgstr ""
+
 #. Resource IDs: (340)
 msgid "Deselect all entries"
 msgstr "Avmarkera alla poster"
@@ -3947,6 +3964,10 @@ msgstr "Namn"
 msgid "Name. Name. Name."
 msgstr "Namn. Namn. Namn."
 
+#. Resource IDs: (65535)
+msgid "Name:"
+msgstr ""
+
 #. Resource IDs: (32103)
 msgid "Nested &Tree"
 msgstr "&Trädvy"
@@ -4547,6 +4568,14 @@ msgstr "Vänligen, ange nuvarande nyckel och därefter en ny nyckel. Skriv den n
 #. Resource IDs: (329)
 msgid "Please enter the key and verify it."
 msgstr "Vänligen, skriv in nyckeln och verifiera den."
+
+#. Resource IDs: (368)
+msgid "Please enter the new database description"
+msgstr ""
+
+#. Resource IDs: (368)
+msgid "Please enter the new database name"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Please enter the safe combination for this password database."
