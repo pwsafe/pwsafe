@@ -223,6 +223,15 @@ msgstr " [ID Procesu=%s]"
 msgid "! Edit externally"
 msgstr "! edytuj zewnętrznie"
 
+#. Resource IDs: (368)
+#, c-format
+msgid "# characters: %d"
+msgstr ""
+
+#. Resource IDs: (1456)
+msgid "#description"
+msgstr ""
+
 #. Resource IDs: (1194)
 msgid "#entries"
 msgstr "#wpisy"
@@ -234,6 +243,10 @@ msgstr "#format"
 #. Resource IDs: (1193)
 msgid "#groups"
 msgstr "#grupy"
+
+#. Resource IDs: (1455)
+msgid "#name"
+msgstr ""
 
 #. Resource IDs: (1256)
 #, fuzzy
@@ -2357,6 +2370,10 @@ msgstr "Usunąć Potwierdzenie Wpisu Bazowego?"
 msgid "Delete a filter"
 msgstr "Usuń filtr"
 
+#. Resource IDs: (65535)
+msgid "Description:"
+msgstr ""
+
 #. Resource IDs: (340)
 #, fuzzy
 msgid "Deselect all entries"
@@ -3980,6 +3997,10 @@ msgstr "Nazwa"
 msgid "Name. Name. Name."
 msgstr "Nazwa. Nazwa. Nazwa."
 
+#. Resource IDs: (65535)
+msgid "Name:"
+msgstr ""
+
 #. Resource IDs: (32103)
 msgid "Nested &Tree"
 msgstr "Zagnieżdzone drzewo"
@@ -4596,6 +4617,14 @@ msgstr "Wprowadź obecne hasło a następnie nowe hasło.  Powtórz nowe hasło 
 #. Resource IDs: (329)
 msgid "Please enter the key and verify it."
 msgstr "Wprowadź klucz i go zweryfikuj."
+
+#. Resource IDs: (368)
+msgid "Please enter the new database description"
+msgstr ""
+
+#. Resource IDs: (368)
+msgid "Please enter the new database name"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Please enter the safe combination for this password database."

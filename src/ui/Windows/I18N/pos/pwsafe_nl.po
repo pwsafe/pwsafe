@@ -255,6 +255,15 @@ msgstr " [Proces ID=%s]"
 msgid "! Edit externally"
 msgstr "! Bewerk extern"
 
+#. Resource IDs: (368)
+#, c-format
+msgid "# characters: %d"
+msgstr ""
+
+#. Resource IDs: (1456)
+msgid "#description"
+msgstr ""
+
 #. Resource IDs: (1194)
 msgid "#entries"
 msgstr "#waarden"
@@ -266,6 +275,10 @@ msgstr "#opmaak"
 #. Resource IDs: (1193)
 msgid "#groups"
 msgstr "#groepen"
+
+#. Resource IDs: (1455)
+msgid "#name"
+msgstr ""
 
 #. Resource IDs: (1256)
 msgid "#unkflds"
@@ -2365,6 +2378,10 @@ msgstr "Verwijder een Basis Vermelding Bevestiging?"
 msgid "Delete a filter"
 msgstr "Verwijder een filter"
 
+#. Resource IDs: (65535)
+msgid "Description:"
+msgstr ""
+
 #. Resource IDs: (340)
 msgid "Deselect all entries"
 msgstr "Selectie alle vermeldingen opheffen"
@@ -3960,6 +3977,10 @@ msgstr "Naam"
 msgid "Name. Name. Name."
 msgstr "Naam. Naam. Naam."
 
+#. Resource IDs: (65535)
+msgid "Name:"
+msgstr ""
+
 #. Resource IDs: (32103)
 msgid "Nested &Tree"
 msgstr "Geneste &Boom"
@@ -4560,6 +4581,14 @@ msgstr "Voer alstublieft de huidige combinatie in, gevolgd door een nieuwe combi
 #. Resource IDs: (329)
 msgid "Please enter the key and verify it."
 msgstr "Voer alstublieft de huidge sleutel in verifieer die."
+
+#. Resource IDs: (368)
+msgid "Please enter the new database description"
+msgstr ""
+
+#. Resource IDs: (368)
+msgid "Please enter the new database name"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Please enter the safe combination for this password database."
