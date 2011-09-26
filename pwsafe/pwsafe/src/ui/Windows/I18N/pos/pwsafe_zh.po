@@ -140,6 +140,10 @@ msgstr " '档案修改时间'"
 msgid " 'Run Command'"
 msgstr " '运行命令'"
 
+#. Resource IDs: (368)
+msgid " 'Shift+DCA'"
+msgstr ""
+
 #. Resource IDs: (347)
 msgid " 'Title'"
 msgstr " '标题'"
@@ -1514,6 +1518,10 @@ msgid "Azeri Latin"
 msgstr "阿塞拜疆(拉丁文)"
 
 #. Resource IDs: (65535)
+msgid "Backup Directory"
+msgstr ""
+
+#. Resource IDs: (65535)
 msgid "Backup Directory:"
 msgstr "备份目录:"
 
@@ -1802,6 +1810,10 @@ msgstr "退出 Password Safe 清空剪贴板"
 #. Resource IDs: (1061)
 msgid "Clear clipboard upon minimize"
 msgstr "最小化时清空剪贴板"
+
+#. Resource IDs: (1453)
+msgid "Click here or details on the various preferences."
+msgstr ""
 
 #. Resource IDs: (351)
 msgid "Click here to pick field"
@@ -2246,6 +2258,10 @@ msgstr "数据库格式:"
 #. Resource IDs: (213)
 msgid "Database has some large entries!"
 msgstr "数据库存在部分大项目！"
+
+#. Resource IDs: (1454)
+msgid "Database is read-only. Changes to DB preferences will not be saved and are only valid for this session."
+msgstr ""
 
 #. Resource IDs: (337)
 msgid "Database is read-only. Sorry, cannot save changed any database preferences."
@@ -4299,6 +4315,10 @@ msgstr "历史密码"
 msgid "Password History Filter"
 msgstr "历史密码筛选"
 
+#. Resource IDs: (367)
+msgid "Password Length"
+msgstr ""
+
 #. Resource IDs: (327)
 msgid "Password Modified"
 msgstr "密码修改时间"
@@ -5132,9 +5152,25 @@ msgstr "茨瓦纳语"
 msgid "Shift"
 msgstr "Shift"
 
+#. Resource IDs: (65535)
+msgid "Shift + Double-Click Action:"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Shift Double-click action"
+msgstr ""
+
 #. Resource IDs: (356)
 msgid "Shift+"
 msgstr "Shift+"
+
+#. Resource IDs: (192, 368)
+msgid "Shift+DCA"
+msgstr ""
+
+#. Resource IDs: (368)
+msgid "Shift+Double Click Action"
+msgstr ""
 
 #. Resource IDs: (348)
 msgid "Shift+click to view current policy"

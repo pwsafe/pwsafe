@@ -140,6 +140,10 @@ msgstr "'Registrer Ændrings Tidspunkt'"
 msgid " 'Run Command'"
 msgstr "'Kør Kommando'"
 
+#. Resource IDs: (368)
+msgid " 'Shift+DCA'"
+msgstr ""
+
 #. Resource IDs: (347)
 msgid " 'Title'"
 msgstr "'Titel'"
@@ -1514,6 +1518,10 @@ msgid "Azeri Latin"
 msgstr "Azeri Latin"
 
 #. Resource IDs: (65535)
+msgid "Backup Directory"
+msgstr ""
+
+#. Resource IDs: (65535)
 msgid "Backup Directory:"
 msgstr ""
 
@@ -1802,6 +1810,10 @@ msgstr "Tøm klipbord ved afslut"
 #. Resource IDs: (1061)
 msgid "Clear clipboard upon minimize"
 msgstr "Tøm klipbord ved minimering"
+
+#. Resource IDs: (1453)
+msgid "Click here or details on the various preferences."
+msgstr ""
 
 #. Resource IDs: (351)
 msgid "Click here to pick field"
@@ -2246,6 +2258,10 @@ msgstr "Database format:"
 #. Resource IDs: (213)
 msgid "Database has some large entries!"
 msgstr "Databasen har nogle store poster!"
+
+#. Resource IDs: (1454)
+msgid "Database is read-only. Changes to DB preferences will not be saved and are only valid for this session."
+msgstr ""
 
 #. Resource IDs: (337)
 msgid "Database is read-only. Sorry, cannot save changed any database preferences."
@@ -4299,6 +4315,10 @@ msgstr "Adgangskode Historik"
 msgid "Password History Filter"
 msgstr "Adgangskode Historik Filter"
 
+#. Resource IDs: (367)
+msgid "Password Length"
+msgstr ""
+
 #. Resource IDs: (327)
 msgid "Password Modified"
 msgstr "Adgangskode Ændret"
@@ -5132,9 +5152,25 @@ msgstr "Setswana"
 msgid "Shift"
 msgstr "Skift"
 
+#. Resource IDs: (65535)
+msgid "Shift + Double-Click Action:"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Shift Double-click action"
+msgstr ""
+
 #. Resource IDs: (356)
 msgid "Shift+"
 msgstr "Skift+"
+
+#. Resource IDs: (192, 368)
+msgid "Shift+DCA"
+msgstr ""
+
+#. Resource IDs: (368)
+msgid "Shift+Double Click Action"
+msgstr ""
 
 #. Resource IDs: (348)
 msgid "Shift+click to view current policy"

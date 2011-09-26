@@ -140,6 +140,10 @@ msgstr "'기록 변경 시간'"
 msgid " 'Run Command'"
 msgstr "'명령 실행'"
 
+#. Resource IDs: (368)
+msgid " 'Shift+DCA'"
+msgstr ""
+
 #. Resource IDs: (347)
 msgid " 'Title'"
 msgstr "'주제'"
@@ -1514,6 +1518,10 @@ msgid "Azeri Latin"
 msgstr "Azeri Latin"
 
 #. Resource IDs: (65535)
+msgid "Backup Directory"
+msgstr ""
+
+#. Resource IDs: (65535)
 msgid "Backup Directory:"
 msgstr "백업본 폴더:"
 
@@ -1802,6 +1810,10 @@ msgstr "종료 시 클립보드 비우기"
 #. Resource IDs: (1061)
 msgid "Clear clipboard upon minimize"
 msgstr "최소화 시 클립보드 비우기"
+
+#. Resource IDs: (1453)
+msgid "Click here or details on the various preferences."
+msgstr ""
 
 #. Resource IDs: (351)
 msgid "Click here to pick field"
@@ -2246,6 +2258,10 @@ msgstr "데이터베이스 버전:"
 #. Resource IDs: (213)
 msgid "Database has some large entries!"
 msgstr "데이터베이스에 항목이 너무 많습니다!"
+
+#. Resource IDs: (1454)
+msgid "Database is read-only. Changes to DB preferences will not be saved and are only valid for this session."
+msgstr ""
 
 #. Resource IDs: (337)
 msgid "Database is read-only. Sorry, cannot save changed any database preferences."
@@ -4299,6 +4315,10 @@ msgstr "비밀번호 내역"
 msgid "Password History Filter"
 msgstr "비밀번호 내역 필터"
 
+#. Resource IDs: (367)
+msgid "Password Length"
+msgstr ""
+
 #. Resource IDs: (327)
 msgid "Password Modified"
 msgstr "비밀번호 수정됨"
@@ -5132,9 +5152,25 @@ msgstr "Setswana"
 msgid "Shift"
 msgstr "Shift"
 
+#. Resource IDs: (65535)
+msgid "Shift + Double-Click Action:"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Shift Double-click action"
+msgstr ""
+
 #. Resource IDs: (356)
 msgid "Shift+"
 msgstr "Shift+"
+
+#. Resource IDs: (192, 368)
+msgid "Shift+DCA"
+msgstr ""
+
+#. Resource IDs: (368)
+msgid "Shift+Double Click Action"
+msgstr ""
 
 #. Resource IDs: (348)
 msgid "Shift+click to view current policy"
