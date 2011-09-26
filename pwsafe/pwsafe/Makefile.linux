@@ -1,7 +1,7 @@
 # Toplevel Makefile for Linux build of PasswordSafe
 
 # TBD: Grok following from src/ui/wxWidgets/version.in
-RELEASENUM := 0.6.0
+RELEASENUM := 0.7.0
 RELEASE_SPECIAL := BETA
 
 # Shouldn't change anything below here
@@ -83,9 +83,7 @@ signatures:
 
 upload:
 	$(UPLOAD_CMD) \
-	$(wildcard $(RELEASEDIR)/passwordsafe-$(RELEASENAME)*) \
-	$(wildcard $(RELEASEDIR)/pwsafe-$(RELEASENAME)*) \
-	README.LINUX \
+	$(wildcard $(RELEASEDIR)/passwordsafe-*$(RELEASENAME)*) \
 	$(UPLOAD_DST)
 
 # Local variables:
