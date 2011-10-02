@@ -1222,6 +1222,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>This means that you are responsible for making the master key available to others under the appropriate circumstances.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20111002T145651Z" changeid="pm_kan">
+        <seg>Поэтому, при наступлении такой ситуации, вам придётся самостоятельно обеспечить доступ доверенным лицам к мастер-паролю.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Overview of all entries:</seg>
       </tuv>
       <tuv lang="RU-RU" changedate="20110622T152253Z" changeid="pm_kan">
@@ -2982,6 +2990,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>This can be as simple as a sealed envelope in a drawer or safe-deposit box, or a more elaborate mechanism such as splitting the master password and giving different parts to different parties.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20111002T150241Z" changeid="pm_kan">
+        <seg>В зависимости от ситуации, вы можете хранить пароль в запечатанном конверте в ячейке банка или, использовать более сложные методы, например, разделение пароля на несколько частей и предоставление частей для хранения различным людям.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>A single &lt;b3&gt;Master Password&lt;/b3&gt; unlocks them all for your use.</seg>
       </tuv>
       <tuv lang="RU-RU" changedate="20110215T215835Z" changeid="pm_kan">
@@ -3358,6 +3374,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Before You Begin</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20111002T143605Z" changeid="pm_kan">
+        <seg>Перед тем как начать работу</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>The short form of the month; e.g. Jan = January, Feb = February etc.</seg>
       </tuv>
       <tuv lang="RU-RU" changedate="20110215T130411Z" changeid="pm_kan">
@@ -3466,6 +3490,14 @@
       </tuv>
       <tuv lang="RU-RU" changedate="20110215T194108Z" changeid="pm_kan">
         <seg>Для закрытия панели поиска нужно нажать на «x» слева от поля ввода.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>https://www.jungledisk.com/</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20111002T143618Z" changeid="pm_kan">
+        <seg>https://www.jungledisk.com/</seg>
       </tuv>
     </tu>
     <tu>
@@ -4670,6 +4702,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Therefore, we strongly recommend that you make regular copies of you password database 'off-line', that is, to another PC or disk.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20111002T144441Z" changeid="pm_kan">
+        <seg>Поэтому, рекомендуется регулярно создавать резервные копии контейнера с паролями на другом носителе или компьютере.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Selecting this checkbox and setting the corresponding value defines the &lt;i0&gt;default&lt;/i0&gt; password retention for &lt;i1&gt;new&lt;/i1&gt; entries.</seg>
       </tuv>
       <tuv lang="RU-RU" changedate="20110621T170204Z" changeid="pm_kan">
@@ -5674,6 +5714,14 @@
       </tuv>
       <tuv lang="RU-RU" changedate="20110620T190959Z" changeid="pm_kan">
         <seg>&lt;image&gt;&lt;br0&gt;</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>https://www.dropbox.com/home</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20111002T143615Z" changeid="pm_kan">
+        <seg>https://www.dropbox.com/home</seg>
       </tuv>
     </tu>
     <tu>
@@ -7202,18 +7250,18 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
-        <seg>Configure options.</seg>
-      </tuv>
-      <tuv lang="RU-RU" changedate="20101104T100618Z" changeid="pm_kan">
-        <seg>Изменить настройки</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
         <seg>The current database and its &quot;regular&quot; backups will not be touched.</seg>
       </tuv>
       <tuv lang="RU-RU" changedate="20110214T123732Z" changeid="pm_kan">
         <seg>В этом случае сам контейнер и «обычные» резервные копии не изменяются.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Configure options.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20101104T100618Z" changeid="pm_kan">
+        <seg>Изменить настройки</seg>
       </tuv>
     </tu>
     <tu>
@@ -7247,6 +7295,14 @@
       </tuv>
       <tuv lang="RU-RU" changedate="20110215T182744Z" changeid="pm_kan">
         <seg>30</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>https://www.sugarsync.com/</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20111002T143617Z" changeid="pm_kan">
+        <seg>https://www.sugarsync.com/</seg>
       </tuv>
     </tu>
     <tu>
@@ -7827,6 +7883,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>ShiftDoubleClickAction</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20111002T150936Z" changeid="pm_kan">
+        <seg>ShiftDoubleClickAction</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>images/toolbar/classic/copynotes.jpg</seg>
       </tuv>
       <tuv lang="RU-RU" changedate="20110215T152323Z" changeid="pm_kan">
@@ -7879,6 +7943,14 @@
       </tuv>
       <tuv lang="RU-RU" changedate="20110622T151346Z" changeid="pm_kan">
         <seg>images/filter_menu.jpg</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>&lt;s0&gt;Password Safe&lt;/s0&gt; works very hard to make sure you password information is saved properly.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20111002T143959Z" changeid="pm_kan">
+        <seg>&lt;s0&gt;Password Safe&lt;/s0&gt; прилагает все усилия для того, чтобы корректно сохранить информацию о ваших паролях.</seg>
       </tuv>
     </tu>
     <tu>
@@ -10912,6 +10984,14 @@
       </tuv>
       <tuv lang="RU-RU" changedate="20101104T111441Z" changeid="pm_kan">
         <seg>Имя пользователя по умолчанию</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>However, &lt;s1&gt;Password Safe&lt;/s1&gt; cannot protect against physical damage or loss to your hard disk, laptop or PC.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20111002T144346Z" changeid="pm_kan">
+        <seg>Однако, &lt;s1&gt;Password Safe&lt;/s1&gt; не может предотвратить повреждение или потерю вашего жёсткого диска, ноутбука или персонального компьютера.</seg>
       </tuv>
     </tu>
     <tu>
@@ -14149,6 +14229,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>This can be done manually, or by using a cloud storage service such as &lt;a2&gt;DropBox&lt;/a2&gt;, &lt;a3&gt;SugarSync &lt;/a3&gt;or &lt;a4&gt;JungleDisk&lt;/a4&gt;, to name a few.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20111002T144654Z" changeid="pm_kan">
+        <seg>Это может быть сделано вручную или с использованием «облачных сервисов» (например, &lt;a2&gt;DropBox&lt;/a2&gt;, &lt;a3&gt;SugarSync&lt;/a3&gt; или &lt;a4&gt;JungleDisk&lt;/a4&gt;).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Initial tree view</seg>
       </tuv>
       <tuv lang="RU-RU" changedate="20100926T195345Z" changeid="pm_kan">
@@ -14694,6 +14782,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>The database's default AutoType string.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20110621T193048Z" changeid="pm_kan">
+        <seg>Строка автонабора по умолчанию.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>0x4000: use upper case characters</seg>
       </tuv>
       <tuv lang="RU-RU" changedate="20110215T143616Z" changeid="pm_kan">
@@ -14706,14 +14802,6 @@
       </tuv>
       <tuv lang="RU-RU" changedate="20110620T114820Z" changeid="pm_kan">
         <seg>&lt;b0&gt;Примечание.&lt;/b0&gt; В случае возникновения проблем с автонабором попробуйте отключить блокировщики всплывающих окон </seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="EN-US">
-        <seg>The database's default AutoType string.</seg>
-      </tuv>
-      <tuv lang="RU-RU" changedate="20110621T193048Z" changeid="pm_kan">
-        <seg>Строка автонабора по умолчанию.</seg>
       </tuv>
     </tu>
     <tu>
@@ -14930,6 +15018,14 @@
       </tuv>
       <tuv lang="RU-RU" changedate="20110621T174855Z" changeid="pm_kan">
         <seg>PWUseEasyVision</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Another thing you might want to consider is arranging for access to your password database by relatives or co-workers if you are no longer able to do so.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20111002T145203Z" changeid="pm_kan">
+        <seg>Кроме того, может возникнуть необходимость в предоставлении доступа к сохранённым паролям родственникам или коллегам.</seg>
       </tuv>
     </tu>
     <tu>
@@ -17388,6 +17484,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>&lt;s0&gt;Password Safe &lt;/s0&gt;has &lt;s1&gt;no &lt;/s1&gt;'back door' or 'recovery password' mechanism by design.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20111002T145457Z" changeid="pm_kan">
+        <seg>&lt;s0&gt;Password Safe&lt;/s0&gt; &lt;s1&gt;не&lt;/s1&gt; содержит «чёрного хода» или «пароля для восстановления».</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Group</seg>
       </tuv>
       <tuv lang="RU-RU" changedate="20100926T195959Z" changeid="pm_kan">
@@ -17984,6 +18088,14 @@
       </tuv>
       <tuv lang="RU-RU" changedate="20110621T204036Z" changeid="pm_kan">
         <seg>Если Вы желаете использовать общий файл настроек для нескольких пользователей/компьютеров, оставьте его в том же каталоге, где находится исполняемый файл, или укажите путь к нему при запуске (через ключ «-g &lt;i0&gt;файл_настроек&lt;/i0&gt;», описанный в справке по &lt;a1&gt;параметрам командной строки&lt;/a1&gt;).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>_Shift+DCA_</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20111002T150318Z" changeid="pm_kan">
+        <seg>Shift+DCA (действие по Shift+двойной клик)</seg>
       </tuv>
     </tu>
     <tu>

@@ -3520,6 +3520,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>&lt;s0&gt;Password Safe &lt;/s0&gt;has &lt;s1&gt;no &lt;/s1&gt;'back door' or 'recovery password' mechanism by design.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20111002T145457Z" changeid="pm_kan">
+        <seg>&lt;s0&gt;Password Safe&lt;/s0&gt; &lt;s1&gt;не&lt;/s1&gt; содержит «чёрного хода» или «пароля для восстановления».</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>&lt;s0&gt;Password Safe&lt;/s0&gt; allows you to export password entries to text files.</seg>
       </tuv>
       <tuv lang="RU-RU" changedate="20101018T175646Z" changeid="pm_kan">
@@ -3572,6 +3580,14 @@
       </tuv>
       <tuv lang="RU-RU" changedate="20101104T210941Z" changeid="pm_kan">
         <seg>&lt;s0&gt;Password Safe&lt;/s0&gt; считает нулевой индекс соответствующим значению всего поля.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>&lt;s0&gt;Password Safe&lt;/s0&gt; works very hard to make sure you password information is saved properly.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20111002T143959Z" changeid="pm_kan">
+        <seg>&lt;s0&gt;Password Safe&lt;/s0&gt; прилагает все усилия для того, чтобы корректно сохранить информацию о ваших паролях.</seg>
       </tuv>
     </tu>
     <tu>
@@ -4864,6 +4880,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Another thing you might want to consider is arranging for access to your password database by relatives or co-workers if you are no longer able to do so.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20111002T145203Z" changeid="pm_kan">
+        <seg>Кроме того, может возникнуть необходимость в предоставлении доступа к сохранённым паролям родственникам или коллегам.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Any end of line characters '\n', '\r' or '\r\n' are converted to '\r' (carriage return).</seg>
       </tuv>
       <tuv lang="RU-RU" changedate="20110620T113831Z" changeid="pm_kan">
@@ -5268,6 +5292,14 @@
       </tuv>
       <tuv lang="RU-RU" changedate="20101106T190809Z" changeid="pm_kan">
         <seg>Основные</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Before You Begin</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20111002T143605Z" changeid="pm_kan">
+        <seg>Перед тем как начать работу</seg>
       </tuv>
     </tu>
     <tu>
@@ -8489,6 +8521,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>However, &lt;s1&gt;Password Safe&lt;/s1&gt; cannot protect against physical damage or loss to your hard disk, laptop or PC.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20111002T144346Z" changeid="pm_kan">
+        <seg>Однако, &lt;s1&gt;Password Safe&lt;/s1&gt; не может предотвратить повреждение или потерю вашего жёсткого диска, ноутбука или персонального компьютера.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>However, if a user wishes to switch to the new setting manually, selecting this checkbox and clicking on 'Apply' will do so.</seg>
       </tuv>
       <tuv lang="RU-RU" changedate="20110621T203853Z" changeid="pm_kan">
@@ -11649,6 +11689,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Note: Format '2' is the output from the ANSI C function &lt;b0&gt;&lt;a1&gt;'&lt;/a1&gt;&lt;c2&gt;asctime&lt;/c2&gt;'&lt;/b0&gt; and format '3' conforms to the ISO 8601 standard.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20111002T150847Z" changeid="pm_kan">
+        <seg>Примечание: формат 2 является выводом ANSI C функции &lt;b0&gt;&lt;a1&gt;«&lt;/a1&gt;&lt;c2&gt;asctime&lt;/c2&gt;»&lt;/b0&gt;, а формат 3 соответствует стандарту ISO 8601.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Note: Format ‘2’ is the output from the ANSI C function &lt;b0&gt;&lt;a1&gt;‘&lt;/a1&gt;&lt;c2&gt;asctime&lt;/c2&gt;’&lt;/b0&gt; and format ‘3’ conforms to the ISO 8601 standard.</seg>
       </tuv>
       <tuv lang="RU-RU" changedate="20110215T130511Z" changeid="pm_kan">
@@ -14017,6 +14065,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>ShiftDoubleClickAction</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20111002T150936Z" changeid="pm_kan">
+        <seg>ShiftDoubleClickAction</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>Shortcut</seg>
       </tuv>
       <tuv lang="RU-RU" changedate="20110215T120406Z" changeid="pm_kan">
@@ -16323,6 +16379,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>Therefore, we strongly recommend that you make regular copies of you password database 'off-line', that is, to another PC or disk.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20111002T144441Z" changeid="pm_kan">
+        <seg>Поэтому, рекомендуется регулярно создавать резервные копии контейнера с паролями на другом носителе или компьютере.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>These are shown in the Shortcut Property Page as just 'Delete' and 'Rename' respectively.</seg>
       </tuv>
       <tuv lang="RU-RU" changedate="20110215T203438Z" changeid="pm_kan">
@@ -16515,10 +16579,26 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>This can be as simple as a sealed envelope in a drawer or safe-deposit box, or a more elaborate mechanism such as splitting the master password and giving different parts to different parties.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20111002T150241Z" changeid="pm_kan">
+        <seg>В зависимости от ситуации, вы можете хранить пароль в запечатанном конверте в ячейке банка или, использовать более сложные методы, например, разделение пароля на несколько частей и предоставление частей для хранения различным людям.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>This can be done either when the entry is created, or when viewing an existing entry.</seg>
       </tuv>
       <tuv lang="RU-RU" changedate="20110209T215309Z" changeid="pm_kan">
         <seg>Настройку можно задать при создании или редактировании элемента.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>This can be done manually, or by using a cloud storage service such as &lt;a2&gt;DropBox&lt;/a2&gt;, &lt;a3&gt;SugarSync &lt;/a3&gt;or &lt;a4&gt;JungleDisk&lt;/a4&gt;, to name a few.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20111002T144654Z" changeid="pm_kan">
+        <seg>Это может быть сделано вручную или с использованием «облачных сервисов» (например, &lt;a2&gt;DropBox&lt;/a2&gt;, &lt;a3&gt;SugarSync&lt;/a3&gt; или &lt;a4&gt;JungleDisk&lt;/a4&gt;).</seg>
       </tuv>
     </tu>
     <tu>
@@ -17003,6 +17083,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>This means that you are responsible for making the master key available to others under the appropriate circumstances.</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20111002T145651Z" changeid="pm_kan">
+        <seg>Поэтому, при наступлении такой ситуации, вам придётся самостоятельно обеспечить доступ доверенным лицам к мастер-паролю.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>This means you may be prompted to save the database upon exit, even though you didn't explicitly change anything.</seg>
       </tuv>
       <tuv lang="RU-RU" changedate="20110215T155032Z" changeid="pm_kan">
@@ -17391,6 +17479,14 @@
       </tuv>
       <tuv lang="RU-RU" changedate="20101031T194640Z" changeid="pm_kan">
         <seg>Время может быть указано в одном из 5 форматов:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>Time fields can be one of the following 7 formats:</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20111002T150334Z" changeid="pm_kan">
+        <seg>Время может быть указано в одном из 7 форматов:</seg>
       </tuv>
     </tu>
     <tu>
@@ -19684,6 +19780,14 @@
     </tu>
     <tu>
       <tuv lang="EN-US">
+        <seg>_Shift+DCA_</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20111002T150318Z" changeid="pm_kan">
+        <seg>Shift+DCA (действие по Shift+двойной клик)</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
         <seg>_Symbol list for password generation_</seg>
       </tuv>
       <tuv lang="RU-RU" changedate="20110620T162653Z" changeid="pm_kan">
@@ -20368,6 +20472,30 @@
       </tuv>
       <tuv lang="RU-RU" changedate="20110209T182342Z" changeid="pm_kan">
         <seg>https://sourceforge.net/project/memberlist.php?group_id=41019</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>https://www.dropbox.com/home</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20111002T143615Z" changeid="pm_kan">
+        <seg>https://www.dropbox.com/home</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>https://www.jungledisk.com/</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20111002T143618Z" changeid="pm_kan">
+        <seg>https://www.jungledisk.com/</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>https://www.sugarsync.com/</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20111002T143617Z" changeid="pm_kan">
+        <seg>https://www.sugarsync.com/</seg>
       </tuv>
     </tu>
     <tu>
@@ -22192,6 +22320,22 @@
       </tuv>
       <tuv lang="RU-RU" changedate="20110215T141518Z" changeid="pm_kan">
         <seg>гггг-ММ-ддTчч:мм:сс</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>yyyy-mm-ddThh:mm:ssZ (XML only)</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20111002T150432Z" changeid="pm_kan">
+        <seg>гггг-ММ-ддTчч:мм:ссZ (только XML)</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="EN-US">
+        <seg>yyyy-mm-ddThh:mm:ss±hh:mm (XML only)</seg>
+      </tuv>
+      <tuv lang="RU-RU" changedate="20111002T150450Z" changeid="pm_kan">
+        <seg>гггг-ММ-ддTчч:мм:сс±чч:мм (только XML)</seg>
       </tuv>
     </tu>
     <tu>

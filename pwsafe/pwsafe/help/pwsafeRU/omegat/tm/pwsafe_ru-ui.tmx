@@ -309,6 +309,22 @@
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg># characters: %d</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg> символов: %d</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>#description</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>#description</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg>#entries</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
@@ -329,6 +345,14 @@
       </tuv>
       <tuv xml:lang="RU-RU">
         <seg>#groups</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>#name</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>#name</seg>
       </tuv>
     </tu>
     <tu>
@@ -384,7 +408,7 @@
         <seg>%1 contains an incorrect path.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>%1 содержит неверный путь.</seg>
+        <seg>%1 содержит недопустимый путь.</seg>
       </tuv>
     </tu>
     <tu>
@@ -392,7 +416,7 @@
         <seg>%1 contains an incorrect schema.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>%1 содержит неверную схему.</seg>
+        <seg>%1 содержит неправильную схему.</seg>
       </tuv>
     </tu>
     <tu>
@@ -400,7 +424,7 @@
         <seg>%1 has a bad format.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>%1 имеет неверный формат.</seg>
+        <seg>%1 имеет неправильный формат.</seg>
       </tuv>
     </tu>
     <tu>
@@ -408,7 +432,7 @@
         <seg>%1 was not found.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>%1 не найден.</seg>
+        <seg>Файл %1 не найден.</seg>
       </tuv>
     </tu>
     <tu>
@@ -418,7 +442,7 @@ Continue running script?</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
         <seg>%1: %2
-Продолжить выполнение скрипта?</seg>
+Продолжить выполнение сценария?</seg>
       </tuv>
     </tu>
     <tu>
@@ -429,8 +453,8 @@ Verify that the correct path and file name are given.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
         <seg>%1
-Файл не найден.
-Пожалуйста, проверьте правильность имени файла и пути к файлу.</seg>
+Не удаётся найти этот файл.
+Проверьте правильность указания пути и имени файла.</seg>
       </tuv>
     </tu>
     <tu>
@@ -479,6 +503,14 @@ Verify that the correct path and file name are given.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
         <seg>%d из %d совпадений.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>%s [Recovered]</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>%s [восстановленный]</seg>
       </tuv>
     </tu>
     <tu>
@@ -1100,7 +1132,7 @@ Unknown error</seg>
         <seg>&amp;Notes:</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>&amp;Заметки:</seg>
+        <seg>За&amp;метки:</seg>
       </tuv>
     </tu>
     <tu>
@@ -1396,7 +1428,7 @@ Unknown error</seg>
         <seg>&amp;View Aliases</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>&amp;Просмотр псевдонимов</seg>
+        <seg>&amp;Список псевдонимов</seg>
       </tuv>
     </tu>
     <tu>
@@ -1492,7 +1524,7 @@ Thank you for your help to improve PasswordSafe.</seg>
 
 Но, если проблема воспроизводится с тестовым контейнером, вы можете выслать нам данный дамп вместе с тестовым контейнером.
 
-Спасибо за помощь в улучшении PasswordSafe.</seg>
+Спасибо за помощь в улучшении Password Safe.</seg>
       </tuv>
     </tu>
     <tu>
@@ -1516,7 +1548,7 @@ Thank you for your help to improve PasswordSafe.</seg>
         <seg>(Requires a restart of PasswordSafe to take effect.)</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>(Для вступления изменений в силу необходим перезапуск PasswordSafe)</seg>
+        <seg>(Для вступления изменений в силу необходим перезапуск Password Safe)</seg>
       </tuv>
     </tu>
     <tu>
@@ -2230,7 +2262,7 @@ in your temporary directory:
         <seg>A required resource was unavailable.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Затребованный ресурс недоступен.</seg>
+        <seg>Обязательный ресурс недоступен.</seg>
       </tuv>
     </tu>
     <tu>
@@ -2262,7 +2294,7 @@ in your temporary directory:
         <seg>Access to %1 was denied.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Доступ к %1 запрещён.</seg>
+        <seg>Нет доступа к %1.</seg>
       </tuv>
     </tu>
     <tu>
@@ -2582,7 +2614,7 @@ in your temporary directory:
         <seg>An incorrect file handle was associated with %1.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>С %1 связан неверный дескриптор (handle).</seg>
+        <seg>С файлом %1 связан недопустимый дескриптор файла.</seg>
       </tuv>
     </tu>
     <tu>
@@ -2590,7 +2622,7 @@ in your temporary directory:
         <seg>An unknown error has occurred.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Произошла неопознанная ошибка.</seg>
+        <seg>Неизвестная ошибка.</seg>
       </tuv>
     </tu>
     <tu>
@@ -2598,7 +2630,7 @@ in your temporary directory:
         <seg>An unknown error occurred while accessing %1.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>При доступе к %1 произошла неопознанная ошибка.</seg>
+        <seg>Произошла неизвестная ошибка при обращении к %1.</seg>
       </tuv>
     </tu>
     <tu>
@@ -2695,7 +2727,7 @@ symbols, hexadecimal) must be permitted.</seg>
         <seg>Attempted an unsupported operation.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Операция не поддерживается.</seg>
+        <seg>Попытка выполнить неподдерживаемую операцию.</seg>
       </tuv>
     </tu>
     <tu>
@@ -2703,7 +2735,7 @@ symbols, hexadecimal) must be permitted.</seg>
         <seg>Attempted to access %1 past its end.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Попытка доступа к %1 после конца.</seg>
+        <seg>Попытка доступа к %1 за пределами файла.</seg>
       </tuv>
     </tu>
     <tu>
@@ -2711,7 +2743,7 @@ symbols, hexadecimal) must be permitted.</seg>
         <seg>Attempted to read from the writing %1.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Попытка чтения при записи %1.</seg>
+        <seg>Попытка выполнить операцию чтения при записи %1.</seg>
       </tuv>
     </tu>
     <tu>
@@ -2719,7 +2751,7 @@ symbols, hexadecimal) must be permitted.</seg>
         <seg>Attempted to write to the reading %1.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Попытка записи при чтении %1.</seg>
+        <seg>Попытка выполнить операцию записи при чтении %1.</seg>
       </tuv>
     </tu>
     <tu>
@@ -2751,7 +2783,7 @@ symbols, hexadecimal) must be permitted.</seg>
         <seg>Autotype copied </seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>«Автонабор» скопирован</seg>
+        <seg>«Автонабор» скопирован </seg>
       </tuv>
     </tu>
     <tu>
@@ -2784,6 +2816,14 @@ symbols, hexadecimal) must be permitted.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
         <seg>Азербайджанская (латиница)</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>Backup Directory</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Каталог для резервных копий</seg>
       </tuv>
     </tu>
     <tu>
@@ -3064,8 +3104,8 @@ symbols, hexadecimal) must be permitted.</seg>
 Please copy it from your installation file, or re-install PasswordSafe.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Невозможно найти файл с определением XML-схемы (%s) в каталоге PasswordSafe.&#13;
-Скопируйте этот файл из дистрибутива или переустановите PasswordSafe.</seg>
+        <seg>Невозможно найти файл с определением XML-схемы (%s) в каталоге Password Safe.&#13;
+Скопируйте этот файл из дистрибутива или переустановите Password Safe.</seg>
       </tuv>
     </tu>
     <tu>
@@ -3301,7 +3341,7 @@ Entries with more than this new maximum already saved will remain unchanged.</se
         <seg>Check</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Проверить</seg>
+        <seg>Установить</seg>
       </tuv>
     </tu>
     <tu>
@@ -3366,6 +3406,14 @@ Entries with more than this new maximum already saved will remain unchanged.</se
       </tuv>
       <tuv xml:lang="RU-RU">
         <seg>Очищать буфер обмена при сворачивании</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>Click here for details on the various preferences.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Щёлкните по этой надписи для получения справки.</seg>
       </tuv>
     </tu>
     <tu>
@@ -3557,7 +3605,7 @@ Entries with more than this new maximum already saved will remain unchanged.</se
         <seg>Command failed.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Сбой при выполнении команды.</seg>
+        <seg>Ошибка команды.</seg>
       </tuv>
     </tu>
     <tu>
@@ -3937,7 +3985,7 @@ If already present in the target database, it will be replaced!</seg>
         <seg>Could not create %1 because the directory is full.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>%1 не может быть создан: каталог переполнен.</seg>
+        <seg>Не удалось создать %1, поскольку в данном каталоге недостаточно места.</seg>
       </tuv>
     </tu>
     <tu>
@@ -3953,7 +4001,7 @@ If already present in the target database, it will be replaced!</seg>
         <seg>Could not open %1 because there are too many open files.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>%1 не может быть открыт: слишком много открытых файлов.</seg>
+        <seg>Не удаётся открыть %1, поскольку уже открыто слишком много файлов.</seg>
       </tuv>
     </tu>
     <tu>
@@ -3961,7 +4009,7 @@ If already present in the target database, it will be replaced!</seg>
         <seg>Could not remove %1 because it is the current directory.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>%1 не может быть удалён: невозможно удалить текущий каталог.</seg>
+        <seg>Не удалось удалить %1, поскольку это текущий каталог.</seg>
       </tuv>
     </tu>
     <tu>
@@ -3969,7 +4017,7 @@ If already present in the target database, it will be replaced!</seg>
         <seg>Could not start print job.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Невозможно начать печать.</seg>
+        <seg>Не удалось запустить задание печати.</seg>
       </tuv>
     </tu>
     <tu>
@@ -4095,7 +4143,7 @@ Please visit the PasswordSafe website to download the latest version.</seg>
         <seg>Текущая версия:	%s&#13;
 Новая версия:	%s&#13;
 &#13;
-Пожалуйста, посетите сайт PasswordSafe для загрузки новой версии.</seg>
+Пожалуйста, посетите сайт Password Safe для загрузки новой версии.</seg>
       </tuv>
     </tu>
     <tu>
@@ -4111,7 +4159,7 @@ Please contact the PasswordSafe Administrator for your upgrade.</seg>
 Новая версия:	%s&#13;
 &#13;
 В стоимость включена возможность бесплатных обновлений в течение года.&#13;
-Пожалуйста, свяжитесь с администратором PasswordSafe для обновления.</seg>
+Пожалуйста, свяжитесь с администратором Password Safe для обновления.</seg>
       </tuv>
     </tu>
     <tu>
@@ -4212,10 +4260,18 @@ Please contact the PasswordSafe Administrator for your upgrade.</seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg>Database is read-only. Changes to DB preferences will not be saved and are only valid for this session.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Контейнер открыт «только для чтения». Изменения настроек будут действительны только до завершения программы.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg>Database is read-only. Sorry, cannot save changed any database preferences.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Контейнер доступен в режиме «только чтение». Извините, невозможно сохранить настройки контейнера.</seg>
+        <seg>Контейнер доступен в режиме «только чтение». Сохранение настроек контейнера невозможно.</seg>
       </tuv>
     </tu>
     <tu>
@@ -4334,6 +4390,14 @@ Please contact the PasswordSafe Administrator for your upgrade.</seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg>Description:</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Описание:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg>Deselect all entries</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
@@ -4353,7 +4417,7 @@ Please contact the PasswordSafe Administrator for your upgrade.</seg>
         <seg>Destination disk drive is full.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Диск назначения заполнен.</seg>
+        <seg>На конечном диске нет места.</seg>
       </tuv>
     </tu>
     <tu>
@@ -4377,7 +4441,7 @@ Please contact the PasswordSafe Administrator for your upgrade.</seg>
         <seg>Disk full while accessing %1.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>При доступе к %1 произошло заполнение диска.</seg>
+        <seg>Нет места на диске при обращении к %1.</seg>
       </tuv>
     </tu>
     <tu>
@@ -4385,7 +4449,7 @@ Please contact the PasswordSafe Administrator for your upgrade.</seg>
         <seg>Dispatch exception: %1</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Исключение: %1</seg>
+        <seg>Обработка исключения: %1</seg>
       </tuv>
     </tu>
     <tu>
@@ -4410,6 +4474,14 @@ Please contact the PasswordSafe Administrator for your upgrade.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
         <seg>Показать часть пароля</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>Do you want to recover these auto-saved documents?</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Восстановить эти автоматически сохранённые документы?</seg>
       </tuv>
     </tu>
     <tu>
@@ -4458,6 +4530,16 @@ or Cancel the shutdown\restart\logoff?</seg>
 %s&#13;
 &#13;
 или отменить выключение\перезапуск\завершение сеанса?</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>Don't recover the auto-saved documents
+Use the last explicitly saved versions of the documents</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Не восстанавливать автоматически сохранённые версии
+Использовать последние явно сохранённые версии документов</seg>
       </tuv>
     </tu>
     <tu>
@@ -4561,7 +4643,7 @@ or Cancel the shutdown\restart\logoff?</seg>
         <seg>Double-click action</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>По двойному щелчку</seg>
+        <seg>По двойному клику</seg>
       </tuv>
     </tu>
     <tu>
@@ -4721,7 +4803,7 @@ Autotype for these functions is disabled.</seg>
         <seg>Encountered a hardware I/O error while accessing %1.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>При доступе к %1 произошла аппаратная ошибка ввода-вывода.</seg>
+        <seg>Аппаратная ошибка ввода-вывода при обращении к %1.</seg>
       </tuv>
     </tu>
     <tu>
@@ -4729,7 +4811,7 @@ Autotype for these functions is disabled.</seg>
         <seg>Encountered a locking violation while accessing %1.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>При доступе к %1 произошло нарушение блокировки.</seg>
+        <seg>Нарушение блокировки при обращении к %1.</seg>
       </tuv>
     </tu>
     <tu>
@@ -4737,7 +4819,7 @@ Autotype for these functions is disabled.</seg>
         <seg>Encountered a sharing violation while accessing %1.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>При доступе к %1 произошла ошибка совместного доступа.</seg>
+        <seg>Нарушение прав доступа при обращении к %1.</seg>
       </tuv>
     </tu>
     <tu>
@@ -4745,7 +4827,7 @@ Autotype for these functions is disabled.</seg>
         <seg>Encountered an improper argument.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Обнаружен недопустимый аргумент.</seg>
+        <seg>Недопустимый аргумент.</seg>
       </tuv>
     </tu>
     <tu>
@@ -4753,7 +4835,7 @@ Autotype for these functions is disabled.</seg>
         <seg>Encountered an unexpected error while reading %1.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>При чтении %1 произошла ошибка.</seg>
+        <seg>Непредвиденная ошибка при чтении файла %1.</seg>
       </tuv>
     </tu>
     <tu>
@@ -4761,7 +4843,7 @@ Autotype for these functions is disabled.</seg>
         <seg>Encountered an unexpected error while writing %1.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>При записи %1 произошла ошибка.</seg>
+        <seg>Непредвиденная ошибка при записи файла %1.</seg>
       </tuv>
     </tu>
     <tu>
@@ -4809,7 +4891,7 @@ Autotype for these functions is disabled.</seg>
         <seg>Enter a GUID.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Введите GUID.</seg>
+        <seg>Введите глобальный уникальный идентификатор (GUID).</seg>
       </tuv>
     </tu>
     <tu>
@@ -4817,7 +4899,7 @@ Autotype for these functions is disabled.</seg>
         <seg>Enter a currency.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Введите валюту.</seg>
+        <seg>Введите денежную единицу.</seg>
       </tuv>
     </tu>
     <tu>
@@ -4825,7 +4907,7 @@ Autotype for these functions is disabled.</seg>
         <seg>Enter a date and/or time.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Введите дату и/или время.</seg>
+        <seg>Введите дату и время.</seg>
       </tuv>
     </tu>
     <tu>
@@ -4857,7 +4939,7 @@ Autotype for these functions is disabled.</seg>
         <seg>Enter a positive integer.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Введите положительное число.</seg>
+        <seg>Введите положительное целое число.</seg>
       </tuv>
     </tu>
     <tu>
@@ -4897,7 +4979,7 @@ Autotype for these functions is disabled.</seg>
         <seg>Enter no more than %1 characters.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Введите не более %1 символов.</seg>
+        <seg>Введите не более %1 знаков.</seg>
       </tuv>
     </tu>
     <tu>
@@ -5311,7 +5393,7 @@ Do you want to replace it?</seg>
         <seg>Failed to create empty document.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Ошибка при создании пустого документа.</seg>
+        <seg>Не удалось создать пустой документ.</seg>
       </tuv>
     </tu>
     <tu>
@@ -5319,7 +5401,7 @@ Do you want to replace it?</seg>
         <seg>Failed to launch help.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Ошибка при открытии помощи.</seg>
+        <seg>Не удалось запустить справку.</seg>
       </tuv>
     </tu>
     <tu>
@@ -5327,7 +5409,7 @@ Do you want to replace it?</seg>
         <seg>Failed to lock configuration file - opened by another instance of PasswordSafe?</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Ошибка при блокировке файла настроек. Проверьте, не открыт ли другой экземпляр PasswordSafe?</seg>
+        <seg>Ошибка при блокировке файла настроек. Проверьте, не открыт ли другой экземпляр Password Safe?</seg>
       </tuv>
     </tu>
     <tu>
@@ -5335,7 +5417,7 @@ Do you want to replace it?</seg>
         <seg>Failed to open document.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Ошибка при открытии документа.</seg>
+        <seg>Не удалось открыть документ.</seg>
       </tuv>
     </tu>
     <tu>
@@ -5351,7 +5433,7 @@ Do you want to replace it?</seg>
         <seg>Failed to save document.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Ошибка при сохранении документа.</seg>
+        <seg>Не удалось сохранить документ.</seg>
       </tuv>
     </tu>
     <tu>
@@ -5379,7 +5461,7 @@ Do you want to replace it?</seg>
         <seg>Failed to switch from R-O to R/W: The file appears to be too short to be a valid database.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Ошибка при переключении в режим чтения/записи: файл не является контейнером PasswordSafe (размер слишком мал).</seg>
+        <seg>Ошибка при переключении в режим чтения/записи: файл не является контейнером Password Safe (размер слишком мал).</seg>
       </tuv>
     </tu>
     <tu>
@@ -5807,7 +5889,7 @@ Press OK to close database and continue (Changes will be saved)</seg>
         <seg>Go </seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Перейти</seg>
+        <seg>Перейти </seg>
       </tuv>
     </tu>
     <tu>
@@ -6001,7 +6083,7 @@ Press OK to close database and continue (Changes will be saved)</seg>
         <seg>Highlight changed entries</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Подсветить изменённые элементы</seg>
+        <seg>Выделить изменённые элементы</seg>
       </tuv>
     </tu>
     <tu>
@@ -6353,7 +6435,7 @@ Press OK to close database and continue (Changes will be saved)</seg>
         <seg>If this is the first database opened on the startup of PasswordSafe, PasswordSafe will exit.  If not, the new open will be cancelled and the existing opened database, if any, will remain open.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Если это контейнер открытый при запуске PasswordSafe, то приложение будет закрыто. Иначе, открытие нового контейнера будет отменено, а ранее открытый контейнер (если такой имеется) останется открытым.</seg>
+        <seg>Если это контейнер открытый при запуске Password Safe, то приложение будет закрыто. Иначе, открытие нового контейнера будет отменено, а ранее открытый контейнер (если такой имеется) останется открытым.</seg>
       </tuv>
     </tu>
     <tu>
@@ -6474,6 +6556,14 @@ You may need to also select the Shift key to see them.</seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg>Import to change passwords of existing entries ONLY</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>При импорте только изменить пароли у существующих элементов</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg>Import under Group?</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
@@ -6557,7 +6647,7 @@ You may need to also select the Shift key to see them.</seg>
         <seg>Incorrect filename.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Неверное имя файла.</seg>
+        <seg>Неправильное имя файла.</seg>
       </tuv>
     </tu>
     <tu>
@@ -6565,7 +6655,7 @@ You may need to also select the Shift key to see them.</seg>
         <seg>Incorrect passkey, not a PasswordSafe database, or a corrupt database.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Указан неверный пароль или файл повреждён/не является контейнером PasswordSafe.</seg>
+        <seg>Указан неверный пароль или файл повреждён/не является контейнером Password Safe.</seg>
       </tuv>
     </tu>
     <tu>
@@ -7095,7 +7185,7 @@ as each byte is two hexadecimal digits.</seg>
         <seg>Mail system DLL is invalid.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Неверная библиотека для работы с почтой.</seg>
+        <seg>Неправильная библиотека DLL почтовой системы.</seg>
       </tuv>
     </tu>
     <tu>
@@ -7119,7 +7209,7 @@ as each byte is two hexadecimal digits.</seg>
         <seg>Manage password history of current entries</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Управление историей паролей для текущих элементов</seg>
+        <seg>Управление историей паролей для существующих элементов</seg>
       </tuv>
     </tu>
     <tu>
@@ -7314,7 +7404,7 @@ must be between 1 and 999.</seg>
         <seg>Mixed</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Смешанный</seg>
+        <seg>Смешанное</seg>
       </tuv>
     </tu>
     <tu>
@@ -7371,6 +7461,14 @@ must be between 1 and 999.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
         <seg>Имя. Имя. Имя.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>Name:</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Имя:</seg>
       </tuv>
     </tu>
     <tu>
@@ -7514,7 +7612,7 @@ must be between 1 and 999.</seg>
         <seg>No error message is available.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Сообщение об ошибке недоступно.</seg>
+        <seg>Отсутствует сообщение об ошибке.</seg>
       </tuv>
     </tu>
     <tu>
@@ -7522,7 +7620,7 @@ must be between 1 and 999.</seg>
         <seg>No error occurred.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Выполнено без ошибок.</seg>
+        <seg>Нет ошибки.</seg>
       </tuv>
     </tu>
     <tu>
@@ -7610,7 +7708,7 @@ must be between 1 and 999.</seg>
         <seg>No reports exist in the same directory as the current database.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>В директории текущего контейнера отчётов не обнаружено.</seg>
+        <seg>В каталоге текущего контейнера отчётов не обнаружено.</seg>
       </tuv>
     </tu>
     <tu>
@@ -7682,7 +7780,7 @@ must be between 1 and 999.</seg>
         <seg>Not all of the system registry entries (or INI file) were removed.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Не все записи в реестре (или ini-файле) были удалены</seg>
+        <seg>Не все записи системного реестра (или файла INI) были удалены.</seg>
       </tuv>
     </tu>
     <tu>
@@ -7690,7 +7788,7 @@ must be between 1 and 999.</seg>
         <seg>Note that if you choose to recover the auto-saved documents, you must explicitly save them to overwrite the original documents.  If you choose to not recover the auto-saved versions, they will be deleted.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Если вы выберете восстановление автоматически сохранённых документов, чтобы перезаписать оригиналы их нужно будет явно сохранить.  Если вы откажетесь от восстановления автоматически сохранённых версий, они будут удалены.</seg>
+        <seg>Заметьте, при выборе восстановления автоматически сохранённых документов вам потребуется явно сохранить их, чтобы перезаписать исходные документы.  Если не восстановить автоматически сохранённые версии, они будут удалены.</seg>
       </tuv>
     </tu>
     <tu>
@@ -7922,7 +8020,7 @@ Number of entries with fields that cannot be fully displayed: %d</seg>
         <seg>One or more auto-saved documents were found.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Найдены один или несколько автоматически сохранённых документов</seg>
+        <seg>Были найдены один или несколько автоматически сохранённых документов.</seg>
       </tuv>
     </tu>
     <tu>
@@ -8151,6 +8249,14 @@ Number of entries with fields that cannot be fully displayed: %d</seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg>Password Length</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Длина пароля</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg>Password Modified</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
@@ -8350,7 +8456,7 @@ Every entry must have a title.</seg>
         <seg>PasswordSafe V%d.%d.%d (Build %s) has had an error.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>В PasswordSafe V%d.%d.%d (Сборка %s) обнаружена ошибка.</seg>
+        <seg>В Password Safe V%d.%d.%d (Сборка %s) обнаружена ошибка.</seg>
       </tuv>
     </tu>
     <tu>
@@ -8358,7 +8464,7 @@ Every entry must have a title.</seg>
         <seg>PasswordSafe: Entries exist with expired or soon-to-expire passwords</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>PasswordSafe: есть элементы с истёкшим или скоро истекающим паролем</seg>
+        <seg>Password Safe: есть элементы с истёкшим или скоро истекающим паролем</seg>
       </tuv>
     </tu>
     <tu>
@@ -8512,7 +8618,7 @@ Every entry must have a title.</seg>
 </seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Подтвердите удаление настроек PasswordSafe для текущего пользователя из реестра Windows.
+        <seg>Подтвердите удаление настроек Password Safe для текущего пользователя из реестра Windows.
 
 </seg>
       </tuv>
@@ -8547,6 +8653,22 @@ Every entry must have a title.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
         <seg>Укажите ключ и подтвердите его.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>Please enter the new database description</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Введите новое описание контейнера</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>Please enter the new database name</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Введите новое имя контейнера</seg>
       </tuv>
     </tu>
     <tu>
@@ -8642,7 +8764,7 @@ Every entry must have a title.</seg>
         <seg>Please visit the &lt;a href="http://pwsafe.org/"&gt;PasswordSafe website.&lt;/a&gt;</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Посетите &lt;a href="http://pwsafe.org/"&gt;сайт PasswordSafe.&lt;/a&gt;</seg>
+        <seg>Посетите &lt;a href="http://pwsafe.org/"&gt;сайт Password Safe.&lt;/a&gt;</seg>
       </tuv>
     </tu>
     <tu>
@@ -8936,7 +9058,7 @@ Open the auto-saved versions instead of the explicitly saved versions</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
         <seg>Восстановить автоматически сохранённые документы
-Открыть автоматически сохранённые версии документов вместо явно сохранённых версий</seg>
+Открыть автоматически сохранённые версии вместо версий, сохранённых явно</seg>
       </tuv>
     </tu>
     <tu>
@@ -8976,7 +9098,7 @@ Open the auto-saved versions instead of the explicitly saved versions</seg>
         <seg>Remove PasswordSafe configuration from Registry</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Убрать настройки PasswordSafe из реестра Windows</seg>
+        <seg>Убрать настройки Password Safe из реестра Windows</seg>
       </tuv>
     </tu>
     <tu>
@@ -9220,7 +9342,7 @@ Unable to provide Virtual Keyboard.</seg>
         <seg>RunCmd copied </seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Команда скопирована</seg>
+        <seg>Команда скопирована </seg>
       </tuv>
     </tu>
     <tu>
@@ -9471,7 +9593,7 @@ Unable to provide Virtual Keyboard.</seg>
         <seg>Seek failed on %1</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Ошибка при поиске в %1</seg>
+        <seg>Ошибка поиска для %1</seg>
       </tuv>
     </tu>
     <tu>
@@ -9535,7 +9657,7 @@ Unable to provide Virtual Keyboard.</seg>
         <seg>Select a button.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Выберите кнопку.</seg>
+        <seg>Нажмите кнопку.</seg>
       </tuv>
     </tu>
     <tu>
@@ -9607,7 +9729,7 @@ Unable to provide Virtual Keyboard.</seg>
         <seg>Send Mail failed to send message.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Ошибка при отправке сообщения.</seg>
+        <seg>Сбой при отправке сообщения.</seg>
       </tuv>
     </tu>
     <tu>
@@ -9772,10 +9894,34 @@ Unable to provide Virtual Keyboard.</seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg>Shift + Double-Click Action:</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Действие по Shift + двойной клик:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>Shift Double-click action</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>По Shift + двойной клик</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg>Shift+</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
         <seg>Shift+</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>Shift+Double Click Action</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Действие по Shift + двойной клик</seg>
       </tuv>
     </tu>
     <tu>
@@ -10051,7 +10197,7 @@ Minimal diagnostic information has been written to file:
 	'</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>При работе PasswordSafe была обнаружена ошибка.
+        <seg>При работе Password Safe была обнаружена ошибка.
 
 Информация об ошибке записана в файл: 
 
@@ -10111,7 +10257,7 @@ Minimal diagnostic information has been written to file:
         <seg>Start PasswordSafe at Login</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Запускать PasswordSafe при входе в систему</seg>
+        <seg>Запускать Password Safe при входе в систему</seg>
       </tuv>
     </tu>
     <tu>
@@ -10325,7 +10471,7 @@ Saved histories will not be touched, but password changes will no longer be stor
         <seg>System registry entries have been removed and the INI file (if any) was deleted.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Записи реестра и ini-файл (если был) были удалены.</seg>
+        <seg>Удалены записи системного реестра и файл INI (если он существовал).</seg>
       </tuv>
     </tu>
     <tu>
@@ -10608,7 +10754,7 @@ has duplicate entries with the same group/title/user combination. Please fix by 
         <seg>The file is too large to open.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Файл слишком большой и не может быть открыт.</seg>
+        <seg>Не удаётся открыть слишком большой файл.</seg>
       </tuv>
     </tu>
     <tu>
@@ -10624,7 +10770,7 @@ has duplicate entries with the same group/title/user combination. Please fix by 
         <seg>The filter XML version (%d) is greater than that supported by this instance of PasswordSafe (%d).</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Версия XML-фильтра (%d) больше поддерживаемой этой версией PasswordSafe (%d).</seg>
+        <seg>Версия XML-фильтра (%d) больше поддерживаемой этой версией Password Safe (%d).</seg>
       </tuv>
     </tu>
     <tu>
@@ -10754,7 +10900,7 @@ Your changes will be written as "%s" in the new format, which is unusable by old
       </tuv>
       <tuv xml:lang="RU-RU">
         <seg>Формат исходного контейнера «%s», имеет версию ниже 3.0. Он не будет изменён.
-Изменения будут записаны в «%s» с использованием нового формата, который несовместим с предыдущими версиями PasswordSafe. Для сохранения изменений в старом формате используйте пункты меню «Файл-&gt;Экспорт в-&gt;Старый (1.x или 2) формат».</seg>
+Изменения будут записаны в «%s» с использованием нового формата, который несовместим с предыдущими версиями Password Safe. Для сохранения изменений в старом формате используйте пункты меню «Файл-&gt;Экспорт в-&gt;Старый (1.x или 2) формат».</seg>
       </tuv>
     </tu>
     <tu>
@@ -10762,7 +10908,7 @@ Your changes will be written as "%s" in the new format, which is unusable by old
         <seg>The original database, "%s", is in pre-3.0 format. The data will now be written in the new format, which is unusable by old versions of PasswordSafe. To save the data in the old format, use the "File-&gt;Export To-&gt;Old (1.x or 2) format" command.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Формат исходного контейнера «%s», имеет версию ниже 3.0. Данные будут записаны с использованием нового формата, который несовместим с предыдущими версиями PasswordSafe. Для сохранения данных в старом формате используйте пункты меню «Файл-&gt;Экспорт в-&gt;Старый (1.x или 2) формат».</seg>
+        <seg>Формат исходного контейнера «%s», имеет версию ниже 3.0. Данные будут записаны с использованием нового формата, который несовместим с предыдущими версиями Password Safe. Для сохранения данных в старом формате используйте пункты меню «Файл-&gt;Экспорт в-&gt;Старый (1.x или 2) формат».</seg>
       </tuv>
     </tu>
     <tu>
@@ -10847,6 +10993,14 @@ has been copied to the clipboard.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
         <seg>На носителе с аварийной резервной копией не обнаружена «Корзина». Удалить файл насовсем?</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>These are more recently saved than the currently open documents and contain changes that were made before the application closed.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Эти документы были сохранены позднее по сравнению с документами, открытыми в настоящий момент, и содержат изменения, внесённые до закрытия приложения.</seg>
       </tuv>
     </tu>
     <tu>
@@ -10992,7 +11146,7 @@ Please confirm to continue (alias entry's passwords will be replaced by this ent
         <seg>This program is linked to the missing export %s in the file %s. This machine may have an incompatible version of %s.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Экспортируемая функция %s, использованная при линковке, отсутствует в файле %s. Возможно, что установлена несовместимая версия %s.</seg>
+        <seg>Программа связана с отсутствующим экспортом %s в файл %s. Возможно, на компьютере установлена несовместимая версия %s.</seg>
       </tuv>
     </tu>
     <tu>
@@ -11000,7 +11154,7 @@ Please confirm to continue (alias entry's passwords will be replaced by this ent
         <seg>This program requires the file %s, which was not found on this system.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Файл %s, необходимый для работы программы не найден.</seg>
+        <seg>Программе требуется файл %s, который не был найден на компьютере.</seg>
       </tuv>
     </tu>
     <tu>
@@ -11011,7 +11165,7 @@ Do you want to open this database anyway?
 (Saving this database will result in the removal of unread entries!)</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Данная версия PasswordSafe поддерживает не более %d элементов в контейнере.
+        <seg>Данная версия Password Safe поддерживает не более %d элементов в контейнере.
 Для получения полноценной версии для платформы U3 посетите http://software.u3.com
 Продолжить открытие контейнера?
 (Сохранение контейнера приведёт к удалению непрочитанных элементов!)</seg>
@@ -11024,7 +11178,7 @@ To get an unlimited version for the U3 platform, please visit http://software.u3
 Note: Saving this database will result in the removal of unread entries!</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Данная версия PasswordSafe поддерживает не более %d элементов в контейнере.
+        <seg>Данная версия Password Safe поддерживает не более %d элементов в контейнере.
 Для получения полноценной версии для платформы U3 посетите http://software.u3.com
 Сохранение контейнера приведёт к удалению непрочитанных элементов!</seg>
       </tuv>
@@ -11098,7 +11252,7 @@ Note: Saving this database will result in the removal of unread entries!</seg>
         <seg>Title copied </seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Заголовок скопирован</seg>
+        <seg>Заголовок скопирован </seg>
       </tuv>
     </tu>
     <tu>
@@ -11226,7 +11380,7 @@ Note: Saving this database will result in the removal of unread entries!</seg>
         <seg>URL copied </seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>URL скопирован</seg>
+        <seg>URL скопирован </seg>
       </tuv>
     </tu>
     <tu>
@@ -11322,7 +11476,7 @@ Will use registry.</seg>
         <seg>Unable to load mail system support.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Невозможно загрузить подсистему поддержки электронной почты.</seg>
+        <seg>Не удаётся загрузить поддержку почтовой системы.</seg>
       </tuv>
     </tu>
     <tu>
@@ -11330,7 +11484,7 @@ Will use registry.</seg>
         <seg>Unable to read from %1, it is opened by someone else.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Невозможно прочитать %1, т.к. он открыть кем-то ещё.</seg>
+        <seg>Не удаётся прочесть данные из %1. Файл открыт другим пользователем.</seg>
       </tuv>
     </tu>
     <tu>
@@ -11346,7 +11500,7 @@ Will use registry.</seg>
         <seg>Unable to read write-only property.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Невозможно прочитать свойство, доступное только для записи.</seg>
+        <seg>Не удалось прочесть: свойство предназначено только для записи.</seg>
       </tuv>
     </tu>
     <tu>
@@ -11410,7 +11564,7 @@ Database related settings will be stored in the open database when it is closed,
         <seg>Unable to write read-only property.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Невозможно изменить свойство доступное только для чтения.</seg>
+        <seg>Не удалось записать: свойство предназначено только для чтения.</seg>
       </tuv>
     </tu>
     <tu>
@@ -11418,7 +11572,7 @@ Database related settings will be stored in the open database when it is closed,
         <seg>Unable to write to %1, it is read-only or opened by someone else.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Невозможно произвести запись в %1, т. к. он доступен только для чтения или открыт кем-то ещё.</seg>
+        <seg>Не удаётся произвести запись в %1. Файл доступен только для чтения или открыт другим пользователем.</seg>
       </tuv>
     </tu>
     <tu>
@@ -11426,7 +11580,7 @@ Database related settings will be stored in the open database when it is closed,
         <seg>Uncheck</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Снять пометку</seg>
+        <seg>Снять</seg>
       </tuv>
     </tu>
     <tu>
@@ -11884,7 +12038,7 @@ Imported %d %s</seg>
         <seg>View Aliases</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Просмотр псевдонимов</seg>
+        <seg>Список псевдонимов</seg>
       </tuv>
     </tu>
     <tu>
@@ -11924,7 +12078,7 @@ Imported %d %s</seg>
         <seg>View Shortcuts</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Просмотр ярлыков</seg>
+        <seg>Список ярлыков</seg>
       </tuv>
     </tu>
     <tu>
@@ -13174,7 +13328,7 @@ E-mail: </seg>
         <seg>an unnamed file</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>безымянный файл</seg>
+        <seg>файл без имени</seg>
       </tuv>
     </tu>
     <tu>
@@ -13398,7 +13552,7 @@ E-mail: </seg>
         <seg>email copied </seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>E-mail скопирован</seg>
+        <seg>E-mail скопирован </seg>
       </tuv>
     </tu>
     <tu>
