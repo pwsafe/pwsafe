@@ -814,6 +814,9 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
       m_keepPWHist = CreatePWHistoryList(pwh_str,
                                          pwh_max, num_err,
                                          pwhl, TMC_LOCALE);
+      if (size_t(m_PWHgrid->GetNumberRows()) < pwhl.size()) {
+        m_PWHgrid->AppendRows(pwhl.size() - m_PWHgrid->GetNumberRows());
+      }
       m_maxPWHist = int(pwh_max);
       int row = 0;
       for (PWHistList::iterator iter = pwhl.begin(); iter != pwhl.end();
