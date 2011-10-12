@@ -352,6 +352,22 @@ dont_install_Win98:
 GreenInstall:
 SectionEnd
 
+;-----------------------------------------------------------------
+; Yubico Support
+
+Section "YubiKey support" YubiKeyAPI
+  SetOutPath $INSTDIR\Yubi
+  File "..\..\..\Yubico\Yubikey Client API Installer.msi"
+  ExecWait '"msiexec" /i "$INSTDIR\Yubi\Yubikey Client API Installer.msi"'
+  IfErrors errorYubico
+  SetOutPath $INSTDIR
+  RMDir /r  $INSTDIR\Yubi
+  goto endYubico
+errorYubico:
+  Abort
+endYubico:
+SectionEnd
+
 ;--------------------------------
 ; Section per-supported language
 SectionGroup /e "$(LANGUAGE_SUPPORT)" LanguageSupport
@@ -476,6 +492,7 @@ SectionEnd
   ; Assign language strings to sections
   !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
     !insertmacro MUI_DESCRIPTION_TEXT ${ProgramFiles} $(DESC_ProgramFiles)
+    !insertmacro MUI_DESCRIPTION_TEXT ${YubiKeyAPI} "Install software required to work with YubiKey (YubiKey Client API)"
     !insertmacro MUI_DESCRIPTION_TEXT ${LanguageSupport} $(DESC_LangSupport)
     !insertmacro MUI_DESCRIPTION_TEXT ${StartUp} $(DESC_StartUp)
     !insertmacro MUI_DESCRIPTION_TEXT ${StartMenu} $(DESC_StartMenu)
