@@ -87,6 +87,11 @@ StringX PWPolicy::MakeRandomPassword(const stringT &st_symbols) const
     numdigits = (pwdigitminlength == 0) ? 1 : pwdigitminlength;
   if (pwusesymbols)
     numsymbols = (pwsymbolminlength == 0) ? 1 : pwsymbolminlength;
+
+  // Sanity check:
+  if ((numlowercase + numuppercase + numdigits + numsymbols == 0) &&
+      !pwusehexdigits)
+    return _T("");
  
   CPasswordCharPool pwchars(pwdefaultlength,
                             numlowercase, numuppercase, numdigits, numsymbols,
