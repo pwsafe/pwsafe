@@ -40,8 +40,6 @@ static char THIS_FILE[] = __FILE__;
 
 int CALLBACK SetSelProc(HWND hWnd, UINT uMsg, LPARAM , LPARAM lpData);
 
-const UINT COptionsBackup::uiDBPrefs[] = {IDC_SAVEIMMEDIATELY};
-
 /////////////////////////////////////////////////////////////////////////////
 // COptionsBackup property page
 
@@ -122,10 +120,16 @@ BOOL COptionsBackup::OnInitDialog()
 
   if (!M_pDbx()->IsDBReadOnly())
     GetDlgItem(IDC_STATIC_DB_PREFS_RO_WARNING)->ShowWindow(SW_HIDE);
-
-  // Need to disable XP themes to change colour of non-static controls!
-  for (int i = 0; i < sizeof(uiDBPrefs) / sizeof(uiDBPrefs[0]); i++) {
-    SetWindowTheme(GetDlgItem(uiDBPrefs[i])->GetSafeHwnd(), L"", L"");
+  
+  // Need to disable XP themes to change colour of ALL buttons to make sure
+  // that they all look the same.  OnCtlColor will only change the colour
+  // of the database preferences!
+  for (CWnd *pwnd = GetWindow(GW_CHILD); pwnd != NULL; pwnd = pwnd->GetWindow(GW_HWNDNEXT)) {
+    wchar_t szClassName[50];
+    GetClassName(pwnd->GetSafeHwnd(), szClassName, 50);
+    if (_wcsicmp(szClassName, L"Button") == 0) {
+      SetWindowTheme(pwnd->GetSafeHwnd(), L"", L"");
+    }
   }
 
   if (m_backupsuffix_cbox.GetCount() == 0) {

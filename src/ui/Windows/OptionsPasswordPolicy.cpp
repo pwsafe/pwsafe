@@ -34,12 +34,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-const UINT COptionsPasswordPolicy::uiDBPrefs[] = {
-  IDC_USELOWERCASE, IDC_USEUPPERCASE, IDC_USEDIGITS,
-  IDC_USESYMBOLS, IDC_EASYVISION, IDC_PRONOUNCEABLE,
-  IDC_USEHEXDIGITS, IDC_USEDEFAULTSYMBOLS, IDC_USEOWNSYMBOLS
-};
-
 /////////////////////////////////////////////////////////////////////////////
 // COptionsPasswordPolicy property page
 
@@ -155,8 +149,15 @@ BOOL COptionsPasswordPolicy::OnInitDialog()
 {
   COptions_PropertyPage::OnInitDialog();
 
-  for (int i = 0; i < sizeof(uiDBPrefs) / sizeof(uiDBPrefs[0]); i++) {
-    SetWindowTheme(GetDlgItem(uiDBPrefs[i])->GetSafeHwnd(), L"", L"");
+  // Need to disable XP themes to change colour of ALL buttons to make sure
+  // that they all look the same.  OnCtlColor will only change the colour
+  // of the database preferences!
+  for (CWnd *pwnd = GetWindow(GW_CHILD); pwnd != NULL; pwnd = pwnd->GetWindow(GW_HWNDNEXT)) {
+    wchar_t szClassName[50];
+    GetClassName(pwnd->GetSafeHwnd(), szClassName, 50);
+    if (_wcsicmp(szClassName, L"Button") == 0) {
+      SetWindowTheme(pwnd->GetSafeHwnd(), L"", L"");
+    }
   }
 
   if (m_bFromOptions) {

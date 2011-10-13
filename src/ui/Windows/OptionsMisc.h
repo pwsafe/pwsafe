@@ -78,6 +78,4 @@ private:
   void SetupCombo(CComboBox *pcbox);
 
   CToolTipCtrl* m_pToolTipCtrl;
-
-  static const UINT uiDBPrefs[];
 };

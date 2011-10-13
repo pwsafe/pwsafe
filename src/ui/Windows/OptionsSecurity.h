@@ -59,8 +59,5 @@ protected:
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
-
-private:
-  static const UINT uiDBPrefs[];
 };
 
