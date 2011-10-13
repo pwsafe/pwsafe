@@ -363,7 +363,8 @@ private:
   PWScore *m_pcore;
 };
 
-int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version)
+int PWScore::WriteFile(const StringX &filename, const bool bUpdateSig,
+                       PWSfile::VERSION version)
 {
   int status;
   PWSfile *out = PWSfile::MakePWSfile(filename, version,
@@ -374,10 +375,12 @@ int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version)
     return status;
   }
 
+  if (bUpdateSig) {
   // since we're writing a new file, the previous sig's
-  // about to be invalidated
+    // about to be invalidated but NOT if a user initiated Backup
   delete m_pFileSig;
   m_pFileSig = NULL;
+  }
 
   m_hdr.m_prefString = PWSprefs::GetInstance()->Store();
   m_hdr.m_whatlastsaved = m_AppNameAndVersion.c_str();
@@ -417,7 +420,8 @@ int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version)
 
   m_ReadFileVersion = version; // needed when saving a V17 as V20 1st time [871893]
 
-  // Create new signature
+  // Create new signature if required
+  if (bUpdateSig)
   m_pFileSig = new PWSFileSig(filename.c_str());
 
   return SUCCESS;
@@ -2417,6 +2421,18 @@ void PWScore::GetDBProperties(st_DBProperties &st_dbp)
   } else {
     LoadAString(st_dbp.unknownfields, IDSC_NONE);
   }
+  
+  st_dbp.db_name = m_hdr.m_dbname;
+  st_dbp.db_description = m_hdr.m_dbdesc;
+}
+
+void PWScore::SetHeaderUserFields(st_DBProperties &st_dbp)
+{
+  // Currently only 2 user fields in DB header
+  m_hdr.m_dbname = st_dbp.db_name;
+  m_hdr.m_dbdesc = st_dbp.db_description;
+
+  SetDBChanged(true);
 }
 
 void PWScore::UpdateExpiryEntry(const CUUID &uuid, const CItemData::FieldType ft,

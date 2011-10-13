@@ -140,6 +140,10 @@ msgstr "'기록 변경 시간'"
 msgid " 'Run Command'"
 msgstr "'명령 실행'"
 
+#. Resource IDs: (368)
+msgid " 'Shift+DCA'"
+msgstr ""
+
 #. Resource IDs: (347)
 msgid " 'Title'"
 msgstr "'주제'"
@@ -213,6 +217,15 @@ msgstr " [프로세스 ID=%s]"
 msgid "! Edit externally"
 msgstr "외부에서 편집"
 
+#. Resource IDs: (368)
+#, c-format
+msgid "# characters: %d"
+msgstr ""
+
+#. Resource IDs: (1456)
+msgid "#description"
+msgstr ""
+
 #. Resource IDs: (1194)
 msgid "#entries"
 msgstr "#entries"
@@ -224,6 +237,10 @@ msgstr "#format"
 #. Resource IDs: (1193)
 msgid "#groups"
 msgstr "#groups"
+
+#. Resource IDs: (1455)
+msgid "#name"
+msgstr ""
 
 #. Resource IDs: (1256)
 msgid "#unkflds"
@@ -1514,6 +1531,10 @@ msgid "Azeri Latin"
 msgstr "Azeri Latin"
 
 #. Resource IDs: (65535)
+msgid "Backup Directory"
+msgstr ""
+
+#. Resource IDs: (65535)
 msgid "Backup Directory:"
 msgstr "백업본 폴더:"
 
@@ -1802,6 +1823,10 @@ msgstr "종료 시 클립보드 비우기"
 #. Resource IDs: (1061)
 msgid "Clear clipboard upon minimize"
 msgstr "최소화 시 클립보드 비우기"
+
+#. Resource IDs: (1453)
+msgid "Click here or details on the various preferences."
+msgstr ""
 
 #. Resource IDs: (351)
 msgid "Click here to pick field"
@@ -2247,6 +2272,10 @@ msgstr "데이터베이스 버전:"
 msgid "Database has some large entries!"
 msgstr "데이터베이스에 항목이 너무 많습니다!"
 
+#. Resource IDs: (1454)
+msgid "Database is read-only. Changes to DB preferences will not be saved and are only valid for this session."
+msgstr ""
+
 #. Resource IDs: (337)
 msgid "Database is read-only. Sorry, cannot save changed any database preferences."
 msgstr "데이터베이스가 읽기 전용입니다. 죄송합니다만, 데이터베이스의 환경설정을 저장할 수 없습니다."
@@ -2310,6 +2339,10 @@ msgstr "기본 항목 삭제 확인"
 #. Resource IDs: (352)
 msgid "Delete a filter"
 msgstr "필터 삭제"
+
+#. Resource IDs: (65535)
+msgid "Description:"
+msgstr ""
 
 #. Resource IDs: (340)
 msgid "Deselect all entries"
@@ -3905,6 +3938,10 @@ msgstr "이름"
 msgid "Name. Name. Name."
 msgstr "이름. 이름. 이름."
 
+#. Resource IDs: (65535)
+msgid "Name:"
+msgstr ""
+
 #. Resource IDs: (32103)
 msgid "Nested &Tree"
 msgstr "중첩된 트리(&T)"
@@ -4299,6 +4336,10 @@ msgstr "비밀번호 내역"
 msgid "Password History Filter"
 msgstr "비밀번호 내역 필터"
 
+#. Resource IDs: (367)
+msgid "Password Length"
+msgstr ""
+
 #. Resource IDs: (327)
 msgid "Password Modified"
 msgstr "비밀번호 수정됨"
@@ -4501,6 +4542,14 @@ msgstr "현재 보안 비밀번호를 입력하신 후, 새 보안 비밀번호�
 #. Resource IDs: (329)
 msgid "Please enter the key and verify it."
 msgstr "비밀번호를 입력하시고 검사해보세요."
+
+#. Resource IDs: (368)
+msgid "Please enter the new database description"
+msgstr ""
+
+#. Resource IDs: (368)
+msgid "Please enter the new database name"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Please enter the safe combination for this password database."
@@ -5132,9 +5181,25 @@ msgstr "Setswana"
 msgid "Shift"
 msgstr "Shift"
 
+#. Resource IDs: (65535)
+msgid "Shift + Double-Click Action:"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Shift Double-click action"
+msgstr ""
+
 #. Resource IDs: (356)
 msgid "Shift+"
 msgstr "Shift+"
+
+#. Resource IDs: (192, 368)
+msgid "Shift+DCA"
+msgstr ""
+
+#. Resource IDs: (368)
+msgid "Shift+Double Click Action"
+msgstr ""
 
 #. Resource IDs: (348)
 msgid "Shift+click to view current policy"

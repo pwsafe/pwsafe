@@ -140,6 +140,10 @@ msgstr "'Data Modifica Record'"
 msgid " 'Run Command'"
 msgstr ""
 
+#. Resource IDs: (368)
+msgid " 'Shift+DCA'"
+msgstr ""
+
 #. Resource IDs: (347)
 msgid " 'Title'"
 msgstr "'Titolo'"
@@ -213,6 +217,15 @@ msgstr "[ID del Processo=%s]"
 msgid "! Edit externally"
 msgstr ""
 
+#. Resource IDs: (368)
+#, c-format
+msgid "# characters: %d"
+msgstr ""
+
+#. Resource IDs: (1456)
+msgid "#description"
+msgstr ""
+
 #. Resource IDs: (1194)
 msgid "#entries"
 msgstr "#inserimenti"
@@ -224,6 +237,10 @@ msgstr "#formato"
 #. Resource IDs: (1193)
 msgid "#groups"
 msgstr "#gruppi"
+
+#. Resource IDs: (1455)
+msgid "#name"
+msgstr ""
 
 #. Resource IDs: (1256)
 msgid "#unkflds"
@@ -1514,6 +1531,10 @@ msgid "Azeri Latin"
 msgstr ""
 
 #. Resource IDs: (65535)
+msgid "Backup Directory"
+msgstr ""
+
+#. Resource IDs: (65535)
 msgid "Backup Directory:"
 msgstr ""
 
@@ -1802,6 +1823,10 @@ msgstr "Svuota gli appunti all'uscita"
 #. Resource IDs: (1061)
 msgid "Clear clipboard upon minimize"
 msgstr "Svuota gli appunti se ridotto ad icona"
+
+#. Resource IDs: (1453)
+msgid "Click here or details on the various preferences."
+msgstr ""
 
 #. Resource IDs: (351)
 msgid "Click here to pick field"
@@ -2247,6 +2272,10 @@ msgstr "Formato Database:"
 msgid "Database has some large entries!"
 msgstr ""
 
+#. Resource IDs: (1454)
+msgid "Database is read-only. Changes to DB preferences will not be saved and are only valid for this session."
+msgstr ""
+
 #. Resource IDs: (337)
 msgid "Database is read-only. Sorry, cannot save changed any database preferences."
 msgstr "Il Database è in modalità a sola lettura. Purtroppo non è possibile salvare alcuna modifica nelle preferenze per il database."
@@ -2310,6 +2339,10 @@ msgstr "Conferma della cancellazione di una scheda?"
 #. Resource IDs: (352)
 msgid "Delete a filter"
 msgstr "Cancella un filtro"
+
+#. Resource IDs: (65535)
+msgid "Description:"
+msgstr ""
 
 #. Resource IDs: (340)
 msgid "Deselect all entries"
@@ -3905,6 +3938,10 @@ msgstr ""
 msgid "Name. Name. Name."
 msgstr ""
 
+#. Resource IDs: (65535)
+msgid "Name:"
+msgstr ""
+
 #. Resource IDs: (32103)
 msgid "Nested &Tree"
 msgstr ""
@@ -4299,6 +4336,10 @@ msgstr ""
 msgid "Password History Filter"
 msgstr ""
 
+#. Resource IDs: (367)
+msgid "Password Length"
+msgstr ""
+
 #. Resource IDs: (327)
 msgid "Password Modified"
 msgstr ""
@@ -4500,6 +4541,14 @@ msgstr ""
 
 #. Resource IDs: (329)
 msgid "Please enter the key and verify it."
+msgstr ""
+
+#. Resource IDs: (368)
+msgid "Please enter the new database description"
+msgstr ""
+
+#. Resource IDs: (368)
+msgid "Please enter the new database name"
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -5132,8 +5181,24 @@ msgstr ""
 msgid "Shift"
 msgstr ""
 
+#. Resource IDs: (65535)
+msgid "Shift + Double-Click Action:"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Shift Double-click action"
+msgstr ""
+
 #. Resource IDs: (356)
 msgid "Shift+"
+msgstr ""
+
+#. Resource IDs: (192, 368)
+msgid "Shift+DCA"
+msgstr ""
+
+#. Resource IDs: (368)
+msgid "Shift+Double Click Action"
 msgstr ""
 
 #. Resource IDs: (348)

@@ -1,96 +1,41 @@
 #!/usr/bin/perl -w
 #
-# This script generates two xcconfig files (one for debug, one for release configs) for 
-# building pwsafe using a custom build of wxWidgets
+# This script parses the output of  wx-config and generates xcconfig file contents
+# on its standard output. Redirect it to one of the xcconfig files mentioned in
+# README.MAC.DEVELOPERS.txt
 #
-# Why would anyone want to build wxWidgets on OS X?
+# Usage:
 #
-# Even though Apple ships wxWidgets binaries/headers with Mac OS X (2.8.8 with Snow Leopard), 
-# anyone wanting to build the release config of pwsafe on OS X will need to build wxWidgets 
-# first, because for some reason Apple didn't include the wxWidgets binaries for release build.  
-# Also, if he want to ship a binary that works on multiple versions of OS X, he will have to 
-# link pwsafe statically with wxWidgets.  Apple's build of wxWidgets consists of dylibs.
-#
-# Having built wxWidgets, unless someone is willing to "make install" wxWidgets and overwrite 
-# whatever shipped with the system, one will have to tell Xcode where it is for it to pick up 
-# the headers/libs. wxWidgets makes it easy by creating a script called 'wx-config' in its 
-# command-line build that spits out the correct location of headers/libs as well as compiler 
-# and liker settings compatible with that build of wxWidgets.  This is used by UNIX builds in 
-# makefiles compile/link with the desired build of wxWidgets where its trivial to read in the
-# settings from outputs of external commands.
-#
-# Since Xcode can't pick up settings from output of external commands , we use this script to 
-# put those settings into configuration files that Xcode can use. Xcode target configurations 
-# can be "based on" xcconfig files, which are essentially sets of name-value pairs.  For a 
-# target/configuration, Xcode will use the settings in its xcconfig file, if that setting is 
-# found. Else, it will use the setting value specified in its GUI.
-#
-# This script generates two files, pwsafe-{debug,release}.xcconfig upon which the configuration(s) 
-# of 'pwsafe' target in Xcode are based on. For now, it only picks up the location of headers/libs 
-# and NOT the other compiler/linker flags.
-#
-# Run this script in the same directory as 'pwsafe.xcodeproj'.  That's where Xcode expects the config files
+# It takes two parameters, and you must pass in both.
+# The first is either "-d" or "-r", to tell this script if you want to generate the
+# xcconfig for a Debug or Release build.  The second parameter is the full path to
+# the 'wx-config' script of the wxWidgets build you want to use.
 #
  
-
 sub usage {
-	die "usage: generate-configs -d <path to wx-config for debug builds> -r <path to wx-config to release builds>\n";
+	die "usage: generate-configs -d|-r <path to wx-config>\n\twhere -d & -r stand for Debug/Release";
 }
 
-
-my $dbg_wxconfig;
-my $rel_wxconfig;
-
-if (scalar @ARGV != 4){
+if (scalar @ARGV != 2){
 	&usage;
 }
 
-for (my $i = 0; $i < 2; $i++) {
-	my $val  = pop @ARGV;
+my $wxconfig = pop @ARGV;
 	my $flag = pop @ARGV;
-	if ($flag eq "-d") {
-		$dbg_wxconfig = $val;
-	}
-	elsif ($flag eq "-r") {
-		$rel_wxconfig = $val;
-	}
-	else {
-		print "unexpected flag\n";
-		&usage;
-	}
-}
 
-#don't change these names! Xcode expects them.  They are always generated in the current directory
-$debug_config='./pwsafe-debug.xcconfig';
-$release_config='./pwsafe-release.xcconfig';
+die "unexpected flag: $flag" unless $flag eq "-d" || $flag eq "-r";
+die "wx-config \"$wxconfig\" does not exist" unless -e $wxconfig;
+die "wx-config \"$wxconfig\" is not executable" unless -x $wxconfig;
 
-#debug configuration
-open DBG, "> $debug_config" or die "cannot open $debug_config";
+my $dbgflag = $flag eq "-d" ? "yes" : "no";
 my $libflags;
-foreach(split /\s+/, `$dbg_wxconfig --libs --unicode=yes --debug=yes`) {
+foreach(split /\s+/, `$wxconfig --libs --unicode=yes --debug=$dbgflag`) {
 	$libflags .= $_." " if /\A-[lL]|\.a\Z/;
 }
-print DBG "OTHER_LDFLAGS = ", $libflags, "\n";
+print "OTHER_LDFLAGS = ", $libflags, "\n";
 
 my $cxxflags;
-foreach(split /\s+/, `$dbg_wxconfig --cxxflags --unicode=yes --debug=yes`) {
+foreach(split /\s+/, `$wxconfig --cxxflags --unicode=yes --debug=$dbgflag`) {
 	$cxxflags .= $1." " if /\A-I(.+)/;
 }
-print DBG "HEADER_SEARCH_PATHS = ", $cxxflags, "\n";
-close DBG;
-
-#release configuration
-open REL, "> $release_config" or die "cannot open $release_config";
-
-$libflags="";
-foreach(split /\s+/, `$rel_wxconfig --libs --unicode=yes --debug=no`) {
-	$libflags .= $_." " if /\A-[lL]|\.a\Z/;
-}
-print REL "OTHER_LDFLAGS = ", $libflags, "\n";
-
-$cxxflags="";
-foreach(split /\s+/, `$rel_wxconfig --cxxflags --unicode=yes --debug=no`) {
-	$cxxflags .= $1." " if /\A-I(.+)/;
-}
-print REL "HEADER_SEARCH_PATHS = ", $cxxflags, "\n";
-
+print "HEADER_SEARCH_PATHS = ", $cxxflags, "\n";

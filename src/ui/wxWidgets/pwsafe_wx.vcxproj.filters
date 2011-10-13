@@ -259,5 +259,11 @@
     <ClCompile Include="wxutils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ComparisonGridTable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SizeRestrictedPanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

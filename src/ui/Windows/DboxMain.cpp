@@ -213,12 +213,6 @@ DboxMain::~DboxMain()
   std::bitset<UIInterFace::NUM_SUPPORTED> bsSupportedFunctions(0);
   m_core.SetUIInterFace(NULL, UIInterFace::NUM_SUPPORTED, bsSupportedFunctions);
 
-  MapKeyNameIDIter KNIDiter;
-  for (KNIDiter = m_MapKeyNameID.begin(); KNIDiter != m_MapKeyNameID.end(); KNIDiter++) {
-    free((void *)KNIDiter->second);
-    KNIDiter->second = NULL;
-  }
-
   ::DestroyIcon(m_hIcon);
   ::DestroyIcon(m_hIconSm);
 
@@ -1996,7 +1990,7 @@ void DboxMain::OnSysCommand(UINT nID, LPARAM lParam)
     return;
   }
 
-  UINT const nSysID = nID & 0xFFFF;
+  UINT const nSysID = nID & 0xFFF0;
   switch (nSysID) {
     case SC_MINIMIZE:
       break;
@@ -2387,7 +2381,7 @@ LRESULT DboxMain::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
           sxLL += L"_";
           sxLL += sxCC;
         }
-        app.m_vlanguagefiles[iLang].lcid = app.m_vlanguagefiles[iLang].lcid;
+        lcid = app.m_vlanguagefiles[iLang].lcid = app.m_vlanguagefiles[iLang].lcid;
       }
       PWSprefs::GetInstance()->SetPref(PWSprefs::LanguageFile, sxLL);
       SetLanguage(lcid);
@@ -2399,6 +2393,7 @@ LRESULT DboxMain::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 
 void DboxMain::SetLanguage(LCID lcid)
 {
+  UNREFERENCED_PARAMETER(lcid);
   // Show wait cursor
   CWaitCursor wait;
 
@@ -2411,7 +2406,7 @@ void DboxMain::SetLanguage(LCID lcid)
   CMenuShortcut::InitStrings();
 
   // Set up menu shortcuts
-  SetUpInitialMenuStrings(lcid);
+  SetUpInitialMenuStrings();
 
   // Set up local strings
   SetLocalStrings();

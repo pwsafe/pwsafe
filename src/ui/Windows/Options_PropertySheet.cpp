@@ -15,7 +15,7 @@
 
 IMPLEMENT_DYNAMIC(COptions_PropertySheet, CPWPropertySheet)
 
-COptions_PropertySheet::COptions_PropertySheet(UINT nID, CWnd* pParent)
+COptions_PropertySheet::COptions_PropertySheet(UINT nID, CWnd* pParent, const bool bLongPPs)
   : CPWPropertySheet(nID, pParent), m_save_bSymbols(L""),
   m_save_iUseOwnSymbols(DEFAULT_SYMBOLS), m_save_iPreExpiryWarnDays(0),
   m_bIsModified(false), m_bChanged(false),
@@ -41,7 +41,7 @@ COptions_PropertySheet::COptions_PropertySheet(UINT nID, CWnd* pParent)
 
   // Only now allocate the PropertyPages - after all data there
   // to be used by their c'tors
-  m_OPTMD.bLongPPs = chooseResource();
+  m_OPTMD.bLongPPs = bLongPPs; // chooseResource();
 
   switch (nID) {
     case IDS_OPTIONS:
@@ -55,7 +55,6 @@ COptions_PropertySheet::COptions_PropertySheet(UINT nID, CWnd* pParent)
       m_pp_system          = new COptionsSystem(this, &m_OPTMD);
 
       m_pp_shortcuts->InitialSetup(m_OPTMD.pDbx->GetMapMenuShortcuts(),
-                                   m_OPTMD.pDbx->GetMapKeyNameID(),
                                    m_OPTMD.pDbx->GetExcludedMenuItems(),
                                    m_OPTMD.pDbx->GetReservedShortcuts());
 
@@ -98,7 +97,7 @@ BOOL COptions_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
 {
   // There is no OnOK for classes derived from CPropertySheet,
   // so we make our own!
-  if (LOWORD(wParam) == IDOK) {
+  if (LOWORD(wParam) == IDOK && HIWORD(wParam) == BN_CLICKED) {
     // First send a message to all loaded pages using base class function.
     // We want them all to update their variables in the Master Data area.
     // And call OnApply() rather than the default OnOK processing

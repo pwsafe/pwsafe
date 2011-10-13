@@ -32,6 +32,9 @@
 #include "../../core/PWScore.h"
 #include <wx/tokenzr.h>
 
+#ifdef __WXMSW__
+#include <wx/msw/msvcrt.h>
+#endif
 
 ////@begin XPM images
 ////@end XPM images
@@ -254,6 +257,16 @@ int PWSGridTable::GetColumnFieldType(int colID)
   wxCHECK_MSG(colID >= 0 && size_t(colID) < WXSIZEOF(PWSGridCellData), CItemData::END,
                 wxT("column ID is greater than the number of columns in PWSGrid"));
   return PWSGridCellData[colID].ft;
+}
+
+//static
+int PWSGridTable::Field2Column(int fieldType)
+{
+  for(int n = 0; n < int(WXSIZEOF(PWSGridCellData)); ++n) {
+    if (PWSGridCellData[n].ft == fieldType)
+      return n; //or it might be the position: PWSGridCellData[n].position
+  }
+  return wxNOT_FOUND;
 }
 
 void PWSGridTable::SaveSettings(void) const

@@ -98,11 +98,14 @@ public:
   void Clear() {DeleteAllItems(); m_item_map.clear();} // consistent name w/PWSgrid
   void AddItem(const CItemData &item);
   void UpdateItem(const CItemData &item);
+  void UpdateItemField(const CItemData &item, CItemData::FieldType ft);
   CItemData *GetItem(const wxTreeItemId &id) const;
   wxTreeItemId Find(const pws_os::CUUID &uuid) const;
   wxTreeItemId Find(const CItemData &item) const;
   bool Remove(const pws_os::CUUID &uuid); // only remove from tree, not from m_core
   void SelectItem(const pws_os::CUUID& uuid);
+  void SortChildrenRecursively(const wxTreeItemId& item);
+  wxString GetItemGroup(const wxTreeItemId& item) const;
 
  private:
   //overriden from base for case-insensitive sort

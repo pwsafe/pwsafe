@@ -442,6 +442,8 @@ public:
   long GetEventRUEIndex(const wxCommandEvent& evt) const;
   bool IsRUEEvent(const wxCommandEvent& evt) const;
   void RebuildGUI(const int iView = iBothViews);
+  void RefreshEntryFieldInGUI(const CItemData& item, CItemData::FieldType ft);
+  void RefreshEntryPasswordInGUI(const CItemData& item);
   void CreateDragBar();
   void RefreshToolbarButtons();
   PWSDragBar* GetDragBar();
@@ -483,6 +485,8 @@ public:
   bool m_bTSUpdated;
   wxString m_savedDBPrefs;
   enum {iListOnly = 1, iTreeOnly = 2, iBothViews = 3};
+  // top-level windows that we hid while locking the UI
+  wxWindowList hiddenWindows;
 };
 
 BEGIN_DECLARE_EVENT_TYPES()

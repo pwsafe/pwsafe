@@ -66,15 +66,15 @@ public:
     HeaderRecord &operator =(const HeaderRecord &hdr);
 
     unsigned short m_nCurrentMajorVersion, m_nCurrentMinorVersion;
-    pws_os::CUUID m_file_uuid;
+    pws_os::CUUID m_file_uuid;         // Unique DB ID
     int m_nITER; // Formally not part of the header.
-    std::vector<bool> m_displaystatus; // tree expansion  state vector
-    StringX m_prefString; // prefererences stored in the file
+    std::vector<bool> m_displaystatus; // Tree expansion state vector
+    StringX m_prefString;              // Prefererences stored in the file
     time_t m_whenlastsaved; // When last saved
     StringX m_lastsavedby; // and by whom
     StringX m_lastsavedon; // and by which machine
     StringX m_whatlastsaved; // and by what application
-    StringX m_dbname, m_dbdesc; // descriptive name, description
+    StringX m_dbname, m_dbdesc;        // Descriptive name, Description
     UUIDList m_RUEList;
   };
 

@@ -52,6 +52,8 @@ struct st_DBProperties {
   StringX whatlastsaved;
   StringX file_uuid;
   StringX unknownfields;
+  StringX db_name;
+  StringX db_description;
 };
 
 class PWScore : public CommandInterface
@@ -130,11 +132,12 @@ public:
 
   void NewFile(const StringX &passkey);
   int WriteCurFile() {return WriteFile(m_currfile);}
-  int WriteFile(const StringX &filename, PWSfile::VERSION version = PWSfile::VCURRENT);
+  int WriteFile(const StringX &filename, const bool bUpdateSig = true,
+                PWSfile::VERSION version = PWSfile::VCURRENT);
   int WriteV17File(const StringX &filename)
-  {return WriteFile(filename, PWSfile::V17);}
+  {return WriteFile(filename, true, PWSfile::V17);}
   int WriteV2File(const StringX &filename)
-  {return WriteFile(filename, PWSfile::V20);}
+  {return WriteFile(filename, true, PWSfile::V20);}
 
   // R/O file status
   void SetReadOnly(bool state) {m_IsReadOnly = state;}
@@ -347,8 +350,11 @@ public:
 
   // Validate() returns true if data modified, false if all OK
   bool Validate(stringT &status, CReport &rpt, const size_t iMAXCHARS = 0);
+
   const PWSfile::HeaderRecord &GetHeader() const {return m_hdr;}
   void GetDBProperties(st_DBProperties &st_dbp);
+  void SetHeaderUserFields(st_DBProperties &st_dbp);
+
   StringX &GetDBPreferences() {return m_hdr.m_prefString;}
 
   // Filters

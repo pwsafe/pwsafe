@@ -137,7 +137,7 @@ DEPDIR= ./deps
 CPPINC += -I../..
 
 LDFLAGS=$(LIBS) -L$(LIBPATH) $(LINKERFLAGS) $(XERCESLIBFLAGS)
-CPPFLAGS=$(CPPINC) $(GCCFLAGS) $(DEBUGFLAGS) $(OPTFLAGS) $(WARNINGFLAGS) $(XERCESCPPFLAGS)
+CPPFLAGS=$(CXXFLAGS) $(CPPINC) $(GCCFLAGS) $(DEBUGFLAGS) $(OPTFLAGS) $(WARNINGFLAGS) $(XERCESCPPFLAGS)
 
 SOURCES= passwordsafeframe.cpp \
 	pwsafeapp.cpp safecombinationentry.cpp \
@@ -156,7 +156,8 @@ SOURCES= passwordsafeframe.cpp \
 	AdvancedSelectionDlg.cpp ViewReport.cpp dragbar.cpp \
 	PWSDragBar.cpp MergeDlg.cpp ExternalKeyboardButton.cpp \
 	PwsSync.cpp DbSelectionPanel.cpp CompareDlg.cpp \
-	wxutils.cpp ComparisonGridTable.cpp SizeRestrictedPanel.cpp
+	wxutils.cpp ComparisonGridTable.cpp SizeRestrictedPanel.cpp \
+	fieldselectionpanel.cpp fieldselectiondlg.cpp
 
 
 OBJECTS=$(SOURCES:%.cpp=$(OBJECTPATH)/%.o)

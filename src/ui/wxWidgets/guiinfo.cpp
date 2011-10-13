@@ -23,6 +23,10 @@
 #include "./PWSgrid.h"
 #include <functional>
 
+#ifdef __WXMSW__
+#include <wx/msw/msvcrt.h>
+#endif
+
 void GUIInfo::Save(PasswordSafeFrame* frame)
 {
   SaveTreeViewInfo(frame->m_tree);
@@ -103,6 +107,10 @@ void GUIInfo::SaveTreeViewInfo(PWSTreeCtrl* tree)
 
 void GUIInfo::SaveGridViewInfo(PWSGrid* grid)
 {
+  //has the grid been initialized?
+  if (grid->GetNumItems() == 0)
+    return;
+
   const int row = grid->YToRow(0);
   if (row != wxNOT_FOUND) {
     CItemData* item = grid->GetItem(row);

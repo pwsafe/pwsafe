@@ -25,8 +25,11 @@
 #include "./AdvancedSelectionDlg.h"
 #include "../../core/PWScore.h"
 #include "./wxutils.h"
-#include "./addeditpropsheet.h"
 #include <algorithm>
+
+#ifdef __WXMSW__
+#include <wx/msw/msvcrt.h>
+#endif
 
 class ComparisonGridCellAttr: public wxGridCellAttr
 {
@@ -146,33 +149,8 @@ void ComparisonGridTable::AutoSizeField(CItemData::FieldType ft)
     GetView()->AutoSizeColumn(col);
 }
 
-
-// UIinterface overrides
-//------------------------------------------------------------
-void ComparisonGridTable::DatabaseModified(bool /*bChanged*/)
+void ComparisonGridTable::RefreshRow(int row) const
 {
-}
-
-// UpdateGUI - used by GUI if one or more entries have changed
-// and the entry/entries needs refreshing in GUI:
-void ComparisonGridTable::UpdateGUI(UpdateGUICommand::GUI_Action /*ga*/,
-                                     const pws_os::CUUID &/*entry_uuid*/,
-                                     CItemData::FieldType /*ft*/ /*= CItemData::START*/,
-                                     bool /*bUpdateGUI*/ /*= true*/)
-{
-}
-
-// GUISetupDisplayInfo: let GUI populate DisplayInfo field in an entry
-void ComparisonGridTable::GUISetupDisplayInfo(CItemData &/*ci*/)
-{
-}
-
-// GUIRefreshEntry: called when the entry's graphic representation
-// may have changed - GUI should update and invalidate its display.
-void ComparisonGridTable::GUIRefreshEntry(const CItemData &ci)
-{
-  int row = GetItemRow(ci.GetUUID());
-  if (row != wxNOT_FOUND) {
     wxRect rect( GetView()->CellToRect( row, 0 ) );
     rect.x = 0;
     rect.width = GetView()->GetGridWindow()->GetClientSize().GetWidth();
@@ -180,12 +158,6 @@ void ComparisonGridTable::GUIRefreshEntry(const CItemData &ci)
     GetView()->CalcScrolledPosition(0, rect.y, &dummy, &rect.y);
     GetView()->GetGridWindow()->Refresh( false, &rect );
   }
-}
-
-// UpdateWizard: called to update text in Wizard during export Text/XML.
-void ComparisonGridTable::UpdateWizard(const stringT &/*s*/)
-{
-}
 
 ///////////////////////////////////////////////////////////////
 //UniSafeCompareGridTable
@@ -202,6 +174,11 @@ UniSafeCompareGridTable::UniSafeCompareGridTable(SelectionCriteria* criteria,
 {
   m_gridAttr->SetBackgroundColour(bgColour);
   m_gridAttr->SetOverflow(false);
+}
+
+UniSafeCompareGridTable::~UniSafeCompareGridTable()
+{
+  m_gridAttr->DecRef();
 }
 
 int UniSafeCompareGridTable::GetNumberRows()
@@ -261,26 +238,16 @@ wxString UniSafeCompareGridTable::GetValue(int row, int col)
   return retval;
 }
 
-wxGridCellAttr* UniSafeCompareGridTable::GetAttr(int row, int col, wxGridCellAttr::wxAttrKind /*kind*/)
+wxGridCellAttr* UniSafeCompareGridTable::GetAttr(int /*row*/, int /*col*/, wxGridCellAttr::wxAttrKind /*kind*/)
 {
   //wxLogDebug(wxT("UniSafeCompareGridTable::GetAttr called for %d, %d"), row, col);
   m_gridAttr->IncRef();
   return m_gridAttr;
 }
 
-void UniSafeCompareGridTable::EditEntry(int idx, wxWindow* parent, bool readonly)
-{
-  wxCHECK_RET(readonly, wxT("Trying to edit entry in non-conflicting grids, which are read-only"));
-  AddEditPropSheet ae(parent, 
-                        *m_core,
-                        AddEditPropSheet::VIEW,
-                        &m_core->Find(m_compData->at(idx).*m_uuidptr)->second);
-  ae.ShowModal();
-}
 
 
-
-int UniSafeCompareGridTable::GetItemRow(const pws_os::CUUID& uuid)
+int UniSafeCompareGridTable::GetItemRow(const pws_os::CUUID& uuid) const
 {
   CompareData::iterator itr = std::find_if(m_compData->begin(),
                                             m_compData->end(),
@@ -289,6 +256,64 @@ int UniSafeCompareGridTable::GetItemRow(const pws_os::CUUID& uuid)
     return std::distance(m_compData->begin(), itr);
   else
     return wxNOT_FOUND;
+}
+
+pws_os::CUUID UniSafeCompareGridTable::GetSelectedItemId(bool readOnly)
+{
+  wxArrayInt selection = GetView()->GetSelectedRows();
+  wxCHECK_MSG(!selection.IsEmpty(), pws_os::CUUID::NullUUID(), wxT("Trying to retrieve selected item id when nothing is selected"));
+  if (readOnly)
+    return m_compData->at(selection[0]).uuid1;
+  else
+    return m_compData->at(selection[0]).uuid0;
+}
+
+bool UniSafeCompareGridTable::DeleteRows(size_t pos, size_t numRows)
+{
+  size_t curNumRows = m_compData->size();
+
+  if (pos > curNumRows) {
+    wxFAIL_MSG( wxString::Format(
+                 wxT("Called UniSafeCompareGridTable::DeleteRows(pos=%lu, N=%lu)\nPos value is invalid for present table with %lu rows"),
+                 static_cast<unsigned int>(pos),
+                 static_cast<unsigned int>(numRows),
+                 static_cast<unsigned int>(curNumRows)
+                 ));
+    return false;
+  }
+
+  if (numRows > curNumRows - pos)
+    numRows = curNumRows - pos;
+
+  CompareData::iterator from = m_compData->begin(), to = m_compData->begin();
+  std::advance(from, pos);
+  std::advance(to, pos + numRows);
+  m_compData->erase(from, to);
+
+  if (GetView()) {
+    //This will actually remove the item from grid display
+    wxGridTableMessage msg(this,
+                           wxGRIDTABLE_NOTIFY_ROWS_DELETED,
+                           reinterpret_cast<int &>(pos),
+                           reinterpret_cast<int &>(numRows));
+    GetView()->ProcessTableMessage(msg);
+  }
+
+  return true;  
+}
+
+bool UniSafeCompareGridTable::AppendRows(size_t numRows/*=1*/)
+{
+  if (GetView()) {
+    wxCHECK_MSG(m_compData->size() == GetView()->GetNumberRows() + numRows, 
+                false,
+                wxT("Items must be added to UnisafeComparisonGridTable's data before adding rows"));
+    wxGridTableMessage msg(this,
+                           wxGRIDTABLE_NOTIFY_ROWS_APPENDED,
+                           reinterpret_cast<int &>(numRows));
+    GetView()->ProcessTableMessage(msg);
+  }
+  return true;
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -314,6 +339,11 @@ MultiSafeCompareGridTable::MultiSafeCompareGridTable(SelectionCriteria* criteria
   m_comparisonAttr->SetAlignment(wxALIGN_LEFT, wxALIGN_TOP);
 }
 
+MultiSafeCompareGridTable::~MultiSafeCompareGridTable()
+{
+  m_currentAttr->DecRef();
+  m_comparisonAttr->DecRef();
+}
 
 int MultiSafeCompareGridTable::GetNumberRows()
 {
@@ -388,7 +418,7 @@ wxString MultiSafeCompareGridTable::GetValue(int row, int col)
   return retval;
 }
 
-wxGridCellAttr* MultiSafeCompareGridTable::GetAttr(int row, int col, wxGridCellAttr::wxAttrKind /*kind*/)
+wxGridCellAttr* MultiSafeCompareGridTable::GetAttr(int row, int /*col*/, wxGridCellAttr::wxAttrKind /*kind*/)
 {
   //wxLogDebug(wxT("MultiSafeCompareGridTable::GetAttr called for %d, %d"), row, col);
   wxGridCellAttr* attr = ( row%2 == 0? m_currentAttr: m_comparisonAttr );
@@ -404,28 +434,7 @@ wxString MultiSafeCompareGridTable::GetRowLabelValue(int row)
   return wxGridTableBase::GetRowLabelValue(row/2);
 }
 
-void MultiSafeCompareGridTable::EditEntry(int idx, wxWindow* parent, bool readonly)
-{
-  int realIndex = idx/2;
-
-  if (readonly) {
-    AddEditPropSheet ae(parent, 
-                        *m_otherCore,
-                        AddEditPropSheet::VIEW,
-                        &m_otherCore->Find(m_compData->at(realIndex).uuid1)->second);
-    ae.ShowModal();
-  }
-  else {
-    AddEditPropSheet ae(parent, 
-                        *m_currentCore,
-                        AddEditPropSheet::EDIT,
-                          &m_currentCore->Find(m_compData->at(realIndex).uuid0)->second,
-                          this);
-    ae.ShowModal();
-  }
-}
-
-int MultiSafeCompareGridTable::GetItemRow(const pws_os::CUUID& uuid)
+int MultiSafeCompareGridTable::GetItemRow(const pws_os::CUUID& uuid) const
 {
   CompareData::iterator itr = std::find_if(m_compData->begin(),
                                             m_compData->end(),
@@ -434,6 +443,56 @@ int MultiSafeCompareGridTable::GetItemRow(const pws_os::CUUID& uuid)
     return std::distance(m_compData->begin(), itr)*2 + (itr->uuid0 == uuid? 0: 1);
   else
     return wxNOT_FOUND;
+}
+
+pws_os::CUUID MultiSafeCompareGridTable::GetSelectedItemId(bool readOnly)
+{
+  wxArrayInt selection = GetView()->GetSelectedRows();
+  wxCHECK_MSG(!selection.IsEmpty(), pws_os::CUUID::NullUUID(), wxT("Trying to retrieve selected item id when nothing is selected"));
+  if (readOnly)
+    return m_compData->at(selection[0]/2).uuid1;
+  else
+    return m_compData->at(selection[0]/2).uuid0;
+}
+
+bool MultiSafeCompareGridTable::DeleteRows(size_t pos, size_t numRows)
+{
+  //this is what gets deleted in the vector
+  size_t datapos = pos/2;
+  size_t datarows = numRows/2 + numRows %2;
+
+  size_t curNumRows = m_compData->size();
+
+  if (datapos > curNumRows) {
+    wxFAIL_MSG( wxString::Format(
+                 wxT("Called MultiSafeCompareGridTable::DeleteRows(pos=%lu, N=%lu)\nPos value is invalid for present table with %lu rows"),
+                 static_cast<unsigned int>(pos),
+                 static_cast<unsigned int>(numRows),
+                 static_cast<unsigned int>(curNumRows)
+                 ));
+    return false;
+  }
+
+  if (datarows > curNumRows - datapos)
+    datarows = curNumRows - datapos;
+
+  CompareData::iterator from = m_compData->begin(), to = m_compData->begin();
+  std::advance(from, datapos);
+  std::advance(to, datapos + datarows);
+  m_compData->erase(from, to);
+
+  if (GetView()) {
+    //make sure an even number of rows are deleted
+    numRows = numRows + numRows%2;
+    //This will actually remove the item from grid display
+    wxGridTableMessage msg(this,
+                           wxGRIDTABLE_NOTIFY_ROWS_DELETED,
+                           reinterpret_cast<int &>(pos),
+                           reinterpret_cast<int &>(numRows));
+    GetView()->ProcessTableMessage(msg);
+  }
+
+  return true;  
 }
 
 //////////////////////////////////////////////////////////////////
@@ -445,8 +504,29 @@ ComparisonGrid::ComparisonGrid(wxWindow* parent, wxWindowID id): wxGrid(parent, 
   SetRowLabelAlignment(horiz, wxALIGN_BOTTOM);
 }
 
+bool ComparisonGrid::IsRowSelected(int row) const
+{
+  //this works only if we are in wxGridSelectRows mode
+  return IsInSelection(row, 0);
+}
+
+//remove the grid line between every other row to make two rows appear as one
 wxPen ComparisonGrid::GetRowGridLinePen(int row)
 {
-  return row%2 == 0? wxPen(CurrentBackgroundColor) : wxGrid::GetRowGridLinePen(row);
+  if (row%2 == 0) {
+    if (IsRowSelected(row)) {
+      if (wxWindow::FindFocus() == GetGridWindow()) {
+        return wxPen(GetSelectionBackground());
+}
+      else {
+        //just like it is hard-coded in wxGridCellRenderer::Draw()
+        return wxPen(wxSystemSettings::GetColour(wxSYS_COLOUR_BTNSHADOW));
+      }
+    }
+    else {
+      return wxPen(GetCellBackgroundColour(row,0));
+    }
+  }
+  return wxGrid::GetRowGridLinePen(row);
 }
 

@@ -25,6 +25,10 @@
 #include "../../core/PWScore.h"
 #include "./wxutils.h"
 
+#ifdef __WXMSW__
+#include <wx/msw/msvcrt.h>
+#endif
+
 /*
  * Reads a file into a PWScore object, and displays an appropriate msgbox
  * in case of failure.  Returns PWScore::SUCCESS on success
@@ -80,3 +84,96 @@ int ReadCore(PWScore& othercore, const wxString& file, const StringX& combinatio
   
   return rc;
 }
+
+
+void HideWindowRecursively(wxTopLevelWindow* win, wxWindowList& hiddenWindows)
+{
+  if (!win)
+    return;
+
+  wxWindowList& children = win->GetChildren();
+  for(wxWindowList::iterator itr = children.begin(); itr != children.end(); ++itr) {
+    if ((*itr)->IsTopLevel() && (*itr)->IsShown()) {
+      HideWindowRecursively(wxDynamicCast(*itr, wxTopLevelWindow), hiddenWindows);
+    }
+  }
+  //Don't call Hide() here, which just calls Show(false), which is overriden in 
+  //derived classes, and wxDialog actually cancels the modal loop and closes the window
+  win->wxWindow::Show(false);
+  //push_front ensures we Show() in the reverse order of Hide()'ing
+  hiddenWindows.push_front(win);
+}
+
+void ShowWindowRecursively(wxWindowList& hiddenWindows)
+{
+  for(wxWindowList::iterator itr = hiddenWindows.begin(); itr != hiddenWindows.end(); ++itr) {
+    wxWindow* win = (*itr);
+    //Show is virtual, and dialog windows assume the window is just starting up when Show()
+    //is called.  Make sure to call the base version
+    win->wxWindow::Show(true);
+    win->Raise();
+    win->Update();
+  }
+  hiddenWindows.clear();
+}
+
+/////////////////////////////////////////////////////////////
+// MultiCheckboxValidator
+//
+MultiCheckboxValidator::MultiCheckboxValidator(int ids[],
+                                               size_t num,
+                                               const wxString& msg,
+                                               const wxString& title): m_ids(new int[num]),
+                                                                       m_count(num),
+                                                                       m_msg(msg),
+                                                                       m_title(title)
+
+{
+  memcpy(m_ids, ids, sizeof(m_ids[0])*m_count);
+}
+
+MultiCheckboxValidator::MultiCheckboxValidator(const MultiCheckboxValidator& other):
+                                                                        m_ids(new int[other.m_count]),
+                                                                        m_count(other.m_count),
+                                                                        m_msg(other.m_msg),
+                                                                        m_title(other.m_title)
+{
+  memcpy(m_ids, other.m_ids, sizeof(m_ids[0])*m_count);
+}
+
+MultiCheckboxValidator::~MultiCheckboxValidator()
+{
+  delete [] m_ids;
+}
+
+wxObject* MultiCheckboxValidator::Clone() const
+{
+  return new MultiCheckboxValidator(m_ids, m_count, m_msg, m_title);
+}
+
+bool MultiCheckboxValidator::Validate(wxWindow* parent)
+{
+  for(size_t idx = 0; idx < m_count; ++idx) {
+    wxWindow* win = GetWindow()->FindWindow(m_ids[idx]);
+    if (win) {
+      if (win->IsEnabled()) {
+        wxCheckBox* cb = wxDynamicCast(win, wxCheckBox);
+        if (cb) {
+          if (cb->IsChecked()) {
+            return true;
+          }
+        }
+        else {
+          wxFAIL_MSG(wxString::Format(wxT("Child(id %d) is not a checkbox"), m_ids[idx]));
+        }
+      }
+    }
+    else {
+      wxFAIL_MSG(wxString::Format(wxT("No child with id (%d) found in MultiCheckboxValidator"), m_ids[idx]));
+    }
+  }
+  wxMessageBox(m_msg, m_title, wxOK|wxICON_EXCLAMATION, parent);
+  return false;
+}
+
+int pless(int* first, int* second) { return *first - *second; }

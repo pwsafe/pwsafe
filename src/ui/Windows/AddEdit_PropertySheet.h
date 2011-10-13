@@ -25,6 +25,7 @@ class CAddEdit_PropertySheet : public CPWPropertySheet
 public:
   CAddEdit_PropertySheet(UINT nID, CWnd* pDbx, PWScore *pcore, 
                          CItemData *pci_original, CItemData *pci,
+                         const bool bLongPPs,
                          const StringX currentDB = L"");
   ~CAddEdit_PropertySheet();
 
@@ -68,6 +69,10 @@ public:
 
 protected:
   st_AE_master_data m_AEMD;
+
+  afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
+
+  DECLARE_MESSAGE_MAP()
 
 private:
   void SetupInitialValues();

@@ -1119,6 +1119,7 @@
     <ClCompile Include="ImportTextDlg.cpp" />
     <ClCompile Include="ImportXMLDlg.cpp" />
     <ClCompile Include="InfoDisplay.cpp" />
+    <ClCompile Include="InputBox.cpp" />
     <ClCompile Include="LVHdrCtrl.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainEdit.cpp" />
@@ -1241,6 +1242,7 @@
     <ClInclude Include="ImportTextDlg.h" />
     <ClInclude Include="ImportXMLDlg.h" />
     <ClInclude Include="InfoDisplay.h" />
+    <ClInclude Include="InputBox.h" />
     <ClInclude Include="jprdebug.h" />
     <ClInclude Include="LVHdrCtrl.h" />
     <ClInclude Include="filter\ManageFiltersDlg.h" />

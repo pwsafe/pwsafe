@@ -15,6 +15,8 @@ CP = /bin/cp
 RM = /bin/rm -rf
 SED = /bin/sed
 ZIP = /usr/bin/zip
+FIND = /usr/bin/find
+CHMOD = /bin/chmod
 
 RELDIR := ../../src/ui/wxWidgets/GCCUnicodeRelease
 DOCSDIR := ../../docs
@@ -76,6 +78,7 @@ debtree:
 	@$(CP) $(XMLFILES) debian/usr/share/pwsafe/xml
 	@$(CP) $(HELPFILES) debian/usr/share/doc/passwordsafe/help
 	@$(MKDIR) debian/DEBIAN
+	@$(FIND) debian -type d -exec $(CHMOD) 755 {} \;
 	@$(SED) s/VERSION/$(RELEASENAME)/ < control > debian/DEBIAN/control
 	@$(CP) ../desktop/pwsafe.desktop debian/tmp
 	@$(CP) ../graphics/pwsafe.png debian/tmp

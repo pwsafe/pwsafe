@@ -8,13 +8,26 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2011-06-09 16:31+0100\n"
+"PO-Revision-Date: 2011-09-27 13:19+0100\n"
 "Last-Translator: Karel Van der Gcuht <karel@vandergucht.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
 #    ID:xxxxx = the menu ID corresponding to the accelerator
@@ -148,6 +161,10 @@ msgstr " 'Datensatz Änderungszeit'"
 msgid " 'Run Command'"
 msgstr " 'Kommando ausführen'"
 
+#. Resource IDs: (368)
+msgid " 'Shift+DCA'"
+msgstr "'Umschalt+DCA'"
+
 #. Resource IDs: (347)
 msgid " 'Title'"
 msgstr " 'Titel'"
@@ -221,6 +238,15 @@ msgstr " [Prozess ID=%s]"
 msgid "! Edit externally"
 msgstr "! Extern bearbeiten"
 
+#. Resource IDs: (368)
+#, c-format
+msgid "# characters: %d"
+msgstr "# Zeichen: %d"
+
+#. Resource IDs: (1456)
+msgid "#description"
+msgstr "#Beschreibung"
+
 #. Resource IDs: (1194)
 msgid "#entries"
 msgstr "#entries"
@@ -232,6 +258,10 @@ msgstr "#format"
 #. Resource IDs: (1193)
 msgid "#groups"
 msgstr "#groups"
+
+#. Resource IDs: (1455)
+msgid "#name"
+msgstr "#Name"
 
 #. Resource IDs: (1256)
 msgid "#unkflds"
@@ -1620,6 +1650,10 @@ msgid "Azeri Latin"
 msgstr "Azeri (Lateinisch)"
 
 #. Resource IDs: (65535)
+msgid "Backup Directory"
+msgstr "Verzeichnis der Sicherung"
+
+#. Resource IDs: (65535)
 msgid "Backup Directory:"
 msgstr "Verzeichnis der Sicherung:"
 
@@ -1918,6 +1952,10 @@ msgstr "Zwischenablage nach Beenden löschen"
 #. Resource IDs: (1061)
 msgid "Clear clipboard upon minimize"
 msgstr "Zwischenablage nach Minimieren löschen"
+
+#. Resource IDs: (1453)
+msgid "Click here or details on the various preferences."
+msgstr "Klicken Sie hier für Details zu den unterschiedlichen Einstellungen."
 
 #. Resource IDs: (351)
 msgid "Click here to pick field"
@@ -2409,6 +2447,10 @@ msgstr "Datenbankformat:"
 msgid "Database has some large entries!"
 msgstr "Die Datenbank enthält einige große Einträge!"
 
+#. Resource IDs: (1454)
+msgid "Database is read-only. Changes to DB preferences will not be saved and are only valid for this session."
+msgstr "Die Datenbank kann nur gelesen werden. Änderungen zu den Datenbankvoreinstellungen werden nicht gesichert, und sind nur während dieser Sitzung gültig."
+
 #. Resource IDs: (337)
 msgid "Database is read-only. Sorry, cannot save changed any database preferences."
 msgstr "Datenbank ist Nur-Lesen. Somit kann keine Einstellung der Datenbank gespeichert werden."
@@ -2476,6 +2518,10 @@ msgstr "Bestätigung für Basiseintrag löschen?"
 #. Resource IDs: (352)
 msgid "Delete a filter"
 msgstr "Filter löschen"
+
+#. Resource IDs: (65535)
+msgid "Description:"
+msgstr "Beschreibung:"
 
 #. Resource IDs: (340)
 msgid "Deselect all entries"
@@ -4156,6 +4202,10 @@ msgstr "Name"
 msgid "Name. Name. Name."
 msgstr "Name. Name. Name."
 
+#. Resource IDs: (65535)
+msgid "Name:"
+msgstr "Name:"
+
 #. Resource IDs: (32103)
 msgid "Nested &Tree"
 msgstr "&Baumstruktur"
@@ -4576,6 +4626,10 @@ msgstr "Passworthistorie"
 msgid "Password History Filter"
 msgstr "Filter Passworthistorie"
 
+#. Resource IDs: (367)
+msgid "Password Length"
+msgstr "Passwortlänge"
+
 #. Resource IDs: (327)
 msgid "Password Modified"
 msgstr "Passwort geändert"
@@ -4790,6 +4844,14 @@ msgstr "Bitte das aktuelle Master-Passwort eingeben, gefolgt von dem neuen. Gebe
 #. Resource IDs: (329)
 msgid "Please enter the key and verify it."
 msgstr "Bitte den Schlüssel eingeben und überprüfen Sie ihn."
+
+#. Resource IDs: (368)
+msgid "Please enter the new database description"
+msgstr "Bitte geben Sie eine neue Datenbankbeschreibung ein"
+
+#. Resource IDs: (368)
+msgid "Please enter the new database name"
+msgstr "Bitte geben Sie einen neuen Datenbanknamen ein"
 
 #. Resource IDs: (65535)
 msgid "Please enter the safe combination for this password database."
@@ -5441,9 +5503,25 @@ msgstr "Setswana"
 msgid "Shift"
 msgstr "Umsch"
 
+#. Resource IDs: (65535)
+msgid "Shift + Double-Click Action:"
+msgstr "Umschalt + Doppelklick Aktion:"
+
+#. Resource IDs: (65535)
+msgid "Shift Double-click action"
+msgstr "Umschalt  Doppelklick Aktion"
+
 #. Resource IDs: (356)
 msgid "Shift+"
 msgstr "Umsch+"
+
+#. Resource IDs: (192, 368)
+msgid "Shift+DCA"
+msgstr "Umschalt+DCA"
+
+#. Resource IDs: (368)
+msgid "Shift+Double Click Action"
+msgstr "Umschalt+Doppelklick Aktion"
 
 #. Resource IDs: (348)
 msgid "Shift+click to view current policy"

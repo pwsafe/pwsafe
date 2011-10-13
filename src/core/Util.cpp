@@ -520,13 +520,12 @@ void PWSUtil::Base64Decode(const StringX &inString, BYTE* &outData, size_t &out_
   out_len = st_length;
 }
 
-static const size_t MAX_TTT_LEN = 64; // Max tooltip text length
-StringX PWSUtil::NormalizeTTT(const StringX &in)
+StringX PWSUtil::NormalizeTTT(const StringX &in, size_t maxlen)
 {
   StringX ttt;
-  if (in.length() >= MAX_TTT_LEN) {
-    ttt = in.substr(0, MAX_TTT_LEN/2-6) + 
-      _T(" ... ") + in.substr(in.length() - MAX_TTT_LEN/2);
+  if (in.length() >= maxlen) {
+    ttt = in.substr(0, maxlen/2-6) + 
+      _T(" ... ") + in.substr(in.length() - maxlen/2);
   } else {
     ttt = in;
   }

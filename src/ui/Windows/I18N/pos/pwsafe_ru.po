@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2011-06-22 23:43+0300\n"
+"PO-Revision-Date: 2011-10-02 13:43+0300\n"
 "Last-Translator: Andrey Kuznetsov <pm_kan@users.sourceforge.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -177,6 +177,12 @@ msgstr " 'Сохранять время модификации'"
 msgid " 'Run Command'"
 msgstr " 'Выполнить команду'"
 
+# Действие по Shift+двойной клик (Shift+Double click action)
+#. Resource IDs: (368)
+#, fuzzy
+msgid " 'Shift+DCA'"
+msgstr " 'По Shift+дв. клик'"
+
 #. Resource IDs: (347)
 msgid " 'Title'"
 msgstr " 'Заголовок'"
@@ -256,6 +262,16 @@ msgstr " [Process ID=%s]"
 msgid "! Edit externally"
 msgstr "! Открыть во внешнем редакторе"
 
+#. Resource IDs: (368)
+#, c-format
+msgid "# characters: %d"
+msgstr " символов: %d"
+
+# can be ignored - no need to translate?
+#. Resource IDs: (1456)
+msgid "#description"
+msgstr "#description"
+
 # can be ignored - no need to translate
 #. Resource IDs: (1194)
 msgid "#entries"
@@ -270,6 +286,11 @@ msgstr "#format"
 #. Resource IDs: (1193)
 msgid "#groups"
 msgstr "#groups"
+
+# can be ignored - no need to translate
+#. Resource IDs: (1455)
+msgid "#name"
+msgstr "#name"
 
 # can be ignored - no need to translate
 #. Resource IDs: (1256)
@@ -984,7 +1005,7 @@ msgstr "------------------------------------------------------------------------
 msgid "-merged-"
 msgstr "-объединено-"
 
-#. Resource IDs: (1223, 1432, 1435)
+#. Resource IDs: (1223, 1432, 1435, 1457, 1458)
 msgid "..."
 msgstr "..."
 
@@ -1352,7 +1373,7 @@ msgstr "Добавить элемент"
 msgid "Add Group"
 msgstr "Добавить группу"
 
-#. Resource IDs: (466)
+#. Resource IDs: (466, 504)
 # закладка в диалоге создания/редактирования элемента
 msgid "Additional"
 msgstr "Дополнительно"
@@ -1611,6 +1632,10 @@ msgid "Azeri Latin"
 msgstr "Азербайджанская (латиница)"
 
 #. Resource IDs: (65535)
+msgid "Backup Directory"
+msgstr "Каталог для резервных копий"
+
+#. Resource IDs: (65535)
 msgid "Backup Directory:"
 msgstr "Каталог для резервных копий:"
 
@@ -1618,7 +1643,7 @@ msgstr "Каталог для резервных копий:"
 msgid "Backup Name"
 msgstr "Имя для резервной копии"
 
-#. Resource IDs: (137)
+#. Resource IDs: (137, 505)
 msgid "Backups"
 msgstr "Резервные копии"
 
@@ -1631,7 +1656,7 @@ msgstr "Исходный элемент:"
 msgid "Base:"
 msgstr "Начало:"
 
-#. Resource IDs: (465)
+#. Resource IDs: (465, 501)
 msgid "Basic"
 msgstr "Основные"
 
@@ -1908,6 +1933,11 @@ msgstr "Очищать буфер обмена при выходе"
 #. Resource IDs: (1061)
 msgid "Clear clipboard upon minimize"
 msgstr "Очищать буфер обмена при сворачивании"
+
+# урезано
+#. Resource IDs: (1453)
+msgid "Click here for details on the various preferences."
+msgstr "Щёлкните по этой надписи для получения справки."
 
 #. Resource IDs: (351)
 msgid "Click here to pick field"
@@ -2196,7 +2226,7 @@ msgid "Copy password to clipboard, minimize"
 msgstr "Копировать пароль в буфер и свернуть"
 
 # Урезано из-за ограничения длины
-#. Resource IDs: (1150)
+#. Resource IDs: (1151)
 msgid "Copy to Clipboard"
 msgstr "Копировать в буфер"
 
@@ -2345,7 +2375,7 @@ msgstr "Формат контейнера"
 #. Resource IDs: (192, 357)
 #, fuzzy
 msgid "DCA"
-msgstr "действие по двойному клику"
+msgstr "Действие по двойному клику"
 
 #. Resource IDs: (513)
 msgid "Danish"
@@ -2371,9 +2401,14 @@ msgstr "Формат контейнера:"
 msgid "Database has some large entries!"
 msgstr "В контейнере присутствуют большие элементы!"
 
+# урезано
+#. Resource IDs: (1454)
+msgid "Database is read-only. Changes to DB preferences will not be saved and are only valid for this session."
+msgstr "Контейнер открыт «только для чтения». Изменения настроек будут действительны только до завершения программы."
+
 #. Resource IDs: (337)
 msgid "Database is read-only. Sorry, cannot save changed any database preferences."
-msgstr "Контейнер доступен в режиме «только чтение». Извините, невозможно сохранить настройки контейнера."
+msgstr "Контейнер доступен в режиме «только чтение». Сохранение настроек контейнера невозможно."
 
 # хинт в статустной строке
 #. Resource IDs: (367)
@@ -2392,7 +2427,7 @@ msgstr "Контейнер проверен - ошибок не обнаруже
 msgid "Date/Time Information"
 msgstr "Информация о дате/времени"
 
-#. Resource IDs: (467)
+#. Resource IDs: (467, 502)
 # закладка в диалоге создания/редактирования элемента
 msgid "Dates and Times"
 msgstr "Дата и время"
@@ -2438,6 +2473,10 @@ msgstr "Подтверждаете удаление исходного элем�
 msgid "Delete a filter"
 msgstr "Удалить фильтр"
 
+#. Resource IDs: (65535)
+msgid "Description:"
+msgstr "Описание:"
+
 #. Resource IDs: (340)
 msgid "Deselect all entries"
 msgstr "Снять пометку со всех элементов"
@@ -2464,7 +2503,7 @@ msgstr "Информация о ярлыке для исходного элем�
 msgid "Devanagari - INSCRIPT"
 msgstr "Деванагари (инскрипт)"
 
-#. Resource IDs: (498)
+#. Resource IDs: (498, 511)
 #, fuzzy
 msgid "Dialog"
 msgstr "Диалог"
@@ -2481,7 +2520,7 @@ msgstr "Нет места на диске при обращении к %1."
 msgid "Dispatch exception: %1"
 msgstr "Обработка исключения: %1"
 
-#. Resource IDs: (138)
+#. Resource IDs: (138, 506)
 msgid "Display"
 msgstr "Отображение"
 
@@ -2529,6 +2568,7 @@ msgstr "Не восстанавливать автоматически сохр�
 msgid "Double Click Action"
 msgstr "Действие по двойному клику"
 
+# урезано
 #. Resource IDs: (65535)
 msgid "Double-Click Action:"
 msgstr "Действие по двойному клику"
@@ -2573,10 +2613,9 @@ msgstr "Щёлкните дважды для отправки письма по 
 msgid "Double-Click on entry to View/Edit it"
 msgstr "Щёлкните дважды для просмотра/редактирования"
 
-# урезано из-за ограничения длины
 #. Resource IDs: (65535)
 msgid "Double-click action"
-msgstr "По дв. клику"
+msgstr "По двойному клику"
 
 # хинт в статустной строке
 #. Resource IDs: (366)
@@ -4050,7 +4089,7 @@ msgstr "Минимальное кол-во символов"
 msgid "Minimum uppercase characters"
 msgstr "Минимальное кол-во прописных букв"
 
-#. Resource IDs: (139)
+#. Resource IDs: (139, 507)
 msgid "Misc."
 msgstr "Разное"
 
@@ -4103,6 +4142,10 @@ msgstr "Имя"
 #. Resource IDs: (1037)
 msgid "Name. Name. Name."
 msgstr "Имя. Имя. Имя."
+
+#. Resource IDs: (65535)
+msgid "Name:"
+msgstr "Имя:"
 
 #. Resource IDs: (32103)
 msgid "Nested &Tree"
@@ -4520,6 +4563,10 @@ msgstr "История паролей"
 msgid "Password History Filter"
 msgstr "Фильтр по истории паролей"
 
+#. Resource IDs: (367)
+msgid "Password Length"
+msgstr "Длина пароля"
+
 #. Resource IDs: (327)
 msgid "Password Modified"
 msgstr "Пароль изменён"
@@ -4528,7 +4575,7 @@ msgstr "Пароль изменён"
 msgid "Password Modified Time"
 msgstr "Время изменения паролей"
 
-#. Resource IDs: (141, 192, 345, 468)
+#. Resource IDs: (141, 192, 345, 468, 503, 508)
 msgid "Password Policy"
 msgstr "Политика создания паролей"
 
@@ -4608,7 +4655,7 @@ msgstr "Длина пароля меньше, чем сумма ограниче
 msgid "Password length must be between 4 and 1024."
 msgstr "Длина пароля должна быть от 4 до 1024 символов."
 
-#. Resource IDs: (1400, 65535)
+#. Resource IDs: (1400, 1448)
 msgid "Password length:"
 msgstr "Длина пароля:"
 
@@ -4728,6 +4775,14 @@ msgstr "Укажите текущий пароль, а затем новый п�
 #. Resource IDs: (329)
 msgid "Please enter the key and verify it."
 msgstr "Укажите ключ и подтвердите его."
+
+#. Resource IDs: (368)
+msgid "Please enter the new database description"
+msgstr "Введите новое описание контейнера"
+
+#. Resource IDs: (368)
+msgid "Please enter the new database name"
+msgstr "Введите новое имя контейнера"
 
 #. Resource IDs: (65535)
 msgid "Please enter the safe combination for this password database."
@@ -5380,9 +5435,27 @@ msgstr "Тсвана"
 msgid "Shift"
 msgstr "Shift"
 
+#. Resource IDs: (65535)
+msgid "Shift + Double-Click Action:"
+msgstr "Действие по Shift + двойной клик:"
+
+# Урезано из-за ограничения длины
+#. Resource IDs: (65535)
+msgid "Shift Double-click action"
+msgstr "По Shift + двойной клик"
+
 #. Resource IDs: (356)
 msgid "Shift+"
 msgstr "Shift+"
+
+#. Resource IDs: (192, 368)
+#, fuzzy
+msgid "Shift+DCA"
+msgstr "Действие по Shift+двойной клик"
+
+#. Resource IDs: (368)
+msgid "Shift+Double Click Action"
+msgstr "Действие по Shift + двойной клик"
 
 #. Resource IDs: (348)
 msgid "Shift+click to view current policy"
@@ -5409,7 +5482,7 @@ msgstr "Исходный элемент для ярлыка - пароль ск�
 msgid "Shortcut Key"
 msgstr "Комбинация клавиш"
 
-#. Resource IDs: (452)
+#. Resource IDs: (452, 509)
 msgid "Shortcuts"
 msgstr "Комбинации клавиш"
 
@@ -5559,7 +5632,7 @@ msgid "Start saving previous passwords"
 msgstr "Начать сохранение предыдущих паролей"
 
 # No need to translate these
-#. Resource IDs: (1107, 1264, 1408, 1410, 1416, 1423, 1424, 1428, 1441)
+#. Resource IDs: (1107, 1264, 1408, 1410, 1416, 1423, 1424, 1428, 1441, 1460)
 msgid "Static"
 msgstr "Static"
 
@@ -5642,7 +5715,7 @@ msgstr "Синхронизация текущего контейнера с:"
 msgid "Synchronizing from database: %s\r\n"
 msgstr "Синхронизация с контейнером: %s\r\n"
 
-#. Resource IDs: (143)
+#. Resource IDs: (143, 510)
 msgid "System"
 msgstr "Система"
 
@@ -6341,7 +6414,7 @@ msgstr "П&РОПИСНЫЕ буквы"
 msgid "Use Database De&faults"
 msgstr "Использовать настройки контейнера по &умолчанию"
 
-#. Resource IDs: (1378)
+#. Resource IDs: (1378, 1450)
 # галка в диалоге редактирования элемента
 msgid "Use Default"
 msgstr "по умолчанию"
@@ -7289,7 +7362,7 @@ msgid "little endian"
 msgstr "little endian"
 
 # Ex.: "Lock password database after 5 minutes idle"
-#. Resource IDs: (65535)
+#. Resource IDs: (1445)
 msgid "minutes idle"
 msgstr "минут бездействия"
 
@@ -7343,7 +7416,7 @@ msgstr "в строке "
 msgid "pixels"
 msgstr "пикселей"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (1446)
 msgid "previous passwords per entry"
 msgstr " предыдущих паролей для элемента"
 

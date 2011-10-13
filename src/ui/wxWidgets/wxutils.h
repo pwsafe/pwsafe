@@ -103,5 +103,86 @@ class PWScore;
 int ReadCore(PWScore& othercore, const wxString& file, const StringX& combination, 
                 bool showMsgbox = true, wxWindow* msgboxParent = NULL);
 
+inline const wxChar* ToStr(const wxString& s) {
+  if (s == wxEmptyString) {
+    return wxT("wxEmptyString");
+  }
+  else {
+    return s.GetData();
+  }
+}
+
+inline const wxChar* ToStr(bool b) {
+  return b? wxT("True"): wxT("False");
+}
+
+void HideWindowRecursively(wxTopLevelWindow* win, wxWindowList& hiddenWindows);
+void ShowWindowRecursively(wxWindowList& hiddenWindows);
+
+//ensures at least one of the checkboxes are selected
+class MultiCheckboxValidator: public wxValidator
+{
+  int* m_ids;
+  size_t m_count;
+  wxString m_msg, m_title;
+
+public:
+  MultiCheckboxValidator(int ids[], size_t num, const wxString& msg, const wxString& title);
+  MultiCheckboxValidator(const MultiCheckboxValidator&);
+  ~MultiCheckboxValidator();
+
+  virtual wxObject* Clone() const;
+  virtual bool Validate(wxWindow* parent);
+  //note that you need to derive from this class if
+  //the following two functions ought to do anything useful
+  virtual bool TransferToWindow() { return true; }
+  virtual bool TransferFromWindow() { return true; }
+
+};
+
+/*
+ * This class injects context data into an event, to avoid having
+ * to "remember" that data in member variables.  It does that by
+ * hooking itself in as a dynamic event handler entry into the
+ * event source, which are called before other types of handlers
+ */
+template <class evtClass>
+class EventDataInjector: public wxEvtHandler
+{
+  wxEvtHandler* m_evtSource;
+  void* m_clientData;
+  wxEventType m_eventType;
+  int m_windowId;
+  bool  m_oneShot;
+public:
+  EventDataInjector(wxEvtHandler* evtSource, void* clientData,
+                    wxEventType evtType, int winid = wxID_ANY,
+                    bool oneShot = true): m_evtSource(evtSource),
+                                          m_clientData(clientData),
+                                          m_eventType(evtType),
+                                          m_windowId(winid),
+                                          m_oneShot(oneShot)
+  {    
+    evtSource->Connect(winid, evtType, 
+                  evtType,
+                  (wxObjectEventFunction)&EventDataInjector::OnHookedEvent,
+                  NULL, //this is for wxWidgets' private use only
+                  this);
+  }
+
+  void OnHookedEvent(evtClass& evt) {
+    evt.Skip();
+    wxCHECK_RET(!evt.GetClientData(), wxT("Command event already has client data"));
+    evt.SetClientData(m_clientData);
+    if (m_oneShot) {
+      wxCHECK_RET(m_evtSource->Disconnect(m_windowId, m_eventType,
+                              (wxObjectEventFunction)&EventDataInjector::OnHookedEvent,
+                              NULL, this), wxT("Could not remove dynamic event parameter injection hook"));
+    }
+  }
+};
+
+int pless(int* first, int* second);
+
 #endif
 

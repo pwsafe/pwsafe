@@ -172,6 +172,8 @@ BOOL CAddEdit_Additional::OnInitDialog()
     // Disable Checkbox
     GetDlgItem(IDC_DCA_DEFAULT)->EnableWindow(FALSE);
     GetDlgItem(IDC_DOUBLE_CLICK_ACTION)->EnableWindow(FALSE);
+    GetDlgItem(IDC_SHIFT_DCA_DEFAULT)->EnableWindow(FALSE);
+    GetDlgItem(IDC_SHIFT_DOUBLE_CLICK_ACTION)->EnableWindow(FALSE);
   }
 
   // For some reason, MFC calls us twice when initializing.

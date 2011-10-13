@@ -8,6 +8,10 @@
 #include "./wxutils.h"
 #include "../../os/file.h"
 
+#ifdef __WXMSW__
+#include <wx/msw/msvcrt.h>
+#endif
+
 bool COpenFilePickerValidator::TransferFromWindow() {
   if (GetWindow() && GetWindow()->IsKindOf(&wxFilePickerCtrl::ms_classInfo)) {
     wxFilePickerCtrl* ctrl = dynamic_cast<wxFilePickerCtrl *>(GetWindow());

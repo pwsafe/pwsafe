@@ -94,6 +94,10 @@
     <File Name="../src/ui/wxWidgets/ComparisonGridTable.cpp"/>
     <File Name="../src/ui/wxWidgets/SizeRestrictedPanel.h"/>
     <File Name="../src/ui/wxWidgets/SizeRestrictedPanel.cpp"/>
+    <File Name="../src/ui/wxWidgets/fieldselectionpanel.h"/>
+    <File Name="../src/ui/wxWidgets/fieldselectionpanel.cpp"/>
+    <File Name="../src/ui/wxWidgets/fieldselectiondlg.cpp"/>
+    <File Name="../src/ui/wxWidgets/fieldselectiondlg.h"/>
   </VirtualDirectory>
   <Dependencies Name="Release">
     <Project Name="core"/>

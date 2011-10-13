@@ -66,6 +66,10 @@
 // main toolbar images
 #include "./PwsToolbarButtons.h"
 
+#ifdef __WXMSW__
+#include <wx/msw/msvcrt.h>
+#endif
+
 ////@begin XPM images
 #include "./graphics/cpane.xpm"
 ////@end XPM images
@@ -658,7 +662,7 @@ void PasswordSafeFrame::ShowTree(bool show)
       m_tree->AddItem(iter->second);
     }
     if (!m_tree->IsEmpty()) // avoid assertion!
-      m_tree->SortChildren(m_tree->GetRootItem());
+      m_tree->SortChildrenRecursively(m_tree->GetRootItem());
   }
 
   m_tree->Show(show);
@@ -1952,6 +1956,7 @@ void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga,
       UpdateToolBarDoUndo();
       UpdateStatusBar();
       break;
+#endif
     case UpdateGUICommand::GUI_REFRESH_ENTRYFIELD:
       ASSERT(pci != NULL);
       RefreshEntryFieldInGUI(*pci, ft);
@@ -1960,7 +1965,6 @@ void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga,
       ASSERT(pci != NULL);
       RefreshEntryPasswordInGUI(*pci);
       break;
-#endif
     case UpdateGUICommand::GUI_DB_PREFERENCES_CHANGED:
     {
       wxCommandEvent evt(wxEVT_GUI_DB_PREFS_CHANGE, wxID_ANY);
@@ -1977,6 +1981,29 @@ void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga,
   }
 }
     
+void PasswordSafeFrame::RefreshEntryFieldInGUI(const CItemData& item, CItemData::FieldType ft)
+{
+  if (m_currentView == GRID) {
+    m_grid->RefreshItemField(item.GetUUID(), ft);
+  }
+  else {
+    //even though the sort order might have changed, don't change the position yet
+    //as it could be too distracting, and the item may even move off the screen
+    m_tree->UpdateItemField(item, ft);
+  }
+}
+
+void PasswordSafeFrame::RefreshEntryPasswordInGUI(const CItemData& item)
+{
+  if (m_currentView == GRID) {
+    RefreshEntryFieldInGUI(item, CItemData::PASSWORD);
+    //TODO: Update password history
+  }
+  else {
+    RefreshEntryFieldInGUI(item, CItemData::PASSWORD);
+  }
+}
+
 void PasswordSafeFrame::GUIRefreshEntry(const CItemData& item)
 {
   if (item.GetStatus() ==CItemData::ES_DELETED) {
@@ -2247,13 +2274,14 @@ void PasswordSafeFrame::UnlockSafe(bool restoreUI)
   
   if (restoreUI) {
     if (!IsShown()) {
-      Show();
+      ShowWindowRecursively(hiddenWindows);
     }
     if (IsIconized()) {
       Iconize(false);
     }
-    Raise();
+    Show(true); //show the grid/tree
     m_guiInfo->Restore(this);
+    Raise();
   }
 }
 
@@ -2286,9 +2314,10 @@ void PasswordSafeFrame::OnIconize(wxIconizeEvent& evt)
     StringX password;
     if (VerifySafeCombination(password)) {
       if (ReloadDatabase(password)) {
-        Show();
+        ShowWindowRecursively(hiddenWindows);
         //On Linux, the UI is already restored, so just set the status flag
         m_sysTray->SetTrayStatus(SystemTray::TRAY_UNLOCKED);
+        Show(true); //show the tree/grid
         m_guiInfo->Restore(this);
       }
       else {
@@ -2328,7 +2357,8 @@ void PasswordSafeFrame::HideUI(bool lock)
     //We should not have to show up the icon manually if m_sysTray
     //can be notified of changes to PWSprefs::UseSystemTray
     m_sysTray->ShowIcon();  
-    Hide();                 
+    hiddenWindows.clear();
+    HideWindowRecursively(this, hiddenWindows);                 
   }  
 }
 
@@ -2504,7 +2534,7 @@ void PasswordSafeFrame::OnImportKeePass(wxCommandEvent& evt)
   else
     rpt.StartReport(_("Import_KeePassV1_TXT"), m_core.GetCurFile().c_str());
 
-  rpt.WriteLine(wxString::Format(_("Text file being imported: %s"), KPsFileName.GetData()).GetData());
+  rpt.WriteLine(static_cast<const TCHAR *>(wxString::Format(_("Text file being imported: %s"), static_cast<const TCHAR *>(KPsFileName))));
   rpt.WriteLine();
 
   int numImported, numSkipped, numRenamed;
@@ -2552,7 +2582,7 @@ void PasswordSafeFrame::OnImportKeePass(wxCommandEvent& evt)
       rpt.WriteLine();
       wxString cs_type(numImported == 1 ? _("entry") : _("entries"));
       wxString cs_msg = wxString::Format(_("Imported %d %s"), numImported, cs_type.GetData());
-      rpt.WriteLine(cs_msg.GetData());
+      rpt.WriteLine(static_cast<const TCHAR*>(cs_msg));
       rpt.EndReport();
       wxString title(rc == PWScore::SUCCESS ? _("Completed successfully") : _("Completed but ...."));
       int icon = (rc == PWScore::SUCCESS ? wxICON_INFORMATION : wxICON_EXCLAMATION);

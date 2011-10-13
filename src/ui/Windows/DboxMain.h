@@ -360,8 +360,7 @@ public:
   void ExportFilters(PWSFilters &MapFilters);
 
   void DoAutoType(const StringX &sx_autotype, 
-                  const std::vector<size_t> &vactionverboffsets,
-                  const bool bDragBarAutoType = false);
+                  const std::vector<size_t> &vactionverboffsets);
   void UpdateLastClipboardAction(const int iaction);
   void PlaceWindow(CWnd *pWnd, CRect *pRect, UINT uiShowCmd);
   void SetDCAText(CItemData * pci = NULL);
@@ -453,7 +452,6 @@ public:
   {OnInitMenuPopup(pPopupMenu, nIndex, bSysMenu);}
 
   const MapMenuShortcuts &GetMapMenuShortcuts() {return m_MapMenuShortcuts;}
-  const MapKeyNameID &GetMapKeyNameID() {return m_MapKeyNameID;}
   const std::vector<UINT> &GetExcludedMenuItems() {return m_ExcludedMenuItems;}
   const std::vector<st_MenuShortcut> &GetReservedShortcuts() {return m_ReservedShortcuts;}
   
@@ -587,7 +585,7 @@ protected:
   int RestoreSafe(void);
   int New(void);
 
-  void AutoType(const CItemData &ci, const bool bDragBarAutoType = false);
+  void AutoType(const CItemData &ci);
   bool EditItem(CItemData *pci, PWScore *pcore = NULL);
   void UpdateEntry(CAddEdit_PropertySheet *pentry_psh);
   bool EditShortcut(CItemData *pci, PWScore *pcore = NULL);
@@ -856,7 +854,7 @@ private:
   void RegistryAnonymity();
   void CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID, const bool bDoShortcuts);
   void SetUpMenuStrings(CMenu *pPopupMenu);
-  void SetUpInitialMenuStrings(LCID lcid = 0);
+  void SetUpInitialMenuStrings();
   void UpdateAccelTable();
   void SetupSpecialShortcuts();
   bool ProcessLanguageMenu(CMenu *pPopupMenu);
@@ -918,9 +916,6 @@ private:
   // Menu Shortcuts
   MapMenuShortcuts m_MapMenuShortcuts;
 
-  // Mapping of virtual key to key name in user's locale
-  MapKeyNameID m_MapKeyNameID;
-
   // Menu items we don't allow the user to modify or see in Options
   // Shortcuts CListCtrl
   // Any popup menu and Exit and Help + a few special one
@@ -981,6 +976,8 @@ private:
   void SetLanguage(LCID lcid);
   int m_ilastaction;  // Last action
   void SetDragbarToolTips();
+
+  bool LongPPs();
 
   // The following is for saving information over an execute/undo/redo
   // Might need to add more e.g. if filter is active and which one?

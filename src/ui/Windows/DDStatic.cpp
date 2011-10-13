@@ -643,6 +643,15 @@ void CDDStatic::EndDrop()
 
   if (m_nID == IDC_STATIC_DRAGAUTO) {
     if (m_pDbx != NULL && m_pci != NULL) {
+      // Get handle of window where the user wants Autotype to start
+      // Then make it the foreground window
+      POINT screenpoint;
+      ::GetCursorPos(&screenpoint);
+      HWND hwndFoundWindow = ::WindowFromPoint(screenpoint);
+      if (hwndFoundWindow != NULL) {
+        ::SetForegroundWindow(hwndFoundWindow);
+      }
+
       m_pDbx->ClearClipboardData();
       m_pDbx->PostMessage(PWS_MSG_DRAGAUTOTYPE, (WPARAM)m_pci);
     }

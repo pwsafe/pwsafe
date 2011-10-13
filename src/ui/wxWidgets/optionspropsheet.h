@@ -33,6 +33,7 @@
 class wxSpinCtrl;
 class wxGridSizer;
 class wxBoxSizer;
+class wxBookCtrlEvent;
 ////@end forward declarations
 
 /*!
@@ -137,7 +138,7 @@ class wxBoxSizer;
 
 class COptions: public wxPropertySheetDialog
 {    
-  DECLARE_CLASS( COptions )
+  DECLARE_DYNAMIC_CLASS( COptions )
   DECLARE_EVENT_TABLE()
 
 public:
@@ -206,6 +207,11 @@ public:
 
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX30
   void OnUseSystrayClick( wxCommandEvent& evt );
+
+  /// wxEVT_COMMAND_BOOKCTRL_PAGE_CHANGING event handler for all pages (wxID_ANY)
+  void OnPageChanging(wxBookCtrlEvent& evt);
+
+  void OnAtLeastChars(wxSpinEvent& evt);
 
 ////@end COptions event handler declarations
 
@@ -397,6 +403,7 @@ private:
  private:
   void PrefsToPropSheet();
   void PropSheetToPrefs();
+  int GetRequiredPWLength() const;
 };
 
 #endif

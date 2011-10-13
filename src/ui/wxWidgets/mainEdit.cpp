@@ -44,6 +44,10 @@
 
 #include <algorithm>
 
+#ifdef __WXMSW__
+#include <wx/msw/msvcrt.h>
+#endif
+
 using pws_os::CUUID;
 
 /*!
@@ -63,7 +67,7 @@ void PasswordSafeFrame::DoEdit(CItemData item)
 {
   int rc = 0;
   if (!item.IsShortcut()) {
-    AddEditPropSheet editDbox(this, m_core, AddEditPropSheet::EDIT, &item);
+    AddEditPropSheet editDbox(this, m_core, AddEditPropSheet::EDIT, &item, this);
     rc = editDbox.ShowModal();
   } else {
     EditShortcut editDbox(this, m_core, &item);
@@ -98,7 +102,7 @@ void PasswordSafeFrame::OnAddClick( wxCommandEvent& /* evt */ )
   wxString selectedGroup = wxEmptyString;
   wxTreeItemId selection;
   if (IsTreeView() && (selection = m_tree->GetSelection()).IsOk() && m_tree->ItemHasChildren(selection)) {
-    selectedGroup = m_tree->GetItemText(selection);
+    selectedGroup = m_tree->GetItemGroup(selection);
   }
 
   AddEditPropSheet addDbox(this, m_core, AddEditPropSheet::ADD, NULL, this, selectedGroup);

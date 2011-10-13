@@ -502,6 +502,11 @@ void ThisMfcApp::SetupMenu()
     m_pMainMenu = NULL;
   }
 
+  //Reload accelerators for current locale
+  if (app.m_ghAccelTable)
+    DestroyAcceleratorTable(app.m_ghAccelTable);
+  app.m_ghAccelTable=LoadAccelerators(AfxGetResourceHandle(), MAKEINTRESOURCE(IDR_ACCS));
+
   int nMRUItems = PWSprefs::GetInstance()->GetPref(PWSprefs::MaxMRUItems);
   m_mruonfilemenu = PWSprefs::GetInstance()->GetPref(PWSprefs::MRUOnFileMenu);
   m_pMainMenu = new CMenu;
@@ -1040,12 +1045,6 @@ BOOL ThisMfcApp::InitInstance()
                                 m_LockedIcon, dbox.m_RUEList,
                                 PWS_MSG_ICON_NOTIFY, IDR_POPTRAY);
   m_pTrayIcon->SetTarget(&dbox);
-#endif
-
-  // Set up an Accelerator table
-#if !defined(POCKET_PC)
-  m_ghAccelTable = ::LoadAccelerators(AfxGetResourceHandle(),
-                                      MAKEINTRESOURCE(IDR_ACCS));
 #endif
 
   CLWnd ListenerWnd(dbox);

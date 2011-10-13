@@ -2163,9 +2163,15 @@ void DboxMain::OnProperties()
   st_DBProperties st_dbp;
   m_core.GetDBProperties(st_dbp);
 
-  CProperties dlg(st_dbp);
+  CProperties dlg(&st_dbp, IsDBReadOnly(), this);
 
-  dlg.DoModal();
+  INT_PTR rc = dlg.DoModal();
+  
+  if (rc == IDOK && dlg.HasDataChanged()) {
+    // Update user fields in header
+    m_core.SetHeaderUserFields(st_dbp);
+    ChangeOkUpdate();
+}
 }
 
 void DboxMain::OnChangeMode()	 
@@ -2237,6 +2243,7 @@ void DboxMain::OnChangeMode()
   bool brc = m_core.ChangeMode(locker, iErrorCode);
   if (brc) {
     UpdateStatusBar();
+    UpdateToolBarROStatus(!bWasRO);
   } else {
     // Better give them the bad news!
     bool bInUse = false;

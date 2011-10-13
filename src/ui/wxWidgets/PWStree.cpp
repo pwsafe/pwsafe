@@ -30,6 +30,10 @@
 #include "passwordsafeframe.h" // for DispatchDblClickAction()
 #include "core/PWSprefs.h"
 
+#ifdef __WXMSW__
+#include <wx/msw/msvcrt.h>
+#endif
+
 ////@begin XPM images
 ////@end XPM images
 #include "./graphics/abase_exp.xpm"
@@ -288,6 +292,22 @@ wxString PWSTreeCtrl::GetPath(const wxTreeItemId &node) const
   return retval;
 }
 
+wxString PWSTreeCtrl::GetItemGroup(const wxTreeItemId& item) const
+{
+  if (!item.IsOk() || item == GetRootItem())
+    return wxEmptyString;
+  else if (ItemHasChildren(item)) {
+    const wxString path = GetPath(item);
+    const wxString name = GetItemText(item);
+    if (path.IsEmpty())//parent is root
+      return name; //group under root
+    else
+      return path + _(".") + name; //sub-group of some (non-root) group
+  }
+  else
+    return GetPath(item); 
+}
+
 void PWSTreeCtrl::UpdateItem(const CItemData &item)
 {
   const wxTreeItemId node = Find(item);
@@ -311,6 +331,26 @@ void PWSTreeCtrl::UpdateItem(const CItemData &item)
   }
 }
 
+//Just update the item's text, don't move it into its sorted position
+void PWSTreeCtrl::UpdateItemField(const CItemData &item, CItemData::FieldType ft)
+{
+  PWSprefs* prefs = PWSprefs::GetInstance();
+  if (ft == CItemData::GROUP) {
+    //remove & add again
+    UpdateItem(item);
+  }
+  //these are the only items ever shown in the tree
+  else if (ft == CItemData::TITLE || ft == CItemData::START ||
+       (ft == CItemData::USER && prefs->GetPref(PWSprefs::ShowUsernameInTree)) ||
+       (ft == CItemData::PASSWORD && prefs->GetPref(PWSprefs::ShowPasswordInTree))) {
+    wxRect rc;
+    wxTreeItemId ti = Find(item);
+    if (ti.IsOk()) {
+      SetItemText(ti, ItemDisplayString(item));
+    }
+  }
+}
+
 void PWSTreeCtrl::AddItem(const CItemData &item)
 {
   wxTreeItemData *data = new PWTreeItemData(item);
@@ -318,7 +358,7 @@ void PWSTreeCtrl::AddItem(const CItemData &item)
   const wxString disp = ItemDisplayString(item);
   wxTreeItemId titem = AppendItem(gnode, disp, -1, -1, data);
   SetItemImage(titem, item);
-  SortChildren(gnode);
+  SortChildrenRecursively(gnode);
   uuid_array_t uuid;
   item.GetUUID(uuid);
   m_item_map.insert(std::make_pair(CUUID(uuid), titem));
@@ -358,6 +398,18 @@ int PWSTreeCtrl::OnCompareItems(const wxTreeItemId& item1, const wxTreeItemId& i
   const wxString text1 = GetItemText(item1);
   const wxString text2 = GetItemText(item2);
   return text1.CmpNoCase(text2);
+}
+
+void PWSTreeCtrl::SortChildrenRecursively(const wxTreeItemId& item)
+{
+  SortChildren(item);
+  
+  wxTreeItemIdValue cookie;
+  for( wxTreeItemId childId = GetFirstChild(item, cookie); childId.IsOk(); childId = GetNextChild(item, cookie)) {
+    if (ItemHasChildren(childId)) {
+      SortChildrenRecursively(childId);
+    }
+  }
 }
 
 wxTreeItemId PWSTreeCtrl::Find(const CUUID &uuid) const

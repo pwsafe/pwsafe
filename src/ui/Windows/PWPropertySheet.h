@@ -22,8 +22,6 @@ public:
 
 protected:
   DECLARE_DYNAMIC(CPWPropertySheet)
-
-  bool chooseResource();
 };
 
 //-----------------------------------------------------------------------------

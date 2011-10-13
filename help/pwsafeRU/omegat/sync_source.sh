@@ -6,7 +6,6 @@ mkdir -p ./source/html
 #copy files
 cp ../../default/pwsafe.hhc ./source/pwsafe.hhc
 cp ../../default/html/* ./source/html
-cat ../../default/html/auto*
 #apply helper patches
 patch -p0 < omegat_helper.diff
 #update ui tmx

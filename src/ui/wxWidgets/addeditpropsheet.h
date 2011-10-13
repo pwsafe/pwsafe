@@ -102,7 +102,10 @@ class UIInterFace;
 #else
 #define SYMBOL_ADDEDITPROPSHEET_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX
 #endif
-#define SYMBOL_ADDEDITPROPSHEET_TITLE _("Edit Entry")
+#define SYMBOL_ADDPROPSHEET_TITLE _("Add Entry")
+#define SYMBOL_EDITPROPSHEET_TITLE _("Edit Entry")
+#define SYMBOL_VIEWPROPSHEET_TITLE _("View Entry")
+#define SYMBOL_AUTOPROPSHEET_TITLE _("Add, Edit or View Entry")
 #define SYMBOL_ADDEDITPROPSHEET_IDNAME ID_ADDEDITPROPSHEET
 #define SYMBOL_ADDEDITPROPSHEET_SIZE wxSize(400, 300)
 #define SYMBOL_ADDEDITPROPSHEET_POSITION wxDefaultPosition
@@ -127,13 +130,13 @@ public:
                    AddOrEdit type, const CItemData *item = NULL,  UIInterFace* ui = 0,
                    const wxString& selectedGroup = wxEmptyString,
                    wxWindowID id = SYMBOL_ADDEDITPROPSHEET_IDNAME,
-                   const wxString& caption = SYMBOL_ADDEDITPROPSHEET_TITLE,
+                   const wxString& caption = SYMBOL_AUTOPROPSHEET_TITLE,
                    const wxPoint& pos = SYMBOL_ADDEDITPROPSHEET_POSITION,
                    const wxSize& size = SYMBOL_ADDEDITPROPSHEET_SIZE,
                    long style = SYMBOL_ADDEDITPROPSHEET_STYLE );
 
   /// Creation
-  bool Create( wxWindow* parent, wxWindowID id = SYMBOL_ADDEDITPROPSHEET_IDNAME, const wxString& caption = SYMBOL_ADDEDITPROPSHEET_TITLE, const wxPoint& pos = SYMBOL_ADDEDITPROPSHEET_POSITION, const wxSize& size = SYMBOL_ADDEDITPROPSHEET_SIZE, long style = SYMBOL_ADDEDITPROPSHEET_STYLE );
+  bool Create( wxWindow* parent, wxWindowID id = SYMBOL_ADDEDITPROPSHEET_IDNAME, const wxString& caption = SYMBOL_AUTOPROPSHEET_TITLE, const wxPoint& pos = SYMBOL_ADDEDITPROPSHEET_POSITION, const wxSize& size = SYMBOL_ADDEDITPROPSHEET_SIZE, long style = SYMBOL_ADDEDITPROPSHEET_STYLE );
 
   /// Destructor
   ~AddEditPropSheet();
@@ -176,17 +179,17 @@ public:
   /// wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_RADIOBUTTON2
   void OnPWPRBSelected( wxCommandEvent& evt);
 
-  /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX7
-  void OnEZreadCBClick( wxCommandEvent& evt);
-
-  /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX8
-  void OnPronouceableCBClick( wxCommandEvent& evt);
+  /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX7 & ID_CHECKBOX8
+  void OnEZreadOrProounceable( wxCommandEvent& evt);
 
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX9
   void OnUseHexCBClick( wxCommandEvent& evt);
 
 ////@end AddEditPropSheet event handler declarations
   void OnOk(wxCommandEvent& evt);
+  void OnResetPWPolicy(wxCommandEvent& evt);
+  void OnUpdateResetPWPolicyButton(wxUpdateUIEvent& evt);
+  void OnAtLeastChars(wxSpinEvent& evt);
 ////@begin AddEditPropSheet member function declarations
 
   wxString GetTitle() const { return m_title ; }
@@ -315,8 +318,6 @@ private:
   wxString m_PWHistory; // string as stored in CItemData
   StringX m_password;
   bool m_isPWHidden;
-  bool m_origPWPdefault;
-  PWPolicy m_PWP;
   PWScore &m_core;
   UIInterFace *m_ui;
   wxString m_selectedGroup;  //Group title in tree view user right-clicked on to add an item
@@ -324,11 +325,16 @@ private:
   AddOrEdit m_type;
   CItemData m_item;
   void ItemFieldsToPropSheet();
-  void UpdatePWPolicyControls(bool useDefault);
+  void UpdatePWPolicyControls(const PWPolicy& pwp);
+  void EnablePWPolicyControls(bool enable);
+  PWPolicy GetPWPolicyFromUI() const;
+  PWPolicy GetPWPolicyFromPrefs() const;
+  PWPolicy GetSelectedPWPolicy() const;
   void ShowPWPSpinners(bool show);
   void EnableNonHexCBs(bool enable);
   void ShowPassword();
   void HidePassword();
+  int GetRequiredPWLength() const;
 };
 
 #endif

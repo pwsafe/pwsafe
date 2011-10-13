@@ -22,6 +22,7 @@ class DbSelectionPanel;
 class wxGrid;
 struct ComparisonData;
 class wxGridEvent;
+class wxGridRangeSelectEvent;
 
 class CompareDlg: public wxDialog
 {
@@ -34,6 +35,13 @@ class CompareDlg: public wxDialog
   void OnGridCellRightClick(wxGridEvent& evt);
   void OnEditInCurrentDB(wxCommandEvent& evt);
   void OnViewInComparisonDB(wxCommandEvent& evt);
+  void OnExpandDataPanels(wxCommandEvent& evt);
+  void OnCopyItemsToCurrentDB(wxCommandEvent& evt);
+  void OnDeleteItemsFromCurrentDB(wxCommandEvent& evt);
+  void OnCopyFieldsToCurrentDB(wxCommandEvent& evt);
+  void OnGridRangeSelect(wxGridRangeSelectEvent& evt);
+  void OnAutoSelectGridRow(wxCommandEvent& evt);
+  void OnSyncItemsWithCurrentDB(wxCommandEvent& evt);
 
 public:
   CompareDlg(wxWindow* parent, PWScore* core);
@@ -48,9 +56,8 @@ private:
   wxCollapsiblePane*  m_optionsPane;
   ComparisonData      *m_current, *m_comparison, *m_conflicts, *m_identical;
 
-  void DoCompare();
-  wxGrid* GetEventSourceGrid(int id);
-  void ViewSelectedEntry(wxGrid* sourceGrid, bool readOnly);
+  void DoCompare(wxCommandEvent& evt);
+  bool ViewEditEntry(PWScore* core, const pws_os::CUUID& uuid, bool readOnly);
 
   DECLARE_EVENT_TABLE()
 };

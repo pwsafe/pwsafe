@@ -8,13 +8,26 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2011-06-21 22:40+0100\n"
+"PO-Revision-Date: 2011-10-04 21:44+0100\n"
 "Last-Translator: Björn Nordwall <pro.bn@telia.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
 #    ID:xxxxx = the menu ID corresponding to the accelerator
@@ -148,6 +161,10 @@ msgstr " 'Tidpunkt för ändring av registreringen'"
 msgid " 'Run Command'"
 msgstr " 'Körkommando'"
 
+#. Resource IDs: (368)
+msgid " 'Shift+DCA'"
+msgstr " 'Skift+DCA'"
+
 #. Resource IDs: (347)
 msgid " 'Title'"
 msgstr " 'Titel'"
@@ -221,6 +238,15 @@ msgstr " [Process ID=%s]"
 msgid "! Edit externally"
 msgstr "! Redigera externt"
 
+#. Resource IDs: (368)
+#, c-format
+msgid "# characters: %d"
+msgstr "# tecken: %d"
+
+#. Resource IDs: (1456)
+msgid "#description"
+msgstr "#beskrivning"
+
 #. Resource IDs: (1194)
 msgid "#entries"
 msgstr "#poster"
@@ -232,6 +258,10 @@ msgstr "#format"
 #. Resource IDs: (1193)
 msgid "#groups"
 msgstr "#grupper"
+
+#. Resource IDs: (1455)
+msgid "#name"
+msgstr "#namn"
 
 #. Resource IDs: (1256)
 msgid "#unkflds"
@@ -392,7 +422,7 @@ msgstr "%s%s%s_Rapport.txt"
 #. Resource IDs: (212)
 #, c-format
 msgid "%s, Title=\"%s\", User=\"%s\" already exists in your database or in the Import file. Added imported entry with title=\"%s\".\r\n"
-msgstr "%s, Titel=\"%s\", Användare=\"%s\" finns redan i din databas eller i importfilen. La till importerade post med namn=\"%s\".\r\n"
+msgstr "%s, Titel=\"%s\", Användare=\"%s\" finns redan i din databas eller i importfilen. La till importerad post med namn=\"%s\".\r\n"
 
 #. Resource IDs: (363)
 #, c-format
@@ -1620,6 +1650,10 @@ msgid "Azeri Latin"
 msgstr "Azerbajdzjanskt Latin"
 
 #. Resource IDs: (65535)
+msgid "Backup Directory"
+msgstr "Backupmapp"
+
+#. Resource IDs: (65535)
 msgid "Backup Directory:"
 msgstr "Säkerhetskopians mapp:"
 
@@ -1918,6 +1952,10 @@ msgstr "Rensa Urklipp vid avslut"
 #. Resource IDs: (1061)
 msgid "Clear clipboard upon minimize"
 msgstr "Rensa Urklipp vid minimera"
+
+#. Resource IDs: (1453)
+msgid "Click here or details on the various preferences."
+msgstr "Klicka här eller på beskrivning av de olika preferencerna."
 
 #. Resource IDs: (351)
 msgid "Click here to pick field"
@@ -2409,6 +2447,10 @@ msgstr "Databasformat:"
 msgid "Database has some large entries!"
 msgstr "Databasen har några stora poster!"
 
+#. Resource IDs: (1454)
+msgid "Database is read-only. Changes to DB preferences will not be saved and are only valid for this session."
+msgstr "Databasen är läs-bara. Ändringar av DB-valen kommer inte att sparas och gäller bara under denna session."
+
 #. Resource IDs: (337)
 msgid "Database is read-only. Sorry, cannot save changed any database preferences."
 msgstr "Databasen är bara läsbar. Kan därför inte spara några ändrade databaspreferenser."
@@ -2476,6 +2518,10 @@ msgstr "Radera en basposts ?"
 #. Resource IDs: (352)
 msgid "Delete a filter"
 msgstr "Radera ett filter"
+
+#. Resource IDs: (65535)
+msgid "Description:"
+msgstr "Beskrivning:"
 
 #. Resource IDs: (340)
 msgid "Deselect all entries"
@@ -2878,11 +2924,11 @@ msgstr "Post på rad %d utan grupp"
 
 #. Resource IDs: (363)
 msgid "Entry size"
-msgstr "Poststorlek"
+msgstr "Postens storlek"
 
 #. Resource IDs: (1409)
 msgid "Entry size:"
-msgstr "Poststorlek:"
+msgstr "Postens storlek:"
 
 #. Resource IDs: (359)
 msgid "Entry status"
@@ -4157,6 +4203,10 @@ msgstr "Namn"
 msgid "Name. Name. Name."
 msgstr "Namn. Namn. Namn."
 
+#. Resource IDs: (65535)
+msgid "Name:"
+msgstr "Namn:"
+
 #. Resource IDs: (32103)
 msgid "Nested &Tree"
 msgstr "&Trädvy"
@@ -4577,6 +4627,10 @@ msgstr "Lösenordshistorik"
 msgid "Password History Filter"
 msgstr "Lösenordshistorikens filter"
 
+#. Resource IDs: (367)
+msgid "Password Length"
+msgstr "Lösenordslängd"
+
 #. Resource IDs: (327)
 msgid "Password Modified"
 msgstr "Lösenordet har ändrats"
@@ -4791,6 +4845,14 @@ msgstr "Vänligen, ange nuvarande nyckel och därefter en ny nyckel. Skriv den n
 #. Resource IDs: (329)
 msgid "Please enter the key and verify it."
 msgstr "Vänligen, skriv in nyckeln och verifiera den."
+
+#. Resource IDs: (368)
+msgid "Please enter the new database description"
+msgstr "Vänligen fyll i beskrivningen av den nya databasen"
+
+#. Resource IDs: (368)
+msgid "Please enter the new database name"
+msgstr "Vänligen fyll i den nya databasens namn"
 
 #. Resource IDs: (65535)
 msgid "Please enter the safe combination for this password database."
@@ -5156,7 +5218,7 @@ msgstr "Kör kommando"
 
 #. Resource IDs: (355)
 msgid "RunCmd copied "
-msgstr "KörCmd kopierat"
+msgstr "RunCmd kopierat"
 
 #. Resource IDs: (514)
 msgid "Russian"
@@ -5442,13 +5504,29 @@ msgstr "Setswana"
 msgid "Shift"
 msgstr "Skift"
 
+#. Resource IDs: (65535)
+msgid "Shift + Double-Click Action:"
+msgstr "Skift + dubbelklicksval:"
+
+#. Resource IDs: (65535)
+msgid "Shift Double-click action"
+msgstr "Skift dubbelklicksval"
+
 #. Resource IDs: (356)
 msgid "Shift+"
-msgstr "Shift+"
+msgstr "Skift+"
+
+#. Resource IDs: (192, 368)
+msgid "Shift+DCA"
+msgstr "Skift+DCA"
+
+#. Resource IDs: (368)
+msgid "Shift+Double Click Action"
+msgstr "Skift+dubbelklicksval"
 
 #. Resource IDs: (348)
 msgid "Shift+click to view current policy"
-msgstr "Shift+klick för att visa aktuell policy"
+msgstr "Skift+klick för att visa aktuell policy"
 
 #. Resource IDs: (356)
 #, c-format
@@ -6761,7 +6839,7 @@ msgid ""
 msgstr ""
 "Varning - %d %s i din databas kan ha ett eller fler fält som är för stora att visas eller editeras.\r\n"
 "\r\n"
-"Den största poststorleken som fanns ~%d %s.\r\n"
+"Den största poststorlek som fanns ~%d %s.\r\n"
 "\r\n"
 "Du kan använda Filter för att selektivt visa registreringen(arna)."
 

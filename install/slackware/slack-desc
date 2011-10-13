@@ -1,7 +1,9 @@
 pwsafe: Password Safe --  password database utility
 pwsafe: 
-pwsafe: Like many other such products, commercial and otherwise, it stores 
-pwsafe: your passwords in an encrypted file, allowing you to remember only
-pwsafe: one password (the "safe combination"), instead of all the
-pwsafe: username/password combinations that you use.
+pwsafe: Portable version of popular password manager program
+pwsafe: pwsafe is the Linux version of the popular Windows PasswordSafe
+pwsafe: password manager.
 pwsafe: 
+pwsafe:     http://pwsafe.org/
+pwsafe: Rony Shapiro <ronys@users.sf.net>
+pwsafe:

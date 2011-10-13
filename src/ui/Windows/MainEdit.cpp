@@ -52,7 +52,9 @@ void DboxMain::OnAdd()
   CItemData ci;
   ci.CreateUUID();
 
-  CAddEdit_PropertySheet add_entry_psh(IDS_ADDENTRY, this, &m_core, NULL, &ci, L""); 
+  bool bLongPPs = LongPPs();
+
+  CAddEdit_PropertySheet add_entry_psh(IDS_ADDENTRY, this, &m_core, NULL, &ci, bLongPPs,  L""); 
 
   PWSprefs *prefs = PWSprefs::GetInstance();
   if (prefs->GetPref(PWSprefs::UseDefaultUser)) {
@@ -914,8 +916,10 @@ bool DboxMain::EditItem(CItemData *pci, PWScore *pcore)
   pci = NULL; // Set to NULL - should use ci_original
 
   const UINT uicaller = pcore->IsReadOnly() ? IDS_VIEWENTRY : IDS_EDITENTRY;
+  bool bLongPPs = LongPPs();
   CAddEdit_PropertySheet edit_entry_psh(uicaller, this, pcore,
-                                        &ci_original, &ci_edit, pcore->GetCurFile()); 
+                                        &ci_original, &ci_edit, 
+                                        bLongPPs, pcore->GetCurFile()); 
 
   // List might be cleared if db locked.
   // Need to take care that we handle a rebuilt list.
@@ -1268,21 +1272,23 @@ void DboxMain::OnDisplayPswdSubset()
   CItemData *pci = getSelectedItem();
   ASSERT(pci != NULL);
 
-  CItemData *pci_original(pci);
 
   if (pci->IsDependent()) {
     pci = GetBaseEntry(pci);
     ASSERT(pci != NULL);
   }
 
+  const CUUID uuid = pci->GetUUID();
+
   CPasswordSubsetDlg DisplaySubsetDlg(this, pci->GetPassword());
 
   if (DisplaySubsetDlg.DoModal() != IDCANCEL) {
-    // Just in case PasswordSafe was locked and pci_original is invalid
-    ItemListIter iter = Find(pci_original->GetUUID());
-    pci_original = &iter->second;
-    UpdateAccessTime(pci_original);
+    // get pci again, in case PasswordSafe was locked and pci is invalidated
+    ItemListIter iter = Find(uuid);
+    if (iter != End()) { // can happen if dbox didn't minimize
+      UpdateAccessTime(&iter->second);
   }
+}
 }
 
 void DboxMain::OnCopyPassword()
@@ -1519,7 +1525,7 @@ void DboxMain::OnAutoType()
   AutoType(*pci);
 }
 
-void DboxMain::AutoType(const CItemData &ci, const bool bDragBarAutoType)
+void DboxMain::AutoType(const CItemData &ci)
 {
   // Called from OnAutoType, OnTrayAutoType and OnDragAutoType
 
@@ -1550,7 +1556,7 @@ void DboxMain::AutoType(const CItemData &ci, const bool bDragBarAutoType)
     ShowWindow(SW_HIDE);
   }
 
-  DoAutoType(sxautotype, vactionverboffsets, bDragBarAutoType);
+  DoAutoType(sxautotype, vactionverboffsets);
 
   // If we minimized it, exit. If we only hid it, now show it
   if (bMinOnAuto)
@@ -1565,10 +1571,9 @@ void DboxMain::AutoType(const CItemData &ci, const bool bDragBarAutoType)
 }
 
 void DboxMain::DoAutoType(const StringX &sx_autotype,
-                          const std::vector<size_t> &vactionverboffsets,
-                          const bool bDragBarAutoType)
+                          const std::vector<size_t> &vactionverboffsets)
 {
-  PWSAuxParse::SendAutoTypeString(sx_autotype, vactionverboffsets, bDragBarAutoType);
+  PWSAuxParse::SendAutoTypeString(sx_autotype, vactionverboffsets);
 }
 
 void DboxMain::OnGotoBaseEntry()
@@ -1862,7 +1867,7 @@ LRESULT DboxMain::OnDragAutoType(WPARAM wParam, LPARAM /* lParam */)
 {
   const CItemData *pci = reinterpret_cast<const CItemData *>(wParam);
 
-  AutoType(*pci, true);
+  AutoType(*pci);
   return 0L;
 }
 

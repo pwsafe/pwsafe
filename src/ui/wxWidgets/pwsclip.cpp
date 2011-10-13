@@ -9,6 +9,10 @@
 #include <wx/clipbrd.h>
 #include <wx/dataobj.h>
 
+#ifdef __WXMSW__
+#include <wx/msw/msvcrt.h>
+#endif
+
 bool PWSclip::SetData(const StringX &text)
 {
   if (wxTheClipboard->Open()) {

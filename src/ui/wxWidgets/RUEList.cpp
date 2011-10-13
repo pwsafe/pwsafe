@@ -14,6 +14,10 @@
 
 #include "RUEList.h"
 
+#ifdef __WXMSW__
+#include <wx/msw/msvcrt.h>
+#endif
+
 using namespace std;
 using pws_os::CUUID;
 

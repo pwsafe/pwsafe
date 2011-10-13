@@ -31,6 +31,10 @@
 #include <functional>
 #include "./PWSgridtable.h"
 
+#ifdef __WXMSW__
+#include <wx/msw/msvcrt.h>
+#endif
+
 ////@begin XPM images
 ////@end XPM images
 
@@ -210,6 +214,33 @@ void PWSGrid::UpdateItem(const CItemData &item)
     int row = iter->second;
     DeleteRows(row);
     InsertRows(row);
+  }
+}
+
+void PWSGrid::RefreshRow(int row)
+{
+  wxRect rect(CellToRect( row, 0 ));
+  rect.x = 0;
+  rect.width = GetGridWindow()->GetClientSize().GetWidth();
+  int dummy;
+  CalcScrolledPosition(0, rect.y, &dummy, &rect.y);
+  GetGridWindow()->Refresh( false, &rect );
+}
+
+void PWSGrid::RefreshItemRow(const pws_os::CUUID& uuid)
+{
+  const int row = FindItemRow(uuid);
+  if (row != wxNOT_FOUND)
+    RefreshRow(row);
+}
+
+void PWSGrid::RefreshItemField(const pws_os::CUUID& uuid, CItemData::FieldType ft)
+{
+  int row = FindItemRow(uuid);
+  int col = PWSGridTable::Field2Column(ft);
+  if (row != wxNOT_FOUND && col != wxNOT_FOUND && IsVisible(row, col, false)) {
+    //last param is false to check if the required cell is even partially visible
+    RefreshItemRow(uuid);
   }
 }
 

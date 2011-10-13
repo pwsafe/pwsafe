@@ -17,17 +17,29 @@ class CProperties : public CPWDialog
   DECLARE_DYNAMIC(CProperties)
 
 public:
-  CProperties(const st_DBProperties &st_dbp, CWnd* pParent = NULL)
-    : CPWDialog(CProperties::IDD, pParent), m_dbp(st_dbp) {}
+  CProperties(st_DBProperties *pdbp, const bool bReadonly, CWnd *pParent = NULL);
+  virtual ~CProperties();
 
   virtual BOOL OnInitDialog();
+  bool HasDataChanged() {return m_bChanged;}
 
   // Dialog Data
   enum { IDD = IDD_PROPERTIES };
 
 protected:
+  CStatic m_stc_name;
+  CStatic m_stc_description;
+
+  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+  afx_msg void OnEditName();
+  afx_msg void OnEditDescription();
+  
   DECLARE_MESSAGE_MAP()
 
 private:
-  const st_DBProperties m_dbp;
+  void SetChangedStatus();
+
+  st_DBProperties *m_pdbp;
+  StringX m_old_name, m_old_description;
+  bool m_bReadOnly, m_bChanged;
 };

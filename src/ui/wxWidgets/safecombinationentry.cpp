@@ -40,6 +40,10 @@
 #include <wx/filename.h>
 #include "./SafeCombinationCtrl.h"
 
+#ifdef __WXMSW__
+#include <wx/msw/msvcrt.h>
+#endif
+
 /*!
  * CSafeCombinationEntry type definition
  */

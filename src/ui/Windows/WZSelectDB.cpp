@@ -464,8 +464,9 @@ LRESULT CWZSelectDB::OnWizardNext()
 
 bool CWZSelectDB::ProcessPhrase(const StringX &filename, const StringX &passkey)
 {
-  PWScore othercore;
-  if (m_pWZPSH->WZPSHCheckPasskey(filename, passkey, &othercore) == PWScore::SUCCESS) {
+  PWScore tmpcore;
+  if (m_pWZPSH->WZPSHCheckPasskey(filename, passkey,
+                                  &tmpcore) == PWScore::SUCCESS) {
     m_tries = 0;
     return true;
   }

@@ -81,7 +81,7 @@ static UINT WZExecuteThread(LPVOID pParam)
   switch (pthdpms->nID) {
     case ID_MENUITEM_COMPARE:
       status = pthdpms->pWZPSH->WZPSHDoCompare(pthdpms->pcore,
-                   pthdpms->bAdvanced, pthdpms->prpt) ? 1 : -1;
+                   pthdpms->bAdvanced, pthdpms->prpt) ? 0 : -1;
       break;
     case ID_MENUITEM_MERGE:
       pthdpms->csResults = pthdpms->pWZPSH->WZPSHDoMerge(pthdpms->pcore, 
@@ -298,7 +298,7 @@ LRESULT CWZFinish::OnExecuteThreadEnded(WPARAM wParam, LPARAM )
   CString cs_results;
   switch (pthdpms->nID) {
     case ID_MENUITEM_COMPARE:
-      if (pthdpms->status != 1) {
+      if (pthdpms->status != 0) {
         cs_results = m_pWZPSH->WZPSHShowCompareResults(m_pWZPSH->WZPSHGetCurFile(), 
                                                        pthdpms->sx_Filename,
                                                        m_pothercore, m_prpt);
