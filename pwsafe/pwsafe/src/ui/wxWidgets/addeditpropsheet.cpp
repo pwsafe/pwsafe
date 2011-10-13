@@ -620,6 +620,10 @@ void AddEditPropSheet::CreateControls()
   wxButton* itemButton125 = new wxButton( itemPanel90, ID_BUTTON7, _("Reset to Database Defaults"), wxDefaultPosition, wxDefaultSize, 0 );
   itemStaticBoxSizer91->Add(itemButton125, 0, wxALIGN_RIGHT|wxALL, 5);
 
+  int checkbox_ids[] = {ID_CHECKBOX3, ID_CHECKBOX4, ID_CHECKBOX5, ID_CHECKBOX6, ID_CHECKBOX9};
+  itemPanel90->SetValidator(MultiCheckboxValidator(checkbox_ids, WXSIZEOF(checkbox_ids),
+                            _("At least one type of character (lowercase, uppercase, digits,\nsymbols, hexadecimal) must be permitted."),
+                            _("Password Policy")));
   GetBookCtrl()->AddPage(itemPanel90, _("Password Policy"));
 
   // Set validators
@@ -896,7 +900,11 @@ void AddEditPropSheet::OnGenerateButtonClick( wxCommandEvent& /* evt */ )
 {
   PWPolicy pwp = GetSelectedPWPolicy();
   StringX password = pwp.MakeRandomPassword();
-
+  if (password.empty()) {
+    wxMessageBox(_("Couldn't generate password - invalid policy"),
+                 _("Error"), wxOK|wxICON_INFORMATION, this);
+      return;
+  }
 
   PWSclip::SetData(password);
   m_password = password.c_str();
