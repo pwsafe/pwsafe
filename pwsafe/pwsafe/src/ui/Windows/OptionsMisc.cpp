@@ -37,10 +37,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-const UINT COptionsMisc::uiDBPrefs[] = {
-  IDC_USERNAME, IDC_MAINTAINDATETIMESTAMPS, IDC_USEDEFUSER
-};
-
 /////////////////////////////////////////////////////////////////////////////
 // COptionsMisc property page
 
@@ -123,8 +119,15 @@ BOOL COptionsMisc::OnInitDialog()
 {
   COptions_PropertyPage::OnInitDialog();
 
-  for (int i = 0; i < sizeof(uiDBPrefs) / sizeof(uiDBPrefs[0]); i++) {
-    SetWindowTheme(GetDlgItem(uiDBPrefs[i])->GetSafeHwnd(), L"", L"");
+  // Need to disable XP themes to change colour of ALL buttons to make sure
+  // that they all look the same.  OnCtlColor will only change the colour
+  // of the database preferences!
+  for (CWnd *pwnd = GetWindow(GW_CHILD); pwnd != NULL; pwnd = pwnd->GetWindow(GW_HWNDNEXT)) {
+    wchar_t szClassName[50];
+    GetClassName(pwnd->GetSafeHwnd(), szClassName, 50);
+    if (_wcsicmp(szClassName, L"Button") == 0) {
+      SetWindowTheme(pwnd->GetSafeHwnd(), L"", L"");
+    }
   }
 
   OnUseDefUser();

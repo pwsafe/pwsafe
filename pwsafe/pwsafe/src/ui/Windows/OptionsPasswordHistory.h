@@ -60,6 +60,4 @@ protected:
 
 private:
   CToolTipCtrl* m_pToolTipCtrl;
-
-  static const UINT uiDBPrefs[];
 };

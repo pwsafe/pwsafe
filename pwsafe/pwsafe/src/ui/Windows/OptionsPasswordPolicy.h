@@ -107,6 +107,4 @@ private:
   UINT m_savelen[N_HEX_LENGTHS];
 
   bool m_bFromOptions;  // True if called by Options, false if called from GeneratePassword
-
-  static const UINT uiDBPrefs[];
 };

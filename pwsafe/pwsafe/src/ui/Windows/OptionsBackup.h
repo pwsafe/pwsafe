@@ -77,7 +77,5 @@ protected:
 private:
   void SetExample();
   CToolTipCtrl* m_pToolTipCtrl;
-
-  static const UINT uiDBPrefs[];
 };
 
