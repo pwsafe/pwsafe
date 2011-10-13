@@ -58,12 +58,16 @@ BOOL CPKBaseDlg::OnInitDialog(void)
   m_yubi->Init();
 
   bool yubiEnabled = IsYubiEnabled();
-  GetDlgItem(IDC_YUBIKEY_BTN)->ShowWindow(yubiEnabled ? SW_SHOW : SW_HIDE);
+  m_yubiLogo.LoadBitmap(IDB_YUBI_LOGO);
+  CWnd *ybn = GetDlgItem(IDC_YUBIKEY_BTN);
+
+  ((CButton*)ybn)->SetBitmap(m_yubiLogo);
+  ybn->ShowWindow(yubiEnabled ? SW_SHOW : SW_HIDE);
   m_yubi_status.ShowWindow(yubiEnabled ? SW_SHOW : SW_HIDE);
   m_yubi_timeout.ShowWindow(SW_HIDE);
   m_yubi_timeout.SetRange(0, 15);
   bool yubiInserted = IsYubiInserted();
-  GetDlgItem(IDC_YUBIKEY_BTN)->EnableWindow(yubiInserted ? TRUE : FALSE);
+  ybn->EnableWindow(yubiInserted ? TRUE : FALSE);
   if (yubiInserted)
     m_yubi_status.SetWindowText(_T("Click, then activate your YubiKey"));
   else

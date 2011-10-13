@@ -47,6 +47,7 @@ class CPKBaseDlg : public CPWDialog {
   CProgressCtrl m_yubi_timeout;
   // Show user what's going on / what we're waiting for:
   CEdit m_yubi_status;
+  CBitmap m_yubiLogo;
 	DECLARE_INTERFACE_MAP()
  private:
   Yubi *m_yubi; // Interface to Yubikey API  

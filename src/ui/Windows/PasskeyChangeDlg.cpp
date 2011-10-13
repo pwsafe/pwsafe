@@ -123,10 +123,12 @@ BOOL CPasskeyChangeDlg::OnInitDialog()
 
   // Base class handles 1 Yubi btn, here we have 2, so we have to manage the
   // 2nd on our lonely.
+  CWnd *ybn2 = GetDlgItem(IDC_YUBIKEY2_BTN);
+  ((CButton*)ybn2)->SetBitmap(m_yubiLogo);
   // Hide 2nd Yubi btn if Yubi API not detected
-  GetDlgItem(IDC_YUBIKEY2_BTN)->ShowWindow(IsYubiEnabled() ? SW_SHOW : SW_HIDE);
+  ybn2->ShowWindow(IsYubiEnabled() ? SW_SHOW : SW_HIDE);
   // Enable 2nd Yubi btn iff Yubi's connected
-  GetDlgItem(IDC_YUBIKEY2_BTN)->EnableWindow(IsYubiInserted() ? TRUE : FALSE);
+  ybn2->EnableWindow(IsYubiInserted() ? TRUE : FALSE);
  
   // Only show virtual Keyboard menu if we can load DLL
   if (!CVKeyBoardDlg::IsOSKAvailable()) {

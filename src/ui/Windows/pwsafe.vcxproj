@@ -1357,6 +1357,7 @@
     <None Include="graphics\toolbar\new\backup_disabled.bmp" />
     <None Include="graphics\blank.bmp" />
     <None Include="graphics\toolbar\classic\browseurl.bmp" />
+    <None Include="graphics\toolbar\new\bitmap1.bmp" />
     <None Include="graphics\toolbar\new\browseurl.bmp" />
     <None Include="graphics\toolbar\new\browseurl_disabled.bmp" />
     <None Include="graphics\toolbar\classic\browseurlplus.bmp" />
@@ -1508,6 +1509,9 @@
     <None Include="graphics\toolbar\new\passwordchars.bmp" />
     <None Include="graphics\toolbar\classic\passwordchars.bmp" />
     <None Include="graphics\toolbar\new\passwordchars_disabled.bmp" />
+    <None Include="graphics\yubico-icon-small.bmp" />
+    <None Include="graphics\yubico-icon-small.ico" />
+    <None Include="graphics\Yubikey-button.bmp" />
     <None Include="res\PasswordSafe2.rc2" />
     <None Include="res\PasswordSafe3.rc2" />
     <None Include="graphics\dragbar\classic\PasswordX.bmp" />

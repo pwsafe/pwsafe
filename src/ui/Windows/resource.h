@@ -738,12 +738,12 @@
 #define IDC_CHANGE_NAME                 1462
 #define IDC_INPUTBOX_TEXT               1463
 #define IDC_INPUTBOX_CHAR_COUNT         1464
-
+#define IDB_YUBI_LOGO                   512
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        512
+#define _APS_NEXT_RESOURCE_VALUE        513
 #define _APS_NEXT_COMMAND_VALUE         30001
 #define _APS_NEXT_CONTROL_VALUE         1465
 #define _APS_NEXT_SYMED_VALUE           166
