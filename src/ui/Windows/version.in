@@ -23,11 +23,11 @@
 #define FILEVER        PRODUCTVER
 #define STRFILEVER     STRPRODUCTVER
 
-#define SPECIAL_BUILD L"pre"
+#define SPECIAL_BUILD L"Ypre"
 
 // Only define SPECIAL_BUILD before here (in version.in) if needed!
 #ifndef SPECIAL_BUILD
-#define SPECIAL_BUILD L"Y"
+#define SPECIAL_BUILD L""
 #endif
 
 #endif // _VERSION_H_
