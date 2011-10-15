@@ -147,6 +147,7 @@
 ;--------------------------------
 ; Pages
 
+  !define MUI_PAGE_CUSTOMFUNCTION_PRE ChangeFonts
   !insertmacro MUI_PAGE_LICENSE "..\LICENSE" ;$(myLicenseData)
   ; ask about installation type, "green" or "regular"
   Page custom GreenOrRegular
@@ -209,6 +210,20 @@
 LangString RESERVE_TITLE ${LANG_ENGLISH} "Choose Installation Type"
 LangString RESERVE_FIELD1 ${LANG_ENGLISH} "Regular (uses Registry, suitable for home or single user PC)"
 LangString RESERVE_FIELD2 ${LANG_ENGLISH} "Green (for Disk-on-Key; does not use host Registry)"
+
+; Code to change font, from
+; http://forums.winamp.com/showthread.php?s=f9514f23b6cf9fd97bf7b177f2f4a04e&postid=2083116
+function ChangeFonts
+;GetDlgItem $1 $HWNDPARENT 1038
+;SendMessage $1 0x0030 $0 0
+CreateFont $0 "$(^Font)" "9" "700"
+SendMessage $mui.Header.Text ${WM_SETFONT} $0 0
+ 
+CreateFont $0 "Tahoma" "8" "500"
+SendMessage $mui.Header.SubText ${WM_SETFONT} $0 0
+
+functionend
+
 
 ; The program itself
 LangString PROGRAM_FILES ${LANG_ENGLISH} "Program Files"
