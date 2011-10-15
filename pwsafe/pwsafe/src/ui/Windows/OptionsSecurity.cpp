@@ -87,17 +87,6 @@ BOOL COptionsSecurity::OnInitDialog()
 {
   COptions_PropertyPage::OnInitDialog();
 
-  // Need to disable XP themes to change colour of ALL buttons to make sure
-  // that they all look the same.  OnCtlColor will only change the colour
-  // of the database preferences!
-  for (CWnd *pwnd = GetWindow(GW_CHILD); pwnd != NULL; pwnd = pwnd->GetWindow(GW_HWNDNEXT)) {
-    wchar_t szClassName[50];
-    GetClassName(pwnd->GetSafeHwnd(), szClassName, 50);
-    if (_wcsicmp(szClassName, L"Button") == 0) {
-      SetWindowTheme(pwnd->GetSafeHwnd(), L"", L"");
-    }
-  }
-
   OnLockOnIdleTimeout();
   CSpinButtonCtrl* pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_IDLESPIN);
 
