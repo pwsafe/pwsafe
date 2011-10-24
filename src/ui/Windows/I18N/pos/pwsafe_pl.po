@@ -1846,7 +1846,7 @@ msgstr "Usuń zawartość schowka przy minimalizowaniu"
 
 #. Resource IDs: (1453)
 msgid "Click here or details on the various preferences."
-msgstr "Kliknij aby zobaczyć szczegóły ustawień"
+msgstr "Kliknij aby zobaczyć szczegóły ustawień."
 
 #. Resource IDs: (351)
 msgid "Click here to pick field"
