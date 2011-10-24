@@ -148,7 +148,7 @@ msgstr " 'Uruchom polecenie'"
 
 #. Resource IDs: (368)
 msgid " 'Shift+DCA'"
-msgstr ""
+msgstr " 'Shift+DCA'"
 
 #. Resource IDs: (347)
 msgid " 'Title'"
@@ -226,11 +226,11 @@ msgstr "! edytuj zewnętrznie"
 #. Resource IDs: (368)
 #, c-format
 msgid "# characters: %d"
-msgstr ""
+msgstr "# znaki: %d"
 
 #. Resource IDs: (1456)
 msgid "#description"
-msgstr ""
+msgstr "#opis"
 
 #. Resource IDs: (1194)
 msgid "#entries"
@@ -246,7 +246,7 @@ msgstr "#grupy"
 
 #. Resource IDs: (1455)
 msgid "#name"
-msgstr ""
+msgstr "#nazwa"
 
 #. Resource IDs: (1256)
 #, fuzzy
@@ -1546,7 +1546,7 @@ msgstr "Azerski łaciński"
 
 #. Resource IDs: (65535)
 msgid "Backup Directory"
-msgstr ""
+msgstr "Katalog kopii zapasowej"
 
 #. Resource IDs: (65535)
 msgid "Backup Directory:"
@@ -1846,7 +1846,7 @@ msgstr "Usuń zawartość schowka przy minimalizowaniu"
 
 #. Resource IDs: (1453)
 msgid "Click here or details on the various preferences."
-msgstr ""
+msgstr "Kliknij aby zobaczyć szczegóły ustawień"
 
 #. Resource IDs: (351)
 msgid "Click here to pick field"
@@ -2303,7 +2303,7 @@ msgstr "W bazie danych jest kilka sporych wpisów!"
 
 #. Resource IDs: (1454)
 msgid "Database is read-only. Changes to DB preferences will not be saved and are only valid for this session."
-msgstr ""
+msgstr "Baza danych jest w trybie tylko do odczytu. Zmiana ustawień bazy nie będzie zachowana i będzie obowiązywała tylko w czasie tej sesji."
 
 #. Resource IDs: (337)
 msgid "Database is read-only. Sorry, cannot save changed any database preferences."
@@ -2372,7 +2372,7 @@ msgstr "Usuń filtr"
 
 #. Resource IDs: (65535)
 msgid "Description:"
-msgstr ""
+msgstr "Opis:"
 
 #. Resource IDs: (340)
 #, fuzzy
@@ -3999,7 +3999,7 @@ msgstr "Nazwa. Nazwa. Nazwa."
 
 #. Resource IDs: (65535)
 msgid "Name:"
-msgstr ""
+msgstr "Nazwa:"
 
 #. Resource IDs: (32103)
 msgid "Nested &Tree"
@@ -4410,7 +4410,7 @@ msgstr "Filtr Historii Haseł"
 
 #. Resource IDs: (367)
 msgid "Password Length"
-msgstr ""
+msgstr "Długość hasła"
 
 #. Resource IDs: (327)
 #, fuzzy
@@ -4620,11 +4620,11 @@ msgstr "Wprowadź klucz i go zweryfikuj."
 
 #. Resource IDs: (368)
 msgid "Please enter the new database description"
-msgstr ""
+msgstr "Proszę podać opis nowej bazy danych"
 
 #. Resource IDs: (368)
 msgid "Please enter the new database name"
-msgstr ""
+msgstr "Proszę podać nazwę nowej bazy danych"
 
 #. Resource IDs: (65535)
 msgid "Please enter the safe combination for this password database."
@@ -5267,11 +5267,11 @@ msgstr "Shift"
 
 #. Resource IDs: (65535)
 msgid "Shift + Double-Click Action:"
-msgstr ""
+msgstr "Akcja Shift + podwójne kliknięcie:"
 
 #. Resource IDs: (65535)
 msgid "Shift Double-click action"
-msgstr ""
+msgstr "Akcja Shift i podwójne kliknięcie"
 
 #. Resource IDs: (356)
 msgid "Shift+"
@@ -5279,11 +5279,11 @@ msgstr "Shift+"
 
 #. Resource IDs: (192, 368)
 msgid "Shift+DCA"
-msgstr ""
+msgstr "Shift+DCA"
 
 #. Resource IDs: (368)
 msgid "Shift+Double Click Action"
-msgstr ""
+msgstr "Shift + podwójne kliknięcie"
 
 #. Resource IDs: (348)
 msgid "Shift+click to view current policy"
