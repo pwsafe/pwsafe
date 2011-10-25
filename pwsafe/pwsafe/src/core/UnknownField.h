@@ -17,6 +17,7 @@
 #define __UNKNOWNFIELD_H
 
 #include <vector>
+#include <cstring>
 
 // Unknown Field structure
 struct UnknownFieldEntry {

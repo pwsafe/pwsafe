@@ -32,7 +32,7 @@ all: unicodedebug unicoderelease
 unicodedebug unicoderelease:
 	$(MAKE) -C src/os/linux $@
 	$(MAKE) -C src/core $@
-	$(MAKE) -C src/ui/wxWidgets $@
+	$(MAKE) -C src/ui/wxWidgets CONFIG=$@
 
 
 debug:

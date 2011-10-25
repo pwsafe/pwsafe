@@ -22,6 +22,7 @@
 #include <string>
 #include <memory>
 #include <limits>
+#include <cstddef> // for ptrdiff_t
 #include <cstdlib> // for malloc
 #include <cstring> // for memset
 
