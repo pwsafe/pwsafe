@@ -241,6 +241,31 @@ const wxChar *DCAs[] = {
   _("Execute Run command"),
 };
 
+class PolicyValidator : public MultiCheckboxValidator
+{
+public:
+  PolicyValidator(int rbID, int ids[], size_t num,
+		  const wxString& msg, const wxString& title)
+    : MultiCheckboxValidator(ids, num, msg, title), m_rbID(rbID) {}
+  PolicyValidator(const PolicyValidator &other)
+    : MultiCheckboxValidator(other), m_rbID(other.m_rbID) {}
+  ~PolicyValidator() {}
+
+  wxObject* Clone() const {return new PolicyValidator(m_rbID, m_ids, m_count, m_msg, m_title);}
+  bool Validate(wxWindow* parent) {
+    wxWindow* win = GetWindow()->FindWindow(m_rbID);
+    if (win && win->IsEnabled()) {
+      wxRadioButton* rb = wxDynamicCast(win, wxRadioButton);
+      if (rb && rb->GetValue()) {
+	return true;
+      }
+    }
+    return MultiCheckboxValidator::Validate(parent);
+  }
+private:
+  int m_rbID;
+};
+
 /*!
  * Control creation for AddEditPropSheet
  */
@@ -621,9 +646,9 @@ void AddEditPropSheet::CreateControls()
   itemStaticBoxSizer91->Add(itemButton125, 0, wxALIGN_RIGHT|wxALL, 5);
 
   int checkbox_ids[] = {ID_CHECKBOX3, ID_CHECKBOX4, ID_CHECKBOX5, ID_CHECKBOX6, ID_CHECKBOX9};
-  itemPanel90->SetValidator(MultiCheckboxValidator(checkbox_ids, WXSIZEOF(checkbox_ids),
-                            _("At least one type of character (lowercase, uppercase, digits,\nsymbols, hexadecimal) must be permitted."),
-                            _("Password Policy")));
+  itemPanel90->SetValidator(PolicyValidator(ID_RADIOBUTTON2, checkbox_ids, WXSIZEOF(checkbox_ids),
+					    _("At least one type of character (lowercase, uppercase, digits,\nsymbols, hexadecimal) must be permitted."),
+					    _("Password Policy")));
   GetBookCtrl()->AddPage(itemPanel90, _("Password Policy"));
 
   // Set validators
@@ -1166,8 +1191,10 @@ if (m_AEMD.ibasedata > 0) {
       ASSERT(0);
       break;
     }
+    EndModal(wxID_OK);
+  } else { // !Validate
+    EndModal(wxID_CANCEL);
   }
-  EndModal(wxID_OK);
 }
 
 
