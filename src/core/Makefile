@@ -79,6 +79,8 @@ $(LIB): $(LIBOBJ)
 core_st.cpp core_st.h : core.rc2
 	../../Misc/rc2cpp.pl $^
 
+StringX.cpp: core_st.h
+
 clean:
 	@rm -f *~ $(OBJ) $(TEST) $(LIB)
 	@rm -rf $(DEPDIR)
