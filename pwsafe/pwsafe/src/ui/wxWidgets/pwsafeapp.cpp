@@ -419,10 +419,7 @@ void PwsafeApp::RestoreFrameCoords(void)
 {
   long top, bottom, left, right;
   PWSprefs::GetInstance()->GetPrefRect(top, bottom, left, right);
-  if (left == -1 && top == -1 && right == -1 && bottom == -1) {
-    m_frame->Maximize();
-  }
-  else {
+  if (!(left == -1 && top == -1 && right == -1 && bottom == -1)) {
     wxRect rcApp(left, top, right - left, bottom - top);
     
     int displayWidth, displayHeight;
