@@ -122,6 +122,7 @@ void ShowWindowRecursively(wxWindowList& hiddenWindows);
 //ensures at least one of the checkboxes are selected
 class MultiCheckboxValidator: public wxValidator
 {
+ protected:
   int* m_ids;
   size_t m_count;
   wxString m_msg, m_title;
