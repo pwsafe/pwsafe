@@ -1203,8 +1203,6 @@ if (m_AEMD.ibasedata > 0) {
       break;
     }
     EndModal(wxID_OK);
-  } else { // !Validate
-    EndModal(wxID_CANCEL);
   }
 }
 
