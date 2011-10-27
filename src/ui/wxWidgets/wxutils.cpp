@@ -153,10 +153,12 @@ wxObject* MultiCheckboxValidator::Clone() const
 
 bool MultiCheckboxValidator::Validate(wxWindow* parent)
 {
+  bool allDisabled = true;
   for(size_t idx = 0; idx < m_count; ++idx) {
     wxWindow* win = GetWindow()->FindWindow(m_ids[idx]);
     if (win) {
       if (win->IsEnabled()) {
+        allDisabled = false;
         wxCheckBox* cb = wxDynamicCast(win, wxCheckBox);
         if (cb) {
           if (cb->IsChecked()) {
@@ -172,8 +174,12 @@ bool MultiCheckboxValidator::Validate(wxWindow* parent)
       wxFAIL_MSG(wxString::Format(wxT("No child with id (%d) found in MultiCheckboxValidator"), m_ids[idx]));
     }
   }
-  wxMessageBox(m_msg, m_title, wxOK|wxICON_EXCLAMATION, parent);
-  return false;
+  if (allDisabled)
+    return true;
+  else {
+    wxMessageBox(m_msg, m_title, wxOK|wxICON_EXCLAMATION, parent);
+    return false;
+  }
 }
 
 int pless(int* first, int* second) { return *first - *second; }
