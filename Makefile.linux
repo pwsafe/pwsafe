@@ -8,7 +8,7 @@ RELEASE_SPECIAL := BETA
 
 .PHONY:	all clean debug-clean release-clean debug release \
 	unicodedebug unicoderelease deb tar signatures \
-	dist sha1sums upload
+	dist sha1sums upload upload-src svn-tag
 
 RELEASENAME := $(RELEASENUM)$(RELEASE_SPECIAL)
 
@@ -26,6 +26,10 @@ GPG_SIGN := $(GPG) --detach-sign --default-key $(GPG_KEY)
 SHA1SUM := /usr/bin/sha1sum
 UPLOAD_CMD := /usr/bin/rsync -avP -e ssh
 UPLOAD_DST :=  ronys@frs.sourceforge.net:/home/frs/project/p/pa/passwordsafe/Linux-BETA/$(RELEASENUM)
+SVN_REPO := https://passwordsafe.svn.sourceforge.net/svnroot/passwordsafe
+SVN_TRUNK := $(SVN_REPO)/trunk/pwsafe/pwsafe
+SVN_TAG := $(SVN_REPO)/tags
+RELTAG = wx$(subst .,_,$(RELEASENAME))
 
 all: unicodedebug unicoderelease
 
@@ -85,6 +89,16 @@ upload:
 	$(UPLOAD_CMD) \
 	$(wildcard $(RELEASEDIR)/passwordsafe-*$(RELEASENAME)*) \
 	$(UPLOAD_DST)
+
+# Uploading source is a separate target as we only want to do this once,
+# as oppoed to uploading the complied package, which we need to do per distro.
+upload-src:
+	$(UPLOAD_CMD) \
+	$(wildcard $(RELEASEDIR)/pwsafe-*$(RELEASENAME)-src*) \
+	$(UPLOAD_DST)
+
+svn-tag:
+	$(SVN) cp $(SVN_TRUNK) $(SVN_TAG)/$(RELTAG) -m "tag wx $(RELEASENAME) release"
 
 # Local variables:
 # mode: makefile
