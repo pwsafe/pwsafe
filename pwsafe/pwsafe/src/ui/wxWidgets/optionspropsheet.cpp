@@ -1102,7 +1102,7 @@ void COptions::OnSuffixCBSet( wxCommandEvent& /* evt */ )
   m_bumaxinc->Enable(suffixIndex == INC_SFX);
   switch (suffixIndex) {
   case NO_SFX:
-    m_suffixExample->SetLabel(_(""));
+    m_suffixExample->SetLabel(wxEmptyString);
     break;
   case TS_SFX: {
     time_t now;

@@ -986,7 +986,7 @@ void AddEditPropSheet::ShowPassword()
   delete tmp;
   m_BasicFGSizer->Layout();
   // Disable confirmation Ctrl, as the user can see the password entered
-  m_Password2Ctrl->ChangeValue(_(""));
+  m_Password2Ctrl->Clear();
   m_Password2Ctrl->Enable(false);
 }
 
@@ -1290,7 +1290,7 @@ void AddEditPropSheet::OnSetXTime( wxCommandEvent& /* evt */ )
 void AddEditPropSheet::OnClearXTime( wxCommandEvent& /* evt */ )
 {
   m_XTime = _("Never");
-  m_CurXTime = _("");
+  m_CurXTime.Clear();
   m_tttXTime = time_t(0);
   m_XTimeInt = 0;
   m_Recurring = false;
