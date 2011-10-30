@@ -70,7 +70,7 @@ CExportTextWarningDlgBase::CExportTextWarningDlgBase(wxWindow* parent) : wxDialo
   wxBoxSizer* delimRow = new wxBoxSizer(wxHORIZONTAL);
   delimRow->Add(new wxStaticText(this, wxID_ANY, _("Line delimiter in Notes field:")));
   delimRow->AddSpacer(ColSeparation);
-  delimRow->Add(new wxTextCtrl(this, ID_LINE_DELIMITER, _("\xbb"), wxDefaultPosition, wxDefaultSize, 0, 
+  delimRow->Add(new wxTextCtrl(this, ID_LINE_DELIMITER, wxT("\xbb"), wxDefaultPosition, wxDefaultSize, 0, 
                                 delimValidator));
   delimRow->AddSpacer(ColSeparation);
   delimRow->Add(new wxStaticText(this, wxID_ANY, _("Also used to replace periods in the Title field")));
