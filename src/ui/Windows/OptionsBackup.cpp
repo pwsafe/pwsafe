@@ -93,6 +93,8 @@ void COptionsBackup::DoDataExchange(CDataExchange* pDX)
   DDX_Radio(pDX, IDC_DFLTBACKUPLOCATION, m_BackupLocation); // only first!
   DDX_Text(pDX, IDC_USERBACKUPOTHRLOCATIONVALUE, m_UserBackupOtherLocation);
   DDX_Text(pDX, IDC_BACKUPMAXINC, m_MaxNumIncBackups);
+
+  DDX_Control(pDX, IDC_SAVEIMMEDIATELY, m_chkbox);
   //}}AFX_DATA_MAP
 }
 
@@ -117,6 +119,8 @@ END_MESSAGE_MAP()
 BOOL COptionsBackup::OnInitDialog()
 {
   COptions_PropertyPage::OnInitDialog();
+
+  m_chkbox.SetTextColour(CR_DATABASE_OPTIONS);
 
   if (!M_pDbx()->IsDBReadOnly())
     GetDlgItem(IDC_STATIC_DB_PREFS_RO_WARNING)->ShowWindow(SW_HIDE);
@@ -483,8 +487,8 @@ HBRUSH COptionsBackup::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
   // Database preferences - controls + associated static text
   switch (pWnd->GetDlgCtrlID()) {
     case IDC_SAVEIMMEDIATELY:
-      pDC->SetTextColor(CR_DATABASE_OPTIONS);
-      pDC->SetBkMode(TRANSPARENT);
+      //pDC->SetTextColor(CR_DATABASE_OPTIONS);
+      //pDC->SetBkMode(TRANSPARENT);
       break;
     case IDC_STATIC_PREFERENCES:
       pDC->SetTextColor(RGB(0, 0, 255));

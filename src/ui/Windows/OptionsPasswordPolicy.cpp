@@ -114,6 +114,16 @@ void COptionsPasswordPolicy::DoDataExchange(CDataExchange* pDX)
 
   // Because we can show the generated password when used from Mangage->Generate
   DDX_Control(pDX, IDC_PASSWORD, m_ex_password);
+
+  DDX_Control(pDX,  IDC_USELOWERCASE, m_chkbox[0]);
+  DDX_Control(pDX,  IDC_USEUPPERCASE, m_chkbox[1]);
+  DDX_Control(pDX,  IDC_USEDIGITS, m_chkbox[2]);
+  DDX_Control(pDX,  IDC_USESYMBOLS, m_chkbox[3]);
+  DDX_Control(pDX,  IDC_EASYVISION, m_chkbox[4]);
+  DDX_Control(pDX,  IDC_PRONOUNCEABLE, m_chkbox[5]);
+  DDX_Control(pDX,  IDC_USEHEXDIGITS, m_chkbox[6]);
+  DDX_Control(pDX,  IDC_USEDEFAULTSYMBOLS, m_radiobtn[0]);
+  DDX_Control(pDX,  IDC_USEOWNSYMBOLS, m_radiobtn[1]);
   //}}AFX_DATA_MAP
 }
 
@@ -148,6 +158,14 @@ END_MESSAGE_MAP()
 BOOL COptionsPasswordPolicy::OnInitDialog() 
 {
   COptions_PropertyPage::OnInitDialog();
+
+  for (int i = 0; i < 7; i++) {
+    m_chkbox[i].SetTextColour(CR_DATABASE_OPTIONS);
+  }
+  for (int i = 0; i < 2; i++) {
+    m_radiobtn[i].SetTextColour(CR_DATABASE_OPTIONS);
+    m_radiobtn[i].SetType(BS_AUTORADIOBUTTON);
+  }
 
   if (m_bFromOptions) {
     // These are only used in Manage -> Generate Password
@@ -430,8 +448,8 @@ void COptionsPasswordPolicy::do_easyorpronounceable(const bool bSet)
     for (i = 0; i < N_HEX_LENGTHS; i++) {
       GetDlgItem(nonHexLengths[i])->ShowWindow(SW_HIDE);
       GetDlgItem(nonHexLengthSpins[i])->ShowWindow(SW_HIDE);
-      GetDlgItem(LenTxts[2*i])->ShowWindow(SW_HIDE);
-      GetDlgItem(LenTxts[2*i + 1])->ShowWindow(SW_HIDE);
+      GetDlgItem(LenTxts[2 * i])->ShowWindow(SW_HIDE);
+      GetDlgItem(LenTxts[2 * i + 1])->ShowWindow(SW_HIDE);
     }
 
     GetDlgItem(IDC_USEDEFAULTSYMBOLS)->EnableWindow(FALSE);
@@ -686,7 +704,7 @@ void COptionsPasswordPolicy::OnENChangePassword()
 
 HBRUSH COptionsPasswordPolicy::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
 {
-  // Database preferences - controls + associated static text
+  // Database preferences - associated static text
   HBRUSH hbr = CPWPropertyPage::OnCtlColor(pDC, pWnd, nCtlColor);
 
   if (M_uicaller() == IDS_GENERATEPASSWORD)
@@ -694,15 +712,6 @@ HBRUSH COptionsPasswordPolicy::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
 
   switch (pWnd->GetDlgCtrlID()) {
     case IDC_STATIC_PSWDLENGTH:
-    case IDC_USELOWERCASE:
-    case IDC_USEUPPERCASE:
-    case IDC_USEDIGITS:
-    case IDC_USESYMBOLS:
-    case IDC_EASYVISION:
-    case IDC_PRONOUNCEABLE:
-    case IDC_USEHEXDIGITS:
-    case IDC_USEDEFAULTSYMBOLS:
-    case IDC_USEOWNSYMBOLS:
     case IDC_STATIC_LC1:
     case IDC_STATIC_LC2:
     case IDC_STATIC_UC1:

@@ -45,6 +45,9 @@ protected:
   int m_TrayIconColour;
   //}}AFX_DATA
 
+  CButtonExtn m_chkbox[4];
+  CButtonExtn m_radiobtn[3];
+
   // Overrides
   // ClassWizard generate virtual function overrides
   //{{AFX_VIRTUAL(COptionsDisplay)

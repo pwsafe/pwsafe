@@ -18,7 +18,7 @@ None
 
 Bugs fixed in 3.27.1
 ====================
-None
+[3430196] Buttons in the Options property pages now retain the user's Windows theme.
 
 New Features for 3.27
 =====================

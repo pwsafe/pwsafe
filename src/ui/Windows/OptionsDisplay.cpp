@@ -81,12 +81,19 @@ void COptionsDisplay::DoDataExchange(CDataExchange* pDX)
   DDX_Text(pDX, IDC_PREEXPIRYWARNDAYS, m_PreExpiryWarnDays);
   DDX_Check(pDX, IDC_HIGHLIGHTCHANGES, m_HighlightChanges);
   DDX_Radio(pDX, IDC_RST_BLK, m_TrayIconColour); // only first!
+
+  DDX_Control(pDX, IDC_DEFUNSHOWINTREE, m_chkbox[0]);
+  DDX_Control(pDX, IDC_DEFPWSHOWINTREE, m_chkbox[1]);
+  DDX_Control(pDX, IDC_DEFPWSHOWINEDIT, m_chkbox[2]);
+  DDX_Control(pDX, IDC_DEFNOTESSHOWINEDIT,m_chkbox[3]);
+  DDX_Control(pDX, IDC_TREE_DISPLAY_COLLAPSED, m_radiobtn[0]);
+  DDX_Control(pDX, IDC_TREE_DISPLAY_EXPANDED, m_radiobtn[1]);
+  DDX_Control(pDX, IDC_TREE_DISPLAY_LASTSAVE, m_radiobtn[2]);
   //}}AFX_DATA_MAP
 }
 
 BEGIN_MESSAGE_MAP(COptionsDisplay, COptions_PropertyPage)
   //{{AFX_MSG_MAP(COptionsDisplay)
-  ON_WM_CTLCOLOR()
   ON_BN_CLICKED(ID_HELP, OnHelp)
 
   ON_BN_CLICKED(IDC_PREWARNEXPIRY, OnPreWarn)
@@ -101,6 +108,14 @@ END_MESSAGE_MAP()
 BOOL COptionsDisplay::OnInitDialog() 
 {
   COptions_PropertyPage::OnInitDialog();
+
+  for (int i = 0; i < 4; i++) {
+    m_chkbox[i].SetTextColour(CR_DATABASE_OPTIONS);
+  }
+  for (int i = 0; i < 3; i++) {
+    m_radiobtn[i].SetTextColour(CR_DATABASE_OPTIONS);
+    m_radiobtn[i].SetType(BS_AUTORADIOBUTTON);
+  }
 
   if (m_ShowUsernameInTree == FALSE) {
     m_ShowPasswordInTree = FALSE;
@@ -218,25 +233,4 @@ void COptionsDisplay::OnDisplayUserInTree()
     ((CButton*)GetDlgItem(IDC_DEFPWSHOWINTREE))->SetCheck(BST_UNCHECKED);
   } else
     GetDlgItem(IDC_DEFPWSHOWINTREE)->EnableWindow(TRUE);
-}
-
-HBRUSH COptionsDisplay::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
-{
-  HBRUSH hbr = CPWPropertyPage::OnCtlColor(pDC, pWnd, nCtlColor);
-
-  // Database preferences - controls + associated static text
-  switch (pWnd->GetDlgCtrlID()) {
-    case IDC_DEFUNSHOWINTREE:
-    case IDC_DEFPWSHOWINTREE:
-    case IDC_DEFPWSHOWINEDIT:
-    case IDC_DEFNOTESSHOWINEDIT:
-    case IDC_TREE_DISPLAY_COLLAPSED:
-    case IDC_TREE_DISPLAY_EXPANDED:
-    case IDC_TREE_DISPLAY_LASTSAVE:
-      pDC->SetTextColor(CR_DATABASE_OPTIONS);
-      pDC->SetBkMode(TRANSPARENT);
-      break;
-  }
-
-  return hbr;
 }

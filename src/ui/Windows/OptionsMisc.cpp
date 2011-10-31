@@ -97,6 +97,9 @@ void COptionsMisc::DoDataExchange(CDataExchange* pDX)
   DDX_Text(pDX, IDC_OTHEREDITORLOCATION, m_OtherEditorLocation);
   DDX_Text(pDX, IDC_ALTBROWSER_CMDLINE, m_BrowserCmdLineParms);
   DDX_Check(pDX, IDC_MINIMIZEONAUTOTYPE, m_AutotypeMinimize);
+
+  DDX_Control(pDX, IDC_MAINTAINDATETIMESTAMPS, m_chkbox[0]);
+  DDX_Control(pDX, IDC_USEDEFUSER, m_chkbox[1]);
   //}}AFX_DATA_MAP
 }
 
@@ -118,6 +121,10 @@ END_MESSAGE_MAP()
 BOOL COptionsMisc::OnInitDialog() 
 {
   COptions_PropertyPage::OnInitDialog();
+
+  for (int i = 0; i < 2; i++) {
+    m_chkbox[i].SetTextColour(CR_DATABASE_OPTIONS);
+  }
 
   OnUseDefUser();
 
@@ -426,13 +433,11 @@ HBRUSH COptionsMisc::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
 {
   HBRUSH hbr = CPWPropertyPage::OnCtlColor(pDC, pWnd, nCtlColor);
 
-  // Database preferences - controls + associated static text
+  // Database preferences - associated static text
   switch (pWnd->GetDlgCtrlID()) {
     case IDC_USERNAME:
     case IDC_STATIC_USERNAME:
     case IDC_STATIC_DEFAUTOTYPE:
-    case IDC_MAINTAINDATETIMESTAMPS:
-    case IDC_USEDEFUSER:
       pDC->SetTextColor(CR_DATABASE_OPTIONS);
       pDC->SetBkMode(TRANSPARENT);
       break;

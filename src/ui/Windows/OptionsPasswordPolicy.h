@@ -56,6 +56,9 @@ protected:
   int m_UseOwnSymbols;
   CString m_Symbols;
 
+  CButtonExtn m_chkbox[7];
+  CButtonExtn m_radiobtn[2];
+
   // Overrides
   // ClassWizard generate virtual function overrides
   //{{AFX_VIRTUAL(COptionsPasswordPolicy)

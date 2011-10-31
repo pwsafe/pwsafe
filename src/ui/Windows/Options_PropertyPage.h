@@ -10,6 +10,7 @@
 
 #include "PWPropertyPage.h"
 #include "SecString.h"
+#include "ControlExtns.h"
 
 class COptions_PropertySheet;
 class DboxMain;
@@ -225,7 +226,6 @@ public:
   inline int &M_MaxMRUItems() {return m_OPTMD.MaxMRUItems;}
 
 protected:
-  virtual BOOL OnInitDialog();
   COptions_PropertySheet *m_options_psh;
   st_Opt_master_data &m_OPTMD;
 };

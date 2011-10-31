@@ -67,6 +67,9 @@ void COptionsSecurity::DoDataExchange(CDataExchange* pDX)
   DDX_Check(pDX, IDC_LOCKONMINIMIZE, m_LockOnMinimize);
   DDX_Check(pDX, IDC_CONFIRMCOPY, m_ConfirmCopy);
   DDX_Check(pDX, IDC_LOCKONSCREEN, m_LockOnWindowLock);
+
+  DDX_Control(pDX, IDC_COPYPSWDURL, m_chkbox[0]);
+  DDX_Control(pDX, IDC_LOCK_TIMER, m_chkbox[1]);
   //}}AFX_DATA_MAP
 }
 
@@ -86,6 +89,10 @@ END_MESSAGE_MAP()
 BOOL COptionsSecurity::OnInitDialog() 
 {
   COptions_PropertyPage::OnInitDialog();
+
+  for (int i = 0; i < 2; i++) {
+    m_chkbox[i].SetTextColour(CR_DATABASE_OPTIONS);
+  }
 
   OnLockOnIdleTimeout();
   CSpinButtonCtrl* pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_IDLESPIN);
@@ -215,11 +222,9 @@ HBRUSH COptionsSecurity::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
 {
   HBRUSH hbr = CPWPropertyPage::OnCtlColor(pDC, pWnd, nCtlColor);
 
-  // Database preferences - controls + associated static text
+  // Database preferences - associated static text
   switch (pWnd->GetDlgCtrlID()) {
     case IDC_STATIC_IDLEMINS:
-    case IDC_COPYPSWDURL:
-    case IDC_LOCK_TIMER:
       pDC->SetTextColor(CR_DATABASE_OPTIONS);
       pDC->SetBkMode(TRANSPARENT);
       break;
