@@ -142,7 +142,7 @@ private:
   MultiCommands *m_pmulticmds;
   CReport *m_prpt;
 
-  int m_whichtime, m_ipwh;
+  int m_ipwh;
   int m_fieldlen;
   bool m_bheader;
   unsigned char * m_pfield;

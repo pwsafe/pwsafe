@@ -79,12 +79,6 @@ const XMLFileValidation::st_file_elements XMLFileValidation::m_file_elements[XLE
   {_T("protected"), {0, XLE_PROTECTED}},
   {_T("notes"), {0, XLE_NOTES}},
   {_T("uuid"), {0, XLE_UUID}},
-  {_T("ctime"), {0, XLE_CTIME}},
-  {_T("atime"), {0, XLE_ATIME}},
-  {_T("ltime"), {0, XLE_LTIME}},
-  {_T("xtime"), {0, XLE_XTIME}},
-  {_T("pmtime"), {0, XLE_PMTIME}},
-  {_T("rmtime"), {0, XLE_RMTIME}},
   {_T("ctimex"), {0, XLE_CTIMEX}},
   {_T("atimex"), {0, XLE_ATIMEX}},
   {_T("xtimex"), {0, XLE_XTIMEX}},
@@ -99,12 +93,9 @@ const XMLFileValidation::st_file_elements XMLFileValidation::m_file_elements[XLE
   {_T("num"), {0, XLE_NUM}},
   {_T("history_entries"), {0, XLE_HISTORY_ENTRIES}},
   {_T("history_entry"), {0, XLE_HISTORY_ENTRY}},
-  {_T("changed"), {0, XLE_CHANGED}},
   {_T("changedx"), {0, XLE_CHANGEDX}},
   {_T("oldpassword"), {0, XLE_OLDPASSWORD}},
-  {_T("PWLength"), {0, XLE_ENTRY_PWLENGTH}},
-  {_T("date"), {0, XLE_DATE}},
-  {_T("time"), {0, XLE_TIME}}
+  {_T("PWLength"), {0, XLE_ENTRY_PWLENGTH}}
 };
 
 XMLFileValidation::XMLFileValidation()
