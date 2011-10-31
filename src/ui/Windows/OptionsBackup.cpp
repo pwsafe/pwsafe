@@ -486,10 +486,6 @@ HBRUSH COptionsBackup::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
 
   // Database preferences - controls + associated static text
   switch (pWnd->GetDlgCtrlID()) {
-    case IDC_SAVEIMMEDIATELY:
-      //pDC->SetTextColor(CR_DATABASE_OPTIONS);
-      //pDC->SetBkMode(TRANSPARENT);
-      break;
     case IDC_STATIC_PREFERENCES:
       pDC->SetTextColor(RGB(0, 0, 255));
       pDC->SetBkMode(TRANSPARENT);
