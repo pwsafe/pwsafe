@@ -79,12 +79,6 @@ enum XLE_PASSWORDSAFE {
   XLE_AUTOTYPE,
   XLE_NOTES,
   XLE_UUID,
-  XLE_CTIME,    // Using old PWS format
-  XLE_ATIME,    // Using old PWS format
-  XLE_LTIME,    // Using old PWS format
-  XLE_XTIME,    // Using old PWS format
-  XLE_PMTIME,   // Using old PWS format
-  XLE_RMTIME,   // Using old PWS format
   XLE_CTIMEX,   // Using standard XML format
   XLE_ATIMEX,   // Using standard XML format
   XLE_XTIMEX,   // Using standard XML format
@@ -110,7 +104,6 @@ enum XLE_PASSWORDSAFE {
   XLE_HISTORY_ENTRY,
 
   // history_entry
-  XLE_CHANGED,   // Using old PWS format
   XLE_CHANGEDX,  // Using standard XML format
   XLE_OLDPASSWORD,
 
@@ -127,10 +120,6 @@ enum XLE_PASSWORDSAFE {
   XLE_ENTRY_PWLOWERCASEMINLENGTH,
   XLE_ENTRY_PWUPPERCASEMINLENGTH,
   XLE_ENTRY_PWSYMBOLMINLENGTH,
-
-  // datetime fields
-  XLE_DATE,
-  XLE_TIME,
 
   // Last element
   XLE_LAST_ELEMENT

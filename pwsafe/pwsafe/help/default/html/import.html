@@ -94,6 +94,31 @@ data between applications. <b>Password Safe</b>
 can import XML files that were generated according to the schema defined in
 the file <i>pwsafe.xsd</i>, which is provided as part of the distribution.</p>
 
+<p><b>Note:</b> Prior to PasswordSafe V3.26, date time fields were exported in our own format:</p>
+<pre>
+  &lt;name&gt;
+    &lt;date&gt;yyyy-mm-dd&lt;/date&gt;
+    &lt;time&gt;hh:mm:ss&lt;/time&gt;
+  &lt;/name&gt;
+</pre>
+<p>Where "name" was any of our record date/time fields e.g. 'ctime', 'atime', 'xtime',
+'pmtime', 'rmtime' and the password history 'changed' date/time.</p>
+
+<p>However, from V3.26 onwards, PasswordSafe will only export XML date/time fields using the
+standard W3C date/time format. V3.26 and V3.27 can input either format but for versions after 3.27,
+it will <b><u>only</u></b> accept the W3C standard.</p>
+
+<p>The W3C standard for XML date/time fields is:</p>
+<pre>
+  &lt;namex&gt;yyyy-mm-ddThh:mm:ss&lt;/namex&gt;
+</pre>
+<p>Where we have changed the "name" to distinguish the fields from the old format by appending an 'x'
+and so 'namex' is any of our new record date/time fields e.g. 'ctimex', 'atimex', 'xtimex',
+'pmtimex', 'rmtimex' and the password history 'changedx' date/time.</p>
+
+<p>To import an older format XML file with date/time fields, you must manually edit these fields to
+convert to the old PasswordSafe format to the W3C standard format.</p>
+
 <h3><a name="KeePassV1_TXTCSV"></a>KeePass V1 TXT and CSV Files</h3>
 
 <p><u>The recommended import of KeePass V1 database entries is via XML as described </u>

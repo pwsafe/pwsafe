@@ -119,7 +119,6 @@ bool XMLFileHandlers::ProcessStartElement(const int icurrent_element)
       cur_entry->ucprotected = 0;
       cur_entry->entrytype = NORMAL;
       cur_entry->bforce_normal_entry = false;
-      m_whichtime = -1;
       break;
     case XLE_HISTORY_ENTRY:
       if (m_bValidation)
@@ -135,15 +134,7 @@ bool XMLFileHandlers::ProcessStartElement(const int icurrent_element)
     case XLE_XTIMEX:
     case XLE_PMTIMEX:
     case XLE_RMTIMEX:
-      break;
-    case XLE_CTIME:
-    case XLE_ATIME:
-    case XLE_LTIME:
-    case XLE_XTIME:
-    case XLE_PMTIME:
-    case XLE_RMTIME:
-    case XLE_CHANGED:
-      m_whichtime = icurrent_element;
+    case XLE_CHANGEDX:
       break;
     default:
       break;
@@ -260,27 +251,6 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
     case XLE_RMTIMEX:
       cur_entry->rmtime = m_strElemContent;
       break;
-    case XLE_CTIME:
-      Replace(cur_entry->ctime, _T('-'), _T('/'));
-      m_whichtime = -1;
-      break;
-    case XLE_ATIME:
-      Replace(cur_entry->atime, _T('-'), _T('/'));
-      m_whichtime = -1;
-      break;
-    case XLE_LTIME:
-    case XLE_XTIME:
-      Replace(cur_entry->xtime, _T('-'), _T('/'));
-      m_whichtime = -1;
-      break;
-    case XLE_PMTIME:
-      Replace(cur_entry->pmtime, _T('-'), _T('/'));
-      m_whichtime = -1;
-      break;
-    case XLE_RMTIME:
-      Replace(cur_entry->rmtime, _T('-'), _T('/'));
-      m_whichtime = -1;
-      break;
     case XLE_XTIME_INTERVAL:
       cur_entry->xtime_interval = Trim(m_strElemContent);
       break;
@@ -327,16 +297,6 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
       cur_entry->pwhistory += buffer;
       delete cur_pwhistory_entry;
       cur_pwhistory_entry = NULL;
-      break;
-    case XLE_CHANGED:
-      ASSERT(cur_pwhistory_entry != NULL);
-      Replace(cur_pwhistory_entry->changed, _T('-'), _T('/'));
-      Trim(cur_pwhistory_entry->changed);
-      if (cur_pwhistory_entry->changed.empty()) {
-        //                                 1234567890123456789
-        cur_pwhistory_entry->changed = _T("1970-01-01 00:00:00");
-      }
-      m_whichtime = -1;
       break;
     case XLE_CHANGEDX:
       cur_pwhistory_entry->changed = m_strElemContent;
@@ -401,58 +361,6 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
       break;
     case XLE_ENTRY_PWUPPERCASEMINLENGTH:
       cur_entry->pwp.upperminlength = _ttoi(m_strElemContent.c_str());
-      break;
-    case XLE_DATE:
-      switch (m_whichtime) {
-        case XLE_CTIME:
-          cur_entry->ctime = m_strElemContent;
-          break;
-        case XLE_ATIME:
-          cur_entry->atime = m_strElemContent;
-          break;
-        case XLE_LTIME:
-        case XLE_XTIME:
-          cur_entry->xtime = m_strElemContent;
-          break;
-        case XLE_PMTIME:
-          cur_entry->pmtime = m_strElemContent;
-          break;
-        case XLE_RMTIME:
-          cur_entry->rmtime = m_strElemContent;
-          break;
-        case XLE_CHANGED:
-          ASSERT(cur_pwhistory_entry != NULL);
-          cur_pwhistory_entry->changed = m_strElemContent;
-          break;
-        default:
-          ASSERT(0);
-      }
-      break;
-    case XLE_TIME:
-      switch (m_whichtime) {
-        case XLE_CTIME:
-          cur_entry->ctime += _T(" ") + m_strElemContent;
-          break;
-        case XLE_ATIME:
-          cur_entry->atime += _T(" ") + m_strElemContent;
-          break;
-        case XLE_LTIME:
-        case XLE_XTIME:
-          cur_entry->xtime += _T(" ") + m_strElemContent;
-          break;
-        case XLE_PMTIME:
-          cur_entry->pmtime += _T(" ") + m_strElemContent;
-          break;
-        case XLE_RMTIME:
-          cur_entry->rmtime += _T(" ") + m_strElemContent;
-          break;
-        case XLE_CHANGED:
-          ASSERT(cur_pwhistory_entry != NULL);
-          cur_pwhistory_entry->changed += _T(" ") + m_strElemContent;
-          break;
-        default:
-          ASSERT(0);
-      }
       break;
     case XLE_PASSWORDSAFE:
     case XLE_PREFERENCES:
