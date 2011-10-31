@@ -109,6 +109,8 @@ sub ReadRC2File {
             my ($key, $val) = ($1, $2);
             # replace "" with \"
             $val =~ s/\"\"/\\\"/g;
+	    # replace \xab and \xbb with gettext-friendly \":
+	    $val =~ s/\\x[ab]b/\\\"/g;
             $MAP{$key} = $val;
         }
     }
