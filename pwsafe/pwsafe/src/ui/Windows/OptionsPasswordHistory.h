@@ -35,6 +35,8 @@ protected:
   int  m_PWHAction;
   //}}AFX_DATA
 
+  CButtonExtn m_chkbox;
+
   // Overrides
   // ClassWizard generate virtual function overrides
   //{{AFX_VIRTUAL(COptionsPasswordHistory)

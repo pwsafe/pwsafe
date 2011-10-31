@@ -47,6 +47,8 @@ protected:
   CString m_currentFileDir;
   CString m_currentFileBasename;
 
+  CButtonExtn m_chkbox;
+
   // Overrides
   // ClassWizard generate virtual function overrides
   //{{AFX_VIRTUAL(COptionsBackup)

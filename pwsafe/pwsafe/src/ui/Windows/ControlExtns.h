@@ -229,3 +229,35 @@ protected:
 
   DECLARE_MESSAGE_MAP()
 };
+
+/////////////////////////////////////////////////////////////////////////////
+// CButtonExtn
+
+class CButtonExtn : public CButton
+{
+  // Construction
+public:
+  CButtonExtn();
+  virtual ~CButtonExtn();
+
+  void SetTextColour(COLORREF crf)
+  {m_bUseTextColour = true; m_crfText = crf;}
+  void ResetTextColour()
+  {m_bUseTextColour = false;}
+  void SetType(int type);
+
+protected:
+  //{{AFX_MSG(CButtonExtn)
+  afx_msg void OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult);
+  //}}AFX_MSG
+
+  DECLARE_MESSAGE_MAP()
+
+private:
+  void DrawButton(HWND hWnd, HDC hDC, RECT *pRect, BOOL fChecked, BOOL fHot);
+
+  CString m_caption;
+  bool m_bUseTextColour;
+  COLORREF m_crfText;
+  int m_type;
+};

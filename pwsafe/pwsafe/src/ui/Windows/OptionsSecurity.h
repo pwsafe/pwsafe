@@ -38,6 +38,8 @@ protected:
   int m_IdleTimeOut;
   //}}AFX_DATA
 
+  CButtonExtn m_chkbox[2];
+
   // Overrides
   // ClassWizard generate virtual function overrides
   //{{AFX_VIRTUAL(COptionsSecurity)

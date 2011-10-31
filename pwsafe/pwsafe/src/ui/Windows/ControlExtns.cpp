@@ -10,10 +10,15 @@
 
 #include "stdafx.h"
 #include "ControlExtns.h"
+
 #include "core/ItemField.h" // for CSecEditExtn
 #include "core/BlowFish.h"  // ditto
 #include "core/PWSrand.h"   // ditto
-#include "resource2.h" // for CEditExtn context menu
+
+#include "resource2.h"     // for CEditExtn context menu
+
+#include "vsstyle.h"
+
 #include <algorithm>
 
 #ifdef _DEBUG
@@ -885,4 +890,105 @@ LRESULT CSymbolEdit::OnPaste(WPARAM , LPARAM )
     SetWindowText(cs_text);
 
   return 0L;
+}
+
+/////////////////////////////////////////////////////////////////////////////
+// CButtonExtn
+
+CButtonExtn::CButtonExtn()
+  : m_bUseTextColour(false), m_caption(L""), m_type(BS_AUTOCHECKBOX)
+{
+}
+
+CButtonExtn::~CButtonExtn()
+{
+}
+
+BEGIN_MESSAGE_MAP(CButtonExtn, CButton)
+  //{{AFX_MSG_MAP(CButtonExtn)
+  ON_NOTIFY_REFLECT(NM_CUSTOMDRAW, OnCustomDraw)
+  //}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
+void CButtonExtn::SetType(int type)
+{
+  // Only the following are supported
+  if (type != BS_AUTOCHECKBOX && type != BS_AUTORADIOBUTTON) {
+    ASSERT(0);
+    return;
+  }
+
+  m_type = type;
+}
+
+void CButtonExtn::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
+{
+  // Code originally by Nikita Leontiev in answer to "Change checkBox text color Win32"
+  // in MS's Forum: "Visual Studio Developer Center > Visual Studio vNext Forums > Visual C++ General"
+  // Modified for MFC, Checkbox and Radio buttons by DK
+
+  LPNMCUSTOMDRAW lpNMCustomDraw = (LPNMCUSTOMDRAW)pNotifyStruct;
+  *pLResult = CDRF_DODEFAULT;
+
+  switch (lpNMCustomDraw->dwDrawStage) {
+    case CDDS_PREERASE:
+      BOOL fChecked = GetCheck() & BST_CHECKED;
+      BOOL fHot = lpNMCustomDraw->uItemState & CDIS_HOT;
+      DrawButton(lpNMCustomDraw->hdr.hwndFrom, lpNMCustomDraw->hdc,
+				     		&lpNMCustomDraw->rc, fChecked, fHot);
+  }
+}
+
+void CButtonExtn::DrawButton(HWND hWnd, HDC hDC, RECT *pRect, BOOL fChecked, BOOL fHot)
+{
+  // Code originally by Nikita Leontiev in answer to "Change checkBox text color Win32"
+  // in MS's Forum: "Visual Studio Developer Center > Visual Studio vNext Forums > Visual C++ General"
+  // Modified for MFC, Checkbox and Radio buttons by DK
+
+  int nWidth = pRect -> right - pRect -> left;
+  int nHeight = pRect -> bottom - pRect -> top;
+
+  HDC hMemDC = CreateCompatibleDC(hDC);
+  HBITMAP hBitmap = CreateCompatibleBitmap(hDC, nWidth, nHeight);
+  SelectObject(hMemDC, hBitmap);
+
+  RECT rFillRect = {0, 0, nWidth, nHeight};
+  FillRect(hMemDC, &rFillRect, CreateSolidBrush(GetSysColor(COLOR_WINDOW)));
+
+  HTHEME hTheme = OpenThemeData(hWnd, L"BUTTON");
+  int nStateID(0);
+
+  if (m_type == BS_AUTOCHECKBOX) {
+    nStateID = (fChecked) ? CBS_CHECKEDNORMAL : CBS_UNCHECKEDNORMAL;
+    if (fHot)
+      nStateID = (fChecked) ? CBS_CHECKEDHOT : CBS_UNCHECKEDHOT;
+  } else {
+    nStateID = (fChecked) ? RBS_CHECKEDNORMAL : RBS_UNCHECKEDNORMAL;
+    if (fHot)
+      nStateID = (fChecked) ? RBS_CHECKEDHOT : RBS_UNCHECKEDHOT;
+  }
+
+  RECT rIconRect = {0, 0, 13, nHeight};
+  DrawThemeBackground(hTheme, hMemDC, m_type == BS_AUTOCHECKBOX ? BP_CHECKBOX : BP_RADIOBUTTON,
+                      nStateID, &rIconRect, NULL);
+  CloseThemeData(hTheme);
+
+  RECT rTextRect = {18, 0, nWidth - 18, nHeight};
+  SetBkMode(hMemDC, TRANSPARENT);
+  if (m_bUseTextColour)
+    SetTextColor(hMemDC, m_crfText);
+
+  SelectObject(hMemDC, (HFONT)GetStockObject(DEFAULT_GUI_FONT));
+
+  if (m_caption.IsEmpty()) {
+    GetWindowText(m_caption);
+    SetWindowText(L"");
+  }
+
+  DrawText(hMemDC, m_caption, m_caption.GetLength(), &rTextRect, DT_SINGLELINE | DT_VCENTER);
+
+  BitBlt(hDC, 0, 0, nWidth, nHeight, hMemDC, 0, 0, SRCCOPY);
+
+  DeleteObject(hBitmap);
+  DeleteDC(hMemDC);
 }
