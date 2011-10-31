@@ -1,5 +1,5 @@
-Password Safe 3.27 Release Notes - October 2011
-===============================================
+Password Safe 3.27.1 Release Notes - October 2011
+=================================================
 
 This note describe the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -7,6 +7,18 @@ Password Safe, please see the accompanying README.txt file. For more
 information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
+
+New Features for 3.27.1
+=======================
+None
+
+Changes to Existing Features in 3.27.1
+======================================
+None
+
+Bugs fixed in 3.27.1
+====================
+None
 
 New Features for 3.27
 =====================
