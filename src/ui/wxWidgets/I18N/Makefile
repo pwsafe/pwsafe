@@ -1,10 +1,15 @@
 # Makefile for supporting internationalization under wxWidgets
 
 DOMAIN := pwsafe
+POT := $(DOMAIN).pot
 SRC_BASE := ../../..
 SRCS := $(wildcard $(SRC_BASE)/ui/wxWidgets/*.cpp) \
 	$(wildcard $(SRC_BASE)/core/*.cpp) \
 	$(wildcard $(SRC_BASE)/os/linux/*.cpp)
+
+LANGS := de dk es fr it kr nl pl ru sv zh
+
+POS := $(patsubst %,pos/pwsafe_%.po,$(LANGS))
 
 .PHONY: all help pot
 
@@ -13,7 +18,12 @@ help:
 
 all: help
 
-pot: $(DOMAIN).pot
+pot: $(POT)
 
-$(DOMAIN).pot : $(SRCS)
+pos: $(POS)
+
+$(POT) : $(SRCS)
 	@xgettext --default-domain=$(DOMAIN) --language=C++ --keyword=_ --output=$@ $^
+
+$(POS) : $(POT)
+	@msgmerge --update --backup=off $@ $^
