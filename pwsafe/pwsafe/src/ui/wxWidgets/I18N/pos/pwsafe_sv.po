@@ -3642,7 +3642,7 @@ msgstr "Internt fel: En ogiltig flagga angavs"
 #: ../../../core/core_st.cpp:187
 #, c-format
 msgid "  Invalid header: '%s' (must be 5 hexadecimal characters)."
-msgstr "  Ogiltig rubrik: '%' (måste vara 5 hexadecimala tecken)."
+msgstr "  Ogiltig rubrik: '%s' (måste vara 5 hexadecimala tecken)."
 
 #: ../../../core/core_st.cpp:188
 #, c-format
