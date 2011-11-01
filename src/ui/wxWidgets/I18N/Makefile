@@ -11,14 +11,15 @@ LANGS := de dk es fr it kr nl pl ru sv zh
 
 POS := $(patsubst %,pos/pwsafe_%.po,$(LANGS))
 
-MOS := $(patsubst %,mos/%/LC_MESSAGES/pwsafe.po,$(LANGS))
+MOS := $(patsubst %,mos/%/LC_MESSAGES/pwsafe.mo,$(LANGS))
 
-.PHONY: all help pot
+.PHONY:  help pot pos mos
 
 help:
-	@echo "Currently you can only specify pot as a target"
+	@echo "pot - update po template $(POT) from source code"
+	@echo "pos - update translated po files from pot file (to send to xlators)"
+	@echo "mos - regenerate compiled catralog files from translations"
 
-all: help
 
 pot: $(POT)
 
@@ -33,6 +34,6 @@ $(POS) : $(POT)
 	@msgmerge --update --backup=off $@ $^
 
 
-mos/%/LC_MESSAGES/pwsafe.po : pos/pwsafe_%.po
+mos/%/LC_MESSAGES/pwsafe.mo : pos/pwsafe_%.po
 	@mkdir -p $(dir $@)
 	@msgfmt --check --output-file=$@ $^

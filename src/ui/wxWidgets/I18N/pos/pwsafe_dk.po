@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-10-31 14:50+0200\n"
+"POT-Creation-Date: 2011-11-01 21:25+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1401,7 +1401,7 @@ msgid "Select a Browser"
 msgstr "Vælg Browser:"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:1258
-#: ../../../ui/wxWidgets/pwsafeapp.cpp:283
+#: ../../../ui/wxWidgets/pwsafeapp.cpp:319
 msgid "Password Safe"
 msgstr "Password Safe"
 
@@ -2389,19 +2389,19 @@ msgstr ""
 msgid "x"
 msgstr ""
 
-#: ../../../ui/wxWidgets/pwsafeapp.cpp:283
+#: ../../../ui/wxWidgets/pwsafeapp.cpp:319
 msgid "Another instance of Password Safe is already running"
 msgstr ""
 
-#: ../../../ui/wxWidgets/pwsafeapp.cpp:312
+#: ../../../ui/wxWidgets/pwsafeapp.cpp:348
 msgid "Could not initialize help subsystem. Help will not be available"
 msgstr ""
 
-#: ../../../ui/wxWidgets/pwsafeapp.cpp:313
+#: ../../../ui/wxWidgets/pwsafeapp.cpp:349
 msgid "Error initializing help"
 msgstr ""
 
-#: ../../../ui/wxWidgets/pwsafeapp.cpp:476
+#: ../../../ui/wxWidgets/pwsafeapp.cpp:512
 msgid "Help Undefined"
 msgstr ""
 
@@ -3380,9 +3380,11 @@ msgstr ""
 
 #: ../../../core/core_st.cpp:151
 #, c-format
-msgid "%s, Title=\"%s\", User=\"%s\" already exists in your database or in the "
+msgid ""
+"%s, Title=\"%s\", User=\"%s\" already exists in your database or in the "
 "Import file. Added imported entry with title=\"%s\".\r\n"
-msgstr "%s, Titel=\"%s\", Bruger=\"%s\" eksisterer allerede i din database eller i "
+msgstr ""
+"%s, Titel=\"%s\", Bruger=\"%s\" eksisterer allerede i din database eller i "
 "den importerede fil. Ekstra importeret adgang med titlen=\"%s\".\r\n"
 
 #: ../../../core/core_st.cpp:152
