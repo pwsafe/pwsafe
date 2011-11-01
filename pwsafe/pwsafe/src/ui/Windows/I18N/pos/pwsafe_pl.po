@@ -2720,7 +2720,7 @@ msgstr "Wpisy z wygasaniem hasła"
 #. Resource IDs: (211)
 #, c-format
 msgid "Entry %s%d with Group=\"%s\", Title=\"%s\", User=\"%s\""
-msgstr "Wpis %s%d z grupą=\"%s\", nazwą=\"%s\", użytkownikiem=\"%s\"
+msgstr "Wpis %s%d z grupą=\"%s\", nazwą=\"%s\", użytkownikiem=\"%s\""
 
 #. Resource IDs: (1407)
 msgid "Entry Unique ID:"
