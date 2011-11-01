@@ -2294,7 +2294,7 @@ msgstr "Database convalidato - nessun problema riscontrato."
 
 #. Resource IDs: (1122)
 msgid "Date/Time Information"
-msgstr "Informazioni Data\Ora"
+msgstr "Informazioni Data\\Ora"
 
 #. Resource IDs: (467)
 msgid "Dates and Times"
