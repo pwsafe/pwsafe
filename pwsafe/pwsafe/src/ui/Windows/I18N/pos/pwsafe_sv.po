@@ -85,7 +85,7 @@ msgstr "  Hittat felaktigt fältavgränsande tecken - endast ett enda blanksteg 
 #. Resource IDs: (190)
 #, c-format
 msgid "  Invalid header: '%s' (must be 5 hexadecimal characters)."
-msgstr "  Ogiltig rubrik: '%' (måste vara 5 hexadecimala tecken)."
+msgstr "  Ogiltig rubrik: '%s' (måste vara 5 hexadecimala tecken)."
 
 #. Resource IDs: (190)
 #, c-format
