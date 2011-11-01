@@ -3174,7 +3174,7 @@ msgstr "Файл %s прошёл проверку, но при импорте п
 #. Resource IDs: (335)
 #, c-format
 msgid "File: %s was imported (entries validated %d / imported %d%s%s%s). See report for details."
-msgstr "Файл %s был импортирован (проверено элементов %d / импортировано %d). Подробная информация находится в отчёте."
+msgstr "Файл %s был импортирован (проверено элементов %d / импортировано %d%s%s%s). Подробная информация находится в отчёте."
 
 #. Resource IDs: (209)
 #, c-format
