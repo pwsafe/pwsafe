@@ -138,11 +138,46 @@ BEGIN_EVENT_TABLE( PwsafeApp, wxApp )
 
 ////@begin PwsafeApp event table entries
 ////@end PwsafeApp event table entries
-    EVT_ACTIVATE_APP(PwsafeApp::OnActivate)
-    EVT_TIMER(ACTIVITY_TIMER_ID, PwsafeApp::OnActivityTimer)
-    EVT_CUSTOM(wxEVT_GUI_DB_PREFS_CHANGE, wxID_ANY, PwsafeApp::OnDBGUIPrefsChange)
+EVT_ACTIVATE_APP(PwsafeApp::OnActivate)
+EVT_TIMER(ACTIVITY_TIMER_ID, PwsafeApp::OnActivityTimer)
+EVT_CUSTOM(wxEVT_GUI_DB_PREFS_CHANGE, wxID_ANY, PwsafeApp::OnDBGUIPrefsChange)
 END_EVENT_TABLE()
 
+
+ 
+static void initLanguageSupport()
+{
+  wxLocale* locale;
+  long language =  wxLANGUAGE_DEFAULT;
+ 
+  // load language if possible, fall back to english otherwise
+  if(wxLocale::IsAvailable(language)) {
+    locale = new wxLocale( language, wxLOCALE_CONV_ENCODING );
+ 
+    // add locale search paths
+    locale->AddCatalogLookupPathPrefix(wxT("/usr"));
+    locale->AddCatalogLookupPathPrefix(wxT("/usr/local"));
+#if defined(__WXDEBUG__) || defined(_DEBUG) || defined(DEBUG)
+    locale->AddCatalogLookupPathPrefix(wxT("../I18N/mos"));
+#endif
+    if (!locale->AddCatalog(wxT("pwsafe"))) {
+      std::wcerr << L"Couldn't load text for "
+		 << locale->GetLanguageName(language).c_str() << endl;
+    }
+ 
+    if(! locale->IsOk()) {
+      std::cerr << "selected language is wrong" << std::endl;
+      delete locale;
+      locale = new wxLocale( wxLANGUAGE_ENGLISH );
+      language = wxLANGUAGE_ENGLISH;
+    }
+  } else {
+    std::cerr << "The selected language is not supported by your system."
+	      << "Try installing support for this language." << std::endl;
+    locale = new wxLocale( wxLANGUAGE_ENGLISH );
+    language = wxLANGUAGE_ENGLISH;
+  }
+}
 
 /*!
  * Constructor for PwsafeApp
@@ -175,6 +210,7 @@ PwsafeApp::~PwsafeApp()
 
 void PwsafeApp::Init()
 {
+  initLanguageSupport();
 ////@begin PwsafeApp member initialisation
 ////@end PwsafeApp member initialisation
 }
