@@ -3380,11 +3380,9 @@ msgstr ""
 
 #: ../../../core/core_st.cpp:151
 #, c-format
-msgid ""
-"%s, Title=\"%s\", User=\"%s\" already exists in your database or in the "
+msgid "%s, Title=\"%s\", User=\"%s\" already exists in your database or in the "
 "Import file. Added imported entry with title=\"%s\".\r\n"
-msgstr ""
-"%s, Titel=\"%\", Bruger=\"%s\" eksisterer allerede i din database eller i "
+msgstr "%s, Titel=\"%s\", Bruger=\"%s\" eksisterer allerede i din database eller i "
 "den importerede fil. Ekstra importeret adgang med titlen=\"%s\".\r\n"
 
 #: ../../../core/core_st.cpp:152

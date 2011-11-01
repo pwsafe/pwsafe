@@ -2209,7 +2209,7 @@ msgid ""
 "File: %s was imported (entries validated %d / imported %d%s%s%s). See report "
 "for details."
 msgstr ""
-"Файл %s был импортирован (проверено элементов %d / импортировано %d). "
+"Файл %s был импортирован (проверено элементов %d / импортировано %d%s%s%s). "
 "Подробная информация находится в отчёте."
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2712
