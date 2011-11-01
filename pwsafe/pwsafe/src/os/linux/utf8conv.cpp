@@ -17,15 +17,30 @@
 #include <cassert>
 #include <cstring>
 #include <string>
+#include <unistd.h>
 
 using namespace std;
 
 class Startup {
 public:
   Startup() {
+    // Sice this can fail before main(), we can't rely on cerr etc.
+    // being intialized. At least give the user a clue...
+    char *gl = setlocale(LC_ALL, NULL);
     char *sl = setlocale(LC_ALL, "");
-    if (sl == NULL)
-      throw "Couldn't initialize locale - bailing out";
+    if (sl == NULL) {
+      // Couldn't get environment-specified locale, warn user
+      // and punt to default "C"
+      char wrnmess[] = "Couldn't load locale, falling back to default\n";
+      write(STDERR_FILENO, wrnmess, sizeof(wrnmess)/sizeof(*wrnmess)-1);
+      sl = setlocale(LC_ALL, gl);
+    }
+    if (sl == NULL) {
+      // If we can't get the default,we're really FUBARed
+      char errmess[] = "Couldn't initialize locale - bailing out\n";
+      write(STDERR_FILENO, errmess, sizeof(errmess)/sizeof(*errmess)-1);
+      _exit(2);
+    }
   }
 };
 
