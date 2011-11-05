@@ -56,11 +56,12 @@ BOOL CProperties::OnInitDialog()
   GetDlgItem(IDC_FILEUUID)->SetWindowText(m_pdbp->file_uuid.c_str());
   GetDlgItem(IDC_UNKNOWNFIELDS)->SetWindowText(m_pdbp->unknownfields.c_str());
 
-  CString csDBName = m_pdbp->db_name.empty() ? L"N/A" : m_pdbp->db_name.c_str();
+  const CString cs_text(MAKEINTRESOURCE(IDS_NA));
+  CString csDBName = m_pdbp->db_name.empty() ? cs_text : m_pdbp->db_name.c_str();
   if (csDBName.GetLength() > 32)
     csDBName = csDBName.Left(30) + L"...";
 
-  CString csDBDescription = m_pdbp->db_description.empty() ? L"N/A" : m_pdbp->db_description.c_str();
+  CString csDBDescription = m_pdbp->db_description.empty() ? cs_text : m_pdbp->db_description.c_str();
   if (csDBDescription.GetLength() > 64)
     csDBDescription = csDBDescription.Left(60) + L"...";
 

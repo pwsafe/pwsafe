@@ -157,7 +157,7 @@ BEGIN_MESSAGE_MAP(CAddEdit_Basic, CAddEdit_PropertyPage)
   ON_BN_CLICKED(ID_HELP, OnHelp)
 
   ON_BN_CLICKED(IDC_SHOWPASSWORD, OnShowPassword)
-  ON_BN_CLICKED(IDC_RANDOM, OnRandom)
+  ON_BN_CLICKED(IDC_GENERATEPASSWORD, OnGeneratePassword)
   ON_BN_CLICKED(IDC_LAUNCH, OnLaunch)
   ON_BN_CLICKED(IDC_SENDEMAIL, OnSendEmail)
   ON_BN_CLICKED(IDC_VIEWDEPENDENTS, OnViewDependents)
@@ -261,9 +261,9 @@ BOOL CAddEdit_Basic::OnInitDialog()
   if (M_uicaller() == IDS_VIEWENTRY ||
       (M_uicaller() == IDS_EDITENTRY && M_protected() != 0)) {
     // Change 'OK' to 'Close' and disable 'Cancel'
-    // "CancelToClose"  disables the System Command SC_CLOSE
+    // "CancelToClose" disables the System Command SC_CLOSE
     // from clicking X on PropertySheet so have implemented
-    // CAddEdit_PropertySheet::OnSysCommand to deal with it
+    // CAddEdit_PropertySheet::OnSysCommand to deal with it.
     CancelToClose();
 
     // Disable Group Combo
@@ -280,7 +280,7 @@ BOOL CAddEdit_Basic::OnInitDialog()
     GetDlgItem(IDC_EMAIL)->SendMessage(EM_SETREADONLY, TRUE, 0);
 
     // Disable Button
-    GetDlgItem(IDC_RANDOM)->EnableWindow(FALSE);
+    GetDlgItem(IDC_GENERATEPASSWORD)->EnableWindow(FALSE);
   }
 
   m_pex_notes->EnableWindow(m_bWordWrap ? FALSE : TRUE);
@@ -764,7 +764,7 @@ void CAddEdit_Basic::HideNotes()
   ((CEdit *)GetDlgItem(IDC_NOTESWW))->Invalidate();
 }
 
-void CAddEdit_Basic::OnRandom()
+void CAddEdit_Basic::OnGeneratePassword()
 {
   UpdateData(TRUE);
 

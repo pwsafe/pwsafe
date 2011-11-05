@@ -98,7 +98,7 @@ protected:
   afx_msg void OnENChangeEmail();
   afx_msg void OnGroupComboChanged();
 
-  afx_msg void OnRandom();
+  afx_msg void OnGeneratePassword();
   afx_msg void OnShowPassword();
   afx_msg void OnSTCExClicked(UINT nId);
   afx_msg void OnViewDependents();

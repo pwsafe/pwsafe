@@ -13,7 +13,6 @@
 #include "../GeneralMsgBox.h"
 #include "FilterBoolDlg.h"
 #include "core/itemdata.h"
-#include "core/core.h"
 
 // CFilterBoolDlg dialog
 

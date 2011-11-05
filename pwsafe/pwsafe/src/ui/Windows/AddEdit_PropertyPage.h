@@ -44,8 +44,6 @@ struct st_AE_master_data {
   CSecString originalrealnotesTRC;
   CSecString URL;
   CSecString email;
-  CSecString symbols;
-  CSecString oldsymbols;
 
   CSecString base;
   CSecString dependents;
@@ -78,6 +76,8 @@ struct st_AE_master_data {
   // Password Policy
   PWPolicy pwp, oldpwp, default_pwp;
   int ipolicy, oldipolicy, iownsymbols, ioldownsymbols;
+  CSecString symbols;
+  CSecString oldsymbols;
   
   // Attributes
   unsigned char ucprotected;

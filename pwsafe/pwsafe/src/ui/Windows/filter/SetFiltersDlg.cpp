@@ -19,8 +19,6 @@
 #include "../GeneralMsgBox.h"
 #include "../resource3.h"
 
-#include "core/core.h"
-
 // CSetFiltersDlg dialog
 
 IMPLEMENT_DYNAMIC(CSetFiltersDlg, CPWFiltersDlg)

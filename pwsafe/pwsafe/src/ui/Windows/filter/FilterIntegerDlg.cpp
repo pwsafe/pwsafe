@@ -12,7 +12,6 @@
 #include "../stdafx.h"
 #include "../GeneralMsgBox.h"
 #include "FilterIntegerDlg.h"
-#include "core/core.h"
 
 // CFilterIntegerDlg dialog
 
