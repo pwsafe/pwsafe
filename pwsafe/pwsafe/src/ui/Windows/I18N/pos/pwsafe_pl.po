@@ -1845,7 +1845,7 @@ msgid "Clear clipboard upon minimize"
 msgstr "Usuń zawartość schowka przy minimalizowaniu"
 
 #. Resource IDs: (1453)
-msgid "Click here or details on the various preferences."
+msgid "Click here for details on the various preferences."
 msgstr "Kliknij aby zobaczyć szczegóły ustawień."
 
 #. Resource IDs: (351)
