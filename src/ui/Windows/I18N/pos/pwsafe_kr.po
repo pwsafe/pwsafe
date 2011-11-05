@@ -1825,7 +1825,7 @@ msgid "Clear clipboard upon minimize"
 msgstr "최소화 시 클립보드 비우기"
 
 #. Resource IDs: (1453)
-msgid "Click here or details on the various preferences."
+msgid "Click here for details on the various preferences."
 msgstr ""
 
 #. Resource IDs: (351)
