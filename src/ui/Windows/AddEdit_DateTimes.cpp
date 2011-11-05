@@ -312,7 +312,7 @@ void CAddEdit_DateTimes::UpdateStats()
   GetDlgItem(IDC_ENTRYSIZE)->SetWindowTextW(cs_text);
   GetDlgItem(IDC_ENTRYSIZE)->Invalidate();
 
-  CString cs_uuid(_T("N/A"));
+  CString cs_uuid(MAKEINTRESOURCE(IDS_NA));
   if (M_entry_uuid() != pws_os::CUUID::NullUUID()) {
     ostringstreamT os;
     pws_os::CUUID huuid(*M_entry_uuid().GetARep(), true); // true for canonical format

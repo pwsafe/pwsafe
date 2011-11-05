@@ -70,7 +70,6 @@
 #define IDI_LOCKEDICON                  181
 #define IDI_MBASKICON                   182
 #define IDI_MBINFOICON                  183
-#define IDI_MBINFOICON                  183
 #define IDI_MBSTOPICON                  184
 #define IDI_MBWARNICON                  185
 #define IDI_ALIAS                       186
@@ -373,7 +372,7 @@
 #define IDC_TRYAGAIN                    1022
 #define IDC_QUIT                        1023
 #define IDC_OPEN                        1024
-#define IDC_RANDOM                      1025
+#define IDC_GENERATEPASSWORD            1025
 #define IDC_LOCKONMINIMIZE              1026
 #define IDC_DEFPWSHOWINEDIT             1028
 #define IDC_USEDEFUSER                  1029

@@ -13,7 +13,6 @@
 #include "../GeneralMsgBox.h"
 #include "FilterPasswordDlg.h"
 #include "core/itemdata.h"
-#include "core/core.h"
 
 // CFilterPasswordDlg dialog
 

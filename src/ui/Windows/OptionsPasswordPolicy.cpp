@@ -141,7 +141,7 @@ BEGIN_MESSAGE_MAP(COptionsPasswordPolicy, COptions_PropertyPage)
   ON_BN_CLICKED(IDC_PRONOUNCEABLE, OnMakePronounceable)
 
   // Because we can show the generated password when used from Mangage->Generate
-  ON_BN_CLICKED(IDC_RANDOM, OnRandom)
+  ON_BN_CLICKED(IDC_GENERATEPASSWORD, OnRandom)
   ON_BN_CLICKED(IDC_COPYPASSWORD, OnCopyPassword)
   ON_EN_CHANGE(IDC_PASSWORD, OnENChangePassword)
 
@@ -159,18 +159,20 @@ BOOL COptionsPasswordPolicy::OnInitDialog()
 {
   COptions_PropertyPage::OnInitDialog();
 
-  for (int i = 0; i < 7; i++) {
-    m_chkbox[i].SetTextColour(CR_DATABASE_OPTIONS);
-  }
-  for (int i = 0; i < 2; i++) {
-    m_radiobtn[i].SetTextColour(CR_DATABASE_OPTIONS);
-    m_radiobtn[i].SetType(BS_AUTORADIOBUTTON);
+  if (M_uicaller() != IDS_GENERATEPASSWORD) {
+    for (int i = 0; i < 7; i++) {
+      m_chkbox[i].SetTextColour(CR_DATABASE_OPTIONS);
+    }
+    for (int i = 0; i < 2; i++) {
+      m_radiobtn[i].SetTextColour(CR_DATABASE_OPTIONS);
+      m_radiobtn[i].SetType(BS_AUTORADIOBUTTON);
+    }
   }
 
   if (m_bFromOptions) {
     // These are only used in Manage -> Generate Password
-    GetDlgItem(IDC_RANDOM)->EnableWindow(FALSE);
-    GetDlgItem(IDC_RANDOM)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_GENERATEPASSWORD)->EnableWindow(FALSE);
+    GetDlgItem(IDC_GENERATEPASSWORD)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_COPYPASSWORD)->EnableWindow(FALSE);
     GetDlgItem(IDC_COPYPASSWORD)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_PASSWORD)->EnableWindow(FALSE);

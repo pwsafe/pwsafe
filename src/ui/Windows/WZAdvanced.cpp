@@ -18,7 +18,6 @@
 #include "WZPropertySheet.h"
 
 #include "core/ItemData.h"
-#include "core/core.h"
 
 #include "resource.h"
 #include "resource3.h"

@@ -33,31 +33,6 @@ public:
 
   DECLARE_DYNAMIC(COptions_PropertySheet)
 
-protected:
-  st_Opt_master_data m_OPTMD;
-
-private:
-  void SetupInitialValues();
-  void UpdateCopyPreferences();
-
-  CString m_save_bSymbols;
-  int m_save_iPreExpiryWarnDays, m_save_iUseOwnSymbols;
-  bool m_bIsModified, m_bChanged;
-  bool m_bRefreshViews, m_bSaveGroupDisplayState, m_bUpdateShortcuts, m_bCheckExpired;
-  BOOL m_save_bHighlightChanges, m_save_bPreExpiryWarn;
-  BOOL m_save_bShowUsernameInTree, m_save_bShowPasswordInTree, m_save_bExplorerTypeTree;
-  BOOL m_save_bLockOnWindowLock, m_bStartupShortcutExists;
-
-  COptionsBackup          *m_pp_backup;
-  COptionsDisplay         *m_pp_display;
-  COptionsMisc            *m_pp_misc;
-  COptionsPasswordHistory *m_pp_passwordhistory;
-  COptionsPasswordPolicy  *m_pp_passwordpolicy;
-  COptionsSecurity        *m_pp_security;
-  COptionsShortcuts       *m_pp_shortcuts;
-  COptionsSystem          *m_pp_system;
-
-public:
   const MapMenuShortcuts GetMaps() {return m_pp_shortcuts->GetMaps();}
   const DWORD GetHotKeyValue() {return m_OPTMD.Hotkey_Value;}
   const int GetDCA() {return m_OPTMD.DoubleClickAction;}
@@ -85,6 +60,31 @@ public:
   const bool StartupShortcut() {return m_OPTMD.Startup == TRUE;}
   const bool StartupShortcutChanged() {return m_OPTMD.Startup !=
                                               m_bStartupShortcutExists;}
+
+protected:
+  st_Opt_master_data m_OPTMD;
+
+private:
+  void SetupInitialValues();
+  void UpdateCopyPreferences();
+  void UpdatePasswordPolicy();
+
+  CString m_save_bSymbols;
+  int m_save_iPreExpiryWarnDays, m_save_iUseOwnSymbols;
+  bool m_bIsModified, m_bChanged;
+  bool m_bRefreshViews, m_bSaveGroupDisplayState, m_bUpdateShortcuts, m_bCheckExpired;
+  BOOL m_save_bHighlightChanges, m_save_bPreExpiryWarn;
+  BOOL m_save_bShowUsernameInTree, m_save_bShowPasswordInTree, m_save_bExplorerTypeTree;
+  BOOL m_save_bLockOnWindowLock, m_bStartupShortcutExists;
+
+  COptionsBackup          *m_pp_backup;
+  COptionsDisplay         *m_pp_display;
+  COptionsMisc            *m_pp_misc;
+  COptionsPasswordHistory *m_pp_passwordhistory;
+  COptionsPasswordPolicy  *m_pp_passwordpolicy;
+  COptionsSecurity        *m_pp_security;
+  COptionsShortcuts       *m_pp_shortcuts;
+  COptionsSystem          *m_pp_system;
 };
 //-----------------------------------------------------------------------------
 // Local variables:

@@ -20,7 +20,7 @@
 
 #include "../resource2.h"
 #include "../resource3.h"
-#include "core/core.h"
+
 #include "core/PWSFilters.h"
 
 // CPWFiltersDlg dialog

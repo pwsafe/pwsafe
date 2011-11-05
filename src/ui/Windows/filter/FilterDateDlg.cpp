@@ -13,7 +13,6 @@
 #include "../GeneralMsgBox.h"
 #include "FilterDateDlg.h"
 #include "core/itemdata.h"
-#include "core/core.h"
 
 // CFilterDateDlg dialog
 
