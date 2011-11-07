@@ -852,6 +852,7 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
 
     const StringX pwh_str = m_item.GetPWHistory();
     if (!pwh_str.empty()) {
+      m_PWHistory = towxstring(pwh_str);
       m_keepPWHist = CreatePWHistoryList(pwh_str,
                                          pwh_max, num_err,
                                          pwhl, TMC_LOCALE);
