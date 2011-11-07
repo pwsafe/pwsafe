@@ -95,6 +95,7 @@ BEGIN_EVENT_TABLE( AddEditPropSheet, wxPropertySheetDialog )
   EVT_SPINCTRL(ID_SPINCTRL7, AddEditPropSheet::OnAtLeastChars)
   EVT_SPINCTRL(ID_SPINCTRL8, AddEditPropSheet::OnAtLeastChars)
 
+  EVT_BUTTON( ID_BUTTON1,    AddEditPropSheet::OnClearPWHist )
 END_EVENT_TABLE()
 
 
@@ -1497,4 +1498,14 @@ int AddEditPropSheet::GetRequiredPWLength() const {
       total += spinCtrls[idx]->GetValue();
   }
   return total;
+}
+
+void AddEditPropSheet::OnClearPWHist(wxCommandEvent& /*evt*/)
+{
+  m_PWHgrid->ClearGrid();
+  if (m_MaxPWHistCtrl->TransferDataFromWindow() && m_keepPWHist && m_maxPWHist > 0) {
+    m_PWHistory = towxstring(MakePWHistoryHeader(m_keepPWHist, m_maxPWHist, 0));
+  }
+  else
+    m_PWHistory.Empty();
 }
