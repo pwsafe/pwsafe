@@ -861,7 +861,7 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
       }
       m_maxPWHist = int(pwh_max);
       int row = 0;
-      for (PWHistList::iterator iter = pwhl.begin(); iter != pwhl.end();
+      for (PWHistList::reverse_iterator iter = pwhl.rbegin(); iter != pwhl.rend();
            ++iter) {
         m_PWHgrid->SetCellValue(row, 0, iter->changedate.c_str());
         m_PWHgrid->SetCellValue(row, 1, iter->password.c_str());
@@ -1097,8 +1097,8 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
       m_PWHistory = towxstring(MakePWHistoryHeader(m_keepPWHist, m_maxPWHist, numEntries));
       // Now add all the existing history entries, up to a max of what the user wants to track
       // This code is from CItemData::UpdatePasswordHistory()
-      PWHistList::iterator iter;
-      for (iter = pwhl.begin(); iter != pwhl.end() && numEntries > 0; iter++, numEntries--) {
+      PWHistList::reverse_iterator iter;
+      for (iter = pwhl.rbegin(); iter != pwhl.rend() && numEntries > 0; iter++, numEntries--) {
         StringX buffer;
         Format(buffer, _T("%08x%04x%s"),
                static_cast<long>(iter->changetttdate), iter->password.length(),
