@@ -185,6 +185,8 @@ public:
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX9
   void OnUseHexCBClick( wxCommandEvent& evt);
 
+  void OnClearPWHist(wxCommandEvent& evt);
+
 ////@end AddEditPropSheet event handler declarations
   void OnOk(wxCommandEvent& evt);
   void OnResetPWPolicy(wxCommandEvent& evt);
