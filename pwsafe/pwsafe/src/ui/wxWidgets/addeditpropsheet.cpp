@@ -1080,6 +1080,33 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
       if (m_type != ADD && m_isNotesHidden)
         m_notes = m_item.GetNotes().c_str();
 
+      // Create a new PWHistory string based on settings in this dialog, and compare it
+      // with the PWHistory string from the item being edited, to see if the user modified it.
+      // Note that we are not erasing the history here, even if the user has chosen to not
+      // track PWHistory.  So there could be some password entries in the history 
+      // but the first byte could be zero, meaning we are not tracking it _FROM_NOW_.
+      // Clearing the history is something the user must do himself with the "Clear History" button
+
+      // First, Get a list of all password history entries
+      size_t pwh_max, num_err;
+      PWHistList pwhl;
+      (void)CreatePWHistoryList(tostringx(m_PWHistory), pwh_max, num_err, pwhl, TMC_LOCALE);
+
+      // Create a new PWHistory header, as per settings in this dialog
+      size_t numEntries = MIN(pwhl.size(), m_maxPWHist);
+      m_PWHistory = towxstring(MakePWHistoryHeader(m_keepPWHist, m_maxPWHist, numEntries));
+      // Now add all the existing history entries, up to a max of what the user wants to track
+      // This code is from CItemData::UpdatePasswordHistory()
+      PWHistList::iterator iter;
+      for (iter = pwhl.begin(); iter != pwhl.end() && numEntries > 0; iter++, numEntries--) {
+        StringX buffer;
+        Format(buffer, _T("%08x%04x%s"),
+               static_cast<long>(iter->changetttdate), iter->password.length(),
+               iter->password.c_str());
+        m_PWHistory += towxstring(buffer);
+      }
+
+      wxASSERT_MSG(numEntries ==0, wxT("Could not save existing password history entries"));
 
       PWPolicy pwp;
       bIsModified = (group        != m_item.GetGroup().c_str()       ||
