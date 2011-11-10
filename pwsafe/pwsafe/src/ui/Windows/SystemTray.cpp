@@ -150,6 +150,13 @@ CSystemTray::~CSystemTray()
   ::DestroyIcon(m_hSavedIcon);
 }
 
+CWnd *CSystemTray::SetTarget(CWnd *pTarget)
+{
+  CWnd *pOldTarget = m_pTarget;
+  m_pTarget = pTarget;
+  return pOldTarget;
+}
+
 /////////////////////////////////////////////////////////////////////////////
 // CSystemTray icon manipulation
 

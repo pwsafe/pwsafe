@@ -1700,8 +1700,12 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
     dbox_pkentry->m_appversion.Format(L"Version %d.%02d.%02d%s",
                                       nMajor, nMinor, nBuild, SPECIAL_BUILD);
 
+  // Ensure blank DboxMain dialog is not shown if user double-clicks
+  // on SystemTray icon when being prompted for passphrase
+  CWnd *pOldTarget = app.SetSystemTrayTarget(dbox_pkentry);
+  
   INT_PTR rc = dbox_pkentry->DoModal();
-
+ 
   if (rc == IDOK) {
     DBGMSG("PasskeyEntry returns IDOK\n");
     const StringX curFile = dbox_pkentry->GetFileName().GetString();
@@ -1824,6 +1828,10 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
         break;
     }
   }
+
+  // Put it back
+  app.SetSystemTrayTarget(pOldTarget);
+
   delete dbox_pkentry;
   dbox_pkentry = NULL;
   return retval;
