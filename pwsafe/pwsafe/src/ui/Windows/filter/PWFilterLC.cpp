@@ -260,7 +260,7 @@ void CPWFilterLC::Init(CWnd *pParent, st_filters *pfilters, const int &filtertyp
   }
 
   // Always show one filter!
-  if (m_pvfdata->size() == 0) {
+  if (m_pvfdata->empty()) {
     AddFilter_Controls();
     SetItemText(i, FLC_LGC_COMBOBOX, L"");
 

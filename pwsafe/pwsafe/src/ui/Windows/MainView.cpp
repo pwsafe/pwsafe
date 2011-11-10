@@ -3362,7 +3362,7 @@ void DboxMain::OnToolBarFindReport()
     rpt.WriteLine();
   }
 
-  if (pindices->size() == 0) {
+  if (pindices->empty()) {
     buffer.Format(IDS_SEARCHRESULTS1, csFindString);
     rpt.WriteLine((LPCWSTR)buffer);
   } else {

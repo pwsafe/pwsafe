@@ -594,12 +594,11 @@ int PWSfileV3::WriteHeader()
     oss << setw(2) << setfill('0') << hex << num;
     UUIDListIter iter = m_hdr.m_RUEList.begin();
     // Only save up to max as defined by FormatV3.
-    for (size_t n = 0; n < num; n++) {
+    for (size_t n = 0; n < num; n++, iter++) {
       const uuid_array_t *rep = iter->GetARep();
       for (size_t i = 0; i < sizeof(uuid_array_t); i++) {
         oss << setw(2) << setfill('0') << hex <<  static_cast<unsigned int>((*rep)[i]);
       }
-      iter++;
     }
 
     numWritten = WriteCBC(HDR_RUE, 
@@ -756,7 +755,7 @@ int PWSfileV3::ReadHeader()
             int ulen = 0;
             is >> hex >> ulen;
             StringX uh = text.substr(4);
-            m_hdr.m_lastsavedby = uh.substr(0,ulen);
+            m_hdr.m_lastsavedby = uh.substr(0, ulen);
             m_hdr.m_lastsavedon = uh.substr(ulen);
           } else
             pws_os::Trace0(_T("FromUTF8(m_wholastsaved) failed\n"));
@@ -811,18 +810,18 @@ int PWSfileV3::ReadHeader()
           if (!pws_os::FileExists(XSDFilename)) {
             // No filter schema => user won't be able to access stored filters
             // Inform her of the fact (probably an installation problem).
-              stringT message, message2;
-              Format(message, IDSC_MISSINGXSD, _T("pwsafe_filter.xsd"));
-              LoadAString(message2, IDSC_FILTERSKEPT);
-              message += stringT(_T("\n\n")) + message2;
-              if (m_pReporter != NULL)
-                (*m_pReporter)(message);
+            stringT message, message2;
+            Format(message, IDSC_MISSINGXSD, _T("pwsafe_filter.xsd"));
+            LoadAString(message2, IDSC_FILTERSKEPT);
+            message += stringT(_T("\n\n")) + message2;
+            if (m_pReporter != NULL)
+              (*m_pReporter)(message);
 
-              // Treat it as an Unknown field!
-              // Maybe user used a later version of PWS
-              // and we don't want to lose anything
-             UnknownFieldEntry unkhfe(fieldType, utf8Len, utf8);
-             m_UHFL.push_back(unkhfe);
+            // Treat it as an Unknown field!
+            // Maybe user used a later version of PWS
+            // and we don't want to lose anything
+            UnknownFieldEntry unkhfe(fieldType, utf8Len, utf8);
+            m_UHFL.push_back(unkhfe);
             break;
           }
           int rc = m_MapFilters.ImportFilterXMLFile(FPOOL_DATABASE, text.c_str(), _T(""),

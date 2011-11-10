@@ -2492,7 +2492,7 @@ void DboxMain::TellUserAboutExpiredPasswords()
   int idays = PWSprefs::GetInstance()->GetPref(PWSprefs::PreExpiryWarnDays);
   ExpiredList expiredEntries = m_core.GetExpired(idays);
 
-  if (m_bTellUserExpired && expiredEntries.size() != 0) {
+  if (m_bTellUserExpired && !expiredEntries.empty()) {
     m_bTellUserExpired = !m_bTellUserExpired;
 
     // Give user option to display and edit them
