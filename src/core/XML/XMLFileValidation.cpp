@@ -29,7 +29,7 @@
 *   3. Element Entry Code - non-zero if within an entry
 *
 * These are entered into a std::map.  The name is the key field and
-* the other 2 fields comprise the associated data vias a structure.
+* the other 2 fields comprise the associated data via a structure.
 */
 
 const XMLFileValidation::st_file_elements XMLFileValidation::m_file_elements[XLE_ELEMENTS] = {

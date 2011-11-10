@@ -236,6 +236,7 @@ void PWScore::DoDeleteEntry(const CItemData &item)
 
     m_bDBChanged = true;
     m_pwlist.erase(pos); // at last!
+
     if (item.NumberUnknownFields() > 0)
       DecrementNumRecordsWithUnknownFields();
 

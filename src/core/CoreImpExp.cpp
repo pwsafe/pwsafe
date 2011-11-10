@@ -113,9 +113,9 @@ int PWScore::TestSelection(const bool bAdvanced,
       return FAILURE;
   } else {
     if (il != NULL)
-      return (il->size() == 0) ? NO_ENTRIES_EXPORTED : SUCCESS;
+      return il->empty() ? NO_ENTRIES_EXPORTED : SUCCESS;
     else
-      return (m_pwlist.size() == 0) ? NO_ENTRIES_EXPORTED : SUCCESS;
+      return m_pwlist.empty() ? NO_ENTRIES_EXPORTED : SUCCESS;
   }
   return SUCCESS;
 }
@@ -294,8 +294,8 @@ int PWScore::WritePlaintextFile(const StringX &filename,
 
   // Although the MFC UI prevents the user selecting export of an
   // empty database, other UIs might not, so:
-  if ((il != NULL && il->size() == 0) ||
-      (il == NULL && m_pwlist.size() == 0))
+  if ((il != NULL && il->empty()) ||
+      (il == NULL && m_pwlist.empty()))
     return NO_ENTRIES_EXPORTED;
  
   FILE *txtfile = pws_os::FOpen(filename.c_str(), _T("wt"));
@@ -893,7 +893,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
 
   bool bMaintainDateTimeStamps = PWSprefs::GetInstance()->
               GetPref(PWSprefs::MaintainDateTimeStamps);
-  bool bIntoEmpty = m_pwlist.size() == 0;
+  bool bIntoEmpty = m_pwlist.empty();
 
   UUIDVector Possible_Aliases, Possible_Shortcuts;
 

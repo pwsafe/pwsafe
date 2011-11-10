@@ -2527,9 +2527,9 @@ bool DboxMain::DoCompare(PWScore *pothercore,
                 m_core.GetCurFile().c_str(), pothercore->GetCurFile().c_str());
 
   bool brc(true);  // True == databases are identical
-  if (m_list_OnlyInCurrent.size() == 0 &&
-      m_list_OnlyInComp.size() == 0 &&
-      m_list_Conflicts.size() == 0) {
+  if (m_list_OnlyInCurrent.empty() &&
+      m_list_OnlyInComp.empty() &&
+      m_list_Conflicts.empty()) {
     m_list_Identical.clear();
     cs_text.LoadString(IDS_IDENTICALDATABASES);
     cs_buffer += cs_text;
