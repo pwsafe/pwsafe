@@ -59,8 +59,8 @@ can be built in four flavours (four different Xcode targets):
  pwsafe           2.8     pwsafe-debug.xcconfig             i386 + ppc       10.4+                10.4
                           pwsafe-release.xcconfig           
 
- pwsafe-i386      2.8     pwsafe-i386-debug.xcconfig        i386             10.4+                10.4
-                          pwsafe-i386-release.xcconfig      
+ pwsafe-i386      2.8     pwsafe-debug.xcconfig        	    i386             10.4+                10.4
+                          pwsafe-release.xcconfig      
 
  pwsafe64         2.9     pwsafe64-debug.xcconfig           X86_64           Compiler Default     Current Mac OS
                           pwsafe64-release.xcconfig         
