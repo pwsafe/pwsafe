@@ -22,6 +22,8 @@ the XML file exported prior to V3.26 to allow it to be successfully imported in 
 
 Bugs fixed in 3.27.1
 ====================
+[3435869] '-g config_file' option now accepts a non-existing file,
+creating it after notfying the user.
 [3430196] Buttons in the Options property pages now retain the user's Windows theme.
 
 New Features for 3.27

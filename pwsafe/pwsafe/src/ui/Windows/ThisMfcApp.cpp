@@ -854,7 +854,7 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
           } else {
             arg++;
             if (!PWSprefs::SetConfigFile(std::wstring(*arg))) {
-              // SetConfigFile fails if specified file not found
+              // SetConfigFile returns false if specified file not found
               CGeneralMsgBox gmb;
               CString missing_cfg;
               // Classic chicken-and-egg here: Since the local
@@ -862,10 +862,9 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
               // the desired config file can't be found, it seems
               // safest to keep this particular error message in English
               // and out of the language-specific dlls.
-              missing_cfg.Format(L"Cannot find configuration file %s",
+              missing_cfg.Format(L"Configuration file %s not found - creating it.",
                                  *arg);
-              gmb.AfxMessageBox(missing_cfg, L"Error", MB_OK|MB_ICONSTOP);
-              return FALSE;
+              gmb.AfxMessageBox(missing_cfg, L"Error", MB_OK|MB_ICONINFORMATION);
             }
           }
           break;
