@@ -4,6 +4,7 @@ Section: utils
 Priority: optional
 Conflicts: pwsafe
 Architecture: i386
+Installed-Size: 5000
 Maintainer: Rony Shapiro <ronys@users.sf.net>
 Homepage: http://pwsafe.org/
 Depends: libc6 (>= 2.7-18lenny4), libwxgtk2.8-0 (>=  2.8.7.1-1.1+lenny1), libuuid1 (>= 1.41.3-1), libxtst6 (>= 2:1.0.3-1), libxerces-c3.1 (>= 3.1.1-1+b1)
