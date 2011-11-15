@@ -11,6 +11,7 @@
 // \file YubiCfgDlg.h
 
 #include "PWDialog.h"
+#import <YubiClientAPI.dll> no_namespace, named_guids
 
 class CYubiCfgDlg : public CPWDialog
 {
@@ -23,11 +24,28 @@ public:
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-
+  virtual BOOL OnInitDialog();
+  afx_msg void OnDestroy();
+  
 	DECLARE_MESSAGE_MAP()
-    CString m_YubiSN;
-    CString m_YubiSK;
+	DECLARE_DISPATCH_MAP()
+	DECLARE_INTERFACE_MAP()
+  CString m_YubiSN;
+  CString m_YubiSK;
 public:
-    afx_msg void OnYubiGenBn();
-    afx_msg void OnBnClickedOk();
+  afx_msg void OnYubiGenBn();
+  afx_msg void OnBnClickedOk();
+ private:
+  void Init();
+  void Destroy();
+  // Callbacks:
+	void yubiInserted(void); // called when Yubikey's inserted
+	void yubiRemoved(void);  // called when Yubikey's removed
+  void yubiCompleted(ycRETCODE rc); // called when done with request
+  void yubiWait(WORD seconds); // called when waiting for user activation
+
+  IYubiClient *m_obj;
+  DWORD m_eventCookie;
+  ycENCODING m_encoding;
+  bool m_isInit;
 };
