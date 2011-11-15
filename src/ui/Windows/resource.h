@@ -70,7 +70,6 @@
 #define IDI_LOCKEDICON                  181
 #define IDI_MBASKICON                   182
 #define IDI_MBINFOICON                  183
-#define IDI_MBINFOICON                  183
 #define IDI_MBSTOPICON                  184
 #define IDI_MBWARNICON                  185
 #define IDI_ALIAS                       186
@@ -349,6 +348,8 @@
 #define IDD_PS_SHORTCUTS_SHORT          509
 #define IDD_PS_SYSTEM_SHORT             510
 #define IDD_INPUTBOX                    511
+#define IDB_YUBI_LOGO                   512
+#define IDD_YUBIKEY                     513
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_CREATE_DB                   1003
@@ -738,14 +739,19 @@
 #define IDC_CHANGE_NAME                 1462
 #define IDC_INPUTBOX_TEXT               1463
 #define IDC_INPUTBOX_CHAR_COUNT         1464
-#define IDB_YUBI_LOGO                   512
+#define IDC_YUBI_SN                     1465
+#define IDC_YUBI_SK                     1466
+#define IDC_YUBI_GEN_BN                 1467
+#define IDC_BUTTON2                     1468
+#define IDC_YUBI_API                    1469
+
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        513
+#define _APS_NEXT_RESOURCE_VALUE        514
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1465
+#define _APS_NEXT_CONTROL_VALUE         1470
 #define _APS_NEXT_SYMED_VALUE           166
 #endif
 #endif
