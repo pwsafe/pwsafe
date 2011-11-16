@@ -64,7 +64,7 @@ public:
     HeaderRecord();
     HeaderRecord(const HeaderRecord &hdr);
     HeaderRecord &operator =(const HeaderRecord &hdr);
-
+    ~HeaderRecord();
     unsigned short m_nCurrentMajorVersion, m_nCurrentMinorVersion;
     pws_os::CUUID m_file_uuid;         // Unique DB ID
     int m_nITER; // Formally not part of the header.
@@ -76,6 +76,8 @@ public:
     StringX m_whatlastsaved; // and by what application
     StringX m_dbname, m_dbdesc;        // Descriptive name, Description
     UUIDList m_RUEList;
+    unsigned char *m_yubi_sk;  // YubiKey HMAC key, added in 0x030a / 3.27Y
+    enum {YUBI_SK_LEN = 20};
   };
 
   static PWSfile *MakePWSfile(const StringX &a_filename, VERSION &version,

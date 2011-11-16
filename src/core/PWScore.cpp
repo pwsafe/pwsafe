@@ -2535,3 +2535,20 @@ bool PWScore::ChangeMode(stringT &locker, int &iErrorCode)
 
   return true;
 }
+
+// Yubi support:
+const unsigned char *PWScore::GetYubiSK() const
+{
+  return m_hdr.m_yubi_sk;
+}
+
+void PWScore::SetYubiSK(const unsigned char *sk)
+{
+  delete[] m_hdr.m_yubi_sk;
+  m_hdr.m_yubi_sk = NULL;
+  if (sk != NULL) {
+    m_hdr.m_yubi_sk = new unsigned char[PWSfile::HeaderRecord::YUBI_SK_LEN];
+    memcpy(m_hdr.m_yubi_sk, sk, PWSfile::HeaderRecord::YUBI_SK_LEN);
+  }
+}
+

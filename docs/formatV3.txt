@@ -157,7 +157,7 @@ Recently Used Entries       0x0f        -                            [14]
 End of Entry                0xff        [empty]       Y              [15]
 
 [1] The version number of the database format. For this version, the value
-is 0x0307 (stored in little-endian format, that is, 0x07, 0x03).
+is 0x030a (stored in little-endian format, that is, 0x0a, 0x03).
 PasswordSafe V3.01 introduced Format 0x0300
 PasswordSafe V3.03 introduced Format 0x0301
 PasswordSafe V3.09 introduced Format 0x0302
@@ -168,7 +168,7 @@ PasswordSafe V3.19 introduced Format 0x0306
 PasswordSafe V3.22 introduced Format 0x0307
 PasswordSafe V3.25 introduced Format 0x0308
 PasswordSafe V3.26 introduced Format 0x0309
-PasswordSafe V3.27 introduced Format 0x0310
+PasswordSafe V3.27.1Y introduced Format 0x030a
 
 [2] A universally unique identifier is needed in order to synchronize
 databases, e.g., between a handheld pocketPC device and a

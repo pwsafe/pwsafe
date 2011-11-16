@@ -39,7 +39,7 @@ public:
     HDR_RESERVED2             = 0x0d,     // added in format 0x030?
     HDR_RESERVED3             = 0x0e,     // added in format 0x030?
     HDR_RUE                   = 0x0f,     // added in format 0x0307
-    HDR_LAST,                             // Start of unknown fields!
+    HDR_YUBI_SK               = 0x10,     // Yubi-specific: currently in branch, format 0x030a
     HDR_END                   = 0xff};    // header field types, per formatV{2,3}.txt
 
   static int CheckPasskey(const StringX &filename,
