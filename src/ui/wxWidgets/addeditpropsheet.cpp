@@ -38,6 +38,7 @@
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
 #endif
+#include <algorithm>
 
 ////@begin XPM images
 ////@end XPM images
@@ -774,6 +775,12 @@ void AddEditPropSheet::EnablePWPolicyControls(bool enable)
   m_pwpHexCtrl->Enable(enable);
 }
 
+struct newer {
+  bool operator()(const PWHistEntry& first, const PWHistEntry& second) const {
+    return first.changetttdate > second.changetttdate;
+  }
+};
+
 void AddEditPropSheet::ItemFieldsToPropSheet()
 {
   // Populate the combo box
@@ -860,8 +867,10 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
         m_PWHgrid->AppendRows(pwhl.size() - m_PWHgrid->GetNumberRows());
       }
       m_maxPWHist = int(pwh_max);
+      //reverse-sort the history entries so that we list the newest first 
+      std::sort(pwhl.begin(), pwhl.end(), newer());
       int row = 0;
-      for (PWHistList::reverse_iterator iter = pwhl.rbegin(); iter != pwhl.rend();
+      for (PWHistList::iterator iter = pwhl.begin(); iter != pwhl.end();
            ++iter) {
         m_PWHgrid->SetCellValue(row, 0, iter->changedate.c_str());
         m_PWHgrid->SetCellValue(row, 1, iter->password.c_str());
@@ -1095,10 +1104,12 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
       // Create a new PWHistory header, as per settings in this dialog
       size_t numEntries = MIN(pwhl.size(), m_maxPWHist);
       m_PWHistory = towxstring(MakePWHistoryHeader(m_keepPWHist, m_maxPWHist, numEntries));
+      //reverse-sort the history entries to retain only the newest
+      std::sort(pwhl.begin(), pwhl.end(), newer());
       // Now add all the existing history entries, up to a max of what the user wants to track
       // This code is from CItemData::UpdatePasswordHistory()
-      PWHistList::reverse_iterator iter;
-      for (iter = pwhl.rbegin(); iter != pwhl.rend() && numEntries > 0; iter++, numEntries--) {
+      PWHistList::iterator iter;
+      for (iter = pwhl.begin(); iter != pwhl.end() && numEntries > 0; iter++, numEntries--) {
         StringX buffer;
         Format(buffer, _T("%08x%04x%s"),
                static_cast<long>(iter->changetttdate), iter->password.length(),
