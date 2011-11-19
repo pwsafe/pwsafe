@@ -78,8 +78,8 @@ public:
     YKLIB_RC readStatus(STATUS *sp);
     YKLIB_RC isSlotConfigured(unsigned char slot, STATUS *sp); 
 
-	YKLIB_RC setKey160(CONFIG *cfg, const unsigned char *key);
-	YKLIB_RC setMovingFactor(CONFIG *cfg, unsigned long seed);
+    static YKLIB_RC setKey160(CONFIG *cfg, const unsigned char *key);
+    YKLIB_RC setMovingFactor(CONFIG *cfg, unsigned long seed);
 
     YKLIB_RC writeConfigBegin(unsigned char slot, CONFIG *cfg = 0, unsigned char *curPasswd = 0);
 

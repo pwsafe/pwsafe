@@ -42,6 +42,7 @@ public:
   void Init();
   void Destroy();
   void ReadYubiSN();
+  int WriteYubiSK();
   // Callbacks:
 	void yubiInserted(void); // called when Yubikey's inserted
 	void yubiRemoved(void);  // called when Yubikey's removed
@@ -54,5 +55,6 @@ public:
   bool m_isInit;
 
   unsigned char m_yubi_sk_bin[YUBI_SK_LEN];
+  bool m_generated; // Set iff Generate key pressed
   PWScore &m_core;
 };

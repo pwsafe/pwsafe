@@ -33,7 +33,7 @@ using namespace std;
 
 CYubiCfgDlg::CYubiCfgDlg(CWnd* pParent, PWScore &core)
 	: CPWDialog(CYubiCfgDlg::IDD, pParent), m_core(core), m_YubiSN(_T("")),
-    m_YubiSK(_T("")), m_obj(0), m_isInit(false)
+    m_YubiSK(_T("")), m_obj(0), m_isInit(false), m_generated(false)
 {
   EnableAutomation();
   memset(m_yubi_sk_bin, 0, YUBI_SK_LEN);
@@ -84,6 +84,7 @@ BOOL CYubiCfgDlg::OnInitDialog()
       m_YubiSK = BinSK2HexStr(m_core.GetYubiSK(), YUBI_SK_LEN).c_str();
     }
     ReadYubiSN();
+    GetDlgItem(IDC_YUBI_SN)->SetWindowText(m_YubiSN);
   } else { // !m_isInit
     GetDlgItem(IDC_YUBI_API)->ShowWindow(SW_SHOW);
     GetDlgItem(IDC_YUBI_SN)->EnableWindow(FALSE);
@@ -142,17 +143,46 @@ void CYubiCfgDlg::ReadYubiSN()
   STATUS status;
 
   memset(&status, 0, sizeof(status));
+  rc = yk.openKey();
+  if (rc != YKLIB_OK) goto fail;
   rc = yk.readSerialBegin();
-  if (rc == YKLIB_OK) {
-    // Wait for response completion
-    rc = yk.waitForCompletion(YKLIB_MAX_SERIAL_WAIT, buffer, sizeof(DWORD));
+  if (rc != YKLIB_OK) goto fail;
+  // Wait for response completion
+  rc = yk.waitForCompletion(YKLIB_MAX_SERIAL_WAIT, buffer, sizeof(DWORD));
+  if (rc != YKLIB_OK) goto fail;
+  m_YubiSN = BinSK2HexStr(buffer, 4).c_str();
+  rc = yk.closeKey();
+  return; // good return
+ fail:
+  m_YubiSN = Yubi::RetCode2String(rc).c_str();
+}
 
-    if (rc == YKLIB_OK) {
-      m_YubiSN = BinSK2HexStr(buffer, 4).c_str();
-    } else
-      m_YubiSN = Yubi::RetCode2String(rc).c_str();
-  } else
-    m_YubiSN = Yubi::RetCode2String(rc).c_str();
+int CYubiCfgDlg::WriteYubiSK()
+{
+  CYkLib yk;
+  BYTE buffer[128];
+  YKLIB_RC rc;
+  STATUS status;
+  CONFIG config;
+
+  memset(&status, 0, sizeof(status));
+  memset(&config, 0, sizeof(config));
+  config.fixedSize = 2;
+  config.fixed[0] = 0x47; // ???
+  config.fixed[1] = 0x11; // ???
+  config.tktFlags = TKTFLAG_APPEND_CR; // ???
+  config.extFlags = EXTFLAG_SERIAL_API_VISIBLE; // ???
+  yk.setKey160(&config, m_yubi_sk_bin);
+  rc = yk.openKey();
+  if (rc != YKLIB_OK) goto fail;
+  rc = yk.writeConfigBegin(0, &config, NULL);
+  if (rc != YKLIB_OK) goto fail;
+  // Wait for response completion
+  rc = yk.waitForCompletion(YKLIB_MAX_WRITE_WAIT, buffer, sizeof(DWORD));
+  if (rc != YKLIB_OK) goto fail;
+  rc = yk.closeKey();
+ fail:
+  return rc;
 }
 
 BEGIN_MESSAGE_MAP(CYubiCfgDlg, CPWDialog)
@@ -179,68 +209,24 @@ void CYubiCfgDlg::yubiInserted(void)
   GetDlgItem(IDC_YUBI_SN)->EnableWindow(TRUE);
   GetDlgItem(IDC_YUBI_SK)->EnableWindow(TRUE);
   GetDlgItem(IDC_YUBI_GEN_BN)->EnableWindow(TRUE);
+  ReadYubiSN();
+  UpdateData(FALSE);
 }
 
 void CYubiCfgDlg::yubiRemoved(void)
 {
+  m_YubiSN = m_YubiSK = _T("");
+  UpdateData(FALSE);
   GetDlgItem(IDC_YUBI_SN)->EnableWindow(FALSE);
   GetDlgItem(IDC_YUBI_SK)->EnableWindow(FALSE);
   GetDlgItem(IDC_YUBI_GEN_BN)->EnableWindow(FALSE);
 }
 
-void CYubiCfgDlg::yubiCompleted(ycRETCODE rc)
+void CYubiCfgDlg::yubiCompleted(ycRETCODE )
 {
-#if 0
-  m_yubi_status.ShowWindow(SW_SHOW);
-  m_yubi_timeout.ShowWindow(SW_HIDE);
-  switch (rc) {
-  case ycRETCODE_OK:
-    m_yubi_timeout.SetPos(0);
-    m_yubi_status.SetWindowText(_T(""));
-    TRACE(_T("yubiCompleted(ycRETCODE_OK)"));
-    // Get hmac, process it, synthesize OK event
-    m_yubi->RetrieveHMACSha1(m_passkey);
-    // The returned hash is the passkey
-    ProcessPhrase();
-    // If we returned from above, reset status:
-    m_yubi_status.SetWindowText(_T("Click, then activate your YubiKey"));
-    break;
-  case ycRETCODE_NO_DEVICE:
-    // device removed while waiting?
-    TRACE(_T("yubiCompleted(ycRETCODE_NO_DEVICE)\n"));
-    m_yubi_status.SetWindowText(_T("Error: YubiKey removed"));
-    break;
-  case ycRETCODE_TIMEOUT:
-    // waited, no user input
-    TRACE(_T("yubiCompleted(ycRETCODE_TIMEOUT)\n"));
-    m_yubi_status.SetWindowText(_T("YubiKey timed out"));
-    break;
-  case ycRETCODE_MORE_THAN_ONE:
-    TRACE(_T("yubiCompleted(ycRETCODE_MORE_THAN_ONE)\n"));
-    m_yubi_status.SetWindowText(_T("More than one YubiKey detected"));
-    break;
-  case ycRETCODE_REENTRANT_CALL:
-    TRACE(_T("yubiCompleted(ycRETCODE_REENTRANT_CALL)\n"));
-    m_yubi_status.SetWindowText(_T("Internal error: Reentrant call"));
-    break;
-  case ycRETCODE_FAILED:
-    TRACE(_T("yubiCompleted(ycRETCODE_FAILED)\n"));
-    if (m_waited) {
-      m_yubi_status.SetWindowText(_T("YubiKey timed out: Click to try again"));
-      m_waited = false;
-    } else
-      m_yubi_status.SetWindowText(_T("YubiKey returned an error. Unconfigured?"));
-    break;
-  default:
-    // Generic error message
-    TRACE(_T("yubiCompleted(%d)\n"), rc);
-    m_yubi_status.SetWindowText(_T("Internal error: Unknown return code"));
-    break;
-  }
-#endif
 }
 
-void CYubiCfgDlg::yubiWait(WORD seconds)
+void CYubiCfgDlg::yubiWait(WORD)
 {
 }
 
@@ -252,6 +238,7 @@ void CYubiCfgDlg::OnYubiGenBn()
   pws_os::GetRandomData(m_yubi_sk_bin, YUBI_SK_LEN);
   StringX str = BinSK2HexStr(m_yubi_sk_bin, YUBI_SK_LEN);
   m_YubiSK = str.c_str();
+  m_generated = true; // tell OnBnClickedOk that we have work to do.
   UpdateData(FALSE);
 }
 
@@ -263,10 +250,20 @@ void CYubiCfgDlg::OnBnClickedOk()
   
   if (!skStr.empty()) {
     StringX oldSK = BinSK2HexStr(m_yubi_sk_bin, YUBI_SK_LEN);
-    if (skStr != oldSK) {
-      // 1. Update SK on Yubi.
-      // 2. If that succeeds, update in core.
-      // 3. Write DB ASAP!
+    if (m_generated) {
+      int rc;
+      if ((rc = WriteYubiSK()) == YKLIB_OK) { // 1. Update SK on Yubi.
+        // 2. If YubiKey update succeeds, update in core.
+        m_core.SetYubiSK(m_yubi_sk_bin);
+        // 3. Write DB ASAP!
+        // XXX TBD
+      } else {
+        CString err = _T("Failed to update YubiKey: ");
+        err += Yubi::RetCode2String(rc).c_str();
+        GetDlgItem(IDC_YUBI_API)->ShowWindow(SW_SHOW);
+        GetDlgItem(IDC_YUBI_API)->SetWindowText(err);
+        return; // don't close dbox
+      }
     }
   }
   CPWDialog::OnOK();

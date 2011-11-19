@@ -733,7 +733,7 @@ YKLIB_RC CYkLib::waitForCompletion(unsigned short maxWait, unsigned char *respBu
 **                                                                      **
 *************************************************************************/
 
-YKLIB_RC setKey160(CONFIG *cfg, const unsigned char *key)
+YKLIB_RC CYkLib::setKey160(CONFIG *cfg, const unsigned char *key)
 {
     memcpy(cfg->key, key, sizeof(cfg->key));
     memcpy(cfg->uid, key + sizeof(cfg->key), KEY_SIZE_OATH - KEY_SIZE);
