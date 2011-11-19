@@ -136,7 +136,6 @@ void CYubiCfgDlg::Destroy()
 
 void CYubiCfgDlg::ReadYubiSN()
 {
-#if 0
   CYkLib yk;
   BYTE buffer[128];
   YKLIB_RC rc;
@@ -154,7 +153,6 @@ void CYubiCfgDlg::ReadYubiSN()
       m_YubiSN = Yubi::RetCode2String(rc).c_str();
   } else
     m_YubiSN = Yubi::RetCode2String(rc).c_str();
-#endif
 }
 
 BEGIN_MESSAGE_MAP(CYubiCfgDlg, CPWDialog)
