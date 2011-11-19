@@ -24,6 +24,7 @@ class Yubi {
   bool isInserted() const;
   bool RequestHMACSha1(const CSecString &value); // send async request
   void RetrieveHMACSha1(CSecString &value); // get when request completed
+  static stringT RetCode2String(int rc);
 private:
   IYubiClient *m_obj;
   DWORD m_eventCookie;

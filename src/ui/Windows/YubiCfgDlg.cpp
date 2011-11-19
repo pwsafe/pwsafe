@@ -12,23 +12,36 @@
 #include <afxdisp.h>
 #include <afxctl.h>
 #include <afxwin.h>
+#include <iomanip>
+#include <sstream>
+
 #include "stdafx.h"
 #include "YubiCfgDlg.h"
 #include "afxdialogex.h"
 
+#include "Yubi.h"
+#include "yubi/yklib.h"
+#include "core/StringX.h"
+#include "core/PWScore.h"
+
+#include "os/rand.h"
+
+using namespace std;
 
 // CYubiCfgDlg dialog
 
 
-CYubiCfgDlg::CYubiCfgDlg(CWnd* pParent /*=NULL*/)
-	: CPWDialog(CYubiCfgDlg::IDD, pParent), m_YubiSN(_T("")), m_YubiSK(_T("")),
-    m_obj(0), m_isInit(false)
+CYubiCfgDlg::CYubiCfgDlg(CWnd* pParent, PWScore &core)
+	: CPWDialog(CYubiCfgDlg::IDD, pParent), m_core(core), m_YubiSN(_T("")),
+    m_YubiSK(_T("")), m_obj(0), m_isInit(false)
 {
   EnableAutomation();
+  memset(m_yubi_sk_bin, 0, YUBI_SK_LEN);
 }
 
 CYubiCfgDlg::~CYubiCfgDlg()
 {
+  trashMemory(m_yubi_sk_bin, YUBI_SK_LEN);
 }
 
 void CYubiCfgDlg::DoDataExchange(CDataExchange* pDX)
@@ -38,11 +51,39 @@ void CYubiCfgDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Text(pDX, IDC_YUBI_SK, m_YubiSK);
 }
 
+static StringX BinSK2HexStr(const unsigned char *sk, int len)
+{
+  wostringstream os;
+  os << setw(2);
+  os << setfill(L'0');
+  for (int i = 0; i < len; i++) {
+    os << hex << setw(2) << int(sk[i]);
+    if (i != len - 1)
+      os << " ";
+  }
+  return StringX(os.str().c_str());
+}
+
+static void HexStr2BinSK(const StringX &str, unsigned char *sk, int len)
+{
+  wistringstream is(str.c_str());
+  is >> hex;
+  int i = 0;
+  int b;
+  while ((is >> b ) && i < len) {
+    sk[i++] = (unsigned char)b;
+  }
+}
+
 BOOL CYubiCfgDlg::OnInitDialog()
 {
   Init();
   if (m_isInit) {
     GetDlgItem(IDC_YUBI_API)->ShowWindow(SW_HIDE);
+    if (m_core.GetYubiSK() != NULL) {
+      m_YubiSK = BinSK2HexStr(m_core.GetYubiSK(), YUBI_SK_LEN).c_str();
+    }
+    ReadYubiSN();
   } else { // !m_isInit
     GetDlgItem(IDC_YUBI_API)->ShowWindow(SW_SHOW);
     GetDlgItem(IDC_YUBI_SN)->EnableWindow(FALSE);
@@ -91,6 +132,29 @@ void CYubiCfgDlg::Destroy()
     m_obj->Release();
     m_obj = 0;
   }
+}
+
+void CYubiCfgDlg::ReadYubiSN()
+{
+#if 0
+  CYkLib yk;
+  BYTE buffer[128];
+  YKLIB_RC rc;
+  STATUS status;
+
+  memset(&status, 0, sizeof(status));
+  rc = yk.readSerialBegin();
+  if (rc == YKLIB_OK) {
+    // Wait for response completion
+    rc = yk.waitForCompletion(YKLIB_MAX_SERIAL_WAIT, buffer, sizeof(DWORD));
+
+    if (rc == YKLIB_OK) {
+      m_YubiSN = BinSK2HexStr(buffer, 4).c_str();
+    } else
+      m_YubiSN = Yubi::RetCode2String(rc).c_str();
+  } else
+    m_YubiSN = Yubi::RetCode2String(rc).c_str();
+#endif
 }
 
 BEGIN_MESSAGE_MAP(CYubiCfgDlg, CPWDialog)
@@ -187,11 +251,25 @@ void CYubiCfgDlg::yubiWait(WORD seconds)
 
 void CYubiCfgDlg::OnYubiGenBn()
 {
-    // TODO: Add your control notification handler code here
+  pws_os::GetRandomData(m_yubi_sk_bin, YUBI_SK_LEN);
+  StringX str = BinSK2HexStr(m_yubi_sk_bin, YUBI_SK_LEN);
+  m_YubiSK = str.c_str();
+  UpdateData(FALSE);
 }
 
 
 void CYubiCfgDlg::OnBnClickedOk()
 {
-    // TODO: Add your control notification handler code here
+  UpdateData(TRUE);  
+  StringX skStr = m_YubiSK;
+  
+  if (!skStr.empty()) {
+    StringX oldSK = BinSK2HexStr(m_yubi_sk_bin, YUBI_SK_LEN);
+    if (skStr != oldSK) {
+      // 1. Update SK on Yubi.
+      // 2. If that succeeds, update in core.
+      // 3. Write DB ASAP!
+    }
+  }
+  CPWDialog::OnOK();
 }

@@ -606,6 +606,6 @@ void DboxMain::OnGeneratePassword()
 
 void DboxMain::OnYubikey()
 {
-  CYubiCfgDlg dlg;
+  CYubiCfgDlg dlg(this, m_core);
   dlg.DoModal();
 }

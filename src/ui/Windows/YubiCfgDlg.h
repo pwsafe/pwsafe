@@ -13,10 +13,12 @@
 #include "PWDialog.h"
 #import <YubiClientAPI.dll> no_namespace, named_guids
 
+class PWScore;
+
 class CYubiCfgDlg : public CPWDialog
 {
 public:
-	CYubiCfgDlg(CWnd* pParent = NULL);   // standard constructor
+	CYubiCfgDlg(CWnd* pParent, PWScore &core);   // standard constructor
 	virtual ~CYubiCfgDlg();
 
 // Dialog Data
@@ -36,8 +38,10 @@ public:
   afx_msg void OnYubiGenBn();
   afx_msg void OnBnClickedOk();
  private:
+  enum {YUBI_SK_LEN = 20};
   void Init();
   void Destroy();
+  void ReadYubiSN();
   // Callbacks:
 	void yubiInserted(void); // called when Yubikey's inserted
 	void yubiRemoved(void);  // called when Yubikey's removed
@@ -48,4 +52,7 @@ public:
   DWORD m_eventCookie;
   ycENCODING m_encoding;
   bool m_isInit;
+
+  unsigned char m_yubi_sk_bin[YUBI_SK_LEN];
+  PWScore &m_core;
 };

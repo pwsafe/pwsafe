@@ -14,6 +14,7 @@
 #include <afxwin.h>
 #include "StdAfx.h"
 #include "Yubi.h"
+#include "yubi/YkLib.h" // for RetCode2String
 
 Yubi::Yubi(CCmdTarget *owner)
   : m_obj(0), m_owner(owner), m_isInit(false)
@@ -185,4 +186,25 @@ void Yubi::RetrieveHMACSha1(CSecString &value)
   catch (...) {
   }
 #endif
+}
+
+stringT Yubi::RetCode2String(int rc)
+{
+  switch (rc) {
+  case YKLIB_OK:                  return (L"YKLIB_OK ");
+  case YKLIB_FAILURE:             return (L"YKLIB_FAILURE ");
+  case YKLIB_NOT_OPENED:          return (L"YKLIB_NOT_OPENED ");
+  case YKLIB_INVALID_PARAMETER:   return (L"YKLIB_INVALID_PARAMETER ");
+  case YKLIB_NO_DEVICE:           return (L"YKLIB_NO_DEVICE ");
+  case YKLIB_MORE_THAN_ONE:       return (L"YKLIB_MORE_THAN_ONE ");
+  case YKLIB_WRITE_ERROR:         return (L"YKLIB_WRITE_ERROR ");
+  case YKLIB_INVALID_RESPONSE:    return (L"YKLIB_INVALID_RESPONSE ");
+  case YKLIB_NOT_COMPLETED:       return (L"YKLIB_NOT_COMPLETED ");
+  case YKLIB_NOT_CONFIGURED:      return (L"YKLIB_NOT_CONFIGURED ");
+  case YKLIB_NOT_READY:           return (L"YKLIB_NOT_READY ");
+  case YKLIB_PROCESSING:          return (L"YKLIB_PROCESSING ");
+  case YKLIB_TIMER_WAIT:          return (L"YKLIB_TIMER_WAIT ");
+  case YKLIB_UNSUPPORTED_FEATURE: return (L"YKLIB_UNSUPPORTED_FEATURE ");
+  default:                        return (L"Unknown rc");
+  }
 }
