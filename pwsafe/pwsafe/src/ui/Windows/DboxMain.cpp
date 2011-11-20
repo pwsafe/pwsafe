@@ -442,6 +442,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND_RANGE(ID_MENUITEM_REPORT_EXPORTTEXT, ID_MENUITEM_REPORT_EXPORTXML, OnViewReportsByID)
   ON_COMMAND_RANGE(ID_MENUITEM_REPORT_IMPORTKP1TXT, ID_MENUITEM_REPORT_IMPORTKP1CSV, OnViewReportsByID)
   ON_COMMAND(ID_MENUITEM_APPLYFILTER, OnApplyFilter)
+  ON_COMMAND(ID_MENUITEM_CLEARFILTER, OnApplyFilter)
   ON_COMMAND(ID_MENUITEM_EDITFILTER, OnSetFilter)
   ON_COMMAND(ID_MENUITEM_MANAGEFILTERS, OnManageFilters)
   ON_COMMAND(ID_MENUITEM_PASSWORDSUBSET, OnDisplayPswdSubset)
@@ -472,7 +473,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   // Double-click on R-O R/W indicator on StatusBar
   ON_COMMAND(IDS_READ_ONLY, OnChangeMode)
   // Double-click on filter indicator on StatusBar
-  ON_COMMAND(IDS_FILTER1, OnCancelFilter)
+  ON_COMMAND(IDB_FILTER_ACTIVE, OnCancelFilter)
 
 #if defined(POCKET_PC)
   ON_WM_CREATE()
@@ -672,6 +673,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_REPORT_SYNCHRONIZE, true, true, true, false},
   {ID_MENUITEM_EDITFILTER, true, true, false, false},
   {ID_MENUITEM_APPLYFILTER, true, true, false, false},
+  {ID_MENUITEM_CLEARFILTER, true, true, false, false},
   {ID_MENUITEM_MANAGEFILTERS, true, true, true, true},
   {ID_MENUITEM_PASSWORDSUBSET, true, true, false, false},
   {ID_MENUITEM_REFRESH, true, true, false, false},
@@ -1645,7 +1647,7 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
   int retval;
   bool bFileIsReadOnly = false;
 
-  /// Get all read-only values from flags
+  // Get all read-only values from flags
   bool bReadOnly = (flags & GCP_READONLY) == GCP_READONLY;
   bool bForceReadOnly = (flags & GCP_FORCEREADONLY) == GCP_FORCEREADONLY;
   bool bHideReadOnly = (flags & GCP_HIDEREADONLY) == GCP_HIDEREADONLY;
@@ -2710,12 +2712,14 @@ void DboxMain::UpdateStatusBar()
                  m_core.GetNumEntries());
       else
         s.Format(IDS_NUMITEMS, m_core.GetNumEntries());
+
       dc.DrawText(s, &rectPane, DT_CALCRECT);
       m_statusBar.GetPaneInfo(CPWStatusBar::SB_NUM_ENT, uiID, uiStyle, iWidth);
       m_statusBar.SetPaneInfo(CPWStatusBar::SB_NUM_ENT, uiID, uiStyle, rectPane.Width());
       m_statusBar.SetPaneText(CPWStatusBar::SB_NUM_ENT, s);
 
       m_statusBar.GetPaneInfo(CPWStatusBar::SB_FILTER, uiID, uiStyle, iWidth);
+      uiID = m_bFilterActive ? IDB_FILTER_ACTIVE : IDS_BLANK;
       m_statusBar.SetPaneInfo(CPWStatusBar::SB_FILTER, uiID, uiStyle | SBT_OWNERDRAW, iBMWidth);
     } else {
       s.LoadString(IDS_STATCOMPANY);
@@ -2740,7 +2744,7 @@ void DboxMain::UpdateStatusBar()
       m_statusBar.SetPaneText(CPWStatusBar::SB_NUM_ENT, L" ");
 
       m_statusBar.GetPaneInfo(CPWStatusBar::SB_FILTER, uiID, uiStyle, iWidth);
-      m_statusBar.SetPaneInfo(CPWStatusBar::SB_FILTER, uiID, uiStyle | SBT_OWNERDRAW, iBMWidth);
+      m_statusBar.SetPaneInfo(CPWStatusBar::SB_FILTER, IDS_BLANK, uiStyle | SBT_OWNERDRAW, iBMWidth);
     }
   }
 

@@ -134,6 +134,7 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 #define ID_MENUITEM_SHOW_ALL_EXPIRY     32131
 #define ID_MENUITEM_REPORT_IMPORTKP1TXT 32132
 #define ID_MENUITEM_REPORT_IMPORTKP1CSV 32133
+#define ID_MENUITEM_CLEARFILTER         32134
 
 // Manage menu
 #define ID_MANAGEMENU                   32150

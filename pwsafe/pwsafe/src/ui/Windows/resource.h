@@ -348,6 +348,9 @@
 #define IDD_PS_SHORTCUTS_SHORT          509
 #define IDD_PS_SYSTEM_SHORT             510
 #define IDD_INPUTBOX                    511
+#define IDB_CLEARFILTERS_CLASSIC        512
+#define IDB_CLEARFILTERS_NEW            513
+#define IDB_CLEARFILTERS_NEW_D          514
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_CREATE_DB                   1003
@@ -736,7 +739,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        512
+#define _APS_NEXT_RESOURCE_VALUE        515
 #define _APS_NEXT_COMMAND_VALUE         30001
 #define _APS_NEXT_CONTROL_VALUE         1461
 #define _APS_NEXT_SYMED_VALUE           166

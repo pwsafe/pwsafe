@@ -69,7 +69,7 @@ const CString CPWToolBar::m_csMainButtons[] = {
   L"saveas", L"compare", L"merge", L"synchronize", L"undo", L"redo",
   L"passwordsubset", L"browse+autotype", L"runcommand", L"sendemail",
   L"listtree", L"find", L"viewreports", 
-  L"applyfilters", L"setfilters", L"managefilters", L"addgroup"
+  L"applyfilters", L"clearfilters", L"setfilters", L"managefilters", L"addgroup"
 };
 
 const UINT CPWToolBar::m_MainToolBarIDs[] = {
@@ -117,6 +117,7 @@ const UINT CPWToolBar::m_MainToolBarIDs[] = {
   ID_MENUITEM_SHOWFINDTOOLBAR,
   ID_TOOLBUTTON_VIEWREPORTS,
   ID_MENUITEM_APPLYFILTER,
+  ID_MENUITEM_CLEARFILTER,
   ID_MENUITEM_EDITFILTER,
   ID_MENUITEM_MANAGEFILTERS,
   ID_MENUITEM_ADDGROUP
@@ -199,6 +200,7 @@ const UINT CPWToolBar::m_MainToolBarClassicBMs[] = {
   IDB_FIND_CLASSIC,
   IDB_VIEWREPORTS_CLASSIC,
   IDB_APPLYFILTERS_CLASSIC,
+  IDB_CLEARFILTERS_CLASSIC,
   IDB_SETFILTERS_CLASSIC,
   IDB_MANAGEFILTERS_CLASSIC,
   IDB_ADDGROUP_CLASSIC
@@ -281,6 +283,7 @@ const UINT CPWToolBar::m_MainToolBarNewBMs[] = {
   IDB_FIND_NEW,
   IDB_VIEWREPORTS_NEW,
   IDB_APPLYFILTERS_NEW,
+  IDB_CLEARFILTERS_NEW,
   IDB_SETFILTERS_NEW,
   IDB_MANAGEFILTERS_NEW,
   IDB_ADDGROUP_NEW
@@ -324,6 +327,7 @@ const UINT CPWToolBar::m_MainToolBarNewDisBMs[] = {
   IDB_FIND_NEW_D,
   IDB_VIEWREPORTS_NEW_D,
   IDB_APPLYFILTERS_NEW_D,
+  IDB_CLEARFILTERS_NEW_D,
   IDB_SETFILTERS_NEW_D,
   IDB_MANAGEFILTERS_NEW_D,
   IDB_ADDGROUP_NEW_D
@@ -815,7 +819,7 @@ void CPWToolBar::MapControlIDtoImage(ID2ImageMap &IDtoImages)
 }
 
 void CPWToolBar::SetupImageList(const UINT *pBM_IDs, const UINT *pDisBM_IDs,
-                           const int numBMs, const int nImageList)
+                                const int numBMs, const int nImageList)
 {
   const COLORREF crCOLOR_3DFACE = GetSysColor(COLOR_3DFACE);
 
