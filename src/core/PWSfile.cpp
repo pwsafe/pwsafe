@@ -109,7 +109,7 @@ PWSfile::HeaderRecord::HeaderRecord(const PWSfile::HeaderRecord &h)
 {
   if (h.m_yubi_sk != NULL) {
     m_yubi_sk = new unsigned char[YUBI_SK_LEN];
-    memcpy(m_yubi_sk, h.m_yubi_sk, sizeof(m_yubi_sk));
+    memcpy(m_yubi_sk, h.m_yubi_sk, YUBI_SK_LEN);
   } else {
     m_yubi_sk = NULL;
   }
@@ -141,7 +141,7 @@ PWSfile::HeaderRecord &PWSfile::HeaderRecord::operator=(const PWSfile::HeaderRec
     m_RUEList = h.m_RUEList;
     if (h.m_yubi_sk != NULL) {
       m_yubi_sk = new unsigned char[YUBI_SK_LEN];
-      memcpy(m_yubi_sk, h.m_yubi_sk, sizeof(m_yubi_sk));
+      memcpy(m_yubi_sk, h.m_yubi_sk, YUBI_SK_LEN);
     } else {
       m_yubi_sk = NULL;
     }

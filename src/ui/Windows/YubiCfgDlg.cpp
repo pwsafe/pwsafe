@@ -90,6 +90,7 @@ BOOL CYubiCfgDlg::OnInitDialog()
     GetDlgItem(IDC_YUBI_SN)->EnableWindow(FALSE);
     GetDlgItem(IDC_YUBI_SK)->EnableWindow(FALSE);
     GetDlgItem(IDC_YUBI_GEN_BN)->EnableWindow(FALSE);
+    GetDlgItem(IDOK)->EnableWindow(FALSE);
   }
   return TRUE;
 }
@@ -160,7 +161,6 @@ void CYubiCfgDlg::ReadYubiSN()
 int CYubiCfgDlg::WriteYubiSK()
 {
   CYkLib yk;
-  BYTE buffer[128];
   YKLIB_RC rc;
   STATUS status;
   CONFIG config;
@@ -168,17 +168,17 @@ int CYubiCfgDlg::WriteYubiSK()
   memset(&status, 0, sizeof(status));
   memset(&config, 0, sizeof(config));
   config.fixedSize = 2;
-  config.fixed[0] = 0x47; // ???
-  config.fixed[1] = 0x11; // ???
-  config.tktFlags = TKTFLAG_APPEND_CR; // ???
-  config.extFlags = EXTFLAG_SERIAL_API_VISIBLE; // ???
+  config.fixed[0] = 0x47;
+  config.fixed[1] = 0x11;
+  config.tktFlags = TKTFLAG_APPEND_CR;
+  config.extFlags = EXTFLAG_SERIAL_API_VISIBLE;
   yk.setKey160(&config, m_yubi_sk_bin);
   rc = yk.openKey();
   if (rc != YKLIB_OK) goto fail;
-  rc = yk.writeConfigBegin(0, &config, NULL);
+  rc = yk.writeConfigBegin(1, &config, NULL);
   if (rc != YKLIB_OK) goto fail;
   // Wait for response completion
-  rc = yk.waitForCompletion(YKLIB_MAX_WRITE_WAIT, buffer, sizeof(DWORD));
+  rc = yk.waitForCompletion(YKLIB_MAX_WRITE_WAIT);
   if (rc != YKLIB_OK) goto fail;
   rc = yk.closeKey();
  fail:
@@ -209,6 +209,7 @@ void CYubiCfgDlg::yubiInserted(void)
   GetDlgItem(IDC_YUBI_SN)->EnableWindow(TRUE);
   GetDlgItem(IDC_YUBI_SK)->EnableWindow(TRUE);
   GetDlgItem(IDC_YUBI_GEN_BN)->EnableWindow(TRUE);
+  GetDlgItem(IDOK)->EnableWindow(TRUE);
   ReadYubiSN();
   UpdateData(FALSE);
 }
@@ -220,6 +221,7 @@ void CYubiCfgDlg::yubiRemoved(void)
   GetDlgItem(IDC_YUBI_SN)->EnableWindow(FALSE);
   GetDlgItem(IDC_YUBI_SK)->EnableWindow(FALSE);
   GetDlgItem(IDC_YUBI_GEN_BN)->EnableWindow(FALSE);
+  GetDlgItem(IDOK)->EnableWindow(FALSE);
 }
 
 void CYubiCfgDlg::yubiCompleted(ycRETCODE )
@@ -256,7 +258,7 @@ void CYubiCfgDlg::OnBnClickedOk()
         // 2. If YubiKey update succeeds, update in core.
         m_core.SetYubiSK(m_yubi_sk_bin);
         // 3. Write DB ASAP!
-        // XXX TBD
+        m_core.WriteCurFile();
       } else {
         CString err = _T("Failed to update YubiKey: ");
         err += Yubi::RetCode2String(rc).c_str();

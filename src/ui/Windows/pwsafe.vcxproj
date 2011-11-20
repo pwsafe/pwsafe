@@ -894,10 +894,10 @@
     </ProjectReference>
     <Link>
       <AdditionalOptions>/OPT:REF %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>core.lib;os.lib;WS2_32.lib;rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;dbghelp.lib;htmlhelp.lib;msxml6.lib;UxTheme.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>core.lib;os.lib;YkLib22.lib;WS2_32.lib;rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;dbghelp.lib;htmlhelp.lib;msxml6.lib;UxTheme.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>..\$(PWSBin)/pwsafe.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalLibraryDirectories>..\$(PWSLib);..\..\..\build\bin\pwsafe\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\$(PWSLib);..\..\..\build\lib\pwsafe\Release;..\..\..\build\bin\pwsafe\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>..\$(PWSBin)/pwsafe.pdb</ProgramDatabaseFile>
       <GenerateMapFile>true</GenerateMapFile>
