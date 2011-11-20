@@ -504,15 +504,6 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
   if (bDoShortcuts)
     SetUpMenuStrings(pPopupMenu);
 
-  // We have done for all except the Edit and View menus
-  if (uiMenuID != ID_FILEMENU && uiMenuID != ID_EDITMENU && uiMenuID != ID_VIEWMENU)
-    return;
-
-  if (bItemSelected) {
-    pci = getSelectedItem();
-    ASSERT(pci != NULL);
-  }
-
 	// Change the 'Change Mode' text as appropriate	 
   if (uiMenuID == ID_FILEMENU) {	 
     pPopupMenu->ModifyMenu(ID_MENUITEM_CHANGEMODE, MF_BYCOMMAND,	 
@@ -520,6 +511,10 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
                            bReadOnly ? CS_READWRITE : CS_READONLY);	 
     return;	 
   }
+
+  // We have done for all except the Edit and View menus
+  if (uiMenuID != ID_EDITMENU && uiMenuID != ID_VIEWMENU && uiMenuID != ID_FILTERMENU)
+    return;
 
   // If View menu selected (contains 'Flattened &List' menu item)
   if (uiMenuID == ID_VIEWMENU) {
@@ -549,13 +544,9 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
     pPopupMenu->CheckMenuItem(ID_MENUITEM_SHOW_ALL_EXPIRY, MF_BYCOMMAND |
                               m_bExpireDisplayed ? MF_CHECKED : MF_UNCHECKED);
 
+    // Don't show filter menu if "internal" menu active
     pPopupMenu->EnableMenuItem(ID_FILTERMENU, MF_BYCOMMAND |
              (m_bUnsavedDisplayed || m_bExpireDisplayed) ? MF_GRAYED : MF_ENABLED);
-
-    pPopupMenu->ModifyMenu(ID_MENUITEM_APPLYFILTER, MF_BYCOMMAND |
-                           m_bFilterActive ? MF_CHECKED : MF_UNCHECKED,
-                           ID_MENUITEM_APPLYFILTER,
-                           m_bFilterActive ? CS_CLEARFILTERS : CS_SETFILTERS);
 
     pPopupMenu->CheckMenuRadioItem(ID_MENUITEM_NEW_TOOLBAR,
                                    ID_MENUITEM_OLD_TOOLBAR,
@@ -566,6 +557,18 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
     pPopupMenu->EnableMenuItem(ID_REPORTSMENU, MF_BYCOMMAND | (m_bOpen ? MF_ENABLED : MF_GRAYED));
     goto exit;
   }  // View menu
+
+  if (uiMenuID == ID_FILTERMENU) {
+    pPopupMenu->ModifyMenu(1, MF_BYPOSITION,
+                           m_bFilterActive ? ID_MENUITEM_CLEARFILTER : ID_MENUITEM_APPLYFILTER,
+                           m_bFilterActive ? CS_CLEARFILTERS : CS_SETFILTERS);
+    goto exit;
+  }
+
+  if (bItemSelected) {
+    pci = getSelectedItem();
+    ASSERT(pci != NULL);
+  }
 
   // Save original entry type before possibly changing pci
   const CItemData::EntryType etype_original = 
@@ -866,7 +869,7 @@ void DboxMain::OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL)
     case ID_CHANGEFONTMENU:
     case ID_REPORTSMENU:
     case ID_MANAGEMENU:
-    case ID_HELPMENU://main menu items' shortuct should be always updated because keyboard layout could be changed
+    case ID_HELPMENU:  //main menu items' shortuct should be always updated because keyboard layout could be changed
       bDoShortcuts = true;
       break;
     default:
