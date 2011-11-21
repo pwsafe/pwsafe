@@ -167,10 +167,8 @@ int CYubiCfgDlg::WriteYubiSK()
 
   memset(&status, 0, sizeof(status));
   memset(&config, 0, sizeof(config));
-  config.fixedSize = 2;
-  config.fixed[0] = 0x47;
-  config.fixed[1] = 0x11;
-  config.tktFlags = TKTFLAG_APPEND_CR;
+  config.tktFlags = TKTFLAG_CHAL_RESP;
+  config.cfgFlags = CFGFLAG_CHAL_HMAC | CFGFLAG_HMAC_LT64 | CFGFLAG_CHAL_BTN_TRIG;
   config.extFlags = EXTFLAG_SERIAL_API_VISIBLE;
   yk.setKey160(&config, m_yubi_sk_bin);
   rc = yk.openKey();
