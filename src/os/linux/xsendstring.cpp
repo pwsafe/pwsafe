@@ -74,22 +74,6 @@ int ErrorHandler(Display *my_dpy, XErrorEvent *event)
   return 0;
 }
 
-int ShiftRequired(char* keystring)
-{
-	if (isupper(keystring[0]))
-		return 1;
-
-	switch(keystring[0]) {
-		case '~': case '!': case '@': case '#': case '$': case '%':
-		case '^': case '&': case '*': case '(': case ')': case '_':
-		case '+': case '{': case '}': case '|': case ':': case '"':
-		case '<': case '>': case '?':
-			return 1;
-		default:
-			return 0;
-	}
-}
-
 
 /*
  * - characters which need to be manually converted to KeySyms
@@ -239,6 +223,77 @@ void InitKeyEvent(XKeyEvent* event)
 }
 
 
+int FindModifierMask(Display* disp, KeySym sym)
+{
+  int modmask = 0;
+  XModifierKeymap* modmap = XGetModifierMapping(disp);
+  if (modmap) {
+    const int last = 8*modmap->max_keypermod;
+    //begin at 4th row, where Mod1 starts
+    for (int i = 3*modmap->max_keypermod && !modmask; i < last; i++) {
+      //
+      const KeyCode kc = modmap->modifiermap[i];
+      if (!kc)
+        continue;
+      int keysyms_per_keycode = 0;
+      // For each keycode attached to this modifier, get a list of all keysyms
+      // attached with this keycode. If any of those keysyms is what we are looking
+      // for, then this is the modifier to use
+      KeySym* symlist = XGetKeyboardMapping(disp, kc, 1, &keysyms_per_keycode);
+      if ( symlist) {
+        for (int j = 0; j < keysyms_per_keycode; j++) {
+          if (sym == symlist[j]) {
+            modmask = (i / modmap->max_keypermod);
+            break;
+          }
+        }
+      }
+    }
+    XFreeModifiermap(modmap);
+  }
+  assert( modmask >= 3 && modmask <= 7);
+  return 1 << modmask;
+}
+
+int CalcModifiersForKeysym(KeyCode code, KeySym sym, Display* disp)
+{
+  int keysyms_per_keycode = 0;
+  const KeySym* symlist = XGetKeyboardMapping(disp, code, 1, &keysyms_per_keycode);
+  if (symlist != NULL && keysyms_per_keycode > 0) {
+    const int ModeSwitchMask = FindModifierMask(disp, XK_Mode_switch);
+    const int Level3ShiftMask = FindModifierMask(disp, XK_ISO_Level3_Shift);
+    int mods[] = {
+      0,                  //none
+      ShiftMask,
+      ModeSwitchMask,
+      ShiftMask | ModeSwitchMask,  
+      // beyond this, its all guesswork since there's no documentation, but see this:
+      //
+      //     http://superuser.com/questions/189869/xmodmap-six-characters-to-one-key
+      //
+      // Also, if you install mulitple keyboard layouts the number of keysyms-per-keycode 
+      // will keep increasing to a max of 16 (up to 4 layouts can be installed together 
+      // in Ubuntu 11.04).  For some keycodes, you will actually have non-NoSymbol
+      // keysyms beyond the first four
+      // 
+      // We probably shouldn't go here if Mode_switch and ISO_Level3_Shift are assigned to
+      // the same modifier mask
+      Level3ShiftMask,
+      ShiftMask | Level3ShiftMask,
+      ModeSwitchMask | Level3ShiftMask,
+      ShiftMask | ModeSwitchMask | Level3ShiftMask,
+    };
+    const int max_keysym_index = std::min(int(NumberOf(mods)), keysyms_per_keycode);
+    for (int idx = 0; idx < max_keysym_index; ++idx) {
+      if (symlist[idx] == sym)
+        return mods[idx];
+    }
+  }
+  // we should at least find the keysym without any mods (index 0)
+  assert(0);
+  return 0;
+}
+
 /*
  * DoSendString - actually sends a string to the X Window having input focus
  *
@@ -297,9 +352,7 @@ void DoSendString(const StringX& str, pws_os::AutotypeMethod method, unsigned de
       KeyPressInfo keypress = {0, 0};
       if ((keypress.code = XKeysymToKeycode(event.display, sym)) != 0) {
         //non-zero return value implies sym -> code was successful
-        if (ShiftRequired(keystring)) {
-          keypress.state |= ShiftMask;
-        }
+        keypress.state |= CalcModifiersForKeysym(keypress.code, sym, event.display);
         keypresses.push_back(keypress);
       }
       else {
