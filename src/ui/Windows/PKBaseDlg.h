@@ -34,8 +34,8 @@ class CPKBaseDlg : public CPWDialog {
   virtual void DoDataExchange(CDataExchange* pDX);
   afx_msg void OnDestroy();
   // Yubico-related:
-  bool IsYubiEnabled() const {return m_yubi->isEnabled();}
-  bool IsYubiInserted() const {return m_yubi->isInserted();}
+  bool IsYubiEnabled() const {return m_yubi.isEnabled();}
+  bool IsYubiInserted() const {return m_yubi.isInserted();}
   // Callbacks:
 	virtual void yubiInserted(void); // called when Yubikey's inserted
 	virtual void yubiRemoved(void);  // called when Yubikey's removed
@@ -50,6 +50,6 @@ class CPKBaseDlg : public CPWDialog {
   CBitmap m_yubiLogo;
 	DECLARE_INTERFACE_MAP()
  private:
-  Yubi *m_yubi; // Interface to Yubikey API  
+  Yubi m_yubi; // Interface to Yubikey API  
   bool m_waited; // needed to discern between timeout and unconfigured yubikey
 };

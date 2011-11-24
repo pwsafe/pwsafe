@@ -20,7 +20,7 @@ END_INTERFACE_MAP()
 
 CPKBaseDlg::CPKBaseDlg(int id, CWnd *pParent)
 : CPWDialog(id, pParent), m_passkey(L""), m_pctlPasskey(new CSecEditExtn),
-  m_yubi(new Yubi(this)), m_waited(false)
+  m_yubi(this), m_waited(false)
 {
   if (pws_os::getenv("PWS_PW_MODE", false) == L"NORMAL")
     m_pctlPasskey->SetSecure(false);
@@ -28,13 +28,12 @@ CPKBaseDlg::CPKBaseDlg(int id, CWnd *pParent)
 
 CPKBaseDlg::~CPKBaseDlg()
 {
-  delete m_yubi;
   delete m_pctlPasskey;
 }
 
 void CPKBaseDlg::OnDestroy()
 {
-  m_yubi->Destroy();
+  m_yubi.Destroy();
   CPWDialog::OnDestroy();
 }
 
@@ -55,7 +54,7 @@ BOOL CPKBaseDlg::OnInitDialog(void)
   ApplyPasswordFont(GetDlgItem(IDC_PASSKEY));
 
   m_pctlPasskey->SetPasswordChar(PSSWDCHAR);
-  m_yubi->Init();
+  m_yubi.Init();
 
   bool yubiEnabled = IsYubiEnabled();
   m_yubiLogo.LoadBitmap(IDB_YUBI_LOGO);
@@ -99,7 +98,7 @@ void CPKBaseDlg::yubiCompleted(ycRETCODE rc)
     m_yubi_status.SetWindowText(_T(""));
     TRACE(_T("yubiCompleted(ycRETCODE_OK)"));
     // Get hmac, process it, synthesize OK event
-    m_yubi->RetrieveHMACSha1(m_passkey);
+    m_yubi.RetrieveHMACSha1(m_passkey);
     // The returned hash is the passkey
     ProcessPhrase();
     // If we returned from above, reset status:
@@ -157,5 +156,5 @@ void CPKBaseDlg::yubiRequestHMACSha1()
   m_yubi_status.SetWindowText(_T(""));
   m_yubi_timeout.ShowWindow(SW_SHOW);
   m_yubi_timeout.SetPos(15);
-  m_yubi->RequestHMACSha1(m_passkey);
+  m_yubi.RequestHMACSha1(m_passkey);
 }
