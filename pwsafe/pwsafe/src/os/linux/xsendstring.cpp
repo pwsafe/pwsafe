@@ -52,6 +52,14 @@ struct AutotypeGlobals
 	Boolean			LiteralKeysymsInitialized;
 } atGlobals	= { False, {0}, 0, pws_os::ATMETHOD_AUTO, False };
 
+class autotype_exception: public std::exception
+{
+  public:
+  virtual const char* what() const throw() {
+    return atGlobals.errorString;
+  }
+};
+
 /*
  * ErrorHandler will be called when X detects an error. This function
  * just sets a global flag and saves the error message text
@@ -230,10 +238,9 @@ void InitKeyEvent(XKeyEvent* event)
 	event->same_screen = TRUE;
 }
 
-} // anonymous namespace
 
 /*
- * SendString - sends a string to the X Window having input focus
+ * DoSendString - actually sends a string to the X Window having input focus
  *
  * The main task of this function is to convert the ascii char values
  * into X KeyCodes.  But they need to be converted to X KeySyms first
@@ -243,8 +250,7 @@ void InitKeyEvent(XKeyEvent* event)
  * Some escape sequences can be converted to the appropriate KeyCodes
  * by this function.  See the code below for details
  */
-
-void pws_os::SendString(const StringX& str, AutotypeMethod method, unsigned delayMS)
+void DoSendString(const StringX& str, pws_os::AutotypeMethod method, unsigned delayMS)
 {
 
   if (!atGlobals.LiteralKeysymsInitialized) {
@@ -316,7 +322,7 @@ void pws_os::SendString(const StringX& str, AutotypeMethod method, unsigned dela
   XSetErrorHandler(ErrorHandler);
   atGlobals.error_detected = False;
 
-  bool useXTEST = (UseXTest() && method != ATMETHOD_XSENDKEYS);
+  bool useXTEST = (UseXTest() && method != pws_os::ATMETHOD_XSENDKEYS);
   void (*KeySendFunction)(XKeyEvent*);
 
   if ( useXTEST) {
@@ -345,4 +351,24 @@ void pws_os::SendString(const StringX& str, AutotypeMethod method, unsigned dela
   }
 
   XSetErrorHandler(NULL);
+}
+
+} // anonymous namespace
+
+/*
+ * SendString - The interface method for CKeySend
+ *
+ * The actual work is done by DoSendString above. This function just
+ * just throws an exception if DoSendString encounters an error.
+ *
+ */
+void pws_os::SendString(const StringX& str, AutotypeMethod method, unsigned delayMS)
+{
+  atGlobals.error_detected = false;
+  atGlobals.errorString[0] = 0;
+
+  DoSendString(str, method, delayMS);
+
+  if (atGlobals.error_detected)
+    throw autotype_exception();
 }
