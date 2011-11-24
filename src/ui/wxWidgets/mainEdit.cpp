@@ -41,6 +41,7 @@
 #include "../../core/Util.h"
 #include "../../os/KeySend.h"
 #include "../../os/sleep.h"
+#include "../../os/utf8conv.h"
 
 #include <algorithm>
 
@@ -480,14 +481,24 @@ void PasswordSafeFrame::DoAutotype(CItemData &ci)
   std::vector<size_t> vactionverboffsets;
   const StringX sxautotype = PWSAuxParse::GetAutoTypeString(ci, m_core,
                                                             vactionverboffsets);
-  DoAutotype(sxautotype, vactionverboffsets);
+
+  bool autotype_err = false;
+  wxString autotype_err_msg;
+  try {
+    DoAutotype(sxautotype, vactionverboffsets);
+  }
+  catch(const std::exception& e) {
+    autotype_err = true;
+    autotype_err_msg = towxstring(pws_os::towc(e.what()));
+  }
+
   UpdateAccessTime(ci);
 
-  // If we minimized it, exit. If we only hid it, now show it
-  if (bMinOnAuto)
-    return;
-
-  if (PWSprefs::GetInstance()->GetPref(PWSprefs::AlwaysOnTop)) {
+  // Restore the UI if
+  //   1. there was an error autotyping
+  //   2. We're supposed to be always-on-top
+  //   3. We hid the UI instead of minimizing while autotyping
+  if (autotype_err || PWSprefs::GetInstance()->GetPref(PWSprefs::AlwaysOnTop) || !bMinOnAuto) {
     /* TODO - figure out how to keep a wxWidgets window always on top */
     if (IsIconized())
       Iconize(false);
@@ -496,6 +507,8 @@ void PasswordSafeFrame::DoAutotype(CItemData &ci)
       m_guiInfo->Restore(this);
     }
   }
+  if (autotype_err)
+    wxMessageBox(_("There was an error autotyping.  ") + autotype_err_msg, _T("Autotype error"), wxOK|wxICON_ERROR, this);
 }
 
 /*
