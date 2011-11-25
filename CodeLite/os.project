@@ -28,6 +28,8 @@
     <File Name="../src/os/linux/pws_str.cpp"/>
     <File Name="../src/os/linux/dir.cpp"/>
     <File Name="../src/os/linux/UUID.cpp"/>
+    <File Name="../src/os/linux/unicode2keysym.cpp"/>
+    <File Name="../src/os/linux/unicode2keysym.h"/>
   </VirtualDirectory>
   <VirtualDirectory Name="os">
     <File Name="../src/os/env.h"/>
