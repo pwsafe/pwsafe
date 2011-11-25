@@ -70,81 +70,16 @@ int ErrorHandler(Display *my_dpy, XErrorEvent *event)
 
   atGlobals.error_detected = TRUE;
   XGetErrorText(my_dpy, event->error_code, xmsg, NumberOf(xmsg) - 1);
-  snprintf(atGlobals.errorString, NumberOf(atGlobals.errorString)-1, "X error (%d): %s\n", event->request_code, xmsg);
+  snprintf(atGlobals.errorString, NumberOf(atGlobals.errorString)-1, "X error (%d): %s", event->request_code, xmsg);
   return 0;
 }
 
 
-/*
- * - characters which need to be manually converted to KeySyms
- */
-
-static struct {
-    char ch;
-    const char* keystr;
-	KeySym sym;
-} LiteralKeysyms[] =
-{
-    { ' ', 		"space", 		NoSymbol },
-    { '\t', 	"Tab",  		NoSymbol },
-    { '\n', 	"Linefeed", 	NoSymbol },
-    { '\r', 	"Return", 		NoSymbol },
-    { '\010', 	"BackSpace", 	NoSymbol },  /* \b doesn't work */
-    { '\177', 	"Delete", 		NoSymbol },
-    { '\033', 	"Escape", 		NoSymbol },  /* \e doesn't work and \e is non-iso escape sequence*/
-    { '!', 		"exclam", 		NoSymbol },
-    { '#', 		"numbersign", 	NoSymbol },
-    { '%', 		"percent", 		NoSymbol },
-    { '$', 		"dollar", 		NoSymbol },
-    { '&', 		"ampersand", 	NoSymbol },
-    { '"', 		"quotedbl", 	NoSymbol },
-    { '\'', 	"apostrophe", 	NoSymbol },
-    { '(', 		"parenleft", 	NoSymbol },
-    { ')', 		"parenright", 	NoSymbol },
-    { '*', 		"asterisk", 	NoSymbol },
-    { '=', 		"equal", 		NoSymbol },
-    { '+', 		"plus", 		NoSymbol },
-    { ',', 		"comma", 		NoSymbol },
-    { '-', 		"minus", 		NoSymbol },
-    { '.', 		"period", 		NoSymbol },
-    { '/', 		"slash", 		NoSymbol },
-    { ':', 		"colon", 		NoSymbol },
-    { ';', 		"semicolon", 	NoSymbol },
-    { '<', 		"less", 		44 	 }, /* I don't understand why we get '>' instead of '<' unless we hardcode this */
-    { '>', 		"greater", 		NoSymbol },
-    { '?', 		"question", 	NoSymbol },
-    { '@', 		"at", 			NoSymbol },
-    { '[', 		"bracketleft", 	NoSymbol },
-    { ']', 		"bracketright", NoSymbol },
-    { '\\', 	"backslash", 	NoSymbol },
-    { '^', 		"asciicircum", 	NoSymbol },
-    { '_', 		"underscore", 	NoSymbol },
-    { '`', 		"grave", 		NoSymbol },
-    { '{', 		"braceleft", 	NoSymbol },
-    { '|', 		"bar", 			NoSymbol },
-    { '}', 		"braceright", 	NoSymbol },
-    { '~', 		"asciitilde", 	NoSymbol },
-};
 
 
 void InitLiteralKeysyms(void)
 {
-	size_t idx;
-	for (idx = 0; idx < NumberOf(LiteralKeysyms); ++idx)
-		if (LiteralKeysyms[idx].sym == NoSymbol)
-			LiteralKeysyms[idx].sym = XStringToKeysym(LiteralKeysyms[idx].keystr);
-
 	atGlobals.lshiftCode = XKeysymToKeycode(XOpenDisplay(NULL), XK_Shift_L);
-}
-
-KeySym GetLiteralKeysym(char* keystring)
-{
-	size_t idx;
-	for (idx = 0; idx < NumberOf(LiteralKeysyms); ++idx)
-		if (keystring[0] ==  LiteralKeysyms[idx].ch )
-			return LiteralKeysyms[idx].sym;
-
-	return NoSymbol;
 }
 
 void XTest_SendEvent(XKeyEvent *event)
@@ -294,6 +229,46 @@ int CalcModifiersForKeysym(KeyCode code, KeySym sym, Display* disp)
   return 0;
 }
 
+KeySym wchar2keysym(wchar_t wc)
+{
+  if (wc < 0x100) {
+    if (wc >= 0x20)
+      return wc;
+    switch(wc) {
+      case L'\t': return XK_Tab;
+      case L'\r': return XK_Return;
+      case L'\n': return XK_Linefeed;
+      case '\010': return XK_BackSpace;
+      case '\177': return XK_Delete;
+      case '\033': return XK_Escape;
+      default:
+        return NoSymbol;
+    }
+  }
+  if (wc > 0x10ffff || (wc > 0x7e && wc < 0xa0))
+    return NoSymbol;
+  return wc | 0x01000000;
+}
+
+//converts a  single wchar_t to a byte string [i.e. char*]
+class wchar2bytes
+{
+private:
+  //MB_CUR_MAX is a function call, not a constant
+  char* bytes;
+public:
+  wchar2bytes(wchar_t wc):  bytes(new char[MB_CUR_MAX*2 + sizeof(wchar_t)*2 + 2 + 1]) {
+    mbstate_t ps = {0};
+    size_t n;
+    if ((n = wcrtomb(bytes, wc, &ps)) == size_t(-1))
+      snprintf(bytes, NumberOf(bytes), "U+%04X", int(wc));
+    else
+      bytes[n] = 0;
+  }
+  ~wchar2bytes() { delete [] bytes; }
+  const char* str() const {return bytes;}
+};
+
 /*
  * DoSendString - actually sends a string to the X Window having input focus
  *
@@ -327,28 +302,11 @@ void DoSendString(const StringX& str, pws_os::AutotypeMethod method, unsigned de
     //as a workaround for some issues with IE 
     if (*srcIter == _T('\v'))
       continue;
-    
-    //This array holds the multibyte representation of the current (wide) char, plus NULL
-    char keystring[MB_LEN_MAX + 1] = {0};
-
-    mbstate_t state = mbstate_t();//using init throw constructor because of missing initializer warning
-
-    size_t ret = wcrtomb(keystring, *srcIter, &state);
-    if (ret == static_cast<size_t>(-1)) {
-      snprintf(atGlobals.errorString, NumberOf(atGlobals.errorString),
-              "char at index(%u), value(%d) couldn't be converted to keycode. %s\n",
-                  static_cast<unsigned int>(std::distance(str.begin(), srcIter)), static_cast<int>(*srcIter), strerror(errno));
-      atGlobals.error_detected = True;
-      return;
-    }
-
-    ASSERT(ret < (NumberOf(keystring)-1));
 
     //Try a regular conversion first
-    KeySym sym = XStringToKeysym(keystring);
+    KeySym sym = wchar2keysym(*srcIter);
 
-    //Failing which, use our hard-coded special names for certain keys
-    if (NoSymbol != sym || (sym = GetLiteralKeysym(keystring)) != NoSymbol) {
+    if (NoSymbol != sym) {
       KeyPressInfo keypress = {0, 0};
       if ((keypress.code = XKeysymToKeycode(event.display, sym)) != 0) {
         //non-zero return value implies sym -> code was successful
@@ -358,15 +316,15 @@ void DoSendString(const StringX& str, pws_os::AutotypeMethod method, unsigned de
       else {
         const char* symStr = XKeysymToString(sym);
         snprintf(atGlobals.errorString, NumberOf(atGlobals.errorString),
-              "Could not get keycode for key char(%s) - sym(%d) - str(%s). Aborting autotype\n",
-                          keystring, static_cast<int>(sym), symStr ? symStr : "NULL");
+              "Could not get keycode for key char(%s) - sym(%#X) - str(%s). Aborting autotype",
+                          wchar2bytes(*srcIter).str(), static_cast<int>(sym), symStr ? symStr : "NULL");
         atGlobals.error_detected = True;
         return;
       }
     }
     else {
       snprintf(atGlobals.errorString, NumberOf(atGlobals.errorString),
-              "Cannot convert '%s' to keysym. Aborting autotype\n", keystring);
+              "Cannot convert '%s' [U+%04X] to keysym. Aborting autotype", wchar2bytes(*srcIter).str(), int(*srcIter));
       atGlobals.error_detected = True;
       return;
     }
