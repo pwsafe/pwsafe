@@ -12,8 +12,10 @@
  * Calls X library functions defined in Xt and Xtst
  *
  * +. Initialize all the params of XKeyEvent
- * +  More escape sequences from http://msdn.microsoft.com/en-us/library/h21280bw%28VS.80%29.aspx
- * +  XGetErrorText and sprintf overflow
+ * +  XOpenDisplay calls don't have matching XCloseDisplay
+ * +  __STD_ISO_10646__ check
+ * +  Must have UNICODE to keysym map for legacy keysyms
+ * +  Remap an unused keycode to a keysym of XKeysymToKeycode fails
  */
 
 #include <stdio.h>
@@ -35,6 +37,7 @@
 #include "../sleep.h"
 #include "../../core/PwsPlatform.h" // for NumberOf()
 #include "../../core/StringX.h"
+#include "./unicode2keysym.h"
 
 namespace { // anonymous namespace for hiding
   //           local variables and functions
@@ -247,6 +250,10 @@ KeySym wchar2keysym(wchar_t wc)
   }
   if (wc > 0x10ffff || (wc > 0x7e && wc < 0xa0))
     return NoSymbol;
+  KeySym sym = unicode2keysym(wc);
+  if (sym != NoSymbol)
+    return sym;
+  //For everything else, there's Mastercard :)
   return wc | 0x01000000;
 }
 
@@ -316,7 +323,7 @@ void DoSendString(const StringX& str, pws_os::AutotypeMethod method, unsigned de
       else {
         const char* symStr = XKeysymToString(sym);
         snprintf(atGlobals.errorString, NumberOf(atGlobals.errorString),
-              "Could not get keycode for key char(%s) - sym(%#X) - str(%s). Aborting autotype",
+              "Could not get keycode for key char(%s) - sym(%#X) - str(%s). Aborting autotype.\n\nIf \'xmodmap -pk\' does not list this KeySym, you probably need to install an appropriate keyboard layout.",
                           wchar2bytes(*srcIter).str(), static_cast<int>(sym), symStr ? symStr : "NULL");
         atGlobals.error_detected = True;
         return;
