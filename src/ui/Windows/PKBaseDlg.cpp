@@ -156,5 +156,7 @@ void CPKBaseDlg::yubiRequestHMACSha1()
   m_yubi_status.SetWindowText(_T(""));
   m_yubi_timeout.ShowWindow(SW_SHOW);
   m_yubi_timeout.SetPos(15);
-  m_yubi.RequestHMACSha1(m_passkey);
+  if (!m_yubi.RequestHMACSha1(m_passkey)) {
+    TRACE(_T("yubi.RequestHMACSha1 failed"));
+  }
 }

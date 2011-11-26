@@ -66,42 +66,37 @@ bool Yubi::isInserted() const
 bool Yubi::RequestHMACSha1(const CSecString &value)
 {
   ASSERT(m_obj != NULL);
-  bool setBufOK = true;
-  try {
-    _variant_t va;
-    int len = value.GetLength()*sizeof(TCHAR);
-    va.parray = SafeArrayCreateVectorEx(VT_UI1, 0, len, 0);
-    BYTE HUGEP *pb;
-
-    SafeArrayAccessData(va.parray, (void HUGEP **) &pb);
+  CString errmess;
+  _variant_t va;
+  int len = value.GetLength()*sizeof(TCHAR);
+  va.parray = SafeArrayCreateVectorEx(VT_UI1, 0, len, 0);
+  if (va.parray == NULL) {
+    errmess = L"SafeArrayCreateVectorEx failed";
+    goto err;
+  }
+  BYTE HUGEP *pb;
+  HRESULT hr;
+  hr = SafeArrayAccessData(va.parray, (void HUGEP **) &pb);
+  if (hr != S_OK) {
+    errmess =  L"SafeArrayAccessData failed";
+    goto err;
+  }
+  if (len > 0)
     memcpy(pb, LPCWSTR(value), len);
-    SafeArrayUnaccessData(va.parray);
-    va.vt = VT_ARRAY | VT_UI1;
+  hr = SafeArrayUnaccessData(va.parray);
+  if (hr != S_OK) {
+    errmess = L"SafeArrayUnaccessData failed";
+    goto err;
+  }
+  va.vt = VT_ARRAY | VT_UI1;
 
-    m_obj->dataBuffer = va;
-  }
-#ifdef DEBUG
-  catch (_com_error e) {
-    setBufOK = false;
-    AfxMessageBox(e.ErrorMessage());
-  }
-
-  catch (...) {
-    setBufOK = false;
-    AfxMessageBox(_T("Other error"));
-  }
-#else
-  catch (...) {
-    setBufOK = false;
-  }
-#endif
+  m_obj->dataBuffer = va;
   // 1 - for second yubikey configuration
-  if (setBufOK) {
-    ycRETCODE rc = m_obj->GethmacSha1(1, ycCALL_ASYNC);
-    return (rc == ycRETCODE_OK);
-  } else {
-    return false;
-  }
+  ycRETCODE rc = m_obj->GethmacSha1(1, ycCALL_ASYNC);
+  return (rc == ycRETCODE_OK);
+ err:
+  AfxMessageBox(errmess);
+  return false;
 }
 
 void Yubi::RetrieveHMACSha1(CSecString &value)
