@@ -63,7 +63,6 @@ protected:
 	void yubiInserted(void);
 	void yubiRemoved(void);
   DECLARE_MESSAGE_MAP()
-	DECLARE_DISPATCH_MAP()
 
 private:
   CSecEditExtn *m_pctlNewPasskey;

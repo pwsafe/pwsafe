@@ -125,6 +125,7 @@ void CPasskeyEntry::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CPasskeyEntry, CPKBaseDlg)
   //{{AFX_MSG_MAP(CPasskeyEntry)
   ON_WM_DESTROY()
+  ON_WM_TIMER()
   ON_BN_CLICKED(ID_HELP, OnHelp)
   ON_BN_CLICKED(IDC_CREATE_DB, OnCreateDb)
   ON_BN_CLICKED(IDC_EXIT, OnExit)
@@ -140,16 +141,6 @@ BEGIN_MESSAGE_MAP(CPasskeyEntry, CPKBaseDlg)
 #endif
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
-
-BEGIN_DISPATCH_MAP(CPasskeyEntry, CPKBaseDlg)
-	//{{AFX_DISPATCH_MAP(CPasskeyEntry)
-		// NOTE - the ClassWizard will add and remove mapping macros here.
-	//}}AFX_DISPATCH_MAP
-	DISP_FUNCTION_ID(CPasskeyEntry, "deviceInserted", 1, yubiInserted, VT_EMPTY, VTS_NONE)
-	DISP_FUNCTION_ID(CPasskeyEntry, "deviceRemoved", 2, yubiRemoved, VT_EMPTY, VTS_NONE)
-	DISP_FUNCTION_ID(CPasskeyEntry, "operationCompleted", 3, yubiCompleted, VT_EMPTY, VTS_I2)
-  DISP_FUNCTION_ID(CPasskeyEntry, "userWait", 4, yubiWait, VT_EMPTY, VTS_I2)
-END_DISPATCH_MAP()
 
 static CString NarrowPathText(const CString &text)
 {

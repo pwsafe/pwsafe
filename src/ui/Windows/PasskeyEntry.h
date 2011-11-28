@@ -100,7 +100,6 @@ protected:
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
-	DECLARE_DISPATCH_MAP()
 private:
   DboxMain *m_pDbx;
 

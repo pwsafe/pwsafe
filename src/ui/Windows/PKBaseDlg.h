@@ -15,7 +15,7 @@
 
 #include "PWDialog.h"
 #include "ControlExtns.h"
-#include "Yubi.h"
+#include "yubi/yklib.h"
 
 class CPKBaseDlg : public CPWDialog {
  public:
@@ -33,14 +33,14 @@ class CPKBaseDlg : public CPWDialog {
   virtual void ProcessPhrase() {}; // Check the passphrase, call OnOK, OnCancel or just return
   virtual void DoDataExchange(CDataExchange* pDX);
   afx_msg void OnDestroy();
+  afx_msg void OnTimer(UINT_PTR nIDEvent);
   // Yubico-related:
-  bool IsYubiEnabled() const {return m_yubi.isEnabled();}
-  bool IsYubiInserted() const {return m_yubi.isInserted();}
+  bool IsYubiEnabled() const;
+  bool IsYubiInserted() const;
   // Callbacks:
 	virtual void yubiInserted(void); // called when Yubikey's inserted
 	virtual void yubiRemoved(void);  // called when Yubikey's removed
-  void yubiCompleted(ycRETCODE rc); // called when done with request
-  void yubiWait(WORD seconds); // called when waiting for user activation
+  void yubiCheckCompleted(); // called when request pending and timer fired
 
   void yubiRequestHMACSha1(); // request HMAC of m_passkey
   // Indicate that we're waiting for user to activate YubiKey:
@@ -48,8 +48,9 @@ class CPKBaseDlg : public CPWDialog {
   // Show user what's going on / what we're waiting for:
   CEdit m_yubi_status;
   CBitmap m_yubiLogo;
-	DECLARE_INTERFACE_MAP()
  private:
-  Yubi m_yubi; // Interface to Yubikey API  
-  bool m_waited; // needed to discern between timeout and unconfigured yubikey
+  mutable CYkLib m_yk;
+  bool m_pending; // request pending?
+  bool m_present; // key present?
+  mutable CMutex m_mutex; // protect against race conditions when calling Yubi API
 };

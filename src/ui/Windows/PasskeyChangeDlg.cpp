@@ -99,17 +99,8 @@ BEGIN_MESSAGE_MAP(CPasskeyChangeDlg, CPKBaseDlg)
   ON_MESSAGE(PWS_MSG_INSERTBUFFER, OnInsertBuffer)
   ON_BN_CLICKED(IDC_YUBIKEY2_BTN, &CPasskeyChangeDlg::OnYubikey2Btn)
   ON_BN_CLICKED(IDC_YUBIKEY_BTN, &CPasskeyChangeDlg::OnYubikeyBtn)
+  ON_WM_TIMER()
 END_MESSAGE_MAP()
-
-BEGIN_DISPATCH_MAP(CPasskeyChangeDlg, CPKBaseDlg)
-	//{{AFX_DISPATCH_MAP(CPasskeyChangeDlg)
-		// NOTE - the ClassWizard will add and remove mapping macros here.
-	//}}AFX_DISPATCH_MAP
-	DISP_FUNCTION_ID(CPasskeyChangeDlg, "deviceInserted", 1, yubiInserted, VT_EMPTY, VTS_NONE)
-	DISP_FUNCTION_ID(CPasskeyChangeDlg, "deviceRemoved", 2, yubiRemoved, VT_EMPTY, VTS_NONE)
-	DISP_FUNCTION_ID(CPasskeyChangeDlg, "operationCompleted", 3, yubiCompleted, VT_EMPTY, VTS_I2)
-  DISP_FUNCTION_ID(CPasskeyChangeDlg, "userWait", 4, yubiWait, VT_EMPTY, VTS_I2)
-END_DISPATCH_MAP()
 
 BOOL CPasskeyChangeDlg::OnInitDialog()
 {

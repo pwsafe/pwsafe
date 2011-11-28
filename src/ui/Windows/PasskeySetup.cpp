@@ -94,17 +94,8 @@ BEGIN_MESSAGE_MAP(CPasskeySetup, CPKBaseDlg)
   ON_EN_KILLFOCUS(IDC_PASSKEY, OnPasskeyKillfocus)
   ON_EN_KILLFOCUS(IDC_VERIFY, OnPasskeyKillfocus)
 #endif
+  ON_WM_TIMER()
 END_MESSAGE_MAP()
-
-BEGIN_DISPATCH_MAP(CPasskeySetup, CPKBaseDlg)
-	//{{AFX_DISPATCH_MAP(CPasskeySetup)
-		// NOTE - the ClassWizard will add and remove mapping macros here.
-	//}}AFX_DISPATCH_MAP
-	DISP_FUNCTION_ID(CPasskeySetup, "deviceInserted", 1, yubiInserted, VT_EMPTY, VTS_NONE)
-	DISP_FUNCTION_ID(CPasskeySetup, "deviceRemoved", 2, yubiRemoved, VT_EMPTY, VTS_NONE)
-	DISP_FUNCTION_ID(CPasskeySetup, "operationCompleted", 3, yubiCompleted, VT_EMPTY, VTS_I2)
-  DISP_FUNCTION_ID(CPasskeySetup, "userWait", 4, yubiWait, VT_EMPTY, VTS_I2)
-END_DISPATCH_MAP()
 
 BOOL CPasskeySetup::OnInitDialog() 
 {
