@@ -10,7 +10,6 @@
 
 #include "WZPropertyPage.h"
 #include "ControlExtns.h"
-#include "Yubi.h"
 
 #include "resource.h"
 
@@ -57,7 +56,6 @@ protected:
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
-	DECLARE_DISPATCH_MAP()
 
 private:
   void AFXAPI DDV_CheckExpDelimiter(CDataExchange* pDX,
@@ -76,15 +74,13 @@ private:
   // but MFC doesn't allow us to do this. So much for OOD.
   static const wchar_t PSSWDCHAR;
 
-  afx_msg void OnDestroy();
+  afx_msg void OnTimer(UINT_PTR nIDEvent);
   // Yubico-related:
-  bool IsYubiEnabled() const {return m_yubi->isEnabled();}
-  bool IsYubiInserted() const {return m_yubi->isInserted();}
+  bool IsYubiInserted() const;
   // Callbacks:
   void yubiInserted(void); // called when Yubikey's inserted
   void yubiRemoved(void);  // called when Yubikey's removed
-  void yubiCompleted(ycRETCODE rc); // called when done with request
-  void yubiWait(WORD seconds); // called when waiting for user activation
+  void yubiCheckCompleted(); // called when request pending and timer fired
 
   void yubiRequestHMACSha1(); // request HMAC of m_passkey
   // Indicate that we're waiting for user to activate YubiKey:
@@ -92,9 +88,9 @@ private:
   // Show user what's going on / what we're waiting for:
   CEdit m_yubi_status;
   CBitmap m_yubiLogo;
-	DECLARE_INTERFACE_MAP()
-  Yubi *m_yubi; // Interface to Yubikey API  
-  bool m_waited; // needed to discern between timeout and unconfigured yubikey
+  bool m_pending; // request pending?
+  bool m_present; // key present?
+  mutable CMutex m_mutex; // protect against race conditions when calling Yubi API
 };
 //-----------------------------------------------------------------------------
 // Local variables:
