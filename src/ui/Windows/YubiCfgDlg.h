@@ -11,7 +11,6 @@
 // \file YubiCfgDlg.h
 
 #include "PWDialog.h"
-#import <YubiClientAPI.dll> no_namespace, named_guids
 
 class PWScore;
 
@@ -27,34 +26,24 @@ public:
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
   virtual BOOL OnInitDialog();
-  afx_msg void OnDestroy();
   
 	DECLARE_MESSAGE_MAP()
-	DECLARE_DISPATCH_MAP()
-	DECLARE_INTERFACE_MAP()
-  CString m_YubiSN;
+	CString m_YubiSN;
   CString m_YubiSK;
 public:
   afx_msg void OnYubiGenBn();
   afx_msg void OnBnClickedOk();
+  afx_msg void OnTimer(UINT_PTR nIDEvent);
  private:
   enum {YUBI_SK_LEN = 20};
-  void Init();
-  void Destroy();
   void ReadYubiSN();
   int WriteYubiSK();
-  // Callbacks:
+  bool IsYubiInserted() const;
 	void yubiInserted(void); // called when Yubikey's inserted
 	void yubiRemoved(void);  // called when Yubikey's removed
-  void yubiCompleted(ycRETCODE rc); // called when done with request
-  void yubiWait(WORD seconds); // called when waiting for user activation
-
-  IYubiClient *m_obj;
-  DWORD m_eventCookie;
-  ycENCODING m_encoding;
-  bool m_isInit;
 
   unsigned char m_yubi_sk_bin[YUBI_SK_LEN];
-  bool m_generated; // Set iff Generate key pressed
+  bool m_present; // key present?
+  mutable CMutex m_mutex; // protect against race conditions when calling Yubi API
   PWScore &m_core;
 };
