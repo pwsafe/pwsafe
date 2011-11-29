@@ -158,7 +158,6 @@ void CPKBaseDlg::yubiCheckCompleted()
     m_yubi_timeout.ShowWindow(SW_HIDE);
     m_yubi_status.ShowWindow(SW_SHOW);
     m_yk.closeKey();
-    break;
     // Generic error message
     TRACE(_T("yubiCompleted(%d)\n"), rc);
     m_yubi_status.SetWindowText(_T("Internal error: Unknown return code"));
