@@ -152,9 +152,8 @@ BOOL CAddEdit_Additional::OnInitDialog()
       m_pToolTipCtrl->SetMaxTipWidth(300);
 
       CString cs_ToolTip;
-      cs_ToolTip.LoadString(IDS_CLICKTOCOPY);
-      m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_AUTO), cs_ToolTip);
       cs_ToolTip.LoadString(IDS_CLICKTOCOPYEXPAND);
+      m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_AUTO), cs_ToolTip);
       m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_RUNCMD), cs_ToolTip);
 
       m_pToolTipCtrl->Activate(TRUE);
@@ -607,7 +606,7 @@ void CAddEdit_Additional::OnShiftDCAComboChanged()
 void CAddEdit_Additional::OnSTCExClicked(UINT nID)
 {
   UpdateData(TRUE);
-  StringX cs_data;
+  StringX sxData;
   int iaction(0);
   std::vector<size_t> vactionverboffsets;
 
@@ -615,26 +614,36 @@ void CAddEdit_Additional::OnSTCExClicked(UINT nID)
   switch (nID) {
     case IDC_STATIC_AUTO:
       m_stc_autotype.FlashBkgnd(CAddEdit_PropertyPage::crefGreen);
-      cs_data = PWSAuxParse::GetAutoTypeString(StringX(M_autotype()),
-                                               StringX(M_group()),
-                                               StringX(M_title()),
-                                               StringX(M_username()),
-                                               StringX(M_realpassword()),
-                                               StringX(M_realnotes()),
-                                               vactionverboffsets);
+      // If Ctrl pressed - just copy un-substituted Autotype string
+      // else substitute
+      if ((GetKeyState(VK_CONTROL) & 0x8000) != 0) {
+        if (M_autotype().IsEmpty())
+          sxData = PWSprefs::GetInstance()->
+                        GetPref(PWSprefs::DefaultAutotypeString);
+        else
+          sxData = StringX(M_autotype());
+      } else {
+        sxData = PWSAuxParse::GetAutoTypeString(StringX(M_autotype()),
+                                                StringX(M_group()),
+                                                StringX(M_title()),
+                                                StringX(M_username()),
+                                                StringX(M_realpassword()),
+                                                StringX(M_realnotes()),
+                                                vactionverboffsets);
+      }
       iaction = CItemData::AUTOTYPE;
       break;
     case IDC_STATIC_RUNCMD:
       m_stc_runcommand.FlashBkgnd(CAddEdit_PropertyPage::crefGreen);
       // If Ctrl pressed - just copy un-substituted Run Command
       // else substitute
-      if (GetKeyState(VK_CONTROL) != 0 || M_runcommand().IsEmpty()) {
-        cs_data = StringX(M_runcommand());
+      if ((GetKeyState(VK_CONTROL) & 0x8000) != 0 || M_runcommand().IsEmpty()) {
+        sxData = StringX(M_runcommand());
       } else {
         std::wstring errmsg;
         size_t st_column;
         bool bURLSpecial;
-        cs_data = PWSAuxParse::GetExpandedString(M_runcommand(),
+        sxData = PWSAuxParse::GetExpandedString(M_runcommand(),
                                                  M_currentDB(),
                                                  M_pci(),
                                                  M_pDbx()->m_bDoAutoType,
@@ -653,7 +662,7 @@ void CAddEdit_Additional::OnSTCExClicked(UINT nID)
     default:
       ASSERT(0);
   }
-  M_pDbx()->SetClipboardData(cs_data);
+  M_pDbx()->SetClipboardData(sxData);
   M_pDbx()->UpdateLastClipboardAction(iaction);
 }
 
