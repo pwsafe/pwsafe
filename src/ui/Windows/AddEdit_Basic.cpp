@@ -898,7 +898,7 @@ void CAddEdit_Basic::OnSTCExClicked(UINT nID)
     case IDC_STATIC_EMAIL:
       cs_data = StringX(M_email());
       // If Ctrl pressed - also copy to URL field with the 'mailto:' prefix
-      if (GetKeyState(VK_CONTROL) != 0 && !M_email().IsEmpty()) {
+      if ((GetKeyState(VK_CONTROL) & 0x8000) != 0 && !M_email().IsEmpty()) {
         M_URL() = L"mailto:" + cs_data;
         UpdateData(FALSE);
       }

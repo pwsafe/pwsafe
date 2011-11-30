@@ -14,6 +14,11 @@ None
 
 Changes to Existing Features in 3.27.1
 ======================================
+[3445820] The Edit menu item and entry right-click context menu item "Copy Run Command to
+Clipboard" will, by default, substitute any variables within the command. To disable this,
+hold down the Ctrl key when selecting these menu items.  The standard menu shortcut cannot
+be used to disable the substitution as the Ctrl key may be used to select a different
+menu item/command.
 [] As indicated with the V3.26 release, date time fields, when exported to XML,
 now are in the W3C dateTime standard format instead of PasswordSafe's.  This release
 can nolonger import XML files with date time fields in the old PasswordSafe's forms.

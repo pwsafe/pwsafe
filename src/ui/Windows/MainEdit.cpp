@@ -1324,14 +1324,21 @@ void DboxMain::OnCopyEmail()
 
 void DboxMain::OnCopyRunCommand()
 {
-  CopyDataToClipBoard(CItemData::RUNCMD);
+  const MSG *pMSG = GetCurrentMessage();
+  // Expand Run Command by default
+  // Disable expansion if via a menu item (not accelerator) and Ctrl key down
+  bool bDoNotExpand = (HIWORD(pMSG->wParam) == 0 && pMSG->lParam == 0) &&
+                      (GetKeyState(VK_CONTROL) & 0x8000) != 0;
+
+  CopyDataToClipBoard(CItemData::RUNCMD, bDoNotExpand);
 }
 
-void DboxMain::CopyDataToClipBoard(const CItemData::FieldType ft, const bool special)
+void DboxMain::CopyDataToClipBoard(const CItemData::FieldType ft, const bool bSpecial)
 {
-  // Boolean 'special' flag is CItemData::FieldType 'ft' dependent
+  // Boolean 'bSpecial' flag is CItemData::FieldType 'ft' dependent
   // For example:
-  //   For "CItemData::PASSWORD", "special" == true means "minimize after copy"
+  //   For "CItemData::PASSWORD": "bSpecial" == true means "Minimize after copy"
+  //   For "CItemData::RUNCMD":   "bSpecial" == true means "Do NOT expand the Run command"
   if (SelItemOk() != TRUE)
     return;
 
@@ -1347,7 +1354,7 @@ void DboxMain::CopyDataToClipBoard(const CItemData::FieldType ft, const bool spe
     pci = pbci;
   }
 
-  StringX cs_data;
+  StringX sxData;
 
   switch (ft) {
     case CItemData::PASSWORD:
@@ -1357,50 +1364,69 @@ void DboxMain::CopyDataToClipBoard(const CItemData::FieldType ft, const bool spe
       if (clearDlg.m_dontaskquestion == FALSE &&
           clearDlg.DoModal() == IDCANCEL)
         return;
-      cs_data = pci->GetPassword();
-      if (special) {
+      sxData = pci->GetPassword();
+      if (bSpecial) {
         ShowWindow(SW_MINIMIZE);
       }
       break;
     }
     case CItemData::USER:
-      cs_data = pci->GetUser();
+      sxData = pci->GetUser();
       break;
     case CItemData::NOTES:
-      cs_data = pci->GetNotes();
+      sxData = pci->GetNotes();
       break;
     case CItemData::URL:
     {
       StringX::size_type ipos;
-      cs_data = pci->GetURL();
-      ipos = cs_data.find(L"[alt]");
+      sxData = pci->GetURL();
+      ipos = sxData.find(L"[alt]");
       if (ipos != StringX::npos)
-        cs_data.replace(ipos, 5, L"");
-      ipos = cs_data.find(L"[ssh]");
+        sxData.replace(ipos, 5, L"");
+      ipos = sxData.find(L"[ssh]");
       if (ipos != StringX::npos)
-        cs_data.replace(ipos, 5, L"");
-      ipos = cs_data.find(L"{alt}");
+        sxData.replace(ipos, 5, L"");
+      ipos = sxData.find(L"{alt}");
       if (ipos != StringX::npos)
-        cs_data.replace(ipos, 5, L"");
-      ipos = cs_data.find(L"[autotype]");
+        sxData.replace(ipos, 5, L"");
+      ipos = sxData.find(L"[autotype]");
       if (ipos != StringX::npos)
-        cs_data.replace(ipos, 10, L"");
-      ipos = cs_data.find(L"[xa]");
+        sxData.replace(ipos, 10, L"");
+      ipos = sxData.find(L"[xa]");
       if (ipos != StringX::npos)
-        cs_data.replace(ipos, 4, L"");
+        sxData.replace(ipos, 4, L"");
       break;
     }
     case CItemData::RUNCMD:
-      cs_data = pci->GetRunCommand();
+      sxData = pci->GetRunCommand();
+      if (!bSpecial) {
+        // Expand Run Command
+        std::wstring errmsg;
+        size_t st_column;
+        bool bURLSpecial;
+        sxData = PWSAuxParse::GetExpandedString(sxData,
+                                                 m_core.GetCurFile(),
+                                                 pci,
+                                                 m_bDoAutoType,
+                                                 m_AutoType,
+                                                 errmsg, st_column, bURLSpecial);
+        if (errmsg.length() > 0) {
+          CGeneralMsgBox gmb;
+          CString cs_title(MAKEINTRESOURCE(IDS_RUNCOMMAND_ERROR));
+          CString cs_errmsg;
+          cs_errmsg.Format(IDS_RUN_ERRORMSG, (int)st_column, errmsg.c_str());
+          gmb.MessageBox(cs_errmsg, cs_title, MB_ICONERROR);
+        }
+      }
       break;
     case CItemData::EMAIL:
-      cs_data = pci->GetEmail();
+      sxData = pci->GetEmail();
       break;
     default:
       ASSERT(0);
   }
 
-  SetClipboardData(cs_data);
+  SetClipboardData(sxData);
   UpdateLastClipboardAction(ft);
   UpdateAccessTime(pci_original);
 }

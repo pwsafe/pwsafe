@@ -861,7 +861,7 @@ private:
   void DoBrowse(const bool bDoAutotype, const bool bSendEmail);
   bool GetSubtreeEntriesProtectedStatus(int &numProtected, int &numUnprotected);
   void ChangeSubtreeEntriesProtectStatus(const UINT nID);
-  void CopyDataToClipBoard(const CItemData::FieldType ft, const bool special = false);
+  void CopyDataToClipBoard(const CItemData::FieldType ft, const bool bSpecial = false);
   void UpdateSystemMenu();
   void RestoreWindows(); // extended ShowWindow(SW_RESTORE), sort of
   void CancelPendingPasswordDialog();
