@@ -369,9 +369,6 @@
     <ClCompile Include="ExpPswdLC.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Yubi.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="PKBaseDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

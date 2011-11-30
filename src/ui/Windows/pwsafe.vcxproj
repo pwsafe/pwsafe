@@ -1194,7 +1194,6 @@
     <ClCompile Include="WZPropertyPage.cpp" />
     <ClCompile Include="WZPropertySheet.cpp" />
     <ClCompile Include="WZSelectDB.cpp" />
-    <ClCompile Include="Yubi.cpp" />
     <ClCompile Include="YubiCfgDlg.cpp" />
   </ItemGroup>
   <ItemGroup>

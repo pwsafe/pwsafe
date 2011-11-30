@@ -78,6 +78,44 @@ currently opened.</small></p>
 clipboard, by pushing <i>Generate</i>. The password in the clipboard can then be used by some
 other application.</p>
 
+<h3>Yubikey</h3>
+<p>This allows you to customize your YubiKey so that you can use it to
+  access your <b>Password Safe</b> database, as well as creating a
+  backup YubiKey in case the original get lost or damaged.</p>
+<h4>To customize your YubiKey</h4>
+<ol>
+  <li>Insert your YubiKey into your PC's USB slot
+  <li>Select the Manage->Yubikey... menu item. The YubiKey
+  Configuration dialog box will appear.
+  <li>Your YubiKey's Serial Number should be displayed. If this field
+  is blank, make sure your YubiKey is plugged in correctly.
+  <li>Click on the Generate button. This will create a 20 byte random
+  secret key that will be written to your YubiKey, and used to access
+  your database.
+  <li>Click OK. This will write the generated key to your YubiKey, and
+  save the data in encrypted form in your <b>Password Safe</b>
+  database, so that you can use it to configure a backup key.
+  <li> If the configuration is successful, then the dialog box will
+  close. If not, then an error message will appear describing the problem.
+</ol>
+<b>Note:</b> After configuring your YubiKey, you must change the
+database's password to use the YubiKey for authentication as described
+in <a href="change_combo.html">Changing Master Passwords</a>
+<h4>To create a backup YubiKey</h4>
+<ol>
+  <li>Insert your backup YubiKey into your PC's USB slot
+  <li>Select the Manage->Yubikey... menu item. The YubiKey
+  Configuration dialog box will appear.
+  <li>Your backup YubiKey's Serial Number should be displayed. If this field
+  is blank, make sure your YubiKey is plugged in correctly.
+  <li><b>Do not</b> click on the Generate button. The data displayed
+  in the "YubiKey Secret Key" field is the key associated with this
+  database. This is the key that will be written to your backup YubiKey.
+  <li>Click OK. This will write the generated key to your backup YubiKey.
+  <li> If the configuration is successful, then the dialog box will
+  close. If not, then an error message will appear describing the problem.
+</ol>
+
 <h3>Change Language</h3>
 
 <img alt="Change Language" src="images/change_language.jpg">
