@@ -670,6 +670,10 @@ void CWZSelectDB::yubiCheckCompleted()
   CSingleLock singeLock(&m_mutex);
   CYkLib yk;
   singeLock.Lock();
+  if (yk.openKey() != YKLIB_OK) {
+    m_yubi_status.SetWindowText(_T("Failed to access YubiKey"));
+      return;
+  }
   YKLIB_RC rc = yk.waitForCompletion(YKLIB_NO_WAIT,
                                      respBuf, sizeof(respBuf), &timer);
   switch (rc) {
@@ -680,7 +684,6 @@ void CWZSelectDB::yubiCheckCompleted()
     m_yubi_status.SetWindowText(_T(""));
     TRACE(_T("yubiCheckCompleted: YKLIB_OK"));
     m_pending = false;
-    yk.closeKey();
     m_passkey = Bin2Hex(respBuf, SHA1_DIGEST_SIZE);
     // The returned hash is the passkey
     m_pWZPSH->SetWizardButtons(PSWIZB_NEXT); // enable 
@@ -700,7 +703,6 @@ void CWZSelectDB::yubiCheckCompleted()
     m_yubi_timeout.ShowWindow(SW_HIDE);
     m_yubi_status.SetWindowText(_T("YubiKey timed out"));
     m_yubi_status.ShowWindow(SW_SHOW);
-    yk.closeKey();
     break;
 
   default:                // A non-recoverable error has occured
