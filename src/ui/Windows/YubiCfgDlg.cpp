@@ -34,12 +34,11 @@ CYubiCfgDlg::CYubiCfgDlg(CWnd* pParent, PWScore &core)
 	: CPWDialog(CYubiCfgDlg::IDD, pParent), m_core(core),
     m_YubiSN(_T("")), m_YubiSK(_T(""))
 {
-  m_present = !IsYubiInserted(); // lie to trigger correct actions in timer even  memset(m_yubi_sk_bin, 0, YUBI_SK_LEN);
+  m_present = !IsYubiInserted(); // lie to trigger correct actions in timer event
 }
 
 CYubiCfgDlg::~CYubiCfgDlg()
 {
-  trashMemory(m_yubi_sk_bin, YUBI_SK_LEN);
 }
 
 void CYubiCfgDlg::DoDataExchange(CDataExchange* pDX)
@@ -104,7 +103,7 @@ void CYubiCfgDlg::ReadYubiSN()
   m_YubiSN = L"Error reading YubiKey";
 }
 
-int CYubiCfgDlg::WriteYubiSK()
+int CYubiCfgDlg::WriteYubiSK(const unsigned char *yubi_sk_bin)
 {
   CYkLib yk;
   YKLIB_RC rc;
@@ -117,7 +116,7 @@ int CYubiCfgDlg::WriteYubiSK()
   config.tktFlags = TKTFLAG_CHAL_RESP;
   config.cfgFlags = CFGFLAG_CHAL_HMAC | CFGFLAG_HMAC_LT64 | CFGFLAG_CHAL_BTN_TRIG;
   config.extFlags = EXTFLAG_SERIAL_API_VISIBLE;
-  yk.setKey160(&config, m_yubi_sk_bin);
+  yk.setKey160(&config, yubi_sk_bin);
   singeLock.Lock();
   rc = yk.openKey();
   if (rc != YKLIB_OK) goto fail;
@@ -126,7 +125,6 @@ int CYubiCfgDlg::WriteYubiSK()
   // Wait for response completion
   rc = yk.waitForCompletion(YKLIB_MAX_WRITE_WAIT);
   if (rc != YKLIB_OK) goto fail;
-  rc = yk.closeKey();
  fail:
   return rc;
 }
@@ -170,9 +168,10 @@ void CYubiCfgDlg::yubiRemoved(void)
 
 void CYubiCfgDlg::OnYubiGenBn()
 {
-  pws_os::GetRandomData(m_yubi_sk_bin, YUBI_SK_LEN);
-  StringX str = BinSK2HexStr(m_yubi_sk_bin, YUBI_SK_LEN);
-  m_YubiSK = str.c_str();
+  unsigned char yubi_sk_bin[YUBI_SK_LEN];
+  pws_os::GetRandomData(yubi_sk_bin, YUBI_SK_LEN);
+  m_YubiSK = BinSK2HexStr(yubi_sk_bin, YUBI_SK_LEN).c_str();
+  trashMemory(yubi_sk_bin, YUBI_SK_LEN);
   UpdateData(FALSE);
 }
 
@@ -182,12 +181,15 @@ void CYubiCfgDlg::OnBnClickedOk()
   StringX skStr = m_YubiSK;
   
   if (!skStr.empty()) {
+    unsigned char yubi_sk_bin[YUBI_SK_LEN];
+    HexStr2BinSK(skStr, yubi_sk_bin, YUBI_SK_LEN);
     int rc;
-    if ((rc = WriteYubiSK()) == YKLIB_OK) { // 1. Update SK on Yubi.
+    if ((rc = WriteYubiSK(yubi_sk_bin)) == YKLIB_OK) { // 1. Update SK on Yubi.
       // 2. If YubiKey update succeeds, update in core.
-      m_core.SetYubiSK(m_yubi_sk_bin);
+      m_core.SetYubiSK(yubi_sk_bin);
       // 3. Write DB ASAP!
       m_core.WriteCurFile();
+      trashMemory(yubi_sk_bin, YUBI_SK_LEN);
     } else {
       const CString err = _T("Failed to update YubiKey");
       GetDlgItem(IDC_YUBI_API)->ShowWindow(SW_SHOW);
