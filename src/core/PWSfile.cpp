@@ -140,6 +140,9 @@ PWSfile::HeaderRecord &PWSfile::HeaderRecord::operator=(const PWSfile::HeaderRec
     m_dbdesc = h.m_dbdesc;
     m_RUEList = h.m_RUEList;
     if (h.m_yubi_sk != NULL) {
+      if (m_yubi_sk)
+        trashMemory(m_yubi_sk, YUBI_SK_LEN);
+      delete[] m_yubi_sk;
       m_yubi_sk = new unsigned char[YUBI_SK_LEN];
       memcpy(m_yubi_sk, h.m_yubi_sk, YUBI_SK_LEN);
     } else {

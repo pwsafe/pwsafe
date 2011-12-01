@@ -2544,6 +2544,8 @@ const unsigned char *PWScore::GetYubiSK() const
 
 void PWScore::SetYubiSK(const unsigned char *sk)
 {
+  if (m_hdr.m_yubi_sk)
+    trashMemory(m_hdr.m_yubi_sk, PWSfile::HeaderRecord::YUBI_SK_LEN);
   delete[] m_hdr.m_yubi_sk;
   m_hdr.m_yubi_sk = NULL;
   if (sk != NULL) {
