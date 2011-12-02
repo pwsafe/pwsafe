@@ -51,7 +51,6 @@ private:
 
   CSHCTHotKey *m_pHotKey;
   WCHAR *m_pwchTip;
-  char *m_pchTip;
   int m_item;
   UINT m_id;
   bool m_bHotKeyActive;

@@ -32,6 +32,7 @@ public:
          IDD_SHORT = IDD_ADDEDIT_PASSWORDPOLICY_SHORT };
 
   CSymbolEdit m_symbols;
+  CComboBox m_cbxPolicyNames;
 
   BOOL m_pwuselowercase;
   BOOL m_pwuseuppercase;
@@ -79,10 +80,12 @@ protected:
   afx_msg void OnEasyVision();
   afx_msg void OnMakePronounceable();
   afx_msg void OnSetDefaultPWPolicy();
+  afx_msg void OnSelectNamedPolicy();
   afx_msg void OnSetSpecificPWPolicy();
   afx_msg void OnResetPolicy();
   afx_msg void OnSymbols();
   afx_msg void OnOwnSymbolsChanged();
+  afx_msg void OnNamesComboChanged();
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()

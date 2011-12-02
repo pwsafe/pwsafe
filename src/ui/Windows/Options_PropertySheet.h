@@ -19,6 +19,8 @@
 #include "OptionsShortcuts.h"
 #include "OptionsSystem.h"
 
+#include "core/coredefs.h"
+
 class DboxMain;
 class PWScore;
 
@@ -60,6 +62,13 @@ public:
   const bool StartupShortcut() {return m_OPTMD.Startup == TRUE;}
   const bool StartupShortcutChanged() {return m_OPTMD.Startup !=
                                               m_bStartupShortcutExists;}
+  
+  // Only for Password Policy maintenance
+  void SetPolicyData(st_PSWDPolicy &st_pp, CString policyname,
+                     PSWDPolicyMap &MapPSWDPLC)
+  {m_pp_passwordpolicy->SetPolicyData(st_pp, policyname, MapPSWDPLC);}
+  void GetPolicyData( CString &cs_policyname, PSWDPolicyMap &MapPSWDPLC)
+  {m_pp_passwordpolicy->GetPolicyData(cs_policyname, MapPSWDPLC);}
 
 protected:
   st_Opt_master_data m_OPTMD;
@@ -67,7 +76,6 @@ protected:
 private:
   void SetupInitialValues();
   void UpdateCopyPreferences();
-  void UpdatePasswordPolicy();
 
   CString m_save_bSymbols;
   int m_save_iPreExpiryWarnDays, m_save_iUseOwnSymbols;

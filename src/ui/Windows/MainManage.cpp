@@ -29,6 +29,7 @@
 #include "OptionsBackup.h"
 #include "OptionsShortcuts.h"
 #include "AddEdit_DateTimes.h"
+#include "ManagePSWDPolices.h"
 
 #include "core/pwsprefs.h"
 #include "core/PWSdirs.h"
@@ -601,4 +602,19 @@ void DboxMain::OnGeneratePassword()
   GenPswdPS.m_psh.dwFlags |= PSH_NOAPPLYNOW;
 
   GenPswdPS.DoModal();
+}
+
+void DboxMain::OnManagePasswordPolicies()
+{
+  CManagePSWDPolices ManagePSWDPoliciesDlg(this);
+  
+  INT_PTR rc = ManagePSWDPoliciesDlg.DoModal();
+  
+  if (rc == IDOK && ManagePSWDPoliciesDlg.IsChanged()) {
+    PSWDPolicyMap MapPSWDPLC = ManagePSWDPoliciesDlg.GetPasswordPolicies();
+    Command *pcmd = DBPolicyNamesCommand::Create(&m_core, MapPSWDPLC,
+                             DBPolicyNamesCommand::REPLACEALL);
+    pcmd->Execute();
+    ChangeOkUpdate();
+  }
 }

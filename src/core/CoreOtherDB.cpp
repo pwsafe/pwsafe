@@ -118,34 +118,34 @@ void PWScore::Compare(PWScore *pothercore,
         // Difference flags:
         /*
          First byte (values in square brackets taken from ItemData.h)
-         1... ....  NAME      [0x00] - n/a - depreciated
-         .1.. ....  UUID      [0x01] - n/a - unique
-         ..1. ....  GROUP     [0x02] - not checked - must be identical
-         ...1 ....  TITLE     [0x03] - not checked - must be identical
-         .... 1...  USER      [0x04] - not checked - must be identical
-         .... .1..  NOTES     [0x05]
-         .... ..1.  PASSWORD  [0x06]
-         .... ...1  CTIME     [0x07] - not checked by default
+         1... ....  NAME       [0x00] - n/a - depreciated
+         .1.. ....  UUID       [0x01] - n/a - unique
+         ..1. ....  GROUP      [0x02] - not checked - must be identical
+         ...1 ....  TITLE      [0x03] - not checked - must be identical
+         .... 1...  USER       [0x04] - not checked - must be identical
+         .... .1..  NOTES      [0x05]
+         .... ..1.  PASSWORD   [0x06]
+         .... ...1  CTIME      [0x07] - not checked by default
 
          Second byte
-         1... ....  PMTIME    [0x08] - not checked by default
-         .1.. ....  ATIME     [0x09] - not checked by default
-         ..1. ....  XTIME     [0x0a] - not checked by default
-         ...1 ....  RESERVED  [0x0b] - not used
-         .... 1...  RMTIME    [0x0c] - not checked by default
-         .... .1..  URL       [0x0d]
-         .... ..1.  AUTOTYPE  [0x0e]
-         .... ...1  PWHIST    [0x0f]
+         1... ....  PMTIME     [0x08] - not checked by default
+         .1.. ....  ATIME      [0x09] - not checked by default
+         ..1. ....  XTIME      [0x0a] - not checked by default
+         ...1 ....  RESERVED   [0x0b] - not used
+         .... 1...  RMTIME     [0x0c] - not checked by default
+         .... .1..  URL        [0x0d]
+         .... ..1.  AUTOTYPE   [0x0e]
+         .... ...1  PWHIST     [0x0f]
 
          Third byte
-         1... ....  POLICY    [0x10] - not checked by default
-         .1.. ....  XTIME_INT [0x11] - not checked by default
-         ..1. ....  RUNCMD    [0x12]
-         ...1 ....  DCA       [0x13]
-         .... 1...  EMAIL     [0x14]
-         .... .1..  PROTECTED [0x15]
-         .... ..1.  SYMBOLS   [0x16]
-         .... ...1  Unused
+         1... ....  POLICY     [0x10] - not checked by default
+         .1.. ....  XTIME_INT  [0x11] - not checked by default
+         ..1. ....  RUNCMD     [0x12]
+         ...1 ....  DCA        [0x13]
+         .... 1...  EMAIL      [0x14]
+         .... .1..  PROTECTED  [0x15]
+         .... ..1.  SYMBOLS    [0x16]
+         .... ...1  POLICYNAME [0x17]
 
          */
         bsConflicts.reset();
@@ -191,6 +191,9 @@ void PWScore::Compare(PWScore *pothercore,
         if (bsFields.test(CItemData::POLICY) &&
             currentItem.GetPWPolicy() != compItem.GetPWPolicy())
           bsConflicts.flip(CItemData::POLICY);
+        if (bsFields.test(CItemData::POLICYNAME) &&
+            currentItem.GetPolicyName() != compItem.GetPolicyName())
+          bsConflicts.flip(CItemData::POLICYNAME);
         if (bsFields.test(CItemData::RUNCMD) &&
             currentItem.GetRunCommand() != compItem.GetRunCommand())
           bsConflicts.flip(CItemData::RUNCMD);
@@ -325,7 +328,10 @@ bool MergeSyncGTUCompare(const StringX &elem1, const StringX &elem2)
 #define MRG_EXECUTE    0x0080
 #define MRG_DCA        0x0040
 #define MRG_EMAIL      0x0020
-#define MRG_UNUSED     0x001f
+#define MRG_SYMBOLS    0x0010
+#define MRG_SHIFTDCA   0x0008
+#define MRG_POLICYNAME 0x0004
+#define MRG_UNUSED     0x0003
 
 stringT PWScore::Merge(PWScore *pothercore,
                        const bool &subgroup_bset,
@@ -336,7 +342,10 @@ stringT PWScore::Merge(PWScore *pothercore,
   std::vector<StringX> vs_added;
   std::vector<StringX> vs_AliasesAdded;
   std::vector<StringX> vs_ShortcutsAdded;
+  std::vector<StringX> vs_PoliciesAdded;
+  std::map<StringX, StringX> mapRenamedPolicies;
 
+  const StringX sxMerge_DateTime = PWSUtil::GetTimeStamp(true).c_str();
   /*
     Purpose:
       Merge entries from otherCore to m_core
@@ -470,6 +479,23 @@ stringT PWScore::Merge(PWScore *pothercore,
         LoadAString(str_temp, IDSC_FLDNMEMAIL);
         str_diffs += str_temp + _T(", ");
       }
+      if (otherItem.GetSymbols() != curItem.GetSymbols()) {
+        diff_flags |= MRG_SYMBOLS;
+        LoadAString(str_temp, IDSC_FLDNMSYMBOLS);
+        str_diffs += str_temp + _T(", ");
+      }
+      otherItem.GetShiftDCA(other_hDCA);
+      curItem.GetShiftDCA(cur_hDCA);
+      if (other_hDCA != cur_hDCA) {
+        diff_flags |= MRG_SHIFTDCA;
+        LoadAString(str_temp, IDSC_FLDNMSHIFTDCA);
+        str_diffs += str_temp + _T(", ");
+      }
+      if (otherItem.GetPolicyName() != curItem.GetPolicyName()) {
+        diff_flags |= MRG_POLICYNAME;
+        LoadAString(str_temp, IDSC_FLDNMPWPOLICYNAME);
+        str_diffs += str_temp + _T(", ");
+      }
       if (diff_flags != 0) {
         // have a match on group/title/user, but not on other fields
         // add an entry suffixed with -merged-YYYYMMDD-HHMMSS
@@ -500,6 +526,51 @@ stringT PWScore::Merge(PWScore *pothercore,
 
         // do it
         bTitleRenamed = true;
+        StringX osxPolicyName = otherItem.GetPolicyName();
+        // If named policy in use....
+        if (!osxPolicyName.empty()) {
+          st_PSWDPolicy st_pp, o_st_ppp;
+          bool bInOtherCore = pothercore->GetPolicyFromName(osxPolicyName, o_st_ppp);
+          bool bInThisCore = GetPolicyFromName(osxPolicyName, st_pp);
+          if (bInThisCore) {
+            // In current database - need to make sure the same settings
+            if (bInOtherCore) {
+              // In this database and other database
+              if (st_pp != o_st_ppp) {
+                // But have different setting. Make unique
+                MakePolicyUnique(mapRenamedPolicies, osxPolicyName,
+                                 sxMerge_DateTime, IDSC_MERGEPOLICY);
+                // Don't add it twice
+                if (std::find(vs_PoliciesAdded.begin(), vs_PoliciesAdded.end(), osxPolicyName) ==
+                    vs_PoliciesAdded.end()) {
+                  Command *pcmd = DBPolicyNamesCommand::Create(this, osxPolicyName, o_st_ppp);
+                  pmulticmds->Add(pcmd);
+                  vs_PoliciesAdded.push_back(osxPolicyName);
+                } 
+              } else {
+                 // In both but have same settings - no need to do anything
+              }
+            } else {
+              // Not there!!!!  Remove any reference to it
+              osxPolicyName = _T("");
+            }
+          } else {
+            // Not in current database
+            if (bInOtherCore) {
+              // Was in other database, so we can add it, if not already added
+              if (std::find(vs_PoliciesAdded.begin(), vs_PoliciesAdded.end(), osxPolicyName) ==
+                   vs_PoliciesAdded.end()) {
+                Command *pcmd = DBPolicyNamesCommand::Create(this, osxPolicyName, o_st_ppp);
+                pmulticmds->Add(pcmd);
+                vs_PoliciesAdded.push_back(osxPolicyName);
+              }
+            } else {
+              // Not here or there!!!!  Remove any reference to it
+              osxPolicyName = _T("");
+            }
+          }
+          otherItem.SetPolicyName(osxPolicyName);
+        }
         otherItem.SetTitle(sx_newTitle);
         otherItem.SetStatus(CItemData::ES_ADDED);
         Command *pcmd = AddEntryCommand::Create(this, otherItem);
@@ -523,6 +594,25 @@ stringT PWScore::Merge(PWScore *pothercore,
         otherItem.GetUUID(new_base_uuid);
       }
 
+      StringX osxPolicyName = otherItem.GetPolicyName();
+      // If named policy in use and not already added....
+        if (!osxPolicyName.empty() &&
+            std::find(vs_PoliciesAdded.begin(), vs_PoliciesAdded.end(), osxPolicyName) ==
+                 vs_PoliciesAdded.end()) {
+        st_PSWDPolicy st_pp;
+        // If this policy does not exist in current database - get it and add it
+        if (!GetPolicyFromName(osxPolicyName, st_pp)) {
+          // But only if it exists there
+          if (pothercore->GetPolicyFromName(osxPolicyName, st_pp)) {
+            Command *pcmd = DBPolicyNamesCommand::Create(this, osxPolicyName, st_pp);
+            pmulticmds->Add(pcmd);
+            vs_PoliciesAdded.push_back(osxPolicyName);
+          } else {
+            // Not there or here - remove any reference to it
+            otherItem.SetPolicyName(_T(""));
+          }
+        }
+      }
       otherItem.SetStatus(CItemData::ES_ADDED);
       Command *pcmd = AddEntryCommand::Create(this, otherItem);
       pcmd->SetNoGUINotify();

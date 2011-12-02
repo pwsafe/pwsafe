@@ -351,6 +351,10 @@
 #define IDB_CLEARFILTERS_CLASSIC        512
 #define IDB_CLEARFILTERS_NEW            513
 #define IDB_CLEARFILTERS_NEW_D          514
+#define IDD_MANAGEPASSWORDPOLICIES      515
+#define IDB_PSWD_POLICIES_CLASSIC       516
+#define IDB_PSWD_POLICIES_NEW           517
+#define IDB_PSWD_POLICIES_NEW_D         518
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_CREATE_DB                   1003
@@ -734,14 +738,28 @@
 #define IDC_CHANGE_NAME                 1458
 #define IDC_INPUTBOX_TEXT               1459
 #define IDC_INPUTBOX_CHAR_COUNT         1460
+#define IDC_EDIT                        1461
+#define IDC_LIST                        1462
+#define IDC_POLICYLIST                  1463
+#define IDC_POLICYNAME                  1464
+#define IDC_USEPWPOLICYNAME             1465
+#define IDC_POLICYPROPERTIES            1466
+#define IDC_POLICYENTRIES               1467
+#define IDC_STATIC_POLICYDETAILS        1468
+#define IDC_STATIC_POLICYENTRIES        1469
+#define IDC_STATIC_POLICYNAME           1470
+#define IDC_USENAMED_POLICY             1471
+#define IDC_STATIC_NAMEDPOLICY          1472
+#define IDC_POLICYNAMES_HEADER          1473
+#define IDC_POLICYENTRIES_HEADER        1474
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        515
+#define _APS_NEXT_RESOURCE_VALUE        519
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1461
+#define _APS_NEXT_CONTROL_VALUE         1475
 #define _APS_NEXT_SYMED_VALUE           166
 #endif
 #endif

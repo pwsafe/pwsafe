@@ -18,7 +18,6 @@ public:
 
 protected:
   WCHAR *m_pwchTip;
-  char *m_pchTip;
 
   virtual BOOL PreTranslateMessage(MSG* pMsg);
   virtual void PreSubclassWindow();

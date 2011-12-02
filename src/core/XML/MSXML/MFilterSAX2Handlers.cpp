@@ -543,6 +543,12 @@ HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::endElement (
     cur_filterentry->fstring = PWSUtil::DeDupString(cur_filterentry->fstring);
   }
 
+  else if (_tcscmp(szCurElement, _T("policyname")) == 0) {
+    m_type = DFTYPE_MAIN;
+    cur_filterentry->mtype = PWSMatch::MT_STRING;
+    cur_filterentry->ftype = FT_POLICYNAME;
+  }
+
   else if (_tcscmp(szCurElement, _T("create_time")) == 0) {
     m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_DATE;

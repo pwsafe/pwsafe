@@ -2421,7 +2421,7 @@ void PasswordSafeFrame::OnImportText(wxCommandEvent& evt)
 
   std::wstring strError;
   wxString TxtFileName = dlg.filepath;
-  int numImported(0), numSkipped(0), numPWHErrors(0), numRenamed(0);
+  int numImported(0), numSkipped(0), numPWHErrors(0), numRenamed(0), numNoPolicyNames(0);
   wchar_t delimiter = dlg.FieldSeparator();
   bool bImportPSWDsOnly = dlg.importPasswordsOnly;
 
@@ -2437,7 +2437,7 @@ void PasswordSafeFrame::OnImportText(wxCommandEvent& evt)
   int rc = m_core.ImportPlaintextFile(ImportedPrefix, tostringx(TxtFileName), fieldSeparator,
                                   delimiter, bImportPSWDsOnly,
                                   strError,
-                                  numImported, numSkipped, numPWHErrors, numRenamed,
+                                  numImported, numSkipped, numPWHErrors, numRenamed, numNoPolicyNames,
                                   rpt, pcmd);
 
   wxString cs_title, cs_temp;
@@ -2628,6 +2628,7 @@ void PasswordSafeFrame::OnImportXML(wxCommandEvent& evt)
   std::wstring strXMLErrors, strSkippedList, strPWHErrorList, strRenameList;
   wxString XMLFilename = dlg.filepath;
   int numValidated, numImported, numSkipped, numRenamed, numPWHErrors;
+  int numRenamedPolicies, numNoPolicy;
   bool bImportPSWDsOnly = dlg.importPasswordsOnly;
 
   wxBeginBusyCursor();  // This may take a while!
@@ -2644,6 +2645,7 @@ void PasswordSafeFrame::OnImportXML(wxCommandEvent& evt)
                             tostdstring(XSDFilename.GetFullPath()), bImportPSWDsOnly,
                             strXMLErrors, strSkippedList, strPWHErrorList, strRenameList,
                             numValidated, numImported, numSkipped, numPWHErrors, numRenamed,
+                            numNoPolicy, numRenamedPolicies,
                             rpt, pcmd);
   wxEndBusyCursor();  // Restore normal cursor
 

@@ -24,7 +24,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 CSHCTListCtrl::CSHCTListCtrl()
-: m_pParent(NULL), m_pHotKey(NULL), m_pchTip(NULL), m_pwchTip(NULL),
+: m_pParent(NULL), m_pHotKey(NULL), m_pwchTip(NULL),
   m_bHotKeyActive(false)
 {
   m_pHotKey = new CSHCTHotKey;
@@ -36,20 +36,19 @@ CSHCTListCtrl::~CSHCTListCtrl()
 {
   m_pHotKey->DestroyWindow();
   delete m_pHotKey;
-  delete m_pchTip;
   delete m_pwchTip;
 }
 
 BEGIN_MESSAGE_MAP(CSHCTListCtrl, CListCtrl)
   //{{AFX_MSG_MAP(CSHCTListCtrl)
-  ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTW, 0, 0xFFFF, OnToolTipText)
-  ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTA, 0, 0xFFFF, OnToolTipText)
-  ON_NOTIFY_REFLECT(NM_CUSTOMDRAW, OnCustomDraw)
   ON_WM_LBUTTONDOWN()
   ON_WM_RBUTTONDOWN()
   ON_WM_HSCROLL()
   ON_WM_VSCROLL()
   ON_WM_MOUSEWHEEL()
+
+  ON_NOTIFY_REFLECT(NM_CUSTOMDRAW, OnCustomDraw)
+  ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTW, 0, 0xFFFF, OnToolTipText)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -309,9 +308,7 @@ BOOL CSHCTListCtrl::OnToolTipText(UINT /*id*/, NMHDR *pNotifyStruct, LRESULT *pL
     return TRUE;  // do not allow display of automatic tooltip,
                   // or our tooltip will disappear
 
-  // handle both ANSI and UNICODE versions of the message
-  TOOLTIPTEXTA* pTTTA = (TOOLTIPTEXTA*)pNotifyStruct;
-  TOOLTIPTEXTW* pTTTW = (TOOLTIPTEXTW*)pNotifyStruct;
+  TOOLTIPTEXTW *pTTTW = (TOOLTIPTEXTW *)pNotifyStruct;
 
   *pLResult = 0;
 
@@ -354,50 +351,12 @@ BOOL CSHCTListCtrl::OnToolTipText(UINT /*id*/, NMHDR *pNotifyStruct, LRESULT *pL
 
     CString cs_TipText(MAKEINTRESOURCE(nID));
 
-#define LONG_TOOLTIPS
+    delete m_pwchTip;
 
-#ifdef LONG_TOOLTIPS
-    if (pNotifyStruct->code == TTN_NEEDTEXTA) {
-      delete m_pchTip;
-
-      m_pchTip = new char[cs_TipText.GetLength() + 1];
-#if (_MSC_VER >= 1400)
-      size_t num_converted;
-      wcstombs_s(&num_converted, m_pchTip, cs_TipText.GetLength() + 1, cs_TipText,
-                 cs_TipText.GetLength() + 1);
-#else
-      wcstombs(m_pchTip, cs_TipText, cs_TipText.GetLength() + 1);
-#endif
-      pTTTA->lpszText = (LPSTR)m_pchTip;
-    } else {
-      delete m_pwchTip;
-
-      m_pwchTip = new WCHAR[cs_TipText.GetLength() + 1];
-#if (_MSC_VER >= 1400)
-      wcsncpy_s(m_pwchTip, cs_TipText.GetLength() + 1,
+    m_pwchTip = new WCHAR[cs_TipText.GetLength() + 1];
+    wcsncpy_s(m_pwchTip, cs_TipText.GetLength() + 1,
                 cs_TipText, _TRUNCATE);
-#else
-      wcsncpy(m_pwchTip, cs_TipText, cs_TipText.GetLength() + 1);
-#endif
-      pTTTW->lpszText = (LPWSTR)m_pwchTip;
-    }
-#else // Short Tooltips!
-    if (pNotifyStruct->code == TTN_NEEDTEXTA) {
-      int n = WideCharToMultiByte(CP_ACP, 0, cs_TipText, -1,
-                                  pTTTA->szText,
-                                  _countof(pTTTA->szText),
-                                  NULL, NULL);
-      if (n > 0)
-        pTTTA->szText[n - 1] = 0;
-    } else {
-#if (_MSC_VER >= 1400)
-      wcsncpy_s(pTTTW->szText, _countof(pTTTW->szText)),
-                cs_TipText, _TRUNCATE);
-#else
-      wcsncpy(pTTTW->szText, cs_TipText, _countof(pTTTW->szText));
-#endif
-    }
-#endif // Long/short tooltips
+    pTTTW->lpszText = (LPWSTR)m_pwchTip;
 
     return TRUE;   // we found a tool tip,
   }

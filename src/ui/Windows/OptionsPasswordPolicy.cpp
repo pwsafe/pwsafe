@@ -58,10 +58,8 @@ COptionsPasswordPolicy::COptionsPasswordPolicy(CWnd *pParent,
   : COptions_PropertyPage(pParent,
                           COptionsPasswordPolicy::IDD, COptionsPasswordPolicy::IDD_SHORT,
                           pOPTMD),
-  m_password(L"")
+  m_password(L""), m_UseNamedPolicy(FALSE)
 {
-  m_bFromOptions = m_OPTMD.uicaller != IDS_GENERATEPASSWORD;
-
   m_Symbols = M_Symbols();
   m_PWUseLowercase = M_PWUseLowercase();
   m_PWUseUppercase = M_PWUseUppercase();
@@ -108,6 +106,7 @@ void COptionsPasswordPolicy::DoDataExchange(CDataExchange* pDX)
   DDX_Check(pDX, IDC_EASYVISION, m_PWEasyVision);
   DDX_Check(pDX, IDC_USEHEXDIGITS, m_PWUseHexdigits);
   DDX_Check(pDX, IDC_PRONOUNCEABLE, m_PWMakePronounceable);
+  DDX_Check(pDX, IDC_USENAMED_POLICY, m_UseNamedPolicy);
   
   DDX_Radio(pDX, IDC_USEDEFAULTSYMBOLS, m_UseOwnSymbols);
   DDX_Control(pDX, IDC_OWNSYMBOLS, (CEdit&)m_SymbolsEdit);
@@ -124,6 +123,11 @@ void COptionsPasswordPolicy::DoDataExchange(CDataExchange* pDX)
   DDX_Control(pDX,  IDC_USEHEXDIGITS, m_chkbox[6]);
   DDX_Control(pDX,  IDC_USEDEFAULTSYMBOLS, m_radiobtn[0]);
   DDX_Control(pDX,  IDC_USEOWNSYMBOLS, m_radiobtn[1]);
+
+  if (M_uicaller() != IDS_OPTIONS) {
+    DDX_Control(pDX, IDC_POLICYNAME, m_PolicyNameEdit);
+    DDX_Control(pDX, IDC_POLICYLIST, m_cbxPolicyNames);
+  }
   //}}AFX_DATA_MAP
 }
 
@@ -141,12 +145,18 @@ BEGIN_MESSAGE_MAP(COptionsPasswordPolicy, COptions_PropertyPage)
   ON_BN_CLICKED(IDC_PRONOUNCEABLE, OnMakePronounceable)
 
   // Because we can show the generated password when used from Mangage->Generate
-  ON_BN_CLICKED(IDC_GENERATEPASSWORD, OnRandom)
+  ON_BN_CLICKED(IDC_GENERATEPASSWORD, OnGeneratePassword)
   ON_BN_CLICKED(IDC_COPYPASSWORD, OnCopyPassword)
   ON_EN_CHANGE(IDC_PASSWORD, OnENChangePassword)
 
   ON_BN_CLICKED(IDC_USEDEFAULTSYMBOLS, OnSymbols)
   ON_BN_CLICKED(IDC_USEOWNSYMBOLS, OnSymbols)
+
+  ON_BN_CLICKED(IDC_USENAMED_POLICY, OnUseNamedPolicy)
+
+  ON_EN_KILLFOCUS(IDC_POLICYNAME, OnENChangePolicyName)
+
+  ON_CBN_SELCHANGE(IDC_POLICYLIST, OnNamesComboChanged)
 
   ON_MESSAGE(PSM_QUERYSIBLINGS, OnQuerySiblings)
   //}}AFX_MSG_MAP
@@ -159,7 +169,7 @@ BOOL COptionsPasswordPolicy::OnInitDialog()
 {
   COptions_PropertyPage::OnInitDialog();
 
-  if (M_uicaller() != IDS_GENERATEPASSWORD) {
+  if (M_uicaller() == IDS_OPTIONS) {
     for (int i = 0; i < 7; i++) {
       m_chkbox[i].SetTextColour(CR_DATABASE_OPTIONS);
     }
@@ -169,38 +179,101 @@ BOOL COptionsPasswordPolicy::OnInitDialog()
     }
   }
 
-  if (m_bFromOptions) {
-    // These are only used in Manage -> Generate Password
-    GetDlgItem(IDC_GENERATEPASSWORD)->EnableWindow(FALSE);
-    GetDlgItem(IDC_GENERATEPASSWORD)->ShowWindow(SW_HIDE);
-    GetDlgItem(IDC_COPYPASSWORD)->EnableWindow(FALSE);
-    GetDlgItem(IDC_COPYPASSWORD)->ShowWindow(SW_HIDE);
-    GetDlgItem(IDC_PASSWORD)->EnableWindow(FALSE);
-    GetDlgItem(IDC_PASSWORD)->ShowWindow(SW_HIDE);
-  } else {
-    // Centre the OK button & change its text
-    RECT rc, rcOK;
-    CWnd *pOK = m_options_psh->GetDlgItem(IDOK);
+  switch (M_uicaller()) {
+    case IDS_OPTIONS:
+      // These are only used in Manage -> Generate Password or Add/Edit Policy names
+      GetDlgItem(IDC_GENERATEPASSWORD)->EnableWindow(FALSE);
+      GetDlgItem(IDC_GENERATEPASSWORD)->ShowWindow(SW_HIDE);
+      GetDlgItem(IDC_COPYPASSWORD)->EnableWindow(FALSE);
+      GetDlgItem(IDC_COPYPASSWORD)->ShowWindow(SW_HIDE);
+      GetDlgItem(IDC_PASSWORD)->EnableWindow(FALSE);
+      GetDlgItem(IDC_PASSWORD)->ShowWindow(SW_HIDE);
+      GetDlgItem(IDC_POLICYNAME)->EnableWindow(FALSE);
+      GetDlgItem(IDC_POLICYNAME)->ShowWindow(SW_HIDE);
+      GetDlgItem(IDC_POLICYLIST)->EnableWindow(FALSE);
+      GetDlgItem(IDC_POLICYLIST)->ShowWindow(SW_HIDE);
+      GetDlgItem(IDC_USENAMED_POLICY)->EnableWindow(FALSE);
+      GetDlgItem(IDC_USENAMED_POLICY)->ShowWindow(SW_HIDE);
+      GetDlgItem(IDC_STATIC_NAMEDPOLICY)->ShowWindow(SW_HIDE);
+      break;
+    case IDS_GENERATEPASSWORD:
+    {
+      // These are only used in Manage -> Add/Edit Policy names
+      GetDlgItem(IDC_POLICYNAME)->EnableWindow(FALSE);
+      GetDlgItem(IDC_POLICYNAME)->ShowWindow(SW_HIDE);
 
-    m_options_psh->GetClientRect(&rc);
-    pOK->GetWindowRect(&rcOK);
-    m_options_psh->ScreenToClient(&rcOK);
-    int top = rcOK.top;
-    pOK->GetClientRect(&rcOK);
-    int left = (rc.right - rcOK.right) / 2;
-    pOK->MoveWindow(left, top, rcOK.right, rcOK.bottom);
+      // Used to generate passwords - list only enabled if checkbox set
+      GetDlgItem(IDC_POLICYLIST)->EnableWindow(FALSE);
+      GetDlgItem(IDC_POLICYLIST)->ShowWindow(SW_SHOW);
+      GetDlgItem(IDC_USENAMED_POLICY)->EnableWindow(TRUE);
+      GetDlgItem(IDC_USENAMED_POLICY)->ShowWindow(SW_SHOW);
+      GetDlgItem(IDC_STATIC_NAMEDPOLICY)->ShowWindow(SW_HIDE);
 
-    CString cs_close(MAKEINTRESOURCE(IDS_CLOSE));
-    pOK->SetWindowText(cs_close);
+      // Populate the combo box
+      m_cbxPolicyNames.ResetContent();
 
-    // Hide the Cancel button
-    m_options_psh->GetDlgItem(IDCANCEL)->EnableWindow(FALSE);
-    m_options_psh->GetDlgItem(IDCANCEL)->ShowWindow(SW_HIDE);
+      // Get all password policy names
+      std::vector<std::wstring> vNames;
+      M_pDbx()->GetPolicyNames(vNames);
 
-    ApplyPasswordFont(GetDlgItem(IDC_PASSWORD));
-    m_ex_password.SetSecure(false);
-    // Remove password character so that the password is displayed
-    m_ex_password.SetPasswordChar(0);
+      // Add Default
+      CString cs_text(MAKEINTRESOURCE(IDS_DATABASE_DEFAULT));
+      m_cbxPolicyNames.AddString(cs_text);
+
+      for (std::vector<std::wstring>::iterator iter = vNames.begin();
+           iter != vNames.end(); ++iter) {
+        m_cbxPolicyNames.AddString(iter->c_str());
+      }
+
+      // Centre the OK button & change its text
+      RECT rc, rcOK;
+      CWnd *pOK = m_options_psh->GetDlgItem(IDOK);
+
+      m_options_psh->GetClientRect(&rc);
+      pOK->GetWindowRect(&rcOK);
+      m_options_psh->ScreenToClient(&rcOK);
+      int top = rcOK.top;
+      pOK->GetClientRect(&rcOK);
+      int left = (rc.right - rcOK.right) / 2;
+      pOK->MoveWindow(left, top, rcOK.right, rcOK.bottom);
+
+      CString cs_close(MAKEINTRESOURCE(IDS_CLOSE));
+      pOK->SetWindowText(cs_close);
+
+      // Hide the Cancel button
+      m_options_psh->GetDlgItem(IDCANCEL)->EnableWindow(FALSE);
+      m_options_psh->GetDlgItem(IDCANCEL)->ShowWindow(SW_HIDE);
+
+      ApplyPasswordFont(GetDlgItem(IDC_PASSWORD));
+      m_ex_password.SetSecure(false);
+      // Remove password character so that the password is displayed
+      m_ex_password.SetPasswordChar(0);
+      break;
+    }
+    case IDS_PSWDPOLICY:
+      // These are only used in Manage -> Generate Password
+      GetDlgItem(IDC_GENERATEPASSWORD)->EnableWindow(FALSE);
+      GetDlgItem(IDC_GENERATEPASSWORD)->ShowWindow(SW_HIDE);
+      GetDlgItem(IDC_COPYPASSWORD)->EnableWindow(FALSE);
+      GetDlgItem(IDC_COPYPASSWORD)->ShowWindow(SW_HIDE);
+      GetDlgItem(IDC_PASSWORD)->EnableWindow(FALSE);
+      GetDlgItem(IDC_PASSWORD)->ShowWindow(SW_HIDE);
+      GetDlgItem(IDC_POLICYLIST)->EnableWindow(FALSE);
+      GetDlgItem(IDC_POLICYLIST)->ShowWindow(SW_HIDE);
+      GetDlgItem(IDC_USENAMED_POLICY)->EnableWindow(FALSE);
+      GetDlgItem(IDC_USENAMED_POLICY)->ShowWindow(SW_HIDE);
+      GetDlgItem(IDC_STATIC_NAMEDPOLICY)->ShowWindow(SW_SHOW);
+
+      if (!m_policyname.IsEmpty() && m_iter->second.usecount > 0) {
+        // Cannot edit the policy 'Name' if it is present and use count > 0
+        m_PolicyNameEdit.SetReadOnly(TRUE);
+      }
+
+      m_PolicyNameEdit.SetWindowText(m_policyname);
+      // Max. length of policy name is 255 - only 2 hex digits used for length
+      // in database header
+      m_PolicyNameEdit.SetLimitText(255);
+      break;
   }
 
   CSpinButtonCtrl *pspin  = (CSpinButtonCtrl *)GetDlgItem(IDC_PWLENSPIN);
@@ -274,7 +347,7 @@ BOOL COptionsPasswordPolicy::OnInitDialog()
 
 LRESULT COptionsPasswordPolicy::OnQuerySiblings(WPARAM wParam, LPARAM )
 {
-  if (!m_bFromOptions)
+  if (M_uicaller() == IDS_GENERATEPASSWORD)
     return 0L;
 
   if (UpdateData(TRUE) == FALSE)
@@ -289,6 +362,8 @@ LRESULT COptionsPasswordPolicy::OnQuerySiblings(WPARAM wParam, LPARAM )
   // Have any of my fields been changed?
   switch (wParam) {
     case PP_DATA_CHANGED:
+      if (M_uicaller() == IDS_PSWDPOLICY)
+        return 0L;
       if (M_PWDefaultLength()     != m_PWDefaultLength     ||
           M_PWUseLowercase()      != m_PWUseLowercase      ||
           (m_PWUseLowercase       == TRUE &&
@@ -315,6 +390,8 @@ LRESULT COptionsPasswordPolicy::OnQuerySiblings(WPARAM wParam, LPARAM )
       // copy data into the entry - we do it ourselfs here first
       if (OnApply() == FALSE)
         return 1L;
+      if (M_uicaller() == IDS_PSWDPOLICY)
+        UpdatePasswordPolicy();
   }
   return 0L;
 }
@@ -350,6 +427,7 @@ BOOL COptionsPasswordPolicy::PreTranslateMessage(MSG* pMsg)
 
   return COptions_PropertyPage::PreTranslateMessage(pMsg);
 }
+
 BOOL COptionsPasswordPolicy::OnKillActive()
 {
   if (Validate() == FALSE)
@@ -363,6 +441,67 @@ void COptionsPasswordPolicy::OnHelp()
   CString cs_HelpTopic;
   cs_HelpTopic = app.GetHelpFileName() + L"::/html/password_policies.html";
   HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
+}
+
+void COptionsPasswordPolicy::SetPolicyData(st_PSWDPolicy &st_pp,
+                                           CString &policyname,
+                                           PSWDPolicyMap &MapPSWDPLC)
+{
+  // Only called for Password Policies
+  if (M_uicaller() != IDS_PSWDPOLICY)
+    return;
+
+  m_default_st_pp = st_pp;
+  m_MapPSWDPLC = MapPSWDPLC;
+  m_policyname = m_oldpolicyname = policyname;
+  m_iter = m_policyname.IsEmpty() ? m_MapPSWDPLC.end() :
+                                    m_MapPSWDPLC.find(StringX((LPCWSTR)m_policyname));
+
+  // Check the find worked above - if PolicyName not empty, it must be in the map!
+  if (!m_policyname.IsEmpty())
+    ASSERT(m_iter != m_MapPSWDPLC.end());
+
+  // If New, use default values; otherwise use this policy's values
+  st_PSWDPolicy xst_pp = m_policyname.IsEmpty() ? m_default_st_pp : m_iter->second;
+  
+  m_PWUseLowercase = M_PWUseLowercase() =
+    (xst_pp.pwp.flags & PWSprefs::PWPolicyUseLowercase) == 
+                       PWSprefs::PWPolicyUseLowercase;
+  m_PWUseUppercase = M_PWUseUppercase() =
+    (xst_pp.pwp.flags & PWSprefs::PWPolicyUseUppercase) == 
+                       PWSprefs::PWPolicyUseUppercase;
+  m_PWUseDigits = M_PWUseDigits() =
+    (xst_pp.pwp.flags & PWSprefs::PWPolicyUseDigits) == 
+                       PWSprefs::PWPolicyUseDigits;
+  m_PWUseSymbols = M_PWUseSymbols() =
+    (xst_pp.pwp.flags & PWSprefs::PWPolicyUseSymbols) == 
+                       PWSprefs::PWPolicyUseSymbols;
+  m_PWUseHexdigits = M_PWUseHexdigits() =
+    (xst_pp.pwp.flags & PWSprefs::PWPolicyUseHexDigits) == 
+                       PWSprefs::PWPolicyUseHexDigits;
+  m_PWEasyVision = M_PWEasyVision() =
+    (xst_pp.pwp.flags & PWSprefs::PWPolicyUseEasyVision) == 
+                       PWSprefs::PWPolicyUseEasyVision;
+  m_PWMakePronounceable = M_PWMakePronounceable() =
+    (xst_pp.pwp.flags & PWSprefs::PWPolicyMakePronounceable) == 
+                       PWSprefs::PWPolicyMakePronounceable;
+  m_PWDefaultLength = M_PWDefaultLength() = xst_pp.pwp.length;
+  m_PWDigitMinLength = M_PWDigitMinLength() = xst_pp.pwp.digitminlength;
+  m_PWLowerMinLength = M_PWLowerMinLength() = xst_pp.pwp.lowerminlength;
+  m_PWSymbolMinLength = M_PWSymbolMinLength() = xst_pp.pwp.symbolminlength;
+  m_PWUpperMinLength = M_PWUpperMinLength() = xst_pp.pwp.upperminlength;
+ 
+  CString cs_symbols = xst_pp.symbols.c_str();
+  m_Symbols = M_Symbols() = cs_symbols;
+  m_UseOwnSymbols = M_UseOwnSymbols() = cs_symbols.IsEmpty() ? DEFAULT_SYMBOLS : OWN_SYMBOLS;
+}
+
+void COptionsPasswordPolicy::OnNamesComboChanged()
+{
+  UpdateData(TRUE);
+
+  int index = m_cbxPolicyNames.GetCurSel();
+  m_cbxPolicyNames.GetLBText(index, m_policyname);
 }
 
 void COptionsPasswordPolicy::do_hex(const bool bHex)
@@ -639,11 +778,21 @@ BOOL COptionsPasswordPolicy::Validate()
   if ((m_PWUseHexdigits || m_PWEasyVision || m_PWMakePronounceable))
     m_PWDigitMinLength = m_PWLowerMinLength = 
        m_PWSymbolMinLength = m_PWUpperMinLength = 1;
+
+  if (M_uicaller() == IDS_PSWDPOLICY) {
+    if (m_policyname.IsEmpty() || 
+         (m_policyname != m_oldpolicyname && !VerifyPolicynameUnique(m_policyname))) {
+      gmb.AfxMessageBox(IDS_INVALIDPOLICYNAME);
+      ((CEdit*)GetDlgItem(IDC_POLICYNAME))->SetFocus();
+      return FALSE;
+    }
+  }
+ 
   //End check
   return TRUE;
 }
 
-void COptionsPasswordPolicy::OnRandom()
+void COptionsPasswordPolicy::OnGeneratePassword()
 {
   UpdateData(TRUE);
 
@@ -652,36 +801,50 @@ void COptionsPasswordPolicy::OnRandom()
     return;
 
   PWPolicy pwp;
+  stringT st_symbols;
 
   pwp.Empty();
-  if (m_PWUseLowercase == TRUE)
-    pwp.flags |= PWSprefs::PWPolicyUseLowercase;
-  if (m_PWUseUppercase == TRUE)
-    pwp.flags |= PWSprefs::PWPolicyUseUppercase;
-  if (m_PWUseDigits == TRUE)
-    pwp.flags |= PWSprefs::PWPolicyUseDigits;
-  if (m_PWUseSymbols == TRUE)
-    pwp.flags |= PWSprefs::PWPolicyUseSymbols;
-  if (m_PWUseHexdigits == TRUE)
-    pwp.flags |= PWSprefs::PWPolicyUseHexDigits;
-  if (m_PWEasyVision == TRUE)
-    pwp.flags |= PWSprefs::PWPolicyUseEasyVision;
-  if (m_PWMakePronounceable == TRUE)
-    pwp.flags |= PWSprefs::PWPolicyMakePronounceable;
-  pwp.length = m_PWDefaultLength;
-  pwp.digitminlength = m_PWDigitMinLength;
-  pwp.lowerminlength = m_PWLowerMinLength;
-  pwp.symbolminlength = m_PWSymbolMinLength;
-  pwp.upperminlength = m_PWUpperMinLength;
-  
-  StringX passwd;
-  stringT st_symbols;
-  if (m_UseOwnSymbols == OWN_SYMBOLS) {
-    m_SymbolsEdit.GetWindowText(m_Symbols);
-    st_symbols = LPCWSTR(m_Symbols);
-  } else
-    CPasswordCharPool::GetDefaultSymbols(st_symbols);
 
+  if (m_UseNamedPolicy == BST_UNCHECKED) {
+    if (m_PWUseLowercase == TRUE)
+      pwp.flags |= PWSprefs::PWPolicyUseLowercase;
+    if (m_PWUseUppercase == TRUE)
+      pwp.flags |= PWSprefs::PWPolicyUseUppercase;
+    if (m_PWUseDigits == TRUE)
+      pwp.flags |= PWSprefs::PWPolicyUseDigits;
+    if (m_PWUseSymbols == TRUE)
+      pwp.flags |= PWSprefs::PWPolicyUseSymbols;
+    if (m_PWUseHexdigits == TRUE)
+      pwp.flags |= PWSprefs::PWPolicyUseHexDigits;
+    if (m_PWEasyVision == TRUE)
+      pwp.flags |= PWSprefs::PWPolicyUseEasyVision;
+    if (m_PWMakePronounceable == TRUE)
+      pwp.flags |= PWSprefs::PWPolicyMakePronounceable;
+    pwp.length = m_PWDefaultLength;
+    pwp.digitminlength = m_PWDigitMinLength;
+    pwp.lowerminlength = m_PWLowerMinLength;
+    pwp.symbolminlength = m_PWSymbolMinLength;
+    pwp.upperminlength = m_PWUpperMinLength;
+  
+    if (m_UseOwnSymbols == OWN_SYMBOLS) {
+      m_SymbolsEdit.GetWindowText(m_Symbols);
+      st_symbols = LPCWSTR(m_Symbols);
+    } else
+      CPasswordCharPool::GetDefaultSymbols(st_symbols);
+  } else {
+    st_PSWDPolicy st_pp;
+    StringX sxPolicyName(m_policyname);
+    M_pDbx()->GetPolicyFromName(sxPolicyName, st_pp);
+
+    pwp = st_pp.pwp;
+    if (st_pp.symbols.empty()) {
+      CPasswordCharPool::GetDefaultSymbols(st_symbols);
+    } else {
+      st_symbols = st_pp.symbols.c_str();
+    }
+  }
+
+  StringX passwd;
   M_pDbx()->MakeRandomPassword(passwd, pwp, st_symbols.c_str(), false);
   m_password = passwd.c_str();
   m_ex_password.SetWindowText(m_password);
@@ -704,12 +867,27 @@ void COptionsPasswordPolicy::OnENChangePassword()
   m_ex_password.GetWindowText((CString &)m_password);
 }
 
+void COptionsPasswordPolicy::OnENChangePolicyName()
+{
+  UpdateData(TRUE);
+
+  m_PolicyNameEdit.GetWindowText((CString &)m_policyname);
+}
+
+void COptionsPasswordPolicy::OnUseNamedPolicy()
+{
+  BOOL bEnable = ((CButton *)GetDlgItem(IDC_USENAMED_POLICY))->GetCheck() == BST_CHECKED ?
+                           TRUE : FALSE;
+
+  GetDlgItem(IDC_POLICYLIST)->EnableWindow(bEnable);
+}
+
 HBRUSH COptionsPasswordPolicy::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
 {
   // Database preferences - associated static text
   HBRUSH hbr = CPWPropertyPage::OnCtlColor(pDC, pWnd, nCtlColor);
 
-  if (M_uicaller() == IDS_GENERATEPASSWORD)
+  if (M_uicaller() != IDS_OPTIONS)
     return hbr;
 
   switch (pWnd->GetDlgCtrlID()) {
@@ -728,4 +906,46 @@ HBRUSH COptionsPasswordPolicy::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
   }
 
   return hbr;
+}
+
+void COptionsPasswordPolicy::UpdatePasswordPolicy()
+{
+  ASSERT(!m_policyname.IsEmpty());
+
+  st_PSWDPolicy st_pp;
+  st_pp.pwp.flags = 0;
+  if (M_PWUseLowercase() == TRUE)
+    st_pp.pwp.flags |= PWSprefs::PWPolicyUseLowercase;
+  if (M_PWUseUppercase() == TRUE)
+    st_pp.pwp.flags |= PWSprefs::PWPolicyUseUppercase;
+  if (M_PWUseDigits() == TRUE)
+    st_pp.pwp.flags |= PWSprefs::PWPolicyUseDigits;
+  if (M_PWUseSymbols() == TRUE)
+    st_pp.pwp.flags |= PWSprefs::PWPolicyUseSymbols;
+  if (M_PWUseHexdigits() == TRUE)
+    st_pp.pwp.flags |= PWSprefs::PWPolicyUseHexDigits;
+  if (M_PWEasyVision() == TRUE)
+    st_pp.pwp.flags |= PWSprefs::PWPolicyUseEasyVision;
+  if (M_PWMakePronounceable() == TRUE)
+    st_pp.pwp.flags |= PWSprefs::PWPolicyMakePronounceable;
+  
+  st_pp.pwp.length = M_PWDefaultLength();
+  st_pp.pwp.digitminlength = M_PWDigitMinLength();
+  st_pp.pwp.lowerminlength = M_PWLowerMinLength();
+  st_pp.pwp.symbolminlength = M_PWSymbolMinLength();
+  st_pp.pwp.upperminlength = M_PWUpperMinLength();
+
+  st_pp.symbols = (M_PWUseSymbols() == TRUE && M_UseOwnSymbols() == OWN_SYMBOLS) ?
+                         m_Symbols : L"";
+
+  StringX sxPolicyName(m_policyname), sx_OldPolicyName(m_oldpolicyname);
+  if (!m_oldpolicyname.IsEmpty() && m_policyname != m_oldpolicyname) {
+    // Delete old policy using old name
+    PSWDPolicyMapIter iter = m_MapPSWDPLC.find(sx_OldPolicyName);
+    if (iter != m_MapPSWDPLC.end())
+      m_MapPSWDPLC.erase(iter);
+  }
+
+  // Insert the new name
+  m_MapPSWDPLC[sxPolicyName] = st_pp;
 }

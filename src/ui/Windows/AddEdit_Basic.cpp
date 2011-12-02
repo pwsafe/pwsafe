@@ -796,7 +796,14 @@ void CAddEdit_Basic::OnGeneratePassword()
   }
 
   StringX passwd;
-  M_pDbx()->MakeRandomPassword(passwd, M_pwp(), M_symbols());
+  if (M_ipolicy() == NAMED_POLICY) {
+    st_PSWDPolicy st_pp;
+    M_pDbx()->GetPolicyFromName(M_policyname(), st_pp);
+    M_pDbx()->MakeRandomPassword(passwd, st_pp.pwp, st_pp.symbols.c_str());
+  } else {
+    M_pDbx()->MakeRandomPassword(passwd, M_pwp(), M_symbols());
+  }
+
   if (rc == CChangeAliasPswd::CHANGEBASE) {
     // Change Base
     ItemListIter iter = M_pDbx()->Find(M_base_uuid());

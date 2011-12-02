@@ -380,6 +380,12 @@ void XFilterSAX2Handlers::endElement(const XMLCh* const /* uri */,
     cur_filterentry->fstring = PWSUtil::DeDupString(cur_filterentry->fstring);
   }
 
+  else if (XMLString::equals(qname, _A2X("policyname"))) {
+    m_type = DFTYPE_MAIN;
+    cur_filterentry->mtype = PWSMatch::MT_STRING;
+    cur_filterentry->ftype = FT_POLICYNAME;
+  }
+
   else if (XMLString::equals(qname, _A2X("create_time"))) {
     m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_DATE;

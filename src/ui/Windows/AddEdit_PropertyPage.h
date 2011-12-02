@@ -78,6 +78,8 @@ struct st_AE_master_data {
   int ipolicy, oldipolicy, iownsymbols, ioldownsymbols;
   CSecString symbols;
   CSecString oldsymbols;
+  CSecString policyname;
+  CSecString oldpolicyname;
   
   // Attributes
   unsigned char ucprotected;
@@ -168,6 +170,8 @@ public:
   inline int &M_oldipolicy() {return m_AEMD.oldipolicy;}
   inline int &M_iownsymbols() {return m_AEMD.iownsymbols;}
   inline int &M_ioldownsymbols() {return m_AEMD.ioldownsymbols;}
+  inline CSecString &M_policyname() {return m_AEMD.policyname;}
+  inline CSecString &M_oldpolicyname() {return m_AEMD.oldpolicyname;}
   
   // Attributes
   inline unsigned char &M_protected() {return m_AEMD.ucprotected;}

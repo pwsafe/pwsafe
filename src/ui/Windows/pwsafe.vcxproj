@@ -1129,6 +1129,7 @@
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="MainView.cpp" />
     <ClCompile Include="filter\ManageFiltersDlg.cpp" />
+    <ClCompile Include="ManagePSWDPolices.cpp" />
     <ClCompile Include="MenuShortcuts.cpp" />
     <ClCompile Include="MenuTipper.cpp" />
     <ClCompile Include="MigratePrefs.cpp" />
@@ -1244,6 +1245,7 @@
     <ClInclude Include="jprdebug.h" />
     <ClInclude Include="LVHdrCtrl.h" />
     <ClInclude Include="filter\ManageFiltersDlg.h" />
+    <ClInclude Include="ManagePSWDPolices.h" />
     <ClInclude Include="MenuShortcuts.h" />
     <ClInclude Include="MenuTipper.h" />
     <ClInclude Include="MFCmessages.h" />
@@ -1331,7 +1333,9 @@
     <None Include="graphics\findtoolbar\classic\findadvancedon.bmp" />
     <None Include="graphics\findtoolbar\new\findadvancedon.bmp" />
     <None Include="graphics\toolbar\classic\addgroup.bmp" />
+    <None Include="graphics\toolbar\classic\clearfilter.bmp" />
     <None Include="graphics\toolbar\classic\duplicategroup.bmp" />
+    <None Include="graphics\toolbar\classic\passwordpolicy.bmp" />
     <None Include="graphics\toolbar\new\about.bmp" />
     <None Include="graphics\toolbar\classic\about.bmp" />
     <None Include="graphics\toolbar\new\about_disabled.bmp" />
@@ -1375,6 +1379,8 @@
     <None Include="graphics\toolbar\new\clearclipboard.bmp" />
     <None Include="graphics\toolbar\new\clearclipboard_disabled.bmp" />
     <None Include="graphics\toolbar\classic\close.bmp" />
+    <None Include="graphics\toolbar\new\clearfilter.bmp" />
+    <None Include="graphics\toolbar\new\clearfilter_disabled.bmp" />
     <None Include="graphics\toolbar\new\close.bmp" />
     <None Include="graphics\toolbar\new\close_disabled.bmp" />
     <None Include="graphics\toolbar\new\collapseall.bmp" />
@@ -1504,6 +1510,8 @@
     <None Include="graphics\toolbar\new\passwordchars.bmp" />
     <None Include="graphics\toolbar\classic\passwordchars.bmp" />
     <None Include="graphics\toolbar\new\passwordchars_disabled.bmp" />
+    <None Include="graphics\toolbar\new\passwordpolicy.bmp" />
+    <None Include="graphics\toolbar\new\passwordpolicy_disabled.bmp" />
     <None Include="res\PasswordSafe2.rc2" />
     <None Include="res\PasswordSafe3.rc2" />
     <None Include="graphics\dragbar\classic\PasswordX.bmp" />

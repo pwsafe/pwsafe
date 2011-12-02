@@ -316,7 +316,7 @@ public:
   bool ClearClipboardData() {return m_clipboard.ClearData();}
   bool SetClipboardData(const StringX &data)
   {return m_clipboard.SetData(data.c_str());}
-  void AddEntries(CDDObList &in_oblist, const StringX &DropGroup);
+  void AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup);
   StringX GetUniqueTitle(const StringX &group, const StringX &title,
                          const StringX &user, const int IDS_MESSAGE) const
   {return m_core.GetUniqueTitle(group, title, user, IDS_MESSAGE);}
@@ -369,6 +369,17 @@ public:
   {return m_core.IsNodeModified(path);}
   StringX GetCurFile() const {return m_core.GetCurFile();}
 
+  bool EditItem(CItemData *pci, PWScore *pcore = NULL);
+  bool GetPolicyFromName(StringX sxPolicyName, st_PSWDPolicy &st_pp)
+  {return m_core.GetPolicyFromName(sxPolicyName, st_pp);}
+  void GetPolicyNames(std::vector<std::wstring> &vNames)
+  {m_core.GetPolicyNames(vNames);}
+  const PSWDPolicyMap &GetPasswordPolicies()
+  {return m_core.GetPasswordPolicies();}
+  
+  // Need this to be public
+  bool LongPPs();
+
   // Following to simplify Command creation in child dialogs:
   CommandInterface *GetCore() {return &m_core;}
   
@@ -399,6 +410,8 @@ public:
   {return m_core.TestSelection(bAdvanced, subgroup_name,
                                subgroup_object, subgroup_function, il);}
   void MakeOrderedItemList(OrderedItemList &il) const;
+  bool MakeMatchingGTUSet(GTUSet &setGTU, const StringX &sxPolicyName) const
+  {return m_core.InitialiseGTU(setGTU, sxPolicyName);}
   CItemData *getSelectedItem();
   void UpdateGUIDisplay();
   CString ShowCompareResults(const StringX sx_Filename1, const StringX sx_Filename2,
@@ -509,8 +522,7 @@ protected:
   bool m_bBoldItem;
 
   WCHAR *m_pwchTip;
-  char *m_pchTip;
-
+  
   StringX m_TreeViewGroup; // used by OnAdd & OnAddGroup
   CCoolMenuManager m_menuManager;
   CMenuTipManager m_menuTipManager;
@@ -586,7 +598,6 @@ protected:
   int New(void);
 
   void AutoType(const CItemData &ci);
-  bool EditItem(CItemData *pci, PWScore *pcore = NULL);
   void UpdateEntry(CAddEdit_PropertySheet *pentry_psh);
   bool EditShortcut(CItemData *pci, PWScore *pcore = NULL);
   void SetFindToolBar(bool bShow);
@@ -693,6 +704,7 @@ protected:
   afx_msg void OnRename();
   afx_msg void OnDuplicateEntry();
   afx_msg void OnOptions();
+  afx_msg void OnManagePasswordPolicies();
   afx_msg void OnValidate();
   afx_msg void OnGeneratePassword();
   afx_msg void OnSave();
@@ -976,8 +988,6 @@ private:
   void SetLanguage(LCID lcid);
   int m_ilastaction;  // Last action
   void SetDragbarToolTips();
-
-  bool LongPPs();
 
   // The following is for saving information over an execute/undo/redo
   // Might need to add more e.g. if filter is active and which one?

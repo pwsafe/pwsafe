@@ -15,9 +15,11 @@
 
 IMPLEMENT_DYNAMIC(COptions_PropertySheet, CPWPropertySheet)
 
-COptions_PropertySheet::COptions_PropertySheet(UINT nID, CWnd* pParent, const bool bLongPPs)
-  : CPWPropertySheet(nID, pParent), m_save_bSymbols(L""),
-  m_save_iUseOwnSymbols(DEFAULT_SYMBOLS), m_save_iPreExpiryWarnDays(0),
+COptions_PropertySheet::COptions_PropertySheet(UINT nID, CWnd* pParent,
+                                               const bool bLongPPs)
+  : CPWPropertySheet(nID, pParent),
+  m_save_bSymbols(L""), m_save_iUseOwnSymbols(DEFAULT_SYMBOLS),
+  m_save_iPreExpiryWarnDays(0),
   m_bIsModified(false), m_bChanged(false),
   m_bRefreshViews(false), m_bSaveGroupDisplayState(false), m_bUpdateShortcuts(false),
   m_bCheckExpired(false),
@@ -29,7 +31,7 @@ COptions_PropertySheet::COptions_PropertySheet(UINT nID, CWnd* pParent, const bo
   m_pp_passwordhistory(NULL), m_pp_passwordpolicy(NULL), m_pp_security(NULL),
   m_pp_shortcuts(NULL), m_pp_system(NULL)
 {
-  // nID = IDS_OPTIONS, IDS_GENERATEPASSWORD, IDS_NEWDATABASE
+  // nID = IDS_OPTIONS, IDS_GENERATEPASSWORD, IDS_PSWDPOLICY
   m_OPTMD.uicaller = nID;
 
   ASSERT(pParent != NULL);
@@ -68,6 +70,7 @@ COptions_PropertySheet::COptions_PropertySheet(UINT nID, CWnd* pParent, const bo
       AddPage(m_pp_system);
       break;
     case IDS_GENERATEPASSWORD:
+    case IDS_PSWDPOLICY:
       m_pp_passwordpolicy  = new COptionsPasswordPolicy(this, &m_OPTMD);
       AddPage(m_pp_passwordpolicy);
       break;
@@ -109,7 +112,7 @@ BOOL COptions_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
       return TRUE;
 
     // Now update preferences as per user's wishes
-    if (m_OPTMD.uicaller != IDS_GENERATEPASSWORD)
+    if (m_OPTMD.uicaller == IDS_OPTIONS)
       UpdateCopyPreferences();
 
     // Now end it all so that OnApply isn't called again
@@ -236,37 +239,47 @@ void COptions_PropertySheet::SetupInitialValues()
     m_OPTMD.PWHAction = 0;
   }
 
-  // Password Policy Data - for IDS_NEWDATABASE, IDS_OPTINOS and IDS_GENERATEPASSWORD
-  m_OPTMD.PWUseLowercase =
+  // Password Policy Data - for IDS_OPTIONS, IDS_GENERATEPASSWORD and IDS_PSWDPOLICY
+  // But IDS_PSWDPOLICY uses what it is given rather than database default
+  CString cs_symbols;
+  switch (m_OPTMD.uicaller) {
+    case IDS_OPTIONS:
+    case IDS_GENERATEPASSWORD:
+      m_OPTMD.PWUseLowercase =
         prefs->GetPref(PWSprefs::PWUseLowercase);
-  m_OPTMD.PWUseUppercase =
+      m_OPTMD.PWUseUppercase =
         prefs->GetPref(PWSprefs::PWUseUppercase);
-  m_OPTMD.PWUseDigits =
+      m_OPTMD.PWUseDigits =
         prefs->GetPref(PWSprefs::PWUseDigits);
-  m_OPTMD.PWUseSymbols =
+      m_OPTMD.PWUseSymbols =
         prefs->GetPref(PWSprefs::PWUseSymbols);
-  m_OPTMD.PWUseHexdigits =
+      m_OPTMD.PWUseHexdigits =
         prefs->GetPref(PWSprefs::PWUseHexDigits);
-  m_OPTMD.PWEasyVision =
+      m_OPTMD.PWEasyVision =
         prefs->GetPref(PWSprefs::PWUseEasyVision);
-  m_OPTMD.PWMakePronounceable =
+      m_OPTMD.PWMakePronounceable =
         prefs->GetPref(PWSprefs::PWMakePronounceable);
-  m_OPTMD.PWDefaultLength =
+      m_OPTMD.PWDefaultLength =
         prefs->GetPref(PWSprefs::PWDefaultLength);
-  m_OPTMD.PWDigitMinLength =
+      m_OPTMD.PWDigitMinLength =
         prefs->GetPref(PWSprefs::PWDigitMinLength);
-  m_OPTMD.PWLowerMinLength =
+      m_OPTMD.PWLowerMinLength =
         prefs->GetPref(PWSprefs::PWLowercaseMinLength);
-  m_OPTMD.PWSymbolMinLength =
+      m_OPTMD.PWSymbolMinLength =
         prefs->GetPref(PWSprefs::PWSymbolMinLength);
-  m_OPTMD.PWUpperMinLength =
+      m_OPTMD.PWUpperMinLength =
         prefs->GetPref(PWSprefs::PWUppercaseMinLength);
 
-  CString cs_symbols = m_save_bSymbols =
+      cs_symbols = m_save_bSymbols =
         prefs->GetPref(PWSprefs::DefaultSymbols).c_str();
-  m_OPTMD.Symbols = cs_symbols;
-  m_OPTMD.UseOwnSymbols = m_save_iUseOwnSymbols =
+      m_OPTMD.Symbols = cs_symbols;
+      m_OPTMD.UseOwnSymbols = m_save_iUseOwnSymbols =
             (cs_symbols.GetLength() == 0) ? DEFAULT_SYMBOLS : OWN_SYMBOLS;
+      break;
+    case IDS_PSWDPOLICY:
+      //  This is performed in Options_PasswordPolicy::SetPolicyData
+      break;
+  }
 
   if (m_OPTMD.uicaller == IDS_OPTIONS) {
     // Security Data

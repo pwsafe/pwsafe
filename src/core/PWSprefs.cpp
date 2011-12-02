@@ -1686,37 +1686,9 @@ stringT PWSprefs::GetXMLPreferences()
   for (i = 0; i < NumStringPrefs; i++) {
     if (m_stringValues[i] != m_string_prefs[i].defVal &&
         m_string_prefs[i].ptype == ptDatabase) {
-      StringX::size_type p = m_stringValues[i].find(_T("]]>")); // special handling required
-      if (p == StringX::npos) {
-        // common case
-        os << "\t\t<" << m_string_prefs[i].name << "><![CDATA[" <<
-          m_stringValues[i] << "]]></" << 
+      stringT sTemp = PWSUtil::GetSafeXMLString(m_stringValues[i]);
+      os << "\t\t<" << m_string_prefs[i].name << sTemp << "</" << 
           m_string_prefs[i].name << ">" << endl;
-      } else {
-        // value has "]]>" sequence(s) that need(s) to be escaped
-        // Each "]]>" splits the field into two CDATA sections, one ending with
-        // ']]', the other starting with '>'
-        const StringX value = m_stringValues[i];
-        os << "\t\t<" << m_string_prefs[i].name << ">";
-        size_t from = 0, to = p + 2;
-        do {
-          StringX slice = value.substr(from, (to - from));
-          os << "<![CDATA[" << slice << "]]><![CDATA[";
-          from = to;
-          p = value.find(_T("]]>"), from); // are there more?
-          if (p == StringX::npos) {
-            to = value.length();
-            slice = value.substr(from, (to - from));
-          } else {
-            to = p + 2;
-            slice = value.substr(from, (to - from));
-            from = to;
-            to = value.length();
-          }
-          os <<  slice << "]]>";
-        } while (p != StringX::npos);
-        os << "</" << m_string_prefs[i].name << ">" << endl;      
-      }
     }
   }
   os << "\t</Preferences>" << endl << endl;

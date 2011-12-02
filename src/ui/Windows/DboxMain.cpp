@@ -127,7 +127,7 @@ DboxMain::DboxMain(CWnd* pParent)
   m_core(app.m_core), m_pFontTree(NULL),
   m_bTSUpdated(false),
   m_iSessionEndingStatus(IDIGNORE),
-  m_pchTip(NULL), m_pwchTip(NULL),
+  m_pwchTip(NULL),
   m_bValidate(false), m_bOpen(false), 
   m_IsStartClosed(false), m_IsStartSilent(false),
   m_bStartHiddenAndMinimized(false),
@@ -152,7 +152,7 @@ DboxMain::DboxMain(CWnd* pParent)
   m_bInRefresh(false), m_bInRestoreWindows(false), m_bExpireDisplayed(false),
   m_bTellUserExpired(false), m_bInRename(false), m_bWhitespaceRightClick(false),
   m_ilastaction(0),
-    m_LUUIDSelectedAtMinimize(pws_os::CUUID::NullUUID()),
+  m_LUUIDSelectedAtMinimize(pws_os::CUUID::NullUUID()),
   m_TUUIDSelectedAtMinimize(pws_os::CUUID::NullUUID()),
   m_LUUIDVisibleAtMinimize(pws_os::CUUID::NullUUID()),
   m_TUUIDVisibleAtMinimize(pws_os::CUUID::NullUUID())
@@ -216,7 +216,6 @@ DboxMain::~DboxMain()
   ::DestroyIcon(m_hIcon);
   ::DestroyIcon(m_hIconSm);
 
-  delete m_pchTip;
   delete m_pwchTip;
   delete m_pFontTree;
   DeletePasswordFont();
@@ -456,6 +455,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_RESTORESAFE, OnRestoreSafe)
   ON_COMMAND(ID_MENUITEM_OPTIONS, OnOptions)
   ON_COMMAND(ID_MENUITEM_GENERATEPASSWORD, OnGeneratePassword)
+  ON_COMMAND(ID_MENUITEM_PSWD_POLICIES, OnManagePasswordPolicies)
 
   // Help Menu
   ON_COMMAND(ID_MENUITEM_ABOUT, OnAbout)
@@ -582,7 +582,6 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND_RANGE(ID_MENUITEM_TRAYSELECT1, ID_MENUITEM_TRAYSELECTMAX, OnTraySelect)
   ON_UPDATE_COMMAND_UI_RANGE(ID_MENUITEM_TRAYSELECT1, ID_MENUITEM_TRAYSELECTMAX, OnUpdateTraySelect)
   ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTW, 0, 0xFFFF, OnToolTipText)
-  ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTA, 0, 0xFFFF, OnToolTipText)
 #endif
 END_MESSAGE_MAP()
 
@@ -686,6 +685,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_OPTIONS, true, true, true, true},
   {ID_MENUITEM_VALIDATE, false, false, false, true},
   {ID_MENUITEM_GENERATEPASSWORD, true, true, true, true},
+  {ID_MENUITEM_PSWD_POLICIES, true, true, true, false},
   // Help Menu
   {ID_MENUITEM_PWSAFE_WEBSITE, true, true, true, true},
   {ID_MENUITEM_ABOUT, true, true, true, true},
@@ -1856,21 +1856,18 @@ BOOL DboxMain::OnToolTipText(UINT, NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
   // This code is copied from the DLGCBR32 example that comes with MFC
   // Updated by MS on 25/09/2005
-#if !defined(POCKET_PC)
-  ASSERT(pNotifyStruct->code == TTN_NEEDTEXTA || pNotifyStruct->code == TTN_NEEDTEXTW);
+  ASSERT(pNotifyStruct->code == TTN_NEEDTEXTW);
 
   // allow top level routing frame to handle the message
   if (GetRoutingFrame() != NULL)
     return FALSE;
 
   // need to handle both ANSI and UNICODE versions of the message
-  TOOLTIPTEXTA* pTTTA = (TOOLTIPTEXTA*)pNotifyStruct;
-  TOOLTIPTEXTW* pTTTW = (TOOLTIPTEXTW*)pNotifyStruct;
+  TOOLTIPTEXTW *pTTTW = (TOOLTIPTEXTW *)pNotifyStruct;
   wchar_t tc_FullText[4096];  // Maxsize of a string in a resource file
   CString cs_TipText;
   UINT nID = (UINT)pNotifyStruct->idFrom;
-  if (pNotifyStruct->code == TTN_NEEDTEXTA && (pTTTA->uFlags & TTF_IDISHWND) ||
-      pNotifyStruct->code == TTN_NEEDTEXTW && (pTTTW->uFlags & TTF_IDISHWND)) {
+  if (pTTTW->uFlags & TTF_IDISHWND) {
     // idFrom is actually the HWND of the tool
     nID = ((UINT)(WORD)::GetDlgCtrlID((HWND)nID));
   }
@@ -1890,59 +1887,17 @@ BOOL DboxMain::OnToolTipText(UINT, NMHDR *pNotifyStruct, LRESULT *pLResult)
 
   // Assume ToolTip is greater than 80 characters in ALL cases and so use
   // the pointer approach.
-  // Otherwise comment out the definition of LONG_TOOLTIPS below
 
-#define LONG_TOOLTIPS
+  delete m_pwchTip;
 
-#ifdef LONG_TOOLTIPS
-  if (pNotifyStruct->code == TTN_NEEDTEXTA) {
-    delete m_pchTip;
-
-    m_pchTip = new char[cs_TipText.GetLength() + 1];
-#if (_MSC_VER >= 1400)
-    size_t num_converted;
-    wcstombs_s(&num_converted, m_pchTip, cs_TipText.GetLength() + 1, cs_TipText,
-               cs_TipText.GetLength() + 1);
-#else
-    wcstombs(m_pchTip, cs_TipText, cs_TipText.GetLength() + 1);
-#endif
-    pTTTA->lpszText = (LPSTR)m_pchTip;
-  } else {
-    delete m_pwchTip;
-
-    m_pwchTip = new WCHAR[cs_TipText.GetLength() + 1];
-#if (_MSC_VER >= 1400)
-    wcsncpy_s(m_pwchTip, cs_TipText.GetLength() + 1,
+  m_pwchTip = new WCHAR[cs_TipText.GetLength() + 1];
+  wcsncpy_s(m_pwchTip, cs_TipText.GetLength() + 1,
               cs_TipText, _TRUNCATE);
-#else
-    wcsncpy(m_pwchTip, cs_TipText, cs_TipText.GetLength() + 1);
-#endif
-    pTTTW->lpszText = (LPWSTR)m_pwchTip;
-  }
-#else // Short Tooltips!
-  if (pNotifyStruct->code == TTN_NEEDTEXTA) {
-    int n = WideCharToMultiByte(CP_ACP, 0, cs_TipText, -1,
-                                pTTTA->szText,
-                                _countof(pTTTA->szText),
-                                NULL, NULL);
-    if (n > 0)
-      pTTTA->szText[n - 1] = 0;
-  } else {
-#if (_MSC_VER >= 1400)
-    wcsncpy_s(pTTTW->szText, _countof(pTTTW->szText),
-              cs_TipText, _TRUNCATE);
-#else
-    wcsncpy(pTTTW->szText, cs_TipText, _countof(pTTTW->szText));
-#endif
-  }
-#endif // LONG_TOOLTIPS
+
+  pTTTW->lpszText = (LPWSTR)m_pwchTip;
 
   *pLResult = 0;
 
-  // bring the tooltip window above other popup windows
-  ::SetWindowPos(pNotifyStruct->hwndFrom, HWND_TOP, 0, 0, 0, 0,
-                 SWP_NOACTIVATE|SWP_NOSIZE|SWP_NOMOVE);
-#endif  // POCKET_PC
   return TRUE;    // message was handled
 }
 
