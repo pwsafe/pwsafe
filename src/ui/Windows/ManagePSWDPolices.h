@@ -54,7 +54,7 @@ protected:
 
 private:
   void UpdateNames();
-  void UpdateDetails(st_PSWDPolicy &st_pp);
+  void UpdateDetails();
   void UpdateEntryList();
   static int CALLBACK SortNames(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
   static int CALLBACK SortEntries(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
@@ -71,5 +71,5 @@ private:
   bool m_bSortNamesAscending, m_bSortEntriesAscending;
 
   int m_iSelectedItem;
-  bool m_bChanged;
+  bool m_bChanged, m_bViewPolicy;
 };

@@ -267,6 +267,7 @@ BOOL COptionsPasswordPolicy::OnInitDialog()
       if (!m_policyname.IsEmpty() && m_iter->second.usecount > 0) {
         // Cannot edit the policy 'Name' if it is present and use count > 0
         m_PolicyNameEdit.SetReadOnly(TRUE);
+        m_PolicyNameEdit.EnableWindow(FALSE);
       }
 
       m_PolicyNameEdit.SetWindowText(m_policyname);
@@ -939,11 +940,18 @@ void COptionsPasswordPolicy::UpdatePasswordPolicy()
                          m_Symbols : L"";
 
   StringX sxPolicyName(m_policyname), sx_OldPolicyName(m_oldpolicyname);
-  if (!m_oldpolicyname.IsEmpty() && m_policyname != m_oldpolicyname) {
-    // Delete old policy using old name
+  if (!sx_OldPolicyName.empty()) {
+    // Edit of an entry
     PSWDPolicyMapIter iter = m_MapPSWDPLC.find(sx_OldPolicyName);
+
+    // Get and reset use count
     if (iter != m_MapPSWDPLC.end())
+      st_pp.usecount = iter->second.usecount;
+
+    if (m_policyname != m_oldpolicyname) {
+      // Delete old policy changing name
       m_MapPSWDPLC.erase(iter);
+    }
   }
 
   // Insert the new name

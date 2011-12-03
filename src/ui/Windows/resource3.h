@@ -704,3 +704,5 @@
 #define IDS_NOT_USED                    5901
 #define IDS_COMPPOLICYNAME              5902
 #define IDS_POLICY_VIEWENTRY            5903
+#define IDC_DETAILS                      5904
+#define IDS_LIST                        5905

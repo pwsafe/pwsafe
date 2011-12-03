@@ -101,7 +101,8 @@ int CALLBACK CManagePSWDPolices::SortEntries(LPARAM lParam1, LPARAM lParam2,
 CManagePSWDPolices::CManagePSWDPolices(CWnd* pParent)
   : CPWDialog(CManagePSWDPolices::IDD, pParent),
   m_pToolTipCtrl(NULL), m_iSelectedItem(-1), m_bChanged(false), m_iSortEntriesIndex(0),
-  m_bSortEntriesAscending(true), m_iSortNamesIndex(0), m_bSortNamesAscending(true)
+  m_bSortEntriesAscending(true), m_iSortNamesIndex(0), m_bSortNamesAscending(true),
+  m_bViewPolicy(true)
 {
   ASSERT(pParent != NULL);
 
@@ -154,7 +155,7 @@ BEGIN_MESSAGE_MAP(CManagePSWDPolices, CPWDialog)
   ON_BN_CLICKED(IDC_DELETE, OnDelete)
   ON_BN_CLICKED(IDC_NEW, OnNew)
   ON_BN_CLICKED(IDC_EDIT, OnEdit)
-  ON_BN_CLICKED(IDC_LIST, OnList)
+  ON_BN_CLICKED(IDC_LIST_POLICYENTRIES, OnList)
 
   ON_NOTIFY(NM_CLICK, IDC_POLICYLIST, OnPolicySelected)
   ON_NOTIFY(NM_DBLCLK, IDC_POLICYENTRIES, OnEntryDoubleClicked)
@@ -190,7 +191,7 @@ BOOL CManagePSWDPolices::OnInitDialog()
     cs_ToolTip.LoadString(IDS_EDITPOLICY);
     m_pToolTipCtrl->AddTool(GetDlgItem(IDC_EDIT), cs_ToolTip);
     cs_ToolTip.LoadString(IDS_LISTPOLICY);
-    m_pToolTipCtrl->AddTool(GetDlgItem(IDC_LIST), cs_ToolTip);
+    m_pToolTipCtrl->AddTool(GetDlgItem(IDC_LIST_POLICYENTRIES), cs_ToolTip);
     cs_ToolTip.LoadString(IDS_CANCELPOLICYCHANGES);
     m_pToolTipCtrl->AddTool(GetDlgItem(IDCANCEL), cs_ToolTip);
     cs_ToolTip.LoadString(IDS_SAVEPOLICYCHANGES);
@@ -237,12 +238,14 @@ BOOL CManagePSWDPolices::OnInitDialog()
   cs_text.LoadString(IDS_USERNAME);
   m_PolicyEntries.InsertColumn(2, cs_text, LVCFMT_LEFT);
 
+  m_bViewPolicy = true;
+
   // Show its details
-  UpdateDetails(m_default_st_pp); 
+  UpdateDetails(); 
 
   // Since we select the default, disable Edit, List & Delete
   GetDlgItem(IDC_EDIT)->EnableWindow(FALSE);
-  GetDlgItem(IDC_LIST)->EnableWindow(FALSE);
+  GetDlgItem(IDC_LIST_POLICYENTRIES)->EnableWindow(FALSE);
   GetDlgItem(IDC_DELETE)->EnableWindow(FALSE);
   
   // Max. of 255 policy names allowed - only 2 hex digits used for number
@@ -324,11 +327,7 @@ void CManagePSWDPolices::OnNew()
     ASSERT(m_iSelectedItem != -1);
     m_PolicyNames.SetItemState(m_iSelectedItem, LVIS_SELECTED, LVIS_SELECTED);
 
-    PSWDPolicyMapIter iter = m_MapPSWDPLC.find(StringX(cs_policyname));
-    if (m_iSelectedItem != 0 && iter == m_MapPSWDPLC.end())
-      return;
-
-    UpdateDetails(iter->second);
+    UpdateDetails();
   }
 }
 
@@ -371,11 +370,7 @@ void CManagePSWDPolices::OnEdit()
     ASSERT(m_iSelectedItem != -1);
     m_PolicyNames.SetItemState(m_iSelectedItem, LVIS_SELECTED, LVIS_SELECTED);
 
-    PSWDPolicyMapIter iter = m_MapPSWDPLC.find(StringX(cs_policyname));
-    if (m_iSelectedItem != 0 && iter == m_MapPSWDPLC.end())
-      return;
-
-    UpdateDetails(iter->second);
+    UpdateDetails();
   }
 }
 
@@ -386,7 +381,16 @@ void CManagePSWDPolices::OnList()
   if (m_iSelectedItem < 1)
     return;
 
-  UpdateEntryList();
+  m_bViewPolicy = !m_bViewPolicy;
+
+  if (m_bViewPolicy)
+    UpdateDetails();
+  else
+    UpdateEntryList();
+
+
+  CString cs_label(MAKEINTRESOURCE(m_bViewPolicy ? IDS_LIST : IDC_DETAILS));
+  GetDlgItem(IDC_LIST_POLICYENTRIES)->SetWindowText(cs_label);
 }
 
 void CManagePSWDPolices::OnDelete()
@@ -449,6 +453,9 @@ void CManagePSWDPolices::OnPolicySelected(NMHDR *pNotifyStruct, LRESULT *pLResul
       return;
   }
 
+  CString cs_label(MAKEINTRESOURCE(IDS_LIST));
+  GetDlgItem(IDC_LIST_POLICYENTRIES)->SetWindowText(cs_label);
+
   // Clear both lists
   m_PolicyDetails.DeleteAllItems();
   m_PolicyEntries.DeleteAllItems();
@@ -459,7 +466,7 @@ void CManagePSWDPolices::OnPolicySelected(NMHDR *pNotifyStruct, LRESULT *pLResul
   if (m_iSelectedItem < 1) {
     // Can't Edit, List or Delete the database default (0) or if nothing selected (-1)
     GetDlgItem(IDC_EDIT)->EnableWindow(FALSE);
-    GetDlgItem(IDC_LIST)->EnableWindow(FALSE);
+    GetDlgItem(IDC_LIST_POLICYENTRIES)->EnableWindow(FALSE);
     GetDlgItem(IDC_DELETE)->EnableWindow(FALSE);
   } else {
     // Can Edit any other but only...
@@ -470,7 +477,7 @@ void CManagePSWDPolices::OnPolicySelected(NMHDR *pNotifyStruct, LRESULT *pLResul
     // Always allow edit
     GetDlgItem(IDC_EDIT)->EnableWindow(TRUE);
     // Do not allow list of associated items if use count is zero
-    GetDlgItem(IDC_LIST)->EnableWindow(citer->second.usecount == 0 ?
+    GetDlgItem(IDC_LIST_POLICYENTRIES)->EnableWindow(citer->second.usecount == 0 ?
                                        FALSE : TRUE);
     // Do not allow delete of policy if use count is non-zero
     GetDlgItem(IDC_DELETE)->EnableWindow(citer->second.usecount != 0 ?
@@ -480,22 +487,8 @@ void CManagePSWDPolices::OnPolicySelected(NMHDR *pNotifyStruct, LRESULT *pLResul
   if (m_iSelectedItem == -1)
     return;
 
-  // Now fill in the details!
-
-  /*
-    If m_iSelectedItem = 0, then fill in with the database default,
-    otherwise use the name entry
-  */
-
-  CString cs_policyname = m_PolicyNames.GetItemText(m_iSelectedItem, 0);
-
-  PSWDPolicyMapIter iter = m_MapPSWDPLC.find(StringX(cs_policyname));
-  if (m_iSelectedItem != 0 && iter == m_MapPSWDPLC.end())
-    return;
-
-  st_PSWDPolicy &st_pp = m_iSelectedItem == 0 ? m_default_st_pp : iter->second;
-
-  UpdateDetails(st_pp); 
+  m_bViewPolicy = true;
+  UpdateDetails(); 
 }
 
 void CManagePSWDPolices::OnEntryDoubleClicked(NMHDR *, LRESULT *pLResult)
@@ -648,9 +641,8 @@ void CManagePSWDPolices::UpdateNames()
   m_PolicyNames.SetColumnWidth(1, LVSCW_AUTOSIZE_USEHEADER);
 }
 
-void CManagePSWDPolices::UpdateDetails(st_PSWDPolicy &st_pp)
+void CManagePSWDPolices::UpdateDetails()
 {
-
   // Make sure correct ListCtrl and title are visible
   m_PolicyDetails.ShowWindow(SW_SHOW);
   m_PolicyDetails.EnableWindow(TRUE);
@@ -658,6 +650,27 @@ void CManagePSWDPolices::UpdateDetails(st_PSWDPolicy &st_pp)
   m_PolicyEntries.ShowWindow(SW_HIDE);
   m_PolicyEntries.EnableWindow(FALSE);
   GetDlgItem(IDC_STATIC_POLICYENTRIES)->ShowWindow(SW_HIDE);
+
+  // Now fill in the details!
+
+  /*
+    If m_iSelectedItem = 0, then fill in with the database default,
+    otherwise use the name entry
+  */
+
+  st_PSWDPolicy st_pp;
+
+  if (m_iSelectedItem != 0) {
+    CString cs_policyname = m_PolicyNames.GetItemText(m_iSelectedItem, 0);
+
+    PSWDPolicyMapIter iter = m_MapPSWDPLC.find(StringX(cs_policyname));
+    if (iter == m_MapPSWDPLC.end())
+      return;
+
+    st_pp = iter->second;
+  } else {
+    st_pp = m_default_st_pp;
+  }
 
   CString cs_yes(MAKEINTRESOURCE(IDS_YES)), cs_no(MAKEINTRESOURCE(IDS_NO));
   cs_yes.Remove(L'&');

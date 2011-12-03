@@ -169,7 +169,7 @@ PasswordSafe V3.19 introduced Format 0x0306
 PasswordSafe V3.22 introduced Format 0x0307
 PasswordSafe V3.25 introduced Format 0x0308
 PasswordSafe V3.26 introduced Format 0x0309
-PasswordSafe V3.28 introduced Format 0x0310
+PasswordSafe V3.28 introduced Format 0x030A
 
 [2] A universally unique identifier is needed in order to synchronize
 databases, e.g., between a handheld pocketPC device and a

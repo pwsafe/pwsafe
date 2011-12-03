@@ -739,7 +739,7 @@
 #define IDC_INPUTBOX_TEXT               1459
 #define IDC_INPUTBOX_CHAR_COUNT         1460
 #define IDC_EDIT                        1461
-#define IDC_LIST                        1462
+#define IDC_LIST_POLICYENTRIES          1462
 #define IDC_POLICYLIST                  1463
 #define IDC_POLICYNAME                  1464
 #define IDC_USEPWPOLICYNAME             1465
@@ -747,11 +747,10 @@
 #define IDC_POLICYENTRIES               1467
 #define IDC_STATIC_POLICYDETAILS        1468
 #define IDC_STATIC_POLICYENTRIES        1469
-#define IDC_STATIC_POLICYNAME           1470
-#define IDC_USENAMED_POLICY             1471
-#define IDC_STATIC_NAMEDPOLICY          1472
-#define IDC_POLICYNAMES_HEADER          1473
-#define IDC_POLICYENTRIES_HEADER        1474
+#define IDC_USENAMED_POLICY             1470
+#define IDC_STATIC_NAMEDPOLICY          1471
+#define IDC_POLICYNAMES_HEADER          1472
+#define IDC_POLICYENTRIES_HEADER        1473
 
 // Next default values for new objects
 // 
@@ -759,7 +758,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        519
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1475
+#define _APS_NEXT_CONTROL_VALUE         1474
 #define _APS_NEXT_SYMED_VALUE           166
 #endif
 #endif
