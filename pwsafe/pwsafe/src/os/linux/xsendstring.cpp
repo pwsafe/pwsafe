@@ -11,10 +11,9 @@
  *
  * Calls X library functions defined in Xt and Xtst
  *
+ * To-Do list:
  * +. Initialize all the params of XKeyEvent
- * +  XOpenDisplay calls don't have matching XCloseDisplay
  * +  __STD_ISO_10646__ check
- * +  Must have UNICODE to keysym map for legacy keysyms
  * +  Remap an unused keycode to a keysym of XKeysymToKeycode fails
  */
 
@@ -50,10 +49,7 @@ struct AutotypeGlobals
 {
 	Boolean			error_detected;
 	char			errorString[1024];
-	KeyCode 		lshiftCode;
-  pws_os::AutotypeMethod	method;
-	Boolean			LiteralKeysymsInitialized;
-} atGlobals	= { False, {0}, 0, pws_os::ATMETHOD_AUTO, False };
+} atGlobals	= { False, {0} };
 
 class autotype_exception: public std::exception
 {
@@ -79,11 +75,6 @@ int ErrorHandler(Display *my_dpy, XErrorEvent *event)
 
 
 
-
-void InitLiteralKeysyms(void)
-{
-	atGlobals.lshiftCode = XKeysymToKeycode(XOpenDisplay(NULL), XK_Shift_L);
-}
 
 void XTest_SendEvent(XKeyEvent *event)
 {
@@ -115,7 +106,7 @@ void XTest_SendKeyEvent(XKeyEvent* event)
 	if (event->state & ShiftMask) {
 		memcpy(&shiftEvent, event, sizeof(shiftEvent));
 
-		shiftEvent.keycode = atGlobals.lshiftCode;
+		shiftEvent.keycode = XKeysymToKeycode(event->display, XK_Shift_L);
 		shiftEvent.type = KeyPress;
 
 		XTest_SendEvent(&shiftEvent);
@@ -136,29 +127,40 @@ void XTest_SendKeyEvent(XKeyEvent* event)
 
 }
 
-Bool UseXTest(void)
+Bool UseXTest(Display* disp)
 {
 	int major_opcode, first_event, first_error;
 	static Bool useXTest;
 	static int checked = 0;
 
 	if (!checked) {
-		useXTest = XQueryExtension(XOpenDisplay(0), "XTEST", &major_opcode, &first_event, &first_error);
+		useXTest = XQueryExtension(disp, "XTEST", &major_opcode, &first_event, &first_error);
 		checked = 1;
 	}
 	return useXTest;
 }
 
-void InitKeyEvent(XKeyEvent* event)
-{
-	int	  revert_to;
-	event->display = XOpenDisplay(NULL);
-	XGetInputFocus(event->display, &event->window, &revert_to);
+class AutotypeEvent: public XKeyEvent {
+public:
+  AutotypeEvent()
+  {
+    display = XOpenDisplay(NULL);
+    if (display) {
+      int	  revert_to;
+      XGetInputFocus(display, &window, &revert_to);
+      subwindow = None;
+      x = y = x_root = y_root = 1;
+      same_screen = True;
+    }
+  }
 
-	event->subwindow = None;
-	event->x = event->y = event->x_root = event->y_root = 1;
-	event->same_screen = TRUE;
-}
+  ~AutotypeEvent() {
+    if (display)
+      XCloseDisplay(display);
+  }
+  
+  bool operator !() const { return display != NULL; }
+};
 
 
 int FindModifierMask(Display* disp, KeySym sym)
@@ -289,14 +291,17 @@ public:
  */
 void DoSendString(const StringX& str, pws_os::AutotypeMethod method, unsigned delayMS)
 {
-
-  if (!atGlobals.LiteralKeysymsInitialized) {
-    InitLiteralKeysyms();
-    atGlobals.LiteralKeysymsInitialized = True;
+  atGlobals.error_detected = false;
+  atGlobals.errorString[0] = 0;
+  
+  AutotypeEvent event;
+  if (!event) {
+    if (!atGlobals.error_detected)
+      atGlobals.error_detected = true;
+    if (!atGlobals.errorString[0])
+      strncpy(atGlobals.errorString, "Could not open X display for autotyping", NumberOf(atGlobals.errorString));
+    throw autotype_exception();
   }
-
-  XKeyEvent event;
-  InitKeyEvent(&event);
 
   // convert all the chars into keycodes and required shift states first
   // Abort if any of the characters cannot be converted
@@ -340,7 +345,7 @@ void DoSendString(const StringX& str, pws_os::AutotypeMethod method, unsigned de
   XSetErrorHandler(ErrorHandler);
   atGlobals.error_detected = False;
 
-  bool useXTEST = (UseXTest() && method != pws_os::ATMETHOD_XSENDKEYS);
+  bool useXTEST = (UseXTest(event.display) && method != pws_os::ATMETHOD_XSENDKEYS);
   void (*KeySendFunction)(XKeyEvent*);
 
   if ( useXTEST) {
