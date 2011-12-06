@@ -16,12 +16,13 @@
 
 class CVKeyBoardDlg;
 class DboxMain;
+class PWScore;
 
 class CPasskeySetup : public CPKBaseDlg
 {
   // Construction
 public:
-  CPasskeySetup(CWnd* pParent = NULL);   // standard constructor
+  CPasskeySetup(CWnd* pParent, PWScore &core);   // standard constructor
   ~CPasskeySetup();
 
 protected:
@@ -50,6 +51,8 @@ protected:
   afx_msg void OnVirtualKeyboard();
   afx_msg void OnYubikeyBtn();
   void ProcessPhrase(); // Check the passphrase, call OnOK, OnCancel or just return
+  void YubiFailed(); // If YubiKey failed, offer to initialize it.
+  void YubiInitialize(); // called if YubiFailed and user confirmed
   afx_msg LRESULT OnInsertBuffer(WPARAM, LPARAM);
   //}}AFX_MSG
 
@@ -60,6 +63,7 @@ private:
   CVKeyBoardDlg *m_pVKeyBoardDlg;
   UINT m_CtrlID;
   UINT m_LastFocus;
+  PWScore &m_core;
 };
 //-----------------------------------------------------------------------------
 // Local variables:

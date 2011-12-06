@@ -107,6 +107,7 @@ private:
   void UpdateRO();
   void ProcessPhrase();
   CVKeyBoardDlg *m_pVKeyBoardDlg;
+  unsigned char *m_yubi_sk;
 };
 //-----------------------------------------------------------------------------
 // Local variables:

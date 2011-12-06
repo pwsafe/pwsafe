@@ -31,6 +31,7 @@ class CPKBaseDlg : public CPWDialog {
   static const wchar_t PSSWDCHAR;
 
   virtual void ProcessPhrase() {}; // Check the passphrase, call OnOK, OnCancel or just return
+  virtual void YubiFailed() {};
   virtual void DoDataExchange(CDataExchange* pDX);
   afx_msg void OnDestroy();
   afx_msg void OnTimer(UINT_PTR nIDEvent);

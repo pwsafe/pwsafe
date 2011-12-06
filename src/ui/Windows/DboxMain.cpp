@@ -685,7 +685,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_OPTIONS, true, true, true, true},
   {ID_MENUITEM_VALIDATE, false, false, false, true},
   {ID_MENUITEM_GENERATEPASSWORD, true, true, true, true},
-  {ID_MENUITEM_YUBIKEY, true, false, false, false},
+  {ID_MENUITEM_YUBIKEY, true, false, true, false},
   // Help Menu
   {ID_MENUITEM_PWSAFE_WEBSITE, true, true, true, true},
   {ID_MENUITEM_ABOUT, true, true, true, true},
@@ -1132,7 +1132,7 @@ BOOL DboxMain::OnInitDialog()
       if (pws_os::FileExists(fname)) 
         bOOI = OpenOnInit();
       else { // really first install!
-        CPasskeySetup dbox_pksetup(this);
+        CPasskeySetup dbox_pksetup(this, m_core);
         INT_PTR rc = dbox_pksetup.DoModal();
         if (rc == IDCANCEL) {
           PostQuitMessage(0);

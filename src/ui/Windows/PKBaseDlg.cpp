@@ -151,6 +151,7 @@ void CPKBaseDlg::yubiCheckCompleted()
     m_yubi_status.SetWindowText(_T("YubiKey timed out"));
     m_yubi_status.ShowWindow(SW_SHOW);
     m_yk.closeKey();
+    YubiFailed(); // allow subclass to do something useful
     break;
 
   default:                // A non-recoverable error has occured

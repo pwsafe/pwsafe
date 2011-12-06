@@ -21,6 +21,7 @@ down the streetsky.  [Groucho Marx]
 #include "core/PwsPlatform.h"
 #include "core/Pwsdirs.h"
 #include "core/pwsprefs.h"
+#include "core/PWScore.h"
 #include "core/core.h"
 
 #include "os/file.h"
@@ -68,7 +69,7 @@ CPasskeyEntry::CPasskeyEntry(CWnd* pParent, const CString& a_filespec, int index
   m_PKE_ReadOnly(bReadOnly ? TRUE : FALSE),
   m_bForceReadOnly(bForceReadOnly),
   m_bHideReadOnly(bHideReadOnly),
-  m_pVKeyBoardDlg(NULL)
+    m_pVKeyBoardDlg(NULL), m_yubi_sk(NULL)
 {
   DBGMSG("CPasskeyEntry()\n");
   if (m_index == GCP_FIRST) {
@@ -97,6 +98,10 @@ CPasskeyEntry::~CPasskeyEntry()
 
     m_pVKeyBoardDlg->DestroyWindow();
     delete m_pVKeyBoardDlg;
+  }
+  if (m_yubi_sk != NULL) {
+    trashMemory(m_yubi_sk, 20);
+    delete[] m_yubi_sk;
   }
 }
 
@@ -368,7 +373,7 @@ void CPasskeyEntry::OnCreateDb()
   }
 
   // 2. Get a password
-  CPasskeySetup pksetup(this);
+  CPasskeySetup pksetup(this, *dynamic_cast<PWScore *>(m_pDbx->GetCore()));
   rc = pksetup.DoModal();
 
   if (rc != IDOK)

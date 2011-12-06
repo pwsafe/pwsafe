@@ -411,7 +411,7 @@ int DboxMain::NewFile(StringX &newfilename)
       return PWScore::USER_CANCEL;
   }
 
-  CPasskeySetup pksetup(this);
+  CPasskeySetup pksetup(this, m_core);
   rc = pksetup.DoModal();
 
   if (rc == IDCANCEL)

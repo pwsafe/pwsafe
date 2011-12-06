@@ -14,12 +14,15 @@
 #include "DboxMain.h"
 #include "GeneralMsgBox.h"
 #include "Options_PropertySheet.h"
+#include "YubiCfgDlg.h"
 
 #include "core/PWCharPool.h" // for CheckPassword()
 #include "core/PwsPlatform.h"
 #include "core/pwsprefs.h"
+#include "core/PWScore.h"
 
 #include "os/dir.h"
+#include "os/rand.h"
 
 #include "VirtualKeyboard/VKeyBoardDlg.h"
 
@@ -45,9 +48,9 @@ static char THIS_FILE[] = __FILE__;
 
 
 //-----------------------------------------------------------------------------
-CPasskeySetup::CPasskeySetup(CWnd *pParent)
+CPasskeySetup::CPasskeySetup(CWnd *pParent, PWScore &core)
   : CPKBaseDlg(CPasskeySetup::IDD, pParent), m_pVKeyBoardDlg(NULL),
-  m_LastFocus(IDC_PASSKEY)
+    m_LastFocus(IDC_PASSKEY), m_core(core)
 {
   m_pDbx = static_cast<DboxMain *>(pParent);
 
@@ -310,3 +313,34 @@ void CPasskeySetup::ProcessPhrase()
   CPKBaseDlg::OnOK();
   m_passkey = save_passkey;
 }
+
+void CPasskeySetup::YubiFailed()
+{
+    CGeneralMsgBox gmb;
+    INT_PTR rc = gmb.MessageBox(_T("The YubiKey appears uninitialized. Initialize it?"),
+                                AfxGetAppName(),
+                                MB_YESNO | MB_ICONQUESTION);
+    if (rc == IDYES) {
+      YubiInitialize();
+    }
+}
+
+void CPasskeySetup::YubiInitialize()
+{
+  CGeneralMsgBox gmb;
+  CYubiCfgDlg ycd(this, m_core);
+  unsigned char sk[CYubiCfgDlg::YUBI_SK_LEN];
+  pws_os::GetRandomData(sk, CYubiCfgDlg::YUBI_SK_LEN);
+  if (ycd.WriteYubiSK(sk) == YKLIB_OK) {
+      m_core.SetYubiSK(sk);
+      gmb.MessageBox(_T("YubiKey initialized sucessfully, close this message box and activate it."),
+                     AfxGetAppName(),
+                     MB_OK | MB_ICONINFORMATION);
+      PostMessage(WM_COMMAND, IDC_YUBIKEY_BTN);
+  } else {
+    gmb.MessageBox(_T("Failed to initialize YubiKey. Please try again."),
+                     AfxGetAppName(),
+                     MB_OK | MB_ICONERROR);
+  }
+}
+
