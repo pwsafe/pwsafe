@@ -159,7 +159,7 @@ public:
       XCloseDisplay(display);
   }
   
-  bool operator !() const { return display != NULL; }
+  bool operator !() const { return display == NULL; }
 };
 
 
@@ -190,8 +190,8 @@ int FindModifierMask(Display* disp, KeySym sym)
       }
     }
     XFreeModifiermap(modmap);
+    assert( modmask >= 3 && modmask <= 7);
   }
-  assert( modmask >= 3 && modmask <= 7);
   return 1 << modmask;
 }
 
