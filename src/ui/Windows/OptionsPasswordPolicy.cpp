@@ -300,7 +300,7 @@ LRESULT COptionsPasswordPolicy::OnQuerySiblings(WPARAM wParam, LPARAM )
           (m_PWUseDigits          == TRUE &&
            M_PWDigitMinLength()   != m_PWDigitMinLength)   ||
           M_PWUseSymbols()        != m_PWUseSymbols        ||
-          (m_PWUseSymbols          = TRUE &&
+          (m_PWUseSymbols         == TRUE &&
            M_PWSymbolMinLength()  != m_PWSymbolMinLength)  ||
           M_PWEasyVision()        != m_PWEasyVision        ||
           M_PWUseHexdigits()      != m_PWUseHexdigits      ||
