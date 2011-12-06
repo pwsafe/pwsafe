@@ -21,7 +21,7 @@ CKeySend::~CKeySend()
 
 void CKeySend::SendString(const StringX &data)
 {
-  pws_os::SendString(data, pws_os::ATMETHOD_AUTO, m_delayMS);
+  pws_os::SendString(data, pws_os::ATMETHOD_XSENDKEYS, m_delayMS);
 }
 
 void CKeySend::SetDelay(unsigned d)
