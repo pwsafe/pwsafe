@@ -154,7 +154,7 @@ Reserved                    0x0c        -                            [13]
 Reserved                    0x0d        -                            [13]
 Reserved                    0x0e        -                            [13]
 Recently Used Entries       0x0f        Text                         [14]
-Database Password Policies  0x10        Text                         [15]
+Named Password Policies     0x10        Text                         [15]
 End of Entry                0xff        [empty]       Y              [16]
 
 [1] The version number of the database format. For this version, the value

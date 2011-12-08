@@ -247,7 +247,7 @@ void ThisMfcApp::SetMinidumpUserStreams(const bool bOpen, const bool bRW, UserSt
   UNREFERENCED_PARAMETER(bRW);
   UNREFERENCED_PARAMETER(iStream);
 #endif
-}  
+}
 
 int ThisMfcApp::ExitInstance()
 {

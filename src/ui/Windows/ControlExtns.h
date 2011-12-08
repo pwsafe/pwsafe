@@ -201,7 +201,7 @@ public:
 
 protected:
   //{{AFX_MSG(CComboBoxExtn)
-  afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
+  afx_msg HBRUSH OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor);
   afx_msg void OnDestroy();
   //}}AFX_MSG
 
@@ -244,6 +244,10 @@ public:
   {m_bUseTextColour = true; m_crfText = crf;}
   void ResetTextColour()
   {m_bUseTextColour = false;}
+  void SetBkgColour(int icolour)
+  {m_bUseBkgColour = true; m_icolour = icolour;}
+  void ResetBkgColour()
+  {m_bUseBkgColour = false;}
   void SetType(int type);
 
 protected:
@@ -257,7 +261,8 @@ private:
   void DrawButton(HWND hWnd, HDC hDC, RECT *pRect, BOOL fChecked, BOOL fHot);
 
   CString m_caption;
-  bool m_bUseTextColour;
+  bool m_bUseTextColour, m_bUseBkgColour;
   COLORREF m_crfText;
+  int m_icolour;
   int m_type;
 };

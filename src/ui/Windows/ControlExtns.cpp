@@ -611,7 +611,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CComboBoxExt message handlers
 
-HBRUSH CComboBoxExtn::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
+HBRUSH CComboBoxExtn::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
 {
   HBRUSH hbr = CComboBox::OnCtlColor(pDC, pWnd, nCtlColor);
 
@@ -896,7 +896,8 @@ LRESULT CSymbolEdit::OnPaste(WPARAM , LPARAM )
 // CButtonExtn
 
 CButtonExtn::CButtonExtn()
-  : m_bUseTextColour(false), m_caption(L""), m_type(BS_AUTOCHECKBOX)
+  : m_bUseTextColour(false), m_bUseBkgColour(false),
+  m_caption(L""), m_type(BS_AUTOCHECKBOX)
 {
 }
 
@@ -953,7 +954,8 @@ void CButtonExtn::DrawButton(HWND hWnd, HDC hDC, RECT *pRect, BOOL fChecked, BOO
   SelectObject(hMemDC, hBitmap);
 
   RECT rFillRect = {0, 0, nWidth, nHeight};
-  FillRect(hMemDC, &rFillRect, CreateSolidBrush(GetSysColor(COLOR_WINDOW)));
+  FillRect(hMemDC, &rFillRect,
+           CreateSolidBrush(GetSysColor(m_bUseBkgColour ? m_icolour : COLOR_WINDOW)));
 
   HTHEME hTheme = OpenThemeData(hWnd, L"BUTTON");
   int nStateID(0);

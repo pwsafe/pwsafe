@@ -446,7 +446,7 @@ public:
   StringX m_AutoType;
   std::vector<size_t> m_vactionverboffsets;
 
-  // Used in Add & Edit & OptionsPasswordPolicy
+  // Used in Add & Edit & PasswordPolicyDlg
   PWPolicy m_pwp;
 
   // Mapping Group to Tree Item to save searching all the time!

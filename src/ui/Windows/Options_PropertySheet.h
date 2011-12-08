@@ -14,7 +14,6 @@
 #include "OptionsDisplay.h"
 #include "OptionsMisc.h"
 #include "OptionsPasswordHistory.h"
-#include "OptionsPasswordPolicy.h"
 #include "OptionsSecurity.h"
 #include "OptionsShortcuts.h"
 #include "OptionsSystem.h"
@@ -63,13 +62,6 @@ public:
   const bool StartupShortcutChanged() {return m_OPTMD.Startup !=
                                               m_bStartupShortcutExists;}
   
-  // Only for Password Policy maintenance
-  void SetPolicyData(st_PSWDPolicy &st_pp, CString policyname,
-                     PSWDPolicyMap &MapPSWDPLC)
-  {m_pp_passwordpolicy->SetPolicyData(st_pp, policyname, MapPSWDPLC);}
-  void GetPolicyData( CString &cs_policyname, PSWDPolicyMap &MapPSWDPLC)
-  {m_pp_passwordpolicy->GetPolicyData(cs_policyname, MapPSWDPLC);}
-
 protected:
   st_Opt_master_data m_OPTMD;
 
@@ -89,7 +81,6 @@ private:
   COptionsDisplay         *m_pp_display;
   COptionsMisc            *m_pp_misc;
   COptionsPasswordHistory *m_pp_passwordhistory;
-  COptionsPasswordPolicy  *m_pp_passwordpolicy;
   COptionsSecurity        *m_pp_security;
   COptionsShortcuts       *m_pp_shortcuts;
   COptionsSystem          *m_pp_system;

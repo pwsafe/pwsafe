@@ -28,12 +28,9 @@ COptions_PropertySheet::COptions_PropertySheet(UINT nID, CWnd* pParent,
   m_save_bLockOnWindowLock(FALSE), m_bStartupShortcutExists(FALSE),
   m_save_bHighlightChanges(FALSE),
   m_pp_backup(NULL), m_pp_display(NULL), m_pp_misc(NULL),
-  m_pp_passwordhistory(NULL), m_pp_passwordpolicy(NULL), m_pp_security(NULL),
+  m_pp_passwordhistory(NULL), m_pp_security(NULL),
   m_pp_shortcuts(NULL), m_pp_system(NULL)
 {
-  // nID = IDS_OPTIONS, IDS_GENERATEPASSWORD, IDS_PSWDPOLICY
-  m_OPTMD.uicaller = nID;
-
   ASSERT(pParent != NULL);
 
   m_OPTMD.pDbx = static_cast<DboxMain *>(pParent);
@@ -45,36 +42,25 @@ COptions_PropertySheet::COptions_PropertySheet(UINT nID, CWnd* pParent,
   // to be used by their c'tors
   m_OPTMD.bLongPPs = bLongPPs; // chooseResource();
 
-  switch (nID) {
-    case IDS_OPTIONS:
-      m_pp_backup          = new COptionsBackup(this, &m_OPTMD);
-      m_pp_display         = new COptionsDisplay(this, &m_OPTMD);
-      m_pp_misc            = new COptionsMisc(this, &m_OPTMD);
-      m_pp_passwordhistory = new COptionsPasswordHistory(this, &m_OPTMD);
-      m_pp_passwordpolicy  = new COptionsPasswordPolicy(this, &m_OPTMD);
-      m_pp_security        = new COptionsSecurity(this, &m_OPTMD);
-      m_pp_shortcuts       = new COptionsShortcuts(this, &m_OPTMD);
-      m_pp_system          = new COptionsSystem(this, &m_OPTMD);
+  m_pp_backup          = new COptionsBackup(this, &m_OPTMD);
+  m_pp_display         = new COptionsDisplay(this, &m_OPTMD);
+  m_pp_misc            = new COptionsMisc(this, &m_OPTMD);
+  m_pp_passwordhistory = new COptionsPasswordHistory(this, &m_OPTMD);
+  m_pp_security        = new COptionsSecurity(this, &m_OPTMD);
+  m_pp_shortcuts       = new COptionsShortcuts(this, &m_OPTMD);
+  m_pp_system          = new COptionsSystem(this, &m_OPTMD);
 
-      m_pp_shortcuts->InitialSetup(m_OPTMD.pDbx->GetMapMenuShortcuts(),
-                                   m_OPTMD.pDbx->GetExcludedMenuItems(),
-                                   m_OPTMD.pDbx->GetReservedShortcuts());
+  m_pp_shortcuts->InitialSetup(m_OPTMD.pDbx->GetMapMenuShortcuts(),
+                               m_OPTMD.pDbx->GetExcludedMenuItems(),
+                               m_OPTMD.pDbx->GetReservedShortcuts());
 
-      AddPage(m_pp_backup);
-      AddPage(m_pp_display);
-      AddPage(m_pp_misc);
-      AddPage(m_pp_passwordhistory);
-      AddPage(m_pp_passwordpolicy);
-      AddPage(m_pp_security);
-      AddPage(m_pp_shortcuts);
-      AddPage(m_pp_system);
-      break;
-    case IDS_GENERATEPASSWORD:
-    case IDS_PSWDPOLICY:
-      m_pp_passwordpolicy  = new COptionsPasswordPolicy(this, &m_OPTMD);
-      AddPage(m_pp_passwordpolicy);
-      break;
-  }
+  AddPage(m_pp_backup);
+  AddPage(m_pp_display);
+  AddPage(m_pp_misc);
+  AddPage(m_pp_passwordhistory);
+  AddPage(m_pp_security);
+  AddPage(m_pp_shortcuts);
+  AddPage(m_pp_system);
  
   CString cs_caption(MAKEINTRESOURCE(nID));
   m_psh.pszCaption = _wcsdup(cs_caption);
@@ -87,7 +73,6 @@ COptions_PropertySheet::~COptions_PropertySheet()
   delete m_pp_display;
   delete m_pp_misc;
   delete m_pp_passwordhistory;
-  delete m_pp_passwordpolicy;
   delete m_pp_security;
   delete m_pp_shortcuts;
   delete m_pp_system;
@@ -112,8 +97,7 @@ BOOL COptions_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
       return TRUE;
 
     // Now update preferences as per user's wishes
-    if (m_OPTMD.uicaller == IDS_OPTIONS)
-      UpdateCopyPreferences();
+    UpdateCopyPreferences();
 
     // Now end it all so that OnApply isn't called again
     CPWPropertySheet::EndDialog(IDOK);
@@ -140,193 +124,145 @@ void COptions_PropertySheet::SetupInitialValues()
   // Set up a copy of the preferences
   prefs->SetupCopyPrefs();
 
-  if (m_OPTMD.uicaller == IDS_OPTIONS) {
-    // Backup Data
-    CString cs_backupPrefix, cs_backupDir;
-    m_OPTMD.CurrentFile = m_OPTMD.pDbx->GetCurFile().c_str();
-    m_OPTMD.SaveImmediately =
-        prefs->GetPref(PWSprefs::SaveImmediately) ? TRUE : FALSE;
-    m_OPTMD.BackupBeforeSave =
-        prefs->GetPref(PWSprefs::BackupBeforeEverySave) ? TRUE : FALSE;
-    cs_backupPrefix =
-        prefs->GetPref(PWSprefs::BackupPrefixValue).c_str();
-    m_OPTMD.BackupPrefix = cs_backupPrefix.IsEmpty() ? 0 : 1;
-    m_OPTMD.UserBackupPrefix = (LPCWSTR)cs_backupPrefix;
-    m_OPTMD.BackupSuffix =
-        prefs->GetPref(PWSprefs::BackupSuffix);
-    m_OPTMD.MaxNumIncBackups =
-        prefs->GetPref(PWSprefs::BackupMaxIncremented);
-    cs_backupDir =
-        prefs->GetPref(PWSprefs::BackupDir).c_str();
-    m_OPTMD.BackupLocation = cs_backupDir.IsEmpty() ? 0 : 1;
-    m_OPTMD.UserBackupOtherLocation = (LPCWSTR)cs_backupDir;
+  // Backup Data
+  CString cs_backupPrefix, cs_backupDir;
+  m_OPTMD.CurrentFile = m_OPTMD.pDbx->GetCurFile().c_str();
+  m_OPTMD.SaveImmediately =
+      prefs->GetPref(PWSprefs::SaveImmediately) ? TRUE : FALSE;
+  m_OPTMD.BackupBeforeSave =
+      prefs->GetPref(PWSprefs::BackupBeforeEverySave) ? TRUE : FALSE;
+  cs_backupPrefix =
+      prefs->GetPref(PWSprefs::BackupPrefixValue).c_str();
+  m_OPTMD.BackupPrefix = cs_backupPrefix.IsEmpty() ? 0 : 1;
+  m_OPTMD.UserBackupPrefix = (LPCWSTR)cs_backupPrefix;
+  m_OPTMD.BackupSuffix =
+      prefs->GetPref(PWSprefs::BackupSuffix);
+  m_OPTMD.MaxNumIncBackups =
+      prefs->GetPref(PWSprefs::BackupMaxIncremented);
+  cs_backupDir =
+      prefs->GetPref(PWSprefs::BackupDir).c_str();
+  m_OPTMD.BackupLocation = cs_backupDir.IsEmpty() ? 0 : 1;
+  m_OPTMD.UserBackupOtherLocation = (LPCWSTR)cs_backupDir;
 
-    // Display Data
-    m_OPTMD.AlwaysOnTop =
-        prefs->GetPref(PWSprefs::AlwaysOnTop) ? TRUE : FALSE;
-    m_OPTMD.ShowPasswordInEdit =
-        prefs->GetPref(PWSprefs::ShowPWDefault) ? TRUE : FALSE;
-    m_OPTMD.ShowUsernameInTree = m_save_bShowUsernameInTree =
-        prefs->GetPref(PWSprefs::ShowUsernameInTree) ? TRUE : FALSE;
-    m_OPTMD.ShowPasswordInTree = m_save_bShowPasswordInTree =
-        prefs->GetPref(PWSprefs::ShowPasswordInTree) ? TRUE : FALSE;
-    m_OPTMD.ShowNotesAsTipsInViews =
-        prefs->GetPref(PWSprefs::ShowNotesAsTooltipsInViews) ? TRUE : FALSE;
-    m_OPTMD.ExplorerTypeTree = m_save_bExplorerTypeTree =
-        prefs->GetPref(PWSprefs::ExplorerTypeTree) ? TRUE : FALSE;
-    m_OPTMD.EnableGrid =
-        prefs->GetPref(PWSprefs::ListViewGridLines) ? TRUE : FALSE;
-    m_OPTMD.NotesShowInEdit =
-        prefs->GetPref(PWSprefs::ShowNotesDefault) ? TRUE : FALSE;
-    m_OPTMD.WordWrapNotes =
-        prefs->GetPref(PWSprefs::NotesWordWrap) ? TRUE : FALSE;
-    m_OPTMD.PreExpiryWarn = m_save_bPreExpiryWarn =
-        prefs->GetPref(PWSprefs::PreExpiryWarn) ? TRUE : FALSE;
-    m_OPTMD.PreExpiryWarnDays = m_save_iPreExpiryWarnDays =
-        prefs->GetPref(PWSprefs::PreExpiryWarnDays);
-    m_OPTMD.TreeDisplayStatusAtOpen =
-        prefs->GetPref(PWSprefs::TreeDisplayStatusAtOpen);
-    m_OPTMD.TrayIconColour =
-        prefs->GetPref(PWSprefs::ClosedTrayIconColour);
-    m_OPTMD.HighlightChanges = m_save_bHighlightChanges =
-        prefs->GetPref(PWSprefs::HighlightChanges);
-    
-    // Misc Data
-    m_OPTMD.ConfirmDelete =
-        prefs->GetPref(PWSprefs::DeleteQuestion) ? FALSE : TRUE;
-    m_OPTMD.MaintainDatetimeStamps =
-        prefs->GetPref(PWSprefs::MaintainDateTimeStamps) ? TRUE : FALSE;
-    m_OPTMD.EscExits =
-        prefs->GetPref(PWSprefs::EscExits) ? TRUE : FALSE;
-    m_OPTMD.DoubleClickAction =
-        prefs->GetPref(PWSprefs::DoubleClickAction);
-    m_OPTMD.ShiftDoubleClickAction =
-        prefs->GetPref(PWSprefs::ShiftDoubleClickAction);
+  // Display Data
+  m_OPTMD.AlwaysOnTop =
+      prefs->GetPref(PWSprefs::AlwaysOnTop) ? TRUE : FALSE;
+  m_OPTMD.ShowPasswordInEdit =
+      prefs->GetPref(PWSprefs::ShowPWDefault) ? TRUE : FALSE;
+  m_OPTMD.ShowUsernameInTree = m_save_bShowUsernameInTree =
+      prefs->GetPref(PWSprefs::ShowUsernameInTree) ? TRUE : FALSE;
+  m_OPTMD.ShowPasswordInTree = m_save_bShowPasswordInTree =
+      prefs->GetPref(PWSprefs::ShowPasswordInTree) ? TRUE : FALSE;
+  m_OPTMD.ShowNotesAsTipsInViews =
+      prefs->GetPref(PWSprefs::ShowNotesAsTooltipsInViews) ? TRUE : FALSE;
+  m_OPTMD.ExplorerTypeTree = m_save_bExplorerTypeTree =
+      prefs->GetPref(PWSprefs::ExplorerTypeTree) ? TRUE : FALSE;
+  m_OPTMD.EnableGrid =
+      prefs->GetPref(PWSprefs::ListViewGridLines) ? TRUE : FALSE;
+  m_OPTMD.NotesShowInEdit =
+      prefs->GetPref(PWSprefs::ShowNotesDefault) ? TRUE : FALSE;
+  m_OPTMD.WordWrapNotes =
+      prefs->GetPref(PWSprefs::NotesWordWrap) ? TRUE : FALSE;
+  m_OPTMD.PreExpiryWarn = m_save_bPreExpiryWarn =
+      prefs->GetPref(PWSprefs::PreExpiryWarn) ? TRUE : FALSE;
+  m_OPTMD.PreExpiryWarnDays = m_save_iPreExpiryWarnDays =
+      prefs->GetPref(PWSprefs::PreExpiryWarnDays);
+  m_OPTMD.TreeDisplayStatusAtOpen =
+      prefs->GetPref(PWSprefs::TreeDisplayStatusAtOpen);
+  m_OPTMD.TrayIconColour =
+      prefs->GetPref(PWSprefs::ClosedTrayIconColour);
+  m_OPTMD.HighlightChanges = m_save_bHighlightChanges =
+      prefs->GetPref(PWSprefs::HighlightChanges);
   
-    m_OPTMD.Hotkey_Value = DWORD(prefs->GetPref(PWSprefs::HotKey));
-    // Can't be enabled if not set!
-    if (m_OPTMD.Hotkey_Value == 0)
-      m_OPTMD.Hotkey_Enabled = FALSE;
-    else
-      m_OPTMD.Hotkey_Enabled =
-        prefs->GetPref(PWSprefs::HotKeyEnabled) ? TRUE : FALSE;
-  
-    m_OPTMD.UseDefuser =
-        prefs->GetPref(PWSprefs::UseDefaultUser) ? TRUE : FALSE;
-    m_OPTMD.DefUsername =
-        prefs->GetPref(PWSprefs::DefaultUsername).c_str();
-    m_OPTMD.QuerySetDef =
-        prefs->GetPref(PWSprefs::QuerySetDef) ? TRUE : FALSE;
-    m_OPTMD.OtherBrowserLocation =
-        prefs->GetPref(PWSprefs::AltBrowser).c_str();
-    m_OPTMD.BrowserCmdLineParms =
-        prefs->GetPref(PWSprefs::AltBrowserCmdLineParms).c_str();
-    m_OPTMD.OtherEditorLocation =
-        prefs->GetPref(PWSprefs::AltNotesEditor).c_str();
-    CString cs_dats =
-        prefs->GetPref(PWSprefs::DefaultAutotypeString).c_str();
-    if (cs_dats.IsEmpty())
-      cs_dats = DEFAULT_AUTOTYPE;
-    m_OPTMD.Autotype = (LPCWSTR)cs_dats;
-    m_OPTMD.MinAuto =
-        prefs->GetPref(PWSprefs::MinimizeOnAutotype) ? TRUE : FALSE;  
-  
-    // Password History Data
-    m_OPTMD.SavePWHistory =
-        prefs->GetPref(PWSprefs::SavePasswordHistory) ? TRUE : FALSE;
-    m_OPTMD.PWHistoryNumDefault =
-        prefs->GetPref(PWSprefs::NumPWHistoryDefault);
-    m_OPTMD.PWHAction = 0;
-  }
+  // Misc Data
+  m_OPTMD.ConfirmDelete =
+      prefs->GetPref(PWSprefs::DeleteQuestion) ? FALSE : TRUE;
+  m_OPTMD.MaintainDatetimeStamps =
+      prefs->GetPref(PWSprefs::MaintainDateTimeStamps) ? TRUE : FALSE;
+  m_OPTMD.EscExits =
+      prefs->GetPref(PWSprefs::EscExits) ? TRUE : FALSE;
+  m_OPTMD.DoubleClickAction =
+      prefs->GetPref(PWSprefs::DoubleClickAction);
+  m_OPTMD.ShiftDoubleClickAction =
+      prefs->GetPref(PWSprefs::ShiftDoubleClickAction);
 
-  // Password Policy Data - for IDS_OPTIONS, IDS_GENERATEPASSWORD and IDS_PSWDPOLICY
-  // But IDS_PSWDPOLICY uses what it is given rather than database default
-  CString cs_symbols;
-  switch (m_OPTMD.uicaller) {
-    case IDS_OPTIONS:
-    case IDS_GENERATEPASSWORD:
-      m_OPTMD.PWUseLowercase =
-        prefs->GetPref(PWSprefs::PWUseLowercase);
-      m_OPTMD.PWUseUppercase =
-        prefs->GetPref(PWSprefs::PWUseUppercase);
-      m_OPTMD.PWUseDigits =
-        prefs->GetPref(PWSprefs::PWUseDigits);
-      m_OPTMD.PWUseSymbols =
-        prefs->GetPref(PWSprefs::PWUseSymbols);
-      m_OPTMD.PWUseHexdigits =
-        prefs->GetPref(PWSprefs::PWUseHexDigits);
-      m_OPTMD.PWEasyVision =
-        prefs->GetPref(PWSprefs::PWUseEasyVision);
-      m_OPTMD.PWMakePronounceable =
-        prefs->GetPref(PWSprefs::PWMakePronounceable);
-      m_OPTMD.PWDefaultLength =
-        prefs->GetPref(PWSprefs::PWDefaultLength);
-      m_OPTMD.PWDigitMinLength =
-        prefs->GetPref(PWSprefs::PWDigitMinLength);
-      m_OPTMD.PWLowerMinLength =
-        prefs->GetPref(PWSprefs::PWLowercaseMinLength);
-      m_OPTMD.PWSymbolMinLength =
-        prefs->GetPref(PWSprefs::PWSymbolMinLength);
-      m_OPTMD.PWUpperMinLength =
-        prefs->GetPref(PWSprefs::PWUppercaseMinLength);
+  m_OPTMD.Hotkey_Value = DWORD(prefs->GetPref(PWSprefs::HotKey));
+  // Can't be enabled if not set!
+  if (m_OPTMD.Hotkey_Value == 0)
+    m_OPTMD.Hotkey_Enabled = FALSE;
+  else
+    m_OPTMD.Hotkey_Enabled =
+      prefs->GetPref(PWSprefs::HotKeyEnabled) ? TRUE : FALSE;
 
-      cs_symbols = m_save_bSymbols =
-        prefs->GetPref(PWSprefs::DefaultSymbols).c_str();
-      m_OPTMD.Symbols = cs_symbols;
-      m_OPTMD.UseOwnSymbols = m_save_iUseOwnSymbols =
-            (cs_symbols.GetLength() == 0) ? DEFAULT_SYMBOLS : OWN_SYMBOLS;
-      break;
-    case IDS_PSWDPOLICY:
-      //  This is performed in Options_PasswordPolicy::SetPolicyData
-      break;
-  }
+  m_OPTMD.UseDefuser =
+      prefs->GetPref(PWSprefs::UseDefaultUser) ? TRUE : FALSE;
+  m_OPTMD.DefUsername =
+      prefs->GetPref(PWSprefs::DefaultUsername).c_str();
+  m_OPTMD.QuerySetDef =
+      prefs->GetPref(PWSprefs::QuerySetDef) ? TRUE : FALSE;
+  m_OPTMD.OtherBrowserLocation =
+      prefs->GetPref(PWSprefs::AltBrowser).c_str();
+  m_OPTMD.BrowserCmdLineParms =
+      prefs->GetPref(PWSprefs::AltBrowserCmdLineParms).c_str();
+  m_OPTMD.OtherEditorLocation =
+      prefs->GetPref(PWSprefs::AltNotesEditor).c_str();
+  CString cs_dats =
+      prefs->GetPref(PWSprefs::DefaultAutotypeString).c_str();
+  if (cs_dats.IsEmpty())
+    cs_dats = DEFAULT_AUTOTYPE;
+  m_OPTMD.Autotype = (LPCWSTR)cs_dats;
+  m_OPTMD.MinAuto =
+      prefs->GetPref(PWSprefs::MinimizeOnAutotype) ? TRUE : FALSE;  
+  
+  // Password History Data
+  m_OPTMD.SavePWHistory =
+      prefs->GetPref(PWSprefs::SavePasswordHistory) ? TRUE : FALSE;
+  m_OPTMD.PWHistoryNumDefault =
+      prefs->GetPref(PWSprefs::NumPWHistoryDefault);
+  m_OPTMD.PWHAction = 0;
 
-  if (m_OPTMD.uicaller == IDS_OPTIONS) {
-    // Security Data
-    m_OPTMD.ClearClipboardOnMinimize =
-        prefs->GetPref(PWSprefs::ClearClipboardOnMinimize) ? TRUE : FALSE;
-    m_OPTMD.ClearClipboardOnExit =
-        prefs->GetPref(PWSprefs::ClearClipboardOnExit) ? TRUE : FALSE;
-    m_OPTMD.LockOnMinimize =
-        prefs->GetPref(PWSprefs::DatabaseClear) ? TRUE : FALSE;
-    m_OPTMD.ConfirmCopy =
-        prefs->GetPref(PWSprefs::DontAskQuestion) ? FALSE : TRUE;
-    m_OPTMD.LockOnWindowLock = m_save_bLockOnWindowLock =
-        prefs->GetPref(PWSprefs::LockOnWindowLock) ? TRUE : FALSE;
-    m_OPTMD.LockOnIdleTimeout =
-        prefs->GetPref(PWSprefs::LockDBOnIdleTimeout) ? TRUE : FALSE;
-    m_OPTMD.IdleTimeOut =
-        prefs->GetPref(PWSprefs::IdleTimeout);
-    m_OPTMD.CopyPswdBrowseURL =
-        prefs->GetPref(PWSprefs::CopyPasswordWhenBrowseToURL) ? TRUE : FALSE;
+  // Security Data
+  m_OPTMD.ClearClipboardOnMinimize =
+      prefs->GetPref(PWSprefs::ClearClipboardOnMinimize) ? TRUE : FALSE;
+  m_OPTMD.ClearClipboardOnExit =
+      prefs->GetPref(PWSprefs::ClearClipboardOnExit) ? TRUE : FALSE;
+  m_OPTMD.LockOnMinimize =
+      prefs->GetPref(PWSprefs::DatabaseClear) ? TRUE : FALSE;
+  m_OPTMD.ConfirmCopy =
+      prefs->GetPref(PWSprefs::DontAskQuestion) ? FALSE : TRUE;
+  m_OPTMD.LockOnWindowLock = m_save_bLockOnWindowLock =
+      prefs->GetPref(PWSprefs::LockOnWindowLock) ? TRUE : FALSE;
+  m_OPTMD.LockOnIdleTimeout =
+      prefs->GetPref(PWSprefs::LockDBOnIdleTimeout) ? TRUE : FALSE;
+  m_OPTMD.IdleTimeOut =
+      prefs->GetPref(PWSprefs::IdleTimeout);
+  m_OPTMD.CopyPswdBrowseURL =
+      prefs->GetPref(PWSprefs::CopyPasswordWhenBrowseToURL) ? TRUE : FALSE;
   
-    // Shortcut Data
-    m_OPTMD.ColWidth =
-        prefs->GetPref(PWSprefs::OptShortcutColumnWidth);
-    m_OPTMD.DefColWidth =
-        prefs->GetPrefDefVal(PWSprefs::OptShortcutColumnWidth);
+  // Shortcut Data
+  m_OPTMD.ColWidth =
+      prefs->GetPref(PWSprefs::OptShortcutColumnWidth);
+  m_OPTMD.DefColWidth =
+      prefs->GetPrefDefVal(PWSprefs::OptShortcutColumnWidth);
   
-    // System Data
-    if (m_OPTMD.uicaller == IDS_OPTIONS) {
-      CShortcut pws_shortcut;
-      m_OPTMD.MaxREItems =
-          prefs->GetPref(PWSprefs::MaxREItems);
-      m_OPTMD.UseSystemTray =
-          prefs->GetPref(PWSprefs::UseSystemTray) ? TRUE : FALSE;
-      m_OPTMD.HideSystemTray =
-          prefs->GetPref(PWSprefs::HideSystemTray) ? TRUE : FALSE;
-      m_OPTMD.MaxMRUItems =
-          prefs->GetPref(PWSprefs::MaxMRUItems);
-      m_OPTMD.MRUOnFileMenu =
-          prefs->GetPref(PWSprefs::MRUOnFileMenu);
-      const CString PWSLnkName(L"Password Safe"); // for startup shortcut
-      m_OPTMD.Startup = m_bStartupShortcutExists =
-          pws_shortcut.isLinkExist(PWSLnkName, CSIDL_STARTUP);
-      m_OPTMD.DefaultOpenRO = prefs->GetPref(PWSprefs::DefaultOpenRO) ? TRUE : FALSE;
-      m_OPTMD.MultipleInstances =
-          prefs->GetPref(PWSprefs::MultipleInstances) ? TRUE : FALSE;
-    }
-  }
+  // System Data
+  CShortcut pws_shortcut;
+  m_OPTMD.MaxREItems =
+      prefs->GetPref(PWSprefs::MaxREItems);
+  m_OPTMD.UseSystemTray =
+      prefs->GetPref(PWSprefs::UseSystemTray) ? TRUE : FALSE;
+  m_OPTMD.HideSystemTray =
+      prefs->GetPref(PWSprefs::HideSystemTray) ? TRUE : FALSE;
+  m_OPTMD.MaxMRUItems =
+      prefs->GetPref(PWSprefs::MaxMRUItems);
+  m_OPTMD.MRUOnFileMenu =
+      prefs->GetPref(PWSprefs::MRUOnFileMenu);
+  const CString PWSLnkName(L"Password Safe"); // for startup shortcut
+  m_OPTMD.Startup = m_bStartupShortcutExists =
+      pws_shortcut.isLinkExist(PWSLnkName, CSIDL_STARTUP);
+  m_OPTMD.DefaultOpenRO = prefs->GetPref(PWSprefs::DefaultOpenRO) ? TRUE : FALSE;
+  m_OPTMD.MultipleInstances =
+      prefs->GetPref(PWSprefs::MultipleInstances) ? TRUE : FALSE;
 }
 
 void COptions_PropertySheet::UpdateCopyPreferences()
@@ -475,45 +411,10 @@ void COptions_PropertySheet::UpdateCopyPreferences()
     prefs->SetPref(PWSprefs::NumPWHistoryDefault,
                    m_OPTMD.PWHistoryNumDefault, true);
 
-  prefs->SetPref(PWSprefs::PWUseLowercase,
-                 m_OPTMD.PWUseLowercase == TRUE, true);
-  prefs->SetPref(PWSprefs::PWUseUppercase,
-                 m_OPTMD.PWUseUppercase == TRUE, true);
-  prefs->SetPref(PWSprefs::PWUseDigits,
-                 m_OPTMD.PWUseDigits == TRUE, true);
-  prefs->SetPref(PWSprefs::PWUseSymbols,
-                 m_OPTMD.PWUseSymbols == TRUE, true);
-  prefs->SetPref(PWSprefs::PWUseHexDigits,
-                 m_OPTMD.PWUseHexdigits == TRUE, true);
-  prefs->SetPref(PWSprefs::PWUseEasyVision,
-                 m_OPTMD.PWEasyVision == TRUE, true);
-  prefs->SetPref(PWSprefs::PWMakePronounceable,
-                 m_OPTMD.PWMakePronounceable == TRUE, true);
-
-  prefs->SetPref(PWSprefs::PWDefaultLength,
-                 m_OPTMD.PWDefaultLength, true);
-  prefs->SetPref(PWSprefs::PWDigitMinLength,
-                 m_OPTMD.PWDigitMinLength, true);
-  prefs->SetPref(PWSprefs::PWLowercaseMinLength,
-                 m_OPTMD.PWLowerMinLength, true);
-  prefs->SetPref(PWSprefs::PWSymbolMinLength,
-                 m_OPTMD.PWSymbolMinLength, true);
-  prefs->SetPref(PWSprefs::PWUppercaseMinLength,
-                 m_OPTMD.PWUpperMinLength, true);
-
-  if (m_OPTMD.UseOwnSymbols != m_save_iUseOwnSymbols ||
-      (m_OPTMD.UseOwnSymbols == OWN_SYMBOLS &&
-       m_OPTMD.Symbols != m_save_bSymbols))
-    prefs->SetPref(PWSprefs::DefaultSymbols,
-                   LPCWSTR(m_OPTMD.Symbols), true);
-
   prefs->SetPref(PWSprefs::LockDBOnIdleTimeout,
                  m_OPTMD.LockOnIdleTimeout == TRUE, true);
   prefs->SetPref(PWSprefs::IdleTimeout,
                  m_OPTMD.IdleTimeOut, true);
-
-  if (m_OPTMD.uicaller != IDS_OPTIONS)
-    return;
 
   // Changing ExplorerTypeTree changes order of items,
   // which DisplayStatus implicitly depends upon

@@ -8,80 +8,82 @@
 #pragma once
 #include "afxwin.h"
 
-// OptionsPasswordPolicy.h : header file
+// PasswordPolicyDlg.h : header file
 //
 
 /////////////////////////////////////////////////////////////////////////////
-// COptionsPasswordPolicy dialog
-#include "Options_PropertyPage.h"
-#include "core/PWPolicy.h"
+// CPasswordPolicyDlg dialog
+#include "PWDialog.h"
 #include "ControlExtns.h"
+
+#include "core/coredefs.h"
+#include "core/PWPolicy.h"
 
 class DboxMain;
 
-class COptionsPasswordPolicy : public COptions_PropertyPage
+class CPasswordPolicyDlg : public CPWDialog
 {
+  DECLARE_DYNAMIC(CPasswordPolicyDlg)
+
 public:
-  DECLARE_DYNAMIC(COptionsPasswordPolicy)
-
   // Construction
-  COptionsPasswordPolicy(CWnd *pParent, st_Opt_master_data *pOPTMD);
-  ~COptionsPasswordPolicy();
+  CPasswordPolicyDlg(UINT uicaller, CWnd *pParent, bool bLongPPs,
+                     st_PSWDPolicy &st_pp);
+  ~CPasswordPolicyDlg();
 
-  void SetPolicyData(st_PSWDPolicy &st_pp, CString &policyname,
-                     PSWDPolicyMap &MapPSWDPLC);
-  void GetPolicyData(CString &cs_policyname, PSWDPolicyMap &MapPSWDPLC)
-  {cs_policyname = m_policyname; MapPSWDPLC = m_MapPSWDPLC;}
+  void SetPolicyData(CString &cs_policyname, PSWDPolicyMap &MapPSWDPLC,
+                     DboxMain *pDbx);
+  void GetPolicyData(st_PSWDPolicy &st_pp, CString &cs_policyname, PSWDPolicyMap &MapPSWDPLC)
+  {st_pp = m_st_default_pp; cs_policyname = m_policyname; MapPSWDPLC = m_MapPSWDPLC;}
  
 protected:
   // Dialog Data
-  //{{AFX_DATA(COptionsPasswordPolicy)
-  enum { IDD = IDD_PS_PASSWORDPOLICY, IDD_SHORT = IDD_PS_PASSWORDPOLICY_SHORT };
+  //{{AFX_DATA(CPasswordPolicyDlg)
+  enum { IDD = IDD_PASSWORDPOLICY, IDD_SHORT = IDD_PASSWORDPOLICY_SHORT };
  
   CSymbolEdit m_SymbolsEdit;
   CEdit m_PolicyNameEdit;
   CComboBox m_cbxPolicyNames;
 
-  BOOL m_PWUseLowercase;
-  BOOL m_PWUseUppercase;
-  BOOL m_PWUseDigits;
-  BOOL m_PWUseSymbols;
-  BOOL m_PWUseHexdigits;
-  BOOL m_PWEasyVision;
-  BOOL m_PWMakePronounceable;
-  BOOL m_UseNamedPolicy;
-  int m_PWDefaultLength;
-  int m_PWDigitMinLength;
-  int m_PWLowerMinLength;
-  int m_PWSymbolMinLength;
-  int m_PWUpperMinLength;
+  UINT m_uicaller;
+  BOOL m_PWUseLowercase, m_oldPWUseLowercase;
+  BOOL m_PWUseUppercase, m_oldPWUseUppercase;
+  BOOL m_PWUseDigits, m_oldPWUseDigits;
+  BOOL m_PWUseSymbols, m_oldPWUseSymbols;
+  BOOL m_PWUseHexdigits, m_oldPWUseHexdigits;
+  BOOL m_PWEasyVision, m_oldPWEasyVision;
+  BOOL m_PWMakePronounceable, m_oldPWMakePronounceable;
+  BOOL m_UseNamedPolicy, m_oldUseNamedPolicy;
+  int m_PWDefaultLength, m_oldPWDefaultLength;
+  int m_PWDigitMinLength, m_oldPWDigitMinLength;
+  int m_PWLowerMinLength, m_oldPWLowerMinLength;
+  int m_PWSymbolMinLength, m_oldPWSymbolMinLength;
+  int m_PWUpperMinLength, m_oldPWUpperMinLength;
   //}}AFX_DATA
 
   PWPolicy m_default_pwp;
   CSecString m_password;
   CSecEditExtn m_ex_password;
   
-  int m_UseOwnSymbols;
-  CString m_Symbols;
-  CString m_policyname;
-  CString m_oldpolicyname;
+  int m_UseOwnSymbols, m_oldUseOwnSymbols;
+  CString m_Symbols, m_oldSymbols;
+  CString m_policyname, m_oldpolicyname;
 
   CButtonExtn m_chkbox[7];
   CButtonExtn m_radiobtn[2];
 
   // Overrides
   // ClassWizard generate virtual function overrides
-  //{{AFX_VIRTUAL(COptionsPasswordPolicy)
+  //{{AFX_VIRTUAL(CPasswordPolicyDlg)
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
   virtual BOOL OnInitDialog();
-  BOOL PreTranslateMessage(MSG* pMsg);
-  virtual BOOL OnApply();
   //}}AFX_VIRTUAL
 
   // Implementation
   // Generated message map functions
-  //{{AFX_MSG(COptionsPasswordPolicy)
-  afx_msg LRESULT OnQuerySiblings(WPARAM wParam, LPARAM);
+  //{{AFX_MSG(CPasswordPolicyDlg)
+  afx_msg void OnOK();
+  afx_msg void OnCancel();
   afx_msg void OnHelp();
   afx_msg void OnUseHexdigits();
   afx_msg void OnUseLowerCase();
@@ -90,7 +92,6 @@ protected:
   afx_msg void OnUseSymbols();
   afx_msg void OnEasyVision();
   afx_msg void OnMakePronounceable();
-  afx_msg BOOL OnKillActive();
   afx_msg void OnGeneratePassword();
   afx_msg void OnCopyPassword();
   afx_msg void OnENChangePassword();
@@ -105,9 +106,8 @@ protected:
 
 private:
   BOOL Validate();
-  bool VerifyPolicynameUnique(CString policyname)
-  {return (m_MapPSWDPLC.find((LPCWSTR)policyname) == m_MapPSWDPLC.end());}
-  void UpdatePasswordPolicy();
+  bool UpdatePasswordPolicy();
+  void SetSpecificPolicyControls(const BOOL bEnable);
 
   void do_hex(const bool bNonHex); // bNonHex == true enable non-hex
   void do_easyorpronounceable(const bool bSet); // bSet == true enable one of these options
@@ -118,7 +118,7 @@ private:
   // number of checkboxes & lengths disabled when hex chosen
   enum {N_NOHEX = 6, N_HEX_LENGTHS = 4};
   static const UINT nonHex[N_NOHEX]; // IDs of said checkboxes
-  BOOL *pnonHex[N_NOHEX]; // Addresses of said checkbox variables
+  BOOL *m_pnonHex[N_NOHEX]; // Addresses of said checkbox variables
   static const UINT LenTxts[N_HEX_LENGTHS * 2]; // IDs of text associated with length
   static const UINT nonHexLengths[N_HEX_LENGTHS]; // IDs of said lengths
   static const UINT nonHexLengthSpins[N_HEX_LENGTHS]; // IDs of said lengths' spinboxes
@@ -126,7 +126,10 @@ private:
   UINT m_savelen[N_HEX_LENGTHS];
 
   stringT m_PolicyName;
-  st_PSWDPolicy m_default_st_pp;
+  st_PSWDPolicy m_st_default_pp;
   PSWDPolicyMap m_MapPSWDPLC;
   PSWDPolicyMapIter m_iter;
+  bool m_bDisableSelection;
+
+  DboxMain *m_pDbx;
 };

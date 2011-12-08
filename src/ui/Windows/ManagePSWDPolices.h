@@ -20,13 +20,16 @@ class DboxMain;
 class CManagePSWDPolices : public CPWDialog
 {
 public:
-  CManagePSWDPolices(CWnd* pParent = NULL);
+  CManagePSWDPolices(CWnd* pParent = NULL, const bool bLongPPs = true);
   virtual ~CManagePSWDPolices();
 
   // Dialog Data
   enum { IDD = IDD_MANAGEPASSWORDPOLICIES };
   
-  PSWDPolicyMap &GetPasswordPolicies() {return m_MapPSWDPLC;}
+  PSWDPolicyMap &GetPasswordPolicies(st_PSWDPolicy &st_default_pp)
+  {st_default_pp = m_st_default_pp; return m_MapPSWDPLC;}
+  void GetDefaultPasswordPolicies(st_PSWDPolicy &st_default_pp)
+  {st_default_pp = m_st_default_pp;}
 
   bool IsChanged() {return m_bChanged;}
 
@@ -45,6 +48,7 @@ protected:
   afx_msg void OnEdit();
   afx_msg void OnList();
   afx_msg void OnDelete();
+  afx_msg void OnGeneratePassword();
   afx_msg void OnPolicySelected(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnEntryDoubleClicked(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnColumnNameClick(NMHDR *pNotifyStruct, LRESULT *pLResult);
@@ -63,7 +67,7 @@ private:
   CToolTipCtrl *m_pToolTipCtrl;
 
   PSWDPolicyMap m_MapPSWDPLC;
-  st_PSWDPolicy m_default_st_pp;
+  st_PSWDPolicy m_st_default_pp;
 
   GTUSet m_setGTU;
 
@@ -71,5 +75,5 @@ private:
   bool m_bSortNamesAscending, m_bSortEntriesAscending;
 
   int m_iSelectedItem;
-  bool m_bChanged, m_bViewPolicy;
+  bool m_bChanged, m_bViewPolicy, m_bLongPPs;
 };

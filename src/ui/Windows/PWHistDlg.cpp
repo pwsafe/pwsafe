@@ -18,7 +18,6 @@
 #include "core/ItemData.h"
 #include "core/PWSprefs.h"
 
-
 // CPWHistDlg dialog
 
 IMPLEMENT_DYNAMIC(CPWHistDlg, CPWDialog)

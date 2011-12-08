@@ -86,6 +86,7 @@ BOOL COptionsPasswordHistory::OnInitDialog()
   COptions_PropertyPage::OnInitDialog();
 
   m_chkbox.SetTextColour(CR_DATABASE_OPTIONS);
+  m_chkbox.SetBkgColour(COLOR_WINDOW);
 
   CSpinButtonCtrl *pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_PWHSPIN);
 

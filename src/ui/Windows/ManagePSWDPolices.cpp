@@ -11,7 +11,7 @@
 
 #include "stdafx.h"
 #include "ManagePSWDPolices.h"
-#include "Options_PropertySheet.h"
+#include "PasswordPolicyDlg.h"
 #include "DboxMain.h"
 #include "ThisMfcApp.h" // for online help
 #include "GeneralMsgBox.h"
@@ -24,85 +24,12 @@
 
 using namespace std;
 
-int CALLBACK CManagePSWDPolices::SortNames(LPARAM lParam1, LPARAM lParam2,
-                                           LPARAM lParamSort)
-{
-  CManagePSWDPolices *self = (CManagePSWDPolices *)lParamSort;
-  ASSERT(self != NULL);
-
-  // Default password policy always first!
-  if (lParam1 < 0)
-    return -1;
-  
-  if (lParam2 < 0)
-    return 1;
-
-  int iretval(0);
-  
-  // Mustn't go past the end!
-  ASSERT((size_t)lParam1 < self->m_MapPSWDPLC.size());
-  ASSERT((size_t)lParam2 < self->m_MapPSWDPLC.size());
-
-  PSWDPolicyMapCIter lhs, rhs;
-  lhs = rhs = self->m_MapPSWDPLC.begin();
-  advance(lhs, lParam1);
-  advance(rhs, lParam2);
-
-  switch (self->m_iSortNamesIndex) {
-    case 0:
-      // Policy name
-      iretval = wcscmp(lhs->first.c_str(), rhs->first.c_str());
-      break;
-    case 1:
-      // Use count
-      iretval = lhs->second.usecount < rhs->second.usecount ? -1 : 1;
-      break;
-  }
-
-  if (!self->m_bSortNamesAscending)
-    iretval *= -1;
-
-  return iretval;
-}
-
-int CALLBACK CManagePSWDPolices::SortEntries(LPARAM lParam1, LPARAM lParam2,
-                                             LPARAM lParamSort)
-{
-  CManagePSWDPolices *self = (CManagePSWDPolices *)lParamSort;
-  ASSERT(self != NULL);
-
-  int iretval(0);
-  
-  st_GroupTitleUser *lhs = reinterpret_cast<st_GroupTitleUser *>(lParam1);
-  st_GroupTitleUser *rhs = reinterpret_cast<st_GroupTitleUser *>(lParam2);
-
-  switch (self->m_iSortEntriesIndex) {
-    case 0:
-      // Group
-      iretval = wcscmp(lhs->group.c_str(), rhs->group.c_str());
-      break;
-    case 1:
-      // Title
-      iretval = wcscmp(lhs->title.c_str(), rhs->title.c_str());
-      break;
-    case 2:
-      // User
-      iretval = wcscmp(lhs->user.c_str(), rhs->user.c_str());
-      break;
-  }
-
-  if (!self->m_bSortEntriesAscending)
-    iretval *= -1;
-
-  return iretval;
-}
-
 // CManagePSWDPolices dialog
-CManagePSWDPolices::CManagePSWDPolices(CWnd* pParent)
+CManagePSWDPolices::CManagePSWDPolices(CWnd* pParent, const bool bLongPPs)
   : CPWDialog(CManagePSWDPolices::IDD, pParent),
   m_pToolTipCtrl(NULL), m_iSelectedItem(-1), m_bChanged(false), m_iSortEntriesIndex(0),
   m_bSortEntriesAscending(true), m_iSortNamesIndex(0), m_bSortNamesAscending(true),
-  m_bViewPolicy(true)
+  m_bViewPolicy(true), m_bLongPPs(bLongPPs)
 {
   ASSERT(pParent != NULL);
 
@@ -111,29 +38,29 @@ CManagePSWDPolices::CManagePSWDPolices(CWnd* pParent)
   m_MapPSWDPLC = m_pDbx->GetPasswordPolicies();
 
   PWSprefs *prefs = PWSprefs::GetInstance();
-  m_default_st_pp.Empty();
+  m_st_default_pp.Empty();
   if (prefs->GetPref(PWSprefs::PWUseLowercase))
-    m_default_st_pp.pwp.flags |= PWSprefs::PWPolicyUseLowercase;
+    m_st_default_pp.pwp.flags |= PWSprefs::PWPolicyUseLowercase;
   if (prefs->GetPref(PWSprefs::PWUseUppercase))
-    m_default_st_pp.pwp.flags |= PWSprefs::PWPolicyUseUppercase;
+    m_st_default_pp.pwp.flags |= PWSprefs::PWPolicyUseUppercase;
   if (prefs->GetPref(PWSprefs::PWUseDigits))
-    m_default_st_pp.pwp.flags |= PWSprefs::PWPolicyUseDigits;
+    m_st_default_pp.pwp.flags |= PWSprefs::PWPolicyUseDigits;
   if (prefs->GetPref(PWSprefs::PWUseSymbols))
-    m_default_st_pp.pwp.flags |= PWSprefs::PWPolicyUseSymbols;
+    m_st_default_pp.pwp.flags |= PWSprefs::PWPolicyUseSymbols;
   if (prefs->GetPref(PWSprefs::PWUseHexDigits))
-    m_default_st_pp.pwp.flags |= PWSprefs::PWPolicyUseHexDigits;
+    m_st_default_pp.pwp.flags |= PWSprefs::PWPolicyUseHexDigits;
   if (prefs->GetPref(PWSprefs::PWUseEasyVision))
-    m_default_st_pp.pwp.flags |= PWSprefs::PWPolicyUseEasyVision;
+    m_st_default_pp.pwp.flags |= PWSprefs::PWPolicyUseEasyVision;
   if (prefs->GetPref(PWSprefs::PWMakePronounceable))
-    m_default_st_pp.pwp.flags |= PWSprefs::PWPolicyMakePronounceable;
+    m_st_default_pp.pwp.flags |= PWSprefs::PWPolicyMakePronounceable;
 
-  m_default_st_pp.pwp.length = prefs->GetPref(PWSprefs::PWDefaultLength);
-  m_default_st_pp.pwp.digitminlength = prefs->GetPref(PWSprefs::PWDigitMinLength);
-  m_default_st_pp.pwp.lowerminlength = prefs->GetPref(PWSprefs::PWLowercaseMinLength);
-  m_default_st_pp.pwp.symbolminlength = prefs->GetPref(PWSprefs::PWSymbolMinLength);
-  m_default_st_pp.pwp.upperminlength = prefs->GetPref(PWSprefs::PWUppercaseMinLength);
+  m_st_default_pp.pwp.length = prefs->GetPref(PWSprefs::PWDefaultLength);
+  m_st_default_pp.pwp.digitminlength = prefs->GetPref(PWSprefs::PWDigitMinLength);
+  m_st_default_pp.pwp.lowerminlength = prefs->GetPref(PWSprefs::PWLowercaseMinLength);
+  m_st_default_pp.pwp.symbolminlength = prefs->GetPref(PWSprefs::PWSymbolMinLength);
+  m_st_default_pp.pwp.upperminlength = prefs->GetPref(PWSprefs::PWUppercaseMinLength);
 
-  m_default_st_pp.symbols = prefs->GetPref(PWSprefs::DefaultSymbols);
+  m_st_default_pp.symbols = prefs->GetPref(PWSprefs::DefaultSymbols);
 }
 
 CManagePSWDPolices::~CManagePSWDPolices()
@@ -156,6 +83,7 @@ BEGIN_MESSAGE_MAP(CManagePSWDPolices, CPWDialog)
   ON_BN_CLICKED(IDC_NEW, OnNew)
   ON_BN_CLICKED(IDC_EDIT, OnEdit)
   ON_BN_CLICKED(IDC_LIST_POLICYENTRIES, OnList)
+  ON_BN_CLICKED(IDC_GENERATEPASSWORD, OnGeneratePassword)
 
   ON_NOTIFY(NM_CLICK, IDC_POLICYLIST, OnPolicySelected)
   ON_NOTIFY(NM_DBLCLK, IDC_POLICYENTRIES, OnEntryDoubleClicked)
@@ -243,8 +171,7 @@ BOOL CManagePSWDPolices::OnInitDialog()
   // Show its details
   UpdateDetails(); 
 
-  // Since we select the default, disable Edit, List & Delete
-  GetDlgItem(IDC_EDIT)->EnableWindow(FALSE);
+  // Since we select the default, disable List & Delete
   GetDlgItem(IDC_LIST_POLICYENTRIES)->EnableWindow(FALSE);
   GetDlgItem(IDC_DELETE)->EnableWindow(FALSE);
   
@@ -304,18 +231,18 @@ void CManagePSWDPolices::OnNew()
 {
   bool bLongPPs = m_pDbx->LongPPs();
 
-  COptions_PropertySheet PasswordPolicy(IDS_PSWDPOLICY, this, bLongPPs);
+  CPasswordPolicyDlg PasswordPolicy(IDS_PSWDPOLICY, this, bLongPPs, m_st_default_pp);
 
-  // Pass default values, PolicyName map and indicate New
-  PasswordPolicy.SetPolicyData(m_default_st_pp, CString(L""), m_MapPSWDPLC);
-  PasswordPolicy.m_psh.dwFlags |= PSH_NOAPPLYNOW;
+  // Pass default values, PolicyName map and indicate New (Blank policy name)
+  CString cs_policyname(L"");
+  PasswordPolicy.SetPolicyData(cs_policyname, m_MapPSWDPLC, m_pDbx);
 
   INT_PTR rc = PasswordPolicy.DoModal();
 
   if (rc == IDOK) {
     m_bChanged = true;
     CString cs_policyname;
-    PasswordPolicy.GetPolicyData(cs_policyname, m_MapPSWDPLC);
+    PasswordPolicy.GetPolicyData(m_st_default_pp, cs_policyname, m_MapPSWDPLC);
 
     // Update lists
     UpdateNames();
@@ -333,41 +260,37 @@ void CManagePSWDPolices::OnNew()
 
 void CManagePSWDPolices::OnEdit()
 {
-  // Must not edit first entry (current database password policy)
-  // Use "Manage -> Options" instead
-  if (m_iSelectedItem < 1)
-    return;
-
   CString cs_policyname = m_PolicyNames.GetItemText(m_iSelectedItem, 0);
 
   PSWDPolicyMapIter iter = m_MapPSWDPLC.find(StringX((LPCWSTR)cs_policyname));
-  if (iter == m_MapPSWDPLC.end())
+  if (m_iSelectedItem != 0 && iter == m_MapPSWDPLC.end())
     return;
 
   bool bLongPPs = m_pDbx->LongPPs();
 
-  COptions_PropertySheet PasswordPolicy(IDS_PSWDPOLICY, this, bLongPPs);
+  CPasswordPolicyDlg PasswordPolicy(m_iSelectedItem == 0 ? IDS_OPTIONS : IDS_PSWDPOLICY,
+                                    this, bLongPPs, m_st_default_pp);
 
   // Pass default values and PolicyName map
-  PasswordPolicy.SetPolicyData(m_default_st_pp, cs_policyname, m_MapPSWDPLC);
-  
-  PasswordPolicy.m_psh.dwFlags |= PSH_NOAPPLYNOW;
+  PasswordPolicy.SetPolicyData(cs_policyname, m_MapPSWDPLC, m_pDbx);
 
   INT_PTR rc = PasswordPolicy.DoModal();
   
   if (rc == IDOK) {
     m_bChanged = true;
-    CString cs_policyname;
-    PasswordPolicy.GetPolicyData(cs_policyname, m_MapPSWDPLC);
-    
-    // Update lists
-    UpdateNames();
-    LVFINDINFO st_lvfindinfo;
-    st_lvfindinfo.flags = LVFI_STRING;
-    st_lvfindinfo.psz = cs_policyname;
+    // Update default (if changed) or the named policies
+    PasswordPolicy.GetPolicyData(m_st_default_pp, cs_policyname, m_MapPSWDPLC);
 
-    m_iSelectedItem = m_PolicyNames.FindItem(&st_lvfindinfo);
-    ASSERT(m_iSelectedItem != -1);
+    if (m_iSelectedItem != 0) {
+      // Update lists
+      UpdateNames();
+      LVFINDINFO st_lvfindinfo;
+      st_lvfindinfo.flags = LVFI_STRING;
+      st_lvfindinfo.psz = cs_policyname;
+
+      m_iSelectedItem = m_PolicyNames.FindItem(&st_lvfindinfo);
+      ASSERT(m_iSelectedItem != -1);
+    }
     m_PolicyNames.SetItemState(m_iSelectedItem, LVIS_SELECTED, LVIS_SELECTED);
 
     UpdateDetails();
@@ -421,6 +344,58 @@ void CManagePSWDPolices::OnDelete()
   m_bChanged = true;
 }
 
+void CManagePSWDPolices::OnGeneratePassword()
+{
+  st_PSWDPolicy st_pp;
+  CString cs_policyname(L"");
+
+  if (m_iSelectedItem == 0) {
+    // Use Default Password policy
+    PWSprefs *prefs = PWSprefs::GetInstance();
+  
+    if (prefs->GetPref(PWSprefs::PWUseLowercase))
+      st_pp.pwp.flags |= PWSprefs::PWPolicyUseLowercase;
+    if (prefs->GetPref(PWSprefs::PWUseUppercase))
+      st_pp.pwp.flags |= PWSprefs::PWPolicyUseUppercase;
+    if (prefs->GetPref(PWSprefs::PWUseDigits))
+      st_pp.pwp.flags |= PWSprefs::PWPolicyUseDigits;
+    if (prefs->GetPref(PWSprefs::PWUseSymbols))
+      st_pp.pwp.flags |= PWSprefs::PWPolicyUseSymbols;
+    if (prefs->GetPref(PWSprefs::PWUseHexDigits))
+      st_pp.pwp.flags |= PWSprefs::PWPolicyUseHexDigits;
+    if (prefs->GetPref(PWSprefs::PWUseEasyVision))
+      st_pp.pwp.flags |= PWSprefs::PWPolicyUseEasyVision;
+    if (prefs->GetPref(PWSprefs::PWMakePronounceable))
+      st_pp.pwp.flags |= PWSprefs::PWPolicyMakePronounceable;
+  
+    st_pp.pwp.length = prefs->GetPref(PWSprefs::PWDefaultLength);
+    st_pp.pwp.digitminlength = prefs->GetPref(PWSprefs::PWDigitMinLength);
+    st_pp.pwp.lowerminlength = prefs->GetPref(PWSprefs::PWLowercaseMinLength);
+    st_pp.pwp.symbolminlength = prefs->GetPref(PWSprefs::PWSymbolMinLength);
+    st_pp.pwp.upperminlength = prefs->GetPref(PWSprefs::PWUppercaseMinLength);
+  
+    st_pp.symbols = prefs->GetPref(PWSprefs::DefaultSymbols);
+  } else {
+    // Named Password Policy
+    cs_policyname = m_PolicyNames.GetItemText(m_iSelectedItem, 0);
+
+    PSWDPolicyMapIter iter = m_MapPSWDPLC.find(StringX((LPCWSTR)cs_policyname));
+    if (iter == m_MapPSWDPLC.end())
+      return;
+
+    st_pp = iter->second;
+  }
+  
+  // Special case of Genrate Password - disable selection of policy
+  UINT ui = IDS_GENERATEPASSWORD | 0x80000000;
+  CPasswordPolicyDlg GenPswdPS(ui, this, m_bLongPPs, st_pp);
+
+  // Pass this policy's values and PolicyName map
+  GenPswdPS.SetPolicyData(cs_policyname, m_MapPSWDPLC, m_pDbx);
+
+  GenPswdPS.DoModal();
+}
+
 void CManagePSWDPolices::OnPolicySelected(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
   *pLResult = 0L;
@@ -463,25 +438,31 @@ void CManagePSWDPolices::OnPolicySelected(NMHDR *pNotifyStruct, LRESULT *pLResul
   // Remove the tooltip for the entry CListCtrl
   m_pToolTipCtrl->DelTool(GetDlgItem(IDC_POLICYENTRIES));
 
-  if (m_iSelectedItem < 1) {
-    // Can't Edit, List or Delete the database default (0) or if nothing selected (-1)
-    GetDlgItem(IDC_EDIT)->EnableWindow(FALSE);
-    GetDlgItem(IDC_LIST_POLICYENTRIES)->EnableWindow(FALSE);
-    GetDlgItem(IDC_DELETE)->EnableWindow(FALSE);
-  } else {
-    // Can Edit any other but only...
-    // List if use count is not zero & Delete if use count is zero
-    PSWDPolicyMapCIter citer = m_MapPSWDPLC.cbegin();
-    advance(citer, m_PolicyNames.GetItemData(m_iSelectedItem));
+  switch (m_iSelectedItem) {
+    case -1:
+      // Can't Edit if nothing selected (-1)
+      GetDlgItem(IDC_EDIT)->EnableWindow(FALSE);
+      // Drop through by design!!!
+    case 0:
+      // Can't List or Delete the database default (0) or if nothing selected (-1)
+      GetDlgItem(IDC_LIST_POLICYENTRIES)->EnableWindow(FALSE);
+      GetDlgItem(IDC_DELETE)->EnableWindow(FALSE);
+      break;
+    default:
+      // Can Edit any other but only...
+      // List if use count is not zero & Delete if use count is zero
+      PSWDPolicyMapCIter citer = m_MapPSWDPLC.cbegin();
+      advance(citer, m_PolicyNames.GetItemData(m_iSelectedItem));
 
-    // Always allow edit
-    GetDlgItem(IDC_EDIT)->EnableWindow(TRUE);
-    // Do not allow list of associated items if use count is zero
-    GetDlgItem(IDC_LIST_POLICYENTRIES)->EnableWindow(citer->second.usecount == 0 ?
-                                       FALSE : TRUE);
-    // Do not allow delete of policy if use count is non-zero
-    GetDlgItem(IDC_DELETE)->EnableWindow(citer->second.usecount != 0 ?
+      // Always allow edit
+      GetDlgItem(IDC_EDIT)->EnableWindow(TRUE);
+      // Do not allow list of associated items if use count is zero
+      GetDlgItem(IDC_LIST_POLICYENTRIES)->EnableWindow(citer->second.usecount == 0 ?
                                          FALSE : TRUE);
+      // Do not allow delete of policy if use count is non-zero
+      GetDlgItem(IDC_DELETE)->EnableWindow(citer->second.usecount != 0 ?
+                                         FALSE : TRUE);
+      break;
   }
   
   if (m_iSelectedItem == -1)
@@ -669,7 +650,7 @@ void CManagePSWDPolices::UpdateDetails()
 
     st_pp = iter->second;
   } else {
-    st_pp = m_default_st_pp;
+    st_pp = m_st_default_pp;
   }
 
   CString cs_yes(MAKEINTRESOURCE(IDS_YES)), cs_no(MAKEINTRESOURCE(IDS_NO));
@@ -824,4 +805,77 @@ void CManagePSWDPolices::UpdateEntryList()
   m_PolicyEntries.SetColumnWidth(0, LVSCW_AUTOSIZE_USEHEADER);
   m_PolicyEntries.SetColumnWidth(1, LVSCW_AUTOSIZE_USEHEADER);
   m_PolicyEntries.SetColumnWidth(2, LVSCW_AUTOSIZE_USEHEADER);
+}
+
+int CALLBACK CManagePSWDPolices::SortNames(LPARAM lParam1, LPARAM lParam2,
+                                           LPARAM lParamSort)
+{
+  CManagePSWDPolices *self = (CManagePSWDPolices *)lParamSort;
+  ASSERT(self != NULL);
+
+  // Default password policy always first!
+  if (lParam1 < 0)
+    return -1;
+  
+  if (lParam2 < 0)
+    return 1;
+
+  int iretval(0);
+  
+  // Mustn't go past the end!
+  ASSERT((size_t)lParam1 < self->m_MapPSWDPLC.size());
+  ASSERT((size_t)lParam2 < self->m_MapPSWDPLC.size());
+
+  PSWDPolicyMapCIter lhs, rhs;
+  lhs = rhs = self->m_MapPSWDPLC.begin();
+  advance(lhs, lParam1);
+  advance(rhs, lParam2);
+
+  switch (self->m_iSortNamesIndex) {
+    case 0:
+      // Policy name
+      iretval = wcscmp(lhs->first.c_str(), rhs->first.c_str());
+      break;
+    case 1:
+      // Use count
+      iretval = lhs->second.usecount < rhs->second.usecount ? -1 : 1;
+      break;
+  }
+
+  if (!self->m_bSortNamesAscending)
+    iretval *= -1;
+
+  return iretval;
+}
+
+int CALLBACK CManagePSWDPolices::SortEntries(LPARAM lParam1, LPARAM lParam2,
+                                             LPARAM lParamSort)
+{
+  CManagePSWDPolices *self = (CManagePSWDPolices *)lParamSort;
+  ASSERT(self != NULL);
+
+  int iretval(0);
+  
+  st_GroupTitleUser *lhs = reinterpret_cast<st_GroupTitleUser *>(lParam1);
+  st_GroupTitleUser *rhs = reinterpret_cast<st_GroupTitleUser *>(lParam2);
+
+  switch (self->m_iSortEntriesIndex) {
+    case 0:
+      // Group
+      iretval = wcscmp(lhs->group.c_str(), rhs->group.c_str());
+      break;
+    case 1:
+      // Title
+      iretval = wcscmp(lhs->title.c_str(), rhs->title.c_str());
+      break;
+    case 2:
+      // User
+      iretval = wcscmp(lhs->user.c_str(), rhs->user.c_str());
+      break;
+  }
+
+  if (!self->m_bSortEntriesAscending)
+    iretval *= -1;
+
+  return iretval;
 }

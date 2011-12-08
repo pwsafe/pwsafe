@@ -30,7 +30,7 @@
 #define IDD_PS_DISPLAY                  138
 #define IDD_PS_MISC                     139
 #define IDD_PS_PASSWORDHISTORY          140
-#define IDD_PS_PASSWORDPOLICY           141
+#define IDD_PASSWORDPOLICY              141
 #define IDD_PS_SECURITY                 142
 #define IDD_PS_SYSTEM                   143
 #define IDD_QUERYSETDEF                 144
@@ -344,7 +344,7 @@
 #define IDD_PS_BACKUP_SHORT             505
 #define IDD_PS_DISPLAY_SHORT            506
 #define IDD_PS_MISC_SHORT               507
-#define IDD_PS_PASSWORDPOLICY_SHORT     508
+#define IDD_PASSWORDPOLICY_SHORT        508
 #define IDD_PS_SHORTCUTS_SHORT          509
 #define IDD_PS_SYSTEM_SHORT             510
 #define IDD_INPUTBOX                    511
