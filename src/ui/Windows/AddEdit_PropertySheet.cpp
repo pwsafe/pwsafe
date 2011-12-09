@@ -64,6 +64,8 @@ CAddEdit_PropertySheet::CAddEdit_PropertySheet(UINT nID, CWnd* pParent,
   m_AEMD.default_pwp.lowerminlength = prefs->GetPref(PWSprefs::PWLowercaseMinLength);
   m_AEMD.default_pwp.symbolminlength = prefs->GetPref(PWSprefs::PWSymbolMinLength);
   m_AEMD.default_pwp.upperminlength = prefs->GetPref(PWSprefs::PWUppercaseMinLength);
+  
+  m_AEMD.default_symbols = prefs->GetPref(PWSprefs::DefaultSymbols);
 
   // Set up data used by all Property Pages, as appropriate
   if (m_AEMD.uicaller == IDS_ADDENTRY) {

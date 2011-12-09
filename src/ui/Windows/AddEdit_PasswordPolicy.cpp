@@ -62,6 +62,8 @@ CAddEdit_PasswordPolicy::CAddEdit_PasswordPolicy(CWnd *pParent,
                           pAEMD),
     m_useownsymbols(DEFAULT_SYMBOLS), m_bInitdone(false)
 {
+  m_policy_radibtn = M_ipolicy() != SPECIFIC_POLICY ? 0 : 1 ;
+
   // We are given the Policy - set Dialog variables
   SetVariablesFromPolicy();
 
@@ -98,7 +100,7 @@ void CAddEdit_PasswordPolicy::DoDataExchange(CDataExchange* pDX)
   CAddEdit_PropertyPage::DoDataExchange(pDX);
 
   //{{AFX_DATA_MAP(CAddEdit_PasswordPolicy)
-  DDX_Radio(pDX, IDC_USEDEFAULTPWPOLICY, M_ipolicy());
+  DDX_Radio(pDX, IDC_USEPWPOLICYNAME, m_policy_radibtn);
 
   DDX_Text(pDX, IDC_DEFPWLENGTH, m_pwdefaultlength);
   DDX_Text(pDX, IDC_MINDIGITLENGTH, m_pwdigitminlength);
@@ -132,7 +134,6 @@ BEGIN_MESSAGE_MAP(CAddEdit_PasswordPolicy, CAddEdit_PropertyPage)
   ON_BN_CLICKED(IDC_USESYMBOLS, OnUseSymbols)
   ON_BN_CLICKED(IDC_EASYVISION, OnEasyVision)
   ON_BN_CLICKED(IDC_PRONOUNCEABLE, OnMakePronounceable)
-  ON_BN_CLICKED(IDC_USEDEFAULTPWPOLICY, OnSetDefaultPWPolicy)
   ON_BN_CLICKED(IDC_USEPWPOLICYNAME, OnSelectNamedPolicy)
   ON_BN_CLICKED(IDC_ENTRYPWPOLICY, OnSetSpecificPWPolicy)
   ON_BN_CLICKED(IDC_RESETPWPOLICY, OnResetPolicy)
@@ -178,6 +179,11 @@ BOOL CAddEdit_PasswordPolicy::OnInitDialog()
   std::vector<std::wstring> vNames;
   M_pDbx()->GetPolicyNames(vNames);
 
+  // Add Default
+  CString cs_text(MAKEINTRESOURCE(IDS_DATABASE_DEFAULT));
+  m_cbxPolicyNames.AddString(cs_text);
+
+  // Add the rest (if any)
   for (std::vector<std::wstring>::iterator iter = vNames.begin();
        iter != vNames.end(); ++iter) {
     m_cbxPolicyNames.AddString(iter->c_str());
@@ -186,6 +192,8 @@ BOOL CAddEdit_PasswordPolicy::OnInitDialog()
   int index(0);
   if (M_ipolicy() == NAMED_POLICY && !M_policyname().IsEmpty() && !vNames.empty()) {
     index = m_cbxPolicyNames.FindStringExact(-1, M_policyname());
+    if (index == CB_ERR)
+      index = 0;
   }
   m_cbxPolicyNames.SetCurSel(index);
   
@@ -194,40 +202,29 @@ BOOL CAddEdit_PasswordPolicy::OnInitDialog()
   m_cbxPolicyNames.GetComboBoxInfo(&info);
   ::SendMessage(info.hwndItem ,EM_SETREADONLY, TRUE, 0);
 
-  // Check correct button and enable/disable combobox appropriately
-  UINT uiChk(IDC_USEDEFAULTPWPOLICY);
-  BOOL bEnable(FALSE);
-  switch (M_ipolicy()) {
-    case DEFAULT_POLICY:
-      uiChk = IDC_USEDEFAULTPWPOLICY;
-      break;
-    case NAMED_POLICY:
-      uiChk = IDC_USEPWPOLICYNAME;
-      bEnable = TRUE;
-      break;
-    case SPECIFIC_POLICY:
-      uiChk = IDC_ENTRYPWPOLICY;
-      break;
-    default:
-      ASSERT(0);
-  }
-  ((CButton *)GetDlgItem(uiChk))->SetCheck(BST_CHECKED);
-
-  if (vNames.empty()) {
-    // User cannot select a policy by name if none defined
-    GetDlgItem(IDC_USEPWPOLICYNAME)->EnableWindow(FALSE);
-    m_cbxPolicyNames.EnableWindow(FALSE);
-  } else {
-    GetDlgItem(IDC_USEPWPOLICYNAME)->EnableWindow(TRUE);
+  if (!vNames.empty()) {
     if (M_uicaller() == IDS_VIEWENTRY || M_protected() != 0) {
       // Read-only
       m_cbxPolicyNames.EnableWindow(FALSE);
-      m_cbxPolicyNames.ShowWindow(M_ipolicy() == NAMED_POLICY ? SW_SHOW : SW_HIDE);
-    } else {
-      // Set enable/disable Combo
-      m_cbxPolicyNames.EnableWindow(bEnable);
-      m_cbxPolicyNames.ShowWindow(SW_SHOW);
+      m_cbxPolicyNames.ShowWindow(M_ipolicy() == SPECIFIC_POLICY ? SW_HIDE : SW_SHOW);
     }
+  }
+
+  // If specific policy - disable named policy comboboc
+  m_cbxPolicyNames.EnableWindow(M_ipolicy() == SPECIFIC_POLICY ? FALSE : TRUE);
+
+  if (M_ipolicy() == NAMED_POLICY) {
+    if (index != 0) {
+      st_PSWDPolicy st_pp;
+      M_pDbx()->GetPolicyFromName(StringX((LPCWSTR)M_policyname()), st_pp);
+      M_pwp() = st_pp.pwp;
+      M_symbols() = st_pp.symbols;
+    } else {
+      M_policyname().Empty();
+      M_pwp() = M_default_pwp();
+      M_symbols() = M_default_symbols();
+    }
+    SetVariablesFromPolicy();
   }
 
   // Set up spin control relationships
@@ -268,7 +265,6 @@ BOOL CAddEdit_PasswordPolicy::OnInitDialog()
   
   if (M_uicaller() == IDS_VIEWENTRY || M_protected() != 0) {
     // Disable Buttons not already disabled in SetPolicyControls
-    GetDlgItem(IDC_USEDEFAULTPWPOLICY)->EnableWindow(FALSE);
     GetDlgItem(IDC_USEPWPOLICYNAME)->EnableWindow(FALSE);
     GetDlgItem(IDC_ENTRYPWPOLICY)->EnableWindow(FALSE);
     GetDlgItem(IDC_STATIC_PWLEN)->EnableWindow(FALSE);
@@ -277,7 +273,7 @@ BOOL CAddEdit_PasswordPolicy::OnInitDialog()
 
   if (M_original_entrytype() == CItemData::ET_ALIAS) {
     DisablePolicy();
-    GetDlgItem(IDC_USEDEFAULTPWPOLICY)->EnableWindow(FALSE);
+    GetDlgItem(IDC_USEPWPOLICYNAME)->EnableWindow(FALSE);
     GetDlgItem(IDC_ENTRYPWPOLICY)->EnableWindow(FALSE);
     GetDlgItem(IDC_STATIC_OR)->EnableWindow(FALSE);
     GetDlgItem(IDC_STATIC_PWLEN)->EnableWindow(FALSE);
@@ -769,32 +765,34 @@ void CAddEdit_PasswordPolicy::OnSymbols()
     GetDlgItem(IDC_OWNSYMBOLS)->SetFocus();
 }
 
-void CAddEdit_PasswordPolicy::OnSetDefaultPWPolicy()
-{
-  m_ae_psh->SetChanged(true);
-  M_ipolicy() = DEFAULT_POLICY;
-  M_policyname().Empty();
-
-  SetPolicyControls();
-
-  // Can only reset to defaults if using an entry specific policy
-  GetDlgItem(IDC_RESETPWPOLICY)->EnableWindow(FALSE);
-
-  m_cbxPolicyNames.EnableWindow(FALSE);
-}
-
 void CAddEdit_PasswordPolicy::OnSelectNamedPolicy()
 {
   m_ae_psh->SetChanged(true);
-  M_ipolicy() = NAMED_POLICY;
+
+  m_cbxPolicyNames.EnableWindow(TRUE);
+  m_policy_radibtn = 0;
+
   int index = m_cbxPolicyNames.GetCurSel();
-  if (index != CB_ERR) {
+  M_ipolicy() = index == 0 ? DEFAULT_POLICY : NAMED_POLICY;
+  if (index != 0 && index != CB_ERR) {
     CString cs_text;
     m_cbxPolicyNames.GetLBText(index, cs_text);
     M_policyname() = (LPCWSTR)cs_text;
+
+    st_PSWDPolicy st_pp;
+    M_pDbx()->GetPolicyFromName(StringX((LPCWSTR)cs_text), st_pp);
+    M_pwp() = st_pp.pwp;
+    M_symbols() = st_pp.symbols;
+
     m_cbxPolicyNames.EnableWindow(TRUE);
-  } else
+  } else {
     M_policyname().Empty();
+    M_pwp() = M_default_pwp();
+    M_symbols() = M_default_symbols();
+  }
+
+  SetVariablesFromPolicy();
+  SetPolicyControls();
 
   // Can only reset to defaults if using an entry specific policy
   GetDlgItem(IDC_RESETPWPOLICY)->EnableWindow(FALSE);
@@ -803,6 +801,10 @@ void CAddEdit_PasswordPolicy::OnSelectNamedPolicy()
 void CAddEdit_PasswordPolicy::OnSetSpecificPWPolicy()
 {
   m_ae_psh->SetChanged(true);
+
+  m_cbxPolicyNames.EnableWindow(FALSE);
+  m_policy_radibtn = 1;
+
   M_ipolicy() = SPECIFIC_POLICY;
   M_policyname().Empty();
 
@@ -822,7 +824,7 @@ void CAddEdit_PasswordPolicy::SetPolicyControls()
 
   if (M_uicaller() == IDS_ADDENTRY || 
      (M_uicaller() == IDS_EDITENTRY && M_protected() == 0)) {
-    bEnableSpecificPolicy = (M_ipolicy() == DEFAULT_POLICY) ? FALSE : TRUE;
+    bEnableSpecificPolicy = (M_ipolicy() == SPECIFIC_POLICY) ? TRUE : FALSE;
     bEnableLengths = ((bEnableSpecificPolicy == TRUE) &&
                       (m_pweasyvision == FALSE && m_pwmakepronounceable == FALSE &&
                        m_pwusehexdigits == FALSE));
@@ -1005,12 +1007,36 @@ void CAddEdit_PasswordPolicy::OnNamesComboChanged()
 {
   UpdateData(TRUE);
 
+  CSecString cs_policyname(L"");
+
   int index = m_cbxPolicyNames.GetCurSel();
-  CSecString cs_policyname;
-  m_cbxPolicyNames.GetLBText(index, cs_policyname);
+  if (index == CB_ERR)
+    index = 0;
+
+  M_ipolicy() = index == 0 ? DEFAULT_POLICY : NAMED_POLICY;
+
+  if (index != 0) {
+    m_cbxPolicyNames.GetLBText(index, cs_policyname);
+  }
 
   if (M_policyname() != cs_policyname) {
     M_policyname() = cs_policyname;
     m_ae_psh->SetChanged(true);
   }
+
+  if (index != 0) {
+    st_PSWDPolicy st_pp;
+    M_pDbx()->GetPolicyFromName(StringX((LPCWSTR)cs_policyname), st_pp);
+    M_pwp() = st_pp.pwp;
+    M_symbols() = st_pp.symbols;
+
+    m_cbxPolicyNames.EnableWindow(TRUE);
+  } else {
+    M_policyname().Empty();
+    M_pwp() = M_default_pwp();
+    M_symbols() = M_default_symbols();
+  }
+
+  SetVariablesFromPolicy();
+  SetPolicyControls();
 }

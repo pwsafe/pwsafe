@@ -655,7 +655,6 @@
 #define IDC_VKB                         1372
 #define IDC_SETSAMPLETEXT               1373
 #define IDC_RESETFONT                   1374
-#define IDC_USEDEFAULTPWPOLICY          1375
 #define IDC_ENTRYPWPOLICY               1376
 #define IDC_RESETPWPOLICY               1377
 #define IDC_DCA_DEFAULT                 1378
