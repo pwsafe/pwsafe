@@ -15,6 +15,7 @@ Title=HTML Help for Password Safe
 [FILES]
 html\about_combinations.html
 html\about_pws.html
+html\about_pws_yubi.html
 html\advanced.html
 html\aliases.html
 html\autotype.html

@@ -37,6 +37,7 @@ public:
   afx_msg void OnYubiGenBn();
   afx_msg void OnBnClickedOk();
   afx_msg void OnTimer(UINT_PTR nIDEvent);
+  afx_msg void OnHelp();
  private:
   void ReadYubiSN();
   bool IsYubiInserted() const;

@@ -16,8 +16,9 @@
 #include <sstream>
 
 #include "stdafx.h"
+#include "PasswordSafe.h"
+#include "ThisMfcApp.h"
 #include "YubiCfgDlg.h"
-#include "afxdialogex.h"
 
 #include "yubi/yklib.h"
 #include "core/StringX.h"
@@ -46,6 +47,16 @@ void CYubiCfgDlg::DoDataExchange(CDataExchange* pDX)
     CDialog::DoDataExchange(pDX);
     DDX_Text(pDX, IDC_YUBI_SN, m_YubiSN);
     DDX_Text(pDX, IDC_YUBI_SK, m_YubiSK);
+}
+
+static StringX BinSN2Str(const unsigned char *snstr)
+{
+  unsigned int sn = 0;
+  sn = (snstr[0] << 24) | (snstr[1] << 16);
+  sn |= (snstr[2] << 8) | snstr[3];
+  wostringstream os;
+  os << sn;
+  return StringX(os.str().c_str());
 }
 
 static StringX BinSK2HexStr(const unsigned char *sk, int len)
@@ -96,7 +107,7 @@ void CYubiCfgDlg::ReadYubiSN()
   // Wait for response completion
   rc = yk.waitForCompletion(YKLIB_MAX_SERIAL_WAIT, buffer, sizeof(DWORD));
   if (rc != YKLIB_OK) goto fail;
-  m_YubiSN = BinSK2HexStr(buffer, 4).c_str();
+  m_YubiSN = BinSN2Str(buffer).c_str();
   rc = yk.closeKey();
   return; // good return
  fail:
@@ -132,6 +143,7 @@ int CYubiCfgDlg::WriteYubiSK(const unsigned char *yubi_sk_bin)
 BEGIN_MESSAGE_MAP(CYubiCfgDlg, CPWDialog)
     ON_BN_CLICKED(IDC_YUBI_GEN_BN, &CYubiCfgDlg::OnYubiGenBn)
     ON_BN_CLICKED(IDOK, &CYubiCfgDlg::OnBnClickedOk)
+    ON_BN_CLICKED(ID_HELP, &CYubiCfgDlg::OnHelp)
     ON_WM_TIMER()
 END_MESSAGE_MAP()
 
@@ -222,4 +234,11 @@ void CYubiCfgDlg::OnTimer(UINT_PTR)
     else
       yubiRemoved();
   }
+}
+
+void CYubiCfgDlg::OnHelp() 
+{
+  CString cs_HelpTopic;
+  cs_HelpTopic = app.GetHelpFileName() + L"::/html/manage_menu.html#yubikey";
+  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
 }
