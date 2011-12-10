@@ -129,7 +129,6 @@ private:
   st_PSWDPolicy m_st_default_pp;
   PSWDPolicyMap m_MapPSWDPLC;
   PSWDPolicyMapIter m_iter;
-  bool m_bDisableSelection;
 
   DboxMain *m_pDbx;
 };

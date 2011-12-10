@@ -55,15 +55,8 @@ CPasswordPolicyDlg::CPasswordPolicyDlg(UINT uicaller, CWnd *pParent, bool bLongP
                                        st_PSWDPolicy &st_default_pp)
   : CPWDialog(bLongPPs ? CPasswordPolicyDlg::IDD : CPasswordPolicyDlg::IDD_SHORT, pParent),
   m_uicaller(uicaller), m_pDbx(NULL), m_password(L""), m_UseNamedPolicy(FALSE),
-  m_bDisableSelection(false), m_st_default_pp(st_default_pp)
+  m_st_default_pp(st_default_pp)
 {
-  // Check if we need to disable user selection of which policy to use
-  // if generating passwords via the Manage Password Policies
-  if ((m_uicaller & 0x80000000) != 0) {
-    m_bDisableSelection = true;
-    m_uicaller &= 0x7fffffff;
-  }
-
   m_PWUseLowercase = m_oldPWUseLowercase =
     (m_st_default_pp.pwp.flags & PWSprefs::PWPolicyUseLowercase) != 0;
   m_PWUseUppercase = m_oldPWUseUppercase =
@@ -229,12 +222,9 @@ BOOL CPasswordPolicyDlg::OnInitDialog()
       GetDlgItem(IDC_POLICYNAME)->EnableWindow(FALSE);
       GetDlgItem(IDC_POLICYNAME)->ShowWindow(SW_HIDE);
 
-      // Used to generate passwords - list only enabled if checkbox set
-      // Don't allow user to select a different policy if called via the
-      // Manage Password Policy dialog
-      GetDlgItem(IDC_POLICYLIST)->EnableWindow(m_bDisableSelection ? FALSE : TRUE);
+      // Used to generate passwords
       GetDlgItem(IDC_POLICYLIST)->ShowWindow(SW_SHOW);
-      GetDlgItem(IDC_USENAMED_POLICY)->EnableWindow(m_bDisableSelection ? FALSE : TRUE);
+      GetDlgItem(IDC_USENAMED_POLICY)->EnableWindow(TRUE);
       GetDlgItem(IDC_USENAMED_POLICY)->ShowWindow(SW_SHOW);
       GetDlgItem(IDC_STATIC_NAMEDPOLICY)->ShowWindow(SW_HIDE);
 
@@ -254,17 +244,9 @@ BOOL CPasswordPolicyDlg::OnInitDialog()
         m_cbxPolicyNames.AddString(iter->c_str());
       }
 
-      // Select policy in CComboBox
-      if (m_bDisableSelection) {
-        // Select user's chosen policy
-        int index(0);
-        if (!m_policyname.IsEmpty())
-          index = m_cbxPolicyNames.FindStringExact(-1, m_policyname);
-        m_cbxPolicyNames.SetCurSel(index);
-      } else {
-        // Select Default
-        m_cbxPolicyNames.SetCurSel(0);
-      }
+      // Select Default
+      m_cbxPolicyNames.SetCurSel(0);
+
       // and check the box
       ((CButton *)GetDlgItem(IDC_USENAMED_POLICY))->SetCheck(BST_CHECKED);
 

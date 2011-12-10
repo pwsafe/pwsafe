@@ -750,6 +750,7 @@
 #define IDC_STATIC_NAMEDPOLICY          1471
 #define IDC_POLICYNAMES_HEADER          1472
 #define IDC_POLICYENTRIES_HEADER        1473
+#define IDC_STATIC_COPYPSWD             1474
 
 // Next default values for new objects
 // 
@@ -757,7 +758,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        519
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1474
+#define _APS_NEXT_CONTROL_VALUE         1475
 #define _APS_NEXT_SYMED_VALUE           166
 #endif
 #endif

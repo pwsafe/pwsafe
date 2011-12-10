@@ -709,3 +709,5 @@
 #define IDS_EDIT_DEFAULT_POLICY         5906
 #define IDS_ADD_NAMED_POLICY            5907
 #define IDS_EDIT_NAMED_POLICY           5908
+#define IDS_CLICKTOCOPYGENPSWD          5909
+

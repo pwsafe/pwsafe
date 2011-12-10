@@ -8,9 +8,12 @@
 #pragma once
 
 #include "PWDialog.h"
+#include "ControlExtns.h"
+#include "DDStatic.h"
 
 #include "core/StringX.h"
 #include "core/coredefs.h"
+
 #include "resource.h"
 
 // CManagePSWDPolices dialog
@@ -38,6 +41,10 @@ protected:
   CListCtrl m_PolicyDetails;
   CListCtrl m_PolicyEntries;
 
+  CSecEditExtn m_ex_password;
+  CSecString m_password;
+  CStatic m_CopyPswdStatic;
+
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
   virtual BOOL OnInitDialog();
   virtual BOOL PreTranslateMessage(MSG* pMsg);
@@ -49,6 +56,7 @@ protected:
   afx_msg void OnList();
   afx_msg void OnDelete();
   afx_msg void OnGeneratePassword();
+  afx_msg void OnCopyPassword();
   afx_msg void OnPolicySelected(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnEntryDoubleClicked(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnColumnNameClick(NMHDR *pNotifyStruct, LRESULT *pLResult);
@@ -70,6 +78,8 @@ private:
   st_PSWDPolicy m_st_default_pp;
 
   GTUSet m_setGTU;
+
+  CBitmap m_CopyPswdBitmap;
 
   int m_iSortNamesIndex, m_iSortEntriesIndex;
   bool m_bSortNamesAscending, m_bSortEntriesAscending;

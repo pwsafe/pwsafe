@@ -66,6 +66,7 @@ CManagePSWDPolices::CManagePSWDPolices(CWnd* pParent, const bool bLongPPs)
 CManagePSWDPolices::~CManagePSWDPolices()
 {
   delete m_pToolTipCtrl;
+  m_CopyPswdStatic.Detach();
 }
 
 void CManagePSWDPolices::DoDataExchange(CDataExchange* pDX)
@@ -74,6 +75,8 @@ void CManagePSWDPolices::DoDataExchange(CDataExchange* pDX)
   DDX_Control(pDX, IDC_POLICYLIST, m_PolicyNames);
   DDX_Control(pDX, IDC_POLICYPROPERTIES, m_PolicyDetails);
   DDX_Control(pDX, IDC_POLICYENTRIES, m_PolicyEntries);
+  DDX_Control(pDX, IDC_PASSWORD, m_ex_password);
+  DDX_Control(pDX, IDC_STATIC_COPYPSWD, m_CopyPswdStatic);
 }
 
 BEGIN_MESSAGE_MAP(CManagePSWDPolices, CPWDialog)
@@ -84,6 +87,8 @@ BEGIN_MESSAGE_MAP(CManagePSWDPolices, CPWDialog)
   ON_BN_CLICKED(IDC_EDIT, OnEdit)
   ON_BN_CLICKED(IDC_LIST_POLICYENTRIES, OnList)
   ON_BN_CLICKED(IDC_GENERATEPASSWORD, OnGeneratePassword)
+
+  ON_STN_CLICKED(IDC_STATIC_COPYPSWD, OnCopyPassword)
 
   ON_NOTIFY(NM_CLICK, IDC_POLICYLIST, OnPolicySelected)
   ON_NOTIFY(NM_DBLCLK, IDC_POLICYENTRIES, OnEntryDoubleClicked)
@@ -120,10 +125,14 @@ BOOL CManagePSWDPolices::OnInitDialog()
     m_pToolTipCtrl->AddTool(GetDlgItem(IDC_EDIT), cs_ToolTip);
     cs_ToolTip.LoadString(IDS_LISTPOLICY);
     m_pToolTipCtrl->AddTool(GetDlgItem(IDC_LIST_POLICYENTRIES), cs_ToolTip);
+    cs_ToolTip.LoadString(IDS_GENERATEPASSWORD);
+    m_pToolTipCtrl->AddTool(GetDlgItem(IDC_GENERATEPASSWORD), cs_ToolTip);
     cs_ToolTip.LoadString(IDS_CANCELPOLICYCHANGES);
     m_pToolTipCtrl->AddTool(GetDlgItem(IDCANCEL), cs_ToolTip);
     cs_ToolTip.LoadString(IDS_SAVEPOLICYCHANGES);
     m_pToolTipCtrl->AddTool(GetDlgItem(IDOK), cs_ToolTip);
+    cs_ToolTip.LoadString(IDS_CLICKTOCOPYGENPSWD);
+    m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_COPYPSWD), cs_ToolTip);
   }
 
   DWORD dwStyle = m_PolicyNames.GetExtendedStyle();
@@ -175,9 +184,54 @@ BOOL CManagePSWDPolices::OnInitDialog()
   GetDlgItem(IDC_LIST_POLICYENTRIES)->EnableWindow(FALSE);
   GetDlgItem(IDC_DELETE)->EnableWindow(FALSE);
   
+  ApplyPasswordFont(GetDlgItem(IDC_PASSWORD));
+  m_ex_password.SetSecure(false);
+
+  // Remove password character so that the password is displayed
+  m_ex_password.SetPasswordChar(0);
+
   // Max. of 255 policy names allowed - only 2 hex digits used for number
   if (m_MapPSWDPLC.size() >= 255)
     GetDlgItem(IDC_NEW)->EnableWindow(FALSE);
+
+  // Load bitmap
+  BOOL brc;
+  UINT nImageID = PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar) ?
+        IDB_COPYPASSWORD_NEW : IDB_COPYPASSWORD_CLASSIC;
+  brc = m_CopyPswdBitmap.Attach(::LoadImage(
+                  ::AfxFindResourceHandle(MAKEINTRESOURCE(nImageID), RT_BITMAP),
+                  MAKEINTRESOURCE(nImageID), IMAGE_BITMAP, 0, 0,
+                  (LR_DEFAULTSIZE | LR_CREATEDIBSECTION | LR_SHARED)));
+  ASSERT(brc);
+
+  // Set bitmap in Static
+  m_CopyPswdStatic.SetBitmap((HBITMAP)m_CopyPswdBitmap);
+
+  // Get how many pixels in the bitmap
+  const COLORREF crCOLOR_3DFACE = GetSysColor(COLOR_3DFACE);
+  BITMAP bmInfo;
+  m_CopyPswdBitmap.GetBitmap(&bmInfo);
+
+  const UINT numPixels(bmInfo.bmHeight * bmInfo.bmWidth);
+
+  // get a pointer to the pixels
+  DIBSECTION ds;
+  VERIFY(m_CopyPswdBitmap.GetObject(sizeof(DIBSECTION), &ds) == sizeof(DIBSECTION));
+
+  RGBTRIPLE *pixels = reinterpret_cast<RGBTRIPLE*>(ds.dsBm.bmBits);
+  ASSERT(pixels != NULL);
+
+  const RGBTRIPLE newbkgrndColourRGB = {GetBValue(crCOLOR_3DFACE),
+                                        GetGValue(crCOLOR_3DFACE),
+                                        GetRValue(crCOLOR_3DFACE)};
+
+  for (UINT i = 0; i < numPixels; ++i) {
+    if (pixels[i].rgbtBlue  == 192 &&
+        pixels[i].rgbtGreen == 192 &&
+        pixels[i].rgbtRed   == 192) {
+      pixels[i] = newbkgrndColourRGB;
+    }
+  }
 
   // Set focus on the policy names CListCtrl and so return FALSE
   m_PolicyNames.SetFocus();
@@ -386,14 +440,19 @@ void CManagePSWDPolices::OnGeneratePassword()
     st_pp = iter->second;
   }
   
-  // Special case of Genrate Password - disable selection of policy
-  UINT ui = IDS_GENERATEPASSWORD | 0x80000000;
-  CPasswordPolicyDlg GenPswdPS(ui, this, m_bLongPPs, st_pp);
+  StringX passwd;
+  m_pDbx->MakeRandomPassword(passwd, st_pp.pwp, st_pp.symbols.c_str(), false);
+  m_password = passwd.c_str();
+  m_ex_password.SetWindowText(m_password);
+  m_ex_password.Invalidate();
+}
 
-  // Pass this policy's values and PolicyName map
-  GenPswdPS.SetPolicyData(cs_policyname, m_MapPSWDPLC, m_pDbx);
+void CManagePSWDPolices::OnCopyPassword()
+{
+  UpdateData(TRUE);
 
-  GenPswdPS.DoModal();
+  m_pDbx->SetClipboardData(m_password);
+  m_pDbx->UpdateLastClipboardAction(CItemData::PASSWORD);
 }
 
 void CManagePSWDPolices::OnPolicySelected(NMHDR *pNotifyStruct, LRESULT *pLResult)
