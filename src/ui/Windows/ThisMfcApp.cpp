@@ -53,6 +53,7 @@
 #include <vector>
 #include <errno.h>
 #include <io.h>
+#include <fstream>
 
 // Only produce minidumps in release code
 #ifndef _DEBUG
@@ -756,6 +757,8 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
            * State of m_bSetup is accessible via public IsSetup() member function
            */
           dbox.SetSetup();
+        } else if (arg->Left(6) == L"--url=") {
+          m_url = arg->Mid(6);
         } else {
           // unrecognized extended flag. Silently ignore.
         }
@@ -984,6 +987,8 @@ BOOL ThisMfcApp::InitInstance()
       EnumWindows(searcher, (LPARAM)&hOther);
 
       if (hOther != NULL) { /* pop up */
+        if (!m_url.IsEmpty())
+          PassURL();
         ::SetForegroundWindow(hOther);
 
         if (IsIconic(hOther)) { /* restore */
@@ -1522,4 +1527,16 @@ void ThisMfcApp::GetLanguageFiles()
     }
   }
   finder.Close();
+}
+
+void ThisMfcApp::PassURL()
+{
+  // For final release, this should be via mapped file IPC, per
+  // http://msdn.microsoft.com/en-us/library/ms810613.aspx
+  // For proof-of-concept, a silly text file will do
+  CString t;
+  t.GetEnvironmentVariable(L"TEMP");
+  t += L"\\pwurl";
+  wofstream of(t);
+  of << m_url;
 }

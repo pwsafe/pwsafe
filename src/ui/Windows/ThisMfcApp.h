@@ -93,6 +93,7 @@ public:
   CString GetFileVersionString() const {return m_csFileVersionString;}
   CString GetCopyrightString() const {return m_csCopyrightString;}
   CString GetHelpFileName() const {return m_csHelpFile;}
+  CString GetURL() const {return m_url;}
   DWORD GetFileVersionMajorMinor() const {return m_dwMajorMinor;}
   DWORD GetFileVersionBuildRevision() const {return m_dwBuildRevision;}
   void SetACCELTableCreated() {m_bACCEL_Table_Created = true;}
@@ -117,6 +118,7 @@ private:
   void LoadLocalizedStuff();
   void SetupMenu();
   static BOOL CALLBACK searcher(HWND hWnd, LPARAM lParam);
+  void PassURL(); // IPC to existing pwsafe process
 
   HANDLE m_hMutexOneInstance;
 
@@ -131,6 +133,7 @@ private:
   CString m_csFileVersionString;
   CString m_csCopyrightString;
   CString m_csHelpFile;
+  CString m_url;
   int m_AppLangID, m_ResLangID;
 
   // Following set by command line arguments
