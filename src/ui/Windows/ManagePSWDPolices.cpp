@@ -34,6 +34,7 @@ CManagePSWDPolices::CManagePSWDPolices(CWnd* pParent, const bool bLongPPs)
   ASSERT(pParent != NULL);
 
   m_pDbx = static_cast<DboxMain *>(pParent);
+  m_bReadOnly = m_pDbx->IsDBReadOnly();
 
   m_MapPSWDPLC = m_pDbx->GetPasswordPolicies();
 
@@ -66,7 +67,6 @@ CManagePSWDPolices::CManagePSWDPolices(CWnd* pParent, const bool bLongPPs)
 CManagePSWDPolices::~CManagePSWDPolices()
 {
   delete m_pToolTipCtrl;
-  m_CopyPswdStatic.Detach();
 }
 
 void CManagePSWDPolices::DoDataExchange(CDataExchange* pDX)
@@ -76,7 +76,6 @@ void CManagePSWDPolices::DoDataExchange(CDataExchange* pDX)
   DDX_Control(pDX, IDC_POLICYPROPERTIES, m_PolicyDetails);
   DDX_Control(pDX, IDC_POLICYENTRIES, m_PolicyEntries);
   DDX_Control(pDX, IDC_PASSWORD, m_ex_password);
-  DDX_Control(pDX, IDC_STATIC_COPYPSWD, m_CopyPswdStatic);
 }
 
 BEGIN_MESSAGE_MAP(CManagePSWDPolices, CPWDialog)
@@ -87,8 +86,7 @@ BEGIN_MESSAGE_MAP(CManagePSWDPolices, CPWDialog)
   ON_BN_CLICKED(IDC_EDIT, OnEdit)
   ON_BN_CLICKED(IDC_LIST_POLICYENTRIES, OnList)
   ON_BN_CLICKED(IDC_GENERATEPASSWORD, OnGeneratePassword)
-
-  ON_STN_CLICKED(IDC_STATIC_COPYPSWD, OnCopyPassword)
+  ON_BN_CLICKED(IDC_COPYPASSWORD, OnCopyPassword)
 
   ON_NOTIFY(NM_CLICK, IDC_POLICYLIST, OnPolicySelected)
   ON_NOTIFY(NM_DBLCLK, IDC_POLICYENTRIES, OnEntryDoubleClicked)
@@ -102,6 +100,21 @@ END_MESSAGE_MAP()
 BOOL CManagePSWDPolices::OnInitDialog()
 {
   CPWDialog::OnInitDialog();
+
+  if (m_bReadOnly) {
+    GetDlgItem(IDC_NEW)->EnableWindow(FALSE);
+    GetDlgItem(IDC_DELETE)->EnableWindow(FALSE);
+
+    // Hide cancel button & change OK button text
+    GetDlgItem(IDCANCEL)->EnableWindow(FALSE);
+    GetDlgItem(IDCANCEL)->ShowWindow(SW_HIDE);
+
+    // Change button text
+    CString cs_text(MAKEINTRESOURCE(IDS_CLOSE));
+    GetDlgItem(IDOK)->SetWindowText(cs_text);
+    cs_text.LoadString(IDS_VIEW);
+    GetDlgItem(IDC_EDIT)->SetWindowText(cs_text);
+  }
 
   m_pToolTipCtrl = new CToolTipCtrl;
   if (!m_pToolTipCtrl->Create(this, TTS_BALLOON | TTS_NOPREFIX)) {
@@ -125,14 +138,17 @@ BOOL CManagePSWDPolices::OnInitDialog()
     m_pToolTipCtrl->AddTool(GetDlgItem(IDC_EDIT), cs_ToolTip);
     cs_ToolTip.LoadString(IDS_LISTPOLICY);
     m_pToolTipCtrl->AddTool(GetDlgItem(IDC_LIST_POLICYENTRIES), cs_ToolTip);
-    cs_ToolTip.LoadString(IDS_GENERATEPASSWORD);
+    cs_ToolTip.LoadString(IDS_TESTPOLICY);
     m_pToolTipCtrl->AddTool(GetDlgItem(IDC_GENERATEPASSWORD), cs_ToolTip);
-    cs_ToolTip.LoadString(IDS_CANCELPOLICYCHANGES);
-    m_pToolTipCtrl->AddTool(GetDlgItem(IDCANCEL), cs_ToolTip);
-    cs_ToolTip.LoadString(IDS_SAVEPOLICYCHANGES);
-    m_pToolTipCtrl->AddTool(GetDlgItem(IDOK), cs_ToolTip);
     cs_ToolTip.LoadString(IDS_CLICKTOCOPYGENPSWD);
-    m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_COPYPSWD), cs_ToolTip);
+    m_pToolTipCtrl->AddTool(GetDlgItem(IDC_COPYPASSWORD), cs_ToolTip);
+
+    if (!m_bReadOnly) {
+      cs_ToolTip.LoadString(IDS_CANCELPOLICYCHANGES);
+      m_pToolTipCtrl->AddTool(GetDlgItem(IDCANCEL), cs_ToolTip);
+      cs_ToolTip.LoadString(IDS_SAVEPOLICYCHANGES);
+      m_pToolTipCtrl->AddTool(GetDlgItem(IDOK), cs_ToolTip);
+    }
   }
 
   DWORD dwStyle = m_PolicyNames.GetExtendedStyle();
@@ -194,45 +210,6 @@ BOOL CManagePSWDPolices::OnInitDialog()
   if (m_MapPSWDPLC.size() >= 255)
     GetDlgItem(IDC_NEW)->EnableWindow(FALSE);
 
-  // Load bitmap
-  BOOL brc;
-  UINT nImageID = PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar) ?
-        IDB_COPYPASSWORD_NEW : IDB_COPYPASSWORD_CLASSIC;
-  brc = m_CopyPswdBitmap.Attach(::LoadImage(
-                  ::AfxFindResourceHandle(MAKEINTRESOURCE(nImageID), RT_BITMAP),
-                  MAKEINTRESOURCE(nImageID), IMAGE_BITMAP, 0, 0,
-                  (LR_DEFAULTSIZE | LR_CREATEDIBSECTION | LR_SHARED)));
-  ASSERT(brc);
-
-  // Set bitmap in Static
-  m_CopyPswdStatic.SetBitmap((HBITMAP)m_CopyPswdBitmap);
-
-  // Get how many pixels in the bitmap
-  const COLORREF crCOLOR_3DFACE = GetSysColor(COLOR_3DFACE);
-  BITMAP bmInfo;
-  m_CopyPswdBitmap.GetBitmap(&bmInfo);
-
-  const UINT numPixels(bmInfo.bmHeight * bmInfo.bmWidth);
-
-  // get a pointer to the pixels
-  DIBSECTION ds;
-  VERIFY(m_CopyPswdBitmap.GetObject(sizeof(DIBSECTION), &ds) == sizeof(DIBSECTION));
-
-  RGBTRIPLE *pixels = reinterpret_cast<RGBTRIPLE*>(ds.dsBm.bmBits);
-  ASSERT(pixels != NULL);
-
-  const RGBTRIPLE newbkgrndColourRGB = {GetBValue(crCOLOR_3DFACE),
-                                        GetGValue(crCOLOR_3DFACE),
-                                        GetRValue(crCOLOR_3DFACE)};
-
-  for (UINT i = 0; i < numPixels; ++i) {
-    if (pixels[i].rgbtBlue  == 192 &&
-        pixels[i].rgbtGreen == 192 &&
-        pixels[i].rgbtRed   == 192) {
-      pixels[i] = newbkgrndColourRGB;
-    }
-  }
-
   // Set focus on the policy names CListCtrl and so return FALSE
   m_PolicyNames.SetFocus();
   return FALSE;
@@ -268,6 +245,14 @@ void CManagePSWDPolices::OnHelp()
   HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
 }
 
+void CManagePSWDPolices::OnOK()
+{
+  if (m_bReadOnly)
+    CPWDialog::OnCancel();
+  else
+    CPWDialog::OnOK();
+}
+
 void CManagePSWDPolices::OnCancel()
 {
   if (m_bChanged) {
@@ -285,7 +270,7 @@ void CManagePSWDPolices::OnNew()
 {
   bool bLongPPs = m_pDbx->LongPPs();
 
-  CPasswordPolicyDlg PasswordPolicy(IDS_PSWDPOLICY, this, bLongPPs, m_st_default_pp);
+  CPasswordPolicyDlg PasswordPolicy(IDS_PSWDPOLICY, this, bLongPPs, m_bReadOnly, m_st_default_pp);
 
   // Pass default values, PolicyName map and indicate New (Blank policy name)
   CString cs_policyname(L"");
@@ -323,7 +308,7 @@ void CManagePSWDPolices::OnEdit()
   bool bLongPPs = m_pDbx->LongPPs();
 
   CPasswordPolicyDlg PasswordPolicy(m_iSelectedItem == 0 ? IDS_OPTIONS : IDS_PSWDPOLICY,
-                                    this, bLongPPs, m_st_default_pp);
+                                    this, bLongPPs, m_bReadOnly, m_st_default_pp);
 
   // Pass default values and PolicyName map
   PasswordPolicy.SetPolicyData(cs_policyname, m_MapPSWDPLC, m_pDbx);
@@ -513,14 +498,16 @@ void CManagePSWDPolices::OnPolicySelected(NMHDR *pNotifyStruct, LRESULT *pLResul
       PSWDPolicyMapCIter citer = m_MapPSWDPLC.cbegin();
       advance(citer, m_PolicyNames.GetItemData(m_iSelectedItem));
 
-      // Always allow edit
+      // Always allow edit/view
       GetDlgItem(IDC_EDIT)->EnableWindow(TRUE);
+
+        // Do not allow delete of policy if use count is non-zero
+      GetDlgItem(IDC_DELETE)->EnableWindow((citer->second.usecount != 0 || m_bReadOnly) ? FALSE : TRUE);
+
       // Do not allow list of associated items if use count is zero
       GetDlgItem(IDC_LIST_POLICYENTRIES)->EnableWindow(citer->second.usecount == 0 ?
                                          FALSE : TRUE);
-      // Do not allow delete of policy if use count is non-zero
-      GetDlgItem(IDC_DELETE)->EnableWindow(citer->second.usecount != 0 ?
-                                         FALSE : TRUE);
+
       break;
   }
   

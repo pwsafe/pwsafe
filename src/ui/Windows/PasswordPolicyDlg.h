@@ -27,7 +27,7 @@ class CPasswordPolicyDlg : public CPWDialog
 
 public:
   // Construction
-  CPasswordPolicyDlg(UINT uicaller, CWnd *pParent, bool bLongPPs,
+  CPasswordPolicyDlg(UINT uicaller, CWnd *pParent, bool bLongPPs, bool bReadOnly,
                      st_PSWDPolicy &st_pp);
   ~CPasswordPolicyDlg();
 
@@ -129,6 +129,8 @@ private:
   st_PSWDPolicy m_st_default_pp;
   PSWDPolicyMap m_MapPSWDPLC;
   PSWDPolicyMapIter m_iter;
+
+  bool m_bReadOnly;
 
   DboxMain *m_pDbx;
 };

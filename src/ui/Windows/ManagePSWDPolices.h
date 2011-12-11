@@ -43,7 +43,6 @@ protected:
 
   CSecEditExtn m_ex_password;
   CSecString m_password;
-  CStatic m_CopyPswdStatic;
 
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
   virtual BOOL OnInitDialog();
@@ -51,6 +50,7 @@ protected:
 
   afx_msg void OnHelp();
   afx_msg void OnCancel();
+  afx_msg void OnOK();
   afx_msg void OnNew();
   afx_msg void OnEdit();
   afx_msg void OnList();
@@ -79,11 +79,9 @@ private:
 
   GTUSet m_setGTU;
 
-  CBitmap m_CopyPswdBitmap;
-
   int m_iSortNamesIndex, m_iSortEntriesIndex;
   bool m_bSortNamesAscending, m_bSortEntriesAscending;
 
   int m_iSelectedItem;
-  bool m_bChanged, m_bViewPolicy, m_bLongPPs;
+  bool m_bChanged, m_bViewPolicy, m_bLongPPs, m_bReadOnly;
 };

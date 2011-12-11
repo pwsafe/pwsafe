@@ -624,7 +624,8 @@ void DboxMain::OnGeneratePassword()
   st_default_pp.symbols = prefs->GetPref(PWSprefs::DefaultSymbols);
 
   bool bLongPPs = LongPPs();
-  CPasswordPolicyDlg GenPswdPS(IDS_GENERATEPASSWORD, this, bLongPPs, st_default_pp);
+  CPasswordPolicyDlg GenPswdPS(IDS_GENERATEPASSWORD, this, bLongPPs, 
+                               IsDBReadOnly(), st_default_pp);
 
   // Pass default values, PolicyName map
   CString cs_poliyname(L"");

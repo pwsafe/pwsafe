@@ -52,10 +52,10 @@ const UINT CPasswordPolicyDlg::nonHexLengthSpins[CPasswordPolicyDlg::N_HEX_LENGT
 IMPLEMENT_DYNAMIC(CPasswordPolicyDlg, CPWDialog)
 
 CPasswordPolicyDlg::CPasswordPolicyDlg(UINT uicaller, CWnd *pParent, bool bLongPPs,
-                                       st_PSWDPolicy &st_default_pp)
+                                       bool bReadOnly, st_PSWDPolicy &st_default_pp)
   : CPWDialog(bLongPPs ? CPasswordPolicyDlg::IDD : CPasswordPolicyDlg::IDD_SHORT, pParent),
-  m_uicaller(uicaller), m_pDbx(NULL), m_password(L""), m_UseNamedPolicy(FALSE),
-  m_st_default_pp(st_default_pp)
+  m_uicaller(uicaller), m_bReadOnly(bReadOnly), m_pDbx(NULL), m_password(L""),
+  m_UseNamedPolicy(FALSE), m_st_default_pp(st_default_pp)
 {
   m_PWUseLowercase = m_oldPWUseLowercase =
     (m_st_default_pp.pwp.flags & PWSprefs::PWPolicyUseLowercase) != 0;
@@ -174,6 +174,16 @@ END_MESSAGE_MAP()
 BOOL CPasswordPolicyDlg::OnInitDialog()
 {
   CPWDialog::OnInitDialog();
+
+  if (m_bReadOnly && m_uicaller != IDS_GENERATEPASSWORD) {
+    // Change OK button test
+    CString cs_close(MAKEINTRESOURCE(IDS_CLOSE));
+    GetDlgItem(IDOK)->SetWindowText(cs_close);
+
+    // Hide the Cancel button
+    GetDlgItem(IDCANCEL)->EnableWindow(FALSE);
+    GetDlgItem(IDCANCEL)->ShowWindow(SW_HIDE);
+  }
 
   // Verify ptr to DboxMain has been set up (call to SetPolicyData)
   ASSERT(m_pDbx != NULL);
@@ -387,6 +397,11 @@ BOOL CPasswordPolicyDlg::OnInitDialog()
 
 void CPasswordPolicyDlg::OnOK()
 {
+  if (m_bReadOnly) {
+    CPWDialog::OnCancel();
+    return;
+  }
+
   // If in edit (database default or named policy) and it fails validation - don't exit
   if (m_uicaller != IDS_GENERATEPASSWORD && !UpdatePasswordPolicy())
     return;
