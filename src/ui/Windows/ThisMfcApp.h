@@ -41,6 +41,8 @@ struct LANGHELPFILE {
 
 class DboxMain;
 
+#define WM_URL_AT (WM_USER + 37)
+
 class ThisMfcApp : public CWinApp
 {
 public:

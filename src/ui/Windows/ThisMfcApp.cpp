@@ -987,13 +987,16 @@ BOOL ThisMfcApp::InitInstance()
       EnumWindows(searcher, (LPARAM)&hOther);
 
       if (hOther != NULL) { /* pop up */
-        if (!m_url.IsEmpty())
+        if (!m_url.IsEmpty()) {
           PassURL();
-        ::SetForegroundWindow(hOther);
-
-        if (IsIconic(hOther)) { /* restore */
-          ::ShowWindow(hOther, SW_RESTORE);
-        } /* restore */
+          ::SendMessage(hOther, WM_URL_AT, 0, 0);
+        } else {
+          ::SetForegroundWindow(hOther);
+          
+          if (IsIconic(hOther)) { /* restore */
+            ::ShowWindow(hOther, SW_RESTORE);
+          } /* restore */
+        }
       } /* pop up */
 
       return FALSE; // terminates the creation
