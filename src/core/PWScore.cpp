@@ -28,8 +28,6 @@
 #include "os/mem.h"
 #include "os/logit.h"
 
-#include "../ui/Windows/PWSFaultHandler.h"
-
 #include <iostream>
 #include <iomanip>
 #include <string>
