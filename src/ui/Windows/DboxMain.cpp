@@ -48,6 +48,7 @@
 #include "os/file.h"
 #include "os/env.h"
 #include "os/dir.h"
+#include "os/logit.h"
 
 #if defined(POCKET_PC)
 #include "pocketpc/resource.h"
@@ -725,6 +726,8 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
 
 void DboxMain::InitPasswordSafe()
 {
+  PWS_LOGIT
+
   pws_os::getosversion(m_WindowsMajorVersion, m_WindowsMinorVersion);
   PWSprefs *prefs = PWSprefs::GetInstance();
   // Real initialization done here
@@ -1082,6 +1085,8 @@ LRESULT DboxMain::OnHdrToCCDragComplete(WPARAM wType, LPARAM /* lParam */)
 
 BOOL DboxMain::OnInitDialog()
 {
+  PWS_LOGIT
+
   CDialog::OnInitDialog();
 
   // Set up UPDATE_UI data map.
@@ -1521,6 +1526,8 @@ void DboxMain::SetStartSilent(bool state)
 
 void DboxMain::SetChanged(ChangeType changed)
 {
+  PWS_LOGIT_ARGS("changed=%d", changed);
+
   if (m_core.IsReadOnly())
     return;
 
@@ -1631,6 +1638,8 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
                                   int flags,
                                   PWScore *pcore)
 {
+  PWS_LOGIT_ARGS("index=%d; flags=0x%04x", index, flags);
+
   // index:
   //  GCP_FIRST      (0) first
   //  GCP_NORMAL     (1) OK, CANCEL & HELP buttons
@@ -2001,6 +2010,9 @@ void DboxMain::OnSysCommand(UINT nID, LPARAM lParam)
   }
 
   UINT const nSysID = nID & 0xFFF0;
+
+  PWS_LOGIT_ARGS("nID=%04X", nID);
+
   switch (nSysID) {
     case SC_MINIMIZE:
       break;
@@ -2115,6 +2127,10 @@ LRESULT DboxMain::OnTrayNotification(WPARAM , LPARAM)
 
 bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
 {
+  PWS_LOGIT_ARGS("bUpdateWindows=%s, bShow=%s",
+    bUpdateWindows ? _T("true") : _T("false"), 
+    bShow ? _T("true") : _T("false"));
+
   // This restores the data in the main dialog.
   // If currently locked, it checks the user knows the correct passphrase first
   // Note: bUpdateWindows = true only when called from within OnSysCommand-SC_RESTORE
@@ -2543,6 +2559,8 @@ void DboxMain::UpdateAccessTime(CItemData *pci)
 
 LRESULT DboxMain::OnQueryEndSession(WPARAM , LPARAM lParam)
 {
+    PWS_LOGIT_ARGS("lParam=%d", lParam);
+
   /*
     ********************************************************************************
     NOTE: If the Windows API ExitWindowsEx is called with the EWX_FORCE flag,
@@ -2626,6 +2644,8 @@ LRESULT DboxMain::OnQueryEndSession(WPARAM , LPARAM lParam)
 
 LRESULT DboxMain::OnEndSession(WPARAM wParam, LPARAM )
 {
+  PWS_LOGIT_ARGS("wParam=%d", wParam);
+
   /*
     See comments in OnQueryEndSession above.
   */

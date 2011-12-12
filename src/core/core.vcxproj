@@ -1081,6 +1081,7 @@
     <ClCompile Include="ItemData.cpp" />
     <ClCompile Include="ItemField.cpp" />
     <ClCompile Include="Match.cpp" />
+    <ClCompile Include="PWSLog.cpp" />
     <ClCompile Include="XML\MSXML\MFileSAX2Handlers.cpp" />
     <ClCompile Include="XML\MSXML\MFileValidator.cpp" />
     <ClCompile Include="XML\MSXML\MFileXMLProcessor.cpp" />
@@ -1136,6 +1137,7 @@
     <ClInclude Include="ItemData.h" />
     <ClInclude Include="ItemField.h" />
     <ClInclude Include="Match.h" />
+    <ClInclude Include="PWSLog.h" />
     <ClInclude Include="XML\MSXML\MFileSAX2Handlers.h" />
     <ClInclude Include="XML\MSXML\MFileValidator.h" />
     <ClInclude Include="XML\MSXML\MFileXMLProcessor.h" />

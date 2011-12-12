@@ -28,6 +28,8 @@
 #include "core/pwscore.h"
 #include "core/PWSAuxParse.h"
 
+#include "os/logit.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -51,6 +53,8 @@ static bool SafeGetBaseEntry(const DboxMain *pDbx, const CItemData &dep, CItemDa
 #ifndef POCKET_PC
 void DboxMain::OnTrayLockUnLock()
 {
+  PWS_LOGIT
+
   switch(app.GetSystemTrayState()) {
     case ThisMfcApp::LOCKED:            // User clicked UnLock!
       // This only unlocks the database - it does not restore the window

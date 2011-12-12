@@ -22,6 +22,9 @@
 #include "os/file.h"
 #include "os/dir.h"
 #include "os/registry.h"
+#include "os/logit.h"
+
+#include "../ui/Windows/PWSFaultHandler.h"
 
 #include <fstream>
 #include <algorithm>
@@ -272,6 +275,8 @@ StringX PWSprefs::GetPrefDefVal(StringPrefs pref_enum) const
 
 StringX PWSprefs::GetAllBoolPrefs()
 {
+  PWS_LOGIT
+
   oStringXStream osxs;
   for (int i = 0; i < NumBoolPrefs; i++) {
     osxs << setw(1) << i << _T(' ')
@@ -283,6 +288,8 @@ StringX PWSprefs::GetAllBoolPrefs()
 
 StringX PWSprefs::GetAllIntPrefs()
 {
+  PWS_LOGIT
+
   oStringXStream osxs;
   for (int i = 0; i < NumIntPrefs; i++) {
     osxs << setw(1) << i << _T(' ')
@@ -294,6 +301,8 @@ StringX PWSprefs::GetAllIntPrefs()
 
 StringX PWSprefs::GetAllStringPrefs()
 {
+  PWS_LOGIT
+
   // Here we must restrict most string preferences as they contain user data
   int SafeStringPrefs[] = {
     LastView, TreeFont, BackupPrefixValue, ListColumns,
@@ -419,6 +428,8 @@ void PWSprefs::SetupCopyPrefs()
 
 void PWSprefs::UpdateFromCopyPrefs(const PWSprefs::PrefType ptype)
 {
+  PWS_LOGIT
+
   // Update real preferences from copy values
   for (int i = 0; i < NumBoolPrefs; i++) {
     if (ptype == ptAll || m_bool_prefs[i].ptype == ptype) {
@@ -516,6 +527,8 @@ void PWSprefs::SetPref(StringPrefs pref_enum, const StringX &value, const bool b
 
 void PWSprefs::ResetPref(BoolPrefs pref_enum)
 {
+  PWS_LOGIT_ARGS("BoolPref: %s", m_bool_prefs[pref_enum].name);
+
   m_boolValues[pref_enum] = m_bool_prefs[pref_enum].defVal;
   m_boolChanged[pref_enum] = true;
   m_prefs_changed[m_bool_prefs[pref_enum].ptype == ptDatabase ? DB_PREF : APP_PREF] = true;
@@ -523,6 +536,8 @@ void PWSprefs::ResetPref(BoolPrefs pref_enum)
 
 void PWSprefs::ResetPref(IntPrefs pref_enum)
 {
+  PWS_LOGIT_ARGS("IntegerPref: %s", m_int_prefs[pref_enum].name);
+  
   m_intValues[pref_enum] = m_int_prefs[pref_enum].defVal;
   m_intChanged[pref_enum] = true;
   m_prefs_changed[m_int_prefs[pref_enum].ptype == ptDatabase ? DB_PREF : APP_PREF] = true;
@@ -530,6 +545,8 @@ void PWSprefs::ResetPref(IntPrefs pref_enum)
 
 void PWSprefs::ResetPref(StringPrefs pref_enum)
 {
+  PWS_LOGIT_ARGS("StringPref: %s", m_string_prefs[pref_enum].name);
+
   m_stringValues[pref_enum] = m_string_prefs[pref_enum].defVal;
   m_stringChanged[pref_enum] = true;
   m_prefs_changed[m_string_prefs[pref_enum].ptype == ptDatabase ? DB_PREF : APP_PREF] = true;
@@ -537,6 +554,8 @@ void PWSprefs::ResetPref(StringPrefs pref_enum)
 
 bool PWSprefs::WritePref(const StringX &name, bool val)
 {
+  PWS_LOGIT_ARGS("Bool Name: %s", name.c_str());
+
   // Used to save to config destination at database save and application termination
   bool bRetVal(false);
   switch (m_ConfigOption) {
@@ -558,6 +577,8 @@ bool PWSprefs::WritePref(const StringX &name, bool val)
 
 bool PWSprefs::WritePref(const StringX &name, unsigned int val)
 {
+  PWS_LOGIT_ARGS("Integer Name: %s", name.c_str());
+
   // Used to save to config destination at database save and application termination
   bool bRetVal(false);
   switch (m_ConfigOption) {
@@ -578,6 +599,8 @@ bool PWSprefs::WritePref(const StringX &name, unsigned int val)
 
 bool PWSprefs::WritePref(const StringX &name, const StringX &val)
 {
+  PWS_LOGIT_ARGS("String Name: %s", name.c_str());
+
   // Used to save to config destination at database save and application termination
   bool bRetVal(false);
   switch (m_ConfigOption) {
@@ -599,6 +622,8 @@ bool PWSprefs::WritePref(const StringX &name, const StringX &val)
 
 bool PWSprefs::DeletePref(const StringX &name)
 {
+  PWS_LOGIT_ARGS("Name: %s", name.c_str());
+  
   bool bRetVal(false);
   switch (m_ConfigOption) {
     case CF_REGISTRY:
@@ -684,6 +709,7 @@ void PWSprefs::SetPrefShortcuts(const std::vector<st_prefShortcut> &vShortcuts)
 
 StringX PWSprefs::Store(bool bUseCopy)
 {
+  PWS_LOGIT_ARGS("bUseCopy=%s", bUseCopy ? _T("true") : _T("false"));
   /*
   * Create a string of values that are (1) different from the defaults, &&
   * (2) are storage in the database (ptype == ptDatabase)
@@ -752,6 +778,8 @@ StringX PWSprefs::Store(bool bUseCopy)
 
 void PWSprefs::Load(const StringX &prefString, bool bUseCopy)
 {
+  PWS_LOGIT_ARGS("bUseCopy=%s", bUseCopy ? _T("true") : _T("false"));
+
   bool *p_boolValues;
   unsigned int *p_intValues;
   StringX *p_stringValues;
@@ -920,6 +948,8 @@ void PWSprefs::FindConfigFile()
 
 void PWSprefs::InitializePreferences()
 {
+  PWS_LOGIT
+
   // Set up XML "keys": host/user ensure that they start with letter,
   // and otherwise conforms with http://www.w3.org/TR/2000/REC-xml-20001006#NT-Name
   const SysInfo *si = SysInfo::GetInstance();
@@ -1047,6 +1077,8 @@ void PWSprefs::InitializePreferences()
 
 void PWSprefs::SetDatabasePrefsToDefaults(const bool bUseCopy)
 {
+  PWS_LOGIT_ARGS("bUseCopy=%s", bUseCopy ? _T("true") : _T("false"));
+
   // Set Database prefs to hardcoded values
   int i;
   // Default values only
@@ -1074,6 +1106,8 @@ void PWSprefs::SetDatabasePrefsToDefaults(const bool bUseCopy)
 
 void PWSprefs::LoadProfileFromDefaults()
 {
+  PWS_LOGIT
+
   // set prefs to hardcoded values
   int i;
   // Default values only
@@ -1092,6 +1126,8 @@ void PWSprefs::LoadProfileFromDefaults()
 
 void PWSprefs::LoadProfileFromRegistry()
 {
+  PWS_LOGIT
+
   // Read in values from registry
   if (!m_bRegistryKeyExists)
     return; // Avoid creating keys if none already, as
@@ -1196,6 +1232,8 @@ void PWSprefs::LoadProfileFromRegistry()
 
 bool PWSprefs::LoadProfileFromFile()
 {
+  PWS_LOGIT
+
   /*
   * Called from InitializePreferences() at startup,
   * attempts to read in application preferences
@@ -1322,6 +1360,8 @@ exit:
 
 void PWSprefs::SaveApplicationPreferences()
 {
+  PWS_LOGIT
+
   int i;
   if (!m_prefs_changed[APP_PREF])
     return;
@@ -1589,6 +1629,7 @@ void PWSprefs::ImportOldPrefs()
 {
   if (!pws_os::RegOpenSubtree(OldSubKey.c_str()))
     return;
+
   // Iterate over app preferences (those not stored
   // in database), read values and store if found.
   int i;
@@ -1647,6 +1688,8 @@ void PWSprefs::DeleteOldPrefs()
 
 stringT PWSprefs::GetXMLPreferences()
 {
+  PWS_LOGIT
+
   stringT retval(_T(""));
   ostringstreamT os;
 
