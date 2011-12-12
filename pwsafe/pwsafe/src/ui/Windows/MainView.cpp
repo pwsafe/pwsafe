@@ -1011,9 +1011,10 @@ void DboxMain::RestoreWindows()
   // Can't use the fact that the string is empty, as that is a valid state!
   // Use arbitrary value "#Empty#" to indicate nothing here.
   if (m_savedDBprefs != EMPTYSAVEDDBPREFS) {
-    PWSprefs::GetInstance()->Load(m_savedDBprefs);
-    if (m_core.HaveHeaderPreferencesChanged(m_savedDBprefs))
+    if (m_core.HaveHeaderPreferencesChanged(m_savedDBprefs)) {
+      PWSprefs::GetInstance()->Load(m_savedDBprefs);
       m_core.SetDBPrefsChanged(true);
+    }
     m_savedDBprefs = EMPTYSAVEDDBPREFS;
   }
 
@@ -1185,9 +1186,10 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
         // Can't use the fact that the string is empty, as that is a valid state!
         // Use arbitrary value "#Empty#" to indicate nothing here.
         if (m_savedDBprefs != EMPTYSAVEDDBPREFS) {
-          prefs->Load(m_savedDBprefs);
-          if (m_core.HaveHeaderPreferencesChanged(m_savedDBprefs))
+          if (m_core.HaveHeaderPreferencesChanged(m_savedDBprefs)) {
+            prefs->Load(m_savedDBprefs);
             m_core.SetDBPrefsChanged(true);
+          }
           m_savedDBprefs = EMPTYSAVEDDBPREFS;
         }
 
@@ -1915,7 +1917,7 @@ void DboxMain::OnTimer(UINT_PTR nIDEvent)
     if (!LockDataBase())
       return;
 
-    // Save any database preference chnages
+    // Save any database preference changes
     PWSprefs *prefs = PWSprefs::GetInstance();
     m_savedDBprefs = prefs->Store();
     bool usingsystray = prefs->GetPref(PWSprefs::UseSystemTray);
