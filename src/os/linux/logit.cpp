@@ -8,6 +8,7 @@
 
 #include "../logit.h"
 #include "../../core/PWSLog.h"
+#include "../../core/Util.h"
 
 #include <stdio.h>
 #include <stdarg.h>
@@ -39,23 +40,23 @@ void pws_os::Logit(LPCTSTR lpszFormat, ...)
   va_end(args);  // after using args we should reset list
   va_start(args, lpszFormat);
 
-  wchar_t *szbuffer = new wchar_t[num_required];
-  num_written = vswprintf(szbuffer, num_required, format_str, args);
+  wchar_t *szBuffer = new wchar_t[num_required];
+  num_written = vswprintf(szBuffer, num_required, format_str, args);
   assert(num_required == num_written + 1);
-  szbuffer[num_required - 1] = L'\0';
+  szBuffer[num_required - 1] = L'\0';
 #else
   num_required = GetStringBufSize(lpszFormat, args);
   va_end(args);  // after using args we should reset list
   va_start(args, lpszFormat);
 
-  char *szbuffer = new char[num_required];
-  num_written = vsnprintf(szbuffer, num_required, lpszFormat, args);
+  char *szBuffer = new char[num_required];
+  num_written = vsnprintf(szBuffer, num_required, lpszFormat, args);
   assert(num_required == num_written+1);
-  szbuffer[num_required - 1] = '\0';
+  szBuffer[num_required - 1] = '\0';
 #endif /* UNICODE */
 
   PWSLog::GetLog()->Add(stringT(szBuffer));
-  delete[] szbuffer;
+  delete[] szBuffer;
 
   va_end(args);
 }
