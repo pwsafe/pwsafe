@@ -7,7 +7,7 @@
 */
 
 #include "PWSLog.h"
-#include "util.h"
+#include "Util.h"
 #include "StringXStream.h"
 
 using namespace std;
