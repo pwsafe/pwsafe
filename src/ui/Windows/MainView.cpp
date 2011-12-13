@@ -1127,6 +1127,7 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
 #if !defined(POCKET_PC)
   switch (nType) {
     case SIZE_MINIMIZED:
+    {
       //pws_os::Trace(L"OnSize:SIZE_MINIMIZED\n");
 
       // Called when minimize button select on main dialog control box
@@ -1173,6 +1174,7 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
           app.ShowIcon();
       }
       break;
+    }
     case SIZE_MAXIMIZED:
     case SIZE_RESTORED:
       if (!m_bSizing) { // here if actually restored
