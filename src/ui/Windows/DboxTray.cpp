@@ -53,7 +53,7 @@ static bool SafeGetBaseEntry(const DboxMain *pDbx, const CItemData &dep, CItemDa
 #ifndef POCKET_PC
 void DboxMain::OnTrayLockUnLock()
 {
-  PWS_LOGIT
+  PWS_LOGIT;
 
   switch(app.GetSystemTrayState()) {
     case ThisMfcApp::LOCKED:            // User clicked UnLock!

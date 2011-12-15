@@ -1009,7 +1009,7 @@ static void Shower(CWnd *pWnd)
 
 void DboxMain::RestoreWindows()
 {
-  PWS_LOGIT
+  PWS_LOGIT;
 
   ShowWindow(SW_RESTORE);
 
@@ -1037,7 +1037,7 @@ void DboxMain::RestoreWindows()
 // changing the size of the dialog, and not restoring it
 void DboxMain::OnSizing(UINT fwSide, LPRECT pRect)
 {
-  PWS_LOGIT
+  PWS_LOGIT;
 
 #if !defined(POCKET_PC)
   CDialog::OnSizing(fwSide, pRect);
@@ -1135,7 +1135,6 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
 
       // Save DB preferences that may not have been saved in the database
       // over the minimize/restore event.
-      PWS_LOGIT_ARGS("m_savedDBprefs set");
       m_savedDBprefs = prefs->Store();
 
       // Suspend notification of changes
@@ -1250,7 +1249,7 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
 
 void DboxMain::OnMinimize()
 {
-  PWS_LOGIT
+  PWS_LOGIT;
 
   // Called when the System Tray Minimize menu option is used
   if (m_bStartHiddenAndMinimized)
@@ -1262,7 +1261,7 @@ void DboxMain::OnMinimize()
 
 void DboxMain::OnRestore()
 {
-  PWS_LOGIT
+  PWS_LOGIT;
 
   m_ctlItemTree.SetRestoreMode(true);
 
@@ -1584,7 +1583,7 @@ CItemData *DboxMain::getSelectedItem()
 
 void DboxMain::ClearData(const bool clearMRE)
 {
-  PWS_LOGIT
+  PWS_LOGIT;
 
   m_core.ClearData();  // Clears DB & DB Preferences changed flags
 
@@ -2009,7 +2008,7 @@ LRESULT DboxMain::OnSessionChange(WPARAM wParam, LPARAM )
 
 bool DboxMain::LockDataBase()
 {
-  PWS_LOGIT
+  PWS_LOGIT;
 
   /*
    * Since we clear the data, any unchanged changes will be lost,
@@ -3128,7 +3127,7 @@ int DboxMain::OnUpdateViewReports(const int nID)
 
 void DboxMain::OnRefreshWindow()
 {
-  PWS_LOGIT
+  PWS_LOGIT;
 
   // Useful for users if they are using a filter and have edited an entry
   // so it no longer passes
@@ -4064,7 +4063,7 @@ void DboxMain::SaveGUIStatusEx(const int iView)
 
 void DboxMain::RestoreGUIStatusEx()
 {
-  PWS_LOGIT
+  PWS_LOGIT;
 
   if (m_core.GetNumEntries() == 0)
     return;
@@ -4195,7 +4194,7 @@ void DboxMain::RestoreGUIStatusEx()
 
 void DboxMain::SaveGroupDisplayState()
 {
-  PWS_LOGIT
+  PWS_LOGIT;
 
   vector <bool> v = GetGroupDisplayState(); // update it
   m_core.SetDisplayStatus(v); // store it
@@ -4203,7 +4202,7 @@ void DboxMain::SaveGroupDisplayState()
 
 void DboxMain::RestoreGroupDisplayState()
 {
-  PWS_LOGIT
+  PWS_LOGIT;
 
   const vector<bool> &displaystatus = m_core.GetDisplayStatus();    
 
@@ -4213,7 +4212,7 @@ void DboxMain::RestoreGroupDisplayState()
 
 vector<bool> DboxMain::GetGroupDisplayState()
 {
-  PWS_LOGIT
+  PWS_LOGIT;
 
   HTREEITEM hItem = NULL;
   vector<bool> v;
@@ -4233,7 +4232,7 @@ vector<bool> DboxMain::GetGroupDisplayState()
 
 void DboxMain::SetGroupDisplayState(const vector<bool> &displaystatus)
 {
-  PWS_LOGIT
+  PWS_LOGIT;
 
   // We need to copy displaystatus since Expand may cause
   // SaveGroupDisplayState to be called, updating it
@@ -4262,7 +4261,7 @@ void DboxMain::SetGroupDisplayState(const vector<bool> &displaystatus)
 
 void DboxMain::SaveGUIStatus()
 {
-  PWS_LOGIT
+  PWS_LOGIT;
 
   st_SaveGUIInfo SaveGUIInfo;
   CItemData *pci_list(NULL), *pci_tree(NULL);
@@ -4308,7 +4307,7 @@ void DboxMain::SaveGUIStatus()
 
 void DboxMain::RestoreGUIStatus()
 {
-  PWS_LOGIT
+  PWS_LOGIT;
 
   if (m_stkSaveGUIInfo.empty())
     return; // better safe than sorry...

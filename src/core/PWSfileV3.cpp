@@ -52,7 +52,7 @@ PWSfileV3::~PWSfileV3()
 
 int PWSfileV3::Open(const StringX &passkey)
 {
-  PWS_LOGIT
+  PWS_LOGIT;
 
   int status = SUCCESS;
 
@@ -81,7 +81,7 @@ int PWSfileV3::Open(const StringX &passkey)
 
 int PWSfileV3::Close()
 {
-  PWS_LOGIT
+  PWS_LOGIT;
 
   if (m_fd == NULL)
     return SUCCESS; // idempotent
@@ -165,7 +165,7 @@ int PWSfileV3::CheckPasskey(const StringX &filename,
                             const StringX &passkey, FILE *a_fd,
                             unsigned char *aPtag, int *nITER)
 {
-  PWS_LOGIT
+  PWS_LOGIT;
 
   FILE *fd = a_fd;
   int retval = SUCCESS;
@@ -436,7 +436,7 @@ const short VersionNum = 0x0309;
 
 int PWSfileV3::WriteHeader()
 {
-  PWS_LOGIT
+  PWS_LOGIT;
 
   // Following code is divided into {} blocks to
   // prevent "uninitialized" compile errors, as we use
@@ -640,7 +640,7 @@ int PWSfileV3::WriteHeader()
 
 int PWSfileV3::ReadHeader()
 {
-  PWS_LOGIT
+  PWS_LOGIT;
 
   unsigned char Ptag[SHA256::HASHLEN];
   int status = CheckPasskey(m_filename, m_passkey, m_fd,

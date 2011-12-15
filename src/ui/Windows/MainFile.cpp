@@ -90,7 +90,7 @@ static void DisplayFileWriteError(INT_PTR rc, const StringX &cs_newfile)
 
 BOOL DboxMain::OpenOnInit()
 {
-  PWS_LOGIT
+  PWS_LOGIT;
 
   /*
     Routine to account for the differences between opening PSafe for
@@ -454,7 +454,7 @@ int DboxMain::NewFile(StringX &newfilename)
 
 void DboxMain::OnClose()
 {
-  PWS_LOGIT
+  PWS_LOGIT;
 
   Close();
 }
@@ -552,7 +552,7 @@ int DboxMain::Close(const bool bTrySave)
 
 void DboxMain::OnOpen()
 {
-  PWS_LOGIT
+  PWS_LOGIT;
 
   int rc = Open();
 
@@ -848,7 +848,7 @@ exit:
 
 void DboxMain::PostOpenProcessing()
 {
-  PWS_LOGIT
+  PWS_LOGIT;
 
 #if !defined(POCKET_PC)
   m_titlebar = PWSUtil::NormalizeTTT(L"Password Safe - " +
@@ -1150,7 +1150,7 @@ int DboxMain::Save(const SaveType savetype)
 
 int DboxMain::SaveIfChanged()
 {
-  PWS_LOGIT
+  PWS_LOGIT;
 
   /*
    * Save silently (without asking user) iff:
@@ -1214,7 +1214,7 @@ void DboxMain::OnSaveAs()
 
 int DboxMain::SaveAs()
 {
-  PWS_LOGIT
+  PWS_LOGIT;
 
   CGeneralMsgBox gmb;
   INT_PTR rc;
@@ -2198,7 +2198,7 @@ void DboxMain::OnProperties()
 
 void DboxMain::OnChangeMode()
 {
-  PWS_LOGIT
+  PWS_LOGIT;
 
   // From StatusBar and menu
   const bool bWasRO = IsDBReadOnly();
@@ -2898,7 +2898,7 @@ LRESULT DboxMain::SynchCompareResult(PWScore *pfromcore, PWScore *ptocore,
 
 void DboxMain::OnOK()
 {
-  PWS_LOGIT
+  PWS_LOGIT;
 
   SavePreferencesOnExit();
 
@@ -2927,7 +2927,7 @@ void RelativizePath(stringT &curfile)
 
 void DboxMain::SavePreferencesOnExit()
 {
-  PWS_LOGIT
+  PWS_LOGIT;
 
   PWSprefs::IntPrefs WidthPrefs[] = {
     PWSprefs::Column1Width,

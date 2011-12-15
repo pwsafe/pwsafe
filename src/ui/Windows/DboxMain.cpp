@@ -726,7 +726,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
 
 void DboxMain::InitPasswordSafe()
 {
-  PWS_LOGIT
+  PWS_LOGIT;
 
   pws_os::getosversion(m_WindowsMajorVersion, m_WindowsMinorVersion);
   PWSprefs *prefs = PWSprefs::GetInstance();
@@ -1085,7 +1085,7 @@ LRESULT DboxMain::OnHdrToCCDragComplete(WPARAM wType, LPARAM /* lParam */)
 
 BOOL DboxMain::OnInitDialog()
 {
-  PWS_LOGIT
+  PWS_LOGIT;
 
   CDialog::OnInitDialog();
 

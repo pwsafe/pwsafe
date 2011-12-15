@@ -273,7 +273,7 @@ StringX PWSprefs::GetPrefDefVal(StringPrefs pref_enum) const
 
 StringX PWSprefs::GetAllBoolPrefs()
 {
-  PWS_LOGIT
+  PWS_LOGIT;
 
   oStringXStream osxs;
   for (int i = 0; i < NumBoolPrefs; i++) {
@@ -286,7 +286,7 @@ StringX PWSprefs::GetAllBoolPrefs()
 
 StringX PWSprefs::GetAllIntPrefs()
 {
-  PWS_LOGIT
+  PWS_LOGIT;
 
   oStringXStream osxs;
   for (int i = 0; i < NumIntPrefs; i++) {
@@ -299,7 +299,7 @@ StringX PWSprefs::GetAllIntPrefs()
 
 StringX PWSprefs::GetAllStringPrefs()
 {
-  PWS_LOGIT
+  PWS_LOGIT;
 
   // Here we must restrict most string preferences as they contain user data
   int SafeStringPrefs[] = {
@@ -426,7 +426,7 @@ void PWSprefs::SetupCopyPrefs()
 
 void PWSprefs::UpdateFromCopyPrefs(const PWSprefs::PrefType ptype)
 {
-  PWS_LOGIT
+  PWS_LOGIT;
 
   // Update real preferences from copy values
   for (int i = 0; i < NumBoolPrefs; i++) {
@@ -946,7 +946,7 @@ void PWSprefs::FindConfigFile()
 
 void PWSprefs::InitializePreferences()
 {
-  PWS_LOGIT
+  PWS_LOGIT;
 
   // Set up XML "keys": host/user ensure that they start with letter,
   // and otherwise conforms with http://www.w3.org/TR/2000/REC-xml-20001006#NT-Name
@@ -1104,7 +1104,7 @@ void PWSprefs::SetDatabasePrefsToDefaults(const bool bUseCopy)
 
 void PWSprefs::LoadProfileFromDefaults()
 {
-  PWS_LOGIT
+  PWS_LOGIT;
 
   // set prefs to hardcoded values
   int i;
@@ -1124,7 +1124,7 @@ void PWSprefs::LoadProfileFromDefaults()
 
 void PWSprefs::LoadProfileFromRegistry()
 {
-  PWS_LOGIT
+  PWS_LOGIT;
 
   // Read in values from registry
   if (!m_bRegistryKeyExists)
@@ -1230,7 +1230,7 @@ void PWSprefs::LoadProfileFromRegistry()
 
 bool PWSprefs::LoadProfileFromFile()
 {
-  PWS_LOGIT
+  PWS_LOGIT;
 
   /*
   * Called from InitializePreferences() at startup,
@@ -1358,7 +1358,7 @@ exit:
 
 void PWSprefs::SaveApplicationPreferences()
 {
-  PWS_LOGIT
+  PWS_LOGIT;
 
   int i;
   if (!m_prefs_changed[APP_PREF])
@@ -1686,7 +1686,7 @@ void PWSprefs::DeleteOldPrefs()
 
 stringT PWSprefs::GetXMLPreferences()
 {
-  PWS_LOGIT
+  PWS_LOGIT;
 
   stringT retval(_T(""));
   ostringstreamT os;

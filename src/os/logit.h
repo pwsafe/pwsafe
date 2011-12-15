@@ -61,14 +61,16 @@
 #endif
 
 #ifdef UNICODE
-#define PWS_LOGIT_CONCAT(x) PWS_LOGIT_HEADER L ## x
+#define PWS_LOGIT_CONCAT(str) PWS_LOGIT_HEADER L ## str
 #else
-#define PWS_LOGIT_CONCAT(x) PWS_LOGIT_HEADER   ## x
+#define PWS_LOGIT_CONCAT(str) PWS_LOGIT_HEADER   ## str
 #endif
 
 // Now the actual logging macros
 #define PWS_LOGIT pws_os::Logit(PWS_LOGIT_HEADER, __FILE__, __FUNCTION__)
-#define PWS_LOGIT_ARGS(x, ...) pws_os::Logit(PWS_LOGIT_CONCAT(x), \
+#define PWS_LOGIT_ARGS0(str) pws_os::Logit(PWS_LOGIT_CONCAT(str), \
+            __FILE__, __FUNCTION__)
+#define PWS_LOGIT_ARGS(format_str, ...) pws_os::Logit(PWS_LOGIT_CONCAT(format_str), \
             __FILE__, __FUNCTION__, __VA_ARGS__)
 
 namespace pws_os {

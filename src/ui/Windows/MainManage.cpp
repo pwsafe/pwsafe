@@ -285,7 +285,7 @@ void DboxMain::OnValidate()
 
 void DboxMain::OnOptions()
 {
-  PWS_LOGIT
+  PWS_LOGIT;
 
   PWSprefs *prefs = PWSprefs::GetInstance();
 

@@ -2495,7 +2495,7 @@ bool PWScore::ChangeMode(stringT &locker, int &iErrorCode)
       // OK - still exists but is R-O - can't change mode!
       // Need new return code but not this close to release - later
       iErrorCode = READ_FAIL;
-      PWS_LOGIT_ARGS("Failed: READ_FAIL");
+      PWS_LOGIT_ARGS0("Failed: READ_FAIL");
       return false;
     }
 
@@ -2504,7 +2504,7 @@ bool PWScore::ChangeMode(stringT &locker, int &iErrorCode)
                                 m_lockFileHandle, m_LockCount);
     if (!brc) {
       iErrorCode = CANT_GET_LOCK;
-      PWS_LOGIT_ARGS("Failed: CANT_GET_LOCK");
+      PWS_LOGIT_ARGS0("Failed: CANT_GET_LOCK");
       return false;
     }
 
@@ -2531,7 +2531,7 @@ bool PWScore::ChangeMode(stringT &locker, int &iErrorCode)
     // In R/W mode
     if (m_LockCount != 1) {
       iErrorCode = FAILURE; // Not actually used as only one failure type
-      PWS_LOGIT_ARGS("Failed count not 1");
+      PWS_LOGIT_ARGS0("Failed count not 1");
       return false;
     }
 
