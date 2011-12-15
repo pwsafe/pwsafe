@@ -67,9 +67,9 @@
 #endif
 
 // Now the actual logging macros
-#define PWS_LOGIT pws_os::Logit(PWS_LOGIT_HEADER, __FILE__, __FUNCTION__);
+#define PWS_LOGIT pws_os::Logit(PWS_LOGIT_HEADER, __FILE__, __FUNCTION__)
 #define PWS_LOGIT_ARGS(x, ...) pws_os::Logit(PWS_LOGIT_CONCAT(x), \
-            __FILE__, __FUNCTION__, __VA_ARGS__);
+            __FILE__, __FUNCTION__, __VA_ARGS__)
 
 namespace pws_os {
   extern void Logit(LPCTSTR lpszFormat, ...);

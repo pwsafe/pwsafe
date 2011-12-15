@@ -300,7 +300,7 @@ void PWScore::ClearData(void)
 
 void PWScore::ReInit(bool bNewFile)
 {
-  PWS_LOGIT
+  PWS_LOGIT;
 
   // Now reset all values as if created from new
   if (bNewFile)
@@ -444,7 +444,7 @@ void PWScore::ClearCommands()
 
 void PWScore::ResetStateAfterSave()
 {
-  PWS_LOGIT
+  PWS_LOGIT;
 
   // After a Save/SaveAs, need to change all saved DB modified states
   // in any commands in the list that can be undone or redone
@@ -550,7 +550,7 @@ int PWScore::CheckPasskey(const StringX &filename, const StringX &passkey)
 int PWScore::ReadFile(const StringX &a_filename,
                       const StringX &a_passkey, const size_t iMAXCHARS)
 {
-  PWS_LOGIT
+  PWS_LOGIT;
 
   int status;
   // Clear any old expired password entries
@@ -1101,7 +1101,7 @@ StringX PWScore::GetPassKey() const
 
 void PWScore::SetDisplayStatus(const vector<bool> &s)
 {
-  PWS_LOGIT
+  PWS_LOGIT;
 
   // DON'T set m_bDBChanged!
   // Application should use WasDisplayStatusChanged()
@@ -1112,7 +1112,7 @@ void PWScore::SetDisplayStatus(const vector<bool> &s)
 
 const vector<bool> &PWScore::GetDisplayStatus() const
 {
-  PWS_LOGIT
+  PWS_LOGIT;
 
   return m_hdr.m_displaystatus;
 }
@@ -2476,7 +2476,7 @@ void PWScore::UpdateExpiryEntry(const CUUID &uuid, const CItemData::FieldType ft
 
 bool PWScore::ChangeMode(stringT &locker, int &iErrorCode)
 {
-  PWS_LOGIT
+  PWS_LOGIT;
 
   // We do not have to close or re-open the database as the database is closed after processing.
   /*
