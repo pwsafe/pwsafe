@@ -24,8 +24,6 @@
 #include "os/registry.h"
 #include "os/logit.h"
 
-#include "../ui/Windows/PWSFaultHandler.h"
-
 #include <fstream>
 #include <algorithm>
 #include <iomanip>
