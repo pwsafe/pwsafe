@@ -56,10 +56,12 @@ void PrintStream0(PVOID pStream);
 void PrintBoolPreferences(PVOID pStream);
 void PrintIntPreferences(PVOID pStream);
 void PrintStringPreferences(PVOID pStream, ULONG StreamSize);
+void PrintLog(PVOID pStream, ULONG StreamSize);
 
 FILE *pOutputFile(NULL);
 FILE *pConfigFile(NULL);
 FILE *pImportFile(NULL);
+FILE *pLogFile(NULL);
 
 using namespace std;
 
@@ -123,7 +125,8 @@ int _tmain(int argc, TCHAR *argv[])
   _tprintf(_T("Minidump: %s \n"), pFileName);
 
   TCHAR sz_Drive[_MAX_DRIVE], sz_Dir[_MAX_DIR], sz_FName[_MAX_FNAME];
-  TCHAR sz_output[_MAX_PATH], sz_config[_MAX_PATH], sz_Import[_MAX_PATH];
+  TCHAR sz_output[_MAX_PATH], sz_config[_MAX_PATH], 
+        sz_Import[_MAX_PATH], sz_Log[_MAX_PATH];
 
   _tsplitpath_s(pFileName, sz_Drive, _MAX_DRIVE, sz_Dir, _MAX_DIR,
                 sz_FName, _MAX_FNAME, NULL, 0);
@@ -132,6 +135,7 @@ int _tmain(int argc, TCHAR *argv[])
   _tmakepath_s(sz_output, _MAX_PATH, sz_Drive, sz_Dir, sz_FName, _T("txt"));
   _tmakepath_s(sz_config, _MAX_PATH, sz_Drive, sz_Dir, _T("pwsafe"), _T("cfg"));
   _tmakepath_s(sz_Import, _MAX_PATH, sz_Drive, sz_Dir, _T("Import"), _T("xml"));
+  _tmakepath_s(sz_Log, _MAX_PATH, sz_Drive, sz_Dir, _T("Log"), _T("txt"));
 
   // Open them
   errno_t err;
@@ -149,6 +153,11 @@ int _tmain(int argc, TCHAR *argv[])
   if (err != 0) {
     _tprintf(_T("Cannot open Import file for output: %s \n"), sz_output);
     return 92;
+  }
+  err = _tfopen_s(&pLogFile, sz_Log, _T("wt"));
+  if (err != 0) {
+    _tprintf(_T("Cannot open Logfile for output: %s \n"), sz_output);
+    return 93;
   }
 
   const TCHAR *IMPORT_HEADER = _T("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<?xml-stylesheet type=\"text/xsl\" href=\"pwsafe.xsl\"?>\n\n");
@@ -232,6 +241,9 @@ exit:
   if (pImportFile)
     fclose(pImportFile);
 
+  if (pLogFile)
+    fclose(pLogFile);
+
   // Complete
   return ierr;
 }
@@ -243,6 +255,7 @@ void GetUserStreams(PVOID pMiniDump)
   // 1 - Boolean preferences
   // 2 - Integer preferences
   // 3 - String  preferences
+  // 4 - Log records
 
   bool brc;
 
@@ -322,6 +335,26 @@ void GetUserStreams(PVOID pMiniDump)
     _ftprintf_s(pOutputFile, _T("\n"));
     if (memcmp(pStream, wcUS3, sizeof(wcUS3)) == 0)
       PrintStringPreferences(pStream, StreamSize);
+  }
+  _ftprintf_s(pOutputFile, _T("\n"));
+  
+  // Fifth user stream - Log records
+  StreamID++;
+
+  // Reset values
+  pStream = NULL;
+  StreamSize = 0;
+
+  // Get stream
+  brc = GetStream(pMiniDump, StreamID, pStream, StreamSize);
+
+  if (brc) {
+    // Process stream
+    wchar_t *wcUS4 = L"US04 ";
+    _ftprintf_s(pOutputFile, _T("Log entries:\n %s \n"), (TCHAR *)pStream);
+    _ftprintf_s(pOutputFile, _T("\n"));
+    if (memcmp(pStream, wcUS4, sizeof(wcUS4)) == 0)
+      PrintLog(pStream, StreamSize);
   }
   _ftprintf_s(pOutputFile, _T("\n"));
 }
@@ -561,4 +594,39 @@ void PrintStringPreferences(PVOID pStream, ULONG StreamSize)
   }
 
   delete[] buffer;
+}
+
+void PrintLog(PVOID pStream, ULONG StreamSize)
+{
+  /*
+    Log records
+  */
+  stringT sName;
+  int num, len;
+
+  TCHAR *buffer = new TCHAR[StreamSize];
+
+  istreamT iss((TCHAR *)pStream);
+  iss >> sName;  // Skip over header
+  
+  // Get number of records
+  iss >> num;
+  iss.ignore(1, TCHAR(' '));    // skip over space
+  if (!iss.good())
+    return;
+
+  for (int i = 0; i < num; i++) {
+    iss >> len;
+    iss.ignore(1, TCHAR(' '));    // skip over space
+    if (!iss.good())
+      break;
+
+    SecureZeroMemory(buffer, StreamSize);
+
+    iss.read(buffer, len);
+    stringT sRecord(buffer);
+    _ftprintf_s(pLogFile, _T("%s\n"), sRecord.c_str());
+  }
+
+  delete [] buffer;
 }

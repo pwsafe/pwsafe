@@ -166,8 +166,8 @@ template<class T> void LoadAString(T &s, int id)
  * Since we *always* use single or wide char functions/strings depending on UNICODE, we convert
  * all %s to %S while building with GNU/glibc and UNICODE defined using the functions below
  * 
- * http://msdn.microsoft.com/en-us/library/hf4y5e3w(v=VS.80).aspx
- * http://msdn.microsoft.com/en-us/library/tcxf1dw6(v=VS.80).aspx
+ * http://msdn.microsoft.com/en-us/library/hf4y5e3w(v=VS.100).aspx
+ * http://msdn.microsoft.com/en-us/library/tcxf1dw6(v=VS.100).aspx
  * http://www.gnu.org/software/libc/manual/html_node/Other-Output-Conversions.html#Other-Output-Conversions
  * 
  * Note that this is not a Linux vs. Windows difference.  The same issue exists if we build this on WIN32

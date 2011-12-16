@@ -60,6 +60,9 @@
     <ClInclude Include="..\UUID.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\logit.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="debug.cpp">
@@ -96,6 +99,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UUID.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="logit.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

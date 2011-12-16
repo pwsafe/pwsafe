@@ -26,6 +26,7 @@
 #include "os/debug.h"
 #include "os/file.h"
 #include "os/mem.h"
+#include "os/logit.h"
 
 #include <iostream>
 #include <iomanip>
@@ -299,6 +300,8 @@ void PWScore::ClearData(void)
 
 void PWScore::ReInit(bool bNewFile)
 {
+  PWS_LOGIT;
+
   // Now reset all values as if created from new
   if (bNewFile)
     m_ReadFileVersion = PWSfile::NEWFILE;
@@ -367,6 +370,8 @@ private:
 int PWScore::WriteFile(const StringX &filename, const bool bUpdateSig,
                        PWSfile::VERSION version)
 {
+  PWS_LOGIT_ARGS("bUpdateSig=%s", bUpdateSig ? _T("true") : _T("false"));
+
   int status;
   PWSfile *out = PWSfile::MakePWSfile(filename, version,
                                       PWSfile::Write, status);
@@ -439,6 +444,8 @@ void PWScore::ClearCommands()
 
 void PWScore::ResetStateAfterSave()
 {
+  PWS_LOGIT;
+
   // After a Save/SaveAs, need to change all saved DB modified states
   // in any commands in the list that can be undone or redone
   // State = whether DB changed (false: no, true: yes)
@@ -543,6 +550,8 @@ int PWScore::CheckPasskey(const StringX &filename, const StringX &passkey)
 int PWScore::ReadFile(const StringX &a_filename,
                       const StringX &a_passkey, const size_t iMAXCHARS)
 {
+  PWS_LOGIT;
+
   int status;
   // Clear any old expired password entries
   m_ExpireCandidates.clear();
@@ -1091,7 +1100,9 @@ StringX PWScore::GetPassKey() const
 }
 
 void PWScore::SetDisplayStatus(const vector<bool> &s)
-{ 
+{
+  PWS_LOGIT;
+
   // DON'T set m_bDBChanged!
   // Application should use WasDisplayStatusChanged()
   // to determine if state has changed.
@@ -1101,6 +1112,8 @@ void PWScore::SetDisplayStatus(const vector<bool> &s)
 
 const vector<bool> &PWScore::GetDisplayStatus() const
 {
+  PWS_LOGIT;
+
   return m_hdr.m_displaystatus;
 }
 
@@ -2463,6 +2476,8 @@ void PWScore::UpdateExpiryEntry(const CUUID &uuid, const CItemData::FieldType ft
 
 bool PWScore::ChangeMode(stringT &locker, int &iErrorCode)
 {
+  PWS_LOGIT;
+
   // We do not have to close or re-open the database as the database is closed after processing.
   /*
    So what do we need to do?
@@ -2480,6 +2495,7 @@ bool PWScore::ChangeMode(stringT &locker, int &iErrorCode)
       // OK - still exists but is R-O - can't change mode!
       // Need new return code but not this close to release - later
       iErrorCode = READ_FAIL;
+      PWS_LOGIT_ARGS0("Failed: READ_FAIL");
       return false;
     }
 
@@ -2488,6 +2504,7 @@ bool PWScore::ChangeMode(stringT &locker, int &iErrorCode)
                                 m_lockFileHandle, m_LockCount);
     if (!brc) {
       iErrorCode = CANT_GET_LOCK;
+      PWS_LOGIT_ARGS0("Failed: CANT_GET_LOCK");
       return false;
     }
 
@@ -2507,12 +2524,16 @@ bool PWScore::ChangeMode(stringT &locker, int &iErrorCode)
     if (iErrorCode != 0) {
       pws_os::UnlockFile(m_currfile.c_str(), 
                          m_lockFileHandle, m_LockCount);
+      PWS_LOGIT_ARGS("Failed code: %d", iErrorCode);
       return false;
     }
   } else {
     // In R/W mode
-    if (m_LockCount != 1)
+    if (m_LockCount != 1) {
+      iErrorCode = FAILURE; // Not actually used as only one failure type
+      PWS_LOGIT_ARGS0("Failed count not 1");
       return false;
+    }
 
     // Try to unlock file
     pws_os::UnlockFile(m_currfile.c_str(), 
