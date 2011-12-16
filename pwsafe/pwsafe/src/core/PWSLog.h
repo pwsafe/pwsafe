@@ -1,0 +1,33 @@
+/*
+* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
+
+#ifndef _PWSLOG_H
+#define _PWSLOG_H
+
+#include "../os/typedefs.h"
+
+#include <deque>
+
+class PWSLog
+{
+public:
+  PWSLog() {}
+  virtual ~PWSLog() {}
+
+  static PWSLog *GetLog(); // singleton
+  static void DeleteLog();
+  
+  void Add(stringT sLogRecord);
+  stringT DumpLog();
+
+private:
+  static PWSLog *self;
+  static std::deque<stringT> global_log;
+};
+
+#endif /* _PWSLOG_H */

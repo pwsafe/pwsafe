@@ -14,9 +14,11 @@
 #include "PWSdirs.h"
 #include "PWSprefs.h"
 #include "core.h"
+#include "PWSLog.h"
 
 #include "os/debug.h"
 #include "os/file.h"
+#include "os/logit.h"
 
 #include "XML/XMLDefs.h"  // Required if testing "USE_XML_LIBRARY"
 
@@ -50,6 +52,8 @@ PWSfileV3::~PWSfileV3()
 
 int PWSfileV3::Open(const StringX &passkey)
 {
+  PWS_LOGIT;
+
   int status = SUCCESS;
 
   ASSERT(m_curversion == V30);
@@ -77,6 +81,8 @@ int PWSfileV3::Open(const StringX &passkey)
 
 int PWSfileV3::Close()
 {
+  PWS_LOGIT;
+
   if (m_fd == NULL)
     return SUCCESS; // idempotent
 
@@ -159,6 +165,8 @@ int PWSfileV3::CheckPasskey(const StringX &filename,
                             const StringX &passkey, FILE *a_fd,
                             unsigned char *aPtag, int *nITER)
 {
+  PWS_LOGIT;
+
   FILE *fd = a_fd;
   int retval = SUCCESS;
   SHA256 H;
@@ -373,6 +381,7 @@ int PWSfileV3::ReadRecord(CItemData &item)
       delete[] utf8; utf8 = NULL; utf8Len = 0;
     }
   } while (type != CItemData::END && fieldLen > 0 && --emergencyExit > 0);
+
   if (numread > 0)
     return status;
   else
@@ -427,6 +436,8 @@ const short VersionNum = 0x0309;
 
 int PWSfileV3::WriteHeader()
 {
+  PWS_LOGIT;
+
   // Following code is divided into {} blocks to
   // prevent "uninitialized" compile errors, as we use
   // goto for error handling
@@ -629,6 +640,8 @@ int PWSfileV3::WriteHeader()
 
 int PWSfileV3::ReadHeader()
 {
+  PWS_LOGIT;
+
   unsigned char Ptag[SHA256::HASHLEN];
   int status = CheckPasskey(m_filename, m_passkey, m_fd,
     Ptag, &m_hdr.m_nITER);

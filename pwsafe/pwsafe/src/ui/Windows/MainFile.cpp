@@ -46,6 +46,7 @@
 
 #include "os/file.h"
 #include "os/dir.h"
+#include "os/logit.h"
 
 #include "resource.h"
 #include "resource2.h"  // Menu, Toolbar & Accelerator resources
@@ -89,6 +90,8 @@ static void DisplayFileWriteError(INT_PTR rc, const StringX &cs_newfile)
 
 BOOL DboxMain::OpenOnInit()
 {
+  PWS_LOGIT;
+
   /*
     Routine to account for the differences between opening PSafe for
     the first time, and just opening a different database or
@@ -451,11 +454,15 @@ int DboxMain::NewFile(StringX &newfilename)
 
 void DboxMain::OnClose()
 {
+  PWS_LOGIT;
+
   Close();
 }
 
 int DboxMain::Close(const bool bTrySave)
 {
+  PWS_LOGIT_ARGS("bTrySave=%s", bTrySave ? _T("true") : _T("false"));
+
   PWSprefs *prefs = PWSprefs::GetInstance();
 
   if (bTrySave) {
@@ -545,6 +552,8 @@ int DboxMain::Close(const bool bTrySave)
 
 void DboxMain::OnOpen()
 {
+  PWS_LOGIT;
+
   int rc = Open();
 
   if (rc == PWScore::SUCCESS) {
@@ -594,6 +603,8 @@ void DboxMain::OnOpenMRU(UINT nID)
 
 int DboxMain::Open(const UINT uiTitle)
 {
+  PWS_LOGIT_ARGS("uiTitle=%d", uiTitle);
+
   int rc = PWScore::SUCCESS;
   StringX sx_Filename;
   CString cs_text(MAKEINTRESOURCE(uiTitle));
@@ -741,6 +752,9 @@ int DboxMain::Open(const StringX &sx_Filename, const bool bReadOnly,  const bool
   // clear the data before loading the new file
   ClearData();
 
+  // Reset saved DB preferences
+  m_savedDBprefs = EMPTYSAVEDDBPREFS;
+
   // Tidy up filters
   m_currentfilter.Empty();
   m_bFilterActive = false;
@@ -834,6 +848,8 @@ exit:
 
 void DboxMain::PostOpenProcessing()
 {
+  PWS_LOGIT;
+
 #if !defined(POCKET_PC)
   m_titlebar = PWSUtil::NormalizeTTT(L"Password Safe - " +
                                      m_core.GetCurFile()).c_str();
@@ -1013,6 +1029,8 @@ void DboxMain::OnSave()
 
 int DboxMain::Save(const SaveType savetype)
 {
+  PWS_LOGIT_ARGS("savetype=%d", savetype);
+
   int rc;
   CString cs_msg, cs_temp;
   CGeneralMsgBox gmb;
@@ -1132,6 +1150,8 @@ int DboxMain::Save(const SaveType savetype)
 
 int DboxMain::SaveIfChanged()
 {
+  PWS_LOGIT;
+
   /*
    * Save silently (without asking user) iff:
    * 1. NOT read-only AND
@@ -1194,6 +1214,8 @@ void DboxMain::OnSaveAs()
 
 int DboxMain::SaveAs()
 {
+  PWS_LOGIT;
+
   CGeneralMsgBox gmb;
   INT_PTR rc;
   StringX newfile;
@@ -2176,6 +2198,8 @@ void DboxMain::OnProperties()
 
 void DboxMain::OnChangeMode()
 {
+  PWS_LOGIT;
+
   // From StatusBar and menu
   const bool bWasRO = IsDBReadOnly();
 
@@ -2874,6 +2898,8 @@ LRESULT DboxMain::SynchCompareResult(PWScore *pfromcore, PWScore *ptocore,
 
 void DboxMain::OnOK()
 {
+  PWS_LOGIT;
+
   SavePreferencesOnExit();
 
   int rc = SaveDatabaseOnExit(ST_NORMALEXIT);
@@ -2901,6 +2927,8 @@ void RelativizePath(stringT &curfile)
 
 void DboxMain::SavePreferencesOnExit()
 {
+  PWS_LOGIT;
+
   PWSprefs::IntPrefs WidthPrefs[] = {
     PWSprefs::Column1Width,
     PWSprefs::Column2Width,
@@ -2969,6 +2997,8 @@ void DboxMain::SavePreferencesOnExit()
 
 int DboxMain::SaveDatabaseOnExit(const SaveType saveType)
 {
+  PWS_LOGIT_ARGS("saveType=%d", saveType);
+
   INT_PTR rc;
 
   if (saveType == ST_FAILSAFESAVE &&
@@ -3061,6 +3091,8 @@ int DboxMain::SaveDatabaseOnExit(const SaveType saveType)
 
 void DboxMain::CleanUpAndExit(const bool bNormalExit)
 {
+  PWS_LOGIT_ARGS("bNormalExit=%s", bNormalExit ? _T("true") : _T("false"));
+
   // Clear clipboard on Exit?  Yes if:
   // a. the app is minimized and the systemtray is enabled
   // b. the user has set the "ClearClipboardOnExit" pref

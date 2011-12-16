@@ -102,6 +102,7 @@ public:
     UsePrimarySelectionForClipboard,  //Only under X-Windows
     CopyPasswordWhenBrowseToURL,
     NumBoolPrefs};
+
   enum IntPrefs {Column1Width, Column2Width, Column3Width, Column4Width,
     SortedColumn, PWDefaultLength, MaxMRUItems, IdleTimeout,
     DoubleClickAction, HotKey, MaxREItems, TreeDisplayStatusAtOpen,
@@ -110,6 +111,7 @@ public:
     PWLowercaseMinLength, PWSymbolMinLength, PWUppercaseMinLength,
     OptShortcutColumnWidth, ShiftDoubleClickAction,
     NumIntPrefs};
+
   enum StringPrefs {CurrentBackup, CurrentFile, LastView, DefaultUsername,
     TreeFont, BackupPrefixValue, BackupDir, AltBrowser, ListColumns,
     ColumnWidths, DefaultAutotypeString, AltBrowserCmdLineParms,

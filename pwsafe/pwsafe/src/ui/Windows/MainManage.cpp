@@ -35,6 +35,7 @@
 #include "core/PWSAuxParse.h"
 
 #include "os/dir.h"
+#include "os/logit.h"
 
 using namespace std;
 
@@ -284,6 +285,8 @@ void DboxMain::OnValidate()
 
 void DboxMain::OnOptions()
 {
+  PWS_LOGIT;
+
   PWSprefs *prefs = PWSprefs::GetInstance();
 
   // Get old DB preferences String value for use later
