@@ -311,7 +311,7 @@ bool PwsafeApp::OnInit()
   }
 #endif /* _DEBUG */
 
-  wxSingleInstanceChecker appInstance;
+  static wxSingleInstanceChecker appInstance;
   if (!prefs->GetPref(PWSprefs::MultipleInstances) && 
         (appInstance.Create(wxT("pwsafe.lck"), towxstring(pws_os::getuserprefsdir())) &&
          appInstance.IsAnotherRunning())) 
