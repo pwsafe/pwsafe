@@ -656,7 +656,6 @@
 #define IDC_SETSAMPLETEXT               1373
 #define IDC_RESETFONT                   1374
 #define IDC_ENTRYPWPOLICY               1376
-#define IDC_RESETPWPOLICY               1377
 #define IDC_DCA_DEFAULT                 1378
 #define IDC_LAUNCH                      1379
 #define IDC_SENDEMAIL                   1380

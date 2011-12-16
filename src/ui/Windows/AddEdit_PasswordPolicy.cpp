@@ -136,7 +136,6 @@ BEGIN_MESSAGE_MAP(CAddEdit_PasswordPolicy, CAddEdit_PropertyPage)
   ON_BN_CLICKED(IDC_PRONOUNCEABLE, OnMakePronounceable)
   ON_BN_CLICKED(IDC_USEPWPOLICYNAME, OnSelectNamedPolicy)
   ON_BN_CLICKED(IDC_ENTRYPWPOLICY, OnSetSpecificPWPolicy)
-  ON_BN_CLICKED(IDC_RESETPWPOLICY, OnResetPolicy)
   ON_BN_CLICKED(IDC_USEDEFAULTSYMBOLS, OnSymbols)
   ON_BN_CLICKED(IDC_USEOWNSYMBOLS, OnSymbols)
 
@@ -671,42 +670,6 @@ void CAddEdit_PasswordPolicy::OnMakePronounceable()
   UpdateData(FALSE);
 }
 
-void CAddEdit_PasswordPolicy::OnResetPolicy()
-{
-  m_ae_psh->SetChanged(true);
-  M_pwp() = M_default_pwp();
-
-  SetVariablesFromPolicy();
-
-  // Now update dialog
-  UpdateData(FALSE);
-
-  // Save current status
-  for (int i = 0; i < N_HEX_LENGTHS; i++) {
-    m_save_visible[i] = true;
-    BOOL bEnable(FALSE);
-    switch (i) {
-      case 0:  // IDC_MINLOWERLENGTH
-        bEnable = m_pwuselowercase;
-        break;
-      case 1:  // IDC_MINUPPERLENGTH
-        bEnable = m_pwuseuppercase;
-        break;
-      case 2:  // IDC_MINDIGITLENGTH
-        bEnable = m_pwusedigits;
-        break;
-      case 3:  // IDC_MINSYMBOLLENGTH
-        bEnable =  m_pwusesymbols;
-        break;
-      default:
-        ASSERT(0);
-    }
-    m_save_enabled[i][0] = m_save_enabled[i][1] = bEnable;
-  }
-
-  SetPolicyControls();
-}
-
 void BubbleSort(std::wstring &str)
 {
   wchar_t tmp;
@@ -793,9 +756,6 @@ void CAddEdit_PasswordPolicy::OnSelectNamedPolicy()
 
   SetVariablesFromPolicy();
   SetPolicyControls();
-
-  // Can only reset to defaults if using an entry specific policy
-  GetDlgItem(IDC_RESETPWPOLICY)->EnableWindow(FALSE);
 }
 
 void CAddEdit_PasswordPolicy::OnSetSpecificPWPolicy()
@@ -809,9 +769,6 @@ void CAddEdit_PasswordPolicy::OnSetSpecificPWPolicy()
   M_policyname().Empty();
 
   SetPolicyControls();
-
-  // Can only reset to defaults if using an entry specific policy
-  GetDlgItem(IDC_RESETPWPOLICY)->EnableWindow(TRUE);
 
   m_cbxPolicyNames.EnableWindow(FALSE);
 }
@@ -872,8 +829,6 @@ void CAddEdit_PasswordPolicy::SetPolicyControls()
 
   // Deal with hex checkbox
   GetDlgItem(IDC_USEHEXDIGITS)->EnableWindow(bEnableSpecificPolicy);
-
-  GetDlgItem(IDC_RESETPWPOLICY)->EnableWindow(bEnableSpecificPolicy);
 
   // Deal with symbols...
   // Default policy - all 4 disabled (2 x radio buttons, 2 x static text).
@@ -999,8 +954,6 @@ void CAddEdit_PasswordPolicy::DisablePolicy()
   }
   // Deal with hex checkbox
   GetDlgItem(IDC_USEHEXDIGITS)->EnableWindow(FALSE);
-
-  GetDlgItem(IDC_RESETPWPOLICY)->EnableWindow(FALSE);
 }
 
 void CAddEdit_PasswordPolicy::OnNamesComboChanged()

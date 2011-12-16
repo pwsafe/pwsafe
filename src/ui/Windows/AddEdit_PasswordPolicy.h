@@ -81,7 +81,6 @@ protected:
   afx_msg void OnMakePronounceable();
   afx_msg void OnSelectNamedPolicy();
   afx_msg void OnSetSpecificPWPolicy();
-  afx_msg void OnResetPolicy();
   afx_msg void OnSymbols();
   afx_msg void OnOwnSymbolsChanged();
   afx_msg void OnNamesComboChanged();

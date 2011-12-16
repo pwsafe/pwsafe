@@ -832,10 +832,16 @@ BOOL CPasswordPolicyDlg::Validate()
     // Only need to check if policy name is empty or it has been changed
     // from the old name and the new name is already defined
     // Note: If editing default password policy: m_uicaller == I.DS_OPTIONS
-    if (m_policyname.IsEmpty() ||
-        (m_policyname != m_oldpolicyname &&
-         (m_MapPSWDPLC.find((LPCWSTR)m_policyname) != m_MapPSWDPLC.end()))) {
-      gmb.AfxMessageBox(IDS_INVALIDPOLICYNAME);
+    UINT uiMsg = 0;
+    if (m_policyname.IsEmpty())
+      uiMsg = IDS_INVALIDPOLICYNAME1;
+    else
+      if ((m_policyname != m_oldpolicyname &&
+         (m_MapPSWDPLC.find((LPCWSTR)m_policyname) != m_MapPSWDPLC.end())))
+        uiMsg = IDS_INVALIDPOLICYNAME2;
+    
+    if (uiMsg != 0) {
+      gmb.AfxMessageBox(uiMsg);
       ((CEdit*)GetDlgItem(IDC_POLICYNAME))->SetFocus();
       return FALSE;
     }
