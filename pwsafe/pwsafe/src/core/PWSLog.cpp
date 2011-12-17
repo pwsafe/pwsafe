@@ -23,6 +23,8 @@ PWSLog *PWSLog::GetLog()
 {
   if (self == NULL) {
     self = new PWSLog();
+    // The following sets the queue size once, avoiding
+    // memory management @ each call to Add(). (reference TBD)
     global_log.resize(NUM_LOG_ENTRIES, _T(" "));
   }
   return self;
@@ -40,8 +42,8 @@ void PWSLog::Add(const stringT &sLogRecord)
   stringT sTimeStamp;
   PWSUtil::GetTimeStamp(sTimeStamp);
 
-  if (!global_log.empty())
-    global_log.pop_front();
+  // global_log preloaded, so pop_fornt is always valid (see GetLog).
+  global_log.pop_front();
   global_log.push_back(sTimeStamp + sb + sLogRecord);
 }
 
