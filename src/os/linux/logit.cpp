@@ -55,7 +55,8 @@ void pws_os::Logit(LPCTSTR lpszFormat, ...)
   szBuffer[num_required - 1] = '\0';
 #endif /* UNICODE */
 
-  PWSLog::GetLog()->Add(stringT(szBuffer));
+  const stringT s(szBuffer);
+  PWSLog::GetLog()->Add(s);
   delete[] szBuffer;
 
   va_end(args);
