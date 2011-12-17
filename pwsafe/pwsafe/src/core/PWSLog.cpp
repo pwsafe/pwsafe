@@ -12,7 +12,6 @@
 
 using namespace std;
 
-static const stringT sb(_T(" "));
 
 std::deque<stringT> PWSLog::global_log;
 
@@ -35,12 +34,14 @@ void PWSLog::DeleteLog()
   self = NULL;
 }
 
-void PWSLog::Add(stringT sLogRecord)
+void PWSLog::Add(const stringT &sLogRecord)
 {
+  static const stringT sb(_T(" "));
   stringT sTimeStamp;
   PWSUtil::GetTimeStamp(sTimeStamp);
 
-  global_log.pop_front();
+  if (!global_log.empty())
+    global_log.pop_front();
   global_log.push_back(sTimeStamp + sb + sLogRecord);
 }
 

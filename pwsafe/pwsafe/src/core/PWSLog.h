@@ -22,7 +22,7 @@ public:
   static PWSLog *GetLog(); // singleton
   static void DeleteLog();
   
-  void Add(stringT sLogRecord);
+  void Add(const stringT &sLogRecord);
   stringT DumpLog();
 
 private:
