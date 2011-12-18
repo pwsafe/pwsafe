@@ -355,6 +355,8 @@
 #define IDB_PSWD_POLICIES_CLASSIC       516
 #define IDB_PSWD_POLICIES_NEW           517
 #define IDB_PSWD_POLICIES_NEW_D         518
+#define IDB_COPYTOCLIPBOARD_CLASSIC     519
+#define IDB_COPYTOCLIPBOARD_NEW         520
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_CREATE_DB                   1003
@@ -755,7 +757,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        519
+#define _APS_NEXT_RESOURCE_VALUE        521
 #define _APS_NEXT_COMMAND_VALUE         30001
 #define _APS_NEXT_CONTROL_VALUE         1475
 #define _APS_NEXT_SYMED_VALUE           166

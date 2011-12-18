@@ -1042,6 +1042,9 @@ bool CPasswordPolicyDlg::UpdatePasswordPolicy()
   if (Validate() == FALSE)
     return false;
 
+  // Get new symbols (if any)
+  m_SymbolsEdit.GetWindowText(m_Symbols);
+
   st_PSWDPolicy st_pp;
   st_pp.pwp.flags = 0;
   if (m_PWUseLowercase == TRUE)

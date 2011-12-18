@@ -1334,6 +1334,7 @@
     <None Include="graphics\findtoolbar\new\findadvancedon.bmp" />
     <None Include="graphics\toolbar\classic\addgroup.bmp" />
     <None Include="graphics\toolbar\classic\clearfilter.bmp" />
+    <None Include="graphics\toolbar\classic\copytoclipboard.bmp" />
     <None Include="graphics\toolbar\classic\duplicategroup.bmp" />
     <None Include="graphics\toolbar\classic\passwordpolicy.bmp" />
     <None Include="graphics\toolbar\new\about.bmp" />
@@ -1396,6 +1397,7 @@
     <None Include="graphics\toolbar\new\copypassword.bmp" />
     <None Include="graphics\toolbar\new\copypassword_disabled.bmp" />
     <None Include="graphics\toolbar\classic\copyuser.bmp" />
+    <None Include="graphics\toolbar\new\copytoclipboard.bmp" />
     <None Include="graphics\toolbar\new\copyuser.bmp" />
     <None Include="graphics\toolbar\new\copyuser_disabled.bmp" />
     <None Include="..\..\core\core.rc2" />

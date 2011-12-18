@@ -62,11 +62,15 @@ CManagePSWDPolices::CManagePSWDPolices(CWnd* pParent, const bool bLongPPs)
   m_st_default_pp.pwp.upperminlength = prefs->GetPref(PWSprefs::PWUppercaseMinLength);
 
   m_st_default_pp.symbols = prefs->GetPref(PWSprefs::DefaultSymbols);
+
+  CPasswordCharPool::GetDefaultSymbols(m_std_symbols);
+  CPasswordCharPool::GetEasyVisionSymbols(m_easyvision_symbols);
 }
 
 CManagePSWDPolices::~CManagePSWDPolices()
 {
   delete m_pToolTipCtrl;
+  m_CopyPswdStatic.Detach();
 }
 
 void CManagePSWDPolices::DoDataExchange(CDataExchange* pDX)
@@ -76,6 +80,7 @@ void CManagePSWDPolices::DoDataExchange(CDataExchange* pDX)
   DDX_Control(pDX, IDC_POLICYPROPERTIES, m_PolicyDetails);
   DDX_Control(pDX, IDC_POLICYENTRIES, m_PolicyEntries);
   DDX_Control(pDX, IDC_PASSWORD, m_ex_password);
+  DDX_Control(pDX, IDC_STATIC_COPYPSWD, m_CopyPswdStatic);
 }
 
 BEGIN_MESSAGE_MAP(CManagePSWDPolices, CPWDialog)
@@ -86,7 +91,8 @@ BEGIN_MESSAGE_MAP(CManagePSWDPolices, CPWDialog)
   ON_BN_CLICKED(IDC_EDIT, OnEdit)
   ON_BN_CLICKED(IDC_LIST_POLICYENTRIES, OnList)
   ON_BN_CLICKED(IDC_GENERATEPASSWORD, OnGeneratePassword)
-  ON_BN_CLICKED(IDC_COPYPASSWORD, OnCopyPassword)
+  //ON_BN_CLICKED(IDC_COPYPASSWORD, OnCopyPassword)
+  ON_STN_CLICKED(IDC_STATIC_COPYPSWD, OnCopyPassword) 
 
   ON_NOTIFY(NM_CLICK, IDC_POLICYLIST, OnPolicySelected)
   ON_NOTIFY(NM_DBLCLK, IDC_POLICYENTRIES, OnEntryDoubleClicked)
@@ -141,7 +147,8 @@ BOOL CManagePSWDPolices::OnInitDialog()
     cs_ToolTip.LoadString(IDS_TESTPOLICY);
     m_pToolTipCtrl->AddTool(GetDlgItem(IDC_GENERATEPASSWORD), cs_ToolTip);
     cs_ToolTip.LoadString(IDS_CLICKTOCOPYGENPSWD);
-    m_pToolTipCtrl->AddTool(GetDlgItem(IDC_COPYPASSWORD), cs_ToolTip);
+    //m_pToolTipCtrl->AddTool(GetDlgItem(IDC_COPYPASSWORD), cs_ToolTip);
+    m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_COPYPSWD), cs_ToolTip);
 
     if (!m_bReadOnly) {
       cs_ToolTip.LoadString(IDS_CANCELPOLICYCHANGES);
@@ -209,6 +216,45 @@ BOOL CManagePSWDPolices::OnInitDialog()
   // Max. of 255 policy names allowed - only 2 hex digits used for number
   if (m_MapPSWDPLC.size() >= 255)
     GetDlgItem(IDC_NEW)->EnableWindow(FALSE);
+
+  // Load bitmap
+  BOOL brc;
+  UINT nImageID = PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar) ?
+        IDB_COPYTOCLIPBOARD_NEW : IDB_COPYTOCLIPBOARD_CLASSIC;
+  brc = m_CopyPswdBitmap.Attach(::LoadImage(
+                  ::AfxFindResourceHandle(MAKEINTRESOURCE(nImageID), RT_BITMAP),
+                  MAKEINTRESOURCE(nImageID), IMAGE_BITMAP, 0, 0,
+                  (LR_DEFAULTSIZE | LR_CREATEDIBSECTION | LR_SHARED)));
+  ASSERT(brc);
+
+  // Set bitmap in Static
+  m_CopyPswdStatic.SetBitmap((HBITMAP)m_CopyPswdBitmap);
+
+  // Get how many pixels in the bitmap
+  const COLORREF crCOLOR_3DFACE = GetSysColor(COLOR_3DFACE);
+  BITMAP bmInfo;
+  m_CopyPswdBitmap.GetBitmap(&bmInfo);
+
+  const UINT numPixels(bmInfo.bmHeight * bmInfo.bmWidth);
+
+  // get a pointer to the pixels
+  DIBSECTION ds;
+  VERIFY(m_CopyPswdBitmap.GetObject(sizeof(DIBSECTION), &ds) == sizeof(DIBSECTION));
+
+  RGBTRIPLE *pixels = reinterpret_cast<RGBTRIPLE*>(ds.dsBm.bmBits);
+  ASSERT(pixels != NULL);
+
+  const RGBTRIPLE newbkgrndColourRGB = {GetBValue(crCOLOR_3DFACE),
+                                        GetGValue(crCOLOR_3DFACE),
+                                        GetRValue(crCOLOR_3DFACE)};
+
+  for (UINT i = 0; i < numPixels; ++i) {
+    if (pixels[i].rgbtBlue  == 192 &&
+        pixels[i].rgbtGreen == 192 &&
+        pixels[i].rgbtRed   == 192) {
+      pixels[i] = newbkgrndColourRGB;
+    }
+  }
 
   // Set focus on the policy names CListCtrl and so return FALSE
   m_PolicyNames.SetFocus();
@@ -762,10 +808,14 @@ void CManagePSWDPolices::UpdateDetails()
   cs_text.LoadString(IDS_PUSESYMBOL);
   m_PolicyDetails.InsertItem(nPos, cs_text);
   if ((st_pp.pwp.flags & PWSprefs::PWPolicyUseSymbols) != 0) {
-    if (bEV_PR)
-      cs_text = cs_yes;
-    else
-      cs_text.Format(IDS_YESNUMBER, st_pp.pwp.symbolminlength);
+    if (bEV_PR) {
+      cs_text.Format(IDS_YESEASYVISON, m_easyvision_symbols.c_str());
+    } else {
+      CString cs_tmp;
+      cs_tmp.LoadString(st_pp.symbols.empty() ? IDS_DEFAULTSYMBOLS : IDS_SPECFICSYMBOLS);
+      cs_text.Format(IDS_YESSYMBOLS, st_pp.pwp.symbolminlength, cs_tmp,
+        st_pp.symbols.empty() ? m_std_symbols.c_str() : st_pp.symbols.c_str());
+    }
   } else {
     cs_text = cs_no;
   }
@@ -788,19 +838,6 @@ void CManagePSWDPolices::UpdateDetails()
   m_PolicyDetails.InsertItem(nPos, cs_text);
   m_PolicyDetails.SetItemText(nPos, 1,
           (st_pp.pwp.flags & PWSprefs::PWPolicyUseHexDigits) != 0 ? cs_yes : cs_no);
-  nPos++;
-
-  cs_text.LoadString(IDS_USEDEFAULTSYMBOLS);
-  m_PolicyDetails.InsertItem(nPos, cs_text);
-  m_PolicyDetails.SetItemText(nPos, 1, st_pp.symbols.empty() ? cs_yes : cs_no);
-  nPos++;
-
-  cs_text.LoadString(IDS_SYMBOLS);
-  m_PolicyDetails.InsertItem(nPos, cs_text);
-  stringT std_symbols;
-  CPasswordCharPool::GetDefaultSymbols(std_symbols);
-  m_PolicyDetails.SetItemText(nPos, 1,
-          st_pp.symbols.empty() ? std_symbols.c_str() : st_pp.symbols.c_str());
   nPos++;
 
   m_PolicyDetails.SetColumnWidth(0, LVSCW_AUTOSIZE);

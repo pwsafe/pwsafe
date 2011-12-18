@@ -43,6 +43,7 @@ protected:
 
   CSecEditExtn m_ex_password;
   CSecString m_password;
+  CStatic m_CopyPswdStatic;
 
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
   virtual BOOL OnInitDialog();
@@ -78,6 +79,10 @@ private:
   st_PSWDPolicy m_st_default_pp;
 
   GTUSet m_setGTU;
+
+  CBitmap m_CopyPswdBitmap;
+
+  stringT m_std_symbols, m_easyvision_symbols;
 
   int m_iSortNamesIndex, m_iSortEntriesIndex;
   bool m_bSortNamesAscending, m_bSortEntriesAscending;

@@ -1561,6 +1561,12 @@
     <None Include="graphics\toolbar\new\passwordpolicy_disabled.bmp">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="graphics\toolbar\classic\copytoclipboard.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="graphics\toolbar\new\copytoclipboard.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="PasswordSafe.rc">

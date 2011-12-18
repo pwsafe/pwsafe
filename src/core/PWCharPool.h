@@ -51,6 +51,8 @@ public:
   static bool CheckPassword(const StringX &pwd, StringX &error);
   static void GetDefaultSymbols(stringT &symbols)
   {symbols = std_symbol_chars;}
+  static void GetEasyVisionSymbols(stringT &symbols)
+  {symbols = easyvision_symbol_chars;}
 
 private:
   enum CharType {LOWERCASE = 0, UPPERCASE = 1,
