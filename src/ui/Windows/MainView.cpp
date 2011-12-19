@@ -4339,3 +4339,27 @@ bool DboxMain::LongPPs()
 
   return (Y > 600); // THRESHOLD = 600 - pixels or virtual-screen coordinates?
 }
+
+bool DboxMain::GetShortCut(const unsigned int &uiMenuItem,
+                           unsigned char &cVirtKey, unsigned char &cModifier)
+{
+  cVirtKey = cModifier = '0';
+
+  MapMenuShortcutsIter iter;
+
+  iter = m_MapMenuShortcuts.find(uiMenuItem);
+  if (iter == m_MapMenuShortcuts.end())
+    return false;
+
+  if (iter->second.cVirtKey  != iter->second.cdefVirtKey ||
+      iter->second.cModifier != iter->second.cdefModifier) {
+    cVirtKey = iter->second.cVirtKey;
+    cModifier = iter->second.cModifier;
+  } else {
+    cVirtKey = iter->second.cdefVirtKey;
+    cModifier = iter->second.cdefModifier;
+  }
+
+  return true;
+}
+ 

@@ -29,12 +29,15 @@ CManagePSWDPolices::CManagePSWDPolices(CWnd* pParent, const bool bLongPPs)
   : CPWDialog(CManagePSWDPolices::IDD, pParent),
   m_pToolTipCtrl(NULL), m_iSelectedItem(-1), m_bChanged(false), m_iSortEntriesIndex(0),
   m_bSortEntriesAscending(true), m_iSortNamesIndex(0), m_bSortNamesAscending(true),
-  m_bViewPolicy(true), m_bLongPPs(bLongPPs)
+  m_bViewPolicy(true), m_bLongPPs(bLongPPs), m_iundo_pos(-1)
 {
   ASSERT(pParent != NULL);
 
   m_pDbx = static_cast<DboxMain *>(pParent);
   m_bReadOnly = m_pDbx->IsDBReadOnly();
+  
+  m_bUndoShortcut = m_pDbx->GetShortCut(ID_MENUITEM_UNDO, m_cUndoVirtKey, m_cUndoModifier);
+  m_bRedoShortcut = m_pDbx->GetShortCut(ID_MENUITEM_REDO, m_cRedoVirtKey, m_cRedoModifier);
 
   m_MapPSWDPLC = m_pDbx->GetPasswordPolicies();
 
@@ -91,7 +94,8 @@ BEGIN_MESSAGE_MAP(CManagePSWDPolices, CPWDialog)
   ON_BN_CLICKED(IDC_EDIT, OnEdit)
   ON_BN_CLICKED(IDC_LIST_POLICYENTRIES, OnList)
   ON_BN_CLICKED(IDC_GENERATEPASSWORD, OnGeneratePassword)
-  //ON_BN_CLICKED(IDC_COPYPASSWORD, OnCopyPassword)
+  ON_BN_CLICKED(IDC_UNDO, OnUndo)
+  ON_BN_CLICKED(IDC_REDO, OnRedo)
   ON_STN_CLICKED(IDC_STATIC_COPYPSWD, OnCopyPassword) 
 
   ON_NOTIFY(NM_CLICK, IDC_POLICYLIST, OnPolicySelected)
@@ -142,12 +146,15 @@ BOOL CManagePSWDPolices::OnInitDialog()
     m_pToolTipCtrl->AddTool(GetDlgItem(IDC_DELETE), cs_ToolTip);
     cs_ToolTip.LoadString(IDS_EDITPOLICY);
     m_pToolTipCtrl->AddTool(GetDlgItem(IDC_EDIT), cs_ToolTip);
+    cs_ToolTip.LoadString(IDS_UNDOPOLICY);
+    m_pToolTipCtrl->AddTool(GetDlgItem(IDC_UNDO), cs_ToolTip);
+    cs_ToolTip.LoadString(IDS_REDOPOLICY);
+    m_pToolTipCtrl->AddTool(GetDlgItem(IDC_REDO), cs_ToolTip);
     cs_ToolTip.LoadString(IDS_LISTPOLICY);
     m_pToolTipCtrl->AddTool(GetDlgItem(IDC_LIST_POLICYENTRIES), cs_ToolTip);
     cs_ToolTip.LoadString(IDS_TESTPOLICY);
     m_pToolTipCtrl->AddTool(GetDlgItem(IDC_GENERATEPASSWORD), cs_ToolTip);
     cs_ToolTip.LoadString(IDS_CLICKTOCOPYGENPSWD);
-    //m_pToolTipCtrl->AddTool(GetDlgItem(IDC_COPYPASSWORD), cs_ToolTip);
     m_pToolTipCtrl->AddTool(GetDlgItem(IDC_STATIC_COPYPSWD), cs_ToolTip);
 
     if (!m_bReadOnly) {
@@ -256,6 +263,10 @@ BOOL CManagePSWDPolices::OnInitDialog()
     }
   }
 
+  // No changes yet
+  GetDlgItem(IDC_UNDO)->EnableWindow(FALSE);
+  GetDlgItem(IDC_REDO)->EnableWindow(FALSE);
+
   // Set focus on the policy names CListCtrl and so return FALSE
   m_PolicyNames.SetFocus();
   return FALSE;
@@ -281,6 +292,46 @@ BOOL CManagePSWDPolices::PreTranslateMessage(MSG* pMsg)
     }
   }
 
+  if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
+    PostMessage(WM_COMMAND, MAKELONG(ID_HELP, BN_CLICKED), NULL);
+    return TRUE;
+  }
+
+  // If user hit the appropriate shortcut - do Undo/Redo
+  if (pMsg->message == WM_KEYDOWN) {
+    if (m_bUndoShortcut && pMsg->wParam == m_cUndoVirtKey) {
+      if (((m_cUndoModifier & HOTKEYF_CONTROL) == HOTKEYF_CONTROL &&
+          (GetKeyState(VK_CONTROL) & 0x8000) == 0) || 
+          ((m_cUndoModifier & HOTKEYF_ALT) == HOTKEYF_ALT &&
+          (GetKeyState(VK_MENU) & 0x8000) == 0) || 
+          ((m_cUndoModifier & HOTKEYF_SHIFT) == HOTKEYF_SHIFT &&
+          (GetKeyState(VK_SHIFT) & 0x8000) == 0))
+        goto exit;
+
+      // Do Undo
+      OnUndo();
+
+      // Tell Windows we have processed it
+      return TRUE;
+    }
+    if (m_bRedoShortcut && pMsg->wParam == m_cRedoVirtKey) {
+      if (((m_cRedoModifier & HOTKEYF_CONTROL) == HOTKEYF_CONTROL &&
+          (GetKeyState(VK_CONTROL) & 0x8000) == 0) || 
+          ((m_cRedoModifier & HOTKEYF_ALT) == HOTKEYF_ALT &&
+          (GetKeyState(VK_MENU) & 0x8000) == 0) || 
+          ((m_cRedoModifier & HOTKEYF_SHIFT) == HOTKEYF_SHIFT &&
+          (GetKeyState(VK_SHIFT) & 0x8000) == 0))
+        goto exit;
+
+      // Do Redo
+      OnRedo();
+
+      // Tell Windows we have processed it
+      return TRUE;
+    }
+  }
+ 
+exit:
   return CPWDialog::PreTranslateMessage(pMsg);
 }
 
@@ -301,7 +352,8 @@ void CManagePSWDPolices::OnOK()
 
 void CManagePSWDPolices::OnCancel()
 {
-  if (m_bChanged) {
+  // There may be no more left if the user has undone them all (if any)
+  if (m_iundo_pos >= 0 && m_bChanged) {
     // Are you sure?
     CGeneralMsgBox gmb;
     if (gmb.AfxMessageBox(IDS_AREYOUSURE_PN,
@@ -327,7 +379,35 @@ void CManagePSWDPolices::OnNew()
   if (rc == IDOK) {
     m_bChanged = true;
     CString cs_policyname;
+    
+    // Get new named password policy
     PasswordPolicy.GetPolicyData(m_st_default_pp, cs_policyname, m_MapPSWDPLC);
+
+    // Save changes for Undo/Redo
+    st_PSWDPolicyChange st_change;
+    st_change.name = cs_policyname;
+    st_change.flags = CPP_ADD;
+    st_change.st_pp_save.Empty();
+
+    // Added a named password policy
+    PSWDPolicyMapIter iter_new = m_MapPSWDPLC.find(StringX((LPCWSTR)cs_policyname));
+    if (iter_new == m_MapPSWDPLC.end())
+      ASSERT(0);
+    st_change.st_pp_new = iter_new->second;
+
+    if (m_iundo_pos != (int)m_vchanges.size() - 1) {
+      // We did have changes that could have been redone
+      // But not anymore - delete all these to add new change on the end
+      m_vchanges.resize(m_iundo_pos + 1);
+    }
+
+    // Add new change
+    m_vchanges.push_back(st_change);
+    // Update pointer to the one that is next to be undone
+    m_iundo_pos++;
+    // Update buttons appropriately
+    GetDlgItem(IDC_UNDO)->EnableWindow(TRUE);
+    GetDlgItem(IDC_REDO)->EnableWindow(FALSE);
 
     // Update lists
     UpdateNames();
@@ -363,8 +443,40 @@ void CManagePSWDPolices::OnEdit()
   
   if (rc == IDOK) {
     m_bChanged = true;
+
+    // Save changes for Undo/Redo
+    st_PSWDPolicyChange st_change;
+    st_change.name = m_iSelectedItem != 0 ? cs_policyname : L"";
+    st_change.flags = CPP_MODIFIED;
+    st_change.st_pp_save = m_iSelectedItem != 0 ?iter->second : m_st_default_pp;
+
     // Update default (if changed) or the named policies
     PasswordPolicy.GetPolicyData(m_st_default_pp, cs_policyname, m_MapPSWDPLC);
+
+    if (m_iSelectedItem != 0) {
+      // Changed a named password policy
+      PSWDPolicyMapIter iter_new = m_MapPSWDPLC.find(StringX((LPCWSTR)cs_policyname));
+      if (iter_new == m_MapPSWDPLC.end())
+        ASSERT(0);
+      st_change.st_pp_new = iter_new->second;
+    } else {
+      // Changed the database default policy
+      st_change.st_pp_new = m_st_default_pp;
+    }
+
+    if (m_iundo_pos != (int)m_vchanges.size() - 1) {
+      // We did have changes that could have been redone
+      // But not anymore
+      m_vchanges.resize(m_iundo_pos + 1);
+    }
+
+    // Add new change
+    m_vchanges.push_back(st_change);
+    // Update pointer to the one that is next to be undone
+    m_iundo_pos++;
+    // Update buttons appropriately
+    GetDlgItem(IDC_UNDO)->EnableWindow(TRUE);
+    GetDlgItem(IDC_REDO)->EnableWindow(FALSE);
 
     if (m_iSelectedItem != 0) {
       // Update lists
@@ -408,14 +520,38 @@ void CManagePSWDPolices::OnDelete()
   if (m_iSelectedItem < 1)
     return;
 
-  CString cs_text =  m_PolicyNames.GetItemText(m_iSelectedItem, 0);
+  CString cs_policyname =  m_PolicyNames.GetItemText(m_iSelectedItem, 0);
   m_PolicyNames.SetItemState(m_iSelectedItem, 0, LVIS_SELECTED);
   m_PolicyNames.DeleteItem(m_iSelectedItem);
 
   // Note: m_iSelectedItem == 0 for default policy that is not in the map.
-  PSWDPolicyMapIter it = m_MapPSWDPLC.find(StringX((LPCWSTR)cs_text));
-  if (it != m_MapPSWDPLC.end())
-    m_MapPSWDPLC.erase(it);
+  // Can't be deleted anyway
+  PSWDPolicyMapIter iter = m_MapPSWDPLC.find(StringX((LPCWSTR)cs_policyname));
+
+  // Save changes for Undo/Redo
+  st_PSWDPolicyChange st_change;
+  st_change.name = cs_policyname;
+  st_change.flags = CPP_DELETE;
+  st_change.st_pp_save.Empty();
+  st_change.st_pp_new = iter->second;
+
+  if (m_iundo_pos != (int)m_vchanges.size() - 1) {
+    // We did have changes that could have been redone
+    // But not anymore
+    m_vchanges.resize(m_iundo_pos + 1);
+  }
+
+  // Add new change
+  m_vchanges.push_back(st_change);
+  // Update pointer to the one that is next to be undone
+  m_iundo_pos++;
+  // Update buttons appropriately
+  GetDlgItem(IDC_UNDO)->EnableWindow(TRUE);
+  GetDlgItem(IDC_REDO)->EnableWindow(FALSE);
+
+  // Delete it
+  if (iter != m_MapPSWDPLC.end())
+    m_MapPSWDPLC.erase(iter);
   m_iSelectedItem = -1;
 
   // Nothing selected now - disable buttons
@@ -749,8 +885,9 @@ void CManagePSWDPolices::UpdateDetails()
   cs_yes.Remove(L'&');
   cs_no.Remove(L'&');
 
-  const bool bEV_PR = (st_pp.pwp.flags & PWSprefs::PWPolicyUseEasyVision) ||
-                      (st_pp.pwp.flags & PWSprefs::PWPolicyMakePronounceable);
+  const bool bEV = (st_pp.pwp.flags & PWSprefs::PWPolicyUseEasyVision) != 0;
+  const bool bPR = (st_pp.pwp.flags & PWSprefs::PWPolicyMakePronounceable) != 0;
+
   int nPos = 0;
 
   // Clear out previous info
@@ -769,7 +906,7 @@ void CManagePSWDPolices::UpdateDetails()
   cs_text.LoadString(IDS_PUSELOWER);
   m_PolicyDetails.InsertItem(nPos, cs_text);
   if ((st_pp.pwp.flags & PWSprefs::PWPolicyUseLowercase) != 0) {
-    if (bEV_PR)
+    if (bEV || bPR)
       cs_text = cs_yes;
     else
       cs_text.Format(IDS_YESNUMBER, st_pp.pwp.lowerminlength);
@@ -782,7 +919,7 @@ void CManagePSWDPolices::UpdateDetails()
   cs_text.LoadString(IDS_PUSEUPPER);
   m_PolicyDetails.InsertItem(nPos, cs_text);
   if ((st_pp.pwp.flags & PWSprefs::PWPolicyUseUppercase) != 0) {
-    if (bEV_PR)
+    if (bEV | bPR)
       cs_text = cs_yes;
     else
       cs_text.Format(IDS_YESNUMBER, st_pp.pwp.upperminlength);
@@ -795,7 +932,7 @@ void CManagePSWDPolices::UpdateDetails()
   cs_text.LoadString(IDS_PUSEDIGITS);
   m_PolicyDetails.InsertItem(nPos, cs_text);
   if ((st_pp.pwp.flags & PWSprefs::PWPolicyUseDigits) != 0) {
-    if (bEV_PR)
+    if (bEV || bPR)
       cs_text = cs_yes;
     else
       cs_text.Format(IDS_YESNUMBER, st_pp.pwp.digitminlength);
@@ -808,8 +945,8 @@ void CManagePSWDPolices::UpdateDetails()
   cs_text.LoadString(IDS_PUSESYMBOL);
   m_PolicyDetails.InsertItem(nPos, cs_text);
   if ((st_pp.pwp.flags & PWSprefs::PWPolicyUseSymbols) != 0) {
-    if (bEV_PR) {
-      cs_text.Format(IDS_YESEASYVISON, m_easyvision_symbols.c_str());
+    if (bEV || bPR) {
+      cs_text.Format(bEV ? IDS_YESEASYVISON : IDS_YESPRONOUNCEABLE, m_easyvision_symbols.c_str());
     } else {
       CString cs_tmp;
       cs_tmp.LoadString(st_pp.symbols.empty() ? IDS_DEFAULTSYMBOLS : IDS_SPECFICSYMBOLS);
@@ -824,14 +961,12 @@ void CManagePSWDPolices::UpdateDetails()
 
   cs_text.LoadString(IDS_PEASYVISION);
   m_PolicyDetails.InsertItem(nPos, cs_text);
-  m_PolicyDetails.SetItemText(nPos, 1,
-          (st_pp.pwp.flags & PWSprefs::PWPolicyUseEasyVision) != 0 ? cs_yes : cs_no);
+  m_PolicyDetails.SetItemText(nPos, 1, bEV ? cs_yes : cs_no);
   nPos++;
 
   cs_text.LoadString(IDS_PPRONOUNCEABLE);
   m_PolicyDetails.InsertItem(nPos, cs_text);
-  m_PolicyDetails.SetItemText(nPos, 1,
-          (st_pp.pwp.flags & PWSprefs::PWPolicyMakePronounceable) != 0 ? cs_yes : cs_no);
+  m_PolicyDetails.SetItemText(nPos, 1, bPR ? cs_yes : cs_no);
   nPos++;
 
   cs_text.LoadString(IDS_PHEXADECIMAL);
@@ -888,6 +1023,138 @@ void CManagePSWDPolices::UpdateEntryList()
   m_PolicyEntries.SetColumnWidth(0, LVSCW_AUTOSIZE_USEHEADER);
   m_PolicyEntries.SetColumnWidth(1, LVSCW_AUTOSIZE_USEHEADER);
   m_PolicyEntries.SetColumnWidth(2, LVSCW_AUTOSIZE_USEHEADER);
+}
+
+void CManagePSWDPolices::OnUndo()
+{
+  // Nothing to undo if no changes saved or already at first entry
+  if (m_vchanges.size() == 0 && m_iundo_pos < 0)
+    return;
+
+  // Get previous change
+  st_PSWDPolicyChange st_last_change = m_vchanges[m_iundo_pos];
+
+  bool bDefaultPolicy = st_last_change.name.empty();
+
+  switch (st_last_change.flags) {
+    case CPP_ADD:
+    {
+      // We added a new policy - delete it
+      PSWDPolicyMapIter iter = m_MapPSWDPLC.find(st_last_change.name);
+      if (iter != m_MapPSWDPLC.end())
+        m_MapPSWDPLC.erase(iter);
+
+      // Select default policy when list refreshed
+      m_iSelectedItem = 0;
+      break;
+    }
+    case CPP_DELETE:
+      // We deleted a policy - add it
+      m_MapPSWDPLC[st_last_change.name] = st_last_change.st_pp_save;
+
+      // Select it - but we do not yet know the m_PolicyNames index yet
+      m_iSelectedItem = -1;
+      break;
+    case CPP_MODIFIED:
+      if (bDefaultPolicy) {
+        m_st_default_pp = st_last_change.st_pp_save;
+        m_iSelectedItem = 0;
+      } else {
+        m_MapPSWDPLC[st_last_change.name] = st_last_change.st_pp_save;
+
+        // Select it - but we do not yet know the m_PolicyNames index yet
+        m_iSelectedItem = -1;
+      }
+      break;
+    default:
+      ASSERT(0);
+  }
+
+  // Now point back to previous change for next Undo (unless result < 0)
+  m_iundo_pos--;
+  // Can't do Undo if undo position is before the start of the changes
+  GetDlgItem(IDC_UNDO)->EnableWindow(m_iundo_pos < 0 ? FALSE : TRUE);
+  GetDlgItem(IDC_REDO)->EnableWindow(TRUE);
+
+  UpdateNames();
+
+  if (m_iSelectedItem != 0) {
+    LVFINDINFO st_lvfindinfo;
+    st_lvfindinfo.flags = LVFI_STRING;
+    st_lvfindinfo.psz = st_last_change.name.c_str();
+
+    m_iSelectedItem = m_PolicyNames.FindItem(&st_lvfindinfo);
+    ASSERT(m_iSelectedItem != -1);
+  }
+  m_PolicyNames.SetItemState(m_iSelectedItem, LVIS_SELECTED, LVIS_SELECTED);
+
+  UpdateDetails();
+}
+
+void CManagePSWDPolices::OnRedo()
+{
+  // Nothing to redo if no changes saved or already at last entry
+  if (m_vchanges.size() == 0 || m_iundo_pos == (int)m_vchanges.size() - 1)
+    return;
+
+  // Get next change
+  st_PSWDPolicyChange st_next_change = m_vchanges[m_iundo_pos + 1];
+
+  bool bDefaultPolicy = st_next_change.name.empty();
+
+  switch (st_next_change.flags) {
+    case CPP_ADD:
+      // We need to add a new policy
+      m_MapPSWDPLC[st_next_change.name] = st_next_change.st_pp_save;
+
+      // Select it - but we do not yet know the m_PolicyNames index yet
+      m_iSelectedItem = -1;
+      break;
+    case CPP_DELETE:
+      {
+      // We need to delete a policy
+      PSWDPolicyMapIter iter = m_MapPSWDPLC.find(st_next_change.name);
+      if (iter != m_MapPSWDPLC.end())
+        m_MapPSWDPLC.erase(iter);
+
+      // Select default policy
+      m_iSelectedItem = 0;
+      break;
+      }
+    case CPP_MODIFIED:
+      if (bDefaultPolicy) {
+        m_st_default_pp = st_next_change.st_pp_new;
+        m_iSelectedItem = 0;
+      } else {
+        m_MapPSWDPLC[st_next_change.name] = st_next_change.st_pp_new;
+
+        // Select it - but we do not yet know the m_PolicyNames index yet
+        m_iSelectedItem = -1;
+      }
+      break;
+    default:
+      ASSERT(0);
+  }
+
+  // Now point back to next change for next Undo (unless result < 0)
+  m_iundo_pos++;
+  GetDlgItem(IDC_UNDO)->EnableWindow(TRUE);
+  // Can't do Redo if undo position is at he end of the changes
+  GetDlgItem(IDC_REDO)->EnableWindow(m_iundo_pos == (int)m_vchanges.size() - 1 ? FALSE : TRUE);
+
+  UpdateNames();
+
+  if (m_iSelectedItem != 0) {
+    LVFINDINFO st_lvfindinfo;
+    st_lvfindinfo.flags = LVFI_STRING;
+    st_lvfindinfo.psz = st_next_change.name.c_str();
+
+    m_iSelectedItem = m_PolicyNames.FindItem(&st_lvfindinfo);
+    ASSERT(m_iSelectedItem != -1);
+  }
+  m_PolicyNames.SetItemState(m_iSelectedItem, LVIS_SELECTED, LVIS_SELECTED);
+
+  UpdateDetails();
 }
 
 int CALLBACK CManagePSWDPolices::SortNames(LPARAM lParam1, LPARAM lParam2,

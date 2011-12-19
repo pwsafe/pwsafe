@@ -379,6 +379,8 @@ public:
   
   // Need this to be public
   bool LongPPs();
+  bool GetShortCut(const unsigned int &uiMenuItem, unsigned char &cVirtKey,
+                   unsigned char &cModifier);
 
   // Following to simplify Command creation in child dialogs:
   CommandInterface *GetCore() {return &m_core;}

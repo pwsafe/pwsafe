@@ -395,10 +395,23 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
           m_AEMD.pci->SetPWPolicy(L"");
         } else {
           m_AEMD.pci->SetXTime(m_AEMD.tttXTime);
-          if (m_AEMD.ipolicy == DEFAULT_POLICY)
-            m_AEMD.pci->SetPWPolicy(L"");
-          else
-            m_AEMD.pci->SetPWPolicy(m_AEMD.pwp);
+
+          switch (m_AEMD.ipolicy) {
+            case DEFAULT_POLICY:
+              m_AEMD.pci->SetPWPolicy(L"");
+              m_AEMD.policyname = L"";
+              m_AEMD.pci->SetPolicyName(L"");
+              break;
+            case NAMED_POLICY:
+              m_AEMD.pci->SetPWPolicy(L"");
+              m_AEMD.pci->SetPolicyName(m_AEMD.policyname);
+              break;
+            case SPECIFIC_POLICY:
+              m_AEMD.pci->SetPWPolicy(m_AEMD.pwp);
+              m_AEMD.policyname = L"";
+              m_AEMD.pci->SetPolicyName(L"");
+              break;
+          }
         }
 
         if (m_bIsModified)

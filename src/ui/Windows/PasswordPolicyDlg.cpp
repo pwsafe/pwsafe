@@ -644,7 +644,7 @@ void CPasswordPolicyDlg::do_easyorpronounceable(const bool bSet)
 
     GetDlgItem(IDC_USEDEFAULTSYMBOLS)->EnableWindow(FALSE);
     GetDlgItem(IDC_USEOWNSYMBOLS)->EnableWindow(FALSE);
-    GetDlgItem(IDC_STATIC_DEFAULTSYMBOLS)->EnableWindow((IsDlgButtonChecked(IDC_USESYMBOLS) == BST_CHECKED) ? TRUE : FALSE);
+    GetDlgItem(IDC_STATIC_DEFAULTSYMBOLS)->EnableWindow((!bSet && IsDlgButtonChecked(IDC_USESYMBOLS) == BST_CHECKED) ? TRUE : FALSE);
     GetDlgItem(IDC_OWNSYMBOLS)->EnableWindow(FALSE);
 
     m_savelen[SAVE_LOWERCASE] = m_PWLowerMinLength;
@@ -726,7 +726,7 @@ void CPasswordPolicyDlg::OnUseSymbols()
 
   GetDlgItem(IDC_USEDEFAULTSYMBOLS)->EnableWindow(bChecked);
   GetDlgItem(IDC_USEOWNSYMBOLS)->EnableWindow(bChecked);
-  GetDlgItem(IDC_STATIC_DEFAULTSYMBOLS)->EnableWindow((IsDlgButtonChecked(IDC_USESYMBOLS) == BST_CHECKED) ? TRUE : FALSE);
+  GetDlgItem(IDC_STATIC_DEFAULTSYMBOLS)->EnableWindow(bChecked);
   GetDlgItem(IDC_OWNSYMBOLS)->EnableWindow((bChecked == TRUE && m_UseOwnSymbols == OWN_SYMBOLS) ? TRUE : FALSE);
 
   m_PWSymbolMinLength = bChecked;  // Based on FALSE=0 & TRUE=1
