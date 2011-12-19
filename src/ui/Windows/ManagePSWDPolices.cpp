@@ -1105,7 +1105,7 @@ void CManagePSWDPolices::OnRedo()
   switch (st_next_change.flags) {
     case CPP_ADD:
       // We need to add a new policy
-      m_MapPSWDPLC[st_next_change.name] = st_next_change.st_pp_save;
+      m_MapPSWDPLC[st_next_change.name] = st_next_change.st_pp_new;
 
       // Select it - but we do not yet know the m_PolicyNames index yet
       m_iSelectedItem = -1;
