@@ -175,6 +175,21 @@ BOOL CAddEdit_DateTimes::OnInitDialog()
     GetDlgItem(IDC_XTIME_RECUR)->EnableWindow(FALSE);
   }
 
+  // Last 32-bit date is 03:14:07 UTC on Tuesday, January 19, 2038
+  // Find number of days from now to 2038/01/18 = max value here
+  const CTime ct_Latest(2038, 1, 18, 0, 0, 0);
+  const CTime ct_Now(CTime::GetCurrentTime());
+
+  CTimeSpan elapsedTime = ct_Latest - ct_Now;
+  m_maxDays = (int)elapsedTime.GetDays();
+
+  CSpinButtonCtrl *pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_EXPDAYSSPIN);
+
+  pspin->SetBuddy(GetDlgItem(IDC_EXPDAYS));
+  pspin->SetBase(10);
+  pspin->SetRange32(1, m_maxDays);
+  pspin->SetPos(1);
+
   // Refresh dialog
   m_bInitdone = true;
   UpdateStats();
@@ -203,21 +218,6 @@ void CAddEdit_DateTimes::UpdateTimes()
   GetDlgItem(IDC_EXPDAYS)->EnableWindow(FALSE);
   GetDlgItem(IDC_STATIC_LTINTERVAL_NOW)->EnableWindow(FALSE);
   GetDlgItem(IDC_REUSE_ON_CHANGE)->EnableWindow(FALSE);
-
-  // Last 32-bit date is 03:14:07 UTC on Tuesday, January 19, 2038
-  // Find number of days from now to 2038/01/18 = max value here
-  const CTime ct_Latest(2038, 1, 18, 0, 0, 0);
-  const CTime ct_Now(CTime::GetCurrentTime());
-
-  CTimeSpan elapsedTime = ct_Latest - ct_Now;
-  m_maxDays = (int)elapsedTime.GetDays();
-
-  CSpinButtonCtrl *pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_EXPDAYSSPIN);
-
-  pspin->SetBuddy(GetDlgItem(IDC_EXPDAYS));
-  pspin->SetBase(10);
-  pspin->SetRange32(1, m_maxDays);
-  pspin->SetPos(1);
 
   // enable/disable relevant controls, depending on 'how' state
   // NONE_EXP, RELATIVE_EXP (interval) or ABSOLUTE_EXP
