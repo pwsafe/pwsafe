@@ -68,6 +68,7 @@ CManagePSWDPolices::CManagePSWDPolices(CWnd* pParent, const bool bLongPPs)
 
   CPasswordCharPool::GetDefaultSymbols(m_std_symbols);
   CPasswordCharPool::GetEasyVisionSymbols(m_easyvision_symbols);
+  CPasswordCharPool::GetPronounceableSymbols(m_pronounceable_symbols);
 }
 
 CManagePSWDPolices::~CManagePSWDPolices()
@@ -946,7 +947,8 @@ void CManagePSWDPolices::UpdateDetails()
   m_PolicyDetails.InsertItem(nPos, cs_text);
   if ((st_pp.pwp.flags & PWSprefs::PWPolicyUseSymbols) != 0) {
     if (bEV || bPR) {
-      cs_text.Format(bEV ? IDS_YESEASYVISON : IDS_YESPRONOUNCEABLE, m_easyvision_symbols.c_str());
+      cs_text.Format(bEV ? IDS_YESEASYVISON : IDS_YESPRONOUNCEABLE,
+                     bEV ? m_easyvision_symbols.c_str() : m_pronounceable_symbols.c_str());
     } else {
       CString cs_tmp;
       cs_tmp.LoadString(st_pp.symbols.empty() ? IDS_DEFAULTSYMBOLS : IDS_SPECFICSYMBOLS);

@@ -154,7 +154,7 @@ private:
 
   CBitmap m_CopyPswdBitmap;
 
-  stringT m_std_symbols, m_easyvision_symbols;
+  stringT m_std_symbols, m_easyvision_symbols, m_pronounceable_symbols;
 
   int m_iSortNamesIndex, m_iSortEntriesIndex;
   bool m_bSortNamesAscending, m_bSortEntriesAscending;
