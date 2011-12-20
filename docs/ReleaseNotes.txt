@@ -27,6 +27,8 @@ the XML file exported prior to V3.26 to allow it to be successfully imported in 
 
 Bugs fixed in 3.27.1
 ====================
+[3462520] A password entry's expiry time in days now correctly
+reflects the expiration date for non-recurring expiration.
 [3440318] Filters can now be cleared by double-clicking on the filter indicator in
 the status bar. Also, Filter Menu correctly changed when a filter is active.
 [3435869] '-g config_file' option now accepts a non-existing file,
