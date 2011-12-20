@@ -189,6 +189,15 @@ BOOL CAddEdit_DateTimes::OnInitDialog()
   pspin->SetBase(10);
   pspin->SetRange32(1, m_maxDays);
   pspin->SetPos(1);
+  if (M_XTimeInt() == 0) {
+    // if non-recurring, set num days to correspond to delta
+    // between exp date & now, if delta > 0
+    const CTime xt(M_tttXTime());
+    const CTime now(CTime::GetCurrentTime());
+    if (xt > now) {
+      pspin->SetPos(int(CTimeSpan(xt - now).GetDays()));
+    }
+  }
 
   // Refresh dialog
   m_bInitdone = true;
@@ -274,7 +283,7 @@ void CAddEdit_DateTimes::UpdateTimes()
   pDateCtl->SetFormat(sDateFormat);
 
   CTime xt;
-  CTime now(CTime::GetCurrentTime());
+  const CTime now(CTime::GetCurrentTime());
 
   if (M_tttXTime() != (time_t)0) {
     xt = CTime(M_tttXTime());
@@ -290,6 +299,13 @@ void CAddEdit_DateTimes::UpdateTimes()
 
   pDateCtl->SetTime(&xt);
   pTimeCtl->SetTime(&xt);
+
+  if (m_bRecurringPswdExpiry == FALSE) {
+    if (xt > now) {
+      m_numDays = int(CTimeSpan(xt - now).GetDays());
+    } else
+      m_numDays = 1;
+  }
 
   GetDlgItem(IDC_STATIC_CURRENT_XTIME)->SetWindowText(M_locXTime());
 
@@ -427,16 +443,16 @@ void CAddEdit_DateTimes::SetXTime()
                       XTime.GetHour(), XTime.GetMinute(), 0, -1);
     M_XTimeInt() = 0;
   } else { // m_how == RELATIVE_EXP
-    LDateTime = CTime::GetCurrentTime() + CTimeSpan(m_numDays, 0, 0, 0);
+    LDateTime = CTime::GetCurrentTime() + CTimeSpan(m_numDays + 1, 0, 0, 0);
     M_XTimeInt() = m_bRecurringPswdExpiry == FALSE ? 0 : m_numDays;
   }
 
-  // m_XTimeInt is non-zero iff user specified a relative & recurring exp. date
   M_tttXTime() = (time_t)LDateTime.GetTime();
   M_locXTime() = PWSUtil::ConvertToDateTimeString(M_tttXTime(), TMC_LOCALE);
 
   CString cs_text(L"");
-  if (M_XTimeInt() != 0) // recurring expiration
+  // m_XTimeInt is non-zero iff user specified a relative & recurring exp. date
+  if (M_XTimeInt() != 0)
     cs_text.Format(IDS_IN_N_DAYS, M_XTimeInt());
 
   GetDlgItem(IDC_XTIME)->SetWindowText(M_locXTime());
