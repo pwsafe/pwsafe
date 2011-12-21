@@ -35,6 +35,14 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CPasswordPolicyDlg property page
 
+/*
+
+  No need to colour all the controls blue as everything in this dialog
+  affects the database - whether the default password policy in the preferences
+  or the named password policies in the header.
+  
+*/
+
 const UINT CPasswordPolicyDlg::nonHex[CPasswordPolicyDlg::N_NOHEX] = {
   IDC_USELOWERCASE, IDC_USEUPPERCASE, IDC_USEDIGITS,
   IDC_USESYMBOLS, IDC_EASYVISION, IDC_PRONOUNCEABLE};
@@ -89,6 +97,10 @@ CPasswordPolicyDlg::CPasswordPolicyDlg(UINT uicaller, CWnd *pParent, bool bLongP
   m_pnonHex[3] = &m_PWUseSymbols;
   m_pnonHex[4] = &m_PWEasyVision;
   m_pnonHex[5] = &m_PWMakePronounceable;
+
+  CPasswordCharPool::GetDefaultSymbols(m_std_symbols);
+  CPasswordCharPool::GetEasyVisionSymbols(m_easyvision_symbols);
+  CPasswordCharPool::GetPronounceableSymbols(m_pronounceable_symbols);
 }
 
 CPasswordPolicyDlg::~CPasswordPolicyDlg()
@@ -120,16 +132,6 @@ void CPasswordPolicyDlg::DoDataExchange(CDataExchange* pDX)
   // Because we can show the generated password when used from Mangage->Generate
   DDX_Control(pDX, IDC_PASSWORD, m_ex_password);
 
-  DDX_Control(pDX,  IDC_USELOWERCASE, m_chkbox[0]);
-  DDX_Control(pDX,  IDC_USEUPPERCASE, m_chkbox[1]);
-  DDX_Control(pDX,  IDC_USEDIGITS, m_chkbox[2]);
-  DDX_Control(pDX,  IDC_USESYMBOLS, m_chkbox[3]);
-  DDX_Control(pDX,  IDC_EASYVISION, m_chkbox[4]);
-  DDX_Control(pDX,  IDC_PRONOUNCEABLE, m_chkbox[5]);
-  DDX_Control(pDX,  IDC_USEHEXDIGITS, m_chkbox[6]);
-  DDX_Control(pDX,  IDC_USEDEFAULTSYMBOLS, m_radiobtn[0]);
-  DDX_Control(pDX,  IDC_USEOWNSYMBOLS, m_radiobtn[1]);
-
   DDX_Control(pDX, IDC_POLICYNAME, m_PolicyNameEdit);
   DDX_Control(pDX, IDC_POLICYLIST, m_cbxPolicyNames);
   //}}AFX_DATA_MAP
@@ -137,7 +139,6 @@ void CPasswordPolicyDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CPasswordPolicyDlg, CPWDialog)
   //{{AFX_MSG_MAP(CPasswordPolicyDlg)
-  ON_WM_CTLCOLOR()
   ON_BN_CLICKED(IDOK, OnOK)
   ON_BN_CLICKED(IDCANCEL, OnCancel)
   ON_BN_CLICKED(ID_HELP, OnHelp)
@@ -187,18 +188,6 @@ BOOL CPasswordPolicyDlg::OnInitDialog()
 
   // Verify ptr to DboxMain has been set up (call to SetPolicyData)
   ASSERT(m_pDbx != NULL);
-
-  for (int i = 0; i < 7; i++) {
-    m_chkbox[i].SetBkgColour(CTLCOLOR_DLG);
-    if (m_uicaller == IDS_OPTIONS)
-      m_chkbox[i].SetTextColour(CR_DATABASE_OPTIONS);
-  }
-  for (int i = 0; i < 2; i++) {
-    m_radiobtn[i].SetBkgColour(CTLCOLOR_DLG);
-    m_radiobtn[i].SetType(BS_AUTORADIOBUTTON);
-    if (m_uicaller == IDS_OPTIONS)
-      m_radiobtn[i].SetTextColour(CR_DATABASE_OPTIONS);
-  }
 
   CString cs_title;
   switch (m_uicaller) {
@@ -375,10 +364,6 @@ BOOL CPasswordPolicyDlg::OnInitDialog()
   do_hex(m_PWUseHexdigits == TRUE);
   do_easyorpronounceable(m_PWEasyVision == TRUE || m_PWMakePronounceable == TRUE);
 
-  stringT st_symbols;
-  CPasswordCharPool::GetDefaultSymbols(st_symbols);
-
-  GetDlgItem(IDC_STATIC_DEFAULTSYMBOLS)->SetWindowText(st_symbols.c_str());
   m_SymbolsEdit.SetWindowText(m_Symbols);
 
   GetDlgItem(IDC_USEDEFAULTSYMBOLS)->EnableWindow(m_PWUseSymbols);
@@ -671,6 +656,16 @@ void CPasswordPolicyDlg::do_easyorpronounceable(const bool bSet)
     m_PWDigitMinLength = m_savelen[SAVE_DIGITS];
     m_PWSymbolMinLength = m_savelen[SAVE_SYMBOLS];
   }
+  
+  stringT *pst_symbols;
+  if (m_PWEasyVision == TRUE)
+    pst_symbols = &m_easyvision_symbols;
+  else if (m_PWMakePronounceable == TRUE)
+    pst_symbols = &m_pronounceable_symbols;
+  else
+    pst_symbols = &m_std_symbols;
+
+  GetDlgItem(IDC_STATIC_DEFAULTSYMBOLS)->SetWindowText((*pst_symbols).c_str());
 }
 
 void CPasswordPolicyDlg::OnUseLowerCase()
@@ -730,12 +725,14 @@ void CPasswordPolicyDlg::OnUseSymbols()
   GetDlgItem(IDC_OWNSYMBOLS)->EnableWindow((bChecked == TRUE && m_UseOwnSymbols == OWN_SYMBOLS) ? TRUE : FALSE);
 
   m_PWSymbolMinLength = bChecked;  // Based on FALSE=0 & TRUE=1
+
   UpdateData(FALSE);
 }
 
 void CPasswordPolicyDlg::OnUseHexdigits()
 {
   UpdateData(TRUE);
+
   do_hex(IsDlgButtonChecked(IDC_USEHEXDIGITS) == BST_CHECKED);
   // Do not use UpdateData(FALSE) here or
   // all the good work in "do_hex" will be undone
@@ -750,6 +747,7 @@ void CPasswordPolicyDlg::OnEasyVision()
     ((CButton*)GetDlgItem(IDC_EASYVISION))->SetCheck(FALSE);
     gmb.AfxMessageBox(IDS_PROVISMUTUALLYEXCL);
     m_PWEasyVision = FALSE;
+    return;
   }
 
   const bool bChecked = (IsDlgButtonChecked(IDC_EASYVISION) == BST_CHECKED);
@@ -768,6 +766,7 @@ void CPasswordPolicyDlg::OnMakePronounceable()
     ((CButton*)GetDlgItem(IDC_PRONOUNCEABLE))->SetCheck(FALSE);
     gmb.AfxMessageBox(IDS_PROVISMUTUALLYEXCL);
     m_PWMakePronounceable = FALSE;
+    return;
   }
 
   const bool bChecked = (IsDlgButtonChecked(IDC_PRONOUNCEABLE) == BST_CHECKED);
@@ -942,32 +941,6 @@ void CPasswordPolicyDlg::OnUseNamedPolicy()
   SetSpecificPolicyControls(1 - bEnable);  // Assumes TRUE == 1; FALSE == 0
 }
 
-HBRUSH CPasswordPolicyDlg::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
-{
-  // Database preferences - associated static text
-  HBRUSH hbr = CPWDialog::OnCtlColor(pDC, pWnd, nCtlColor);
-
-  if (m_uicaller != IDS_OPTIONS || nCtlColor != CTLCOLOR_STATIC)
-    return hbr;
-
-  switch (pWnd->GetDlgCtrlID()) {
-    case IDC_STATIC_PSWDLENGTH:
-    case IDC_STATIC_LC1:
-    case IDC_STATIC_LC2:
-    case IDC_STATIC_UC1:
-    case IDC_STATIC_UC2:
-    case IDC_STATIC_DG1:
-    case IDC_STATIC_DG2:
-    case IDC_STATIC_SY1:
-    case IDC_STATIC_SY2:
-      pDC->SetTextColor(CR_DATABASE_OPTIONS);
-      pDC->SetBkMode(TRANSPARENT);
-      break;
-  }
-
-  return hbr;
-}
-
 void CPasswordPolicyDlg::SetSpecificPolicyControls(const BOOL bEnable)
 {
   if (bEnable == FALSE) {
@@ -982,14 +955,6 @@ void CPasswordPolicyDlg::SetSpecificPolicyControls(const BOOL bEnable)
     m_savelen[SAVE_UPPERCASE] = m_PWUpperMinLength;
     m_savelen[SAVE_DIGITS] = m_PWDigitMinLength;
     m_savelen[SAVE_SYMBOLS] = m_PWSymbolMinLength;
-
-    for (int i = 0; i < 7; i++) {
-      m_chkbox[i].EnableWindow(FALSE);
-    }
-
-    for (int i = 0; i < 2; i++) {
-      m_radiobtn[i].EnableWindow(FALSE);
-    }
 
     for (int i = 0; i < N_HEX_LENGTHS * 2; i++) {
       GetDlgItem(LenTxts[i])->EnableWindow(FALSE);

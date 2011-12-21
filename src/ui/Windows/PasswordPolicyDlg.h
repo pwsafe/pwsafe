@@ -69,9 +69,6 @@ protected:
   CString m_Symbols, m_oldSymbols;
   CString m_policyname, m_oldpolicyname;
 
-  CButtonExtn m_chkbox[7];
-  CButtonExtn m_radiobtn[2];
-
   // Overrides
   // ClassWizard generate virtual function overrides
   //{{AFX_VIRTUAL(CPasswordPolicyDlg)
@@ -99,7 +96,6 @@ protected:
   afx_msg void OnENChangePolicyName();
   afx_msg void OnNamesComboChanged();
   afx_msg void OnUseNamedPolicy();
-  afx_msg HBRUSH OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor);
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
@@ -130,6 +126,7 @@ private:
   PSWDPolicyMap m_MapPSWDPLC;
   PSWDPolicyMapIter m_iter;
 
+  stringT m_std_symbols, m_easyvision_symbols, m_pronounceable_symbols;
   bool m_bReadOnly;
 
   DboxMain *m_pDbx;
