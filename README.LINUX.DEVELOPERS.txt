@@ -40,7 +40,8 @@ src/ui/wxWidgets/GCCUnicodeDebug (*)
 
 (*) Note that under Fedora and RHEL5, wxGTK-devel doesn't support
 "wx-config --debug=yes --unicode=yes" so just "make" fails. The
-workaround is to use "make CONFIG=unicoderelease"
+workaround is to use "make release". The release binary will be found
+under src/ui/wxWidgets/GCCUnicodeRelease.
 
 Create a Debian Package
 =======================
