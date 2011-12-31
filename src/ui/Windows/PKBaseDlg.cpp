@@ -85,9 +85,9 @@ BOOL CPKBaseDlg::OnInitDialog(void)
   bool yubiInserted = IsYubiInserted();
   ybn->EnableWindow(yubiInserted ? TRUE : FALSE);
   if (yubiInserted)
-    m_yubi_status.SetWindowText(_T("Click, then activate your YubiKey"));
+    m_yubi_status.SetWindowText(CString(MAKEINTRESOURCE(IDS_YUBI_CLICK_PROMPT)));
   else
-    m_yubi_status.SetWindowText(_T("Please insert your YubiKey"));
+    m_yubi_status.SetWindowText(CString(MAKEINTRESOURCE(IDS_YUBI_INSERT_PROMPT)));
   return TRUE;
 }
 
@@ -95,13 +95,13 @@ BOOL CPKBaseDlg::OnInitDialog(void)
 void CPKBaseDlg::yubiInserted(void)
 {
   GetDlgItem(IDC_YUBIKEY_BTN)->EnableWindow(TRUE);
-  m_yubi_status.SetWindowText(_T("Click, then activate your YubiKey"));
+  m_yubi_status.SetWindowText(CString(MAKEINTRESOURCE(IDS_YUBI_CLICK_PROMPT)));
 }
 
 void CPKBaseDlg::yubiRemoved(void)
 {
   GetDlgItem(IDC_YUBIKEY_BTN)->EnableWindow(FALSE);
-  m_yubi_status.SetWindowText(_T("Please insert your YubiKey"));
+  m_yubi_status.SetWindowText(CString(MAKEINTRESOURCE(IDS_YUBI_INSERT_PROMPT)));
 }
 
 static StringX Bin2Hex(const unsigned char *buf, int len)
@@ -137,7 +137,7 @@ void CPKBaseDlg::yubiCheckCompleted()
     // The returned hash is the passkey
     ProcessPhrase();
     // If we returned from above, reset status:
-    m_yubi_status.SetWindowText(_T("Click, then activate your YubiKey"));
+    m_yubi_status.SetWindowText(CString(MAKEINTRESOURCE(IDS_YUBI_CLICK_PROMPT)));
     break;
   case YKLIB_PROCESSING:  // Still processing or waiting for the result
     break;

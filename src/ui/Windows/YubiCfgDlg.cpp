@@ -166,7 +166,7 @@ void CYubiCfgDlg::yubiInserted(void)
 void CYubiCfgDlg::yubiRemoved(void)
 {
   m_YubiSN = _T("");
-  m_YubiSK = _T("Please insert YubiKey");
+  m_YubiSK = CString(MAKEINTRESOURCE(IDS_YUBI_INSERT_PROMPT));
   UpdateData(FALSE);
   GetDlgItem(IDC_YUBI_SN)->EnableWindow(FALSE);
   GetDlgItem(IDC_YUBI_SK)->EnableWindow(FALSE);

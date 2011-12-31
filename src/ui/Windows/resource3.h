@@ -678,3 +678,6 @@
 #define IDS_ENTER_NEW_DB_NAME           5875
 #define IDS_ENTER_NEW_DB_DESCRIPTION    5876
 #define IDS_INPUTBOX_CHAR_COUNT         5877
+
+#define IDS_YUBI_CLICK_PROMPT           5900
+#define IDS_YUBI_INSERT_PROMPT          5901

@@ -256,9 +256,9 @@ BOOL CWZSelectDB::OnInitDialog()
   bool yubiInserted = IsYubiInserted();
   ybn->EnableWindow(yubiInserted ? TRUE : FALSE);
   if (yubiInserted)
-    m_yubi_status.SetWindowText(_T("Click, then activate your YubiKey"));
+    m_yubi_status.SetWindowText(CString(MAKEINTRESOURCE(IDS_YUBI_CLICK_PROMPT)));
   else
-    m_yubi_status.SetWindowText(_T("Please insert your YubiKey"));
+    m_yubi_status.SetWindowText(CString(MAKEINTRESOURCE(IDS_YUBI_INSERT_PROMPT)));
 
   return FALSE;
 }
@@ -642,13 +642,13 @@ bool CWZSelectDB::IsYubiInserted() const
 void CWZSelectDB::yubiInserted(void)
 {
   GetDlgItem(IDC_YUBIKEY_BTN)->EnableWindow(TRUE);
-  m_yubi_status.SetWindowText(_T("Click, then activate your YubiKey"));
+  m_yubi_status.SetWindowText(CString(MAKEINTRESOURCE(IDS_YUBI_CLICK_PROMPT)));
 }
 
 void CWZSelectDB::yubiRemoved(void)
 {
   GetDlgItem(IDC_YUBIKEY_BTN)->EnableWindow(FALSE);
-  m_yubi_status.SetWindowText(_T("Please insert your YubiKey"));
+  m_yubi_status.SetWindowText(CString(MAKEINTRESOURCE(IDS_YUBI_INSERT_PROMPT)));
 }
 
 static StringX Bin2Hex(const unsigned char *buf, int len)
