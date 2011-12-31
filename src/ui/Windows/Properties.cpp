@@ -67,9 +67,6 @@ BOOL CProperties::OnInitDialog()
   m_stc_name.SetWindowText(csDBName);
   m_stc_description.SetWindowText(csDBDescription);
 
-  // Disable Cancel button - either because R-O or nothing yet altered
-  GetDlgItem(IDCANCEL)->EnableWindow(FALSE);
-
   if (m_bReadOnly) {
     // Hide the Cancel button and centre the OK button
     GetDlgItem(IDCANCEL)->ShowWindow(SW_HIDE);
@@ -107,7 +104,6 @@ void CProperties::OnEditName()
     if (csDBName.GetLength() > 32)
       csDBName = csDBName.Left(30) + L" ...";
     m_stc_name.SetWindowText(csDBName);
-    GetDlgItem(IDCANCEL)->EnableWindow(TRUE);
     SetChangedStatus();
   }
 }
@@ -122,7 +118,6 @@ void CProperties::OnEditDescription()
     if (csDBDescription.GetLength() > 64)
       csDBDescription = csDBDescription.Left(60) + L" ...";
     m_stc_description.SetWindowText(csDBDescription);
-    GetDlgItem(IDCANCEL)->EnableWindow(TRUE);
     SetChangedStatus();
   }
 }
