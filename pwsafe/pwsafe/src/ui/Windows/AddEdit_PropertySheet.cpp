@@ -299,8 +299,7 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
           m_AEMD.pci->SetProtected(m_AEMD.ucprotected != 0);
         }
 
-        if (m_AEMD.XTimeInt > 0 && m_AEMD.XTimeInt <= 3650)
-          m_AEMD.pci->SetXTimeInt(m_AEMD.XTimeInt);
+        m_AEMD.pci->SetXTimeInt(m_AEMD.XTimeInt);
 
         if (bIsPSWDModified || m_AEMD.locXTime != m_AEMD.oldlocXTime) {
           CItemData *pciA(m_AEMD.pci);

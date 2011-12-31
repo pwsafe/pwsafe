@@ -8,6 +8,14 @@
 // AddEdit_DateTimes.cpp : implementation file
 //
 
+/*
+ * XXX This needs more cleaning up:
+ * The "Password Expires On:" fields (IDC_XTIME and IDC_XTIME_RECUR)
+ * are redundant and confusing. What needs to be done is
+ * update the exp. date/time when the days field is set and vice-versa,
+ * so that the two will be equivalent.
+ */
+
 #include "stdafx.h"
 #include "PasswordSafe.h"
 #include "ThisMfcApp.h"    // For Help
@@ -102,7 +110,6 @@ static void AFXAPI DDV_CheckMaxDays(CDataExchange* pDX, const int &how,
       gmb.AfxMessageBox(csError);
       CAddEdit_DateTimes::m_bNumDaysFailed = true;
       pDX->Fail();
-      return;
     }
   }
 }
@@ -188,7 +195,7 @@ BOOL CAddEdit_DateTimes::OnInitDialog()
   pspin->SetBuddy(GetDlgItem(IDC_EXPDAYS));
   pspin->SetBase(10);
   pspin->SetRange32(1, m_maxDays);
-  pspin->SetPos(1);
+  pspin->SetPos(m_numDays);
   if (M_XTimeInt() == 0) {
     // if non-recurring, set num days to correspond to delta
     // between exp date & now, if delta > 0
@@ -198,6 +205,41 @@ BOOL CAddEdit_DateTimes::OnInitDialog()
       pspin->SetPos(int(CTimeSpan(xt - now).GetDays()));
     }
   }
+
+  // Set the time/date format:
+  // First get the time format picture.
+  wchar_t szBuf[81];     // workspace
+  VERIFY(::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_STIMEFORMAT, szBuf, 80));
+  CString sTimeFormat = szBuf;
+
+  // Next get the separator character.
+  VERIFY(::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_STIME, szBuf, 80));
+  // Search for ":ss".
+  CString sSearch = szBuf;
+  sSearch += L"ss";
+  int nIndex = sTimeFormat.Find(sSearch);
+
+  if (nIndex != -1) {
+    // Found it!  Remove it from the format picture.
+    sTimeFormat.Delete(nIndex, sSearch.GetLength());
+  } else {
+    // No ":ss", so try ":s".
+    sSearch = szBuf;
+    sSearch += L"s";
+    nIndex = sTimeFormat.Find(sSearch);
+
+    if (nIndex != -1) {
+      // Found it!  Remove it from the format picture.
+      sTimeFormat.Delete(nIndex, sSearch.GetLength());
+    }
+  }
+  VERIFY(::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SSHORTDATE, szBuf, 80));
+  CString sDateFormat = szBuf;
+
+  CDateTimeCtrl *pTimeCtl = (CDateTimeCtrl*)GetDlgItem(IDC_EXPIRYTIME);
+  CDateTimeCtrl *pDateCtl = (CDateTimeCtrl*)GetDlgItem(IDC_EXPIRYDATE);
+  pTimeCtl->SetFormat(sTimeFormat);
+  pDateCtl->SetFormat(sDateFormat);
 
   // Refresh dialog
   m_bInitdone = true;
@@ -218,69 +260,43 @@ void CAddEdit_DateTimes::UpdateTimes()
   // Time fields
   time(&M_tttCPMTime());
 
-  wchar_t szBuf[81];     // workspace
-  CString sTimeFormat;   // the time format being worked on
-  CString sDateFormat;
-  CString sSearch;       // the string to search for
-  int nIndex;            // index of the string, if found
-
-  GetDlgItem(IDC_EXPDAYS)->EnableWindow(FALSE);
-  GetDlgItem(IDC_STATIC_LTINTERVAL_NOW)->EnableWindow(FALSE);
-  GetDlgItem(IDC_REUSE_ON_CHANGE)->EnableWindow(FALSE);
+  // Determine m_how from M_* field (not from radio buttons)
+  if (M_XTimeInt() > 0) {
+    m_how = RELATIVE_EXP;
+  } else {
+    m_how = (M_tttXTime() == (time_t)0) ? NONE_EXP : ABSOLUTE_EXP;
+  }
 
   // enable/disable relevant controls, depending on 'how' state
   // NONE_EXP, RELATIVE_EXP (interval) or ABSOLUTE_EXP
   CString cs_text(L"");
-  if (M_XTimeInt() > 0) {
-    m_how = RELATIVE_EXP;
+  switch (m_how) {
+  case RELATIVE_EXP:
     m_numDays = M_XTimeInt();
     m_bRecurringPswdExpiry = TRUE;
     cs_text.Format(IDS_IN_N_DAYS, M_XTimeInt());
-  } else
-    m_how = (M_tttXTime() == (time_t)0) ? NONE_EXP : ABSOLUTE_EXP;
-
-  GetDlgItem(IDC_XTIME_RECUR)->SetWindowText(cs_text);
-
-  // Note: Only enable if 'how' is the correct value, this will also
-  // disable if the other option or NONE_EXP
-  GetDlgItem(IDC_EXPDAYS)->EnableWindow(m_how == RELATIVE_EXP ? TRUE : FALSE);
-  GetDlgItem(IDC_STATIC_LTINTERVAL_NOW)->EnableWindow(m_how == RELATIVE_EXP ? TRUE : FALSE);
-  GetDlgItem(IDC_REUSE_ON_CHANGE)->EnableWindow(m_how == RELATIVE_EXP ? TRUE : FALSE);
-  GetDlgItem(IDC_EXPIRYDATE)->EnableWindow(m_how == ABSOLUTE_EXP ? TRUE : FALSE);
-  GetDlgItem(IDC_EXPIRYTIME)->EnableWindow(m_how == ABSOLUTE_EXP ? TRUE : FALSE);
-
-  // First get the time format picture.
-  VERIFY(::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_STIMEFORMAT, szBuf, 80));
-  sTimeFormat = szBuf;
-
-  // Next get the separator character.
-  VERIFY(::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_STIME, szBuf, 80));
-  // Search for ":ss".
-  sSearch = szBuf;
-  sSearch += L"ss";
-  nIndex = sTimeFormat.Find(sSearch);
-
-  if (nIndex != -1) {
-    // Found it!  Remove it from the format picture.
-    sTimeFormat.Delete(nIndex, sSearch.GetLength());
-  } else {
-    // No ":ss", so try ":s".
-    sSearch = szBuf;
-    sSearch += L"s";
-    nIndex = sTimeFormat.Find(sSearch);
-
-    if (nIndex != -1) {
-      // Found it!  Remove it from the format picture.
-      sTimeFormat.Delete(nIndex, sSearch.GetLength());
-    }
+    GetDlgItem(IDC_EXPDAYS)->EnableWindow(TRUE);
+    GetDlgItem(IDC_STATIC_LTINTERVAL_NOW)->EnableWindow(TRUE);
+    GetDlgItem(IDC_REUSE_ON_CHANGE)->EnableWindow(TRUE);
+    GetDlgItem(IDC_EXPIRYDATE)->EnableWindow(FALSE);
+    GetDlgItem(IDC_EXPIRYTIME)->EnableWindow(FALSE);
+    break;
+  case ABSOLUTE_EXP:
+    GetDlgItem(IDC_EXPDAYS)->EnableWindow(FALSE);
+    GetDlgItem(IDC_STATIC_LTINTERVAL_NOW)->EnableWindow(FALSE);
+    GetDlgItem(IDC_REUSE_ON_CHANGE)->EnableWindow(FALSE);
+    GetDlgItem(IDC_EXPIRYDATE)->EnableWindow(TRUE);
+    GetDlgItem(IDC_EXPIRYTIME)->EnableWindow(TRUE);
+    break;
+  case NONE_EXP:
+    GetDlgItem(IDC_EXPDAYS)->EnableWindow(FALSE);
+    GetDlgItem(IDC_STATIC_LTINTERVAL_NOW)->EnableWindow(FALSE);
+    GetDlgItem(IDC_REUSE_ON_CHANGE)->EnableWindow(FALSE);
+    GetDlgItem(IDC_EXPIRYDATE)->EnableWindow(FALSE);
+    GetDlgItem(IDC_EXPIRYTIME)->EnableWindow(FALSE);
+    break;
   }
-  VERIFY(::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SSHORTDATE, szBuf, 80));
-  sDateFormat = szBuf;
-
-  CDateTimeCtrl *pTimeCtl = (CDateTimeCtrl*)GetDlgItem(IDC_EXPIRYTIME);
-  CDateTimeCtrl *pDateCtl = (CDateTimeCtrl*)GetDlgItem(IDC_EXPIRYDATE);
-  pTimeCtl->SetFormat(sTimeFormat);
-  pDateCtl->SetFormat(sDateFormat);
+  GetDlgItem(IDC_XTIME_RECUR)->SetWindowText(cs_text);
 
   CTime xt;
   const CTime now(CTime::GetCurrentTime());
@@ -293,6 +309,9 @@ void CAddEdit_DateTimes::UpdateTimes()
 
   const CTime sMinDate(xt.GetTime() < now.GetTime() ? xt : now);
   const CTime sMaxDate(CTime(2038, 1, 1, 0, 0, 0, -1));
+
+  CDateTimeCtrl *pTimeCtl = (CDateTimeCtrl*)GetDlgItem(IDC_EXPIRYTIME);
+  CDateTimeCtrl *pDateCtl = (CDateTimeCtrl*)GetDlgItem(IDC_EXPIRYDATE);
 
   // Set approx. limit of 32-bit times!
   pDateCtl->SetRange(&sMinDate, &sMaxDate);
@@ -375,7 +394,7 @@ BOOL CAddEdit_DateTimes::OnApply()
       m_numDays = m_maxDays;
       UpdateData(FALSE);
     } else
-      return FALSE;  // Something else - probably max. saved passwords
+      return FALSE;  // Something else
   }
 
   return CAddEdit_PropertyPage::OnApply();
