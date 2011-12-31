@@ -30,10 +30,11 @@ using namespace std;
 
 // CYubiCfgDlg dialog
 
+static const wchar_t PSSWDCHAR = L'*';
 
 CYubiCfgDlg::CYubiCfgDlg(CWnd* pParent, PWScore &core)
 	: CPWDialog(CYubiCfgDlg::IDD, pParent), m_core(core),
-    m_YubiSN(_T("")), m_YubiSK(_T(""))
+    m_YubiSN(_T("")), m_YubiSK(_T("")), m_isSKHidden(true)
 {
   m_present = !IsYubiInserted(); // lie to trigger correct actions in timer event
 }
@@ -45,8 +46,9 @@ CYubiCfgDlg::~CYubiCfgDlg()
 void CYubiCfgDlg::DoDataExchange(CDataExchange* pDX)
 {
     CDialog::DoDataExchange(pDX);
+    m_ex_YubiSK.DoDDX(pDX, m_YubiSK);
     DDX_Text(pDX, IDC_YUBI_SN, m_YubiSN);
-    DDX_Text(pDX, IDC_YUBI_SK, m_YubiSK);
+    DDX_Control(pDX, IDC_YUBI_SK, m_ex_YubiSK);
 }
 
 static StringX BinSN2Str(const unsigned char *snstr)
@@ -85,9 +87,13 @@ static void HexStr2BinSK(const StringX &str, unsigned char *sk, int len)
 
 BOOL CYubiCfgDlg::OnInitDialog()
 {
-  SetTimer(1, 250, 0); // Setup a timer to poll the key every 250 ms
-  GetDlgItem(IDC_YUBI_API)->ShowWindow(SW_HIDE);
-  return TRUE;
+  if (CPWDialog::OnInitDialog() == TRUE) {
+    SetTimer(1, 250, 0); // Setup a timer to poll the key every 250 ms
+    GetDlgItem(IDC_YUBI_API)->ShowWindow(SW_HIDE);
+    HideSK();
+    return TRUE;
+  } else
+    return FALSE;
 }
 
 void CYubiCfgDlg::ReadYubiSN()
@@ -145,6 +151,7 @@ BEGIN_MESSAGE_MAP(CYubiCfgDlg, CPWDialog)
     ON_BN_CLICKED(IDOK, &CYubiCfgDlg::OnBnClickedOk)
     ON_BN_CLICKED(ID_HELP, &CYubiCfgDlg::OnHelp)
     ON_WM_TIMER()
+    ON_BN_CLICKED(IDC_YUBI_SHOW_HIDE, &CYubiCfgDlg::OnBnClickedYubiShowHide)
 END_MESSAGE_MAP()
 
 
@@ -154,9 +161,10 @@ void CYubiCfgDlg::yubiInserted(void)
   GetDlgItem(IDC_YUBI_SK)->EnableWindow(TRUE);
   GetDlgItem(IDC_YUBI_GEN_BN)->EnableWindow(TRUE);
   GetDlgItem(IDOK)->EnableWindow(TRUE);
-  if (m_core.GetYubiSK() != NULL)
+  if (m_core.GetYubiSK() != NULL) {
+    HideSK();
     m_YubiSK = BinSK2HexStr(m_core.GetYubiSK(), YUBI_SK_LEN).c_str();
-  else 
+  } else 
     m_YubiSK = _T("");
   ReadYubiSN();
   GetDlgItem(IDC_YUBI_SN)->SetWindowText(m_YubiSN);
@@ -166,7 +174,8 @@ void CYubiCfgDlg::yubiInserted(void)
 void CYubiCfgDlg::yubiRemoved(void)
 {
   m_YubiSN = _T("");
-  m_YubiSK = CString(MAKEINTRESOURCE(IDS_YUBI_INSERT_PROMPT));
+  m_YubiSK = CSecString(MAKEINTRESOURCE(IDS_YUBI_INSERT_PROMPT));
+  ShowSK();
   UpdateData(FALSE);
   GetDlgItem(IDC_YUBI_SN)->EnableWindow(FALSE);
   GetDlgItem(IDC_YUBI_SK)->EnableWindow(FALSE);
@@ -189,9 +198,12 @@ void CYubiCfgDlg::OnYubiGenBn()
 
 void CYubiCfgDlg::OnBnClickedOk()
 {
+  // Was OK button, now "Set Yubikey" so we don't close
+  // after processing.
   UpdateData(TRUE);  
   StringX skStr = m_YubiSK;
   
+  GetDlgItem(IDC_YUBI_API)->ShowWindow(SW_HIDE); // in case of retry
   if (!skStr.empty()) {
     unsigned char yubi_sk_bin[YUBI_SK_LEN];
     HexStr2BinSK(skStr, yubi_sk_bin, YUBI_SK_LEN);
@@ -206,10 +218,8 @@ void CYubiCfgDlg::OnBnClickedOk()
       const CString err = _T("Failed to update YubiKey");
       GetDlgItem(IDC_YUBI_API)->ShowWindow(SW_SHOW);
       GetDlgItem(IDC_YUBI_API)->SetWindowText(err);
-      return; // don't close dbox
     }
   }
-  CPWDialog::OnOK();
 }
 
 bool CYubiCfgDlg::IsYubiInserted() const
@@ -242,3 +252,40 @@ void CYubiCfgDlg::OnHelp()
   cs_HelpTopic = app.GetHelpFileName() + L"::/html/manage_menu.html#yubikey";
   HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
 }
+
+void CYubiCfgDlg::ShowSK()
+{
+  m_isSKHidden = false;
+  GetDlgItem(IDC_YUBI_SHOW_HIDE)->
+    SetWindowText(CString(MAKEINTRESOURCE(IDS_HIDEPASSWORDTXT2)));
+  m_ex_YubiSK.SetSecure(false);
+
+  // Remove password character so that the password is displayed
+  m_ex_YubiSK.SetPasswordChar(0);
+  m_ex_YubiSK.Invalidate();
+}
+
+void CYubiCfgDlg::HideSK()
+{
+  m_isSKHidden = true;
+  GetDlgItem(IDC_YUBI_SHOW_HIDE)->
+    SetWindowText(CString(MAKEINTRESOURCE(IDS_SHOWPASSWORDTXT2)));
+  m_ex_YubiSK.SetSecure(true);
+
+  // Set password character so that the password is not displayed
+  m_ex_YubiSK.SetPasswordChar(PSSWDCHAR);
+  m_ex_YubiSK.Invalidate();
+}
+
+void CYubiCfgDlg::OnBnClickedYubiShowHide()
+{
+  UpdateData(TRUE);
+
+  if (m_isSKHidden) {
+    ShowSK();
+  } else {
+    HideSK();
+  }
+  UpdateData(FALSE);
+}
+

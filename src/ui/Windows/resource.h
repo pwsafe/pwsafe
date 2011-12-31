@@ -744,6 +744,8 @@
 #define IDC_YUBI_GEN_BN                 1467
 #define IDC_BUTTON2                     1468
 #define IDC_YUBI_API                    1469
+#define IDC_BUTTON1                     1470
+#define IDC_YUBI_SHOW_HIDE              1470
 
 // Next default values for new objects
 // 
@@ -751,7 +753,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        514
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1470
+#define _APS_NEXT_CONTROL_VALUE         1471
 #define _APS_NEXT_SYMED_VALUE           166
 #endif
 #endif

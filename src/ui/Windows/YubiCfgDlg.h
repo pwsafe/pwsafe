@@ -11,6 +11,7 @@
 // \file YubiCfgDlg.h
 
 #include "PWDialog.h"
+#include "ControlExtns.h"
 
 class PWScore;
 
@@ -32,7 +33,8 @@ protected:
   
 	DECLARE_MESSAGE_MAP()
 	CString m_YubiSN;
-  CString m_YubiSK;
+  CSecString m_YubiSK;
+  CSecEditExtn m_ex_YubiSK;
 public:
   afx_msg void OnYubiGenBn();
   afx_msg void OnBnClickedOk();
@@ -43,8 +45,12 @@ public:
   bool IsYubiInserted() const;
 	void yubiInserted(void); // called when Yubikey's inserted
 	void yubiRemoved(void);  // called when Yubikey's removed
+  void ShowSK();
+  void HideSK();
 
   bool m_present; // key present?
+  bool m_isSKHidden;
   mutable CMutex m_mutex; // protect against race conditions when calling Yubi API
   PWScore &m_core;
+  afx_msg void OnBnClickedYubiShowHide();
 };
