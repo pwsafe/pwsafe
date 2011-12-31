@@ -76,14 +76,22 @@ BOOL CPasswordSubsetDlg::OnInitDialog()
 
   ApplyPasswordFont(GetDlgItem(IDC_SUBSETRESULTS));
 
-  CRect rect;
-  PWSprefs::GetInstance()->GetPrefPSSRect(rect.top, rect.bottom, 
-                                          rect.left, rect.right);
+  CRect prefRect, origRect;
+  GetWindowRect(&origRect);
+  PWSprefs::GetInstance()->GetPrefPSSRect(prefRect.top, prefRect.bottom, 
+                                          prefRect.left, prefRect.right);
 
-  if (rect.top == -1 && rect.bottom == -1 && rect.left == -1 && rect.right == -1) {
-    GetWindowRect(&rect);
+  if (prefRect.top == -1 || prefRect.bottom == -1 ||
+      prefRect.left == -1 || prefRect.right == -1) {
+    prefRect = origRect;
+  } else {
+    // Sanity checks
+    if (prefRect.Width() < origRect.Width())
+      prefRect.right = prefRect.left + origRect.Width();
+    if (prefRect.Height() < origRect.Height())
+      prefRect.bottom = prefRect.top + origRect.Height();
   }
-  m_pDbx->PlaceWindow(this, &rect, SW_SHOW);
+  m_pDbx->PlaceWindow(this, &prefRect, SW_SHOW);
 
   return TRUE;
 }
