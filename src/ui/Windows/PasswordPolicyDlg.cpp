@@ -362,7 +362,14 @@ BOOL CPasswordPolicyDlg::OnInitDialog()
 
   // Set up the correct controls (enabled/disabled)
   do_hex(m_PWUseHexdigits == TRUE);
-  do_easyorpronounceable(m_PWEasyVision == TRUE || m_PWMakePronounceable == TRUE);
+
+  int iSet = EVPR_NONE;
+  if (m_PWEasyVision == TRUE)
+    iSet = EVPR_EV;
+  else
+  if (m_PWMakePronounceable == TRUE)
+    iSet = EVPR_PR;
+  do_easyorpronounceable(iSet);
 
   m_SymbolsEdit.SetWindowText(m_Symbols);
 
@@ -607,7 +614,7 @@ void CPasswordPolicyDlg::do_hex(const bool bHex)
   }
 }
 
-void CPasswordPolicyDlg::do_easyorpronounceable(const bool bSet)
+void CPasswordPolicyDlg::do_easyorpronounceable(const int iSet)
 {
   // Can't have minimum lengths!
   if ((m_PWEasyVision == TRUE  || m_PWMakePronounceable == TRUE) &&
@@ -619,7 +626,8 @@ void CPasswordPolicyDlg::do_easyorpronounceable(const bool bSet)
 
   CString cs_value;
   int i;
-  if (bSet) {
+  if (iSet != EVPR_NONE) {
+    // Make EasyVision or Pronounceable
     for (i = 0; i < N_HEX_LENGTHS; i++) {
       GetDlgItem(nonHexLengths[i])->ShowWindow(SW_HIDE);
       GetDlgItem(nonHexLengthSpins[i])->ShowWindow(SW_HIDE);
@@ -627,9 +635,10 @@ void CPasswordPolicyDlg::do_easyorpronounceable(const bool bSet)
       GetDlgItem(LenTxts[2 * i + 1])->ShowWindow(SW_HIDE);
     }
 
+    GetDlgItem(IDC_USESYMBOLS)->EnableWindow(FALSE);
     GetDlgItem(IDC_USEDEFAULTSYMBOLS)->EnableWindow(FALSE);
     GetDlgItem(IDC_USEOWNSYMBOLS)->EnableWindow(FALSE);
-    GetDlgItem(IDC_STATIC_DEFAULTSYMBOLS)->EnableWindow((!bSet && IsDlgButtonChecked(IDC_USESYMBOLS) == BST_CHECKED) ? TRUE : FALSE);
+    GetDlgItem(IDC_STATIC_DEFAULTSYMBOLS)->EnableWindow(FALSE);
     GetDlgItem(IDC_OWNSYMBOLS)->EnableWindow(FALSE);
 
     m_savelen[SAVE_LOWERCASE] = m_PWLowerMinLength;
@@ -637,6 +646,7 @@ void CPasswordPolicyDlg::do_easyorpronounceable(const bool bSet)
     m_savelen[SAVE_DIGITS] = m_PWDigitMinLength;
     m_savelen[SAVE_SYMBOLS] = m_PWSymbolMinLength;
   } else {
+    // Unmake EasyVision or Pronounceable
     for (i = 0; i < N_HEX_LENGTHS; i++) {
       GetDlgItem(nonHexLengths[i])->ShowWindow(SW_SHOW);
       GetDlgItem(nonHexLengthSpins[i])->ShowWindow(SW_SHOW);
@@ -752,7 +762,7 @@ void CPasswordPolicyDlg::OnEasyVision()
 
   const bool bChecked = (IsDlgButtonChecked(IDC_EASYVISION) == BST_CHECKED);
 
-  do_easyorpronounceable(bChecked);
+  do_easyorpronounceable(bChecked ? EVPR_EV : EVPR_NONE);
   // Do not use UpdateData(FALSE) here or
   // all the good work in "do_easyorpronounceable" will be undone
 }
@@ -771,7 +781,15 @@ void CPasswordPolicyDlg::OnMakePronounceable()
 
   const bool bChecked = (IsDlgButtonChecked(IDC_PRONOUNCEABLE) == BST_CHECKED);
 
-  do_easyorpronounceable(bChecked);
+  if (m_PWUseLowercase == FALSE && m_PWUseUppercase == FALSE) {
+    CGeneralMsgBox gmb;
+    ((CButton*)GetDlgItem(IDC_PRONOUNCEABLE))->SetCheck(FALSE);
+    gmb.AfxMessageBox(IDS_PR_MUSTHAVECHARACTERS);
+    m_PWMakePronounceable = FALSE;
+    return;
+  }
+
+  do_easyorpronounceable(bChecked ? EVPR_PR : EVPR_NONE);
   // Do not use UpdateData(FALSE) here or
   // all the good work in "do_easyorpronounceable" will be undone
 }
@@ -995,7 +1013,14 @@ void CPasswordPolicyDlg::SetSpecificPolicyControls(const BOOL bEnable)
 
     // Set up the correct controls (enabled/disabled)
     do_hex(m_PWUseHexdigits == TRUE);
-    do_easyorpronounceable(m_PWEasyVision == TRUE || m_PWMakePronounceable == TRUE);
+
+    int iSet = EVPR_NONE;
+    if (m_PWEasyVision == TRUE)
+      iSet = EVPR_EV;
+    else
+    if (m_PWMakePronounceable == TRUE)
+      iSet = EVPR_PR;
+    do_easyorpronounceable(iSet);
   }
 }
 

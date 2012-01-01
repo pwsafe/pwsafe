@@ -718,3 +718,5 @@
 #define IDS_EDIT_NAMED_POLICY           5915
 #define IDS_TESTPOLICY                  5916
 #define IDS_CLICKTOCOPYGENPSWD          5917
+#define IDS_PR_MUSTHAVECHARACTERS       5918
+
