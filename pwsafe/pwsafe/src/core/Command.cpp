@@ -254,6 +254,77 @@ void DBPrefsCommand::Undo()
 }
 
 // ------------------------------------------------
+// DBPolicyNamesCommand
+// ------------------------------------------------
+
+DBPolicyNamesCommand::DBPolicyNamesCommand(CommandInterface *pcomInt,
+                                           PSWDPolicyMap &MapPSWDPLC,
+                                           Function function)
+  : Command(pcomInt), m_NewMapPSWDPLC(MapPSWDPLC), m_function(function),
+  bSingleAdd(false)
+{
+  m_OldMapPSWDPLC = pcomInt->GetPasswordPolicies();
+  m_bOldState = pcomInt->IsChanged();
+}
+
+DBPolicyNamesCommand::DBPolicyNamesCommand(CommandInterface *pcomInt,
+                                           StringX &sxPolicyName,
+                                           st_PSWDPolicy &st_pp)
+  : Command(pcomInt), m_sxPolicyName(sxPolicyName), m_st_ppp(st_pp),
+  bSingleAdd(true)
+{
+  m_OldMapPSWDPLC = pcomInt->GetPasswordPolicies();
+  m_bOldState = pcomInt->IsChanged();
+}
+
+int DBPolicyNamesCommand::Execute()
+{
+  if (!m_pcomInt->IsReadOnly()) {
+    if (bSingleAdd) {
+      m_pcomInt->AddPolicy(m_sxPolicyName, m_st_ppp);
+    } else {
+      switch (m_function) {
+       case ADDNEW:
+        {
+          PSWDPolicyMapIter iter;
+          for (iter = m_NewMapPSWDPLC.begin(); iter != m_NewMapPSWDPLC.end(); iter++) {
+            m_pcomInt->AddPolicy(iter->first, iter->second);
+          }
+          break;
+        }
+        case REPLACEALL:
+          m_pcomInt->SetPasswordPolicies(m_NewMapPSWDPLC);
+          break;
+      }
+    }
+    m_pcomInt->SetDBChanged(true);
+
+    if (m_bNotifyGUI) {
+      m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_UPDATE_STATUSBAR,
+                                        CUUID::NullUUID());
+    }
+
+    m_bState = true;
+  }
+  return 0;
+}
+
+void DBPolicyNamesCommand::Undo()
+{
+  if (!m_pcomInt->IsReadOnly()) {
+    m_pcomInt->SetPasswordPolicies(m_OldMapPSWDPLC);
+    m_pcomInt->SetDBChanged(m_bOldState);
+
+    if (m_bNotifyGUI) {
+      m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_UPDATE_STATUSBAR,
+                                        CUUID::NullUUID());
+    }
+
+    m_bState = false;
+  }
+}
+
+// ------------------------------------------------
 // AddEntryCommand
 // ------------------------------------------------
 

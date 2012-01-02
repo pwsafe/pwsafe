@@ -141,7 +141,7 @@ BEGIN_MESSAGE_MAP(CPWFindToolBar, CToolBar)
   ON_WM_CTLCOLOR()
 END_MESSAGE_MAP()
 
-HBRUSH CPWFindToolBar::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
+HBRUSH CPWFindToolBar::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
 {
   HBRUSH hbr = CToolBar::OnCtlColor(pDC, pWnd, nCtlColor);
 

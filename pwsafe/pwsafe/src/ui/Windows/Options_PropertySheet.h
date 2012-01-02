@@ -14,10 +14,11 @@
 #include "OptionsDisplay.h"
 #include "OptionsMisc.h"
 #include "OptionsPasswordHistory.h"
-#include "OptionsPasswordPolicy.h"
 #include "OptionsSecurity.h"
 #include "OptionsShortcuts.h"
 #include "OptionsSystem.h"
+
+#include "core/coredefs.h"
 
 class DboxMain;
 class PWScore;
@@ -60,14 +61,13 @@ public:
   const bool StartupShortcut() {return m_OPTMD.Startup == TRUE;}
   const bool StartupShortcutChanged() {return m_OPTMD.Startup !=
                                               m_bStartupShortcutExists;}
-
+  
 protected:
   st_Opt_master_data m_OPTMD;
 
 private:
   void SetupInitialValues();
   void UpdateCopyPreferences();
-  void UpdatePasswordPolicy();
 
   CString m_save_bSymbols;
   int m_save_iPreExpiryWarnDays, m_save_iUseOwnSymbols;
@@ -81,7 +81,6 @@ private:
   COptionsDisplay         *m_pp_display;
   COptionsMisc            *m_pp_misc;
   COptionsPasswordHistory *m_pp_passwordhistory;
-  COptionsPasswordPolicy  *m_pp_passwordpolicy;
   COptionsSecurity        *m_pp_security;
   COptionsShortcuts       *m_pp_shortcuts;
   COptionsSystem          *m_pp_system;

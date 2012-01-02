@@ -62,6 +62,8 @@ CAddEdit_PasswordPolicy::CAddEdit_PasswordPolicy(CWnd *pParent,
                           pAEMD),
     m_useownsymbols(DEFAULT_SYMBOLS), m_bInitdone(false)
 {
+  m_policy_radibtn = M_ipolicy() != SPECIFIC_POLICY ? 0 : 1 ;
+
   // We are given the Policy - set Dialog variables
   SetVariablesFromPolicy();
 
@@ -98,7 +100,7 @@ void CAddEdit_PasswordPolicy::DoDataExchange(CDataExchange* pDX)
   CAddEdit_PropertyPage::DoDataExchange(pDX);
 
   //{{AFX_DATA_MAP(CAddEdit_PasswordPolicy)
-  DDX_Radio(pDX, IDC_USEDEFAULTPWPOLICY, M_ipolicy());
+  DDX_Radio(pDX, IDC_USEPWPOLICYNAME, m_policy_radibtn);
 
   DDX_Text(pDX, IDC_DEFPWLENGTH, m_pwdefaultlength);
   DDX_Text(pDX, IDC_MINDIGITLENGTH, m_pwdigitminlength);
@@ -116,6 +118,8 @@ void CAddEdit_PasswordPolicy::DoDataExchange(CDataExchange* pDX)
 
   DDX_Radio(pDX, IDC_USEDEFAULTSYMBOLS, m_useownsymbols);
   DDX_Control(pDX, IDC_OWNSYMBOLS, (CEdit&)m_symbols);
+  
+  DDX_Control(pDX, IDC_POLICYLIST, m_cbxPolicyNames);
   //}}AFX_DATA_MAP
 }
 
@@ -130,9 +134,8 @@ BEGIN_MESSAGE_MAP(CAddEdit_PasswordPolicy, CAddEdit_PropertyPage)
   ON_BN_CLICKED(IDC_USESYMBOLS, OnUseSymbols)
   ON_BN_CLICKED(IDC_EASYVISION, OnEasyVision)
   ON_BN_CLICKED(IDC_PRONOUNCEABLE, OnMakePronounceable)
-  ON_BN_CLICKED(IDC_USEDEFAULTPWPOLICY, OnSetDefaultPWPolicy)
+  ON_BN_CLICKED(IDC_USEPWPOLICYNAME, OnSelectNamedPolicy)
   ON_BN_CLICKED(IDC_ENTRYPWPOLICY, OnSetSpecificPWPolicy)
-  ON_BN_CLICKED(IDC_RESETPWPOLICY, OnResetPolicy)
   ON_BN_CLICKED(IDC_USEDEFAULTSYMBOLS, OnSymbols)
   ON_BN_CLICKED(IDC_USEOWNSYMBOLS, OnSymbols)
 
@@ -143,6 +146,8 @@ BEGIN_MESSAGE_MAP(CAddEdit_PasswordPolicy, CAddEdit_PropertyPage)
   ON_EN_CHANGE(IDC_MINUPPERLENGTH, OnChanged)
 
   ON_EN_CHANGE(IDC_OWNSYMBOLS, OnOwnSymbolsChanged)
+  
+  ON_CBN_SELCHANGE(IDC_POLICYLIST, OnNamesComboChanged)
 
   // Common
   ON_MESSAGE(PSM_QUERYSIBLINGS, OnQuerySiblings)
@@ -165,6 +170,61 @@ BOOL CAddEdit_PasswordPolicy::PreTranslateMessage(MSG* pMsg)
 BOOL CAddEdit_PasswordPolicy::OnInitDialog()
 {
   CAddEdit_PropertyPage::OnInitDialog();
+
+  // Populate the combo box
+  m_cbxPolicyNames.ResetContent();
+
+  // Get all password policy names
+  std::vector<std::wstring> vNames;
+  M_pDbx()->GetPolicyNames(vNames);
+
+  // Add Default
+  CString cs_text(MAKEINTRESOURCE(IDS_DATABASE_DEFAULT));
+  m_cbxPolicyNames.AddString(cs_text);
+
+  // Add the rest (if any)
+  for (std::vector<std::wstring>::iterator iter = vNames.begin();
+       iter != vNames.end(); ++iter) {
+    m_cbxPolicyNames.AddString(iter->c_str());
+  }
+
+  int index(0);
+  if (M_ipolicy() == NAMED_POLICY && !M_policyname().IsEmpty() && !vNames.empty()) {
+    index = m_cbxPolicyNames.FindStringExact(-1, M_policyname());
+    if (index == CB_ERR)
+      index = 0;
+  }
+  m_cbxPolicyNames.SetCurSel(index);
+  
+  // Make sure user can't edit the list!
+  COMBOBOXINFO info = { sizeof(COMBOBOXINFO) };
+  m_cbxPolicyNames.GetComboBoxInfo(&info);
+  ::SendMessage(info.hwndItem ,EM_SETREADONLY, TRUE, 0);
+
+  if (!vNames.empty()) {
+    if (M_uicaller() == IDS_VIEWENTRY || M_protected() != 0) {
+      // Read-only
+      m_cbxPolicyNames.EnableWindow(FALSE);
+      m_cbxPolicyNames.ShowWindow(M_ipolicy() == SPECIFIC_POLICY ? SW_HIDE : SW_SHOW);
+    }
+  }
+
+  // If specific policy - disable named policy comboboc
+  m_cbxPolicyNames.EnableWindow(M_ipolicy() == SPECIFIC_POLICY ? FALSE : TRUE);
+
+  if (M_ipolicy() == NAMED_POLICY) {
+    if (index != 0) {
+      st_PSWDPolicy st_pp;
+      M_pDbx()->GetPolicyFromName(StringX((LPCWSTR)M_policyname()), st_pp);
+      M_pwp() = st_pp.pwp;
+      M_symbols() = st_pp.symbols;
+    } else {
+      M_policyname().Empty();
+      M_pwp() = M_default_pwp();
+      M_symbols() = M_default_symbols();
+    }
+    SetVariablesFromPolicy();
+  }
 
   // Set up spin control relationships
   CSpinButtonCtrl* pspin;
@@ -201,14 +261,10 @@ BOOL CAddEdit_PasswordPolicy::OnInitDialog()
 
   // Disable controls based on m_ipolicy
   SetPolicyControls();
-
-  UINT uiChk = (M_ipolicy() == DEFAULT_POLICY) ?
-                IDC_USEDEFAULTPWPOLICY : IDC_ENTRYPWPOLICY;
-  ((CButton *)GetDlgItem(uiChk))->SetCheck(BST_CHECKED);
-
+  
   if (M_uicaller() == IDS_VIEWENTRY || M_protected() != 0) {
     // Disable Buttons not already disabled in SetPolicyControls
-    GetDlgItem(IDC_USEDEFAULTPWPOLICY)->EnableWindow(FALSE);
+    GetDlgItem(IDC_USEPWPOLICYNAME)->EnableWindow(FALSE);
     GetDlgItem(IDC_ENTRYPWPOLICY)->EnableWindow(FALSE);
     GetDlgItem(IDC_STATIC_PWLEN)->EnableWindow(FALSE);
     GetDlgItem(IDC_STATIC_OR)->EnableWindow(FALSE);
@@ -216,7 +272,7 @@ BOOL CAddEdit_PasswordPolicy::OnInitDialog()
 
   if (M_original_entrytype() == CItemData::ET_ALIAS) {
     DisablePolicy();
-    GetDlgItem(IDC_USEDEFAULTPWPOLICY)->EnableWindow(FALSE);
+    GetDlgItem(IDC_USEPWPOLICYNAME)->EnableWindow(FALSE);
     GetDlgItem(IDC_ENTRYPWPOLICY)->EnableWindow(FALSE);
     GetDlgItem(IDC_STATIC_OR)->EnableWindow(FALSE);
     GetDlgItem(IDC_STATIC_PWLEN)->EnableWindow(FALSE);
@@ -255,6 +311,9 @@ void CAddEdit_PasswordPolicy::OnHelp()
 
 bool CAddEdit_PasswordPolicy::ValidatePolicy(CWnd *&pFocus)
 {
+  if (M_ipolicy() == NAMED_POLICY && !M_policyname().IsEmpty())
+    return true;
+
   CGeneralMsgBox gmb;
   pFocus = NULL; // caller should set focus to this if non-null
   // Check that options, as set, are valid.
@@ -328,8 +387,10 @@ LRESULT CAddEdit_PasswordPolicy::OnQuerySiblings(WPARAM wParam, LPARAM )
   switch (wParam) {
     case PP_DATA_CHANGED:
       if (M_ipolicy()     != M_oldipolicy() ||
-          (M_ipolicy()     == SPECIFIC_POLICY &&
-           M_pwp()         != M_oldpwp()) ||
+          (M_ipolicy()    == SPECIFIC_POLICY &&
+           M_pwp()        != M_oldpwp()) ||
+          (M_ipolicy()    == NAMED_POLICY &&
+           M_policyname() != M_oldpolicyname()) ||
           M_iownsymbols() != M_ioldownsymbols() ||
           M_symbols()     != M_oldsymbols())
         return 1L;
@@ -609,42 +670,6 @@ void CAddEdit_PasswordPolicy::OnMakePronounceable()
   UpdateData(FALSE);
 }
 
-void CAddEdit_PasswordPolicy::OnResetPolicy()
-{
-  m_ae_psh->SetChanged(true);
-  M_pwp() = M_default_pwp();
-
-  SetVariablesFromPolicy();
-
-  // Now update dialog
-  UpdateData(FALSE);
-
-  // Save current status
-  for (int i = 0; i < N_HEX_LENGTHS; i++) {
-    m_save_visible[i] = true;
-    BOOL bEnable(FALSE);
-    switch (i) {
-      case 0:  // IDC_MINLOWERLENGTH
-        bEnable = m_pwuselowercase;
-        break;
-      case 1:  // IDC_MINUPPERLENGTH
-        bEnable = m_pwuseuppercase;
-        break;
-      case 2:  // IDC_MINDIGITLENGTH
-        bEnable = m_pwusedigits;
-        break;
-      case 3:  // IDC_MINSYMBOLLENGTH
-        bEnable =  m_pwusesymbols;
-        break;
-      default:
-        ASSERT(0);
-    }
-    m_save_enabled[i][0] = m_save_enabled[i][1] = bEnable;
-  }
-
-  SetPolicyControls();
-}
-
 void BubbleSort(std::wstring &str)
 {
   wchar_t tmp;
@@ -703,20 +728,49 @@ void CAddEdit_PasswordPolicy::OnSymbols()
     GetDlgItem(IDC_OWNSYMBOLS)->SetFocus();
 }
 
-void CAddEdit_PasswordPolicy::OnSetDefaultPWPolicy()
+void CAddEdit_PasswordPolicy::OnSelectNamedPolicy()
 {
   m_ae_psh->SetChanged(true);
-  M_ipolicy() = DEFAULT_POLICY;
 
+  m_cbxPolicyNames.EnableWindow(TRUE);
+  m_policy_radibtn = 0;
+
+  int index = m_cbxPolicyNames.GetCurSel();
+  M_ipolicy() = index == 0 ? DEFAULT_POLICY : NAMED_POLICY;
+  if (index != 0 && index != CB_ERR) {
+    CString cs_text;
+    m_cbxPolicyNames.GetLBText(index, cs_text);
+    M_policyname() = (LPCWSTR)cs_text;
+
+    st_PSWDPolicy st_pp;
+    M_pDbx()->GetPolicyFromName(StringX((LPCWSTR)cs_text), st_pp);
+    M_pwp() = st_pp.pwp;
+    M_symbols() = st_pp.symbols;
+
+    m_cbxPolicyNames.EnableWindow(TRUE);
+  } else {
+    M_policyname().Empty();
+    M_pwp() = M_default_pwp();
+    M_symbols() = M_default_symbols();
+  }
+
+  SetVariablesFromPolicy();
   SetPolicyControls();
 }
 
 void CAddEdit_PasswordPolicy::OnSetSpecificPWPolicy()
 {
   m_ae_psh->SetChanged(true);
+
+  m_cbxPolicyNames.EnableWindow(FALSE);
+  m_policy_radibtn = 1;
+
   M_ipolicy() = SPECIFIC_POLICY;
+  M_policyname().Empty();
 
   SetPolicyControls();
+
+  m_cbxPolicyNames.EnableWindow(FALSE);
 }
 
 void CAddEdit_PasswordPolicy::SetPolicyControls()
@@ -727,7 +781,7 @@ void CAddEdit_PasswordPolicy::SetPolicyControls()
 
   if (M_uicaller() == IDS_ADDENTRY || 
      (M_uicaller() == IDS_EDITENTRY && M_protected() == 0)) {
-    bEnableSpecificPolicy = (M_ipolicy() == DEFAULT_POLICY) ? FALSE : TRUE;
+    bEnableSpecificPolicy = (M_ipolicy() == SPECIFIC_POLICY) ? TRUE : FALSE;
     bEnableLengths = ((bEnableSpecificPolicy == TRUE) &&
                       (m_pweasyvision == FALSE && m_pwmakepronounceable == FALSE &&
                        m_pwusehexdigits == FALSE));
@@ -776,8 +830,6 @@ void CAddEdit_PasswordPolicy::SetPolicyControls()
   // Deal with hex checkbox
   GetDlgItem(IDC_USEHEXDIGITS)->EnableWindow(bEnableSpecificPolicy);
 
-  GetDlgItem(IDC_RESETPWPOLICY)->EnableWindow(bEnableSpecificPolicy);
-
   // Deal with symbols...
   // Default policy - all 4 disabled (2 x radio buttons, 2 x static text).
   // Specific policy - if default, then enable radio buttons, default set text.
@@ -797,50 +849,55 @@ void CAddEdit_PasswordPolicy::SetPolicyControls()
 
 void CAddEdit_PasswordPolicy::SetPolicyFromVariables()
 {
-  if (M_ipolicy() == DEFAULT_POLICY) {
-    M_pwp() = M_default_pwp();
-    M_iownsymbols() = DEFAULT_SYMBOLS;
-  } else {
-    M_pwp().Empty();
-    // Since in Hex, the checkboxes for non-hex characters can still be
-    // checked but the checkbox is disabled, we have to check both
-    if (m_pwuselowercase == TRUE &&
-        (GetDlgItem(IDC_USELOWERCASE)->IsWindowEnabled() == TRUE))
-      M_pwp().flags |= PWSprefs::PWPolicyUseLowercase;
-    if (m_pwuseuppercase == TRUE &&
-        (GetDlgItem(IDC_USEUPPERCASE)->IsWindowEnabled() == TRUE))
-      M_pwp().flags |= PWSprefs::PWPolicyUseUppercase;
-    if (m_pwusedigits == TRUE &&
-        (GetDlgItem(IDC_USEDIGITS)->IsWindowEnabled() == TRUE))
-      M_pwp().flags |= PWSprefs::PWPolicyUseDigits;
-    if (m_pwusesymbols == TRUE &&
-        (GetDlgItem(IDC_USESYMBOLS)->IsWindowEnabled() == TRUE))
-      M_pwp().flags |= PWSprefs::PWPolicyUseSymbols;
-    if (m_pwusehexdigits == TRUE &&
-        (GetDlgItem(IDC_USEHEXDIGITS)->IsWindowEnabled() == TRUE))
-      M_pwp().flags |= PWSprefs::PWPolicyUseHexDigits;
-    if (m_pweasyvision == TRUE &&
-        (GetDlgItem(IDC_EASYVISION)->IsWindowEnabled() == TRUE))
-      M_pwp().flags |= PWSprefs::PWPolicyUseEasyVision;
-    if (m_pwmakepronounceable == TRUE &&
-        (GetDlgItem(IDC_PRONOUNCEABLE)->IsWindowEnabled() == TRUE))
-      M_pwp().flags |= PWSprefs::PWPolicyMakePronounceable;
-
-    M_pwp().length = (int)m_pwdefaultlength;
-    M_pwp().digitminlength = (int)m_pwdigitminlength;
-    M_pwp().lowerminlength = (int)m_pwlowerminlength;
-    M_pwp().symbolminlength = (int)m_pwsymbolminlength;
-    M_pwp().upperminlength = (int)m_pwupperminlength;
-
-    if (m_pwusesymbols == TRUE && m_useownsymbols == OWN_SYMBOLS) {
-      M_iownsymbols() = OWN_SYMBOLS;
-      CString cs_symbols;
-      m_symbols.GetWindowText(cs_symbols);
-      M_symbols() = CSecString(cs_symbols);
-    } else {
-      m_useownsymbols = DEFAULT_SYMBOLS;
+  switch (M_ipolicy()) {
+    case DEFAULT_POLICY:
+      M_pwp() = M_default_pwp();
       M_iownsymbols() = DEFAULT_SYMBOLS;
-    }
+      break;
+    case NAMED_POLICY:
+      break;
+    case SPECIFIC_POLICY:
+      M_pwp().Empty();
+      // Since in Hex, the checkboxes for non-hex characters can still be
+      // checked but the checkbox is disabled, we have to check both
+      if (m_pwuselowercase == TRUE &&
+          (GetDlgItem(IDC_USELOWERCASE)->IsWindowEnabled() == TRUE))
+        M_pwp().flags |= PWSprefs::PWPolicyUseLowercase;
+      if (m_pwuseuppercase == TRUE &&
+          (GetDlgItem(IDC_USEUPPERCASE)->IsWindowEnabled() == TRUE))
+        M_pwp().flags |= PWSprefs::PWPolicyUseUppercase;
+      if (m_pwusedigits == TRUE &&
+          (GetDlgItem(IDC_USEDIGITS)->IsWindowEnabled() == TRUE))
+        M_pwp().flags |= PWSprefs::PWPolicyUseDigits;
+      if (m_pwusesymbols == TRUE &&
+          (GetDlgItem(IDC_USESYMBOLS)->IsWindowEnabled() == TRUE))
+        M_pwp().flags |= PWSprefs::PWPolicyUseSymbols;
+      if (m_pwusehexdigits == TRUE &&
+          (GetDlgItem(IDC_USEHEXDIGITS)->IsWindowEnabled() == TRUE))
+        M_pwp().flags |= PWSprefs::PWPolicyUseHexDigits;
+      if (m_pweasyvision == TRUE &&
+          (GetDlgItem(IDC_EASYVISION)->IsWindowEnabled() == TRUE))
+        M_pwp().flags |= PWSprefs::PWPolicyUseEasyVision;
+      if (m_pwmakepronounceable == TRUE &&
+          (GetDlgItem(IDC_PRONOUNCEABLE)->IsWindowEnabled() == TRUE))
+        M_pwp().flags |= PWSprefs::PWPolicyMakePronounceable;
+
+      M_pwp().length = (int)m_pwdefaultlength;
+      M_pwp().digitminlength = (int)m_pwdigitminlength;
+      M_pwp().lowerminlength = (int)m_pwlowerminlength;
+      M_pwp().symbolminlength = (int)m_pwsymbolminlength;
+      M_pwp().upperminlength = (int)m_pwupperminlength;
+
+      if (m_pwusesymbols == TRUE && m_useownsymbols == OWN_SYMBOLS) {
+        M_iownsymbols() = OWN_SYMBOLS;
+        CString cs_symbols;
+        m_symbols.GetWindowText(cs_symbols);
+        M_symbols() = CSecString(cs_symbols);
+      } else {
+        m_useownsymbols = DEFAULT_SYMBOLS;
+        M_iownsymbols() = DEFAULT_SYMBOLS;
+      }
+      break;
   }
 }
 
@@ -897,6 +954,42 @@ void CAddEdit_PasswordPolicy::DisablePolicy()
   }
   // Deal with hex checkbox
   GetDlgItem(IDC_USEHEXDIGITS)->EnableWindow(FALSE);
+}
 
-  GetDlgItem(IDC_RESETPWPOLICY)->EnableWindow(FALSE);
+void CAddEdit_PasswordPolicy::OnNamesComboChanged()
+{
+  UpdateData(TRUE);
+
+  CSecString cs_policyname(L"");
+
+  int index = m_cbxPolicyNames.GetCurSel();
+  if (index == CB_ERR)
+    index = 0;
+
+  M_ipolicy() = index == 0 ? DEFAULT_POLICY : NAMED_POLICY;
+
+  if (index != 0) {
+    m_cbxPolicyNames.GetLBText(index, cs_policyname);
+  }
+
+  if (M_policyname() != cs_policyname) {
+    M_policyname() = cs_policyname;
+    m_ae_psh->SetChanged(true);
+  }
+
+  if (index != 0) {
+    st_PSWDPolicy st_pp;
+    M_pDbx()->GetPolicyFromName(StringX((LPCWSTR)cs_policyname), st_pp);
+    M_pwp() = st_pp.pwp;
+    M_symbols() = st_pp.symbols;
+
+    m_cbxPolicyNames.EnableWindow(TRUE);
+  } else {
+    M_policyname().Empty();
+    M_pwp() = M_default_pwp();
+    M_symbols() = M_default_symbols();
+  }
+
+  SetVariablesFromPolicy();
+  SetPolicyControls();
 }

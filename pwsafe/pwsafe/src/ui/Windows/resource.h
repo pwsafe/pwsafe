@@ -30,7 +30,7 @@
 #define IDD_PS_DISPLAY                  138
 #define IDD_PS_MISC                     139
 #define IDD_PS_PASSWORDHISTORY          140
-#define IDD_PS_PASSWORDPOLICY           141
+#define IDD_PASSWORDPOLICY              141
 #define IDD_PS_SECURITY                 142
 #define IDD_PS_SYSTEM                   143
 #define IDD_QUERYSETDEF                 144
@@ -344,13 +344,19 @@
 #define IDD_PS_BACKUP_SHORT             505
 #define IDD_PS_DISPLAY_SHORT            506
 #define IDD_PS_MISC_SHORT               507
-#define IDD_PS_PASSWORDPOLICY_SHORT     508
+#define IDD_PASSWORDPOLICY_SHORT        508
 #define IDD_PS_SHORTCUTS_SHORT          509
 #define IDD_PS_SYSTEM_SHORT             510
 #define IDD_INPUTBOX                    511
 #define IDB_CLEARFILTERS_CLASSIC        512
 #define IDB_CLEARFILTERS_NEW            513
 #define IDB_CLEARFILTERS_NEW_D          514
+#define IDD_MANAGEPASSWORDPOLICIES      515
+#define IDB_PSWD_POLICIES_CLASSIC       516
+#define IDB_PSWD_POLICIES_NEW           517
+#define IDB_PSWD_POLICIES_NEW_D         518
+#define IDB_COPYTOCLIPBOARD_CLASSIC     519
+#define IDB_COPYTOCLIPBOARD_NEW         520
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_CREATE_DB                   1003
@@ -651,9 +657,7 @@
 #define IDC_VKB                         1372
 #define IDC_SETSAMPLETEXT               1373
 #define IDC_RESETFONT                   1374
-#define IDC_USEDEFAULTPWPOLICY          1375
 #define IDC_ENTRYPWPOLICY               1376
-#define IDC_RESETPWPOLICY               1377
 #define IDC_DCA_DEFAULT                 1378
 #define IDC_LAUNCH                      1379
 #define IDC_SENDEMAIL                   1380
@@ -734,14 +738,30 @@
 #define IDC_CHANGE_NAME                 1458
 #define IDC_INPUTBOX_TEXT               1459
 #define IDC_INPUTBOX_CHAR_COUNT         1460
+#define IDC_EDIT                        1461
+#define IDC_LIST_POLICYENTRIES          1462
+#define IDC_POLICYLIST                  1463
+#define IDC_POLICYNAME                  1464
+#define IDC_USEPWPOLICYNAME             1465
+#define IDC_POLICYPROPERTIES            1466
+#define IDC_POLICYENTRIES               1467
+#define IDC_STATIC_POLICYDETAILS        1468
+#define IDC_STATIC_POLICYENTRIES        1469
+#define IDC_USENAMED_POLICY             1470
+#define IDC_STATIC_NAMEDPOLICY          1471
+#define IDC_POLICYNAMES_HEADER          1472
+#define IDC_POLICYENTRIES_HEADER        1473
+#define IDC_STATIC_COPYPSWD             1474
+#define IDC_UNDO                        1475
+#define IDC_REDO                        1476
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        515
+#define _APS_NEXT_RESOURCE_VALUE        521
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1461
+#define _APS_NEXT_CONTROL_VALUE         1477
 #define _APS_NEXT_SYMED_VALUE           166
 #endif
 #endif

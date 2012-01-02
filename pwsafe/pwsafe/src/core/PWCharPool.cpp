@@ -58,6 +58,9 @@ const size_t CPasswordCharPool::easyvision_symbol_len = LENGTH(easyvision_symbol
 const charT CPasswordCharPool::easyvision_hexdigit_chars[] = _T("0123456789abcdef");
 const size_t CPasswordCharPool::easyvision_hexdigit_len = LENGTH(easyvision_hexdigit_chars);
 
+// See the values of "charT sym" in the static const structure "leets" below
+const charT CPasswordCharPool::pronounceable_symbol_chars[] = _T("@&(#!|$+");
+
 //-----------------------------------------------------------------------------
 
 CPasswordCharPool::CPasswordCharPool(const uint pwlen,

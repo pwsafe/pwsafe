@@ -238,7 +238,7 @@ BOOL CWZSelectDB::OnInitDialog()
   return FALSE;
 }
 
-HBRUSH CWZSelectDB::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
+HBRUSH CWZSelectDB::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
 {
   HBRUSH hbr = CWZPropertyPage::OnCtlColor(pDC, pWnd, nCtlColor);
 

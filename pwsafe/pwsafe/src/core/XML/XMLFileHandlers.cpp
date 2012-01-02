@@ -26,6 +26,8 @@
 
 #include <algorithm>
 
+extern const TCHAR *FORMATIMPORTED;
+
 using namespace std;
 using pws_os::CUUID;
 
@@ -33,10 +35,12 @@ XMLFileHandlers::XMLFileHandlers()
 {
   cur_entry = NULL;
   cur_pwhistory_entry = NULL;
+  cur_policy = NULL;
   m_strElemContent.clear();
 
   m_sDefaultAutotypeString = _T("");
   m_sDefaultUsername = _T("");
+  m_sDefaultSymbols = _T("");
   m_delimiter = _T('\0');
   m_strErrorMessage = _T("");
 
@@ -48,8 +52,10 @@ XMLFileHandlers::XMLFileHandlers()
   m_bErrors = false;
 
   m_nITER = MIN_HASH_ITERATIONS;
+  
+  m_sxXML_DateTime = PWSUtil::GetTimeStamp(true).c_str();
 
-  // Following are user preferences stored in the database
+  // Following are user preferences stored in the database and for PolicyNames
   for (int i = 0; i < NUMPREFSINXML; i++) {
     prefsinXML[i] = -1;
   }
@@ -85,6 +91,8 @@ bool XMLFileHandlers::ProcessStartElement(const int icurrent_element)
       m_numEntriesSkipped = 0;
       m_numEntriesRenamed = 0;
       m_numEntriesPWHErrors = 0;
+      m_numNoPolicies = 0;
+      m_numRenamedPolicies = 0;
       m_bEntryBeingProcessed = false;
       break;
     case XLE_ENTRY:
@@ -116,6 +124,7 @@ bool XMLFileHandlers::ProcessStartElement(const int icurrent_element)
       cur_entry->shiftdca = _T("");
       cur_entry->email = _T("");
       cur_entry->symbols = _T("");
+      cur_entry->policyname = _T("");
       cur_entry->ucprotected = 0;
       cur_entry->entrytype = NORMAL;
       cur_entry->bforce_normal_entry = false;
@@ -136,6 +145,28 @@ bool XMLFileHandlers::ProcessStartElement(const int icurrent_element)
     case XLE_RMTIMEX:
     case XLE_CHANGEDX:
       break;
+    case XLE_PASSWORDPOLICYNAMES:
+      m_bInPolicyNames = true;
+      break;
+    case XLE_POLICY:
+      m_bPolicyBeingProcessed = true;
+      if (m_bValidation)
+        return false;
+
+      // Reset preferences in XML for PolicyNames (we reuse those for preferences)
+      for (int i = 0; i < NUMPREFSINXML; i++) {
+        prefsinXML[i] = -1;
+      }
+      m_sNamedPolicySymbols = _T("");
+
+      cur_policy = new pw_policy;
+
+      // Clear all fields
+      cur_policy->name = _T("");
+      cur_policy->st_pp.pwp.Empty();
+      cur_policy->st_pp.symbols = _T("");
+      break;
+    case XLE_PWNAME:
     default:
       break;
   }
@@ -187,6 +218,9 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
     case XLE_USEDEFAULTUSER:
       prefsinXML[icurrent_element - XLE_PREF_START] = _ttoi(m_strElemContent.c_str());
       break;
+    case XLE_PASSWORDPOLICYNAMES:
+      m_bInPolicyNames = false;
+      break;
     case XLE_TREEDISPLAYSTATUSATOPEN:
       if (m_strElemContent == _T("AllCollapsed"))
         prefsinXML[XLE_TREEDISPLAYSTATUSATOPEN - XLE_PREF_START] = PWSprefs::AllCollapsed;
@@ -200,6 +234,9 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
       break;
     case XLE_DEFAULTAUTOTYPESTRING:
       m_sDefaultAutotypeString = m_strElemContent.c_str();
+      break;
+    case XLE_DEFAULTSYMBOLS:
+      m_sDefaultSymbols = m_strElemContent.c_str();
       break;
     // MUST be in the same order as enum beginning STR_GROUP...
     case XLE_GROUP:
@@ -271,7 +308,13 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
         cur_entry->ucprotected = 1;
       break;
     case XLE_SYMBOLS:
-      cur_entry->symbols = m_strElemContent;
+      if (m_bEntryBeingProcessed)
+        cur_entry->symbols = m_strElemContent;
+      else
+        cur_policy->st_pp.symbols = m_strElemContent;
+      break;
+    case XLE_ENTRY_PASSWORDPOLICYNAME:
+      cur_entry->policyname = m_strElemContent;
       break;
     case XLE_STATUS:
       i = _ttoi(m_strElemContent.c_str());
@@ -369,11 +412,113 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
     case XLE_ENTRY_PASSWORDPOLICY:
     default:
       break;
+    case XLE_POLICY:
+    {
+      // Deal with Named Policies in the XML file
+      int ivalue;
+      PWSprefs *prefs = PWSprefs::GetInstance();
+      if ((ivalue = prefsinXML[XLE_PWDEFAULTLENGTH - XLE_PREF_START]) != -1)
+        cur_policy->st_pp.pwp.length = ivalue;
+      else
+        cur_policy->st_pp.pwp.length =
+                              prefs->GetPrefDefVal(PWSprefs::PWDefaultLength);
+
+      if (prefsinXML[XLE_PWUSEDIGITS - XLE_PREF_START]  == 1)
+        cur_policy->st_pp.pwp.flags |= PWSprefs::PWPolicyUseDigits;
+      else
+        cur_policy->st_pp.pwp.flags &= ~PWSprefs::PWPolicyUseDigits;
+
+      if (prefsinXML[XLE_PWUSEEASYVISION - XLE_PREF_START]  == 1)
+        cur_policy->st_pp.pwp.flags |= PWSprefs::PWPolicyUseEasyVision;
+      else
+        cur_policy->st_pp.pwp.flags &= ~PWSprefs::PWPolicyUseEasyVision;
+
+      if (prefsinXML[XLE_PWUSEHEXDIGITS - XLE_PREF_START]  == 1)
+        cur_policy->st_pp.pwp.flags |= PWSprefs::PWPolicyUseHexDigits;
+      else
+        cur_policy->st_pp.pwp.flags &= ~PWSprefs::PWPolicyUseHexDigits;
+
+      if (prefsinXML[XLE_PWUSELOWERCASE - XLE_PREF_START]  == 1)
+        cur_policy->st_pp.pwp.flags |= PWSprefs::PWPolicyUseLowercase;
+      else
+        cur_policy->st_pp.pwp.flags &= ~PWSprefs::PWPolicyUseLowercase;
+
+      if (prefsinXML[XLE_PWUSESYMBOLS - XLE_PREF_START]  == 1)
+        cur_policy->st_pp.pwp.flags |= PWSprefs::PWPolicyUseSymbols;
+      else
+        cur_policy->st_pp.pwp.flags &= ~PWSprefs::PWPolicyUseSymbols;
+
+      if (prefsinXML[XLE_PWUSEUPPERCASE - XLE_PREF_START]  == 1)
+        cur_policy->st_pp.pwp.flags |= PWSprefs::PWPolicyUseUppercase;
+      else
+        cur_policy->st_pp.pwp.flags &= ~PWSprefs::PWPolicyUseUppercase;
+
+      if (prefsinXML[XLE_PWMAKEPRONOUNCEABLE - XLE_PREF_START]  == 1)
+        cur_policy->st_pp.pwp.flags |= PWSprefs::PWPolicyMakePronounceable;
+      else
+        cur_policy->st_pp.pwp.flags &= ~PWSprefs::PWPolicyMakePronounceable;
+
+      if ((ivalue = prefsinXML[XLE_PWDIGITMINLENGTH - XLE_PREF_START]) != -1)
+        cur_policy->st_pp.pwp.digitminlength = ivalue;
+      else
+        cur_policy->st_pp.pwp.digitminlength =
+                              prefs->GetPrefDefVal(PWSprefs::PWDigitMinLength);
+
+      if ((ivalue = prefsinXML[XLE_PWLOWERCASEMINLENGTH - XLE_PREF_START]) != -1)
+        cur_policy->st_pp.pwp.lowerminlength = ivalue;
+      else
+        cur_policy->st_pp.pwp.lowerminlength =
+                              prefs->GetPrefDefVal(PWSprefs::PWLowercaseMinLength);
+
+      if ((ivalue = prefsinXML[XLE_PWSYMBOLMINLENGTH - XLE_PREF_START]) != -1)
+        cur_policy->st_pp.pwp.symbolminlength = ivalue;
+      else
+        cur_policy->st_pp.pwp.symbolminlength =
+                              prefs->GetPrefDefVal(PWSprefs::PWSymbolMinLength);
+
+      if ((ivalue = prefsinXML[XLE_PWUPPERCASEMINLENGTH - XLE_PREF_START]) != -1)
+        cur_policy->st_pp.pwp.upperminlength = ivalue;
+      else
+        cur_policy->st_pp.pwp.upperminlength = 
+                              prefs->GetPrefDefVal(PWSprefs::PWUppercaseMinLength);
+
+      cur_policy->st_pp.symbols = m_sDefaultSymbols.c_str();
+
+      st_PSWDPolicy currentDB_st_pp;
+      if (m_pXMLcore->GetPolicyFromName(cur_policy->name, currentDB_st_pp)) {
+        // It already exists in current database
+        if (currentDB_st_pp != cur_policy->st_pp) {
+          // They are not the same
+          m_pXMLcore->MakePolicyUnique(m_mapRenamedPolicies, cur_policy->name,
+                              m_sxXML_DateTime, IDSC_IMPORTPOLICY);
+          // Now renamed add it
+          m_MapPSWDPLC[cur_policy->name] = cur_policy->st_pp;
+          m_numRenamedPolicies++;
+        }
+      } else {
+        // Doesn't exist - add
+        m_MapPSWDPLC[cur_policy->name] = cur_policy->st_pp;
+      }
+      delete cur_policy;
+      m_bPolicyBeingProcessed = false;
+      break;
+    }
+    case XLE_PWNAME:
+      cur_policy->name = m_strElemContent.c_str();
   }
 }
 
-void XMLFileHandlers::AddEntries()
+void XMLFileHandlers::AddXMLEntries()
 {
+  // First add any Policy Names imported that are not already in the database
+  // This must be done prior to importing entries that may reference them
+  if (!m_MapPSWDPLC.empty()) {
+    Command *pcmd = DBPolicyNamesCommand::Create(m_pXMLcore, m_MapPSWDPLC,
+                            DBPolicyNamesCommand::ADDNEW);
+    m_pmulticmds->Add(pcmd);
+  }
+  
+  StringX sxEntriesWithNewNamedPolicies;
   vdb_entries::iterator entry_iter;
   CItemData ci_temp;
   bool bMaintainDateTimeStamps = PWSprefs::GetInstance()->
@@ -392,8 +537,10 @@ void XMLFileHandlers::AddEntries()
   m_pmulticmds->Add(pcmd1);
 
   for (entry_iter = m_ventries.begin(); entry_iter != m_ventries.end(); entry_iter++) {
+    bool bNoPolicy(false);
     pw_entry *cur_entry = *entry_iter;
     StringX sxtitle(cur_entry->title);
+    StringX sxMissingPolicyName;
     EmptyIfOnlyWhiteSpace(sxtitle);
     // Title and Password are mandatory fields!
     if (sxtitle.empty() || cur_entry->password.empty()) {
@@ -492,7 +639,8 @@ void XMLFileHandlers::AddEntries()
     EmptyIfOnlyWhiteSpace(sxnewtitle);
 
     bool conflict = !m_pXMLcore->MakeEntryUnique(setGTU,
-                                                 sxnewgroup, sxnewtitle, cur_entry->username,
+                                                 sxnewgroup, sxnewtitle,
+                                                 cur_entry->username,
                                                  IDSC_IMPORTNUMBER);
 
     if (conflict) {
@@ -509,51 +657,98 @@ void XMLFileHandlers::AddEntries()
     }
 
     ci_temp.SetGroup(sxnewgroup);
+
     if (!sxnewtitle.empty())
       ci_temp.SetTitle(sxnewtitle, m_delimiter);
+
     EmptyIfOnlyWhiteSpace(cur_entry->username);
     if (!cur_entry->username.empty())
       ci_temp.SetUser(cur_entry->username);
+
     if (!cur_entry->password.empty())
       ci_temp.SetPassword(cur_entry->password);
+
     EmptyIfOnlyWhiteSpace(cur_entry->url);
     if (!cur_entry->url.empty())
       ci_temp.SetURL(cur_entry->url);
+
     EmptyIfOnlyWhiteSpace(cur_entry->autotype);
     if (!cur_entry->autotype.empty())
       ci_temp.SetAutoType(cur_entry->autotype);
+
     if (!cur_entry->ctime.empty())
       ci_temp.SetCTime(cur_entry->ctime.c_str());
+
     if (!cur_entry->pmtime.empty())
       ci_temp.SetPMTime(cur_entry->pmtime.c_str());
+
     if (!cur_entry->atime.empty())
       ci_temp.SetATime(cur_entry->atime.c_str());
+
     if (!cur_entry->xtime.empty())
       ci_temp.SetXTime(cur_entry->xtime.c_str());
+
     if (!cur_entry->xtime_interval.empty()) {
       int numdays = _ttoi(cur_entry->xtime_interval.c_str());
       if (numdays > 0 && numdays <= 3650)
         ci_temp.SetXTimeInt(numdays);
     }
+
     if (!cur_entry->rmtime.empty())
       ci_temp.SetRMTime(cur_entry->rmtime.c_str());
+
     if (!cur_entry->run_command.empty())
       ci_temp.SetRunCommand(cur_entry->run_command);
+
     if (cur_entry->pwp.flags != 0)
       ci_temp.SetPWPolicy(cur_entry->pwp);
+
     if (!cur_entry->dca.empty())
       ci_temp.SetDCA(cur_entry->dca.c_str());
+
     if (!cur_entry->shiftdca.empty())
       ci_temp.SetShiftDCA(cur_entry->shiftdca.c_str());
+
     if (!cur_entry->email.empty())
       ci_temp.SetEmail(cur_entry->email);
+
     if (cur_entry->ucprotected)
       ci_temp.SetProtected(cur_entry->ucprotected != 0);
+
     if (!cur_entry->symbols.empty())
       ci_temp.SetSymbols(cur_entry->symbols);
 
+    if (!cur_entry->policyname.empty()) {
+      // First check if it is one we renamed because it exists in the current
+      // database but with different settings
+      std::map<StringX, StringX>::iterator iter;
+      iter = m_mapRenamedPolicies.find(cur_entry->policyname);
+      if (iter != m_mapRenamedPolicies.end()) {
+        // Yes we did, so use renamed version
+        cur_entry->policyname = iter->second;
+        StringX sxChanged = L"\r\n\xab" + cur_entry->group + L"\xbb " +
+	                        L"\xab" + cur_entry->title + L"\xbb " +
+	                        L"\xab" + cur_entry->username + L"\xbb";
+        sxEntriesWithNewNamedPolicies += sxChanged;
+      } else {
+        // No we didn't, verify current database has it
+        st_PSWDPolicy currentDB_st_pp;
+        if (!m_pXMLcore->GetPolicyFromName(cur_entry->policyname, currentDB_st_pp)) {
+          // Not here - make a note and clear the name
+          // As we have no information about it's settings we can't even give
+          // this entry a specific policy
+          sxMissingPolicyName = cur_entry->policyname;
+          cur_entry->policyname = _T("");
+          m_numNoPolicies++;
+          bNoPolicy = true;
+        }
+      }
+      ci_temp.SetPolicyName(cur_entry->policyname);
+    }
+
     StringX newPWHistory;
     stringT strPWHErrorList;
+
     switch (VerifyXMLImportPWHistoryString(cur_entry->pwhistory,
                                            newPWHistory, strPWHErrorList)) {
       case PWH_OK:
@@ -598,6 +793,16 @@ void XMLFileHandlers::AddEntries()
       ci_temp.SetStatus(CItemData::ES_ADDED);
     }
 
+    StringX sx_imported;
+    Format(sx_imported, FORMATIMPORTED,
+                        cur_entry->group.c_str(), cur_entry->title.c_str(), cur_entry->username.c_str());
+    m_prpt->WriteLine(sx_imported.c_str());
+
+    if (bNoPolicy) {
+      Format(sx_imported, IDSC_MISSINGPOLICYNAME, sxMissingPolicyName.c_str());
+      m_prpt->WriteLine(sx_imported.c_str());
+    }
+
     m_pXMLcore->GUISetupDisplayInfo(ci_temp);
     Command *pcmd = AddEntryCommand::Create(m_pXMLcore, ci_temp);
     pcmd->SetNoGUINotify();
@@ -620,6 +825,15 @@ void XMLFileHandlers::AddEntries()
                                             UpdateGUICommand::WN_EXECUTE_REDO,
                                             UpdateGUICommand::GUI_REDO_IMPORT);
   m_pmulticmds->Add(pcmd2);
+  
+  if (!sxEntriesWithNewNamedPolicies.empty()) {
+    StringX sxRenamedPolicies;
+    Format(sxRenamedPolicies, IDSC_ENTRIES_POLICIES, m_sxXML_DateTime.c_str(),
+                sxEntriesWithNewNamedPolicies.c_str());
+    m_prpt->WriteLine();
+    m_prpt->WriteLine(sxRenamedPolicies.c_str());
+    m_prpt->WriteLine();
+  }
 }
 
 void XMLFileHandlers::AddDBPreferences()

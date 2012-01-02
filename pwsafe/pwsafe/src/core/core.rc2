@@ -47,6 +47,7 @@ BEGIN
   IDSC_FLDNMEMAIL        "e-mail"
   IDSC_FLDNMPROTECTED    "Protected"
   IDSC_FLDNMSYMBOLS      "Symbols"
+  IDSC_FLDNMPWPOLICYNAME "Password Policy Name"
 END
 
 STRINGTABLE
@@ -333,6 +334,13 @@ BEGIN
   IDSC_XMLEXP_SUBSETFIELDS "The user specified that the following fields be excluded from the export:"
   IDSC_UNKNOWNFUNCTION     "Unknown function"
   IDSC_UNKNOWNOBJECT       "Unknown object"
+  IDSC_XMLEXP_POLICIES     "Note: These Password Policies will not replace existing policies with the same name in the current database."
+  IDSC_MISSINGPOLICYNAME   "\tPassword policy name '%s' is not in the database."
+  IDSC_MISSINGPOLICYNAMES  "\tOne or more Password Policy Names were not found in the database. The affected entries have been changed to use the database's default policy."
+  IDSC_RENAMEDPOLICYNAMES  "\tOne or more Password Policy Names were already in this database but had different settings. They have been renamed."
+  IDSC_IMPORTPOLICY        "%s  - Imported %s"
+  IDSC_MERGEPOLICY         "%s - Merged %s"
+  IDSC_ENTRIES_POLICIES    "The following entries had a policy name that already existed in this database but with different settings.\r\nA new named policy has been created with the current date/time (%s) appended:%s"
 END
 
 STRINGTABLE

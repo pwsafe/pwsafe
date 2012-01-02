@@ -40,7 +40,9 @@ void CConfirmDeleteDlg::DoDataExchange(CDataExchange* pDX)
   BOOL B_dontaskquestion = m_dontaskquestion ? TRUE : FALSE;
 
   CPWDialog::DoDataExchange(pDX);
+
   DDX_Check(pDX, IDC_CLEARCHECK, B_dontaskquestion);
+
   m_dontaskquestion = B_dontaskquestion == TRUE;
 }
 

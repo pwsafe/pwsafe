@@ -188,13 +188,15 @@ bool XFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
       m_numEntriesValidated = pSAX2Handler->getNumEntries();
       m_delimiter = pSAX2Handler->getDelimiter();
     } else {
-      pSAX2Handler->AddEntries();
+      pSAX2Handler->AddXMLEntries();
 
-      // Get numbers (may have been modified by AddEntries
+      // Get numbers (may have been modified by AddXMLEntries
       m_numEntriesImported = pSAX2Handler->getNumEntries();
       m_numEntriesSkipped = pSAX2Handler->getNumSkipped();
       m_numEntriesRenamed = pSAX2Handler->getNumRenamed();
       m_numEntriesPWHErrors = pSAX2Handler->getNumPWHErrors();
+      m_numNoPolicies = pSAX2Handler->getNumNoPolicies();
+      m_numRenamedPolicies = pSAX2Handler->getNumRenamedPolicies();
 
       // Get lists
       m_strXMLErrors = pSAX2Handler->getXMLErrors();

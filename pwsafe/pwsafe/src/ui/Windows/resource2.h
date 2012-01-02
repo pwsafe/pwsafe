@@ -146,6 +146,7 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 #define ID_MENUITEM_VALIDATE            32156
 #define ID_MENUITEM_GENERATEPASSWORD    32157
 #define ID_LANGUAGEMENU                 32158
+#define ID_MENUITEM_PSWD_POLICIES       32159
 
 // Help menu
 #define ID_HELPMENU                     32200

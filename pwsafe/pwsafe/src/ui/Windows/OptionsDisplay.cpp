@@ -111,10 +111,12 @@ BOOL COptionsDisplay::OnInitDialog()
 
   for (int i = 0; i < 4; i++) {
     m_chkbox[i].SetTextColour(CR_DATABASE_OPTIONS);
+    m_chkbox[i].SetBkgColour(COLOR_WINDOW);
   }
   for (int i = 0; i < 3; i++) {
     m_radiobtn[i].SetTextColour(CR_DATABASE_OPTIONS);
     m_radiobtn[i].SetType(BS_AUTORADIOBUTTON);
+    m_radiobtn[i].SetBkgColour(COLOR_WINDOW);
   }
 
   if (m_ShowUsernameInTree == FALSE) {

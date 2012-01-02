@@ -63,7 +63,7 @@ protected:
 
   //{{AFX_MSG(CPWFindToolBar)
   afx_msg void OnDestroy();
-  afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
+  afx_msg HBRUSH OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor);
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()

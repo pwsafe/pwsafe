@@ -92,6 +92,12 @@ class CommandInterface {
                                  const StringX &value) = 0;
   virtual void RemoveExpiryEntry(const CItemData &ci) = 0;
 
+  virtual const PSWDPolicyMap &GetPasswordPolicies() = 0;
+  virtual void SetPasswordPolicies(const PSWDPolicyMap &MapPSWDPLC) = 0;
+  virtual void AddPolicy(const StringX &sxPolicyName, const st_PSWDPolicy &st_pp,
+                         const bool bAllowReplace = false) = 0;
+  virtual bool GetPolicyFromName(StringX sxPolicyName, st_PSWDPolicy &st_pp) = 0;
+
   virtual ~CommandInterface() {}
 };
 

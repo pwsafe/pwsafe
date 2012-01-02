@@ -43,6 +43,8 @@ public:
   int getNumEntriesSkipped() {return m_numEntriesSkipped;}
   int getNumEntriesRenamed() {return m_numEntriesRenamed;}
   int getNumEntriesPWHErrors() {return m_numEntriesPWHErrors;}
+  int getNumNoPolicies() {return m_numNoPolicies;}
+  int getNumRenamedPolicies() const {return m_numRenamedPolicies;}
 
 private:
   PWScore *m_pXMLcore;
@@ -54,6 +56,7 @@ private:
   stringT m_strXMLErrors, m_strSkippedList, m_strPWHErrorList, m_strRenameList;
   int m_numEntriesValidated, m_numEntriesImported, m_numEntriesSkipped;
   int m_numEntriesPWHErrors, m_numEntriesRenamed;
+  int m_numRenamedPolicies, m_numNoPolicies;
   int m_MSXML_Version;
   TCHAR m_delimiter;
   bool m_bValidation;

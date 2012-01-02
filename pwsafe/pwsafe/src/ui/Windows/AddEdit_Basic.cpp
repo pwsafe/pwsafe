@@ -375,7 +375,7 @@ void CAddEdit_Basic::OnHelp()
   HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
 }
 
-HBRUSH CAddEdit_Basic::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
+HBRUSH CAddEdit_Basic::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
 {
   HBRUSH hbr = CAddEdit_PropertyPage::OnCtlColor(pDC, pWnd, nCtlColor);
 
@@ -796,7 +796,14 @@ void CAddEdit_Basic::OnGeneratePassword()
   }
 
   StringX passwd;
-  M_pDbx()->MakeRandomPassword(passwd, M_pwp(), M_symbols());
+  if (M_ipolicy() == NAMED_POLICY) {
+    st_PSWDPolicy st_pp;
+    M_pDbx()->GetPolicyFromName(M_policyname(), st_pp);
+    M_pDbx()->MakeRandomPassword(passwd, st_pp.pwp, st_pp.symbols.c_str());
+  } else {
+    M_pDbx()->MakeRandomPassword(passwd, M_pwp(), M_symbols());
+  }
+
   if (rc == CChangeAliasPswd::CHANGEBASE) {
     // Change Base
     ItemListIter iter = M_pDbx()->Find(M_base_uuid());
