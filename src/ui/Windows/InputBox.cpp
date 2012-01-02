@@ -82,6 +82,16 @@ BOOL CInputBox::OnInitDialog()
   return FALSE;
 }
 
+BOOL CInputBox::PreTranslateMessage(MSG* pMsg)
+{
+  if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_ESCAPE) {
+    PostMessage(WM_COMMAND, MAKELONG(IDCANCEL, BN_CLICKED), NULL);
+    return TRUE;
+  }
+
+  return CPWDialog::PreTranslateMessage(pMsg);
+}
+
 void CInputBox::OnActivate(UINT , CWnd *, BOOL )
 {
   if (!m_bInitDone) {

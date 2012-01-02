@@ -387,6 +387,17 @@ BOOL CPasswordPolicyDlg::OnInitDialog()
   return FALSE;
 }
 
+BOOL CPasswordPolicyDlg::PreTranslateMessage(MSG* pMsg)
+{
+  if (pMsg->message == WM_KEYDOWN && 
+      (pMsg->wParam == VK_F1 || pMsg->wParam == VK_ESCAPE)) {
+    PostMessage(WM_COMMAND, MAKELONG(pMsg->wParam == VK_F1 ? ID_HELP : IDCANCEL, BN_CLICKED), NULL);
+    return TRUE;
+  }
+
+  return CPWDialog::PreTranslateMessage(pMsg);
+}
+
 void CPasswordPolicyDlg::OnOK()
 {
   if (m_bReadOnly) {
