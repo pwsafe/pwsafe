@@ -666,6 +666,7 @@ void CPasswordPolicyDlg::do_easyorpronounceable(const int iSet)
     }
 
     BOOL bEnable = (IsDlgButtonChecked(IDC_USESYMBOLS) == BST_CHECKED) ? TRUE : FALSE;
+    GetDlgItem(IDC_USESYMBOLS)->EnableWindow(bEnable);
     GetDlgItem(IDC_USEDEFAULTSYMBOLS)->EnableWindow(bEnable);
     GetDlgItem(IDC_USEOWNSYMBOLS)->EnableWindow(bEnable);
     GetDlgItem(IDC_STATIC_DEFAULTSYMBOLS)->EnableWindow(bEnable);
