@@ -17,7 +17,7 @@ class CCreateShortcutDlg : public CPWDialog
 {
   // Construction
 public:
-  CCreateShortcutDlg(CWnd* pParent = NULL,
+  CCreateShortcutDlg(CWnd *pParent = NULL,
     const CSecString &cs_tg = L"", const CSecString &cs_tt = L"", 
     const CSecString &cs_tu = L"");
 

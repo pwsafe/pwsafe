@@ -69,6 +69,7 @@
 #define IDSC_INVALIDFIELDLENGTH         3069
 #define IDSC_INVALIDPWLENGTHX           3070
 #define IDSC_FLDNMSHIFTDCA              3071
+#define IDSC_FLDNMPWPOLICYNAME          3072
 
 #define IDSC_CONFIG_NONE                3230
 #define IDSC_CONFIG_REGISTRY            3231
@@ -247,6 +248,13 @@
 #define IDSC_IMPORTABORTED              3425
 #define IDSC_IMPORTMISSINGTITLE         3426
 #define IDSC_PWHERRORTEXT               3427
+#define IDSC_XMLEXP_POLICIES            3428
+#define IDSC_MISSINGPOLICYNAME          3429
+#define IDSC_MISSINGPOLICYNAMES         3430
+#define IDSC_IMPORTPOLICY               3431
+#define IDSC_MERGEPOLICY                3432
+#define IDSC_ENTRIES_POLICIES           3433
+#define IDSC_RENAMEDPOLICYNAMES         3434
 
 // Keep DCA together
 #define IDSC_CURRENTDEFAULTDCA          4000

@@ -23,8 +23,6 @@ public:
 
 protected:
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-
-protected:
   virtual void OnCancel();
   virtual void OnOK();
 

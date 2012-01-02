@@ -68,11 +68,9 @@ BOOL CProperties::OnInitDialog()
   m_stc_name.SetWindowText(csDBName);
   m_stc_description.SetWindowText(csDBDescription);
 
-  // Disable Cancel button - either because R-O or nothing yet altered
-  GetDlgItem(IDCANCEL)->EnableWindow(FALSE);
-
   if (m_bReadOnly) {
     // Hide the Cancel button and centre the OK button
+    GetDlgItem(IDCANCEL)->EnableWindow(FALSE);
     GetDlgItem(IDCANCEL)->ShowWindow(SW_HIDE);
 
     CRect dlgRect, btnRect;
@@ -87,6 +85,16 @@ BOOL CProperties::OnInitDialog()
   }
 
   return TRUE;
+}
+
+BOOL CProperties::PreTranslateMessage(MSG* pMsg)
+{
+  if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_ESCAPE) {
+    PostMessage(WM_COMMAND, MAKELONG(IDCANCEL, BN_CLICKED), NULL);
+    return TRUE;
+  }
+
+  return CPWDialog::PreTranslateMessage(pMsg);
 }
 
 void CProperties::SetChangedStatus() 

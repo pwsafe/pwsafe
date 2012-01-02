@@ -88,7 +88,7 @@ BOOL CPasswordSubsetDlg::OnInitDialog()
   return TRUE;
 }
 
-HBRUSH CPasswordSubsetDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
+HBRUSH CPasswordSubsetDlg::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
 {
   HBRUSH hbr = CPWDialog::OnCtlColor(pDC, pWnd, nCtlColor);
 

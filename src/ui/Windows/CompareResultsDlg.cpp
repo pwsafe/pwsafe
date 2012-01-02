@@ -488,7 +488,8 @@ st_CompareData * CCompareResultsDlg::GetCompareData(const LONG_PTR dwItemData)
   return GetCompareData(dwItemData, this);
 }
 
-st_CompareData * CCompareResultsDlg::GetCompareData(const LONG_PTR dwItemData, CCompareResultsDlg *self)
+st_CompareData * CCompareResultsDlg::GetCompareData(const LONG_PTR dwItemData,
+                                                    CCompareResultsDlg *self)
 {
   const int iList = (short int)LOWORD(dwItemData);
   const int id = HIWORD(dwItemData);
@@ -908,6 +909,7 @@ void CCompareResultsDlg::WriteReportData()
     const CString csx_email(MAKEINTRESOURCE(IDS_COMPEMAIL));
     const CString csx_protected(MAKEINTRESOURCE(IDS_COMPPROTECTED));
     const CString csx_symbols(MAKEINTRESOURCE(IDS_COMPSYMBOLS));
+    const CString csx_policyname(MAKEINTRESOURCE(IDS_COMPPOLICYNAME));
 
     for (cd_iter = m_Conflicts.begin(); cd_iter != m_Conflicts.end();
          cd_iter++) {
@@ -930,6 +932,7 @@ void CCompareResultsDlg::WriteReportData()
       if (st_data.bsDiffs.test(CItemData::EMAIL)) buffer += csx_email;
       if (st_data.bsDiffs.test(CItemData::PROTECTED)) buffer += csx_protected;
       if (st_data.bsDiffs.test(CItemData::SYMBOLS)) buffer += csx_symbols;
+      if (st_data.bsDiffs.test(CItemData::POLICYNAME)) buffer += csx_policyname;
 
       // Time fields
       if (st_data.bsDiffs.test(CItemData::CTIME)) buffer += csx_ctime;

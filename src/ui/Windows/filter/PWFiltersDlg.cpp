@@ -70,7 +70,7 @@ BOOL CPWFiltersDlg::OnInitDialog()
 
   m_FilterLC.Init(this, m_pfilters, m_iType);
   if (m_filtername.IsEmpty() || m_pfilters->fname.empty())
-    m_filtername.LoadString(IDS_FILTER1);
+    m_filtername.LoadString(IDS_FILTER_NAME);
   else
     m_filtername = m_pfilters->fname.c_str();
 

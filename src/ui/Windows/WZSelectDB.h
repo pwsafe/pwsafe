@@ -42,7 +42,7 @@ protected:
 
   // Generated message map functions
   //{{AFX_MSG(CWZSelectDB)
-  afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
+  afx_msg HBRUSH OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor);
   virtual BOOL OnSetActive();
 
   afx_msg void OnHelp();

@@ -201,13 +201,15 @@ bool MFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
           m_delimiter = pCH->m_delimiter;
         } else {
           // Now add entries
-          pCH->AddEntries();
+          pCH->AddXMLEntries();
 
-          // Get numbers (may have been modified by AddEntries
+          // Get numbers (may have been modified by AddXMLEntries
           m_numEntriesImported = pCH->m_numEntries;
           m_numEntriesSkipped = pCH->getNumSkipped();
           m_numEntriesRenamed = pCH->getNumRenamed();
           m_numEntriesPWHErrors = pCH->getNumPWHErrors();
+          m_numNoPolicies = pCH->getNumNoPolicies();
+          m_numRenamedPolicies = pCH->getNumRenamedPolicies();
 
           // Get lists
           m_strXMLErrors = pCH->getXMLErrors();

@@ -248,6 +248,7 @@ bool DboxMain::PassesFiltering(const CItemData &ci,
         case FT_RUNCMD:
         case FT_EMAIL:
         case FT_SYMBOLS:
+        case FT_POLICYNAME:
           mt = PWSMatch::MT_STRING;
           break;
         case FT_PASSWORD:

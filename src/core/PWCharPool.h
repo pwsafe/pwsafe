@@ -51,6 +51,10 @@ public:
   static bool CheckPassword(const StringX &pwd, StringX &error);
   static void GetDefaultSymbols(stringT &symbols)
   {symbols = std_symbol_chars;}
+  static void GetEasyVisionSymbols(stringT &symbols)
+  {symbols = easyvision_symbol_chars;}
+  static void GetPronounceableSymbols(stringT &symbols)
+  {symbols = pronounceable_symbol_chars;}
 
 private:
   enum CharType {LOWERCASE = 0, UPPERCASE = 1,
@@ -71,6 +75,7 @@ private:
   static const charT easyvision_digit_chars[];
   static const charT easyvision_symbol_chars[];
   static const charT easyvision_hexdigit_chars[];
+  static const charT pronounceable_symbol_chars[];
   // and here are the lengths of the above arrays
   static const size_t std_lowercase_len;
   static const size_t std_uppercase_len;

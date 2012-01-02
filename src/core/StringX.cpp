@@ -27,6 +27,12 @@ template<class T> int CompareNoCase(const T &s1, const T &s2)
   return _tcsicmp(s1.c_str(), s2.c_str());
 }
 
+template<class T> int CompareCase(const T &s1, const T &s2)
+{
+  // case sensitive string comparison
+  return _tcscmp(s1.c_str(), s2.c_str());
+}
+
 template<class T> void ToLower(T &s)
 {
   for (typename T::iterator iter = s.begin(); iter != s.end(); iter++)
@@ -246,6 +252,8 @@ template<class T> void Format(T &s, int fmt, ...)
 // instantiations for StringX & stringT
 template int CompareNoCase(const StringX &s1, const StringX &s2);
 template int CompareNoCase(const stringT &s1, const stringT &s2);
+template int CompareCase(const StringX &s1, const StringX &s2);
+template int CompareCase(const stringT &s1, const stringT &s2);
 template void ToLower(StringX &s);
 template void ToLower(stringT &s);
 template void ToUpper(StringX &s);
@@ -270,7 +278,6 @@ template void Format(stringT &s, int fmt, ...);
 template void Format(StringX &s, int fmt, ...);
 template void Format(stringT &s, const TCHAR *fmt, ...);
 template void Format(StringX &s, const TCHAR *fmt, ...);
-
 
 #ifdef TEST_TRIM
 int main(int argc, char *argv[])

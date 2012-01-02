@@ -20,8 +20,6 @@ public:
               const bool bReadOnly = false, CWnd *pParent = NULL);   // standard constructor
 	virtual ~CInputBox();
 
-  virtual BOOL OnInitDialog();
-
   CString GetText() {return m_csText;}
 
 // Dialog Data
@@ -29,6 +27,9 @@ public:
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+  virtual BOOL OnInitDialog();
+  virtual BOOL PreTranslateMessage(MSG* pMsg);
+
   afx_msg void OnOK();
   afx_msg void OnInputChanged();
   afx_msg void OnActivate(UINT nState, CWnd *pWndOther, BOOL bMinimized);

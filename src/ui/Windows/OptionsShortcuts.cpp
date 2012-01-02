@@ -392,6 +392,6 @@ int CALLBACK COptionsShortcuts::CompareFunc(LPARAM lParam1, LPARAM lParam2,
 
 bool COptionsShortcuts::GetMapMenuShortcutsIter(const UINT &id, MapMenuShortcutsIter &iter)
 {
-  iter=m_MapMenuShortcuts.find(id);
-  return iter!=m_MapMenuShortcuts.end();
+  iter = m_MapMenuShortcuts.find(id);
+  return iter != m_MapMenuShortcuts.end();
 }

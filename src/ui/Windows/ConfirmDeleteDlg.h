@@ -12,6 +12,7 @@
 #include "core/PwsPlatform.h"
 
 #include "PWDialog.h"
+
 class CConfirmDeleteDlg : public CPWDialog
 {
 public:

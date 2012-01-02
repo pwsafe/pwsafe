@@ -307,6 +307,9 @@ int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2,
     case CItemData::POLICY:
       iResult = CompareNoCase(pLHS->GetPWPolicy(), pRHS->GetPWPolicy());
       break;
+    case CItemData::POLICYNAME:
+      iResult = CompareCase(pLHS->GetPolicyName(), pRHS->GetPolicyName());
+      break;
     case CItemData::PROTECTED:
       iResult = pLHS->IsProtected() ? 1 : (pRHS->IsProtected() ? -1 : 1);
       break;
@@ -642,7 +645,7 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
   ASSERT(indices.empty());
 
   StringX curGroup, curTitle, curUser, curNotes, curPassword, curURL, curAT, curXInt;
-  StringX curEmail, curSymbols, curRunCommand, listTitle, saveTitle;
+  StringX curEmail, curSymbols, curPolicyName, curRunCommand, listTitle, saveTitle;
   bool bFoundit;
   CString searchstr(str); // Since str is const, and we might need to MakeLower
   size_t retval = 0;
@@ -687,6 +690,7 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
     curURL = curitem.GetURL();
     curEmail = curitem.GetEmail();
     curSymbols = curitem.GetSymbols();
+    curPolicyName = curitem.GetPolicyName();
     curRunCommand = curitem.GetRunCommand();
     curAT = curitem.GetAutoType();
     curXInt = curitem.GetXTimeInt();
@@ -699,6 +703,8 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
       ToLower(curNotes);
       ToLower(curURL);
       ToLower(curEmail);
+      // ToLower(curSymbols); - not needed as contains only symbols
+      ToLower(curPolicyName);
       ToLower(curRunCommand);
       ToLower(curAT);
     }
@@ -739,6 +745,10 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
         break;
       }
       if (bsFields.test(CItemData::RUNCMD) && ::wcsstr(curRunCommand.c_str(), searchstr)) {
+        bFoundit = true;
+        break;
+      }
+      if (bsFields.test(CItemData::POLICYNAME) && ::wcsstr(curPolicyName.c_str(), searchstr)) {
         bFoundit = true;
         break;
       }
@@ -1615,9 +1625,6 @@ void DboxMain::OnColumnClick(NMHDR *pNotifyStruct, LRESULT *pLResult)
   int iIndex = pNMListView->iSubItem;
   int iTypeSortColumn = m_nColumnTypeByIndex[iIndex];
 
-  HDITEM hdi;
-  hdi.mask = HDI_FORMAT;
-
   if (m_iTypeSortColumn == iTypeSortColumn) {
     m_bSortAscending = !m_bSortAscending;
     PWSprefs *prefs = PWSprefs::GetInstance();
@@ -1633,6 +1640,8 @@ void DboxMain::OnColumnClick(NMHDR *pNotifyStruct, LRESULT *pLResult)
   } else {
     // Turn off all previous sort arrrows
     // Note: not sure where, as user may have played with the columns!
+    HDITEM hdi;
+    hdi.mask = HDI_FORMAT;
     for (int i = 0; i < m_LVHdrCtrl.GetItemCount(); i++) {
       m_LVHdrCtrl.GetItem(i, &hdi);
       if ((hdi.fmt & (HDF_SORTUP | HDF_SORTDOWN)) != 0) {
@@ -2816,6 +2825,9 @@ CString DboxMain::GetHeaderText(int iType) const
     case CItemData::POLICY:        
       cs_header.LoadString(IDS_PWPOLICY);
       break;
+    case CItemData::POLICYNAME:        
+      cs_header.LoadString(IDS_POLICYNAME);
+      break;
     case CItemData::PROTECTED:        
       cs_header.LoadString(IDS_PROTECTED);
       break;
@@ -2841,6 +2853,7 @@ int DboxMain::GetHeaderWidth(int iType) const
     case CItemData::SYMBOLS:
     case CItemData::RUNCMD:
     case CItemData::POLICY:
+    case CItemData::POLICYNAME: 
     case CItemData::XTIME_INT:
       nWidth = m_nColumnHeaderWidthByType[iType];
       break;
@@ -3383,6 +3396,8 @@ void DboxMain::OnToolBarFindReport()
       buffer += L"\t" + CString(MAKEINTRESOURCE(IDS_COMPAUTOTYPE));
     if (bsFFields.test(CItemData::PWHIST))
       buffer += L"\t" + CString(MAKEINTRESOURCE(IDS_COMPPWHISTORY));
+    if (bsFFields.test(CItemData::POLICYNAME))
+      buffer += L"\t" + CString(MAKEINTRESOURCE(IDS_COMPPOLICYNAME));
     rpt.WriteLine((LPCWSTR)buffer);
     rpt.WriteLine();
   }
@@ -4363,3 +4378,27 @@ bool DboxMain::LongPPs()
 
   return (Y > 600); // THRESHOLD = 600 - pixels or virtual-screen coordinates?
 }
+
+bool DboxMain::GetShortCut(const unsigned int &uiMenuItem,
+                           unsigned char &cVirtKey, unsigned char &cModifier)
+{
+  cVirtKey = cModifier = '0';
+
+  MapMenuShortcutsIter iter;
+
+  iter = m_MapMenuShortcuts.find(uiMenuItem);
+  if (iter == m_MapMenuShortcuts.end())
+    return false;
+
+  if (iter->second.cVirtKey  != iter->second.cdefVirtKey ||
+      iter->second.cModifier != iter->second.cdefModifier) {
+    cVirtKey = iter->second.cVirtKey;
+    cModifier = iter->second.cModifier;
+  } else {
+    cVirtKey = iter->second.cdefVirtKey;
+    cModifier = iter->second.cdefModifier;
+  }
+
+  return true;
+}
+ 

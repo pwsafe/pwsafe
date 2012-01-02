@@ -96,7 +96,6 @@ protected:
   std::vector<st_Fcbxdata> vWCFcbx_data;   // Working copy Field combobox & fieldtypes
 
   WCHAR *m_pwchTip;
-  char *m_pchTip;
 
   BOOL OnCommand(WPARAM wParam, LPARAM lParam);
   INT_PTR OnToolHitTest(CPoint point, TOOLINFO * pTI) const;

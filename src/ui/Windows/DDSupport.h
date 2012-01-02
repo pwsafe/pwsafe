@@ -7,7 +7,10 @@
 */
 
 #pragma once
+
 #include "core/ItemData.h"
+#include "core/coredefs.h"
+
 #include "SMemFile.h"
 
 // Drag & Drop Object written to SMemFile
@@ -18,8 +21,8 @@ class CDDObject : public CObject
 public:
   CDDObject() {m_pbaseitem = NULL;};
 
-  void DDSerialize(CSMemFile &outDDmemfile);
-  void DDUnSerialize(CSMemFile &inDDmemfile);
+  void DDSerializeEntry(CSMemFile &outDDmemfile);
+  void DDUnSerializeEntry(CSMemFile &inDDmemfile);
   void FromItem(const CItemData &item) {m_item = item;}
   void ToItem(CItemData &item) const {item = m_item;}
 

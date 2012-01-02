@@ -1660,7 +1660,8 @@ void DboxMain::OnImportText()
     bool bWasEmpty = m_core.GetNumEntries() == 0;
     std::wstring strError;
     StringX TxtFileName = fd.GetPathName();
-    int numImported(0), numSkipped(0), numPWHErrors(0), numRenamed(0), numWarnings(0);
+    int numImported(0), numSkipped(0), numPWHErrors(0), numRenamed(0), numWarnings(0),
+      numNoPolicy(0);
     wchar_t delimiter = dlg.m_defimpdelim[0];
     bool bImportPSWDsOnly = dlg.m_bImportPSWDsOnly == TRUE;
 
@@ -1679,6 +1680,7 @@ void DboxMain::OnImportText()
                                     delimiter, bImportPSWDsOnly,
                                     strError,
                                     numImported, numSkipped, numPWHErrors, numRenamed,
+                                    numNoPolicy,
                                     rpt, pcmd);
 
     switch (rc) {
@@ -1743,7 +1745,7 @@ void DboxMain::OnImportText()
           cs_temp += cs_tmp;
         }
 
-        if (numWarnings != 0) {
+        if (numWarnings != 0 || numNoPolicy != 0) {
           CString cs_tmp(MAKEINTRESOURCE(IDS_WITHWARNINGS));
           cs_temp += cs_tmp;
         }
@@ -2066,6 +2068,7 @@ void DboxMain::OnImportXML()
     std::wstring strXMLErrors, strSkippedList, strPWHErrorList, strRenameList;
     CString XMLFilename = fd.GetPathName();
     int numValidated, numImported, numSkipped, numRenamed, numPWHErrors;
+    int numRenamedPolicies, numNoPolicy;
     bool bImportPSWDsOnly = dlg.m_bImportPSWDsOnly == TRUE;
 
     CWaitCursor waitCursor;  // This may take a while!
@@ -2086,6 +2089,7 @@ void DboxMain::OnImportXML()
                               XSDFilename.c_str(), bImportPSWDsOnly,
                               strXMLErrors, strSkippedList, strPWHErrorList, strRenameList,
                               numValidated, numImported, numSkipped, numPWHErrors, numRenamed,
+                              numNoPolicy, numRenamedPolicies,
                               rpt, pcmd);
     waitCursor.Restore();  // Restore normal cursor
 
@@ -2159,6 +2163,23 @@ void DboxMain::OnImportXML()
 
     // Finish Report
     rpt.WriteLine((LPCWSTR)cs_temp);
+
+    if (numNoPolicy != 0 || numRenamedPolicies != 0) {
+      CString cs_tmp(MAKEINTRESOURCE(IDS_WITHWARNINGS));
+      cs_temp += cs_tmp;
+
+      if (numNoPolicy != 0) {
+        rpt.WriteLine();
+        cs_tmp.LoadString(IDSC_MISSINGPOLICYNAMES);
+        rpt.WriteLine((LPCWSTR)cs_tmp);
+      }
+      if (numRenamedPolicies != 0) {
+        rpt.WriteLine();
+        cs_tmp.LoadString(IDSC_RENAMEDPOLICYNAMES);
+        rpt.WriteLine((LPCWSTR)cs_tmp);
+      }
+    }
+
     rpt.EndReport();
 
     if (rc != PWScore::SUCCESS || !strXMLErrors.empty())
@@ -3311,11 +3332,11 @@ void DboxMain::ReportAdvancedOptions(CReport *pRpt, const bool bAdvanced, const 
     int ifields[] = {CItemData::PASSWORD, CItemData::NOTES, CItemData::URL,
                      CItemData::AUTOTYPE, CItemData::PWHIST, CItemData::POLICY,
                      CItemData::RUNCMD, CItemData::DCA, CItemData::SHIFTDCA, CItemData::EMAIL,
-                     CItemData::PROTECTED, CItemData::SYMBOLS};
+                     CItemData::PROTECTED, CItemData::SYMBOLS, CItemData::POLICYNAME};
     UINT uimsgids[] = {IDS_COMPPASSWORD, IDS_COMPNOTES, IDS_COMPURL,
                        IDS_COMPAUTOTYPE, IDS_COMPPWHISTORY, IDS_COMPPWPOLICY,
                        IDS_COMPRUNCOMMAND, IDS_COMPDCA, IDS_COMPSHIFTDCA, IDS_COMPEMAIL,
-                       IDS_COMPPROTECTED, IDS_COMPSYMBOLS};
+                       IDS_COMPPROTECTED, IDS_COMPSYMBOLS, IDS_COMPPOLICYNAME};
     ASSERT(_countof(ifields) == _countof(uimsgids));
 
     // Time fields

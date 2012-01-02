@@ -187,7 +187,7 @@ void CViewReport::Finish()
   CPWResizeDialog::OnCancel();
 }
 
-HBRUSH CViewReport::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
+HBRUSH CViewReport::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
 {
   HBRUSH hbr = CPWResizeDialog::OnCtlColor(pDC, pWnd, nCtlColor);
 

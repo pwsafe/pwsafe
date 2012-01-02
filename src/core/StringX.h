@@ -16,7 +16,6 @@
  * Like std::string in all respects, except that
  * memory is scrubbed before being returned to system.
  *
- *
  */
 
 #include <string>
@@ -158,6 +157,7 @@ typedef std::basic_string<char,
 // (In for a dime, in for a $).
 
 template<class T> int CompareNoCase(const T &s1, const T &s2);
+template<class T> int CompareCase(const T &s1, const T &s2);
 template<class T> void ToLower(T &s);
 template<class T> void ToUpper(T &s);
 template<class T> T &TrimRight(T &s, const TCHAR *set = NULL);

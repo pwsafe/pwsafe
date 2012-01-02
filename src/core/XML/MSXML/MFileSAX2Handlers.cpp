@@ -173,6 +173,7 @@ HRESULT STDMETHODCALLTYPE  MFileSAX2ContentHandler::startDocument()
 {
   m_strXMLErrors = _T("");
   m_bEntryBeingProcessed = false;
+  m_bPolicyBeingProcessed = false;
   return S_OK;
 }
 
@@ -187,7 +188,7 @@ TCHAR * FileProcessAttributes(
   /* [in] */  TCHAR *lpName)
 {
   // Note 1: Caller needs to free the value returned, which is created via '_tcsdup'.
-  // Note 2:  This ONLY processes the attributes to find ONE value.
+  // Note 2: This ONLY processes the attributes to find ONE value.
   // Needs to be enhanced if we ever need more (which we do not currently)
   int iAttribs = 0;
   pAttributes->getLength(&iAttribs);
@@ -272,7 +273,7 @@ HRESULT STDMETHODCALLTYPE MFileSAX2ContentHandler::startElement(
         }
         TCHAR *lpValue2 = FileProcessAttributes(pAttributes, _T("id"));
         if (lpValue2 != NULL) {
-          cur_entry->id = _ttoi(lpValue2) ;
+          cur_entry->id = _ttoi(lpValue2);
           free(lpValue2);
         }
       }

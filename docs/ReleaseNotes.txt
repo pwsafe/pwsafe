@@ -10,7 +10,8 @@ releases may be found in the file ChangeLog.txt.
 
 New Features for 3.27.1
 =======================
-None
+[3421963] Centralized Password Policies can now be saved in a database, managed (added,
+edited and deleted), exported and imported, used in filters and to generate passwords.
 
 Changes to Existing Features in 3.27.1
 ======================================

@@ -128,6 +128,35 @@ private:
   bool m_bOldState;
 };
 
+class DBPolicyNamesCommand : public Command
+{
+public:
+  enum Function {ADDNEW = 0, REPLACEALL};
+
+  static DBPolicyNamesCommand *Create(CommandInterface *pcomInt,
+                                PSWDPolicyMap &MapPSWDPLC,
+                                Function function)
+  { return new DBPolicyNamesCommand(pcomInt, MapPSWDPLC, function); }
+  static DBPolicyNamesCommand *Create(CommandInterface *pcomInt,
+                                StringX &sxPolicyName, st_PSWDPolicy &st_pp)
+  { return new DBPolicyNamesCommand(pcomInt, sxPolicyName, st_pp); }
+  int Execute();
+  void Undo();
+
+private:
+  DBPolicyNamesCommand(CommandInterface *pcomInt, PSWDPolicyMap &MapPSWDPLC,
+                       Function function);
+  DBPolicyNamesCommand(CommandInterface *pcomInt, StringX &sxPolicyName,
+                       st_PSWDPolicy &st_pp);
+
+  PSWDPolicyMap m_OldMapPSWDPLC;
+  PSWDPolicyMap m_NewMapPSWDPLC;
+  StringX m_sxPolicyName;
+  st_PSWDPolicy m_st_ppp;
+  Function m_function;
+  bool m_bOldState, bSingleAdd;
+};
+
 class DeleteEntryCommand;
 
 class AddEntryCommand : public Command

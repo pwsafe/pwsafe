@@ -206,6 +206,7 @@ BOOL COptionsSystem::OnInitDialog()
     m_pToolTipCtrl->AddTool(GetDlgItem(IDC_MIGRATETOAPPDATA), cs_ToolTip);
   }
 
+
   return TRUE;  // return TRUE unless you set the focus to a control
   // EXCEPTION: OCX Property Pages should return FALSE
 }

@@ -20,7 +20,6 @@ public:
   CProperties(st_DBProperties *pdbp, const bool bReadonly, CWnd *pParent = NULL);
   virtual ~CProperties();
 
-  virtual BOOL OnInitDialog();
   bool HasDataChanged() {return m_bChanged;}
 
   // Dialog Data
@@ -31,6 +30,9 @@ protected:
   CStatic m_stc_description;
 
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+  virtual BOOL OnInitDialog();
+  virtual BOOL PreTranslateMessage(MSG* pMsg);
+
   afx_msg void OnEditName();
   afx_msg void OnEditDescription();
   

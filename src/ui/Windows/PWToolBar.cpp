@@ -69,7 +69,8 @@ const CString CPWToolBar::m_csMainButtons[] = {
   L"saveas", L"compare", L"merge", L"synchronize", L"undo", L"redo",
   L"passwordsubset", L"browse+autotype", L"runcommand", L"sendemail",
   L"listtree", L"find", L"viewreports", 
-  L"applyfilters", L"clearfilters", L"setfilters", L"managefilters", L"addgroup"
+  L"applyfilters", L"clearfilters", L"setfilters", L"managefilters",
+  L"addgroup", L"managepolicies"
 };
 
 const UINT CPWToolBar::m_MainToolBarIDs[] = {
@@ -120,7 +121,8 @@ const UINT CPWToolBar::m_MainToolBarIDs[] = {
   ID_MENUITEM_CLEARFILTER,
   ID_MENUITEM_EDITFILTER,
   ID_MENUITEM_MANAGEFILTERS,
-  ID_MENUITEM_ADDGROUP
+  ID_MENUITEM_ADDGROUP,
+  ID_MENUITEM_PSWD_POLICIES
 };
 
 // Additional Control IDs not on ToolBar
@@ -203,7 +205,8 @@ const UINT CPWToolBar::m_MainToolBarClassicBMs[] = {
   IDB_CLEARFILTERS_CLASSIC,
   IDB_SETFILTERS_CLASSIC,
   IDB_MANAGEFILTERS_CLASSIC,
-  IDB_ADDGROUP_CLASSIC
+  IDB_ADDGROUP_CLASSIC,
+  IDB_PSWD_POLICIES_CLASSIC
 };
 
 // Additional bitmaps not on ToolBar
@@ -286,7 +289,8 @@ const UINT CPWToolBar::m_MainToolBarNewBMs[] = {
   IDB_CLEARFILTERS_NEW,
   IDB_SETFILTERS_NEW,
   IDB_MANAGEFILTERS_NEW,
-  IDB_ADDGROUP_NEW
+  IDB_ADDGROUP_NEW,
+  IDB_PSWD_POLICIES_NEW
 };
 
 const UINT CPWToolBar::m_MainToolBarNewDisBMs[] = {
@@ -330,7 +334,8 @@ const UINT CPWToolBar::m_MainToolBarNewDisBMs[] = {
   IDB_CLEARFILTERS_NEW_D,
   IDB_SETFILTERS_NEW_D,
   IDB_MANAGEFILTERS_NEW_D,
-  IDB_ADDGROUP_NEW_D
+  IDB_ADDGROUP_NEW_D,
+  IDB_PSWD_POLICIES_NEW_D
 };
 
 // Additional bitmaps not on ToolBar

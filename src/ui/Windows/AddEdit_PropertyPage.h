@@ -77,7 +77,10 @@ struct st_AE_master_data {
   PWPolicy pwp, oldpwp, default_pwp;
   int ipolicy, oldipolicy, iownsymbols, ioldownsymbols;
   CSecString symbols;
+  CSecString default_symbols;
   CSecString oldsymbols;
+  CSecString policyname;
+  CSecString oldpolicyname;
   
   // Attributes
   unsigned char ucprotected;
@@ -121,6 +124,7 @@ public:
   inline CSecString &M_email() {return m_AEMD.email;}
   inline CSecString &M_symbols() {return m_AEMD.symbols;}
   inline CSecString &M_oldsymbols() {return m_AEMD.oldsymbols;}
+  inline CSecString &M_default_symbols() {return m_AEMD.default_symbols;}
 
   inline CSecString &M_base() {return m_AEMD.base;}
   inline CSecString &M_dependents() {return m_AEMD.dependents;}
@@ -168,6 +172,8 @@ public:
   inline int &M_oldipolicy() {return m_AEMD.oldipolicy;}
   inline int &M_iownsymbols() {return m_AEMD.iownsymbols;}
   inline int &M_ioldownsymbols() {return m_AEMD.ioldownsymbols;}
+  inline CSecString &M_policyname() {return m_AEMD.policyname;}
+  inline CSecString &M_oldpolicyname() {return m_AEMD.oldpolicyname;}
   
   // Attributes
   inline unsigned char &M_protected() {return m_AEMD.ucprotected;}

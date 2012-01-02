@@ -16,7 +16,7 @@
 #include "StringX.h"
 
 // Password Policy related stuff
-enum {DEFAULT_POLICY = 0, SPECIFIC_POLICY};
+enum {DEFAULT_POLICY = 0, NAMED_POLICY, SPECIFIC_POLICY};
 enum {DEFAULT_SYMBOLS = 0, OWN_SYMBOLS = 1}; // m_symbols's values
 
 struct PWPolicy {
@@ -43,12 +43,12 @@ struct PWPolicy {
   PWPolicy &operator=(const PWPolicy &that)
   {
     if (this != &that) {
-      flags = that.flags;
+      flags  = that.flags;
       length = that.length;
-      digitminlength = that.digitminlength;
-      lowerminlength = that.lowerminlength;
+      digitminlength  = that.digitminlength;
+      lowerminlength  = that.lowerminlength;
       symbolminlength = that.symbolminlength;
-      upperminlength = that.upperminlength;
+      upperminlength  = that.upperminlength;
     }
     return *this;
   }
@@ -61,9 +61,10 @@ struct PWPolicy {
   void Empty()
   { 
     flags = 0; length = 0;
-    digitminlength = lowerminlength = 0;
+    digitminlength  = lowerminlength = 0;
     symbolminlength = upperminlength = 0;
   }
+
   // Following calls CPasswordCharPool::MakePassword()
   // with arguments matching 'this' policy, or,
   // preference-defined policy if this->flags == 0

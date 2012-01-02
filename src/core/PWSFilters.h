@@ -59,6 +59,7 @@ enum FieldType {
   FT_EMAIL         = CItemData::EMAIL,
   FT_PROTECTED     = CItemData::PROTECTED,
   FT_SYMBOLS       = CItemData::SYMBOLS,
+  FT_POLICYNAME    = CItemData::POLICYNAME,
   FT_END           = CItemData::END,
 
   // Internal fields purely for filters

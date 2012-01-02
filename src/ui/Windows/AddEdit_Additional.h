@@ -61,7 +61,7 @@ protected:
   afx_msg void OnHelp();
   afx_msg BOOL OnKillActive();
   afx_msg LRESULT OnQuerySiblings(WPARAM wParam, LPARAM);
-  afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
+  afx_msg HBRUSH OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor);
 
   afx_msg void OnDCAComboChanged();
   afx_msg void OnShiftDCAComboChanged();
