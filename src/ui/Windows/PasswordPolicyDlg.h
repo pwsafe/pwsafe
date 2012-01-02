@@ -100,6 +100,7 @@ protected:
   afx_msg void OnENChangePolicyName();
   afx_msg void OnNamesComboChanged();
   afx_msg void OnUseNamedPolicy();
+  afx_msg void OnENOwnSymbols();
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()

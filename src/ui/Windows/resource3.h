@@ -719,4 +719,4 @@
 #define IDS_TESTPOLICY                  5916
 #define IDS_CLICKTOCOPYGENPSWD          5917
 #define IDS_PR_MUSTHAVECHARACTERS       5918
-
+#define IDS_OWNSYMBOLSMISSING           5919

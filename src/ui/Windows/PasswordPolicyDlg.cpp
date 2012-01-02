@@ -162,6 +162,7 @@ BEGIN_MESSAGE_MAP(CPasswordPolicyDlg, CPWDialog)
   ON_BN_CLICKED(IDC_USENAMED_POLICY, OnUseNamedPolicy)
 
   ON_EN_KILLFOCUS(IDC_POLICYNAME, OnENChangePolicyName)
+  ON_EN_KILLFOCUS(IDC_OWNSYMBOLS, OnENOwnSymbols)
 
   ON_CBN_SELCHANGE(IDC_POLICYLIST, OnNamesComboChanged)
   //}}AFX_MSG_MAP
@@ -666,7 +667,7 @@ void CPasswordPolicyDlg::do_easyorpronounceable(const int iSet)
     }
 
     BOOL bEnable = (IsDlgButtonChecked(IDC_USESYMBOLS) == BST_CHECKED) ? TRUE : FALSE;
-    GetDlgItem(IDC_USESYMBOLS)->EnableWindow(bEnable);
+    GetDlgItem(IDC_USESYMBOLS)->EnableWindow(TRUE);
     GetDlgItem(IDC_USEDEFAULTSYMBOLS)->EnableWindow(bEnable);
     GetDlgItem(IDC_USEOWNSYMBOLS)->EnableWindow(bEnable);
     GetDlgItem(IDC_STATIC_DEFAULTSYMBOLS)->EnableWindow(bEnable);
@@ -960,6 +961,29 @@ void CPasswordPolicyDlg::OnENChangePolicyName()
   UpdateData(TRUE);
 
   m_PolicyNameEdit.GetWindowText((CString &)m_policyname);
+}
+
+void CPasswordPolicyDlg::OnENOwnSymbols()
+{
+  UpdateData(TRUE);
+
+  CString cs_symbols;
+  m_SymbolsEdit.GetWindowText(cs_symbols);
+
+  // Check if user about to leave own symbols emtpy
+  if (cs_symbols.GetLength() == 0) {
+    // Tell user
+    CGeneralMsgBox gmb;
+    gmb.AfxMessageBox(IDS_OWNSYMBOLSMISSING, MB_ICONEXCLAMATION);
+
+    // Select Default symbols - then uncheck use symbols
+    ((CButton *)GetDlgItem(IDC_USESYMBOLS))->SetCheck(BST_UNCHECKED);
+    ((CButton *)GetDlgItem(IDC_USEDEFAULTSYMBOLS))->SetCheck(BST_CHECKED);
+    ((CButton *)GetDlgItem(IDC_USEOWNSYMBOLS))->SetCheck(BST_UNCHECKED);
+
+    // Setup variables etc.
+    OnUseSymbols();
+  }
 }
 
 void CPasswordPolicyDlg::OnUseNamedPolicy()
