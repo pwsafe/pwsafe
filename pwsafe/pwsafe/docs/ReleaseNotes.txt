@@ -28,6 +28,8 @@ the XML file exported prior to V3.26 to allow it to be successfully imported in 
 
 Bugs fixed in 3.27.1
 ====================
+[3468853] The number of saved passwords can be changed and after the user presses Apply
+they will no longer be warned that the entry has been changed when pressing Cancel.
 [3462520] A password entry's expiry time in days now correctly
 reflects the expiration date for non-recurring expiration.
 [3440318] Filters can now be cleared by double-clicking on the filter indicator in
