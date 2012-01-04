@@ -218,7 +218,7 @@ BOOL DboxMain::OpenOnInit()
    */
   if (rc2 == PWScore::BAD_DIGEST ||
       rc2 == PWScore::TRUNCATED_FILE ||
-      rc2 == PWScore:: READ_FAIL) {
+      rc2 == PWScore::READ_FAIL) {
     CGeneralMsgBox gmb;
     CString cs_title(MAKEINTRESOURCE(IDS_FILEREADERROR)), cs_msg;
     cs_msg.Format(IDS_FILECORRUPT, m_core.GetCurFile().c_str());

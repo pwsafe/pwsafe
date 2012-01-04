@@ -145,7 +145,11 @@ void PWScore::Compare(PWScore *pothercore,
          .... 1...  EMAIL      [0x14]
          .... .1..  PROTECTED  [0x15]
          .... ..1.  SYMBOLS    [0x16]
-         .... ...1  POLICYNAME [0x17]
+         .... ...1  SHIFTDCA   [0x17]
+
+         Forth byte
+         1... ....  POLICYNAME [0x18] - not checked by default
+
 
          */
         bsConflicts.reset();
@@ -717,7 +721,6 @@ int PWScore::MergeDependents(PWScore *pothercore, MultiCommands *pmulticmds,
   UUIDVector dependentslist;
   UUIDVectorIter paiter;
   ItemListIter iter;
-  uuid_array_t entry_uuid, new_entry_uuid;
   ItemListConstIter foundPos;
   CItemData ci_temp;
   int numadded(0);
@@ -736,10 +739,8 @@ int PWScore::MergeDependents(PWScore *pothercore, MultiCommands *pmulticmds,
     CItemData *pci = &iter->second;
     ci_temp = (*pci);
 
-    memcpy(new_entry_uuid, entry_uuid, sizeof(new_entry_uuid));
     if (Find(*paiter) != GetEntryEndIter()) {
       ci_temp.CreateUUID();
-      ci_temp.GetUUID(new_entry_uuid);
     }
 
     // If the base title was renamed - we should automatically rename any dependent.
