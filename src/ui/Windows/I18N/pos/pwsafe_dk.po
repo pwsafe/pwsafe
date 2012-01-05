@@ -132,6 +132,10 @@ msgstr "'Adgangskode Politik'"
 msgid " 'Password'"
 msgstr "'Adgangskode'"
 
+#. Resource IDs: (370)
+msgid " 'Policy Name'"
+msgstr ""
+
 #. Resource IDs: (336)
 msgid " 'Record Modification Time'"
 msgstr "'Registrer Ændrings Tidspunkt'"
@@ -327,9 +331,24 @@ msgstr "%d poster"
 msgid "%d of %d matches."
 msgstr "%d af %d passer sammen."
 
+#. Resource IDs: (215)
+#, c-format
+msgid "%s  - Imported %s"
+msgstr ""
+
 #. Resource IDs: (366)
 #, c-format
 msgid "%s (database-specific)"
+msgstr ""
+
+#. Resource IDs: (370)
+#, c-format
+msgid "%s - Drag & Drop %s"
+msgstr ""
+
+#. Resource IDs: (215)
+#, c-format
+msgid "%s - Merged %s"
 msgstr ""
 
 #. Resource IDs: (3887)
@@ -627,6 +646,10 @@ msgstr ""
 msgid "&Keep"
 msgstr "&Behold"
 
+#. Resource IDs: (1462)
+msgid "&List"
+msgstr ""
+
 #. Resource IDs: (32150)
 msgid "&Manage"
 msgstr "&Håndter"
@@ -666,10 +689,6 @@ msgstr "&Ny/Rediger Filter"
 #. Resource IDs: (2)
 msgid "&No"
 msgstr "&Nej"
-
-#. Resource IDs: (1229)
-msgid "&None"
-msgstr ""
 
 #. Resource IDs: (1354, 65535)
 msgid "&Notes:"
@@ -1233,7 +1252,7 @@ msgid "A new password database will be created. The safe combination you enter w
 msgstr "En ny adgangskode database vil blive oprettet. Sikkerheds Adgangskoden du indsætter vil blive brugt til at kryptere adgangskode database filen. Sikkerheds Adgangskoden kan bruge enhver tastatur karakter og er følsom over for store/små bogst.."
 
 #. Resource IDs: (367)
-msgid "A red and white indicator means that a filter is active\r\n(double click to clear filter)"
+msgid "A red and white indicator means that a filter is active\r\n(if showing, double click to clear filter)"
 msgstr ""
 
 #. Resource IDs: (3843)
@@ -1280,6 +1299,10 @@ msgstr "Tilføj Post"
 #. Resource IDs: (32057)
 msgid "Add Group"
 msgstr "Tilføj Gruppe"
+
+#. Resource IDs: (370)
+msgid "Add a New Database Named Password Policy"
+msgstr ""
 
 #. Resource IDs: (466)
 msgid "Additional"
@@ -1356,6 +1379,10 @@ msgstr "Alle Filer (*.*)"
 #. Resource IDs: (339)
 msgid "All available columns are being displayed."
 msgstr "Alle tilgængelige kolonner bliver vist."
+
+#. Resource IDs: (368)
+msgid "All changes to Password Policies will be lost"
+msgstr ""
 
 #. Resource IDs: (1333)
 msgid "Allow multiple instances (requires all instances to be restarted)"
@@ -1521,6 +1548,10 @@ msgstr "Tilgængelige felter:"
 #. Resource IDs: (65535)
 msgid "Available Filters:"
 msgstr "Tilgængelige Filtre:"
+
+#. Resource IDs: (65535)
+msgid "Available Password Policies:"
+msgstr ""
 
 #. Resource IDs: (518)
 msgid "Azeri Cyrillic"
@@ -1780,6 +1811,18 @@ msgstr ""
 msgid "Change the maximum number of saved passwords for entries currently saving password history to the new maximum, if currently saving fewer.\n\nEntries with more than this new maximum already saved will remain unchanged."
 msgstr "Ændre det maximale antal af gemte adgangskoder for poster i for øjeblikket gemte adgangskode historik til nyt maximum, hvis der for øjeblikket gemmes færre.\n\nPoster med mere end dette nye maximum allerede gemt vil forblive uændrede."
 
+#. Resource IDs: (370)
+msgid "Change/View Database Default Password Policy"
+msgstr ""
+
+#. Resource IDs: (370)
+msgid "Change/View a Database Named Password Policy"
+msgstr ""
+
+#. Resource IDs: (368)
+msgid "Change/View selected Named Password Policy or the database default policy"
+msgstr ""
+
 #. Resource IDs: (1187)
 msgid "Changes to existing entries will be applied on pressing OK"
 msgstr "Ændringer til eksisterende poster vil blive anvendt ved tryk på OK"
@@ -1835,6 +1878,10 @@ msgstr "Klik her for at vælge felt"
 #. Resource IDs: (510)
 msgid "Click to change case."
 msgstr "Klik forat ændre tilfælde."
+
+#. Resource IDs: (370)
+msgid "Click to copy generated password to clipboard"
+msgstr ""
 
 #. Resource IDs: (353)
 msgid "Click to copy to clipboard"
@@ -2170,6 +2217,10 @@ msgstr "Opret SkemaCache%2d Fejl 0x%08X under %s."
 msgid "Create Shortcut"
 msgstr "Opret Genvej"
 
+#. Resource IDs: (368)
+msgid "Create a new Password Policy"
+msgstr ""
+
 #. Resource IDs: (1199)
 msgid "Create intermediate backups (.ibak) before saving"
 msgstr "Opret mellemliggende sikkerhedskopier (.ibak) før du gemmer"
@@ -2308,6 +2359,10 @@ msgstr ""
 msgid "Default Autotype string:"
 msgstr "Standart Autoindsæt streng:"
 
+#. Resource IDs: (368)
+msgid "Default Policy"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Default Username"
 msgstr "Standart Brugernavn"
@@ -2340,6 +2395,10 @@ msgstr "Slet en Base Adgangs Bekræftelse?"
 msgid "Delete a filter"
 msgstr "Slet et filter"
 
+#. Resource IDs: (368)
+msgid "Delete selected Password Policy\n(only an unused Named Password Policy may be deleted)"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Description:"
 msgstr ""
@@ -2359,6 +2418,10 @@ msgstr "Destinations disk drevet er fuld."
 #. Resource IDs: (337)
 msgid "Destination location does not exist or is not accessible."
 msgstr "Destinations placeringen eksisterer ikke eller er ikke tilgængelig."
+
+#. Resource IDs: (370)
+msgid "Details"
+msgstr ""
 
 #. Resource IDs: (329)
 #, c-format
@@ -2390,6 +2453,10 @@ msgstr "Vis"
 #. Resource IDs: (151, 152, 153, 154, 155, 156)
 msgid "Display Filter - "
 msgstr "Vis Filter - "
+
+#. Resource IDs: (368)
+msgid "Display policy setings or List entries using this named policy\n(The latter may take a while depending on the number of entries in this database)"
+msgstr ""
 
 #. Resource IDs: (32262)
 msgid "Display subset of Password"
@@ -2476,6 +2543,10 @@ msgstr "Dobbelt Klik på post for at Se/Redigere den"
 #. Resource IDs: (65535)
 msgid "Double-click action"
 msgstr "Dobbelt Klik Handling"
+
+#. Resource IDs: (370)
+msgid "Double-click an entry to Edit/View it"
+msgstr ""
 
 #. Resource IDs: (366)
 msgid "Doubleclick action for current entry"
@@ -2675,6 +2746,10 @@ msgstr "Poster kun i sammenlignings databasen (%s):"
 msgid "Entries only in current database (%s):"
 msgstr "Poster kun i nuværende database (%s):"
 
+#. Resource IDs: (1469)
+msgid "Entries using selected policy:"
+msgstr ""
+
 #. Resource IDs: (365)
 msgid "Entries with a password expiry"
 msgstr ""
@@ -2683,6 +2758,10 @@ msgstr ""
 #, c-format
 msgid "Entry %s%d with Group=\"%s\", Title=\"%s\", User=\"%s\""
 msgstr "Post %s%d med Gruppe=\"%s\", Titel=\"%s\", Bruger=\"%s\""
+
+#. Resource IDs: (370)
+msgid "Entry Password Policy Changes"
+msgstr ""
 
 #. Resource IDs: (1407)
 msgid "Entry Unique ID:"
@@ -2994,6 +3073,11 @@ msgstr "Filen: %s fejlede testen mod XML Skema:\r\n\r\n%s"
 msgid "File: %s passed Validation but had the following errors during import:\r\n\r\n%s"
 msgstr "Filen: %s godkendt ved test men havde følgrnde fejl under import:\r\n\r\n%s"
 
+#. Resource IDs: (370)
+#, c-format
+msgid "File: %s was imported (%d warning(s) issued about missing Password Policy Names). See report for details."
+msgstr ""
+
 #. Resource IDs: (335)
 #, c-format
 msgid "File: %s was imported (entries validated %d / imported %d%s%s%s). See report for details."
@@ -3085,6 +3169,10 @@ msgstr "Fudt udvidet"
 msgid "Gaelic"
 msgstr "Gaelic"
 
+#. Resource IDs: (1025)
+msgid "Generate"
+msgstr ""
+
 #. Resource IDs: (32157)
 msgid "Generate &Password"
 msgstr "Generer &Adgangskode"
@@ -3096,6 +3184,10 @@ msgstr "Generer &Udtalbare adgangskoder"
 #. Resource IDs: (359)
 msgid "Generate Password"
 msgstr "Generer Adgangskode"
+
+#. Resource IDs: (370)
+msgid "Generate Password using selected Password Policy"
+msgstr ""
 
 #. Resource IDs: (516)
 msgid "Georgian"
@@ -3413,6 +3505,10 @@ msgstr "Hvis dette er den først åbnede database opened ved start af PasswordSa
 #, c-format
 msgid "If this keyboard supports characters via the %s, then this key will be enabled and can be used to select them.\n\nYou may need to also select the Shift key to see them."
 msgstr "Hvis dette tastatur understøtter tegn via %s, så vil denne tast blive aktiveret og kan bruges til at vælge dem.\n\nDu kan blive nødt til også at vælge Skift tasten for at se dem."
+
+#. Resource IDs: (370)
+msgid "If you specify using your own symbol list, you cannot leave it empty. Unselecting use of symbols."
+msgstr ""
 
 #. Resource IDs: (517)
 msgid "Igbo"
@@ -3803,6 +3899,10 @@ msgstr "Lav Sikkerhedskopi"
 msgid "Manage Filters"
 msgstr "Håndter Filtre"
 
+#. Resource IDs: (515)
+msgid "Manage Password Policies"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Manage password history of current entries"
 msgstr "Håndter adgangskode historik over nuværende poster"
@@ -3870,16 +3970,20 @@ msgid "Minimize after Autotype"
 msgstr "Minimer efter Autoindsæt"
 
 #. Resource IDs: (350)
-msgid "Minimum digit characters"
-msgstr "Minimum tal tegn"
+msgid "Minimum digits"
+msgstr ""
 
 #. Resource IDs: (349)
 msgid "Minimum lowercase characters"
 msgstr "Minimum små tegn"
 
+#. Resource IDs: (349)
+msgid "Minimum password length"
+msgstr ""
+
 #. Resource IDs: (350)
-msgid "Minimum symbol characters"
-msgstr "Minimum symbol tegn"
+msgid "Minimum symbols"
+msgstr ""
 
 #. Resource IDs: (349)
 msgid "Minimum uppercase characters"
@@ -3940,6 +4044,10 @@ msgstr "Navn. Navn. Navn."
 
 #. Resource IDs: (65535)
 msgid "Name:"
+msgstr ""
+
+#. Resource IDs: (1471)
+msgid "Named Policy"
 msgstr ""
 
 #. Resource IDs: (32103)
@@ -4099,6 +4207,10 @@ msgstr "Norwegian with Sami"
 msgid "Not all of the system registry entries (or INI file) were removed."
 msgstr "Ikke alle system registrerings poster (eller INI filen) blev fjernet."
 
+#. Resource IDs: (370)
+msgid "Not used"
+msgstr ""
+
 #. Resource IDs: (3887)
 msgid "Note that if you choose to recover the auto-saved documents, you must explicitly save them to overwrite the original documents.  If you choose to not recover the auto-saved versions, they will be deleted."
 msgstr ""
@@ -4110,6 +4222,10 @@ msgstr "Bemærk: Tomme felter er vist som »*»"
 #. Resource IDs: (33126)
 msgid "Note: Entry format is »Group»Title»Username»"
 msgstr "Bemærk: Post formatet er »Gruppe»Titel»Brugernavn»"
+
+#. Resource IDs: (215)
+msgid "Note: These Password Policies will not replace existing policies with the same name in the current database."
+msgstr ""
 
 #. Resource IDs: (211)
 msgid "Note: These preferences are only used when importing into an empty database."
@@ -4206,6 +4322,10 @@ msgstr "Tændt"
 #. Resource IDs: (359)
 msgid "One of more preferences have been changed. Are you sure you wish to cancel?"
 msgstr "En af flere præferencer er blevet ændret. Er du sikker på du vil afbryde?"
+
+#. Resource IDs: (369)
+msgid "One or more Password Policies have been changed. Are you sure you wish to cancel?"
+msgstr ""
 
 #. Resource IDs: (3887)
 msgid "One or more auto-saved documents were found."
@@ -4348,6 +4468,10 @@ msgstr "Adgangskode Ændret"
 msgid "Password Modified Time"
 msgstr ""
 
+#. Resource IDs: (32159)
+msgid "Password Policies..."
+msgstr ""
+
 #. Resource IDs: (141, 345)
 msgid "Password Policy"
 msgstr "Adgangskode Politik"
@@ -4355,6 +4479,10 @@ msgstr "Adgangskode Politik"
 #. Resource IDs: (351)
 msgid "Password Policy Filter"
 msgstr "Adgangskode Politik Filter"
+
+#. Resource IDs: (193)
+msgid "Password Policy Name"
+msgstr ""
 
 #. Resource IDs: (329)
 msgid "Password Policy Override"
@@ -4428,10 +4556,6 @@ msgstr "Adgangskode længden skal være mellem 4 og 1024."
 #. Resource IDs: (65535)
 msgid "Password length:"
 msgstr "Adgangskode længde:"
-
-#. Resource IDs: (349)
-msgid "Password minimum length"
-msgstr "Adgangskode minimum længde"
 
 #. Resource IDs: (188)
 msgid "Password should be mixed case, with at least one digit or punctuation character"
@@ -4518,14 +4642,14 @@ msgstr "Vælg Venligst et navn til den nye database"
 msgid "Please choose a new name for the current database:"
 msgstr "Vælg Venligst et nyt navn til den nuværende database:"
 
+#. Resource IDs: (353)
+#, c-format
+msgid "Please confirm delete of the %s filter %s?"
+msgstr ""
+
 #. Resource IDs: (331)
 msgid "Please confirm that you wish to delete current user's PasswordSafe configuration information from the Windows registry.\n\n"
 msgstr ""
-
-#. Resource IDs: (353)
-#, c-format
-msgid "Please confirm you wish to delete the %s filter %s?"
-msgstr "Bekræft venligst at du vil slette %s filteret %s?"
 
 #. Resource IDs: (330)
 msgid "Please enter a search string"
@@ -4600,6 +4724,22 @@ msgstr "Specificer venligst under-biblioteket til alle sikkerhedskopier."
 msgid "Please visit the <a href=\"http://pwsafe.org/\">PasswordSafe website.</a>"
 msgstr "Besøg venligst <a href=\"http://pwsafe.org/\">PasswordSafe websiden.</a>"
 
+#. Resource IDs: (368)
+msgid "Policy Name"
+msgstr ""
+
+#. Resource IDs: (369)
+msgid "Policy Name is already in use"
+msgstr ""
+
+#. Resource IDs: (369)
+msgid "Policy Name is blank"
+msgstr ""
+
+#. Resource IDs: (369)
+msgid "Policy field"
+msgstr ""
+
 #. Resource IDs: (519)
 msgid "Polish (214)"
 msgstr "Polish (214)"
@@ -4639,6 +4779,10 @@ msgstr "Programmer (*.exe)|*.exe|Alle filer (*.*)|*.*||"
 #. Resource IDs: (350)
 msgid "Pronounceable passwords"
 msgstr "Udtal-bare adgangskoder"
+
+#. Resource IDs: (370)
+msgid "Pronounceable passwords must contain either lowercase or uppercase characters or both"
+msgstr ""
 
 #. Resource IDs: (136)
 msgid "Properties"
@@ -4758,6 +4902,10 @@ msgstr "Periodisk(%d dage)"
 msgid "Redo"
 msgstr "Sæt tilbage"
 
+#. Resource IDs: (368)
+msgid "Redo the last change to password policies that was previously undone"
+msgstr ""
+
 #. Resource IDs: (1229)
 msgid "Relative"
 msgstr ""
@@ -4810,10 +4958,6 @@ msgstr ""
 #. Resource IDs: (356)
 msgid "Required Unicode font is not installed on this system.\n\nUnable to provide Virtual Keyboard."
 msgstr "Krævet Unicode skrift er ikke installeret på dette system.\n\nUde af stand til at tilvejebringe Virtuelt Tastatur."
-
-#. Resource IDs: (1377)
-msgid "Rese&t to Database Defaults"
-msgstr "Nulsti&l til Database Standarter"
 
 #. Resource IDs: (356)
 #, c-format
@@ -4979,6 +5123,10 @@ msgstr "Gem Som"
 msgid "Save Error"
 msgstr "Fejl ved Gem"
 
+#. Resource IDs: (368)
+msgid "Save all changes to Password Policies"
+msgstr ""
+
 #. Resource IDs: (3857)
 #, c-format
 msgid "Save changes to %1?"
@@ -5085,6 +5233,10 @@ msgstr "Valgte Felter:"
 #. Resource IDs: (65535)
 msgid "Selected filter details:"
 msgstr "Valgt filters detaljer:"
+
+#. Resource IDs: (1468)
+msgid "Selected policy details:"
+msgstr ""
 
 #. Resource IDs: (1380)
 msgid "Send"
@@ -5503,6 +5655,10 @@ msgstr "Tatar"
 msgid "Telugu"
 msgstr "Telugu"
 
+#. Resource IDs: (65535)
+msgid "Test Selected Policy"
+msgstr ""
+
 #. Resource IDs: (347)
 msgid "Text"
 msgstr "Tekst"
@@ -5617,6 +5773,11 @@ msgstr "De følgende kolonner blev genkendt men kun Gruppe/Titel, Brugernavn og 
 #. Resource IDs: (204)
 msgid "The following columns will be processed: "
 msgstr "De følgende kolonner vil blive behandlet: "
+
+#. Resource IDs: (215)
+#, c-format
+msgid "The following entries had a policy name that already existed in this database but with different settings.\r\nA new named policy has been created with the current date/time (%s) appended:%s"
+msgstr ""
 
 #. Resource IDs: (205)
 msgid "The following entries had an invalid Password History.  This has been rebuilt with available data.  There may be some loss of history."
@@ -6012,6 +6173,10 @@ msgstr "Fjern tjektegn"
 msgid "Undo"
 msgstr "Omgør"
 
+#. Resource IDs: (368)
+msgid "Undo the last change to password policies"
+msgstr ""
+
 #. Resource IDs: (3859)
 msgid "Unexpected file format."
 msgstr "Uventet fil format."
@@ -6122,17 +6287,37 @@ msgstr "Brug &Symboler (i.e., &, %, $, o.s.v.)"
 msgid "Use &UPPERCASE letters"
 msgstr "Brug &STORE bogstaver"
 
-#. Resource IDs: (1375)
-msgid "Use Database De&faults"
-msgstr "Brug Database Stan&darter"
+#. Resource IDs: (1465)
+msgid "Use Database Policy"
+msgstr ""
 
 #. Resource IDs: (1378)
 msgid "Use Default"
 msgstr "Brug Standart"
 
+#. Resource IDs: (1470)
+msgid "Use Named Policy"
+msgstr ""
+
+#. Resource IDs: (369)
+msgid "Use count"
+msgstr ""
+
+#. Resource IDs: (369)
+msgid "Use digits"
+msgstr ""
+
+#. Resource IDs: (369)
+msgid "Use lowercase characters"
+msgstr ""
+
 #. Resource IDs: (1051)
 msgid "Use only &Easy-to-read characters (i.e., no  'l', '1', etc.)"
 msgstr "Brug kun &let læselige tegn (d.v.s., ingen  'l', '1', o.s.v.)"
+
+#. Resource IDs: (369)
+msgid "Use symbols"
+msgstr ""
 
 #. Resource IDs: (1376)
 msgid "Use the P&olicy below:"
@@ -6145,6 +6330,10 @@ msgstr "Brug programmet specificeret her til at gennemse når en adgangs URL fel
 #. Resource IDs: (320)
 msgid "Use the application specified here to edit an entry's Notes field via the right-click context menu during Add/Edit."
 msgstr "Brug programmet specificeret her til at redigere en adgsngs Notat felt via højre-kliks kontekst menuen under Tilføj/Rediger."
+
+#. Resource IDs: (369)
+msgid "Use uppercase characters"
+msgstr ""
 
 #. Resource IDs: (327)
 msgid "User Name"
@@ -6182,6 +6371,10 @@ msgstr "Vurder"
 #, c-format
 msgid "Validated %d %s\r\n\r\nImported %d %s"
 msgstr "Vurderede %d %s\r\n\r\nImporterede %d %s"
+
+#. Resource IDs: (369)
+msgid "Value"
+msgstr ""
 
 #. Resource IDs: (1322)
 msgid "Value:"
@@ -6369,6 +6562,26 @@ msgstr "YYMMDD_HHMMSS"
 msgid "Yes"
 msgstr "Ja"
 
+#. Resource IDs: (369)
+#, c-format
+msgid "Yes (at least %d)"
+msgstr ""
+
+#. Resource IDs: (370)
+#, c-format
+msgid "Yes - At least %d from %s: %s"
+msgstr ""
+
+#. Resource IDs: (369)
+#, c-format
+msgid "Yes - EasyVision Symbols: %s"
+msgstr ""
+
+#. Resource IDs: (369)
+#, c-format
+msgid "Yes - Pronounceable Symbols: %s"
+msgstr ""
+
 #. Resource IDs: (1084)
 msgid "Yes:"
 msgstr "Ja:"
@@ -6391,8 +6604,8 @@ msgstr ""
 
 #. Resource IDs: (357)
 #, c-format
-msgid "Your requested font '%s' is not installed on this system, using '%s' instead."
-msgstr "Den ønskede skrift '%s' er ikke installeret på dette system, brug '%s' istedet."
+msgid "Your requested font, '%s', could not be found (not installed?), using '%s' instead."
+msgstr ""
 
 #. Resource IDs: (330)
 msgid "[No current database]"
@@ -6759,6 +6972,19 @@ msgstr "\tGruppe='%s', Titel='%s', Bruger='%s' %s"
 msgid "\tNo entries were found containing search string '%s'"
 msgstr ""
 
+#. Resource IDs: (215)
+msgid "\tOne or more Password Policy Names were already in this database but had different settings. They have been renamed."
+msgstr ""
+
+#. Resource IDs: (215)
+msgid "\tOne or more Password Policy Names were not found in the database. The affected entries have been changed to use the database's default policy."
+msgstr ""
+
+#. Resource IDs: (215)
+#, c-format
+msgid "\tPassword policy name '%s' is not in the database."
+msgstr ""
+
 #. Resource IDs: (347)
 #, c-format
 msgid "\tThe following entries contain search string '%s'"
@@ -6892,6 +7118,10 @@ msgstr "dage"
 #. Resource IDs: (65535)
 msgid "days before passwords expire"
 msgstr "dage før adgangskode udløber"
+
+#. Resource IDs: (369)
+msgid "default symbol set"
+msgstr ""
 
 #. Resource IDs: (206)
 msgid "does not begin with"
@@ -7089,6 +7319,10 @@ msgstr "på linie"
 msgid "pixels"
 msgstr "pixels"
 
+#. Resource IDs: (369)
+msgid "policy specific symbols"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "previous passwords per entry"
 msgstr "tidligere adgangskoder pr post"
@@ -7123,10 +7357,6 @@ msgstr ""
 #, c-format
 msgid "subset: '%s' field '%s' '%s' %s"
 msgstr "delmængde: '%s' felt '%s' '%s' %s"
-
-#. Resource IDs: (366)
-msgid "symbols"
-msgstr ""
 
 #. Resource IDs: (366)
 msgid "synchronized"
