@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+ * Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -167,7 +167,7 @@ void CAbout::CreateControls()
   wxStaticText* itemStaticText13 = new wxStaticText( itemDialog1, wxID_STATIC, _("See LICENSE for open souce details."), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT );
   itemBoxSizer4->Add(itemStaticText13, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxStaticText* itemStaticText14 = new wxStaticText( itemDialog1, wxID_STATIC, _("Copyright (c) 2003-2011 by Rony Shapiro"), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT );
+  wxStaticText* itemStaticText14 = new wxStaticText( itemDialog1, wxID_STATIC, _("Copyright (c) 2003-2012 by Rony Shapiro"), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT );
   itemBoxSizer4->Add(itemStaticText14, 0, wxALIGN_LEFT|wxALL, 5);
 
   m_newVerStatus = new wxTextCtrl( itemDialog1, ID_TEXTCTRL, wxEmptyString, wxDefaultPosition, wxSize(itemDialog1->ConvertDialogToPixels(wxSize(120, -1)).x, -1), wxTE_READONLY|wxNO_BORDER );
