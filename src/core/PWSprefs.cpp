@@ -311,13 +311,13 @@ StringX PWSprefs::GetAllStringPrefs()
 
   TCHAR delim;
   const TCHAR Delimiters[] = _T("\"\'#?!%&*+=:;@~<>?,.{}[]()\xab\xbb");
-  const int NumDelimiters = sizeof(Delimiters) / sizeof(Delimiters[0]) - 1;
+  const size_t NumDelimiters = sizeof(Delimiters) / sizeof(Delimiters[0]) - 1;
 
   oStringXStream osxs;
-  for (int i = 0; i < sizeof(SafeStringPrefs) / sizeof(SafeStringPrefs[0]); i++) {
+  for (size_t i = 0; i < sizeof(SafeStringPrefs) / sizeof(SafeStringPrefs[0]); i++) {
     const int k = SafeStringPrefs[i];
     delim = _T(' ');
-    for (int j = 0; j < NumDelimiters; j++) {
+    for (size_t j = 0; j < NumDelimiters; j++) {
       if (m_stringValues[k].find(Delimiters[j]) == StringX::npos) {
         delim = Delimiters[j];
         break;

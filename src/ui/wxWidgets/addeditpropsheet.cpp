@@ -1102,7 +1102,7 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
       (void)CreatePWHistoryList(tostringx(m_PWHistory), pwh_max, num_err, pwhl, TMC_LOCALE);
 
       // Create a new PWHistory header, as per settings in this dialog
-      size_t numEntries = MIN(pwhl.size(), m_maxPWHist);
+      size_t numEntries = MIN(pwhl.size(), static_cast<size_t>(m_maxPWHist));
       m_PWHistory = towxstring(MakePWHistoryHeader(m_keepPWHist, m_maxPWHist, numEntries));
       //reverse-sort the history entries to retain only the newest
       std::sort(pwhl.begin(), pwhl.end(), newer());
