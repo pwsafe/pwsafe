@@ -165,7 +165,7 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 // Compare Entry menu
 #define ID_MENUITEM_COMPVIEWEDIT        32220
 #define ID_MENUITEM_COPY_TO_ORIGINAL    32221
-#define ID_MENUITEM_COPY_TO_COMPARISON  32222
+#define ID_MENUITEM_COPY_TO_COMPARISON  32222 // obsolete: can't modify comparison DB
 
 // System Tray Menu
 #define ID_MENUITEM_TRAYLOCK            32250

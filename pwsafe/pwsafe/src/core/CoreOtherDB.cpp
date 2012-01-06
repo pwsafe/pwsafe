@@ -94,6 +94,7 @@ void PWScore::Compare(PWScore *pothercore,
   for (currentPos = GetEntryIter();
        currentPos != GetEntryEndIter();
        currentPos++) {
+    st_data.Empty();
     CItemData currentItem = GetEntry(currentPos);
 
     if (!subgroup_bset ||
@@ -217,7 +218,6 @@ void PWScore::Compare(PWScore *pothercore,
             currentItem.GetSymbols() != compItem.GetSymbols())
           bsConflicts.flip(CItemData::SYMBOLS);
 
-
         st_data.uuid0 = currentPos->first;
         st_data.uuid1 = foundPos->first;
         st_data.bsDiffs = bsConflicts;
@@ -254,6 +254,7 @@ void PWScore::Compare(PWScore *pothercore,
   for (compPos = pothercore->GetEntryIter();
        compPos != pothercore->GetEntryEndIter();
        compPos++) {
+    st_data.Empty();
     CItemData compItem = pothercore->GetEntry(compPos);
 
     if (!subgroup_bset ||

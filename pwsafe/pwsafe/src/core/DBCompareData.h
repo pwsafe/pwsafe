@@ -57,7 +57,15 @@ struct st_CompareData {
     }
     return *this;
   }
-    
+
+  void Empty() {
+    uuid0 = uuid1 = pws_os::CUUID::NullUUID();
+    bsDiffs = 0;
+    group = title = user = _T("");
+    id = indatabase = listindex =0;
+    unknflds0 = unknflds1 = bIsProtected0 = false;
+  }
+
   operator int() {return id;}
     
   pws_os::CUUID uuid0;  // original DB

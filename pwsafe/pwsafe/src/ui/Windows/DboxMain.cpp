@@ -699,7 +699,6 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   // Compare popup menu
   {ID_MENUITEM_COMPVIEWEDIT, true, false, true, false},
   {ID_MENUITEM_COPY_TO_ORIGINAL, true, false, true, false},
-  {ID_MENUITEM_COPY_TO_COMPARISON, true, true, true, false},
   // Tray popup menu
   {ID_MENUITEM_TRAYUNLOCK, true, true, true, false},
   {ID_MENUITEM_TRAYLOCK, true, true, true, false},

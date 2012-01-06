@@ -37,6 +37,8 @@ the status bar. Also, Filter Menu correctly changed when a filter is active.
 [3435869] '-g config_file' option now accepts a non-existing file,
 creating it after notfying the user.
 [3430196] Buttons in the Options property pages now retain the user's Windows theme.
+[] Fix inability to copy entries to the original database in the Compare database results
+dialog.
 [] Thanks to Jon F. for proofreading the online help.
 
 New Features for 3.27
