@@ -223,7 +223,9 @@ int DboxMain::RestoreSafe()
   // clear the data before restoring
   ClearData();
 
-  rc = m_core.ReadFile(backup, passkey, MAXTEXTCHARS);
+  // Validate it unless user says NO
+  CReport Rpt;
+  rc = m_core.ReadFile(backup, passkey, !m_bNoValidation, MAXTEXTCHARS, &Rpt);
   if (rc == PWScore::CANT_OPEN_FILE) {
     cs_temp.Format(IDS_CANTOPENREADING, backup);
     cs_title.LoadString(IDS_FILEREADERROR);
@@ -246,23 +248,23 @@ int DboxMain::RestoreSafe()
 void DboxMain::OnValidate() 
 {
   CGeneralMsgBox gmb;
-  if (!m_bValidate) {
-    // We didn't get here via command line flag - so must be via the menu
-    int rc = Open(IDS_CHOOSEDATABASEV);
-    if (rc != PWScore::SUCCESS)
-      return;
-  }
+
+  if (Open(IDS_CHOOSEDATABASEV) != PWScore::SUCCESS)
+    return;
 
   CReport rpt;
   std::wstring cs_title;
   LoadAString(cs_title, IDS_RPTVALIDATE);
   rpt.StartReport(cs_title.c_str(), m_core.GetCurFile().c_str());
 
+  st_ValidateResults st_vr;
+  bool bchanged = m_core.Validate(MAXTEXTCHARS, false,  &rpt, st_vr);
+
   std::wstring cs_msg;
-  bool bchanged = m_core.Validate(cs_msg, rpt, MAXTEXTCHARS);
   if (!bchanged)
-    LoadAString(cs_msg, IDS_VALIDATEOK);
+    LoadAString(cs_msg, IDS_VALIDATE_OK);
   else {
+    LoadAString(cs_msg, IDS_VALIDATE_ISSUES);
     SetChanged(Data);
     ChangeOkUpdate();
   }

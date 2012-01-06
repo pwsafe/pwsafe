@@ -759,6 +759,11 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
            * State of m_bSetup is accessible via public IsSetup() member function
            */
           dbox.SetSetup();
+        } else if ((*arg) == L"--voff") {
+          /**
+           * '--voff' prevents SOME of validation during open
+           */
+          dbox.NoValidation();
         } else {
           // unrecognized extended flag. Silently ignore.
         }
@@ -827,7 +832,7 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
           dbox.SetStartSilent(true);
           break;
         case L'V': case L'v':
-          dbox.SetValidate(true);
+          // Obsolete - databases are always validated during opening unless --voff specified
           break;
         case L'U': case L'u': // set effective user
           // ensure there's another non-flag argument

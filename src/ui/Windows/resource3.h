@@ -215,7 +215,7 @@
 #define IDS_PICKBACKUP                  5375
 #define IDS_PICKRESTORE                 5376
 #define IDS_UNTITLEDRESTORE             5377
-#define IDS_VALIDATEOK                  5378
+#define IDS_VALIDATE_OK                 5378
 #define IDS_FAILEDSAVEPREF              5379
 #define IDS_FAILEDSAVEPREFRO            5380
 #define IDS_ENTRIESCHANGEDSTOP          5381
@@ -720,3 +720,4 @@
 #define IDS_CLICKTOCOPYGENPSWD          5917
 #define IDS_PR_MUSTHAVECHARACTERS       5918
 #define IDS_OWNSYMBOLSMISSING           5919
+#define IDS_VALIDATE_ISSUES             5920

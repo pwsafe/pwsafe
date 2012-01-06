@@ -25,6 +25,7 @@ now are in the W3C dateTime standard format instead of PasswordSafe's.  This rel
 can nolonger import XML files with date time fields in the old PasswordSafe's forms.
 See Help file (the XML section of "Import Password Entries") on how to manually change
 the XML file exported prior to V3.26 to allow it to be successfully imported in this release.
+[] Databases are always validated on opening.
 
 Bugs fixed in 3.27.1
 ====================
