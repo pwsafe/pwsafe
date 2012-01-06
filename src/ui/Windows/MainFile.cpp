@@ -2778,10 +2778,6 @@ LRESULT DboxMain::OnProcessCompareResultFunction(WPARAM wParam, LPARAM lFunction
       lres = CopyCompareResult(st_info->pcore1, st_info->pcore0,
                                st_info->uuid1, st_info->uuid0);
       break;
-    case CCompareResultsDlg::COPY_TO_COMPARISONDB:
-      lres = CopyCompareResult(st_info->pcore0, st_info->pcore1,
-                               st_info->uuid0, st_info->uuid1);
-      break;
     case CCompareResultsDlg::SYNCH:
       lres = SynchCompareResult(st_info->pcore1, st_info->pcore0,
                                 st_info->uuid1, st_info->uuid0);

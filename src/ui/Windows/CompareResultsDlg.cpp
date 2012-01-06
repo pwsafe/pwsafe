@@ -83,7 +83,6 @@ BEGIN_MESSAGE_MAP(CCompareResultsDlg, CPWResizeDialog)
   ON_COMMAND(ID_MENUITEM_COMPVIEWEDIT, OnCompareViewEdit)
   ON_COMMAND(ID_MENUITEM_SYNCHRONIZE, OnCompareSynchronize)
   ON_COMMAND(ID_MENUITEM_COPY_TO_ORIGINAL, OnCompareCopyToOriginalDB)
-  ON_COMMAND(ID_MENUITEM_COPY_TO_COMPARISON, OnCompareCopyToComparisonDB)
 END_MESSAGE_MAP()
 
 BOOL CCompareResultsDlg::OnInitDialog()
@@ -453,23 +452,8 @@ bool CCompareResultsDlg::ProcessFunction(const int ifunction, st_CompareData *ps
           buffer.Format(IDS_COPYENTRY,cs_tmp, group, title, user);
           m_pRpt->WriteLine((LPCWSTR)buffer);
           break;
-        case CCompareResultsDlg::COPY_TO_COMPARISONDB:
-          // UUID of copied entry returned - now update data
-          pst_data->uuid1 = pst_info->uuid1;
-
-          pos = m_pcore0->Find(pst_info->uuid0);
-          ASSERT(pos != m_pcore0->GetEntryEndIter());
-
-          group = pos->second.GetGroup();
-          title = pos->second.GetTitle();
-          user = pos->second.GetUser();
-          cs_tmp.LoadString(IDS_COMPARISONDB);
-          buffer.Format(IDS_COPYENTRY, cs_tmp, group, title, user);
-          m_pRpt->WriteLine((LPCWSTR)buffer);
-          break;
         case CCompareResultsDlg::EDIT:
         case CCompareResultsDlg::VIEW:
-          break;
         case CCompareResultsDlg::SYNCH:
           break;
         default:
@@ -573,25 +557,10 @@ void CCompareResultsDlg::OnCompareCopyToOriginalDB()
   if (m_bOriginalDBReadOnly)
     return;
 
-  if (CopyLeftOrRight(true))
-    m_OriginalDBChanged = true;
-}
-
-void CCompareResultsDlg::OnCompareCopyToComparisonDB()
-{
-  if (m_bComparisonDBReadOnly)
-    return;
-
-  if (CopyLeftOrRight(false))
-    m_ComparisonDBChanged = true;
-}
-
-bool CCompareResultsDlg::CopyLeftOrRight(const bool bCopyLeft)
-{
   // Check not already copied one way or another
   CString cs_text = m_LCResults.GetItemText(m_row, m_column);
   if (cs_text.Compare(L"=") == 0)
-    return false;
+    return;
 
   CGeneralMsgBox gmb;
   CString cs_msg;
@@ -599,20 +568,16 @@ bool CCompareResultsDlg::CopyLeftOrRight(const bool bCopyLeft)
 
   const CString cs_originaldb(MAKEINTRESOURCE(IDS_ORIGINALDB));
   const CString cs_comparisondb(MAKEINTRESOURCE(IDS_COMPARISONDB));
-  if (bCopyLeft) {
-    cs_msg.Format(IDS_COPYLEFTRIGHT, cs_comparisondb, cs_originaldb);
-    ifunction = COPY_TO_ORIGINALDB;
-  } else {
-    cs_msg.Format(IDS_COPYLEFTRIGHT, cs_originaldb, cs_comparisondb);
-    ifunction = COPY_TO_COMPARISONDB;
-  }
+
+  cs_msg.Format(IDS_COPYLEFTRIGHT, cs_comparisondb, cs_originaldb);
+  ifunction = COPY_TO_ORIGINALDB;
 
   if (cs_text.Right(1) == L"*")
     cs_msg += CString(MAKEINTRESOURCE(IDS_COPYUNKNOWNFIELDS));
 
   if (gmb.AfxMessageBox(cs_msg, NULL,
                         MB_YESNO | MB_ICONWARNING | MB_DEFBUTTON2) != IDYES)
-    return false;
+    return;
 
   LRESULT lres(FALSE);
   DWORD_PTR dwItemData = m_LCResults.GetItemData(m_row);
@@ -623,10 +588,10 @@ bool CCompareResultsDlg::CopyLeftOrRight(const bool bCopyLeft)
   if (m_column == indatabase || indatabase == BOTH) {
     lres = ProcessFunction(ifunction, pst_data);
   } else
-    return false;
+    return;
 
   if (lres != TRUE)
-    return false;
+    return;
 
   if (pst_data->unknflds0)
     m_LCResults.SetItemText(m_row, CURRENT, L"=*");
@@ -673,6 +638,7 @@ bool CCompareResultsDlg::CopyLeftOrRight(const bool bCopyLeft)
     default:
       ASSERT(0);
   }
+
   m_numIdentical++;
   st_newdata.id = static_cast<int>(m_numIdentical);
   st_newdata.indatabase = IDENTICAL;
@@ -680,7 +646,8 @@ bool CCompareResultsDlg::CopyLeftOrRight(const bool bCopyLeft)
   m_LCResults.SetItemData(m_row, MAKELONG(IDENTICAL, st_newdata.id));
   UpdateStatusBar();
 
-  return true;
+  m_OriginalDBChanged = true;
+  return;
 }
 
 void CCompareResultsDlg::OnItemDoubleClick(NMHDR *, LRESULT *pLResult)
@@ -725,11 +692,15 @@ void CCompareResultsDlg::OnItemRightClick(NMHDR *, LRESULT *pLResult)
   colwidth0 = m_LCResults.GetColumnWidth(0);
 
   if (client_pt.x <= colwidth0) {
+    // Column is the current database
+    // Therefore: Source = Current DB, Target = Comparison DB
     m_column = CURRENT;
     ipopup = IDR_POPEDITVIEWORIGINAL;
     bTargetRO = m_bComparisonDBReadOnly;
     bSourceRO = m_bOriginalDBReadOnly;
   } else if  (client_pt.x <= (colwidth0 + m_LCResults.GetColumnWidth(1))) {
+    // Column is the comparison database
+    // Therefore: Source = Comparison DB, Target = Current DB
     m_column = COMPARE;
     ipopup = IDR_POPCOPYTOORIGINAL;
     bTargetRO = m_bOriginalDBReadOnly;
@@ -741,9 +712,15 @@ void CCompareResultsDlg::OnItemRightClick(NMHDR *, LRESULT *pLResult)
   st_CompareData *pst_data = GetCompareData(dwItemData);
   ASSERT(pst_data != NULL);
 
+  // Get where this entry is:
+  // IDENTICAL means CURRENT + COMPARE but identical
+  // BOTH      means CURRENT + COMPARE but with differences
   int indatabase = pst_data->indatabase;
+
+  // If entry isn't in this database that the user click or the entry is only
+  // in the other column - do nothing
   if (m_column != indatabase && 
-    (indatabase != BOTH && indatabase != IDENTICAL))
+      (indatabase != BOTH && indatabase != IDENTICAL))
     return;
 
   CMenu menu;
@@ -762,15 +739,23 @@ void CCompareResultsDlg::OnItemRightClick(NMHDR *, LRESULT *pLResult)
     // Disable copy/sychnronize if target is read-only or entry is protected
     // Delete synchronize if not in both databases (and not already identical)
     if (m_column == COMPARE) {
-      if (bTargetRO || pst_data->bIsProtected0) {
+      // User clicked on Comparison DB
+      if (bTargetRO) {
+        // Can't modify RO DB
         pPopup->RemoveMenu(ID_MENUITEM_COPY_TO_ORIGINAL, MF_BYCOMMAND);
         pPopup->RemoveMenu(ID_MENUITEM_SYNCHRONIZE, MF_BYCOMMAND);
+      } else {
+        // If it is in the current DB (i.e. BOTH as we know it is in the compare
+        // column as the user has clicked on it) and is protected - don't allow copy
+        if (indatabase == BOTH || pst_data->bIsProtected0)
+          pPopup->RemoveMenu(ID_MENUITEM_COPY_TO_ORIGINAL, MF_BYCOMMAND);
       }
+      // Can't synchonize if not in both databases!
       if (indatabase != BOTH)
         pPopup->RemoveMenu(ID_MENUITEM_SYNCHRONIZE, MF_BYCOMMAND);
     }
 
-    // Disable edit if source read-only OR entry is protected OR if Comparison DB
+    // Change Edit to View if source read-only OR entry is protected OR if Comparison DB
     if (bSourceRO || pst_data->bIsProtected0) {
       const CString cs_View_Entry(MAKEINTRESOURCE(IDS_VIEWENTRY2));
       pPopup->ModifyMenu(ID_MENUITEM_COMPVIEWEDIT, MF_BYCOMMAND,
