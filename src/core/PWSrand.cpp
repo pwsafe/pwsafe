@@ -135,9 +135,12 @@ unsigned int PWSrand::RandUInt()
 */
 unsigned int PWSrand::RangeRand(size_t len)
 {
-  unsigned int      r;
-  const size_t ceil = UINT_MAX - (UINT_MAX % len) - 1;
-  while ((r = RandUInt()) > ceil)
-    ;
-  return(r%len);
+  if (len != 0) {
+    unsigned int      r;
+    const size_t ceil = UINT_MAX - (UINT_MAX % len) - 1;
+    while ((r = RandUInt()) > ceil)
+      ;
+    return(r%len);
+  } else
+    return 0;
 }
