@@ -341,7 +341,7 @@ msgstr "%d z %d jest identycznych."
 #. Resource IDs: (215)
 #, c-format
 msgid "%s  - Imported %s"
-msgstr ""
+msgstr "%s  - Zaimportowano %s"
 
 #. Resource IDs: (366)
 #, c-format
@@ -351,12 +351,12 @@ msgstr "%s (specyficzny dla bazy danych)"
 #. Resource IDs: (370)
 #, c-format
 msgid "%s - Drag & Drop %s"
-msgstr ""
+msgstr "%s - Przesuń i upuść %s"
 
 #. Resource IDs: (215)
 #, c-format
 msgid "%s - Merged %s"
-msgstr ""
+msgstr "%s - Połączony %s"
 
 #. Resource IDs: (3887)
 #, c-format
@@ -655,7 +655,7 @@ msgstr "Zachowaj"
 
 #. Resource IDs: (1462)
 msgid "&List"
-msgstr ""
+msgstr "&Lista"
 
 #. Resource IDs: (32150)
 msgid "&Manage"
@@ -1261,7 +1261,7 @@ msgstr "Zostanie utworzona nowa baza danych szyfrowana hasłem. Hasło może zaw
 
 #. Resource IDs: (367)
 msgid "A red and white indicator means that a filter is active\r\n(if showing, double click to clear filter)"
-msgstr ""
+msgstr "Czerwony i biały znacznik oznacza, że filtr jest aktywny\r\n(jeśli pokazany, dwukliknij by wyczyścić)"
 
 #. Resource IDs: (3843)
 msgid "A required resource was unavailable."
@@ -1901,7 +1901,7 @@ msgstr "Kliknij by zmienić wielkość liter."
 
 #. Resource IDs: (370)
 msgid "Click to copy generated password to clipboard"
-msgstr ""
+msgstr "Kliknij by skopiować stworzone hasło do schowka"
 
 #. Resource IDs: (353)
 msgid "Click to copy to clipboard"
@@ -2454,7 +2454,7 @@ msgstr "Folder docelowy nie istnieje lub jest niedostępny."
 
 #. Resource IDs: (370)
 msgid "Details"
-msgstr ""
+msgstr "Szczegóły"
 
 #. Resource IDs: (329)
 #, c-format
@@ -2580,7 +2580,7 @@ msgstr "Podwójne kliknięcie"
 
 #. Resource IDs: (370)
 msgid "Double-click an entry to Edit/View it"
-msgstr ""
+msgstr "Dwukliknij wpis by go edytować lub przeglądać"
 
 #. Resource IDs: (366)
 msgid "Doubleclick action for current entry"
@@ -3218,7 +3218,7 @@ msgstr "Celtycki"
 
 #. Resource IDs: (1025)
 msgid "Generate"
-msgstr ""
+msgstr "Twórz"
 
 #. Resource IDs: (32157)
 msgid "Generate &Password"
@@ -4028,7 +4028,7 @@ msgstr "Zminimalizuj po autouzupełnieniu"
 
 #. Resource IDs: (350)
 msgid "Minimum digits"
-msgstr ""
+msgstr "Minimalna liczba cyfr"
 
 #. Resource IDs: (349)
 msgid "Minimum lowercase characters"
@@ -4036,11 +4036,11 @@ msgstr "Minimalna liczba znaków zawierających małe litery"
 
 #. Resource IDs: (349)
 msgid "Minimum password length"
-msgstr ""
+msgstr "Minimalna długość hasła"
 
 #. Resource IDs: (350)
 msgid "Minimum symbols"
-msgstr ""
+msgstr "Minimalna liczba symboli"
 
 #. Resource IDs: (349)
 msgid "Minimum uppercase characters"
@@ -4274,7 +4274,7 @@ msgstr "Nie wszystkie wpisy w rejestrze (lub pliku INI) zostały usunięte."
 
 #. Resource IDs: (370)
 msgid "Not used"
-msgstr ""
+msgstr "Nie użyty"
 
 #. Resource IDs: (3887)
 msgid "Note that if you choose to recover the auto-saved documents, you must explicitly save them to overwrite the original documents.  If you choose to not recover the auto-saved versions, they will be deleted."
@@ -4719,7 +4719,7 @@ msgstr "Wybierz nową nazwę dla bieżącej bazy danych:"
 #. Resource IDs: (353)
 #, c-format
 msgid "Please confirm delete of the %s filter %s?"
-msgstr ""
+msgstr "Proszę potwierdzić usunięcie %s filtra %s"
 
 #. Resource IDs: (331)
 msgid "Please confirm that you wish to delete current user's PasswordSafe configuration information from the Windows registry.\n\n"
@@ -4859,7 +4859,7 @@ msgstr "Hasła łatwe do wymówienia"
 
 #. Resource IDs: (370)
 msgid "Pronounceable passwords must contain either lowercase or uppercase characters or both"
-msgstr ""
+msgstr "Hasła wymiawialne muszą zawierać małe lub duże litery"
 
 #. Resource IDs: (136)
 msgid "Properties"
@@ -6393,15 +6393,15 @@ msgstr ""
 
 #. Resource IDs: (369)
 msgid "Use count"
-msgstr ""
+msgstr "Liczba użyć"
 
 #. Resource IDs: (369)
 msgid "Use digits"
-msgstr ""
+msgstr "Użyć cyfr"
 
 #. Resource IDs: (369)
 msgid "Use lowercase characters"
-msgstr ""
+msgstr "Użyć małych liter"
 
 #. Resource IDs: (1051)
 msgid "Use only &Easy-to-read characters (i.e., no  'l', '1', etc.)"
@@ -6409,7 +6409,7 @@ msgstr "Użyj tylko łatwych-do-czytania znaków (np. b&ez  'l', '1', itp.)"
 
 #. Resource IDs: (369)
 msgid "Use symbols"
-msgstr ""
+msgstr "Użyć symboli"
 
 #. Resource IDs: (1376)
 msgid "Use the P&olicy below:"
@@ -6426,7 +6426,7 @@ msgstr "Użyj aplikacji wskazanej tu by edytować notatkę dla wpisu przez menu 
 
 #. Resource IDs: (369)
 msgid "Use uppercase characters"
-msgstr ""
+msgstr "Użyć dużych liter"
 
 #. Resource IDs: (327)
 msgid "User Name"
@@ -6467,7 +6467,7 @@ msgstr "Potwierdzone %d %s\r\n\r\nZaimportowane %d %s"
 
 #. Resource IDs: (369)
 msgid "Value"
-msgstr ""
+msgstr "Wartość"
 
 #. Resource IDs: (1322)
 msgid "Value:"
@@ -6660,22 +6660,22 @@ msgstr "Tak"
 #. Resource IDs: (369)
 #, c-format
 msgid "Yes (at least %d)"
-msgstr ""
+msgstr "Tak (co najmniej %d)"
 
 #. Resource IDs: (370)
 #, c-format
 msgid "Yes - At least %d from %s: %s"
-msgstr ""
+msgstr "Tak - co najwyżej %d z %s: %s"
 
 #. Resource IDs: (369)
 #, c-format
 msgid "Yes - EasyVision Symbols: %s"
-msgstr ""
+msgstr "Tak - symbole EasyVision: %s"
 
 #. Resource IDs: (369)
 #, c-format
 msgid "Yes - Pronounceable Symbols: %s"
-msgstr ""
+msgstr "Tak - wymiawialne symbole: %s"
 
 #. Resource IDs: (1084)
 msgid "Yes:"
@@ -6700,7 +6700,7 @@ msgstr "Twoja aktualnie otwarta baza danych będzie w pierwszym rzędzie.  Kopia
 #. Resource IDs: (357)
 #, c-format
 msgid "Your requested font, '%s', could not be found (not installed?), using '%s' instead."
-msgstr ""
+msgstr "Zażądany font '%s' nie został znaleziony (brak instalacji?), użycie '%s' w zastępstwie.
 
 #. Resource IDs: (330)
 msgid "[No current database]"
@@ -7228,7 +7228,7 @@ msgstr "dni zanim hasło wygaśnie"
 
 #. Resource IDs: (369)
 msgid "default symbol set"
-msgstr ""
+msgstr "domyślny zestaw symboli"
 
 #. Resource IDs: (206)
 msgid "does not begin with"
