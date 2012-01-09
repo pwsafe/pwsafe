@@ -20,7 +20,6 @@
 #include "AboutDlg.h"
 #include "PwFont.h"
 #include "MFCMessages.h"
-#include "version.h"
 
 #include "DboxMain.h"
 #include "TryAgainDlg.h"
@@ -1693,22 +1692,6 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
                                    index, bReadOnly || bFileIsReadOnly,
                                    bFileIsReadOnly || bForceReadOnly,
                                    bHideReadOnly);
-
-  int nMajor(0), nMinor(0), nBuild(0);
-  DWORD dwMajorMinor = app.GetFileVersionMajorMinor();
-  DWORD dwBuildRevision = app.GetFileVersionBuildRevision();
-
-  if (dwMajorMinor > 0) {
-    nMajor = HIWORD(dwMajorMinor);
-    nMinor = LOWORD(dwMajorMinor);
-    nBuild = HIWORD(dwBuildRevision);
-  }
-  if (nBuild == 0)
-    dbox_pkentry->m_appversion.Format(L"Version %d.%02d%s",
-                                      nMajor, nMinor, SPECIAL_BUILD);
-  else
-    dbox_pkentry->m_appversion.Format(L"Version %d.%02d.%02d%s",
-                                      nMajor, nMinor, nBuild, SPECIAL_BUILD);
 
   // Ensure blank DboxMain dialog is not shown if user double-clicks
   // on SystemTray icon when being prompted for passphrase

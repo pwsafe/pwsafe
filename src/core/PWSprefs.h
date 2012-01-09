@@ -49,7 +49,6 @@ class CXMLprefs;
 class PWSprefs
 {
 public:
-
   enum ConfigOption {CF_NONE = 0, CF_REGISTRY,
                      CF_FILE_RO, CF_FILE_RW, CF_FILE_RW_NEW};
 

@@ -17,6 +17,7 @@ down the streetsky.  [Groucho Marx]
 #include "PWFileDialog.h"
 #include "ThisMfcApp.h"
 #include "GeneralMsgBox.h"
+#include "PWSversion.h"
 
 #include "core/PwsPlatform.h"
 #include "core/Pwsdirs.h"
@@ -89,6 +90,17 @@ CPasskeyEntry::CPasskeyEntry(CWnd* pParent, const CString& a_filespec, int index
   m_pctlPasskey = new CSecEditExtn;
   if (pws_os::getenv("PWS_PW_MODE", false) == L"NORMAL")
     m_pctlPasskey->SetSecure(false);
+
+  PWSversion *pPWSver = PWSversion::GetInstance();
+  int nMajor = pPWSver->GetMajor();
+  int nMinor = pPWSver->GetMinor();
+  int nBuild = pPWSver->GetBuild();
+  CString csSpecialBuild = pPWSver->GetSpecialBuild();
+
+  if (nBuild == 0)
+    m_appversion.Format(L"Version %d.%02d%s", nMajor, nMinor, csSpecialBuild);
+  else
+    m_appversion.Format(L"Version %d.%02d.%02d%s", nMajor, nMinor, nBuild, csSpecialBuild);
 }
 
 CPasskeyEntry::~CPasskeyEntry()

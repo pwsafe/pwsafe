@@ -1166,6 +1166,7 @@
     <ClCompile Include="PWSFaultHandler.cpp" />
     <ClCompile Include="PWSRecentFileList.cpp" />
     <ClCompile Include="PWStatusBar.cpp" />
+    <ClCompile Include="PWSversion.cpp" />
     <ClCompile Include="PWToolBar.cpp" />
     <ClCompile Include="PWTreeCtrl.cpp" />
     <ClCompile Include="QuerySetDef.cpp" />
@@ -1283,6 +1284,7 @@
     <ClInclude Include="PWSFaultHandler.h" />
     <ClInclude Include="PWSRecentFileList.h" />
     <ClInclude Include="PWStatusBar.h" />
+    <ClInclude Include="PWSversion.h" />
     <ClInclude Include="PWToolBar.h" />
     <ClInclude Include="PWTreeCtrl.h" />
     <ClInclude Include="QuerySetDef.h" />

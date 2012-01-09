@@ -34,6 +34,7 @@
 #include "MFCMessages.h"
 #include "GeneralMsgBox.h"
 #include "PWSFaultHandler.h"
+#include "PWSversion.h"
 
 #include "core/Util.h"
 #include "core/BlowFish.h"
@@ -194,6 +195,7 @@ ThisMfcApp::~ThisMfcApp()
 
   PWSprefs::DeleteInstance();
   PWSrand::DeleteInstance();
+  PWSversion::DeleteInstance();
   PWSLog::DeleteLog();
 
   CoUninitialize(); // Uninitialize COM library
