@@ -30,6 +30,7 @@ typedef uuid_t UUID;
 #include "../core/StringX.h"
 
 #include <vector>
+
 namespace pws_os {
 class CUUID
 {

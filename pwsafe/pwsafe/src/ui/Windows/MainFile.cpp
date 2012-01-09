@@ -2803,7 +2803,7 @@ LRESULT DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
 {
   bool bWasEmpty = ptocore->GetNumEntries() == 0;
 
-  // Copy *pfromcore -> *ptocore entry
+  // Copy *pfromcore enrtry -> *ptocore entry
   ItemListIter fromPos = pfromcore->Find(fromUUID);
   ASSERT(fromPos != pfromcore->GetEntryEndIter());
   const CItemData *pfromEntry = &fromPos->second;
@@ -2812,11 +2812,15 @@ LRESULT DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
   DisplayInfo *pdi = new DisplayInfo;
   ci_temp.SetDisplayInfo(pdi); // DisplayInfo values will be set later
 
-  // If the UUID is not in use, copy it too, otherwise reuse current
-  if (ptocore->Find(fromUUID) == ptocore->GetEntryEndIter())
+  // If the UUID is not in use in the "to" core, copy it too, otherwise reuse current
+  if (ptocore->Find(fromUUID) == ptocore->GetEntryEndIter()) {
     ci_temp.SetUUID(fromUUID);
-  else
-    ci_temp.SetUUID(toUUID);
+  } else {
+    if (toUUID == CUUID::NullUUID())
+      ci_temp.CreateUUID();
+    else
+      ci_temp.SetUUID(toUUID);
+  }
 
   Command *pcmd(NULL);
 
