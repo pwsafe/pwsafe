@@ -387,14 +387,11 @@ Section /o "$(SWEDISH_SUPPORT)" SwedishSection
   File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeSV.dll"
   File /nonfatal "..\help\pwsafeSV\pwsafeSV.chm"
 SectionEnd
-; ******************** Dutch isn't supported yet ********************
-!if 0
 Section /o "$(DUTCH_SUPPORT)" DutchSection
   SetOutPath "$INSTDIR"  
   File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeNL.dll"
   File /nonfatal "..\help\pwsafeNL\pwsafeNL.chm"
 SectionEnd
-!endif
 Section /o "$(FRENCH_SUPPORT)" FrenchSection
   SetOutPath "$INSTDIR"  
   File /nonfatal "..\build\bin\pwsafe\I18N\pwsafeFR.dll"
