@@ -441,9 +441,9 @@ prefix. This field was introduced in version 0x0306 (PasswordSafe V3.19).
 
 [17] Entry is protected, i.e., the entry cannot be changed or deleted
 while this field is set. This field was introduced in version 0x0308
-(PasswordSafe V3.25).  This a single character. An absent field or a
-zero valued field means that the entry is not protected. Any non-zero
-value means that the entry is protected.
+(PasswordSafe V3.25).  This a single byte. An absent field or a zero
+valued field means that the entry is not protected. Any non-zero value
+means that the entry is protected.
 
 [18] Each entry can now specify its own set of allowed special symbols for
 password generation.  This overrides the default set and any database specific
