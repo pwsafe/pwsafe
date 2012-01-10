@@ -45,7 +45,7 @@ PWSversion::PWSversion()
   m_SpecialBuild = SPECIAL_BUILD;
 
   CString resToken;
-  int curPos = 0, i = 0;
+  int curPos = 0, index = 0;
   
   // Tokenize the file version to get the values in order
   // Revision is either a number or a number with '+',
@@ -57,8 +57,8 @@ PWSversion::PWSversion()
     if (resToken.IsEmpty())
       resToken = L"0";
     
-    const int len = resToken.GetLength();
-    switch (i) {
+    // Note: if token not numeric, returned value of _wtoi is zero
+    switch (index) {
       case 0:
         m_nMajor = _wtoi(resToken);
         break;
@@ -69,16 +69,16 @@ PWSversion::PWSversion()
         m_nBuild = _wtoi(resToken);
         break;
       case 3:
-        if (len > 0 && resToken.Right(1) == L"+") {
+        if (resToken.Right(1) == L"+") {
           m_bModified = true;
-          resToken = resToken.Left(len - 1);
+          resToken = resToken.Left(resToken.GetLength() - 1);
         }
         m_nRevision = _wtoi(resToken);
         break;
       default:
         ASSERT(0);
     }
-    i++;
+    index++;
     resToken = csFileVersion.Tokenize(L",", curPos);
   };
 }
