@@ -607,13 +607,39 @@ int DboxMain::Open(const UINT uiTitle)
   int rc = PWScore::SUCCESS;
   StringX sx_Filename;
   CString cs_text(MAKEINTRESOURCE(uiTitle));
-  std::wstring dir;
-  if (m_core.GetCurFile().empty())
-    dir = PWSdirs::GetSafeDir();
-  else {
-    std::wstring cdrive, cdir, dontCare;
+  std::wstring DBpath, cdrive, cdir, dontCare;
+  if (m_core.GetCurFile().empty()) {
+    // Can't use same directory as currently open DB as there isn't one.
+    // Attempt to get path from last opened database from MRU
+    // If valid and accessible, use it, if not valid or not accessible use
+    // value returned from PWSdirs::GetSafeDir() - "My Safes"
+    bool bUseGetSafeDir(true);
+    if (app.GetMRU() != NULL && !app.GetMRU()->IsMRUEmpty()) {
+      CString mruItem = (*app.GetMRU())[0];
+      pws_os::splitpath((LPCWSTR)mruItem, cdrive, cdir, dontCare, dontCare);
+      DBpath = cdrive + cdir;
+
+      // _stat functions will fail for a directory if it ends with a slash
+      // and splitpath always adds a slash!
+      if (cdir.length() > 0)
+        DBpath.pop_back();
+      
+      // Check it exists and accessible but don't are for information retrieved
+      struct _stat stat_buf;
+      int istat = _wstat(DBpath.c_str(), &stat_buf);
+      // Now put trailing slash back!
+      DBpath += L"\\";
+
+      // If _stat worked and user has at least read access to the directory
+      // use this value for DBpath, otherwise use result from PWSdirs::GetSafeDir()
+      if (istat == 0 && _waccess_s(DBpath.c_str(), R_OK) == 0)
+        bUseGetSafeDir = false;
+    }
+    if (bUseGetSafeDir)
+      DBpath = PWSdirs::GetSafeDir();
+  } else {
     pws_os::splitpath(m_core.GetCurFile().c_str(), cdrive, cdir, dontCare, dontCare);
-    dir = cdrive + cdir;
+    DBpath = cdrive + cdir;
   }
 
   // Open-type dialog box
@@ -637,8 +663,8 @@ int DboxMain::Open(const UINT uiTitle)
       fd.m_ofn.Flags |= (OFN_HIDEREADONLY | OFN_NOREADONLYRETURN);
     }
 
-    if (!dir.empty())
-      fd.m_ofn.lpstrInitialDir = dir.c_str();
+    if (!DBpath.empty())
+      fd.m_ofn.lpstrInitialDir = DBpath.c_str();
 
     INT_PTR rc2 = fd.DoModal();
 

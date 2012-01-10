@@ -1,12 +1,15 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<!-- A HTML version of the ReleaseNotes.txt file. There Javascript functions provide a mechanism to access Feature Requests,
-     Support Requests and Bug Reports directly from the Tracker ID. They are implemented to make it easier to change if
-     SourceForge change their environment. Would have been nice to open a new tab rather than a new Window but currently
-     not possible from Javascript. Within a given release, the order of the entries are: New Features, Changes to Existing
-     Features and then Bugs Fixed. Within each section, entries are ordered in decreasing Tracker ID order. If an entry resolves
-     multiple Tracker IDs, they are also entered in decreasing Tracker ID order. -->
+<!-- A HTML version of the ReleaseNotes.txt file. There Javascript functions provide a
+     mechanism to access Feature Requests, Support Requests and Bug Reports directly
+     from the Tracker ID. They are implemented to make it easier to change if
+     SourceForge change their environment. Would have been nice to open a new tab
+     rather than a new Window but currently not possible from Javascript. Within a given
+     release, the order of the entries are: New Features, Changes to Existing
+     Features and then Bugs Fixed. Within each section, entries are ordered in decreasing
+     Tracker ID order. If an entry resolves multiple Tracker IDs, they are also entered
+     in decreasing Tracker ID order. -->
 <style  type="text/css">
 h2 { text-decoration: underline; }
 h3 { text-decoration: underline; }
@@ -95,6 +98,13 @@ now are in the W3C dateTime standard format instead of PasswordSafe's.  This rel
 can nolonger import XML files with date time fields in the old PasswordSafe's forms.
 See Help file (the XML section of "Import Password Entries") on how to manually change
 the XML file exported prior to V3.26 to allow it to be successfully imported in this release.</td>
+</tr>
+<tr>
+<td align="center" width="100">n/a</td>
+<td>After closing the current database, on opening another, PasswordSafe will first
+attempt to access the directory of the last opened database in order to allow the user
+to start browsing for their intended database.  If this directory is not available,
+PasswordSafe will open the default "My Safes" directory as it did prior to this change.</td>
 </tr>
 </tbody>
 </table>

@@ -18,22 +18,19 @@ public:
   static PWSversion *GetInstance(); // singleton
   static void DeleteInstance();
 
-  inline int GetMajor() {return m_nMajor;}
-  inline int GetMinor() {return m_nMinor;}
-  inline int GetBuild() {return m_nBuild;}
-  inline int GetRevision() {return m_nRevision;}
+  int GetMajor() {return m_nMajor;}
+  int GetMinor() {return m_nMinor;}
+  int GetBuild() {return m_nBuild;}
+  int GetRevision() {return m_nRevision;}
 
-  inline CString GetSpecialBuild() {return m_SpecialBuild;}
-  inline CString GetAppVersion() {return m_AppVersion;}
-  inline bool IsModified() {return m_bModified;}
+  CString GetSpecialBuild() {return m_SpecialBuild;}
+  CString GetAppVersion() {return m_AppVersion;}
+  bool IsModified() {return m_bModified;}
 
 private:
   static PWSversion *self; // singleton
 
   CString m_AppVersion, m_SpecialBuild;
-  int m_nMajor;
-  int m_nMinor;
-  int m_nBuild;
-  int m_nRevision;
+  int m_nMajor, m_nMinor, m_nBuild, m_nRevision;
   bool m_bModified;
 };

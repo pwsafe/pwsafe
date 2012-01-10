@@ -70,9 +70,3 @@ void CPWSRecentFileList::WriteList()
   }
 }
 
-bool CPWSRecentFileList::IsMRUEmpty()
-{
-  CString csMRUFileName;
-
-  return GetDisplayName(csMRUFileName, 0, L"", 0, TRUE) == FALSE;
-}
