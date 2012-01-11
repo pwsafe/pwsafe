@@ -376,6 +376,7 @@ bool PwsafeApp::OnInit()
 
   RestoreFrameCoords();
   m_frame->Show();
+  SetTopWindow(m_frame);
   return true;
 }
 
