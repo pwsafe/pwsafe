@@ -68,12 +68,13 @@ struct st_PSWDPolicy {
 
   bool operator==(const st_PSWDPolicy &that) const
   {
+    // Need to check all elements are the same for != operator to be correct
     if (this != &that) {
-      if (pwp != that.pwp ||
-          symbols != that.symbols)
-        return false;
+      if (pwp == that.pwp &&
+          symbols == that.symbols)
+        return true;
     }
-    return true;
+    return (this == &that) ? true : false;
   }
 
   bool operator!=(const st_PSWDPolicy &that) const

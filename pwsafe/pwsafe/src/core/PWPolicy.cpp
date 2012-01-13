@@ -15,20 +15,21 @@
 
 bool PWPolicy::operator==(const PWPolicy &that) const
 {
+  // Need to check all elements are the same for != operator to be correct
   if (this != &that) {
-    if (flags           != that.flags  ||
-        length          != that.length ||
+    if (flags == that.flags &&
+        length == that.length &&
         ((flags & PWSprefs::PWPolicyUseDigits) == PWSprefs::PWPolicyUseDigits &&
-                    digitminlength  != that.digitminlength)  ||
+                    digitminlength  == that.digitminlength)  &&
         ((flags & PWSprefs::PWPolicyUseLowercase) == PWSprefs::PWPolicyUseLowercase &&
-                    lowerminlength  != that.lowerminlength)  ||
+                    lowerminlength  == that.lowerminlength)  &&
         ((flags & PWSprefs::PWPolicyUseSymbols) == PWSprefs::PWPolicyUseSymbols &&
-                    symbolminlength != that.symbolminlength) ||
+                    symbolminlength == that.symbolminlength) &&
         ((flags & PWSprefs::PWPolicyUseUppercase) == PWSprefs::PWPolicyUseUppercase &&
-                    upperminlength  != that.upperminlength))
-      return false;
+                    upperminlength  == that.upperminlength))
+      return true;
   }
-  return true;
+  return (this == &that) ? true : false;
 }
 
 // Following calls CPasswordCharPool::MakePassword()
