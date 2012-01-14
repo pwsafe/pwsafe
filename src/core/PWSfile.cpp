@@ -507,12 +507,12 @@ PWSFileSig &PWSFileSig::operator=(const PWSFileSig &that)
   return *this;
 }
 
-bool PWSFileSig::operator==(const PWSFileSig &that)
+bool PWSFileSig::operator==(const PWSFileSig &other)
 {
-  // Need to check all elements are the same for != operator to be correct
-  // If either has a non-zero error code, treat as "not equal"
-  return (m_iErrorCode == PWSfile::SUCCESS && that.m_iErrorCode == PWSfile::SUCCESS &&
-          m_length == that.m_length &&
-          memcmp(m_digest, that.m_digest, sizeof(m_digest)) == 0);
+  // Check this first as digest may otherwise be invalid
+  if (m_iErrorCode != 0 || other.m_iErrorCode != 0)
+    return false;
 
+  return (m_length == other.m_length &&
+          memcmp(m_digest, other.m_digest, sizeof(m_digest)) == 0);
 }
