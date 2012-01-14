@@ -151,8 +151,8 @@ public:
   bool IsValid() {return m_iErrorCode == PWSfile::SUCCESS;}
   int GetErrorCode() {return m_iErrorCode;}
 
-  bool operator==(const PWSFileSig &that);
-  bool operator!=(const PWSFileSig &that) {return !(*this == that);}
+  bool operator==(const PWSFileSig &other);
+  bool operator!=(const PWSFileSig &other) {return !(*this == other);}
 
 private:
   long m_length; // -1 if file doesn't exist or zero length
