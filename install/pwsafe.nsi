@@ -142,7 +142,11 @@
   Var HOST_OS
   
   ;Request application privileges for Windows Vista, Windows 7
-  RequestExecutionLevel admin
+  ; Changed from 'admin' to 'none' as 'admin' caused prog. group &
+  ; shortcuts to be created for admin user only - a bug in NSIS.
+  ; 'none' should do the 'right thing' for vista & above
+  
+  RequestExecutionLevel none
 
 ;--------------------------------
 ; Pages
