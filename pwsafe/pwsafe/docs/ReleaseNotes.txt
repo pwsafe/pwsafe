@@ -15,6 +15,7 @@ edited and deleted), exported and imported, used in filters and to generate pass
 
 Changes to Existing Features in 3.27.1
 ======================================
+[] The default backup policy has been changed to save the last three versions of the database, instead of one.
 [3445820] The Edit menu item and entry right-click context menu item "Copy Run Command to
 Clipboard" will, by default, substitute any variables within the command. To disable this,
 hold down the Ctrl key when selecting these menu items.  The standard menu shortcut cannot
