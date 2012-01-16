@@ -82,7 +82,7 @@ protected:
 private:
   static int CALLBACK PWHistCompareFunc(LPARAM lParam1, LPARAM lParam2,
                                         LPARAM lParamSort);
-  void SetupDCAComboBoxes(CComboBox *pcbox);
+  void SetupDCAComboBoxes(CComboBox *pcbox, bool isShift);
   CToolTipCtrl *m_pToolTipCtrl;
 
   COLORREF m_autotype_cfOldColour, m_runcmd_cfOldColour;

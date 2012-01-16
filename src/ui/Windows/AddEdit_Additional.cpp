@@ -177,8 +177,8 @@ BOOL CAddEdit_Additional::OnInitDialog()
 
   // For some reason, MFC calls us twice when initializing.
   // Populate the combo box only once.
-  SetupDCAComboBoxes(&m_dblclk_cbox);
-  SetupDCAComboBoxes(&m_shiftdblclk_cbox);
+  SetupDCAComboBoxes(&m_dblclk_cbox, false);
+  SetupDCAComboBoxes(&m_shiftdblclk_cbox, true);
 
   if (M_DCA() < PWSprefs::minDCA || M_DCA() > PWSprefs::maxDCA) {
     short iDCA = (short)PWSprefs::GetInstance()->
@@ -294,56 +294,34 @@ BOOL CAddEdit_Additional::OnInitDialog()
   return TRUE;
 }
 
-void CAddEdit_Additional::SetupDCAComboBoxes(CComboBox *pcbox)
+void CAddEdit_Additional::SetupDCAComboBoxes(CComboBox *pcbox, bool isShift)
 {
-  if (pcbox->GetCount() == 0) {
-    // ComboBox now sorted - no need to add in English alphabetical order
-    int nIndex;
+  const struct {int res; int pref;} ResPref[] = {
+    {IDSC_DCAAUTOTYPE, PWSprefs::DoubleClickAutoType},
+    {IDSC_DCABROWSE, PWSprefs::DoubleClickBrowse},
+    {IDSC_DCABROWSEPLUS, PWSprefs::DoubleClickBrowsePlus},
+    {IDSC_DCACOPYNOTES, PWSprefs::DoubleClickCopyNotes},
+    {IDSC_DCACOPYPASSWORD, PWSprefs::DoubleClickCopyPassword},
+    {IDSC_DCACOPYPASSWORDMIN, PWSprefs::DoubleClickCopyPasswordMinimize},
+    {IDSC_DCACOPYUSERNAME, PWSprefs::DoubleClickCopyUsername},
+    {IDSC_DCAVIEWEDIT, PWSprefs::DoubleClickViewEdit},
+    {IDSC_DCARUN, PWSprefs::DoubleClickRun},
+    {IDSC_DCASENDEMAIL, PWSprefs::DoubleClickSendEmail},
+    {0, 0},
+  };
+  if (pcbox->GetCount() == 0) { // Make sure we're idempotent
+    int DefaultDCA = PWSprefs::GetInstance()->GetPref(isShift ?
+                                                      PWSprefs::ShiftDoubleClickAction :
+                                                      PWSprefs::DoubleClickAction);
     CString cs_text;
 
-    cs_text.LoadString(IDSC_DCAAUTOTYPE);
-    nIndex = pcbox->AddString(cs_text);
-    pcbox->SetItemData(nIndex, PWSprefs::DoubleClickAutoType);
-
-    cs_text.LoadString(IDSC_DCABROWSE);
-    nIndex = pcbox->AddString(cs_text);
-    pcbox->SetItemData(nIndex, PWSprefs::DoubleClickBrowse);
-
-    cs_text.LoadString(IDSC_DCABROWSEPLUS);
-    nIndex = pcbox->AddString(cs_text);
-    pcbox->SetItemData(nIndex, PWSprefs::DoubleClickBrowsePlus);
-
-    cs_text.LoadString(IDSC_DCACOPYNOTES);
-    nIndex = pcbox->AddString(cs_text);
-    pcbox->SetItemData(nIndex, PWSprefs::DoubleClickCopyNotes);
-
-    cs_text.LoadString(IDSC_DCACOPYPASSWORD);
-    nIndex = pcbox->AddString(cs_text);
-    pcbox->SetItemData(nIndex, PWSprefs::DoubleClickCopyPassword);
-
-    cs_text.LoadString(IDSC_DCACOPYPASSWORDMIN);
-    nIndex = pcbox->AddString(cs_text);
-    pcbox->SetItemData(nIndex, PWSprefs::DoubleClickCopyPasswordMinimize);
-
-    cs_text.LoadString(IDSC_DCACOPYUSERNAME);
-    nIndex = pcbox->AddString(cs_text);
-    pcbox->SetItemData(nIndex, PWSprefs::DoubleClickCopyUsername);
-
-    cs_text.LoadString(IDSC_DCAVIEWEDIT);
-    nIndex = pcbox->AddString(cs_text);
-    pcbox->SetItemData(nIndex, PWSprefs::DoubleClickViewEdit);
-
-    cs_text.LoadString(IDSC_DCARUN);
-    nIndex = pcbox->AddString(cs_text);
-    pcbox->SetItemData(nIndex, PWSprefs::DoubleClickRun);
-
-    cs_text.LoadString(IDSC_DCASENDEMAIL);
-    nIndex = pcbox->AddString(cs_text);
-    pcbox->SetItemData(nIndex, PWSprefs::DoubleClickSendEmail);
-
-    for (int i = 0; i < pcbox->GetCount(); i++) {
-      int ival = (int)pcbox->GetItemData(i);
-      m_DCA_to_Index[ival] = i;
+    for (int i = 0; ResPref[i].res != 0; i++) {
+      cs_text.LoadString(ResPref[i].res);
+      if (ResPref[i].pref == DefaultDCA)
+        cs_text += L" *";
+      int nIndex = pcbox->AddString(cs_text);
+      pcbox->SetItemData(nIndex, ResPref[i].pref);
+      m_DCA_to_Index[ResPref[i].pref] = nIndex;
     }
   }
 }
