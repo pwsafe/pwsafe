@@ -180,6 +180,35 @@ struct st_FilterRow {
     return *this;
   }
 
+
+  bool operator==(const st_FilterRow &that) const
+  {
+    if (this != &that) {
+      if (bFilterActive != that.bFilterActive ||
+          bFilterComplete != that.bFilterComplete ||
+          ftype != that.ftype ||
+          mtype != that.mtype ||
+          rule != that.rule ||
+          fnum1 != that.fnum1 ||
+          fnum2 != that.fnum2 ||
+          fdate1 != that.fdate1 ||
+          fdate2 != that.fdate2 ||
+          fdatetype != that.fdatetype ||
+          fstring != that.fstring ||
+          fcase != that.fcase ||
+          fdca != that.fdca ||
+          etype != that.etype ||
+          estatus != that.estatus ||
+          funit != that.funit ||
+          ltype != that.ltype)
+      return false;
+    }
+    return true;
+  }
+
+  bool operator!=(const st_FilterRow &that) const
+  {return !(*this == that);}
+
   void Empty()
   {
     bFilterActive = true;
@@ -249,6 +278,24 @@ struct st_filters {
     }
     return *this;
   }
+
+  bool operator==(const st_filters &that) const
+  {
+    if (this != &that) {
+      if (fname != that.fname ||
+          num_Mactive != that.num_Mactive ||
+          num_Hactive != that.num_Hactive ||
+          num_Pactive != that.num_Pactive ||
+          vMfldata != that.vMfldata ||
+          vHfldata != that.vHfldata ||
+          vPfldata != that.vPfldata)
+      return false;
+    }
+    return true;
+  }
+
+  bool operator!=(const st_filters &that) const
+  {return !(*this == that);}
 
   void Empty()
   {

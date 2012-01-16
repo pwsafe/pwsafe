@@ -503,6 +503,7 @@
 #define IDC_SETMAXPWHISTORY             1186
 #define IDC_STATIC_UPDATEPWHISTORY      1187
 #define IDC_REGDEL                      1188
+#define IDC_SETMAXPWHISTORY2            1188
 #define IDC_DEFNOTESSHOWINEDIT          1190
 #define IDC_DATABASENAME                1191
 #define IDC_DATABASEFORMAT              1192
@@ -754,6 +755,8 @@
 #define IDC_STATIC_COPYPSWD             1474
 #define IDC_UNDO                        1475
 #define IDC_REDO                        1476
+#define IDC_CLEARPWHISTORY              1477
+#define IDC_UPDATEPROTECTEDPWH          1478
 
 // Next default values for new objects
 // 
@@ -761,7 +764,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        521
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1477
+#define _APS_NEXT_CONTROL_VALUE         1479
 #define _APS_NEXT_SYMED_VALUE           166
 #endif
 #endif

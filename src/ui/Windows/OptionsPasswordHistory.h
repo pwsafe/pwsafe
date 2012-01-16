@@ -30,7 +30,7 @@ protected:
   //{{AFX_DATA(COptionsPasswordHistory)
   enum { IDD = IDD_PS_PASSWORDHISTORY };
 
-  BOOL m_SavePWHistory;
+  BOOL m_SavePWHistory, mApplyToProtected;
   int m_PWHistoryNumDefault;
   int  m_PWHAction;
   //}}AFX_DATA

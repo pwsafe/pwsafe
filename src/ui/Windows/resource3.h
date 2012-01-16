@@ -50,6 +50,7 @@
 #define IDS_OTHERBROWSERLOCATION        5108
 #define IDS_OTHEREDITORLOCATION         5109
 #define IDS_MIGRATETOAPPDATA            5110
+#define IDS_CLEARPWHISTORY              5111
 
 // Program strings
 #define IDS_LITTLEENDIAN                5207
@@ -720,3 +721,4 @@
 #define IDS_CLICKTOCOPYGENPSWD          5917
 #define IDS_PR_MUSTHAVECHARACTERS       5918
 #define IDS_OWNSYMBOLSMISSING           5919
+#define IDS_ENTRIESCLEARALL             5920

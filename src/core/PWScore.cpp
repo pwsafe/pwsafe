@@ -2344,14 +2344,17 @@ void PWScore::AddChangedNodes(StringX path)
 
 struct HistoryUpdater {
   HistoryUpdater(int &num_altered, 
-                 SavePWHistoryMap &mapSavedHistory)
-  : m_num_altered(num_altered), m_mapSavedHistory(mapSavedHistory)
+                 SavePWHistoryMap &mapSavedHistory, bool bExcludeProtected)
+  : m_num_altered(num_altered), m_mapSavedHistory(mapSavedHistory),
+   m_bExcludeProtected(bExcludeProtected)
   {}
   virtual void operator() (CItemData &ci) = 0;
 
 protected:
   int &m_num_altered;
   SavePWHistoryMap &m_mapSavedHistory;
+  std::vector<BYTE> m_vSavedEntryStatus;
+  bool m_bExcludeProtected;
 
 private:
   HistoryUpdater& operator=(const HistoryUpdater&); // Do not implement
@@ -2359,16 +2362,23 @@ private:
 
 struct HistoryUpdateResetOff : public HistoryUpdater {
   HistoryUpdateResetOff(int &num_altered, 
-                        SavePWHistoryMap &mapSavedHistory)
- : HistoryUpdater(num_altered, mapSavedHistory) {}
+                        SavePWHistoryMap &mapSavedHistory, bool bExcludeProtected)
+ : HistoryUpdater(num_altered, mapSavedHistory, bExcludeProtected) {}
 
   void operator()(CItemData &ci) {
-    StringX cs_tmp = ci.GetPWHistory();
-    if (cs_tmp.length() >= 5 && cs_tmp[0] == L'1') {
-      m_mapSavedHistory[ci.GetUUID()] = cs_tmp;
-      cs_tmp[0] = L'0';
-      ci.SetPWHistory(cs_tmp);
-      m_num_altered++;
+    if (!ci.IsProtected() ||
+        (!m_bExcludeProtected && ci.IsProtected())) {
+      StringX cs_tmp = ci.GetPWHistory();
+      if (cs_tmp.length() >= 5 && cs_tmp[0] == L'1') {
+        st_PWH_status st_pwhs;
+        st_pwhs.pwh = cs_tmp;
+        st_pwhs.es = ci.GetStatus();
+        m_mapSavedHistory[ci.GetUUID()] = st_pwhs;
+        cs_tmp[0] = L'0';
+        ci.SetPWHistory(cs_tmp);
+        ci.SetStatus(CItemData::ES_MODIFIED);
+        m_num_altered++;
+      }
     }
   }
 
@@ -2378,22 +2388,29 @@ private:
 
 struct HistoryUpdateResetOn : public HistoryUpdater {
   HistoryUpdateResetOn(int &num_altered, int new_default_max,
-                       SavePWHistoryMap &mapSavedHistory)
-    : HistoryUpdater(num_altered, mapSavedHistory)
+                       SavePWHistoryMap &mapSavedHistory, bool bExcludeProtected)
+    : HistoryUpdater(num_altered, mapSavedHistory, bExcludeProtected)
   {Format(m_text, _T("1%02x00"), new_default_max);}
 
   void operator()(CItemData &ci) {
-    StringX cs_tmp = ci.GetPWHistory();
-    if (cs_tmp.length() < 5) {
-      m_mapSavedHistory[ci.GetUUID()] = cs_tmp;
-      ci.SetPWHistory(m_text);
-      m_num_altered++;
-    } else {
-      if (cs_tmp[0] == L'0') {
-        m_mapSavedHistory[ci.GetUUID()] = cs_tmp;
-        cs_tmp[0] = L'1';
-        ci.SetPWHistory(cs_tmp);
+    if (!ci.IsProtected() ||
+        (!m_bExcludeProtected && ci.IsProtected())) {
+      StringX cs_tmp = ci.GetPWHistory();
+      st_PWH_status st_pwhs;
+      st_pwhs.pwh = cs_tmp;
+      st_pwhs.es = ci.GetStatus();
+      if (cs_tmp.length() < 5) {
+        m_mapSavedHistory[ci.GetUUID()] = st_pwhs;
+        ci.SetPWHistory(m_text);
         m_num_altered++;
+      } else {
+        if (cs_tmp[0] == L'0') {
+          m_mapSavedHistory[ci.GetUUID()] = st_pwhs;
+          cs_tmp[0] = L'1';
+          ci.SetPWHistory(cs_tmp);
+          ci.SetStatus(CItemData::ES_MODIFIED);
+          m_num_altered++;
+        }
       }
     }
   }
@@ -2405,30 +2422,37 @@ private:
 
 struct HistoryUpdateSetMax : public HistoryUpdater {
   HistoryUpdateSetMax(int &num_altered, int new_default_max,
-                      SavePWHistoryMap &mapSavedHistory)
-    : HistoryUpdater(num_altered, mapSavedHistory),
+                      SavePWHistoryMap &mapSavedHistory, bool bExcludeProtected)
+    : HistoryUpdater(num_altered, mapSavedHistory, bExcludeProtected),
     m_new_default_max(new_default_max)
   {Format(m_text, _T("1%02x"), new_default_max);}
 
   void operator()(CItemData &ci) {
-    StringX cs_tmp = ci.GetPWHistory();
+    if (!ci.IsProtected() ||
+        (!m_bExcludeProtected && ci.IsProtected())) {
+      StringX cs_tmp = ci.GetPWHistory();
 
-    size_t len = cs_tmp.length();
-    if (len >= 5) {
-      m_mapSavedHistory[ci.GetUUID()] = cs_tmp;
-      int status, old_max, num_saved;
-      const wchar_t *lpszPWHistory = cs_tmp.c_str();
+      size_t len = cs_tmp.length();
+      if (len >= 5) {
+        st_PWH_status st_pwhs;
+        st_pwhs.pwh = cs_tmp;
+        st_pwhs.es = ci.GetStatus();
+        m_mapSavedHistory[ci.GetUUID()] = st_pwhs;
+        int status, old_max, num_saved;
+        const wchar_t *lpszPWHistory = cs_tmp.c_str();
 #if (_MSC_VER >= 1400)
-      int iread = swscanf_s(lpszPWHistory, _T("%01d%02x%02x"), 
-                             &status, &old_max, &num_saved);
+        int iread = swscanf_s(lpszPWHistory, _T("%01d%02x%02x"), 
+                               &status, &old_max, &num_saved);
 #else
-      int iread = swscanf(lpszPWHistory, _T("%01d%02x%02x"),
-                           &status, &old_max, &num_saved);
+        int iread = swscanf(lpszPWHistory, _T("%01d%02x%02x"),
+                             &status, &old_max, &num_saved);
 #endif
-      if (iread == 3 && status == 1 && num_saved <= m_new_default_max) {
-        cs_tmp = m_text + cs_tmp.substr(3);
-        ci.SetPWHistory(cs_tmp);
-        m_num_altered++;
+        if (iread == 3 && status == 1 && num_saved <= m_new_default_max) {
+          cs_tmp = m_text + cs_tmp.substr(3);
+          ci.SetPWHistory(cs_tmp);
+          ci.SetStatus(CItemData::ES_MODIFIED);
+          m_num_altered++;
+        }
       }
     }
   }
@@ -2439,25 +2463,66 @@ private:
   StringX m_text;
 };
 
+struct HistoryUpdateClearAll : public HistoryUpdater {
+  HistoryUpdateClearAll(int &num_altered,
+                        SavePWHistoryMap &mapSavedHistory, bool bExcludeProtected)
+  : HistoryUpdater(num_altered, mapSavedHistory, bExcludeProtected) {}
+
+  void operator()(CItemData &ci) {
+    if (!ci.IsProtected() ||
+        (!m_bExcludeProtected && ci.IsProtected())) {
+      StringX cs_tmp = ci.GetPWHistory();
+      size_t len = cs_tmp.length();
+      if (len != 0 && cs_tmp != _T("00000")) {
+        st_PWH_status st_pwhs;
+        st_pwhs.pwh = cs_tmp;
+        st_pwhs.es = ci.GetStatus();
+        m_mapSavedHistory[ci.GetUUID()] = st_pwhs;
+        ci.SetPWHistory(L"");
+        ci.SetStatus(CItemData::ES_MODIFIED);
+        m_num_altered++;
+      }
+    }
+  }
+
+private:
+  HistoryUpdateClearAll& operator=(const HistoryUpdateClearAll&); // Do not implement
+};
+
 int PWScore::DoUpdatePasswordHistory(int iAction, int new_default_max,
                                      SavePWHistoryMap &mapSavedHistory)
 {
   int num_altered = 0;
   HistoryUpdater *updater = NULL;
+  bool bExcludeProtected(true);
 
-  HistoryUpdateResetOff reset_off(num_altered, mapSavedHistory);
-  HistoryUpdateResetOn reset_on(num_altered, new_default_max, mapSavedHistory);
-  HistoryUpdateSetMax set_max(num_altered, new_default_max, mapSavedHistory);
+  if (iAction < 0)
+    bExcludeProtected = false;
+
+  HistoryUpdateResetOff reset_off(num_altered, mapSavedHistory, bExcludeProtected);
+  HistoryUpdateResetOn  reset_on(num_altered, new_default_max, mapSavedHistory,
+                                 bExcludeProtected);
+  HistoryUpdateSetMax   set_max(num_altered, new_default_max, mapSavedHistory,
+                                bExcludeProtected);
+  HistoryUpdateClearAll clearall(num_altered, mapSavedHistory, bExcludeProtected);
+
 
   switch (iAction) {
-    case 1:   // reset off
+    case -1:   // reset off - include protected entries
+    case  1:   // reset off - exclude protected entries
       updater = &reset_off;
       break;
-    case 2:   // reset on
+    case -2:   // reset on - include protected entries
+    case  2:   // reset on - exclude protected entries
       updater = &reset_on;
       break;
-    case 3:   // setmax
+    case -3:   // setmax - include protected entries
+    case  3:   // setmax - exclude protected entries
       updater = &set_max;
+      break;
+    case -4:   // clearall - include protected entries
+    case  4:   // clearall - exclude protected entries
+      updater = &clearall;
       break;
     default:
       ASSERT(0);
@@ -2492,7 +2557,8 @@ void PWScore::UndoUpdatePasswordHistory(SavePWHistoryMap &mapSavedHistory)
   for (itr = mapSavedHistory.begin(); itr != mapSavedHistory.end(); itr++) {
     ItemListIter listPos = m_pwlist.find(itr->first);
     if (listPos != m_pwlist.end()) {
-      listPos->second.SetPWHistory(itr->second);
+      listPos->second.SetPWHistory(itr->second.pwh);
+      listPos->second.SetStatus(itr->second.es);
     }
   }
 }

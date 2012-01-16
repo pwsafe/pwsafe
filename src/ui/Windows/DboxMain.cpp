@@ -1324,6 +1324,16 @@ void DboxMain::Execute(Command *pcmd, PWScore *pcore)
 
   SaveGUIStatus();
   pcore->Execute(pcmd);
+
+  // See if we have any special filters active that now do not have any entries
+  // to display, which would have meant that the user should not be able to select them,
+  // we need to cancel them
+  if (m_ctlItemTree.GetCount() == 0 &&
+      (m_currentfilter == m_showexpirefilter ||
+       m_currentfilter == m_showunsavedfilter)) {
+    OnCancelFilter();
+  }
+
   UpdateToolBarDoUndo();
 
   SaveGUIStatusEx(iBothViews);
@@ -1332,6 +1342,16 @@ void DboxMain::Execute(Command *pcmd, PWScore *pcore)
 void DboxMain::OnUndo()
 {
   m_core.Undo();
+  
+  // See if we have any special filters active that now do not have any entries
+  // to display, which would have meant that the user should not be able to select them,
+  // we need to cancel them
+  if (m_ctlItemTree.GetCount() == 0 &&
+      (m_currentfilter == m_showexpirefilter ||
+       m_currentfilter == m_showunsavedfilter)) {
+    OnCancelFilter();
+  }
+
   RestoreGUIStatus();
 
   UpdateToolBarDoUndo();

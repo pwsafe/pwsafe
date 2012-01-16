@@ -504,7 +504,7 @@ void DboxMain::OnOptions()
         if (bNeedGUITreeUpdate) {
           Command *pcmd = UpdateGUICommand::Create(&m_core,
                                                    UpdateGUICommand::WN_UNDO,
-                                                   UpdateGUICommand::GUI_REFRESH_TREE);
+                                                   UpdateGUICommand::GUI_DB_PREFERENCES_CHANGED);
           pmulticmds->Add(pcmd);
         }
         Command *pcmd = DBPrefsCommand::Create(&m_core, sxNewDBPrefsString);
@@ -512,7 +512,7 @@ void DboxMain::OnOptions()
         if (bNeedGUITreeUpdate) {
           Command *pcmd = UpdateGUICommand::Create(&m_core,
                                                    UpdateGUICommand::WN_EXECUTE_REDO,
-                                                   UpdateGUICommand::GUI_REFRESH_TREE);
+                                                   UpdateGUICommand::GUI_DB_PREFERENCES_CHANGED);
           pmulticmds->Add(pcmd);
         }
       }
@@ -521,13 +521,23 @@ void DboxMain::OnOptions()
     const int iAction = optionsPS.GetPWHAction();
     const int new_default_max = optionsPS.GetPWHistoryMax();
     size_t ipwh_exec(0);
+    int num_altered(0);
 
     if (iAction != 0) {
+      Command *pcmd1 = UpdateGUICommand::Create(&m_core,
+                                                UpdateGUICommand::WN_UNDO,
+                                                UpdateGUICommand::GUI_PWH_CHANGED_IN_DB);
+      pmulticmds->Add(pcmd1);
       Command *pcmd = UpdatePasswordHistoryCommand::Create(&m_core,
                                                            iAction,
                                                            new_default_max);
       pmulticmds->Add(pcmd);
       ipwh_exec = pmulticmds->GetSize();
+
+      Command *pcmd2 = UpdateGUICommand::Create(&m_core,
+                                                UpdateGUICommand::WN_EXECUTE_REDO,
+                                                UpdateGUICommand::GUI_PWH_CHANGED_IN_DB);
+      pmulticmds->Add(pcmd2);
     }
 
     // If DB preferences changed and/or password history options
@@ -536,18 +546,24 @@ void DboxMain::OnOptions()
         Execute(pmulticmds);
         if (ipwh_exec > 0) {
           // We did do PWHistory update
-          int num_altered(0);
           if (pmulticmds->GetRC(ipwh_exec, num_altered)) {
             UINT uimsg_id(0);
             switch (iAction) {
-              case 1:   // reset off
+              case -1:   // reset off - include protected entries
+              case  1:   // reset off - exclude protected entries
                 uimsg_id = IDS_ENTRIESCHANGEDSTOP;
                 break;
-              case 2:   // reset on
+              case -2:   // reset on - include protected entries
+              case  2:   // reset on - exclude protected entries
                 uimsg_id = IDS_ENTRIESCHANGEDSAVE;
                 break;
-              case 3:   // setmax
+              case -3:   // setmax - include protected entries
+              case  3:   // setmax - exclude protected entries
                 uimsg_id = IDS_ENTRIESRESETMAX;
+                break;
+              case -4:   // clearall - include protected entries
+              case  4:   // clearall - exclude protected entries
+                uimsg_id = IDS_ENTRIESCLEARALL;
                 break;
               default:
                 ASSERT(0);
@@ -568,8 +584,14 @@ void DboxMain::OnOptions()
       }
     }
 
-    if (m_core.HaveDBPrefsChanged())
+    if (m_core.HaveDBPrefsChanged() || num_altered > 0) {
+      if (m_core.HaveDBPrefsChanged())
+        SetChanged(DBPrefs);
+      if (num_altered > 0)
+        SetChanged(Data);
+      
       ChangeOkUpdate();
+    }
   }
 
   // Restore hotkey as it was or as user changed it - if user pressed OK

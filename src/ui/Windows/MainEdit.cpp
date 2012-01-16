@@ -601,7 +601,7 @@ void DboxMain::OnProtect(UINT nID)
     Command *pcmd = UpdateEntryCommand::Create(&m_core, *pci, 
                                                CItemData::PROTECTED,
                                                nID == ID_MENUITEM_UNPROTECT ? L"0" : L"1");
-    Execute(pcmd, &m_core);
+    Execute(pcmd);
 
     SetChanged(Data);
   } else {
