@@ -95,6 +95,8 @@ DECLARE_HANDLE(HDROP);
 #define PWS_MSG_EDIT_WORDWRAP           (WM_APP + 42)
 #define PWS_MSG_EDIT_SHOWNOTES          (WM_APP + 43)
 #define PWS_MSG_EDIT_APPLY              (WM_APP + 44)
+#define PWS_MSG_CALL_NOTESZOOMIN        (WM_APP + 45)
+#define PWS_MSG_CALL_NOTESZOOMOUT       (WM_APP + 46)
 
 // Simulate Ctrl+F from Find Toolbar "enter"
 #define PWS_MSG_TOOLBAR_FIND            (WM_APP + 50)
@@ -824,7 +826,6 @@ private:
   int m_nColumnWidthByIndex[CItemData::LAST];
   int m_nColumnHeaderWidthByType[CItemData::LAST];
   int m_iheadermaxwidth;
-  CFont *m_pFontTree;
 
   pws_os::CUUID m_LUUIDSelectedAtMinimize; // to restore List entry selection upon un-minimize
   pws_os::CUUID m_TUUIDSelectedAtMinimize; // to restore Tree entry selection upon un-minimize

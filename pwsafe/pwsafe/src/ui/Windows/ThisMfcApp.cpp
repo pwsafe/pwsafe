@@ -34,6 +34,7 @@
 #include "MFCMessages.h"
 #include "GeneralMsgBox.h"
 #include "PWSFaultHandler.h"
+#include "Fonts.h"
 #include "PWSversion.h"
 
 #include "core/Util.h"
@@ -196,6 +197,7 @@ ThisMfcApp::~ThisMfcApp()
   PWSprefs::DeleteInstance();
   PWSrand::DeleteInstance();
   PWSversion::DeleteInstance();
+  Fonts::DeleteInstance();
   PWSLog::DeleteLog();
 
   CoUninitialize(); // Uninitialize COM library
@@ -953,6 +955,14 @@ BOOL ThisMfcApp::InitInstance()
   // Ensures all things like saving locations etc. are set up.
 
   PWSprefs *prefs = PWSprefs::GetInstance();
+
+  // And the others - even if not referenced here
+  Fonts *pFonts = Fonts::GetInstance();
+  PWSversion *pPWSver = PWSversion::GetInstance();
+
+  // Stop compiler warnings
+  UNREFERENCED_PARAMETER(pFonts);
+  UNREFERENCED_PARAMETER(pPWSver);
 
   LoadLocalizedStuff();
 #ifndef _DEBUG

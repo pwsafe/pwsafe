@@ -8,30 +8,30 @@
 
 #pragma once
 
-// CPWFontDialog
+// CFontsDialog
 
 enum {PWFONT, TLFONT, VKFONT};
 
 extern LOGFONT dfltTreeListFont;
 
-class CPWFontDialog : public CFontDialog
+class CFontsDialog : public CFontDialog
 {
-  DECLARE_DYNAMIC(CPWFontDialog)
+  DECLARE_DYNAMIC(CFontsDialog)
 
 public:
-  CPWFontDialog(LPLOGFONT lplfInitial = NULL,
-    DWORD dwFlags = CF_EFFECTS | CF_SCREENFONTS,
-    CDC* pdcPrinter = NULL,
-    CWnd* pParentWnd = NULL,
-    int iType = PWFONT);
+  CFontsDialog(LPLOGFONT lplfInitial = NULL,
+                 DWORD dwFlags = CF_EFFECTS | CF_SCREENFONTS,
+                 CDC* pdcPrinter = NULL,
+                 CWnd* pParentWnd = NULL,
+                 int iType = PWFONT);
 #ifndef _AFX_NO_RICHEDIT_SUPPORT
-  CPWFontDialog(const CHARFORMAT& charformat,
-    DWORD dwFlags = CF_SCREENFONTS,
-    CDC* pdcPrinter = NULL,
-    CWnd* pParentWnd = NULL,
-    int iType = PWFONT);
+  CFontsDialog(const CHARFORMAT& charformat,
+                 DWORD dwFlags = CF_SCREENFONTS,
+                 CDC* pdcPrinter = NULL,
+                 CWnd* pParentWnd = NULL,
+                 int iType = PWFONT);
 #endif
-  virtual ~CPWFontDialog();
+  virtual ~CFontsDialog();
 
   // Following override to reset idle timeout on any event
   virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
@@ -44,7 +44,7 @@ public:
   LOGFONT m_dfltVKBDFont;
   bool m_bReset;
 
-// Dialog Data
+  // Dialog Data
   //{{AFX_DATA(CXFontDialog)
   //enum { IDD = IDD_PWFONTDIALOG };
   //}}AFX_DATA

@@ -89,7 +89,7 @@ protected:
   BOOL Draw3DCheckmark(CDC& dc, const CRect& rc, BOOL bSelected,
     HBITMAP hbmCheck = NULL);
   void ConvertMenu(CMenu* pMenu,UINT nIndex,BOOL bSysMenu,BOOL bShowButtons);
-  CFont* GetMenuFont();
+  CFont * GetMenuFont();
 
   void FillRect(CDC& dc, const CRect& rc, COLORREF color);
   void DrawEmbossed(CDC& dc, CImageList &il, int iBtn, CPoint p);

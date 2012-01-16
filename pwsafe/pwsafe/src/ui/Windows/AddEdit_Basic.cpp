@@ -13,7 +13,7 @@
 #include "ThisMfcApp.h"    // For Help
 #include "GeneralMsgBox.h"
 #include "DboxMain.h"
-#include "PwFont.h"
+#include "Fonts.h"
 
 #include "AddEdit_Basic.h"
 #include "AddEdit_PropertySheet.h"
@@ -27,6 +27,8 @@
 
 #include <shlwapi.h>
 #include <fstream>
+
+#include "Richedit.h"
 
 using pws_os::CUUID;
 
@@ -71,10 +73,10 @@ CAddEdit_Basic::CAddEdit_Basic(CWnd *pParent, st_AE_master_data *pAEMD)
   m_bWordWrap = prefs->GetPref(PWSprefs::NotesWordWrap);
 
   m_password = m_password2 = M_realpassword();
-  m_notes = m_notesww = M_realnotes().Left(MAXTEXTCHARS);
+  m_notes = M_realnotes().Left(MAXTEXTCHARS);
 
   // Set up right-click Notes context menu additions
-  std::vector<st_context_menu> vmenu_items(3);
+  std::vector<st_context_menu> vmenu_items;
 
   st_context_menu st_cm;
   std::wstring cs_menu_string;
@@ -83,28 +85,44 @@ CAddEdit_Basic::CAddEdit_Basic(CWnd *pParent, st_AE_master_data *pAEMD)
   st_cm.menu_string = cs_menu_string;
   st_cm.message_number = PWS_MSG_EDIT_WORDWRAP;
   st_cm.flags = m_bWordWrap ? MF_CHECKED : MF_UNCHECKED;
-  vmenu_items[0] = st_cm;
+  vmenu_items.push_back(st_cm);
 
+  st_cm.Empty();
   LoadAString(cs_menu_string, IDS_SHOW_NOTES);
   st_cm.menu_string = cs_menu_string;
   st_cm.message_number = PWS_MSG_EDIT_SHOWNOTES;
   st_cm.flags = m_isNotesHidden ? MF_CHECKED : MF_UNCHECKED;
-  vmenu_items[1] = st_cm;
+  vmenu_items.push_back(st_cm);
 
+  st_cm.Empty();
+  LoadAString(cs_menu_string, IDS_NOTESZOOMIN);
+  st_cm.menu_string = cs_menu_string;
+  st_cm.message_number = PWS_MSG_CALL_NOTESZOOMIN;
+  st_cm.flags = 0;
+  st_cm.lParam = 1;
+  vmenu_items.push_back(st_cm);
+
+  st_cm.Empty();
+  LoadAString(cs_menu_string, IDS_NOTESZOOMOUT);
+  st_cm.menu_string = cs_menu_string;
+  st_cm.message_number = PWS_MSG_CALL_NOTESZOOMOUT;
+  st_cm.flags = 0;
+  st_cm.lParam = -1;
+  vmenu_items.push_back(st_cm);
+
+  st_cm.Empty();
   LoadAString(cs_menu_string, IDS_EDITEXTERNALLY);
   st_cm.menu_string = cs_menu_string;
   st_cm.message_number = PWS_MSG_CALL_EXTERNAL_EDITOR;
   st_cm.flags = 0;
-  vmenu_items[2] = st_cm;
+  vmenu_items.push_back(st_cm);
 
-  m_pex_notes = new CEditExtn(vmenu_items);
-  m_pex_notesww = new CEditExtn(vmenu_items);
+  m_pex_notes = new CRichEditExtn(vmenu_items);
 }
 
 CAddEdit_Basic::~CAddEdit_Basic()
 {
   delete m_pex_notes;
-  delete m_pex_notesww;
   delete m_pToolTipCtrl;
 }
 
@@ -117,7 +135,6 @@ void CAddEdit_Basic::DoDataExchange(CDataExchange* pDX)
   m_ex_password2.DoDDX(pDX, m_password2);
 
   DDX_Text(pDX, IDC_NOTES, (CString&)m_notes);
-  DDX_Text(pDX, IDC_NOTESWW, (CString&)m_notesww);
 
   DDX_CBString(pDX, IDC_GROUP, (CString&)M_group());
   DDX_Text(pDX, IDC_TITLE, (CString&)M_title());
@@ -131,7 +148,6 @@ void CAddEdit_Basic::DoDataExchange(CDataExchange* pDX)
   DDX_Control(pDX, IDC_PASSWORD, m_ex_password);
   DDX_Control(pDX, IDC_PASSWORD2, m_ex_password2);
   DDX_Control(pDX, IDC_NOTES, *m_pex_notes);
-  DDX_Control(pDX, IDC_NOTESWW, *m_pex_notesww);
   DDX_Control(pDX, IDC_URL, m_ex_URL);
   DDX_Control(pDX, IDC_EMAIL, m_ex_email);
   DDX_Control(pDX, IDC_VIEWDEPENDENTS, m_ViewDependentsBtn);
@@ -168,7 +184,6 @@ BEGIN_MESSAGE_MAP(CAddEdit_Basic, CAddEdit_PropertyPage)
   ON_EN_CHANGE(IDC_USERNAME, OnChanged)
   ON_EN_CHANGE(IDC_PASSWORD2, OnChanged)
   ON_EN_CHANGE(IDC_NOTES, OnENChangeNotes)
-  ON_EN_CHANGE(IDC_NOTESWW, OnENChangeNotes)
 
   ON_EN_CHANGE(IDC_URL, OnENChangeURL)
   ON_EN_CHANGE(IDC_EMAIL, OnENChangeEmail)
@@ -177,9 +192,7 @@ BEGIN_MESSAGE_MAP(CAddEdit_Basic, CAddEdit_PropertyPage)
   ON_EN_SETFOCUS(IDC_PASSWORD, OnENSetFocusPassword)
   ON_EN_SETFOCUS(IDC_PASSWORD2, OnENSetFocusPassword2)
   ON_EN_SETFOCUS(IDC_NOTES, OnENSetFocusNotes)
-  ON_EN_SETFOCUS(IDC_NOTESWW, OnENSetFocusNotes)
   ON_EN_KILLFOCUS(IDC_NOTES, OnENKillFocusNotes)
-  ON_EN_KILLFOCUS(IDC_NOTESWW, OnENKillFocusNotes)
 
   ON_CONTROL_RANGE(STN_CLICKED, IDC_STATIC_GROUP, IDC_STATIC_EMAIL, OnSTCExClicked)
 
@@ -187,6 +200,8 @@ BEGIN_MESSAGE_MAP(CAddEdit_Basic, CAddEdit_PropertyPage)
   ON_MESSAGE(PWS_MSG_EXTERNAL_EDITOR_ENDED, OnExternalEditorEnded)
   ON_MESSAGE(PWS_MSG_EDIT_WORDWRAP, OnWordWrap)
   ON_MESSAGE(PWS_MSG_EDIT_SHOWNOTES, OnShowNotes)
+  ON_MESSAGE(PWS_MSG_CALL_NOTESZOOMIN, OnZoomNotes)
+  ON_MESSAGE(PWS_MSG_CALL_NOTESZOOMOUT, OnZoomNotes)
 
   // Common
   ON_MESSAGE(PSM_QUERYSIBLINGS, OnQuerySiblings)
@@ -202,8 +217,11 @@ BOOL CAddEdit_Basic::OnInitDialog()
 
   ModifyStyleEx(0, WS_EX_CONTROLPARENT);
 
-  ApplyPasswordFont(GetDlgItem(IDC_PASSWORD));
-  ApplyPasswordFont(GetDlgItem(IDC_PASSWORD2));
+  Fonts::GetInstance()->ApplyPasswordFont(GetDlgItem(IDC_PASSWORD));
+  Fonts::GetInstance()->ApplyPasswordFont(GetDlgItem(IDC_PASSWORD2));
+
+  // Need to get change notifcations
+  m_pex_notes->SetEventMask(ENM_CHANGE | m_pex_notes->GetEventMask());
 
   if (M_uicaller() == IDS_EDITENTRY && M_protected() != 0) {
     GetDlgItem(IDC_STATIC_PROTECTED)->ShowWindow(SW_SHOW);
@@ -275,7 +293,6 @@ BOOL CAddEdit_Basic::OnInitDialog()
     GetDlgItem(IDC_PASSWORD)->SendMessage(EM_SETREADONLY, TRUE, 0);
     GetDlgItem(IDC_PASSWORD2)->SendMessage(EM_SETREADONLY, TRUE, 0);
     GetDlgItem(IDC_NOTES)->SendMessage(EM_SETREADONLY, TRUE, 0);
-    GetDlgItem(IDC_NOTESWW)->SendMessage(EM_SETREADONLY, TRUE, 0);
     GetDlgItem(IDC_URL)->SendMessage(EM_SETREADONLY, TRUE, 0);
     GetDlgItem(IDC_EMAIL)->SendMessage(EM_SETREADONLY, TRUE, 0);
 
@@ -285,9 +302,6 @@ BOOL CAddEdit_Basic::OnInitDialog()
 
   m_pex_notes->EnableWindow(m_bWordWrap ? FALSE : TRUE);
   m_pex_notes->ShowWindow(m_bWordWrap ? SW_HIDE : SW_SHOW);
-
-  m_pex_notesww->EnableWindow(m_bWordWrap ? TRUE : FALSE);
-  m_pex_notesww->ShowWindow(m_bWordWrap ? SW_SHOW : SW_HIDE);
 
   // Populate the combo box
   m_ex_group.ResetContent(); // groups might be from a previous DB (BR 3062758)
@@ -361,6 +375,22 @@ BOOL CAddEdit_Basic::OnInitDialog()
     ShowNotes();
   } else {
     HideNotes();
+  }
+
+  CHARFORMAT cf = {0};
+  cf.cbSize = sizeof(cf);
+
+  m_pex_notes->SetSel(0, -1);
+  m_pex_notes->SendMessage(EM_GETCHARFORMAT, SCF_SELECTION, (LPARAM)&cf);
+  m_iPointSize = cf.yHeight / 20;
+  m_pex_notes->Clear();
+
+  if (m_isNotesHidden) {
+    m_pex_notes->EnableMenuItem(PWS_MSG_CALL_NOTESZOOMIN, false);
+    m_pex_notes->EnableMenuItem(PWS_MSG_CALL_NOTESZOOMOUT, false);
+  } else {
+    // If at the limit - don't allow to be called again in that direction
+    SetZoomMenu();
   }
 
   UpdateData(FALSE);
@@ -499,7 +529,7 @@ BOOL CAddEdit_Basic::PreTranslateMessage(MSG* pMsg)
 
   // if user hit Ctrl+A in Notes control, then SelectAllNotes
   if (pMsg->message == WM_KEYDOWN && pMsg->wParam == 'A' &&
-      (GetKeyState(VK_CONTROL) & 0x8000) &&
+      (GetKeyState(VK_CONTROL) & 0x8000)  == 0x8000 &&
       m_pex_notes->m_hWnd == ::GetFocus()) {
     SelectAllNotes();
     return TRUE;
@@ -518,6 +548,14 @@ BOOL CAddEdit_Basic::PreTranslateMessage(MSG* pMsg)
     CString cs_text(MAKEINTRESOURCE(IDS_LAUNCH));
     GetDlgItem(IDC_LAUNCH)->SetWindowText(cs_text);
     m_bLaunchPlus = false;
+    return TRUE;
+  }
+
+  if (pMsg->message == WM_KEYDOWN && 
+      (pMsg->wParam == VK_ADD || pMsg->wParam == VK_SUBTRACT) &&
+      (GetKeyState(VK_CONTROL) & 0x8000) == 0x8000 &&
+      m_pex_notes->m_hWnd == ::GetFocus()) {
+    OnZoomNotes(0, pMsg->wParam == VK_ADD ? 1 : -1);
     return TRUE;
   }
 
@@ -544,7 +582,6 @@ BOOL CAddEdit_Basic::OnApply()
   M_symbols().EmptyIfOnlyWhiteSpace();
 
   m_notes.EmptyIfOnlyWhiteSpace();
-  m_notesww.EmptyIfOnlyWhiteSpace();
 
   if (m_password.IsOnlyWhiteSpace()) {
     m_password.Empty();
@@ -556,7 +593,7 @@ BOOL CAddEdit_Basic::OnApply()
     M_realpassword() = m_password;
 
   if (!m_isNotesHidden)
-    M_realnotes() = m_bWordWrap ? m_notesww : m_notes;
+    M_realnotes() = m_notes;
 
   UpdateData(FALSE);
 
@@ -730,7 +767,44 @@ LRESULT CAddEdit_Basic::OnShowNotes(WPARAM, LPARAM)
   UpdateData(FALSE);
 
   m_pex_notes->UpdateState(PWS_MSG_EDIT_SHOWNOTES, m_isNotesHidden ? FALSE : TRUE);
-  m_pex_notesww->UpdateState(PWS_MSG_EDIT_SHOWNOTES, m_isNotesHidden ? FALSE : TRUE);
+
+  return 0L;
+}
+
+void CAddEdit_Basic::SetZoomMenu()
+{
+    m_pex_notes->EnableMenuItem(PWS_MSG_CALL_NOTESZOOMIN, m_iPointSize < 72);
+    m_pex_notes->EnableMenuItem(PWS_MSG_CALL_NOTESZOOMOUT, m_iPointSize > 6);
+}
+
+LRESULT CAddEdit_Basic::OnZoomNotes(WPARAM, LPARAM lParam)
+{
+  // Zoom into and out of notes (by menu and also by keyboard)
+  UpdateData(TRUE);
+
+  ASSERT(lParam != 0);
+
+  if ((lParam < 0 && m_iPointSize <= 6) || (lParam > 0 && m_iPointSize >= 72))
+    return 0L;
+
+  WPARAM wp_increment = (lParam > 0 ? 1 : -1) * 2;
+
+  long nStart, nEnd;
+  m_pex_notes->GetSel(nStart, nEnd);
+
+  m_pex_notes->SetSel(0, -1);
+  m_pex_notes->HideSelection(TRUE, FALSE);
+  m_pex_notes->SendMessage(EM_SETFONTSIZE, wp_increment, 0);
+
+  CHARFORMAT cf = {0};
+  cf.cbSize = sizeof(cf);
+
+  m_pex_notes->SendMessage(EM_GETCHARFORMAT, SCF_SELECTION, (LPARAM)&cf);
+  m_iPointSize = cf.yHeight / 20;
+
+  m_pex_notes->SetSel(nStart, nEnd);
+
+  SetZoomMenu();
   return 0L;
 }
 
@@ -738,30 +812,25 @@ void CAddEdit_Basic::ShowNotes()
 {
   m_isNotesHidden = false;
   m_notes = M_realnotes();
-  m_notesww = M_realnotes();
 
   ((CEdit *)GetDlgItem(IDC_NOTES))->Invalidate();
-  ((CEdit *)GetDlgItem(IDC_NOTESWW))->Invalidate();
+
+  // If at the limit - don't allow to be called again in that direction
+  SetZoomMenu();
  }
 
 void CAddEdit_Basic::HideNotes()
 {
   m_isNotesHidden = true;
-  if (m_bWordWrap) {
-    if (m_notesww != HIDDEN_NOTES) {
-      M_realnotes() = m_notesww;
-    }
-  } else {
-    if (m_notes != HIDDEN_NOTES) {
-      M_realnotes() = m_notes;
-    }
-  }
+  M_realnotes() = m_notes;
 
   m_notes = HIDDEN_NOTES;
-  m_notesww = HIDDEN_NOTES;
 
   ((CEdit *)GetDlgItem(IDC_NOTES))->Invalidate();
-  ((CEdit *)GetDlgItem(IDC_NOTESWW))->Invalidate();
+
+  // Disable zoom of hidden text
+  m_pex_notes->EnableMenuItem(PWS_MSG_CALL_NOTESZOOMIN, false);
+  m_pex_notes->EnableMenuItem(PWS_MSG_CALL_NOTESZOOMOUT, false);
 }
 
 void CAddEdit_Basic::OnGeneratePassword()
@@ -923,32 +992,15 @@ void CAddEdit_Basic::SelectAllNotes()
 {
   // Here from PreTranslateMessage iff User pressed Ctrl+A
   // in Notes control
-  ((CEdit *)GetDlgItem(m_bWordWrap ? IDC_NOTESWW : IDC_NOTES))->
-                       SetSel(0, -1, TRUE);
+  ((CEdit *)GetDlgItem(IDC_NOTES))->SetSel(0, -1, TRUE);
 }
 
 LRESULT CAddEdit_Basic::OnWordWrap(WPARAM, LPARAM)
 {
-  // Get value of notes from dialog.
-  UpdateData(TRUE);
-  if (m_bWordWrap)
-    m_notes = m_notesww;
-  else
-    m_notesww = m_notes;
-
   m_bWordWrap = !m_bWordWrap;
-  // Update dalog
-  UpdateData(FALSE);
+  m_pex_notes->SetTargetDevice(NULL, m_bWordWrap ? 0 : 1);
 
-  m_pex_notes->EnableWindow(m_bWordWrap ? FALSE : TRUE);
-  m_pex_notes->ShowWindow(m_bWordWrap ? SW_HIDE : SW_SHOW);
-  m_pex_notes->Invalidate();
   m_pex_notes->UpdateState(PWS_MSG_EDIT_WORDWRAP, m_bWordWrap);
-
-  m_pex_notesww->EnableWindow(m_bWordWrap ? TRUE : FALSE);
-  m_pex_notesww->ShowWindow(m_bWordWrap ? SW_SHOW : SW_HIDE);
-  m_pex_notesww->Invalidate();
-  m_pex_notesww->UpdateState(PWS_MSG_EDIT_WORDWRAP, m_bWordWrap);
 
   return 0L;
 }
@@ -968,7 +1020,7 @@ void CAddEdit_Basic::OnENKillFocusNotes()
   if (m_isNotesHidden) {
     HideNotes();
   } else
-    M_realnotes() = m_bWordWrap ? m_notesww : m_notes;
+    M_realnotes() = m_notes;
 
   UpdateData(FALSE);
 }
@@ -1153,11 +1205,10 @@ LRESULT CAddEdit_Basic::OnExternalEditorEnded(WPARAM, LPARAM)
 
   // Set real notes field, and
   // we are still displaying the old text, so replace that too
-  M_realnotes() = m_notes = m_notesww = note.c_str();
+  M_realnotes() = m_notes = note.c_str();
 
   UpdateData(FALSE);
   ((CEdit*)GetDlgItem(IDC_NOTES))->Invalidate();
-  ((CEdit*)GetDlgItem(IDC_NOTESWW))->Invalidate();
 
   // Delete temporary file
   _wremove(m_szTempName);

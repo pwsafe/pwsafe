@@ -135,6 +135,12 @@
     <ClCompile Include="filter\FilterStringDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Fonts.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FontsDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="GeneralMsgBox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -241,12 +247,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PWFindToolBar.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PwFont.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PWFontDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PWHdrCtrlNoChng.cpp">
@@ -378,6 +378,9 @@
     <ClCompile Include="PWSversion.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PWHistListCtrl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AboutDlg.h">
@@ -497,6 +500,12 @@
     <ClInclude Include="filter\FilterStringDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Fonts.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FontsDialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="GeneralMsgBox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -588,12 +597,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PWFindToolBar.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PwFont.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PWFontDialog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PWHdrCtrlNoChng.h">
@@ -753,6 +756,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PWSversion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PWHistListCtrl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

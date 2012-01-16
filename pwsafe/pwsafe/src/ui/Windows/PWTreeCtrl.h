@@ -13,7 +13,7 @@
 
 #include <Afxcmn.h>
 #include "SecString.h"
-#include "PwFont.h"
+#include "Fonts.h"
 
 #include <vector>
 
@@ -80,7 +80,7 @@ public:
   void EndDrop() {m_bDropped = true;}
   void SetFilterState(bool bState);
   bool WasLabelEdited() {return m_bEditLabelCompleted;};
-  void SetUpFont(CFont *pfont) {m_fonts.SetUpFont(this, pfont);}
+  void SetUpFont();
   void SetHighlightChanges(bool bvalue)
   {m_bUseHighLighting = bvalue;}
   HTREEITEM FindItem(const CString &path, HTREEITEM hRoot);
@@ -150,7 +150,7 @@ private:
   bool ProcessData(BYTE *in_buffer, const long &inLen, const CSecString &DropGroup);
   void GetGroupEntriesData(CDDObList &out_oblist, HTREEITEM hItem);
   void GetEntryData(CDDObList &out_oblist, CItemData *pci);
-  HFONT GetFontBasedOnStatus(HTREEITEM &hItem, CItemData *pci, COLORREF &cf);
+  CFont *GetFontBasedOnStatus(HTREEITEM &hItem, CItemData *pci, COLORREF &cf);
 
   // Notes Display
   UINT_PTR m_nHoverNDTimerID, m_nShowNDTimerID;
@@ -161,7 +161,6 @@ private:
   bool m_bFilterActive;
   bool m_bEditLabelCompleted;
 
-  PWFonts m_fonts;
   bool m_bUseHighLighting;
   std::vector<StringX> m_vnodes_modified;
 };

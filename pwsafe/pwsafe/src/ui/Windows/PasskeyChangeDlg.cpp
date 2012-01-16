@@ -13,7 +13,7 @@
 #include "ThisMfcApp.h"
 #include "GeneralMsgBox.h"
 #include "PasskeyChangeDlg.h"
-#include "PwFont.h"
+#include "Fonts.h"
 
 #include "core/PwsPlatform.h"
 #include "core/PWScore.h"    // for error statuses from CheckPasskey()
@@ -108,9 +108,9 @@ BOOL CPasskeyChangeDlg::OnInitDialog()
 {
   CPWDialog::OnInitDialog();
 
-  ApplyPasswordFont(GetDlgItem(IDC_OLDPASSKEY));
-  ApplyPasswordFont(GetDlgItem(IDC_NEWPASSKEY));
-  ApplyPasswordFont(GetDlgItem(IDC_CONFIRMNEW));
+  Fonts::GetInstance()->ApplyPasswordFont(GetDlgItem(IDC_OLDPASSKEY));
+  Fonts::GetInstance()->ApplyPasswordFont(GetDlgItem(IDC_NEWPASSKEY));
+  Fonts::GetInstance()->ApplyPasswordFont(GetDlgItem(IDC_CONFIRMNEW));
 
   m_pctlOldPasskey->SetPasswordChar(PSSWDCHAR);
   m_pctlNewPasskey->SetPasswordChar(PSSWDCHAR);

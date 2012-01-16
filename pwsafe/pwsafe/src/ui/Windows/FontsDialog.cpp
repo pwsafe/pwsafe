@@ -6,7 +6,7 @@
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
 
-// PWFontDialog.cpp : implementation file
+// FontsDialog.cpp : implementation file
 //
 
 #include "stdafx.h"
@@ -14,8 +14,8 @@
 #include "resource3.h"
 #include "ThisMfcApp.h"
 #include "DboxMain.h"
-#include "PwFont.h"
-#include "PWFontDialog.h"
+#include "Fonts.h"
+#include "FontsDialog.h"
 #include "SampleTextDlg.h"
 #include "dlgs.h"
 
@@ -23,15 +23,15 @@ extern const wchar_t *EYE_CATCHER;
 
 #ifndef _WIN32_WCE // CFontDialog is not supported for Windows CE.
 
-// CPWFontDialog
+// CFontsDialog
 
-IMPLEMENT_DYNAMIC(CPWFontDialog, CFontDialog)
+IMPLEMENT_DYNAMIC(CFontsDialog, CFontDialog)
 
 static UINT_PTR CALLBACK CFHookProc(HWND hdlg, UINT uiMsg, WPARAM wParam, LPARAM lParam);
-static CPWFontDialog *pwfd_self(NULL);
+static CFontsDialog *pwfd_self(NULL);
 
-CPWFontDialog::CPWFontDialog(LPLOGFONT lplfInitial, DWORD dwFlags, CDC* pdcPrinter,
-                             CWnd* pParentWnd, int iType)
+CFontsDialog::CFontsDialog(LPLOGFONT lplfInitial, DWORD dwFlags, CDC* pdcPrinter,
+                               CWnd* pParentWnd, int iType)
   : CFontDialog(lplfInitial, dwFlags, pdcPrinter, pParentWnd), m_iType(iType)
 {
   m_cf.Flags |= CF_ENABLETEMPLATE | CF_ENABLEHOOK | CF_APPLY;
@@ -64,15 +64,15 @@ CPWFontDialog::CPWFontDialog(LPLOGFONT lplfInitial, DWORD dwFlags, CDC* pdcPrint
   m_bReset = false;
 }
 
-CPWFontDialog::~CPWFontDialog()
+CFontsDialog::~CFontsDialog()
 {
   pwfd_self = NULL;
 }
 
-BEGIN_MESSAGE_MAP(CPWFontDialog, CFontDialog)
+BEGIN_MESSAGE_MAP(CFontsDialog, CFontDialog)
 END_MESSAGE_MAP()
 
-// CPWFontDialog message handlers
+// CFontsDialog message handlers
 
 static UINT_PTR CALLBACK CFHookProc(HWND hdlg, UINT uiMsg, 
                                     WPARAM wParam, LPARAM /* lParam */)
@@ -128,7 +128,7 @@ static UINT_PTR CALLBACK CFHookProc(HWND hdlg, UINT uiMsg,
       // Need to do:
       switch (pwfd_self->m_iType) {
         case PWFONT:
-          GetDefaultPasswordFont(dfltFont);
+          Fonts::GetInstance()->GetDefaultPasswordFont(dfltFont);
           break;
         case TLFONT:
           memcpy(&dfltFont, &dfltTreeListFont, sizeof(LOGFONT));
@@ -159,7 +159,7 @@ static UINT_PTR CALLBACK CFHookProc(HWND hdlg, UINT uiMsg,
   return FALSE; // We didn't process message
 }
 
-INT_PTR CPWFontDialog::DoModal()
+INT_PTR CFontsDialog::DoModal()
 {
   bool bAccEn = app.IsAcceleratorEnabled();
   if (bAccEn)
@@ -175,7 +175,7 @@ INT_PTR CPWFontDialog::DoModal()
   return rc;
 }
 
-LRESULT CPWFontDialog::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
+LRESULT CFontsDialog::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {
   CWnd *pParent = GetParent();
   while (pParent != NULL) {
@@ -188,7 +188,7 @@ LRESULT CPWFontDialog::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
       pParent = pParent->GetParent();
   }
   if (pParent == NULL)
-    pws_os::Trace(L"CPWFontDialog::WindowProc - couldn't find DboxMain ancestor\n");
+    pws_os::Trace(L"CFontsDialog::WindowProc - couldn't find DboxMain ancestor\n");
   return CFontDialog::WindowProc(message, wParam, lParam);
 }
 

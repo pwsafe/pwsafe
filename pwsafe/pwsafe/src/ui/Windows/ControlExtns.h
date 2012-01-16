@@ -64,6 +64,49 @@ struct st_context_menu {
   UINT_PTR message_number;
   std::wstring menu_string;
   int flags;
+  WPARAM wParam;
+  LPARAM lParam;
+  bool bEnable;
+
+  st_context_menu() : message_number(0), menu_string(L""), 
+    flags(0), wParam(0), lParam(0), bEnable(true) {}
+
+  // copy c'tor and assignment operator, standard idioms
+  st_context_menu(const st_context_menu &that)
+    : message_number(that.message_number),
+    menu_string(that.menu_string),
+    flags(that.flags),
+    wParam(that.wParam),
+    lParam(that.lParam),
+    bEnable(that.bEnable) {}
+
+  st_context_menu &operator=(const st_context_menu &that)
+  {
+    if (this != &that) {
+      message_number  = that.message_number;
+      menu_string = that.menu_string;
+      flags  = that.flags;
+      wParam  = that.wParam;
+      lParam = that.lParam;
+      bEnable = that.bEnable;
+    }
+    return *this;
+  }
+
+  bool operator==(const st_context_menu &that) const;
+
+  bool operator!=(const st_context_menu &that) const
+  {return !(*this == that);}
+
+  void Empty()
+  { 
+    message_number = 0;
+    menu_string.clear();
+    flags = 0;
+    wParam = 0;
+    lParam = 0;
+    bEnable = true;
+  }
 };
 
 class CEditExtn : public CEdit
@@ -82,6 +125,7 @@ public:
   void GetSel(int &nStartChar, int &nEndChar);
   void SetSel(DWORD dwSelection, BOOL bNoScroll = FALSE);
   void SetSel(int nStartChar, int nEndChar, BOOL bNoScroll = FALSE);
+  void EnableMenuItem(const int message_number, const bool bEnable);
 
 protected:
   //{{AFX_MSG(CEditExtn)
@@ -103,6 +147,45 @@ private:
   const COLORREF m_crefInFocus;
 
   int m_lastposition, m_nStartChar, m_nEndChar;
+  std::vector<st_context_menu> m_vmenu_items;
+};
+
+class CRichEditExtn : public CRichEditCtrl
+{
+  // Construction
+public:
+  CRichEditExtn(COLORREF focusColor = (RGB(222, 255, 222))); // light green
+  CRichEditExtn(std::vector<st_context_menu> vmenu_items, 
+            COLORREF focusColor = (RGB(222, 255, 222))); //light green
+  virtual ~CRichEditExtn();
+
+  void ChangeColour() {m_bIsFocused = TRUE;}
+  void UpdateState(const int message_number, const BOOL new_state);
+
+  void GetSel(long &nStartChar, long &nEndChar);
+  void SetSel(long nStartChar, long nEndChar);
+  void EnableMenuItem(const int message_number, const bool bEnable);
+
+protected:
+  //{{AFX_MSG(CRichEditExtn)
+  afx_msg void OnSetFocus(CWnd* pOldWnd);
+  afx_msg void OnKillFocus(CWnd* pNewWnd);
+  afx_msg HBRUSH CtlColor(CDC* pDC, UINT nCtlColor);
+  afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
+  afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+  //}}AFX_MSG
+
+  DECLARE_MESSAGE_MAP()
+
+  // Attributes
+private:
+  BOOL m_bIsFocused;
+
+  CBrush m_brInFocus;
+  CBrush m_brNoFocus;
+  const COLORREF m_crefInFocus;
+
+  long m_lastposition, m_nStartChar, m_nEndChar;
   std::vector<st_context_menu> m_vmenu_items;
 };
 

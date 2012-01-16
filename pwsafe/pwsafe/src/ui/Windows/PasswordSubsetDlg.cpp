@@ -12,7 +12,7 @@
 
 #include "PasswordSubsetDlg.h"
 #include "DboxMain.h"
-#include "PwFont.h"
+#include "Fonts.h"
 #include "core/StringX.h"
 #include "core/PWSprefs.h"
 
@@ -74,7 +74,7 @@ BOOL CPasswordSubsetDlg::OnInitDialog()
 {
   CPWDialog::OnInitDialog();
 
-  ApplyPasswordFont(GetDlgItem(IDC_SUBSETRESULTS));
+  Fonts::GetInstance()->ApplyPasswordFont(GetDlgItem(IDC_SUBSETRESULTS));
 
   CRect rect;
   PWSprefs::GetInstance()->GetPrefPSSRect(rect.top, rect.bottom, 

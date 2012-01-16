@@ -18,8 +18,8 @@
 #include "TryAgainDlg.h"
 #include "ColumnChooserDlg.h"
 #include "GeneralMsgBox.h"
-#include "PWFontDialog.h"
-#include "PWFont.h"
+#include "FontsDialog.h"
+#include "Fonts.h"
 #include "InfoDisplay.h"
 #include "ViewReport.h"
 #include "ExpPWListDlg.h"
@@ -2096,18 +2096,17 @@ void DboxMain::OnChangeTreeFont()
   // Allow user to apply changes to font
   StringX cs_TreeListSampleText = prefs->GetPref(PWSprefs::TreeListSampleText);
 
-  CPWFontDialog fontdlg(&lf, CF_SCREENFONTS | CF_INITTOLOGFONTSTRUCT, NULL, NULL, TLFONT);
+  CFontsDialog fontdlg(&lf, CF_SCREENFONTS | CF_INITTOLOGFONTSTRUCT, NULL, NULL, TLFONT);
 
   fontdlg.m_sampletext = cs_TreeListSampleText.c_str();
 
   if (fontdlg.DoModal() == IDOK) {
-    m_pFontTree->DeleteObject();
-    m_pFontTree->CreateFontIndirect(&lf);
+    Fonts::GetInstance()->SetCurrentFont(&lf);
 
     // Transfer the fonts to the tree and list windows
-    m_ctlItemTree.SetUpFont(m_pFontTree);
-    m_ctlItemList.SetUpFont(m_pFontTree);
-    m_LVHdrCtrl.SetFont(m_pFontTree);
+    m_ctlItemTree.SetUpFont();
+    m_ctlItemList.SetUpFont();
+    m_LVHdrCtrl.SetFont(Fonts::GetInstance()->GetCurrentFont());
 
     // Recalculate header widths
     CalcHeaderWidths();
@@ -2142,22 +2141,23 @@ void DboxMain::OnChangePswdFont()
   PWSprefs *prefs = PWSprefs::GetInstance();
   LOGFONT lf;
   // Get Password font in case the user wants to change this.
-  GetPasswordFont(&lf);
+  Fonts *pFonts = Fonts::GetInstance();
+  pFonts->GetPasswordFont(&lf);
 
   // Present Password font and possibly change it
   // Allow user to apply changes to font
   StringX cs_PswdSampleText = prefs->GetPref(PWSprefs::PswdSampleText);
 
-  CPWFontDialog fontdlg(&lf, CF_SCREENFONTS | CF_INITTOLOGFONTSTRUCT, NULL, NULL, PWFONT);
+  CFontsDialog fontdlg(&lf, CF_SCREENFONTS | CF_INITTOLOGFONTSTRUCT, NULL, NULL, PWFONT);
 
   fontdlg.m_sampletext = cs_PswdSampleText.c_str();
 
   if (fontdlg.DoModal() == IDOK) {
     // Transfer the new font to the passwords
-    SetPasswordFont(&lf);
+    pFonts->SetPasswordFont(&lf);
 
     LOGFONT dfltfont;
-    GetDefaultPasswordFont(dfltfont);
+    pFonts->GetDefaultPasswordFont(dfltfont);
 
     // Check if default
     CString csfn(lf.lfFaceName), csdfltfn(dfltfont.lfFaceName);
@@ -2199,7 +2199,7 @@ void DboxMain::OnChangeVKFont()
   // Allow user to apply changes to font
   StringX cs_VKSampleText = prefs->GetPref(PWSprefs::VKSampleText);
 
-  CPWFontDialog fontdlg(&lf, CF_SCREENFONTS | CF_INITTOLOGFONTSTRUCT | 
+  CFontsDialog fontdlg(&lf, CF_SCREENFONTS | CF_INITTOLOGFONTSTRUCT | 
                              CF_LIMITSIZE | CF_NOSCRIPTSEL,
                              NULL, NULL, VKFONT);
 

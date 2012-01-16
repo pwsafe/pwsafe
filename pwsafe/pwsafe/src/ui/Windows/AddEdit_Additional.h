@@ -11,6 +11,7 @@
 #pragma once
 
 #include "AddEdit_PropertyPage.h"
+#include "PWHistListCtrl.h"
 
 #include "resource.h"
 
@@ -39,7 +40,7 @@ public:
   BOOL m_UseDefaultDCA, m_UseDefaultShiftDCA;
   int m_DCA_to_Index[PWSprefs::maxDCA + 1];
 
-  CListCtrl m_PWHistListCtrl;
+  CPWHistListCtrl m_PWHistListCtrl;
   int m_iSortedColumn;
   bool m_bSortAscending;
   bool m_ClearPWHistory;

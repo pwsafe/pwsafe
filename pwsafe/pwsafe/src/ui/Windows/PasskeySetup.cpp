@@ -34,7 +34,7 @@
 #include "core/util.h"
 
 #include "PasskeySetup.h"
-#include "PwFont.h"
+#include "Fonts.h"
 
 #include <iomanip>  // For setbase and setw
 
@@ -106,8 +106,8 @@ END_MESSAGE_MAP()
 BOOL CPasskeySetup::OnInitDialog() 
 {
   CPWDialog::OnInitDialog();
-  ApplyPasswordFont(GetDlgItem(IDC_PASSKEY));
-  ApplyPasswordFont(GetDlgItem(IDC_VERIFY));
+  Fonts::GetInstance()->ApplyPasswordFont(GetDlgItem(IDC_PASSKEY));
+  Fonts::GetInstance()->ApplyPasswordFont(GetDlgItem(IDC_VERIFY));
 
   m_pctlPasskey->SetPasswordChar(PSSWDCHAR);
   m_pctlVerify->SetPasswordChar(PSSWDCHAR);
