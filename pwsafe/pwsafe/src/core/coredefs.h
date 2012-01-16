@@ -77,7 +77,7 @@ struct st_PSWDPolicy {
   }
 
   bool operator!=(const st_PSWDPolicy &that) const
-  { return !(*this == that);}
+  {return !(*this == that);}
 
   void Empty()
   { 
@@ -117,6 +117,10 @@ struct st_GroupTitleUser {
   }
 };
 
+struct st_PWH_status {
+  StringX pwh;
+  CItemData::EntryStatus es;
+};
 
 typedef std::map<pws_os::CUUID, CItemData, std::less<pws_os::CUUID> > ItemList;
 typedef ItemList::iterator ItemListIter;
@@ -138,7 +142,7 @@ typedef std::pair<pws_os::CUUID, pws_os::CUUID> ItemMap_Pair;
 typedef std::map<pws_os::CUUID, st_SaveTypePW, std::less<pws_os::CUUID> > SaveTypePWMap;
 typedef std::pair<pws_os::CUUID, st_SaveTypePW> SaveTypePWMap_Pair;
 
-typedef std::map<pws_os::CUUID, StringX, std::less<pws_os::CUUID> > SavePWHistoryMap;
+typedef std::map<pws_os::CUUID, st_PWH_status, std::less<pws_os::CUUID> > SavePWHistoryMap;
 
 typedef std::set<st_GroupTitleUser> GTUSet;
 typedef std::pair<GTUSet::iterator, bool > GTUSetPair;

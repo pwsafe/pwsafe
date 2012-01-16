@@ -148,18 +148,25 @@ void DboxMain::UpdateGUI(UpdateGUICommand::GUI_Action ga,
       // the action is complete - when these calls are then sent
       RebuildGUI();
       break;
+    case UpdateGUICommand::GUI_PWH_CHANGED_IN_DB:
+      // During this process, many entries may have been edited (marked modified)
+      if (prefs->GetPref(PWSprefs::HighlightChanges))
+        RebuildGUI();
+      break;
     case UpdateGUICommand::GUI_REFRESH_TREE:
       // Rebuid the entire tree view
       RebuildGUI(iTreeOnly);
       break;
     case UpdateGUICommand::GUI_DB_PREFERENCES_CHANGED:
       // Change any impact on the application due to a database preference change
-      // Currently - only Idle Timeout values
+      // Currently - only Idle Timeout values and potentially whether the
+      // user/password is shown in the Tree view
       KillTimer(TIMER_LOCKDBONIDLETIMEOUT);
       ResetIdleLockCounter();
       if (prefs->GetPref(PWSprefs::LockDBOnIdleTimeout)) {
         SetTimer(TIMER_LOCKDBONIDLETIMEOUT, IDLE_CHECK_INTERVAL, NULL);
       }
+      RebuildGUI(iTreeOnly);
       break;
     default:
       break;
