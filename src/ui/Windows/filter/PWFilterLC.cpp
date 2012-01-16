@@ -1709,13 +1709,13 @@ void CPWFilterLC::DrawComboBox(const int iSubItem, const int index)
     return;
 
   if (!m_pFont) {
-    CFont* pF = GetFont();
-    ASSERT(pF);
+    CFont *pFont = GetFont();
+    ASSERT(pFont);
 
     LOGFONT logFont;
     SecureZeroMemory(&logFont, sizeof(logFont));
 
-    pF->GetLogFont(&logFont);
+    pFont->GetLogFont(&logFont);
     m_pFont = new CFont;
     m_pFont->CreateFontIndirect(&logFont);
   }
@@ -1761,11 +1761,11 @@ void CPWFilterLC::DrawComboBox(const int iSubItem, const int index)
     CSize sz;
     int dx(0);
     TEXTMETRIC tm;
-    CDC* pDC = m_pComboBox->GetDC();
-    CFont* pFont = m_pComboBox->GetFont();
+    CDC *pDC = m_pComboBox->GetDC();
+    CFont *pFont = m_pComboBox->GetFont();
 
     // Select the ComboBox font, save the old font
-    CFont* pOldFont = pDC->SelectObject(pFont);
+    CFont *pOldFont = pDC->SelectObject(pFont);
     // Get the text metrics for avg char width
     pDC->GetTextMetrics(&tm);
 
@@ -1989,10 +1989,10 @@ void CPWFilterLC::DrawSubItemText(int iItem, int iSubItem, CDC *pDC,
     CFont boldfont;
 
     if (bBold) {
-      CFont *font = pDC->GetCurrentFont();
-      if (font) {
+      CFont *pFont = pDC->GetCurrentFont();
+      if (pFont) {
         LOGFONT lf;
-        font->GetLogFont(&lf);
+        pFont->GetLogFont(&lf);
         lf.lfWeight = FW_BOLD;
         boldfont.CreateFontIndirect(&lf);
         pOldFont = pDC->SelectObject(&boldfont);

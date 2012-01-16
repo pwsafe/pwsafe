@@ -181,6 +181,6 @@ private:
   COLORREF m_crGrayText, m_crWindow, m_crWindowText, m_crButtonFace, m_crRedText;
   int m_fwidth, m_lwidth, m_rowheight;
   CComboBox *m_pComboBox;
-  CFont* m_pFont;
+  CFont *m_pFont;
   int m_iItem;
 };

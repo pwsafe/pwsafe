@@ -1115,6 +1115,8 @@
     <ClCompile Include="filter\FilterIntegerDlg.cpp" />
     <ClCompile Include="filter\FilterPasswordDlg.cpp" />
     <ClCompile Include="filter\FilterStringDlg.cpp" />
+    <ClCompile Include="Fonts.cpp" />
+    <ClCompile Include="FontsDialog.cpp" />
     <ClCompile Include="GeneralMsgBox.cpp" />
     <ClCompile Include="ImportTextDlg.cpp" />
     <ClCompile Include="ImportXMLDlg.cpp" />
@@ -1154,10 +1156,9 @@
     <ClCompile Include="filter\PWFilterLC.cpp" />
     <ClCompile Include="filter\PWFiltersDlg.cpp" />
     <ClCompile Include="PWFindToolBar.cpp" />
-    <ClCompile Include="PwFont.cpp" />
-    <ClCompile Include="PWFontDialog.cpp" />
     <ClCompile Include="PWHdrCtrlNoChng.cpp" />
     <ClCompile Include="PWHistDlg.cpp" />
+    <ClCompile Include="PWHistListCtrl.cpp" />
     <ClCompile Include="PWListCtrl.cpp" />
     <ClCompile Include="PWPropertyPage.cpp" />
     <ClCompile Include="PWPropertySheet.cpp" />
@@ -1238,6 +1239,8 @@
     <ClInclude Include="filter\FilterIntegerDlg.h" />
     <ClInclude Include="filter\FilterPasswordDlg.h" />
     <ClInclude Include="filter\FilterStringDlg.h" />
+    <ClInclude Include="Fonts.h" />
+    <ClInclude Include="FontsDialog.h" />
     <ClInclude Include="GeneralMsgBox.h" />
     <ClInclude Include="ImportTextDlg.h" />
     <ClInclude Include="ImportXMLDlg.h" />
@@ -1272,10 +1275,9 @@
     <ClInclude Include="filter\PWFilterLC.h" />
     <ClInclude Include="filter\PWFiltersDlg.h" />
     <ClInclude Include="PWFindToolBar.h" />
-    <ClInclude Include="PwFont.h" />
-    <ClInclude Include="PWFontDialog.h" />
     <ClInclude Include="PWHdrCtrlNoChng.h" />
     <ClInclude Include="PWHistDlg.h" />
+    <ClInclude Include="PWHistListCtrl.h" />
     <ClInclude Include="PWListCtrl.h" />
     <ClInclude Include="PWPropertyPage.h" />
     <ClInclude Include="PWPropertySheet.h" />

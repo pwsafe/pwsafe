@@ -14,6 +14,7 @@
 #include "AddEdit_PropertyPage.h"
 #include "ExtThread.h"
 #include "ControlExtns.h"
+
 #include "core/ItemData.h"
 
 class DboxMain;
@@ -35,14 +36,13 @@ public:
   enum { IDD = IDD_ADDEDIT_BASIC, IDD_SHORT = IDD_ADDEDIT_BASIC_SHORT };
 
   CSecString m_password, m_password2;
-  CSecString m_notes, m_notesww;
+  CSecString m_notes;
 
   CComboBoxExtn m_ex_group;
 
   CEditExtn m_ex_title;
   CEditExtn m_ex_username;
-  CEditExtn *m_pex_notes;
-  CEditExtn *m_pex_notesww;
+  CRichEditExtn *m_pex_notes;
   CEditExtn m_ex_URL;
   CEditExtn m_ex_email;
 
@@ -109,11 +109,13 @@ protected:
   afx_msg LRESULT OnExternalEditorEnded(WPARAM, LPARAM);
   afx_msg LRESULT OnWordWrap(WPARAM, LPARAM);
   afx_msg LRESULT OnShowNotes(WPARAM, LPARAM);
+  afx_msg LRESULT OnZoomNotes(WPARAM, LPARAM);
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
 
 private:
+  void SetZoomMenu();
   void SelectAllNotes();
   void ShowPassword();
   void HidePassword();
@@ -131,6 +133,7 @@ private:
 
   CToolTipCtrl *m_pToolTipCtrl;
   bool m_bInitdone;
+  int m_iPointSize;
 };
 //-----------------------------------------------------------------------------
 // Local variables:

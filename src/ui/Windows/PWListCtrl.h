@@ -17,7 +17,7 @@
 #pragma once
 
 #include "SecString.h"
-#include "PwFont.h"
+#include "Fonts.h"
 
 class DboxMain;
 class CItemData;
@@ -35,7 +35,7 @@ public:
   bool FindNext(const CString &cs_find, const int iSubItem);
 
   void SetFilterState(bool bState);
-  void SetUpFont(CFont *pfont) {m_fonts.SetUpFont(this, pfont);}
+  void SetUpFont();
   void SetHighlightChanges(bool bvalue)
   {m_bUseHighLighting = bvalue;}
 
@@ -69,7 +69,6 @@ private:
   // Filter
   bool m_bFilterActive;
 
-  HFONT GetFontBasedOnStatus(CItemData *pci, COLORREF &cf);
-  PWFonts m_fonts;
+  CFont *GetFontBasedOnStatus(CItemData *pci, COLORREF &cf);
   bool m_bUseHighLighting;
 };

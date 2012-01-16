@@ -722,3 +722,5 @@
 #define IDS_PR_MUSTHAVECHARACTERS       5918
 #define IDS_OWNSYMBOLSMISSING           5919
 #define IDS_ENTRIESCLEARALL             5920
+#define IDS_NOTESZOOMIN                 5921
+#define IDS_NOTESZOOMOUT                5922

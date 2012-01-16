@@ -10,6 +10,10 @@ releases may be found in the file ChangeLog.txt.
 
 New Features for 3.27.1
 =======================
+[3468289]	The password font is now also used for passwords in the Password History and
+for passwords in the List view, if the user has selected that the password column is
+shown in this view. The user can zoom in/out of the Notes field in Add/Edit dialogs in
+order to make the contents easier to read.
 [3455436] Users may now delete the password history for all existing entries in a database.
 They may choose to also change Protected Entries, although the default is not to.
 [3421963] Centralized Password Policies can now be saved in a database, managed (added,

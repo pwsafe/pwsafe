@@ -13,7 +13,7 @@
 #include "WZSelectDB.h"
 #include "WZPropertySheet.h"
 
-#include "PwFont.h"
+#include "Fonts.h"
 #include "TryAgainDlg.h"
 #include "SecString.h"
 #include "GeneralMsgBox.h"
@@ -144,7 +144,7 @@ BOOL CWZSelectDB::OnInitDialog()
 {
   CWZPropertyPage::OnInitDialog();
 
-  ApplyPasswordFont(GetDlgItem(IDC_PASSKEY));
+  Fonts::GetInstance()->ApplyPasswordFont(GetDlgItem(IDC_PASSKEY));
 
   m_pctlPasskey->SetPasswordChar(PSSWDCHAR);
 

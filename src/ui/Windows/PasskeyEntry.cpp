@@ -43,7 +43,7 @@ down the streetsky.  [Groucho Marx]
 #include "SysColStatic.h"
 
 #include "PasskeyEntry.h"
-#include "PwFont.h"
+#include "Fonts.h"
 #include "TryAgainDlg.h"
 #include "DboxMain.h" // for CheckPasskey()
 #include "PasskeySetup.h"
@@ -194,7 +194,7 @@ BOOL CPasskeyEntry::OnInitDialog(void)
   CPWDialog::OnInitDialog();
 #endif
 
-  ApplyPasswordFont(GetDlgItem(IDC_PASSKEY));
+  Fonts::GetInstance()->ApplyPasswordFont(GetDlgItem(IDC_PASSKEY));
 
   m_pctlPasskey->SetPasswordChar(PSSWDCHAR);
 

@@ -271,7 +271,7 @@ BOOL CPasswordPolicyDlg::OnInitDialog()
       GetDlgItem(ID_HELP)->EnableWindow(FALSE);
       GetDlgItem(ID_HELP)->ShowWindow(SW_HIDE);
 
-      ApplyPasswordFont(GetDlgItem(IDC_PASSWORD));
+      Fonts::GetInstance()->ApplyPasswordFont(GetDlgItem(IDC_PASSWORD));
       m_ex_password.SetSecure(false);
 
       // Remove password character so that the password is displayed

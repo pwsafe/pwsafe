@@ -215,7 +215,7 @@ BOOL CManagePSWDPolices::OnInitDialog()
   GetDlgItem(IDC_LIST_POLICYENTRIES)->EnableWindow(FALSE);
   GetDlgItem(IDC_DELETE)->EnableWindow(FALSE);
   
-  ApplyPasswordFont(GetDlgItem(IDC_PASSWORD));
+  Fonts::GetInstance()->ApplyPasswordFont(GetDlgItem(IDC_PASSWORD));
   m_ex_password.SetSecure(false);
 
   // Remove password character so that the password is displayed

@@ -171,7 +171,7 @@ BOOL CInfoDisplay::Create(int /* x */, int /* y */, LPCWSTR sztext, CWnd * paren
   if (NDclass == NULL)
     return FALSE;
    
-  CFont *f = parent->GetFont();
+  CFont *pFont = parent->GetFont();
    
   CRect r(0, 0, 10, 10); // meaningless values, will be recomputed after creation
 
@@ -186,7 +186,7 @@ BOOL CInfoDisplay::Create(int /* x */, int /* y */, LPCWSTR sztext, CWnd * paren
   if (!bresult)
     return FALSE;
 
-  SetFont(f);
+  SetFont(pFont);
 
   return TRUE;
 }

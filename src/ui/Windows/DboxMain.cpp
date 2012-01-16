@@ -18,7 +18,7 @@
 #include "PasswordSafe.h"
 #include "ThisMfcApp.h"
 #include "AboutDlg.h"
-#include "PwFont.h"
+#include "Fonts.h"
 #include "MFCMessages.h"
 
 #include "DboxMain.h"
@@ -124,7 +124,7 @@ DboxMain::DboxMain(CWnd* pParent)
   m_bSizing(false), m_bDBNeedsReading(true), m_bInitDone(false),
   m_toolbarsSetup(FALSE),
   m_bSortAscending(true), m_iTypeSortColumn(CItemData::TITLE),
-  m_core(app.m_core), m_pFontTree(NULL),
+  m_core(app.m_core),
   m_bTSUpdated(false),
   m_iSessionEndingStatus(IDIGNORE),
   m_pwchTip(NULL),
@@ -217,9 +217,6 @@ DboxMain::~DboxMain()
   ::DestroyIcon(m_hIconSm);
 
   delete m_pwchTip;
-  delete m_pFontTree;
-  DeletePasswordFont();
-
   delete m_pToolTipCtrl;
 
   if (m_hUser32 != NULL)
@@ -836,7 +833,6 @@ void DboxMain::InitPasswordSafe()
   m_ctlItemTree.SetHighlightChanges(prefs->GetPref(PWSprefs::HighlightChanges));
 
   // Set up fonts before playing with Tree/List views
-  m_pFontTree = new CFont;
 
   // Get current font (as specified in .rc file for IDD_PASSWORDSAFE_DIALOG) & save it
   // If it's not available, fall back to font used in pre-3.18 versions, rather than
@@ -845,6 +841,7 @@ void DboxMain::InitPasswordSafe()
   pCurrentFont->GetLogFont(&dfltTreeListFont);
 
   CString szTreeFont = prefs->GetPref(PWSprefs::TreeFont).c_str();
+  Fonts *pFonts = Fonts::GetInstance();
 
   // If we didn't find font specified in rc, and user didn't select anything
   // fallback to MS Sans Serif
@@ -852,30 +849,33 @@ void DboxMain::InitPasswordSafe()
       szTreeFont.IsEmpty()) {
     const CString MS_SanSerif8 = L"-11,0,0,0,400,0,0,0,177,1,2,1,34,MS Sans Serif";
     szTreeFont = MS_SanSerif8;
-    ExtractFont(szTreeFont, dfltTreeListFont); // Save for 'Reset font' action
+    pFonts->ExtractFont(szTreeFont, dfltTreeListFont); // Save for 'Reset font' action
   }
   
+  LOGFONT tree_lf;
   if (!szTreeFont.IsEmpty()) { // either preference or our own fallback
-    LOGFONT treefont;
-    ExtractFont(szTreeFont, treefont);
-    m_pFontTree->CreateFontIndirect(&treefont);
-    // transfer the fonts to the tree windows
-    m_ctlItemTree.SetUpFont(m_pFontTree);
-    m_ctlItemList.SetUpFont(m_pFontTree);
-    m_LVHdrCtrl.SetFont(m_pFontTree);
+    pFonts->ExtractFont(szTreeFont, tree_lf);
+    pFonts->SetCurrentFont(&tree_lf);
   } else {
-    m_ctlItemTree.SetUpFont(pCurrentFont);
-    m_ctlItemList.SetUpFont(pCurrentFont);
+    pFonts->SetCurrentFont(&dfltTreeListFont);
   }
 
   // Set up Password font too.
   CString szPasswordFont = prefs->GetPref(PWSprefs::PasswordFont).c_str();
 
-  if (szPasswordFont != L"") {
+  if (!szPasswordFont.IsEmpty()) {
     LOGFONT Passwordfont;
-    ExtractFont(szPasswordFont, Passwordfont);
-    SetPasswordFont(&Passwordfont);
+    pFonts->ExtractFont(szPasswordFont, Passwordfont);
+    pFonts->SetPasswordFont(&Passwordfont);
+  } else {
+    // Not set - use default password font
+    pFonts->SetPasswordFont(NULL);
   }
+
+  // transfer the fonts to the tree windows
+  m_ctlItemTree.SetUpFont();
+  m_ctlItemList.SetUpFont();
+  m_LVHdrCtrl.SetFont(pFonts->GetCurrentFont());
 
   const CString lastView = prefs->GetPref(PWSprefs::LastView).c_str();
   if (lastView != L"list")
