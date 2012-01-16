@@ -110,8 +110,8 @@ const PWSprefs::intPref PWSprefs::int_prefs[NumIntPrefs] = {
                                   minTDS, maxTDS},                  // database
   {_T("NumPWHistoryDefault"), 3, ptDatabase, 0, 255},               // database
   // Specified by supported masks
-  {_T("BackupSuffix"), BKSFX_None, ptApplication, minBKSFX, maxBKSFX}, // application
-  {_T("BackupMaxIncremented"), 1, ptApplication, 1, 999},           // application
+  {_T("BackupSuffix"), BKSFX_IncNumber, ptApplication, minBKSFX, maxBKSFX}, // application
+  {_T("BackupMaxIncremented"), 3, ptApplication, 1, 999},           // application
   {_T("PreExpiryWarnDays"), 1, ptApplication, 1, 30},               // application
   {_T("ClosedTrayIconColour"), stiBlack, ptApplication,
                                stiBlack, stiYellow},                // application
