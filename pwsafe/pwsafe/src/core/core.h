@@ -268,3 +268,4 @@
 #define IDSC_DCABROWSEPLUS              4008
 #define IDSC_DCARUN                     4009
 #define IDSC_DCASENDEMAIL               4010
+#define IDSC_DEFAULT                    4011

@@ -316,6 +316,7 @@ BEGIN
   IDSC_DCACOPYPASSWORDMIN  "Copy password to clipboard, minimize"
   IDSC_DCARUN              "Run Command"
   IDSC_DCASENDEMAIL        "Send email"
+  IDSC_DEFAULT             "default"
 END
 
 STRINGTABLE
