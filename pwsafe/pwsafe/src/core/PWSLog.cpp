@@ -59,9 +59,10 @@ stringT PWSLog::DumpLog()
   stLog << global_log.size() << _T(" ");
 
   deque<stringT>::const_reverse_iterator criter;
+  deque<stringT>::const_reverse_iterator crend = global_log.rend();
 
   // Now add records - last first
-  for (criter = global_log.rbegin(); criter != global_log.rend(); criter++) {
+  for (criter = global_log.rbegin(); criter != crend; criter++) {
     if (criter->length() > 1) {
       // First add record length, then record
       stLog << criter->length() << _T(" ");
