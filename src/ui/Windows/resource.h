@@ -658,7 +658,6 @@
 #define IDC_SETSAMPLETEXT               1373
 #define IDC_RESETFONT                   1374
 #define IDC_ENTRYPWPOLICY               1376
-#define IDC_DCA_DEFAULT                 1378
 #define IDC_LAUNCH                      1379
 #define IDC_SENDEMAIL                   1380
 #define IDC_STATIC_PWH_ADD              1381
@@ -729,7 +728,6 @@
 #define IDC_STATIC_DEFAUTOTYPE          1447
 #define IDC_STATIC_PSWDLENGTH           1448
 #define IDC_SHIFT_DOUBLE_CLICK_ACTION   1449
-#define IDC_SHIFT_DCA_DEFAULT           1450
 #define IDC_STATIC_PREFERENCES          1453
 #define IDC_STATIC_DB_PREFS_RO_WARNING  1454
 #define IDC_DATABASE_NAME               1455

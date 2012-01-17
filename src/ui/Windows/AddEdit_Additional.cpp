@@ -34,8 +34,8 @@ CAddEdit_Additional::CAddEdit_Additional(CWnd * pParent, st_AE_master_data *pAEM
   : CAddEdit_PropertyPage(pParent, 
                           CAddEdit_Additional::IDD, CAddEdit_Additional::IDD_SHORT,
                           pAEMD),
-  m_UseDefaultDCA(TRUE), m_UseDefaultShiftDCA(TRUE), m_ClearPWHistory(false),
-  m_bSortAscending(true), m_pToolTipCtrl(NULL), m_bInitdone(false), m_iSortedColumn(-1)
+  m_ClearPWHistory(false), m_bSortAscending(true),
+  m_pToolTipCtrl(NULL), m_bInitdone(false), m_iSortedColumn(-1)
 {
   if (M_MaxPWHistory() == 0)
     M_MaxPWHistory() = PWSprefs::GetInstance()->
@@ -54,9 +54,6 @@ void CAddEdit_Additional::DoDataExchange(CDataExchange* pDX)
   //{{AFX_DATA_MAP(CAddEdit_Additional)
   DDX_Text(pDX, IDC_AUTOTYPE, (CString&)M_autotype());
   DDX_Text(pDX, IDC_RUNCMD, (CString&)M_runcommand());
-
-  DDX_Check(pDX, IDC_DCA_DEFAULT, m_UseDefaultDCA);
-  DDX_Check(pDX, IDC_SHIFT_DCA_DEFAULT, m_UseDefaultShiftDCA);
 
   DDX_Control(pDX, IDC_AUTOTYPE, m_ex_autotype);
   DDX_Control(pDX, IDC_RUNCMD, m_ex_runcommand);
@@ -85,9 +82,7 @@ BEGIN_MESSAGE_MAP(CAddEdit_Additional, CAddEdit_PropertyPage)
   ON_EN_CHANGE(IDC_RUNCMD, OnChanged)
 
   ON_CONTROL_RANGE(STN_CLICKED, IDC_STATIC_AUTO, IDC_STATIC_RUNCMD, OnSTCExClicked)
-  ON_BN_CLICKED(IDC_DCA_DEFAULT, OnSetDCACheck)
   ON_CBN_SELCHANGE(IDC_DOUBLE_CLICK_ACTION, OnDCAComboChanged)
-  ON_BN_CLICKED(IDC_SHIFT_DCA_DEFAULT, OnSetShiftDCACheck)
   ON_CBN_SELCHANGE(IDC_SHIFT_DOUBLE_CLICK_ACTION, OnShiftDCAComboChanged)
 
   // Password History
@@ -168,41 +163,28 @@ BOOL CAddEdit_Additional::OnInitDialog()
     GetDlgItem(IDC_AUTOTYPE)->SendMessage(EM_SETREADONLY, TRUE, 0);
     GetDlgItem(IDC_RUNCMD)->SendMessage(EM_SETREADONLY, TRUE, 0);
 
-    // Disable Checkbox
-    GetDlgItem(IDC_DCA_DEFAULT)->EnableWindow(FALSE);
+    // Disable Combobox
     GetDlgItem(IDC_DOUBLE_CLICK_ACTION)->EnableWindow(FALSE);
-    GetDlgItem(IDC_SHIFT_DCA_DEFAULT)->EnableWindow(FALSE);
     GetDlgItem(IDC_SHIFT_DOUBLE_CLICK_ACTION)->EnableWindow(FALSE);
   }
 
   // For some reason, MFC calls us twice when initializing.
-  // Populate the combo box only once.
+  // SetupDCAComboBoxes is idempotent
   SetupDCAComboBoxes(&m_dblclk_cbox, false);
   SetupDCAComboBoxes(&m_shiftdblclk_cbox, true);
 
-  if (M_DCA() < PWSprefs::minDCA || M_DCA() > PWSprefs::maxDCA) {
-    short iDCA = (short)PWSprefs::GetInstance()->
-                      GetPref(PWSprefs::DoubleClickAction);
-    m_dblclk_cbox.SetCurSel(m_DCA_to_Index[iDCA]);
-    m_dblclk_cbox.EnableWindow(FALSE);
-    m_UseDefaultDCA = TRUE;
-  } else {
-    m_dblclk_cbox.SetCurSel(m_DCA_to_Index[M_DCA()]);
-    m_dblclk_cbox.EnableWindow(TRUE);
-    m_UseDefaultDCA = FALSE;
-  }
+  short iDCA;
+  if (M_DCA() < PWSprefs::minDCA || M_DCA() > PWSprefs::maxDCA)
+    iDCA = (short)PWSprefs::GetInstance()->GetPref(PWSprefs::DoubleClickAction);
+  else
+    iDCA = M_DCA();
+  m_dblclk_cbox.SetCurSel(m_DCA_to_Index[iDCA]);
 
-  if (M_ShiftDCA() < PWSprefs::minDCA || M_ShiftDCA() > PWSprefs::maxDCA) {
-    short iDCA = (short)PWSprefs::GetInstance()->
-                      GetPref(PWSprefs::ShiftDoubleClickAction);
-    m_shiftdblclk_cbox.SetCurSel(m_DCA_to_Index[iDCA]);
-    m_shiftdblclk_cbox.EnableWindow(FALSE);
-    m_UseDefaultShiftDCA = TRUE;
-  } else {
-    m_shiftdblclk_cbox.SetCurSel(m_DCA_to_Index[M_ShiftDCA()]);
-    m_shiftdblclk_cbox.EnableWindow(TRUE);
-    m_UseDefaultShiftDCA = FALSE;
-  }
+  if (M_ShiftDCA() < PWSprefs::minDCA || M_ShiftDCA() > PWSprefs::maxDCA)
+    iDCA = (short)PWSprefs::GetInstance()->GetPref(PWSprefs::ShiftDoubleClickAction);
+  else
+    iDCA = M_ShiftDCA();
+  m_shiftdblclk_cbox.SetCurSel(m_DCA_to_Index[iDCA]);
 
   // Password History
   M_oldMaxPWHistory() = M_MaxPWHistory();
@@ -297,17 +279,17 @@ BOOL CAddEdit_Additional::OnInitDialog()
 void CAddEdit_Additional::SetupDCAComboBoxes(CComboBox *pcbox, bool isShift)
 {
   const struct {int res; int pref;} ResPref[] = {
-    {IDSC_DCAAUTOTYPE, PWSprefs::DoubleClickAutoType},
-    {IDSC_DCABROWSE, PWSprefs::DoubleClickBrowse},
-    {IDSC_DCABROWSEPLUS, PWSprefs::DoubleClickBrowsePlus},
-    {IDSC_DCACOPYNOTES, PWSprefs::DoubleClickCopyNotes},
-    {IDSC_DCACOPYPASSWORD, PWSprefs::DoubleClickCopyPassword},
+    {IDSC_DCAAUTOTYPE,        PWSprefs::DoubleClickAutoType},
+    {IDSC_DCABROWSE,          PWSprefs::DoubleClickBrowse},
+    {IDSC_DCABROWSEPLUS,      PWSprefs::DoubleClickBrowsePlus},
+    {IDSC_DCACOPYNOTES,       PWSprefs::DoubleClickCopyNotes},
+    {IDSC_DCACOPYPASSWORD,    PWSprefs::DoubleClickCopyPassword},
     {IDSC_DCACOPYPASSWORDMIN, PWSprefs::DoubleClickCopyPasswordMinimize},
-    {IDSC_DCACOPYUSERNAME, PWSprefs::DoubleClickCopyUsername},
-    {IDSC_DCAVIEWEDIT, PWSprefs::DoubleClickViewEdit},
-    {IDSC_DCARUN, PWSprefs::DoubleClickRun},
-    {IDSC_DCASENDEMAIL, PWSprefs::DoubleClickSendEmail},
-    {0, 0},
+    {IDSC_DCACOPYUSERNAME,    PWSprefs::DoubleClickCopyUsername},
+    {IDSC_DCAVIEWEDIT,        PWSprefs::DoubleClickViewEdit},
+    {IDSC_DCARUN,             PWSprefs::DoubleClickRun},
+    {IDSC_DCASENDEMAIL,       PWSprefs::DoubleClickSendEmail},
+    {0,                       0},
   };
   if (pcbox->GetCount() == 0) { // Make sure we're idempotent
     int DefaultDCA = PWSprefs::GetInstance()->GetPref(isShift ?
@@ -317,8 +299,10 @@ void CAddEdit_Additional::SetupDCAComboBoxes(CComboBox *pcbox, bool isShift)
 
     for (int i = 0; ResPref[i].res != 0; i++) {
       cs_text.LoadString(ResPref[i].res);
-      if (ResPref[i].pref == DefaultDCA)
-        cs_text += L" *";
+      if (ResPref[i].pref == DefaultDCA) {
+        const CString cs_default(MAKEINTRESOURCE(IDSC_DEFAULT));
+        cs_text += L" ("; cs_text += cs_default; cs_text += L")";
+      }
       int nIndex = pcbox->AddString(cs_text);
       pcbox->SetItemData(nIndex, ResPref[i].pref);
       m_DCA_to_Index[ResPref[i].pref] = nIndex;
@@ -531,38 +515,6 @@ error:
     ((CEdit *)pFocus)->SetSel(MAKEWORD(-1, 0));
 
   return FALSE;
-}
-
-void CAddEdit_Additional::OnSetDCACheck()
-{
-  m_ae_psh->SetChanged(true);
-
-  BOOL bEnable = ((CButton *)GetDlgItem(IDC_DCA_DEFAULT))->GetCheck() == BST_CHECKED ?
-                   FALSE : TRUE;
-
-  // Assuming FALSE = 0 & TRUE = 1
-  m_UseDefaultDCA = 1 - bEnable;
-  m_dblclk_cbox.EnableWindow(bEnable);
-  if (bEnable == FALSE)
-    M_DCA() = -1;
-  else
-    OnDCAComboChanged();
-}
-
-void CAddEdit_Additional::OnSetShiftDCACheck()
-{
-  m_ae_psh->SetChanged(true);
-
-  BOOL bEnable = ((CButton *)GetDlgItem(IDC_SHIFT_DCA_DEFAULT))->GetCheck() == BST_CHECKED ?
-                   FALSE : TRUE;
-
-  // Assuming FALSE = 0 & TRUE = 1
-  m_UseDefaultShiftDCA = 1 - bEnable;
-  m_shiftdblclk_cbox.EnableWindow(bEnable);
-  if (bEnable == FALSE)
-    M_ShiftDCA() = -1;
-  else
-    OnShiftDCAComboChanged();
 }
 
 void CAddEdit_Additional::OnDCAComboChanged()

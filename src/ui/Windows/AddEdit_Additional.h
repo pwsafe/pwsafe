@@ -37,7 +37,6 @@ public:
 
   CComboBox m_dblclk_cbox;
   CComboBox m_shiftdblclk_cbox;
-  BOOL m_UseDefaultDCA, m_UseDefaultShiftDCA;
   int m_DCA_to_Index[PWSprefs::maxDCA + 1];
 
   CPWHistListCtrl m_PWHistListCtrl;
@@ -68,8 +67,6 @@ protected:
   afx_msg void OnShiftDCAComboChanged();
   afx_msg void OnChanged();
 
-  afx_msg void OnSetDCACheck();
-  afx_msg void OnSetShiftDCACheck();
   afx_msg void OnSTCExClicked(UINT nId);
   afx_msg void OnCheckedSavePasswordHistory();
   afx_msg void OnHeaderClicked(NMHDR *pNotifyStruct, LRESULT *pLResult);
