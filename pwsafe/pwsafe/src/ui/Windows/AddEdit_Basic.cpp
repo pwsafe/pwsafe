@@ -913,6 +913,12 @@ void CAddEdit_Basic::OnENChangeNotes()
   if (!m_bInitdone || m_AEMD.uicaller != IDS_EDITENTRY)
     return;
 
+  // Called for any change - even just clicking on it - so check really changed
+  CSecString current_notes;
+  m_pex_notes->GetWindowText(current_notes);
+  if (current_notes == M_realnotes())
+    return;
+
   m_ae_psh->SetChanged(true);
   m_ae_psh->SetNotesChanged(true); // Needed if Notes field is long and will be truncated
   UpdateData(TRUE);
