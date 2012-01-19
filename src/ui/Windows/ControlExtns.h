@@ -168,11 +168,11 @@ public:
 
 protected:
   //{{AFX_MSG(CRichEditExtn)
-  afx_msg void OnSetFocus(CWnd* pOldWnd);
-  afx_msg void OnKillFocus(CWnd* pNewWnd);
-  afx_msg HBRUSH CtlColor(CDC* pDC, UINT nCtlColor);
-  afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
+  afx_msg void OnSetFocus(CWnd *pOldWnd);
+  afx_msg void OnKillFocus(CWnd *pNewWnd);
+  afx_msg void OnContextMenu(CWnd *pWnd, CPoint point);
   afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+  afx_msg BOOL OnSetCursor(CWnd *pWnd, UINT nHitTest, UINT message);
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
@@ -180,13 +180,13 @@ protected:
   // Attributes
 private:
   BOOL m_bIsFocused;
-
-  CBrush m_brInFocus;
-  CBrush m_brNoFocus;
   const COLORREF m_crefInFocus;
 
   long m_lastposition, m_nStartChar, m_nEndChar;
   std::vector<st_context_menu> m_vmenu_items;
+  
+  bool m_bContextMenu;
+  HCURSOR m_hCursor;
 };
 
 // Following is meant for sensitive information that you really don't
