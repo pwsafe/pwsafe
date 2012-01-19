@@ -750,6 +750,13 @@ void COptions::CreateControls()
 
   PutAcceleratorsInGrid(itemGrid143);
   itemGrid143->AutoSize();
+
+  wxGridCellAttr* colAttr = new wxGridCellAttr;
+  colAttr->SetReadOnly();
+  itemGrid143->SetColAttr(COL_MENU_ITEM, colAttr);
+  itemGrid143->Connect(wxEVT_GRID_CELL_CHANGE, wxGridEventHandler(COptions::OnShortcutChange), NULL, this);
+  //let's not directly connect to the grid for key events.  We'll only handle what bubbles up to us
+  itemGrid143->GetGridWindow()->Connect(itemGrid143->GetGridWindow()->GetId(), wxEVT_KEY_DOWN, wxKeyEventHandler(COptions::OnShortcutKey), NULL, this);
   GetBookCtrl()->AddPage(itemPanel142, _("Shortcuts"));
 
   // Set validators
@@ -1430,4 +1437,67 @@ void PutAcceleratorsInGrid(wxGrid* grid)
   }
   if (row < grid->GetNumberRows())
     grid->DeleteRows(row, grid->GetNumberRows() - row);
+}
+
+void COptions::OnShortcutChange(wxGridEvent& evt)
+{
+  wxGrid* grid = wxDynamicCast(evt.GetEventObject(), wxGrid);
+  wxCHECK_RET(grid, wxT("Could not get grid from wxGridEvent"));
+  wxGridCellCoords cell(evt.GetRow(), evt.GetCol());
+  wxString newStr = grid->GetCellValue(cell);
+  if (newStr.IsEmpty())
+    return;
+  //The parser expects a full menuitem string, with menu text and accel separated by TAB
+  wxAcceleratorEntry* newAccel = wxAcceleratorEntry::Create(wxT('\t')+newStr);
+  if (!newAccel) {
+    //wxMessageBox(wxT("Invalid shortcut: ") + newStr, wxT("Shortcut changed"), wxOK|wxICON_ERROR, this);
+    grid->SetCellTextColour(cell.GetRow(), cell.GetCol(), *wxRED);
+  }
+  else {
+    grid->SetCellValue(cell, newAccel->ToString());
+    grid->SetCellTextColour(cell.GetRow(), cell.GetCol(), grid->GetDefaultCellTextColour());
+  }
+  delete newAccel;
+}
+
+int ModifiersToAccelFlags(int mods)
+{
+  struct mod_accel_map_t {
+    int modifier;
+    int accelerator;
+  } mod_accel_map[] = {
+        {wxMOD_ALT,          wxACCEL_ALT   },
+        {wxMOD_CONTROL,      wxACCEL_CTRL  },
+        {wxMOD_SHIFT,        wxACCEL_SHIFT },
+#if defined(__WXMAC__) || defined(__WXCOCOA__)
+        {wxMOD_CMD,          wxACCEL_CMD   },
+#endif
+  };
+
+  int flags = wxACCEL_NORMAL; //no modifiers
+  for (size_t idx = 0; idx < WXSIZEOF(mod_accel_map); ++idx) {
+    if (mods & mod_accel_map[idx].modifier)
+      flags |= mod_accel_map[idx].accelerator;
+  }
+  return flags;
+}
+
+bool IsFunctionKey(int keycode)
+{
+  return keycode >= WXK_F1 && keycode <= WXK_F24;
+}
+
+void COptions::OnShortcutKey(wxKeyEvent& evt)
+{
+  wxWindow* gridWindow = wxDynamicCast(evt.GetEventObject(), wxWindow);
+  wxGrid* grid = wxDynamicCast(gridWindow->GetParent(), wxGrid);
+  wxCHECK_RET(grid, wxT("Could not get grid from wxKeyEvent"));
+  //unless there are modifiers, don't attempt anything
+  if ((evt.GetModifiers() || IsFunctionKey(evt.GetKeyCode())) && grid->GetGridCursorCol() == COL_SHORTCUT_KEY) {
+    wxAcceleratorEntry* accel = new wxAcceleratorEntry(ModifiersToAccelFlags(evt.GetModifiers()),
+                                                        evt.GetKeyCode(), 0);
+    grid->SetCellValue(grid->GetCursorRow(), grid->GetCursorColumn(), accel->ToString());
+    delete accel;
+  }
+  evt.Skip();
 }
