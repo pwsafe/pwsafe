@@ -213,6 +213,9 @@ public:
 
   void OnAtLeastChars(wxSpinEvent& evt);
 
+  void OnShortcutChange(wxGridEvent& evt);
+  void OnShortcutKey(wxKeyEvent& evt);
+
 ////@end COptions event handler declarations
 
 ////@begin COptions member function declarations
