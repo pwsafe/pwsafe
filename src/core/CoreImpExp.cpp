@@ -220,11 +220,11 @@ struct TextRecordWriter {
           const int &subgroup_object, const int &subgroup_function,
           const CItemData::FieldBits &bsFields,
           const TCHAR &delimiter, coStringXStream &ofs, FILE * &txtfile,
-          int &numExported, CReport *prpt, PWScore *pcore) :
+          int &numExported, CReport *pRpt, PWScore *pcore) :
   m_subgroup_name(subgroup_name), m_subgroup_object(subgroup_object),
   m_subgroup_function(subgroup_function), m_bsFields(bsFields),
   m_delimiter(delimiter), m_ofs(ofs), m_txtfile(txtfile), m_pcore(pcore),
-  m_prpt(prpt), m_numExported(numExported)
+  m_pRpt(pRpt), m_numExported(numExported)
   {}
 
   // operator for ItemList
@@ -245,8 +245,8 @@ struct TextRecordWriter {
                              item.GetTitle() + StringX(_T("\xbb \xab")) +
                              item.GetUser()  + StringX(_T("\xbb"));
 
-        if (m_prpt != NULL)
-          m_prpt->WriteLine(sx_exported.c_str());
+        if (m_pRpt != NULL)
+          m_pRpt->WriteLine(sx_exported.c_str());
         m_pcore->UpdateWizard(sx_exported.c_str());
 
         CUTF8Conv conv; // can't make a member, as no copy c'tor!
@@ -277,7 +277,7 @@ private:
   coStringXStream &m_ofs;
   FILE * &m_txtfile;
   PWScore *m_pcore;
-  CReport *m_prpt;
+  CReport *m_pRpt;
   int &m_numExported;
 };
 
@@ -287,7 +287,7 @@ int PWScore::WritePlaintextFile(const StringX &filename,
                                 const int &subgroup_object,
                                 const int &subgroup_function,
                                 const TCHAR &delimiter, int &numExported, 
-                                const OrderedItemList *il, CReport *prpt)
+                                const OrderedItemList *il, CReport *pRpt)
 {
   numExported = 0;
 
@@ -330,7 +330,7 @@ int PWScore::WritePlaintextFile(const StringX &filename,
   ofs.str("");
 
   TextRecordWriter put_text(subgroup_name, subgroup_object, subgroup_function,
-                   bsFields, delimiter, ofs, txtfile, numExported, prpt, this);
+                   bsFields, delimiter, ofs, txtfile, numExported, pRpt, this);
 
   if (il != NULL) {
     for_each(il->begin(), il->end(), put_text);
@@ -349,11 +349,11 @@ struct XMLRecordWriter {
                   const int subgroup_object, const int subgroup_function,
                   const CItemData::FieldBits &bsFields,
                   TCHAR delimiter, coStringXStream &ofs, FILE * &xmlfile,
-                  int &numExported, CReport *prpt, PWScore *pcore) :
+                  int &numExported, CReport *pRpt, PWScore *pcore) :
   m_subgroup_name(subgroup_name), m_subgroup_object(subgroup_object),
   m_subgroup_function(subgroup_function), m_bsFields(bsFields),
   m_delimiter(delimiter), m_ofs(ofs), m_xmlfile(xmlfile), m_id(0), m_pcore(pcore),
-  m_numExported(numExported), m_prpt(prpt)
+  m_numExported(numExported), m_pRpt(pRpt)
   {}
 
   // operator for ItemList
@@ -390,8 +390,8 @@ struct XMLRecordWriter {
         }
       }
 
-      if (m_prpt != NULL)
-        m_prpt->WriteLine(sx_exported.c_str());
+      if (m_pRpt != NULL)
+        m_pRpt->WriteLine(sx_exported.c_str());
       m_pcore->UpdateWizard(sx_exported.c_str());
 
       const CItemData *pcibase = m_pcore->GetBaseEntry(&item);
@@ -419,7 +419,7 @@ private:
   unsigned int m_id;
   PWScore *m_pcore;
   int &m_numExported;
-  CReport *m_prpt;
+  CReport *m_pRpt;
 };
 
 int PWScore::WriteXMLFile(const StringX &filename,
@@ -427,7 +427,7 @@ int PWScore::WriteXMLFile(const StringX &filename,
                           const stringT &subgroup_name,
                           const int &subgroup_object, const int &subgroup_function,
                           const TCHAR &delimiter, int &numExported, const OrderedItemList *il,
-                          const bool &bFilterActive, CReport *prpt)
+                          const bool &bFilterActive, CReport *pRpt)
 {
   numExported = 0;
 
@@ -647,7 +647,7 @@ int PWScore::WriteXMLFile(const StringX &filename,
   ofs.str("");
 
   XMLRecordWriter put_xml(subgroup_name, subgroup_object, subgroup_function,
-                          bsFields, delimiter, ofs, xmlfile, numExported, prpt, this);
+                          bsFields, delimiter, ofs, xmlfile, numExported, pRpt, this);
 
   if (il != NULL) {
     for_each(il->begin(), il->end(), put_xml);

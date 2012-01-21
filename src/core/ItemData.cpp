@@ -1615,41 +1615,21 @@ BlowFish *CItemData::MakeBlowFish(bool noData) const
                                   m_salt, SaltLength);
 }
 
-int CItemData::ValidateUUID(const unsigned short &nMajor, const unsigned short &nMinor,
-                            uuid_array_t &uuid_array)
+bool CItemData::ValidateEntry(int &flags)
 {
-  // currently only ensure that item has a uuid, creating one if missing.
+  // Validate possible issues with an entry
+  // Add more internal functions as necessary
+  flags = VF_OK;
 
-  /* NOTE the unusual position of the default statement.
+  if (!ValidatePWHistory())
+    flags |= VF_BAD_PSWDHISTORY;
 
-  This is by design as it assumes that if we don't know the version, the
-  database probably has all the problems and should be fixed.
-
-  To date, we know that databases of format 0x0200 and 0x0300 have a UUID
-  problem if records were duplicated.  Databases of format 0x0100 did not
-  have the duplicate function and it has been fixed in databases in format
-  0x0301.
-
-  As more problems are detected and need to be fixed, this code will expand
-  and may have to change.
-  */
-  int iResult(0);
-  switch ((nMajor << 8) + nMinor) {
-    default:
-    case 0x0200:  // V2 format
-    case 0x0300:  // V3 format prior to PWS V3.03
-      CreateUUID();
-      GetUUID(uuid_array);
-      iResult = 1;
-    case 0x0100:  // V1 format
-    case 0x0301:  // V3 format PWS V3.03 and later
-      break;
-  }
-  return iResult;
+  return (flags != VF_OK);
 }
 
 bool CItemData::ValidatePWHistory()
 {
+  // Return true if valid
   if (m_PWHistory.IsEmpty())
     return true;
 
@@ -1692,7 +1672,9 @@ bool CItemData::ValidatePWHistory()
     history += os1.str();
     history += pwshe.password;
   }
-  SetPWHistory(history);
+
+  if (pwh != history)
+    SetPWHistory(history);
 
   return false;
 }

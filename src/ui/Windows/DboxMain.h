@@ -302,7 +302,6 @@ public:
   bool IsDBReadOnly() const {return m_core.IsReadOnly();}
   void SetStartSilent(bool state);
   void SetStartClosed(bool state) {m_IsStartClosed = state;}
-  void SetValidate(bool state) {m_bValidate = state;}
   void MakeRandomPassword(StringX &password, PWPolicy &pwp, stringT st_symbols,
                           bool bIssueMsg = false);
   BOOL LaunchBrowser(const CString &csURL, const StringX &sxAutotype,
@@ -463,6 +462,7 @@ public:
   bool CheckPreTranslateAutoType(MSG* pMsg);
 
   void SetSetup() {m_bSetup = true;} // called by app when '--setup' passed
+  void NoValidation() {m_bNoValidation = true;} // called by app when '--voff' passed
 
   // Needed public function for ComapreResultsDialog
   void CPRInitMenuPopup(CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu)
@@ -485,10 +485,10 @@ protected:
   bool m_bSizing;
   bool m_bIsRestoring;
   bool m_bOpen;
-  bool m_bValidate; // do validation after reading db
   bool m_bInRestoreWindowsData;
 
   bool m_bSetup; // invoked with '--setup'?
+  bool m_bNoValidation; // invoked with '--voff'? 
   
 #if !defined(POCKET_PC)
   CString m_titlebar; // what's displayed in the title bar

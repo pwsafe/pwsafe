@@ -259,6 +259,7 @@ int PWSfileV3::WriteRecord(const CItemData &item)
   WriteCBC(CItemData::TITLE, item.GetTitle());
   WriteCBC(CItemData::USER, item.GetUser());
   WriteCBC(CItemData::PASSWORD, item.GetPassword());
+
   tmp = item.GetNotes();
   if (!tmp.empty())
     WriteCBC(CItemData::NOTES, tmp);

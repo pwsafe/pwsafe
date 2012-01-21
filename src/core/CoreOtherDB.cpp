@@ -342,7 +342,7 @@ stringT PWScore::Merge(PWScore *pothercore,
                        const bool &subgroup_bset,
                        const stringT &subgroup_name,
                        const int &subgroup_object, const int &subgroup_function,
-                       CReport *prpt)
+                       CReport *pRpt)
 {
   std::vector<StringX> vs_added;
   std::vector<StringX> vs_AliasesAdded;
@@ -520,8 +520,8 @@ stringT PWScore::Merge(PWScore *pothercore,
                        str_diffs.c_str());
 
         // log it
-        if (prpt != NULL)
-          prpt->WriteLine(strWarnMsg.c_str());
+        if (pRpt != NULL)
+          pRpt->WriteLine(strWarnMsg.c_str());
 
         // Check no conflict of unique uuid
         if (Find(base_uuid) != GetEntryEndIter()) {
@@ -648,45 +648,45 @@ stringT PWScore::Merge(PWScore *pothercore,
   } // iteration over other core's entries
 
   stringT str_results;
-  if (numAdded > 0 && prpt != NULL) {
+  if (numAdded > 0 && pRpt != NULL) {
     std::sort(vs_added.begin(), vs_added.end(), MergeSyncGTUCompare);
     stringT str_singular_plural_type, str_singular_plural_verb;
     LoadAString(str_singular_plural_type, numAdded == 1 ? IDSC_ENTRY : IDSC_ENTRIES);
     LoadAString(str_singular_plural_verb, numAdded == 1 ? IDSC_WAS : IDSC_WERE);
     Format(str_results, IDSC_MERGEADDED, str_singular_plural_type.c_str(),
                     str_singular_plural_verb.c_str());
-    prpt->WriteLine(str_results.c_str());
+    pRpt->WriteLine(str_results.c_str());
     for (size_t i = 0; i < vs_added.size(); i++) {
       Format(str_results, _T("\t%s"), vs_added[i].c_str());
-      prpt->WriteLine(str_results.c_str());
+      pRpt->WriteLine(str_results.c_str());
     }
   }
 
-  if (numAliasesAdded > 0 && prpt != NULL) {
+  if (numAliasesAdded > 0 && pRpt != NULL) {
     std::sort(vs_AliasesAdded.begin(), vs_AliasesAdded.end(), MergeSyncGTUCompare);
     stringT str_singular_plural_type, str_singular_plural_verb;
     LoadAString(str_singular_plural_type, numAliasesAdded == 1 ? IDSC_ENTRY : IDSC_ENTRIES);
     LoadAString(str_singular_plural_verb, numAliasesAdded == 1 ? IDSC_WAS : IDSC_WERE);
     Format(str_results, IDSC_MERGEADDED, str_singular_plural_type.c_str(),
                     str_singular_plural_verb.c_str());
-    prpt->WriteLine(str_results.c_str());
+    pRpt->WriteLine(str_results.c_str());
     for (size_t i = 0; i < vs_AliasesAdded.size(); i++) {
       Format(str_results, _T("\t%s"), vs_AliasesAdded[i].c_str());
-      prpt->WriteLine(str_results.c_str());
+      pRpt->WriteLine(str_results.c_str());
     }
   }
 
-  if (numShortcutsAdded > 0 && prpt != NULL) {
+  if (numShortcutsAdded > 0 && pRpt != NULL) {
     std::sort(vs_ShortcutsAdded.begin(), vs_ShortcutsAdded.end(), MergeSyncGTUCompare);
     stringT str_singular_plural_type, str_singular_plural_verb;
     LoadAString(str_singular_plural_type, numShortcutsAdded == 1 ? IDSC_ENTRY : IDSC_ENTRIES);
     LoadAString(str_singular_plural_verb, numShortcutsAdded == 1 ? IDSC_WAS : IDSC_WERE);
     Format(str_results, IDSC_MERGEADDED, str_singular_plural_type.c_str(),
                     str_singular_plural_verb.c_str());
-    prpt->WriteLine(str_results.c_str());
+    pRpt->WriteLine(str_results.c_str());
     for (size_t i = 0; i < vs_ShortcutsAdded.size(); i++) {
       Format(str_results, _T("\t%s"), vs_ShortcutsAdded[i].c_str());
-      prpt->WriteLine(str_results.c_str());
+      pRpt->WriteLine(str_results.c_str());
     }
   }
 
@@ -708,7 +708,7 @@ stringT PWScore::Merge(PWScore *pothercore,
                    numConflicts, str_conflicts.c_str(),
                    numAliasesAdded, str_aliases.c_str(),
                    numShortcutsAdded, str_shortcuts.c_str());
-  prpt->WriteLine(str_results.c_str());
+  pRpt->WriteLine(str_results.c_str());
 
   return str_results;
 }
@@ -787,7 +787,7 @@ void PWScore::Synchronize(PWScore *pothercore,
                           const CItemData::FieldBits &bsFields, const bool &subgroup_bset,
                           const stringT &subgroup_name,
                           const int &subgroup_object, const int &subgroup_function,
-                          int &numUpdated, CReport *prpt)
+                          int &numUpdated, CReport *pRpt)
 {
   /*
   Purpose:
@@ -879,17 +879,17 @@ void PWScore::Synchronize(PWScore *pothercore,
   } // iteration over other core's entries
 
   stringT str_results;
-  if (numUpdated > 0 && prpt != NULL) {
+  if (numUpdated > 0 && pRpt != NULL) {
     std::sort(vs_updated.begin(), vs_updated.end(), MergeSyncGTUCompare);
     stringT str_singular_plural_type, str_singular_plural_verb;
     LoadAString(str_singular_plural_type, numUpdated == 1 ? IDSC_ENTRY : IDSC_ENTRIES);
     LoadAString(str_singular_plural_verb, numUpdated == 1 ? IDSC_WAS : IDSC_WERE);
     Format(str_results, IDSC_SYNCHUPDATED, str_singular_plural_type.c_str(),
                     str_singular_plural_verb.c_str());
-    prpt->WriteLine(str_results.c_str());
+    pRpt->WriteLine(str_results.c_str());
     for (size_t i = 0; i < vs_updated.size(); i++) {
       Format(str_results, _T("\t%s"), vs_updated[i].c_str());
-      prpt->WriteLine(str_results.c_str());
+      pRpt->WriteLine(str_results.c_str());
     }
   }
 
@@ -902,5 +902,5 @@ void PWScore::Synchronize(PWScore *pothercore,
   stringT str_entries;
   LoadAString(str_entries, numUpdated == 1 ? IDSC_ENTRY : IDSC_ENTRIES);
   Format(str_results, IDSC_SYNCHCOMPLETED, numUpdated, str_entries.c_str());
-  prpt->WriteLine(str_results.c_str());
+  pRpt->WriteLine(str_results.c_str());
 }

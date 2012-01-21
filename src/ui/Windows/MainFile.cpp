@@ -120,6 +120,7 @@ BOOL DboxMain::OpenOnInit()
   bool bReporterSet = m_core.IsReporterSet();
   MFCAsker q;
   MFCReporter r;
+  CReport Rpt;
 
   if (!bAskerSet)
     m_core.SetAsker(&q);
@@ -139,20 +140,11 @@ BOOL DboxMain::OpenOnInit()
     }
   }
 
-  // If the user has changed the file at OpenOnInit time but had specified
-  // validation, turn off validation of the new file.  However, allow user to
-  // specify just the -v command flag with no filename on the command line and
-  // then validate the database selected via the initial Open dialog.
-  if (m_bValidate && !sxOriginalFileName.empty() &&
-      sxOriginalFileName.compare(m_core.GetCurFile()) != 0)
-    m_bValidate = false;
-
   int rc2 = PWScore::NOT_SUCCESS;
 
   switch (rc) {
     case PWScore::SUCCESS:
-      // Don't validate twice
-      rc2 = m_core.ReadCurFile(passkey, m_bValidate ? 0 : MAXTEXTCHARS);
+      rc2 = m_core.ReadCurFile(passkey, true, MAXTEXTCHARS, &Rpt);
 #if !defined(POCKET_PC)
       m_titlebar = PWSUtil::NormalizeTTT(L"Password Safe - " +
                                          m_core.GetCurFile()).c_str();
@@ -241,6 +233,24 @@ BOOL DboxMain::OpenOnInit()
   } // LIMIT_REACHED
 #endif /* DEMO */
 
+  if (rc2 == PWScore::OK_WITH_VALIDATION_ERRORS) {
+    rc2 = PWScore::SUCCESS;
+
+    CGeneralMsgBox gmb;
+    std::wstring cs_title, cs_msg;
+    LoadAString(cs_title, IDS_RPTVALIDATE);
+    LoadAString(cs_msg, IDS_VALIDATE_ISSUES);
+    gmb.SetTitle(cs_title.c_str());
+    gmb.SetMsg(cs_msg.c_str());
+    gmb.SetStandardIcon(MB_ICONEXCLAMATION);
+    gmb.AddButton(IDS_OK, IDS_OK, TRUE, TRUE);
+    gmb.AddButton(IDS_VIEWREPORT, IDS_VIEWREPORT);
+
+    INT_PTR rc2 = gmb.DoModal();
+    if (rc2 == IDS_VIEWREPORT)
+      ViewReport(Rpt);
+  }
+
   if (rc2 != PWScore::SUCCESS && !go_ahead) {
     // not a good return status, fold.
     if (!m_IsStartSilent)
@@ -254,13 +264,6 @@ BOOL DboxMain::OpenOnInit()
   }
 
   PostOpenProcessing();
-
-  // Validation does integrity check & repair on database
-  // currently invoke it iff m_bValidate set (e.g., user passed '-v' flag)
-  if (m_bValidate) {
-    OnValidate();
-    m_bValidate = false;
-  }
 
   retval = TRUE;
 
@@ -798,6 +801,7 @@ int DboxMain::Open(const StringX &sx_Filename, const bool bReadOnly,  const bool
   bool bReporterSet = m_core.IsReporterSet();
   MFCAsker q;
   MFCReporter r;
+  CReport Rpt;
 
   if (!bAskerSet)
     m_core.SetAsker(&q);
@@ -816,10 +820,12 @@ int DboxMain::Open(const StringX &sx_Filename, const bool bReadOnly,  const bool
     }
   }
 
-  // Now read the file
-  rc = m_core.ReadFile(sx_Filename, passkey, MAXTEXTCHARS);
+  // Now read the file - as initial open, file will be validated
+  rc = m_core.ReadFile(sx_Filename, passkey, !m_bNoValidation, MAXTEXTCHARS, &Rpt);
 
   switch (rc) {
+    case PWScore::OK_WITH_VALIDATION_ERRORS:
+      break;
     case PWScore::SUCCESS:
       break;
     case PWScore::CANT_OPEN_FILE:
@@ -861,6 +867,23 @@ int DboxMain::Open(const StringX &sx_Filename, const bool bReadOnly,  const bool
 
   m_core.SetCurFile(sx_Filename);
   PostOpenProcessing();
+
+  if (rc == PWScore::OK_WITH_VALIDATION_ERRORS) {
+    rc = PWScore::SUCCESS;
+
+    std::wstring cs_title, cs_msg;
+    LoadAString(cs_title, IDS_RPTVALIDATE);
+    LoadAString(cs_msg, IDS_VALIDATE_ISSUES);
+    gmb.SetTitle(cs_title.c_str());
+    gmb.SetMsg(cs_msg.c_str());
+    gmb.SetStandardIcon(MB_ICONEXCLAMATION);
+    gmb.AddButton(IDS_OK, IDS_OK, TRUE, TRUE);
+    gmb.AddButton(IDS_VIEWREPORT, IDS_VIEWREPORT);
+
+    INT_PTR rc2 = gmb.DoModal();
+    if (rc2 == IDS_VIEWREPORT)
+      ViewReport(Rpt);
+  }
 
 exit:
   if (!bAskerSet)
@@ -973,6 +996,8 @@ int DboxMain::CheckEmergencyBackupFiles(StringX sx_Filename, StringX &passkey)
   PWScore othercore;
 
   // Get currently selected database's information
+  // No Report or MAXCHARS vaue, implies no validation of the file
+  // except the mandatory UUID uniqueness
   st_DBProperties st_dbpcore;
   othercore.ReadFile(sx_Filename, passkey);
   othercore.GetDBProperties(st_dbpcore);

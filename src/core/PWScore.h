@@ -56,6 +56,63 @@ struct st_DBProperties {
   StringX db_description;
 };
 
+// Results of a database verification
+struct st_ValidateResults {
+  int num_invalid_UUIDs;
+  int num_duplicate_UUIDs;
+  int num_empty_titles;
+  int num_empty_passwords;
+  int num_duplicate_GTU_fixed;
+  int num_PWH_fixed;
+  int num_excessivetxt_found;
+  int num_alias_warnings;
+  int num_shortcuts_warnings;
+
+  st_ValidateResults()
+  : num_invalid_UUIDs(0), num_duplicate_UUIDs(0),
+  num_empty_titles(0), num_empty_passwords(0),
+  num_duplicate_GTU_fixed(0),
+  num_PWH_fixed(0), num_excessivetxt_found(0),
+  num_alias_warnings(0), num_shortcuts_warnings(0)
+  {}
+
+  st_ValidateResults(const st_ValidateResults &that)
+  : num_invalid_UUIDs(that.num_invalid_UUIDs),
+  num_duplicate_UUIDs(that.num_duplicate_UUIDs),
+  num_empty_titles(that.num_empty_titles),
+  num_empty_passwords(that.num_empty_passwords),
+  num_duplicate_GTU_fixed(that.num_duplicate_GTU_fixed),
+  num_PWH_fixed(that.num_PWH_fixed),
+  num_excessivetxt_found(that.num_excessivetxt_found),
+  num_alias_warnings(that.num_alias_warnings),
+  num_shortcuts_warnings(that.num_shortcuts_warnings)
+  {}
+
+  st_ValidateResults &operator=(const st_ValidateResults &that) {
+    if (this != &that) {
+      num_invalid_UUIDs = that.num_invalid_UUIDs;
+      num_duplicate_UUIDs = that.num_duplicate_UUIDs;
+      num_empty_titles = that.num_empty_titles;
+      num_empty_passwords = that.num_empty_passwords;
+      num_duplicate_GTU_fixed = that.num_duplicate_GTU_fixed;
+      num_PWH_fixed = that.num_PWH_fixed;
+      num_excessivetxt_found = that.num_excessivetxt_found;
+      num_alias_warnings = that.num_alias_warnings;
+      num_shortcuts_warnings = that.num_shortcuts_warnings;
+    }
+    return *this;
+  }
+
+  int TotalIssues()
+  { 
+    return (num_invalid_UUIDs + num_duplicate_UUIDs +
+            num_empty_titles + num_empty_passwords +
+            num_duplicate_GTU_fixed +
+            num_PWH_fixed + num_excessivetxt_found +
+            num_alias_warnings + num_shortcuts_warnings);
+  }
+};
+
 class PWScore : public CommandInterface
 {
 public:
@@ -83,7 +140,8 @@ public:
     UNIMPLEMENTED,                            //  19
     NO_ENTRIES_EXPORTED,                      //  20
     DB_HAS_DUPLICATES,                        //  21
-    OK_WITH_ERRORS                            //  22
+    OK_WITH_ERRORS,                           //  22
+    OK_WITH_VALIDATION_ERRORS                 // 23
   };
 
   PWScore();
@@ -122,9 +180,12 @@ public:
   StringX GetCurFile() const {return m_currfile;}
   void SetCurFile(const StringX &file) {m_currfile = file;}
 
-  int ReadCurFile(const StringX &passkey, const size_t iMAXCHARS = 0)
-  {return ReadFile(m_currfile, passkey, iMAXCHARS);}
-  int ReadFile(const StringX &filename, const StringX &passkey, const size_t iMAXCHARS = 0);
+  int ReadCurFile(const StringX &passkey, const bool bValidate = false,
+                  const size_t iMAXCHARS = 0, CReport *pRpt = NULL)
+  {return ReadFile(m_currfile, passkey, bValidate, iMAXCHARS, pRpt);}
+  int ReadFile(const StringX &filename, const StringX &passkey,
+               const bool bValidate = false, const size_t iMAXCHARS = 0,
+               CReport *pRpt = NULL);
   PWSfile::VERSION GetReadFileVersion() const {return m_ReadFileVersion;}
   bool BackupCurFile(int maxNumIncBackups, int backupSuffix,
                      const stringT &userBackupPrefix,
@@ -166,13 +227,13 @@ public:
                 const bool &subgroup_bset,
                 const stringT &subgroup_name,
                 const int &subgroup_object, const int &subgroup_function,
-                CReport *prpt);
+                CReport *pRpt);
 
   void Synchronize(PWScore *pothercore, 
                    const CItemData::FieldBits &bsFields, const bool &subgroup_bset,
                    const stringT &subgroup_name,
                    const int &subgroup_object, const int &subgroup_function,
-                   int &numUpdated, CReport *prpt);
+                   int &numUpdated, CReport *pRpt);
 
   // Export databases
   int WritePlaintextFile(const StringX &filename,
@@ -180,7 +241,7 @@ public:
                          const stringT &subgroup, const int &iObject,
                          const int &iFunction, const TCHAR &delimiter,
                          int &numExported, const OrderedItemList *il = NULL,
-                         CReport *prpt = NULL);
+                         CReport *pRpt = NULL);
 
   int WriteXMLFile(const StringX &filename,
                    const CItemData::FieldBits &bsExport,
@@ -188,7 +249,7 @@ public:
                    const int &iFunction, const TCHAR &delimiter,
                    int &numExported, const OrderedItemList *il = NULL,
                    const bool &bFilterActive = false,
-                   CReport *prpt = NULL);
+                   CReport *pRpt = NULL);
 
   // Import databases
   // If returned status is SUCCESS, then returned Command * can be executed.
@@ -358,7 +419,8 @@ public:
   void CopyPWList(const ItemList &in);
 
   // Validate() returns true if data modified, false if all OK
-  bool Validate(stringT &status, CReport &rpt, const size_t iMAXCHARS = 0);
+  bool Validate(const size_t iMAXCHARS, const bool bInReadfile,
+                CReport *pRpt, st_ValidateResults &st_vr);
 
   const PWSfile::HeaderRecord &GetHeader() const {return m_hdr;}
   void GetDBProperties(st_DBProperties &st_dbp);

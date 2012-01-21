@@ -96,6 +96,14 @@ public:
                     ES_DELETED      =  4,  // Deleted  but not yet removed from disk copy
                     ES_LAST};
 
+  // Flags if error found during validate of the entry
+  enum  {VF_OK              =  0,
+         VF_BAD_UUID        =  1,
+         VF_EMPTY_TITLE     =  2,
+         VF_EMPTY_PASSWORD  =  4,
+         VF_NOT_UNIQUE_GTU  =  8,
+         VF_BAD_PSWDHISTORY = 16};
+
   // a bitset for indicating a subset of an item's fields: 
   typedef std::bitset<LAST> FieldBits;
 
@@ -248,10 +256,11 @@ public:
   DisplayInfoBase *GetDisplayInfo() const {return m_display_info;}
   void SetDisplayInfo(DisplayInfoBase *di) {delete m_display_info; m_display_info = di;}
   void Clear();
+
   // check record for mandatory fields, silently fix if missing
-  int ValidateUUID(const unsigned short &nMajor, const unsigned short &nMinor,
-                   uuid_array_t &uuid_array);
+  bool ValidateEntry(int &flags);
   bool ValidatePWHistory(); // return true if OK, false if there's a problem
+
   bool IsExpired() const;
   bool WillExpire(const int numdays) const;
 
@@ -398,9 +407,10 @@ private:
 
 inline bool CItemData::IsTextField(unsigned char t)
 {
-  return !(t == UUID || t == CTIME || t == PMTIME ||
-    t == ATIME || t == XTIME || t == RMTIME || t == XTIME_INT ||
-    t == RESERVED || t == DCA || t == SHIFTDCA ||
+  return !(t == UUID ||
+    t == CTIME     || t == PMTIME || t == ATIME || t == XTIME || t == RMTIME ||
+    t == XTIME_INT ||
+    t == RESERVED  || t == DCA    || t == SHIFTDCA || t == PROTECTED ||
     t >= LAST);
 }
 #endif /* __ITEMDATA_H */

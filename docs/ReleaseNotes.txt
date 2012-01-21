@@ -35,6 +35,7 @@ the XML file exported prior to V3.26 to allow it to be successfully imported in 
 attempt to access the directory of the last opened database in order to allow the user
 to start browsing for their intended database.  If this directory is not available,
 PasswordSafe will open the default "My Safes" directory as it did prior to this change.
+[] Databases are always validated on opening.
 
 Bugs fixed in 3.27.1
 ====================

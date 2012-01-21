@@ -128,7 +128,7 @@ DboxMain::DboxMain(CWnd* pParent)
   m_bTSUpdated(false),
   m_iSessionEndingStatus(IDIGNORE),
   m_pwchTip(NULL),
-  m_bValidate(false), m_bOpen(false), 
+  m_bOpen(false), 
   m_IsStartClosed(false), m_IsStartSilent(false),
   m_bStartHiddenAndMinimized(false),
   m_bAlreadyToldUserNoSave(false), m_inExit(false),
@@ -151,7 +151,7 @@ DboxMain::DboxMain(CWnd* pParent)
   m_bInAT(false), m_bInRestoreWindowsData(false), m_bSetup(false),
   m_bInRefresh(false), m_bInRestoreWindows(false), m_bExpireDisplayed(false),
   m_bTellUserExpired(false), m_bInRename(false), m_bWhitespaceRightClick(false),
-  m_ilastaction(0),
+  m_ilastaction(0), m_bNoValidation(false),
   m_LUUIDSelectedAtMinimize(pws_os::CUUID::NullUUID()),
   m_TUUIDSelectedAtMinimize(pws_os::CUUID::NullUUID()),
   m_LUUIDVisibleAtMinimize(pws_os::CUUID::NullUUID()),
@@ -2179,6 +2179,7 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
 
     switch (rc_passphrase) {
       case PWScore::SUCCESS:
+        // Don't validate again
         rc_readdatabase = m_core.ReadCurFile(passkey);
 #if !defined(POCKET_PC)
         m_titlebar = PWSUtil::NormalizeTTT(L"Password Safe - " +
