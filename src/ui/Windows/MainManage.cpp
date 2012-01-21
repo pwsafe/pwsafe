@@ -245,47 +245,6 @@ int DboxMain::RestoreSafe()
   return PWScore::SUCCESS;
 }
 
-void DboxMain::OnValidate() 
-{
-  CGeneralMsgBox gmb;
-
-  if (Open(IDS_CHOOSEDATABASEV) != PWScore::SUCCESS)
-    return;
-
-  CReport rpt;
-  std::wstring cs_title;
-  LoadAString(cs_title, IDS_RPTVALIDATE);
-  rpt.StartReport(cs_title.c_str(), m_core.GetCurFile().c_str());
-
-  st_ValidateResults st_vr;
-  bool bchanged = m_core.Validate(MAXTEXTCHARS, false,  &rpt, st_vr);
-
-  std::wstring cs_msg;
-  if (!bchanged)
-    LoadAString(cs_msg, IDS_VALIDATE_OK);
-  else {
-    LoadAString(cs_msg, IDS_VALIDATE_ISSUES);
-    SetChanged(Data);
-    ChangeOkUpdate();
-  }
-
-  rpt.EndReport();
-
-  gmb.SetTitle(cs_title.c_str());
-  gmb.SetMsg(cs_msg.c_str());
-  gmb.SetStandardIcon(bchanged ? MB_ICONEXCLAMATION : MB_ICONINFORMATION);
-  gmb.AddButton(IDS_OK, IDS_OK, TRUE, TRUE);
-  if (bchanged)
-    gmb.AddButton(IDS_VIEWREPORT, IDS_VIEWREPORT);
-
-  INT_PTR rc = gmb.DoModal();
-  if (rc == IDS_VIEWREPORT)
-    ViewReport(rpt);
-
-  // Show UUID in Edit Date/Time property sheet stats
-  CAddEdit_DateTimes::m_bShowUUID = true;
-}
-
 void DboxMain::OnOptions()
 {
   PWS_LOGIT;
