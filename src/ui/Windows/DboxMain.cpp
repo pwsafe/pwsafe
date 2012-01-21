@@ -782,7 +782,8 @@ void DboxMain::InitPasswordSafe()
   m_pImageList = new CImageList();
   // Number (12) corresponds to number in CPWTreeCtrl public enum
   BOOL status = m_pImageList->Create(bm.bmWidth, bm.bmHeight, 
-                                     ILC_MASK | ILC_COLORDDB, 12, 0);
+                                     ILC_MASK | ILC_COLORDDB, 
+                                     CPWTreeCtrl::NUM_IMAGES, 0);
   ASSERT(status != 0);
 
   // Dummy Imagelist needed if user adds then removes Icon column
