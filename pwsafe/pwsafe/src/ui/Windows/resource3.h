@@ -216,7 +216,7 @@
 #define IDS_PICKBACKUP                  5375
 #define IDS_PICKRESTORE                 5376
 #define IDS_UNTITLEDRESTORE             5377
-#define IDS_VALIDATEOK                  5378
+#define IDS_VALIDATE_OK                 5378
 #define IDS_FAILEDSAVEPREF              5379
 #define IDS_FAILEDSAVEPREFRO            5380
 #define IDS_ENTRIESCHANGEDSTOP          5381
@@ -724,3 +724,4 @@
 #define IDS_ENTRIESCLEARALL             5920
 #define IDS_NOTESZOOMIN                 5921
 #define IDS_NOTESZOOMOUT                5922
+#define IDS_VALIDATE_ISSUES             5923
