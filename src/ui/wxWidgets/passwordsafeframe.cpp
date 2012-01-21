@@ -3046,7 +3046,8 @@ void PasswordSafeFrame::ValidateCurrentDatabase()
   rpt.StartReport(_("Validate"), m_core.GetCurFile().c_str());
 
   stringT cs_msg;
-  const bool bchanged = m_core.Validate(cs_msg, rpt, MAXTEXTCHARS);
+  st_ValidateResults st_vr;
+  const bool bchanged = m_core.Validate(MAXTEXTCHARS, false, &rpt, st_vr);
   if (bchanged) {
     SetChanged(Data);
 
