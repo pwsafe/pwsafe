@@ -466,7 +466,6 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_RESETCOLUMNS, OnResetColumns)
 
   // Others
-  ON_COMMAND(ID_MENUITEM_VALIDATE, OnValidate)
   // Double-click on R-O R/W indicator on StatusBar
   ON_COMMAND(IDS_READ_ONLY, OnChangeMode)
   // Double-click on filter indicator on StatusBar
@@ -680,7 +679,6 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_BACKUPSAFE, true, true, true, false},
   {ID_MENUITEM_RESTORESAFE, true, false, true, false},
   {ID_MENUITEM_OPTIONS, true, true, true, true},
-  {ID_MENUITEM_VALIDATE, false, false, false, true},
   {ID_MENUITEM_GENERATEPASSWORD, true, true, true, true},
   {ID_MENUITEM_PSWD_POLICIES, true, true, true, false},
   // Help Menu

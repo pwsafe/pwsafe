@@ -143,7 +143,6 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 #define ID_MENUITEM_RESTORESAFE         32153
 #define ID_MENUITEM_OPTIONS             32154
 #define ID_MENUITEM_CUSTOMIZETOOLBAR    32155
-#define ID_MENUITEM_VALIDATE            32156
 #define ID_MENUITEM_GENERATEPASSWORD    32157
 #define ID_LANGUAGEMENU                 32158
 #define ID_MENUITEM_PSWD_POLICIES       32159
