@@ -821,6 +821,10 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                pci->IsProtected() ? ID_MENUITEM_UNPROTECT : ID_MENUITEM_PROTECT,
                                tc_dummy);
+
+      if (m_bCompareWith && etype_original != CItemData::ET_SHORTCUT)
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
+                               ID_MENUITEM_COMPARE_ENTRIES, tc_dummy);
     } else {
       // Must be List view with no entry selected
       pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
@@ -1257,6 +1261,10 @@ void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint screen)
 
     // Since an entry - remove Duplicate Group
     pPopup->RemoveMenu(ID_MENUITEM_DUPLICATEGROUP, MF_BYCOMMAND);
+
+    // Remove if not allowed or a shortcut
+    if (!m_bCompareWith || etype_original == CItemData::ET_SHORTCUT)
+        pPopup->RemoveMenu(ID_MENUITEM_COMPARE_ENTRIES, MF_BYCOMMAND);
 
     // Use this DboxMain for commands
     pPopup->TrackPopupMenu(dwTrackPopupFlags, screen.x, screen.y, this);

@@ -26,7 +26,6 @@ using namespace std;
 
 #if defined(POCKET_PC)
 #include "pocketpc/PocketPC.h"
-#include "editshortcutdlg.h"
 #endif
 
 #ifdef _DEBUG

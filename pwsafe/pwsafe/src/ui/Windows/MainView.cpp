@@ -229,7 +229,7 @@ int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2,
   int xint1, xint2;
 
   int iResult;
-  switch(nTypeSortColumn) {
+  switch (nTypeSortColumn) {
     case CItemData::UUID:  // Image
       iResult = (pLHS->GetEntryType() < pRHS->GetEntryType()) ? -1 : 1;
       break;
@@ -982,11 +982,11 @@ void DboxMain::RefreshViews(const int iView)
 #endif
     for (listPos = m_core.GetEntryIter(); listPos != m_core.GetEntryEndIter();
          listPos++) {
-      CItemData &pci = m_core.GetEntry(listPos);
-      DisplayInfo *pdi = (DisplayInfo *)pci.GetDisplayInfo();
+      CItemData &ci = m_core.GetEntry(listPos);
+      DisplayInfo *pdi = (DisplayInfo *)ci.GetDisplayInfo();
       if (pdi != NULL)
         pdi->list_index = -1; // easier, but less efficient, to delete pdi
-      InsertItemIntoGUITreeList(pci, -1, false, iView);
+      InsertItemIntoGUITreeList(ci, -1, false, iView);
     }
 
     m_ctlItemTree.SortTree(TVI_ROOT);
@@ -1336,7 +1336,7 @@ void DboxMain::OnItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult)
         // Ignore any clicks not on an item (group or entry)
         if (hItem == NULL ||
             htinfo.flags & (TVHT_NOWHERE | TVHT_ONITEMRIGHT | 
-                            TVHT_ABOVE | TVHT_BELOW | 
+                            TVHT_ABOVE   | TVHT_BELOW | 
                             TVHT_TORIGHT | TVHT_TOLEFT))
             return;
 

@@ -768,6 +768,12 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
            * '--voff' prevents SOME of validation during open
            */
           dbox.NoValidation();
+        } else if ((*arg) == L"--cw") {
+          /**
+           * '--cw' will allow the user to select 2 entries and compare them
+           * TEMPORARY solution until multi-seect is coded in the main Tree & List views
+           */
+          dbox.AllowCompareWith();
         } else {
           // unrecognized extended flag. Silently ignore.
         }
