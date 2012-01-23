@@ -1,0 +1,28 @@
+/*
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
+
+#pragma once
+
+class CSCWListCtrl : public CListCtrl
+{
+public:
+  CSCWListCtrl();
+  ~CSCWListCtrl();
+
+  enum {REDTEXT = 0x8000};
+
+protected:
+  //{{AFX_MSG(CSCWListCtrl)
+  afx_msg void OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult);
+  //}}AFX_MSG
+
+  DECLARE_MESSAGE_MAP()
+
+private:
+  COLORREF m_crWindowText;
+};

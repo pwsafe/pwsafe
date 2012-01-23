@@ -357,6 +357,9 @@
 #define IDB_PSWD_POLICIES_NEW_D         518
 #define IDB_COPYTOCLIPBOARD_CLASSIC     519
 #define IDB_COPYTOCLIPBOARD_NEW         520
+#define IDR_POPCOMPAREENTRIES           521
+#define IDD_SHOW_COMPARE                522
+#define IDD_COMPARE_WITH                523
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_CREATE_DB                   1003
@@ -754,14 +757,15 @@
 #define IDC_REDO                        1476
 #define IDC_CLEARPWHISTORY              1477
 #define IDC_UPDATEPROTECTEDPWH          1478
+#define IDC_SHOW_IDENTICAL_FIELDS       1479
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        521
+#define _APS_NEXT_RESOURCE_VALUE        524
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1479
+#define _APS_NEXT_CONTROL_VALUE         1480
 #define _APS_NEXT_SYMED_VALUE           166
 #endif
 #endif

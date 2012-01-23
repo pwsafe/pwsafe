@@ -725,3 +725,9 @@
 #define IDS_NOTESZOOMIN                 5921
 #define IDS_NOTESZOOMOUT                5922
 #define IDS_VALIDATE_ISSUES             5923
+#define IDS_CURRENT_ENTRY               5924
+#define IDS_COMPARISON_ENTRY            5925
+#define IDS_PWHACTIVE                   5926
+#define IDS_PWHMAX                      5927
+#define IDS_PWHNUM                      5928
+#define IDS_PWHENTRY                    5929

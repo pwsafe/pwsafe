@@ -354,7 +354,7 @@ void CCompareResultsDlg::AddCompareEntries(const bool bAddIdentical)
 
 void CCompareResultsDlg::OnShowIdenticalEntries()
 {
-  m_ShowIdenticalEntries = ((CButton*)GetDlgItem(IDC_SHOW_IDENTICAL_ENTRIES))->GetCheck();
+  m_ShowIdenticalEntries = ((CButton *)GetDlgItem(IDC_SHOW_IDENTICAL_ENTRIES))->GetCheck();
 
   m_LCResults.SetRedraw(FALSE);
   m_LCResults.DeleteAllItems();

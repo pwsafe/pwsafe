@@ -462,6 +462,7 @@ public:
   bool CheckPreTranslateAutoType(MSG* pMsg);
 
   void SetSetup() {m_bSetup = true;} // called by app when '--setup' passed
+  void AllowCompareWith() {m_bCompareWith = true;} // called by app when '--cw' passed
   void NoValidation() {m_bNoValidation = true;} // called by app when '--voff' passed
 
   // Needed public function for ComapreResultsDialog
@@ -488,6 +489,7 @@ protected:
   bool m_bInRestoreWindowsData;
 
   bool m_bSetup; // invoked with '--setup'?
+  bool m_bCompareWith; // invoked with '--cw'?
   bool m_bNoValidation; // invoked with '--voff'? 
   
 #if !defined(POCKET_PC)
@@ -715,6 +717,7 @@ protected:
   afx_msg void OnAddGroup();
   afx_msg void OnDuplicateGroup();
   afx_msg void OnProtect(UINT nID);
+  afx_msg void OnCompareWith();
   afx_msg void OnCreateShortcut();
   afx_msg void OnOK();
   afx_msg void OnShowHideToolbar();

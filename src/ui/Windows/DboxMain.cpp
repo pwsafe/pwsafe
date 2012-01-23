@@ -148,7 +148,7 @@ DboxMain::DboxMain(CWnd* pParent)
   m_bDeleteCtrl(false), m_bDeleteShift(false),
   m_bRenameCtrl(false), m_bRenameShift(false),
   m_bAutotypeCtrl(false), m_bAutotypeShift(false),
-  m_bInAT(false), m_bInRestoreWindowsData(false), m_bSetup(false),
+  m_bInAT(false), m_bInRestoreWindowsData(false), m_bSetup(false), m_bCompareWith(false),
   m_bInRefresh(false), m_bInRestoreWindows(false), m_bExpireDisplayed(false),
   m_bTellUserExpired(false), m_bInRename(false), m_bWhitespaceRightClick(false),
   m_ilastaction(0), m_bNoValidation(false),
@@ -417,6 +417,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_REDO, OnRedo)
   ON_COMMAND(ID_MENUITEM_EXPORTENT2PLAINTEXT, OnExportEntryText)
   ON_COMMAND(ID_MENUITEM_EXPORTENT2XML, OnExportEntryXML)
+  ON_COMMAND(ID_MENUITEM_COMPARE_ENTRIES, OnCompareWith)
   ON_COMMAND_RANGE(ID_MENUITEM_PROTECT, ID_MENUITEM_UNPROTECTGROUP, OnProtect)
 
   // View Menu
@@ -642,6 +643,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_REDO, true, false, true, false},
   {ID_MENUITEM_EXPORTENT2PLAINTEXT, true, true, false, false},
   {ID_MENUITEM_EXPORTENT2XML, true, true, false, false},
+  {ID_MENUITEM_COMPARE_ENTRIES, true, false, false, false},
   // View menu
   {ID_MENUITEM_LIST_VIEW, true, true, true, false},
   {ID_MENUITEM_TREE_VIEW, true, true, true, false},
