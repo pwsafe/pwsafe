@@ -463,7 +463,7 @@ public:
 
   void SetSetup() {m_bSetup = true;} // called by app when '--setup' passed
   void AllowCompareWith() {m_bCompareWith = true;} // called by app when '--cw' passed
-  void NoValidation() {m_bNoValidation = true;} // called by app when '--voff' passed
+  void NoValidation() {m_bNoValidation = true;} // called by app when '--novalidate' passed
 
   // Needed public function for ComapreResultsDialog
   void CPRInitMenuPopup(CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu)
@@ -490,7 +490,7 @@ protected:
 
   bool m_bSetup; // invoked with '--setup'?
   bool m_bCompareWith; // invoked with '--cw'?
-  bool m_bNoValidation; // invoked with '--voff'? 
+  bool m_bNoValidation; // invoked with '--novalidate'? 
   
 #if !defined(POCKET_PC)
   CString m_titlebar; // what's displayed in the title bar
