@@ -10,6 +10,7 @@
 
 #include "SCWListCtrl.h"
 #include "DboxMain.h" // For TIMER_FIND
+#include "Fonts.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -19,7 +20,6 @@ static char THIS_FILE[] = __FILE__;
 
 CSCWListCtrl::CSCWListCtrl()
 {
-  m_crWindowText = ::GetSysColor(COLOR_WINDOWTEXT);
 }
 
 CSCWListCtrl::~CSCWListCtrl()
@@ -39,12 +39,19 @@ void CSCWListCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
 
   *pLResult = CDRF_DODEFAULT;
 
+  static bool bchanged_subitem_font(false);
   static CDC *pDC = NULL;
+  static COLORREF crWindowText;
+  static CFont *pCurrentFont = NULL;
+  static CFont *pPasswordFont = NULL;
 
   switch (pLVCD->nmcd.dwDrawStage) {
     case CDDS_PREPAINT:
       // PrePaint
+      crWindowText = GetTextColor();
       pDC = CDC::FromHandle(pLVCD->nmcd.hdc);
+      pCurrentFont = Fonts::GetInstance()->GetCurrentFont();
+      pPasswordFont = Fonts::GetInstance()->GetPasswordFont();
       *pLResult = CDRF_NOTIFYITEMDRAW;
       break;
 
@@ -68,8 +75,8 @@ void CSCWListCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
         rect.DeflateRect(2, 2);
 
         CString str = GetItemText(pLVCD->nmcd.dwItemSpec, pLVCD->iSubItem);
-
-        pDC->SetTextColor(((pLVCD->nmcd.lItemlParam & REDTEXT) == REDTEXT) ? RGB(255, 0, 0) : m_crWindowText);
+        pDC->SetTextColor(((pLVCD->nmcd.lItemlParam & REDTEXT) == REDTEXT) ?
+                                RGB(255, 0, 0) : crWindowText);
 
         int iFormat = (pLVCD->nmcd.lItemlParam & 0x0F);
         UINT nFormat = DT_VCENTER | DT_SINGLELINE;
@@ -80,8 +87,22 @@ void CSCWListCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
         pDC->DrawText(str, &rect, nFormat);
         *pLResult = CDRF_SKIPDEFAULT;
       } else {
-        pLVCD->clrText = m_crWindowText;
+        // For Password values
+        if ((pLVCD->nmcd.lItemlParam & PASSWORDFONT) == PASSWORDFONT) {
+          bchanged_subitem_font = true;
+          pDC->SelectObject(pPasswordFont);
+        }
+        pLVCD->clrText = crWindowText;
         *pLResult |= CDRF_NOTIFYPOSTPAINT;
+      }
+      break;
+
+    case CDDS_ITEMPOSTPAINT | CDDS_SUBITEM:
+      // Sub-item PostPaint - restore old font if any
+      if (bchanged_subitem_font) {
+        bchanged_subitem_font = false;
+        pDC->SelectObject(pCurrentFont);
+        *pLResult |= CDRF_NEWFONT;
       }
       break;
 
