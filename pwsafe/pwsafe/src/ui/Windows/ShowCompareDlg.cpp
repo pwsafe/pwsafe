@@ -137,6 +137,8 @@ void CShowCompareDlg::PopulateResults(const bool bShowAll)
     time_t t1(0), t2(0);
     short int si1, si2;
 
+    bool bPassword = (i == CItemData::PASSWORD);
+
     // Always add group/title/user fields - otherwise only if different values
     // Unless user wants all fields
     if (bShowAll || sxValue1 != sxValue2) {
@@ -290,6 +292,8 @@ void CShowCompareDlg::PopulateResults(const bool bShowAll)
         dw = LVCFMT_LEFT;
         if (sxValue1 != sxValue2)
           dw |= CSCWListCtrl::REDTEXT;
+        if (bPassword)
+          dw |= CSCWListCtrl::PASSWORDFONT;
         m_ListCtrl.SetItemData(iPos, dw);
       }
     }

@@ -14,7 +14,7 @@ public:
   CSCWListCtrl();
   ~CSCWListCtrl();
 
-  enum {REDTEXT = 0x8000};
+  enum {REDTEXT = 0x1000, PASSWORDFONT = 0x2000};
 
 protected:
   //{{AFX_MSG(CSCWListCtrl)
@@ -22,7 +22,4 @@ protected:
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
-
-private:
-  COLORREF m_crWindowText;
 };
