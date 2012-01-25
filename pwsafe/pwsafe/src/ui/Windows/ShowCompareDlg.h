@@ -25,14 +25,14 @@ class CShowCompareDlg : public CPWDialog
 
 public:
   // default constructor
-  CShowCompareDlg(CItemData *pci, CItemData *pci_other, CWnd* pParent);
+  CShowCompareDlg(CItemData *pci, CItemData *pci_other, CWnd *pParent);
   virtual ~CShowCompareDlg();
 
   pws_os::CUUID GetUUID();
   enum { IDD = IDD_SHOW_COMPARE };
 
 protected:
-  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+  virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
 
   virtual BOOL OnInitDialog();
   afx_msg void OnShowIdenticalFields();

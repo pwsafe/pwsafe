@@ -25,7 +25,7 @@ class CCompareWithSelectDlg : public CPWDialog
 public:
   // default constructor
   CCompareWithSelectDlg(CItemData *pci, PWScore *pcore, bool bShowTree,
-                        CWnd* pParent);
+                        CWnd *pParent);
   virtual ~CCompareWithSelectDlg();
 
   pws_os::CUUID GetUUID();
@@ -33,7 +33,7 @@ public:
   enum { IDD = IDD_COMPARE_WITH };
 
 protected:
-  virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+  virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
 
   virtual BOOL OnInitDialog();
   afx_msg void OnDestroy();

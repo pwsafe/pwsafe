@@ -24,7 +24,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 CCompareWithSelectDlg::CCompareWithSelectDlg(CItemData *pci, PWScore *pcore,
-      bool bShowTree, CWnd* pParent)
+      bool bShowTree, CWnd *pParent)
   : CPWDialog(CCompareWithSelectDlg::IDD, pParent),
   m_pci(pci), m_pcore(pcore), m_pSelected(NULL), m_bShowTree(bShowTree), m_pImageList(NULL)
 {
@@ -39,7 +39,7 @@ CCompareWithSelectDlg::~CCompareWithSelectDlg()
 {
 }
 
-void CCompareWithSelectDlg::DoDataExchange(CDataExchange* pDX)
+void CCompareWithSelectDlg::DoDataExchange(CDataExchange *pDX)
 {
   CPWDialog::DoDataExchange(pDX);
 
@@ -123,7 +123,7 @@ BOOL CCompareWithSelectDlg::OnInitDialog()
     cs_text.LoadString(IDS_TITLE);
     m_cwItemList.InsertColumn(1, cs_text);
     cs_text.LoadString(IDS_USERNAME);
-    m_cwItemList.InsertColumn(1, cs_text);
+    m_cwItemList.InsertColumn(2, cs_text);
     GetDlgItem(IDC_ITEMTREE)->EnableWindow(FALSE);
     GetDlgItem(IDC_ITEMTREE)->ShowWindow(SW_HIDE);
 
@@ -239,9 +239,9 @@ void CCompareWithSelectDlg::OnItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResu
     switch (pNotifyStruct->code) {
       case NM_CLICK:
       {
-        NMITEMACTIVATE *pia = (NMITEMACTIVATE *)pNotifyStruct;
+        NMITEMACTIVATE *pNMIA = reinterpret_cast<NMITEMACTIVATE *>(pNotifyStruct);
         LVHITTESTINFO htinfo = {0};
-        CPoint point(pia->ptAction);
+        CPoint point(pNMIA->ptAction);
         htinfo.pt = point;
         iItem = m_cwItemList.SubItemHitTest(&htinfo);
 
@@ -257,12 +257,12 @@ void CCompareWithSelectDlg::OnItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResu
       }
       case LVN_KEYDOWN:
       {
-        LPNMLVKEYDOWN pLVKeyDown = reinterpret_cast<LPNMLVKEYDOWN>(pNotifyStruct);
+        NMLVKEYDOWN *pNMLVKD = reinterpret_cast<NMLVKEYDOWN *>(pNotifyStruct);
         iItem = m_cwItemList.GetNextItem(-1, LVNI_SELECTED);
         int nCount = m_cwItemList.GetItemCount();
-        if (pLVKeyDown->wVKey == VK_DOWN)
+        if (pNMLVKD->wVKey == VK_DOWN)
           iItem = (iItem + 1) % nCount;
-        if (pLVKeyDown->wVKey == VK_UP)
+        if (pNMLVKD->wVKey == VK_UP)
           iItem = (iItem - 1 + nCount) % nCount;
         break;
       }
@@ -343,8 +343,8 @@ int CALLBACK CCompareWithSelectDlg::CompareFunc(LPARAM lParam1, LPARAM lParam2,
   int nTypeSortColumn = abs(lParmSort);
   int bSortAscending = lParmSort > 0;
 
-  CItemData* pLHS = (CItemData *)lParam1;
-  CItemData* pRHS = (CItemData *)lParam2;
+  CItemData *pLHS = (CItemData *)lParam1;
+  CItemData *pRHS = (CItemData *)lParam2;
   StringX group1, group2;
 
   int iResult;
