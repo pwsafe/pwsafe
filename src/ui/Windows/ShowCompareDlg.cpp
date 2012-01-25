@@ -23,7 +23,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-CShowCompareDlg::CShowCompareDlg(CItemData *pci, CItemData *pci_other, CWnd* pParent)
+CShowCompareDlg::CShowCompareDlg(CItemData *pci, CItemData *pci_other, CWnd *pParent)
   : CPWDialog(CShowCompareDlg::IDD, pParent),
   m_pci(pci), m_pci_other(pci_other),   m_ShowIdenticalFields(BST_UNCHECKED)
 {
@@ -48,7 +48,7 @@ CShowCompareDlg::~CShowCompareDlg()
 {
 }
 
-void CShowCompareDlg::DoDataExchange(CDataExchange* pDX)
+void CShowCompareDlg::DoDataExchange(CDataExchange *pDX)
 {
   CPWDialog::DoDataExchange(pDX);
 
@@ -215,6 +215,14 @@ void CShowCompareDlg::PopulateResults(const bool bShowAll)
                                       pwhistlist2,
                                       TMC_EXPORT_IMPORT);
 
+        // If any password history value is different - it must be red
+        if (sxValue1 != sxValue2)
+          dw = LVCFMT_LEFT | CSCWListCtrl::REDTEXT;
+        else
+          dw = LVCFMT_LEFT;
+        m_ListCtrl.SetItemData(iPos, dw);
+        
+        // Now add sub-fields
         iPos++;
 
         sxValue1 =  status1 ? sxYes : sxNo;
