@@ -34,6 +34,7 @@ class wxSpinCtrl;
 class wxGridSizer;
 class wxBoxSizer;
 class wxBookCtrlEvent;
+class PWSMenuShortcuts;
 ////@end forward declarations
 
 /*!
@@ -402,6 +403,7 @@ private:
 #if defined(__X__) || defined(__WXGTK__)
   bool m_usePrimarySelection;
 #endif
+  PWSMenuShortcuts* m_shortcuts;
 ////@end COptions member variables
  private:
   void PrefsToPropSheet();

@@ -37,8 +37,7 @@
 #include "core/Util.h" // for datetime string
 #include "core/PWSAuxParse.h" // for DEFAULT_AUTOTYPE
 #include "./wxutils.h"
-#include "./pwsafeapp.h"
-#include <wx/stockitem.h>
+#include "./pwsmenushortcuts.h"
 
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
@@ -134,8 +133,6 @@ const wxChar *BUSuffix[] = {
 
 enum {NO_SFX, TS_SFX, INC_SFX}; // For backup file suffix name
 
-enum {COL_SHORTCUT_KEY, COL_MENU_ITEM}; //For shortcuts page
-
 // Following in enum order (see PWSprefs.h)
 const wxChar *DCAStrings[] = {
   _("Copy password to clipboard"),
@@ -154,12 +151,13 @@ const wxChar *DCAStrings[] = {
  * COptions constructors
  */
 
-COptions::COptions()
+COptions::COptions(): m_shortcuts(new PWSMenuShortcuts)
 {
   Init();
 }
 
 COptions::COptions( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
+    :m_shortcuts(new PWSMenuShortcuts)
 {
   Init();
   Create(parent, id, caption, pos, size, style);
@@ -200,6 +198,7 @@ bool COptions::Create( wxWindow* parent, wxWindowID id, const wxString& caption,
 
 COptions::~COptions()
 {
+  delete m_shortcuts;
 ////@begin COptions destruction
 ////@end COptions destruction
 }
@@ -748,7 +747,7 @@ void COptions::CreateControls()
   shortcutSizer->Add(itemGrid143, wxSizerFlags().Expand().Proportion(1).Border());
   itemPanel142->SetSizer(shortcutSizer);
 
-  PutAcceleratorsInGrid(itemGrid143);
+  itemGrid143->SetValidator(ShortcutsGridValidator(*m_shortcuts));
   itemGrid143->AutoSize();
 
   wxGridCellAttr* colAttr = new wxGridCellAttr;
@@ -1381,62 +1380,6 @@ int COptions::GetRequiredPWLength() const {
       total += spinCtrls[idx]->GetValue();
   }
   return total;
-}
-
-
-/*
- * Retrieves all shortcuts from a menu recursively
- *
- */
-void GetShortcutsFromMenu(wxMenu* menu, wxGrid* grid, int& row, const wxString& menuLabel)
-{
-  wxMenuItemList& items = menu->GetMenuItems();
-  const CRecentDBList& rdb = wxGetApp().recentDatabases();
-  for (wxMenuItemList::iterator itr = items.begin(); itr != items.end(); ++itr) {
-    wxMenuItem* item = *itr;
-    if (item->IsSeparator())
-      continue;
-    //skip Recently-Used items from file menu
-    if (item->GetId() >= rdb.GetBaseId() && item->GetId() <= (rdb.GetBaseId() + rdb.GetMaxFiles()-1))
-      continue;
-    const wxString menuItemLabel = menuLabel + wxT(" \xbb ") + item->GetItemLabelText();
-    if (item->IsSubMenu()) {
-      GetShortcutsFromMenu(item->GetSubMenu(), grid, row, menuItemLabel);
-    }
-    else {
-      if (row >= grid->GetNumberRows())
-        grid->AppendRows(row - grid->GetNumberRows() + 1);
-      wxAcceleratorEntry* accel = item->GetAccel();
-      if (accel) {
-        grid->SetCellValue(row, COL_SHORTCUT_KEY, accel->ToString());
-      }
-      else if (wxIsStockID(item->GetId())) {
-        wxAcceleratorEntry stockAccel = wxGetStockAccelerator(item->GetId());
-        if (stockAccel.IsOk())
-          grid->SetCellValue(row, COL_SHORTCUT_KEY, stockAccel.ToString());
-      }
-      grid->SetCellValue(row, COL_MENU_ITEM, menuItemLabel);
-      row++;
-    }
-  }
-}
-
-/*
- * Retrieves all shortcuts from the frame's accelerator table
- *
- */
-void PutAcceleratorsInGrid(wxGrid* grid)
-{
-  wxFrame* frame = wxDynamicCast(wxGetApp().GetTopWindow(), wxFrame);
-  wxCHECK_RET(frame, wxT("Could not get frame window from wxApp"));
-  wxMenuBar* menuBar = frame->GetMenuBar();
-  wxCHECK_RET(menuBar, wxT("Could not get menu bar from frame"));
-  int row = 0;
-  for( unsigned menuIndex = 0; menuIndex < menuBar->GetMenuCount(); ++menuIndex) {
-    GetShortcutsFromMenu(menuBar->GetMenu(menuIndex), grid, row, menuBar->GetMenuLabelText(menuIndex));
-  }
-  if (row < grid->GetNumberRows())
-    grid->DeleteRows(row, grid->GetNumberRows() - row);
 }
 
 void COptions::OnShortcutChange(wxGridEvent& evt)
