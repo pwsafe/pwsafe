@@ -731,3 +731,6 @@
 #define IDS_PWHMAX                      5927
 #define IDS_PWHNUM                      5928
 #define IDS_PWHENTRY                    5929
+#define IDS_COPYALL                     5930
+#define IDS_SYNCHRONIZEALL              5931
+#define IDS_SYNCENTRY                   5932
