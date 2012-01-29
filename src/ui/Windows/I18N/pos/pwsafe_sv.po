@@ -877,10 +877,6 @@ msgstr "&Användarnamn:"
 msgid "&Validate"
 msgstr "&Validera"
 
-#. Resource IDs: (32156)
-msgid "&Validate..."
-msgstr "&Validera..."
-
 #. Resource IDs: (32101)
 msgid "&View"
 msgstr "&Visa"
@@ -1517,6 +1513,10 @@ msgstr "Fält som senast ändrats:"
 msgid "Apply"
 msgstr "Använd"
 
+#. Resource IDs: (1478)
+msgid "Apply these changes to Protected Entries (if required)."
+msgstr ""
+
 #. Resource IDs: (513)
 msgid "Arabic (101)"
 msgstr "Arabiskt (101)"
@@ -1538,8 +1538,8 @@ msgid "Armenian Western"
 msgstr "Armeniskt Västra"
 
 #. Resource IDs: (330)
-msgid "As the double quotation character is used to delimit the whole notes field, it cannot be used within it to delimit multiple lines. Please enter another character."
-msgstr "Då citattecknet används för att avgränsa hela Notering-fältet, får det inte användas inom noteringsfältet för att avgränsa ett antal rader. Vänligen, använd ett annat tecken."
+msgid "As the double quote character is used to delimit the whole notes field, it cannot be used within it to delimit multiple lines. Please enter another character."
+msgstr ""
 
 #. Resource IDs: (331)
 msgid "At least one type of character (lowercase, uppercase, digits,\nsymbols, hexadecimal) must be permitted."
@@ -1863,8 +1863,8 @@ msgid "Change/View selected Named Password Policy or the database default policy
 msgstr ""
 
 #. Resource IDs: (1187)
-msgid "Changes to existing entries will be applied on pressing OK"
-msgstr "Ändringar av befintliga poster utförs efter OK"
+msgid "Changes to existing entries will be applied on pressing OK."
+msgstr ""
 
 #. Resource IDs: (210)
 msgid "Characters present between end of index ']' and '}'"
@@ -1905,6 +1905,10 @@ msgstr "Rensa Urklipp vid avslut"
 #. Resource IDs: (1061)
 msgid "Clear clipboard upon minimize"
 msgstr "Rensa Urklipp vid minimera"
+
+#. Resource IDs: (1477)
+msgid "Clear password history for ALL entries"
+msgstr ""
 
 #. Resource IDs: (1453)
 msgid "Click here for details on the various preferences."
@@ -2051,6 +2055,10 @@ msgstr "Resultat från databasjämförelsen"
 msgid "Compare complete of current database:\n\t %s\n and:\n\t %s"
 msgstr "Jämförelsen klar med nuvarande databas:\n\t %s\n och:\n\t %s"
 
+#. Resource IDs: (32091)
+msgid "Compare entries..."
+msgstr ""
+
 #. Resource IDs: (32019)
 msgid "Compare..."
 msgstr "Jämför..."
@@ -2071,6 +2079,10 @@ msgstr "Jämförd"
 #. Resource IDs: (65535)
 msgid "Comparison Database:"
 msgstr "Jämförd med databas:"
+
+#. Resource IDs: (371)
+msgid "Comparison Entry"
+msgstr ""
 
 #. Resource IDs: (362)
 msgid "Completed but ...."
@@ -2113,10 +2125,20 @@ msgstr "Bekräfta radering av objekt"
 msgid "Confirm item copy to clipboard"
 msgstr "Bekräfta kopiering till Urklipp"
 
+#. Resource IDs: (371)
+#, c-format
+msgid "Confirm that you wish to copy these entries from %s to %s\n\nIf already present in the target database, they will be replaced!"
+msgstr ""
+
 #. Resource IDs: (340)
 #, c-format
-msgid "Confirm that you wish to copy this entry from the %s database to the %s database?\n\nIf already present in the target database, it will be replaced!"
-msgstr "Konfirmera att du vill kopiera denna post från %s databas till %s databas?\n\nOm den redan finns i måldatabasen, kommer den att ersättas!"
+msgid "Confirm that you wish to copy this entry from %s to %s.\n\nIf already present in the target database, it will be replaced!"
+msgstr ""
+
+#. Resource IDs: (371)
+#, c-format
+msgid "Confirm that you wish to synchronize these entries from %s to %s?\n\nSelected fields will be replaced in all entries!"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Confirmation:"
@@ -2130,6 +2152,11 @@ msgstr "Poster i konflikt «%s» «%s» «%s».\r\n  La till sammanslagen post s
 #. Resource IDs: (1, 347)
 msgid "Continue"
 msgstr "Fortsätt"
+
+#. Resource IDs: (360)
+#, c-format
+msgid "Copied password\r\n\r\n\"%s\"\r\n\r\nto the clipboard."
+msgstr ""
 
 #. Resource IDs: (32060)
 msgid "Copy &Notes to Clipboard"
@@ -2171,6 +2198,10 @@ msgstr "Kopiera URL till Urklipp"
 msgid "Copy URL to clipboard"
 msgstr "Kopiera URL till Urklipp"
 
+#. Resource IDs: (32223)
+msgid "Copy all entries to Original"
+msgstr ""
+
 #. Resource IDs: (32071)
 msgid "Copy email to Clipboard"
 msgstr "Kopiera e-post till Urklipp"
@@ -2200,8 +2231,8 @@ msgid "Copy to DB"
 msgstr "Kopiera till DB"
 
 #. Resource IDs: (32221)
-msgid "Copy to Orignal"
-msgstr "Kopiera till originalet"
+msgid "Copy to Original"
+msgstr ""
 
 #. Resource IDs: (325)
 msgid "Copy username to clipboard"
@@ -2300,6 +2331,10 @@ msgstr "Ctrl+"
 msgid "Cu&t"
 msgstr "Klipp u&t"
 
+#. Resource IDs: (371)
+msgid "Current Entry"
+msgstr ""
+
 #. Resource IDs: (343)
 #, c-format
 msgid "Current version:\t%s\r\nLatest version:\t%s\r\n\r\nPlease visit the PasswordSafe website to download the latest version."
@@ -2357,10 +2392,6 @@ msgstr "Databasens unika ID:"
 #. Resource IDs: (65535)
 msgid "Database format:"
 msgstr "Databasformat:"
-
-#. Resource IDs: (213)
-msgid "Database has some large entries!"
-msgstr "Databasen har några stora poster!"
 
 #. Resource IDs: (1454)
 msgid "Database is read-only. Changes to DB preferences will not be saved and are only valid for this session."
@@ -2654,10 +2685,6 @@ msgstr "Redigera/&visa post..."
 msgid "Either or both of the Group/Title and Password columns are missing. No records imported."
 msgstr "Endera av eller både grupp-/titel- och lösenords-kolumner saknas. Ingenting har importerades."
 
-#. Resource IDs: (354)
-msgid "Either unable to load the necessary DLL, or it is the incorrect version, to support Autotype during Launch of a Browser or Run a command.\n\nAutotype for these functions is disabled."
-msgstr "Antingen kan inte den nödvändiga DLL-filen läsas in, eller så är det fel version, för att stödja autoskrivning då browsern startas eller under kommandokörning.\n\nAutoskrivning av dessa funktioner är avstängd."
-
 #. Resource IDs: (204)
 #, c-format
 msgid "Empty line %d skipped"
@@ -2797,6 +2824,10 @@ msgstr "Poster med utgående lösenord"
 #, c-format
 msgid "Entry %s%d with Group=\"%s\", Title=\"%s\", User=\"%s\""
 msgstr "Post %s%d med Grupp=\"%s\", Titel=\"%s\", Användare=\"%s\""
+
+#. Resource IDs: (522)
+msgid "Entry Comparison"
+msgstr ""
 
 #. Resource IDs: (370)
 msgid "Entry Password Policy Changes"
@@ -2999,6 +3030,10 @@ msgstr "Kunde inte skapa tomt dokument."
 #. Resource IDs: (3857)
 msgid "Failed to launch help."
 msgstr "Kunde inte starta hjälp."
+
+#. Resource IDs: (354)
+msgid "Failed to load Autotype support DLL (wrong version?).\n\nAutotype for Launch of a Browser or Running a command is disabled."
+msgstr ""
 
 #. Resource IDs: (208)
 msgid "Failed to lock configuration file - opened by another instance of PasswordSafe?"
@@ -3353,8 +3388,8 @@ msgid "Hexadecimal characters"
 msgstr "Hexadecimala tecken"
 
 #. Resource IDs: (331)
-msgid "Hexadecimal is mutually exclusive to all other options!"
-msgstr "Hexadecimalt utesluter alla andra alternativ!"
+msgid "Hexadecimal is mutually exclusive to all other options."
+msgstr ""
 
 #. Resource IDs: (1426)
 msgid "Hide System Tray icon (Hot Key MUST be active)"
@@ -3371,6 +3406,10 @@ msgstr "Hindi Traditional"
 #. Resource IDs: (189)
 msgid "History"
 msgstr "Historik"
+
+#. Resource IDs: (371)
+msgid "History entry"
+msgstr ""
 
 #. Resource IDs: (1088)
 msgid "Hot Key"
@@ -3529,8 +3568,8 @@ msgid "If enabled, a 'snapshot' will be taken before every save, and named accor
 msgstr "Om vald, kommer ett 'snapshot' att tas före varje Spara. Filen namnges och sparas enligt alternativen nedan."
 
 #. Resource IDs: (330)
-msgid "If requested, then a delimiter character must be entered!"
-msgstr "Om så begärs, måste ett avgränsande tecken anges!"
+msgid "If requested, then a delimiter character must be entered."
+msgstr ""
 
 #. Resource IDs: (361)
 msgid "If the passphrase is the same as the currently opened database, properties of this backup are shown."
@@ -3869,13 +3908,13 @@ msgstr "Rad %d överhoppad - Bara %d fält funna, emedan körning av rubriken vi
 
 #. Resource IDs: (205)
 #, c-format
-msgid "Line %d skipped. It has an empty mandatory Password field."
-msgstr "Rad %d överhoppad. Den innehåller ett tomt obligatoriskt Lösenord-fält."
+msgid "Line %d skipped: Empty mandatory Password field."
+msgstr ""
 
 #. Resource IDs: (205)
 #, c-format
-msgid "Line %d skipped. It has an empty mandatory Title field."
-msgstr "Rad %d överhoppad. Den innehåller ett tomt obligatoriskt Titel-fält."
+msgid "Line %d skipped: Empty mandatory Title field."
+msgstr ""
 
 #. Resource IDs: (189)
 #, c-format
@@ -3926,6 +3965,15 @@ msgstr "Lås lösenordsdatabasen då datorn stängs"
 msgid "MBytes"
 msgstr "MBytes"
 
+#. Resource IDs: (215)
+msgid "MISSING PASSWORD"
+msgstr ""
+
+#. Resource IDs: (215)
+#, c-format
+msgid "MISSING TITLE # %d"
+msgstr ""
+
 #. Resource IDs: (3866)
 msgid "Mail system DLL is invalid."
 msgstr "e-postsystemets DLL är ogiltig."
@@ -3970,6 +4018,10 @@ msgstr "Maximala antalet dagar som kan anges är %d"
 #. Resource IDs: (349)
 msgid "Maximum number stored"
 msgstr "Maximalt antal lagrade"
+
+#. Resource IDs: (371)
+msgid "Maximum saved"
+msgstr ""
 
 #. Resource IDs: (348)
 msgid "Maximum value for first number and 'Between' rule"
@@ -4101,10 +4153,6 @@ msgstr "Aldrig"
 msgid "New"
 msgstr "Ny"
 
-#. Resource IDs: (1003)
-msgid "New Database"
-msgstr "Ny databas"
-
 #. Resource IDs: (332)
 msgid "New Group"
 msgstr "Ny grupp"
@@ -4120,6 +4168,10 @@ msgstr "Ny version finns!"
 #. Resource IDs: (331)
 msgid "New safe combination and confirmation do not match"
 msgstr "Nya Safe-nyckeln och konfirmeringen matchar inte"
+
+#. Resource IDs: (1003)
+msgid "New..."
+msgstr ""
 
 #. Resource IDs: (364)
 msgid "Next >"
@@ -4312,8 +4364,8 @@ msgstr "Antal poster i databasen"
 
 #. Resource IDs: (190)
 #, c-format
-msgid "Number of entries processed: %d\n\nNumber of UUIDs fixed: %d\n\nNumber of Password Histories fixed: %d\n\nNumber of non-unique Group/Title/User fixed: %d\n\nNumber of Alias warnings issued: %d\n\nNumber of Shortcut warnings issued: %d\n\nNumber of entries with fields that cannot be fully displayed: %d"
-msgstr "rntal processade poster: %d\n\nAntal UUIDs som fixats: %d\n\nAntal lösenordshistoriken som fixats: %d\n\nAntal icke unika Grupper/Titlar/Användare som fixats: %d\n\nAntal alias-varningar som genererats: %d\n\nAntal länkvarningarsom genererats %d\n\nAntal poster med fält som inte kan visas fullständigt: %d"
+msgid "Number of entries processed: %d\n\nNumber of invalid UUIDs fixed: %d\n\nNumber of duplicate UUIDs fixed: %d\n\nNumber of non-unique Group/Title/User fixed: %d\n\nNumber of Password Histories fixed: %d\n\nNumber of Alias warnings issued: %d\n\nNumber of Shortcut warnings issued: %d\n\nNumber of entries with fields that cannot be fully displayed: %d.\n\nRecommend that the database is now saved."
+msgstr ""
 
 #. Resource IDs: (337)
 #, c-format
@@ -4330,9 +4382,18 @@ msgstr "Antalet poster vars inställningar ändrades till att inte spara histori
 msgid "Number of entries that had their settings changed to save password history was: %d"
 msgstr "Antalet poster vars inställningar ändrades till att spara historik: %d"
 
+#. Resource IDs: (371)
+#, c-format
+msgid "Number of entries that had their their paasword history removed was %d"
+msgstr ""
+
 #. Resource IDs: (1266)
 msgid "Number of unknown fields:"
 msgstr "Antal okända fält:"
+
+#. Resource IDs: (371)
+msgid "Number saved"
+msgstr ""
 
 #. Resource IDs: (349)
 msgid "Number stored"
@@ -4372,8 +4433,8 @@ msgstr "Ett eller fler autosparade dokument hittades."
 
 #. Resource IDs: (340)
 #, c-format
-msgid "Only in Original DB: %d; Only in Comparison DB: %d; In both (differences): %d; In both (identical): %d"
-msgstr "Bara i nuvarande DB: %d; Bara i jämförd DB: %d; I båda - skillnader: %d; I båda - identiska: %d"
+msgid "Only in Original DB: %d; Only in Comparison DB: %d; In both (differing): %d; In both (identical): %d"
+msgstr ""
 
 #. Resource IDs: (3841)
 msgid "Open"
@@ -4589,8 +4650,8 @@ msgid "Password length is less than sum of 'at least' constraints"
 msgstr "Lösenordets längd är kortare än summan av minimikraven  "
 
 #. Resource IDs: (331)
-msgid "Password length must be between 4 and 1024."
-msgstr "Lösenordets längd måste vara mellan 4 och 1024."
+msgid "Password length must be between 4 and 1024 characters."
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Password length:"
@@ -4687,8 +4748,8 @@ msgid "Please confirm delete of the %s filter %s?"
 msgstr ""
 
 #. Resource IDs: (331)
-msgid "Please confirm that you wish to delete current user's PasswordSafe configuration information from the Windows registry.\n\n"
-msgstr "Vänligen, bekräfta att du önskar radera nuvarande användares PasswordSafe-konfigurationsinformation från Windows-registret.\n\n"
+msgid "Please confirm that you wish to delete current user's PasswordSafe configuration from the Windows registry.\n\n"
+msgstr ""
 
 #. Resource IDs: (330)
 msgid "Please enter a search string"
@@ -4719,8 +4780,8 @@ msgid "Please enter the safe combination for this password database."
 msgstr "Vänligen, skriv in nyckelkombinationen till denna lösenordsdatabas."
 
 #. Resource IDs: (337)
-msgid "Please enter your backup database prefix!"
-msgstr "Vänligen, skriv in prefixet till din säkerhetskopias databas!"
+msgid "Please enter your backup database prefix."
+msgstr ""
 
 #. Resource IDs: (334)
 msgid "Please name the XML file"
@@ -4961,6 +5022,10 @@ msgstr "Kom ihåg senaste"
 msgid "Remove PasswordSafe configuration from Registry"
 msgstr "Ta bort PasswordSafes konfiguratinsinformation i registret"
 
+#. Resource IDs: (320)
+msgid "Remove all saved passwords for entries and stop saving any new password history in all entries."
+msgstr ""
+
 #. Resource IDs: (32291)
 msgid "Remove this shortcut"
 msgstr "Tag bort denna genväg"
@@ -5193,8 +5258,8 @@ msgid "Second date must be later than first"
 msgstr "Andra datumet måste vara senare än det första"
 
 #. Resource IDs: (348)
-msgid "Second number must be more than first"
-msgstr "Andra talet måste vara större än det första"
+msgid "Second number must be greater than first"
+msgstr ""
 
 #. Resource IDs: (142)
 msgid "Security"
@@ -5256,6 +5321,10 @@ msgstr "Välj alla poster"
 #. Resource IDs: (352)
 msgid "Select and apply a filter"
 msgstr "Välj och använd ett filter"
+
+#. Resource IDs: (523)
+msgid "Select entry to compare"
+msgstr ""
 
 #. Resource IDs: (340)
 msgid "Select some entries"
@@ -5473,6 +5542,10 @@ msgstr "Visa poster med identiska jämförda fält (Notera: Okända fält jämf�
 msgid "Show grid lines in List View"
 msgstr "Visa radlinjer i Listvyn"
 
+#. Resource IDs: (1479)
+msgid "Show identical compared fields (Note: Unknown fields were not compared.)"
+msgstr ""
+
 #. Resource IDs: (360)
 msgid "Shutdown, Restart or Logoff in progress"
 msgstr "Avstängning, omstart eller utloggning pågår."
@@ -5504,6 +5577,10 @@ msgstr "Slovenska"
 #. Resource IDs: (1383)
 msgid "Some characters may be missing or not be displayed correctly, as we were unable to find the Arial Unicode MS font."
 msgstr "Vissa tecken kan saknas eller inte visas korrekt, då vi inte kunde hitta Arial Unicode MS fonterna."
+
+#. Resource IDs: (371)
+msgid "Some consistency issues were found while opening the database.\n\nYou should save this database before proceeding. Please view report for details."
+msgstr ""
 
 #. Resource IDs: (364)
 msgid "Some of the entries in this database have passwords that have expired or are about to.  Do you wish to list them and possibly update them?"
@@ -5636,6 +5713,10 @@ msgstr "Synkronisera"
 #. Resource IDs: (121)
 msgid "Synchronize Entries"
 msgstr "Synkroniseringsposter"
+
+#. Resource IDs: (32224)
+msgid "Synchronize all entries"
+msgstr ""
 
 #. Resource IDs: (364)
 msgid "Synchronizing current database with:"
@@ -5771,8 +5852,8 @@ msgstr "Databasen:\n%s\n\nanvänds uppenbarligen av:\n%s%s.\n\nÖppna databasen 
 
 #. Resource IDs: (328)
 #, c-format
-msgid "The database:\n%s\n\nis apparently being used by:\n%s%s.\n\nOpen the database for Read-Only, Read-Write, or Exit?\r\n\r\nNote: Choose \"Read-Write\" only if you are certain that the file is in fact not being used by anyone else,\nincluding another copy of Password Safe running on your machine."
-msgstr "Databasen:\n%s\n\nanvänds uppenbarligen av:\n%s%s.\n\nÖppna databasen för läs-bara, läs-skriv eller avsluta?\r\n\r\nNotera: Välj \"läs-bara\" endast om du är säker på att filen verkligen inte används av någon annan,\ninkluderande en annan kopia av Password Safe som körs på din maskin."
+msgid "The database:\n%s\n\nis apparently being used by:\n%s%s.\n\nOpen the database for Read-Only, Read-Write, or Exit?\r\n\r\nNote: Choose \"Read-Write\" only if you are certain that the file isn't being used by anyone else,\nincluding another copy of Password Safe running on your machine."
+msgstr ""
 
 #. Resource IDs: (361)
 #, c-format
@@ -5805,6 +5886,14 @@ msgstr "XML-filtrets version (%d) är större än nuvarande schema (%d)."
 msgid "The filter XML version is missing."
 msgstr "XML-filtrets version saknas."
 
+#. Resource IDs: (216)
+msgid "The following ERRORS were detected and were FIXED."
+msgstr ""
+
+#. Resource IDs: (216)
+msgid "The following WARNINGS were detected - you should review and fix them manually."
+msgstr ""
+
 #. Resource IDs: (211)
 msgid "The following columns were recognised but only Group/Title, Username and Password will be processed:"
 msgstr "Följande kolumner återfanns, men bara Grupp/Titel, Användare och Lösenord kommer att behandlas."
@@ -5814,8 +5903,21 @@ msgid "The following columns will be processed: "
 msgstr "Följande kolumner kommer att köras:"
 
 #. Resource IDs: (215)
+msgid "The following entries had a duplicate UUID field.  This has been corrected."
+msgstr ""
+
+#. Resource IDs: (215)
 #, c-format
 msgid "The following entries had a policy name that already existed in this database but with different settings.\r\nA new named policy has been created with the current date/time (%s) appended:%s"
+msgstr ""
+
+#. Resource IDs: (215)
+#, c-format
+msgid "The following entries had an empty Password field, which is not permitted. The password has been set to '%s'"
+msgstr ""
+
+#. Resource IDs: (215)
+msgid "The following entries had an empty Title field, which is not permitted."
 msgstr ""
 
 #. Resource IDs: (205)
@@ -5828,8 +5930,13 @@ msgstr "Följande poster innehöll ett ogiltigt UUID-fält.  Detta har korrigera
 
 #. Resource IDs: (212)
 #, c-format
-msgid "The following entries have one or more text fields too long to display or edit (over %d characters)."
-msgstr "Följande poster har en eller fler textfält som är för långa för att kunna visas eller editeras (fler än %d tecken)."
+msgid "The following entries have one or more text fields too long to display or edit (over %d characters).  The largest entry size found was ~%d %s."
+msgstr ""
+
+#. Resource IDs: (216)
+#, c-format
+msgid "The following entries have passwords in the correct form for %s, but the base entry does not exist."
+msgstr ""
 
 #. Resource IDs: (212)
 msgid "The following entries were duplicates of an existing entry."
@@ -5843,6 +5950,11 @@ msgstr "Följande posters lösenord håller på att gå ut eller har gått ut:"
 #, c-format
 msgid "The following entry was copied to the %s database: '%s:%s:%s'"
 msgstr "Följande post kopierades till %s databas: '%s:%s:%s'"
+
+#. Resource IDs: (371)
+#, c-format
+msgid "The following entry was synchronized to the %s database: '%s:%s:%s'"
+msgstr ""
 
 #. Resource IDs: (362)
 msgid "The following records had errors in their Password History:"
@@ -5879,11 +5991,6 @@ msgstr "Den ursprungliga databasen, \"%s\", är äldre än 3.0 formatet. Data ko
 #, c-format
 msgid "The password is in 'alias' form but the referenced entry '%s:%s:%s' is itself an alias.\r\n\r\nDo you wish this entry to point to the 'real' base entry?"
 msgstr "Lösenordet är i 'alias'-form men posten som avses '%s:%s:%s' är själv en alias.\r\n\r\nVill du att denna post skal peka på den 'verkliga' basposten?"
-
-#. Resource IDs: (360)
-#, c-format
-msgid "The password\r\n\r\n\"%s\"\r\n\r\nhas been copied to the clipboard."
-msgstr "Lösenordet\r\n\r\n\"%s\"\r\n\r\nhar kopierats till Urklipp."
 
 #. Resource IDs: (65535)
 msgid "The safe combination has been entered three times without success. If you don't know the safe combination, you can either try to open another password database, or create a new blank password database."
@@ -6033,8 +6140,8 @@ msgid "This will delete the selected Failsafe Backup file.  If the current drive
 msgstr "Detta kommer att radera den valda felsäkra backup-filen. Om den nuvarande enheten har en Papperskorg, kommer den att flyttas dit. Om inte, raderas den permanent."
 
 #. Resource IDs: (331)
-msgid "Time out period must be between 1 and 120 minutes."
-msgstr "Time out perioden måste vara mellan 1 och 120 minuter."
+msgid "Timeout period must be between 1 and 120 minutes."
+msgstr ""
 
 #. Resource IDs: (327)
 msgid "Title"
@@ -6047,6 +6154,10 @@ msgstr "Titel [Obligatorisk post]"
 #. Resource IDs: (355)
 msgid "Title copied "
 msgstr "Titel kopierad"
+
+#. Resource IDs: (65535)
+msgid "Title:"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "To add a new entry, simply fill in the fields below. At least a title and a password are required. If you have set a default username, it will appear in the username field."
@@ -6330,10 +6441,6 @@ msgstr "Använd &VERSALER"
 msgid "Use Database Policy"
 msgstr ""
 
-#. Resource IDs: (1378)
-msgid "Use Default"
-msgstr "Använd förval"
-
 #. Resource IDs: (1470)
 msgid "Use Named Policy"
 msgstr ""
@@ -6389,6 +6496,10 @@ msgstr "Användare kopierad"
 #. Resource IDs: (188)
 msgid "Username"
 msgstr "Användarnamn"
+
+#. Resource IDs: (65535)
+msgid "Username:"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Using application:"
@@ -6505,11 +6616,6 @@ msgstr "Varna"
 msgid "Warning"
 msgstr "Varning"
 
-#. Resource IDs: (213)
-#, c-format
-msgid "Warning - %d %s in your database may have one or more fields too large to display or edit.\r\n\r\nThe largest entry size found was ~%d %s.\r\n\r\nYou can use the Filter to selectively display these record(s)."
-msgstr "Varning - %d %s i din databas kan ha ett eller fler fält som är för stora att visas eller editeras.\r\n\r\nDen största poststorlek som fanns ~%d %s.\r\n\r\nDu kan använda Filter för att selektivt visa registreringen(arna)."
-
 #. Resource IDs: (363)
 msgid "Warning - excessive field contents"
 msgstr "Varning - överflödande postinnehåll"
@@ -6557,8 +6663,8 @@ msgstr "Radbryt noteringar i Lägg till && Redigera"
 
 #. Resource IDs: (332)
 #, c-format
-msgid "Would you like to set \"%s\" as your default username?\n\nIt would then automatically be put in the dialog each time you add a new item."
-msgstr "Vill du använda \"%s\" som förvalt användarnamn?\n\nDet kommer i så fall att automatiskt läggas in i dialogen när du lägger till en ny post."
+msgid "Would you like to set \"%s\" as your default username?\n\nIt would then be used by default for new items."
+msgstr ""
 
 #. Resource IDs: (333)
 msgid "Write Error"
@@ -6646,6 +6752,14 @@ msgstr "Din nuvarande öppna databas kommer att vara på första raden. Felsäkr
 msgid "Your requested font, '%s', could not be found (not installed?), using '%s' instead."
 msgstr ""
 
+#. Resource IDs: (371)
+msgid "Zoom in\tCtrl + NUM PLUS"
+msgstr ""
+
+#. Resource IDs: (371)
+msgid "Zoom out\tCtrl + NUM SUB"
+msgstr ""
+
 #. Resource IDs: (330)
 msgid "[No current database]"
 msgstr "[Ingen aktiv databas]"
@@ -6701,6 +6815,10 @@ msgstr "\nStäng sökmenyn"
 #. Resource IDs: (2007)
 msgid "\nCollapse All"
 msgstr "\nMinimera allt"
+
+#. Resource IDs: (2006)
+msgid "\nCompare entries..."
+msgstr ""
 
 #. Resource IDs: (2002)
 msgid "\nCompare two Databases"
@@ -7157,6 +7275,10 @@ msgstr "dagar"
 #. Resource IDs: (65535)
 msgid "days before passwords expire"
 msgstr "dagar innan lösenordet går ut"
+
+#. Resource IDs: (251)
+msgid "default"
+msgstr ""
 
 #. Resource IDs: (369)
 msgid "default symbol set"
