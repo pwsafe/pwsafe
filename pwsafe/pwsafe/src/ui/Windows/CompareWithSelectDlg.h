@@ -12,7 +12,6 @@
 
 #include "PWDialog.h"
 #include "SecString.h"
-#include "CWListCtrl.h"
 #include "CWTreeCtrl.h"
 
 #include "os/UUID.h"
@@ -24,8 +23,7 @@ class CCompareWithSelectDlg : public CPWDialog
 {
 public:
   // default constructor
-  CCompareWithSelectDlg(CItemData *pci, PWScore *pcore, bool bShowTree,
-                        CWnd *pParent);
+  CCompareWithSelectDlg(CItemData *pci, PWScore *pcore, CWnd *pParent);
   virtual ~CCompareWithSelectDlg();
 
   pws_os::CUUID GetUUID();
@@ -37,17 +35,14 @@ protected:
 
   virtual BOOL OnInitDialog();
   afx_msg void OnDestroy();
-  afx_msg void OnListItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult);
-  afx_msg void OnTreeItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult);
+  afx_msg void OnItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult);
+  afx_msg void OnItemDblClick(NMHDR *pNotifyStruct, LRESULT *pLResult);
 
   DECLARE_MESSAGE_MAP()
 
 private:
-  static int CALLBACK CompareFunc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort);
-  void InsertItemIntoGUITreeList(CItemData &ci, int iIndex);
-  void OnItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult);
+  void InsertItemIntoGUITree(CItemData &ci);
 
-  CCWListCtrl m_cwItemList;
   CCWTreeCtrl m_cwItemTree;
   CImageList *m_pImageList;
 
@@ -57,7 +52,6 @@ private:
 
   PWScore *m_pcore;
   CItemData *m_pci, *m_pSelected;
-  bool m_bShowTree;
 };
 //-----------------------------------------------------------------------------
 // Local variables:

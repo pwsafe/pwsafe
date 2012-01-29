@@ -390,9 +390,6 @@
     <ClCompile Include="CWTreeCtrl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CWListCtrl.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="SCWListCtrl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -783,9 +780,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CWTreeCtrl.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CWListCtrl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SCWListCtrl.h">

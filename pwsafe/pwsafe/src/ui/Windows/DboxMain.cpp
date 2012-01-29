@@ -148,7 +148,7 @@ DboxMain::DboxMain(CWnd* pParent)
   m_bDeleteCtrl(false), m_bDeleteShift(false),
   m_bRenameCtrl(false), m_bRenameShift(false),
   m_bAutotypeCtrl(false), m_bAutotypeShift(false),
-  m_bInAT(false), m_bInRestoreWindowsData(false), m_bSetup(false), m_bCompareWith(false),
+  m_bInAT(false), m_bInRestoreWindowsData(false), m_bSetup(false), m_bCompareEntries(false),
   m_bInRefresh(false), m_bInRestoreWindows(false), m_bExpireDisplayed(false),
   m_bTellUserExpired(false), m_bInRename(false), m_bWhitespaceRightClick(false),
   m_ilastaction(0), m_bNoValidation(false),
@@ -417,7 +417,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_REDO, OnRedo)
   ON_COMMAND(ID_MENUITEM_EXPORTENT2PLAINTEXT, OnExportEntryText)
   ON_COMMAND(ID_MENUITEM_EXPORTENT2XML, OnExportEntryXML)
-  ON_COMMAND(ID_MENUITEM_COMPARE_ENTRIES, OnCompareWith)
+  ON_COMMAND(ID_MENUITEM_COMPARE_ENTRIES, OnCompareEntries)
   ON_COMMAND_RANGE(ID_MENUITEM_PROTECT, ID_MENUITEM_UNPROTECTGROUP, OnProtect)
 
   // View Menu
@@ -1394,6 +1394,11 @@ void DboxMain::FixListIndexes()
 void DboxMain::OnItemDoubleClick(NMHDR *, LRESULT *pLResult)
 {
   *pLResult = 0L;
+
+  // Ignore double-click if multiple entries selected (List view only)
+  if (m_IsListView && m_ctlItemList.GetSelectedCount() != 1)
+    return;
+
   UnFindItem();
 
   // TreeView only - use DoubleClick to Expand/Collapse group
@@ -2408,7 +2413,12 @@ void DboxMain::SetLanguage(LCID lcid)
   }
 
   // Update Statusbar
-  CItemData *pci = getSelectedItem();
+  // Double-click action meaningless if multiple entries selected - pci should be NULL
+  // List view only
+  CItemData *pci(NULL);
+  if (m_IsListView && m_ctlItemList.GetSelectedCount() == 1)
+    pci = getSelectedItem();
+
   SetDCAText(pci);
   if (m_ilastaction != 0)
     UpdateLastClipboardAction(m_ilastaction);
@@ -2754,6 +2764,11 @@ void DboxMain::SetDCAText(CItemData *pci)
     if (si_dca == -1)
       si_dca = si_dca_default;
   }
+
+  // Double-click action meaningless if multiple entries selected - pci should be NULL
+  // List View only
+  if (m_IsListView && m_ctlItemList.GetSelectedCount() != 1)
+    si_dca = -1;
 
   UINT ui_dca;
   switch (si_dca) {

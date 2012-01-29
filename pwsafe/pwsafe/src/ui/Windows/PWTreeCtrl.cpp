@@ -640,7 +640,7 @@ void CPWTreeCtrl::OnSelectionChanged(NMHDR *pNotifyStruct, LRESULT *pLResult)
   if (((NMTREEVIEW *)pNotifyStruct)->action != TVC_BYKEYBOARD || GetCount() == 0)
     return;
 
-  m_pDbx->OnItemSelected(pNotifyStruct, pLResult);
+  m_pDbx->OnItemSelected(pNotifyStruct, pLResult, true);
 }
 
 void CPWTreeCtrl::OnDeleteItem(NMHDR *pNotifyStruct, LRESULT *pLResult)

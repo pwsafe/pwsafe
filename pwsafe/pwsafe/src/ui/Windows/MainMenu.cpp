@@ -686,6 +686,21 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
     //               Entry functions (copy to clipboard, browse, run etc)
     if (pci != NULL) {
       // Entry is selected
+
+      // Deal with multi-selection
+      // More than 2 is meaningless in List view
+      if (m_IsListView && m_ctlItemList.GetSelectedCount() > 2)
+        return;
+
+      // If exactly 2 selected - show compare entries menu
+      if (m_IsListView  && m_ctlItemList.GetSelectedCount() == 2) {
+        CString cs_txt(MAKEINTRESOURCE(ID_MENUITEM_COMPARE_ENTRIES));
+        cs_txt.TrimLeft();  // Remove leading newline
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
+                               ID_MENUITEM_COMPARE_ENTRIES, cs_txt);
+        return;
+      }
+
       if (!bReadOnly) {
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_ADD, tc_dummy);
@@ -822,7 +837,9 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
                                pci->IsProtected() ? ID_MENUITEM_UNPROTECT : ID_MENUITEM_PROTECT,
                                tc_dummy);
 
-      if (m_bCompareWith && etype_original != CItemData::ET_SHORTCUT)
+      // Tree view and command flag present only
+      if (!m_IsListView && m_bCompareEntries &&
+           etype_original != CItemData::ET_SHORTCUT)
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_COMPARE_ENTRIES, tc_dummy);
     } else {
@@ -1019,7 +1036,7 @@ void DboxMain::OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL)
 }
 
 // Called when right-click is invoked in the client area of the window.
-void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint screen)
+void DboxMain::OnContextMenu(CWnd * /* pWnd */, CPoint screen)
 {
 #if defined(POCKET_PC)
   const DWORD dwTrackPopupFlags = TPM_LEFTALIGN;
@@ -1187,6 +1204,29 @@ void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint screen)
 
   // RClick over an entry
   if (item >= 0) {
+    CMenu *pPopup(NULL);
+
+    // More than 2 is meaningless in List view
+    if (m_IsListView && m_ctlItemList.GetSelectedCount() > 2)
+      return;
+
+    // Only compare entries if 2 entries are selected - List view only
+    if (m_IsListView && m_ctlItemList.GetSelectedCount() == 2) {
+      brc = menu.LoadMenu(IDR_POPCOMPAREENTRIES);
+      ASSERT(brc != 0);
+
+      minfo.dwMenuData = IDR_POPCOMPAREENTRIES;
+      brc = menu.SetMenuInfo(&minfo);
+      ASSERT(brc != 0);
+
+      pPopup = menu.GetSubMenu(0);
+      ASSERT_VALID(pPopup);
+
+      // Use this DboxMain for commands
+      pPopup->TrackPopupMenu(dwTrackPopupFlags, screen.x, screen.y, this);
+      return;
+    }
+
     ASSERT(pci != NULL);
     brc = menu.LoadMenu(IDR_POPEDITMENU);
     ASSERT(brc != 0);
@@ -1195,7 +1235,7 @@ void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint screen)
     brc = menu.SetMenuInfo(&minfo);
     ASSERT(brc != 0);
 
-    CMenu* pPopup = menu.GetSubMenu(0);
+    pPopup = menu.GetSubMenu(0);
     ASSERT_VALID(pPopup);
 
     const CItemData::EntryType etype_original = pci->GetEntryType();
@@ -1262,8 +1302,9 @@ void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint screen)
     // Since an entry - remove Duplicate Group
     pPopup->RemoveMenu(ID_MENUITEM_DUPLICATEGROUP, MF_BYCOMMAND);
 
-    // Remove if not allowed or a shortcut
-    if (!m_bCompareWith || etype_original == CItemData::ET_SHORTCUT)
+    // Remove if in List View, not allowed in Tree view or a shortcut
+    if (m_IsListView || !m_bCompareEntries ||
+        etype_original == CItemData::ET_SHORTCUT)
         pPopup->RemoveMenu(ID_MENUITEM_COMPARE_ENTRIES, MF_BYCOMMAND);
 
     // Use this DboxMain for commands
