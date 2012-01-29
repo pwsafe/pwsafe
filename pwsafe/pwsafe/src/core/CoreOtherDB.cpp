@@ -148,20 +148,37 @@ void PWScore::Compare(PWScore *pothercore,
          .... ..1.  SYMBOLS    [0x16]
          .... ...1  SHIFTDCA   [0x17]
 
-         Forth byte
+         Fourth byte
          1... ....  POLICYNAME [0x18] - not checked by default
 
 
-         */
+        */
         bsConflicts.reset();
+        StringX sxCurrentPassword, sxComparisonPassword;
 
         CItemData compItem = pothercore->GetEntry(foundPos);
+
+        if (currentItem.GetEntryType() == CItemData::ET_ALIAS ||
+            currentItem.GetEntryType() == CItemData::ET_SHORTCUT) {
+          CItemData *pci_base = GetBaseEntry(&currentItem);
+          sxCurrentPassword == pci_base->GetPassword();
+        } else
+          sxCurrentPassword == currentItem.GetPassword();
+
+        if (compItem.GetEntryType() == CItemData::ET_ALIAS ||
+            compItem.GetEntryType() == CItemData::ET_SHORTCUT) {
+          CItemData *pci_base = pothercore->GetBaseEntry(&compItem);
+          sxComparisonPassword == pci_base->GetPassword();
+        } else
+          sxComparisonPassword == compItem.GetPassword();
+
+        if (bsFields.test(CItemData::PASSWORD) &&
+            sxCurrentPassword != sxComparisonPassword)
+          bsConflicts.flip(CItemData::PASSWORD);
+
         if (bsFields.test(CItemData::NOTES) &&
             FieldsNotEqual(currentItem.GetNotes(), compItem.GetNotes(), bTreatWhiteSpaceasEmpty))
           bsConflicts.flip(CItemData::NOTES);
-        if (bsFields.test(CItemData::PASSWORD) &&
-            currentItem.GetPassword() != compItem.GetPassword())
-          bsConflicts.flip(CItemData::PASSWORD);
         if (bsFields.test(CItemData::CTIME) &&
             currentItem.GetCTime() != compItem.GetCTime())
           bsConflicts.flip(CItemData::CTIME);
@@ -185,10 +202,12 @@ void PWScore::Compare(PWScore *pothercore,
             bsConflicts.flip(CItemData::XTIME_INT);
         }
         if (bsFields.test(CItemData::URL) &&
-            FieldsNotEqual(currentItem.GetURL(), compItem.GetURL(), bTreatWhiteSpaceasEmpty))
+            FieldsNotEqual(currentItem.GetURL(), compItem.GetURL(),
+                           bTreatWhiteSpaceasEmpty))
           bsConflicts.flip(CItemData::URL);
         if (bsFields.test(CItemData::AUTOTYPE) &&
-            FieldsNotEqual(currentItem.GetAutoType(), compItem.GetAutoType(), bTreatWhiteSpaceasEmpty))
+            FieldsNotEqual(currentItem.GetAutoType(), compItem.GetAutoType(),
+                           bTreatWhiteSpaceasEmpty))
           bsConflicts.flip(CItemData::AUTOTYPE);
         if (bsFields.test(CItemData::PWHIST) &&
             currentItem.GetPWHistory() != compItem.GetPWHistory())

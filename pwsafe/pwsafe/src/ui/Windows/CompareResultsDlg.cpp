@@ -39,7 +39,8 @@ IMPLEMENT_DYNAMIC(CCompareResultsDlg, CPWResizeDialog)
 CCompareResultsDlg::CCompareResultsDlg(CWnd* pParent,
                                        CompareData &OnlyInCurrent, CompareData &OnlyInComp,
                                        CompareData &Conflicts, CompareData &Identical,
-                                       CItemData::FieldBits &bsFields, PWScore *pcore0, PWScore *pcore1,
+                                       CItemData::FieldBits &bsFields,
+                                       PWScore *pcore0, PWScore *pcore1,
                                        CReport *pRpt)
   : CPWResizeDialog(CCompareResultsDlg::IDD, pParent),
   m_OnlyInCurrent(OnlyInCurrent), m_OnlyInComp(OnlyInComp),
@@ -47,9 +48,14 @@ CCompareResultsDlg::CCompareResultsDlg(CWnd* pParent,
   m_bsFields(bsFields), m_pcore0(pcore0), m_pcore1(pcore1),
   m_pRpt(pRpt), m_bSortAscending(true), m_iSortedColumn(0),
   m_OriginalDBChanged(false), m_ComparisonDBChanged(false),
+  m_bTreatWhiteSpaceasEmpty(false),
   m_ShowIdenticalEntries(BST_UNCHECKED)
 {
   m_pDbx = static_cast<DboxMain *>(pParent);
+}
+
+CCompareResultsDlg::~CCompareResultsDlg()
+{
 }
 
 // Return whether first [g:t:u] is greater than the second [g:t:u]
@@ -74,15 +80,18 @@ void CCompareResultsDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CCompareResultsDlg, CPWResizeDialog)
   ON_WM_SIZE()
   ON_WM_INITMENUPOPUP()
-  ON_NOTIFY(NM_DBLCLK, IDC_RESULTLIST, OnItemDoubleClick)
-  ON_NOTIFY(NM_RCLICK, IDC_RESULTLIST, OnItemRightClick)
   ON_BN_CLICKED(ID_HELP, OnHelp)
   ON_BN_CLICKED(IDOK, OnOK)
   ON_BN_CLICKED(IDC_SHOW_IDENTICAL_ENTRIES, OnShowIdenticalEntries)
+  ON_NOTIFY(NM_RCLICK, IDC_RESULTLIST, OnItemRightClick)
+  ON_NOTIFY(NM_DBLCLK, IDC_RESULTLIST, OnItemDoubleClick)
+  ON_NOTIFY(LVN_ITEMCHANGING, IDC_RESULTLIST, OnItemChanging)
   ON_NOTIFY(HDN_ITEMCLICK, IDC_RESULTLISTHDR, OnColumnClick)
   ON_COMMAND(ID_MENUITEM_COMPVIEWEDIT, OnCompareViewEdit)
   ON_COMMAND(ID_MENUITEM_SYNCHRONIZE, OnCompareSynchronize)
   ON_COMMAND(ID_MENUITEM_COPY_TO_ORIGINAL, OnCompareCopyToOriginalDB)
+  ON_COMMAND(ID_MENUITEM_COPYALL_TO_ORIGINAL, OnCompareCopyAllToOriginalDB)
+  ON_COMMAND(ID_MENUITEM_SYNCHRONIZEALL, OnCompareSynchronizeAll)
 END_MESSAGE_MAP()
 
 BOOL CCompareResultsDlg::OnInitDialog()
@@ -105,7 +114,7 @@ BOOL CCompareResultsDlg::OnInitDialog()
   m_LCResults.GetHeaderCtrl()->SetDlgCtrlID(IDC_RESULTLISTHDR);
 
   DWORD dwExtendedStyle = m_LCResults.GetExtendedStyle();
-  dwExtendedStyle |= LVS_EX_GRIDLINES | LVS_EX_FULLROWSELECT;
+  dwExtendedStyle |= (LVS_EX_GRIDLINES | LVS_EX_FULLROWSELECT);
   m_LCResults.SetExtendedStyle(dwExtendedStyle);
 
   CString cs_header;
@@ -135,12 +144,13 @@ BOOL CCompareResultsDlg::OnInitDialog()
                  {CItemData::PMTIME, IDS_PASSWORDMODIFIED, PMTIME},
                  {CItemData::RMTIME, IDS_LASTMODIFIED, RMTIME},
                  {CItemData::POLICY, IDS_PWPOLICY, POLICY},
+                 {CItemData::SYMBOLS, IDS_SYMBOLS, SYMBOLS},
+                 {CItemData::POLICYNAME, IDS_POLICYNAME, POLICYNAME},
                  {CItemData::RUNCMD, IDS_RUNCOMMAND, RUNCMD},
+                 {CItemData::EMAIL, IDS_EMAIL, EMAIL},
                  {CItemData::DCA, IDS_DCA, DCA},
                  {CItemData::SHIFTDCA, IDS_SHIFTDCA, SHIFTDCA},
-                 {CItemData::EMAIL, IDS_EMAIL, EMAIL},
                  {CItemData::PROTECTED, IDS_PROTECTED, PROTECTED},
-                 {CItemData::SYMBOLS, IDS_SYMBOLS, SYMBOLS},
   };
 
   for (i = 0; i < sizeof(OptCols) / sizeof(OptCols[0]); i++)
@@ -415,30 +425,36 @@ void CCompareResultsDlg::UpdateStatusBar()
   m_statusBar.UpdateWindow();
 }
 
-bool CCompareResultsDlg::ProcessFunction(const int ifunction, st_CompareData *pst_data)
+LRESULT CCompareResultsDlg::ProcessAllFunction(const int ifunction,
+                                               std::vector<st_CompareData *> vpst_data)
 {
-  st_CompareInfo *pst_info;
-  pst_info = new st_CompareInfo;
+  std::vector<st_CompareInfo *> vpst_info;
+  for (size_t index = 0; index < vpst_data.size(); index++) {
+    st_CompareData *pst_data = vpst_data[index];
+    st_CompareInfo *pst_info;
+    pst_info = new st_CompareInfo;
 
-  bool rc(false);
-
-  int indatabase = pst_data->indatabase;
-  if (m_column == indatabase || indatabase == BOTH) {
     pst_info->pcore0 = m_pcore0;
     pst_info->pcore1 = m_pcore1;
     pst_info->uuid0 = pst_data->uuid0;
     pst_info->uuid1 = pst_data->uuid1;
-    pst_info->clicked_column = m_column;
+    pst_info->clicked_column = 1;
+    vpst_info.push_back(pst_info);
+  }
 
-    LRESULT lres = ::SendMessage(AfxGetApp()->m_pMainWnd->GetSafeHwnd(),
-                                     PWS_MSG_COMPARE_RESULT_FUNCTION,
-                                     (WPARAM)pst_info, (LPARAM)ifunction);
-    if (lres == TRUE) {
-      CSecString group, title, user, buffer, cs_tmp;
-      ItemListIter pos;
+  LRESULT lres = ::SendMessage(AfxGetApp()->m_pMainWnd->GetSafeHwnd(),
+                               PWS_MSG_COMPARE_RESULT_ALLFNCTN,
+                               (WPARAM)&vpst_info, (LPARAM)ifunction);
+  if (lres == TRUE) {
+    CSecString group, title, user, buffer, cs_tmp;
+    ItemListIter pos;
 
+    for (size_t index = 0; index < vpst_info.size(); index++) {
+      st_CompareData *pst_data = vpst_data[index];
+      st_CompareInfo *pst_info = vpst_info[index];
       switch (ifunction) {
-        case CCompareResultsDlg::COPY_TO_ORIGINALDB:
+        case COPYALL_TO_ORIGINALDB:
+        case SYNCHALL:
           // UUID of copied entry returned - now update data
           pst_data->uuid0 = pst_info->uuid0;
 
@@ -449,12 +465,71 @@ bool CCompareResultsDlg::ProcessFunction(const int ifunction, st_CompareData *ps
           title = pos->second.GetTitle();
           user = pos->second.GetUser();
           cs_tmp.LoadString(IDS_ORIGINALDB);
-          buffer.Format(IDS_COPYENTRY,cs_tmp, group, title, user);
+          buffer.Format(ifunction == SYNCHALL ? IDS_SYNCENTRY : IDS_COPYENTRY,
+                        cs_tmp, group, title, user);
           m_pRpt->WriteLine((LPCWSTR)buffer);
           break;
-        case CCompareResultsDlg::EDIT:
-        case CCompareResultsDlg::VIEW:
-        case CCompareResultsDlg::SYNCH:
+        case EDIT:
+        case VIEW:
+        case SYNCH:
+          break;
+        default:
+          ASSERT(0);
+      }
+    }
+  }
+
+  // Delete structures - vector will be deleted at end of scope automatically
+  for (size_t index = 0; index < vpst_info.size(); index++) {
+    st_CompareInfo *pst_info = vpst_info[index];
+    delete pst_info;
+  }
+
+  return lres;
+}
+
+bool CCompareResultsDlg::ProcessFunction(const int ifunction,
+                                         st_CompareData *pst_data)
+{
+  st_CompareInfo *pst_info;
+  pst_info = new st_CompareInfo;
+
+  bool rc(false);
+
+  int indatabase = pst_data->indatabase;
+  if (m_LCResults.GetColumn() == indatabase || indatabase == BOTH) {
+    pst_info->pcore0 = m_pcore0;
+    pst_info->pcore1 = m_pcore1;
+    pst_info->uuid0 = pst_data->uuid0;
+    pst_info->uuid1 = pst_data->uuid1;
+    pst_info->clicked_column = m_LCResults.GetColumn();
+
+    LRESULT lres = ::SendMessage(AfxGetApp()->m_pMainWnd->GetSafeHwnd(),
+                                 PWS_MSG_COMPARE_RESULT_FUNCTION,
+                                 (WPARAM)pst_info, (LPARAM)ifunction);
+    if (lres == TRUE) {
+      CSecString group, title, user, buffer, cs_tmp;
+      ItemListIter pos;
+
+      switch (ifunction) {
+        case COPY_TO_ORIGINALDB:
+        case SYNCH:
+          // UUID of copied entry returned - now update data
+          pst_data->uuid0 = pst_info->uuid0;
+
+          pos = m_pcore1->Find(pst_info->uuid1);
+          ASSERT(pos != m_pcore1->GetEntryEndIter());
+
+          group = pos->second.GetGroup();
+          title = pos->second.GetTitle();
+          user = pos->second.GetUser();
+          cs_tmp.LoadString(IDS_ORIGINALDB);
+          buffer.Format(ifunction == SYNCH ? IDS_SYNCENTRY : IDS_COPYENTRY,
+                        cs_tmp, group, title, user);
+          m_pRpt->WriteLine((LPCWSTR)buffer);
+          break;
+        case EDIT:
+        case VIEW:
           break;
         default:
           ASSERT(0);
@@ -513,13 +588,13 @@ st_CompareData * CCompareResultsDlg::GetCompareData(const LONG_PTR dwItemData,
 
 void CCompareResultsDlg::OnCompareViewEdit()
 {
-  bool bDatabaseRO = (m_column == CURRENT) ? m_bOriginalDBReadOnly : m_bComparisonDBReadOnly;
+  bool bDatabaseRO = (m_LCResults.GetColumn() == CURRENT) ? m_bOriginalDBReadOnly : m_bComparisonDBReadOnly;
 
-  DWORD_PTR dwItemData = m_LCResults.GetItemData(m_row);
+  DWORD_PTR dwItemData = m_LCResults.GetItemData(m_LCResults.GetRow());
   st_CompareData *pst_data = GetCompareData(dwItemData);
   ASSERT(pst_data != NULL);
 
-  if (bDatabaseRO || m_column == COMPARE)
+  if (bDatabaseRO || m_LCResults.GetColumn() == COMPARE)
     ProcessFunction(VIEW, pst_data);
   else
     ProcessFunction(EDIT, pst_data);
@@ -545,7 +620,7 @@ void CCompareResultsDlg::OnCompareSynchronize()
   }
   setGTU.clear();  // Don't need it anymore - so clear it now
 
-  DWORD_PTR dwItemData = m_LCResults.GetItemData(m_row);
+  DWORD_PTR dwItemData = m_LCResults.GetItemData(m_LCResults.GetRow());
   st_CompareData *pst_data = GetCompareData(dwItemData);
   ASSERT(pst_data != NULL);
 
@@ -557,8 +632,8 @@ void CCompareResultsDlg::OnCompareCopyToOriginalDB()
   if (m_bOriginalDBReadOnly)
     return;
 
-  // Check not already copied one way or another
-  CString cs_text = m_LCResults.GetItemText(m_row, m_column);
+  // Check not already equal
+  CString cs_text = m_LCResults.GetItemText(m_LCResults.GetRow(), m_LCResults.GetColumn());
   if (cs_text.Compare(L"=") == 0)
     return;
 
@@ -580,12 +655,12 @@ void CCompareResultsDlg::OnCompareCopyToOriginalDB()
     return;
 
   LRESULT lres(FALSE);
-  DWORD_PTR dwItemData = m_LCResults.GetItemData(m_row);
+  DWORD_PTR dwItemData = m_LCResults.GetItemData(m_LCResults.GetRow());
   st_CompareData *pst_data = GetCompareData(dwItemData);
   ASSERT(pst_data != NULL);
 
-  int indatabase = pst_data->indatabase;
-  if (m_column == indatabase || indatabase == BOTH) {
+  const int indatabase = pst_data->indatabase;
+  if (m_LCResults.GetColumn() == indatabase || indatabase == BOTH) {
     lres = ProcessFunction(ifunction, pst_data);
   } else
     return;
@@ -594,23 +669,23 @@ void CCompareResultsDlg::OnCompareCopyToOriginalDB()
     return;
 
   if (pst_data->unknflds0)
-    m_LCResults.SetItemText(m_row, CURRENT, L"=*");
+    m_LCResults.SetItemText(m_LCResults.GetRow(), CURRENT, L"=*");
   else
-    m_LCResults.SetItemText(m_row, CURRENT, L"=");
+    m_LCResults.SetItemText(m_LCResults.GetRow(), CURRENT, L"=");
 
   if (pst_data->unknflds1)
-    m_LCResults.SetItemText(m_row, COMPARE, L"=*");
+    m_LCResults.SetItemText(m_LCResults.GetRow(), COMPARE, L"=*");
   else
-    m_LCResults.SetItemText(m_row, COMPARE, L"=");
+    m_LCResults.SetItemText(m_LCResults.GetRow(), COMPARE, L"=");
 
   for (int i = 0; i < m_nCols - 5; i++)
-    m_LCResults.SetItemText(m_row, USER + 1 + i, L"-");
+    m_LCResults.SetItemText(m_LCResults.GetRow(), USER + 1 + i, L"-");
 
   st_CompareData st_newdata;
   st_newdata = *pst_data;
   st_newdata.bsDiffs.reset();
 
-  int id = pst_data->id;
+  const int id = pst_data->id;
   CompareData::iterator cd_iter;
   switch (indatabase) {
     case BOTH:
@@ -643,72 +718,243 @@ void CCompareResultsDlg::OnCompareCopyToOriginalDB()
   st_newdata.id = static_cast<int>(m_numIdentical);
   st_newdata.indatabase = IDENTICAL;
   m_Identical.push_back(st_newdata);
-  m_LCResults.SetItemData(m_row, MAKELONG(IDENTICAL, st_newdata.id));
+  m_LCResults.SetItemData(m_LCResults.GetRow(), MAKELONG(IDENTICAL, st_newdata.id));
   UpdateStatusBar();
 
   m_OriginalDBChanged = true;
-  return;
 }
 
-void CCompareResultsDlg::OnItemDoubleClick(NMHDR *, LRESULT *pLResult)
+void CCompareResultsDlg::OnCompareCopyAllToOriginalDB()
 {
-  *pLResult = 0;
+  DoAllFunctions(COPYALL_TO_ORIGINALDB);
+}
 
-  m_row = m_LCResults.GetNextItem(-1, LVNI_SELECTED);
+void CCompareResultsDlg::OnCompareSynchronizeAll()
+{
+  DoAllFunctions(SYNCHALL);
+}
 
-  if (m_row == -1)
+void CCompareResultsDlg::DoAllFunctions(const int ifunction)
+{
+  // Shouldn't ever get here if original is R-O
+  if (m_bOriginalDBReadOnly)
     return;
 
-  CPoint pt = ::GetMessagePos();
-  ScreenToClient(&pt);
+  CGeneralMsgBox gmb;
+  CString cs_msg;
 
-  int colwidth0 = m_LCResults.GetColumnWidth(0);
+  const CString cs_originaldb(MAKEINTRESOURCE(IDS_ORIGINALDB));
+  const CString cs_comparisondb(MAKEINTRESOURCE(IDS_COMPARISONDB));
 
-  if (pt.x <= colwidth0) {
-    m_column = CURRENT;
-  } else if  (pt.x <= (colwidth0 + m_LCResults.GetColumnWidth(1))) {
-    m_column = COMPARE;
-  } else
+  cs_msg.Format(ifunction == COPYALL_TO_ORIGINALDB ? IDS_COPYALL : IDS_SYNCHRONIZEALL,
+                cs_comparisondb, cs_originaldb);
+
+  // Check if any records have unknown fields
+  POSITION pos = m_LCResults.GetFirstSelectedItemPosition();
+
+  while (pos) {
+    int irow = m_LCResults.GetNextSelectedItem(pos);
+    CString cs_text = m_LCResults.GetItemText(irow, 1);
+    if (cs_text.Right(1) == L"*") {
+      cs_msg += CString(MAKEINTRESOURCE(IDS_COPYUNKNOWNFIELDS));
+      break;
+    }
+  }
+
+  if (gmb.AfxMessageBox(cs_msg, NULL,
+                        MB_YESNO | MB_ICONWARNING | MB_DEFBUTTON2) != IDYES)
     return;
+
+  // Get vector of all the data
+  pos = m_LCResults.GetFirstSelectedItemPosition();
+  std::vector<st_CompareData *> vpst_data;
+  while (pos) {
+    int irow = m_LCResults.GetNextSelectedItem(pos);
+    DWORD_PTR dwItemData = m_LCResults.GetItemData(irow);
+    st_CompareData *pst_data = GetCompareData(dwItemData);
+    ASSERT(pst_data != NULL);
+    vpst_data.push_back(pst_data);
+  }
+
+  // Do it
+  LRESULT lres = ProcessAllFunction(ifunction, vpst_data);
+
+  if (lres != TRUE)
+    return;
+
+  size_t index = 0;
+  pos = m_LCResults.GetFirstSelectedItemPosition();
+
+  while (pos) {
+    const int irow = m_LCResults.GetNextSelectedItem(pos);
+
+    ASSERT(index < vpst_data.size());
+
+    st_CompareData *pst_data = vpst_data[index];
+    bool bNowEqual = true; // Must be if copied, now check if synch'd
+    if (ifunction == SYNCHALL)
+      bNowEqual = CompareEntries(pst_data);
+   
+    if (bNowEqual) {
+      // Update Compare results
+      if (pst_data->unknflds0)
+        m_LCResults.SetItemText(irow, CURRENT, L"=*");
+      else
+        m_LCResults.SetItemText(irow, CURRENT, L"=");
+
+      if (pst_data->unknflds1)
+        m_LCResults.SetItemText(irow, COMPARE, L"=*");
+      else
+        m_LCResults.SetItemText(irow, COMPARE, L"=");
+
+      for (int i = 0; i < m_nCols - 5; i++)
+        m_LCResults.SetItemText(irow, USER + 1 + i, L"-");
+
+      st_CompareData st_newdata;
+      st_newdata = *pst_data;
+      st_newdata.bsDiffs.reset();
+
+      const int id = pst_data->id;
+      CompareData::iterator cd_iter;
+      switch (pst_data->indatabase) {
+        case BOTH:
+          m_numConflicts--;
+          cd_iter = std::find_if(m_Conflicts.begin(), m_Conflicts.end(),
+                                 std::bind2nd(std::equal_to<int>(), id));
+          if (cd_iter != m_Conflicts.end())
+            m_Conflicts.erase(cd_iter);
+          break;
+        case COMPARE:
+          m_numOnlyInComp--;
+          cd_iter = std::find_if(m_OnlyInComp.begin(), m_OnlyInComp.end(),
+                                 std::bind2nd(std::equal_to<int>(), id));
+          if (cd_iter != m_OnlyInComp.end())
+            m_OnlyInComp.erase(cd_iter);
+          break;
+        case CURRENT:
+        case IDENTICAL:
+        default:
+          ASSERT(0);
+      }
+
+      m_numIdentical++;
+      st_newdata.id = static_cast<int>(m_numIdentical);
+      st_newdata.indatabase = IDENTICAL;
+      m_Identical.push_back(st_newdata);
+      m_LCResults.SetItemData(m_LCResults.GetRow(), MAKELONG(IDENTICAL, st_newdata.id));
+    }
+    index++;
+  }
+
+  UpdateStatusBar();
+
+  m_OriginalDBChanged = true;
+}
+
+void CCompareResultsDlg::OnItemDoubleClick(NMHDR *pNMHDR, LRESULT *pLResult)
+{
+  *pLResult = 0; // Perform default processing on return
+
+  NMLISTVIEW *pNMLV = (NMLISTVIEW *)pNMHDR;
+
+  if (m_LCResults.GetSelectedCount() > 1)
+    return;
+
+  m_LCResults.SetRow(pNMLV->iItem);
+
+  switch (pNMLV->iSubItem) {
+    case 0:
+      m_LCResults.SetColumn(CURRENT);
+      break;
+    case 1:
+      m_LCResults.SetColumn(COMPARE);
+      break;
+    default:
+      return;
+  }
 
   OnCompareViewEdit();
 }
 
-void CCompareResultsDlg::OnItemRightClick(NMHDR *, LRESULT *pLResult)
+void CCompareResultsDlg::OnItemRightClick(NMHDR *pNMHDR, LRESULT *pLResult)
 {
-  *pLResult = 0;
+  *pLResult = 0; // Perform default processing on return
 
-  m_row = m_LCResults.GetNextItem(-1, LVNI_SELECTED);
+  NMLISTVIEW *pNMLV = (NMLISTVIEW *)pNMHDR;
 
-  if (m_row == -1)
-    return;
+  m_LCResults.SetRow(pNMLV->iItem);
 
   CPoint msg_pt = ::GetMessagePos();
-  CPoint client_pt(msg_pt);
-  ScreenToClient(&client_pt);
-
-  int ipopup, colwidth0;
+  CMenu menu;
+  int ipopup;
   bool bTargetRO, bSourceRO;
-  colwidth0 = m_LCResults.GetColumnWidth(0);
 
-  if (client_pt.x <= colwidth0) {
-    // Column is the current database
-    // Therefore: Source = Current DB, Target = Comparison DB
-    m_column = CURRENT;
-    ipopup = IDR_POPEDITVIEWORIGINAL;
-    bTargetRO = m_bComparisonDBReadOnly;
-    bSourceRO = m_bOriginalDBReadOnly;
-  } else if  (client_pt.x <= (colwidth0 + m_LCResults.GetColumnWidth(1))) {
-    // Column is the comparison database
-    // Therefore: Source = Comparison DB, Target = Current DB
-    m_column = COMPARE;
-    ipopup = IDR_POPCOPYTOORIGINAL;
+  if (m_LCResults.GetSelectedCount() != 1) {
+    // Special processing - only allow "Copy All" items to original or 
+    // "Synchronise All" items to original
+    // Do not allow "Synchronise All" is any selected entry does not
+    // have a corresponding entry in the original DB
+    // No point if original is R-O - is checked in OnItemChanging()
+    m_LCResults.SetColumn(COMPARE);
+    ipopup = IDR_POPCOPYALLTOORIGINAL;
     bTargetRO = m_bOriginalDBReadOnly;
     bSourceRO = m_bComparisonDBReadOnly;
-  } else
-    return;
+    
+    bool bNoSyncAll(false);
+    POSITION pos = m_LCResults.GetFirstSelectedItemPosition();
 
-  DWORD_PTR dwItemData = m_LCResults.GetItemData(m_row);
+    while (pos) {
+      const int irow = m_LCResults.GetNextSelectedItem(pos);
+      DWORD_PTR dwItemData = m_LCResults.GetItemData(irow);
+      st_CompareData *pst_data = GetCompareData(dwItemData);
+      ASSERT(pst_data != NULL);
+      if (pst_data->uuid0 == pws_os::CUUID::NullUUID() || pst_data->indatabase != BOTH) {
+        bNoSyncAll = true;
+        break;
+      }
+    }
+
+    if (menu.LoadMenu(ipopup)) {
+      MENUINFO minfo ={0};
+      minfo.cbSize = sizeof(MENUINFO);
+      minfo.fMask = MIM_MENUDATA;
+      minfo.dwMenuData = ipopup;
+      BOOL brc = menu.SetMenuInfo(&minfo);
+      ASSERT(brc != 0);
+
+      CMenu *pPopup = menu.GetSubMenu(0);
+      ASSERT(pPopup != NULL);
+      
+      if (bNoSyncAll)
+        pPopup->RemoveMenu(ID_MENUITEM_SYNCHRONIZEALL, MF_BYCOMMAND);
+
+      pPopup->TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, msg_pt.x, msg_pt.y, this);
+    }
+    return;
+  }
+
+  switch (pNMLV->iSubItem) {
+    case 0:
+      // Column is the current database
+      // Therefore: Source = Current DB, Target = Comparison DB
+      m_LCResults.SetColumn(CURRENT);
+      ipopup = IDR_POPEDITVIEWORIGINAL;
+      bTargetRO = m_bComparisonDBReadOnly;
+      bSourceRO = m_bOriginalDBReadOnly;
+      break;
+    case 1:
+      // Column is the comparison database
+      // Therefore: Source = Comparison DB, Target = Current DB
+      m_LCResults.SetColumn(COMPARE);
+      ipopup = IDR_POPCOPYTOORIGINAL;
+      bTargetRO = m_bOriginalDBReadOnly;
+      bSourceRO = m_bComparisonDBReadOnly;
+      break;
+    default:
+      return;
+  }
+
+  DWORD_PTR dwItemData = m_LCResults.GetItemData(m_LCResults.GetRow());
   st_CompareData *pst_data = GetCompareData(dwItemData);
   ASSERT(pst_data != NULL);
 
@@ -719,11 +965,9 @@ void CCompareResultsDlg::OnItemRightClick(NMHDR *, LRESULT *pLResult)
 
   // If entry isn't in this database that the user click or the entry is only
   // in the other column - do nothing
-  if (m_column != indatabase && 
+  if (m_LCResults.GetColumn() != indatabase && 
       (indatabase != BOTH && indatabase != IDENTICAL))
     return;
-
-  CMenu menu;
 
   if (menu.LoadMenu(ipopup)) {
     MENUINFO minfo ={0};
@@ -733,12 +977,12 @@ void CCompareResultsDlg::OnItemRightClick(NMHDR *, LRESULT *pLResult)
     BOOL brc = menu.SetMenuInfo(&minfo);
     ASSERT(brc != 0);
 
-    CMenu* pPopup = menu.GetSubMenu(0);
+    CMenu *pPopup = menu.GetSubMenu(0);
     ASSERT(pPopup != NULL);
 
     // Disable copy/sychnronize if target is read-only or entry is protected
     // Delete synchronize if not in both databases (and not already identical)
-    if (m_column == COMPARE) {
+    if (m_LCResults.GetColumn() == COMPARE) {
       // User clicked on Comparison DB
       if (bTargetRO) {
         // Can't modify RO DB
@@ -763,6 +1007,77 @@ void CCompareResultsDlg::OnItemRightClick(NMHDR *, LRESULT *pLResult)
     }
 
     pPopup->TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, msg_pt.x, msg_pt.y, this);
+  }
+}
+
+void CCompareResultsDlg::OnItemChanging(NMHDR *pNMHDR, LRESULT *pLResult)
+{
+  *pLResult = FALSE;  // Allow change
+
+  NMLISTVIEW *pNMLV = reinterpret_cast<NMLISTVIEW *>(pNMHDR);
+  int irow = pNMLV->iItem;
+  
+  // Check if state unchanged - unchanged == not interested
+  if ((pNMLV->uChanged & LVIF_STATE) != LVIF_STATE)
+    return;
+
+  // Has the selected state changed?
+  // Was selected and now not or Wasn't selected and still isn't - ignore
+  if (((pNMLV->uOldState & LVIS_SELECTED)!= 0 && (pNMLV->uNewState & LVIS_SELECTED) == 0) ||
+      ((pNMLV->uOldState & LVIS_SELECTED) == 0 && (pNMLV->uNewState & LVIS_SELECTED) == 0)) {
+    return;
+  }
+
+  DWORD_PTR dwItemData = m_LCResults.GetItemData(irow);
+  st_CompareData *pst_data = GetCompareData(dwItemData);
+  ASSERT(pst_data != NULL);
+
+  CPoint pt(GetMessagePos());
+  m_LCResults.ScreenToClient(&pt);
+
+  LVHITTESTINFO hti = {0};
+  hti.pt = pt;
+  int iItem = m_LCResults.SubItemHitTest(&hti);
+  
+  // Ignore any clicks not on an item
+  if (iItem == -1 ||
+      hti.flags & (LVHT_NOWHERE |
+                   LVHT_ABOVE   | LVHT_BELOW |
+                   LVHT_TORIGHT | LVHT_TOLEFT)) {
+      return;
+  }
+
+  
+  if ((GetKeyState(VK_CONTROL) & 0x8000)) {
+    // Control key pressed - multi-select
+    /*
+       Since we only allow multi-select for Copy or Synchronise from Compare DB
+       to the original Db, we won't allow if row entry is not in the Compare DB
+       ...  pst_data->indatabase == CURRENT
+
+       We also won't allow if entry is in the original DB and protected.
+       ...  pst_data->bIsProtected0
+
+       or if the first of the multiple selection was not in the Compare DB
+       ... m_bFirstInCompare
+
+       or if user changes column
+       ... m_LCResults.GetColumn() == pNMLV->iSubItem
+
+       No point if original is R-O or if already equal to original
+       ... !m_bOriginalDBReadOnly || pst_data->indatabase == IDENTICAL
+    */
+
+    if (pst_data->indatabase == CURRENT || pst_data->indatabase == IDENTICAL ||
+        pst_data->bIsProtected0 ||
+        !m_bFirstInCompare || m_bOriginalDBReadOnly ||
+        m_LCResults.GetColumn() != hti.iSubItem) {
+      *pLResult = TRUE; // Deny change
+      return;
+    }
+  } else {
+    // Single-select or first selection
+    m_bFirstInCompare = pst_data->indatabase != CURRENT;  // Not in Current DB only
   }
 }
 
@@ -808,7 +1123,7 @@ void CCompareResultsDlg::OnColumnClick(NMHDR *pNotifyStruct, LRESULT *pLResult)
   hdi.fmt |= ((m_bSortAscending == TRUE) ? HDF_SORTUP : HDF_SORTDOWN);
   pHDRCtrl->SetItem(isortcolumn, &hdi);
 
-  *pLResult = TRUE;
+  *pLResult = TRUE; // Say we have done all processing on return
 }
 
 /*
@@ -820,7 +1135,6 @@ void CCompareResultsDlg::OnColumnClick(NMHDR *pNotifyStruct, LRESULT *pLResult)
 int CALLBACK CCompareResultsDlg::CRCompareFunc(LPARAM lParam1, LPARAM lParam2,
                                                LPARAM lParamSort)
 {
-
   // m_bSortAscending to determine the direction of the sort (duh)
 
   CCompareResultsDlg *self = (CCompareResultsDlg *)lParamSort;
@@ -973,4 +1287,221 @@ void CCompareResultsDlg::OnSize(UINT nType, int cx, int cy)
                           ctrlRect.Height(), TRUE);
 
   GetDlgItem(IDC_COMPARECOMPARISONDB)->SetWindowText(m_scFilename2);
+}
+
+inline bool FieldsNotEqual(StringX a, StringX b, const bool bTreatWhiteSpaceasEmpty)
+{
+  if (bTreatWhiteSpaceasEmpty) { // m_treatwhitespaceasempty
+    EmptyIfOnlyWhiteSpace(a);
+    EmptyIfOnlyWhiteSpace(b);
+  }
+  return a != b;
+}
+
+bool CCompareResultsDlg::CompareEntries(st_CompareData *pst_data)
+{
+  CItemData::FieldBits bsConflicts;
+  
+  bsConflicts.reset();
+
+  ItemListIter iter;
+  iter = m_pcore0->Find(pst_data->uuid0);
+  CItemData currentItem = iter->second;
+  iter = m_pcore1->Find(pst_data->uuid1);
+  CItemData compItem = iter->second;
+  
+  StringX sxCurrentPassword, sxComparisonPassword;
+
+  if (currentItem.GetEntryType() == CItemData::ET_ALIAS ||
+      currentItem.GetEntryType() == CItemData::ET_SHORTCUT) {
+     CItemData *pci_base = m_pcore0->GetBaseEntry(&currentItem);
+     sxCurrentPassword == pci_base->GetPassword();
+  } else
+    sxCurrentPassword == currentItem.GetPassword();
+
+  if (compItem.GetEntryType() == CItemData::ET_ALIAS ||
+      compItem.GetEntryType() == CItemData::ET_SHORTCUT) {
+    CItemData *pci_base = m_pcore1->GetBaseEntry(&compItem);
+    sxComparisonPassword == pci_base->GetPassword();
+  } else
+    sxComparisonPassword == compItem.GetPassword();
+
+  if (m_bsFields.test(CItemData::PASSWORD) &&
+      sxCurrentPassword != sxComparisonPassword)
+    bsConflicts.flip(CItemData::PASSWORD);
+
+  if (m_bsFields.test(CItemData::NOTES) &&
+      FieldsNotEqual(currentItem.GetNotes(), compItem.GetNotes(), m_bTreatWhiteSpaceasEmpty))
+    bsConflicts.flip(CItemData::NOTES);
+  if (m_bsFields.test(CItemData::CTIME) &&
+      currentItem.GetCTime() != compItem.GetCTime())
+    bsConflicts.flip(CItemData::CTIME);
+  if (m_bsFields.test(CItemData::PMTIME) &&
+      currentItem.GetPMTime() != compItem.GetPMTime())
+    bsConflicts.flip(CItemData::PMTIME);
+  if (m_bsFields.test(CItemData::ATIME) &&
+      currentItem.GetATime() != compItem.GetATime())
+    bsConflicts.flip(CItemData::ATIME);
+  if (m_bsFields.test(CItemData::XTIME) &&
+      currentItem.GetXTime() != compItem.GetXTime())
+    bsConflicts.flip(CItemData::XTIME);
+  if (m_bsFields.test(CItemData::RMTIME) &&
+      currentItem.GetRMTime() != compItem.GetRMTime())
+    bsConflicts.flip(CItemData::RMTIME);
+  if (m_bsFields.test(CItemData::XTIME_INT)) {
+    int current_xint, comp_xint;
+    currentItem.GetXTimeInt(current_xint);
+    compItem.GetXTimeInt(comp_xint);
+    if (current_xint != comp_xint)
+      bsConflicts.flip(CItemData::XTIME_INT);
+    }
+  if (m_bsFields.test(CItemData::URL) &&
+      FieldsNotEqual(currentItem.GetURL(), compItem.GetURL(),
+                     m_bTreatWhiteSpaceasEmpty))
+    bsConflicts.flip(CItemData::URL);
+  if (m_bsFields.test(CItemData::AUTOTYPE) &&
+      FieldsNotEqual(currentItem.GetAutoType(), compItem.GetAutoType(),
+                     m_bTreatWhiteSpaceasEmpty))
+    bsConflicts.flip(CItemData::AUTOTYPE);
+  if (m_bsFields.test(CItemData::PWHIST) &&
+    currentItem.GetPWHistory() != compItem.GetPWHistory())
+    bsConflicts.flip(CItemData::PWHIST);
+  if (m_bsFields.test(CItemData::POLICY) &&
+      currentItem.GetPWPolicy() != compItem.GetPWPolicy())
+    bsConflicts.flip(CItemData::POLICY);
+  if (m_bsFields.test(CItemData::POLICYNAME) &&
+      currentItem.GetPolicyName() != compItem.GetPolicyName())
+    bsConflicts.flip(CItemData::POLICYNAME);
+  if (m_bsFields.test(CItemData::RUNCMD) &&
+      currentItem.GetRunCommand() != compItem.GetRunCommand())
+    bsConflicts.flip(CItemData::RUNCMD);
+  if (m_bsFields.test(CItemData::DCA) &&
+      currentItem.GetDCA() != compItem.GetDCA())
+    bsConflicts.flip(CItemData::DCA);
+  if (m_bsFields.test(CItemData::SHIFTDCA) &&
+      currentItem.GetShiftDCA() != compItem.GetShiftDCA())
+    bsConflicts.flip(CItemData::SHIFTDCA);
+  if (m_bsFields.test(CItemData::EMAIL) &&
+      currentItem.GetEmail() != compItem.GetEmail())
+    bsConflicts.flip(CItemData::EMAIL);
+  if (m_bsFields.test(CItemData::PROTECTED) &&
+      currentItem.GetProtected() != compItem.GetProtected())
+    bsConflicts.flip(CItemData::PROTECTED);
+  if (m_bsFields.test(CItemData::SYMBOLS) &&
+      currentItem.GetSymbols() != compItem.GetSymbols())
+    bsConflicts.flip(CItemData::SYMBOLS);
+
+  return bsConflicts.none();
+}
+
+// Compare CListCtrl
+
+CCPListCtrl::CCPListCtrl()
+  : m_row(-1), m_column(-1)
+{
+}
+
+CCPListCtrl::~CCPListCtrl()
+{
+}
+
+BEGIN_MESSAGE_MAP(CCPListCtrl, CListCtrl)
+  //{{AFX_MSG_MAP(CCPListCtrl)
+  ON_NOTIFY_REFLECT(NM_CUSTOMDRAW, OnCustomDraw)
+  //}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
+BOOL CCPListCtrl::PreTranslateMessage(MSG *pMsg)
+{
+  if (pMsg->message == WM_LBUTTONDOWN) {
+    // Get cell position for CustomDraw
+    CPoint pt(pMsg->pt);
+    ScreenToClient(&pt);
+    LVHITTESTINFO htinfo = {0};
+    htinfo.pt = pt;
+    int index = SubItemHitTest(&htinfo);
+    // Ignore any clicks not on an item or not on cloumn 0 or 1
+    if (index != -1 &&
+        (htinfo.iSubItem == 0 || htinfo.iSubItem == 1) &&
+        !(htinfo.flags & (LVHT_NOWHERE |
+                          LVHT_ABOVE   | LVHT_BELOW |
+                          LVHT_TORIGHT | LVHT_TOLEFT))) {
+      if ((GetKeyState(VK_CONTROL) & 0x8000) && m_column != htinfo.iSubItem) {
+        //  Multi-select - can't change column
+        return TRUE;
+      }
+      m_row = htinfo.iItem;
+      m_column = htinfo.iSubItem;
+    }
+  }
+  return CListCtrl::PreTranslateMessage(pMsg);
+} 
+
+bool CCPListCtrl::IsSelected(const int iRow)
+{
+  POSITION pos = GetFirstSelectedItemPosition();
+
+  while (pos) {
+    if (GetNextSelectedItem(pos) == iRow)
+      return true;
+  }
+
+  return false;
+}
+
+void CCPListCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
+{
+  NMLVCUSTOMDRAW *pLVCD = (NMLVCUSTOMDRAW *)pNotifyStruct;
+
+  *pLResult = CDRF_DODEFAULT;
+
+  static COLORREF crWindowText, cfNormalTextBkgrd, crSelectedText, crSelectedBkgrd;
+  bool bIsSelected = IsSelected(pLVCD->nmcd.dwItemSpec);
+  
+  switch (pLVCD->nmcd.dwDrawStage) {
+    case CDDS_PREPAINT:
+      // PrePaint
+      crWindowText = GetTextColor();
+      cfNormalTextBkgrd = GetTextBkColor();
+      crSelectedText = ::GetSysColor(COLOR_HIGHLIGHTTEXT);
+      crSelectedBkgrd = ::GetSysColor(COLOR_HIGHLIGHT);
+      *pLResult = CDRF_NOTIFYITEMDRAW;
+      break;
+
+    case CDDS_ITEMPREPAINT:
+      // Item PrePaint
+      if ((pLVCD->nmcd.uItemState & CDIS_SELECTED) == CDIS_SELECTED) {
+        pLVCD->clrText = crWindowText;
+        pLVCD->clrTextBk = cfNormalTextBkgrd;
+        pLVCD->nmcd.uItemState &= ~CDIS_SELECTED;
+        *pLResult |= CDRF_NEWFONT;
+      }
+      *pLResult |= CDRF_NOTIFYSUBITEMDRAW;
+      break;
+
+    case CDDS_ITEMPREPAINT | CDDS_SUBITEM:
+      // Sub-item PrePaint
+      if (bIsSelected && m_column != -1 && pLVCD->iSubItem == m_column) {
+        pLVCD->clrText = crSelectedText;
+        pLVCD->clrTextBk = crSelectedBkgrd;
+        pLVCD->nmcd.uItemState &= ~CDIS_SELECTED;
+      } else {
+        pLVCD->clrText = crWindowText;
+        pLVCD->clrTextBk = cfNormalTextBkgrd;
+      }
+      *pLResult |= (CDRF_NOTIFYPOSTPAINT | CDRF_NEWFONT);
+      break;
+
+    /*
+    case CDDS_PREERASE:
+    case CDDS_POSTERASE:
+    case CDDS_POSTPAINT:
+    case CDDS_ITEMPOSTPAINT | CDDS_SUBITEM:
+    case CDDS_ITEMPOSTPAINT:
+    case CDDS_ITEMPREERASE:
+    case CDDS_ITEMPOSTERASE:
+    */
+    default:
+      break;
+  }
 }

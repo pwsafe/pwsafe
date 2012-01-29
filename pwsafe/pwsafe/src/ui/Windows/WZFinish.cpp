@@ -352,35 +352,39 @@ LRESULT CWZFinish::OnExecuteThreadEnded(WPARAM wParam, LPARAM )
 
   m_pWZPSH->WZPSHSetUpdateWizardWindow(NULL);
 
-  CString cs_text;
-  if (m_status != 0) {
-    UINT uiMsg(0);
-    switch (nID) {
-      case ID_MENUITEM_COMPARE:
-        uiMsg = IDS_WZCOMPARE;
-        break;
-      case ID_MENUITEM_MERGE:
-        uiMsg = IDS_WZMERGE;
-        break;
-      case ID_MENUITEM_SYNCHRONIZE:
-        uiMsg = IDS_WZSYNCH;
-        break;
-      case ID_MENUITEM_EXPORT2PLAINTEXT:
-      case ID_MENUITEM_EXPORTENT2PLAINTEXT:
-        uiMsg = IDS_WZEXPORTTEXT;
-        break;
-      case ID_MENUITEM_EXPORT2XML:
-      case ID_MENUITEM_EXPORTENT2XML:
-        uiMsg = IDS_WZEXPORTXML;
-        break;
-      default:
-        ASSERT(0);
-        break;
-    }
-    CString cs_temp(MAKEINTRESOURCE(uiMsg));
-    cs_text.Format(IDS_WZACTIONFAILED, cs_temp);
-  } else
-    cs_text.LoadString(IDS_COMPLETE);
+  // In Compare status == 0 means identical, status != 0 means different
+  // Details placed in results summary.
+  // In other functions, status != 0 means : failed.
+  CString cs_text, cs_temp;
+  if (nID == ID_MENUITEM_COMPARE) {
+    cs_text.LoadStringW(IDS_COMPARECOMPLETE);
+  } else {
+    if (m_status != 0) {
+      UINT uiMsg(0);
+      switch (nID) {
+        case ID_MENUITEM_MERGE:
+          uiMsg = IDS_WZMERGE;
+          break;
+        case ID_MENUITEM_SYNCHRONIZE:
+          uiMsg = IDS_WZSYNCH;
+          break;
+        case ID_MENUITEM_EXPORT2PLAINTEXT:
+        case ID_MENUITEM_EXPORTENT2PLAINTEXT:
+          uiMsg = IDS_WZEXPORTTEXT;
+          break;
+        case ID_MENUITEM_EXPORT2XML:
+        case ID_MENUITEM_EXPORTENT2XML:
+          uiMsg = IDS_WZEXPORTXML;
+          break;
+        default:
+          ASSERT(0);
+          break;
+      }
+      cs_temp.LoadStringW(uiMsg);
+      cs_text.Format(IDS_WZACTIONFAILED, cs_temp);
+    } else
+      cs_text.LoadString(IDS_COMPLETE);
+  }
 
   GetDlgItem(IDC_STATIC_WZPROCESSING)->SetWindowText(cs_text);
   GetDlgItem(IDC_ENTRY)->ShowWindow(SW_HIDE);
