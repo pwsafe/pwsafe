@@ -628,11 +628,13 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
           pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
         }
       }
-      pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                             ID_MENUITEM_UNDO, tc_dummy);
-      pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                             ID_MENUITEM_REDO, tc_dummy);
-      pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
+      if (m_core.AnyToUndo() || m_core.AnyToRedo()) {
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
+                               ID_MENUITEM_UNDO, tc_dummy);
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
+                               ID_MENUITEM_REDO, tc_dummy);
+        pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
+      }
       pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                              ID_MENUITEM_CLEARCLIPBOARD, tc_dummy);
       goto exit;
@@ -669,11 +671,13 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
         }
       }
       pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
-      pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                             ID_MENUITEM_UNDO, tc_dummy);
-      pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                             ID_MENUITEM_REDO, tc_dummy);
-      pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
+      if (m_core.AnyToUndo() || m_core.AnyToRedo()) {
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
+                               ID_MENUITEM_UNDO, tc_dummy);
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
+                               ID_MENUITEM_REDO, tc_dummy);
+        pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
+      }
       pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                              ID_MENUITEM_CLEARCLIPBOARD, tc_dummy);
       goto exit;
@@ -730,18 +734,20 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
       if (!bReadOnly) {
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_DUPLICATEENTRY, tc_dummy);
-        pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
         if (!m_IsListView) {
+          pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
           pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                  ID_MENUITEM_ADDGROUP, tc_dummy);
         }
       }
       pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
-      pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                             ID_MENUITEM_UNDO, tc_dummy);
-      pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                             ID_MENUITEM_REDO, tc_dummy);
-      pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
+      if (m_core.AnyToUndo() || m_core.AnyToRedo()) {
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
+                               ID_MENUITEM_UNDO, tc_dummy);
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
+                               ID_MENUITEM_REDO, tc_dummy);
+        pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
+      }
       pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                              ID_MENUITEM_CLEARCLIPBOARD, tc_dummy);
       pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
@@ -1297,6 +1303,11 @@ void DboxMain::OnContextMenu(CWnd * /* pWnd */, CPoint screen)
     if (pci->IsRunCommandEmpty()) {
       pPopup->RemoveMenu(ID_MENUITEM_COPYRUNCOMMAND, MF_BYCOMMAND);
       pPopup->RemoveMenu(ID_MENUITEM_RUNCOMMAND, MF_BYCOMMAND);
+    }
+
+    if (m_IsListView) {
+      // Rename not valid in List View
+      pPopup->RemoveMenu(ID_MENUITEM_RENAMEENTRY, MF_BYCOMMAND);
     }
 
     // Since an entry - remove Duplicate Group
