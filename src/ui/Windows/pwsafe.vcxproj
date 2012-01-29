@@ -1093,7 +1093,6 @@
     <ClCompile Include="CoolMenu.cpp" />
     <ClCompile Include="CreateShortcutDlg.cpp" />
     <ClCompile Include="CryptKeyEntry.cpp" />
-    <ClCompile Include="CWListCtrl.cpp" />
     <ClCompile Include="CWTreeCtrl.cpp" />
     <ClCompile Include="DboxMain.cpp" />
     <ClCompile Include="DboxTray.cpp" />
@@ -1224,7 +1223,6 @@
     <ClInclude Include="..\..\core\core.h" />
     <ClInclude Include="CreateShortcutDlg.h" />
     <ClInclude Include="CryptKeyEntry.h" />
-    <ClInclude Include="CWListCtrl.h" />
     <ClInclude Include="CWTreeCtrl.h" />
     <ClInclude Include="DboxMain.h" />
     <ClInclude Include="DDStatic.h" />

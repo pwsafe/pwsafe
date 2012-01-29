@@ -1295,43 +1295,89 @@ void DboxMain::OnRestore()
   TellUserAboutExpiredPasswords();
 }
 
+void DboxMain::OnItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult, const bool bTreeView)
+{
+  // Needed as need public function called by CPWTreeCtrl and CPWListCtrl
+  if (bTreeView)
+    OnTreeItemSelected(pNotifyStruct, pLResult);
+  else
+    OnListItemSelected(pNotifyStruct, pLResult);
+
+}
+
 void DboxMain::OnListItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
-  OnItemSelected(pNotifyStruct, pLResult);
+  // ListView
+  *pLResult = 0L;
+  CItemData *pci(NULL);
+
+  // More than 2 selected is meaningless in List view
+  //if (m_IsListView && m_ctlItemList.GetSelectedCount() == 2) {
+  //  *pLResult = 1L;
+  //  return;
+  //}
+
+  int iItem(-1);
+  switch (pNotifyStruct->code) {
+    case NM_CLICK:
+    {
+      LPNMITEMACTIVATE pLVItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNotifyStruct);
+      iItem = pLVItemActivate->iItem;
+      break;
+    }
+    case LVN_KEYDOWN:
+    {
+      LPNMLVKEYDOWN pLVKeyDown = reinterpret_cast<LPNMLVKEYDOWN>(pNotifyStruct);
+      iItem = m_ctlItemList.GetNextItem(-1, LVNI_SELECTED);
+      int nCount = m_ctlItemList.GetItemCount();
+      if (pLVKeyDown->wVKey == VK_DOWN)
+        iItem = (iItem + 1) % nCount;
+      if (pLVKeyDown->wVKey == VK_UP)
+        iItem = (iItem - 1 + nCount) % nCount;
+      break;
+    }
+    default:
+      // No idea how we got here!
+      return;
+  }
+
+  if (iItem != -1) {
+    // -1 if nothing selected, e.g., empty list
+    pci = (CItemData *)m_ctlItemList.GetItemData(iItem);
+  }
+
+  UpdateToolBarForSelectedItem(pci);
+  SetDCAText(pci);
+
+  m_LastFoundTreeItem = NULL;
+  m_LastFoundListItem = -1;
 }
 
 void DboxMain::OnTreeItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
-  OnItemSelected(pNotifyStruct, pLResult);
-}
-
-void DboxMain::OnItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult)
-{
+  // TreeView
   *pLResult = 0L;
   CItemData *pci(NULL);
 
-  if (!m_IsListView) {
-    // TreeView
+  // Seems that under Vista with Windows Common Controls V6, it is ignoring
+  // the single click on the button (+/-) of a node and only processing the 
+  // double click, which generates a copy of whatever the user selected
+  // for a double click (except that it invalid for a node!) and then does
+  // the expand/collapse as appropriate.
+  // This codes attempts to fix this.
+  HTREEITEM hItem(NULL);
 
-    // Seems that under Vista with Windows Common Controls V6, it is ignoring
-    // the single click on the button (+/-) of a node and only processing the 
-    // double click, which generates a copy of whatever the user selected
-    // for a double click (except that it invalid for a node!) and then does
-    // the expand/collapse as appropriate.
-    // This codes attempts to fix this.
-    HTREEITEM hItem(NULL);
-
-    UnFindItem();
-    switch (pNotifyStruct->code) {
-      case NM_CLICK:
-      {
-        // Mouseclick - Need to find the item clicked via HitTest
-        TVHITTESTINFO htinfo = {0};
-        CPoint local = ::GetMessagePos();
-        m_ctlItemTree.ScreenToClient(&local);
-        htinfo.pt = local;
-        m_ctlItemTree.HitTest(&htinfo);
-        hItem = htinfo.hItem;
+  UnFindItem();
+  switch (pNotifyStruct->code) {
+    case NM_CLICK:
+    {
+      // Mouseclick - Need to find the item clicked via HitTest
+      TVHITTESTINFO htinfo = {0};
+      CPoint local = ::GetMessagePos();
+      m_ctlItemTree.ScreenToClient(&local);
+      htinfo.pt = local;
+      m_ctlItemTree.HitTest(&htinfo);
+      hItem = htinfo.hItem;
 
         // Ignore any clicks not on an item (group or entry)
         if (hItem == NULL ||
@@ -1340,65 +1386,34 @@ void DboxMain::OnItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult)
                             TVHT_TORIGHT | TVHT_TOLEFT))
             return;
 
-        // If a group
-        if (!m_ctlItemTree.IsLeaf(hItem)) {
-          // If on indent or button
-          if (htinfo.flags & (TVHT_ONITEMINDENT | TVHT_ONITEMBUTTON)) {
-            m_ctlItemTree.Expand(htinfo.hItem, TVE_TOGGLE);
-            *pLResult = 1L; // We have toggled the group
-            return;
-          }
+      // If a group
+      if (!m_ctlItemTree.IsLeaf(hItem)) {
+        // If on indent or button
+        if (htinfo.flags & (TVHT_ONITEMINDENT | TVHT_ONITEMBUTTON)) {
+          m_ctlItemTree.Expand(htinfo.hItem, TVE_TOGGLE);
+          *pLResult = 1L; // We have toggled the group
+          return;
         }
-        break;
       }
-      case TVN_SELCHANGED:
-        // Keyboard - We are given the new selected entry
-        hItem = ((NMTREEVIEW *)pNotifyStruct)->itemNew.hItem;
-        break;
-      default:
-        // No idea how we got here!
-        return;
-    }    
-
-    // Check it was on an item
-    if (hItem != NULL && m_ctlItemTree.IsLeaf(hItem)) {
-      pci = (CItemData *)m_ctlItemTree.GetItemData(hItem);
+      break;
     }
+    case TVN_SELCHANGED:
+      // Keyboard - We are given the new selected entry
+      hItem = ((NMTREEVIEW *)pNotifyStruct)->itemNew.hItem;
+      break;
+    default:
+      // No idea how we got here!
+      return;
+  }    
 
-    HTREEITEM hti = m_ctlItemTree.GetDropHilightItem();
-    if (hti != NULL)
-      m_ctlItemTree.SetItemState(hti, 0, TVIS_DROPHILITED);
-  } else {
-    // ListView
-
-    int iItem(-1);
-    switch (pNotifyStruct->code) {
-      case NM_CLICK:
-      {
-        LPNMITEMACTIVATE pLVItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNotifyStruct);
-        iItem = pLVItemActivate->iItem;
-        break;
-      }
-      case LVN_KEYDOWN:
-      {
-        LPNMLVKEYDOWN pLVKeyDown = reinterpret_cast<LPNMLVKEYDOWN>(pNotifyStruct);
-        iItem = m_ctlItemList.GetNextItem(-1, LVNI_SELECTED);
-        int nCount = m_ctlItemList.GetItemCount();
-        if (pLVKeyDown->wVKey == VK_DOWN)
-          iItem = (iItem + 1) % nCount;
-        if (pLVKeyDown->wVKey == VK_UP)
-          iItem = (iItem - 1 + nCount) % nCount;
-        break;
-      }
-      default:
-        // No idea how we got here!
-        return;
-    }
-    if (iItem != -1) {
-      // -1 if nothing selected, e.g., empty list
-      pci = (CItemData *)m_ctlItemList.GetItemData(iItem);
-    }
+  // Check it was on an item
+  if (hItem != NULL && m_ctlItemTree.IsLeaf(hItem)) {
+    pci = (CItemData *)m_ctlItemTree.GetItemData(hItem);
   }
+
+  HTREEITEM hti = m_ctlItemTree.GetDropHilightItem();
+  if (hti != NULL)
+    m_ctlItemTree.SetItemState(hti, 0, TVIS_DROPHILITED);
 
   UpdateToolBarForSelectedItem(pci);
   SetDCAText(pci);

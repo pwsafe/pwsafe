@@ -614,41 +614,53 @@ void DboxMain::OnProtect(UINT nID)
   ChangeOkUpdate();
 }
 
-void DboxMain::OnCompareWith()
+void DboxMain::OnCompareEntries()
 {
   CItemData *pci(NULL), *pci_other(NULL);
 
-  const bool bShowTree = m_ctlItemTree.IsWindowVisible() == TRUE;
-  if (bShowTree) {
+  // Not yet supported in Tree view unless command line flag present.
+  if (!m_IsListView && !m_bCompareEntries)
+    return;
+
+  if (m_IsListView) {
+    // Only called if 2 entries selected
+    POSITION pos = m_ctlItemList.GetFirstSelectedItemPosition();
+    int nItem = m_ctlItemList.GetNextSelectedItem(pos);
+    pci = (CItemData *)m_ctlItemList.GetItemData(nItem);
+    nItem = m_ctlItemList.GetNextSelectedItem(pos);
+    pci_other = (CItemData *)m_ctlItemList.GetItemData(nItem);
+  } else {
+    // Not yet supported in Tree view - get user to select other item
     HTREEITEM hStartItem = m_ctlItemTree.GetSelectedItem();
     if (hStartItem != NULL) {
       pci = (CItemData *)m_ctlItemTree.GetItemData(hStartItem);
     }
-  } else {
-    POSITION pos = m_ctlItemList.GetFirstSelectedItemPosition();
-    if (pos != NULL) {
-      pci = (CItemData *)m_ctlItemList.GetItemData((int)pos - 1);
+
+    if (pci != NULL) {
+      // Entry - selected - shouldn't be called when group is selected
+      // Now get the other entry
+      CCompareWithSelectDlg dlg(pci, &m_core, this);
+
+      if (dlg.DoModal() == IDOK) {
+        // Get UUID of the entry
+        CUUID otherUUID = dlg.GetUUID();
+        if (otherUUID == CUUID::NullUUID())
+          return;
+
+        ItemListIter pos = Find(otherUUID);
+        if (pos == End())
+          return;
+ 
+        pci_other = &pos->second;
+      } else
+        return;
     }
   }
-  if (pci != NULL) {
-    // Entry - selected - shouldn't be call when group is seelcted
-    // Now get the other entry
-    CCompareWithSelectDlg dlg(pci, &m_core, bShowTree, this);
 
-    if (dlg.DoModal() == IDOK) {
-      // Get UUID of the entry
-      CUUID otherUUID = dlg.GetUUID();
-      if (otherUUID == CUUID::NullUUID())
-        return;
-
-      ItemListIter pos = Find(otherUUID);
-      if (pos == End())
-        return;
-        
-      pci_other = &pos->second;
-      CShowCompareDlg showdlg(pci, pci_other, this);
-      showdlg.DoModal();
-    }
+  if (pci != NULL && pci_other != NULL) {
+    // Entries - selected - shouldn't be call when group is seelcted
+    CShowCompareDlg showdlg(pci, pci_other, this);
+    showdlg.DoModal();
   }
 }
 
@@ -735,6 +747,10 @@ void DboxMain::OnDelete()
   // Check preconditions, possibly prompt user for confirmation, then call Delete()
   // to do the heavy lifting.
   if (m_core.GetNumEntries() == 0) // easiest way to avoid asking stupid questions...
+    return;
+
+  // Ignore if more than one selected - List view only
+  if (m_ctlItemList.GetSelectedCount() > 1)
     return;
 
   bool bAskForDeleteConfirmation = !(PWSprefs::GetInstance()->

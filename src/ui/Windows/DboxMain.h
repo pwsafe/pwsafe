@@ -117,28 +117,28 @@ DECLARE_HANDLE(HDROP);
   Timer related values (note - all documented her but some defined only where needed.
 */
 
-/* timer event number used to by PupText.  Here for doc. only
+/* Timer event number used to by PupText.  Here for doc. only
 #define TIMER_PUPTEXT             0x03 */
-// timer event number used to check if the workstation is locked
+// Timer event number used to check if the workstation is locked
 #define TIMER_LOCKONWTSLOCK       0x04
-// timer event number used to support lock on user-defined idle timeout
+// Timer event number used to support lock on user-defined idle timeout
 #define TIMER_LOCKDBONIDLETIMEOUT 0x05
 // Definition of a minute in milliseconds
 #define MINUTE 60000
 // How ofter should idle timeout timer check:
 #define IDLE_CHECK_RATE 2
 #define IDLE_CHECK_INTERVAL (MINUTE/IDLE_CHECK_RATE)
-// timer event number used to support Find in PWListCtrl when icons visible
+// Timer event number used to support Find in PWListCtrl when icons visible
 #define TIMER_FIND                0x06
-// timer event number used to support display of notes in List & Tree controls
+// Timer event number used to support display of notes in List & Tree controls
 #define TIMER_ND_HOVER            0x07
 #define TIMER_ND_SHOWING          0x08
-// timer event number used to support DragBar
+// Timer event number used to support DragBar
 #define TIMER_DRAGBAR             0x09
-/* timer event numbers used to by ControlExtns for ListBox tooltips.  Here for doc. only
+/* Timer event numbers used to by ControlExtns for ListBox tooltips.  Here for doc. only
 #define TIMER_LB_HOVER            0x0A
 #define TIMER_LB_SHOWING          0x0B 
-/* timer event numbers used by StatusBar for tooltips.  Here for doc. only
+/* Timer event numbers used by StatusBar for tooltips.  Here for doc. only
 #define TIMER_SB_HOVER            0x0C
 #define TIMER_SB_SHOWING          0x0D */
 // Timer event for daily expired entries check
@@ -365,8 +365,8 @@ public:
                   const std::vector<size_t> &vactionverboffsets);
   void UpdateLastClipboardAction(const int iaction);
   void PlaceWindow(CWnd *pWnd, CRect *pRect, UINT uiShowCmd);
-  void SetDCAText(CItemData * pci = NULL);
-  void OnItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult);
+  void SetDCAText(CItemData *pci = NULL);
+  void OnItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult, const bool bTreeView);
   bool IsNodeModified(StringX &path) const
   {return m_core.IsNodeModified(path);}
   StringX GetCurFile() const {return m_core.GetCurFile();}
@@ -462,9 +462,9 @@ public:
   bool CheckPreTranslateRename(MSG* pMsg);
   bool CheckPreTranslateAutoType(MSG* pMsg);
 
-  void SetSetup() {m_bSetup = true;} // called by app when '--setup' passed
-  void AllowCompareWith() {m_bCompareWith = true;} // called by app when '--cw' passed
-  void NoValidation() {m_bNoValidation = true;} // called by app when '--novalidate' passed
+  void SetSetup() {m_bSetup = true;}                     // called by app when '--setup' passed
+  void NoValidation() {m_bNoValidation = true;}          // called by app when '--novalidate' passed
+  void AllowCompareEntries() {m_bCompareEntries = true;} // called by app when '--cetreeview' passed
 
   // Needed public function for ComapreResultsDialog
   void CPRInitMenuPopup(CMenu* pPopupMenu, UINT nIndex, BOOL bSysMenu)
@@ -489,9 +489,9 @@ protected:
   bool m_bOpen;
   bool m_bInRestoreWindowsData;
 
-  bool m_bSetup; // invoked with '--setup'?
-  bool m_bCompareWith; // invoked with '--cw'?
-  bool m_bNoValidation; // invoked with '--novalidate'? 
+  bool m_bSetup;          // invoked with '--setup'?
+  bool m_bNoValidation;   // invoked with '--novalidate'?
+  bool m_bCompareEntries; // invoked with '--cetreeview'?
   
 #if !defined(POCKET_PC)
   CString m_titlebar; // what's displayed in the title bar
@@ -721,7 +721,7 @@ protected:
   afx_msg void OnAddGroup();
   afx_msg void OnDuplicateGroup();
   afx_msg void OnProtect(UINT nID);
-  afx_msg void OnCompareWith();
+  afx_msg void OnCompareEntries();
   afx_msg void OnCreateShortcut();
   afx_msg void OnOK();
   afx_msg void OnShowHideToolbar();
@@ -817,6 +817,7 @@ private:
 
   StringX m_BrowseURL; // set by OnContextMenu(), used by OnBrowse()
   PWScore &m_core;
+
   bool m_IsStartSilent;
   bool m_IsStartClosed;
   bool m_bStartHiddenAndMinimized;

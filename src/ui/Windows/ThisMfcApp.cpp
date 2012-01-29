@@ -768,12 +768,13 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
            * '--novalidate' prevents SOME of validation during open
            */
           dbox.NoValidation();
-        } else if ((*arg) == L"--cw") {
+        } else if ((*arg) == L"--cetreeview") {
           /**
-           * '--cw' will allow the user to select 2 entries and compare them
-           * TEMPORARY solution until multi-seect is coded in the main Tree & List views
+           * '--cetreeview' will allow the user to select 2 entries and compare them
+           * TEMPORARY solution until multi-select is coded in the main Tree view
+           * Supported natively in List View
            */
-          dbox.AllowCompareWith();
+          dbox.AllowCompareEntries();
         } else {
           // unrecognized extended flag. Silently ignore.
         }
