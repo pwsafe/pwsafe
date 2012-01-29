@@ -66,8 +66,8 @@ BEGIN
   IDSC_IMPORTBADFORMAT    "The TXT or CSV file was not exported as required as entry records span multiple lines in the CSV file.\r\n\r\nImport aborted."
   IDSC_IMPORTEMPTYLINESKIPPED "Empty line %d skipped"
   IDSC_IMPORTINVALIDFIELD "Entry of line %d has an invalid ""%s"" field. It has been ignored."
-  IDSC_IMPORTNOPASSWORD   "Line %d skipped. It has an empty mandatory Password field."
-  IDSC_IMPORTNOTITLE      "Line %d skipped. It has an empty mandatory Title field."
+  IDSC_IMPORTNOPASSWORD   "Line %d skipped: Empty mandatory Password field."
+  IDSC_IMPORTNOTITLE      "Line %d skipped: Empty mandatory Title field."
   IDSC_IMPORTPSWDNOCOLS   "To replace passwords of existing entries, all the following columns must be present: Group/Title, Username and Password.  One or more are missing and no entries have been updated."
   IDSC_IMPORTENTRY        "Entry %s%d with Group=""%s"", Title=""%s"", User=""%s"""
   IDSC_IMPORTRECNOTFOUND  "%s not found. Cannot update entry's password.\r\n"
@@ -196,7 +196,7 @@ BEGIN
   IDSC_MISSINGPASSWORD     "MISSING PASSWORD"
   IDSC_MISSINGTITLE        "MISSING TITLE # %d"
   IDSC_VALIDATE_ERRORS     "The following ERRORS were detected and were FIXED."
-  IDSC_VALIDATE_WARNINGS   "The following WARNINGS were detected but you will need to take action to rectify them."
+  IDSC_VALIDATE_WARNINGS   "The following WARNINGS were detected - you should review and fix them manually."
 END
 
 STRINGTABLE
