@@ -1,5 +1,5 @@
-Password Safe 3.27.1 Release Notes - January 2012
-=================================================
+Password Safe 3.28pre Release Notes - January 2012
+==================================================
 
 This note describe the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -8,8 +8,8 @@ information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
 
-New Features for 3.27.1
-=======================
+New Features for 3.28pre
+========================
 [3468289] Use the Password font for passwords displayed in the Password History and for
 those displayed in the List view.  Also add the ability to zoom in/out of the Notes field
 to enable any text to be more easily read.
@@ -18,8 +18,8 @@ They may choose to also change Protected Entries, although the default is not to
 [3421963] Centralized Password Policies can now be saved in a database, managed (added,
 edited and deleted), exported and imported, used in filters and to generate passwords.
 
-Changes to Existing Features in 3.27.1
-======================================
+Changes to Existing Features in 3.28pre
+=======================================
 [3445820] The Edit menu item and entry right-click context menu item "Copy Run Command to
 Clipboard" will, by default, substitute any variables within the command. To disable this,
 hold down the Ctrl key when selecting these menu items.  The standard menu shortcut cannot
@@ -39,8 +39,8 @@ menu item has therefore been removed.
 [] The default backup policy has been changed to save the last three
 versions of the database, instead of one. 
 
-Bugs fixed in 3.27.1
-====================
+Bugs fixed in 3.28pre
+=====================
 [3468853] The number of saved passwords can be changed and after the user presses Apply
 they will no longer be warned that the entry has been changed when pressing Cancel.
 [3462520] A password entry's expiry time in days now correctly
