@@ -1,0 +1,73 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Compare Results</title>
+<!-- pwsafe version: 3.28--><!-- Modified: 15/06/2005 --><!--Popup control -->
+<script language="javascript" src="html/popups.js">
+</script>
+<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"></object>
+<!-- Popup Source File -->
+
+<h2>Compare Results</h2>
+
+<img alt="Compare Results dialog" src="images/compare_results.jpg">
+
+<p>After the two databases are compared, if there are any differences detected, the above
+dialog is shown.  Note: only the fields selected by the user are compared, so database
+could be shown as being identical when they are not due to the corresponding fields not
+being compared.  By default, <u>all</u> fields are compared.  However, if you select a different
+set, via the Advanced Settings dialog during Compare, then these fields will only be
+compared during this invocation of <b>Password Safe</b> unless you change then again
+via the Advance Settings dialog.  The same is true for all the Wizard functions, although
+the values are independent:</p>
+
+<ul>
+<li>Compare</li>
+<li>Export to Text (the whole database or a single entry)</li>
+<li>Export to XML (the whole database or a single entry)</li>
+<li>Merge</li>
+<li>Synchronize</li>
+</ul>
+
+<p>There are a number of options available to the user if differences are detected:</p>
+
+<ul>
+<li>Right click on an entry in the current database (first column):</li>
+<ul>
+<li>Edit the entry if the database is in R/W mode and the entry is not protected</li>
+<li>View the entry if the database is in R-O mode or the entry is protected</li>
+</ul>
+<li>Right click on an entry in the comparison database (second column):</li>
+<ul>
+<li>View the entry (the comparison database is always in R-O mode as we are unable to provide
+the Undo facitility if it is changed).
+<li>Copy the entry to the current database, overwriting its equivalent entry there if the current
+database is in R-W mode and the existing entry is not procteted.</li>
+<li>Synchonize the entry to its equivalent in the current database, if the current
+database is in R-W mode and the existing entry is not procteted.</li>
+</ul>
+</ul>
+
+<p>In addition, multiple entries may be selected in the comparision database (left-click in the
+second column with the Ctrl key pressed for the second and subsequent entries).  Once a number are selected,
+you can either "Copy All" of them to the current database or "Synchronize All" of them with their
+equivalent entries in the current database.  Note: Synchronize will only be allowed if all selected
+entries are in also the current database.  A protected entry in the current database cannot be included
+in any multiple selection as it cannot be changed.  As in the main Tree view, the title field
+has a '&#35;' appended to its value if the entry is protected.</p>
+
+<!-- Added some white space at the bottom for natural scrolling -->
+<br>
+<br>
+<br>
+
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="Keyword" value="Compare Results">
+<param name="Keyword" value="Compare">
+</object>
+
+</body>
+</html>

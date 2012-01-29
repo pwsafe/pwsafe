@@ -82,6 +82,28 @@ application was invoked. Note that if the filename and/or path has
 spaces, it should be enclosed in double quotes.</li>
 </ul>
 
+<p>Finally, there are some special command line flags beginning with "--".  They are:
+</p>
+
+<ul>
+<li><b>--novalidate</b><br>
+This will prevent <b>Password Safe</b> validating databases automatically when they are
+opened.  Some validation is always required e.g. uniqueness of the entry's ID and the
+group/title/username combination.</li>
+
+<li><b>--testdump</b><br>
+This allows testers to verify the mini-dump production when <b>Password Safe</b> has
+a problem to helps delelopers resolve the isssue.</li>
+
+<li><b>--cetreeview</b><br>
+A new feature allows two entries to be selected compared either via the Edit menu or
+by right-clicking on either.  Selecting more than one entry is natively supported
+in the List view but not in the Tree view.  This flag enables "Compare Entries"
+in the Tree view via an extra dialog to select the "other" entry.  Supporting
+multiple selction in the Tree view is under development.  Once supported,
+this flag will be ignored.</li>
+</ul>
+
 <!-- Added some white space at the bottom for natural scrolling -->
 <br>
 <br>
