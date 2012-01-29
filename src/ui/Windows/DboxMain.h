@@ -85,9 +85,10 @@ DECLARE_HANDLE(HDROP);
 
 // Process Compare Result Dialog click/menu functions
 #define PWS_MSG_COMPARE_RESULT_FUNCTION (WM_APP + 30)
+#define PWS_MSG_COMPARE_RESULT_ALLFNCTN (WM_APP + 31)
 
 // Equivalent one from Expired Password dialog
-#define PWS_MSG_EXPIRED_PASSWORD_EDIT   (WM_APP + 31)
+#define PWS_MSG_EXPIRED_PASSWORD_EDIT   (WM_APP + 32)
 
 // Edit/Add extra context menu messages
 #define PWS_MSG_CALL_EXTERNAL_EDITOR    (WM_APP + 40)
@@ -563,6 +564,7 @@ protected:
   LRESULT OnTrayNotification(WPARAM wParam, LPARAM lParam);
 
   LRESULT OnProcessCompareResultFunction(WPARAM wParam, LPARAM lParam);
+  LRESULT OnProcessCompareResultAllFunction(WPARAM wParam, LPARAM lParam);
   LRESULT OnEditExpiredPasswordEntry(WPARAM wParam, LPARAM lParam);
   LRESULT ViewCompareResult(PWScore *pcore, const pws_os::CUUID &uuid);
   LRESULT EditCompareResult(PWScore *pcore, const pws_os::CUUID &uuid);
@@ -570,6 +572,8 @@ protected:
                             const pws_os::CUUID &fromuuid, const pws_os::CUUID &touuid);
   LRESULT SynchCompareResult(PWScore *pfromcore, PWScore *ptocore,
                              const pws_os::CUUID &fromuuid, const pws_os::CUUID &touuid);
+  LRESULT CopyAllCompareResult(WPARAM wParam);
+  LRESULT SynchAllCompareResult(WPARAM wParam);
   LRESULT OnToolBarFindMessage(WPARAM wParam, LPARAM lParam);
   LRESULT OnDragAutoType(WPARAM wParam, LPARAM lParam);
   LRESULT OnExecuteFilters(WPARAM wParam, LPARAM lParam);

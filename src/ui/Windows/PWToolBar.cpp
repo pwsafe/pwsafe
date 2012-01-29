@@ -160,7 +160,9 @@ const UINT CPWToolBar::m_OtherIDs[] = {
   ID_MENUITEM_EXPORTENT2XML,
   ID_MENUITEM_DUPLICATEGROUP,
   ID_MENUITEM_REPORT_EXPORTTEXT,
-  ID_MENUITEM_REPORT_EXPORTXML
+  ID_MENUITEM_REPORT_EXPORTXML,
+  ID_MENUITEM_COPYALL_TO_ORIGINAL,
+  ID_MENUITEM_SYNCHRONIZEALL
 };
 
 const UINT CPWToolBar::m_MainToolBarClassicBMs[] = {
@@ -244,6 +246,8 @@ const UINT CPWToolBar::m_OtherClassicBMs[] = {
   IDB_DUPLICATEGROUP_CLASSIC,
   IDB_EXPORTTEXT_CLASSIC,   // For report of the same name
   IDB_EXPORTXML_CLASSIC,    // For report of the same name
+  IDB_IMPORT_CLASSIC,
+  IDB_IMPORT_CLASSIC,
 };
 
 const UINT CPWToolBar::m_MainToolBarNewBMs[] = {
@@ -372,6 +376,8 @@ const UINT CPWToolBar::m_OtherNewBMs[] = {
   IDB_DUPLICATEGROUP_NEW,
   IDB_EXPORTTEXT_NEW,     // For report of the same name
   IDB_EXPORTXML_NEW,      // For report of the same name
+  IDB_IMPORT_NEW,
+  IDB_IMPORT_NEW
 };
 
 // Additional bitmaps not on ToolBar
@@ -410,6 +416,8 @@ const UINT CPWToolBar::m_OtherNewDisBMs[] = {
   IDB_DUPLICATEGROUP_NEW_D,
   IDB_EXPORTTEXT_NEW_D,    // For report of the same name
   IDB_EXPORTXML_NEW_D,     // For report of the same name
+  IDB_IMPORT_NEW_D,
+  IDB_IMPORT_NEW_D
 };
 
 IMPLEMENT_DYNAMIC(CPWToolBar, CToolBar)

@@ -2603,7 +2603,8 @@ bool DboxMain::DoCompare(PWScore *pothercore,
   waitCursor.Restore();
 
   cs_buffer.Format(IDS_COMPARESTATISTICS,
-                m_core.GetCurFile().c_str(), pothercore->GetCurFile().c_str());
+                   m_core.GetCurFile().c_str(),
+                   pothercore->GetCurFile().c_str());
 
   bool brc(true);  // True == databases are identical
   if (m_list_OnlyInCurrent.empty() &&
@@ -2822,6 +2823,23 @@ LRESULT DboxMain::OnProcessCompareResultFunction(WPARAM wParam, LPARAM lFunction
   return lres;
 }
 
+LRESULT DboxMain::OnProcessCompareResultAllFunction(WPARAM wParam, LPARAM lFunction)
+{
+  LRESULT lres(FALSE);
+
+  switch ((int)lFunction) {
+    case CCompareResultsDlg::COPYALL_TO_ORIGINALDB:
+      lres = CopyAllCompareResult(wParam);
+      break;
+    case CCompareResultsDlg::SYNCHALL:
+      lres = SynchAllCompareResult(wParam);
+      break;
+    default:
+      ASSERT(0);
+  }
+  return lres;
+}
+
 LRESULT DboxMain::ViewCompareResult(PWScore *pcore, const CUUID &entryUUID)
 {
   ItemListIter pos = pcore->Find(entryUUID);
@@ -2832,7 +2850,11 @@ LRESULT DboxMain::ViewCompareResult(PWScore *pcore, const CUUID &entryUUID)
   bool bSaveRO = pcore->IsReadOnly();
   pcore->SetReadOnly(true);
 
-  EditItem(pci, pcore);
+  // Edit the correct entry
+  if (pci->GetEntryType() != CItemData::ET_SHORTCUT)
+    EditItem(pci, pcore);
+  else
+    EditShortcut(pci, pcore);
 
   pcore->SetReadOnly(bSaveRO);
 
@@ -2846,15 +2868,19 @@ LRESULT DboxMain::EditCompareResult(PWScore *pcore, const CUUID &entryUUID)
   CItemData *pci = &pos->second;
 
   // Edit the correct entry
-  return EditItem(pci, pcore) ? TRUE : FALSE;
+  if (pci->GetEntryType() != CItemData::ET_SHORTCUT)
+    return EditItem(pci, pcore) ? TRUE : FALSE;
+  else
+    return EditShortcut(pci, pcore) ? TRUE : FALSE;
 }
 
 LRESULT DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
                                     const CUUID &fromUUID, const CUUID &toUUID)
 {
+  // This is always from Comparison DB to Current DB
   bool bWasEmpty = ptocore->GetNumEntries() == 0;
 
-  // Copy *pfromcore enrtry -> *ptocore entry
+  // Copy *pfromcore entry -> *ptocore entry
   ItemListIter fromPos = pfromcore->Find(fromUUID);
   ASSERT(fromPos != pfromcore->GetEntryEndIter());
   const CItemData *pfromEntry = &fromPos->second;
@@ -2890,18 +2916,16 @@ LRESULT DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
     ci_temp.SetStatus(CItemData::ES_ADDED);
     pcmd = AddEntryCommand::Create(ptocore, ci_temp);
   }
-  Execute(pcmd, ptocore);
+  Execute(pcmd);
 
-  if (ptocore == &m_core) {
-    SetChanged(Data);
-    ChangeOkUpdate();
-    // May need to update menu/toolbar if database was previously empty
-    if (bWasEmpty)
-      UpdateMenuAndToolBar(m_bOpen);
+  SetChanged(Data);
+  ChangeOkUpdate();
+  // May need to update menu/toolbar if database was previously empty
+  if (bWasEmpty)
+    UpdateMenuAndToolBar(m_bOpen);
 
-    CItemData *pci = GetLastSelected();
-    UpdateToolBarForSelectedItem(pci);
-  }
+  CItemData *pci = GetLastSelected();
+  UpdateToolBarForSelectedItem(pci);
 
   return TRUE;
 }
@@ -2910,7 +2934,6 @@ LRESULT DboxMain::SynchCompareResult(PWScore *pfromcore, PWScore *ptocore,
                                      const CUUID &fromUUID, const CUUID &toUUID)
 {
   // Synch 1 entry *pfromcore -> *ptocore
-  CItemData::FieldBits bsFields;
 
   // Use a cut down Advanced dialog (only fields to synchronize)
   CAdvancedDlg Adv(this, CAdvancedDlg::COMPARESYNCH,
@@ -2931,7 +2954,7 @@ LRESULT DboxMain::SynchCompareResult(PWScore *pfromcore, PWScore *ptocore,
   CItemData updtEntry(*ptoEntry);
 
   bool bUpdated(false);
-  for (size_t i = 0; i < bsFields.size(); i++) {
+  for (size_t i = 0; i < m_SaveAdvValues[CAdvancedDlg::COMPARESYNCH].bsFields.size(); i++) {
     if (m_SaveAdvValues[CAdvancedDlg::COMPARESYNCH].bsFields.test(i)) {
       const StringX sxValue = pfromEntry->GetFieldValue((CItemData::FieldType)i);
       if (sxValue != updtEntry.GetFieldValue((CItemData::FieldType)i)) {
@@ -2945,6 +2968,134 @@ LRESULT DboxMain::SynchCompareResult(PWScore *pfromcore, PWScore *ptocore,
     updtEntry.SetStatus(CItemData::ES_MODIFIED);
     Command *pcmd = EditEntryCommand::Create(ptocore, *ptoEntry, updtEntry);
     Execute(pcmd, ptocore);
+    return TRUE;
+  }
+
+  return FALSE;
+}
+
+LRESULT DboxMain::CopyAllCompareResult(WPARAM wParam)
+{
+  // This is always from Comparison DB to Current DB
+  bool bWasEmpty = GetNumEntries() == 0;
+  std::vector<st_CompareInfo *> *vpst_info = (std::vector<st_CompareInfo *> *)wParam;
+
+  MultiCommands *pmulticmds = MultiCommands::Create(&m_core);
+
+  for (size_t index = 0; index < vpst_info->size(); index++) {
+    st_CompareInfo *pst_info = (*vpst_info)[index];
+    // Copy *pfromcore entry -> *ptocore entry
+    PWScore *ptocore = pst_info->pcore0;
+    PWScore *pfromcore = pst_info->pcore1;
+    CUUID toUUID = pst_info->uuid0;
+    CUUID fromUUID = pst_info->uuid1;
+
+    ItemListIter fromPos = pfromcore->Find(fromUUID);
+    ASSERT(fromPos != pfromcore->GetEntryEndIter());
+    const CItemData *pfromEntry = &fromPos->second;
+    CItemData ci_temp(*pfromEntry);  // Set up copy
+
+    DisplayInfo *pdi = new DisplayInfo;
+    ci_temp.SetDisplayInfo(pdi); // DisplayInfo values will be set later
+
+    // If the UUID is not in use in the "to" core, copy it too, otherwise reuse current
+    if (ptocore->Find(fromUUID) == ptocore->GetEntryEndIter()) {
+      ci_temp.SetUUID(fromUUID);
+    } else {
+      if (toUUID == CUUID::NullUUID())
+        ci_temp.CreateUUID();
+      else
+        ci_temp.SetUUID(toUUID);
+    }
+
+    Command *pcmd(NULL);
+
+    // Is it already there:?
+    const StringX sxgroup(ci_temp.GetGroup()), sxtitle(ci_temp.GetTitle()),
+         sxuser(ci_temp.GetUser());
+    ItemListIter toPos = ptocore->Find(sxgroup, sxtitle, sxuser);
+
+    if (toPos != ptocore->GetEntryEndIter()) {
+      // Already there - change it
+      CItemData *ptoEntry = &toPos->second;
+      ci_temp.SetStatus(CItemData::ES_MODIFIED);
+      pcmd = EditEntryCommand::Create(ptocore, *ptoEntry, ci_temp);
+    } else {
+      // Not there - add it
+      ci_temp.SetStatus(CItemData::ES_ADDED);
+      pcmd = AddEntryCommand::Create(ptocore, ci_temp);
+    }
+    pmulticmds->Add(pcmd);
+  }
+  
+  Execute(pmulticmds);
+
+  SetChanged(Data);
+  ChangeOkUpdate();
+
+  // May need to update menu/toolbar if database was previously empty
+  if (bWasEmpty)
+    UpdateMenuAndToolBar(m_bOpen);
+
+  return TRUE;
+}
+
+LRESULT DboxMain::SynchAllCompareResult(WPARAM wParam)
+{
+  // Synch multiple entries *pfromcore -> *ptocore
+
+  // Use a cut down Advanced dialog (only fields to synchronize)
+  // This will apply to all entries that are synchronised
+  CAdvancedDlg Adv(this, CAdvancedDlg::COMPARESYNCH,
+                   &m_SaveAdvValues[CAdvancedDlg::COMPARESYNCH]);
+
+  INT_PTR rc = Adv.DoModal();
+
+  if (rc != IDOK)
+    return FALSE;
+
+  // This is always from Comparison DB to Current DB
+  std::vector<st_CompareInfo *> *vpst_info = (std::vector<st_CompareInfo *> *)wParam;
+
+  MultiCommands *pmulticmds = MultiCommands::Create(&m_core);
+
+  for (size_t index = 0; index < vpst_info->size(); index++) {
+    st_CompareInfo *pst_info = (*vpst_info)[index];
+    // Synchronise *pfromcore entry -> *ptocore entry
+    PWScore *ptocore = pst_info->pcore0;
+    PWScore *pfromcore = pst_info->pcore1;
+    CUUID toUUID = pst_info->uuid0;
+    CUUID fromUUID = pst_info->uuid1;
+  
+    ItemListIter fromPos = pfromcore->Find(fromUUID);
+    ASSERT(fromPos != pfromcore->GetEntryEndIter());
+    const CItemData *pfromEntry = &fromPos->second;
+
+    ItemListIter toPos = ptocore->Find(toUUID);
+    ASSERT(toPos != ptocore->GetEntryEndIter());
+    CItemData *ptoEntry = &toPos->second;
+    CItemData updtEntry(*ptoEntry);
+
+    bool bUpdated(false);
+    for (size_t i = 0; i < m_SaveAdvValues[CAdvancedDlg::COMPARESYNCH].bsFields.size(); i++) {
+      if (m_SaveAdvValues[CAdvancedDlg::COMPARESYNCH].bsFields.test(i)) {
+        const StringX sxValue = pfromEntry->GetFieldValue((CItemData::FieldType)i);
+        if (sxValue != updtEntry.GetFieldValue((CItemData::FieldType)i)) {
+          bUpdated = true;
+          updtEntry.SetFieldValue((CItemData::FieldType)i, sxValue);
+        }
+      }
+    }
+
+    if (bUpdated) {
+      updtEntry.SetStatus(CItemData::ES_MODIFIED);
+      Command *pcmd = EditEntryCommand::Create(ptocore, *ptoEntry, updtEntry);
+      pmulticmds->Add(pcmd);
+    }
+  }
+
+  if (pmulticmds->GetSize() > 0) {
+    Execute(pmulticmds);
     return TRUE;
   }
 
