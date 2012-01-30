@@ -300,9 +300,6 @@ BOOL CAddEdit_Basic::OnInitDialog()
     GetDlgItem(IDC_GENERATEPASSWORD)->EnableWindow(FALSE);
   }
 
-  m_pex_notes->EnableWindow(m_bWordWrap ? FALSE : TRUE);
-  m_pex_notes->ShowWindow(m_bWordWrap ? SW_HIDE : SW_SHOW);
-
   // Populate the combo box
   m_ex_group.ResetContent(); // groups might be from a previous DB (BR 3062758)
 
