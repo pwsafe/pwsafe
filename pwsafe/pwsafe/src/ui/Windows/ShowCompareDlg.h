@@ -13,11 +13,13 @@
 #include "PWDialog.h"
 #include "SCWListCtrl.h"
 
+#include "core/ItemData.h"
+
 #include "os/UUID.h"
 
 #include <vector>
 
-class CItemData;
+class DboxMain;
 class PWScore;
 
 class CShowCompareDlg : public CPWDialog
@@ -44,8 +46,10 @@ protected:
 private:
   void PopulateResults(const bool bShowAll);
   CString GetDCAString(const int iValue, const bool isShift);
+  CString GetEntryTypeString(CItemData::EntryType et);
 
   CSCWListCtrl m_ListCtrl;
+  DboxMain *m_pDbx;
   CItemData *m_pci, *m_pci_other;
 
   std::vector<UINT> m_DCA;
