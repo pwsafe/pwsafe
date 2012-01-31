@@ -12,6 +12,7 @@
 
 #include "ShowCompareDlg.h"
 #include "PWHistDlg.h"
+#include "DboxMain.h"
 
 #include "core/ItemData.h"
 #include "core/Util.h"
@@ -25,9 +26,11 @@ static char THIS_FILE[] = __FILE__;
 
 CShowCompareDlg::CShowCompareDlg(CItemData *pci, CItemData *pci_other, CWnd *pParent)
   : CPWDialog(CShowCompareDlg::IDD, pParent),
-  m_pci(pci), m_pci_other(pci_other),   m_ShowIdenticalFields(BST_UNCHECKED)
+  m_pci(pci), m_pci_other(pci_other), m_ShowIdenticalFields(BST_UNCHECKED)
 {
-  ASSERT(m_pci != NULL && m_pci_other != NULL);
+  ASSERT(m_pci != NULL && m_pci_other != NULL && pParent != NULL);
+  
+  m_pDbx = (DboxMain *)pParent;
 
   // Set up DCA to string values
   m_DCA.resize(PWSprefs::maxDCA + 1);
@@ -86,26 +89,31 @@ void CShowCompareDlg::PopulateResults(const bool bShowAll)
   // Populate List view
   // Our preferred field order
   const int iFields[] = {
-    CItemData::NAME, CItemData::PASSWORD,
+    CItemData::NAME,                        // Special processing
+    CItemData::PASSWORD,                    // Special processing
+    CItemData::ENTRYTYPE,                   // Special processing
     CItemData::URL, CItemData::AUTOTYPE,
     CItemData::RUNCMD, CItemData::EMAIL,
     CItemData::DCA, CItemData::SHIFTDCA,
     CItemData::PROTECTED, CItemData::SYMBOLS,
     CItemData::POLICY, CItemData::POLICYNAME,
-    CItemData::CTIME, CItemData::PMTIME, CItemData::ATIME, CItemData::XTIME, CItemData::RMTIME,
-    CItemData::XTIME_INT, CItemData::PWHIST, CItemData::NOTES
+    CItemData::CTIME, CItemData::PMTIME, CItemData::ATIME, CItemData::XTIME,
+    CItemData::RMTIME, CItemData::XTIME_INT, CItemData::PWHIST, CItemData::NOTES
   };
 
   // Clear out contents
   m_ListCtrl.SetRedraw(FALSE);
   m_ListCtrl.DeleteAllItems();
 
-  const StringX sxOpenBracket(L"["), sxColon(L":"), sxCloseBracket(L"]"), sxGTU(L"[Group:Title:Username]");
-  StringX sxNo, sxYes, sxGTU1, sxGTU2;
+  const StringX sxOpenBracket(L"["), sxColon(L":"), sxCloseBracket(L"]"),
+          sxGTU(L"[Group:Title:Username]");
+  StringX sxNo, sxYes, sxGTU1, sxGTU2, sxGTUBase1, sxGTUBase2;
   LoadAString(sxNo, IDS_NO);
-  sxNo = sxNo.substr(1);  // Remove leading ampersand
+  sxNo = sxNo.substr(1);    // Remove leading ampersand
   LoadAString(sxYes, IDS_YES);
   sxYes = sxYes.substr(1);  // Remove leading ampersand
+  CItemData *pci(m_pci), *pci_other(m_pci_other);
+  CItemData *pci_base(NULL), *pci_other_base(NULL);
 
   sxGTU1 = sxOpenBracket +
              m_pci->GetGroup() + sxColon + 
@@ -116,12 +124,35 @@ void CShowCompareDlg::PopulateResults(const bool bShowAll)
              m_pci_other->GetTitle() + sxColon +
              m_pci_other->GetUser() + sxCloseBracket;
 
+  if (m_pci->IsAlias() || m_pci->IsShortcut()) {
+    pci_base = m_pDbx->GetBaseEntry(m_pci);
+    sxGTUBase1 = sxOpenBracket +
+               pci_base->GetGroup() + sxColon + 
+               pci_base->GetTitle() + sxColon +
+               pci_base->GetUser() + sxCloseBracket;
+    // If shortcut - use base entry for everything
+    if (m_pci->IsShortcut())
+      pci = pci_base;
+  }
+  if (m_pci_other->IsAlias() || m_pci_other->IsShortcut()) {
+    pci_other_base = m_pDbx->GetBaseEntry(m_pci_other);
+    sxGTUBase2 = sxOpenBracket +
+               pci_other_base->GetGroup() + sxColon + 
+               pci_other_base->GetTitle() + sxColon +
+               pci_other_base->GetUser() + sxCloseBracket;
+    // If shortcut - use base entry for everything
+    if (m_pci_other->IsShortcut())
+      pci_other = pci_other_base;
+  }
+
   int iPos = 0;
 
   for (int j = 0; j < sizeof(iFields) / sizeof(iFields[0]); j++) {
     const int i = iFields[j];
     DWORD dw(0);
+
     if (i == CItemData::NAME) {
+      // Special processing - put in [g:t:u]
       iPos = m_ListCtrl.InsertItem(iPos, sxGTU.c_str());
       m_ListCtrl.SetItemText(iPos, 1, sxGTU1.c_str());
       m_ListCtrl.SetItemText(iPos, 2, sxGTU2.c_str());
@@ -131,48 +162,159 @@ void CShowCompareDlg::PopulateResults(const bool bShowAll)
       continue;
     }
 
-    stringT sFieldName = m_pci->FieldName((CItemData::FieldType)i);
-    StringX sxValue1 = m_pci->GetFieldValue((CItemData::FieldType)i);
-    StringX sxValue2 = m_pci_other->GetFieldValue((CItemData::FieldType)i);
+    if (i == CItemData::ENTRYTYPE) {
+      // Special processing: NOTE TESTS ARE DONE USING ORIGINAL m_pci & m_pci_other
+      /*
+        Entry 1 / 2 | Normal/Base | Alias | Shortcut |
+        ------------|-------------|-------|----------|
+        Normal/Base |      a      |   b   |    d     |
+        ------------|-------------|-------|----------|
+        Alias       |      b      |   c   |    e     |
+        ------------|-------------|-------|----------|
+        Shortcut    |      d      |   e   |    f     |
+        ----------------------------------------------
+        
+        a. If both are normal entries or base entries - ignore this field
+        b. If one is normal/base and the other is an alias - use the base's password
+           and show the alias's base [g:t:u] here
+        c. If both are aliases, - use their respective base's passwords
+           and show their base [g:t:u] here
+        d. If one is a shortcut, use information from its base entry and show its base
+           [g:t:u] here.
+        e. If one is an alias and the other a shortcut, use the alias's base for
+           its password, use all information from the shortcut's base entry and show
+           their base [g:t:u] here.
+        f. If both are shortcuts, use information from their base entries and show
+           their base [g:t:u] here.
+      */
+      const CString cs_type(MAKEINTRESOURCE(IDS_ENTRYTYPE));
+      const CString cs_et1 = GetEntryTypeString(m_pci->GetEntryType());
+      const CString cs_et2 = GetEntryTypeString(m_pci_other->GetEntryType());
+
+      CString cs_label;
+      StringX sxText1, sxText2;
+      bool bAddBaseGTURow(false);
+
+      // 'a' : both normal or base entries
+      // However, if both normal or same type of base, don't show unless "Show All"
+      if (!bShowAll && !m_pci->IsDependent() && !m_pci_other->IsDependent() &&
+          cs_et1 == cs_et2)
+        continue;
+
+      // 'b' or 'c' : 1 normal/base & 1 alias or both aliases (no shortcuts)
+      // However, if both aliases of same base, don't show unless "Show All"
+      if (!bShowAll && m_pci->IsAlias() && m_pci_other->IsAlias() && 
+          sxGTUBase1 == sxGTUBase2)
+        continue;
+
+      if ((m_pci->IsAlias() || m_pci_other->IsAlias()) &&
+          (!m_pci->IsShortcut() && !m_pci_other->IsShortcut())) {
+        cs_label.LoadString(IDS_EXP_ABASE);
+        sxText1 = m_pci->IsAlias() ? sxGTUBase1 : L"-";
+        sxText2 = m_pci_other->IsAlias() ? sxGTUBase2 : L"-";
+        bAddBaseGTURow = true;
+      }
+
+      // 'd' or 'f' : 1 shortcut & 1 normal/base or both shortcuts (no aliases)
+      // However, if both shortcuts of same base, don't show unless "Show All"
+      if (!bShowAll && m_pci->IsShortcut() && m_pci_other->IsShortcut() && 
+          sxGTUBase1 == sxGTUBase2)
+        continue;
+
+      if ((m_pci->IsShortcut() && !m_pci_other->IsAlias()) ||
+          (!m_pci->IsAlias() && m_pci_other->IsShortcut())) {
+        cs_label.LoadString(IDS_EXP_SBASE);
+        sxText1 = m_pci->IsShortcut() ? sxGTUBase1 : L"-";
+        sxText2 = m_pci_other->IsShortcut() ? sxGTUBase2 : L"-";
+        bAddBaseGTURow = true;
+      }
+
+      // 'e' : 1 shortcut & 1 alias
+      if ((m_pci->IsShortcut() && m_pci_other->IsAlias()) ||
+          (m_pci->IsAlias() && m_pci_other->IsShortcut())) {
+        const CString cs_label1(MAKEINTRESOURCE(m_pci->IsAlias() ? IDS_EXP_ABASE : IDS_EXP_SBASE));
+        const CString cs_label2(MAKEINTRESOURCE(m_pci_other->IsAlias() ? IDS_EXP_ABASE : IDS_EXP_SBASE));
+        cs_label = cs_label1 + L" / " + cs_label2;
+        sxText1 = sxGTUBase1;
+        sxText2 = sxGTUBase2;
+        bAddBaseGTURow = true;
+      }
+
+      // Show entry types
+      iPos = m_ListCtrl.InsertItem(iPos, cs_type);
+      m_ListCtrl.SetItemText(iPos, 1, cs_et1);
+      m_ListCtrl.SetItemText(iPos, 2, cs_et2);
+      if (cs_et1 != cs_et2)
+        dw = CSCWListCtrl::REDTEXT;
+      m_ListCtrl.SetItemData(iPos, dw);
+      iPos++;
+
+      // If required, show the base entry [g:t:u]
+      if (bAddBaseGTURow) {
+        iPos = m_ListCtrl.InsertItem(iPos, cs_label);
+        m_ListCtrl.SetItemText(iPos, 1, sxText1.c_str());
+        m_ListCtrl.SetItemText(iPos, 2, sxText2.c_str());
+        if (sxText1 != sxText2)
+          dw = CSCWListCtrl::REDTEXT;
+        m_ListCtrl.SetItemData(iPos, dw);
+        iPos++;
+        continue;
+      }
+      continue;
+    }
+
+    // Now use pci, pci_other, which will different if either entry is a shortcut
     time_t t1(0), t2(0);
     short int si1, si2;
+    StringX sxValue1, sxValue2;
+    stringT sFieldName = pci->FieldName((CItemData::FieldType)i);
 
-    bool bPassword = (i == CItemData::PASSWORD);
+    // Get field values
+    // For aliases - use base entry passwords
+    if (i == CItemData::PASSWORD && m_pci->IsAlias())
+      sxValue1 = pci_base->GetFieldValue((CItemData::FieldType)i);
+    else
+      sxValue1 = pci->GetFieldValue((CItemData::FieldType)i);
+
+    if (i == CItemData::PASSWORD && m_pci_other->IsAlias())
+      sxValue2 = pci_other_base->GetFieldValue((CItemData::FieldType)i);
+    else
+      sxValue2 = pci_other->GetFieldValue((CItemData::FieldType)i);
 
     // Always add group/title/user fields - otherwise only if different values
     // Unless user wants all fields
     if (bShowAll || sxValue1 != sxValue2) {
       iPos = m_ListCtrl.InsertItem(iPos, sFieldName.c_str());
       m_ListCtrl.SetItemData(iPos, LVCFMT_LEFT);
-      if (!m_pci->CItemData::IsTextField((unsigned char)i)) {
+      if (!pci->CItemData::IsTextField((unsigned char)i)) {
         switch (i) {
           case CItemData::CTIME:      /* 07 */
-            m_pci->GetCTime(t1);
-            m_pci_other->GetCTime(t2);
+            pci->GetCTime(t1);
+            pci_other->GetCTime(t2);
             if (t1 == 0) sxValue1 = L"N/A";
             if (t2 == 0) sxValue2 = L"N/A";
             break;
           case CItemData::PMTIME:     /* 08 */
-            m_pci->GetPMTime(t1);
-            m_pci_other->GetPMTime(t2);
+            pci->GetPMTime(t1);
+            pci_other->GetPMTime(t2);
             if (t1 == 0) sxValue1 = L"N/A";
             if (t2 == 0) sxValue2 = L"N/A";
             break;
           case CItemData::ATIME:      /* 09 */
-            m_pci->GetATime(t1);
-            m_pci_other->GetATime(t2);
+            pci->GetATime(t1);
+            pci_other->GetATime(t2);
             if (t1 == 0) sxValue1 = L"N/A";
             if (t2 == 0) sxValue2 = L"N/A";
             break;
           case CItemData::XTIME:      /* 0a */
-            m_pci->GetXTime(t1);
-            m_pci_other->GetXTime(t2);
+            pci->GetXTime(t1);
+            pci_other->GetXTime(t2);
             if (t1 == 0) sxValue1 = L"N/A";
             if (t2 == 0) sxValue2 = L"N/A";
             break;
           case CItemData::RMTIME:     /* 0c */
-            m_pci->GetRMTime(t1);
-            m_pci_other->GetRMTime(t2);
+            pci->GetRMTime(t1);
+            pci_other->GetRMTime(t2);
             if (t1 == 0) sxValue1 = L"N/A";
             if (t2 == 0) sxValue2 = L"N/A";
             break;
@@ -181,8 +323,8 @@ void CShowCompareDlg::PopulateResults(const bool bShowAll)
             break;
           case CItemData::DCA:        /* 13 */
           case CItemData::SHIFTDCA:   /* 17 */
-            m_pci->GetDCA(si1, i == CItemData::SHIFTDCA);
-            m_pci_other->GetDCA(si2, i == CItemData::SHIFTDCA);
+            pci->GetDCA(si1, i == CItemData::SHIFTDCA);
+            pci_other->GetDCA(si2, i == CItemData::SHIFTDCA);
             sxValue1 = GetDCAString(si1, i == CItemData::SHIFTDCA);
             sxValue2 = GetDCAString(si2, i == CItemData::SHIFTDCA);
             break;
@@ -300,7 +442,7 @@ void CShowCompareDlg::PopulateResults(const bool bShowAll)
         dw = LVCFMT_LEFT;
         if (sxValue1 != sxValue2)
           dw |= CSCWListCtrl::REDTEXT;
-        if (bPassword)
+        if (i == CItemData::PASSWORD)
           dw |= CSCWListCtrl::PASSWORDFONT;
         m_ListCtrl.SetItemData(iPos, dw);
       }
@@ -341,5 +483,32 @@ CString CShowCompareDlg::GetDCAString(const int iValue, const bool isShift)
 
   CString cs;
   cs.LoadString(ui);
+  return cs;
+}
+
+CString CShowCompareDlg::GetEntryTypeString(CItemData::EntryType et)
+{
+  UINT ui(IDSC_UNKNOWN);
+  switch (et) {
+    case CItemData::ET_NORMAL:
+      ui = IDS_EXP_NORMAL;
+      break;
+    case CItemData::ET_ALIASBASE:
+      ui = IDS_EXP_ABASE;
+      break;
+    case CItemData::ET_ALIAS:
+      ui = IDSC_ALIAS;
+      break;
+    case CItemData::ET_SHORTCUTBASE:
+      ui = IDS_EXP_SBASE;
+      break;
+    case CItemData::ET_SHORTCUT:
+      ui = IDSC_SHORTCUT;
+      break;
+    case CItemData::ET_INVALID:
+    default:
+      ASSERT(0);
+  }
+  CString cs(MAKEINTRESOURCE(ui));
   return cs;
 }
