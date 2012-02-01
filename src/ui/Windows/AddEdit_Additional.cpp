@@ -296,8 +296,8 @@ void CAddEdit_Additional::SetupDCAComboBoxes(CComboBox *pcbox, bool isShift)
                                                       PWSprefs::ShiftDoubleClickAction :
                                                       PWSprefs::DoubleClickAction);
     CString cs_text;
-
-    for (int i = 0; ResPref[i].res != 0; i++) {
+    int i;
+    for (i = 0; ResPref[i].res != 0; i++) {
       cs_text.LoadString(ResPref[i].res);
       if (ResPref[i].pref == DefaultDCA) {
         const CString cs_default(MAKEINTRESOURCE(IDSC_DEFAULT));
@@ -306,6 +306,12 @@ void CAddEdit_Additional::SetupDCAComboBoxes(CComboBox *pcbox, bool isShift)
       int nIndex = pcbox->AddString(cs_text);
       pcbox->SetItemData(nIndex, ResPref[i].pref);
       m_DCA_to_Index[ResPref[i].pref] = nIndex;
+    }
+    // set up m_DCA_to_Index after populating pcbox, as order may be changed
+    int N = pcbox->GetCount();
+    for (i = 0; i < N; i++) {
+      DWORD_PTR j = pcbox->GetItemData(i);
+      m_DCA_to_Index[j] = i;
     }
   }
 }
