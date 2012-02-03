@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2012-02-02 13:38+0100\n"
+"PO-Revision-Date: 2012-02-03 14:07+0100\n"
 "Last-Translator: Björn Nordwall <pro.bn@telia.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -2624,28 +2624,17 @@ msgstr "Förvald inställning"
 msgid "Delete"
 msgstr "Radera"
 
-# What confirmation?
-# It's not about regretting a confirmation of something, is it?
-# This is the caption of the dialog box that's displayed when you try
-# to delete an entry, asking for confirmation, and offerening to stop
-# asking each time.
 #. Resource IDs: (116)
 msgid "Delete Confirmation"
-msgstr "Bekräfta radering"
+msgstr "Bekräfta annulering"
 
 #. Resource IDs: (32053)
 msgid "Delete Entry"
 msgstr "Radera posten"
 
-# What confirmation?
-# Is it about deleting a Confirmation of a Base Entry or deleting of
-# the "Base Entry Confirmation"?
-# It's the caption of the dialog box that's shown when you're about to
-# delete a base entry that has aliases and/or shortcut referencing it.
-# I've fixed the phrasing - the '?' was unnecessary.
 #. Resource IDs: (341)
 msgid "Delete Base Entry Confirmation"
-msgstr "Radera en basposts ?"
+msgstr "Bekräfta annulering av baspost"
 
 #. Resource IDs: (352)
 msgid "Delete a filter"
@@ -2714,13 +2703,12 @@ msgstr "Visa"
 msgid "Display Filter - "
 msgstr "Visa filter - "
 
-# mispelled: setings
 #. Resource IDs: (368)
 msgid ""
 "Display policy setings or List entries using this named policy\n"
 "(The latter may take a while depending on the number of entries in this database)"
 msgstr ""
-"Visa polycyval eller lista poster som använder denna namngivna policy\n"
+"Visa polycyval eller lista poster som använder den namngivna policyn\n"
 "(Det senare kan ta en stund beroende på mängden poster i databasen)"
 
 #. Resource IDs: (32262)
@@ -3857,10 +3845,9 @@ msgstr ""
 "\n"
 "Du måste kanske också välja skift-tangenten för att se dem."
 
-# Unselecting use ....?
 #. Resource IDs: (370)
 msgid "If you specify using your own symbol list, you cannot leave it empty. Unselecting use of symbols."
-msgstr "Om du specificerar med din egen symbollista, kan du inte lämna den tom. Välj bort symboler"
+msgstr "Om du specificerar med din egen symbollista, kan du inte lämna den tom. Välj bort symboler."
 
 #. Resource IDs: (517)
 msgid "Igbo"
@@ -4698,7 +4685,8 @@ msgstr "Antalet poster vars inställningar ändrades till att inte spara histori
 msgid "Number of entries that had their settings changed to save password history was: %d"
 msgstr "Antalet poster vars inställningar ändrades till att spara historik: %d"
 
-#   ..their their ..... (one too many)
+#   ..their their ..... paasword .... (one too many)
+# Please, fix this phrase and spelling.
 #. Resource IDs: (371)
 #, c-format
 msgid "Number of entries that had their their paasword history removed was %d"
@@ -6156,13 +6144,9 @@ msgstr "Tatariskt"
 msgid "Telugu"
 msgstr "Telugiskt"
 
-# In what connection appears this? Does it mean:
-# "Go ahead and test the selected Policy"
-# or
-# Policy selected in testing process"
 #. Resource IDs: (65535)
 msgid "Test Selected Policy"
-msgstr "Testa vald testpolicy"
+msgstr "Testa vald policy"
 
 #. Resource IDs: (347)
 msgid "Text"
