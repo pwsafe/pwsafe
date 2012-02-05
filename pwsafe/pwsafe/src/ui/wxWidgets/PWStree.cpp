@@ -181,7 +181,7 @@ void PWSTreeCtrl::CreateControls()
   };
   const int Nimages = sizeof(xpmList)/sizeof(xpmList[0]);
 
-  wxImageList *iList = new wxImageList(9, 9, true, Nimages);
+  wxImageList *iList = new wxImageList(13, 13, true, Nimages);
   for (int i = 0; i < Nimages; i++)
     iList->Add(wxBitmap(xpmList[i]));
   AssignImageList(iList);
