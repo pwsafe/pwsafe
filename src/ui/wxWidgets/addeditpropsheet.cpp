@@ -354,12 +354,12 @@ void AddEditPropSheet::CreateControls()
   itemBoxSizer27->Add(itemButton29, 0, wxALIGN_CENTER_VERTICAL|wxALL, 0);
 
   wxBoxSizer* itemBoxSizer30 = new wxBoxSizer(wxHORIZONTAL);
-  itemBoxSizer3->Add(itemBoxSizer30, 0, wxGROW|wxALL, 5);
+  itemBoxSizer3->Add(itemBoxSizer30, 1, wxGROW|wxALL, 5);
   wxStaticText* itemStaticText31 = new wxStaticText( m_BasicPanel, wxID_STATIC, _("Notes:"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer30->Add(itemStaticText31, 1, wxALIGN_TOP|wxALL, 5);
 
   m_noteTX = new wxTextCtrl( m_BasicPanel, ID_TEXTCTRL7, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE );
-  itemBoxSizer30->Add(m_noteTX, 5, wxALIGN_CENTER_VERTICAL|wxALL, 3);
+  itemBoxSizer30->Add(m_noteTX, 5, wxEXPAND|wxALIGN_CENTER_VERTICAL|wxALL, 3);
 
   GetBookCtrl()->AddPage(m_BasicPanel, _("Basic"));
 
