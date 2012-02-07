@@ -20,6 +20,8 @@
 
 #include <wx/grid.h>
 
+#include <iterator>
+
 template <class Iter>
 void GetShortcutsFromMenu(wxMenu* menu, Iter cont_itr, const wxString& menuLabel)
 {

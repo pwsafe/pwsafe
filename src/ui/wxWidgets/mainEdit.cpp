@@ -492,6 +492,8 @@ void PasswordSafeFrame::DoAutotype(CItemData &ci)
 #ifndef _WIN32
     // pws_os::towc is not defined for Windows
     autotype_err_msg = towxstring(pws_os::towc(e.what()));
+#else
+    UNREFERENCED_PARAMETER(e);
 #endif
   }
 
