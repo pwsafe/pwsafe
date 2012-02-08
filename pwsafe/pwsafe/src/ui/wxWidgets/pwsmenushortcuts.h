@@ -46,7 +46,11 @@ public:
   wxAcceleratorEntry OldShortcutAt(size_t index) const;
   wxAcceleratorEntry NewShortcutAt(size_t index) const;
 
-  void ChangeShortcut(size_t idx, const wxAcceleratorEntry& newEntry);
+  void ChangeShortcut(size_t idx, const wxAcceleratorEntry* newEntry);
+
+  // must delete the returned entry
+  wxAcceleratorEntry* CreateShortcut(const wxString& newEntry);
+  wxAcceleratorEntry* CreateShortcut(const wxKeyEvent& evt);
 
   bool IsDirty() const;
 
