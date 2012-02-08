@@ -353,14 +353,14 @@ void PasswordSafeFrame::CreateControls()
 
   wxMenuBar* menuBar = new wxMenuBar;
   wxMenu* itemMenu3 = new wxMenu;
-  itemMenu3->Append(wxID_NEW, _("&New..."), _T(""), wxITEM_NORMAL);
-  itemMenu3->Append(wxID_OPEN, _("&Open..."), _T(""), wxITEM_NORMAL);
-  itemMenu3->Append(wxID_CLOSE, _("&Close"), _T(""), wxITEM_NORMAL);
+  itemMenu3->Append(wxID_NEW);
+  itemMenu3->Append(wxID_OPEN);
+  itemMenu3->Append(wxID_CLOSE);
   itemMenu3->AppendSeparator();
   itemMenu3->Append(ID_MENU_CLEAR_MRU, _("Clear Recent Safe List"), _T(""), wxITEM_NORMAL);
   itemMenu3->AppendSeparator();
-  itemMenu3->Append(wxID_SAVE, _("&Save..."), _T(""), wxITEM_NORMAL);
-  itemMenu3->Append(wxID_SAVEAS, _("Save &As..."), _T(""), wxITEM_NORMAL);
+  itemMenu3->Append(wxID_SAVE);
+  itemMenu3->Append(wxID_SAVEAS);
   itemMenu3->AppendSeparator();
   wxMenu* itemMenu13 = new wxMenu;
   itemMenu13->Append(ID_EXPORT2OLD1XFORMAT, _("v&1.x format..."), _T(""), wxITEM_NORMAL);
@@ -377,9 +377,9 @@ void PasswordSafeFrame::CreateControls()
   itemMenu3->Append(ID_COMPARE, _("Compare..."), _T(""), wxITEM_NORMAL);
   itemMenu3->Append(ID_SYNCHRONIZE, _("S&ynchronize..."), _T(""), wxITEM_NORMAL);
   itemMenu3->AppendSeparator();
-  itemMenu3->Append(wxID_PROPERTIES, _("&Properties"), _T(""), wxITEM_NORMAL);
+  itemMenu3->Append(wxID_PROPERTIES);
   itemMenu3->AppendSeparator();
-  itemMenu3->Append(wxID_EXIT, _("E&xit"), _T(""), wxITEM_NORMAL);
+  itemMenu3->Append(wxID_EXIT);
   menuBar->Append(itemMenu3, _("&File"));
   wxGetApp().recentDatabases().UseMenu(itemMenu3);
   wxGetApp().recentDatabases().AddFilesToMenu(itemMenu3);  //must add existing history entries manually.
@@ -393,8 +393,8 @@ void PasswordSafeFrame::CreateControls()
   itemMenu28->AppendSeparator();
   itemMenu28->Append(ID_ADDGROUP, _("Add Group"), _T(""), wxITEM_NORMAL);
   itemMenu28->AppendSeparator();
-  itemMenu28->Append(wxID_UNDO, _("Undo"), _T(""), wxITEM_NORMAL);
-  itemMenu28->Append(wxID_REDO, _("Redo"), _T(""), wxITEM_NORMAL);
+  itemMenu28->Append(wxID_UNDO);
+  itemMenu28->Append(wxID_REDO);
   itemMenu28->Append(ID_CLEARCLIPBOARD, _("C&lear Clipboard\tCtrl+Del"), _T(""), wxITEM_NORMAL);
   itemMenu28->AppendSeparator();
   itemMenu28->Append(ID_COPYPASSWORD, _("&Copy Password to Clipboard\tCtrl+C"), _T(""), wxITEM_NORMAL);
@@ -442,13 +442,13 @@ void PasswordSafeFrame::CreateControls()
   itemMenu72->Append(ID_BACKUP, _("Make &Backup\tCtrl+B"), _T(""), wxITEM_NORMAL);
   itemMenu72->Append(ID_RESTORE, _("&Restore from Backup...\tCtrl+R"), _T(""), wxITEM_NORMAL);
   itemMenu72->AppendSeparator();
-  itemMenu72->Append(wxID_PREFERENCES, _("&Options..."), _T(""), wxITEM_NORMAL);
+  itemMenu72->Append(wxID_PREFERENCES);
   itemMenu72->Append(ID_VALIDATE, _("&Validate..."), _T(""), wxITEM_NORMAL);
   menuBar->Append(itemMenu72, _("&Manage"));
   wxMenu* itemMenu79 = new wxMenu;
-  itemMenu79->Append(wxID_HELP, _("Get &Help"), _T(""), wxITEM_NORMAL);
+  itemMenu79->Append(wxID_HELP);
   itemMenu79->Append(ID_MENUITEM, _("Visit Password Safe &website..."), _T(""), wxITEM_NORMAL);
-  itemMenu79->Append(wxID_ABOUT, _("&About Password Safe..."), _T(""), wxITEM_NORMAL);
+  itemMenu79->Append(wxID_ABOUT);
   menuBar->Append(itemMenu79, _("&Help"));
   itemFrame1->SetMenuBar(menuBar);
 
