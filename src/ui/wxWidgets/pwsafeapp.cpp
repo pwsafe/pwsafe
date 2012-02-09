@@ -51,6 +51,7 @@ using namespace std;
 #include <wx/clipbrd.h>
 #endif
 #include <wx/snglinst.h>
+#include "../../core/PWSLog.h"
 
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
@@ -200,6 +201,7 @@ PwsafeApp::~PwsafeApp()
 
   PWSprefs::DeleteInstance();
   PWSrand::DeleteInstance();
+  PWSLog::DeleteLog();
   
   delete m_controller;
 }
