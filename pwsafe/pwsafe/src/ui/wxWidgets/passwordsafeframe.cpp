@@ -1358,11 +1358,7 @@ void PasswordSafeFrame::OnOptionsMClick( wxCommandEvent& /* evt */ )
   if (window->ShowModal() == wxID_OK) {
     StringX sxNewDBPrefsString(prefs->Store(true));
 
-    // Maybe needed if this causes changes to database
-    // Update the display through a command, so that any changes to DB can be UNDOne
-    MultiCommands *pmulticmds = MultiCommands::Create(&m_core);
-
-    if (pmulticmds && !m_core.GetCurFile().empty() && !m_core.IsReadOnly() &&
+    if (!m_core.GetCurFile().empty() && !m_core.IsReadOnly() &&
         m_core.GetReadFileVersion() == PWSfile::VCURRENT) {
       if (sxOldDBPrefsString != sxNewDBPrefsString) {
         Command *pcmd = DBPrefsCommand::Create(&m_core, sxNewDBPrefsString);
