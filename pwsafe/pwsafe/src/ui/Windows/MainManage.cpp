@@ -398,15 +398,30 @@ void DboxMain::OnOptions()
           continue;
         }
         // Now only those different from default
-        if (iter->second.cVirtKey  != iter->second.cdefVirtKey  ||
-            iter->second.cModifier != iter->second.cdefModifier) {
+        if (iter->second.siVirtKey  != iter->second.siDefVirtKey  ||
+            iter->second.cModifier != iter->second.cDefModifier) {
           st_prefShortcut stxst;
           stxst.id = iter->first;
-          stxst.cVirtKey = iter->second.cVirtKey;
+          stxst.siVirtKey = iter->second.siVirtKey;
           stxst.cModifier = iter->second.cModifier;
           vShortcuts.push_back(stxst);
         }
       }
+
+      // We need to convert from MFC shortcut modifiers to PWS modifiers
+      for (size_t i = 0; i < vShortcuts.size(); i++) {
+        unsigned char cModifier(0), cWindowsMod = vShortcuts[i].cModifier;
+        if ((cWindowsMod & HOTKEYF_ALT    ) == HOTKEYF_ALT)
+          cModifier |= PWS_HOTKEYF_ALT;
+        if ((cWindowsMod & HOTKEYF_CONTROL) == HOTKEYF_CONTROL)
+          cModifier |= PWS_HOTKEYF_CONTROL;
+        if ((cWindowsMod & HOTKEYF_SHIFT  ) == HOTKEYF_SHIFT)
+          cModifier |= PWS_HOTKEYF_SHIFT;
+        if ((cWindowsMod & HOTKEYF_EXT    ) == HOTKEYF_EXT)
+          cModifier |= PWS_HOTKEYF_EXT;
+        vShortcuts[i].cModifier = cModifier;
+      }
+
       prefs->SetPrefShortcuts(vShortcuts);
       prefs->SaveShortcuts();
 

@@ -688,7 +688,7 @@ struct shortcut_less {
 bool equal_shortcuts(st_prefShortcut a, st_prefShortcut b)
 {
   return (a.id        == b.id &&
-          a.cVirtKey  == b.cVirtKey &&
+          a.siVirtKey == b.siVirtKey &&
           a.cModifier == b.cModifier);
 }
 

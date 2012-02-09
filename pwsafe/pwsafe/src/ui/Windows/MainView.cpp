@@ -4402,9 +4402,10 @@ bool DboxMain::LongPPs()
 }
 
 bool DboxMain::GetShortCut(const unsigned int &uiMenuItem,
-                           unsigned char &cVirtKey, unsigned char &cModifier)
+                           unsigned short int &siVirtKey, unsigned char &cModifier)
 {
-  cVirtKey = cModifier = '0';
+  siVirtKey = 0;
+  cModifier = '0';
 
   MapMenuShortcutsIter iter;
 
@@ -4412,13 +4413,13 @@ bool DboxMain::GetShortCut(const unsigned int &uiMenuItem,
   if (iter == m_MapMenuShortcuts.end())
     return false;
 
-  if (iter->second.cVirtKey  != iter->second.cdefVirtKey ||
-      iter->second.cModifier != iter->second.cdefModifier) {
-    cVirtKey = iter->second.cVirtKey;
+  if (iter->second.siVirtKey  != iter->second.siDefVirtKey ||
+      iter->second.cModifier != iter->second.cDefModifier) {
+    siVirtKey = iter->second.siVirtKey;
     cModifier = iter->second.cModifier;
   } else {
-    cVirtKey = iter->second.cdefVirtKey;
-    cModifier = iter->second.cdefModifier;
+    siVirtKey = iter->second.siDefVirtKey;
+    cModifier = iter->second.cDefModifier;
   }
 
   return true;
