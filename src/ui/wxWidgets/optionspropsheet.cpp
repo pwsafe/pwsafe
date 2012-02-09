@@ -1401,6 +1401,7 @@ void COptions::OnShortcutChange(wxGridEvent& evt)
   else {
     grid->SetCellValue(cell, newAccel->ToString());
     grid->SetCellTextColour(cell.GetRow(), cell.GetCol(), grid->GetDefaultCellTextColour());
+    delete newAccel;
   }
 }
 
@@ -1421,6 +1422,7 @@ void COptions::OnShortcutKey(wxKeyEvent& evt)
     wxAcceleratorEntry* accel = m_shortcuts->CreateShortcut(evt);
     wxCHECK_RET(accel, wxT("Could not create accelerator from wxKeyEvent"));
     grid->SetCellValue(grid->GetCursorRow(), grid->GetCursorColumn(), accel->ToString());
+    delete accel;
   }
   evt.Skip();
 }
