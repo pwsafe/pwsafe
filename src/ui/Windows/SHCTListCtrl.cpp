@@ -98,7 +98,7 @@ void CSHCTListCtrl::OnLButtonDown(UINT , CPoint point)
   m_id = (UINT)LOWORD(GetItemData(m_item));
   if (m_pParent->GetMapMenuShortcutsIter(m_id, iter)) {
     WORD vModifiers = iter->second.cModifier;
-    m_pHotKey->SetHotKey(iter->second.cVirtKey, vModifiers);
+    m_pHotKey->SetHotKey(iter->second.siVirtKey, vModifiers);
   }
   m_pHotKey->EnableWindow(TRUE);
   m_pHotKey->ShowWindow(SW_SHOW);
@@ -141,11 +141,11 @@ void CSHCTListCtrl::OnRButtonDown(UINT , CPoint point)
 
   PopupMenu.LoadMenu(IDR_POPRESETSHORTCUT);
   CMenu* pContextMenu = PopupMenu.GetSubMenu(0);
-  if (iter->second.cVirtKey == 0)
+  if (iter->second.siVirtKey == 0)
     pContextMenu->RemoveMenu(ID_MENUITEM_REMOVESHORTCUT, MF_BYCOMMAND);
 
-  if (iter->second.cVirtKey   == iter->second.cdefVirtKey &&
-      iter->second.cModifier  == iter->second.cdefModifier)
+  if (iter->second.siVirtKey   == iter->second.siDefVirtKey &&
+      iter->second.cModifier  == iter->second.cDefModifier)
     pContextMenu->RemoveMenu(ID_MENUITEM_RESETSHORTCUT, MF_BYCOMMAND);
 
   if (pContextMenu->GetMenuItemCount() == 0)
@@ -158,8 +158,8 @@ void CSHCTListCtrl::OnRButtonDown(UINT , CPoint point)
                                          pt.x, pt.y, this);
 
   if (nID == ID_MENUITEM_REMOVESHORTCUT) {
-    iter->second.cVirtKey = (unsigned char)0;
-    iter->second.cModifier = (unsigned char)0;
+    iter->second.siVirtKey = 0;
+    iter->second.cModifier = 0;
     str = L"";
     goto update;
   }
@@ -167,8 +167,8 @@ void CSHCTListCtrl::OnRButtonDown(UINT , CPoint point)
   if (nID != ID_MENUITEM_RESETSHORTCUT)
     goto exit;
 
-  iter->second.cVirtKey = iter->second.cdefVirtKey;
-  iter->second.cModifier = iter->second.cdefModifier;
+  iter->second.siVirtKey = iter->second.siDefVirtKey;
+  iter->second.cModifier = iter->second.cDefModifier;
 
   str = CMenuShortcut::FormatShortcut(iter);
 
@@ -252,7 +252,7 @@ void CSHCTListCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
       switch (iSubItem) {
         case SHCT_MENUITEMTEXT:
           if ( m_pParent->GetMapMenuShortcutsIter(id, iter) && 
-              ( (iter->second.cVirtKey != iter->second.cdefVirtKey) || (iter->second.cModifier != iter->second.cdefModifier) ))
+              ( (iter->second.siVirtKey != iter->second.siDefVirtKey) || (iter->second.cModifier != iter->second.cDefModifier) ))
             pLVCD->clrText = m_crRedText;
           break;
         case SHCT_SHORTCUTKEYS:

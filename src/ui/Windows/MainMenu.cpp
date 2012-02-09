@@ -32,7 +32,7 @@ static char THIS_FILE[] = __FILE__;
 // Functor for count_if
 struct CountShortcuts {
   bool operator()(const std::pair<const UINT, CMenuShortcut> &p) {
-    return (p.second.cVirtKey != (unsigned char)0);
+    return (p.second.siVirtKey != 0);
   }
 };
 
@@ -40,14 +40,15 @@ struct CountShortcuts {
 struct CreateAccelTable {
   CreateAccelTable(ACCEL *pacceltbl, unsigned char ucAutotypeKey) 
     : m_pacceltbl(pacceltbl), m_ucAutotypeKey(ucAutotypeKey) {}
+
   void operator()(const std::pair<UINT, CMenuShortcut> &p)
   {
-    if (p.second.cVirtKey != 0 && p.second.cVirtKey != m_ucAutotypeKey) {
+    if (p.second.siVirtKey != 0 && p.second.siVirtKey != m_ucAutotypeKey) {
       m_pacceltbl->fVirt = FVIRTKEY |
-                           ((p.second.cModifier & HOTKEYF_CONTROL) == HOTKEYF_CONTROL ? FCONTROL : 0) |
-                           ((p.second.cModifier & HOTKEYF_ALT)    == HOTKEYF_ALT      ? FALT     : 0) |
-                           ((p.second.cModifier & HOTKEYF_SHIFT)  == HOTKEYF_SHIFT    ? FSHIFT   : 0);
-      m_pacceltbl->key = (WORD)p.second.cVirtKey;
+               ((p.second.cModifier & HOTKEYF_CONTROL) == HOTKEYF_CONTROL ? FCONTROL : 0) |
+               ((p.second.cModifier & HOTKEYF_ALT)     == HOTKEYF_ALT     ? FALT     : 0) |
+               ((p.second.cModifier & HOTKEYF_SHIFT)   == HOTKEYF_SHIFT   ? FSHIFT   : 0);
+      m_pacceltbl->key = (WORD)p.second.siVirtKey;
       m_pacceltbl->cmd = (WORD)p.first;
       m_pacceltbl++;
     }
@@ -188,7 +189,7 @@ void DboxMain::SetUpInitialMenuStrings()
   m_ReservedShortcuts.clear();
 
   st_MenuShortcut st_mst;
-  st_mst.cVirtKey;
+  st_mst.siVirtKey;
   st_mst.cModifier = HOTKEYF_ALT;
 
   for (UINT ui = 0; ui < uiCount; ui++) {
@@ -207,22 +208,22 @@ void DboxMain::SetUpInitialMenuStrings()
       CString csMainMenuItem = tcMenuString;
       int iamp = csMainMenuItem.Find(L'&');
       if (iamp >= 0 && iamp < csMainMenuItem.GetLength() - 1) {
-        st_mst.cVirtKey = (unsigned char)csMainMenuItem[iamp + 1];
+        st_mst.siVirtKey = csMainMenuItem[iamp + 1];
         m_ReservedShortcuts.push_back(st_mst);
       }
     }
   }
 
   // Add 3 special keys F1 (for Help), Ctrl+Q/Alt+F4 (Exit)
-  st_mst.cVirtKey = VK_F1;
+  st_mst.siVirtKey = VK_F1;
   st_mst.cModifier = 0;
   m_ReservedShortcuts.push_back(st_mst);
 
-  st_mst.cVirtKey = 'Q';
+  st_mst.siVirtKey = 'Q';
   st_mst.cModifier = HOTKEYF_CONTROL;
   m_ReservedShortcuts.push_back(st_mst);
 
-  st_mst.cVirtKey = VK_F4;
+  st_mst.siVirtKey = VK_F4;
   st_mst.cModifier = HOTKEYF_ALT;
   m_ReservedShortcuts.push_back(st_mst);
 
@@ -326,9 +327,9 @@ void DboxMain::SetUpInitialMenuStrings()
 
       iter = m_MapMenuShortcuts.find((UINT)paccel->cmd);
       if (iter != m_MapMenuShortcuts.end()) {
-        iter->second.cdefVirtKey = iter->second.cVirtKey = 
+        iter->second.siDefVirtKey = iter->second.siVirtKey = 
           (unsigned char)paccel->key;
-          iter->second.cdefModifier = iter->second.cModifier =
+          iter->second.cDefModifier = iter->second.cModifier =
           ((paccel->fVirt & FCONTROL) == FCONTROL ? HOTKEYF_CONTROL : 0) |
           ((paccel->fVirt & FALT)     == FALT     ? HOTKEYF_ALT     : 0) |
           ((paccel->fVirt & FSHIFT)   == FSHIFT   ? HOTKEYF_SHIFT   : 0) |
@@ -345,6 +346,20 @@ void DboxMain::SetUpInitialMenuStrings()
   // Now go through the default table and see if the user has changed anything,
   // change shortcuts as per preferences
   std::vector<st_prefShortcut> vShortcuts(PWSprefs::GetInstance()->GetPrefShortcuts());
+
+  // We need to convert from PWS shortcut modifiers to MFC modifiers
+  for (size_t i = 0; i < vShortcuts.size(); i++) {
+    unsigned char cModifier(0), cWindowsMod = vShortcuts[i].cModifier;
+    if ((cWindowsMod & PWS_HOTKEYF_ALT    ) == PWS_HOTKEYF_ALT)
+      cModifier |= HOTKEYF_ALT;
+    if ((cWindowsMod & PWS_HOTKEYF_CONTROL) == PWS_HOTKEYF_CONTROL)
+      cModifier |= HOTKEYF_CONTROL;
+    if ((cWindowsMod & PWS_HOTKEYF_SHIFT  ) == PWS_HOTKEYF_SHIFT)
+      cModifier |= HOTKEYF_SHIFT;
+    if ((cWindowsMod & PWS_HOTKEYF_EXT    ) == PWS_HOTKEYF_EXT)
+      cModifier |= HOTKEYF_EXT;
+    vShortcuts[i].cModifier = cModifier;
+  }
 
   size_t N = vShortcuts.size();
   for (size_t i = 0; i < N; i++) {
@@ -365,8 +380,8 @@ void DboxMain::SetUpInitialMenuStrings()
       continue;
     }
     // Check not already in use (ignore if deleting current shortcut)
-    if (stxst.cVirtKey != (unsigned char)0) {
-      st_mst.cVirtKey = stxst.cVirtKey;
+    if (stxst.siVirtKey != 0) {
+      st_mst.siVirtKey = stxst.siVirtKey;
       st_mst.cModifier = stxst.cModifier;
       already_inuse inuse(st_mst);
       inuse_iter = std::find_if(m_MapMenuShortcuts.begin(),
@@ -378,10 +393,10 @@ void DboxMain::SetUpInitialMenuStrings()
         continue;
       }
     }
-    if ((iter->second.cVirtKey  != stxst.cVirtKey  ||
+    if ((iter->second.siVirtKey  != stxst.siVirtKey  ||
          iter->second.cModifier != stxst.cModifier)) {
       // User changed a added or shortcut
-      iter->second.cVirtKey  = stxst.cVirtKey;
+      iter->second.siVirtKey  = stxst.siVirtKey;
       iter->second.cModifier = stxst.cModifier;
     }
   }
@@ -468,7 +483,7 @@ void DboxMain::SetUpMenuStrings(CMenu *pPopupMenu)
       iter = m_MapMenuShortcuts.find(miteminfo.wID);
       if (iter != m_MapMenuShortcuts.end()) {
         CString str;
-        if (iter->second.cVirtKey != 0) {
+        if (iter->second.siVirtKey != 0) {
           str.Format(L"%s\t%s", iter->second.name.c_str(), 
                        CMenuShortcut::FormatShortcut(iter));
         } else {
@@ -1337,9 +1352,10 @@ void DboxMain::SetupSpecialShortcuts()
     iter_group = m_MapMenuShortcuts.find(ID_MENUITEM_DELETEGROUP);
     iter_group->second.SetKeyFlags(iter->second);
 
-    m_wpDeleteMsg = ((iter->second.cModifier & HOTKEYF_ALT) == HOTKEYF_ALT) ? WM_SYSKEYDOWN : WM_KEYDOWN;
-    m_wpDeleteKey = iter->second.cVirtKey;
-    m_bDeleteCtrl = (iter->second.cModifier & HOTKEYF_CONTROL) == HOTKEYF_CONTROL;
+    m_wpDeleteMsg = ((iter->second.cModifier & HOTKEYF_ALT) == HOTKEYF_ALT) ?
+                           WM_SYSKEYDOWN : WM_KEYDOWN;
+    m_wpDeleteKey = iter->second.siVirtKey;
+    m_bDeleteCtrl = (iter->second.cModifier  & HOTKEYF_CONTROL) == HOTKEYF_CONTROL;
     m_bDeleteShift = (iter->second.cModifier & HOTKEYF_SHIFT) == HOTKEYF_SHIFT;
   } else {
     m_wpDeleteKey = 0;
@@ -1355,8 +1371,9 @@ void DboxMain::SetupSpecialShortcuts()
     iter_group = m_MapMenuShortcuts.find(ID_MENUITEM_RENAMEGROUP);
     iter_group->second.SetKeyFlags(iter->second);
 
-    m_wpRenameMsg = ((iter->second.cModifier & HOTKEYF_ALT) == HOTKEYF_ALT) ? WM_SYSKEYDOWN : WM_KEYDOWN;
-    m_wpRenameKey = iter->second.cVirtKey;
+    m_wpRenameMsg = ((iter->second.cModifier & HOTKEYF_ALT) == HOTKEYF_ALT) ?
+                           WM_SYSKEYDOWN : WM_KEYDOWN;
+    m_wpRenameKey = iter->second.siVirtKey;
     m_bRenameCtrl = (iter->second.cModifier & HOTKEYF_CONTROL) == HOTKEYF_CONTROL;
     m_bRenameShift = (iter->second.cModifier & HOTKEYF_SHIFT) == HOTKEYF_SHIFT;
   } else {
@@ -1368,9 +1385,11 @@ void DboxMain::SetupSpecialShortcuts()
   
   // Save for CTreeCtrl & CListCtrl PreTranslateMessage
   if (iter != m_MapMenuShortcuts.end()) {
-    m_wpAutotypeDNMsg = ((iter->second.cModifier & HOTKEYF_ALT) == HOTKEYF_ALT) ? WM_SYSKEYDOWN : WM_KEYDOWN;
-    m_wpAutotypeUPMsg = ((iter->second.cModifier & HOTKEYF_ALT) == HOTKEYF_ALT) ? WM_SYSKEYUP : WM_KEYUP;
-    m_wpAutotypeKey = iter->second.cVirtKey;
+    m_wpAutotypeDNMsg = ((iter->second.cModifier & HOTKEYF_ALT) == HOTKEYF_ALT) ?
+                               WM_SYSKEYDOWN : WM_KEYDOWN;
+    m_wpAutotypeUPMsg = ((iter->second.cModifier & HOTKEYF_ALT) == HOTKEYF_ALT) ?
+                               WM_SYSKEYUP : WM_KEYUP;
+    m_wpAutotypeKey = iter->second.siVirtKey;
     m_bAutotypeCtrl = (iter->second.cModifier & HOTKEYF_CONTROL) == HOTKEYF_CONTROL;
     m_bAutotypeShift = (iter->second.cModifier & HOTKEYF_SHIFT) == HOTKEYF_SHIFT;
   } else {

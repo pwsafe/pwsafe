@@ -163,5 +163,6 @@ private:
   bool m_bChanged, m_bViewPolicy, m_bLongPPs, m_bReadOnly;
   
   bool m_bUndoShortcut, m_bRedoShortcut;
-  unsigned char m_cUndoVirtKey, m_cUndoModifier, m_cRedoVirtKey, m_cRedoModifier;
+  unsigned short int m_siUndoVirtKey, m_siRedoVirtKey;
+  unsigned char m_cUndoModifier, m_cRedoModifier;
 };

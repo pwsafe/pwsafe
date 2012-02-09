@@ -40,7 +40,7 @@ extern int s_cfgLockCount;
 
 struct st_prefShortcut {
   unsigned int id;
-  unsigned char cVirtKey;
+  unsigned short int siVirtKey;
   unsigned char cModifier;
 };
 

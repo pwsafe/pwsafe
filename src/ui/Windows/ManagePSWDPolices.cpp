@@ -36,8 +36,8 @@ CManagePSWDPolices::CManagePSWDPolices(CWnd* pParent, const bool bLongPPs)
   m_pDbx = static_cast<DboxMain *>(pParent);
   m_bReadOnly = m_pDbx->IsDBReadOnly();
   
-  m_bUndoShortcut = m_pDbx->GetShortCut(ID_MENUITEM_UNDO, m_cUndoVirtKey, m_cUndoModifier);
-  m_bRedoShortcut = m_pDbx->GetShortCut(ID_MENUITEM_REDO, m_cRedoVirtKey, m_cRedoModifier);
+  m_bUndoShortcut = m_pDbx->GetShortCut(ID_MENUITEM_UNDO, m_siUndoVirtKey, m_cUndoModifier);
+  m_bRedoShortcut = m_pDbx->GetShortCut(ID_MENUITEM_REDO, m_siRedoVirtKey, m_cRedoModifier);
 
   m_MapPSWDPLC = m_pDbx->GetPasswordPolicies();
 
@@ -300,7 +300,7 @@ BOOL CManagePSWDPolices::PreTranslateMessage(MSG* pMsg)
 
   // If user hit the appropriate shortcut - do Undo/Redo
   if (pMsg->message == WM_KEYDOWN) {
-    if (m_bUndoShortcut && pMsg->wParam == m_cUndoVirtKey) {
+    if (m_bUndoShortcut && pMsg->wParam == m_siUndoVirtKey) {
       if (((m_cUndoModifier & HOTKEYF_CONTROL) == HOTKEYF_CONTROL &&
           (GetKeyState(VK_CONTROL) & 0x8000) == 0) || 
           ((m_cUndoModifier & HOTKEYF_ALT) == HOTKEYF_ALT &&
@@ -315,7 +315,7 @@ BOOL CManagePSWDPolices::PreTranslateMessage(MSG* pMsg)
       // Tell Windows we have processed it
       return TRUE;
     }
-    if (m_bRedoShortcut && pMsg->wParam == m_cRedoVirtKey) {
+    if (m_bRedoShortcut && pMsg->wParam == m_siRedoVirtKey) {
       if (((m_cRedoModifier & HOTKEYF_CONTROL) == HOTKEYF_CONTROL &&
           (GetKeyState(VK_CONTROL) & 0x8000) == 0) || 
           ((m_cRedoModifier & HOTKEYF_ALT) == HOTKEYF_ALT &&
