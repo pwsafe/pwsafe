@@ -23,6 +23,10 @@
 
 #include <iterator>
 
+#ifdef __WXMSW__
+#include <wx/msw/msvcrt.h>
+#endif
+
 template <class Iter>
 void GetShortcutsFromMenu(wxMenu* menu, Iter cont_itr, const wxString& menuLabel)
 {
