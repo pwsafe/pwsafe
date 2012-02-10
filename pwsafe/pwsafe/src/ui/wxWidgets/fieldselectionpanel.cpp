@@ -24,6 +24,10 @@
 
 #include "./wxutils.h"
 
+#ifdef __WXMSW__
+#include <wx/msw/msvcrt.h>
+#endif
+
 //control ids used in the panel
 enum {
       ID_SELECT_SOME = 101,
