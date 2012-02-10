@@ -57,6 +57,7 @@ void GetShortcutsFromMenu(wxMenu* menu, Iter cont_itr, const wxString& menuLabel
       wxAcceleratorEntry* accel = item->GetAccel();
       if (accel) {
         mid.oldShortcut = *accel;
+        delete accel;
       }
       else if (wxIsStockID(item->GetId())) {
         mid.oldShortcut = wxGetStockAccelerator(item->GetId());
