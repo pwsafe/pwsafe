@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -37,6 +37,56 @@ struct st_SaveTypePW {
   }  
 };
 
+struct st_PSWDPolicy {
+  PWPolicy pwp;
+  StringX symbols;
+  size_t usecount;
+
+  st_PSWDPolicy()
+  : symbols(_T("")), usecount(0)
+  {
+    pwp.Empty();
+  }
+
+  st_PSWDPolicy(const PWPolicy &in_pwp, const StringX &in_symbols, size_t in_usecount)
+  : pwp(in_pwp), symbols(in_symbols), usecount(in_usecount)
+  {}
+
+  st_PSWDPolicy(const st_PSWDPolicy &that)
+    : pwp(that.pwp), symbols(that.symbols), usecount(that.usecount)
+  {}
+
+  st_PSWDPolicy &operator=(const st_PSWDPolicy &that)
+  {
+    if (this != &that) {
+      pwp = that.pwp;
+      symbols = that.symbols;
+      usecount = that.usecount;
+    }
+    return *this;
+  }
+
+  bool operator==(const st_PSWDPolicy &that) const
+  {
+    if (this != &that) {
+      if (pwp != that.pwp ||
+          symbols != that.symbols)
+        return false;
+    }
+    return true;
+  }
+
+  bool operator!=(const st_PSWDPolicy &that) const
+  {return !(*this == that);}
+
+  void Empty()
+  { 
+    pwp.Empty();
+    symbols = _T("");
+    usecount = 0;
+  }
+};
+
 // Used to verify uniqueness of GTU using std::set
 struct st_GroupTitleUser {
   StringX group;
@@ -67,6 +117,10 @@ struct st_GroupTitleUser {
   }
 };
 
+struct st_PWH_status {
+  StringX pwh;
+  CItemData::EntryStatus es;
+};
 
 typedef std::map<pws_os::CUUID, CItemData, std::less<pws_os::CUUID> > ItemList;
 typedef ItemList::iterator ItemListIter;
@@ -88,10 +142,10 @@ typedef std::pair<pws_os::CUUID, pws_os::CUUID> ItemMap_Pair;
 typedef std::map<pws_os::CUUID, st_SaveTypePW, std::less<pws_os::CUUID> > SaveTypePWMap;
 typedef std::pair<pws_os::CUUID, st_SaveTypePW> SaveTypePWMap_Pair;
 
-typedef std::map<pws_os::CUUID, StringX, std::less<pws_os::CUUID> > SavePWHistoryMap;
+typedef std::map<pws_os::CUUID, st_PWH_status, std::less<pws_os::CUUID> > SavePWHistoryMap;
 
 typedef std::set<st_GroupTitleUser> GTUSet;
-typedef std::pair< std::set<st_GroupTitleUser>::iterator, bool > GTUSetPair;
+typedef std::pair<GTUSet::iterator, bool > GTUSetPair;
 
 typedef std::set<pws_os::CUUID> UUIDSet;
 typedef std::pair<UUIDSet::iterator, bool > UUIDSetPair;
@@ -99,5 +153,10 @@ typedef std::pair<UUIDSet::iterator, bool > UUIDSetPair;
 typedef std::list<pws_os::CUUID> UUIDList;
 typedef UUIDList::iterator UUIDListIter;
 typedef UUIDList::reverse_iterator UUIDListRIter;
+
+typedef std::map<StringX, st_PSWDPolicy> PSWDPolicyMap;
+typedef std::map<StringX, st_PSWDPolicy>::iterator PSWDPolicyMapIter;
+typedef std::map<StringX, st_PSWDPolicy>::const_iterator PSWDPolicyMapCIter;
+typedef std::pair<StringX, st_PSWDPolicy> PSWDPolicyMapPair;
 
 #endif /* __COREDEFS_H */

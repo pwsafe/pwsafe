@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -11,6 +11,7 @@
 #pragma once
 
 #include "AddEdit_PropertyPage.h"
+#include "PWHistListCtrl.h"
 
 #include "resource.h"
 
@@ -36,10 +37,9 @@ public:
 
   CComboBox m_dblclk_cbox;
   CComboBox m_shiftdblclk_cbox;
-  BOOL m_UseDefaultDCA, m_UseDefaultShiftDCA;
   int m_DCA_to_Index[PWSprefs::maxDCA + 1];
 
-  CListCtrl m_PWHistListCtrl;
+  CPWHistListCtrl m_PWHistListCtrl;
   int m_iSortedColumn;
   bool m_bSortAscending;
   bool m_ClearPWHistory;
@@ -67,8 +67,6 @@ protected:
   afx_msg void OnShiftDCAComboChanged();
   afx_msg void OnChanged();
 
-  afx_msg void OnSetDCACheck();
-  afx_msg void OnSetShiftDCACheck();
   afx_msg void OnSTCExClicked(UINT nId);
   afx_msg void OnCheckedSavePasswordHistory();
   afx_msg void OnHeaderClicked(NMHDR *pNotifyStruct, LRESULT *pLResult);
@@ -82,7 +80,7 @@ protected:
 private:
   static int CALLBACK PWHistCompareFunc(LPARAM lParam1, LPARAM lParam2,
                                         LPARAM lParamSort);
-  void SetupDCAComboBoxes(CComboBox *pcbox);
+  void SetupDCAComboBoxes(CComboBox *pcbox, bool isShift);
   CToolTipCtrl *m_pToolTipCtrl;
 
   COLORREF m_autotype_cfOldColour, m_runcmd_cfOldColour;

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -93,7 +93,8 @@ public:
     GUI_REDO_MERGESYNC,
     GUI_UNDO_MERGESYNC,
     GUI_REFRESH_TREE,
-    GUI_DB_PREFERENCES_CHANGED
+    GUI_DB_PREFERENCES_CHANGED,
+    GUI_PWH_CHANGED_IN_DB
   };
 
   static UpdateGUICommand *Create(CommandInterface *pcomInt,
@@ -126,6 +127,35 @@ private:
   StringX m_sxOldDBPrefs;
   StringX m_sxNewDBPrefs;
   bool m_bOldState;
+};
+
+class DBPolicyNamesCommand : public Command
+{
+public:
+  enum Function {ADDNEW = 0, REPLACEALL};
+
+  static DBPolicyNamesCommand *Create(CommandInterface *pcomInt,
+                                PSWDPolicyMap &MapPSWDPLC,
+                                Function function)
+  { return new DBPolicyNamesCommand(pcomInt, MapPSWDPLC, function); }
+  static DBPolicyNamesCommand *Create(CommandInterface *pcomInt,
+                                StringX &sxPolicyName, st_PSWDPolicy &st_pp)
+  { return new DBPolicyNamesCommand(pcomInt, sxPolicyName, st_pp); }
+  int Execute();
+  void Undo();
+
+private:
+  DBPolicyNamesCommand(CommandInterface *pcomInt, PSWDPolicyMap &MapPSWDPLC,
+                       Function function);
+  DBPolicyNamesCommand(CommandInterface *pcomInt, StringX &sxPolicyName,
+                       st_PSWDPolicy &st_pp);
+
+  PSWDPolicyMap m_OldMapPSWDPLC;
+  PSWDPolicyMap m_NewMapPSWDPLC;
+  StringX m_sxPolicyName;
+  st_PSWDPolicy m_st_ppp;
+  Function m_function;
+  bool m_bOldState, bSingleAdd;
 };
 
 class DeleteEntryCommand;

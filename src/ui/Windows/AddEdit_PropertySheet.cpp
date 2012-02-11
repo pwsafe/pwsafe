@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -65,6 +65,8 @@ CAddEdit_PropertySheet::CAddEdit_PropertySheet(UINT nID, CWnd* pParent,
   m_AEMD.default_pwp.symbolminlength = prefs->GetPref(PWSprefs::PWSymbolMinLength);
   m_AEMD.default_pwp.upperminlength = prefs->GetPref(PWSprefs::PWUppercaseMinLength);
 
+  m_AEMD.default_symbols = prefs->GetPref(PWSprefs::DefaultSymbols);
+
   // Set up data used by all Property Pages, as appropriate
   if (m_AEMD.uicaller == IDS_ADDENTRY) {
     // Basic initialisation
@@ -104,6 +106,7 @@ CAddEdit_PropertySheet::CAddEdit_PropertySheet(UINT nID, CWnd* pParent,
     m_AEMD.ipolicy = m_AEMD.oldipolicy = DEFAULT_POLICY;
     m_AEMD.iownsymbols = m_AEMD.ioldownsymbols = DEFAULT_SYMBOLS;
     m_AEMD.symbols = L"";
+    m_AEMD.policyname = m_AEMD.oldpolicyname = L"";
 
     // Protected
     m_AEMD.ucprotected = 0;
@@ -265,7 +268,9 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
                          m_AEMD.XTimeInt    != m_AEMD.oldXTimeInt          ||
                          m_AEMD.ipolicy     != m_AEMD.oldipolicy           ||
                         (m_AEMD.ipolicy     == SPECIFIC_POLICY &&
-                         m_AEMD.pwp         != m_AEMD.oldpwp));
+                         m_AEMD.pwp         != m_AEMD.oldpwp)              ||
+                        (m_AEMD.ipolicy     == NAMED_POLICY &&
+                         m_AEMD.policyname  != m_AEMD.oldpolicyname));
 
         bIsPSWDModified = (m_AEMD.realpassword != m_AEMD.oldRealPassword);
 
@@ -281,15 +286,32 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
           m_AEMD.pci->SetURL(m_AEMD.URL);
           m_AEMD.pci->SetAutoType(m_AEMD.autotype);
           m_AEMD.pci->SetPWHistory(m_AEMD.PWHistory);
+          m_AEMD.PWHistory = m_AEMD.PWHistory;
+          m_AEMD.oldNumPWHistory = m_AEMD.NumPWHistory;
+          m_AEMD.oldMaxPWHistory = m_AEMD.MaxPWHistory;
+          m_AEMD.oldSavePWHistory = m_AEMD.SavePWHistory;
 
-          if (m_AEMD.ipolicy == DEFAULT_POLICY)
+          switch (m_AEMD.ipolicy) {
+            case DEFAULT_POLICY:
             m_AEMD.pci->SetPWPolicy(L"");
-          else
+              m_AEMD.policyname = L"";
+              m_AEMD.pci->SetPolicyName(L"");
+              break;
+            case NAMED_POLICY:
+              m_AEMD.pci->SetPWPolicy(L"");
+              m_AEMD.pci->SetPolicyName(m_AEMD.policyname);
+              break;
+            case SPECIFIC_POLICY:
             m_AEMD.pci->SetPWPolicy(m_AEMD.pwp);
+              m_AEMD.policyname = L"";
+              m_AEMD.pci->SetPolicyName(L"");
+              break;
+           }
 
           m_AEMD.oldipolicy = m_AEMD.ipolicy;
           m_AEMD.oldpwp = m_AEMD.pwp;
           m_AEMD.oldsymbols = m_AEMD.symbols;
+          m_AEMD.oldpolicyname = m_AEMD.policyname;
 
           m_AEMD.pci->SetRunCommand(m_AEMD.runcommand);
           m_AEMD.pci->SetDCA(m_AEMD.DCA);
@@ -299,7 +321,6 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
           m_AEMD.pci->SetProtected(m_AEMD.ucprotected != 0);
         }
 
-        if (m_AEMD.XTimeInt > 0 && m_AEMD.XTimeInt <= 3650)
           m_AEMD.pci->SetXTimeInt(m_AEMD.XTimeInt);
 
         if (bIsPSWDModified || m_AEMD.locXTime != m_AEMD.oldlocXTime) {
@@ -377,10 +398,23 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
           m_AEMD.pci->SetPWPolicy(L"");
         } else {
           m_AEMD.pci->SetXTime(m_AEMD.tttXTime);
-          if (m_AEMD.ipolicy == DEFAULT_POLICY)
+
+          switch (m_AEMD.ipolicy) {
+            case DEFAULT_POLICY:
             m_AEMD.pci->SetPWPolicy(L"");
-          else
+              m_AEMD.policyname = L"";
+              m_AEMD.pci->SetPolicyName(L"");
+              break;
+            case NAMED_POLICY:
+              m_AEMD.pci->SetPWPolicy(L"");
+              m_AEMD.pci->SetPolicyName(m_AEMD.policyname);
+              break;
+            case SPECIFIC_POLICY:
             m_AEMD.pci->SetPWPolicy(m_AEMD.pwp);
+              m_AEMD.policyname = L"";
+              m_AEMD.pci->SetPolicyName(L"");
+              break;
+        }
         }
 
         if (m_bIsModified)
@@ -543,9 +577,16 @@ void CAddEdit_PropertySheet::SetupInitialValues()
   // PWPolicy fields
   // Note different pci depending on if Alias
   pciA->GetPWPolicy(m_AEMD.pwp);
+  m_AEMD.policyname = m_AEMD.oldpolicyname = pciA->GetPolicyName();
 
-  m_AEMD.ipolicy = (pciA->GetPWPolicy().empty()) ?
-                             DEFAULT_POLICY : SPECIFIC_POLICY;
+  if (!m_AEMD.policyname.IsEmpty())
+    m_AEMD.ipolicy = NAMED_POLICY;
+  else
+  if (pciA->GetPWPolicy().empty())
+    m_AEMD.ipolicy = DEFAULT_POLICY;
+  else
+    m_AEMD.ipolicy = SPECIFIC_POLICY;
+
   m_AEMD.oldipolicy = m_AEMD.ipolicy;
 
   if (m_AEMD.ipolicy == DEFAULT_POLICY) {

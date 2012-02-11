@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+ * Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -51,6 +51,7 @@ using namespace std;
 #include <wx/clipbrd.h>
 #endif
 #include <wx/snglinst.h>
+#include "../../core/PWSLog.h"
 
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
@@ -200,6 +201,7 @@ PwsafeApp::~PwsafeApp()
 
   PWSprefs::DeleteInstance();
   PWSrand::DeleteInstance();
+  PWSLog::DeleteLog();
   
   delete m_controller;
 }
@@ -311,7 +313,7 @@ bool PwsafeApp::OnInit()
   }
 #endif /* _DEBUG */
 
-  wxSingleInstanceChecker appInstance;
+  static wxSingleInstanceChecker appInstance;
   if (!prefs->GetPref(PWSprefs::MultipleInstances) && 
         (appInstance.Create(wxT("pwsafe.lck"), towxstring(pws_os::getuserprefsdir())) &&
          appInstance.IsAnotherRunning())) 
@@ -376,6 +378,7 @@ bool PwsafeApp::OnInit()
 
   RestoreFrameCoords();
   m_frame->Show();
+  SetTopWindow(m_frame);
   return true;
 }
 

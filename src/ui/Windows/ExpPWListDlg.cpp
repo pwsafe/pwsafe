@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -134,7 +134,8 @@ BOOL CExpPWListDlg::OnInitDialog()
   m_pImageList = new CImageList();
   // Number (12) corresponds to number in CPWTreeCtrl public enum
   BOOL status = m_pImageList->Create(bm.bmWidth, bm.bmHeight,
-                                     ILC_MASK | ILC_COLOR, 12, 0);
+                                     ILC_MASK | ILC_COLORDDB,
+                                     CPWTreeCtrl::NUM_IMAGES, 0);
   ASSERT(status != 0);
 
   // Order of LoadBitmap() calls matches CPWTreeCtrl public enum

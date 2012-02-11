@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -44,6 +44,53 @@ void CItemData::SetSessionKey()
   IsSessionKeySet = true;
 }
 
+void String2PWPolicy(const stringT &cs_pwp, PWPolicy &pwp)
+{
+  // should really be a c'tor of PWPolicy - later...
+
+  // We need flags(4), length(3), lower_len(3), upper_len(3)
+  //   digit_len(3), symbol_len(3) = 4 + 5 * 3 = 19
+  // All fields are hexadecimal digits representing flags or lengths
+
+  // Note: order of fields set by PWSprefs enum that can have minimum lengths.
+  // Later releases must support these as a minimum.  Any fields added
+  // by these releases will be lost if the user changes these field.
+  ASSERT(cs_pwp.length() == 19);
+
+  // Get fields
+  istringstreamT is_flags(stringT(cs_pwp, 0, 4));
+  istringstreamT is_length(stringT(cs_pwp, 4, 3));
+  istringstreamT is_digitminlength(stringT(cs_pwp, 7, 3));
+  istringstreamT is_lowreminlength(stringT(cs_pwp, 10, 3));
+  istringstreamT is_symbolminlength(stringT(cs_pwp, 13, 3));
+  istringstreamT is_upperminlength(stringT(cs_pwp, 16, 3));
+
+  // Put them into PWPolicy structure
+  unsigned int f; // dain bramaged istringstream requires this runaround
+  is_flags >> hex >> f;
+  pwp.flags = static_cast<unsigned short>(f);
+  is_length >> hex >> pwp.length;
+  is_digitminlength >> hex >> pwp.digitminlength;
+  is_lowreminlength >> hex >> pwp.lowerminlength;
+  is_symbolminlength >> hex >> pwp.symbolminlength;
+  is_upperminlength >> hex >> pwp.upperminlength;
+}
+
+void PWPolicy2String(const PWPolicy &pwp, stringT &cs_pwp)
+{
+  ostringstreamT os;
+  unsigned int f; // dain bramaged istringstream requires this runaround
+  f = static_cast<unsigned int>(pwp.flags);
+  os.fill(charT('0'));
+  os << hex << setw(4) << f
+     << setw(3) << pwp.length
+     << setw(3) << pwp.digitminlength
+     << setw(3) << pwp.lowerminlength
+     << setw(3) << pwp.symbolminlength
+     << setw(3) << pwp.upperminlength;
+  cs_pwp = os.str().c_str();
+}
+
 //-----------------------------------------------------------------------------
 // Constructors
 
@@ -55,7 +102,8 @@ CItemData::CItemData()
     m_tttPMTime(PMTIME), m_tttRMTime(RMTIME), m_PWHistory(PWHIST),
     m_PWPolicy(POLICY), m_XTimeInterval(XTIME_INT), m_RunCommand(RUNCMD),
     m_DCA(DCA), m_ShiftDCA(SHIFTDCA), m_email(EMAIL), m_protected(PROTECTED),
-    m_symbols(SYMBOLS), m_entrytype(ET_NORMAL), m_entrystatus(ES_CLEAN),
+    m_symbols(SYMBOLS), m_PolicyName(POLICYNAME), 
+    m_entrytype(ET_NORMAL), m_entrystatus(ES_CLEAN),
     m_display_info(NULL)
 {
   PWSrand::GetInstance()->GetRandomData( m_salt, SaltLength );
@@ -71,6 +119,7 @@ CItemData::CItemData(const CItemData &that) :
   m_PWPolicy(that.m_PWPolicy), m_XTimeInterval(that.m_XTimeInterval),
   m_RunCommand(that.m_RunCommand), m_DCA(that.m_DCA), m_ShiftDCA(that.m_ShiftDCA),
   m_email(that.m_email), m_protected(that.m_protected), m_symbols(that.m_symbols),
+  m_PolicyName(that.m_PolicyName),
   m_entrytype(that.m_entrytype), m_entrystatus(that.m_entrystatus),
   m_display_info(that.m_display_info == NULL ?
                       NULL : that.m_display_info->clone())
@@ -105,6 +154,7 @@ CItemData& CItemData::operator=(const CItemData &that)
     m_ShiftDCA = that.m_ShiftDCA;
     m_email = that.m_email;
     m_symbols = that.m_symbols;
+    m_PolicyName = that.m_PolicyName;
     m_tttCTime = that.m_tttCTime;
     m_tttPMTime = that.m_tttPMTime;
     m_tttATime = that.m_tttATime;
@@ -146,6 +196,7 @@ void CItemData::Clear()
   m_ShiftDCA.Empty();
   m_email.Empty();
   m_symbols.Empty();
+  m_PolicyName.Empty();
   m_tttCTime.Empty();
   m_tttPMTime.Empty();
   m_tttATime.Empty();
@@ -294,6 +345,8 @@ StringX CItemData::GetFieldValue(const FieldType &ft) const
       return GetSymbols();
     case SHIFTDCA:   /* 17 */
       return GetShiftDCA();
+    case POLICYNAME: /* 18 */
+      return GetPolicyName();
     default:
       ASSERT(0);
   }
@@ -484,39 +537,6 @@ const CUUID CItemData::GetUUID() const
   return CUUID(ua);
 }
 
-
-static void String2PWPolicy(const stringT &cs_pwp, PWPolicy &pwp)
-{
-  // should really be a c'tor of PWPolicy - later...
-
-  // We need flags(4), length(3), lower_len(3), upper_len(3)
-  //   digit_len(3), symbol_len(3) = 4 + 5 * 3 = 19
-  // All fields are hexadecimal digits representing flags or lengths
-
-  // Note: order of fields set by PWSprefs enum that can have minimum lengths.
-  // Later releases must support these as a minimum.  Any fields added
-  // by these releases will be lost if the user changes these field.
-  ASSERT(cs_pwp.length() == 19);
-
-  // Get fields
-  istringstreamT is_flags(stringT(cs_pwp, 0, 4));
-  istringstreamT is_length(stringT(cs_pwp, 4, 3));
-  istringstreamT is_digitminlength(stringT(cs_pwp, 7, 3));
-  istringstreamT is_lowreminlength(stringT(cs_pwp, 10, 3));
-  istringstreamT is_symbolminlength(stringT(cs_pwp, 13, 3));
-  istringstreamT is_upperminlength(stringT(cs_pwp, 16, 3));
-
-  // Put them into PWPolicy structure
-  unsigned int f; // dain bramaged istringstream requires this runaround
-  is_flags >> hex >> f;
-  pwp.flags = static_cast<unsigned short>(f);
-  is_length >> hex >> pwp.length;
-  is_digitminlength >> hex >> pwp.digitminlength;
-  is_lowreminlength >> hex >> pwp.lowerminlength;
-  is_symbolminlength >> hex >> pwp.symbolminlength;
-  is_upperminlength >> hex >> pwp.upperminlength;
-}
-
 void CItemData::GetPWPolicy(PWPolicy &pwp) const
 {
   StringX cs_pwp(GetField(m_PWPolicy));
@@ -625,6 +645,11 @@ StringX CItemData::GetEmail() const
 StringX CItemData::GetSymbols() const
 {
   return GetField(m_symbols);
+}
+
+StringX CItemData::GetPolicyName() const
+{
+  return GetField(m_PolicyName);
 }
 
 void CItemData::GetUnknownField(unsigned char &type, size_t &length,
@@ -758,6 +783,7 @@ StringX CItemData::GetPlaintext(const TCHAR &separator,
            GetXTimeInt() + separator +
            GetRMTimeExp() + separator +
            GetPWPolicy() + separator +
+           GetPolicyName() + separator +
            history + separator +
            GetRunCommand() + separator +
            GetDCA() + separator +
@@ -795,8 +821,16 @@ StringX CItemData::GetPlaintext(const TCHAR &separator,
       ret += GetXTimeInt() + separator;
     if (bsFields.test(CItemData::RMTIME))
       ret += GetRMTimeExp() + separator;
+
+    StringX sxPolicyName = GetPolicyName();
+    if (sxPolicyName.empty()) {
     if (bsFields.test(CItemData::POLICY))
       ret += GetPWPolicy() + separator;
+    } else {
+      if (bsFields.test(CItemData::POLICY) || bsFields.test(CItemData::POLICYNAME))
+        ret += sxPolicyName + separator;
+    }
+
     if (bsFields.test(CItemData::PWHIST))
       ret += history + separator;
     if (bsFields.test(CItemData::RUNCMD))
@@ -915,6 +949,8 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
   if (bsExport.test(CItemData::RMTIME) && t)
     oss << PWSUtil::GetXMLTime(2, "rmtimex", t, utf8conv);
 
+  StringX sxPolicyName = GetPolicyName();
+  if (sxPolicyName.empty()) {
   PWPolicy pwp;
   GetPWPolicy(pwp);
   if (bsExport.test(CItemData::POLICY) && pwp.flags != 0) {
@@ -949,6 +985,11 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
       oss << "\t\t\t<PWSymbolMinLength>" << pwp.symbolminlength << "</PWSymbolMinLength>" << endl;
     }
     oss << "\t\t</PasswordPolicy>" << endl;
+  }
+  } else {
+    if (bsExport.test(CItemData::POLICY) || bsExport.test(CItemData::POLICYNAME))
+      PWSUtil::WriteXMLField(oss, "PasswordPolicyName", sxPolicyName,
+                        utf8conv, "\t\t");
   }
 
   if (bsExport.test(CItemData::PWHIST)) {
@@ -1391,24 +1432,14 @@ void CItemData::SetPWPolicy(const PWPolicy &pwp)
   bool bhex_flag = (pwp.flags & PWSprefs::PWPolicyUseHexDigits) != 0;
   bool bother_flags = (pwp.flags & (~PWSprefs::PWPolicyUseHexDigits)) != 0;
 
-  StringX cs_pwp;
+  stringT cs_pwp;
 
   if (pwp.flags == 0 || (bhex_flag && bother_flags)) {
     cs_pwp = _T("");
   } else {
-    ostringstreamT os;
-    unsigned int f; // dain bramaged istringstream requires this runaround
-    f = static_cast<unsigned int>(pwp.flags);
-    os.fill(charT('0'));
-    os << hex << setw(4) << f
-       << setw(3) << pwp.length
-       << setw(3) << pwp.digitminlength
-       << setw(3) << pwp.lowerminlength
-       << setw(3) << pwp.symbolminlength
-       << setw(3) << pwp.upperminlength;
-    cs_pwp = os.str().c_str();
+    PWPolicy2String(pwp, cs_pwp);
   }
-  SetField(m_PWPolicy, cs_pwp);
+  SetField(m_PWPolicy, cs_pwp.c_str());
 }
 
 bool CItemData::SetPWPolicy(const stringT &cs_pwp)
@@ -1457,6 +1488,11 @@ void CItemData::SetEmail(const StringX &sx_email)
 void CItemData::SetSymbols(const StringX &sx_symbols)
 {
   SetField(m_symbols, sx_symbols);
+}
+
+void CItemData::SetPolicyName(const StringX &sx_PolicyName)
+{
+  SetField(m_PolicyName, sx_PolicyName);
 }
 
 void CItemData::SetDCA(const short &iDCA, const bool bShift)
@@ -1579,41 +1615,21 @@ BlowFish *CItemData::MakeBlowFish(bool noData) const
                                   m_salt, SaltLength);
 }
 
-int CItemData::ValidateUUID(const unsigned short &nMajor, const unsigned short &nMinor,
-                            uuid_array_t &uuid_array)
+bool CItemData::ValidateEntry(int &flags)
 {
-  // currently only ensure that item has a uuid, creating one if missing.
+  // Validate possible issues with an entry
+  // Add more internal functions as necessary
+  flags = VF_OK;
 
-  /* NOTE the unusual position of the default statement.
+  if (!ValidatePWHistory())
+    flags |= VF_BAD_PSWDHISTORY;
 
-  This is by design as it assumes that if we don't know the version, the
-  database probably has all the problems and should be fixed.
-
-  To date, we know that databases of format 0x0200 and 0x0300 have a UUID
-  problem if records were duplicated.  Databases of format 0x0100 did not
-  have the duplicate function and it has been fixed in databases in format
-  0x0301.
-
-  As more problems are detected and need to be fixed, this code will expand
-  and may have to change.
-  */
-  int iResult(0);
-  switch ((nMajor << 8) + nMinor) {
-    default:
-    case 0x0200:  // V2 format
-    case 0x0300:  // V3 format prior to PWS V3.03
-      CreateUUID();
-      GetUUID(uuid_array);
-      iResult = 1;
-    case 0x0100:  // V1 format
-    case 0x0301:  // V3 format PWS V3.03 and later
-      break;
+  return (flags != VF_OK);
   }
-  return iResult;
-}
 
 bool CItemData::ValidatePWHistory()
 {
+  // Return true if valid
   if (m_PWHistory.IsEmpty())
     return true;
 
@@ -1656,6 +1672,8 @@ bool CItemData::ValidatePWHistory()
     history += os1.str();
     history += pwshe.password;
   }
+
+  if (pwh != history)
   SetPWHistory(history);
 
   return false;
@@ -1697,6 +1715,9 @@ bool CItemData::Matches(const stringT &stValue, int iObject,
       break;
     case SYMBOLS:
       sx_Object = GetSymbols();
+      break;
+    case POLICYNAME:
+      sx_Object = GetPolicyName();
       break;
     case AUTOTYPE:
       sx_Object = GetAutoType();
@@ -1899,7 +1920,7 @@ static bool pull_string(StringX &str, const unsigned char *data, size_t len)
   v.push_back(0); // null terminate for FromUTF8.
   bool utf8status = utf8conv.FromUTF8(&v[0], len, str);
   if (!utf8status) {
-    pws_os::Trace(_T("CItemData::DeserializePlainText(): FromUTF8 failed!\n"));
+    pws_os::Trace(_T("CItemData::DeSerializePlainText(): FromUTF8 failed!\n"));
   }
   trashMemory(&v[0], len);
   return utf8status;
@@ -1969,7 +1990,7 @@ static bool pull_char(unsigned char &uc, const unsigned char *data, size_t len)
   return true;
 }
 
-bool CItemData::DeserializePlainText(const std::vector<char> &v)
+bool CItemData::DeSerializePlainText(const std::vector<char> &v)
 {
   vector<char>::const_iterator iter = v.begin();
   int emergencyExit = 255;
@@ -2104,6 +2125,10 @@ bool CItemData::SetField(int type, const unsigned char *data, size_t len)
       if (!pull_string(str, data, len)) return false;
       SetSymbols(str);
       break;
+    case POLICYNAME:
+      if (!pull_string(str, data, len)) return false;
+      SetPolicyName(str);
+      break;
     case END:
       break;
     default:
@@ -2232,6 +2257,7 @@ void CItemData::SerializePlainText(vector<char> &v,
   push_string(v, EMAIL, GetEmail());
   GetProtected(uc); push_uchar(v, PROTECTED, uc);
   push_string(v, SYMBOLS, GetSymbols());
+  push_string(v, POLICYNAME, GetPolicyName());
 
   UnknownFieldsConstIter vi_IterURFE;
   for (vi_IterURFE = GetURFIterBegin();
@@ -2283,6 +2309,7 @@ stringT CItemData::FieldName(FieldType ft)
   case EMAIL:        LoadAString(retval, IDSC_FLDNMEMAIL); break;
   case PROTECTED:    LoadAString(retval, IDSC_FLDNMPROTECTED); break;
   case SYMBOLS:      LoadAString(retval, IDSC_FLDNMSYMBOLS); break;
+  case POLICYNAME:   LoadAString(retval, IDSC_FLDNMPWPOLICYNAME); break;
   default:
     ASSERT(0);
   };
@@ -2315,6 +2342,7 @@ stringT CItemData::EngFieldName(FieldType ft)
   case EMAIL:      return _T("e-mail");
   case PROTECTED:  return _T("Protected");
   case SYMBOLS:    return _T("Symbols");
+  case POLICYNAME: return _T("Password Policy Name");
   default:
     ASSERT(0);
     return _T("");

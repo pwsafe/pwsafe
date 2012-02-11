@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -13,7 +13,7 @@
 #include "ThisMfcApp.h"
 #include "GeneralMsgBox.h"
 #include "PasskeyChangeDlg.h"
-#include "PwFont.h"
+#include "Fonts.h"
 
 #include "core/PwsPlatform.h"
 #include "core/PWScore.h"    // for error statuses from CheckPasskey()
@@ -108,9 +108,9 @@ BOOL CPasskeyChangeDlg::OnInitDialog()
 {
   CPWDialog::OnInitDialog();
 
-  ApplyPasswordFont(GetDlgItem(IDC_OLDPASSKEY));
-  ApplyPasswordFont(GetDlgItem(IDC_NEWPASSKEY));
-  ApplyPasswordFont(GetDlgItem(IDC_CONFIRMNEW));
+  Fonts::GetInstance()->ApplyPasswordFont(GetDlgItem(IDC_OLDPASSKEY));
+  Fonts::GetInstance()->ApplyPasswordFont(GetDlgItem(IDC_NEWPASSKEY));
+  Fonts::GetInstance()->ApplyPasswordFont(GetDlgItem(IDC_CONFIRMNEW));
 
   m_pctlOldPasskey->SetPasswordChar(PSSWDCHAR);
   m_pctlNewPasskey->SetPasswordChar(PSSWDCHAR);

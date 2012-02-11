@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -25,6 +25,12 @@ template<class T> int CompareNoCase(const T &s1, const T &s2)
 {
   // case insensitive string comparison
   return _tcsicmp(s1.c_str(), s2.c_str());
+}
+
+template<class T> int CompareCase(const T &s1, const T &s2)
+{
+  // case sensitive string comparison
+  return _tcscmp(s1.c_str(), s2.c_str());
 }
 
 template<class T> void ToLower(T &s)
@@ -166,8 +172,8 @@ template<class T> void LoadAString(T &s, int id)
  * Since we *always* use single or wide char functions/strings depending on UNICODE, we convert
  * all %s to %S while building with GNU/glibc and UNICODE defined using the functions below
  * 
- * http://msdn.microsoft.com/en-us/library/hf4y5e3w(v=VS.80).aspx
- * http://msdn.microsoft.com/en-us/library/tcxf1dw6(v=VS.80).aspx
+ * http://msdn.microsoft.com/en-us/library/hf4y5e3w(v=VS.100).aspx
+ * http://msdn.microsoft.com/en-us/library/tcxf1dw6(v=VS.100).aspx
  * http://www.gnu.org/software/libc/manual/html_node/Other-Output-Conversions.html#Other-Output-Conversions
  * 
  * Note that this is not a Linux vs. Windows difference.  The same issue exists if we build this on WIN32
@@ -246,6 +252,8 @@ template<class T> void Format(T &s, int fmt, ...)
 // instantiations for StringX & stringT
 template int CompareNoCase(const StringX &s1, const StringX &s2);
 template int CompareNoCase(const stringT &s1, const stringT &s2);
+template int CompareCase(const StringX &s1, const StringX &s2);
+template int CompareCase(const stringT &s1, const stringT &s2);
 template void ToLower(StringX &s);
 template void ToLower(stringT &s);
 template void ToUpper(StringX &s);
@@ -270,7 +278,6 @@ template void Format(stringT &s, int fmt, ...);
 template void Format(StringX &s, int fmt, ...);
 template void Format(stringT &s, const TCHAR *fmt, ...);
 template void Format(StringX &s, const TCHAR *fmt, ...);
-
 
 #ifdef TEST_TRIM
 int main(int argc, char *argv[])

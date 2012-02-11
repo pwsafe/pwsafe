@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -21,7 +21,6 @@ class PWScore;
 
 struct st_Opt_master_data {
   bool bLongPPs;   // Long or Wide PropertyPages
-  UINT uicaller;   // Options, New Database, Generate
 
   DboxMain *pDbx;
 
@@ -74,22 +73,6 @@ struct st_Opt_master_data {
   int PWHistoryNumDefault;
   int PWHAction;
 
-  // Password Policy Data
-  CString Symbols;
-  BOOL PWUseLowercase;
-  BOOL PWUseUppercase;
-  BOOL PWUseDigits;
-  BOOL PWUseSymbols;
-  BOOL PWUseHexdigits;
-  BOOL PWEasyVision;
-  BOOL PWMakePronounceable;
-  int PWDefaultLength;
-  int PWDigitMinLength;
-  int PWLowerMinLength;
-  int PWSymbolMinLength;
-  int PWUpperMinLength;
-  int UseOwnSymbols;
-
   // Security Data
   BOOL ClearClipboardOnMinimize;
   BOOL ClearClipboardOnExit;
@@ -131,7 +114,6 @@ public:
 
   DECLARE_DYNAMIC(COptions_PropertyPage)
 
-  inline UINT &M_uicaller() {return m_OPTMD.uicaller;}
   inline DboxMain * &M_pDbx() {return m_OPTMD.pDbx;}
 
   // Backup Data
@@ -184,22 +166,6 @@ public:
   inline BOOL &M_SavePWHistory() {return m_OPTMD.SavePWHistory;}
   inline int &M_PWHistoryNumDefault() {return m_OPTMD.PWHistoryNumDefault;}
   inline int &M_PWHAction() {return m_OPTMD.PWHAction;}
-
-  // Password Policy Data
-  inline CString &M_Symbols() {return m_OPTMD.Symbols;}
-  inline BOOL &M_PWUseLowercase() {return m_OPTMD.PWUseLowercase;}
-  inline BOOL &M_PWUseUppercase() {return m_OPTMD.PWUseUppercase;}
-  inline BOOL &M_PWUseDigits() {return m_OPTMD.PWUseDigits;}
-  inline BOOL &M_PWUseSymbols() {return m_OPTMD.PWUseSymbols;}
-  inline BOOL &M_PWUseHexdigits() {return m_OPTMD.PWUseHexdigits;}
-  inline BOOL &M_PWEasyVision() {return m_OPTMD.PWEasyVision;}
-  inline BOOL &M_PWMakePronounceable() {return m_OPTMD.PWMakePronounceable;}
-  inline int &M_PWDefaultLength() {return m_OPTMD.PWDefaultLength;}
-  inline int &M_PWDigitMinLength() {return m_OPTMD.PWDigitMinLength;}
-  inline int &M_PWLowerMinLength() {return m_OPTMD.PWLowerMinLength;}
-  inline int &M_PWSymbolMinLength() {return m_OPTMD.PWSymbolMinLength;}
-  inline int &M_PWUpperMinLength() {return m_OPTMD.PWUpperMinLength;}
-  inline int &M_UseOwnSymbols() {return m_OPTMD.UseOwnSymbols;}
 
   // Security Data
   inline BOOL &M_ClearClipboardOnMinimize() {return m_OPTMD.ClearClipboardOnMinimize;}

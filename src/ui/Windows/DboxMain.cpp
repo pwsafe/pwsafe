@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -18,9 +18,8 @@
 #include "PasswordSafe.h"
 #include "ThisMfcApp.h"
 #include "AboutDlg.h"
-#include "PwFont.h"
+#include "Fonts.h"
 #include "MFCMessages.h"
-#include "version.h"
 
 #include "DboxMain.h"
 #include "TryAgainDlg.h"
@@ -48,6 +47,7 @@
 #include "os/file.h"
 #include "os/env.h"
 #include "os/dir.h"
+#include "os/logit.h"
 
 #if defined(POCKET_PC)
 #include "pocketpc/resource.h"
@@ -124,11 +124,11 @@ DboxMain::DboxMain(CWnd* pParent)
   m_bSizing(false), m_bDBNeedsReading(true), m_bInitDone(false),
   m_toolbarsSetup(FALSE),
   m_bSortAscending(true), m_iTypeSortColumn(CItemData::TITLE),
-  m_core(app.m_core), m_pFontTree(NULL),
+  m_core(app.m_core),
   m_bTSUpdated(false),
   m_iSessionEndingStatus(IDIGNORE),
-  m_pchTip(NULL), m_pwchTip(NULL),
-  m_bValidate(false), m_bOpen(false), 
+  m_pwchTip(NULL),
+  m_bOpen(false), 
   m_IsStartClosed(false), m_IsStartSilent(false),
   m_bStartHiddenAndMinimized(false),
   m_bAlreadyToldUserNoSave(false), m_inExit(false),
@@ -148,10 +148,10 @@ DboxMain::DboxMain(CWnd* pParent)
   m_bDeleteCtrl(false), m_bDeleteShift(false),
   m_bRenameCtrl(false), m_bRenameShift(false),
   m_bAutotypeCtrl(false), m_bAutotypeShift(false),
-  m_bInAT(false), m_bInRestoreWindowsData(false), m_bSetup(false),
+  m_bInAT(false), m_bInRestoreWindowsData(false), m_bSetup(false), m_bCompareEntries(false),
   m_bInRefresh(false), m_bInRestoreWindows(false), m_bExpireDisplayed(false),
   m_bTellUserExpired(false), m_bInRename(false), m_bWhitespaceRightClick(false),
-  m_ilastaction(0),
+  m_ilastaction(0), m_bNoValidation(false),
     m_LUUIDSelectedAtMinimize(pws_os::CUUID::NullUUID()),
   m_TUUIDSelectedAtMinimize(pws_os::CUUID::NullUUID()),
   m_LUUIDVisibleAtMinimize(pws_os::CUUID::NullUUID()),
@@ -216,11 +216,7 @@ DboxMain::~DboxMain()
   ::DestroyIcon(m_hIcon);
   ::DestroyIcon(m_hIconSm);
 
-  delete m_pchTip;
   delete m_pwchTip;
-  delete m_pFontTree;
-  DeletePasswordFont();
-
   delete m_pToolTipCtrl;
 
   if (m_hUser32 != NULL)
@@ -421,6 +417,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_REDO, OnRedo)
   ON_COMMAND(ID_MENUITEM_EXPORTENT2PLAINTEXT, OnExportEntryText)
   ON_COMMAND(ID_MENUITEM_EXPORTENT2XML, OnExportEntryXML)
+  ON_COMMAND(ID_MENUITEM_COMPARE_ENTRIES, OnCompareEntries)
   ON_COMMAND_RANGE(ID_MENUITEM_PROTECT, ID_MENUITEM_UNPROTECTGROUP, OnProtect)
 
   // View Menu
@@ -456,6 +453,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_RESTORESAFE, OnRestoreSafe)
   ON_COMMAND(ID_MENUITEM_OPTIONS, OnOptions)
   ON_COMMAND(ID_MENUITEM_GENERATEPASSWORD, OnGeneratePassword)
+  ON_COMMAND(ID_MENUITEM_PSWD_POLICIES, OnManagePasswordPolicies)
 
   // Help Menu
   ON_COMMAND(ID_MENUITEM_ABOUT, OnAbout)
@@ -469,7 +467,6 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_RESETCOLUMNS, OnResetColumns)
 
   // Others
-  ON_COMMAND(ID_MENUITEM_VALIDATE, OnValidate)
   // Double-click on R-O R/W indicator on StatusBar
   ON_COMMAND(IDS_READ_ONLY, OnChangeMode)
   // Double-click on filter indicator on StatusBar
@@ -543,6 +540,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_MESSAGE(PWS_MSG_HDRTOCC_DD_COMPLETE, OnHdrToCCDragComplete)
   ON_MESSAGE(PWS_MSG_HDR_DRAG_COMPLETE, OnHeaderDragComplete)
   ON_MESSAGE(PWS_MSG_COMPARE_RESULT_FUNCTION, OnProcessCompareResultFunction)
+  ON_MESSAGE(PWS_MSG_COMPARE_RESULT_ALLFNCTN, OnProcessCompareResultAllFunction)
   ON_MESSAGE(PWS_MSG_EXPIRED_PASSWORD_EDIT, OnEditExpiredPasswordEntry)
   ON_MESSAGE(PWS_MSG_TOOLBAR_FIND, OnToolBarFindMessage)
   ON_MESSAGE(PWS_MSG_DRAGAUTOTYPE, OnDragAutoType)
@@ -582,7 +580,6 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND_RANGE(ID_MENUITEM_TRAYSELECT1, ID_MENUITEM_TRAYSELECTMAX, OnTraySelect)
   ON_UPDATE_COMMAND_UI_RANGE(ID_MENUITEM_TRAYSELECT1, ID_MENUITEM_TRAYSELECTMAX, OnUpdateTraySelect)
   ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTW, 0, 0xFFFF, OnToolTipText)
-  ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTA, 0, 0xFFFF, OnToolTipText)
 #endif
 END_MESSAGE_MAP()
 
@@ -647,6 +644,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_REDO, true, false, true, false},
   {ID_MENUITEM_EXPORTENT2PLAINTEXT, true, true, false, false},
   {ID_MENUITEM_EXPORTENT2XML, true, true, false, false},
+  {ID_MENUITEM_COMPARE_ENTRIES, true, false, false, false},
   // View menu
   {ID_MENUITEM_LIST_VIEW, true, true, true, false},
   {ID_MENUITEM_TREE_VIEW, true, true, true, false},
@@ -684,8 +682,8 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_BACKUPSAFE, true, true, true, false},
   {ID_MENUITEM_RESTORESAFE, true, false, true, false},
   {ID_MENUITEM_OPTIONS, true, true, true, true},
-  {ID_MENUITEM_VALIDATE, false, false, false, true},
   {ID_MENUITEM_GENERATEPASSWORD, true, true, true, true},
+  {ID_MENUITEM_PSWD_POLICIES, true, true, true, false},
   // Help Menu
   {ID_MENUITEM_PWSAFE_WEBSITE, true, true, true, true},
   {ID_MENUITEM_ABOUT, true, true, true, true},
@@ -698,7 +696,8 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   // Compare popup menu
   {ID_MENUITEM_COMPVIEWEDIT, true, false, true, false},
   {ID_MENUITEM_COPY_TO_ORIGINAL, true, false, true, false},
-  {ID_MENUITEM_COPY_TO_COMPARISON, true, true, true, false},
+  {ID_MENUITEM_COPYALL_TO_ORIGINAL, true, false, true, false},
+  {ID_MENUITEM_SYNCHRONIZEALL, true, false, true, false},
   // Tray popup menu
   {ID_MENUITEM_TRAYUNLOCK, true, true, true, false},
   {ID_MENUITEM_TRAYLOCK, true, true, true, false},
@@ -725,6 +724,8 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
 
 void DboxMain::InitPasswordSafe()
 {
+  PWS_LOGIT;
+
   pws_os::getosversion(m_WindowsMajorVersion, m_WindowsMinorVersion);
   PWSprefs *prefs = PWSprefs::GetInstance();
   // Real initialization done here
@@ -784,7 +785,8 @@ void DboxMain::InitPasswordSafe()
   m_pImageList = new CImageList();
   // Number (12) corresponds to number in CPWTreeCtrl public enum
   BOOL status = m_pImageList->Create(bm.bmWidth, bm.bmHeight, 
-                                     ILC_MASK | ILC_COLOR, 12, 0);
+                                     ILC_MASK | ILC_COLORDDB, 
+                                     CPWTreeCtrl::NUM_IMAGES, 0);
   ASSERT(status != 0);
 
   // Dummy Imagelist needed if user adds then removes Icon column
@@ -835,7 +837,6 @@ void DboxMain::InitPasswordSafe()
   m_ctlItemTree.SetHighlightChanges(prefs->GetPref(PWSprefs::HighlightChanges));
 
   // Set up fonts before playing with Tree/List views
-  m_pFontTree = new CFont;
 
   // Get current font (as specified in .rc file for IDD_PASSWORDSAFE_DIALOG) & save it
   // If it's not available, fall back to font used in pre-3.18 versions, rather than
@@ -844,6 +845,7 @@ void DboxMain::InitPasswordSafe()
   pCurrentFont->GetLogFont(&dfltTreeListFont);
 
   CString szTreeFont = prefs->GetPref(PWSprefs::TreeFont).c_str();
+  Fonts *pFonts = Fonts::GetInstance();
 
   // If we didn't find font specified in rc, and user didn't select anything
   // fallback to MS Sans Serif
@@ -851,30 +853,33 @@ void DboxMain::InitPasswordSafe()
       szTreeFont.IsEmpty()) {
     const CString MS_SanSerif8 = L"-11,0,0,0,400,0,0,0,177,1,2,1,34,MS Sans Serif";
     szTreeFont = MS_SanSerif8;
-    ExtractFont(szTreeFont, dfltTreeListFont); // Save for 'Reset font' action
+    pFonts->ExtractFont(szTreeFont, dfltTreeListFont); // Save for 'Reset font' action
   }
   
+  LOGFONT tree_lf;
   if (!szTreeFont.IsEmpty()) { // either preference or our own fallback
-    LOGFONT treefont;
-    ExtractFont(szTreeFont, treefont);
-    m_pFontTree->CreateFontIndirect(&treefont);
-    // transfer the fonts to the tree windows
-    m_ctlItemTree.SetUpFont(m_pFontTree);
-    m_ctlItemList.SetUpFont(m_pFontTree);
-    m_LVHdrCtrl.SetFont(m_pFontTree);
+    pFonts->ExtractFont(szTreeFont, tree_lf);
+    pFonts->SetCurrentFont(&tree_lf);
   } else {
-    m_ctlItemTree.SetUpFont(pCurrentFont);
-    m_ctlItemList.SetUpFont(pCurrentFont);
+    pFonts->SetCurrentFont(&dfltTreeListFont);
   }
 
   // Set up Password font too.
   CString szPasswordFont = prefs->GetPref(PWSprefs::PasswordFont).c_str();
 
-  if (szPasswordFont != L"") {
+  if (!szPasswordFont.IsEmpty()) {
     LOGFONT Passwordfont;
-    ExtractFont(szPasswordFont, Passwordfont);
-    SetPasswordFont(&Passwordfont);
+    pFonts->ExtractFont(szPasswordFont, Passwordfont);
+    pFonts->SetPasswordFont(&Passwordfont);
+  } else {
+    // Not set - use default password font
+    pFonts->SetPasswordFont(NULL);
   }
+
+  // transfer the fonts to the tree windows
+  m_ctlItemTree.SetUpFont();
+  m_ctlItemList.SetUpFont();
+  m_LVHdrCtrl.SetFont(pFonts->GetCurrentFont());
 
   const CString lastView = prefs->GetPref(PWSprefs::LastView).c_str();
   if (lastView != L"list")
@@ -1082,6 +1087,8 @@ LRESULT DboxMain::OnHdrToCCDragComplete(WPARAM wType, LPARAM /* lParam */)
 
 BOOL DboxMain::OnInitDialog()
 {
+  PWS_LOGIT;
+
   CDialog::OnInitDialog();
 
   // Set up UPDATE_UI data map.
@@ -1321,6 +1328,16 @@ void DboxMain::Execute(Command *pcmd, PWScore *pcore)
 
   SaveGUIStatus();
   pcore->Execute(pcmd);
+
+  // See if we have any special filters active that now do not have any entries
+  // to display, which would have meant that the user should not be able to select them,
+  // we need to cancel them
+  if (m_ctlItemTree.GetCount() == 0 &&
+      (m_currentfilter == m_showexpirefilter ||
+       m_currentfilter == m_showunsavedfilter)) {
+    OnCancelFilter();
+  }
+
   UpdateToolBarDoUndo();
 
   SaveGUIStatusEx(iBothViews);
@@ -1329,6 +1346,16 @@ void DboxMain::Execute(Command *pcmd, PWScore *pcore)
 void DboxMain::OnUndo()
 {
   m_core.Undo();
+  
+  // See if we have any special filters active that now do not have any entries
+  // to display, which would have meant that the user should not be able to select them,
+  // we need to cancel them
+  if (m_ctlItemTree.GetCount() == 0 &&
+      (m_currentfilter == m_showexpirefilter ||
+       m_currentfilter == m_showunsavedfilter)) {
+    OnCancelFilter();
+  }
+
   RestoreGUIStatus();
 
   UpdateToolBarDoUndo();
@@ -1367,6 +1394,11 @@ void DboxMain::FixListIndexes()
 void DboxMain::OnItemDoubleClick(NMHDR *, LRESULT *pLResult)
 {
   *pLResult = 0L;
+
+  // Ignore double-click if multiple entries selected (List view only)
+  if (m_IsListView && m_ctlItemList.GetSelectedCount() != 1)
+    return;
+
   UnFindItem();
 
   // TreeView only - use DoubleClick to Expand/Collapse group
@@ -1521,6 +1553,8 @@ void DboxMain::SetStartSilent(bool state)
 
 void DboxMain::SetChanged(ChangeType changed)
 {
+  PWS_LOGIT_ARGS("changed=%d", changed);
+
   if (m_core.IsReadOnly())
     return;
 
@@ -1631,6 +1665,8 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
                                   int flags,
                                   PWScore *pcore)
 {
+  PWS_LOGIT_ARGS("index=%d; flags=0x%04x", index, flags);
+
   // index:
   //  GCP_FIRST      (0) first
   //  GCP_NORMAL     (1) OK, CANCEL & HELP buttons
@@ -1685,22 +1721,6 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
                                    index, bReadOnly || bFileIsReadOnly,
                                    bFileIsReadOnly || bForceReadOnly,
                                    bHideReadOnly);
-
-  int nMajor(0), nMinor(0), nBuild(0);
-  DWORD dwMajorMinor = app.GetFileVersionMajorMinor();
-  DWORD dwBuildRevision = app.GetFileVersionBuildRevision();
-
-  if (dwMajorMinor > 0) {
-    nMajor = HIWORD(dwMajorMinor);
-    nMinor = LOWORD(dwMajorMinor);
-    nBuild = HIWORD(dwBuildRevision);
-  }
-  if (nBuild == 0)
-    dbox_pkentry->m_appversion.Format(L"Version %d.%02d%s",
-                                      nMajor, nMinor, SPECIAL_BUILD);
-  else
-    dbox_pkentry->m_appversion.Format(L"Version %d.%02d.%02d%s",
-                                      nMajor, nMinor, nBuild, SPECIAL_BUILD);
 
   // Ensure blank DboxMain dialog is not shown if user double-clicks
   // on SystemTray icon when being prompted for passphrase
@@ -1856,21 +1876,18 @@ BOOL DboxMain::OnToolTipText(UINT, NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
   // This code is copied from the DLGCBR32 example that comes with MFC
   // Updated by MS on 25/09/2005
-#if !defined(POCKET_PC)
-  ASSERT(pNotifyStruct->code == TTN_NEEDTEXTA || pNotifyStruct->code == TTN_NEEDTEXTW);
+  ASSERT(pNotifyStruct->code == TTN_NEEDTEXTW);
 
   // allow top level routing frame to handle the message
   if (GetRoutingFrame() != NULL)
     return FALSE;
 
   // need to handle both ANSI and UNICODE versions of the message
-  TOOLTIPTEXTA* pTTTA = (TOOLTIPTEXTA*)pNotifyStruct;
   TOOLTIPTEXTW* pTTTW = (TOOLTIPTEXTW*)pNotifyStruct;
   wchar_t tc_FullText[4096];  // Maxsize of a string in a resource file
   CString cs_TipText;
   UINT nID = (UINT)pNotifyStruct->idFrom;
-  if (pNotifyStruct->code == TTN_NEEDTEXTA && (pTTTA->uFlags & TTF_IDISHWND) ||
-      pNotifyStruct->code == TTN_NEEDTEXTW && (pTTTW->uFlags & TTF_IDISHWND)) {
+  if (pTTTW->uFlags & TTF_IDISHWND) {
     // idFrom is actually the HWND of the tool
     nID = ((UINT)(WORD)::GetDlgCtrlID((HWND)nID));
   }
@@ -1890,59 +1907,17 @@ BOOL DboxMain::OnToolTipText(UINT, NMHDR *pNotifyStruct, LRESULT *pLResult)
 
   // Assume ToolTip is greater than 80 characters in ALL cases and so use
   // the pointer approach.
-  // Otherwise comment out the definition of LONG_TOOLTIPS below
 
-#define LONG_TOOLTIPS
-
-#ifdef LONG_TOOLTIPS
-  if (pNotifyStruct->code == TTN_NEEDTEXTA) {
-    delete m_pchTip;
-
-    m_pchTip = new char[cs_TipText.GetLength() + 1];
-#if (_MSC_VER >= 1400)
-    size_t num_converted;
-    wcstombs_s(&num_converted, m_pchTip, cs_TipText.GetLength() + 1, cs_TipText,
-               cs_TipText.GetLength() + 1);
-#else
-    wcstombs(m_pchTip, cs_TipText, cs_TipText.GetLength() + 1);
-#endif
-    pTTTA->lpszText = (LPSTR)m_pchTip;
-  } else {
     delete m_pwchTip;
 
     m_pwchTip = new WCHAR[cs_TipText.GetLength() + 1];
-#if (_MSC_VER >= 1400)
     wcsncpy_s(m_pwchTip, cs_TipText.GetLength() + 1,
               cs_TipText, _TRUNCATE);
-#else
-    wcsncpy(m_pwchTip, cs_TipText, cs_TipText.GetLength() + 1);
-#endif
+
     pTTTW->lpszText = (LPWSTR)m_pwchTip;
-  }
-#else // Short Tooltips!
-  if (pNotifyStruct->code == TTN_NEEDTEXTA) {
-    int n = WideCharToMultiByte(CP_ACP, 0, cs_TipText, -1,
-                                pTTTA->szText,
-                                _countof(pTTTA->szText),
-                                NULL, NULL);
-    if (n > 0)
-      pTTTA->szText[n - 1] = 0;
-  } else {
-#if (_MSC_VER >= 1400)
-    wcsncpy_s(pTTTW->szText, _countof(pTTTW->szText),
-              cs_TipText, _TRUNCATE);
-#else
-    wcsncpy(pTTTW->szText, cs_TipText, _countof(pTTTW->szText));
-#endif
-  }
-#endif // LONG_TOOLTIPS
 
   *pLResult = 0;
 
-  // bring the tooltip window above other popup windows
-  ::SetWindowPos(pNotifyStruct->hwndFrom, HWND_TOP, 0, 0, 0, 0,
-                 SWP_NOACTIVATE|SWP_NOSIZE|SWP_NOMOVE);
-#endif  // POCKET_PC
   return TRUE;    // message was handled
 }
 
@@ -2001,6 +1976,9 @@ void DboxMain::OnSysCommand(UINT nID, LPARAM lParam)
   }
 
   UINT const nSysID = nID & 0xFFF0;
+
+  PWS_LOGIT_ARGS("nID=%04X", nID);
+
   switch (nSysID) {
     case SC_MINIMIZE:
       break;
@@ -2115,6 +2093,10 @@ LRESULT DboxMain::OnTrayNotification(WPARAM , LPARAM)
 
 bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
 {
+  PWS_LOGIT_ARGS("bUpdateWindows=%s, bShow=%s",
+    bUpdateWindows ? _T("true") : _T("false"), 
+    bShow ? _T("true") : _T("false"));
+
   // This restores the data in the main dialog.
   // If currently locked, it checks the user knows the correct passphrase first
   // Note: bUpdateWindows = true only when called from within OnSysCommand-SC_RESTORE
@@ -2205,6 +2187,7 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
 
     switch (rc_passphrase) {
       case PWScore::SUCCESS:
+        // Don't validate again
         rc_readdatabase = m_core.ReadCurFile(passkey);
 #if !defined(POCKET_PC)
         m_titlebar = PWSUtil::NormalizeTTT(L"Password Safe - " +
@@ -2430,7 +2413,12 @@ void DboxMain::SetLanguage(LCID lcid)
   }
 
   // Update Statusbar
-  CItemData *pci = getSelectedItem();
+  // Double-click action meaningless if multiple entries selected - pci should be NULL
+  // List view only
+  CItemData *pci(NULL);
+  if (m_IsListView && m_ctlItemList.GetSelectedCount() == 1)
+    pci = getSelectedItem();
+
   SetDCAText(pci);
   if (m_ilastaction != 0)
     UpdateLastClipboardAction(m_ilastaction);
@@ -2543,6 +2531,8 @@ void DboxMain::UpdateAccessTime(CItemData *pci)
 
 LRESULT DboxMain::OnQueryEndSession(WPARAM , LPARAM lParam)
 {
+    PWS_LOGIT_ARGS("lParam=%d", lParam);
+
   /*
     ********************************************************************************
     NOTE: If the Windows API ExitWindowsEx is called with the EWX_FORCE flag,
@@ -2626,6 +2616,8 @@ LRESULT DboxMain::OnQueryEndSession(WPARAM , LPARAM lParam)
 
 LRESULT DboxMain::OnEndSession(WPARAM wParam, LPARAM )
 {
+  PWS_LOGIT_ARGS("wParam=%d", wParam);
+
   /*
     See comments in OnQueryEndSession above.
   */
@@ -2772,6 +2764,11 @@ void DboxMain::SetDCAText(CItemData *pci)
     if (si_dca == -1)
       si_dca = si_dca_default;
   }
+
+  // Double-click action meaningless if multiple entries selected - pci should be NULL
+  // List View only
+  if (m_IsListView && m_ctlItemList.GetSelectedCount() != 1)
+    si_dca = -1;
 
   UINT ui_dca;
   switch (si_dca) {

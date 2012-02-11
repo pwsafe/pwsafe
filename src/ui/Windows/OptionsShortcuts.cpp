@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -143,7 +143,7 @@ bool shortcutmaps_equal (MapMenuShortcutsPair p1, MapMenuShortcutsPair p2 )
 {
   return (p1.first == p2.first && 
           p1.second.cModifier == p2.second.cModifier &&
-          p1.second.cVirtKey == p2.second.cVirtKey);
+          p1.second.siVirtKey == p2.second.siVirtKey);
 }
 
 LRESULT COptionsShortcuts::OnQuerySiblings(WPARAM wParam, LPARAM )
@@ -230,8 +230,8 @@ void COptionsShortcuts::OnResetAll()
     id = (UINT)LOWORD(m_ShortcutLC.GetItemData(i));
 
     iter = m_MapMenuShortcuts.find(id);
-    iter->second.cVirtKey = iter->second.cdefVirtKey;
-    iter->second.cModifier = iter->second.cdefModifier;
+    iter->second.siVirtKey = iter->second.siDefVirtKey;
+    iter->second.cModifier = iter->second.cDefModifier;
   
     str = CMenuShortcut::FormatShortcut(iter);
     m_ShortcutLC.SetItemText(i, 0, str);  // SHCT_SHORTCUTKEYS
@@ -313,7 +313,7 @@ struct reserved {
   reserved(st_MenuShortcut& st_mst) : m_st_mst(st_mst) {}
   bool operator()(st_MenuShortcut const& rdata) const
   {
-    return (m_st_mst.cVirtKey  == rdata.cVirtKey &&
+    return (m_st_mst.siVirtKey  == rdata.siVirtKey &&
             m_st_mst.cModifier == rdata.cModifier);
   }
 
@@ -331,7 +331,7 @@ void COptionsShortcuts::OnHotKeyKillFocus(const int item, const UINT id,
   MapMenuShortcutsIter iter, inuse_iter;
   st_MenuShortcut st_mst;
 
-  st_mst.cVirtKey  = (unsigned char)wVirtualKeyCode;
+  st_mst.siVirtKey  = wVirtualKeyCode;
   st_mst.cModifier = wVirtualKeyCode == 0 ? 0 : (unsigned char)wModifiers;
 
   // Stop compiler complaining - put this here even if not needed
@@ -355,7 +355,7 @@ void COptionsShortcuts::OnHotKeyKillFocus(const int item, const UINT id,
 
   // Check not already in use (ignore if deleting current shortcut)
   iter = m_MapMenuShortcuts.find(id);
-  if (st_mst.cVirtKey != (unsigned char)0) {
+  if (st_mst.siVirtKey != 0) {
     inuse_iter = std::find_if(m_MapMenuShortcuts.begin(),
                               m_MapMenuShortcuts.end(),
                               inuse);
@@ -368,7 +368,7 @@ void COptionsShortcuts::OnHotKeyKillFocus(const int item, const UINT id,
   }
 
   // Not reserved and not already in use - implement
-  iter->second.cVirtKey = st_mst.cVirtKey;
+  iter->second.siVirtKey = st_mst.siVirtKey;
   iter->second.cModifier = st_mst.cModifier;
 
   m_ShortcutLC.SetItemText(item, 0, str);  // SHCT_SHORTCUTKEYS

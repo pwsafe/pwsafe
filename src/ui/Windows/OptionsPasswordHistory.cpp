@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -39,7 +39,7 @@ IMPLEMENT_DYNAMIC(COptionsPasswordHistory, COptions_PropertyPage)
 
 COptionsPasswordHistory::COptionsPasswordHistory(CWnd *pParent, st_Opt_master_data *pOPTMD)
   : COptions_PropertyPage(pParent, COptionsPasswordHistory::IDD, pOPTMD),
-  m_pToolTipCtrl(NULL), m_PWHAction(0)
+  m_pToolTipCtrl(NULL), m_PWHAction(0), mApplyToProtected(BST_UNCHECKED)
 {
   m_SavePWHistory = M_SavePWHistory();
   m_PWHistoryNumDefault = M_PWHistoryNumDefault();
@@ -57,6 +57,7 @@ void COptionsPasswordHistory::DoDataExchange(CDataExchange* pDX)
 
   //{{AFX_DATA_MAP(COptionsPasswordHistory)
   DDX_Check(pDX, IDC_SAVEPWHISTORY, m_SavePWHistory);
+  DDX_Check(pDX, IDC_UPDATEPROTECTEDPWH, mApplyToProtected);
   DDX_Text(pDX, IDC_DEFPWHNUM, m_PWHistoryNumDefault);
   DDX_Radio(pDX, IDC_PWHISTORYNOACTION, m_PWHAction);
 
@@ -74,6 +75,7 @@ BEGIN_MESSAGE_MAP(COptionsPasswordHistory, COptions_PropertyPage)
   ON_BN_CLICKED(IDC_RESETPWHISTORYOFF, OnPWHistoryDoAction)
   ON_BN_CLICKED(IDC_RESETPWHISTORYON, OnPWHistoryDoAction)
   ON_BN_CLICKED(IDC_SETMAXPWHISTORY, OnPWHistoryDoAction)
+  ON_BN_CLICKED(IDC_CLEARPWHISTORY, OnPWHistoryDoAction)
   ON_MESSAGE(PSM_QUERYSIBLINGS, OnQuerySiblings)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
@@ -86,6 +88,7 @@ BOOL COptionsPasswordHistory::OnInitDialog()
   COptions_PropertyPage::OnInitDialog();
 
   m_chkbox.SetTextColour(CR_DATABASE_OPTIONS);
+  m_chkbox.SetBkgColour(COLOR_WINDOW);
 
   CSpinButtonCtrl *pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_PWHSPIN);
 
@@ -100,6 +103,7 @@ BOOL COptionsPasswordHistory::OnInitDialog()
 
   // Disable text re: PWHistory changes on existing entries to start
   GetDlgItem(IDC_STATIC_UPDATEPWHISTORY)->EnableWindow(FALSE);
+  GetDlgItem(IDC_UPDATEPROTECTEDPWH)->EnableWindow(FALSE);
 
   m_pToolTipCtrl = new CToolTipCtrl;
   if (!m_pToolTipCtrl->Create(this, TTS_BALLOON | TTS_NOPREFIX)) {
@@ -128,6 +132,8 @@ BOOL COptionsPasswordHistory::OnInitDialog()
   m_pToolTipCtrl->AddTool(GetDlgItem(IDC_RESETPWHISTORYON), cs_ToolTip);
   cs_ToolTip.LoadString(IDS_SETMAXPWHISTORY);
   m_pToolTipCtrl->AddTool(GetDlgItem(IDC_SETMAXPWHISTORY), cs_ToolTip);
+  cs_ToolTip.LoadString(IDS_CLEARPWHISTORY);
+  m_pToolTipCtrl->AddTool(GetDlgItem(IDC_CLEARPWHISTORY), cs_ToolTip);
 
   return TRUE;  // return TRUE unless you set the focus to a control
   // EXCEPTION: OCX Property Pages should return FALSE
@@ -137,8 +143,8 @@ LRESULT COptionsPasswordHistory::OnQuerySiblings(WPARAM wParam, LPARAM )
 {
   UpdateData(TRUE);
 
-  // Save current value
-  M_PWHAction() = m_PWHAction;
+  // Save current value - make negative if to update protected entries too
+  M_PWHAction() = m_PWHAction * (mApplyToProtected == 0 ? 1 : -1);
 
   // Have any of my fields been changed?
   switch (wParam) {
@@ -163,7 +169,7 @@ BOOL COptionsPasswordHistory::OnApply()
 
   M_SavePWHistory() = m_SavePWHistory;
   M_PWHistoryNumDefault() = m_PWHistoryNumDefault;
-  M_PWHAction() = m_PWHAction;
+  M_PWHAction() = m_PWHAction * (mApplyToProtected == 0 ? 1 : -1);
 
   return COptions_PropertyPage::OnApply();
 }
@@ -213,11 +219,15 @@ void COptionsPasswordHistory::OnSavePWHistory()
 void COptionsPasswordHistory::OnPWHistoryNoAction()
 {
   GetDlgItem(IDC_STATIC_UPDATEPWHISTORY)->EnableWindow(FALSE);
+  GetDlgItem(IDC_UPDATEPROTECTEDPWH)->EnableWindow(FALSE);
+  ((CButton *)GetDlgItem(IDC_UPDATEPROTECTEDPWH))->SetCheck(BST_UNCHECKED);
+  mApplyToProtected = BST_UNCHECKED;
 }
 
 void COptionsPasswordHistory::OnPWHistoryDoAction() 
 {
   GetDlgItem(IDC_STATIC_UPDATEPWHISTORY)->EnableWindow(TRUE);
+  GetDlgItem(IDC_UPDATEPROTECTEDPWH)->EnableWindow(TRUE);
 }
 
 HBRUSH COptionsPasswordHistory::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)

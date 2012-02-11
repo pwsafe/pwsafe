@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -286,6 +286,8 @@ HBRUSH CEditExtn::CtlColor(CDC* pDC, UINT /*nCtlColor*/)
   }
 }
 
+// Following structure used by botlh CEditExtn and CRichEditExtn for
+// finding menu items in the supplied extra vector based on command message number
 struct equal_cmd {
   equal_cmd(UINT_PTR const& nCmd) : m_nCmd(nCmd) {}
   bool operator()(st_context_menu const& context_menu) const
@@ -348,6 +350,8 @@ void CEditExtn::OnContextMenu(CWnd* pWnd, CPoint point)
       menu.InsertMenu((int)i + iPos, MF_BYPOSITION | m_vmenu_items[i].flags,
                       m_vmenu_items[i].message_number,
                       m_vmenu_items[i].menu_string.c_str());
+      if (!m_vmenu_items[i].bEnable)
+        menu.EnableMenuItem((int)i + iPos, MF_BYPOSITION | MF_GRAYED);
   }
 
   if (point.x == -1 || point.y == -1) {
@@ -368,7 +372,7 @@ void CEditExtn::OnContextMenu(CWnd* pWnd, CPoint point)
   iter = std::find_if(m_vmenu_items.begin(), m_vmenu_items.end(),
                       equal_cmd(nCmd));
   if (iter != m_vmenu_items.end()) {
-    this->GetParent()->SendMessage((UINT)nCmd);
+    this->GetParent()->SendMessage((UINT)nCmd, iter->wParam, iter->lParam);
     return;
   }
 
@@ -396,6 +400,254 @@ void CEditExtn::UpdateState(const int message_number, const BOOL new_state)
   if (iter != m_vmenu_items.end()) {
     int flags = new_state == TRUE ? MF_CHECKED : MF_UNCHECKED;
     iter->flags = flags;
+    return;
+  }
+}
+
+void CEditExtn::EnableMenuItem(const int message_number, const bool bEnable)
+{
+  std::vector<st_context_menu>::iterator iter;
+  iter = std::find_if(m_vmenu_items.begin(), m_vmenu_items.end(),
+                      equal_cmd(message_number));
+  if (iter != m_vmenu_items.end()) {
+    iter->bEnable = bEnable;
+    return;
+  }
+}
+
+/////////////////////////////////////////////////////////////////////////////
+// CRichEditExtn
+
+CRichEditExtn::CRichEditExtn(COLORREF focusColor)
+  : m_bIsFocused(FALSE), m_lastposition(-1), m_crefInFocus(focusColor),
+  m_bContextMenu(false)
+{
+  m_vmenu_items.clear();
+}
+
+CRichEditExtn::CRichEditExtn(std::vector<st_context_menu> vmenu_items,
+                     COLORREF focusColor)
+  : m_bIsFocused(FALSE), m_lastposition(-1), m_crefInFocus(focusColor),
+  m_bContextMenu(false)
+{
+  // Don't allow if menu string is empty.
+  if (vmenu_items.empty()) {
+    m_vmenu_items.clear();
+  } else {
+    m_vmenu_items = vmenu_items;
+  }
+
+  m_hCursor = LoadCursor(NULL, IDC_ARROW);
+}
+
+CRichEditExtn::~CRichEditExtn()
+{
+}
+
+BEGIN_MESSAGE_MAP(CRichEditExtn, CRichEditCtrl)
+  //{{AFX_MSG_MAP(CRichEditExtn)
+  ON_WM_SETFOCUS()
+  ON_WM_KILLFOCUS()
+  ON_WM_CONTEXTMENU()
+  ON_WM_LBUTTONDOWN()
+  ON_WM_SETCURSOR()
+  //}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
+/////////////////////////////////////////////////////////////////////////////
+// CRichEditExtn message handlers
+
+void CRichEditExtn::GetSel(long &nStartChar, long &nEndChar)
+{
+  CRichEditCtrl::GetSel(nStartChar, nEndChar);
+  m_nStartChar = nStartChar;
+  m_nEndChar = nEndChar;
+}
+
+void CRichEditExtn::SetSel(long nStartChar, long nEndChar)
+{
+  m_nStartChar = nStartChar;
+  m_nEndChar = nEndChar;
+  CRichEditCtrl::SetSel(nStartChar, nEndChar);
+}
+
+void CRichEditExtn::OnSetFocus(CWnd* pOldWnd)
+{
+  m_bIsFocused = TRUE;
+  CRichEditCtrl::OnSetFocus(pOldWnd);
+  if (m_lastposition >= 0) {
+    int iLine = LineFromChar(m_lastposition);
+    LineScroll(iLine);
+    SetSel(m_nStartChar, m_nEndChar); 
+  }
+
+  SetBackgroundColor(FALSE, m_crefInFocus);
+  Invalidate(TRUE);
+}
+
+void CRichEditExtn::OnKillFocus(CWnd* pNewWnd)
+{
+  m_bIsFocused = FALSE;
+  m_lastposition = LineIndex();
+  GetSel(m_nStartChar, m_nEndChar);
+  CRichEditCtrl::OnKillFocus(pNewWnd);
+
+  SetBackgroundColor(FALSE, crefNoFocus);
+  Invalidate(TRUE);
+}
+
+void CRichEditExtn::OnLButtonDown(UINT nFlags, CPoint point)
+{
+  // Get the scroll bar position.
+  int nScrollHPos = GetScrollPos(SB_HORZ);
+  int nScrollVPos = GetScrollPos(SB_VERT);
+
+  int n = CharFromPos(point);
+  m_lastposition = HIWORD(n);
+  m_nStartChar = m_nEndChar = LOWORD(n);
+
+  CRichEditCtrl::OnLButtonDown(nFlags, point);
+
+  // Reset the scroll bar position.
+  SetScrollPos(SB_HORZ, nScrollHPos);
+  SetScrollPos(SB_VERT, nScrollVPos);
+
+  // Reset the display scroll position.
+  SendMessage(WM_HSCROLL, MAKEWPARAM(SB_THUMBTRACK, nScrollHPos), 0);
+  SendMessage(WM_VSCROLL, MAKEWPARAM(SB_THUMBTRACK, nScrollVPos), 0);
+
+  SetSel(m_nStartChar, m_nEndChar);
+}
+
+BOOL CRichEditExtn::OnSetCursor(CWnd *pWnd, UINT nHitTest, UINT message)
+{
+  if (m_bContextMenu) {
+    ::SetCursor(m_hCursor);
+    return TRUE;
+  }
+  return CRichEditCtrl::OnSetCursor(pWnd, nHitTest, message);
+}
+
+void CRichEditExtn::OnContextMenu(CWnd* pWnd, CPoint point)
+{
+  if (m_vmenu_items.empty()) {
+    CRichEditExtn::OnContextMenu(pWnd, point);
+    return;
+  }
+
+  SetFocus();
+  CMenu menu;
+  menu.CreatePopupMenu();
+
+  BOOL bReadOnly = GetStyle() & ES_READONLY;
+  DWORD flags = CanUndo() && !bReadOnly ? 0 : MF_GRAYED;
+
+  int iPos(0);
+  menu.InsertMenu(iPos++, MF_BYPOSITION | flags, EM_UNDO,
+                  CString(MAKEINTRESOURCE(IDS_MENUSTRING_UNDO)));
+
+  menu.InsertMenu(iPos++, MF_BYPOSITION | MF_SEPARATOR);
+
+  long lStart, lEnd;
+  GetSel(lStart, lEnd);
+  flags = lStart == lEnd ? MF_GRAYED : 0;
+  menu.InsertMenu(iPos++, MF_BYPOSITION | flags, WM_COPY,
+                  CString(MAKEINTRESOURCE(IDS_MENUSTRING_COPY)));
+
+  flags = (flags == MF_GRAYED || bReadOnly) ? MF_GRAYED : 0;
+  menu.InsertMenu(iPos++, MF_BYPOSITION | flags, WM_CUT,
+                  CString(MAKEINTRESOURCE(IDS_MENUSTRING_CUT)));
+
+  flags = (flags == MF_GRAYED || bReadOnly) ? MF_GRAYED : 0;
+  menu.InsertMenu(iPos++, MF_BYPOSITION | flags, WM_CLEAR,
+                  CString(MAKEINTRESOURCE(IDS_MENUSTRING_DELETE)));
+
+  flags = IsClipboardFormatAvailable(EDIT_CLIPBOARD_TEXT_FORMAT) &&
+                                     !bReadOnly ? 0 : MF_GRAYED;
+  menu.InsertMenu(iPos++, MF_BYPOSITION | flags, WM_PASTE,
+                  CString(MAKEINTRESOURCE(IDS_MENUSTRING_PASTE)));
+
+  menu.InsertMenu(iPos++, MF_BYPOSITION | MF_SEPARATOR);
+
+  int len = GetWindowTextLength();
+  flags = (!len || (lStart == 0 && lEnd == len)) ? MF_GRAYED : 0;
+
+  menu.InsertMenu(iPos++, MF_BYPOSITION | flags, EM_SELECTALL,
+                  CString(MAKEINTRESOURCE(IDS_MENUSTRING_SELECTALL)));
+
+  menu.InsertMenu(iPos++, MF_BYPOSITION | MF_SEPARATOR);
+
+  for (size_t i = 0; i < m_vmenu_items.size(); i++) {
+      menu.InsertMenu((int)i + iPos, MF_BYPOSITION | m_vmenu_items[i].flags,
+                      m_vmenu_items[i].message_number,
+                      m_vmenu_items[i].menu_string.c_str());
+      if (!m_vmenu_items[i].bEnable)
+        menu.EnableMenuItem((int)i + iPos, MF_BYPOSITION | MF_GRAYED);
+  }
+
+  if (point.x == -1 || point.y == -1) {
+    CRect rc;
+    GetClientRect(&rc);
+    point = rc.CenterPoint();
+    ClientToScreen(&point);
+  }
+
+  // For some reason - weird cursor
+  m_bContextMenu = true;
+  
+  // Now show menu
+  UINT_PTR nCmd = menu.TrackPopupMenu(TPM_LEFTALIGN | TPM_LEFTBUTTON |
+                                      TPM_RETURNCMD | TPM_RIGHTBUTTON, 
+                                      point.x, point.y, this);
+  // Restore cursor
+  m_bContextMenu = false;
+
+  if (nCmd == 0)
+    return;
+
+  std::vector<st_context_menu>::iterator iter;
+  iter = std::find_if(m_vmenu_items.begin(), m_vmenu_items.end(),
+                      equal_cmd(nCmd));
+  if (iter != m_vmenu_items.end()) {
+    this->GetParent()->SendMessage((UINT)nCmd, iter->wParam, iter->lParam);
+    return;
+  }
+
+  switch (nCmd) {
+    case EM_UNDO:
+    case WM_CUT:
+    case WM_COPY:
+    case WM_CLEAR:
+    case WM_PASTE:
+      SendMessage((UINT)nCmd);
+      break;
+    case EM_SELECTALL:
+      SendMessage(EM_SETSEL, 0, -1);
+      break;
+    default:
+      break;
+  }
+}
+
+void CRichEditExtn::UpdateState(const int message_number, const BOOL new_state)
+{
+  std::vector<st_context_menu>::iterator iter;
+  iter = std::find_if(m_vmenu_items.begin(), m_vmenu_items.end(),
+                      equal_cmd(message_number));
+  if (iter != m_vmenu_items.end()) {
+    int flags = new_state == TRUE ? MF_CHECKED : MF_UNCHECKED;
+    iter->flags = flags;
+    return;
+  }
+}
+
+void CRichEditExtn::EnableMenuItem(const int message_number, const bool bEnable)
+{
+  std::vector<st_context_menu>::iterator iter;
+  iter = std::find_if(m_vmenu_items.begin(), m_vmenu_items.end(),
+                      equal_cmd(message_number));
+  if (iter != m_vmenu_items.end()) {
+    iter->bEnable = bEnable;
     return;
   }
 }
@@ -896,7 +1148,8 @@ LRESULT CSymbolEdit::OnPaste(WPARAM , LPARAM )
 // CButtonExtn
 
 CButtonExtn::CButtonExtn()
-  : m_bUseTextColour(false), m_caption(L""), m_type(BS_AUTOCHECKBOX)
+  : m_bUseTextColour(false), m_bUseBkgColour(false),
+  m_caption(L""), m_type(BS_AUTOCHECKBOX)
 {
 }
 
@@ -953,7 +1206,8 @@ void CButtonExtn::DrawButton(HWND hWnd, HDC hDC, RECT *pRect, BOOL fChecked, BOO
   SelectObject(hMemDC, hBitmap);
 
   RECT rFillRect = {0, 0, nWidth, nHeight};
-  FillRect(hMemDC, &rFillRect, CreateSolidBrush(GetSysColor(COLOR_WINDOW)));
+  FillRect(hMemDC, &rFillRect,
+           CreateSolidBrush(GetSysColor(m_bUseBkgColour ? m_icolour : COLOR_WINDOW)));
 
   HTHEME hTheme = OpenThemeData(hWnd, L"BUTTON");
   int nStateID(0);

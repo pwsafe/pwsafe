@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -16,7 +16,7 @@
 #include "StringX.h"
 
 // Password Policy related stuff
-enum {DEFAULT_POLICY = 0, SPECIFIC_POLICY};
+enum {DEFAULT_POLICY = 0, NAMED_POLICY, SPECIFIC_POLICY};
 enum {DEFAULT_SYMBOLS = 0, OWN_SYMBOLS = 1}; // m_symbols's values
 
 struct PWPolicy {
@@ -64,6 +64,7 @@ struct PWPolicy {
     digitminlength = lowerminlength = 0;
     symbolminlength = upperminlength = 0;
   }
+
   // Following calls CPasswordCharPool::MakePassword()
   // with arguments matching 'this' policy, or,
   // preference-defined policy if this->flags == 0

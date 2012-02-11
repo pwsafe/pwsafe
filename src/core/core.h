@@ -69,6 +69,7 @@
 #define IDSC_INVALIDFIELDLENGTH         3069
 #define IDSC_INVALIDPWLENGTHX           3070
 #define IDSC_FLDNMSHIFTDCA              3071
+#define IDSC_FLDNMPWPOLICYNAME          3072
 
 #define IDSC_CONFIG_NONE                3230
 #define IDSC_CONFIG_REGISTRY            3231
@@ -108,8 +109,8 @@
 #define IDSC_IMPORTINVALIDFIELD         3266
 #define IDSC_IMPORTNOPASSWORD           3268
 #define IDSC_IMPORTNOTITLE              3269
-#define IDSC_VALIDATEUUID               3270
-#define IDSC_VALIDATEPWH                3271
+#define IDSC_VALIDATE_BADUUID           3270
+#define IDSC_VALIDATE_PWH               3271
 #define IDSC_IMPORTWARNINGHDR           3272
 #define IDSC_IMPORTWARNING1             3273
 #define IDSC_IMPORTWARNING1A            3274
@@ -210,15 +211,13 @@
 #define IDSC_IMPORTCONFLICTSX1          3385
 #define IDSC_IMPORTCONFLICTSX2          3386
 #define IDSC_DUPLICATENUMBER            3387
-#define IDSC_VALIDATEDUPLICATES         3388
+#define IDSC_VALIDATE_DUPLICATES        3388
 #define IDSC_IMPORTRECSKIPPED           3389
-#define IDSC_VALIDATETEXT               3390
-#define IDSC_VALIDATEENTRY              3391
-#define IDSC_VALIDATEENTRY2             3392
-#define IDSC_WARNINGENTRYLENGTH         3393
+#define IDSC_VALIDATE_TEXT              3390
+#define IDSC_VALIDATE_ENTRY             3391
+#define IDSC_VALIDATE_ENTRY2            3392
 #define IDSC_ENTRY                      3394
 #define IDSC_ENTRIES                    3395
-#define IDSC_LARGEENTRIES               3396
 #define IDSC_RELATIVE                   3397
 #define IDSC_FILE_UNREADABLE            3398
 #define IDSC_FILE_TRUNCATED             3399
@@ -247,6 +246,22 @@
 #define IDSC_IMPORTABORTED              3425
 #define IDSC_IMPORTMISSINGTITLE         3426
 #define IDSC_PWHERRORTEXT               3427
+#define IDSC_XMLEXP_POLICIES            3428
+#define IDSC_MISSINGPOLICYNAME          3429
+#define IDSC_MISSINGPOLICYNAMES         3430
+#define IDSC_IMPORTPOLICY               3431
+#define IDSC_MERGEPOLICY                3432
+#define IDSC_ENTRIES_POLICIES           3433
+#define IDSC_RENAMEDPOLICYNAMES         3434
+#define IDSC_MISSINGPASSWORD            3435
+#define IDSC_MISSINGTITLE               3436
+#define IDSC_VALIDATE_EMPTYTITLE        3437
+#define IDSC_VALIDATE_EMPTYPSWD         3438
+#define IDSC_VALIDATE_DUPUUID           3439
+#define IDSC_RPTVALIDATE                3440
+#define IDSC_VALIDATE_DEPS              3441
+#define IDSC_VALIDATE_ERRORS            3442
+#define IDSC_VALIDATE_WARNINGS          3443
 
 // Keep DCA together
 #define IDSC_CURRENTDEFAULTDCA          4000
@@ -260,3 +275,4 @@
 #define IDSC_DCABROWSEPLUS              4008
 #define IDSC_DCARUN                     4009
 #define IDSC_DCASENDEMAIL               4010
+#define IDSC_DEFAULT                    4011

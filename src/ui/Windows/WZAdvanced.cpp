@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -297,6 +297,11 @@ BOOL CWZAdvanced::OnInitDialog()
       m_pLC_List->SetItemData(iItem, CItemData::POLICY | NORMALFIELD);
       m_bsAllowedFields.set(CItemData::POLICY);
 
+      cs_text.LoadString(IDS_POLICYNAME);
+      iItem = m_pLC_List->InsertItem(++iItem, cs_text);
+      m_pLC_List->SetItemData(iItem, CItemData::POLICYNAME | NORMALFIELD);
+      m_bsAllowedFields.set(CItemData::POLICYNAME);
+
       cs_text.LoadString(IDS_DCALONG);
       iItem = m_pLC_List->InsertItem(++iItem, cs_text);
       m_pLC_List->SetItemData(iItem, CItemData::DCA | NORMALFIELD);
@@ -364,6 +369,15 @@ BOOL CWZAdvanced::OnInitDialog()
       m_pLC_Selected->SetItemData(iItem, CItemData::POLICY | NORMALFIELD);
       m_bsAllowedFields.set(CItemData::POLICY);
       m_bsDefaultSelectedFields.set(CItemData::POLICY);
+
+      if (m_iIndex != WZAdvanced::SYNCH) {
+        // Policy name not supported in Synchonize
+        cs_text.LoadString(IDS_POLICYNAME);
+        iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
+        m_pLC_Selected->SetItemData(iItem, CItemData::POLICYNAME | NORMALFIELD);
+        m_bsAllowedFields.set(CItemData::POLICYNAME);
+        m_bsDefaultSelectedFields.set(CItemData::POLICYNAME);
+      }
 
       cs_text.LoadString(IDS_DCALONG);
       iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
@@ -572,6 +586,7 @@ BOOL CWZAdvanced::OnInitDialog()
   m_pToolTipCtrl->AddTool(GetDlgItem(IDC_ADVANCED_DESELECTSOME), cs_ToolTip);
   cs_ToolTip.LoadString(IDS_ADVANCED_DESELECTALL);
   m_pToolTipCtrl->AddTool(GetDlgItem(IDC_ADVANCED_DESELECTALL), cs_ToolTip);
+
 
   return TRUE;
 }

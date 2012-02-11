@@ -47,6 +47,7 @@ BEGIN
   IDSC_FLDNMEMAIL        "e-mail"
   IDSC_FLDNMPROTECTED    "Protected"
   IDSC_FLDNMSYMBOLS      "Symbols"
+  IDSC_FLDNMPWPOLICYNAME "Password Policy Name"
 END
 
 STRINGTABLE
@@ -65,8 +66,8 @@ BEGIN
   IDSC_IMPORTBADFORMAT    "The TXT or CSV file was not exported as required as entry records span multiple lines in the CSV file.\r\n\r\nImport aborted."
   IDSC_IMPORTEMPTYLINESKIPPED "Empty line %d skipped"
   IDSC_IMPORTINVALIDFIELD "Entry of line %d has an invalid ""%s"" field. It has been ignored."
-  IDSC_IMPORTNOPASSWORD   "Line %d skipped. It has an empty mandatory Password field."
-  IDSC_IMPORTNOTITLE      "Line %d skipped. It has an empty mandatory Title field."
+  IDSC_IMPORTNOPASSWORD   "Line %d skipped: Empty mandatory Password field."
+  IDSC_IMPORTNOTITLE      "Line %d skipped: Empty mandatory Title field."
   IDSC_IMPORTPSWDNOCOLS   "To replace passwords of existing entries, all the following columns must be present: Group/Title, Username and Password.  One or more are missing and no entries have been updated."
   IDSC_IMPORTENTRY        "Entry %s%d with Group=""%s"", Title=""%s"", User=""%s"""
   IDSC_IMPORTRECNOTFOUND  "%s not found. Cannot update entry's password.\r\n"
@@ -94,7 +95,7 @@ END
 
 STRINGTABLE
 BEGIN
-  IDSC_NUMPROCESSED       "Number of entries processed: %d\n\nNumber of UUIDs fixed: %d\n\nNumber of Password Histories fixed: %d\n\nNumber of non-unique Group/Title/User fixed: %d\n\nNumber of Alias warnings issued: %d\n\nNumber of Shortcut warnings issued: %d\n\nNumber of entries with fields that cannot be fully displayed: %d"
+  IDSC_NUMPROCESSED       "Number of entries processed: %d\n\nNumber of invalid UUIDs fixed: %d\n\nNumber of duplicate UUIDs fixed: %d\n\nNumber of non-unique Group/Title/User fixed: %d\n\nNumber of Password Histories fixed: %d\n\nNumber of Alias warnings issued: %d\n\nNumber of Shortcut warnings issued: %d\n\nNumber of entries with fields that cannot be fully displayed: %d.\n\nRecommend that the database is now saved."
   IDSC_AUTOTYPE           "autotype:"
   IDSC_NOCONFIGLOCK       "Unable to get configuration file lock.\n\nWill use registry."
   IDSC_CANTCREATEXMLCFG   "Unable to create a new XML configuration file or add your settings to an existing XML configuration file.\n\nAll application configuration settings will be saved in your registry entry on this computer.\n\nDatabase related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
@@ -181,14 +182,21 @@ STRINGTABLE
 BEGIN
   IDSC_READ_ERROR          "Read Error"
   IDSC_ENCODING_PROBLEM    "Trouble with a non-textual (e.g., time) field in record '%s' - please check data carefully."
-  IDSC_VALIDATEENTRY       "\tGroup='%s', Title='%s', User='%s' %s"
-  IDSC_VALIDATEENTRY2      "- Its title has been changed to:'%s'"
-  IDSC_VALIDATEUUID        "The following entries had an invalid UUID field.  This has been corrected."
-  IDSC_VALIDATEPWH         "The following entries had an invalid Password History.  This has been rebuilt with available data.  There may be some loss of history."
-  IDSC_VALIDATEDUPLICATES  "The following entries were duplicates of an existing entry."
-  IDSC_VALIDATETEXT        "The following entries have one or more text fields too long to display or edit (over %d characters)."
-  IDSC_WARNINGENTRYLENGTH  "Warning - %d %s in your database may have one or more fields too large to display or edit.\r\n\r\nThe largest entry size found was ~%d %s.\r\n\r\nYou can use the Filter to selectively display these record(s)."
-  IDSC_LARGEENTRIES        "Database has some large entries!"
+  IDSC_RPTVALIDATE         "Validate"
+  IDSC_VALIDATE_ENTRY      "\tGroup='%s', Title='%s', User='%s' %s"
+  IDSC_VALIDATE_ENTRY2     "- Its title has been changed to:'%s'"
+  IDSC_VALIDATE_BADUUID    "The following entries had an invalid UUID field.  This has been corrected."
+  IDSC_VALIDATE_DUPUUID    "The following entries had a duplicate UUID field.  This has been corrected."
+  IDSC_VALIDATE_PWH        "The following entries had an invalid Password History.  This has been rebuilt with available data.  There may be some loss of history."
+  IDSC_VALIDATE_DUPLICATES "The following entries were duplicates of an existing entry."
+  IDSC_VALIDATE_EMPTYTITLE "The following entries had an empty Title field, which is not permitted."
+  IDSC_VALIDATE_EMPTYPSWD  "The following entries had an empty Password field, which is not permitted. The password has been set to '%s'"
+  IDSC_VALIDATE_TEXT       "The following entries have one or more text fields too long to display or edit (over %d characters).  The largest entry size found was ~%d %s."
+  IDSC_VALIDATE_DEPS       "The following entries have passwords in the correct form for %s, but the base entry does not exist."
+  IDSC_MISSINGPASSWORD     "MISSING PASSWORD"
+  IDSC_MISSINGTITLE        "MISSING TITLE # %d"
+  IDSC_VALIDATE_ERRORS     "The following ERRORS were detected and were FIXED."
+  IDSC_VALIDATE_WARNINGS   "The following WARNINGS were detected - you should review and fix them manually."
 END
 
 STRINGTABLE
@@ -315,6 +323,7 @@ BEGIN
   IDSC_DCACOPYPASSWORDMIN  "Copy password to clipboard, minimize"
   IDSC_DCARUN              "Run Command"
   IDSC_DCASENDEMAIL        "Send email"
+  IDSC_DEFAULT             "default"
 END
 
 STRINGTABLE
@@ -333,6 +342,13 @@ BEGIN
   IDSC_XMLEXP_SUBSETFIELDS "The user specified that the following fields be excluded from the export:"
   IDSC_UNKNOWNFUNCTION     "Unknown function"
   IDSC_UNKNOWNOBJECT       "Unknown object"
+  IDSC_XMLEXP_POLICIES     "Note: These Password Policies will not replace existing policies with the same name in the current database."
+  IDSC_MISSINGPOLICYNAME   "\tPassword policy name '%s' is not in the database."
+  IDSC_MISSINGPOLICYNAMES  "\tOne or more Password Policy Names were not found in the database. The affected entries have been changed to use the database's default policy."
+  IDSC_RENAMEDPOLICYNAMES  "\tOne or more Password Policy Names were already in this database but had different settings. They have been renamed."
+  IDSC_IMPORTPOLICY        "%s  - Imported %s"
+  IDSC_MERGEPOLICY         "%s - Merged %s"
+  IDSC_ENTRIES_POLICIES    "The following entries had a policy name that already existed in this database but with different settings.\r\nA new named policy has been created with the current date/time (%s) appended:%s"
 END
 
 STRINGTABLE

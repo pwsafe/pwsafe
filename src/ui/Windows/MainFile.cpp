@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -29,7 +29,6 @@
 #include "AddEdit_DateTimes.h"
 #include "PasskeyEntry.h"
 #include "PWSFaultHandler.h"
-#include "version.h"
 
 #include "WZPropertySheet.h"
 
@@ -46,6 +45,7 @@
 
 #include "os/file.h"
 #include "os/dir.h"
+#include "os/logit.h"
 
 #include "resource.h"
 #include "resource2.h"  // Menu, Toolbar & Accelerator resources
@@ -89,6 +89,8 @@ static void DisplayFileWriteError(INT_PTR rc, const StringX &cs_newfile)
 
 BOOL DboxMain::OpenOnInit()
 {
+  PWS_LOGIT;
+
   /*
     Routine to account for the differences between opening PSafe for
     the first time, and just opening a different database or
@@ -118,6 +120,7 @@ BOOL DboxMain::OpenOnInit()
   bool bReporterSet = m_core.IsReporterSet();
   MFCAsker q;
   MFCReporter r;
+  CReport Rpt;
 
   if (!bAskerSet)
     m_core.SetAsker(&q);
@@ -137,20 +140,11 @@ BOOL DboxMain::OpenOnInit()
     }
   }
 
-  // If the user has changed the file at OpenOnInit time but had specified
-  // validation, turn off validation of the new file.  However, allow user to
-  // specify just the -v command flag with no filename on the command line and
-  // then validate the database selected via the initial Open dialog.
-  if (m_bValidate && !sxOriginalFileName.empty() &&
-      sxOriginalFileName.compare(m_core.GetCurFile()) != 0)
-    m_bValidate = false;
-
   int rc2 = PWScore::NOT_SUCCESS;
 
   switch (rc) {
     case PWScore::SUCCESS:
-      // Don't validate twice
-      rc2 = m_core.ReadCurFile(passkey, m_bValidate ? 0 : MAXTEXTCHARS);
+      rc2 = m_core.ReadCurFile(passkey, true, MAXTEXTCHARS, &Rpt);
 #if !defined(POCKET_PC)
       m_titlebar = PWSUtil::NormalizeTTT(L"Password Safe - " +
                                          m_core.GetCurFile()).c_str();
@@ -239,6 +233,24 @@ BOOL DboxMain::OpenOnInit()
   } // LIMIT_REACHED
 #endif /* DEMO */
 
+  if (rc2 == PWScore::OK_WITH_VALIDATION_ERRORS) {
+    rc2 = PWScore::SUCCESS;
+
+    CGeneralMsgBox gmb;
+    std::wstring cs_title, cs_msg;
+    LoadAString(cs_title, IDS_RPTVALIDATE);
+    LoadAString(cs_msg, IDS_VALIDATE_ISSUES);
+    gmb.SetTitle(cs_title.c_str());
+    gmb.SetMsg(cs_msg.c_str());
+    gmb.SetStandardIcon(MB_ICONEXCLAMATION);
+    gmb.AddButton(IDS_OK, IDS_OK, TRUE, TRUE);
+    gmb.AddButton(IDS_VIEWREPORT, IDS_VIEWREPORT);
+
+    INT_PTR rc2 = gmb.DoModal();
+    if (rc2 == IDS_VIEWREPORT)
+      ViewReport(Rpt);
+  }
+
   if (rc2 != PWScore::SUCCESS && !go_ahead) {
     // not a good return status, fold.
     if (!m_IsStartSilent)
@@ -252,13 +264,6 @@ BOOL DboxMain::OpenOnInit()
   }
 
   PostOpenProcessing();
-
-  // Validation does integrity check & repair on database
-  // currently invoke it iff m_bValidate set (e.g., user passed '-v' flag)
-  if (m_bValidate) {
-    OnValidate();
-    m_bValidate = false;
-  }
 
   retval = TRUE;
 
@@ -451,11 +456,15 @@ int DboxMain::NewFile(StringX &newfilename)
 
 void DboxMain::OnClose()
 {
+  PWS_LOGIT;
+
   Close();
 }
 
 int DboxMain::Close(const bool bTrySave)
 {
+  PWS_LOGIT_ARGS("bTrySave=%s", bTrySave ? _T("true") : _T("false"));
+
   PWSprefs *prefs = PWSprefs::GetInstance();
 
   if (bTrySave) {
@@ -545,6 +554,8 @@ int DboxMain::Close(const bool bTrySave)
 
 void DboxMain::OnOpen()
 {
+  PWS_LOGIT;
+
   int rc = Open();
 
   if (rc == PWScore::SUCCESS) {
@@ -594,16 +605,44 @@ void DboxMain::OnOpenMRU(UINT nID)
 
 int DboxMain::Open(const UINT uiTitle)
 {
+  PWS_LOGIT_ARGS("uiTitle=%d", uiTitle);
+
   int rc = PWScore::SUCCESS;
   StringX sx_Filename;
   CString cs_text(MAKEINTRESOURCE(uiTitle));
-  std::wstring dir;
-  if (m_core.GetCurFile().empty())
-    dir = PWSdirs::GetSafeDir();
-  else {
-    std::wstring cdrive, cdir, dontCare;
+  std::wstring DBpath, cdrive, cdir, dontCare;
+  if (m_core.GetCurFile().empty()) {
+    // Can't use same directory as currently open DB as there isn't one.
+    // Attempt to get path from last opened database from MRU
+    // If valid and accessible, use it, if not valid or not accessible use
+    // value returned from PWSdirs::GetSafeDir() - "My Safes"
+    bool bUseGetSafeDir(true);
+    if (app.GetMRU() != NULL && !app.GetMRU()->IsMRUEmpty()) {
+      CString mruItem = (*app.GetMRU())[0];
+      pws_os::splitpath((LPCWSTR)mruItem, cdrive, cdir, dontCare, dontCare);
+      DBpath = cdrive + cdir;
+
+      // _stat functions will fail for a directory if it ends with a slash
+      // and splitpath always adds a slash!
+      if (cdir.length() > 0)
+        DBpath.pop_back();
+      
+      // Check it exists and accessible but don't are for information retrieved
+      struct _stat stat_buf;
+      int istat = _wstat(DBpath.c_str(), &stat_buf);
+      // Now put trailing slash back!
+      DBpath += L"\\";
+
+      // If _stat worked and user has at least read access to the directory
+      // use this value for DBpath, otherwise use result from PWSdirs::GetSafeDir()
+      if (istat == 0 && _waccess_s(DBpath.c_str(), R_OK) == 0)
+        bUseGetSafeDir = false;
+    }
+    if (bUseGetSafeDir)
+      DBpath = PWSdirs::GetSafeDir();
+  } else {
     pws_os::splitpath(m_core.GetCurFile().c_str(), cdrive, cdir, dontCare, dontCare);
-    dir = cdrive + cdir;
+    DBpath = cdrive + cdir;
   }
 
   // Open-type dialog box
@@ -627,8 +666,8 @@ int DboxMain::Open(const UINT uiTitle)
       fd.m_ofn.Flags |= (OFN_HIDEREADONLY | OFN_NOREADONLYRETURN);
     }
 
-    if (!dir.empty())
-      fd.m_ofn.lpstrInitialDir = dir.c_str();
+    if (!DBpath.empty())
+      fd.m_ofn.lpstrInitialDir = DBpath.c_str();
 
     INT_PTR rc2 = fd.DoModal();
 
@@ -741,6 +780,9 @@ int DboxMain::Open(const StringX &sx_Filename, const bool bReadOnly,  const bool
   // clear the data before loading the new file
   ClearData();
 
+  // Reset saved DB preferences
+  m_savedDBprefs = EMPTYSAVEDDBPREFS;
+
   // Tidy up filters
   m_currentfilter.Empty();
   m_bFilterActive = false;
@@ -759,6 +801,7 @@ int DboxMain::Open(const StringX &sx_Filename, const bool bReadOnly,  const bool
   bool bReporterSet = m_core.IsReporterSet();
   MFCAsker q;
   MFCReporter r;
+  CReport Rpt;
 
   if (!bAskerSet)
     m_core.SetAsker(&q);
@@ -777,10 +820,12 @@ int DboxMain::Open(const StringX &sx_Filename, const bool bReadOnly,  const bool
     }
   }
 
-  // Now read the file
-  rc = m_core.ReadFile(sx_Filename, passkey, MAXTEXTCHARS);
+  // Now read the file - as initial open, file will be validated
+  rc = m_core.ReadFile(sx_Filename, passkey, !m_bNoValidation, MAXTEXTCHARS, &Rpt);
 
   switch (rc) {
+    case PWScore::OK_WITH_VALIDATION_ERRORS:
+      break;
     case PWScore::SUCCESS:
       break;
     case PWScore::CANT_OPEN_FILE:
@@ -823,6 +868,23 @@ int DboxMain::Open(const StringX &sx_Filename, const bool bReadOnly,  const bool
   m_core.SetCurFile(sx_Filename);
   PostOpenProcessing();
 
+  if (rc == PWScore::OK_WITH_VALIDATION_ERRORS) {
+    rc = PWScore::SUCCESS;
+
+    std::wstring cs_title, cs_msg;
+    LoadAString(cs_title, IDS_RPTVALIDATE);
+    LoadAString(cs_msg, IDS_VALIDATE_ISSUES);
+    gmb.SetTitle(cs_title.c_str());
+    gmb.SetMsg(cs_msg.c_str());
+    gmb.SetStandardIcon(MB_ICONEXCLAMATION);
+    gmb.AddButton(IDS_OK, IDS_OK, TRUE, TRUE);
+    gmb.AddButton(IDS_VIEWREPORT, IDS_VIEWREPORT);
+
+    INT_PTR rc2 = gmb.DoModal();
+    if (rc2 == IDS_VIEWREPORT)
+      ViewReport(Rpt);
+  }
+
 exit:
   if (!bAskerSet)
     m_core.SetAsker(NULL);
@@ -834,6 +896,8 @@ exit:
 
 void DboxMain::PostOpenProcessing()
 {
+  PWS_LOGIT;
+
 #if !defined(POCKET_PC)
   m_titlebar = PWSUtil::NormalizeTTT(L"Password Safe - " +
                                      m_core.GetCurFile()).c_str();
@@ -932,6 +996,8 @@ int DboxMain::CheckEmergencyBackupFiles(StringX sx_Filename, StringX &passkey)
   PWScore othercore;
 
   // Get currently selected database's information
+  // No Report or MAXCHARS vaue, implies no validation of the file
+  // except the mandatory UUID uniqueness
   st_DBProperties st_dbpcore;
   othercore.ReadFile(sx_Filename, passkey);
   othercore.GetDBProperties(st_dbpcore);
@@ -1013,6 +1079,8 @@ void DboxMain::OnSave()
 
 int DboxMain::Save(const SaveType savetype)
 {
+  PWS_LOGIT_ARGS("savetype=%d", savetype);
+
   int rc;
   CString cs_msg, cs_temp;
   CGeneralMsgBox gmb;
@@ -1132,6 +1200,8 @@ int DboxMain::Save(const SaveType savetype)
 
 int DboxMain::SaveIfChanged()
 {
+  PWS_LOGIT;
+
   /*
    * Save silently (without asking user) iff:
    * 1. NOT read-only AND
@@ -1194,6 +1264,8 @@ void DboxMain::OnSaveAs()
 
 int DboxMain::SaveAs()
 {
+  PWS_LOGIT;
+
   CGeneralMsgBox gmb;
   INT_PTR rc;
   StringX newfile;
@@ -1638,7 +1710,8 @@ void DboxMain::OnImportText()
     bool bWasEmpty = m_core.GetNumEntries() == 0;
     std::wstring strError;
     StringX TxtFileName = fd.GetPathName();
-    int numImported(0), numSkipped(0), numPWHErrors(0), numRenamed(0), numWarnings(0);
+    int numImported(0), numSkipped(0), numPWHErrors(0), numRenamed(0), numWarnings(0),
+      numNoPolicy(0);
     wchar_t delimiter = dlg.m_defimpdelim[0];
     bool bImportPSWDsOnly = dlg.m_bImportPSWDsOnly == TRUE;
 
@@ -1657,6 +1730,7 @@ void DboxMain::OnImportText()
                                     delimiter, bImportPSWDsOnly,
                                     strError,
                                     numImported, numSkipped, numPWHErrors, numRenamed,
+                                    numNoPolicy,
                                     rpt, pcmd);
 
     switch (rc) {
@@ -1721,7 +1795,7 @@ void DboxMain::OnImportText()
           cs_temp += cs_tmp;
         }
 
-        if (numWarnings != 0) {
+        if (numWarnings != 0 || numNoPolicy != 0) {
           CString cs_tmp(MAKEINTRESOURCE(IDS_WITHWARNINGS));
           cs_temp += cs_tmp;
         }
@@ -2044,6 +2118,7 @@ void DboxMain::OnImportXML()
     std::wstring strXMLErrors, strSkippedList, strPWHErrorList, strRenameList;
     CString XMLFilename = fd.GetPathName();
     int numValidated, numImported, numSkipped, numRenamed, numPWHErrors;
+    int numRenamedPolicies, numNoPolicy;
     bool bImportPSWDsOnly = dlg.m_bImportPSWDsOnly == TRUE;
 
     CWaitCursor waitCursor;  // This may take a while!
@@ -2064,6 +2139,7 @@ void DboxMain::OnImportXML()
                               XSDFilename.c_str(), bImportPSWDsOnly,
                               strXMLErrors, strSkippedList, strPWHErrorList, strRenameList,
                               numValidated, numImported, numSkipped, numPWHErrors, numRenamed,
+                              numNoPolicy, numRenamedPolicies,
                               rpt, pcmd);
     waitCursor.Restore();  // Restore normal cursor
 
@@ -2137,6 +2213,23 @@ void DboxMain::OnImportXML()
 
     // Finish Report
     rpt.WriteLine((LPCWSTR)cs_temp);
+
+    if (numNoPolicy != 0 || numRenamedPolicies != 0) {
+      CString cs_tmp(MAKEINTRESOURCE(IDS_WITHWARNINGS));
+      cs_temp += cs_tmp;
+
+      if (numNoPolicy != 0) {
+        rpt.WriteLine();
+        cs_tmp.LoadString(IDSC_MISSINGPOLICYNAMES);
+        rpt.WriteLine((LPCWSTR)cs_tmp);
+      }
+      if (numRenamedPolicies != 0) {
+        rpt.WriteLine();
+        cs_tmp.LoadString(IDSC_RENAMEDPOLICYNAMES);
+        rpt.WriteLine((LPCWSTR)cs_tmp);
+      }
+    }
+
     rpt.EndReport();
 
     if (rc != PWScore::SUCCESS || !strXMLErrors.empty())
@@ -2176,6 +2269,8 @@ void DboxMain::OnProperties()
 
 void DboxMain::OnChangeMode()
 {
+  PWS_LOGIT;
+
   // From StatusBar and menu
   const bool bWasRO = IsDBReadOnly();
 
@@ -2207,28 +2302,12 @@ void DboxMain::OnChangeMode()
     m_core.ClearCommands();
   } else {
     // Taken from GetAndCheckPassword.
-    // We don't wanr all the other processing that GetAndCheckPassword does
+    // We don't want all the other processing that GetAndCheckPassword does
     CPasskeyEntry *dbox_pkentry = new CPasskeyEntry(this,
                                    m_core.GetCurFile().c_str(),
                                    GCP_CHANGEMODE, true,
                                    false,
                                    true);
-
-    int nMajor(0), nMinor(0), nBuild(0);
-    DWORD dwMajorMinor = app.GetFileVersionMajorMinor();
-    DWORD dwBuildRevision = app.GetFileVersionBuildRevision();
-
-    if (dwMajorMinor > 0) {
-      nMajor = HIWORD(dwMajorMinor);
-      nMinor = LOWORD(dwMajorMinor);
-      nBuild = HIWORD(dwBuildRevision);
-    }
-    if (nBuild == 0)
-      dbox_pkentry->m_appversion.Format(L"Version %d.%02d%s",
-                                        nMajor, nMinor, SPECIAL_BUILD);
-    else
-      dbox_pkentry->m_appversion.Format(L"Version %d.%02d.%02d%s",
-                                        nMajor, nMinor, nBuild, SPECIAL_BUILD);
 
     INT_PTR rc = dbox_pkentry->DoModal();
     delete dbox_pkentry;
@@ -2524,7 +2603,8 @@ bool DboxMain::DoCompare(PWScore *pothercore,
   waitCursor.Restore();
 
   cs_buffer.Format(IDS_COMPARESTATISTICS,
-                m_core.GetCurFile().c_str(), pothercore->GetCurFile().c_str());
+                   m_core.GetCurFile().c_str(),
+                   pothercore->GetCurFile().c_str());
 
   bool brc(true);  // True == databases are identical
   if (m_list_OnlyInCurrent.empty() &&
@@ -2733,13 +2813,26 @@ LRESULT DboxMain::OnProcessCompareResultFunction(WPARAM wParam, LPARAM lFunction
       lres = CopyCompareResult(st_info->pcore1, st_info->pcore0,
                                st_info->uuid1, st_info->uuid0);
       break;
-    case CCompareResultsDlg::COPY_TO_COMPARISONDB:
-      lres = CopyCompareResult(st_info->pcore0, st_info->pcore1,
-                               st_info->uuid0, st_info->uuid1);
-      break;
     case CCompareResultsDlg::SYNCH:
       lres = SynchCompareResult(st_info->pcore1, st_info->pcore0,
                                 st_info->uuid1, st_info->uuid0);
+      break;
+    default:
+      ASSERT(0);
+  }
+  return lres;
+}
+
+LRESULT DboxMain::OnProcessCompareResultAllFunction(WPARAM wParam, LPARAM lFunction)
+{
+  LRESULT lres(FALSE);
+
+  switch ((int)lFunction) {
+    case CCompareResultsDlg::COPYALL_TO_ORIGINALDB:
+      lres = CopyAllCompareResult(wParam);
+      break;
+    case CCompareResultsDlg::SYNCHALL:
+      lres = SynchAllCompareResult(wParam);
       break;
     default:
       ASSERT(0);
@@ -2757,7 +2850,11 @@ LRESULT DboxMain::ViewCompareResult(PWScore *pcore, const CUUID &entryUUID)
   bool bSaveRO = pcore->IsReadOnly();
   pcore->SetReadOnly(true);
 
+  // Edit the correct entry
+  if (pci->GetEntryType() != CItemData::ET_SHORTCUT)
   EditItem(pci, pcore);
+  else
+    EditShortcut(pci, pcore);
 
   pcore->SetReadOnly(bSaveRO);
 
@@ -2771,15 +2868,19 @@ LRESULT DboxMain::EditCompareResult(PWScore *pcore, const CUUID &entryUUID)
   CItemData *pci = &pos->second;
 
   // Edit the correct entry
+  if (pci->GetEntryType() != CItemData::ET_SHORTCUT)
   return EditItem(pci, pcore) ? TRUE : FALSE;
+  else
+    return EditShortcut(pci, pcore) ? TRUE : FALSE;
 }
 
 LRESULT DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
                                     const CUUID &fromUUID, const CUUID &toUUID)
 {
+  // This is always from Comparison DB to Current DB
   bool bWasEmpty = ptocore->GetNumEntries() == 0;
 
-  // Copy *pfromcore -> *ptocore entry
+  // Copy *pfromcore entry -> *ptocore entry
   ItemListIter fromPos = pfromcore->Find(fromUUID);
   ASSERT(fromPos != pfromcore->GetEntryEndIter());
   const CItemData *pfromEntry = &fromPos->second;
@@ -2788,11 +2889,15 @@ LRESULT DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
   DisplayInfo *pdi = new DisplayInfo;
   ci_temp.SetDisplayInfo(pdi); // DisplayInfo values will be set later
 
-  // If the UUID is not in use, copy it too, otherwise reuse current
-  if (ptocore->Find(fromUUID) == ptocore->GetEntryEndIter())
+  // If the UUID is not in use in the "to" core, copy it too, otherwise reuse current
+  if (ptocore->Find(fromUUID) == ptocore->GetEntryEndIter()) {
     ci_temp.SetUUID(fromUUID);
+  } else {
+    if (toUUID == CUUID::NullUUID())
+      ci_temp.CreateUUID();
   else
     ci_temp.SetUUID(toUUID);
+  }
 
   Command *pcmd(NULL);
 
@@ -2811,9 +2916,8 @@ LRESULT DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
     ci_temp.SetStatus(CItemData::ES_ADDED);
     pcmd = AddEntryCommand::Create(ptocore, ci_temp);
   }
-  Execute(pcmd, ptocore);
+  Execute(pcmd);
 
-  if (ptocore == &m_core) {
     SetChanged(Data);
     ChangeOkUpdate();
     // May need to update menu/toolbar if database was previously empty
@@ -2822,7 +2926,6 @@ LRESULT DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
 
     CItemData *pci = GetLastSelected();
     UpdateToolBarForSelectedItem(pci);
-  }
 
   return TRUE;
 }
@@ -2831,7 +2934,6 @@ LRESULT DboxMain::SynchCompareResult(PWScore *pfromcore, PWScore *ptocore,
                                      const CUUID &fromUUID, const CUUID &toUUID)
 {
   // Synch 1 entry *pfromcore -> *ptocore
-  CItemData::FieldBits bsFields;
 
   // Use a cut down Advanced dialog (only fields to synchronize)
   CAdvancedDlg Adv(this, CAdvancedDlg::COMPARESYNCH,
@@ -2852,7 +2954,7 @@ LRESULT DboxMain::SynchCompareResult(PWScore *pfromcore, PWScore *ptocore,
   CItemData updtEntry(*ptoEntry);
 
   bool bUpdated(false);
-  for (size_t i = 0; i < bsFields.size(); i++) {
+  for (size_t i = 0; i < m_SaveAdvValues[CAdvancedDlg::COMPARESYNCH].bsFields.size(); i++) {
     if (m_SaveAdvValues[CAdvancedDlg::COMPARESYNCH].bsFields.test(i)) {
       const StringX sxValue = pfromEntry->GetFieldValue((CItemData::FieldType)i);
       if (sxValue != updtEntry.GetFieldValue((CItemData::FieldType)i)) {
@@ -2872,8 +2974,138 @@ LRESULT DboxMain::SynchCompareResult(PWScore *pfromcore, PWScore *ptocore,
   return FALSE;
 }
 
+LRESULT DboxMain::CopyAllCompareResult(WPARAM wParam)
+{
+  // This is always from Comparison DB to Current DB
+  bool bWasEmpty = GetNumEntries() == 0;
+  std::vector<st_CompareInfo *> *vpst_info = (std::vector<st_CompareInfo *> *)wParam;
+
+  MultiCommands *pmulticmds = MultiCommands::Create(&m_core);
+
+  for (size_t index = 0; index < vpst_info->size(); index++) {
+    st_CompareInfo *pst_info = (*vpst_info)[index];
+    // Copy *pfromcore entry -> *ptocore entry
+    PWScore *ptocore = pst_info->pcore0;
+    PWScore *pfromcore = pst_info->pcore1;
+    CUUID toUUID = pst_info->uuid0;
+    CUUID fromUUID = pst_info->uuid1;
+
+    ItemListIter fromPos = pfromcore->Find(fromUUID);
+    ASSERT(fromPos != pfromcore->GetEntryEndIter());
+    const CItemData *pfromEntry = &fromPos->second;
+    CItemData ci_temp(*pfromEntry);  // Set up copy
+
+    DisplayInfo *pdi = new DisplayInfo;
+    ci_temp.SetDisplayInfo(pdi); // DisplayInfo values will be set later
+
+    // If the UUID is not in use in the "to" core, copy it too, otherwise reuse current
+    if (ptocore->Find(fromUUID) == ptocore->GetEntryEndIter()) {
+      ci_temp.SetUUID(fromUUID);
+    } else {
+      if (toUUID == CUUID::NullUUID())
+        ci_temp.CreateUUID();
+      else
+        ci_temp.SetUUID(toUUID);
+    }
+
+    Command *pcmd(NULL);
+
+    // Is it already there:?
+    const StringX sxgroup(ci_temp.GetGroup()), sxtitle(ci_temp.GetTitle()),
+         sxuser(ci_temp.GetUser());
+    ItemListIter toPos = ptocore->Find(sxgroup, sxtitle, sxuser);
+
+    if (toPos != ptocore->GetEntryEndIter()) {
+      // Already there - change it
+      CItemData *ptoEntry = &toPos->second;
+      ci_temp.SetStatus(CItemData::ES_MODIFIED);
+      pcmd = EditEntryCommand::Create(ptocore, *ptoEntry, ci_temp);
+    } else {
+      // Not there - add it
+      ci_temp.SetStatus(CItemData::ES_ADDED);
+      pcmd = AddEntryCommand::Create(ptocore, ci_temp);
+    }
+    pmulticmds->Add(pcmd);
+  }
+  
+  Execute(pmulticmds);
+
+  SetChanged(Data);
+  ChangeOkUpdate();
+
+  // May need to update menu/toolbar if database was previously empty
+  if (bWasEmpty)
+    UpdateMenuAndToolBar(m_bOpen);
+
+  return TRUE;
+}
+
+LRESULT DboxMain::SynchAllCompareResult(WPARAM wParam)
+{
+  // Synch multiple entries *pfromcore -> *ptocore
+
+  // Use a cut down Advanced dialog (only fields to synchronize)
+  // This will apply to all entries that are synchronised
+  CAdvancedDlg Adv(this, CAdvancedDlg::COMPARESYNCH,
+                   &m_SaveAdvValues[CAdvancedDlg::COMPARESYNCH]);
+
+  INT_PTR rc = Adv.DoModal();
+
+  if (rc != IDOK)
+    return FALSE;
+
+  // This is always from Comparison DB to Current DB
+  std::vector<st_CompareInfo *> *vpst_info = (std::vector<st_CompareInfo *> *)wParam;
+
+  MultiCommands *pmulticmds = MultiCommands::Create(&m_core);
+
+  for (size_t index = 0; index < vpst_info->size(); index++) {
+    st_CompareInfo *pst_info = (*vpst_info)[index];
+    // Synchronise *pfromcore entry -> *ptocore entry
+    PWScore *ptocore = pst_info->pcore0;
+    PWScore *pfromcore = pst_info->pcore1;
+    CUUID toUUID = pst_info->uuid0;
+    CUUID fromUUID = pst_info->uuid1;
+  
+    ItemListIter fromPos = pfromcore->Find(fromUUID);
+    ASSERT(fromPos != pfromcore->GetEntryEndIter());
+    const CItemData *pfromEntry = &fromPos->second;
+
+    ItemListIter toPos = ptocore->Find(toUUID);
+    ASSERT(toPos != ptocore->GetEntryEndIter());
+    CItemData *ptoEntry = &toPos->second;
+    CItemData updtEntry(*ptoEntry);
+
+    bool bUpdated(false);
+    for (size_t i = 0; i < m_SaveAdvValues[CAdvancedDlg::COMPARESYNCH].bsFields.size(); i++) {
+      if (m_SaveAdvValues[CAdvancedDlg::COMPARESYNCH].bsFields.test(i)) {
+        const StringX sxValue = pfromEntry->GetFieldValue((CItemData::FieldType)i);
+        if (sxValue != updtEntry.GetFieldValue((CItemData::FieldType)i)) {
+          bUpdated = true;
+          updtEntry.SetFieldValue((CItemData::FieldType)i, sxValue);
+        }
+      }
+    }
+
+    if (bUpdated) {
+      updtEntry.SetStatus(CItemData::ES_MODIFIED);
+      Command *pcmd = EditEntryCommand::Create(ptocore, *ptoEntry, updtEntry);
+      pmulticmds->Add(pcmd);
+    }
+  }
+
+  if (pmulticmds->GetSize() > 0) {
+    Execute(pmulticmds);
+    return TRUE;
+  }
+
+  return FALSE;
+}
+
 void DboxMain::OnOK()
 {
+  PWS_LOGIT;
+
   SavePreferencesOnExit();
 
   int rc = SaveDatabaseOnExit(ST_NORMALEXIT);
@@ -2901,6 +3133,8 @@ void RelativizePath(stringT &curfile)
 
 void DboxMain::SavePreferencesOnExit()
 {
+  PWS_LOGIT;
+
   PWSprefs::IntPrefs WidthPrefs[] = {
     PWSprefs::Column1Width,
     PWSprefs::Column2Width,
@@ -2969,6 +3203,8 @@ void DboxMain::SavePreferencesOnExit()
 
 int DboxMain::SaveDatabaseOnExit(const SaveType saveType)
 {
+  PWS_LOGIT_ARGS("saveType=%d", saveType);
+
   INT_PTR rc;
 
   if (saveType == ST_FAILSAFESAVE &&
@@ -3061,6 +3297,8 @@ int DboxMain::SaveDatabaseOnExit(const SaveType saveType)
 
 void DboxMain::CleanUpAndExit(const bool bNormalExit)
 {
+  PWS_LOGIT_ARGS("bNormalExit=%s", bNormalExit ? _T("true") : _T("false"));
+
   // Clear clipboard on Exit?  Yes if:
   // a. the app is minimized and the systemtray is enabled
   // b. the user has set the "ClearClipboardOnExit" pref
@@ -3279,11 +3517,11 @@ void DboxMain::ReportAdvancedOptions(CReport *pRpt, const bool bAdvanced, const 
     int ifields[] = {CItemData::PASSWORD, CItemData::NOTES, CItemData::URL,
                      CItemData::AUTOTYPE, CItemData::PWHIST, CItemData::POLICY,
                      CItemData::RUNCMD, CItemData::DCA, CItemData::SHIFTDCA, CItemData::EMAIL,
-                     CItemData::PROTECTED, CItemData::SYMBOLS};
+                     CItemData::PROTECTED, CItemData::SYMBOLS, CItemData::POLICYNAME};
     UINT uimsgids[] = {IDS_COMPPASSWORD, IDS_COMPNOTES, IDS_COMPURL,
                        IDS_COMPAUTOTYPE, IDS_COMPPWHISTORY, IDS_COMPPWPOLICY,
                        IDS_COMPRUNCOMMAND, IDS_COMPDCA, IDS_COMPSHIFTDCA, IDS_COMPEMAIL,
-                       IDS_COMPPROTECTED, IDS_COMPSYMBOLS};
+                       IDS_COMPPROTECTED, IDS_COMPSYMBOLS, IDS_COMPPOLICYNAME};
     ASSERT(_countof(ifields) == _countof(uimsgids));
 
     // Time fields

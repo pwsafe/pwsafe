@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -58,6 +58,14 @@ struct st_CompareData {
     return *this;
   }
     
+  void Empty() {
+    uuid0 = uuid1 = pws_os::CUUID::NullUUID();
+    bsDiffs = 0;
+    group = title = user = _T("");
+    id = indatabase = listindex =0;
+    unknflds0 = unknflds1 = bIsProtected0 = false;
+  }
+
   operator int() {return id;}
     
   pws_os::CUUID uuid0;  // original DB

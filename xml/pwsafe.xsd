@@ -5,7 +5,7 @@ xmlns:xs="http://www.w3.org/2001/XMLSchema" version="3.18">
 
 <xs:annotation>
   <xs:documentation xml:lang="en">
-    This XML Schema corresponds to V3.26 of Password Safe.
+    This XML Schema corresponds to V3.28 of Password Safe.
     As each new version is a 'superset' of previous versions, the current version of Password Safe
     will be able to import XML files created by all prior versions.
     However, in V3.13 element 'ltime' has been replaced by 'xtime' for the Password Expiry Time.
@@ -17,6 +17,8 @@ xmlns:xs="http://www.w3.org/2001/XMLSchema" version="3.18">
     of the XML standard for representing datetimes (fields ctimex, ltimex, xtimex, pmtimex and rmtimex).
     In a future release, the old fields will no longer be supported making this schema 'cleaner' and
     'simpler'.
+    In V3.27, support for ShiftDCA was added.
+    In V3.28, support for Password Policy Names was added and support for depreciated times was removed.
   </xs:documentation>
 </xs:annotation>
 
@@ -116,6 +118,33 @@ xmlns:xs="http://www.w3.org/2001/XMLSchema" version="3.18">
 </xs:simpleType>
 <!-- End of Special types -->
 
+<xs:complexType name="policynamesType">
+  <!-- Start Named Password Policy Fields -->
+  <xs:sequence>
+  <xs:element name="Policy" minOccurs="1" maxOccurs="unbounded" >
+    <xs:complexType>
+      <xs:all>
+        <xs:element name="PWName" type="stringType" minOccurs="1" maxOccurs="1" />
+        <xs:element name="PWDefaultLength" type="passwordlengthType" minOccurs="1" maxOccurs="1" />
+        <xs:element name="PWUseDigits" type="boolType" minOccurs="0" maxOccurs="1" />
+        <xs:element name="PWUseEasyVision" type="boolType" minOccurs="0" maxOccurs="1" />
+        <xs:element name="PWUseHexDigits" type="boolType" minOccurs="0" maxOccurs="1" />
+        <xs:element name="PWUseLowercase" type="boolType"  minOccurs="0" maxOccurs="1" />
+        <xs:element name="PWUseSymbols" type="boolType" minOccurs="0" maxOccurs="1" />
+        <xs:element name="PWUseUppercase" type="boolType" minOccurs="0" maxOccurs="1" />
+        <xs:element name="PWMakePronounceable" type="boolType" minOccurs="0" maxOccurs="1" />
+        <xs:element name="PWLowercaseMinLength" type="passwordlengthType2" minOccurs="0" maxOccurs="1" />
+        <xs:element name="PWUppercaseMinLength" type="passwordlengthType2" minOccurs="0" maxOccurs="1" />
+        <xs:element name="PWDigitMinLength" type="passwordlengthType2" minOccurs="0" maxOccurs="1" />
+        <xs:element name="PWSymbolMinLength" type="passwordlengthType2" minOccurs="0" maxOccurs="1" />
+        <xs:element name="symbols" type="stringType" minOccurs="0" maxOccurs="1" />
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+  </xs:sequence>
+  <!-- End Named Password Policy Fields -->
+</xs:complexType>
+
 <!-- Start of proper Password Safe validation XSD -->
   <xs:element name="passwordsafe">
   <!-- Start Database -->
@@ -165,14 +194,18 @@ xmlns:xs="http://www.w3.org/2001/XMLSchema" version="3.18">
           </xs:complexType>
         <!-- End Database Preferences -->
         </xs:element>
-        <xs:element name="entry" minOccurs="0" maxOccurs="unbounded">
+
+        <!-- Multiple PolicyNames in database -->
+        <xs:element name="NamedPasswordPolicies" type="policynamesType" minOccurs="0" maxOccurs="1" />
+        
         <!-- Start Database Entries -->
+        <xs:element name="entry" minOccurs="0" maxOccurs="unbounded">
           <xs:complexType>
             <xs:all>
               <xs:element name="group" type="stringType" minOccurs="0" maxOccurs="1" />
-              <xs:element name="title" type="stringType" minOccurs="1" />
+              <xs:element name="title" type="stringType" minOccurs="1" maxOccurs="1" />
               <xs:element name="username" type="stringType" minOccurs="0" maxOccurs="1" />
-              <xs:element name="password" type="stringType" minOccurs="1" />
+              <xs:element name="password" type="stringType" minOccurs="1" maxOccurs="1" />
               <xs:element name="url" type="stringType" minOccurs="0" maxOccurs="1" />
               <xs:element name="autotype" type="stringType" minOccurs="0" maxOccurs="1" />
               <xs:element name="notes" type="stringType" minOccurs="0" maxOccurs="1" />
@@ -209,26 +242,7 @@ xmlns:xs="http://www.w3.org/2001/XMLSchema" version="3.18">
                 </xs:complexType>
               <!-- End Password History Fields -->
               </xs:element>
-              <xs:element name="PasswordPolicy" minOccurs="0" maxOccurs="1">
-              <!-- Start Password Policy Fields -->
-                <xs:complexType>
-                  <xs:all>
-                    <xs:element name="PWLength" type="passwordlengthType" minOccurs="1" />
-                    <xs:element name="PWUseDigits" type="boolType" minOccurs="0" maxOccurs="1" />
-                    <xs:element name="PWUseEasyVision" type="boolType" minOccurs="0" maxOccurs="1" />
-                    <xs:element name="PWUseHexDigits" type="boolType" minOccurs="0" maxOccurs="1" />
-                    <xs:element name="PWUseLowercase" type="boolType"  minOccurs="0" maxOccurs="1" />
-                    <xs:element name="PWUseSymbols" type="boolType" minOccurs="0" maxOccurs="1" />
-                    <xs:element name="PWUseUppercase" type="boolType" minOccurs="0" maxOccurs="1" />
-                    <xs:element name="PWMakePronounceable" type="boolType" minOccurs="0" maxOccurs="1" />
-                    <xs:element name="PWLowercaseMinLength" type="passwordlengthType2" minOccurs="0" maxOccurs="1" />
-                    <xs:element name="PWUppercaseMinLength" type="passwordlengthType2" minOccurs="0" maxOccurs="1" />
-                    <xs:element name="PWDigitMinLength" type="passwordlengthType2" minOccurs="0" maxOccurs="1" />
-                    <xs:element name="PWSymbolMinLength" type="passwordlengthType2" minOccurs="0" maxOccurs="1" />
-                  </xs:all>
-                </xs:complexType>
-              <!-- End Password Policy Fields -->
-              </xs:element>
+              <xs:element ref="entrypolicyType" minOccurs="0" maxOccurs="1" />
               <xs:element name="runcommand" type="stringType" minOccurs="0" maxOccurs="1" />
               <xs:element name="dca" type="dcaType" minOccurs="0" maxOccurs="1" />
               <xs:element name="shiftdca" type="dcaType" minOccurs="0" maxOccurs="1" />
@@ -255,5 +269,29 @@ xmlns:xs="http://www.w3.org/2001/XMLSchema" version="3.18">
     </xs:complexType>
   <!-- End Database -->
   </xs:element>
+
+  <!-- Since can't put xs:choice within xs:all - do it this way! -->
+  <xs:element name="entrypolicyType" abstract="true" />
+    <xs:element name="PasswordPolicyName" type="stringType" substitutionGroup="entrypolicyType" />
+    <xs:element name="PasswordPolicy" substitutionGroup="entrypolicyType" >
+    <!-- Start Password Policy Fields -->
+      <xs:complexType>
+        <xs:all>
+          <xs:element name="PWLength" type="passwordlengthType" minOccurs="1" />
+          <xs:element name="PWUseDigits" type="boolType" minOccurs="0" maxOccurs="1" />
+          <xs:element name="PWUseEasyVision" type="boolType" minOccurs="0" maxOccurs="1" />
+          <xs:element name="PWUseHexDigits" type="boolType" minOccurs="0" maxOccurs="1" />
+          <xs:element name="PWUseLowercase" type="boolType"  minOccurs="0" maxOccurs="1" />
+          <xs:element name="PWUseSymbols" type="boolType" minOccurs="0" maxOccurs="1" />
+          <xs:element name="PWUseUppercase" type="boolType" minOccurs="0" maxOccurs="1" />
+          <xs:element name="PWMakePronounceable" type="boolType" minOccurs="0" maxOccurs="1" />
+          <xs:element name="PWLowercaseMinLength" type="passwordlengthType2" minOccurs="0" maxOccurs="1" />
+          <xs:element name="PWUppercaseMinLength" type="passwordlengthType2" minOccurs="0" maxOccurs="1" />
+          <xs:element name="PWDigitMinLength" type="passwordlengthType2" minOccurs="0" maxOccurs="1" />
+          <xs:element name="PWSymbolMinLength" type="passwordlengthType2" minOccurs="0" maxOccurs="1" />
+        </xs:all>
+      </xs:complexType>
+      <!-- End Password Policy Fields -->
+    </xs:element>
 </xs:schema>
 <!-- End of proper Password Safe validation XSD -->

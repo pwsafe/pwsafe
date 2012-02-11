@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -7,7 +7,10 @@
 */
 
 #pragma once
+
 #include "core/ItemData.h"
+#include "core/coredefs.h"
+
 #include "SMemFile.h"
 
 // Drag & Drop Object written to SMemFile
@@ -18,8 +21,8 @@ class CDDObject : public CObject
 public:
   CDDObject() {m_pbaseitem = NULL;};
 
-  void DDSerialize(CSMemFile &outDDmemfile);
-  void DDUnSerialize(CSMemFile &inDDmemfile);
+  void DDSerializeEntry(CSMemFile &outDDmemfile);
+  void DDUnSerializeEntry(CSMemFile &inDDmemfile);
   void FromItem(const CItemData &item) {m_item = item;}
   void ToItem(CItemData &item) const {item = m_item;}
 

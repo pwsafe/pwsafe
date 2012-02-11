@@ -661,7 +661,7 @@
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
     </ProjectReference>
     <Link>
-      <AdditionalDependencies>core.lib;os.lib;WS2_32.lib;Rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;htmlhelp.lib;msxml6.lib;UxTheme.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>core.lib;os.lib;WS2_32.lib;Rpcrt4.lib;version.lib;psapi.lib;Wtsapi32.lib;htmlhelp.lib;msxml6.lib;UxTheme.lib;dbghelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ShowProgress>NotSet</ShowProgress>
       <OutputFile>..\$(PWSBin)/pwsafe.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -1087,11 +1087,13 @@
     <ClCompile Include="ColumnChooserDlg.cpp" />
     <ClCompile Include="ColumnChooserLC.cpp" />
     <ClCompile Include="CompareResultsDlg.cpp" />
+    <ClCompile Include="CompareWithSelectDlg.cpp" />
     <ClCompile Include="ConfirmDeleteDlg.cpp" />
     <ClCompile Include="ControlExtns.cpp" />
     <ClCompile Include="CoolMenu.cpp" />
     <ClCompile Include="CreateShortcutDlg.cpp" />
     <ClCompile Include="CryptKeyEntry.cpp" />
+    <ClCompile Include="CWTreeCtrl.cpp" />
     <ClCompile Include="DboxMain.cpp" />
     <ClCompile Include="DboxTray.cpp" />
     <ClCompile Include="DDStatic.cpp" />
@@ -1115,6 +1117,8 @@
     <ClCompile Include="filter\FilterIntegerDlg.cpp" />
     <ClCompile Include="filter\FilterPasswordDlg.cpp" />
     <ClCompile Include="filter\FilterStringDlg.cpp" />
+    <ClCompile Include="Fonts.cpp" />
+    <ClCompile Include="FontsDialog.cpp" />
     <ClCompile Include="GeneralMsgBox.cpp" />
     <ClCompile Include="ImportTextDlg.cpp" />
     <ClCompile Include="ImportXMLDlg.cpp" />
@@ -1129,6 +1133,7 @@
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="MainView.cpp" />
     <ClCompile Include="filter\ManageFiltersDlg.cpp" />
+    <ClCompile Include="ManagePSWDPolices.cpp" />
     <ClCompile Include="MenuShortcuts.cpp" />
     <ClCompile Include="MenuTipper.cpp" />
     <ClCompile Include="MigratePrefs.cpp" />
@@ -1138,13 +1143,13 @@
     <ClCompile Include="OptionsDisplay.cpp" />
     <ClCompile Include="OptionsMisc.cpp" />
     <ClCompile Include="OptionsPasswordHistory.cpp" />
-    <ClCompile Include="OptionsPasswordPolicy.cpp" />
     <ClCompile Include="OptionsSecurity.cpp" />
     <ClCompile Include="OptionsShortcuts.cpp" />
     <ClCompile Include="OptionsSystem.cpp" />
     <ClCompile Include="PasskeyChangeDlg.cpp" />
     <ClCompile Include="PasskeyEntry.cpp" />
     <ClCompile Include="PasskeySetup.cpp" />
+    <ClCompile Include="PasswordPolicyDlg.cpp" />
     <ClCompile Include="PasswordSubsetDlg.cpp" />
     <ClCompile Include="Properties.cpp" />
     <ClCompile Include="PupText.cpp" />
@@ -1153,10 +1158,9 @@
     <ClCompile Include="filter\PWFilterLC.cpp" />
     <ClCompile Include="filter\PWFiltersDlg.cpp" />
     <ClCompile Include="PWFindToolBar.cpp" />
-    <ClCompile Include="PwFont.cpp" />
-    <ClCompile Include="PWFontDialog.cpp" />
     <ClCompile Include="PWHdrCtrlNoChng.cpp" />
     <ClCompile Include="PWHistDlg.cpp" />
+    <ClCompile Include="PWHistListCtrl.cpp" />
     <ClCompile Include="PWListCtrl.cpp" />
     <ClCompile Include="PWPropertyPage.cpp" />
     <ClCompile Include="PWPropertySheet.cpp" />
@@ -1165,12 +1169,14 @@
     <ClCompile Include="PWSFaultHandler.cpp" />
     <ClCompile Include="PWSRecentFileList.cpp" />
     <ClCompile Include="PWStatusBar.cpp" />
+    <ClCompile Include="PWSversion.cpp" />
     <ClCompile Include="PWToolBar.cpp" />
     <ClCompile Include="PWTreeCtrl.cpp" />
     <ClCompile Include="QuerySetDef.cpp" />
     <ClCompile Include="RichEditCtrlExtn.cpp" />
     <ClCompile Include="RUEList.cpp" />
     <ClCompile Include="SampleTextDlg.cpp" />
+    <ClCompile Include="SCWListCtrl.cpp" />
     <ClCompile Include="SecString.cpp" />
     <ClCompile Include="filter\SetFiltersDlg.cpp" />
     <ClCompile Include="filter\SetHistoryFiltersDlg.cpp" />
@@ -1178,6 +1184,7 @@
     <ClCompile Include="SHCTHotKey.cpp" />
     <ClCompile Include="SHCTListCtrl.cpp" />
     <ClCompile Include="Shortcut.cpp" />
+    <ClCompile Include="ShowCompareDlg.cpp" />
     <ClCompile Include="SingleInstance.cpp" />
     <ClCompile Include="SMemFile.cpp" />
     <ClCompile Include="Subclass.cpp" />
@@ -1209,12 +1216,14 @@
     <ClInclude Include="ColumnChooserDlg.h" />
     <ClInclude Include="ColumnChooserLC.h" />
     <ClInclude Include="CompareResultsDlg.h" />
+    <ClInclude Include="CompareWithSelectDlg.h" />
     <ClInclude Include="ConfirmDeleteDlg.h" />
     <ClInclude Include="ControlExtns.h" />
     <ClInclude Include="CoolMenu.h" />
     <ClInclude Include="..\..\core\core.h" />
     <ClInclude Include="CreateShortcutDlg.h" />
     <ClInclude Include="CryptKeyEntry.h" />
+    <ClInclude Include="CWTreeCtrl.h" />
     <ClInclude Include="DboxMain.h" />
     <ClInclude Include="DDStatic.h" />
     <ClInclude Include="DDSupport.h" />
@@ -1236,6 +1245,8 @@
     <ClInclude Include="filter\FilterIntegerDlg.h" />
     <ClInclude Include="filter\FilterPasswordDlg.h" />
     <ClInclude Include="filter\FilterStringDlg.h" />
+    <ClInclude Include="Fonts.h" />
+    <ClInclude Include="FontsDialog.h" />
     <ClInclude Include="GeneralMsgBox.h" />
     <ClInclude Include="ImportTextDlg.h" />
     <ClInclude Include="ImportXMLDlg.h" />
@@ -1244,6 +1255,7 @@
     <ClInclude Include="jprdebug.h" />
     <ClInclude Include="LVHdrCtrl.h" />
     <ClInclude Include="filter\ManageFiltersDlg.h" />
+    <ClInclude Include="ManagePSWDPolices.h" />
     <ClInclude Include="MenuShortcuts.h" />
     <ClInclude Include="MenuTipper.h" />
     <ClInclude Include="MFCmessages.h" />
@@ -1253,13 +1265,13 @@
     <ClInclude Include="OptionsDisplay.h" />
     <ClInclude Include="OptionsMisc.h" />
     <ClInclude Include="OptionsPasswordHistory.h" />
-    <ClInclude Include="OptionsPasswordPolicy.h" />
     <ClInclude Include="OptionsSecurity.h" />
     <ClInclude Include="OptionsShortcuts.h" />
     <ClInclude Include="OptionsSystem.h" />
     <ClInclude Include="PasskeyChangeDlg.h" />
     <ClInclude Include="PasskeyEntry.h" />
     <ClInclude Include="PasskeySetup.h" />
+    <ClInclude Include="PasswordPolicyDlg.h" />
     <ClInclude Include="PasswordSafe.h" />
     <ClInclude Include="PasswordSubsetDlg.h" />
     <ClInclude Include="Properties.h" />
@@ -1269,10 +1281,9 @@
     <ClInclude Include="filter\PWFilterLC.h" />
     <ClInclude Include="filter\PWFiltersDlg.h" />
     <ClInclude Include="PWFindToolBar.h" />
-    <ClInclude Include="PwFont.h" />
-    <ClInclude Include="PWFontDialog.h" />
     <ClInclude Include="PWHdrCtrlNoChng.h" />
     <ClInclude Include="PWHistDlg.h" />
+    <ClInclude Include="PWHistListCtrl.h" />
     <ClInclude Include="PWListCtrl.h" />
     <ClInclude Include="PWPropertyPage.h" />
     <ClInclude Include="PWPropertySheet.h" />
@@ -1281,6 +1292,7 @@
     <ClInclude Include="PWSFaultHandler.h" />
     <ClInclude Include="PWSRecentFileList.h" />
     <ClInclude Include="PWStatusBar.h" />
+    <ClInclude Include="PWSversion.h" />
     <ClInclude Include="PWToolBar.h" />
     <ClInclude Include="PWTreeCtrl.h" />
     <ClInclude Include="QuerySetDef.h" />
@@ -1290,6 +1302,7 @@
     <ClInclude Include="RichEditCtrlExtn.h" />
     <ClInclude Include="RUEList.h" />
     <ClInclude Include="SampleTextDlg.h" />
+    <ClInclude Include="SCWListCtrl.h" />
     <ClInclude Include="SecString.h" />
     <ClInclude Include="filter\SetFiltersDlg.h" />
     <ClInclude Include="filter\SetHistoryFiltersDlg.h" />
@@ -1297,6 +1310,7 @@
     <ClInclude Include="SHCTHotKey.h" />
     <ClInclude Include="SHCTListCtrl.h" />
     <ClInclude Include="Shortcut.h" />
+    <ClInclude Include="ShowCompareDlg.h" />
     <ClInclude Include="SingleInstance.h" />
     <ClInclude Include="SMemFile.h" />
     <ClInclude Include="StdAfx.h" />
@@ -1331,7 +1345,10 @@
     <None Include="graphics\findtoolbar\classic\findadvancedon.bmp" />
     <None Include="graphics\findtoolbar\new\findadvancedon.bmp" />
     <None Include="graphics\toolbar\classic\addgroup.bmp" />
+    <None Include="graphics\toolbar\classic\clearfilter.bmp" />
+    <None Include="graphics\toolbar\classic\copytoclipboard.bmp" />
     <None Include="graphics\toolbar\classic\duplicategroup.bmp" />
+    <None Include="graphics\toolbar\classic\passwordpolicy.bmp" />
     <None Include="graphics\toolbar\new\about.bmp" />
     <None Include="graphics\toolbar\classic\about.bmp" />
     <None Include="graphics\toolbar\new\about_disabled.bmp" />
@@ -1375,6 +1392,8 @@
     <None Include="graphics\toolbar\new\clearclipboard.bmp" />
     <None Include="graphics\toolbar\new\clearclipboard_disabled.bmp" />
     <None Include="graphics\toolbar\classic\close.bmp" />
+    <None Include="graphics\toolbar\new\clearfilter.bmp" />
+    <None Include="graphics\toolbar\new\clearfilter_disabled.bmp" />
     <None Include="graphics\toolbar\new\close.bmp" />
     <None Include="graphics\toolbar\new\close_disabled.bmp" />
     <None Include="graphics\toolbar\new\collapseall.bmp" />
@@ -1390,6 +1409,7 @@
     <None Include="graphics\toolbar\new\copypassword.bmp" />
     <None Include="graphics\toolbar\new\copypassword_disabled.bmp" />
     <None Include="graphics\toolbar\classic\copyuser.bmp" />
+    <None Include="graphics\toolbar\new\copytoclipboard.bmp" />
     <None Include="graphics\toolbar\new\copyuser.bmp" />
     <None Include="graphics\toolbar\new\copyuser_disabled.bmp" />
     <None Include="..\..\core\core.rc2" />
@@ -1504,6 +1524,8 @@
     <None Include="graphics\toolbar\new\passwordchars.bmp" />
     <None Include="graphics\toolbar\classic\passwordchars.bmp" />
     <None Include="graphics\toolbar\new\passwordchars_disabled.bmp" />
+    <None Include="graphics\toolbar\new\passwordpolicy.bmp" />
+    <None Include="graphics\toolbar\new\passwordpolicy_disabled.bmp" />
     <None Include="res\PasswordSafe2.rc2" />
     <None Include="res\PasswordSafe3.rc2" />
     <None Include="graphics\dragbar\classic\PasswordX.bmp" />

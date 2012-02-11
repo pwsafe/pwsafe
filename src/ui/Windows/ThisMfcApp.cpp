@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -34,6 +34,8 @@
 #include "MFCMessages.h"
 #include "GeneralMsgBox.h"
 #include "PWSFaultHandler.h"
+#include "Fonts.h"
+#include "PWSversion.h"
 
 #include "core/Util.h"
 #include "core/BlowFish.h"
@@ -42,6 +44,7 @@
 #include "core/PWSdirs.h"
 #include "core/SysInfo.h"
 #include "core/XMLprefs.h"
+#include "core/PWSLog.h"
 
 #include "os/windows/pws_autotype/pws_at.h"
 #include "os/dir.h"
@@ -194,6 +197,10 @@ ThisMfcApp::~ThisMfcApp()
 
   PWSprefs::DeleteInstance();
   PWSrand::DeleteInstance();
+  PWSversion::DeleteInstance();
+  Fonts::DeleteInstance();
+  PWSLog::DeleteLog();
+
   CoUninitialize(); // Uninitialize COM library
 
 #if !defined(POCKET_PC)
@@ -759,6 +766,18 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
           dbox.SetSetup();
         } else if (arg->Left(6) == L"--url=") {
           m_url = arg->Mid(6);
+        } else if ((*arg) == L"--novalidate") {
+          /**
+           * '--novalidate' prevents SOME of validation during open
+           */
+          dbox.NoValidation();
+        } else if ((*arg) == L"--cetreeview") {
+          /**
+           * '--cetreeview' will allow the user to select 2 entries and compare them
+           * TEMPORARY solution until multi-select is coded in the main Tree view
+           * Supported natively in List View
+           */
+          dbox.AllowCompareEntries();
         } else {
           // unrecognized extended flag. Silently ignore.
         }
@@ -827,7 +846,7 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
           dbox.SetStartSilent(true);
           break;
         case L'V': case L'v':
-          dbox.SetValidate(true);
+          // Obsolete - databases are always validated during opening unless --novalidate specified
           break;
         case L'U': case L'u': // set effective user
           // ensure there's another non-flag argument
@@ -951,6 +970,14 @@ BOOL ThisMfcApp::InitInstance()
   // Ensures all things like saving locations etc. are set up.
 
   PWSprefs *prefs = PWSprefs::GetInstance();
+
+  // And the others - even if not referenced here
+  Fonts *pFonts = Fonts::GetInstance();
+  PWSversion *pPWSver = PWSversion::GetInstance();
+
+  // Stop compiler warnings
+  UNREFERENCED_PARAMETER(pFonts);
+  UNREFERENCED_PARAMETER(pPWSver);
 
   LoadLocalizedStuff();
 #ifndef _DEBUG

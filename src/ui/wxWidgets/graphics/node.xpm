@@ -1,19 +1,37 @@
 /* XPM */
 static const char *node_xpm[] = {
-/* columns rows colors chars-per-pixel */
-"9 9 3 1",
+/* width height ncolors chars_per_pixel */
+"13 13 17 1",
 /* colors */
-"  c None",
-". c Black",
-"X c #FFFF00",
+"  c #F7B71E",
+". c #FBD885",
+"X c #F8BF36",
+"o c #FAD57D",
+"O c #FBDA8B",
+"+ c #F8BD31",
+"@ c #FBDB8D",
+"# c #FAD57B",
+"$ c #F8C343",
+"% c #FBD988",
+"& c #FAD680",
+"* c #FBDE98",
+"= c #FFFFFF",
+"- c #F8BC2E",
+"; c #FBD783",
+": c #FAD478",
+"> c None",
 /* pixels */
-"         ",
-"         ",
-"    ..   ",
-"   XXXX  ",
-"  .XXXX. ",
-"  .XXXX. ",
-"   XXXX  ",
-"    ..   ",
-"         "
+"=====*$*=====",
+"====;   &====",
+"===;     o===",
+"==;       o==",
+"=;         o=",
+"@           .",
+"X           +",
+"O           .",
+"=o         :=",
+"==o       :==",
+"===#     :===",
+"====#   :====",
+"=====%-%====="
 };

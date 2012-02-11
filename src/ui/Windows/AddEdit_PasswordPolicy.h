@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -32,6 +32,7 @@ public:
          IDD_SHORT = IDD_ADDEDIT_PASSWORDPOLICY_SHORT };
 
   CSymbolEdit m_symbols;
+  CComboBox m_cbxPolicyNames;
 
   BOOL m_pwuselowercase;
   BOOL m_pwuseuppercase;
@@ -78,11 +79,11 @@ protected:
   afx_msg void OnUseSymbols();
   afx_msg void OnEasyVision();
   afx_msg void OnMakePronounceable();
-  afx_msg void OnSetDefaultPWPolicy();
+  afx_msg void OnSelectNamedPolicy();
   afx_msg void OnSetSpecificPWPolicy();
-  afx_msg void OnResetPolicy();
   afx_msg void OnSymbols();
   afx_msg void OnOwnSymbolsChanged();
+  afx_msg void OnNamesComboChanged();
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
@@ -103,10 +104,13 @@ private:
   static const UINT LenTxts[N_HEX_LENGTHS * 2];       // IDs of text associated with length
   static const UINT nonHexLengths[N_HEX_LENGTHS];     // IDs of said lengths
   static const UINT nonHexLengthSpins[N_HEX_LENGTHS]; // IDs of said lengths' spinboxes
+
   // 2nd idex: 0 = pronounceable; 1 = hex
   BOOL m_save_enabled[N_HEX_LENGTHS][2];   // Save when disabling hex/pronounceable
   BOOL m_save_visible[N_HEX_LENGTHS];   // Save when disabling hex/pronounceable
   bool m_bInitdone;
+
+  int m_policy_radibtn;  // Can't use M_policy() anymore
 };
 //-----------------------------------------------------------------------------
 // Local variables:

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -56,6 +56,63 @@ struct st_DBProperties {
   StringX db_description;
 };
 
+// Results of a database verification
+struct st_ValidateResults {
+  int num_invalid_UUIDs;
+  int num_duplicate_UUIDs;
+  int num_empty_titles;
+  int num_empty_passwords;
+  int num_duplicate_GTU_fixed;
+  int num_PWH_fixed;
+  int num_excessivetxt_found;
+  int num_alias_warnings;
+  int num_shortcuts_warnings;
+
+  st_ValidateResults()
+  : num_invalid_UUIDs(0), num_duplicate_UUIDs(0),
+  num_empty_titles(0), num_empty_passwords(0),
+  num_duplicate_GTU_fixed(0),
+  num_PWH_fixed(0), num_excessivetxt_found(0),
+  num_alias_warnings(0), num_shortcuts_warnings(0)
+  {}
+
+  st_ValidateResults(const st_ValidateResults &that)
+  : num_invalid_UUIDs(that.num_invalid_UUIDs),
+  num_duplicate_UUIDs(that.num_duplicate_UUIDs),
+  num_empty_titles(that.num_empty_titles),
+  num_empty_passwords(that.num_empty_passwords),
+  num_duplicate_GTU_fixed(that.num_duplicate_GTU_fixed),
+  num_PWH_fixed(that.num_PWH_fixed),
+  num_excessivetxt_found(that.num_excessivetxt_found),
+  num_alias_warnings(that.num_alias_warnings),
+  num_shortcuts_warnings(that.num_shortcuts_warnings)
+  {}
+
+  st_ValidateResults &operator=(const st_ValidateResults &that) {
+    if (this != &that) {
+      num_invalid_UUIDs = that.num_invalid_UUIDs;
+      num_duplicate_UUIDs = that.num_duplicate_UUIDs;
+      num_empty_titles = that.num_empty_titles;
+      num_empty_passwords = that.num_empty_passwords;
+      num_duplicate_GTU_fixed = that.num_duplicate_GTU_fixed;
+      num_PWH_fixed = that.num_PWH_fixed;
+      num_excessivetxt_found = that.num_excessivetxt_found;
+      num_alias_warnings = that.num_alias_warnings;
+      num_shortcuts_warnings = that.num_shortcuts_warnings;
+    }
+    return *this;
+  }
+
+  int TotalIssues()
+  { 
+    return (num_invalid_UUIDs + num_duplicate_UUIDs +
+            num_empty_titles + num_empty_passwords +
+            num_duplicate_GTU_fixed +
+            num_PWH_fixed + num_excessivetxt_found +
+            num_alias_warnings + num_shortcuts_warnings);
+  }
+};
+
 class PWScore : public CommandInterface
 {
 public:
@@ -83,7 +140,8 @@ public:
     UNIMPLEMENTED,                            //  19
     NO_ENTRIES_EXPORTED,                      //  20
     DB_HAS_DUPLICATES,                        //  21
-    OK_WITH_ERRORS                            //  22
+    OK_WITH_ERRORS,                           //  22
+    OK_WITH_VALIDATION_ERRORS                 // 23
   };
 
   PWScore();
@@ -122,9 +180,12 @@ public:
   StringX GetCurFile() const {return m_currfile;}
   void SetCurFile(const StringX &file) {m_currfile = file;}
 
-  int ReadCurFile(const StringX &passkey, const size_t iMAXCHARS = 0)
-  {return ReadFile(m_currfile, passkey, iMAXCHARS);}
-  int ReadFile(const StringX &filename, const StringX &passkey, const size_t iMAXCHARS = 0);
+  int ReadCurFile(const StringX &passkey, const bool bValidate = false,
+                  const size_t iMAXCHARS = 0, CReport *pRpt = NULL)
+  {return ReadFile(m_currfile, passkey, bValidate, iMAXCHARS, pRpt);}
+  int ReadFile(const StringX &filename, const StringX &passkey,
+               const bool bValidate = false, const size_t iMAXCHARS = 0,
+               CReport *pRpt = NULL);
   PWSfile::VERSION GetReadFileVersion() const {return m_ReadFileVersion;}
   bool BackupCurFile(int maxNumIncBackups, int backupSuffix,
                      const stringT &userBackupPrefix,
@@ -166,13 +227,13 @@ public:
                 const bool &subgroup_bset,
                 const stringT &subgroup_name,
                 const int &subgroup_object, const int &subgroup_function,
-                CReport *prpt);
+                CReport *pRpt);
 
   void Synchronize(PWScore *pothercore, 
                    const CItemData::FieldBits &bsFields, const bool &subgroup_bset,
                    const stringT &subgroup_name,
                    const int &subgroup_object, const int &subgroup_function,
-                   int &numUpdated, CReport *prpt);
+                   int &numUpdated, CReport *pRpt);
 
   // Export databases
   int WritePlaintextFile(const StringX &filename,
@@ -180,7 +241,7 @@ public:
                          const stringT &subgroup, const int &iObject,
                          const int &iFunction, const TCHAR &delimiter,
                          int &numExported, const OrderedItemList *il = NULL,
-                         CReport *prpt = NULL);
+                         CReport *pRpt = NULL);
 
   int WriteXMLFile(const StringX &filename,
                    const CItemData::FieldBits &bsExport,
@@ -188,7 +249,7 @@ public:
                    const int &iFunction, const TCHAR &delimiter,
                    int &numExported, const OrderedItemList *il = NULL,
                    const bool &bFilterActive = false,
-                   CReport *prpt = NULL);
+                   CReport *pRpt = NULL);
 
   // Import databases
   // If returned status is SUCCESS, then returned Command * can be executed.
@@ -198,7 +259,7 @@ public:
                           const bool &bImportPSWDsOnly,
                           stringT &strErrors,
                           int &numImported, int &numSkipped,
-                          int &numPWHErrors, int &numRenamed,
+                          int &numPWHErrors, int &numRenamed, int &numNoPolicy,
                           CReport &rpt, Command *&pcommand);
   int ImportXMLFile(const stringT &ImportedPrefix,
                     const stringT &strXMLFileName,
@@ -208,6 +269,7 @@ public:
                     stringT &strPWHErrorList, stringT &strRenameList, 
                     int &numValidated, int &numImported, int &numSkipped,
                     int &numPWHErrors, int &numRenamed, 
+                    int &numNoPolicy,  int &numRenamedPolicies,
                     CReport &rpt, Command *&pcommand);
   int ImportKeePassV1TXTFile(const StringX &filename,
                              int &numImported, int &numSkipped, int &numRenamed,
@@ -233,13 +295,21 @@ public:
   void SetApplicationNameAndVersion(const stringT &appName, DWORD dwMajorMinor);
 
   // Return list of unique groups
-  void GetUniqueGroups(std::vector<stringT> &ary) const;
+  void GetUniqueGroups(std::vector<stringT> &vUniqueGroups) const;
+  // Construct unique title
   StringX GetUniqueTitle(const StringX &group, const StringX &title,
                          const StringX &user, const int IDS_MESSAGE);
+  // Get all password policy names
+  void GetPolicyNames(std::vector<stringT> &vNames) const;
+  bool GetPolicyFromName(StringX sxPolicyName, st_PSWDPolicy &st_pp);
+  void MakePolicyUnique(std::map<StringX, StringX> &mapRenamedPolicies,
+                        StringX &sxPolicyName, const StringX &sxMerge_DateTime,
+                        const int IDS_MESSAGE);
 
   // Populate setGTU & setUUID from m_pwlist. Returns false & empty set if
   // m_pwlist had one or more entries with same GTU/UUID respectively.
   bool InitialiseGTU(GTUSet &setGTU);
+  bool InitialiseGTU(GTUSet &setGTU, const StringX &sxPolicyName);
   bool InitialiseUUID(UUIDSet &setUUID);
   // Adds an st_GroupTitleUser to setGTU, possible modifying title
   // to ensure uniqueness. Returns false if title was modified.
@@ -349,7 +419,8 @@ public:
   void CopyPWList(const ItemList &in);
 
   // Validate() returns true if data modified, false if all OK
-  bool Validate(stringT &status, CReport &rpt, const size_t iMAXCHARS = 0);
+  bool Validate(const size_t iMAXCHARS, const bool bInReadfile,
+                CReport *pRpt, st_ValidateResults &st_vr);
 
   const PWSfile::HeaderRecord &GetHeader() const {return m_hdr;}
   void GetDBProperties(st_DBProperties &st_dbp);
@@ -372,6 +443,16 @@ public:
 
   size_t GetExpirySize() {return m_ExpireCandidates.size();}
   ExpiredList GetExpired(int idays) {return m_ExpireCandidates.GetExpired(idays);}
+
+  // Password Policies
+  bool IncrementPasswordPolicy(const StringX &sxPolicyName);
+  bool DecrementPasswordPolicy(const StringX &sxPolicyName);
+  const PSWDPolicyMap &GetPasswordPolicies()
+  {return m_MapPSWDPLC;}
+  void SetPasswordPolicies(const PSWDPolicyMap &MapPSWDPLC)
+  {m_MapPSWDPLC = MapPSWDPLC; SetDBChanged(true);}
+  void AddPolicy(const StringX &sxPolicyName, const st_PSWDPolicy &st_pp,
+                 const bool bAllowReplace = false);
 
 private:
   // Database update routines
@@ -514,6 +595,9 @@ private:
                          const StringX &value);
   void RemoveExpiryEntry(const CItemData &ci)
   {m_ExpireCandidates.Remove(ci);}
+
+  stringT GetXMLPWPolicies();
+  PSWDPolicyMap m_MapPSWDPLC;
 };
 
 #endif /* __PWSCORE_H */

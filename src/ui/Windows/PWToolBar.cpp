@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -69,7 +69,8 @@ const CString CPWToolBar::m_csMainButtons[] = {
   L"saveas", L"compare", L"merge", L"synchronize", L"undo", L"redo",
   L"passwordsubset", L"browse+autotype", L"runcommand", L"sendemail",
   L"listtree", L"find", L"viewreports", 
-  L"applyfilters", L"clearfilters", L"setfilters", L"managefilters", L"addgroup"
+  L"applyfilters", L"clearfilters", L"setfilters", L"managefilters",
+  L"addgroup", L"managepolicies"
 };
 
 const UINT CPWToolBar::m_MainToolBarIDs[] = {
@@ -120,7 +121,8 @@ const UINT CPWToolBar::m_MainToolBarIDs[] = {
   ID_MENUITEM_CLEARFILTER,
   ID_MENUITEM_EDITFILTER,
   ID_MENUITEM_MANAGEFILTERS,
-  ID_MENUITEM_ADDGROUP
+  ID_MENUITEM_ADDGROUP,
+  ID_MENUITEM_PSWD_POLICIES
 };
 
 // Additional Control IDs not on ToolBar
@@ -141,7 +143,6 @@ const UINT CPWToolBar::m_OtherIDs[] = {
   ID_MENUITEM_CHANGECOMBO,
   ID_MENUITEM_BACKUPSAFE,
   ID_MENUITEM_RESTORESAFE,
-  ID_MENUITEM_VALIDATE,
   ID_MENUITEM_EXIT,
   ID_MENUITEM_ABOUT,
   ID_MENUITEM_TRAYUNLOCK,
@@ -159,7 +160,9 @@ const UINT CPWToolBar::m_OtherIDs[] = {
   ID_MENUITEM_EXPORTENT2XML,
   ID_MENUITEM_DUPLICATEGROUP,
   ID_MENUITEM_REPORT_EXPORTTEXT,
-  ID_MENUITEM_REPORT_EXPORTXML
+  ID_MENUITEM_REPORT_EXPORTXML,
+  ID_MENUITEM_COPYALL_TO_ORIGINAL,
+  ID_MENUITEM_SYNCHRONIZEALL
 };
 
 const UINT CPWToolBar::m_MainToolBarClassicBMs[] = {
@@ -203,7 +206,8 @@ const UINT CPWToolBar::m_MainToolBarClassicBMs[] = {
   IDB_CLEARFILTERS_CLASSIC,
   IDB_SETFILTERS_CLASSIC,
   IDB_MANAGEFILTERS_CLASSIC,
-  IDB_ADDGROUP_CLASSIC
+  IDB_ADDGROUP_CLASSIC,
+  IDB_PSWD_POLICIES_CLASSIC
 };
 
 // Additional bitmaps not on ToolBar
@@ -224,7 +228,6 @@ const UINT CPWToolBar::m_OtherClassicBMs[] = {
   IDB_CHANGECOMBO_CLASSIC,
   IDB_BACKUPSAFE_CLASSIC,
   IDB_RESTORE_CLASSIC,
-  IDB_VALIDATE_CLASSIC,     // Yes, it is correct to be here twice!
   IDB_EXIT_CLASSIC,
   IDB_ABOUT_CLASSIC,
   IDB_TRAYUNLOCK_CLASSIC,
@@ -243,6 +246,8 @@ const UINT CPWToolBar::m_OtherClassicBMs[] = {
   IDB_DUPLICATEGROUP_CLASSIC,
   IDB_EXPORTTEXT_CLASSIC,   // For report of the same name
   IDB_EXPORTXML_CLASSIC,    // For report of the same name
+  IDB_IMPORT_CLASSIC,
+  IDB_IMPORT_CLASSIC,
 };
 
 const UINT CPWToolBar::m_MainToolBarNewBMs[] = {
@@ -286,7 +291,8 @@ const UINT CPWToolBar::m_MainToolBarNewBMs[] = {
   IDB_CLEARFILTERS_NEW,
   IDB_SETFILTERS_NEW,
   IDB_MANAGEFILTERS_NEW,
-  IDB_ADDGROUP_NEW
+  IDB_ADDGROUP_NEW,
+  IDB_PSWD_POLICIES_NEW
 };
 
 const UINT CPWToolBar::m_MainToolBarNewDisBMs[] = {
@@ -330,7 +336,8 @@ const UINT CPWToolBar::m_MainToolBarNewDisBMs[] = {
   IDB_CLEARFILTERS_NEW_D,
   IDB_SETFILTERS_NEW_D,
   IDB_MANAGEFILTERS_NEW_D,
-  IDB_ADDGROUP_NEW_D
+  IDB_ADDGROUP_NEW_D,
+  IDB_PSWD_POLICIES_NEW_D
 };
 
 // Additional bitmaps not on ToolBar
@@ -351,7 +358,6 @@ const UINT CPWToolBar::m_OtherNewBMs[] = {
   IDB_CHANGECOMBO_NEW,
   IDB_BACKUPSAFE_NEW,
   IDB_RESTORE_NEW,
-  IDB_VALIDATE_NEW,       // Yes, it is correct to be here twice!
   IDB_EXIT_NEW,
   IDB_ABOUT_NEW,
   IDB_TRAYUNLOCK_NEW,
@@ -370,6 +376,8 @@ const UINT CPWToolBar::m_OtherNewBMs[] = {
   IDB_DUPLICATEGROUP_NEW,
   IDB_EXPORTTEXT_NEW,     // For report of the same name
   IDB_EXPORTXML_NEW,      // For report of the same name
+  IDB_IMPORT_NEW,
+  IDB_IMPORT_NEW
 };
 
 // Additional bitmaps not on ToolBar
@@ -390,7 +398,6 @@ const UINT CPWToolBar::m_OtherNewDisBMs[] = {
   IDB_CHANGECOMBO_NEW_D,
   IDB_BACKUPSAFE_NEW_D,
   IDB_RESTORE_NEW_D,
-  IDB_VALIDATE_NEW_D,       // Yes, it is correct to be here twice!
   IDB_EXIT_NEW_D,
   IDB_ABOUT_NEW_D,
   IDB_TRAYUNLOCK_NEW_D,
@@ -409,6 +416,8 @@ const UINT CPWToolBar::m_OtherNewDisBMs[] = {
   IDB_DUPLICATEGROUP_NEW_D,
   IDB_EXPORTTEXT_NEW_D,    // For report of the same name
   IDB_EXPORTXML_NEW_D,     // For report of the same name
+  IDB_IMPORT_NEW_D,
+  IDB_IMPORT_NEW_D
 };
 
 IMPLEMENT_DYNAMIC(CPWToolBar, CToolBar)

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -14,10 +14,11 @@
 #include "OptionsDisplay.h"
 #include "OptionsMisc.h"
 #include "OptionsPasswordHistory.h"
-#include "OptionsPasswordPolicy.h"
 #include "OptionsSecurity.h"
 #include "OptionsShortcuts.h"
 #include "OptionsSystem.h"
+
+#include "core/coredefs.h"
 
 class DboxMain;
 class PWScore;
@@ -67,7 +68,6 @@ protected:
 private:
   void SetupInitialValues();
   void UpdateCopyPreferences();
-  void UpdatePasswordPolicy();
 
   CString m_save_bSymbols;
   int m_save_iPreExpiryWarnDays, m_save_iUseOwnSymbols;
@@ -81,7 +81,6 @@ private:
   COptionsDisplay         *m_pp_display;
   COptionsMisc            *m_pp_misc;
   COptionsPasswordHistory *m_pp_passwordhistory;
-  COptionsPasswordPolicy  *m_pp_passwordpolicy;
   COptionsSecurity        *m_pp_security;
   COptionsShortcuts       *m_pp_shortcuts;
   COptionsSystem          *m_pp_system;

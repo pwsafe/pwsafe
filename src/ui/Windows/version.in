@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+ * Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -18,12 +18,12 @@
 //   Build != 0 for all Intermediate versions
 // Full information shown in AboutBox; only Major & Minor are displayed in initial dialog
 
-#define PRODUCTVER     3, 27, 1, $WCREV$
-#define STRPRODUCTVER  "3, 27, 1, $WCREV$$WCMODS?+:$\0"
+#define PRODUCTVER     3, 28, 0, $WCREV$
+#define STRPRODUCTVER  "3, 28, 0, $WCREV$$WCMODS?+:$\0"
 #define FILEVER        PRODUCTVER
 #define STRFILEVER     STRPRODUCTVER
 
-#define SPECIAL_BUILD L"T"
+#define SPECIAL_BUILD L"preT"
 // Only define SPECIAL_BUILD before here (in version.in) if needed!
 #ifndef SPECIAL_BUILD
 #define SPECIAL_BUILD L""

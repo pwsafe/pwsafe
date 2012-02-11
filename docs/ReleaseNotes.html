@@ -1,12 +1,15 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<!-- A HTML version of the ReleaseNotes.txt file. There Javascript functions provide a mechanism to access Feature Requests,
-     Support Requests and Bug Reports directly from the Tracker ID. They are implemented to make it easier to change if
-     SourceForge change their environment. Would have been nice to open a new tab rather than a new Window but currently
-     not possible from Javascript. Within a given release, the order of the entries are: New Features, Changes to Existing
-     Features and then Bugs Fixed. Within each section, entries are ordered in decreasing Tracker ID order. If an entry resolves
-     multiple Tracker IDs, they are also entered in decreasing Tracker ID order. -->
+<!-- A HTML version of the ReleaseNotes.txt file. There Javascript functions provide a
+     mechanism to access Feature Requests, Support Requests and Bug Reports directly
+     from the Tracker ID. They are implemented to make it easier to change if
+     SourceForge change their environment. Would have been nice to open a new tab
+     rather than a new Window but currently not possible from Javascript. Within a given
+     release, the order of the entries are: New Features, Changes to Existing
+     Features and then Bugs Fixed. Within each section, entries are ordered in decreasing
+     Tracker ID order. If an entry resolves multiple Tracker IDs, they are also entered
+     in decreasing Tracker ID order. -->
 <style  type="text/css">
 h2 { text-decoration: underline; }
 h3 { text-decoration: underline; }
@@ -46,7 +49,7 @@ will not work! ***</p>
 
 <body>
 
-<h1 align="center">Password Safe 3.27.1 Release Notes - October 2011</h1>
+<h1 align="center">Password Safe 3.28pre Release Notes - January 2012</h1>
 
 <p>This note describe the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -62,30 +65,42 @@ Information about older versions may be found <a href="http://pwsafe.org/history
 <br>
 <hr>
 
-<h3><a name="V3.271"></a>Version V3.27.1</h3>
+<h3><a name="V3.28pre"></a>Version V3.28pre</h3>
 
-<h4><a name="V3.271New"></a>New Features for V3.27.1</h4>
+<h4><a name="V3.28preNew"></a>New Features for V3.28pre</h4>
 
 <table>
 <tbody>
 <tr>
-<td>None</td>
+<td align="center" width="100"><a href="nojs.html" onclick="FR(3468289);return false;">3468289</a></td>
+<td>Use the Password font for passwords displayed in the Password History and for
+those displayed in the List view.  Also add the ability to zoom in/out of the Notes field
+to enable any text to be more easily read.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="FR(3455436);return false;">3455436</a></td>
+<td>Users may now delete the password history for all existing entries in a database.
+They may choose to also change Protected Entries, although the default is not to.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="FR(3421963);return false;">3421963</a></td>
+<td>Centralized Password Policies can now be saved in a database, managed (added,
+edited and deleted), exported and imported, used in filters and to generate passwords.</td>
 </tr>
 </tbody>
 </table>
 
-<h4><a name="V3.271Changes"></a>Changes to Existing Features in V3.27.1</h4>
+<h4><a name="V3.28preChanges"></a>Changes to Existing Features in V3.28pre</h4>
 
 <table>
 <tbody>
+<tr>
 <td align="center" width="100"><a href="nojs.html" onclick="FR(3445820);return false;">3445820</a></td>
-<td>
-The Edit menu item and entry right-click context menu item "Copy Run Command to
+<td>The Edit menu item and entry right-click context menu item "Copy Run Command to
 Clipboard" will, by default, substitute any variables within the command. To disable this,
 hold down the Ctrl key when selecting these menu items.  The standard menu shortcut cannot
 be used to disable the substitution as the Ctrl key may be used to select a different
-menu item/command.
-</td>
+menu item/command.</td>
 </tr>
 <tr>
 <td align="center" width="100">n/a</td>
@@ -96,17 +111,42 @@ See Help file (the XML section of "Import Password Entries") on how to manually 
 the XML file exported prior to V3.26 to allow it to be successfully imported in this release.</td>
 </tr>
 <tr>
+<td align="center" width="100">n/a</td>
+<td>After closing the current database, on opening another, PasswordSafe will first
+attempt to access the directory of the last opened database in order to allow the user
+to start browsing for their intended database.  If this directory is not available,
+PasswordSafe will open the default "My Safes" directory as it did prior to this change.</td>
+</tr>
+<tr>
+<td align="center" width="100">n/a</td>
+<td>Databases are now always validated when opened. The Manage->Validate
+menu item has therefore been removed.</td>
+</tr>
+<tr>
+<td align="center" width="100">n/a</td>
+<td>The default backup policy has been changed to save the last three versions of the database,
+instead of one.</td>
+</tr>
 </tbody>
 </table>
 
-<h4><a name="V3.271BugsFixed"></a>Bugs fixed in V3.27.1</h4>
+<h4><a name="V3.28preBugsFixed"></a>Bugs fixed in V3.28pre</h4>
 
 <table>
 <tbody>
 <tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(3468853);return false;">3468853</a></td>
+<td>The number of saved passwords can be changed and after the user presses Apply
+they will no longer be warned that the entry has been changed when pressing Cancel.</td>
+</tr>
+<tr>
+<td align="center" width="100"><a href="nojs.html" onclick="BR(3462520);return false;">3462520</a></td>
+<td>A password entry's expiry time in days now correctly reflects the
+expiration date for non-recurring expiration.</td>
+</tr>
+<tr>
 <td align="center" width="100"><a href="nojs.html" onclick="BR(3440318);return false;">3440318</a></td>
-<td>
-Filters can now be cleared by double-clicking on the filter indicator in
+<td>Filters can now be cleared by double-clicking on the filter indicator in
 the status bar. Also, Filter Menu correctly changed when a filter is active.</td>
 </tr>
 <tr>
@@ -116,6 +156,15 @@ the status bar. Also, Filter Menu correctly changed when a filter is active.</td
 <tr>
 <td align="center" width="100"><a href="nojs.html" onclick="BR(3430196);return false;">3430196</a></td>
 <td>Buttons in the Options property pages now retain the user's Windows theme.</td>
+</tr>
+<tr>
+<td align="center" width="100">n/a</td>
+<td>Fix inability to copy entries to the original database in the Compare database results
+dialog.</td>
+</tr>
+<tr>
+<td align="center" width="100">n/a</td>
+<td>Thanks to Jon F. for proofreading the online help.</td>
 </tr>
 </tbody>
 </table>
@@ -205,6 +254,7 @@ the status bar. Also, Filter Menu correctly changed when a filter is active.</td
 
 <table>
 <tbody>
+<tr>
 <td align="center" width="100"><a href="nojs.html" onclick="FR(3367590);return false;">3367590</a></td>
 <td>User can now add a database name and description via the Properties diaolg.</td>
 </tr>
@@ -259,7 +309,7 @@ opened.</td>
 </tr>
 <tr>
 <td align="center" width="100"><a href="nojs.html" onclick="BR(3380714);return false;">3380714</a></td>
-<td>User can now save database after manually taking a bakup./td>
+<td>User can now save database after manually taking a bakup.</td>
 </tr>
 <tr>
 <td align="center" width="100"><a href="nojs.html" onclick="BR(3380424);return false;">3380424</a></td>
@@ -314,7 +364,7 @@ current database's default Autotype string (if set via Manage->Options).</td>
 </tr> 
 <tr>
 <td align="center" width="100"><a href="nojs.html" onclick="FR(2964804);return false;">2964804</a>,<br>
-<a href="nojs.html" onclick="FR(1855389);return false;">1855389</a></td></td>
+<a href="nojs.html" onclick="FR(1855389);return false;">1855389</a></td>
 <td>The user can specify the list of symbols valid for
 password generation, and can override this for any particular
 entry (except when EasyVision or Pronounceable passwords are chosen).</td>
@@ -373,12 +423,14 @@ mechanism to re-check them during import. Exporting to XML and then
 importing to a new database can be used to remove these unknown
 fields.</td>
 </tr>
+<tr>
 <td align="center" width="100">n/a</td>
 <td>Date time fields, when exported to XML, now are in the W3C dateTime
 standard format instead of PasswordSafe's.  This release can import
 XML files with date time fields in either of these forms. The next
 release will only be able to process the W3C standard.</td>
 </tr>
+<tr>
 <td align="center" width="100">n/a</td>
 <td>Fully support importing of TXT files exported from KeePass V1
 including the Group Tree structure, URL and date time fields. Please
@@ -425,8 +477,7 @@ neeeded.</td>
 <tr>
 <td align="center" width="100"><a href="nojs.html" onclick="BR(3088187);return false;">3088187</a></td>
 <td>The correct entry in List View is now used for Autotype when
-using the keyboard to select the entry when PasswordSafe first opens.
-</td>
+using the keyboard to select the entry when PasswordSafe first opens.</td>
 </tr>
 <tr>
 <td align="center" width="100">n/a</td>

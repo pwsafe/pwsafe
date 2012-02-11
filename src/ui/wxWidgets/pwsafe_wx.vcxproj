@@ -458,6 +458,8 @@
     <ClInclude Include="editshortcut.h" />
     <ClInclude Include="ExportTextWarningDlg.h" />
     <ClInclude Include="ExternalKeyboardButton.h" />
+    <ClInclude Include="fieldselectiondlg.h" />
+    <ClInclude Include="fieldselectionpanel.h" />
     <ClInclude Include="guiinfo.h" />
     <ClInclude Include="helpmap.h" />
     <ClInclude Include="ImportTextDlg.h" />
@@ -473,6 +475,7 @@
     <ClInclude Include="PWSDragBar.h" />
     <ClInclude Include="PWSgrid.h" />
     <ClInclude Include="PWSgridtable.h" />
+    <ClInclude Include="pwsmenushortcuts.h" />
     <ClInclude Include="PwsSync.h" />
     <ClInclude Include="PWStree.h" />
     <ClInclude Include="RecentDBList.h" />
@@ -505,6 +508,8 @@
     <ClCompile Include="editshortcut.cpp" />
     <ClCompile Include="ExportTextWarningDlg.cpp" />
     <ClCompile Include="ExternalKeyboardButton.cpp" />
+    <ClCompile Include="fieldselectiondlg.cpp" />
+    <ClCompile Include="fieldselectionpanel.cpp" />
     <ClCompile Include="guiinfo.cpp" />
     <ClCompile Include="ImportTextDlg.cpp" />
     <ClCompile Include="ImportXmlDlg.cpp" />
@@ -520,6 +525,7 @@
     <ClCompile Include="PWSDragBar.cpp" />
     <ClCompile Include="PWSgrid.cpp" />
     <ClCompile Include="PWSgridtable.cpp" />
+    <ClCompile Include="pwsmenushortcuts.cpp" />
     <ClCompile Include="PwsSync.cpp" />
     <ClCompile Include="PWStree.cpp" />
     <ClCompile Include="RUEList.cpp" />

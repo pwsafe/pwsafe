@@ -138,6 +138,15 @@
     <ClInclude Include="helpmap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="fieldselectiondlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pwsmenushortcuts.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="fieldselectionpanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="pwsafe.rc">
@@ -263,6 +272,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SizeRestrictedPanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="fieldselectiondlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pwsmenushortcuts.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="fieldselectionpanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

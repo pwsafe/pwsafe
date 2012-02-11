@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -17,21 +17,19 @@
 using namespace std;
 
 CEBListCtrl::CEBListCtrl()
-: m_pToolTipCtrl(NULL), m_LastToolTipRow(-1), m_pwchTip(NULL), m_pchTip(NULL)
+: m_pToolTipCtrl(NULL), m_LastToolTipRow(-1), m_pwchTip(NULL)
 {
 }
 
 CEBListCtrl::~CEBListCtrl()
 {
   delete m_pwchTip;
-  delete m_pchTip;
   delete m_pToolTipCtrl;
 }
 
 BEGIN_MESSAGE_MAP(CEBListCtrl, CListCtrl)
   //{{AFX_MSG_MAP(CEBListCtrl)
   ON_WM_MOUSEMOVE()
-  ON_NOTIFY_EX(TTN_NEEDTEXTA, 0, OnToolTipText)
   ON_NOTIFY_EX(TTN_NEEDTEXTW, 0, OnToolTipText)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
@@ -111,8 +109,6 @@ BOOL CEBListCtrl::OnToolTipText(UINT /*id*/, NMHDR *pNotifyStruct, LRESULT *pLRe
     return TRUE;  // do not allow display of automatic tooltip,
                   // or our tooltip will disappear
 
-  // handle both ANSI and UNICODE versions of the message
-  TOOLTIPTEXTA* pTTTA = (TOOLTIPTEXTA*)pNotifyStruct;
   TOOLTIPTEXTW* pTTTW = (TOOLTIPTEXTW*)pNotifyStruct;
 
   CString cs_tooltip;
@@ -135,49 +131,12 @@ BOOL CEBListCtrl::OnToolTipText(UINT /*id*/, NMHDR *pNotifyStruct, LRESULT *pLRe
     cs_tooltip.LoadString(IDS_EBLISTCTRL);
   }
 
-#define LONG_TOOLTIPS
-
-#ifdef LONG_TOOLTIPS
-  if (pNotifyStruct->code == TTN_NEEDTEXTA) {
-    delete m_pchTip;
-
-    m_pchTip = new char[cs_tooltip.GetLength() + 1];
-#if (_MSC_VER >= 1400)
-    size_t num_converted;
-    wcstombs_s(&num_converted, m_pchTip, cs_tooltip.GetLength() + 1, cs_tooltip,
-               cs_tooltip.GetLength() + 1);
-#else
-    wcstombs(m_pchTip, cs_tooltip, cs_tooltip.GetLength() + 1);
-#endif
-    pTTTA->lpszText = (LPSTR)m_pchTip;
-  } else {
     delete m_pwchTip;
 
     m_pwchTip = new WCHAR[cs_tooltip.GetLength() + 1];
-#if (_MSC_VER >= 1400)
     wcsncpy_s(m_pwchTip, cs_tooltip.GetLength() + 1,
               cs_tooltip, _TRUNCATE);
-#else
-    wcsncpy(m_pwchTip, cs_tooltip, cs_tooltip.GetLength() + 1);
-#endif
     pTTTW->lpszText = (LPWSTR)m_pwchTip;
-  }
-#else // Short Tooltips!
-  if (pNotifyStruct->code == TTN_NEEDTEXTA) {
-    int n = WideCharToMultiByte(CP_ACP, 0, cs_tooltip, -1,
-                                pTTTA->szText, _countof(pTTTA->szText),
-                                NULL, NULL);
-    if (n > 0)
-      pTTTA->szText[n - 1] = 0;
-  } else {
-#if (_MSC_VER >= 1400)
-    wcsncpy_s(pTTTW->szText, _countof(pTTTW->szText),
-             cs_tooltip, _TRUNCATE);
-#else
-    wcsncpy(pTTTW->szText, cs_tooltip, _countof(pTTTW->szText));
-#endif
-  }
-#endif // Long/short tooltips
 
   return TRUE;   // we found a tool tip,
 }

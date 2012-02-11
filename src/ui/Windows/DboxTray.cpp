@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -28,6 +28,8 @@
 #include "core/pwscore.h"
 #include "core/PWSAuxParse.h"
 
+#include "os/logit.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -51,6 +53,8 @@ static bool SafeGetBaseEntry(const DboxMain *pDbx, const CItemData &dep, CItemDa
 #ifndef POCKET_PC
 void DboxMain::OnTrayLockUnLock()
 {
+  PWS_LOGIT;
+
   switch(app.GetSystemTrayState()) {
     case ThisMfcApp::LOCKED:            // User clicked UnLock!
       // This only unlocks the database - it does not restore the window

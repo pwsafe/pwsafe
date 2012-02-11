@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -57,6 +57,9 @@ const size_t CPasswordCharPool::easyvision_symbol_len = LENGTH(easyvision_symbol
 
 const charT CPasswordCharPool::easyvision_hexdigit_chars[] = _T("0123456789abcdef");
 const size_t CPasswordCharPool::easyvision_hexdigit_len = LENGTH(easyvision_hexdigit_chars);
+
+// See the values of "charT sym" in the static const structure "leets" below
+const charT CPasswordCharPool::pronounceable_symbol_chars[] = _T("@&(#!|$+");
 
 //-----------------------------------------------------------------------------
 

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -44,6 +44,7 @@ struct pw_entry {
   StringX shiftdca;
   StringX email;
   StringX symbols;
+  StringX policyname;
   unsigned char ucprotected;
   PWPolicy pwp;
   int entrytype;
@@ -53,6 +54,11 @@ struct pw_entry {
 struct pwhistory_entry {
   StringX changed;
   StringX oldpassword;
+};
+
+struct pw_policy {
+  StringX name;
+  st_PSWDPolicy st_pp;
 };
 
 typedef std::vector<pw_entry *> vdb_entries;
@@ -97,6 +103,8 @@ public:
   int getNumSkipped() const {return m_numEntriesSkipped;}
   int getNumRenamed() const {return m_numEntriesRenamed;}
   int getNumPWHErrors() const {return m_numEntriesPWHErrors;}
+  int getNumNoPolicies() const {return m_numNoPolicies;}
+  int getNumRenamedPolicies() const {return m_numRenamedPolicies;}
  
   bool getDatabaseHeaderErrors() const {return m_bDatabaseHeaderErrors;}
   bool getRecordHeaderErrors() const {return m_bRecordHeaderErrors;}
@@ -104,12 +112,13 @@ public:
 protected:
   bool ProcessStartElement(const int icurrent_element);
   void ProcessEndElement(const int icurrent_element);
-  void AddEntries();
+  void AddXMLEntries();
   void AddDBPreferences();
 
   vdb_entries m_ventries;
   pw_entry *cur_entry;
   pwhistory_entry *cur_pwhistory_entry;
+  pw_policy *cur_policy;
 
   StringX m_strElemContent;
   stringT m_strErrorMessage;
@@ -123,11 +132,15 @@ protected:
   int m_numEntriesSkipped;
   int m_numEntriesRenamed;
   int m_numEntriesPWHErrors;
+  int m_numNoPolicies;
+  int m_numRenamedPolicies;
   int m_iErrorCode;
   TCHAR m_delimiter;
 
   bool m_bEntryBeingProcessed;
+  bool m_bPolicyBeingProcessed;
   bool m_bValidation;
+  bool m_bInPolicyNames;
   bool m_bErrors, m_bRecordHeaderErrors, m_bDatabaseHeaderErrors;
   bool m_bImportPSWDsOnly;
   unsigned char m_ctype;
@@ -154,6 +167,11 @@ private:
   stringT m_sDefaultAutotypeString;
   stringT m_sDefaultUsername;
   stringT m_sDefaultSymbols;
+  stringT m_sNamedPolicySymbols;
+
+  PSWDPolicyMap m_MapPSWDPLC;
+  std::map<StringX, StringX> m_mapRenamedPolicies;
+  StringX m_sxXML_DateTime;
 };
 
 #endif /* __XMLFILEHANDLERS_H */

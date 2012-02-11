@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -20,7 +20,6 @@ public:
   CProperties(st_DBProperties *pdbp, const bool bReadonly, CWnd *pParent = NULL);
   virtual ~CProperties();
 
-  virtual BOOL OnInitDialog();
   bool HasDataChanged() {return m_bChanged;}
 
   // Dialog Data
@@ -31,6 +30,9 @@ protected:
   CStatic m_stc_description;
 
   virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+  virtual BOOL OnInitDialog();
+  virtual BOOL PreTranslateMessage(MSG* pMsg);
+
   afx_msg void OnEditName();
   afx_msg void OnEditDescription();
   

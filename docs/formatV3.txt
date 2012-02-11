@@ -1,7 +1,7 @@
-PasswordSafe database format description version 3.22
+PasswordSafe database format description version 3.28
 -----------------------------------------------------
 
-Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 All rights reserved. Use of the code is allowed under the Artistic
 License terms, as specified in the LICENSE file distributed with this
 code, or available from
@@ -153,11 +153,12 @@ Database Filters            0x0b        Text          Y              [12]
 Reserved                    0x0c        -                            [13]
 Reserved                    0x0d        -                            [13]
 Reserved                    0x0e        -                            [13]
-Recently Used Entries       0x0f        -                            [14]
-End of Entry                0xff        [empty]       Y              [15]
+Recently Used Entries       0x0f        Text                         [14]
+Named Password Policies     0x10        Text                         [15]
+End of Entry                0xff        [empty]       Y              [16]
 
 [1] The version number of the database format. For this version, the value
-is 0x0309 (stored in little-endian format, that is, 0x09, 0x03).
+is 0x0310 (stored in little-endian format, that is, 0x10, 0x03).
 PasswordSafe V3.01 introduced Format 0x0300
 PasswordSafe V3.03 introduced Format 0x0301
 PasswordSafe V3.09 introduced Format 0x0302
@@ -168,6 +169,7 @@ PasswordSafe V3.19 introduced Format 0x0306
 PasswordSafe V3.22 introduced Format 0x0307
 PasswordSafe V3.25 introduced Format 0x0308
 PasswordSafe V3.26 introduced Format 0x0309
+PasswordSafe V3.28 introduced Format 0x030A
 
 [2] A universally unique identifier is needed in order to synchronize
 databases, e.g., between a handheld pocketPC device and a
@@ -246,7 +248,7 @@ format version 0x0305.
 versions of PasswordSafe. To ensure compatability beweeen versions,
 use of these values should be avoided.
 
-[14] A list of the UUIds (32 hex character representation of the 16 byte field)
+[14] A list of the UUIDs (32 hex character representation of the 16 byte field)
 of the recently used entries, prefixed by a 2 hex character representation
 of the number of these entries (right justified and left filled with zeroes).
 The size of the number of entries field gives a maximum number of entries of 255,
@@ -254,7 +256,37 @@ however the GUI may impose further restrictions e.g. Windows MFC UI limits this
 to 25. The first entry is the most recent entry accessed. This field was
 introduced in format version 0x0307.
 
-[15] An explicit end of entry field is useful for supporting new fields
+[15] This field allows a multiple Password Policies per database.  The format is:
+    "NN{LLxxx...xxxffffnnnllluuudddsssMMSSS...SSS}"
+where:
+     NN = 2 hexadecimal digits giving number of password policies in
+    field (max. 255).
+     
+   Each entry is of the form:
+     LL = 2 hexadecimal digits giving length of the policy name in bytes
+     xxx...xxx = The policy name (maximum 255 bytes)
+     ffff = 4 hexadecimal digits representing the following flags
+        UseLowercase        0x8000
+        UseUppercase        0x4000
+        UseDigits           0x2000
+        UseSymbols          0x1000
+        UseHexDigits        0x0800 (if set, then no other flags can be set)
+        UseEasyVision       0x0400
+        MakePronounceable   0x0200
+        Unused              0x01ff
+    nnn  = 3 hexadecimal digits password total length
+    lll  = 3 hexadecimal digits password minimum number of lowercase characters
+    uuu  = 3 hexadecimal digits password minimum number of uppercase characters
+    ddd  = 3 hexadecimal digits password minimum number of digit characters
+    sss  = 3 hexadecimal digits password minimum number of symbol characters
+    MM = 2 hexadecimal digits giving the length in bytes of allowed special
+         symbols, or zero to specify the database default special symbol
+         set.
+    SSS...SSS = List of allowed symbols in this policy (maximum 255 bytes)
+    
+This field was introduced in format version 0x0311.
+
+[16] An explicit end of entry field is useful for supporting new fields
 without breaking backwards compatability.
 
 3.3 Field types for database Records:
@@ -284,7 +316,8 @@ EMail address               0x14        Text          Y              [16]
 Protected Entry             0x15        1 byte        Y              [17]
 Own symbols for password    0x16        Text          Y              [18]
 Shift Double-Click Action   0x17        2 bytes       Y              [15]
-End of Entry                0xff        [empty]       Y              [19]
+Password Policy Name        0x18        Text          Y              [19]
+End of Entry                0xff        [empty]       Y              [20]
 
 [1] Per-record UUID to assist in sync, merge, etc. Representation is
 as described in Section 3.1.1.
@@ -363,14 +396,15 @@ the PWH field (preferred), or by a header of _T("00000"):
 Note that 0aabb, where bb <= aa, is possible if password history was enabled
 in the past and has then been disabled but the history hasn't been cleared.
 
-[13] This field allows a specific Password Policy per entry.  The format is:
+[13] This field allows a specific Password Policy per entry.  This field
+is mutually exclusive with the policy name field [0x18]. The format is:
     "ffffnnnllluuudddsss"
 where:
      ffff = 4 hexadecimal digits representing the following flags
-        UseLowercase        0x8000  - can have a minimum length
-        UseUppercase        0x4000  - can have a minimum length
-        UseDigits           0x2000  - can have a minimum length
-        UseSymbols          0x1000  - can have a minimum length
+        UseLowercase        0x8000 
+        UseUppercase        0x4000 
+        UseDigits           0x2000 
+        UseSymbols          0x1000 
         UseHexDigits        0x0800 (if set, then no other flags can be set)
         UseEasyVision       0x0400
         MakePronounceable   0x0200
@@ -388,7 +422,8 @@ corresponding to up to approximately 10 years.  A value of zero is equivalent to
 this field not being set.
 
 [15] A two byte field contain the value of the Double-Click Action and Shift
-Double-Click Action'preference value' (0xff means use the current Application default):
+Double-Click Action'preference value' (0xff means use the current
+Application default):
 Current 'preference values' are:
     CopyPassword           0
     ViewEdit               1
@@ -404,17 +439,24 @@ Current 'preference values' are:
 [16] Separate Email address field as per RFC 2368 (without the 'mailto:'
 prefix. This field was introduced in version 0x0306 (PasswordSafe V3.19).
 
-[17] Entry is protected i.e. the entry cannot be changed until the user unsets
-this field.  Effectively a read-only entry in a read-write database. This field
-was introduced in version 0x0308 (PasswordSafe V3.25).  This a single character.
-An absent field or a zero valued field means that the entry is not protected.
-Any non-zero value is taken as meaning that the entry is protected.
+[17] Entry is protected, i.e., the entry cannot be changed or deleted
+while this field is set. This field was introduced in version 0x0308
+(PasswordSafe V3.25).  This a single byte. An absent field or a zero
+valued field means that the entry is not protected. Any non-zero value
+means that the entry is protected.
 
-[18] Each entry can now specify it on set of allowed special symbols for
+[18] Each entry can now specify its own set of allowed special symbols for
 password generation.  This overrides the default set and any database specific
-set.  This was introduced in version 0x0309 (PasswordSafe V3.26).
+set. This field is mutually exclusive with the policy name field
+[0x18].  This was introduced in version 0x0309 (PasswordSafe V3.26).
 
-[19] An explicit end of entry field is useful for supporting new fields
+[19] Each entry can now specify the name of a Password Policy saved in
+the database header for password generation. This field is mutually
+exclusive with the specific policy field [0x10] and with the Own
+symbols for password field [0x16]. This was introduced in version
+0x0311 (PasswordSafe V3.28).
+
+[20] An explicit end of entry field is useful for supporting new fields
 without breaking backwards compatability.
 
 4. Extensibility

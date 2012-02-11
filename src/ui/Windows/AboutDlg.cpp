@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -17,7 +17,7 @@
 #include "ThisMfcApp.h"
 #include "GeneralMsgBox.h"
 #include "RichEditCtrlExtn.h"
-#include "version.h"
+#include "PWSversion.h"
 #include "DumpSelect.h"
 #include "DboxMain.h"
 
@@ -63,42 +63,36 @@ BOOL CAboutDlg::OnInitDialog()
 {
   CPWDialog::OnInitDialog();
 
-  DWORD dwMajorMinor = app.GetFileVersionMajorMinor();
-  DWORD dwBuildRevision = app.GetFileVersionBuildRevision();
+  PWSversion *pPWSver = PWSversion::GetInstance();
+  m_nMajor = pPWSver->GetMajor();
+  m_nMinor = pPWSver->GetMinor();
+  m_nBuild = pPWSver->GetBuild();
+  int nRevision = pPWSver->GetRevision();
+  bool bModified = pPWSver->IsModified();
+  CString SpecialBuild = pPWSver->GetSpecialBuild();
 
-  if (dwMajorMinor > 0) {
-    m_nMajor = HIWORD(dwMajorMinor);
-    m_nMinor = LOWORD(dwMajorMinor);
-    m_nBuild = HIWORD(dwBuildRevision);
-  }
+  m_appversion = pPWSver->GetAppVersion();
 
-  // revision is either a number or a number with '+',
-  // so we need to get it from the file version string
-  // which is of the form "MM, NN, BB, rev"
-  CString csFileVersionString, csRevision;
-  csFileVersionString = app.GetFileVersionString();
-  int revIndex = csFileVersionString.ReverseFind(L',');
-  if (revIndex >= 0) {
-    int len = csFileVersionString.GetLength();
-    csRevision = csFileVersionString.Right(len - revIndex - 1);
-    csRevision.Trim();
-  }
   const CString cs2go = SysInfo::IsUnderPw2go() ? L"2go " : L" ";
   if (m_nBuild == 0) { // hide build # if zero (formal release)
-    m_appversion.Format(L"%s%sV%d.%02d (%s)%s", AfxGetAppName(), cs2go,
-                        m_nMajor, m_nMinor, csRevision, SPECIAL_BUILD);
+    m_appversion.Format(L"%s%sV%d.%02d (%d%s)%s", AfxGetAppName(), cs2go,
+                        m_nMajor, m_nMinor, nRevision,
+                        bModified ? L"+" : L"", SpecialBuild);
   } else {
-    m_appversion.Format(L"%s%sV%d.%02d.%02d (%s)%s", AfxGetAppName(), cs2go,
-                        m_nMajor, m_nMinor, m_nBuild, csRevision, SPECIAL_BUILD);
+    m_appversion.Format(L"%s%sV%d.%02d.%02d (%d%s)%s", AfxGetAppName(), cs2go,
+                        m_nMajor, m_nMinor, m_nBuild, nRevision,
+                        bModified ? L"+" : L"", SpecialBuild);
   }
+
 #ifdef _DEBUG
   m_appversion += L" [Debug]";
 #endif
-  m_appcopyright = app.GetCopyrightString();
 
 #ifdef DEMO
-  m_appversion += L" " + CString(MAKEINTRESOURCE(IDS_DEMO));
+  m_AppVersion += L" " + CString(MAKEINTRESOURCE(IDS_DEMO));
 #endif
+
+  m_appcopyright = app.GetCopyrightString();
 
   GetDlgItem(IDC_APPVERSION)->SetWindowText(m_appversion);
   GetDlgItem(IDC_APPCOPYRIGHT)->SetWindowText(m_appcopyright);
@@ -191,8 +185,10 @@ CheckVersion::CheckStatus CAboutDlg::CheckLatestVersion(std::wstring &latest)
 {
   CInternetSession session(L"PasswordSafe Version Check");
   CStdioFile *fh;
+
   // Put up hourglass...this might take a while
   CWaitCursor waitCursor;
+
   try {
     // Loading the file as binary since we're treating it as UTF-8
     fh = session.OpenURL(L"http://pwsafe.org/latest.xml",
@@ -201,12 +197,14 @@ CheckVersion::CheckStatus CAboutDlg::CheckLatestVersion(std::wstring &latest)
     // throw;
     return CheckVersion::CANT_CONNECT;
   }
+
   ASSERT(fh != NULL);
   CString latest_xml;
   unsigned char buff[BUFSIZ + 1];
   StringX chunk;
   UINT nRead;
   CUTF8Conv conv;
+
   while ((nRead = fh->Read(buff, BUFSIZ)) != 0) {
     buff[nRead] = '\0';
     // change to widechar representation
@@ -218,10 +216,13 @@ CheckVersion::CheckStatus CAboutDlg::CheckLatestVersion(std::wstring &latest)
     } else
       latest_xml += chunk.c_str();
   }
+
   fh->Close();
   delete fh;
+
   session.Close();
   waitCursor.Restore(); // restore normal cursor
+
   CheckVersion vh(m_nMajor, m_nMinor, m_nBuild);
   return vh.CheckLatestVersion(LPCWSTR(latest_xml), latest);
 }

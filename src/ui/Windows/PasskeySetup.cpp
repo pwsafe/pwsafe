@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -34,7 +34,7 @@
 #include "core/util.h"
 
 #include "PasskeySetup.h"
-#include "PwFont.h"
+#include "Fonts.h"
 
 #include <iomanip>  // For setbase and setw
 
@@ -106,8 +106,8 @@ END_MESSAGE_MAP()
 BOOL CPasskeySetup::OnInitDialog() 
 {
   CPWDialog::OnInitDialog();
-  ApplyPasswordFont(GetDlgItem(IDC_PASSKEY));
-  ApplyPasswordFont(GetDlgItem(IDC_VERIFY));
+  Fonts::GetInstance()->ApplyPasswordFont(GetDlgItem(IDC_PASSKEY));
+  Fonts::GetInstance()->ApplyPasswordFont(GetDlgItem(IDC_VERIFY));
 
   m_pctlPasskey->SetPasswordChar(PSSWDCHAR);
   m_pctlVerify->SetPasswordChar(PSSWDCHAR);

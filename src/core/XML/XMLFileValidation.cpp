@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -95,7 +95,11 @@ const XMLFileValidation::st_file_elements XMLFileValidation::m_file_elements[XLE
   {_T("history_entry"), {0, XLE_HISTORY_ENTRY}},
   {_T("changedx"), {0, XLE_CHANGEDX}},
   {_T("oldpassword"), {0, XLE_OLDPASSWORD}},
-  {_T("PWLength"), {0, XLE_ENTRY_PWLENGTH}}
+  {_T("PWLength"), {0, XLE_ENTRY_PWLENGTH}},
+  {_T("NamedPasswordPolicies"), {0, XLE_PASSWORDPOLICYNAMES}},
+  {_T("Policy"), {XLE_POLICY, 0}},
+  {_T("PWName"), {XLE_PWNAME, 0}},
+  {_T("PasswordPolicyName"), {0, XLE_ENTRY_PASSWORDPOLICYNAME}},
 };
 
 XMLFileValidation::XMLFileValidation()

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+ * Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -181,7 +181,7 @@ void PWSTreeCtrl::CreateControls()
   };
   const int Nimages = sizeof(xpmList)/sizeof(xpmList[0]);
 
-  wxImageList *iList = new wxImageList(9, 9, true, Nimages);
+  wxImageList *iList = new wxImageList(13, 13, true, Nimages);
   for (int i = 0; i < Nimages; i++)
     iList->Add(wxBitmap(xpmList[i]));
   AssignImageList(iList);

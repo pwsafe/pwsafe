@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -7,6 +7,7 @@
 */
 #ifndef _TYPEDEFS_H
 #define _TYPEDEFS_H
+
 /**
 * Silly wrapper to abstract away the difference between a Unicode
 * (wchar_t) and non-Unicode (char) std::string, as well as
@@ -37,6 +38,21 @@ typedef char charT;
 
 #include "../core/PwsPlatform.h" // for afxwin.h, and endian macros
 
+
+// Hotkey values. Internal PWS values - need to convert to either MFC or wxWidgets
+// values in the GUI when retrieving these from the preferences and aso back to PWS
+// internal values before giving them to PWSPrefs for saving in the XML config file.
+#define PWS_HOTKEYF_ALT     0x01
+#define PWS_HOTKEYF_CONTROL 0x02
+#define PWS_HOTKEYF_SHIFT   0x04
+#define PWS_HOTKEYF_EXT     0x08
+ 
+// wxWidgets Only - Not used in Windows MFC
+#define PWS_HOTKEYF_ALTGR   HOTKEYF_ALT | HOTKEYF_CONTROL
+#define PWS_HOTKEYF_META    0x10
+#define PWS_HOTKEYF_WIN     0x20
+#define PWS_HOTKEYF_CMD     0x40
+
 #ifdef _WIN32
 #include "TCHAR.h"
 typedef char    int8;
@@ -64,12 +80,6 @@ typedef void *HANDLE;
 #ifdef __WX__
 #include "debug.h"
 
-// Fake these for shortcut prefs
-#define HOTKEYF_SHIFT           0x01
-#define HOTKEYF_CONTROL         0x02
-#define HOTKEYF_ALT             0x04
-#define HOTKEYF_EXT             0x08
-
 typedef unsigned long DWORD;
 // assorted conveniences:
 #define ASSERT(p) assert(p)
@@ -96,12 +106,6 @@ typedef uint32_t uint32;
 typedef uint64_t uint64;
 
 typedef int errno_t;
-
-// Fake these for shortcut prefs
-#define HOTKEYF_SHIFT           0x01
-#define HOTKEYF_CONTROL         0x02
-#define HOTKEYF_ALT             0x04
-#define HOTKEYF_EXT             0x08
 
 #ifdef UNICODE
 #ifndef _T
@@ -154,6 +158,7 @@ typedef int HANDLE;
 #ifndef FALSE
 #define FALSE false
 #endif
+
 /* These two files require the above definitions */
 #include "debug.h"
 #include "linux/pws_time.h"

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -32,7 +32,7 @@ CPWFilterLC::CPWFilterLC()
    m_fwidth(-1), m_lwidth(-1), m_rowheight(-1),
    m_bSetFieldActive(false), m_bSetLogicActive(false),
    m_pComboBox(NULL), m_iItem(-1), m_numfilters(0), m_pFont(NULL),
-   m_pchTip(NULL), m_pwchTip(NULL),
+   m_pwchTip(NULL),
   // Following 4 variables only used if "m_iType == DFTYPE_MAIN"
   m_bPWHIST_Set(false), m_bPOLICY_Set(false),
   m_GoodHistory(false), m_GoodPolicy(false)
@@ -56,14 +56,12 @@ CPWFilterLC::~CPWFilterLC()
 
   delete m_pFont;
   delete m_pComboBox;
-  delete m_pchTip;
   delete m_pwchTip;
 }
 
 BEGIN_MESSAGE_MAP(CPWFilterLC, CListCtrl)
   //{{AFX_MSG_MAP(CPWFilterLC)
   ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTW, 0, 0xFFFF, OnToolTipText)
-  ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTA, 0, 0xFFFF, OnToolTipText)
   ON_NOTIFY_REFLECT(NM_CUSTOMDRAW, OnCustomDraw)
   ON_WM_LBUTTONDOWN()
   //}}AFX_MSG_MAP
@@ -770,6 +768,7 @@ bool CPWFilterLC::SetField(const int iItem)
         case FT_RUNCMD:
         case FT_EMAIL:
         case FT_SYMBOLS:
+        case FT_POLICYNAME:
           bAddPresent = true;
           mt = PWSMatch::MT_STRING;
           break;
@@ -1464,6 +1463,10 @@ void CPWFilterLC::SetUpComboBoxData()
         stf.ftype = FT_SYMBOLS;
         vFcbx_data.push_back(stf);
 
+        stf.cs_text = CItemData::FieldName(CItemData::POLICYNAME).c_str();
+        stf.ftype = FT_POLICYNAME;
+        vFcbx_data.push_back(stf);
+
         stf.cs_text = CItemData::FieldName(CItemData::PROTECTED).c_str();
         stf.ftype = FT_PROTECTED;
         vFcbx_data.push_back(stf);
@@ -1706,13 +1709,13 @@ void CPWFilterLC::DrawComboBox(const int iSubItem, const int index)
     return;
 
   if (!m_pFont) {
-    CFont* pF = GetFont();
-    ASSERT(pF);
+    CFont *pFont = GetFont();
+    ASSERT(pFont);
 
     LOGFONT logFont;
     SecureZeroMemory(&logFont, sizeof(logFont));
 
-    pF->GetLogFont(&logFont);
+    pFont->GetLogFont(&logFont);
     m_pFont = new CFont;
     m_pFont->CreateFontIndirect(&logFont);
   }
@@ -1986,10 +1989,10 @@ void CPWFilterLC::DrawSubItemText(int iItem, int iSubItem, CDC *pDC,
     CFont boldfont;
 
     if (bBold) {
-      CFont *font = pDC->GetCurrentFont();
-      if (font) {
+      CFont *pFont = pDC->GetCurrentFont();
+      if (pFont) {
         LOGFONT lf;
-        font->GetLogFont(&lf);
+        pFont->GetLogFont(&lf);
         lf.lfWeight = FW_BOLD;
         boldfont.CreateFontIndirect(&lf);
         pOldFont = pDC->SelectObject(&boldfont);
@@ -2096,8 +2099,6 @@ BOOL CPWFilterLC::OnToolTipText(UINT /*id*/, NMHDR *pNotifyStruct, LRESULT *pLRe
     return TRUE;  // do not allow display of automatic tooltip,
                   // or our tooltip will disappear
 
-  // handle both ANSI and UNICODE versions of the message
-  TOOLTIPTEXTA* pTTTA = (TOOLTIPTEXTA*)pNotifyStruct;
   TOOLTIPTEXTW* pTTTW = (TOOLTIPTEXTW*)pNotifyStruct;
 
   *pLResult = 0;
@@ -2155,50 +2156,13 @@ BOOL CPWFilterLC::OnToolTipText(UINT /*id*/, NMHDR *pNotifyStruct, LRESULT *pLRe
     // structure's szText member
 
     CString cs_TipText(MAKEINTRESOURCE(nID));
-
-#define LONG_TOOLTIPS
-
-#ifdef LONG_TOOLTIPS
-    if (pNotifyStruct->code == TTN_NEEDTEXTA) {
-      delete m_pchTip;
-
-      m_pchTip = new char[cs_TipText.GetLength() + 1];
-#if (_MSC_VER >= 1400)
-      size_t num_converted;
-      wcstombs_s(&num_converted, m_pchTip, cs_TipText.GetLength() + 1, cs_TipText,
-                 cs_TipText.GetLength() + 1);
-#else
-      wcstombs(m_pchTip, cs_TipText, cs_TipText.GetLength() + 1);
-#endif
-      pTTTA->lpszText = (LPSTR)m_pchTip;
-    } else {
       delete m_pwchTip;
 
       m_pwchTip = new WCHAR[cs_TipText.GetLength() + 1];
-#if (_MSC_VER >= 1400)
       wcsncpy_s(m_pwchTip, cs_TipText.GetLength() + 1,
                 cs_TipText, _TRUNCATE);
-#else
-      wcsncpy(m_pwchTip, cs_TipText, cs_TipText.GetLength() + 1);
-#endif
       pTTTW->lpszText = (LPWSTR)m_pwchTip;
-    }
-#else // Short Tooltips!
-    if (pNotifyStruct->code == TTN_NEEDTEXTA) {
-      int n = WideCharToMultiByte(CP_ACP, 0, cs_TipText, -1,
-                                  pTTTA->szText, _countof(pTTTA->szText),
-                                  NULL, NULL);
-      if (n > 0)
-        pTTTA->szText[n - 1] = 0;
-    } else {
-#if (_MSC_VER >= 1400)
-      wcsncpy_s(pTTTW->szText, _countof(pTTTW->szText),
-               cs_TipText, _TRUNCATE);
-#else
-      wcsncpy(pTTTW->szText, cs_TipText, _countof(pTTTW->szText));
-#endif
-    }
-#endif // Long/short tooltips
+
 
     return TRUE;   // we found a tool tip,
   }

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -39,6 +39,7 @@ public:
     HDR_RESERVED2             = 0x0d,     // added in format 0x030?
     HDR_RESERVED3             = 0x0e,     // added in format 0x030?
     HDR_RUE                   = 0x0f,     // added in format 0x0307
+    HDR_PSWDPOLICIES          = 0x10,     // added in format 0x0311
     HDR_LAST,                             // Start of unknown fields!
     HDR_END                   = 0xff};    // header field types, per formatV{2,3}.txt
 
@@ -56,8 +57,12 @@ public:
 
   virtual int WriteRecord(const CItemData &item);
   virtual int ReadRecord(CItemData &item);
+
   void SetFilters(const PWSFilters &MapFilters) {m_MapFilters = MapFilters;}
   const PWSFilters &GetFilters() const {return m_MapFilters;}
+
+  void SetPasswordPolicies(const PSWDPolicyMap &MapPSWDPLC) {m_MapPSWDPLC = MapPSWDPLC;}
+  const PSWDPolicyMap &GetPasswordPolicies() const {return m_MapPSWDPLC;}
 
 private:
   unsigned char m_ipthing[TwoFish::BLOCKSIZE]; // for CBC
@@ -73,6 +78,7 @@ private:
   int WriteHeader();
   int ReadHeader();
   PWSFilters m_MapFilters;
+  PSWDPolicyMap m_MapPSWDPLC;
 
   static int SanityCheck(FILE *stream); // Check for TAG and EOF marker
   static void StretchKey(const unsigned char *salt, unsigned long saltLen,

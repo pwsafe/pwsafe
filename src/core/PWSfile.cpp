@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+ * Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -507,12 +507,12 @@ PWSFileSig &PWSFileSig::operator=(const PWSFileSig &that)
   return *this;
 }
 
-bool PWSFileSig::operator==(const PWSFileSig &other)
+bool PWSFileSig::operator==(const PWSFileSig &that)
 {
   // Check this first as digest may otherwise be invalid
-  if (m_iErrorCode != 0 || other.m_iErrorCode != 0)
+  if (m_iErrorCode != 0 || that.m_iErrorCode != 0)
     return false;
 
-  return (m_length == other.m_length &&
-          memcmp(m_digest, other.m_digest, sizeof(m_digest)) == 0);
+  return (m_length == that.m_length &&
+          memcmp(m_digest, that.m_digest, sizeof(m_digest)) == 0);
 }

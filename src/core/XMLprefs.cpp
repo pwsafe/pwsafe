@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -451,17 +451,28 @@ std::vector<st_prefShortcut> CXMLprefs::GetShortcuts(const stringT &csKeyName)
 
     pChild = hShortcutsNode.Child(_T("Shortcut"), count).ToElement();
 
-    cur.cModifier = static_cast<unsigned char>(0);
+    cur.cModifier = 0;
     pChild->Attribute(_T("id"), &itemp);
     cur.id = itemp;
     pChild->Attribute(_T("Key"), &itemp);
-    cur.cVirtKey = static_cast<unsigned char>(itemp);
+    cur.siVirtKey = static_cast<short int>(itemp);
     pChild->Attribute(_T("Ctrl"), &itemp);
-    cur.cModifier |= itemp != 0 ? HOTKEYF_CONTROL : 0;
+    cur.cModifier |= itemp != 0 ? PWS_HOTKEYF_CONTROL : 0;
     pChild->Attribute(_T("Alt"), &itemp);
-    cur.cModifier |= itemp != 0 ? HOTKEYF_ALT : 0;
+    cur.cModifier |= itemp != 0 ? PWS_HOTKEYF_ALT : 0;
     pChild->Attribute(_T("Shift"), &itemp);
-    cur.cModifier |= itemp != 0 ? HOTKEYF_SHIFT : 0;
+    cur.cModifier |= itemp != 0 ? PWS_HOTKEYF_SHIFT : 0;
+
+    // wxWidgets only - set values so not lost in XML file 
+    // but not use them in Windows MFC - they are never tested in MFC code
+    // when creating the necessary hotkeys/shortcuts
+    pChild->Attribute(_T("Win"), &itemp);
+    cur.cModifier |= itemp != 0 ? PWS_HOTKEYF_WIN : 0;
+    pChild->Attribute(_T("Meta"), &itemp);
+    cur.cModifier |= itemp != 0 ? PWS_HOTKEYF_META : 0;
+    pChild->Attribute(_T("Cmd"), &itemp);
+    cur.cModifier |= itemp != 0 ? PWS_HOTKEYF_CMD : 0;
+
     v_Shortcuts.push_back(cur);
     count++;
   }
@@ -499,12 +510,19 @@ int CXMLprefs::SetShortcuts(const stringT &csKeyName,
         Format(csValue, _T("%u"), v_shortcuts[i].id);
         element->SetAttribute(_T("id"), csValue);
         element->SetAttribute(_T("Ctrl"), 
-          (v_shortcuts[i].cModifier & HOTKEYF_CONTROL) == HOTKEYF_CONTROL ? 1 : 0);
+          (v_shortcuts[i].cModifier & PWS_HOTKEYF_CONTROL) == PWS_HOTKEYF_CONTROL ? 1 : 0);
         element->SetAttribute(_T("Alt"),
-          (v_shortcuts[i].cModifier & HOTKEYF_ALT    ) == HOTKEYF_ALT     ? 1 : 0);
+          (v_shortcuts[i].cModifier & PWS_HOTKEYF_ALT    ) == PWS_HOTKEYF_ALT     ? 1 : 0);
         element->SetAttribute(_T("Shift"),
-          (v_shortcuts[i].cModifier & HOTKEYF_SHIFT  ) == HOTKEYF_SHIFT   ? 1 : 0);
-        element->SetAttribute(_T("Key"), static_cast<int>(v_shortcuts[i].cVirtKey));
+          (v_shortcuts[i].cModifier & PWS_HOTKEYF_SHIFT  ) == PWS_HOTKEYF_SHIFT   ? 1 : 0);
+        // wxWidgets only - set values but do not use in Windows MFC
+        element->SetAttribute(_T("Meta"),
+          (v_shortcuts[i].cModifier & PWS_HOTKEYF_META   ) == PWS_HOTKEYF_META    ? 1 : 0);
+        element->SetAttribute(_T("Win"),
+          (v_shortcuts[i].cModifier & PWS_HOTKEYF_WIN    ) == PWS_HOTKEYF_WIN     ? 1 : 0);
+        element->SetAttribute(_T("Cmd"),
+          (v_shortcuts[i].cModifier & PWS_HOTKEYF_CMD    ) == PWS_HOTKEYF_CMD     ? 1 : 0);
+        element->SetAttribute(_T("Key"), v_shortcuts[i].siVirtKey);
       }
     } else
       iRetVal = XML_LOAD_FAILED;

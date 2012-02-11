@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -23,10 +23,13 @@
 #include "CreateShortcutDlg.h"
 #include "PasswordSubsetDlg.h"
 #include "ExpPWListDlg.h"
+#include "CompareWithSelectDlg.h"
+#include "ShowCompareDlg.h"
 
 #include "core/pwsprefs.h"
 #include "core/PWSAuxParse.h"
 #include "core/Command.h"
+#include "core/core.h"
 
 #include "os/dir.h"
 #include "os/run.h"
@@ -600,7 +603,7 @@ void DboxMain::OnProtect(UINT nID)
     Command *pcmd = UpdateEntryCommand::Create(&m_core, *pci, 
                                                CItemData::PROTECTED,
                                                nID == ID_MENUITEM_UNPROTECT ? L"0" : L"1");
-    Execute(pcmd, &m_core);
+    Execute(pcmd);
 
     SetChanged(Data);
   } else {
@@ -609,6 +612,56 @@ void DboxMain::OnProtect(UINT nID)
     ChangeSubtreeEntriesProtectStatus(nID);
   }
   ChangeOkUpdate();
+}
+
+void DboxMain::OnCompareEntries()
+{
+  CItemData *pci(NULL), *pci_other(NULL);
+
+  // Not yet supported in Tree view unless command line flag present.
+  if (!m_IsListView && !m_bCompareEntries)
+    return;
+
+  if (m_IsListView) {
+    // Only called if 2 entries selected
+    POSITION pos = m_ctlItemList.GetFirstSelectedItemPosition();
+    int nItem = m_ctlItemList.GetNextSelectedItem(pos);
+    pci = (CItemData *)m_ctlItemList.GetItemData(nItem);
+    nItem = m_ctlItemList.GetNextSelectedItem(pos);
+    pci_other = (CItemData *)m_ctlItemList.GetItemData(nItem);
+  } else {
+    // Not yet supported in Tree view - get user to select other item
+    HTREEITEM hStartItem = m_ctlItemTree.GetSelectedItem();
+    if (hStartItem != NULL) {
+      pci = (CItemData *)m_ctlItemTree.GetItemData(hStartItem);
+    }
+
+    if (pci != NULL) {
+      // Entry - selected - shouldn't be called when group is selected
+      // Now get the other entry
+      CCompareWithSelectDlg dlg(pci, &m_core, this);
+
+      if (dlg.DoModal() == IDOK) {
+        // Get UUID of the entry
+        CUUID otherUUID = dlg.GetUUID();
+        if (otherUUID == CUUID::NullUUID())
+          return;
+
+        ItemListIter pos = Find(otherUUID);
+        if (pos == End())
+          return;
+ 
+        pci_other = &pos->second;
+      } else
+        return;
+    }
+  }
+
+  if (pci != NULL && pci_other != NULL) {
+    // Entries - selected - shouldn't be call when group is seelcted
+    CShowCompareDlg showdlg(pci, pci_other, this);
+    showdlg.DoModal();
+  }
 }
 
 void DboxMain::ChangeSubtreeEntriesProtectStatus(const UINT nID)
@@ -694,6 +747,10 @@ void DboxMain::OnDelete()
   // Check preconditions, possibly prompt user for confirmation, then call Delete()
   // to do the heavy lifting.
   if (m_core.GetNumEntries() == 0) // easiest way to avoid asking stupid questions...
+    return;
+
+  // Ignore if more than one selected - List view only
+  if (m_ctlItemList.GetSelectedCount() > 1)
     return;
 
   bool bAskForDeleteConfirmation = !(PWSprefs::GetInstance()->
@@ -1711,15 +1768,20 @@ void DboxMain::OnRunCommand()
   }
 }
 
-void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
+void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup)
 {
   // Add Drop entries
   CItemData ci_temp;
   UUIDVector Possible_Aliases, Possible_Shortcuts;
+  std::vector<StringX> vAddedPolicyNames;
+  StringX sxEntriesWithNewNamedPolicies;
+  std::map<StringX, StringX> mapRenamedPolicies;
   StringX sxgroup, sxtitle, sxuser;
   POSITION pos;
   wchar_t *dot;
   bool bAddToViews;
+
+  const StringX sxDD_DateTime = PWSUtil::GetTimeStamp(true).c_str();
 
   // Initialize set
   GTUSet setGTU;
@@ -1733,10 +1795,52 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
     if (m_core.GetNumEntries() >= MAXDEMO)
       break;
 #endif /* DEMO */
+
+    bool bChangedPolicy(false);
     ci_temp.Clear();
     // Only set to false if adding a shortcut where the base isn't there (yet)
     bAddToViews = true;
     pDDObject->ToItem(ci_temp);
+
+    StringX sxPolicyName = ci_temp.GetPolicyName();
+    if (!sxPolicyName.empty()) {
+      // D&D put the entry's name here and the details in the entry
+      // which we now have to add to this core and remove from the entry
+
+      // Get the source database PWPolicy & symbols for this name
+      st_PSWDPolicy st_pp;
+      ci_temp.GetPWPolicy(st_pp.pwp);
+      st_pp.symbols = ci_temp.GetSymbols();
+
+      // Get the same info if the policy is in the target database
+      st_PSWDPolicy currentDB_st_pp;
+      bool bNPWInCurrentDB = GetPolicyFromName(sxPolicyName, currentDB_st_pp);
+      if (bNPWInCurrentDB) {
+        // It exists in target database
+        if (st_pp != currentDB_st_pp) {
+          // They are not the same - make this policy unique
+          m_core.MakePolicyUnique(mapRenamedPolicies, sxPolicyName, sxDD_DateTime,
+                                  IDS_DRAGPOLICY);
+          ci_temp.SetPolicyName(sxPolicyName);
+          bChangedPolicy = true;
+        }
+      }
+
+      if (!bNPWInCurrentDB || bChangedPolicy) {
+        // Not in target database or has different settings -
+        // Add it if we haven't already
+        if (std::find(vAddedPolicyNames.begin(), vAddedPolicyNames.end(), sxPolicyName) ==
+                      vAddedPolicyNames.end()) {
+          // Doesn't already exist and we haven't already added it - add
+          Command *pcmd = DBPolicyNamesCommand::Create(&m_core, sxPolicyName, st_pp);
+          pmulticmds->Add(pcmd);
+          vAddedPolicyNames.push_back(sxPolicyName);
+        }
+        // No longer need these values
+        ci_temp.SetPWPolicy(L"");
+        ci_temp.SetSymbols(L"");
+      }
+    }
 
     if (in_oblist.m_bDragNode) {
       dot = (!DropGroup.empty() && !ci_temp.GetGroup().empty()) ? L"." : L"";
@@ -1752,6 +1856,13 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
     if (m_core.Find(ci_temp.GetUUID()) != End()) {
       // Already in use - get a new one!
       ci_temp.CreateUUID();
+    }
+
+    if (bChangedPolicy) {
+      StringX sxChanged = L"\r\n\xab" + sxgroup + L"\xbb " +
+	                        L"\xab" + sxnewtitle + L"\xbb " +
+	                        L"\xab" + sxuser + L"\xbb";
+      sxEntriesWithNewNamedPolicies += sxChanged;
     }
 
     ci_temp.SetGroup(sxgroup);
@@ -1887,6 +1998,18 @@ void DboxMain::AddEntries(CDDObList &in_oblist, const StringX &DropGroup)
   SetChanged(Data);
   FixListIndexes();
   RefreshViews();
+
+  if (!sxEntriesWithNewNamedPolicies.empty()) {
+    // A number of entries had a similar named password policy but with
+    // different settings to those in this database.
+    // Tell user
+    CGeneralMsgBox gmb;
+    CString cs_title, cs_msg;
+    cs_title.LoadString(IDS_CHANGED_POLICIES);
+    cs_msg.Format(IDSC_ENTRIES_POLICIES, sxDD_DateTime.c_str(),
+                  sxEntriesWithNewNamedPolicies.c_str());
+    gmb.MessageBox(cs_msg, cs_title, MB_OK);
+}
 }
 
 LRESULT DboxMain::OnDragAutoType(WPARAM wParam, LPARAM /* lParam */)

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -22,6 +22,7 @@
 #include "os/file.h"
 #include "os/dir.h"
 #include "os/registry.h"
+#include "os/logit.h"
 
 #include <fstream>
 #include <algorithm>
@@ -149,8 +150,8 @@ const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {
                                   minTDS, maxTDS},                  // database
   {_T("NumPWHistoryDefault"), 3, ptDatabase, 0, 255},               // database
   // Specified by supported masks
-  {_T("BackupSuffix"), BKSFX_None, ptApplication, minBKSFX, maxBKSFX}, // application
-  {_T("BackupMaxIncremented"), 1, ptApplication, 1, 999},           // application
+  {_T("BackupSuffix"), BKSFX_IncNumber, ptApplication, minBKSFX, maxBKSFX}, // application
+  {_T("BackupMaxIncremented"), 3, ptApplication, 1, 999},           // application
   {_T("PreExpiryWarnDays"), 1, ptApplication, 1, 30},               // application
   {_T("ClosedTrayIconColour"), stiBlack, ptApplication,
                                stiBlack, stiYellow},                // application
@@ -272,6 +273,8 @@ StringX PWSprefs::GetPrefDefVal(StringPrefs pref_enum) const
 
 StringX PWSprefs::GetAllBoolPrefs()
 {
+  PWS_LOGIT;
+
   oStringXStream osxs;
   for (int i = 0; i < NumBoolPrefs; i++) {
     osxs << setw(1) << i << _T(' ')
@@ -283,6 +286,8 @@ StringX PWSprefs::GetAllBoolPrefs()
 
 StringX PWSprefs::GetAllIntPrefs()
 {
+  PWS_LOGIT;
+
   oStringXStream osxs;
   for (int i = 0; i < NumIntPrefs; i++) {
     osxs << setw(1) << i << _T(' ')
@@ -294,6 +299,8 @@ StringX PWSprefs::GetAllIntPrefs()
 
 StringX PWSprefs::GetAllStringPrefs()
 {
+  PWS_LOGIT;
+
   // Here we must restrict most string preferences as they contain user data
   int SafeStringPrefs[] = {
     LastView, TreeFont, BackupPrefixValue, ListColumns,
@@ -304,13 +311,13 @@ StringX PWSprefs::GetAllStringPrefs()
 
   TCHAR delim;
   const TCHAR Delimiters[] = _T("\"\'#?!%&*+=:;@~<>?,.{}[]()\xab\xbb");
-  const int NumDelimiters = sizeof(Delimiters) / sizeof(Delimiters[0]) - 1;
+  const size_t NumDelimiters = sizeof(Delimiters) / sizeof(Delimiters[0]) - 1;
 
   oStringXStream osxs;
-  for (int i = 0; i < sizeof(SafeStringPrefs) / sizeof(SafeStringPrefs[0]); i++) {
+  for (size_t i = 0; i < sizeof(SafeStringPrefs) / sizeof(SafeStringPrefs[0]); i++) {
     const int k = SafeStringPrefs[i];
     delim = _T(' ');
-    for (int j = 0; j < NumDelimiters; j++) {
+    for (size_t j = 0; j < NumDelimiters; j++) {
       if (m_stringValues[k].find(Delimiters[j]) == StringX::npos) {
         delim = Delimiters[j];
         break;
@@ -419,6 +426,8 @@ void PWSprefs::SetupCopyPrefs()
 
 void PWSprefs::UpdateFromCopyPrefs(const PWSprefs::PrefType ptype)
 {
+  PWS_LOGIT;
+
   // Update real preferences from copy values
   for (int i = 0; i < NumBoolPrefs; i++) {
     if (ptype == ptAll || m_bool_prefs[i].ptype == ptype) {
@@ -516,6 +525,8 @@ void PWSprefs::SetPref(StringPrefs pref_enum, const StringX &value, const bool b
 
 void PWSprefs::ResetPref(BoolPrefs pref_enum)
 {
+  PWS_LOGIT_ARGS("BoolPref: %s", m_bool_prefs[pref_enum].name);
+
   m_boolValues[pref_enum] = m_bool_prefs[pref_enum].defVal;
   m_boolChanged[pref_enum] = true;
   m_prefs_changed[m_bool_prefs[pref_enum].ptype == ptDatabase ? DB_PREF : APP_PREF] = true;
@@ -523,6 +534,8 @@ void PWSprefs::ResetPref(BoolPrefs pref_enum)
 
 void PWSprefs::ResetPref(IntPrefs pref_enum)
 {
+  PWS_LOGIT_ARGS("IntegerPref: %s", m_int_prefs[pref_enum].name);
+  
   m_intValues[pref_enum] = m_int_prefs[pref_enum].defVal;
   m_intChanged[pref_enum] = true;
   m_prefs_changed[m_int_prefs[pref_enum].ptype == ptDatabase ? DB_PREF : APP_PREF] = true;
@@ -530,6 +543,8 @@ void PWSprefs::ResetPref(IntPrefs pref_enum)
 
 void PWSprefs::ResetPref(StringPrefs pref_enum)
 {
+  PWS_LOGIT_ARGS("StringPref: %s", m_string_prefs[pref_enum].name);
+
   m_stringValues[pref_enum] = m_string_prefs[pref_enum].defVal;
   m_stringChanged[pref_enum] = true;
   m_prefs_changed[m_string_prefs[pref_enum].ptype == ptDatabase ? DB_PREF : APP_PREF] = true;
@@ -537,6 +552,8 @@ void PWSprefs::ResetPref(StringPrefs pref_enum)
 
 bool PWSprefs::WritePref(const StringX &name, bool val)
 {
+  PWS_LOGIT_ARGS("Bool Name: %s", name.c_str());
+
   // Used to save to config destination at database save and application termination
   bool bRetVal(false);
   switch (m_ConfigOption) {
@@ -558,6 +575,8 @@ bool PWSprefs::WritePref(const StringX &name, bool val)
 
 bool PWSprefs::WritePref(const StringX &name, unsigned int val)
 {
+  PWS_LOGIT_ARGS("Integer Name: %s", name.c_str());
+
   // Used to save to config destination at database save and application termination
   bool bRetVal(false);
   switch (m_ConfigOption) {
@@ -578,6 +597,8 @@ bool PWSprefs::WritePref(const StringX &name, unsigned int val)
 
 bool PWSprefs::WritePref(const StringX &name, const StringX &val)
 {
+  PWS_LOGIT_ARGS("String Name: %s", name.c_str());
+
   // Used to save to config destination at database save and application termination
   bool bRetVal(false);
   switch (m_ConfigOption) {
@@ -599,6 +620,8 @@ bool PWSprefs::WritePref(const StringX &name, const StringX &val)
 
 bool PWSprefs::DeletePref(const StringX &name)
 {
+  PWS_LOGIT_ARGS("Name: %s", name.c_str());
+  
   bool bRetVal(false);
   switch (m_ConfigOption) {
     case CF_REGISTRY:
@@ -665,7 +688,7 @@ struct shortcut_less {
 bool equal_shortcuts(st_prefShortcut a, st_prefShortcut b)
 {
   return (a.id        == b.id &&
-          a.cVirtKey  == b.cVirtKey &&
+          a.siVirtKey == b.siVirtKey &&
           a.cModifier == b.cModifier);
 }
 
@@ -684,6 +707,7 @@ void PWSprefs::SetPrefShortcuts(const std::vector<st_prefShortcut> &vShortcuts)
 
 StringX PWSprefs::Store(bool bUseCopy)
 {
+  PWS_LOGIT_ARGS("bUseCopy=%s", bUseCopy ? _T("true") : _T("false"));
   /*
   * Create a string of values that are (1) different from the defaults, &&
   * (2) are storage in the database (ptype == ptDatabase)
@@ -752,6 +776,8 @@ StringX PWSprefs::Store(bool bUseCopy)
 
 void PWSprefs::Load(const StringX &prefString, bool bUseCopy)
 {
+  PWS_LOGIT_ARGS("bUseCopy=%s", bUseCopy ? _T("true") : _T("false"));
+
   bool *p_boolValues;
   unsigned int *p_intValues;
   StringX *p_stringValues;
@@ -920,6 +946,8 @@ void PWSprefs::FindConfigFile()
 
 void PWSprefs::InitializePreferences()
 {
+  PWS_LOGIT;
+
   // Set up XML "keys": host/user ensure that they start with letter,
   // and otherwise conforms with http://www.w3.org/TR/2000/REC-xml-20001006#NT-Name
   const SysInfo *si = SysInfo::GetInstance();
@@ -1047,6 +1075,8 @@ void PWSprefs::InitializePreferences()
 
 void PWSprefs::SetDatabasePrefsToDefaults(const bool bUseCopy)
 {
+  PWS_LOGIT_ARGS("bUseCopy=%s", bUseCopy ? _T("true") : _T("false"));
+
   // Set Database prefs to hardcoded values
   int i;
   // Default values only
@@ -1074,6 +1104,8 @@ void PWSprefs::SetDatabasePrefsToDefaults(const bool bUseCopy)
 
 void PWSprefs::LoadProfileFromDefaults()
 {
+  PWS_LOGIT;
+
   // set prefs to hardcoded values
   int i;
   // Default values only
@@ -1092,6 +1124,8 @@ void PWSprefs::LoadProfileFromDefaults()
 
 void PWSprefs::LoadProfileFromRegistry()
 {
+  PWS_LOGIT;
+
   // Read in values from registry
   if (!m_bRegistryKeyExists)
     return; // Avoid creating keys if none already, as
@@ -1196,6 +1230,8 @@ void PWSprefs::LoadProfileFromRegistry()
 
 bool PWSprefs::LoadProfileFromFile()
 {
+  PWS_LOGIT;
+
   /*
   * Called from InitializePreferences() at startup,
   * attempts to read in application preferences
@@ -1322,6 +1358,8 @@ exit:
 
 void PWSprefs::SaveApplicationPreferences()
 {
+  PWS_LOGIT;
+
   int i;
   if (!m_prefs_changed[APP_PREF])
     return;
@@ -1589,6 +1627,7 @@ void PWSprefs::ImportOldPrefs()
 {
   if (!pws_os::RegOpenSubtree(OldSubKey.c_str()))
     return;
+
   // Iterate over app preferences (those not stored
   // in database), read values and store if found.
   int i;
@@ -1647,6 +1686,8 @@ void PWSprefs::DeleteOldPrefs()
 
 stringT PWSprefs::GetXMLPreferences()
 {
+  PWS_LOGIT;
+
   stringT retval(_T(""));
   ostringstreamT os;
 
@@ -1686,39 +1727,11 @@ stringT PWSprefs::GetXMLPreferences()
   for (i = 0; i < NumStringPrefs; i++) {
     if (m_stringValues[i] != m_string_prefs[i].defVal &&
         m_string_prefs[i].ptype == ptDatabase) {
-      StringX::size_type p = m_stringValues[i].find(_T("]]>")); // special handling required
-      if (p == StringX::npos) {
-        // common case
-        os << "\t\t<" << m_string_prefs[i].name << "><![CDATA[" <<
-          m_stringValues[i] << "]]></" << 
+      stringT sTemp = PWSUtil::GetSafeXMLString(m_stringValues[i]);
+      os << "\t\t<" << m_string_prefs[i].name << sTemp << "</" << 
           m_string_prefs[i].name << ">" << endl;
-      } else {
-        // value has "]]>" sequence(s) that need(s) to be escaped
-        // Each "]]>" splits the field into two CDATA sections, one ending with
-        // ']]', the other starting with '>'
-        const StringX value = m_stringValues[i];
-        os << "\t\t<" << m_string_prefs[i].name << ">";
-        size_t from = 0, to = p + 2;
-        do {
-          StringX slice = value.substr(from, (to - from));
-          os << "<![CDATA[" << slice << "]]><![CDATA[";
-          from = to;
-          p = value.find(_T("]]>"), from); // are there more?
-          if (p == StringX::npos) {
-            to = value.length();
-            slice = value.substr(from, (to - from));
-          } else {
-            to = p + 2;
-            slice = value.substr(from, (to - from));
-            from = to;
-            to = value.length();
           }
-          os <<  slice << "]]>";
-        } while (p != StringX::npos);
-        os << "</" << m_string_prefs[i].name << ">" << endl;      
       }
-    }
-  }
   os << "\t</Preferences>" << endl << endl;
   retval = os.str().c_str();
   return retval;

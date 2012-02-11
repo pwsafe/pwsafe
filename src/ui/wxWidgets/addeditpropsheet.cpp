@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+ * Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -354,12 +354,12 @@ void AddEditPropSheet::CreateControls()
   itemBoxSizer27->Add(itemButton29, 0, wxALIGN_CENTER_VERTICAL|wxALL, 0);
 
   wxBoxSizer* itemBoxSizer30 = new wxBoxSizer(wxHORIZONTAL);
-  itemBoxSizer3->Add(itemBoxSizer30, 0, wxGROW|wxALL, 5);
+  itemBoxSizer3->Add(itemBoxSizer30, 1, wxGROW|wxALL, 5);
   wxStaticText* itemStaticText31 = new wxStaticText( m_BasicPanel, wxID_STATIC, _("Notes:"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer30->Add(itemStaticText31, 1, wxALIGN_TOP|wxALL, 5);
 
   m_noteTX = new wxTextCtrl( m_BasicPanel, ID_TEXTCTRL7, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE );
-  itemBoxSizer30->Add(m_noteTX, 5, wxALIGN_CENTER_VERTICAL|wxALL, 3);
+  itemBoxSizer30->Add(m_noteTX, 5, wxEXPAND|wxALIGN_CENTER_VERTICAL|wxALL, 3);
 
   GetBookCtrl()->AddPage(m_BasicPanel, _("Basic"));
 
@@ -1102,7 +1102,7 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
       (void)CreatePWHistoryList(tostringx(m_PWHistory), pwh_max, num_err, pwhl, TMC_LOCALE);
 
       // Create a new PWHistory header, as per settings in this dialog
-      size_t numEntries = MIN(pwhl.size(), m_maxPWHist);
+      size_t numEntries = MIN(pwhl.size(), static_cast<size_t>(m_maxPWHist));
       m_PWHistory = towxstring(MakePWHistoryHeader(m_keepPWHist, m_maxPWHist, numEntries));
       //reverse-sort the history entries to retain only the newest
       std::sort(pwhl.begin(), pwhl.end(), newer());

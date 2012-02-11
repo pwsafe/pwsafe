@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -15,9 +15,11 @@
 
 IMPLEMENT_DYNAMIC(COptions_PropertySheet, CPWPropertySheet)
 
-COptions_PropertySheet::COptions_PropertySheet(UINT nID, CWnd* pParent, const bool bLongPPs)
-  : CPWPropertySheet(nID, pParent), m_save_bSymbols(L""),
-  m_save_iUseOwnSymbols(DEFAULT_SYMBOLS), m_save_iPreExpiryWarnDays(0),
+COptions_PropertySheet::COptions_PropertySheet(UINT nID, CWnd* pParent,
+                                               const bool bLongPPs)
+  : CPWPropertySheet(nID, pParent),
+  m_save_bSymbols(L""), m_save_iUseOwnSymbols(DEFAULT_SYMBOLS),
+  m_save_iPreExpiryWarnDays(0),
   m_bIsModified(false), m_bChanged(false),
   m_bRefreshViews(false), m_bSaveGroupDisplayState(false), m_bUpdateShortcuts(false),
   m_bCheckExpired(false),
@@ -26,12 +28,9 @@ COptions_PropertySheet::COptions_PropertySheet(UINT nID, CWnd* pParent, const bo
   m_save_bLockOnWindowLock(FALSE), m_bStartupShortcutExists(FALSE),
   m_save_bHighlightChanges(FALSE),
   m_pp_backup(NULL), m_pp_display(NULL), m_pp_misc(NULL),
-  m_pp_passwordhistory(NULL), m_pp_passwordpolicy(NULL), m_pp_security(NULL),
+  m_pp_passwordhistory(NULL), m_pp_security(NULL),
   m_pp_shortcuts(NULL), m_pp_system(NULL)
 {
-  // nID = IDS_OPTIONS, IDS_GENERATEPASSWORD, IDS_NEWDATABASE
-  m_OPTMD.uicaller = nID;
-
   ASSERT(pParent != NULL);
 
   m_OPTMD.pDbx = static_cast<DboxMain *>(pParent);
@@ -43,13 +42,10 @@ COptions_PropertySheet::COptions_PropertySheet(UINT nID, CWnd* pParent, const bo
   // to be used by their c'tors
   m_OPTMD.bLongPPs = bLongPPs; // chooseResource();
 
-  switch (nID) {
-    case IDS_OPTIONS:
       m_pp_backup          = new COptionsBackup(this, &m_OPTMD);
       m_pp_display         = new COptionsDisplay(this, &m_OPTMD);
       m_pp_misc            = new COptionsMisc(this, &m_OPTMD);
       m_pp_passwordhistory = new COptionsPasswordHistory(this, &m_OPTMD);
-      m_pp_passwordpolicy  = new COptionsPasswordPolicy(this, &m_OPTMD);
       m_pp_security        = new COptionsSecurity(this, &m_OPTMD);
       m_pp_shortcuts       = new COptionsShortcuts(this, &m_OPTMD);
       m_pp_system          = new COptionsSystem(this, &m_OPTMD);
@@ -62,16 +58,9 @@ COptions_PropertySheet::COptions_PropertySheet(UINT nID, CWnd* pParent, const bo
       AddPage(m_pp_display);
       AddPage(m_pp_misc);
       AddPage(m_pp_passwordhistory);
-      AddPage(m_pp_passwordpolicy);
       AddPage(m_pp_security);
       AddPage(m_pp_shortcuts);
       AddPage(m_pp_system);
-      break;
-    case IDS_GENERATEPASSWORD:
-      m_pp_passwordpolicy  = new COptionsPasswordPolicy(this, &m_OPTMD);
-      AddPage(m_pp_passwordpolicy);
-      break;
-  }
  
   CString cs_caption(MAKEINTRESOURCE(nID));
   m_psh.pszCaption = _wcsdup(cs_caption);
@@ -84,7 +73,6 @@ COptions_PropertySheet::~COptions_PropertySheet()
   delete m_pp_display;
   delete m_pp_misc;
   delete m_pp_passwordhistory;
-  delete m_pp_passwordpolicy;
   delete m_pp_security;
   delete m_pp_shortcuts;
   delete m_pp_system;
@@ -109,7 +97,6 @@ BOOL COptions_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
       return TRUE;
 
     // Now update preferences as per user's wishes
-    if (m_OPTMD.uicaller != IDS_GENERATEPASSWORD)
       UpdateCopyPreferences();
 
     // Now end it all so that OnApply isn't called again
@@ -137,7 +124,6 @@ void COptions_PropertySheet::SetupInitialValues()
   // Set up a copy of the preferences
   prefs->SetupCopyPrefs();
 
-  if (m_OPTMD.uicaller == IDS_OPTIONS) {
     // Backup Data
     CString cs_backupPrefix, cs_backupDir;
     m_OPTMD.CurrentFile = m_OPTMD.pDbx->GetCurFile().c_str();
@@ -234,41 +220,7 @@ void COptions_PropertySheet::SetupInitialValues()
     m_OPTMD.PWHistoryNumDefault =
         prefs->GetPref(PWSprefs::NumPWHistoryDefault);
     m_OPTMD.PWHAction = 0;
-  }
 
-  // Password Policy Data - for IDS_NEWDATABASE, IDS_OPTINOS and IDS_GENERATEPASSWORD
-  m_OPTMD.PWUseLowercase =
-        prefs->GetPref(PWSprefs::PWUseLowercase);
-  m_OPTMD.PWUseUppercase =
-        prefs->GetPref(PWSprefs::PWUseUppercase);
-  m_OPTMD.PWUseDigits =
-        prefs->GetPref(PWSprefs::PWUseDigits);
-  m_OPTMD.PWUseSymbols =
-        prefs->GetPref(PWSprefs::PWUseSymbols);
-  m_OPTMD.PWUseHexdigits =
-        prefs->GetPref(PWSprefs::PWUseHexDigits);
-  m_OPTMD.PWEasyVision =
-        prefs->GetPref(PWSprefs::PWUseEasyVision);
-  m_OPTMD.PWMakePronounceable =
-        prefs->GetPref(PWSprefs::PWMakePronounceable);
-  m_OPTMD.PWDefaultLength =
-        prefs->GetPref(PWSprefs::PWDefaultLength);
-  m_OPTMD.PWDigitMinLength =
-        prefs->GetPref(PWSprefs::PWDigitMinLength);
-  m_OPTMD.PWLowerMinLength =
-        prefs->GetPref(PWSprefs::PWLowercaseMinLength);
-  m_OPTMD.PWSymbolMinLength =
-        prefs->GetPref(PWSprefs::PWSymbolMinLength);
-  m_OPTMD.PWUpperMinLength =
-        prefs->GetPref(PWSprefs::PWUppercaseMinLength);
-
-  CString cs_symbols = m_save_bSymbols =
-        prefs->GetPref(PWSprefs::DefaultSymbols).c_str();
-  m_OPTMD.Symbols = cs_symbols;
-  m_OPTMD.UseOwnSymbols = m_save_iUseOwnSymbols =
-            (cs_symbols.GetLength() == 0) ? DEFAULT_SYMBOLS : OWN_SYMBOLS;
-
-  if (m_OPTMD.uicaller == IDS_OPTIONS) {
     // Security Data
     m_OPTMD.ClearClipboardOnMinimize =
         prefs->GetPref(PWSprefs::ClearClipboardOnMinimize) ? TRUE : FALSE;
@@ -294,7 +246,6 @@ void COptions_PropertySheet::SetupInitialValues()
         prefs->GetPrefDefVal(PWSprefs::OptShortcutColumnWidth);
   
     // System Data
-    if (m_OPTMD.uicaller == IDS_OPTIONS) {
       CShortcut pws_shortcut;
       m_OPTMD.MaxREItems =
           prefs->GetPref(PWSprefs::MaxREItems);
@@ -313,8 +264,6 @@ void COptions_PropertySheet::SetupInitialValues()
       m_OPTMD.MultipleInstances =
           prefs->GetPref(PWSprefs::MultipleInstances) ? TRUE : FALSE;
     }
-  }
-}
 
 void COptions_PropertySheet::UpdateCopyPreferences()
 {
@@ -462,45 +411,10 @@ void COptions_PropertySheet::UpdateCopyPreferences()
     prefs->SetPref(PWSprefs::NumPWHistoryDefault,
                    m_OPTMD.PWHistoryNumDefault, true);
 
-  prefs->SetPref(PWSprefs::PWUseLowercase,
-                 m_OPTMD.PWUseLowercase == TRUE, true);
-  prefs->SetPref(PWSprefs::PWUseUppercase,
-                 m_OPTMD.PWUseUppercase == TRUE, true);
-  prefs->SetPref(PWSprefs::PWUseDigits,
-                 m_OPTMD.PWUseDigits == TRUE, true);
-  prefs->SetPref(PWSprefs::PWUseSymbols,
-                 m_OPTMD.PWUseSymbols == TRUE, true);
-  prefs->SetPref(PWSprefs::PWUseHexDigits,
-                 m_OPTMD.PWUseHexdigits == TRUE, true);
-  prefs->SetPref(PWSprefs::PWUseEasyVision,
-                 m_OPTMD.PWEasyVision == TRUE, true);
-  prefs->SetPref(PWSprefs::PWMakePronounceable,
-                 m_OPTMD.PWMakePronounceable == TRUE, true);
-
-  prefs->SetPref(PWSprefs::PWDefaultLength,
-                 m_OPTMD.PWDefaultLength, true);
-  prefs->SetPref(PWSprefs::PWDigitMinLength,
-                 m_OPTMD.PWDigitMinLength, true);
-  prefs->SetPref(PWSprefs::PWLowercaseMinLength,
-                 m_OPTMD.PWLowerMinLength, true);
-  prefs->SetPref(PWSprefs::PWSymbolMinLength,
-                 m_OPTMD.PWSymbolMinLength, true);
-  prefs->SetPref(PWSprefs::PWUppercaseMinLength,
-                 m_OPTMD.PWUpperMinLength, true);
-
-  if (m_OPTMD.UseOwnSymbols != m_save_iUseOwnSymbols ||
-      (m_OPTMD.UseOwnSymbols == OWN_SYMBOLS &&
-       m_OPTMD.Symbols != m_save_bSymbols))
-    prefs->SetPref(PWSprefs::DefaultSymbols,
-                   LPCWSTR(m_OPTMD.Symbols), true);
-
   prefs->SetPref(PWSprefs::LockDBOnIdleTimeout,
                  m_OPTMD.LockOnIdleTimeout == TRUE, true);
   prefs->SetPref(PWSprefs::IdleTimeout,
                  m_OPTMD.IdleTimeOut, true);
-
-  if (m_OPTMD.uicaller != IDS_OPTIONS)
-    return;
 
   // Changing ExplorerTypeTree changes order of items,
   // which DisplayStatus implicitly depends upon

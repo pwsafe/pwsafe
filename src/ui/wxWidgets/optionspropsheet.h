@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+ * Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -34,6 +34,7 @@ class wxSpinCtrl;
 class wxGridSizer;
 class wxBoxSizer;
 class wxBookCtrlEvent;
+class PWSMenuShortcuts;
 ////@end forward declarations
 
 /*!
@@ -212,6 +213,9 @@ public:
   void OnPageChanging(wxBookCtrlEvent& evt);
 
   void OnAtLeastChars(wxSpinEvent& evt);
+
+  void OnShortcutChange(wxGridEvent& evt);
+  void OnShortcutKey(wxKeyEvent& evt);
 
 ////@end COptions event handler declarations
 
@@ -399,6 +403,7 @@ private:
 #if defined(__X__) || defined(__WXGTK__)
   bool m_usePrimarySelection;
 #endif
+  PWSMenuShortcuts* m_shortcuts;
 ////@end COptions member variables
  private:
   void PrefsToPropSheet();

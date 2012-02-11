@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -352,13 +352,16 @@ LRESULT CWZFinish::OnExecuteThreadEnded(WPARAM wParam, LPARAM )
 
   m_pWZPSH->WZPSHSetUpdateWizardWindow(NULL);
 
-  CString cs_text;
+  // In Compare status == 0 means identical, status != 0 means different
+  // Details placed in results summary.
+  // In other functions, status != 0 means : failed.
+  CString cs_text, cs_temp;
+  if (nID == ID_MENUITEM_COMPARE) {
+    cs_text.LoadStringW(IDS_COMPARECOMPLETE);
+  } else {
   if (m_status != 0) {
     UINT uiMsg(0);
     switch (nID) {
-      case ID_MENUITEM_COMPARE:
-        uiMsg = IDS_WZCOMPARE;
-        break;
       case ID_MENUITEM_MERGE:
         uiMsg = IDS_WZMERGE;
         break;
@@ -377,10 +380,11 @@ LRESULT CWZFinish::OnExecuteThreadEnded(WPARAM wParam, LPARAM )
         ASSERT(0);
         break;
     }
-    CString cs_temp(MAKEINTRESOURCE(uiMsg));
+      cs_temp.LoadStringW(uiMsg);
     cs_text.Format(IDS_WZACTIONFAILED, cs_temp);
   } else
     cs_text.LoadString(IDS_COMPLETE);
+  }
 
   GetDlgItem(IDC_STATIC_WZPROCESSING)->SetWindowText(cs_text);
   GetDlgItem(IDC_ENTRY)->ShowWindow(SW_HIDE);

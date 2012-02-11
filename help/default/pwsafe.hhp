@@ -21,6 +21,7 @@ html\autotype.html
 html\backups_tab.html
 html\backup_and_restore.html
 html\change_combo.html
+html\compare_results.html
 html\create_new_db.html
 html\credits.html
 html\display_tab.html
@@ -40,6 +41,7 @@ html\imp_exp_text_details.html
 html\manage_menu.html
 html\menu_toolbar.html
 html\misc_tab.html
+html\named_password_policies.html
 html\password_history.html
 html\password_history_tab.html
 html\password_policies.html

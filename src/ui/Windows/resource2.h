@@ -99,6 +99,7 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 #define ID_MENUITEM_UNPROTECT           32088
 #define ID_MENUITEM_PROTECTGROUP        32089
 #define ID_MENUITEM_UNPROTECTGROUP      32090
+#define ID_MENUITEM_COMPARE_ENTRIES     32091
 
 // View menu
 #define ID_VIEWMENU                     32101
@@ -143,9 +144,9 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 #define ID_MENUITEM_RESTORESAFE         32153
 #define ID_MENUITEM_OPTIONS             32154
 #define ID_MENUITEM_CUSTOMIZETOOLBAR    32155
-#define ID_MENUITEM_VALIDATE            32156
 #define ID_MENUITEM_GENERATEPASSWORD    32157
 #define ID_LANGUAGEMENU                 32158
+#define ID_MENUITEM_PSWD_POLICIES       32159
 
 // Help menu
 #define ID_HELPMENU                     32200
@@ -164,7 +165,9 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 // Compare Entry menu
 #define ID_MENUITEM_COMPVIEWEDIT        32220
 #define ID_MENUITEM_COPY_TO_ORIGINAL    32221
-#define ID_MENUITEM_COPY_TO_COMPARISON  32222
+#define ID_MENUITEM_COPY_TO_COMPARISON  32222 // obsolete: can't modify comparison DB
+#define ID_MENUITEM_COPYALL_TO_ORIGINAL 32223
+#define ID_MENUITEM_SYNCHRONIZEALL      32224
 
 // System Tray Menu
 #define ID_MENUITEM_TRAYLOCK            32250
