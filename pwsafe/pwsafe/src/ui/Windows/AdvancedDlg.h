@@ -26,7 +26,7 @@ public:
 
   CAdvancedDlg(CWnd* pParent = NULL, Type iIndex = INVALID,
                st_SaveAdvValues *pst_SADV = NULL);   // standard constructor
-  virtual CAdvancedDlg::~CAdvancedDlg();
+  virtual ~CAdvancedDlg();
 
   // Dialog Data
   //{{AFX_DATA(CAdvancedDlg)
