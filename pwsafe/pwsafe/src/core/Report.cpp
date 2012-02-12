@@ -178,8 +178,7 @@ bool CReport::SaveToDisk()
 
     // Now copy
     do {
-      nBytesRead = fread(inwbuffer, sizeof(inwbuffer[0])*sizeof(inwbuffer),
-                         1, f_in);
+      nBytesRead = fread(inwbuffer, sizeof(inwbuffer), 1, f_in);
 
       if (nBytesRead > 0) {
         size_t len = pws_os::wcstombs((char *)outbuffer, 4096,
