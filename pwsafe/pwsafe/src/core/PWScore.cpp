@@ -2804,6 +2804,44 @@ void PWScore::UndoUpdatePasswordHistory(SavePWHistoryMap &mapSavedHistory)
   }
 }
 
+int PWScore::DoRenameGroup(StringX sxOldPath, StringX sxNewPath)
+{
+  const StringX sxDot(L".");
+  StringX sxOldPath2 = sxOldPath + sxDot;
+  const size_t len2 = sxOldPath2.length();
+  ItemListIter iter;
+
+  for (iter = m_pwlist.begin(); iter != m_pwlist.end(); iter++) {
+    bool bU1 = iter->second.GetUser() == StringX(L"u1");
+    if (iter->second.GetGroup() == sxOldPath) {
+      iter->second.SetGroup(sxNewPath);
+    } else
+    if (iter->second.GetGroup().substr(0, len2) == sxOldPath2) {
+      StringX sxSubGroups = iter->second.GetGroup().substr(len2);
+      iter->second.SetGroup(sxNewPath + sxDot + sxSubGroups);
+    }
+  }
+  return 0;
+}
+
+void PWScore::UndoRenameGroup(StringX sxOldPath, StringX sxNewPath)
+{
+  const StringX sxDot(L".");
+  StringX sxNewPath2 = sxNewPath + sxDot;
+  const size_t len2 = sxNewPath2.length();
+  ItemListIter iter;
+
+  for (iter = m_pwlist.begin(); iter != m_pwlist.end(); iter++) {
+    if (iter->second.GetGroup() == sxNewPath) {
+      iter->second.SetGroup(sxOldPath);
+    } else
+    if (iter->second.GetGroup().substr(0, len2) == sxNewPath2) {
+      StringX sxSubGroups = iter->second.GetGroup().substr(len2);
+      iter->second.SetGroup(sxOldPath + sxDot + sxSubGroups);
+    }
+  }
+}
+
 void PWScore::GetDBProperties(st_DBProperties &st_dbp)
 {
   st_dbp.database = m_currfile;

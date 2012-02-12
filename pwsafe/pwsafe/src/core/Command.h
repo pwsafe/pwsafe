@@ -392,6 +392,22 @@ private:
   SavePWHistoryMap m_mapSavedHistory;
 };
 
+class RenameGroupCommand : public Command
+{
+public:
+  static RenameGroupCommand *Create(CommandInterface *pcomInt,
+                                    const StringX sxOldPath, const StringX sxNewPath)
+  { return new RenameGroupCommand(pcomInt, sxOldPath, sxNewPath); }
+  int Execute();
+  void Undo();
+
+private:
+  RenameGroupCommand(CommandInterface *pcomInt,
+                     StringX sxOldPath, StringX sxNewPath);
+
+   StringX m_sxOldPath, m_sxNewPath;
+};
+
 // Derived MultiCommands class
 class MultiCommands : public Command
 {

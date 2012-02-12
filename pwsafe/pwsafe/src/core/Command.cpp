@@ -900,3 +900,34 @@ void UpdatePasswordHistoryCommand::Undo()
   RestoreState();
   m_bState = false;
 }
+
+// ------------------------------------------------
+// RenameGroupCommand
+// ------------------------------------------------
+
+RenameGroupCommand::RenameGroupCommand(CommandInterface *pcomInt,
+                                       const StringX sxOldPath, const StringX sxNewPath)
+ : Command(pcomInt), m_sxOldPath(sxOldPath), m_sxNewPath(sxNewPath)
+{}
+
+int RenameGroupCommand::Execute()
+{
+  SaveState();
+
+  if (m_pcomInt->IsReadOnly())
+    return 0;
+
+  int rc = m_pcomInt->DoRenameGroup(m_sxOldPath, m_sxNewPath);
+  m_bState = true;
+  return rc;
+}
+
+void RenameGroupCommand::Undo()
+{
+  if (m_pcomInt->IsReadOnly())
+    return;
+
+  m_pcomInt->UndoRenameGroup(m_sxOldPath, m_sxNewPath);
+  RestoreState();
+  m_bState = false;
+}
