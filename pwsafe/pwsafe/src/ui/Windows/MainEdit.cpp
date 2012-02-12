@@ -1339,13 +1339,8 @@ void DboxMain::OnDisplayPswdSubset()
 
   CPasswordSubsetDlg DisplaySubsetDlg(this, pci->GetPassword());
 
-  if (DisplaySubsetDlg.DoModal() != IDCANCEL) {
-    // get pci again, in case PasswordSafe was locked and pci is invalidated
-    ItemListIter iter = Find(uuid);
-    if (iter != End()) { // can happen if dbox didn't minimize
-      UpdateAccessTime(&iter->second);
-    }
-  }
+  if (DisplaySubsetDlg.DoModal() != IDCANCEL)
+    UpdateAccessTime(uuid);
 }
 
 void DboxMain::OnCopyPassword()
@@ -1402,7 +1397,7 @@ void DboxMain::CopyDataToClipBoard(const CItemData::FieldType ft, const bool bSp
   CItemData *pci = getSelectedItem();
   ASSERT(pci != NULL);
 
-  CItemData *pci_original(pci);
+  const pws_os::CUUID uuid = pci->GetUUID();
 
   if (pci->IsShortcut() ||
       (pci->IsAlias() && ft == CItemData::PASSWORD)) {
@@ -1485,7 +1480,7 @@ void DboxMain::CopyDataToClipBoard(const CItemData::FieldType ft, const bool bSp
 
   SetClipboardData(sxData);
   UpdateLastClipboardAction(ft);
-  UpdateAccessTime(pci_original);
+  UpdateAccessTime(uuid);
 }
 
 void DboxMain::UpdateLastClipboardAction(const int iaction)
@@ -1601,7 +1596,7 @@ void DboxMain::OnAutoType()
   if (pci == NULL)
     return;
 
-  UpdateAccessTime(pci);
+  UpdateAccessTime(pci->GetUUID());
 
   // All code using ci must be before this AutoType since the
   // latter may trash *pci if lock-on-minimize
@@ -1669,7 +1664,7 @@ void DboxMain::OnGotoBaseEntry()
     if (pbci != NULL) {
       DisplayInfo *pdi = (DisplayInfo *)pbci->GetDisplayInfo();
       SelectEntry(pdi->list_index);
-      UpdateAccessTime(pci);
+      UpdateAccessTime(pci->GetUUID());
     }
   }
 }
@@ -1683,11 +1678,11 @@ void DboxMain::OnEditBaseEntry()
 
     CItemData *pbci = GetBaseEntry(pci);
     if (pbci != NULL) {
-       DisplayInfo *pdi = (DisplayInfo *)pbci->GetDisplayInfo();
-       SelectEntry(pdi->list_index);
-       EditItem(pbci);
-       // pbci may be invalid upon return!
-       UpdateAccessTime(GetBaseEntry(pci));
+      const pws_os::CUUID uuid = pbci->GetUUID();
+      DisplayInfo *pdi = (DisplayInfo *)pbci->GetDisplayInfo();
+      SelectEntry(pdi->list_index);
+      EditItem(pbci);
+      UpdateAccessTime(uuid);
     }
   }
 }
@@ -1700,7 +1695,7 @@ void DboxMain::OnRunCommand()
   CItemData *pci = getSelectedItem();
   ASSERT(pci != NULL);
 
-  CItemData *pci_original(pci);
+  const pws_os::CUUID uuid = pci->GetUUID();
   StringX sx_pswd;
 
   if (pci->IsDependent()) {
@@ -1739,7 +1734,7 @@ void DboxMain::OnRunCommand()
                                  m_vactionverboffsets);
   SetClipboardData(pci->GetPassword());
   UpdateLastClipboardAction(CItemData::PASSWORD);
-  UpdateAccessTime(pci_original);
+  UpdateAccessTime(uuid);
 
   // Now honour presence of [alt], {alt} or [ssh] in the url if present
   // in the RunCommand field.  Note: they are all treated the same (unlike

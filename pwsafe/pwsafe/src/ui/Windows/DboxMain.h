@@ -863,7 +863,7 @@ private:
   void CheckExpireList(const bool bAtOpen = false); // Upon open, timer + menu, check list, show exp.
   void TellUserAboutExpiredPasswords();
   bool RestoreWindowsData(bool bUpdateWindows, bool bShow = true);
-  void UpdateAccessTime(CItemData *pci);
+  void UpdateAccessTime(const pws_os::CUUID &uuid);
   void RestoreGroupDisplayState();
   std::vector<bool> GetGroupDisplayState(); // get current display state from window
   void SetGroupDisplayState(const std::vector<bool> &displaystatus); // changes display
