@@ -41,6 +41,8 @@ versions of the database, instead of one.
 
 Bugs fixed in 3.28pre
 =====================
+[3486960] Rename of a group now complete even if a filter is active.
+[3486959] PasswordSafe no longer crashes when returning to edit after lock.
 [3468853] The number of saved passwords can be changed and after the user presses Apply
 they will no longer be warned that the entry has been changed when pressing Cancel.
 [3462520] A password entry's expiry time in days now correctly

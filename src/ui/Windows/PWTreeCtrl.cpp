@@ -865,8 +865,20 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
       }
     }
   } else {
+    // We refresh the view
+    Command *pcmd1 = UpdateGUICommand::Create(pcore,
+                                              UpdateGUICommand::WN_UNDO,
+                                              UpdateGUICommand::GUI_REFRESH_TREE);
+    pmulticmds->Add(pcmd1);
+
     // Update Group
-    UpdateLeafsGroup(pmulticmds, ti, prefix);
+    pmulticmds->Add(RenameGroupCommand::Create(pcore, sxOldPath, sxNewPath));
+
+    // We refresh the view
+    Command *pcmd2 = UpdateGUICommand::Create(pcore,
+                                              UpdateGUICommand::WN_EXECUTE_REDO,
+                                              UpdateGUICommand::GUI_REFRESH_TREE);
+    pmulticmds->Add(pcmd2);
   }
 
   m_pDbx->Execute(pmulticmds);
@@ -881,7 +893,8 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
   // OK
   *pLResult = TRUE;
   m_bEditLabelCompleted = true;
-  if (m_pDbx->IsFilterActive())
+
+  if (bIsLeaf)
     m_pDbx->RefreshViews();
 
   return;
