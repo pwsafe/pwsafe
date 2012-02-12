@@ -893,7 +893,8 @@ private:
   void RefreshEntryFieldInGUI(CItemData &ci, CItemData::FieldType ft);
   void RefreshEntryPasswordInGUI(CItemData &ci);
   void RebuildGUI(const int iView = iBothViews);
-  
+
+  bool HandleURLArg(const CString &url);
   static const struct UICommandTableEntry {
     UINT ID;
     enum {InOpenRW=0, InOpenRO=1, InEmpty=2, InClosed=3, bOK_LAST};

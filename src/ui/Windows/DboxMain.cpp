@@ -1163,11 +1163,13 @@ BOOL DboxMain::OnInitDialog()
     // No need for another RefreshViews as OpenOnInit does one via PostOpenProcessing
   }
 
-  // Check if user cancelled
-  if (bOOI == FALSE) {
+  if ((bOOI == FALSE) ||  // Check if user cancelled
+      // If user passed --url= arg, handle it & exit
+      (!app.GetURL().IsEmpty() && HandleURLArg(app.GetURL()))) {
     PostQuitMessage(0);
     return FALSE;
   }
+
 
   SetInitialDatabaseDisplay();
   if (m_bOpen && PWSprefs::GetInstance()->GetPref(PWSprefs::ShowFindToolBarOnOpen))
@@ -3459,3 +3461,35 @@ bool DboxMain::CheckPreTranslateAutoType(MSG* pMsg)
   return false;
 }
 
+struct HasUrl {
+  HasUrl(const CString &url) : m_url(url) {
+    if (m_url.Left(7) == L"http://")
+      m_url2 = m_url.Right(m_url.GetLength()-7);
+    else if (m_url.Left(8) == L"https://")
+      m_url2 = m_url.Right(m_url.GetLength()-8);
+  }
+  bool operator() (const std::pair<const pws_os::CUUID, CItemData> &item) const {
+    const StringX iurl = item.second.GetURL();
+    if (!iurl.empty())
+      return (m_url == iurl.c_str() || m_url2 == iurl.c_str());
+    else
+      return false;
+  }
+private:
+  const CString &m_url;
+  CString m_url2;
+};
+bool DboxMain::HandleURLArg(const CString &url)
+{
+  // Find an item with given URL, and then perform autotype
+  // as per item.
+  // return false if item not found
+  ItemListConstIter item = find_if(m_core.GetEntryIter(),
+                                   m_core.GetEntryEndIter(),
+                                   HasUrl(url));
+  if (item == m_core.GetEntryEndIter())
+    return false;
+  // Found it - perform autotype!
+  AutoType(item->second);
+  return true;
+}
