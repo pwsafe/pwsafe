@@ -1496,8 +1496,6 @@ void DboxMain::OnBrowse()
 void DboxMain::DoBrowse(const bool bDoAutotype, const bool bSendEmail)
 {
   CItemData *pci = getSelectedItem();
-  CItemData *pci_original(pci);
-
   if (pci != NULL) {
     StringX sx_pswd;
     if (pci->IsDependent()) {
@@ -1518,6 +1516,7 @@ void DboxMain::DoBrowse(const bool bDoAutotype, const bool bSendEmail)
     }
 
     if (!cs_command.IsEmpty()) {
+      const pws_os::CUUID uuid = pci->GetUUID();
       std::vector<size_t> vactionverboffsets;
       StringX sxautotype = PWSAuxParse::GetAutoTypeString(*pci, m_core,
                                                           vactionverboffsets);
@@ -1529,7 +1528,7 @@ void DboxMain::DoBrowse(const bool bDoAutotype, const bool bSendEmail)
       } else
         UpdateLastClipboardAction(CItemData::URL);
 
-      UpdateAccessTime(pci_original);
+      UpdateAccessTime(uuid);
     }
   }
 }
@@ -2498,33 +2497,38 @@ void DboxMain::TellUserAboutExpiredPasswords()
   }
 }
 
-void DboxMain::UpdateAccessTime(CItemData *pci)
+void DboxMain::UpdateAccessTime(const pws_os::CUUID &uuid)
 {
   // Mark access time if so configured
-  ASSERT(pci != NULL);
-
   // First add to RUE List
-  m_RUEList.AddRUEntry(pci->GetUUID());
+  m_RUEList.AddRUEntry(uuid);
 
   bool bMaintainDateTimeStamps = PWSprefs::GetInstance()->
               GetPref(PWSprefs::MaintainDateTimeStamps);
 
   if (!m_core.IsReadOnly() && bMaintainDateTimeStamps) {
-    pci->SetATime();
+    ItemListIter iter = Find(uuid);
+    ASSERT(iter != End());
+    // fail safely in Release build:
+    if (iter == End())
+      return;
+    CItemData &item = iter->second;
+    item.SetATime();
     SetChanged(TimeStamp);
 
-    if (!IsGUIEmpty()) {
+    if (!IsGUIEmpty() &&
+        (m_nColumnIndexByType[CItemData::ATIME] != -1)) {
       // Need to update view if there and the display has been
       // rebuilt/restored after unlocking or minimized
-      if (m_nColumnIndexByType[CItemData::ATIME] != -1) {
-        // Get index of entry
-        DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
-        // Get value in correct format
-        CString cs_atime = pci->GetATimeL().c_str();
-        // Update it
-        m_ctlItemList.SetItemText(pdi->list_index,
-                 m_nColumnIndexByType[CItemData::ATIME], cs_atime);
-      }
+      // Get index of entry
+      DisplayInfo *pdi = (DisplayInfo *)item.GetDisplayInfo();
+      ASSERT(pdi != NULL);
+      // Get value in correct format
+      const CString cs_atime(item.GetATimeL().c_str());
+      // Update it
+      m_ctlItemList.SetItemText(pdi->list_index,
+                                m_nColumnIndexByType[CItemData::ATIME],
+                                cs_atime);
     }
   }
 }
