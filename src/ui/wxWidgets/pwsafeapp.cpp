@@ -146,36 +146,35 @@ END_EVENT_TABLE()
 
 
  
-static void initLanguageSupport()
+void PwsafeApp::initLanguageSupport()
 {
-  wxLocale* locale;
   long language =  wxLANGUAGE_DEFAULT;
  
   // load language if possible, fall back to english otherwise
   if(wxLocale::IsAvailable(language)) {
-    locale = new wxLocale( language, wxLOCALE_CONV_ENCODING );
+    m_locale = new wxLocale( language, wxLOCALE_CONV_ENCODING );
  
     // add locale search paths
-    locale->AddCatalogLookupPathPrefix(wxT("/usr"));
-    locale->AddCatalogLookupPathPrefix(wxT("/usr/local"));
+    m_locale->AddCatalogLookupPathPrefix(wxT("/usr"));
+    m_locale->AddCatalogLookupPathPrefix(wxT("/usr/local"));
 #if defined(__WXDEBUG__) || defined(_DEBUG) || defined(DEBUG)
-    locale->AddCatalogLookupPathPrefix(wxT("../I18N/mos"));
+    m_locale->AddCatalogLookupPathPrefix(wxT("../I18N/mos"));
 #endif
-    if (!locale->AddCatalog(wxT("pwsafe"))) {
+    if (!m_locale->AddCatalog(wxT("pwsafe"))) {
       std::wcerr << L"Couldn't load text for "
-		 << locale->GetLanguageName(language).c_str() << endl;
+		 << m_locale->GetLanguageName(language).c_str() << endl;
     }
  
-    if(! locale->IsOk()) {
+    if(! m_locale->IsOk()) {
       std::cerr << "selected language is wrong" << std::endl;
-      delete locale;
-      locale = new wxLocale( wxLANGUAGE_ENGLISH );
+      delete m_locale;
+      m_locale = new wxLocale( wxLANGUAGE_ENGLISH );
       language = wxLANGUAGE_ENGLISH;
     }
   } else {
     std::cerr << "The selected language is not supported by your system."
 	      << "Try installing support for this language." << std::endl;
-    locale = new wxLocale( wxLANGUAGE_ENGLISH );
+    m_locale = new wxLocale( wxLANGUAGE_ENGLISH );
     language = wxLANGUAGE_ENGLISH;
   }
 }
@@ -185,8 +184,8 @@ static void initLanguageSupport()
  */
 
 PwsafeApp::PwsafeApp() : m_activityTimer(new wxTimer(this, ACTIVITY_TIMER_ID)),
-  m_frame(0), m_recentDatabases(0),
-  m_controller(new wxHtmlHelpController)
+			 m_frame(0), m_recentDatabases(0),
+			 m_controller(new wxHtmlHelpController), m_locale(NULL)
 {
     Init();
 }
@@ -204,6 +203,7 @@ PwsafeApp::~PwsafeApp()
   PWSLog::DeleteLog();
   
   delete m_controller;
+  delete m_locale;
 }
 
 /*!
