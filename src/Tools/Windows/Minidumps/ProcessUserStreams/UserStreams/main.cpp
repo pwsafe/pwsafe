@@ -613,7 +613,7 @@ void PrintLog(PVOID pStream, ULONG StreamSize)
   iss >> num;
   iss.ignore(1, TCHAR(' '));    // skip over space
   if (!iss.good())
-    return;
+    goto exit;
 
   for (int i = 0; i < num; i++) {
     iss >> len;
@@ -628,5 +628,6 @@ void PrintLog(PVOID pStream, ULONG StreamSize)
     _ftprintf_s(pLogFile, _T("%s\n"), sRecord.c_str());
   }
 
+exit:
   delete [] buffer;
 }

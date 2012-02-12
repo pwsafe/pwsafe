@@ -646,6 +646,7 @@ int GetStringBufSize(const TCHAR *fmt, va_list args)
       break;
     else { // too small, resize & try again
       delete[] buffer;
+      buffer = NULL;
       guess *= 2;
     }
   }
@@ -653,7 +654,8 @@ int GetStringBufSize(const TCHAR *fmt, va_list args)
 #endif
   if (buffer)
     delete[] buffer;
-  ASSERT(len>0);
+
+  ASSERT(len > 0);
   return len;
 }
 
