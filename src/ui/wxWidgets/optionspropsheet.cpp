@@ -747,7 +747,8 @@ void COptions::CreateControls()
   shortcutSizer->Add(itemGrid143, wxSizerFlags().Expand().Proportion(1).Border());
   itemPanel142->SetSizer(shortcutSizer);
 
-  itemGrid143->SetValidator(ShortcutsGridValidator(*m_shortcuts));
+  ShortcutsGridValidator sv(*m_shortcuts);
+  itemGrid143->SetValidator(sv);
   itemGrid143->AutoSize();
 
   wxGridCellAttr* colAttr = new wxGridCellAttr;
