@@ -442,29 +442,6 @@ void CPWTreeCtrl::SetUpFont()
   Fonts::GetInstance()->SetUpFont(this, Fonts::GetInstance()->GetCurrentFont());
 }
 
-void CPWTreeCtrl::UpdateLeafsGroup(MultiCommands *pmulticmds, HTREEITEM hItem, CString prefix)
-{
-  // Starting with hItem, update the Group field of all of hItem's
-  // children. Called after a label has been edited.
-  if (IsLeaf(hItem)) {
-    CItemData *pci = (CItemData *)GetItemData(hItem);
-    ASSERT(pci != NULL);
-    Command *pcmd = NULL;
-    pcmd = UpdateEntryCommand::Create(m_pDbx->GetCore(), *pci,
-                                               CItemData::GROUP, (LPCWSTR)prefix);
-    pcmd->SetNoGUINotify();
-    pmulticmds->Add(pcmd);
-  } else { // update prefix with current group name and recurse
-    if (!prefix.IsEmpty())
-      prefix += GROUP_SEP;
-    prefix += GetItemText(hItem);
-    HTREEITEM child;
-    for (child = GetChildItem(hItem); child != NULL; child = GetNextSiblingItem(child)) {
-      UpdateLeafsGroup(pmulticmds, child, prefix);
-    }
-  }
-}
-
 void CPWTreeCtrl::OnBeginLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
   NMTVDISPINFO *ptvinfo = (NMTVDISPINFO *)pNotifyStruct;
