@@ -144,7 +144,6 @@ private:
   bool CopyItem(HTREEITEM hitem, HTREEITEM hNewParent, const CSecString &prefix);
   bool IsChildNodeOf(HTREEITEM hitemChild, HTREEITEM hitemSuspectedParent) const;
   bool ExistsInTree(HTREEITEM &node, const CSecString &s, HTREEITEM &si) const; 
-  void UpdateLeafsGroup(MultiCommands *pmulticmds, HTREEITEM hItem, CString prefix);
   void CollapseBranch(HTREEITEM hItem);
   CSecString GetPrefix(HTREEITEM hItem) const;
   bool CollectData(BYTE * &out_buffer, long &outLen);
