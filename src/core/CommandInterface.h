@@ -67,8 +67,8 @@ class CommandInterface {
                                       SavePWHistoryMap &mapSavedHistory) = 0;
   virtual void UndoUpdatePasswordHistory(SavePWHistoryMap &mapSavedHistory) = 0;
 
-  virtual int DoRenameGroup(StringX sxOldPath, StringX sxNewPath) = 0;
-  virtual void UndoRenameGroup(StringX sxOldPath, StringX sxNewPath) = 0;
+  virtual int DoRenameGroup(const StringX &sxOldPath, const StringX &sxNewPath) = 0;
+  virtual void UndoRenameGroup(const StringX &sxOldPath, const StringX &sxNewPath) = 0;
 
   virtual const std::vector<StringX> &GetVnodesModified() const = 0;
   virtual void SetVnodesModified(const std::vector<StringX> &) = 0;
