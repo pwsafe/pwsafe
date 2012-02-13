@@ -488,8 +488,8 @@ private:
                                       SavePWHistoryMap &mapSavedHistory);
   virtual void UndoUpdatePasswordHistory(SavePWHistoryMap &mapSavedHistory);
 
-  virtual int DoRenameGroup(StringX sxOldPath, StringX sxNewPath);
-  virtual void UndoRenameGroup(StringX sxOldPath, StringX sxNewPath);
+  virtual int DoRenameGroup(const StringX &sxOldPath, const StringX &sxNewPath);
+  virtual void UndoRenameGroup(const StringX &sxOldPath, const StringX &sxNewPath);
 
   // End of Command Interface implementations
   void ResetAllAliasPasswords(const pws_os::CUUID &base_uuid);
