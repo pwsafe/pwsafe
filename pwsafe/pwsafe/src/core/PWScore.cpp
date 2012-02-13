@@ -2812,7 +2812,6 @@ int PWScore::DoRenameGroup(StringX sxOldPath, StringX sxNewPath)
   ItemListIter iter;
 
   for (iter = m_pwlist.begin(); iter != m_pwlist.end(); iter++) {
-    bool bU1 = iter->second.GetUser() == StringX(L"u1");
     if (iter->second.GetGroup() == sxOldPath) {
       iter->second.SetGroup(sxNewPath);
     } else
