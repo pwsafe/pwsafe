@@ -129,12 +129,19 @@ INT_PTR CWZPropertySheet::DoModal()
   return rc;
 }
 
-BOOL CWZPropertySheet::PreTranslateMessage(MSG* pMsg)
+BOOL CWZPropertySheet::PreTranslateMessage(MSG *pMsg)
 {
-  if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
-    CWZPropertyPage *pp = (CWZPropertyPage *)GetActivePage();
-    pp->PostMessage(WM_COMMAND, MAKELONG(ID_HELP, BN_CLICKED), NULL);
-    return TRUE;
+  if (pMsg->message == WM_KEYDOWN) {
+    if (pMsg->wParam == VK_F1) {
+      CWZPropertyPage *pp = (CWZPropertyPage *)GetActivePage();
+      pp->PostMessage(WM_COMMAND, MAKELONG(ID_HELP, BN_CLICKED), NULL);
+      return TRUE;
+    }
+
+    if (pMsg->wParam == VK_ESCAPE) {
+      PostMessage(WM_COMMAND, MAKELONG(IDCANCEL, BN_CLICKED), NULL);
+      return TRUE;
+    }
   }
 
   return CPropertySheet::PreTranslateMessage(pMsg);

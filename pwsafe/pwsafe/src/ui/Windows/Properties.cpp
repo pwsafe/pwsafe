@@ -87,7 +87,7 @@ BOOL CProperties::OnInitDialog()
   return TRUE;
 }
 
-BOOL CProperties::PreTranslateMessage(MSG* pMsg)
+BOOL CProperties::PreTranslateMessage(MSG *pMsg)
 {
   if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_ESCAPE) {
     PostMessage(WM_COMMAND, MAKELONG(IDCANCEL, BN_CLICKED), NULL);
