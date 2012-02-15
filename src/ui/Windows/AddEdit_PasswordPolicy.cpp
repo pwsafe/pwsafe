@@ -173,6 +173,7 @@ BOOL CAddEdit_PasswordPolicy::OnInitDialog()
 
   // Populate the combo box
   m_cbxPolicyNames.ResetContent();
+  m_cbxPolicyNames.ChangeColour();
 
   // Get all password policy names
   std::vector<std::wstring> vNames;

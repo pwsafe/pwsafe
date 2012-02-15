@@ -1221,6 +1221,7 @@ void PWScore::GetUniqueGroups(vector<stringT> &vUniqueGroups) const
 }
 
 // GetPolicyNames - returns an array of all password policy names
+// They are in sort order as a map is always sorted by its key
 void PWScore::GetPolicyNames(vector<stringT> &vNames) const
 {
   vNames.clear();
