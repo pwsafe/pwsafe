@@ -578,6 +578,7 @@ protected:
   LRESULT OnDragAutoType(WPARAM wParam, LPARAM lParam);
   LRESULT OnExecuteFilters(WPARAM wParam, LPARAM lParam);
   LRESULT OnApplyEditChanges(WPARAM wParam, LPARAM lParam);
+  LRESULT OnURL(WPARAM, LPARAM);
 
   BOOL PreTranslateMessage(MSG* pMsg);
 

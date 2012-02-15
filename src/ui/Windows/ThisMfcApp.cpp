@@ -1568,5 +1568,6 @@ void ThisMfcApp::PassURL()
   t.GetEnvironmentVariable(L"TEMP");
   t += L"\\pwurl";
   wofstream of(t);
-  of << m_url;
+  const stringT w_url = LPCTSTR(m_url);
+  of << w_url.c_str();
 }

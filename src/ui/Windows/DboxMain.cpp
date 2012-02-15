@@ -67,6 +67,7 @@
 #include <stdlib.h>   // for qsort
 #include <bitset>
 #include <algorithm>
+#include <fstream>
 
 // Need to add Windows SDK 6.0 (or later) 'include' and 'lib' libraries to
 // Visual Studio "VC++ directories" in their respective search orders to find
@@ -548,7 +549,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_MESSAGE(PWS_MSG_EDIT_APPLY, OnApplyEditChanges)
   ON_MESSAGE(WM_QUERYENDSESSION, OnQueryEndSession)
   ON_MESSAGE(WM_ENDSESSION, OnEndSession)
-
+  ON_MESSAGE(WM_URL_AT, OnURL)
   ON_COMMAND(ID_MENUITEM_CUSTOMIZETOOLBAR, OnCustomizeToolbar)
 
   //}}AFX_MSG_MAP
@@ -3492,4 +3493,28 @@ bool DboxMain::HandleURLArg(const CString &url)
   // Found it - perform autotype!
   AutoType(item->second);
   return true;
+}
+
+LRESULT DboxMain::OnURL(WPARAM, LPARAM)
+{
+  CString t;
+  stringT url;
+  t.GetEnvironmentVariable(L"TEMP");
+  t += L"\\pwurl";
+  std::wifstream ifs(t);
+  // Passed a URL from another instance
+  // We prompt user for master password if locked,
+  // extract the url from wherever, and call HandleURLArg()
+  if (app.GetSystemTrayState() == ThisMfcApp::LOCKED) {
+    if (!RestoreWindowsData(false, false))
+      goto exit; // don't continue if user can't open
+  }
+  // For final release, this should be via mapped file IPC, per
+  // http://msdn.microsoft.com/en-us/library/ms810613.aspx
+  // For proof-of-concept, a silly text file will do
+  if (ifs >> url)
+    HandleURLArg(url.c_str());
+ exit:
+  pws_os::DeleteAFile(LPCTSTR(t));
+  return 0;
 }
