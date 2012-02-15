@@ -32,7 +32,7 @@ public:
          IDD_SHORT = IDD_ADDEDIT_PASSWORDPOLICY_SHORT };
 
   CSymbolEdit m_symbols;
-  CComboBox m_cbxPolicyNames;
+  CComboBoxExtn m_cbxPolicyNames;
 
   BOOL m_pwuselowercase;
   BOOL m_pwuseuppercase;
