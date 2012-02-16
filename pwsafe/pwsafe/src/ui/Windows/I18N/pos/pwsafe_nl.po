@@ -460,12 +460,12 @@ msgstr "%s, Titel=\"%s\", Gebruiker=\"%s\" bestaat al in uw databse of in het Im
 #. Resource IDs: (363)
 #, c-format
 msgid "%s. Either try to save database with another name or exit without saving."
-msgstr "%s. Probeer het bestand met een andere naam op te slaan of beeindig sonder op te slaan."
+msgstr "%s. Probeer het bestand met een andere naam op te slaan of beeindig zonder op te slaan."
 
 #. Resource IDs: (343)
 #, c-format
 msgid "%sA newer release is available.%s"
-msgstr "%sEen niewere versie is beschikbaar.%s"
+msgstr "%sEen nieuwere versie is beschikbaar.%s"
 
 #. Resource IDs: (343)
 #, c-format
@@ -593,7 +593,7 @@ msgstr "&Blader naar URL"
 
 #. Resource IDs: (32151)
 msgid "&Change Safe Combination..."
-msgstr "&Wijzig Safe Combinatie..."
+msgstr "&Wijzig Kluis Combinatie..."
 
 #. Resource IDs: (32105)
 msgid "&Classic Toolbar"
@@ -3455,11 +3455,11 @@ msgstr "De eerste positie van een variabele naam moet een letter zijn"
 
 #. Resource IDs: (32102)
 msgid "Flattened &List"
-msgstr "Samengevouwen &Lijst"
+msgstr "Platte &Lijst"
 
 #. Resource IDs: (148)
 msgid "Font"
-msgstr "Letter type"
+msgstr "Lettertype"
 
 #. Resource IDs: (1089)
 msgid "Font st&yle:"
@@ -3982,7 +3982,7 @@ msgstr "Index is geen getal"
 
 #. Resource IDs: (65535)
 msgid "Initial Tree View"
-msgstr "Initiële Boomstructuurweergave"
+msgstr "Initiele Boomweergave"
 
 #. Resource IDs: (65535)
 msgid "Initial system tray icon"
@@ -4412,7 +4412,7 @@ msgstr "Benoemd Beleid"
 
 #. Resource IDs: (32103)
 msgid "Nested &Tree"
-msgstr "Geneste &Boom"
+msgstr "&Boomweergave"
 
 #. Resource IDs: (328)
 msgid "Never"
@@ -5244,7 +5244,7 @@ msgstr "Koop niet gelimiteerde &U3 versie..."
 
 #. Resource IDs: (1235)
 msgid "Put Groups first in Tree View"
-msgstr "Plaats groepen eerst in boomstructuur"
+msgstr "Plaats Groepen eerst in Boomweergave"
 
 #. Resource IDs: (1072)
 msgid "Put icon in System Tray"
@@ -5365,7 +5365,7 @@ msgstr "Vermelding naam wijzigen"
 
 #. Resource IDs: (32054)
 msgid "Rename Group"
-msgstr "Groep naam wijzigen"
+msgstr "Naam Groep wijzigen"
 
 #. Resource IDs: (347)
 msgid "Report created"
@@ -5382,7 +5382,7 @@ msgstr "Gevraagde waardes:"
 
 #. Resource IDs: (366)
 msgid "Requested mode change failed"
-msgstr "Gevraagde modus wijziging is mislukt."
+msgstr "Wijziging gevraagde modus is mislukt."
 
 #. Resource IDs: (356)
 msgid ""
@@ -5421,7 +5421,7 @@ msgstr "Deze snelkoppeling opnieuw instellen"
 
 #. Resource IDs: (32153)
 msgid "Restore from Backup..."
-msgstr "Herstellen van Back-up..."
+msgstr "Terugzetten vanaf Back-up..."
 
 #. Resource IDs: (1158)
 msgid "Restrict to a subset of entries:"
@@ -5437,7 +5437,7 @@ msgstr "Rechter Ctrl toets"
 
 #. Resource IDs: (65535)
 msgid "Right-click on the 'Y' in either of the first 2 columns for additional functions"
-msgstr "Rechtermuis klil op de 'Y' in een van de 2 eerste kolommen voor meer functies"
+msgstr "Rechtermuis klik op de 'Y' in een van de 2 eerste kolommen voor meer functies"
 
 #. Resource IDs: (514)
 msgid "Romanian (Legacy)"
@@ -5655,7 +5655,7 @@ msgstr "Selecteer alle vermeldingen"
 
 #. Resource IDs: (352)
 msgid "Select and apply a filter"
-msgstr "Selecteer ene filter en pas dit toe"
+msgstr "Selecteer een filter en pas dit toe"
 
 #. Resource IDs: (523)
 msgid "Select entry to compare"
@@ -5750,7 +5750,7 @@ msgstr "Zet wachtwoordbeleids filters: %d Toegevoegd; %d Actief"
 
 #. Resource IDs: (356)
 msgid "Set Password display font"
-msgstr "Zet wachtwoord letter type"
+msgstr "Zet wachtwoord lettertype"
 
 #. Resource IDs: (1038)
 msgid "Set Sample &Text"
@@ -5758,11 +5758,11 @@ msgstr "Zet voorbeeld &Tekst"
 
 #. Resource IDs: (356)
 msgid "Set Tree/List display font"
-msgstr "Zet boom/lijst letter type"
+msgstr "Zet Boom/Lijst lettertype"
 
 #. Resource IDs: (357)
 msgid "Set Virtual Keyboard font"
-msgstr "Zet Virtueel toetsenbord letter type"
+msgstr "Zet Virtueel toetsenbord lettertype"
 
 #. Resource IDs: (1186)
 msgid "Set maximum number of passwords saved to above value"
@@ -5778,11 +5778,11 @@ msgstr "Shift"
 
 #. Resource IDs: (65535)
 msgid "Shift + Double-Click Action:"
-msgstr "Shift + Dubbel-Klik Aktie:"
+msgstr "Shift + Dubbel-Klik Actie:"
 
 #. Resource IDs: (65535)
 msgid "Shift Double-click action"
-msgstr "Shift Dubbel-klik aktie"
+msgstr "Shift Dubbel-klik actie"
 
 #. Resource IDs: (356)
 msgid "Shift+"
@@ -5839,7 +5839,7 @@ msgstr "Toon Notities"
 
 #. Resource IDs: (1296)
 msgid "Show Notes as ToolTips in Tree && List views"
-msgstr "Toon Notities als tekstballon in de boomstructuur && lijst weergaves"
+msgstr "Toon Notities als tekstballon in de Boom- && Lijstweergaves"
 
 #. Resource IDs: (1190)
 msgid "Show Notes in Edit"
@@ -5851,11 +5851,11 @@ msgstr "Toon wachtwoord bij toevoegen && bewerken"
 
 #. Resource IDs: (1031)
 msgid "Show Password in Tree View"
-msgstr "Toon wachtwoord in boomstructuur weergave"
+msgstr "Toon Wachtwoord in Boomweergave"
 
 #. Resource IDs: (1254)
 msgid "Show Username in Tree View"
-msgstr "Toon gebruikersnaam in boomstructuur weergave"
+msgstr "Toon Gebruikersnaam in Boomweergave"
 
 #. Resource IDs: (2132)
 msgid "Show Virtual Keyboard"
@@ -5863,7 +5863,7 @@ msgstr "Toon Virtueel Toetsenbord"
 
 #. Resource IDs: (159)
 msgid "Show a subset of the Password"
-msgstr "Toon een deel van het wachtwoord"
+msgstr "Toon een deel van het Wachtwoord"
 
 #. Resource IDs: (32131)
 msgid "Show entries with E&xpiry dates"
@@ -5895,7 +5895,7 @@ msgstr "Ongeldige Opdracht Signaal"
 
 #. Resource IDs: (1390)
 msgid "Signal Terminate"
-msgstr "Beëindig Signaal"
+msgstr "Beeindig Signaal"
 
 #. Resource IDs: (514)
 msgid "Slovak"
@@ -5925,7 +5925,7 @@ msgstr ""
 
 #. Resource IDs: (364)
 msgid "Some of the entries in this database have passwords that have expired or are about to.  Do you wish to list them and possibly update them?"
-msgstr "Een aantal vermeldingen in deze database hebben wachtwoorden die verlopen zijn of bijna verlopen zijn. Wilt U deze lijst zien en eventueel bijwerken?"
+msgstr "Een aantal vermeldingen in deze database hebben wachtwoorden die verlopen of bijna verlopen zijn. Wilt U deze lijst zien en eventueel bijwerken?"
 
 #. Resource IDs: (520)
 msgid "Sorbian Standard"
@@ -5965,7 +5965,7 @@ msgstr ""
 
 #. Resource IDs: (345)
 msgid "Sorry, 'pronounceable' and 'easy-to-read' are not supported together"
-msgstr "Sorry, 'uitspreekbare' of 'makkelijk te lezen' opties zijn niet samen mogelijk. "
+msgstr "Sorry, 'uitspreekbare' of 'makkelijk te lezen' opties zijn niet tergelijkertijd mogelijk. "
 
 #. Resource IDs: (345)
 msgid "Sorry, can't specify a minimum number of characters with 'pronounceable' or 'easy-to-read' options. Specified values ignored."
@@ -6087,7 +6087,7 @@ msgstr "Synchroniseer alle vermeldingen"
 
 #. Resource IDs: (364)
 msgid "Synchronizing current database with:"
-msgstr "Synchronizeren van de huidige database met:"
+msgstr "Synchroniseren van de huidige database met:"
 
 #. Resource IDs: (360)
 #, c-format
@@ -6636,7 +6636,7 @@ msgstr "Titel:"
 
 #. Resource IDs: (65535)
 msgid "To add a new entry, simply fill in the fields below. At least a title and a password are required. If you have set a default username, it will appear in the username field."
-msgstr "Om een nieuw vermelding toe te voegen is het voldoende de velden hieronder in te vullen. Minimaal moet een titel en een wachtwoord op gegeven worden. Als u een standaard gebruikersnaam hebt gekozen zal deze te zien zijn in het gebruikersnaam veld."
+msgstr "Vul de velden hieronder in om een nieuw vermelding toe te voegen. Minimaal moet een titel en een wachtwoord op gegeven worden. Als u een standaard gebruikersnaam hebt gekozen zal deze te zien zijn in het veld gebruikersnaam."
 
 #. Resource IDs: (211)
 msgid "To replace passwords of existing entries, all the following columns must be present: Group/Title, Username and Password.  One or more are missing and no entries have been updated."
@@ -7667,7 +7667,7 @@ msgid ""
 "List View/Tree View"
 msgstr ""
 "\n"
-"Lijs tonen/Boomstructuur tonen"
+"Lijst Tonen/Boomweergave Tonen"
 
 #. Resource IDs: (2001)
 msgid ""
@@ -7853,7 +7853,7 @@ msgid ""
 "Synchronize Databases"
 msgstr ""
 "\n"
-"Synchronizeer databases"
+"Synchroniseer databases"
 
 #. Resource IDs: (2006)
 msgid ""
