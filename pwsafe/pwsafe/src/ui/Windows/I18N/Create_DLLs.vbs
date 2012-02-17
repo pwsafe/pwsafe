@@ -11,7 +11,7 @@ If Instr(1, WScript.FullName, "cscript.exe", vbTextCompare) = 0 then
     Wscript.Quit(99)
 End If
 
-Dim TOOLS, RESTEXT, RESPWSL, BASE_DLL, DEST_DIR, DO_ALL, DO_COUNTRY
+Dim CURPATH, TOOLS, RESTEXT, RESPWSL, BASE_DLL, DEST_DIR, DO_ALL, DO_COUNTRY
 Dim objFSO
 
 TOOLS = "..\..\..\..\build\bin"
@@ -22,6 +22,15 @@ DEST_DIR = "..\..\..\..\build\bin\pwsafe\I18N\"
 
 Set objFSO = CreateObject("Scripting.FileSystemObject")
 
+' Make absolute addresses
+DEST_DIR = objFSO.GetAbsolutePathName(DEST_DIR)
+DEST_DIR = DEST_DIR & "\"
+
+CURPATH = objFSO.GetAbsolutePathName(".")
+CURPATH = CURPATH & "\"
+
+' Check output directory exists and, if not, create it
+CreateFolder(DEST_DIR)
 If (Not objFSO.FileExists(BASE_DLL)) Then
   ' Check Base DLL exists
   WScript.Echo "Can't find the Base DLL - pwsafe_base.dll"
@@ -54,6 +63,15 @@ Else
   End If
 End If
 
+' Sometimes the delete files do not work for permission failures. So...
+WScript.Echo "*** Please ensure that you have deleted ALL DLLs from this script directory:"
+WScript.Echo  " " & CURPATH
+WScript.Echo  " "
+WScript.Echo "*** Please delete any DLLs you are (re)making from the target directory:"
+WScript.Echo  " " & DEST_DIR
+WScript.Echo  " "
+Pause("Press any key to continue.")
+
 If (objFSO.FileExists("foo.dll")) Then
   'Delete intermediate DLL if still there
   objFSO.DeleteFile "foo.dll"
@@ -65,15 +83,22 @@ Set objStdOut = WScript.StdOut
 DoneSome = false
 
 ' Now do them
-If (DO_ALL = True Or DO_COUNTRY = "DE") Then
-  objStdOut.WriteLine " Creating German Language DLL"
-  Call DoI18N("de", "0x0407", "DE_DE", "DE")
+
+If (DO_ALL = True Or DO_COUNTRY = "CZ") Then
+  objStdOut.WriteLine " Creating Czech Language DLL"
+  Call DoI18N("cz", "0x0405", "CS_CZ", "CZ")
   DoneSome = true
 End If
 
 If (DO_ALL = True Or DO_COUNTRY = "DA") Then
   objStdOut.WriteLine " Creating Danish Language DLL"
   Call DoI18N("dk", "0x0406", "DA_DK", "DA")
+  DoneSome = true
+End If
+
+If (DO_ALL = True Or DO_COUNTRY = "DE") Then
+  objStdOut.WriteLine " Creating German Language DLL"
+  Call DoI18N("de", "0x0407", "DE_DE", "DE")
   DoneSome = true
 End If
 
@@ -177,16 +202,15 @@ Do While oExec.Status = 0
   WScript.Sleep 100
 Loop
 
-Set oExec = Nothing
-Set WshShell = Nothing
-
 If (objFSO.FileExists("foo.dll")) Then
   'Delete intermediate DLL if still there
+  On Error Resume Next
   objFSO.DeleteFile "foo.dll"
 End If
 
 If (objFSO.FileExists(DEST_DIR & "pwsafe" & LL & ".dll")) Then
   ' Delete any old version of this language resource-only DLL
+  On Error Resume Next
   objFSO.DeleteFile DEST_DIR & "pwsafe" & LL & ".dll"
 End If
 
@@ -195,8 +219,25 @@ objFSO.MoveFile "pwsafe" & LL_CC & ".dll", DEST_DIR & "pwsafe" & LL & ".dll"
 
 objStdOut.WriteLine "   Done"
 
+Set oExec = Nothing
+Set WshShell = Nothing
+
 End Sub
 
+' Recursive folder create, will create directories and Sub
+Sub CreateFolder(strPath)
+  On Error Resume Next
+  If strPath <> "" Then 'Fixes endless recursion in some instances when at lowest directory
+  If Not objFSO.FolderExists(objFSO.GetParentFolderName(strPath)) then Call CreateFolder(objFSO.GetParentFolderName(strPath))
+    objFSO.CreateFolder(strPath)
+  End If 
+End Sub
+
+Sub Pause(strPause)
+ Dim z
+  WScript.Echo (strPause)
+  z = WScript.StdIn.Read(1)
+End Sub
 Sub Usage
   MsgBox "This script must be executed by cscript.exe in a Command window, either:" & vbCRLF & _
          "'cscript Create_DLLs.vbs' to create all supported language DLLs, or" & vbCRLF & _
