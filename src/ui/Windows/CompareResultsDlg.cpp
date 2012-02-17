@@ -35,6 +35,38 @@ static char THIS_FILE[] = __FILE__;
 
 IMPLEMENT_DYNAMIC(CCompareResultsDlg, CPWResizeDialog)
 
+const struct {
+  UINT ids; int ncol;
+} FixedCols[] = {{IDS_ORIGINALDB, CCompareResultsDlg::CURRENT},
+                 {IDS_COMPARISONDB, CCompareResultsDlg::COMPARE},
+                 {IDS_GROUP, CCompareResultsDlg::GROUP},
+                 {IDS_TITLE, CCompareResultsDlg::TITLE},
+                 {IDS_USERNAME, CCompareResultsDlg::USER},
+};
+
+const struct {
+  CItemData::FieldType ft; UINT ids; int ncol;
+} OptCols[] = {{CItemData::PASSWORD, IDS_PASSWORD, CCompareResultsDlg::PASSWORD},
+               {CItemData::NOTES, IDS_NOTES, CCompareResultsDlg::NOTES},
+               {CItemData::URL, IDS_URL, CCompareResultsDlg::URL},
+               {CItemData::AUTOTYPE, IDS_AUTOTYPE, CCompareResultsDlg::AUTOTYPE},
+               {CItemData::PWHIST, IDS_PWHISTORY, CCompareResultsDlg::PWHIST},
+               {CItemData::CTIME, IDS_CREATED, CCompareResultsDlg::CTIME},
+               {CItemData::ATIME, IDS_LASTACCESSED, CCompareResultsDlg::ATIME},
+               {CItemData::XTIME, IDS_PASSWORDEXPIRYDATE, CCompareResultsDlg::XTIME},
+               {CItemData::XTIME_INT, IDS_PASSWORDEXPIRYDATEINT, CCompareResultsDlg::XTIME_INT},
+               {CItemData::PMTIME, IDS_PASSWORDMODIFIED, CCompareResultsDlg::PMTIME},
+               {CItemData::RMTIME, IDS_LASTMODIFIED, CCompareResultsDlg::RMTIME},
+               {CItemData::POLICY, IDS_PWPOLICY, CCompareResultsDlg::POLICY},
+               {CItemData::SYMBOLS, IDS_SYMBOLS, CCompareResultsDlg::SYMBOLS},
+               {CItemData::POLICYNAME, IDS_POLICYNAME, CCompareResultsDlg::POLICYNAME},
+               {CItemData::RUNCMD, IDS_RUNCOMMAND, CCompareResultsDlg::RUNCMD},
+               {CItemData::EMAIL, IDS_EMAIL, CCompareResultsDlg::EMAIL},
+               {CItemData::DCA, IDS_DCA, CCompareResultsDlg::DCA},
+               {CItemData::SHIFTDCA, IDS_SHIFTDCA, CCompareResultsDlg::SHIFTDCA},
+               {CItemData::PROTECTED, IDS_PROTECTED, CCompareResultsDlg::PROTECTED},
+};
+
 //-----------------------------------------------------------------------------
 CCompareResultsDlg::CCompareResultsDlg(CWnd* pParent,
                                        CompareData &OnlyInCurrent, CompareData &OnlyInComp,
@@ -119,45 +151,19 @@ BOOL CCompareResultsDlg::OnInitDialog()
 
   CString cs_header;
   int i;
-  const struct {
-    UINT ids; int ncol;
-  } FixedCols[] = {{IDS_ORIGINALDB, CURRENT}, {IDS_COMPARISONDB, COMPARE},
-                   {IDS_GROUP, GROUP}, {IDS_TITLE, TITLE}, {IDS_USERNAME, USER},
-  };
 
   for (i = 0; i < sizeof(FixedCols) / sizeof(FixedCols[0]); i++) {
     cs_header.LoadString(FixedCols[i].ids);
     m_LCResults.InsertColumn(FixedCols[i].ncol, cs_header);
   }
 
-  const struct {
-    CItemData::FieldType ft; UINT ids; int ncol;
-  } OptCols[] = {{CItemData::PASSWORD, IDS_PASSWORD, PASSWORD},
-                 {CItemData::NOTES, IDS_NOTES, NOTES},
-                 {CItemData::URL, IDS_URL, URL},
-                 {CItemData::AUTOTYPE, IDS_AUTOTYPE, AUTOTYPE},
-                 {CItemData::PWHIST, IDS_PWHISTORY, PWHIST},
-                 {CItemData::CTIME, IDS_CREATED, CTIME},
-                 {CItemData::ATIME, IDS_LASTACCESSED, ATIME},
-                 {CItemData::XTIME, IDS_PASSWORDEXPIRYDATE, XTIME},
-                 {CItemData::XTIME_INT, IDS_PASSWORDEXPIRYDATEINT, XTIME_INT},
-                 {CItemData::PMTIME, IDS_PASSWORDMODIFIED, PMTIME},
-                 {CItemData::RMTIME, IDS_LASTMODIFIED, RMTIME},
-                 {CItemData::POLICY, IDS_PWPOLICY, POLICY},
-                 {CItemData::SYMBOLS, IDS_SYMBOLS, SYMBOLS},
-                 {CItemData::POLICYNAME, IDS_POLICYNAME, POLICYNAME},
-                 {CItemData::RUNCMD, IDS_RUNCOMMAND, RUNCMD},
-                 {CItemData::EMAIL, IDS_EMAIL, EMAIL},
-                 {CItemData::DCA, IDS_DCA, DCA},
-                 {CItemData::SHIFTDCA, IDS_SHIFTDCA, SHIFTDCA},
-                 {CItemData::PROTECTED, IDS_PROTECTED, PROTECTED},
-  };
-
-  for (i = 0; i < sizeof(OptCols) / sizeof(OptCols[0]); i++)
+  for (i = 0; i < sizeof(OptCols) / sizeof(OptCols[0]); i++) {
     if (m_bsFields.test(OptCols[i].ft)) {
       cs_header.LoadString(OptCols[i].ids);
       m_LCResults.InsertColumn(OptCols[i].ncol, cs_header, LVCFMT_CENTER);
     }
+  }
+
   m_nCols = m_LCResults.GetHeaderCtrl()->GetItemCount();
 
   m_numOnlyInCurrent = m_OnlyInCurrent.size();
@@ -297,7 +303,6 @@ void CCompareResultsDlg::AddCompareEntries(const bool bAddIdentical)
   }
 
   if (m_numConflicts > 0) {
-    int icol;
     for (cd_iter = m_Conflicts.begin(); cd_iter != m_Conflicts.end(); cd_iter++) {
       st_CompareData &st_data = *cd_iter;
 
@@ -319,41 +324,12 @@ void CCompareResultsDlg::AddCompareEntries(const bool bAddIdentical)
       m_LCResults.SetItemText(iItem, USER, st_data.user.c_str());
 
       // Start of the 'data' columns (if present)
-      icol = PASSWORD;
-      if (m_bsFields.test(CItemData::PASSWORD))
-        m_LCResults.SetItemText(iItem, icol++, st_data.bsDiffs.test(CItemData::PASSWORD) ? L"X" : L"-");
-      if (m_bsFields.test(CItemData::NOTES))
-        m_LCResults.SetItemText(iItem, icol++, st_data.bsDiffs.test(CItemData::NOTES) ? L"X" : L"-");
-      if (m_bsFields.test(CItemData::URL))
-        m_LCResults.SetItemText(iItem, icol++, st_data.bsDiffs.test(CItemData::URL) ? L"X" : L"-");
-      if (m_bsFields.test(CItemData::AUTOTYPE))
-        m_LCResults.SetItemText(iItem, icol++, st_data.bsDiffs.test(CItemData::AUTOTYPE) ? L"X" : L"-");
-      if (m_bsFields.test(CItemData::PWHIST))
-        m_LCResults.SetItemText(iItem, icol++, st_data.bsDiffs.test(CItemData::PWHIST) ? L"X" : L"-");
-      if (m_bsFields.test(CItemData::CTIME))
-        m_LCResults.SetItemText(iItem, icol++, st_data.bsDiffs.test(CItemData::CTIME) ? L"X" : L"-");
-      if (m_bsFields.test(CItemData::ATIME))
-        m_LCResults.SetItemText(iItem, icol++, st_data.bsDiffs.test(CItemData::ATIME) ? L"X" : L"-");
-      if (m_bsFields.test(CItemData::XTIME))
-        m_LCResults.SetItemText(iItem, icol++, st_data.bsDiffs.test(CItemData::XTIME) ? L"X" : L"-");
-      if (m_bsFields.test(CItemData::XTIME_INT))
-        m_LCResults.SetItemText(iItem, icol++, st_data.bsDiffs.test(CItemData::XTIME_INT) ? L"X" : L"-");
-      if (m_bsFields.test(CItemData::PMTIME))
-        m_LCResults.SetItemText(iItem, icol++, st_data.bsDiffs.test(CItemData::PMTIME) ? L"X" : L"-");
-      if (m_bsFields.test(CItemData::RMTIME))
-        m_LCResults.SetItemText(iItem, icol++, st_data.bsDiffs.test(CItemData::RMTIME) ? L"X" : L"-");
-      if (m_bsFields.test(CItemData::POLICY))
-        m_LCResults.SetItemText(iItem, icol++, st_data.bsDiffs.test(CItemData::POLICY) ? L"X" : L"-");
-      if (m_bsFields.test(CItemData::RUNCMD))
-        m_LCResults.SetItemText(iItem, icol++, st_data.bsDiffs.test(CItemData::RUNCMD) ? L"X" : L"-");
-      if (m_bsFields.test(CItemData::DCA))
-        m_LCResults.SetItemText(iItem, icol++, st_data.bsDiffs.test(CItemData::DCA) ? L"X" : L"-");
-      if (m_bsFields.test(CItemData::EMAIL))
-        m_LCResults.SetItemText(iItem, icol++, st_data.bsDiffs.test(CItemData::EMAIL) ? L"X" : L"-");
-      if (m_bsFields.test(CItemData::PROTECTED))
-        m_LCResults.SetItemText(iItem, icol++, st_data.bsDiffs.test(CItemData::PROTECTED) ? L"X" : L"-");
-      if (m_bsFields.test(CItemData::SYMBOLS))
-        m_LCResults.SetItemText(iItem, icol++, st_data.bsDiffs.test(CItemData::SYMBOLS) ? L"X" : L"-");
+      int icol = PASSWORD;
+      for (i = 0; i < sizeof(OptCols) / sizeof(OptCols[0]); i++) {
+        if (m_bsFields.test(OptCols[i].ft)) {
+          m_LCResults.SetItemText(iItem, icol++, st_data.bsDiffs.test(OptCols[i].ft) ? L"X" : L"-");
+        }
+      }
 
       st_data.listindex = iItem;
       m_LCResults.SetItemData(iItem, MAKELONG(BOTH, st_data.id));

@@ -2587,6 +2587,8 @@ bool DboxMain::DoCompare(PWScore *pothercore,
     bsFields.reset(CItemData::RMTIME);
   }
 
+  m_bsFields = bsFields;
+
   ReportAdvancedOptions(prpt, bAdvanced, WZAdvanced::COMPARE);
 
   // Put up hourglass...this might take a while

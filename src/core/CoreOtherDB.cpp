@@ -179,21 +179,27 @@ void PWScore::Compare(PWScore *pothercore,
         if (bsFields.test(CItemData::NOTES) &&
             FieldsNotEqual(currentItem.GetNotes(), compItem.GetNotes(), bTreatWhiteSpaceasEmpty))
           bsConflicts.flip(CItemData::NOTES);
+
         if (bsFields.test(CItemData::CTIME) &&
             currentItem.GetCTime() != compItem.GetCTime())
           bsConflicts.flip(CItemData::CTIME);
+
         if (bsFields.test(CItemData::PMTIME) &&
             currentItem.GetPMTime() != compItem.GetPMTime())
           bsConflicts.flip(CItemData::PMTIME);
+
         if (bsFields.test(CItemData::ATIME) &&
             currentItem.GetATime() != compItem.GetATime())
           bsConflicts.flip(CItemData::ATIME);
+
         if (bsFields.test(CItemData::XTIME) &&
             currentItem.GetXTime() != compItem.GetXTime())
           bsConflicts.flip(CItemData::XTIME);
+
         if (bsFields.test(CItemData::RMTIME) &&
             currentItem.GetRMTime() != compItem.GetRMTime())
           bsConflicts.flip(CItemData::RMTIME);
+
         if (bsFields.test(CItemData::XTIME_INT)) {
           int current_xint, comp_xint;
           currentItem.GetXTimeInt(current_xint);
@@ -201,41 +207,55 @@ void PWScore::Compare(PWScore *pothercore,
           if (current_xint != comp_xint)
             bsConflicts.flip(CItemData::XTIME_INT);
         }
+
         if (bsFields.test(CItemData::URL) &&
             FieldsNotEqual(currentItem.GetURL(), compItem.GetURL(),
                            bTreatWhiteSpaceasEmpty))
           bsConflicts.flip(CItemData::URL);
+
         if (bsFields.test(CItemData::AUTOTYPE) &&
             FieldsNotEqual(currentItem.GetAutoType(), compItem.GetAutoType(),
                            bTreatWhiteSpaceasEmpty))
           bsConflicts.flip(CItemData::AUTOTYPE);
+
         if (bsFields.test(CItemData::PWHIST) &&
             currentItem.GetPWHistory() != compItem.GetPWHistory())
           bsConflicts.flip(CItemData::PWHIST);
-        if (bsFields.test(CItemData::POLICY) &&
-            currentItem.GetPWPolicy() != compItem.GetPWPolicy())
-          bsConflicts.flip(CItemData::POLICY);
+
         if (bsFields.test(CItemData::POLICYNAME) &&
             currentItem.GetPolicyName() != compItem.GetPolicyName())
           bsConflicts.flip(CItemData::POLICYNAME);
+
+        // Don't test policy or symbols if either entry is using a named policy
+        // as these are meaningless to compare
+        if (currentItem.GetPolicyName().empty() && compItem.GetPolicyName().empty()) {
+          if (bsFields.test(CItemData::POLICY) &&
+              currentItem.GetPWPolicy() != compItem.GetPWPolicy())
+            bsConflicts.flip(CItemData::POLICY);
+          if (bsFields.test(CItemData::SYMBOLS) &&
+              currentItem.GetSymbols() != compItem.GetSymbols())
+            bsConflicts.flip(CItemData::SYMBOLS);
+        }
+
         if (bsFields.test(CItemData::RUNCMD) &&
             currentItem.GetRunCommand() != compItem.GetRunCommand())
           bsConflicts.flip(CItemData::RUNCMD);
+
         if (bsFields.test(CItemData::DCA) &&
             currentItem.GetDCA() != compItem.GetDCA())
           bsConflicts.flip(CItemData::DCA);
+
         if (bsFields.test(CItemData::SHIFTDCA) &&
             currentItem.GetShiftDCA() != compItem.GetShiftDCA())
           bsConflicts.flip(CItemData::SHIFTDCA);
+
         if (bsFields.test(CItemData::EMAIL) &&
             currentItem.GetEmail() != compItem.GetEmail())
           bsConflicts.flip(CItemData::EMAIL);
+
         if (bsFields.test(CItemData::PROTECTED) &&
             currentItem.GetProtected() != compItem.GetProtected())
           bsConflicts.flip(CItemData::PROTECTED);
-        if (bsFields.test(CItemData::SYMBOLS) &&
-            currentItem.GetSymbols() != compItem.GetSymbols())
-          bsConflicts.flip(CItemData::SYMBOLS);
 
         st_data.uuid0 = currentPos->first;
         st_data.uuid1 = foundPos->first;
