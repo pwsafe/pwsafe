@@ -165,4 +165,14 @@ private:
   size_t m_numOnlyInCurrent, m_numOnlyInComp, m_numConflicts, m_numIdentical;
   int m_nCols;
   bool m_bFirstInCompare;
+
+  // These columns always shown
+  static const struct FixedColumns {
+    UINT ids; int ncol;
+  } FixedCols[USER + 1];
+
+  // These columns are optional
+  static const struct OptionalColumns {
+    CItemData::FieldType ft; UINT ids; int ncol;
+  }   OptCols[LAST - PASSWORD];
 };
