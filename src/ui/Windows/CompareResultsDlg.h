@@ -86,10 +86,10 @@ public:
   enum {
     // Used to determine if entries are in both DBs and whether different
     IDENTICAL = -2, BOTH = -1 ,
-    // Fixed columns - must be same order as FixedCols member variable data
+    // Fixed columns - MUST be same order as FixedCols member variable data
     CURRENT = 0, COMPARE = 1, 
     GROUP, TITLE, USER,
-    // Optional columns - must be in same order as OptCols member variable data
+    // Optional columns - do NOT have to be in same order as OptCols member variable data
     PASSWORD, NOTES, URL, AUTOTYPE, PWHIST, 
     POLICY, POLICYNAME, SYMBOLS, RUNCMD, EMAIL,
     DCA, SHIFTDCA, PROTECTED,
