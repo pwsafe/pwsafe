@@ -754,6 +754,8 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
     } // switch
   } while (go);
 
+  ParseBasesAndAliases();
+
   if (in3 != NULL && !in3->GetPasswordPolicies().empty()) {
     // Wait til now so that reading in the records updates the use counts
     m_MapPSWDPLC = in3->GetPasswordPolicies();
@@ -809,7 +811,7 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
   // as needed for m_pwlist - map uses UUID as its key)
   bool bValidateRC = !vGTU_INVALID_UUID.empty() || !vGTU_DUPLICATE_UUID.empty();
 
-  // Only do the rest if user hasn't explicitly diabled the checks
+  // Only do the rest if user hasn't explicitly disabled the checks
   // NOTE: When a "other" core is involved (Compare, Merge etc.), we NEVER validate
   // the "other" core.
   if (bValidate)
@@ -1335,6 +1337,43 @@ static bool GTUCompareV2(const st_GroupTitleUser2 &gtu1, const st_GroupTitleUser
     return gtu1.newtitle.compare(gtu2.newtitle) < 0;
 }
 
+void PWScore::ParseBasesAndAliases()
+{
+  UUIDVector Possible_Aliases, Possible_Shortcuts;
+
+  for (ItemListIter iter = m_pwlist.begin(); iter != m_pwlist.end(); iter++) {
+    const CItemData &ci = iter->second;
+    // Get all possible Aliases/Shortcuts for future checking if base entries exist
+    const StringX csMyPassword = ci.GetPassword();
+    if (csMyPassword.length() == 36) { // look for "[[uuid]]" or "[~uuid~]"
+      StringX cs_possibleUUID = csMyPassword.substr(2, 32); // try to extract uuid
+      ToLower(cs_possibleUUID);
+      if (((csMyPassword.substr(0,2) == _T("[[") &&
+            csMyPassword.substr(csMyPassword.length() - 2) == _T("]]")) ||
+           (csMyPassword.substr(0, 2) == _T("[~") &&
+            csMyPassword.substr(csMyPassword.length() - 2) == _T("~]"))) &&
+          cs_possibleUUID.find_first_not_of(_T("0123456789abcdef")) == StringX::npos) {
+        CUUID buuid(cs_possibleUUID.c_str());
+        if (csMyPassword.substr(0, 2) == _T("[[")) {
+          m_alias2base_map[ci.GetUUID()] = buuid;
+          Possible_Aliases.push_back(ci.GetUUID());
+        } else {
+          m_shortcut2base_map[ci.GetUUID()] = buuid;
+          Possible_Shortcuts.push_back(ci.GetUUID());
+        }
+      }
+    }
+
+  } // iter over m_pwlist
+  if (!Possible_Aliases.empty()) {
+    DoAddDependentEntries(Possible_Aliases, NULL, CItemData::ET_ALIAS, CItemData::UUID);
+  }
+
+  if (!Possible_Shortcuts.empty()) {
+    DoAddDependentEntries(Possible_Shortcuts, NULL, CItemData::ET_SHORTCUT, CItemData::UUID);
+  }
+}
+
 bool PWScore::Validate(const size_t iMAXCHARS, const bool bInReadfile,
                        CReport *pRpt, st_ValidateResults &st_vr)
 {
@@ -1342,9 +1381,7 @@ bool PWScore::Validate(const size_t iMAXCHARS, const bool bInReadfile,
      1. Check PWH is valid
      2. Check that the 2 mandatory fields are present (Title & Password)
      3. Check group/title/user must be unique.
-     4. Check alias password has corresponding base entry
-     5. Check shortcut password has corresponding base entry
-     6. Check that no text field has more than iMAXCHARS, that can displayed
+     4. Check that no text field has more than iMAXCHARS, that can displayed
         in the GUI's text control.
 
      Notes:
@@ -1364,7 +1401,6 @@ bool PWScore::Validate(const size_t iMAXCHARS, const bool bInReadfile,
   unsigned int uimaxsize(0);
 
   MultiCommands *pmulticmds(NULL);
-  Command *pcmdA(NULL), *pcmdS(NULL);
 
   // We do not use the Command infrastructure with Undo/Redo when reading in
   // the database
@@ -1383,7 +1419,6 @@ bool PWScore::Validate(const size_t iMAXCHARS, const bool bInReadfile,
                                  vGTU_ALIASES, vGTU_SHORTCUTS;
   std::vector<st_GroupTitleUser2> vGTU_NONUNIQUE, vGTU_EmptyTitle;
 
-  UUIDVector Possible_Aliases, Possible_Shortcuts;
   ItemListIter iter;
 
   for (iter = m_pwlist.begin(); iter != m_pwlist.end(); iter++) {
@@ -1465,27 +1500,6 @@ bool PWScore::Validate(const size_t iMAXCHARS, const bool bInReadfile,
       flags |= CItemData::VF_BAD_PSWDHISTORY;
     }
 
-    // Get all possible Aliases/Shortcuts for futrie checking if base entries exist
-    StringX csMyPassword = ci.GetPassword();
-    if (csMyPassword.length() == 36) { // look for "[[uuid]]" or "[~uuid~]"
-      StringX cs_possibleUUID = csMyPassword.substr(2, 32); // try to extract uuid
-      ToLower(cs_possibleUUID);
-      if (((csMyPassword.substr(0,2) == _T("[[") &&
-            csMyPassword.substr(csMyPassword.length() - 2) == _T("]]")) ||
-           (csMyPassword.substr(0, 2) == _T("[~") &&
-            csMyPassword.substr(csMyPassword.length() - 2) == _T("~]"))) &&
-          cs_possibleUUID.find_first_not_of(_T("0123456789abcdef")) == StringX::npos) {
-        CUUID buuid(cs_possibleUUID.c_str());
-        if (csMyPassword.substr(0, 2) == _T("[[")) {
-          m_alias2base_map[ci.GetUUID()] = buuid;
-          Possible_Aliases.push_back(ci.GetUUID());
-        } else {
-          m_shortcut2base_map[ci.GetUUID()] = buuid;
-          Possible_Shortcuts.push_back(ci.GetUUID());
-        }
-      }
-    }
-
     // Note excessively sized text fields
     if (iMAXCHARS > 0) {
       bool bEntryHasBigField(false);
@@ -1522,7 +1536,7 @@ bool PWScore::Validate(const size_t iMAXCHARS, const bool bInReadfile,
       }
     }
   } // iteration over m_pwlist
-
+#if 0 // XXX We've separated alias/shortcut processing from Validate - reconsider this!
   // See if we have any entries with passwords that imply they are an alias
   // but there is no equivalent base entry
   for (size_t ipa = 0; ipa < Possible_Aliases.size(); ipa++) {
@@ -1552,54 +1566,7 @@ bool PWScore::Validate(const size_t iMAXCHARS, const bool bInReadfile,
       st_vr.num_shortcuts_warnings++;
     }
   }
-
-  if (!Possible_Aliases.empty()) {
-    if (bInReadfile) {
-      // We must add aliases without using the Command structure and Undo/Redo during
-      // initial read of the file and no report
-      DoAddDependentEntries(Possible_Aliases, NULL, CItemData::ET_ALIAS, CItemData::UUID);
-    } else {
-      // Otherwise, we must do it via the normal command mechanism
-      pcmdA = AddDependentEntriesCommand::Create(this,
-                                                 Possible_Aliases, pRpt,
-                                                 CItemData::ET_ALIAS,
-                                                 CItemData::UUID);
-      pmulticmds->Add(pcmdA);
-    }
-  }
-
-  if (!Possible_Shortcuts.empty()) {
-    if (bInReadfile) {
-      // We must add shortcuts without using the Command structure and Undo/Redo during
-      // initial read of the file and no report
-      DoAddDependentEntries(Possible_Shortcuts, NULL, CItemData::ET_SHORTCUT, CItemData::UUID);
-    } else {
-      // Otherwise, we must do it via the normal command mechanism
-      pcmdS = AddDependentEntriesCommand::Create(this,
-                                                 Possible_Shortcuts, pRpt,
-                                                 CItemData::ET_SHORTCUT,
-                                                 CItemData::UUID);
-      pmulticmds->Add(pcmdS);  
-    }
-  }
-
-  if (!bInReadfile) {
-    // Do it via Command mechanism.
-    Execute(pmulticmds);
-
-    // Get number of missing alias base entries
-    // We don't bother to check it equals previously determined number
-    if (pcmdA != NULL)
-      pmulticmds->GetRC(pcmdA, st_vr.num_alias_warnings);
-
-    // Get number of missing shortcut base entries
-    // We don't bother to check it equals previously determined number
-    if (pcmdS != NULL)
-      pmulticmds->GetRC(pcmdS, st_vr.num_shortcuts_warnings);
-  }
-
-  Possible_Aliases.clear();
-  Possible_Shortcuts.clear();
+#endif 
 
   if (st_vr.TotalIssues() != 0 && pRpt != NULL) {
 
