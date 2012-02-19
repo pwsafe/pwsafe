@@ -492,6 +492,8 @@ private:
   virtual void UndoRenameGroup(const StringX &sxOldPath, const StringX &sxNewPath);
 
   // End of Command Interface implementations
+
+  void ParseBasesAndAliases(); // populate data structures as needed - called in ReadFile()
   void ResetAllAliasPasswords(const pws_os::CUUID &base_uuid);
   
   StringX GetPassKey() const; // returns cleartext - USE WITH CARE
