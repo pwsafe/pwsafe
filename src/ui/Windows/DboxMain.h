@@ -35,7 +35,6 @@
 #include "DDStatic.h"
 #include "MenuShortcuts.h"
 #include "AdvancedDlg.h"
-#include "CompareResultsDlg.h"
 
 #include "core/UIinterface.h"
 #include "core/PWScore.h"
