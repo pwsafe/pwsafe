@@ -36,36 +36,31 @@ static char THIS_FILE[] = __FILE__;
 IMPLEMENT_DYNAMIC(CCompareResultsDlg, CPWResizeDialog)
 
 // These columns always shown and in this order (do not chnage)
-const CCompareResultsDlg::FixedColumns CCompareResultsDlg::FixedCols[CCompareResultsDlg::USER + 1] = {
-    {IDS_ORIGINALDB,   CURRENT},
-    {IDS_COMPARISONDB, COMPARE},
-    {IDS_GROUP,        GROUP},
-    {IDS_TITLE,        TITLE},
-    {IDS_USERNAME,     USER}
+const UINT CCompareResultsDlg::FixedCols[CCompareResultsDlg::USER + 1] = {
+    IDS_ORIGINALDB, IDS_COMPARISONDB, IDS_GROUP, IDS_TITLE, IDS_USERNAME
 };
 
-
-// These columns are optional and in this order
-const CCompareResultsDlg::OptionalColumns CCompareResultsDlg::OptCols[LAST - PASSWORD] = {
-    {CItemData::PASSWORD,   IDS_PASSWORD,              PASSWORD},
-    {CItemData::NOTES,      IDS_NOTES,                 NOTES},
-    {CItemData::URL,        IDS_URL,                   URL},
-    {CItemData::AUTOTYPE,   IDS_AUTOTYPE,              AUTOTYPE},
-    {CItemData::PWHIST,     IDS_PWHISTORY,             PWHIST},
-    {CItemData::CTIME,      IDS_CREATED,               CTIME},
-    {CItemData::ATIME,      IDS_LASTACCESSED,          ATIME},
-    {CItemData::XTIME,      IDS_PASSWORDEXPIRYDATE,    XTIME},
-    {CItemData::XTIME_INT,  IDS_PASSWORDEXPIRYDATEINT, XTIME_INT},
-    {CItemData::PMTIME,     IDS_PASSWORDMODIFIED,      PMTIME},
-    {CItemData::RMTIME,     IDS_LASTMODIFIED,          RMTIME},
-    {CItemData::POLICY,     IDS_PWPOLICY,              POLICY},
-    {CItemData::SYMBOLS,    IDS_SYMBOLS,               SYMBOLS},
-    {CItemData::POLICYNAME, IDS_POLICYNAME,            POLICYNAME},
-    {CItemData::RUNCMD,     IDS_RUNCOMMAND,            RUNCMD},
-    {CItemData::EMAIL,      IDS_EMAIL,                 EMAIL},
-    {CItemData::DCA,        IDS_DCA,                   DCA},
-    {CItemData::SHIFTDCA,   IDS_SHIFTDCA,              SHIFTDCA},
-    {CItemData::PROTECTED,  IDS_PROTECTED,             PROTECTED}
+// These columns are optional and in this *preferred* order
+CCompareResultsDlg::OptionalColumns CCompareResultsDlg::OptCols[LAST - PASSWORD] = {
+    {CItemData::PASSWORD,   IDS_PASSWORD},
+    {CItemData::NOTES,      IDS_NOTES},
+    {CItemData::URL,        IDS_URL},
+    {CItemData::AUTOTYPE,   IDS_AUTOTYPE},
+    {CItemData::PWHIST,     IDS_PWHISTORY},
+    {CItemData::POLICY,     IDS_PWPOLICY},
+    {CItemData::POLICYNAME, IDS_POLICYNAME},
+    {CItemData::SYMBOLS,    IDS_SYMBOLS},
+    {CItemData::RUNCMD,     IDS_RUNCOMMAND},
+    {CItemData::EMAIL,      IDS_EMAIL},
+    {CItemData::DCA,        IDS_DCA},
+    {CItemData::SHIFTDCA,   IDS_SHIFTDCA},
+    {CItemData::PROTECTED,  IDS_PROTECTED},
+    {CItemData::CTIME,      IDS_CREATED},
+    {CItemData::ATIME,      IDS_LASTACCESSED},
+    {CItemData::XTIME,      IDS_PASSWORDEXPIRYDATE},
+    {CItemData::XTIME_INT,  IDS_PASSWORDEXPIRYDATEINT},
+    {CItemData::PMTIME,     IDS_PASSWORDMODIFIED},
+    {CItemData::RMTIME,     IDS_LASTMODIFIED}
 };
 
 //-----------------------------------------------------------------------------
@@ -154,14 +149,16 @@ BOOL CCompareResultsDlg::OnInitDialog()
   int i;
 
   for (i = 0; i < sizeof(FixedCols) / sizeof(FixedCols[0]); i++) {
-    cs_header.LoadString(FixedCols[i].ids);
-    m_LCResults.InsertColumn(FixedCols[i].ncol, cs_header);
+    cs_header.LoadString(FixedCols[i]);
+    m_LCResults.InsertColumn(i, cs_header);
   }
 
   for (i = 0; i < sizeof(OptCols) / sizeof(OptCols[0]); i++) {
     if (m_bsFields.test(OptCols[i].ft)) {
       cs_header.LoadString(OptCols[i].ids);
-      m_LCResults.InsertColumn(OptCols[i].ncol, cs_header, LVCFMT_CENTER);
+      // Add on the end
+      int icol = m_LCResults.InsertColumn(LAST, cs_header, LVCFMT_CENTER);
+      ASSERT(icol != -1);
     }
   }
 
@@ -325,7 +322,7 @@ void CCompareResultsDlg::AddCompareEntries(const bool bAddIdentical)
       m_LCResults.SetItemText(iItem, USER, st_data.user.c_str());
 
       // Start of the 'data' columns (if present)
-      int icol = OptCols[0].ncol;
+      int icol = PASSWORD;
       for (i = 0; i < sizeof(OptCols) / sizeof(OptCols[0]); i++) {
         if (m_bsFields.test(OptCols[i].ft)) {
           m_LCResults.SetItemText(iItem, icol++, st_data.bsDiffs.test(OptCols[i].ft) ? L"X" : L"-");

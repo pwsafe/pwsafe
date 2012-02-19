@@ -83,9 +83,15 @@ public:
   // NOTE: BOTH = -1 , CURRENT = 0, COMPARE = 1
   // MUST be the same as in "core/DBCompareData.h"
 
-  enum {IDENTICAL = -2, BOTH = -1 , CURRENT = 0, COMPARE = 1, 
-    GROUP, TITLE, USER, PASSWORD, NOTES, URL, AUTOTYPE, PWHIST, 
-    POLICY, SYMBOLS, POLICYNAME, RUNCMD, EMAIL,
+  enum {
+    // Used to determine if entries are in both DBs and whether different
+    IDENTICAL = -2, BOTH = -1 ,
+    // Fixed columns - must be same order as FixedCols member variable data
+    CURRENT = 0, COMPARE = 1, 
+    GROUP, TITLE, USER,
+    // Optional columns - must be in same order as OptCols member variable data
+    PASSWORD, NOTES, URL, AUTOTYPE, PWHIST, 
+    POLICY, POLICYNAME, SYMBOLS, RUNCMD, EMAIL,
     DCA, SHIFTDCA, PROTECTED,
     CTIME, ATIME, XTIME, XTIME_INT, PMTIME, RMTIME,
     LAST};
@@ -167,12 +173,10 @@ private:
   bool m_bFirstInCompare;
 
   // These columns always shown
-  static const struct FixedColumns {
-    UINT ids; int ncol;
-  } FixedCols[USER + 1];
+  static const UINT FixedCols[USER + 1];
 
   // These columns are optional
-  static const struct OptionalColumns {
-    CItemData::FieldType ft; UINT ids; int ncol;
+  static struct OptionalColumns {
+    CItemData::FieldType ft; UINT ids;
   }   OptCols[LAST - PASSWORD];
 };
