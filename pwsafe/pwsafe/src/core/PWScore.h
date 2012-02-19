@@ -493,7 +493,7 @@ private:
 
   // End of Command Interface implementations
 
-  void ParseBasesAndAliases(); // populate data structures as needed - called in ReadFile()
+  void ParseDependants(); // populate data structures as needed - called in ReadFile()
   void ResetAllAliasPasswords(const pws_os::CUUID &base_uuid);
   
   StringX GetPassKey() const; // returns cleartext - USE WITH CARE
