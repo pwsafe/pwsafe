@@ -754,7 +754,7 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
     } // switch
   } while (go);
 
-  ParseBasesAndAliases();
+  ParseDependants();
 
   if (in3 != NULL && !in3->GetPasswordPolicies().empty()) {
     // Wait til now so that reading in the records updates the use counts
@@ -1337,7 +1337,7 @@ static bool GTUCompareV2(const st_GroupTitleUser2 &gtu1, const st_GroupTitleUser
     return gtu1.newtitle.compare(gtu2.newtitle) < 0;
 }
 
-void PWScore::ParseBasesAndAliases()
+void PWScore::ParseDependants()
 {
   UUIDVector Possible_Aliases, Possible_Shortcuts;
 
