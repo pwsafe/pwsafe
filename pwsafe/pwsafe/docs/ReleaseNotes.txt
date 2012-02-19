@@ -17,6 +17,7 @@ in and out of the Notes field, for easy reading of texts.
 in a database at once (optionally including Protected Entries).
 [3421963] Multiple Password Policies can now be defined, managed and
 selected in entries to generate passwords.
+[] Partial support for Czech has been added, thanks to butchtik.
 
 Changes to Existing Features in 3.28
 ====================================
