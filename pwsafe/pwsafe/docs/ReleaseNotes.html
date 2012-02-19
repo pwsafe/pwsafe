@@ -49,7 +49,7 @@ will not work! ***</p>
 
 <body>
 
-<h1 align="center">Password Safe 3.28pre Release Notes - January 2012</h1>
+<h1 align="center">Password Safe 3.28 Release Notes - February 2012</h1>
 
 <p>This note describe the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -65,50 +65,50 @@ Information about older versions may be found <a href="http://pwsafe.org/history
 <br>
 <hr>
 
-<h3><a name="V3.28pre"></a>Version V3.28pre</h3>
+<h3><a name="V3.28"></a>Version V3.28</h3>
 
-<h4><a name="V3.28preNew"></a>New Features for V3.28pre</h4>
+<h4><a name="V3.28New"></a>New Features for V3.28</h4>
 
 <table>
 <tbody>
 <tr>
 <td align="center" width="100"><a href="nojs.html" onclick="FR(3468289);return false;">3468289</a></td>
-<td>Use the Password font for passwords displayed in the Password History and for
-those displayed in the List view.  Also add the ability to zoom in/out of the Notes field
-to enable any text to be more easily read.</td>
+<td> The passwords in the Password History and in the List view now
+displayed with the specified Password Font. In addition, you can now zoom
+in and out of the Notes field, for easy reading of texts.</td>
 </tr>
 <tr>
 <td align="center" width="100"><a href="nojs.html" onclick="FR(3455436);return false;">3455436</a></td>
-<td>Users may now delete the password history for all existing entries in a database.
-They may choose to also change Protected Entries, although the default is not to.</td>
+<td>The password history can now be deleted for all existing entries
+in a database at once (optionally including Protected Entries).</td>
 </tr>
 <tr>
 <td align="center" width="100"><a href="nojs.html" onclick="FR(3421963);return false;">3421963</a></td>
-<td>Centralized Password Policies can now be saved in a database, managed (added,
-edited and deleted), exported and imported, used in filters and to generate passwords.</td>
+<td>Multiple Password Policies can now be defined, managed and
+selected in entries to generate passwords.</td>
 </tr>
 </tbody>
 </table>
 
-<h4><a name="V3.28preChanges"></a>Changes to Existing Features in V3.28pre</h4>
+<h4><a name="V3.28Changes"></a>Changes to Existing Features in V3.28</h4>
 
 <table>
 <tbody>
 <tr>
 <td align="center" width="100"><a href="nojs.html" onclick="FR(3445820);return false;">3445820</a></td>
 <td>The Edit menu item and entry right-click context menu item "Copy Run Command to
-Clipboard" will, by default, substitute any variables within the command. To disable this,
-hold down the Ctrl key when selecting these menu items.  The standard menu shortcut cannot
-be used to disable the substitution as the Ctrl key may be used to select a different
-menu item/command.</td>
+Clipboard" will now substitute any variables within the command. This can
+be disabled by holding down the Ctrl key when selecting these menu
+items. (Note that the standard menu shortcut can't be used to disable, as
+the Ctrl key may be used to select a different menu item/command.)</td>
 </tr>
 <tr>
 <td align="center" width="100">n/a</td>
-<td>As indicated with the V3.26 release, date time fields, when exported to XML,
-now are in the W3C dateTime standard format instead of PasswordSafe's.  This release
-can nolonger import XML files with date time fields in the old PasswordSafe's forms.
-See Help file (the XML section of "Import Password Entries") on how to manually change
-the XML file exported prior to V3.26 to allow it to be successfully imported in this release.</td>
+<td>As mentioned in the V3.26 release, the XML representation of date/time
+fields, are now in the W3C dateTime standard format instead of PasswordSafe's. This release
+no longer supports import of XML files with date time fields in the old PasswordSafe's format.
+See the online Help (the XML section of "Import Password Entries") if you
+need to manually convert old XML files.</td>
 </tr>
 <tr>
 <td align="center" width="100">n/a</td>
@@ -127,16 +127,20 @@ menu item has therefore been removed.</td>
 <td>The default backup policy has been changed to save the last three versions of the database,
 instead of one.</td>
 </tr>
-</tbody>
+<tr>
+<td align="center" width="100">n/a</td>
+<td> The graphic symbols for entries, groups, etc. have been redone, as most
+displays now support more than 256 colors.</td>
+</tr></tbody>
 </table>
 
-<h4><a name="V3.28preBugsFixed"></a>Bugs fixed in V3.28pre</h4>
+<h4><a name="V3.28BugsFixed"></a>Bugs fixed in V3.28</h4>
 
 <table>
 <tbody>
 <tr>
 <td align="center" width="100"><a href="nojs.html" onclick="BR(3486960);return false;">3486960</a></td>
-<td>Rename of a group now complete even if a filter is active.</td>
+<td>Rename of a group is now complete even if a filter is active.</td>
 </tr>
 <tr>
 <td align="center" width="100"><a href="nojs.html" onclick="BR(3486959);return false;">3486959</a></td>
