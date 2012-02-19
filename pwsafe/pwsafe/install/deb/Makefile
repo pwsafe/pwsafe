@@ -2,7 +2,7 @@
 
 # RELEASENAME should be provided by invoker, or grokked
 # from src/ui/wxWidgets/version.in
-RELEASENAME := 0.4
+RELEASENAME := 0.8
 
 DISTRO := $(shell echo $(word 2,$(shell lsb_release -d))|tr [:upper:] [:lower:])
 
