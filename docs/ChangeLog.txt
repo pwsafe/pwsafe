@@ -2,6 +2,167 @@ This file lists the changes made to older versions of
 PasswordSafe. The changes for the current version and those
 immediately preceding it are noted in ReleaseNotes.txt.
 
+New Features for 3.27
+=====================
+[3367590] User can now add a database name and description via the Properties
+diaolg.
+[3349458] Allow filters to match on rules based on the password's length.
+[3316779] Shift + "left mouse button 'Double-Click'" now configurable for user.
+Default is copy the username to the clipboard.
+[] Preferences stored in the database are shown in blue in the Options dialogs.
+
+Changes to Existing Features in 3.27
+====================================
+[3406549] Tooltip for System tray (displaying database file path) is
+now limited to 40 characters (replacing text in the middle with '...'
+if needed).
+[3348954] The passphrase is now required to change from read-only to
+read/write.
+
+Bugs fixed in 3.27
+==================
+[3411210] No longer crashes when unlocking with Subset Password dialog
+box opened.
+[3395549] PasswordSafe now displays forms correctly on Netbooks.
+[3382422] Toolbar now updated to reflect R/W or R-O mode when user
+dynamically changes mode. 
+[3380714] User can now save database after manually taking a bakup.
+[3380424] System Menu 'X' now closes the Edit/View PropertyPages when
+the database is in R-O mode or the entry is protected.
+[] Filter image in Status bar is no longer replaced by 'Filter1' after
+changing preferences via Manage->Options.
+[] Selecting hexadecimal passwords as the database policy no longer
+causes validation to fail.
+[] Correctly show database has been modified (to allow saving) if
+database preferences have been changed.
+
+New Features for 3.26
+=====================
+[3288341] Autotype has been added to the DragBar. Drag the image to an
+input area on another Window (e.g., Browser) and PasswordSafe will
+begin Autotype from there. 
+[3286721] User can now toggle between read-only and read-write modes
+via a menu item or by double-clicking on the current R-O or R/W
+indicator in the Status Bar.
+[3203152] The displayed language can now be changed via the new
+Manage->Change Language menu.
+[3065111] Add/Edit now displays both the Application's (PasswordSafe) and the
+current database's default Autotype string (if set via Manage->Options).
+[2964804, 1855389] The user can specify the list of symbols valid for
+password generation, and can override this for any particular
+entry (except when EasyVision or Pronounceable passwords are chosen).
+[1831893, 1471134] Added Autotype code "\s" to send "Shift+Tab" (back tab).
+[] Allow user to control copying of the password to clipboard when
+performing "Browse to URL" via an option in Options->Security. This is
+a database option i.e., you can have different setting for different
+databases.
+[] Support importing of TXT, CSV files and XML exported from KeePass
+V1 and KeePass V2 XML files. Note that KeePass V2's export in the V1
+format is does not conform to their own format as specified by their
+V1 product and can not be imported. Please review our Help file for
+the settings in KeePass required during their export. 
+
+Changes to Existing Features in 3.26
+====================================
+[] New image on start-up dialog - courtesy of user Prinz_Eugen.
+[] Polish installation texts added thanks to Michal Niklas.
+[] An entry's password expiry date is set or cleared directly rather than using
+the Set and Clear buttons after changing values.
+[] The default password generation policy is now for 12 character
+passwords that include symbol characters (previous default was 8, no
+symbols).
+[] Unknown database header fields and unknown entry fields are no
+longer exported when a database is exported to XML as there is no
+mechanism to re-check them during import. Exporting to XML and then
+importing to a new database can be used to remove these unknown
+fields.
+[] Date time fields, when exported to XML, now are in the W3C dateTime
+standard format instead of PasswordSafe's.  This release can import
+XML files with date time fields in either of these forms. The next
+release will only be able to process the W3C standard.
+[] Fully support importing of TXT files exported from KeePass V1
+including the Group Tree structure, URL and date time fields. Please
+review the online help for more details.
+
+Bugs fixed in 3.26
+==================
+[3325116] Users can no longer select an entry via the System Tray
+icon's Recent Entry menu if the display has not been restored after
+minimize or unlock.
+[3306357, 3062632, 2888026] User preference changes are now correctly
+saved. This includes allowing user to change database preferences when
+the database is read-only.
+[3303018] Filters with quotes in their name are now correctly
+exported, imported and displayed in the Manage Filters dialog.
+[3301904] Export XML, export Text and the export of filters functions
+now process file names and paths containing non-Latin characters.  In
+addition, missing directories in the specified path are created as
+neeeded.
+[3234204] PasswordSafe no longer exits if the command flag is set to
+"-s <databasename>".
+[3088187] The correct entry in List View is now used for Autotype when
+using the keyboard to select the entry when PasswordSafe first opens.
+[] Controls in Edit are now disabled if entry is protected.
+[] Compare databases now correctly compares the 'Protect' and password
+policy 'symbols' fields of entries.
+
+New Features for 3.25
+=====================
+[] Dutch installation instructions thank to Kees, and a first
+(incomplete) Dutch translation of the application thank to Bert, Kees
+and Fred.
+[] Korean texts in the application and installer program thanks to
+Seunggyun.
+[] Poserpro has provided Traditional Chinese texts for the installer
+program.
+[] New View menu option: Show entries with Expiry. This is useful for
+displaying entries with passwords that are expired or about to expire.
+
+Changes to Existing Features in 3.25
+====================================
+[3171962] The password expiration warning mechanism now checks for
+expiration daily. The display of expired and almost-expired entries
+has been redesigned, allowing users to update the entry directly. When
+an expired password is changed, the expiry date will be cleared unless
+there is a recurring password expiry interval, in which case a new
+expiry date will be calculated.
+[3131945] Double-clicking on the system tray icon when PasswordSafe is
+not minimized now brings it to front, instead of minimizing.
+[3131935] Rename of an entry or group in the Tree View can now only be
+performed via the Rename shortcut (default value F2), using the Edit
+menu or the right-click context menu. Edit in place by double clicking
+the entry is no longer allowed as, most of the time, this was not the
+desired action.
+[] Filtered views are now updated when an entry's edited, e.g., if an
+entry is edited such that it no longer satisfies the filter's
+criteria, it will be removed from the display. 
+[] The Russian online help has been totally rewritten and updated,
+thanks to pm_kan.
+[] pm_kan has updated the Russian texts.
+[] The Spanish texts have been updated thanks to Jose.
+[] Karlo has updated the German texts.
+[] Francois has updated the French texts.
+[] Bjorne has updated the Swedish version.
+[] Freedoctor has updated the Chinese texts.
+
+Bugs fixed in 3.25
+==================
+[3194472] Fix new group creation location. When a Group is selected, then
+selecting 'Add Group' from the Edit menu or from the context menu
+displayed by right clicking on that Group, the new group will be a
+child of the selected group. However, when using the context menu
+displayed on right clicking on 'white space' below the last
+entry/group displayed, the group will be created at the topmost
+level. 
+[3165889] No longer crashes if search starts with Shift-Enter (search
+backwards).
+[3148701] Windows installer will now refuse to install on Win2K,
+referring user to last supported version on that OS (3.18).
+[3115760] Window view is now saved and restored if the user uses the Windows
+"Show Desktop" feature.
+[] No longer crashes when doing an Undo after a Merge.
+[] Ensure Undo/Redo honour the changes to the display of the original change.
+
 New Features for 3.24.1
 =======================
 [] Allow an entry to be protected against modification even if the database
