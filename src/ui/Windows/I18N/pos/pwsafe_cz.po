@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2012-02-19 19:09+0100\n"
+"PO-Revision-Date: 2012-02-20 10:52+0100\n"
 "Last-Translator: Jaroslav Buchtík <buchtik@post.cz>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1533,22 +1533,22 @@ msgstr "Alias nesmí odkazovat sám na sebe"
 #. Resource IDs: (329)
 #, c-format
 msgid "An entry with Group \"%s\", Title \"%s\" and User Name \"%s\" already exists."
-msgstr "Záznam ve skupině \"%s\", Title \"%s\" and User Name \"%s\" již existuje."
+msgstr "Záznam ve skupině \"%s\", název \"%s\" a jménem uživatele \"%s\" již existuje."
 
 #. Resource IDs: (356)
 #, c-format
 msgid "An entry with Group \"%s\", Title \"%s\" and empty User Name already exists."
-msgstr "Záznam ve skupině  \"%s\", Title \"%s\" s prázdným jmeénem již existuje."
+msgstr "Záznam ve skupině  \"%s\", název \"%s\" s prázdným jménem již existuje."
 
 #. Resource IDs: (339)
 #, c-format
 msgid "An entry with an empty Group, Title \"%s\" and User Name \"%s\" already exists."
-msgstr "Záznam bez skupina a jména \"%s\" and User Name \"%s\" již existuje."
+msgstr "Záznam bez skupiny a jména \"%s\" či uživatele \"%s\" již existuje."
 
 #. Resource IDs: (357)
 #, c-format
 msgid "An entry with an empty Group, Title \"%s\" and empty User Name already exists."
-msgstr "Záznam bez skupina a jména \"%s\" and chybějící uživatel již existuje."
+msgstr "Záznam bez skupiny, jména \"%s\" či chybějícího uživatele již existuje."
 
 #. Resource IDs: (3867)
 #, c-format
