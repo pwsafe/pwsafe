@@ -255,7 +255,6 @@ bool PwsafeApp::OnInit()
   wxString filename, user, host, cfg_file;
   bool cmd_ro = cmdParser.Found(wxT("r"));
   // Next variable currently not referenced
-  bool cmd_validate = cmdParser.Found(wxT("v"), &filename);
   bool cmd_encrypt = cmdParser.Found(wxT("e"), &filename);
   bool cmd_decrypt = cmdParser.Found(wxT("d"), &filename);
   bool cmd_closed = cmdParser.Found(wxT("c"));
@@ -340,7 +339,6 @@ bool PwsafeApp::OnInit()
     //dbox.SetStartClosed(true);
     // dbox.SetStartSilent(true);
   }
-  // dbox.SetValidate(cmd_validate);
 
   //Initialize help subsystem
   wxFileSystem::AddHandler(new wxArchiveFSHandler);
@@ -368,8 +366,6 @@ bool PwsafeApp::OnInit()
     wxASSERT_MSG(!m_frame, wxT("Frame window created unexpectedly"));
     m_frame = new PasswordSafeFrame(NULL, m_core);
     m_frame->Load(initWindow->GetPassword());
-    if (cmd_validate)
-      m_frame->ValidateCurrentDatabase();
   } 
   else {
     wxASSERT_MSG(!m_frame, wxT("Frame window created unexpectedly"));

@@ -418,10 +418,6 @@ public:
 
   void CopyPWList(const ItemList &in);
 
-  // Validate() returns true if data modified, false if all OK
-  bool Validate(const size_t iMAXCHARS, const bool bInReadfile,
-                CReport *pRpt, st_ValidateResults &st_vr);
-
   const PWSfile::HeaderRecord &GetHeader() const {return m_hdr;}
   void GetDBProperties(st_DBProperties &st_dbp);
   void SetHeaderUserFields(st_DBProperties &st_dbp);
@@ -492,6 +488,10 @@ private:
   virtual void UndoRenameGroup(const StringX &sxOldPath, const StringX &sxNewPath);
 
   // End of Command Interface implementations
+
+  // Validate() returns true if data modified, false if all OK
+  bool Validate(const size_t iMAXCHARS, const bool bInReadfile,
+                CReport *pRpt, st_ValidateResults &st_vr);
 
   void ParseDependants(); // populate data structures as needed - called in ReadFile()
   void ResetAllAliasPasswords(const pws_os::CUUID &base_uuid);

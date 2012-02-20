@@ -127,7 +127,6 @@ enum {
   ID_TOOLBAR_NEW,
   ID_TOOLBAR_CLASSIC,
   ID_SYNCHRONIZE,
-  ID_VALIDATE
 };
 
 
@@ -339,9 +338,6 @@ public:
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_TOOLBAR_CLASSIC and ID_TOOLBAR_NEW
   void OnChangeToolbarType(wxCommandEvent& /*evt*/);
 
-  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_VALIDATE
-  void OnValidate(wxCommandEvent& evt);
-
   void OnBackupSafe(wxCommandEvent& evt);
   void OnRestoreSafe(wxCommandEvent& evt);
 
@@ -404,8 +400,6 @@ public:
 
   CItemData *GetSelectedEntry() const;
     wxString GetCurrentSafe() const { return towxstring(m_core.GetCurFile()); }
-    
-  void ValidateCurrentDatabase();
     
 ////@begin PasswordSafeFrame member variables
   PWSGrid* m_grid;

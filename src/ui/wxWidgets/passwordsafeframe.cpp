@@ -196,8 +196,6 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_MENU( ID_MENU_CLEAR_MRU, PasswordSafeFrame::OnClearRecentHistory )
   EVT_UPDATE_UI( ID_MENU_CLEAR_MRU, PasswordSafeFrame::OnUpdateClearRecentDBHistory )
   
-  EVT_MENU(ID_VALIDATE,    PasswordSafeFrame::OnValidate)
-
   EVT_MENU(ID_BACKUP,      PasswordSafeFrame::OnBackupSafe)
   EVT_MENU(ID_RESTORE,     PasswordSafeFrame::OnRestoreSafe)
 
@@ -228,7 +226,6 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_UPDATE_UI(wxID_UNDO,          PasswordSafeFrame::OnUpdateUI )
   EVT_UPDATE_UI(wxID_REDO,          PasswordSafeFrame::OnUpdateUI )
   EVT_UPDATE_UI(ID_SYNCHRONIZE,     PasswordSafeFrame::OnUpdateUI )
-  EVT_UPDATE_UI(ID_VALIDATE,        PasswordSafeFrame::OnUpdateUI )
 END_EVENT_TABLE()
 
 static void DisplayFileWriteError(int rc, const StringX &fname);
@@ -443,7 +440,6 @@ void PasswordSafeFrame::CreateControls()
   itemMenu72->Append(ID_RESTORE, _("&Restore from Backup...\tCtrl+R"), _T(""), wxITEM_NORMAL);
   itemMenu72->AppendSeparator();
   itemMenu72->Append(wxID_PREFERENCES);
-  itemMenu72->Append(ID_VALIDATE, _("&Validate..."), _T(""), wxITEM_NORMAL);
   menuBar->Append(itemMenu72, _("&Manage"));
   wxMenu* itemMenu79 = new wxMenu;
   itemMenu79->Append(wxID_HELP);
@@ -1810,10 +1806,6 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
       evt.Enable(!m_core.IsReadOnly() && !m_core.GetCurFile().empty() && m_core.GetNumEntries() != 0);
       break;
 
-    case ID_VALIDATE:
-      evt.Enable(IsClosed());
-      break;
-
     default:
       break;
   }
@@ -3027,44 +3019,6 @@ void PasswordSafeFrame::OnCompare(wxCommandEvent& /*evt*/)
   dlg.ShowModal();
 }
 
-//------------ Validation
-//
-//
-void PasswordSafeFrame::OnValidate(wxCommandEvent& /*evt*/) 
-{
-  if (DoOpen(_("Please Choose a Database to Validate:")) == PWScore::SUCCESS)
-    ValidateCurrentDatabase();
-}
-
-void PasswordSafeFrame::ValidateCurrentDatabase()
-{
-  CReport rpt;
-  rpt.StartReport(_("Validate"), m_core.GetCurFile().c_str());
-
-  stringT cs_msg;
-  st_ValidateResults st_vr;
-  const bool bchanged = m_core.Validate(MAXTEXTCHARS, false, &rpt, st_vr);
-  if (bchanged) {
-    SetChanged(Data);
-
-#ifdef NOT_YET
-    ChangeOkUpdate();
-#endif
-
-    rpt.EndReport();
-
-    if (wxMessageBox(towxstring(cs_msg) << _("\r\n\r\nDo you wish to see a detailed report?"),
-                            _("Validate"), wxYES_NO|wxICON_EXCLAMATION, this) == wxYES)
-      ViewReport(rpt);
-  }
-  else {
-    wxMessageBox(_("Database validated - no problems found."), _("Validate"), wxOK|wxICON_INFORMATION, this);
-  }
-#ifdef NOT_YET
-  // Show UUID in Edit Date/Time property sheet stats
-  CAddEdit_DateTimes::m_bShowUUID = true;
-#endif
-}
 
 //////////////////////////////////////////
 // Backup and Restore
