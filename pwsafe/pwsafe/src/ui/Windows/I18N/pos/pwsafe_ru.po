@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2012-02-12 18:35+0400\n"
+"PO-Revision-Date: 2012-02-21 8:25+0400\n"
 "Last-Translator: Andrey Kuznetsov <pm_kan@users.sourceforge.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -2984,7 +2984,7 @@ msgstr "Предупреждения при импорте элементов"
 #. Resource IDs: (205)
 #, c-format
 msgid "Entry of line %d has an invalid \"%s\" field. It has been ignored."
-msgstr "Элемент на строке %d содержит недопустимое поле «%s». Проигнорировано."
+msgstr "Элемент в строке %d содержит недопустимое поле «%s». Проигнорировано."
 
 #. Resource IDs: (205)
 #, c-format
@@ -5765,7 +5765,7 @@ msgstr "Показать элементы с заданными датами &и
 
 #. Resource IDs: (1262)
 msgid "Show entries with identical compared fields (Note: Unknown fields were not compared.)"
-msgstr "Показать элементы совпадающие по указанным полям (неизвестные поля проигнорированы)"
+msgstr "Показать элементы, совпадающие по указанным полям (неизвестные поля проигнорированы)"
 
 #. Resource IDs: (1246)
 msgid "Show grid lines in List View"
@@ -7392,17 +7392,17 @@ msgstr "\t%s ограничивается следующими полями:"
 #. Resource IDs: (336)
 #, c-format
 msgid "\tEntry - Group:\"%s\"; Title:\"%s\"; User:\"%s\"\r\n\t\thas differences in the following fields:"
-msgstr "\tЭлемент — группа:«%s»; Заголовок:«%s»; Пользователь:«%s»\r\n\t\tсодержит следующие отличающиеся поля:"
+msgstr "\tЭлемент — Группа: «%s»; Заголовок: «%s»; Имя пользователя: «%s»\r\n\t\tсодержит следующие отличающиеся поля:"
 
 #. Resource IDs: (335)
 #, c-format
 msgid "\tGroup:'%s'; Title:'%s'; User:'%s'"
-msgstr "\tГруппа:«%s»; Заголовок:«%s»; Пользователь:«%s»"
+msgstr "\tГруппа: «%s»; Заголовок: «%s»; Имя пользователя: «%s»"
 
 #. Resource IDs: (212)
 #, c-format
 msgid "\tGroup='%s', Title='%s', User='%s' %s"
-msgstr "\tГруппа=«%s», Заголовок=«%s», Пользователь=«%s» %s"
+msgstr "\tГруппа=«%s», Заголовок=«%s», Имя пользователя=«%s» %s"
 
 #. Resource IDs: (347)
 #, c-format
