@@ -2410,6 +2410,10 @@ msgstr ""
 msgid "Delete"
 msgstr "删除"
 
+#. Resource IDs: (213)
+msgid "Delete Base Entry Confirmation"
+msgstr ""
+
 #. Resource IDs: (116)
 msgid "Delete Confirmation"
 msgstr "确认删除"
@@ -2417,10 +2421,6 @@ msgstr "确认删除"
 #. Resource IDs: (32053)
 msgid "Delete Entry"
 msgstr "删除项目"
-
-#. Resource IDs: (341)
-msgid "Delete a Base Entry Confirmation?"
-msgstr "确认删除一个基本项目？"
 
 #. Resource IDs: (352)
 msgid "Delete a filter"
@@ -4333,6 +4333,11 @@ msgstr ""
 msgid "Number of entries that had their 'maximum saved passwords' changed to the new default was %d"
 msgstr "该项目的“最大保存密码数量”已经更改为新默认值:%d"
 
+#. Resource IDs: (371)
+#, c-format
+msgid "Number of entries that had their password history removed was %d"
+msgstr ""
+
 #. Resource IDs: (337)
 #, c-format
 msgid "Number of entries that had their settings changed to not save password history was: %d"
@@ -4342,11 +4347,6 @@ msgstr "该项目数量设置已经更改为不保存历史密码:%d"
 #, c-format
 msgid "Number of entries that had their settings changed to save password history was: %d"
 msgstr "该项目数量设置已经更改为保存历史密码:%d"
-
-#. Resource IDs: (371)
-#, c-format
-msgid "Number of entries that had their their paasword history removed was %d"
-msgstr ""
 
 #. Resource IDs: (1266)
 msgid "Number of unknown fields:"

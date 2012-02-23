@@ -2449,6 +2449,10 @@ msgstr "Symboles par défaut :"
 msgid "Delete"
 msgstr "Supprimer"
 
+#. Resource IDs: (213)
+msgid "Delete Base Entry Confirmation"
+msgstr ""
+
 #. Resource IDs: (116)
 msgid "Delete Confirmation"
 msgstr "Confirmation de suppression"
@@ -2456,10 +2460,6 @@ msgstr "Confirmation de suppression"
 #. Resource IDs: (32053)
 msgid "Delete Entry"
 msgstr "&Supprimer l'entrée"
-
-#. Resource IDs: (341)
-msgid "Delete a Base Entry Confirmation?"
-msgstr "Confirmation de suppression d'une entrée de la base?"
 
 #. Resource IDs: (352)
 msgid "Delete a filter"
@@ -4372,6 +4372,11 @@ msgstr ""
 msgid "Number of entries that had their 'maximum saved passwords' changed to the new default was %d"
 msgstr "Le nombre d'entrées qui ont eu leurs 'mots de passe enregistré maximum' changé en le nouveau nombre par défaut a été de %d"
 
+#. Resource IDs: (371)
+#, c-format
+msgid "Number of entries that had their password history removed was %d"
+msgstr ""
+
 #. Resource IDs: (337)
 #, c-format
 msgid "Number of entries that had their settings changed to not save password history was: %d"
@@ -4381,11 +4386,6 @@ msgstr "Le nombre d'entrée à avoir eu leur configuration changée en 'Ne pas e
 #, c-format
 msgid "Number of entries that had their settings changed to save password history was: %d"
 msgstr "Le nombre d'entrée à avoir eu leur configuration changée en 'Enregistrer l'historique du mot de passe' a été de: %d"
-
-#. Resource IDs: (371)
-#, c-format
-msgid "Number of entries that had their their paasword history removed was %d"
-msgstr ""
 
 #. Resource IDs: (1266)
 msgid "Number of unknown fields:"

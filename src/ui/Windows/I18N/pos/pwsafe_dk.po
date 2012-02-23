@@ -2410,6 +2410,10 @@ msgstr ""
 msgid "Delete"
 msgstr "Slet"
 
+#. Resource IDs: (213)
+msgid "Delete Base Entry Confirmation"
+msgstr ""
+
 #. Resource IDs: (116)
 msgid "Delete Confirmation"
 msgstr "Bekræft Slet"
@@ -2417,10 +2421,6 @@ msgstr "Bekræft Slet"
 #. Resource IDs: (32053)
 msgid "Delete Entry"
 msgstr "Slet Post"
-
-#. Resource IDs: (341)
-msgid "Delete a Base Entry Confirmation?"
-msgstr "Slet en Base Adgangs Bekræftelse?"
 
 #. Resource IDs: (352)
 msgid "Delete a filter"
@@ -4333,6 +4333,11 @@ msgstr ""
 msgid "Number of entries that had their 'maximum saved passwords' changed to the new default was %d"
 msgstr "Antal poster der fik deres  'maximum gemte adgangskoder' ændret til den nye standart er %d"
 
+#. Resource IDs: (371)
+#, c-format
+msgid "Number of entries that had their password history removed was %d"
+msgstr ""
+
 #. Resource IDs: (337)
 #, c-format
 msgid "Number of entries that had their settings changed to not save password history was: %d"
@@ -4342,11 +4347,6 @@ msgstr "Antal poster der fik deres indstillinger ændret til ikke at gemme adgan
 #, c-format
 msgid "Number of entries that had their settings changed to save password history was: %d"
 msgstr "Antal poster med ændrede indstillinger for at gemme adgangskode historik var: %d"
-
-#. Resource IDs: (371)
-#, c-format
-msgid "Number of entries that had their their paasword history removed was %d"
-msgstr ""
 
 #. Resource IDs: (1266)
 msgid "Number of unknown fields:"

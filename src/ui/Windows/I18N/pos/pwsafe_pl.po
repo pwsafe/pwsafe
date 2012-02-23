@@ -2439,6 +2439,10 @@ msgstr "Ustawienia domyślne"
 msgid "Delete"
 msgstr "Usuń"
 
+#. Resource IDs: (213)
+msgid "Delete Base Entry Confirmation"
+msgstr ""
+
 #. Resource IDs: (116)
 msgid "Delete Confirmation"
 msgstr "Usuń Potwierdzenie"
@@ -2446,11 +2450,6 @@ msgstr "Usuń Potwierdzenie"
 #. Resource IDs: (32053)
 msgid "Delete Entry"
 msgstr "Usuń wpis"
-
-#. Resource IDs: (341)
-#, fuzzy
-msgid "Delete a Base Entry Confirmation?"
-msgstr "Usunąć Potwierdzenie Wpisu Bazowego?"
 
 #. Resource IDs: (352)
 msgid "Delete a filter"
@@ -4399,6 +4398,11 @@ msgstr ""
 msgid "Number of entries that had their 'maximum saved passwords' changed to the new default was %d"
 msgstr "Liczba wpisów których 'maksymalna ilość zapisanych haseł' została zmieniona na nową wartość domyślną: %d"
 
+#. Resource IDs: (371)
+#, c-format
+msgid "Number of entries that had their password history removed was %d"
+msgstr ""
+
 #. Resource IDs: (337)
 #, c-format
 msgid "Number of entries that had their settings changed to not save password history was: %d"
@@ -4408,11 +4412,6 @@ msgstr "Liczba wpisów których ustawienia zostały zmienione, żeby nie zapisyw
 #, c-format
 msgid "Number of entries that had their settings changed to save password history was: %d"
 msgstr "Liczba wpisów których ustawienia zostały zmienione, żeby zapisywać historię haseł: %d"
-
-#. Resource IDs: (371)
-#, c-format
-msgid "Number of entries that had their their paasword history removed was %d"
-msgstr ""
 
 #. Resource IDs: (1266)
 msgid "Number of unknown fields:"
