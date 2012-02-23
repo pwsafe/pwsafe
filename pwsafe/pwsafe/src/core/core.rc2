@@ -353,7 +353,7 @@ END
 
 STRINGTABLE
 BEGIN
-  IDSC_DELETEBASET         "Delete a Base Entry Confirmation?"
+  IDSC_DELETEBASET         "Delete Base Entry Confirmation"
   IDSC_DELETEABASE         "This entry has the following %d %s:\r\n%s\r\nPlease confirm to continue (alias entry's passwords will be replaced by this entry's password)?"
   IDSC_DELETESBASE         "This entry has the following %d %s:\r\n%s\r\nPlease confirm to continue (All shortcuts to this entry will be deleted)?"
 END
