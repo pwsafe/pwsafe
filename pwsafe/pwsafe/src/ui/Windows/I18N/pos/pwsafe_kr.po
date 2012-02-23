@@ -2410,6 +2410,10 @@ msgstr ""
 msgid "Delete"
 msgstr "삭제"
 
+#. Resource IDs: (213)
+msgid "Delete Base Entry Confirmation"
+msgstr ""
+
 #. Resource IDs: (116)
 msgid "Delete Confirmation"
 msgstr "삭제 확인"
@@ -2417,10 +2421,6 @@ msgstr "삭제 확인"
 #. Resource IDs: (32053)
 msgid "Delete Entry"
 msgstr "항목 삭제"
-
-#. Resource IDs: (341)
-msgid "Delete a Base Entry Confirmation?"
-msgstr "기본 항목 삭제 확인"
 
 #. Resource IDs: (352)
 msgid "Delete a filter"
@@ -4333,6 +4333,11 @@ msgstr ""
 msgid "Number of entries that had their 'maximum saved passwords' changed to the new default was %d"
 msgstr "'최대 저장가능 비밀번호' 설정값이 새 기본값으로 바뀌는 항목의 수는 %d 입니다"
 
+#. Resource IDs: (371)
+#, c-format
+msgid "Number of entries that had their password history removed was %d"
+msgstr ""
+
 #. Resource IDs: (337)
 #, c-format
 msgid "Number of entries that had their settings changed to not save password history was: %d"
@@ -4342,11 +4347,6 @@ msgstr "비밀번호 내역을 저장하지 않기 위해 설정을 변경한 �
 #, c-format
 msgid "Number of entries that had their settings changed to save password history was: %d"
 msgstr "비밀번호 내역을 저장하기 위해 설정을 변경한 항목의 수: %d"
-
-#. Resource IDs: (371)
-#, c-format
-msgid "Number of entries that had their their paasword history removed was %d"
-msgstr ""
 
 #. Resource IDs: (1266)
 msgid "Number of unknown fields:"
