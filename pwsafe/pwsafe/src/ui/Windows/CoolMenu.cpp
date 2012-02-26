@@ -132,7 +132,7 @@ BOOL CCoolMenuManager::CMOnMeasureItem(LPMEASUREITEMSTRUCT lpmis)
 {
   ASSERT(lpmis);
   CMenuItemData *pmd = (CMenuItemData *)lpmis->itemData;
-  if (lpmis->CtlType != ODT_MENU || pmd== NULL || !pmd->IsCMID())
+  if (lpmis->CtlType != ODT_MENU || pmd == NULL || !pmd->IsCMID())
     return FALSE; // not handled by me
 
   if (pmd->fType & MFT_SEPARATOR) {
@@ -174,7 +174,7 @@ BOOL CCoolMenuManager::CMOnDrawItem(LPDRAWITEMSTRUCT lpdis)
 {
   ASSERT(lpdis);
   CMenuItemData *pmd = (CMenuItemData *)lpdis->itemData;
-  if (lpdis->CtlType != ODT_MENU || pmd== NULL || !pmd->IsCMID())
+  if (lpdis->CtlType != ODT_MENU || pmd == NULL || !pmd->IsCMID())
     return FALSE; // not handled by me
 
   ASSERT(lpdis->itemAction != ODA_FOCUS);
