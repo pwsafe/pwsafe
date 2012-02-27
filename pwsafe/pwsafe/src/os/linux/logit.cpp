@@ -9,14 +9,11 @@
 #include "../logit.h"
 #include "../../core/PWSLog.h"
 #include "../../core/Util.h"
+#include "../../core/fmtspecs_cvt.h"
 
 #include <stdio.h>
 #include <stdarg.h>
 
-// See discussion on CONVERT_GLIBC_FORMATSPECS in core/StringX.cpp
-#if defined(__GNUC__)  && (defined(UNICODE) || defined(_UNICODE))
-#define CONVERT_GLIBC_FORMATSPECS
-#endif
 
 void pws_os::Logit(LPCTSTR lpszFormat, ...)
 {
@@ -26,22 +23,14 @@ void pws_os::Logit(LPCTSTR lpszFormat, ...)
   int num_required, num_written;
 
 #ifdef UNICODE
-#ifdef CONVERT_GLIBC_FORMATSPECS
-  std::wstring fmt(lpszFormat);
-  for (std::wstring::size_type pos = 0;
-       (pos = fmt.find(L"%s", pos)) != std::wstring::npos; pos += 2)
-    fmt.insert(pos + 1, 1, L'l');
-  LPCTSTR format_str = fmt.c_str();
-#else
-  LPCTSTR format_str = lpszFormat;
-#endif /* CONVERT_GLIBC_FORMATSPECS */
+  const stringT format(FormatStr(lpszFormat));
 
-  num_required = GetStringBufSize(format_str, args);
+  num_required = GetStringBufSize(format.c_str(), args);
   va_end(args);  // after using args we should reset list
   va_start(args, lpszFormat);
 
   wchar_t *szBuffer = new wchar_t[num_required];
-  num_written = vswprintf(szBuffer, num_required, format_str, args);
+  num_written = vswprintf(szBuffer, num_required, format.c_str(), args);
   assert(num_required == num_written + 1);
   szBuffer[num_required - 1] = L'\0';
 #else
