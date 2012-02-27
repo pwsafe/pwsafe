@@ -56,8 +56,8 @@ inline T ConvertFormatSpecs(const wchar_t* fmt) { return T(fmt); }
 
 #define _FMT(s) _T(s)
 
-inline stringT FormatStr(const wchar_t* str) { return stringT(str); }
-inline stringT FormatStr(const char* str) { return stringT(str); }
+inline wstringT FormatStr(const wchar_t* str) { return wstringT(str); }
+inline cstringT FormatStr(const char* str) { return cstringT(str); }
 
 #endif
 
