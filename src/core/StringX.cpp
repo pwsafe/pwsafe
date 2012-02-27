@@ -11,7 +11,7 @@
 #include <cstdarg>
 #include "StringX.h"
 #include "Util.h"
-#include "fmtspecs_cvt.h"
+#include "../os/fmtspecs_cvt.h"
 
 #include "PwsPlatform.h"
 #include "os/pws_tchar.h"
