@@ -37,7 +37,7 @@ distribution.
 #include "tinyxml.h"
 #include "os/utf8conv.h"
 #include "os/file.h"
-#include "../../core/fmtspecs_cvt.h"
+#include "../../os/fmtspecs_cvt.h"
 
 const unsigned char TIXML_UTF_LEAD_0 = 0xefU;
 const unsigned char TIXML_UTF_LEAD_1 = 0xbbU;

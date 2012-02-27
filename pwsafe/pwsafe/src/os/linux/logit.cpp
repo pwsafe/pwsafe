@@ -9,7 +9,7 @@
 #include "../logit.h"
 #include "../../core/PWSLog.h"
 #include "../../core/Util.h"
-#include "../../core/fmtspecs_cvt.h"
+#include "../fmtspecs_cvt.h"
 
 #include <stdio.h>
 #include <stdarg.h>
