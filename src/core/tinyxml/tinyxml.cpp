@@ -37,6 +37,7 @@ distribution.
 #include "tinyxml.h"
 #include "os/utf8conv.h"
 #include "os/file.h"
+#include "../../core/fmtspecs_cvt.h"
 
 const unsigned char TIXML_UTF_LEAD_0 = 0xefU;
 const unsigned char TIXML_UTF_LEAD_1 = 0xbbU;
@@ -1294,7 +1295,7 @@ void TiXmlAttribute::Print( FILE* cfile, int /*depth*/, TIXML_STRING* str ) cons
 
 	if (value.find ('\"') == TIXML_STRING::npos) {
 		if ( cfile ) {
-      _ftprintf (cfile, _T("%s=\"%s\""), n.c_str(), v.c_str() );
+      _ftprintf (cfile, _FMT("%s=\"%s\""), n.c_str(), v.c_str() );
 		}
 		if ( str ) {
 			(*str) += n; (*str) += _T("=\""); (*str) += v; (*str) += _T("\"");
@@ -1302,7 +1303,7 @@ void TiXmlAttribute::Print( FILE* cfile, int /*depth*/, TIXML_STRING* str ) cons
 	}
 	else {
 		if ( cfile ) {
-      _ftprintf (cfile, _T("%s='%s'"), n.c_str(), v.c_str() );
+      _ftprintf (cfile, _FMT("%s='%s'"), n.c_str(), v.c_str() );
 		}
 		if ( str ) {
 			(*str) += n; (*str) += _T("='"); (*str) += v; (*str) += _T("'");
@@ -1378,7 +1379,7 @@ void TiXmlComment::Print( FILE* cfile, int depth ) const
 	{
 		_ftprintf( cfile,  _T("    ") );
 	}
-	_ftprintf( cfile, _T("<!--%s-->"), value.c_str() );
+	_ftprintf( cfile, _FMT("<!--%s-->"), value.c_str() );
 }
 
 
@@ -1429,7 +1430,7 @@ void TiXmlText::Print( FILE* cfile, int depth ) const
     delete[] utf8buf;
 #endif /* UNICODE */
 #else /* !WIN32 */
-		_ftprintf( cfile, _T("<![CDATA[%s]]>\n"), value.c_str() );
+		_ftprintf( cfile, _FMT("<![CDATA[%s]]>\n"), value.c_str() );
 #endif /* WIN32 */
 	}
 	else
@@ -1527,15 +1528,15 @@ void TiXmlDeclaration::Print( FILE* cfile, int /*depth*/, TIXML_STRING* str ) co
 	if ( str )	 (*str) += _T("<?xml ");
 
 	if ( !version.empty() ) {
-		if ( cfile ) _ftprintf (cfile, _T("version=\"%s\" "), version.c_str ());
+		if ( cfile ) _ftprintf (cfile, _FMT("version=\"%s\" "), version.c_str ());
 		if ( str ) { (*str) += _T("version=\""); (*str) += version; (*str) += _T("\" "); }
 	}
 	if ( !encoding.empty() ) {
-		if ( cfile ) _ftprintf (cfile, _T("encoding=\"%s\" "), encoding.c_str ());
+		if ( cfile ) _ftprintf (cfile, _FMT("encoding=\"%s\" "), encoding.c_str ());
 		if ( str ) { (*str) += _T("encoding=\""); (*str) += encoding; (*str) += _T("\" "); }
 	}
 	if ( !standalone.empty() ) {
-		if ( cfile ) _ftprintf (cfile, _T("standalone=\"%s\" "), standalone.c_str ());
+		if ( cfile ) _ftprintf (cfile, _FMT("standalone=\"%s\" "), standalone.c_str ());
 		if ( str ) { (*str) += _T("standalone=\""); (*str) += standalone; (*str) += _T("\" "); }
 	}
 	if ( cfile ) _ftprintf( cfile, _T("?>") );
