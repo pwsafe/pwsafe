@@ -139,7 +139,7 @@ msgstr " 'Hasło'"
 
 #. Resource IDs: (370)
 msgid " 'Policy Name'"
-msgstr ""
+msgstr " 'Nazwa polityki'"
 
 #. Resource IDs: (336)
 #, fuzzy
@@ -1308,7 +1308,7 @@ msgstr "Dodaj grupę"
 
 #. Resource IDs: (370)
 msgid "Add a New Database Named Password Policy"
-msgstr ""
+msgstr "Dodaj nową nazwaną politykę haseł"
 
 #. Resource IDs: (466)
 msgid "Additional"
@@ -1390,7 +1390,7 @@ msgstr "Wszystkie dostępne kolumny są wyświetlane."
 
 #. Resource IDs: (368)
 msgid "All changes to Password Policies will be lost"
-msgstr ""
+msgstr "Wszystkie zmiany do polityk haseł będą odrzucone"
 
 #. Resource IDs: (1333)
 msgid "Allow multiple instances (requires all instances to be restarted)"
@@ -1489,7 +1489,7 @@ msgstr "Zastosuj"
 
 #. Resource IDs: (1478)
 msgid "Apply these changes to Protected Entries (if required)."
-msgstr ""
+msgstr "Zastosuj te zmiany do chronionych wpisów (jeśli trzeba)."
 
 #. Resource IDs: (513)
 msgid "Arabic (101)"
@@ -1513,7 +1513,7 @@ msgstr "Armeński zachodninian"
 
 #. Resource IDs: (330)
 msgid "As the double quote character is used to delimit the whole notes field, it cannot be used within it to delimit multiple lines. Please enter another character."
-msgstr ""
+msgstr "Jako że znak cudzysłowia jest używany by oddzielać całe pola notatek, to nie można go używać by oddzielał od siebie linie. Proszę wybrać inny znak."
 
 #. Resource IDs: (331)
 msgid "At least one type of character (lowercase, uppercase, digits,\nsymbols, hexadecimal) must be permitted."
@@ -1565,7 +1565,7 @@ msgstr "Dostępne Filtry:"
 
 #. Resource IDs: (65535)
 msgid "Available Password Policies:"
-msgstr ""
+msgstr "Dostępne polityki haseł:"
 
 #. Resource IDs: (518)
 msgid "Azeri Cyrillic"
@@ -1832,19 +1832,19 @@ msgstr "Zmień maksymalną liczbę zapisanych haseł dla wpisów aktualnie zapis
 
 #. Resource IDs: (370)
 msgid "Change/View Database Default Password Policy"
-msgstr ""
+msgstr "Zmien/Pokaż domyślną politykę haseł"
 
 #. Resource IDs: (370)
 msgid "Change/View a Database Named Password Policy"
-msgstr ""
+msgstr "Zmień/Pokaż nazwane polityki haseł"
 
 #. Resource IDs: (368)
 msgid "Change/View selected Named Password Policy or the database default policy"
-msgstr ""
+msgstr "Zmień/Pokaż wybraną nazwaną politykę haseł lub domyślną politykę"
 
 #. Resource IDs: (1187)
 msgid "Changes to existing entries will be applied on pressing OK."
-msgstr ""
+msgstr "Zmiany do istniejących wpisów będą wprowadzone po wybraniu OK."
 
 #. Resource IDs: (210)
 msgid "Characters present between end of index ']' and '}'"
@@ -1889,7 +1889,7 @@ msgstr "Usuń zawartość schowka przy minimalizowaniu"
 
 #. Resource IDs: (1477)
 msgid "Clear password history for ALL entries"
-msgstr ""
+msgstr "Wyczyść historię haseł dla WSZYSTKICH wpisów"
 
 #. Resource IDs: (1453)
 msgid "Click here for details on the various preferences."
@@ -2042,7 +2042,7 @@ msgstr "Zakończono porównanie bieżącej bazy danych:\n\t %s\n i:\n\t %s"
 
 #. Resource IDs: (32091)
 msgid "Compare entries..."
-msgstr ""
+msgstr "Porównaj wpisy..."
 
 #. Resource IDs: (32019)
 msgid "Compare..."
@@ -2067,7 +2067,7 @@ msgstr "Baza Danych do porównania:"
 
 #. Resource IDs: (371)
 msgid "Comparison Entry"
-msgstr ""
+msgstr "Porównywanie wpisów"
 
 #. Resource IDs: (362)
 msgid "Completed but ...."
@@ -2113,17 +2113,17 @@ msgstr "Potwierdź kopiowanie wpisu do schowka"
 #. Resource IDs: (371)
 #, c-format
 msgid "Confirm that you wish to copy these entries from %s to %s\n\nIf already present in the target database, they will be replaced!"
-msgstr ""
+msgstr "Potwierdź, że chcesz skopiować te wpisy z %s do %s\n\nJeśli wpisy już są w docelowej bazie, to zostaną zamienione!"
 
 #. Resource IDs: (340)
 #, c-format
 msgid "Confirm that you wish to copy this entry from %s to %s.\n\nIf already present in the target database, it will be replaced!"
-msgstr ""
+msgstr "Potwierdź, że chcesz skopiowac wpisy z %s do %s.\n\nJeśli wpisy już są w docelowej bazie, to zostaną zamienione!"
 
 #. Resource IDs: (371)
 #, c-format
 msgid "Confirm that you wish to synchronize these entries from %s to %s?\n\nSelected fields will be replaced in all entries!"
-msgstr ""
+msgstr "Potwierdź, że chcesz zszynchronizowac te wpisy z %s do %s.\n\nWybrane pola będą zamienione dla wszystkich wpisów!"
 
 #. Resource IDs: (65535)
 msgid "Confirmation:"
@@ -2141,7 +2141,7 @@ msgstr "Kontynuuj"
 #. Resource IDs: (360)
 #, c-format
 msgid "Copied password\r\n\r\n\"%s\"\r\n\r\nto the clipboard."
-msgstr ""
+msgstr "Hasło\r\n\r\n\"%s\"\r\n\r\nskopiowano do schowka."
 
 #. Resource IDs: (32060)
 msgid "Copy &Notes to Clipboard"
@@ -2185,7 +2185,7 @@ msgstr "Kopiuj Adres URL do Schowka"
 
 #. Resource IDs: (32223)
 msgid "Copy all entries to Original"
-msgstr ""
+msgstr "Skopij wszystkie wpisy do oryginału"
 
 #. Resource IDs: (32071)
 msgid "Copy email to Clipboard"
@@ -2218,7 +2218,7 @@ msgstr "Kopiuj do bazy danych"
 
 #. Resource IDs: (32221)
 msgid "Copy to Original"
-msgstr ""
+msgstr "Skopiuj do oryginału"
 
 #. Resource IDs: (325)
 msgid "Copy username to clipboard"
@@ -2275,7 +2275,7 @@ msgstr "Utwórz skrót"
 
 #. Resource IDs: (368)
 msgid "Create a new Password Policy"
-msgstr ""
+msgstr "Stwórz nową politykę haseł"
 
 #. Resource IDs: (1199)
 #, fuzzy
@@ -2322,7 +2322,7 @@ msgstr "Wy&tnij"
 
 #. Resource IDs: (371)
 msgid "Current Entry"
-msgstr ""
+msgstr "Aktualny wpis"
 
 #. Resource IDs: (343)
 #, fuzzy, c-format
@@ -2421,7 +2421,7 @@ msgstr "Domyślna fraza autouzupełniania:"
 
 #. Resource IDs: (368)
 msgid "Default Policy"
-msgstr ""
+msgstr "Domyślna polityka"
 
 #. Resource IDs: (65535)
 msgid "Default Username"
@@ -2441,7 +2441,7 @@ msgstr "Usuń"
 
 #. Resource IDs: (213)
 msgid "Delete Base Entry Confirmation"
-msgstr ""
+msgstr "Potwierdź kasowanie wpisu z bazy"
 
 #. Resource IDs: (116)
 msgid "Delete Confirmation"
@@ -2457,7 +2457,7 @@ msgstr "Usuń filtr"
 
 #. Resource IDs: (368)
 msgid "Delete selected Password Policy\n(only an unused Named Password Policy may be deleted)"
-msgstr ""
+msgstr "Skasuj wybraną politykę haseł\n(tylko nieużywana nazwana polityka może byc skasowana)"
 
 #. Resource IDs: (65535)
 msgid "Description:"
@@ -2619,7 +2619,7 @@ msgstr "Akcja na dwuklik dla aktualnego wpisu"
 #. Resource IDs: (357)
 #, c-format
 msgid "Drag this image onto a another window to paste the '%s' field."
-msgstr "Przeciągnij ten obraz do innegi okna by przenieść pole '%s'."
+msgstr "Przeciągnij ten obraz do innego okna by przenieść pole '%s'."
 
 #. Resource IDs: (367)
 msgid "Drag this image onto a another window to start AutoType from there."
@@ -2812,7 +2812,7 @@ msgstr "Wpisy istnieją tylko w bieżącej bazie danych (%s):"
 
 #. Resource IDs: (1469)
 msgid "Entries using selected policy:"
-msgstr ""
+msgstr "Wpisy używające wybranej polityki:"
 
 #. Resource IDs: (365)
 msgid "Entries with a password expiry"
@@ -2825,11 +2825,11 @@ msgstr "Wpis %s%d z grupą=\"%s\", nazwą=\"%s\", użytkownikiem=\"%s\""
 
 #. Resource IDs: (522)
 msgid "Entry Comparison"
-msgstr ""
+msgstr "Porównanie wpisów"
 
 #. Resource IDs: (370)
 msgid "Entry Password Policy Changes"
-msgstr ""
+msgstr "Zmiany polityki wpisu"
 
 #. Resource IDs: (1407)
 msgid "Entry Unique ID:"
@@ -3154,7 +3154,7 @@ msgstr "Plik: %s potwierdzono zgodność ale wystąpiły następujące błędy p
 #. Resource IDs: (370)
 #, c-format
 msgid "File: %s was imported (%d warning(s) issued about missing Password Policy Names). See report for details."
-msgstr ""
+msgstr "Plik: %s został zaimportowany (%d ostrzeżeń o brakujących nazwach polityk haseł). Szczegóły do zobaczenia w raporcie."
 
 #. Resource IDs: (335)
 #, c-format
@@ -3268,7 +3268,7 @@ msgstr "Generuj hasło"
 
 #. Resource IDs: (370)
 msgid "Generate Password using selected Password Policy"
-msgstr ""
+msgstr "Stwórz hasło używając wybranej polityki haseł"
 
 #. Resource IDs: (516)
 msgid "Georgian"
@@ -3398,7 +3398,7 @@ msgstr "Znaki szesnastkowe"
 
 #. Resource IDs: (331)
 msgid "Hexadecimal is mutually exclusive to all other options."
-msgstr ""
+msgstr "Tryb szesnastkowy może być wybrany jako jedyna opcja."
 
 #. Resource IDs: (1426)
 msgid "Hide System Tray icon (Hot Key MUST be active)"
@@ -3418,7 +3418,7 @@ msgstr "Historia"
 
 #. Resource IDs: (371)
 msgid "History entry"
-msgstr ""
+msgstr "Historia wpisu"
 
 #. Resource IDs: (1088)
 #, fuzzy
@@ -3580,7 +3580,7 @@ msgstr "Jeśli zaznaczone, przed każdym zapisem zostanie wykonany 'zrzut' oraz 
 
 #. Resource IDs: (330)
 msgid "If requested, then a delimiter character must be entered."
-msgstr ""
+msgstr "Jeśli żądano, to należy podać znak oddzielający."
 
 #. Resource IDs: (361)
 msgid "If the passphrase is the same as the currently opened database, properties of this backup are shown."
@@ -3921,12 +3921,12 @@ msgstr "Linia %d ominęta - znaleziono tylko %d pól, podczas gdy parsowanie nag
 #. Resource IDs: (205)
 #, c-format
 msgid "Line %d skipped: Empty mandatory Password field."
-msgstr ""
+msgstr "Linia %d pominięta: pusta wymagana linia z hasłem."
 
 #. Resource IDs: (205)
 #, c-format
 msgid "Line %d skipped: Empty mandatory Title field."
-msgstr ""
+msgstr "Linia %d pominięta: pusta wymagana linia z tytułem."
 
 #. Resource IDs: (189)
 #, c-format
@@ -3980,12 +3980,12 @@ msgstr "MBajtów"
 
 #. Resource IDs: (215)
 msgid "MISSING PASSWORD"
-msgstr ""
+msgstr "BRAKUJĄCE HASŁO"
 
 #. Resource IDs: (215)
 #, c-format
 msgid "MISSING TITLE # %d"
-msgstr ""
+msgstr "BRAKUJĄCY TYTUŁ # %d"
 
 #. Resource IDs: (3866)
 msgid "Mail system DLL is invalid."
@@ -4001,7 +4001,7 @@ msgstr "Zarządzaj Filtrami"
 
 #. Resource IDs: (515)
 msgid "Manage Password Policies"
-msgstr ""
+msgstr "Zarządzaj politykami haseł"
 
 #. Resource IDs: (65535)
 msgid "Manage password history of current entries"
@@ -4036,7 +4036,7 @@ msgstr "Maksymalna liczba zapisanych"
 
 #. Resource IDs: (371)
 msgid "Maximum saved"
-msgstr ""
+msgstr "Maksymalna ilość zachowanych"
 
 #. Resource IDs: (348)
 msgid "Maximum value for first number and 'Between' rule"
@@ -4157,7 +4157,7 @@ msgstr "Nazwa:"
 
 #. Resource IDs: (1471)
 msgid "Named Policy"
-msgstr ""
+msgstr "Nazwane polityki"
 
 #. Resource IDs: (32103)
 msgid "Nested &Tree"
@@ -4190,7 +4190,7 @@ msgstr "Nowe hasło i jego potwierdzenie nie są identyczne"
 
 #. Resource IDs: (1003)
 msgid "New..."
-msgstr ""
+msgstr "Nowy..."
 
 #. Resource IDs: (364)
 msgid "Next >"
@@ -4419,7 +4419,7 @@ msgstr "Liczba nieznanych pól:"
 
 #. Resource IDs: (371)
 msgid "Number saved"
-msgstr ""
+msgstr "Zachowano liczbę"
 
 #. Resource IDs: (349)
 msgid "Number stored"
@@ -4602,7 +4602,7 @@ msgstr "Czas modyfikacji hasła"
 
 #. Resource IDs: (32159)
 msgid "Password Policies..."
-msgstr ""
+msgstr "Polityki haseł..."
 
 #. Resource IDs: (141, 345)
 msgid "Password Policy"
@@ -4614,7 +4614,7 @@ msgstr "Filtr Ustawień Haseł"
 
 #. Resource IDs: (193)
 msgid "Password Policy Name"
-msgstr ""
+msgstr "Nazwa polityki haseł"
 
 #. Resource IDs: (329)
 msgid "Password Policy Override"
@@ -4683,7 +4683,7 @@ msgstr "Liczba znaków w haśle jest większa niż suma ograniczeń określonych
 
 #. Resource IDs: (331)
 msgid "Password length must be between 4 and 1024 characters."
-msgstr ""
+msgstr "Hasło musi mieć od 4 do 1024 znaków."
 
 #. Resource IDs: (65535)
 msgid "Password length:"
@@ -4815,7 +4815,7 @@ msgstr "Wprowadź hasło dla tej bazy danych."
 
 #. Resource IDs: (337)
 msgid "Please enter your backup database prefix."
-msgstr ""
+msgstr "Proszę podać prefiks kopii zapasowej."
 
 #. Resource IDs: (334)
 #, fuzzy
@@ -4862,19 +4862,19 @@ msgstr "Proszę odwiedzić <a href=\"http://pwsafe.org/\">stronę PasswordSafe.<
 
 #. Resource IDs: (368)
 msgid "Policy Name"
-msgstr ""
+msgstr "Nazwa polityki"
 
 #. Resource IDs: (369)
 msgid "Policy Name is already in use"
-msgstr ""
+msgstr "Nazwa polityki już jest używana"
 
 #. Resource IDs: (369)
 msgid "Policy Name is blank"
-msgstr ""
+msgstr "Nazwa polityki jest pusta"
 
 #. Resource IDs: (369)
 msgid "Policy field"
-msgstr ""
+msgstr "Pole z nazwą polityki"
 
 #. Resource IDs: (519)
 msgid "Polish (214)"
@@ -5267,7 +5267,7 @@ msgstr "Błąd Zapisu"
 
 #. Resource IDs: (368)
 msgid "Save all changes to Password Policies"
-msgstr ""
+msgstr "Zachowaj wszystkie zmiany w polityce haseł"
 
 #. Resource IDs: (3857)
 #, c-format
@@ -5298,7 +5298,7 @@ msgstr "Druga data musi być późniejsza niż pierwsza"
 
 #. Resource IDs: (348)
 msgid "Second number must be greater than first"
-msgstr ""
+msgstr "Druga liczba musi byc większa niż pierwsza"
 
 #. Resource IDs: (142)
 msgid "Security"
@@ -5365,7 +5365,7 @@ msgstr "Wybierz i zastosuj filtr"
 
 #. Resource IDs: (523)
 msgid "Select entry to compare"
-msgstr ""
+msgstr "Wybierz wpis do porównania"
 
 #. Resource IDs: (340)
 #, fuzzy
@@ -5386,7 +5386,7 @@ msgstr "Sczegóły zaznaczonego filtru:"
 
 #. Resource IDs: (1468)
 msgid "Selected policy details:"
-msgstr ""
+msgstr "Szczegóły wybranej polityki:"
 
 #. Resource IDs: (1380)
 msgid "Send"
@@ -5761,7 +5761,7 @@ msgstr "Synchronizuj wpisy"
 
 #. Resource IDs: (32224)
 msgid "Synchronize all entries"
-msgstr ""
+msgstr "Synchronizuj wszystkie wpisy"
 
 #. Resource IDs: (364)
 msgid "Synchronizing current database with:"
@@ -5822,7 +5822,7 @@ msgstr "Telugu"
 
 #. Resource IDs: (65535)
 msgid "Test Selected Policy"
-msgstr ""
+msgstr "Test wybranej polityki"
 
 #. Resource IDs: (347)
 msgid "Text"
@@ -5935,11 +5935,11 @@ msgstr "Brak wersji XML filtra."
 
 #. Resource IDs: (216)
 msgid "The following ERRORS were detected and were FIXED."
-msgstr ""
+msgstr "Następujące BŁĘDY zostały wykryte i POPRAWIONE."
 
 #. Resource IDs: (216)
 msgid "The following WARNINGS were detected - you should review and fix them manually."
-msgstr ""
+msgstr "Następujące OSTRZEŻENIA zostały wykryte - należy je przejrzeć i naprawić ręcznie."
 
 #. Resource IDs: (211)
 msgid "The following columns were recognised but only Group/Title, Username and Password will be processed:"
@@ -6188,7 +6188,7 @@ msgstr "To skasuje wybraną kopię zapasową Failsafe.  Jeśli aktualny dysk ma 
 
 #. Resource IDs: (331)
 msgid "Timeout period must be between 1 and 120 minutes."
-msgstr ""
+msgstr "Czas wygaśnięcie powninen być pomiędzy minutą, a 120 minutami."
 
 #. Resource IDs: (327)
 #, fuzzy
@@ -6205,7 +6205,7 @@ msgstr "Nazwa skopiowana "
 
 #. Resource IDs: (65535)
 msgid "Title:"
-msgstr ""
+msgstr "Tytuł:"
 
 #. Resource IDs: (65535)
 msgid "To add a new entry, simply fill in the fields below. At least a title and a password are required. If you have set a default username, it will appear in the username field."
@@ -6375,7 +6375,7 @@ msgstr "Cofnij zmiany"
 
 #. Resource IDs: (368)
 msgid "Undo the last change to password policies"
-msgstr ""
+msgstr "Cofnij ostatnią zmianę w polityce haseł "
 
 #. Resource IDs: (3859)
 msgid "Unexpected file format."
@@ -6490,11 +6490,11 @@ msgstr "Użyj D&UŻYCH liter"
 
 #. Resource IDs: (1465)
 msgid "Use Database Policy"
-msgstr ""
+msgstr "Użyj polityki"
 
 #. Resource IDs: (1470)
 msgid "Use Named Policy"
-msgstr ""
+msgstr "Użyj nazwanej polityki"
 
 #. Resource IDs: (369)
 msgid "Use count"
@@ -6551,7 +6551,7 @@ msgstr "Nazwa użytkownika"
 
 #. Resource IDs: (65535)
 msgid "Username:"
-msgstr ""
+msgstr "Nazwa użytkownika:"
 
 #. Resource IDs: (65535)
 msgid "Using application:"
@@ -6873,7 +6873,7 @@ msgstr "\nZwiń wszystko"
 
 #. Resource IDs: (2006)
 msgid "\nCompare entries..."
-msgstr ""
+msgstr "\nPorównaj wpisy..."
 
 #. Resource IDs: (2002)
 msgid "\nCompare two Databases"
@@ -7344,7 +7344,7 @@ msgstr "dni zanim hasło wygaśnie"
 
 #. Resource IDs: (251)
 msgid "default"
-msgstr ""
+msgstr "domyślne"
 
 #. Resource IDs: (369)
 msgid "default symbol set"
