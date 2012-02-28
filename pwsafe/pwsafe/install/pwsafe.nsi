@@ -614,7 +614,7 @@ Function .onInit
   Push ${LANG_RUSSIAN}
   Push Russian
   Push ${LANG_POLISH}
-  Push Polska
+  Push Polski
 ;  Push ${LANG_ITALIAN}
 ;  Push Italiano
   Push ${LANG_DANISH}
