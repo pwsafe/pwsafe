@@ -392,13 +392,13 @@ void CEditExtn::OnContextMenu(CWnd* pWnd, CPoint point)
   }
 }
 
-void CEditExtn::UpdateState(const int message_number, const BOOL new_state)
+void CEditExtn::UpdateState(const int message_number, const bool new_state)
 {
   std::vector<st_context_menu>::iterator iter;
   iter = std::find_if(m_vmenu_items.begin(), m_vmenu_items.end(),
                       equal_cmd(message_number));
   if (iter != m_vmenu_items.end()) {
-    int flags = new_state == TRUE ? MF_CHECKED : MF_UNCHECKED;
+    int flags = new_state ? MF_CHECKED : MF_UNCHECKED;
     iter->flags = flags;
     return;
   }
@@ -629,13 +629,13 @@ void CRichEditExtn::OnContextMenu(CWnd* pWnd, CPoint point)
   }
 }
 
-void CRichEditExtn::UpdateState(const int message_number, const BOOL new_state)
+void CRichEditExtn::UpdateState(const int message_number, const bool new_state)
 {
   std::vector<st_context_menu>::iterator iter;
   iter = std::find_if(m_vmenu_items.begin(), m_vmenu_items.end(),
                       equal_cmd(message_number));
   if (iter != m_vmenu_items.end()) {
-    int flags = new_state == TRUE ? MF_CHECKED : MF_UNCHECKED;
+    int flags = new_state ? MF_CHECKED : MF_UNCHECKED;
     iter->flags = flags;
     return;
   }

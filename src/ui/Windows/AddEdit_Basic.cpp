@@ -88,13 +88,6 @@ CAddEdit_Basic::CAddEdit_Basic(CWnd *pParent, st_AE_master_data *pAEMD)
   vmenu_items.push_back(st_cm);
 
   st_cm.Empty();
-  LoadAString(cs_menu_string, IDS_SHOW_NOTES);
-  st_cm.menu_string = cs_menu_string;
-  st_cm.message_number = PWS_MSG_EDIT_SHOWNOTES;
-  st_cm.flags = m_isNotesHidden ? MF_CHECKED : MF_UNCHECKED;
-  vmenu_items.push_back(st_cm);
-
-  st_cm.Empty();
   LoadAString(cs_menu_string, IDS_NOTESZOOMIN);
   st_cm.menu_string = cs_menu_string;
   st_cm.message_number = PWS_MSG_CALL_NOTESZOOMIN;
@@ -199,7 +192,6 @@ BEGIN_MESSAGE_MAP(CAddEdit_Basic, CAddEdit_PropertyPage)
   ON_MESSAGE(PWS_MSG_CALL_EXTERNAL_EDITOR, OnCallExternalEditor)
   ON_MESSAGE(PWS_MSG_EXTERNAL_EDITOR_ENDED, OnExternalEditorEnded)
   ON_MESSAGE(PWS_MSG_EDIT_WORDWRAP, OnWordWrap)
-  ON_MESSAGE(PWS_MSG_EDIT_SHOWNOTES, OnShowNotes)
   ON_MESSAGE(PWS_MSG_CALL_NOTESZOOMIN, OnZoomNotes)
   ON_MESSAGE(PWS_MSG_CALL_NOTESZOOMOUT, OnZoomNotes)
 
@@ -389,6 +381,10 @@ BOOL CAddEdit_Basic::OnInitDialog()
     // If at the limit - don't allow to be called again in that direction
     SetZoomMenu();
   }
+
+  // Set initial Word Wrap
+  m_pex_notes->SetTargetDevice(NULL, m_bWordWrap ? 0 : 1);
+  m_pex_notes->UpdateState(PWS_MSG_EDIT_WORDWRAP, m_bWordWrap);
 
   UpdateData(FALSE);
   m_bInitdone = true;
@@ -753,21 +749,6 @@ void CAddEdit_Basic::HidePassword()
   m_ex_password2.Invalidate();
 }
 
-LRESULT CAddEdit_Basic::OnShowNotes(WPARAM, LPARAM)
-{
-  UpdateData(TRUE);
-  if (m_isNotesHidden) {
-    ShowNotes();
-  } else {
-    HideNotes();
-  }
-  UpdateData(FALSE);
-
-  m_pex_notes->UpdateState(PWS_MSG_EDIT_SHOWNOTES, m_isNotesHidden ? FALSE : TRUE);
-
-  return 0L;
-}
-
 void CAddEdit_Basic::SetZoomMenu()
 {
     m_pex_notes->EnableMenuItem(PWS_MSG_CALL_NOTESZOOMIN, m_iPointSize < 72);
@@ -814,7 +795,7 @@ void CAddEdit_Basic::ShowNotes()
 
   // If at the limit - don't allow to be called again in that direction
   SetZoomMenu();
- }
+}
 
 void CAddEdit_Basic::HideNotes()
 {
@@ -1020,7 +1001,7 @@ void CAddEdit_Basic::OnENSetFocusNotes()
 void CAddEdit_Basic::OnENKillFocusNotes()
 {
   UpdateData(TRUE);
-  if (m_isNotesHidden) {
+  if (!m_isNotesHidden) {
     HideNotes();
   } else
     M_realnotes() = m_notes;

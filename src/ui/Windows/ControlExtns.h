@@ -119,7 +119,7 @@ public:
   virtual ~CEditExtn();
 
   void ChangeColour() {m_bIsFocused = TRUE;}
-  void UpdateState(const int message_number, const BOOL new_state);
+  void UpdateState(const int message_number, const bool new_state);
 
   DWORD GetSel();
   void GetSel(int &nStartChar, int &nEndChar);
@@ -160,7 +160,7 @@ public:
   virtual ~CRichEditExtn();
 
   void ChangeColour() {m_bIsFocused = TRUE;}
-  void UpdateState(const int message_number, const BOOL new_state);
+  void UpdateState(const int message_number, const bool new_state);
 
   void GetSel(long &nStartChar, long &nEndChar);
   void SetSel(long nStartChar, long nEndChar);
