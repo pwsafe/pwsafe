@@ -7,6 +7,7 @@
 */
 
 #include "../debug.h"
+#include "../fmtspecs_cvt.h"
 #include "../core/Util.h"
 
 #if defined(_DEBUG) || defined(DEBUG)
