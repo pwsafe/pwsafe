@@ -237,23 +237,9 @@ void CAbout::OnCloseClick( wxCommandEvent& /* evt */ )
 }
 
 
-/*
- * The latest version information is in
- * http://pwsafe.org/latest.xml
- *
- * And is of the form:
- * <VersionInfo>
- *  <Product name=PasswordSafe variant=PC major=3 minor=10 build=2 rev=1710 />
- *  <Product name=PasswordSafe variant=PPc major=1 minor=9 build=2
- *    rev=100 />
- *  <Product name=PasswordSafe variant=U3 major=3 minor=10 build=2
- *    rev=1710 />
- *  <Product name=SWTPasswordSafe variant=Java major=0 minor=6
- *    build=0 rev=1230 />
- * </VersionInfo>
- *
- * Note: The "rev" is the svn commit number. Not using it (for now),
- *       as I think it's too volatile.
+/*!
+ * core routine "CheckVersion::CheckLatestVersion" checks if there is a later version
+ * see details in that routine as to format of the downloaded xml file
  */
 
 /*!

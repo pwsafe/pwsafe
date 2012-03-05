@@ -12,8 +12,9 @@
 #include "PWSprefs.h"
 #include "core.h"
 #include "StringXStream.h"
+#include "Util.h"
 
-#include "tinyxml/tinyxml.h"
+#include "pugixml/pugixml.hpp"
 
 #include "os/typedefs.h"
 #include "os/sleep.h"
@@ -21,21 +22,61 @@
 
 #include <vector>
 
-//#define DEBUG_XMLPREFS
-#ifdef DEBUG_XMLPREFS
-#include <stdio.h>
-static FILE *f;
-#define DOPEN() do {f = fopen("cxmlpref.log", "a+");} while (0)
-#define DPRINT(x) do {fprintf x; fflush(f);} while (0)
-#define DCLOSE() fclose(f)
-#else
-#define DOPEN()
-#define DPRINT(x)
-#define DCLOSE()
-#endif
-
 /////////////////////////////////////////////////////////////////////////////
 // CXMLprefs
+
+const char *eye_catcher = "*pugixml_memory*";
+const size_t extralen = strlen(eye_catcher) + sizeof(size_t);
+
+static void *custom_allocate(size_t len)
+{
+  // Get more so we can store the length as we can't determine length in deallocate
+  char *ptr = new (std::nothrow) char[len + extralen];
+  
+  if (ptr == NULL)
+    return NULL;
+
+  // Put eyecatcher at the beginning - less likely to be overwritten!
+  memcpy(ptr, eye_catcher, strlen(eye_catcher));
+  // Then the length requestor asked for
+  memcpy(ptr + strlen(eye_catcher), &len, sizeof(size_t));
+  
+  // Return ptr to what they wanted
+  return (void *)(ptr + extralen);
+}
+
+static void custom_deallocate(void *ptr)
+{
+  // Can't check is ours if pointer is NULL.
+  if (ptr == NULL)
+    return;
+
+  char *cptr = static_cast<char *>(ptr) - extralen;
+
+  // Verify we allocated it
+  if (memcmp(cptr, eye_catcher, strlen(eye_catcher)) != 0) {
+    // No - delete as is
+    delete[] static_cast<char *>(ptr);
+    return;
+  }
+     
+  size_t len;
+  
+  // Get length of user data stored after eyecatcher
+  memcpy(&len, cptr + strlen(eye_catcher), sizeof(size_t));
+  
+  // Trash all data
+  trashMemory(cptr, len + extralen);
+  
+  // Free all of it
+  delete[] cptr;
+}
+
+CXMLprefs::CXMLprefs(const stringT &configFile)
+  : m_pXMLDoc(NULL), m_csConfigFile(configFile), m_bIsLocked(false)
+{
+  pugi::set_memory_management_functions(custom_allocate, custom_deallocate);
+}
 
 bool CXMLprefs::Lock(stringT &locker)
 {
@@ -61,13 +102,23 @@ bool CXMLprefs::CreateXML(bool bLoad)
   // Call with bLoad set when about to Load, else
   // this also adds a toplevel root element
   ASSERT(m_pXMLDoc == NULL);
-  m_pXMLDoc = new TiXmlDocument(m_csConfigFile.c_str());
+  m_pXMLDoc = new pugi::xml_document;
+  
   if (!bLoad && m_pXMLDoc != NULL) {
-    TiXmlDeclaration decl(_T("1.0"), _T("UTF-8"), _T("yes"));
-    TiXmlElement rootElem(_T("Pwsafe_Settings"));
+    // Insert
+    // <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+    // <Pwsafe_Settings>
+    // </ Pwsafe_Settings>
+    pugi::xml_node decl = m_pXMLDoc->prepend_child(pugi::node_declaration);
+    if (decl == NULL)
+      return false;
 
-    return (m_pXMLDoc->InsertEndChild(decl) != NULL &&
-            m_pXMLDoc->InsertEndChild(rootElem) != NULL);
+    decl.append_attribute(_T("version")).set_value(_T("1.0"));
+    decl.append_attribute(_T("encoding")).set_value(_T("utf-8"));
+    decl.append_attribute(_T("standalone")).set_value(_T("yes"));
+    
+    pugi::xml_node node = m_pXMLDoc->append_child(_T("Pwsafe_Settings"));
+    return node != NULL;
   } else
     return m_pXMLDoc != NULL;
 }
@@ -75,9 +126,8 @@ bool CXMLprefs::CreateXML(bool bLoad)
 bool CXMLprefs::Load()
 {
   // Already loaded?
-  if (m_pXMLDoc != NULL) return true;
-  DOPEN();
-  DPRINT((f, "Entered CXMLprefs::Load()\n"));
+  if (m_pXMLDoc != NULL)
+    return true;
 
   bool alreadyLocked = m_bIsLocked;
   if (!alreadyLocked) {
@@ -94,32 +144,38 @@ bool CXMLprefs::Load()
     return false;
   }
 
-  bool retval = m_pXMLDoc->LoadFile();
+  pugi::xml_parse_result result = m_pXMLDoc->load_file(m_csConfigFile.c_str());
 
-  if (!retval) {
-    // an XML load error occurred so display the reason
+  if (!result) {
+    // An XML load error occurred so display the reason
+    // Note: "result.description()" returns char* even in Unicode builds.
+    stringT sErrorDesc;
+#ifdef UNICODE
+    sErrorDesc = pugi::as_wide(result.description());
+#else
+    sErrorDesc = result.description();
+#endif
     Format(m_Reason, IDSC_XMLFILEERROR,
-           m_pXMLDoc->ErrorDesc(), m_csConfigFile.c_str(),
-           m_pXMLDoc->ErrorRow(), m_pXMLDoc->ErrorCol());
+           sErrorDesc.c_str(), m_csConfigFile.c_str(), result.offset);
     delete m_pXMLDoc;
     m_pXMLDoc = NULL;
+    return false;
   } // load failed
 
-  // if we locked it, we should unlock it...
+  // If we locked it, we should unlock it...
   if (!alreadyLocked)
     Unlock();
-  DPRINT((f, "Leaving CXMLprefs::Load(), retval = %s\n",
-    retval ? "true" : "false"));
-  DCLOSE();
-  if (retval)
-    m_Reason.clear();
-  return retval;
+  
+  // If OK - delete any error message
+  m_Reason.clear();
+  return true;
 }
 
 bool CXMLprefs::Store()
 {
   bool retval = false;
   bool alreadyLocked = m_bIsLocked;
+  pugi::xml_node decl;
 
   if (!alreadyLocked) {
     stringT locker;
@@ -129,10 +185,6 @@ bool CXMLprefs::Store()
       return false;
     }
   }
-
-  DOPEN();
-  DPRINT((f, "Entered CXMLprefs::Store()\n"));
-  DPRINT((f, "\tm_pXMLDoc = %p\n", static_cast<void *>(m_pXMLDoc)));
 
   // Although technically possible, it doesn't make sense
   // to create a toplevel document here, since we'd then
@@ -144,33 +196,98 @@ bool CXMLprefs::Store()
     goto exit;
   }
 
-  retval = m_pXMLDoc->SaveFile();
-  if (!retval) {
-    // Get and show error
-    Format(m_Reason, IDSC_XMLFILEERROR,
-           m_pXMLDoc->ErrorDesc(), m_csConfigFile.c_str(),
-           m_pXMLDoc->ErrorRow(), m_pXMLDoc->ErrorCol());
-  }
+  decl = m_pXMLDoc->prepend_child(pugi::node_declaration);
+  if (decl == NULL)
+    goto exit;
+
+  decl.append_attribute(_T("version")).set_value(_T("1.0"));
+  decl.append_attribute(_T("encoding")).set_value(_T("utf-8"));
+  decl.append_attribute(_T("standalone")).set_value(_T("yes"));
+
+  retval = m_pXMLDoc->save_file(m_csConfigFile.c_str(), _T("  "),
+                         pugi::format_default | pugi::format_write_bom,
+                         pugi::encoding_utf8);
 
 exit:
-  // if we locked it, we should unlock it...
+  // If we locked it, we should unlock it...
   if (!alreadyLocked)
     Unlock();
-  DPRINT((f, "Leaving CXMLprefs::Store(), retval = %s\n",
-    retval ? "true" : "false"));
-  DCLOSE();
+  
+  // If OK - delete any error message
   if (retval)
     m_Reason.clear();
+
   return retval;
 }
 
-// get a int value
+int CXMLprefs::SetPreference(const stringT &sPath, const stringT &sValue)
+{
+  // Find the node specified by the path, creating it if it does not already exist
+  // and add the requested value.
+
+  // Notes:
+  // This routine only adds plain character data to the node, see comments at the end.
+  // If the node already has plain character data, it is replaced.
+  // If the node exists multiple times with the same path, only the first is altered -
+  //   see description of function "first_element_by_path" in the pugixml manual.
+
+  int iRetVal = XML_SUCCESS;
+  
+  // First see if the node already exists
+  pugi::xml_node node = m_pXMLDoc->first_element_by_path(sPath.c_str(), _T('\\'));
+  
+  if (node == NULL) {
+    // Not there - let's build it
+    // Split up path and then add all nodes in the path (if they don't exist)
+    // Start at the top
+    node = m_pXMLDoc->root();
+  
+    stringT::size_type pos, lastPos(0);
+
+    // Find first "non-delimiter".
+    pos = sPath.find_first_of(_T('\\'), lastPos);
+
+    // Get all nodes in the path, if they exist fine, if not, create them
+    while (pos != stringT::npos || lastPos != stringT::npos) {
+      // Retrieve next node name from path
+      stringT snode = sPath.substr(lastPos, pos - lastPos);
+      
+      // Try to get it
+      pugi::xml_node child = node.child(snode.c_str());
+
+      // If not there, add it otherwise use it for the next iteration
+      node = (child == NULL) ? node.append_child(snode.c_str()) : child;
+    
+      // Skip delimiter and find next "non-delimiter"
+      lastPos = sPath.find_first_not_of(_T('\\'), pos);
+      pos = sPath.find_first_of(_T('\\'), lastPos);
+    }
+  }
+
+  //  ***** VERY IMPORTANT *****
+  // Note, as documented in the manual under "Document object model/Tree Structure",
+  // nodes can be of various types.  Element nodes found above, do not have a value.
+  // To add a value to an element node, one has to add a child node of type
+  // 'node_pcdata' (plain character data node) or 'node_cdata' (character data node),
+  // the latter using <![CDATA[[...]]> to encapsulate the data.
+
+  // If the node has data in its first pcdata child use it, otherwise add a pcdata child
+  pugi::xml_node prefnode = (node.first_child().type() == pugi::node_pcdata) ?
+     node.first_child() : node.append_child(pugi::node_pcdata);
+
+  if (!prefnode.set_value(sValue.c_str()))
+     iRetVal = XML_PUT_TEXT_FAILED;
+
+  return iRetVal;
+}
+
+// Get a int value
 int CXMLprefs::Get(const stringT &csBaseKeyName, const stringT &csValueName, 
                    int iDefaultValue)
 {
   /*
-  Since XML is text based and we have no schema, just convert to a string and
-  call the Get(String) method.
+    Since XML is text based and we have no schema, just convert to a string and
+    call the Get(String) method.
   */
   int iRetVal = iDefaultValue;
   ostringstreamT os;
@@ -181,7 +298,7 @@ int CXMLprefs::Get(const stringT &csBaseKeyName, const stringT &csValueName,
   return iRetVal;
 }
 
-// get a string value
+// Get a string value
 stringT CXMLprefs::Get(const stringT &csBaseKeyName, const stringT &csValueName, 
                        const stringT &csDefaultValue)
 {
@@ -189,7 +306,6 @@ stringT CXMLprefs::Get(const stringT &csBaseKeyName, const stringT &csValueName,
   if (m_pXMLDoc == NULL) // just in case
     return csDefaultValue;
 
-  int iNumKeys = 0;
   stringT csValue = csDefaultValue;
 
   // Add the value to the base key separated by a '\'
@@ -197,36 +313,23 @@ stringT CXMLprefs::Get(const stringT &csBaseKeyName, const stringT &csValueName,
   csKeyName += _T("\\");
   csKeyName += csValueName;
 
-  // Parse all keys from the base key name (keys separated by a '\')
-  stringT *pcsKeys = ParseKeys(csKeyName, iNumKeys);
+  pugi::xml_node preference = m_pXMLDoc->first_element_by_path(csKeyName.c_str(), _T('\\'));
 
-  // Traverse the xml using the keys parsed from the base key name to find the correct node
-  if (pcsKeys != NULL) {
-    TiXmlElement *rootElem = m_pXMLDoc->RootElement();
-
-    if (rootElem != NULL) {
-      // returns the last node in the chain
-      TiXmlElement *foundNode = FindNode(rootElem, pcsKeys, iNumKeys);
-
-      if (foundNode != NULL) {
-        // get the text of the node (will be the value we requested)
-        const TCHAR *val = foundNode->GetText(); 
-        csValue = (val != NULL) ? val : _T("");
-      }
-    }
-    delete[] pcsKeys;
+  if (preference != NULL) {
+    const TCHAR *val = preference.child_value(); 
+    csValue = (val != NULL) ? val : _T("");
   }
 
   return csValue;
 }
 
-// set a int value
+// Set a int value
 int CXMLprefs::Set(const stringT &csBaseKeyName, const stringT &csValueName,
                    int iValue)
 {
   /*
-  Since XML is text based and we have no schema, just convert to a string and
-  call the SetSettingString method.
+    Since XML is text based and we have no schema, just convert to a string and
+    call the SetSettingString method.
   */
   int iRetVal = 0;
   stringT csValue = _T("");
@@ -238,65 +341,39 @@ int CXMLprefs::Set(const stringT &csBaseKeyName, const stringT &csValueName,
   return iRetVal;
 }
 
-// set a string value
+// Set a string value
 int CXMLprefs::Set(const stringT &csBaseKeyName, const stringT &csValueName, 
                    const stringT &csValue)
 {
-  // m_pXMLDoc may be NULL if Load() not called b4 Set,
+  // m_pXMLDoc may be NULL if Load() not called before Set,
   // or if called & failed
 
   if (m_pXMLDoc == NULL && !CreateXML(false))
     return false;
 
   int iRetVal = XML_SUCCESS;
-  int iNumKeys = 0;
 
   // Add the value to the base key separated by a '\'
   stringT csKeyName(csBaseKeyName);
   csKeyName += _T("\\");
   csKeyName += csValueName;
 
-  // Parse all keys from the base key name (keys separated by a '\')
-  stringT *pcsKeys = ParseKeys(csKeyName, iNumKeys);
+  iRetVal = SetPreference(csKeyName, csValue);
 
-  // Traverse the xml using the keys parsed from the base key name to find the correct node
-  if (pcsKeys != NULL) {
-    TiXmlElement *rootElem = m_pXMLDoc->RootElement();
-
-    if (rootElem != NULL) {
-      // returns the last node in the chain
-      TiXmlElement *foundNode = FindNode(rootElem, pcsKeys, iNumKeys, TRUE);
-
-      if (foundNode != NULL) {
-        TiXmlNode *valueNode = foundNode->FirstChild();
-        if (valueNode != NULL) // replace existing value
-          valueNode->SetValue(csValue.c_str());
-        else {// first time set
-          TiXmlText value(csValue.c_str());
-          foundNode->InsertEndChild(value);
-        }
-      } else
-        iRetVal = XML_NODE_NOT_FOUND;
-
-    } else
-      iRetVal = XML_LOAD_FAILED;
-
-    delete [] pcsKeys;
-  }
   return iRetVal;
 }
 
-// delete a key or chain of keys
+// Delete a key or chain of keys
 bool CXMLprefs::DeleteSetting(const stringT &csBaseKeyName, const stringT &csValueName)
 {
-  // m_pXMLDoc may be NULL if Load() not called b4 DeleteSetting,
+  // m_pXMLDoc may be NULL if Load() not called before DeleteSetting,
   // or if called & failed
 
   if (m_pXMLDoc == NULL && !CreateXML(false))
     return false;
 
   bool bRetVal = false;
-  int iNumKeys = 0;
+
   stringT csKeyName(csBaseKeyName);
 
   if (!csValueName.empty()) {
@@ -304,72 +381,18 @@ bool CXMLprefs::DeleteSetting(const stringT &csBaseKeyName, const stringT &csVal
     csKeyName += csValueName;
   }
 
-  // Parse all keys from the base key name (keys separated by a '\')
-  stringT *pcsKeys = ParseKeys(csKeyName, iNumKeys);
+  pugi::xml_node base_node = m_pXMLDoc->first_element_by_path(csKeyName.c_str(), _T('\\'));
+  if (base_node == NULL)
+    return false;
 
-  // Traverse the xml using the keys parsed from the base key name to find the correct node.
-  if (pcsKeys != NULL) {
-    TiXmlElement *rootElem = m_pXMLDoc->RootElement();
-
-    if (rootElem != NULL) {
-      // returns the last node in the chain
-      TiXmlElement *foundNode = FindNode(rootElem, pcsKeys, iNumKeys);
-
-      if (foundNode!= NULL) {
-        // get the parent of the found node and use removeChild to delete the found node
-        TiXmlNode *parentNode = foundNode->Parent();
-
-        if (parentNode != NULL) {
-          if (parentNode->RemoveChild(foundNode)) {
-            bRetVal = TRUE;
-          }
-        }
-      }
-    }
-    delete[] pcsKeys;
+  pugi::xml_node node_parent = base_node.parent();
+  if (node_parent != NULL) {
+    size_t last_slash = csKeyName.find_last_of(_T("\\"));
+    stringT sKey = csKeyName.substr(last_slash + 1);
+    bRetVal = node_parent.remove_child(sKey.c_str());
   }
+
   return bRetVal;
-}
-
-// Parse all keys from the base key name.
-stringT* CXMLprefs::ParseKeys(const stringT &csFullKeyPath, int &iNumKeys)
-{
-  stringT* pcsKeys = NULL;
-
-  // replace spaces with _ since xml doesn't like them
-  stringT csFKP(csFullKeyPath);
-  Replace(csFKP, _T(' '), _T('_'));
-
-  if (csFKP[csFKP.length() - 1] == TCHAR('\\'))
-    TrimRight(csFKP, _T("\\"));  // remove slashes on the end
-
-  stringT csTemp(csFKP);
-
-  iNumKeys = Remove(csTemp, _T('\\')) + 1;  // get a count of slashes
-
-  pcsKeys = new stringT[iNumKeys];  // create storage for the keys
-
-  if (pcsKeys) {
-    stringT::size_type iFind = 0, iLastFind = 0;
-    int iCount = -1;
-
-    // get all of the keys in the chain
-    while (iFind != stringT::npos) {
-      iFind = csFKP.find(_T("\\"), iLastFind);
-      if (iFind != stringT::npos) {
-        iCount++;
-        pcsKeys[iCount] = csFKP.substr(iLastFind, iFind - iLastFind);
-        iLastFind = iFind + 1;
-      } else {
-        // get the last key in the chain
-        if (iLastFind < csFKP.length())  {
-          iCount++;
-          pcsKeys[iCount] = csFKP.substr(csFKP.find_last_of(_T("\\"))+1);
-        }
-      }
-    }
-  }
-  return pcsKeys;
 }
 
 void CXMLprefs::UnloadXML()
@@ -378,156 +401,129 @@ void CXMLprefs::UnloadXML()
   m_pXMLDoc = NULL;
 }
 
-// find a node given a chain of key names
-TiXmlElement *CXMLprefs::FindNode(TiXmlElement *parentNode,
-                                  stringT* pcsKeys, int iNumKeys,
-                                  bool bAddNodes /*= false*/)
-{
-  ASSERT(m_pXMLDoc != NULL); // shouldn't be called if load failed
-  if (m_pXMLDoc == NULL) // just in case
-    return NULL;
-
-  for (int i=0; i<iNumKeys; i++) {
-    // find the node named X directly under the parent
-    TiXmlNode *foundNode = parentNode->IterateChildren(pcsKeys[i].c_str(),
-                                                       NULL);
-
-    if (foundNode == NULL) {
-      // if its not found...
-      if (bAddNodes)  {  // create the node and append to parent (Set only)
-        TiXmlElement elem(pcsKeys[i].c_str());
-        // Add child, set parent to it for next iteration
-        parentNode = parentNode->InsertEndChild(elem)->ToElement();
-      } else {
-        parentNode = NULL;
-        break;
-      }
-    } else {
-      // since we are traversing the nodes, we need to set the parentNode to our foundNode
-      parentNode = foundNode->ToElement();
-      foundNode = NULL;
-    }
-  }
-  return parentNode;
-}
-
-std::vector<st_prefShortcut> CXMLprefs::GetShortcuts(const stringT &csKeyName)
+std::vector<st_prefShortcut> CXMLprefs::GetShortcuts(const stringT &csBaseKeyName)
 {
   std::vector<st_prefShortcut> v_Shortcuts;
   ASSERT(m_pXMLDoc != NULL); // shouldn't be called if not loaded
 
-  if (m_pXMLDoc == NULL) // just in case
+  if (m_pXMLDoc == NULL)     // just in case
     return v_Shortcuts;
 
   v_Shortcuts.clear();
-  int count(0), iNumKeys(0);
-  TiXmlElement* pElem;
-  TiXmlElement* pChild;
+  
+  stringT csKeyName(csBaseKeyName);
 
-  // Parse all keys from the base key name (keys separated by a '\')
-  stringT *pcsKeys = ParseKeys(csKeyName, iNumKeys);
+  // Get shortcuts
+  pugi::xml_node all_shortcuts = m_pXMLDoc->first_element_by_path(csKeyName.c_str(), _T('\\'));
 
-  // Traverse the xml using the keys parsed from the base key name to find the correct node
-  if (pcsKeys == NULL)
+  if (all_shortcuts == NULL)
     return v_Shortcuts;
 
-  TiXmlElement *rootElem = m_pXMLDoc->RootElement();
-  TiXmlHandle hShortcutsNode(0);
-
-  if (rootElem != NULL) {
-    // returns the last node in the chain
-    TiXmlElement *SNode = FindNode(rootElem, pcsKeys, iNumKeys);
-    hShortcutsNode = SNode;
-  }
-  delete[] pcsKeys;
-
-  if (rootElem == NULL || hShortcutsNode.ToNode() == NULL)
-    return v_Shortcuts;
-
-  for (pElem = hShortcutsNode.FirstChild(_T("Shortcut")).ToElement(); pElem;
-        pElem = pElem->NextSiblingElement()) {
+  pugi::xml_node shortcut;
+  // Now go through all shortcuts
+  for (shortcut = all_shortcuts.first_child(); shortcut; 
+       shortcut = shortcut.next_sibling()) {
     st_prefShortcut cur;
     int itemp;
 
-    pChild = hShortcutsNode.Child(_T("Shortcut"), count).ToElement();
-
     cur.cModifier = 0;
-    pChild->Attribute(_T("id"), &itemp);
-    cur.id = itemp;
-    pChild->Attribute(_T("Key"), &itemp);
+    cur.id = shortcut.attribute(_T("id")).as_uint();
+    itemp = shortcut.attribute(_T("Key")).as_int();
     cur.siVirtKey = static_cast<short int>(itemp);
-    pChild->Attribute(_T("Ctrl"), &itemp);
-    cur.cModifier |= itemp != 0 ? PWS_HOTKEYF_CONTROL : 0;
-    pChild->Attribute(_T("Alt"), &itemp);
-    cur.cModifier |= itemp != 0 ? PWS_HOTKEYF_ALT : 0;
-    pChild->Attribute(_T("Shift"), &itemp);
-    cur.cModifier |= itemp != 0 ? PWS_HOTKEYF_SHIFT : 0;
+    itemp = shortcut.attribute(_T("Ctrl")).as_int();
+    cur.cModifier |= itemp == 0 ? 0 : PWS_HOTKEYF_CONTROL;
+    itemp = shortcut.attribute(_T("Alt")).as_int();
+    cur.cModifier |= itemp == 0 ? 0 : PWS_HOTKEYF_ALT;
+    itemp = shortcut.attribute(_T("Shift")).as_int();
+    cur.cModifier |= itemp == 0 ? 0 : PWS_HOTKEYF_SHIFT;
 
     // wxWidgets only - set values so not lost in XML file 
     // but not use them in Windows MFC - they are never tested in MFC code
     // when creating the necessary hotkeys/shortcuts
-    pChild->Attribute(_T("Win"), &itemp);
-    cur.cModifier |= itemp != 0 ? PWS_HOTKEYF_WIN : 0;
-    pChild->Attribute(_T("Meta"), &itemp);
-    cur.cModifier |= itemp != 0 ? PWS_HOTKEYF_META : 0;
-    pChild->Attribute(_T("Cmd"), &itemp);
-    cur.cModifier |= itemp != 0 ? PWS_HOTKEYF_CMD : 0;
+    itemp = shortcut.attribute(_T("Win")).as_int();
+    cur.cModifier |= itemp == 0 ? 0 : PWS_HOTKEYF_WIN;
+    itemp = shortcut.attribute(_T("Meta")).as_int();
+    cur.cModifier |= itemp == 0 ? 0 : PWS_HOTKEYF_META;
+    itemp = shortcut.attribute(_T("Cmd")).as_int();
+    cur.cModifier |= itemp == 0 ? 0 : PWS_HOTKEYF_CMD;
 
     v_Shortcuts.push_back(cur);
-    count++;
   }
   return v_Shortcuts;
 }
 
-int CXMLprefs::SetShortcuts(const stringT &csKeyName, 
+int CXMLprefs::SetShortcuts(const stringT &csBaseKeyName, 
                             std::vector<st_prefShortcut> v_shortcuts)
 {
-  // m_pXMLDoc may be NULL if Load() not called b4 Set,
+  // m_pXMLDoc may be NULL if Load() not called before Set,
   // or if called & failed
 
   if (m_pXMLDoc == NULL && !CreateXML(false))
-    return false;
+    return XML_LOAD_FAILED;
 
   int iRetVal = XML_SUCCESS;
-  int iNumKeys = 0;
 
-  // Parse all keys from the base key name (keys separated by a '\')
-  stringT *pcsKeys = ParseKeys(csKeyName, iNumKeys);
+  // csBaseKeyName is "Pwsafe_Settings\host\user\Shortcuts"
+  // Even if this does not exist, "Pwsafe_Settings\host\user" must so we can just go
+  // up one level to create it (see SetPreference for when we don't know how many levels
+  // we have to go up before we find an existing node
+  stringT csKeyName(csBaseKeyName);
 
-  // Traverse the xml using the keys parsed from the base key name to 
-  // find the correct node
-  if (pcsKeys != NULL) {
-    TiXmlElement *rootElem = m_pXMLDoc->RootElement();
+  // Get all shortcuts
+  pugi::xml_node all_shortcuts = m_pXMLDoc->first_element_by_path(csKeyName.c_str(), _T('\\'));
 
-    if (rootElem != NULL) {
-      // returns the last node in the chain
-      TiXmlElement *foundNode = FindNode(rootElem, pcsKeys, iNumKeys, TRUE);
+  // Not there - go up one node and try to add it.
+  if (all_shortcuts == NULL) {
+    // Add node - go up a level in path
+    size_t last_slash = csKeyName.find_last_of(_T("\\"));
+    stringT sPath = csKeyName.substr(0, last_slash);
+    stringT sKey = csKeyName.substr(last_slash + 1);
+    all_shortcuts = m_pXMLDoc->first_element_by_path(sPath.c_str(), _T('\\'));
+    
+    ASSERT(all_shortcuts != NULL);
+    if (all_shortcuts != NULL) {
+      all_shortcuts = all_shortcuts.append_child(sKey.c_str());
+    }
+  }
 
-      for (size_t i = 0; i < v_shortcuts.size(); i++) { 
-        TiXmlElement* element = new TiXmlElement(_T("Shortcut"));
-        foundNode->LinkEndChild(element);
-        stringT csValue = _T("");
-        Format(csValue, _T("%u"), v_shortcuts[i].id);
-        element->SetAttribute(_T("id"), csValue);
-        element->SetAttribute(_T("Ctrl"), 
-          (v_shortcuts[i].cModifier & PWS_HOTKEYF_CONTROL) == PWS_HOTKEYF_CONTROL ? 1 : 0);
-        element->SetAttribute(_T("Alt"),
-          (v_shortcuts[i].cModifier & PWS_HOTKEYF_ALT    ) == PWS_HOTKEYF_ALT     ? 1 : 0);
-        element->SetAttribute(_T("Shift"),
-          (v_shortcuts[i].cModifier & PWS_HOTKEYF_SHIFT  ) == PWS_HOTKEYF_SHIFT   ? 1 : 0);
-        // wxWidgets only - set values but do not use in Windows MFC
-        element->SetAttribute(_T("Meta"),
-          (v_shortcuts[i].cModifier & PWS_HOTKEYF_META   ) == PWS_HOTKEYF_META    ? 1 : 0);
-        element->SetAttribute(_T("Win"),
-          (v_shortcuts[i].cModifier & PWS_HOTKEYF_WIN    ) == PWS_HOTKEYF_WIN     ? 1 : 0);
-        element->SetAttribute(_T("Cmd"),
-          (v_shortcuts[i].cModifier & PWS_HOTKEYF_CMD    ) == PWS_HOTKEYF_CMD     ? 1 : 0);
-        element->SetAttribute(_T("Key"), v_shortcuts[i].siVirtKey);
-      }
-    } else
-      iRetVal = XML_LOAD_FAILED;
+  // If still NULL - give up!!!
+  if (all_shortcuts == NULL)
+    return XML_PUT_TEXT_FAILED;
 
-    delete [] pcsKeys;
+  for (size_t i = 0; i < v_shortcuts.size(); i++) { 
+    pugi::xml_node shortcut = all_shortcuts.append_child(_T("Shortcut"));
+    
+    // If we can't add this - give up!
+    if (shortcut == NULL)
+      return XML_PUT_TEXT_FAILED;
+      
+    shortcut.set_value(_T(""));
+    
+    pugi::xml_attribute attrib;
+
+    attrib = shortcut.append_attribute(_T("id"));
+    attrib.set_value(v_shortcuts[i].id);
+    attrib = shortcut.append_attribute(_T("Ctrl"));
+    attrib.set_value((v_shortcuts[i].cModifier & PWS_HOTKEYF_CONTROL) ==
+                       PWS_HOTKEYF_CONTROL ? 1 : 0);
+    attrib = shortcut.append_attribute(_T("Alt"));
+    attrib.set_value((v_shortcuts[i].cModifier & PWS_HOTKEYF_ALT) ==
+                       PWS_HOTKEYF_ALT ? 1 : 0);
+    attrib = shortcut.append_attribute(_T("Shift"));
+    attrib.set_value((v_shortcuts[i].cModifier & PWS_HOTKEYF_SHIFT) ==
+                       PWS_HOTKEYF_SHIFT ? 1 : 0);
+    // wxWidgets only - set values but do not use in Windows MFC
+    attrib = shortcut.append_attribute(_T("Meta"));
+    attrib.set_value((v_shortcuts[i].cModifier & PWS_HOTKEYF_META) ==
+                       PWS_HOTKEYF_META ? 1 : 0);
+    attrib = shortcut.append_attribute(_T("Win"));
+    attrib.set_value((v_shortcuts[i].cModifier & PWS_HOTKEYF_WIN) ==
+                       PWS_HOTKEYF_WIN ? 1 : 0);
+    attrib = shortcut.append_attribute(_T("Cmd"));
+    attrib.set_value((v_shortcuts[i].cModifier & PWS_HOTKEYF_CMD) ==
+                       PWS_HOTKEYF_CMD ? 1 : 0);
+    attrib = shortcut.append_attribute(_T("Key"));
+    attrib.set_value(v_shortcuts[i].siVirtKey);
   }
   return iRetVal;
 }
@@ -542,68 +538,44 @@ bool CXMLprefs::MigrateSettings(const stringT &sNewFilename,
   if (m_pXMLDoc == NULL)
     return false;
 
-  TiXmlHandle hDoc(m_pXMLDoc);
-  TiXmlElement *pElem, *pElem_host(NULL), *pElem_user(NULL);
-  TiXmlHandle hRoot(0);
-
-  pElem = hDoc.FirstChildElement().Element();
-  // should always have a valid root but handle gracefully if it does
-  if (!pElem)
+  pugi::xml_node root_node = m_pXMLDoc->first_element_by_path(_T("Pwsafe_Settings"), _T('\\'));
+  if (root_node == NULL)
     return false;
-
-  // save this for later
-  hRoot = TiXmlHandle(pElem);
 
   // Delete all hosts - except the one supplied
-  pElem = hRoot.FirstChild().Element();
-  while(pElem) {
-    TiXmlElement *pSibling = pElem->NextSiblingElement();
-    const TCHAR *pKey = pElem->Value();
-    if (pKey != NULL) {
-      if (_tcscmp(pKey, sHost.c_str()) != 0) {
-        pws_os::Trace(_T("Deleting host: %s\n"), pKey);
-        hRoot.ToNode()->RemoveChild(TiXmlHandle(pElem).ToNode());
-      } else {
-        pElem_host = pElem;
+  for (pugi::xml_node host = root_node.first_child(); host;
+       host = root_node.next_sibling()) {
+
+    if (host.name() != sHost.c_str()) {
+      root_node.remove_child(host);
+    } else {
+      // Same host - now delete all other users on that host
+      for (pugi::xml_node user = host.first_child(); user;
+           user = host.next_sibling()) {
+         if (user.name() != sUser.c_str()) {
+           host.remove_child(user);
+         }
       }
     }
-    pElem = pSibling;
   }
-
-  ASSERT(pElem_host != NULL);
-  if (pElem_host == NULL)
-    return false;
-  
-  // Within supplied host, delete all users except the one supplied
-  TiXmlNode *pnode = hRoot.FirstChild(sHost.c_str()).ToNode();
-  pElem = hRoot.FirstChild(sHost.c_str()).FirstChild().Element();
-  while(pElem) {
-    TiXmlElement *pSibling = pElem->NextSiblingElement();
-    const TCHAR *pKey = pElem->Value();
-    if (pKey != NULL) {
-      if (_tcscmp(pKey, sUser.c_str()) != 0) {
-        pws_os::Trace(_T("Deleting user: %s\n"), pKey);
-        pnode->RemoveChild(TiXmlHandle(pElem).ToNode());
-      } else {
-        pElem_user = pElem;
-      }
-    }
-    pElem = pSibling;
-  }
-
-  ASSERT(pElem_user != NULL);
-  if (pElem_user == NULL)
-    return false;
 
   // Save just host/user in new file
-  bool retval = m_pXMLDoc->SaveFile(sNewFilename.c_str());
-  if (!retval) {
-    // Get and show error
-    Format(m_Reason, IDSC_XMLFILEERROR,
-           m_pXMLDoc->ErrorDesc(), sNewFilename.c_str(),
-           m_pXMLDoc->ErrorRow(), m_pXMLDoc->ErrorCol());
+  pugi::xml_node decl = m_pXMLDoc->prepend_child(pugi::node_declaration);
+  if (decl == NULL)
+    return false;
+
+  decl.append_attribute(_T("version")).set_value(_T("1.0"));
+  decl.append_attribute(_T("encoding")).set_value(_T("utf-8"));
+  decl.append_attribute(_T("standalone")).set_value(_T("yes"));
+
+  bool result = m_pXMLDoc->save_file(sNewFilename.c_str(), _T("  "),
+                         pugi::format_default | pugi::format_write_bom,
+                         pugi::encoding_utf8);
+
+  if (!result) {
+    return false;
   }
-  return retval;
+  return true;
 }
 
 bool CXMLprefs::RemoveHostnameUsername(const stringT &sHost, const stringT &sUser,
@@ -621,36 +593,16 @@ bool CXMLprefs::RemoveHostnameUsername(const stringT &sHost, const stringT &sUse
   if (m_pXMLDoc == NULL)
     return false;
 
-  TiXmlHandle hDoc(m_pXMLDoc);
-  TiXmlElement *pElemR, *pElemH, *pElemU;
-  TiXmlHandle hRoot(0);
-
-  pElemR = hDoc.FirstChildElement().Element();
-  // should always have a valid root but handle gracefully if it does
-  if (!pElemR)
+  stringT sPath = stringT(_T("Pwsafe_Settings//")) + sHost;
+  pugi::xml_node node = m_pXMLDoc->first_element_by_path(sPath.c_str(), _T('\\'));
+  
+  if (node == NULL)
+    return false;
+  
+  if (!node.remove_child(sUser.c_str()))
     return false;
 
-  hRoot = TiXmlHandle(pElemR);
-
-  // Find host supplied host
-  pElemH = hRoot.FirstChild(sHost.c_str()).Element();
-  ASSERT(pElemH != NULL);
-  if (pElemH == NULL)
-    return false;
-
-  // Find supplied user within this host
-  pElemU = hRoot.FirstChild(sHost.c_str()).FirstChild(sUser.c_str()).Element();
-  ASSERT(pElemU != NULL);
-  if (pElemU == NULL)
-    return false;
-
-  // Remove it
-  TiXmlHandle(pElemH).ToNode()->RemoveChild(TiXmlHandle(pElemU).ToNode());
-
-  // If no more users in this host - delete it
-  if (TiXmlHandle(pElemH).ToNode()->NoChildren())
-    hRoot.ToNode()->RemoveChild(TiXmlHandle(pElemH).ToNode());
-
-  bNoMoreNodes = hRoot.ToNode()->NoChildren();
+  // Check if more children
+  bNoMoreNodes = node.first_child() == NULL;
   return true;
 }

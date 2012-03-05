@@ -11,6 +11,8 @@
 #include "os/typedefs.h"
 #include "PWSprefs.h"
 
+#include "pugixml/pugixml.hpp"
+
 #include <vector>
 
 /////////////////////////////////////////////////////////////////////////////
@@ -22,16 +24,12 @@
 // 2. Lock(), Load(), zero or more Set()s, zero or more
 //    DeleteSetting()s, Store(), Unlock()
 /////////////////////////////////////////////////////////////////////////////
-class TiXmlDocument;
-class TiXmlElement;
 
 class CXMLprefs
 {
   // Construction & Destruction
 public:
-  CXMLprefs(const stringT &configFile)
-   : m_pXMLDoc(NULL), m_csConfigFile(configFile), m_bIsLocked(false)
-    {}
+  CXMLprefs(const stringT &configFile);
 
   ~CXMLprefs() { UnloadXML(); }
 
@@ -51,8 +49,8 @@ public:
   int Set(const stringT &csBaseKeyName, const stringT &csValueName,
           const stringT &csValue);
 
-  std::vector<st_prefShortcut> GetShortcuts(const stringT &csKeyName);
-  int SetShortcuts(const stringT &csKeyName, 
+  std::vector<st_prefShortcut> GetShortcuts(const stringT &csBaseKeyName);
+  int SetShortcuts(const stringT &csBaseKeyName, 
                    std::vector<st_prefShortcut> v_shortcuts);
 
   bool DeleteSetting(const stringT &csBaseKeyName, const stringT &csValueName);
@@ -72,16 +70,15 @@ public:
         XML_SAVE_FAILED};
 
 private:
-  TiXmlDocument *m_pXMLDoc;
+  int SetPreference(const stringT &sPath, const stringT &sValue);
+
+  pugi::xml_document *m_pXMLDoc;
   stringT m_csConfigFile;
   bool m_bIsLocked;
 
-  stringT* ParseKeys(const stringT &csFullKeyPath, int &iNumKeys);
   // CreateXML - bLoad will skip creation of root element
   bool CreateXML(bool bLoad);
   void UnloadXML();
-  TiXmlElement *FindNode(TiXmlElement *parentNode, stringT* pcsKeys,
-                         int iNumKeys, bool bAddNodes = false);
   stringT m_Reason; // why something bad happenned
 };
 #endif /* __XMLPREFS_H */

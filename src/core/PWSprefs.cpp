@@ -629,7 +629,7 @@ bool PWSprefs::DeletePref(const StringX &name)
       break;
     case CF_FILE_RW:
       bRetVal = (m_pXML_Config->DeleteSetting(m_csHKCU_PREF,
-                                             name.c_str()) == TRUE);
+                                              name.c_str()) == TRUE);
       break;
     case CF_FILE_RW_NEW:
     case CF_FILE_RO:
@@ -955,9 +955,11 @@ void PWSprefs::InitializePreferences()
   XMLify(charT('H'), hn);
   stringT un = si->GetEffectiveUser();
   XMLify(charT('u'), un);
-  m_csHKCU = hn.c_str();
+  m_csHKCU = _T("Pwsafe_Settings\\");
+  m_csHKCU += hn.c_str();
   m_csHKCU += _T("\\");
   m_csHKCU += un.c_str();
+
   // set up other keys
   m_csHKCU_MRU  = m_csHKCU + _T("\\MRU");
   m_csHKCU_POS  = m_csHKCU + _T("\\Position");
@@ -1504,16 +1506,19 @@ void PWSprefs::SaveApplicationPreferences()
       m_ConfigOption == CF_FILE_RW_NEW) {
     int j;
     const int n = GetPref(PWSprefs::MaxMRUItems);
-    // Delete ALL entries
+    // Delete ALL MRU entries
     m_pXML_Config->DeleteSetting(m_csHKCU_MRU, _T(""));
     // Now put back the ones we want
     stringT csSubkey;
     for (j = 0; j < n; j++) {
       if (!m_MRUitems[j].empty()) {
-        Format(csSubkey, _T("Safe%02d"), j+1);
+        Format(csSubkey, _T("Safe%02d"), j + 1);
         m_pXML_Config->Set(m_csHKCU_MRU, csSubkey, m_MRUitems[j]);
       }
     }
+
+    // Since we may have changed the MRU - update timestamp in config file
+    UpdateTimeStamp();
   }
 
   if (m_ConfigOption == CF_FILE_RW ||
@@ -1569,6 +1574,9 @@ void PWSprefs::SaveShortcuts()
     // Now put back the ones we want
     if (!m_vShortcuts.empty())
       m_pXML_Config->SetShortcuts(m_csHKCU_SHCT, m_vShortcuts);
+
+    // Since we may have changed the shortcuts - update timestamp in config file
+    UpdateTimeStamp();
   }
 
   if (m_ConfigOption == CF_FILE_RW ||

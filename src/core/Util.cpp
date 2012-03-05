@@ -30,7 +30,7 @@
 using namespace std;
 
 // used by CBC routines...
-static void xormem(unsigned char* mem1, const unsigned char* mem2, int length)
+static void xormem(unsigned char *mem1, const unsigned char *mem2, int length)
 {
   for (int x = 0; x < length; x++)
     mem1[x] ^= mem2[x];
@@ -46,7 +46,7 @@ static void xormem(unsigned char* mem1, const unsigned char* mem2, int length)
 #ifdef _WIN32
 #pragma optimize("",off)
 #endif
-void trashMemory(void* buffer, size_t length)
+void trashMemory(void *buffer, size_t length)
 {
   ASSERT(buffer != NULL);
   // {kjp} no point in looping around doing nothing is there?
@@ -107,8 +107,8 @@ void ConvertString(const StringX &text,
 
 //Generates a passkey-based hash from stuff - used to validate the passkey
 void GenRandhash(const StringX &a_passkey,
-                 const unsigned char* a_randstuff,
-                 unsigned char* a_randhash)
+                 const unsigned char *a_randstuff,
+                 unsigned char *a_randhash)
 {
   size_t pkeyLen = 0;
   unsigned char *pstr = NULL;
@@ -150,8 +150,8 @@ void GenRandhash(const StringX &a_passkey,
   keyHash.Final(a_randhash);
 }
 
-size_t _writecbc(FILE *fp, const unsigned char* buffer, size_t length, unsigned char type,
-                 Fish *Algorithm, unsigned char* cbcbuffer)
+size_t _writecbc(FILE *fp, const unsigned char *buffer, size_t length, unsigned char type,
+                 Fish *Algorithm, unsigned char *cbcbuffer)
 {
   const unsigned int BS = Algorithm->GetBlockSize();
   size_t numWritten = 0;
@@ -239,7 +239,7 @@ size_t _writecbc(FILE *fp, const unsigned char* buffer, size_t length, unsigned 
 */
 size_t _readcbc(FILE *fp,
          unsigned char* &buffer, size_t &buffer_len, unsigned char &type,
-         Fish *Algorithm, unsigned char* cbcbuffer,
+         Fish *Algorithm, unsigned char *cbcbuffer,
          const unsigned char *TERMINAL_BLOCK, size_t file_len)
 {
   const unsigned int BS = Algorithm->GetBlockSize();
@@ -491,7 +491,7 @@ stringT PWSUtil::Base64Encode(const BYTE *strIn, size_t len)
   return cs_Out;
 }
 
-void PWSUtil::Base64Decode(const StringX &inString, BYTE* &outData, size_t &out_len)
+void PWSUtil::Base64Decode(const StringX &inString, BYTE * &outData, size_t &out_len)
 {
   static const char szCS[]=
     "=ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
@@ -550,7 +550,7 @@ void PWSUtil::WriteXMLField(ostream &os, const char *fname,
                             const StringX &value, CUTF8Conv &utf8conv,
                             const char *tabs)
 {
-  const unsigned char * utf8 = NULL;
+  const unsigned char *utf8 = NULL;
   size_t utf8Len = 0;
   StringX::size_type p = value.find(_T("]]>")); // special handling required
   if (p == StringX::npos) {
