@@ -85,6 +85,9 @@
 		E66FB84E13ACA5C3004DBB97 /* SizeRestrictedPanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66FB84B13ACA5C3004DBB97 /* SizeRestrictedPanel.cpp */; };
 		E66FB84F13ACA5C3004DBB97 /* SizeRestrictedPanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66FB84B13ACA5C3004DBB97 /* SizeRestrictedPanel.cpp */; };
 		E66FB85013ACA5C3004DBB97 /* SizeRestrictedPanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66FB84B13ACA5C3004DBB97 /* SizeRestrictedPanel.cpp */; };
+		E683B21A150481DF0013D588 /* pugixml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E683B218150481DF0013D588 /* pugixml.cpp */; };
+		E683B21B150481DF0013D588 /* pugixml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E683B218150481DF0013D588 /* pugixml.cpp */; };
+		E683B21C150481DF0013D588 /* pugixml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E683B218150481DF0013D588 /* pugixml.cpp */; };
 		E690B55F12984A1B007EA508 /* pwsafe_filter.xsd in Resources */ = {isa = PBXBuildFile; fileRef = E690B55C12984A1A007EA508 /* pwsafe_filter.xsd */; };
 		E690B56012984A1B007EA508 /* pwsafe.xsd in Resources */ = {isa = PBXBuildFile; fileRef = E690B55D12984A1A007EA508 /* pwsafe.xsd */; };
 		E690B56112984A1B007EA508 /* pwsafe.xsl in Resources */ = {isa = PBXBuildFile; fileRef = E690B55E12984A1A007EA508 /* pwsafe.xsl */; };
@@ -214,10 +217,6 @@
 		E6BF9EA113348CDB0084A011 /* sha256.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83CD11E87E9700B01518 /* sha256.cpp */; };
 		E6BF9EA213348CDB0084A011 /* StringX.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83CF11E87E9700B01518 /* StringX.cpp */; };
 		E6BF9EA313348CDB0084A011 /* SysInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83D211E87E9700B01518 /* SysInfo.cpp */; };
-		E6BF9EA413348CDB0084A011 /* tinystr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83D511E87E9700B01518 /* tinystr.cpp */; };
-		E6BF9EA513348CDB0084A011 /* tinyxml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83D711E87E9700B01518 /* tinyxml.cpp */; };
-		E6BF9EA613348CDB0084A011 /* tinyxmlerror.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83D911E87E9700B01518 /* tinyxmlerror.cpp */; };
-		E6BF9EA713348CDB0084A011 /* tinyxmlparser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83DA11E87E9700B01518 /* tinyxmlparser.cpp */; };
 		E6BF9EA813348CDB0084A011 /* TwoFish.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83DC11E87E9700B01518 /* TwoFish.cpp */; };
 		E6BF9EA913348CDB0084A011 /* twofish_tab.c in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83DE11E87E9700B01518 /* twofish_tab.c */; };
 		E6BF9EAA13348CDB0084A011 /* UnknownField.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83E011E87E9700B01518 /* UnknownField.cpp */; };
@@ -321,10 +320,6 @@
 		E6E31A3A12FD69A0001618AB /* sha256.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83CD11E87E9700B01518 /* sha256.cpp */; };
 		E6E31A3B12FD69A0001618AB /* StringX.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83CF11E87E9700B01518 /* StringX.cpp */; };
 		E6E31A3C12FD69A0001618AB /* SysInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83D211E87E9700B01518 /* SysInfo.cpp */; };
-		E6E31A3D12FD69A0001618AB /* tinystr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83D511E87E9700B01518 /* tinystr.cpp */; };
-		E6E31A3E12FD69A0001618AB /* tinyxml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83D711E87E9700B01518 /* tinyxml.cpp */; };
-		E6E31A3F12FD69A0001618AB /* tinyxmlerror.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83D911E87E9700B01518 /* tinyxmlerror.cpp */; };
-		E6E31A4012FD69A0001618AB /* tinyxmlparser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83DA11E87E9700B01518 /* tinyxmlparser.cpp */; };
 		E6E31A4112FD69A0001618AB /* TwoFish.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83DC11E87E9700B01518 /* TwoFish.cpp */; };
 		E6E31A4212FD69A0001618AB /* twofish_tab.c in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83DE11E87E9700B01518 /* twofish_tab.c */; };
 		E6E31A4312FD69A0001618AB /* UnknownField.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83E011E87E9700B01518 /* UnknownField.cpp */; };
@@ -414,10 +409,6 @@
 		E6EE843311E87E9800B01518 /* sha256.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83CD11E87E9700B01518 /* sha256.cpp */; };
 		E6EE843411E87E9800B01518 /* StringX.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83CF11E87E9700B01518 /* StringX.cpp */; };
 		E6EE843511E87E9800B01518 /* SysInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83D211E87E9700B01518 /* SysInfo.cpp */; };
-		E6EE843611E87E9800B01518 /* tinystr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83D511E87E9700B01518 /* tinystr.cpp */; };
-		E6EE843711E87E9800B01518 /* tinyxml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83D711E87E9700B01518 /* tinyxml.cpp */; };
-		E6EE843811E87E9800B01518 /* tinyxmlerror.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83D911E87E9700B01518 /* tinyxmlerror.cpp */; };
-		E6EE843911E87E9800B01518 /* tinyxmlparser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83DA11E87E9700B01518 /* tinyxmlparser.cpp */; };
 		E6EE843A11E87E9800B01518 /* TwoFish.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83DC11E87E9700B01518 /* TwoFish.cpp */; };
 		E6EE843B11E87E9800B01518 /* twofish_tab.c in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83DE11E87E9700B01518 /* twofish_tab.c */; };
 		E6EE843C11E87E9800B01518 /* UnknownField.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83E011E87E9700B01518 /* UnknownField.cpp */; };
@@ -540,6 +531,9 @@
 		E66EE0B213921B30005C10C5 /* ComparisonGridTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComparisonGridTable.h; sourceTree = "<group>"; };
 		E66FB84B13ACA5C3004DBB97 /* SizeRestrictedPanel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SizeRestrictedPanel.cpp; sourceTree = "<group>"; };
 		E66FB84C13ACA5C3004DBB97 /* SizeRestrictedPanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SizeRestrictedPanel.h; sourceTree = "<group>"; };
+		E683B217150481DF0013D588 /* pugiconfig.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = pugiconfig.hpp; sourceTree = "<group>"; };
+		E683B218150481DF0013D588 /* pugixml.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = pugixml.cpp; sourceTree = "<group>"; };
+		E683B219150481DF0013D588 /* pugixml.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = pugixml.hpp; sourceTree = "<group>"; };
 		E690B55C12984A1A007EA508 /* pwsafe_filter.xsd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = pwsafe_filter.xsd; path = ../xml/pwsafe_filter.xsd; sourceTree = SOURCE_ROOT; };
 		E690B55D12984A1A007EA508 /* pwsafe.xsd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = pwsafe.xsd; path = ../xml/pwsafe.xsd; sourceTree = SOURCE_ROOT; };
 		E690B55E12984A1A007EA508 /* pwsafe.xsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = pwsafe.xsl; path = ../xml/pwsafe.xsl; sourceTree = SOURCE_ROOT; };
@@ -955,12 +949,6 @@
 		E6EE83D111E87E9700B01518 /* StringXStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringXStream.h; sourceTree = "<group>"; };
 		E6EE83D211E87E9700B01518 /* SysInfo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SysInfo.cpp; sourceTree = "<group>"; };
 		E6EE83D311E87E9700B01518 /* SysInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SysInfo.h; sourceTree = "<group>"; };
-		E6EE83D511E87E9700B01518 /* tinystr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinystr.cpp; sourceTree = "<group>"; };
-		E6EE83D611E87E9700B01518 /* tinystr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tinystr.h; sourceTree = "<group>"; };
-		E6EE83D711E87E9700B01518 /* tinyxml.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxml.cpp; sourceTree = "<group>"; };
-		E6EE83D811E87E9700B01518 /* tinyxml.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tinyxml.h; sourceTree = "<group>"; };
-		E6EE83D911E87E9700B01518 /* tinyxmlerror.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxmlerror.cpp; sourceTree = "<group>"; };
-		E6EE83DA11E87E9700B01518 /* tinyxmlparser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxmlparser.cpp; sourceTree = "<group>"; };
 		E6EE83DB11E87E9700B01518 /* trigram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = trigram.h; sourceTree = "<group>"; };
 		E6EE83DC11E87E9700B01518 /* TwoFish.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TwoFish.cpp; sourceTree = "<group>"; };
 		E6EE83DD11E87E9700B01518 /* TwoFish.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwoFish.h; sourceTree = "<group>"; };
@@ -1057,6 +1045,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E683B216150481DF0013D588 /* pugixml */ = {
+			isa = PBXGroup;
+			children = (
+				E683B217150481DF0013D588 /* pugiconfig.hpp */,
+				E683B218150481DF0013D588 /* pugixml.cpp */,
+				E683B219150481DF0013D588 /* pugixml.hpp */,
+			);
+			path = pugixml;
+			sourceTree = "<group>";
+		};
 		E690B1031297D76E007EA508 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -1571,6 +1569,7 @@
 		E6EE839111E87E9700B01518 /* core */ = {
 			isa = PBXGroup;
 			children = (
+				E683B216150481DF0013D588 /* pugixml */,
 				E698275814C01B7D0043C243 /* PWSLog.cpp */,
 				E698275914C01B7D0043C243 /* PWSLog.h */,
 				E6DDC6FF1389120E00F0C0D1 /* CoreOtherDB.cpp */,
@@ -1635,7 +1634,6 @@
 				E6EE83D111E87E9700B01518 /* StringXStream.h */,
 				E6EE83D211E87E9700B01518 /* SysInfo.cpp */,
 				E6EE83D311E87E9700B01518 /* SysInfo.h */,
-				E6EE83D411E87E9700B01518 /* tinyxml */,
 				E6EE83DB11E87E9700B01518 /* trigram.h */,
 				E6EE83DC11E87E9700B01518 /* TwoFish.cpp */,
 				E6EE83DD11E87E9700B01518 /* TwoFish.h */,
@@ -1659,19 +1657,6 @@
 			sourceTree = SOURCE_ROOT;
 			tabWidth = 2;
 			usesTabs = 0;
-		};
-		E6EE83D411E87E9700B01518 /* tinyxml */ = {
-			isa = PBXGroup;
-			children = (
-				E6EE83D511E87E9700B01518 /* tinystr.cpp */,
-				E6EE83D611E87E9700B01518 /* tinystr.h */,
-				E6EE83D711E87E9700B01518 /* tinyxml.cpp */,
-				E6EE83D811E87E9700B01518 /* tinyxml.h */,
-				E6EE83D911E87E9700B01518 /* tinyxmlerror.cpp */,
-				E6EE83DA11E87E9700B01518 /* tinyxmlparser.cpp */,
-			);
-			path = tinyxml;
-			sourceTree = "<group>";
 		};
 		E6EE83EA11E87E9800B01518 /* XML */ = {
 			isa = PBXGroup;
@@ -2207,10 +2192,6 @@
 				E6EE843311E87E9800B01518 /* sha256.cpp in Sources */,
 				E6EE843411E87E9800B01518 /* StringX.cpp in Sources */,
 				E6EE843511E87E9800B01518 /* SysInfo.cpp in Sources */,
-				E6EE843611E87E9800B01518 /* tinystr.cpp in Sources */,
-				E6EE843711E87E9800B01518 /* tinyxml.cpp in Sources */,
-				E6EE843811E87E9800B01518 /* tinyxmlerror.cpp in Sources */,
-				E6EE843911E87E9800B01518 /* tinyxmlparser.cpp in Sources */,
 				E6EE843A11E87E9800B01518 /* TwoFish.cpp in Sources */,
 				E6EE843B11E87E9800B01518 /* twofish_tab.c in Sources */,
 				E6EE843C11E87E9800B01518 /* UnknownField.cpp in Sources */,
@@ -2229,6 +2210,7 @@
 				E6112A64131D720E00AA1454 /* ExpiredList.cpp in Sources */,
 				E6DDC7011389120E00F0C0D1 /* CoreOtherDB.cpp in Sources */,
 				E698275A14C01B7D0043C243 /* PWSLog.cpp in Sources */,
+				E683B21A150481DF0013D588 /* pugixml.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2385,10 +2367,6 @@
 				E6BF9EA113348CDB0084A011 /* sha256.cpp in Sources */,
 				E6BF9EA213348CDB0084A011 /* StringX.cpp in Sources */,
 				E6BF9EA313348CDB0084A011 /* SysInfo.cpp in Sources */,
-				E6BF9EA413348CDB0084A011 /* tinystr.cpp in Sources */,
-				E6BF9EA513348CDB0084A011 /* tinyxml.cpp in Sources */,
-				E6BF9EA613348CDB0084A011 /* tinyxmlerror.cpp in Sources */,
-				E6BF9EA713348CDB0084A011 /* tinyxmlparser.cpp in Sources */,
 				E6BF9EA813348CDB0084A011 /* TwoFish.cpp in Sources */,
 				E6BF9EA913348CDB0084A011 /* twofish_tab.c in Sources */,
 				E6BF9EAA13348CDB0084A011 /* UnknownField.cpp in Sources */,
@@ -2407,6 +2385,7 @@
 				E6BF9EB813348CDB0084A011 /* ExpiredList.cpp in Sources */,
 				E6DDC7031389120E00F0C0D1 /* CoreOtherDB.cpp in Sources */,
 				E698275C14C01B7D0043C243 /* PWSLog.cpp in Sources */,
+				E683B21C150481DF0013D588 /* pugixml.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2486,10 +2465,6 @@
 				E6E31A3A12FD69A0001618AB /* sha256.cpp in Sources */,
 				E6E31A3B12FD69A0001618AB /* StringX.cpp in Sources */,
 				E6E31A3C12FD69A0001618AB /* SysInfo.cpp in Sources */,
-				E6E31A3D12FD69A0001618AB /* tinystr.cpp in Sources */,
-				E6E31A3E12FD69A0001618AB /* tinyxml.cpp in Sources */,
-				E6E31A3F12FD69A0001618AB /* tinyxmlerror.cpp in Sources */,
-				E6E31A4012FD69A0001618AB /* tinyxmlparser.cpp in Sources */,
 				E6E31A4112FD69A0001618AB /* TwoFish.cpp in Sources */,
 				E6E31A4212FD69A0001618AB /* twofish_tab.c in Sources */,
 				E6E31A4312FD69A0001618AB /* UnknownField.cpp in Sources */,
@@ -2508,6 +2483,7 @@
 				E6112A63131D720E00AA1454 /* ExpiredList.cpp in Sources */,
 				E6DDC7021389120E00F0C0D1 /* CoreOtherDB.cpp in Sources */,
 				E698275B14C01B7D0043C243 /* PWSLog.cpp in Sources */,
+				E683B21B150481DF0013D588 /* pugixml.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

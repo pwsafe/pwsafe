@@ -132,7 +132,7 @@ BEGIN
   IDCS_XERCESOUTOFMEMORY  "OutOfMemoryException."
   IDSC_XMLVALIDATION      "validation"
   IDSC_XMLIMPORT          "import"
-  IDSC_XMLFILEERROR       "Configuration file error:\n%s\n%s\nline %d column %d"
+  IDSC_XMLFILEERROR       "Configuration file error:\n%s\n%s\noffset approximately at %d"
   IDSC_XMLLOADFAILURE     "Unable to load configuration file"
   IDSC_XMLSAVEFAILURE     "Unable to save configuration file"
   IDSC_XMLLOCK_CFG_FAILED "Failed to lock configuration file - opened by another instance of PasswordSafe?"

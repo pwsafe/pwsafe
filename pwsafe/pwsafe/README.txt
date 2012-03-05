@@ -60,10 +60,9 @@ Password Safe is available under the restrictions set forth in the
 standard "Artistic License 2.0". For more details, see the LICENSE
 file that comes with the package.
 
-Password Safe 3.06 and later makes use of the TinyXML project
-(http://www.grinninglizard.com/tinyxml/index.html), which is available 
-under the zlib license
-(http://www.opensource.org/licenses/zlib-license.php).
+Password Safe 3.29 and later makes use of the pugixml project
+(http://www.pugixml.org), which is available under the MIT license
+(http://www.opensource.org/licenses/mit-license.html).
 
 Helping Out:
 ============

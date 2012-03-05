@@ -38,7 +38,7 @@
 #define V10 0
 #define V15 1
 
-extern void trashMemory(void* buffer, size_t length);
+extern void trashMemory(void *buffer, size_t length);
 extern void trashMemory(LPTSTR buffer, size_t length);
 extern void burnStack(unsigned long len); // borrowed from libtomcrypt
 
@@ -46,21 +46,21 @@ extern void ConvertString(const StringX &text,
                           unsigned char *&txt, size_t &txtlen);
 
 extern void GenRandhash(const StringX &passkey,
-                        const unsigned char* m_randstuff,
-                        unsigned char* m_randhash);
+                        const unsigned char *m_randstuff,
+                        unsigned char *m_randhash);
 
 // buffer is allocated by _readcbc, *** delete[] is responsibility of caller ***
-extern size_t _readcbc(FILE *fp, unsigned char* &buffer,
+extern size_t _readcbc(FILE *fp, unsigned char * &buffer,
                        size_t &buffer_len,
                        unsigned char &type, Fish *Algorithm,
-                       unsigned char* cbcbuffer,
+                       unsigned char *cbcbuffer,
                        const unsigned char *TERMINAL_BLOCK = NULL, 
                        size_t file_len = 0);
 
 // _writecbc will throw(EIO) iff a write fail occurs!
-extern size_t _writecbc(FILE *fp, const unsigned char* buffer, size_t length,
+extern size_t _writecbc(FILE *fp, const unsigned char *buffer, size_t length,
                         unsigned char type, Fish *Algorithm,
-                        unsigned char* cbcbuffer);
+                        unsigned char *cbcbuffer);
 
 /*
 * Get an integer that is stored in little-endian format
