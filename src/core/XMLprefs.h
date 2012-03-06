@@ -29,7 +29,8 @@ class CXMLprefs
 {
   // Construction & Destruction
 public:
-  CXMLprefs(const stringT &configFile);
+  CXMLprefs(const stringT &configFile)
+  : m_pXMLDoc(NULL), m_csConfigFile(configFile), m_bIsLocked(false) {}
 
   ~CXMLprefs() { UnloadXML(); }
 
