@@ -25,59 +25,6 @@
 /////////////////////////////////////////////////////////////////////////////
 // CXMLprefs
 
-const char *eye_catcher = "*pugixml_memory*";
-const size_t extralen = strlen(eye_catcher) + sizeof(size_t);
-
-static void *custom_allocate(size_t len)
-{
-  // Get more so we can store the length as we can't determine length in deallocate
-  char *ptr = new (std::nothrow) char[len + extralen];
-  
-  if (ptr == NULL)
-    return NULL;
-
-  // Put eyecatcher at the beginning - less likely to be overwritten!
-  memcpy(ptr, eye_catcher, strlen(eye_catcher));
-  // Then the length requestor asked for
-  memcpy(ptr + strlen(eye_catcher), &len, sizeof(size_t));
-  
-  // Return ptr to what they wanted
-  return (void *)(ptr + extralen);
-}
-
-static void custom_deallocate(void *ptr)
-{
-  // Can't check is ours if pointer is NULL.
-  if (ptr == NULL)
-    return;
-
-  char *cptr = static_cast<char *>(ptr) - extralen;
-
-  // Verify we allocated it
-  if (memcmp(cptr, eye_catcher, strlen(eye_catcher)) != 0) {
-    // No - delete as is
-    delete[] static_cast<char *>(ptr);
-    return;
-  }
-     
-  size_t len;
-  
-  // Get length of user data stored after eyecatcher
-  memcpy(&len, cptr + strlen(eye_catcher), sizeof(size_t));
-  
-  // Trash all data
-  trashMemory(cptr, len + extralen);
-  
-  // Free all of it
-  delete[] cptr;
-}
-
-CXMLprefs::CXMLprefs(const stringT &configFile)
-  : m_pXMLDoc(NULL), m_csConfigFile(configFile), m_bIsLocked(false)
-{
-  pugi::set_memory_management_functions(custom_allocate, custom_deallocate);
-}
-
 bool CXMLprefs::Lock(stringT &locker)
 {
   locker = _T("");
