@@ -30,12 +30,6 @@
   <Dependencies/>
   <VirtualDirectory Name="src"/>
   <VirtualDirectory Name="include"/>
-  <VirtualDirectory Name="tinyxml">
-    <File Name="../src/core/tinyxml/tinyxml.h"/>
-    <File Name="../src/core/tinyxml/tinyxmlparser.cpp"/>
-    <File Name="../src/core/tinyxml/tinyxml.cpp"/>
-    <File Name="../src/core/tinyxml/tinyxmlerror.cpp"/>
-  </VirtualDirectory>
   <VirtualDirectory Name="core">
     <File Name="../src/core/PWSfile.h"/>
     <File Name="../src/core/Util.cpp"/>
@@ -114,6 +108,8 @@
     <File Name="../src/core/ExpiredList.h"/>
     <File Name="../src/core/CoreOtherDB.cpp"/>
     <File Name="../src/core/DBCompareData.h"/>
+    <File Name="../src/core/PWSLog.cpp"/>
+    <File Name="../src/core/PWSLog.h"/>
   </VirtualDirectory>
   <Dependencies Name="Release"/>
   <Dependencies Name="Debug"/>
@@ -272,4 +268,9 @@
       </AdditionalRules>
     </Configuration>
   </Settings>
+  <VirtualDirectory Name="pugixml">
+    <File Name="../src/core/pugixml/pugiconfig.hpp"/>
+    <File Name="../src/core/pugixml/pugixml.cpp"/>
+    <File Name="../src/core/pugixml/pugixml.hpp"/>
+  </VirtualDirectory>
 </CodeLite_Project>

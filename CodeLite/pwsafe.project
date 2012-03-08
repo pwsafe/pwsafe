@@ -98,6 +98,8 @@
     <File Name="../src/ui/wxWidgets/fieldselectionpanel.cpp"/>
     <File Name="../src/ui/wxWidgets/fieldselectiondlg.cpp"/>
     <File Name="../src/ui/wxWidgets/fieldselectiondlg.h"/>
+    <File Name="../src/ui/wxWidgets/pwsmenushortcuts.h"/>
+    <File Name="../src/ui/wxWidgets/pwsmenushortcuts.cpp"/>
   </VirtualDirectory>
   <Dependencies Name="Release">
     <Project Name="core"/>
