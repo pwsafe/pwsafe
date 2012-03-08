@@ -65,6 +65,7 @@
 
 // main toolbar images
 #include "./PwsToolbarButtons.h"
+#include "./pwsmenushortcuts.h"
 
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
@@ -446,6 +447,8 @@ void PasswordSafeFrame::CreateControls()
   itemMenu79->Append(ID_MENUITEM, _("Visit Password Safe &website..."), _T(""), wxITEM_NORMAL);
   itemMenu79->Append(wxID_ABOUT);
   menuBar->Append(itemMenu79, _("&Help"));
+  PWSMenuShortcuts* scmgr = PWSMenuShortcuts::CreateShortcutsManager(menuBar);
+  scmgr->ReadApplyUserShortcuts();
   itemFrame1->SetMenuBar(menuBar);
 
   wxBoxSizer* mainsizer = new wxBoxSizer(wxVERTICAL); //to add the search bar later to the bottom

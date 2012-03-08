@@ -151,13 +151,12 @@ const wxChar *DCAStrings[] = {
  * COptions constructors
  */
 
-COptions::COptions(): m_shortcuts(new PWSMenuShortcuts)
+COptions::COptions()
 {
   Init();
 }
 
 COptions::COptions( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
-    :m_shortcuts(new PWSMenuShortcuts)
 {
   Init();
   Create(parent, id, caption, pos, size, style);
@@ -198,7 +197,6 @@ bool COptions::Create( wxWindow* parent, wxWindowID id, const wxString& caption,
 
 COptions::~COptions()
 {
-  delete m_shortcuts;
 ////@begin COptions destruction
 ////@end COptions destruction
 }
@@ -747,7 +745,7 @@ void COptions::CreateControls()
   shortcutSizer->Add(itemGrid143, wxSizerFlags().Expand().Proportion(1).Border());
   itemPanel142->SetSizer(shortcutSizer);
 
-  ShortcutsGridValidator sv(*m_shortcuts);
+  ShortcutsGridValidator sv(*PWSMenuShortcuts::GetShortcutsManager());
   itemGrid143->SetValidator(sv);
   itemGrid143->AutoSize();
 
@@ -1062,8 +1060,8 @@ void COptions::OnOk(wxCommandEvent& /* evt */)
 {
   if (Validate() && TransferDataFromWindow()) {
     PropSheetToPrefs();
-    if (m_shortcuts->IsDirty()) {
-      m_shortcuts->ApplyAll();
+    if (PWSMenuShortcuts::GetShortcutsManager()->IsDirty()) {
+      PWSMenuShortcuts::GetShortcutsManager()->ApplyEditedShortcuts();
     }
     EndModal(wxID_OK);
   }
@@ -1394,7 +1392,7 @@ void COptions::OnShortcutChange(wxGridEvent& evt)
   wxString newStr = grid->GetCellValue(cell);
   if (newStr.IsEmpty())
     return;
-  wxAcceleratorEntry* newAccel = m_shortcuts->CreateShortcut(newStr);
+  wxAcceleratorEntry* newAccel = PWSMenuShortcuts::GetShortcutsManager()->CreateShortcut(newStr);
   if (!newAccel) {
     //wxMessageBox(wxT("Invalid shortcut: ") + newStr, wxT("Shortcut changed"), wxOK|wxICON_ERROR, this);
     grid->SetCellTextColour(cell.GetRow(), cell.GetCol(), *wxRED);
@@ -1420,7 +1418,7 @@ void COptions::OnShortcutKey(wxKeyEvent& evt)
   //unless there are modifiers, don't attempt anything
   if ((evt.GetModifiers() || IsFunctionKey(evt.GetKeyCode()))
                 && grid->GetGridCursorCol() == COL_SHORTCUT_KEY) {
-    wxAcceleratorEntry* accel = m_shortcuts->CreateShortcut(evt);
+    wxAcceleratorEntry* accel = PWSMenuShortcuts::GetShortcutsManager()->CreateShortcut(evt);
     wxCHECK_RET(accel, wxT("Could not create accelerator from wxKeyEvent"));
     grid->SetCellValue(grid->GetCursorRow(), grid->GetCursorColumn(), accel->ToString());
     delete accel;
