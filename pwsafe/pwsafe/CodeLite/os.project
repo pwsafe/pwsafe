@@ -30,6 +30,7 @@
     <File Name="../src/os/linux/UUID.cpp"/>
     <File Name="../src/os/linux/unicode2keysym.cpp"/>
     <File Name="../src/os/linux/unicode2keysym.h"/>
+    <File Name="../src/os/linux/logit.cpp"/>
   </VirtualDirectory>
   <VirtualDirectory Name="os">
     <File Name="../src/os/env.h"/>
@@ -47,6 +48,7 @@
     <File Name="../src/os/registry.h"/>
     <File Name="../src/os/typedefs.h"/>
     <File Name="../src/os/UUID.h"/>
+    <File Name="../src/os/logit.h"/>
   </VirtualDirectory>
   <Dependencies Name="Release">
     <Project Name="core"/>
