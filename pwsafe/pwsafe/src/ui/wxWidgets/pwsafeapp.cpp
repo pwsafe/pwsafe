@@ -52,6 +52,7 @@ using namespace std;
 #endif
 #include <wx/snglinst.h>
 #include "../../core/PWSLog.h"
+#include "./pwsmenushortcuts.h"
 
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
@@ -391,6 +392,11 @@ int PwsafeApp::OnExit()
     prefs->SetPref(PWSprefs::CurrentFile, m_core.GetCurFile());
   // Save Application related preferences
   prefs->SaveApplicationPreferences();
+  // Save shortcuts, if changed
+  if (PWSMenuShortcuts::GetShortcutsManager()->IsDirty())
+    PWSMenuShortcuts::GetShortcutsManager()->SaveUserShortcuts();
+
+  PWSMenuShortcuts::DestroyShortcutsManager();
   m_activityTimer->Stop();
 ////@begin PwsafeApp cleanup
   return wxApp::OnExit();
