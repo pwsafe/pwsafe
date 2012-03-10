@@ -37,55 +37,6 @@ struct st_SaveTypePW {
   }  
 };
 
-struct st_PSWDPolicy {
-  PWPolicy pwp;
-  StringX symbols;
-  size_t usecount;
-
-  st_PSWDPolicy()
-  : symbols(_T("")), usecount(0)
-  {
-    pwp.Empty();
-  }
-
-  st_PSWDPolicy(const PWPolicy &in_pwp, const StringX &in_symbols, size_t in_usecount)
-  : pwp(in_pwp), symbols(in_symbols), usecount(in_usecount)
-  {}
-
-  st_PSWDPolicy(const st_PSWDPolicy &that)
-    : pwp(that.pwp), symbols(that.symbols), usecount(that.usecount)
-  {}
-
-  st_PSWDPolicy &operator=(const st_PSWDPolicy &that)
-  {
-    if (this != &that) {
-      pwp = that.pwp;
-      symbols = that.symbols;
-      usecount = that.usecount;
-    }
-    return *this;
-  }
-
-  bool operator==(const st_PSWDPolicy &that) const
-  {
-    if (this != &that) {
-      if (pwp != that.pwp ||
-          symbols != that.symbols)
-        return false;
-    }
-    return true;
-  }
-
-  bool operator!=(const st_PSWDPolicy &that) const
-  {return !(*this == that);}
-
-  void Empty()
-  { 
-    pwp.Empty();
-    symbols = _T("");
-    usecount = 0;
-  }
-};
 
 // Used to verify uniqueness of GTU using std::set
 struct st_GroupTitleUser {

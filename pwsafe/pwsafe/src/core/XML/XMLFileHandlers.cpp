@@ -353,45 +353,45 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
       break;
     case XLE_ENTRY_PWUSEDIGITS:
       if (m_strElemContent == _T("1"))
-        cur_entry->pwp.flags |= PWSprefs::PWPolicyUseDigits;
+        cur_entry->pwp.flags |= PWPolicy::UseDigits;
       else
-        cur_entry->pwp.flags &= ~PWSprefs::PWPolicyUseDigits;
+        cur_entry->pwp.flags &= ~PWPolicy::UseDigits;
       break;
     case XLE_ENTRY_PWUSEEASYVISION:
       if (m_strElemContent == _T("1"))
-        cur_entry->pwp.flags |= PWSprefs::PWPolicyUseEasyVision;
+        cur_entry->pwp.flags |= PWPolicy::UseEasyVision;
       else
-        cur_entry->pwp.flags &= ~PWSprefs::PWPolicyUseEasyVision;
+        cur_entry->pwp.flags &= ~PWPolicy::UseEasyVision;
       break;
     case XLE_ENTRY_PWUSEHEXDIGITS:
       if (m_strElemContent == _T("1"))
-        cur_entry->pwp.flags |= PWSprefs::PWPolicyUseHexDigits;
+        cur_entry->pwp.flags |= PWPolicy::UseHexDigits;
       else
-        cur_entry->pwp.flags &= ~PWSprefs::PWPolicyUseHexDigits;
+        cur_entry->pwp.flags &= ~PWPolicy::UseHexDigits;
       break;
     case XLE_ENTRY_PWUSELOWERCASE:
       if (m_strElemContent == _T("1"))
-        cur_entry->pwp.flags |= PWSprefs::PWPolicyUseLowercase;
+        cur_entry->pwp.flags |= PWPolicy::UseLowercase;
       else
-        cur_entry->pwp.flags &= ~PWSprefs::PWPolicyUseLowercase;
+        cur_entry->pwp.flags &= ~PWPolicy::UseLowercase;
       break;
     case XLE_ENTRY_PWUSESYMBOLS:
       if (m_strElemContent == _T("1"))
-        cur_entry->pwp.flags |= PWSprefs::PWPolicyUseSymbols;
+        cur_entry->pwp.flags |= PWPolicy::UseSymbols;
       else
-        cur_entry->pwp.flags &= ~PWSprefs::PWPolicyUseSymbols;
+        cur_entry->pwp.flags &= ~PWPolicy::UseSymbols;
       break;
     case XLE_ENTRY_PWUSEUPPERCASE:
       if (m_strElemContent == _T("1"))
-        cur_entry->pwp.flags |= PWSprefs::PWPolicyUseUppercase;
+        cur_entry->pwp.flags |= PWPolicy::UseUppercase;
       else
-        cur_entry->pwp.flags &= ~PWSprefs::PWPolicyUseUppercase;
+        cur_entry->pwp.flags &= ~PWPolicy::UseUppercase;
       break;
     case XLE_ENTRY_PWMAKEPRONOUNCEABLE:
       if (m_strElemContent == _T("1"))
-        cur_entry->pwp.flags |= PWSprefs::PWPolicyMakePronounceable;
+        cur_entry->pwp.flags |= PWPolicy::MakePronounceable;
       else
-        cur_entry->pwp.flags &= ~PWSprefs::PWPolicyMakePronounceable;
+        cur_entry->pwp.flags &= ~PWPolicy::MakePronounceable;
       break;
     case XLE_ENTRY_PWDIGITMINLENGTH:
       cur_entry->pwp.digitminlength = _ttoi(m_strElemContent.c_str());
@@ -424,39 +424,39 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
                               prefs->GetPrefDefVal(PWSprefs::PWDefaultLength);
 
       if (prefsinXML[XLE_PWUSEDIGITS - XLE_PREF_START]  == 1)
-        cur_policy->st_pp.pwp.flags |= PWSprefs::PWPolicyUseDigits;
+        cur_policy->st_pp.pwp.flags |= PWPolicy::UseDigits;
       else
-        cur_policy->st_pp.pwp.flags &= ~PWSprefs::PWPolicyUseDigits;
+        cur_policy->st_pp.pwp.flags &= ~PWPolicy::UseDigits;
 
       if (prefsinXML[XLE_PWUSEEASYVISION - XLE_PREF_START]  == 1)
-        cur_policy->st_pp.pwp.flags |= PWSprefs::PWPolicyUseEasyVision;
+        cur_policy->st_pp.pwp.flags |= PWPolicy::UseEasyVision;
       else
-        cur_policy->st_pp.pwp.flags &= ~PWSprefs::PWPolicyUseEasyVision;
+        cur_policy->st_pp.pwp.flags &= ~PWPolicy::UseEasyVision;
 
       if (prefsinXML[XLE_PWUSEHEXDIGITS - XLE_PREF_START]  == 1)
-        cur_policy->st_pp.pwp.flags |= PWSprefs::PWPolicyUseHexDigits;
+        cur_policy->st_pp.pwp.flags |= PWPolicy::UseHexDigits;
       else
-        cur_policy->st_pp.pwp.flags &= ~PWSprefs::PWPolicyUseHexDigits;
+        cur_policy->st_pp.pwp.flags &= ~PWPolicy::UseHexDigits;
 
       if (prefsinXML[XLE_PWUSELOWERCASE - XLE_PREF_START]  == 1)
-        cur_policy->st_pp.pwp.flags |= PWSprefs::PWPolicyUseLowercase;
+        cur_policy->st_pp.pwp.flags |= PWPolicy::UseLowercase;
       else
-        cur_policy->st_pp.pwp.flags &= ~PWSprefs::PWPolicyUseLowercase;
+        cur_policy->st_pp.pwp.flags &= ~PWPolicy::UseLowercase;
 
       if (prefsinXML[XLE_PWUSESYMBOLS - XLE_PREF_START]  == 1)
-        cur_policy->st_pp.pwp.flags |= PWSprefs::PWPolicyUseSymbols;
+        cur_policy->st_pp.pwp.flags |= PWPolicy::UseSymbols;
       else
-        cur_policy->st_pp.pwp.flags &= ~PWSprefs::PWPolicyUseSymbols;
+        cur_policy->st_pp.pwp.flags &= ~PWPolicy::UseSymbols;
 
       if (prefsinXML[XLE_PWUSEUPPERCASE - XLE_PREF_START]  == 1)
-        cur_policy->st_pp.pwp.flags |= PWSprefs::PWPolicyUseUppercase;
+        cur_policy->st_pp.pwp.flags |= PWPolicy::UseUppercase;
       else
-        cur_policy->st_pp.pwp.flags &= ~PWSprefs::PWPolicyUseUppercase;
+        cur_policy->st_pp.pwp.flags &= ~PWPolicy::UseUppercase;
 
       if (prefsinXML[XLE_PWMAKEPRONOUNCEABLE - XLE_PREF_START]  == 1)
-        cur_policy->st_pp.pwp.flags |= PWSprefs::PWPolicyMakePronounceable;
+        cur_policy->st_pp.pwp.flags |= PWPolicy::MakePronounceable;
       else
-        cur_policy->st_pp.pwp.flags &= ~PWSprefs::PWPolicyMakePronounceable;
+        cur_policy->st_pp.pwp.flags &= ~PWPolicy::MakePronounceable;
 
       if ((ivalue = prefsinXML[XLE_PWDIGITMINLENGTH - XLE_PREF_START]) != -1)
         cur_policy->st_pp.pwp.digitminlength = ivalue;
