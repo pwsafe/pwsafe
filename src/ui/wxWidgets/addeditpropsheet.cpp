@@ -747,17 +747,17 @@ void AddEditPropSheet::UpdatePWPolicyControls(const PWPolicy& pwp)
 
   EnableSizerChildren(m_pwMinsGSzr, !m_pwpHexCtrl->GetValue());
   m_pwpLenCtrl->SetValue(pwp.length);
-  bUseVal = (pwp.flags & PWSprefs::PWPolicyUseLowercase) != 0;
+  bUseVal = (pwp.flags & PWPolicy::UseLowercase) != 0;
   m_pwpUseLowerCtrl->SetValue(bUseVal);
   m_pwpLCSpin->SetValue(pwp.lowerminlength);
-  bUseVal = (pwp.flags & PWSprefs::PWPolicyUseUppercase) != 0;
+  bUseVal = (pwp.flags & PWPolicy::UseUppercase) != 0;
   m_pwpUseUpperCtrl->SetValue(bUseVal);
   m_pwpUCSpin->SetValue(pwp.upperminlength);
-  bUseVal = (pwp.flags & PWSprefs::PWPolicyUseDigits) != 0;
+  bUseVal = (pwp.flags & PWPolicy::UseDigits) != 0;
   m_pwpUseDigitsCtrl->SetValue(bUseVal);
   m_pwpDigSpin->SetValue(pwp.digitminlength);
 
-  bUseVal = (pwp.flags & PWSprefs::PWPolicyUseSymbols) != 0;
+  bUseVal = (pwp.flags & PWPolicy::UseSymbols) != 0;
   m_pwpSymCtrl->SetValue(bUseVal);
   m_pwpSymSpin->SetValue(pwp.symbolminlength);
   FindWindow(IDC_USE_DEFAULTSYMBOLS)->Enable(bUseVal);
@@ -765,11 +765,11 @@ void AddEditPropSheet::UpdatePWPolicyControls(const PWPolicy& pwp)
   FindWindow(IDC_USE_OWNSYMBOLS)->Enable(bUseVal);
   FindWindow(IDC_OWNSYMBOLS)->Enable(bUseVal);
 
-  bUseVal = (pwp.flags & PWSprefs::PWPolicyUseEasyVision) != 0;
+  bUseVal = (pwp.flags & PWPolicy::UseEasyVision) != 0;
   m_pwpEasyCtrl->SetValue(bUseVal);
-  bUseVal = (pwp.flags & PWSprefs::PWPolicyMakePronounceable) != 0;
+  bUseVal = (pwp.flags & PWPolicy::MakePronounceable) != 0;
   m_pwpPronounceCtrl->SetValue(bUseVal);
-  bUseVal = (pwp.flags & PWSprefs::PWPolicyUseHexDigits) != 0;
+  bUseVal = (pwp.flags & PWPolicy::UseHexDigits) != 0;
   m_pwpHexCtrl->SetValue(bUseVal);
 
   ShowPWPSpinners(!m_pwpPronounceCtrl->GetValue() && !m_pwpEasyCtrl->GetValue());
@@ -1509,30 +1509,30 @@ PWPolicy AddEditPropSheet::GetPWPolicyFromUI() const
   pwp.lowerminlength = pwp.upperminlength =
     pwp.digitminlength = pwp.symbolminlength = 0;
   if (m_pwpUseLowerCtrl->GetValue()) {
-    pwp.flags |= PWSprefs::PWPolicyUseLowercase;
+    pwp.flags |= PWPolicy::UseLowercase;
     pwp.lowerminlength = m_pwpLCSpin->GetValue();
   }
   if (m_pwpUseUpperCtrl->GetValue()) {
-    pwp.flags |= PWSprefs::PWPolicyUseUppercase;
+    pwp.flags |= PWPolicy::UseUppercase;
     pwp.upperminlength = m_pwpUCSpin->GetValue();
   }
   if (m_pwpUseDigitsCtrl->GetValue()) {
-    pwp.flags |= PWSprefs::PWPolicyUseDigits;
+    pwp.flags |= PWPolicy::UseDigits;
     pwp.digitminlength = m_pwpDigSpin->GetValue();
   }
   if (m_pwpSymCtrl->GetValue()) {
-    pwp.flags |= PWSprefs::PWPolicyUseSymbols;
+    pwp.flags |= PWPolicy::UseSymbols;
     pwp.symbolminlength = m_pwpSymSpin->GetValue();
   }
 
   wxASSERT_MSG(!m_pwpEasyCtrl->GetValue() || !m_pwpPronounceCtrl->GetValue(), wxT("UI Bug: both pronounceable and easy-to-read are set"));
 
   if (m_pwpEasyCtrl->GetValue())
-    pwp.flags |= PWSprefs::PWPolicyUseEasyVision;
+    pwp.flags |= PWPolicy::UseEasyVision;
   else if (m_pwpPronounceCtrl->GetValue())
-    pwp.flags |= PWSprefs::PWPolicyMakePronounceable;
+    pwp.flags |= PWPolicy::MakePronounceable;
   if (m_pwpHexCtrl->GetValue())
-    pwp.flags = PWSprefs::PWPolicyUseHexDigits; //yes, its '=' and not '|='
+    pwp.flags = PWPolicy::UseHexDigits; //yes, its '=' and not '|='
 
   return pwp;
 }
@@ -1544,13 +1544,13 @@ PWPolicy AddEditPropSheet::GetPWPolicyFromPrefs() const
 
   pwp.length = prefs->GetPref(PWSprefs::PWDefaultLength);
   pwp.flags = 0;
-  pwp.flags |= (prefs->GetPref(PWSprefs::PWUseLowercase)     ? PWSprefs::PWPolicyUseLowercase:      0);
-  pwp.flags |= (prefs->GetPref(PWSprefs::PWUseUppercase)     ? PWSprefs::PWPolicyUseUppercase:      0);
-  pwp.flags |= (prefs->GetPref(PWSprefs::PWUseDigits)        ? PWSprefs::PWPolicyUseDigits   :      0);
-  pwp.flags |= (prefs->GetPref(PWSprefs::PWUseSymbols)       ? PWSprefs::PWPolicyUseSymbols  :      0);
-  pwp.flags |= (prefs->GetPref(PWSprefs::PWUseHexDigits)     ? PWSprefs::PWPolicyUseHexDigits:      0);
-  pwp.flags |= (prefs->GetPref(PWSprefs::PWUseEasyVision)    ? PWSprefs::PWPolicyUseEasyVision:     0);
-  pwp.flags |= (prefs->GetPref(PWSprefs::PWMakePronounceable)? PWSprefs::PWPolicyMakePronounceable: 0);
+  pwp.flags |= (prefs->GetPref(PWSprefs::PWUseLowercase)     ? PWPolicy::UseLowercase:      0);
+  pwp.flags |= (prefs->GetPref(PWSprefs::PWUseUppercase)     ? PWPolicy::UseUppercase:      0);
+  pwp.flags |= (prefs->GetPref(PWSprefs::PWUseDigits)        ? PWPolicy::UseDigits   :      0);
+  pwp.flags |= (prefs->GetPref(PWSprefs::PWUseSymbols)       ? PWPolicy::UseSymbols  :      0);
+  pwp.flags |= (prefs->GetPref(PWSprefs::PWUseHexDigits)     ? PWPolicy::UseHexDigits:      0);
+  pwp.flags |= (prefs->GetPref(PWSprefs::PWUseEasyVision)    ? PWPolicy::UseEasyVision:     0);
+  pwp.flags |= (prefs->GetPref(PWSprefs::PWMakePronounceable)? PWPolicy::MakePronounceable: 0);
   pwp.lowerminlength = prefs->GetPref(PWSprefs::PWLowercaseMinLength);
   pwp.upperminlength = prefs->GetPref(PWSprefs::PWUppercaseMinLength);
   pwp.digitminlength = prefs->GetPref(PWSprefs::PWDigitMinLength);
