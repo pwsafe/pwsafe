@@ -863,25 +863,25 @@ void CAddEdit_PasswordPolicy::SetPolicyFromVariables()
       // checked but the checkbox is disabled, we have to check both
       if (m_pwuselowercase == TRUE &&
           (GetDlgItem(IDC_USELOWERCASE)->IsWindowEnabled() == TRUE))
-        M_pwp().flags |= PWSprefs::PWPolicyUseLowercase;
+        M_pwp().flags |= PWPolicy::UseLowercase;
       if (m_pwuseuppercase == TRUE &&
           (GetDlgItem(IDC_USEUPPERCASE)->IsWindowEnabled() == TRUE))
-        M_pwp().flags |= PWSprefs::PWPolicyUseUppercase;
+        M_pwp().flags |= PWPolicy::UseUppercase;
       if (m_pwusedigits == TRUE &&
           (GetDlgItem(IDC_USEDIGITS)->IsWindowEnabled() == TRUE))
-        M_pwp().flags |= PWSprefs::PWPolicyUseDigits;
+        M_pwp().flags |= PWPolicy::UseDigits;
       if (m_pwusesymbols == TRUE &&
           (GetDlgItem(IDC_USESYMBOLS)->IsWindowEnabled() == TRUE))
-        M_pwp().flags |= PWSprefs::PWPolicyUseSymbols;
+        M_pwp().flags |= PWPolicy::UseSymbols;
       if (m_pwusehexdigits == TRUE &&
           (GetDlgItem(IDC_USEHEXDIGITS)->IsWindowEnabled() == TRUE))
-        M_pwp().flags |= PWSprefs::PWPolicyUseHexDigits;
+        M_pwp().flags |= PWPolicy::UseHexDigits;
       if (m_pweasyvision == TRUE &&
           (GetDlgItem(IDC_EASYVISION)->IsWindowEnabled() == TRUE))
-        M_pwp().flags |= PWSprefs::PWPolicyUseEasyVision;
+        M_pwp().flags |= PWPolicy::UseEasyVision;
       if (m_pwmakepronounceable == TRUE &&
           (GetDlgItem(IDC_PRONOUNCEABLE)->IsWindowEnabled() == TRUE))
-        M_pwp().flags |= PWSprefs::PWPolicyMakePronounceable;
+        M_pwp().flags |= PWPolicy::MakePronounceable;
 
       M_pwp().length = (int)m_pwdefaultlength;
       M_pwp().digitminlength = (int)m_pwdigitminlength;
@@ -904,13 +904,13 @@ void CAddEdit_PasswordPolicy::SetPolicyFromVariables()
 
 void CAddEdit_PasswordPolicy::SetVariablesFromPolicy()
 {
-  m_pwuselowercase = (M_pwp().flags & PWSprefs::PWPolicyUseLowercase) ? TRUE : FALSE;
-  m_pwuseuppercase = (M_pwp().flags & PWSprefs::PWPolicyUseUppercase) ? TRUE : FALSE;
-  m_pwusedigits = (M_pwp().flags & PWSprefs::PWPolicyUseDigits) ? TRUE : FALSE;
-  m_pwusesymbols = (M_pwp().flags & PWSprefs::PWPolicyUseSymbols) ? TRUE : FALSE;
-  m_pwusehexdigits = (M_pwp().flags & PWSprefs::PWPolicyUseHexDigits) ? TRUE : FALSE;
-  m_pweasyvision = (M_pwp().flags & PWSprefs::PWPolicyUseEasyVision) ? TRUE : FALSE;
-  m_pwmakepronounceable =  (M_pwp().flags & PWSprefs::PWPolicyMakePronounceable) ? TRUE : FALSE;
+  m_pwuselowercase = (M_pwp().flags & PWPolicy::UseLowercase) ? TRUE : FALSE;
+  m_pwuseuppercase = (M_pwp().flags & PWPolicy::UseUppercase) ? TRUE : FALSE;
+  m_pwusedigits = (M_pwp().flags & PWPolicy::UseDigits) ? TRUE : FALSE;
+  m_pwusesymbols = (M_pwp().flags & PWPolicy::UseSymbols) ? TRUE : FALSE;
+  m_pwusehexdigits = (M_pwp().flags & PWPolicy::UseHexDigits) ? TRUE : FALSE;
+  m_pweasyvision = (M_pwp().flags & PWPolicy::UseEasyVision) ? TRUE : FALSE;
+  m_pwmakepronounceable =  (M_pwp().flags & PWPolicy::MakePronounceable) ? TRUE : FALSE;
   m_pwdefaultlength = M_pwp().length;
   m_pwdigitminlength = M_pwp().digitminlength;
   m_pwlowerminlength = M_pwp().lowerminlength;

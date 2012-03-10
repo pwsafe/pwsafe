@@ -142,16 +142,6 @@ public:
   enum {stiBlack = 0, stiBlue = 1, stiWhite = 2, stiYellow = 3};
 
   // For Password Policy
-  enum {
-    PWPolicyUseLowercase        = 0x8000, // Can have a minimum length field
-    PWPolicyUseUppercase        = 0x4000, // Can have a minimum length field
-    PWPolicyUseDigits           = 0x2000, // Can have a minimum length field
-    PWPolicyUseSymbols          = 0x1000, // Can have a minimum length field
-    PWPolicyUseHexDigits        = 0x0800,
-    PWPolicyUseEasyVision       = 0x0400,
-    PWPolicyMakePronounceable   = 0x0200,
-    PWPolicyUnused              = 0x01ff};
-
   // Preferences changed (Database or Application or Shortcuts)
   enum {DB_PREF = 0, APP_PREF = 1, SHC_PREF = 2};
 

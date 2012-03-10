@@ -18,13 +18,13 @@ bool PWPolicy::operator==(const PWPolicy &that) const
   if (this != &that) {
     if (flags != that.flags ||
         length != that.length ||
-        ((flags & PWSprefs::PWPolicyUseDigits) == PWSprefs::PWPolicyUseDigits &&
+        ((flags & PWPolicy::UseDigits) == PWPolicy::UseDigits &&
                     digitminlength != that.digitminlength)  ||
-        ((flags & PWSprefs::PWPolicyUseLowercase) == PWSprefs::PWPolicyUseLowercase &&
+        ((flags & PWPolicy::UseLowercase) == PWPolicy::UseLowercase &&
                     lowerminlength != that.lowerminlength)  ||
-        ((flags & PWSprefs::PWPolicyUseSymbols) == PWSprefs::PWPolicyUseSymbols &&
+        ((flags & PWPolicy::UseSymbols) == PWPolicy::UseSymbols &&
                     symbolminlength != that.symbolminlength) ||
-        ((flags & PWSprefs::PWPolicyUseUppercase) == PWSprefs::PWPolicyUseUppercase &&
+        ((flags & PWPolicy::UseUppercase) == PWPolicy::UseUppercase &&
                     upperminlength != that.upperminlength))
       return false;
   }
@@ -43,20 +43,20 @@ StringX PWPolicy::MakeRandomPassword(const stringT &st_symbols) const
   int pwdigitminlength, pwlowerminlength, pwsymbolminlength, pwupperminlength;
 
   if (flags != 0) {
-    pwuselowercase = (flags & PWSprefs::PWPolicyUseLowercase) == 
-                            PWSprefs::PWPolicyUseLowercase;
-    pwuseuppercase = (flags & PWSprefs::PWPolicyUseUppercase) == 
-                            PWSprefs::PWPolicyUseUppercase;
-    pwusedigits = (flags & PWSprefs::PWPolicyUseDigits) == 
-                            PWSprefs::PWPolicyUseDigits;
-    pwusesymbols = (flags & PWSprefs::PWPolicyUseSymbols) == 
-                            PWSprefs::PWPolicyUseSymbols;
-    pwusehexdigits = (flags & PWSprefs::PWPolicyUseHexDigits) == 
-                            PWSprefs::PWPolicyUseHexDigits;
-    pweasyvision = (flags & PWSprefs::PWPolicyUseEasyVision) == 
-                            PWSprefs::PWPolicyUseEasyVision;
-    pwmakepronounceable = (flags & PWSprefs::PWPolicyMakePronounceable) == 
-                                 PWSprefs::PWPolicyMakePronounceable;
+    pwuselowercase = (flags & PWPolicy::UseLowercase) == 
+                            PWPolicy::UseLowercase;
+    pwuseuppercase = (flags & PWPolicy::UseUppercase) == 
+                            PWPolicy::UseUppercase;
+    pwusedigits = (flags & PWPolicy::UseDigits) == 
+                            PWPolicy::UseDigits;
+    pwusesymbols = (flags & PWPolicy::UseSymbols) == 
+                            PWPolicy::UseSymbols;
+    pwusehexdigits = (flags & PWPolicy::UseHexDigits) == 
+                            PWPolicy::UseHexDigits;
+    pweasyvision = (flags & PWPolicy::UseEasyVision) == 
+                            PWPolicy::UseEasyVision;
+    pwmakepronounceable = (flags & PWPolicy::MakePronounceable) == 
+                                 PWPolicy::MakePronounceable;
     pwdefaultlength = length;
     pwdigitminlength = digitminlength;
     pwlowerminlength = lowerminlength;

@@ -602,19 +602,19 @@ void DboxMain::OnGeneratePassword()
   st_PSWDPolicy st_default_pp;
 
   if (prefs->GetPref(PWSprefs::PWUseLowercase))
-    st_default_pp.pwp.flags |= PWSprefs::PWPolicyUseLowercase;
+    st_default_pp.pwp.flags |= PWPolicy::UseLowercase;
   if (prefs->GetPref(PWSprefs::PWUseUppercase))
-    st_default_pp.pwp.flags |= PWSprefs::PWPolicyUseUppercase;
+    st_default_pp.pwp.flags |= PWPolicy::UseUppercase;
   if (prefs->GetPref(PWSprefs::PWUseDigits))
-    st_default_pp.pwp.flags |= PWSprefs::PWPolicyUseDigits;
+    st_default_pp.pwp.flags |= PWPolicy::UseDigits;
   if (prefs->GetPref(PWSprefs::PWUseSymbols))
-    st_default_pp.pwp.flags |= PWSprefs::PWPolicyUseSymbols;
+    st_default_pp.pwp.flags |= PWPolicy::UseSymbols;
   if (prefs->GetPref(PWSprefs::PWUseHexDigits))
-    st_default_pp.pwp.flags |= PWSprefs::PWPolicyUseHexDigits;
+    st_default_pp.pwp.flags |= PWPolicy::UseHexDigits;
   if (prefs->GetPref(PWSprefs::PWUseEasyVision))
-    st_default_pp.pwp.flags |= PWSprefs::PWPolicyUseEasyVision;
+    st_default_pp.pwp.flags |= PWPolicy::UseEasyVision;
   if (prefs->GetPref(PWSprefs::PWMakePronounceable))
-    st_default_pp.pwp.flags |= PWSprefs::PWPolicyMakePronounceable;
+    st_default_pp.pwp.flags |= PWPolicy::MakePronounceable;
 
   st_default_pp.pwp.length = prefs->GetPref(PWSprefs::PWDefaultLength);
   st_default_pp.pwp.digitminlength = prefs->GetPref(PWSprefs::PWDigitMinLength);
@@ -669,19 +669,19 @@ void DboxMain::OnManagePasswordPolicies()
       PWSprefs *prefs = PWSprefs::GetInstance();
 
       prefs->SetPref(PWSprefs::PWUseLowercase,
-                 (st_new_default_pp.pwp.flags & PWSprefs::PWPolicyUseLowercase) != 0, true);
+                 (st_new_default_pp.pwp.flags & PWPolicy::UseLowercase) != 0, true);
       prefs->SetPref(PWSprefs::PWUseUppercase,
-                 (st_new_default_pp.pwp.flags & PWSprefs::PWPolicyUseUppercase) != 0, true);
+                 (st_new_default_pp.pwp.flags & PWPolicy::UseUppercase) != 0, true);
       prefs->SetPref(PWSprefs::PWUseDigits,
-                 (st_new_default_pp.pwp.flags & PWSprefs::PWPolicyUseDigits) != 0, true);
+                 (st_new_default_pp.pwp.flags & PWPolicy::UseDigits) != 0, true);
       prefs->SetPref(PWSprefs::PWUseSymbols,
-                 (st_new_default_pp.pwp.flags & PWSprefs::PWPolicyUseSymbols) != 0, true);
+                 (st_new_default_pp.pwp.flags & PWPolicy::UseSymbols) != 0, true);
       prefs->SetPref(PWSprefs::PWUseHexDigits,
-                 (st_new_default_pp.pwp.flags & PWSprefs::PWPolicyUseHexDigits) != 0, true);
+                 (st_new_default_pp.pwp.flags & PWPolicy::UseHexDigits) != 0, true);
       prefs->SetPref(PWSprefs::PWUseEasyVision,
-                 (st_new_default_pp.pwp.flags & PWSprefs::PWPolicyUseEasyVision) != 0, true);
+                 (st_new_default_pp.pwp.flags & PWPolicy::UseEasyVision) != 0, true);
       prefs->SetPref(PWSprefs::PWMakePronounceable,
-                 (st_new_default_pp.pwp.flags & PWSprefs::PWPolicyMakePronounceable) != 0, true);
+                 (st_new_default_pp.pwp.flags & PWPolicy::MakePronounceable) != 0, true);
 
       prefs->SetPref(PWSprefs::PWDefaultLength,
                      st_new_default_pp.pwp.length, true);

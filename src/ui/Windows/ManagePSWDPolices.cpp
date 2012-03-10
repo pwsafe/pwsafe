@@ -44,19 +44,19 @@ CManagePSWDPolices::CManagePSWDPolices(CWnd* pParent, const bool bLongPPs)
   PWSprefs *prefs = PWSprefs::GetInstance();
   m_st_default_pp.Empty();
   if (prefs->GetPref(PWSprefs::PWUseLowercase))
-    m_st_default_pp.pwp.flags |= PWSprefs::PWPolicyUseLowercase;
+    m_st_default_pp.pwp.flags |= PWPolicy::UseLowercase;
   if (prefs->GetPref(PWSprefs::PWUseUppercase))
-    m_st_default_pp.pwp.flags |= PWSprefs::PWPolicyUseUppercase;
+    m_st_default_pp.pwp.flags |= PWPolicy::UseUppercase;
   if (prefs->GetPref(PWSprefs::PWUseDigits))
-    m_st_default_pp.pwp.flags |= PWSprefs::PWPolicyUseDigits;
+    m_st_default_pp.pwp.flags |= PWPolicy::UseDigits;
   if (prefs->GetPref(PWSprefs::PWUseSymbols))
-    m_st_default_pp.pwp.flags |= PWSprefs::PWPolicyUseSymbols;
+    m_st_default_pp.pwp.flags |= PWPolicy::UseSymbols;
   if (prefs->GetPref(PWSprefs::PWUseHexDigits))
-    m_st_default_pp.pwp.flags |= PWSprefs::PWPolicyUseHexDigits;
+    m_st_default_pp.pwp.flags |= PWPolicy::UseHexDigits;
   if (prefs->GetPref(PWSprefs::PWUseEasyVision))
-    m_st_default_pp.pwp.flags |= PWSprefs::PWPolicyUseEasyVision;
+    m_st_default_pp.pwp.flags |= PWPolicy::UseEasyVision;
   if (prefs->GetPref(PWSprefs::PWMakePronounceable))
-    m_st_default_pp.pwp.flags |= PWSprefs::PWPolicyMakePronounceable;
+    m_st_default_pp.pwp.flags |= PWPolicy::MakePronounceable;
 
   m_st_default_pp.pwp.length = prefs->GetPref(PWSprefs::PWDefaultLength);
   m_st_default_pp.pwp.digitminlength = prefs->GetPref(PWSprefs::PWDigitMinLength);
@@ -576,19 +576,19 @@ void CManagePSWDPolices::OnGeneratePassword()
     PWSprefs *prefs = PWSprefs::GetInstance();
   
     if (prefs->GetPref(PWSprefs::PWUseLowercase))
-      st_pp.pwp.flags |= PWSprefs::PWPolicyUseLowercase;
+      st_pp.pwp.flags |= PWPolicy::UseLowercase;
     if (prefs->GetPref(PWSprefs::PWUseUppercase))
-      st_pp.pwp.flags |= PWSprefs::PWPolicyUseUppercase;
+      st_pp.pwp.flags |= PWPolicy::UseUppercase;
     if (prefs->GetPref(PWSprefs::PWUseDigits))
-      st_pp.pwp.flags |= PWSprefs::PWPolicyUseDigits;
+      st_pp.pwp.flags |= PWPolicy::UseDigits;
     if (prefs->GetPref(PWSprefs::PWUseSymbols))
-      st_pp.pwp.flags |= PWSprefs::PWPolicyUseSymbols;
+      st_pp.pwp.flags |= PWPolicy::UseSymbols;
     if (prefs->GetPref(PWSprefs::PWUseHexDigits))
-      st_pp.pwp.flags |= PWSprefs::PWPolicyUseHexDigits;
+      st_pp.pwp.flags |= PWPolicy::UseHexDigits;
     if (prefs->GetPref(PWSprefs::PWUseEasyVision))
-      st_pp.pwp.flags |= PWSprefs::PWPolicyUseEasyVision;
+      st_pp.pwp.flags |= PWPolicy::UseEasyVision;
     if (prefs->GetPref(PWSprefs::PWMakePronounceable))
-      st_pp.pwp.flags |= PWSprefs::PWPolicyMakePronounceable;
+      st_pp.pwp.flags |= PWPolicy::MakePronounceable;
   
     st_pp.pwp.length = prefs->GetPref(PWSprefs::PWDefaultLength);
     st_pp.pwp.digitminlength = prefs->GetPref(PWSprefs::PWDigitMinLength);
@@ -886,8 +886,8 @@ void CManagePSWDPolices::UpdateDetails()
   cs_yes.Remove(L'&');
   cs_no.Remove(L'&');
 
-  const bool bEV = (st_pp.pwp.flags & PWSprefs::PWPolicyUseEasyVision) != 0;
-  const bool bPR = (st_pp.pwp.flags & PWSprefs::PWPolicyMakePronounceable) != 0;
+  const bool bEV = (st_pp.pwp.flags & PWPolicy::UseEasyVision) != 0;
+  const bool bPR = (st_pp.pwp.flags & PWPolicy::MakePronounceable) != 0;
 
   int nPos = 0;
 
@@ -906,7 +906,7 @@ void CManagePSWDPolices::UpdateDetails()
 
   cs_text.LoadString(IDS_PUSELOWER);
   m_PolicyDetails.InsertItem(nPos, cs_text);
-  if ((st_pp.pwp.flags & PWSprefs::PWPolicyUseLowercase) != 0) {
+  if ((st_pp.pwp.flags & PWPolicy::UseLowercase) != 0) {
     if (bEV || bPR)
       cs_text = cs_yes;
     else
@@ -919,7 +919,7 @@ void CManagePSWDPolices::UpdateDetails()
 
   cs_text.LoadString(IDS_PUSEUPPER);
   m_PolicyDetails.InsertItem(nPos, cs_text);
-  if ((st_pp.pwp.flags & PWSprefs::PWPolicyUseUppercase) != 0) {
+  if ((st_pp.pwp.flags & PWPolicy::UseUppercase) != 0) {
     if (bEV | bPR)
       cs_text = cs_yes;
     else
@@ -932,7 +932,7 @@ void CManagePSWDPolices::UpdateDetails()
 
   cs_text.LoadString(IDS_PUSEDIGITS);
   m_PolicyDetails.InsertItem(nPos, cs_text);
-  if ((st_pp.pwp.flags & PWSprefs::PWPolicyUseDigits) != 0) {
+  if ((st_pp.pwp.flags & PWPolicy::UseDigits) != 0) {
     if (bEV || bPR)
       cs_text = cs_yes;
     else
@@ -945,7 +945,7 @@ void CManagePSWDPolices::UpdateDetails()
 
   cs_text.LoadString(IDS_PUSESYMBOL);
   m_PolicyDetails.InsertItem(nPos, cs_text);
-  if ((st_pp.pwp.flags & PWSprefs::PWPolicyUseSymbols) != 0) {
+  if ((st_pp.pwp.flags & PWPolicy::UseSymbols) != 0) {
     if (bEV || bPR) {
       cs_text.Format(bEV ? IDS_YESEASYVISON : IDS_YESPRONOUNCEABLE,
                      bEV ? m_easyvision_symbols.c_str() : m_pronounceable_symbols.c_str());
@@ -974,7 +974,7 @@ void CManagePSWDPolices::UpdateDetails()
   cs_text.LoadString(IDS_PHEXADECIMAL);
   m_PolicyDetails.InsertItem(nPos, cs_text);
   m_PolicyDetails.SetItemText(nPos, 1,
-          (st_pp.pwp.flags & PWSprefs::PWPolicyUseHexDigits) != 0 ? cs_yes : cs_no);
+          (st_pp.pwp.flags & PWPolicy::UseHexDigits) != 0 ? cs_yes : cs_no);
   nPos++;
 
   m_PolicyDetails.SetColumnWidth(0, LVSCW_AUTOSIZE);

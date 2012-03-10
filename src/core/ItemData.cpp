@@ -284,39 +284,39 @@ StringX CItemData::GetFieldValue(const FieldType &ft) const
       GetPWPolicy(pwp);
       if (pwp.flags != 0) {
         stringT st_pwp(_T("")), st_text;
-        if (pwp.flags & PWSprefs::PWPolicyUseLowercase) {
+        if (pwp.flags & PWPolicy::UseLowercase) {
           st_pwp += _T("L");
           if (pwp.lowerminlength > 1) {
             Format(st_text, _T("(%d)"), pwp.lowerminlength);
             st_pwp += st_text;
           }
         }
-        if (pwp.flags & PWSprefs::PWPolicyUseUppercase) {
+        if (pwp.flags & PWPolicy::UseUppercase) {
           st_pwp += _T("U");
           if (pwp.upperminlength > 1) {
             Format(st_text, _T("(%d)"), pwp.upperminlength);
             st_pwp += st_text;
           }
         }
-        if (pwp.flags & PWSprefs::PWPolicyUseDigits) {
+        if (pwp.flags & PWPolicy::UseDigits) {
           st_pwp += _T("D");
           if (pwp.digitminlength > 1) {
             Format(st_text, _T("(%d)"), pwp.digitminlength);
             st_pwp += st_text;
           }
         }
-        if (pwp.flags & PWSprefs::PWPolicyUseSymbols) {
+        if (pwp.flags & PWPolicy::UseSymbols) {
           st_pwp += _T("S");
             if (pwp.symbolminlength > 1) {
             Format(st_text, _T("(%d)"), pwp.symbolminlength);
               st_pwp += st_text;
           }
         }
-        if (pwp.flags & PWSprefs::PWPolicyUseHexDigits)
+        if (pwp.flags & PWPolicy::UseHexDigits)
           st_pwp += _T("H");
-        if (pwp.flags & PWSprefs::PWPolicyUseEasyVision)
+        if (pwp.flags & PWPolicy::UseEasyVision)
           st_pwp += _T("E");
-        if (pwp.flags & PWSprefs::PWPolicyMakePronounceable)
+        if (pwp.flags & PWPolicy::MakePronounceable)
           st_pwp += _T("P");
         oStringXStream osx;
         osx << st_pwp << _T(":") << pwp.length;
@@ -957,19 +957,19 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
       oss << "\t\t<PasswordPolicy>" << endl;
       oss << dec;
       oss << "\t\t\t<PWLength>" << pwp.length << "</PWLength>" << endl;
-      if (pwp.flags & PWSprefs::PWPolicyUseLowercase)
+      if (pwp.flags & PWPolicy::UseLowercase)
         oss << "\t\t\t<PWUseLowercase>1</PWUseLowercase>" << endl;
-      if (pwp.flags & PWSprefs::PWPolicyUseUppercase)
+      if (pwp.flags & PWPolicy::UseUppercase)
         oss << "\t\t\t<PWUseUppercase>1</PWUseUppercase>" << endl;
-      if (pwp.flags & PWSprefs::PWPolicyUseDigits)
+      if (pwp.flags & PWPolicy::UseDigits)
         oss << "\t\t\t<PWUseDigits>1</PWUseDigits>" << endl;
-      if (pwp.flags & PWSprefs::PWPolicyUseSymbols)
+      if (pwp.flags & PWPolicy::UseSymbols)
         oss << "\t\t\t<PWUseSymbols>1</PWUseSymbols>" << endl;
-      if (pwp.flags & PWSprefs::PWPolicyUseHexDigits)
+      if (pwp.flags & PWPolicy::UseHexDigits)
         oss << "\t\t\t<PWUseHexDigits>1</PWUseHexDigits>" << endl;
-      if (pwp.flags & PWSprefs::PWPolicyUseEasyVision)
+      if (pwp.flags & PWPolicy::UseEasyVision)
         oss << "\t\t\t<PWUseEasyVision>1</PWUseEasyVision>" << endl;
-      if (pwp.flags & PWSprefs::PWPolicyMakePronounceable)
+      if (pwp.flags & PWPolicy::MakePronounceable)
         oss << "\t\t\t<PWMakePronounceable>1</PWMakePronounceable>" << endl;
 
       if (pwp.lowerminlength > 0) {
@@ -1429,8 +1429,8 @@ void CItemData::SetPWHistory(const StringX &PWHistory)
 void CItemData::SetPWPolicy(const PWPolicy &pwp)
 {
   // Must be some flags; however hex incompatible with other flags
-  bool bhex_flag = (pwp.flags & PWSprefs::PWPolicyUseHexDigits) != 0;
-  bool bother_flags = (pwp.flags & (~PWSprefs::PWPolicyUseHexDigits)) != 0;
+  bool bhex_flag = (pwp.flags & PWPolicy::UseHexDigits) != 0;
+  bool bother_flags = (pwp.flags & (~PWPolicy::UseHexDigits)) != 0;
 
   stringT cs_pwp;
 
@@ -1459,8 +1459,8 @@ bool CItemData::SetPWPolicy(const stringT &cs_pwp)
   StringX cs_pwpolicy(cs_pwp.c_str());
 
   // Must be some flags; however hex incompatible with other flags
-  bool bhex_flag = (pwp.flags & PWSprefs::PWPolicyUseHexDigits) != 0;
-  bool bother_flags = (pwp.flags & (~PWSprefs::PWPolicyUseHexDigits)) != 0;
+  bool bhex_flag = (pwp.flags & PWPolicy::UseHexDigits) != 0;
+  bool bother_flags = (pwp.flags & (~PWPolicy::UseHexDigits)) != 0;
   const int total_sublength = pwp.digitminlength + pwp.lowerminlength +
     pwp.symbolminlength + pwp.upperminlength;
 
