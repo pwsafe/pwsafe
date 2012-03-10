@@ -41,30 +41,7 @@ CManagePSWDPolices::CManagePSWDPolices(CWnd* pParent, const bool bLongPPs)
 
   m_MapPSWDPLC = m_pDbx->GetPasswordPolicies();
 
-  PWSprefs *prefs = PWSprefs::GetInstance();
-  m_st_default_pp.Empty();
-  if (prefs->GetPref(PWSprefs::PWUseLowercase))
-    m_st_default_pp.pwp.flags |= PWPolicy::UseLowercase;
-  if (prefs->GetPref(PWSprefs::PWUseUppercase))
-    m_st_default_pp.pwp.flags |= PWPolicy::UseUppercase;
-  if (prefs->GetPref(PWSprefs::PWUseDigits))
-    m_st_default_pp.pwp.flags |= PWPolicy::UseDigits;
-  if (prefs->GetPref(PWSprefs::PWUseSymbols))
-    m_st_default_pp.pwp.flags |= PWPolicy::UseSymbols;
-  if (prefs->GetPref(PWSprefs::PWUseHexDigits))
-    m_st_default_pp.pwp.flags |= PWPolicy::UseHexDigits;
-  if (prefs->GetPref(PWSprefs::PWUseEasyVision))
-    m_st_default_pp.pwp.flags |= PWPolicy::UseEasyVision;
-  if (prefs->GetPref(PWSprefs::PWMakePronounceable))
-    m_st_default_pp.pwp.flags |= PWPolicy::MakePronounceable;
-
-  m_st_default_pp.pwp.length = prefs->GetPref(PWSprefs::PWDefaultLength);
-  m_st_default_pp.pwp.digitminlength = prefs->GetPref(PWSprefs::PWDigitMinLength);
-  m_st_default_pp.pwp.lowerminlength = prefs->GetPref(PWSprefs::PWLowercaseMinLength);
-  m_st_default_pp.pwp.symbolminlength = prefs->GetPref(PWSprefs::PWSymbolMinLength);
-  m_st_default_pp.pwp.upperminlength = prefs->GetPref(PWSprefs::PWUppercaseMinLength);
-
-  m_st_default_pp.symbols = prefs->GetPref(PWSprefs::DefaultSymbols);
+  m_st_default_pp.SetToDefaults();
 
   CPasswordCharPool::GetDefaultSymbols(m_std_symbols);
   CPasswordCharPool::GetEasyVisionSymbols(m_easyvision_symbols);
@@ -571,34 +548,9 @@ void CManagePSWDPolices::OnGeneratePassword()
   st_PSWDPolicy st_pp;
   CString cs_policyname(L"");
 
-  if (m_iSelectedItem == 0) {
-    // Use Default Password policy
-    PWSprefs *prefs = PWSprefs::GetInstance();
-  
-    if (prefs->GetPref(PWSprefs::PWUseLowercase))
-      st_pp.pwp.flags |= PWPolicy::UseLowercase;
-    if (prefs->GetPref(PWSprefs::PWUseUppercase))
-      st_pp.pwp.flags |= PWPolicy::UseUppercase;
-    if (prefs->GetPref(PWSprefs::PWUseDigits))
-      st_pp.pwp.flags |= PWPolicy::UseDigits;
-    if (prefs->GetPref(PWSprefs::PWUseSymbols))
-      st_pp.pwp.flags |= PWPolicy::UseSymbols;
-    if (prefs->GetPref(PWSprefs::PWUseHexDigits))
-      st_pp.pwp.flags |= PWPolicy::UseHexDigits;
-    if (prefs->GetPref(PWSprefs::PWUseEasyVision))
-      st_pp.pwp.flags |= PWPolicy::UseEasyVision;
-    if (prefs->GetPref(PWSprefs::PWMakePronounceable))
-      st_pp.pwp.flags |= PWPolicy::MakePronounceable;
-  
-    st_pp.pwp.length = prefs->GetPref(PWSprefs::PWDefaultLength);
-    st_pp.pwp.digitminlength = prefs->GetPref(PWSprefs::PWDigitMinLength);
-    st_pp.pwp.lowerminlength = prefs->GetPref(PWSprefs::PWLowercaseMinLength);
-    st_pp.pwp.symbolminlength = prefs->GetPref(PWSprefs::PWSymbolMinLength);
-    st_pp.pwp.upperminlength = prefs->GetPref(PWSprefs::PWUppercaseMinLength);
-  
-    st_pp.symbols = prefs->GetPref(PWSprefs::DefaultSymbols);
-  } else {
-    // Named Password Policy
+  if (m_iSelectedItem == 0) { // Use Default Password policy
+    st_pp.SetToDefaults();
+  } else { // Named Password Policy
     cs_policyname = m_PolicyNames.GetItemText(m_iSelectedItem, 0);
 
     PSWDPolicyMapIter iter = m_MapPSWDPLC.find(StringX((LPCWSTR)cs_policyname));

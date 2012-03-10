@@ -598,31 +598,8 @@ void DboxMain::OnGeneratePassword()
 {
   PSWDPolicyMap MapPSWDPLC = GetPasswordPolicies();
 
-  PWSprefs *prefs = PWSprefs::GetInstance();
   st_PSWDPolicy st_default_pp;
-
-  if (prefs->GetPref(PWSprefs::PWUseLowercase))
-    st_default_pp.pwp.flags |= PWPolicy::UseLowercase;
-  if (prefs->GetPref(PWSprefs::PWUseUppercase))
-    st_default_pp.pwp.flags |= PWPolicy::UseUppercase;
-  if (prefs->GetPref(PWSprefs::PWUseDigits))
-    st_default_pp.pwp.flags |= PWPolicy::UseDigits;
-  if (prefs->GetPref(PWSprefs::PWUseSymbols))
-    st_default_pp.pwp.flags |= PWPolicy::UseSymbols;
-  if (prefs->GetPref(PWSprefs::PWUseHexDigits))
-    st_default_pp.pwp.flags |= PWPolicy::UseHexDigits;
-  if (prefs->GetPref(PWSprefs::PWUseEasyVision))
-    st_default_pp.pwp.flags |= PWPolicy::UseEasyVision;
-  if (prefs->GetPref(PWSprefs::PWMakePronounceable))
-    st_default_pp.pwp.flags |= PWPolicy::MakePronounceable;
-
-  st_default_pp.pwp.length = prefs->GetPref(PWSprefs::PWDefaultLength);
-  st_default_pp.pwp.digitminlength = prefs->GetPref(PWSprefs::PWDigitMinLength);
-  st_default_pp.pwp.lowerminlength = prefs->GetPref(PWSprefs::PWLowercaseMinLength);
-  st_default_pp.pwp.symbolminlength = prefs->GetPref(PWSprefs::PWSymbolMinLength);
-  st_default_pp.pwp.upperminlength = prefs->GetPref(PWSprefs::PWUppercaseMinLength);
-
-  st_default_pp.symbols = prefs->GetPref(PWSprefs::DefaultSymbols);
+  st_default_pp.SetToDefaults();
 
   bool bLongPPs = LongPPs();
   CPasswordPolicyDlg GenPswdPS(IDS_GENERATEPASSWORD, this, bLongPPs, 

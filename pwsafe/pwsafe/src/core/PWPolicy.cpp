@@ -100,3 +100,34 @@ StringX PWPolicy::MakeRandomPassword(const stringT &st_symbols) const
 
   return pwchars.MakePassword();
 }
+
+void PWPolicy::SetToDefaults()
+{
+  const PWSprefs *prefs = PWSprefs::GetInstance();
+  if (prefs->GetPref(PWSprefs::PWUseLowercase))
+    flags |= PWPolicy::UseLowercase;
+  if (prefs->GetPref(PWSprefs::PWUseUppercase))
+    flags |= PWPolicy::UseUppercase;
+  if (prefs->GetPref(PWSprefs::PWUseDigits))
+    flags |= PWPolicy::UseDigits;
+  if (prefs->GetPref(PWSprefs::PWUseSymbols))
+    flags |= PWPolicy::UseSymbols;
+  if (prefs->GetPref(PWSprefs::PWUseHexDigits))
+    flags |= PWPolicy::UseHexDigits;
+  if (prefs->GetPref(PWSprefs::PWUseEasyVision))
+    flags |= PWPolicy::UseEasyVision;
+  if (prefs->GetPref(PWSprefs::PWMakePronounceable))
+    flags |= PWPolicy::MakePronounceable;
+
+  length = prefs->GetPref(PWSprefs::PWDefaultLength);
+  digitminlength = prefs->GetPref(PWSprefs::PWDigitMinLength);
+  lowerminlength = prefs->GetPref(PWSprefs::PWLowercaseMinLength);
+  symbolminlength = prefs->GetPref(PWSprefs::PWSymbolMinLength);
+  upperminlength = prefs->GetPref(PWSprefs::PWUppercaseMinLength);
+}
+
+void st_PSWDPolicy::SetToDefaults()
+{
+  pwp.SetToDefaults();
+  symbols = PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultSymbols);
+}
