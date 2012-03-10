@@ -1540,22 +1540,7 @@ PWPolicy AddEditPropSheet::GetPWPolicyFromUI() const
 PWPolicy AddEditPropSheet::GetPWPolicyFromPrefs() const
 {
   PWPolicy pwp;
-  PWSprefs *prefs = PWSprefs::GetInstance();
-
-  pwp.length = prefs->GetPref(PWSprefs::PWDefaultLength);
-  pwp.flags = 0;
-  pwp.flags |= (prefs->GetPref(PWSprefs::PWUseLowercase)     ? PWPolicy::UseLowercase:      0);
-  pwp.flags |= (prefs->GetPref(PWSprefs::PWUseUppercase)     ? PWPolicy::UseUppercase:      0);
-  pwp.flags |= (prefs->GetPref(PWSprefs::PWUseDigits)        ? PWPolicy::UseDigits   :      0);
-  pwp.flags |= (prefs->GetPref(PWSprefs::PWUseSymbols)       ? PWPolicy::UseSymbols  :      0);
-  pwp.flags |= (prefs->GetPref(PWSprefs::PWUseHexDigits)     ? PWPolicy::UseHexDigits:      0);
-  pwp.flags |= (prefs->GetPref(PWSprefs::PWUseEasyVision)    ? PWPolicy::UseEasyVision:     0);
-  pwp.flags |= (prefs->GetPref(PWSprefs::PWMakePronounceable)? PWPolicy::MakePronounceable: 0);
-  pwp.lowerminlength = prefs->GetPref(PWSprefs::PWLowercaseMinLength);
-  pwp.upperminlength = prefs->GetPref(PWSprefs::PWUppercaseMinLength);
-  pwp.digitminlength = prefs->GetPref(PWSprefs::PWDigitMinLength);
-  pwp.symbolminlength = prefs->GetPref(PWSprefs::PWSymbolMinLength);
-
+  pwp.SetToDefaults();
   return pwp;
 }
 
