@@ -153,13 +153,13 @@ struct st_PSWDPolicyChange {
   st_PSWDPolicyChange(const StringX &in_name, CPP_FLAGS in_flags,
           const st_PSWDPolicy &in_st_pp_original,
           const st_PSWDPolicy &in_st_pp_new)
-  : name(in_name), flags(in_flags), st_pp_save(in_st_pp_original),
-  st_pp_new(in_st_pp_new)
+  : name(in_name), st_pp_save(in_st_pp_original),
+  st_pp_new(in_st_pp_new), flags(in_flags)
   {}
 
   st_PSWDPolicyChange(const st_PSWDPolicyChange &that)
-    : name(that.name), flags(that.flags), st_pp_save(that.st_pp_save),
-    st_pp_new(that.st_pp_new)
+    : name(that.name), st_pp_save(that.st_pp_save),
+    st_pp_new(that.st_pp_new), flags(that.flags)
   {}
 
   st_PSWDPolicyChange &operator=(const st_PSWDPolicyChange &that)
