@@ -43,28 +43,7 @@ CAddEdit_PropertySheet::CAddEdit_PropertySheet(UINT nID, CWnd* pParent,
 
   PWSprefs *prefs = PWSprefs::GetInstance();
 
-  m_AEMD.default_pwp.Empty();
-  if (prefs->GetPref(PWSprefs::PWUseLowercase))
-    m_AEMD.default_pwp.flags |= PWPolicy::UseLowercase;
-  if (prefs->GetPref(PWSprefs::PWUseUppercase))
-    m_AEMD.default_pwp.flags |= PWPolicy::UseUppercase;
-  if (prefs->GetPref(PWSprefs::PWUseDigits))
-    m_AEMD.default_pwp.flags |= PWPolicy::UseDigits;
-  if (prefs->GetPref(PWSprefs::PWUseSymbols))
-    m_AEMD.default_pwp.flags |= PWPolicy::UseSymbols;
-  if (prefs->GetPref(PWSprefs::PWUseHexDigits))
-    m_AEMD.default_pwp.flags |= PWPolicy::UseHexDigits;
-  if (prefs->GetPref(PWSprefs::PWUseEasyVision))
-    m_AEMD.default_pwp.flags |= PWPolicy::UseEasyVision;
-  if (prefs->GetPref(PWSprefs::PWMakePronounceable))
-    m_AEMD.default_pwp.flags |= PWPolicy::MakePronounceable;
-
-  m_AEMD.default_pwp.length = prefs->GetPref(PWSprefs::PWDefaultLength);
-  m_AEMD.default_pwp.digitminlength = prefs->GetPref(PWSprefs::PWDigitMinLength);
-  m_AEMD.default_pwp.lowerminlength = prefs->GetPref(PWSprefs::PWLowercaseMinLength);
-  m_AEMD.default_pwp.symbolminlength = prefs->GetPref(PWSprefs::PWSymbolMinLength);
-  m_AEMD.default_pwp.upperminlength = prefs->GetPref(PWSprefs::PWUppercaseMinLength);
-  
+  m_AEMD.default_pwp.SetToDefaults();
   m_AEMD.default_symbols = prefs->GetPref(PWSprefs::DefaultSymbols);
 
   // Set up data used by all Property Pages, as appropriate

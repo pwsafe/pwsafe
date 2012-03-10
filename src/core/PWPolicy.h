@@ -78,6 +78,8 @@ struct PWPolicy {
   // with arguments matching 'this' policy, or,
   // preference-defined policy if this->flags == 0
   StringX MakeRandomPassword(const stringT &st_symbols = _T("")) const;
+
+  void SetToDefaults(); // from Prefs
 };
 
 //-----------------------------------------------------------------
@@ -129,6 +131,8 @@ struct st_PSWDPolicy {
     symbols = _T("");
     usecount = 0;
   }
+
+  void SetToDefaults();
 };
 
 //-----------------------------------------------------------------
