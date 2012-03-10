@@ -549,7 +549,7 @@ void CManagePSWDPolices::OnGeneratePassword()
   CString cs_policyname(L"");
 
   if (m_iSelectedItem == 0) { // Use Default Password policy
-    st_pp.SetToDefaults();
+    st_pp = m_st_default_pp;
   } else { // Named Password Policy
     cs_policyname = m_PolicyNames.GetItemText(m_iSelectedItem, 0);
 
