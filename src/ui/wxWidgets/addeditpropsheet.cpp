@@ -79,7 +79,11 @@ BEGIN_EVENT_TABLE( AddEditPropSheet, wxPropertySheetDialog )
 
   EVT_RADIOBUTTON( ID_RADIOBUTTON3, AddEditPropSheet::OnPWPRBSelected )
 
-  EVT_RADIOBUTTON( IDC_USE_DEFAULTSYMBOLS, AddEditPropSheet::OnSymbols )
+  EVT_CHECKBOX( ID_CHECKBOX6, AddEditPropSheet::OnSymbolsCB )
+
+  EVT_RADIOBUTTON( IDC_USE_DEFAULTSYMBOLS, AddEditPropSheet::OnSymbolsRB )
+
+  EVT_RADIOBUTTON( IDC_USE_OWNSYMBOLS, AddEditPropSheet::OnSymbolsRB )
 
   EVT_CHECKBOX( ID_CHECKBOX7, AddEditPropSheet::OnEZreadCBClick )
 
@@ -247,7 +251,6 @@ private:
 
 void AddEditPropSheet::CreateControls()
 {
-  PWSprefs *prefs = PWSprefs::GetInstance();
 ////@begin AddEditPropSheet content construction
   AddEditPropSheet* itemPropertySheetDialog1 = this;
 
@@ -741,6 +744,8 @@ static void EnableSizerChildren(wxSizer *sizer, bool enable)
 void AddEditPropSheet::UpdatePWPolicyControls(const PWPolicy& pwp)
 {
   bool bUseVal; // keep picky compiler happy, code readable
+
+  EnableSizerChildren(m_pwMinsGSzr, !m_pwpHexCtrl->GetValue());
   m_pwpLenCtrl->SetValue(pwp.length);
   bUseVal = (pwp.flags & PWSprefs::PWPolicyUseLowercase) != 0;
   m_pwpUseLowerCtrl->SetValue(bUseVal);
@@ -751,9 +756,15 @@ void AddEditPropSheet::UpdatePWPolicyControls(const PWPolicy& pwp)
   bUseVal = (pwp.flags & PWSprefs::PWPolicyUseDigits) != 0;
   m_pwpUseDigitsCtrl->SetValue(bUseVal);
   m_pwpDigSpin->SetValue(pwp.digitminlength);
+
   bUseVal = (pwp.flags & PWSprefs::PWPolicyUseSymbols) != 0;
   m_pwpSymCtrl->SetValue(bUseVal);
   m_pwpSymSpin->SetValue(pwp.symbolminlength);
+  FindWindow(IDC_USE_DEFAULTSYMBOLS)->Enable(bUseVal);
+  FindWindow(IDC_STATIC_DEFAULT_SYMBOLS)->Enable(bUseVal);
+  FindWindow(IDC_USE_OWNSYMBOLS)->Enable(bUseVal);
+  FindWindow(IDC_OWNSYMBOLS)->Enable(bUseVal);
+
   bUseVal = (pwp.flags & PWSprefs::PWPolicyUseEasyVision) != 0;
   m_pwpEasyCtrl->SetValue(bUseVal);
   bUseVal = (pwp.flags & PWSprefs::PWPolicyMakePronounceable) != 0;
@@ -761,7 +772,6 @@ void AddEditPropSheet::UpdatePWPolicyControls(const PWPolicy& pwp)
   bUseVal = (pwp.flags & PWSprefs::PWPolicyUseHexDigits) != 0;
   m_pwpHexCtrl->SetValue(bUseVal);
 
-  EnableSizerChildren(m_pwMinsGSzr, !m_pwpHexCtrl->GetValue());
   ShowPWPSpinners(!m_pwpPronounceCtrl->GetValue() && !m_pwpEasyCtrl->GetValue());
 
   if (m_useownsymbols == DEFAULT_SYMBOLS) {
@@ -1626,13 +1636,29 @@ void AddEditPropSheet::OnPronouceableCBClick( wxCommandEvent& evt)
  * wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_RADIOBUTTON8
  */
 
-void AddEditPropSheet::OnSymbols( wxCommandEvent& evt)
+void AddEditPropSheet::OnSymbolsRB( wxCommandEvent& evt)
 {
-  m_useownsymbols = ((evt.GetInt() == IDC_USE_DEFAULTSYMBOLS)
+  m_useownsymbols = ((evt.GetId() == IDC_USE_DEFAULTSYMBOLS)
 		     ? DEFAULT_SYMBOLS : OWN_SYMBOLS);
 
-  FindWindow(IDC_OWNSYMBOLS)->Enable(m_useownsymbols == DEFAULT_SYMBOLS);
+  FindWindow(IDC_OWNSYMBOLS)->Enable(m_useownsymbols == OWN_SYMBOLS);
   if (m_useownsymbols == OWN_SYMBOLS)
     FindWindow(IDC_OWNSYMBOLS)->SetFocus();
+}
+
+
+
+
+/*!
+ * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX6
+ */
+
+void AddEditPropSheet::OnSymbolsCB( wxCommandEvent& evt )
+{
+  bool enable = evt.IsChecked();
+  FindWindow(IDC_USE_DEFAULTSYMBOLS)->Enable(enable);
+  FindWindow(IDC_STATIC_DEFAULT_SYMBOLS)->Enable(enable);
+  FindWindow(IDC_USE_OWNSYMBOLS)->Enable(enable);
+  FindWindow(IDC_OWNSYMBOLS)->Enable(enable);
 }
 

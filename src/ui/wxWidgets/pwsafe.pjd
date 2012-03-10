@@ -14856,6 +14856,7 @@ Action:"</string>
                   <long name="title-mode">0</long>
                   <long name="locked">0</long>
                   <string name="proxy-type">"wbCheckBoxProxy"</string>
+                  <string name="event-handler-0">"wxEVT_COMMAND_CHECKBOX_CLICKED|OnSymbolsCB|NONE||AddEditPropSheet"</string>
                   <string name="proxy-Id name">"ID_CHECKBOX6"</string>
                   <long name="proxy-Id value">10121</long>
                   <string name="proxy-Name">""</string>
@@ -15153,7 +15154,7 @@ Action:"</string>
                   <long name="title-mode">0</long>
                   <long name="locked">0</long>
                   <string name="proxy-type">"wbRadioButtonProxy"</string>
-                  <string name="event-handler-0">"wxEVT_COMMAND_RADIOBUTTON_SELECTED|OnSymbols|NONE||AddEditPropSheet"</string>
+                  <string name="event-handler-0">"wxEVT_COMMAND_RADIOBUTTON_SELECTED|OnSymbolsRB|NONE||AddEditPropSheet"</string>
                   <string name="proxy-Id name">"IDC_USE_DEFAULTSYMBOLS"</string>
                   <long name="proxy-Id value">10210</long>
                   <string name="proxy-Name">""</string>
@@ -15285,6 +15286,7 @@ Action:"</string>
                   <long name="title-mode">0</long>
                   <long name="locked">0</long>
                   <string name="proxy-type">"wbRadioButtonProxy"</string>
+                  <string name="event-handler-0">"wxEVT_COMMAND_RADIOBUTTON_SELECTED|OnSymbolsRB|NONE||AddEditPropSheet"</string>
                   <string name="proxy-Id name">"IDC_USE_OWNSYMBOLS"</string>
                   <long name="proxy-Id value">10211</long>
                   <string name="proxy-Name">""</string>
