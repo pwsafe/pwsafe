@@ -1752,7 +1752,7 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
     case ID_COPYEMAIL:
     {
       CItemData* item = GetBaseOfSelectedEntry();
-      evt.Enable( item && !item->IsURLEmpty()  && item->IsURLEmail() );
+      evt.Enable( item && !item->IsEmailEmpty() );
       break;
     }
     case ID_COPYUSERNAME:
