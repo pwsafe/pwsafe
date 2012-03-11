@@ -60,6 +60,8 @@ class UIInterFace;
 #define ID_TEXTCTRL3 10091
 #define ID_TEXTCTRL4 10092
 #define ID_GO_BTN 10093
+#define ID_TEXTCTRL20 10100
+#define ID_SEND_BTN 10214
 #define ID_TEXTCTRL7 10098
 #define ID_PANEL_ADDITIONAL 10085
 #define ID_TEXTCTRL6 10094
@@ -152,46 +154,49 @@ public:
 ////@begin AddEditPropSheet event handler declarations
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON2
-  void OnShowHideClick( wxCommandEvent& evt);
+  void OnShowHideClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON3
-  void OnGenerateButtonClick( wxCommandEvent& evt);
+  void OnGenerateButtonClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_GO_BTN
-  void OnGoButtonClick( wxCommandEvent& evt);
+  void OnGoButtonClick( wxCommandEvent& event );
+
+  /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_SEND_BTN
+  void OnSendButtonClick( wxCommandEvent& event );
 
   /// wxEVT_SET_FOCUS event handler for ID_TEXTCTRL7
-  void OnNoteSetFocus( wxFocusEvent& evt);
+  void OnNoteSetFocus( wxFocusEvent& event );
 
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX1
-  void OnKeepHistoryClick( wxCommandEvent& evt);
+  void OnKeepHistoryClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_RADIOBUTTON
-  void OnRadiobuttonSelected( wxCommandEvent& evt);
+  void OnRadiobuttonSelected( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON5
-  void OnSetXTime( wxCommandEvent& evt);
+  void OnSetXTime( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON6
-  void OnClearXTime( wxCommandEvent& evt);
+  void OnClearXTime( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_RADIOBUTTON2
-  void OnPWPRBSelected( wxCommandEvent& evt);
+  void OnPWPRBSelected( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX6
-  void OnSymbolsCB( wxCommandEvent& evt);
+  void OnSymbolsCB( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for IDC_USE_DEFAULTSYMBOLS
-  void OnSymbolsRB( wxCommandEvent& evt);
+  void OnSymbolsRB( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX7
-  void OnEZreadCBClick( wxCommandEvent& evt);
+  void OnEZreadCBClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX8
-  void OnPronouceableCBClick( wxCommandEvent& evt);
+  void OnPronouceableCBClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX9
-  void OnUseHexCBClick( wxCommandEvent& evt);
+  void OnUseHexCBClick( wxCommandEvent& event );
 
 ////@end AddEditPropSheet event handler declarations
   void OnEZreadOrPronounceable( wxCommandEvent& evt);
@@ -255,6 +260,9 @@ public:
 
   wxString GetSymbols() const { return m_symbols ; }
   void SetSymbols(wxString value) { m_symbols = value ; }
+
+  wxString GetEmail() const { return m_email ; }
+  void SetEmail(wxString value) { m_email = value ; }
 
   /// Retrieves bitmap resources
   wxBitmap GetBitmapResource( const wxString& name );
@@ -324,6 +332,7 @@ private:
   bool m_Recurring;
   bool m_isNotesHidden;
   wxString m_symbols;
+  wxString m_email;
   ////@end AddEditPropSheet member variables
   short m_DCA;
   short m_ShiftDCA;
