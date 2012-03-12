@@ -36,7 +36,6 @@
 #include "passwordsafeframe.h"
 #include "safecombinationprompt.h"
 #include "properties.h"
-#include "optionspropsheet.h"
 #include "core/PWSprefs.h"
 #include "core/PWSdirs.h"
 #include "PasswordSafeSearch.h"
@@ -132,6 +131,8 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_MENU( ID_CHANGECOMBO, PasswordSafeFrame::OnChangePasswdClick )
 
   EVT_MENU( ID_OPTIONS_M, PasswordSafeFrame::OnOptionsMClick )
+
+  EVT_MENU( ID_PWDPOLSM, PasswordSafeFrame::OnPwdPolsMClick )
 
   EVT_MENU( wxID_ABOUT, PasswordSafeFrame::OnAboutClick )
 
@@ -438,7 +439,8 @@ void PasswordSafeFrame::CreateControls()
   itemMenu72->Append(ID_BACKUP, _("Make &Backup\tCtrl+B"), _T(""), wxITEM_NORMAL);
   itemMenu72->Append(ID_RESTORE, _("&Restore from Backup...\tCtrl+R"), _T(""), wxITEM_NORMAL);
   itemMenu72->AppendSeparator();
-  itemMenu72->Append(wxID_PREFERENCES);
+  itemMenu72->Append(ID_OPTIONS_M, _("&Options...\tCtrl+M"), _T(""), wxITEM_NORMAL);
+  itemMenu72->Append(ID_PWDPOLSM, _("Password Policies..."), _T(""), wxITEM_NORMAL);
   menuBar->Append(itemMenu72, _("&Manage"));
   wxMenu* itemMenu79 = new wxMenu;
   itemMenu79->Append(wxID_HELP);
@@ -1341,38 +1343,6 @@ void PasswordSafeFrame::OnAboutClick( wxCommandEvent& /* evt */ )
   window->ShowModal();
   window->Destroy();
 }
-
-
-/*!
- * wxEVT_COMMAND_MENU_SELECTED event handler for ID_OPTIONS_M
- */
-
-void PasswordSafeFrame::OnOptionsMClick( wxCommandEvent& /* evt */ )
-{
-  PWSprefs* prefs = PWSprefs::GetInstance();
-  const StringX sxOldDBPrefsString(prefs->Store());
-  COptions *window = new COptions(this);
-  if (window->ShowModal() == wxID_OK) {
-    StringX sxNewDBPrefsString(prefs->Store(true));
-
-    if (!m_core.GetCurFile().empty() && !m_core.IsReadOnly() &&
-        m_core.GetReadFileVersion() == PWSfile::VCURRENT) {
-      if (sxOldDBPrefsString != sxNewDBPrefsString) {
-        Command *pcmd = DBPrefsCommand::Create(&m_core, sxNewDBPrefsString);
-        if (pcmd) {
-            //I don't know why notifications should ever be suspended, but that's how
-            //things were before I messed with them, so I want to limit the damage by
-            //enabling notifications only as long as required and no more 
-            m_core.ResumeOnDBNotification();
-            Execute(pcmd);  //deleted automatically
-            m_core.SuspendOnDBNotification();
-        }
-      }
-    }
-  }
-  window->Destroy();
-}
-
 
 /*!
  * wxEVT_COMMAND_MENU_SELECTED event handler for ID_BROWSEURL
@@ -3020,138 +2990,10 @@ void PasswordSafeFrame::OnCompare(wxCommandEvent& /*evt*/)
   dlg.ShowModal();
 }
 
-
-//////////////////////////////////////////
-// Backup and Restore
-//
-void PasswordSafeFrame::OnBackupSafe(wxCommandEvent& /*evt*/)
-{
-  PWSprefs *prefs = PWSprefs::GetInstance();
-  const wxFileName currbackup(towxstring(prefs->GetPref(PWSprefs::CurrentBackup)));
-
-  const wxString title(_("Please Choose a Name for this Backup:"));
-
-  wxString dir;
-  if (m_core.GetCurFile().empty())
-    dir = towxstring(PWSdirs::GetSafeDir());
-  else {
-    wxFileName::SplitPath(towxstring(m_core.GetCurFile()), &dir, NULL, NULL);
-    wxCHECK_RET(!dir.IsEmpty(), _("Could not parse current file path"));
-  }
-
-  //returns empty string if user cancels
-  wxString wxbf = wxFileSelector(title,
-                                 dir,
-                                 currbackup.GetFullName(),
-                                 _("bak"),
-                                 _("Password Safe Backups (*.bak)|*.bak"),
-                                 wxFD_SAVE|wxFD_OVERWRITE_PROMPT,
-                                 this);
-  /*
-  The wxFileSelector code says it appends the default extension if user
-  doesn't type one, but it actually doesn't and I don't see the purported
-  code in 2.8.10.  And doing it ourselves after the dialog has returned is
-  risky because we might silenty overwrite an existing file
-  */
-  
-  //create a copy to avoid multiple conversions to StringX
-  const StringX backupfile(tostringx(wxbf));
-  
-#ifdef NOT_YET
-  if (m_inExit) {
-    // If U3ExitNow called while in CPWFileDialog,
-    // PostQuitMessage makes us return here instead
-    // of exiting the app. Try resignalling 
-    PostQuitMessage(0);
-    return PWScore::USER_CANCEL;
-  }
-#endif
-
-  if (!backupfile.empty()) {  //i.e. if user didn't cancel
-    if (m_core.WriteFile(backupfile) == PWScore::CANT_OPEN_FILE) {
-      wxMessageBox( wxbf << _("\n\nCould not open file for writing!"),
-                    _("Write Error"), wxOK|wxICON_ERROR, this);
-    }
-
-    prefs->SetPref(PWSprefs::CurrentBackup, backupfile);
-  }
-}
-
-void PasswordSafeFrame::OnRestoreSafe(wxCommandEvent& /*evt*/)
-{
-  if (SaveIfChanged() != PWScore::SUCCESS)
-    return;
-
-  const wxFileName currbackup(towxstring(PWSprefs::GetInstance()->GetPref(PWSprefs::CurrentBackup)));
-
-  wxString dir;
-  if (m_core.GetCurFile().empty())
-    dir = towxstring(PWSdirs::GetSafeDir());
-  else {
-    wxFileName::SplitPath(towxstring(m_core.GetCurFile()), &dir, NULL, NULL);
-    wxCHECK_RET(!dir.IsEmpty(), _("Could not parse current file path"));
-  }
-
-  //returns empty string if user cancels
-  wxString wxbf = wxFileSelector(_("Please Choose a Backup to restore:"),
-                                 dir,
-                                 currbackup.GetFullName(),
-                                 _("bak"),
-                                 _("Password Safe Backups (*.bak)|*.bak"),
-                                 wxFD_OPEN|wxFD_FILE_MUST_EXIST,
-                                 this);
-  if (wxbf.empty())
-    return;
-
-#ifdef NOT_YET
-  if (m_inExit) {
-    // If U3ExitNow called while in CPWFileDialog,
-    // PostQuitMessage makes us return here instead
-    // of exiting the app. Try resignalling 
-    PostQuitMessage(0);
-    return PWScore::USER_CANCEL;
-  }
-#endif
-
-  CSafeCombinationPrompt pwdprompt(this, m_core, wxbf);
-  if (pwdprompt.ShowModal() == wxID_OK) {
-    const StringX passkey = pwdprompt.GetPassword();
-    // unlock the file we're leaving
-    if (!m_core.GetCurFile().empty()) {
-      m_core.UnlockFile(m_core.GetCurFile().c_str());
-    }
-
-    // clear the data before restoring
-    ClearData();
-
-    if (m_core.ReadFile(tostringx(wxbf), passkey, true, MAXTEXTCHARS) == PWScore::CANT_OPEN_FILE) {
-      wxMessageBox(wxbf << _("\n\nCould not open file for reading!"), 
-                      _("File Read Error"), wxOK | wxICON_ERROR, this);
-      return /*PWScore::CANT_OPEN_FILE*/;
-    }
-
-    m_core.SetCurFile(L"");    // Force a Save As...
-    m_core.SetDBChanged(true); // So that the restored file will be saved
-
-#if !defined(POCKET_PC)
-    SetTitle(_("Password Safe - <Untitled Restored Backup>"));
-
-#ifdef NOT_YET
-    app.SetTooltipText(L"PasswordSafe");
-#endif
-
-#endif
-
-#ifdef NOT_YET
-    ChangeOkUpdate();
-#endif
-
-    RefreshViews();
-  }
-}
-
 //-----------------------------------------------------------------
 // Remove all DialogBlock-generated stubs below this line, as we
-// already have them implemented in mainEdit.cpp
+// already have them implemented in main*.cpp
 // (how to get DB to stop generating them??)
 //-----------------------------------------------------------------
+
+

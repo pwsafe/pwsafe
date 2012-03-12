@@ -145,7 +145,7 @@ SOURCES= passwordsafeframe.cpp \
 	safecombinationchange.cpp about.cpp \
 	properties.cpp PWSgrid.cpp \
 	PWStree.cpp version.cpp \
-	pwsclip.cpp mainEdit.cpp \
+	pwsclip.cpp mainEdit.cpp mainManage.cpp \
 	addeditpropsheet.cpp PWSgridtable.cpp \
 	optionspropsheet.cpp PasswordSafeSearch.cpp \
 	deleteconfirmation.cpp editshortcut.cpp \
@@ -157,7 +157,8 @@ SOURCES= passwordsafeframe.cpp \
 	PWSDragBar.cpp MergeDlg.cpp ExternalKeyboardButton.cpp \
 	PwsSync.cpp DbSelectionPanel.cpp CompareDlg.cpp \
 	wxutils.cpp ComparisonGridTable.cpp SizeRestrictedPanel.cpp \
-	fieldselectionpanel.cpp fieldselectiondlg.cpp pwsmenushortcuts.cpp
+	fieldselectionpanel.cpp fieldselectiondlg.cpp pwsmenushortcuts.cpp \
+	ManagePwdPolicies.cpp
 
 
 OBJECTS=$(SOURCES:%.cpp=$(OBJECTPATH)/%.o)
