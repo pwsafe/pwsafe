@@ -72,8 +72,8 @@
 #endif
 
 ////@begin XPM images
-#include "./graphics/cpane.xpm"
 ////@end XPM images
+#include "./graphics/cpane.xpm"
 
 using pws_os::CUUID;
 
@@ -125,15 +125,13 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
 
   EVT_MENU( ID_COPYURL, PasswordSafeFrame::OnCopyurlClick )
 
-  EVT_MENU( ID_COPYEMAIL, PasswordSafeFrame::OnCopyEmailClick )
-
   EVT_MENU( ID_LIST_VIEW, PasswordSafeFrame::OnListViewClick )
 
   EVT_MENU( ID_TREE_VIEW, PasswordSafeFrame::OnTreeViewClick )
 
   EVT_MENU( ID_CHANGECOMBO, PasswordSafeFrame::OnChangePasswdClick )
 
-  EVT_MENU( wxID_PREFERENCES, PasswordSafeFrame::OnOptionsMClick )
+  EVT_MENU( ID_OPTIONS_M, PasswordSafeFrame::OnOptionsMClick )
 
   EVT_MENU( wxID_ABOUT, PasswordSafeFrame::OnAboutClick )
 
@@ -266,7 +264,7 @@ bool PasswordSafeFrame::Create( wxWindow* parent, wxWindowID id, const wxString&
   wxFrame::Create( parent, id, caption, pos, size, style );
 
   CreateControls();
-  SetIcons(wxGetApp().GetAppIcons());
+  SetIcon(GetIconResource(wxT("../graphics/wxWidgets/cpane.xpm")));
   Centre();
 ////@end PasswordSafeFrame creation
   m_search = new PasswordSafeSearch(this);
@@ -573,7 +571,7 @@ wxIcon PasswordSafeFrame::GetIconResource( const wxString& name )
     // Icon retrieval
 ////@begin PasswordSafeFrame icon retrieval
   wxUnusedVar(name);
-  if (name == _T("./graphics/cpane.xpm"))
+  if (name == _T("../graphics/wxWidgets/cpane.xpm"))
   {
     wxIcon icon(cpane_xpm);
     return icon;
@@ -3157,4 +3155,3 @@ void PasswordSafeFrame::OnRestoreSafe(wxCommandEvent& /*evt*/)
 // already have them implemented in mainEdit.cpp
 // (how to get DB to stop generating them??)
 //-----------------------------------------------------------------
-
