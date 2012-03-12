@@ -98,6 +98,7 @@ class PasswordSafeSearch;
 #define ID_BACKUP 10057
 #define ID_RESTORE 10058
 #define ID_OPTIONS_M 10059
+#define ID_PWDPOLSM 10215
 #define ID_MENUITEM 10012
 #define SYMBOL_PASSWORDSAFEFRAME_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxMINIMIZE_BOX|wxMAXIMIZE_BOX|wxCLOSE_BOX
 #define SYMBOL_PASSWORDSAFEFRAME_TITLE _("PasswordSafe")
@@ -233,6 +234,9 @@ public:
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_OPTIONS_M
   void OnOptionsMClick( wxCommandEvent& evt);
+
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_PWDPOLSM
+  void OnPwdPolsMClick( wxCommandEvent& evt);
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_ABOUT
   void OnAboutClick( wxCommandEvent& evt);
