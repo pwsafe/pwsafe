@@ -22,12 +22,19 @@
 ////@begin includes
 #include "wx/grid.h"
 ////@end includes
+#include "core/coredefs.h"
+#include "core/PWPolicy.h"
+#include "core/StringX.h"
+#include "core/PWScore.h"
+
+#include <vector>
 
 /*!
  * Forward declarations
  */
 
 ////@begin forward declarations
+class wxGrid;
 ////@end forward declarations
 
 /*!
@@ -62,8 +69,12 @@ class CManagePasswordPolicies: public wxDialog
 
 public:
   /// Constructors
-  CManagePasswordPolicies();
-  CManagePasswordPolicies( wxWindow* parent, wxWindowID id = SYMBOL_CMANAGEPASSWORDPOLICIES_IDNAME, const wxString& caption = SYMBOL_CMANAGEPASSWORDPOLICIES_TITLE, const wxPoint& pos = SYMBOL_CMANAGEPASSWORDPOLICIES_POSITION, const wxSize& size = SYMBOL_CMANAGEPASSWORDPOLICIES_SIZE, long style = SYMBOL_CMANAGEPASSWORDPOLICIES_STYLE );
+  CManagePasswordPolicies( wxWindow* parent,  PWScore &core,
+			   wxWindowID id = SYMBOL_CMANAGEPASSWORDPOLICIES_IDNAME,
+			   const wxString& caption = SYMBOL_CMANAGEPASSWORDPOLICIES_TITLE,
+			   const wxPoint& pos = SYMBOL_CMANAGEPASSWORDPOLICIES_POSITION,
+			   const wxSize& size = SYMBOL_CMANAGEPASSWORDPOLICIES_SIZE,
+			   long style = SYMBOL_CMANAGEPASSWORDPOLICIES_STYLE );
 
   /// Creation
   bool Create( wxWindow* parent, wxWindowID id = SYMBOL_CMANAGEPASSWORDPOLICIES_IDNAME, const wxString& caption = SYMBOL_CMANAGEPASSWORDPOLICIES_TITLE, const wxPoint& pos = SYMBOL_CMANAGEPASSWORDPOLICIES_POSITION, const wxSize& size = SYMBOL_CMANAGEPASSWORDPOLICIES_SIZE, long style = SYMBOL_CMANAGEPASSWORDPOLICIES_STYLE );
@@ -124,7 +135,37 @@ public:
   static bool ShowToolTips();
 
 ////@begin CManagePasswordPolicies member variables
+  wxGrid* m_PolicyNames;
+  wxStaticText* m_lowerTableDesc;
+  wxGrid* m_PolicyDetails;
 ////@end CManagePasswordPolicies member variables
+ private:
+  void UpdateNames();
+  void UpdateDetails();
+
+  PWScore &m_core;
+  // History of current changes for Undo/Redo and index to current change
+  // that can be undone. Note: if this is less that the size of the vector
+  // of saved changes, then there are changes that can be redone.
+  std::vector<st_PSWDPolicyChange> m_vchanges;
+  int m_iundo_pos;
+
+  PSWDPolicyMap m_MapPSWDPLC;
+  st_PSWDPolicy m_st_default_pp;
+
+  GTUSet m_setGTU;
+
+  stringT m_std_symbols, m_easyvision_symbols, m_pronounceable_symbols;
+
+  int m_iSortNamesIndex, m_iSortEntriesIndex;
+  bool m_bSortNamesAscending, m_bSortEntriesAscending;
+
+  int m_iSelectedItem;
+  bool m_bChanged, m_bViewPolicy, m_bLongPPs, m_bReadOnly;
+  
+  bool m_bUndoShortcut, m_bRedoShortcut;
+  unsigned short int m_siUndoVirtKey, m_siRedoVirtKey;
+  unsigned char m_cUndoModifier, m_cRedoModifier;
 };
 
 #endif

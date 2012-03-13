@@ -28906,10 +28906,10 @@ to the base entry "</string>
                 <bool name="proxy-Separate files">0</bool>
                 <string name="proxy-Implementation filename">""</string>
                 <string name="proxy-Header filename">""</string>
-                <string name="proxy-Member variable name">""</string>
+                <string name="proxy-Member variable name">"m_PolicyNames"</string>
                 <long name="proxy-Rows">10</long>
                 <long name="proxy-Columns">2</long>
-                <long name="proxy-Column width">50</long>
+                <long name="proxy-Column width">100</long>
                 <long name="proxy-Row height">25</long>
                 <long name="proxy-Column label height">25</long>
                 <long name="proxy-Row label width">50</long>
@@ -28947,7 +28947,7 @@ to the base entry "</string>
                 <string name="proxy-Custom styles">""</string>
                 <long name="proxy-X">-1</long>
                 <long name="proxy-Y">-1</long>
-                <long name="proxy-Width">200</long>
+                <long name="proxy-Width">269</long>
                 <long name="proxy-Height">150</long>
                 <string name="proxy-AlignH">"Centre"</string>
                 <string name="proxy-AlignV">"Expand"</string>
@@ -29710,7 +29710,7 @@ to the base entry "</string>
               <bool name="proxy-Separate files">0</bool>
               <string name="proxy-Implementation filename">""</string>
               <string name="proxy-Header filename">""</string>
-              <string name="proxy-Member variable name">""</string>
+              <string name="proxy-Member variable name">"m_lowerTableDesc"</string>
               <string name="proxy-Label">"Selected policy details:"</string>
               <long name="proxy-Wrapping width">-1</long>
               <string name="proxy-Help text">""</string>
@@ -29780,10 +29780,10 @@ to the base entry "</string>
               <bool name="proxy-Separate files">0</bool>
               <string name="proxy-Implementation filename">""</string>
               <string name="proxy-Header filename">""</string>
-              <string name="proxy-Member variable name">""</string>
+              <string name="proxy-Member variable name">"m_PolicyDetails"</string>
               <long name="proxy-Rows">5</long>
               <long name="proxy-Columns">2</long>
-              <long name="proxy-Column width">50</long>
+              <long name="proxy-Column width">210</long>
               <long name="proxy-Row height">25</long>
               <long name="proxy-Column label height">25</long>
               <long name="proxy-Row label width">50</long>
