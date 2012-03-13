@@ -24,6 +24,7 @@
 ////@end includes
 
 #include "ManagePwdPolicies.h"
+#include "core/PWCharPool.h"
 
 ////@begin XPM images
 ////@end XPM images
@@ -33,7 +34,7 @@
  * CManagePasswordPolicies type definition
  */
 
-IMPLEMENT_DYNAMIC_CLASS( CManagePasswordPolicies, wxDialog )
+IMPLEMENT_CLASS( CManagePasswordPolicies, wxDialog )
 
 
 /*!
@@ -69,15 +70,16 @@ END_EVENT_TABLE()
 
 
 /*!
- * CManagePasswordPolicies constructors
+ * CManagePasswordPolicies constructor
  */
 
-CManagePasswordPolicies::CManagePasswordPolicies()
-{
-  Init();
-}
 
-CManagePasswordPolicies::CManagePasswordPolicies( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
+CManagePasswordPolicies::CManagePasswordPolicies( wxWindow* parent,  PWScore &core, wxWindowID id,
+						  const wxString& caption, const wxPoint& pos,
+						  const wxSize& size, long style )
+  : m_core(core), m_iundo_pos(-1), m_iSortNamesIndex(0), m_iSortEntriesIndex(0),
+  m_bSortNamesAscending(true), m_bSortEntriesAscending(true), m_iSelectedItem(-1),
+  m_bChanged(false), m_bViewPolicy(true)
 {
   Init();
   Create(parent, id, caption, pos, size, style);
@@ -123,7 +125,17 @@ CManagePasswordPolicies::~CManagePasswordPolicies()
 void CManagePasswordPolicies::Init()
 {
 ////@begin CManagePasswordPolicies member initialisation
+  m_PolicyNames = NULL;
+  m_lowerTableDesc = NULL;
+  m_PolicyDetails = NULL;
 ////@end CManagePasswordPolicies member initialisation
+  m_MapPSWDPLC = m_core.GetPasswordPolicies();
+
+  m_st_default_pp.SetToDefaults();
+
+  CPasswordCharPool::GetDefaultSymbols(m_std_symbols);
+  CPasswordCharPool::GetEasyVisionSymbols(m_easyvision_symbols);
+  CPasswordCharPool::GetPronounceableSymbols(m_pronounceable_symbols);
 }
 
 
@@ -145,13 +157,13 @@ void CManagePasswordPolicies::CreateControls()
   wxBoxSizer* itemBoxSizer4 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer2->Add(itemBoxSizer4, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
 
-  wxGrid* itemGrid5 = new wxGrid( itemDialog1, ID_POLICYLIST, wxDefaultPosition, wxSize(200, 150), wxSUNKEN_BORDER|wxHSCROLL|wxVSCROLL );
-  itemGrid5->SetDefaultColSize(50);
-  itemGrid5->SetDefaultRowSize(25);
-  itemGrid5->SetColLabelSize(25);
-  itemGrid5->SetRowLabelSize(50);
-  itemGrid5->CreateGrid(10, 2, wxGrid::wxGridSelectRows);
-  itemBoxSizer4->Add(itemGrid5, 3, wxGROW|wxALL, 5);
+  m_PolicyNames = new wxGrid( itemDialog1, ID_POLICYLIST, wxDefaultPosition, wxSize(269, 150), wxSUNKEN_BORDER|wxHSCROLL|wxVSCROLL );
+  m_PolicyNames->SetDefaultColSize(100);
+  m_PolicyNames->SetDefaultRowSize(25);
+  m_PolicyNames->SetColLabelSize(25);
+  m_PolicyNames->SetRowLabelSize(50);
+  m_PolicyNames->CreateGrid(10, 2, wxGrid::wxGridSelectRows);
+  itemBoxSizer4->Add(m_PolicyNames, 3, wxGROW|wxALL, 5);
 
   wxBoxSizer* itemBoxSizer6 = new wxBoxSizer(wxVERTICAL);
   itemBoxSizer4->Add(itemBoxSizer6, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
@@ -193,16 +205,16 @@ void CManagePasswordPolicies::CreateControls()
   wxBitmapButton* itemBitmapButton18 = new wxBitmapButton( itemDialog1, ID_BITMAPBUTTON, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
   itemBoxSizer16->Add(itemBitmapButton18, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxStaticText* itemStaticText19 = new wxStaticText( itemDialog1, wxID_STATIC, _("Selected policy details:"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer2->Add(itemStaticText19, 0, wxALIGN_LEFT|wxALL, 5);
+  m_lowerTableDesc = new wxStaticText( itemDialog1, wxID_STATIC, _("Selected policy details:"), wxDefaultPosition, wxDefaultSize, 0 );
+  itemBoxSizer2->Add(m_lowerTableDesc, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxGrid* itemGrid20 = new wxGrid( itemDialog1, ID_POLICYPROPERTIES, wxDefaultPosition, wxSize(200, 150), wxSUNKEN_BORDER|wxHSCROLL|wxVSCROLL );
-  itemGrid20->SetDefaultColSize(50);
-  itemGrid20->SetDefaultRowSize(25);
-  itemGrid20->SetColLabelSize(25);
-  itemGrid20->SetRowLabelSize(50);
-  itemGrid20->CreateGrid(5, 2, wxGrid::wxGridSelectRows);
-  itemBoxSizer2->Add(itemGrid20, 0, wxGROW|wxALL, 5);
+  m_PolicyDetails = new wxGrid( itemDialog1, ID_POLICYPROPERTIES, wxDefaultPosition, wxSize(200, 150), wxSUNKEN_BORDER|wxHSCROLL|wxVSCROLL );
+  m_PolicyDetails->SetDefaultColSize(210);
+  m_PolicyDetails->SetDefaultRowSize(25);
+  m_PolicyDetails->SetColLabelSize(25);
+  m_PolicyDetails->SetRowLabelSize(50);
+  m_PolicyDetails->CreateGrid(5, 2, wxGrid::wxGridSelectRows);
+  itemBoxSizer2->Add(m_PolicyDetails, 0, wxGROW|wxALL, 5);
 
   wxStdDialogButtonSizer* itemStdDialogButtonSizer21 = new wxStdDialogButtonSizer;
 
@@ -219,6 +231,53 @@ void CManagePasswordPolicies::CreateControls()
   itemStdDialogButtonSizer21->Realize();
 
 ////@end CManagePasswordPolicies content construction
+
+  if (m_core.IsReadOnly()) {
+    FindWindow(wxID_NEW)->Enable(false);
+    FindWindow(wxID_DELETE)->Enable(false);
+
+    // Hide cancel button & change OK button text
+    FindWindow(wxID_CANCEL)->Enable(false);
+    FindWindow(wxID_CANCEL)->Show(false);
+
+    FindWindow(wxID_OK)->SetLabel(_("Close"));
+    FindWindow(wxID_EDIT)->SetLabel(_("View"));
+  }
+
+  m_PolicyNames->SetColLabelValue(0, _("Policy Name"));
+  m_PolicyNames->SetColLabelValue(1, _("Use count"));
+  UpdateNames();
+  m_PolicyNames->SelectRow(0);
+
+  // Since we select the default policy, disable List & Delete
+  FindWindow(ID_LIST)->Enable(false);
+  FindWindow(wxID_DELETE)->Enable(false);
+
+  m_PolicyDetails->SetColLabelValue(0, _("Policy Field"));
+  m_PolicyDetails->SetColLabelValue(1, _("Value"));
+  UpdateDetails(); 
+
+#if 0
+  // Add columns to policy entries CListCtrl - Group, Title, Username
+  cs_text.LoadString(IDS_GROUP);
+  m_PolicyEntries.InsertColumn(0, cs_text, LVCFMT_CENTER);
+  cs_text.LoadString(IDS_TITLE);
+  m_PolicyEntries.InsertColumn(1, cs_text, LVCFMT_LEFT);
+  cs_text.LoadString(IDS_USERNAME);
+  m_PolicyEntries.InsertColumn(2, cs_text, LVCFMT_LEFT);
+#endif
+
+  m_bViewPolicy = true;
+
+  // Max. of 255 policy names allowed - only 2 hex digits used for number
+  if (m_MapPSWDPLC.size() >= 255)
+    FindWindow(wxID_NEW)->Enable(false);
+
+  // No changes yet
+  FindWindow(wxID_UNDO)->Enable(false);
+  FindWindow(wxID_REDO)->Enable(false);
+
+  m_PolicyNames->SetFocus();
 }
 
 
@@ -255,6 +314,14 @@ wxIcon CManagePasswordPolicies::GetIconResource( const wxString& name )
   wxUnusedVar(name);
   return wxNullIcon;
 ////@end CManagePasswordPolicies icon retrieval
+}
+
+void CManagePasswordPolicies::UpdateNames()
+{
+}
+
+void CManagePasswordPolicies::UpdateDetails()
+{
 }
 
 

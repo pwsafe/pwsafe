@@ -200,6 +200,6 @@ void PasswordSafeFrame::OnRestoreSafe(wxCommandEvent& /*evt*/)
 
 void PasswordSafeFrame::OnPwdPolsMClick( wxCommandEvent&  )
 {
-  CManagePasswordPolicies ppols(this);
+  CManagePasswordPolicies ppols(this, m_core);
   ppols.ShowModal();
 }
