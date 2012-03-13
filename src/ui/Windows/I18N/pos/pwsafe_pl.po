@@ -2519,7 +2519,7 @@ msgstr "Pokaż filtr - "
 
 #. Resource IDs: (368)
 msgid "Display policy setings or List entries using this named policy\n(The latter may take a while depending on the number of entries in this database)"
-msgstr ""
+msgstr "Wyświetlenie ustawień polityki lub wylistowanie wpisów używających tej nazwanej polityki\n(Wylistowanie może chwilę potrwać zależnie od liczby wpisów w bazie danych)"
 
 #. Resource IDs: (32262)
 msgid "Display subset of Password"
@@ -3033,7 +3033,7 @@ msgstr "Nie udało się uruchomić pomocy."
 
 #. Resource IDs: (354)
 msgid "Failed to load Autotype support DLL (wrong version?).\n\nAutotype for Launch of a Browser or Running a command is disabled."
-msgstr ""
+msgstr "Nieudane załadowanie biblioteki DLL wspierającej autouzupełnianie (zła wersja?).\n\nAutouzupełnianie przy uruchamianiu przeglądarki jest zablokowane."
 
 #. Resource IDs: (208)
 #, fuzzy
@@ -3597,7 +3597,7 @@ msgstr "Jeśli ta klawiatura obsługuje znaki poprzez %s, wtedy ten klawisz zost
 
 #. Resource IDs: (370)
 msgid "If you specify using your own symbol list, you cannot leave it empty. Unselecting use of symbols."
-msgstr ""
+msgstr "Jeśli podano, by używać własnej listy symboli, to nie można zostawić tego pustego. Odznaczono używanie symboli."
 
 #. Resource IDs: (517)
 msgid "Igbo"
@@ -4340,7 +4340,7 @@ msgstr "Uwaga: Format wpisu to »grupa»nazwa»nazwa użytkownika»"
 
 #. Resource IDs: (215)
 msgid "Note: These Password Policies will not replace existing policies with the same name in the current database."
-msgstr ""
+msgstr "Uwaga: ta polityka haseł nie zastąpi w aktualnej bazie istniejących polityk o takiej samej nazwie."
 
 #. Resource IDs: (211)
 msgid "Note: These preferences are only used when importing into an empty database."
@@ -4391,7 +4391,7 @@ msgstr "Liczba wpisów w bazie danych"
 #. Resource IDs: (190)
 #, c-format
 msgid "Number of entries processed: %d\n\nNumber of invalid UUIDs fixed: %d\n\nNumber of duplicate UUIDs fixed: %d\n\nNumber of non-unique Group/Title/User fixed: %d\n\nNumber of Password Histories fixed: %d\n\nNumber of Alias warnings issued: %d\n\nNumber of Shortcut warnings issued: %d\n\nNumber of entries with fields that cannot be fully displayed: %d.\n\nRecommend that the database is now saved."
-msgstr ""
+msgstr "Liczba przetworzonych wpisów: %d\n\nLiczba naprawionych błędnych UIID: %d\n\nLiczba naprawionych duplikatów UUID: %d\n\nLiczba naprawionych nieunikalnych grup/tytułów/użytkowników: %d\n\nLiczba naprawionych historii haseł: %d\n\nLiczba ostrzeżeń o aliasach: %d\n\nLiczba ostrzeżeń o skrótach: %d\n\nLiczba wpisów z polami, które nie mogą być w pełni wyświetlone: %d\n\nRekomendacja, by zachować bazę danych."
 
 #. Resource IDs: (337)
 #, c-format
@@ -4401,7 +4401,7 @@ msgstr "Liczba wpisów których 'maksymalna ilość zapisanych haseł' została 
 #. Resource IDs: (371)
 #, c-format
 msgid "Number of entries that had their password history removed was %d"
-msgstr ""
+msgstr "Liczba wpisów którym usunięto historię haseł to %d"
 
 #. Resource IDs: (337)
 #, c-format
@@ -4451,7 +4451,7 @@ msgstr "Preferencja została zmieniona. Jesteś pewien, że chcesz to odrzucić?
 
 #. Resource IDs: (369)
 msgid "One or more Password Policies have been changed. Are you sure you wish to cancel?"
-msgstr ""
+msgstr "Zmieniono jedna lub więcej polityk haseł. Jesteś pewnien, że chesz to odrzucić?"
 
 #. Resource IDs: (3887)
 msgid "One or more auto-saved documents were found."
@@ -4460,7 +4460,7 @@ msgstr "Znaleziono automatycznie zachowany dokument."
 #. Resource IDs: (340)
 #, c-format
 msgid "Only in Original DB: %d; Only in Comparison DB: %d; In both (differing): %d; In both (identical): %d"
-msgstr ""
+msgstr "Tylko w orginalnej bazie: %d; Tylko w porównywanej bazie: %d; W obu (różne): %d; W obu (identyczne): %d"
 
 #. Resource IDs: (3841)
 msgid "Open"
@@ -4782,7 +4782,7 @@ msgstr "Proszę potwierdzić usunięcie %s filtra %s"
 
 #. Resource IDs: (331)
 msgid "Please confirm that you wish to delete current user's PasswordSafe configuration from the Windows registry.\n\n"
-msgstr ""
+msgstr "Proszę potwierdzić chęć skasowania z rejestrów Windows aktualnej konfiguracji użytkownika PasswordSafe.\n\n"
 
 #. Resource IDs: (330)
 #, fuzzy
@@ -5038,11 +5038,11 @@ msgstr "Okresowy (%d dni)"
 
 #. Resource IDs: (32083)
 msgid "Redo"
-msgstr "Wykonaj ponownie"
+msgstr "Przywróć"
 
 #. Resource IDs: (368)
 msgid "Redo the last change to password policies that was previously undone"
-msgstr ""
+msgstr "Przywróć ostatnią zmianę w polityce haseł, która została wcześniej cofnięta"
 
 #. Resource IDs: (1229)
 msgid "Relative"
@@ -5062,7 +5062,7 @@ msgstr "Usuń konfigurację PasswordSafe z rejestrów"
 
 #. Resource IDs: (320)
 msgid "Remove all saved passwords for entries and stop saving any new password history in all entries."
-msgstr ""
+msgstr "Usuń wszystkie zapisane hasła dla wpisów i zaprzestań zachowywania historii haseł dla wszystkich wpisów."
 
 #. Resource IDs: (32291)
 msgid "Remove this shortcut"
@@ -5587,7 +5587,7 @@ msgstr "Pokaż linie siatki w widoku list"
 
 #. Resource IDs: (1479)
 msgid "Show identical compared fields (Note: Unknown fields were not compared.)"
-msgstr ""
+msgstr "Pokaż identyczne pliki (Uwaga: nieznane pola nie są porównywane)"
 
 #. Resource IDs: (360)
 msgid "Shutdown, Restart or Logoff in progress"
@@ -5623,7 +5623,7 @@ msgstr "Niektórych znaków może brakować, lub nie będą wyświetlane poprawn
 
 #. Resource IDs: (371)
 msgid "Some consistency issues were found while opening the database.\n\nYou should save this database before proceeding. Please view report for details."
-msgstr ""
+msgstr "Podczas wczytywania bazy znaleziono pewne problemy.\n\nNależy zachować kopię tej bazy przed dalszą pracą. Szczegóły znajdują się w raporcie."
 
 #. Resource IDs: (364)
 msgid "Some of the entries in this database have passwords that have expired or are about to.  Do you wish to list them and possibly update them?"
@@ -5899,7 +5899,7 @@ msgstr "Baza danych:\n%s\n\njest używana przez:\n%s%s.\n\nOtworzyć bazę w try
 #. Resource IDs: (328)
 #, c-format
 msgid "The database:\n%s\n\nis apparently being used by:\n%s%s.\n\nOpen the database for Read-Only, Read-Write, or Exit?\r\n\r\nNote: Choose \"Read-Write\" only if you are certain that the file isn't being used by anyone else,\nincluding another copy of Password Safe running on your machine."
-msgstr ""
+msgstr "Baza danych:\n%s\n\njest używana przez:\n%s%s.\n\nOtworzyć bazę tylko do odczytu, do odczytu i zapisu, czy wyjść?\r\n\r\nUwaga: Wybierz \"do odczytu i zapisu\" jedynie jeśli masz pewność że plik nie jest używany przez nikogo innego,\nwłączając inne instancje Password Safe działające na Twoim komputerze."
 
 #. Resource IDs: (361)
 #, c-format
@@ -5951,21 +5951,21 @@ msgstr "Następujące kolumny zostaną przetworzone: "
 
 #. Resource IDs: (215)
 msgid "The following entries had a duplicate UUID field.  This has been corrected."
-msgstr ""
+msgstr "Skorygowano następujące wpisy ze zduplikowanymi polami UUID."
 
 #. Resource IDs: (215)
 #, c-format
 msgid "The following entries had a policy name that already existed in this database but with different settings.\r\nA new named policy has been created with the current date/time (%s) appended:%s"
-msgstr ""
+msgstr "Następujące wpisy mają nazwę polityki która już jest w bazie danych, ale z innymi ustawieniami.\r\nNowa nazwana polityka została stworzona z dodaniem aktualnej daty i czasu (%s): %s"
 
 #. Resource IDs: (215)
 #, c-format
 msgid "The following entries had an empty Password field, which is not permitted. The password has been set to '%s'"
-msgstr ""
+msgstr "Następujące wpisy mają puste pole z hasłem, co nie jest dozwolone. Zostało ustawione hasło '%s'"
 
 #. Resource IDs: (215)
 msgid "The following entries had an empty Title field, which is not permitted."
-msgstr ""
+msgstr "Następujące wpisy mają puste pole z tytułem, co nie jest dozwolone."
 
 #. Resource IDs: (205)
 msgid "The following entries had an invalid Password History.  This has been rebuilt with available data.  There may be some loss of history."
@@ -5973,17 +5973,17 @@ msgstr "Następujące wpisy miały nieprawidłową historię haseł.  Zostało t
 
 #. Resource IDs: (205)
 msgid "The following entries had an invalid UUID field.  This has been corrected."
-msgstr "Następujące wpisy mają nieprawidłowe pole UUID, co zostało to skorygowane."
+msgstr "Skorygowano następujące wpisy z nieprawidłowym polem UUID."
 
 #. Resource IDs: (212)
 #, c-format
 msgid "The following entries have one or more text fields too long to display or edit (over %d characters).  The largest entry size found was ~%d %s."
-msgstr ""
+msgstr "Następujące wpisy mają jedno lub więcej pól zbyt długich by je wyświetlić lub edytować (ponad %d znaków).  Największy rozmiar wpisu jaki znaleziono to ~%d %s."
 
 #. Resource IDs: (216)
 #, c-format
 msgid "The following entries have passwords in the correct form for %s, but the base entry does not exist."
-msgstr ""
+msgstr "Następujące wpisy mają hasła w prawidłowej postaci dla %s, ale wpis bazowy nie istnieje."
 
 #. Resource IDs: (212)
 msgid "The following entries were duplicates of an existing entry."
@@ -6001,7 +6001,7 @@ msgstr "Następujący wpis został skopiowany do bazy danych %s: '%s:%s:%s'"
 #. Resource IDs: (371)
 #, c-format
 msgid "The following entry was synchronized to the %s database: '%s:%s:%s'"
-msgstr ""
+msgstr "Następujące wpisu zostały zsynchronizowane z bazą danych %s: '%s:%s:%s'"
 
 #. Resource IDs: (362)
 msgid "The following records had errors in their Password History:"
@@ -6717,7 +6717,7 @@ msgstr "Zawijaj słowa w notatkach podczas dodawania i edycji"
 #. Resource IDs: (332)
 #, c-format
 msgid "Would you like to set \"%s\" as your default username?\n\nIt would then be used by default for new items."
-msgstr ""
+msgstr "Czy chcesz ustawić \"%s\" jako domyślną nazwę użytkownika?\n\nPotem będzie to użyte jako domyślna nazwa dla nowych wpisów."
 
 #. Resource IDs: (333)
 msgid "Write Error"
@@ -6804,15 +6804,15 @@ msgstr "Twoja aktualnie otwarta baza danych będzie w pierwszym rzędzie.  Kopia
 #. Resource IDs: (357)
 #, c-format
 msgid "Your requested font, '%s', could not be found (not installed?), using '%s' instead."
-msgstr "Zażądany font '%s' nie został znaleziony (brak instalacji?), użycie '%s' w zastępstwie"
+msgstr "Zażądany font '%s' nie został znaleziony (brak instalacji?), zatąpiono go '%s'."
 
 #. Resource IDs: (371)
 msgid "Zoom in\tCtrl + NUM PLUS"
-msgstr ""
+msgstr "Powiększ\tCtrl + NUM PLUS"
 
 #. Resource IDs: (371)
 msgid "Zoom out\tCtrl + NUM SUB"
-msgstr ""
+msgstr "Pomniejsz\tCtrl + NUM SUB"
 
 #. Resource IDs: (330)
 msgid "[No current database]"
@@ -7192,16 +7192,16 @@ msgstr "\tNie znaleziono żadnego wpisu zawierającego szukany ciąg '%s'"
 
 #. Resource IDs: (215)
 msgid "\tOne or more Password Policy Names were already in this database but had different settings. They have been renamed."
-msgstr ""
+msgstr "\tJedna lub więcej z nazw polityk haseł już była w bazie danych, ale miała inne ustawienia. Zmieniono ich nazwę."
 
 #. Resource IDs: (215)
 msgid "\tOne or more Password Policy Names were not found in the database. The affected entries have been changed to use the database's default policy."
-msgstr ""
+msgstr "\tJedna lub więcej z nazw polityk haseł nie została znaleziona w bazie danych. Wpisom któych to dotyczyło zmieniono politykę na domyślną."
 
 #. Resource IDs: (215)
 #, c-format
 msgid "\tPassword policy name '%s' is not in the database."
-msgstr ""
+msgstr "\nNazwy polityki haseł '%s' nie ma w bazie danych."
 
 #. Resource IDs: (347)
 #, c-format
@@ -7553,7 +7553,7 @@ msgstr "piksele"
 
 #. Resource IDs: (369)
 msgid "policy specific symbols"
-msgstr ""
+msgstr "symbole specyficzne dla polityki"
 
 #. Resource IDs: (65535)
 msgid "previous passwords per entry"
