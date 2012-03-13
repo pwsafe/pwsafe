@@ -260,7 +260,7 @@ void CAbout::OnHyperlinkctrl1HyperlinkClicked( wxHyperlinkEvent& /* evt */ )
     wxMessageDialog dlg(this, cs_txt, cs_title,
                         (wxICON_QUESTION | wxOK | wxCANCEL));
     int rc = dlg.ShowModal();
-    if (rc == wxCANCEL)
+    if (rc == wxID_CANCEL)
       return; // no hard feelings
     // Close database, prompt for save if changed
     wxCommandEvent closeEvent(wxEVT_COMMAND_MENU_SELECTED, wxID_CLOSE);
