@@ -128,6 +128,7 @@ void CManagePasswordPolicies::Init()
   m_PolicyNames = NULL;
   m_lowerTableDesc = NULL;
   m_PolicyDetails = NULL;
+  m_PolicyEntries = NULL;
 ////@end CManagePasswordPolicies member initialisation
   m_MapPSWDPLC = m_core.GetPasswordPolicies();
 
@@ -208,27 +209,38 @@ void CManagePasswordPolicies::CreateControls()
   m_lowerTableDesc = new wxStaticText( itemDialog1, wxID_STATIC, _("Selected policy details:"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer2->Add(m_lowerTableDesc, 0, wxALIGN_LEFT|wxALL, 5);
 
-  m_PolicyDetails = new wxGrid( itemDialog1, ID_POLICYPROPERTIES, wxDefaultPosition, wxSize(200, 150), wxSUNKEN_BORDER|wxHSCROLL|wxVSCROLL );
+  wxBoxSizer* itemBoxSizer20 = new wxBoxSizer(wxHORIZONTAL);
+  itemBoxSizer2->Add(itemBoxSizer20, 0, wxGROW|wxALL, 5);
+
+  m_PolicyDetails = new wxGrid( itemDialog1, ID_POLICYPROPERTIES, wxDefaultPosition, wxSize(-1, 150), wxSUNKEN_BORDER|wxHSCROLL|wxVSCROLL );
   m_PolicyDetails->SetDefaultColSize(210);
   m_PolicyDetails->SetDefaultRowSize(25);
   m_PolicyDetails->SetColLabelSize(25);
   m_PolicyDetails->SetRowLabelSize(50);
   m_PolicyDetails->CreateGrid(5, 2, wxGrid::wxGridSelectRows);
-  itemBoxSizer2->Add(m_PolicyDetails, 0, wxGROW|wxALL, 5);
+  itemBoxSizer20->Add(m_PolicyDetails, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxStdDialogButtonSizer* itemStdDialogButtonSizer21 = new wxStdDialogButtonSizer;
+  m_PolicyEntries = new wxGrid( itemDialog1, ID_POLICYENTRIES, wxDefaultPosition, wxSize(-1, 150), wxSUNKEN_BORDER|wxHSCROLL|wxVSCROLL );
+  m_PolicyEntries->SetDefaultColSize(140);
+  m_PolicyEntries->SetDefaultRowSize(25);
+  m_PolicyEntries->SetColLabelSize(25);
+  m_PolicyEntries->SetRowLabelSize(50);
+  m_PolicyEntries->CreateGrid(5, 3, wxGrid::wxGridSelectRows);
+  itemBoxSizer20->Add(m_PolicyEntries, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  itemBoxSizer2->Add(itemStdDialogButtonSizer21, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
-  wxButton* itemButton22 = new wxButton( itemDialog1, wxID_OK, _("&OK"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemStdDialogButtonSizer21->AddButton(itemButton22);
+  wxStdDialogButtonSizer* itemStdDialogButtonSizer23 = new wxStdDialogButtonSizer;
 
-  wxButton* itemButton23 = new wxButton( itemDialog1, wxID_CANCEL, _("&Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemStdDialogButtonSizer21->AddButton(itemButton23);
+  itemBoxSizer2->Add(itemStdDialogButtonSizer23, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
+  wxButton* itemButton24 = new wxButton( itemDialog1, wxID_OK, _("&OK"), wxDefaultPosition, wxDefaultSize, 0 );
+  itemStdDialogButtonSizer23->AddButton(itemButton24);
 
-  wxButton* itemButton24 = new wxButton( itemDialog1, wxID_HELP, _("&Help"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemStdDialogButtonSizer21->AddButton(itemButton24);
+  wxButton* itemButton25 = new wxButton( itemDialog1, wxID_CANCEL, _("&Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
+  itemStdDialogButtonSizer23->AddButton(itemButton25);
 
-  itemStdDialogButtonSizer21->Realize();
+  wxButton* itemButton26 = new wxButton( itemDialog1, wxID_HELP, _("&Help"), wxDefaultPosition, wxDefaultSize, 0 );
+  itemStdDialogButtonSizer23->AddButton(itemButton26);
+
+  itemStdDialogButtonSizer23->Realize();
 
 ////@end CManagePasswordPolicies content construction
 
@@ -244,6 +256,9 @@ void CManagePasswordPolicies::CreateControls()
     FindWindow(wxID_EDIT)->SetLabel(_("View"));
   }
 
+  // We have 2 grids, but we show only one at a time,
+  // toggle when user clicks on ID_LIST button.
+  // Setting these up:
   m_PolicyNames->SetColLabelValue(0, _("Policy Name"));
   m_PolicyNames->SetColLabelValue(1, _("Use count"));
   UpdateNames();
@@ -257,17 +272,11 @@ void CManagePasswordPolicies::CreateControls()
   m_PolicyDetails->SetColLabelValue(1, _("Value"));
   UpdateDetails(); 
 
-#if 0
-  // Add columns to policy entries CListCtrl - Group, Title, Username
-  cs_text.LoadString(IDS_GROUP);
-  m_PolicyEntries.InsertColumn(0, cs_text, LVCFMT_CENTER);
-  cs_text.LoadString(IDS_TITLE);
-  m_PolicyEntries.InsertColumn(1, cs_text, LVCFMT_LEFT);
-  cs_text.LoadString(IDS_USERNAME);
-  m_PolicyEntries.InsertColumn(2, cs_text, LVCFMT_LEFT);
-#endif
+  m_PolicyEntries->SetColLabelValue(0, _("Group"));
+  m_PolicyEntries->SetColLabelValue(1, _("Title"));
+  m_PolicyEntries->SetColLabelValue(2, _("User Name"));
 
-  m_bViewPolicy = true;
+  ShowPolicyDetails();
 
   // Max. of 255 policy names allowed - only 2 hex digits used for number
   if (m_MapPSWDPLC.size() >= 255)
@@ -324,6 +333,39 @@ void CManagePasswordPolicies::UpdateDetails()
 {
 }
 
+bool CManagePasswordPolicies::Show(bool show)
+{
+  if (m_bViewPolicy)
+    ShowPolicyDetails();
+  else
+    ShowPolicyEntries();
+  return wxDialog::Show(show);
+}
+
+
+void CManagePasswordPolicies::ShowPolicyDetails()
+{
+  m_bViewPolicy = true;
+  FindWindow(ID_LIST)->SetLabel(_("List"));
+  m_lowerTableDesc->SetLabel(_("Selected policy details:"));
+  m_PolicyDetails->Show();
+  m_PolicyDetails->Enable(true);
+  m_PolicyEntries->Hide();
+  m_PolicyEntries->Enable(false);
+  GetSizer()->Layout();
+}
+
+void CManagePasswordPolicies::ShowPolicyEntries()
+{
+  m_bViewPolicy = false;
+  FindWindow(ID_LIST)->SetLabel(_("Details"));
+  m_lowerTableDesc->SetLabel(_("Entries using selected policy:"));
+  m_PolicyEntries->Show();
+  m_PolicyEntries->Enable(true);
+  m_PolicyDetails->Hide();
+  m_PolicyDetails->Enable(false);
+  GetSizer()->Layout();
+}
 
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_NEW
@@ -368,12 +410,12 @@ void CManagePasswordPolicies::OnDeleteClick( wxCommandEvent& event )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_LIST
  */
 
-void CManagePasswordPolicies::OnListClick( wxCommandEvent& event )
+void CManagePasswordPolicies::OnListClick( wxCommandEvent&  )
 {
-////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_LIST in CManagePasswordPolicies.
-  // Before editing this code, remove the block markers.
-  event.Skip();
-////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_LIST in CManagePasswordPolicies. 
+  if (m_bViewPolicy)
+    ShowPolicyEntries();
+  else
+    ShowPolicyDetails();
 }
 
 

@@ -50,6 +50,7 @@ class wxGrid;
 #define ID_TEXTCTRL21 10226
 #define ID_BITMAPBUTTON 10227
 #define ID_POLICYPROPERTIES 10217
+#define ID_POLICYENTRIES 10219
 #define SYMBOL_CMANAGEPASSWORDPOLICIES_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxDIALOG_MODAL|wxTAB_TRAVERSAL
 #define SYMBOL_CMANAGEPASSWORDPOLICIES_TITLE _("Manage Password Policies")
 #define SYMBOL_CMANAGEPASSWORDPOLICIES_IDNAME ID_CMANAGEPASSWORDPOLICIES
@@ -134,14 +135,20 @@ public:
   /// Should we show tooltips?
   static bool ShowToolTips();
 
+  // Overriden virtuals
+  virtual bool Show(bool show = true);
+
 ////@begin CManagePasswordPolicies member variables
   wxGrid* m_PolicyNames;
   wxStaticText* m_lowerTableDesc;
   wxGrid* m_PolicyDetails;
+  wxGrid* m_PolicyEntries;
 ////@end CManagePasswordPolicies member variables
  private:
   void UpdateNames();
   void UpdateDetails();
+  void ShowPolicyDetails();
+  void ShowPolicyEntries();
 
   PWScore &m_core;
   // History of current changes for Undo/Redo and index to current change
