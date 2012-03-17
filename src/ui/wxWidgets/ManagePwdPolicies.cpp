@@ -24,9 +24,12 @@
 ////@end includes
 
 #include "ManagePwdPolicies.h"
+#include "pwsclip.h"
 #include "core/PWCharPool.h"
 
 ////@begin XPM images
+#include "graphics/toolbar/new/copypassword.xpm"
+#include "graphics/toolbar/new/copypassword_disabled.xpm"
 ////@end XPM images
 
 
@@ -57,6 +60,8 @@ BEGIN_EVENT_TABLE( CManagePasswordPolicies, wxDialog )
   EVT_BUTTON( wxID_REDO, CManagePasswordPolicies::OnRedoClick )
 
   EVT_BUTTON( ID_GENERATE_PASSWORD, CManagePasswordPolicies::OnGeneratePasswordClick )
+
+  EVT_BUTTON( ID_BITMAPBUTTON, CManagePasswordPolicies::OnCopyPasswordClick )
 
   EVT_BUTTON( wxID_OK, CManagePasswordPolicies::OnOkClick )
 
@@ -126,6 +131,7 @@ void CManagePasswordPolicies::Init()
 {
 ////@begin CManagePasswordPolicies member initialisation
   m_PolicyNames = NULL;
+  m_passwordCtrl = NULL;
   m_lowerTableDesc = NULL;
   m_PolicyDetails = NULL;
   m_PolicyEntries = NULL;
@@ -196,10 +202,14 @@ void CManagePasswordPolicies::CreateControls()
   wxBoxSizer* itemBoxSizer16 = new wxBoxSizer(wxHORIZONTAL);
   itemStaticBoxSizer14->Add(itemBoxSizer16, 0, wxGROW|wxALL, 5);
 
-  wxTextCtrl* itemTextCtrl17 = new wxTextCtrl( itemDialog1, ID_TEXTCTRL21, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer16->Add(itemTextCtrl17, 5, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_passwordCtrl = new wxTextCtrl( itemDialog1, ID_PASSWORD_TXT, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+  itemBoxSizer16->Add(m_passwordCtrl, 5, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxBitmapButton* itemBitmapButton18 = new wxBitmapButton( itemDialog1, ID_BITMAPBUTTON, wxNullBitmap, wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+  wxBitmapButton* itemBitmapButton18 = new wxBitmapButton( itemDialog1, ID_BITMAPBUTTON, itemDialog1->GetBitmapResource(wxT("graphics/toolbar/new/copypassword.xpm")), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+  wxBitmap itemBitmapButton18BitmapDisabled(itemDialog1->GetBitmapResource(wxT("graphics/toolbar/new/copypassword_disabled.xpm")));
+  itemBitmapButton18->SetBitmapDisabled(itemBitmapButton18BitmapDisabled);
+  if (CManagePasswordPolicies::ShowToolTips())
+    itemBitmapButton18->SetToolTip(_("Copy Password to clipboard"));
   itemBoxSizer16->Add(itemBitmapButton18, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_lowerTableDesc = new wxStaticText( itemDialog1, wxID_STATIC, _("Selected policy details:"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -304,6 +314,16 @@ wxBitmap CManagePasswordPolicies::GetBitmapResource( const wxString& name )
   // Bitmap retrieval
 ////@begin CManagePasswordPolicies bitmap retrieval
   wxUnusedVar(name);
+  if (name == _T("graphics/toolbar/new/copypassword.xpm"))
+  {
+    wxBitmap bitmap(copypassword_xpm);
+    return bitmap;
+  }
+  else if (name == _T("graphics/toolbar/new/copypassword_disabled.xpm"))
+  {
+    wxBitmap bitmap(copypassword_disabled_xpm);
+    return bitmap;
+  }
   return wxNullBitmap;
 ////@end CManagePasswordPolicies bitmap retrieval
 }
@@ -392,6 +412,25 @@ static void wxRowPutter(int row, const stringT &name, const stringT &value,
   tableControl->SetReadOnly(row, 0); tableControl->SetReadOnly(row, 1);
 }
 
+st_PSWDPolicy CManagePasswordPolicies::GetSelectedPolicy() const
+{
+  /*
+    If m_iSelectedItem = 0, then fill in with the database default,
+    otherwise use the name entry
+  */
+
+  if (m_iSelectedItem != 0) {
+    const wxString policyname = m_PolicyNames->GetCellValue(m_iSelectedItem, 0);
+
+    PSWDPolicyMapCIter iter = m_MapPSWDPLC.find(policyname.c_str());
+    if (iter == m_MapPSWDPLC.end())
+      return m_st_default_pp;
+
+    return iter->second;
+  } else {
+    return m_st_default_pp;
+  }
+}
 
 void CManagePasswordPolicies::UpdateDetails()
 {
@@ -403,19 +442,7 @@ void CManagePasswordPolicies::UpdateDetails()
     otherwise use the name entry
   */
 
-  st_PSWDPolicy st_pp;
-
-  if (m_iSelectedItem != 0) {
-    const wxString policyname = m_PolicyNames->GetCellValue(m_iSelectedItem, 0);
-
-    PSWDPolicyMapIter iter = m_MapPSWDPLC.find(policyname.c_str());
-    if (iter == m_MapPSWDPLC.end())
-      return;
-
-    st_pp = iter->second;
-  } else {
-    st_pp = m_st_default_pp;
-  }
+  st_PSWDPolicy st_pp = GetSelectedPolicy();
 
   m_PolicyDetails->ClearGrid();
   st_pp.Policy2Table(wxRowPutter, m_PolicyDetails);
@@ -545,9 +572,19 @@ void CManagePasswordPolicies::OnHelpClick( wxCommandEvent& event )
 
 void CManagePasswordPolicies::OnGeneratePasswordClick( wxCommandEvent& event )
 {
-////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_GENERATE_PASSWORD in CManagePasswordPolicies.
-  // Before editing this code, remove the block markers.
-  event.Skip();
-////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_GENERATE_PASSWORD in CManagePasswordPolicies. 
+  st_PSWDPolicy st_pp = GetSelectedPolicy();
+  
+  StringX passwd = st_pp.pwp.MakeRandomPassword(st_pp.symbols.c_str());
+  m_passwordCtrl->SetValue(passwd.c_str());
+}
+
+
+/*!
+ * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BITMAPBUTTON
+ */
+
+void CManagePasswordPolicies::OnCopyPasswordClick( wxCommandEvent& )
+{
+  PWSclip::SetData(m_passwordCtrl->GetValue().c_str());
 }
 
