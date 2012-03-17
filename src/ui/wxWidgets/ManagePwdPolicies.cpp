@@ -133,10 +133,6 @@ void CManagePasswordPolicies::Init()
   m_MapPSWDPLC = m_core.GetPasswordPolicies();
 
   m_st_default_pp.SetToDefaults();
-
-  CPasswordCharPool::GetDefaultSymbols(m_std_symbols);
-  CPasswordCharPool::GetEasyVisionSymbols(m_easyvision_symbols);
-  CPasswordCharPool::GetPronounceableSymbols(m_pronounceable_symbols);
 }
 
 

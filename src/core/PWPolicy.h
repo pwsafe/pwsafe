@@ -133,6 +133,8 @@ struct st_PSWDPolicy {
   }
 
   void SetToDefaults();
+  typedef void (*RowPutter)(int row, const stringT &name, const stringT &value, void *table);
+  void Policy2Table(RowPutter rp, void *table);
 };
 
 //-----------------------------------------------------------------

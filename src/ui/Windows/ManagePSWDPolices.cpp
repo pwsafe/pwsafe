@@ -42,10 +42,6 @@ CManagePSWDPolices::CManagePSWDPolices(CWnd* pParent, const bool bLongPPs)
   m_MapPSWDPLC = m_pDbx->GetPasswordPolicies();
 
   m_st_default_pp.SetToDefaults();
-
-  CPasswordCharPool::GetDefaultSymbols(m_std_symbols);
-  CPasswordCharPool::GetEasyVisionSymbols(m_easyvision_symbols);
-  CPasswordCharPool::GetPronounceableSymbols(m_pronounceable_symbols);
 }
 
 CManagePSWDPolices::~CManagePSWDPolices()
@@ -803,6 +799,15 @@ void CManagePSWDPolices::UpdateNames()
   m_PolicyNames.SetColumnWidth(1, LVSCW_AUTOSIZE_USEHEADER);
 }
 
+static void WindowsRowPutter(int row, const stringT &name, const stringT &value,
+                             void *table)
+{
+  // Callback function used by st_PSWDPolicy::Policy2Table
+  CListCtrl *tableControl = (CListCtrl *)table;
+  tableControl->InsertItem(row, name.c_str());
+  tableControl->SetItemText(row, 1, value.c_str());
+}
+
 void CManagePSWDPolices::UpdateDetails()
 {
   // Make sure correct ListCtrl and title are visible
@@ -814,6 +819,9 @@ void CManagePSWDPolices::UpdateDetails()
   GetDlgItem(IDC_STATIC_POLICYENTRIES)->ShowWindow(SW_HIDE);
 
   // Now fill in the details!
+
+  if (m_iSelectedItem == -1) // or not...
+    return;
 
   /*
     If m_iSelectedItem = 0, then fill in with the database default,
@@ -834,100 +842,9 @@ void CManagePSWDPolices::UpdateDetails()
     st_pp = m_st_default_pp;
   }
 
-  CString cs_yes(MAKEINTRESOURCE(IDS_YES)), cs_no(MAKEINTRESOURCE(IDS_NO));
-  cs_yes.Remove(L'&');
-  cs_no.Remove(L'&');
-
-  const bool bEV = (st_pp.pwp.flags & PWPolicy::UseEasyVision) != 0;
-  const bool bPR = (st_pp.pwp.flags & PWPolicy::MakePronounceable) != 0;
-
-  int nPos = 0;
-
   // Clear out previous info
   m_PolicyDetails.DeleteAllItems();
-
-  if (m_iSelectedItem == -1)
-    return;
-
-  // Length, Lowercase, Uppercase, Digits, Symbols, EasyVision, Pronounceable, Hexadecimal
-  CString cs_text(MAKEINTRESOURCE(IDS_PLENGTH));
-  m_PolicyDetails.InsertItem(nPos, cs_text);
-  cs_text.Format(L"%d", st_pp.pwp.length);
-  m_PolicyDetails.SetItemText(nPos, 1, cs_text);
-  nPos++;
-
-  cs_text.LoadString(IDS_PUSELOWER);
-  m_PolicyDetails.InsertItem(nPos, cs_text);
-  if ((st_pp.pwp.flags & PWPolicy::UseLowercase) != 0) {
-    if (bEV || bPR)
-      cs_text = cs_yes;
-    else
-      cs_text.Format(IDS_YESNUMBER, st_pp.pwp.lowerminlength);
-  } else {
-    cs_text = cs_no;
-  }
-  m_PolicyDetails.SetItemText(nPos, 1, cs_text);
-  nPos++;
-
-  cs_text.LoadString(IDS_PUSEUPPER);
-  m_PolicyDetails.InsertItem(nPos, cs_text);
-  if ((st_pp.pwp.flags & PWPolicy::UseUppercase) != 0) {
-    if (bEV | bPR)
-      cs_text = cs_yes;
-    else
-      cs_text.Format(IDS_YESNUMBER, st_pp.pwp.upperminlength);
-  } else {
-    cs_text = cs_no;
-  }
-  m_PolicyDetails.SetItemText(nPos, 1, cs_text);
-  nPos++;
-
-  cs_text.LoadString(IDS_PUSEDIGITS);
-  m_PolicyDetails.InsertItem(nPos, cs_text);
-  if ((st_pp.pwp.flags & PWPolicy::UseDigits) != 0) {
-    if (bEV || bPR)
-      cs_text = cs_yes;
-    else
-      cs_text.Format(IDS_YESNUMBER, st_pp.pwp.digitminlength);
-  } else {
-    cs_text = cs_no;
-  }
-  m_PolicyDetails.SetItemText(nPos, 1, cs_text);
-  nPos++;
-
-  cs_text.LoadString(IDS_PUSESYMBOL);
-  m_PolicyDetails.InsertItem(nPos, cs_text);
-  if ((st_pp.pwp.flags & PWPolicy::UseSymbols) != 0) {
-    if (bEV || bPR) {
-      cs_text.Format(bEV ? IDS_YESEASYVISON : IDS_YESPRONOUNCEABLE,
-                     bEV ? m_easyvision_symbols.c_str() : m_pronounceable_symbols.c_str());
-    } else {
-      CString cs_tmp;
-      cs_tmp.LoadString(st_pp.symbols.empty() ? IDS_DEFAULTSYMBOLS : IDS_SPECFICSYMBOLS);
-      cs_text.Format(IDS_YESSYMBOLS, st_pp.pwp.symbolminlength, cs_tmp,
-        st_pp.symbols.empty() ? m_std_symbols.c_str() : st_pp.symbols.c_str());
-    }
-  } else {
-    cs_text = cs_no;
-  }
-  m_PolicyDetails.SetItemText(nPos, 1, cs_text);
-  nPos++;
-
-  cs_text.LoadString(IDS_PEASYVISION);
-  m_PolicyDetails.InsertItem(nPos, cs_text);
-  m_PolicyDetails.SetItemText(nPos, 1, bEV ? cs_yes : cs_no);
-  nPos++;
-
-  cs_text.LoadString(IDS_PPRONOUNCEABLE);
-  m_PolicyDetails.InsertItem(nPos, cs_text);
-  m_PolicyDetails.SetItemText(nPos, 1, bPR ? cs_yes : cs_no);
-  nPos++;
-
-  cs_text.LoadString(IDS_PHEXADECIMAL);
-  m_PolicyDetails.InsertItem(nPos, cs_text);
-  m_PolicyDetails.SetItemText(nPos, 1,
-          (st_pp.pwp.flags & PWPolicy::UseHexDigits) != 0 ? cs_yes : cs_no);
-  nPos++;
+  st_pp.Policy2Table(WindowsRowPutter, &m_PolicyDetails);
 
   m_PolicyDetails.SetColumnWidth(0, LVSCW_AUTOSIZE);
   m_PolicyDetails.SetColumnWidth(1, LVSCW_AUTOSIZE_USEHEADER);
