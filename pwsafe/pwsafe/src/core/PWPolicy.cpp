@@ -12,6 +12,7 @@
 #include "../os/typedefs.h"
 #include "PWSprefs.h"
 #include "PWCharPool.h"
+#include "core.h"
 
 bool PWPolicy::operator==(const PWPolicy &that) const
 {
@@ -131,3 +132,91 @@ void st_PSWDPolicy::SetToDefaults()
   pwp.SetToDefaults();
   symbols = PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultSymbols);
 }
+
+static stringT PolValueString(int flag, bool override, int count)
+{
+  // helper function for Policy2Table
+  stringT yes, no;
+  LoadAString(yes, IDSC_YES); LoadAString(no, IDSC_NO);
+
+  stringT retval;
+  if (flag != 0) {
+    if (override)
+      retval = yes;
+    else {
+      Format(retval, IDSC_YESNUMBER, count);
+    }
+  } else {
+    retval = no;
+  }
+  return retval;
+}
+
+void st_PSWDPolicy::Policy2Table(st_PSWDPolicy::RowPutter rp, void *table)
+{
+  stringT yes, no;
+  LoadAString(yes, IDSC_YES); LoadAString(no, IDSC_NO);
+
+  stringT std_symbols, easyvision_symbols, pronounceable_symbols;
+  CPasswordCharPool::GetDefaultSymbols(std_symbols);
+  CPasswordCharPool::GetEasyVisionSymbols(easyvision_symbols);
+  CPasswordCharPool::GetPronounceableSymbols(pronounceable_symbols);
+
+  const bool bEV = (pwp.flags & PWPolicy::UseEasyVision) != 0;
+  const bool bPR = (pwp.flags & PWPolicy::MakePronounceable) != 0;
+
+  int nPos = 0;
+
+// Length, Lowercase, Uppercase, Digits, Symbols, EasyVision, Pronounceable, Hexadecimal
+  stringT col1, col2;
+
+  LoadAString(col1, IDSC_PLENGTH);
+  Format(col2, L"%d", pwp.length);
+  rp(nPos, col1, col2, table);
+  nPos++;
+
+  LoadAString(col1, IDSC_PUSELOWER);
+  col2 = PolValueString((pwp.flags & PWPolicy::UseLowercase), bEV || bPR, pwp.lowerminlength);
+  rp(nPos, col1, col2, table);
+  nPos++;
+
+  LoadAString(col1, IDSC_PUSEUPPER);
+  col2 = PolValueString((pwp.flags & PWPolicy::UseUppercase), bEV || bPR, pwp.upperminlength);
+  rp(nPos, col1, col2, table);
+  nPos++;
+
+  LoadAString(col1, IDSC_PUSEDIGITS);
+  col2 = PolValueString((pwp.flags & PWPolicy::UseDigits), bEV || bPR, pwp.digitminlength);
+  rp(nPos, col1, col2, table);
+  nPos++;
+
+  LoadAString(col1, IDSC_PUSESYMBOL);
+  if ((pwp.flags & PWPolicy::UseSymbols) != 0) {
+    if (bEV || bPR) {
+      Format(col2, bEV ? IDSC_YESEASYVISON : IDSC_YESPRONOUNCEABLE,
+             bEV ? easyvision_symbols.c_str() : pronounceable_symbols.c_str());
+    } else {
+      stringT tmp, symbols;
+      LoadAString(tmp, symbols.empty() ? IDSC_DEFAULTSYMBOLS : IDSC_SPECFICSYMBOLS);
+      symbols = symbols.empty() ? std_symbols.c_str() : symbols.c_str();
+      Format(col2, IDSC_YESSYMBOLS, pwp.symbolminlength, tmp.c_str(), symbols.c_str());
+    }
+  } else {
+    col2 = no;
+  }
+  rp(nPos, col1, col2, table);
+  nPos++;
+
+  LoadAString(col1, IDSC_PEASYVISION);
+  rp(nPos, col1, bEV ? yes : no, table);
+  nPos++;
+
+  LoadAString(col1, IDSC_PPRONOUNCEABLE);
+  rp(nPos, col1, bPR ? yes : no, table);
+  nPos++;
+
+  LoadAString(col1, IDSC_PHEXADECIMAL);
+  rp(nPos, col1, (pwp.flags & PWPolicy::UseHexDigits) != 0 ? yes : no, table);
+  nPos++;
+}
+

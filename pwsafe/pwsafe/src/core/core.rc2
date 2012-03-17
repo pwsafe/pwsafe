@@ -376,3 +376,21 @@ BEGIN
   IDSC_MERGED              "-merged-"
   IDSC_MERGEADDED          "\r\nThe following new %s %s merged into this database:"
 END
+
+STRINGTABLE
+BEGIN
+  IDSC_PUSELOWER           "Use lowercase characters"
+  IDSC_PUSEUPPER           "Use uppercase characters"
+  IDSC_PUSEDIGITS          "Use digits"
+  IDSC_PUSESYMBOL          "Use symbols"
+  IDSC_YESNUMBER           "Yes (at least %d)"
+  IDSC_YESEASYVISON        "Yes - EasyVision Symbols: %s"
+  IDSC_YESPRONOUNCEABLE    "Yes - Pronounceable Symbols: %s"
+  IDSC_YESSYMBOLS          "Yes - At least %d from %s: %s"
+  IDSC_PLENGTH             "Minimum password length"
+  IDSC_DEFAULTSYMBOLS      "default symbol set"
+  IDSC_SPECFICSYMBOLS      "policy specific symbols"
+  IDSC_PEASYVISION         "Easyvision characters"
+  IDSC_PPRONOUNCEABLE      "Pronounceable passwords"
+  IDSC_PHEXADECIMAL        "Hexadecimal characters"
+END

@@ -1110,14 +1110,14 @@ CString CManageFiltersDlg::GetFieldTypeName(FieldType ft)
   case HT_CHANGEDATE:    nID = IDS_HDATE; break;
   case HT_PASSWORDS:     nID = HT_PASSWORDS; break;
   case PT_PRESENT:       nID = IDS_PRESENT; break;
-  case PT_LENGTH:        nID = IDS_PLENGTH; break;
+  case PT_LENGTH:        nID = IDSC_PLENGTH; break;
   case PT_LOWERCASE:     nID = IDS_PLOWER; break;
   case PT_UPPERCASE:     nID = IDS_PUPPER; break;
   case PT_DIGITS:        nID = IDS_PDIGITS; break;
   case PT_SYMBOLS:       nID = IDS_PSYMBOL; break;
-  case PT_HEXADECIMAL:   nID = IDS_PHEXADECIMAL; break;
-  case PT_EASYVISION:    nID = IDS_PEASYVISION; break;
-  case PT_PRONOUNCEABLE: nID = IDS_PPRONOUNCEABLE; break;
+  case PT_HEXADECIMAL:   nID = IDSC_PHEXADECIMAL; break;
+  case PT_EASYVISION:    nID = IDSC_PEASYVISION; break;
+  case PT_PRONOUNCEABLE: nID = IDSC_PPRONOUNCEABLE; break;
     default:
       ASSERT(0);
   }

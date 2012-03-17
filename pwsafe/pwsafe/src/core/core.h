@@ -276,3 +276,20 @@
 #define IDSC_DCARUN                     4009
 #define IDSC_DCASENDEMAIL               4010
 #define IDSC_DEFAULT                    4011
+
+// Named Policy stuff
+#define IDSC_PUSELOWER                  4100
+#define IDSC_PUSEUPPER                  4101
+#define IDSC_PUSEDIGITS                 4102
+#define IDSC_PUSESYMBOL                 4103
+#define IDSC_YESNUMBER                  4104
+#define IDSC_YESEASYVISON               4105
+#define IDSC_YESPRONOUNCEABLE           4106
+#define IDSC_YESSYMBOLS                 4107
+#define IDSC_PLENGTH                    4108
+#define IDSC_DEFAULTSYMBOLS             4109
+#define IDSC_SPECFICSYMBOLS             4110
+#define IDSC_PEASYVISION                4111
+#define IDSC_PPRONOUNCEABLE             4112
+#define IDSC_PHEXADECIMAL               4113
+
