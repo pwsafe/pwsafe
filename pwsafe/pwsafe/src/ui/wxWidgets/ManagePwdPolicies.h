@@ -47,7 +47,7 @@ class wxGrid;
 #define ID_EDIT_PP 10220
 #define ID_LIST 10222
 #define ID_GENERATE_PASSWORD 10225
-#define ID_TEXTCTRL21 10226
+#define ID_PASSWORD_TXT 10226
 #define ID_BITMAPBUTTON 10227
 #define ID_POLICYPROPERTIES 10217
 #define ID_POLICYENTRIES 10219
@@ -112,6 +112,9 @@ public:
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_GENERATE_PASSWORD
   void OnGeneratePasswordClick( wxCommandEvent& event );
 
+  /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BITMAPBUTTON
+  void OnCopyPasswordClick( wxCommandEvent& event );
+
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
   void OnOkClick( wxCommandEvent& event );
 
@@ -140,6 +143,7 @@ public:
 
 ////@begin CManagePasswordPolicies member variables
   wxGrid* m_PolicyNames;
+  wxTextCtrl* m_passwordCtrl;
   wxStaticText* m_lowerTableDesc;
   wxGrid* m_PolicyDetails;
   wxGrid* m_PolicyEntries;
@@ -149,6 +153,7 @@ public:
   void UpdateDetails();
   void ShowPolicyDetails();
   void ShowPolicyEntries();
+  st_PSWDPolicy GetSelectedPolicy() const;
 
   PWScore &m_core;
   // History of current changes for Undo/Redo and index to current change

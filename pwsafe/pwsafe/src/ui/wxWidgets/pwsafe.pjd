@@ -2219,6 +2219,14 @@
             <string name="proxy-type">"wbBoxSizerProxy"</string>
             <string name="proxy-Orientation">"Horizontal"</string>
             <string name="proxy-Member variable name">""</string>
+            <string name="proxy-AlignH">"Centre"</string>
+            <string name="proxy-AlignV">"Centre"</string>
+            <long name="proxy-Stretch factor">0</long>
+            <long name="proxy-Border">5</long>
+            <bool name="proxy-wxLEFT">1</bool>
+            <bool name="proxy-wxRIGHT">1</bool>
+            <bool name="proxy-wxTOP">1</bool>
+            <bool name="proxy-wxBOTTOM">1</bool>
             <bool name="proxy-wxSHAPED">0</bool>
             <bool name="proxy-wxADJUST_MINSIZE">0</bool>
             <bool name="proxy-wxFIXED_MINSIZE">0</bool>
@@ -29537,7 +29545,7 @@ to the base entry "</string>
                     <bool name="proxy-wxFIXED_MINSIZE">0</bool>
                     <string name="proxy-Platform">"&lt;Any platform&gt;"</string>
                     <document>
-                      <string name="title">"wxTextCtrl: ID_TEXTCTRL21"</string>
+                      <string name="title">"wxTextCtrl: ID_PASSWORD_TXT"</string>
                       <string name="type">"dialog-control-document"</string>
                       <string name="filename">""</string>
                       <string name="icon-name">"textctrl"</string>
@@ -29546,7 +29554,7 @@ to the base entry "</string>
                       <long name="title-mode">0</long>
                       <long name="locked">0</long>
                       <string name="proxy-type">"wbTextCtrlProxy"</string>
-                      <string name="proxy-Id name">"ID_TEXTCTRL21"</string>
+                      <string name="proxy-Id name">"ID_PASSWORD_TXT"</string>
                       <long name="proxy-Id value">10226</long>
                       <string name="proxy-Name">""</string>
                       <string name="proxy-Class">"wxTextCtrl"</string>
@@ -29555,7 +29563,7 @@ to the base entry "</string>
                       <bool name="proxy-Separate files">0</bool>
                       <string name="proxy-Implementation filename">""</string>
                       <string name="proxy-Header filename">""</string>
-                      <string name="proxy-Member variable name">""</string>
+                      <string name="proxy-Member variable name">"m_passwordCtrl"</string>
                       <string name="proxy-Initial value">""</string>
                       <long name="proxy-Max length">0</long>
                       <string name="proxy-Help text">""</string>
@@ -29628,6 +29636,7 @@ to the base entry "</string>
                       <long name="title-mode">0</long>
                       <long name="locked">0</long>
                       <string name="proxy-type">"wbBitmapButtonProxy"</string>
+                      <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnCopyPasswordClick|NONE||CManagePasswordPolicies"</string>
                       <string name="proxy-Id name">"ID_BITMAPBUTTON"</string>
                       <long name="proxy-Id value">10227</long>
                       <string name="proxy-Name">""</string>
@@ -29638,14 +29647,14 @@ to the base entry "</string>
                       <string name="proxy-Implementation filename">""</string>
                       <string name="proxy-Header filename">""</string>
                       <string name="proxy-Member variable name">""</string>
-                      <string name="proxy-Bitmap">""</string>
+                      <string name="proxy-Bitmap">"graphics/toolbar/new/copypassword.xpm"</string>
                       <string name="proxy-Bitmap (selected)">""</string>
                       <string name="proxy-Bitmap (focused)">""</string>
-                      <string name="proxy-Bitmap (disabled)">""</string>
+                      <string name="proxy-Bitmap (disabled)">"graphics/toolbar/new/copypassword_disabled.xpm"</string>
                       <string name="proxy-Bitmap (hover)">""</string>
                       <bool name="proxy-Default">0</bool>
                       <string name="proxy-Help text">""</string>
-                      <string name="proxy-Tooltip text">""</string>
+                      <string name="proxy-Tooltip text">"Copy Password to clipboard"</string>
                       <string name="proxy-Data variable">""</string>
                       <string name="proxy-Data validator">""</string>
                       <string name="proxy-Data source">""</string>
