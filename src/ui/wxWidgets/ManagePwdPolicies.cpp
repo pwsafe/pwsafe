@@ -78,7 +78,7 @@ CManagePasswordPolicies::CManagePasswordPolicies( wxWindow* parent,  PWScore &co
 						  const wxString& caption, const wxPoint& pos,
 						  const wxSize& size, long style )
   : m_core(core), m_iundo_pos(-1), m_iSortNamesIndex(0), m_iSortEntriesIndex(0),
-  m_bSortNamesAscending(true), m_bSortEntriesAscending(true), m_iSelectedItem(-1),
+  m_bSortNamesAscending(true), m_bSortEntriesAscending(true), m_iSelectedItem(0),
   m_bChanged(false), m_bViewPolicy(true)
 {
   Init();
@@ -321,14 +321,6 @@ wxIcon CManagePasswordPolicies::GetIconResource( const wxString& name )
 ////@end CManagePasswordPolicies icon retrieval
 }
 
-void CManagePasswordPolicies::UpdateNames()
-{
-}
-
-void CManagePasswordPolicies::UpdateDetails()
-{
-}
-
 bool CManagePasswordPolicies::Show(bool show)
 {
   if (m_bViewPolicy)
@@ -362,6 +354,73 @@ void CManagePasswordPolicies::ShowPolicyEntries()
   m_PolicyDetails->Enable(false);
   GetSizer()->Layout();
 }
+
+void CManagePasswordPolicies::UpdateNames()
+{
+  int nPos = 0;
+  m_PolicyNames->ClearGrid();
+
+  // Add in the default policy as the first entry
+  m_PolicyNames->SetCellValue(nPos, 0, _("Default Policy"));
+  m_PolicyNames->SetCellValue(nPos, 1, _("N/A"));
+  m_PolicyNames->SetReadOnly(nPos, 0); m_PolicyNames->SetReadOnly(nPos, 1);
+
+  // Add in all other policies - ItemData == offset into map
+  PSWDPolicyMapIter iter;
+  nPos++;
+  for (iter = m_MapPSWDPLC.begin(); iter != m_MapPSWDPLC.end(); iter++) {
+    m_PolicyNames->InsertRows(nPos);
+    m_PolicyNames->SetCellValue(nPos, 0, iter->first.c_str());
+    wxString useCount;
+    if (iter->second.usecount != 0)
+      useCount.Printf(wxT("%d"),iter->second.usecount);
+    else
+      useCount = _("Not used");
+    m_PolicyNames->SetCellValue(nPos, 1, useCount);
+    m_PolicyNames->SetReadOnly(nPos, 0); m_PolicyNames->SetReadOnly(nPos, 1);
+  }
+}
+
+static void wxRowPutter(int row, const stringT &name, const stringT &value,
+                             void *table)
+{
+  // Callback function used by st_PSWDPolicy::Policy2Table
+  wxGrid *tableControl = (wxGrid *)table;
+  tableControl->InsertRows(row);
+  tableControl->SetCellValue(row, 0, name.c_str());
+  tableControl->SetCellValue(row, 1, value.c_str());
+  tableControl->SetReadOnly(row, 0); tableControl->SetReadOnly(row, 1);
+}
+
+
+void CManagePasswordPolicies::UpdateDetails()
+{
+  if (m_iSelectedItem == -1)
+    return;
+
+  /*
+    If m_iSelectedItem = 0, then fill in with the database default,
+    otherwise use the name entry
+  */
+
+  st_PSWDPolicy st_pp;
+
+  if (m_iSelectedItem != 0) {
+    const wxString policyname = m_PolicyNames->GetCellValue(m_iSelectedItem, 0);
+
+    PSWDPolicyMapIter iter = m_MapPSWDPLC.find(policyname.c_str());
+    if (iter == m_MapPSWDPLC.end())
+      return;
+
+    st_pp = iter->second;
+  } else {
+    st_pp = m_st_default_pp;
+  }
+
+  m_PolicyDetails->ClearGrid();
+  st_pp.Policy2Table(wxRowPutter, m_PolicyDetails);
+}
+
 
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_NEW
