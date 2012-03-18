@@ -24,6 +24,7 @@
 ////@end includes
 
 #include "ManagePwdPolicies.h"
+#include "PasswordPolicy.h"
 #include "pwsclip.h"
 #include "core/PWCharPool.h"
 
@@ -453,12 +454,12 @@ void CManagePasswordPolicies::UpdateDetails()
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_NEW
  */
 
-void CManagePasswordPolicies::OnNewClick( wxCommandEvent& event )
+void CManagePasswordPolicies::OnNewClick( wxCommandEvent& )
 {
-////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_NEW in CManagePasswordPolicies.
-  // Before editing this code, remove the block markers.
-  event.Skip();
-////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_NEW in CManagePasswordPolicies. 
+  CPasswordPolicy ppdlg(this);
+  if (ppdlg.ShowModal() == wxID_OK) {
+    UpdateNames();
+  }
 }
 
 
@@ -468,10 +469,11 @@ void CManagePasswordPolicies::OnNewClick( wxCommandEvent& event )
 
 void CManagePasswordPolicies::OnEditPpClick( wxCommandEvent& event )
 {
-////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_EDIT in CManagePasswordPolicies.
-  // Before editing this code, remove the block markers.
-  event.Skip();
-////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_EDIT in CManagePasswordPolicies. 
+  CPasswordPolicy ppdlg(this);
+  ppdlg.SetPolname(_("WTF"));
+  if (ppdlg.ShowModal() == wxID_OK) {
+    UpdateNames();
+  }
 }
 
 
