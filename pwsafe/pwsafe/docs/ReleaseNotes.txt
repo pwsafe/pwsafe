@@ -1,5 +1,5 @@
-Password Safe 3.28 Release Notes - February 2012
-================================================
+Password Safe 3.28.1 Release Notes - March 2012
+===============================================
 
 This note describe the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -7,6 +7,8 @@ Password Safe, please see the accompanying README.txt file. For more
 information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
+
+[reminder] Portuguese (Brazil) installation instructions thanks to Andreas.
 
 New Features for 3.28
 =====================
