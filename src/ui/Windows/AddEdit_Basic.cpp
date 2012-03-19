@@ -25,6 +25,8 @@
 #include "core/core.h"
 #include "core/command.h"
 
+#include "os/file.h"
+
 #include <shlwapi.h>
 #include <fstream>
 
@@ -1088,14 +1090,22 @@ UINT CAddEdit_Basic::ExternalEditorThread(LPVOID me) // static method!
                   0,                     // create unique name
                   self->m_szTempName);   // buffer for name
 
-  // Open it and put the Notes field in it
-  std::wofstream ofs(self->m_szTempName);
-  if (ofs.bad())
-    return 16;
+  FILE *fd;
 
-  ofs << LPCWSTR(self->M_realnotes()) << std::endl;
-  ofs.flush();
-  ofs.close();
+  if ((fd = pws_os::FOpen(self->m_szTempName, _T("w+b"))) == NULL) {
+    return false;
+  }
+
+  // Write BOM
+  const unsigned int iBOM = 0xFEFF;
+  putwc(iBOM, fd);
+
+  // Write out text
+  fwrite(reinterpret_cast<const void *>((LPCWSTR)self->M_realnotes()), sizeof(BYTE),
+             self->M_realnotes().GetLength() * sizeof(TCHAR), fd);
+
+  // Close file before invoking editor
+  fclose(fd);
 
   StringX sxEditor = PWSprefs::GetInstance()->GetPref(PWSprefs::AltNotesEditor);
   if (sxEditor.empty()) {
@@ -1159,24 +1169,45 @@ LRESULT CAddEdit_Basic::OnExternalEditorEnded(WPARAM, LPARAM)
   GetDlgItem(IDC_NOTES)->EnableWindow(TRUE);
 
   // Now get what the user saved in this file and put it back into Notes field
-  std::wifstream ifs(m_szTempName);
-  if (ifs.bad())
-    return 16;
-
   M_realnotes().Empty();
   std::wstring linebuf, note;
 
-  // Get first line
-  getline(ifs, note, L'\n');
+  FILE *fd;
 
-  // Now get the rest (if any)
-  while (!ifs.eof()) {
-    getline(ifs, linebuf, L'\n');
-    note += L"\r\n";
-    note += linebuf;
+  if ((fd = pws_os::FOpen(m_szTempName, _T("r+b"))) == NULL) {
+    return 0L;
   }
 
-  ifs.close();
+  long flength = pws_os::fileLength(fd);
+
+  ASSERT(flength % 2 == 0);
+
+  BYTE *pBuffer = new BYTE[flength + sizeof(wchar_t)];
+  memset(pBuffer, 0, flength + sizeof(wchar_t));
+
+  if (flength >= 2) {
+    // Read in BOM and check it is
+    const unsigned char BOM[] = {0xff, 0xfe};
+    fread(pBuffer, 1, 2, fd);
+
+    // if not a BOM - backspace and treat as data
+    if (pBuffer[0] != BOM[0] || pBuffer[1] != BOM[1]) {
+      fseek(fd, 0, SEEK_SET);
+      flength += 2;
+    }
+  }
+
+  // Clear BOM
+  memset(pBuffer, 0, 2);
+  // Read in text
+  fread(pBuffer, sizeof(BYTE), flength - 2, fd);
+
+  note = reinterpret_cast<const LPCWSTR>(pBuffer);
+
+  delete [] pBuffer;
+
+  // Close file before invoking editor
+  fclose(fd);
 
   if (note.length() > MAXTEXTCHARS) {
     note = note.substr(0, MAXTEXTCHARS);
