@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2012-02-14 11:10+0100\n"
+"PO-Revision-Date: 2012-02-20 11:08+0100\n"
 "Last-Translator: Jaroslav Buchtík <buchtik@post.cz>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -147,7 +147,7 @@ msgstr " 'Shift+DCA'"
 
 #. Resource IDs: (347)
 msgid " 'Title'"
-msgstr " 'Titul'"
+msgstr " 'Název'"
 
 #. Resource IDs: (336)
 #, fuzzy
@@ -561,7 +561,7 @@ msgstr "&Změň šifrovací klíč..."
 
 #. Resource IDs: (32105)
 msgid "&Classic Toolbar"
-msgstr "&Klasická nástrojová lišta"
+msgstr "&Tradiční vzhled lišty"
 
 #. Resource IDs: (32252)
 msgid "&Clear Recent History"
@@ -629,7 +629,7 @@ msgstr "&Příště mne nezdržuj"
 
 #. Resource IDs: (32107)
 msgid "&Dragbar visible"
-msgstr "&Dragbar visible"
+msgstr "&Přetahovací lišta"
 
 #. Resource IDs: (32063)
 msgid "&Duplicate Entry"
@@ -737,7 +737,7 @@ msgstr "&Nový"
 
 #. Resource IDs: (32104)
 msgid "&New Toolbar"
-msgstr "&Nová lišta"
+msgstr "&Nový vzhled lišta"
 
 #. Resource IDs: (32003)
 msgid "&New..."
@@ -945,8 +945,9 @@ msgid "'Alt Gr' (right Alt) key"
 msgstr "'Kombinace Alt Gr' (right Alt) "
 
 #. Resource IDs: (1444)
+#, fuzzy
 msgid "'Browse to URL' copies password to clipboard"
-msgstr "'Zobraz URL' copíruj heslo do schránky"
+msgstr "Jdi na odkaz po zkopírování hesla"
 
 #. Resource IDs: (353)
 msgid "'Clear Clipboard on Minimize' and Double Click Action 'Copy Password and Minimize' conflict. Please change one or both."
@@ -988,7 +989,7 @@ msgstr "(Vyžaduje restart programu.)"
 
 #. Resource IDs: (1285, 1287, 1289, 1291)
 msgid "(at least"
-msgstr "(na konec"
+msgstr "(minimálně"
 
 #. Resource IDs: (207, 346)
 msgid "(case insensitive)"
@@ -1532,22 +1533,22 @@ msgstr "Alias nesmí odkazovat sám na sebe"
 #. Resource IDs: (329)
 #, c-format
 msgid "An entry with Group \"%s\", Title \"%s\" and User Name \"%s\" already exists."
-msgstr "Záznam ve skupině \"%s\", Title \"%s\" and User Name \"%s\" již existuje."
+msgstr "Záznam ve skupině \"%s\", název \"%s\" a jménem uživatele \"%s\" již existuje."
 
 #. Resource IDs: (356)
 #, c-format
 msgid "An entry with Group \"%s\", Title \"%s\" and empty User Name already exists."
-msgstr "Záznam ve skupině  \"%s\", Title \"%s\" s prázdným jmeénem již existuje."
+msgstr "Záznam ve skupině  \"%s\", název \"%s\" s prázdným jménem již existuje."
 
 #. Resource IDs: (339)
 #, c-format
 msgid "An entry with an empty Group, Title \"%s\" and User Name \"%s\" already exists."
-msgstr "Záznam bez skupina a jména \"%s\" and User Name \"%s\" již existuje."
+msgstr "Záznam bez skupiny a jména \"%s\" či uživatele \"%s\" již existuje."
 
 #. Resource IDs: (357)
 #, c-format
 msgid "An entry with an empty Group, Title \"%s\" and empty User Name already exists."
-msgstr "Záznam bez skupina a jména \"%s\" and chybějící uživatel  \"%s\" již existuje."
+msgstr "Záznam bez skupiny, jména \"%s\" či chybějícího uživatele již existuje."
 
 #. Resource IDs: (3867)
 #, c-format
@@ -1694,7 +1695,7 @@ msgstr "Základní:"
 
 #. Resource IDs: (465, 501)
 msgid "Basic"
-msgstr ""
+msgstr "Obecné"
 
 #. Resource IDs: (515)
 msgid "Belarusian"
@@ -1885,7 +1886,7 @@ msgstr "Case sensitive search"
 
 #. Resource IDs: (366)
 msgid "Chan&ge to R-O"
-msgstr "Chan&ge to R-O"
+msgstr "&Změň na R-O"
 
 #. Resource IDs: (366)
 msgid "Chan&ge to R/W"
@@ -2183,7 +2184,7 @@ msgstr "Konfigurační soubor:"
 
 #. Resource IDs: (1221)
 msgid "Configuration Information"
-msgstr "konfigurační informace"
+msgstr "Konfigurační informace"
 
 #. Resource IDs: (191)
 #, c-format
@@ -2379,7 +2380,7 @@ msgstr "Vytvoř nová pravidla pro tvorbu hesla"
 
 #. Resource IDs: (1199)
 msgid "Create intermediate backups (.ibak) before saving"
-msgstr "Vytoř zálohu (.ibak) před ukončením"
+msgstr "Vytvoř zálohu (.ibak) před ukončením"
 
 #. Resource IDs: (32308)
 msgid "Create report of previous Find search"
@@ -2529,7 +2530,7 @@ msgstr "Informace o čase"
 
 #. Resource IDs: (467, 502)
 msgid "Dates and Times"
-msgstr "Datum a šas"
+msgstr "Datum a čas"
 
 #. Resource IDs: (65535)
 msgid "Default"
@@ -2651,9 +2652,8 @@ msgstr ""
 "(The latter may take a while depending on the number of entries in this database)"
 
 #. Resource IDs: (32067)
-#, fuzzy
 msgid "Display subset of Password"
-msgstr "Display subset of Password"
+msgstr "Zobraz podmnožinu hesel"
 
 #. Resource IDs: (3887)
 msgid "Do you want to recover these auto-saved documents?"
@@ -2805,11 +2805,11 @@ msgstr ""
 
 #. Resource IDs: (32220)
 msgid "Edit Entry"
-msgstr ""
+msgstr "Uprav záznam"
 
 #. Resource IDs: (32052)
 msgid "Edit Entry..."
-msgstr ""
+msgstr "Uprav záznam..."
 
 #. Resource IDs: (357)
 #, c-format
@@ -3094,7 +3094,7 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Example:"
-msgstr ""
+msgstr "Například:"
 
 #. Resource IDs: (1004)
 msgid "Exit"
@@ -3114,15 +3114,15 @@ msgstr ""
 
 #. Resource IDs: (353)
 msgid "Export"
-msgstr ""
+msgstr "Export"
 
 #. Resource IDs: (32129)
 msgid "Export &Text"
-msgstr ""
+msgstr "Export &Text"
 
 #. Resource IDs: (32009)
 msgid "Export &To"
-msgstr ""
+msgstr "&Export do"
 
 #. Resource IDs: (32130)
 msgid "Export &XML"
@@ -3130,27 +3130,27 @@ msgstr ""
 
 #. Resource IDs: (32085)
 msgid "Export Entry in XML format..."
-msgstr ""
+msgstr "Exportuj záznam jako XML..."
 
 #. Resource IDs: (32084)
 msgid "Export Entry to Plain Text..."
-msgstr ""
+msgstr "Exportuj záznam jako text..."
 
 #. Resource IDs: (365)
 msgid "Export Text"
-msgstr ""
+msgstr "Exportuj text"
 
 #. Resource IDs: (112)
 msgid "Export Text Extra"
-msgstr ""
+msgstr "Export Text Extra"
 
 #. Resource IDs: (365)
 msgid "Export XML"
-msgstr ""
+msgstr "Export XML"
 
 #. Resource IDs: (364)
 msgid "Export file:"
-msgstr ""
+msgstr "Exportuj soubor:"
 
 #. Resource IDs: (367)
 #, c-format
@@ -3367,7 +3367,7 @@ msgstr ""
 
 #. Resource IDs: (32102)
 msgid "Flattened &List"
-msgstr ""
+msgstr "Zobraz jako &tabulku"
 
 #. Resource IDs: (148)
 msgid "Font"
@@ -3410,7 +3410,7 @@ msgstr ""
 
 #. Resource IDs: (1025)
 msgid "Generate"
-msgstr ""
+msgstr "Vytvoř"
 
 #. Resource IDs: (32157)
 msgid "Generate &Password"
@@ -3418,7 +3418,7 @@ msgstr ""
 
 #. Resource IDs: (1052)
 msgid "Generate &Pronounceable passwords"
-msgstr ""
+msgstr "Tvoř dobře vyslovitelná hesla"
 
 #. Resource IDs: (359)
 msgid "Generate Password"
@@ -3514,7 +3514,7 @@ msgstr ""
 
 #. Resource IDs: (1350, 65535)
 msgid "Group:"
-msgstr ""
+msgstr "Skupina:"
 
 #. Resource IDs: (328)
 msgid "Group\tTitle\tUsername\tPassword Expiry Date\r\n"
@@ -3762,15 +3762,15 @@ msgstr ""
 
 #. Resource IDs: (32014)
 msgid "Import &From"
-msgstr ""
+msgstr "&Importuj ze"
 
 #. Resource IDs: (32122)
 msgid "Import &Text"
-msgstr ""
+msgstr "Importuj &text"
 
 #. Resource IDs: (32123)
 msgid "Import &XML"
-msgstr ""
+msgstr "Importuj &XML"
 
 #. Resource IDs: (32133)
 msgid "Import KeePass V1 CSV"
@@ -3905,7 +3905,7 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Intermediate Backups"
-msgstr ""
+msgstr "Zálohuj ihned"
 
 #. Resource IDs: (3857)
 msgid "Internal application error."
@@ -4117,15 +4117,15 @@ msgstr ""
 
 #. Resource IDs: (1077)
 msgid "Lock password database after "
-msgstr ""
+msgstr "Zamkni program při nečinnosti "
 
 #. Resource IDs: (1026)
 msgid "Lock password database on minimize"
-msgstr ""
+msgstr "Zamkni program při minimalizaci"
 
 #. Resource IDs: (1073)
 msgid "Lock password database on workstation lock"
-msgstr ""
+msgstr "Zamkni program při zamčení počítače"
 
 #. Resource IDs: (1413)
 msgid "MBytes"
@@ -4137,7 +4137,7 @@ msgstr ""
 
 #. Resource IDs: (32152)
 msgid "Make Backup"
-msgstr ""
+msgstr "Vytvoř zálohu"
 
 #. Resource IDs: (158)
 msgid "Manage Filters"
@@ -4145,7 +4145,7 @@ msgstr ""
 
 #. Resource IDs: (515)
 msgid "Manage Password Policies"
-msgstr ""
+msgstr "Pravidla tvorby hesla"
 
 #. Resource IDs: (65535)
 msgid "Manage password history of current entries"
@@ -4188,15 +4188,15 @@ msgstr ""
 
 #. Resource IDs: (347, 365)
 msgid "Merge"
-msgstr ""
+msgstr "Sloučit"
 
 #. Resource IDs: (362)
 msgid "Merge failed"
-msgstr ""
+msgstr "Sloučení selhalo"
 
 #. Resource IDs: (32018)
 msgid "Merge..."
-msgstr ""
+msgstr "Sloučit..."
 
 #. Resource IDs: (335)
 #, c-format
@@ -4306,7 +4306,7 @@ msgstr ""
 
 #. Resource IDs: (32103)
 msgid "Nested &Tree"
-msgstr ""
+msgstr "Zobraz jako &strom"
 
 #. Resource IDs: (328)
 msgid "Never"
@@ -4326,7 +4326,7 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "New Safe Combination:"
-msgstr ""
+msgstr "Nové heslo:"
 
 #. Resource IDs: (343)
 msgid "New Version Found!"
@@ -4580,7 +4580,7 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Old Safe Combination:"
-msgstr ""
+msgstr "Staré heslo:"
 
 #. Resource IDs: (330)
 msgid "On"
@@ -4621,7 +4621,7 @@ msgstr ""
 
 #. Resource IDs: (1300)
 msgid "Open database read-only by default"
-msgstr ""
+msgstr "Otevři databázi jen pročtení"
 
 #. Resource IDs: (327)
 msgid "Options"
@@ -4629,7 +4629,7 @@ msgstr ""
 
 #. Resource IDs: (208, 1399, 65535)
 msgid "Or"
-msgstr ""
+msgstr "nebo"
 
 #. Resource IDs: (340)
 msgid "Original"
@@ -4649,11 +4649,11 @@ msgstr ""
 
 #. Resource IDs: (1081, 1201)
 msgid "Other:"
-msgstr ""
+msgstr "Jiný :"
 
 #. Resource IDs: (1206)
 msgid "Other: "
-msgstr ""
+msgstr "Jiný:"
 
 #. Resource IDs: (3843)
 msgid "Out of memory."
@@ -4737,11 +4737,11 @@ msgstr ""
 
 #. Resource IDs: (32159)
 msgid "Password Policies..."
-msgstr ""
+msgstr "Pravidla tvorby hesla..."
 
 #. Resource IDs: (141, 192, 345, 468, 503, 508)
 msgid "Password Policy"
-msgstr ""
+msgstr "Pravidlo tvorby hesla"
 
 #. Resource IDs: (351)
 msgid "Password Policy Filter"
@@ -4847,15 +4847,15 @@ msgstr ""
 
 #. Resource IDs: (32075)
 msgid "Perform Auto &Type"
-msgstr ""
+msgstr "Vyplň &výchozí text"
 
 #. Resource IDs: (332)
 msgid "Perform Auto&Type"
-msgstr ""
+msgstr "Vyplň &výchozí text"
 
 #. Resource IDs: (32075)
 msgid "Perform Auto&type"
-msgstr ""
+msgstr "Vyplň &výchozí text"
 
 #. Resource IDs: (515)
 msgid "Persian"
@@ -4943,7 +4943,7 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Please enter the current combination, followed by a new combination.  Type the new combination once again to confirm it."
-msgstr ""
+msgstr "Vlož stávající heslo a nové heslo. Nové hesl vypiš dvakrát a potvrď je OK. "
 
 #. Resource IDs: (329)
 msgid "Please enter the key and verify it."
@@ -5083,16 +5083,16 @@ msgstr ""
 
 #. Resource IDs: (32087)
 msgid "Protect Entry"
-msgstr ""
+msgstr "Zamkni záznam"
 
 #. Resource IDs: (192, 363)
 msgid "Protected"
-msgstr ""
+msgstr "Zamčeno"
 
 #. Resource IDs: (366)
 #, c-format
 msgid "Protected Entry:   «%s» «%s» «%s»"
-msgstr ""
+msgstr "Zamčená záznamy:   «%s» «%s» «%s»"
 
 #. Resource IDs: (355)
 msgid "Pswd copied "
@@ -5111,8 +5111,9 @@ msgid "Put Groups first in Tree View"
 msgstr ""
 
 #. Resource IDs: (1072)
+#, fuzzy
 msgid "Put icon in System Tray"
-msgstr ""
+msgstr "Minimalizuj do System Tray"
 
 #. Resource IDs: (1030)
 msgid "Query user to set default username"
@@ -5132,7 +5133,7 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Random password generation rules"
-msgstr ""
+msgstr "Pravidla tvorby náhodného hesla"
 
 #. Resource IDs: (8002)
 msgid "Randomize"
@@ -5155,8 +5156,9 @@ msgid "Recent"
 msgstr ""
 
 #. Resource IDs: (1096)
+#, fuzzy
 msgid "Recent Databases on File Menu rather than as a sub-menu."
-msgstr ""
+msgstr "Poslední otevřené v menu Soubor"
 
 #. Resource IDs: (1095)
 msgid "Recent PasswordSafe Databases"
@@ -5203,11 +5205,11 @@ msgstr ""
 
 #. Resource IDs: (1295, 65535)
 msgid "Remember last"
-msgstr ""
+msgstr "Pamatuj si poslední"
 
 #. Resource IDs: (1188)
 msgid "Remove PasswordSafe configuration from Registry"
-msgstr ""
+msgstr "Vymaž konfigurační záznamy z registru Windows "
 
 #. Resource IDs: (32291)
 msgid "Remove this shortcut"
@@ -5215,15 +5217,15 @@ msgstr ""
 
 #. Resource IDs: (32058)
 msgid "Rename"
-msgstr ""
+msgstr "Přejmenuj"
 
 #. Resource IDs: (32060)
 msgid "Rename Entry"
-msgstr ""
+msgstr "Přejmenuj záznam"
 
 #. Resource IDs: (32059)
 msgid "Rename Group"
-msgstr ""
+msgstr "Přejmenuj skupinu"
 
 #. Resource IDs: (347)
 msgid "Report created"
@@ -5280,7 +5282,7 @@ msgstr ""
 
 #. Resource IDs: (32153)
 msgid "Restore from Backup..."
-msgstr ""
+msgstr "Obnov ze zálohy"
 
 #. Resource IDs: (1158)
 msgid "Restrict to a subset of entries:"
@@ -5381,7 +5383,7 @@ msgstr ""
 
 #. Resource IDs: (1205)
 msgid "Same as database's"
-msgstr ""
+msgstr "Adresář databáze"
 
 #. Resource IDs: (1178)
 msgid "Same as when last saved"
@@ -5405,15 +5407,15 @@ msgstr ""
 
 #. Resource IDs: (1137)
 msgid "Save"
-msgstr ""
+msgstr "Ulož"
 
 #. Resource IDs: (32006)
 msgid "Save &As..."
-msgstr ""
+msgstr "&Ulož jako..."
 
 #. Resource IDs: (363, 3841)
 msgid "Save As"
-msgstr ""
+msgstr "Ulož jako"
 
 #. Resource IDs: (332)
 msgid "Save Error"
@@ -5430,7 +5432,7 @@ msgstr ""
 
 #. Resource IDs: (1045)
 msgid "Save database immediately after Edit or Add"
-msgstr ""
+msgstr "Ulož ihned po změně nabo přidání"
 
 #. Resource IDs: (1094)
 msgid "Sc&ript:"
@@ -5680,7 +5682,7 @@ msgstr ""
 
 #. Resource IDs: (32108)
 msgid "Show &Find Toolbar"
-msgstr ""
+msgstr "Hledání - &Find"
 
 #. Resource IDs: (32127)
 msgid "Show &Unsaved Changes"
@@ -5818,7 +5820,7 @@ msgstr ""
 
 #. Resource IDs: (1220)
 msgid "Start PasswordSafe at Login"
-msgstr ""
+msgstr "Spusť PasswordSafe při startu PC"
 
 #. Resource IDs: (204)
 msgid "Start Report"
@@ -5873,7 +5875,7 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Suffix:"
-msgstr ""
+msgstr "Rozlišení názvu záložních souborů: "
 
 #. Resource IDs: (515)
 msgid "Swedish"
@@ -5897,11 +5899,11 @@ msgstr ""
 
 #. Resource IDs: (362)
 msgid "Synchronization failed"
-msgstr ""
+msgstr "Synchronizace selhala"
 
 #. Resource IDs: (360, 365, 32022)
 msgid "Synchronize"
-msgstr ""
+msgstr "Synchronizace"
 
 #. Resource IDs: (121, 496)
 msgid "Synchronize Entries"
@@ -6391,7 +6393,7 @@ msgstr ""
 
 #. Resource IDs: (32106)
 msgid "Toolbar &visible"
-msgstr ""
+msgstr "Nástrojová lišta"
 
 #. Resource IDs: (1284)
 msgid "Treat fields that only contain 'whitespace' as empty"
@@ -6670,11 +6672,11 @@ msgstr ""
 
 #. Resource IDs: (1049)
 msgid "Use &Digits"
-msgstr ""
+msgstr "Použij číslice"
 
 #. Resource IDs: (1070)
 msgid "Use &Hexadecimal digits only (0-9,a-f)"
-msgstr ""
+msgstr "Použij hexadecimální čísla  (0-9,a-f)"
 
 #. Resource IDs: (1047)
 msgid "Use &Lowercase letters"
@@ -6705,9 +6707,8 @@ msgid "Use Default"
 msgstr "Použij výchozí"
 
 #. Resource IDs: (1470)
-#, fuzzy
 msgid "Use Named Policy"
-msgstr "Use Named Policy"
+msgstr "Umožni více pravidel "
 
 #. Resource IDs: (369)
 #, fuzzy
@@ -6724,15 +6725,15 @@ msgstr "Použij malá písmena"
 
 #. Resource IDs: (1051)
 msgid "Use only &Easy-to-read characters (i.e., no  'l', '1', etc.)"
-msgstr ""
+msgstr "Nepoužívej zaměnitelné znaky (jako jsou: .,  'l', '1', etc.)"
 
 #. Resource IDs: (369)
 msgid "Use symbols"
-msgstr "Použij symboly"
+msgstr "Použij symboly (znaky)"
 
 #. Resource IDs: (1376)
 msgid "Use the P&olicy below:"
-msgstr ""
+msgstr "Použij jiná pravidla:"
 
 #. Resource IDs: (320)
 msgid "Use the application specified here to browse when an entry's URL field starts with [alt], e.g., '[alt]http://foo.com'"
@@ -6860,7 +6861,7 @@ msgstr "Zobraz/edituj vybrané"
 
 #. Resource IDs: (32201)
 msgid "Visit Password Safe &website..."
-msgstr ""
+msgstr "Jdi na web programu ..."
 
 #. Resource IDs: (363)
 msgid "WARNING: If you continue, fields will be updated in entries in your existing database from your selected input database."
@@ -7734,7 +7735,7 @@ msgstr "obsahuje cokoli z "
 
 #. Resource IDs: (1093)
 msgid "databases."
-msgstr "databáze"
+msgstr "použité databáze."
 
 #. Resource IDs: (1321)
 msgid "day(s)"
