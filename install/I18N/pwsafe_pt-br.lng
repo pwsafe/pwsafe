@@ -1,0 +1,153 @@
+; Password Safe Installer Laguage script template
+; This file is the basis for translating the installer
+; to a new language. To use:
+; 1. Copy file to pwsafe_xx.lng, where xx is the ISO 3166-1 2-letter
+; country code for the language.
+; 2. Replace LANG_PORTUGUESEBR with LANG_NAME, where name is the name of thr
+; language as used in the parent .nsi file
+; 3. Replace "TRANSLATION" with the translation of the text in the
+; preceding line.
+; 4. Remove all the text above the following line
+; ================= CUT HERE =====================================
+;---------------------------------------------------
+; Password Safe Language Script
+; Name : pwsafe_xx.lng
+; include file for "pwsafe.nsi"
+; first edit : Karlo Van der Gucht
+;---------------------------------------------------
+; Copyright 2004, David Lacy Kusters (dkusters@yahoo.com)
+; Copyright 2005-2007 Rony Shapiro <ronys@users.sourceforge.net>
+; 2009 extended by Karlo Van der Gucht for multiple language use
+; 2010 extended by Karlo Van der Gucht Danish language
+; This script may be redistributed and/or modified under the Artistic
+; License 2.0 terms as available at 
+; http://www.opensource.org/licenses/artistic-license-2.0.php
+;
+; This script is distributed AS IS.  All warranties are explicitly
+; disclaimed, including, but not limited to, the implied warranties of
+; MERCHANTABILITY and FITNESS FOR A PARTICULAR PURPOSE.
+ 
+;=================================================================
+
+; RESERVE_TITLE "Choose Installation Type"
+LangString RESERVE_TITLE ${LANG_PORTUGUESEBR} "Escolha o tipo de installação"
+
+; RESERVE_FIELD1 "Regular (uses Registry, suitable for home or single user PC)"
+LangString RESERVE_FIELD1 ${LANG_PORTUGUESEBR} "Normal (utiliza o Registro, apropriado para PC pessoal ou um usuário)"
+
+; RESERVE_FIELD2 "Green (for Disk-on-Key; does not use host Registry)"
+LangString RESERVE_FIELD2 ${LANG_PORTUGUESEBR} "Verde (para Disco USB; não utiliza o Registro"
+
+; PROGRAM_FILES "Program Files"
+LangString PROGRAM_FILES ${LANG_PORTUGUESEBR} "Arquivos de Programas"
+
+; START_AUTO "Start automatically"
+LangString START_AUTO ${LANG_PORTUGUESEBR} "Inicia automaticamente"
+
+; START_SHOW "Show in start menu"
+LangString START_SHOW ${LANG_PORTUGUESEBR} "Apresenta no menu Iniciar"
+
+; START_SHORTCUT "Install desktop shortcut"
+LangString START_SHORTCUT ${LANG_PORTUGUESEBR} "Cria um atalho na Área de Trabalho"
+
+; UNINSTALL_SHORTCUT "Uninstall shortcut"
+LangString UNINSTALL_SHORTCUT ${LANG_PORTUGUESEBR} "Atalho para desinstalação"
+
+;--------------------------------
+; Descriptions
+
+; DESC_ProgramFiles "Installs the basic files necessary to run Password Safe."
+LangString DESC_ProgramFiles ${LANG_PORTUGUESEBR} "Instala os arquivos mínimos necessários para executar o Password Safe."
+
+; DESC_LangSupport "Please select the language(s) that PasswordSafe will use."
+LangString DESC_LangSupport ${LANG_PORTUGUESEBR} "Por favor escolha o(s) idioma(s) que o PasswordSafe irá utilizar."
+
+; DESC_StartUp "Starts Password Safe as part of Windows boot/login."
+LangString DESC_StartUp ${LANG_PORTUGUESEBR} "Inicia o Password Safe como parte do processo de inicialização/login fo Windows."
+
+; DESC_StartMenu "Creates an entry in the start menu for Password Safe."
+LangString DESC_StartMenu ${LANG_PORTUGUESEBR} "Cria uma entrada no menu Iniciar para o Password Safe."
+
+; DESC_DesktopShortcut "Places a shortcut to Password Safe on your desktop."
+LangString DESC_DesktopShortcut ${LANG_PORTUGUESEBR} "Colcoa um atalho para o Password Safe na sua Área de Trabalho."
+
+; DESC_UninstallMenu "Places a shortcut in the start menu to Uninstall Password Safe."
+LangString DESC_UninstallMenu ${LANG_PORTUGUESEBR} "Colcoa um atalho no menu Iniciar para o programa de desinstalação (Uninstall) do Password Safe."
+  
+; "LangString" (for "Function GreenOrRegular") are setup here because they cannot be defined in the function body
+; TEXT_GC_TITLE "Installation Type"
+LangString TEXT_GC_TITLE ${LANG_PORTUGUESEBR} "Tipo da instalação"
+
+; TEXT_GC_SUBTITLE "Choose Regular for use on a single PC, Green for portable installation. If you're not sure, 'Regular' is fine."
+LangString TEXT_GC_SUBTITLE ${LANG_PORTUGUESEBR} "Escolha Normal para uso em um único PC, Verde para instalaçãoes portáteis. Se você não tem certeza, a 'Normal' deve ser suficiente."
+
+; PSWINI_TITLE "Choose Installation Type"
+LangString PSWINI_TITLE ${LANG_PORTUGUESEBR} "Escolha o tipo da instalação"
+
+; PSWINI_TEXT1 "Regular (uses Registry, suitable for home or single user PC)"
+LangString PSWINI_TEXT1 ${LANG_PORTUGUESEBR} "Normal (utiliza o registro, apropriado para PC pessoal ou um usuário)"
+
+; PSWINI_TEXT2 "Green (for Disk-on-Key; does not use host Registry)"
+LangString PSWINI_TEXT2 ${LANG_PORTUGUESEBR} "Verde (para Disco USB; não utiliza o Registro)"
+
+;--------------------------------
+; checks and warnings
+
+; RUNNING_INSTALL "The installer is already running."
+LangString RUNNING_INSTALL ${LANG_PORTUGUESEBR} "O programa de instalação já está sendo executado."
+
+; RUNNING_APPLICATION "Please exit all running instances of PasswordSafe before installing a new version"
+LangString RUNNING_APPLICATION ${LANG_PORTUGUESEBR} "Por favor termine todas as instâncias em execução do PasswordSafe antes de instalar uma versão nova"
+
+; LANG_INSTALL "Installation Language"
+LangString LANG_INSTALL ${LANG_PORTUGUESEBR} "Idioma da instalação"
+
+; LANG_SELECT "Please select the language for the installation"
+LangString LANG_SELECT ${LANG_PORTUGUESEBR} "Por favor escolha o idioma a ser utilziado para a instalação"
+
+; LANGUAGE_SUPPORT "Language Support"
+LangString LANGUAGE_SUPPORT ${LANG_PORTUGUESEBR} "Idioma de Suporte"
+; ENGLISH_SUPPORT "English"
+LangString ENGLISH_SUPPORT ${LANG_PORTUGUESEBR} "Inglês"
+; CHINESE_CN_SUPPORT "Chinese (Simplified)"
+LangString CHINESE_CN_SUPPORT ${LANG_PORTUGUESEBR} "Chinês (Simplificado)"
+; CHINESE_TW_SUPPORT "Chinese (Traditional)"
+LangString CHINESE_TW_SUPPORT ${LANG_PORTUGUESEBR} "Chinês (Tradicional)" 
+; GERMAN_SUPPORT "German"
+LangString GERMAN_SUPPORT ${LANG_PORTUGUESEBR} "Alemão"
+; SPANISH_SUPPORT "Spanish"
+LangString SPANISH_SUPPORT ${LANG_PORTUGUESEBR} "Espanhol"
+; SWEDISH_SUPPORT "Swedish"
+LangString SWEDISH_SUPPORT ${LANG_PORTUGUESEBR} "Sueco"
+; DUTCH_SUPPORT "Dutch"
+LangString DUTCH_SUPPORT ${LANG_PORTUGUESEBR} "Holandês"
+; FRENCH_SUPPORT "French"
+LangString FRENCH_SUPPORT ${LANG_PORTUGUESEBR} "Francês"
+; RUSSIAN_SUPPORT "Russian"
+LangString RUSSIAN_SUPPORT ${LANG_PORTUGUESEBR} "Russo"
+; POLISH_SUPPORT "Polish"
+LangString POLISH_SUPPORT ${LANG_PORTUGUESEBR} "Polonês"
+; ITALIAN_SUPPORT "Italian"
+LangString ITALIAN_SUPPORT ${LANG_PORTUGUESEBR} "Italiano"
+; DANISH_SUPPORT "Danish"
+LangString DANISH_SUPPORT ${LANG_PORTUGUESEBR} "Dinamarquês"
+; KOREAN_SUPPORT "Korean"
+LangString KOREAN_SUPPORT ${LANG_PORTUGUESEBR} "Koreano"
+
+; LANG_PROGRAM "Program Language"
+LangString LANG_PROGRAM ${LANG_PORTUGUESEBR} "Idioma do programa"
+
+; SORRY_NO_95 "Sorry, Windows 95 is no longer supported. Try PasswordSafe 2.16"
+LangString SORRY_NO_95 ${LANG_PORTUGUESEBR} "Sinto muito mas o Windows 95 não é mais suportado. Tente a versão 2.16 do PasswordSafe"
+
+; SORRY_NO_98 "Sorry, Windows 98 is no longer supported. Try PasswordSafe 2.16"
+LangString SORRY_NO_98 ${LANG_PORTUGUESEBR} "Sinto muito mas o Windows 98 não é mais suportado. Tente a versão 2.16 do PasswordSafe"
+
+; SORRY_NO_ME "Sorry, Windows ME is no longer supported. Try PasswordSafe 2.16"
+LangString SORRY_NO_ME ${LANG_PORTUGUESEBR} "Sinto muito mas o Windows ME não é mais suportado. Tente a versão 2.16 do PasswordSafe"
+
+; SORRY_NO_2K "Sorry, Windows 2000 is no longer supported. Try PasswordSafe 3.18"
+LangString SORRY_NO_2K ${LANG_PORTUGUESEBR} "Sinto muito mas o Windows 2000 não é mais suportado. Tente a versão 3.18 do PasswordSafe"
+
+;=================================================================
+; End of pwsafe_xx.lng

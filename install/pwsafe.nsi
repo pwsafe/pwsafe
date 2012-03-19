@@ -200,6 +200,8 @@
   !include ".\I18N\pwsafe_dk.lng"
   !insertmacro MUI_LANGUAGE "Korean"
   !include ".\I18N\pwsafe_kr.lng"
+  !insertmacro MUI_LANGUAGE "PortugueseBR"
+  !include ".\I18N\pwsafe_pt-br.lng"
 
 ; English texts here
 ; Note that if we add a string, it needs to be added in all the
@@ -257,6 +259,7 @@ LangString POLISH_SUPPORT ${LANG_ENGLISH} "Polish"
 LangString ITALIAN_SUPPORT ${LANG_ENGLISH} "Italian"
 LangString DANISH_SUPPORT ${LANG_ENGLISH} "Danish"
 LangString KOREAN_SUPPORT ${LANG_ENGLISH} "Korean"
+LangString PORTUGUESEBR_SUPPORT ${LANG_ENGLISH} "Portuguese (Brazil)"
 
 LangString LANG_PROGRAM ${LANG_ENGLISH} "Program Language"
 LangString SORRY_NO_95 ${LANG_ENGLISH} "Sorry, Windows 95 is no longer supported. Try PasswordSafe 2.16"
@@ -621,6 +624,8 @@ Function .onInit
   Push Dansk
   Push ${LANG_KOREAN}
   Push Korean
+  Push ${LANG_PORTUGUESEBR}
+  Push "Português (Brasil)"
   Push A ; A means auto count languages
          ; for the auto count to work the first empty push (Push "") must remain
   LangDLL::LangDialog $(LANG_INSTALL) $(LANG_SELECT)
