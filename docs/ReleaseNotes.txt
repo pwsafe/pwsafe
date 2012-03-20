@@ -8,7 +8,19 @@ information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
 
-[reminder] Portuguese (Brazil) installation instructions thanks to Andreas.
+New Features for 3.28.1
+=======================
+[] Portuguese (Brazil) installation instructions added, thanks to Andreas.
+
+Changes to Existing Features in 3.28.1
+======================================
+None
+
+Bugs fixed in 3.28.1
+====================
+[3508891] Editing an entry's Notes using an external editor no longer adds blank lines
+and fully supports non-Latin characters.
+[3498625] Test selected password policy now reflects any edits done to the policy.
 
 New Features for 3.28
 =====================
