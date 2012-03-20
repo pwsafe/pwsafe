@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2012-02-20 11:08+0100\n"
+"PO-Revision-Date: 2012-03-20 10:52+0100\n"
 "Last-Translator: Jaroslav Buchtík <buchtik@post.cz>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1520,7 +1520,7 @@ msgstr "Náhradní textvý editor poznámek"
 
 #. Resource IDs: (1043)
 msgid "Always keep Password Safe on top"
-msgstr "Password Safe vždy nahoře"
+msgstr "Aplikace vždy nahoře"
 
 #. Resource IDs: (314)
 msgid "Always on top"
@@ -1586,7 +1586,7 @@ msgstr "Arabic (101)"
 
 #. Resource IDs: (341)
 msgid "Are you sure you want to delete the selected entry?"
-msgstr "Smazat vybrabý záznam?"
+msgstr "Smazat vybraný záznam?"
 
 #. Resource IDs: (355)
 msgid "Are you sure you want to delete the selected group?"
@@ -1775,7 +1775,7 @@ msgstr "Bytes"
 
 #. Resource IDs: (32065)
 msgid "C&lear Clipboard"
-msgstr "C&lear Clipboard"
+msgstr "V&ymaž schránku"
 
 #. Resource IDs: (1386)
 msgid "C++ Terminate"
@@ -2209,7 +2209,7 @@ msgstr "Opravdu ukončit dialog?"
 
 #. Resource IDs: (1019)
 msgid "Confirm deletion of items"
-msgstr "Opravdu smazat?"
+msgstr "Potvrdit mazání záznamu"
 
 #. Resource IDs: (1021)
 msgid "Confirm item copy to clipboard"
@@ -3086,7 +3086,7 @@ msgstr ""
 
 #. Resource IDs: (1078)
 msgid "Escape key closes application"
-msgstr ""
+msgstr "Escape ukončí  aplikaci"
 
 #. Resource IDs: (515)
 msgid "Estonian"
@@ -3398,11 +3398,11 @@ msgstr ""
 
 #. Resource IDs: (1176)
 msgid "Fully collapsed"
-msgstr ""
+msgstr "Vše sbaleno"
 
 #. Resource IDs: (1177)
 msgid "Fully expanded"
-msgstr ""
+msgstr "Vše rozbaleno"
 
 #. Resource IDs: (520)
 msgid "Gaelic"
@@ -3422,11 +3422,11 @@ msgstr "Tvoř dobře vyslovitelná hesla"
 
 #. Resource IDs: (359)
 msgid "Generate Password"
-msgstr ""
+msgstr "Vytvoř heslo"
 
 #. Resource IDs: (370)
 msgid "Generate Password using selected Password Policy"
-msgstr ""
+msgstr "Vytvoř heslo podle pravidel tvorby hesla"
 
 #. Resource IDs: (516)
 msgid "Georgian"
@@ -3450,7 +3450,7 @@ msgstr ""
 
 #. Resource IDs: (32204)
 msgid "Get &Help\tF1"
-msgstr ""
+msgstr "&Nápověda \tF1"
 
 #. Resource IDs: (326)
 msgid "Given path is a directory or file is read-only"
@@ -3562,7 +3562,7 @@ msgstr ""
 
 #. Resource IDs: (1397)
 msgid "Highlight changed entries"
-msgstr ""
+msgstr "Zvýrazni měněný záznam"
 
 #. Resource IDs: (519)
 msgid "Hindi Traditional"
@@ -3574,7 +3574,7 @@ msgstr ""
 
 #. Resource IDs: (1088)
 msgid "Hot Key"
-msgstr ""
+msgstr "Klávesová zkratka"
 
 #. Resource IDs: (1087)
 msgid "HotKey1"
@@ -4010,15 +4010,15 @@ msgstr ""
 
 #. Resource IDs: (189)
 msgid "Last Access Time"
-msgstr ""
+msgstr "Poslední přístup"
 
 #. Resource IDs: (327)
 msgid "Last Accessed"
-msgstr ""
+msgstr "Poslední přístup"
 
 #. Resource IDs: (328)
 msgid "Last Modified"
-msgstr ""
+msgstr "Poslední úprava"
 
 #. Resource IDs: (1112)
 msgid "Last accessed on:"
@@ -4149,7 +4149,7 @@ msgstr "Pravidla tvorby hesla"
 
 #. Resource IDs: (65535)
 msgid "Manage password history of current entries"
-msgstr ""
+msgstr "Pravidla historie hesla"
 
 #. Resource IDs: (517)
 msgid "Maori"
@@ -4350,7 +4350,7 @@ msgstr ""
 
 #. Resource IDs: (1183)
 msgid "No change"
-msgstr ""
+msgstr "Beze změn"
 
 #. Resource IDs: (351)
 msgid "No criteria defined"
@@ -4487,7 +4487,7 @@ msgstr ""
 
 #. Resource IDs: (189, 327)
 msgid "Notes"
-msgstr ""
+msgstr "Poznámka"
 
 #. Resource IDs: (355)
 msgid "Notes copied "
@@ -4697,15 +4697,15 @@ msgstr ""
 
 #. Resource IDs: (1114)
 msgid "Password Expires on:"
-msgstr ""
+msgstr "Heslo vyprší:"
 
 #. Resource IDs: (1123)
 msgid "Password Expiry"
-msgstr ""
+msgstr "Heslo vyprší"
 
 #. Resource IDs: (189, 327)
 msgid "Password Expiry Date"
-msgstr ""
+msgstr "Heslo vyprší"
 
 #. Resource IDs: (192, 348)
 msgid "Password Expiry Interval"
@@ -4729,11 +4729,11 @@ msgstr ""
 
 #. Resource IDs: (327)
 msgid "Password Modified"
-msgstr ""
+msgstr "Upraveno ..."
 
 #. Resource IDs: (189)
 msgid "Password Modified Time"
-msgstr ""
+msgstr "Čas změny"
 
 #. Resource IDs: (32159)
 msgid "Password Policies..."
@@ -5108,7 +5108,7 @@ msgstr ""
 
 #. Resource IDs: (1235)
 msgid "Put Groups first in Tree View"
-msgstr ""
+msgstr "Zobraz skupiny"
 
 #. Resource IDs: (1072)
 #, fuzzy
@@ -5170,7 +5170,7 @@ msgstr ""
 
 #. Resource IDs: (1121)
 msgid "Record last access times"
-msgstr ""
+msgstr "Ukládaj čas poslední úpravy"
 
 #. Resource IDs: (3887)
 msgid ""
@@ -5335,7 +5335,7 @@ msgstr ""
 
 #. Resource IDs: (192, 251, 354)
 msgid "Run Command"
-msgstr ""
+msgstr "Provede příkaz"
 
 #. Resource IDs: (355)
 msgid "RunCmd copied "
@@ -5387,7 +5387,7 @@ msgstr "Adresář databáze"
 
 #. Resource IDs: (1178)
 msgid "Same as when last saved"
-msgstr ""
+msgstr "Zobraz stejně jako při ukončení"
 
 #. Resource IDs: (520)
 msgid "Sami Extended Finland-Sweden"
@@ -5690,7 +5690,7 @@ msgstr ""
 
 #. Resource IDs: (354)
 msgid "Show Notes"
-msgstr ""
+msgstr "Zobraz poznámku"
 
 #. Resource IDs: (1296)
 msgid "Show Notes as ToolTips in Tree && List views"
@@ -5698,19 +5698,19 @@ msgstr ""
 
 #. Resource IDs: (1190)
 msgid "Show Notes in Edit"
-msgstr ""
+msgstr "Zobraz poznámky ve form"
 
 #. Resource IDs: (1028)
 msgid "Show Password in Add && Edit"
-msgstr ""
+msgstr "Zobraz heslo ve formuláři"
 
 #. Resource IDs: (1031)
 msgid "Show Password in Tree View"
-msgstr ""
+msgstr "Zobrazuj heslo"
 
 #. Resource IDs: (1254)
 msgid "Show Username in Tree View"
-msgstr ""
+msgstr "Zobrazuj jméno "
 
 #. Resource IDs: (2132)
 msgid "Show Virtual Keyboard"
@@ -5730,7 +5730,7 @@ msgstr ""
 
 #. Resource IDs: (1246)
 msgid "Show grid lines in List View"
-msgstr ""
+msgstr "Zobraz rastr v seznamu hesel"
 
 #. Resource IDs: (360)
 msgid "Shutdown, Restart or Logoff in progress"
@@ -6369,11 +6369,11 @@ msgstr ""
 
 #. Resource IDs: (192, 327)
 msgid "Title"
-msgstr ""
+msgstr "Název"
 
 #. Resource IDs: (339)
 msgid "Title [Mandatory Field]"
-msgstr ""
+msgstr "Název (Povinná položka)"
 
 #. Resource IDs: (355)
 msgid "Title copied "
@@ -6954,7 +6954,7 @@ msgstr "Zalamovat řádky"
 
 #. Resource IDs: (1363)
 msgid "Word Wrap Notes in Add && Edit"
-msgstr "Word Wrap Notes in Add && Edit"
+msgstr "Zalom text poznámky při editaci"
 
 #. Resource IDs: (332)
 #, c-format
@@ -7276,6 +7276,8 @@ msgid ""
 "\n"
 "Generate Password"
 msgstr ""
+"\n"
+"Vytvoř heslo"
 
 #. Resource IDs: (2005)
 msgid ""
@@ -7747,7 +7749,7 @@ msgstr "dny"
 
 #. Resource IDs: (65535)
 msgid "days before passwords expire"
-msgstr "den před vyporšením hesla"
+msgstr "dnů před vypršením hesla"
 
 #. Resource IDs: (369)
 msgid "default symbol set"
@@ -7954,9 +7956,8 @@ msgid "policy specific symbols"
 msgstr "policy specific symbols"
 
 #. Resource IDs: (1446)
-#, fuzzy
 msgid "previous passwords per entry"
-msgstr "předchozí heslo"
+msgstr "předchozí hesla"
 
 #. Resource IDs: (338)
 msgid "pwsafe"
@@ -8012,7 +8013,7 @@ msgstr "nahoře"
 
 #. Resource IDs: (1098)
 msgid "used entries in System Tray menu."
-msgstr ""
+msgstr "použitých hesel v systray"
 
 #. Resource IDs: (32011)
 msgid "v&1.x format..."
