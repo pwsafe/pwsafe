@@ -3,7 +3,7 @@
 ; to a new language. To use:
 ; 1. Copy file to pwsafe_xx.lng, where xx is the ISO 3166-1 2-letter
 ; country code for the language.
-; 2. Replace LANG_PORTUGUESEBR with LANG_NAME, where name is the name of thr
+; 2. Replace LANG_NEW with LANG_NAME, where name is the name of thr
 ; language as used in the parent .nsi file
 ; 3. Replace "TRANSLATION" with the translation of the text in the
 ; preceding line.
@@ -30,13 +30,13 @@
 ;=================================================================
 
 ; RESERVE_TITLE "Choose Installation Type"
-LangString RESERVE_TITLE ${LANG_PORTUGUESEBR} "Escolha o tipo de installação"
+LangString RESERVE_TITLE ${LANG_PORTUGUESEBR} "Escolha o tipo de instalação"
 
 ; RESERVE_FIELD1 "Regular (uses Registry, suitable for home or single user PC)"
-LangString RESERVE_FIELD1 ${LANG_PORTUGUESEBR} "Normal (utiliza o Registro, apropriado para PC pessoal ou um usuário)"
+LangString RESERVE_FIELD1 ${LANG_PORTUGUESEBR} "Normal (utiliza o Registro do Windows; mais apropriado para PC pessoal ou um usuário)"
 
-; RESERVE_FIELD2 "Green (for Disk-on-Key; does not use host Registry)"
-LangString RESERVE_FIELD2 ${LANG_PORTUGUESEBR} "Verde (para Disco USB; não utiliza o Registro"
+; RESERVE_FIELD2 "Green (for Disco USB; does not use host Registry)"
+LangString RESERVE_FIELD2 ${LANG_PORTUGUESEBR} "Verde (para Disco USB; não utiliza o Registro do Windows)"
 
 ; PROGRAM_FILES "Program Files"
 LangString PROGRAM_FILES ${LANG_PORTUGUESEBR} "Arquivos de Programas"
@@ -79,16 +79,16 @@ LangString DESC_UninstallMenu ${LANG_PORTUGUESEBR} "Colcoa um atalho no menu Ini
 LangString TEXT_GC_TITLE ${LANG_PORTUGUESEBR} "Tipo da instalação"
 
 ; TEXT_GC_SUBTITLE "Choose Regular for use on a single PC, Green for portable installation. If you're not sure, 'Regular' is fine."
-LangString TEXT_GC_SUBTITLE ${LANG_PORTUGUESEBR} "Escolha Normal para uso em um único PC, Verde para instalaçãoes portáteis. Se você não tem certeza, a 'Normal' deve ser suficiente."
+LangString TEXT_GC_SUBTITLE ${LANG_PORTUGUESEBR} "Escolha Normal para uso em um único PC, ou Verde para instalaçãoes portáteis. Se você não tem certeza, a 'Normal' deve ser suficiente."
 
 ; PSWINI_TITLE "Choose Installation Type"
 LangString PSWINI_TITLE ${LANG_PORTUGUESEBR} "Escolha o tipo da instalação"
 
 ; PSWINI_TEXT1 "Regular (uses Registry, suitable for home or single user PC)"
-LangString PSWINI_TEXT1 ${LANG_PORTUGUESEBR} "Normal (utiliza o registro, apropriado para PC pessoal ou um usuário)"
+LangString PSWINI_TEXT1 ${LANG_PORTUGUESEBR} "Normal (utiliza o Registro do Windows; apropriado para PC pessoal ou um usuário)"
 
-; PSWINI_TEXT2 "Green (for Disk-on-Key; does not use host Registry)"
-LangString PSWINI_TEXT2 ${LANG_PORTUGUESEBR} "Verde (para Disco USB; não utiliza o Registro)"
+; PSWINI_TEXT2 "Green (for Disco USB; does not use host Registry)"
+LangString PSWINI_TEXT2 ${LANG_PORTUGUESEBR} "Verde (para Disco USB; não utiliza o Registro do Windows)"
 
 ;--------------------------------
 ; checks and warnings
