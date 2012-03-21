@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2012-03-20 10:52+0100\n"
+"PO-Revision-Date: 2012-03-21 13:46+0100\n"
 "Last-Translator: Jaroslav Buchtík <buchtik@post.cz>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -3414,7 +3414,7 @@ msgstr "Vytvoř"
 
 #. Resource IDs: (32157)
 msgid "Generate &Password"
-msgstr ""
+msgstr "Vytvoř &heslo"
 
 #. Resource IDs: (1052)
 msgid "Generate &Pronounceable passwords"
@@ -4245,7 +4245,7 @@ msgstr ""
 
 #. Resource IDs: (139, 507)
 msgid "Misc."
-msgstr ""
+msgstr "Různ."
 
 #. Resource IDs: (210)
 msgid "Missing XSD File"
@@ -4717,7 +4717,7 @@ msgstr ""
 
 #. Resource IDs: (120, 140, 340, 350, 1381, 1382)
 msgid "Password History"
-msgstr ""
+msgstr "Historie hesel"
 
 #. Resource IDs: (351)
 msgid "Password History Filter"
@@ -5162,7 +5162,7 @@ msgstr "Poslední otevřené v menu Soubor"
 
 #. Resource IDs: (1095)
 msgid "Recent PasswordSafe Databases"
-msgstr ""
+msgstr "Poslední otevřené databáze"
 
 #. Resource IDs: (189)
 msgid "Record Modified Time"
@@ -5457,7 +5457,7 @@ msgstr ""
 
 #. Resource IDs: (142)
 msgid "Security"
-msgstr ""
+msgstr "Bezpečnost"
 
 #. Resource IDs: (65535)
 msgid "See LICENSE for open source details."
@@ -5678,7 +5678,7 @@ msgstr ""
 
 #. Resource IDs: (452, 509)
 msgid "Shortcuts"
-msgstr ""
+msgstr "Zkratky"
 
 #. Resource IDs: (32108)
 msgid "Show &Find Toolbar"
@@ -5694,7 +5694,7 @@ msgstr "Zobraz poznámku"
 
 #. Resource IDs: (1296)
 msgid "Show Notes as ToolTips in Tree && List views"
-msgstr ""
+msgstr "Zobraz poznámky jako tipy v &&seznamu strom"
 
 #. Resource IDs: (1190)
 msgid "Show Notes in Edit"
@@ -5920,7 +5920,7 @@ msgstr ""
 
 #. Resource IDs: (143, 510)
 msgid "System"
-msgstr ""
+msgstr "Systém"
 
 #. Resource IDs: (189)
 msgid "System error: No more file handles available"
