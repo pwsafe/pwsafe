@@ -50,6 +50,10 @@ class wxSpinCtrl;
 #define ID_SPINCTRL7 10128
 #define ID_CHECKBOX6 10121
 #define ID_SPINCTRL8 10129
+#define IDC_USE_DEFAULTSYMBOLS 10210
+#define IDC_STATIC_DEFAULT_SYMBOLS 10213
+#define IDC_USE_OWNSYMBOLS 10211
+#define IDC_OWNSYMBOLS 10212
 #define ID_CHECKBOX7 10122
 #define ID_CHECKBOX8 10123
 #define ID_CHECKBOX9 10124
@@ -102,11 +106,11 @@ public:
 
 ////@begin CPasswordPolicy member function declarations
 
-  int GetPwdefaultlength() const { return m_pwdefaultlength ; }
-  void SetPwdefaultlength(int value) { m_pwdefaultlength = value ; }
-
   wxString GetPolname() const { return m_polname ; }
   void SetPolname(wxString value) { m_polname = value ; }
+
+  int GetPwdefaultlength() const { return m_pwdefaultlength ; }
+  void SetPwdefaultlength(int value) { m_pwdefaultlength = value ; }
 
   /// Retrieves bitmap resources
   wxBitmap GetBitmapResource( const wxString& name );
@@ -136,8 +140,8 @@ public:
   wxCheckBox* m_pwpPronounceCtrl;
   wxCheckBox* m_pwpHexCtrl;
 private:
-  int m_pwdefaultlength;
   wxString m_polname;
+  int m_pwdefaultlength;
 ////@end CPasswordPolicy member variables
 };
 
