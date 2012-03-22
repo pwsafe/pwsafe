@@ -449,6 +449,52 @@ void CManagePasswordPolicies::UpdateDetails()
   st_pp.Policy2Table(wxRowPutter, m_PolicyDetails);
 }
 
+void CManagePasswordPolicies::UpdatePolicy(const wxString &policyname, CPP_FLAGS mode)
+{
+    m_bChanged = true;
+    // Save changes for Undo/Redo
+    st_PSWDPolicyChange st_change;
+    st_change.name = m_iSelectedItem != 0 ? policyname : wxT("");
+    st_change.flags = mode;
+    st_change.st_pp_save = m_iSelectedItem != 0 ? m_mapIter->second : m_st_default_pp;
+
+    if (m_iSelectedItem != 0) {
+      // Changed a named password policy
+      PSWDPolicyMapIter iter_new = m_MapPSWDPLC.find(StringX(policyname.c_str()));
+      if (iter_new == m_MapPSWDPLC.end())
+        ASSERT(0);
+      st_change.st_pp_new = iter_new->second;
+    } else {
+      // Changed the database default policy
+      st_change.st_pp_new = m_st_default_pp;
+    }
+
+  if (m_iundo_pos != (int)m_vchanges.size() - 1) {
+    // We did have changes that could have been redone
+    // But not anymore - delete all these to add new change on the end
+    m_vchanges.resize(m_iundo_pos + 1);
+  }
+
+  // Add new change
+  m_vchanges.push_back(st_change);
+  // Update pointer to the one that is next to be undone
+  m_iundo_pos++;
+  // Update buttons appropriately
+  FindWindow(wxID_UNDO)->Enable(true);
+  FindWindow(wxID_REDO)->Enable(false);
+
+  // Update lists
+  UpdateNames();
+  int N = m_PolicyNames->GetNumberRows();
+  for (int row = 0; row < N; row++) 
+    if (m_PolicyNames->GetCellValue(row, 0) == policyname) {
+      m_iSelectedItem = row;
+      m_PolicyNames->SelectRow(row);
+      break;
+    }
+
+  UpdateDetails();
+}
 
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_NEW
@@ -456,9 +502,14 @@ void CManagePasswordPolicies::UpdateDetails()
 
 void CManagePasswordPolicies::OnNewClick( wxCommandEvent& )
 {
-  CPasswordPolicy ppdlg(this);
+  CPasswordPolicy ppdlg(this, m_core);
+
+  ppdlg.SetPolicyData(wxT(""), m_MapPSWDPLC);
   if (ppdlg.ShowModal() == wxID_OK) {
-    UpdateNames();
+    wxString policyname;
+    
+    ppdlg.GetPolicyData(m_st_default_pp, policyname, m_MapPSWDPLC);
+    UpdatePolicy(policyname, CPP_ADD);
   }
 }
 
@@ -467,12 +518,21 @@ void CManagePasswordPolicies::OnNewClick( wxCommandEvent& )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_EDIT
  */
 
-void CManagePasswordPolicies::OnEditPpClick( wxCommandEvent& event )
+void CManagePasswordPolicies::OnEditPpClick( wxCommandEvent& )
 {
-  CPasswordPolicy ppdlg(this);
-  ppdlg.SetPolname(_("WTF"));
+  wxString policyname = m_PolicyNames->GetCellValue(m_iSelectedItem, 0);
+
+  m_mapIter = m_MapPSWDPLC.find(StringX(policyname.c_str()));
+  if (m_iSelectedItem != 0 && m_mapIter == m_MapPSWDPLC.end())
+    return;
+
+  // Pass default values and PolicyName map
+  CPasswordPolicy ppdlg(this, m_core);
+
+  ppdlg.SetPolicyData(policyname, m_MapPSWDPLC);
   if (ppdlg.ShowModal() == wxID_OK) {
-    UpdateNames();
+    ppdlg.GetPolicyData(m_st_default_pp, policyname, m_MapPSWDPLC);
+    UpdatePolicy(policyname, CPP_MODIFIED);
   }
 }
 

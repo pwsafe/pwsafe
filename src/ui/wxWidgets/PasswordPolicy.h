@@ -23,6 +23,9 @@
 #include "wx/valgen.h"
 #include "wx/spinctrl.h"
 ////@end includes
+#include "core/coredefs.h"
+#include "core/PWPolicy.h"
+#include "core/PWScore.h"
 
 /*!
  * Forward declarations
@@ -71,13 +74,16 @@ class wxSpinCtrl;
 
 class CPasswordPolicy: public wxDialog
 {    
-  DECLARE_DYNAMIC_CLASS( CPasswordPolicy )
   DECLARE_EVENT_TABLE()
 
 public:
   /// Constructors
-  CPasswordPolicy();
-  CPasswordPolicy( wxWindow* parent, wxWindowID id = SYMBOL_CPASSWORDPOLICY_IDNAME, const wxString& caption = SYMBOL_CPASSWORDPOLICY_TITLE, const wxPoint& pos = SYMBOL_CPASSWORDPOLICY_POSITION, const wxSize& size = SYMBOL_CPASSWORDPOLICY_SIZE, long style = SYMBOL_CPASSWORDPOLICY_STYLE );
+  CPasswordPolicy( wxWindow* parent, PWScore &core,
+		   wxWindowID id = SYMBOL_CPASSWORDPOLICY_IDNAME,
+		   const wxString& caption = SYMBOL_CPASSWORDPOLICY_TITLE,
+		   const wxPoint& pos = SYMBOL_CPASSWORDPOLICY_POSITION,
+		   const wxSize& size = SYMBOL_CPASSWORDPOLICY_SIZE,
+		   long style = SYMBOL_CPASSWORDPOLICY_STYLE );
 
   /// Creation
   bool Create( wxWindow* parent, wxWindowID id = SYMBOL_CPASSWORDPOLICY_IDNAME, const wxString& caption = SYMBOL_CPASSWORDPOLICY_TITLE, const wxPoint& pos = SYMBOL_CPASSWORDPOLICY_POSITION, const wxSize& size = SYMBOL_CPASSWORDPOLICY_SIZE, long style = SYMBOL_CPASSWORDPOLICY_STYLE );
@@ -118,6 +124,9 @@ public:
   /// Retrieves icon resources
   wxIcon GetIconResource( const wxString& name );
 ////@end CPasswordPolicy member function declarations
+  void SetPolicyData(const wxString &policyname, PSWDPolicyMap &MapPSWDPLC);
+  void GetPolicyData(st_PSWDPolicy &st_pp, wxString &policyname, PSWDPolicyMap &MapPSWDPLC)
+  {st_pp = m_st_default_pp; policyname = m_polname; MapPSWDPLC = m_MapPSWDPLC;}
 
   /// Should we show tooltips?
   static bool ShowToolTips();
@@ -143,6 +152,13 @@ private:
   wxString m_polname;
   int m_pwdefaultlength;
 ////@end CPasswordPolicy member variables
+  PWScore &m_core;
+  wxString m_oldpolname;
+  st_PSWDPolicy m_st_default_pp;
+  PSWDPolicyMap m_MapPSWDPLC;
+  PSWDPolicyMapIter m_iter;
+
+  stringT m_std_symbols, m_easyvision_symbols, m_pronounceable_symbols;
 };
 
 #endif

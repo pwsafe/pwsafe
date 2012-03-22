@@ -29,12 +29,6 @@
 ////@end XPM images
 
 
-/*!
- * CPasswordPolicy type definition
- */
-
-IMPLEMENT_DYNAMIC_CLASS( CPasswordPolicy, wxDialog )
-
 
 /*!
  * CPasswordPolicy event table definition
@@ -55,15 +49,13 @@ END_EVENT_TABLE()
 
 
 /*!
- * CPasswordPolicy constructors
+ * CPasswordPolicy constructor
  */
 
-CPasswordPolicy::CPasswordPolicy()
-{
-  Init();
-}
-
-CPasswordPolicy::CPasswordPolicy( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
+CPasswordPolicy::CPasswordPolicy( wxWindow* parent, PWScore &core,
+				  wxWindowID id, const wxString& caption,
+				  const wxPoint& pos, const wxSize& size, long style )
+: m_core(core)
 {
   Init();
   Create(parent, id, caption, pos, size, style);
@@ -358,3 +350,50 @@ void CPasswordPolicy::OnHelpClick( wxCommandEvent& event )
 ////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_HELP in CPasswordPolicy. 
 }
 
+void CPasswordPolicy::SetPolicyData(const wxString &policyname, PSWDPolicyMap &MapPSWDPLC)
+{
+  m_MapPSWDPLC = MapPSWDPLC;
+  m_polname = m_oldpolname = policyname;
+
+  m_iter = m_polname.IsEmpty() ? m_MapPSWDPLC.end() :
+    m_MapPSWDPLC.find(StringX(m_polname.c_str()));
+
+  // Check the find worked above - if PolicyName not empty, it must be in the map!
+  if (!m_polname.IsEmpty())
+    ASSERT(m_iter != m_MapPSWDPLC.end());
+
+  // If New, use default values; otherwise use this policy's values
+  st_PSWDPolicy xst_pp = m_polname.IsEmpty() ? m_st_default_pp : m_iter->second;
+#ifdef NOTYET
+  m_PWUseLowercase = m_oldPWUseLowercase =
+    (xst_pp.pwp.flags & PWPolicy::UseLowercase) ==
+                       PWPolicy::UseLowercase;
+  m_PWUseUppercase = m_oldPWUseUppercase =
+    (xst_pp.pwp.flags & PWPolicy::UseUppercase) ==
+                       PWPolicy::UseUppercase;
+  m_PWUseDigits = m_oldPWUseDigits =
+    (xst_pp.pwp.flags & PWPolicy::UseDigits) ==
+                       PWPolicy::UseDigits;
+  m_PWUseSymbols = m_oldPWUseSymbols =
+    (xst_pp.pwp.flags & PWPolicy::UseSymbols) ==
+                       PWPolicy::UseSymbols;
+  m_PWUseHexdigits = m_oldPWUseHexdigits =
+    (xst_pp.pwp.flags & PWPolicy::UseHexDigits) ==
+                       PWPolicy::UseHexDigits;
+  m_PWEasyVision = m_oldPWEasyVision =
+    (xst_pp.pwp.flags & PWPolicy::UseEasyVision) ==
+                       PWPolicy::UseEasyVision;
+  m_PWMakePronounceable = m_oldPWMakePronounceable =
+    (xst_pp.pwp.flags & PWPolicy::MakePronounceable) ==
+                       PWPolicy::MakePronounceable;
+  m_PWDefaultLength = m_oldPWDefaultLength = xst_pp.pwp.length;
+  m_PWDigitMinLength = m_oldPWDigitMinLength = xst_pp.pwp.digitminlength;
+  m_PWLowerMinLength = m_oldPWLowerMinLength = xst_pp.pwp.lowerminlength;
+  m_PWSymbolMinLength = m_oldPWSymbolMinLength = xst_pp.pwp.symbolminlength;
+  m_PWUpperMinLength = m_oldPWUpperMinLength = xst_pp.pwp.upperminlength;
+
+  wxString symbols = xst_pp.symbols.c_str();
+  m_Symbols = m_oldSymbols = symbols;
+  m_UseOwnSymbols = m_oldUseOwnSymbols = cs_symbols.IsEmpty() ? DEFAULT_SYMBOLS : OWN_SYMBOLS;
+#endif
+}

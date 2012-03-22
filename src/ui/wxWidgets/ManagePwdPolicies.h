@@ -151,6 +151,7 @@ public:
  private:
   void UpdateNames();
   void UpdateDetails();
+  void UpdatePolicy(const wxString &policyname, CPP_FLAGS mode); // called after New/Edit
   void ShowPolicyDetails();
   void ShowPolicyEntries();
   st_PSWDPolicy GetSelectedPolicy() const;
@@ -163,6 +164,7 @@ public:
   int m_iundo_pos;
 
   PSWDPolicyMap m_MapPSWDPLC;
+  PSWDPolicyMapIter m_mapIter;
   st_PSWDPolicy m_st_default_pp;
 
   GTUSet m_setGTU;
