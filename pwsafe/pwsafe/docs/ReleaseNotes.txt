@@ -21,6 +21,7 @@ Bugs fixed in 3.28.1
 [3508891] Editing an entry's Notes using an external editor no longer adds blank lines
 and fully supports non-Latin characters.
 [3498625] Test selected password policy now reflects any edits done to the policy.
+[3495473} Notes Word Wrap during edit now works again.
 
 New Features for 3.28
 =====================
