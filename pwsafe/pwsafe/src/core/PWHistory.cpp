@@ -19,22 +19,24 @@ bool CreatePWHistoryList(const StringX &pwh_str,
                          size_t &pwh_max, size_t &num_err,
                          PWHistList &pwhl, int time_format)
 {
+  // Return boolean value stating if PWHistory status is active
   pwh_max = num_err = 0;
 
   StringX pwh_s = pwh_str;
-  size_t len = pwh_s.length();
+  const size_t len = pwh_s.length();
 
   if (len < 5) {
     num_err = len != 0 ? 1 : 0;
     return false;
   }
-  bool retval = pwh_s[0] != charT('0');
+  bool bStatus = pwh_s[0] != charT('0');
 
   int n;
   iStringXStream ism(StringX(pwh_s, 1, 2)); // max history 1 byte hex
   ism >> hex >> pwh_max;
   if (!ism)
     return false;
+
   iStringXStream isn(StringX(pwh_s, 3, 2)); // cur # entries 1 byte hex
   isn >> hex >> n;
   if (!isn)
@@ -51,12 +53,18 @@ bool CreatePWHistoryList(const StringX &pwh_str,
   // Case when password history field is too long and no passwords present
   if (n == 0 && pwh_s.length() != 5) {
     num_err = static_cast<size_t>(-1);
-    return retval;
+    return bStatus;
   }
 
   size_t offset = 1 + 2 + 2; // where to extract the next token from pwh_s
 
   for (int i = 0; i < n; i++) {
+    if (offset >= len) {
+      // Trying to read past end of buffer!
+      num_err++;
+      break;
+    }
+
     PWHistEntry pwh_ent;
     long t = 0L;
     iStringXStream ist(StringX(pwh_s, offset, 8)); // time in 4 byte hex
@@ -101,7 +109,7 @@ bool CreatePWHistoryList(const StringX &pwh_str,
   }
 
   num_err += n - pwhl.size();
-  return retval;
+  return bStatus;
 }
 
 StringX MakePWHistoryHeader(BOOL status, size_t pwh_max, size_t pwh_num)

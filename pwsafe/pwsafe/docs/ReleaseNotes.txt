@@ -18,6 +18,8 @@ None
 
 Bugs fixed in 3.28.1
 ====================
+[3510590] Password History is now correctly repaired if found in error during
+the automatic Validate on database open.
 [3508891] Editing an entry's Notes using an external editor no longer adds blank lines
 and fully supports non-Latin characters.
 [3498625] Test selected password policy now reflects any edits done to the policy.

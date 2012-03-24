@@ -1656,25 +1656,21 @@ bool CItemData::ValidatePWHistory()
   if (listnum > pwh_max)
     pwh_max = listnum;
 
-  if (pwh_max < listnum)
-    pwh_max = listnum;
-
   // Rebuild PWHistory from the data we have
-  StringX history = MakePWHistoryHeader(pwh_status, pwh_max, listnum);
+  StringX sxBuffer;
+  StringX sxNewHistory = MakePWHistoryHeader(pwh_status, pwh_max, listnum);
 
-  PWHistList::iterator iter;
-  for (iter = pwhistlist.begin(); iter != pwhistlist.end(); iter++) {
-    const PWHistEntry &pwshe = *iter;
-    history += pwshe.changedate;
-    oStringXStream os1;
-    os1 << hex << setfill(charT('0')) << setw(4)
-        << pwshe.password.length();
-    history += os1.str();
-    history += pwshe.password;
+  PWHistList::const_iterator citer;
+  for (citer = pwhistlist.begin(); citer != pwhistlist.end(); citer++) {
+    Format(sxBuffer, _T("%08x%04x%s"),
+	           static_cast<long>(citer->changetttdate), citer->password.length(),
+	           citer->password.c_str());
+	    sxNewHistory += sxBuffer;
+	    sxBuffer = _T("");
   }
 
-  if (pwh != history)
-    SetPWHistory(history);
+  if (pwh != sxNewHistory)
+    SetPWHistory(sxNewHistory);
 
   return false;
 }
