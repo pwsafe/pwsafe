@@ -37,6 +37,8 @@
 BEGIN_EVENT_TABLE( CPasswordPolicy, wxDialog )
 
 ////@begin CPasswordPolicy event table entries
+  EVT_CHECKBOX( ID_CHECKBOX3, CPasswordPolicy::OnPwPolUseClick )
+
   EVT_BUTTON( wxID_OK, CPasswordPolicy::OnOkClick )
 
   EVT_BUTTON( wxID_CANCEL, CPasswordPolicy::OnCancelClick )
@@ -272,6 +274,18 @@ void CPasswordPolicy::CreateControls()
   // Set validators
   itemTextCtrl5->SetValidator( wxGenericValidator(& m_polname) );
   itemSpinCtrl9->SetValidator( wxGenericValidator(& m_pwdefaultlength) );
+  m_pwpUseLowerCtrl->SetValidator( wxGenericValidator(& m_pwUseLowercase) );
+  m_pwpLCSpin->SetValidator( wxGenericValidator(& m_pwLowerMinLength) );
+  m_pwpUseUpperCtrl->SetValidator( wxGenericValidator(& m_pwUseUppercase) );
+  m_pwpUCSpin->SetValidator( wxGenericValidator(& m_pwUpperMinLength) );
+  m_pwpUseDigitsCtrl->SetValidator( wxGenericValidator(& m_pwUseDigits) );
+  m_pwpDigSpin->SetValidator( wxGenericValidator(& m_pwDigitMinLength) );
+  m_pwpSymCtrl->SetValidator( wxGenericValidator(& m_pwUseSymbols) );
+  m_pwpSymSpin->SetValidator( wxGenericValidator(& m_pwSymbolMinLength) );
+  itemTextCtrl34->SetValidator( wxGenericValidator(& m_Symbols) );
+  m_pwpEasyCtrl->SetValidator( wxGenericValidator(& m_pwUseEasyVision) );
+  m_pwpPronounceCtrl->SetValidator( wxGenericValidator(& m_pwMakePronounceable) );
+  m_pwpHexCtrl->SetValidator( wxGenericValidator(& m_pwUseHex) );
 ////@end CPasswordPolicy content construction
 }
 
@@ -364,36 +378,50 @@ void CPasswordPolicy::SetPolicyData(const wxString &policyname, PSWDPolicyMap &M
 
   // If New, use default values; otherwise use this policy's values
   st_PSWDPolicy xst_pp = m_polname.IsEmpty() ? m_st_default_pp : m_iter->second;
-#ifdef NOTYET
-  m_PWUseLowercase = m_oldPWUseLowercase =
+  m_pwUseLowercase = m_oldpwUseLowercase =
     (xst_pp.pwp.flags & PWPolicy::UseLowercase) ==
                        PWPolicy::UseLowercase;
-  m_PWUseUppercase = m_oldPWUseUppercase =
+  m_pwUseUppercase = m_oldpwUseUppercase =
     (xst_pp.pwp.flags & PWPolicy::UseUppercase) ==
                        PWPolicy::UseUppercase;
-  m_PWUseDigits = m_oldPWUseDigits =
+  m_pwUseDigits = m_oldpwUseDigits =
     (xst_pp.pwp.flags & PWPolicy::UseDigits) ==
                        PWPolicy::UseDigits;
-  m_PWUseSymbols = m_oldPWUseSymbols =
+  m_pwUseSymbols = m_oldpwUseSymbols =
     (xst_pp.pwp.flags & PWPolicy::UseSymbols) ==
                        PWPolicy::UseSymbols;
-  m_PWUseHexdigits = m_oldPWUseHexdigits =
+  m_pwUseHex = m_oldpwUseHex =
     (xst_pp.pwp.flags & PWPolicy::UseHexDigits) ==
                        PWPolicy::UseHexDigits;
-  m_PWEasyVision = m_oldPWEasyVision =
+  m_pwUseEasyVision = m_oldpwUseEasyVision =
     (xst_pp.pwp.flags & PWPolicy::UseEasyVision) ==
                        PWPolicy::UseEasyVision;
-  m_PWMakePronounceable = m_oldPWMakePronounceable =
+  m_pwMakePronounceable = m_oldpwMakePronounceable =
     (xst_pp.pwp.flags & PWPolicy::MakePronounceable) ==
                        PWPolicy::MakePronounceable;
-  m_PWDefaultLength = m_oldPWDefaultLength = xst_pp.pwp.length;
-  m_PWDigitMinLength = m_oldPWDigitMinLength = xst_pp.pwp.digitminlength;
-  m_PWLowerMinLength = m_oldPWLowerMinLength = xst_pp.pwp.lowerminlength;
-  m_PWSymbolMinLength = m_oldPWSymbolMinLength = xst_pp.pwp.symbolminlength;
-  m_PWUpperMinLength = m_oldPWUpperMinLength = xst_pp.pwp.upperminlength;
+  m_pwdefaultlength = m_oldpwdefaultlength = xst_pp.pwp.length;
+  m_pwDigitMinLength = m_oldpwDigitMinLength = xst_pp.pwp.digitminlength;
+  m_pwLowerMinLength = m_oldpwLowerMinLength = xst_pp.pwp.lowerminlength;
+  m_pwSymbolMinLength = m_oldpwSymbolMinLength = xst_pp.pwp.symbolminlength;
+  m_pwUpperMinLength = m_oldpwUpperMinLength = xst_pp.pwp.upperminlength;
 
   wxString symbols = xst_pp.symbols.c_str();
   m_Symbols = m_oldSymbols = symbols;
+#ifdef NOTYET
   m_UseOwnSymbols = m_oldUseOwnSymbols = cs_symbols.IsEmpty() ? DEFAULT_SYMBOLS : OWN_SYMBOLS;
 #endif
 }
+
+
+/*!
+ * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX3
+ */
+
+void CPasswordPolicy::OnPwPolUseClick( wxCommandEvent& event )
+{
+////@begin wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX3 in CPasswordPolicy.
+  // Before editing this code, remove the block markers.
+  event.Skip();
+////@end wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX3 in CPasswordPolicy. 
+}
+
