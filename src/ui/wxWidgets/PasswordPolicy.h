@@ -100,7 +100,16 @@ public:
 ////@begin CPasswordPolicy event handler declarations
 
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX3
-  void OnPwPolUseClick( wxCommandEvent& event );
+  void OnPwPolUseLowerCase( wxCommandEvent& event );
+
+  /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX4
+  void OnPwPolUseUpperCase( wxCommandEvent& event );
+
+  /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX5
+  void OnPwPolUseDigits( wxCommandEvent& event );
+
+  /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX6
+  void OnPwPolUseSymbols( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
   void OnOkClick( wxCommandEvent& event );
@@ -115,47 +124,47 @@ public:
 
 ////@begin CPasswordPolicy member function declarations
 
+  wxString GetSymbols() const { return m_Symbols ; }
+  void SetSymbols(wxString value) { m_Symbols = value ; }
+
   wxString GetPolname() const { return m_polname ; }
   void SetPolname(wxString value) { m_polname = value ; }
-
-  int GetPwdefaultlength() const { return m_pwdefaultlength ; }
-  void SetPwdefaultlength(int value) { m_pwdefaultlength = value ; }
-
-  bool GetPwUseLowercase() const { return m_pwUseLowercase ; }
-  void SetPwUseLowercase(bool value) { m_pwUseLowercase = value ; }
-
-  bool GetPwUseUppercase() const { return m_pwUseUppercase ; }
-  void SetPwUseUppercase(bool value) { m_pwUseUppercase = value ; }
-
-  bool GetPwUseDigits() const { return m_pwUseDigits ; }
-  void SetPwUseDigits(bool value) { m_pwUseDigits = value ; }
-
-  bool GetPwUseSymbols() const { return m_pwUseSymbols ; }
-  void SetPwUseSymbols(bool value) { m_pwUseSymbols = value ; }
-
-  bool GetPwUseHex() const { return m_pwUseHex ; }
-  void SetPwUseHex(bool value) { m_pwUseHex = value ; }
-
-  bool GetPwUseEasyVision() const { return m_pwUseEasyVision ; }
-  void SetPwUseEasyVision(bool value) { m_pwUseEasyVision = value ; }
-
-  bool GetPwMakePronounceable() const { return m_pwMakePronounceable ; }
-  void SetPwMakePronounceable(bool value) { m_pwMakePronounceable = value ; }
-
-  int GetPwLowerMinLength() const { return m_pwLowerMinLength ; }
-  void SetPwLowerMinLength(int value) { m_pwLowerMinLength = value ; }
-
-  int GetPwUpperMinLength() const { return m_pwUpperMinLength ; }
-  void SetPwUpperMinLength(int value) { m_pwUpperMinLength = value ; }
-
-  int GetPwSymbolMinLength() const { return m_pwSymbolMinLength ; }
-  void SetPwSymbolMinLength(int value) { m_pwSymbolMinLength = value ; }
 
   int GetPwDigitMinLength() const { return m_pwDigitMinLength ; }
   void SetPwDigitMinLength(int value) { m_pwDigitMinLength = value ; }
 
-  wxString GetSymbols() const { return m_Symbols ; }
-  void SetSymbols(wxString value) { m_Symbols = value ; }
+  int GetPwLowerMinLength() const { return m_pwLowerMinLength ; }
+  void SetPwLowerMinLength(int value) { m_pwLowerMinLength = value ; }
+
+  bool GetPwMakePronounceable() const { return m_pwMakePronounceable ; }
+  void SetPwMakePronounceable(bool value) { m_pwMakePronounceable = value ; }
+
+  int GetPwSymbolMinLength() const { return m_pwSymbolMinLength ; }
+  void SetPwSymbolMinLength(int value) { m_pwSymbolMinLength = value ; }
+
+  int GetPwUpperMinLength() const { return m_pwUpperMinLength ; }
+  void SetPwUpperMinLength(int value) { m_pwUpperMinLength = value ; }
+
+  bool GetPwUseDigits() const { return m_pwUseDigits ; }
+  void SetPwUseDigits(bool value) { m_pwUseDigits = value ; }
+
+  bool GetPwUseEasyVision() const { return m_pwUseEasyVision ; }
+  void SetPwUseEasyVision(bool value) { m_pwUseEasyVision = value ; }
+
+  bool GetPwUseHex() const { return m_pwUseHex ; }
+  void SetPwUseHex(bool value) { m_pwUseHex = value ; }
+
+  bool GetPwUseLowercase() const { return m_pwUseLowercase ; }
+  void SetPwUseLowercase(bool value) { m_pwUseLowercase = value ; }
+
+  bool GetPwUseSymbols() const { return m_pwUseSymbols ; }
+  void SetPwUseSymbols(bool value) { m_pwUseSymbols = value ; }
+
+  bool GetPwUseUppercase() const { return m_pwUseUppercase ; }
+  void SetPwUseUppercase(bool value) { m_pwUseUppercase = value ; }
+
+  int GetPwdefaultlength() const { return m_pwdefaultlength ; }
+  void SetPwdefaultlength(int value) { m_pwdefaultlength = value ; }
 
   /// Retrieves bitmap resources
   wxBitmap GetBitmapResource( const wxString& name );
@@ -188,20 +197,21 @@ public:
   wxCheckBox* m_pwpPronounceCtrl;
   wxCheckBox* m_pwpHexCtrl;
 private:
-  wxString m_polname;
-  int m_pwdefaultlength;
-  bool m_pwUseLowercase;
-  bool m_pwUseUppercase;
-  bool m_pwUseDigits;
-  bool m_pwUseSymbols;
-  bool m_pwUseHex;
-  bool m_pwUseEasyVision;
-  bool m_pwMakePronounceable;
-  int m_pwLowerMinLength;
-  int m_pwUpperMinLength;
-  int m_pwSymbolMinLength;
-  int m_pwDigitMinLength;
+  void CBox2Spin(wxCheckBox *cb, wxSpinCtrl *sp);
   wxString m_Symbols;
+  wxString m_polname;
+  int m_pwDigitMinLength;
+  int m_pwLowerMinLength;
+  bool m_pwMakePronounceable;
+  int m_pwSymbolMinLength;
+  int m_pwUpperMinLength;
+  bool m_pwUseDigits;
+  bool m_pwUseEasyVision;
+  bool m_pwUseHex;
+  bool m_pwUseLowercase;
+  bool m_pwUseSymbols;
+  bool m_pwUseUppercase;
+  int m_pwdefaultlength;
 ////@end CPasswordPolicy member variables
   PWScore &m_core;
   wxString m_oldpolname;

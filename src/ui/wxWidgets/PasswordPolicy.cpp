@@ -37,7 +37,13 @@
 BEGIN_EVENT_TABLE( CPasswordPolicy, wxDialog )
 
 ////@begin CPasswordPolicy event table entries
-  EVT_CHECKBOX( ID_CHECKBOX3, CPasswordPolicy::OnPwPolUseClick )
+  EVT_CHECKBOX( ID_CHECKBOX3, CPasswordPolicy::OnPwPolUseLowerCase )
+
+  EVT_CHECKBOX( ID_CHECKBOX4, CPasswordPolicy::OnPwPolUseUpperCase )
+
+  EVT_CHECKBOX( ID_CHECKBOX5, CPasswordPolicy::OnPwPolUseDigits )
+
+  EVT_CHECKBOX( ID_CHECKBOX6, CPasswordPolicy::OnPwPolUseSymbols )
 
   EVT_BUTTON( wxID_OK, CPasswordPolicy::OnOkClick )
 
@@ -170,7 +176,7 @@ void CPasswordPolicy::CreateControls()
   wxStaticText* itemStaticText13 = new wxStaticText( itemDialog1, wxID_STATIC, _("(At least "), wxDefaultPosition, wxDefaultSize, 0 );
   m_pwNumLCbox->Add(itemStaticText13, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_pwpLCSpin = new wxSpinCtrl( itemDialog1, ID_SPINCTRL5, _T("0"), wxDefaultPosition, wxSize(20, -1), wxSP_ARROW_KEYS, 0, 100, 0 );
+  m_pwpLCSpin = new wxSpinCtrl( itemDialog1, ID_SPINCTRL5, _T("0"), wxDefaultPosition, wxSize(40, -1), wxSP_ARROW_KEYS, 0, 100, 0 );
   m_pwNumLCbox->Add(m_pwpLCSpin, 0, wxALIGN_CENTER_VERTICAL|wxALL, 0);
 
   wxStaticText* itemStaticText15 = new wxStaticText( itemDialog1, wxID_STATIC, _(")"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -186,7 +192,7 @@ void CPasswordPolicy::CreateControls()
   wxStaticText* itemStaticText18 = new wxStaticText( itemDialog1, wxID_STATIC, _("(At least "), wxDefaultPosition, wxDefaultSize, 0 );
   m_pwNumUCbox->Add(itemStaticText18, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_pwpUCSpin = new wxSpinCtrl( itemDialog1, ID_SPINCTRL6, _T("0"), wxDefaultPosition, wxSize(20, -1), wxSP_ARROW_KEYS, 0, 100, 0 );
+  m_pwpUCSpin = new wxSpinCtrl( itemDialog1, ID_SPINCTRL6, _T("0"), wxDefaultPosition, wxSize(40, -1), wxSP_ARROW_KEYS, 0, 100, 0 );
   m_pwNumUCbox->Add(m_pwpUCSpin, 0, wxALIGN_CENTER_VERTICAL|wxALL, 0);
 
   wxStaticText* itemStaticText20 = new wxStaticText( itemDialog1, wxID_STATIC, _(")"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -202,7 +208,7 @@ void CPasswordPolicy::CreateControls()
   wxStaticText* itemStaticText23 = new wxStaticText( itemDialog1, wxID_STATIC, _("(At least "), wxDefaultPosition, wxDefaultSize, 0 );
   m_pwNumDigbox->Add(itemStaticText23, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_pwpDigSpin = new wxSpinCtrl( itemDialog1, ID_SPINCTRL7, _T("0"), wxDefaultPosition, wxSize(20, -1), wxSP_ARROW_KEYS, 0, 100, 0 );
+  m_pwpDigSpin = new wxSpinCtrl( itemDialog1, ID_SPINCTRL7, _T("0"), wxDefaultPosition, wxSize(40, -1), wxSP_ARROW_KEYS, 0, 100, 0 );
   m_pwNumDigbox->Add(m_pwpDigSpin, 0, wxALIGN_CENTER_VERTICAL|wxALL, 0);
 
   wxStaticText* itemStaticText25 = new wxStaticText( itemDialog1, wxID_STATIC, _(")"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -218,7 +224,7 @@ void CPasswordPolicy::CreateControls()
   wxStaticText* itemStaticText28 = new wxStaticText( itemDialog1, wxID_STATIC, _("(At least "), wxDefaultPosition, wxDefaultSize, 0 );
   m_pwNumSymbox->Add(itemStaticText28, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_pwpSymSpin = new wxSpinCtrl( itemDialog1, ID_SPINCTRL8, _T("0"), wxDefaultPosition, wxSize(20, -1), wxSP_ARROW_KEYS, 0, 100, 0 );
+  m_pwpSymSpin = new wxSpinCtrl( itemDialog1, ID_SPINCTRL8, _T("0"), wxDefaultPosition, wxSize(40, -1), wxSP_ARROW_KEYS, 0, 100, 0 );
   m_pwNumSymbox->Add(m_pwpSymSpin, 0, wxALIGN_CENTER_VERTICAL|wxALL, 0);
 
   wxStaticText* itemStaticText30 = new wxStaticText( itemDialog1, wxID_STATIC, _(")"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -412,16 +418,57 @@ void CPasswordPolicy::SetPolicyData(const wxString &policyname, PSWDPolicyMap &M
 #endif
 }
 
+void CPasswordPolicy::CBox2Spin(wxCheckBox *cb, wxSpinCtrl *sp)
+{
+  Validate();
+  TransferDataFromWindow();
+  bool checked = cb->GetValue();
+  sp->Enable(checked);
+  Validate();
+  TransferDataFromWindow();
+}
 
 /*!
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX3
  */
 
-void CPasswordPolicy::OnPwPolUseClick( wxCommandEvent& event )
+void CPasswordPolicy::OnPwPolUseLowerCase( wxCommandEvent& )
 {
-////@begin wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX3 in CPasswordPolicy.
-  // Before editing this code, remove the block markers.
-  event.Skip();
-////@end wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX3 in CPasswordPolicy. 
+  CBox2Spin(m_pwpUseLowerCtrl, m_pwpLCSpin);
+}
+
+
+/*!
+ * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX4
+ */
+
+void CPasswordPolicy::OnPwPolUseUpperCase( wxCommandEvent& )
+{
+  CBox2Spin(m_pwpUseUpperCtrl, m_pwpUCSpin);
+}
+
+
+/*!
+ * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX5
+ */
+
+void CPasswordPolicy::OnPwPolUseDigits( wxCommandEvent& )
+{
+  CBox2Spin(m_pwpUseDigitsCtrl, m_pwpDigSpin);
+}
+
+
+/*!
+ * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX6
+ */
+
+void CPasswordPolicy::OnPwPolUseSymbols( wxCommandEvent& )
+{
+  CBox2Spin(m_pwpSymCtrl, m_pwpSymSpin);
+  bool checked = m_pwpSymCtrl->GetValue();
+  FindWindow(IDC_USE_DEFAULTSYMBOLS)->Enable(checked);
+  FindWindow(IDC_USE_OWNSYMBOLS)->Enable(checked);
+  FindWindow(IDC_STATIC_DEFAULT_SYMBOLS)->Enable(checked);
+  FindWindow(IDC_OWNSYMBOLS)->Enable(checked);
 }
 
