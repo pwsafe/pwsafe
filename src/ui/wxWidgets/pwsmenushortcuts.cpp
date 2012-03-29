@@ -63,7 +63,8 @@ st_prefShortcut MenuItemData::ToPrefShortcut() const
   st_prefShortcut sc;
 
   sc.id = m_item->GetId();
-  sc.siVirtKey = ae.IsOk()? ae.GetKeyCode(): 0;
+  wxASSERT_MSG(sc.id != 0, wxT("Trying to save shortcut with NULL menu item id"));
+  sc.siVirtKey = ae.GetKeyCode();
   sc.cModifier = 0;
   for (size_t idx = 0; idx < WXSIZEOF(g_modmap); ++idx)
     if ((ae.GetFlags() & g_modmap[idx].wxmod) != 0)
@@ -84,19 +85,22 @@ void MenuItemData::SetUserShortcut(const st_prefShortcut& prefAccel, bool setdir
 
 void MenuItemData::SetUserShortcut(const wxAcceleratorEntry& userAccel, bool setdirty /* = true */)
 {
-  if (userAccel.IsOk()) {
+  if (userAccel.GetKeyCode() != 0) {
     m_userShortcut = userAccel;
     m_status.setchanged();
-    if (setdirty)
-      m_status.setdirty();
   }
-  else if (m_origShortcut.IsOk() || m_userShortcut.IsOk()) {
-    // we have a shortcut, but the user doesn't want one for this menu item 
+  else if (m_userShortcut.GetKeyCode() != 0) {
+    // Remove the user shortcut
     m_userShortcut = wxAcceleratorEntry();
-    m_status.setdeleted();
-    if (setdirty)
-      m_status.setdirty();
+    m_status.setorig();
+    
   }
+  else if (m_origShortcut.GetKeyCode() != 0) {
+    //just mark the original shortcut as deleted
+    m_status.setdeleted();
+  }
+  if (setdirty)
+    m_status.setdirty();
 }
 
 bool MenuItemData::IsDirty() const {
@@ -129,7 +133,7 @@ void MenuItemData::ApplyEffectiveShortcut()
  */
 bool MenuItemData::HasEffectiveShortcut() const
 {
-  return m_userShortcut.IsOk() || (m_origShortcut.IsOk() && !m_status.isdeleted());
+  return m_userShortcut.GetKeyCode() != 0 || (m_origShortcut.GetKeyCode() != 0 && !m_status.isdeleted());
 }
 
 /*
@@ -138,7 +142,7 @@ bool MenuItemData::HasEffectiveShortcut() const
  */
 bool MenuItemData::ShouldSave() const
 {
-  return IsDirty() || (m_userShortcut.IsOk() || (m_status.isdeleted() && m_origShortcut.IsOk()));
+  return IsDirty() || (m_userShortcut.GetKeyCode() != 0 || (m_status.isdeleted() && m_origShortcut.GetKeyCode() != 0));
 }
 
 bool MenuItemData::IsCustom() const
@@ -150,7 +154,7 @@ wxAcceleratorEntry MenuItemData::GetEffectiveShortcut() const
 {
   static wxAcceleratorEntry nullAccel;
 
-  if (m_userShortcut.IsOk())
+  if (m_userShortcut.GetKeyCode() != 0)
     return m_userShortcut;
   else if (m_status.isdeleted())
     return wxAcceleratorEntry(0, 0, m_item->GetId());
@@ -166,7 +170,7 @@ wxAcceleratorEntry MenuItemData::GetEffectiveShortcut() const
  */
 void MenuItemData::Reset()
 {
-  if (m_userShortcut.IsOk() || m_status.isdeleted()) {
+  if (m_userShortcut.GetKeyCode() != 0 || m_status.isdeleted()) {
     m_userShortcut = wxAcceleratorEntry();
     m_status.setorig();
     m_status.flipdirty();
@@ -265,7 +269,7 @@ wxMenuItem* PWSMenuShortcuts::MenuItemAt(size_t index) const
   return m_midata[index].GetMenuItem();
 }
 
-void PWSMenuShortcuts::ChangeShortcut(size_t idx, const wxAcceleratorEntry& newEntry)
+void PWSMenuShortcuts::ChangeShortcutAt(size_t idx, const wxAcceleratorEntry& newEntry)
 {
   wxCHECK_RET(idx < Count(), wxT("Index for new shortcut exceeds number of menu items retrieved"));
 
@@ -373,6 +377,19 @@ bool PWSMenuShortcuts::IsShortcutCustomizedAt(size_t idx) const
   return m_midata[idx].IsCustom();
 }
 
+bool PWSMenuShortcuts::HasEffectiveShortcutAt(size_t index) const
+{
+  wxCHECK_MSG(index < Count(), false, wxT("Invalid index for effective shortcut check"));
+  return m_midata[index].HasEffectiveShortcut();
+}
+
+void PWSMenuShortcuts::RemoveShortcutAt(size_t idx)
+{
+  wxCHECK_RET(idx < Count(), wxT("Index for deleting shortcut exceeds number of menu items retrieved"));
+
+  m_midata[idx].SetUserShortcut(wxAcceleratorEntry());
+}
+
 //////////////////////////////////////////////////////////////////
 // ShortcutsGridValidator
 //
@@ -395,7 +412,7 @@ bool ShortcutsGridValidator::TransferFromWindow()
           wxMenuItem* menuitem = m_shortcuts.MenuItemAt(row);
           if (menuitem) {
             newAccel.Set(newAccel.GetFlags(), newAccel.GetKeyCode(), menuitem->GetId(), menuitem);
-            m_shortcuts.ChangeShortcut(row, newAccel);
+            m_shortcuts.ChangeShortcutAt(row, newAccel);
           }
         }
       }
@@ -403,9 +420,9 @@ bool ShortcutsGridValidator::TransferFromWindow()
         success = false;
       }
     }
-    else {
+    else if (m_shortcuts.HasEffectiveShortcutAt(row)) {
       // remove the current user shortcut, if there
-      m_shortcuts.ChangeShortcut(row, wxAcceleratorEntry());
+      m_shortcuts.RemoveShortcutAt(row);
     }
   }
   return success;
@@ -430,12 +447,12 @@ bool ShortcutsGridValidator::TransferToWindow()
 
   for( unsigned row = 0; row < m_shortcuts.Count(); ++row) {
     const wxAcceleratorEntry& ae = m_shortcuts.EffectiveShortcutAt(row);
-    if (ae.IsOk())
+    if (ae.GetKeyCode() != 0)
       grid->SetCellValue(row, COL_SHORTCUT_KEY, ae.ToString());
     grid->SetCellValue(row, COL_MENU_ITEM, m_shortcuts.MenuLabelAt(row));
     if (m_shortcuts.IsShortcutCustomizedAt(row)) {
       wxFont cellFont = grid->GetCellFont(row, COL_MENU_ITEM);
-      cellFont.SetStyle(cellFont.GetStyle()|wxFONTSTYLE_SLANT);
+      cellFont.SetWeight(wxFONTWEIGHT_BOLD);
       grid->SetCellFont(row, COL_MENU_ITEM, cellFont);
     }
   }
