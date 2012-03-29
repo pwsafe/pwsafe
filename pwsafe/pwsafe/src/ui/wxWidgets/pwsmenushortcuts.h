@@ -110,9 +110,11 @@ public:
   wxAcceleratorEntry EffectiveShortcutAt(size_t index) const;
   wxMenuItem* MenuItemAt(size_t index) const;
   bool IsShortcutCustomizedAt(size_t index) const;
+  bool HasEffectiveShortcutAt(size_t index) const;
 
   // change or remove the user shortcut
-  void ChangeShortcut(size_t idx, const wxAcceleratorEntry& newEntry);
+  void ChangeShortcutAt(size_t idx, const wxAcceleratorEntry& newEntry);
+  void RemoveShortcutAt(size_t idx);
 
   // caller must delete the returned entry
   wxAcceleratorEntry* CreateShortcut(const wxString& newEntry);
