@@ -10,6 +10,10 @@ releases may be found in the file ChangeLog.txt.
 
 New Features for 3.28.1
 =======================
+[3510481] If the Record Last Modified and Password Modified date/times have not been set (e.g. the
+entry has not been changed since it was created), then the entry creation date/time is displayed.
+If the entry was created before PasswordSafe saved these fields, then all fields may still be blank.
+Note: This is a change to what is displayed and the entries are not updated to populate these fields.
 [] Portuguese (Brazil) installation instructions added, thanks to Andreas.
 
 Changes to Existing Features in 3.28.1

@@ -284,32 +284,58 @@ int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2,
     case CItemData::CTIME:
       pLHS->GetCTime(t1);
       pRHS->GetCTime(t2);
-      iResult = ((long) t1 < (long) t2) ? -1 : 1;
+      if ((long)t1 == (long)t2)
+        iResult = 0;
+      else
+        iResult = ((long)t1 < (long)t2) ? -1 : 1;
       break;
     case CItemData::PMTIME:
       pLHS->GetPMTime(t1);
+      if ((long)t1 == 0)
+        pLHS->GetCTime(t1);
       pRHS->GetPMTime(t2);
-      iResult = ((long) t1 < (long) t2) ? -1 : 1;
+      if ((long)t2 == 0)
+        pRHS->GetCTime(t2);
+      if ((long)t1 == (long)t2)
+        iResult = 0;
+      else
+        iResult = ((long)t1 < (long)t2) ? -1 : 1;
       break;
     case CItemData::ATIME:
       pLHS->GetATime(t1);
       pRHS->GetATime(t2);
-      iResult = ((long) t1 < (long) t2) ? -1 : 1;
+      if ((long)t1 == (long)t2)
+        iResult = 0;
+      else
+        iResult = ((long)t1 < (long)t2) ? -1 : 1;
       break;
     case CItemData::XTIME:
       pLHS->GetXTime(t1);
       pRHS->GetXTime(t2);
-      iResult = ((long) t1 < (long) t2) ? -1 : 1;
+      if ((long)t1 == (long)t2)
+        iResult = 0;
+      else
+        iResult = ((long)t1 < (long)t2) ? -1 : 1;
       break;
     case CItemData::XTIME_INT:
       pLHS->GetXTimeInt(xint1);
       pRHS->GetXTimeInt(xint2);
-      iResult = (xint1 < xint2) ? -1 : 1;
+      if (xint1 == xint2)
+        iResult = 0;
+      else
+        iResult = (xint1 < xint2) ? -1 : 1;
       break;
     case CItemData::RMTIME:
       pLHS->GetRMTime(t1);
+      if ((long)t1 == 0)
+        pLHS->GetCTime(t1);
       pRHS->GetRMTime(t2);
-      iResult = ((long) t1 < (long) t2) ? -1 : 1;
+      if ((long)t2 == 0)
+        pRHS->GetCTime(t2);
+      if ((long)t1 == (long)t2)
+        iResult = 0;
+      else
+        iResult = ((long)t1 < (long)t2) ? -1 : 1;
       break;
     case CItemData::POLICY:
       iResult = CompareNoCase(pLHS->GetPWPolicy(), pRHS->GetPWPolicy());
@@ -1509,8 +1535,24 @@ int DboxMain::InsertItemIntoGUITreeList(CItemData &ci, int iIndex,
     // Insert the first column data
     if (m_bImageInLV)
       cs_fielddata = L"";
-    else
-      cs_fielddata = ci.GetFieldValue((CItemData::FieldType)m_nColumnTypeByIndex[0]);
+    else {
+      time_t t;
+      const CItemData::FieldType ft = (CItemData::FieldType)m_nColumnTypeByIndex[0];
+      switch (ft) {
+        case CItemData::PMTIME:
+          ci.GetPMTime(t);
+          if ((long)t == 0)
+            cs_fielddata = ci.GetCTime();
+          break;
+        case CItemData::RMTIME:
+          ci.GetPMTime(t);
+          if ((long)t == 0)
+            cs_fielddata = ci.GetCTime();
+          break;
+        default:
+          cs_fielddata = ci.GetFieldValue(ft);
+      }
+    }
 
     iResult = m_ctlItemList.InsertItem(iResult, cs_fielddata.c_str());
 
@@ -1566,11 +1608,29 @@ int DboxMain::InsertItemIntoGUITreeList(CItemData &ci, int iIndex,
         line1 += L"[>>>]";
     }
 
+    time_t t;
+    const StringX sxUnknown = PWSUtil::UNKNOWN_ASC_TIME_STR;
     for (int i = 1; i < m_nColumns; i++) {
-      if ((CItemData::FieldType)m_nColumnTypeByIndex[i] == CItemData::NOTES)
-        cs_fielddata = line1;
-      else
-        cs_fielddata = ci.GetFieldValue((CItemData::FieldType)m_nColumnTypeByIndex[i]);
+      const CItemData::FieldType ft = (CItemData::FieldType)m_nColumnTypeByIndex[i];
+      switch (ft) {
+        case CItemData::NOTES:
+          cs_fielddata = line1;
+          break;
+        case CItemData::CTIME:
+          ci.GetCTime(t);
+          cs_fielddata = ((long)t == 0) ? sxUnknown : ci.GetCTime();
+          break;
+        case CItemData::PMTIME:
+          ci.GetPMTime(t);
+          cs_fielddata = ((long)t == 0) ? ci.GetCTime() : ci.GetPMTime();
+          break;
+        case CItemData::RMTIME:
+          ci.GetRMTime(t);
+          cs_fielddata = ((long)t == 0) ? ci.GetCTime() : ci.GetRMTime();
+          break;
+        default:
+          cs_fielddata = ci.GetFieldValue(ft);
+      }
 
       m_ctlItemList.SetItemText(iResult, i, cs_fielddata.c_str());
     }
