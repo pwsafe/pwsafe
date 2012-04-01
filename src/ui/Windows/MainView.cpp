@@ -228,7 +228,7 @@ int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2,
   time_t t1, t2;
   int xint1, xint2;
 
-  int iResult;
+  int iResult(0);
   switch (nTypeSortColumn) {
     case CItemData::UUID:  // Image
       iResult = (pLHS->GetEntryType() < pRHS->GetEntryType()) ? -1 : 1;
@@ -284,57 +284,45 @@ int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2,
     case CItemData::CTIME:
       pLHS->GetCTime(t1);
       pRHS->GetCTime(t2);
-      if ((long)t1 == (long)t2)
-        iResult = 0;
-      else
+      if (t1 != t2)
         iResult = ((long)t1 < (long)t2) ? -1 : 1;
       break;
     case CItemData::PMTIME:
       pLHS->GetPMTime(t1);
-      if ((long)t1 == 0)
+      if (t1 == 0)
         pLHS->GetCTime(t1);
       pRHS->GetPMTime(t2);
-      if ((long)t2 == 0)
+      if (t2 == 0)
         pRHS->GetCTime(t2);
-      if ((long)t1 == (long)t2)
-        iResult = 0;
-      else
+      if (t1 != t2)
         iResult = ((long)t1 < (long)t2) ? -1 : 1;
       break;
     case CItemData::ATIME:
       pLHS->GetATime(t1);
       pRHS->GetATime(t2);
-      if ((long)t1 == (long)t2)
-        iResult = 0;
-      else
+      if (t1 != t2)
         iResult = ((long)t1 < (long)t2) ? -1 : 1;
       break;
     case CItemData::XTIME:
       pLHS->GetXTime(t1);
       pRHS->GetXTime(t2);
-      if ((long)t1 == (long)t2)
-        iResult = 0;
-      else
+      if (t1 != t2)
         iResult = ((long)t1 < (long)t2) ? -1 : 1;
       break;
     case CItemData::XTIME_INT:
       pLHS->GetXTimeInt(xint1);
       pRHS->GetXTimeInt(xint2);
-      if (xint1 == xint2)
-        iResult = 0;
-      else
+      if (xint1 != xint2)
         iResult = (xint1 < xint2) ? -1 : 1;
       break;
     case CItemData::RMTIME:
       pLHS->GetRMTime(t1);
-      if ((long)t1 == 0)
+      if (t1 == 0)
         pLHS->GetCTime(t1);
       pRHS->GetRMTime(t2);
-      if ((long)t2 == 0)
+      if (t2 == 0)
         pRHS->GetCTime(t2);
-      if ((long)t1 == (long)t2)
-        iResult = 0;
-      else
+      if (t1 != t2)
         iResult = ((long)t1 < (long)t2) ? -1 : 1;
       break;
     case CItemData::POLICY:
@@ -347,10 +335,9 @@ int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2,
       iResult = pLHS->IsProtected() ? 1 : (pRHS->IsProtected() ? -1 : 1);
       break;
     default:
-      iResult = 0; // should never happen - just keep compiler happy
       ASSERT(FALSE);
   }
-  if (!self->m_bSortAscending) {
+  if (!self->m_bSortAscending && iResult != 0) {
     iResult *= -1;
   }
   return iResult;

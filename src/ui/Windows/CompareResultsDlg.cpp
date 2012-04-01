@@ -1123,7 +1123,7 @@ int CALLBACK CCompareResultsDlg::CRCompareFunc(LPARAM lParam1, LPARAM lParam2,
 
   int iResult = LHS_ItemText.CompareNoCase(RHS_ItemText);
 
-  if (!self->m_bSortAscending) {
+  if (!self->m_bSortAscending && iResult != 0) {
     iResult *= -1;
   }
   return iResult;

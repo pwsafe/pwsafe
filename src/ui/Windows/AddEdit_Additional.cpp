@@ -682,12 +682,13 @@ int CALLBACK CAddEdit_Additional::PWHistCompareFunc(LPARAM lParam1, LPARAM lPara
   CSecString password2, changedate2;
   time_t t1, t2;
 
-  int iResult;
+  int iResult(0);
   switch(nSortColumn) {
     case 0:
       t1 = pLHS.changetttdate;
       t2 = pRHS.changetttdate;
-      iResult = ((long) t1 < (long) t2) ? -1 : 1;
+      if (t1 != t2)
+        iResult = ((long) t1 < (long) t2) ? -1 : 1;
       break;
     case 1:
       password1 = pLHS.password;
@@ -695,11 +696,10 @@ int CALLBACK CAddEdit_Additional::PWHistCompareFunc(LPARAM lParam1, LPARAM lPara
       iResult = ((CString)password1).Compare(password2);
       break;
     default:
-      iResult = 0; // should never happen - just keep compiler happy
       ASSERT(FALSE);
   }
 
-  if (!self->m_bSortAscending)
+  if (!self->m_bSortAscending && iResult != 0)
     iResult *= -1;
 
   return iResult;
