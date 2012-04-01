@@ -258,12 +258,13 @@ int CALLBACK CExpPWListDlg::ExpPWCompareFunc(LPARAM lParam1, LPARAM lParam2,
   int et1, et2;
   time_t t1, t2;
 
-  int iResult;
+  int iResult(0);
   switch(nSortColumn) {
     case 0:
       et1 = (int)pLHS.et;
       et2 = (int)pRHS.et;
-      iResult = (et1 < et2) ? -1 : 1;
+      if (et1 != et2)
+        iResult = (et1 < et2) ? -1 : 1;
       break;
     case 1:
       group1 = pLHS.sx_group;
@@ -283,14 +284,14 @@ int CALLBACK CExpPWListDlg::ExpPWCompareFunc(LPARAM lParam1, LPARAM lParam2,
     case 4:
       t1 = pLHS.expirytttXTime;
       t2 = pRHS.expirytttXTime;
-      iResult = ((long)t1 < (long)t2) ? -1 : 1;
+      if (t1 != t2)
+        iResult = ((long)t1 < (long)t2) ? -1 : 1;
       break;
     default:
-      iResult = 0; // should never happen - just keep compiler happy
       ASSERT(FALSE);
   }
 
-  if (!self->m_bSortAscending)
+  if (!self->m_bSortAscending && iResult != 0)
     iResult *= -1;
 
   return iResult;

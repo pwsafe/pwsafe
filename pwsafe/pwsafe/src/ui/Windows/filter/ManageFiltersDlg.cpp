@@ -1170,7 +1170,7 @@ int CALLBACK CManageFiltersDlg::FLTCompareFunc(LPARAM lParam1,
   st_FilterItemData *pRHS = (st_FilterItemData *)lParam2;
   int i1, i2;
 
-  int iResult;
+  int iResult(0);
   switch(nSortColumn) {
     case MFLC_FILTER_NAME:
       iResult = pLHS->flt_key.cs_filtername.compare(pRHS->flt_key.cs_filtername);
@@ -1181,9 +1181,7 @@ int CALLBACK CManageFiltersDlg::FLTCompareFunc(LPARAM lParam1,
     case MFLC_INUSE:
       i1 = (int)(pLHS->flt_flags & MFLT_INUSE);
       i2 = (int)(pRHS->flt_flags & MFLT_INUSE);
-      if (i1 == i2)
-        iResult = 0;
-      else
+      if (i1 != i2)
         iResult = (i1 < i2) ? -1 : 1;
       break;
     case MFLC_COPYTODATABASE:
@@ -1196,24 +1194,19 @@ int CALLBACK CManageFiltersDlg::FLTCompareFunc(LPARAM lParam1,
         i1 = ((pLHS->flt_flags & MFLT_REQUEST_COPY_TO_DB) == MFLT_REQUEST_COPY_TO_DB) ? 2 : 1;
       if (pRHS->flt_key.fpool != FPOOL_DATABASE)
         i2 = ((pRHS->flt_flags & MFLT_REQUEST_COPY_TO_DB) == MFLT_REQUEST_COPY_TO_DB) ? 2 : 1;
-      if (i1 == i2)
-        iResult = 0;
-      else
+      if (i1 != i2)
         iResult = (i1 < i2) ? -1 : 1;
       break;
     case MFLC_EXPORT:
       i1 = (int)(pLHS->flt_flags & MFLT_REQUEST_EXPORT);
       i2 = (int)(pRHS->flt_flags & MFLT_REQUEST_EXPORT);
-      if (i1 == i2)
-        iResult = 0;
-      else
+      if (i1 != i2)
         iResult = (i1 < i2) ? -1 : 1;
       break;
     default:
-      iResult = 0; // should never happen - just keep compiler happy
       ASSERT(FALSE);
   }
-  if (!self->m_bSortAscending) {
+  if (!self->m_bSortAscending && iResult != 0) {
     iResult *= -1;
   }
   return iResult;
