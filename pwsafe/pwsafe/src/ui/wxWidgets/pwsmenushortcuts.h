@@ -18,6 +18,7 @@ struct st_prefShortcut;
  */
 class MenuItemData{
   wxMenuItem*         m_item;
+  int                 m_menuId;
   wxString            m_label;
   wxAcceleratorEntry  m_origShortcut;
   wxAcceleratorEntry  m_userShortcut;
@@ -28,8 +29,8 @@ class MenuItemData{
       SC_NORMAL    = 1,      /* unmodified.  Might have user, original, both or none */
       SC_CHANGED   = 2,      /* user shortcut has been added/changed */
       SC_DELETED   = 4,      /* shortcut deleted.  neither user nor original available */
-      SC_DIRTY     = 8       /* something has changed, and this shortcut should be saved or "unsaved" */
-	  };
+      SC_DIRTY     = 8       /* something has changed, and this shortcut should be saved or removed from config */
+    };
     int flags;
   public:
     ShortcutStatus(): flags(SC_NORMAL) {}
@@ -131,6 +132,8 @@ public:
 
   // Save User shortucts to prefs file
   void SaveUserShortcuts();
+
+  void ResetShortcutAt(size_t index);
 
   // Remove all user shortcuts
   void ResetShortcuts();
