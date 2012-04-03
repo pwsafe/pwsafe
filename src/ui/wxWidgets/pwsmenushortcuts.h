@@ -12,6 +12,8 @@
 #include <vector>
 
 struct st_prefShortcut;
+class wxGrid;
+class wxGridEvent;
 
 /*
  * data we need to track for managing menuitem shortcuts
@@ -89,7 +91,7 @@ public:
  * The access is index-based.  You give it a menubar or a string (from prefs), and access
  * all the menu items and their accelerators by index
  */
-class PWSMenuShortcuts {
+class PWSMenuShortcuts : public wxEvtHandler {
 
   typedef std::vector<MenuItemData> MenuItemDataArray;
 
@@ -140,6 +142,11 @@ public:
 
   //wxString ToString() const;
   
+  void SetShorcutsGridEventHandlers(wxGrid* grid);
+  void OnShortcutChange(wxGridEvent& evt);
+  void OnShortcutKey(wxKeyEvent& evt);
+  void OnKeyChar(wxKeyEvent& evt);
+
   static PWSMenuShortcuts* CreateShortcutsManager(wxMenuBar* menubar);
   static PWSMenuShortcuts* GetShortcutsManager();
   static void DestroyShortcutsManager();

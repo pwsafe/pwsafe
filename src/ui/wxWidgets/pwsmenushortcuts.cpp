@@ -89,7 +89,7 @@ void MenuItemData::SetUserShortcut(const wxAcceleratorEntry& userAccel, bool set
   bool modified = false;
   if (userAccel.GetKeyCode() != 0) {
     if (m_userShortcut.GetKeyCode() != userAccel.GetKeyCode()
-                    && m_userShortcut.GetFlags() != userAccel.GetFlags()) {
+                    || m_userShortcut.GetFlags() != userAccel.GetFlags()) {
       m_userShortcut = userAccel;
       m_status.setchanged();
       modified = true;
@@ -121,7 +121,12 @@ void MenuItemData::ApplyEffectiveShortcut()
     m_item->SetAccel(&ae);
   }
   else {
-    //remove the accelerator
+    /*
+     * remove the accelerator.  We cannot just do "m_item->SetAccel(NULL)", since it
+     * won't work for stock-ids, and even for custom ids it leaves an Underscore
+     * just before the item's hotkey
+     */
+    
     wxString label = m_item->GetItemLabelText();
     if (label.IsEmpty()) {
       if (wxIsStockID(m_menuId))
@@ -411,6 +416,84 @@ void PWSMenuShortcuts::ResetShortcutAt(size_t index)
 
   m_midata[index].Reset();
 }
+
+void PWSMenuShortcuts::SetShorcutsGridEventHandlers(wxGrid* grid)
+{
+  grid->Connect(wxEVT_GRID_CELL_CHANGE, wxGridEventHandler(PWSMenuShortcuts::OnShortcutChange), NULL, this);
+  //let's not directly connect to the grid for key events.  We'll only handle what bubbles up to us
+  grid->GetGridWindow()->Connect(grid->GetGridWindow()->GetId(), wxEVT_KEY_DOWN, wxKeyEventHandler(PWSMenuShortcuts::OnShortcutKey), NULL, this);
+  grid->GetGridWindow()->Connect(grid->GetGridWindow()->GetId(), wxEVT_CHAR, wxCharEventHandler(PWSMenuShortcuts::OnKeyChar), NULL, this);
+}
+
+void PWSMenuShortcuts::OnShortcutChange(wxGridEvent& evt)
+{
+  wxGrid* grid = wxDynamicCast(evt.GetEventObject(), wxGrid);
+  wxCHECK_RET(grid, wxT("Could not get grid from wxGridEvent"));
+  wxGridCellCoords cell(evt.GetRow(), evt.GetCol());
+  wxString newStr = grid->GetCellValue(cell);
+  if (newStr.IsEmpty())
+    return;
+  wxAcceleratorEntry* newAccel = CreateShortcut(newStr);
+  if (!newAccel) {
+    //wxMessageBox(wxT("Invalid shortcut: ") + newStr, wxT("Shortcut changed"), wxOK|wxICON_ERROR, this);
+    grid->SetCellTextColour(cell.GetRow(), cell.GetCol(), *wxRED);
+  }
+  else {
+    grid->SetCellValue(cell, newAccel->ToString());
+    grid->SetCellTextColour(cell.GetRow(), cell.GetCol(), grid->GetDefaultCellTextColour());
+    delete newAccel;
+  }
+}
+
+
+bool IsFunctionKey(int keycode)
+{
+  return keycode >= WXK_F1 && keycode <= WXK_F24;
+}
+
+void PWSMenuShortcuts::OnShortcutKey(wxKeyEvent& evt)
+{
+  wxWindow* gridWindow = wxDynamicCast(evt.GetEventObject(), wxWindow);
+  wxGrid* grid = wxDynamicCast(gridWindow->GetParent(), wxGrid);
+  wxCHECK_RET(grid, wxT("Could not get grid from wxKeyEvent"));
+  //unless there are modifiers, don't attempt anything
+  if ((evt.GetModifiers() || IsFunctionKey(evt.GetKeyCode()))
+                && grid->GetGridCursorCol() == COL_SHORTCUT_KEY) {
+    wxAcceleratorEntry* accel = CreateShortcut(evt);
+    wxCHECK_RET(accel, wxT("Could not create accelerator from wxKeyEvent"));
+    grid->SetCellValue(grid->GetCursorRow(), grid->GetCursorColumn(), accel->ToString());
+    delete accel;
+  }
+  evt.Skip();
+}
+
+void ToggleFontWeight(wxGrid* grid, int row)
+{
+  wxFont cellFont = grid->GetCellFont(row, COL_MENU_ITEM);
+  if (cellFont.GetWeight() != wxFONTWEIGHT_BOLD)
+    cellFont.SetWeight(wxFONTWEIGHT_BOLD);
+  else
+    cellFont.SetWeight(wxFONTWEIGHT_NORMAL);
+  grid->SetCellFont(row, COL_MENU_ITEM, cellFont);
+}
+
+/*
+ * Handle the DELETE key to remove the accelerator, if any
+ */
+void PWSMenuShortcuts::OnKeyChar(wxKeyEvent& evt)
+{
+  wxWindow* gridWindow = wxDynamicCast(evt.GetEventObject(), wxWindow);
+  wxGrid* grid = wxDynamicCast(gridWindow->GetParent(), wxGrid);
+  wxCHECK_RET(grid, wxT("Could not get grid from wxKeyEvent"));
+  if (!evt.GetModifiers() && evt.GetKeyCode() == WXK_DELETE) {
+    const int row = grid->GetGridCursorRow(), col = grid->GetGridCursorCol();
+    if (HasEffectiveShortcutAt(row)) {
+      grid->SetCellValue(row, col, wxEmptyString);
+      ToggleFontWeight(grid, row);
+    }
+  }
+}
+
 //////////////////////////////////////////////////////////////////
 // ShortcutsGridValidator
 //
