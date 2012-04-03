@@ -34,12 +34,13 @@
 ///////////////
 
 MenuItemData::MenuItemData(wxMenuItem* menuItem, 
-                           const wxString& label) : m_item(menuItem), 
+                           const wxString& label) : m_item(menuItem),
+                                                    m_menuId(menuItem->GetId()),
                                                     m_label(label)
 {
   if (!m_origShortcut.FromString(m_item->GetItemLabel()))
-    if (wxIsStockID(m_item->GetId()))
-      m_origShortcut = wxGetStockAccelerator(m_item->GetId());
+    if (wxIsStockID(m_menuId))
+      m_origShortcut = wxGetStockAccelerator(m_menuId);
 }
 
 // used for converting to/from ds used in core::PWSprefs
@@ -62,7 +63,7 @@ st_prefShortcut MenuItemData::ToPrefShortcut() const
 
   st_prefShortcut sc;
 
-  sc.id = m_item->GetId();
+  sc.id = m_menuId;
   wxASSERT_MSG(sc.id != 0, wxT("Trying to save shortcut with NULL menu item id"));
   sc.siVirtKey = ae.GetKeyCode();
   sc.cModifier = 0;
@@ -85,21 +86,27 @@ void MenuItemData::SetUserShortcut(const st_prefShortcut& prefAccel, bool setdir
 
 void MenuItemData::SetUserShortcut(const wxAcceleratorEntry& userAccel, bool setdirty /* = true */)
 {
+  bool modified = false;
   if (userAccel.GetKeyCode() != 0) {
-    m_userShortcut = userAccel;
-    m_status.setchanged();
+    if (m_userShortcut.GetKeyCode() != userAccel.GetKeyCode()
+                    && m_userShortcut.GetFlags() != userAccel.GetFlags()) {
+      m_userShortcut = userAccel;
+      m_status.setchanged();
+      modified = true;
+    }
   }
   else if (m_userShortcut.GetKeyCode() != 0) {
     // Remove the user shortcut
     m_userShortcut = wxAcceleratorEntry();
     m_status.setorig();
-    
+    modified = true;
   }
   else if (m_origShortcut.GetKeyCode() != 0) {
     //just mark the original shortcut as deleted
     m_status.setdeleted();
+    modified = true;
   }
-  if (setdirty)
+  if (setdirty && modified)
     m_status.setdirty();
 }
 
@@ -117,8 +124,8 @@ void MenuItemData::ApplyEffectiveShortcut()
     //remove the accelerator
     wxString label = m_item->GetItemLabelText();
     if (label.IsEmpty()) {
-      if (wxIsStockID(m_item->GetId()))
-        label = wxGetStockLabel(m_item->GetId(), wxSTOCK_WITH_MNEMONIC);
+      if (wxIsStockID(m_menuId))
+        label = wxGetStockLabel(m_menuId, wxSTOCK_WITH_MNEMONIC);
       else {
         wxFAIL_MSG(wxT("empty menu item label, and not a stock item either"));
       }
@@ -157,7 +164,7 @@ wxAcceleratorEntry MenuItemData::GetEffectiveShortcut() const
   if (m_userShortcut.GetKeyCode() != 0)
     return m_userShortcut;
   else if (m_status.isdeleted())
-    return wxAcceleratorEntry(0, 0, m_item->GetId());
+    return wxAcceleratorEntry(0, 0, m_menuId);
   else
     return m_origShortcut;
 }
@@ -347,6 +354,10 @@ void PWSMenuShortcuts::ReadApplyUserShortcuts()
       itr->SetUserShortcut(*usrItr);
       itr->ApplyEffectiveShortcut();
     }
+    else {
+      wxLogDebug(wxT("Could not find menu item id %d, for shortcut {%d, %d}"),
+                                usrItr->id, usrItr->siVirtKey, usrItr->cModifier);
+    }
   }
 }
 
@@ -383,6 +394,10 @@ bool PWSMenuShortcuts::HasEffectiveShortcutAt(size_t index) const
   return m_midata[index].HasEffectiveShortcut();
 }
 
+/*
+ will remove the user-specified shortcut.  If there wasn't any, then it will 
+ remove the original shortcut, if any
+ */
 void PWSMenuShortcuts::RemoveShortcutAt(size_t idx)
 {
   wxCHECK_RET(idx < Count(), wxT("Index for deleting shortcut exceeds number of menu items retrieved"));
@@ -390,6 +405,12 @@ void PWSMenuShortcuts::RemoveShortcutAt(size_t idx)
   m_midata[idx].SetUserShortcut(wxAcceleratorEntry());
 }
 
+void PWSMenuShortcuts::ResetShortcutAt(size_t index)
+{
+  wxCHECK_RET(index < Count(), wxT("Invalid index for reset shortcut"));
+
+  m_midata[index].Reset();
+}
 //////////////////////////////////////////////////////////////////
 // ShortcutsGridValidator
 //
