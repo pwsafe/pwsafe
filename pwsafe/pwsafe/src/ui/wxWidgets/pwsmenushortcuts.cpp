@@ -114,28 +114,30 @@ bool MenuItemData::IsDirty() const {
   return m_status.isdirty();
 }
 
+/*
+ * The only realiable way to change the accelerator, atleast for 2.8.11, is to
+ * set a new and complete label, with full mnemonics + accelerator.   Don't 
+ * use wxMenuItem::SetAccel(), or do * SetItemLabel(SomeManipulation(GetItemLabelText()))).
+ * You will end up with underscores in place where the '&' mnemonic is, and they would multiply
+ * each time you call SetItemLabel
+ */
 void MenuItemData::ApplyEffectiveShortcut()
 {
+  wxString currentLabel = m_item->GetItemLabel();
+  if (currentLabel.IsEmpty()) {
+    if (wxIsStockID(m_menuId))
+      currentLabel = wxGetStockLabel(m_menuId, wxSTOCK_WITH_MNEMONIC);
+    else {
+      wxFAIL_MSG(wxT("empty menu item label, and not a stock item either"));
+    }
+  }
+
   if (HasEffectiveShortcut()) {
     wxAcceleratorEntry ae(GetEffectiveShortcut());
-    m_item->SetAccel(&ae);
+    m_item->SetItemLabel(currentLabel.BeforeFirst(wxT('\t')) + wxT('\t') + ae.ToString());
   }
   else {
-    /*
-     * remove the accelerator.  We cannot just do "m_item->SetAccel(NULL)", since it
-     * won't work for stock-ids, and even for custom ids it leaves an Underscore
-     * just before the item's hotkey
-     */
-    
-    wxString label = m_item->GetItemLabelText();
-    if (label.IsEmpty()) {
-      if (wxIsStockID(m_menuId))
-        label = wxGetStockLabel(m_menuId, wxSTOCK_WITH_MNEMONIC);
-      else {
-        wxFAIL_MSG(wxT("empty menu item label, and not a stock item either"));
-      }
-    }
-    m_item->SetItemLabel(label);
+    m_item->SetItemLabel(currentLabel.BeforeFirst(wxT('\t')));
   }
 }
 
@@ -360,7 +362,7 @@ void PWSMenuShortcuts::ReadApplyUserShortcuts()
       itr->ApplyEffectiveShortcut();
     }
     else {
-      wxLogDebug(wxT("Could not find menu item id %d, for shortcut {%d, %d}"),
+      wxLogDebug(wxT("Could not find menu item id=[%d], for saved shortcut {key=[%d], mods=[%d]}"),
                                 usrItr->id, usrItr->siVirtKey, usrItr->cModifier);
     }
   }
@@ -373,8 +375,6 @@ void PWSMenuShortcuts::SaveUserShortcuts()
   for (MenuItemDataArray::iterator itr = m_midata.begin(); itr != m_midata.end(); ++itr) {
     if (itr->ShouldSave()) {
       userShortcuts.push_back(itr->ToPrefShortcut());
-      wxLogDebug(wxT("Saving shortcut for menu %s [%d]\n"), itr->GetLabel().c_str(),
-                                                               itr->GetMenuItem()->GetId());
     }
   }
   PWSprefs::GetInstance()->SetPrefShortcuts(userShortcuts);
