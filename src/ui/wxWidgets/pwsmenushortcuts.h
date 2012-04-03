@@ -119,10 +119,6 @@ public:
   void ChangeShortcutAt(size_t idx, const wxAcceleratorEntry& newEntry);
   void RemoveShortcutAt(size_t idx);
 
-  // caller must delete the returned entry
-  wxAcceleratorEntry* CreateShortcut(const wxString& newEntry);
-  wxAcceleratorEntry* CreateShortcut(const wxKeyEvent& evt);
-
   // Did the user change any of the shortcuts
   bool IsDirty() const;
 

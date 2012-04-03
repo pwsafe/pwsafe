@@ -313,18 +313,6 @@ int ModifiersToAccelFlags(int mods)
   return flags;
 }
 
-wxAcceleratorEntry* PWSMenuShortcuts::CreateShortcut(const wxKeyEvent& evt)
-{
-  return new wxAcceleratorEntry(ModifiersToAccelFlags(evt.GetModifiers()), evt.GetKeyCode(), 0);
-}
-
-wxAcceleratorEntry* PWSMenuShortcuts::CreateShortcut(const wxString& str)
-{
-  //The parser expects a full menuitem string, with menu text and accel separated by TAB
-  return wxAcceleratorEntry::Create(wxT('\t') + str);
-}
-
-
 bool PWSMenuShortcuts::IsDirty() const
 {
   return std::find_if(m_midata.begin(), m_midata.end(), std::mem_fun_ref(&MenuItemData::IsDirty)) != m_midata.end();
@@ -433,15 +421,14 @@ void PWSMenuShortcuts::OnShortcutChange(wxGridEvent& evt)
   wxString newStr = grid->GetCellValue(cell);
   if (newStr.IsEmpty())
     return;
-  wxAcceleratorEntry* newAccel = CreateShortcut(newStr);
-  if (!newAccel) {
+  wxAcceleratorEntry newAccel;
+  if (!newAccel.FromString(wxT('\t') + newStr)) {
     //wxMessageBox(wxT("Invalid shortcut: ") + newStr, wxT("Shortcut changed"), wxOK|wxICON_ERROR, this);
     grid->SetCellTextColour(cell.GetRow(), cell.GetCol(), *wxRED);
   }
   else {
-    grid->SetCellValue(cell, newAccel->ToString());
+    grid->SetCellValue(cell, newAccel.ToString());
     grid->SetCellTextColour(cell.GetRow(), cell.GetCol(), grid->GetDefaultCellTextColour());
-    delete newAccel;
   }
 }
 
@@ -459,10 +446,10 @@ void PWSMenuShortcuts::OnShortcutKey(wxKeyEvent& evt)
   //unless there are modifiers, don't attempt anything
   if ((evt.GetModifiers() || IsFunctionKey(evt.GetKeyCode()))
                 && grid->GetGridCursorCol() == COL_SHORTCUT_KEY) {
-    wxAcceleratorEntry* accel = CreateShortcut(evt);
-    wxCHECK_RET(accel, wxT("Could not create accelerator from wxKeyEvent"));
-    grid->SetCellValue(grid->GetCursorRow(), grid->GetCursorColumn(), accel->ToString());
-    delete accel;
+    wxAcceleratorEntry accel(ModifiersToAccelFlags(evt.GetModifiers()), evt.GetKeyCode(), 0);
+    wxCHECK_RET(accel.IsOk(), wxT("Could not create accelerator from wxKeyEvent"));
+    grid->SetCellValue(grid->GetCursorRow(), grid->GetCursorColumn(), accel.ToString());
+    grid->SetCellTextColour(grid->GetCursorRow(), grid->GetCursorColumn(), grid->GetDefaultCellTextColour());
   }
   evt.Skip();
 }
