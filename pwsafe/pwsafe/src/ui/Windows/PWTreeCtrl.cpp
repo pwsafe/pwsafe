@@ -842,20 +842,8 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
       }
     }
   } else {
-    // We refresh the view
-    Command *pcmd1 = UpdateGUICommand::Create(pcore,
-                                              UpdateGUICommand::WN_UNDO,
-                                              UpdateGUICommand::GUI_REFRESH_TREE);
-    pmulticmds->Add(pcmd1);
-
     // Update Group
     pmulticmds->Add(RenameGroupCommand::Create(pcore, sxOldPath, sxNewPath));
-
-    // We refresh the view
-    Command *pcmd2 = UpdateGUICommand::Create(pcore,
-                                              UpdateGUICommand::WN_EXECUTE_REDO,
-                                              UpdateGUICommand::GUI_REFRESH_TREE);
-    pmulticmds->Add(pcmd2);
   }
 
   m_pDbx->Execute(pmulticmds);
