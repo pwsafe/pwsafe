@@ -771,16 +771,16 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
     // (We could do fancy merging if so, but for now we'll reject the rename)
     // Check is simple - just see if there's a sibling NODE name sxNewText
 
-    HTREEITEM parent = GetParentItem(ti);
-    HTREEITEM sibling = GetChildItem(parent);
+    HTREEITEM hParent = GetParentItem(ti);
+    HTREEITEM hSibling = GetChildItem(hParent);
     do {
-      if (sibling != ti && !IsLeaf(sibling)) {
-        const CString siblingText = GetItemText(sibling);
-        if (siblingText == sxNewText.c_str())
+      if (hSibling != ti && !IsLeaf(hSibling)) {
+        CString cs_SiblingText = GetItemText(hSibling);
+        if (cs_SiblingText == sxNewText.c_str())
           goto bad_exit;
       }
-      sibling = GetNextSiblingItem(sibling);
-    } while (sibling != NULL);
+      hSibling = GetNextSiblingItem(hSibling);
+    } while (hSibling != NULL);
     // If we made it here, then name's unique.
 
 
@@ -842,11 +842,32 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
       }
     }
   } else {
-    // Update Group
-    pmulticmds->Add(RenameGroupCommand::Create(pcore, sxOldPath, sxNewPath));
+    if (m_pDbx->IsInAddGroup()) {
+      // Don't do any refesh if just adding a group or it will be lost
+      m_pDbx->ResetInAddGroup();
+      *pLResult = TRUE;
+    } else {
+      // We refresh the view
+      Command *pcmd1 = UpdateGUICommand::Create(pcore,
+                                                UpdateGUICommand::WN_UNDO,
+                                                UpdateGUICommand::GUI_REFRESH_TREE);
+      pmulticmds->Add(pcmd1);
+
+      // Update Group
+      pmulticmds->Add(RenameGroupCommand::Create(pcore, sxOldPath, sxNewPath));
+
+      // We refresh the view
+      Command *pcmd2 = UpdateGUICommand::Create(pcore,
+                                              UpdateGUICommand::WN_EXECUTE_REDO,
+                                              UpdateGUICommand::GUI_REFRESH_TREE);
+      pmulticmds->Add(pcmd2);
+    }
   }
 
-  m_pDbx->Execute(pmulticmds);
+  if (pmulticmds->GetSize() > 0)
+    m_pDbx->Execute(pmulticmds);
+  else
+    delete pmulticmds;
 
   // Mark database as modified
   m_pDbx->SetChanged(DboxMain::Data);
@@ -869,7 +890,6 @@ bad_exit:
   m_pDbx->RefreshViews();
 
   // restore text
-  // (not that this is documented anywhere in MS's docs...)
   *pLResult = FALSE;
 }
 
