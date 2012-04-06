@@ -43,8 +43,8 @@ class wxSpinCtrl;
 
 ////@begin control identifiers
 #define ID_CPASSWORDPOLICY 10221
-#define ID_TEXTCTRL21 10223
-#define ID_SPINCTRL3 10117
+#define ID_POLICYNAME 10223
+#define ID_PWLENSB 10117
 #define ID_CHECKBOX3 10118
 #define ID_SPINCTRL5 10126
 #define ID_CHECKBOX4 10119
@@ -197,7 +197,6 @@ public:
   wxCheckBox* m_pwpPronounceCtrl;
   wxCheckBox* m_pwpHexCtrl;
 private:
-  void CBox2Spin(wxCheckBox *cb, wxSpinCtrl *sp);
   wxString m_Symbols;
   wxString m_polname;
   int m_pwDigitMinLength;
@@ -213,6 +212,11 @@ private:
   bool m_pwUseUppercase;
   int m_pwdefaultlength;
 ////@end CPasswordPolicy member variables
+  void SetDefaultSymbolDisplay();
+  void CBox2Spin(wxCheckBox *cb, wxSpinCtrl *sp);
+  bool UpdatePolicy();
+  bool Verify();
+
   PWScore &m_core;
   wxString m_oldpolname;
   int m_oldpwdefaultlength;

@@ -526,7 +526,6 @@ void CManagePasswordPolicies::OnEditPpClick( wxCommandEvent& )
   if (m_iSelectedItem != 0 && m_mapIter == m_MapPSWDPLC.end())
     return;
 
-  // Pass default values and PolicyName map
   CPasswordPolicy ppdlg(this, m_core);
 
   ppdlg.SetPolicyData(policyname, m_MapPSWDPLC);

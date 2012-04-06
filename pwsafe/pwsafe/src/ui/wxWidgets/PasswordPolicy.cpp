@@ -24,6 +24,7 @@
 ////@end includes
 
 #include "PasswordPolicy.h"
+#include "core/PWCharPool.h"
 
 ////@begin XPM images
 ////@end XPM images
@@ -87,9 +88,21 @@ bool CPasswordPolicy::Create( wxWindow* parent, wxWindowID id, const wxString& c
   }
   Centre();
 ////@end CPasswordPolicy creation
+  SetDefaultSymbolDisplay();
   return true;
 }
 
+void CPasswordPolicy::SetDefaultSymbolDisplay()
+{
+  stringT symset;
+  if (m_pwUseEasyVision) 
+    CPasswordCharPool::GetEasyVisionSymbols(symset);
+  else if (m_pwMakePronounceable)
+    CPasswordCharPool::GetPronounceableSymbols(symset);
+  else
+    CPasswordCharPool::GetDefaultSymbols(symset);
+  FindWindow(IDC_STATIC_DEFAULT_SYMBOLS)->SetLabel(symset.c_str());
+}
 
 /*!
  * CPasswordPolicy destructor
@@ -108,6 +121,7 @@ CPasswordPolicy::~CPasswordPolicy()
 
 void CPasswordPolicy::Init()
 {
+  m_st_default_pp.SetToDefaults();
 ////@begin CPasswordPolicy member initialisation
   m_pwMinsGSzr = NULL;
   m_pwpUseLowerCtrl = NULL;
@@ -142,12 +156,12 @@ void CPasswordPolicy::CreateControls()
   itemDialog1->SetSizer(itemBoxSizer2);
 
   wxBoxSizer* itemBoxSizer3 = new wxBoxSizer(wxHORIZONTAL);
-  itemBoxSizer2->Add(itemBoxSizer3, 0, 0, 0);
+  itemBoxSizer2->Add(itemBoxSizer3, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
 
   wxStaticText* itemStaticText4 = new wxStaticText( itemDialog1, wxID_STATIC, _("Policy Name:"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer3->Add(itemStaticText4, 1, wxALIGN_CENTER_VERTICAL|wxALL, 10);
 
-  wxTextCtrl* itemTextCtrl5 = new wxTextCtrl( itemDialog1, ID_TEXTCTRL21, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+  wxTextCtrl* itemTextCtrl5 = new wxTextCtrl( itemDialog1, ID_POLICYNAME, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer3->Add(itemTextCtrl5, 2, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticBox* itemStaticBoxSizer6Static = new wxStaticBox(itemDialog1, wxID_ANY, _("Random password generation rules"));
@@ -160,7 +174,7 @@ void CPasswordPolicy::CreateControls()
   wxStaticText* itemStaticText8 = new wxStaticText( itemDialog1, wxID_STATIC, _("Password length: "), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer7->Add(itemStaticText8, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxSpinCtrl* itemSpinCtrl9 = new wxSpinCtrl( itemDialog1, ID_SPINCTRL3, _T("12"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 4, 1024, 12 );
+  wxSpinCtrl* itemSpinCtrl9 = new wxSpinCtrl( itemDialog1, ID_PWLENSB, _T("12"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 4, 1024, 12 );
   itemBoxSizer7->Add(itemSpinCtrl9, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_pwMinsGSzr = new wxGridSizer(6, 2, 0, 0);
@@ -234,7 +248,7 @@ void CPasswordPolicy::CreateControls()
   itemRadioButton31->SetValue(false);
   m_pwMinsGSzr->Add(itemRadioButton31, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxStaticText* itemStaticText32 = new wxStaticText( itemDialog1, IDC_STATIC_DEFAULT_SYMBOLS, _("Static text"), wxDefaultPosition, wxSize(120, -1), 0 );
+  wxStaticText* itemStaticText32 = new wxStaticText( itemDialog1, IDC_STATIC_DEFAULT_SYMBOLS, _("Static text"), wxDefaultPosition, wxSize(140, -1), 0 );
   m_pwMinsGSzr->Add(itemStaticText32, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 0);
 
   wxRadioButton* itemRadioButton33 = new wxRadioButton( itemDialog1, IDC_USE_OWNSYMBOLS, _("Special set"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -331,18 +345,138 @@ wxIcon CPasswordPolicy::GetIconResource( const wxString& name )
 ////@end CPasswordPolicy icon retrieval
 }
 
+bool CPasswordPolicy::Verify()
+{
+  wxString mess;
+  bool retval = true;
+  int id = 0;
+
+  // Check that options, as set, are valid.
+  if (m_pwUseHex &&
+     (m_pwUseLowercase || m_pwUseUppercase || m_pwUseDigits ||
+      m_pwUseSymbols || m_pwUseEasyVision || m_pwMakePronounceable)) {
+    mess = _("Hexadecimal is mutually exculsive to all other options.");
+    retval = false;
+  } else if (m_pwUseHex) {
+    if (m_pwdefaultlength % 2 != 0) {
+      mess = _("Hexadecimal passwords must have even length - each byte is two characters");
+      retval = false;
+    }
+  } else if (!m_pwUseLowercase && !m_pwUseUppercase &&
+      !m_pwUseDigits && !m_pwUseSymbols) {
+    mess = _("At least one type of character (lowercase, uppercase, digits, symbols or hexadecimal) must be chosen");
+    retval = false;
+  }
+
+  if ((m_pwdefaultlength < 4) || (m_pwdefaultlength > 1024)) {
+    mess = _("Password must be between 4 and 1024 characters");
+    id = ID_PWLENSB;
+    retval = false;
+  }
+
+  if (!(m_pwUseHex || m_pwUseEasyVision || m_pwMakePronounceable) &&
+      (m_pwDigitMinLength + m_pwLowerMinLength +
+       m_pwSymbolMinLength + m_pwUpperMinLength) > m_pwdefaultlength) {
+    mess = _("Password length is less than sum of 'at least' constraints");
+    id = ID_PWLENSB;
+    retval = false;
+  }
+
+  if ((m_pwUseHex || m_pwUseEasyVision || m_pwMakePronounceable))
+    m_pwDigitMinLength = m_pwLowerMinLength =
+      m_pwSymbolMinLength = m_pwUpperMinLength = 1;
+
+  if (m_polname.IsEmpty()) {
+    mess = _("Policy name cannot be blank");
+    id = ID_POLICYNAME;
+    retval = false;
+  } else if ((m_polname != m_oldpolname &&
+              (m_MapPSWDPLC.find(m_polname.c_str()) != m_MapPSWDPLC.end()))) {
+    mess = _("Policy name is already in use");
+    id = ID_POLICYNAME;
+    retval = false;
+  }
+
+  if (!retval) {
+    wxMessageDialog md(this, mess, _("Policy Error"), wxOK | wxICON_ERROR);
+    md.ShowModal();
+    if (id != 0)
+      FindWindow(id)->SetFocus();
+  }
+  return retval;
+}
+
+bool CPasswordPolicy::UpdatePolicy()
+{
+  if (Validate() && TransferDataFromWindow() && Verify()) {
+
+    st_PSWDPolicy st_pp;
+    st_pp.pwp.flags = 0;
+    if (m_pwUseLowercase == TRUE)
+      st_pp.pwp.flags |= PWPolicy::UseLowercase;
+    if (m_pwUseUppercase == TRUE)
+      st_pp.pwp.flags |= PWPolicy::UseUppercase;
+    if (m_pwUseDigits == TRUE)
+      st_pp.pwp.flags |= PWPolicy::UseDigits;
+    if (m_pwUseSymbols == TRUE)
+      st_pp.pwp.flags |= PWPolicy::UseSymbols;
+    if (m_pwUseHex == TRUE)
+      st_pp.pwp.flags |= PWPolicy::UseHexDigits;
+    if (m_pwUseEasyVision == TRUE)
+      st_pp.pwp.flags |= PWPolicy::UseEasyVision;
+    if (m_pwMakePronounceable == TRUE)
+      st_pp.pwp.flags |= PWPolicy::MakePronounceable;
+
+    st_pp.pwp.length = m_pwdefaultlength;
+    st_pp.pwp.digitminlength = m_pwDigitMinLength;
+    st_pp.pwp.lowerminlength = m_pwLowerMinLength;
+    st_pp.pwp.symbolminlength = m_pwSymbolMinLength;
+    st_pp.pwp.upperminlength = m_pwUpperMinLength;
+#ifdef NOTYET
+    st_pp.symbols = (m_pwUseSymbols == TRUE && m_UseOwnSymbols == OWN_SYMBOLS) ?
+      m_Symbols : L"";
+#endif
+    if (m_polname == _("Default Policy")) {
+      // Update database default
+      m_st_default_pp = st_pp;
+    } else {
+      ASSERT(!m_polname.IsEmpty());
+      // Update a named policy
+      StringX sxPolicyName(m_polname), sx_OldPolicyName(m_oldpolname);
+      if (!sx_OldPolicyName.empty()) {
+        // Edit of an old entry
+        PSWDPolicyMapIter iter = m_MapPSWDPLC.find(sx_OldPolicyName);
+
+        // Get and reset use count
+        if (iter != m_MapPSWDPLC.end())
+          st_pp.usecount = iter->second.usecount;
+
+        if (m_polname != m_oldpolname) {
+          // Delete old policy changing name
+          m_MapPSWDPLC.erase(iter);
+        }
+      }
+      // Insert the new name
+      m_MapPSWDPLC[sxPolicyName] = st_pp;
+    }
+    return true;
+  }
+  return false;
+}
 
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
  */
 
-void CPasswordPolicy::OnOkClick( wxCommandEvent& event )
+void CPasswordPolicy::OnOkClick( wxCommandEvent& evt)
 {
-////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK in CPasswordPolicy.
-  // Before editing this code, remove the block markers.
-  event.Skip();
-////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK in CPasswordPolicy. 
+  if (m_core.IsReadOnly())
+    return;
+  if (!UpdatePolicy())
+    return;
+  evt.Skip();
 }
+
 
 
 /*!
@@ -372,18 +506,22 @@ void CPasswordPolicy::OnHelpClick( wxCommandEvent& event )
 
 void CPasswordPolicy::SetPolicyData(const wxString &policyname, PSWDPolicyMap &MapPSWDPLC)
 {
+  st_PSWDPolicy xst_pp;
   m_MapPSWDPLC = MapPSWDPLC;
   m_polname = m_oldpolname = policyname;
 
-  m_iter = m_polname.IsEmpty() ? m_MapPSWDPLC.end() :
-    m_MapPSWDPLC.find(StringX(m_polname.c_str()));
-
-  // Check the find worked above - if PolicyName not empty, it must be in the map!
-  if (!m_polname.IsEmpty())
+  // use default for new policy (blank name), or if editing Default Policy
+  // (Default Policy isn't in policy map)
+  if (m_polname.IsEmpty() || m_polname == _("Default Policy")) {
+    xst_pp = m_st_default_pp;
+    m_iter = m_MapPSWDPLC.end();
+  } else {
+    m_iter = m_MapPSWDPLC.find(StringX(m_polname.c_str()));
+    // Check the find worked above - if PolicyName not empty, it must be in the map!
     ASSERT(m_iter != m_MapPSWDPLC.end());
+    st_PSWDPolicy xst_pp = m_iter->second;
+  }
 
-  // If New, use default values; otherwise use this policy's values
-  st_PSWDPolicy xst_pp = m_polname.IsEmpty() ? m_st_default_pp : m_iter->second;
   m_pwUseLowercase = m_oldpwUseLowercase =
     (xst_pp.pwp.flags & PWPolicy::UseLowercase) ==
                        PWPolicy::UseLowercase;
