@@ -393,8 +393,7 @@ int PwsafeApp::OnExit()
   // Save Application related preferences
   prefs->SaveApplicationPreferences();
   // Save shortcuts, if changed
-  if (PWSMenuShortcuts::GetShortcutsManager()->IsDirty())
-    PWSMenuShortcuts::GetShortcutsManager()->SaveUserShortcuts();
+  PWSMenuShortcuts::GetShortcutsManager()->SaveUserShortcuts();
 
   PWSMenuShortcuts::DestroyShortcutsManager();
   m_activityTimer->Stop();
