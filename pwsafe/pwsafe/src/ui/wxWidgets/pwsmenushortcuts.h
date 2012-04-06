@@ -25,6 +25,7 @@ class MenuItemData{
   wxAcceleratorEntry  m_origShortcut;
   wxAcceleratorEntry  m_userShortcut;
 
+public:
   class ShortcutStatus {
   
     enum {
@@ -49,15 +50,19 @@ class MenuItemData{
     void cleardirty() { flags &= ~SC_DIRTY; }
     bool isdirty()    const  { return (flags & SC_DIRTY) == SC_DIRTY; }
   };
+
+private:
   ShortcutStatus      m_status;
   
 public:
   MenuItemData(wxMenuItem* menuItem, const wxString& label);
 
   wxMenuItem*                  GetMenuItem()         const { return m_item;         }
+  int                          GetMenuId()           const { return m_menuId;       }
   wxString                     GetLabel()            const { return m_label;        }
   const wxAcceleratorEntry&    GetOriginalShortcut() const { return m_origShortcut; }
   const wxAcceleratorEntry&    GetUserShortcut()     const { return m_userShortcut; }
+  ShortcutStatus               GetStatus()           const { return m_status;       }
 
   // Setting the user shortcut from preferences doesn't make it dirty
   void SetUserShortcut(const st_prefShortcut& prefShortcut, bool setdirty = false);
@@ -97,11 +102,14 @@ class PWSMenuShortcuts : public wxEvtHandler {
 
   MenuItemDataArray m_midata;
 
-  // Use create
-  // Walk the menubar and collect all shortcuts
+  //used for tracking the status of shortcuts while editing them in the options grid
+  //we don't modify the actual shortcuts unless the user clicks Ok
+  std::vector<MenuItemData::ShortcutStatus> m_shortcutGridStatus;
+
+  // Walks the menubar and collect all shortcuts
   PWSMenuShortcuts(wxMenuBar* menubar);
 
-  // Note: this doesn't save all shortcuts automatically to prefs. You have to do it
+  // Note: the dtor doesn't save all shortcuts automatically to prefs. You have to do it
   // yourself using SaveUserShortcuts()
   ~PWSMenuShortcuts();
 
@@ -111,7 +119,9 @@ public:
 
   wxString MenuLabelAt(size_t index) const;
   wxAcceleratorEntry EffectiveShortcutAt(size_t index) const;
+  wxAcceleratorEntry OriginalShortcutAt(size_t index) const;
   wxMenuItem* MenuItemAt(size_t index) const;
+  int MenuIdAt(size_t index) const;
   bool IsShortcutCustomizedAt(size_t index) const;
   bool HasEffectiveShortcutAt(size_t index) const;
 
@@ -119,7 +129,7 @@ public:
   void ChangeShortcutAt(size_t idx, const wxAcceleratorEntry& newEntry);
   void RemoveShortcutAt(size_t idx);
 
-  // Did the user change any of the shortcuts
+  // Did the user change any of the shortcuts that aren't reflected in the menubar yet?
   bool IsDirty() const;
 
   // Set the shortcuts of all menuitems to new ones, if modified
@@ -131,17 +141,19 @@ public:
   // Save User shortucts to prefs file
   void SaveUserShortcuts();
 
-  void ResetShortcutAt(size_t index);
+  // Remove or reset all user shortcuts in grid.  They don't take effect until
+  // user clicks Ok
+  void GridResetAllShortcuts();
+  void GridResetOrRemoveShortcut(wxGrid* grid, size_t index);
 
-  // Remove all user shortcuts
-  void ResetShortcuts();
-
-  //wxString ToString() const;
+  MenuItemData::ShortcutStatus GetGridShortcutStatusAt(size_t index) const;
   
   void SetShorcutsGridEventHandlers(wxGrid* grid);
   void OnShortcutChange(wxGridEvent& evt);
   void OnShortcutKey(wxKeyEvent& evt);
   void OnKeyChar(wxKeyEvent& evt);
+  void OnShortcutRightClick( wxGridEvent& evt );
+  void OnResetRemoveShortcut( wxCommandEvent& evt );
 
   static PWSMenuShortcuts* CreateShortcutsManager(wxMenuBar* menubar);
   static PWSMenuShortcuts* GetShortcutsManager();
