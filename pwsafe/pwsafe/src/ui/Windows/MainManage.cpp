@@ -643,39 +643,10 @@ void DboxMain::OnManagePasswordPolicies()
     if (st_old_default_pp != st_new_default_pp) {
       // User has changed database default policy - need to update preferences
       // Update the copy only!
-      PWSprefs *prefs = PWSprefs::GetInstance();
-
-      prefs->SetPref(PWSprefs::PWUseLowercase,
-                 (st_new_default_pp.pwp.flags & PWPolicy::UseLowercase) != 0, true);
-      prefs->SetPref(PWSprefs::PWUseUppercase,
-                 (st_new_default_pp.pwp.flags & PWPolicy::UseUppercase) != 0, true);
-      prefs->SetPref(PWSprefs::PWUseDigits,
-                 (st_new_default_pp.pwp.flags & PWPolicy::UseDigits) != 0, true);
-      prefs->SetPref(PWSprefs::PWUseSymbols,
-                 (st_new_default_pp.pwp.flags & PWPolicy::UseSymbols) != 0, true);
-      prefs->SetPref(PWSprefs::PWUseHexDigits,
-                 (st_new_default_pp.pwp.flags & PWPolicy::UseHexDigits) != 0, true);
-      prefs->SetPref(PWSprefs::PWUseEasyVision,
-                 (st_new_default_pp.pwp.flags & PWPolicy::UseEasyVision) != 0, true);
-      prefs->SetPref(PWSprefs::PWMakePronounceable,
-                 (st_new_default_pp.pwp.flags & PWPolicy::MakePronounceable) != 0, true);
-
-      prefs->SetPref(PWSprefs::PWDefaultLength,
-                     st_new_default_pp.pwp.length, true);
-      prefs->SetPref(PWSprefs::PWDigitMinLength,
-                     st_new_default_pp.pwp.digitminlength, true);
-      prefs->SetPref(PWSprefs::PWLowercaseMinLength,
-                     st_new_default_pp.pwp.lowerminlength, true);
-      prefs->SetPref(PWSprefs::PWSymbolMinLength,
-                     st_new_default_pp.pwp.symbolminlength, true);
-      prefs->SetPref(PWSprefs::PWUppercaseMinLength,
-                     st_new_default_pp.pwp.upperminlength, true);
-    
-      prefs->SetPref(PWSprefs::DefaultSymbols,
-                     st_new_default_pp.symbols, true);
+      st_new_default_pp.UpdateDefaults(true);
 
       // Now get new DB preferences String value
-      StringX sxNewDBPrefsString(prefs->Store(true));
+      StringX sxNewDBPrefsString(PWSprefs::GetInstance()->Store(true));
 
       // Set up Command to update string in database
       if (m_core.GetReadFileVersion() == PWSfile::VCURRENT) {
