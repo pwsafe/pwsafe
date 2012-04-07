@@ -172,9 +172,9 @@ public:
   /// Retrieves icon resources
   wxIcon GetIconResource( const wxString& name );
 ////@end CPasswordPolicy member function declarations
-  void SetPolicyData(const wxString &policyname, PSWDPolicyMap &MapPSWDPLC);
-  void GetPolicyData(st_PSWDPolicy &st_pp, wxString &policyname, PSWDPolicyMap &MapPSWDPLC)
-  {st_pp = m_st_default_pp; policyname = m_polname; MapPSWDPLC = m_MapPSWDPLC;}
+  void SetPolicyData(const st_PSWDPolicy &defpol, const wxString &policyname, PSWDPolicyMap &MapPSWDPLC);
+  void GetPolicyData(st_PSWDPolicy &defpol, wxString &policyname, PSWDPolicyMap &MapPSWDPLC)
+  {defpol = m_st_default_pp; policyname = m_polname; MapPSWDPLC = m_MapPSWDPLC;}
 
   /// Should we show tooltips?
   static bool ShowToolTips();

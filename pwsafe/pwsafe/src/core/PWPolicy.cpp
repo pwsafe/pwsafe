@@ -127,10 +127,44 @@ void PWPolicy::SetToDefaults()
   upperminlength = prefs->GetPref(PWSprefs::PWUppercaseMinLength);
 }
 
+void PWPolicy::UpdateDefaults(bool bUseCopy) const
+{
+  PWSprefs *prefs = PWSprefs::GetInstance();
+
+  prefs->SetPref(PWSprefs::PWUseLowercase,
+                 (flags & PWPolicy::UseLowercase) != 0, bUseCopy);
+  prefs->SetPref(PWSprefs::PWUseUppercase,
+                 (flags & PWPolicy::UseUppercase) != 0, bUseCopy);
+  prefs->SetPref(PWSprefs::PWUseDigits,
+                 (flags & PWPolicy::UseDigits) != 0, bUseCopy);
+  prefs->SetPref(PWSprefs::PWUseSymbols,
+                 (flags & PWPolicy::UseSymbols) != 0, bUseCopy);
+  prefs->SetPref(PWSprefs::PWUseHexDigits,
+                 (flags & PWPolicy::UseHexDigits) != 0, bUseCopy);
+  prefs->SetPref(PWSprefs::PWUseEasyVision,
+                 (flags & PWPolicy::UseEasyVision) != 0, bUseCopy);
+  prefs->SetPref(PWSprefs::PWMakePronounceable,
+                 (flags & PWPolicy::MakePronounceable) != 0, bUseCopy);
+
+  prefs->SetPref(PWSprefs::PWDefaultLength, length, bUseCopy);
+  prefs->SetPref(PWSprefs::PWDigitMinLength, digitminlength, bUseCopy);
+  prefs->SetPref(PWSprefs::PWLowercaseMinLength, lowerminlength, bUseCopy);
+  prefs->SetPref(PWSprefs::PWSymbolMinLength, symbolminlength, bUseCopy);
+  prefs->SetPref(PWSprefs::PWUppercaseMinLength, upperminlength, bUseCopy);
+}
+
+
 void st_PSWDPolicy::SetToDefaults()
 {
   pwp.SetToDefaults();
   symbols = PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultSymbols);
+}
+
+void st_PSWDPolicy::UpdateDefaults(bool bUseCopy) const
+{
+  pwp.UpdateDefaults(bUseCopy);
+  PWSprefs::GetInstance()->SetPref(PWSprefs::DefaultSymbols,
+                                   symbols, bUseCopy);
 }
 
 static stringT PolValueString(int flag, bool override, int count)

@@ -121,7 +121,6 @@ CPasswordPolicy::~CPasswordPolicy()
 
 void CPasswordPolicy::Init()
 {
-  m_st_default_pp.SetToDefaults();
 ////@begin CPasswordPolicy member initialisation
   m_pwMinsGSzr = NULL;
   m_pwpUseLowerCtrl = NULL;
@@ -468,13 +467,13 @@ bool CPasswordPolicy::UpdatePolicy()
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
  */
 
-void CPasswordPolicy::OnOkClick( wxCommandEvent& evt)
+void CPasswordPolicy::OnOkClick( wxCommandEvent& )
 {
   if (m_core.IsReadOnly())
     return;
   if (!UpdatePolicy())
     return;
-  evt.Skip();
+  EndModal(wxID_OK);
 }
 
 
@@ -504,11 +503,13 @@ void CPasswordPolicy::OnHelpClick( wxCommandEvent& event )
 ////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_HELP in CPasswordPolicy. 
 }
 
-void CPasswordPolicy::SetPolicyData(const wxString &policyname, PSWDPolicyMap &MapPSWDPLC)
+void CPasswordPolicy::SetPolicyData(const st_PSWDPolicy &defpol, 
+                                    const wxString &policyname, PSWDPolicyMap &MapPSWDPLC)
 {
   st_PSWDPolicy xst_pp;
   m_MapPSWDPLC = MapPSWDPLC;
   m_polname = m_oldpolname = policyname;
+  m_st_default_pp = defpol;
 
   // use default for new policy (blank name), or if editing Default Policy
   // (Default Policy isn't in policy map)

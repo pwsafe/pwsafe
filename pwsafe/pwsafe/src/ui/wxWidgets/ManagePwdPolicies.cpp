@@ -504,7 +504,7 @@ void CManagePasswordPolicies::OnNewClick( wxCommandEvent& )
 {
   CPasswordPolicy ppdlg(this, m_core);
 
-  ppdlg.SetPolicyData(wxT(""), m_MapPSWDPLC);
+  ppdlg.SetPolicyData(m_st_default_pp, wxT(""), m_MapPSWDPLC);
   if (ppdlg.ShowModal() == wxID_OK) {
     wxString policyname;
     
@@ -528,7 +528,7 @@ void CManagePasswordPolicies::OnEditPpClick( wxCommandEvent& )
 
   CPasswordPolicy ppdlg(this, m_core);
 
-  ppdlg.SetPolicyData(policyname, m_MapPSWDPLC);
+  ppdlg.SetPolicyData(m_st_default_pp, policyname, m_MapPSWDPLC);
   if (ppdlg.ShowModal() == wxID_OK) {
     ppdlg.GetPolicyData(m_st_default_pp, policyname, m_MapPSWDPLC);
     UpdatePolicy(policyname, CPP_MODIFIED);
@@ -592,12 +592,13 @@ void CManagePasswordPolicies::OnRedoClick( wxCommandEvent& event )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
  */
 
-void CManagePasswordPolicies::OnOkClick( wxCommandEvent& event )
+void CManagePasswordPolicies::OnOkClick( wxCommandEvent& )
 {
-////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK in CManagePasswordPolicies.
-  // Before editing this code, remove the block markers.
-  event.Skip();
-////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK in CManagePasswordPolicies. 
+  st_PSWDPolicy olddefpol;
+  olddefpol.SetToDefaults();
+  if (olddefpol != m_st_default_pp)
+    m_st_default_pp.UpdateDefaults(); // TBD - put in in Command to support undo/redo
+  EndModal(wxID_OK);
 }
 
 
