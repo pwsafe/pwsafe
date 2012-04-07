@@ -80,6 +80,7 @@ struct PWPolicy {
   StringX MakeRandomPassword(const stringT &st_symbols = _T("")) const;
 
   void SetToDefaults(); // from Prefs
+  void UpdateDefaults(bool bUseCopy = false) const; // to prefs
 };
 
 //-----------------------------------------------------------------
@@ -132,7 +133,8 @@ struct st_PSWDPolicy {
     usecount = 0;
   }
 
-  void SetToDefaults();
+  void SetToDefaults(); // from prefs
+  void UpdateDefaults(bool bUseCopy = false) const; // to prefs
   typedef void (*RowPutter)(int row, const stringT &name, const stringT &value, void *table);
   void Policy2Table(RowPutter rp, void *table);
 };
