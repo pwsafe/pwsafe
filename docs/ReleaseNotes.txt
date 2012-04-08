@@ -22,6 +22,8 @@ None
 
 Bugs fixed in 3.28.1
 ====================
+[3515692] Fixed crash with Generate Password switching to default
+policy with > 1 named policy.
 [3514819] Add Group now works again.
 [3510590] Password History is now correctly repaired if found in error during
 the automatic Validate on database open.
