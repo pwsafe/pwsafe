@@ -519,22 +519,27 @@ void CPasswordPolicyDlg::OnNamesComboChanged()
   int index = m_cbxPolicyNames.GetCurSel();
   m_cbxPolicyNames.GetLBText(index, m_policyname);
 
-  // We need to update the "values" of the controls based on the selected
+  // We need to update the controls' settings based on the selected
   // Named Password Policy or the Database Default Policy
 
-  m_iter = m_policyname.IsEmpty() ? m_MapPSWDPLC.end() :
-                                    m_MapPSWDPLC.find(StringX((LPCWSTR)m_policyname));
+  st_PSWDPolicy xst_pp;
+  const CString defpol(MAKEINTRESOURCE(IDS_DATABASE_DEFAULT));
 
-  // Check the find worked above - if PolicyName not empty, it must be in the map!
-  if (!m_policyname.IsEmpty())
+  if (m_policyname == defpol || m_policyname.IsEmpty()) {
+    // m_policyname shouldn't be empty here, but JIC...
+    xst_pp = m_st_default_pp;
+  } else { // ! default policy, must be in map
+    m_iter = m_MapPSWDPLC.find(StringX((LPCWSTR)m_policyname));
     ASSERT(m_iter != m_MapPSWDPLC.end());
+    if (m_iter == m_MapPSWDPLC.end()) // if the impossible happens, at least don't crash
+      return;
+    xst_pp = m_iter->second;
+  }
 
   // First disable them all
   SetSpecificPolicyControls(FALSE);
 
   // Now set values
-  st_PSWDPolicy xst_pp = index == 0 ? m_st_default_pp : m_iter->second;
-
   m_PWUseLowercase = (xst_pp.pwp.flags & PWPolicy::UseLowercase) != 0;
   m_PWUseUppercase = (xst_pp.pwp.flags & PWPolicy::UseUppercase) != 0;
   m_PWUseDigits = (xst_pp.pwp.flags & PWPolicy::UseDigits) != 0;
