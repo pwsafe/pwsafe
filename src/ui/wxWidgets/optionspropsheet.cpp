@@ -46,8 +46,6 @@
 ////@begin XPM images
 ////@end XPM images
 
-void PutAcceleratorsInGrid(wxGrid* grid);
-
 /*!
  * COptions type definition
  */
@@ -743,6 +741,8 @@ void COptions::CreateControls()
 
   wxBoxSizer* shortcutSizer = new wxBoxSizer(wxVERTICAL);
   shortcutSizer->Add(itemGrid143, wxSizerFlags().Expand().Proportion(1).Border());
+  wxButton* resetAllShortcuts = new wxButton(itemPanel142, wxID_RESET, wxT("&Reset All"));
+  shortcutSizer->Add(resetAllShortcuts, wxSizerFlags().Center().Border());
   itemPanel142->SetSizer(shortcutSizer);
 
   ShortcutsGridValidator sv(*PWSMenuShortcuts::GetShortcutsManager());
@@ -752,7 +752,7 @@ void COptions::CreateControls()
   wxGridCellAttr* colAttr = new wxGridCellAttr;
   colAttr->SetReadOnly();
   itemGrid143->SetColAttr(COL_MENU_ITEM, colAttr);
-  PWSMenuShortcuts::GetShortcutsManager()->SetShorcutsGridEventHandlers(itemGrid143);
+  PWSMenuShortcuts::GetShortcutsManager()->SetShorcutsGridEventHandlers(itemGrid143, resetAllShortcuts);
 
   GetBookCtrl()->AddPage(itemPanel142, _("Shortcuts"));
 

@@ -104,7 +104,8 @@ class PWSMenuShortcuts : public wxEvtHandler {
 
   //used for tracking the status of shortcuts while editing them in the options grid
   //we don't modify the actual shortcuts unless the user clicks Ok
-  std::vector<MenuItemData::ShortcutStatus> m_shortcutGridStatus;
+  typedef std::vector<MenuItemData::ShortcutStatus> ShortcutStatusArray;
+  ShortcutStatusArray m_shortcutGridStatus;
 
   // Walks the menubar and collect all shortcuts
   PWSMenuShortcuts(wxMenuBar* menubar);
@@ -148,16 +149,21 @@ public:
 
   MenuItemData::ShortcutStatus GetGridShortcutStatusAt(size_t index) const;
   
-  void SetShorcutsGridEventHandlers(wxGrid* grid);
+  void SetShorcutsGridEventHandlers(wxGrid* grid, wxButton* resetAllButton);
   void OnShortcutChange(wxGridEvent& evt);
   void OnShortcutKey(wxKeyEvent& evt);
   void OnKeyChar(wxKeyEvent& evt);
   void OnShortcutRightClick( wxGridEvent& evt );
   void OnResetRemoveShortcut( wxCommandEvent& evt );
+  void OnResetAll(wxCommandEvent& evt);
 
   static PWSMenuShortcuts* CreateShortcutsManager(wxMenuBar* menubar);
   static PWSMenuShortcuts* GetShortcutsManager();
   static void DestroyShortcutsManager();
+
+private:
+  // The grid we are handling events for
+  wxGrid* m_shortcutsGrid;
 };
 
 enum {COL_SHORTCUT_KEY, COL_MENU_ITEM}; //For shortcuts page
