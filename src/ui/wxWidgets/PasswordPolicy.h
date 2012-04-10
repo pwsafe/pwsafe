@@ -234,9 +234,6 @@ private:
   wxString m_oldSymbols;
   st_PSWDPolicy m_st_default_pp;
   PSWDPolicyMap m_MapPSWDPLC;
-  PSWDPolicyMapIter m_iter;
-
-  stringT m_std_symbols, m_easyvision_symbols, m_pronounceable_symbols;
 };
 
 #endif

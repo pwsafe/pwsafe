@@ -515,12 +515,11 @@ void CPasswordPolicy::SetPolicyData(const st_PSWDPolicy &defpol,
   // (Default Policy isn't in policy map)
   if (m_polname.IsEmpty() || m_polname == _("Default Policy")) {
     xst_pp = m_st_default_pp;
-    m_iter = m_MapPSWDPLC.end();
   } else {
-    m_iter = m_MapPSWDPLC.find(StringX(m_polname.c_str()));
+    PSWDPolicyMapIter iter = m_MapPSWDPLC.find(StringX(m_polname.c_str()));
     // Check the find worked above - if PolicyName not empty, it must be in the map!
-    ASSERT(m_iter != m_MapPSWDPLC.end());
-    st_PSWDPolicy xst_pp = m_iter->second;
+    ASSERT(iter != m_MapPSWDPLC.end());
+    st_PSWDPolicy xst_pp = iter->second;
   }
 
   m_pwUseLowercase = m_oldpwUseLowercase =

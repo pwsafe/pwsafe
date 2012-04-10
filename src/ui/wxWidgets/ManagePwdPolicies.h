@@ -155,6 +155,7 @@ public:
   void ShowPolicyDetails();
   void ShowPolicyEntries();
   st_PSWDPolicy GetSelectedPolicy() const;
+  int GetSelectedRow() const;
 
   PWScore &m_core;
   // History of current changes for Undo/Redo and index to current change
@@ -164,20 +165,14 @@ public:
   int m_iundo_pos;
 
   PSWDPolicyMap m_MapPSWDPLC;
-  PSWDPolicyMapIter m_mapIter;
   st_PSWDPolicy m_st_default_pp;
-
-  GTUSet m_setGTU;
 
   int m_iSortNamesIndex, m_iSortEntriesIndex;
   bool m_bSortNamesAscending, m_bSortEntriesAscending;
 
-  int m_iSelectedItem;
-  bool m_bChanged, m_bViewPolicy, m_bLongPPs, m_bReadOnly;
+  bool m_bViewPolicy;
   
   bool m_bUndoShortcut, m_bRedoShortcut;
-  unsigned short int m_siUndoVirtKey, m_siRedoVirtKey;
-  unsigned char m_cUndoModifier, m_cRedoModifier;
 };
 
 #endif
