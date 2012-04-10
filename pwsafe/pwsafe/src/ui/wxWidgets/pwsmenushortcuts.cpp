@@ -328,7 +328,7 @@ void SetFont(wxGrid *grid, int row)
 /////////////////////////////////////////////////////////////////////////////////
 // PWSMenuShortcuts
 ///////////////////
-PWSMenuShortcuts::PWSMenuShortcuts(wxMenuBar* menuBar)
+PWSMenuShortcuts::PWSMenuShortcuts(wxMenuBar* menuBar): m_shortcutsGrid(0)
 {
   std::back_insert_iterator<MenuItemDataArray> inserter = std::back_inserter(m_midata);
   for( unsigned menuIndex = 0; menuIndex < menuBar->GetMenuCount(); ++menuIndex) {
@@ -474,8 +474,19 @@ void PWSMenuShortcuts::SaveUserShortcuts()
  */
 void PWSMenuShortcuts::GridResetAllShortcuts()
 {
-  std::for_each(m_shortcutGridStatus.begin(), m_shortcutGridStatus.end(),
-                  std::mem_fun_ref(&MenuItemData::ShortcutStatus::setorig));
+  for( ShortcutStatusArray::iterator itr = m_shortcutGridStatus.begin(); itr != m_shortcutGridStatus.end(); ++itr) {
+    if (itr->ischanged() || itr->isdeleted()) {
+      itr->setorig();
+      const size_t index = std::distance(m_shortcutGridStatus.begin(), itr);
+      wxCHECK2_MSG(index < m_midata.size(), continue, wxT("ShortcutStatusArray is not the same size as menu item data"));
+      wxAcceleratorEntry origShortcut = OriginalShortcutAt(index);
+      if (IsNotNull(origShortcut))
+        m_shortcutsGrid->SetCellValue(index, COL_SHORTCUT_KEY, origShortcut.ToString());
+      else
+        m_shortcutsGrid->SetCellValue(index, COL_SHORTCUT_KEY, wxEmptyString);
+      SetFont(m_shortcutsGrid, index);
+    }
+  }
 }
 
 /*
@@ -496,6 +507,7 @@ void PWSMenuShortcuts::GridResetOrRemoveShortcut(wxGrid* grid, size_t index)
     status.setdeleted();
     grid->SetCellValue(index, COL_SHORTCUT_KEY, wxEmptyString);
   }
+  SetFont(grid, index);
 }
 
 bool PWSMenuShortcuts::IsShortcutCustomizedAt(size_t idx) const
@@ -532,7 +544,7 @@ void PWSMenuShortcuts::RemoveShortcutAt(size_t idx)
  * Also set up some housekeeping data to manage the state of shortcut display in the grid,
  * which will be used by ShortcutsAttrProvider below
  */
-void PWSMenuShortcuts::SetShorcutsGridEventHandlers(wxGrid* grid)
+void PWSMenuShortcuts::SetShorcutsGridEventHandlers(wxGrid* grid, wxButton* resetAllButton)
 {
   m_shortcutGridStatus.resize(m_midata.size());
   std::transform(m_midata.begin(), m_midata.end(), m_shortcutGridStatus.begin(), std::mem_fun_ref(&MenuItemData::GetStatus));
@@ -542,6 +554,8 @@ void PWSMenuShortcuts::SetShorcutsGridEventHandlers(wxGrid* grid)
   //let's not directly connect to the grid for key events.  We'll only handle what bubbles up to us
   grid->GetGridWindow()->Connect(grid->GetGridWindow()->GetId(), wxEVT_KEY_DOWN, wxKeyEventHandler(PWSMenuShortcuts::OnShortcutKey), NULL, this);
   grid->GetGridWindow()->Connect(grid->GetGridWindow()->GetId(), wxEVT_CHAR, wxCharEventHandler(PWSMenuShortcuts::OnKeyChar), NULL, this);
+  resetAllButton->Connect(resetAllButton->GetId(), wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(PWSMenuShortcuts::OnResetAll), NULL, this);
+  m_shortcutsGrid = grid;
 }
 
 /*
@@ -553,6 +567,7 @@ void PWSMenuShortcuts::OnShortcutChange(wxGridEvent& evt)
 {
   wxGrid* grid = wxDynamicCast(evt.GetEventObject(), wxGrid);
   wxCHECK_RET(grid, wxT("Could not get grid from wxGridEvent"));
+  wxASSERT_MSG(grid == m_shortcutsGrid, wxT("Events from unexpected grid"));
   wxGridCellCoords cell(evt.GetRow(), evt.GetCol());
   wxString newStr = grid->GetCellValue(cell);
   if (newStr.IsEmpty())
@@ -578,6 +593,7 @@ void PWSMenuShortcuts::OnShortcutKey(wxKeyEvent& evt)
   wxWindow* gridWindow = wxDynamicCast(evt.GetEventObject(), wxWindow);
   wxGrid* grid = wxDynamicCast(gridWindow->GetParent(), wxGrid);
   wxCHECK_RET(grid, wxT("Could not get grid from wxKeyEvent"));
+  wxASSERT_MSG(grid == m_shortcutsGrid, wxT("Events from unexpected grid"));
   const int col = grid->GetGridCursorCol();
   //unless there are modifiers, don't attempt anything
   if ((evt.GetModifiers() || IsFunctionKey(evt.GetKeyCode()))
@@ -605,11 +621,13 @@ void PWSMenuShortcuts::OnKeyChar(wxKeyEvent& evt)
   wxWindow* gridWindow = wxDynamicCast(evt.GetEventObject(), wxWindow);
   wxGrid* grid = wxDynamicCast(gridWindow->GetParent(), wxGrid);
   wxCHECK_RET(grid, wxT("Could not get grid from wxKeyEvent"));
+  wxASSERT_MSG(grid == m_shortcutsGrid, wxT("Events from unexpected grid"));
   if (!evt.GetModifiers() && evt.GetKeyCode() == WXK_DELETE) {
     const int row = grid->GetGridCursorRow();
     GridResetOrRemoveShortcut(grid, row);
-    SetFont(grid, row);
   }
+  else
+    evt.Skip();
 }
 
 struct GridAndIndex
@@ -653,7 +671,11 @@ void PWSMenuShortcuts::OnResetRemoveShortcut( wxCommandEvent& evt )
   GridAndIndex* gr = reinterpret_cast<GridAndIndex*>(shortcutsMenu->GetClientData());
   wxCHECK_RET(gr, wxT("Could not find internal data in reset/remove handler"));
   GridResetOrRemoveShortcut(gr->grid, gr->index);
-  SetFont(gr->grid, gr->index);
+}
+
+void PWSMenuShortcuts::OnResetAll(wxCommandEvent& evt)
+{
+  GridResetAllShortcuts();
 }
 
 //////////////////////////////////////////////////////////////////
@@ -726,6 +748,7 @@ bool ShortcutsGridValidator::TransferToWindow()
     SetFont(grid, row);
   }
   grid->AutoSize();
+  grid->GetParent()->Layout();
   return true;
 }
 
