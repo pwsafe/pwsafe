@@ -84,8 +84,7 @@ CManagePasswordPolicies::CManagePasswordPolicies( wxWindow* parent,  PWScore &co
 						  const wxString& caption, const wxPoint& pos,
 						  const wxSize& size, long style )
   : m_core(core), m_iundo_pos(-1), m_iSortNamesIndex(0), m_iSortEntriesIndex(0),
-  m_bSortNamesAscending(true), m_bSortEntriesAscending(true), m_iSelectedItem(0),
-  m_bChanged(false), m_bViewPolicy(true)
+  m_bSortNamesAscending(true), m_bSortEntriesAscending(true), m_bViewPolicy(true)
 {
   Init();
   Create(parent, id, caption, pos, size, style);
@@ -413,15 +412,22 @@ static void wxRowPutter(int row, const stringT &name, const stringT &value,
   tableControl->SetReadOnly(row, 0); tableControl->SetReadOnly(row, 1);
 }
 
+int CManagePasswordPolicies::GetSelectedRow() const
+{
+  wxArrayInt ai = m_PolicyNames->GetSelectedRows();
+  return ai.IsEmpty() ? -1 : ai[0];
+}
+
 st_PSWDPolicy CManagePasswordPolicies::GetSelectedPolicy() const
 {
   /*
-    If m_iSelectedItem = 0, then fill in with the database default,
+    If first row or no row selected, then fill in with the database default,
     otherwise use the name entry
   */
 
-  if (m_iSelectedItem != 0) {
-    const wxString policyname = m_PolicyNames->GetCellValue(m_iSelectedItem, 0);
+  int row = GetSelectedRow();
+  if (row > 0) {
+    const wxString policyname = m_PolicyNames->GetCellValue(row, 0);
 
     PSWDPolicyMapCIter iter = m_MapPSWDPLC.find(policyname.c_str());
     if (iter == m_MapPSWDPLC.end())
@@ -435,13 +441,9 @@ st_PSWDPolicy CManagePasswordPolicies::GetSelectedPolicy() const
 
 void CManagePasswordPolicies::UpdateDetails()
 {
-  if (m_iSelectedItem == -1)
+  // Update details table to reflect selected policy, if any
+  if (GetSelectedRow() == -1)
     return;
-
-  /*
-    If m_iSelectedItem = 0, then fill in with the database default,
-    otherwise use the name entry
-  */
 
   st_PSWDPolicy st_pp = GetSelectedPolicy();
 
@@ -451,12 +453,22 @@ void CManagePasswordPolicies::UpdateDetails()
 
 void CManagePasswordPolicies::UpdatePolicy(const wxString &policyname, CPP_FLAGS mode)
 {
-    m_bChanged = true;
+#ifdef NOTYET
     // Save changes for Undo/Redo
     st_PSWDPolicyChange st_change;
-    st_change.name = m_iSelectedItem != 0 ? policyname : wxT("");
     st_change.flags = mode;
+    st_change.name = policyname;
     st_change.st_pp_save = m_iSelectedItem != 0 ? m_mapIter->second : m_st_default_pp;
+    switch (mode) {
+    case CPP_ADD:
+      break;
+    case CPP_MODIFIED:
+      break;
+    case CPP_DELETE:
+      break;
+    default:
+      ASSERT(0);
+    }
 
     if (m_iSelectedItem != 0) {
       // Changed a named password policy
@@ -468,7 +480,6 @@ void CManagePasswordPolicies::UpdatePolicy(const wxString &policyname, CPP_FLAGS
       // Changed the database default policy
       st_change.st_pp_new = m_st_default_pp;
     }
-
   if (m_iundo_pos != (int)m_vchanges.size() - 1) {
     // We did have changes that could have been redone
     // But not anymore - delete all these to add new change on the end
@@ -482,13 +493,12 @@ void CManagePasswordPolicies::UpdatePolicy(const wxString &policyname, CPP_FLAGS
   // Update buttons appropriately
   FindWindow(wxID_UNDO)->Enable(true);
   FindWindow(wxID_REDO)->Enable(false);
-
+#endif
   // Update lists
   UpdateNames();
   int N = m_PolicyNames->GetNumberRows();
   for (int row = 0; row < N; row++) 
     if (m_PolicyNames->GetCellValue(row, 0) == policyname) {
-      m_iSelectedItem = row;
       m_PolicyNames->SelectRow(row);
       break;
     }
@@ -520,10 +530,13 @@ void CManagePasswordPolicies::OnNewClick( wxCommandEvent& )
 
 void CManagePasswordPolicies::OnEditPpClick( wxCommandEvent& )
 {
-  wxString policyname = m_PolicyNames->GetCellValue(m_iSelectedItem, 0);
+  int row = GetSelectedRow();
+  if (row < 0)
+    return;
+  wxString policyname = m_PolicyNames->GetCellValue(row, 0);
 
-  m_mapIter = m_MapPSWDPLC.find(StringX(policyname.c_str()));
-  if (m_iSelectedItem != 0 && m_mapIter == m_MapPSWDPLC.end())
+  PSWDPolicyMapIter mapIter = m_MapPSWDPLC.find(StringX(policyname.c_str()));
+  if (row != 0 && mapIter == m_MapPSWDPLC.end())
     return;
 
   CPasswordPolicy ppdlg(this, m_core);
