@@ -599,7 +599,7 @@ void PWSMenuShortcuts::OnShortcutKey(wxKeyEvent& evt)
   if ((evt.GetModifiers() || IsFunctionKey(evt.GetKeyCode()))
                 && col == COL_SHORTCUT_KEY) {
     wxAcceleratorEntry accel(ModifiersToAccelFlags(evt.GetModifiers()), evt.GetKeyCode(), 0);
-    wxCHECK_RET(accel.IsOk(), wxT("Could not create accelerator from wxKeyEvent"));
+    wxCHECK_RET(IsNotNull(accel), wxT("Could not create accelerator from wxKeyEvent"));
     const int row = grid->GetCursorRow();
     grid->SetCellValue(row, col, accel.ToString());
     grid->SetCellTextColour(row, col, grid->GetDefaultCellTextColour());
