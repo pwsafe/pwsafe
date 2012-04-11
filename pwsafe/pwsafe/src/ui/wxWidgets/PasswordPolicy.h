@@ -79,11 +79,12 @@ class CPasswordPolicy: public wxDialog
 public:
   /// Constructors
   CPasswordPolicy( wxWindow* parent, PWScore &core,
-		   wxWindowID id = SYMBOL_CPASSWORDPOLICY_IDNAME,
-		   const wxString& caption = SYMBOL_CPASSWORDPOLICY_TITLE,
-		   const wxPoint& pos = SYMBOL_CPASSWORDPOLICY_POSITION,
-		   const wxSize& size = SYMBOL_CPASSWORDPOLICY_SIZE,
-		   long style = SYMBOL_CPASSWORDPOLICY_STYLE );
+                   const PSWDPolicyMap &polmap,
+                   wxWindowID id = SYMBOL_CPASSWORDPOLICY_IDNAME,
+                   const wxString& caption = SYMBOL_CPASSWORDPOLICY_TITLE,
+                   const wxPoint& pos = SYMBOL_CPASSWORDPOLICY_POSITION,
+                   const wxSize& size = SYMBOL_CPASSWORDPOLICY_SIZE,
+                   long style = SYMBOL_CPASSWORDPOLICY_STYLE );
 
   /// Creation
   bool Create( wxWindow* parent, wxWindowID id = SYMBOL_CPASSWORDPOLICY_IDNAME, const wxString& caption = SYMBOL_CPASSWORDPOLICY_TITLE, const wxPoint& pos = SYMBOL_CPASSWORDPOLICY_POSITION, const wxSize& size = SYMBOL_CPASSWORDPOLICY_SIZE, long style = SYMBOL_CPASSWORDPOLICY_STYLE );
@@ -172,9 +173,9 @@ public:
   /// Retrieves icon resources
   wxIcon GetIconResource( const wxString& name );
 ////@end CPasswordPolicy member function declarations
-  void SetPolicyData(const st_PSWDPolicy &defpol, const wxString &policyname, PSWDPolicyMap &MapPSWDPLC);
-  void GetPolicyData(st_PSWDPolicy &defpol, wxString &policyname, PSWDPolicyMap &MapPSWDPLC)
-  {defpol = m_st_default_pp; policyname = m_polname; MapPSWDPLC = m_MapPSWDPLC;}
+  void SetPolicyData(const wxString &polname, const st_PSWDPolicy &pol);
+  void GetPolicyData(wxString &polname, st_PSWDPolicy &pol)
+  {polname = m_polname; pol = m_st_pp;}
 
   /// Should we show tooltips?
   static bool ShowToolTips();
@@ -218,6 +219,7 @@ private:
   bool Verify();
 
   PWScore &m_core;
+  const PSWDPolicyMap &m_MapPSWDPLC; // used to detect existing name
   wxString m_oldpolname;
   int m_oldpwdefaultlength;
   bool m_oldpwUseLowercase;
@@ -232,8 +234,7 @@ private:
   int m_oldpwSymbolMinLength;
   int m_oldpwDigitMinLength;
   wxString m_oldSymbols;
-  st_PSWDPolicy m_st_default_pp;
-  PSWDPolicyMap m_MapPSWDPLC;
+  st_PSWDPolicy m_st_pp; // The edited policy
 };
 
 #endif
