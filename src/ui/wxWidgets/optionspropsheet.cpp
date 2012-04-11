@@ -741,7 +741,7 @@ void COptions::CreateControls()
 
   wxBoxSizer* shortcutSizer = new wxBoxSizer(wxVERTICAL);
   shortcutSizer->Add(itemGrid143, wxSizerFlags().Expand().Proportion(1).Border());
-  wxButton* resetAllShortcuts = new wxButton(itemPanel142, wxID_RESET, wxT("&Reset All"));
+  wxButton* resetAllShortcuts = new wxButton(itemPanel142, wxID_ANY, wxT("&Reset All"));
   shortcutSizer->Add(resetAllShortcuts, wxSizerFlags().Center().Border());
   itemPanel142->SetSizer(shortcutSizer);
 
