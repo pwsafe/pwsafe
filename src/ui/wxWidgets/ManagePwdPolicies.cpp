@@ -451,8 +451,13 @@ void CManagePasswordPolicies::UpdateDetails()
   st_pp.Policy2Table(wxRowPutter, m_PolicyDetails);
 }
 
-void CManagePasswordPolicies::UpdatePolicy(const wxString &policyname, CPP_FLAGS mode)
+void CManagePasswordPolicies::UpdatePolicy(const wxString &polname, const st_PSWDPolicy &pol,
+                                           CPP_FLAGS mode)
 {
+  if (polname == _("Default Policy"))
+    m_st_default_pp = pol;
+  else
+    m_MapPSWDPLC[polname.c_str()] = pol;
 #ifdef NOTYET
     // Save changes for Undo/Redo
     st_PSWDPolicyChange st_change;
@@ -498,7 +503,7 @@ void CManagePasswordPolicies::UpdatePolicy(const wxString &policyname, CPP_FLAGS
   UpdateNames();
   int N = m_PolicyNames->GetNumberRows();
   for (int row = 0; row < N; row++) 
-    if (m_PolicyNames->GetCellValue(row, 0) == policyname) {
+    if (m_PolicyNames->GetCellValue(row, 0) == polname) {
       m_PolicyNames->SelectRow(row);
       break;
     }
@@ -512,14 +517,14 @@ void CManagePasswordPolicies::UpdatePolicy(const wxString &policyname, CPP_FLAGS
 
 void CManagePasswordPolicies::OnNewClick( wxCommandEvent& )
 {
-  CPasswordPolicy ppdlg(this, m_core);
-
-  ppdlg.SetPolicyData(m_st_default_pp, wxT(""), m_MapPSWDPLC);
+  CPasswordPolicy ppdlg(this, m_core, m_MapPSWDPLC);
+  st_PSWDPolicy st_pp = m_st_default_pp;
+  ppdlg.SetPolicyData(wxT(""), st_pp);
   if (ppdlg.ShowModal() == wxID_OK) {
     wxString policyname;
     
-    ppdlg.GetPolicyData(m_st_default_pp, policyname, m_MapPSWDPLC);
-    UpdatePolicy(policyname, CPP_ADD);
+    ppdlg.GetPolicyData(policyname, st_pp);
+    UpdatePolicy(policyname, st_pp, CPP_ADD);
   }
 }
 
@@ -534,17 +539,26 @@ void CManagePasswordPolicies::OnEditPpClick( wxCommandEvent& )
   if (row < 0)
     return;
   wxString policyname = m_PolicyNames->GetCellValue(row, 0);
+  st_PSWDPolicy st_pp;
 
-  PSWDPolicyMapIter mapIter = m_MapPSWDPLC.find(StringX(policyname.c_str()));
-  if (row != 0 && mapIter == m_MapPSWDPLC.end())
-    return;
+  if (row == 0) { // 1st row is default
+    st_pp = m_st_default_pp;
+  } else {
+    PSWDPolicyMapIter mapIter = m_MapPSWDPLC.find(StringX(policyname.c_str()));
+    if (row != 0 && mapIter == m_MapPSWDPLC.end()) {
+      ASSERT(0);
+      return;
+    }
+    st_pp = mapIter->second;
+  }
 
-  CPasswordPolicy ppdlg(this, m_core);
+  CPasswordPolicy ppdlg(this, m_core, m_MapPSWDPLC);
 
-  ppdlg.SetPolicyData(m_st_default_pp, policyname, m_MapPSWDPLC);
+  ppdlg.SetPolicyData(policyname, st_pp);
   if (ppdlg.ShowModal() == wxID_OK) {
-    ppdlg.GetPolicyData(m_st_default_pp, policyname, m_MapPSWDPLC);
-    UpdatePolicy(policyname, CPP_MODIFIED);
+    ppdlg.GetPolicyData(policyname, st_pp);
+    ASSERT(!policyname.IsEmpty());
+    UpdatePolicy(policyname, st_pp, CPP_MODIFIED);
   }
 }
 
