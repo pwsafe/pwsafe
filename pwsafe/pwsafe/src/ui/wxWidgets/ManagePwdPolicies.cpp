@@ -634,10 +634,38 @@ void CManagePasswordPolicies::OnRedoClick( wxCommandEvent& event )
 
 void CManagePasswordPolicies::OnOkClick( wxCommandEvent& )
 {
+  /*
+   * User may have changed default poliicy, named policy, none or both.
+   * If anything has changed, we trat the change as atomic, creating a multicommand
+   * s.t. Undo/Redo will work as expected.
+   */
   st_PSWDPolicy olddefpol;
   olddefpol.SetToDefaults();
-  if (olddefpol != m_st_default_pp)
-    m_st_default_pp.UpdateDefaults(); // TBD - put in in Command to support undo/redo
+  bool defChanged = (olddefpol != m_st_default_pp);
+  bool namedChanged = (m_MapPSWDPLC != m_core.GetPasswordPolicies());
+
+  if (defChanged || namedChanged) {
+    MultiCommands *pmulticmds = MultiCommands::Create(&m_core);
+    
+    if (defChanged) {
+      // User has changed database default policy - need to update preferences
+      // Update the copy only!
+      m_st_default_pp.UpdateDefaults(true);
+
+      // Now get new DB preferences String value
+      StringX sxNewDBPrefsString(PWSprefs::GetInstance()->Store(true));
+
+      // Set up Command to update string in database
+      if (m_core.GetReadFileVersion() == PWSfile::VCURRENT)
+        pmulticmds->Add(DBPrefsCommand::Create(&m_core, sxNewDBPrefsString));
+    } // defChanged
+
+    if (namedChanged) {
+      pmulticmds->Add(DBPolicyNamesCommand::Create(&m_core, m_MapPSWDPLC,
+                                                   DBPolicyNamesCommand::REPLACEALL));
+    }
+    m_core.Execute(pmulticmds);
+  } // defChanged || namedChanged
   EndModal(wxID_OK);
 }
 
