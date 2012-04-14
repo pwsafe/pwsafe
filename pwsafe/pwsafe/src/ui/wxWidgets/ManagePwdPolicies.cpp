@@ -48,6 +48,8 @@ IMPLEMENT_CLASS( CManagePasswordPolicies, wxDialog )
 BEGIN_EVENT_TABLE( CManagePasswordPolicies, wxDialog )
 
 ////@begin CManagePasswordPolicies event table entries
+  EVT_GRID_SELECT_CELL( CManagePasswordPolicies::OnSelectCell )
+
   EVT_BUTTON( wxID_NEW, CManagePasswordPolicies::OnNewClick )
 
   EVT_BUTTON( ID_EDIT_PP, CManagePasswordPolicies::OnEditPpClick )
@@ -83,7 +85,8 @@ END_EVENT_TABLE()
 CManagePasswordPolicies::CManagePasswordPolicies( wxWindow* parent,  PWScore &core, wxWindowID id,
 						  const wxString& caption, const wxPoint& pos,
 						  const wxSize& size, long style )
-  : m_core(core), m_iundo_pos(-1), m_iSortNamesIndex(0), m_iSortEntriesIndex(0),
+: m_core(core), m_iundo_pos(-1), m_curPolRow(-1),
+  m_iSortNamesIndex(0), m_iSortEntriesIndex(0),
   m_bSortNamesAscending(true), m_bSortEntriesAscending(true), m_bViewPolicy(true)
 {
   Init();
@@ -265,6 +268,10 @@ void CManagePasswordPolicies::CreateControls()
   // We have 2 grids, but we show only one at a time,
   // toggle when user clicks on ID_LIST button.
   // Setting these up:
+  m_PolicyNames->SetRowLabelSize(0);
+  int col0Width = m_PolicyNames->GetColSize(0);
+  col0Width += 45;
+  m_PolicyNames->SetColSize(0, col0Width);
   m_PolicyNames->SetColLabelValue(0, _("Policy Name"));
   m_PolicyNames->SetColLabelValue(1, _("Use count"));
   UpdateNames();
@@ -274,10 +281,12 @@ void CManagePasswordPolicies::CreateControls()
   FindWindow(ID_LIST)->Enable(false);
   FindWindow(wxID_DELETE)->Enable(false);
 
+  m_PolicyDetails->SetRowLabelSize(0);
   m_PolicyDetails->SetColLabelValue(0, _("Policy Field"));
   m_PolicyDetails->SetColLabelValue(1, _("Value"));
   UpdateDetails(); 
 
+  m_PolicyEntries->SetRowLabelSize(0);
   m_PolicyEntries->SetColLabelValue(0, _("Group"));
   m_PolicyEntries->SetColLabelValue(1, _("Title"));
   m_PolicyEntries->SetColLabelValue(2, _("User Name"));
@@ -415,7 +424,11 @@ static void wxRowPutter(int row, const stringT &name, const stringT &value,
 int CManagePasswordPolicies::GetSelectedRow() const
 {
   wxArrayInt ai = m_PolicyNames->GetSelectedRows();
-  return ai.IsEmpty() ? -1 : ai[0];
+  if (!ai.IsEmpty())
+    return ai[0];
+  else {
+    return m_curPolRow;
+  }
 }
 
 st_PSWDPolicy CManagePasswordPolicies::GetSelectedPolicy() const
@@ -675,5 +688,18 @@ void CManagePasswordPolicies::OnGeneratePasswordClick( wxCommandEvent& event )
 void CManagePasswordPolicies::OnCopyPasswordClick( wxCommandEvent& )
 {
   PWSclip::SetData(m_passwordCtrl->GetValue().c_str());
+}
+
+
+/*!
+ * wxEVT_GRID_SELECT_CELL event handler for ID_POLICYLIST
+ */
+
+void CManagePasswordPolicies::OnSelectCell( wxGridEvent& evt )
+{
+  if (evt.GetEventObject() == m_PolicyNames) {
+    m_curPolRow = evt.GetRow();
+    UpdateDetails();
+  }
 }
 
