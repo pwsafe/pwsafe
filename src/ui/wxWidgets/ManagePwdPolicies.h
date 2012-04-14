@@ -91,6 +91,9 @@ public:
 
 ////@begin CManagePasswordPolicies event handler declarations
 
+  /// wxEVT_GRID_SELECT_CELL event handler for ID_POLICYLIST
+  void OnSelectCell( wxGridEvent& event );
+
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_NEW
   void OnNewClick( wxCommandEvent& event );
 
@@ -166,6 +169,7 @@ public:
 
   PSWDPolicyMap m_MapPSWDPLC;
   st_PSWDPolicy m_st_default_pp;
+  int m_curPolRow;
 
   int m_iSortNamesIndex, m_iSortEntriesIndex;
   bool m_bSortNamesAscending, m_bSortEntriesAscending;
