@@ -230,10 +230,10 @@ void st_PSWDPolicy::Policy2Table(st_PSWDPolicy::RowPutter rp, void *table)
       Format(col2, bEV ? IDSC_YESEASYVISON : IDSC_YESPRONOUNCEABLE,
              bEV ? easyvision_symbols.c_str() : pronounceable_symbols.c_str());
     } else {
-      stringT tmp, symbols;
+      stringT tmp, sym;
       LoadAString(tmp, symbols.empty() ? IDSC_DEFAULTSYMBOLS : IDSC_SPECFICSYMBOLS);
-      symbols = symbols.empty() ? std_symbols.c_str() : symbols.c_str();
-      Format(col2, IDSC_YESSYMBOLS, pwp.symbolminlength, tmp.c_str(), symbols.c_str());
+      sym = symbols.empty() ? std_symbols.c_str() : symbols.c_str();
+      Format(col2, IDSC_YESSYMBOLS, pwp.symbolminlength, tmp.c_str(), sym.c_str());
     }
   } else {
     col2 = no;

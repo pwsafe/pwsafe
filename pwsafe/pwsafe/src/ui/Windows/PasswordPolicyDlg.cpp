@@ -555,7 +555,13 @@ void CPasswordPolicyDlg::OnNamesComboChanged()
   m_PWUpperMinLength = xst_pp.pwp.upperminlength;
 
   m_Symbols = m_oldSymbols = xst_pp.symbols.c_str();
-  m_UseOwnSymbols = m_Symbols.IsEmpty() ? DEFAULT_SYMBOLS : OWN_SYMBOLS;
+  if (m_Symbols.IsEmpty()) {
+    m_UseOwnSymbols = DEFAULT_SYMBOLS;
+    ((CButton *)GetDlgItem(IDC_USEDEFAULTSYMBOLS))->SetCheck(BST_CHECKED);
+  } else {
+    m_UseOwnSymbols = OWN_SYMBOLS;
+    ((CButton *)GetDlgItem(IDC_USEOWNSYMBOLS))->SetCheck(BST_CHECKED);
+  }
 
   UpdateData(FALSE);
 }
