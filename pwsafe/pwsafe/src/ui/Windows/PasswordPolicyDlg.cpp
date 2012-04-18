@@ -171,8 +171,6 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CPasswordPolicyDlg message handlers
 
-#define CR_DATABASE_OPTIONS 0x800000
-
 BOOL CPasswordPolicyDlg::OnInitDialog()
 {
   CPWDialog::OnInitDialog();
@@ -236,8 +234,8 @@ BOOL CPasswordPolicyDlg::OnInitDialog()
       m_pDbx->GetPolicyNames(vNames);
 
       // Add Default
-      CString cs_text(MAKEINTRESOURCE(IDS_DATABASE_DEFAULT));
-      m_cbxPolicyNames.AddString(cs_text);
+      CString cs_default(MAKEINTRESOURCE(IDS_DATABASE_DEFAULT));
+      m_cbxPolicyNames.AddString(cs_default);
 
       for (std::vector<std::wstring>::iterator iter = vNames.begin();
            iter != vNames.end(); ++iter) {
@@ -245,7 +243,7 @@ BOOL CPasswordPolicyDlg::OnInitDialog()
       }
 
       // Select Default
-      m_cbxPolicyNames.SetCurSel(0);
+      m_cbxPolicyNames.SelectString(-1, cs_default);
 
       // and check the box
       ((CButton *)GetDlgItem(IDC_USENAMED_POLICY))->SetCheck(BST_CHECKED);
@@ -555,6 +553,7 @@ void CPasswordPolicyDlg::OnNamesComboChanged()
   m_PWUpperMinLength = xst_pp.pwp.upperminlength;
 
   m_Symbols = m_oldSymbols = xst_pp.symbols.c_str();
+  m_SymbolsEdit.SetWindowText(m_Symbols);
   if (m_Symbols.IsEmpty()) {
     m_UseOwnSymbols = DEFAULT_SYMBOLS;
     ((CButton *)GetDlgItem(IDC_USEDEFAULTSYMBOLS))->SetCheck(BST_CHECKED);
