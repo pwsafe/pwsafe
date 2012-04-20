@@ -362,6 +362,7 @@ int DBEmptyGroupsCommand::Execute()
 {
   if (!m_pcomInt->IsReadOnly()) {
     if (m_bSingleGroup) {
+      // Single Empty Group functions
       switch (m_function) {
         case EG_ADD:
           m_pcomInt->AddEmptyGroup(m_sxEmptyGroup);
@@ -372,16 +373,25 @@ int DBEmptyGroupsCommand::Execute()
         case EG_RENAME:
           m_pcomInt->RenameEmptyGroup(m_sxOldGroup, m_sxNewGroup);
           break;
+        default:
+          // Ignore multi-group functions
+          ASSERT(0);
+          break;
       }
     } else {
+      // Multi-Empty Group functions
       switch (m_function) {
-        case EG_ADD:
+        case EG_ADDALL:
           for (size_t n = 0; n < m_vNewEmptyGroups.size(); n++) {
             m_pcomInt->AddEmptyGroup(m_vNewEmptyGroups[n]);
           }
           break;
         case EG_REPLACEALL:
           m_pcomInt->SetEmptyGroups(m_vNewEmptyGroups);
+          break;
+        default:
+          // Ignore single group functions
+          ASSERT(0);
           break;
       }
     }
@@ -400,6 +410,7 @@ void DBEmptyGroupsCommand::Undo()
 {
   if (!m_pcomInt->IsReadOnly()) {
     if (m_bSingleGroup) {
+      // Single Empty Group functions
       switch (m_function) {
         case EG_ADD:
           m_pcomInt->RemoveEmptyGroup(m_sxEmptyGroup);
@@ -410,9 +421,23 @@ void DBEmptyGroupsCommand::Undo()
         case EG_RENAME:
           m_pcomInt->RenameEmptyGroup(m_sxNewGroup, m_sxOldGroup);
           break;
+        default:
+          // Ignore multi-group functions
+          ASSERT(0);
+          break;
       }
     } else {
-      m_pcomInt->SetEmptyGroups(m_vOldEmptyGroups);
+      // Multi-Empty Group functions
+      switch (m_function) {
+        case EG_ADDALL:
+        case EG_REPLACEALL:
+          m_pcomInt->SetEmptyGroups(m_vOldEmptyGroups);
+          break;
+        default:
+          // Ignore single group functions
+          ASSERT(0);
+          break;
+      }
     }
     m_pcomInt->SetDBChanged(m_bOldState);
 

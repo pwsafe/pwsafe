@@ -161,7 +161,7 @@ private:
 class DBEmptyGroupsCommand : public Command
 {
 public:
-  enum Function {EG_ADD = 0, EG_DELETE, EG_RENAME, EG_REPLACEALL};
+  enum Function {EG_ADD = 0, EG_DELETE, EG_RENAME, EG_ADDALL = 10, EG_REPLACEALL};
 
   static DBEmptyGroupsCommand *Create(CommandInterface *pcomInt,
                                 std::vector<StringX> &vEmptyGroups,
