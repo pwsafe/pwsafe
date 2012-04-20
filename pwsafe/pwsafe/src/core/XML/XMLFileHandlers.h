@@ -140,7 +140,7 @@ protected:
   bool m_bEntryBeingProcessed;
   bool m_bPolicyBeingProcessed;
   bool m_bValidation;
-  bool m_bInPolicyNames;
+  bool m_bInPolicyNames, m_bInEmptyGroups;
   bool m_bErrors, m_bRecordHeaderErrors, m_bDatabaseHeaderErrors;
   bool m_bImportPSWDsOnly;
   unsigned char m_ctype;
@@ -158,7 +158,7 @@ private:
   int m_ipwh;
   int m_fieldlen;
   bool m_bheader;
-  unsigned char * m_pfield;
+  unsigned char *m_pfield;
 
   // Preferences possibly stored in database
   // Note: boolean is integer to allow an 'not set' value of '-1'
@@ -171,6 +171,7 @@ private:
 
   PSWDPolicyMap m_MapPSWDPLC;
   std::map<StringX, StringX> m_mapRenamedPolicies;
+  std::vector<StringX> m_vEmptyGroups;
   StringX m_sxXML_DateTime;
 };
 

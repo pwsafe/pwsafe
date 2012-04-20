@@ -21,7 +21,7 @@ public:
   // NOTE for normal and base entries items, order MUST be:
   //    Not-Expired, Warn-Expired, Expired
   // MUST BE SAME AS IN PWTreeCtrl.h !!!!
-  enum {NODE = 0,
+  enum {GROUP = 0,
     NORMAL, WARNEXPIRED_NORMAL, EXPIRED_NORMAL,
     ALIASBASE, WARNEXPIRED_ALIASBASE, EXPIRED_ALIASBASE, ALIAS,
     SHORTCUTBASE, WARNEXPIRED_SHORTCUTBASE, EXPIRED_SHORTCUTBASE, SHORTCUT,

@@ -657,7 +657,7 @@ void DboxMain::OnManagePasswordPolicies()
 
     // Now update named preferences
     Command *pcmd2 = DBPolicyNamesCommand::Create(&m_core, MapPSWDPLC,
-                             DBPolicyNamesCommand::REPLACEALL);
+                             DBPolicyNamesCommand::NP_REPLACEALL);
     pmulticmds->Add(pcmd2);
     Execute(pmulticmds);
 

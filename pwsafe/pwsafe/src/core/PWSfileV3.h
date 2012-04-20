@@ -39,7 +39,8 @@ public:
     HDR_RESERVED2             = 0x0d,     // added in format 0x030?
     HDR_RESERVED3             = 0x0e,     // added in format 0x030?
     HDR_RUE                   = 0x0f,     // added in format 0x0307
-    HDR_PSWDPOLICIES          = 0x10,     // added in format 0x0311
+    HDR_PSWDPOLICIES          = 0x10,     // added in format 0x030A
+    HDR_EMPTYGROUP            = 0x11,     // added in format 0x030B
     HDR_LAST,                             // Start of unknown fields!
     HDR_END                   = 0xff};    // header field types, per formatV{2,3}.txt
 
@@ -64,6 +65,9 @@ public:
   void SetPasswordPolicies(const PSWDPolicyMap &MapPSWDPLC) {m_MapPSWDPLC = MapPSWDPLC;}
   const PSWDPolicyMap &GetPasswordPolicies() const {return m_MapPSWDPLC;}
 
+  void SetEmptyGroups(const std::vector<StringX> &vEmptyGroups) {m_vEmptyGroups = vEmptyGroups;}
+  const std::vector<StringX> &GetEmptyGroups() const {return m_vEmptyGroups;}
+
 private:
   unsigned char m_ipthing[TwoFish::BLOCKSIZE]; // for CBC
   unsigned char m_key[32];
@@ -79,6 +83,9 @@ private:
   int ReadHeader();
   PWSFilters m_MapFilters;
   PSWDPolicyMap m_MapPSWDPLC;
+
+  // EmptyGroups
+  std::vector<StringX> m_vEmptyGroups;
 
   static int SanityCheck(FILE *stream); // Check for TAG and EOF marker
   static void StretchKey(const unsigned char *salt, unsigned long saltLen,

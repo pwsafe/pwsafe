@@ -324,6 +324,9 @@ void PWScore::ClearData(void)
   // Clear out policies
   m_MapPSWDPLC.clear();
 
+  // Clear out Empty Groups
+  m_vEmptyGroups.clear();
+
   // Clear out commands
   ClearCommands();
 }
@@ -431,6 +434,7 @@ int PWScore::WriteFile(const StringX &filename, const bool bUpdateSig,
     out3->SetUnknownHeaderFields(m_UHFL);
     out3->SetFilters(m_MapFilters); // Give it the filters to write out
     out3->SetPasswordPolicies(m_MapPSWDPLC); // Give it the password policies to write out
+    out3->SetEmptyGroups(m_vEmptyGroups); // Give it the Empty Groups to write out
   }
 
   try { // exception thrown on write error
@@ -759,6 +763,10 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
   if (in3 != NULL && !in3->GetPasswordPolicies().empty()) {
     // Wait til now so that reading in the records updates the use counts
     m_MapPSWDPLC = in3->GetPasswordPolicies();
+  }
+
+  if (in3 != NULL && !in3->GetEmptyGroups().empty()) {
+    m_vEmptyGroups = in3->GetEmptyGroups();
   }
 
   m_nRecordsWithUnknownFields = in->GetNumRecordsWithUnknownFields();
@@ -3021,4 +3029,42 @@ void PWScore::AddPolicy(const StringX &sxPolicyName, const st_PSWDPolicy &st_pp,
     m_MapPSWDPLC[sxPolicyName] = st_pp;
     SetDBChanged(true);
   }
+}
+
+bool PWScore::IsEmptyGroup(const StringX &sxEmptyGroup)
+{
+  return find(m_vEmptyGroups.begin(), m_vEmptyGroups.end(), sxEmptyGroup) != 
+                   m_vEmptyGroups.end();
+}
+
+bool PWScore::AddEmptyGroup(const StringX &sxEmptyGroup)
+{
+  if (find(m_vEmptyGroups.begin(), m_vEmptyGroups.end(), sxEmptyGroup) == 
+           m_vEmptyGroups.end()) {
+    m_vEmptyGroups.push_back(sxEmptyGroup);
+    return true;
+  } else
+    return false;
+}
+
+bool PWScore::RemoveEmptyGroup(const StringX &sxEmptyGroup)
+{
+  std::vector<StringX>::iterator iter;
+  iter = find(m_vEmptyGroups.begin(), m_vEmptyGroups.end(), sxEmptyGroup);
+
+  if (iter != m_vEmptyGroups.end()) {
+    m_vEmptyGroups.erase(iter);
+    return true;
+  } else
+    return false;
+}
+
+void PWScore::RenameEmptyGroup(const StringX &sxOldPath, const StringX &sxNewPath)
+{
+  std::vector<StringX>::iterator iter;
+  iter = find(m_vEmptyGroups.begin(), m_vEmptyGroups.end(), sxOldPath);
+  ASSERT(iter !=  m_vEmptyGroups.end());
+
+  m_vEmptyGroups.erase(iter);
+  m_vEmptyGroups.push_back(sxNewPath);
 }

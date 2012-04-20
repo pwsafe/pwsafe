@@ -377,6 +377,9 @@ public:
   {m_core.GetPolicyNames(vNames);}
   const PSWDPolicyMap &GetPasswordPolicies()
   {return m_core.GetPasswordPolicies();}
+
+  bool IsEmptyGroup(const StringX &sxEmptyGroup)
+  {return m_core.IsEmptyGroup(sxEmptyGroup);}
   
   // Need this to be public
   bool LongPPs();

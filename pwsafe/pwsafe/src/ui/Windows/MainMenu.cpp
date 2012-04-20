@@ -1180,7 +1180,7 @@ void DboxMain::OnContextMenu(CWnd * /* pWnd */, CPoint screen)
         item = pdi->list_index;
         m_ctlItemTree.SelectItem(ti); // So that OnEdit gets the right one
       } else {
-        // right-click was on a group (NODE)
+        // right-click was on a group (GROUP)
         m_ctlItemTree.SelectItem(ti);
         if (menu.LoadMenu(IDR_POPEDITGROUP)) {
           minfo.dwMenuData = IDR_POPEDITGROUP;

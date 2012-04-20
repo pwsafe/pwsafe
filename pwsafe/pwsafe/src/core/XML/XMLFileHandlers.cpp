@@ -166,6 +166,9 @@ bool XMLFileHandlers::ProcessStartElement(const int icurrent_element)
       cur_policy->st_pp.pwp.Empty();
       cur_policy->st_pp.symbols = _T("");
       break;
+    case XLE_EMPTYGROUPS:
+      m_bInEmptyGroups = true;
+      break;
     case XLE_PWNAME:
     default:
       break;
@@ -237,6 +240,14 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
       break;
     case XLE_DEFAULTSYMBOLS:
       m_sDefaultSymbols = m_strElemContent.c_str();
+      break;
+    case XLE_EMPTYGROUPS:
+      m_bInEmptyGroups = false;
+      break;
+    case XLE_EGNAME:
+      if (!m_strElemContent.empty() &&
+          find(m_vEmptyGroups.begin(), m_vEmptyGroups.end(), m_strElemContent) == m_vEmptyGroups.end())
+        m_vEmptyGroups.push_back(m_strElemContent);
       break;
     // MUST be in the same order as enum beginning STR_GROUP...
     case XLE_GROUP:
@@ -514,10 +525,17 @@ void XMLFileHandlers::AddXMLEntries()
   // This must be done prior to importing entries that may reference them
   if (!m_MapPSWDPLC.empty()) {
     Command *pcmd = DBPolicyNamesCommand::Create(m_pXMLcore, m_MapPSWDPLC,
-                            DBPolicyNamesCommand::ADDNEW);
+                            DBPolicyNamesCommand::NP_ADDNEW);
     m_pmulticmds->Add(pcmd);
   }
   
+  // Then add any Empty Groups imported that are not already in the database
+  if (!m_vEmptyGroups.empty()) {
+    Command *pcmd = DBEmptyGroupsCommand::Create(m_pXMLcore, m_vEmptyGroups,
+                           DBEmptyGroupsCommand::EG_ADD);
+    m_pmulticmds->Add(pcmd);
+  }
+
   StringX sxEntriesWithNewNamedPolicies;
   vdb_entries::iterator entry_iter;
   CItemData ci_temp;

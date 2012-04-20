@@ -53,7 +53,7 @@ bool CCWTreeCtrl::IsLeaf(HTREEITEM hItem) const
   int i, dummy;
   BOOL status = GetItemImage(hItem, i, dummy);
   ASSERT(status);
-  return (i != NODE);
+  return (i != GROUP);
 }
 
 // Returns the number of children of this group
@@ -130,7 +130,7 @@ HTREEITEM CCWTreeCtrl::AddGroup(const CString &group)
 
       if (!ExistsInTree(ti, s, si)) {
         ti = InsertItem(s, ti, TVI_SORT);
-        SetItemImage(ti, CCWTreeCtrl::NODE, CCWTreeCtrl::NODE);
+        SetItemImage(ti, CCWTreeCtrl::GROUP, CCWTreeCtrl::GROUP);
       } else
         ti = si;
     } while (!path.IsEmpty());
