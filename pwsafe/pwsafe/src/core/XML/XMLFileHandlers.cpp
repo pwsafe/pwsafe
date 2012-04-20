@@ -163,7 +163,7 @@ bool XMLFileHandlers::ProcessStartElement(const int icurrent_element)
 
       // Clear all fields
       cur_policy->name = _T("");
-      cur_policy->st_pp.pwp.Empty();
+      cur_policy->st_pp.Empty();
       cur_policy->st_pp.symbols = _T("");
       break;
     case XLE_EMPTYGROUPS:
@@ -429,73 +429,73 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
       int ivalue;
       PWSprefs *prefs = PWSprefs::GetInstance();
       if ((ivalue = prefsinXML[XLE_PWDEFAULTLENGTH - XLE_PREF_START]) != -1)
-        cur_policy->st_pp.pwp.length = ivalue;
+        cur_policy->st_pp.length = ivalue;
       else
-        cur_policy->st_pp.pwp.length =
+        cur_policy->st_pp.length =
                               prefs->GetPrefDefVal(PWSprefs::PWDefaultLength);
 
       if (prefsinXML[XLE_PWUSEDIGITS - XLE_PREF_START]  == 1)
-        cur_policy->st_pp.pwp.flags |= PWPolicy::UseDigits;
+        cur_policy->st_pp.flags |= PWPolicy::UseDigits;
       else
-        cur_policy->st_pp.pwp.flags &= ~PWPolicy::UseDigits;
+        cur_policy->st_pp.flags &= ~PWPolicy::UseDigits;
 
       if (prefsinXML[XLE_PWUSEEASYVISION - XLE_PREF_START]  == 1)
-        cur_policy->st_pp.pwp.flags |= PWPolicy::UseEasyVision;
+        cur_policy->st_pp.flags |= PWPolicy::UseEasyVision;
       else
-        cur_policy->st_pp.pwp.flags &= ~PWPolicy::UseEasyVision;
+        cur_policy->st_pp.flags &= ~PWPolicy::UseEasyVision;
 
       if (prefsinXML[XLE_PWUSEHEXDIGITS - XLE_PREF_START]  == 1)
-        cur_policy->st_pp.pwp.flags |= PWPolicy::UseHexDigits;
+        cur_policy->st_pp.flags |= PWPolicy::UseHexDigits;
       else
-        cur_policy->st_pp.pwp.flags &= ~PWPolicy::UseHexDigits;
+        cur_policy->st_pp.flags &= ~PWPolicy::UseHexDigits;
 
       if (prefsinXML[XLE_PWUSELOWERCASE - XLE_PREF_START]  == 1)
-        cur_policy->st_pp.pwp.flags |= PWPolicy::UseLowercase;
+        cur_policy->st_pp.flags |= PWPolicy::UseLowercase;
       else
-        cur_policy->st_pp.pwp.flags &= ~PWPolicy::UseLowercase;
+        cur_policy->st_pp.flags &= ~PWPolicy::UseLowercase;
 
       if (prefsinXML[XLE_PWUSESYMBOLS - XLE_PREF_START]  == 1)
-        cur_policy->st_pp.pwp.flags |= PWPolicy::UseSymbols;
+        cur_policy->st_pp.flags |= PWPolicy::UseSymbols;
       else
-        cur_policy->st_pp.pwp.flags &= ~PWPolicy::UseSymbols;
+        cur_policy->st_pp.flags &= ~PWPolicy::UseSymbols;
 
       if (prefsinXML[XLE_PWUSEUPPERCASE - XLE_PREF_START]  == 1)
-        cur_policy->st_pp.pwp.flags |= PWPolicy::UseUppercase;
+        cur_policy->st_pp.flags |= PWPolicy::UseUppercase;
       else
-        cur_policy->st_pp.pwp.flags &= ~PWPolicy::UseUppercase;
+        cur_policy->st_pp.flags &= ~PWPolicy::UseUppercase;
 
       if (prefsinXML[XLE_PWMAKEPRONOUNCEABLE - XLE_PREF_START]  == 1)
-        cur_policy->st_pp.pwp.flags |= PWPolicy::MakePronounceable;
+        cur_policy->st_pp.flags |= PWPolicy::MakePronounceable;
       else
-        cur_policy->st_pp.pwp.flags &= ~PWPolicy::MakePronounceable;
+        cur_policy->st_pp.flags &= ~PWPolicy::MakePronounceable;
 
       if ((ivalue = prefsinXML[XLE_PWDIGITMINLENGTH - XLE_PREF_START]) != -1)
-        cur_policy->st_pp.pwp.digitminlength = ivalue;
+        cur_policy->st_pp.digitminlength = ivalue;
       else
-        cur_policy->st_pp.pwp.digitminlength =
+        cur_policy->st_pp.digitminlength =
                               prefs->GetPrefDefVal(PWSprefs::PWDigitMinLength);
 
       if ((ivalue = prefsinXML[XLE_PWLOWERCASEMINLENGTH - XLE_PREF_START]) != -1)
-        cur_policy->st_pp.pwp.lowerminlength = ivalue;
+        cur_policy->st_pp.lowerminlength = ivalue;
       else
-        cur_policy->st_pp.pwp.lowerminlength =
+        cur_policy->st_pp.lowerminlength =
                               prefs->GetPrefDefVal(PWSprefs::PWLowercaseMinLength);
 
       if ((ivalue = prefsinXML[XLE_PWSYMBOLMINLENGTH - XLE_PREF_START]) != -1)
-        cur_policy->st_pp.pwp.symbolminlength = ivalue;
+        cur_policy->st_pp.symbolminlength = ivalue;
       else
-        cur_policy->st_pp.pwp.symbolminlength =
+        cur_policy->st_pp.symbolminlength =
                               prefs->GetPrefDefVal(PWSprefs::PWSymbolMinLength);
 
       if ((ivalue = prefsinXML[XLE_PWUPPERCASEMINLENGTH - XLE_PREF_START]) != -1)
-        cur_policy->st_pp.pwp.upperminlength = ivalue;
+        cur_policy->st_pp.upperminlength = ivalue;
       else
-        cur_policy->st_pp.pwp.upperminlength = 
+        cur_policy->st_pp.upperminlength = 
                               prefs->GetPrefDefVal(PWSprefs::PWUppercaseMinLength);
 
       cur_policy->st_pp.symbols = m_sDefaultSymbols.c_str();
 
-      st_PSWDPolicy currentDB_st_pp;
+      PWPolicy currentDB_st_pp;
       if (m_pXMLcore->GetPolicyFromName(cur_policy->name, currentDB_st_pp)) {
         // It already exists in current database
         if (currentDB_st_pp != cur_policy->st_pp) {
@@ -750,7 +750,7 @@ void XMLFileHandlers::AddXMLEntries()
         sxEntriesWithNewNamedPolicies += sxChanged;
       } else {
         // No we didn't, verify current database has it
-        st_PSWDPolicy currentDB_st_pp;
+        PWPolicy currentDB_st_pp;
         if (!m_pXMLcore->GetPolicyFromName(cur_entry->policyname, currentDB_st_pp)) {
           // Not here - make a note and clear the name
           // As we have no information about it's settings we can't even give

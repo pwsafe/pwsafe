@@ -1243,7 +1243,7 @@ void PWScore::GetPolicyNames(vector<stringT> &vNames) const
   }
 }
 
-bool PWScore::GetPolicyFromName(StringX sxPolicyName, st_PSWDPolicy &st_pp)
+bool PWScore::GetPolicyFromName(StringX sxPolicyName, PWPolicy &st_pp)
 {
   PSWDPolicyMapIter iter = m_MapPSWDPLC.find(sxPolicyName);
   if (iter != m_MapPSWDPLC.end()) {
@@ -3013,7 +3013,7 @@ bool PWScore::DecrementPasswordPolicy(const StringX &sxPolicyName)
   }
 }
 
-void PWScore::AddPolicy(const StringX &sxPolicyName, const st_PSWDPolicy &st_pp,
+void PWScore::AddPolicy(const StringX &sxPolicyName, const PWPolicy &st_pp,
                         const bool bAllowReplace)
 {
   bool bDoIt(false);

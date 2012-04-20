@@ -302,8 +302,7 @@ public:
   bool IsDBReadOnly() const {return m_core.IsReadOnly();}
   void SetStartSilent(bool state);
   void SetStartClosed(bool state) {m_IsStartClosed = state;}
-  void MakeRandomPassword(StringX &password, PWPolicy &pwp, stringT st_symbols,
-                          bool bIssueMsg = false);
+  void MakeRandomPassword(StringX &password, PWPolicy &pwp, bool bIssueMsg = false);
   BOOL LaunchBrowser(const CString &csURL, const StringX &sxAutotype,
                      const std::vector<size_t> &vactionverboffsets,
                      const bool &bDoAutotype);
@@ -371,7 +370,7 @@ public:
   StringX GetCurFile() const {return m_core.GetCurFile();}
 
   bool EditItem(CItemData *pci, PWScore *pcore = NULL);
-  bool GetPolicyFromName(StringX sxPolicyName, st_PSWDPolicy &st_pp)
+  bool GetPolicyFromName(const StringX &sxPolicyName, PWPolicy &st_pp)
   {return m_core.GetPolicyFromName(sxPolicyName, st_pp);}
   void GetPolicyNames(std::vector<std::wstring> &vNames)
   {m_core.GetPolicyNames(vNames);}

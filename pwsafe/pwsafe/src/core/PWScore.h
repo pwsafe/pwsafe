@@ -301,7 +301,7 @@ public:
                          const StringX &user, const int IDS_MESSAGE);
   // Get all password policy names
   void GetPolicyNames(std::vector<stringT> &vNames) const;
-  bool GetPolicyFromName(StringX sxPolicyName, st_PSWDPolicy &st_pp);
+  bool GetPolicyFromName(StringX sxPolicyName, PWPolicy &st_pp);
   void MakePolicyUnique(std::map<StringX, StringX> &mapRenamedPolicies,
                         StringX &sxPolicyName, const StringX &sxMerge_DateTime,
                         const int IDS_MESSAGE);
@@ -447,7 +447,7 @@ public:
   {return m_MapPSWDPLC;}
   void SetPasswordPolicies(const PSWDPolicyMap &MapPSWDPLC)
   {m_MapPSWDPLC = MapPSWDPLC; SetDBChanged(true);}
-  void AddPolicy(const StringX &sxPolicyName, const st_PSWDPolicy &st_pp,
+  void AddPolicy(const StringX &sxPolicyName, const PWPolicy &st_pp,
                  const bool bAllowReplace = false);
 
   // Empty Groups

@@ -663,7 +663,7 @@ int PWSfileV3::WriteHeader()
       oss << setw(2) << hex << iter->first.length();
       oss << iter->first.c_str();
       stringT strpwp;
-      PWPolicy2String(iter->second.pwp, strpwp);
+      PWPolicy2String(iter->second, strpwp);
       oss << strpwp.c_str();
       if (iter->second.symbols.empty()) {
         oss << _T("00");
@@ -1008,10 +1008,10 @@ int PWSfileV3::ReadHeader()
               sxSymbols = text.substr(j, symbollength);
               j += symbollength;  // Skip over symbols
             }
+            pwp.symbols = sxSymbols;
 
-            st_PSWDPolicy st_pp(pwp, sxSymbols, 0);
-            pair< map<StringX, st_PSWDPolicy>::iterator, bool > pr;
-            pr = m_MapPSWDPLC.insert(PSWDPolicyMapPair(sxPolicyName, st_pp));
+            pair< map<StringX, PWPolicy>::iterator, bool > pr;
+            pr = m_MapPSWDPLC.insert(PSWDPolicyMapPair(sxPolicyName, pwp));
             if (pr.second == false) break; // Error
           }
         }

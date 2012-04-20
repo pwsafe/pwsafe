@@ -2242,28 +2242,28 @@ stringT PWScore::GetXMLPWPolicies()
     stringT sTemp = PWSUtil::GetSafeXMLString(iter->first);
     os << "\t\t\t<PWName>" << sTemp << "</PWName>" << endl;
 
-    os << "\t\t\t<PWDefaultLength>" << iter->second.pwp.length <<
+    os << "\t\t\t<PWDefaultLength>" << iter->second.length <<
           "</PWDefaultLength>" << endl;
 
-    if (iter->second.pwp.flags & PWPolicy::UseLowercase)
+    if (iter->second.flags & PWPolicy::UseLowercase)
       os << "\t\t\t<PWUseLowercase>1</PWUseLowercase>" << endl;
 
-    if (iter->second.pwp.flags & PWPolicy::UseUppercase)
+    if (iter->second.flags & PWPolicy::UseUppercase)
       os << "\t\t\t<PWUseUppercase>1</PWUseUppercase>" << endl;
 
-    if (iter->second.pwp.flags & PWPolicy::UseDigits)
+    if (iter->second.flags & PWPolicy::UseDigits)
       os << "\t\t\t<PWUseDigits>1</PWUseDigits>" << endl;
 
-    if (iter->second.pwp.flags & PWPolicy::UseSymbols)
+    if (iter->second.flags & PWPolicy::UseSymbols)
       os << "\t\t\t<PWUseSymbols>1</PWUseSymbols>" << endl;
 
-    if (iter->second.pwp.flags & PWPolicy::UseHexDigits)
+    if (iter->second.flags & PWPolicy::UseHexDigits)
       os << "\t\t\t<PWUseHexDigits>1</PWUseHexDigits>" << endl;
 
-    if (iter->second.pwp.flags & PWPolicy::UseEasyVision)
+    if (iter->second.flags & PWPolicy::UseEasyVision)
       os << "\t\t\t<PWUseEasyVision>1</PWUseEasyVision>" << endl;
 
-    if (iter->second.pwp.flags & PWPolicy::MakePronounceable)
+    if (iter->second.flags & PWPolicy::MakePronounceable)
       os << "\t\t\t<PWMakePronounceable>1</PWMakePronounceable>" << endl;
 
     if (!iter->second.symbols.empty()) {

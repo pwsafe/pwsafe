@@ -63,28 +63,22 @@ const charT CPasswordCharPool::pronounceable_symbol_chars[] = _T("@&(#!|$+");
 
 //-----------------------------------------------------------------------------
 
-CPasswordCharPool::CPasswordCharPool(const uint pwlen,
-                                     const uint numlowercase, const uint numuppercase,
-                                     const uint numdigits, const uint numsymbols,
-                                     const bool usehexdigits, const bool easyvision,
-                                     const bool pronounceable,
-                                     const charT *ct_symbols)
-  : m_pwlen(pwlen),
-  m_numlowercase(numlowercase), m_numuppercase(numuppercase),
-  m_numdigits(numdigits), m_numsymbols(numsymbols),
-  m_uselowercase(numlowercase > 0 ? TRUE : FALSE),
-  m_useuppercase(numuppercase > 0 ? TRUE : FALSE),
-  m_usedigits(numdigits > 0 ? TRUE : FALSE),
-  m_usesymbols(numsymbols > 0 ? TRUE : FALSE),
-  m_usehexdigits(usehexdigits), m_pronounceable(pronounceable),
-  m_bDefaultSymbols(false)
+CPasswordCharPool::CPasswordCharPool(const PWPolicy &policy)
+  : m_pwlen(policy.length),
+    m_numlowercase(policy.lowerminlength), m_numuppercase(policy.upperminlength),
+    m_numdigits(policy.digitminlength), m_numsymbols(policy.symbolminlength),
+    m_uselowercase(m_numlowercase > 0), m_useuppercase(m_numuppercase > 0),
+    m_usedigits(m_numdigits > 0), m_usesymbols(m_numsymbols > 0),
+    m_usehexdigits(policy.flags & PWPolicy::UseHexDigits ? true : false),
+    m_pronounceable(policy.flags & PWPolicy::MakePronounceable ? true : false),
+    m_bDefaultSymbols(false)
 {
   ASSERT(m_pwlen > 0);
   ASSERT(m_uselowercase || m_useuppercase || 
          m_usedigits    || m_usesymbols   || 
          m_usehexdigits || m_pronounceable);
 
-  if (easyvision) {
+  if (policy.flags & PWPolicy::UseEasyVision) {
     m_char_arrays[LOWERCASE] = easyvision_lowercase_chars;
     m_char_arrays[UPPERCASE] = easyvision_uppercase_chars;
     m_char_arrays[DIGIT] = easyvision_digit_chars;
@@ -107,7 +101,7 @@ CPasswordCharPool::CPasswordCharPool(const uint pwlen,
     m_lengths[DIGIT] = m_usedigits ? std_digit_len : 0;
     m_lengths[HEXDIGIT] = m_usehexdigits ? std_hexdigit_len : 0;
 
-    if (ct_symbols == NULL || _tcslen(ct_symbols) == 0) {
+    if (policy.symbols.empty()) {
       StringX sx_symbols = PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultSymbols);
       if (sx_symbols.empty()) {
         m_char_arrays[SYMBOL] = std_symbol_chars;
@@ -118,8 +112,8 @@ CPasswordCharPool::CPasswordCharPool(const uint pwlen,
         m_lengths[SYMBOL] = m_usesymbols ? sx_symbols.length() : 0;
       }
     } else {
-      m_char_arrays[SYMBOL] = ct_symbols;
-      m_lengths[SYMBOL] = m_usesymbols ? _tcslen(ct_symbols) : 0;
+      m_char_arrays[SYMBOL] = _tcsdup(policy.symbols.c_str());
+      m_lengths[SYMBOL] = m_usesymbols ? policy.symbols.length() : 0;
     }
   }
 

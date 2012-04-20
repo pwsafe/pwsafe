@@ -97,9 +97,9 @@ class CommandInterface {
 
   virtual const PSWDPolicyMap &GetPasswordPolicies() = 0;
   virtual void SetPasswordPolicies(const PSWDPolicyMap &MapPSWDPLC) = 0;
-  virtual void AddPolicy(const StringX &sxPolicyName, const st_PSWDPolicy &st_pp,
+  virtual void AddPolicy(const StringX &sxPolicyName, const PWPolicy &st_pp,
                          const bool bAllowReplace = false) = 0;
-  virtual bool GetPolicyFromName(StringX sxPolicyName, st_PSWDPolicy &st_pp) = 0;
+  virtual bool GetPolicyFromName(StringX sxPolicyName, PWPolicy &st_pp) = 0;
 
   virtual void SetEmptyGroups(const std::vector<StringX> &vEmptyGroups) = 0;
   virtual bool AddEmptyGroup(const StringX &sxEmptyGroup) = 0;

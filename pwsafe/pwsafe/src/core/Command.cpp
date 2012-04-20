@@ -269,7 +269,7 @@ DBPolicyNamesCommand::DBPolicyNamesCommand(CommandInterface *pcomInt,
 
 DBPolicyNamesCommand::DBPolicyNamesCommand(CommandInterface *pcomInt,
                                            StringX &sxPolicyName,
-                                           st_PSWDPolicy &st_pp)
+                                           PWPolicy &st_pp)
   : Command(pcomInt), m_sxPolicyName(sxPolicyName), m_st_ppp(st_pp),
   m_bSingleAdd(true)
 {

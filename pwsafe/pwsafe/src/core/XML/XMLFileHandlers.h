@@ -58,7 +58,7 @@ struct pwhistory_entry {
 
 struct pw_policy {
   StringX name;
-  st_PSWDPolicy st_pp;
+  PWPolicy st_pp;
 };
 
 typedef std::vector<pw_entry *> vdb_entries;

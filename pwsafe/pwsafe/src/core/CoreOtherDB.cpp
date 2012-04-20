@@ -573,7 +573,7 @@ stringT PWScore::Merge(PWScore *pothercore,
         StringX osxPolicyName = otherItem.GetPolicyName();
         // If named policy in use....
         if (!osxPolicyName.empty()) {
-          st_PSWDPolicy st_pp, o_st_ppp;
+          PWPolicy st_pp, o_st_ppp;
           bool bInOtherCore = pothercore->GetPolicyFromName(osxPolicyName, o_st_ppp);
           bool bInThisCore = GetPolicyFromName(osxPolicyName, st_pp);
           if (bInThisCore) {
@@ -643,7 +643,7 @@ stringT PWScore::Merge(PWScore *pothercore,
         if (!osxPolicyName.empty() &&
             std::find(vs_PoliciesAdded.begin(), vs_PoliciesAdded.end(), osxPolicyName) ==
                  vs_PoliciesAdded.end()) {
-        st_PSWDPolicy st_pp;
+        PWPolicy st_pp;
         // If this policy does not exist in current database - get it and add it
         if (!GetPolicyFromName(osxPolicyName, st_pp)) {
           // But only if it exists there

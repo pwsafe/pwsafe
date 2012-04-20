@@ -1582,10 +1582,9 @@ void DboxMain::OnClearClipboard()
 // be avoided by putting the password into the clipboard when the entry is saved
 // but that would be annoying when generating a new entry.
 
-void DboxMain::MakeRandomPassword(StringX &password, PWPolicy &pwp, stringT st_symbols,
-                                  bool bIssueMsg)
+void DboxMain::MakeRandomPassword(StringX &password, PWPolicy &pwp, bool bIssueMsg)
 {
-  password = pwp.MakeRandomPassword(st_symbols);
+  password = pwp.MakeRandomPassword();
   SetClipboardData(password);
   UpdateLastClipboardAction(CItemData::PASSWORD);
 
@@ -1828,12 +1827,12 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup)
       // which we now have to add to this core and remove from the entry
 
       // Get the source database PWPolicy & symbols for this name
-      st_PSWDPolicy st_pp;
-      ci_temp.GetPWPolicy(st_pp.pwp);
+      PWPolicy st_pp;
+      ci_temp.GetPWPolicy(st_pp);
       st_pp.symbols = ci_temp.GetSymbols();
 
       // Get the same info if the policy is in the target database
-      st_PSWDPolicy currentDB_st_pp;
+      PWPolicy currentDB_st_pp;
       bool bNPWInCurrentDB = GetPolicyFromName(sxPolicyName, currentDB_st_pp);
       if (bNPWInCurrentDB) {
         // It exists in target database

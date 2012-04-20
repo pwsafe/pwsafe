@@ -13,22 +13,17 @@
 
 #include "os/typedefs.h"
 #include "StringX.h"
+#include "PWPolicy.h"
 
 /*
  * This class is used to create a random password based on the policy
  * defined in the constructor.
- * The policy consists of the following attributes:
- * - The length of the password to be generated
- * - Which type of characters to use from the following: lowercase, uppercase,
- *   digits, symbols
- * - Whether or not to use only characters that are easily distinguishable
- *   (i.e., no '1', 'l', 'I', etc.)
  * The class ensures that if a character type is selected, then at least one
  * character from that type will be in the generated password. (i.e., at least
  * one digit if usedigits is set in the constructor).
  *
  * The usage scenario is something like:
- * CPasswordCharPool pwgen(-policy-);
+ * CPasswordCharPool pwgen(policy);
  * StringX pwd = pwgen.MakePassword();
  *
  * CheckPassword() is used to verify the strength of existing passwords,
@@ -38,12 +33,7 @@
 class CPasswordCharPool
 {
 public:
-  CPasswordCharPool(const uint pwlen,
-                    const uint numlowercase, const uint numuppercase,
-                    const uint numdigits, const uint numsymbols,
-                    const bool usehexdigits,  const bool easyvision,
-                    const bool pronounceable,
-                    const charT *ct_symbols);
+  CPasswordCharPool(const PWPolicy &policy);
   StringX MakePassword() const;
 
   ~CPasswordCharPool();
