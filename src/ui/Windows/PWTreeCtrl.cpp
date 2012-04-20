@@ -296,7 +296,10 @@ BOOL CPWTreeCtrl::PreTranslateMessage(MSG* pMsg)
   // Process user's Rename shortcut
   if (m_pDbx != NULL && m_pDbx->CheckPreTranslateRename(pMsg)) {
     //  Send via main window to ensure it isn't an Edit in place
-    m_pDbx->SendMessage(WM_COMMAND, ID_MENUITEM_RENAME);
+    HTREEITEM hItem = GetSelectedItem();
+    CItemData *pci = (CItemData *)GetItemData(hItem);
+    m_pDbx->SendMessage(WM_COMMAND,
+          pci == NULL ? ID_MENUITEM_RENAMEENTRY : ID_MENUITEM_RENAMEGROUP);
     return TRUE;
   }
 
@@ -660,13 +663,26 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
   these fields cannot be empty.
   */
 
+  PWScore *pcore = (PWScore *)m_pDbx->GetCore();
+
+  MultiCommands *pmulticmds = MultiCommands::Create(pcore);
+
   NMTVDISPINFO *ptvinfo = (NMTVDISPINFO *)pNotifyStruct;
   HTREEITEM ti = ptvinfo->item.hItem;
   if (ptvinfo->item.pszText == NULL ||     // NULL if edit cancelled,
       ptvinfo->item.pszText[0] == L'\0') { // empty if text deleted - not allowed
     // If called from AddGroup, user cancels EditLabel - save it
-    // (Still called "New Group")
+    // (Still called "New Group" or the changed name if that already existed)
     if (m_pDbx->IsInAddGroup()) {
+      // m_eLabel is the old name but need to get the path
+      StringX sxPath = GetGroup(ti);
+
+      pmulticmds->Add(DBEmptyGroupsCommand::Create(pcore, sxPath,
+                             DBEmptyGroupsCommand::EG_ADD));
+
+      // Do it
+      m_pDbx->Execute(pmulticmds);
+
       m_pDbx->ResetInAddGroup();
       *pLResult = TRUE;
     }
@@ -683,7 +699,6 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
   StringX sxOldPath, sxNewPath;                  // For Node
   CString prefix;                                // For Node
   
-  PWScore *pcore = (PWScore *)m_pDbx->GetCore();
   PWSprefs *prefs = PWSprefs::GetInstance();
   bool bShowUsernameInTree = prefs->GetPref(PWSprefs::ShowUsernameInTree);
   bool bShowPasswordInTree = prefs->GetPref(PWSprefs::ShowPasswordInTree);
@@ -769,7 +784,7 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
 
     // Check that pathname with node name doesn't already exist.
     // (We could do fancy merging if so, but for now we'll reject the rename)
-    // Check is simple - just see if there's a sibling NODE name sxNewText
+    // Check is simple - just see if there's a sibling GROUP name sxNewText
 
     HTREEITEM hParent = GetParentItem(ti);
     HTREEITEM hSibling = GetChildItem(hParent);
@@ -817,12 +832,13 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
         sxNewPath = StringX(prefix) + StringX(GROUP_SEP2) + sxNewText;
       }
 
-      m_pDbx->UpdateGroupNamesInMap(sxOldPath, sxNewPath);
+      if (m_pDbx->IsEmptyGroup(sxOldPath))
+        pmulticmds->Add(DBEmptyGroupsCommand::Create(pcore, sxOldPath, sxNewPath));
+      else
+        m_pDbx->UpdateGroupNamesInMap(sxOldPath, sxNewPath);
 
     } // good group name (no GROUP_SEP)
   } // !IsLeaf
-
-  MultiCommands *pmulticmds = MultiCommands::Create(pcore);
 
   if (bIsLeaf) {
     // Update Leaf
@@ -842,8 +858,12 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
       }
     }
   } else {
+    // Group
     if (m_pDbx->IsInAddGroup()) {
-      // Don't do any refesh if just adding a group or it will be lost
+      // Add the group
+      pmulticmds->Add(DBEmptyGroupsCommand::Create(pcore, sxNewPath,
+                      DBEmptyGroupsCommand::EG_ADD));
+
       m_pDbx->ResetInAddGroup();
       *pLResult = TRUE;
     } else {
@@ -909,7 +929,7 @@ bool CPWTreeCtrl::IsLeaf(HTREEITEM hItem) const
   int i, dummy;
   BOOL status = GetItemImage(hItem, i, dummy);
   ASSERT(status);
-  return (i != NODE);
+  return (i != GROUP && i!= EMPTY_GROUP);
 }
 
 // Returns the number of children of this group
@@ -946,8 +966,9 @@ void CPWTreeCtrl::DeleteWithParents(HTREEITEM hItem)
   } while (parent != TVI_ROOT && parent != NULL);
 }
 
-// Return the full path leading up to a given item, but
+// If passed an entry, return the full path leading up to a given item, but
 // not including the name of the item itself.
+// If passed a Group, return full path including this group.
 CString CPWTreeCtrl::GetGroup(HTREEITEM hItem)
 {
   CString retval(L""), nodeText;
@@ -1007,6 +1028,7 @@ HTREEITEM CPWTreeCtrl::AddGroup(const CString &group, bool &bAlreadyExists)
   HTREEITEM ti = TVI_ROOT;
   HTREEITEM si;
   bAlreadyExists = true;
+
   if (!group.IsEmpty()) {
     CSecString path = group;
     CSecString s;
@@ -1020,13 +1042,16 @@ HTREEITEM CPWTreeCtrl::AddGroup(const CString &group, bool &bAlreadyExists)
 
       if (!ExistsInTree(ti, s, si)) {
         ti = InsertItem(s, ti, TVI_SORT);
-        SetItemImage(ti, CPWTreeCtrl::NODE, CPWTreeCtrl::NODE);
+        SetItemImage(ti, CPWTreeCtrl::GROUP, CPWTreeCtrl::GROUP);
         bAlreadyExists = false;
       } else
         ti = si;
       m_pDbx->m_mapGroupToTreeItem[path2root] = ti;
     } while (!path.IsEmpty());
   }
+  if (m_pDbx->IsEmptyGroup(StringX(group)))
+    SetItemImage(ti, CPWTreeCtrl::EMPTY_GROUP, CPWTreeCtrl::EMPTY_GROUP);
+
   return ti;
 }
 

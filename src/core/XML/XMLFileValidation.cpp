@@ -100,6 +100,8 @@ const XMLFileValidation::st_file_elements XMLFileValidation::m_file_elements[XLE
   {_T("Policy"), {XLE_POLICY, 0}},
   {_T("PWName"), {XLE_PWNAME, 0}},
   {_T("PasswordPolicyName"), {0, XLE_ENTRY_PASSWORDPOLICYNAME}},
+  {_T("EmptyGroups"), {XLE_EMPTYGROUPS, 0}},
+  {_T("EGName"), {XLE_EGNAME, 0}},
 };
 
 XMLFileValidation::XMLFileValidation()

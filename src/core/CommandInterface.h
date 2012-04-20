@@ -101,6 +101,12 @@ class CommandInterface {
                          const bool bAllowReplace = false) = 0;
   virtual bool GetPolicyFromName(StringX sxPolicyName, st_PSWDPolicy &st_pp) = 0;
 
+  virtual void SetEmptyGroups(const std::vector<StringX> &vEmptyGroups) = 0;
+  virtual bool AddEmptyGroup(const StringX &sxEmptyGroup) = 0;
+  virtual bool RemoveEmptyGroup(const StringX &sxEmptyGroup) = 0;
+  virtual void RenameEmptyGroup(const StringX &sxOldPath, const StringX &sxNewPath) = 0;
+  virtual const std::vector<StringX> & GetEmptyGroups() = 0;
+  
   virtual ~CommandInterface() {}
 };
 

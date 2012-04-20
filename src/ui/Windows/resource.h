@@ -98,7 +98,7 @@
 #define IDB_ABASE                       231
 #define IDB_ABASE_EXPIRED               232
 #define IDB_ABASE_WARNEXPIRED           233
-#define IDB_NODE                        234
+#define IDB_GROUP                       234
 #define IDB_NORMAL                      235
 #define IDB_NORMAL_EXPIRED              236
 #define IDB_NORMAL_WARNEXPIRED          237
@@ -361,6 +361,7 @@
 #define IDR_POPCOMPAREENTRIES           521
 #define IDD_SHOW_COMPARE                522
 #define IDD_COMPARE_WITH                523
+#define IDB_EMPTY_GROUP                 524
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_CREATE_DB                   1003
@@ -764,7 +765,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        524
+#define _APS_NEXT_RESOURCE_VALUE        525
 #define _APS_NEXT_COMMAND_VALUE         30001
 #define _APS_NEXT_CONTROL_VALUE         1480
 #define _APS_NEXT_SYMED_VALUE           166

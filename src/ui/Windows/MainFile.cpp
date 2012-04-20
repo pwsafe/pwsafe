@@ -2132,7 +2132,7 @@ void DboxMain::OnImportXML()
     cs_temp.Format(IDS_IMPORTFILE, str_text.c_str(), XMLFilename);
     rpt.WriteLine((LPCWSTR)cs_temp);
     rpt.WriteLine();
-    std::vector<StringX> vgroups;
+
     Command *pcmd = NULL;
 
     rc = m_core.ImportXMLFile(ImportedPrefix, std::wstring(XMLFilename),

@@ -1,4 +1,4 @@
-PasswordSafe database format description version 3.28
+PasswordSafe database format description version 3.29
 -----------------------------------------------------
 
 Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
@@ -155,7 +155,8 @@ Reserved                    0x0d        -                            [13]
 Reserved                    0x0e        -                            [13]
 Recently Used Entries       0x0f        Text                         [14]
 Named Password Policies     0x10        Text                         [15]
-End of Entry                0xff        [empty]       Y              [16]
+Empty Groups                0x11        Text                         [16]
+End of Entry                0xff        [empty]       Y              [17]
 
 [1] The version number of the database format. For this version, the value
 is 0x0310 (stored in little-endian format, that is, 0x10, 0x03).
@@ -170,6 +171,7 @@ PasswordSafe V3.22 introduced Format 0x0307
 PasswordSafe V3.25 introduced Format 0x0308
 PasswordSafe V3.26 introduced Format 0x0309
 PasswordSafe V3.28 introduced Format 0x030A
+PasswordSafe V3.29 introduced Format 0x030B
 
 [2] A universally unique identifier is needed in order to synchronize
 databases, e.g., between a handheld pocketPC device and a
@@ -284,9 +286,15 @@ where:
          set.
     SSS...SSS = List of allowed symbols in this policy (maximum 255 bytes)
     
-This field was introduced in format version 0x0311.
+This field was introduced in format version 0x030A.
 
-[16] An explicit end of entry field is useful for supporting new fields
+[16] This fields contains the name of an empty group that cannot be constructed
+from entries within the database. Unlike other header fields, this field can appear
+multiple times.
+
+This field was introduced in format version 0x030B.
+
+[17] An explicit end of entry field is useful for supporting new fields
 without breaking backwards compatability.
 
 3.3 Field types for database Records:

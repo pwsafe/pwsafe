@@ -450,6 +450,12 @@ public:
   void AddPolicy(const StringX &sxPolicyName, const st_PSWDPolicy &st_pp,
                  const bool bAllowReplace = false);
 
+  // Empty Groups
+  void SetEmptyGroups(const std::vector<StringX> &vEmptyGroups)
+  {m_vEmptyGroups = vEmptyGroups; SetDBChanged(true);}
+  const std::vector<StringX> &GetEmptyGroups() {return m_vEmptyGroups;}
+  bool IsEmptyGroup(const StringX &sxEmptyGroup);
+
 private:
   // Database update routines
 
@@ -486,6 +492,10 @@ private:
 
   virtual int DoRenameGroup(const StringX &sxOldPath, const StringX &sxNewPath);
   virtual void UndoRenameGroup(const StringX &sxOldPath, const StringX &sxNewPath);
+
+  virtual bool AddEmptyGroup(const StringX &sxEmptyGroup);
+  virtual bool RemoveEmptyGroup(const StringX &sxEmptyGroup);
+  virtual void RenameEmptyGroup(const StringX &sxOldPath, const StringX &sxNewPath);
 
   // End of Command Interface implementations
 
@@ -563,6 +573,9 @@ private:
   virtual void SetVnodesModified(const std::vector<StringX> &mvm)
   {m_vnodes_modified = mvm;}
   void AddChangedNodes(StringX path);
+
+  // EmptyGroups
+  std::vector<StringX> m_vEmptyGroups;
 
   UnknownFieldList m_UHFL;
   int m_nRecordsWithUnknownFields;

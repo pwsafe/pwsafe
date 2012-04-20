@@ -449,7 +449,7 @@ void PWSfileV3::StretchKey(const unsigned char *salt, unsigned long saltLen,
   }
 }
 
-const short VersionNum = 0x030A;
+const short VersionNum = 0x030B;
 
 // Following specific for PWSfileV3::WriteHeader
 #define SAFE_FWRITE(p, sz, cnt, stream) \
@@ -642,6 +642,7 @@ int PWSfileV3::WriteHeader()
     if (numWritten <= 0) { status = FAILURE; goto end; }
   }
 
+  // Named Policies
   if (!m_MapPSWDPLC.empty()) {
     oStringXStream oss;
     oss.fill(charT('0'));
@@ -674,6 +675,14 @@ int PWSfileV3::WriteHeader()
 
     numWritten = WriteCBC(HDR_PSWDPOLICIES, StringX(oss.str().c_str()));
     if (numWritten <= 0) { status = FAILURE; goto end; }
+  }
+
+  // Empty Groups
+  if (!m_vEmptyGroups.empty()) {
+    for (size_t n = 0; n < m_vEmptyGroups.size(); n++) {
+      numWritten = WriteCBC(HDR_EMPTYGROUP, m_vEmptyGroups[n]);
+      if (numWritten <= 0) { status = FAILURE; goto end; }
+    }
   }
 
   if (!m_UHFL.empty()) {
@@ -1005,6 +1014,16 @@ int PWSfileV3::ReadHeader()
             pr = m_MapPSWDPLC.insert(PSWDPolicyMapPair(sxPolicyName, st_pp));
             if (pr.second == false) break; // Error
           }
+        }
+        break;
+      }
+
+      case HDR_EMPTYGROUP:
+      {
+        if (utf8 != NULL) utf8[utf8Len] = '\0';
+        utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
+        if (utf8status) {
+          m_vEmptyGroups.push_back(text);
         }
         break;
       }

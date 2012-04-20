@@ -79,7 +79,7 @@ BOOL CCompareWithSelectDlg::OnInitDialog()
   // Change all pixels in this 'grey' to transparent
   const COLORREF crTransparent = RGB(192, 192, 192);
 
-  bitmap.LoadBitmap(IDB_NODE);
+  bitmap.LoadBitmap(IDB_GROUP);
   bitmap.GetBitmap(&bm);
 
   m_pImageList = new CImageList();
@@ -90,15 +90,15 @@ BOOL CCompareWithSelectDlg::OnInitDialog()
   ASSERT(status != 0);
 
   // Order of LoadBitmap() calls matches CCWTreeCtrl public enum
-  //bitmap.LoadBitmap(IDB_NODE); - already loaded above to get width
+  //bitmap.LoadBitmap(IDB_GROUP); - already loaded above to get width
   m_pImageList->Add(&bitmap, crTransparent);
   bitmap.DeleteObject();
-  UINT bitmapResIDs[] = {IDB_NODE,
+  UINT bitmapResIDs[] = {IDB_GROUP,
     IDB_NORMAL, IDB_NORMAL_WARNEXPIRED, IDB_NORMAL_EXPIRED,
     IDB_ABASE, IDB_ABASE_WARNEXPIRED, IDB_ABASE_EXPIRED,
     IDB_ALIAS,
     IDB_SBASE, IDB_SBASE_WARNEXPIRED, IDB_SBASE_EXPIRED,
-    IDB_SHORTCUT,
+    IDB_SHORTCUT
   };
 
   for (int i = 1; i < sizeof(bitmapResIDs) / sizeof(bitmapResIDs[0]); i++) {

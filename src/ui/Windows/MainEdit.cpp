@@ -133,6 +133,12 @@ void DboxMain::OnAdd()
 
     // Add the entry
     ci.SetStatus(CItemData::ES_ADDED);
+    StringX sxGroup = ci.GetGroup();
+    if (m_core.IsEmptyGroup(sxGroup)) {
+      // It was an empty group - better delete it
+      pmulticmds->Add(DBEmptyGroupsCommand::Create(&m_core, sxGroup,
+                      DBEmptyGroupsCommand::EG_DELETE));
+    }
 
     Command *pcmd;
     if (add_entry_psh.GetIBasedata() == 0) {
@@ -556,7 +562,12 @@ void DboxMain::OnDuplicateGroup()
     // User is duplicating an empty group - just add it
     HTREEITEM parent = m_ctlItemTree.GetParentItem(ti);
     HTREEITEM ng_ti = m_ctlItemTree.InsertItem(sxNewGroup.c_str(), parent, TVI_SORT);
-    m_ctlItemTree.SetItemImage(ng_ti, CPWTreeCtrl::NODE, CPWTreeCtrl::NODE);
+
+    if (IsEmptyGroup(sxNewGroup))
+      m_ctlItemTree.SetItemImage(ng_ti, CPWTreeCtrl::EMPTY_GROUP, CPWTreeCtrl::EMPTY_GROUP);
+    else
+      m_ctlItemTree.SetItemImage(ng_ti, CPWTreeCtrl::GROUP, CPWTreeCtrl::GROUP);
+
     m_mapGroupToTreeItem[sxNewPath] = ng_ti;
     bRefresh = false;
   }
@@ -821,7 +832,8 @@ void DboxMain::Delete()
 
   if (pci != NULL)
     pcmd = Delete(pci); // single entry
-  else if (m_ctlItemTree.IsWindowVisible()) {
+  else
+  if (m_ctlItemTree.IsWindowVisible()) {
     HTREEITEM ti = m_ctlItemTree.GetSelectedItem();
     // Deleting a Group
     HTREEITEM parent = m_ctlItemTree.GetParentItem(ti);
@@ -880,6 +892,19 @@ Command *DboxMain::Delete(HTREEITEM ti)
 
   // Here if we have a bona fida group
   ASSERT(ti != NULL && !m_ctlItemTree.IsLeaf(ti));
+  
+  // Check if an Empty Group
+  if (m_ctlItemTree.ItemHasChildren(ti) == 0) {
+    // Should be as it has no children!
+    StringX sxPath = m_ctlItemTree.GetGroup(ti);
+
+    // Check we know about it!
+    if (m_core.IsEmptyGroup(sxPath)) {
+      return DBEmptyGroupsCommand::Create(&m_core, sxPath,
+                      DBEmptyGroupsCommand::EG_DELETE);
+    }
+  }
+  
   MultiCommands *pmulti_cmd = MultiCommands::Create(&m_core);
 
   HTREEITEM cti = m_ctlItemTree.GetChildItem(ti);

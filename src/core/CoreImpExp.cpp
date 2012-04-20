@@ -522,7 +522,7 @@ int PWScore::WriteXMLFile(const StringX &filename,
   fwrite(ofs.str().c_str(), 1, ofs.str().length(), xmlfile);
   ofs.str("");
 
-  // write out preferences stored in database
+  // Write out preferences stored in database
   LoadAString(cs_temp, IDSC_XMLEXP_PREFERENCES);
   oss_xml << _T(" <!-- ") << cs_temp << _T(" --> ");
   conv.ToUTF8(oss_xml.str(), utf8, utf8Len);
@@ -536,7 +536,7 @@ int PWScore::WriteXMLFile(const StringX &filename,
 
   stringT pwpolicies = GetXMLPWPolicies();
   if (!pwpolicies.empty()) {
-    // write out password policies stored in database
+    // Write out password policies stored in database
     LoadAString(cs_temp, IDSC_XMLEXP_POLICIES);
     oss_xml << _T(" <!-- ") << cs_temp << _T(" --> ");
     conv.ToUTF8(oss_xml.str(), utf8, utf8Len);
@@ -545,6 +545,19 @@ int PWScore::WriteXMLFile(const StringX &filename,
     oss_xml.str(_T(""));  // Clear buffer for next user
 
     conv.ToUTF8(pwpolicies.c_str(), utf8, utf8Len);
+    ofs.write(reinterpret_cast<const char *>(utf8), utf8Len);
+  }
+
+  if (!m_vEmptyGroups.empty()) {
+    // Write out empty groups stored in database
+    ostringstreamT os;
+    os << "\t<EmptyGroups>" << endl;
+    for (size_t n = 0; n < m_vEmptyGroups.size(); n++) {
+      stringT sTemp = PWSUtil::GetSafeXMLString(m_vEmptyGroups[n]);
+      os << "\t\t<EGName>" << sTemp << "</EGName>" << endl;
+    }
+    os << "\t</EmptyGroups>" << endl << endl;
+    conv.ToUTF8(os.str().c_str(), utf8, utf8Len);
     ofs.write(reinterpret_cast<const char *>(utf8), utf8Len);
   }
 

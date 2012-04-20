@@ -1002,6 +1002,13 @@ void DboxMain::RefreshViews(const int iView)
       InsertItemIntoGUITreeList(ci, -1, false, iView);
     }
 
+    // Need to add any empty groups into the view
+    std::vector<StringX> vEmptyGroups = m_core.GetEmptyGroups();
+    for (size_t n = 0; n < vEmptyGroups.size(); n++) {
+      bool bAlreadyExists;
+      m_ctlItemTree.AddGroup(vEmptyGroups[n].c_str(), bAlreadyExists);
+    }
+
     m_ctlItemTree.SortTree(TVI_ROOT);
     SortListView();
 
@@ -4471,4 +4478,3 @@ bool DboxMain::GetShortCut(const unsigned int &uiMenuItem,
 
   return true;
 }
- 

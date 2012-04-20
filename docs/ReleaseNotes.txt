@@ -10,10 +10,14 @@ releases may be found in the file ChangeLog.txt.
 
 New Features for 3.28.1
 =======================
-[3510481] If the Record Last Modified and Password Modified date/times have not been set (e.g. the
-entry has not been changed since it was created), then the entry creation date/time is displayed.
-If the entry was created before PasswordSafe saved these fields, then all fields may still be blank.
-Note: This is a change to what is displayed and the entries are not updated to populate these fields.
+[3519484] Empty Groups are now stored in the database header and will not be
+deleted from the Tree view whenever the view is refreshed.  These can also be
+exported and imported (via XML only).
+[3510481] If the Record Last Modified and Password Modified date/times have not
+been set (e.g. the entry has not been changed since it was created), then the entry
+creation date/time is displayed. If the entry was created before PasswordSafe saved
+these fields, then all fields may still be blank. Note: This is a change to what
+is displayed and the entries are not updated to populate these fields.
 [] Portuguese (Brazil) installation instructions added, thanks to Andreas.
 
 Changes to Existing Features in 3.28.1
@@ -22,17 +26,17 @@ None
 
 Bugs fixed in 3.28.1
 ====================
-[3518732] Custom special symbol set now handled correctly in Generate
-Password dialog box.
-[3515692] Fixed crash with Generate Password switching to default
-policy with > 1 named policy.
+[3518732] Custom special symbol set now handled correctly in Generate Password
+dialog box.
+[3515692] Fixed crash with Generate Password switching to default policy with > 1
+named policy.
 [3514819] Add Group now works again.
-[3510590] Password History is now correctly repaired if found in error during
-the automatic Validate on database open.
+[3510590] Password History is now correctly repaired if found in error during the
+automatic Validate on database open.
 [3508891] Editing an entry's Notes using an external editor no longer adds blank lines
 and fully supports non-Latin characters.
 [3498625] Test selected password policy now reflects any edits done to the policy.
-[3495473} Notes Word Wrap during edit now works again.
+[3495473] Notes Word Wrap during edit now works again.
 
 New Features for 3.28
 =====================
