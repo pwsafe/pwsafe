@@ -532,7 +532,7 @@ void XMLFileHandlers::AddXMLEntries()
   // Then add any Empty Groups imported that are not already in the database
   if (!m_vEmptyGroups.empty()) {
     Command *pcmd = DBEmptyGroupsCommand::Create(m_pXMLcore, m_vEmptyGroups,
-                           DBEmptyGroupsCommand::EG_ADD);
+                           DBEmptyGroupsCommand::EG_ADDALL);
     m_pmulticmds->Add(pcmd);
   }
 
