@@ -846,11 +846,14 @@ void CAddEdit_Basic::OnGeneratePassword()
 
   StringX passwd;
   if (M_ipolicy() == NAMED_POLICY) {
-    st_PSWDPolicy st_pp;
+    PWPolicy st_pp;
     M_pDbx()->GetPolicyFromName(M_policyname(), st_pp);
-    M_pDbx()->MakeRandomPassword(passwd, st_pp.pwp, st_pp.symbols.c_str());
+    M_pDbx()->MakeRandomPassword(passwd, st_pp);
   } else {
-    M_pDbx()->MakeRandomPassword(passwd, M_pwp(), M_symbols());
+    // XXX temp - to be cleaned up
+    PWPolicy policy(M_pwp());
+    policy.symbols = LPCWSTR(M_symbols());
+    M_pDbx()->MakeRandomPassword(passwd, policy);
   }
 
   if (rc == CChangeAliasPswd::CHANGEBASE) {

@@ -215,9 +215,9 @@ BOOL CAddEdit_PasswordPolicy::OnInitDialog()
 
   if (M_ipolicy() == NAMED_POLICY) {
     if (index != 0) {
-      st_PSWDPolicy st_pp;
+      PWPolicy st_pp;
       M_pDbx()->GetPolicyFromName(StringX((LPCWSTR)M_policyname()), st_pp);
-      M_pwp() = st_pp.pwp;
+      M_pwp() = st_pp;
       M_symbols() = st_pp.symbols;
     } else {
       M_policyname().Empty();
@@ -743,9 +743,9 @@ void CAddEdit_PasswordPolicy::OnSelectNamedPolicy()
     m_cbxPolicyNames.GetLBText(index, cs_text);
     M_policyname() = (LPCWSTR)cs_text;
 
-    st_PSWDPolicy st_pp;
+    PWPolicy st_pp;
     M_pDbx()->GetPolicyFromName(StringX((LPCWSTR)cs_text), st_pp);
-    M_pwp() = st_pp.pwp;
+    M_pwp() = st_pp;
     M_symbols() = st_pp.symbols;
 
     m_cbxPolicyNames.EnableWindow(TRUE);
@@ -979,9 +979,9 @@ void CAddEdit_PasswordPolicy::OnNamesComboChanged()
   }
 
   if (index != 0) {
-    st_PSWDPolicy st_pp;
+    PWPolicy st_pp;
     M_pDbx()->GetPolicyFromName(StringX((LPCWSTR)cs_policyname), st_pp);
-    M_pwp() = st_pp.pwp;
+    M_pwp() = st_pp;
     M_symbols() = st_pp.symbols;
 
     m_cbxPolicyNames.EnableWindow(TRUE);

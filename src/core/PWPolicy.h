@@ -17,8 +17,18 @@
 enum {DEFAULT_POLICY = 0, NAMED_POLICY, SPECIFIC_POLICY};
 enum {DEFAULT_SYMBOLS = 0, OWN_SYMBOLS = 1}; // m_symbols's values
 
-// Struct encapsulating the Password generation policy: length,
-// how many digits, upper/lowercase characters, etc.
+/**
+ * PWPolicy is a struct encapsulating the Password generation policy:
+ * The policy consists of the following attributes:
+ * - The length of the password to be generated
+ * - Which type of characters to use from the following: lowercase, uppercase,
+ *   digits, symbols
+ * - Whether or not to restrict the generated password to hexadecimal (candidate for removal?)
+ * - Whether or not to use only characters that are easily distinguishable
+ *   (i.e., no '1', 'l', 'I', etc.)
+ * - Whether or not to make a password that's pronounceable (and hence easier to memorize)
+ *
+ */
 struct PWPolicy {
   enum {
     UseLowercase        = 0x8000, // Can have a minimum length field
@@ -36,18 +46,22 @@ struct PWPolicy {
   int lowerminlength;
   int symbolminlength;
   int upperminlength;
+  StringX symbols; // policy-specific set of 'symbol' characters
+  size_t usecount; // how many entries use this policy?
 
   PWPolicy() : flags(0), length(0), 
-    digitminlength(0), lowerminlength(0),
-    symbolminlength(0), upperminlength(0) {}
+               digitminlength(0), lowerminlength(0),
+               symbolminlength(0), upperminlength(0),
+               symbols(_T("")), usecount(0) {}
 
   // copy c'tor and assignment operator, standard idioms
   PWPolicy(const PWPolicy &that)
     : flags(that.flags), length(that.length),
-    digitminlength(that.digitminlength),
-    lowerminlength(that.lowerminlength),
-    symbolminlength(that.symbolminlength),
-    upperminlength(that.upperminlength) {}
+      digitminlength(that.digitminlength),
+      lowerminlength(that.lowerminlength),
+      symbolminlength(that.symbolminlength),
+      upperminlength(that.upperminlength),
+      symbols(that.symbols), usecount(that.usecount) {}
 
   PWPolicy &operator=(const PWPolicy &that)
   {
@@ -58,6 +72,8 @@ struct PWPolicy {
       lowerminlength  = that.lowerminlength;
       symbolminlength = that.symbolminlength;
       upperminlength  = that.upperminlength;
+      symbols = that.symbols;
+      // don't care about usecount!
     }
     return *this;
   }
@@ -72,83 +88,30 @@ struct PWPolicy {
     flags = 0; length = 0;
     digitminlength  = lowerminlength = 0;
     symbolminlength = upperminlength = 0;
+    symbols = _T(""); usecount = 0;
   }
 
   // Following calls CPasswordCharPool::MakePassword()
   // with arguments matching 'this' policy, or,
   // preference-defined policy if this->flags == 0
-  StringX MakeRandomPassword(const stringT &st_symbols = _T("")) const;
+  StringX MakeRandomPassword() const;
 
   void SetToDefaults(); // from Prefs
-  void UpdateDefaults(bool bUseCopy = false) const; // to prefs
-};
-
-//-----------------------------------------------------------------
-struct st_PSWDPolicy {
-  PWPolicy pwp;
-  StringX symbols;
-  size_t usecount;
-
-  st_PSWDPolicy()
-  : symbols(_T("")), usecount(0)
-  {
-    pwp.Empty();
-  }
-
-  st_PSWDPolicy(const PWPolicy &in_pwp, const StringX &in_symbols, size_t in_usecount)
-  : pwp(in_pwp), symbols(in_symbols), usecount(in_usecount)
-  {}
-
-  st_PSWDPolicy(const st_PSWDPolicy &that)
-    : pwp(that.pwp), symbols(that.symbols), usecount(that.usecount)
-  {}
-
-  st_PSWDPolicy &operator=(const st_PSWDPolicy &that)
-  {
-    if (this != &that) {
-      pwp = that.pwp;
-      symbols = that.symbols;
-      usecount = that.usecount;
-    }
-    return *this;
-  }
-
-  bool operator==(const st_PSWDPolicy &that) const
-  {
-    if (this != &that) {
-      if (pwp != that.pwp ||
-          symbols != that.symbols)
-        return false;
-    }
-    return true;
-  }
-
-  bool operator!=(const st_PSWDPolicy &that) const
-  {return !(*this == that);}
-
-  void Empty()
-  { 
-    pwp.Empty();
-    symbols = _T("");
-    usecount = 0;
-  }
-
-  void SetToDefaults(); // from prefs
   void UpdateDefaults(bool bUseCopy = false) const; // to prefs
   typedef void (*RowPutter)(int row, const stringT &name, const stringT &value, void *table);
   void Policy2Table(RowPutter rp, void *table);
 };
 
 //-----------------------------------------------------------------
-// Structure for maintaining history of changes for Undo/Redo
+// Structure for maintaining history of policy changes for Undo/Redo
 
 // Change flags
 enum  CPP_FLAGS {CPP_INVALID = 0, CPP_ADD = 1, CPP_DELETE = 2, CPP_MODIFIED = 4};
 
 struct st_PSWDPolicyChange {
   StringX name;
-  st_PSWDPolicy st_pp_save;
-  st_PSWDPolicy st_pp_new;
+  PWPolicy st_pp_save;
+  PWPolicy st_pp_new;
   CPP_FLAGS flags;
 
   st_PSWDPolicyChange()
@@ -159,8 +122,8 @@ struct st_PSWDPolicyChange {
   }
 
   st_PSWDPolicyChange(const StringX &in_name, CPP_FLAGS in_flags,
-          const st_PSWDPolicy &in_st_pp_original,
-          const st_PSWDPolicy &in_st_pp_new)
+          const PWPolicy &in_st_pp_original,
+          const PWPolicy &in_st_pp_new)
   : name(in_name), st_pp_save(in_st_pp_original),
   st_pp_new(in_st_pp_new), flags(in_flags)
   {}

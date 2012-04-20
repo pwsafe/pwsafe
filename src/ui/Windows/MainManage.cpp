@@ -598,7 +598,7 @@ void DboxMain::OnGeneratePassword()
 {
   PSWDPolicyMap MapPSWDPLC = GetPasswordPolicies();
 
-  st_PSWDPolicy st_default_pp;
+  PWPolicy st_default_pp;
   st_default_pp.SetToDefaults();
 
   bool bLongPPs = LongPPs();
@@ -623,7 +623,7 @@ void DboxMain::OnManagePasswordPolicies()
   
   CManagePSWDPolices ManagePSWDPoliciesDlg(this, bLongPPs);
   
-  st_PSWDPolicy st_old_default_pp;
+  PWPolicy st_old_default_pp;
 
   // Let ManagePSWDPoliciesDlg fill out database default policy during construction
   ManagePSWDPoliciesDlg.GetDefaultPasswordPolicies(st_old_default_pp);
@@ -632,7 +632,7 @@ void DboxMain::OnManagePasswordPolicies()
   
   if (rc == IDOK && ManagePSWDPoliciesDlg.IsChanged()) {
     // Get new DB preferences String value
-    st_PSWDPolicy st_new_default_pp;
+    PWPolicy st_new_default_pp;
     PSWDPolicyMap MapPSWDPLC = ManagePSWDPoliciesDlg.GetPasswordPolicies(st_new_default_pp);
     
     // Maybe needed if this causes changes to database

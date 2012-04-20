@@ -105,9 +105,9 @@ typedef std::list<pws_os::CUUID> UUIDList;
 typedef UUIDList::iterator UUIDListIter;
 typedef UUIDList::reverse_iterator UUIDListRIter;
 
-typedef std::map<StringX, st_PSWDPolicy> PSWDPolicyMap;
-typedef std::map<StringX, st_PSWDPolicy>::iterator PSWDPolicyMapIter;
-typedef std::map<StringX, st_PSWDPolicy>::const_iterator PSWDPolicyMapCIter;
-typedef std::pair<StringX, st_PSWDPolicy> PSWDPolicyMapPair;
+typedef std::map<StringX, PWPolicy> PSWDPolicyMap;
+typedef std::map<StringX, PWPolicy>::iterator PSWDPolicyMapIter;
+typedef std::map<StringX, PWPolicy>::const_iterator PSWDPolicyMapCIter;
+typedef std::pair<StringX, PWPolicy> PSWDPolicyMapPair;
 
 #endif /* __COREDEFS_H */

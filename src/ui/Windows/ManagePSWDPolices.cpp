@@ -541,7 +541,7 @@ void CManagePSWDPolices::OnDelete()
 
 void CManagePSWDPolices::OnGeneratePassword()
 {
-  st_PSWDPolicy st_pp;
+  PWPolicy st_pp;
   CString cs_policyname(L"");
 
   if (m_iSelectedItem == 0) { // Use Default Password policy
@@ -557,7 +557,7 @@ void CManagePSWDPolices::OnGeneratePassword()
   }
   
   StringX passwd;
-  m_pDbx->MakeRandomPassword(passwd, st_pp.pwp, st_pp.symbols.c_str(), false);
+  m_pDbx->MakeRandomPassword(passwd, st_pp);
   m_password = passwd.c_str();
   m_ex_password.SetWindowText(m_password);
   m_ex_password.Invalidate();
@@ -828,7 +828,7 @@ void CManagePSWDPolices::UpdateDetails()
     otherwise use the name entry
   */
 
-  st_PSWDPolicy st_pp;
+  PWPolicy st_pp;
 
   if (m_iSelectedItem != 0) {
     CString cs_policyname = m_PolicyNames.GetItemText(m_iSelectedItem, 0);

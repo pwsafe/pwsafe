@@ -60,31 +60,31 @@ const UINT CPasswordPolicyDlg::nonHexLengthSpins[CPasswordPolicyDlg::N_HEX_LENGT
 IMPLEMENT_DYNAMIC(CPasswordPolicyDlg, CPWDialog)
 
 CPasswordPolicyDlg::CPasswordPolicyDlg(UINT uicaller, CWnd *pParent, bool bLongPPs,
-                                       bool bReadOnly, st_PSWDPolicy &st_default_pp)
+                                       bool bReadOnly, PWPolicy &st_default_pp)
   : CPWDialog(bLongPPs ? CPasswordPolicyDlg::IDD : CPasswordPolicyDlg::IDD_SHORT, pParent),
   m_uicaller(uicaller), m_bReadOnly(bReadOnly), m_pDbx(NULL), m_password(L""),
   m_UseNamedPolicy(FALSE), m_st_default_pp(st_default_pp)
 {
   m_PWUseLowercase = m_oldPWUseLowercase =
-    (m_st_default_pp.pwp.flags & PWPolicy::UseLowercase) != 0;
+    (m_st_default_pp.flags & PWPolicy::UseLowercase) != 0;
   m_PWUseUppercase = m_oldPWUseUppercase =
-    (m_st_default_pp.pwp.flags & PWPolicy::UseUppercase) != 0;
+    (m_st_default_pp.flags & PWPolicy::UseUppercase) != 0;
   m_PWUseDigits = m_oldPWUseDigits =
-    (m_st_default_pp.pwp.flags & PWPolicy::UseDigits) != 0;
+    (m_st_default_pp.flags & PWPolicy::UseDigits) != 0;
   m_PWUseSymbols = m_oldPWUseSymbols =
-    (m_st_default_pp.pwp.flags & PWPolicy::UseSymbols) != 0;
+    (m_st_default_pp.flags & PWPolicy::UseSymbols) != 0;
   m_PWUseHexdigits = m_oldPWUseHexdigits =
-    (m_st_default_pp.pwp.flags & PWPolicy::UseHexDigits) != 0;
+    (m_st_default_pp.flags & PWPolicy::UseHexDigits) != 0;
   m_PWEasyVision = m_oldPWEasyVision =
-    (m_st_default_pp.pwp.flags & PWPolicy::UseEasyVision) != 0;
+    (m_st_default_pp.flags & PWPolicy::UseEasyVision) != 0;
   m_PWMakePronounceable = m_oldPWMakePronounceable =
-    (m_st_default_pp.pwp.flags & PWPolicy::MakePronounceable) != 0;
+    (m_st_default_pp.flags & PWPolicy::MakePronounceable) != 0;
 
-  m_PWDefaultLength = m_oldPWDefaultLength = m_st_default_pp.pwp.length;
-  m_PWDigitMinLength = m_oldPWDigitMinLength = m_st_default_pp.pwp.digitminlength;
-  m_PWLowerMinLength = m_oldPWLowerMinLength = m_st_default_pp.pwp.lowerminlength;
-  m_PWSymbolMinLength = m_oldPWSymbolMinLength = m_st_default_pp.pwp.symbolminlength;
-  m_PWUpperMinLength = m_oldPWUpperMinLength = m_st_default_pp.pwp.upperminlength;
+  m_PWDefaultLength = m_oldPWDefaultLength = m_st_default_pp.length;
+  m_PWDigitMinLength = m_oldPWDigitMinLength = m_st_default_pp.digitminlength;
+  m_PWLowerMinLength = m_oldPWLowerMinLength = m_st_default_pp.lowerminlength;
+  m_PWSymbolMinLength = m_oldPWSymbolMinLength = m_st_default_pp.symbolminlength;
+  m_PWUpperMinLength = m_oldPWUpperMinLength = m_st_default_pp.upperminlength;
 
   m_Symbols = m_oldSymbols = m_st_default_pp.symbols.c_str();
   m_UseOwnSymbols = m_oldUseOwnSymbols = m_Symbols.IsEmpty() ? DEFAULT_SYMBOLS : OWN_SYMBOLS;
@@ -476,34 +476,34 @@ void CPasswordPolicyDlg::SetPolicyData(CString &cs_policyname,
     ASSERT(m_iter != m_MapPSWDPLC.end());
 
   // If New, use default values; otherwise use this policy's values
-  st_PSWDPolicy xst_pp = m_policyname.IsEmpty() ? m_st_default_pp : m_iter->second;
+  PWPolicy xst_pp = m_policyname.IsEmpty() ? m_st_default_pp : m_iter->second;
 
   m_PWUseLowercase = m_oldPWUseLowercase =
-    (xst_pp.pwp.flags & PWPolicy::UseLowercase) ==
+    (xst_pp.flags & PWPolicy::UseLowercase) ==
                        PWPolicy::UseLowercase;
   m_PWUseUppercase = m_oldPWUseUppercase =
-    (xst_pp.pwp.flags & PWPolicy::UseUppercase) ==
+    (xst_pp.flags & PWPolicy::UseUppercase) ==
                        PWPolicy::UseUppercase;
   m_PWUseDigits = m_oldPWUseDigits =
-    (xst_pp.pwp.flags & PWPolicy::UseDigits) ==
+    (xst_pp.flags & PWPolicy::UseDigits) ==
                        PWPolicy::UseDigits;
   m_PWUseSymbols = m_oldPWUseSymbols =
-    (xst_pp.pwp.flags & PWPolicy::UseSymbols) ==
+    (xst_pp.flags & PWPolicy::UseSymbols) ==
                        PWPolicy::UseSymbols;
   m_PWUseHexdigits = m_oldPWUseHexdigits =
-    (xst_pp.pwp.flags & PWPolicy::UseHexDigits) ==
+    (xst_pp.flags & PWPolicy::UseHexDigits) ==
                        PWPolicy::UseHexDigits;
   m_PWEasyVision = m_oldPWEasyVision =
-    (xst_pp.pwp.flags & PWPolicy::UseEasyVision) ==
+    (xst_pp.flags & PWPolicy::UseEasyVision) ==
                        PWPolicy::UseEasyVision;
   m_PWMakePronounceable = m_oldPWMakePronounceable =
-    (xst_pp.pwp.flags & PWPolicy::MakePronounceable) ==
+    (xst_pp.flags & PWPolicy::MakePronounceable) ==
                        PWPolicy::MakePronounceable;
-  m_PWDefaultLength = m_oldPWDefaultLength = xst_pp.pwp.length;
-  m_PWDigitMinLength = m_oldPWDigitMinLength = xst_pp.pwp.digitminlength;
-  m_PWLowerMinLength = m_oldPWLowerMinLength = xst_pp.pwp.lowerminlength;
-  m_PWSymbolMinLength = m_oldPWSymbolMinLength = xst_pp.pwp.symbolminlength;
-  m_PWUpperMinLength = m_oldPWUpperMinLength = xst_pp.pwp.upperminlength;
+  m_PWDefaultLength = m_oldPWDefaultLength = xst_pp.length;
+  m_PWDigitMinLength = m_oldPWDigitMinLength = xst_pp.digitminlength;
+  m_PWLowerMinLength = m_oldPWLowerMinLength = xst_pp.lowerminlength;
+  m_PWSymbolMinLength = m_oldPWSymbolMinLength = xst_pp.symbolminlength;
+  m_PWUpperMinLength = m_oldPWUpperMinLength = xst_pp.upperminlength;
 
   CString cs_symbols = xst_pp.symbols.c_str();
   m_Symbols = m_oldSymbols = cs_symbols;
@@ -520,7 +520,7 @@ void CPasswordPolicyDlg::OnNamesComboChanged()
   // We need to update the controls' settings based on the selected
   // Named Password Policy or the Database Default Policy
 
-  st_PSWDPolicy xst_pp;
+  PWPolicy xst_pp;
   const CString defpol(MAKEINTRESOURCE(IDS_DATABASE_DEFAULT));
 
   if (m_policyname == defpol || m_policyname.IsEmpty()) {
@@ -538,19 +538,19 @@ void CPasswordPolicyDlg::OnNamesComboChanged()
   SetSpecificPolicyControls(FALSE);
 
   // Now set values
-  m_PWUseLowercase = (xst_pp.pwp.flags & PWPolicy::UseLowercase) != 0;
-  m_PWUseUppercase = (xst_pp.pwp.flags & PWPolicy::UseUppercase) != 0;
-  m_PWUseDigits = (xst_pp.pwp.flags & PWPolicy::UseDigits) != 0;
-  m_PWUseSymbols = (xst_pp.pwp.flags & PWPolicy::UseSymbols) != 0;
-  m_PWUseHexdigits = (xst_pp.pwp.flags & PWPolicy::UseHexDigits) != 0;
-  m_PWEasyVision = (xst_pp.pwp.flags & PWPolicy::UseEasyVision) != 0;
-  m_PWMakePronounceable = (xst_pp.pwp.flags & PWPolicy::MakePronounceable) != 0;
+  m_PWUseLowercase = (xst_pp.flags & PWPolicy::UseLowercase) != 0;
+  m_PWUseUppercase = (xst_pp.flags & PWPolicy::UseUppercase) != 0;
+  m_PWUseDigits = (xst_pp.flags & PWPolicy::UseDigits) != 0;
+  m_PWUseSymbols = (xst_pp.flags & PWPolicy::UseSymbols) != 0;
+  m_PWUseHexdigits = (xst_pp.flags & PWPolicy::UseHexDigits) != 0;
+  m_PWEasyVision = (xst_pp.flags & PWPolicy::UseEasyVision) != 0;
+  m_PWMakePronounceable = (xst_pp.flags & PWPolicy::MakePronounceable) != 0;
   
-  m_PWDefaultLength = xst_pp.pwp.length;
-  m_PWDigitMinLength = xst_pp.pwp.digitminlength;
-  m_PWLowerMinLength = xst_pp.pwp.lowerminlength;
-  m_PWSymbolMinLength = xst_pp.pwp.symbolminlength;
-  m_PWUpperMinLength = xst_pp.pwp.upperminlength;
+  m_PWDefaultLength = xst_pp.length;
+  m_PWDigitMinLength = xst_pp.digitminlength;
+  m_PWLowerMinLength = xst_pp.lowerminlength;
+  m_PWSymbolMinLength = xst_pp.symbolminlength;
+  m_PWUpperMinLength = xst_pp.upperminlength;
 
   m_Symbols = m_oldSymbols = xst_pp.symbols.c_str();
   m_SymbolsEdit.SetWindowText(m_Symbols);
@@ -897,7 +897,7 @@ void CPasswordPolicyDlg::OnGeneratePassword()
 
   stringT st_symbols;
 
-  st_PSWDPolicy st_pp;
+  PWPolicy st_pp;
 
   if (m_UseNamedPolicy == BST_UNCHECKED) {
     // Use specific policy but validate it first
@@ -905,24 +905,24 @@ void CPasswordPolicyDlg::OnGeneratePassword()
       return;
 
     if (m_PWUseLowercase == TRUE)
-      st_pp.pwp.flags |= PWPolicy::UseLowercase;
+      st_pp.flags |= PWPolicy::UseLowercase;
     if (m_PWUseUppercase == TRUE)
-      st_pp.pwp.flags |= PWPolicy::UseUppercase;
+      st_pp.flags |= PWPolicy::UseUppercase;
     if (m_PWUseDigits == TRUE)
-      st_pp.pwp.flags |= PWPolicy::UseDigits;
+      st_pp.flags |= PWPolicy::UseDigits;
     if (m_PWUseSymbols == TRUE)
-      st_pp.pwp.flags |= PWPolicy::UseSymbols;
+      st_pp.flags |= PWPolicy::UseSymbols;
     if (m_PWUseHexdigits == TRUE)
-      st_pp.pwp.flags |= PWPolicy::UseHexDigits;
+      st_pp.flags |= PWPolicy::UseHexDigits;
     if (m_PWEasyVision == TRUE)
-      st_pp.pwp.flags |= PWPolicy::UseEasyVision;
+      st_pp.flags |= PWPolicy::UseEasyVision;
     if (m_PWMakePronounceable == TRUE)
-      st_pp.pwp.flags |= PWPolicy::MakePronounceable;
-    st_pp.pwp.length = m_PWDefaultLength;
-    st_pp.pwp.digitminlength = m_PWDigitMinLength;
-    st_pp.pwp.lowerminlength = m_PWLowerMinLength;
-    st_pp.pwp.symbolminlength = m_PWSymbolMinLength;
-    st_pp.pwp.upperminlength = m_PWUpperMinLength;
+      st_pp.flags |= PWPolicy::MakePronounceable;
+    st_pp.length = m_PWDefaultLength;
+    st_pp.digitminlength = m_PWDigitMinLength;
+    st_pp.lowerminlength = m_PWLowerMinLength;
+    st_pp.symbolminlength = m_PWSymbolMinLength;
+    st_pp.upperminlength = m_PWUpperMinLength;
 
     if (m_UseOwnSymbols == OWN_SYMBOLS) {
       m_SymbolsEdit.GetWindowText(m_Symbols);
@@ -943,7 +943,7 @@ void CPasswordPolicyDlg::OnGeneratePassword()
   }
 
   StringX passwd;
-  m_pDbx->MakeRandomPassword(passwd, st_pp.pwp, st_pp.symbols.c_str(), false);
+  m_pDbx->MakeRandomPassword(passwd, st_pp);
   m_password = passwd.c_str();
   m_ex_password.SetWindowText(m_password);
   m_ex_password.Invalidate();
@@ -1081,31 +1081,31 @@ bool CPasswordPolicyDlg::UpdatePasswordPolicy()
   // Get new symbols (if any)
   m_SymbolsEdit.GetWindowText(m_Symbols);
 
-  st_PSWDPolicy st_pp;
-  st_pp.pwp.flags = 0;
+  PWPolicy st_pp;
+  st_pp.flags = 0;
   if (m_PWUseLowercase == TRUE)
-    st_pp.pwp.flags |= PWPolicy::UseLowercase;
+    st_pp.flags |= PWPolicy::UseLowercase;
   if (m_PWUseUppercase == TRUE)
-    st_pp.pwp.flags |= PWPolicy::UseUppercase;
+    st_pp.flags |= PWPolicy::UseUppercase;
   if (m_PWUseDigits == TRUE)
-    st_pp.pwp.flags |= PWPolicy::UseDigits;
+    st_pp.flags |= PWPolicy::UseDigits;
   if (m_PWUseSymbols == TRUE)
-    st_pp.pwp.flags |= PWPolicy::UseSymbols;
+    st_pp.flags |= PWPolicy::UseSymbols;
   if (m_PWUseHexdigits == TRUE)
-    st_pp.pwp.flags |= PWPolicy::UseHexDigits;
+    st_pp.flags |= PWPolicy::UseHexDigits;
   if (m_PWEasyVision == TRUE)
-    st_pp.pwp.flags |= PWPolicy::UseEasyVision;
+    st_pp.flags |= PWPolicy::UseEasyVision;
   if (m_PWMakePronounceable == TRUE)
-    st_pp.pwp.flags |= PWPolicy::MakePronounceable;
+    st_pp.flags |= PWPolicy::MakePronounceable;
 
-  st_pp.pwp.length = m_PWDefaultLength;
-  st_pp.pwp.digitminlength = m_PWDigitMinLength;
-  st_pp.pwp.lowerminlength = m_PWLowerMinLength;
-  st_pp.pwp.symbolminlength = m_PWSymbolMinLength;
-  st_pp.pwp.upperminlength = m_PWUpperMinLength;
+  st_pp.length = m_PWDefaultLength;
+  st_pp.digitminlength = m_PWDigitMinLength;
+  st_pp.lowerminlength = m_PWLowerMinLength;
+  st_pp.symbolminlength = m_PWSymbolMinLength;
+  st_pp.upperminlength = m_PWUpperMinLength;
 
-  st_pp.symbols = (m_PWUseSymbols == TRUE && m_UseOwnSymbols == OWN_SYMBOLS) ?
-                         m_Symbols : L"";
+  st_pp.symbols = (m_PWUseSymbols == TRUE && m_UseOwnSymbols == OWN_SYMBOLS) ? 
+    m_Symbols : L"";
 
   if (m_uicaller == IDS_OPTIONS) {
     // Update database default

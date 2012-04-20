@@ -26,7 +26,8 @@ bool PWPolicy::operator==(const PWPolicy &that) const
         ((flags & PWPolicy::UseSymbols) == PWPolicy::UseSymbols &&
                     symbolminlength != that.symbolminlength) ||
         ((flags & PWPolicy::UseUppercase) == PWPolicy::UseUppercase &&
-                    upperminlength != that.upperminlength))
+                    upperminlength != that.upperminlength) ||
+        symbols != that.symbols)
       return false;
   }
   return true;
@@ -35,7 +36,7 @@ bool PWPolicy::operator==(const PWPolicy &that) const
 // Following calls CPasswordCharPool::MakePassword()
 // with arguments matching 'this' policy, or,
 // preference-defined policy if this->flags == 0
-StringX PWPolicy::MakeRandomPassword(const stringT &st_symbols) const
+StringX PWPolicy::MakeRandomPassword() const
 {
   bool pwuselowercase, pwuseuppercase;
   bool pwusedigits, pwusesymbols, pweasyvision, pwusehexdigits;
@@ -94,10 +95,7 @@ StringX PWPolicy::MakeRandomPassword(const stringT &st_symbols) const
       !pwusehexdigits)
     return _T("");
  
-  CPasswordCharPool pwchars(pwdefaultlength,
-                            numlowercase, numuppercase, numdigits, numsymbols,
-                            pwusehexdigits, pweasyvision, pwmakepronounceable,
-                            st_symbols.c_str());
+  CPasswordCharPool pwchars(*this);
 
   return pwchars.MakePassword();
 }
@@ -125,6 +123,7 @@ void PWPolicy::SetToDefaults()
   lowerminlength = prefs->GetPref(PWSprefs::PWLowercaseMinLength);
   symbolminlength = prefs->GetPref(PWSprefs::PWSymbolMinLength);
   upperminlength = prefs->GetPref(PWSprefs::PWUppercaseMinLength);
+  symbols = PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultSymbols);
 }
 
 void PWPolicy::UpdateDefaults(bool bUseCopy) const
@@ -151,21 +150,10 @@ void PWPolicy::UpdateDefaults(bool bUseCopy) const
   prefs->SetPref(PWSprefs::PWLowercaseMinLength, lowerminlength, bUseCopy);
   prefs->SetPref(PWSprefs::PWSymbolMinLength, symbolminlength, bUseCopy);
   prefs->SetPref(PWSprefs::PWUppercaseMinLength, upperminlength, bUseCopy);
-}
-
-
-void st_PSWDPolicy::SetToDefaults()
-{
-  pwp.SetToDefaults();
-  symbols = PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultSymbols);
-}
-
-void st_PSWDPolicy::UpdateDefaults(bool bUseCopy) const
-{
-  pwp.UpdateDefaults(bUseCopy);
   PWSprefs::GetInstance()->SetPref(PWSprefs::DefaultSymbols,
                                    symbols, bUseCopy);
 }
+
 
 static stringT PolValueString(int flag, bool override, int count)
 {
@@ -186,7 +174,7 @@ static stringT PolValueString(int flag, bool override, int count)
   return retval;
 }
 
-void st_PSWDPolicy::Policy2Table(st_PSWDPolicy::RowPutter rp, void *table)
+void PWPolicy::Policy2Table(PWPolicy::RowPutter rp, void *table)
 {
   stringT yes, no;
   LoadAString(yes, IDSC_YES); LoadAString(no, IDSC_NO);
@@ -196,8 +184,8 @@ void st_PSWDPolicy::Policy2Table(st_PSWDPolicy::RowPutter rp, void *table)
   CPasswordCharPool::GetEasyVisionSymbols(easyvision_symbols);
   CPasswordCharPool::GetPronounceableSymbols(pronounceable_symbols);
 
-  const bool bEV = (pwp.flags & PWPolicy::UseEasyVision) != 0;
-  const bool bPR = (pwp.flags & PWPolicy::MakePronounceable) != 0;
+  const bool bEV = (flags & PWPolicy::UseEasyVision) != 0;
+  const bool bPR = (flags & PWPolicy::MakePronounceable) != 0;
 
   int nPos = 0;
 
@@ -205,27 +193,27 @@ void st_PSWDPolicy::Policy2Table(st_PSWDPolicy::RowPutter rp, void *table)
   stringT col1, col2;
 
   LoadAString(col1, IDSC_PLENGTH);
-  Format(col2, L"%d", pwp.length);
+  Format(col2, L"%d", length);
   rp(nPos, col1, col2, table);
   nPos++;
 
   LoadAString(col1, IDSC_PUSELOWER);
-  col2 = PolValueString((pwp.flags & PWPolicy::UseLowercase), bEV || bPR, pwp.lowerminlength);
+  col2 = PolValueString((flags & PWPolicy::UseLowercase), bEV || bPR, lowerminlength);
   rp(nPos, col1, col2, table);
   nPos++;
 
   LoadAString(col1, IDSC_PUSEUPPER);
-  col2 = PolValueString((pwp.flags & PWPolicy::UseUppercase), bEV || bPR, pwp.upperminlength);
+  col2 = PolValueString((flags & PWPolicy::UseUppercase), bEV || bPR, upperminlength);
   rp(nPos, col1, col2, table);
   nPos++;
 
   LoadAString(col1, IDSC_PUSEDIGITS);
-  col2 = PolValueString((pwp.flags & PWPolicy::UseDigits), bEV || bPR, pwp.digitminlength);
+  col2 = PolValueString((flags & PWPolicy::UseDigits), bEV || bPR, digitminlength);
   rp(nPos, col1, col2, table);
   nPos++;
 
   LoadAString(col1, IDSC_PUSESYMBOL);
-  if ((pwp.flags & PWPolicy::UseSymbols) != 0) {
+  if ((flags & PWPolicy::UseSymbols) != 0) {
     if (bEV || bPR) {
       Format(col2, bEV ? IDSC_YESEASYVISON : IDSC_YESPRONOUNCEABLE,
              bEV ? easyvision_symbols.c_str() : pronounceable_symbols.c_str());
@@ -233,7 +221,7 @@ void st_PSWDPolicy::Policy2Table(st_PSWDPolicy::RowPutter rp, void *table)
       stringT tmp, sym;
       LoadAString(tmp, symbols.empty() ? IDSC_DEFAULTSYMBOLS : IDSC_SPECFICSYMBOLS);
       sym = symbols.empty() ? std_symbols.c_str() : symbols.c_str();
-      Format(col2, IDSC_YESSYMBOLS, pwp.symbolminlength, tmp.c_str(), sym.c_str());
+      Format(col2, IDSC_YESSYMBOLS, symbolminlength, tmp.c_str(), sym.c_str());
     }
   } else {
     col2 = no;
@@ -250,7 +238,7 @@ void st_PSWDPolicy::Policy2Table(st_PSWDPolicy::RowPutter rp, void *table)
   nPos++;
 
   LoadAString(col1, IDSC_PHEXADECIMAL);
-  rp(nPos, col1, (pwp.flags & PWPolicy::UseHexDigits) != 0 ? yes : no, table);
+  rp(nPos, col1, (flags & PWPolicy::UseHexDigits) != 0 ? yes : no, table);
   nPos++;
 }
 

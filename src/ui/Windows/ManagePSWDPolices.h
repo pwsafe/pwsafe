@@ -30,9 +30,9 @@ public:
   // Dialog Data
   enum { IDD = IDD_MANAGEPASSWORDPOLICIES };
   
-  PSWDPolicyMap &GetPasswordPolicies(st_PSWDPolicy &st_default_pp)
+  PSWDPolicyMap &GetPasswordPolicies(PWPolicy &st_default_pp)
   {st_default_pp = m_st_default_pp; return m_MapPSWDPLC;}
-  void GetDefaultPasswordPolicies(st_PSWDPolicy &st_default_pp)
+  void GetDefaultPasswordPolicies(PWPolicy &st_default_pp)
   {st_default_pp = m_st_default_pp;}
 
   bool IsChanged() {return m_bChanged;}
@@ -86,7 +86,7 @@ private:
   CToolTipCtrl *m_pToolTipCtrl;
 
   PSWDPolicyMap m_MapPSWDPLC;
-  st_PSWDPolicy m_st_default_pp;
+  PWPolicy m_st_default_pp;
 
   GTUSet m_setGTU;
 
