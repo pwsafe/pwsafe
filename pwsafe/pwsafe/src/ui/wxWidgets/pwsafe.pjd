@@ -30214,6 +30214,7 @@ to the base entry "</string>
           <string name="variable-11">"m_pwUseSymbols|bool|PwUseSymbols||2|0|"</string>
           <string name="variable-12">"m_pwUseUppercase|bool|PwUseUppercase||2|0|"</string>
           <string name="variable-13">"m_pwdefaultlength|int|Pwdefaultlength||2|0|"</string>
+          <string name="variable-14">"m_UseOwnSymbols|int|UseOwnSymbols||2|0|"</string>
           <string name="proxy-Id name">"ID_CPASSWORDPOLICY"</string>
           <long name="proxy-Id value">10221</long>
           <string name="proxy-Class">"CPasswordPolicy"</string>
@@ -31895,7 +31896,7 @@ to the base entry "</string>
                   <long name="title-mode">0</long>
                   <long name="locked">0</long>
                   <string name="proxy-type">"wbRadioButtonProxy"</string>
-                  <string name="event-handler-0">"wxEVT_COMMAND_RADIOBUTTON_SELECTED|OnSymbolsRB|NONE||AddEditPropSheet"</string>
+                  <string name="event-handler-0">"wxEVT_COMMAND_RADIOBUTTON_SELECTED|OnSymbolsRB|NONE||CPasswordPolicy"</string>
                   <string name="proxy-Id name">"IDC_USE_DEFAULTSYMBOLS"</string>
                   <long name="proxy-Id value">10210</long>
                   <string name="proxy-Name">""</string>
@@ -32027,7 +32028,7 @@ to the base entry "</string>
                   <long name="title-mode">0</long>
                   <long name="locked">0</long>
                   <string name="proxy-type">"wbRadioButtonProxy"</string>
-                  <string name="event-handler-0">"wxEVT_COMMAND_RADIOBUTTON_SELECTED|OnSymbolsRB|NONE||AddEditPropSheet"</string>
+                  <string name="event-handler-0">"wxEVT_COMMAND_RADIOBUTTON_SELECTED|OnSymbolsRB|NONE||CPasswordPolicy"</string>
                   <string name="proxy-Id name">"IDC_USE_OWNSYMBOLS"</string>
                   <long name="proxy-Id value">10211</long>
                   <string name="proxy-Name">""</string>

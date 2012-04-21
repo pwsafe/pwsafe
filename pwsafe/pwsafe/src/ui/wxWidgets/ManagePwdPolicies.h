@@ -154,10 +154,10 @@ public:
  private:
   void UpdateNames();
   void UpdateDetails();
-  void UpdatePolicy(const wxString &polname, const st_PSWDPolicy &pol, CPP_FLAGS mode); // called after New/Edit
+  void UpdatePolicy(const wxString &polname, const PWPolicy &pol, CPP_FLAGS mode); // called after New/Edit
   void ShowPolicyDetails();
   void ShowPolicyEntries();
-  st_PSWDPolicy GetSelectedPolicy() const;
+  PWPolicy GetSelectedPolicy() const;
   int GetSelectedRow() const;
 
   PWScore &m_core;
@@ -168,7 +168,7 @@ public:
   int m_iundo_pos;
 
   PSWDPolicyMap m_MapPSWDPLC;
-  st_PSWDPolicy m_st_default_pp;
+  PWPolicy m_st_default_pp;
   int m_curPolRow;
 
   int m_iSortNamesIndex, m_iSortEntriesIndex;

@@ -413,7 +413,7 @@ void CManagePasswordPolicies::UpdateNames()
 static void wxRowPutter(int row, const stringT &name, const stringT &value,
                              void *table)
 {
-  // Callback function used by st_PSWDPolicy::Policy2Table
+  // Callback function used by PWPolicy::Policy2Table
   wxGrid *tableControl = (wxGrid *)table;
   tableControl->InsertRows(row);
   tableControl->SetCellValue(row, 0, name.c_str());
@@ -431,7 +431,7 @@ int CManagePasswordPolicies::GetSelectedRow() const
   }
 }
 
-st_PSWDPolicy CManagePasswordPolicies::GetSelectedPolicy() const
+PWPolicy CManagePasswordPolicies::GetSelectedPolicy() const
 {
   /*
     If first row or no row selected, then fill in with the database default,
@@ -458,13 +458,13 @@ void CManagePasswordPolicies::UpdateDetails()
   if (GetSelectedRow() == -1)
     return;
 
-  st_PSWDPolicy st_pp = GetSelectedPolicy();
+  PWPolicy st_pp = GetSelectedPolicy();
 
   m_PolicyDetails->ClearGrid();
   st_pp.Policy2Table(wxRowPutter, m_PolicyDetails);
 }
 
-void CManagePasswordPolicies::UpdatePolicy(const wxString &polname, const st_PSWDPolicy &pol,
+void CManagePasswordPolicies::UpdatePolicy(const wxString &polname, const PWPolicy &pol,
                                            CPP_FLAGS mode)
 {
   if (polname == _("Default Policy"))
@@ -473,7 +473,7 @@ void CManagePasswordPolicies::UpdatePolicy(const wxString &polname, const st_PSW
     m_MapPSWDPLC[polname.c_str()] = pol;
 #ifdef NOTYET
     // Save changes for Undo/Redo
-    st_PSWDPolicyChange st_change;
+    PWPolicyChange st_change;
     st_change.flags = mode;
     st_change.name = policyname;
     st_change.st_pp_save = m_iSelectedItem != 0 ? m_mapIter->second : m_st_default_pp;
@@ -531,7 +531,7 @@ void CManagePasswordPolicies::UpdatePolicy(const wxString &polname, const st_PSW
 void CManagePasswordPolicies::OnNewClick( wxCommandEvent& )
 {
   CPasswordPolicy ppdlg(this, m_core, m_MapPSWDPLC);
-  st_PSWDPolicy st_pp = m_st_default_pp;
+  PWPolicy st_pp = m_st_default_pp;
   ppdlg.SetPolicyData(wxT(""), st_pp);
   if (ppdlg.ShowModal() == wxID_OK) {
     wxString policyname;
@@ -552,7 +552,7 @@ void CManagePasswordPolicies::OnEditPpClick( wxCommandEvent& )
   if (row < 0)
     return;
   wxString policyname = m_PolicyNames->GetCellValue(row, 0);
-  st_PSWDPolicy st_pp;
+  PWPolicy st_pp;
 
   if (row == 0) { // 1st row is default
     st_pp = m_st_default_pp;
@@ -639,7 +639,7 @@ void CManagePasswordPolicies::OnOkClick( wxCommandEvent& )
    * If anything has changed, we trat the change as atomic, creating a multicommand
    * s.t. Undo/Redo will work as expected.
    */
-  st_PSWDPolicy olddefpol;
+  PWPolicy olddefpol;
   olddefpol.SetToDefaults();
   bool defChanged = (olddefpol != m_st_default_pp);
   bool namedChanged = (m_MapPSWDPLC != m_core.GetPasswordPolicies());
@@ -662,7 +662,7 @@ void CManagePasswordPolicies::OnOkClick( wxCommandEvent& )
 
     if (namedChanged) {
       pmulticmds->Add(DBPolicyNamesCommand::Create(&m_core, m_MapPSWDPLC,
-                                                   DBPolicyNamesCommand::REPLACEALL));
+                                                   DBPolicyNamesCommand::NP_REPLACEALL));
     }
     m_core.Execute(pmulticmds);
   } // defChanged || namedChanged
@@ -702,9 +702,9 @@ void CManagePasswordPolicies::OnHelpClick( wxCommandEvent& event )
 
 void CManagePasswordPolicies::OnGeneratePasswordClick( wxCommandEvent& event )
 {
-  st_PSWDPolicy st_pp = GetSelectedPolicy();
+  PWPolicy st_pp = GetSelectedPolicy();
   
-  StringX passwd = st_pp.pwp.MakeRandomPassword(st_pp.symbols.c_str());
+  StringX passwd = st_pp.MakeRandomPassword();
   m_passwordCtrl->SetValue(passwd.c_str());
 }
 
