@@ -46,6 +46,10 @@ BEGIN_EVENT_TABLE( CPasswordPolicy, wxDialog )
 
   EVT_CHECKBOX( ID_CHECKBOX6, CPasswordPolicy::OnPwPolUseSymbols )
 
+  EVT_RADIOBUTTON( IDC_USE_DEFAULTSYMBOLS, CPasswordPolicy::OnSymbolsRB )
+
+  EVT_RADIOBUTTON( IDC_USE_OWNSYMBOLS, CPasswordPolicy::OnSymbolsRB )
+
   EVT_BUTTON( wxID_OK, CPasswordPolicy::OnOkClick )
 
   EVT_BUTTON( wxID_CANCEL, CPasswordPolicy::OnCancelClick )
@@ -410,31 +414,29 @@ bool CPasswordPolicy::UpdatePolicy()
 {
   if (Validate() && TransferDataFromWindow() && Verify()) {
 
-    m_st_pp.pwp.flags = 0;
+    m_st_pp.flags = 0;
     if (m_pwUseLowercase == TRUE)
-      m_st_pp.pwp.flags |= PWPolicy::UseLowercase;
+      m_st_pp.flags |= PWPolicy::UseLowercase;
     if (m_pwUseUppercase == TRUE)
-      m_st_pp.pwp.flags |= PWPolicy::UseUppercase;
+      m_st_pp.flags |= PWPolicy::UseUppercase;
     if (m_pwUseDigits == TRUE)
-      m_st_pp.pwp.flags |= PWPolicy::UseDigits;
+      m_st_pp.flags |= PWPolicy::UseDigits;
     if (m_pwUseSymbols == TRUE)
-      m_st_pp.pwp.flags |= PWPolicy::UseSymbols;
+      m_st_pp.flags |= PWPolicy::UseSymbols;
     if (m_pwUseHex == TRUE)
-      m_st_pp.pwp.flags |= PWPolicy::UseHexDigits;
+      m_st_pp.flags |= PWPolicy::UseHexDigits;
     if (m_pwUseEasyVision == TRUE)
-      m_st_pp.pwp.flags |= PWPolicy::UseEasyVision;
+      m_st_pp.flags |= PWPolicy::UseEasyVision;
     if (m_pwMakePronounceable == TRUE)
-      m_st_pp.pwp.flags |= PWPolicy::MakePronounceable;
+      m_st_pp.flags |= PWPolicy::MakePronounceable;
 
-    m_st_pp.pwp.length = m_pwdefaultlength;
-    m_st_pp.pwp.digitminlength = m_pwDigitMinLength;
-    m_st_pp.pwp.lowerminlength = m_pwLowerMinLength;
-    m_st_pp.pwp.symbolminlength = m_pwSymbolMinLength;
-    m_st_pp.pwp.upperminlength = m_pwUpperMinLength;
-#ifdef NOTYET
-    m_st_pp.symbols = (m_pwUseSymbols == TRUE && m_UseOwnSymbols == OWN_SYMBOLS) ?
+    m_st_pp.length = m_pwdefaultlength;
+    m_st_pp.digitminlength = m_pwDigitMinLength;
+    m_st_pp.lowerminlength = m_pwLowerMinLength;
+    m_st_pp.symbolminlength = m_pwSymbolMinLength;
+    m_st_pp.upperminlength = m_pwUpperMinLength;
+    m_st_pp.symbols = (m_pwUseSymbols && m_UseOwnSymbols == OWN_SYMBOLS) ?
       m_Symbols : L"";
-#endif
     return true;
   }
   return false;
@@ -480,42 +482,40 @@ void CPasswordPolicy::OnHelpClick( wxCommandEvent& event )
 ////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_HELP in CPasswordPolicy. 
 }
 
-void CPasswordPolicy::SetPolicyData(const wxString &polname, const st_PSWDPolicy &pol)
+void CPasswordPolicy::SetPolicyData(const wxString &polname, const PWPolicy &pol)
 {
   m_polname = m_oldpolname = polname;
 
   m_pwUseLowercase = m_oldpwUseLowercase =
-    (pol.pwp.flags & PWPolicy::UseLowercase) ==
+    (pol.flags & PWPolicy::UseLowercase) ==
                        PWPolicy::UseLowercase;
   m_pwUseUppercase = m_oldpwUseUppercase =
-    (pol.pwp.flags & PWPolicy::UseUppercase) ==
+    (pol.flags & PWPolicy::UseUppercase) ==
                        PWPolicy::UseUppercase;
   m_pwUseDigits = m_oldpwUseDigits =
-    (pol.pwp.flags & PWPolicy::UseDigits) ==
+    (pol.flags & PWPolicy::UseDigits) ==
                        PWPolicy::UseDigits;
   m_pwUseSymbols = m_oldpwUseSymbols =
-    (pol.pwp.flags & PWPolicy::UseSymbols) ==
+    (pol.flags & PWPolicy::UseSymbols) ==
                        PWPolicy::UseSymbols;
   m_pwUseHex = m_oldpwUseHex =
-    (pol.pwp.flags & PWPolicy::UseHexDigits) ==
+    (pol.flags & PWPolicy::UseHexDigits) ==
                        PWPolicy::UseHexDigits;
   m_pwUseEasyVision = m_oldpwUseEasyVision =
-    (pol.pwp.flags & PWPolicy::UseEasyVision) ==
+    (pol.flags & PWPolicy::UseEasyVision) ==
                        PWPolicy::UseEasyVision;
   m_pwMakePronounceable = m_oldpwMakePronounceable =
-    (pol.pwp.flags & PWPolicy::MakePronounceable) ==
+    (pol.flags & PWPolicy::MakePronounceable) ==
                        PWPolicy::MakePronounceable;
-  m_pwdefaultlength = m_oldpwdefaultlength = pol.pwp.length;
-  m_pwDigitMinLength = m_oldpwDigitMinLength = pol.pwp.digitminlength;
-  m_pwLowerMinLength = m_oldpwLowerMinLength = pol.pwp.lowerminlength;
-  m_pwSymbolMinLength = m_oldpwSymbolMinLength = pol.pwp.symbolminlength;
-  m_pwUpperMinLength = m_oldpwUpperMinLength = pol.pwp.upperminlength;
+  m_pwdefaultlength = m_oldpwdefaultlength = pol.length;
+  m_pwDigitMinLength = m_oldpwDigitMinLength = pol.digitminlength;
+  m_pwLowerMinLength = m_oldpwLowerMinLength = pol.lowerminlength;
+  m_pwSymbolMinLength = m_oldpwSymbolMinLength = pol.symbolminlength;
+  m_pwUpperMinLength = m_oldpwUpperMinLength = pol.upperminlength;
 
   wxString symbols = pol.symbols.c_str();
   m_Symbols = m_oldSymbols = symbols;
-#ifdef NOTYET
-  m_UseOwnSymbols = m_oldUseOwnSymbols = cs_symbols.IsEmpty() ? DEFAULT_SYMBOLS : OWN_SYMBOLS;
-#endif
+  m_UseOwnSymbols = m_oldUseOwnSymbols = symbols.IsEmpty() ? DEFAULT_SYMBOLS : OWN_SYMBOLS;
 }
 
 void CPasswordPolicy::CBox2Spin(wxCheckBox *cb, wxSpinCtrl *sp)
@@ -570,5 +570,16 @@ void CPasswordPolicy::OnPwPolUseSymbols( wxCommandEvent& )
   FindWindow(IDC_USE_OWNSYMBOLS)->Enable(checked);
   FindWindow(IDC_STATIC_DEFAULT_SYMBOLS)->Enable(checked);
   FindWindow(IDC_OWNSYMBOLS)->Enable(checked);
+}
+
+
+/*!
+ * wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for IDC_USE_DEFAULTSYMBOLS
+ */
+
+void CPasswordPolicy::OnSymbolsRB( wxCommandEvent& evt )
+{
+  m_UseOwnSymbols = (evt.GetEventObject() == FindWindow(IDC_USE_DEFAULTSYMBOLS)) ?
+    DEFAULT_SYMBOLS : OWN_SYMBOLS;
 }
 

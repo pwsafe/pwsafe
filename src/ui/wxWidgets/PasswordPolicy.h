@@ -112,6 +112,9 @@ public:
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX6
   void OnPwPolUseSymbols( wxCommandEvent& event );
 
+  /// wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for IDC_USE_DEFAULTSYMBOLS
+  void OnSymbolsRB( wxCommandEvent& event );
+
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
   void OnOkClick( wxCommandEvent& event );
 
@@ -167,14 +170,17 @@ public:
   int GetPwdefaultlength() const { return m_pwdefaultlength ; }
   void SetPwdefaultlength(int value) { m_pwdefaultlength = value ; }
 
+  int GetUseOwnSymbols() const { return m_UseOwnSymbols ; }
+  void SetUseOwnSymbols(int value) { m_UseOwnSymbols = value ; }
+
   /// Retrieves bitmap resources
   wxBitmap GetBitmapResource( const wxString& name );
 
   /// Retrieves icon resources
   wxIcon GetIconResource( const wxString& name );
 ////@end CPasswordPolicy member function declarations
-  void SetPolicyData(const wxString &polname, const st_PSWDPolicy &pol);
-  void GetPolicyData(wxString &polname, st_PSWDPolicy &pol)
+  void SetPolicyData(const wxString &polname, const PWPolicy &pol);
+  void GetPolicyData(wxString &polname, PWPolicy &pol)
   {polname = m_polname; pol = m_st_pp;}
 
   /// Should we show tooltips?
@@ -212,6 +218,7 @@ private:
   bool m_pwUseSymbols;
   bool m_pwUseUppercase;
   int m_pwdefaultlength;
+  int m_UseOwnSymbols;
 ////@end CPasswordPolicy member variables
   void SetDefaultSymbolDisplay();
   void CBox2Spin(wxCheckBox *cb, wxSpinCtrl *sp);
@@ -234,7 +241,8 @@ private:
   int m_oldpwSymbolMinLength;
   int m_oldpwDigitMinLength;
   wxString m_oldSymbols;
-  st_PSWDPolicy m_st_pp; // The edited policy
+  int m_oldUseOwnSymbols; // enum {DEFAULT_SYMBOLS, OWN_SYMBOLS}
+  PWPolicy m_st_pp; // The edited policy
 };
 
 #endif
