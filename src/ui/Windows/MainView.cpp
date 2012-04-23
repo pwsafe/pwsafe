@@ -222,8 +222,8 @@ int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2,
   ASSERT(self != NULL);
 
   const int nTypeSortColumn = self->m_iTypeSortColumn;
-  CItemData* pLHS = (CItemData *)lParam1;
-  CItemData* pRHS = (CItemData *)lParam2;
+  CItemData* pLHS_PCI = (CItemData *)lParam1;
+  CItemData* pRHS_PCI = (CItemData *)lParam2;
   StringX group1, group2;
   time_t t1, t2;
   int xint1, xint2;
@@ -231,108 +231,110 @@ int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2,
   int iResult(0);
   switch (nTypeSortColumn) {
     case CItemData::UUID:  // Image
-      iResult = (pLHS->GetEntryType() < pRHS->GetEntryType()) ? -1 : 1;
+      if (pLHS_PCI->GetEntryType() != pRHS_PCI->GetEntryType())
+        iResult = (pLHS_PCI->GetEntryType() < pRHS_PCI->GetEntryType()) ? -1 : 1;
       break;
     case CItemData::GROUP:
-      group1 = pLHS->GetGroup();
-      group2 = pRHS->GetGroup();
+      group1 = pLHS_PCI->GetGroup();
+      group2 = pRHS_PCI->GetGroup();
       if (group1.empty())  // root?
         group1 = L"\xff";
       if (group2.empty())  // root?
         group2 = L"\xff";
       iResult = CompareNoCase(group1, group2);
       if (iResult == 0) {
-        iResult = CompareNoCase(pLHS->GetTitle(), pRHS->GetTitle());
+        iResult = CompareNoCase(pLHS_PCI->GetTitle(), pRHS_PCI->GetTitle());
         if (iResult == 0) {
-          iResult = CompareNoCase(pLHS->GetUser(), pRHS->GetUser());
+          iResult = CompareNoCase(pLHS_PCI->GetUser(), pRHS_PCI->GetUser());
         }
       }
       break;
     case CItemData::TITLE:
-      iResult = CompareNoCase(pLHS->GetTitle(), pRHS->GetTitle());
+      iResult = CompareNoCase(pLHS_PCI->GetTitle(), pRHS_PCI->GetTitle());
       if (iResult == 0) {
-        iResult = CompareNoCase(pLHS->GetUser(), pRHS->GetUser());
+        iResult = CompareNoCase(pLHS_PCI->GetUser(), pRHS_PCI->GetUser());
       }
       break;
     case CItemData::USER:
-      iResult = CompareNoCase(pLHS->GetUser(), pRHS->GetUser());
+      iResult = CompareNoCase(pLHS_PCI->GetUser(), pRHS_PCI->GetUser());
       if (iResult == 0) {
-        iResult = CompareNoCase(pLHS->GetTitle(), pRHS->GetTitle());
+        iResult = CompareNoCase(pLHS_PCI->GetTitle(), pRHS_PCI->GetTitle());
       }
       break;
     case CItemData::NOTES:
-      iResult = CompareNoCase(pLHS->GetNotes(), pRHS->GetNotes());
+      iResult = CompareNoCase(pLHS_PCI->GetNotes(), pRHS_PCI->GetNotes());
       break;
     case CItemData::PASSWORD:
-      iResult = CompareNoCase(pLHS->GetPassword(), pRHS->GetPassword());
+      iResult = CompareNoCase(pLHS_PCI->GetPassword(), pRHS_PCI->GetPassword());
       break;
     case CItemData::URL:
-      iResult = CompareNoCase(pLHS->GetURL(), pRHS->GetURL());
+      iResult = CompareNoCase(pLHS_PCI->GetURL(), pRHS_PCI->GetURL());
       break;
     case CItemData::EMAIL:
-      iResult = CompareNoCase(pLHS->GetEmail(), pRHS->GetEmail());
+      iResult = CompareNoCase(pLHS_PCI->GetEmail(), pRHS_PCI->GetEmail());
       break;
     case CItemData::SYMBOLS:
-      iResult = CompareNoCase(pLHS->GetSymbols(), pRHS->GetSymbols());
+      iResult = CompareNoCase(pLHS_PCI->GetSymbols(), pRHS_PCI->GetSymbols());
       break;
     case CItemData::RUNCMD:
-      iResult = CompareNoCase(pLHS->GetRunCommand(), pRHS->GetRunCommand());
+      iResult = CompareNoCase(pLHS_PCI->GetRunCommand(), pRHS_PCI->GetRunCommand());
       break;
     case CItemData::AUTOTYPE:
-      iResult = CompareNoCase(pLHS->GetAutoType(), pRHS->GetAutoType());
+      iResult = CompareNoCase(pLHS_PCI->GetAutoType(), pRHS_PCI->GetAutoType());
       break;
     case CItemData::CTIME:
-      pLHS->GetCTime(t1);
-      pRHS->GetCTime(t2);
+      pLHS_PCI->GetCTime(t1);
+      pRHS_PCI->GetCTime(t2);
       if (t1 != t2)
         iResult = ((long)t1 < (long)t2) ? -1 : 1;
       break;
     case CItemData::PMTIME:
-      pLHS->GetPMTime(t1);
+      pLHS_PCI->GetPMTime(t1);
       if (t1 == 0)
-        pLHS->GetCTime(t1);
-      pRHS->GetPMTime(t2);
+        pLHS_PCI->GetCTime(t1);
+      pRHS_PCI->GetPMTime(t2);
       if (t2 == 0)
-        pRHS->GetCTime(t2);
+        pRHS_PCI->GetCTime(t2);
       if (t1 != t2)
         iResult = ((long)t1 < (long)t2) ? -1 : 1;
       break;
     case CItemData::ATIME:
-      pLHS->GetATime(t1);
-      pRHS->GetATime(t2);
+      pLHS_PCI->GetATime(t1);
+      pRHS_PCI->GetATime(t2);
       if (t1 != t2)
         iResult = ((long)t1 < (long)t2) ? -1 : 1;
       break;
     case CItemData::XTIME:
-      pLHS->GetXTime(t1);
-      pRHS->GetXTime(t2);
+      pLHS_PCI->GetXTime(t1);
+      pRHS_PCI->GetXTime(t2);
       if (t1 != t2)
         iResult = ((long)t1 < (long)t2) ? -1 : 1;
       break;
     case CItemData::XTIME_INT:
-      pLHS->GetXTimeInt(xint1);
-      pRHS->GetXTimeInt(xint2);
+      pLHS_PCI->GetXTimeInt(xint1);
+      pRHS_PCI->GetXTimeInt(xint2);
       if (xint1 != xint2)
         iResult = (xint1 < xint2) ? -1 : 1;
       break;
     case CItemData::RMTIME:
-      pLHS->GetRMTime(t1);
+      pLHS_PCI->GetRMTime(t1);
       if (t1 == 0)
-        pLHS->GetCTime(t1);
-      pRHS->GetRMTime(t2);
+        pLHS_PCI->GetCTime(t1);
+      pRHS_PCI->GetRMTime(t2);
       if (t2 == 0)
-        pRHS->GetCTime(t2);
+        pRHS_PCI->GetCTime(t2);
       if (t1 != t2)
         iResult = ((long)t1 < (long)t2) ? -1 : 1;
       break;
     case CItemData::POLICY:
-      iResult = CompareNoCase(pLHS->GetPWPolicy(), pRHS->GetPWPolicy());
+      iResult = CompareNoCase(pLHS_PCI->GetPWPolicy(), pRHS_PCI->GetPWPolicy());
       break;
     case CItemData::POLICYNAME:
-      iResult = CompareCase(pLHS->GetPolicyName(), pRHS->GetPolicyName());
+      iResult = CompareCase(pLHS_PCI->GetPolicyName(), pRHS_PCI->GetPolicyName());
       break;
     case CItemData::PROTECTED:
-      iResult = pLHS->IsProtected() ? 1 : (pRHS->IsProtected() ? -1 : 1);
+      if (pLHS_PCI->IsProtected() != pRHS_PCI->IsProtected())
+        iResult = pLHS_PCI->IsProtected() ? 1 : -1;
       break;
     default:
       ASSERT(FALSE);
@@ -1536,12 +1538,12 @@ int DboxMain::InsertItemIntoGUITreeList(CItemData &ci, int iIndex,
         case CItemData::PMTIME:
           ci.GetPMTime(t);
           if ((long)t == 0)
-            cs_fielddata = ci.GetCTime();
+            cs_fielddata = ci.GetCTimeL();
           break;
         case CItemData::RMTIME:
           ci.GetPMTime(t);
           if ((long)t == 0)
-            cs_fielddata = ci.GetCTime();
+            cs_fielddata = ci.GetCTimeL();
           break;
         default:
           cs_fielddata = ci.GetFieldValue(ft);
@@ -1612,15 +1614,15 @@ int DboxMain::InsertItemIntoGUITreeList(CItemData &ci, int iIndex,
           break;
         case CItemData::CTIME:
           ci.GetCTime(t);
-          cs_fielddata = ((long)t == 0) ? sxUnknown : ci.GetCTime();
+          cs_fielddata = ((long)t == 0) ? sxUnknown : ci.GetCTimeL();
           break;
         case CItemData::PMTIME:
           ci.GetPMTime(t);
-          cs_fielddata = ((long)t == 0) ? ci.GetCTime() : ci.GetPMTime();
+          cs_fielddata = ((long)t == 0) ? ci.GetCTimeL() : ci.GetPMTimeL();
           break;
         case CItemData::RMTIME:
           ci.GetRMTime(t);
-          cs_fielddata = ((long)t == 0) ? ci.GetCTime() : ci.GetRMTime();
+          cs_fielddata = ((long)t == 0) ? ci.GetCTimeL() : ci.GetRMTimeL();
           break;
         default:
           cs_fielddata = ci.GetFieldValue(ft);
