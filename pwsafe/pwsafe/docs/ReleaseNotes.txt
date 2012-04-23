@@ -28,6 +28,8 @@ Bugs fixed in 3.28.1
 ====================
 [3518732] Custom special symbol set now handled correctly in Generate Password
 dialog box.
+[3518389] All date/time fields in the List view are now displayed using the user's
+"short date" format as specified via the Windows Control Panel "Region and Language" tab.
 [3515692] Fixed crash with Generate Password switching to default policy with > 1
 named policy.
 [3514819] Add Group now works again.
