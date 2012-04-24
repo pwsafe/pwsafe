@@ -1243,7 +1243,7 @@ void PWScore::GetPolicyNames(vector<stringT> &vNames) const
   }
 }
 
-bool PWScore::GetPolicyFromName(StringX sxPolicyName, PWPolicy &st_pp)
+bool PWScore::GetPolicyFromName(const StringX &sxPolicyName, PWPolicy &st_pp)
 {
   PSWDPolicyMapIter iter = m_MapPSWDPLC.find(sxPolicyName);
   if (iter != m_MapPSWDPLC.end()) {

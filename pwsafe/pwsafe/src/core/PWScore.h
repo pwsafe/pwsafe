@@ -301,7 +301,7 @@ public:
                          const StringX &user, const int IDS_MESSAGE);
   // Get all password policy names
   void GetPolicyNames(std::vector<stringT> &vNames) const;
-  bool GetPolicyFromName(StringX sxPolicyName, PWPolicy &st_pp);
+  bool GetPolicyFromName(const StringX &sxPolicyName, PWPolicy &st_pp);
   void MakePolicyUnique(std::map<StringX, StringX> &mapRenamedPolicies,
                         StringX &sxPolicyName, const StringX &sxMerge_DateTime,
                         const int IDS_MESSAGE);
