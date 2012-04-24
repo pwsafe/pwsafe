@@ -865,18 +865,41 @@ static struct {short pv; wxString name;}
 
 void AddEditPropSheet::ItemFieldsToPropSheet()
 {
-  // Populate the group combo box
-  std::vector<stringT> aryGroups;
-  m_core.GetUniqueGroups(aryGroups);
-  for (size_t igrp = 0; igrp < aryGroups.size(); igrp++) {
-    m_groupCtrl->Append(aryGroups[igrp].c_str());
+  std::vector<stringT> svec;
+  std::vector<stringT>::iterator sviter;
+  PWPolicy policy;
+  // Populate the policy names combo box:
+  m_cbxPolicyNames->Append(_("Default Policy"));
+  m_core.GetPolicyNames(svec);
+  for (sviter = svec.begin(); sviter != svec.end(); sviter++)
+    m_cbxPolicyNames->Append(sviter->c_str());
+  // Does item have a custom policy?
+  if (!m_item.GetPWPolicy().empty()) {
+    m_ourPWPRB->SetValue(true);
+    m_item.GetPWPolicy(policy);
+  } else {
+    m_defPWPRB->SetValue(true);
+    // Select item's named policy, or Default
+    const wxString itemPolName = m_item.GetPolicyName().c_str();
+    if (!itemPolName.IsEmpty()) {
+      m_cbxPolicyNames->SetValue(itemPolName);
+      m_core.GetPolicyFromName(itemPolName.c_str(), policy);
+    } else {
+      m_cbxPolicyNames->SetValue(_("Default Policy"));
+      policy.SetToDefaults();
+    }
   }
+  // Populate the group combo box
+  m_core.GetUniqueGroups(svec);
+  for (sviter = svec.begin(); sviter != svec.end(); sviter++)
+    m_groupCtrl->Append(sviter->c_str());
+
   // select relevant group
   const StringX group = (m_type == ADD? tostringx(m_selectedGroup): m_item.GetGroup());
   if (!group.empty()) {
     bool foundGroup = false;
-    for (size_t igrp = 0; igrp < aryGroups.size(); igrp++) {
-      if (group == aryGroups[igrp].c_str()) {
+    for (size_t igrp = 0; igrp < svec.size(); igrp++) {
+      if (group == svec[igrp].c_str()) {
         m_groupCtrl->SetSelection((int)igrp);
         foundGroup =true;
         break;
