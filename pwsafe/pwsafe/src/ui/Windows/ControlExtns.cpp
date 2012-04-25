@@ -618,8 +618,10 @@ void CRichEditExtn::OnContextMenu(CWnd* pWnd, CPoint point)
     case WM_CUT:
     case WM_COPY:
     case WM_CLEAR:
-    case WM_PASTE:
       SendMessage((UINT)nCmd);
+      break;
+    case WM_PASTE:
+      SendMessage(EM_PASTESPECIAL, CF_UNICODETEXT, NULL);
       break;
     case EM_SELECTALL:
       SendMessage(EM_SETSEL, 0, -1);

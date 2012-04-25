@@ -217,7 +217,7 @@ BOOL CAddEdit_Basic::OnInitDialog()
   // Need to get change notifcations
   m_pex_notes->SetEventMask(ENM_CHANGE | m_pex_notes->GetEventMask());
 
-  // Set plain text
+  // Set plain text - not that it seems to do much!
   m_pex_notes->SetTextMode(TM_PLAINTEXT);
 
   if (M_uicaller() == IDS_EDITENTRY && M_protected() != 0) {
@@ -525,35 +525,32 @@ BOOL CAddEdit_Basic::PreTranslateMessage(MSG* pMsg)
   if (m_pToolTipCtrl != NULL)
     m_pToolTipCtrl->RelayEvent(pMsg);
 
-  // if user hit Ctrl+A in Notes control, then SelectAllNotes
-  if (pMsg->message == WM_KEYDOWN && pMsg->wParam == 'A' &&
+  // Ctrl + 'key' in Notes
+  if (pMsg->message == WM_KEYDOWN &&
       (GetKeyState(VK_CONTROL) & 0x8000)  == 0x8000 &&
       m_pex_notes->m_hWnd == ::GetFocus()) {
-    SelectAllNotes();
-    return TRUE;
+    switch (pMsg->wParam) {
+      case 'A':
+        // Ctrl+A (Select All), then SelectAllNotes
+        SelectAllNotes();
+        return TRUE;
+      case 'V':
+        // Ctrl+V (Paste), then do PasteSpecial
+        m_pex_notes->PasteSpecial(CF_UNICODETEXT);
+        return TRUE;
+      case VK_ADD:
+      case VK_SUBTRACT:
+        // Zoom in/out
+        OnZoomNotes(0, pMsg->wParam == VK_ADD ? 1 : -1);
+        return TRUE;
+    }
   }
-
+  
   if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_CONTROL &&
-      !m_bLaunchPlus && GetDlgItem(IDC_LAUNCH)->IsWindowEnabled()) {
-    CString cs_text(MAKEINTRESOURCE(IDS_LAUNCHPLUS));
+      GetDlgItem(IDC_LAUNCH)->IsWindowEnabled()) {
+    CString cs_text(MAKEINTRESOURCE(m_bLaunchPlus ? IDS_LAUNCH : IDS_LAUNCHPLUS));
     GetDlgItem(IDC_LAUNCH)->SetWindowText(cs_text);
-    m_bLaunchPlus = true;
-    return TRUE;
-  }
-
-  if (pMsg->message == WM_KEYUP && pMsg->wParam == VK_CONTROL &&
-      m_bLaunchPlus && GetDlgItem(IDC_LAUNCH)->IsWindowEnabled()) {
-    CString cs_text(MAKEINTRESOURCE(IDS_LAUNCH));
-    GetDlgItem(IDC_LAUNCH)->SetWindowText(cs_text);
-    m_bLaunchPlus = false;
-    return TRUE;
-  }
-
-  if (pMsg->message == WM_KEYDOWN && 
-      (pMsg->wParam == VK_ADD || pMsg->wParam == VK_SUBTRACT) &&
-      (GetKeyState(VK_CONTROL) & 0x8000) == 0x8000 &&
-      m_pex_notes->m_hWnd == ::GetFocus()) {
-    OnZoomNotes(0, pMsg->wParam == VK_ADD ? 1 : -1);
+    m_bLaunchPlus = !m_bLaunchPlus;
     return TRUE;
   }
 
