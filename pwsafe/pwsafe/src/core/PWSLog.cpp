@@ -13,8 +13,6 @@
 using namespace std;
 
 
-std::deque<stringT> PWSLog::global_log;
-
 #define NUM_LOG_ENTRIES 256
 
 PWSLog *PWSLog::self = NULL;
@@ -25,7 +23,7 @@ PWSLog *PWSLog::GetLog()
     self = new PWSLog();
     // The following sets the queue size once, avoiding
     // memory management @ each call to Add(). (reference TBD)
-    global_log.resize(NUM_LOG_ENTRIES, _T(" "));
+    self->m_log.resize(NUM_LOG_ENTRIES, _T(" "));
   }
   return self;
 }
@@ -42,9 +40,9 @@ void PWSLog::Add(const stringT &sLogRecord)
   stringT sTimeStamp;
   PWSUtil::GetTimeStamp(sTimeStamp);
 
-  // global_log preloaded, so pop_fornt is always valid (see GetLog).
-  global_log.pop_front();
-  global_log.push_back(sTimeStamp + sb + sLogRecord);
+  // m_log preloaded, so pop_fornt is always valid (see GetLog).
+  m_log.pop_front();
+  m_log.push_back(sTimeStamp + sb + sLogRecord);
 }
 
 stringT PWSLog::DumpLog()
@@ -56,13 +54,13 @@ stringT PWSLog::DumpLog()
   stLog << sHeader;
 
   // Then total number of records
-  stLog << global_log.size() << _T(" ");
+  stLog << m_log.size() << _T(" ");
 
   deque<stringT>::const_reverse_iterator criter;
-  deque<stringT>::const_reverse_iterator crend = global_log.rend();
+  deque<stringT>::const_reverse_iterator crend = m_log.rend();
 
   // Now add records - last first
-  for (criter = global_log.rbegin(); criter != crend; criter++) {
+  for (criter = m_log.rbegin(); criter != crend; criter++) {
     if (criter->length() > 1) {
       // First add record length, then record
       stLog << criter->length() << _T(" ");

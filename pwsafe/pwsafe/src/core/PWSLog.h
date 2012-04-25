@@ -27,7 +27,7 @@ public:
 
 private:
   static PWSLog *self;
-  static std::deque<stringT> global_log;
+  std::deque<stringT> m_log;
 };
 
 #endif /* _PWSLOG_H */
