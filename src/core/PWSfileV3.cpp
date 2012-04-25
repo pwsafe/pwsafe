@@ -14,7 +14,6 @@
 #include "PWSdirs.h"
 #include "PWSprefs.h"
 #include "core.h"
-#include "PWSLog.h"
 
 #include "os/debug.h"
 #include "os/file.h"
