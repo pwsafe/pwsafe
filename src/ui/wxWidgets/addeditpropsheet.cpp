@@ -867,28 +867,7 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
 {
   std::vector<stringT> svec;
   std::vector<stringT>::iterator sviter;
-  PWPolicy policy;
-  // Populate the policy names combo box:
-  m_cbxPolicyNames->Append(_("Default Policy"));
-  m_core.GetPolicyNames(svec);
-  for (sviter = svec.begin(); sviter != svec.end(); sviter++)
-    m_cbxPolicyNames->Append(sviter->c_str());
-  // Does item have a custom policy?
-  if (!m_item.GetPWPolicy().empty()) {
-    m_ourPWPRB->SetValue(true);
-    m_item.GetPWPolicy(policy);
-  } else {
-    m_defPWPRB->SetValue(true);
-    // Select item's named policy, or Default
-    const wxString itemPolName = m_item.GetPolicyName().c_str();
-    if (!itemPolName.IsEmpty()) {
-      m_cbxPolicyNames->SetValue(itemPolName);
-      m_core.GetPolicyFromName(itemPolName.c_str(), policy);
-    } else {
-      m_cbxPolicyNames->SetValue(_("Default Policy"));
-      policy.SetToDefaults();
-    }
-  }
+
   // Populate the group combo box
   m_core.GetUniqueGroups(svec);
   for (sviter = svec.begin(); sviter != svec.end(); sviter++)
@@ -1016,18 +995,32 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
   m_RMTime = m_item.GetRMTimeL().c_str();
 
   // Password policy
+  PWPolicy policy;
+  // Populate the policy names combo box:
+  m_cbxPolicyNames->Append(_("Default Policy"));
+  m_core.GetPolicyNames(svec);
+  for (sviter = svec.begin(); sviter != svec.end(); sviter++)
+    m_cbxPolicyNames->Append(sviter->c_str());
+  // Does item have a custom policy?
   bool defPwPolicy = m_item.GetPWPolicy().empty();
   m_defPWPRB->SetValue(defPwPolicy);
   m_ourPWPRB->SetValue(!defPwPolicy);
   if (!defPwPolicy) {
-    PWPolicy pwp;
-    m_item.GetPWPolicy(pwp);
-    UpdatePWPolicyControls(pwp);
+    m_item.GetPWPolicy(policy);
     m_pwpLenCtrl->Enable(true);
-  }
-  else {
+  } else {
     EnablePWPolicyControls(false);
+    // Select item's named policy, or Default
+    const wxString itemPolName = m_item.GetPolicyName().c_str();
+    if (!itemPolName.IsEmpty()) {
+      m_cbxPolicyNames->SetValue(itemPolName);
+      m_core.GetPolicyFromName(itemPolName.c_str(), policy);
+    } else {
+      m_cbxPolicyNames->SetValue(_("Default Policy"));
+      policy.SetToDefaults();
+    }
   }
+  UpdatePWPolicyControls(policy);
 }
 
 /*!
