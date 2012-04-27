@@ -80,6 +80,8 @@ BEGIN_EVENT_TABLE( AddEditPropSheet, wxPropertySheetDialog )
 
   EVT_RADIOBUTTON( ID_RADIOBUTTON2, AddEditPropSheet::OnPWPRBSelected )
 
+  EVT_COMBOBOX( ID_POLICYLIST, AddEditPropSheet::OnPolicylistSelected )
+
   EVT_RADIOBUTTON( ID_RADIOBUTTON3, AddEditPropSheet::OnPWPRBSelected )
 
   EVT_CHECKBOX( ID_CHECKBOX6, AddEditPropSheet::OnSymbolsCB )
@@ -547,7 +549,7 @@ void AddEditPropSheet::CreateControls()
 
   wxBoxSizer* itemBoxSizer97 = new wxBoxSizer(wxHORIZONTAL);
   itemStaticBoxSizer96->Add(itemBoxSizer97, 0, wxGROW|wxALL, 0);
-  m_defPWPRB = new wxRadioButton( itemPanel95, ID_RADIOBUTTON2, _("Use Database Policy"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_defPWPRB = new wxRadioButton( itemPanel95, ID_RADIOBUTTON2, _("Use Database Policy"), wxDefaultPosition, wxDefaultSize, wxRB_GROUP );
   m_defPWPRB->SetValue(false);
   itemBoxSizer97->Add(m_defPWPRB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
@@ -634,7 +636,7 @@ void AddEditPropSheet::CreateControls()
   wxStaticText* itemStaticText126 = new wxStaticText( itemPanel95, wxID_STATIC, _(")"), wxDefaultPosition, wxDefaultSize, 0 );
   m_pwNumSymbox->Add(itemStaticText126, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxRadioButton* itemRadioButton127 = new wxRadioButton( itemPanel95, IDC_USE_DEFAULTSYMBOLS, _("Default set"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxRadioButton* itemRadioButton127 = new wxRadioButton( itemPanel95, IDC_USE_DEFAULTSYMBOLS, _("Default set"), wxDefaultPosition, wxDefaultSize, wxRB_GROUP );
   itemRadioButton127->SetValue(false);
   m_pwMinsGSzr->Add(itemRadioButton127, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
@@ -666,9 +668,6 @@ void AddEditPropSheet::CreateControls()
   m_pwpHexCtrl = new wxCheckBox( itemPanel95, ID_CHECKBOX9, _("Use hexadecimal digits only (0-9, a-f)"), wxDefaultPosition, wxDefaultSize, 0 );
   m_pwpHexCtrl->SetValue(false);
   itemStaticBoxSizer96->Add(m_pwpHexCtrl, 0, wxALIGN_LEFT|wxALL, 5);
-
-  wxButton* itemButton137 = new wxButton( itemPanel95, ID_BUTTON7, _("Reset to Database Defaults"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemStaticBoxSizer96->Add(itemButton137, 0, wxALIGN_RIGHT|wxALL, 5);
 
   GetBookCtrl()->AddPage(itemPanel95, _("Password Policy"));
 
@@ -791,14 +790,13 @@ void AddEditPropSheet::UpdatePWPolicyControls(const PWPolicy& pwp)
 
   ShowPWPSpinners(!m_pwpPronounceCtrl->GetValue() && !m_pwpEasyCtrl->GetValue());
 
-  if (m_useownsymbols == DEFAULT_SYMBOLS) {
+  if (pwp.symbols.empty()) {
     static_cast<wxRadioButton*>(FindWindow(IDC_USE_DEFAULTSYMBOLS))->SetValue(true);
     static_cast<wxRadioButton*>(FindWindow(IDC_USE_OWNSYMBOLS))->SetValue(false);
   } else {
     static_cast<wxRadioButton*>(FindWindow(IDC_USE_DEFAULTSYMBOLS))->SetValue(false);
     static_cast<wxRadioButton*>(FindWindow(IDC_USE_OWNSYMBOLS))->SetValue(true);
-    const StringX ownsyms = m_item.GetSymbols();
-    m_symbols = ownsyms.c_str();
+    m_symbols = pwp.symbols.c_str();
     Validate(); TransferDataToWindow();
   }
 }
@@ -1008,6 +1006,7 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
   if (!defPwPolicy) {
     m_item.GetPWPolicy(policy);
     m_pwpLenCtrl->Enable(true);
+    policy.symbols = m_item.GetSymbols().c_str(); // ??? XXX ???
   } else {
     EnablePWPolicyControls(false);
     // Select item's named policy, or Default
@@ -1535,14 +1534,6 @@ void AddEditPropSheet::OnNoteSetFocus( wxFocusEvent& /* evt */ )
   }
 }
 
-/*!
- * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_BUTTON7
- */
-void AddEditPropSheet::OnResetPWPolicy(wxCommandEvent& /*evt*/)
-{
-  UpdatePWPolicyControls(GetPWPolicyFromPrefs());
-}
-
 PWPolicy AddEditPropSheet::GetPWPolicyFromUI() const
 {
   wxASSERT_MSG(m_ourPWPRB->GetValue() && !m_defPWPRB->GetValue(), wxT("Trying to get Password policy from UI when db defaults are to be used"));
@@ -1582,19 +1573,14 @@ PWPolicy AddEditPropSheet::GetPWPolicyFromUI() const
   return pwp;
 }
 
-PWPolicy AddEditPropSheet::GetPWPolicyFromPrefs() const
-{
-  PWPolicy pwp;
-  pwp.SetToDefaults();
-  return pwp;
-}
-
 PWPolicy AddEditPropSheet::GetSelectedPWPolicy() const
 {
+  PWPolicy pwp;
   if (m_defPWPRB->GetValue())
-    return GetPWPolicyFromPrefs();
+    pwp.SetToDefaults();
   else
-    return GetPWPolicyFromUI();
+    pwp = GetPWPolicyFromUI();
+  return pwp;
 }
 
 void AddEditPropSheet::OnUpdateResetPWPolicyButton(wxUpdateUIEvent& evt)
@@ -1734,5 +1720,27 @@ void AddEditPropSheet::OnSendButtonClick( wxCommandEvent& event )
     PWSRun runner;
     runner.issuecmd(mail_cmd, _(""), false);
   }
+}
+
+
+/*!
+ * wxEVT_COMMAND_COMBOBOX_SELECTED event handler for ID_POLICYLIST
+ */
+
+void AddEditPropSheet::OnPolicylistSelected( wxCommandEvent& event )
+{
+  const wxString polName = event.GetString();
+  PWPolicy policy;
+  if (polName == _("Default Policy")) {
+    policy.SetToDefaults();
+  } else {
+    if (!m_core.GetPolicyFromName(polName.c_str(), policy)) {
+      pws_os::Trace(_("Couldn't find policy %s\n"), polName.c_str());
+      return;
+    }
+  }
+  m_defPWPRB->SetValue(true);
+  UpdatePWPolicyControls(policy);
+  EnablePWPolicyControls(false);
 }
 
