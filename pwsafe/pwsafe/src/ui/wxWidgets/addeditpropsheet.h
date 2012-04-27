@@ -103,7 +103,6 @@ class UIInterFace;
 #define ID_CHECKBOX7 10122
 #define ID_CHECKBOX8 10123
 #define ID_CHECKBOX9 10124
-#define ID_BUTTON7 10125
 #define SYMBOL_ADDEDITPROPSHEET_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxDIALOG_MODAL
 #define SYMBOL_ADDEDITPROPSHEET_TITLE _("Edit Entry")
 #define SYMBOL_ADDEDITPROPSHEET_IDNAME ID_ADDEDITPROPSHEET
@@ -183,6 +182,9 @@ public:
   /// wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_RADIOBUTTON2
   void OnPWPRBSelected( wxCommandEvent& event );
 
+  /// wxEVT_COMMAND_COMBOBOX_SELECTED event handler for ID_POLICYLIST
+  void OnPolicylistSelected( wxCommandEvent& event );
+
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX6
   void OnSymbolsCB( wxCommandEvent& event );
 
@@ -202,67 +204,66 @@ public:
   void OnEZreadOrPronounceable( wxCommandEvent& evt);
   void OnClearPWHist(wxCommandEvent& evt);
   void OnOk(wxCommandEvent& evt);
-  void OnResetPWPolicy(wxCommandEvent& evt);
   void OnUpdateResetPWPolicyButton(wxUpdateUIEvent& evt);
   void OnAtLeastChars(wxSpinEvent& evt);
 ////@begin AddEditPropSheet member function declarations
 
-  wxString GetTitle() const { return m_title ; }
-  void SetTitle(wxString value) { m_title = value ; }
-
-  wxString GetUser() const { return m_user ; }
-  void SetUser(wxString value) { m_user = value ; }
-
-  wxString GetUrl() const { return m_url ; }
-  void SetUrl(wxString value) { m_url = value ; }
-
-  wxString GetNotes() const { return m_notes ; }
-  void SetNotes(wxString value) { m_notes = value ; }
-
-  wxString GetAutotype() const { return m_autotype ; }
-  void SetAutotype(wxString value) { m_autotype = value ; }
-
-  wxString GetRuncmd() const { return m_runcmd ; }
-  void SetRuncmd(wxString value) { m_runcmd = value ; }
-
-  int GetMaxPWHist() const { return m_maxPWHist ; }
-  void SetMaxPWHist(int value) { m_maxPWHist = value ; }
-
-  bool GetKeepPWHist() const { return m_keepPWHist ; }
-  void SetKeepPWHist(bool value) { m_keepPWHist = value ; }
+  wxString GetATime() const { return m_ATime ; }
+  void SetATime(wxString value) { m_ATime = value ; }
 
   wxString GetCTime() const { return m_CTime ; }
   void SetCTime(wxString value) { m_CTime = value ; }
 
+  wxString GetCurXTime() const { return m_CurXTime ; }
+  void SetCurXTime(wxString value) { m_CurXTime = value ; }
+
   wxString GetPMTime() const { return m_PMTime ; }
   void SetPMTime(wxString value) { m_PMTime = value ; }
-
-  wxString GetATime() const { return m_ATime ; }
-  void SetATime(wxString value) { m_ATime = value ; }
 
   wxString GetRMTime() const { return m_RMTime ; }
   void SetRMTime(wxString value) { m_RMTime = value ; }
 
+  bool GetRecurring() const { return m_Recurring ; }
+  void SetRecurring(bool value) { m_Recurring = value ; }
+
   wxString GetXTime() const { return m_XTime ; }
   void SetXTime(wxString value) { m_XTime = value ; }
-
-  wxString GetCurXTime() const { return m_CurXTime ; }
-  void SetCurXTime(wxString value) { m_CurXTime = value ; }
 
   int GetExpInterval() const { return m_XTimeInt ; }
   void SetExpInterval(int value) { m_XTimeInt = value ; }
 
-  bool GetRecurring() const { return m_Recurring ; }
-  void SetRecurring(bool value) { m_Recurring = value ; }
+  wxString GetAutotype() const { return m_autotype ; }
+  void SetAutotype(wxString value) { m_autotype = value ; }
+
+  wxString GetEmail() const { return m_email ; }
+  void SetEmail(wxString value) { m_email = value ; }
 
   bool GetIsNotesHidden() const { return m_isNotesHidden ; }
   void SetIsNotesHidden(bool value) { m_isNotesHidden = value ; }
 
+  bool GetKeepPWHist() const { return m_keepPWHist ; }
+  void SetKeepPWHist(bool value) { m_keepPWHist = value ; }
+
+  int GetMaxPWHist() const { return m_maxPWHist ; }
+  void SetMaxPWHist(int value) { m_maxPWHist = value ; }
+
+  wxString GetNotes() const { return m_notes ; }
+  void SetNotes(wxString value) { m_notes = value ; }
+
+  wxString GetRuncmd() const { return m_runcmd ; }
+  void SetRuncmd(wxString value) { m_runcmd = value ; }
+
   wxString GetSymbols() const { return m_symbols ; }
   void SetSymbols(wxString value) { m_symbols = value ; }
 
-  wxString GetEmail() const { return m_email ; }
-  void SetEmail(wxString value) { m_email = value ; }
+  wxString GetTitle() const { return m_title ; }
+  void SetTitle(wxString value) { m_title = value ; }
+
+  wxString GetUrl() const { return m_url ; }
+  void SetUrl(wxString value) { m_url = value ; }
+
+  wxString GetUser() const { return m_user ; }
+  void SetUser(wxString value) { m_user = value ; }
 
   /// Retrieves bitmap resources
   wxBitmap GetBitmapResource( const wxString& name );
@@ -315,24 +316,24 @@ public:
   wxCheckBox* m_pwpHexCtrl;
   wxString m_RMTime; // Any field modification time
 private:
-  wxString m_title;
-  wxString m_user;
-  wxString m_url;
-  wxString m_notes;
-  wxString m_autotype;
-  wxString m_runcmd;
-  int m_maxPWHist; // How many passwords to keep
-  bool m_keepPWHist;
-  wxString m_CTime; // Creation time
-  wxString m_PMTime; // Password Modification time
   wxString m_ATime; // Access Time
-  wxString m_XTime; // Password eXpiration time
+  wxString m_CTime; // Creation time
   wxString m_CurXTime; // Current Exp. time
-  int m_XTimeInt; // Password Exp. Interval (days)
+  wxString m_PMTime; // Password Modification time
   bool m_Recurring;
-  bool m_isNotesHidden;
-  wxString m_symbols;
+  wxString m_XTime; // Password eXpiration time
+  int m_XTimeInt; // Password Exp. Interval (days)
+  wxString m_autotype;
   wxString m_email;
+  bool m_isNotesHidden;
+  bool m_keepPWHist;
+  int m_maxPWHist; // How many passwords to keep
+  wxString m_notes;
+  wxString m_runcmd;
+  wxString m_symbols;
+  wxString m_title;
+  wxString m_url;
+  wxString m_user;
   ////@end AddEditPropSheet member variables
   short m_DCA;
   short m_ShiftDCA;
@@ -352,7 +353,6 @@ private:
   void UpdatePWPolicyControls(const PWPolicy& pwp);
   void EnablePWPolicyControls(bool enable);
   PWPolicy GetPWPolicyFromUI() const;
-  PWPolicy GetPWPolicyFromPrefs() const;
   PWPolicy GetSelectedPWPolicy() const;
   void ShowPWPSpinners(bool show);
   void EnableNonHexCBs(bool enable);

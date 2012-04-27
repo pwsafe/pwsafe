@@ -15,7 +15,7 @@
 
 // Password Policy related stuff
 enum {DEFAULT_POLICY = 0, NAMED_POLICY, SPECIFIC_POLICY};
-enum {DEFAULT_SYMBOLS = 0, OWN_SYMBOLS = 1}; // m_symbols's values
+enum {DEFAULT_SYMBOLS = 0, OWN_SYMBOLS = 1}; // TBD - try to eliminate, as this should be implicit
 
 /**
  * PWPolicy is a struct encapsulating the Password generation policy:
