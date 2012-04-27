@@ -16,6 +16,7 @@
 #include "ThisMfcApp.h" // for online help
 #include "GeneralMsgBox.h"
 
+#include "core/core.h"
 #include "core/PWCharPool.h"
 
 #include "resource3.h"  // String resources
@@ -773,7 +774,7 @@ void CManagePSWDPolices::UpdateNames()
   int nPos = 0;
 
   // Add in the default policy as the first entry
-  CString cs_text(MAKEINTRESOURCE(IDS_DATABASE_DEFAULT));
+  CString cs_text(MAKEINTRESOURCE(IDSC_DEFAULT_POLICY));
   nPos = m_PolicyNames.InsertItem(nPos, cs_text);
   cs_text.LoadString(IDS_NA);
   m_PolicyNames.SetItemText(nPos, 1, cs_text);

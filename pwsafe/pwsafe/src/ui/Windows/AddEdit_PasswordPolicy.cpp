@@ -16,6 +16,7 @@
 #include "AddEdit_PasswordPolicy.h"
 #include "AddEdit_PropertySheet.h"
 
+#include "core/core.h"
 #include "core/PwsPlatform.h"
 #include "core/ItemData.h"
 #include "core/PWSprefs.h"
@@ -180,7 +181,7 @@ BOOL CAddEdit_PasswordPolicy::OnInitDialog()
   M_pDbx()->GetPolicyNames(vNames);
 
   // Add Default
-  CString cs_text(MAKEINTRESOURCE(IDS_DATABASE_DEFAULT));
+  CString cs_text(MAKEINTRESOURCE(IDSC_DEFAULT_POLICY));
   m_cbxPolicyNames.AddString(cs_text);
 
   // Add the rest (if any)

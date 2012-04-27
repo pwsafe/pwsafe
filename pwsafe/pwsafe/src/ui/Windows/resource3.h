@@ -675,7 +675,6 @@
 #define IDS_ENTER_NEW_DB_NAME           5875
 #define IDS_ENTER_NEW_DB_DESCRIPTION    5876
 #define IDS_INPUTBOX_CHAR_COUNT         5877
-#define IDS_DATABASE_DEFAULT            5878
 #define IDS_POLICYNAME                  5879
 #define IDS_NEWPOLICY                   5880
 #define IDS_EDITPOLICY                  5881

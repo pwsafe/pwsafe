@@ -379,6 +379,7 @@ END
 
 STRINGTABLE
 BEGIN
+  IDSC_DEFAULT_POLICY      "Default Policy"
   IDSC_PUSELOWER           "Use lowercase characters"
   IDSC_PUSEUPPER           "Use uppercase characters"
   IDSC_PUSEDIGITS          "Use digits"
