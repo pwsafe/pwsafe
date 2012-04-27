@@ -15,6 +15,7 @@
 #include "DboxMain.h"
 #include "ThisMfcApp.h"    // For Help
 
+#include "core/core.h"
 #include "core/PWCharPool.h"
 #include "core/PwsPlatform.h"
 #include "core/PWSprefs.h"
@@ -234,7 +235,7 @@ BOOL CPasswordPolicyDlg::OnInitDialog()
       m_pDbx->GetPolicyNames(vNames);
 
       // Add Default
-      CString cs_default(MAKEINTRESOURCE(IDS_DATABASE_DEFAULT));
+      CString cs_default(MAKEINTRESOURCE(IDSC_DEFAULT_POLICY));
       m_cbxPolicyNames.AddString(cs_default);
 
       for (std::vector<std::wstring>::iterator iter = vNames.begin();
@@ -521,7 +522,7 @@ void CPasswordPolicyDlg::OnNamesComboChanged()
   // Named Password Policy or the Database Default Policy
 
   PWPolicy xst_pp;
-  const CString defpol(MAKEINTRESOURCE(IDS_DATABASE_DEFAULT));
+  const CString defpol(MAKEINTRESOURCE(IDSC_DEFAULT_POLICY));
 
   if (m_policyname == defpol || m_policyname.IsEmpty()) {
     // m_policyname shouldn't be empty here, but JIC...
@@ -933,6 +934,12 @@ void CPasswordPolicyDlg::OnGeneratePassword()
     st_pp.symbols = st_symbols.c_str();
   } else {
     // Use named policy
+    if (m_PolicyNameEdit.IsWindowVisible()) {
+      m_PolicyNameEdit.GetWindowText((CString &)m_policyname);
+    } else {
+      int index = m_cbxPolicyNames.GetCurSel();
+      m_cbxPolicyNames.GetLBText(index, m_policyname);
+    }
     StringX sxPolicyName(m_policyname);
     m_pDbx->GetPolicyFromName(sxPolicyName, st_pp);
 

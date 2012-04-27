@@ -1245,13 +1245,25 @@ void PWScore::GetPolicyNames(vector<stringT> &vNames) const
 
 bool PWScore::GetPolicyFromName(const StringX &sxPolicyName, PWPolicy &st_pp)
 {
-  PSWDPolicyMapIter iter = m_MapPSWDPLC.find(sxPolicyName);
-  if (iter != m_MapPSWDPLC.end()) {
-    st_pp = iter->second;
+  // - An empty policy name is never valid.
+  ASSERT(!sxPolicyName.empty());
+
+  // - The default policy is not stored in the map (but read from preferences)
+  StringX defpolStr;
+  LoadAString(defpolStr, IDSC_DEFAULT_POLICY);
+
+  if (sxPolicyName == defpolStr) {
+    st_pp.SetToDefaults();
     return true;
   } else {
-    st_pp.Empty();
-    return false;
+    PSWDPolicyMapIter iter = m_MapPSWDPLC.find(sxPolicyName);
+    if (iter != m_MapPSWDPLC.end()) {
+      st_pp = iter->second;
+      return true;
+    } else {
+      st_pp.Empty();
+      return false;
+    }
   }
 }
 
