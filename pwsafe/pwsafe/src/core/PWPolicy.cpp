@@ -38,66 +38,35 @@ bool PWPolicy::operator==(const PWPolicy &that) const
 // preference-defined policy if this->flags == 0
 StringX PWPolicy::MakeRandomPassword() const
 {
-  bool pwuselowercase, pwuseuppercase;
-  bool pwusedigits, pwusesymbols, pweasyvision, pwusehexdigits;
-  bool pwmakepronounceable;
-  int pwdefaultlength;
-  int pwdigitminlength, pwlowerminlength, pwsymbolminlength, pwupperminlength;
+  PWPolicy pol(*this); // small price to keep constness
+  if (flags == 0)
+    pol.SetToDefaults();
+  pol.Normalize();
 
-  if (flags != 0) {
-    pwuselowercase = (flags & PWPolicy::UseLowercase) == 
-                            PWPolicy::UseLowercase;
-    pwuseuppercase = (flags & PWPolicy::UseUppercase) == 
-                            PWPolicy::UseUppercase;
-    pwusedigits = (flags & PWPolicy::UseDigits) == 
-                            PWPolicy::UseDigits;
-    pwusesymbols = (flags & PWPolicy::UseSymbols) == 
-                            PWPolicy::UseSymbols;
-    pwusehexdigits = (flags & PWPolicy::UseHexDigits) == 
-                            PWPolicy::UseHexDigits;
-    pweasyvision = (flags & PWPolicy::UseEasyVision) == 
-                            PWPolicy::UseEasyVision;
-    pwmakepronounceable = (flags & PWPolicy::MakePronounceable) == 
-                                 PWPolicy::MakePronounceable;
-    pwdefaultlength = length;
-    pwdigitminlength = digitminlength;
-    pwlowerminlength = lowerminlength;
-    pwsymbolminlength = symbolminlength;
-    pwupperminlength = upperminlength;
-  } else {
-    PWSprefs *prefs = PWSprefs::GetInstance();
-    pwuselowercase = prefs->GetPref(PWSprefs::PWUseLowercase);
-    pwuseuppercase = prefs->GetPref(PWSprefs::PWUseUppercase);
-    pwusedigits = prefs->GetPref(PWSprefs::PWUseDigits);
-    pwusesymbols = prefs->GetPref(PWSprefs::PWUseSymbols);
-    pwusehexdigits = prefs->GetPref(PWSprefs::PWUseHexDigits);
-    pweasyvision = prefs->GetPref(PWSprefs::PWUseEasyVision);
-    pwmakepronounceable = prefs->GetPref(PWSprefs::PWMakePronounceable);
-    pwdefaultlength = prefs->GetPref(PWSprefs::PWDefaultLength);
-    pwdigitminlength = prefs->GetPref(PWSprefs::PWDigitMinLength);
-    pwlowerminlength = prefs->GetPref(PWSprefs::PWLowercaseMinLength);
-    pwsymbolminlength = prefs->GetPref(PWSprefs::PWSymbolMinLength);
-    pwupperminlength = prefs->GetPref(PWSprefs::PWUppercaseMinLength);
-  }
-
-  unsigned int numlowercase(0), numuppercase(0), numdigits(0), numsymbols(0);
-  if (pwuselowercase)
-    numlowercase = (pwlowerminlength == 0) ? 1 : pwlowerminlength;
-  if (pwuseuppercase)
-    numuppercase = (pwupperminlength == 0) ? 1 : pwupperminlength;
-  if (pwusedigits)
-    numdigits = (pwdigitminlength == 0) ? 1 : pwdigitminlength;
-  if (pwusesymbols)
-    numsymbols = (pwsymbolminlength == 0) ? 1 : pwsymbolminlength;
-
-  // Sanity check:
-  if ((numlowercase + numuppercase + numdigits + numsymbols == 0) &&
-      !pwusehexdigits)
-    return _T("");
- 
-  CPasswordCharPool pwchars(*this);
-
+  CPasswordCharPool pwchars(pol);
   return pwchars.MakePassword();
+}
+
+inline void NormalizeField(int bitset, int &value)
+{
+  if (bitset != 0) {
+    if (value == 0)
+      value = 1;
+  } else
+    value = 0;
+}
+
+void PWPolicy::Normalize()
+{
+  /**
+   * Protect agains inconsistent policy:
+   * Make sure that if a Use* bit is set, the corresponding
+   * min length is > 0.
+   */
+  NormalizeField((flags & PWPolicy::UseLowercase), lowerminlength);
+  NormalizeField((flags & PWPolicy::UseUppercase), upperminlength);
+  NormalizeField((flags & PWPolicy::UseDigits), digitminlength);
+  NormalizeField((flags & PWPolicy::UseSymbols), symbolminlength);
 }
 
 void PWPolicy::SetToDefaults()
@@ -124,10 +93,12 @@ void PWPolicy::SetToDefaults()
   symbolminlength = prefs->GetPref(PWSprefs::PWSymbolMinLength);
   upperminlength = prefs->GetPref(PWSprefs::PWUppercaseMinLength);
   symbols = PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultSymbols);
+  Normalize();
 }
 
 void PWPolicy::UpdateDefaults(bool bUseCopy) const
 {
+  const_cast<PWPolicy *>(this)->Normalize(); // alternate: use a local copy
   PWSprefs *prefs = PWSprefs::GetInstance();
 
   prefs->SetPref(PWSprefs::PWUseLowercase,
