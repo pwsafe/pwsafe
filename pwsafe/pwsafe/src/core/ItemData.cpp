@@ -69,10 +69,10 @@ CItemData::CItemData(const CItemData &that) :
   m_tttATime(that.m_tttATime), m_tttCTime(that.m_tttCTime),
   m_tttXTime(that.m_tttXTime), m_tttPMTime(that.m_tttPMTime),
   m_tttRMTime(that.m_tttRMTime), m_PWHistory(that.m_PWHistory),
-  m_PWPolicy(that.m_PWPolicy), m_XTimeInterval(that.m_XTimeInterval),
+  m_XTimeInterval(that.m_XTimeInterval),
   m_RunCommand(that.m_RunCommand), m_DCA(that.m_DCA), m_ShiftDCA(that.m_ShiftDCA),
-  m_email(that.m_email), m_protected(that.m_protected), m_symbols(that.m_symbols),
-  m_PolicyName(that.m_PolicyName),
+  m_email(that.m_email), m_protected(that.m_protected), 
+  m_PWPolicy(that.m_PWPolicy), m_symbols(that.m_symbols), m_PolicyName(that.m_PolicyName),
   m_entrytype(that.m_entrytype), m_entrystatus(that.m_entrystatus),
   m_display_info(that.m_display_info == NULL ?
                       NULL : that.m_display_info->clone())
