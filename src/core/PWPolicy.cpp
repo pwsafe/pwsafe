@@ -46,6 +46,9 @@ PWPolicy::PWPolicy(const StringX &str) : usecount(0)
   istringstreamT is_upperminlength(stringT(cs_pwp, 16, 3));
 
   // Put them into PWPolicy structure
+  bool bhex_flag;
+  bool bother_flags;
+  int total_sublength;
   unsigned int f; // dain bramaged istringstream requires this runaround
   if (!(is_flags >> std::hex >> f)) goto fail;
   flags = static_cast<unsigned short>(f);
@@ -58,10 +61,9 @@ PWPolicy::PWPolicy(const StringX &str) : usecount(0)
   // Sanity checks:
   // Must be some flags; however hex incompatible with other flags
   // lengths also have restrictions.
-  bool bhex_flag = (flags & PWPolicy::UseHexDigits) != 0;
-  bool bother_flags = (flags & (~PWPolicy::UseHexDigits)) != 0;
-  const int total_sublength = digitminlength + lowerminlength +
-    symbolminlength + upperminlength;
+  bhex_flag = (flags & PWPolicy::UseHexDigits) != 0;
+  bother_flags = (flags & (~PWPolicy::UseHexDigits)) != 0;
+  total_sublength = digitminlength + lowerminlength + symbolminlength + upperminlength;
 
   if (flags == 0 || (bhex_flag && bother_flags) ||
       length > 1024 || total_sublength > length ||
