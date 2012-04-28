@@ -44,53 +44,6 @@ void CItemData::SetSessionKey()
   IsSessionKeySet = true;
 }
 
-void String2PWPolicy(const stringT &cs_pwp, PWPolicy &pwp)
-{
-  // should really be a c'tor of PWPolicy - later...
-
-  // We need flags(4), length(3), lower_len(3), upper_len(3)
-  //   digit_len(3), symbol_len(3) = 4 + 5 * 3 = 19
-  // All fields are hexadecimal digits representing flags or lengths
-
-  // Note: order of fields set by PWSprefs enum that can have minimum lengths.
-  // Later releases must support these as a minimum.  Any fields added
-  // by these releases will be lost if the user changes these field.
-  ASSERT(cs_pwp.length() == 19);
-
-  // Get fields
-  istringstreamT is_flags(stringT(cs_pwp, 0, 4));
-  istringstreamT is_length(stringT(cs_pwp, 4, 3));
-  istringstreamT is_digitminlength(stringT(cs_pwp, 7, 3));
-  istringstreamT is_lowreminlength(stringT(cs_pwp, 10, 3));
-  istringstreamT is_symbolminlength(stringT(cs_pwp, 13, 3));
-  istringstreamT is_upperminlength(stringT(cs_pwp, 16, 3));
-
-  // Put them into PWPolicy structure
-  unsigned int f; // dain bramaged istringstream requires this runaround
-  is_flags >> hex >> f;
-  pwp.flags = static_cast<unsigned short>(f);
-  is_length >> hex >> pwp.length;
-  is_digitminlength >> hex >> pwp.digitminlength;
-  is_lowreminlength >> hex >> pwp.lowerminlength;
-  is_symbolminlength >> hex >> pwp.symbolminlength;
-  is_upperminlength >> hex >> pwp.upperminlength;
-}
-
-void PWPolicy2String(const PWPolicy &pwp, stringT &cs_pwp)
-{
-  ostringstreamT os;
-  unsigned int f; // dain bramaged istringstream requires this runaround
-  f = static_cast<unsigned int>(pwp.flags);
-  os.fill(charT('0'));
-  os << hex << setw(4) << f
-     << setw(3) << pwp.length
-     << setw(3) << pwp.digitminlength
-     << setw(3) << pwp.lowerminlength
-     << setw(3) << pwp.symbolminlength
-     << setw(3) << pwp.upperminlength;
-  cs_pwp = os.str().c_str();
-}
-
 //-----------------------------------------------------------------------------
 // Constructors
 
@@ -100,9 +53,9 @@ CItemData::CItemData()
     m_URL(URL), m_AutoType(AUTOTYPE),
     m_tttATime(ATIME), m_tttCTime(CTIME), m_tttXTime(XTIME),
     m_tttPMTime(PMTIME), m_tttRMTime(RMTIME), m_PWHistory(PWHIST),
-    m_PWPolicy(POLICY), m_XTimeInterval(XTIME_INT), m_RunCommand(RUNCMD),
+    m_XTimeInterval(XTIME_INT), m_RunCommand(RUNCMD),
     m_DCA(DCA), m_ShiftDCA(SHIFTDCA), m_email(EMAIL), m_protected(PROTECTED),
-    m_symbols(SYMBOLS), m_PolicyName(POLICYNAME), 
+    m_PWPolicy(POLICY), m_symbols(SYMBOLS), m_PolicyName(POLICYNAME), 
     m_entrytype(ET_NORMAL), m_entrystatus(ES_CLEAN),
     m_display_info(NULL)
 {
@@ -539,11 +492,8 @@ const CUUID CItemData::GetUUID() const
 
 void CItemData::GetPWPolicy(PWPolicy &pwp) const
 {
-  StringX cs_pwp(GetField(m_PWPolicy));
-
-  pwp.flags = 0;
-  if (cs_pwp.length() == 19)
-    String2PWPolicy(cs_pwp.c_str(), pwp);
+  PWPolicy mypol(GetField(m_PWPolicy));
+  pwp = mypol;
 }
 
 StringX CItemData::GetPWPolicy() const
@@ -1428,18 +1378,11 @@ void CItemData::SetPWHistory(const StringX &PWHistory)
 
 void CItemData::SetPWPolicy(const PWPolicy &pwp)
 {
-  // Must be some flags; however hex incompatible with other flags
-  bool bhex_flag = (pwp.flags & PWPolicy::UseHexDigits) != 0;
-  bool bother_flags = (pwp.flags & (~PWPolicy::UseHexDigits)) != 0;
+  const StringX cs_pwp(pwp);
 
-  stringT cs_pwp;
-
-  if (pwp.flags == 0 || (bhex_flag && bother_flags)) {
-    cs_pwp = _T("");
-  } else {
-    PWPolicy2String(pwp, cs_pwp);
-  }
-  SetField(m_PWPolicy, cs_pwp.c_str());
+  SetField(m_PWPolicy, cs_pwp);
+  if (!pwp.symbols.empty())
+    SetSymbols(pwp.symbols);
 }
 
 bool CItemData::SetPWPolicy(const stringT &cs_pwp)
@@ -1449,27 +1392,13 @@ bool CItemData::SetPWPolicy(const stringT &cs_pwp)
     SetField(m_PWPolicy, cs_pwp.c_str());
     return true;
   }
-  if (cs_pwp.length() < 19)
+
+  const StringX cs_pwpolicy(cs_pwp.c_str());
+  PWPolicy pwp(cs_pwpolicy);
+  PWPolicy emptyPol;
+  // a non-empty string creates an empty policy iff it's ill-formed
+  if (pwp == emptyPol)
     return false;
-
-  // Parse policy string, more sanity checks
-  // See String2PWPolicy for valid format
-  PWPolicy pwp;
-  String2PWPolicy(stringT(cs_pwp), pwp);
-  StringX cs_pwpolicy(cs_pwp.c_str());
-
-  // Must be some flags; however hex incompatible with other flags
-  bool bhex_flag = (pwp.flags & PWPolicy::UseHexDigits) != 0;
-  bool bother_flags = (pwp.flags & (~PWPolicy::UseHexDigits)) != 0;
-  const int total_sublength = pwp.digitminlength + pwp.lowerminlength +
-    pwp.symbolminlength + pwp.upperminlength;
-
-  if (pwp.flags == 0 || (bhex_flag && bother_flags) ||
-      pwp.length > 1024 || total_sublength > pwp.length ||
-      pwp.digitminlength > 1024 || pwp.lowerminlength > 1024 ||
-      pwp.symbolminlength > 1024 || pwp.upperminlength > 1024) {
-    cs_pwpolicy.clear();
-  }
 
   SetField(m_PWPolicy, cs_pwpolicy);
   return true;

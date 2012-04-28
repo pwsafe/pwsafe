@@ -13,6 +13,89 @@
 #include "PWSprefs.h"
 #include "PWCharPool.h"
 #include "core.h"
+#include "StringXStream.h"
+#include <iomanip>
+/**
+ * A policy is encoded as string (for persistence) as follows:
+ * We need flags(4), length(3), lower_len(3), upper_len(3)
+ *   digit_len(3), symbol_len(3) = 4 + 5 * 3 = 19
+ * All fields are hexadecimal digits representing flags or lengths
+
+ * Note: order of fields set by PWSprefs enum that can have minimum lengths.
+ * Later releases must support these as a minimum.  Any fields added
+ * by these releases will be lost if the user changes these field.
+ */
+#define POL_STR_ENC_LEN 19
+
+PWPolicy::PWPolicy(const StringX &str) : usecount(0)
+{
+  ASSERT(str.empty() || str.length() == POL_STR_ENC_LEN);
+  if (str.length() != POL_STR_ENC_LEN) {
+    PWPolicy emptyPol;
+    *this = emptyPol;
+    return;
+  }
+
+  // String !empty and of right length: Get fields
+  const stringT cs_pwp(str.c_str());
+  istringstreamT is_flags(stringT(cs_pwp, 0, 4));
+  istringstreamT is_length(stringT(cs_pwp, 4, 3));
+  istringstreamT is_digitminlength(stringT(cs_pwp, 7, 3));
+  istringstreamT is_lowreminlength(stringT(cs_pwp, 10, 3));
+  istringstreamT is_symbolminlength(stringT(cs_pwp, 13, 3));
+  istringstreamT is_upperminlength(stringT(cs_pwp, 16, 3));
+
+  // Put them into PWPolicy structure
+  unsigned int f; // dain bramaged istringstream requires this runaround
+  if (!(is_flags >> std::hex >> f)) goto fail;
+  flags = static_cast<unsigned short>(f);
+  if (!(is_length >> std::hex >> length)) goto fail;
+  if (!(is_digitminlength >> std::hex >> digitminlength)) goto fail;
+  if (!(is_lowreminlength >> std::hex >> lowerminlength)) goto fail;
+  if (!(is_symbolminlength >> std::hex >> symbolminlength)) goto fail;
+  if (!(is_upperminlength >> std::hex >> upperminlength)) goto fail;
+
+  // Sanity checks:
+  // Must be some flags; however hex incompatible with other flags
+  // lengths also have restrictions.
+  bool bhex_flag = (flags & PWPolicy::UseHexDigits) != 0;
+  bool bother_flags = (flags & (~PWPolicy::UseHexDigits)) != 0;
+  const int total_sublength = digitminlength + lowerminlength +
+    symbolminlength + upperminlength;
+
+  if (flags == 0 || (bhex_flag && bother_flags) ||
+      length > 1024 || total_sublength > length ||
+      digitminlength > 1024 || lowerminlength > 1024 ||
+      symbolminlength > 1024 || upperminlength > 1024) {
+    goto fail;
+  }
+  return;
+
+ fail:
+  PWPolicy failPol; // empty
+  *this = failPol;
+}
+
+PWPolicy::operator StringX() const
+{
+  StringX retval;
+  if (flags == 0) {
+    return retval;
+  }
+  ostringstreamT os;
+  unsigned int f; // dain bramaged istringstream requires this runaround
+  f = static_cast<unsigned int>(flags);
+  os.fill(charT('0'));
+  os << std::hex << std::setw(4) << f
+     << std::setw(3) << length
+     << std::setw(3) << digitminlength
+     << std::setw(3) << lowerminlength
+     << std::setw(3) << symbolminlength
+     << std::setw(3) << upperminlength;
+  retval = os.str().c_str();
+  ASSERT(retval.length() == POL_STR_ENC_LEN);
+  return retval;
+}
 
 bool PWPolicy::operator==(const PWPolicy &that) const
 {

@@ -54,6 +54,9 @@ struct PWPolicy {
                symbolminlength(0), upperminlength(0),
                symbols(_T("")), usecount(0) {}
 
+  // PWPolicy has a persistent textual representation:
+  PWPolicy(const StringX &str); // String2Policy
+  operator StringX() const; // Policy2String
   // copy c'tor and assignment operator, standard idioms
   PWPolicy(const PWPolicy &that)
     : flags(that.flags), length(that.length),

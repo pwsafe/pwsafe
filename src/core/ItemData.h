@@ -357,15 +357,17 @@ private:
   CItemField m_tttPMTime; // last 'P'assword 'M'odification time
   CItemField m_tttRMTime; // last 'R'ecord 'M'odification time
   CItemField m_PWHistory;
-  CItemField m_PWPolicy;
   CItemField m_XTimeInterval;
   CItemField m_RunCommand;
   CItemField m_DCA;
   CItemField m_ShiftDCA;
   CItemField m_email;
   CItemField m_protected;
-  CItemField m_symbols;
-  CItemField m_PolicyName;
+  // Password Policy stuff: Either m_PWPolicy (+ optionally m_symbols) is not empty
+  // or m_PolicyName is not empty. Both cannot be set. All can be empty.
+  CItemField m_PWPolicy;  // string encoding of item-specific password policy
+  CItemField m_symbols;   // string of item-specific password symbols
+  CItemField m_PolicyName; // named non-default password policy for this item
 
   // Save unknown record fields on read to put back on write unchanged
   UnknownFields m_URFL;

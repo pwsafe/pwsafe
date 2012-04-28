@@ -30,9 +30,6 @@
 #include <errno.h>
 #include <iomanip>
 
-extern void String2PWPolicy(const stringT &cs_pwp, PWPolicy &pwp);
-extern void PWPolicy2String(const PWPolicy &pwp, stringT &cs_pwp);
-
 using namespace std;
 using pws_os::CUUID;
 
@@ -661,8 +658,7 @@ int PWSfileV3::WriteHeader()
 
       oss << setw(2) << hex << iter->first.length();
       oss << iter->first.c_str();
-      stringT strpwp;
-      PWPolicy2String(iter->second, strpwp);
+      StringX strpwp(iter->second);
       oss << strpwp.c_str();
       if (iter->second.symbols.empty()) {
         oss << _T("00");
@@ -988,13 +984,10 @@ int PWSfileV3::ReadHeader()
             j += namelength;  // Skip over name
             if (j + 19 > recordlength) break;  // Error
 
-            PWPolicy pwp;
             StringX cs_pwp(text.substr(j, 19));
+            PWPolicy pwp(cs_pwp);
             j += 19;  // Skip over pwp
 
-            pwp.flags = 0;
-            String2PWPolicy(cs_pwp.c_str(), pwp);
-            
             if (j + 2 > recordlength) break;  // Error
             sxTemp = text.substr(j, 2) + sxBlank;
             is.str(sxTemp);
