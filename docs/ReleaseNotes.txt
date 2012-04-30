@@ -27,6 +27,9 @@ None
 Bugs fixed in 3.28.1
 ====================
 [3521158] Paste into the Notes field (Add or Edit entry) is now always in plain text.
+[3518734] When generating passwords (Ctrl-P), the user is no longer prompted to save
+changes when pressing Esc if they have selected a Named Password Policy but not generated
+a password.
 [3518732] Custom special symbol set now handled correctly in Generate Password
 dialog box.
 [3518389] All date/time fields in the List view are now displayed using the user's

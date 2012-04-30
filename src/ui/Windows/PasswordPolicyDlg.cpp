@@ -414,6 +414,11 @@ void CPasswordPolicyDlg::OnOK()
 
 void CPasswordPolicyDlg::OnCancel()
 {
+  // If user is just generating passwords, nothing to save.
+  if (m_uicaller == IDS_GENERATEPASSWORD)
+    goto exit;
+  
+  
   // Get new symbols (if any)
   m_SymbolsEdit.GetWindowText(m_Symbols);
 
@@ -444,6 +449,7 @@ void CPasswordPolicyDlg::OnCancel()
       return;
   }
 
+exit:
   CPWDialog::OnCancel();
 }
 
