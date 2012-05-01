@@ -1243,7 +1243,7 @@ void PWScore::GetPolicyNames(vector<stringT> &vNames) const
   }
 }
 
-bool PWScore::GetPolicyFromName(const StringX &sxPolicyName, PWPolicy &st_pp)
+bool PWScore::GetPolicyFromName(const StringX &sxPolicyName, PWPolicy &st_pp) const
 {
   // - An empty policy name is never valid.
   ASSERT(!sxPolicyName.empty());
@@ -1256,7 +1256,7 @@ bool PWScore::GetPolicyFromName(const StringX &sxPolicyName, PWPolicy &st_pp)
     st_pp.SetToDefaults();
     return true;
   } else {
-    PSWDPolicyMapIter iter = m_MapPSWDPLC.find(sxPolicyName);
+    PSWDPolicyMapCIter iter = m_MapPSWDPLC.find(sxPolicyName);
     if (iter != m_MapPSWDPLC.end()) {
       st_pp = iter->second;
       return true;
