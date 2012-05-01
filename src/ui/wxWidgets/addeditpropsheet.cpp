@@ -691,6 +691,7 @@ void AddEditPropSheet::CreateControls()
   itemStaticText94->SetValidator( wxGenericValidator(& m_RMTime) );
   // Connect events and objects
   m_noteTX->Connect(ID_TEXTCTRL7, wxEVT_SET_FOCUS, wxFocusEventHandler(AddEditPropSheet::OnNoteSetFocus), NULL, this);
+  itemTextCtrl130->Connect(IDC_OWNSYMBOLS, wxEVT_SET_FOCUS, wxFocusEventHandler(AddEditPropSheet::OnOwnSymSetFocus), NULL, this);
 ////@end AddEditPropSheet content construction
   m_PWHgrid->SetColLabelValue(0, _("Set Date/Time"));
   m_PWHgrid->SetColLabelValue(1, _("Password"));
@@ -999,16 +1000,16 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
   m_core.GetPolicyNames(svec);
   for (sviter = svec.begin(); sviter != svec.end(); sviter++)
     m_cbxPolicyNames->Append(sviter->c_str());
-  // Does item have a custom policy?
-  bool defPwPolicy = m_item.GetPWPolicy().empty();
-  m_defPWPRB->SetValue(defPwPolicy);
-  m_ourPWPRB->SetValue(!defPwPolicy);
-  if (!defPwPolicy) {
+  // Does item use a named policy or item-specific policy?
+  bool namedPwPolicy = !m_item.GetPolicyName().empty();
+  bool specificPwPolicy = !m_item.GetPWPolicy().empty();
+  ASSERT(!(namedPwPolicy && specificPwPolicy)); // both cannot be true!
+  m_defPWPRB->SetValue(!specificPwPolicy);
+  m_ourPWPRB->SetValue(specificPwPolicy);
+  if (specificPwPolicy) {
     m_item.GetPWPolicy(policy);
-    m_pwpLenCtrl->Enable(true);
-    policy.symbols = m_item.GetSymbols().c_str(); // ??? XXX ???
-  } else {
-    EnablePWPolicyControls(false);
+    policy.symbols = m_item.GetSymbols().c_str();
+  } else { // no item-specific policy, either default or named
     // Select item's named policy, or Default
     const wxString itemPolName = m_item.GetPolicyName().c_str();
     if (!itemPolName.IsEmpty()) {
@@ -1020,6 +1021,7 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
     }
   }
   UpdatePWPolicyControls(policy);
+  EnablePWPolicyControls(specificPwPolicy);
 }
 
 /*!
@@ -1657,7 +1659,7 @@ void AddEditPropSheet::OnSymbolsRB( wxCommandEvent& evt)
   m_useownsymbols = ((evt.GetId() == IDC_USE_DEFAULTSYMBOLS)
 		     ? DEFAULT_SYMBOLS : OWN_SYMBOLS);
 
-  FindWindow(IDC_OWNSYMBOLS)->Enable(m_useownsymbols == OWN_SYMBOLS);
+  //  FindWindow(IDC_OWNSYMBOLS)->Enable(m_useownsymbols == OWN_SYMBOLS);
   if (m_useownsymbols == OWN_SYMBOLS)
     FindWindow(IDC_OWNSYMBOLS)->SetFocus();
 }
@@ -1675,7 +1677,6 @@ void AddEditPropSheet::OnSymbolsCB( wxCommandEvent& evt )
   FindWindow(IDC_USE_DEFAULTSYMBOLS)->Enable(enable);
   FindWindow(IDC_STATIC_DEFAULT_SYMBOLS)->Enable(enable);
   FindWindow(IDC_USE_OWNSYMBOLS)->Enable(enable);
-  FindWindow(IDC_OWNSYMBOLS)->Enable(enable);
 }
 
 
@@ -1742,5 +1743,15 @@ void AddEditPropSheet::OnPolicylistSelected( wxCommandEvent& event )
   m_defPWPRB->SetValue(true);
   UpdatePWPolicyControls(policy);
   EnablePWPolicyControls(false);
+}
+
+
+/*!
+ * wxEVT_SET_FOCUS event handler for IDC_OWNSYMBOLS
+ */
+
+void AddEditPropSheet::OnOwnSymSetFocus( wxFocusEvent& )
+{
+  static_cast<wxRadioButton*>(FindWindow(IDC_USE_OWNSYMBOLS))->SetValue(true);
 }
 

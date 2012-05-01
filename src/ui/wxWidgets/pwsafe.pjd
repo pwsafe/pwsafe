@@ -15641,6 +15641,7 @@ Action:"</string>
                   <long name="title-mode">0</long>
                   <long name="locked">0</long>
                   <string name="proxy-type">"wbTextCtrlProxy"</string>
+                  <string name="event-handler-0">"wxEVT_SET_FOCUS|OnOwnSymSetFocus|NONE||AddEditPropSheet"</string>
                   <string name="proxy-Id name">"IDC_OWNSYMBOLS"</string>
                   <long name="proxy-Id value">10212</long>
                   <string name="proxy-Name">""</string>

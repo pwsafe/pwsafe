@@ -191,6 +191,9 @@ public:
   /// wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for IDC_USE_DEFAULTSYMBOLS
   void OnSymbolsRB( wxCommandEvent& event );
 
+  /// wxEVT_SET_FOCUS event handler for IDC_OWNSYMBOLS
+  void OnOwnSymSetFocus( wxFocusEvent& event );
+
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX7
   void OnEZreadCBClick( wxCommandEvent& event );
 
