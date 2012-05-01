@@ -1183,10 +1183,6 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
       m_item.GetXTimeInt(lastXTimeInt);
       time_t lastXtime;
       m_item.GetXTime(lastXtime);
-      bool isPWPDefault = m_defPWPRB->GetValue();
-      PWPolicy oldPWP;
-      m_item.GetPWPolicy(oldPWP);
-
       // Following ensures that untouched & hidden note
       // isn't marked as modified. Relies on fact that
       // Note field can't be modified w/o first getting focus
@@ -1224,7 +1220,20 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
 
       wxASSERT_MSG(numEntries ==0, wxT("Could not save existing password history entries"));
 
-      PWPolicy pwp;
+      PWPolicy oldPWP, pwp;
+      // get item's effective policy:
+      const StringX oldPolName = m_item.GetPolicyName();
+      if (oldPolName.empty()) { // either item-specific or default:
+        if (m_item.GetPWPolicy().empty())
+          oldPWP.SetToDefaults();
+        else
+          m_item.GetPWPolicy(oldPWP);
+      } else {
+        m_core.GetPolicyFromName(oldPolName, oldPWP);
+      }
+      // now get dbox's effecive policy:
+      pwp = GetSelectedPWPolicy();
+
       bIsModified = (group        != m_item.GetGroup().c_str()       ||
                      m_title      != m_item.GetTitle().c_str()       ||
                      m_user       != m_item.GetUser().c_str()        ||
@@ -1239,8 +1248,7 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
                      m_tttXTime   != lastXtime                       ||
                      m_XTimeInt   != lastXTimeInt                    ||
                      m_symbols    != m_item.GetSymbols().c_str()     ||
-                     (!isPWPDefault && ((pwp = GetPWPolicyFromUI()) != oldPWP)) ||
-                     (isPWPDefault && oldPWP != PWPolicy()));
+                     oldPWP       != pwp);
 
       bIsPSWDModified = (password != m_item.GetPassword());
 
@@ -1253,11 +1261,19 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
                        GetPref(PWSprefs::DefaultUsername).c_str() : m_user.c_str());
         m_item.SetNotes(tostringx(m_notes));
         m_item.SetURL(tostringx(m_url));
-	m_item.SetEmail(tostringx(m_email));
+        m_item.SetEmail(tostringx(m_email));
         m_item.SetAutoType(tostringx(m_autotype));
         m_item.SetRunCommand(tostringx(m_runcmd));
         m_item.SetPWHistory(tostringx(m_PWHistory));
-        m_item.SetPWPolicy(pwp);
+        wxString polName;
+        if (m_defPWPRB->GetValue()) {
+          polName = m_cbxPolicyNames->GetValue();
+          if (polName == _("Default Policy"))
+            polName = _("");
+        } else {
+          m_item.SetPWPolicy(pwp);
+        }
+        m_item.SetPolicyName(polName.c_str());
         m_item.SetDCA(m_DCA);
         m_item.SetShiftDCA(m_ShiftDCA);
       } // bIsModified
@@ -1578,9 +1594,10 @@ PWPolicy AddEditPropSheet::GetPWPolicyFromUI() const
 PWPolicy AddEditPropSheet::GetSelectedPWPolicy() const
 {
   PWPolicy pwp;
-  if (m_defPWPRB->GetValue())
-    pwp.SetToDefaults();
-  else
+  if (m_defPWPRB->GetValue()) {
+    const wxString polName = m_cbxPolicyNames->GetValue();
+    m_core.GetPolicyFromName(polName.c_str(), pwp);
+  } else
     pwp = GetPWPolicyFromUI();
   return pwp;
 }
