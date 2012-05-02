@@ -1130,7 +1130,7 @@ static short GetSelectedDCA(wxComboBox *pcbox, short defval)
   if (sel == wxNOT_FOUND) { // no selection - is this possible with our combobox?
     return -1;
   } else {
-    retval = reinterpret_cast<int>(pcbox->GetClientData(sel));
+    retval = reinterpret_cast<intptr_t>(pcbox->GetClientData(sel));
   }
   if (retval == defval)
     retval = -1;
