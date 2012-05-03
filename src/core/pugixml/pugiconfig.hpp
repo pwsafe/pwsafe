@@ -1,7 +1,7 @@
 /**
- * pugixml parser - version 1.0
+ * pugixml parser - version 1.2
  * --------------------------------------------------------
- * Copyright (C) 2006-2010, by Arseny Kapoulkine (arseny.kapoulkine@gmail.com)
+ * Copyright (C) 2006-2012, by Arseny Kapoulkine (arseny.kapoulkine@gmail.com)
  * Report bugs and download new versions at http://pugixml.org/
  *
  * This library is distributed under the MIT License. See notice at the end
@@ -17,12 +17,11 @@
  * The ONLY changes are for this configuration:
  *  a. To place the definition of PUGIXML_WCHAR_MODE within a ifdef depending on UNICODE
  *  b. Disable XPath as we do not need it.
- *  c. Implement custom memory allocation and deallocation routines
  *
  * NO changes made to the package's source files pugixml.cpp and pugixml.hpp
  *
- * The pugixml source corresponds to V1 rev. 836 - latest release as of 2012-02-19.
- * Official release of V1.0 was rev. 793 on 2011-10-31.
+ * The pugixml source corresponds to V1.2 @ rev. 916 - latest release as of 2012-05-02.
+ * Official release of V1.2 @ rev. 914 on 2012-05-01.
  *
  */
 
@@ -49,10 +48,19 @@
 // #define PUGIXML_FUNCTION __fastcall // to set calling conventions to all public functions to fastcall
 // In absence of PUGIXML_CLASS/PUGIXML_FUNCTION definitions PUGIXML_API is used instead
 
+// Uncomment this to switch to header-only version
+// #define PUGIXML_HEADER_ONLY
+// #include "pugixml.cpp"
+
+// Tune these constants to adjust memory-related behavior
+// #define PUGIXML_MEMORY_PAGE_SIZE 32768
+// #define PUGIXML_MEMORY_OUTPUT_STACK 10240
+// #define PUGIXML_MEMORY_XPATH_PAGE_SIZE 4096
+
 #endif
 
 /**
- * Copyright (c) 2006-2010 Arseny Kapoulkine
+ * Copyright (c) 2006-2012 Arseny Kapoulkine
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
