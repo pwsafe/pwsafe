@@ -43,7 +43,6 @@
 #include "core/PWSrand.h"
 #include "core/PWSdirs.h"
 #include "core/SysInfo.h"
-#include "core/XMLprefs.h"
 #include "core/PWSLog.h"
 
 #include "os/windows/pws_autotype/pws_at.h"

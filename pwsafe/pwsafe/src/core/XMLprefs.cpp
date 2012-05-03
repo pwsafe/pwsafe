@@ -47,7 +47,7 @@ void CXMLprefs::Unlock()
 bool CXMLprefs::CreateXML(bool bLoad)
 {
   // Call with bLoad set when about to Load, else
-  // this also adds a toplevel root element
+  // this just adds the XML declaration and a toplevel root element
   ASSERT(m_pXMLDoc == NULL);
   m_pXMLDoc = new pugi::xml_document;
   
@@ -60,9 +60,9 @@ bool CXMLprefs::CreateXML(bool bLoad)
     if (decl == NULL)
       return false;
 
-    decl.append_attribute(_T("version")).set_value(_T("1.0"));
-    decl.append_attribute(_T("encoding")).set_value(_T("utf-8"));
-    decl.append_attribute(_T("standalone")).set_value(_T("yes"));
+    decl.append_attribute(_T("version")) = _T("1.0");
+    decl.append_attribute(_T("encoding")) = _T("utf-8");
+    decl.append_attribute(_T("standalone")) = _T("yes");
     
     pugi::xml_node node = m_pXMLDoc->append_child(_T("Pwsafe_Settings"));
     return node != NULL;
@@ -147,9 +147,9 @@ bool CXMLprefs::Store()
   if (decl == NULL)
     goto exit;
 
-  decl.append_attribute(_T("version")).set_value(_T("1.0"));
-  decl.append_attribute(_T("encoding")).set_value(_T("utf-8"));
-  decl.append_attribute(_T("standalone")).set_value(_T("yes"));
+  decl.append_attribute(_T("version")) = _T("1.0");
+  decl.append_attribute(_T("encoding")) = _T("utf-8");
+  decl.append_attribute(_T("standalone")) = _T("yes");
 
   retval = m_pXMLDoc->save_file(m_csConfigFile.c_str(), _T("  "),
                          pugi::format_default | pugi::format_write_bom,
@@ -212,7 +212,7 @@ int CXMLprefs::SetPreference(const stringT &sPath, const stringT &sValue)
   }
 
   //  ***** VERY IMPORTANT *****
-  // Note, as documented in the manual under "Document object model/Tree Structure",
+  // Note, as documented in the pugi manual under "Document object model/Tree Structure",
   // nodes can be of various types.  Element nodes found above, do not have a value.
   // To add a value to an element node, one has to add a child node of type
   // 'node_pcdata' (plain character data node) or 'node_cdata' (character data node),
@@ -449,28 +449,28 @@ int CXMLprefs::SetShortcuts(const stringT &csBaseKeyName,
     pugi::xml_attribute attrib;
 
     attrib = shortcut.append_attribute(_T("id"));
-    attrib.set_value(v_shortcuts[i].id);
+    attrib = v_shortcuts[i].id;
     attrib = shortcut.append_attribute(_T("Ctrl"));
-    attrib.set_value((v_shortcuts[i].cModifier & PWS_HOTKEYF_CONTROL) ==
-                       PWS_HOTKEYF_CONTROL ? 1 : 0);
+    attrib = (v_shortcuts[i].cModifier & PWS_HOTKEYF_CONTROL) ==
+                       PWS_HOTKEYF_CONTROL ? 1 : 0;
     attrib = shortcut.append_attribute(_T("Alt"));
-    attrib.set_value((v_shortcuts[i].cModifier & PWS_HOTKEYF_ALT) ==
-                       PWS_HOTKEYF_ALT ? 1 : 0);
+    attrib = (v_shortcuts[i].cModifier & PWS_HOTKEYF_ALT) ==
+                       PWS_HOTKEYF_ALT ? 1 : 0;
     attrib = shortcut.append_attribute(_T("Shift"));
-    attrib.set_value((v_shortcuts[i].cModifier & PWS_HOTKEYF_SHIFT) ==
-                       PWS_HOTKEYF_SHIFT ? 1 : 0);
+    attrib = (v_shortcuts[i].cModifier & PWS_HOTKEYF_SHIFT) ==
+                       PWS_HOTKEYF_SHIFT ? 1 : 0;
     // wxWidgets only - set values but do not use in Windows MFC
     attrib = shortcut.append_attribute(_T("Meta"));
-    attrib.set_value((v_shortcuts[i].cModifier & PWS_HOTKEYF_META) ==
-                       PWS_HOTKEYF_META ? 1 : 0);
+    attrib = (v_shortcuts[i].cModifier & PWS_HOTKEYF_META) ==
+                       PWS_HOTKEYF_META ? 1 : 0;
     attrib = shortcut.append_attribute(_T("Win"));
-    attrib.set_value((v_shortcuts[i].cModifier & PWS_HOTKEYF_WIN) ==
-                       PWS_HOTKEYF_WIN ? 1 : 0);
+    attrib = (v_shortcuts[i].cModifier & PWS_HOTKEYF_WIN) ==
+                       PWS_HOTKEYF_WIN ? 1 : 0;
     attrib = shortcut.append_attribute(_T("Cmd"));
-    attrib.set_value((v_shortcuts[i].cModifier & PWS_HOTKEYF_CMD) ==
-                       PWS_HOTKEYF_CMD ? 1 : 0);
+    attrib = (v_shortcuts[i].cModifier & PWS_HOTKEYF_CMD) ==
+                       PWS_HOTKEYF_CMD ? 1 : 0;
     attrib = shortcut.append_attribute(_T("Key"));
-    attrib.set_value(v_shortcuts[i].siVirtKey);
+    attrib = v_shortcuts[i].siVirtKey;
   }
   return iRetVal;
 }
@@ -511,9 +511,9 @@ bool CXMLprefs::MigrateSettings(const stringT &sNewFilename,
   if (decl == NULL)
     return false;
 
-  decl.append_attribute(_T("version")).set_value(_T("1.0"));
-  decl.append_attribute(_T("encoding")).set_value(_T("utf-8"));
-  decl.append_attribute(_T("standalone")).set_value(_T("yes"));
+  decl.append_attribute(_T("version")) = _T("1.0");
+  decl.append_attribute(_T("encoding")) = _T("utf-8");
+  decl.append_attribute(_T("standalone")) = _T("yes");
 
   bool result = m_pXMLDoc->save_file(sNewFilename.c_str(), _T("  "),
                          pugi::format_default | pugi::format_write_bom,
