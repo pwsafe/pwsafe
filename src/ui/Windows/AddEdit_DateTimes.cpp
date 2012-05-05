@@ -462,7 +462,7 @@ void CAddEdit_DateTimes::SetXTime()
                       XTime.GetHour(), XTime.GetMinute(), 0, -1);
     M_XTimeInt() = 0;
   } else { // m_how == RELATIVE_EXP
-    LDateTime = CTime::GetCurrentTime() + CTimeSpan(m_numDays + 1, 0, 0, 0);
+    LDateTime = now + CTimeSpan(m_numDays, 0, 0, 0);
     M_XTimeInt() = m_bRecurringPswdExpiry == FALSE ? 0 : m_numDays;
   }
 
