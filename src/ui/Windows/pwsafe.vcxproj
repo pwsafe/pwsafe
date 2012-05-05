@@ -1342,6 +1342,7 @@
     <None Include="graphics\abase_warn.ico" />
     <None Include="graphics\dragbar\classic\AutotypeX.bmp" />
     <None Include="graphics\dragbar\new\AutotypeX.bmp" />
+    <None Include="graphics\empty_node.bmp" />
     <None Include="graphics\findtoolbar\classic\findadvancedon.bmp" />
     <None Include="graphics\findtoolbar\new\findadvancedon.bmp" />
     <None Include="graphics\toolbar\classic\addgroup.bmp" />

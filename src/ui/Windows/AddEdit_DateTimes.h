@@ -40,7 +40,6 @@ public:
   // m_how's values DEFAULT_SYMBOLS - in Radio button order
   enum {ABSOLUTE_EXP = 0, RELATIVE_EXP = 1, NONE_EXP = 2};
 
-  CDateTimeCtrl m_pTimeCtl;    // time picker control
   CDateTimeCtrl m_pDateCtl;    // date picker control
 
   BOOL m_bRecurringPswdExpiry;   // e.g., is interval recurring or 1-shot.

@@ -1603,6 +1603,9 @@
     <None Include="graphics\toolbar\new\copytoclipboard.bmp">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="graphics\empty_node.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="PasswordSafe.rc">
