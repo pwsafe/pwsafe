@@ -71,9 +71,7 @@ void CAddEdit_DateTimes::DoDataExchange(CDataExchange* pDX)
   DDX_Text(pDX, IDC_EXPDAYS, m_numDays);
   DDX_Radio(pDX, IDC_SELECTBYDATETIME, m_how);
   DDX_Check(pDX, IDC_REUSE_ON_CHANGE, m_bRecurringPswdExpiry);
-
   DDX_Control(pDX, IDC_EXPIRYDATE, m_pDateCtl);
-  DDX_Control(pDX, IDC_EXPIRYTIME, m_pTimeCtl);
 
   // Validation
   DDV_CheckMaxDays(pDX, m_how, m_numDays, m_maxDays);
@@ -91,7 +89,6 @@ BEGIN_MESSAGE_MAP(CAddEdit_DateTimes, CAddEdit_PropertyPage)
 
   ON_EN_CHANGE(IDC_EXPDAYS, OnDaysChanged)
   ON_NOTIFY(DTN_DATETIMECHANGE, IDC_EXPIRYDATE, OnDateTimeChanged)
-  ON_NOTIFY(DTN_DATETIMECHANGE, IDC_EXPIRYTIME, OnDateTimeChanged)
 
   // Common
   ON_MESSAGE(PSM_QUERYSIBLINGS, OnQuerySiblings)
@@ -141,7 +138,6 @@ BOOL CAddEdit_DateTimes::OnInitDialog()
     GetDlgItem(IDC_REUSE_ON_CHANGE)->EnableWindow(FALSE);
     GetDlgItem(IDC_EXPDAYS)->EnableWindow(FALSE);
     GetDlgItem(IDC_EXPIRYDATE)->EnableWindow(FALSE);
-    GetDlgItem(IDC_EXPIRYTIME)->EnableWindow(FALSE);
     GetDlgItem(IDC_STATIC_CURRENTVALUE)->EnableWindow(FALSE);
     GetDlgItem(IDC_STATIC_CURRENT_XTIME)->EnableWindow(FALSE);
     GetDlgItem(IDC_STATIC_LTINTERVAL_NOW)->EnableWindow(FALSE);
@@ -170,7 +166,6 @@ BOOL CAddEdit_DateTimes::OnInitDialog()
 
   if (M_original_entrytype() == CItemData::ET_ALIAS) {
     GetDlgItem(IDC_EXPIRYDATE)->EnableWindow(FALSE);
-    GetDlgItem(IDC_EXPIRYTIME)->EnableWindow(FALSE);
     GetDlgItem(IDC_SELECTBYNONE)->EnableWindow(FALSE);
     GetDlgItem(IDC_SELECTBYDATETIME)->EnableWindow(FALSE);
     GetDlgItem(IDC_SELECTBYDAYS)->EnableWindow(FALSE);
@@ -206,39 +201,13 @@ BOOL CAddEdit_DateTimes::OnInitDialog()
     }
   }
 
-  // Set the time/date format:
+  // Set the date format:
   // First get the time format picture.
   wchar_t szBuf[81];     // workspace
-  VERIFY(::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_STIMEFORMAT, szBuf, 80));
-  CString sTimeFormat = szBuf;
-
-  // Next get the separator character.
-  VERIFY(::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_STIME, szBuf, 80));
-  // Search for ":ss".
-  CString sSearch = szBuf;
-  sSearch += L"ss";
-  int nIndex = sTimeFormat.Find(sSearch);
-
-  if (nIndex != -1) {
-    // Found it!  Remove it from the format picture.
-    sTimeFormat.Delete(nIndex, sSearch.GetLength());
-  } else {
-    // No ":ss", so try ":s".
-    sSearch = szBuf;
-    sSearch += L"s";
-    nIndex = sTimeFormat.Find(sSearch);
-
-    if (nIndex != -1) {
-      // Found it!  Remove it from the format picture.
-      sTimeFormat.Delete(nIndex, sSearch.GetLength());
-    }
-  }
   VERIFY(::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SSHORTDATE, szBuf, 80));
   CString sDateFormat = szBuf;
 
-  CDateTimeCtrl *pTimeCtl = (CDateTimeCtrl*)GetDlgItem(IDC_EXPIRYTIME);
   CDateTimeCtrl *pDateCtl = (CDateTimeCtrl*)GetDlgItem(IDC_EXPIRYDATE);
-  pTimeCtl->SetFormat(sTimeFormat);
   pDateCtl->SetFormat(sDateFormat);
 
   // Refresh dialog
@@ -279,21 +248,18 @@ void CAddEdit_DateTimes::UpdateTimes()
     GetDlgItem(IDC_STATIC_LTINTERVAL_NOW)->EnableWindow(TRUE);
     GetDlgItem(IDC_REUSE_ON_CHANGE)->EnableWindow(TRUE);
     GetDlgItem(IDC_EXPIRYDATE)->EnableWindow(FALSE);
-    GetDlgItem(IDC_EXPIRYTIME)->EnableWindow(FALSE);
     break;
   case ABSOLUTE_EXP:
     GetDlgItem(IDC_EXPDAYS)->EnableWindow(FALSE);
     GetDlgItem(IDC_STATIC_LTINTERVAL_NOW)->EnableWindow(FALSE);
     GetDlgItem(IDC_REUSE_ON_CHANGE)->EnableWindow(FALSE);
     GetDlgItem(IDC_EXPIRYDATE)->EnableWindow(TRUE);
-    GetDlgItem(IDC_EXPIRYTIME)->EnableWindow(TRUE);
     break;
   case NONE_EXP:
     GetDlgItem(IDC_EXPDAYS)->EnableWindow(FALSE);
     GetDlgItem(IDC_STATIC_LTINTERVAL_NOW)->EnableWindow(FALSE);
     GetDlgItem(IDC_REUSE_ON_CHANGE)->EnableWindow(FALSE);
     GetDlgItem(IDC_EXPIRYDATE)->EnableWindow(FALSE);
-    GetDlgItem(IDC_EXPIRYTIME)->EnableWindow(FALSE);
     break;
   }
   GetDlgItem(IDC_XTIME_RECUR)->SetWindowText(cs_text);
@@ -310,14 +276,12 @@ void CAddEdit_DateTimes::UpdateTimes()
   const CTime sMinDate(xt.GetTime() < now.GetTime() ? xt : now);
   const CTime sMaxDate(CTime(2038, 1, 1, 0, 0, 0, -1));
 
-  CDateTimeCtrl *pTimeCtl = (CDateTimeCtrl*)GetDlgItem(IDC_EXPIRYTIME);
   CDateTimeCtrl *pDateCtl = (CDateTimeCtrl*)GetDlgItem(IDC_EXPIRYDATE);
 
   // Set approx. limit of 32-bit times!
   pDateCtl->SetRange(&sMinDate, &sMaxDate);
 
   pDateCtl->SetTime(&xt);
-  pTimeCtl->SetTime(&xt);
 
   if (m_bRecurringPswdExpiry == FALSE) {
     if (xt > now) {
@@ -443,7 +407,6 @@ void CAddEdit_DateTimes::OnClearXTime()
   GetDlgItem(IDC_STATIC_LTINTERVAL_NOW)->EnableWindow(FALSE);
   GetDlgItem(IDC_REUSE_ON_CHANGE)->EnableWindow(FALSE);
   GetDlgItem(IDC_EXPIRYDATE)->EnableWindow(FALSE);
-  GetDlgItem(IDC_EXPIRYTIME)->EnableWindow(FALSE);
 
   m_how = NONE_EXP;
 }
@@ -451,18 +414,17 @@ void CAddEdit_DateTimes::OnClearXTime()
 void CAddEdit_DateTimes::SetXTime()
 {
   UpdateData(TRUE);
-  CTime XTime, LDate, LDateTime;
-  CTime now(CTime::GetCurrentTime());
+  CTime LDate, LDateTime;
 
   if (m_how == ABSOLUTE_EXP) {
-    VERIFY(m_pTimeCtl.GetTime(XTime) == GDT_VALID);
     VERIFY(m_pDateCtl.GetTime(LDate) == GDT_VALID);
 
-    LDateTime = CTime(LDate.GetYear(), LDate.GetMonth(), LDate.GetDay(),
-                      XTime.GetHour(), XTime.GetMinute(), 0, -1);
+    LDateTime = CTime(LDate.GetYear(), LDate.GetMonth(), LDate.GetDay(), 0, 1, 0, -1);
     M_XTimeInt() = 0;
   } else { // m_how == RELATIVE_EXP
-    LDateTime = now + CTimeSpan(m_numDays, 0, 0, 0);
+    const CTime now(CTime::GetCurrentTime());
+    const CTime today(now.GetYear(), now.GetMonth(), now.GetDay(), 0, 1, 0);
+    LDateTime = today + CTimeSpan(m_numDays, 0, 0, 0);
     M_XTimeInt() = m_bRecurringPswdExpiry == FALSE ? 0 : m_numDays;
   }
 
@@ -487,7 +449,6 @@ void CAddEdit_DateTimes::OnDays()
   GetDlgItem(IDC_STATIC_LTINTERVAL_NOW)->EnableWindow(TRUE);
   GetDlgItem(IDC_REUSE_ON_CHANGE)->EnableWindow(TRUE);
   GetDlgItem(IDC_EXPIRYDATE)->EnableWindow(FALSE);
-  GetDlgItem(IDC_EXPIRYTIME)->EnableWindow(FALSE);
 
   m_how = RELATIVE_EXP;
 
@@ -502,7 +463,6 @@ void CAddEdit_DateTimes::OnDateTime()
   GetDlgItem(IDC_STATIC_LTINTERVAL_NOW)->EnableWindow(FALSE);
   GetDlgItem(IDC_REUSE_ON_CHANGE)->EnableWindow(FALSE);
   GetDlgItem(IDC_EXPIRYDATE)->EnableWindow(TRUE);
-  GetDlgItem(IDC_EXPIRYTIME)->EnableWindow(TRUE);
 
   m_how = ABSOLUTE_EXP;
 
