@@ -3022,15 +3022,21 @@ LRESULT DboxMain::CopyAllCompareResult(WPARAM wParam)
       CItemData *ptoEntry = &toPos->second;
       ci_temp.SetStatus(CItemData::ES_MODIFIED);
       pcmd = EditEntryCommand::Create(ptocore, *ptoEntry, ci_temp);
+      pcmd->SetNoGUINotify();
     } else {
       // Not there - add it
       ci_temp.SetStatus(CItemData::ES_ADDED);
       pcmd = AddEntryCommand::Create(ptocore, ci_temp);
+      pcmd->SetNoGUINotify();
     }
     pmulticmds->Add(pcmd);
   }
   
+  if (pmulticmds->GetSize() == 0)
+    return FALSE;
+
   Execute(pmulticmds);
+  RefreshViews();
 
   SetChanged(Data);
   ChangeOkUpdate();
@@ -3092,12 +3098,14 @@ LRESULT DboxMain::SynchAllCompareResult(WPARAM wParam)
     if (bUpdated) {
       updtEntry.SetStatus(CItemData::ES_MODIFIED);
       Command *pcmd = EditEntryCommand::Create(ptocore, *ptoEntry, updtEntry);
+      pcmd->SetNoGUINotify();
       pmulticmds->Add(pcmd);
     }
   }
 
   if (pmulticmds->GetSize() > 0) {
     Execute(pmulticmds);
+    RefreshViews();
     return TRUE;
   }
 
