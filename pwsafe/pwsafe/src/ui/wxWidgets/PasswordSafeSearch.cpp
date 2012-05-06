@@ -437,7 +437,8 @@ void PasswordSafeSearch::FindMatches(const StringX& searchText, bool fCaseSensit
     if (!found && bsFields.test(CItemData::PWHIST)) {
         size_t pwh_max, err_num;
         PWHistList pwhistlist;
-        CreatePWHistoryList(afn(itr).GetPWHistory(), pwh_max, err_num, pwhistlist, TMC_XML);
+        CreatePWHistoryList(afn(itr).GetPWHistory(), pwh_max, err_num,
+                            pwhistlist, PWSUtil::TMC_XML);
         for (PWHistList::iterator iter = pwhistlist.begin(); iter != pwhistlist.end(); iter++) {
           PWHistEntry pwshe = *iter;
           found = fCaseSensitive? pwshe.password.find(searchText) != StringX::npos: FindNoCase(searchText, pwshe.password );
