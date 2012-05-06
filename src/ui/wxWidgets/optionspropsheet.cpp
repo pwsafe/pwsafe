@@ -1128,7 +1128,7 @@ void COptions::OnSuffixCBSet( wxCommandEvent& /* evt */ )
     time_t now;
     time(&now);
     wxString datetime = PWSUtil::ConvertToDateTimeString(now,
-                                                         TMC_EXPORT_IMPORT).c_str();
+                                                         PWSUtil::TMC_EXPORT_IMPORT).c_str();
       example += L"_";
       example = example + datetime.Left(4) +  // YYYY
         datetime.Mid(5,2) +  // MM

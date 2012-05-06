@@ -941,7 +941,7 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
       m_PWHistory = towxstring(pwh_str);
       m_keepPWHist = CreatePWHistoryList(pwh_str,
                                          pwh_max, num_err,
-                                         pwhl, TMC_LOCALE);
+                                         pwhl, PWSUtil::TMC_LOCALE);
       if (size_t(m_PWHgrid->GetNumberRows()) < pwhl.size()) {
         m_PWHgrid->AppendRows(pwhl.size() - m_PWHgrid->GetNumberRows());
       }
@@ -1126,14 +1126,15 @@ void AddEditPropSheet::HidePassword()
 static short GetSelectedDCA(wxComboBox *pcbox, short defval)
 {
   int sel = pcbox->GetSelection();
-  short retval;
+  intptr_t retval = -1;
   if (sel == wxNOT_FOUND) { // no selection - is this possible with our combobox?
-    return -1;
+    goto done;
   } else {
     retval = reinterpret_cast<intptr_t>(pcbox->GetClientData(sel));
   }
   if (retval == defval)
     retval = -1;
+ done:
   return retval;
 }
 
@@ -1200,7 +1201,8 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
       // First, Get a list of all password history entries
       size_t pwh_max, num_err;
       PWHistList pwhl;
-      (void)CreatePWHistoryList(tostringx(m_PWHistory), pwh_max, num_err, pwhl, TMC_LOCALE);
+      (void)CreatePWHistoryList(tostringx(m_PWHistory), pwh_max, num_err,
+                                pwhl, PWSUtil::TMC_LOCALE);
 
       // Create a new PWHistory header, as per settings in this dialog
       size_t numEntries = MIN(pwhl.size(), static_cast<size_t>(m_maxPWHist));
