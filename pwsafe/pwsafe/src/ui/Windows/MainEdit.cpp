@@ -669,7 +669,7 @@ void DboxMain::OnCompareEntries()
   }
 
   if (pci != NULL && pci_other != NULL) {
-    // Entries - selected - shouldn't be call when group is seelcted
+    // Entries - selected - shouldn't be call when group is selected
     CShowCompareDlg showdlg(pci, pci_other, this);
     showdlg.DoModal();
   }
