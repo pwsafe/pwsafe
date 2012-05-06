@@ -15,6 +15,7 @@
 #include "GeneralMsgBox.h"
 #include "DboxMain.h"
 #include "CompareResultsDlg.h"
+#include "ShowCompareDlg.h"
 
 #include "core/PWScore.h"
 #include "core/Report.h"
@@ -120,6 +121,7 @@ BEGIN_MESSAGE_MAP(CCompareResultsDlg, CPWResizeDialog)
   ON_COMMAND(ID_MENUITEM_COPY_TO_ORIGINAL, OnCompareCopyToOriginalDB)
   ON_COMMAND(ID_MENUITEM_COPYALL_TO_ORIGINAL, OnCompareCopyAllToOriginalDB)
   ON_COMMAND(ID_MENUITEM_SYNCHRONIZEALL, OnCompareSynchronizeAll)
+  ON_COMMAND(ID_MENUITEM_COMPARE_ENTRIES, OnCompareBothEntries)
 END_MESSAGE_MAP()
 
 BOOL CCompareResultsDlg::OnInitDialog()
@@ -708,6 +710,25 @@ void CCompareResultsDlg::OnCompareSynchronizeAll()
   DoAllFunctions(SYNCHALL);
 }
 
+void CCompareResultsDlg::OnCompareBothEntries()
+{
+  DWORD_PTR dwItemData = m_LCResults.GetItemData(m_LCResults.GetRow());
+  st_CompareData *pst_data = GetCompareData(dwItemData);
+  ASSERT(pst_data != NULL);
+
+  ItemListIter i0 = m_pcore0->Find(pst_data->uuid0);
+  ItemListIter i1 = m_pcore1->Find(pst_data->uuid1);
+  ASSERT(i0 != m_pcore0->GetEntryEndIter());
+  ASSERT(i1 != m_pcore1->GetEntryEndIter());
+
+  if (i0 == m_pcore0->GetEntryEndIter() ||
+      i1 == m_pcore1->GetEntryEndIter())
+    return;
+
+  CShowCompareDlg showdlg(&i0->second, &i1->second, this);
+  showdlg.DoModal();
+}
+
 void CCompareResultsDlg::DoAllFunctions(const int ifunction)
 {
   // Shouldn't ever get here if original is R-O
@@ -861,7 +882,7 @@ void CCompareResultsDlg::OnItemRightClick(NMHDR *pNMHDR, LRESULT *pLResult)
   CPoint msg_pt = ::GetMessagePos();
   CMenu menu;
   int ipopup;
-  bool bTargetRO, bSourceRO;
+  bool bTargetRO(true), bSourceRO(true);
 
   if (m_LCResults.GetSelectedCount() != 1) {
     // Special processing - only allow "Copy All" items to original or 
@@ -925,7 +946,11 @@ void CCompareResultsDlg::OnItemRightClick(NMHDR *pNMHDR, LRESULT *pLResult)
       bSourceRO = m_bComparisonDBReadOnly;
       break;
     default:
-      return;
+      // Column is elsewhere - Compare entries' values
+      // Therefore: Source = Current DB, Target = Comparison DB
+      m_LCResults.SetColumn(LAST);
+      ipopup = IDR_POPCOMPAREBOTH;
+      break;
   }
 
   DWORD_PTR dwItemData = m_LCResults.GetItemData(m_LCResults.GetRow());
@@ -1455,7 +1480,8 @@ void CCPListCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
 
     case CDDS_ITEMPREPAINT | CDDS_SUBITEM:
       // Sub-item PrePaint
-      if (bIsSelected && m_column != -1 && pLVCD->iSubItem == m_column) {
+      if (bIsSelected &&
+          (m_column != -1 && pLVCD->iSubItem == m_column)) {
         pLVCD->clrText = crSelectedText;
         pLVCD->clrTextBk = crSelectedBkgrd;
         pLVCD->nmcd.uItemState &= ~CDIS_SELECTED;

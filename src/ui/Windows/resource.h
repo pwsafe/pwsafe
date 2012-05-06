@@ -90,6 +90,7 @@
 #define IDI_UNLOCKEDICON                209
 #define IDR_POPLANGUAGES                210
 #define IDR_POPCOPYALLTOORIGINAL        211
+#define IDR_POPCOMPAREBOTH              212
 #define IDB_CLOGO                       220
 #define IDB_CLOGO_SMALL                 221
 #define IDB_PSLOGO                      223

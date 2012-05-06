@@ -3035,7 +3035,10 @@ LRESULT DboxMain::CopyAllCompareResult(WPARAM wParam)
   if (pmulticmds->GetSize() == 0)
     return FALSE;
 
+  CWaitCursor waitCursor;
   Execute(pmulticmds);
+  waitCursor.Restore();
+
   RefreshViews();
 
   SetChanged(Data);
@@ -3104,7 +3107,10 @@ LRESULT DboxMain::SynchAllCompareResult(WPARAM wParam)
   }
 
   if (pmulticmds->GetSize() > 0) {
+    CWaitCursor waitCursor;
     Execute(pmulticmds);
+    waitCursor.Restore();
+
     RefreshViews();
     return TRUE;
   }

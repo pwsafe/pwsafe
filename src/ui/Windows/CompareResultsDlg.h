@@ -139,6 +139,7 @@ protected:
   afx_msg void OnCompareCopyToOriginalDB();
   afx_msg void OnCompareCopyAllToOriginalDB();
   afx_msg void OnCompareSynchronizeAll();
+  afx_msg void OnCompareBothEntries();
   afx_msg void OnSize(UINT nType, int cx, int cy);
   afx_msg void OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL);
   //}}AFX_MSG
