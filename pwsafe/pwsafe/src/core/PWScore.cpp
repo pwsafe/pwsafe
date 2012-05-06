@@ -947,7 +947,7 @@ bool PWScore::BackupCurFile(int maxNumIncBackups, int backupSuffix,
         time_t now;
         time(&now);
         StringX cs_datetime = PWSUtil::ConvertToDateTimeString(now,
-                                                               TMC_EXPORT_IMPORT);
+                                                               PWSUtil::TMC_EXPORT_IMPORT);
         cs_temp += _T("_");
         StringX nf = cs_temp.c_str() + 
                      cs_datetime.substr( 0, 4) +  // YYYY
@@ -2833,7 +2833,7 @@ void PWScore::GetDBProperties(st_DBProperties &st_dbp)
   if (twls == 0) {
     LoadAString(st_dbp.whenlastsaved, IDSC_UNKNOWN);
   } else {
-    st_dbp.whenlastsaved = PWSUtil::ConvertToDateTimeString(twls, TMC_EXPORT_IMPORT);
+    st_dbp.whenlastsaved = PWSUtil::ConvertToDateTimeString(twls, PWSUtil::TMC_EXPORT_IMPORT);
   }
 
   if (m_hdr.m_lastsavedby.empty() && m_hdr.m_lastsavedon.empty()) {

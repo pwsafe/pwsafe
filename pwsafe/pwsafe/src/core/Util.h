@@ -123,10 +123,6 @@ inline void putInt32(unsigned char buf[4], const int val )
 #endif
 }
 
-// Time conversion result formats - powers of 2 as they can be combined!
-enum {TMC_ASC_UNKNOWN = 1, TMC_ASC_NULL = 2, TMC_EXPORT_IMPORT = 4, TMC_XML = 8,
-      TMC_LOCALE = 16};
-
 namespace PWSUtil {
   // namespace of common utility functions
 
@@ -134,7 +130,10 @@ namespace PWSUtil {
   // and use secure versions (_s) when available
   void strCopy(LPTSTR target, size_t tcount, const LPCTSTR source, size_t scount);
   size_t strLength(const LPCTSTR str);
-  StringX ConvertToDateTimeString(const time_t &t, const int result_format);
+  // Time conversion result formats:
+  enum TMC {TMC_ASC_UNKNOWN, TMC_ASC_NULL, TMC_EXPORT_IMPORT, TMC_XML,
+            TMC_LOCALE, TMC_LOCALE_DATE_ONLY};
+  StringX ConvertToDateTimeString(const time_t &t, TMC result_format);
   stringT GetNewFileName(const stringT &oldfilename, const stringT &newExtn);
   extern const TCHAR *UNKNOWN_ASC_TIME_STR, *UNKNOWN_XML_TIME_STR;
   void GetTimeStamp(stringT &sTimeStamp, const bool bShort = false);

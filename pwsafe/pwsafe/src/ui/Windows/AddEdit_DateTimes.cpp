@@ -429,7 +429,7 @@ void CAddEdit_DateTimes::SetXTime()
   }
 
   M_tttXTime() = (time_t)LDateTime.GetTime();
-  M_locXTime() = PWSUtil::ConvertToDateTimeString(M_tttXTime(), TMC_LOCALE);
+  M_locXTime() = PWSUtil::ConvertToDateTimeString(M_tttXTime(), PWSUtil::TMC_LOCALE_DATE_ONLY);
 
   CString cs_text(L"");
   // m_XTimeInt is non-zero iff user specified a relative & recurring exp. date

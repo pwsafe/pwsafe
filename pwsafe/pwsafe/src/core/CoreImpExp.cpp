@@ -453,7 +453,7 @@ int PWScore::WriteXMLFile(const StringX &filename,
   time_t time_now;
 
   time(&time_now);
-  const StringX now = PWSUtil::ConvertToDateTimeString(time_now, TMC_XML);
+  const StringX now = PWSUtil::ConvertToDateTimeString(time_now, PWSUtil::TMC_XML);
 
   ofs << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" << endl;
   ofs << "<?xml-stylesheet type=\"text/xsl\" href=\"pwsafe.xsl\"?>" << endl;
@@ -499,7 +499,7 @@ int PWScore::WriteXMLFile(const StringX &filename,
   }
   if (m_hdr.m_whenlastsaved != 0) {
     StringX wls = PWSUtil::ConvertToDateTimeString(m_hdr.m_whenlastsaved,
-                                                   TMC_XML);
+                                                   PWSUtil::TMC_XML);
     conv.ToUTF8(wls.c_str(), utf8, utf8Len);
     ofs << "WhenLastSaved=\"";
     ofs.write(reinterpret_cast<const char *>(utf8), utf8Len);

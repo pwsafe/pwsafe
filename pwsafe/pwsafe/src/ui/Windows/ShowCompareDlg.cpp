@@ -334,9 +334,9 @@ void CShowCompareDlg::PopulateResults(const bool bShowAll)
         if (i == CItemData::CTIME  || i == CItemData::ATIME || i == CItemData::XTIME ||
             i == CItemData::PMTIME || i == CItemData::RMTIME) {
           if (t1 != 0)
-            sxValue1 = PWSUtil::ConvertToDateTimeString(t1, TMC_EXPORT_IMPORT);
+            sxValue1 = PWSUtil::ConvertToDateTimeString(t1, PWSUtil::TMC_EXPORT_IMPORT);
           if (t2 != 0)
-            sxValue2 = PWSUtil::ConvertToDateTimeString(t2, TMC_EXPORT_IMPORT);
+            sxValue2 = PWSUtil::ConvertToDateTimeString(t2, PWSUtil::TMC_EXPORT_IMPORT);
         }
         if (i == CItemData::PROTECTED) {
           sxValue1 = sxValue1.empty() ? sxNo : sxYes;
@@ -350,12 +350,12 @@ void CShowCompareDlg::PopulateResults(const bool bShowAll)
                                       MaxPWHistory1,
                                       num_err1,
                                       pwhistlist1,
-                                      TMC_EXPORT_IMPORT);
+                                      PWSUtil::TMC_EXPORT_IMPORT);
         bool status2 = CreatePWHistoryList(sxValue2,
                                       MaxPWHistory2,
                                       num_err2,
                                       pwhistlist2,
-                                      TMC_EXPORT_IMPORT);
+                                      PWSUtil::TMC_EXPORT_IMPORT);
 
         // If any password history value is different - it must be red
         if (sxValue1 != sxValue2)

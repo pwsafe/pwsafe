@@ -53,7 +53,7 @@ CExpPWListDlg::CExpPWListDlg(CWnd* pParent,
 
     // Get XTime and string versions
     elle.expirytttXTime = m_expPWList[i].expirytttXTime;
-    elle.sx_expirylocdate = PWSUtil::ConvertToDateTimeString(elle.expirytttXTime, TMC_LOCALE);
+    elle.sx_expirylocdate = PWSUtil::ConvertToDateTimeString(elle.expirytttXTime, PWSUtil::TMC_LOCALE);
     
     // Get entrytype (used for selecting image)
     elle.et = pci->GetEntryType();

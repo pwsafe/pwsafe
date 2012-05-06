@@ -888,7 +888,7 @@ void PWSprefs::UpdateTimeStamp()
   if (m_ConfigOption == CF_FILE_RW || m_ConfigOption == CF_FILE_RW_NEW) {
     time_t time_now;
     time(&time_now);
-    const StringX now = PWSUtil::ConvertToDateTimeString(time_now, TMC_XML);
+    const StringX now = PWSUtil::ConvertToDateTimeString(time_now, PWSUtil::TMC_XML);
 
     m_pXML_Config->Set(m_csHKCU, _T("LastUpdated"), now.c_str());
   }

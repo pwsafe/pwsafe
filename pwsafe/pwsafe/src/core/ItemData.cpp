@@ -428,7 +428,7 @@ StringX CItemData::GetAutoType() const
   return GetField(m_AutoType);
 }
 
-StringX CItemData::GetTime(int whichtime, int result_format) const
+StringX CItemData::GetTime(int whichtime, PWSUtil::TMC result_format) const
 {
   time_t t;
 
@@ -681,7 +681,7 @@ StringX CItemData::GetPlaintext(const TCHAR &separator,
     PWHistList pwhistlist;
 
     pwh_status = CreatePWHistoryList(GetPWHistory(), pwh_max, num_err,
-                                     pwhistlist, TMC_EXPORT_IMPORT);
+                                     pwhistlist, PWSUtil::TMC_EXPORT_IMPORT);
 
     //  Build export string
     history = MakePWHistoryHeader(pwh_status, pwh_max, pwhistlist.size());
@@ -946,7 +946,7 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
     size_t pwh_max, num_err;
     PWHistList pwhistlist;
     bool pwh_status = CreatePWHistoryList(GetPWHistory(), pwh_max, num_err,
-                                          pwhistlist, TMC_XML);
+                                          pwhistlist, PWSUtil::TMC_XML);
     oss << dec;
     if (pwh_status || pwh_max > 0 || !pwhistlist.empty()) {
       oss << "\t\t<pwhistory>" << endl;
@@ -1159,7 +1159,7 @@ void CItemData::UpdatePasswordHistory()
   } else {
     size_t num_err;
     saving = CreatePWHistoryList(pwh_str, pwh_max, num_err,
-                                 pwhistlist, TMC_EXPORT_IMPORT);
+                                 pwhistlist, PWSUtil::TMC_EXPORT_IMPORT);
   }
   if (!saving)
     return;
@@ -1176,7 +1176,7 @@ void CItemData::UpdatePasswordHistory()
   pwh_ent.password = GetPassword();
   pwh_ent.changetttdate = t;
   pwh_ent.changedate =
-    PWSUtil::ConvertToDateTimeString(t, TMC_EXPORT_IMPORT);
+    PWSUtil::ConvertToDateTimeString(t, PWSUtil::TMC_EXPORT_IMPORT);
 
   if (pwh_ent.changedate.empty()) {
     StringX unk;
@@ -1571,7 +1571,7 @@ bool CItemData::ValidatePWHistory()
   size_t pwh_max, num_err;
   PWHistList pwhistlist;
   bool pwh_status = CreatePWHistoryList(pwh, pwh_max, num_err,
-                                        pwhistlist, TMC_EXPORT_IMPORT);
+                                        pwhistlist, PWSUtil::TMC_EXPORT_IMPORT);
   if (num_err == 0)
     return true;
 
