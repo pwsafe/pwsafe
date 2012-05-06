@@ -135,31 +135,31 @@ public:
   StringX GetGroup() const; // V20
   StringX GetURL() const; // V30
   StringX GetAutoType() const; // V30
-  StringX GetATime() const {return GetTime(ATIME, TMC_ASC_UNKNOWN);}  // V30
-  StringX GetCTime() const {return GetTime(CTIME, TMC_ASC_UNKNOWN);}  // V30
-  StringX GetXTime() const {return GetTime(XTIME, TMC_ASC_UNKNOWN);}  // V30
-  StringX GetPMTime() const {return GetTime(PMTIME, TMC_ASC_UNKNOWN);}  // V30
-  StringX GetRMTime() const {return GetTime(RMTIME, TMC_ASC_UNKNOWN);}  // V30
-  StringX GetATimeL() const {return GetTime(ATIME, TMC_LOCALE);}  // V30
-  StringX GetCTimeL() const {return GetTime(CTIME, TMC_LOCALE);}  // V30
-  StringX GetXTimeL() const {return GetTime(XTIME, TMC_LOCALE);}  // V30
-  StringX GetPMTimeL() const {return GetTime(PMTIME, TMC_LOCALE);}  // V30
-  StringX GetRMTimeL() const {return GetTime(RMTIME, TMC_LOCALE);}  // V30
-  StringX GetATimeN() const {return GetTime(ATIME, TMC_ASC_NULL);}  // V30
-  StringX GetCTimeN() const {return GetTime(CTIME, TMC_ASC_NULL);}  // V30
-  StringX GetXTimeN() const {return GetTime(XTIME, TMC_ASC_NULL);}  // V30
-  StringX GetPMTimeN() const {return GetTime(PMTIME, TMC_ASC_NULL);}  // V30
-  StringX GetRMTimeN() const {return GetTime(RMTIME, TMC_ASC_NULL);}  // V30
-  StringX GetATimeExp() const {return GetTime(ATIME, TMC_EXPORT_IMPORT);}  // V30
-  StringX GetCTimeExp() const {return GetTime(CTIME, TMC_EXPORT_IMPORT);}  // V30
-  StringX GetXTimeExp() const {return GetTime(XTIME, TMC_EXPORT_IMPORT);}  // V30
-  StringX GetPMTimeExp() const {return GetTime(PMTIME, TMC_EXPORT_IMPORT);}  // V30
-  StringX GetRMTimeExp() const {return GetTime(RMTIME, TMC_EXPORT_IMPORT);}  // V30
-  StringX GetATimeXML() const {return GetTime(ATIME, TMC_XML);}  // V30
-  StringX GetCTimeXML() const {return GetTime(CTIME, TMC_XML);}  // V30
-  StringX GetXTimeXML() const {return GetTime(XTIME, TMC_XML);}  // V30
-  StringX GetPMTimeXML() const {return GetTime(PMTIME, TMC_XML);}  // V30
-  StringX GetRMTimeXML() const {return GetTime(RMTIME, TMC_XML);}  // V30
+  StringX GetATime() const {return GetTime(ATIME, PWSUtil::TMC_ASC_UNKNOWN);}  // V30
+  StringX GetCTime() const {return GetTime(CTIME, PWSUtil::TMC_ASC_UNKNOWN);}  // V30
+  StringX GetXTime() const {return GetTime(XTIME, PWSUtil::TMC_ASC_UNKNOWN);}  // V30
+  StringX GetPMTime() const {return GetTime(PMTIME, PWSUtil::TMC_ASC_UNKNOWN);}  // V30
+  StringX GetRMTime() const {return GetTime(RMTIME, PWSUtil::TMC_ASC_UNKNOWN);}  // V30
+  StringX GetATimeL() const {return GetTime(ATIME, PWSUtil::TMC_LOCALE);}  // V30
+  StringX GetCTimeL() const {return GetTime(CTIME, PWSUtil::TMC_LOCALE);}  // V30
+  StringX GetXTimeL() const {return GetTime(XTIME, PWSUtil::TMC_LOCALE_DATE_ONLY);}  // V30
+  StringX GetPMTimeL() const {return GetTime(PMTIME, PWSUtil::TMC_LOCALE);}  // V30
+  StringX GetRMTimeL() const {return GetTime(RMTIME, PWSUtil::TMC_LOCALE);}  // V30
+  StringX GetATimeN() const {return GetTime(ATIME, PWSUtil::TMC_ASC_NULL);}  // V30
+  StringX GetCTimeN() const {return GetTime(CTIME, PWSUtil::TMC_ASC_NULL);}  // V30
+  StringX GetXTimeN() const {return GetTime(XTIME, PWSUtil::TMC_ASC_NULL);}  // V30
+  StringX GetPMTimeN() const {return GetTime(PMTIME, PWSUtil::TMC_ASC_NULL);}  // V30
+  StringX GetRMTimeN() const {return GetTime(RMTIME, PWSUtil::TMC_ASC_NULL);}  // V30
+  StringX GetATimeExp() const {return GetTime(ATIME, PWSUtil::TMC_EXPORT_IMPORT);}  // V30
+  StringX GetCTimeExp() const {return GetTime(CTIME, PWSUtil::TMC_EXPORT_IMPORT);}  // V30
+  StringX GetXTimeExp() const {return GetTime(XTIME, PWSUtil::TMC_EXPORT_IMPORT);}  // V30
+  StringX GetPMTimeExp() const {return GetTime(PMTIME, PWSUtil::TMC_EXPORT_IMPORT);}  // V30
+  StringX GetRMTimeExp() const {return GetTime(RMTIME, PWSUtil::TMC_EXPORT_IMPORT);}  // V30
+  StringX GetATimeXML() const {return GetTime(ATIME, PWSUtil::TMC_XML);}  // V30
+  StringX GetCTimeXML() const {return GetTime(CTIME, PWSUtil::TMC_XML);}  // V30
+  StringX GetXTimeXML() const {return GetTime(XTIME, PWSUtil::TMC_XML);}  // V30
+  StringX GetPMTimeXML() const {return GetTime(PMTIME, PWSUtil::TMC_XML);}  // V30
+  StringX GetRMTimeXML() const {return GetTime(RMTIME, PWSUtil::TMC_XML);}  // V30
   //  These populate the time structure instead of giving a character string
   void GetATime(time_t &t) const {GetTime(ATIME, t);}  // V30
   void GetCTime(time_t &t) const {GetTime(CTIME, t);}  // V30
@@ -387,7 +387,7 @@ private:
   // move from pre-2.0 name to post-2.0 title+user
   void SplitName(const StringX &name,
                  StringX &title, StringX &username);
-  StringX GetTime(int whichtime, int result_format) const; // V30
+  StringX GetTime(int whichtime, PWSUtil::TMC result_format) const; // V30
   void GetTime(int whichtime, time_t &t) const; // V30
   void SetTime(const int whichtime); // V30
   void SetTime(const int whichtime, time_t t); // V30

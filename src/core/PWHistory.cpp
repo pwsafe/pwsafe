@@ -8,7 +8,6 @@
 /// \file PWHistory.cpp
 //-----------------------------------------------------------------------------
 #include "PWHistory.h"
-#include "Util.h"
 #include <sstream>
 #include <iomanip>
 #include "StringXStream.h"
@@ -17,7 +16,7 @@ using namespace std;
 
 bool CreatePWHistoryList(const StringX &pwh_str,
                          size_t &pwh_max, size_t &num_err,
-                         PWHistList &pwhl, int time_format)
+                         PWHistList &pwhl, PWSUtil::TMC time_format)
 {
   // Return boolean value stating if PWHistory status is active
   pwh_max = num_err = 0;
@@ -81,9 +80,9 @@ bool CreatePWHistoryList(const StringX &pwh_str,
     if (offset >= pwh_s.length())
       break;
 
-    pwh_ent.changetttdate = static_cast< time_t>(t);
+    pwh_ent.changetttdate = static_cast<time_t>(t);
     pwh_ent.changedate =
-      PWSUtil::ConvertToDateTimeString(static_cast< time_t>(t), time_format);
+      PWSUtil::ConvertToDateTimeString(static_cast<time_t>(t), time_format);
     if (pwh_ent.changedate.empty()) {
       //                       1234567890123456789
       pwh_ent.changedate = _T("1970-01-01 00:00:00");

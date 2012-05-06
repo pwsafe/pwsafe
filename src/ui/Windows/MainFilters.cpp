@@ -427,7 +427,7 @@ bool DboxMain::PassesPWHFiltering(const CItemData *pci,
 
   bool status = CreatePWHistoryList(pci->GetPWHistory(),
                                     pwh_max, err_num,
-                                    pwhistlist, TMC_EXPORT_IMPORT);
+                                    pwhistlist, PWSUtil::TMC_EXPORT_IMPORT);
 
   bPresent = pwh_max > 0 || !pwhistlist.empty();
 

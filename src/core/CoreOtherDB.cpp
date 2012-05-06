@@ -546,7 +546,7 @@ stringT PWScore::Merge(PWScore *pothercore,
         StringX sx_newTitle;
         time_t time_now;
         time(&time_now);
-        str_timestring = PWSUtil::ConvertToDateTimeString(time_now, TMC_XML).c_str();
+        str_timestring = PWSUtil::ConvertToDateTimeString(time_now, PWSUtil::TMC_XML).c_str();
         Replace(str_timestring, _T('T'), _T('-'));
         Format(sx_newTitle, _T("%s%s%s"), sx_otherTitle.c_str(), sx_merged.c_str(),
                             str_timestring.c_str());

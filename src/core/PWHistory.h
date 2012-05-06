@@ -43,6 +43,7 @@
 #include <time.h> // for time_t
 #include <vector>
 #include "StringX.h"
+#include "Util.h"
 
 struct PWHistEntry {
   time_t changetttdate;
@@ -76,7 +77,7 @@ typedef std::vector<PWHistEntry> PWHistList;
 
 bool CreatePWHistoryList(const StringX &pwh_str,
                         size_t &pwh_max, size_t &num_err,
-                        PWHistList &pwhl, int time_format);
+                         PWHistList &pwhl, PWSUtil::TMC time_format);
 
 StringX MakePWHistoryHeader(BOOL status, size_t pwh_max, size_t pwh_num);
 

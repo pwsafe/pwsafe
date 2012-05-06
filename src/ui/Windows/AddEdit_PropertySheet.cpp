@@ -549,7 +549,7 @@ void CAddEdit_PropertySheet::SetupInitialValues()
                                         m_AEMD.MaxPWHistory,
                                         num_err,
                                         m_AEMD.pwhistlist,
-                                        TMC_EXPORT_IMPORT) ? TRUE : FALSE;
+                                        PWSUtil::TMC_EXPORT_IMPORT) ? TRUE : FALSE;
   m_AEMD.oldNumPWHistory = m_AEMD.NumPWHistory = m_AEMD.pwhistlist.size();
   m_AEMD.oldSavePWHistory = m_AEMD.SavePWHistory = HasHistory;
 

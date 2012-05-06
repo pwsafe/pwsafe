@@ -2779,7 +2779,7 @@ LRESULT DboxMain::OnEditExpiredPasswordEntry(WPARAM wParam, LPARAM )
       tttXTime = (time_t)((long)tttCPMTime + (long)tttXTime * 86400);
     }
     pELLE->expirytttXTime = tttXTime;
-    pELLE->sx_expirylocdate = PWSUtil::ConvertToDateTimeString(tttXTime, TMC_LOCALE);
+    pELLE->sx_expirylocdate = PWSUtil::ConvertToDateTimeString(tttXTime, PWSUtil::TMC_LOCALE);
 
     return TRUE;
   }
@@ -3228,7 +3228,7 @@ int DboxMain::SaveDatabaseOnExit(const SaveType saveType)
     cs_temp += L"_";
     time_t now;
     time(&now);
-    StringX cs_datetime = PWSUtil::ConvertToDateTimeString(now, TMC_EXPORT_IMPORT);
+    StringX cs_datetime = PWSUtil::ConvertToDateTimeString(now, PWSUtil::TMC_EXPORT_IMPORT);
     StringX nf = cs_temp.c_str() +
                      cs_datetime.substr( 0, 4) +  // YYYY
                      cs_datetime.substr( 5, 2) +  // MM

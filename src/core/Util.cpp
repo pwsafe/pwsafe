@@ -355,8 +355,7 @@ size_t PWSUtil::strLength(const LPCTSTR str)
 const TCHAR *PWSUtil::UNKNOWN_XML_TIME_STR = _T("1970-01-01 00:00:00");
 const TCHAR *PWSUtil::UNKNOWN_ASC_TIME_STR = _T("Unknown");
 
-StringX PWSUtil::ConvertToDateTimeString(const time_t &t,
-                                         const int result_format)
+StringX PWSUtil::ConvertToDateTimeString(const time_t &t, TMC result_format)
 {
   StringX ret;
   if (t != 0) {
@@ -374,32 +373,40 @@ StringX PWSUtil::ConvertToDateTimeString(const time_t &t,
     if (st == NULL) // null means invalid time
       return ConvertToDateTimeString(0, result_format);
 #endif
-    if ((result_format & TMC_EXPORT_IMPORT) == TMC_EXPORT_IMPORT)
+    switch (result_format) {
+    case TMC_EXPORT_IMPORT:
       _tcsftime(datetime_str, sizeof(datetime_str) / sizeof(datetime_str[0]),
                 _T("%Y/%m/%d %H:%M:%S"), st);
-    else if ((result_format & TMC_XML) == TMC_XML)
+      break;
+    case TMC_XML:
       _tcsftime(datetime_str, sizeof(datetime_str) / sizeof(datetime_str[0]),
                 _T("%Y-%m-%dT%H:%M:%S"), st);
-    else if ((result_format & TMC_LOCALE) == TMC_LOCALE) {
+      break;
+    case TMC_LOCALE:
       setlocale(LC_TIME, "");
       _tcsftime(datetime_str, sizeof(datetime_str) / sizeof(datetime_str[0]),
                 _T("%c"), st);
-    } else {
-      int terr = _tasctime_s(datetime_str, 32, st);  // secure version
-      if (terr != 0)
+      break;
+    case TMC_LOCALE_DATE_ONLY:
+      setlocale(LC_TIME, "");
+      _tcsftime(datetime_str, sizeof(datetime_str) / sizeof(datetime_str[0]),
+                _T("%x"), st);
+      break;
+    default:
+      if (_tasctime_s(datetime_str, 32, st) != 0)
         return ConvertToDateTimeString(0, result_format);
     }
     ret = datetime_str;
-  } else {
+  } else { // t == 0
     switch (result_format) {
-      case TMC_ASC_UNKNOWN:
-        ret = UNKNOWN_ASC_TIME_STR;
-        break;
-      case TMC_XML:
-        ret = UNKNOWN_XML_TIME_STR;
-        break;
-      default:
-        ret = _T("");
+    case TMC_ASC_UNKNOWN:
+      ret = UNKNOWN_ASC_TIME_STR;
+      break;
+    case TMC_XML:
+      ret = UNKNOWN_XML_TIME_STR;
+      break;
+    default:
+      ret = _T("");
     }
   }
   // remove the trailing EOL char.
