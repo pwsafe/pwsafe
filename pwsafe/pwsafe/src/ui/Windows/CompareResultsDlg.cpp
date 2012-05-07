@@ -716,6 +716,9 @@ void CCompareResultsDlg::OnCompareBothEntries()
   st_CompareData *pst_data = GetCompareData(dwItemData);
   ASSERT(pst_data != NULL);
 
+  if (pst_data->indatabase != BOTH)
+    return;
+
   ItemListIter i0 = m_pcore0->Find(pst_data->uuid0);
   ItemListIter i1 = m_pcore1->Find(pst_data->uuid1);
   ASSERT(i0 != m_pcore0->GetEntryEndIter());
@@ -946,11 +949,7 @@ void CCompareResultsDlg::OnItemRightClick(NMHDR *pNMHDR, LRESULT *pLResult)
       bSourceRO = m_bComparisonDBReadOnly;
       break;
     default:
-      // Column is elsewhere - Compare entries' values
-      // Therefore: Source = Current DB, Target = Comparison DB
-      m_LCResults.SetColumn(LAST);
-      ipopup = IDR_POPCOMPAREBOTH;
-      break;
+      return;
   }
 
   DWORD_PTR dwItemData = m_LCResults.GetItemData(m_LCResults.GetRow());
@@ -993,9 +992,12 @@ void CCompareResultsDlg::OnItemRightClick(NMHDR *pNMHDR, LRESULT *pLResult)
         if (indatabase == BOTH || pst_data->bIsProtected0)
           pPopup->RemoveMenu(ID_MENUITEM_COPY_TO_ORIGINAL, MF_BYCOMMAND);
       }
-      // Can't synchonize if not in both databases!
-      if (indatabase != BOTH)
-        pPopup->RemoveMenu(ID_MENUITEM_SYNCHRONIZE, MF_BYCOMMAND);
+    }
+
+    // Can't synchonize pr compare if not in both databases!
+    if (indatabase != BOTH) {
+      pPopup->RemoveMenu(ID_MENUITEM_SYNCHRONIZE, MF_BYCOMMAND);
+      pPopup->RemoveMenu(ID_MENUITEM_COMPARE_ENTRIES, MF_BYCOMMAND);
     }
 
     // Change Edit to View if source read-only OR entry is protected OR if Comparison DB

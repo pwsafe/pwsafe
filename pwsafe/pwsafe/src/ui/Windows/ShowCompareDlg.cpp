@@ -13,6 +13,7 @@
 #include "ShowCompareDlg.h"
 #include "PWHistDlg.h"
 #include "DboxMain.h"
+#include "InfoDisplay.h"
 
 #include "core/ItemData.h"
 #include "core/Util.h"
@@ -26,7 +27,8 @@ static char THIS_FILE[] = __FILE__;
 
 CShowCompareDlg::CShowCompareDlg(CItemData *pci, CItemData *pci_other, CWnd *pParent)
   : CPWDialog(CShowCompareDlg::IDD, pParent),
-  m_pci(pci), m_pci_other(pci_other), m_ShowIdenticalFields(BST_UNCHECKED)
+  m_pci(pci), m_pci_other(pci_other), m_ShowIdenticalFields(BST_UNCHECKED),
+  m_pNotesDisplay(NULL)
 {
   ASSERT(m_pci != NULL && m_pci_other != NULL && pParent != NULL);
   
@@ -66,6 +68,8 @@ BOOL CShowCompareDlg::OnInitDialog()
 {
   CPWDialog::OnInitDialog();
 
+  m_ListCtrl.Initialize();
+
   // Add grid lines
   m_ListCtrl.SetExtendedStyle(LVS_EX_GRIDLINES | LVS_EX_FULLROWSELECT |
                               m_ListCtrl.GetExtendedStyle());
@@ -80,6 +84,13 @@ BOOL CShowCompareDlg::OnInitDialog()
   m_ListCtrl.InsertColumn(2, cs_text);
 
   PopulateResults(false);
+
+  m_pNotesDisplay = new CInfoDisplay;
+  if (!m_pNotesDisplay->Create(0, 0, L"", this)) {
+    // failed
+    delete m_pNotesDisplay;
+    m_pNotesDisplay = NULL;
+  }
 
   return TRUE;
 }
@@ -444,6 +455,8 @@ void CShowCompareDlg::PopulateResults(const bool bShowAll)
           dw |= CSCWListCtrl::REDTEXT;
         if (i == CItemData::PASSWORD)
           dw |= CSCWListCtrl::PASSWORDFONT;
+        if (i == CItemData::NOTES)
+          dw |= CSCWListCtrl::NOTES;
         m_ListCtrl.SetItemData(iPos, dw);
       }
     }
@@ -511,4 +524,57 @@ CString CShowCompareDlg::GetEntryTypeString(CItemData::EntryType et)
   }
   CString cs(MAKEINTRESOURCE(ui));
   return cs;
+}
+
+bool CShowCompareDlg::SetNotesWindow(const CPoint ptClient, const bool bVisible)
+{
+  CPoint ptScreen(ptClient);
+  StringX sx_notes(L"");
+
+  if (m_pNotesDisplay == NULL)
+    return false;
+
+  if (!bVisible) {
+    m_pNotesDisplay->SetWindowText(sx_notes.c_str());
+    m_pNotesDisplay->ShowWindow(SW_HIDE);
+    return false;
+  }
+
+  m_ListCtrl.ClientToScreen(&ptScreen);
+
+  LVHITTESTINFO lvhti;
+  lvhti.pt = ptClient;
+  int nItem = m_ListCtrl.SubItemHitTest(&lvhti);
+  
+  if (nItem == -1 ||
+      (m_ListCtrl.GetItemData(nItem) & CSCWListCtrl::NOTES) != CSCWListCtrl::NOTES)
+    return false;
+
+  switch (lvhti.iSubItem) {
+    case 1:
+    case 2:
+      sx_notes = m_ListCtrl.GetItemText(nItem, lvhti.iSubItem);
+      break;
+    default:
+      return false;
+  }
+
+  ptScreen.y += ::GetSystemMetrics(SM_CYCURSOR) / 2; // half-height of cursor
+
+  if (!sx_notes.empty()) {
+    Replace(sx_notes, StringX(L"\r\n"), StringX(L"\n"));
+    Remove(sx_notes, L'\r');
+  }
+
+  // move window
+  CString cs_oldnotes;
+  m_pNotesDisplay->GetWindowText(cs_oldnotes);
+  if (LPCWSTR(cs_oldnotes) != sx_notes)
+    m_pNotesDisplay->SetWindowText(sx_notes.c_str());
+
+  m_pNotesDisplay->SetWindowPos(NULL, ptScreen.x, ptScreen.y, 0, 0,
+                                SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE);
+  m_pNotesDisplay->ShowWindow(!sx_notes.empty() ? SW_SHOWNA : SW_HIDE);
+
+  return !sx_notes.empty();
 }

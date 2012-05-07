@@ -344,7 +344,7 @@ public:
   void CreateShortcutEntry(CItemData *pci, const StringX &cs_group,
                            const StringX &cs_title, const StringX &cs_user,
                            StringX &sxNewDBPrefsString);
-  bool SetNotesWindow(const CPoint point, const bool bVisible = true);
+  bool SetNotesWindow(const CPoint ptClient, const bool bVisible = true);
   bool IsFilterActive() const {return m_bFilterActive;}
   int GetNumPassedFiltering() const {return m_bNumPassedFiltering;}
   CItemData *GetLastSelected() const;

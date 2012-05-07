@@ -11,6 +11,7 @@
 #include "SCWListCtrl.h"
 #include "DboxMain.h" // For TIMER_FIND
 #include "Fonts.h"
+#include "ShowCompareDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -19,6 +20,8 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 CSCWListCtrl::CSCWListCtrl()
+  : m_nHoverNDTimerID(0), m_nShowNDTimerID(0), m_bMouseInWindow(false),
+  m_pParent(NULL)
 {
 }
 
@@ -26,8 +29,16 @@ CSCWListCtrl::~CSCWListCtrl()
 {
 }
 
+void CSCWListCtrl::Initialize()
+{
+  m_pParent = reinterpret_cast<CShowCompareDlg *>(GetParent());
+}
+
 BEGIN_MESSAGE_MAP(CSCWListCtrl, CListCtrl)
   //{{AFX_MSG_MAP(CSCWListCtrl)
+  ON_MESSAGE(WM_MOUSELEAVE, OnMouseLeave)
+  ON_WM_MOUSEMOVE()
+  ON_WM_TIMER()
   ON_NOTIFY_REFLECT(NM_CUSTOMDRAW, OnCustomDraw)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
@@ -119,3 +130,70 @@ void CSCWListCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
       break;
   }
 }
+
+void CSCWListCtrl::OnTimer(UINT_PTR nIDEvent)
+{
+  switch (nIDEvent) {
+    case TIMER_ND_HOVER:
+      KillTimer(m_nHoverNDTimerID);
+      m_nHoverNDTimerID = 0;
+      if (m_pParent->SetNotesWindow(m_HoverNDPoint)) {
+        if (m_nShowNDTimerID) {
+          KillTimer(m_nShowNDTimerID);
+          m_nShowNDTimerID = 0;
+        }
+        m_nShowNDTimerID = SetTimer(TIMER_ND_SHOWING, TIMEINT_ND_SHOWING, NULL);
+      }
+      break;
+    case TIMER_ND_SHOWING:
+      KillTimer(m_nShowNDTimerID);
+      m_nShowNDTimerID = 0;
+      m_HoverNDPoint = CPoint(0, 0);
+      m_pParent->SetNotesWindow(m_HoverNDPoint, false);
+      break;
+    default:
+      CListCtrl::OnTimer(nIDEvent);
+      break;
+  }
+}
+
+LRESULT CSCWListCtrl::OnMouseLeave(WPARAM, LPARAM)
+{
+  KillTimer(m_nHoverNDTimerID);
+  KillTimer(m_nShowNDTimerID);
+  m_nHoverNDTimerID = m_nShowNDTimerID = 0;
+  m_HoverNDPoint = CPoint(0, 0);
+  m_pParent->SetNotesWindow(m_HoverNDPoint, false);
+  m_bMouseInWindow = false;
+  return 0L;
+}
+
+void CSCWListCtrl::OnMouseMove(UINT nFlags, CPoint point)
+{
+  if (m_nHoverNDTimerID) {
+    if (HitTest(m_HoverNDPoint) == HitTest(point))
+      return;
+    KillTimer(m_nHoverNDTimerID);
+    m_nHoverNDTimerID = 0;
+  }
+
+  if (m_nShowNDTimerID) {
+    if (HitTest(m_HoverNDPoint) == HitTest(point))
+      return;
+    KillTimer(m_nShowNDTimerID);
+    m_nShowNDTimerID = 0;
+    m_pParent->SetNotesWindow(CPoint(0, 0), false);
+  }
+
+  if (!m_bMouseInWindow) {
+    m_bMouseInWindow = true;
+    TRACKMOUSEEVENT tme = {sizeof(TRACKMOUSEEVENT), TME_LEAVE, m_hWnd, 0};
+    VERIFY(TrackMouseEvent(&tme));
+  }
+
+  m_nHoverNDTimerID = SetTimer(TIMER_ND_HOVER, HOVER_TIME_ND, NULL);
+  m_HoverNDPoint = point;
+
+  CListCtrl::OnMouseMove(nFlags, point);
+}
+

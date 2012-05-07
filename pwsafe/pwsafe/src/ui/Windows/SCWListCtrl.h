@@ -8,18 +8,32 @@
 
 #pragma once
 
+class CShowCompareDlg;
+
 class CSCWListCtrl : public CListCtrl
 {
 public:
   CSCWListCtrl();
   ~CSCWListCtrl();
 
-  enum {REDTEXT = 0x1000, PASSWORDFONT = 0x2000};
+  void Initialize();
+
+  enum {REDTEXT = 0x1000, PASSWORDFONT = 0x2000, NOTES = 0x4000};
 
 protected:
   //{{AFX_MSG(CSCWListCtrl)
   afx_msg void OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult);
+  afx_msg void OnTimer(UINT_PTR nIDEvent);
+  afx_msg LRESULT OnMouseLeave(WPARAM, LPARAM);
+  afx_msg void OnMouseMove(UINT nFlags, CPoint point);
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
+
+private:
+  CShowCompareDlg *m_pParent;
+
+  UINT_PTR m_nHoverNDTimerID, m_nShowNDTimerID;
+  bool m_bMouseInWindow;
+  CPoint m_HoverNDPoint;
 };

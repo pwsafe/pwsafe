@@ -3733,11 +3733,11 @@ HICON DboxMain::GetEntryIcon(const int nImage) const
   return hIcon;
 }
 
-bool DboxMain::SetNotesWindow(const CPoint point, const bool bVisible)
+bool DboxMain::SetNotesWindow(const CPoint ptClient, const bool bVisible)
 {
   const CItemData *pci(NULL);
-  CPoint target(point);
-  StringX cs_notes(L"");
+  CPoint ptScreen(ptClient);
+  StringX sx_notes(L"");
   UINT nFlags;
   HTREEITEM hItem(NULL);
   int nItem(-1);
@@ -3746,52 +3746,52 @@ bool DboxMain::SetNotesWindow(const CPoint point, const bool bVisible)
     return false;
 
   if (!bVisible) {
-    m_pNotesDisplay->SetWindowText(cs_notes.c_str());
+    m_pNotesDisplay->SetWindowText(sx_notes.c_str());
     m_pNotesDisplay->ShowWindow(SW_HIDE);
     return false;
   }
 
   if (m_ctlItemTree.IsWindowVisible()) {
-    m_ctlItemTree.ClientToScreen(&target);
-    hItem = m_ctlItemTree.HitTest(point, &nFlags);
+    m_ctlItemTree.ClientToScreen(&ptScreen);
+    hItem = m_ctlItemTree.HitTest(ptClient, &nFlags);
     if (hItem != NULL &&
         (nFlags & (TVHT_ONITEM | TVHT_ONITEMBUTTON | TVHT_ONITEMINDENT))) {
       pci = (CItemData *)m_ctlItemTree.GetItemData(hItem);
     }
   } else {
-    m_ctlItemList.ClientToScreen(&target);
-    nItem = m_ctlItemList.HitTest(point, &nFlags);
+    m_ctlItemList.ClientToScreen(&ptScreen);
+    nItem = m_ctlItemList.HitTest(ptClient, &nFlags);
     if (nItem >= 0) {
       pci = (CItemData *)m_ctlItemList.GetItemData(nItem);
     }
   }
-  target.y += ::GetSystemMetrics(SM_CYCURSOR) / 2; // half-height of cursor
+  ptScreen.y += ::GetSystemMetrics(SM_CYCURSOR) / 2; // half-height of cursor
 
   if (pci != NULL) {
     if (pci->IsShortcut())
       pci = GetBaseEntry(pci);
-    cs_notes = pci->GetNotes();
+    sx_notes = pci->GetNotes();
   }
 
-  if (!cs_notes.empty()) {
-    Replace(cs_notes, StringX(L"\r\n"), StringX(L"\n"));
-    Remove(cs_notes, L'\r');
+  if (!sx_notes.empty()) {
+    Replace(sx_notes, StringX(L"\r\n"), StringX(L"\n"));
+    Remove(sx_notes, L'\r');
 
-    if (cs_notes.length() > 256)
-      cs_notes = cs_notes.substr(0, 250) + L"[...]";
+    if (sx_notes.length() > 256)
+      sx_notes = sx_notes.substr(0, 250) + L"[...]";
   }
 
   // move window
   CString cs_oldnotes;
   m_pNotesDisplay->GetWindowText(cs_oldnotes);
-  if (LPCWSTR(cs_oldnotes) != cs_notes)
-    m_pNotesDisplay->SetWindowText(cs_notes.c_str());
+  if (LPCWSTR(cs_oldnotes) != sx_notes)
+    m_pNotesDisplay->SetWindowText(sx_notes.c_str());
 
-  m_pNotesDisplay->SetWindowPos(NULL, target.x, target.y, 0, 0,
+  m_pNotesDisplay->SetWindowPos(NULL, ptScreen.x, ptScreen.y, 0, 0,
                                 SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE);
-  m_pNotesDisplay->ShowWindow(!cs_notes.empty() ? SW_SHOWNA : SW_HIDE);
+  m_pNotesDisplay->ShowWindow(!sx_notes.empty() ? SW_SHOWNA : SW_HIDE);
 
-  return !cs_notes.empty();
+  return !sx_notes.empty();
 }
 
 CItemData *DboxMain::GetLastSelected() const

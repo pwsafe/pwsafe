@@ -21,6 +21,7 @@
 
 class DboxMain;
 class PWScore;
+class CInfoDisplay;
 
 class CShowCompareDlg : public CPWDialog
 {
@@ -32,6 +33,8 @@ public:
 
   pws_os::CUUID GetUUID();
   enum { IDD = IDD_SHOW_COMPARE };
+
+  bool SetNotesWindow(const CPoint ptClient, const bool bVisible = true);
 
 protected:
   virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
@@ -51,6 +54,7 @@ private:
   CSCWListCtrl m_ListCtrl;
   DboxMain *m_pDbx;
   CItemData *m_pci, *m_pci_other;
+  CInfoDisplay *m_pNotesDisplay;
 
   std::vector<UINT> m_DCA;
 };

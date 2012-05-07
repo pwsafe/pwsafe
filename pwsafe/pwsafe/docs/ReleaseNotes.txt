@@ -19,8 +19,7 @@ creation date/time is displayed. If the entry was created before PasswordSafe sa
 these fields, then all fields may still be blank. Note: This is a change to what
 is displayed and the entries are not updated to populate these fields.
 [] Display of the details of the entries' differences in the Compare database results dialog
-by invoking the compare selected entries dialog via the right click context menu on columns
-other than the first 2 columns (used for other functions).
+by invoking the compare selected entries dialog via the right click context menu.
 [] Portuguese (Brazil) installation instructions added, thanks to Andreas.
 
 Changes to Existing Features in 3.28.1
