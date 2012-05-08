@@ -158,19 +158,17 @@ void PWScore::Compare(PWScore *pothercore,
 
         CItemData compItem = pothercore->GetEntry(foundPos);
 
-        if (currentItem.GetEntryType() == CItemData::ET_ALIAS ||
-            currentItem.GetEntryType() == CItemData::ET_SHORTCUT) {
+        if (currentItem.IsDependent()) {
           CItemData *pci_base = GetBaseEntry(&currentItem);
-          sxCurrentPassword == pci_base->GetPassword();
+          sxCurrentPassword = pci_base->GetPassword();
         } else
-          sxCurrentPassword == currentItem.GetPassword();
+          sxCurrentPassword = currentItem.GetPassword();
 
-        if (compItem.GetEntryType() == CItemData::ET_ALIAS ||
-            compItem.GetEntryType() == CItemData::ET_SHORTCUT) {
+        if (compItem.IsDependent()) {
           CItemData *pci_base = pothercore->GetBaseEntry(&compItem);
-          sxComparisonPassword == pci_base->GetPassword();
+          sxComparisonPassword = pci_base->GetPassword();
         } else
-          sxComparisonPassword == compItem.GetPassword();
+          sxComparisonPassword = compItem.GetPassword();
 
         if (bsFields.test(CItemData::PASSWORD) &&
             sxCurrentPassword != sxComparisonPassword)
