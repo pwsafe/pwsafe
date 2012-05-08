@@ -3115,6 +3115,9 @@ LRESULT DboxMain::SynchAllCompareResult(WPARAM wParam)
     waitCursor.Restore();
 
     RefreshViews();
+
+    SetChanged(Data);
+    ChangeOkUpdate();
     return TRUE;
   }
 
