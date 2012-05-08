@@ -2970,6 +2970,9 @@ LRESULT DboxMain::SynchCompareResult(PWScore *pfromcore, PWScore *ptocore,
     updtEntry.SetStatus(CItemData::ES_MODIFIED);
     Command *pcmd = EditEntryCommand::Create(ptocore, *ptoEntry, updtEntry);
     Execute(pcmd, ptocore);
+    
+    SetChanged(Data);
+    ChangeOkUpdate();
     return TRUE;
   }
 
