@@ -67,12 +67,9 @@ protected:
 
   afx_msg void OnDaysChanged();
   afx_msg void OnDateTimeChanged(NMHDR *pNotifyStruct, LRESULT *pLResult);
-
-  afx_msg void OnClearXTime();
-  afx_msg void OnDateTime();
-  afx_msg void OnDays();
   afx_msg void OnRecurringPswdExpiry();
   //}}AFX_MSG
+  afx_msg void OnHowChanged(); // When a RB's clicked
 
   DECLARE_MESSAGE_MAP()
 
