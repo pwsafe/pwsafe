@@ -82,9 +82,9 @@ BEGIN_MESSAGE_MAP(CAddEdit_DateTimes, CAddEdit_PropertyPage)
   //{{AFX_MSG_MAP(CAddEdit_DateTimes)
   ON_BN_CLICKED(ID_HELP, OnHelp)
 
-  ON_BN_CLICKED(IDC_SELECTBYNONE, OnClearXTime)
-  ON_BN_CLICKED(IDC_SELECTBYDATETIME, OnDateTime)
-  ON_BN_CLICKED(IDC_SELECTBYDAYS, OnDays)
+  ON_BN_CLICKED(IDC_SELECTBYNONE, OnHowChanged)
+  ON_BN_CLICKED(IDC_SELECTBYDATETIME, OnHowChanged)
+  ON_BN_CLICKED(IDC_SELECTBYDAYS, OnHowChanged)
   ON_BN_CLICKED(IDC_REUSE_ON_CHANGE, OnRecurringPswdExpiry)
 
   ON_EN_CHANGE(IDC_EXPDAYS, OnDaysChanged)
@@ -392,24 +392,48 @@ void CAddEdit_DateTimes::OnHelp()
   HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
 }
 
-void CAddEdit_DateTimes::OnClearXTime()
+void CAddEdit_DateTimes::OnHowChanged()
 {
-  M_locXTime().LoadString(IDS_NEVER);
-  GetDlgItem(IDC_XTIME)->SetWindowText((CString)M_locXTime());
-  GetDlgItem(IDC_XTIME_RECUR)->SetWindowText(L"");
-  if (M_tttXTime() != (time_t)0 || M_XTimeInt() != 0)
+  UpdateData(TRUE); // Gets new m_how
+  switch (m_how) {
+  case NONE_EXP:
+    M_locXTime().LoadString(IDS_NEVER);
+    GetDlgItem(IDC_XTIME)->SetWindowText((CString)M_locXTime());
+    GetDlgItem(IDC_XTIME_RECUR)->SetWindowText(L"");
+    if (M_tttXTime() != (time_t)0 || M_XTimeInt() != 0)
+      m_ae_psh->SetChanged(true);
+
+    M_tttXTime() = (time_t)0;
+    M_XTimeInt() = 0;
+
+    GetDlgItem(IDC_EXPDAYS)->EnableWindow(FALSE);
+    GetDlgItem(IDC_STATIC_LTINTERVAL_NOW)->EnableWindow(FALSE);
+    GetDlgItem(IDC_REUSE_ON_CHANGE)->EnableWindow(FALSE);
+    GetDlgItem(IDC_EXPIRYDATE)->EnableWindow(FALSE);
+    break;
+  case ABSOLUTE_EXP:
     m_ae_psh->SetChanged(true);
 
-  M_tttXTime() = (time_t)0;
-  M_XTimeInt() = 0;
+    GetDlgItem(IDC_EXPDAYS)->EnableWindow(FALSE);
+    GetDlgItem(IDC_STATIC_LTINTERVAL_NOW)->EnableWindow(FALSE);
+    GetDlgItem(IDC_REUSE_ON_CHANGE)->EnableWindow(FALSE);
+    GetDlgItem(IDC_EXPIRYDATE)->EnableWindow(TRUE);
+    SetXTime();
+    break;
+  case RELATIVE_EXP:
+    m_ae_psh->SetChanged(true);
 
-  GetDlgItem(IDC_EXPDAYS)->EnableWindow(FALSE);
-  GetDlgItem(IDC_STATIC_LTINTERVAL_NOW)->EnableWindow(FALSE);
-  GetDlgItem(IDC_REUSE_ON_CHANGE)->EnableWindow(FALSE);
-  GetDlgItem(IDC_EXPIRYDATE)->EnableWindow(FALSE);
-
-  m_how = NONE_EXP;
+    GetDlgItem(IDC_EXPDAYS)->EnableWindow(TRUE);
+    GetDlgItem(IDC_STATIC_LTINTERVAL_NOW)->EnableWindow(TRUE);
+    GetDlgItem(IDC_REUSE_ON_CHANGE)->EnableWindow(TRUE);
+    GetDlgItem(IDC_EXPIRYDATE)->EnableWindow(FALSE);
+    SetXTime();
+    break;
+  default:
+    ASSERT(0);
+  }
 }
+
 
 void CAddEdit_DateTimes::SetXTime()
 {
@@ -439,34 +463,6 @@ void CAddEdit_DateTimes::SetXTime()
   GetDlgItem(IDC_XTIME)->SetWindowText(M_locXTime());
   GetDlgItem(IDC_XTIME_RECUR)->SetWindowText(cs_text);
   m_ae_psh->SetChanged(true);
-}
-
-void CAddEdit_DateTimes::OnDays()
-{
-  m_ae_psh->SetChanged(true);
-
-  GetDlgItem(IDC_EXPDAYS)->EnableWindow(TRUE);
-  GetDlgItem(IDC_STATIC_LTINTERVAL_NOW)->EnableWindow(TRUE);
-  GetDlgItem(IDC_REUSE_ON_CHANGE)->EnableWindow(TRUE);
-  GetDlgItem(IDC_EXPIRYDATE)->EnableWindow(FALSE);
-
-  m_how = RELATIVE_EXP;
-
-  SetXTime();
-}
-
-void CAddEdit_DateTimes::OnDateTime()
-{
-  m_ae_psh->SetChanged(true);
-
-  GetDlgItem(IDC_EXPDAYS)->EnableWindow(FALSE);
-  GetDlgItem(IDC_STATIC_LTINTERVAL_NOW)->EnableWindow(FALSE);
-  GetDlgItem(IDC_REUSE_ON_CHANGE)->EnableWindow(FALSE);
-  GetDlgItem(IDC_EXPIRYDATE)->EnableWindow(TRUE);
-
-  m_how = ABSOLUTE_EXP;
-
-  SetXTime();
 }
 
 void CAddEdit_DateTimes::OnRecurringPswdExpiry()
