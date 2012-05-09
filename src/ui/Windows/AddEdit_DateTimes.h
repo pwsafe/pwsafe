@@ -46,6 +46,7 @@ public:
   int m_how;                    // is expiration absolute or relative? (int for DDX)
   int m_numDays;                // interval (in days) to expiration when m_how == RELATIVE
   int m_maxDays;                // limited s.t. time_t can't overflow
+  bool m_inSetX;                // avoid nasty recursion when updating stuff directly
 
   void UpdateStats();
 

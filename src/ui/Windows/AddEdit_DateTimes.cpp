@@ -34,6 +34,9 @@ using pws_os::CUUID;
 bool CAddEdit_DateTimes::m_bNumDaysFailed = false;
 bool CAddEdit_DateTimes::m_bShowUUID = false;
 
+// If no expiry set, this is what we offer:
+#define DEFAULT_EXP_INTERVAL 90
+
 static void AFXAPI DDV_CheckMaxDays(CDataExchange* pDX, const int &how,
                                     int &numDays, const int &maxDays);
 
@@ -46,7 +49,8 @@ CAddEdit_DateTimes::CAddEdit_DateTimes(CWnd *pParent, st_AE_master_data *pAEMD)
   : CAddEdit_PropertyPage(pParent, 
                           CAddEdit_DateTimes::IDD, CAddEdit_DateTimes::IDD_SHORT,
                           pAEMD),
-  m_how(NONE_EXP), m_numDays(1), m_bRecurringPswdExpiry(FALSE), m_bInitdone(false)
+  m_how(NONE_EXP), m_numDays(DEFAULT_EXP_INTERVAL), m_inSetX(false),
+  m_bRecurringPswdExpiry(FALSE), m_bInitdone(false)
 {
 #ifdef _DEBUG
   m_bShowUUID = true;
@@ -226,10 +230,11 @@ BOOL CAddEdit_DateTimes::OnKillActive()
 
 void CAddEdit_DateTimes::UpdateTimes()
 {
-  // Time fields
+  // From Item to page's controls:
+
   time(&M_tttCPMTime());
 
-  // Determine m_how from M_* field (not from radio buttons)
+  // Determine m_how from M_* field
   if (M_XTimeInt() > 0) {
     m_how = RELATIVE_EXP;
   } else {
@@ -261,16 +266,18 @@ void CAddEdit_DateTimes::UpdateTimes()
     GetDlgItem(IDC_REUSE_ON_CHANGE)->EnableWindow(FALSE);
     GetDlgItem(IDC_EXPIRYDATE)->EnableWindow(FALSE);
     break;
+  default:
+    ASSERT(0);
   }
   GetDlgItem(IDC_XTIME_RECUR)->SetWindowText(cs_text);
 
-  CTime xt;
   const CTime now(CTime::GetCurrentTime());
 
+  CTime xt;
   if (M_tttXTime() != (time_t)0) {
     xt = CTime(M_tttXTime());
   } else {
-    xt = now;
+    xt = now + CTimeSpan(DEFAULT_EXP_INTERVAL, 0, 0, 0);
   }
 
   const CTime sMinDate(xt.GetTime() < now.GetTime() ? xt : now);
@@ -287,12 +294,11 @@ void CAddEdit_DateTimes::UpdateTimes()
     if (xt > now) {
       m_numDays = int(CTimeSpan(xt - now).GetDays());
     } else
-      m_numDays = 1;
+      m_numDays = DEFAULT_EXP_INTERVAL;
   }
 
   GetDlgItem(IDC_STATIC_CURRENT_XTIME)->SetWindowText(M_locXTime());
 
-  // Need to update dialog from OnInitDialog and when called during OnApply
   UpdateData(FALSE);
 }
 
@@ -367,22 +373,18 @@ BOOL CAddEdit_DateTimes::OnApply()
 void CAddEdit_DateTimes::OnDateTimeChanged(NMHDR *, LRESULT *pLResult)
 {
   *pLResult = 0;
-  if (!m_bInitdone || m_AEMD.uicaller != IDS_EDITENTRY)
+  if (!m_bInitdone || m_AEMD.uicaller != IDS_EDITENTRY || m_inSetX)
     return;
 
   SetXTime();
-  UpdateData(TRUE);
-  m_ae_psh->SetChanged(true);
 }
 
 void CAddEdit_DateTimes::OnDaysChanged()
 {
-  if (!m_bInitdone || m_AEMD.uicaller != IDS_EDITENTRY)
+  if (!m_bInitdone || m_AEMD.uicaller != IDS_EDITENTRY || m_inSetX)
     return;
 
   SetXTime();
-  UpdateData(TRUE);
-  m_ae_psh->SetChanged(true);
 }
 
 void CAddEdit_DateTimes::OnHelp()
@@ -437,18 +439,24 @@ void CAddEdit_DateTimes::OnHowChanged()
 
 void CAddEdit_DateTimes::SetXTime()
 {
+  m_inSetX = true;
   UpdateData(TRUE);
   CTime LDate, LDateTime;
+  const CTime now(CTime::GetCurrentTime());
 
   if (m_how == ABSOLUTE_EXP) {
     VERIFY(m_pDateCtl.GetTime(LDate) == GDT_VALID);
 
     LDateTime = CTime(LDate.GetYear(), LDate.GetMonth(), LDate.GetDay(), 0, 1, 0, -1);
+    m_numDays = static_cast<int>((LDate.GetTime() - now.GetTime()) / (24*60*60)) + 1;
+    CString nds;
+    nds.Format(L"%d", m_numDays);
+    GetDlgItem(IDC_EXPDAYS)->SetWindowText(nds);
     M_XTimeInt() = 0;
   } else { // m_how == RELATIVE_EXP
-    const CTime now(CTime::GetCurrentTime());
     const CTime today(now.GetYear(), now.GetMonth(), now.GetDay(), 0, 1, 0);
     LDateTime = today + CTimeSpan(m_numDays, 0, 0, 0);
+    m_pDateCtl.SetTime(&LDateTime);
     M_XTimeInt() = m_bRecurringPswdExpiry == FALSE ? 0 : m_numDays;
   }
 
@@ -463,6 +471,7 @@ void CAddEdit_DateTimes::SetXTime()
   GetDlgItem(IDC_XTIME)->SetWindowText(M_locXTime());
   GetDlgItem(IDC_XTIME_RECUR)->SetWindowText(cs_text);
   m_ae_psh->SetChanged(true);
+  m_inSetX = false;
 }
 
 void CAddEdit_DateTimes::OnRecurringPswdExpiry()
