@@ -10,6 +10,7 @@
 
 #include "PWPolicy.h"
 #include "../os/typedefs.h"
+#include "../os/debug.h"
 #include "PWSprefs.h"
 #include "PWCharPool.h"
 #include "core.h"
@@ -29,8 +30,10 @@
 
 PWPolicy::PWPolicy(const StringX &str) : usecount(0)
 {
-  ASSERT(str.empty() || str.length() == POL_STR_ENC_LEN);
-  if (str.length() != POL_STR_ENC_LEN) {
+  if (str.empty() || str.length() != POL_STR_ENC_LEN) {
+    if (!str.empty()) {
+      pws_os::Trace(_T("Malformed policy string: %s\n"), str.c_str());
+    }
     PWPolicy emptyPol;
     *this = emptyPol;
     return;
