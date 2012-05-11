@@ -354,6 +354,10 @@ void CShowCompareDlg::PopulateResults(const bool bShowAll)
           sxValue2 = sxValue2.empty() ? sxNo : sxYes;
         }
       }
+      if (i == CItemData::POLICY) {
+        sxValue1 = pci->GetPWPolicyDisplayString();
+        sxValue2 = pci_other->GetPWPolicyDisplayString();
+      }
       if (i == CItemData::PWHIST) {
         size_t num_err1, num_err2, MaxPWHistory1, MaxPWHistory2;
         PWHistList pwhistlist1, pwhistlist2;

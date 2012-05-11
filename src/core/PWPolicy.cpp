@@ -32,6 +32,7 @@ PWPolicy::PWPolicy(const StringX &str) : usecount(0)
 {
   if (str.empty() || str.length() != POL_STR_ENC_LEN) {
     if (!str.empty()) {
+      ASSERT(str.length() == POL_STR_ENC_LEN);
       pws_os::Trace(_T("Malformed policy string: %s\n"), str.c_str());
     }
     PWPolicy emptyPol;

@@ -878,11 +878,13 @@ void PWScore::Synchronize(PWScore *pothercore,
       updItem.SetDisplayInfo(NULL);
 
       if (curItem.GetUUID() != otherItem.GetUUID()) {
-        pws_os::Trace(_T("Synchronize: Mis-match UUIDs for [%s:%s:%s]\n"), sx_otherGroup.c_str(), sx_otherTitle.c_str(), sx_otherUser.c_str());
+        pws_os::Trace(_T("Synchronize: Mis-match UUIDs for [%s:%s:%s]\n"),
+             sx_otherGroup.c_str(), sx_otherTitle.c_str(), sx_otherUser.c_str());
       }
 
       bool bUpdated(false);
-      for (size_t i = 0; i < bsFields.size(); i++) {
+      // Do not try and change GROUPTITLE = 0x00 (use GROUP & TITLE separately) or UUID = 0x01
+      for (size_t i = 2; i < bsFields.size(); i++) {
         if (bsFields.test(i)) {
           const StringX sxValue = otherItem.GetFieldValue(static_cast<CItemData::FieldType>(i));
           if (sxValue != updItem.GetFieldValue(static_cast<CItemData::FieldType>(i))) {

@@ -1525,12 +1525,12 @@ int DboxMain::InsertItemIntoGUITreeList(CItemData &ci, int iIndex,
     StringX strTemp = strNotes.substr(0, iEOL);
     strNotes = strTemp;
   }
-  StringX cs_fielddata;
+  StringX sx_fielddata;
 
   if (iView & iListOnly) {
     // Insert the first column data
     if (m_bImageInLV)
-      cs_fielddata = L"";
+      sx_fielddata = L"";
     else {
       time_t t;
       const CItemData::FieldType ft = (CItemData::FieldType)m_nColumnTypeByIndex[0];
@@ -1538,19 +1538,22 @@ int DboxMain::InsertItemIntoGUITreeList(CItemData &ci, int iIndex,
         case CItemData::PMTIME:
           ci.GetPMTime(t);
           if ((long)t == 0)
-            cs_fielddata = ci.GetCTimeL();
+            sx_fielddata = ci.GetCTimeL();
           break;
         case CItemData::RMTIME:
           ci.GetPMTime(t);
           if ((long)t == 0)
-            cs_fielddata = ci.GetCTimeL();
+            sx_fielddata = ci.GetCTimeL();
+          break;
+        case CItemData::POLICY:
+          sx_fielddata = ci.GetPWPolicyDisplayString();
           break;
         default:
-          cs_fielddata = ci.GetFieldValue(ft);
+          sx_fielddata = ci.GetFieldValue(ft);
       }
     }
 
-    iResult = m_ctlItemList.InsertItem(iResult, cs_fielddata.c_str());
+    iResult = m_ctlItemList.InsertItem(iResult, sx_fielddata.c_str());
 
     if (iResult < 0) {
       // TODO: issue error here...
@@ -1610,25 +1613,28 @@ int DboxMain::InsertItemIntoGUITreeList(CItemData &ci, int iIndex,
       const CItemData::FieldType ft = (CItemData::FieldType)m_nColumnTypeByIndex[i];
       switch (ft) {
         case CItemData::NOTES:
-          cs_fielddata = line1;
+          sx_fielddata = line1;
           break;
         case CItemData::CTIME:
           ci.GetCTime(t);
-          cs_fielddata = ((long)t == 0) ? sxUnknown : ci.GetCTimeL();
+          sx_fielddata = ((long)t == 0) ? sxUnknown : ci.GetCTimeL();
           break;
         case CItemData::PMTIME:
           ci.GetPMTime(t);
-          cs_fielddata = ((long)t == 0) ? ci.GetCTimeL() : ci.GetPMTimeL();
+          sx_fielddata = ((long)t == 0) ? ci.GetCTimeL() : ci.GetPMTimeL();
           break;
         case CItemData::RMTIME:
           ci.GetRMTime(t);
-          cs_fielddata = ((long)t == 0) ? ci.GetCTimeL() : ci.GetRMTimeL();
+          sx_fielddata = ((long)t == 0) ? ci.GetCTimeL() : ci.GetRMTimeL();
+          break;
+        case CItemData::POLICY:
+          sx_fielddata = ci.GetPWPolicyDisplayString();
           break;
         default:
-          cs_fielddata = ci.GetFieldValue(ft);
+          sx_fielddata = ci.GetFieldValue(ft);
       }
 
-      m_ctlItemList.SetItemText(iResult, i, cs_fielddata.c_str());
+      m_ctlItemList.SetItemText(iResult, i, sx_fielddata.c_str());
     }
 
     m_ctlItemList.SetItemData(iResult, (DWORD_PTR)&ci);
@@ -4020,7 +4026,52 @@ void DboxMain::RefreshEntryFieldInGUI(CItemData &ci, CItemData::FieldType ft)
   // For when any field is updated
   DisplayInfo *pdi = (DisplayInfo *)ci.GetDisplayInfo();
 
-  UpdateListItem(pdi->list_index, ft, ci.GetFieldValue(ft));
+  StringX sx_fielddata;
+  const StringX sxUnknown = PWSUtil::UNKNOWN_ASC_TIME_STR;
+  time_t t;
+
+  switch (ft) {
+    case CItemData::NOTES:
+    {
+      StringX sxnotes, line1(L"");
+      sxnotes = ci.GetNotes();
+      if (!sxnotes.empty()) {
+        StringX::size_type end;
+        const StringX delim = L"\r\n";
+        end = sxnotes.find(delim, 0);
+        line1 = sxnotes.substr(0, 
+                      (end == StringX::npos) ? StringX::npos : end);
+
+        // If more than one line, add '[>>>]' to end of this line
+        // Note CHeaderStrl adds the normal ellipsis '...' (without square
+        // brackets) if the text doesn't fit in the cell.  Use this to show
+        // more lines rather than more text in the first line.
+        if (end != StringX::npos)
+          line1 += L"[>>>]";
+      }
+      sx_fielddata = line1;
+      break;
+    }
+    case CItemData::CTIME:
+      ci.GetCTime(t);
+      sx_fielddata = ((long)t == 0) ? sxUnknown : ci.GetCTimeL();
+      break;
+    case CItemData::PMTIME:
+      ci.GetPMTime(t);
+      sx_fielddata = ((long)t == 0) ? ci.GetCTimeL() : ci.GetPMTimeL();
+      break;
+    case CItemData::RMTIME:
+      ci.GetRMTime(t);
+      sx_fielddata = ((long)t == 0) ? ci.GetCTimeL() : ci.GetRMTimeL();
+      break;
+    case CItemData::POLICY:
+      sx_fielddata = ci.GetPWPolicyDisplayString();
+      break;
+    default:
+      sx_fielddata = ci.GetFieldValue(ft);
+  }
+
+  UpdateListItem(pdi->list_index, ft, sx_fielddata);
 
   if (ft == CItemData::GROUP || m_bFilterActive) {
     RefreshViews();

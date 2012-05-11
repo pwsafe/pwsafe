@@ -171,6 +171,7 @@ public:
   StringX GetPWHistory() const;  // V30
   void GetPWPolicy(PWPolicy &pwp) const;
   StringX GetPWPolicy() const;
+  StringX GetPWPolicyDisplayString() const;
   StringX GetRunCommand() const;
   void GetDCA(short &iDCA, const bool bShift = false) const;
   StringX GetDCA(const bool bShift = false) const;
