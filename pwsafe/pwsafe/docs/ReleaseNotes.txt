@@ -20,6 +20,9 @@ these fields, then all fields may still be blank. Note: This is a change to what
 is displayed and the entries are not updated to populate these fields.
 [] Display of the details of the entries' differences in the Compare database results dialog
 by invoking the compare selected entries dialog via the right click context menu.
+[] Allow user to abort a long running Compare, Merge or Synchronise of databases. Note:
+if they are aborted, no changes will have been made to the database and users should view the
+report log to determine if they pressed abort in time (any changes can still be undone as normal).
 [] Portuguese (Brazil) installation instructions added, thanks to Andreas.
 
 Changes to Existing Features in 3.28.1

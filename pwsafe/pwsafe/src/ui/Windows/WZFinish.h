@@ -23,6 +23,8 @@ public:
 
   enum {IDD = IDD_WZFINISH};
 
+  void DisableAbort();
+
 protected:
   BOOL OnInitDialog();
 
@@ -30,6 +32,7 @@ protected:
   //{{AFX_MSG(CWZFinish)
   afx_msg BOOL OnSetActive();
   afx_msg void OnHelp();
+  afx_msg void OnAbort();
   afx_msg void OnViewReport();
   LRESULT OnExecuteThreadEnded(WPARAM wParam, LPARAM );
   //}}AFX_MSG
@@ -38,6 +41,7 @@ protected:
 
 private:
   BOOL Execute();
+
   CReport *m_prpt;
   CWinThread *m_pExecuteThread; // Execute worker thread
   int DoExecuteThread(WZExecuteThreadParms * &pthdpms);
@@ -48,6 +52,7 @@ private:
   bool m_bInitDone, m_bInProgress, m_bComplete, m_bViewingReport;
   int m_status;
   int m_numProcessed;
+  WZExecuteThreadParms m_thdpms;
 };
 //-----------------------------------------------------------------------------
 // Local variables:

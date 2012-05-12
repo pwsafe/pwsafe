@@ -719,3 +719,4 @@
 #define IDS_COPYALL                     5930
 #define IDS_SYNCHRONIZEALL              5931
 #define IDS_SYNCENTRY                   5932
+#define IDS_OPERATION_ABORTED           5933

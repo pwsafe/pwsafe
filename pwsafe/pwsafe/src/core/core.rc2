@@ -369,7 +369,7 @@ BEGIN
   IDSC_WERE                "were"
   IDSC_SYNCHUPDATED        "\r\nThe following %s %s updated:"
   IDSC_SYNCHCOMPLETED      "\r\nSynchronize completed: %d %s updated"
-  IDSC_MERGECONFLICTS      "Conflicting entries for \xab%s\xbb \xab%s\xbb \xab%s\xbb.\r\n  Added merged entry as \xab%s\xbb \xab%s\xbb \xab%s\xbb.\r\n    Differing field(s): %s"
+  IDSC_MERGECONFLICTS      "Conflicting entries for \xab%s\xbb \xab%s\xbb \xab%s\xbb.\r\n  Adding merged entry as \xab%s\xbb \xab%s\xbb \xab%s\xbb.\r\n    Differing field(s): %s"
   IDSC_MERGECOMPLETED      "\r\nMerge completed: %d %s added (%d %s, %d %s, %d %s)"
   IDSC_CONFLICT            "conflict"
   IDSC_CONFLICTS           "conflicts"

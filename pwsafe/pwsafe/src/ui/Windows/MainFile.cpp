@@ -1552,8 +1552,6 @@ int DboxMain::DoExportText(const StringX &sx_Filename, const bool bAll,
   }
 
   prpt->EndReport();
-
-  orderedItemList.clear(); // cleanup soonest
   return rc;
 }
 
@@ -1639,8 +1637,6 @@ int DboxMain::DoExportXML(const StringX &sx_Filename, const bool bAll,
   if (rc != PWScore::SUCCESS) {
     DisplayFileWriteError(rc, sx_Filename);
   }
-
-  orderedItemList.clear(); // cleanup soonest
 
   prpt->EndReport();
   return rc;
@@ -2440,7 +2436,7 @@ void DboxMain::OnSynchronize()
 }
 
 stringT DboxMain::DoMerge(PWScore *pothercore,
-                          const bool bAdvanced, CReport *prpt)
+                          const bool bAdvanced, CReport *prpt, bool *pbCancel)
 {
   CGeneralMsgBox gmb;
   CString cs_title, cs_temp,cs_text;
@@ -2503,10 +2499,15 @@ stringT DboxMain::DoMerge(PWScore *pothercore,
 
   // Do the Merge
   std::wstring str_result = m_core.Merge(pothercore, subgroup_bset,
-             subgroup_name, subgroup_object, subgroup_function, prpt);
+             subgroup_name, subgroup_object, subgroup_function, prpt, pbCancel);
 
   // restore normal cursor
   waitCursor.Restore();
+
+  if (pbCancel != NULL && *pbCancel) {
+    CString cs_buffer(MAKEINTRESOURCE(IDS_OPERATION_ABORTED));
+    prpt->WriteLine((LPCWSTR)cs_buffer);
+  }
 
   prpt->EndReport();
 
@@ -2514,7 +2515,7 @@ stringT DboxMain::DoMerge(PWScore *pothercore,
 }
 
 bool DboxMain::DoCompare(PWScore *pothercore,
-                         const bool bAdvanced, CReport *prpt)
+                         const bool bAdvanced, CReport *prpt, bool *pbCancel)
 {
   CString cs_temp, cs_text, cs_buffer;
 
@@ -2599,10 +2600,17 @@ bool DboxMain::DoCompare(PWScore *pothercore,
                  subgroup_name, subgroup_object,
                  subgroup_function,
                  m_list_OnlyInCurrent, m_list_OnlyInComp,
-                 m_list_Conflicts, m_list_Identical);
+                 m_list_Conflicts, m_list_Identical, pbCancel);
 
   // restore normal cursor
   waitCursor.Restore();
+
+  if (pbCancel != NULL && *pbCancel) {
+    cs_buffer.LoadString(IDS_OPERATION_ABORTED);
+    prpt->WriteLine((LPCWSTR)cs_buffer);
+    prpt->EndReport();
+    return false;
+  }
 
   cs_buffer.Format(IDS_COMPARESTATISTICS,
                    m_core.GetCurFile().c_str(),
@@ -2625,7 +2633,8 @@ bool DboxMain::DoCompare(PWScore *pothercore,
   return brc;
 }
 
-CString DboxMain::ShowCompareResults(const StringX sx_Filename1, const StringX sx_Filename2,
+CString DboxMain::ShowCompareResults(const StringX sx_Filename1,
+                                     const StringX sx_Filename2,
                                      PWScore *pothercore, CReport *prpt)
 {
   // Can't do UI from a worker thread!
@@ -2656,7 +2665,8 @@ CString DboxMain::ShowCompareResults(const StringX sx_Filename1, const StringX s
 }
 
 void DboxMain::DoSynchronize(PWScore *pothercore,
-                             const bool bAdvanced, int &numUpdated, CReport *prpt)
+                             const bool bAdvanced, int &numUpdated, CReport *prpt,
+                             bool *pbCancel)
 {
   numUpdated = 0;
 
@@ -2732,10 +2742,15 @@ void DboxMain::DoSynchronize(PWScore *pothercore,
   // Do the Synchronize
   m_core.Synchronize(pothercore, bsFields, subgroup_bset,
                      subgroup_name, subgroup_object, subgroup_function,
-                     numUpdated, prpt);
+                     numUpdated, prpt, pbCancel);
 
   // Restore normal cursor
   waitCursor.Restore();
+
+  if (pbCancel != NULL && *pbCancel) {
+    CString cs_buffer(MAKEINTRESOURCE(IDS_OPERATION_ABORTED));
+    prpt->WriteLine((LPCWSTR)cs_buffer);
+  }
 
   prpt->EndReport();
 }

@@ -59,7 +59,8 @@ void PWScore::Compare(PWScore *pothercore,
                       const bool &bTreatWhiteSpaceasEmpty,  const stringT &subgroup_name,
                       const int &subgroup_object, const int &subgroup_function,
                       CompareData &list_OnlyInCurrent, CompareData &list_OnlyInComp,
-                      CompareData &list_Conflicts, CompareData &list_Identical)
+                      CompareData &list_Conflicts, CompareData &list_Identical,
+                      bool *pbCancel)
 {
   /*
   Purpose:
@@ -94,6 +95,11 @@ void PWScore::Compare(PWScore *pothercore,
   for (currentPos = GetEntryIter();
        currentPos != GetEntryEndIter();
        currentPos++) {
+    // See if user has cancelled
+    if (pbCancel != NULL && *pbCancel) {
+      return;
+    }
+
     st_data.Empty();
     CItemData currentItem = GetEntry(currentPos);
 
@@ -291,6 +297,11 @@ void PWScore::Compare(PWScore *pothercore,
   for (compPos = pothercore->GetEntryIter();
        compPos != pothercore->GetEntryEndIter();
        compPos++) {
+    // See if user has cancelled
+    if (pbCancel != NULL && *pbCancel) {
+      return;
+    }
+
     st_data.Empty();
     CItemData compItem = pothercore->GetEntry(compPos);
 
@@ -324,6 +335,11 @@ void PWScore::Compare(PWScore *pothercore,
       }
     }
   } // iteration over other core's element
+
+  // See if user has cancelled too late - reset flag so incorrect information not given to user
+  if (pbCancel != NULL && *pbCancel) {
+    *pbCancel = false;
+  }
 }
 
 // Return whether first '«g» «t» «u»' is greater than the second '«g» «t» «u»'
@@ -379,7 +395,7 @@ stringT PWScore::Merge(PWScore *pothercore,
                        const bool &subgroup_bset,
                        const stringT &subgroup_name,
                        const int &subgroup_object, const int &subgroup_function,
-                       CReport *pRpt)
+                       CReport *pRpt, bool *pbCancel)
 {
   std::vector<StringX> vs_added;
   std::vector<StringX> vs_AliasesAdded;
@@ -424,6 +440,12 @@ stringT PWScore::Merge(PWScore *pothercore,
   for (otherPos = pothercore->GetEntryIter();
        otherPos != pothercore->GetEntryEndIter();
        otherPos++) {
+    // See if user has cancelled
+    if (pbCancel != NULL && *pbCancel) {
+      delete pmulticmds;
+      return _T("");
+    }
+
     CItemData otherItem = pothercore->GetEntry(otherPos);
     CItemData::EntryType et = otherItem.GetEntryType();
 
@@ -727,10 +749,21 @@ stringT PWScore::Merge(PWScore *pothercore,
     }
   }
 
+  // See if user has cancelled
+  if (pbCancel != NULL && *pbCancel) {
+    delete pmulticmds;
+    return _T("");
+  }
+
   Command *pcmd2 = UpdateGUICommand::Create(this, UpdateGUICommand::WN_REDO,
                                             UpdateGUICommand::GUI_REDO_MERGESYNC);
   pmulticmds->Add(pcmd2);
   Execute(pmulticmds);
+
+  // See if user has cancelled too late - reset flag so incorrect information not given to user
+  if (pbCancel != NULL && *pbCancel) {
+    *pbCancel = false;
+  }
 
   // Tell the user we're done & provide short merge report
   stringT str_entries, str_conflicts, str_aliases, str_shortcuts;
@@ -824,7 +857,7 @@ void PWScore::Synchronize(PWScore *pothercore,
                           const CItemData::FieldBits &bsFields, const bool &subgroup_bset,
                           const stringT &subgroup_name,
                           const int &subgroup_object, const int &subgroup_function,
-                          int &numUpdated, CReport *pRpt)
+                          int &numUpdated, CReport *pRpt, bool *pbCancel)
 {
   /*
   Purpose:
@@ -849,9 +882,15 @@ void PWScore::Synchronize(PWScore *pothercore,
   for (otherPos = pothercore->GetEntryIter();
        otherPos != pothercore->GetEntryEndIter();
        otherPos++) {
+    // See if user has cancelled
+    if (pbCancel != NULL && *pbCancel) {
+      delete pmulticmds;
+      return;
+    }
+
     CItemData otherItem = pothercore->GetEntry(otherPos);
     CItemData::EntryType et = otherItem.GetEntryType();
-
+    
     // Do not process Aliases and Shortcuts
     if (et == CItemData::ET_ALIAS || et == CItemData::ET_SHORTCUT)
       continue;
@@ -932,10 +971,22 @@ void PWScore::Synchronize(PWScore *pothercore,
     }
   }
 
+  // See if user has cancelled
+  if (pbCancel != NULL && *pbCancel) {
+    delete pmulticmds;
+    return;
+  }
+
   Command *pcmd2 = UpdateGUICommand::Create(this, UpdateGUICommand::WN_REDO,
                                             UpdateGUICommand::GUI_REDO_MERGESYNC);
   pmulticmds->Add(pcmd2);
   Execute(pmulticmds);
+
+  // See if user has cancelled too late - reset flag so incorrect information not given to user
+  if (pbCancel != NULL && *pbCancel) {
+    *pbCancel = false;
+    return;
+  }
 
   // tell the user we're done & provide short Synchronize report
   stringT str_entries;
