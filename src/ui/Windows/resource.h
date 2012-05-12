@@ -760,6 +760,7 @@
 #define IDC_CLEARPWHISTORY              1477
 #define IDC_UPDATEPROTECTEDPWH          1478
 #define IDC_SHOW_IDENTICAL_FIELDS       1479
+#define IDC_ABORT                       1480
 
 // Next default values for new objects
 // 
@@ -767,7 +768,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        525
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1480
+#define _APS_NEXT_CONTROL_VALUE         1481
 #define _APS_NEXT_SYMED_VALUE           166
 #endif
 #endif

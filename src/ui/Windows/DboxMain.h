@@ -395,18 +395,20 @@ public:
   void ViewReport(CReport &rpt) const;
   void SetUpdateWizardWindow(CWnd *pWnd)
   {m_pWZWnd = pWnd;}
+
   stringT DoMerge(PWScore *pothercore,
-                  const bool bAdvanced, CReport *prpt);
+                  const bool bAdvanced, CReport *prpt, bool *pbCancel);
   bool DoCompare(PWScore *pothercore,
-                 const bool bAdvanced, CReport *prpt);
+                 const bool bAdvanced, CReport *prpt, bool *pbCancel);
   void DoSynchronize(PWScore *pothercore,
-                     const bool bAdvanced, int &numUpdated, CReport *prpt);
+                     const bool bAdvanced, int &numUpdated, CReport *prpt, bool *pbCancel);
   int DoExportText(const StringX &sx_Filename, const bool bAll,
                    const wchar_t &delimiter, const bool bAdvanced,
                    int &numExported, CReport *prpt);
   int DoExportXML(const StringX &sx_Filename, const bool bAll,
                   const wchar_t &delimiter, const bool bAdvanced,
                   int &numExported, CReport *prpt);
+
   int TestSelection(const bool bAdvanced,
                     const stringT &subgroup_name,
                     const int &subgroup_object,
@@ -414,6 +416,7 @@ public:
                     const OrderedItemList *il) const
   {return m_core.TestSelection(bAdvanced, subgroup_name,
                                subgroup_object, subgroup_function, il);}
+
   void MakeOrderedItemList(OrderedItemList &il) const;
   bool MakeMatchingGTUSet(GTUSet &setGTU, const StringX &sxPolicyName) const
   {return m_core.InitialiseGTU(setGTU, sxPolicyName);}

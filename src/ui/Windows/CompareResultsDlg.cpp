@@ -989,7 +989,7 @@ void CCompareResultsDlg::OnItemRightClick(NMHDR *pNMHDR, LRESULT *pLResult)
       } else {
         // If it is in the current DB (i.e. BOTH as we know it is in the compare
         // column as the user has clicked on it) and is protected - don't allow copy
-        if (indatabase == BOTH || pst_data->bIsProtected0)
+        if (indatabase == BOTH && pst_data->bIsProtected0)
           pPopup->RemoveMenu(ID_MENUITEM_COPY_TO_ORIGINAL, MF_BYCOMMAND);
       }
     }

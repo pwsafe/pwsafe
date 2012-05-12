@@ -426,7 +426,8 @@ int PWScore::WriteXMLFile(const StringX &filename,
                           const CItemData::FieldBits &bsFields,
                           const stringT &subgroup_name,
                           const int &subgroup_object, const int &subgroup_function,
-                          const TCHAR &delimiter, int &numExported, const OrderedItemList *il,
+                          const TCHAR &delimiter, int &numExported,
+                          const OrderedItemList *il,
                           const bool &bFilterActive, CReport *pRpt)
 {
   numExported = 0;

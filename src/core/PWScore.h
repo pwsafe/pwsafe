@@ -221,19 +221,20 @@ public:
                const bool &bTreatWhiteSpaceasEmpty, const stringT &subgroup_name,
                const int &subgroup_object, const int &subgroup_function,
                CompareData &list_OnlyInCurrent, CompareData &list_OnlyInComp,
-               CompareData &list_Conflicts, CompareData &list_Identical);
+               CompareData &list_Conflicts, CompareData &list_Identical,
+               bool *pbCancel = NULL);
 
   stringT Merge(PWScore *pothercore,
                 const bool &subgroup_bset,
                 const stringT &subgroup_name,
                 const int &subgroup_object, const int &subgroup_function,
-                CReport *pRpt);
+                CReport *pRpt, bool *pbCancel = NULL);
 
   void Synchronize(PWScore *pothercore, 
                    const CItemData::FieldBits &bsFields, const bool &subgroup_bset,
                    const stringT &subgroup_name,
                    const int &subgroup_object, const int &subgroup_function,
-                   int &numUpdated, CReport *pRpt);
+                   int &numUpdated, CReport *pRpt, bool *pbCancel = NULL);
 
   // Export databases
   int WritePlaintextFile(const StringX &filename,
