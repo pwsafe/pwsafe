@@ -451,6 +451,7 @@
     <ClInclude Include="addeditpropsheet.h" />
     <ClInclude Include="AdvancedSelectionDlg.h" />
     <ClInclude Include="CompareDlg.h" />
+    <ClInclude Include="ComparisonGridTable.h" />
     <ClInclude Include="createshortcutdlg.h" />
     <ClInclude Include="DbSelectionPanel.h" />
     <ClInclude Include="deleteconfirmation.h" />
@@ -464,9 +465,11 @@
     <ClInclude Include="helpmap.h" />
     <ClInclude Include="ImportTextDlg.h" />
     <ClInclude Include="ImportXmlDlg.h" />
+    <ClInclude Include="ManagePwdPolicies.h" />
     <ClInclude Include="MergeDlg.h" />
     <ClInclude Include="OpenFilePickerValidator.h" />
     <ClInclude Include="optionspropsheet.h" />
+    <ClInclude Include="PasswordPolicy.h" />
     <ClInclude Include="passwordsafeframe.h" />
     <ClInclude Include="PasswordSafeSearch.h" />
     <ClInclude Include="properties.h" />
@@ -477,6 +480,7 @@
     <ClInclude Include="PWSgridtable.h" />
     <ClInclude Include="pwsmenushortcuts.h" />
     <ClInclude Include="PwsSync.h" />
+    <ClInclude Include="PwsToolbarButtons.h" />
     <ClInclude Include="PWStree.h" />
     <ClInclude Include="RecentDBList.h" />
     <ClInclude Include="RUEList.h" />
@@ -485,6 +489,7 @@
     <ClInclude Include="safecombinationentry.h" />
     <ClInclude Include="safecombinationprompt.h" />
     <ClInclude Include="safecombinationsetup.h" />
+    <ClInclude Include="SizeRestrictedPanel.h" />
     <ClInclude Include="SystemTray.h" />
     <ClInclude Include="SystemTrayMenuId.h" />
     <ClInclude Include="version.h" />
@@ -514,9 +519,12 @@
     <ClCompile Include="ImportTextDlg.cpp" />
     <ClCompile Include="ImportXmlDlg.cpp" />
     <ClCompile Include="mainEdit.cpp" />
+    <ClCompile Include="mainManage.cpp" />
+    <ClCompile Include="ManagePwdPolicies.cpp" />
     <ClCompile Include="MergeDlg.cpp" />
     <ClCompile Include="OpenFilePickerValidator.cpp" />
     <ClCompile Include="optionspropsheet.cpp" />
+    <ClCompile Include="PasswordPolicy.cpp" />
     <ClCompile Include="passwordsafeframe.cpp" />
     <ClCompile Include="PasswordSafeSearch.cpp" />
     <ClCompile Include="properties.cpp" />

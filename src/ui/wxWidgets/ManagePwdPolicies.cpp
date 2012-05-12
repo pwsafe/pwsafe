@@ -511,6 +511,8 @@ void CManagePasswordPolicies::UpdatePolicy(const wxString &polname, const PWPoli
   // Update buttons appropriately
   FindWindow(wxID_UNDO)->Enable(true);
   FindWindow(wxID_REDO)->Enable(false);
+#else
+  UNREFERENCED_PARAMETER(mode);
 #endif
   // Update lists
   UpdateNames();
@@ -702,6 +704,7 @@ void CManagePasswordPolicies::OnHelpClick( wxCommandEvent& event )
 
 void CManagePasswordPolicies::OnGeneratePasswordClick( wxCommandEvent& event )
 {
+  UNREFERENCED_PARAMETER(event);
   PWPolicy st_pp = GetSelectedPolicy();
   
   StringX passwd = st_pp.MakeRandomPassword();

@@ -675,6 +675,7 @@ void PWSMenuShortcuts::OnResetRemoveShortcut( wxCommandEvent& evt )
 
 void PWSMenuShortcuts::OnResetAll(wxCommandEvent& evt)
 {
+  UNREFERENCED_PARAMETER(evt);
   GridResetAllShortcuts();
 }
 
