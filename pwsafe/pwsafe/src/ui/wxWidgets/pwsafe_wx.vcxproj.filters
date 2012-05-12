@@ -147,6 +147,21 @@
     <ClInclude Include="fieldselectionpanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ComparisonGridTable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ManagePwdPolicies.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PasswordPolicy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PwsToolbarButtons.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SizeRestrictedPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="pwsafe.rc">
@@ -281,6 +296,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="fieldselectionpanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mainManage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ManagePwdPolicies.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PasswordPolicy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

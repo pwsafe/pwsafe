@@ -257,7 +257,7 @@ private:
 void AddEditPropSheet::CreateControls()
 {
 ////@begin AddEditPropSheet content construction
-  AddEditPropSheet* itemPropertySheetDialog1 = this;
+  //AddEditPropSheet* itemPropertySheetDialog1 = this;  // Unused
 
   m_BasicPanel = new wxPanel( GetBookCtrl(), ID_PANEL_BASIC, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER|wxTAB_TRAVERSAL );
   wxBoxSizer* itemBoxSizer3 = new wxBoxSizer(wxVERTICAL);
@@ -1705,6 +1705,7 @@ void AddEditPropSheet::OnSymbolsCB( wxCommandEvent& evt )
 
 void AddEditPropSheet::OnSendButtonClick( wxCommandEvent& event )
 {
+  UNREFERENCED_PARAMETER(event);
   /*
    * Format is the standard 'mailto:' rules as per RFC 2368.
    * 'mailto:' is prefixed the the string passed to this routine.

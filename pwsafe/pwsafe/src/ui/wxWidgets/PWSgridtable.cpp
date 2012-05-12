@@ -136,7 +136,8 @@ wxString PWSGridTable::GetValue(int row, int col)
       size_t(col) < NumberOf(PWSGridCellData)) {
 		const CItemData* item = m_pwsgrid->GetItem(row);
     if (item != NULL) {
-			return towxstring(item->GetFieldValue(PWSGridCellData[col].ft));
+			return towxstring(PWSGridCellData[col].ft != CItemData::POLICY ?
+             item->GetFieldValue(PWSGridCellData[col].ft) : item->GetPWPolicyDisplayString());
 		}
 	}
 	return wxEmptyString;
