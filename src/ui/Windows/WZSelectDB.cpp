@@ -375,6 +375,11 @@ LRESULT CWZSelectDB::OnWizardNext()
         // pws_os::FOpen(...) cannot create any missing directories
         std::wstring dir, cdrive, cdir, cfile, cextn;
         pws_os::splitpath(m_filespec.GetString(), cdrive, cdir, cfile, cextn);
+        //  If root directory - nothing to create
+        if (cdir == L"\\")          
+          break;
+
+        // Try and create necessary directories
         dir = cdrive + cdir;
         int rc = ::SHCreateDirectoryEx(NULL, dir.c_str(), NULL);
         switch (rc) {
