@@ -127,6 +127,15 @@ BOOL CAddEdit_DateTimes::PreTranslateMessage(MSG* pMsg)
 
 BOOL CAddEdit_DateTimes::OnInitDialog()
 {
+  // Last 32-bit date is 03:14:07 UTC on Tuesday, January 19, 2038
+  // Find number of days from now to 2038/01/18 = max value here
+  // Need to do this early, since base classe's OnInitDialog()
+  // Calls UpdateData() which calls Validator, which uses m_maxDays (phew!)
+  const CTime ct_Latest(2038, 1, 18, 0, 0, 0);
+
+  CTimeSpan elapsedTime = ct_Latest - CTime::GetCurrentTime();
+  m_maxDays = (int)elapsedTime.GetDays();
+
   CAddEdit_PropertyPage::OnInitDialog();
 
   ModifyStyleEx(0, WS_EX_CONTROLPARENT);
@@ -180,14 +189,6 @@ BOOL CAddEdit_DateTimes::OnInitDialog()
     GetDlgItem(IDC_STATIC_LTINTERVAL_NOW)->EnableWindow(FALSE);
     GetDlgItem(IDC_XTIME_RECUR)->EnableWindow(FALSE);
   }
-
-  // Last 32-bit date is 03:14:07 UTC on Tuesday, January 19, 2038
-  // Find number of days from now to 2038/01/18 = max value here
-  const CTime ct_Latest(2038, 1, 18, 0, 0, 0);
-  const CTime ct_Now(CTime::GetCurrentTime());
-
-  CTimeSpan elapsedTime = ct_Latest - ct_Now;
-  m_maxDays = (int)elapsedTime.GetDays();
 
   CSpinButtonCtrl *pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_EXPDAYSSPIN);
 
@@ -420,7 +421,6 @@ void CAddEdit_DateTimes::OnHowChanged()
     GetDlgItem(IDC_STATIC_LTINTERVAL_NOW)->EnableWindow(FALSE);
     GetDlgItem(IDC_REUSE_ON_CHANGE)->EnableWindow(FALSE);
     GetDlgItem(IDC_EXPIRYDATE)->EnableWindow(TRUE);
-    SetXTime();
     break;
   case RELATIVE_EXP:
     m_ae_psh->SetChanged(true);
@@ -429,7 +429,6 @@ void CAddEdit_DateTimes::OnHowChanged()
     GetDlgItem(IDC_STATIC_LTINTERVAL_NOW)->EnableWindow(TRUE);
     GetDlgItem(IDC_REUSE_ON_CHANGE)->EnableWindow(TRUE);
     GetDlgItem(IDC_EXPIRYDATE)->EnableWindow(FALSE);
-    SetXTime();
     break;
   default:
     ASSERT(0);
@@ -447,7 +446,7 @@ void CAddEdit_DateTimes::SetXTime()
   if (m_how == ABSOLUTE_EXP) {
     VERIFY(m_pDateCtl.GetTime(LDate) == GDT_VALID);
 
-    LDateTime = CTime(LDate.GetYear(), LDate.GetMonth(), LDate.GetDay(), 0, 1, 0, -1);
+    LDateTime = CTime(LDate.GetYear(), LDate.GetMonth(), LDate.GetDay(), 0, 1, 0);
     m_numDays = static_cast<int>((LDate.GetTime() - now.GetTime()) / (24*60*60)) + 1;
     CString nds;
     nds.Format(L"%d", m_numDays);
@@ -455,8 +454,8 @@ void CAddEdit_DateTimes::SetXTime()
     M_XTimeInt() = 0;
   } else { // m_how == RELATIVE_EXP
     const CTime today(now.GetYear(), now.GetMonth(), now.GetDay(), 0, 1, 0);
-    LDateTime = today + CTimeSpan(m_numDays, 0, 0, 0);
-    m_pDateCtl.SetTime(&LDateTime);
+    LDateTime = today + CTimeSpan(m_numDays + 1, 0, 0, 0);
+    VERIFY(m_pDateCtl.SetTime(&LDateTime));
     M_XTimeInt() = m_bRecurringPswdExpiry == FALSE ? 0 : m_numDays;
   }
 
