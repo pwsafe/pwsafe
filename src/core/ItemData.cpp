@@ -1528,6 +1528,9 @@ void CItemData::SetFieldValue(const FieldType &ft, const StringX &value)
     case SHIFTDCA:   /* 17 */
       SetShiftDCA(value.c_str());
       break;
+    case POLICYNAME: /* 18 */
+      SetPolicyName(value);
+      break;
     case GROUPTITLE: /* 00 */
     case UUID:       /* 01 */
     case RESERVED:   /* 0b */

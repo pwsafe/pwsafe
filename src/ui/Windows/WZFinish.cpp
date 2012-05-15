@@ -323,17 +323,6 @@ LRESULT CWZFinish::OnExecuteThreadEnded(WPARAM , LPARAM )
   // Was in DboxMain::Merge etc - but not allowed when called from a worker thread!!!!!
   m_pWZPSH->WZPSHUpdateGUIDisplay();
 
-  // Tidy up other core
-  if (m_pothercore != NULL) {
-    if (m_pothercore->IsLockedFile(m_pothercore->GetCurFile().c_str()))
-      m_pothercore->UnlockFile(m_pothercore->GetCurFile().c_str());
-
-    m_pothercore->ClearData();
-    m_pothercore->SetCurFile(L"");
-    delete m_pothercore;
-    m_pothercore = NULL;
-  }
-
   CString cs_results;
   if (m_thdpms.bCancel) {
     cs_results.LoadString(IDS_OPERATION_ABORTED);
@@ -367,6 +356,17 @@ LRESULT CWZFinish::OnExecuteThreadEnded(WPARAM , LPARAM )
         break;
     }
     m_pWZPSH->SetNumProcessed(m_thdpms.numProcessed);
+  }
+
+  // Tidy up other core
+  if (m_pothercore != NULL) {
+    if (m_pothercore->IsLockedFile(m_pothercore->GetCurFile().c_str()))
+      m_pothercore->UnlockFile(m_pothercore->GetCurFile().c_str());
+
+    m_pothercore->ClearData();
+    m_pothercore->SetCurFile(L"");
+    delete m_pothercore;
+    m_pothercore = NULL;
   }
 
   GetDlgItem(IDC_STATIC_WZRESULTS)->SetWindowText(cs_results);
