@@ -374,7 +374,6 @@
 #define IDS_READWRITE                   5551
 #define IDS_SEARCH                      5552
 #define IDS_NEW                         5553
-#define IDS_IN_N_DAYS                   5554
 #define IDS_OVERRIDE_POLICY             5555
 #define IDS_PASSWORDEXPIRYDATEINT       5556
 #define IDS_NOFIELDSFORFILTER           5557
