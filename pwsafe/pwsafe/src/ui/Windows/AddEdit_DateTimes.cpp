@@ -8,14 +8,6 @@
 // AddEdit_DateTimes.cpp : implementation file
 //
 
-/*
- * XXX This needs more cleaning up:
- * The "Password Expires On:" fields (IDC_XTIME and IDC_XTIME_RECUR)
- * are redundant and confusing. What needs to be done is
- * update the exp. date/time when the days field is set and vice-versa,
- * so that the two will be equivalent.
- */
-
 #include "stdafx.h"
 #include "PasswordSafe.h"
 #include "ThisMfcApp.h"    // For Help
@@ -66,7 +58,6 @@ void CAddEdit_DateTimes::DoDataExchange(CDataExchange* pDX)
   CAddEdit_PropertyPage::DoDataExchange(pDX);
 
   //{{AFX_DATA_MAP(CAddEdit_DateTimes)
-  DDX_Text(pDX, IDC_XTIME, (CString&)M_locXTime());
   DDX_Text(pDX, IDC_CTIME, (CString&)M_locCTime());
   DDX_Text(pDX, IDC_PMTIME, (CString&)M_locPMTime());
   DDX_Text(pDX, IDC_ATIME, (CString&)M_locATime());
@@ -183,11 +174,9 @@ BOOL CAddEdit_DateTimes::OnInitDialog()
     GetDlgItem(IDC_SELECTBYDATETIME)->EnableWindow(FALSE);
     GetDlgItem(IDC_SELECTBYDAYS)->EnableWindow(FALSE);
     GetDlgItem(IDC_REUSE_ON_CHANGE)->EnableWindow(FALSE);
-    GetDlgItem(IDC_STATIC_XTIME)->EnableWindow(FALSE);
     GetDlgItem(IDC_STATIC_CURRENTVALUE)->EnableWindow(FALSE);
     GetDlgItem(IDC_STATIC_CURRENT_XTIME)->EnableWindow(FALSE);
     GetDlgItem(IDC_STATIC_LTINTERVAL_NOW)->EnableWindow(FALSE);
-    GetDlgItem(IDC_XTIME_RECUR)->EnableWindow(FALSE);
   }
 
   CSpinButtonCtrl *pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_EXPDAYSSPIN);
@@ -244,12 +233,10 @@ void CAddEdit_DateTimes::UpdateTimes()
 
   // enable/disable relevant controls, depending on 'how' state
   // NONE_EXP, RELATIVE_EXP (interval) or ABSOLUTE_EXP
-  CString cs_text(L"");
   switch (m_how) {
   case RELATIVE_EXP:
     m_numDays = M_XTimeInt();
     m_bRecurringPswdExpiry = TRUE;
-    cs_text.Format(IDS_IN_N_DAYS, M_XTimeInt());
     GetDlgItem(IDC_EXPDAYS)->EnableWindow(TRUE);
     GetDlgItem(IDC_STATIC_LTINTERVAL_NOW)->EnableWindow(TRUE);
     GetDlgItem(IDC_REUSE_ON_CHANGE)->EnableWindow(TRUE);
@@ -270,7 +257,6 @@ void CAddEdit_DateTimes::UpdateTimes()
   default:
     ASSERT(0);
   }
-  GetDlgItem(IDC_XTIME_RECUR)->SetWindowText(cs_text);
 
   const CTime now(CTime::GetCurrentTime());
 
@@ -401,8 +387,6 @@ void CAddEdit_DateTimes::OnHowChanged()
   switch (m_how) {
   case NONE_EXP:
     M_locXTime().LoadString(IDS_NEVER);
-    GetDlgItem(IDC_XTIME)->SetWindowText((CString)M_locXTime());
-    GetDlgItem(IDC_XTIME_RECUR)->SetWindowText(L"");
     if (M_tttXTime() != (time_t)0 || M_XTimeInt() != 0)
       m_ae_psh->SetChanged(true);
 
@@ -462,13 +446,6 @@ void CAddEdit_DateTimes::SetXTime()
   M_tttXTime() = (time_t)LDateTime.GetTime();
   M_locXTime() = PWSUtil::ConvertToDateTimeString(M_tttXTime(), PWSUtil::TMC_LOCALE_DATE_ONLY);
 
-  CString cs_text(L"");
-  // m_XTimeInt is non-zero iff user specified a relative & recurring exp. date
-  if (M_XTimeInt() != 0)
-    cs_text.Format(IDS_IN_N_DAYS, M_XTimeInt());
-
-  GetDlgItem(IDC_XTIME)->SetWindowText(M_locXTime());
-  GetDlgItem(IDC_XTIME_RECUR)->SetWindowText(cs_text);
   m_ae_psh->SetChanged(true);
   m_inSetX = false;
 }
