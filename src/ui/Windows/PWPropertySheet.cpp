@@ -14,17 +14,28 @@ extern const wchar_t *EYE_CATCHER;
 
 IMPLEMENT_DYNAMIC(CPWPropertySheet, CPropertySheet)
 
-CPWPropertySheet::CPWPropertySheet(UINT nID, CWnd *pParent)
-  : CPropertySheet(nID, pParent)
+CPWPropertySheet::CPWPropertySheet(UINT nID, CWnd *pParent, const bool bLongPPs)
+  : CPropertySheet(nID, pParent), m_bKeepHidden(true)
 {
+  m_pDbx =  static_cast<DboxMain *>(pParent);
+  m_bLongPPs = bLongPPs;
+
   m_psh.dwFlags |= PSH_HASHELP;
 }
 
-CPWPropertySheet::CPWPropertySheet(LPCTSTR pszCaption, CWnd* pParent)
-  : CPropertySheet(pszCaption, pParent)
+CPWPropertySheet::CPWPropertySheet(LPCTSTR pszCaption, CWnd* pParent, const bool bLongPPs)
+  : CPropertySheet(pszCaption, pParent), m_bKeepHidden(false)
 {
+  m_pDbx =  static_cast<DboxMain *>(pParent);
+  m_bLongPPs = bLongPPs;
+
   m_psh.dwFlags |= PSH_HASHELP;
 }
+
+BEGIN_MESSAGE_MAP(CPWPropertySheet, CPropertySheet)
+  ON_WM_WINDOWPOSCHANGING()
+  ON_WM_SHOWWINDOW()
+END_MESSAGE_MAP()
 
 LRESULT CPWPropertySheet::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -42,6 +53,38 @@ LRESULT CPWPropertySheet::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
     pws_os::Trace(L"CPWPropertySheet::WindowProc - couldn't find DboxMain ancestor\n");
 
   return CPropertySheet::WindowProc(message, wParam, lParam);
+}
+
+void CPWPropertySheet::OnWindowPosChanging(WINDOWPOS *lpwndpos)
+{
+  // This ensures PropertySheet is not shown during OnInitDialog default processing
+  // if we are going to end it immediately
+  if(m_bKeepHidden)
+    lpwndpos->flags &= ~SWP_SHOWWINDOW;
+
+  CPropertySheet::OnWindowPosChanging(lpwndpos);
+}
+
+void CPWPropertySheet::OnShowWindow(BOOL bShow, UINT nStatus)
+{
+  if(!m_bKeepHidden)
+    CPropertySheet::OnShowWindow(bShow, nStatus);
+}
+
+BOOL CPWPropertySheet::OnInitDialog()
+{
+  CPropertySheet::OnInitDialog();
+
+  // If started with Tall and won't fit - return to be called again with Wide
+  if (m_bLongPPs && !m_pDbx->LongPPs(this)) {
+    EndDialog(-1);
+    return TRUE;
+  }
+
+  // It's OK - show it
+  m_bKeepHidden = false;
+  ShowWindow(SW_SHOW);
+  return TRUE;
 }
 
 INT_PTR CPWPropertySheet::DoModal()

@@ -64,7 +64,7 @@ CPasswordPolicyDlg::CPasswordPolicyDlg(UINT uicaller, CWnd *pParent, bool bLongP
                                        bool bReadOnly, PWPolicy &st_default_pp)
   : CPWDialog(bLongPPs ? CPasswordPolicyDlg::IDD : CPasswordPolicyDlg::IDD_SHORT, pParent),
   m_uicaller(uicaller), m_bReadOnly(bReadOnly), m_pDbx(NULL), m_password(L""),
-  m_UseNamedPolicy(FALSE), m_st_default_pp(st_default_pp)
+  m_UseNamedPolicy(FALSE), m_st_default_pp(st_default_pp), m_bLongPPs(bLongPPs)
 {
   m_PWUseLowercase = m_oldPWUseLowercase =
     (m_st_default_pp.flags & PWPolicy::UseLowercase) != 0;
@@ -176,6 +176,15 @@ BOOL CPasswordPolicyDlg::OnInitDialog()
 {
   CPWDialog::OnInitDialog();
 
+  // Verify ptr to DboxMain has been set up (call to SetPolicyData)
+  ASSERT(m_pDbx != NULL);
+  
+  // If started with Tall and won't fit - return to be called again with Wide
+  if (m_bLongPPs && !m_pDbx->LongPPs(this)) {
+    EndDialog(-1);
+    return FALSE;
+  }
+  
   if (m_bReadOnly && m_uicaller != IDS_GENERATEPASSWORD) {
     // Change OK button test
     CString cs_close(MAKEINTRESOURCE(IDS_CLOSE));
@@ -185,9 +194,6 @@ BOOL CPasswordPolicyDlg::OnInitDialog()
     GetDlgItem(IDCANCEL)->EnableWindow(FALSE);
     GetDlgItem(IDCANCEL)->ShowWindow(SW_HIDE);
   }
-
-  // Verify ptr to DboxMain has been set up (call to SetPolicyData)
-  ASSERT(m_pDbx != NULL);
 
   CString cs_title;
   switch (m_uicaller) {

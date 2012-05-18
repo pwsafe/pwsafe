@@ -24,7 +24,7 @@ CAddEdit_PropertySheet::CAddEdit_PropertySheet(UINT nID, CWnd* pParent,
                                                CItemData *pci_original, CItemData *pci,
                                                const bool bLongPPs,
                                                const StringX currentDB)
-  : CPWPropertySheet(nID, pParent), m_bIsModified(false), m_bChanged(false),
+  : CPWPropertySheet(nID, pParent, bLongPPs), m_bIsModified(false), m_bChanged(false),
   m_bNotesChanged(false), m_bSymbolsChanged(false)
 {
   m_AEMD.bLongPPs = bLongPPs;

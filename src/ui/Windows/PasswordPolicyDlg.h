@@ -135,4 +135,5 @@ private:
   bool m_bReadOnly;
 
   DboxMain *m_pDbx;
+  bool m_bLongPPs;
 };
