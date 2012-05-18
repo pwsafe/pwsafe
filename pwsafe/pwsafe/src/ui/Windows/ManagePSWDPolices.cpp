@@ -341,22 +341,34 @@ void CManagePSWDPolices::OnCancel()
 
 void CManagePSWDPolices::OnNew()
 {
-  bool bLongPPs = m_pDbx->LongPPs();
+  CPasswordPolicyDlg *pDlg(NULL);
 
-  CPasswordPolicyDlg PasswordPolicy(IDS_PSWDPOLICY, this, bLongPPs, m_bReadOnly, m_st_default_pp);
+  // Try Tall version
+  pDlg = new CPasswordPolicyDlg(IDS_PSWDPOLICY, this, true, m_bReadOnly, m_st_default_pp);
 
   // Pass default values, PolicyName map and indicate New (Blank policy name)
   CString cs_policyname(L"");
-  PasswordPolicy.SetPolicyData(cs_policyname, m_MapPSWDPLC, m_pDbx);
+  pDlg->SetPolicyData(cs_policyname, m_MapPSWDPLC, m_pDbx);
 
-  INT_PTR rc = PasswordPolicy.DoModal();
+  INT_PTR rc = pDlg->DoModal();
+  
+  if (rc < 0) {
+    // Try again with Wide version
+    delete pDlg;
+    pDlg = new CPasswordPolicyDlg(IDS_PSWDPOLICY, this, false, m_bReadOnly, m_st_default_pp);
+
+    // Pass default values, PolicyName map and indicate New (Blank policy name)
+    pDlg->SetPolicyData(cs_policyname, m_MapPSWDPLC, m_pDbx);
+
+    rc = pDlg->DoModal(); 
+  }
 
   if (rc == IDOK) {
     m_bChanged = true;
     CString cs_policyname;
     
     // Get new named password policy
-    PasswordPolicy.GetPolicyData(m_st_default_pp, cs_policyname, m_MapPSWDPLC);
+    pDlg->GetPolicyData(m_st_default_pp, cs_policyname, m_MapPSWDPLC);
 
     // Save changes for Undo/Redo
     st_PSWDPolicyChange st_change;
@@ -368,6 +380,7 @@ void CManagePSWDPolices::OnNew()
     PSWDPolicyMapIter iter_new = m_MapPSWDPLC.find(StringX((LPCWSTR)cs_policyname));
     if (iter_new == m_MapPSWDPLC.end())
       ASSERT(0);
+
     st_change.st_pp_new = iter_new->second;
 
     if (m_iundo_pos != (int)m_vchanges.size() - 1) {
@@ -396,6 +409,7 @@ void CManagePSWDPolices::OnNew()
 
     UpdateDetails();
   }
+  delete pDlg;
 }
 
 void CManagePSWDPolices::OnEdit()
@@ -406,16 +420,29 @@ void CManagePSWDPolices::OnEdit()
   if (m_iSelectedItem != 0 && iter == m_MapPSWDPLC.end())
     return;
 
-  bool bLongPPs = m_pDbx->LongPPs();
+  CPasswordPolicyDlg *pDlg(NULL);
 
-  CPasswordPolicyDlg PasswordPolicy(m_iSelectedItem == 0 ? IDS_OPTIONS : IDS_PSWDPOLICY,
-                                    this, bLongPPs, m_bReadOnly, m_st_default_pp);
+  // Try Tall version
+  pDlg = new CPasswordPolicyDlg(m_iSelectedItem == 0 ? IDS_OPTIONS : IDS_PSWDPOLICY,
+                                this, true, m_bReadOnly, m_st_default_pp);
 
   // Pass default values and PolicyName map
-  PasswordPolicy.SetPolicyData(cs_policyname, m_MapPSWDPLC, m_pDbx);
+  pDlg->SetPolicyData(cs_policyname, m_MapPSWDPLC, m_pDbx);
 
-  INT_PTR rc = PasswordPolicy.DoModal();
+  INT_PTR rc = pDlg->DoModal();
   
+  if (rc < 0) {
+    // Try again with Wide version
+    delete pDlg;
+    pDlg = new CPasswordPolicyDlg(m_iSelectedItem == 0 ? IDS_OPTIONS : IDS_PSWDPOLICY,
+                                  this, false, m_bReadOnly, m_st_default_pp);
+
+    // Pass default values, PolicyName map and indicate New (Blank policy name)
+    pDlg->SetPolicyData(cs_policyname, m_MapPSWDPLC, m_pDbx);
+
+    rc = pDlg->DoModal(); 
+  }
+
   if (rc == IDOK) {
     m_bChanged = true;
 
@@ -426,7 +453,7 @@ void CManagePSWDPolices::OnEdit()
     st_change.st_pp_save = m_iSelectedItem != 0 ?iter->second : m_st_default_pp;
 
     // Update default (if changed) or the named policies
-    PasswordPolicy.GetPolicyData(m_st_default_pp, cs_policyname, m_MapPSWDPLC);
+    pDlg->GetPolicyData(m_st_default_pp, cs_policyname, m_MapPSWDPLC);
 
     if (m_iSelectedItem != 0) {
       // Changed a named password policy
@@ -467,6 +494,7 @@ void CManagePSWDPolices::OnEdit()
 
     UpdateDetails();
   }
+  delete pDlg;
 }
 
 void CManagePSWDPolices::OnList()

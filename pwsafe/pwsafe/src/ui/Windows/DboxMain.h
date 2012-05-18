@@ -381,7 +381,8 @@ public:
   {return m_core.IsEmptyGroup(sxEmptyGroup);}
   
   // Need this to be public
-  bool LongPPs();
+  bool LongPPs(CWnd *pWnd);
+
   bool GetShortCut(const unsigned int &uiMenuItem, unsigned short int &siVirtKey,
                    unsigned char &cModifier);
 

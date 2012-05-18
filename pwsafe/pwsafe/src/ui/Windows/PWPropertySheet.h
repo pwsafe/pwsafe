@@ -8,20 +8,34 @@
 
 #pragma once
 
+class DboxMain;
+
 class CPWPropertySheet : public CPropertySheet
 {
 public:
-  CPWPropertySheet(UINT nID, CWnd* pParent);
+  CPWPropertySheet(UINT nID, CWnd* pParent, const bool bLongPPs);
 
-  CPWPropertySheet(LPCTSTR pszCaption, CWnd* pParent);
+  CPWPropertySheet(LPCTSTR pszCaption, CWnd* pParent, const bool bLongPPs);
 
   // Following override to reset idle timeout on any event
   virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
   // Following override to stop accelerators interfering
   virtual INT_PTR DoModal();
+  virtual BOOL OnInitDialog();
 
 protected:
   DECLARE_DYNAMIC(CPWPropertySheet)
+
+  afx_msg void OnWindowPosChanging(WINDOWPOS *lpwndpos);
+  afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);
+
+  DECLARE_MESSAGE_MAP()
+  
+private:
+  // Used to determine if Tall will fit in OnInitDialog
+  DboxMain *m_pDbx;
+  bool m_bLongPPs;
+  bool m_bKeepHidden;
 };
 
 //-----------------------------------------------------------------------------

@@ -26,7 +26,7 @@ class PWScore;
 class COptions_PropertySheet : public CPWPropertySheet
 {
 public:
-  COptions_PropertySheet(UINT nID, CWnd *pDbx, const bool bLongPPs);
+  COptions_PropertySheet(UINT nID, CWnd *pParent, const bool bLongPPs);
   ~COptions_PropertySheet();
 
   virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
@@ -70,7 +70,7 @@ private:
   void UpdateCopyPreferences();
 
   CString m_save_bSymbols;
-  int m_save_iPreExpiryWarnDays, m_save_iUseOwnSymbols;
+  int m_save_iPreExpiryWarnDays, m_save_iUseOwnSymbols, m_save_DisplayPreference;
   bool m_bIsModified, m_bChanged;
   bool m_bRefreshViews, m_bSaveGroupDisplayState, m_bUpdateShortcuts, m_bCheckExpired;
   BOOL m_save_bHighlightChanges, m_save_bPreExpiryWarn;

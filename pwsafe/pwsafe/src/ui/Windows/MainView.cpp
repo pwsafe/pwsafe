@@ -4496,16 +4496,21 @@ void DboxMain::GetAllGroups(std::vector<std::wstring> &vGroups) const
   }
 }
 
-bool DboxMain::LongPPs()
+bool DboxMain::LongPPs(CWnd *pWnd)
 {
   // Based on current screen height, decide if we want to display.
   // The normal "tall/long" page, or the "wide/short" version (for netbooks)
   MONITORINFO mi;
   mi.cbSize = sizeof(mi);
   GetMonitorInfo(MonitorFromWindow(GetSafeHwnd(), MONITOR_DEFAULTTONEAREST), &mi);
-  const int Y = abs(mi.rcWork.bottom - mi.rcWork.top);
+  const int YM = abs(mi.rcWork.bottom - mi.rcWork.top);
 
-  return (Y > 600); // THRESHOLD = 600 - pixels or virtual-screen coordinates?
+  // This is the main dialog - not the one we need to ask about!
+  CRect rect;
+  pWnd->GetWindowRect(&rect);
+  const int YD = abs(rect.bottom - rect.top);
+
+  return (YM > YD);
 }
 
 bool DboxMain::GetShortCut(const unsigned int &uiMenuItem,

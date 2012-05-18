@@ -254,13 +254,6 @@ void DboxMain::OnOptions()
   // Get old DB preferences String value for use later
   const StringX sxOldDBPrefsString(prefs->Store());
 
-  bool bLongPPs = LongPPs();
-
-  COptions_PropertySheet optionsPS(IDS_OPTIONS, this, bLongPPs);
-
-  // Remove the "Apply Now" button.
-  optionsPS.m_psh.dwFlags |= PSH_NOAPPLYNOW;
-
   // Save Hotkey info
   DWORD hotkey_value;
   BOOL hotkey_enabled;
@@ -276,19 +269,38 @@ void DboxMain::OnOptions()
   // selecting the new key!
   UnregisterHotKey(m_hWnd, PWS_HOTKEY_ID); // clear last - never hurts
 
-  INT_PTR rc = optionsPS.DoModal();
+  COptions_PropertySheet *pOptionsPS(NULL);
+  
+  // Try Tall version
+  pOptionsPS = new COptions_PropertySheet(IDS_OPTIONS, this, true);
+
+  // Remove the "Apply Now" button.
+  pOptionsPS->m_psh.dwFlags |= PSH_NOAPPLYNOW;
+
+  INT_PTR rc = pOptionsPS->DoModal();
+
+  if (rc < 0) {
+    // Try again with Wide version
+    delete pOptionsPS;
+    pOptionsPS = new COptions_PropertySheet(IDS_OPTIONS, this, false);
+
+    // Remove the "Apply Now" button.
+    pOptionsPS->m_psh.dwFlags |= PSH_NOAPPLYNOW;
+  
+    rc = pOptionsPS->DoModal(); 
+  }
 
   if (rc == IDOK) {
     // Now update the application look and feel as appropriate
 
     // Get updated Hotkey information as we will either re-instate the original or
     // set these new values
-    hotkey_enabled = optionsPS.GetHotKeyState();
-    hotkey_value = optionsPS.GetHotKeyValue();
+    hotkey_enabled = pOptionsPS->GetHotKeyState();
+    hotkey_value = pOptionsPS->GetHotKeyValue();
 
     // Update status bar
     UINT uiMessage(IDS_STATCOMPANY);
-    switch (optionsPS.GetDCA()) {
+    switch (pOptionsPS->GetDCA()) {
       case PWSprefs::DoubleClickAutoType:
         uiMessage = IDS_STATAUTOTYPE; break;
       case PWSprefs::DoubleClickBrowse:
@@ -320,12 +332,12 @@ void DboxMain::OnOptions()
                             m_statusBar.GetItemID(CPWStatusBar::SB_DBLCLICK),
                             SBPS_STRETCH, NULL);
 
-    int iTrayColour = optionsPS.GetTrayIconColour();
+    int iTrayColour = pOptionsPS->GetTrayIconColour();
     app.SetClosedTrayIcon(iTrayColour);
 
     UpdateSystemMenu();
     
-    if (optionsPS.GetMaxMRUItems() == 0)
+    if (pOptionsPS->GetMaxMRUItems() == 0)
       app.ClearMRU();  // Clear any currently saved
     
     UpdateAlwaysOnTop();
@@ -333,8 +345,8 @@ void DboxMain::OnOptions()
     DWORD dwExtendedStyle = m_ctlItemList.GetExtendedStyle();
     bool bGridLines = ((dwExtendedStyle & LVS_EX_GRIDLINES) == LVS_EX_GRIDLINES);
 
-    if (optionsPS.GetEnableGrid() != bGridLines) {
-      if (optionsPS.GetEnableGrid()) {
+    if (pOptionsPS->GetEnableGrid() != bGridLines) {
+      if (pOptionsPS->GetEnableGrid()) {
         dwExtendedStyle |= LVS_EX_GRIDLINES;
       } else {
         dwExtendedStyle &= ~LVS_EX_GRIDLINES;
@@ -342,15 +354,15 @@ void DboxMain::OnOptions()
       m_ctlItemList.SetExtendedStyle(dwExtendedStyle);
     }
 
-    m_ctlItemTree.ActivateND(optionsPS.GetNotesAsTips());
-    m_ctlItemList.ActivateND(optionsPS.GetNotesAsTips());
+    m_ctlItemTree.ActivateND(pOptionsPS->GetNotesAsTips());
+    m_ctlItemList.ActivateND(pOptionsPS->GetNotesAsTips());
 
-    m_RUEList.SetMax(optionsPS.GetMaxREItems());
+    m_RUEList.SetMax(pOptionsPS->GetMaxREItems());
     
-    if (optionsPS.StartupShortcutChanged()) {
+    if (pOptionsPS->StartupShortcutChanged()) {
       CShortcut pws_shortcut;
       const CString PWSLnkName(L"Password Safe"); // for startup shortcut
-      if (optionsPS.StartupShortcut()) {
+      if (pOptionsPS->StartupShortcut()) {
         // Put it there
         wchar_t exeName[MAX_PATH];
         GetModuleFileName(NULL, exeName, MAX_PATH);
@@ -363,28 +375,28 @@ void DboxMain::OnOptions()
     }
 
     // Update Lock on Window Lock
-    if (optionsPS.LockOnWindowLockChanged()) {
-      if (optionsPS.LockOnWindowLock()) {
+    if (pOptionsPS->LockOnWindowLockChanged()) {
+      if (pOptionsPS->LockOnWindowLock()) {
         startLockCheckTimer();
       } else {
         KillTimer(TIMER_LOCKONWTSLOCK);
       }
     }
 
-    if (optionsPS.RefreshViews()) {
-      m_ctlItemList.SetHighlightChanges(optionsPS.HighlightChanges());
-      m_ctlItemTree.SetHighlightChanges(optionsPS.HighlightChanges());
+    if (pOptionsPS->RefreshViews()) {
+      m_ctlItemList.SetHighlightChanges(pOptionsPS->HighlightChanges());
+      m_ctlItemTree.SetHighlightChanges(pOptionsPS->HighlightChanges());
       RefreshViews();
     }
 
-    if (optionsPS.SaveGroupDisplayState())
+    if (pOptionsPS->SaveGroupDisplayState())
       SaveGroupDisplayState();
 
-    if (optionsPS.UpdateShortcuts()) {
+    if (pOptionsPS->UpdateShortcuts()) {
       // Create vector of shortcuts for user's config file
       std::vector<st_prefShortcut> vShortcuts;
       MapMenuShortcutsIter iter, iter_entry, iter_group;
-      m_MapMenuShortcuts = optionsPS.GetMaps();
+      m_MapMenuShortcuts = pOptionsPS->GetMaps();
 
       for (iter = m_MapMenuShortcuts.begin(); iter != m_MapMenuShortcuts.end();
            iter++) {
@@ -452,7 +464,7 @@ void DboxMain::OnOptions()
       app.HideIcon();
     }
 
-    if (optionsPS.CheckExpired()) {
+    if (pOptionsPS->CheckExpired()) {
       CheckExpireList();
       TellUserAboutExpiredPasswords();
     }
@@ -472,11 +484,11 @@ void DboxMain::OnOptions()
       if (sxOldDBPrefsString != sxNewDBPrefsString) {
         // Determine whether Tree needs redisplayng due to change
         // in what is shown (e.g. usernames/passwords)
-        bool bUserDisplayChanged = optionsPS.UserDisplayChanged();
+        bool bUserDisplayChanged = pOptionsPS->UserDisplayChanged();
         // Note: passwords are only shown in the Tree if usernames are also shown
-        bool bPswdDisplayChanged = optionsPS.PswdDisplayChanged();
+        bool bPswdDisplayChanged = pOptionsPS->PswdDisplayChanged();
         bool bNeedGUITreeUpdate = bUserDisplayChanged || 
-                 (optionsPS.ShowUsernameInTree() && bPswdDisplayChanged);
+                 (pOptionsPS->ShowUsernameInTree() && bPswdDisplayChanged);
         if (bNeedGUITreeUpdate) {
           Command *pcmd = UpdateGUICommand::Create(&m_core,
                                                    UpdateGUICommand::WN_UNDO,
@@ -494,8 +506,8 @@ void DboxMain::OnOptions()
       }
     }
 
-    const int iAction = optionsPS.GetPWHAction();
-    const int new_default_max = optionsPS.GetPWHistoryMax();
+    const int iAction = pOptionsPS->GetPWHAction();
+    const int new_default_max = pOptionsPS->GetPWHistoryMax();
     size_t ipwh_exec(0);
     int num_altered(0);
 
@@ -592,6 +604,9 @@ void DboxMain::OnOptions()
 
   // Update Minidump user streams
   app.SetMinidumpUserStreams(m_bOpen, !IsDBReadOnly(), usPrefs);
+  
+  // Delete Options Property page
+  delete pOptionsPS;
 }
 
 void DboxMain::OnGeneratePassword()
@@ -601,39 +616,63 @@ void DboxMain::OnGeneratePassword()
   PWPolicy st_default_pp;
   st_default_pp.SetToDefaults();
 
-  bool bLongPPs = LongPPs();
-  CPasswordPolicyDlg GenPswdPS(IDS_GENERATEPASSWORD, this, bLongPPs, 
-                               IsDBReadOnly(), st_default_pp);
+  CPasswordPolicyDlg *pDlg(NULL);
+  
+  // Try Tall version
+  pDlg = new CPasswordPolicyDlg(IDS_GENERATEPASSWORD, this, true, IsDBReadOnly(), st_default_pp);
 
   // Pass default values, PolicyName map
   CString cs_poliyname(L"");
-  GenPswdPS.SetPolicyData(cs_poliyname, MapPSWDPLC, this);
+  pDlg->SetPolicyData(cs_poliyname, MapPSWDPLC, this);
 
-  GenPswdPS.DoModal();
+  INT_PTR rc = pDlg->DoModal();
+  
+  if (rc < 0) {
+    // Try again with Wide version
+    delete pDlg;
+    pDlg = new CPasswordPolicyDlg(IDS_GENERATEPASSWORD, this, false, IsDBReadOnly(), st_default_pp);
+
+    // Pass default values, PolicyName map
+    pDlg->SetPolicyData(cs_poliyname, MapPSWDPLC, this);
+  
+    pDlg->DoModal(); 
+  }
+
+  // Delete generate password dialog
+  delete pDlg;
 }
 
 void DboxMain::OnManagePasswordPolicies()
 {
-  bool bLongPPs = LongPPs();
-
   PWSprefs *prefs = PWSprefs::GetInstance();
   
   // Set up copy of preferences
   prefs->SetupCopyPrefs();
   
-  CManagePSWDPolices ManagePSWDPoliciesDlg(this, bLongPPs);
+  CManagePSWDPolices *pDlg(NULL);
+  
+  // Try Tall version
+  pDlg = new CManagePSWDPolices(this, true);
   
   PWPolicy st_old_default_pp;
 
   // Let ManagePSWDPoliciesDlg fill out database default policy during construction
-  ManagePSWDPoliciesDlg.GetDefaultPasswordPolicies(st_old_default_pp);
+  pDlg->GetDefaultPasswordPolicies(st_old_default_pp);
   
-  INT_PTR rc = ManagePSWDPoliciesDlg.DoModal();
+  INT_PTR rc = pDlg->DoModal();
   
-  if (rc == IDOK && ManagePSWDPoliciesDlg.IsChanged()) {
+  if (rc < 0) {
+    // Try again with Wide version
+    delete pDlg;
+    pDlg = new CManagePSWDPolices(this, false);
+
+    pDlg->DoModal(); 
+  }
+  
+  if (rc == IDOK && pDlg->IsChanged()) {
     // Get new DB preferences String value
     PWPolicy st_new_default_pp;
-    PSWDPolicyMap MapPSWDPLC = ManagePSWDPoliciesDlg.GetPasswordPolicies(st_new_default_pp);
+    PSWDPolicyMap MapPSWDPLC = pDlg->GetPasswordPolicies(st_new_default_pp);
     
     // Maybe needed if this causes changes to database
     // (currently only DB default policy preferences + updating Named Policies)
@@ -666,4 +705,7 @@ void DboxMain::OnManagePasswordPolicies()
     
     ChangeOkUpdate();
   }
+  
+  // Delete Manage Password Policies dialog
+  delete pDlg;
 }
