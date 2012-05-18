@@ -2306,9 +2306,6 @@ void PasswordSafeFrame::HideUI(bool lock)
 #ifndef __WXMAC__
   if (!IsIconized()) {
     Iconize();
-    while (!IsIconized()) {
-      wxSafeYield();
-    }
   }
 #endif
   
