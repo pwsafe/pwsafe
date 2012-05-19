@@ -15,6 +15,7 @@
 #include "VerifyFormat.h"
 #include "StringXStream.h"
 #include "UTF8Conv.h"
+#include "PWPolicy.h"
 
 #include "os/typedefs.h"
 #include "os/debug.h"
@@ -407,6 +408,63 @@ int PWSprefs::SetMRUList(const stringT *MRUFiles, int n, int max_MRU)
     m_prefs_changed[APP_PREF] = true;
   return n;
 }
+
+PWPolicy PWSprefs::GetDefaultPolicy() const
+{
+  PWPolicy retval;
+  if (GetPref(PWUseLowercase))
+    retval.flags |= PWPolicy::UseLowercase;
+  if (GetPref(PWUseUppercase))
+    retval.flags |= PWPolicy::UseUppercase;
+  if (GetPref(PWUseDigits))
+    retval.flags |= PWPolicy::UseDigits;
+  if (GetPref(PWUseSymbols))
+    retval.flags |= PWPolicy::UseSymbols;
+  if (GetPref(PWUseHexDigits))
+    retval.flags |= PWPolicy::UseHexDigits;
+  if (GetPref(PWUseEasyVision))
+    retval.flags |= PWPolicy::UseEasyVision;
+  if (GetPref(PWMakePronounceable))
+    retval.flags |= PWPolicy::MakePronounceable;
+
+  retval.length = GetPref(PWDefaultLength);
+  retval.digitminlength = GetPref(PWDigitMinLength);
+  retval.lowerminlength = GetPref(PWLowercaseMinLength);
+  retval.symbolminlength = GetPref(PWSymbolMinLength);
+  retval.upperminlength = GetPref(PWUppercaseMinLength);
+  retval.symbols = GetPref(DefaultSymbols);
+  retval.Normalize();
+  return retval;
+}
+
+void PWSprefs::SetDefaultPolicy(const PWPolicy &pol, bool bUseCopy)
+{
+  PWPolicy nc_pol(pol); // non-const copy that we can Normalize;
+  nc_pol.Normalize();
+
+  SetPref(PWUseLowercase,
+          (nc_pol.flags & PWPolicy::UseLowercase) != 0, bUseCopy);
+  SetPref(PWUseUppercase,
+          (nc_pol.flags & PWPolicy::UseUppercase) != 0, bUseCopy);
+  SetPref(PWUseDigits,
+          (nc_pol.flags & PWPolicy::UseDigits) != 0, bUseCopy);
+  SetPref(PWUseSymbols,
+          (nc_pol.flags & PWPolicy::UseSymbols) != 0, bUseCopy);
+  SetPref(PWUseHexDigits,
+          (nc_pol.flags & PWPolicy::UseHexDigits) != 0, bUseCopy);
+  SetPref(PWUseEasyVision,
+          (nc_pol.flags & PWPolicy::UseEasyVision) != 0, bUseCopy);
+  SetPref(PWMakePronounceable,
+          (nc_pol.flags & PWPolicy::MakePronounceable) != 0, bUseCopy);
+
+  SetPref(PWDefaultLength, nc_pol.length, bUseCopy);
+  SetPref(PWDigitMinLength, nc_pol.digitminlength, bUseCopy);
+  SetPref(PWLowercaseMinLength, nc_pol.lowerminlength, bUseCopy);
+  SetPref(PWSymbolMinLength, nc_pol.symbolminlength, bUseCopy);
+  SetPref(PWUppercaseMinLength, nc_pol.upperminlength, bUseCopy);
+  SetPref(DefaultSymbols, nc_pol.symbols, bUseCopy);
+}
+
 
 void PWSprefs::SetupCopyPrefs()
 {
