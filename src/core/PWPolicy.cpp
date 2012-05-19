@@ -129,8 +129,9 @@ StringX PWPolicy::MakeRandomPassword() const
 {
   PWPolicy pol(*this); // small price to keep constness
   if (flags == 0)
-    pol.SetToDefaults();
-  pol.Normalize();
+    pol = PWSprefs::GetInstance()->GetDefaultPolicy();
+  else
+    pol.Normalize(); // just in case
 
   CPasswordCharPool pwchars(pol);
   return pwchars.MakePassword();
@@ -157,63 +158,6 @@ void PWPolicy::Normalize()
   NormalizeField((flags & PWPolicy::UseDigits), digitminlength);
   NormalizeField((flags & PWPolicy::UseSymbols), symbolminlength);
 }
-
-void PWPolicy::SetToDefaults()
-{
-  const PWSprefs *prefs = PWSprefs::GetInstance();
-  if (prefs->GetPref(PWSprefs::PWUseLowercase))
-    flags |= PWPolicy::UseLowercase;
-  if (prefs->GetPref(PWSprefs::PWUseUppercase))
-    flags |= PWPolicy::UseUppercase;
-  if (prefs->GetPref(PWSprefs::PWUseDigits))
-    flags |= PWPolicy::UseDigits;
-  if (prefs->GetPref(PWSprefs::PWUseSymbols))
-    flags |= PWPolicy::UseSymbols;
-  if (prefs->GetPref(PWSprefs::PWUseHexDigits))
-    flags |= PWPolicy::UseHexDigits;
-  if (prefs->GetPref(PWSprefs::PWUseEasyVision))
-    flags |= PWPolicy::UseEasyVision;
-  if (prefs->GetPref(PWSprefs::PWMakePronounceable))
-    flags |= PWPolicy::MakePronounceable;
-
-  length = prefs->GetPref(PWSprefs::PWDefaultLength);
-  digitminlength = prefs->GetPref(PWSprefs::PWDigitMinLength);
-  lowerminlength = prefs->GetPref(PWSprefs::PWLowercaseMinLength);
-  symbolminlength = prefs->GetPref(PWSprefs::PWSymbolMinLength);
-  upperminlength = prefs->GetPref(PWSprefs::PWUppercaseMinLength);
-  symbols = PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultSymbols);
-  Normalize();
-}
-
-void PWPolicy::UpdateDefaults(bool bUseCopy) const
-{
-  const_cast<PWPolicy *>(this)->Normalize(); // alternate: use a local copy
-  PWSprefs *prefs = PWSprefs::GetInstance();
-
-  prefs->SetPref(PWSprefs::PWUseLowercase,
-                 (flags & PWPolicy::UseLowercase) != 0, bUseCopy);
-  prefs->SetPref(PWSprefs::PWUseUppercase,
-                 (flags & PWPolicy::UseUppercase) != 0, bUseCopy);
-  prefs->SetPref(PWSprefs::PWUseDigits,
-                 (flags & PWPolicy::UseDigits) != 0, bUseCopy);
-  prefs->SetPref(PWSprefs::PWUseSymbols,
-                 (flags & PWPolicy::UseSymbols) != 0, bUseCopy);
-  prefs->SetPref(PWSprefs::PWUseHexDigits,
-                 (flags & PWPolicy::UseHexDigits) != 0, bUseCopy);
-  prefs->SetPref(PWSprefs::PWUseEasyVision,
-                 (flags & PWPolicy::UseEasyVision) != 0, bUseCopy);
-  prefs->SetPref(PWSprefs::PWMakePronounceable,
-                 (flags & PWPolicy::MakePronounceable) != 0, bUseCopy);
-
-  prefs->SetPref(PWSprefs::PWDefaultLength, length, bUseCopy);
-  prefs->SetPref(PWSprefs::PWDigitMinLength, digitminlength, bUseCopy);
-  prefs->SetPref(PWSprefs::PWLowercaseMinLength, lowerminlength, bUseCopy);
-  prefs->SetPref(PWSprefs::PWSymbolMinLength, symbolminlength, bUseCopy);
-  prefs->SetPref(PWSprefs::PWUppercaseMinLength, upperminlength, bUseCopy);
-  PWSprefs::GetInstance()->SetPref(PWSprefs::DefaultSymbols,
-                                   symbols, bUseCopy);
-}
-
 
 static stringT PolValueString(int flag, bool override, int count)
 {

@@ -43,7 +43,7 @@ CAddEdit_PropertySheet::CAddEdit_PropertySheet(UINT nID, CWnd* pParent,
 
   PWSprefs *prefs = PWSprefs::GetInstance();
 
-  m_AEMD.default_pwp.SetToDefaults();
+  m_AEMD.default_pwp = prefs->GetDefaultPolicy();
   m_AEMD.default_symbols = prefs->GetPref(PWSprefs::DefaultSymbols);
 
   // Set up data used by all Property Pages, as appropriate

@@ -1253,7 +1253,7 @@ bool PWScore::GetPolicyFromName(const StringX &sxPolicyName, PWPolicy &st_pp) co
   LoadAString(defpolStr, IDSC_DEFAULT_POLICY);
 
   if (sxPolicyName == defpolStr) {
-    st_pp.SetToDefaults();
+    st_pp = PWSprefs::GetInstance()->GetDefaultPolicy();
     return true;
   } else {
     PSWDPolicyMapCIter iter = m_MapPSWDPLC.find(sxPolicyName);
