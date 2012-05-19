@@ -45,6 +45,7 @@ struct st_prefShortcut {
 };
 
 class CXMLprefs;
+struct PWPolicy;
 
 class PWSprefs
 {
@@ -179,6 +180,8 @@ public:
   void SetPrefPSSRect(long top, long bottom, long left, long right);
   int GetMRUList(stringT *MRUFiles) const;
   int SetMRUList(const stringT *MRUFiles, int n, int max_MRU);
+  PWPolicy GetDefaultPolicy() const;
+  void SetDefaultPolicy(const PWPolicy &pol, bool bUseCopy);
 
   void SetupCopyPrefs();
   void UpdateFromCopyPrefs(const PWSprefs::PrefType ptype);
