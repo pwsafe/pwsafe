@@ -1017,7 +1017,7 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
       m_core.GetPolicyFromName(itemPolName.c_str(), policy);
     } else {
       m_cbxPolicyNames->SetValue(_("Default Policy"));
-      policy.SetToDefaults();
+      policy = prefs->GetDefaultPolicy();
     }
   }
   UpdatePWPolicyControls(policy);
@@ -1227,7 +1227,7 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
       const StringX oldPolName = m_item.GetPolicyName();
       if (oldPolName.empty()) { // either item-specific or default:
         if (m_item.GetPWPolicy().empty())
-          oldPWP.SetToDefaults();
+          oldPWP = PWSprefs::GetInstance()->GetDefaultPolicy();
         else
           m_item.GetPWPolicy(oldPWP);
       } else {
@@ -1753,7 +1753,7 @@ void AddEditPropSheet::OnPolicylistSelected( wxCommandEvent& event )
   const wxString polName = event.GetString();
   PWPolicy policy;
   if (polName == _("Default Policy")) {
-    policy.SetToDefaults();
+    policy = PWSprefs::GetInstance()->GetDefaultPolicy();
   } else {
     if (!m_core.GetPolicyFromName(polName.c_str(), policy)) {
       pws_os::Trace(_("Couldn't find policy %s\n"), polName.c_str());
