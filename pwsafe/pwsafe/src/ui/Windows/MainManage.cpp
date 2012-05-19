@@ -612,10 +612,7 @@ void DboxMain::OnOptions()
 void DboxMain::OnGeneratePassword()
 {
   PSWDPolicyMap MapPSWDPLC = GetPasswordPolicies();
-
-  PWPolicy st_default_pp;
-  st_default_pp.SetToDefaults();
-
+  PWPolicy st_default_pp(PWSprefs::GetInstance()->GetDefaultPolicy());
   CPasswordPolicyDlg *pDlg(NULL);
   
   // Try Tall version
@@ -682,7 +679,7 @@ void DboxMain::OnManagePasswordPolicies()
     if (st_old_default_pp != st_new_default_pp) {
       // User has changed database default policy - need to update preferences
       // Update the copy only!
-      st_new_default_pp.UpdateDefaults(true);
+      PWSprefs::GetInstance()->SetDefaultPolicy(st_new_default_pp, true);
 
       // Now get new DB preferences String value
       StringX sxNewDBPrefsString(PWSprefs::GetInstance()->Store(true));
