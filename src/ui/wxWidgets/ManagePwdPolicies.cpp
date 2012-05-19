@@ -141,7 +141,7 @@ void CManagePasswordPolicies::Init()
 ////@end CManagePasswordPolicies member initialisation
   m_MapPSWDPLC = m_core.GetPasswordPolicies();
 
-  m_st_default_pp.SetToDefaults();
+  m_st_default_pp = PWSprefs::GetInstance()->GetDefaultPolicy();
 }
 
 
@@ -641,8 +641,7 @@ void CManagePasswordPolicies::OnOkClick( wxCommandEvent& )
    * If anything has changed, we trat the change as atomic, creating a multicommand
    * s.t. Undo/Redo will work as expected.
    */
-  PWPolicy olddefpol;
-  olddefpol.SetToDefaults();
+  PWPolicy olddefpol(PWSprefs::GetInstance()->GetDefaultPolicy());
   bool defChanged = (olddefpol != m_st_default_pp);
   bool namedChanged = (m_MapPSWDPLC != m_core.GetPasswordPolicies());
 
@@ -652,7 +651,7 @@ void CManagePasswordPolicies::OnOkClick( wxCommandEvent& )
     if (defChanged) {
       // User has changed database default policy - need to update preferences
       // Update the copy only!
-      m_st_default_pp.UpdateDefaults(true);
+      PWSprefs::GetInstance()->SetDefaultPolicy(m_st_default_pp, true);
 
       // Now get new DB preferences String value
       StringX sxNewDBPrefsString(PWSprefs::GetInstance()->Store(true));

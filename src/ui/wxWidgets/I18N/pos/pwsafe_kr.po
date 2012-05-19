@@ -3,13 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1719
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1274
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1742
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-30 18:05+0300\n"
+"POT-Creation-Date: 2012-05-13 20:13+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -124,7 +125,7 @@ msgstr "새 버전 출시!"
 msgid "Could not read server version data."
 msgstr ""
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:264
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:266
 #, fuzzy
 msgid ""
 "To add a new entry, simply fill in the fields below. At least a title and a\n"
@@ -136,408 +137,403 @@ msgstr ""
 "입력해야 합니다. 기본 사용자 이름을 설정하셨다면, 그것이 사용자 이름 필드에 "
 "표시될 것입니다."
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:269
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:271
 #: ../../../ui/wxWidgets/createshortcutdlg.cpp:153
 #: ../../../ui/wxWidgets/editshortcut.cpp:169
 msgid "Group:"
 msgstr "그룹:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:278
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:280
 #: ../../../ui/wxWidgets/createshortcutdlg.cpp:160
 #: ../../../ui/wxWidgets/editshortcut.cpp:176
 #, fuzzy
 msgid "Title:"
 msgstr "주제(&T)"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:286
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:288
 #: ../../../ui/wxWidgets/createshortcutdlg.cpp:166
 #: ../../../ui/wxWidgets/editshortcut.cpp:182
 #, fuzzy
 msgid "Username:"
 msgstr "사용자 이름(&U):"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:294
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:296
 #, fuzzy
 msgid "Password:"
 msgstr "비밀번호(&P):"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:304
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1061
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:306
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1078
 msgid "&Hide"
 msgstr "숨기기(&H)"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:309
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:311
 msgid "&Generate"
 msgstr "생성(&G)"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:312
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:314
 #, fuzzy
 msgid "Confirm:"
 msgstr "확인:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:320
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:322
 msgid "URL:"
 msgstr ""
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:330
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:332
 msgid "Go"
 msgstr "이동"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:333
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:335
 #, fuzzy
 msgid "email:"
 msgstr "전자우편(&E)"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:343
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:345
 msgid "Send"
 msgstr "보내기"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:348
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:350
 #, fuzzy
 msgid "Notes:"
 msgstr "메모(&N):"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:354
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:356
 msgid "Basic"
 msgstr "기본"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:362
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:364
 #, fuzzy
 msgid "Autotype:"
 msgstr "자동 입력(&A):"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:368
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:370
 msgid "Run Cmd:"
 msgstr "명령 실행:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:374
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:376
 #, fuzzy
 msgid ""
 "Double-Click\n"
 "Action:"
 msgstr "더블클릭 행동:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:378
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:394
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:823
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:380
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:396
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:822
 #, fuzzy
 msgid "Auto Type"
 msgstr "자동입력"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:379
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:395
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:824
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:343
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:483
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:381
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:397
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:823
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:341
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:481
 msgid "Browse"
 msgstr "탐색"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:380
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:396
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:825
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:382
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:398
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:824
 #, fuzzy
 msgid "Browse + Auto Type"
 msgstr "URL으로 탐색하고 자동입력"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:381
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:397
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:826
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:383
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:399
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:825
 #, fuzzy
 msgid "Copy Notes"
 msgstr "노트 보이기"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:382
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:398
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:827
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:384
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:400
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:826
 #, fuzzy
 msgid "Copy Password"
 msgstr "비밀번호"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:383
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:399
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:828
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:385
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:401
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:827
 #, fuzzy
 msgid "Copy Password + Minimize"
 msgstr "비밀번호를 클립보드에 복사하고 창 최소화"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:384
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:400
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:829
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:386
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:402
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:828
 #, fuzzy
 msgid "Copy Username"
 msgstr "사용자 이름"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:385
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:401
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:830
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:387
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:403
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:829
 #, fuzzy
 msgid "View/Edit Entry"
 msgstr "항목 편집"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:386
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:402
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:831
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:388
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:404
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:830
 #, fuzzy
 msgid "Execute Run command"
 msgstr "'명령 실행'"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:390
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:392
 #, fuzzy
 msgid ""
 "Shift-Double-Click\n"
 "Action:"
 msgstr "더블클릭 행동:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:406
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:634
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:408
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:632
 msgid "Password History"
 msgstr "비밀번호 내역"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:411
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:413
 msgid "Keep"
 msgstr "유지"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:418
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:420
 msgid "last passwords"
 msgstr "이전 비밀번호"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:431
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:433
 msgid "Clear History"
 msgstr "내역 비우기"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:436
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:438
 msgid "Copy All"
 msgstr "모두 복사"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:439
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:441
 msgid "Additional"
 msgstr "추가"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:445
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:447
 msgid "Password Expiry"
 msgstr "비밀번호 만료"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:452
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:454
 msgid "Password Expires on:"
 msgstr "비밀번호 만료 예정:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:455
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:457
 msgid "Whenever"
 msgstr "Whenever"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:460
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:462
 msgid "On"
 msgstr "켜기"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:472
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:474
 msgid ":"
 msgstr ""
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:478
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:480
 #, fuzzy
 msgid "In"
 msgstr "아이콘"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:487
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:489
 msgid "days"
 msgstr "days"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:490
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:492
 msgid "Recurring"
 msgstr "되풀이"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:496
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:498
 #, fuzzy
 msgid "Current Value:"
 msgstr "요청된 값:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:504
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:506
 msgid "&Set"
 msgstr ""
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:509
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:511
 #, fuzzy
 msgid "&Clear"
 msgstr "검색창 비우기"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:512
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:514
 msgid "Statistics"
 msgstr "통계:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:517
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:519
 #: ../../../ui/wxWidgets/editshortcut.cpp:195
 msgid "Created on:"
 msgstr "생성된 일자:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:520
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:522
 msgid "10/06/2009 23:19:25"
 msgstr ""
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:523
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:525
 msgid "Password last changed on:"
 msgstr "비밀번호가 마지막으로 변경된 때:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:526
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:538
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:641
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:239
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:528
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:540
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:643
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:255
 #: ../../../ui/wxWidgets/properties.cpp:188
 #, fuzzy
 msgid "Static text"
 msgstr "정적"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:529
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:531
 #: ../../../ui/wxWidgets/editshortcut.cpp:207
 msgid "Last accessed on:"
 msgstr "최종 접근 시간:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:532
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:386
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:534
+#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:394
 msgid "N/A"
 msgstr "N/A"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:535
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:537
 #: ../../../ui/wxWidgets/editshortcut.cpp:213
 msgid "Any field last changed on:"
 msgstr "마지막으로 변경된 날짜:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:541
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:543
 msgid "Dates and Times"
 msgstr "요일 및 시간"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:544
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:497
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:155
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:546
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:495
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:171
 msgid "Random password generation rules"
 msgstr "난수 비밀번호 생성 규칙"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:550
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:552
 #, fuzzy
 msgid "Use Database Policy"
 msgstr "데이터베이스 기본값 사용(&F)"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:560
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:562
 #, fuzzy
 msgid "Use the policy below:"
 msgstr "아래에 있는 정책 사용하기(&O):"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:569
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:503
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:162
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:571
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:501
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:178
 #, fuzzy
 msgid "Password length: "
 msgstr "비밀번호 길이:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:577
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:511
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:171
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:579
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:509
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:187
 #, fuzzy
 msgid "Use lowercase letters"
 msgstr "소문자 사용(&L)"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:583
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:598
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:613
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:628
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:517
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:532
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:547
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:562
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:178
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:585
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:600
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:615
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:630
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:515
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:530
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:545
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:560
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:194
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:210
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:226
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:242
 #, fuzzy
 msgid "(At least "
 msgstr "(최소한"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:589
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:604
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:619
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:634
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:857
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:523
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:538
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:553
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:568
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:184
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:591
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:606
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:621
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:636
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:856
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:521
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:536
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:551
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:566
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:200
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:216
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:232
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:248
 msgid ")"
 msgstr ")"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:592
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:526
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:187
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:594
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:524
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:203
 #, fuzzy
 msgid "Use UPPERCASE letters"
 msgstr "대문자 사용"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:607
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:541
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:203 ../../../core/core_st.cpp:241
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:609
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:539
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:219 ../../../core/core_st.cpp:242
 #, fuzzy
 msgid "Use digits"
 msgstr "숫자 사용(&D)"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:622
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:556
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:219
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:624
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:554
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:235
 #, fuzzy
 msgid "Use symbols (i.e., ., %, $, etc.)"
 msgstr "특수문자 사용 (i.e. &, %, $, etc.)(&S)"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:637
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:235
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:639
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:251
 #, fuzzy
 msgid "Default set"
 msgstr "기본 사용자 이름"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:644
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:242
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:646
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:258
 msgid "Special set"
 msgstr ""
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:651
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:571
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:249
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:653
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:569
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:265
 #, fuzzy
 msgid ""
 "Use only easy-to-read characters\n"
 "(i.e., no 'l', '1', etc.)"
 msgstr "읽기 쉬운 문자열만 사용 (i.e., no  'l', '1', etc.)(&E)"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:657
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:577
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:255
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:659
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:575
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:271
 #, fuzzy
 msgid "Generate pronounceable passwords"
 msgstr "발음 가능한 비밀번호 생성(&P)"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:663
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:583
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:261 ../../../core/core_st.cpp:234
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:665
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:581
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:277 ../../../core/core_st.cpp:235
 msgid "Or"
 msgstr "또는"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:666
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:586
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:264
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:668
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:584
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:280
 #, fuzzy
 msgid "Use hexadecimal digits only (0-9, a-f)"
 msgstr "16진수만 사용(&H) (0-9,a-f)"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:670
-#, fuzzy
-msgid "Reset to Database Defaults"
-msgstr "데이터베이스 기본값으로 초기화(&T)"
-
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:673
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1479
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:593
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:594
-#: ../../../core/core_st.cpp:130
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:672
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1514
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:591
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:592
+#: ../../../core/core_st.cpp:131
 msgid "Password Policy"
 msgstr "비밀번호 정책"
 
@@ -546,35 +542,45 @@ msgid "Set Date/Time"
 msgstr "날짜/시간 설정"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:697
-#: ../../../core/core_st.cpp:126
+#: ../../../core/core_st.cpp:127
 msgid "Password"
 msgstr "비밀번호"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:857
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:856
 msgid " ("
 msgstr ""
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:857 ../../../core/core_st.cpp:73
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:856 ../../../core/core_st.cpp:73
 #, fuzzy
 msgid "default"
 msgstr "기본값 사용"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:912
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:913
 msgid "[Notes hidden - click here to display]"
 msgstr "[노트가 숨겨져있음 - 표시하려면 이곳을 클릭하세요]"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:968
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1423
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:969
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1458
 msgid "Never"
 msgstr "전혀"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1030
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:999
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1019
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1273
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1755
+#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:393
+#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:470
+#: ../../../core/core_st.cpp:74
+msgid "Default Policy"
+msgstr ""
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1047
 msgid "Couldn't generate password - invalid policy"
 msgstr ""
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1031
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1138
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1145
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1048
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1156
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1163
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:98
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:105
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:113
@@ -595,50 +601,55 @@ msgstr ""
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:210
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:216
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:241
-#: ../../../core/core_st.cpp:254
+#: ../../../core/core_st.cpp:255
 msgid "Error"
 msgstr "오류"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1086
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1103
 msgid "&Show"
 msgstr "보이기(&S)"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1137
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1155
 #, fuzzy
 msgid "This entry must have a "
 msgstr "이 항목은 반드시 제목을 가져야 합니다."
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1137
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1155
 #, fuzzy
 msgid "title"
 msgstr "주제"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1137
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1155
 #, fuzzy
 msgid "password"
 msgstr "비밀번호"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1145
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1163
 #, fuzzy
 msgid "Passwords do not match"
 msgstr "두 항목이 일치하지 않습니다."
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1407
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1442
 #, fuzzy, c-format
 msgid " (every %d days)"
 msgstr "되풀이 (%d 일)"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1478
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1513
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:1277
 msgid "Sorry, 'pronounceable' and 'easy-to-read' are not supported together"
 msgstr ""
 "죄송합니다만, '발음할 수 있는' 속성과 '읽기쉬운' 속성이 동시에 지원되지 않습"
 "니다"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1716
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1739
 #, fuzzy
 msgid "mailto:"
 msgstr "전자우편(&E)"
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1759
+#, c-format
+msgid "Couldn't find policy %s\n"
+msgstr ""
 
 #: ../../../ui/wxWidgets/AdvancedSelectionDlg.cpp:79
 #, fuzzy
@@ -816,8 +827,8 @@ msgstr "기본 항목'%s' 으로 향하는 바로가기의 이름과 그룹을 �
 
 #: ../../../ui/wxWidgets/createshortcutdlg.cpp:175
 #: ../../../ui/wxWidgets/editshortcut.cpp:222
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:241
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:271
+#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:243
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:287
 #: ../../../ui/wxWidgets/properties.cpp:253
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:164
 #, fuzzy
@@ -826,8 +837,8 @@ msgstr "확인"
 
 #: ../../../ui/wxWidgets/createshortcutdlg.cpp:178
 #: ../../../ui/wxWidgets/editshortcut.cpp:225
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:244
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:274
+#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:246
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:290
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:168
 #, fuzzy
 msgid "&Cancel"
@@ -835,8 +846,8 @@ msgstr "취소"
 
 #: ../../../ui/wxWidgets/createshortcutdlg.cpp:181
 #: ../../../ui/wxWidgets/editshortcut.cpp:228
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:247
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:277
+#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:249
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:293
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:449
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:171
 msgid "&Help"
@@ -928,7 +939,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/editshortcut.cpp:123
 #: ../../../ui/wxWidgets/properties.cpp:124
 #: ../../../ui/wxWidgets/properties.cpp:132
-#: ../../../ui/wxWidgets/properties.cpp:143 ../../../core/core_st.cpp:268
+#: ../../../ui/wxWidgets/properties.cpp:143 ../../../core/core_st.cpp:269
 msgid "Unknown"
 msgstr "알 수 없는"
 
@@ -1132,113 +1143,109 @@ msgstr "파일 읽기 오류"
 msgid "Password Safe - <Untitled Restored Backup>"
 msgstr "Password Safe - <복원된 이름없는 백업본>"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:158
+#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:160
 #, fuzzy
 msgid "Available Password Policies:"
 msgstr "비밀번호 정책 필터 보기"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:178
+#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:180
 msgid "&New"
 msgstr "새로 만들기(&N)"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:181
+#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:183
 #, fuzzy
 msgid "Edit"
 msgstr "편집(&E)"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:184
+#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:186
 msgid "&Delete"
 msgstr "삭제(&D)"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:187
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:358
+#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:189
+#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:366
 msgid "List"
 msgstr "목록"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:190
+#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:192
 msgid "&Undo"
 msgstr "되돌리기(&U)"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:193
+#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:195
 #, fuzzy
 msgid "&Redo"
 msgstr "되돌리기"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:196
+#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:198
 msgid "Test Selected Policy"
 msgstr ""
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:200
+#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:202
 #, fuzzy
 msgid "Generate"
 msgstr "생성(&G)"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:213
+#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:215
 #, fuzzy
 msgid "Copy Password to clipboard"
 msgstr "비밀번호를 클립보드에 복사(&C)"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:216
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:359
+#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:218
+#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:367
 #, fuzzy
 msgid "Selected policy details:"
 msgstr "선택된 필터 속성:"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:262
+#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:264
 msgid "Close"
 msgstr "닫기"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:263
+#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:265
 msgid "View"
 msgstr "보기"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:269
+#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:275
 #, fuzzy
 msgid "Policy Name"
 msgstr "비밀번호 정책"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:270
+#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:276
 #, fuzzy
 msgid "Use count"
 msgstr "기본값 사용"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:278
+#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:285
 msgid "Policy Field"
 msgstr ""
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:279
+#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:286
 #, fuzzy
 msgid "Value"
 msgstr "값:"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:282
-#: ../../../core/core_st.cpp:123
+#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:290
+#: ../../../core/core_st.cpp:124
 msgid "Group"
 msgstr "그룹"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:283
-#: ../../../ui/wxWidgets/PWSgrid.cpp:136 ../../../core/core_st.cpp:136
+#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:291
+#: ../../../ui/wxWidgets/PWSgrid.cpp:136 ../../../core/core_st.cpp:137
 msgid "Title"
 msgstr "주제"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:284
+#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:292
 msgid "User Name"
 msgstr "사용자 이름"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:370
+#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:378
 msgid "Details"
 msgstr ""
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:371
+#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:379
 #, fuzzy
 msgid "Entries using selected policy:"
 msgstr "항목이 선택되지 않았습니다"
 
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:385
-msgid "Default Policy"
-msgstr ""
-
-#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:399
+#: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:407
 msgid "Not used"
 msgstr ""
 
@@ -1268,243 +1275,243 @@ msgstr "고급 병합 옵션"
 msgid "merge"
 msgstr "병합"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:129
-#: ../../../ui/wxWidgets/properties.cpp:171 ../../../core/core_st.cpp:231
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:127
+#: ../../../ui/wxWidgets/properties.cpp:171 ../../../core/core_st.cpp:232
 msgid "None"
 msgstr "None"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:130
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:128
 #, fuzzy
 msgid "YYYYMMMDD_HHMMSS"
 msgstr "YYMMDD_HHMMSS"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:131
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:129
 msgid "Incremented Number [001-999]"
 msgstr "증가수 [001-999]"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:138
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:432 ../../../core/core_st.cpp:67
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:136
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:430 ../../../core/core_st.cpp:67
 msgid "Copy password to clipboard"
 msgstr "클립보드에 비밀번호 복사"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:139
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:437 ../../../core/core_st.cpp:72
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:137
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:435 ../../../core/core_st.cpp:72
 msgid "View/Edit selected entry"
 msgstr "선택한 항목을 편집"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:140
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:428
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:441 ../../../core/core_st.cpp:63
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:138
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:426
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:439 ../../../core/core_st.cpp:63
 msgid "Autotype"
 msgstr "자동 입력"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:141
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:429 ../../../core/core_st.cpp:64
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:139
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:427 ../../../core/core_st.cpp:64
 msgid "Browse to URL"
 msgstr "URL으로 탐색"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:142
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:431 ../../../core/core_st.cpp:66
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:140
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:429 ../../../core/core_st.cpp:66
 msgid "Copy notes to clipboard"
 msgstr "노트를 클립보드에 복사"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:143
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:434 ../../../core/core_st.cpp:69
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:141
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:432 ../../../core/core_st.cpp:69
 msgid "Copy username to clipboard"
 msgstr "사용자 이름을 클립보드에 복사"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:144
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:433 ../../../core/core_st.cpp:68
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:142
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:431 ../../../core/core_st.cpp:68
 msgid "Copy password to clipboard, minimize"
 msgstr "비밀번호를 클립보드에 복사하고 창 최소화"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:145
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:430 ../../../core/core_st.cpp:65
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:143
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:428 ../../../core/core_st.cpp:65
 msgid "Browse to URL + Autotype"
 msgstr "URL으로 탐색하고 자동입력"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:146
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:435 ../../../core/core_st.cpp:70
-#: ../../../core/core_st.cpp:133
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:144
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:433 ../../../core/core_st.cpp:70
+#: ../../../core/core_st.cpp:134
 msgid "Run Command"
 msgstr "명령 실행"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:147
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:436 ../../../core/core_st.cpp:71
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:145
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:434 ../../../core/core_st.cpp:71
 msgid "Send email"
 msgstr "전자우편 보내기"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:266
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:264
 msgid "Save database immediately after Edit or Add"
 msgstr "항목 추가/편집 후 즉시 데이터베이스 저장"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:270
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:268
 msgid "Intermediate Backups"
 msgstr "중간 백업본"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:273
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:271
 msgid "Create intermediate backups (.ibak) before saving"
 msgstr "저장하기 전에 긴급 복구본 생성"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:277
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:275
 msgid "Backup Name"
 msgstr "백업본 이름"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:280
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:278
 msgid "Base:"
 msgstr "기본:"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:283
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:281
 msgid "Database name"
 msgstr "데이터베이스 이름"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:289
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:336
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:287
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:334
 msgid "Other:"
 msgstr "기타:"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:299
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:297
 msgid "Suffix:"
 msgstr "접미사:"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:310
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:308
 msgid "Max."
 msgstr "최대"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:318
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:316
 msgid "Example:"
 msgstr "예제:"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:327
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:325
 #, fuzzy
 msgid "Backup directory:"
 msgstr "백업본 폴더:"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:330
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:328
 msgid "Same as database's"
 msgstr "데이터베이스의 다음 항목과 동일:"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:346
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:344
 msgid "Backups"
 msgstr "백업본"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:352
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:350
 msgid "Always keep Password Safe on top"
 msgstr "Password Safe를 항상 위에 표시"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:356
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:354
 msgid "Show Username in Tree View"
 msgstr "트리 보기 형식에서 사용자 이름 보이기"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:360
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:358
 msgid "Show Password in Tree View"
 msgstr "트리 보기 형식에서 비밀번호 보이기"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:364
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:362
 msgid "Show Notes as ToolTips in Tree && List views"
 msgstr "트리/리스트 보기에서 노트를 도움말로 보여주기"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:368
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:366
 msgid "Show Password in Add && Edit"
 msgstr "편집 모드에서 비밀번호 보이기(&E)"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:372
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:370
 msgid "Show Notes in Edit"
 msgstr "편집 상태로 노트 보이기"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:376
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:374
 msgid "Word Wrap Notes in Add && Edit"
 msgstr "Word Wrap Notes in Add && Edit"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:380
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:378
 msgid "Put Groups first in Tree View"
 msgstr "트리보기에서 그룹을 첫번째로 놓기"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:386
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:384
 msgid "Warn"
 msgstr "경고"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:393
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:391
 msgid "days before passwords expire"
 msgstr "days before passwords expire"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:397
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:395
 #, fuzzy
 msgid "&Fully collapsed"
 msgstr "모두 접힘"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:398
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:396
 #, fuzzy
 msgid "&Fully expanded"
 msgstr "모두 펼쳐짐"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:399
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:397
 #, fuzzy
 msgid "&Same as when last saved"
 msgstr "마지막에 저장된 다음 항목과 같음:"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:400
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:398
 msgid "Initial Tree View"
 msgstr "트리 보기 기본값"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:404
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:402
 msgid "Display"
 msgstr "표시"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:410
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:408
 msgid "Confirm deletion of items"
 msgstr "항목 삭제 확인"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:414
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:412
 msgid "Record last access times"
 msgstr "마지막 기록 변경 시점"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:418
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:416
 msgid "Escape key closes application"
 msgstr "Esc 키로 프로그램을 닫습니다"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:424
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:422
 msgid "Double-click action"
 msgstr "더블클릭 행동"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:444
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:442
 msgid "Minimize after Autotype"
 msgstr "자동입력 후 최소화"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:450
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:448
 msgid "Default Autotype string:"
 msgstr "기본 자동입력 문자열:"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:456
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:454
 msgid "Default Username"
 msgstr "기본 사용자 이름"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:461
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:459
 msgid "Use"
 msgstr "Use"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:468
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:466
 msgid "as default username"
 msgstr "기본 사용자 이름으로 사용"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:471
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:469
 msgid "Query user to set default username"
 msgstr "사용자를 기본 사용자 이름으로 요청"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:475
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:473
 #, fuzzy
 msgid "Alternate Browser"
 msgstr "대체 브라우저"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:491
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:489
 msgid "Browser Command Line parameters"
 msgstr "브라우저 명령줄 변수"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:494
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:492
 msgid "Misc."
 msgstr "기타"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:592
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:590
 msgid ""
 "At least one type of character (lowercase, uppercase, digits,\n"
 "symbols, hexadecimal) must be permitted."
@@ -1512,132 +1519,132 @@ msgstr ""
 "최소 한 글자(소문자, 대문자, 숫자,\n"
 "특수문자, 16진수) 이상 입력해야 합니다."
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:602
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:600
 msgid "Save"
 msgstr "저장"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:609
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:607
 msgid "previous passwords per entry"
 msgstr "항목별 비밀번호 내역의 수"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:612
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:610
 msgid "Manage password history of current entries"
 msgstr "현재 항목의 과거 비밀번호 내역 관리"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:615
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:613
 msgid "No change"
 msgstr "변경 안함"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:619
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:617
 msgid "Stop saving previous passwords"
 msgstr "이전 비밀번호 저장 안함"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:623
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:621
 msgid "Start saving previous passwords"
 msgstr "이전 비밀번호 저장 시작"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:627
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:625
 #, fuzzy
 msgid "Set maximum number of paswords saved to above value"
 msgstr "최대 저장가능한 비밀번호의 수량 설정"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:631
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:629
 msgid "Apply"
 msgstr "적용"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:640
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:638
 msgid "Clear clipboard upon minimize"
 msgstr "최소화 시 클립보드 비우기"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:644
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:642
 msgid "Clear clipboard upon exit"
 msgstr "종료 시 클립보드 비우기"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:648
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:646
 msgid "Confirm item copy to clipboard"
 msgstr "클립보드에 복사 확인"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:652
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:650
 msgid "Lock password database on minimize"
 msgstr "최소화할 때 비밀번호 데이터베이스 잠그기"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:656
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:654
 msgid "Lock password database on workstation lock"
 msgstr "컴퓨터 잠금 시 비밀번호 데이터베이스 잠금"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:662
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:660
 #, fuzzy
 msgid "Lock password database after"
 msgstr "비밀번호 데이터베이스를 다음 시간 이후로 잠금:"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:669
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:667
 msgid "minutes idle"
 msgstr "minutes idle"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:672
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:670
 msgid "Security"
 msgstr "보안"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:678
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:676
 #, fuzzy
 msgid "System Tray"
 msgstr "시스템 트레이"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:681
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:679
 msgid "Put icon in System Tray"
 msgstr "시스템 트레이에 아이콘 감추기"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:687
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:705
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:685
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:703
 #, fuzzy
 msgid "  Remember last"
 msgstr "마지막에 사용한 항목 불러오기"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:693
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:691
 #, fuzzy
 msgid "used entries in System Tray menu"
 msgstr "used entries in System Tray menu."
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:696
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:694
 msgid "Start PasswordSafe at Login"
 msgstr "로그인 때 Password Safe 시작"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:700
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:698
 msgid "Recent PasswordSafe Databases"
 msgstr "최근 Password Safe 데이터베이스"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:711
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:709
 #, fuzzy
 msgid "databases"
 msgstr "databases."
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:714
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:712
 #, fuzzy
 msgid "Recent Databases on File Menu rather than as a sub-menu"
 msgstr "최근 데이터베이스 목록을 파일 메뉴에 표시"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:718
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:716
 #, fuzzy
 msgid "Open database as read-only by default"
 msgstr "데이터베이스를 읽기전용으로 여는 것을 기본값으로 설정"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:722
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:720
 msgid "Allow multiple instances"
 msgstr ""
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:727
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:725
 msgid "Use Primary Selection for clipboard"
 msgstr ""
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:732
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:730
 msgid "System"
 msgstr "시스템"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:741
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:739
 msgid "Shortcut Key"
 msgstr "단축키"
 
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:742
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:740
 msgid "Menu Item"
 msgstr "메뉴 항목"
 
@@ -1662,9 +1669,51 @@ msgstr "브라우저 선택:"
 msgid "Password Safe"
 msgstr "Password Safe"
 
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:149
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:165
 #, fuzzy
 msgid "Policy Name:"
+msgstr "비밀번호 정책"
+
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:362
+#, fuzzy
+msgid "Hexadecimal is mutually exculsive to all other options."
+msgstr "16진수 방식은 모든 다른 옵션들을 공통적으로 제외합니다!"
+
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:366
+msgid ""
+"Hexadecimal passwords must have even length - each byte is two characters"
+msgstr ""
+
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:371
+#, fuzzy
+msgid ""
+"At least one type of character (lowercase, uppercase, digits, symbols or "
+"hexadecimal) must be chosen"
+msgstr ""
+"최소 한 글자(소문자, 대문자, 숫자,\n"
+"특수문자, 16진수) 이상 입력해야 합니다."
+
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:376
+#, fuzzy
+msgid "Password must be between 4 and 1024 characters"
+msgstr "비밀번호의 길이는 반드시 4~1024자 이내여야 합니다."
+
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:384
+msgid "Password length is less than sum of 'at least' constraints"
+msgstr "비밀번호 길이가 최소 규칙들의 합보다 적습니다"
+
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:394
+#, fuzzy
+msgid "Policy name cannot be blank"
+msgstr "비밀번호 조합은 공백으로 남겨질 수 없습니다"
+
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:399
+msgid "Policy name is already in use"
+msgstr ""
+
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:405
+#, fuzzy
+msgid "Policy Error"
 msgstr "비밀번호 정책"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:357
@@ -2144,7 +2193,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2671
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2672
 #: ../../../ui/wxWidgets/PwsSync.cpp:573 ../../../ui/wxWidgets/PwsSync.cpp:724
-#: ../../../ui/wxWidgets/PwsSync.cpp:741 ../../../core/core_st.cpp:91
+#: ../../../ui/wxWidgets/PwsSync.cpp:741 ../../../core/core_st.cpp:92
 msgid "entry"
 msgstr "항목"
 
@@ -2152,7 +2201,7 @@ msgstr "항목"
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2671
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2672
 #: ../../../ui/wxWidgets/PwsSync.cpp:573 ../../../ui/wxWidgets/PwsSync.cpp:724
-#: ../../../ui/wxWidgets/PwsSync.cpp:741 ../../../core/core_st.cpp:89
+#: ../../../ui/wxWidgets/PwsSync.cpp:741 ../../../core/core_st.cpp:90
 msgid "entries"
 msgstr "항목들"
 
@@ -2186,7 +2235,7 @@ msgid "Import XML failed"
 msgstr "XML 설정 불러오기 실패"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2576
-#: ../../../core/core_st.cpp:222
+#: ../../../core/core_st.cpp:223
 #, c-format
 msgid ""
 "Can't find XML Schema Definition file (%s) in your PasswordSafe Application "
@@ -2422,20 +2471,20 @@ msgstr "이전 검색 내역의 보고서 만들기"
 msgid "Clear Find"
 msgstr "검색창 비우기"
 
-#: ../../../ui/wxWidgets/properties.cpp:138 ../../../core/core_st.cpp:273
+#: ../../../ui/wxWidgets/properties.cpp:138 ../../../core/core_st.cpp:274
 #, c-format
 msgid "%s on %s"
 msgstr "%s - %s중에서"
 
-#: ../../../ui/wxWidgets/properties.cpp:160 ../../../core/core_st.cpp:304
+#: ../../../ui/wxWidgets/properties.cpp:160 ../../../core/core_st.cpp:305
 msgid "Yes"
 msgstr "Yes"
 
-#: ../../../ui/wxWidgets/properties.cpp:160 ../../../core/core_st.cpp:226
+#: ../../../ui/wxWidgets/properties.cpp:160 ../../../core/core_st.cpp:227
 msgid "No"
 msgstr "아니오"
 
-#: ../../../ui/wxWidgets/properties.cpp:162 ../../../core/core_st.cpp:270
+#: ../../../ui/wxWidgets/properties.cpp:162 ../../../core/core_st.cpp:271
 #, c-format
 msgid "In Headers(%s)/In Entries("
 msgstr "In Headers(%s)/In Entries("
@@ -2525,7 +2574,7 @@ msgstr ""
 msgid "Error initializing help"
 msgstr ""
 
-#: ../../../ui/wxWidgets/pwsafeapp.cpp:517
+#: ../../../ui/wxWidgets/pwsafeapp.cpp:522
 msgid "Help Undefined"
 msgstr ""
 
@@ -2712,15 +2761,15 @@ msgstr "데이터베이스로부터 동기화 중: %s\r\n"
 msgid "synchronized"
 msgstr "동기화됨"
 
-#: ../../../ui/wxWidgets/PwsSync.cpp:725 ../../../core/core_st.cpp:286
+#: ../../../ui/wxWidgets/PwsSync.cpp:725 ../../../core/core_st.cpp:287
 msgid "was"
 msgstr "was"
 
-#: ../../../ui/wxWidgets/PwsSync.cpp:725 ../../../core/core_st.cpp:287
+#: ../../../ui/wxWidgets/PwsSync.cpp:725 ../../../core/core_st.cpp:288
 msgid "were"
 msgstr "were"
 
-#: ../../../ui/wxWidgets/PwsSync.cpp:726 ../../../core/core_st.cpp:266
+#: ../../../ui/wxWidgets/PwsSync.cpp:726 ../../../core/core_st.cpp:267
 #, c-format
 msgid ""
 "\r\n"
@@ -2729,7 +2778,7 @@ msgstr ""
 "\r\n"
 "다음 %s %s 가 갱신됨:"
 
-#: ../../../ui/wxWidgets/PwsSync.cpp:742 ../../../core/core_st.cpp:265
+#: ../../../ui/wxWidgets/PwsSync.cpp:742 ../../../core/core_st.cpp:266
 #, c-format
 msgid ""
 "\r\n"
@@ -2930,7 +2979,7 @@ msgid "Please enter the key and verify it."
 msgstr "비밀번호를 입력하시고 검사해보세요."
 
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:234
-#: ../../../core/core_st.cpp:256
+#: ../../../core/core_st.cpp:257
 msgid "Warning"
 msgstr "경고"
 
@@ -3176,11 +3225,11 @@ msgstr ""
 msgid " Current default (%s)"
 msgstr "현재 기본값 (%s)"
 
-#: ../../../core/core_st.cpp:74
+#: ../../../core/core_st.cpp:75
 msgid "default symbol set"
 msgstr ""
 
-#: ../../../core/core_st.cpp:75
+#: ../../../core/core_st.cpp:76
 #, c-format
 msgid ""
 "This entry has the following %d %s:\r\n"
@@ -3189,12 +3238,12 @@ msgid ""
 "entry's password)?"
 msgstr ""
 
-#: ../../../core/core_st.cpp:76
+#: ../../../core/core_st.cpp:77
 #, fuzzy
 msgid "Delete Base Entry Confirmation"
 msgstr "기본 항목 삭제 확인"
 
-#: ../../../core/core_st.cpp:77
+#: ../../../core/core_st.cpp:78
 #, c-format
 msgid ""
 "This entry has the following %d %s:\r\n"
@@ -3202,36 +3251,36 @@ msgid ""
 "Please confirm to continue (All shortcuts to this entry will be deleted)?"
 msgstr ""
 
-#: ../../../core/core_st.cpp:78
+#: ../../../core/core_st.cpp:79
 msgid "does not begin with"
 msgstr "does not begin with"
 
-#: ../../../core/core_st.cpp:79
+#: ../../../core/core_st.cpp:80
 msgid "does not contain"
 msgstr "does not contain"
 
-#: ../../../core/core_st.cpp:80
+#: ../../../core/core_st.cpp:81
 msgid "does not contain all of"
 msgstr ""
 
-#: ../../../core/core_st.cpp:81
+#: ../../../core/core_st.cpp:82
 msgid "does not contain any of"
 msgstr ""
 
-#: ../../../core/core_st.cpp:82
+#: ../../../core/core_st.cpp:83
 msgid "does not end with"
 msgstr "does not end with"
 
-#: ../../../core/core_st.cpp:83
+#: ../../../core/core_st.cpp:84
 msgid "does not equal"
 msgstr "does not equal"
 
-#: ../../../core/core_st.cpp:84
+#: ../../../core/core_st.cpp:85
 #, c-format
 msgid " Duplicate # %d"
 msgstr "# %d 을(를) 복제"
 
-#: ../../../core/core_st.cpp:85
+#: ../../../core/core_st.cpp:86
 #, c-format
 msgid ""
 "Trouble with a non-textual (e.g., time) field in record '%s' - please check "
@@ -3240,19 +3289,19 @@ msgstr ""
 "'%s' 레코드에서 텍스트가 아닌 필드에 오류가 발생 - 데이터를 꼼꼼히 살펴 주십"
 "시오."
 
-#: ../../../core/core_st.cpp:86
+#: ../../../core/core_st.cpp:87
 msgid "End Report"
 msgstr "보고 중지"
 
-#: ../../../core/core_st.cpp:87
+#: ../../../core/core_st.cpp:88
 msgid "--------------------------------------------------------------------------------"
 msgstr "--------------------------------------------------------------------------------"
 
-#: ../../../core/core_st.cpp:88
+#: ../../../core/core_st.cpp:89
 msgid "ends with"
 msgstr "ends with"
 
-#: ../../../core/core_st.cpp:90
+#: ../../../core/core_st.cpp:91
 #, c-format
 msgid ""
 "The following entries had a policy name that already existed in this "
@@ -3261,104 +3310,104 @@ msgid ""
 "%s"
 msgstr ""
 
-#: ../../../core/core_st.cpp:92
+#: ../../../core/core_st.cpp:93
 msgid "equals"
 msgstr "equals"
 
-#: ../../../core/core_st.cpp:93
+#: ../../../core/core_st.cpp:94
 msgid "has expired"
 msgstr "has expired"
 
-#: ../../../core/core_st.cpp:94
+#: ../../../core/core_st.cpp:95
 #, c-format
 msgid "within %d day(s)"
 msgstr "within %d day(s)"
 
-#: ../../../core/core_st.cpp:95
+#: ../../../core/core_st.cpp:96
 msgid "First character of variable name must be alphabetic"
 msgstr "변수 이름의 첫 글자는 반드시 알파벳이 와야 합니다"
 
-#: ../../../core/core_st.cpp:96
+#: ../../../core/core_st.cpp:97
 msgid "Index not numeric"
 msgstr "색인이 숫자가 아님"
 
-#: ../../../core/core_st.cpp:97
+#: ../../../core/core_st.cpp:98
 msgid "Input string is empty"
 msgstr "입력란이 비어있습니다"
 
-#: ../../../core/core_st.cpp:98
+#: ../../../core/core_st.cpp:99
 msgid "Characters present between end of index ']' and '}'"
 msgstr "인덱서 ']' 와 '}' 의 끝이 나타나기 전에 문자열이 존재합니다."
 
-#: ../../../core/core_st.cpp:99
+#: ../../../core/core_st.cpp:100
 msgid "Index is invalid or missing"
 msgstr "색인이 올바르지 않거나 손상되었습니다"
 
-#: ../../../core/core_st.cpp:100
+#: ../../../core/core_st.cpp:101
 msgid "Missing ending curly bracket for variable name"
 msgstr "변수 이름의 폐행문자가 없음"
 
-#: ../../../core/core_st.cpp:101
+#: ../../../core/core_st.cpp:102
 msgid "Missing ending round bracket for Autotype value"
 msgstr "자동 입력 값의 폐행문자가 없음"
 
-#: ../../../core/core_st.cpp:102
+#: ../../../core/core_st.cpp:103
 msgid "Missing ending square bracket for index value"
 msgstr "목차값의 폐행문자가 없음"
 
-#: ../../../core/core_st.cpp:103
+#: ../../../core/core_st.cpp:104
 msgid "There are unmatched quotes in the run command"
 msgstr "실행 명령에 짝이 맞지 않는 쌍따옴표가 있습니다"
 
-#: ../../../core/core_st.cpp:104
+#: ../../../core/core_st.cpp:105
 msgid "Variable name is empty"
 msgstr "변수 이름이 비어있습니다"
 
-#: ../../../core/core_st.cpp:105
+#: ../../../core/core_st.cpp:106
 msgid "Variable name must be alphanumeric"
 msgstr "변수 이름은 반드시 알파벳과 숫자로 구성되어야 합니다"
 
-#: ../../../core/core_st.cpp:106
+#: ../../../core/core_st.cpp:107
 msgid "an alias entry"
 msgstr "보조 항목"
 
-#: ../../../core/core_st.cpp:107
+#: ../../../core/core_st.cpp:108
 msgid "a base entry of an alias"
 msgstr "보조 항목의 기본 항목"
 
-#: ../../../core/core_st.cpp:108
+#: ../../../core/core_st.cpp:109
 msgid "  Field is too long."
 msgstr "필드 값이 너무 깁니다."
 
-#: ../../../core/core_st.cpp:109
+#: ../../../core/core_st.cpp:110
 msgid "  Field is too short."
 msgstr "필드 값이 너무 짧습니다."
 
-#: ../../../core/core_st.cpp:110
+#: ../../../core/core_st.cpp:111
 msgid "Error: A file with this name already exists"
 msgstr "오류: 같은 이름의 파일이 이미 존재합니다"
 
-#: ../../../core/core_st.cpp:111
+#: ../../../core/core_st.cpp:112
 msgid "The file was not found."
 msgstr "파일을 찾을 수 없습니다."
 
-#: ../../../core/core_st.cpp:112
+#: ../../../core/core_st.cpp:113
 msgid "Error: File is read-only"
 msgstr "오류: 파일이 읽기전용 입니다."
 
-#: ../../../core/core_st.cpp:113
+#: ../../../core/core_st.cpp:114
 msgid "File is truncated or otherwise corrupt. Please use backup database."
 msgstr ""
 
-#: ../../../core/core_st.cpp:114
+#: ../../../core/core_st.cpp:115
 msgid "Cannot read file. Please check file permissions."
 msgstr "파일을 읽을 수 없습니다. 파일 권한을 점검해 보십시오."
 
-#: ../../../core/core_st.cpp:115
+#: ../../../core/core_st.cpp:116
 msgid "Error while writing file! Try saving in a different location"
 msgstr "파일 작성 중 오류가 발생했습니다! 다른 곳에 저장해 보십시오"
 
-#: ../../../core/core_st.cpp:116
+#: ../../../core/core_st.cpp:117
 #, c-format
 msgid ""
 "Filter %s already exists in the database, do you wish to replace it with "
@@ -3366,120 +3415,120 @@ msgid ""
 msgstr ""
 "%s 필터가 이미 데이터베이스에 존재합니다만, 이 것으로 교체하시겠습니까?"
 
-#: ../../../core/core_st.cpp:117
+#: ../../../core/core_st.cpp:118
 msgid "Stored filters will be unusable until the file's restored."
 msgstr "파일을 다시 불러오기 전 까지 저장된 필터는 사용할 수 없습니다."
 
-#: ../../../core/core_st.cpp:118
+#: ../../../core/core_st.cpp:119
 msgid "Last Access Time"
 msgstr "최종 접근 시간:"
 
-#: ../../../core/core_st.cpp:119
+#: ../../../core/core_st.cpp:120
 msgid "AutoType"
 msgstr "자동입력"
 
-#: ../../../core/core_st.cpp:120
+#: ../../../core/core_st.cpp:121
 msgid "Created Time"
 msgstr "생성 시간"
 
-#: ../../../core/core_st.cpp:121
+#: ../../../core/core_st.cpp:122
 msgid "DCA"
 msgstr "DCA"
 
-#: ../../../core/core_st.cpp:122
+#: ../../../core/core_st.cpp:123
 msgid "e-mail"
 msgstr "전자우편"
 
-#: ../../../core/core_st.cpp:124
+#: ../../../core/core_st.cpp:125
 msgid "Group/Title"
 msgstr "그룹/주제"
 
-#: ../../../core/core_st.cpp:125
+#: ../../../core/core_st.cpp:126
 msgid "Notes"
 msgstr "노트"
 
-#: ../../../core/core_st.cpp:127
+#: ../../../core/core_st.cpp:128
 msgid "Password Modified Time"
 msgstr "비밀번호 수정 시간"
 
-#: ../../../core/core_st.cpp:128
+#: ../../../core/core_st.cpp:129
 msgid "Protected"
 msgstr "보호됨"
 
-#: ../../../core/core_st.cpp:129
+#: ../../../core/core_st.cpp:130
 msgid "History"
 msgstr "내역"
 
-#: ../../../core/core_st.cpp:131
+#: ../../../core/core_st.cpp:132
 #, fuzzy
 msgid "Password Policy Name"
 msgstr "비밀번호 정책"
 
-#: ../../../core/core_st.cpp:132
+#: ../../../core/core_st.cpp:133
 msgid "Record Modified Time"
 msgstr "기록이 수정된 시간"
 
-#: ../../../core/core_st.cpp:134
+#: ../../../core/core_st.cpp:135
 msgid "Shift+DCA"
 msgstr ""
 
-#: ../../../core/core_st.cpp:135
+#: ../../../core/core_st.cpp:136
 msgid "Symbols"
 msgstr ""
 
-#: ../../../core/core_st.cpp:137
+#: ../../../core/core_st.cpp:138
 msgid "URL"
 msgstr "URL"
 
-#: ../../../core/core_st.cpp:138
+#: ../../../core/core_st.cpp:139
 msgid "Username"
 msgstr "사용자 이름"
 
-#: ../../../core/core_st.cpp:139
+#: ../../../core/core_st.cpp:140
 msgid "UUID"
 msgstr "UUID"
 
-#: ../../../core/core_st.cpp:140
+#: ../../../core/core_st.cpp:141
 msgid "Password Expiry Date"
 msgstr "비밀번호 만료일"
 
-#: ../../../core/core_st.cpp:141
+#: ../../../core/core_st.cpp:142
 msgid "Password Expiry Interval"
 msgstr "비밀번호 만료 간격"
 
-#: ../../../core/core_st.cpp:142
+#: ../../../core/core_st.cpp:143
 msgid "a normal entry"
 msgstr "일반 항목"
 
-#: ../../../core/core_st.cpp:143
+#: ../../../core/core_st.cpp:144
 msgid "added but not yet saved to database"
 msgstr "추가되었지만 데이터베이스에 저장되지 않음"
 
-#: ../../../core/core_st.cpp:144
+#: ../../../core/core_st.cpp:145
 msgid "in the database"
 msgstr "in the database"
 
-#: ../../../core/core_st.cpp:145
+#: ../../../core/core_st.cpp:146
 msgid "a shortcut entry"
 msgstr "바로가기 항목"
 
-#: ../../../core/core_st.cpp:146
+#: ../../../core/core_st.cpp:147
 msgid "a base entry of a shortcut"
 msgstr "바로가기의 기본 항목"
 
-#: ../../../core/core_st.cpp:147
+#: ../../../core/core_st.cpp:148
 msgid "changed but not yet saved to database"
 msgstr "변경되었지만 데이터베이스에 저장되지 않음"
 
-#: ../../../core/core_st.cpp:148
+#: ../../../core/core_st.cpp:149
 msgid "greater than"
 msgstr "greater than"
 
-#: ../../../core/core_st.cpp:149
+#: ../../../core/core_st.cpp:150
 msgid "greater than or equal to"
 msgstr "greater than or equal to"
 
-#: ../../../core/core_st.cpp:150
+#: ../../../core/core_st.cpp:151
 #, c-format
 msgid ""
 "Invalid input on line %d.  Number of fields separated by '%c' is not as "
@@ -3488,12 +3537,12 @@ msgstr ""
 "%d 행에서 잘못된 입력값이 있습니다..  Number of fields separated by '%c' is "
 "not as expected."
 
-#: ../../../core/core_st.cpp:151
+#: ../../../core/core_st.cpp:152
 #, c-format
 msgid "Line %d: "
 msgstr "%d 행:"
 
-#: ../../../core/core_st.cpp:152
+#: ../../../core/core_st.cpp:153
 #, c-format
 msgid ""
 "File ends on line %d before ending double quote of last entry's note field."
@@ -3501,11 +3550,11 @@ msgstr ""
 "파일의 %d번째 줄에서 마지막 항목의 메모 노트에 포함된 쌍따옴표가 나타나기 전"
 "에 파일의 끝에 도착했습니다."
 
-#: ../../../core/core_st.cpp:153
+#: ../../../core/core_st.cpp:154
 msgid "Import aborted. Please see report."
 msgstr ""
 
-#: ../../../core/core_st.cpp:154
+#: ../../../core/core_st.cpp:155
 msgid ""
 "The TXT or CSV file was not exported as required as entry records span "
 "multiple lines in the CSV file.\r\n"
@@ -3513,7 +3562,7 @@ msgid ""
 "Import aborted."
 msgstr ""
 
-#: ../../../core/core_st.cpp:155
+#: ../../../core/core_st.cpp:156
 #, c-format
 msgid ""
 "%s, Title=\"%s\", User=\"%s\" already exists in your database or in the "
@@ -3522,67 +3571,67 @@ msgstr ""
 "%s, 주제=\"%s\", 사용자=\"%s\" 가 이미 데이터베이스 혹은 불러온 파일에 존재합"
 "니다. 불러온 항목에 다음과 같이 주제를 추가했습니다=\"%s\".\r\n"
 
-#: ../../../core/core_st.cpp:156
+#: ../../../core/core_st.cpp:157
 #, c-format
 msgid "Entry on line %d with Group=\"%s\""
 msgstr "Entry on line %d with Group=\"%s\""
 
-#: ../../../core/core_st.cpp:157
+#: ../../../core/core_st.cpp:158
 #, c-format
 msgid "Entry on line %d with no group"
 msgstr "%d 행의 그룹이 없는 항목"
 
-#: ../../../core/core_st.cpp:158
+#: ../../../core/core_st.cpp:159
 #, c-format
 msgid "Entry with Group=\"%s\""
 msgstr "\"%s\" 그룹의 항목"
 
-#: ../../../core/core_st.cpp:159
+#: ../../../core/core_st.cpp:160
 msgid "Entry with no group"
 msgstr "그룹이 없는 항목"
 
-#: ../../../core/core_st.cpp:160
+#: ../../../core/core_st.cpp:161
 #, c-format
 msgid "Empty line %d skipped"
 msgstr "비어있는 %d째 줄이 생략됨"
 
-#: ../../../core/core_st.cpp:161
+#: ../../../core/core_st.cpp:162
 #, c-format
 msgid "Entry %s%d with Group=\"%s\", Title=\"%s\", User=\"%s\""
 msgstr "Entry %s%d with Group=\"%s\", Title=\"%s\", User=\"%s\""
 
-#: ../../../core/core_st.cpp:162
+#: ../../../core/core_st.cpp:163
 msgid "id="
 msgstr "id="
 
-#: ../../../core/core_st.cpp:163
+#: ../../../core/core_st.cpp:164
 msgid "Internal error. Import failed. No records imported."
 msgstr "내부 오류: 불러오기 실패. 아무 레코드도 불러오지 않았습니다."
 
-#: ../../../core/core_st.cpp:164
+#: ../../../core/core_st.cpp:165
 #, c-format
 msgid "Found %d known column headers:"
 msgstr "컬럼 헤더에서 알려진 %d개 발견:"
 
-#: ../../../core/core_st.cpp:165
+#: ../../../core/core_st.cpp:166
 #, c-format
 msgid "Entry of line %d has an invalid \"%s\" field. It has been ignored."
 msgstr ""
 "%d 행에 있는 항목이 잘못된 \"%s\" 필드값을 가지고 잇습니다. 이 항목은 무시될 "
 "것입니다."
 
-#: ../../../core/core_st.cpp:166
+#: ../../../core/core_st.cpp:167
 msgid "The following columns will be processed: "
 msgstr "다음 항목이 처리될 것입니다:"
 
-#: ../../../core/core_st.cpp:167
+#: ../../../core/core_st.cpp:168
 msgid ""
 "The following columns were recognised but only Group/Title, Username and "
 "Password will be processed:"
 msgstr ""
 "다음 항목들이 인식되었으나 그룹/제목,  사용자 이름과 비밀번호만 처리됩니다:"
 
-#: ../../../core/core_st.cpp:168
+#: ../../../core/core_st.cpp:169
 #, c-format
 msgid ""
 "Line %d skipped - Only %d fields found, whereas parsing the Header says "
@@ -3591,7 +3640,7 @@ msgstr ""
 "%d 행 생략됨: 헤더에는 %d개의 필드가 있다고 분석되었지만 불과 %d개만 검색되었"
 "습니다"
 
-#: ../../../core/core_st.cpp:169
+#: ../../../core/core_st.cpp:170
 msgid ""
 "Either or both of the Group/Title and Password columns are missing. No "
 "records imported."
@@ -3599,47 +3648,47 @@ msgstr ""
 "그룹/제목 항목과 비밀번호 항목 중 적어도 하나 이상이 손상되었습니다. 아무 항"
 "목도 불러오지 않았습니다."
 
-#: ../../../core/core_st.cpp:170
+#: ../../../core/core_st.cpp:171
 msgid ""
 "Could not find the next entry's title field in the KeePass V1 TXT (should be "
 "within square brackets)."
 msgstr ""
 
-#: ../../../core/core_st.cpp:171
+#: ../../../core/core_st.cpp:172
 msgid "Column header row not recognised as first record. No records imported."
 msgstr ""
 "첫번째 항목으로 컬럼 헤더의 행이 인식되지 않았습니다. 아무 항목도 불러오지 않"
 "았습니다."
 
-#: ../../../core/core_st.cpp:172
+#: ../../../core/core_st.cpp:173
 msgid "No records in import file!"
 msgstr "불러온 파일에 레코드가 없습니다!"
 
-#: ../../../core/core_st.cpp:173
+#: ../../../core/core_st.cpp:174
 #, fuzzy, c-format
 msgid "Line %d skipped: Empty mandatory Password field."
 msgstr "%d 행 생략됨: 비밀번호 항목이 비어 있습니다."
 
-#: ../../../core/core_st.cpp:174
+#: ../../../core/core_st.cpp:175
 #, fuzzy, c-format
 msgid "Line %d skipped: Empty mandatory Title field."
 msgstr "%d 행 생략됨: 제목 항목이 비어 있습니다"
 
-#: ../../../core/core_st.cpp:175
+#: ../../../core/core_st.cpp:176
 #, c-format
 msgid " Import # %d"
 msgstr "# %d 을(를) 불러오기"
 
-#: ../../../core/core_st.cpp:176
+#: ../../../core/core_st.cpp:177
 msgid "on line "
 msgstr "on line "
 
-#: ../../../core/core_st.cpp:177
+#: ../../../core/core_st.cpp:178
 #, fuzzy, c-format
 msgid "%s  - Imported %s"
 msgstr "%d %s 불러옴"
 
-#: ../../../core/core_st.cpp:178
+#: ../../../core/core_st.cpp:179
 msgid ""
 "To replace passwords of existing entries, all the following columns must be "
 "present: Group/Title, Username and Password.  One or more are missing and no "
@@ -3649,17 +3698,17 @@ msgstr ""
 "니다: 그룹/제목, 사용자 이름 그리고 비밀번호. 하나라도 빠트리면 아무 항목도 "
 "갱신되지 않을 것입니다."
 
-#: ../../../core/core_st.cpp:179
+#: ../../../core/core_st.cpp:180
 #, c-format
 msgid "%s not found. Cannot update entry's password.\r\n"
 msgstr "%s 가 발견되지 않았습니다. 항목의 비밀번호를 갱신할 수 없습니다.\r\n"
 
-#: ../../../core/core_st.cpp:180
+#: ../../../core/core_st.cpp:181
 #, c-format
 msgid "%s has an empty %s.\r\n"
 msgstr "%s 항목이 비었습니다 %s.\r\n"
 
-#: ../../../core/core_st.cpp:181
+#: ../../../core/core_st.cpp:182
 #, c-format
 msgid ""
 "Entry \"%s, %s, %s\" has a password in the correct form for an alias, but "
@@ -3668,11 +3717,11 @@ msgstr ""
 "Entry \"%s, %s, %s\" 가 보조 항목에 대한 올바른 비밀번호를 가지고 있으나, 기"
 "본 항목이 이미 보조 항목에 속해 있습니다."
 
-#: ../../../core/core_st.cpp:182
+#: ../../../core/core_st.cpp:183
 msgid "\tThis entry has been made an alias of associated base entry."
 msgstr "\t이 항목은 연관된 기본 항목의 보조 항목으로 만들어졌습니다."
 
-#: ../../../core/core_st.cpp:183
+#: ../../../core/core_st.cpp:184
 #, c-format
 msgid ""
 "Entry \"%s, %s, %s\" has a password in the correct form for an alias, but "
@@ -3681,12 +3730,12 @@ msgstr ""
 "Entry \"%s, %s, %s\" 가 보조 항목에 대한 올바른 비밀번호를 가지고 있으나, 기"
 "본 항목이 존재하지 않습니다."
 
-#: ../../../core/core_st.cpp:184
+#: ../../../core/core_st.cpp:185
 msgid ""
 "\tThis entry remains a normal entry and the password has not been changed."
 msgstr "\t이 항목은 일반 항목으로 남아 있고 비밀번호는 변경되지 않았습니다."
 
-#: ../../../core/core_st.cpp:185
+#: ../../../core/core_st.cpp:186
 #, c-format
 msgid ""
 "The %s entry \"%s, %s, %s\" doesn't point to a normal or existing %s base "
@@ -3695,63 +3744,63 @@ msgstr ""
 "%s \"%s, %s, %s\" 항목이 일반항목 혹은 존재하는 기본항목 %s 을 향하지 않습니"
 "다. 이 항목을 불러올 수 없습니다."
 
-#: ../../../core/core_st.cpp:186
+#: ../../../core/core_st.cpp:187
 msgid "Entry import warnings"
 msgstr "항목 불러오기 경고"
 
-#: ../../../core/core_st.cpp:187
+#: ../../../core/core_st.cpp:188
 msgid "Internal error: Invalid oflag or pmode argument"
 msgstr "내부 오류: 잘못된 플래그 혹은 모드 변수"
 
-#: ../../../core/core_st.cpp:188
+#: ../../../core/core_st.cpp:189
 msgid "invalid!"
 msgstr "invalid!"
 
-#: ../../../core/core_st.cpp:189
+#: ../../../core/core_st.cpp:190
 msgid "  Invalid date/time value."
 msgstr "잘못된 날짜/시간 값입니다."
 
-#: ../../../core/core_st.cpp:190
+#: ../../../core/core_st.cpp:191
 msgid "  Field length is incorrect."
 msgstr ""
 
-#: ../../../core/core_st.cpp:191
+#: ../../../core/core_st.cpp:192
 msgid "Internal error: An invalid flag was specified"
 msgstr "내부 오류: 잘못된 플래그가 지정되었습니다"
 
-#: ../../../core/core_st.cpp:192
+#: ../../../core/core_st.cpp:193
 #, c-format
 msgid "  Invalid header: '%s' (must be 5 hexadecimal characters)."
 msgstr ""
 
-#: ../../../core/core_st.cpp:193
+#: ../../../core/core_st.cpp:194
 #, c-format
 msgid "  Invalid number of saved old passwords %d."
 msgstr "저장된 과거 비밀번호의 수 %d가 잘못되었습니다."
 
-#: ../../../core/core_st.cpp:194
+#: ../../../core/core_st.cpp:195
 #, c-format
 msgid "  Invalid status value: %d (must be either 0 or 1)."
 msgstr ""
 
-#: ../../../core/core_st.cpp:195
+#: ../../../core/core_st.cpp:196
 msgid "  Invalid password length found (not a hexadecimal number)."
 msgstr ""
 
-#: ../../../core/core_st.cpp:196
+#: ../../../core/core_st.cpp:197
 msgid ""
 "  Invalid password length found (differs from length of following password)."
 msgstr ""
 
-#: ../../../core/core_st.cpp:197
+#: ../../../core/core_st.cpp:198
 msgid "Invalid Filter schema."
 msgstr "잘못된 필터 스키마"
 
-#: ../../../core/core_st.cpp:198
+#: ../../../core/core_st.cpp:199
 msgid "Schema does not have a version number."
 msgstr "스키마가 버전 정보를 가지고 있지 않습니다."
 
-#: ../../../core/core_st.cpp:199
+#: ../../../core/core_st.cpp:200
 msgid ""
 "  Invalid field separator character found - only a single blank is allowed "
 "between fields."
@@ -3759,12 +3808,12 @@ msgstr ""
 "잘못된 필드 구분자가 발견되었습니다 - 필드 사이에는 반드시 하나의 공백만 가능"
 "합니다."
 
-#: ../../../core/core_st.cpp:200
+#: ../../../core/core_st.cpp:201
 #, c-format
 msgid "The filter XML version (%d) is greater than the current schema (%d)."
 msgstr "필터의 XML 버전 (%d) 이 현재 스키마 (%d) 보다 높습니다."
 
-#: ../../../core/core_st.cpp:201
+#: ../../../core/core_st.cpp:202
 #, c-format
 msgid ""
 "The filter XML version (%d) is greater than that supported by this instance "
@@ -3773,50 +3822,50 @@ msgstr ""
 "필터의 XML 버전 (%d) 이 그것을 지원하는 Password Safe의 버전 (%d) 보다 높습니"
 "다."
 
-#: ../../../core/core_st.cpp:202
+#: ../../../core/core_st.cpp:203
 msgid "is"
 msgstr "is"
 
-#: ../../../core/core_st.cpp:203
+#: ../../../core/core_st.cpp:204
 msgid "is active"
 msgstr "is active"
 
-#: ../../../core/core_st.cpp:204
+#: ../../../core/core_st.cpp:205
 msgid "is inactive"
 msgstr "is inactive"
 
-#: ../../../core/core_st.cpp:205
+#: ../../../core/core_st.cpp:206
 msgid "is not"
 msgstr "is not"
 
-#: ../../../core/core_st.cpp:206
+#: ../../../core/core_st.cpp:207
 msgid "is not present"
 msgstr "is not present"
 
-#: ../../../core/core_st.cpp:207
+#: ../../../core/core_st.cpp:208
 msgid "is present"
 msgstr "is present"
 
-#: ../../../core/core_st.cpp:208
+#: ../../../core/core_st.cpp:209
 msgid "less than"
 msgstr "less than"
 
-#: ../../../core/core_st.cpp:209
+#: ../../../core/core_st.cpp:210
 msgid "less than or equal to"
 msgstr "less than or equal to"
 
-#: ../../../core/core_st.cpp:210
+#: ../../../core/core_st.cpp:211
 msgid "File or path not found"
 msgstr "파일 또는 경로를 찾을 수 없습니다"
 
-#: ../../../core/core_st.cpp:211
+#: ../../../core/core_st.cpp:212
 #, c-format
 msgid ""
 "\r\n"
 "The following new %s %s merged into this database:"
 msgstr "다음 새 데이터베이스 %s %s 가 이 데이터베이스로 병합됩니다:"
 
-#: ../../../core/core_st.cpp:212
+#: ../../../core/core_st.cpp:213
 #, c-format
 msgid ""
 "\r\n"
@@ -3825,7 +3874,7 @@ msgstr ""
 "\r\n"
 "병합 완료: %d %s 추가됨 (%d %s, %d %s, %d %s)"
 
-#: ../../../core/core_st.cpp:213
+#: ../../../core/core_st.cpp:214
 #, fuzzy, c-format
 msgid ""
 "Conflicting entries for \"%s\" \"%s\" \"%s\".\r\n"
@@ -3836,59 +3885,59 @@ msgstr ""
 "  «%s» «%s» «%s» 항목으로 병합함.\r\n"
 "    차이점: %s"
 
-#: ../../../core/core_st.cpp:214
+#: ../../../core/core_st.cpp:215
 msgid "-merged-"
 msgstr "-통합됨-"
 
-#: ../../../core/core_st.cpp:215
+#: ../../../core/core_st.cpp:216
 #, c-format
 msgid "%s - Merged %s"
 msgstr ""
 
-#: ../../../core/core_st.cpp:216
+#: ../../../core/core_st.cpp:217
 msgid "MISSING PASSWORD"
 msgstr ""
 
-#: ../../../core/core_st.cpp:217
+#: ../../../core/core_st.cpp:218
 #, c-format
 msgid "\tPassword policy name '%s' is not in the database."
 msgstr ""
 
-#: ../../../core/core_st.cpp:218
+#: ../../../core/core_st.cpp:219
 msgid ""
 "\tOne or more Password Policy Names were not found in the database. The "
 "affected entries have been changed to use the database's default policy."
 msgstr ""
 
-#: ../../../core/core_st.cpp:219
+#: ../../../core/core_st.cpp:220
 msgid "Can't obtain the schema version."
 msgstr "스키마 버전을 획득할 수 없습니다."
 
-#: ../../../core/core_st.cpp:220
+#: ../../../core/core_st.cpp:221
 #, c-format
 msgid "MISSING TITLE # %d"
 msgstr ""
 
-#: ../../../core/core_st.cpp:221
+#: ../../../core/core_st.cpp:222
 msgid "The filter XML version is missing."
 msgstr "필터의 XML 버전이 없습니다."
 
-#: ../../../core/core_st.cpp:223
+#: ../../../core/core_st.cpp:224
 #, c-format
 msgid "Create SchemaCache%2d Error 0x%08X during %s."
 msgstr "Create SchemaCache%2d Error 0x%08X during %s."
 
-#: ../../../core/core_st.cpp:224
+#: ../../../core/core_st.cpp:225
 #, c-format
 msgid "SAX Parse%2d Error 0x%08X during %s."
 msgstr "SAX Parse%2d Error 0x%08X during %s."
 
-#: ../../../core/core_st.cpp:225
+#: ../../../core/core_st.cpp:226
 #, c-format
 msgid "Error (%08X): line %d character %d %s"
 msgstr "오류 (%08X): %d 행 %d 열 %s"
 
-#: ../../../core/core_st.cpp:227
+#: ../../../core/core_st.cpp:228
 msgid ""
 "Unable to get configuration file lock.\n"
 "\n"
@@ -3898,15 +3947,15 @@ msgstr ""
 "\n"
 "레지스트리를 대신 사용합니다."
 
-#: ../../../core/core_st.cpp:228
+#: ../../../core/core_st.cpp:229
 msgid "Cannot create lock file - no permission in directory?"
 msgstr "잠금 파일을 만들 수 없습니다 - 디렉터리 권한이 없습니까?"
 
-#: ../../../core/core_st.cpp:229
+#: ../../../core/core_st.cpp:230
 msgid "Internal error: Out of file handles"
 msgstr "내부 오류: 파일 핸들 오류"
 
-#: ../../../core/core_st.cpp:230
+#: ../../../core/core_st.cpp:231
 msgid ""
 "Unable to use a MS XML reader on your system.  Neither MS XML V3, V4 or V6 "
 "seems available."
@@ -3914,11 +3963,11 @@ msgstr ""
 "이 시스템에서 MS XML 리더를 사용할 수 없습니다. MS XML의 버전이 V3, V4 혹은 "
 "V6 을  사용할 수 없는 것 같습니다."
 
-#: ../../../core/core_st.cpp:232
+#: ../../../core/core_st.cpp:233
 msgid "is not set"
 msgstr "is not set"
 
-#: ../../../core/core_st.cpp:233
+#: ../../../core/core_st.cpp:234
 #, fuzzy, c-format
 msgid ""
 "Number of entries processed: %d\n"
@@ -3953,7 +4002,7 @@ msgstr ""
 "\n"
 "전부 표시할 수 없는 항목: %d"
 
-#: ../../../core/core_st.cpp:235
+#: ../../../core/core_st.cpp:236
 msgid ""
 "Password should be mixed case, with at least one digit or punctuation "
 "character"
@@ -3961,89 +4010,89 @@ msgstr ""
 "비밀번호가 반드시 대소문자를 혼합하고, 최소한 1개의 숫자 혹은 알파벳 문자를 "
 "입력해야 합니다"
 
-#: ../../../core/core_st.cpp:236
+#: ../../../core/core_st.cpp:237
 msgid "Password is too short"
 msgstr "비밀번호가 너무 짧습니다"
 
-#: ../../../core/core_st.cpp:237
+#: ../../../core/core_st.cpp:238
 msgid "Easyvision characters"
 msgstr "읽기 쉬운 문자들"
 
-#: ../../../core/core_st.cpp:238
+#: ../../../core/core_st.cpp:239
 msgid "Hexadecimal characters"
 msgstr "16진수 문자"
 
-#: ../../../core/core_st.cpp:239
+#: ../../../core/core_st.cpp:240
 #, fuzzy
 msgid "Minimum password length"
 msgstr "비밀번호 길이:"
 
-#: ../../../core/core_st.cpp:240
+#: ../../../core/core_st.cpp:241
 msgid "Pronounceable passwords"
 msgstr "발음할 수 있는 비밀번호"
 
-#: ../../../core/core_st.cpp:242
+#: ../../../core/core_st.cpp:243
 #, fuzzy
 msgid "Use lowercase characters"
 msgstr "최소 소문자 개수"
 
-#: ../../../core/core_st.cpp:243
+#: ../../../core/core_st.cpp:244
 msgid "Use symbols"
 msgstr ""
 
-#: ../../../core/core_st.cpp:244
+#: ../../../core/core_st.cpp:245
 #, fuzzy
 msgid "Use uppercase characters"
 msgstr "최소 대문자 개수"
 
-#: ../../../core/core_st.cpp:245
+#: ../../../core/core_st.cpp:246
 #, c-format
 msgid "Error in a Password History %s:"
 msgstr ""
 
-#: ../../../core/core_st.cpp:246
+#: ../../../core/core_st.cpp:247
 #, c-format
 msgid "sub-field starting at position %d (within the History field): "
 msgstr ""
 
-#: ../../../core/core_st.cpp:247
+#: ../../../core/core_st.cpp:248
 msgid "  All Password History ignored."
 msgstr "모든 비밀번호 내역이 무시되었습니다."
 
-#: ../../../core/core_st.cpp:248
+#: ../../../core/core_st.cpp:249
 msgid "Read Error"
 msgstr "읽기 오류"
 
-#: ../../../core/core_st.cpp:249
+#: ../../../core/core_st.cpp:250
 msgid ""
 "\tOne or more Password Policy Names were already in this database but had "
 "different settings. They have been renamed."
 msgstr ""
 
-#: ../../../core/core_st.cpp:250
+#: ../../../core/core_st.cpp:251
 #, c-format
 msgid "%s%s%s_Report.txt"
 msgstr "%s%s%s_보고서.txt"
 
-#: ../../../core/core_st.cpp:251
+#: ../../../core/core_st.cpp:252
 #, c-format
 msgid "Report of %s function started at %s"
 msgstr "%s 의 보고서 기능이 %s에 시작했습니다."
 
-#: ../../../core/core_st.cpp:252
+#: ../../../core/core_st.cpp:253
 #, c-format
 msgid "on database %s"
 msgstr "on database %s"
 
-#: ../../../core/core_st.cpp:253
+#: ../../../core/core_st.cpp:254
 msgid "Validate"
 msgstr "유효화"
 
-#: ../../../core/core_st.cpp:255
+#: ../../../core/core_st.cpp:256
 msgid "Fatal Error"
 msgstr "치명적 오류"
 
-#: ../../../core/core_st.cpp:257
+#: ../../../core/core_st.cpp:258
 #, fuzzy, c-format
 msgid ""
 "\n"
@@ -4052,58 +4101,58 @@ msgstr ""
 "\n"
 "비밀번호 내역의 다음 항목에서 에러가 발생했습니다: »%s»%s»%s»: "
 
-#: ../../../core/core_st.cpp:258
+#: ../../../core/core_st.cpp:259
 msgid "See Password History filters"
 msgstr "비밀번호 내역 필터 보기"
 
-#: ../../../core/core_st.cpp:259
+#: ../../../core/core_st.cpp:260
 msgid "See Password Policy filters"
 msgstr "비밀번호 정책 필터 보기"
 
-#: ../../../core/core_st.cpp:260
+#: ../../../core/core_st.cpp:261
 msgid "is set"
 msgstr "is set"
 
-#: ../../../core/core_st.cpp:261
+#: ../../../core/core_st.cpp:262
 msgid "shortcut"
 msgstr "바로가기"
 
-#: ../../../core/core_st.cpp:262
+#: ../../../core/core_st.cpp:263
 msgid "shortcuts"
 msgstr "shortcuts"
 
-#: ../../../core/core_st.cpp:263
+#: ../../../core/core_st.cpp:264
 msgid "policy specific symbols"
 msgstr ""
 
-#: ../../../core/core_st.cpp:264
+#: ../../../core/core_st.cpp:265
 msgid "Start Report"
 msgstr "보고서 시작"
 
-#: ../../../core/core_st.cpp:267
+#: ../../../core/core_st.cpp:268
 msgid "System error: No more file handles available"
 msgstr "시스템 오류: 더 이상 사용 가능한 파일 핸들이 없습니다"
 
-#: ../../../core/core_st.cpp:269
+#: ../../../core/core_st.cpp:270
 msgid "Internal error: Unexpected error number"
 msgstr "내부 오류: 예기치 못한 오류"
 
-#: ../../../core/core_st.cpp:271
+#: ../../../core/core_st.cpp:272
 msgid "Unknown function"
 msgstr "알 수 없는 기능"
 
-#: ../../../core/core_st.cpp:272
+#: ../../../core/core_st.cpp:273
 msgid "Unknown object"
 msgstr "알 수 없는 객체"
 
-#: ../../../core/core_st.cpp:274
+#: ../../../core/core_st.cpp:275
 msgid ""
 "The following entries had an invalid UUID field.  This has been corrected."
 msgstr ""
 "다음 항목이 잘못된 UUID 항목 값을 가지고 있습니다. 이 항목은 다시 교정되었습"
 "니다."
 
-#: ../../../core/core_st.cpp:275
+#: ../../../core/core_st.cpp:276
 #, fuzzy, c-format
 msgid ""
 "The following entries have passwords in the correct form for %s, but the "
@@ -4112,11 +4161,11 @@ msgstr ""
 "Entry \"%s, %s, %s\" 가 보조 항목에 대한 올바른 비밀번호를 가지고 있으나, 기"
 "본 항목이 존재하지 않습니다."
 
-#: ../../../core/core_st.cpp:276
+#: ../../../core/core_st.cpp:277
 msgid "The following entries were duplicates of an existing entry."
 msgstr "다음 항목은 같은 항목의 복제본입니다."
 
-#: ../../../core/core_st.cpp:277
+#: ../../../core/core_st.cpp:278
 #, fuzzy
 msgid ""
 "The following entries had a duplicate UUID field.  This has been corrected."
@@ -4124,35 +4173,35 @@ msgstr ""
 "다음 항목이 잘못된 UUID 항목 값을 가지고 있습니다. 이 항목은 다시 교정되었습"
 "니다."
 
-#: ../../../core/core_st.cpp:278
+#: ../../../core/core_st.cpp:279
 #, c-format
 msgid ""
 "The following entries had an empty Password field, which is not permitted. "
 "The password has been set to '%s'"
 msgstr ""
 
-#: ../../../core/core_st.cpp:279
+#: ../../../core/core_st.cpp:280
 #, fuzzy
 msgid "The following entries had an empty Title field, which is not permitted."
 msgstr ""
 "다음 항목이 잘못된 UUID 항목 값을 가지고 있습니다. 이 항목은 다시 교정되었습"
 "니다."
 
-#: ../../../core/core_st.cpp:280
+#: ../../../core/core_st.cpp:281
 #, c-format
 msgid "\tGroup='%s', Title='%s', User='%s' %s"
 msgstr "\t그룹:'%s'; 제목:'%s'; 사용자 이름:'%s' %s"
 
-#: ../../../core/core_st.cpp:281
+#: ../../../core/core_st.cpp:282
 #, c-format
 msgid "- Its title has been changed to:'%s'"
 msgstr "- 주제가 다음과 같이 변경되었습니다:'%s'"
 
-#: ../../../core/core_st.cpp:282
+#: ../../../core/core_st.cpp:283
 msgid "The following ERRORS were detected and were FIXED."
 msgstr ""
 
-#: ../../../core/core_st.cpp:283
+#: ../../../core/core_st.cpp:284
 msgid ""
 "The following entries had an invalid Password History.  This has been "
 "rebuilt with available data.  There may be some loss of history."
@@ -4160,24 +4209,24 @@ msgstr ""
 "다음 항목이 잘못된 비밀번호 내역을 가지고 있습니다. 곧 사용가능한 데이터로 재"
 "생성 될 것입니다. 이전 기록의 손실이 발생할 수 있습니다."
 
-#: ../../../core/core_st.cpp:284
+#: ../../../core/core_st.cpp:285
 #, c-format
 msgid ""
 "The following entries have one or more text fields too long to display or "
 "edit (over %d characters).  The largest entry size found was ~%d %s."
 msgstr ""
 
-#: ../../../core/core_st.cpp:285
+#: ../../../core/core_st.cpp:286
 msgid ""
 "The following WARNINGS were detected - you should review and fix them "
 "manually."
 msgstr ""
 
-#: ../../../core/core_st.cpp:288
+#: ../../../core/core_st.cpp:289
 msgid "will expire"
 msgstr "will expire"
 
-#: ../../../core/core_st.cpp:289
+#: ../../../core/core_st.cpp:290
 #, c-format
 msgid ""
 "SAX Parse Error during %s\r\n"
@@ -4186,46 +4235,46 @@ msgstr ""
 "%s 도중 SAX 분석 오류가 발생했습니다.\r\n"
 "%s."
 
-#: ../../../core/core_st.cpp:290
+#: ../../../core/core_st.cpp:291
 #, c-format
 msgid "XML %s: line %d character %d: %s"
 msgstr "XML %s: line %d character %d: %s"
 
-#: ../../../core/core_st.cpp:291
+#: ../../../core/core_st.cpp:292
 msgid "Internal error: Couldn't initialize config file XML structure"
 msgstr "내부 오류: 설정 XML 파일을 초기화 할 수 없었습니다"
 
-#: ../../../core/core_st.cpp:292
+#: ../../../core/core_st.cpp:293
 msgid ""
 "A filter was active. Export of data was restricted to include only those "
 "displayed."
 msgstr "필터가 활성화되었습니다. 현재 표시된 데이터만 내보낼 수 있습니다."
 
-#: ../../../core/core_st.cpp:293
+#: ../../../core/core_st.cpp:294
 msgid "Export of data was restricted to certain fields by the user."
 msgstr "사용자에 의해 특정 필드값의 데이터가 제한되어 내보내졌습니다."
 
-#: ../../../core/core_st.cpp:294
+#: ../../../core/core_st.cpp:295
 msgid ""
 "Note: These Password Policies will not replace existing policies with the "
 "same name in the current database."
 msgstr ""
 
-#: ../../../core/core_st.cpp:295
+#: ../../../core/core_st.cpp:296
 msgid ""
 "Note: These preferences are only used when importing into an empty database."
 msgstr "주의: 이 설정들은 다른 빈 데이터베이스를 불러올 때에만 사용됩니다."
 
-#: ../../../core/core_st.cpp:296
+#: ../../../core/core_st.cpp:297
 msgid "Subset of entries restricted by the following rule:"
 msgstr "다음 규칙에 따라 제한된 항목들:"
 
-#: ../../../core/core_st.cpp:297
+#: ../../../core/core_st.cpp:298
 msgid ""
 "The user specified that the following fields be excluded from the export:"
 msgstr "사용자가 입력한 다음 필드는 내보내기 중에 제외됩니다:"
 
-#: ../../../core/core_st.cpp:298
+#: ../../../core/core_st.cpp:299
 #, fuzzy, c-format
 msgid ""
 "Configuration file error:\n"
@@ -4238,48 +4287,52 @@ msgstr ""
 "%s\n"
 "%d 행 %d 열"
 
-#: ../../../core/core_st.cpp:299
+#: ../../../core/core_st.cpp:300
 msgid "import"
 msgstr "import"
 
-#: ../../../core/core_st.cpp:300
+#: ../../../core/core_st.cpp:301
 msgid "Unable to load configuration file"
 msgstr "설정 파일을 불러올 수 없었습니다"
 
-#: ../../../core/core_st.cpp:301
+#: ../../../core/core_st.cpp:302
 msgid ""
 "Failed to lock configuration file - opened by another instance of "
 "PasswordSafe?"
 msgstr ""
 "설정파일을 잠그는 데 실패했습니다 - 다른 Password Safe에 의해 열려있습니까?"
 
-#: ../../../core/core_st.cpp:302
+#: ../../../core/core_st.cpp:303
 msgid "Unable to save configuration file"
 msgstr "설정 파일을 저장할 수 없었습니다"
 
-#: ../../../core/core_st.cpp:303
+#: ../../../core/core_st.cpp:304
 msgid "validation"
 msgstr "validation"
 
-#: ../../../core/core_st.cpp:305
+#: ../../../core/core_st.cpp:306
 #, c-format
 msgid "Yes - EasyVision Symbols: %s"
 msgstr ""
 
-#: ../../../core/core_st.cpp:306
+#: ../../../core/core_st.cpp:307
 #, fuzzy, c-format
 msgid "Yes (at least %d)"
 msgstr "최소 %d 이상이어야 합니다"
 
-#: ../../../core/core_st.cpp:307
+#: ../../../core/core_st.cpp:308
 #, c-format
 msgid "Yes - Pronounceable Symbols: %s"
 msgstr ""
 
-#: ../../../core/core_st.cpp:308
+#: ../../../core/core_st.cpp:309
 #, c-format
 msgid "Yes - At least %d from %s: %s"
 msgstr ""
+
+#, fuzzy
+#~ msgid "Reset to Database Defaults"
+#~ msgstr "데이터베이스 기본값으로 초기화(&T)"
 
 #~ msgid "&Validate..."
 #~ msgstr "유효화...(&V)"
@@ -5908,9 +5961,6 @@ msgstr ""
 #~ msgid "Help (F1)"
 #~ msgstr "도움말 (F1)"
 
-#~ msgid "Hexadecimal is mutually exclusive to all other options!"
-#~ msgstr "16진수 방식은 모든 다른 옵션들을 공통적으로 제외합니다!"
-
 #~ msgid "Hide System Tray icon (Hot Key MUST be active)"
 #~ msgstr "시스템 트레이 아이콘 감추기 (반드시 단축키를 설정해야함)"
 
@@ -6498,12 +6548,6 @@ msgstr ""
 
 #~ msgid "Password implies this is an alias entry, but "
 #~ msgstr "비밀번호가 앨리어스 항목을 암시합니다만,"
-
-#~ msgid "Password length is less than sum of 'at least' constraints"
-#~ msgstr "비밀번호 길이가 최소 규칙들의 합보다 적습니다"
-
-#~ msgid "Password length must be between 4 and 1024."
-#~ msgstr "비밀번호의 길이는 반드시 4~1024자 이내여야 합니다."
 
 #~ msgid "Password minimum length"
 #~ msgstr "비밀번호 최소 길이"
