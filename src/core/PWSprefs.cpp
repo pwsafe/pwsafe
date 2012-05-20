@@ -249,12 +249,12 @@ bool PWSprefs::GetPref(BoolPrefs pref_enum, const bool bUseCopy) const
 
 unsigned int PWSprefs::GetPref(IntPrefs pref_enum, const bool bUseCopy) const
 {
-  return bUseCopy ? m_intValues[pref_enum] : m_intCopyValues[pref_enum];
+  return bUseCopy ? m_intCopyValues[pref_enum] : m_intValues[pref_enum];
 }
 
 StringX PWSprefs::GetPref(StringPrefs pref_enum, const bool bUseCopy) const
 {
-  return bUseCopy ? m_stringValues[pref_enum] : m_stringCopyValues[pref_enum];
+  return bUseCopy ? m_stringCopyValues[pref_enum] : m_stringValues[pref_enum];
 }
 
 bool PWSprefs::GetPrefDefVal(BoolPrefs pref_enum) const
