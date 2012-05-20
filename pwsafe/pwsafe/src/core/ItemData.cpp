@@ -262,54 +262,6 @@ StringX CItemData::GetFieldValue(const FieldType &ft) const
   return str;
 }
 
-StringX CItemData::GetPWPolicyDisplayString() const
-{
-  // Display string for policy in List View
-  PWPolicy pwp;
-  GetPWPolicy(pwp);
-  if (pwp.flags != 0) {
-    stringT st_pwp(_T("")), st_text;
-    if (pwp.flags & PWPolicy::UseLowercase) {
-      st_pwp += _T("L");
-      if (pwp.lowerminlength > 1) {
-        Format(st_text, _T("(%d)"), pwp.lowerminlength);
-        st_pwp += st_text;
-      }
-    }
-    if (pwp.flags & PWPolicy::UseUppercase) {
-      st_pwp += _T("U");
-      if (pwp.upperminlength > 1) {
-        Format(st_text, _T("(%d)"), pwp.upperminlength);
-        st_pwp += st_text;
-      }
-    }
-    if (pwp.flags & PWPolicy::UseDigits) {
-      st_pwp += _T("D");
-      if (pwp.digitminlength > 1) {
-        Format(st_text, _T("(%d)"), pwp.digitminlength);
-        st_pwp += st_text;
-      }
-    }
-    if (pwp.flags & PWPolicy::UseSymbols) {
-      st_pwp += _T("S");
-        if (pwp.symbolminlength > 1) {
-        Format(st_text, _T("(%d)"), pwp.symbolminlength);
-          st_pwp += st_text;
-      }
-    }
-    if (pwp.flags & PWPolicy::UseHexDigits)
-      st_pwp += _T("H");
-    if (pwp.flags & PWPolicy::UseEasyVision)
-      st_pwp += _T("E");
-    if (pwp.flags & PWPolicy::MakePronounceable)
-      st_pwp += _T("P");
-    oStringXStream osx;
-    osx << st_pwp << _T(":") << pwp.length;
-    return osx.str().c_str();
-  }
-  return _T("");
-}
-
 size_t CItemData::GetSize()
 {
   size_t length(0);

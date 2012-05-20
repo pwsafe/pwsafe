@@ -2916,9 +2916,26 @@ LRESULT DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
       ci_temp.SetUUID(toUUID);
   }
 
-  Command *pcmd(NULL);
+  MultiCommands *pmulticmds = MultiCommands::Create(&m_core);
 
-  // Is it already there:?
+  // Check policy names
+  // Don't really need the map and vector as only copying 1 entry
+  std::map<StringX, StringX> mapRenamedPolicies;
+  std::vector<StringX> vs_PoliciesAdded;
+  bool bUpdated;  // Not need for Copy
+
+  const StringX sxCopy_DateTime = PWSUtil::GetTimeStamp(true).c_str();
+  StringX sxPolicyName = pfromEntry->GetPolicyName();
+
+  // Special processing for password policies (default & named)
+  Command *pPolicyCmd = ptocore->ProcessPolicyName(pfromcore, ci_temp,
+      mapRenamedPolicies, vs_PoliciesAdded, sxPolicyName, bUpdated,
+      sxCopy_DateTime, IDSC_COPYPOLICY);
+
+  if (pPolicyCmd != NULL)
+    pmulticmds->Add(pPolicyCmd);
+ 
+  // Is it already there?
   const StringX sxgroup(ci_temp.GetGroup()), sxtitle(ci_temp.GetTitle()),
     sxuser(ci_temp.GetUser());
   ItemListIter toPos = ptocore->Find(sxgroup, sxtitle, sxuser);
@@ -2927,13 +2944,13 @@ LRESULT DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
     // Already there - change it
     CItemData *ptoEntry = &toPos->second;
     ci_temp.SetStatus(CItemData::ES_MODIFIED);
-    pcmd = EditEntryCommand::Create(ptocore, *ptoEntry, ci_temp);
+    pmulticmds->Add(EditEntryCommand::Create(ptocore, *ptoEntry, ci_temp));
   } else {
     // Not there - add it
     ci_temp.SetStatus(CItemData::ES_ADDED);
-    pcmd = AddEntryCommand::Create(ptocore, ci_temp);
+    pmulticmds->Add(AddEntryCommand::Create(ptocore, ci_temp));
   }
-  Execute(pcmd);
+  Execute(pmulticmds);
 
   SetChanged(Data);
   ChangeOkUpdate();
@@ -2969,22 +2986,41 @@ LRESULT DboxMain::SynchCompareResult(PWScore *pfromcore, PWScore *ptocore,
   ASSERT(toPos != ptocore->GetEntryEndIter());
   CItemData *ptoEntry = &toPos->second;
   CItemData updtEntry(*ptoEntry);
+  
+  MultiCommands *pmulticmds = MultiCommands::Create(ptocore);
 
   bool bUpdated(false);
   for (size_t i = 0; i < m_SaveAdvValues[CAdvancedDlg::COMPARESYNCH].bsFields.size(); i++) {
     if (m_SaveAdvValues[CAdvancedDlg::COMPARESYNCH].bsFields.test(i)) {
       const StringX sxValue = pfromEntry->GetFieldValue((CItemData::FieldType)i);
-      if (sxValue != updtEntry.GetFieldValue((CItemData::FieldType)i)) {
-        bUpdated = true;
-        updtEntry.SetFieldValue((CItemData::FieldType)i, sxValue);
+      
+      // Special processing for password policies (default & named)
+      if ((CItemData::FieldType)i == CItemData::POLICYNAME) {
+        // Don't really need the map and vector as only sync'ing 1 entry
+        std::map<StringX, StringX> mapRenamedPolicies;
+        std::vector<StringX> vs_PoliciesAdded;
+          
+        const StringX sxSync_DateTime = PWSUtil::GetTimeStamp(true).c_str();
+        StringX sxPolicyName = pfromEntry->GetPolicyName();
+          
+        Command *pPolicyCmd = ptocore->ProcessPolicyName(pfromcore, updtEntry,
+             mapRenamedPolicies, vs_PoliciesAdded, sxPolicyName, bUpdated, 
+             sxSync_DateTime, IDSC_SYNCPOLICY);
+        if (pPolicyCmd != NULL)
+          pmulticmds->Add(pPolicyCmd);
+      } else {
+        if (sxValue != updtEntry.GetFieldValue((CItemData::FieldType)i)) {
+          bUpdated = true;
+          updtEntry.SetFieldValue((CItemData::FieldType)i, sxValue);
+        }
       }
     }
   }
 
   if (bUpdated) {
     updtEntry.SetStatus(CItemData::ES_MODIFIED);
-    Command *pcmd = EditEntryCommand::Create(ptocore, *ptoEntry, updtEntry);
-    Execute(pcmd, ptocore);
+    pmulticmds->Add(EditEntryCommand::Create(ptocore, *ptoEntry, updtEntry));
+    Execute(pmulticmds, ptocore);
     
     SetChanged(Data);
     ChangeOkUpdate();
@@ -2993,7 +3029,7 @@ LRESULT DboxMain::SynchCompareResult(PWScore *pfromcore, PWScore *ptocore,
 
   return FALSE;
 }
-
+          
 LRESULT DboxMain::CopyAllCompareResult(WPARAM wParam)
 {
   // This is always from Comparison DB to Current DB
@@ -3001,6 +3037,12 @@ LRESULT DboxMain::CopyAllCompareResult(WPARAM wParam)
   std::vector<st_CompareInfo *> *vpst_info = (std::vector<st_CompareInfo *> *)wParam;
 
   MultiCommands *pmulticmds = MultiCommands::Create(&m_core);
+
+  // Make sure we don't add or rename named password policies multiple times
+  std::map<StringX, StringX> mapRenamedPolicies;
+  std::vector<StringX> vs_PoliciesAdded;
+
+  const StringX sxCopy_DateTime = PWSUtil::GetTimeStamp(true).c_str();
 
   for (size_t index = 0; index < vpst_info->size(); index++) {
     st_CompareInfo *pst_info = (*vpst_info)[index];
@@ -3017,6 +3059,17 @@ LRESULT DboxMain::CopyAllCompareResult(WPARAM wParam)
 
     DisplayInfo *pdi = new DisplayInfo;
     ci_temp.SetDisplayInfo(pdi); // DisplayInfo values will be set later
+    
+    // Special processing for password policies (default & named)
+    StringX sxPolicyName = pfromEntry->GetPolicyName();
+    bool bUpdated;  // Not needed for Copy
+
+    Command *pcmd = ptocore->ProcessPolicyName(pfromcore, ci_temp,
+      mapRenamedPolicies, vs_PoliciesAdded, sxPolicyName, bUpdated, 
+      sxCopy_DateTime, IDSC_COPYPOLICY);
+
+    if (pcmd != NULL)
+      pmulticmds->Add(pcmd);
 
     // If the UUID is not in use in the "to" core, copy it too, otherwise reuse current
     if (ptocore->Find(fromUUID) == ptocore->GetEntryEndIter()) {
@@ -3028,7 +3081,7 @@ LRESULT DboxMain::CopyAllCompareResult(WPARAM wParam)
         ci_temp.SetUUID(toUUID);
     }
 
-    Command *pcmd(NULL);
+    Command *pcmdCopy(NULL);
 
     // Is it already there:?
     const StringX sxgroup(ci_temp.GetGroup()), sxtitle(ci_temp.GetTitle()),
@@ -3039,15 +3092,15 @@ LRESULT DboxMain::CopyAllCompareResult(WPARAM wParam)
       // Already there - change it
       CItemData *ptoEntry = &toPos->second;
       ci_temp.SetStatus(CItemData::ES_MODIFIED);
-      pcmd = EditEntryCommand::Create(ptocore, *ptoEntry, ci_temp);
-      pcmd->SetNoGUINotify();
+      pcmdCopy = EditEntryCommand::Create(ptocore, *ptoEntry, ci_temp);
+      pcmdCopy->SetNoGUINotify();
     } else {
       // Not there - add it
       ci_temp.SetStatus(CItemData::ES_ADDED);
-      pcmd = AddEntryCommand::Create(ptocore, ci_temp);
-      pcmd->SetNoGUINotify();
+      pcmdCopy = AddEntryCommand::Create(ptocore, ci_temp);
+      pcmdCopy->SetNoGUINotify();
     }
-    pmulticmds->Add(pcmd);
+    pmulticmds->Add(pcmdCopy);
   }
   
   if (pmulticmds->GetSize() == 0)
@@ -3088,6 +3141,12 @@ LRESULT DboxMain::SynchAllCompareResult(WPARAM wParam)
 
   MultiCommands *pmulticmds = MultiCommands::Create(&m_core);
 
+  // Make sure we don't add/rename password policies multiple times
+  std::map<StringX, StringX> mapRenamedPolicies;
+  std::vector<StringX> vs_PoliciesAdded;
+  
+  const StringX sxSync_DateTime = PWSUtil::GetTimeStamp(true).c_str();
+
   for (size_t index = 0; index < vpst_info->size(); index++) {
     st_CompareInfo *pst_info = (*vpst_info)[index];
     // Synchronise *pfromcore entry -> *ptocore entry
@@ -3108,10 +3167,20 @@ LRESULT DboxMain::SynchAllCompareResult(WPARAM wParam)
     bool bUpdated(false);
     for (size_t i = 0; i < m_SaveAdvValues[CAdvancedDlg::COMPARESYNCH].bsFields.size(); i++) {
       if (m_SaveAdvValues[CAdvancedDlg::COMPARESYNCH].bsFields.test(i)) {
-        const StringX sxValue = pfromEntry->GetFieldValue((CItemData::FieldType)i);
-        if (sxValue != updtEntry.GetFieldValue((CItemData::FieldType)i)) {
-          bUpdated = true;
-          updtEntry.SetFieldValue((CItemData::FieldType)i, sxValue);
+        StringX sxValue = pfromEntry->GetFieldValue((CItemData::FieldType)i);
+        
+        // Special processing for password policies (default & named)
+        if ((CItemData::FieldType)i == CItemData::POLICYNAME) {
+          Command *pPolicyCmd = ptocore->ProcessPolicyName(pfromcore, updtEntry,
+               mapRenamedPolicies, vs_PoliciesAdded, sxValue, bUpdated, sxSync_DateTime,
+               IDSC_SYNCPOLICY);
+          if (pPolicyCmd != NULL)
+            pmulticmds->Add(pPolicyCmd);
+        } else {
+          if (sxValue != updtEntry.GetFieldValue((CItemData::FieldType)i)) {
+            bUpdated = true;
+            updtEntry.SetFieldValue((CItemData::FieldType)i, sxValue);
+          }
         }
       }
     }

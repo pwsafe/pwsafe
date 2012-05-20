@@ -1546,8 +1546,12 @@ int DboxMain::InsertItemIntoGUITreeList(CItemData &ci, int iIndex,
             sx_fielddata = ci.GetCTimeL();
           break;
         case CItemData::POLICY:
-          sx_fielddata = ci.GetPWPolicyDisplayString();
+        {
+          PWPolicy pwp;
+          ci.GetPWPolicy(pwp);
+          sx_fielddata = pwp.GetPWPolicyDisplayString();
           break;
+        }
         default:
           sx_fielddata = ci.GetFieldValue(ft);
       }
@@ -1628,8 +1632,12 @@ int DboxMain::InsertItemIntoGUITreeList(CItemData &ci, int iIndex,
           sx_fielddata = ((long)t == 0) ? ci.GetCTimeL() : ci.GetRMTimeL();
           break;
         case CItemData::POLICY:
-          sx_fielddata = ci.GetPWPolicyDisplayString();
+        {
+          PWPolicy pwp;
+          ci.GetPWPolicy(pwp);
+          sx_fielddata = pwp.GetPWPolicyDisplayString();
           break;
+        }
         default:
           sx_fielddata = ci.GetFieldValue(ft);
       }
@@ -4065,8 +4073,12 @@ void DboxMain::RefreshEntryFieldInGUI(CItemData &ci, CItemData::FieldType ft)
       sx_fielddata = ((long)t == 0) ? ci.GetCTimeL() : ci.GetRMTimeL();
       break;
     case CItemData::POLICY:
-      sx_fielddata = ci.GetPWPolicyDisplayString();
+    {
+      PWPolicy pwp;
+      ci.GetPWPolicy(pwp);
+      sx_fielddata = pwp.GetPWPolicyDisplayString();
       break;
+    }
     default:
       sx_fielddata = ci.GetFieldValue(ft);
   }

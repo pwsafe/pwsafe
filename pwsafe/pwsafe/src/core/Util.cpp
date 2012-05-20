@@ -14,6 +14,8 @@
 #include "PwsPlatform.h"
 #include "core.h"
 #include "StringXStream.h"
+#include "PWPolicy.h"
+
 #include "Util.h"
 
 #include "os/debug.h"

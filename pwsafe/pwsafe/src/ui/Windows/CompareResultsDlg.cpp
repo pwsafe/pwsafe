@@ -728,7 +728,7 @@ void CCompareResultsDlg::OnCompareBothEntries()
       i1 == m_pcore1->GetEntryEndIter())
     return;
 
-  CShowCompareDlg showdlg(&i0->second, &i1->second, this);
+  CShowCompareDlg showdlg(&i0->second, &i1->second, this, true);
   showdlg.DoModal();
 }
 

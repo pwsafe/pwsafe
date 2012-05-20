@@ -99,6 +99,9 @@ struct PWPolicy {
   // preference-defined policy if this->flags == 0
   StringX MakeRandomPassword() const;
 
+  // "User friendly" Display of a policy
+  StringX GetPWPolicyDisplayString();
+
   typedef void (*RowPutter)(int row, const stringT &name, const stringT &value, void *table);
   void Policy2Table(RowPutter rp, void *table);
 private:
