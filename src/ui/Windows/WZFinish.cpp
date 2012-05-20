@@ -225,17 +225,25 @@ int CWZFinish::ExecuteAction()
     // Not really needed but...
     m_pothercore->ClearData();
 
-    // Reading a new file changes the preferences!
-    const StringX sxSavePrefString(PWSprefs::GetInstance()->Store());
-    const bool bDBPrefsChanged = PWSprefs::GetInstance()->IsDBprefsChanged();
+    // Reading a new file changes the preferences as they are instance dependent
+    // not core dependent
+    PWSprefs *prefs =  PWSprefs::GetInstance();
+
+    const StringX sxSavePrefString(prefs->Store());
+    const bool bSaveIfDBPrefsChanged = prefs->IsDBprefsChanged();
 
     const StringX passkey = m_pWZPSH->GetPassKey();
 
+    // Read the other database
     rc = m_pothercore->ReadFile(sx_Filename2, passkey);
 
+    // Save all the 'other core' preferences in the copy - to use for
+    // 'other' default Password Policy when needed in Compare, Merge & Sync
+    prefs->SetupCopyPrefs();
+
     // Reset database preferences - first to defaults then add saved changes!
-    PWSprefs::GetInstance()->Load(sxSavePrefString);
-    PWSprefs::GetInstance()->SetDBprefsChanged(bDBPrefsChanged);
+    prefs->Load(sxSavePrefString);
+    prefs->SetDBprefsChanged(bSaveIfDBPrefsChanged);
 
     switch (rc) {
       case PWScore::SUCCESS:
