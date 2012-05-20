@@ -170,6 +170,12 @@ public:
   /// wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_RADIOBUTTON
   void OnRadiobuttonSelected( wxCommandEvent& event );
 
+  /// wxEVT_DATE_CHANGED event handler for ID_DATECTRL
+  void OnExpDateChanged( wxDateEvent& event );
+
+  /// wxEVT_COMMAND_SPINCTRL_UPDATED event handler for ID_SPINCTRL2
+  void OnExpIntervalChanged( wxSpinEvent& event );
+
   /// wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_RADIOBUTTON2
   void OnPWPRBSelected( wxCommandEvent& event );
 
@@ -343,6 +349,7 @@ private:
   CItemData m_item;
   void ItemFieldsToPropSheet();
   void SetupDCAComboBoxes(wxComboBox *pcbox, short &iDCA, bool isShift);
+  void SetXTime(wxObject *src);
   void UpdatePWPolicyControls(const PWPolicy& pwp);
   void EnablePWPolicyControls(bool enable);
   PWPolicy GetPWPolicyFromUI() const;
