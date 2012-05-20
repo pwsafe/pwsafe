@@ -579,6 +579,7 @@ protected:
                              const pws_os::CUUID &fromuuid, const pws_os::CUUID &touuid);
   LRESULT CopyAllCompareResult(WPARAM wParam);
   LRESULT SynchAllCompareResult(WPARAM wParam);
+  
   LRESULT OnToolBarFindMessage(WPARAM wParam, LPARAM lParam);
   LRESULT OnDragAutoType(WPARAM wParam, LPARAM lParam);
   LRESULT OnExecuteFilters(WPARAM wParam, LPARAM lParam);

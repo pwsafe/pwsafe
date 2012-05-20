@@ -292,16 +292,6 @@ BOOL CWZAdvanced::OnInitDialog()
       m_pLC_List->SetItemData(iItem, CItemData::XTIME_INT | NORMALFIELD);
       m_bsAllowedFields.set(CItemData::XTIME_INT);
 
-      cs_text.LoadString(IDS_PWPOLICY);
-      iItem = m_pLC_List->InsertItem(++iItem, cs_text);
-      m_pLC_List->SetItemData(iItem, CItemData::POLICY | NORMALFIELD);
-      m_bsAllowedFields.set(CItemData::POLICY);
-
-      cs_text.LoadString(IDS_POLICYNAME);
-      iItem = m_pLC_List->InsertItem(++iItem, cs_text);
-      m_pLC_List->SetItemData(iItem, CItemData::POLICYNAME | NORMALFIELD);
-      m_bsAllowedFields.set(CItemData::POLICYNAME);
-
       cs_text.LoadString(IDS_DCALONG);
       iItem = m_pLC_List->InsertItem(++iItem, cs_text);
       m_pLC_List->SetItemData(iItem, CItemData::DCA | NORMALFIELD);
@@ -317,6 +307,7 @@ BOOL CWZAdvanced::OnInitDialog()
       m_pLC_Selected->SetItemData(iItem, CItemData::PROTECTED | NORMALFIELD);
       m_bsAllowedFields.set(CItemData::PROTECTED);
       break;
+
     case WZAdvanced::SYNCH:
     case WZAdvanced::EXPORT_TEXT:
     case WZAdvanced::EXPORT_ENTRYTEXT:
@@ -370,14 +361,11 @@ BOOL CWZAdvanced::OnInitDialog()
       m_bsAllowedFields.set(CItemData::POLICY);
       m_bsDefaultSelectedFields.set(CItemData::POLICY);
 
-      if (m_iIndex != WZAdvanced::SYNCH) {
-        // Policy name not supported in Synchonize
-        cs_text.LoadString(IDS_POLICYNAME);
-        iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
-        m_pLC_Selected->SetItemData(iItem, CItemData::POLICYNAME | NORMALFIELD);
-        m_bsAllowedFields.set(CItemData::POLICYNAME);
-        m_bsDefaultSelectedFields.set(CItemData::POLICYNAME);
-      }
+      cs_text.LoadString(IDS_POLICYNAME);
+      iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
+      m_pLC_Selected->SetItemData(iItem, CItemData::POLICYNAME | NORMALFIELD);
+      m_bsAllowedFields.set(CItemData::POLICYNAME);
+      m_bsDefaultSelectedFields.set(CItemData::POLICYNAME);
 
       cs_text.LoadString(IDS_DCALONG);
       iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
@@ -397,6 +385,7 @@ BOOL CWZAdvanced::OnInitDialog()
       m_bsAllowedFields.set(CItemData::PROTECTED);
       m_bsDefaultSelectedFields.set(CItemData::PROTECTED);
       break;
+
     default:
       ASSERT(FALSE);
       break;
@@ -475,6 +464,7 @@ BOOL CWZAdvanced::OnInitDialog()
       m_bsDefaultSelectedFields.set(CItemData::PASSWORD);
       m_bsMandatoryFields.set(CItemData::PASSWORD);
       break;
+
     case WZAdvanced::COMPARE:
       cs_text.LoadString(IDS_ADVANCED_GROUPTEXT); // <-- Special - Mandatory field
       iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
@@ -502,7 +492,20 @@ BOOL CWZAdvanced::OnInitDialog()
       m_pLC_Selected->SetItemData(iItem, CItemData::PASSWORD | NORMALFIELD);
       m_bsAllowedFields.set(CItemData::PASSWORD);
       m_bsDefaultSelectedFields.set(CItemData::PASSWORD);
+
+      cs_text.LoadString(IDS_PWPOLICY);
+      iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
+      m_pLC_Selected->SetItemData(iItem, CItemData::POLICY | NORMALFIELD);
+      m_bsAllowedFields.set(CItemData::POLICY);
+      m_bsDefaultSelectedFields.set(CItemData::POLICY);
+
+      cs_text.LoadString(IDS_POLICYNAME);
+      iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
+      m_pLC_Selected->SetItemData(iItem, CItemData::POLICYNAME | NORMALFIELD);
+      m_bsAllowedFields.set(CItemData::POLICYNAME);
+      m_bsDefaultSelectedFields.set(CItemData::POLICYNAME);
       break;
+
     case WZAdvanced::SYNCH:
       cs_text.LoadString(IDS_PASSWORD);
       iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
@@ -510,6 +513,7 @@ BOOL CWZAdvanced::OnInitDialog()
       m_bsAllowedFields.set(CItemData::PASSWORD);
       m_bsDefaultSelectedFields.set(CItemData::PASSWORD);
       break;
+
     case WZAdvanced::EXPORT_TEXT:
     case WZAdvanced::EXPORT_ENTRYTEXT:
       cs_text.LoadString(IDS_GROUP);
@@ -536,6 +540,7 @@ BOOL CWZAdvanced::OnInitDialog()
       m_bsAllowedFields.set(CItemData::PASSWORD);
       m_bsDefaultSelectedFields.set(CItemData::PASSWORD);
       break;
+
     default:
       ASSERT(FALSE);
   }
@@ -982,5 +987,42 @@ BOOL CWZAdvanced::PreTranslateMessage(MSG* pMsg)
 int CALLBACK CWZAdvanced::AdvCompareFunc(LPARAM lParam1, LPARAM lParam2,
                                          LPARAM /* closure */)
 {
-  return (int)(lParam1 - lParam2);
+  // Preferred display order
+  // 1. Group, Title, User first - range 0-9
+  // 2. Text fields and fields that are displayed as text, next range 10...49
+  // 3. Non-text fields (not times), next 50...
+  // 4. Times last 100...
+  // 5. Invalid and so shouldn' be here -1
+
+  const int iSortOrder[CItemData::LAST] = {
+      -1 /* NAME       = 0x00 */,
+      -1 /* UUID       = 0x01 */,
+       0 /* GROUP      = 0x02 */,
+       1 /* TITLE      = 0x03 */,
+       2 /* USER       = 0x04 */,
+      10 /* NOTES      = 0x05 */,
+      11 /* PASSWORD   = 0x06 */,
+     100 /* CTIME      = 0x07 */,
+     101 /* PMTIME     = 0x08 */,
+     102 /* ATIME      = 0x09 */,
+     103 /* XTIME      = 0x0a */,
+      -1 /* RESERVED   = 0x0b */,
+     104 /* RMTIME     = 0x0c */,
+      12 /* URL        = 0x0d */,
+      15 /* AUTOTYPE   = 0x0e */,
+      50 /* PWHIST     = 0x0f */,
+      61 /* POLICY     = 0x10 */,
+     505 /* XTIME_INT  = 0x11 */,
+      14 /* RUNCMD     = 0x12 */,
+      81 /* DCA        = 0x13 */,
+      13 /* EMAIL      = 0x14 */,
+      80 /* PROTECTED  = 0x15 */,
+      60 /* SYMBOLS    = 0x16 */,
+      82 /* SHIFTDCA   = 0x17 */,
+      62 /* POLICYNAME = 0x18 */
+  };
+
+  const int i1 = iSortOrder[lParam1 & 0xff];
+  const int i2 = iSortOrder[lParam2 & 0xff];
+  return i1 - i2;
 }

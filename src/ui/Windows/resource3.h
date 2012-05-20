@@ -719,3 +719,4 @@
 #define IDS_SYNCHRONIZEALL              5931
 #define IDS_SYNCENTRY                   5932
 #define IDS_OPERATION_ABORTED           5933
+#define IDS_FORMAT_CMP_POLICY           5934

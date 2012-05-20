@@ -9,12 +9,14 @@
 //-----------------------------------------------------------------------------
 
 #include "PWPolicy.h"
-#include "../os/typedefs.h"
-#include "../os/debug.h"
 #include "PWSprefs.h"
 #include "PWCharPool.h"
 #include "core.h"
 #include "StringXStream.h"
+
+#include "../os/typedefs.h"
+#include "../os/debug.h"
+
 #include <iomanip>
 /**
  * A policy is encoded as string (for persistence) as follows:
@@ -246,3 +248,50 @@ void PWPolicy::Policy2Table(PWPolicy::RowPutter rp, void *table)
   nPos++;
 }
 
+
+StringX PWPolicy::GetPWPolicyDisplayString()
+{
+  // Display string for policy in List View and Show entries' differences
+  // when comparing entries in this or in different databases
+  if (flags != 0) {
+    stringT st_pwp(_T("")), st_text;
+    if (flags & PWPolicy::UseLowercase) {
+      st_pwp += _T("L");
+      if (lowerminlength > 1) {
+        Format(st_text, _T("(%d)"), lowerminlength);
+        st_pwp += st_text;
+      }
+    }
+    if (flags & PWPolicy::UseUppercase) {
+      st_pwp += _T("U");
+      if (upperminlength > 1) {
+        Format(st_text, _T("(%d)"), upperminlength);
+        st_pwp += st_text;
+      }
+    }
+    if (flags & PWPolicy::UseDigits) {
+      st_pwp += _T("D");
+      if (digitminlength > 1) {
+        Format(st_text, _T("(%d)"), digitminlength);
+        st_pwp += st_text;
+      }
+    }
+    if (flags & PWPolicy::UseSymbols) {
+      st_pwp += _T("S");
+        if (symbolminlength > 1) {
+        Format(st_text, _T("(%d)"), symbolminlength);
+          st_pwp += st_text;
+      }
+    }
+    if (flags & PWPolicy::UseHexDigits)
+      st_pwp += _T("H");
+    if (flags & PWPolicy::UseEasyVision)
+      st_pwp += _T("E");
+    if (flags & PWPolicy::MakePronounceable)
+      st_pwp += _T("P");
+    oStringXStream osx;
+    osx << st_pwp << _T(":") << length;
+    return osx.str().c_str();
+  }
+  return _T("");
+}

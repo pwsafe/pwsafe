@@ -303,9 +303,16 @@ public:
   // Get all password policy names
   void GetPolicyNames(std::vector<stringT> &vNames) const;
   bool GetPolicyFromName(const StringX &sxPolicyName, PWPolicy &st_pp) const;
+  Command *ProcessPolicyName(PWScore *pothercore, CItemData &updtEntry,
+                             std::map<StringX, StringX> &mapRenamedPolicies,
+                             std::vector<StringX> &vs_PoliciesAdded,
+                             StringX &sxOtherPolicyName, bool &bUpdated,
+                             const StringX &sxDateTime, const UINT &IDS_MESSAGE);
+
+  // This routine should only be directly called from XML import
   void MakePolicyUnique(std::map<StringX, StringX> &mapRenamedPolicies,
-                        StringX &sxPolicyName, const StringX &sxMerge_DateTime,
-                        const int IDS_MESSAGE);
+                        StringX &sxPolicyName, const StringX &sxDateTime,
+                        const UINT IDS_MESSAGE);
 
   // Populate setGTU & setUUID from m_pwlist. Returns false & empty set if
   // m_pwlist had one or more entries with same GTU/UUID respectively.
@@ -444,10 +451,12 @@ public:
   // Password Policies
   bool IncrementPasswordPolicy(const StringX &sxPolicyName);
   bool DecrementPasswordPolicy(const StringX &sxPolicyName);
+
   const PSWDPolicyMap &GetPasswordPolicies()
   {return m_MapPSWDPLC;}
   void SetPasswordPolicies(const PSWDPolicyMap &MapPSWDPLC)
   {m_MapPSWDPLC = MapPSWDPLC; SetDBChanged(true);}
+
   void AddPolicy(const StringX &sxPolicyName, const PWPolicy &st_pp,
                  const bool bAllowReplace = false);
 

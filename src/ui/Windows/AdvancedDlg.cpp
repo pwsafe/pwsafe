@@ -215,6 +215,12 @@ BOOL CAdvancedDlg::OnInitDialog()
     m_bsAllowedFields.set(CItemData::POLICY);
     m_bsDefaultSelectedFields.set(CItemData::POLICY);
 
+    cs_text.LoadString(IDS_POLICYNAME);
+    iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
+    m_pLC_Selected->SetItemData(iItem, CItemData::POLICYNAME | NORMALFIELD);
+    m_bsAllowedFields.set(CItemData::POLICYNAME);
+    m_bsDefaultSelectedFields.set(CItemData::POLICYNAME);
+
     cs_text.LoadString(IDS_DCALONG);
     iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
     m_pLC_Selected->SetItemData(iItem, CItemData::DCA | NORMALFIELD);

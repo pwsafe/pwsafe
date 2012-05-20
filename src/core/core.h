@@ -262,6 +262,8 @@
 #define IDSC_VALIDATE_DEPS              3441
 #define IDSC_VALIDATE_ERRORS            3442
 #define IDSC_VALIDATE_WARNINGS          3443
+#define IDSC_SYNCPOLICY                 3444
+#define IDSC_COPYPOLICY                 3445
 
 // Keep DCA together
 #define IDSC_CURRENTDEFAULTDCA          4000
@@ -293,4 +295,3 @@
 #define IDSC_PPRONOUNCEABLE             4112
 #define IDSC_PHEXADECIMAL               4113
 #define IDSC_DEFAULT_POLICY             4114
-
