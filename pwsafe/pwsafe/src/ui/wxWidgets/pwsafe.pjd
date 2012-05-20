@@ -11929,6 +11929,7 @@ Action:"</string>
                       <long name="title-mode">0</long>
                       <long name="locked">0</long>
                       <string name="proxy-type">"wbDatePickerCtrlProxy"</string>
+                      <string name="event-handler-0">"wxEVT_DATE_CHANGED|OnExpDateChanged|NONE||AddEditPropSheet"</string>
                       <string name="proxy-Id name">"ID_DATECTRL"</string>
                       <long name="proxy-Id value">10108</long>
                       <string name="proxy-Name">""</string>
@@ -12111,6 +12112,7 @@ Action:"</string>
                         <long name="title-mode">0</long>
                         <long name="locked">0</long>
                         <string name="proxy-type">"wbSpinCtrlProxy"</string>
+                        <string name="event-handler-0">"wxEVT_COMMAND_SPINCTRL_UPDATED|OnExpIntervalChanged|NONE||AddEditPropSheet"</string>
                         <string name="proxy-Id name">"ID_SPINCTRL2"</string>
                         <long name="proxy-Id value">10111</long>
                         <string name="proxy-Name">""</string>

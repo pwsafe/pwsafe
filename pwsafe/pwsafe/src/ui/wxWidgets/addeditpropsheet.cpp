@@ -72,7 +72,11 @@ BEGIN_EVENT_TABLE( AddEditPropSheet, wxPropertySheetDialog )
 
   EVT_RADIOBUTTON( ID_RADIOBUTTON, AddEditPropSheet::OnRadiobuttonSelected )
 
+  EVT_DATE_CHANGED( ID_DATECTRL, AddEditPropSheet::OnExpDateChanged )
+
   EVT_RADIOBUTTON( ID_RADIOBUTTON1, AddEditPropSheet::OnRadiobuttonSelected )
+
+  EVT_SPINCTRL( ID_SPINCTRL2, AddEditPropSheet::OnExpIntervalChanged )
 
   EVT_RADIOBUTTON( ID_RADIOBUTTON4, AddEditPropSheet::OnRadiobuttonSelected )
 
@@ -946,20 +950,32 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
 
   m_item.GetXTimeInt(m_XTimeInt);
 
-  if (m_XTimeInt == 0) { // expiration specified as date
-    m_OnRB->SetValue(true);
-    m_InRB->SetValue(false);
-    m_ExpTimeCtrl->Enable(false);
-    m_Recurring = false;
-  } else { // exp. specified as interval
+  wxCommandEvent dummy;
+  if (m_tttXTime == 0) { // never expires
     m_OnRB->SetValue(false);
-    m_InRB->SetValue(true);
-    m_ExpDate->Enable(false);
-    m_ExpTimeCtrl->SetValue(m_XTimeInt);
-    m_Recurring = true;
+    m_InRB->SetValue(false);
+    m_NeverRB->SetValue(true);
+    dummy.SetEventObject(m_NeverRB);
+  } else {
+    if (m_XTimeInt == 0) { // expiration specified as date
+      m_OnRB->SetValue(true);
+      m_InRB->SetValue(false);
+      m_NeverRB->SetValue(false);
+      m_ExpTimeCtrl->Enable(false);
+      m_Recurring = false;
+      dummy.SetEventObject(m_OnRB);
+    } else { // exp. specified as interval
+      m_OnRB->SetValue(false);
+      m_InRB->SetValue(true);
+      m_NeverRB->SetValue(false);
+      m_ExpDate->Enable(false);
+      m_ExpTimeCtrl->SetValue(m_XTimeInt);
+      m_Recurring = true;
+      dummy.SetEventObject(m_InRB);
+    }
+    m_RecurringCtrl->Enable(m_Recurring);
   }
-  m_RecurringCtrl->Enable(m_Recurring);
-
+  OnRadiobuttonSelected(dummy); // setup enable/disable of expiry-related controls
   // Modification times
   m_CTime = m_item.GetCTimeL().c_str();
   m_PMTime = m_item.GetPMTimeL().c_str();
@@ -1303,7 +1319,7 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
         m_item.SetPWPolicy(GetPWPolicyFromUI());
 
 #ifdef NOTYET
-if (m_AEMD.ibasedata > 0) {
+      if (m_AEMD.ibasedata > 0) {
         // Password in alias format AND base entry exists
         // No need to check if base is an alias as already done in
         // call to PWScore::ParseBaseEntryPWD
@@ -1324,18 +1340,13 @@ if (m_AEMD.ibasedata > 0) {
         m_item.SetPassword(m_AEMD.realpassword);
         m_item.SetNormal();
       }
-
+#endif
       if (m_item.IsAlias()) {
         m_item.SetXTime((time_t)0);
         m_item.SetPWPolicy(_T(""));
       } else {
-        m_item.SetXTime(m_AEMD.tttXTime);
-        if (m_AEMD.ipolicy == DEFAULT_POLICY)
-          m_item.SetPWPolicy(_T(""));
-        else
-          m_item.SetPWPolicy(m_AEMD.pwp);
+        m_item.SetXTime(m_tttXTime);
       }
-#endif
       break;
     case VIEW:
       // No Update
@@ -1381,18 +1392,17 @@ void AddEditPropSheet::OnOverrideDCAClick( wxCommandEvent& /* evt */ )
 }
 #endif
 
-#if 0
-void AddEditPropSheet::OnSetXTime( wxCommandEvent& /* evt */ )
+void AddEditPropSheet::SetXTime(wxObject *src)
 {
   if (Validate() && TransferDataFromWindow()) {
-    wxDateTime xdt = m_ExpDate->GetValue();
-    if (m_OnRB->GetValue()) { // absolute exp time
+    wxDateTime xdt;
+    if (src == m_ExpDate) { // expiration date changed, update interval
       xdt = m_ExpDate->GetValue();
-      xdt.SetHour(m_ExpTimeH->GetValue());
-      xdt.SetMinute(m_ExpTimeM->GetValue());
+      xdt.SetHour(0);
+      xdt.SetMinute(1);
       m_XTimeInt = 0;
       m_XTime = xdt.FormatDate();
-    } else { // relative, possibly recurring
+    } else if (src == m_ExpTimeCtrl) { // expiration interval changed, update date
       // If it's a non-recurring interval, just set XTime to
       // now + interval, XTimeInt should be stored as zero
       // (one-shot semantics)
@@ -1404,30 +1414,21 @@ void AddEditPropSheet::OnSetXTime( wxCommandEvent& /* evt */ )
         m_XTime = xdt.FormatDate();
       } else { // recurring exp. interval
         xdt = m_ExpDate->GetValue();
-        xdt.SetHour(m_ExpTimeH->GetValue());
-        xdt.SetMinute(m_ExpTimeM->GetValue());
+        xdt.SetHour(0);
+        xdt.SetMinute(1);
         xdt += wxDateSpan(0, 0, 0, m_XTimeInt);
         m_XTime = xdt.FormatDate();
         wxString rstr;
         rstr.Printf(_(" (every %d days)"), m_XTimeInt);
         m_XTime += rstr;
       } // recurring
-    } // relative
+    } else {
+      ASSERT(0);
+    }
     m_tttXTime = xdt.GetTicks();
     Validate(); TransferDataToWindow();
   } // Validated & transferred from controls
 }
-
-void AddEditPropSheet::OnClearXTime( wxCommandEvent& /* evt */ )
-{
-  m_XTime = _("Never");
-  m_CurXTime.Clear();
-  m_tttXTime = time_t(0);
-  m_XTimeInt = 0;
-  m_Recurring = false;
-  TransferDataToWindow();
-}
-#endif
 
 /*!
  * wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_RADIOBUTTON
@@ -1436,10 +1437,20 @@ void AddEditPropSheet::OnClearXTime( wxCommandEvent& /* evt */ )
 void AddEditPropSheet::OnRadiobuttonSelected( wxCommandEvent& evt )
 {
   bool On = (evt.GetEventObject() == m_OnRB);
-  m_ExpDate->Enable(On);
-  m_ExpTimeCtrl->Enable(!On);
-  m_RecurringCtrl->Enable(!On);
+  bool Never = (evt.GetEventObject() == m_NeverRB);
 
+  if (Never) {
+    m_XTime = _("Never");
+    m_CurXTime.Clear();
+    m_tttXTime = time_t(0);
+    m_XTimeInt = 0;
+    m_Recurring = false;
+    TransferDataToWindow();
+  }
+
+  m_ExpDate->Enable(On && !Never);
+  m_ExpTimeCtrl->Enable(!On && !Never);
+  m_RecurringCtrl->Enable(!On && !Never);
 }
 
 
@@ -1460,10 +1471,6 @@ void AddEditPropSheet::ShowPWPSpinners(bool show)
   m_pwMinsGSzr->Show(m_pwNumSymbox, show, true);
   m_pwMinsGSzr->Layout();
 }
-
-/*!
- * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX8
- */
 
 /*!
  * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX7
@@ -1736,5 +1743,25 @@ void AddEditPropSheet::OnPolicylistSelected( wxCommandEvent& event )
 void AddEditPropSheet::OnOwnSymSetFocus( wxFocusEvent& )
 {
   static_cast<wxRadioButton*>(FindWindow(IDC_USE_OWNSYMBOLS))->SetValue(true);
+}
+
+
+/*!
+ * wxEVT_DATE_CHANGED event handler for ID_DATECTRL
+ */
+
+void AddEditPropSheet::OnExpDateChanged( wxDateEvent& event )
+{
+  SetXTime(event.GetEventObject());
+}
+
+
+/*!
+ * wxEVT_COMMAND_SPINCTRL_UPDATED event handler for ID_SPINCTRL2
+ */
+
+void AddEditPropSheet::OnExpIntervalChanged( wxSpinEvent& event )
+{
+  SetXTime(event.GetEventObject());
 }
 
