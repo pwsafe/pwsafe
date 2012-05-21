@@ -1549,7 +1549,7 @@ int DboxMain::InsertItemIntoGUITreeList(CItemData &ci, int iIndex,
         {
           PWPolicy pwp;
           ci.GetPWPolicy(pwp);
-          sx_fielddata = pwp.GetPWPolicyDisplayString();
+          sx_fielddata = pwp.GetDisplayString();
           break;
         }
         default:
@@ -1635,7 +1635,7 @@ int DboxMain::InsertItemIntoGUITreeList(CItemData &ci, int iIndex,
         {
           PWPolicy pwp;
           ci.GetPWPolicy(pwp);
-          sx_fielddata = pwp.GetPWPolicyDisplayString();
+          sx_fielddata = pwp.GetDisplayString();
           break;
         }
         default:
@@ -4076,7 +4076,7 @@ void DboxMain::RefreshEntryFieldInGUI(CItemData &ci, CItemData::FieldType ft)
     {
       PWPolicy pwp;
       ci.GetPWPolicy(pwp);
-      sx_fielddata = pwp.GetPWPolicyDisplayString();
+      sx_fielddata = pwp.GetDisplayString();
       break;
     }
     default:

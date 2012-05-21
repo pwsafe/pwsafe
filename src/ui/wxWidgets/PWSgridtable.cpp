@@ -141,7 +141,7 @@ wxString PWSGridTable::GetValue(int row, int col)
       } else {
         PWPolicy pwp;
         pItem->GetPWPolicy(pwp);
-        return towxstring(pwp.GetPWPolicyDisplayString());
+        return towxstring(pwp.GetDisplayString());
       }
 		}
 	}

@@ -249,7 +249,7 @@ void PWPolicy::Policy2Table(PWPolicy::RowPutter rp, void *table)
 }
 
 
-StringX PWPolicy::GetPWPolicyDisplayString()
+StringX PWPolicy::GetDisplayString()
 {
   // Display string for policy in List View and Show entries' differences
   // when comparing entries in this or in different databases
