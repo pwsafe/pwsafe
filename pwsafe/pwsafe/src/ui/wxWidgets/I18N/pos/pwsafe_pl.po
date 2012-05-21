@@ -22,11 +22,11 @@ msgstr ""
 #: ../../../ui/wxWidgets/about.cpp:143
 #, fuzzy
 msgid "Password Safe vx.yy (abcd)"
-msgstr "Password Safe x.xx"
+msgstr "Password Safe vx.yy (abcd)"
 
 #: ../../../ui/wxWidgets/about.cpp:149
 msgid "Latest version? Click"
-msgstr ""
+msgstr "Najnowsza wersja? Kliknij"
 
 #: ../../../ui/wxWidgets/about.cpp:152
 #, fuzzy
@@ -55,7 +55,7 @@ msgstr "Zobacz LICENCJĘ po szczególy open source."
 
 #: ../../../ui/wxWidgets/about.cpp:170
 msgid "Copyright (c) 2003-2012 by Rony Shapiro"
-msgstr ""
+msgstr "Copyright (c) 2003-2012 Rony Shapiro"
 
 #: ../../../ui/wxWidgets/about.cpp:177
 msgid "&Close"
@@ -96,13 +96,13 @@ msgstr "%sObecna werjsa jest najnowsza!%s"
 
 #: ../../../ui/wxWidgets/about.cpp:324
 msgid "Current version: "
-msgstr ""
+msgstr "Aktualna wersja: "
 
 #: ../../../ui/wxWidgets/about.cpp:326
 msgid ""
 "\r\n"
 "Latest version:\t"
-msgstr ""
+msgstr "\r\nNajnowsza wersja:\t"
 
 #: ../../../ui/wxWidgets/about.cpp:327
 #, fuzzy
@@ -111,8 +111,7 @@ msgid ""
 "\r\n"
 "Please visit the PasswordSafe website to download the latest version."
 msgstr ""
-"Aktualna wersja:\t%s\r\n"
-"Najnowsza wersja:\t%s\r\n"
+"\r\n"
 "\r\n"
 "Odwiedź stronę PasswordSafe by pobrać najnowszą wersję."
 
@@ -179,7 +178,7 @@ msgstr "Potwierdzenie:"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:322
 msgid "URL:"
-msgstr ""
+msgstr "URL:"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:332
 #, fuzzy
@@ -335,7 +334,7 @@ msgstr "Wł."
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:474
 msgid ":"
-msgstr ""
+msgstr ":"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:480
 #, fuzzy
@@ -357,7 +356,7 @@ msgstr "Szukane wartości:"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:506
 msgid "&Set"
-msgstr ""
+msgstr "U&staw"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:511
 #, fuzzy
@@ -376,7 +375,7 @@ msgstr "Utworzono:"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:522
 msgid "10/06/2009 23:19:25"
-msgstr ""
+msgstr "10/06/2009 23:19:25"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:525
 msgid "Password last changed on:"
@@ -551,7 +550,7 @@ msgstr "Hasło"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:856
 msgid " ("
-msgstr ""
+msgstr " ("
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:856 ../../../core/core_st.cpp:73
 #, fuzzy
@@ -580,7 +579,7 @@ msgstr "Ustawienia domyślne"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:1047
 msgid "Couldn't generate password - invalid policy"
-msgstr ""
+msgstr "Nie można stworzyc hasła - nieprawidłowa polityka haseł"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:1048
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:1156
@@ -641,9 +640,7 @@ msgstr "Okresowy (%d dni)"
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:1513
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:1277
 msgid "Sorry, 'pronounceable' and 'easy-to-read' are not supported together"
-msgstr ""
-"'łatwe do wymówienia' i 'łatwe do przeczytania' nie mogą być zaznaczone "
-"jednocześnie"
+msgstr "'łatwe do wymówienia' i 'łatwe do przeczytania' nie mogą być zaznaczone jednocześnie"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:1739
 #, fuzzy
@@ -653,7 +650,7 @@ msgstr "&email:"
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:1759
 #, c-format
 msgid "Couldn't find policy %s\n"
-msgstr ""
+msgstr "Nie można znaleźć polityki %s\n"
 
 #: ../../../ui/wxWidgets/AdvancedSelectionDlg.cpp:79
 #, fuzzy
@@ -662,11 +659,11 @@ msgstr "wpisy"
 
 #: ../../../ui/wxWidgets/AdvancedSelectionDlg.cpp:81
 msgid "Entries whose "
-msgstr ""
+msgstr "Wpisy których "
 
 #: ../../../ui/wxWidgets/AdvancedSelectionDlg.cpp:83
 msgid "not "
-msgstr ""
+msgstr "nie "
 
 #: ../../../ui/wxWidgets/AdvancedSelectionDlg.cpp:83
 #, fuzzy
@@ -675,7 +672,7 @@ msgstr "(uwzględniaj wielkość liter)"
 
 #: ../../../ui/wxWidgets/AdvancedSelectionDlg.cpp:157
 msgid "*"
-msgstr ""
+msgstr "*"
 
 #: ../../../ui/wxWidgets/AdvancedSelectionDlg.cpp:242
 #: ../../../ui/wxWidgets/fieldselectionpanel.cpp:138
@@ -685,7 +682,7 @@ msgstr "Użytkownik [Pole Wymagane]"
 
 #: ../../../ui/wxWidgets/AdvancedSelectionDlg.cpp:260
 msgid "You must select some of the fields to "
-msgstr ""
+msgstr "Musisz wybrać kilka z pól by "
 
 #: ../../../ui/wxWidgets/CompareDlg.cpp:142
 #, fuzzy
@@ -915,11 +912,11 @@ msgstr "&Nie"
 
 #: ../../../ui/wxWidgets/dragbar.cpp:77
 msgid "Error dragging"
-msgstr ""
+msgstr "Błąd podczas przeciągania"
 
 #: ../../../ui/wxWidgets/dragbar.cpp:80
 msgid "Nothing happened dragging"
-msgstr ""
+msgstr "Nic się nie stało podczas przeciągania"
 
 #: ../../../ui/wxWidgets/dragbar.cpp:83
 #, fuzzy
@@ -933,14 +930,12 @@ msgstr "Zakończono z sukcesem"
 
 #: ../../../ui/wxWidgets/dragbar.cpp:89
 msgid "Dragging cancelled"
-msgstr ""
+msgstr "Przeciąganie anulowane"
 
 #: ../../../ui/wxWidgets/dragbar.cpp:92
 #, fuzzy
 msgid "Unexpected result dragging"
-msgstr ""
-"\n"
-"Nieoczekiwany wyjątek podczas parsowania."
+msgstr "Nieoczekiwany wynik przeciągania"
 
 #: ../../../ui/wxWidgets/editshortcut.cpp:123
 #: ../../../ui/wxWidgets/properties.cpp:124
@@ -965,7 +960,7 @@ msgstr "Data/Czas"
 #: ../../../ui/wxWidgets/editshortcut.cpp:210
 #: ../../../ui/wxWidgets/editshortcut.cpp:216
 msgid "DDD DD MMM YYYY HH:MM:SS XM ZZZ"
-msgstr ""
+msgstr "DDD DD MMM YYYY HH:MM:SS XM ZZZ"
 
 #: ../../../ui/wxWidgets/editshortcut.cpp:201
 msgid "Target last changed on:"
@@ -996,11 +991,13 @@ msgid ""
 "\r\n"
 "\r\n"
 msgstr ""
+"\r\n"
+"\r\n"
 
 #: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:68
 #: ../../../ui/wxWidgets/MergeDlg.cpp:41 ../../../ui/wxWidgets/PwsSync.cpp:371
 msgid "\""
-msgstr ""
+msgstr "\""
 
 #: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:71
 msgid "Line delimiter in Notes field:"
@@ -1019,18 +1016,18 @@ msgstr "Zaawansowane"
 
 #: ../../../ui/wxWidgets/ExternalKeyboardButton.cpp:73
 msgid "Could not launch xvkbd.  Please make sure its in your PATH"
-msgstr ""
+msgstr "Nie można uruchomić xvkbd. Upewnij się, że jest on na ścieżce wyszukiwania PATH"
 
 #: ../../../ui/wxWidgets/ExternalKeyboardButton.cpp:74
 #: ../../../ui/wxWidgets/ExternalKeyboardButton.cpp:79
 msgid "Could not launch external onscreen keyboard"
-msgstr ""
+msgstr "Nie można uruchomic zewnętrznej klawiatury ekranowej"
 
 #: ../../../ui/wxWidgets/ExternalKeyboardButton.cpp:78
 msgid ""
 "Could not launch a new process for xvkbd.  Simultaneous execution is "
 "disabled?"
-msgstr ""
+msgstr "Nie można uruchomić nowego procesu dla xvkbd.  Czy równoległe uruchamiania jest wyłączone?"
 
 #: ../../../ui/wxWidgets/ImportTextDlg.cpp:183
 #, fuzzy
@@ -1074,7 +1071,7 @@ msgstr " Kopiuj # %d"
 
 #: ../../../ui/wxWidgets/mainEdit.cpp:516
 msgid "There was an error autotyping.  "
-msgstr ""
+msgstr "Błąd podczas automatycznego wypełniania.  "
 
 #: ../../../ui/wxWidgets/mainEdit.cpp:680
 msgid "Unable to send email"
@@ -1097,7 +1094,7 @@ msgstr "Nie można uzyskać dostępu do pliku: %s"
 #: ../../../ui/wxWidgets/mainManage.cpp:89
 #: ../../../ui/wxWidgets/mainManage.cpp:142
 msgid "bak"
-msgstr ""
+msgstr "bak"
 
 #: ../../../ui/wxWidgets/mainManage.cpp:90
 #: ../../../ui/wxWidgets/mainManage.cpp:143
@@ -1185,7 +1182,7 @@ msgstr "Wykonaj ponownie"
 
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:198
 msgid "Test Selected Policy"
-msgstr ""
+msgstr "Test wybranej polityki"
 
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:202
 #, fuzzy
@@ -1223,7 +1220,7 @@ msgstr "Użyj wartości domyślnej"
 
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:285
 msgid "Policy Field"
-msgstr ""
+msgstr "Polityka"
 
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:286
 #, fuzzy
@@ -1247,7 +1244,7 @@ msgstr "Nazwa Użytkownika"
 
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:378
 msgid "Details"
-msgstr ""
+msgstr "Szczegóły"
 
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:379
 #, fuzzy
@@ -1256,14 +1253,12 @@ msgstr "Nie wybrano wpisów"
 
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:407
 msgid "Not used"
-msgstr ""
+msgstr "Nie używany"
 
 #: ../../../ui/wxWidgets/MergeDlg.cpp:37
 #, fuzzy
 msgid "Merge Another Database"
-msgstr ""
-"\n"
-"Otwórz inną bazę danych"
+msgstr "Łącz innę bazę danych"
 
 #: ../../../ui/wxWidgets/MergeDlg.cpp:40
 #, fuzzy
@@ -1654,7 +1649,7 @@ msgstr "Domyślnie otwieraj bazę danych tylko do odczytu"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:720
 msgid "Allow multiple instances"
-msgstr ""
+msgstr "Pozwól na wiele uruchomień równolegle"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:725
 msgid "Use Primary Selection for clipboard"
@@ -1706,7 +1701,7 @@ msgstr "System szesnastkowy wyklucza wszystkie pozostałe opcje!"
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:366
 msgid ""
 "Hexadecimal passwords must have even length - each byte is two characters"
-msgstr ""
+msgstr "Szesnastkowe hasła muszą mieć parzystą długość - każdy bajt to dwa znaki"
 
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:371
 #, fuzzy
@@ -1735,7 +1730,7 @@ msgstr "Hasło nie może być puste."
 
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:399
 msgid "Policy name is already in use"
-msgstr ""
+msgstr "Nazwa polityki jest już w użyciu"
 
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:405
 #, fuzzy
@@ -2134,7 +2129,7 @@ msgstr "Nieznane pola"
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:1882
 #, c-format
 msgid "Couldn't find uuid %s"
-msgstr ""
+msgstr "Nie można znaleźć uuid %s"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2016
 #, fuzzy
@@ -2182,8 +2177,7 @@ msgstr "Wybierz nazwę dla nowej bazy danych"
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2131
 #, fuzzy
 msgid "psafe3 files (*.psafe3)|*.psafe3|All files(*.*; *)|*.*;*"
-msgstr ""
-"Bazy danych Password Safe (*.psafe3)|*.psafe3|Wszystkie pliki (*.*)|*.*||"
+msgstr "Bazy danych Password Safe (*.psafe3)|*.psafe3|Wszystkie pliki (*.*)|*.*||"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2478
 msgid "Please Choose a KeePass Text File to Import"
@@ -2307,7 +2301,7 @@ msgstr "Brak pliku XSD"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2577
 msgid " Build"
-msgstr ""
+msgstr " Buduj"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2597
 msgid "Import_XML"
@@ -2398,12 +2392,12 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2679
 msgid "XML import not supported in this release"
-msgstr ""
+msgstr "Import XML nie jest wspierany w tym wydaniu"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2682
 #, c-format
 msgid "XML import: Unexpected return code(%d)"
-msgstr ""
+msgstr "Import XML: niespodziewany kod wynikowy (%d)"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2713
 msgid "Please name the exported database"
@@ -2592,7 +2586,7 @@ msgstr "Nieznane pola:"
 
 #: ../../../ui/wxWidgets/properties.cpp:224
 msgid "x.y"
-msgstr ""
+msgstr "x.y"
 
 #: ../../../ui/wxWidgets/properties.cpp:227
 #: ../../../ui/wxWidgets/properties.cpp:230
@@ -2607,35 +2601,35 @@ msgstr "US"
 
 #: ../../../ui/wxWidgets/properties.cpp:236
 msgid "h"
-msgstr ""
+msgstr "h"
 
 #: ../../../ui/wxWidgets/properties.cpp:239
 msgid "a"
-msgstr ""
+msgstr "a"
 
 #: ../../../ui/wxWidgets/properties.cpp:243
 msgid "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-msgstr ""
+msgstr "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
 
 #: ../../../ui/wxWidgets/properties.cpp:247
 msgid "x"
-msgstr ""
+msgstr "x"
 
 #: ../../../ui/wxWidgets/pwsafeapp.cpp:321
 msgid "Another instance of Password Safe is already running"
-msgstr ""
+msgstr "Inna instancja PasswordSafe już działa"
 
 #: ../../../ui/wxWidgets/pwsafeapp.cpp:349
 msgid "Could not initialize help subsystem. Help will not be available"
-msgstr ""
+msgstr "Nie można uruchomić systemu pomocy. Pomoc nie będzie dostępna"
 
 #: ../../../ui/wxWidgets/pwsafeapp.cpp:350
 msgid "Error initializing help"
-msgstr ""
+msgstr "Nie można uruchomić systemu pomocy."
 
 #: ../../../ui/wxWidgets/pwsafeapp.cpp:522
 msgid "Help Undefined"
-msgstr ""
+msgstr "Pomoc niezdefiniowana"
 
 #: ../../../ui/wxWidgets/PWSDragBar.cpp:111
 #, fuzzy
@@ -2664,7 +2658,7 @@ msgstr "Scalanie tej bazy danych z aktualną bazą danych:"
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:339
 msgid "Introduction"
-msgstr ""
+msgstr "Wstęp"
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:343
 msgid ""
@@ -2674,7 +2668,7 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:346
 msgid "More Info"
-msgstr ""
+msgstr "Więcej informacji"
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:349
 msgid ""
@@ -2743,11 +2737,11 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:469
 msgid "All fields in matching entries will be updated"
-msgstr ""
+msgstr "Wszystkie pola pasujących wpisów zostaną zaktualizowane"
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:475
 msgid "Following fields in matching entries will be updated:"
-msgstr ""
+msgstr "Następujące pola pasujących wpisów zostaną zaktualizowane:"
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:479
 #, fuzzy
@@ -2761,7 +2755,7 @@ msgstr "Synchronizacja sie nie powiodła"
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:511
 msgid "See a detailed report"
-msgstr ""
+msgstr "Zobacz raport szczegółowy"
 
 #: ../../../ui/wxWidgets/PwsSync.cpp:547
 msgid "Your database is being synchronized with \""
@@ -4553,7 +4547,7 @@ msgstr ""
 
 #, fuzzy
 #~ msgid " Drag # %d"
-#~ msgstr " Przenieś # %d"
+#~ msgstr " Przeciągnij # %d"
 
 #~ msgid " [Process ID=%s]"
 #~ msgstr " [ID Procesu=%s]"
@@ -5841,8 +5835,7 @@ msgstr ""
 
 #~ msgid "Drag this image onto a another window to start AutoType from there."
 #~ msgstr ""
-#~ "Przenieś ten obraz do innego okna by zacząć stąd automatyczne "
-#~ "uzupełnianie."
+#~ "Przeciągnj ten obraz do innego okna by zacząć stąd automatyczne 2012-05-21uzupełnianie."
 
 #~ msgid ""
 #~ "Dropped entry '%s:%s:%s' password points to an entry that is also an "
