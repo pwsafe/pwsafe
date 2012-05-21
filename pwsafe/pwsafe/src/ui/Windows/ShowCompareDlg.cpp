@@ -379,7 +379,7 @@ void CShowCompareDlg::PopulateResults(const bool bShowAll)
           }  else {
             pci->GetPWPolicy(pwp1);
           }
-          StringX sxTemp1 = pwp1.GetPWPolicyDisplayString();
+          StringX sxTemp1 = pwp1.GetDisplayString();
           if (sxPolicy1.empty())
             Format(sxValue1, IDS_FORMAT_CMP_POLICY, sxTemp1.c_str(), sxDefPolicyStr.c_str());
           else
@@ -391,7 +391,7 @@ void CShowCompareDlg::PopulateResults(const bool bShowAll)
           }  else {
             pci_other->GetPWPolicy(pwp2);
           }   
-          StringX sxTemp2 = pwp2.GetPWPolicyDisplayString();
+          StringX sxTemp2 = pwp2.GetDisplayString();
           if (sxPolicy2.empty())
             Format(sxValue2, IDS_FORMAT_CMP_POLICY, sxTemp2.c_str(), sxDefPolicyStr.c_str());
           else
