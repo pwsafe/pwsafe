@@ -1033,8 +1033,6 @@ Command *PWScore::ProcessPolicyName(PWScore *pothercore, CItemData &updtEntry,
   if (sxOtherPolicyName.empty()) {
     // If now blank, meaning default, are the defaults the same?
     PWPolicy st_to_default_pp, st_from_default_pp;
-    StringX sxDefPolicyStr;
-    LoadAString(sxDefPolicyStr, IDSC_DEFAULT_POLICY);
     st_to_default_pp = PWSprefs::GetInstance()->GetDefaultPolicy();
     st_from_default_pp = PWSprefs::GetInstance()->GetDefaultPolicy(true);
 

@@ -104,6 +104,7 @@ struct PWPolicy {
 
   typedef void (*RowPutter)(int row, const stringT &name, const stringT &value, void *table);
   void Policy2Table(RowPutter rp, void *table);
+
 private:
   friend class PWSprefs; // PWSprefs is the only one who can call Normalize()
   void Normalize(); // make policy internally consistent
