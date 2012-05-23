@@ -42,7 +42,7 @@ CManagePSWDPolices::CManagePSWDPolices(CWnd* pParent, const bool bLongPPs)
 
   m_MapPSWDPLC = m_pDbx->GetPasswordPolicies();
 
-  PWSprefs::GetInstance()->SetDefaultPolicy(m_st_default_pp, false);
+  m_st_default_pp = PWSprefs::GetInstance()->GetDefaultPolicy();
 }
 
 CManagePSWDPolices::~CManagePSWDPolices()
