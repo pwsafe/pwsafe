@@ -478,7 +478,6 @@ void PWSprefs::SetDefaultPolicy(const PWPolicy &pol, const bool bUseCopy)
   SetPref(DefaultSymbols, nc_pol.symbols, bUseCopy);
 }
 
-
 void PWSprefs::SetupCopyPrefs()
 {
   // Set up copy of current preferences
