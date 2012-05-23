@@ -456,7 +456,7 @@ void AddEditPropSheet::CreateControls()
   m_OnRB->SetValue(false);
   itemFlexGridSizer63->Add(m_OnRB, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_ExpDate = new wxDatePickerCtrl( itemPanel59, ID_DATECTRL, wxDateTime(10, (wxDateTime::Month) 7, 2009), wxDefaultPosition, wxDefaultSize, wxDP_DEFAULT );
+  m_ExpDate = new wxDatePickerCtrl( itemPanel59, ID_DATECTRL, wxDateTime(), wxDefaultPosition, wxDefaultSize, wxDP_DEFAULT );
   itemFlexGridSizer63->Add(m_ExpDate, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   itemFlexGridSizer63->Add(10, 10, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
@@ -467,7 +467,7 @@ void AddEditPropSheet::CreateControls()
 
   wxBoxSizer* itemBoxSizer68 = new wxBoxSizer(wxHORIZONTAL);
   itemFlexGridSizer63->Add(itemBoxSizer68, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 0);
-  m_ExpTimeCtrl = new wxSpinCtrl( itemPanel59, ID_SPINCTRL2, _T("1"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1, 3650, 1 );
+  m_ExpTimeCtrl = new wxSpinCtrl( itemPanel59, ID_SPINCTRL2, _T("90"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1, 3650, 90 );
   itemBoxSizer68->Add(m_ExpTimeCtrl, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticText* itemStaticText70 = new wxStaticText( itemPanel59, wxID_STATIC, _("days"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -499,7 +499,7 @@ void AddEditPropSheet::CreateControls()
   wxStaticText* itemStaticText79 = new wxStaticText( itemPanel59, wxID_STATIC, _("Created on:"), wxDefaultPosition, wxDefaultSize, 0 );
   itemFlexGridSizer78->Add(itemStaticText79, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxStaticText* itemStaticText80 = new wxStaticText( itemPanel59, wxID_STATIC, _("10/06/2009 23:19:25"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxStaticText* itemStaticText80 = new wxStaticText( itemPanel59, wxID_STATIC, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
   itemFlexGridSizer78->Add(itemStaticText80, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticText* itemStaticText81 = new wxStaticText( itemPanel59, wxID_STATIC, _("Password last changed on:"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -672,8 +672,11 @@ void AddEditPropSheet::CreateControls()
   m_noteTX->Connect(ID_TEXTCTRL7, wxEVT_SET_FOCUS, wxFocusEventHandler(AddEditPropSheet::OnNoteSetFocus), NULL, this);
   itemTextCtrl122->Connect(IDC_OWNSYMBOLS, wxEVT_SET_FOCUS, wxFocusEventHandler(AddEditPropSheet::OnOwnSymSetFocus), NULL, this);
 ////@end AddEditPropSheet content construction
+
+  // Non-DialogBlock initializations:
   m_PWHgrid->SetColLabelValue(0, _("Set Date/Time"));
   m_PWHgrid->SetColLabelValue(1, _("Password"));
+
   // Setup symbols
   StringX sx_symbols = PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultSymbols);
   if (sx_symbols.empty()) {
@@ -951,12 +954,15 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
   m_item.GetXTimeInt(m_XTimeInt);
 
   wxCommandEvent dummy;
+  wxDateTime earliestExp;
   if (m_tttXTime == 0) { // never expires
     m_OnRB->SetValue(false);
     m_InRB->SetValue(false);
     m_NeverRB->SetValue(true);
+    earliestExp = wxDateTime::Now();
     dummy.SetEventObject(m_NeverRB);
   } else {
+    earliestExp = wxDateTime(m_tttXTime);
     if (m_XTimeInt == 0) { // expiration specified as date
       m_OnRB->SetValue(true);
       m_InRB->SetValue(false);
@@ -975,6 +981,9 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
     }
     m_RecurringCtrl->Enable(m_Recurring);
   }
+
+  m_ExpDate->SetRange(earliestExp, wxDateTime(time_t(-1)));
+
   OnRadiobuttonSelected(dummy); // setup enable/disable of expiry-related controls
   // Modification times
   m_CTime = m_item.GetCTimeL().c_str();
@@ -1400,24 +1409,19 @@ void AddEditPropSheet::SetXTime(wxObject *src)
       xdt = m_ExpDate->GetValue();
       xdt.SetHour(0);
       xdt.SetMinute(1);
-      m_XTimeInt = 0;
+      wxTimeSpan delta = xdt.Subtract(wxDateTime::Today());
+      m_XTimeInt = delta.GetDays();
       m_XTime = xdt.FormatDate();
     } else if (src == m_ExpTimeCtrl) { // expiration interval changed, update date
       // If it's a non-recurring interval, just set XTime to
       // now + interval, XTimeInt should be stored as zero
       // (one-shot semantics)
       // Otherwise, XTime += interval, keep XTimeInt
-      if (!m_Recurring) {
         xdt = wxDateTime::Now();
         xdt += wxDateSpan(0, 0, 0, m_XTimeInt);
-        m_XTimeInt = 0;
+        m_ExpDate->SetValue(xdt);
         m_XTime = xdt.FormatDate();
-      } else { // recurring exp. interval
-        xdt = m_ExpDate->GetValue();
-        xdt.SetHour(0);
-        xdt.SetMinute(1);
-        xdt += wxDateSpan(0, 0, 0, m_XTimeInt);
-        m_XTime = xdt.FormatDate();
+      if (m_Recurring) {
         wxString rstr;
         rstr.Printf(_(" (every %d days)"), m_XTimeInt);
         m_XTime += rstr;
@@ -1443,7 +1447,10 @@ void AddEditPropSheet::OnRadiobuttonSelected( wxCommandEvent& evt )
     m_XTime = _("Never");
     m_CurXTime.Clear();
     m_tttXTime = time_t(0);
-    m_XTimeInt = 0;
+    m_XTimeInt = 90;
+    wxDateTime xdt(wxDateTime::Now());
+    xdt += wxDateSpan(0, 0, 0, m_XTimeInt);
+    m_ExpDate->SetValue(xdt);
     m_Recurring = false;
     TransferDataToWindow();
   }

@@ -11940,7 +11940,7 @@ Action:"</string>
                       <string name="proxy-Implementation filename">""</string>
                       <string name="proxy-Header filename">""</string>
                       <string name="proxy-Member variable name">"m_ExpDate"</string>
-                      <string name="proxy-Default date">"08/10/2009"</string>
+                      <string name="proxy-Default date">""</string>
                       <string name="proxy-Earliest date">""</string>
                       <string name="proxy-Latest date">""</string>
                       <string name="proxy-Help text">""</string>
@@ -12125,7 +12125,7 @@ Action:"</string>
                         <string name="proxy-Member variable name">"m_ExpTimeCtrl"</string>
                         <long name="proxy-Minimum value">1</long>
                         <long name="proxy-Maximum value">3650</long>
-                        <long name="proxy-Initial value">1</long>
+                        <long name="proxy-Initial value">90</long>
                         <string name="proxy-Help text">""</string>
                         <string name="proxy-Tooltip text">""</string>
                         <string name="proxy-Background colour">""</string>
@@ -12714,7 +12714,7 @@ Action:"</string>
                     <string name="proxy-Implementation filename">""</string>
                     <string name="proxy-Header filename">""</string>
                     <string name="proxy-Member variable name">""</string>
-                    <string name="proxy-Label">"10/06/2009 23:19:25"</string>
+                    <string name="proxy-Label">""</string>
                     <long name="proxy-Wrapping width">-1</long>
                     <string name="proxy-Help text">""</string>
                     <string name="proxy-Tooltip text">""</string>
