@@ -156,7 +156,7 @@ void PWScore::SortDependents(UUIDVector &dlist, StringX &sxDependents)
   }
 
   std::sort(sorted_dependents.begin(), sorted_dependents.end(), GTUCompare);
-  sxDependents.clear();
+  sxDependents = _T("");
 
   for (sd_iter = sorted_dependents.begin(); sd_iter != sorted_dependents.end(); sd_iter++)
     sxDependents += _T("\t[") +  *sd_iter + _T("]\r\n");

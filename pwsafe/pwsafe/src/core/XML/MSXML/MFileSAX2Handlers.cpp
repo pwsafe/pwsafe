@@ -254,7 +254,7 @@ HRESULT STDMETHODCALLTYPE MFileSAX2ContentHandler::startElement(
     }
   }
 
-  m_strElemContent = _T("");
+  m_sxElemContent = _T("");
 
   st_file_element_data edata;
   m_pValidator->GetElementInfo(szCurElement, edata);
@@ -310,7 +310,7 @@ HRESULT STDMETHODCALLTYPE MFileSAX2ContentHandler::characters(
 #endif
 
   szData[cchChars] = 0;
-  m_strElemContent += szData;
+  m_sxElemContent += szData;
 
   delete [] szData;
   szData = NULL;

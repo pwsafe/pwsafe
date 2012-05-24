@@ -136,7 +136,7 @@ DboxMain::DboxMain(CWnd* pParent)
   m_lastclipboardaction(L""), m_pNotesDisplay(NULL),
   m_LastFoundTreeItem(NULL), m_bFilterActive(false), m_bNumPassedFiltering(0),
   m_currentfilterpool(FPOOL_LAST), m_bDoAutoType(false),
-  m_AutoType(L""), m_pToolTipCtrl(NULL), m_bWSLocked(false), m_bWTSRegistered(false),
+  m_sxAutoType(L""), m_pToolTipCtrl(NULL), m_bWSLocked(false), m_bWTSRegistered(false),
   m_savedDBprefs(EMPTYSAVEDDBPREFS), m_bBlockShutdown(false),
   m_pfcnShutdownBlockReasonCreate(NULL), m_pfcnShutdownBlockReasonDestroy(NULL),
   m_bFilterForStatus(false),
@@ -194,8 +194,8 @@ DboxMain::DboxMain(CWnd* pParent)
   m_hIconSm = (HICON) ::LoadImage(app.m_hInstance, MAKEINTRESOURCE(IDI_CORNERICON),
                                   IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
 
-  m_sxSelectedGroup.clear();
-  m_sxVisibleGroup.clear();
+  m_sxSelectedGroup = L"";
+  m_sxVisibleGroup = L"";
 
   ClearData();
 
@@ -294,14 +294,14 @@ LRESULT DboxMain::OnWH_SHELL_CallBack(WPARAM wParam, LPARAM )
   // lParam = 0
 
   bool brc;
-  if (!m_bDoAutoType || (m_bDoAutoType && m_AutoType.empty())) {
+  if (!m_bDoAutoType || (m_bDoAutoType && m_sxAutoType.empty())) {
     // Should never happen as we should not be active if not doing AutoType!
     brc = m_runner.UnInit();
     pws_os::Trace(L"DboxMain::OnWH_SHELL_CallBack - Error - AT_HK_UnInitialise : %s\n",
           brc ? L"OK" : L"FAILED");
     // Reset Autotype
     m_bDoAutoType = false;
-    m_AutoType.clear();
+    m_sxAutoType = L"";
     // Reset Keyboard/Mouse Input
     pws_os::Trace(L"DboxMain::OnWH_SHELL_CallBack - BlockInput reset\n");
     ::BlockInput(FALSE);
@@ -349,11 +349,11 @@ LRESULT DboxMain::OnWH_SHELL_CallBack(WPARAM wParam, LPARAM )
   // Do Autotype!  Note: All fields were substituted before getting here
   // Pure guess to wait 1 second.  Might be more or less but certainly > 0
   ::Sleep(1000);
-  DoAutoType(m_AutoType, m_vactionverboffsets);
+  DoAutoType(m_sxAutoType, m_vactionverboffsets);
 
   // Reset AutoType
   m_bDoAutoType = false;
-  m_AutoType.clear();
+  m_sxAutoType = L"";
 
   return 0L;
 }

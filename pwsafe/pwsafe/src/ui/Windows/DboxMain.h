@@ -452,7 +452,7 @@ public:
   wchar_t *m_eye_catcher;
 
   bool m_bDoAutoType;
-  StringX m_AutoType;
+  StringX m_sxAutoType;
   std::vector<size_t> m_vactionverboffsets;
 
   // Used in Add & Edit & PasswordPolicyDlg

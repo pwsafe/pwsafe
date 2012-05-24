@@ -837,7 +837,7 @@ static UINT ParseRunCommand(const StringX &sxInputString,
 
   // Special Autotype processing
   bDoAutoType = false;
-  sxAutoType.clear();
+  sxAutoType = _T("");
   for (size_t st_idx = 0; st_idx < v_rctokens.size(); st_idx++) {
     if (!v_rctokens[st_idx].is_variable)
       continue;

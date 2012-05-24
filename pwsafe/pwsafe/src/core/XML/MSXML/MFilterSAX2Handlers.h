@@ -140,7 +140,7 @@ private:
   st_FilterRow *cur_filterentry;
   Asker *m_pAsker;
 
-  StringX m_strElemContent;
+  StringX m_sxElemContent;
   BSTR * m_pSchema_Version;
 
   int m_fieldlen;

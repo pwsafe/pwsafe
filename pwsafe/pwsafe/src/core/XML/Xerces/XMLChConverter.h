@@ -47,14 +47,14 @@ struct _XMLChDeallocator {
   }
 
   StringX Xml2StringX(const XMLCh* xs) {
-    char* astr = XMLString::transcode(xs);
+    char *astr = XMLString::transcode(xs);
     StringX ws;
     if (astr) {
       //transcode() apparently converts the string to "Native code page"
       //Hopefully, that overlaps just fine with utf-8 
       CUTF8Conv conv;
       if (!conv.FromUTF8(reinterpret_cast<unsigned char *>(astr), strlen(astr), ws)) {
-        ws.clear(); 
+        ws = _T(""); 
       }
       XMLString::release(&astr);
     }
@@ -62,13 +62,13 @@ struct _XMLChDeallocator {
   }
 
   stringT Xml2StringT(const XMLCh* xs) {
-    char* astr = XMLString::transcode(xs);
+    char *astr = XMLString::transcode(xs);
     StringX ws;
     if (astr) {
       CUTF8Conv conv;
       //This is wrong if the second param of FromUTF8 is the number of chars
       if (!conv.FromUTF8(reinterpret_cast<unsigned char *>(astr), strlen(astr), ws)) {
-        ws.clear(); 
+        ws = _T(""); 
       }
       XMLString::release(&astr);
     }
@@ -82,7 +82,7 @@ struct _XMLChDeallocator {
   void Clear() {
     using namespace std;
     for_each(allocations.begin(), allocations.end(), bind1st(mem_fun(&_XMLChDeallocator::Release), this));
-    allocations.clear();
+      allocations.clear();
   }
   
   ~_XMLChDeallocator() {

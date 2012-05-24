@@ -2414,17 +2414,17 @@ BOOL DboxMain::LaunchBrowser(const CString &csURL, const StringX &sxAutotype,
   // Obey user's No Autotype flag [xa]
   if (no_autotype > 0) {
     m_bDoAutoType = false;
-    m_AutoType.clear();
+    m_sxAutoType = L"";
     m_vactionverboffsets.clear();
   } else {
     // Either do it because they pressed the right menu/shortcut
     // or they had specified Do Auotype flag [autotype]
     m_bDoAutoType = bDoAutotype || autotypeReplacements > 0;
-    m_AutoType = m_bDoAutoType ? sxAutotype : L"";
+    m_sxAutoType = m_bDoAutoType ? sxAutotype : L"";
     if (m_bDoAutoType)
       m_vactionverboffsets = vactionverboffsets;
   }
-  bool rc = m_runner.issuecmd(sxFile, sxParameters, !m_AutoType.empty());
+  bool rc = m_runner.issuecmd(sxFile, sxParameters, !m_sxAutoType.empty());
 
   if (!rc) {
     CGeneralMsgBox gmb;
@@ -4173,8 +4173,8 @@ void DboxMain::SaveGUIStatusEx(const int iView)
     m_LUUIDSelectedAtMinimize = CUUID::NullUUID();
     m_LUUIDVisibleAtMinimize = CUUID::NullUUID();
 
-    m_sxSelectedGroup.clear();
-    m_sxVisibleGroup.clear();
+    m_sxSelectedGroup = L"";
+    m_sxVisibleGroup = L"";
 
     // Tree view
     // Get selected entry in CTreeCtrl

@@ -36,10 +36,10 @@ XMLFileHandlers::XMLFileHandlers()
 {
   cur_entry = NULL;
   cur_pwhistory_entry = NULL;
-  m_strElemContent.clear();
+  m_sxElemContent = _T("");
 
   m_delimiter = _T('\0');
-  m_strErrorMessage.clear();
+  m_strErrorMessage = _T("");
 
   m_iErrorCode = 0;
 
@@ -103,28 +103,28 @@ bool XMLFileHandlers::ProcessStartElement(const int icurrent_element)
       cur_entry = new pw_entry;
       // Clear all fields
       cur_entry->id = 0;
-      cur_entry->group.clear();
-      cur_entry->title.clear();
-      cur_entry->username.clear();
-      cur_entry->password.clear();
-      cur_entry->url.clear();
-      cur_entry->autotype.clear();
-      cur_entry->ctime.clear();
-      cur_entry->atime.clear();
-      cur_entry->xtime.clear();
-      cur_entry->xtime_interval.clear();
-      cur_entry->pmtime.clear();
-      cur_entry->rmtime.clear();
-      cur_entry->pwhistory.clear();
-      cur_entry->notes.clear();
-      cur_entry->uuid.clear();
+      cur_entry->group = _T("");
+      cur_entry->title = _T("");
+      cur_entry->username = _T("");
+      cur_entry->password = _T("");
+      cur_entry->url = _T("");
+      cur_entry->autotype = _T("");
+      cur_entry->ctime = _T("");
+      cur_entry->atime = _T("");
+      cur_entry->xtime = _T("");
+      cur_entry->xtime_interval = _T("");
+      cur_entry->pmtime = _T("");
+      cur_entry->rmtime = _T("");
+      cur_entry->pwhistory = _T("");
+      cur_entry->notes = _T("");
+      cur_entry->uuid = _T("");
       cur_entry->pwp.Empty();
-      cur_entry->run_command.clear();
-      cur_entry->dca.clear();
-      cur_entry->shiftdca.clear();
-      cur_entry->email.clear();
-      cur_entry->symbols.clear();
-      cur_entry->policyname.clear();
+      cur_entry->run_command = _T("");
+      cur_entry->dca = _T("");
+      cur_entry->shiftdca = _T("");
+      cur_entry->email = _T("");
+      cur_entry->symbols = _T("");
+      cur_entry->policyname = _T("");
       cur_entry->ucprotected = 0;
       cur_entry->entrytype = NORMAL;
       cur_entry->bforce_normal_entry = false;
@@ -135,8 +135,8 @@ bool XMLFileHandlers::ProcessStartElement(const int icurrent_element)
 
       ASSERT(cur_pwhistory_entry == NULL);
       cur_pwhistory_entry = new pwhistory_entry;
-      cur_pwhistory_entry->changed.clear();
-      cur_pwhistory_entry->oldpassword.clear();
+      cur_pwhistory_entry->changed = _T("");
+      cur_pwhistory_entry->oldpassword = _T("");
       break;
     case XLE_CTIMEX:
     case XLE_ATIMEX:
@@ -155,7 +155,7 @@ bool XMLFileHandlers::ProcessStartElement(const int icurrent_element)
 
       // Clear all fields
       m_Named_pwp.Empty();
-      m_PolicyName.clear();
+      m_PolicyName = _T("");
 
       break;
     case XLE_EMPTYGROUPS:
@@ -179,7 +179,7 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
 
   switch (icurrent_element) {
     case XLE_NUMBERHASHITERATIONS:
-      i = _ttoi(m_strElemContent.c_str());
+      i = _ttoi(m_sxElemContent.c_str());
       if (i > MIN_HASH_ITERATIONS) {
         m_nITER = i;
       }
@@ -211,7 +211,7 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
       break;
     case XLE_PREF_PWUSELOWERCASE:
       if (m_bPolicyBeingProcessed)
-        if (m_strElemContent == _T("1"))
+        if (m_sxElemContent == _T("1"))
           m_Named_pwp.flags |= PWPolicy::UseLowercase;
         else
           m_Named_pwp.flags &= ~PWPolicy::UseLowercase;
@@ -220,7 +220,7 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
       break;
     case XLE_PREF_PWUSEUPPERCASE:
       if (m_bPolicyBeingProcessed)
-        if (m_strElemContent == _T("1"))
+        if (m_sxElemContent == _T("1"))
           m_Named_pwp.flags |= PWPolicy::UseUppercase;
         else
           m_Named_pwp.flags &= ~PWPolicy::UseUppercase;
@@ -229,7 +229,7 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
       break;
     case XLE_PREF_PWUSEDIGITS:
       if (m_bPolicyBeingProcessed)
-        if (m_strElemContent == _T("1"))
+        if (m_sxElemContent == _T("1"))
           m_Named_pwp.flags |= PWPolicy::UseDigits;
         else
           m_Named_pwp.flags &= ~PWPolicy::UseDigits;
@@ -238,7 +238,7 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
       break;
     case XLE_PREF_PWUSESYMBOLS:
       if (m_bPolicyBeingProcessed)
-        if (m_strElemContent == _T("1"))
+        if (m_sxElemContent == _T("1"))
           m_Named_pwp.flags |= PWPolicy::UseSymbols;
         else
           m_Named_pwp.flags &= ~PWPolicy::UseSymbols;
@@ -247,7 +247,7 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
       break;
     case XLE_PREF_PWUSEHEXDIGITS:
       if (m_bPolicyBeingProcessed)
-        if (m_strElemContent == _T("1"))
+        if (m_sxElemContent == _T("1"))
           m_Named_pwp.flags |= PWPolicy::UseHexDigits;
         else
           m_Named_pwp.flags &= ~PWPolicy::UseHexDigits;
@@ -256,7 +256,7 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
       break;
     case XLE_PREF_PWUSEEASYVISION:
       if (m_bPolicyBeingProcessed)
-        if (m_strElemContent == _T("1"))
+        if (m_sxElemContent == _T("1"))
           m_Named_pwp.flags |= PWPolicy::UseEasyVision;
         else
           m_Named_pwp.flags &= ~PWPolicy::UseEasyVision;
@@ -277,7 +277,7 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
       break;
     case XLE_PREF_PWMAKEPRONOUNCEABLE:
       if (m_bPolicyBeingProcessed)
-        if (m_strElemContent == _T("1"))
+        if (m_sxElemContent == _T("1"))
           m_Named_pwp.flags |= PWPolicy::MakePronounceable;
         else
           m_Named_pwp.flags &= ~PWPolicy::MakePronounceable;
@@ -293,7 +293,7 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
     // Integer DB preferences
     case XLE_PREF_PWDEFAULTLENGTH:
       if (m_bPolicyBeingProcessed)
-        m_Named_pwp.length = _ttoi(m_strElemContent.c_str());
+        m_Named_pwp.length = _ttoi(m_sxElemContent.c_str());
       else
         ipref = PWSprefs::PWDefaultLength;
       break;
@@ -302,11 +302,11 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
       break;
     case XLE_PREF_TREEDISPLAYSTATUSATOPEN:
       // Since value is a string - need to convert here to corresponding integer value
-      if (m_strElemContent == _T("AllCollapsed"))
+      if (m_sxElemContent == _T("AllCollapsed"))
         i = PWSprefs::AllCollapsed;
-      else if (m_strElemContent == _T("AllExpanded"))
+      else if (m_sxElemContent == _T("AllExpanded"))
         i = PWSprefs::AllExpanded;
-      else if (m_strElemContent == _T("AsPerLastSave"))
+      else if (m_sxElemContent == _T("AsPerLastSave"))
         i = PWSprefs::AsPerLastSave;
       else
         break;
@@ -317,25 +317,25 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
       break;
     case XLE_PREF_PWDIGITMINLENGTH:
       if (m_bPolicyBeingProcessed)
-        m_Named_pwp.digitminlength = _ttoi(m_strElemContent.c_str());
+        m_Named_pwp.digitminlength = _ttoi(m_sxElemContent.c_str());
       else
         ipref = PWSprefs::PWDigitMinLength;
       break;
     case XLE_PREF_PWLOWERCASEMINLENGTH:
       if (m_bPolicyBeingProcessed)
-         m_Named_pwp.lowerminlength = _ttoi(m_strElemContent.c_str());
+         m_Named_pwp.lowerminlength = _ttoi(m_sxElemContent.c_str());
       else
         ipref = PWSprefs::PWLowercaseMinLength;
       break;
     case XLE_PREF_PWSYMBOLMINLENGTH:
       if (m_bPolicyBeingProcessed)
-        m_Named_pwp.symbolminlength = _ttoi(m_strElemContent.c_str());
+        m_Named_pwp.symbolminlength = _ttoi(m_sxElemContent.c_str());
       else
         ipref = PWSprefs::PWSymbolMinLength;
       break;
     case XLE_PREF_PWUPPERCASEMINLENGTH:
       if (m_bPolicyBeingProcessed)
-        m_Named_pwp.upperminlength = _ttoi(m_strElemContent.c_str());
+        m_Named_pwp.upperminlength = _ttoi(m_sxElemContent.c_str());
       else
         ipref = PWSprefs::PWUppercaseMinLength;
       break;
@@ -357,101 +357,101 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
       m_bInEmptyGroups = false;
       break;
     case XLE_EGNAME:
-      if (!m_strElemContent.empty() &&
-          find(m_vEmptyGroups.begin(), m_vEmptyGroups.end(), m_strElemContent) == m_vEmptyGroups.end())
-        m_vEmptyGroups.push_back(m_strElemContent);
+      if (!m_sxElemContent.empty() &&
+          find(m_vEmptyGroups.begin(), m_vEmptyGroups.end(), m_sxElemContent) == m_vEmptyGroups.end())
+        m_vEmptyGroups.push_back(m_sxElemContent);
       break;
 
     // MUST be in the same order as enum beginning STR_GROUP...
     case XLE_GROUP:
-      cur_entry->group = m_strElemContent;
+      cur_entry->group = m_sxElemContent;
       break;
     case XLE_TITLE:
-      cur_entry->title = m_strElemContent;
+      cur_entry->title = m_sxElemContent;
       break;
     case XLE_USERNAME:
-      cur_entry->username = m_strElemContent;
+      cur_entry->username = m_sxElemContent;
       break;
     case XLE_URL:
-      cur_entry->url = m_strElemContent;
+      cur_entry->url = m_sxElemContent;
       break;
     case XLE_AUTOTYPE:
-      cur_entry->autotype = m_strElemContent;
+      cur_entry->autotype = m_sxElemContent;
       break;
     case XLE_NOTES:
-      cur_entry->notes = m_strElemContent;
+      cur_entry->notes = m_sxElemContent;
       break;
     case XLE_UUID:
-      cur_entry->uuid = m_strElemContent;
+      cur_entry->uuid = m_sxElemContent;
       break;
     case XLE_PASSWORD:
-      cur_entry->password = m_strElemContent;
-      if (Replace(m_strElemContent, _T(':'), _T(';')) <= 2) {
-        if (m_strElemContent.substr(0, 2) == _T("[[") &&
-            m_strElemContent.substr(m_strElemContent.length() - 2) == _T("]]")) {
+      cur_entry->password = m_sxElemContent;
+      if (Replace(m_sxElemContent, _T(':'), _T(';')) <= 2) {
+        if (m_sxElemContent.substr(0, 2) == _T("[[") &&
+            m_sxElemContent.substr(m_sxElemContent.length() - 2) == _T("]]")) {
             cur_entry->entrytype = ALIAS;
         }
-        if (m_strElemContent.substr(0, 2) == _T("[~") &&
-            m_strElemContent.substr(m_strElemContent.length() - 2) == _T("~]")) {
+        if (m_sxElemContent.substr(0, 2) == _T("[~") &&
+            m_sxElemContent.substr(m_sxElemContent.length() - 2) == _T("~]")) {
             cur_entry->entrytype = SHORTCUT;
         }
       }
       break;
     case XLE_CTIMEX:
-      cur_entry->ctime = m_strElemContent;
+      cur_entry->ctime = m_sxElemContent;
       break;
     case XLE_ATIMEX:
-      cur_entry->atime = m_strElemContent;
+      cur_entry->atime = m_sxElemContent;
       break;
     case XLE_XTIMEX:
-      cur_entry->xtime = m_strElemContent;
+      cur_entry->xtime = m_sxElemContent;
       break;
     case XLE_PMTIMEX:
-      cur_entry->pmtime = m_strElemContent;
+      cur_entry->pmtime = m_sxElemContent;
       break;
     case XLE_RMTIMEX:
-      cur_entry->rmtime = m_strElemContent;
+      cur_entry->rmtime = m_sxElemContent;
       break;
     case XLE_XTIME_INTERVAL:
-      cur_entry->xtime_interval = Trim(m_strElemContent);
+      cur_entry->xtime_interval = Trim(m_sxElemContent);
       break;
     case XLE_RUNCOMMAND:
-      cur_entry->run_command = m_strElemContent;
+      cur_entry->run_command = m_sxElemContent;
       break;
     case XLE_DCA:
-      cur_entry->dca = Trim(m_strElemContent);
+      cur_entry->dca = Trim(m_sxElemContent);
       break;
     case XLE_SHIFTDCA:
-      cur_entry->shiftdca = Trim(m_strElemContent);
+      cur_entry->shiftdca = Trim(m_sxElemContent);
       break;
     case XLE_EMAIL:
-      cur_entry->email = m_strElemContent;
+      cur_entry->email = m_sxElemContent;
       break;
     case XLE_PROTECTED:
-      if (m_strElemContent == _T("1"))
+      if (m_sxElemContent == _T("1"))
         cur_entry->ucprotected = 1;
       break;
     case XLE_SYMBOLS:
       if (m_bPolicyBeingProcessed)
-        m_Named_pwp.symbols = m_strElemContent;
+        m_Named_pwp.symbols = m_sxElemContent;
       else
-        cur_entry->symbols = m_strElemContent;
+        cur_entry->symbols = m_sxElemContent;
       break;
     case XLE_ENTRY_PASSWORDPOLICYNAME:
-      cur_entry->policyname = m_strElemContent;
+      cur_entry->policyname = m_sxElemContent;
       break;
     case XLE_STATUS:
-      i = _ttoi(m_strElemContent.c_str());
+      i = _ttoi(m_sxElemContent.c_str());
       Format(buffer, _T("%01x"), i);
       cur_entry->pwhistory = buffer;
       break;
     case XLE_MAX:
-      i = _ttoi(m_strElemContent.c_str());
+      i = _ttoi(m_sxElemContent.c_str());
       Format(buffer, _T("%02x"), i);
       cur_entry->pwhistory += buffer;
       break;
     case XLE_NUM:
-      i = _ttoi(m_strElemContent.c_str());
+      i = _ttoi(m_sxElemContent.c_str());
       Format(buffer, _T("%02x"), i);
       cur_entry->pwhistory += buffer;
       break;
@@ -466,68 +466,68 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
       cur_pwhistory_entry = NULL;
       break;
     case XLE_CHANGEDX:
-      cur_pwhistory_entry->changed = m_strElemContent;
+      cur_pwhistory_entry->changed = m_sxElemContent;
       break;
     case XLE_OLDPASSWORD:
       ASSERT(cur_pwhistory_entry != NULL);
-      cur_pwhistory_entry->oldpassword = m_strElemContent;
+      cur_pwhistory_entry->oldpassword = m_sxElemContent;
       break;
     case XLE_ENTRY_PWLENGTH:
-      cur_entry->pwp.length = _ttoi(m_strElemContent.c_str());
+      cur_entry->pwp.length = _ttoi(m_sxElemContent.c_str());
       break;
     case XLE_ENTRY_PWUSEDIGITS:
-      if (m_strElemContent == _T("1"))
+      if (m_sxElemContent == _T("1"))
         cur_entry->pwp.flags |= PWPolicy::UseDigits;
       else
         cur_entry->pwp.flags &= ~PWPolicy::UseDigits;
       break;
     case XLE_ENTRY_PWUSEEASYVISION:
-      if (m_strElemContent == _T("1"))
+      if (m_sxElemContent == _T("1"))
         cur_entry->pwp.flags |= PWPolicy::UseEasyVision;
       else
         cur_entry->pwp.flags &= ~PWPolicy::UseEasyVision;
       break;
     case XLE_ENTRY_PWUSEHEXDIGITS:
-      if (m_strElemContent == _T("1"))
+      if (m_sxElemContent == _T("1"))
         cur_entry->pwp.flags |= PWPolicy::UseHexDigits;
       else
         cur_entry->pwp.flags &= ~PWPolicy::UseHexDigits;
       break;
     case XLE_ENTRY_PWUSELOWERCASE:
-      if (m_strElemContent == _T("1"))
+      if (m_sxElemContent == _T("1"))
         cur_entry->pwp.flags |= PWPolicy::UseLowercase;
       else
         cur_entry->pwp.flags &= ~PWPolicy::UseLowercase;
       break;
     case XLE_ENTRY_PWUSESYMBOLS:
-      if (m_strElemContent == _T("1"))
+      if (m_sxElemContent == _T("1"))
         cur_entry->pwp.flags |= PWPolicy::UseSymbols;
       else
         cur_entry->pwp.flags &= ~PWPolicy::UseSymbols;
       break;
     case XLE_ENTRY_PWUSEUPPERCASE:
-      if (m_strElemContent == _T("1"))
+      if (m_sxElemContent == _T("1"))
         cur_entry->pwp.flags |= PWPolicy::UseUppercase;
       else
         cur_entry->pwp.flags &= ~PWPolicy::UseUppercase;
       break;
     case XLE_ENTRY_PWMAKEPRONOUNCEABLE:
-      if (m_strElemContent == _T("1"))
+      if (m_sxElemContent == _T("1"))
         cur_entry->pwp.flags |= PWPolicy::MakePronounceable;
       else
         cur_entry->pwp.flags &= ~PWPolicy::MakePronounceable;
       break;
     case XLE_ENTRY_PWDIGITMINLENGTH:
-      cur_entry->pwp.digitminlength = _ttoi(m_strElemContent.c_str());
+      cur_entry->pwp.digitminlength = _ttoi(m_sxElemContent.c_str());
       break;
     case XLE_ENTRY_PWLOWERCASEMINLENGTH:
-      cur_entry->pwp.lowerminlength = _ttoi(m_strElemContent.c_str());
+      cur_entry->pwp.lowerminlength = _ttoi(m_sxElemContent.c_str());
       break;
     case XLE_ENTRY_PWSYMBOLMINLENGTH:
-      cur_entry->pwp.symbolminlength = _ttoi(m_strElemContent.c_str());
+      cur_entry->pwp.symbolminlength = _ttoi(m_sxElemContent.c_str());
       break;
     case XLE_ENTRY_PWUPPERCASEMINLENGTH:
-      cur_entry->pwp.upperminlength = _ttoi(m_strElemContent.c_str());
+      cur_entry->pwp.upperminlength = _ttoi(m_sxElemContent.c_str());
       break;
     case XLE_PASSWORDSAFE:
     case XLE_PWHISTORY:
@@ -557,17 +557,17 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
       break;
     }
     case XLE_PWNAME:
-      m_PolicyName = m_strElemContent.c_str();
+      m_PolicyName = m_sxElemContent.c_str();
       break;
   }
   
   // If we have processed a DB preference - add it to our copy
   if (bpref != PWSprefs::NumBoolPrefs)    // boolean
-    PWSprefs::GetInstance()->SetPref(bpref, _ttoi(m_strElemContent.c_str()) == 0 ? false : true, true);
+    PWSprefs::GetInstance()->SetPref(bpref, _ttoi(m_sxElemContent.c_str()) == 0 ? false : true, true);
   if (ipref != PWSprefs::NumIntPrefs)     // integer
-    PWSprefs::GetInstance()->SetPref(ipref, _ttoi(m_strElemContent.c_str()), true);
+    PWSprefs::GetInstance()->SetPref(ipref, _ttoi(m_sxElemContent.c_str()), true);
   if (spref != PWSprefs::NumStringPrefs)  // string
-    PWSprefs::GetInstance()->SetPref(spref, m_strElemContent, true);
+    PWSprefs::GetInstance()->SetPref(spref, m_sxElemContent, true);
 }
 
 void XMLFileHandlers::AddXMLEntries()
@@ -834,7 +834,7 @@ void XMLFileHandlers::AddXMLEntries()
             // As we have no information about it's settings we can't even give
             // this entry a specific policy
             sxMissingPolicyName = cur_entry->policyname;
-            cur_entry->policyname.clear();
+            cur_entry->policyname = _T("");
             m_numNoPolicies++;
             bNoPolicy = true;
           }
