@@ -1522,7 +1522,7 @@ int PWScore::ImportKeePassV1TXTFile(const StringX &filename,
           pgs.push_back(item);
         }
         // Construct the parent groups
-        sx_Parent_Groups.clear();
+        sx_Parent_Groups = _T("");
         for (size_t i = 0; i < pgs.size(); i++) {
           sx_Parent_Groups = sx_Parent_Groups + pgs[i] + dot;
         }
@@ -1752,23 +1752,23 @@ void ProcessKeePassCSVLine(const string &linebuf, std::vector<StringX> &tokens)
     else
     if (!bInField && ch == ',' && linebuf[i + 1] == ',') {
       conv.FromUTF8((unsigned char *)item.c_str(), item.length(), sxdata);
-      tokens.push_back(sxdata); item.clear(); sxdata.clear();
+      tokens.push_back(sxdata); item.clear(); sxdata = _T("");
     }
     else
     if (!bInField && ch == ',' && linebuf[i + 1] == '\r') {
       conv.FromUTF8((unsigned char *)item.c_str(), item.length(), sxdata);
-      tokens.push_back(sxdata); item.clear(); sxdata.clear();
+      tokens.push_back(sxdata); item.clear(); sxdata = _T("");
     }
     else
     if (!bInField && ch == ',' && linebuf[i + 1] == '\n') {
       conv.FromUTF8((unsigned char *)item.c_str(), item.length(), sxdata);
-      tokens.push_back(sxdata); item.clear(); sxdata.clear();
+      tokens.push_back(sxdata); item.clear(); sxdata = _T("");
     }
     else
     if (ch == '\"') {
       if (bInField) {
         conv.FromUTF8((unsigned char *)item.c_str(), item.length(), sxdata);
-        tokens.push_back(sxdata); item.clear(); sxdata.clear();
+        tokens.push_back(sxdata); item.clear(); sxdata = _T("");
         bInField = false;
       }
       else bInField = true;
@@ -2056,7 +2056,7 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
       }
 
       // Construct the parent groups
-      sx_parent_groups.clear();
+      sx_parent_groups = _T("");
       for (size_t i = 0; i < parent_groups.size(); i++) {
         sx_parent_groups = sx_parent_groups + parent_groups[i].c_str() + dot;
       }
@@ -2073,7 +2073,7 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
           ua[i] = static_cast<unsigned char>(x);
         }
       } else
-        sx_uuid.clear();
+        sx_uuid = _T("");
     }
 
     if (i_Offset[CTIME] >= 0 && !tokens[i_Offset[CTIME]].empty()) {

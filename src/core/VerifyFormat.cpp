@@ -435,7 +435,7 @@ int VerifyTextImportPWHistoryString(const StringX &PWHistory,
     tmp = StringX(lpszPWHistory, ipwlen);
     Format(sxBuffer, _T("%08x%04x%s"), static_cast<long>(t), ipwlen, tmp.c_str());
     newPWHistory += sxBuffer;
-    sxBuffer.clear();
+    sxBuffer = _T("");
     lpszPWHistory += ipwlen;
     pwleft -= ipwlen;
   }
@@ -630,7 +630,7 @@ int VerifyXMLImportPWHistoryString(const StringX &PWHistory,
     Format(sxBuffer, _T("%08x%04x%s"), static_cast<long>(t), ipwlen, 
                  sxPassword.c_str());
     out_entries.push_back(sxBuffer);
-    sxBuffer.clear();
+    sxBuffer = _T("");
     it += 3;
   }
 

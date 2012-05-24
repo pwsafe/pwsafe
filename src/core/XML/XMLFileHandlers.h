@@ -114,7 +114,7 @@ protected:
   pw_entry *cur_entry;
   pwhistory_entry *cur_pwhistory_entry;
 
-  StringX m_strElemContent;
+  StringX m_sxElemContent;
   stringT m_strErrorMessage;
   stringT m_strXMLErrors;
   stringT m_strPWHErrorList;

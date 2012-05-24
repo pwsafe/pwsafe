@@ -501,8 +501,8 @@ int DboxMain::Close(const bool bTrySave)
   m_TUUIDSelectedAtMinimize = CUUID::NullUUID();
   m_LUUIDVisibleAtMinimize = CUUID::NullUUID();
   m_TUUIDVisibleAtMinimize = CUUID::NullUUID();
-  m_sxSelectedGroup.clear();
-  m_sxVisibleGroup.clear();
+  m_sxSelectedGroup = L"";
+  m_sxVisibleGroup = L"";
 
   CAddEdit_DateTimes::m_bShowUUID = false;
 
@@ -793,8 +793,8 @@ int DboxMain::Open(const StringX &sx_Filename, const bool bReadOnly,  const bool
   m_TUUIDSelectedAtMinimize = CUUID::NullUUID();
   m_LUUIDVisibleAtMinimize = CUUID::NullUUID();
   m_TUUIDVisibleAtMinimize = CUUID::NullUUID();
-  m_sxSelectedGroup.clear();
-  m_sxVisibleGroup.clear();
+  m_sxSelectedGroup = L"";
+  m_sxVisibleGroup = L"";
 
   cs_title.LoadString(IDS_FILEREADERROR);
   bool bAskerSet = m_core.IsAskerSet();

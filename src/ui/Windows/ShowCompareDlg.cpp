@@ -472,11 +472,11 @@ void CShowCompareDlg::PopulateResults(const bool bShowAll)
           if (n < pwhistlist1.size()) {
             sxValue1 = pwhistlist1[n].changedate + sxBlank + pwhistlist1[n].password;
           }  else
-            sxValue1.clear();
+            sxValue1 = L"";
           if (n < pwhistlist2.size()) {
             sxValue2 = pwhistlist2[n].changedate + sxBlank + pwhistlist2[n].password;
           } else
-            sxValue2.clear();
+            sxValue2 = L"";
 
           if (bShowAll || sxValue1 != sxValue2) {
             stringT str;

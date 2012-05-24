@@ -245,7 +245,7 @@ void DboxMain::OnCreateShortcut()
         const StringX sxOldDBPrefsString(prefs->Store());
         sxNewDBPrefsString = prefs->Store(true);
         if (sxOldDBPrefsString == sxNewDBPrefsString) {
-          sxNewDBPrefsString.clear();
+          sxNewDBPrefsString = L"";
         }
       }
     }
@@ -1534,7 +1534,7 @@ void DboxMain::CopyDataToClipBoard(const CItemData::FieldType ft, const bool bSp
                                                  m_core.GetCurFile(),
                                                  pci,
                                                  m_bDoAutoType,
-                                                 m_AutoType,
+                                                 m_sxAutoType,
                                                  errmsg, st_column, bURLSpecial);
         if (errmsg.length() > 0) {
           CGeneralMsgBox gmb;
@@ -1790,7 +1790,7 @@ void DboxMain::OnRunCommand()
   bool bURLSpecial;
   sx_Expanded_ES = PWSAuxParse::GetExpandedString(sx_RunCommand,
                        m_core.GetCurFile(), pci,
-                       m_bDoAutoType, m_AutoType,
+                       m_bDoAutoType, m_sxAutoType,
                        errmsg, st_column, bURLSpecial);
   if (!errmsg.empty()) {
     CGeneralMsgBox gmb;
@@ -1801,7 +1801,7 @@ void DboxMain::OnRunCommand()
     return;
   }
 
-  m_AutoType = PWSAuxParse::GetAutoTypeString(m_AutoType, pci->GetGroup(),
+  m_sxAutoType = PWSAuxParse::GetAutoTypeString(m_sxAutoType, pci->GetGroup(),
                                  pci->GetTitle(), pci->GetUser(),
                                  sx_pswd, pci->GetNotes(),
                                  m_vactionverboffsets);
@@ -1828,10 +1828,10 @@ void DboxMain::OnRunCommand()
       sx_Expanded_ES = sxAltBrowser + StringX(L" ") + sx_Expanded_ES;
   }
 
-  bool rc = m_runner.runcmd(sx_Expanded_ES, !m_AutoType.empty());
+  bool rc = m_runner.runcmd(sx_Expanded_ES, !m_sxAutoType.empty());
   if (!rc) {
     m_bDoAutoType = false;
-    m_AutoType.clear();
+    m_sxAutoType = L"";
     return;
   }
 }

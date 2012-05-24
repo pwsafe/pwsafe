@@ -168,7 +168,7 @@ struct st_PSWDPolicyChange {
 
   void Empty()
   { 
-    name.clear();
+    name = _T("");
     flags = CPP_INVALID;
     st_pp_save.Empty();
     st_pp_new.Empty();

@@ -92,7 +92,7 @@ private:
   XMLCh * m_pSchema_Version;
   Asker *m_pAsker;
 
-  StringX m_strElemContent;
+  StringX m_sxElemContent;
   stringT m_strValidationResult;
   stringT m_strXMLErrors;
 

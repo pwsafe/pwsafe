@@ -583,7 +583,7 @@ void CAddEdit_Additional::OnSTCExClicked(UINT nID)
                                                  M_currentDB(),
                                                  M_pci(),
                                                  M_pDbx()->m_bDoAutoType,
-                                                 M_pDbx()->m_AutoType,
+                                                 M_pDbx()->m_sxAutoType,
                                                  errmsg, st_column, bURLSpecial);
         if (errmsg.length() > 0) {
           CGeneralMsgBox gmb;
