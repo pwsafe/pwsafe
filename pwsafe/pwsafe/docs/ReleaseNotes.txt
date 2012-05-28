@@ -31,6 +31,7 @@ None
 
 Bugs fixed in 3.28.1
 ====================
+[3525995] Find now only highlights/select the found entry.
 [3523117] Password Expiration Date now correctly set when using intervals.
 [3521158] Paste into the Notes field (Add or Edit entry) is now always in plain text.
 [3518734] When generating passwords (Ctrl-P), the user is no longer prompted to save
