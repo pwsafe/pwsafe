@@ -50,7 +50,7 @@ void CDDObList::DDSerialize(CSMemFile &outDDmemfile)
   // NOTE:  Do not call the base class!
   // Serialize ALL entries
   int nCount;
-  POSITION Pos;
+  POSITION pos;
   CDDObject *pDDObject;
 
   nCount = (int)GetCount();
@@ -58,9 +58,9 @@ void CDDObList::DDSerialize(CSMemFile &outDDmemfile)
   outDDmemfile.Write((void *)&nCount, sizeof(nCount));
   outDDmemfile.Write((void *)&m_bDragNode, sizeof(bool));
 
-  Pos = GetHeadPosition();
-  while (Pos != NULL) {
-    pDDObject = (CDDObject *)GetNext(Pos);
+  pos = GetHeadPosition();
+  while (pos != NULL) {
+    pDDObject = (CDDObject *)GetNext(pos);
     pDDObject->DDSerializeEntry(outDDmemfile);
   }
 }

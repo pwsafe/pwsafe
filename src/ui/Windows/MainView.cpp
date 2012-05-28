@@ -915,6 +915,13 @@ BOOL DboxMain::SelectFindEntry(const int i, BOOL MakeVisible)
   CItemData *pci = (CItemData *)m_ctlItemList.GetItemData(i);
   ASSERT(pci != NULL);
   if (m_ctlItemList.IsWindowVisible()) {
+    // Unselect all others first
+    POSITION pos = m_ctlItemList.GetFirstSelectedItemPosition();
+    while (pos) {
+      int iIndex = m_ctlItemList.GetNextSelectedItem(pos);
+      m_ctlItemList.SetItemState(iIndex, 0, LVIS_FOCUSED | LVIS_SELECTED);
+    }
+    // Now select found item
     retval = m_ctlItemList.SetItemState(i,
                                         LVIS_FOCUSED | LVIS_SELECTED,
                                         LVIS_FOCUSED | LVIS_SELECTED);
@@ -1657,9 +1664,9 @@ CItemData *DboxMain::getSelectedItem()
     return pci;
 
   if (m_ctlItemList.IsWindowVisible()) { // list view
-    POSITION p = m_ctlItemList.GetFirstSelectedItemPosition();
-    if (p) {
-      int i = m_ctlItemList.GetNextSelectedItem(p);
+    POSITION pos = m_ctlItemList.GetFirstSelectedItemPosition();
+    if (pos) {
+      int i = m_ctlItemList.GetNextSelectedItem(pos);
       pci = (CItemData *)m_ctlItemList.GetItemData(i);
       ASSERT(pci != NULL);
       DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
@@ -3810,20 +3817,22 @@ bool DboxMain::SetNotesWindow(const CPoint ptClient, const bool bVisible)
 
 CItemData *DboxMain::GetLastSelected() const
 {
-  CItemData *retval(NULL);
+  CItemData *pci(NULL);
   if (m_core.GetNumEntries() == 0)
-    return retval;
+    return pci;
 
   if (m_ctlItemTree.IsWindowVisible()) {
     HTREEITEM hSelected = m_ctlItemTree.GetSelectedItem();
     if (hSelected != NULL)
-      retval = (CItemData *)m_ctlItemTree.GetItemData(hSelected);
+      pci = (CItemData *)m_ctlItemTree.GetItemData(hSelected);
   } else {
-    POSITION pSelected = m_ctlItemList.GetFirstSelectedItemPosition();
-    if (pSelected != NULL)
-      retval = (CItemData *)m_ctlItemList.GetItemData((int)pSelected - 1);
+    POSITION pos = m_ctlItemList.GetFirstSelectedItemPosition();
+    if (pos != NULL) {
+      int i = m_ctlItemList.GetNextSelectedItem(pos);
+      pci = (CItemData *)m_ctlItemList.GetItemData(i);
+    }
   }
-  return retval;
+  return pci;
 }
 
 StringX DboxMain::GetGroupName() const
@@ -4135,7 +4144,7 @@ void DboxMain::SaveGUIStatusEx(const int iView)
   //pws_os::Trace(L"SaveGUIStatusEx\n");
 
   CItemData *pci(NULL);
-  POSITION p;
+  POSITION pos;
   HTREEITEM ti;
   int i;
 
@@ -4146,9 +4155,9 @@ void DboxMain::SaveGUIStatusEx(const int iView)
 
     // List view
     // Get selected entry in CListCtrl
-    p = m_ctlItemList.GetFirstSelectedItemPosition();
-    if (p) {
-      int i = m_ctlItemList.GetNextSelectedItem(p);
+    pos = m_ctlItemList.GetFirstSelectedItemPosition();
+    if (pos) {
+      int i = m_ctlItemList.GetNextSelectedItem(pos);
       pci = (CItemData *)m_ctlItemList.GetItemData(i);
       ASSERT(pci != NULL);  // No groups in List View
       DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();

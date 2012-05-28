@@ -683,11 +683,11 @@ void CManagePSWDPolices::OnEntryDoubleClicked(NMHDR *, LRESULT *pLResult)
   // Set we have processed the event
   *pLResult = 1L;
 
-  POSITION p = m_PolicyEntries.GetFirstSelectedItemPosition();
-  if (p == NULL)
+  POSITION pos = m_PolicyEntries.GetFirstSelectedItemPosition();
+  if (pos == NULL)
     return;
 
-  int nIndex = m_PolicyEntries.GetNextSelectedItem(p);
+  int nIndex = m_PolicyEntries.GetNextSelectedItem(pos);
 
   if (nIndex < 0)
     return;
