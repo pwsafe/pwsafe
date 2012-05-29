@@ -236,7 +236,8 @@ static void DisplayFileWriteError(int rc, const StringX &fname);
 
 PasswordSafeFrame::PasswordSafeFrame(PWScore &core)
 : m_core(core), m_currentView(GRID), m_search(0), m_sysTray(new SystemTray(this)), m_exitFromMenu(false),
-  m_RUEList(core), m_guiInfo(new GUIInfo), m_bTSUpdated(false), m_savedDBPrefs(wxEmptyString)
+  m_RUEList(core), m_guiInfo(new GUIInfo), m_bTSUpdated(false), m_savedDBPrefs(wxEmptyString),
+  m_bUnlocking(false)
 {
     Init();
 }
@@ -246,7 +247,8 @@ PasswordSafeFrame::PasswordSafeFrame(wxWindow* parent, PWScore &core,
                                      const wxPoint& pos, const wxSize& size,
                                      long style)
   : m_core(core), m_currentView(GRID), m_search(0), m_sysTray(new SystemTray(this)), m_exitFromMenu(false),
-    m_RUEList(core), m_guiInfo(new GUIInfo), m_bTSUpdated(false), m_savedDBPrefs(wxEmptyString)
+    m_RUEList(core), m_guiInfo(new GUIInfo), m_bTSUpdated(false), m_savedDBPrefs(wxEmptyString),
+    m_bUnlocking(false)
 {
     Init();
     if (PWSprefs::GetInstance()->GetPref(PWSprefs::AlwaysOnTop))
@@ -1315,7 +1317,13 @@ int PasswordSafeFrame::SaveAs()
 void PasswordSafeFrame::OnCloseWindow( wxCloseEvent& evt )
 {
   wxGetApp().SaveFrameCoords();
-  if (m_exitFromMenu) {
+  const bool systrayEnabled = PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray);
+  /*
+   * Really quit if the user chooses to quit from File menu, or
+   * by clicking the 'X' in title bar or the system menu pulldown
+   * from the top-left of the titlebar while systray is disabled
+   */
+  if (m_exitFromMenu || !systrayEnabled) {
     if (evt.CanVeto()) {
       int rc = SaveIfChanged();
       if (rc == PWScore::USER_CANCEL) {
@@ -1328,7 +1336,8 @@ void PasswordSafeFrame::OnCloseWindow( wxCloseEvent& evt )
     Destroy();
   }
   else {
-    HideUI(false); //false => don't lock the UI yet, wait for interactivity timer from app
+    const bool lockOnMinimize = PWSprefs::GetInstance()->GetPref(PWSprefs::DatabaseClear);
+    HideUI(lockOnMinimize);
   } 
 }
 
@@ -2210,6 +2219,7 @@ void PasswordSafeFrame::UnlockSafe(bool restoreUI)
 {
   StringX password;
   if (m_sysTray->IsLocked()) {
+    AutoRestore<bool> unlocking(m_bUnlocking,true);
     if (VerifySafeCombination(password)) {
       if (ReloadDatabase(password)) {
         m_sysTray->SetTrayStatus(SystemTray::TRAY_UNLOCKED);
@@ -2242,6 +2252,10 @@ void PasswordSafeFrame::UnlockSafe(bool restoreUI)
     m_guiInfo->Restore(this);
     Raise();
   }
+  else if (IsShown()) { /* if it is somehow visible, show it correctly */
+    Show(true);
+    m_guiInfo->Restore(this);
+  }
 }
 
 bool PasswordSafeFrame::VerifySafeCombination(StringX& password)
@@ -2264,28 +2278,45 @@ void PasswordSafeFrame::SetFocus()
 
 void PasswordSafeFrame::OnIconize(wxIconizeEvent& evt)
 {
-  // being restored?
+  const bool beingRestored = 
 #if wxCHECK_VERSION(2,9,0)
-  if (!evt.IsIconized() && m_sysTray->IsLocked()){
+    !evt.IsIconized();
 #else
-  if (!evt.Iconized() && m_sysTray->IsLocked()){
+    !evt.Iconized();
 #endif
-    StringX password;
-    if (VerifySafeCombination(password)) {
-      if (ReloadDatabase(password)) {
-        ShowWindowRecursively(hiddenWindows);
-        //On Linux, the UI is already restored, so just set the status flag
-        m_sysTray->SetTrayStatus(SystemTray::TRAY_UNLOCKED);
-        Show(true); //show the tree/grid
-        m_guiInfo->Restore(this);
+
+  if (beingRestored) {
+    if (m_sysTray->IsLocked() && !m_bUnlocking) {
+      /* 
+       * the frame is automatically un-iconized by gtk when the Safe Combination Entry dialog comes up
+       * which causes the code here to throw up a second SCE dialog.  This ugly hack (m_bUnlocking) is
+       *  the only way I could come up with to prevent that
+       */
+      StringX password;
+      if (VerifySafeCombination(password)) {
+        if (ReloadDatabase(password)) {
+          ShowWindowRecursively(hiddenWindows);
+          m_sysTray->SetTrayStatus(SystemTray::TRAY_UNLOCKED);
+          Show(true); //show the tree/grid
+          m_guiInfo->Restore(this);
+        }
+        else {
+          CleanupAfterReloadFailure(true);
+        }
       }
       else {
-        CleanupAfterReloadFailure(true);
+        // Make sure the window remains iconized
+        Iconize();
       }
     }
-    else {
-      //On Linux, the UI is already restored, so hide it back
-      HideUI(true); //true => lock UI
+  }
+  else {
+    const bool lockOnMinimize = PWSprefs::GetInstance()->GetPref(PWSprefs::DatabaseClear);
+    // if not already locked, lock it if "lock on minimize" is set
+    if (m_sysTray->GetTrayStatus() == SystemTray::TRAY_UNLOCKED && lockOnMinimize) {
+      m_guiInfo->Save(this);
+      if (SaveAndClearDatabase())
+        m_sysTray->SetTrayStatus(SystemTray::TRAY_LOCKED);
     }
   }
 }
@@ -2295,7 +2326,7 @@ void PasswordSafeFrame::HideUI(bool lock)
   m_guiInfo->Save(this);
   wxGetApp().SaveFrameCoords();
   
-  if (lock) {
+  if (lock && m_sysTray->GetTrayStatus() == SystemTray::TRAY_UNLOCKED) {
     if (!SaveAndClearDatabase())
       return;
     m_sysTray->SetTrayStatus(SystemTray::TRAY_LOCKED);

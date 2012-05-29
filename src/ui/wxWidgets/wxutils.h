@@ -193,5 +193,21 @@ public:
 
 int pless(int* first, int* second);
 
+template <typename T>
+class AutoRestore
+{
+  T& m_ref;
+  T  m_oldVal;
+public:
+  AutoRestore(T& var, T newVal): m_ref(var), m_oldVal(var)
+  {
+    var = newVal;
+  }
+  ~AutoRestore()
+  {
+    m_ref = m_oldVal;
+  }
+};
+
 #endif
 
