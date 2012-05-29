@@ -485,6 +485,7 @@ public:
   enum {iListOnly = 1, iTreeOnly = 2, iBothViews = 3};
   // top-level windows that we hid while locking the UI
   wxWindowList hiddenWindows;
+  bool m_bUnlocking;
 };
 
 BEGIN_DECLARE_EVENT_TYPES()
