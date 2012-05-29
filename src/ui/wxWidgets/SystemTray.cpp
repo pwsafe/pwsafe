@@ -256,15 +256,14 @@ void SystemTray::OnSysTrayMenuItem(wxCommandEvent& evt)
         break;
         
       case wxID_EXIT:
-      case wxID_ICONIZE_FRAME:
       case ID_CLEARCLIPBOARD:
       case wxID_ABOUT:
       case wxID_CLOSE:
-#if wxCHECK_VERSION(2,9,0)
         m_frame->GetEventHandler()->ProcessEvent(evt);
-#else
-        m_frame->ProcessEvent(evt);
-#endif
+        break;
+
+      case wxID_ICONIZE_FRAME:
+        m_frame->Iconize();
         break;
 
       default:
