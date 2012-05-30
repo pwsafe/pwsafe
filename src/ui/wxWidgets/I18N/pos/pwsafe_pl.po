@@ -1043,7 +1043,7 @@ msgstr "Importuj ustawienia XML"
 #: ../../../ui/wxWidgets/ImportXmlDlg.cpp:39
 #, fuzzy
 msgid "XML file to import:"
-msgstr Plik XML do zaimportowania:"
+msgstr "Plik XML do zaimportowania:"
 
 #: ../../../ui/wxWidgets/ImportXmlDlg.cpp:43
 msgid "Please Choose a XML File to Import"
@@ -2200,7 +2200,7 @@ msgstr "Import_KeePassV1_TXT"
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2496
 #, fuzzy, c-format
 msgid "Text file being imported: %s"
-msgstr Importowany plik tekstowy: %s"
+msgstr "Importowany plik tekstowy: %s"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2513
 #: ../../../ui/wxWidgets/PwsSync.cpp:588
