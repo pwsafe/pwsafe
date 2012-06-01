@@ -1,0 +1,151 @@
+PasswordSafe's frame window and the db can exist in the following combinations, which gives us
+9 possible states pwsafe application could be in, at any point.
+
+Y => valid combination
+N => Invalid combination
+(n) - The state number used below
+
+               +-----------------------------------------------+
+               |                  DB States                    |
+               |         ..................................    |
+Frame Window   |         Closed        Unlocked      Locked    |
+---------------+-----------------------------------------------|
+   Uncreated   |           Y(1)            N            N      |
+               |                                               |
+   Shown       |           Y(3)            Y(2)         N      |
+               |                                               |
+   Hidden      |           Y(5)            Y(7)         Y(6)   |
+               |                                               |
+   Minimized   |           Y(4)            Y(8)         Y(9)   |
+---------------+-----------------------------------------------+
+
+Descriptions of various states
+==============================
+
+1. Not logged in
+
+This is the first safe combination entry prompt, without
+even having created the frame
+
+2. Unlocked
+
+Frame window is displayed (restored) and the db is unlocked.
+Red icon in systray.
+
+3. Closed
+
+Frame window is displayed (restored) and db is closed.
+Black icon in systray.
+
+4. MinimizedClosed
+
+Frame window is minimized and db is closed.
+Black icon in systray.
+
+5. HiddenClosed
+
+Frame window is closed.  DB closed as well.
+Black icon in systray.
+
+6. HiddenLocked
+
+Frame window is hidden.  Db is locked.
+Green icon in systray.
+
+7. HiddenUnlocked
+
+Frame window is hidden.  Db is unlocked.
+Red icon in systray.
+
+8. MinimizedUnlocked
+
+Frame window is minimized.  DB is closed.
+Black icon in systray.
+
+9. MinimizedLocked
+
+Frame window is minimized.  DB is locked.
+Green icon in systray. 
+
+
+Events are various things that can happen either by user's actions or
+automatically (like a timer), that can change the state of the app. The
+possible events are:
+
+1. Successful safe combination entry
+
+This happens when the user does something that causes the
+Safe Combination Entry dialog to come up and the user
+enters the correct safe combination.
+
+2. CloseDb
+
+Users can choose to close the DB either from File menu, or the systray icon.
+
+3. Minimize
+
+Users can decide to minimize the app either from sysmenu in titlebar, or the systray icon.
+Depending on the "Lock on Minimize" setting, the db can get locked 
+
+4. Restore
+
+The "Restore" item in systray menu.  Also, a double-click on the systray menu.  
+This menuitem is active even for unlocked databases
+
+5. Autotype
+
+Users can choose to autotype an entry in the tree/grid, or from the systray 
+menu's "Recently used Items".  Depending on "minimize after autotype" and 
+"Put icon in system tray" settings, the app can minimize or hide.  Depending on
+"Lock on minimize" setting, the db can get locked as well. 
+
+6. CloseWindow
+
+Users can close the frame window by clicking on the 'X' in the title bar.  If
+"Use System Tray" is set, the app is hidden.  It is locked as well if "Lock on Minimize"
+is also set.  If "Use System Tray" is not set, pwsafe quits.
+
+7. Unlock
+
+Users can unlock the db from the system tray menu.  If the frame was hidden, it stays
+hidden while the systray icon turns red.  If the frame was minimized, it gets restored.
+
+8. Idle timeout
+
+If the user doesn't interact with pwsafe for a long (configurable) time, a timer locks the db.
+If "Use System Tray" is set, the frame hides and shows an icon in the system tray.  Otherwise,
+the frame is minimized.  There's no icon in system tray in the latter case.
+ 
+
+States                                                              Events
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                            SuccessfulCombination       CloseDb         Minimize           Restore        Autotype              CloseWindow                     Unlock              Idle Timeout
+                        ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+1. Not logged In              Unlocked                     X                X              X               X                      Quit                             X                   X
+............................................................................................................................................................................................................
+2. Unlocked                       X                      Closed         LockOnMinimize?    X            Use SysTray?               Use SysTray?                    X                   Use Systray?
+                                                                           MinimizeU                     MinimizeOnAutotype?          LockOnMinimize?                                    HiddenLocked
+                                                                           MinimizeL                       LockOnMinimize?              HiddenLocked                                     MinimizedLocked
+                                                                                                             MinimizeU                  HiddenUnlocked                                     
+                                                                                                             MinimizeL                Quit
+                                                                                                             HiddenLocked             
+                                                                                                             HiddenUnlocked
+.................................................................................................................................................................................................................
+3. Closed                     Unlocked                      X           MinimizedClosed    X               X                       Use Systray?                    X                   X
+                                                                                                                                       MinimizedClosed                         
+                                                                                                                                       Quit                         
+.................................................................................................................................................................................................................
+4. MinimizedClosed                X                         X               X              Closed          X                       X                               X                   X
+.................................................................................................................................................................................................................
+5. HiddenClosed                   X                         X               X              Closed          X                       X                               X                   X
+.................................................................................................................................................................................................................
+6. HiddenLocked                   HiddenUnlocked         HiddenClosed       X              Unlocked        X                       X                               HiddenUnlocked      X
+.................................................................................................................................................................................................................
+7. HiddenUnlocked                 X                      HiddenClosed       X              Unlocked        HiddenUnlocked          X                               X                   HiddenLocked
+.................................................................................................................................................................................................................
+8. MinimizedUnlocked              X                         X               X              Unlocked        MinimizedUnlocked       Use Systray?                    X                   Use Systray?
+                                                                                                                                      HiddenUnlocked                                     HiddenLocked
+                                                                                                                                      Quit                                               MinimizedLocked
+.................................................................................................................................................................................................................
+9. MinimizedLocked                Unlocked                  X               X              Unlocked        X                       Quit                           Unlocked             X
+
