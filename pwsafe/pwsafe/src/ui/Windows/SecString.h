@@ -50,9 +50,9 @@ public:
 #ifdef _WIN32
   wchar_t GetAt(int nIndex) {return m_mystring.GetAt(nIndex);}
   void SetAt(int nIndex, wchar_t ch) {m_mystring.SetAt(nIndex,ch);}
-  operator LPCWSTR() const {return (LPCWSTR)m_mystring;}
-  operator StringX() const {return StringX((LPCWSTR)m_mystring);}
-  operator stringT() const {return stringT((LPCWSTR)m_mystring);}
+  operator LPCWSTR() const {return static_cast<LPCWSTR>(m_mystring);}
+  operator StringX() const {return static_cast<LPCWSTR>(*this);}
+  operator stringT() const {return static_cast<LPCWSTR>(*this);}
   BOOL IsEmpty() const {return m_mystring.IsEmpty();}
   LPWSTR GetBuffer(int nMinBufLength) {return m_mystring.GetBuffer(nMinBufLength);}
   LPWSTR GetBuffer() {return m_mystring.GetBuffer();}
@@ -134,8 +134,6 @@ public:
   const CSecString& operator+=(wchar_t ch) {m_mystring += ch; return *this;}
   const CSecString& operator+=(LPCWSTR lpsz) {m_mystring += lpsz; return *this;}
 
-  // CSecString operator+(LPCWSTR lpsz);
-
   friend CSecString operator+(const CSecString& string1,
                               const CSecString& string2);
   friend CSecString operator+(const CSecString& string,
@@ -159,7 +157,6 @@ public:
 
 private:
   CString m_mystring;
-  //  StringX m_stringX;
   void trashstring();
 };
 //-----------------------------------------------------------------------------

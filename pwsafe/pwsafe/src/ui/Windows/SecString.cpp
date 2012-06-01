@@ -78,36 +78,31 @@ const CSecString& CSecString::operator=(LPCWSTR lpsz)
 
 CSecString operator+(const CSecString& string1,const CSecString& string2)
 {
-  CSecString s;
-  s = (CSecString)(string1.m_mystring+string2.m_mystring);
+  CSecString s(string1.m_mystring+string2.m_mystring);
   return s;
 }
 
 CSecString operator+(const CSecString& string, wchar_t ch)
 {
-  CSecString s;
-  s = (CSecString)(string.m_mystring + ch);
+  CSecString s(string.m_mystring + ch);
   return s;
 }
 
 CSecString operator+(wchar_t ch, const CSecString& string)
 {
-  CSecString s;
-  s = (CSecString)(ch + string.m_mystring);
+  CSecString s(ch + string.m_mystring);
   return s;
 }
 
 CSecString operator+(const CSecString& string, LPCWSTR lpsz)
 {
-  CSecString s;
-  s = (CSecString)(string.m_mystring + lpsz);
+  CSecString s(string.m_mystring + lpsz);
   return s;
 }
 
 CSecString operator+(LPCWSTR lpsz, const CSecString& string)
 {
-  CSecString s;
-  s = (CSecString)(lpsz + string.m_mystring);
+  CSecString s(lpsz + string.m_mystring);
   return s;
 }
 
