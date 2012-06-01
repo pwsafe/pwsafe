@@ -447,6 +447,7 @@ public:
   PWSDragBar* GetDragBar();
   bool IsClosed() const;
   void SaveSettings() const;
+  void LockDb();
 
   void Merge(const StringX &sx_Filename2, PWScore *pothercore, const SelectionCriteria& selection);
   int MergeDependents(PWScore *pothercore, MultiCommands *pmulticmds,

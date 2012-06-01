@@ -379,6 +379,22 @@ bool PwsafeApp::OnInit()
   return true;
 }
 
+void PwsafeApp::StopIdleTimer()
+{
+  m_activityTimer->Stop();
+}
+
+void PwsafeApp::StartIdleTimer()
+{
+  int timeout = PWSprefs::GetInstance()->GetPref(PWSprefs::IdleTimeout);
+  if (timeout != 0)
+    m_activityTimer->Start(timeout*60*1000, true);
+}
+
+bool PwsafeApp::IsIdleTimerRunning() const
+{
+  return m_activityTimer->IsRunning();
+}
 
 /*!
  * Cleanup for PwsafeApp
@@ -386,6 +402,7 @@ bool PwsafeApp::OnInit()
 
 int PwsafeApp::OnExit()
 {    
+  StopIdleTimer();
   recentDatabases().Save();
   PWSprefs *prefs = PWSprefs::GetInstance();
   if (!m_core.GetCurFile().empty())
@@ -396,7 +413,6 @@ int PwsafeApp::OnExit()
   PWSMenuShortcuts::GetShortcutsManager()->SaveUserShortcuts();
 
   PWSMenuShortcuts::DestroyShortcutsManager();
-  m_activityTimer->Stop();
 ////@begin PwsafeApp cleanup
   return wxApp::OnExit();
 ////@end PwsafeApp cleanup
@@ -404,14 +420,9 @@ int PwsafeApp::OnExit()
 
 void PwsafeApp::OnActivate(wxActivateEvent& actEvent)
 {
-  if (actEvent.GetActive()) {
-    m_activityTimer->Stop();
-  }
-  else {
-    m_activityTimer->Stop();
-    int timeout = PWSprefs::GetInstance()->GetPref(PWSprefs::IdleTimeout);
-    if (timeout != 0)
-      m_activityTimer->Start(timeout*60*1000, true);
+  StopIdleTimer();
+  if (!actEvent.GetActive()) {
+    StartIdleTimer();
   }
   actEvent.Skip();
 }
@@ -427,11 +438,10 @@ void PwsafeApp::OnActivityTimer(wxTimerEvent &evt)
 void PwsafeApp::OnDBGUIPrefsChange(wxEvent& evt)
 {
   UNREFERENCED_PARAMETER(evt);
-  if (m_activityTimer->IsRunning()) {
-    m_activityTimer->Stop();
-    int timeout = PWSprefs::GetInstance()->GetPref(PWSprefs::IdleTimeout);
-    if (timeout != 0)
-      m_activityTimer->Start(timeout*60*1000, true);
+  if (IsIdleTimerRunning()) {
+    // Restart, in case Idle timer settings have just changed
+    StopIdleTimer();
+    StartIdleTimer();
   }
 }
 
