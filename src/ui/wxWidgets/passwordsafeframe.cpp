@@ -2314,9 +2314,7 @@ void PasswordSafeFrame::OnIconize(wxIconizeEvent& evt)
     const bool lockOnMinimize = PWSprefs::GetInstance()->GetPref(PWSprefs::DatabaseClear);
     // if not already locked, lock it if "lock on minimize" is set
     if (m_sysTray->GetTrayStatus() == SystemTray::TRAY_UNLOCKED && lockOnMinimize) {
-      m_guiInfo->Save(this);
-      if (SaveAndClearDatabase())
-        m_sysTray->SetTrayStatus(SystemTray::TRAY_LOCKED);
+      LockDb();
     }
   }
 }
@@ -2327,9 +2325,7 @@ void PasswordSafeFrame::HideUI(bool lock)
   wxGetApp().SaveFrameCoords();
   
   if (lock && m_sysTray->GetTrayStatus() == SystemTray::TRAY_UNLOCKED) {
-    if (!SaveAndClearDatabase())
-      return;
-    m_sysTray->SetTrayStatus(SystemTray::TRAY_LOCKED);
+    LockDb();
   }
 
   wxClipboard().Clear();
@@ -2349,6 +2345,13 @@ void PasswordSafeFrame::HideUI(bool lock)
   }  
 }
 
+void PasswordSafeFrame::LockDb()
+{
+  wxGetApp().StopIdleTimer();
+  m_guiInfo->Save(this);
+  if (SaveAndClearDatabase())
+    m_sysTray->SetTrayStatus(SystemTray::TRAY_LOCKED);
+}
 
 void PasswordSafeFrame::OnOpenRecentDB(wxCommandEvent& evt)
 {

@@ -90,6 +90,10 @@ public:
 
   wxIconBundle GetAppIcons() const { return m_appIcons; }
   
+  void StopIdleTimer();
+  void StartIdleTimer();
+  bool IsIdleTimerRunning() const;
+
  private:
     PWScore m_core;
     wxTimer* m_activityTimer;
