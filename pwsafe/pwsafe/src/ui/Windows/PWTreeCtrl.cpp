@@ -985,24 +985,23 @@ CString CPWTreeCtrl::GetGroup(HTREEITEM hItem)
   return retval;
 }
 
-static CSecString GetPathElem(CSecString &path)
+static StringX GetFirstPathElem(StringX &sxPath)
 {
   // Get first path element and chop it off, i.e., if
   // path = "a.b.c.d"
   // will return "a" and path will be "b.c.d"
   // (assuming GROUP_SEP is '.')
 
-  CSecString retval;
-  int N = path.Find(GROUP_SEP);
-  if (N == -1) {
-    retval = path;
-    path = L"";
+  StringX sxElement;
+  const size_t n1stDot = sxPath.find_first_of(L'.');
+  if (n1stDot == StringX::npos) {
+    sxElement = sxPath;
+    sxPath = L"";
   } else {
-    const int Len = path.GetLength();
-    retval = CSecString(path.Left(N));
-    path = CSecString(path.Right(Len - N - 1));
+    sxElement = sxPath.substr(0, n1stDot);
+    sxPath = sxPath.substr(n1stDot + 1);
   }
-  return retval;
+  return sxElement;
 }
 
 bool CPWTreeCtrl::ExistsInTree(HTREEITEM &node, const CSecString &s, HTREEITEM &si) const
@@ -1030,24 +1029,23 @@ HTREEITEM CPWTreeCtrl::AddGroup(const CString &group, bool &bAlreadyExists)
   bAlreadyExists = true;
 
   if (!group.IsEmpty()) {
-    CSecString path = group;
-    CSecString s;
-    StringX path2root(L""), sxDot(L".");
+    StringX sxPath = group;
+    StringX sxTemp, sxPath2Root(L""), sxDot(L".");
     do {
-      s = GetPathElem(path);
-      if (path2root.empty())
-        path2root = (LPCWSTR)s;
+      sxTemp = GetFirstPathElem(sxPath);
+      if (sxPath2Root.empty())
+        sxPath2Root = sxTemp;
       else
-        path2root += sxDot + StringX(s);
+        sxPath2Root += sxDot + sxTemp;
 
-      if (!ExistsInTree(ti, s, si)) {
-        ti = InsertItem(s, ti, TVI_SORT);
+      if (!ExistsInTree(ti, sxTemp, si)) {
+        ti = InsertItem(sxTemp.c_str(), ti, TVI_SORT);
         SetItemImage(ti, CPWTreeCtrl::GROUP, CPWTreeCtrl::GROUP);
         bAlreadyExists = false;
       } else
         ti = si;
-      m_pDbx->m_mapGroupToTreeItem[path2root] = ti;
-    } while (!path.IsEmpty());
+      m_pDbx->m_mapGroupToTreeItem[sxPath2Root] = ti;
+    } while (!sxPath.empty());
   }
   if (m_pDbx->IsEmptyGroup(StringX(group)))
     SetItemImage(ti, CPWTreeCtrl::EMPTY_GROUP, CPWTreeCtrl::EMPTY_GROUP);
