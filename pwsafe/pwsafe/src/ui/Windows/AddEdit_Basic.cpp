@@ -925,43 +925,43 @@ void CAddEdit_Basic::OnSTCExClicked(UINT nID)
 {
   UpdateData(TRUE);
 
-  StringX cs_data;
+  CSecString cs_data;
   int iaction(0);
 
   // NOTE: These values must be contiguous in "resource.h"
   switch (nID) {
     case IDC_STATIC_GROUP:
       m_stc_group.FlashBkgnd(CAddEdit_PropertyPage::crefGreen);
-      cs_data = StringX(M_group());
+      cs_data = M_group();
       iaction = CItemData::GROUP;
       break;
     case IDC_STATIC_TITLE:
       m_stc_title.FlashBkgnd(CAddEdit_PropertyPage::crefGreen);
-      cs_data = StringX(M_title());
+      cs_data = M_title();
       iaction = CItemData::TITLE;
       break;
     case IDC_STATIC_USERNAME:
       m_stc_username.FlashBkgnd(CAddEdit_PropertyPage::crefGreen);
-      cs_data = StringX(M_username());
+      cs_data = M_username();
       iaction = CItemData::USER;
       break;
     case IDC_STATIC_PASSWORD:
       m_stc_password.FlashBkgnd(CAddEdit_PropertyPage::crefGreen);
-      cs_data = StringX(M_realpassword());
+      cs_data = M_realpassword();
       iaction = CItemData::PASSWORD;
       break;
     case IDC_STATIC_NOTES:
       m_stc_notes.FlashBkgnd(CAddEdit_PropertyPage::crefGreen);
-      cs_data = StringX(M_realnotes());
+      cs_data = M_realnotes();
       iaction = CItemData::NOTES;
       break;
     case IDC_STATIC_URL:
-      cs_data = StringX(M_URL());
+      cs_data = M_URL();
       m_stc_URL.FlashBkgnd(CAddEdit_PropertyPage::crefGreen);
       iaction = CItemData::URL;
       break;
     case IDC_STATIC_EMAIL:
-      cs_data = StringX(M_email());
+      cs_data = M_email();
       // If Ctrl pressed - also copy to URL field with the 'mailto:' prefix
       if ((GetKeyState(VK_CONTROL) & 0x8000) != 0 && !M_email().IsEmpty()) {
         M_URL() = L"mailto:" + cs_data;
@@ -1017,7 +1017,6 @@ void CAddEdit_Basic::OnENKillFocusNotes()
 void CAddEdit_Basic::OnLaunch()
 {
   UpdateData(TRUE);
-  StringX sx_url = StringX(M_URL());
   std::vector<size_t> vactionverboffsets;
   StringX sx_autotype = PWSAuxParse::GetAutoTypeString(M_autotype(),
                                                        M_group(),
@@ -1029,7 +1028,7 @@ void CAddEdit_Basic::OnLaunch()
 
   const bool bDoAutoType = (GetKeyState(VK_CONTROL) & 0x8000) != 0;
 
-  M_pDbx()->LaunchBrowser(sx_url.c_str(), sx_autotype, vactionverboffsets, bDoAutoType);
+  M_pDbx()->LaunchBrowser(M_URL(), sx_autotype, vactionverboffsets, bDoAutoType);
   M_pDbx()->UpdateLastClipboardAction(CItemData::URL);
 
   if (bDoAutoType) {
@@ -1047,9 +1046,8 @@ void CAddEdit_Basic::OnLaunch()
 void CAddEdit_Basic::OnSendEmail()
 {
   UpdateData(TRUE);
-  StringX sx_email = StringX(M_email());
 
-  M_pDbx()->SendEmail(sx_email.c_str());
+  M_pDbx()->SendEmail(M_email());
   M_pDbx()->UpdateLastClipboardAction(CItemData::EMAIL);
 }
 
