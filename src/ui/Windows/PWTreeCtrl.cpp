@@ -828,7 +828,7 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
         sxOldPath = (LPCWSTR)m_eLabel;
         sxNewPath = sxNewText;
       } else {
-        sxOldPath = StringX(prefix) + StringX(GROUP_SEP2) + StringX(m_eLabel);
+        sxOldPath = StringX(prefix) + StringX(GROUP_SEP2) + (LPCWSTR)m_eLabel;
         sxNewPath = StringX(prefix) + StringX(GROUP_SEP2) + sxNewText;
       }
 

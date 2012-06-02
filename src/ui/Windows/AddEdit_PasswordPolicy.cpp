@@ -699,7 +699,7 @@ void CAddEdit_PasswordPolicy::OnOwnSymbolsChanged()
   CString cs_symbols;
   m_symbols.GetWindowText(cs_symbols);
 
-  std::wstring oldstr = M_symbols();
+  std::wstring oldstr = (LPCWSTR)M_symbols();
   std::wstring newstr = cs_symbols;
 
   // First check lengths the same
