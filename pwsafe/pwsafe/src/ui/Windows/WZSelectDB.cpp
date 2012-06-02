@@ -409,7 +409,7 @@ LRESULT CWZSelectDB::OnWizardNext()
   // Check that this file isn't already open
   const StringX sx_Filename1(m_pWZPSH->WZPSHGetCurFile());
   const StringX sx_Filename2 = m_filespec.GetString();
-  const StringX sx_passkey = StringX(m_passkey);
+  const StringX sx_passkey = (LPCWSTR)m_passkey;
   const bool bOtherIsDB = nID == ID_MENUITEM_COMPARE ||
                           nID == ID_MENUITEM_MERGE   ||
                           nID == ID_MENUITEM_SYNCHRONIZE;
