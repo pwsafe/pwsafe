@@ -124,8 +124,8 @@ END
 STRINGTABLE
 BEGIN
   IDSC_CANTXMLVALIDATE    "Unable to validate a XML file using a XML Schema (XSD) on your system."
-  IDSC_MSXMLPARSEERROR    "SAX Parse%2d Error 0x%08X during %s."
-  IDSC_MSXMLBADCREATESCHEMA "Create SchemaCache%2d Error 0x%08X during %s."
+  IDSC_MSXMLPARSEERROR    "SAX Parse60 Error 0x%08X during %s."
+  IDSC_MSXMLBADCREATESCHEMA "Create SchemaCache60 Error 0x%08X during %s."
   IDSC_NOMSXMLREADER      "Unable to use a MS XML reader on your system.  Neither MS XML V3, V4 or V6 seems available."
   IDSC_XERCESPARSEERROR   "SAX Parse Error during %s\r\n%s."
   IDCS_XERCESEXCEPTION    "\nUnexpected exception during parsing."
