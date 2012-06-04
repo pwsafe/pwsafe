@@ -1318,12 +1318,6 @@ void PWScore::MakePolicyUnique(std::map<StringX, StringX> &mapRenamedPolicies,
   return;
 }
 
-void PWScore::CopyPWList(const ItemList &in)
-{
-  m_pwlist = in;
-  SetDBChanged(true);
-}
-
 // For Validate only
 struct st_GroupTitleUser2 {
   StringX group;
