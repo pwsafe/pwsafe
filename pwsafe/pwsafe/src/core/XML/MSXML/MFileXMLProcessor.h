@@ -57,7 +57,6 @@ private:
   int m_numEntriesValidated, m_numEntriesImported, m_numEntriesSkipped;
   int m_numEntriesPWHErrors, m_numEntriesRenamed;
   int m_numRenamedPolicies, m_numNoPolicies;
-  int m_MSXML_Version;
   TCHAR m_delimiter;
   bool m_bValidation;
 };
