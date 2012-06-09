@@ -336,9 +336,19 @@ msgstr "%d 中 %d 个相匹配！"
 msgid "%s  - Imported %s"
 msgstr ""
 
+#. Resource IDs: (371)
+#, c-format
+msgid "%s (%s)"
+msgstr ""
+
 #. Resource IDs: (366)
 #, c-format
 msgid "%s (database-specific)"
+msgstr ""
+
+#. Resource IDs: (216)
+#, c-format
+msgid "%s - Copied %s"
 msgstr ""
 
 #. Resource IDs: (370)
@@ -349,6 +359,11 @@ msgstr ""
 #. Resource IDs: (215)
 #, c-format
 msgid "%s - Merged %s"
+msgstr ""
+
+#. Resource IDs: (216)
+#, c-format
+msgid "%s - Sync'd %s"
 msgstr ""
 
 #. Resource IDs: (3887)
@@ -916,6 +931,10 @@ msgstr ")"
 
 #. Resource IDs: (367)
 msgid "* means that the database has been modified since last save"
+msgstr ""
+
+#. Resource IDs: (371)
+msgid "*** Operation aborted by User ***"
 msgstr ""
 
 #. Resource IDs: (213)
@@ -1566,10 +1585,6 @@ msgid "Backup Directory"
 msgstr ""
 
 #. Resource IDs: (65535)
-msgid "Backup Directory:"
-msgstr "备份目录:"
-
-#. Resource IDs: (65535)
 msgid "Backup Name"
 msgstr "备份名称"
 
@@ -1642,8 +1657,8 @@ msgid "Browse to URL + Autotype"
 msgstr "浏览网址+自动输入"
 
 #. Resource IDs: (65535)
-msgid "Browser Command Line parameters"
-msgstr "浏览器命令行参数"
+msgid "Browser Command Line parameters:"
+msgstr ""
 
 #. Resource IDs: (520)
 msgid "Bulgarian"
@@ -2067,8 +2082,8 @@ msgstr "配置信息"
 
 #. Resource IDs: (191)
 #, c-format
-msgid "Configuration file error:\n%s\n%s\nline %d column %d"
-msgstr "配置文件错误:\n%s\n%s\n行 %d 栏目 %d"
+msgid "Configuration file error:\n%s\n%s\noffset approximately at %d"
+msgstr ""
 
 #. Resource IDs: (367)
 msgid "Configuration file status"
@@ -2105,10 +2120,10 @@ msgstr ""
 msgid "Confirmation:"
 msgstr "确认:"
 
-#. Resource IDs: (335)
+#. Resource IDs: (214)
 #, c-format
-msgid "Conflicting entries for «%s» «%s» «%s».\r\n  Added merged entry as «%s» «%s» «%s».\r\n    Differing field(s): %s"
-msgstr "冲突项目为 «%s» «%s» «%s».\r\n  增加的合并项目为 «%s» «%s» «%s».\r\n    不一致字段: %s"
+msgid "Conflicting entries for «%s» «%s» «%s».\r\n  Adding merged entry as «%s» «%s» «%s».\r\n    Differing field(s): %s"
+msgstr ""
 
 #. Resource IDs: (1, 347)
 msgid "Continue"
@@ -2241,8 +2256,8 @@ msgstr "创建快捷方式(&S)"
 
 #. Resource IDs: (191)
 #, c-format
-msgid "Create SchemaCache%2d Error 0x%08X during %s."
-msgstr "创建计划缓存%2d 发生错误 0x%08X 在 %s 期间！"
+msgid "Create SchemaCache60 Error 0x%08X during %s."
+msgstr ""
 
 #. Resource IDs: (117, 32272)
 msgid "Create Shortcut"
@@ -2355,7 +2370,7 @@ msgid "Database format:"
 msgstr "数据库格式:"
 
 #. Resource IDs: (1454)
-msgid "Database is read-only. Changes to DB preferences will not be saved and are only valid for this session."
+msgid "Database is read-only. Changes to database preferences will not be saved."
 msgstr ""
 
 #. Resource IDs: (337)
@@ -4489,10 +4504,6 @@ msgstr "密码"
 msgid "Password Database:"
 msgstr "密码数据库:"
 
-#. Resource IDs: (1114)
-msgid "Password Expires on:"
-msgstr "密码失效时间:"
-
 #. Resource IDs: (1123)
 msgid "Password Expiry"
 msgstr "密码效期"
@@ -4954,11 +4965,6 @@ msgstr "恢复自动保存文档\n打开自动保存版本取代明确保存版�
 msgid "Recurring"
 msgstr "重复"
 
-#. Resource IDs: (348)
-#, c-format
-msgid "Recurring (%d days)"
-msgstr "重复 (%d 天)"
-
 #. Resource IDs: (32083)
 msgid "Redo"
 msgstr "重选"
@@ -5133,8 +5139,8 @@ msgstr "在 %s 期间 SAX 分析错误\r\n%s。"
 
 #. Resource IDs: (191)
 #, c-format
-msgid "SAX Parse%2d Error 0x%08X during %s."
-msgstr "SAX 分析%2d 错误 0x%08X 在 %s 期间！"
+msgid "SAX Parse60 Error 0x%08X during %s."
+msgstr ""
 
 #. Resource IDs: (131)
 msgid "Safe Combination Entry"

@@ -387,10 +387,20 @@ msgstr "%d van %d overeenkomsten."
 msgid "%s  - Imported %s"
 msgstr "%s  -Geimporteerd %s"
 
+#. Resource IDs: (371)
+#, c-format
+msgid "%s (%s)"
+msgstr ""
+
 #. Resource IDs: (366)
 #, c-format
 msgid "%s (database-specific)"
 msgstr "%s (database-specifiek)"
+
+#. Resource IDs: (216)
+#, c-format
+msgid "%s - Copied %s"
+msgstr ""
 
 #. Resource IDs: (370)
 #, c-format
@@ -401,6 +411,11 @@ msgstr "%s -Slepen & Neerzetten  %s"
 #, c-format
 msgid "%s - Merged %s"
 msgstr "%s - Samengevoegd %s"
+
+#. Resource IDs: (216)
+#, c-format
+msgid "%s - Sync'd %s"
+msgstr ""
 
 #. Resource IDs: (3887)
 #, c-format
@@ -968,6 +983,10 @@ msgstr ")"
 #. Resource IDs: (367)
 msgid "* means that the database has been modified since last save"
 msgstr "* betekent dat de database verandert is sinds de laatste keer opslaan"
+
+#. Resource IDs: (371)
+msgid "*** Operation aborted by User ***"
+msgstr ""
 
 #. Resource IDs: (213)
 #, c-format
@@ -1617,10 +1636,6 @@ msgid "Backup Directory"
 msgstr "Folder voor Backup"
 
 #. Resource IDs: (65535)
-msgid "Backup Directory:"
-msgstr "Backup Folder:"
-
-#. Resource IDs: (65535)
 msgid "Backup Name"
 msgstr "Backup Naam"
 
@@ -1693,8 +1708,8 @@ msgid "Browse to URL + Autotype"
 msgstr "Ga naar URL + Automatisch invoer"
 
 #. Resource IDs: (65535)
-msgid "Browser Command Line parameters"
-msgstr "Parameters voor opstarten Browser vanaf de opdrachtregel."
+msgid "Browser Command Line parameters:"
+msgstr ""
 
 #. Resource IDs: (520)
 msgid "Bulgarian"
@@ -2118,8 +2133,8 @@ msgstr "Configuratie Informatie"
 
 #. Resource IDs: (191)
 #, c-format
-msgid "Configuration file error:\n%s\n%s\nline %d column %d"
-msgstr "Configuratie bestand fout:\n%s\n%s\nregel %d kolom %d"
+msgid "Configuration file error:\n%s\n%s\noffset approximately at %d"
+msgstr ""
 
 #. Resource IDs: (367)
 msgid "Configuration file status"
@@ -2156,10 +2171,10 @@ msgstr "Bevestig dat u deze vermeldingen wenst te synchroniseren van %s naar %s.
 msgid "Confirmation:"
 msgstr "Bevestiging:"
 
-#. Resource IDs: (335)
+#. Resource IDs: (214)
 #, c-format
-msgid "Conflicting entries for «%s» «%s» «%s».\r\n  Added merged entry as «%s» «%s» «%s».\r\n    Differing field(s): %s"
-msgstr "Conflicterende vermeldingen voor «%s» «%s» «%s».\r\n Samengevoegde vermelding toegevoegd als  «%s» «%s» «%s».\r\n  Veld(en) welke verschillen: %s"
+msgid "Conflicting entries for «%s» «%s» «%s».\r\n  Adding merged entry as «%s» «%s» «%s».\r\n    Differing field(s): %s"
+msgstr ""
 
 #. Resource IDs: (1, 347)
 msgid "Continue"
@@ -2292,8 +2307,8 @@ msgstr "Maak &Snelkoppeling"
 
 #. Resource IDs: (191)
 #, c-format
-msgid "Create SchemaCache%2d Error 0x%08X during %s."
-msgstr "Maak SchemaCache%2d Fout 0x%08X tijdens %s."
+msgid "Create SchemaCache60 Error 0x%08X during %s."
+msgstr ""
 
 #. Resource IDs: (117, 32272)
 msgid "Create Shortcut"
@@ -2406,8 +2421,8 @@ msgid "Database format:"
 msgstr "Database opmaak:"
 
 #. Resource IDs: (1454)
-msgid "Database is read-only. Changes to DB preferences will not be saved and are only valid for this session."
-msgstr "Database is alleen-lezen. Wijzigingen aan database voorkeuren worden niet opgeslagen en zijn alleen geldig tijdens deze sessie."
+msgid "Database is read-only. Changes to database preferences will not be saved."
+msgstr ""
 
 #. Resource IDs: (337)
 msgid "Database is read-only. Sorry, cannot save changed any database preferences."
@@ -4541,10 +4556,6 @@ msgstr "Wachtwoord"
 msgid "Password Database:"
 msgstr "Wachtwoord database:"
 
-#. Resource IDs: (1114)
-msgid "Password Expires on:"
-msgstr "Wachtwoord verloopt op:"
-
 #. Resource IDs: (1123)
 msgid "Password Expiry"
 msgstr "Wachtwoord verloopt"
@@ -5006,11 +5017,6 @@ msgstr "Herstel de automatisch bewaarde documenten\nOpen de automatisch bewaarde
 msgid "Recurring"
 msgstr "Herhalend"
 
-#. Resource IDs: (348)
-#, c-format
-msgid "Recurring (%d days)"
-msgstr "Herhalend (%d dagen)"
-
 #. Resource IDs: (32083)
 msgid "Redo"
 msgstr "Opnieuw uitvoeren"
@@ -5185,8 +5191,8 @@ msgstr "SAX ontleed fout tijdens %s\r\n%s."
 
 #. Resource IDs: (191)
 #, c-format
-msgid "SAX Parse%2d Error 0x%08X during %s."
-msgstr "SAX ontleed %2d fout 0x%08X tijdens %s."
+msgid "SAX Parse60 Error 0x%08X during %s."
+msgstr ""
 
 #. Resource IDs: (131)
 msgid "Safe Combination Entry"

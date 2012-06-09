@@ -1,4 +1,4 @@
-Password Safe 3.28.1 Release Notes - March 2012
+Password Safe 3.29pre Release Notes - June 2012
 ===============================================
 
 This note describe the new features, fixed bugs and known problems
@@ -8,47 +8,48 @@ information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
 
-New Features for 3.28.1
-=======================
-[3519484] Empty Groups are now stored in the database header and will not be
-deleted from the Tree view whenever the view is refreshed.  These can also be
-exported and imported (via XML only).
-[3510481] If the Record Last Modified and Password Modified date/times have not
-been set (e.g. the entry has not been changed since it was created), then the entry
-creation date/time is displayed. If the entry was created before PasswordSafe saved
-these fields, then all fields may still be blank. Note: This is a change to what
-is displayed and the entries are not updated to populate these fields.
-[] Display of the details of the entries' differences in the Compare database results dialog
-by invoking the compare selected entries dialog via the right click context menu.
-[] Allow user to abort a long running Compare, Merge or Synchronise of databases. Note:
-if they are aborted, no changes will have been made to the database and users should view the
-report log to determine if they pressed abort in time (any changes can still be undone as normal).
+New Features for 3.29pre
+========================
+[3519484] Empty Groups are now persistent (previously a group with no
+entries would 'disappear' if the database was locked or closed).
+[3510481] The Last Modified and Password Modified date/times are
+initially set to show the entry's creation time, instead of being blank.
+[] When comparing databases, you can now display of the details of the
+entries' differences in the results dialog by right-click -> compare
+selected entries.
+[] You can now cancel a long running Compare, Merge or Synchronize
+database operation. Note: You should check the operation's report file
+to see if the operation was indeed cancelled. If not, you can undo it
+as all operations).
 [] Portuguese (Brazil) installation instructions added, thanks to Andreas.
 
-Changes to Existing Features in 3.28.1
-======================================
+Changes to Existing Features in 3.29pre
+=======================================
 None
 
-Bugs fixed in 3.28.1
-====================
+Bugs fixed in 3.29pre
+=====================
 [3525995] Find now only highlights/select the found entry.
 [3523117] Password Expiration Date now correctly set when using intervals.
-[3521158] Paste into the Notes field (Add or Edit entry) is now always in plain text.
-[3518734] When generating passwords (Ctrl-P), the user is no longer prompted to save
-changes when pressing Esc if they have selected a Named Password Policy but not generated
-a password.
-[3518732] Custom special symbol set now handled correctly in Generate Password
-dialog box.
-[3518389] All date/time fields in the List view are now displayed using the user's
-"short date" format as specified via the Windows Control Panel "Region and Language" tab.
-[3515692] Fixed crash with Generate Password switching to default policy with > 1
-named policy.
+[3521158] Paste into the Notes field (Add or Edit entry) is now always
+in plain text.
+[3518734] When generating passwords (Ctrl-P), the user is no longer
+prompted to save changes when pressing Esc if they have selected a
+Named Password Policy but not generated a password.
+[3518732] Custom special symbol set now handled correctly in Generate
+Password dialog box.
+[3518389] All date/time fields in the List view are now displayed
+using the user's "short date" format as specified via the Windows
+Control Panel "Region and Language" tab.
+[3515692] Fixed crash with Generate Password switching to default
+policy with > 1 named policy.
 [3514819] Add Group now works again.
-[3510590] Password History is now correctly repaired if found in error during the
-automatic Validate on database open.
-[3508891] Editing an entry's Notes using an external editor no longer adds blank lines
-and fully supports non-Latin characters.
-[3498625] Test selected password policy now reflects any edits done to the policy.
+[3510590] Password History is now correctly repaired during the
+automatic Validate on database open. 
+[3508891] Editing an entry's Notes using an external editor no longer
+adds blank lines and fully supports non-Latin characters.
+[3498625] Test selected password policy now reflects any edits done to
+the policy.
 [3495473] Notes Word Wrap during edit now works again.
 
 New Features for 3.28

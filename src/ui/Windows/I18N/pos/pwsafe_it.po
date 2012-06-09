@@ -336,9 +336,19 @@ msgstr "%d di %d concordano."
 msgid "%s  - Imported %s"
 msgstr ""
 
+#. Resource IDs: (371)
+#, c-format
+msgid "%s (%s)"
+msgstr ""
+
 #. Resource IDs: (366)
 #, c-format
 msgid "%s (database-specific)"
+msgstr ""
+
+#. Resource IDs: (216)
+#, c-format
+msgid "%s - Copied %s"
 msgstr ""
 
 #. Resource IDs: (370)
@@ -349,6 +359,11 @@ msgstr ""
 #. Resource IDs: (215)
 #, c-format
 msgid "%s - Merged %s"
+msgstr ""
+
+#. Resource IDs: (216)
+#, c-format
+msgid "%s - Sync'd %s"
 msgstr ""
 
 #. Resource IDs: (3887)
@@ -916,6 +931,10 @@ msgstr ")"
 
 #. Resource IDs: (367)
 msgid "* means that the database has been modified since last save"
+msgstr ""
+
+#. Resource IDs: (371)
+msgid "*** Operation aborted by User ***"
 msgstr ""
 
 #. Resource IDs: (213)
@@ -1566,10 +1585,6 @@ msgid "Backup Directory"
 msgstr ""
 
 #. Resource IDs: (65535)
-msgid "Backup Directory:"
-msgstr ""
-
-#. Resource IDs: (65535)
 msgid "Backup Name"
 msgstr "Nome File di Salvataggio"
 
@@ -1642,8 +1657,8 @@ msgid "Browse to URL + Autotype"
 msgstr ""
 
 #. Resource IDs: (65535)
-msgid "Browser Command Line parameters"
-msgstr "Parametri di navigazione da riga di comando"
+msgid "Browser Command Line parameters:"
+msgstr ""
 
 #. Resource IDs: (520)
 msgid "Bulgarian"
@@ -2067,8 +2082,8 @@ msgstr "Informazioni di configurazione"
 
 #. Resource IDs: (191)
 #, c-format
-msgid "Configuration file error:\n%s\n%s\nline %d column %d"
-msgstr "Errore di configurazione file:\n%s\n%s\nlinea %d colonna %d"
+msgid "Configuration file error:\n%s\n%s\noffset approximately at %d"
+msgstr ""
 
 #. Resource IDs: (367)
 msgid "Configuration file status"
@@ -2105,9 +2120,9 @@ msgstr ""
 msgid "Confirmation:"
 msgstr "Conferma:"
 
-#. Resource IDs: (335)
+#. Resource IDs: (214)
 #, c-format
-msgid "Conflicting entries for «%s» «%s» «%s».\r\n  Added merged entry as «%s» «%s» «%s».\r\n    Differing field(s): %s"
+msgid "Conflicting entries for «%s» «%s» «%s».\r\n  Adding merged entry as «%s» «%s» «%s».\r\n    Differing field(s): %s"
 msgstr ""
 
 #. Resource IDs: (1, 347)
@@ -2241,8 +2256,8 @@ msgstr "Crea &Scorciatoia"
 
 #. Resource IDs: (191)
 #, c-format
-msgid "Create SchemaCache%2d Error 0x%08X during %s."
-msgstr "Crea SchemaCache%2d Errore 0x%08X mentre %s."
+msgid "Create SchemaCache60 Error 0x%08X during %s."
+msgstr ""
 
 #. Resource IDs: (117, 32272)
 msgid "Create Shortcut"
@@ -2355,7 +2370,7 @@ msgid "Database format:"
 msgstr "Formato Database:"
 
 #. Resource IDs: (1454)
-msgid "Database is read-only. Changes to DB preferences will not be saved and are only valid for this session."
+msgid "Database is read-only. Changes to database preferences will not be saved."
 msgstr ""
 
 #. Resource IDs: (337)
@@ -4489,10 +4504,6 @@ msgstr ""
 msgid "Password Database:"
 msgstr ""
 
-#. Resource IDs: (1114)
-msgid "Password Expires on:"
-msgstr ""
-
 #. Resource IDs: (1123)
 msgid "Password Expiry"
 msgstr ""
@@ -4954,11 +4965,6 @@ msgstr ""
 msgid "Recurring"
 msgstr ""
 
-#. Resource IDs: (348)
-#, c-format
-msgid "Recurring (%d days)"
-msgstr ""
-
 #. Resource IDs: (32083)
 msgid "Redo"
 msgstr ""
@@ -5133,7 +5139,7 @@ msgstr ""
 
 #. Resource IDs: (191)
 #, c-format
-msgid "SAX Parse%2d Error 0x%08X during %s."
+msgid "SAX Parse60 Error 0x%08X during %s."
 msgstr ""
 
 #. Resource IDs: (131)

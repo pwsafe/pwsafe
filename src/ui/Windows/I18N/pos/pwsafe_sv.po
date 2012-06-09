@@ -388,10 +388,20 @@ msgstr "%d av %d matchar."
 msgid "%s  - Imported %s"
 msgstr "%s  - Importerat %s"
 
+#. Resource IDs: (371)
+#, c-format
+msgid "%s (%s)"
+msgstr ""
+
 #. Resource IDs: (366)
 #, c-format
 msgid "%s (database-specific)"
 msgstr "%s (databasspecifik)"
+
+#. Resource IDs: (216)
+#, c-format
+msgid "%s - Copied %s"
+msgstr ""
 
 #. Resource IDs: (370)
 #, c-format
@@ -402,6 +412,11 @@ msgstr "%s - Dra & släpp %s"
 #, c-format
 msgid "%s - Merged %s"
 msgstr "%s - Sammanslagen %s"
+
+#. Resource IDs: (216)
+#, c-format
+msgid "%s - Sync'd %s"
+msgstr ""
 
 #. Resource IDs: (3887)
 #, c-format
@@ -969,6 +984,10 @@ msgstr ")"
 #. Resource IDs: (367)
 msgid "* means that the database has been modified since last save"
 msgstr "* betyder att databasen har ändrats sedan senaste spara"
+
+#. Resource IDs: (371)
+msgid "*** Operation aborted by User ***"
+msgstr ""
 
 #. Resource IDs: (213)
 #, c-format
@@ -1618,10 +1637,6 @@ msgid "Backup Directory"
 msgstr "Backupmapp"
 
 #. Resource IDs: (65535)
-msgid "Backup Directory:"
-msgstr "Säkerhetskopians mapp:"
-
-#. Resource IDs: (65535)
 msgid "Backup Name"
 msgstr "Säkerhetskopians namn"
 
@@ -1694,8 +1709,8 @@ msgid "Browse to URL + Autotype"
 msgstr "Gå till URL + Autoskriv"
 
 #. Resource IDs: (65535)
-msgid "Browser Command Line parameters"
-msgstr "Browserns kommandoparametrar"
+msgid "Browser Command Line parameters:"
+msgstr ""
 
 #. Resource IDs: (520)
 msgid "Bulgarian"
@@ -2119,8 +2134,8 @@ msgstr "Information om konfigureringen"
 
 #. Resource IDs: (191)
 #, c-format
-msgid "Configuration file error:\n%s\n%s\nline %d column %d"
-msgstr "Fel på konfigurationsfilen:\n%s\n%s\nrad %d kolumn %d"
+msgid "Configuration file error:\n%s\n%s\noffset approximately at %d"
+msgstr ""
 
 #. Resource IDs: (367)
 msgid "Configuration file status"
@@ -2157,10 +2172,10 @@ msgstr "Bekräfta att du vill snkronisera dessa poster från %s till %s?\n\nVald
 msgid "Confirmation:"
 msgstr "Bekräftelse:"
 
-#. Resource IDs: (335)
+#. Resource IDs: (214)
 #, c-format
-msgid "Conflicting entries for «%s» «%s» «%s».\r\n  Added merged entry as «%s» «%s» «%s».\r\n    Differing field(s): %s"
-msgstr "Poster i konflikt «%s» «%s» «%s».\r\n  La till sammanslagen post som«%s» «%s» «%s».\r\n    Skiljande fält(s): %s"
+msgid "Conflicting entries for «%s» «%s» «%s».\r\n  Adding merged entry as «%s» «%s» «%s».\r\n    Differing field(s): %s"
+msgstr ""
 
 #. Resource IDs: (1, 347)
 msgid "Continue"
@@ -2293,8 +2308,8 @@ msgstr "Skapa &genväg"
 
 #. Resource IDs: (191)
 #, c-format
-msgid "Create SchemaCache%2d Error 0x%08X during %s."
-msgstr "Skapa SchemaCache%2d Fel 0x%08X vid %s."
+msgid "Create SchemaCache60 Error 0x%08X during %s."
+msgstr ""
 
 #. Resource IDs: (117, 32272)
 msgid "Create Shortcut"
@@ -2407,8 +2422,8 @@ msgid "Database format:"
 msgstr "Databasformat:"
 
 #. Resource IDs: (1454)
-msgid "Database is read-only. Changes to DB preferences will not be saved and are only valid for this session."
-msgstr "Databasen är läs-bara. Ändringar av DB-valen kommer inte att sparas och gäller bara under denna session."
+msgid "Database is read-only. Changes to database preferences will not be saved."
+msgstr ""
 
 #. Resource IDs: (337)
 msgid "Database is read-only. Sorry, cannot save changed any database preferences."
@@ -4541,10 +4556,6 @@ msgstr "Lösenord"
 msgid "Password Database:"
 msgstr "Lösenordsdatabas:"
 
-#. Resource IDs: (1114)
-msgid "Password Expires on:"
-msgstr "Lösenordet upphör den:"
-
 #. Resource IDs: (1123)
 msgid "Password Expiry"
 msgstr "Lösenordet upphör"
@@ -5006,11 +5017,6 @@ msgstr "Återskapa de auto-sparade dokumenten\nÖppna de auto-sparade versionern
 msgid "Recurring"
 msgstr "Återkommande"
 
-#. Resource IDs: (348)
-#, c-format
-msgid "Recurring (%d days)"
-msgstr "Återkommer (%d dagar)"
-
 #. Resource IDs: (32083)
 msgid "Redo"
 msgstr "Upprepa"
@@ -5185,8 +5191,8 @@ msgstr "SAX parsefel i %s\r\n%s."
 
 #. Resource IDs: (191)
 #, c-format
-msgid "SAX Parse%2d Error 0x%08X during %s."
-msgstr "SAX parse%2d fel 0x%08X under %s."
+msgid "SAX Parse60 Error 0x%08X during %s."
+msgstr ""
 
 #. Resource IDs: (131)
 msgid "Safe Combination Entry"
