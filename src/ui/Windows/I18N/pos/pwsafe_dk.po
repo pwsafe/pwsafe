@@ -6763,6 +6763,10 @@ msgstr "\nBogstavs ufølsom søgning"
 msgid "\nCase sensitive search"
 msgstr "\nBogstavs følsom søgning"
 
+#. Resource IDs: (2009)
+msgid "\nClear Filters"
+msgstr ""
+
 #. Resource IDs: (2020)
 msgid "\nClear Find"
 msgstr "\nTøm Find"
@@ -6915,6 +6919,10 @@ msgstr "\nÅben en Anden Database"
 #. Resource IDs: (2010)
 msgid "\nOptions"
 msgstr "\nValgmuligheder"
+
+#. Resource IDs: (2010)
+msgid "\nPassword Policies"
+msgstr ""
 
 #. Resource IDs: (2004)
 msgid "\nPerform Autotype"

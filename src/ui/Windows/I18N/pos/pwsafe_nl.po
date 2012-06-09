@@ -6815,6 +6815,10 @@ msgstr "\nHoofdletter ongevoelige zoekopdracht"
 msgid "\nCase sensitive search"
 msgstr "\nHoofdletter gevoelige zoekopdracht"
 
+#. Resource IDs: (2009)
+msgid "\nClear Filters"
+msgstr ""
+
 #. Resource IDs: (2020)
 msgid "\nClear Find"
 msgstr "\nZoekveld wissen"
@@ -6967,6 +6971,10 @@ msgstr "\nOpen Andere Database"
 #. Resource IDs: (2010)
 msgid "\nOptions"
 msgstr "\nOpties"
+
+#. Resource IDs: (2010)
+msgid "\nPassword Policies"
+msgstr ""
 
 #. Resource IDs: (2004)
 msgid "\nPerform Autotype"
