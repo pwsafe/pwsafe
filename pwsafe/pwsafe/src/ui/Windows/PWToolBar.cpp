@@ -17,6 +17,7 @@
 #include <vector>
 #include <map>
 #include <algorithm>
+#include <iterator>
 
 // CPWToolBar
 
@@ -621,13 +622,11 @@ void CPWToolBar::CustomizeButtons(CString csButtonNames)
     tbCtrl.DeleteButton(i);
   }
 
-  std::vector<CString> vcsButtonNameArray;
 
   csButtonNames.MakeLower();
 
-  for (i = 0; i < m_iMaxNumButtons; i++) {
-    vcsButtonNameArray.push_back(m_csMainButtons[i]);
-  }
+  const std::vector<CString> vcsButtonNameArray(m_csMainButtons,
+                                                m_csMainButtons + m_iMaxNumButtons);
 
   std::vector<CString>::const_iterator cstring_iter;
 
@@ -638,7 +637,7 @@ void CPWToolBar::CustomizeButtons(CString csButtonNames)
   while (csToken != L"" && curPos != -1) {
     cstring_iter = std::find(vcsButtonNameArray.begin(), vcsButtonNameArray.end(), csToken);
     if (cstring_iter != vcsButtonNameArray.end()) {
-      int index = (int)(cstring_iter - vcsButtonNameArray.begin());
+      int index = std::distance(vcsButtonNameArray.begin(), cstring_iter);
       tbCtrl.AddButtons(1, &m_pOriginalTBinfo[index]);
     }
     csToken = csButtonNames.Tokenize(L" ", curPos);
@@ -647,7 +646,7 @@ void CPWToolBar::CustomizeButtons(CString csButtonNames)
   tbCtrl.AutoSize();
 }
 
-CString CPWToolBar::GetButtonString()
+CString CPWToolBar::GetButtonString() const
 {
   CString cs_buttonnames(L"");
   TBBUTTONINFO tbinfo;
@@ -657,12 +656,9 @@ CString CPWToolBar::GetButtonString()
 
   num_buttons = tbCtrl.GetButtonCount();
 
-  std::vector<UINT> vcsButtonIDArray;
+  const std::vector<UINT> vcsButtonIDArray(m_MainToolBarIDs,
+                                           m_MainToolBarIDs + m_iMaxNumButtons);
   std::vector<UINT>::const_iterator uint_iter;
-
-  for (i = 0; i < m_iMaxNumButtons; i++) {
-    vcsButtonIDArray.push_back(m_MainToolBarIDs[i]);
-  }
 
   SecureZeroMemory(&tbinfo, sizeof(tbinfo));
   tbinfo.cbSize = sizeof(tbinfo);
@@ -679,8 +675,10 @@ CString CPWToolBar::GetButtonString()
     uint_iter = std::find(vcsButtonIDArray.begin(), vcsButtonIDArray.end(), 
                           tbinfo.idCommand);
     if (uint_iter != vcsButtonIDArray.end()) {
-      int index = (int)(uint_iter - vcsButtonIDArray.begin());
+      int index = std::distance(vcsButtonIDArray.begin(), uint_iter);
       cs_buttonnames += m_csMainButtons[index] + L" ";
+    } else {
+      ASSERT(0);
     }
   }
 
