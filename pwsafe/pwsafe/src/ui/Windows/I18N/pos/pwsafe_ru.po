@@ -7078,6 +7078,10 @@ msgstr "\nПоиск без учёта регистра"
 msgid "\nCase sensitive search"
 msgstr "\nПоиск с учётом регистра"
 
+#. Resource IDs: (2009)
+msgid "\nClear Filters"
+msgstr ""
+
 #. Resource IDs: (2019)
 msgid "\nClear Find"
 msgstr "\nОчистить поле поиска"
@@ -7230,6 +7234,10 @@ msgstr "\nОткрыть другой контейнер"
 #. Resource IDs: (2010)
 msgid "\nOptions"
 msgstr "\nНастройки"
+
+#. Resource IDs: (2010)
+msgid "\nPassword Policies"
+msgstr ""
 
 #. Resource IDs: (2005)
 msgid "\nPerform Autotype"

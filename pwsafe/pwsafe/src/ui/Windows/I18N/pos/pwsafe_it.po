@@ -6763,6 +6763,10 @@ msgstr ""
 msgid "\nCase sensitive search"
 msgstr ""
 
+#. Resource IDs: (2009)
+msgid "\nClear Filters"
+msgstr ""
+
 #. Resource IDs: (2020)
 msgid "\nClear Find"
 msgstr ""
@@ -6914,6 +6918,10 @@ msgstr ""
 
 #. Resource IDs: (2010)
 msgid "\nOptions"
+msgstr ""
+
+#. Resource IDs: (2010)
+msgid "\nPassword Policies"
 msgstr ""
 
 #. Resource IDs: (2004)

@@ -6781,6 +6781,10 @@ msgstr "\nBuscar sin distinguir mayús./minús."
 msgid "\nCase sensitive search"
 msgstr "\nBúscar con distinción mayús./minús."
 
+#. Resource IDs: (2009)
+msgid "\nClear Filters"
+msgstr ""
+
 #. Resource IDs: (2020)
 msgid "\nClear Find"
 msgstr "\nBorrar búsqueda"
@@ -6933,6 +6937,10 @@ msgstr "\nAbrir otra base de datos"
 #. Resource IDs: (2010)
 msgid "\nOptions"
 msgstr "\nOpciones"
+
+#. Resource IDs: (2010)
+msgid "\nPassword Policies"
+msgstr ""
 
 #. Resource IDs: (2004)
 msgid "\nPerform Autotype"

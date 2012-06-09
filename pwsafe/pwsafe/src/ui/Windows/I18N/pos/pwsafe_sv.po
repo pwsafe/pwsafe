@@ -6815,6 +6815,10 @@ msgstr "\nIcke lägeskänslig sökning"
 msgid "\nCase sensitive search"
 msgstr "\nLägeskänslig sökning"
 
+#. Resource IDs: (2009)
+msgid "\nClear Filters"
+msgstr ""
+
 #. Resource IDs: (2020)
 msgid "\nClear Find"
 msgstr "\nRensa sökningen"
@@ -6967,6 +6971,10 @@ msgstr "\nÖppna en annan databas"
 #. Resource IDs: (2010)
 msgid "\nOptions"
 msgstr "\nAlternativ"
+
+#. Resource IDs: (2010)
+msgid "\nPassword Policies"
+msgstr ""
 
 #. Resource IDs: (2004)
 msgid "\nPerform Autotype"

@@ -6815,6 +6815,10 @@ msgstr "\nRecherche insensible à la casse"
 msgid "\nCase sensitive search"
 msgstr "\nRecherche sensible à la casse"
 
+#. Resource IDs: (2009)
+msgid "\nClear Filters"
+msgstr ""
+
 #. Resource IDs: (2020)
 msgid "\nClear Find"
 msgstr "\nAnnuler la recherche"
@@ -6967,6 +6971,10 @@ msgstr "\nOuvrir un autre fichier"
 #. Resource IDs: (2010)
 msgid "\nOptions"
 msgstr "\nOptions"
+
+#. Resource IDs: (2010)
+msgid "\nPassword Policies"
+msgstr ""
 
 #. Resource IDs: (2004)
 msgid "\nPerform Autotype"

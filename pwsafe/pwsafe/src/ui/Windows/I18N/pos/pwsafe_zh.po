@@ -6763,6 +6763,10 @@ msgstr "\n不区分大小写查找"
 msgid "\nCase sensitive search"
 msgstr "\n区分大小写查找"
 
+#. Resource IDs: (2009)
+msgid "\nClear Filters"
+msgstr ""
+
 #. Resource IDs: (2020)
 msgid "\nClear Find"
 msgstr "\n清除查找"
@@ -6915,6 +6919,10 @@ msgstr "\n打开其它数据库"
 #. Resource IDs: (2010)
 msgid "\nOptions"
 msgstr "\n选项"
+
+#. Resource IDs: (2010)
+msgid "\nPassword Policies"
+msgstr ""
 
 #. Resource IDs: (2004)
 msgid "\nPerform Autotype"

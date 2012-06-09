@@ -6763,6 +6763,10 @@ msgstr "\n대소문자 무시하고 검색"
 msgid "\nCase sensitive search"
 msgstr "\n대소문자 구별하고 검색"
 
+#. Resource IDs: (2009)
+msgid "\nClear Filters"
+msgstr ""
+
 #. Resource IDs: (2020)
 msgid "\nClear Find"
 msgstr "\n검색 내역 삭제"
@@ -6915,6 +6919,10 @@ msgstr "\n다른 데이터베이스 불러오기"
 #. Resource IDs: (2010)
 msgid "\nOptions"
 msgstr "\n옵션"
+
+#. Resource IDs: (2010)
+msgid "\nPassword Policies"
+msgstr ""
 
 #. Resource IDs: (2004)
 msgid "\nPerform Autotype"

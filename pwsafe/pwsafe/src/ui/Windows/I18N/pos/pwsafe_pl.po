@@ -6857,6 +6857,10 @@ msgstr "\nNie uwzględniaj wielkości liter"
 msgid "\nCase sensitive search"
 msgstr "\nUwzględiaj wielkość liter"
 
+#. Resource IDs: (2009)
+msgid "\nClear Filters"
+msgstr ""
+
 #. Resource IDs: (2020)
 msgid "\nClear Find"
 msgstr "\nWyczyść Szukanie"
@@ -7012,6 +7016,10 @@ msgstr "\nOtwórz inną bazę danych"
 #. Resource IDs: (2010)
 msgid "\nOptions"
 msgstr "\nOpcje"
+
+#. Resource IDs: (2010)
+msgid "\nPassword Policies"
+msgstr ""
 
 #. Resource IDs: (2004)
 msgid "\nPerform Autotype"
