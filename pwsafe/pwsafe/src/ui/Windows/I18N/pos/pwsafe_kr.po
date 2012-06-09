@@ -336,9 +336,19 @@ msgstr "%d 가 전체 %d 중에서 일치합니다."
 msgid "%s  - Imported %s"
 msgstr ""
 
+#. Resource IDs: (371)
+#, c-format
+msgid "%s (%s)"
+msgstr ""
+
 #. Resource IDs: (366)
 #, c-format
 msgid "%s (database-specific)"
+msgstr ""
+
+#. Resource IDs: (216)
+#, c-format
+msgid "%s - Copied %s"
 msgstr ""
 
 #. Resource IDs: (370)
@@ -349,6 +359,11 @@ msgstr ""
 #. Resource IDs: (215)
 #, c-format
 msgid "%s - Merged %s"
+msgstr ""
+
+#. Resource IDs: (216)
+#, c-format
+msgid "%s - Sync'd %s"
 msgstr ""
 
 #. Resource IDs: (3887)
@@ -916,6 +931,10 @@ msgstr ")"
 
 #. Resource IDs: (367)
 msgid "* means that the database has been modified since last save"
+msgstr ""
+
+#. Resource IDs: (371)
+msgid "*** Operation aborted by User ***"
 msgstr ""
 
 #. Resource IDs: (213)
@@ -1566,10 +1585,6 @@ msgid "Backup Directory"
 msgstr ""
 
 #. Resource IDs: (65535)
-msgid "Backup Directory:"
-msgstr "백업본 폴더:"
-
-#. Resource IDs: (65535)
 msgid "Backup Name"
 msgstr "백업본 이름"
 
@@ -1642,8 +1657,8 @@ msgid "Browse to URL + Autotype"
 msgstr "URL으로 탐색하고 자동입력"
 
 #. Resource IDs: (65535)
-msgid "Browser Command Line parameters"
-msgstr "브라우저 명령줄 변수"
+msgid "Browser Command Line parameters:"
+msgstr ""
 
 #. Resource IDs: (520)
 msgid "Bulgarian"
@@ -2067,8 +2082,8 @@ msgstr "설정 정보"
 
 #. Resource IDs: (191)
 #, c-format
-msgid "Configuration file error:\n%s\n%s\nline %d column %d"
-msgstr "설정 파일 오류:\n%s\n%s\n%d 행 %d 열"
+msgid "Configuration file error:\n%s\n%s\noffset approximately at %d"
+msgstr ""
 
 #. Resource IDs: (367)
 msgid "Configuration file status"
@@ -2105,10 +2120,10 @@ msgstr ""
 msgid "Confirmation:"
 msgstr "확인:"
 
-#. Resource IDs: (335)
+#. Resource IDs: (214)
 #, c-format
-msgid "Conflicting entries for «%s» «%s» «%s».\r\n  Added merged entry as «%s» «%s» «%s».\r\n    Differing field(s): %s"
-msgstr "«%s» «%s» «%s» 항목과 겹침.\r\n  «%s» «%s» «%s» 항목으로 병합함.\r\n    차이점: %s"
+msgid "Conflicting entries for «%s» «%s» «%s».\r\n  Adding merged entry as «%s» «%s» «%s».\r\n    Differing field(s): %s"
+msgstr ""
 
 #. Resource IDs: (1, 347)
 msgid "Continue"
@@ -2241,8 +2256,8 @@ msgstr "바로가기 만들기(&S)"
 
 #. Resource IDs: (191)
 #, c-format
-msgid "Create SchemaCache%2d Error 0x%08X during %s."
-msgstr "Create SchemaCache%2d Error 0x%08X during %s."
+msgid "Create SchemaCache60 Error 0x%08X during %s."
+msgstr ""
 
 #. Resource IDs: (117, 32272)
 msgid "Create Shortcut"
@@ -2355,7 +2370,7 @@ msgid "Database format:"
 msgstr "데이터베이스 버전:"
 
 #. Resource IDs: (1454)
-msgid "Database is read-only. Changes to DB preferences will not be saved and are only valid for this session."
+msgid "Database is read-only. Changes to database preferences will not be saved."
 msgstr ""
 
 #. Resource IDs: (337)
@@ -4489,10 +4504,6 @@ msgstr "비밀번호"
 msgid "Password Database:"
 msgstr "비밀번호 데이터베이스:"
 
-#. Resource IDs: (1114)
-msgid "Password Expires on:"
-msgstr "비밀번호 만료 예정:"
-
 #. Resource IDs: (1123)
 msgid "Password Expiry"
 msgstr "비밀번호 만료"
@@ -4954,11 +4965,6 @@ msgstr "자동 저장된 문서 복구\n바로 이전에 저장한 파일 대신
 msgid "Recurring"
 msgstr "되풀이"
 
-#. Resource IDs: (348)
-#, c-format
-msgid "Recurring (%d days)"
-msgstr "되풀이 (%d 일)"
-
 #. Resource IDs: (32083)
 msgid "Redo"
 msgstr "되돌리기"
@@ -5133,8 +5139,8 @@ msgstr "%s 도중 SAX 분석 오류가 발생했습니다.\r\n%s."
 
 #. Resource IDs: (191)
 #, c-format
-msgid "SAX Parse%2d Error 0x%08X during %s."
-msgstr "SAX Parse%2d Error 0x%08X during %s."
+msgid "SAX Parse60 Error 0x%08X during %s."
+msgstr ""
 
 #. Resource IDs: (131)
 msgid "Safe Combination Entry"

@@ -336,9 +336,19 @@ msgstr "%d af %d passer sammen."
 msgid "%s  - Imported %s"
 msgstr ""
 
+#. Resource IDs: (371)
+#, c-format
+msgid "%s (%s)"
+msgstr ""
+
 #. Resource IDs: (366)
 #, c-format
 msgid "%s (database-specific)"
+msgstr ""
+
+#. Resource IDs: (216)
+#, c-format
+msgid "%s - Copied %s"
 msgstr ""
 
 #. Resource IDs: (370)
@@ -349,6 +359,11 @@ msgstr ""
 #. Resource IDs: (215)
 #, c-format
 msgid "%s - Merged %s"
+msgstr ""
+
+#. Resource IDs: (216)
+#, c-format
+msgid "%s - Sync'd %s"
 msgstr ""
 
 #. Resource IDs: (3887)
@@ -916,6 +931,10 @@ msgstr ")"
 
 #. Resource IDs: (367)
 msgid "* means that the database has been modified since last save"
+msgstr ""
+
+#. Resource IDs: (371)
+msgid "*** Operation aborted by User ***"
 msgstr ""
 
 #. Resource IDs: (213)
@@ -1566,10 +1585,6 @@ msgid "Backup Directory"
 msgstr ""
 
 #. Resource IDs: (65535)
-msgid "Backup Directory:"
-msgstr ""
-
-#. Resource IDs: (65535)
 msgid "Backup Name"
 msgstr "Sikkerheds kopi Navn"
 
@@ -1642,8 +1657,8 @@ msgid "Browse to URL + Autotype"
 msgstr "Gennemse efter URL + Autoindsæt"
 
 #. Resource IDs: (65535)
-msgid "Browser Command Line parameters"
-msgstr "Browser Kommando Linie parametre"
+msgid "Browser Command Line parameters:"
+msgstr ""
 
 #. Resource IDs: (520)
 msgid "Bulgarian"
@@ -2067,8 +2082,8 @@ msgstr "Konfigurations Oplysninger"
 
 #. Resource IDs: (191)
 #, c-format
-msgid "Configuration file error:\n%s\n%s\nline %d column %d"
-msgstr "Konfigurations fil fejl:\n%s\n%s\nlinie %d kolonne %d"
+msgid "Configuration file error:\n%s\n%s\noffset approximately at %d"
+msgstr ""
 
 #. Resource IDs: (367)
 msgid "Configuration file status"
@@ -2105,10 +2120,10 @@ msgstr ""
 msgid "Confirmation:"
 msgstr "Bekræftelse:"
 
-#. Resource IDs: (335)
+#. Resource IDs: (214)
 #, c-format
-msgid "Conflicting entries for «%s» «%s» «%s».\r\n  Added merged entry as «%s» «%s» «%s».\r\n    Differing field(s): %s"
-msgstr "Modstridende poster for «%s» «%s» «%s».\r\n  Tilføjet flettet post som «%s» «%s» «%s».\r\n    Afvigende felt(er): %s"
+msgid "Conflicting entries for «%s» «%s» «%s».\r\n  Adding merged entry as «%s» «%s» «%s».\r\n    Differing field(s): %s"
+msgstr ""
 
 #. Resource IDs: (1, 347)
 msgid "Continue"
@@ -2241,8 +2256,8 @@ msgstr "Opret &Genvej"
 
 #. Resource IDs: (191)
 #, c-format
-msgid "Create SchemaCache%2d Error 0x%08X during %s."
-msgstr "Opret SkemaCache%2d Fejl 0x%08X under %s."
+msgid "Create SchemaCache60 Error 0x%08X during %s."
+msgstr ""
 
 #. Resource IDs: (117, 32272)
 msgid "Create Shortcut"
@@ -2355,7 +2370,7 @@ msgid "Database format:"
 msgstr "Database format:"
 
 #. Resource IDs: (1454)
-msgid "Database is read-only. Changes to DB preferences will not be saved and are only valid for this session."
+msgid "Database is read-only. Changes to database preferences will not be saved."
 msgstr ""
 
 #. Resource IDs: (337)
@@ -4489,10 +4504,6 @@ msgstr "Adgangskode"
 msgid "Password Database:"
 msgstr ""
 
-#. Resource IDs: (1114)
-msgid "Password Expires on:"
-msgstr "Adgangskode Udløber den:"
-
 #. Resource IDs: (1123)
 msgid "Password Expiry"
 msgstr "Adgangskode Udløb"
@@ -4954,11 +4965,6 @@ msgstr ""
 msgid "Recurring"
 msgstr "Periodisk"
 
-#. Resource IDs: (348)
-#, c-format
-msgid "Recurring (%d days)"
-msgstr "Periodisk(%d dage)"
-
 #. Resource IDs: (32083)
 msgid "Redo"
 msgstr "Sæt tilbage"
@@ -5133,8 +5139,8 @@ msgstr "SAX Analyse Fejl under %s\r\n%s."
 
 #. Resource IDs: (191)
 #, c-format
-msgid "SAX Parse%2d Error 0x%08X during %s."
-msgstr "SAX Analyse%2d Fejl 0x%08X under %s."
+msgid "SAX Parse60 Error 0x%08X during %s."
+msgstr ""
 
 #. Resource IDs: (131)
 msgid "Safe Combination Entry"

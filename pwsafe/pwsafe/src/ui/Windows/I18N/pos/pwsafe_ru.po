@@ -402,10 +402,20 @@ msgstr "%d из %d совпадений."
 msgid "%s  - Imported %s"
 msgstr "%s — Импортировано %s"
 
+#. Resource IDs: (371)
+#, c-format
+msgid "%s (%s)"
+msgstr ""
+
 #. Resource IDs: (366)
 #, fuzzy, c-format
 msgid "%s (database-specific)"
 msgstr "%s (связан с контейнером)"
+
+#. Resource IDs: (216)
+#, c-format
+msgid "%s - Copied %s"
+msgstr ""
 
 #. Resource IDs: (370)
 #, c-format
@@ -416,6 +426,11 @@ msgstr "%s — перетянуто %s"
 #, fuzzy, c-format
 msgid "%s - Merged %s"
 msgstr "%s — объединено %s"
+
+#. Resource IDs: (216)
+#, c-format
+msgid "%s - Sync'd %s"
+msgstr ""
 
 #. Resource IDs: (3887)
 # AFX_IDS_AUTOSAVE_RECOVERED
@@ -1004,6 +1019,10 @@ msgstr ")"
 # хинт в статустной строке
 msgid "* means that the database has been modified since last save"
 msgstr "* значит, что с момента последнего сохранения контейнер был изменён"
+
+#. Resource IDs: (371)
+msgid "*** Operation aborted by User ***"
+msgstr ""
 
 #. Resource IDs: (213)
 #, c-format
@@ -1672,10 +1691,6 @@ msgid "Backup Directory"
 msgstr "Каталог для резервных копий"
 
 #. Resource IDs: (65535)
-msgid "Backup Directory:"
-msgstr "Каталог для резервных копий:"
-
-#. Resource IDs: (65535)
 msgid "Backup Name"
 msgstr "Имя для резервной копии"
 
@@ -1749,9 +1764,8 @@ msgid "Browse to URL + Autotype"
 msgstr "Перейти по ссылке и выполнить автонабор"
 
 #. Resource IDs: (65535)
-# урезано из-за ограничения длины
-msgid "Browser Command Line parameters"
-msgstr "параметры командной строки"
+msgid "Browser Command Line parameters:"
+msgstr ""
 
 #. Resource IDs: (520)
 msgid "Bulgarian"
@@ -2194,8 +2208,8 @@ msgstr "Информация о настройках"
 
 #. Resource IDs: (191)
 #, c-format
-msgid "Configuration file error:\n%s\n%s\nline %d column %d"
-msgstr "Ошибка в файле настроек:\n%s\n%s\nстрока %d столбец %d"
+msgid "Configuration file error:\n%s\n%s\noffset approximately at %d"
+msgstr ""
 
 #. Resource IDs: (367)
 # хинт в статустной строке
@@ -2235,8 +2249,8 @@ msgstr "Подтверждение:"
 
 #. Resource IDs: (214)
 #, c-format
-msgid "Conflicting entries for «%s» «%s» «%s».\r\n  Added merged entry as «%s» «%s» «%s».\r\n    Differing field(s): %s"
-msgstr "Конфликт элементов для «%s» «%s» «%s».\r\n  При слиянии элемент был добавлен как «%s» «%s» «%s».\r\n    Различающиеся поля: %s"
+msgid "Conflicting entries for «%s» «%s» «%s».\r\n  Adding merged entry as «%s» «%s» «%s».\r\n    Differing field(s): %s"
+msgstr ""
 
 #. Resource IDs: (1)
 msgid "Continue"
@@ -2374,10 +2388,9 @@ msgid "Create &Shortcut"
 msgstr "Создать &ярлык"
 
 #. Resource IDs: (191)
-# First substitution is a number, second is either "import" or "validation"
 #, c-format
-msgid "Create SchemaCache%2d Error 0x%08X during %s."
-msgstr "Создание SchemaCache%2d завершилось ошибкой 0x%08X при выполнении операции «%s»."
+msgid "Create SchemaCache60 Error 0x%08X during %s."
+msgstr ""
 
 #. Resource IDs: (117, 32272)
 msgid "Create Shortcut"
@@ -2493,9 +2506,8 @@ msgid "Database format:"
 msgstr "Формат контейнера:"
 
 #. Resource IDs: (1454)
-# урезано
-msgid "Database is read-only. Changes to DB preferences will not be saved and are only valid for this session."
-msgstr "Контейнер открыт «только для чтения». Изменения настроек будут действительны только до завершения программы."
+msgid "Database is read-only. Changes to database preferences will not be saved."
+msgstr ""
 
 #. Resource IDs: (337)
 msgid "Database is read-only. Sorry, cannot save changed any database preferences."
@@ -4725,12 +4737,6 @@ msgstr "Пароль"
 msgid "Password Database:"
 msgstr "Контейнер:"
 
-#. Resource IDs: (1114)
-# Нельзя использовать "срок действия" есть контекст "Password expires on: Never"
-#, fuzzy
-msgid "Password Expires on:"
-msgstr "Пароль истекает:"
-
 #. Resource IDs: (1123)
 #, fuzzy
 msgid "Password Expiry"
@@ -5204,11 +5210,6 @@ msgstr "Восстановить автоматически сохранённы
 msgid "Recurring"
 msgstr "Повторять"
 
-#. Resource IDs: (348)
-#, fuzzy, c-format
-msgid "Recurring (%d days)"
-msgstr "Повторять (%d дней)"
-
 #. Resource IDs: (1476, 32083)
 msgid "Redo"
 msgstr "Повторить"
@@ -5388,10 +5389,9 @@ msgid "SAX Parse Error during %s\r\n%s."
 msgstr "Ошибка разбора SAX при выполнении %s\r\n%s."
 
 #. Resource IDs: (191)
-# First two substitutions are numbers, last is either "import" or "validation"
 #, c-format
-msgid "SAX Parse%2d Error 0x%08X during %s."
-msgstr "Ошибка разбора SAX Parse%2d 0x%08X при выполнении операции «%s»."
+msgid "SAX Parse60 Error 0x%08X during %s."
+msgstr ""
 
 #. Resource IDs: (131)
 msgid "Safe Combination Entry"

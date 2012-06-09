@@ -349,10 +349,20 @@ msgstr "%d de %d coincidencias."
 msgid "%s  - Imported %s"
 msgstr ""
 
+#. Resource IDs: (371)
+#, c-format
+msgid "%s (%s)"
+msgstr ""
+
 #. Resource IDs: (366)
 #, c-format
 msgid "%s (database-specific)"
 msgstr "%s (específico de base de datos)"
+
+#. Resource IDs: (216)
+#, c-format
+msgid "%s - Copied %s"
+msgstr ""
 
 #. Resource IDs: (370)
 #, c-format
@@ -362,6 +372,11 @@ msgstr ""
 #. Resource IDs: (215)
 #, c-format
 msgid "%s - Merged %s"
+msgstr ""
+
+#. Resource IDs: (216)
+#, c-format
+msgid "%s - Sync'd %s"
 msgstr ""
 
 #. Resource IDs: (3887)
@@ -930,6 +945,10 @@ msgstr ")"
 #. Resource IDs: (367)
 msgid "* means that the database has been modified since last save"
 msgstr "* indica modificaciones desde la última vez que se guardó la base de datos"
+
+#. Resource IDs: (371)
+msgid "*** Operation aborted by User ***"
+msgstr ""
 
 #. Resource IDs: (213)
 #, c-format
@@ -1579,10 +1598,6 @@ msgid "Backup Directory"
 msgstr ""
 
 #. Resource IDs: (65535)
-msgid "Backup Directory:"
-msgstr "Directorio de respaldo:"
-
-#. Resource IDs: (65535)
 msgid "Backup Name"
 msgstr "Nombre de copia de respaldo"
 
@@ -1655,8 +1670,8 @@ msgid "Browse to URL + Autotype"
 msgstr "Ir a URL + Autoescritura"
 
 #. Resource IDs: (65535)
-msgid "Browser Command Line parameters"
-msgstr "Parámetros de línea de comandos"
+msgid "Browser Command Line parameters:"
+msgstr ""
 
 #. Resource IDs: (520)
 msgid "Bulgarian"
@@ -2080,8 +2095,8 @@ msgstr "Información de configuración"
 
 #. Resource IDs: (191)
 #, c-format
-msgid "Configuration file error:\n%s\n%s\nline %d column %d"
-msgstr "Error en archivo de configuración:\n%s\n%s\nlínea %d columna %d"
+msgid "Configuration file error:\n%s\n%s\noffset approximately at %d"
+msgstr ""
 
 #. Resource IDs: (367)
 msgid "Configuration file status"
@@ -2118,10 +2133,10 @@ msgstr ""
 msgid "Confirmation:"
 msgstr "Confirmación:"
 
-#. Resource IDs: (335)
+#. Resource IDs: (214)
 #, c-format
-msgid "Conflicting entries for «%s» «%s» «%s».\r\n  Added merged entry as «%s» «%s» «%s».\r\n    Differing field(s): %s"
-msgstr "Entradas conflictivas para «%s» «%s» «%s».\r\n  Entrada fusionada añadida como «%s» «%s» «%s».\r\n    Campo(s) diferentes(s): %s"
+msgid "Conflicting entries for «%s» «%s» «%s».\r\n  Adding merged entry as «%s» «%s» «%s».\r\n    Differing field(s): %s"
+msgstr ""
 
 #. Resource IDs: (1, 347)
 msgid "Continue"
@@ -2254,8 +2269,8 @@ msgstr "Crear &Atajo"
 
 #. Resource IDs: (191)
 #, c-format
-msgid "Create SchemaCache%2d Error 0x%08X during %s."
-msgstr "Crear SchemaCache%2d Error 0x%08X durante %s."
+msgid "Create SchemaCache60 Error 0x%08X during %s."
+msgstr ""
 
 #. Resource IDs: (117, 32272)
 msgid "Create Shortcut"
@@ -2368,7 +2383,7 @@ msgid "Database format:"
 msgstr "Formato de la base de datos:"
 
 #. Resource IDs: (1454)
-msgid "Database is read-only. Changes to DB preferences will not be saved and are only valid for this session."
+msgid "Database is read-only. Changes to database preferences will not be saved."
 msgstr ""
 
 #. Resource IDs: (337)
@@ -4504,10 +4519,6 @@ msgstr "Contraseña"
 msgid "Password Database:"
 msgstr "Base de datos de contraseñas:"
 
-#. Resource IDs: (1114)
-msgid "Password Expires on:"
-msgstr "Contraseña caduca el:"
-
 #. Resource IDs: (1123)
 msgid "Password Expiry"
 msgstr "Caducidad de contraseña"
@@ -4970,11 +4981,6 @@ msgstr "Recuperar los documentos guardados automáticamente\nAbre las versiones 
 msgid "Recurring"
 msgstr "Periódico"
 
-#. Resource IDs: (348)
-#, c-format
-msgid "Recurring (%d days)"
-msgstr "Periódico (%d días)"
-
 #. Resource IDs: (32083)
 msgid "Redo"
 msgstr "Rehacer"
@@ -5149,8 +5155,8 @@ msgstr "SAX Error de análisis mientras %s\r\n%s."
 
 #. Resource IDs: (191)
 #, c-format
-msgid "SAX Parse%2d Error 0x%08X during %s."
-msgstr "SAX Análisis%2d Error 0x%08X mientras %s."
+msgid "SAX Parse60 Error 0x%08X during %s."
+msgstr ""
 
 #. Resource IDs: (131)
 msgid "Safe Combination Entry"
