@@ -264,7 +264,7 @@ void CAddEdit_DateTimes::UpdateTimes()
   if (M_tttXTime() != (time_t)0) {
     xt = CTime(M_tttXTime());
   } else {
-    xt = now + CTimeSpan(DEFAULT_EXP_INTERVAL, 0, 0, 0);
+    xt = now + CTimeSpan(DEFAULT_EXP_INTERVAL, 0, 1, 0);
   }
 
   const CTime sMinDate(xt.GetTime() < now.GetTime() ? xt : now);
@@ -400,7 +400,7 @@ void CAddEdit_DateTimes::OnHowChanged()
     break;
   case ABSOLUTE_EXP:
     m_ae_psh->SetChanged(true);
-
+    SetXTime();
     GetDlgItem(IDC_EXPDAYS)->EnableWindow(FALSE);
     GetDlgItem(IDC_STATIC_LTINTERVAL_NOW)->EnableWindow(FALSE);
     GetDlgItem(IDC_REUSE_ON_CHANGE)->EnableWindow(FALSE);
@@ -408,8 +408,8 @@ void CAddEdit_DateTimes::OnHowChanged()
     break;
   case RELATIVE_EXP:
     m_ae_psh->SetChanged(true);
-
-    GetDlgItem(IDC_EXPDAYS)->EnableWindow(TRUE);
+    SetXTime();
+GetDlgItem(IDC_EXPDAYS)->EnableWindow(TRUE);
     GetDlgItem(IDC_STATIC_LTINTERVAL_NOW)->EnableWindow(TRUE);
     GetDlgItem(IDC_REUSE_ON_CHANGE)->EnableWindow(TRUE);
     GetDlgItem(IDC_EXPIRYDATE)->EnableWindow(FALSE);
