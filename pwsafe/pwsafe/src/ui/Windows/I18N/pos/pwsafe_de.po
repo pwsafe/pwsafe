@@ -9,8 +9,13 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
+<<<<<<< .mine
+"PO-Revision-Date: 2012-06-10 09:12+0100\n"
+"Last-Translator: kvdg <karel@vandergucht.de>\n"
+=======
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+>>>>>>> .r4966
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -86,6 +91,7 @@ msgstr ""
 # updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
 # ONLY change the msgstr field. Do NOT change any other.
 # If you do not want to change an Accelerator Key, copy msgid to msgstr
+<<<<<<< .mine
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
 #    ID:xxxxx = the menu ID corresponding to the accelerator
@@ -99,6 +105,22 @@ msgstr ""
 # updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
 # ONLY change the msgstr field. Do NOT change any other.
 # If you do not want to change an Accelerator Key, copy msgid to msgstr
+#. Resource IDs: (315, 8016, 8017)
+=======
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
+>>>>>>> .r4966
 msgid " "
 msgstr " "
 
@@ -2563,7 +2585,7 @@ msgstr "Anzeige"
 
 #. Resource IDs: (151, 152, 153, 154, 155, 156, 161, 163, 165)
 msgid "Display Filter - "
-msgstr "Anzeigefilter - "
+msgstr "Zeige Filter an - "
 
 #. Resource IDs: (368)
 msgid "Display policy setings or List entries using this named policy\n(The latter may take a while depending on the number of entries in this database)"
@@ -6832,6 +6854,14 @@ msgstr "\nGroßschreibung beachtende Suche"
 msgid "\nClear Filters"
 msgstr ""
 
+#. Resource IDs: (2009)
+msgid ""
+"\n"
+"Clear Filters"
+msgstr ""
+"\n"
+"Filter löschen"
+
 #. Resource IDs: (2019)
 msgid "\nClear Find"
 msgstr "\nLösche Suchbegriff"
@@ -6988,6 +7018,14 @@ msgstr "\nOptionen"
 #. Resource IDs: (2010)
 msgid "\nPassword Policies"
 msgstr ""
+
+#. Resource IDs: (2010)
+msgid ""
+"\n"
+"Password Policies"
+msgstr ""
+"\n"
+"Passowrtrichtlinien"
 
 #. Resource IDs: (2005)
 msgid "\nPerform Autotype"
