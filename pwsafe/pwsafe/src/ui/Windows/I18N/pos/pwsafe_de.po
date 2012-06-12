@@ -2763,7 +2763,7 @@ msgid ""
 "Display policy setings or List entries using this named policy\n"
 "(The latter may take a while depending on the number of entries in this database)"
 msgstr ""
-"Zeige die Richtlinieneinstellungen oder lisze die Einträge auf mit der benannten Richtlinie\n"
+"Zeige die Richtlinieneinstellungen oder liste die Einträge auf mit der benannten Richtlinie\n"
 "(Letzteres kann einige Zeit dauern, abhängig von der Anzahl Einträge in der Datenbank)"
 
 #. Resource IDs: (32067)
@@ -3555,7 +3555,7 @@ msgstr "Gälisch"
 
 #. Resource IDs: (1025)
 msgid "Generate"
-msgstr "Erzeuge"
+msgstr "Generiere"
 
 #. Resource IDs: (32157)
 msgid "Generate &Password"
@@ -3571,7 +3571,7 @@ msgstr "Generiere Passwort"
 
 #. Resource IDs: (370)
 msgid "Generate Password using selected Password Policy"
-msgstr "Erzeuge Passwort mit der ausgewählten Richtlinie"
+msgstr "Generiere Passwort mit der ausgewählten Richtlinie"
 
 #. Resource IDs: (516)
 msgid "Georgian"
@@ -7038,7 +7038,7 @@ msgstr "Verwende Datenbankrichtlinie"
 
 #. Resource IDs: (1470)
 msgid "Use Named Policy"
-msgstr "Verwende benannte Richtlinie"
+msgstr "f�r benannte Richtlinie"
 
 #. Resource IDs: (369)
 msgid "Use count"
