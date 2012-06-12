@@ -49,11 +49,10 @@
   <li><b>\n</b> wird ersetzt durch die ENTER Taste, um die Taste zu 'Dr&uuml;cken'.</li>
   <li><b>\\</b> wird ersetzt durch die Gegenschr&auml;gstrich (\) Taste.</li>
   <li><b>\d<i>NNN</i></b> setzt die Verz&ouml;gerung zwischen Zeichen auf <i>NNN</i> Millisekunden, anstelle von 10 (Standard).<br>
-    <hr> <small><b>Anmerkung: </b> Man kann mehrere \d Kommandos an einander ketten. Z.B. \d999\d999\d999\d010 ergibt 3 Sekunden Verz&ouml;gerung (3.007, um exakt zu sein). Das \d Kommando setzt sowohl die Verz&ouml;gerung zwischen den Zeichen als auch die anf&auml;ngliche Verz&ouml;gerung.</small>
-    <hr>
-  </li>
+Dies &auml;ndert die Verz&ouml;gerung des aktuellen und alle folgenden Zeichen . Z.B. "schnell\d500langsam" bewirkt dass 'schnell' im normalem Tempo ausgegeben wird, und die Zeichen 'l','a' bis 'm' ausgegeben werden mit jeweils einer halben Sekunde Verz&ouml;gerung vor der Ausgabe. Wenn Sie eine Verz&ouml;gerung nur 1x wollen, und keine Verz&ouml;gerung der folgenden Zeichen, setzen Sie '\w' bzw. '\W' ein, wie weiter unten beschrieben.  </li>
   <li><b>\WNNN</b> macht eine einmalige Verz&ouml;gerung an der Stelle wo es erscheint. Die Verz&ouml;gerung  betr&auml;gt <i>NNN</i> Sekunden.</li>
-  <li><b>\wNNN</b> macht eine einmalige Verz&ouml;gerung an der Stelle wo es erscheint. Die Verz&ouml;gerung  betr&auml;gt <i>NNN</i> Millisekunden.</li>
+  <li><b>\wNNN</b> macht eine einmalige Verz&ouml;gerung an der Stelle wo es erscheint. Die Verz&ouml;gerung  betr&auml;gt <i>NNN</i> Millisekunden.<br>
+Z.B. bei "wie\w500jetzt" wird zuerst 'wie' ausgeben (mit der Geschwindigkeit des zuletzt definierten '\d'), gefolgt von einer Verz&ouml;gerung mit 0,5 Sekunden, und die Ausgabe von 'jetzt', in derselben Geschwindigkeit wie 'wie'. Gleicherma&szlig;en wird bei "das\W2Gleiche" eine Pause von 2 Sekunden zwischen den beiden W&ouml;rtern ausgegeben. Diese Vorgehensweise ist sinnvoll um die Ausgabe an einigen WEB-Seiten genau abzustimmen.</li>
   <li><b>\z</b> ruft den alten Mechanismus f&uuml;r Automatische Eingabe auf. Dieser Mechanismus behandelt nicht-Latein Buchstaben eventuell nicht ganz richtig, 
     aber bringt Automatische Eingabe an problematische WEB-Seiten zum "Spielen". Wenn Sie feststellen das Automatische Eingabe auf bestimmte WEB-seiten nicht funktioniert,
     versuchen Sie es mit diesem Kode.</li>
