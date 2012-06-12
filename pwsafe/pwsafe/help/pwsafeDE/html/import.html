@@ -12,7 +12,7 @@
 </object>
 <!-- Popup Source File -->
 <h2>Eintr&auml;ge importieren</h2>
-<p><b>Anmerkung:</b> Teile in <span style="color:green;">gr&uuml;n</span> sind (noch) nicht aus dem Englischen &uuml;bersetzt.</p>
+<p><b>Anmerkung:</b> Teile in <span style="color: #0000FF;">blau</span> sind (noch) nicht aus dem Englischen &uuml;bersetzt.</p>
 <p><b>Password Safe</b> bietet an, Passwortinformationen aus anderen Formaten zu importieren. Diese Formate/Dateien k&ouml;nnen mit Hilfe anderer Anwendungen entstanden sein z.B. exportiert aus einer Tabelle, oder sogar von Hand geschrieben mit Notepad oder &auml;hnlichem Texteditor.</p>
 <p>Die von <b>Password Safe</b> unterst&uuml;tzten Formate sind:</p>
 <ul>
@@ -27,7 +27,7 @@
 Dieser Bericht kann in die Zwischenablage kopiert werden, oder auf die Festplatte als Textdatei im selben Verzeichnis wie die Datenbank  abgespeichert werden.
 Unter dem Menupunkt "Ansicht&nbsp;&rarr;&nbsp;Berichte" k&ouml;nnen die Berichte zu einem sp&auml;teren Zeitpunkt angeschaut werden.
 Der Name des Berichtes ist festgelegt, und h&auml;ngt ab von der Funktion mit der er erzeugt wurde.
-Wenn dieselbe Funktion ausgeführt, und der entsprechende Bericht auf die Festplatte abgespeichert wird, wird jegliche Bericht zu dieser Funktion &uuml;berschrieben. 
+Wenn dieselbe Funktion ausgef&uuml;hrt, und der entsprechende Bericht auf die Festplatte abgespeichert wird, wird jegliche Bericht zu dieser Funktion &uuml;berschrieben. 
 <span style="color:red;">Hinweis: Der Bericht kann sensible Daten enthalten, so Vorsicht ist geboten beim Abspeichern auf die Festplatte.</span></p>
 
 <p><b>Hinweis:</b> Sie k&ouml;nnen auch Untermengen aus einer anderen <b>Password Safe</b> Datenbank importieren. Sie &ouml;ffnen eine andere Datenbank mit <b>Password Safe</b>
@@ -50,11 +50,58 @@ Wenn dieselbe Funktion ausgeführt, und der entsprechende Bericht auf die Festpla
 <li>Am Ende des Importierens &ouml;ffnet sich ein kleines Fenster, in dem die Gesamtanzahl sowie die Anzahl der fehlerhaft verarbeiteten Eintr&auml;ge gemeldet werden.</li>
 </ol>
 <hr>
+<small><b><span style="color: rgb(255, 0, 0);">WICHTIG</span>:</b> Wenn ein zu importierender Eintrag eine benannte Passwortrichtlinie, die noch nicht in der aktuel empfangenden Datenbank ist, benutzt, dann wird der Eintrag nach dem Import mit der standardm&auml;&szlig;igen Passwortrichtlinie ausgestattet.<br>
+</small>
+<hr>
 <small><b><span style="color: rgb(255, 0, 0);">WICHTIG</span>:</b> Die erste Zeile der importierten Datei muss eine durch TAB getrennte Namensliste der Felder enthalten, die die Elemente im jeweiligen Eintrag beschreiben z.B. "Gruppe/Titel  Benutzername  Passwort  URL", usw. Diese Zeile wird automatisch erzeugt beim Aufruf der Funktion "<a href="export.html">Export Text</a>" erzeugt, muss aber in Dateien, die in anderen Anwendungen erstellt wurden, eventuell von Hand eingef&uuml;gt werden.<br>
 </small>
 <hr>
 <h3><a name="XML"></a>XML</h3>
 XML (eXtensible Markup Language) ist ein popul&auml;res Format, um Daten zwischen Anwendungen zu transportieren. <b>Password Safe</b> kann XML-Dateien importieren,  die nach den in der Datei <i>pwsafe.xsd</i> festgelegten Vorgaben erstellt wurden. Diese Datei ist Bestandteil dieser Distribution.
+
+
+
+<p style="color: #0000FF;">When importing XML into an empty database, any database preferences in the beginning
+of the XML input file will be imported into the database.  If the current receiving database
+already has entries, then these preferences will be ignored.</p>
+
+<p style="color: #0000FF;">However, any "Password Policy Names" in the XML input file will be imported irrespective
+of whether there are entries already in the current receiving database.  Note however, if a
+Password Policy with the same name already exists in the database, it will <u>not</u> be overwritten
+by the values in the XML input file.</p>
+
+<p style="color: #0000FF;">If an entry that uses a Password Policy Name is imported and that name is neither in the
+current receiving database nor in XML input file, then the resulting entry in the database will
+revert to using the database's default Password Policy.</p>
+
+<p style="color: #0000FF;"><u>Change of the coding of XML Date/time values</u></p>
+
+<div class="indent">
+<p style="color: #0000FF;">Prior to PasswordSafe V3.26, date time fields were exported in our own format:</p>
+<pre>
+  &lt;name&gt;
+    &lt;date&gt;yyyy-mm-dd&lt;/date&gt;
+    &lt;time&gt;hh:mm:ss&lt;/time&gt;
+  &lt;/name&gt;
+</pre>
+<p style="color: #0000FF;">Where "name" was any of our record date/time fields e.g. 'ctime', 'atime', 'xtime',
+'pmtime', 'rmtime' and the password history 'changed' date/time.</p>
+
+<p style="color: #0000FF;">However, from V3.26 onwards, PasswordSafe will only export XML date/time fields using the
+International W3C Standard date/time format. V3.26 and V3.27 can input either format but
+for versions after 3.27, it will <b><u>only</u></b> accept the W3C standard.</p>
+
+<p style="color: #0000FF;">The W3C standard for XML date/time fields is:</p>
+<pre>
+  &lt;namex&gt;yyyy-mm-ddThh:mm:ss&lt;/namex&gt;
+</pre>
+<p style="color: #0000FF;">Where we have changed the "name" to distinguish the fields from the old format by appending an 'x'
+and so 'namex' is any of our new record date/time fields e.g. 'ctimex', 'atimex', 'xtimex',
+'pmtimex', 'rmtimex' and the password history 'changedx' date/time.</p>
+
+<p style="color: #0000FF;">To import an older format XML file with date/time fields, you must manually edit these fields to
+convert to the old PasswordSafe format to the W3C standard format.</p>
+</div>
 
 <h3><a name="KeePassV1_TXTCSV"></a>KeePass V1 TXT und CSV Files</h3>
 
@@ -152,11 +199,9 @@ http://www.w3.org/TR/xslt</a>. Sie wurden getestet mit XML Dateien erzeugt mit K
 <p>Beachten Sie dass Zeiten in <b>Password Safe</b> vor 19. Januar 2038 liegen m&uuml;ssen.
 Jeder Zeit danach wird als ung&uuml;ltig betrachtet, und das zugeh&ouml;rige Feld somit auch.</p>
 
-<div style="color:green;">
-
-<p>Under Windows, the following XSLT processors support the supplied XSL Transform files. The example
+<p style="color: #0000FF;">Under Windows, the following XSLT processors support the supplied XSL Transform files. The example
 command line execution of these processors assume:<p>
-<ul>
+<ul style="color: #0000FF;">
 <li>The style sheet to convert the KeePass XML file to a <b>Password Safe</b> XML file is: KPV1_to_PWS.xslt or
 KPV2_to_PWS.xslt.</li>
 <li>The input KeePass V1 or V2 XML file is: KeePassV1.xml or KeePassV2.xml</li>
@@ -164,7 +209,7 @@ KPV2_to_PWS.xslt.</li>
 <li>All input and output files are in the same directory as the XSLT processor. If not, you will need to
 enter the full path of these files.</li>
 </ul>
-<ol>
+<ol style="color: #0000FF;">
 <li>The command line program from Microsoft (XSLT Processor Version 4.0). The properties of the file msxsl.exe state that
 it is V1.1.0.1 and dated 2001, although the web site states that it is
   V2.0 and dated 19 September 2004. It can currently be found at
@@ -200,11 +245,11 @@ The format of the command depends on whether you use the Java or .Net version of
 Saxon-HE and/or Kernow.  Please refer to the product's documentation for further information.</li>
 </ol>
 
-<p>All these programs are free, although Kernow needs to be registered if used more than 100 times.</p>
+<p style="color: #0000FF;">All these programs are free, although Kernow needs to be registered if used more than 100 times.</p>
 
 <h4>KeePass V1 XML Spezialverarbeitung</h4>
 
-<ul>
+<ul style="color: #0000FF;">
 <li>If a KeePass group contains a dot ('.'), it is converted to a forward slash ('/') when added to
 <b>Password Safe</b>, since dots are used as group delimiters by <b>Password Safe</b>.</li>
 
@@ -245,7 +290,7 @@ equivalent and are ignored</td></tr>
 
 <h4>KeePass V2 XML Spezialverarbeitung</h4>
 
-<ul>
+<ul style="color: #0000FF;">
 <li>The '&lt;HistoryMaxItems&gt;' field from the '&lt;Meta&gt;' section of the KeePass V2 XML file
 is used as the maximum number of passwords to be saved in an <b>Password Safe</b>'s entry password
 history.  All other fields in this section are ignored.</li>
@@ -281,15 +326,15 @@ entry's URL field with only {S:FieldName} substitution.</li>
 prefixed by "Tags:".</li>
 </ul>
 
-<p>KeePass V2 exports all strings, e.g. Title, in a "String" section with "Key" and "Value" sub-elements.
-For example:
+<p style="color: #0000FF;">KeePass V2 exports all strings, e.g. Title, in a "String" section with "Key" and "Value" sub-elements.
+For example:</p>
 <pre>
 &lt;String&gt;
 	&lt;Key&gt;Title&lt;/Key&gt;
 	&lt;Value&gt;Test title&lt;/Value&gt;
 &lt;/String&gt;
 </pre>
-<p>The following table shows the conversion of these to the <b>Password Save</b> equivalent XML
+<p style="color: #0000FF;">The following table shows the conversion of these to the <b>Password Save</b> equivalent XML
 element.</p>
 
 <table border="1" cellpadding="2" cellspacing="2 width="80%">
@@ -311,7 +356,7 @@ element.</p>
 </tbody>
 </table>
 
-<p>KeePass V2 exports all date/time fields, e.g. creation time, in a "Times" section. For example:</p>
+<p style="color: #0000FF;">KeePass V2 exports all date/time fields, e.g. creation time, in a "Times" section. For example:</p>
 <pre>
 &lt;Times&gt;
   &lt;LastModificationTime&gt;2011-05-30T14:20:57Z&lt;/LastModificationTime&gt;
@@ -321,7 +366,7 @@ element.</p>
   &lt;Expires&gt;False&lt;/Expires&gt;
 &lt;/Times&gt;
 </pre>
-<p>The following table shows the conversion of these to the <b>Password Save</b> equivalent XML
+<p style="color: #0000FF;">The following table shows the conversion of these to the <b>Password Save</b> equivalent XML
 element.</p>
 
 <table border="1" cellpadding="2" cellspacing="2 width="80%">
@@ -341,7 +386,7 @@ element.</p>
 </tbody>
 </table>
 
-<p>KeePass V2 can create an history section when anything is changed in an entry. <b>Password Safe</b>
+<p style="color: #0000FF;">KeePass V2 can create an history section when anything is changed in an entry. <b>Password Safe</b>
 only saves password changes.  All other saved changed fields in the KeePass XML element are ignored.</p>
 
 <table border="1" cellpadding="2" cellspacing="2 width="80%">
@@ -360,7 +405,7 @@ only saves password changes.  All other saved changed fields in the KeePass XML 
 </tbody>
 </table>
 
-<p>The following KeePass V2 Auto-type special codes (see
+<p style="color: #0000FF;">The following KeePass V2 Auto-type special codes (see
 <a target="blank" href="http://keepass.info/help/base/autotype.html">http://keepass.info/help/base/autotype.html</a>) 
 are translated as follows.  <i>All codes not listed are copied across as-is.</i></p>
 
@@ -392,14 +437,14 @@ are translated as follows.  <i>All codes not listed are copied across as-is.</i>
 </tbody>
 </table>
 
-<p>The following KeePass V2 Platzhalter (see 
+<p style="color: #0000FF;">The following KeePass V2 Platzhalter (see 
 <a target="blank" href="http://keepass.info/help/base/placeholders.html">http://keepass.info/help/base/placeholders.html</a>)
 are translated as follows.  <i>All codes not listed are copied across as-is</i>.</p>
 
-<p>Platzhalter achten nicht auf Gro&szlig;- oder Kleinschreibung. 
+<p style="color: #0000FF;">Platzhalter achten nicht auf Gro&szlig;- oder Kleinschreibung. 
 Custom strings can be referenced using {S:Name}. For example,
 if the database has a custom string named "eMail", it can be referenced via the Placeholder {S:eMail}.</p>
-</div>
+
 <table border="1" cellpadding="2" cellspacing="2 width="80%">
 <col align="left" width="33%" />
 <col align="center" width="33%" />

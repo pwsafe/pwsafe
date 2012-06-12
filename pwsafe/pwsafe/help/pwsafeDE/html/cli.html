@@ -43,7 +43,7 @@ aufgerufen wurden (siehe oben).</li>
   <li><i>pwsafe</i> <b>-m</b><br>
     Dies ist dasselbe wie '<b>-c</b>'. Au&szlig;erdem wird die Anwendung minimiert gestartet.</li>
 </ul>
-Zus&auml;tzlich werden folgende Argumente akzeptiert:<br>
+Zus&auml;tzlich werden folgende Argumente akzeptiert:<br>Diese Argumente k&ouml;nnten n&uuml;tzlich sein, wenn Sie dieselben Einstellungen &uuml;ber mehrere Maschinen gemeinsam benutzen m&ouml;chten, z.B. wenn Sie <b>Password Safe</b> aus einer disk-on-key betreiben.
 <ul>
   <li><b>-u</b> <i>Benutzername</i><br>
 Hiermit kann die Anwendung angehalten werden, das Lesen und Schreiben der Einstellungen unter dem angegebenen <i>Benutzername</i> zu machen, anstatt es unter dem Anmeldenamen zu tun.</li>
@@ -54,7 +54,26 @@ Hiermit kann die Anwendung angehalten werden, das Lesen und Schreiben der Einste
 </ul>
 <ul>
 </ul>
-Diese Argumente k&ouml;nnten n&uuml;tzlich sein, wenn Sie dieselben Einstellungen &uuml;ber mehrere Maschinen gemeinsam benutzen m&ouml;chten, z.B. wenn Sie <b>Password Safe</b> aus einer disk-on-key betreiben.<br>
+
+<p>Zu guter letzt, sind da noch ein paar spezielle Kommandozeilen 4flags die mit "--" beginnen. Dies sind:
+</p>
+
+<ul>
+<li><b>--novalidate</b><br>
+Dies verhindert dass <b>Password Safe</b> automatisch Datenbanken validiert beim Er&ouml;ffnen.
+Einige Sachen m&uuml;ssen aber immer validiert werden, z.B. Eindeutichkeit der ID der Eintr&auml;ge und der Kombination Gruppe / Titel / Benutzername.</li>
+
+<li><b>--testdump</b><br>
+Dies erlaubt es Testern bei der Erstellung eines Mini-Dump, wenn <b>Password Safe</b> ein Problem hat, um die Entwickler bei der L&ouml;sung zu helfen.</li>
+
+<li><b>--cetreeview</b><br>
+Dieses neue Merkmal erlaubt es zwei Eintr&auml;ge auszuw&auml;hlen und zu vergleichen im <i>Bearbeiten</i> Men&uuml; oder durch ein Rechtsklick auf einem Eintrag.
+Die Auswahl mehrere Eintr&auml;ge wird von Hause aus in der Listenansicht unterst&uuml;tzt, aber nicht in der Baumstruktur. 
+Dieses Flag schaltet <i>Vergleiche Eintrag</i> frei, mit einem extra Dialog um den 'anderen' Eintrag auszuw&auml;hlen.
+Die Unterst&uuml;tzung dieses Merkmales in der Baumstruktur wird noch entwickelt. Wenn es implementiert ist, wird dieses Flag ignoroert.</li>
+</ul>
+
+<br>
 <br>
 <object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
  <param name="Keyword" value="NUR Lesen">
