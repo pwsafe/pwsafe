@@ -41,6 +41,7 @@ public:
     HDR_RUE                   = 0x0f,     // added in format 0x0307
     HDR_PSWDPOLICIES          = 0x10,     // added in format 0x030A
     HDR_EMPTYGROUP            = 0x11,     // added in format 0x030B
+    HDR_RESERVED4             = 0x12,     // added in format 0x030C
     HDR_LAST,                             // Start of unknown fields!
     HDR_END                   = 0xff};    // header field types, per formatV{2,3}.txt
 

@@ -156,6 +156,7 @@ Reserved                    0x0e        -                            [13]
 Recently Used Entries       0x0f        Text                         [14]
 Named Password Policies     0x10        Text                         [15]
 Empty Groups                0x11        Text                         [16]
+Reserved                    0x12        Text                         [13]
 End of Entry                0xff        [empty]       Y              [17]
 
 [1] The version number of the database format. For this version, the value
@@ -172,6 +173,7 @@ PasswordSafe V3.25 introduced Format 0x0308
 PasswordSafe V3.26 introduced Format 0x0309
 PasswordSafe V3.28 introduced Format 0x030A
 PasswordSafe V3.29 introduced Format 0x030B
+PasswordSafe V3.29Y introduced Format 0x030C
 
 [2] A universally unique identifier is needed in order to synchronize
 databases, e.g., between a handheld pocketPC device and a
