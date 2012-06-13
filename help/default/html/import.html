@@ -75,12 +75,18 @@ showing how many entries were added, and how many (if any) were
 unsuccessfully parsed.</li>
 </ol>
 
-<hr>
+<hr style="width: 100%; height: 2px;">
+<small><b style="color: rgb(255, 0, 0);">IMPORTANT</b>: If an entry that uses a
+Password Policy Name is imported and that name is not already in the current
+receiving database, then the resulting entry in the database will
+revert to using the database's default Password Policy.<br>
+</small>
+
+<hr style="width: 100%; height: 2px;">
 <small><b style="color: rgb(255, 0, 0);">IMPORTANT</b>: The
 first line of the file being imported must be a tab-separated list of
 the names of the fields that each entry contains, e.g.,
-"Group/Title&nbsp;&nbsp;&nbsp; Username&nbsp;&nbsp;&nbsp;
-Password&nbsp;&nbsp;&nbsp; URL", etc. This line is generated
+"Group/Title&nbsp;Username&nbsp;Password&nbsp;URL", etc. This line is generated
 automatically by the "<a href="export.html">Export Text</a>" function,
 but must be added manually for files created from other tools.<br>
 </small>
@@ -93,6 +99,48 @@ but must be added manually for files created from other tools.<br>
 data between applications. <b>Password Safe</b>
 can import XML files that were generated according to the schema defined in
 the file <i>pwsafe.xsd</i>, which is provided as part of the distribution.</p>
+
+<p>When importing XML into an empty database, any database preferences in the beginning
+of the XML input file will be imported into the database.  If the current receiving database
+already has entries, then these preferences will be ignored.</p>
+
+<p>However, any "Password Policy Names" in the XML input file will be imported irrespective
+of whether there are entries already in the current receiving database.  Note however, if a
+Password Policy with the same name already exists in the database, it will <u>not</u> be overwritten
+by the values in the XML input file.</p>
+
+<p>If an entry that uses a Password Policy Name is imported and that name is neither in the
+current receiving database nor in XML input file, then the resulting entry in the database will
+revert to using the database's default Password Policy.</p>
+
+<p><u>Change of the coding of XML Date/time values</u></p>
+
+<div class="indent">
+<p>Prior to PasswordSafe V3.26, date time fields were exported in our own format:</p>
+<pre>
+  &lt;name&gt;
+    &lt;date&gt;yyyy-mm-dd&lt;/date&gt;
+    &lt;time&gt;hh:mm:ss&lt;/time&gt;
+  &lt;/name&gt;
+</pre>
+<p>Where "name" was any of our record date/time fields e.g. 'ctime', 'atime', 'xtime',
+'pmtime', 'rmtime' and the password history 'changed' date/time.</p>
+
+<p>However, from V3.26 onwards, PasswordSafe will only export XML date/time fields using the
+International W3C Standard date/time format. V3.26 and V3.27 can input either format but
+for versions after 3.27, it will <b><u>only</u></b> accept the W3C standard.</p>
+
+<p>The W3C standard for XML date/time fields is:</p>
+<pre>
+  &lt;namex&gt;yyyy-mm-ddThh:mm:ss&lt;/namex&gt;
+</pre>
+<p>Where we have changed the "name" to distinguish the fields from the old format by appending an 'x'
+and so 'namex' is any of our new record date/time fields e.g. 'ctimex', 'atimex', 'xtimex',
+'pmtimex', 'rmtimex' and the password history 'changedx' date/time.</p>
+
+<p>To import an older format XML file with date/time fields, you must manually edit these fields to
+convert to the old PasswordSafe format to the W3C standard format.</p>
+</div>
 
 <h3><a name="KeePassV1_TXTCSV"></a>KeePass V1 TXT and CSV Files</h3>
 
@@ -308,12 +356,12 @@ used within that database (which is very unlikely), in which case a new value wi
 import.</li>
 
 <li>If the '&lt;DefaultAutoTypeSequence&gt;' field is present within a KeePass group is used
-as the default <b>Password Safe</b> Autotype field for entries within that group.</li>
+as the default <b>Password Safe</b> AutoType field for entries within that group.</li>
 
 <li>If an entry's '&lt;AutoType&gt;' field is set to 'True' and the '&lt;DefaultSequence&gt;'
-is not empty, then this is used as the <b>Password Safe</b>'s entry's Autotype sequence. If it is
+is not empty, then this is used as the <b>Password Safe</b>'s entry's AutoType sequence. If it is
 'True' but '&lt;DefaultSequence&gt;' is empty, then the '&lt;DefaultAutoTypeSequence&gt;' field from 
-the parent group is used as the <b>Password Safe</b>'s entry's Autotype sequence.</li>
+the parent group is used as the <b>Password Safe</b>'s entry's AutoType sequence.</li>
 
 <li>If the '&lt;OverrideURL&gt;' field is not empty, its value is inserted into the Notes field and
 prefixed by "OverrideURL:" and the URL field is prefixed by "[alt]".</li>

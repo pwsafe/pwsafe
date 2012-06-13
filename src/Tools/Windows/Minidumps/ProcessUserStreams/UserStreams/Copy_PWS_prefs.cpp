@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -110,8 +110,8 @@ const PWSprefs::intPref PWSprefs::int_prefs[NumIntPrefs] = {
                                   minTDS, maxTDS},                  // database
   {_T("NumPWHistoryDefault"), 3, ptDatabase, 0, 255},               // database
   // Specified by supported masks
-  {_T("BackupSuffix"), BKSFX_None, ptApplication, minBKSFX, maxBKSFX}, // application
-  {_T("BackupMaxIncremented"), 1, ptApplication, 1, 999},           // application
+  {_T("BackupSuffix"), BKSFX_IncNumber, ptApplication, minBKSFX, maxBKSFX}, // application
+  {_T("BackupMaxIncremented"), 3, ptApplication, 1, 999},           // application
   {_T("PreExpiryWarnDays"), 1, ptApplication, 1, 30},               // application
   {_T("ClosedTrayIconColour"), stiBlack, ptApplication,
                                stiBlack, stiYellow},                // application
@@ -120,7 +120,7 @@ const PWSprefs::intPref PWSprefs::int_prefs[NumIntPrefs] = {
   {_T("PWSymbolMinLength"), 0, ptDatabase, 0, 1024},                // database
   {_T("PWUppercaseMinLength"), 0, ptDatabase, 0, 1024},             // database
   {_T("OptShortcutColumnWidth"), 92, ptApplication, 10, 512},       // application
-  {_T("ShiftDoubleClickAction"), DoubleClickCopyPassword, ptApplication,
+  {_T("ShiftDoubleClickAction"), DoubleClickCopyUsername, ptApplication,
                             minDCA, maxDCA},                        // application
 };
 

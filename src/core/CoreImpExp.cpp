@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -44,7 +44,7 @@
 #include <algorithm>
 #include <set>
 
-const TCHAR *EXPORTHEADER  = _T("Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tPassword Expiry Interval\tRecord Modified Time\tPassword Policy\tHistory\tRun Command\tDCA\tShift DCA\te-mail\tProtected\tSymbols\tNotes");
+const TCHAR *EXPORTHEADER  = _T("Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tPassword Expiry Interval\tRecord Modified Time\tPassword Policy\tPassword Policy Name\tHistory\tRun Command\tDCA\tShift DCA\te-mail\tProtected\tSymbols\tNotes");
 const TCHAR *KPEXPORTHEADER  = _T("Password Groups\tGroup Tree\tAccount\tLogin Name\tPassword\tWeb Site\tComments\tUUID\tIcon\tCreation Time\tLast Access\tLast Modification\tExpires\tAttachment Description\tAttachment");
 const TCHAR *KPIMPORTEDPREFIX = _T("ImportedKeePass");
 const TCHAR *FORMATIMPORTED = _T("\xab%s\xbb \xab%s\xbb \xab%s\xbb");
@@ -113,9 +113,9 @@ int PWScore::TestSelection(const bool bAdvanced,
       return FAILURE;
   } else {
     if (il != NULL)
-      return (il->size() == 0) ? NO_ENTRIES_EXPORTED : SUCCESS;
+      return il->empty() ? NO_ENTRIES_EXPORTED : SUCCESS;
     else
-      return (m_pwlist.size() == 0) ? NO_ENTRIES_EXPORTED : SUCCESS;
+      return m_pwlist.empty() ? NO_ENTRIES_EXPORTED : SUCCESS;
   }
   return SUCCESS;
 }
@@ -174,6 +174,9 @@ StringX PWScore::BuildHeader(const CItemData::FieldBits &bsFields, const bool bI
   }
   if (bittest(bsFields, CItemData::POLICY, bIncluded)) {
     hdr += CItemData::FieldName(CItemData::POLICY) + TAB;
+  }
+  if (bittest(bsFields, CItemData::POLICYNAME, bIncluded)) {
+    hdr += CItemData::FieldName(CItemData::POLICYNAME) + TAB;
   }
   if (bittest(bsFields, CItemData::PWHIST, bIncluded)) {
     hdr += CItemData::FieldName(CItemData::PWHIST) + TAB;
@@ -294,8 +297,8 @@ int PWScore::WritePlaintextFile(const StringX &filename,
 
   // Although the MFC UI prevents the user selecting export of an
   // empty database, other UIs might not, so:
-  if ((il != NULL && il->size() == 0) ||
-      (il == NULL && m_pwlist.size() == 0))
+  if ((il != NULL && il->empty()) ||
+      (il == NULL && m_pwlist.empty()))
     return NO_ENTRIES_EXPORTED;
  
   FILE *txtfile = pws_os::FOpen(filename.c_str(), _T("wt"));
@@ -531,6 +534,20 @@ int PWScore::WriteXMLFile(const StringX &filename,
   conv.ToUTF8(prefs.c_str(), utf8, utf8Len);
   ofs.write(reinterpret_cast<const char *>(utf8), utf8Len);
 
+  stringT pwpolicies = GetXMLPWPolicies();
+  if (!pwpolicies.empty()) {
+    // write out password policies stored in database
+    LoadAString(cs_temp, IDSC_XMLEXP_POLICIES);
+    oss_xml << _T(" <!-- ") << cs_temp << _T(" --> ");
+    conv.ToUTF8(oss_xml.str(), utf8, utf8Len);
+    ofs.write(reinterpret_cast<const char *>(utf8), utf8Len);
+    ofs << endl;
+    oss_xml.str(_T(""));  // Clear buffer for next user
+
+    conv.ToUTF8(pwpolicies.c_str(), utf8, utf8Len);
+    ofs.write(reinterpret_cast<const char *>(utf8), utf8Len);
+  }
+
   bool bStartComment(false);
   if (bFilterActive) {
     if (!bStartComment) {
@@ -653,7 +670,7 @@ int PWScore::WriteXMLFile(const StringX &filename,
 int PWScore::ImportXMLFile(const stringT &, const stringT &,
                            const stringT &, const bool &,
                            stringT &, stringT &, stringT &, stringT &,
-                           int &, int &, int &, int &, int &,
+                           int &, int &, int &, int &, int &, int &, int &,
                            CReport &, Command *&)
 {
   return UNIMPLEMENTED;
@@ -662,9 +679,10 @@ int PWScore::ImportXMLFile(const stringT &, const stringT &,
 int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLFileName,
                            const stringT &strXSDFileName, const bool &bImportPSWDsOnly,
                            stringT &strXMLErrors, stringT &strSkippedList,
-                           stringT &strPWHErrorList, stringT &strRenameList, 
+                           stringT &strPWHErrorList, stringT &strRenameList,
                            int &numValidated, int &numImported, int &numSkipped,
-                           int &numPWHErrors, int &numRenamed, 
+                           int &numPWHErrors, int &numRenamed,
+                           int &numNoPolicy, int &numRenamedPolicies,
                            CReport &rpt, Command *&pcommand)
 {
   UUIDVector Possible_Aliases, Possible_Shortcuts;
@@ -699,6 +717,8 @@ int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLF
   numSkipped = iXML.getNumEntriesSkipped();
   numRenamed = iXML.getNumEntriesRenamed();
   numPWHErrors = iXML.getNumEntriesPWHErrors();
+  numNoPolicy = iXML.getNumNoPolicies();
+  numRenamedPolicies = iXML.getNumRenamedPolicies();
 
   strXMLErrors = iXML.getXMLErrors();
   strSkippedList = iXML.getSkippedList();
@@ -735,6 +755,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
                                  stringT &strError,
                                  int &numImported, int &numSkipped,
                                  int &numPWHErrors, int &numRenamed,
+                                 int &numNoPolicy,
                                  CReport &rpt, Command *&pcommand)
 {
   stringT cs_error;
@@ -794,7 +815,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   // Order of fields determined in CItemData::GetPlaintext()
   enum Fields {GROUPTITLE, USER, PASSWORD, URL, AUTOTYPE,
                CTIME, PMTIME, ATIME, XTIME, XTIME_INT, RMTIME,
-               POLICY, HISTORY, RUNCMD, DCA, SHIFTDCA, EMAIL,
+               POLICY, POLICYNAME, HISTORY, RUNCMD, DCA, SHIFTDCA, EMAIL,
                PROTECTED, SYMBOLS, NOTES, 
                NUMFIELDS};
 
@@ -893,7 +914,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
 
   bool bMaintainDateTimeStamps = PWSprefs::GetInstance()->
               GetPref(PWSprefs::MaintainDateTimeStamps);
-  bool bIntoEmpty = m_pwlist.size() == 0;
+  bool bIntoEmpty = m_pwlist.empty();
 
   UUIDVector Possible_Aliases, Possible_Shortcuts;
 
@@ -909,6 +930,9 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   InitialiseGTU(setGTU);
 
   for (;;) {
+    bool bNoPolicy(false);
+    StringX sxPolicyName;
+
     // read a single line.
     if (!getline(iss, linebuf, '\n')) break;
     numlines++;
@@ -1160,6 +1184,17 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
     if (i_Offset[POLICY] >= 0 && tokens.size() > static_cast<size_t>(i_Offset[POLICY]))
       if (!ci_temp.SetPWPolicy(tokens[i_Offset[POLICY]].c_str()))
         ReportInvalidField(rpt, vs_Header.at(POLICY), numlines);
+    if (i_Offset[POLICYNAME] >= 0 && tokens.size() > static_cast<size_t>(i_Offset[POLICYNAME])) {
+      sxPolicyName = tokens[i_Offset[POLICYNAME]].c_str();
+      if (!sxPolicyName.empty()) {
+        if (m_MapPSWDPLC.find(sxPolicyName) != m_MapPSWDPLC.end()) {
+          ci_temp.SetPolicyName(sxPolicyName);
+        } else {
+          bNoPolicy = true;
+          numNoPolicy++;
+        }
+      }
+    }
     if (i_Offset[HISTORY] >= 0 && tokens.size() > static_cast<size_t>(i_Offset[HISTORY])) {
       StringX newPWHistory;
       stringT strPWHErrorList;
@@ -1249,8 +1284,22 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
     StringX sx_imported;
     Format(sx_imported, FORMATIMPORTED,
                         sx_group.c_str(), sx_title.c_str(), sx_user.c_str());
+
     rpt.WriteLine(sx_imported.c_str());
+
+    if (bNoPolicy) {
+      Format(sx_imported, IDSC_MISSINGPOLICYNAME, sxPolicyName.c_str());
+      rpt.WriteLine(sx_imported.c_str());
+    }
   } // file processing for (;;) loop
+
+  if (numNoPolicy != 0) {
+    rpt.WriteLine();
+
+    StringX sxTemp;
+    LoadAString(sxTemp, IDSC_MISSINGPOLICYNAMES);
+    rpt.WriteLine(sxTemp.c_str());
+  }
 
   Command *pcmdA = AddDependentEntriesCommand::Create(this,
                                                       Possible_Aliases, &rpt, 
@@ -2162,4 +2211,56 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
     SetDBChanged(true);
 
   return ((numSkipped + numRenamed)) == 0 ? SUCCESS : OK_WITH_ERRORS;
+}
+  
+stringT PWScore::GetXMLPWPolicies()
+{
+  stringT retval(_T(""));
+  ostringstreamT os;
+
+  if (m_MapPSWDPLC.empty())
+    return retval;
+
+  os << _T("\t<NamedPasswordPolicies>") << endl;
+
+  PSWDPolicyMapCIter iter;
+  for (iter = m_MapPSWDPLC.begin(); iter != m_MapPSWDPLC.end(); iter++) {
+    os << "\t\t<Policy>" << endl;
+    stringT sTemp = PWSUtil::GetSafeXMLString(iter->first);
+    os << "\t\t\t<PWName>" << sTemp << "</PWName>" << endl;
+
+    os << "\t\t\t<PWDefaultLength>" << iter->second.pwp.length <<
+          "</PWDefaultLength>" << endl;
+
+    if (iter->second.pwp.flags & PWSprefs::PWPolicyUseLowercase)
+      os << "\t\t\t<PWUseLowercase>1</PWUseLowercase>" << endl;
+
+    if (iter->second.pwp.flags & PWSprefs::PWPolicyUseUppercase)
+      os << "\t\t\t<PWUseUppercase>1</PWUseUppercase>" << endl;
+
+    if (iter->second.pwp.flags & PWSprefs::PWPolicyUseDigits)
+      os << "\t\t\t<PWUseDigits>1</PWUseDigits>" << endl;
+
+    if (iter->second.pwp.flags & PWSprefs::PWPolicyUseSymbols)
+      os << "\t\t\t<PWUseSymbols>1</PWUseSymbols>" << endl;
+
+    if (iter->second.pwp.flags & PWSprefs::PWPolicyUseHexDigits)
+      os << "\t\t\t<PWUseHexDigits>1</PWUseHexDigits>" << endl;
+
+    if (iter->second.pwp.flags & PWSprefs::PWPolicyUseEasyVision)
+      os << "\t\t\t<PWUseEasyVision>1</PWUseEasyVision>" << endl;
+
+    if (iter->second.pwp.flags & PWSprefs::PWPolicyMakePronounceable)
+      os << "\t\t\t<PWMakePronounceable>1</PWMakePronounceable>" << endl;
+
+    if (!iter->second.symbols.empty()) {
+      sTemp = PWSUtil::GetSafeXMLString(iter->second.symbols);
+      os << "\t\t\t<symbols>" << sTemp << "</symbols>" << endl;
+    }
+    os << "\t\t</Policy>" << endl;
+  }
+
+  os << "\t</NamedPasswordPolicies>" << endl << endl;
+  retval = os.str().c_str();
+  return retval;
 }

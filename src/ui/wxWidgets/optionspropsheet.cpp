@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+ * Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -37,6 +37,8 @@
 #include "core/Util.h" // for datetime string
 #include "core/PWSAuxParse.h" // for DEFAULT_AUTOTYPE
 #include "./wxutils.h"
+#include "./pwsafeapp.h"
+#include <wx/stockitem.h>
 
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
@@ -45,6 +47,7 @@
 ////@begin XPM images
 ////@end XPM images
 
+void PutAcceleratorsInGrid(wxGrid* grid);
 
 /*!
  * COptions type definition
@@ -130,6 +133,8 @@ const wxChar *BUSuffix[] = {
 };
 
 enum {NO_SFX, TS_SFX, INC_SFX}; // For backup file suffix name
+
+enum {COL_SHORTCUT_KEY, COL_MENU_ITEM}; //For shortcuts page
 
 // Following in enum order (see PWSprefs.h)
 const wxChar *DCAStrings[] = {
@@ -736,7 +741,22 @@ void COptions::CreateControls()
   itemGrid143->SetColLabelSize(25);
   itemGrid143->SetRowLabelSize(50);
   itemGrid143->CreateGrid(50, 2, wxGrid::wxGridSelectCells);
+  itemGrid143->SetColLabelValue(COL_SHORTCUT_KEY, _("Shortcut Key"));
+  itemGrid143->SetColLabelValue(COL_MENU_ITEM, _("Menu Item"));
 
+  wxBoxSizer* shortcutSizer = new wxBoxSizer(wxVERTICAL);
+  shortcutSizer->Add(itemGrid143, wxSizerFlags().Expand().Proportion(1).Border());
+  itemPanel142->SetSizer(shortcutSizer);
+
+  PutAcceleratorsInGrid(itemGrid143);
+  itemGrid143->AutoSize();
+
+  wxGridCellAttr* colAttr = new wxGridCellAttr;
+  colAttr->SetReadOnly();
+  itemGrid143->SetColAttr(COL_MENU_ITEM, colAttr);
+  itemGrid143->Connect(wxEVT_GRID_CELL_CHANGE, wxGridEventHandler(COptions::OnShortcutChange), NULL, this);
+  //let's not directly connect to the grid for key events.  We'll only handle what bubbles up to us
+  itemGrid143->GetGridWindow()->Connect(itemGrid143->GetGridWindow()->GetId(), wxEVT_KEY_DOWN, wxKeyEventHandler(COptions::OnShortcutKey), NULL, this);
   GetBookCtrl()->AddPage(itemPanel142, _("Shortcuts"));
 
   // Set validators
@@ -1102,7 +1122,7 @@ void COptions::OnSuffixCBSet( wxCommandEvent& /* evt */ )
   m_bumaxinc->Enable(suffixIndex == INC_SFX);
   switch (suffixIndex) {
   case NO_SFX:
-    m_suffixExample->SetLabel(_(""));
+    m_suffixExample->SetLabel(wxEmptyString);
     break;
   case TS_SFX: {
     time_t now;
@@ -1361,4 +1381,123 @@ int COptions::GetRequiredPWLength() const {
       total += spinCtrls[idx]->GetValue();
   }
   return total;
+}
+
+
+/*
+ * Retrieves all shortcuts from a menu recursively
+ *
+ */
+void GetShortcutsFromMenu(wxMenu* menu, wxGrid* grid, int& row, const wxString& menuLabel)
+{
+  wxMenuItemList& items = menu->GetMenuItems();
+  const CRecentDBList& rdb = wxGetApp().recentDatabases();
+  for (wxMenuItemList::iterator itr = items.begin(); itr != items.end(); ++itr) {
+    wxMenuItem* item = *itr;
+    if (item->IsSeparator())
+      continue;
+    //skip Recently-Used items from file menu
+    if (item->GetId() >= rdb.GetBaseId() && item->GetId() <= (rdb.GetBaseId() + rdb.GetMaxFiles()-1))
+      continue;
+    const wxString menuItemLabel = menuLabel + wxT(" \xbb ") + item->GetItemLabelText();
+    if (item->IsSubMenu()) {
+      GetShortcutsFromMenu(item->GetSubMenu(), grid, row, menuItemLabel);
+    }
+    else {
+      if (row >= grid->GetNumberRows())
+        grid->AppendRows(row - grid->GetNumberRows() + 1);
+      wxAcceleratorEntry* accel = item->GetAccel();
+      if (accel) {
+        grid->SetCellValue(row, COL_SHORTCUT_KEY, accel->ToString());
+      }
+      else if (wxIsStockID(item->GetId())) {
+        wxAcceleratorEntry stockAccel = wxGetStockAccelerator(item->GetId());
+        if (stockAccel.IsOk())
+          grid->SetCellValue(row, COL_SHORTCUT_KEY, stockAccel.ToString());
+      }
+      grid->SetCellValue(row, COL_MENU_ITEM, menuItemLabel);
+      row++;
+    }
+  }
+}
+
+/*
+ * Retrieves all shortcuts from the frame's accelerator table
+ *
+ */
+void PutAcceleratorsInGrid(wxGrid* grid)
+{
+  wxFrame* frame = wxDynamicCast(wxGetApp().GetTopWindow(), wxFrame);
+  wxCHECK_RET(frame, wxT("Could not get frame window from wxApp"));
+  wxMenuBar* menuBar = frame->GetMenuBar();
+  wxCHECK_RET(menuBar, wxT("Could not get menu bar from frame"));
+  int row = 0;
+  for( unsigned menuIndex = 0; menuIndex < menuBar->GetMenuCount(); ++menuIndex) {
+    GetShortcutsFromMenu(menuBar->GetMenu(menuIndex), grid, row, menuBar->GetMenuLabelText(menuIndex));
+  }
+  if (row < grid->GetNumberRows())
+    grid->DeleteRows(row, grid->GetNumberRows() - row);
+}
+
+void COptions::OnShortcutChange(wxGridEvent& evt)
+{
+  wxGrid* grid = wxDynamicCast(evt.GetEventObject(), wxGrid);
+  wxCHECK_RET(grid, wxT("Could not get grid from wxGridEvent"));
+  wxGridCellCoords cell(evt.GetRow(), evt.GetCol());
+  wxString newStr = grid->GetCellValue(cell);
+  if (newStr.IsEmpty())
+    return;
+  //The parser expects a full menuitem string, with menu text and accel separated by TAB
+  wxAcceleratorEntry* newAccel = wxAcceleratorEntry::Create(wxT('\t')+newStr);
+  if (!newAccel) {
+    //wxMessageBox(wxT("Invalid shortcut: ") + newStr, wxT("Shortcut changed"), wxOK|wxICON_ERROR, this);
+    grid->SetCellTextColour(cell.GetRow(), cell.GetCol(), *wxRED);
+  }
+  else {
+    grid->SetCellValue(cell, newAccel->ToString());
+    grid->SetCellTextColour(cell.GetRow(), cell.GetCol(), grid->GetDefaultCellTextColour());
+  }
+  delete newAccel;
+}
+
+int ModifiersToAccelFlags(int mods)
+{
+  struct mod_accel_map_t {
+    int modifier;
+    int accelerator;
+  } mod_accel_map[] = {
+        {wxMOD_ALT,          wxACCEL_ALT   },
+        {wxMOD_CONTROL,      wxACCEL_CTRL  },
+        {wxMOD_SHIFT,        wxACCEL_SHIFT },
+#if defined(__WXMAC__) || defined(__WXCOCOA__)
+        {wxMOD_CMD,          wxACCEL_CMD   },
+#endif
+  };
+
+  int flags = wxACCEL_NORMAL; //no modifiers
+  for (size_t idx = 0; idx < WXSIZEOF(mod_accel_map); ++idx) {
+    if (mods & mod_accel_map[idx].modifier)
+      flags |= mod_accel_map[idx].accelerator;
+  }
+  return flags;
+}
+
+bool IsFunctionKey(int keycode)
+{
+  return keycode >= WXK_F1 && keycode <= WXK_F24;
+}
+
+void COptions::OnShortcutKey(wxKeyEvent& evt)
+{
+  wxWindow* gridWindow = wxDynamicCast(evt.GetEventObject(), wxWindow);
+  wxGrid* grid = wxDynamicCast(gridWindow->GetParent(), wxGrid);
+  wxCHECK_RET(grid, wxT("Could not get grid from wxKeyEvent"));
+  //unless there are modifiers, don't attempt anything
+  if ((evt.GetModifiers() || IsFunctionKey(evt.GetKeyCode())) && grid->GetGridCursorCol() == COL_SHORTCUT_KEY) {
+    wxAcceleratorEntry* accel = new wxAcceleratorEntry(ModifiersToAccelFlags(evt.GetModifiers()),
+                                                        evt.GetKeyCode(), 0);
+    grid->SetCellValue(grid->GetCursorRow(), grid->GetCursorColumn(), accel->ToString());
+    delete accel;
+  }
+  evt.Skip();
 }

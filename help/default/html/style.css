@@ -18,6 +18,11 @@ A:hover { Color: maroon; text-decoration: underline;}
 	margin-left: .25in;
 	}
 
+.indent
+   {
+   margin-left: 40px;
+  }
+  
 DD	{
 	text-indent: 10%;
 	}

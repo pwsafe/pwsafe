@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+ * Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -23,7 +23,7 @@
 
 #define MAJORVERSION 0
 #define MINORVERSION 7
-#define REVISION     0
+#define REVISION     1
 
 // LINUXPRODVER and SVN_VERSION set by mkversion.pl
 // LINUXPRODVER is for Misc/make-latest-xml.pl

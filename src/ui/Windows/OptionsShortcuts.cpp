@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -392,6 +392,6 @@ int CALLBACK COptionsShortcuts::CompareFunc(LPARAM lParam1, LPARAM lParam2,
 
 bool COptionsShortcuts::GetMapMenuShortcutsIter(const UINT &id, MapMenuShortcutsIter &iter)
 {
-  iter=m_MapMenuShortcuts.find(id);
-  return iter!=m_MapMenuShortcuts.end();
+  iter = m_MapMenuShortcuts.find(id);
+  return iter != m_MapMenuShortcuts.end();
 }

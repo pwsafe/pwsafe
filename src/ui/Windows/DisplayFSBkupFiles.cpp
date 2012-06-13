@@ -1,12 +1,12 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
 
-// ExpPWListDlg.cpp : implementation file
+// DisplayFSBkupFiles.cpp : implementation file
 //
 
 #include "stdafx.h"
@@ -109,9 +109,10 @@ BOOL CDisplayFSBkupFiles::OnInitDialog()
 
   int nPos = 0;
 
+  cs_text.LoadString(IDS_NA);
   // Add in the current database as the first entry
   nPos = m_RFListCtrl.InsertItem(nPos, m_st_dbpcore.database.c_str());
-  m_RFListCtrl.SetItemText(nPos, 1, L"N/A");
+  m_RFListCtrl.SetItemText(nPos, 1, cs_text);
   m_RFListCtrl.SetItemText(nPos, 2, m_st_dbpcore.databaseformat.c_str());
   m_RFListCtrl.SetItemText(nPos, 3, m_st_dbpcore.numgroups.c_str());
   m_RFListCtrl.SetItemText(nPos, 4, m_st_dbpcore.numentries.c_str());
@@ -135,7 +136,7 @@ BOOL CDisplayFSBkupFiles::OnInitDialog()
        filepos++) {
     const st_recfile st_rf = *filepos;
     nPos = m_RFListCtrl.InsertItem(++nPos, st_rf.filename.c_str());
-    // Svae return codes for later
+    // Save return codes for later
     m_vrc.push_back(st_rf.rc);
     if (st_rf.rc == 0) {
       m_RFListCtrl.SetItemText(nPos, 1, wsYES.c_str());
@@ -184,7 +185,7 @@ BOOL CDisplayFSBkupFiles::PreTranslateMessage(MSG* pMsg)
       // Change to allow tooltip on disabled controls
       MSG msg = *pMsg;
       msg.hwnd = (HWND)m_pToolTipCtrl->SendMessage(TTM_WINDOWFROMPOINT, 0,
-                                                  (LPARAM)&msg.pt);
+                                                   (LPARAM)&msg.pt);
       CPoint pt = pMsg->pt;
       ::ScreenToClient(msg.hwnd, &pt);
 

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -36,10 +36,6 @@
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
-
-const UINT COptionsMisc::uiDBPrefs[] = {
-  IDC_USERNAME, IDC_MAINTAINDATETIMESTAMPS, IDC_USEDEFUSER
-};
 
 /////////////////////////////////////////////////////////////////////////////
 // COptionsMisc property page
@@ -101,6 +97,9 @@ void COptionsMisc::DoDataExchange(CDataExchange* pDX)
   DDX_Text(pDX, IDC_OTHEREDITORLOCATION, m_OtherEditorLocation);
   DDX_Text(pDX, IDC_ALTBROWSER_CMDLINE, m_BrowserCmdLineParms);
   DDX_Check(pDX, IDC_MINIMIZEONAUTOTYPE, m_AutotypeMinimize);
+
+  DDX_Control(pDX, IDC_MAINTAINDATETIMESTAMPS, m_chkbox[0]);
+  DDX_Control(pDX, IDC_USEDEFUSER, m_chkbox[1]);
   //}}AFX_DATA_MAP
 }
 
@@ -123,8 +122,9 @@ BOOL COptionsMisc::OnInitDialog()
 {
   COptions_PropertyPage::OnInitDialog();
 
-  for (int i = 0; i < sizeof(uiDBPrefs) / sizeof(uiDBPrefs[0]); i++) {
-    SetWindowTheme(GetDlgItem(uiDBPrefs[i])->GetSafeHwnd(), L"", L"");
+  for (int i = 0; i < 2; i++) {
+    m_chkbox[i].SetTextColour(CR_DATABASE_OPTIONS);
+    m_chkbox[i].SetBkgColour(COLOR_WINDOW);
   }
 
   OnUseDefUser();
@@ -434,13 +434,11 @@ HBRUSH COptionsMisc::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
 {
   HBRUSH hbr = CPWPropertyPage::OnCtlColor(pDC, pWnd, nCtlColor);
 
-  // Database preferences - controls + associated static text
+  // Database preferences - associated static text
   switch (pWnd->GetDlgCtrlID()) {
     case IDC_USERNAME:
     case IDC_STATIC_USERNAME:
     case IDC_STATIC_DEFAUTOTYPE:
-    case IDC_MAINTAINDATETIMESTAMPS:
-    case IDC_USEDEFUSER:
       pDC->SetTextColor(CR_DATABASE_OPTIONS);
       pDC->SetBkMode(TRANSPARENT);
       break;

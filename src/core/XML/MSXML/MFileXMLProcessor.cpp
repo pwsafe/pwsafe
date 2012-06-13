@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -201,13 +201,15 @@ bool MFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
           m_delimiter = pCH->m_delimiter;
         } else {
           // Now add entries
-          pCH->AddEntries();
+          pCH->AddXMLEntries();
 
-          // Get numbers (may have been modified by AddEntries
+          // Get numbers (may have been modified by AddXMLEntries
           m_numEntriesImported = pCH->m_numEntries;
           m_numEntriesSkipped = pCH->getNumSkipped();
           m_numEntriesRenamed = pCH->getNumRenamed();
           m_numEntriesPWHErrors = pCH->getNumPWHErrors();
+          m_numNoPolicies = pCH->getNumNoPolicies();
+          m_numRenamedPolicies = pCH->getNumRenamedPolicies();
 
           // Get lists
           m_strXMLErrors = pCH->getXMLErrors();

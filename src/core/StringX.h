@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -16,12 +16,12 @@
  * Like std::string in all respects, except that
  * memory is scrubbed before being returned to system.
  *
- *
  */
 
 #include <string>
 #include <memory>
 #include <limits>
+#include <cstddef> // for ptrdiff_t
 #include <cstdlib> // for malloc
 #include <cstring> // for memset
 
@@ -157,6 +157,7 @@ typedef std::basic_string<char,
 // (In for a dime, in for a $).
 
 template<class T> int CompareNoCase(const T &s1, const T &s2);
+template<class T> int CompareCase(const T &s1, const T &s2);
 template<class T> void ToLower(T &s);
 template<class T> void ToUpper(T &s);
 template<class T> T &TrimRight(T &s, const TCHAR *set = NULL);

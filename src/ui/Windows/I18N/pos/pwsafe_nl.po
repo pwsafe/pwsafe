@@ -170,6 +170,10 @@ msgstr " 'Wachtwoord Beleid'"
 msgid " 'Password'"
 msgstr " 'Wachtwoord'"
 
+#. Resource IDs: (370)
+msgid " 'Policy Name'"
+msgstr ""
+
 #. Resource IDs: (336)
 msgid " 'Record Modification Time'"
 msgstr " 'Tijdstip waarop Record Gewijzigd is'"
@@ -365,10 +369,25 @@ msgstr "%d onderdelen"
 msgid "%d of %d matches."
 msgstr "%d van %d overeenkomsten."
 
+#. Resource IDs: (215)
+#, c-format
+msgid "%s  - Imported %s"
+msgstr ""
+
 #. Resource IDs: (366)
 #, c-format
 msgid "%s (database-specific)"
 msgstr "%s (database-specifiek)"
+
+#. Resource IDs: (370)
+#, c-format
+msgid "%s - Drag & Drop %s"
+msgstr ""
+
+#. Resource IDs: (215)
+#, c-format
+msgid "%s - Merged %s"
+msgstr ""
 
 #. Resource IDs: (3887)
 #, c-format
@@ -665,6 +684,10 @@ msgstr "&In"
 msgid "&Keep"
 msgstr "&Behoud"
 
+#. Resource IDs: (1462)
+msgid "&List"
+msgstr ""
+
 #. Resource IDs: (32150)
 msgid "&Manage"
 msgstr "&Beheer"
@@ -704,10 +727,6 @@ msgstr "&Nieuw/Bewerk Filter"
 #. Resource IDs: (2)
 msgid "&No"
 msgstr "&Nee"
-
-#. Resource IDs: (1229)
-msgid "&None"
-msgstr "&Geen"
 
 #. Resource IDs: (1354, 65535)
 msgid "&Notes:"
@@ -1271,8 +1290,8 @@ msgid "A new password database will be created. The safe combination you enter w
 msgstr "Een nieuw wachtwoord database zal gemaakt worden. De kluis combinatie die u ingevoerd heeft zal gebruikt worden om het wachtwoord database bestand te versleutelen. De Kluis Combinatie kan bestaan uit alle toetsenbord tekens en is hoofdletter gevoelig."
 
 #. Resource IDs: (367)
-msgid "A red and white indicator means that a filter is active\r\n(double click to clear filter)"
-msgstr "Een rood en witte indicator betekent dat een filter actief is\r\n(dubbel klik om de filter te wissen)"
+msgid "A red and white indicator means that a filter is active\r\n(if showing, double click to clear filter)"
+msgstr ""
 
 #. Resource IDs: (3843)
 msgid "A required resource was unavailable."
@@ -1318,6 +1337,10 @@ msgstr "Vermelding Toevoegen"
 #. Resource IDs: (32057)
 msgid "Add Group"
 msgstr "Groep Toevoegen"
+
+#. Resource IDs: (370)
+msgid "Add a New Database Named Password Policy"
+msgstr ""
 
 #. Resource IDs: (466)
 msgid "Additional"
@@ -1394,6 +1417,10 @@ msgstr "Alle Bestanden(*.*)"
 #. Resource IDs: (339)
 msgid "All available columns are being displayed."
 msgstr "Alle beschikbare kolommen worden getoond."
+
+#. Resource IDs: (368)
+msgid "All changes to Password Policies will be lost"
+msgstr ""
 
 #. Resource IDs: (1333)
 msgid "Allow multiple instances (requires all instances to be restarted)"
@@ -1559,6 +1586,10 @@ msgstr "Beschikbare Velden:"
 #. Resource IDs: (65535)
 msgid "Available Filters:"
 msgstr "Beschikbare Filters:"
+
+#. Resource IDs: (65535)
+msgid "Available Password Policies:"
+msgstr ""
 
 #. Resource IDs: (518)
 msgid "Azeri Cyrillic"
@@ -1818,6 +1849,18 @@ msgstr "Verander database modus?"
 msgid "Change the maximum number of saved passwords for entries currently saving password history to the new maximum, if currently saving fewer.\n\nEntries with more than this new maximum already saved will remain unchanged."
 msgstr "Wijzig het maximaal aantal opgeslagen wachtwoorden naar het nieuwe aantal opgeslagen wachtwoorden voor vermeldingen waar de wachtwoord geschiedenis voor bewaard wordt. Wijzig het aantal alleen als het oude aantal kleiner is dan het nieuwe aantal.\n\nVermeldingen waar meer dan het nieuwe maximale aantal oude wachtwoorden bewaard werden zullen niet aangepast worden."
 
+#. Resource IDs: (370)
+msgid "Change/View Database Default Password Policy"
+msgstr ""
+
+#. Resource IDs: (370)
+msgid "Change/View a Database Named Password Policy"
+msgstr ""
+
+#. Resource IDs: (368)
+msgid "Change/View selected Named Password Policy or the database default policy"
+msgstr ""
+
 #. Resource IDs: (1187)
 msgid "Changes to existing entries will be applied on pressing OK"
 msgstr "Wijzigigen van bestaande vermeldingen zullen toegepast worden zodra op OK gedrukt wordt."
@@ -1863,7 +1906,7 @@ msgid "Clear clipboard upon minimize"
 msgstr "Klembord wissen bij minimaliseren"
 
 #. Resource IDs: (1453)
-msgid "Click here or details on the various preferences."
+msgid "Click here for details on the various preferences."
 msgstr ""
 
 #. Resource IDs: (351)
@@ -1873,6 +1916,10 @@ msgstr "Hier klikken om een veld te kiezen"
 #. Resource IDs: (510)
 msgid "Click to change case."
 msgstr "Klik om wisselen tussen hoofd- en kleine letters."
+
+#. Resource IDs: (370)
+msgid "Click to copy generated password to clipboard"
+msgstr ""
 
 #. Resource IDs: (353)
 msgid "Click to copy to clipboard"
@@ -2208,6 +2255,10 @@ msgstr "Maak SchemaCache%2d Fout 0x%08X tijdens %s."
 msgid "Create Shortcut"
 msgstr "Maak Snelkoppeling"
 
+#. Resource IDs: (368)
+msgid "Create a new Password Policy"
+msgstr ""
+
 #. Resource IDs: (1199)
 msgid "Create intermediate backups (.ibak) before saving"
 msgstr "Maak tussentijdse backup (.ibak) voordat bewaren "
@@ -2346,6 +2397,10 @@ msgstr "Standaard"
 msgid "Default Autotype string:"
 msgstr "Standaard Autoinvoer tekst:"
 
+#. Resource IDs: (368)
+msgid "Default Policy"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Default Username"
 msgstr "Standaard Gebruikersnaam"
@@ -2378,6 +2433,10 @@ msgstr "Verwijder een Basis Vermelding Bevestiging?"
 msgid "Delete a filter"
 msgstr "Verwijder een filter"
 
+#. Resource IDs: (368)
+msgid "Delete selected Password Policy\n(only an unused Named Password Policy may be deleted)"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Description:"
 msgstr ""
@@ -2397,6 +2456,10 @@ msgstr "Bestemmingsschijf is vol"
 #. Resource IDs: (337)
 msgid "Destination location does not exist or is not accessible."
 msgstr "bestemmingslokatie bestaat niet of is niet toegankelijk."
+
+#. Resource IDs: (370)
+msgid "Details"
+msgstr ""
 
 #. Resource IDs: (329)
 #, c-format
@@ -2428,6 +2491,10 @@ msgstr "Toon"
 #. Resource IDs: (151, 152, 153, 154, 155, 156)
 msgid "Display Filter - "
 msgstr "Toon Filter -"
+
+#. Resource IDs: (368)
+msgid "Display policy setings or List entries using this named policy\n(The latter may take a while depending on the number of entries in this database)"
+msgstr ""
 
 #. Resource IDs: (32262)
 msgid "Display subset of Password"
@@ -2514,6 +2581,10 @@ msgstr "Dubbel klik de vermelding om het te bekijken/bewerken"
 #. Resource IDs: (65535)
 msgid "Double-click action"
 msgstr "Dubbel-klik actie"
+
+#. Resource IDs: (370)
+msgid "Double-click an entry to Edit/View it"
+msgstr ""
 
 #. Resource IDs: (366)
 msgid "Doubleclick action for current entry"
@@ -2713,6 +2784,10 @@ msgstr "Vermeldingen alleen in de vergeleken database (%s):"
 msgid "Entries only in current database (%s):"
 msgstr "Vermeldingen alleen in de huidige database (%s):"
 
+#. Resource IDs: (1469)
+msgid "Entries using selected policy:"
+msgstr ""
+
 #. Resource IDs: (365)
 msgid "Entries with a password expiry"
 msgstr "Vermeldingen met verloopdatum voor het wachtwoord"
@@ -2721,6 +2796,10 @@ msgstr "Vermeldingen met verloopdatum voor het wachtwoord"
 #, c-format
 msgid "Entry %s%d with Group=\"%s\", Title=\"%s\", User=\"%s\""
 msgstr "Vermelding %s%d met Groep=\"%s\", Titel=\"%s\", Gebruiker=\"%s\""
+
+#. Resource IDs: (370)
+msgid "Entry Password Policy Changes"
+msgstr ""
 
 #. Resource IDs: (1407)
 msgid "Entry Unique ID:"
@@ -3033,6 +3112,11 @@ msgstr "Bestand: %s kon niet gevalideerd worden met XML Schema:\r\n\r\n%s"
 msgid "File: %s passed Validation but had the following errors during import:\r\n\r\n%s"
 msgstr "Bestand: %s is gevalideerd maar tijdens het inlezen zijn de volgende fouten opgetreden:\r\n\r\n%s"
 
+#. Resource IDs: (370)
+#, c-format
+msgid "File: %s was imported (%d warning(s) issued about missing Password Policy Names). See report for details."
+msgstr ""
+
 #. Resource IDs: (335)
 #, c-format
 msgid "File: %s was imported (entries validated %d / imported %d%s%s%s). See report for details."
@@ -3124,6 +3208,10 @@ msgstr "Helemaal uitgevouwen"
 msgid "Gaelic"
 msgstr "Keltisch"
 
+#. Resource IDs: (1025)
+msgid "Generate"
+msgstr ""
+
 #. Resource IDs: (32157)
 msgid "Generate &Password"
 msgstr "Produceer &wachtwoord"
@@ -3135,6 +3223,10 @@ msgstr "Produceer wachtwoorden die &uit te spreken zijn"
 #. Resource IDs: (359)
 msgid "Generate Password"
 msgstr "Produceer wachtwoord"
+
+#. Resource IDs: (370)
+msgid "Generate Password using selected Password Policy"
+msgstr ""
 
 #. Resource IDs: (516)
 msgid "Georgian"
@@ -3452,6 +3544,10 @@ msgstr "PasswordSafe zal stoppen als dit de eerste database is die geopend wordt
 #, c-format
 msgid "If this keyboard supports characters via the %s, then this key will be enabled and can be used to select them.\n\nYou may need to also select the Shift key to see them."
 msgstr "Als dit toetsenbord letters ondersteund met de %s, dan zal deze toets worden geactiveerd en kan gebruikt worden om deze te selecteren.\n\nHet kan zijn dat ook de Shift toets gebruikt moet worden om ze te zien."
+
+#. Resource IDs: (370)
+msgid "If you specify using your own symbol list, you cannot leave it empty. Unselecting use of symbols."
+msgstr ""
 
 #. Resource IDs: (517)
 msgid "Igbo"
@@ -3842,6 +3938,10 @@ msgstr "Back-up maken"
 msgid "Manage Filters"
 msgstr "Beheren van Filters"
 
+#. Resource IDs: (515)
+msgid "Manage Password Policies"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Manage password history of current entries"
 msgstr "Beheren van de wachtwoord geschiedenis van de huidige vermeldingen"
@@ -3909,16 +4009,20 @@ msgid "Minimize after Autotype"
 msgstr "Minimaliseren na Automatisch Invoeren"
 
 #. Resource IDs: (350)
-msgid "Minimum digit characters"
-msgstr "Minimum aantal cijfers"
+msgid "Minimum digits"
+msgstr ""
 
 #. Resource IDs: (349)
 msgid "Minimum lowercase characters"
 msgstr "Minimum aantal kleine letters"
 
+#. Resource IDs: (349)
+msgid "Minimum password length"
+msgstr ""
+
 #. Resource IDs: (350)
-msgid "Minimum symbol characters"
-msgstr "Minimum aantal symbool tekens"
+msgid "Minimum symbols"
+msgstr ""
 
 #. Resource IDs: (349)
 msgid "Minimum uppercase characters"
@@ -3979,6 +4083,10 @@ msgstr "Naam. Naam. Naam."
 
 #. Resource IDs: (65535)
 msgid "Name:"
+msgstr ""
+
+#. Resource IDs: (1471)
+msgid "Named Policy"
 msgstr ""
 
 #. Resource IDs: (32103)
@@ -4138,6 +4246,10 @@ msgstr "Noors met Sami"
 msgid "Not all of the system registry entries (or INI file) were removed."
 msgstr "Niet alle register gegevens (of INI bestand) werden verwijderd."
 
+#. Resource IDs: (370)
+msgid "Not used"
+msgstr ""
+
 #. Resource IDs: (3887)
 msgid "Note that if you choose to recover the auto-saved documents, you must explicitly save them to overwrite the original documents.  If you choose to not recover the auto-saved versions, they will be deleted."
 msgstr "Bedenk dat bij de keuze om de automatisch bewaarde documenten te herstellen deze expliciet opgeslagen moeten worden om de originele documenten te overschrijven. Bij de keuze om de automatisch bewaarde versies niet te herstellen worden ze verwijderd."
@@ -4149,6 +4261,10 @@ msgstr "Opmerking: Lege velden worden getoond als »*»"
 #. Resource IDs: (33126)
 msgid "Note: Entry format is »Group»Title»Username»"
 msgstr "Opmerking: Vermeldingsopmaak is »Groep»Title»Gebruikersnaam»"
+
+#. Resource IDs: (215)
+msgid "Note: These Password Policies will not replace existing policies with the same name in the current database."
+msgstr ""
 
 #. Resource IDs: (211)
 msgid "Note: These preferences are only used when importing into an empty database."
@@ -4245,6 +4361,10 @@ msgstr "Aan"
 #. Resource IDs: (359)
 msgid "One of more preferences have been changed. Are you sure you wish to cancel?"
 msgstr "Een of meer voorkeuren is gewizjigd. Weet u zeket dat u wilt annuleren?"
+
+#. Resource IDs: (369)
+msgid "One or more Password Policies have been changed. Are you sure you wish to cancel?"
+msgstr ""
 
 #. Resource IDs: (3887)
 msgid "One or more auto-saved documents were found."
@@ -4387,6 +4507,10 @@ msgstr "Wachtwoord gewijzigd"
 msgid "Password Modified Time"
 msgstr "Tijd waarop wachtwoord gewijzigd is"
 
+#. Resource IDs: (32159)
+msgid "Password Policies..."
+msgstr ""
+
 #. Resource IDs: (141, 345)
 msgid "Password Policy"
 msgstr "Wachtwoord regels"
@@ -4394,6 +4518,10 @@ msgstr "Wachtwoord regels"
 #. Resource IDs: (351)
 msgid "Password Policy Filter"
 msgstr "Wachtwoord regel filter"
+
+#. Resource IDs: (193)
+msgid "Password Policy Name"
+msgstr ""
 
 #. Resource IDs: (329)
 msgid "Password Policy Override"
@@ -4467,10 +4595,6 @@ msgstr "Wachtwoord lengte moet liggen tussen 4 en 1024."
 #. Resource IDs: (65535)
 msgid "Password length:"
 msgstr "Wachtwoord lengte:"
-
-#. Resource IDs: (349)
-msgid "Password minimum length"
-msgstr "Wachtwoord lengte minimaal"
 
 #. Resource IDs: (188)
 msgid "Password should be mixed case, with at least one digit or punctuation character"
@@ -4557,14 +4681,14 @@ msgstr "Kies alstublieft een naam voor de nieuwe database"
 msgid "Please choose a new name for the current database:"
 msgstr "Kies alstublieft een nieuwe naam voor de actieve database:"
 
+#. Resource IDs: (353)
+#, c-format
+msgid "Please confirm delete of the %s filter %s?"
+msgstr ""
+
 #. Resource IDs: (331)
 msgid "Please confirm that you wish to delete current user's PasswordSafe configuration information from the Windows registry.\n\n"
 msgstr "Bevestig SVP dat u de PasswordSafe Configuratie informatie van de huidige gebruiker wilt verwijderen uit het Windows register.\n\n"
-
-#. Resource IDs: (353)
-#, c-format
-msgid "Please confirm you wish to delete the %s filter %s?"
-msgstr "Alstublieft bevestigen dat u het %s filter %s wilt verwijderen?"
 
 #. Resource IDs: (330)
 msgid "Please enter a search string"
@@ -4639,6 +4763,22 @@ msgstr "Geef alstublieft de sub-folder waar alle back-ups worden bewaard."
 msgid "Please visit the <a href=\"http://pwsafe.org/\">PasswordSafe website.</a>"
 msgstr "Bezoek alstublieft de <a href=\"http://pwsafe.org/\">PasswordSafe website.</a>"
 
+#. Resource IDs: (368)
+msgid "Policy Name"
+msgstr ""
+
+#. Resource IDs: (369)
+msgid "Policy Name is already in use"
+msgstr ""
+
+#. Resource IDs: (369)
+msgid "Policy Name is blank"
+msgstr ""
+
+#. Resource IDs: (369)
+msgid "Policy field"
+msgstr ""
+
 #. Resource IDs: (519)
 msgid "Polish (214)"
 msgstr "Pools (214)"
@@ -4678,6 +4818,10 @@ msgstr "Programma's (*.exe)|*.exe|Alle bestanden  (*.*)|*.*||"
 #. Resource IDs: (350)
 msgid "Pronounceable passwords"
 msgstr "Wachtwoorden die uit te spreken zijn"
+
+#. Resource IDs: (370)
+msgid "Pronounceable passwords must contain either lowercase or uppercase characters or both"
+msgstr ""
 
 #. Resource IDs: (136)
 msgid "Properties"
@@ -4797,6 +4941,10 @@ msgstr "Herhalend (%d dagen)"
 msgid "Redo"
 msgstr "Opnieuw uitvoeren"
 
+#. Resource IDs: (368)
+msgid "Redo the last change to password policies that was previously undone"
+msgstr ""
+
 #. Resource IDs: (1229)
 msgid "Relative"
 msgstr "Relatief"
@@ -4849,10 +4997,6 @@ msgstr ""
 #. Resource IDs: (356)
 msgid "Required Unicode font is not installed on this system.\n\nUnable to provide Virtual Keyboard."
 msgstr "Verplichte Unicode lettertype is niet geinstalleerd op dit systeem.\n\nHet is niet mogelijk om een Virtueel toetsenbord te tonen."
-
-#. Resource IDs: (1377)
-msgid "Rese&t to Database Defaults"
-msgstr "Terug ze&tten naar de database standaards"
 
 #. Resource IDs: (356)
 #, c-format
@@ -5018,6 +5162,10 @@ msgstr "Opslaan als"
 msgid "Save Error"
 msgstr "Fout bij opslaan."
 
+#. Resource IDs: (368)
+msgid "Save all changes to Password Policies"
+msgstr ""
+
 #. Resource IDs: (3857)
 #, c-format
 msgid "Save changes to %1?"
@@ -5124,6 +5272,10 @@ msgstr "Geselecteerde velden"
 #. Resource IDs: (65535)
 msgid "Selected filter details:"
 msgstr "Details van het geselecteerde filter:"
+
+#. Resource IDs: (1468)
+msgid "Selected policy details:"
+msgstr ""
 
 #. Resource IDs: (1380)
 msgid "Send"
@@ -5542,6 +5694,10 @@ msgstr "Tataars"
 msgid "Telugu"
 msgstr "Telugu"
 
+#. Resource IDs: (65535)
+msgid "Test Selected Policy"
+msgstr ""
+
 #. Resource IDs: (347)
 msgid "Text"
 msgstr "Tekst"
@@ -5656,6 +5812,11 @@ msgstr "De volgende kolommen waren herkend maar alleen Groep/Titel, Gebruikersna
 #. Resource IDs: (204)
 msgid "The following columns will be processed: "
 msgstr "De volgende kolommen worden bewerkt:"
+
+#. Resource IDs: (215)
+#, c-format
+msgid "The following entries had a policy name that already existed in this database but with different settings.\r\nA new named policy has been created with the current date/time (%s) appended:%s"
+msgstr ""
 
 #. Resource IDs: (205)
 msgid "The following entries had an invalid Password History.  This has been rebuilt with available data.  There may be some loss of history."
@@ -6051,6 +6212,10 @@ msgstr "Vink verwijderen"
 msgid "Undo"
 msgstr "Herstel"
 
+#. Resource IDs: (368)
+msgid "Undo the last change to password policies"
+msgstr ""
+
 #. Resource IDs: (3859)
 msgid "Unexpected file format."
 msgstr "Onverwacht bestands formaat."
@@ -6161,17 +6326,37 @@ msgstr "Gebruik &Symbolen (b.v.  &, %, $, etc.)"
 msgid "Use &UPPERCASE letters"
 msgstr "Gebruik &HOOFDletters"
 
-#. Resource IDs: (1375)
-msgid "Use Database De&faults"
-msgstr "Gebruik Database &Standaarden"
+#. Resource IDs: (1465)
+msgid "Use Database Policy"
+msgstr ""
 
 #. Resource IDs: (1378)
 msgid "Use Default"
 msgstr "Gebruik Standaard"
 
+#. Resource IDs: (1470)
+msgid "Use Named Policy"
+msgstr ""
+
+#. Resource IDs: (369)
+msgid "Use count"
+msgstr ""
+
+#. Resource IDs: (369)
+msgid "Use digits"
+msgstr ""
+
+#. Resource IDs: (369)
+msgid "Use lowercase characters"
+msgstr ""
+
 #. Resource IDs: (1051)
 msgid "Use only &Easy-to-read characters (i.e., no  'l', '1', etc.)"
 msgstr "Gebruik alleen &makkelijk te lezen letters (bijvoorbeeld geen letters die op anderen lijken zoals \"1\",'i',\"I\")"
+
+#. Resource IDs: (369)
+msgid "Use symbols"
+msgstr ""
 
 #. Resource IDs: (1376)
 msgid "Use the P&olicy below:"
@@ -6184,6 +6369,10 @@ msgstr "Gebruik de hier gespecificieerde applicatie om bladeren wanneer het URL 
 #. Resource IDs: (320)
 msgid "Use the application specified here to edit an entry's Notes field via the right-click context menu during Add/Edit."
 msgstr "Gebruik de hier gespecificieerde applicatie om een Notitie te bewerken via het rechtermuis klik menu tijdens Toevoegen/Bewerken."
+
+#. Resource IDs: (369)
+msgid "Use uppercase characters"
+msgstr ""
 
 #. Resource IDs: (327)
 msgid "User Name"
@@ -6221,6 +6410,10 @@ msgstr "Valideren"
 #, c-format
 msgid "Validated %d %s\r\n\r\nImported %d %s"
 msgstr "Gevalideerd %d %s\r\n\r\nGeïmporteerd %d %s"
+
+#. Resource IDs: (369)
+msgid "Value"
+msgstr ""
 
 #. Resource IDs: (1322)
 msgid "Value:"
@@ -6408,6 +6601,26 @@ msgstr "JJMMDD_UUMMSS"
 msgid "Yes"
 msgstr "Ja"
 
+#. Resource IDs: (369)
+#, c-format
+msgid "Yes (at least %d)"
+msgstr ""
+
+#. Resource IDs: (370)
+#, c-format
+msgid "Yes - At least %d from %s: %s"
+msgstr ""
+
+#. Resource IDs: (369)
+#, c-format
+msgid "Yes - EasyVision Symbols: %s"
+msgstr ""
+
+#. Resource IDs: (369)
+#, c-format
+msgid "Yes - Pronounceable Symbols: %s"
+msgstr ""
+
 #. Resource IDs: (1084)
 msgid "Yes:"
 msgstr "Ja:"
@@ -6430,8 +6643,8 @@ msgstr "Uw huidige geopende database zal in de eerste rij staan. Veilige Backup 
 
 #. Resource IDs: (357)
 #, c-format
-msgid "Your requested font '%s' is not installed on this system, using '%s' instead."
-msgstr "Het door U gekozen font  '%s' is niet op deze computer geïnstalleerd. Font  '%s' wordt als vervanging gebruikt"
+msgid "Your requested font, '%s', could not be found (not installed?), using '%s' instead."
+msgstr ""
 
 #. Resource IDs: (330)
 msgid "[No current database]"
@@ -6798,6 +7011,19 @@ msgstr "\tGroep='%s', Titel='%s', Gebruiker='%s' %s"
 msgid "\tNo entries were found containing search string '%s'"
 msgstr "\tGeen vermdelingen zijn gevonden die de zoek tekst '%s' bevattan"
 
+#. Resource IDs: (215)
+msgid "\tOne or more Password Policy Names were already in this database but had different settings. They have been renamed."
+msgstr ""
+
+#. Resource IDs: (215)
+msgid "\tOne or more Password Policy Names were not found in the database. The affected entries have been changed to use the database's default policy."
+msgstr ""
+
+#. Resource IDs: (215)
+#, c-format
+msgid "\tPassword policy name '%s' is not in the database."
+msgstr ""
+
 #. Resource IDs: (347)
 #, c-format
 msgid "\tThe following entries contain search string '%s'"
@@ -6931,6 +7157,10 @@ msgstr "dagen"
 #. Resource IDs: (65535)
 msgid "days before passwords expire"
 msgstr "dagen voordat wachtwoord verloopt"
+
+#. Resource IDs: (369)
+msgid "default symbol set"
+msgstr ""
 
 #. Resource IDs: (206)
 msgid "does not begin with"
@@ -7128,6 +7358,10 @@ msgstr "on-line"
 msgid "pixels"
 msgstr "pixels"
 
+#. Resource IDs: (369)
+msgid "policy specific symbols"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "previous passwords per entry"
 msgstr "vorige wachtwoorden per vermelding"
@@ -7162,10 +7396,6 @@ msgstr "neven-veld beginnend op positie %d(in het Geschiedenis veld):"
 #, c-format
 msgid "subset: '%s' field '%s' '%s' %s"
 msgstr "deel van de set:'%s' veld '%s' '%s' %s"
-
-#. Resource IDs: (366)
-msgid "symbols"
-msgstr "symbolen"
 
 #. Resource IDs: (366)
 msgid "synchronized"

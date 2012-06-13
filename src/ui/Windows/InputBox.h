@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -20,8 +20,6 @@ public:
               const bool bReadOnly = false, CWnd *pParent = NULL);   // standard constructor
 	virtual ~CInputBox();
 
-  virtual BOOL OnInitDialog();
-
   CString GetText() {return m_csText;}
 
 // Dialog Data
@@ -29,6 +27,9 @@ public:
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+  virtual BOOL OnInitDialog();
+  virtual BOOL PreTranslateMessage(MSG* pMsg);
+
   afx_msg void OnOK();
   afx_msg void OnInputChanged();
   afx_msg void OnActivate(UINT nState, CWnd *pWndOther, BOOL bMinimized);

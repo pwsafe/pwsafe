@@ -10,7 +10,7 @@
 #include <sstream>
 #include "stdafx.h"
 #include "PKBaseDlg.h"
-#include "PwFont.h"
+#include "Fonts.h"
 #include "resource.h"
 #include "os/env.h"
 
@@ -69,7 +69,7 @@ BOOL CPKBaseDlg::OnInitDialog(void)
   CPWDialog::OnInitDialog();
   // Setup a timer to poll the key every 250 ms
   SetTimer(1, 250, 0);
-  ApplyPasswordFont(GetDlgItem(IDC_PASSKEY));
+  Fonts::GetInstance()->ApplyPasswordFont(GetDlgItem(IDC_PASSKEY));
 
   m_pctlPasskey->SetPasswordChar(PSSWDCHAR);
 
@@ -205,7 +205,7 @@ void CPKBaseDlg::yubiRequestHMACSha1()
   }
 }
 
-void CPKBaseDlg::OnTimer(UINT_PTR nIDEvent)
+void CPKBaseDlg::OnTimer(UINT_PTR )
 {
   // If an operation is pending, check if it has completed
 

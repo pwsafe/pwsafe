@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -56,11 +56,12 @@ BOOL CProperties::OnInitDialog()
   GetDlgItem(IDC_FILEUUID)->SetWindowText(m_pdbp->file_uuid.c_str());
   GetDlgItem(IDC_UNKNOWNFIELDS)->SetWindowText(m_pdbp->unknownfields.c_str());
 
-  CString csDBName = m_pdbp->db_name.empty() ? L"N/A" : m_pdbp->db_name.c_str();
+  const CString cs_text(MAKEINTRESOURCE(IDS_NA));
+  CString csDBName = m_pdbp->db_name.empty() ? cs_text : m_pdbp->db_name.c_str();
   if (csDBName.GetLength() > 32)
     csDBName = csDBName.Left(30) + L"...";
 
-  CString csDBDescription = m_pdbp->db_description.empty() ? L"N/A" : m_pdbp->db_description.c_str();
+  CString csDBDescription = m_pdbp->db_description.empty() ? cs_text : m_pdbp->db_description.c_str();
   if (csDBDescription.GetLength() > 64)
     csDBDescription = csDBDescription.Left(60) + L"...";
 
@@ -69,6 +70,7 @@ BOOL CProperties::OnInitDialog()
 
   if (m_bReadOnly) {
     // Hide the Cancel button and centre the OK button
+    GetDlgItem(IDCANCEL)->EnableWindow(FALSE);
     GetDlgItem(IDCANCEL)->ShowWindow(SW_HIDE);
 
     CRect dlgRect, btnRect;
@@ -83,6 +85,16 @@ BOOL CProperties::OnInitDialog()
   }
 
   return TRUE;
+}
+
+BOOL CProperties::PreTranslateMessage(MSG* pMsg)
+{
+  if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_ESCAPE) {
+    PostMessage(WM_COMMAND, MAKELONG(IDCANCEL, BN_CLICKED), NULL);
+    return TRUE;
+  }
+
+  return CPWDialog::PreTranslateMessage(pMsg);
 }
 
 void CProperties::SetChangedStatus() 

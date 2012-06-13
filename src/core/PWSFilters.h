@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -59,6 +59,7 @@ enum FieldType {
   FT_EMAIL         = CItemData::EMAIL,
   FT_PROTECTED     = CItemData::PROTECTED,
   FT_SYMBOLS       = CItemData::SYMBOLS,
+  FT_POLICYNAME    = CItemData::POLICYNAME,
   FT_END           = CItemData::END,
 
   // Internal fields purely for filters
@@ -179,6 +180,35 @@ struct st_FilterRow {
     return *this;
   }
 
+
+  bool operator==(const st_FilterRow &that) const
+  {
+    if (this != &that) {
+      if (bFilterActive != that.bFilterActive ||
+          bFilterComplete != that.bFilterComplete ||
+          ftype != that.ftype ||
+          mtype != that.mtype ||
+          rule != that.rule ||
+          fnum1 != that.fnum1 ||
+          fnum2 != that.fnum2 ||
+          fdate1 != that.fdate1 ||
+          fdate2 != that.fdate2 ||
+          fdatetype != that.fdatetype ||
+          fstring != that.fstring ||
+          fcase != that.fcase ||
+          fdca != that.fdca ||
+          etype != that.etype ||
+          estatus != that.estatus ||
+          funit != that.funit ||
+          ltype != that.ltype)
+      return false;
+    }
+    return true;
+  }
+
+  bool operator!=(const st_FilterRow &that) const
+  {return !(*this == that);}
+
   void Empty()
   {
     bFilterActive = true;
@@ -248,6 +278,24 @@ struct st_filters {
     }
     return *this;
   }
+
+  bool operator==(const st_filters &that) const
+  {
+    if (this != &that) {
+      if (fname != that.fname ||
+          num_Mactive != that.num_Mactive ||
+          num_Hactive != that.num_Hactive ||
+          num_Pactive != that.num_Pactive ||
+          vMfldata != that.vMfldata ||
+          vHfldata != that.vHfldata ||
+          vPfldata != that.vPfldata)
+      return false;
+    }
+    return true;
+  }
+
+  bool operator!=(const st_filters &that) const
+  {return !(*this == that);}
 
   void Empty()
   {

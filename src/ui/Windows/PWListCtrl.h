@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -17,7 +17,7 @@
 #pragma once
 
 #include "SecString.h"
-#include "PwFont.h"
+#include "Fonts.h"
 
 class DboxMain;
 class CItemData;
@@ -35,7 +35,7 @@ public:
   bool FindNext(const CString &cs_find, const int iSubItem);
 
   void SetFilterState(bool bState);
-  void SetUpFont(CFont *pfont) {m_fonts.SetUpFont(this, pfont);}
+  void SetUpFont();
   void SetHighlightChanges(bool bvalue)
   {m_bUseHighLighting = bvalue;}
 
@@ -69,7 +69,6 @@ private:
   // Filter
   bool m_bFilterActive;
 
-  HFONT GetFontBasedOnStatus(CItemData *pci, COLORREF &cf);
-  PWFonts m_fonts;
+  CFont *GetFontBasedOnStatus(CItemData *pci, COLORREF &cf);
   bool m_bUseHighLighting;
 };

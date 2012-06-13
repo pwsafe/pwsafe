@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -421,9 +421,19 @@ stringT PWSUtil::GetNewFileName(const stringT &oldfilename,
   return outpath;
 }
 
-void PWSUtil::GetTimeStamp(stringT &sTimeStamp)
+stringT PWSUtil::GetTimeStamp(const bool bShort)
+{
+  stringT sTimeStamp;
+  GetTimeStamp(sTimeStamp, bShort);
+  return sTimeStamp;
+}
+  
+void PWSUtil::GetTimeStamp(stringT &sTimeStamp, const bool bShort)
 {
   // Now re-entrant
+  // Gets datetime stamp in format YYYY/MM/DD HH:MM:SS.mmm
+  // If bShort == true, don't add milli-seconds
+
 #ifdef _WIN32
   struct _timeb *ptimebuffer;
   ptimebuffer = new _timeb;
@@ -439,14 +449,18 @@ void PWSUtil::GetTimeStamp(stringT &sTimeStamp)
 #endif
   StringX cmys_now = ConvertToDateTimeString(ptimebuffer->time, TMC_EXPORT_IMPORT);
 
-  ostringstreamT *p_os;
-  p_os = new ostringstreamT;
-  *p_os << cmys_now << TCHAR('.') << setw(3) << setfill(TCHAR('0'))
-     << static_cast<unsigned int>(ptimebuffer->millitm);
+  if (bShort) {
+    sTimeStamp = cmys_now.c_str();
+  } else {
+    ostringstreamT *p_os;
+    p_os = new ostringstreamT;
+    *p_os << cmys_now << TCHAR('.') << setw(3) << setfill(TCHAR('0'))
+          << static_cast<unsigned int>(ptimebuffer->millitm);
 
-  sTimeStamp = p_os->str();
+    sTimeStamp = p_os->str();
+    delete p_os;
+  }
   delete ptimebuffer;
-  delete p_os;
 }
 
 stringT PWSUtil::Base64Encode(const BYTE *strIn, size_t len)
@@ -663,4 +677,40 @@ StringX PWSUtil::DeDupString(StringX &in_string)
     c++;
   }
   return out_string;
+}
+
+stringT PWSUtil::GetSafeXMLString(const StringX &sxInString)
+{
+  stringT retval(_T(""));
+  ostringstreamT os;
+
+  StringX::size_type p = sxInString.find(_T("]]>")); // special handling required
+  if (p == StringX::npos) {
+    // common case
+    os << "<![CDATA[" << sxInString << "]]>";
+  } else {
+    // value has "]]>" sequence(s) that need(s) to be escaped
+    // Each "]]>" splits the field into two CDATA sections, one ending with
+    // ']]', the other starting with '>'
+    const StringX value = sxInString;
+    size_t from = 0, to = p + 2;
+    do {
+      StringX slice = value.substr(from, (to - from));
+      os << "<![CDATA[" << slice << "]]><![CDATA[";
+      from = to;
+      p = value.find(_T("]]>"), from); // are there more?
+      if (p == StringX::npos) {
+        to = value.length();
+        slice = value.substr(from, (to - from));
+      } else {
+        to = p + 2;
+        slice = value.substr(from, (to - from));
+        from = to;
+        to = value.length();
+      }
+      os <<  slice << "]]>";
+    } while (p != StringX::npos);
+  }
+  retval = os.str().c_str();
+  return retval;
 }

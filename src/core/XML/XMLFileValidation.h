@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -33,6 +33,9 @@ enum XLE_PASSWORDSAFE {
   XLE_PASSWORDSAFE            = 0,
   XLE_NUMBERHASHITERATIONS,
   XLE_PREFERENCES,
+  XLE_PASSWORDPOLICYNAMES,
+  XLE_POLICY,
+  XLE_PWNAME,
   XLE_ENTRY,
 
   // Preferences
@@ -65,6 +68,7 @@ enum XLE_PASSWORDSAFE {
   XLE_TREEDISPLAYSTATUSATOPEN,
   XLE_USEDEFAULTUSER,
   XLE_PREF_END = XLE_USEDEFAULTUSER,
+
   //   String
   XLE_DEFAULTUSERNAME,
   XLE_DEFAULTAUTOTYPESTRING,
@@ -79,12 +83,6 @@ enum XLE_PASSWORDSAFE {
   XLE_AUTOTYPE,
   XLE_NOTES,
   XLE_UUID,
-  XLE_CTIME,    // Using old PWS format
-  XLE_ATIME,    // Using old PWS format
-  XLE_LTIME,    // Using old PWS format
-  XLE_XTIME,    // Using old PWS format
-  XLE_PMTIME,   // Using old PWS format
-  XLE_RMTIME,   // Using old PWS format
   XLE_CTIMEX,   // Using standard XML format
   XLE_ATIMEX,   // Using standard XML format
   XLE_XTIMEX,   // Using standard XML format
@@ -99,6 +97,7 @@ enum XLE_PASSWORDSAFE {
   XLE_PROTECTED,
   XLE_SYMBOLS,
   XLE_ENTRY_PASSWORDPOLICY,
+  XLE_ENTRY_PASSWORDPOLICYNAME,
 
   // pwhistory
   XLE_STATUS,
@@ -110,7 +109,6 @@ enum XLE_PASSWORDSAFE {
   XLE_HISTORY_ENTRY,
 
   // history_entry
-  XLE_CHANGED,   // Using old PWS format
   XLE_CHANGEDX,  // Using standard XML format
   XLE_OLDPASSWORD,
 
@@ -127,10 +125,6 @@ enum XLE_PASSWORDSAFE {
   XLE_ENTRY_PWLOWERCASEMINLENGTH,
   XLE_ENTRY_PWUPPERCASEMINLENGTH,
   XLE_ENTRY_PWSYMBOLMINLENGTH,
-
-  // datetime fields
-  XLE_DATE,
-  XLE_TIME,
 
   // Last element
   XLE_LAST_ELEMENT

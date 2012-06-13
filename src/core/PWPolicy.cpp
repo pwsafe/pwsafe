@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -16,16 +16,16 @@
 bool PWPolicy::operator==(const PWPolicy &that) const
 {
   if (this != &that) {
-    if (flags           != that.flags ||
-        length          != that.length ||
+    if (flags != that.flags ||
+        length != that.length ||
         ((flags & PWSprefs::PWPolicyUseDigits) == PWSprefs::PWPolicyUseDigits &&
-         digitminlength  != that.digitminlength) ||
+                    digitminlength != that.digitminlength)  ||
         ((flags & PWSprefs::PWPolicyUseLowercase) == PWSprefs::PWPolicyUseLowercase &&
-         lowerminlength  != that.lowerminlength) ||
+                    lowerminlength != that.lowerminlength)  ||
         ((flags & PWSprefs::PWPolicyUseSymbols) == PWSprefs::PWPolicyUseSymbols &&
-         symbolminlength != that.symbolminlength) ||
+                    symbolminlength != that.symbolminlength) ||
         ((flags & PWSprefs::PWPolicyUseUppercase) == PWSprefs::PWPolicyUseUppercase &&
-         upperminlength  != that.upperminlength))
+                    upperminlength != that.upperminlength))
       return false;
   }
   return true;
@@ -44,19 +44,19 @@ StringX PWPolicy::MakeRandomPassword(const stringT &st_symbols) const
 
   if (flags != 0) {
     pwuselowercase = (flags & PWSprefs::PWPolicyUseLowercase) == 
-                      PWSprefs::PWPolicyUseLowercase;
+                            PWSprefs::PWPolicyUseLowercase;
     pwuseuppercase = (flags & PWSprefs::PWPolicyUseUppercase) == 
-                      PWSprefs::PWPolicyUseUppercase;
+                            PWSprefs::PWPolicyUseUppercase;
     pwusedigits = (flags & PWSprefs::PWPolicyUseDigits) == 
-                   PWSprefs::PWPolicyUseDigits;
+                            PWSprefs::PWPolicyUseDigits;
     pwusesymbols = (flags & PWSprefs::PWPolicyUseSymbols) == 
-                    PWSprefs::PWPolicyUseSymbols;
+                            PWSprefs::PWPolicyUseSymbols;
     pwusehexdigits = (flags & PWSprefs::PWPolicyUseHexDigits) == 
-                      PWSprefs::PWPolicyUseHexDigits;
+                            PWSprefs::PWPolicyUseHexDigits;
     pweasyvision = (flags & PWSprefs::PWPolicyUseEasyVision) == 
-                    PWSprefs::PWPolicyUseEasyVision;
+                            PWSprefs::PWPolicyUseEasyVision;
     pwmakepronounceable = (flags & PWSprefs::PWPolicyMakePronounceable) == 
-                           PWSprefs::PWPolicyMakePronounceable;
+                                 PWSprefs::PWPolicyMakePronounceable;
     pwdefaultlength = length;
     pwdigitminlength = digitminlength;
     pwlowerminlength = lowerminlength;
@@ -87,6 +87,11 @@ StringX PWPolicy::MakeRandomPassword(const stringT &st_symbols) const
     numdigits = (pwdigitminlength == 0) ? 1 : pwdigitminlength;
   if (pwusesymbols)
     numsymbols = (pwsymbolminlength == 0) ? 1 : pwsymbolminlength;
+
+  // Sanity check:
+  if ((numlowercase + numuppercase + numdigits + numsymbols == 0) &&
+      !pwusehexdigits)
+    return _T("");
  
   CPasswordCharPool pwchars(pwdefaultlength,
                             numlowercase, numuppercase, numdigits, numsymbols,

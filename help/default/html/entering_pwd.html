@@ -13,11 +13,36 @@
 <h2>User Names, Passwords, and Groups: Basic</h2>
 
 <p>Username, passwords and groups together with the additional parameters are managed in 4 tabs:</p>
+
 <ul>
 <li><b><i>Basic</i>:</b> all necesarry elements for password management</li>
 <li><b><i><a href="entering_pwd_add.html">Additional</a></i>:</b> additional specifications, including history</li>
 <li><b><i><a href="entering_pwd_date.html">Dates and Times</a></i>:</b> expiry and statistics</li>
 <li><b><i><a href="entering_pwd_pp.html">Password Policy</a></i>:</b> specific differences to the default</li>
+</ul>
+
+<p>Most labels in the Basic and Additional Property Pages are <i>Smart Labels</i>.
+This means that when you click on them, the current contents of the relevant field
+are copied to the clipboard. The label will flash green to show that the data has
+been copied.  The currently supported labels are:
+<ul>
+<li><b>Basic</b></li>
+<ul>
+<li>Group</li>
+<li>Title</li>
+<li>Username</li>
+<li>Password</li>
+<li>Notes</li>
+<li>URL</li>
+<li>Email</li>
+</ul>
+<li><b>Additional</b></li>
+<ul>
+<li>AutoType</li>
+<li>Run Command</li>
+<br><br>Note: By pressing the Ctrl key down whilst clicking on the AutoType and Run Command
+labels, variables will not be substituted in the strings before copying to the clipboard.
+</ul>
 </ul>
 
 <h3><i>Basic</i> Tab</h3>
@@ -43,7 +68,7 @@ password entry:</p>
 is enabled. If the protocol is not specified, then "http://" is assumed
 (e.g., "www.foo.net" is the same as "http://www.foo.net"). The<b>Go</b> button to the right
 of the <b>URL</b> field is enabled if the URL field is not empty. Clicking with the Control key
-pressed (Ctrl+Click) will, in addition, invoke the <a href="autotype.html">autotype</a>
+pressed (Ctrl+Click) will, in addition, invoke the <a href="autotype.html">AutoType</a>
 function on the opened browser page. See the <a href="#URL_details">following notes</a>
 for more information.</li>
 <li><b>email</b>: The email address associated with this entry. If this field is not
@@ -75,8 +100,8 @@ remote access application, e.g., an SSH client. [ssh] will achieve the
 same effect.</li>
 
 <li>If '[autotype]' is found before the URL, then after the
-URL has been displayed/actioned, <b>Password Safe</b> then perform the Autotype
-action using this entry's Autotype field, or the default value if not
+URL has been displayed/actioned, <b>Password Safe</b> then perform the AutoType
+action using this entry's AutoType field, or the default value if not
 specified.</li>
 
 </ul>

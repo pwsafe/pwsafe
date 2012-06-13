@@ -1,0 +1,4325 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-11-01 21:25+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../../ui/wxWidgets/about.cpp:143
+msgid "Password Safe vx.yy (abcd)"
+msgstr ""
+
+#: ../../../ui/wxWidgets/about.cpp:149
+msgid "Latest version? Click"
+msgstr ""
+
+#: ../../../ui/wxWidgets/about.cpp:152
+msgid "here"
+msgstr ""
+
+#: ../../../ui/wxWidgets/about.cpp:155
+msgid "to check."
+msgstr ""
+
+#: ../../../ui/wxWidgets/about.cpp:161
+msgid "Please visit the "
+msgstr ""
+
+#: ../../../ui/wxWidgets/about.cpp:164
+#, fuzzy
+msgid "PasswordSafe website"
+msgstr "A proposito di Password Safe"
+
+#: ../../../ui/wxWidgets/about.cpp:167
+msgid "See LICENSE for open souce details."
+msgstr ""
+
+#: ../../../ui/wxWidgets/about.cpp:170
+msgid "Copyright (c) 2003-2012 by Rony Shapiro"
+msgstr ""
+
+#: ../../../ui/wxWidgets/about.cpp:177
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:358
+msgid "&Close"
+msgstr ""
+
+#: ../../../ui/wxWidgets/about.cpp:272
+msgid ""
+"For security, the database must be closed before connecting to the Internet."
+"\r\n"
+"Press OK to close database and continue (Changes will be saved)"
+msgstr ""
+
+#: ../../../ui/wxWidgets/about.cpp:273
+msgid "Confirm Close Dialog"
+msgstr "Finestra di dialogo per Conferma Chiusura"
+
+#: ../../../ui/wxWidgets/about.cpp:294
+msgid "Trying to contact server..."
+msgstr ""
+
+#: ../../../ui/wxWidgets/about.cpp:297
+msgid "http://pwsafe.org/latest.xml"
+msgstr ""
+
+#: ../../../ui/wxWidgets/about.cpp:331
+msgid "Couldn't contact server."
+msgstr ""
+
+#: ../../../ui/wxWidgets/about.cpp:334
+msgid "This is the latest release!"
+msgstr ""
+
+#: ../../../ui/wxWidgets/about.cpp:338
+msgid "Current version: "
+msgstr ""
+
+#: ../../../ui/wxWidgets/about.cpp:340
+msgid ""
+"\r\n"
+"Latest version:\t"
+msgstr ""
+
+#: ../../../ui/wxWidgets/about.cpp:341
+#, fuzzy
+msgid ""
+"\r\n"
+"\r\n"
+"Please visit the PasswordSafe website to download the latest version."
+msgstr ""
+"Versione corrente:\t%s\r\n"
+"Ultima versione:\t%s\r\n"
+"\r\n"
+"Per favore visitate il sito di PasswordSafe per scaricare la versione più "
+"recente."
+
+#: ../../../ui/wxWidgets/about.cpp:342
+msgid "Newer Version Found!"
+msgstr ""
+
+#: ../../../ui/wxWidgets/about.cpp:349
+msgid "Could not read server version data."
+msgstr ""
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:172
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:233
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:392
+#, fuzzy
+msgid "Auto Type"
+msgstr "Autoinserimento"
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:173
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:234
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:393
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:341
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:481
+msgid "Browse"
+msgstr "Naviga"
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:174
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:235
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:394
+#, fuzzy
+msgid "Browse + Auto Type"
+msgstr "Naviga l' URL"
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:175
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:236
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:395
+#, fuzzy
+msgid "Copy Notes"
+msgstr "Dichiarazione di Copyright"
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:176
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:237
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:396
+#, fuzzy
+msgid "Copy Password"
+msgstr "'Password'"
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:177
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:238
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:397
+#, fuzzy
+msgid "Copy Password + Minimize"
+msgstr "Copia la password negli appunti, riduci a icona"
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:178
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:239
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:398
+#, fuzzy
+msgid "Copy Username"
+msgstr "Copia Qui"
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:179
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:240
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:399
+#, fuzzy
+msgid "View/Edit Entry"
+msgstr "Modifica Scheda"
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:180
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:241
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:400
+msgid "Execute Run command"
+msgstr ""
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:284
+msgid ""
+"To add a new entry, simply fill in the fields below. At least a title and a\n"
+"password are required. If you have set a default username, it will appear in "
+"the\n"
+"username field."
+msgstr ""
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:289
+#: ../../../ui/wxWidgets/createshortcutdlg.cpp:153
+#: ../../../ui/wxWidgets/editshortcut.cpp:169
+msgid "Group:"
+msgstr ""
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:298
+#: ../../../ui/wxWidgets/createshortcutdlg.cpp:160
+#: ../../../ui/wxWidgets/editshortcut.cpp:176
+#, fuzzy
+msgid "Title:"
+msgstr "&Titolo:"
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:306
+#: ../../../ui/wxWidgets/createshortcutdlg.cpp:166
+#: ../../../ui/wxWidgets/editshortcut.cpp:182
+#, fuzzy
+msgid "Username:"
+msgstr "&Nome Utente:"
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:314
+#, fuzzy
+msgid "Password:"
+msgstr "&Password:"
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:324
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:971
+msgid "&Hide"
+msgstr "&Nascondi"
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:329
+msgid "&Generate"
+msgstr ""
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:332
+#, fuzzy
+msgid "Confirm:"
+msgstr "Conferma:"
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:341
+msgid "URL:"
+msgstr ""
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:351
+msgid "Go"
+msgstr ""
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:356
+#, fuzzy
+msgid "Notes:"
+msgstr "&Note:"
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:362
+msgid "Basic"
+msgstr ""
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:370
+#, fuzzy
+msgid "Autotype:"
+msgstr "&Autoinserimento"
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:376
+msgid "Run Cmd:"
+msgstr ""
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:382
+#, fuzzy
+msgid ""
+"Double-Click\n"
+"Action:"
+msgstr "Azione di Doppio Click"
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:387
+msgid "Use Default"
+msgstr ""
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:404
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:632
+msgid "Password History"
+msgstr ""
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:409
+msgid "Keep"
+msgstr ""
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:416
+msgid "last passwords"
+msgstr ""
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:429
+msgid "Clear History"
+msgstr "Cancella lo storico"
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:434
+msgid "Copy All"
+msgstr "Copia Tutto"
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:437
+msgid "Additional"
+msgstr ""
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:443
+msgid "Password Expiry"
+msgstr ""
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:450
+msgid "Password Expires on:"
+msgstr ""
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:453
+msgid "Whenever"
+msgstr ""
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:458
+msgid "On"
+msgstr ""
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:470
+msgid ":"
+msgstr ""
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:476
+msgid "In"
+msgstr ""
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:485
+msgid "days"
+msgstr ""
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:488
+msgid "Recurring"
+msgstr ""
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:494
+msgid "Current Value:"
+msgstr ""
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:502
+msgid "&Set"
+msgstr ""
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:507
+#, fuzzy
+msgid "&Clear"
+msgstr "&Cancella oggetto corrente"
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:510
+msgid "Statistics"
+msgstr ""
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:515
+#: ../../../ui/wxWidgets/editshortcut.cpp:195
+msgid "Created on:"
+msgstr "Creato in:"
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:518
+msgid "10/06/2009 23:19:25"
+msgstr ""
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:521
+msgid "Password last changed on:"
+msgstr ""
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:524
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:536
+#: ../../../ui/wxWidgets/properties.cpp:188
+msgid "Static text"
+msgstr ""
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:527
+#: ../../../ui/wxWidgets/editshortcut.cpp:207
+msgid "Last accessed on:"
+msgstr ""
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:530
+msgid "N/A"
+msgstr ""
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:533
+#: ../../../ui/wxWidgets/editshortcut.cpp:213
+msgid "Any field last changed on:"
+msgstr "Ultimo cambiamento di ogni campo il:"
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:539
+msgid "Dates and Times"
+msgstr ""
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:542
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:495
+msgid "Random password generation rules"
+msgstr ""
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:546
+#, fuzzy
+msgid "Use Database Defaults"
+msgstr "Risultati della comparazione dei database"
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:550
+msgid "Use the policy below:"
+msgstr ""
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:559
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:501
+#, fuzzy
+msgid "Password length: "
+msgstr "&Caratteri per Password"
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:567
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:509
+msgid "Use lowercase letters"
+msgstr ""
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:573
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:591
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:609
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:626
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:515
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:530
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:545
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:560
+#, fuzzy
+msgid "(At least "
+msgstr "(almeno"
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:582
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:600
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:617
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:634
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:521
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:536
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:551
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:566
+msgid ")"
+msgstr ")"
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:585
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:524
+msgid "Use UPPERCASE letters"
+msgstr ""
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:603
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:539
+msgid "Use digits"
+msgstr ""
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:620
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:554
+msgid "Use symbols (i.e., ., %, $, etc.)"
+msgstr ""
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:637
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:569
+msgid ""
+"Use only easy-to-read characters\n"
+"(i.e., no 'l', '1', etc.)"
+msgstr ""
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:643
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:575
+msgid "Generate pronounceable passwords"
+msgstr ""
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:649
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:581
+#: ../../../core/core_st.cpp:225
+msgid "Or"
+msgstr ""
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:652
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:584
+msgid "Use hexadecimal digits only (0-9, a-f)"
+msgstr ""
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:656
+#, fuzzy
+msgid "Reset to Database Defaults"
+msgstr "Risultati della comparazione dei database"
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:661
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:590
+msgid ""
+"At least one type of character (lowercase, uppercase, digits,\n"
+"symbols, hexadecimal) must be permitted."
+msgstr ""
+"Almeno una tipologia di carattere (minuscolo, maiuscolo, numero, \n"
+" simbolo, esadecimale) deve essere consentito."
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:662
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:663
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1348
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:591
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:592
+#: ../../../core/core_st.cpp:127
+msgid "Password Policy"
+msgstr ""
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:686
+msgid "Set Date/Time"
+msgstr ""
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:687
+#: ../../../core/core_st.cpp:123
+msgid "Password"
+msgstr ""
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:814
+msgid "[Notes hidden - click here to display]"
+msgstr ""
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:879
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1292
+msgid "Never"
+msgstr ""
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:940
+msgid "Couldn't generate password - invalid policy"
+msgstr ""
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:941
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1034
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1041
+#: ../../../ui/wxWidgets/DbSelectionPanel.cpp:98
+#: ../../../ui/wxWidgets/DbSelectionPanel.cpp:105
+#: ../../../ui/wxWidgets/DbSelectionPanel.cpp:113
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1596
+#: ../../../ui/wxWidgets/safecombinationchange.cpp:233
+#: ../../../ui/wxWidgets/safecombinationchange.cpp:237
+#: ../../../ui/wxWidgets/safecombinationchange.cpp:241
+#: ../../../ui/wxWidgets/safecombinationchange.cpp:245
+#: ../../../ui/wxWidgets/safecombinationchange.cpp:259
+#: ../../../ui/wxWidgets/safecombinationchange.cpp:265
+#: ../../../ui/wxWidgets/SafeCombinationCtrl.cpp:69
+#: ../../../ui/wxWidgets/safecombinationentry.cpp:283
+#: ../../../ui/wxWidgets/safecombinationentry.cpp:289
+#: ../../../ui/wxWidgets/safecombinationentry.cpp:320
+#: ../../../ui/wxWidgets/safecombinationprompt.cpp:223
+#: ../../../ui/wxWidgets/safecombinationprompt.cpp:229
+#: ../../../ui/wxWidgets/safecombinationprompt.cpp:243
+#: ../../../ui/wxWidgets/safecombinationsetup.cpp:210
+#: ../../../ui/wxWidgets/safecombinationsetup.cpp:216
+#: ../../../ui/wxWidgets/safecombinationsetup.cpp:241
+#: ../../../core/core_st.cpp:235
+msgid "Error"
+msgstr ""
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:996
+msgid "&Show"
+msgstr "&Mostra"
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1033
+msgid "This entry must have a "
+msgstr ""
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1033
+#, fuzzy
+msgid "title"
+msgstr "&Titolo:"
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1033
+#, fuzzy
+msgid "password"
+msgstr "&Password:"
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1041
+#, fuzzy
+msgid "Passwords do not match"
+msgstr "&Caratteri per Password"
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1276
+#, c-format
+msgid " (every %d days)"
+msgstr ""
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1347
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:1257
+msgid "Sorry, 'pronounceable' and 'easy-to-read' are not supported together"
+msgstr ""
+
+#: ../../../ui/wxWidgets/AdvancedSelectionDlg.cpp:79
+#, fuzzy
+msgid "All entries"
+msgstr "#inserimenti"
+
+#: ../../../ui/wxWidgets/AdvancedSelectionDlg.cpp:81
+msgid "Entries whose "
+msgstr ""
+
+#: ../../../ui/wxWidgets/AdvancedSelectionDlg.cpp:83
+msgid "not "
+msgstr ""
+
+#: ../../../ui/wxWidgets/AdvancedSelectionDlg.cpp:83
+#, fuzzy
+msgid "case-sensitive]"
+msgstr "(tiene conto del maiuscolo)"
+
+#: ../../../ui/wxWidgets/AdvancedSelectionDlg.cpp:157
+msgid "*"
+msgstr ""
+
+#: ../../../ui/wxWidgets/AdvancedSelectionDlg.cpp:242
+#: ../../../ui/wxWidgets/fieldselectionpanel.cpp:134
+msgid " [Mandatory Field]"
+msgstr ""
+
+#: ../../../ui/wxWidgets/AdvancedSelectionDlg.cpp:260
+msgid "You must select some of the fields to "
+msgstr ""
+
+#: ../../../ui/wxWidgets/CompareDlg.cpp:142
+msgid "Conflicting items"
+msgstr ""
+
+#: ../../../ui/wxWidgets/CompareDlg.cpp:150
+#, fuzzy
+msgid "Only in current database: "
+msgstr "Schede solo nel database corrente (%s):"
+
+#: ../../../ui/wxWidgets/CompareDlg.cpp:155
+#, fuzzy
+msgid "Only in comparison database: "
+msgstr "Schede solo nel database comparativo (%s):"
+
+#: ../../../ui/wxWidgets/CompareDlg.cpp:160
+#, fuzzy
+msgid "Identical items"
+msgstr "%d oggetti"
+
+#: ../../../ui/wxWidgets/CompareDlg.cpp:170
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:431
+msgid "&Compare"
+msgstr "&Compara"
+
+#: ../../../ui/wxWidgets/CompareDlg.cpp:192
+#, fuzzy
+msgid "compare"
+msgstr "Confronta"
+
+#: ../../../ui/wxWidgets/CompareDlg.cpp:198
+msgid "Select a database to compare with current database ("
+msgstr ""
+
+#: ../../../ui/wxWidgets/CompareDlg.cpp:205
+#, fuzzy
+msgid "Password Database"
+msgstr "Comparazione dei Database"
+
+#: ../../../ui/wxWidgets/CompareDlg.cpp:206
+msgid "Select a PasswordSafe database to compare"
+msgstr ""
+
+#: ../../../ui/wxWidgets/CompareDlg.cpp:222
+#, fuzzy
+msgid "Advanced Options..."
+msgstr "Opzioni di Ricerca Avanzate"
+
+#: ../../../ui/wxWidgets/CompareDlg.cpp:449
+msgid "Synchronize this item..."
+msgstr ""
+
+#: ../../../ui/wxWidgets/CompareDlg.cpp:451
+#: ../../../ui/wxWidgets/CompareDlg.cpp:735
+#: ../../../ui/wxWidgets/PwsSync.cpp:632
+msgid "Synchronize"
+msgstr ""
+
+#: ../../../ui/wxWidgets/CompareDlg.cpp:451
+#: ../../../ui/wxWidgets/safecombinationentry.cpp:179
+msgid "..."
+msgstr "..."
+
+#: ../../../ui/wxWidgets/CompareDlg.cpp:454
+msgid "Synchronize all items..."
+msgstr ""
+
+#: ../../../ui/wxWidgets/CompareDlg.cpp:457
+#, fuzzy
+msgid "Copy"
+msgstr "&Copia"
+
+#: ../../../ui/wxWidgets/CompareDlg.cpp:457
+#: ../../../ui/wxWidgets/CompareDlg.cpp:480
+#, fuzzy
+msgid " to current db"
+msgstr "&Imposta Corrente"
+
+#: ../../../ui/wxWidgets/CompareDlg.cpp:461
+msgid "Delete"
+msgstr "Cancella"
+
+#: ../../../ui/wxWidgets/CompareDlg.cpp:461
+#, fuzzy
+msgid " from current db"
+msgstr "&Cancella oggetto corrente"
+
+#: ../../../ui/wxWidgets/CompareDlg.cpp:476
+#, fuzzy
+msgid "&Copy "
+msgstr "&Copia"
+
+#: ../../../ui/wxWidgets/CompareDlg.cpp:478
+#, fuzzy
+msgid " fields to current db"
+msgstr "&Imposta Corrente"
+
+#: ../../../ui/wxWidgets/CompareDlg.cpp:480
+#, fuzzy
+msgid "&Copy this "
+msgstr "Copia nel DB"
+
+#: ../../../ui/wxWidgets/CompareDlg.cpp:735
+msgid "Current safe was opened read-only"
+msgstr ""
+
+#: ../../../ui/wxWidgets/CompareDlg.cpp:742
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2606
+#: ../../../ui/wxWidgets/PwsSync.cpp:611
+#, c-format
+msgid ""
+"The database:\n"
+"\n"
+"%s\n"
+"\n"
+"has duplicate entries with the same group/title/user combination. Please fix "
+"by validating database."
+msgstr ""
+
+#: ../../../ui/wxWidgets/CompareDlg.cpp:743
+#: ../../../ui/wxWidgets/PwsSync.cpp:610
+msgid "Synchronization failed"
+msgstr ""
+
+#: ../../../ui/wxWidgets/createshortcutdlg.cpp:147
+msgid ""
+"Please specify the name & group\n"
+" for shortcut to "
+msgstr ""
+
+#: ../../../ui/wxWidgets/createshortcutdlg.cpp:175
+#: ../../../ui/wxWidgets/editshortcut.cpp:222
+#: ../../../ui/wxWidgets/properties.cpp:253
+#: ../../../ui/wxWidgets/safecombinationchange.cpp:164
+msgid "&OK"
+msgstr ""
+
+#: ../../../ui/wxWidgets/createshortcutdlg.cpp:178
+#: ../../../ui/wxWidgets/editshortcut.cpp:225
+#: ../../../ui/wxWidgets/safecombinationchange.cpp:168
+#, fuzzy
+msgid "&Cancel"
+msgstr "Elimina"
+
+#: ../../../ui/wxWidgets/createshortcutdlg.cpp:181
+#: ../../../ui/wxWidgets/editshortcut.cpp:228
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:452
+#: ../../../ui/wxWidgets/safecombinationchange.cpp:171
+msgid "&Help"
+msgstr "&Aiuto"
+
+#: ../../../ui/wxWidgets/DbSelectionPanel.cpp:60
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1018
+msgid ""
+"Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat|Password Safe "
+"Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All "
+"files (*.*; *)|*.*;*"
+msgstr ""
+
+#: ../../../ui/wxWidgets/DbSelectionPanel.cpp:67
+#: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:60
+#: ../../../ui/wxWidgets/safecombinationentry.cpp:182
+#: ../../../ui/wxWidgets/safecombinationsetup.cpp:140
+msgid "Safe Combination:"
+msgstr ""
+
+#: ../../../ui/wxWidgets/DbSelectionPanel.cpp:98
+#: ../../../ui/wxWidgets/safecombinationentry.cpp:288
+#: ../../../ui/wxWidgets/safecombinationprompt.cpp:228
+msgid "File or path not found."
+msgstr ""
+
+#: ../../../ui/wxWidgets/DbSelectionPanel.cpp:105
+msgid "That file is already open."
+msgstr ""
+
+#: ../../../ui/wxWidgets/DbSelectionPanel.cpp:112
+#: ../../../ui/wxWidgets/safecombinationentry.cpp:314
+#: ../../../ui/wxWidgets/safecombinationprompt.cpp:240
+msgid ""
+"Incorrect passkey, not a PasswordSafe database, or a corrupt database. "
+"(Backup database has same name as original, ending with '~')"
+msgstr ""
+
+#: ../../../ui/wxWidgets/deleteconfirmation.cpp:134
+msgid "Are you sure you want to delete the selected entry?"
+msgstr ""
+
+#: ../../../ui/wxWidgets/deleteconfirmation.cpp:137
+#, fuzzy
+msgid "Don't ask me again"
+msgstr "&Non chiedermelo più"
+
+#: ../../../ui/wxWidgets/deleteconfirmation.cpp:144
+msgid "&Yes"
+msgstr "&Si"
+
+#: ../../../ui/wxWidgets/deleteconfirmation.cpp:147
+msgid "&No"
+msgstr "&No"
+
+#: ../../../ui/wxWidgets/dragbar.cpp:77
+msgid "Error dragging"
+msgstr ""
+
+#: ../../../ui/wxWidgets/dragbar.cpp:80
+msgid "Nothing happened dragging"
+msgstr ""
+
+#: ../../../ui/wxWidgets/dragbar.cpp:83
+msgid "Copied successfully"
+msgstr ""
+
+#: ../../../ui/wxWidgets/dragbar.cpp:86
+msgid "Moved successfully"
+msgstr ""
+
+#: ../../../ui/wxWidgets/dragbar.cpp:89
+msgid "Dragging cancelled"
+msgstr ""
+
+#: ../../../ui/wxWidgets/dragbar.cpp:92
+msgid "Unexpected result dragging"
+msgstr ""
+
+#: ../../../ui/wxWidgets/editshortcut.cpp:123
+#: ../../../ui/wxWidgets/properties.cpp:124
+#: ../../../ui/wxWidgets/properties.cpp:132
+#: ../../../ui/wxWidgets/properties.cpp:143 ../../../core/core_st.cpp:248
+msgid "Unknown"
+msgstr ""
+
+#: ../../../ui/wxWidgets/editshortcut.cpp:163
+msgid ""
+"Please specify the name and group for this shortcut\n"
+"to the base entry "
+msgstr ""
+
+#: ../../../ui/wxWidgets/editshortcut.cpp:188
+msgid "Date/Time Information"
+msgstr "Informazioni Data\\Ora"
+
+#: ../../../ui/wxWidgets/editshortcut.cpp:198
+#: ../../../ui/wxWidgets/editshortcut.cpp:204
+#: ../../../ui/wxWidgets/editshortcut.cpp:210
+#: ../../../ui/wxWidgets/editshortcut.cpp:216
+msgid "DDD DD MMM YYYY HH:MM:SS XM ZZZ"
+msgstr ""
+
+#: ../../../ui/wxWidgets/editshortcut.cpp:201
+msgid "Target last changed on:"
+msgstr ""
+
+#: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:50
+msgid ""
+"Warning! This operation will create an unprotected copy of ALL of the "
+"passwords\r\n"
+"in the database. Deleting this copy after use is NOT sufficient."
+msgstr ""
+
+#: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:51
+msgid ""
+"Please do not use this option unless you understand and accept the risks. "
+"This option\r\n"
+"bypasses the security provided by this program."
+msgstr ""
+
+#: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:53
+msgid ""
+"\r\n"
+"\r\n"
+msgstr ""
+
+#: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:68
+#: ../../../ui/wxWidgets/MergeDlg.cpp:41 ../../../ui/wxWidgets/PwsSync.cpp:371
+msgid "\""
+msgstr ""
+
+#: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:71
+msgid "Line delimiter in Notes field:"
+msgstr ""
+
+#: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:76
+#, fuzzy
+msgid "Also used to replace periods in the Title field"
+msgstr "Utilizzato anche per rimpiazzare periodi nel campo Titolo."
+
+#: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:87
+#: ../../../ui/wxWidgets/MergeDlg.cpp:58
+#, fuzzy
+msgid "Advanced..."
+msgstr "Avanzate"
+
+#: ../../../ui/wxWidgets/ExternalKeyboardButton.cpp:73
+msgid "Could not launch xvkbd.  Please make sure its in your PATH"
+msgstr ""
+
+#: ../../../ui/wxWidgets/ExternalKeyboardButton.cpp:74
+#: ../../../ui/wxWidgets/ExternalKeyboardButton.cpp:79
+msgid "Could not launch external onscreen keyboard"
+msgstr ""
+
+#: ../../../ui/wxWidgets/ExternalKeyboardButton.cpp:78
+msgid ""
+"Could not launch a new process for xvkbd.  Simultaneous execution is "
+"disabled?"
+msgstr ""
+
+#: ../../../ui/wxWidgets/ImportTextDlg.cpp:175
+msgid ""
+"Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*; *)|*.*; *"
+msgstr ""
+
+#: ../../../ui/wxWidgets/ImportXmlDlg.cpp:19
+msgid "Import XML Settings"
+msgstr ""
+
+#: ../../../ui/wxWidgets/ImportXmlDlg.cpp:31
+#, fuzzy
+msgid "XML file to import:"
+msgstr "%s file importati: %s"
+
+#: ../../../ui/wxWidgets/ImportXmlDlg.cpp:35
+msgid "Please Choose a XML File to Import"
+msgstr ""
+
+#: ../../../ui/wxWidgets/ImportXmlDlg.cpp:36
+msgid "XML files (*.xml)|*.xml"
+msgstr ""
+
+#: ../../../ui/wxWidgets/ImportXmlDlg.cpp:46
+msgid "Import under Group"
+msgstr ""
+
+#: ../../../ui/wxWidgets/ImportXmlDlg.cpp:52
+msgid "Import to change passwords of existing entries ONLY"
+msgstr ""
+
+#: ../../../ui/wxWidgets/mainEdit.cpp:372
+#, fuzzy
+msgid " Copy # "
+msgstr "Copia # %d"
+
+#: ../../../ui/wxWidgets/mainEdit.cpp:662
+msgid "Unable to send email"
+msgstr ""
+
+#: ../../../ui/wxWidgets/mainEdit.cpp:662
+msgid "Unable to display URL"
+msgstr ""
+
+#: ../../../ui/wxWidgets/MergeDlg.cpp:37
+#, fuzzy
+msgid "Merge Another Database"
+msgstr "&Apri un'altro Database..."
+
+#: ../../../ui/wxWidgets/MergeDlg.cpp:40
+msgid "Choose Database to Merge into \""
+msgstr ""
+
+#: ../../../ui/wxWidgets/MergeDlg.cpp:42
+msgid "Please Choose a Database to Merge into current database"
+msgstr ""
+
+#: ../../../ui/wxWidgets/MergeDlg.cpp:78
+msgid "Advanced Merge Options"
+msgstr "Opzioni di Unione Avanzate"
+
+#: ../../../ui/wxWidgets/MergeDlg.cpp:90
+#, fuzzy
+msgid "merge"
+msgstr "&Unisci"
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:127
+#: ../../../ui/wxWidgets/properties.cpp:171 ../../../core/core_st.cpp:222
+msgid "None"
+msgstr ""
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:128
+msgid "YYYYMMMDD_HHMMSS"
+msgstr ""
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:129
+msgid "Incremented Number [001-999]"
+msgstr ""
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:136
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:430 ../../../core/core_st.cpp:67
+msgid "Copy password to clipboard"
+msgstr "Copia la password negli appunti"
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:137
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:435 ../../../core/core_st.cpp:72
+msgid "View/Edit selected entry"
+msgstr ""
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:138
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:426
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:439 ../../../core/core_st.cpp:63
+msgid "Autotype"
+msgstr "Autoinserimento"
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:139
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:427 ../../../core/core_st.cpp:64
+msgid "Browse to URL"
+msgstr "Naviga l' URL"
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:140
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:429 ../../../core/core_st.cpp:66
+msgid "Copy notes to clipboard"
+msgstr "Copia le note negli appunti"
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:141
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:432 ../../../core/core_st.cpp:69
+msgid "Copy username to clipboard"
+msgstr "Copia nome utente negli appunti"
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:142
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:431 ../../../core/core_st.cpp:68
+msgid "Copy password to clipboard, minimize"
+msgstr "Copia la password negli appunti, riduci a icona"
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:143
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:428 ../../../core/core_st.cpp:65
+msgid "Browse to URL + Autotype"
+msgstr ""
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:144
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:433 ../../../core/core_st.cpp:70
+#: ../../../core/core_st.cpp:129
+msgid "Run Command"
+msgstr ""
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:145
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:434 ../../../core/core_st.cpp:71
+msgid "Send email"
+msgstr ""
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:264
+msgid "Save database immediately after Edit or Add"
+msgstr ""
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:268
+msgid "Intermediate Backups"
+msgstr ""
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:271
+msgid "Create intermediate backups (.ibak) before saving"
+msgstr "Crea backup intermedi (.ibak) prima del salvataggio"
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:275
+msgid "Backup Name"
+msgstr "Nome File di Salvataggio"
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:278
+msgid "Base:"
+msgstr "Predefinito:"
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:281
+msgid "Database name"
+msgstr "Nome Database"
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:287
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:334
+msgid "Other:"
+msgstr ""
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:297
+msgid "Suffix:"
+msgstr ""
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:308
+msgid "Max."
+msgstr ""
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:316
+msgid "Example:"
+msgstr ""
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:325
+#, fuzzy
+msgid "Backup directory:"
+msgstr "%s è una cartella"
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:328
+msgid "Same as database's"
+msgstr ""
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:344
+msgid "Backups"
+msgstr "Salvataggi"
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:350
+msgid "Always keep Password Safe on top"
+msgstr "Mantieni sempre Password Safe in primo piano"
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:354
+msgid "Show Username in Tree View"
+msgstr ""
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:358
+msgid "Show Password in Tree View"
+msgstr ""
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:362
+msgid "Show Notes as ToolTips in Tree && List views"
+msgstr ""
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:366
+msgid "Show Password in Add && Edit"
+msgstr ""
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:370
+msgid "Show Notes in Edit"
+msgstr ""
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:374
+msgid "Word Wrap Notes in Add && Edit"
+msgstr ""
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:378
+msgid "Put Groups first in Tree View"
+msgstr ""
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:384
+msgid "Warn"
+msgstr ""
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:391
+msgid "days before passwords expire"
+msgstr ""
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:395
+msgid "&Fully collapsed"
+msgstr ""
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:396
+msgid "&Fully expanded"
+msgstr ""
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:397
+msgid "&Same as when last saved"
+msgstr ""
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:398
+msgid "Initial Tree View"
+msgstr ""
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:402
+msgid "Display"
+msgstr "Mostra"
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:408
+msgid "Confirm deletion of items"
+msgstr ""
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:412
+msgid "Record last access times"
+msgstr ""
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:416
+msgid "Escape key closes application"
+msgstr ""
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:422
+msgid "Double-click action"
+msgstr "Azione di Doppio Click"
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:442
+msgid "Minimize after Autotype"
+msgstr ""
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:448
+msgid "Default Autotype string:"
+msgstr "Stringa di Autoinserimento di default"
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:454
+msgid "Default Username"
+msgstr "Nome utente di default"
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:459
+msgid "Use"
+msgstr ""
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:466
+msgid "as default username"
+msgstr ""
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:469
+msgid "Query user to set default username"
+msgstr ""
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:473
+#, fuzzy
+msgid "Alternate Browser"
+msgstr "Navigazione alternativa"
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:489
+msgid "Browser Command Line parameters"
+msgstr "Parametri di navigazione da riga di comando"
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:492
+msgid "Misc."
+msgstr ""
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:600
+msgid "Save"
+msgstr ""
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:607
+msgid "previous passwords per entry"
+msgstr ""
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:610
+msgid "Manage password history of current entries"
+msgstr ""
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:613
+msgid "No change"
+msgstr ""
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:617
+msgid "Stop saving previous passwords"
+msgstr ""
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:621
+msgid "Start saving previous passwords"
+msgstr ""
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:625
+msgid "Set maximum number of paswords saved to above value"
+msgstr ""
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:629
+msgid "Apply"
+msgstr "Applica"
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:638
+msgid "Clear clipboard upon minimize"
+msgstr "Svuota gli appunti se ridotto ad icona"
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:642
+msgid "Clear clipboard upon exit"
+msgstr "Svuota gli appunti all'uscita"
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:646
+msgid "Confirm item copy to clipboard"
+msgstr "Conferma di copia negli appunti dell'elemento"
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:650
+msgid "Lock password database on minimize"
+msgstr ""
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:654
+msgid "Lock password database on workstation lock"
+msgstr ""
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:660
+msgid "Lock password database after"
+msgstr ""
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:667
+msgid "minutes idle"
+msgstr ""
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:670
+msgid "Security"
+msgstr ""
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:676
+msgid "System Tray"
+msgstr ""
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:679
+msgid "Put icon in System Tray"
+msgstr ""
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:685
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:703
+msgid "  Remember last"
+msgstr ""
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:691
+msgid "used entries in System Tray menu"
+msgstr ""
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:694
+msgid "Start PasswordSafe at Login"
+msgstr ""
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:698
+msgid "Recent PasswordSafe Databases"
+msgstr ""
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:709
+#, fuzzy
+msgid "databases"
+msgstr "Database"
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:712
+msgid "Recent Databases on File Menu rather than as a sub-menu"
+msgstr ""
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:716
+msgid "Open database as read-only by default"
+msgstr ""
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:720
+msgid "Allow multiple instances"
+msgstr ""
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:725
+msgid "Use Primary Selection for clipboard"
+msgstr ""
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:730
+msgid "System"
+msgstr ""
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:740
+msgid "Shortcuts"
+msgstr ""
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:1100
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1222
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2165
+#: ../../../ui/wxWidgets/safecombinationentry.cpp:373
+msgid "pwsafe"
+msgstr ""
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:1203
+#, fuzzy
+msgid "Select a Browser"
+msgstr "Navigazione alternativa"
+
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:1258
+#: ../../../ui/wxWidgets/pwsafeapp.cpp:319
+msgid "Password Safe"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:356
+msgid "&New..."
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:357
+msgid "&Open..."
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:360
+#, fuzzy
+msgid "Clear Recent Safe List"
+msgstr "&Cancella la Lista dei Salvataggi Recenti"
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:362
+#, fuzzy
+msgid "&Save..."
+msgstr "&Gestione..."
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:363
+msgid "Save &As..."
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:366
+msgid "v&1.x format..."
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:367
+msgid "v&2 format..."
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:368
+msgid "&Plain Text (tab separated)..."
+msgstr "&Testo Completo (separato da tabulazione)"
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:369
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:373
+msgid "&XML format..."
+msgstr "&Formato XML..."
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:370
+msgid "Export &To"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:372
+msgid "&Plain Text..."
+msgstr "&Testo Completo"
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:374
+msgid "&KeePass..."
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:375
+msgid "Import &From"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:376
+msgid "Merge..."
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:377
+msgid "Compare..."
+msgstr "Confronta..."
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:378
+msgid "S&ynchronize..."
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:380
+msgid "&Properties"
+msgstr "&Proprietà"
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:382
+msgid "E&xit"
+msgstr "E&xit"
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:383
+msgid "&File"
+msgstr "&File"
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:387
+#, fuzzy
+msgid "&Add Entry...\tCtrl+A"
+msgstr "Aggiungi Scheda"
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:388
+#, fuzzy
+msgid "Edit/&View Entry...\tCtrl+Enter"
+msgstr "Modifica/&Visualizza Scheda"
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:389
+#, fuzzy
+msgid "&Delete Entry\tDel"
+msgstr "Cancella Scheda"
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:390
+msgid "Rename Entry\tF2"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:391
+#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:186
+msgid "&Find Entry...\tCtrl+F"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:392
+#, fuzzy
+msgid "&Duplicate Entry\tCtrl+D"
+msgstr "&Duplica Scheda"
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:394
+msgid "Add Group"
+msgstr "Aggiungi Gruppo"
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:396
+msgid "Undo"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:397
+msgid "Redo"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:398
+#, fuzzy
+msgid "C&lear Clipboard\tCtrl+Del"
+msgstr "C&lear Clipboard"
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:400
+#, fuzzy
+msgid "&Copy Password to Clipboard\tCtrl+C"
+msgstr "&Copia la Password nella Memoria"
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:401
+#, fuzzy
+msgid "Copy &Username to Clipboard\tCtrl+U"
+msgstr "Copia &Nome Utente negli Appunti"
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:402
+#, fuzzy
+msgid "Copy &Notes to Clipboard\tCtrl+G"
+msgstr "Copia &Note negli Appunti"
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:403
+#, fuzzy
+msgid "Copy URL to Clipboard\tCtrl+Alt+L"
+msgstr "Copia &URL negli appunti"
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:404
+#, fuzzy
+msgid "&Browse to URL\tCtrl+L"
+msgstr "&Naviga all' URL"
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:405
+msgid "Perform Auto&type\tCtrl+T"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:406
+#, fuzzy
+msgid "Go to Base entry"
+msgstr "&Vai alla Scheda Base"
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:407
+msgid "&Edit"
+msgstr "&Modifica"
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:409
+msgid "Flattened &List"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:410
+msgid "Nested &Tree"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:412
+msgid "Toolbar &visible"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:413
+msgid "&New Toolbar"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:414
+msgid "&Classic Toolbar"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:415
+msgid "&Dragbar visible"
+msgstr "&Barra di trascinamento visibile"
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:417
+msgid "Expand All"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:418
+msgid "Collapse All"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:420
+#, fuzzy
+msgid "&New/Edit Filter..."
+msgstr "&Nuovo/Modifica Filtro"
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:421
+msgid "&Apply current"
+msgstr "&Applica attualmente"
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:422
+msgid "&Manage..."
+msgstr "&Gestione..."
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:423
+msgid "&Filters"
+msgstr "&Filtri"
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:425
+#, fuzzy
+msgid "Customize &Main Toolbar..."
+msgstr "Personalizza &Barra delle Applicazioni Principale"
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:427
+msgid "&Tree/List Font"
+msgstr "&Albero/Lista Caratteri "
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:428
+msgid "&Password Font"
+msgstr "&Caratteri per Password"
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:429
+msgid "Change &Font"
+msgstr "Cambia &Carattere"
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:432
+msgid "&Find"
+msgstr "&Trova"
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:433
+msgid "Import &Text"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:434
+msgid "Import &XML"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:435
+#, fuzzy
+msgid "I&Merge"
+msgstr "&Unisci"
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:436
+msgid "&Validate"
+msgstr "&Convalida"
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:437
+#, fuzzy
+msgid "Reports"
+msgstr "&Resoconti"
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:438
+msgid "&View"
+msgstr "&Visualizza"
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:440
+msgid "&Change Safe Combination..."
+msgstr "&Cambia la Combinazione di Sicurezza"
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:442
+msgid "Make &Backup\tCtrl+B"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:443
+msgid "&Restore from Backup...\tCtrl+R"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:445
+msgid "&Options..."
+msgstr "&Opzioni..."
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:446
+msgid "&Validate..."
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:447
+msgid "&Manage"
+msgstr "&Gestione"
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:449
+#, fuzzy
+msgid "Get &Help"
+msgstr "&Aiuto"
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:450
+msgid "Visit Password Safe &website..."
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:451
+msgid "&About Password Safe..."
+msgstr "&A proposito di Password Safe..."
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:741
+msgid "Select Tree/List display font"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:758
+msgid "Set Password display font"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:822
+msgid ""
+"Unable to create intermediate backup.  Save database elsewhere or with "
+"another name?\n"
+"\n"
+"Click 'No' to exit without saving."
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:823
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:830
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:835
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2053
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3119
+#: ../../../ui/wxWidgets/safecombinationentry.cpp:415
+msgid "Write Error"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:830
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:835
+msgid "Unable to create intermediate backup."
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:845
+#, c-format
+msgid ""
+"The original database, \"%s\", is in pre-3.0 format. It will be unchanged.\n"
+"Your changes will be written as \"%s\" in the new format, which is unusable "
+"by old versions of PasswordSafe. To save your changes in the old format, use "
+"the \"File->Export To-> Old (1.x or 2) format\" command."
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:847
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1214
+msgid "File version warning"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:923
+#, fuzzy
+msgid "Do you want to save changes to the password database"
+msgstr "Vuoi salvare i cambiamenti nel database delle password: %s?"
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:925
+msgid ": "
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:988
+#: ../../../ui/wxWidgets/safecombinationentry.cpp:348
+msgid "Please Choose a Database to Open:"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1017
+msgid "pwsafe.psafe3"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1213
+#, c-format
+msgid ""
+"The original database, '%s', is in pre-3.0 format. The data will now be "
+"written in the new format, which is unusable by old versions of "
+"PasswordSafe. To save the data in the old format, use the 'File->Export To-> "
+"Old (1.x or 2) format' command."
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1226
+msgid "Please choose a name for the current (Untitled) database:"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1227
+msgid "Please choose a new name for the current database:"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1235
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2761
+msgid ""
+"Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat|All files (*.*; *)|"
+"*.*;*"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1247
+#, c-format
+msgid ""
+"%s\n"
+"\n"
+"File is currently locked by %s"
+msgstr ""
+"%s\n"
+"\n"
+"File attualmente \"lucchettato\" da %s"
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1248
+msgid "File lock error"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1594
+#, c-format
+msgid "Unknown code: %d"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:1923
+#, c-format
+msgid "Couldn't find uuid %s"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2057
+#, fuzzy
+msgid ""
+"\n"
+"\n"
+"Coud not open file for writing!"
+msgstr ""
+"%s\n"
+"\n"
+"Non è possibile aprire il file in scrittura!"
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2060
+msgid ""
+"Write operation failed!\n"
+"File may have been corrupted.\n"
+"Try saving in a different location"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2064
+#: ../../../ui/wxWidgets/wxutils.cpp:81
+#, fuzzy
+msgid ""
+"\n"
+"\n"
+"Unknown error"
+msgstr ""
+"%s\n"
+"\n"
+"Errore sconosciuto"
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2082
+#, fuzzy
+msgid "Do you want to save changes to the password database: "
+msgstr "Vuoi salvare i cambiamenti nel database delle password: %s?"
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2163
+#: ../../../ui/wxWidgets/safecombinationentry.cpp:378
+msgid "Please choose a name for the new database"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2172
+msgid "psafe3 files (*.psafe3)|*.psafe3|All files(*.*; *)|*.*;*"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2519
+msgid "Please Choose a KeePass Text File to Import"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2521
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2795
+msgid ""
+"Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*; *)|*.*;*"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2533
+msgid "Import_KeePassV1_CSV"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2535
+msgid "Import_KeePassV1_TXT"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2537
+#, fuzzy, c-format
+msgid "Text file being imported: %s"
+msgstr "%s file importati: %s"
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2554
+#: ../../../ui/wxWidgets/PwsSync.cpp:588
+#, c-format
+msgid ""
+"%s\n"
+"\n"
+"Could not open file for reading!"
+msgstr ""
+"%s\n"
+"\n"
+"Non è possibile aprire il file in lettura!"
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2555
+msgid "File open error"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2569
+#, c-format
+msgid ""
+"%s\n"
+"\n"
+"Invalid format"
+msgstr ""
+"%s\n"
+"\n"
+"Formato non valido"
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2570
+msgid "Import failed"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2583
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2710
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2711
+#: ../../../ui/wxWidgets/PwsSync.cpp:573 ../../../ui/wxWidgets/PwsSync.cpp:724
+#: ../../../ui/wxWidgets/PwsSync.cpp:741 ../../../core/core_st.cpp:88
+msgid "entry"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2583
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2710
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2711
+#: ../../../ui/wxWidgets/PwsSync.cpp:573 ../../../ui/wxWidgets/PwsSync.cpp:724
+#: ../../../ui/wxWidgets/PwsSync.cpp:741 ../../../core/core_st.cpp:87
+msgid "entries"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2584
+#, c-format
+msgid "Imported %d %s"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2587
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2669
+msgid "Completed successfully"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2587
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2669
+msgid "Completed but ...."
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2589
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2731
+#, fuzzy
+msgid ""
+"\n"
+"\n"
+"Do you wish to see a detailed report?"
+msgstr "Vuoi rimpiazzarlo?"
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2607
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2651
+msgid "Import XML failed"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2617
+#: ../../../core/core_st.cpp:213
+#, c-format
+msgid ""
+"Can't find XML Schema Definition file (%s) in your PasswordSafe Application "
+"Directory.\r\n"
+"Please copy it from your installation file, or re-install PasswordSafe."
+msgstr ""
+"Impossibile trovare lo schema di definizione file XML (%s) nella cartella "
+"del tuo programma Password Safe.\r\n"
+"Si prega di copiarlo dal file di'installazione, o di reinstallare Password "
+"Safe."
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2618
+msgid "Missing XSD File - "
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2618
+msgid " Build"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2637
+msgid "Import_XML"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2638
+#, c-format
+msgid "%s file being imported: %s"
+msgstr "%s file importati: %s"
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2638
+msgid "XML"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2657
+#, c-format
+msgid ""
+"File: %s failed validation against XML Schema:\r\n"
+"\r\n"
+"%s"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2663
+#, c-format
+msgid ""
+"File: %s passed Validation but had the following errors during import:\r\n"
+"\r\n"
+"%s"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2684
+msgid "The following records were skipped:"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2686
+#, c-format
+msgid " / skipped %d"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2691
+msgid "The following records had errors in their Password History:"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2693
+#, c-format
+msgid " / with Password History errors %d"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2698
+msgid ""
+"The following records were renamed as an entry already exists in your "
+"database or in the Import file:"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2700
+#, c-format
+msgid " / renamed %d"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2705
+#, c-format
+msgid ""
+"File: %s was imported (entries validated %d / imported %d%s%s%s). See report "
+"for details."
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2712
+#, c-format
+msgid ""
+"Validated %d %s\r\n"
+"\r\n"
+"Imported %d %s"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2718
+msgid "XML import not supported in this release"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2721
+#, c-format
+msgid "XML import: Unexpected return code(%d)"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2752
+msgid "Please name the exported database"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2777
+msgid "Could not figure out why PasswordSafeFrame::OnExportVx was invoked"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2788
+msgid "Export Text"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2792
+msgid "Export Text failed"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2794
+msgid "Please name the plaintext file"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2805
+msgid "Advanced Text Export Options"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2817
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2857
+#, fuzzy
+msgid "export"
+msgstr "&Esporta"
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2828
+msgid "Export XML"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2832
+msgid "Export XML failed"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2834
+msgid "Please name the XML file"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2835
+msgid "XML files (*.xml)|*.xml|All files (*.*; *)|*.*;*"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2846
+msgid "Advanced XML Export Options"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2938
+msgid "No entries satisfied your selection criteria and so none were exported!"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2951
+msgid "Passkey incorrect"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2983
+msgid "Merge"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2984
+#, fuzzy
+msgid "Merging database: "
+msgstr "Comparazione dei Database"
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2997
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3057
+#, fuzzy
+msgid ""
+"\r\n"
+"\r\n"
+"Do you wish to see a detailed report?"
+msgstr "Vuoi rimpiazzarlo?"
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:2998
+#, fuzzy
+msgid "Merge Complete"
+msgstr "Confronto completato"
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3037
+msgid "Please Choose a Database to Validate:"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3044
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3058
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3062
+msgid "Validate"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3062
+msgid "Database validated - no problems found."
+msgstr "Database convalidato - nessun problema riscontrato."
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3078
+msgid "Please Choose a Name for this Backup:"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3085
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3138
+#, fuzzy
+msgid "Could not parse current file path"
+msgstr "Impossibile accedere al file: %s"
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3092
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3145
+msgid "bak"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3093
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3146
+msgid "Password Safe Backups (*.bak)|*.bak"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3118
+#, fuzzy
+msgid ""
+"\n"
+"\n"
+"Could not open file for writing!"
+msgstr ""
+"%s\n"
+"\n"
+"Non è possibile aprire il file in scrittura!"
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3142
+msgid "Please Choose a Backup to restore:"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3174
+#: ../../../ui/wxWidgets/wxutils.cpp:60
+#, fuzzy
+msgid ""
+"\n"
+"\n"
+"Could not open file for reading!"
+msgstr ""
+"%s\n"
+"\n"
+"Non è possibile aprire il file in lettura!"
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3175
+#: ../../../ui/wxWidgets/PwsSync.cpp:558 ../../../ui/wxWidgets/wxutils.cpp:61
+#: ../../../ui/wxWidgets/wxutils.cpp:66 ../../../ui/wxWidgets/wxutils.cpp:81
+msgid "File Read Error"
+msgstr ""
+
+#: ../../../ui/wxWidgets/passwordsafeframe.cpp:3183
+msgid "Password Safe - <Untitled Restored Backup>"
+msgstr ""
+
+#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:127
+#, fuzzy
+msgid "&Find next...\tF3"
+msgstr "&Testo Completo"
+
+#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:128
+msgid "&Find previous...\tSHIFT+F3"
+msgstr ""
+
+#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:192
+#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:279
+msgid "Advanced Find Options"
+msgstr "Opzioni di Ricerca Avanzate"
+
+#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:204
+msgid "search"
+msgstr ""
+
+#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:277
+msgid "Find Next"
+msgstr ""
+
+#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:278
+#, fuzzy
+msgid "Case Insensitive Search"
+msgstr "Ricerca indifferente al maiuscolo"
+
+#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:280
+msgid "Create report of previous Find search"
+msgstr ""
+
+#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:281
+msgid "Clear Find"
+msgstr ""
+
+#: ../../../ui/wxWidgets/properties.cpp:138 ../../../core/core_st.cpp:253
+#, c-format
+msgid "%s on %s"
+msgstr ""
+
+#: ../../../ui/wxWidgets/properties.cpp:160 ../../../core/core_st.cpp:278
+msgid "Yes"
+msgstr ""
+
+#: ../../../ui/wxWidgets/properties.cpp:160 ../../../core/core_st.cpp:217
+msgid "No"
+msgstr ""
+
+#: ../../../ui/wxWidgets/properties.cpp:162 ../../../core/core_st.cpp:250
+#, c-format
+msgid "In Headers(%s)/In Entries("
+msgstr ""
+
+#: ../../../ui/wxWidgets/properties.cpp:165
+#, fuzzy
+msgid "No)"
+msgstr "&No"
+
+#: ../../../ui/wxWidgets/properties.cpp:167
+#, fuzzy, c-format
+msgid "%d)"
+msgstr "%d"
+
+#: ../../../ui/wxWidgets/properties.cpp:197
+msgid "Database format:"
+msgstr "Formato Database:"
+
+#: ../../../ui/wxWidgets/properties.cpp:200
+msgid "Number of Groups:"
+msgstr ""
+
+#: ../../../ui/wxWidgets/properties.cpp:203
+msgid "Number of Entries:"
+msgstr ""
+
+#: ../../../ui/wxWidgets/properties.cpp:206
+msgid "Last saved by:"
+msgstr ""
+
+#: ../../../ui/wxWidgets/properties.cpp:209
+msgid "Last saved on:"
+msgstr ""
+
+#: ../../../ui/wxWidgets/properties.cpp:212
+msgid "Using application:"
+msgstr ""
+
+#: ../../../ui/wxWidgets/properties.cpp:215
+msgid "Database Unique ID:"
+msgstr "Database ID unico:"
+
+#: ../../../ui/wxWidgets/properties.cpp:218
+msgid "Unknown fields:"
+msgstr ""
+
+#: ../../../ui/wxWidgets/properties.cpp:224
+msgid "x.y"
+msgstr ""
+
+#: ../../../ui/wxWidgets/properties.cpp:227
+#: ../../../ui/wxWidgets/properties.cpp:230
+msgid "N"
+msgstr ""
+
+#: ../../../ui/wxWidgets/properties.cpp:233
+msgid "U"
+msgstr ""
+
+#: ../../../ui/wxWidgets/properties.cpp:236
+msgid "h"
+msgstr ""
+
+#: ../../../ui/wxWidgets/properties.cpp:239
+msgid "a"
+msgstr ""
+
+#: ../../../ui/wxWidgets/properties.cpp:243
+msgid "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+msgstr ""
+
+#: ../../../ui/wxWidgets/properties.cpp:247
+msgid "x"
+msgstr ""
+
+#: ../../../ui/wxWidgets/pwsafeapp.cpp:319
+msgid "Another instance of Password Safe is already running"
+msgstr ""
+
+#: ../../../ui/wxWidgets/pwsafeapp.cpp:348
+msgid "Could not initialize help subsystem. Help will not be available"
+msgstr ""
+
+#: ../../../ui/wxWidgets/pwsafeapp.cpp:349
+msgid "Error initializing help"
+msgstr ""
+
+#: ../../../ui/wxWidgets/pwsafeapp.cpp:512
+msgid "Help Undefined"
+msgstr ""
+
+#: ../../../ui/wxWidgets/PWSDragBar.cpp:111
+msgid "Drag this image onto another window to paste the '"
+msgstr ""
+
+#: ../../../ui/wxWidgets/PWSDragBar.cpp:112
+msgid "' field."
+msgstr ""
+
+#: ../../../ui/wxWidgets/PWSgrid.cpp:136 ../../../core/core_st.cpp:132
+msgid "Title"
+msgstr ""
+
+#: ../../../ui/wxWidgets/PWSgrid.cpp:137
+#, fuzzy
+msgid "User"
+msgstr "'Utente'"
+
+#: ../../../ui/wxWidgets/PwsSync.cpp:131
+msgid "synchronize"
+msgstr ""
+
+#: ../../../ui/wxWidgets/PwsSync.cpp:209
+msgid "Synchronize another database with currently open database"
+msgstr ""
+
+#: ../../../ui/wxWidgets/PwsSync.cpp:339
+msgid "Introduction"
+msgstr ""
+
+#: ../../../ui/wxWidgets/PwsSync.cpp:343
+msgid ""
+"Synchroinzing with another database will update the entries in your\r\n"
+"database with matching entries from the other database."
+msgstr ""
+
+#: ../../../ui/wxWidgets/PwsSync.cpp:346
+msgid "More Info"
+msgstr ""
+
+#: ../../../ui/wxWidgets/PwsSync.cpp:349
+msgid ""
+"1. Two entries from different databases match if their Group, Title\r\n"
+"and User fields match."
+msgstr ""
+
+#: ../../../ui/wxWidgets/PwsSync.cpp:350
+msgid ""
+"2. You can select the fields to update, as well as filter the entries\r\n"
+"for synchronization."
+msgstr ""
+
+#: ../../../ui/wxWidgets/PwsSync.cpp:351
+msgid ""
+"3. Only existing entries in your database are updated.  No new entries are"
+"\r\n"
+"added or existing entries removed during this process."
+msgstr ""
+
+#: ../../../ui/wxWidgets/PwsSync.cpp:352
+msgid ""
+"4. You can undo the operation once it is complete, but won't be\r\n"
+"able to abort it mid-way."
+msgstr ""
+
+#: ../../../ui/wxWidgets/PwsSync.cpp:369
+#, fuzzy
+msgid "Select another database"
+msgstr "&Apri un'altro Database..."
+
+#: ../../../ui/wxWidgets/PwsSync.cpp:371
+msgid "Choose Database to Synchronize with \""
+msgstr ""
+
+#: ../../../ui/wxWidgets/PwsSync.cpp:372
+msgid "Please Choose a Database to Synchronize with current database"
+msgstr ""
+
+#: ../../../ui/wxWidgets/PwsSync.cpp:395
+msgid "Synchronization options"
+msgstr ""
+
+#: ../../../ui/wxWidgets/PwsSync.cpp:420
+msgid "Options Summary"
+msgstr ""
+
+#: ../../../ui/wxWidgets/PwsSync.cpp:445
+msgid ""
+"WARNING!!\r\n"
+"\r\n"
+"If you continue, fields will be updated in your existing database\r\n"
+"from your selected input database"
+msgstr ""
+
+#: ../../../ui/wxWidgets/PwsSync.cpp:462
+msgid " will be updated with corresponding entries from \""
+msgstr ""
+
+#: ../../../ui/wxWidgets/PwsSync.cpp:469
+msgid "All fields in matching entries will be updated"
+msgstr ""
+
+#: ../../../ui/wxWidgets/PwsSync.cpp:475
+msgid "Following fields in matching entries will be updated:"
+msgstr ""
+
+#: ../../../ui/wxWidgets/PwsSync.cpp:479
+msgid "Following fields will not be updated:"
+msgstr ""
+
+#: ../../../ui/wxWidgets/PwsSync.cpp:493
+msgid "Synchronization status"
+msgstr ""
+
+#: ../../../ui/wxWidgets/PwsSync.cpp:511
+msgid "See a detailed report"
+msgstr ""
+
+#: ../../../ui/wxWidgets/PwsSync.cpp:547
+msgid "Your database is being synchronized with \""
+msgstr ""
+
+#: ../../../ui/wxWidgets/PwsSync.cpp:557
+msgid "There was an error during synchronization"
+msgstr ""
+
+#: ../../../ui/wxWidgets/PwsSync.cpp:571
+#, c-format
+msgid "Your database has been synchronized with \"%s\""
+msgstr ""
+
+#: ../../../ui/wxWidgets/PwsSync.cpp:572
+#, c-format
+msgid "%d %s updated"
+msgstr ""
+
+#: ../../../ui/wxWidgets/PwsSync.cpp:574
+msgid "Synchronization completed successfully"
+msgstr ""
+
+#: ../../../ui/wxWidgets/PwsSync.cpp:590
+#, fuzzy, c-format
+msgid ""
+"%s\n"
+"\n"
+"File corrupt or truncated!\n"
+"Data may have been lost or modified."
+msgstr ""
+"%s\n"
+"\n"
+"File corrotto o troncato!\n"
+"I dati possono essere stati perduti o modificati.\n"
+"Continuare comunque?"
+
+#: ../../../ui/wxWidgets/PwsSync.cpp:599
+#, c-format
+msgid ""
+"%s\n"
+"\n"
+"Unknown error"
+msgstr ""
+"%s\n"
+"\n"
+"Errore sconosciuto"
+
+#: ../../../ui/wxWidgets/PwsSync.cpp:633
+#, c-format
+msgid "Synchronizing from database: %s\r\n"
+msgstr ""
+
+#: ../../../ui/wxWidgets/PwsSync.cpp:636
+msgid "synchronized"
+msgstr ""
+
+#: ../../../ui/wxWidgets/PwsSync.cpp:725 ../../../core/core_st.cpp:261
+msgid "was"
+msgstr ""
+
+#: ../../../ui/wxWidgets/PwsSync.cpp:725 ../../../core/core_st.cpp:262
+msgid "were"
+msgstr ""
+
+#: ../../../ui/wxWidgets/PwsSync.cpp:726 ../../../core/core_st.cpp:246
+#, c-format
+msgid ""
+"\r\n"
+"The following %s %s updated:"
+msgstr ""
+
+#: ../../../ui/wxWidgets/PwsSync.cpp:742 ../../../core/core_st.cpp:245
+#, c-format
+msgid ""
+"\r\n"
+"Synchronize completed: %d %s updated"
+msgstr ""
+
+#: ../../../ui/wxWidgets/PwsSync.cpp:752
+msgid " were "
+msgstr ""
+
+#: ../../../ui/wxWidgets/PwsSync.cpp:752
+msgid " with corresponding entries from \""
+msgstr ""
+
+#: ../../../ui/wxWidgets/PwsSync.cpp:759
+#, c-format
+msgid "All fields in matching entries were %s"
+msgstr ""
+
+#: ../../../ui/wxWidgets/PwsSync.cpp:763
+#, c-format
+msgid "The following fields were %s"
+msgstr ""
+
+#: ../../../ui/wxWidgets/PwsSync.cpp:766
+#, c-format
+msgid "\t* %s"
+msgstr ""
+
+#: ../../../ui/wxWidgets/PWStree.cpp:263
+msgid "]"
+msgstr ""
+
+#: ../../../ui/wxWidgets/PWStree.cpp:269
+msgid "}"
+msgstr ""
+
+#: ../../../ui/wxWidgets/PWStree.cpp:290 ../../../ui/wxWidgets/PWStree.cpp:305
+msgid "."
+msgstr ""
+
+#: ../../../ui/wxWidgets/safecombinationchange.cpp:133
+msgid ""
+"Please enter the current combination, followed by a new combination.\n"
+"Type the new combination once again to confirm it."
+msgstr ""
+
+#: ../../../ui/wxWidgets/safecombinationchange.cpp:139
+#, fuzzy
+msgid "Old safe combination:"
+msgstr "Inserisci la combinazione di sicurezza."
+
+#: ../../../ui/wxWidgets/safecombinationchange.cpp:147
+#, fuzzy
+msgid "New safe combination:"
+msgstr "Inserisci la combinazione di sicurezza."
+
+#: ../../../ui/wxWidgets/safecombinationchange.cpp:154
+msgid "Confirmation:"
+msgstr "Conferma:"
+
+#: ../../../ui/wxWidgets/safecombinationchange.cpp:232
+msgid "The old safe combination is not correct"
+msgstr ""
+
+#: ../../../ui/wxWidgets/safecombinationchange.cpp:236
+msgid "Cannot verify old safe combination - file gone?"
+msgstr ""
+"Impossibile verificare la vecchia Combinazione di Sicurezza - file assente?"
+
+#: ../../../ui/wxWidgets/safecombinationchange.cpp:240
+msgid "New safe combination and confirmation do not match"
+msgstr ""
+
+#: ../../../ui/wxWidgets/safecombinationchange.cpp:244
+#: ../../../ui/wxWidgets/SafeCombinationCtrl.cpp:69
+#: ../../../ui/wxWidgets/safecombinationentry.cpp:282
+#: ../../../ui/wxWidgets/safecombinationprompt.cpp:222
+msgid "The combination cannot be blank."
+msgstr ""
+
+#: ../../../ui/wxWidgets/safecombinationchange.cpp:254
+#: ../../../ui/wxWidgets/safecombinationsetup.cpp:230
+msgid ""
+"Weak passphrase:\n"
+"\n"
+msgstr ""
+
+#: ../../../ui/wxWidgets/safecombinationchange.cpp:257
+#: ../../../ui/wxWidgets/safecombinationsetup.cpp:233
+msgid ""
+"\n"
+"Use it anyway?"
+msgstr ""
+
+#: ../../../ui/wxWidgets/safecombinationentry.cpp:166
+msgid "VX.YY"
+msgstr ""
+
+#: ../../../ui/wxWidgets/safecombinationentry.cpp:169
+msgid "Open Password Database:"
+msgstr ""
+
+#: ../../../ui/wxWidgets/safecombinationentry.cpp:191
+msgid "Open as read-only"
+msgstr ""
+
+#: ../../../ui/wxWidgets/safecombinationentry.cpp:197
+#, fuzzy
+msgid ""
+"New\n"
+"Database"
+msgstr "Database"
+
+#: ../../../ui/wxWidgets/safecombinationentry.cpp:208
+#, c-format
+msgid "V%d.%d %s"
+msgstr ""
+
+#: ../../../ui/wxWidgets/safecombinationentry.cpp:211
+#, c-format
+msgid "V%d.%d.%d %s"
+msgstr ""
+
+#: ../../../ui/wxWidgets/safecombinationentry.cpp:311
+#: ../../../ui/wxWidgets/safecombinationprompt.cpp:237
+msgid "Three strikes - yer out!"
+msgstr ""
+
+#: ../../../ui/wxWidgets/safecombinationentry.cpp:350
+#: ../../../ui/wxWidgets/safecombinationentry.cpp:380
+msgid ""
+"Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat| All files (*.*; *)|"
+"*.*;*"
+msgstr ""
+
+#: ../../../ui/wxWidgets/safecombinationentry.cpp:414
+#, fuzzy
+msgid ""
+"\r\n"
+"\r\n"
+"Could not open file for writing!"
+msgstr ""
+"%s\n"
+"\n"
+"Non è possibile aprire il file in scrittura!"
+
+#: ../../../ui/wxWidgets/safecombinationprompt.cpp:143
+msgid "Please enter the safe combination for this password database."
+msgstr ""
+
+#: ../../../ui/wxWidgets/safecombinationprompt.cpp:146
+msgid "filename"
+msgstr ""
+
+#: ../../../ui/wxWidgets/safecombinationprompt.cpp:152
+#, fuzzy
+msgid ""
+"Safe\n"
+"combination:"
+msgstr "Inserisci la combinazione di sicurezza."
+
+#: ../../../ui/wxWidgets/safecombinationsetup.cpp:134
+#, fuzzy
+msgid ""
+"A new password database will be created.\n"
+"The safe combination will be used to encrypt the password database file.\n"
+"You can use any keyboard character. The combination is case-sensitive.\n"
+msgstr ""
+"Verrà creato un nuovo database di password. La combinazione di sicurezza che "
+"inserisci verrà utilizzata per criptare il file del database di password. La "
+"Combinazione di Sicurezza può contenere qualsiasi carattere della tastiera e "
+"tiene conto del maiuscolo. "
+
+#: ../../../ui/wxWidgets/safecombinationsetup.cpp:146
+msgid "Verify:"
+msgstr ""
+
+#: ../../../ui/wxWidgets/safecombinationsetup.cpp:209
+msgid "The two entries do not match."
+msgstr ""
+
+#: ../../../ui/wxWidgets/safecombinationsetup.cpp:215
+msgid "Please enter the key and verify it."
+msgstr ""
+
+#: ../../../ui/wxWidgets/safecombinationsetup.cpp:234
+#: ../../../core/core_st.cpp:237
+msgid "Warning"
+msgstr ""
+
+#: ../../../ui/wxWidgets/safecombinationsetup.cpp:240
+msgid ""
+"\n"
+"Please try another"
+msgstr ""
+
+#: ../../../ui/wxWidgets/ViewReport.cpp:19
+msgid "View Report"
+msgstr ""
+
+#: ../../../ui/wxWidgets/ViewReport.cpp:34
+msgid "&Save to Disk"
+msgstr "&Salva su Disco"
+
+#: ../../../ui/wxWidgets/ViewReport.cpp:35
+#, fuzzy
+msgid "&Copy to Clipboard"
+msgstr "Copia negli Appunti"
+
+#: ../../../ui/wxWidgets/ViewReport.cpp:36
+msgid "&Finish"
+msgstr "&Finito"
+
+#: ../../../ui/wxWidgets/wxutils.cpp:65
+#, fuzzy
+msgid ""
+"\n"
+"\n"
+"File corrupt or truncated!\n"
+"Data may have been lost or modified.\n"
+"Continue anyway?"
+msgstr ""
+"%s\n"
+"\n"
+"File corrotto o troncato!\n"
+"I dati possono essere stati perduti o modificati.\n"
+"Continuare comunque?"
+
+#: ../../../ui/wxWidgets/wxutils.cpp:74
+#, c-format
+msgid ""
+"This version of PasswordSafe does not support more than %d entries in a "
+"database.\n"
+"To get an unlimited version for the U3 platform, please visit http://"
+"software.u3.com\n"
+"Note: Saving this database will result in the removal of unread entries!"
+msgstr ""
+
+#: ../../../ui/wxWidgets/wxutils.cpp:75
+msgid "Trial Version Limitation"
+msgstr ""
+
+#: ../../../core/core_st.cpp:32
+msgid ""
+"\n"
+"Unexpected exception during parsing."
+msgstr ""
+
+#: ../../../core/core_st.cpp:33
+msgid "OutOfMemoryException."
+msgstr ""
+
+#: ../../../core/core_st.cpp:34
+msgid "after"
+msgstr ""
+
+#: ../../../core/core_st.cpp:35
+msgid "alias"
+msgstr ""
+
+#: ../../../core/core_st.cpp:36
+msgid "aliases"
+msgstr ""
+
+#: ../../../core/core_st.cpp:37
+msgid "And"
+msgstr "And"
+
+#: ../../../core/core_st.cpp:38
+msgid "autotype:"
+msgstr ""
+
+#: ../../../core/core_st.cpp:39
+msgid "Incorrect password"
+msgstr ""
+
+#: ../../../core/core_st.cpp:40
+msgid "before"
+msgstr ""
+
+#: ../../../core/core_st.cpp:41
+msgid "begins with"
+msgstr ""
+
+#: ../../../core/core_st.cpp:42
+msgid "between"
+msgstr ""
+
+#: ../../../core/core_st.cpp:43
+msgid ""
+"Unable to create a new XML configuration file or add your settings to an "
+"existing XML configuration file.\n"
+"\n"
+"All application configuration settings will be saved in your registry entry "
+"on this computer.\n"
+"\n"
+"Database related settings will be stored in the open database when it is "
+"closed, assuming it is not read-only or locked by another user."
+msgstr ""
+
+#: ../../../core/core_st.cpp:44
+msgid ""
+"Error - unable to determine settings configuration!\n"
+"\n"
+"No application settings will be saved.\n"
+"\n"
+"Database related settings will be stored in the open database when it is "
+"closed, assuming it is not read-only or locked by another user."
+msgstr ""
+
+#: ../../../core/core_st.cpp:45
+msgid ""
+"Trouble reading stored filters (version mismatch?). Filters will be unusable."
+msgstr ""
+
+#: ../../../core/core_st.cpp:46
+msgid "Unable to read locker?"
+msgstr ""
+
+#: ../../../core/core_st.cpp:47
+msgid ""
+"Unable to update your entries in the existing XML configuration file.\n"
+"\n"
+"All application configuration settings will be loaded from this file but no "
+"changes will be saved.\n"
+"\n"
+"Database related settings will be stored in the open database when it is "
+"closed, assuming it is not read-only or locked by another user."
+msgstr ""
+
+#: ../../../core/core_st.cpp:48
+#, c-format
+msgid ""
+"%s\n"
+"\n"
+"The configuration file will not be used."
+msgstr ""
+"%s\n"
+"\n"
+"Il file di configurazione non sarà utilizzato."
+
+#: ../../../core/core_st.cpp:49
+msgid "Missing XSD File"
+msgstr ""
+
+#: ../../../core/core_st.cpp:50
+msgid "Unable to validate a XML file using a XML Schema (XSD) on your system."
+msgstr ""
+
+#: ../../../core/core_st.cpp:51
+msgid "(case insensitive)"
+msgstr "(indifferente al maiuscolo)"
+
+#: ../../../core/core_st.cpp:52
+msgid "(case sensitive)"
+msgstr "(tiene conto del maiuscolo)"
+
+#: ../../../core/core_st.cpp:53
+msgid "C:F[R-O]"
+msgstr "C:F[R-O]"
+
+#: ../../../core/core_st.cpp:54
+msgid "C:F[R/W]"
+msgstr "C:F[R/W]"
+
+#: ../../../core/core_st.cpp:55
+msgid "C:None  "
+msgstr "C:Nessuno"
+
+#: ../../../core/core_st.cpp:56
+msgid "C:Reg   "
+msgstr "C:Reg   "
+
+#: ../../../core/core_st.cpp:57
+msgid "conflict"
+msgstr ""
+
+#: ../../../core/core_st.cpp:58
+msgid "conflicts"
+msgstr ""
+
+#: ../../../core/core_st.cpp:59
+msgid "contains"
+msgstr ""
+
+#: ../../../core/core_st.cpp:60
+msgid "contains all of"
+msgstr ""
+
+#: ../../../core/core_st.cpp:61
+msgid "contains any of"
+msgstr ""
+
+#: ../../../core/core_st.cpp:62
+#, c-format
+msgid " Current default (%s)"
+msgstr ""
+
+#: ../../../core/core_st.cpp:73
+#, c-format
+msgid ""
+"This entry has the following %d %s:\r\n"
+"%s\r\n"
+"Please confirm to continue (alias entry's passwords will be replaced by this "
+"entry's password)?"
+msgstr ""
+
+#: ../../../core/core_st.cpp:74
+msgid "Delete a Base Entry Confirmation?"
+msgstr "Conferma della cancellazione di una scheda?"
+
+#: ../../../core/core_st.cpp:75
+#, c-format
+msgid ""
+"This entry has the following %d %s:\r\n"
+"%s\r\n"
+"Please confirm to continue (All shortcuts to this entry will be deleted)?"
+msgstr ""
+
+#: ../../../core/core_st.cpp:76
+msgid "does not begin with"
+msgstr ""
+
+#: ../../../core/core_st.cpp:77
+msgid "does not contain"
+msgstr ""
+
+#: ../../../core/core_st.cpp:78
+msgid "does not contain all of"
+msgstr ""
+
+#: ../../../core/core_st.cpp:79
+msgid "does not contain any of"
+msgstr ""
+
+#: ../../../core/core_st.cpp:80
+msgid "does not end with"
+msgstr ""
+
+#: ../../../core/core_st.cpp:81
+msgid "does not equal"
+msgstr ""
+
+#: ../../../core/core_st.cpp:82
+#, c-format
+msgid " Duplicate # %d"
+msgstr ""
+
+#: ../../../core/core_st.cpp:83
+#, c-format
+msgid ""
+"Trouble with a non-textual (e.g., time) field in record '%s' - please check "
+"data carefully."
+msgstr ""
+
+#: ../../../core/core_st.cpp:84
+msgid "End Report"
+msgstr "Fine del Report"
+
+#: ../../../core/core_st.cpp:85
+msgid "--------------------------------------------------------------------------------"
+msgstr "--------------------------------------------------------------------------------"
+
+#: ../../../core/core_st.cpp:86
+msgid "ends with"
+msgstr ""
+
+#: ../../../core/core_st.cpp:89
+msgid "equals"
+msgstr ""
+
+#: ../../../core/core_st.cpp:90
+msgid "has expired"
+msgstr ""
+
+#: ../../../core/core_st.cpp:91
+#, c-format
+msgid "within %d day(s)"
+msgstr ""
+
+#: ../../../core/core_st.cpp:92
+msgid "First character of variable name must be alphabetic"
+msgstr ""
+
+#: ../../../core/core_st.cpp:93
+msgid "Index not numeric"
+msgstr ""
+
+#: ../../../core/core_st.cpp:94
+msgid "Input string is empty"
+msgstr ""
+
+#: ../../../core/core_st.cpp:95
+msgid "Characters present between end of index ']' and '}'"
+msgstr ""
+
+#: ../../../core/core_st.cpp:96
+msgid "Index is invalid or missing"
+msgstr ""
+
+#: ../../../core/core_st.cpp:97
+msgid "Missing ending curly bracket for variable name"
+msgstr ""
+
+#: ../../../core/core_st.cpp:98
+msgid "Missing ending round bracket for Autotype value"
+msgstr ""
+
+#: ../../../core/core_st.cpp:99
+msgid "Missing ending square bracket for index value"
+msgstr ""
+
+#: ../../../core/core_st.cpp:100
+msgid "There are unmatched quotes in the run command"
+msgstr ""
+
+#: ../../../core/core_st.cpp:101
+msgid "Variable name is empty"
+msgstr ""
+
+#: ../../../core/core_st.cpp:102
+msgid "Variable name must be alphanumeric"
+msgstr ""
+
+#: ../../../core/core_st.cpp:103
+msgid "an alias entry"
+msgstr ""
+
+#: ../../../core/core_st.cpp:104
+msgid "a base entry of an alias"
+msgstr ""
+
+#: ../../../core/core_st.cpp:105
+msgid "  Field is too long."
+msgstr "Il campo è troppo lungo."
+
+#: ../../../core/core_st.cpp:106
+msgid "  Field is too short."
+msgstr "Il campo è troppo corto."
+
+#: ../../../core/core_st.cpp:107
+msgid "Error: A file with this name already exists"
+msgstr ""
+
+#: ../../../core/core_st.cpp:108
+msgid "The file was not found."
+msgstr ""
+
+#: ../../../core/core_st.cpp:109
+msgid "Error: File is read-only"
+msgstr ""
+
+#: ../../../core/core_st.cpp:110
+msgid "File is truncated or otherwise corrupt. Please use backup database."
+msgstr ""
+
+#: ../../../core/core_st.cpp:111
+msgid "Cannot read file. Please check file permissions."
+msgstr ""
+
+#: ../../../core/core_st.cpp:112
+msgid "Error while writing file! Try saving in a different location"
+msgstr ""
+
+#: ../../../core/core_st.cpp:113
+#, c-format
+msgid ""
+"Filter %s already exists in the database, do you wish to replace it with "
+"this?"
+msgstr ""
+
+#: ../../../core/core_st.cpp:114
+msgid "Stored filters will be unusable until the file's restored."
+msgstr ""
+
+#: ../../../core/core_st.cpp:115
+msgid "Last Access Time"
+msgstr ""
+
+#: ../../../core/core_st.cpp:116
+msgid "AutoType"
+msgstr ""
+
+#: ../../../core/core_st.cpp:117
+msgid "Created Time"
+msgstr ""
+
+#: ../../../core/core_st.cpp:118
+msgid "DCA"
+msgstr ""
+
+#: ../../../core/core_st.cpp:119
+msgid "e-mail"
+msgstr ""
+
+#: ../../../core/core_st.cpp:120
+msgid "Group"
+msgstr ""
+
+#: ../../../core/core_st.cpp:121
+msgid "Group/Title"
+msgstr ""
+
+#: ../../../core/core_st.cpp:122
+msgid "Notes"
+msgstr ""
+
+#: ../../../core/core_st.cpp:124
+msgid "Password Modified Time"
+msgstr ""
+
+#: ../../../core/core_st.cpp:125
+msgid "Protected"
+msgstr ""
+
+#: ../../../core/core_st.cpp:126
+msgid "History"
+msgstr ""
+
+#: ../../../core/core_st.cpp:128
+msgid "Record Modified Time"
+msgstr ""
+
+#: ../../../core/core_st.cpp:130
+msgid "Shift+DCA"
+msgstr ""
+
+#: ../../../core/core_st.cpp:131
+msgid "Symbols"
+msgstr ""
+
+#: ../../../core/core_st.cpp:133
+msgid "URL"
+msgstr ""
+
+#: ../../../core/core_st.cpp:134
+msgid "Username"
+msgstr ""
+
+#: ../../../core/core_st.cpp:135
+msgid "UUID"
+msgstr ""
+
+#: ../../../core/core_st.cpp:136
+msgid "Password Expiry Date"
+msgstr ""
+
+#: ../../../core/core_st.cpp:137
+msgid "Password Expiry Interval"
+msgstr ""
+
+#: ../../../core/core_st.cpp:138
+msgid "a normal entry"
+msgstr ""
+
+#: ../../../core/core_st.cpp:139
+msgid "added but not yet saved to database"
+msgstr ""
+
+#: ../../../core/core_st.cpp:140
+msgid "in the database"
+msgstr ""
+
+#: ../../../core/core_st.cpp:141
+msgid "a shortcut entry"
+msgstr ""
+
+#: ../../../core/core_st.cpp:142
+msgid "a base entry of a shortcut"
+msgstr ""
+
+#: ../../../core/core_st.cpp:143
+msgid "changed but not yet saved to database"
+msgstr ""
+
+#: ../../../core/core_st.cpp:144
+msgid "greater than"
+msgstr ""
+
+#: ../../../core/core_st.cpp:145
+msgid "greater than or equal to"
+msgstr ""
+
+#: ../../../core/core_st.cpp:146
+#, c-format
+msgid ""
+"Invalid input on line %d.  Number of fields separated by '%c' is not as "
+"expected."
+msgstr ""
+
+#: ../../../core/core_st.cpp:147
+#, c-format
+msgid "Line %d: "
+msgstr ""
+
+#: ../../../core/core_st.cpp:148
+#, c-format
+msgid ""
+"File ends on line %d before ending double quote of last entry's note field."
+msgstr ""
+
+#: ../../../core/core_st.cpp:149
+msgid "Import aborted. Please see report."
+msgstr ""
+
+#: ../../../core/core_st.cpp:150
+msgid ""
+"The TXT or CSV file was not exported as required as entry records span "
+"multiple lines in the CSV file.\r\n"
+"\r\n"
+"Import aborted."
+msgstr ""
+
+#: ../../../core/core_st.cpp:151
+#, c-format
+msgid ""
+"%s, Title=\"%s\", User=\"%s\" already exists in your database or in the "
+"Import file. Added imported entry with title=\"%s\".\r\n"
+msgstr ""
+
+#: ../../../core/core_st.cpp:152
+#, c-format
+msgid "Entry on line %d with Group=\"%s\""
+msgstr ""
+
+#: ../../../core/core_st.cpp:153
+#, c-format
+msgid "Entry on line %d with no group"
+msgstr ""
+
+#: ../../../core/core_st.cpp:154
+#, c-format
+msgid "Entry with Group=\"%s\""
+msgstr ""
+
+#: ../../../core/core_st.cpp:155
+msgid "Entry with no group"
+msgstr ""
+
+#: ../../../core/core_st.cpp:156
+#, c-format
+msgid "Empty line %d skipped"
+msgstr "La linea vuota %d saltata"
+
+#: ../../../core/core_st.cpp:157
+#, c-format
+msgid "Entry %s%d with Group=\"%s\", Title=\"%s\", User=\"%s\""
+msgstr ""
+
+#: ../../../core/core_st.cpp:158
+msgid "id="
+msgstr ""
+
+#: ../../../core/core_st.cpp:159
+msgid "Internal error. Import failed. No records imported."
+msgstr ""
+
+#: ../../../core/core_st.cpp:160
+#, c-format
+msgid "Found %d known column headers:"
+msgstr ""
+
+#: ../../../core/core_st.cpp:161
+#, c-format
+msgid "Entry of line %d has an invalid \"%s\" field. It has been ignored."
+msgstr ""
+
+#: ../../../core/core_st.cpp:162
+msgid "The following columns will be processed: "
+msgstr ""
+
+#: ../../../core/core_st.cpp:163
+msgid ""
+"The following columns were recognised but only Group/Title, Username and "
+"Password will be processed:"
+msgstr ""
+
+#: ../../../core/core_st.cpp:164
+#, c-format
+msgid ""
+"Line %d skipped - Only %d fields found, whereas parsing the Header says "
+"there should be %d."
+msgstr ""
+
+#: ../../../core/core_st.cpp:165
+msgid ""
+"Either or both of the Group/Title and Password columns are missing. No "
+"records imported."
+msgstr ""
+"Una o entrambe le colonne Gruppo/Titolo e Password sono assenti. Nessun "
+"record importato."
+
+#: ../../../core/core_st.cpp:166
+msgid ""
+"Could not find the next entry's title field in the KeePass V1 TXT (should be "
+"within square brackets)."
+msgstr ""
+
+#: ../../../core/core_st.cpp:167
+msgid "Column header row not recognised as first record. No records imported."
+msgstr ""
+"Riga di intestazione della colonna non riconosciuta come primo record. Non è "
+"stato importato alcun record."
+
+#: ../../../core/core_st.cpp:168
+msgid "No records in import file!"
+msgstr ""
+
+#: ../../../core/core_st.cpp:169
+#, c-format
+msgid "Line %d skipped. It has an empty mandatory Password field."
+msgstr ""
+
+#: ../../../core/core_st.cpp:170
+#, c-format
+msgid "Line %d skipped. It has an empty mandatory Title field."
+msgstr ""
+
+#: ../../../core/core_st.cpp:171
+#, c-format
+msgid " Import # %d"
+msgstr "Importa # %d"
+
+#: ../../../core/core_st.cpp:172
+msgid "on line "
+msgstr ""
+
+#: ../../../core/core_st.cpp:173
+msgid ""
+"To replace passwords of existing entries, all the following columns must be "
+"present: Group/Title, Username and Password.  One or more are missing and no "
+"entries have been updated."
+msgstr ""
+
+#: ../../../core/core_st.cpp:174
+#, c-format
+msgid "%s not found. Cannot update entry's password.\r\n"
+msgstr ""
+
+#: ../../../core/core_st.cpp:175
+#, c-format
+msgid "%s has an empty %s.\r\n"
+msgstr ""
+
+#: ../../../core/core_st.cpp:176
+#, c-format
+msgid ""
+"Entry \"%s, %s, %s\" has a password in the correct form for an alias, but "
+"the base entry is already an alias."
+msgstr ""
+"Scheda \"%s, %s, %s\" ha una password di forma corretta per un secondo nome,"
+"ma la scheda di base è già un secondo nome."
+
+#: ../../../core/core_st.cpp:177
+msgid "\tThis entry has been made an alias of associated base entry."
+msgstr ""
+
+#: ../../../core/core_st.cpp:178
+#, c-format
+msgid ""
+"Entry \"%s, %s, %s\" has a password in the correct form for an alias, but "
+"the base entry does not exist."
+msgstr ""
+"Scheda \"%s, %s, %s\" ha una password di forma corretta per un secondo nome,"
+"ma la scheda di base non esiste."
+
+#: ../../../core/core_st.cpp:179
+msgid ""
+"\tThis entry remains a normal entry and the password has not been changed."
+msgstr ""
+
+#: ../../../core/core_st.cpp:180
+#, c-format
+msgid ""
+"The %s entry \"%s, %s, %s\" doesn't point to a normal or existing %s base "
+"entry. It cannot be imported."
+msgstr ""
+
+#: ../../../core/core_st.cpp:181
+msgid "Entry import warnings"
+msgstr "Avvertenze per l'importazione di scheda"
+
+#: ../../../core/core_st.cpp:182
+msgid "Internal error: Invalid oflag or pmode argument"
+msgstr ""
+
+#: ../../../core/core_st.cpp:183
+msgid "invalid!"
+msgstr ""
+
+#: ../../../core/core_st.cpp:184
+msgid "  Invalid date/time value."
+msgstr "Valore data/ora non valido."
+
+#: ../../../core/core_st.cpp:185
+msgid "  Field length is incorrect."
+msgstr ""
+
+#: ../../../core/core_st.cpp:186
+msgid "Internal error: An invalid flag was specified"
+msgstr ""
+
+#: ../../../core/core_st.cpp:187
+#, c-format
+msgid "  Invalid header: '%s' (must be 5 hexadecimal characters)."
+msgstr ""
+
+#: ../../../core/core_st.cpp:188
+#, c-format
+msgid "  Invalid number of saved old passwords %d."
+msgstr "Numero di vecchie password salvate non valido %d."
+
+#: ../../../core/core_st.cpp:189
+#, c-format
+msgid "  Invalid status value: %d (must be either 0 or 1)."
+msgstr ""
+
+#: ../../../core/core_st.cpp:190
+msgid "  Invalid password length found (not a hexadecimal number)."
+msgstr ""
+
+#: ../../../core/core_st.cpp:191
+msgid ""
+"  Invalid password length found (differs from length of following password)."
+msgstr ""
+
+#: ../../../core/core_st.cpp:192
+msgid "Invalid Filter schema."
+msgstr ""
+
+#: ../../../core/core_st.cpp:193
+msgid "Schema does not have a version number."
+msgstr ""
+
+#: ../../../core/core_st.cpp:194
+msgid ""
+"  Invalid field separator character found - only a single blank is allowed "
+"between fields."
+msgstr ""
+"Rilevato un carattere separatore di campo non valido - è consentito un solo "
+"spazio tra i campi."
+
+#: ../../../core/core_st.cpp:195
+#, c-format
+msgid "The filter XML version (%d) is greater than the current schema (%d)."
+msgstr ""
+
+#: ../../../core/core_st.cpp:196
+#, c-format
+msgid ""
+"The filter XML version (%d) is greater than that supported by this instance "
+"of PasswordSafe (%d)."
+msgstr ""
+
+#: ../../../core/core_st.cpp:197
+msgid "is"
+msgstr ""
+
+#: ../../../core/core_st.cpp:198
+msgid "is active"
+msgstr ""
+
+#: ../../../core/core_st.cpp:199
+msgid "is inactive"
+msgstr ""
+
+#: ../../../core/core_st.cpp:200
+msgid "is not"
+msgstr ""
+
+#: ../../../core/core_st.cpp:201
+msgid "is not present"
+msgstr ""
+
+#: ../../../core/core_st.cpp:202
+msgid "is present"
+msgstr ""
+
+#: ../../../core/core_st.cpp:203
+msgid "Database has some large entries!"
+msgstr ""
+
+#: ../../../core/core_st.cpp:204
+msgid "less than"
+msgstr ""
+
+#: ../../../core/core_st.cpp:205
+msgid "less than or equal to"
+msgstr ""
+
+#: ../../../core/core_st.cpp:206
+msgid "File or path not found"
+msgstr ""
+
+#: ../../../core/core_st.cpp:207
+#, c-format
+msgid ""
+"\r\n"
+"The following new %s %s merged into this database:"
+msgstr ""
+
+#: ../../../core/core_st.cpp:208
+#, c-format
+msgid ""
+"\r\n"
+"Merge completed: %d %s added (%d %s, %d %s, %d %s)"
+msgstr ""
+
+#: ../../../core/core_st.cpp:209
+#, c-format
+msgid ""
+"Conflicting entries for \"%s\" \"%s\" \"%s\".\r\n"
+"  Added merged entry as \"%s\" \"%s\" \"%s\".\r\n"
+"    Differing field(s): %s"
+msgstr ""
+
+#: ../../../core/core_st.cpp:210
+msgid "-merged-"
+msgstr ""
+
+#: ../../../core/core_st.cpp:211
+msgid "Can't obtain the schema version."
+msgstr "Non è possibile ottenere lo schema della versione."
+
+#: ../../../core/core_st.cpp:212
+msgid "The filter XML version is missing."
+msgstr ""
+
+#: ../../../core/core_st.cpp:214
+#, c-format
+msgid "Create SchemaCache%2d Error 0x%08X during %s."
+msgstr "Crea SchemaCache%2d Errore 0x%08X mentre %s."
+
+#: ../../../core/core_st.cpp:215
+#, c-format
+msgid "SAX Parse%2d Error 0x%08X during %s."
+msgstr ""
+
+#: ../../../core/core_st.cpp:216
+#, c-format
+msgid "Error (%08X): line %d character %d %s"
+msgstr ""
+
+#: ../../../core/core_st.cpp:218
+msgid ""
+"Unable to get configuration file lock.\n"
+"\n"
+"Will use registry."
+msgstr ""
+
+#: ../../../core/core_st.cpp:219
+msgid "Cannot create lock file - no permission in directory?"
+msgstr ""
+"Impossibile creare il file \"lucchettato\" - mancanza di permessi nella "
+"cartella?"
+
+#: ../../../core/core_st.cpp:220
+msgid "Internal error: Out of file handles"
+msgstr ""
+
+#: ../../../core/core_st.cpp:221
+msgid ""
+"Unable to use a MS XML reader on your system.  Neither MS XML V3, V4 or V6 "
+"seems available."
+msgstr ""
+
+#: ../../../core/core_st.cpp:223
+msgid "is not set"
+msgstr ""
+
+#: ../../../core/core_st.cpp:224
+#, c-format
+msgid ""
+"Number of entries processed: %d\n"
+"\n"
+"Number of UUIDs fixed: %d\n"
+"\n"
+"Number of Password Histories fixed: %d\n"
+"\n"
+"Number of non-unique Group/Title/User fixed: %d\n"
+"\n"
+"Number of Alias warnings issued: %d\n"
+"\n"
+"Number of Shortcut warnings issued: %d\n"
+"\n"
+"Number of entries with fields that cannot be fully displayed: %d"
+msgstr ""
+
+#: ../../../core/core_st.cpp:226
+msgid ""
+"Password should be mixed case, with at least one digit or punctuation "
+"character"
+msgstr ""
+
+#: ../../../core/core_st.cpp:227
+msgid "Password is too short"
+msgstr ""
+
+#: ../../../core/core_st.cpp:228
+#, c-format
+msgid "Error in a Password History %s:"
+msgstr ""
+
+#: ../../../core/core_st.cpp:229
+#, c-format
+msgid "sub-field starting at position %d (within the History field): "
+msgstr ""
+
+#: ../../../core/core_st.cpp:230
+msgid "  All Password History ignored."
+msgstr "Ignora storico di tutte le password."
+
+#: ../../../core/core_st.cpp:231
+msgid "Read Error"
+msgstr ""
+
+#: ../../../core/core_st.cpp:232
+#, c-format
+msgid "%s%s%s_Report.txt"
+msgstr "%s%s%s_Report.txt"
+
+#: ../../../core/core_st.cpp:233
+#, c-format
+msgid "Report of %s function started at %s"
+msgstr ""
+
+#: ../../../core/core_st.cpp:234
+#, c-format
+msgid "on database %s"
+msgstr ""
+
+#: ../../../core/core_st.cpp:236
+msgid "Fatal Error"
+msgstr ""
+
+#: ../../../core/core_st.cpp:238
+#, c-format
+msgid ""
+"\n"
+"Error in Password History for entry: \"%s\"%s\"%s\": "
+msgstr ""
+
+#: ../../../core/core_st.cpp:239
+msgid "See Password History filters"
+msgstr ""
+
+#: ../../../core/core_st.cpp:240
+msgid "See Password Policy filters"
+msgstr ""
+
+#: ../../../core/core_st.cpp:241
+msgid "is set"
+msgstr ""
+
+#: ../../../core/core_st.cpp:242
+msgid "shortcut"
+msgstr ""
+
+#: ../../../core/core_st.cpp:243
+msgid "shortcuts"
+msgstr ""
+
+#: ../../../core/core_st.cpp:244
+msgid "Start Report"
+msgstr ""
+
+#: ../../../core/core_st.cpp:247
+msgid "System error: No more file handles available"
+msgstr ""
+
+#: ../../../core/core_st.cpp:249
+msgid "Internal error: Unexpected error number"
+msgstr ""
+
+#: ../../../core/core_st.cpp:251
+msgid "Unknown function"
+msgstr ""
+
+#: ../../../core/core_st.cpp:252
+msgid "Unknown object"
+msgstr ""
+
+#: ../../../core/core_st.cpp:254
+msgid "The following entries were duplicates of an existing entry."
+msgstr ""
+
+#: ../../../core/core_st.cpp:255
+#, c-format
+msgid "\tGroup='%s', Title='%s', User='%s' %s"
+msgstr ""
+
+#: ../../../core/core_st.cpp:256
+#, c-format
+msgid "- Its title has been changed to:'%s'"
+msgstr ""
+
+#: ../../../core/core_st.cpp:257
+msgid ""
+"The following entries had an invalid Password History.  This has been "
+"rebuilt with available data.  There may be some loss of history."
+msgstr ""
+
+#: ../../../core/core_st.cpp:258
+#, c-format
+msgid ""
+"The following entries have one or more text fields too long to display or "
+"edit (over %d characters)."
+msgstr ""
+
+#: ../../../core/core_st.cpp:259
+msgid ""
+"The following entries had an invalid UUID field.  This has been corrected."
+msgstr ""
+
+#: ../../../core/core_st.cpp:260
+#, c-format
+msgid ""
+"Warning - %d %s in your database may have one or more fields too large to "
+"display or edit.\r\n"
+"\r\n"
+"The largest entry size found was ~%d %s.\r\n"
+"\r\n"
+"You can use the Filter to selectively display these record(s)."
+msgstr ""
+
+#: ../../../core/core_st.cpp:263
+msgid "will expire"
+msgstr ""
+
+#: ../../../core/core_st.cpp:264
+#, c-format
+msgid ""
+"SAX Parse Error during %s\r\n"
+"%s."
+msgstr ""
+
+#: ../../../core/core_st.cpp:265
+#, c-format
+msgid "XML %s: line %d character %d: %s"
+msgstr ""
+
+#: ../../../core/core_st.cpp:266
+msgid "Internal error: Couldn't initialize config file XML structure"
+msgstr ""
+
+#: ../../../core/core_st.cpp:267
+msgid ""
+"A filter was active. Export of data was restricted to include only those "
+"displayed."
+msgstr ""
+
+#: ../../../core/core_st.cpp:268
+msgid "Export of data was restricted to certain fields by the user."
+msgstr ""
+
+#: ../../../core/core_st.cpp:269
+msgid ""
+"Note: These preferences are only used when importing into an empty database."
+msgstr ""
+
+#: ../../../core/core_st.cpp:270
+msgid "Subset of entries restricted by the following rule:"
+msgstr ""
+
+#: ../../../core/core_st.cpp:271
+msgid ""
+"The user specified that the following fields be excluded from the export:"
+msgstr ""
+
+#: ../../../core/core_st.cpp:272
+#, c-format
+msgid ""
+"Configuration file error:\n"
+"%s\n"
+"%s\n"
+"line %d column %d"
+msgstr ""
+"Errore di configurazione file:\n"
+"%s\n"
+"%s\n"
+"linea %d colonna %d"
+
+#: ../../../core/core_st.cpp:273
+msgid "import"
+msgstr ""
+
+#: ../../../core/core_st.cpp:274
+msgid "Unable to load configuration file"
+msgstr ""
+
+#: ../../../core/core_st.cpp:275
+msgid ""
+"Failed to lock configuration file - opened by another instance of "
+"PasswordSafe?"
+msgstr ""
+
+#: ../../../core/core_st.cpp:276
+msgid "Unable to save configuration file"
+msgstr ""
+
+#: ../../../core/core_st.cpp:277
+msgid "validation"
+msgstr ""
+
+#~ msgid " 'Autotype'"
+#~ msgstr "'Inserimento Automatico\"'"
+
+#~ msgid " 'Creation Time'"
+#~ msgstr "'Data Creazione'"
+
+#~ msgid " 'Group'"
+#~ msgstr "'Gruppo'"
+
+#~ msgid " 'Last Access Time'"
+#~ msgstr "'Data Ultimo Accesso'"
+
+#~ msgid " 'Notes'"
+#~ msgstr "'Note'"
+
+#~ msgid " 'Password Expiry Time'"
+#~ msgstr "'Data Scadenza Password'"
+
+#~ msgid " 'Password History'"
+#~ msgstr "'Storico Password'"
+
+#~ msgid " 'Password Modification Time'"
+#~ msgstr "'Data Modifica Password'"
+
+#~ msgid " 'Password Policy'"
+#~ msgstr "'Regole Password'"
+
+#~ msgid " 'Record Modification Time'"
+#~ msgstr "'Data Modifica Record'"
+
+#~ msgid " 'Title'"
+#~ msgstr "'Titolo'"
+
+#~ msgid " 'URL'"
+#~ msgstr "'URL'"
+
+#~ msgid " Drag # %d"
+#~ msgstr "Trascina # %d"
+
+#~ msgid " [Process ID=%s]"
+#~ msgstr "[ID del Processo=%s]"
+
+#~ msgid "#format"
+#~ msgstr "#formato"
+
+#~ msgid "#groups"
+#~ msgstr "#gruppi"
+
+#~ msgid "#unkflds"
+#~ msgstr "#unkflds"
+
+#~ msgid "#uuid"
+#~ msgstr "#uuid"
+
+#~ msgid "#what"
+#~ msgstr "#cosa"
+
+#~ msgid "#when"
+#~ msgstr "#quando"
+
+#~ msgid "#who"
+#~ msgstr "#chi"
+
+#~ msgid "%1 contained an unexpected object."
+#~ msgstr "%1 conteneva un oggetto inatteso"
+
+#~ msgid "%1 contains an incorrect schema."
+#~ msgstr "%1 contiene uno schema non corretto"
+
+#~ msgid "%1 has a bad format."
+#~ msgstr "%1 ha un formato invalido."
+
+#~ msgid "%1 was not found."
+#~ msgstr "%1 non trovato."
+
+#~ msgid ""
+#~ "%1: %2\n"
+#~ "Continue running script?"
+#~ msgstr ""
+#~ "%1: %2\n"
+#~ "Continuare ad eseguire lo script?"
+
+#~ msgid "%d (%d) items"
+#~ msgstr "%d (%d) oggetti"
+
+#~ msgid "%d of %d matches."
+#~ msgstr "%d di %d concordano."
+
+#~ msgid ""
+#~ "%s \n"
+#~ "\n"
+#~ "Can't open file. Please choose another."
+#~ msgstr ""
+#~ "%s \n"
+#~ "\n"
+#~ "Impossibile aprire il file. Si prega di effettuare un'altra scelta."
+
+#~ msgid "&Apply"
+#~ msgstr "&Applica"
+
+#~ msgid "&Clear Recent History"
+#~ msgstr "&Cancella lo storico recente"
+
+#~ msgid "&Copy Password to clipboard"
+#~ msgstr "&Copia la Password nella memoria"
+
+#~ msgid "&Create a New Database"
+#~ msgstr "&Crea un Nuovo Database"
+
+#~ msgid "&Delete"
+#~ msgstr "&Elimina"
+
+#~ msgid "&Delete Group"
+#~ msgstr "&Elimina Gruppo"
+
+#~ msgid "&Delete from Recent Entry List"
+#~ msgstr "&Elimina dalla Lista delle Schede Recenti"
+
+#~ msgid "&Don't remind me again"
+#~ msgstr "&Non ricordarmelo più"
+
+#~ msgid "&Font:"
+#~ msgstr "&Carattere:"
+
+#~ msgid "&Import"
+#~ msgstr "&Importa"
+
+#~ msgid "&Keep"
+#~ msgstr "&Mantieni"
+
+#~ msgid "&Minimize"
+#~ msgstr "&Minimizza"
+
+#~ msgid "&New"
+#~ msgstr "&Nuovo"
+
+#~ msgid "&New "
+#~ msgstr "&Nuovo"
+
+#~ msgid "&Quit"
+#~ msgstr "&Esci"
+
+#~ msgid "&Recent Entries History"
+#~ msgstr "&Storico Schede Recenti"
+
+#~ msgid "&Recent Safes"
+#~ msgstr "&Salvataggi Recenti"
+
+#~ msgid "&Restore"
+#~ msgstr "&Ripristina"
+
+#~ msgid "&Size:"
+#~ msgstr "&Lunghezza:"
+
+#~ msgid "&Try Again"
+#~ msgstr "&Riprova"
+
+#~ msgid "&View Aliases"
+#~ msgstr "&Visualizza Nome Alternativo"
+
+#~ msgid "(Requires a restart of PasswordSafe to take effect.)"
+#~ msgstr "(Richiede il riavvio di PasswordSafe per avere effetto.)"
+
+#~ msgid "....."
+#~ msgstr "....."
+
+#~ msgid "......."
+#~ msgstr "......."
+
+#~ msgid "<"
+#~ msgstr "<"
+
+#~ msgid "<<"
+#~ msgstr "<<"
+
+#~ msgid ">"
+#~ msgstr ">"
+
+#~ msgid ">>"
+#~ msgstr ">>"
+
+#~ msgid "A dot is invalid as the first character of the Group field."
+#~ msgstr "Il punto non è valido come primo carattere del campo Gruppo."
+
+#~ msgid "A fatal error occured: "
+#~ msgstr "Si è verificato un Errore Fatale:"
+
+#~ msgid "A required resource was unavailable."
+#~ msgstr "Una risorsa necessaria non era disponibile."
+
+#~ msgid "AaBbYyZz 0O1lIL"
+#~ msgstr "AaBbYyZz 0O1lIL"
+
+#~ msgid "Access to %1 was denied."
+#~ msgstr "L'accesso a  %1 è stato negato."
+
+#~ msgid "Active"
+#~ msgstr "Attivo"
+
+#~ msgid "Add &Entry"
+#~ msgstr "Aggiungi &Scheda"
+
+#~ msgid "Add &Group"
+#~ msgstr "Aggiungi &Gruppo"
+
+#~ msgid "Advanced Compare Options"
+#~ msgstr "Opzioni di Comparazione Avanzate"
+
+#~ msgid "Advanced Merge Extra"
+#~ msgstr "Extra Unione Avanzate"
+
+#~ msgid "All Files (*.*)"
+#~ msgstr "Tutti i File (*.*)"
+
+#~ msgid "All available columns are being displayed."
+#~ msgstr "Tutte le colonne disponibili sono state visualizzate."
+
+#~ msgid "Allow multiple instances (requires all instances to be restarted)"
+#~ msgstr "Permette istanze multiple (è necessario riavviare tutte le istanze)"
+
+#~ msgid "Always on top"
+#~ msgstr "Sempre in primo piano"
+
+#~ msgid "An alias cannot refer to itself!"
+#~ msgstr "Un secondo nome non può riferirsi a se stesso!"
+
+#~ msgid ""
+#~ "An entry with Group \"%s\", Title \"%s\" and User Name \"%s\" already "
+#~ "exists."
+#~ msgstr ""
+#~ "Una scheda con Gruppo \"%s\", Titolo \"%s\" e Nome Utente \"%s\" è già "
+#~ "presente."
+
+#~ msgid ""
+#~ "An entry with an empty Group, Title \"%s\" and User Name \"%s\" already "
+#~ "exists."
+#~ msgstr ""
+#~ "Una scheda con Gruppo vuoto,Titolo \"%s\" e Nome Utente \"%s\" è già "
+#~ "presente."
+
+#~ msgid "An unknown error has occurred."
+#~ msgstr "Si è verificato un errore sconosciuto."
+
+#~ msgid "An unknown error occurred while accessing %1."
+#~ msgstr "Un errore sconosciuto si è verificato accedendo a %1."
+
+#~ msgid "And / Or"
+#~ msgstr "And / Or"
+
+#~ msgid ""
+#~ "As the double quotation character is used to delimit the whole notes "
+#~ "field, it cannot be used within it to delimit multiple lines. Please "
+#~ "enter another character."
+#~ msgstr ""
+#~ "Essendo il carattere della doppia virgoletta utilizzato per delimitare "
+#~ "l'intero campo Note, non può essere usato al suo interno per delimitare "
+#~ "linee multiple. Si prega di inserire un altro carattere."
+
+#~ msgid "Autoload"
+#~ msgstr "Autocaricamento"
+
+#~ msgid "Available Fields:"
+#~ msgstr "Campi disponibili:"
+
+#~ msgid "Available Filters:"
+#~ msgstr "Filtri disponibili:"
+
+#~ msgid "Can only warn between 1 and 30 days before passwords expire"
+#~ msgstr ""
+#~ "Avviso possibile solo tra 1 e 30 giorni prima della scadenza della "
+#~ "password"
+
+#~ msgid "Cannot be less than zero."
+#~ msgstr "Non può essere inferiore a zero."
+
+#~ msgid "Cannot be more than %d"
+#~ msgstr "Non può essere superiore a %d"
+
+#~ msgid ""
+#~ "Cannot process as this entry has been deleted from the open database."
+#~ msgstr ""
+#~ "Impossibile eseguire dato che la scheda è stata cancellata dal database "
+#~ "aperto."
+
+#~ msgid "Case Sensitive"
+#~ msgstr "Tiene conto del maiuscolo"
+
+#~ msgid "Case sensitive search"
+#~ msgstr "Ricerca che tiene conto del maiuscolo"
+
+#~ msgid "Change Date"
+#~ msgstr "Cambia Data"
+
+#~ msgid "Change Safe Combination"
+#~ msgstr "Cambia Combinazione di Sicurezza"
+
+#~ msgid ""
+#~ "Change the maximum number of saved passwords for entries currently saving "
+#~ "password history to the new maximum, if currently saving fewer.\n"
+#~ "\n"
+#~ "Entries with more than this new maximum already saved will remain "
+#~ "unchanged."
+#~ msgstr ""
+#~ "Cambia il numero massimo consentito di password salvate per scheda "
+#~ "salvando l'attuale storico delle password come nuovo massimo, se quello "
+#~ "attualmente salvato è inferiore.\n"
+#~ "Schede con numero superiore a quello massimo già salvato non verranno "
+#~ "modificate."
+
+#~ msgid "Check"
+#~ msgstr "Controlla"
+
+#~ msgid "Clear Clipboard"
+#~ msgstr "Svuota gli appunti"
+
+#~ msgid "Click here to pick field"
+#~ msgstr "Clicca qui per scegliere il campo"
+
+#~ msgid "Click to copy to clipboard"
+#~ msgstr "Clicca per copiare negli appunti"
+
+#~ msgid "Click to enable/disable this row"
+#~ msgstr "Clicca per abilitare/disabilitare questa riga"
+
+#~ msgid "Click to insert a new row below"
+#~ msgstr "Clicca per inserire una nuova riga sottostante"
+
+#~ msgid "Click to remove this row"
+#~ msgstr "Clicca per rimuovere questa riga"
+
+#~ msgid "Click to set criteria for matching the field"
+#~ msgstr "Clicca per stabilire i criteri di confronto dei campi"
+
+#~ msgid "Click to set the field to filter by"
+#~ msgstr "Clicca per impostare il campo da porre come filtro"
+
+#~ msgid "Click to toggle and/or relation to previous row"
+#~ msgstr "Clicca per attivare la relazione and/or con la riga precedente"
+
+#~ msgid "Close"
+#~ msgstr "Chiudi"
+
+#~ msgid "Column Picker"
+#~ msgstr "Selettore di colonne"
+
+#~ msgid "Comma"
+#~ msgstr "Virgola"
+
+#~ msgid "Command failed."
+#~ msgstr "Comando non riuscito."
+
+#~ msgid ""
+#~ "Compare complete of current database:\n"
+#~ "\t %s\n"
+#~ " and:\n"
+#~ "\t %s"
+#~ msgstr ""
+#~ "Comparazione completata dei seguenti database:\n"
+#~ "\t %s\n"
+#~ " e:\n"
+#~ "\t %s"
+
+#~ msgid "Comparing current database with: %s"
+#~ msgstr "In confronto i database correnti con:"
+
+#~ msgid "Comparison"
+#~ msgstr "Camparazione"
+
+#~ msgid "Con&firm Password:"
+#~ msgstr "Con&firm Password:"
+
+#~ msgid "Configuration Information"
+#~ msgstr "Informazioni di configurazione"
+
+#~ msgid ""
+#~ "Confirm that you wish to copy this entry from the %s database to the %s "
+#~ "database?\n"
+#~ "\n"
+#~ "If already present in the target database, it will be replaced!"
+#~ msgstr ""
+#~ "Confirm that you wish to copy this entry from the %s database to the %s "
+#~ "database?\n"
+#~ "\n"
+#~ "If already present in the target database, it will be replaced!"
+
+#~ msgid "Continue"
+#~ msgstr "Continua"
+
+#~ msgid "Copy &Notes to clipboard"
+#~ msgstr "Copia &Note negli appunti"
+
+#~ msgid "Copy &Username to clipboard"
+#~ msgstr "Copia &Nome Utente negli appunti"
+
+#~ msgid "Could not start print job."
+#~ msgstr "Impossibile iniziare la stampa."
+
+#~ msgid "Couldn't save database - Please save manually"
+#~ msgstr "Impossibile salvare il database - Si prega di salvare manualmente."
+
+#~ msgid "Create &Shortcut"
+#~ msgstr "Crea &Scorciatoia"
+
+#~ msgid "Create Shortcut"
+#~ msgstr "Crea Scorciatoia"
+
+#~ msgid "Created"
+#~ msgstr "Creato"
+
+#~ msgid "Criteria"
+#~ msgstr "Criteri"
+
+#~ msgid ""
+#~ "Current version:\t%s\r\n"
+#~ "Latest version:\t%s\r\n"
+#~ "\r\n"
+#~ "Your purchase includes free upgrades for one year.\r\n"
+#~ "Please contact the PasswordSafe Administrator for your upgrade."
+#~ msgstr ""
+#~ "Versione corrente:\t%s\r\n"
+#~ "Ultima versione:\t%s\r\n"
+#~ "\r\n"
+#~ "L'acquisto include aggiornamenti gratuiti per un anno.\r\n"
+#~ "Per favore contattate l'Amministratore di PasswordSafe per "
+#~ "l'aggiornamento."
+
+#~ msgid "Customize Main Toolbar"
+#~ msgstr "Personalizza Barra delle Applicazioni Principale"
+
+#~ msgid ""
+#~ "Database is read-only. Sorry, cannot save changed any database "
+#~ "preferences."
+#~ msgstr ""
+#~ "Il Database è in modalità a sola lettura. Purtroppo non è possibile "
+#~ "salvare alcuna modifica nelle preferenze per il database."
+
+#~ msgid ""
+#~ "Default number of saved password history entries must be between 1 and "
+#~ "255."
+#~ msgstr ""
+#~ "Il numero di default dello storico di password salvate per scheda "
+#~ "dev'essere compreso fra 1 e 255."
+
+#~ msgid "Delete Confirmation"
+#~ msgstr "Conferma Cancellazione"
+
+#~ msgid "Delete a filter"
+#~ msgstr "Cancella un filtro"
+
+#~ msgid "Deselect all entries"
+#~ msgstr "Deseleziona tutte le schede"
+
+#~ msgid "Deselect some entries"
+#~ msgstr "Deseleziona alcune schede"
+
+#~ msgid "Destination disk drive is full."
+#~ msgstr "Il disco di destinazione è pieno."
+
+#~ msgid "Destination location does not exist or is not accessible."
+#~ msgstr "Luogo di destinazione inesistente o inaccessibile."
+
+#~ msgid "Disk full while accessing %1."
+#~ msgstr "Disco pieno nel tentativo di accedere %1."
+
+#~ msgid "Dispatch exception: %1"
+#~ msgstr "Dispatch exception: %1"
+
+#~ msgid "Display Filter - "
+#~ msgstr "Mostra Filtro -"
+
+#~ msgid "Display subset of Password"
+#~ msgstr "Mostra sottoinsieme di Password"
+
+#~ msgid "Do you want to save changes to the password list?"
+#~ msgstr "Vuoi salvare i cambiamenti nella lista delle password?"
+
+#~ msgid ""
+#~ "Do you wish to save the changes made to database:\r\n"
+#~ "\r\n"
+#~ "%s\r\n"
+#~ "\r\n"
+#~ "or Cancel the shutdown\\restart\\logoff?"
+#~ msgstr ""
+#~ "Vuoi salvare i cambiamenti fatti al database:\r\n"
+#~ "\r\n"
+#~ "%s\r\n"
+#~ "\r\n"
+#~ "o Cancellare lo spegnimento\\riavvio\\scollegamento?"
+
+#~ msgid "Double-Click on entry to Autotype"
+#~ msgstr "Doppio Click sulla scheda per l' Autoinserimento"
+
+#~ msgid "Double-Click on entry to Browse to URL"
+#~ msgstr "Doppio Click sulla scheda per navigare all'URL"
+
+#~ msgid "Double-Click on entry to Copy Notes"
+#~ msgstr "Doppio Click sulla scheda per Copiare le Note"
+
+#~ msgid "Double-Click on entry to Copy Password"
+#~ msgstr "Doppio Click sulla scheda per la Password"
+
+#~ msgid "Double-Click on entry to Copy Password and Minimize"
+#~ msgstr ""
+#~ "Doppio Click sulla scheda per Copiare la Password e Ridurre ad Icona"
+
+#~ msgid "Double-Click on entry to Copy Username"
+#~ msgstr "Doppio Click sulla scheda per Copiare il Nome Utente"
+
+#~ msgid "Double-Click on entry to View/Edit it"
+#~ msgstr "Doppio Click sulla scheda per Visualizzarla/Modificarla"
+
+#~ msgid ""
+#~ "Dropped entry '%s:%s:%s' password points to an entry that is also an "
+#~ "alias.\r\n"
+#~ "\r\n"
+#~ "The dropped entry now references that entry's base entry."
+#~ msgstr ""
+#~ "Scheda eliminata '%s:%s:%s' la password punta ad una scheda che è anche "
+#~ "un secondo nome.\r\n"
+#~ "\r\n"
+#~ "La scheda eliminata ora fa riferimento alla scheda delle schede di base."
+
+#~ msgid "E&xit\tCtrl+Q\\Alt+F4"
+#~ msgstr "E&xit\tCtrl+Q\\Alt+F4"
+
+#~ msgid "Easyvision characters"
+#~ msgstr "Caratteri che facilitano la visione"
+
+#~ msgid "Edit Shortcut"
+#~ msgstr "Modifica Scorciatoia"
+
+#~ msgid "Encrypt/Decrypt"
+#~ msgstr "Crittare/Decrittare"
+
+#~ msgid "Encryption failed"
+#~ msgstr "Crittazione fallita"
+
+#~ msgid "Enter Key:"
+#~ msgstr "Inserisci la chiave:"
+
+#~ msgid ""
+#~ "Enter positions of password characters separated by spaces, commas or "
+#~ "semi-colons:"
+#~ msgstr ""
+#~ "Inserisci la posizione delle lettere della password separate da spazi, "
+#~ "virgole e punti e virgole:"
+
+#~ msgid "Enter your Sample Text below"
+#~ msgstr "Inserisci il tuo Testo d'Esempio sotto"
+
+#~ msgid "Entries in both databases but with differences:"
+#~ msgstr "Schede presenti in entrambi i database con differenze:"

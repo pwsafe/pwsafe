@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -153,8 +153,8 @@ public:
   bool IsValid() {return m_iErrorCode == PWSfile::SUCCESS;}
   int GetErrorCode() {return m_iErrorCode;}
 
-  bool operator==(const PWSFileSig &other);
-  bool operator!=(const PWSFileSig &other) {return !(*this == other);}
+  bool operator==(const PWSFileSig &that);
+  bool operator!=(const PWSFileSig &that) {return !(*this == that);}
 
 private:
   long m_length; // -1 if file doesn't exist or zero length

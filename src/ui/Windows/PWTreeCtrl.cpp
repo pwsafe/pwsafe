@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -435,6 +435,11 @@ void CPWTreeCtrl::OnDragLeave()
   pws_os::Trace(L"CPWTreeCtrl::OnDragLeave() show cursor\n");
   while (ShowCursor(TRUE) < 0)
     ;
+}
+
+void CPWTreeCtrl::SetUpFont()
+{
+  Fonts::GetInstance()->SetUpFont(this, Fonts::GetInstance()->GetCurrentFont());
 }
 
 void CPWTreeCtrl::UpdateLeafsGroup(MultiCommands *pmulticmds, HTREEITEM hItem, CString prefix)
@@ -1426,9 +1431,9 @@ void CPWTreeCtrl::OnBeginDrag(NMHDR *pNotifyStruct, LRESULT *pLResult)
 
   // Bug in MS TreeCtrl and CreateDragImage.  During Drag, it doesn't show
   // the entry's text as well as the drag image if the font is not MS Sans Serif !!!!
-  SetFont(m_fonts.GetDragFixFont(), false);
+  SetFont(Fonts::GetInstance()->GetDragFixFont(), false);
   CImageList *pil = CreateDragImage(m_hitemDrag);
-  SetFont(m_fonts.GetCurrentFont(), false);
+  SetFont(Fonts::GetInstance()->GetCurrentFont(), false);
 
   pil->SetDragCursorImage(0, CPoint(0, 0));
   pil->BeginDrag(0, CPoint(0,0));
@@ -1710,7 +1715,8 @@ bool CPWTreeCtrl::CollectData(BYTE * &out_buffer, long &outLen)
   return (outLen > 0);
 }
 
-bool CPWTreeCtrl::ProcessData(BYTE *in_buffer, const long &inLen, const CSecString &DropGroup)
+bool CPWTreeCtrl::ProcessData(BYTE *in_buffer, const long &inLen,
+                              const CSecString &DropGroup)
 {
 #ifdef DUMP_DATA
   std:wstring stimestamp;
@@ -1732,7 +1738,7 @@ bool CPWTreeCtrl::ProcessData(BYTE *in_buffer, const long &inLen, const CSecStri
   inDDmemfile.Detach();
 
   if (!in_oblist.IsEmpty()) {
-    m_pDbx->AddEntries(in_oblist, DropGroup);
+    m_pDbx->AddDDEntries(in_oblist, DropGroup);
 
     while (!in_oblist.IsEmpty()) {
       delete (CDDObject *)in_oblist.RemoveHead();
@@ -2233,13 +2239,14 @@ bad_return:
   return retval;
 }
 
-HFONT CPWTreeCtrl::GetFontBasedOnStatus(HTREEITEM &hItem, CItemData *pci, COLORREF &cf)
+CFont *CPWTreeCtrl::GetFontBasedOnStatus(HTREEITEM &hItem, CItemData *pci, COLORREF &cf)
 {
+  Fonts *pFonts = Fonts::GetInstance();
   if (pci == NULL) {
     StringX path = GetGroup(hItem);
     if (m_pDbx->IsNodeModified(path)) {
-      cf = PWFonts::MODIFIED_COLOR;
-      return (HFONT)*m_fonts.m_pModifiedFont;
+      cf = pFonts->GetModified_Color();
+      return pFonts->GetModifiedFont();
     } else
       return NULL;
   }
@@ -2247,8 +2254,8 @@ HFONT CPWTreeCtrl::GetFontBasedOnStatus(HTREEITEM &hItem, CItemData *pci, COLORR
   switch (pci->GetStatus()) {
     case CItemData::ES_ADDED:
     case CItemData::ES_MODIFIED:
-      cf = PWFonts::MODIFIED_COLOR;
-      return (HFONT)*m_fonts.m_pModifiedFont;
+      cf = pFonts->GetModified_Color();
+      return pFonts->GetModifiedFont();
     default:
       break;
   }
@@ -2262,25 +2269,29 @@ void CPWTreeCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
   *pLResult = CDRF_DODEFAULT;
 
   static bool bchanged_item_font(false);
-  HFONT hfont;
-  COLORREF cf;
+  static CFont *pcurrentfont;
+  static CDC *pDC = NULL;
+  
   HTREEITEM hItem = (HTREEITEM)pNMLVCUSTOMDRAW->nmcd.dwItemSpec;
   CItemData *pci = (CItemData *)pNMLVCUSTOMDRAW->nmcd.lItemlParam;
 
   switch (pNMLVCUSTOMDRAW->nmcd.dwDrawStage) {
     case CDDS_PREPAINT:
       // PrePaint
+      pDC = CDC::FromHandle(pNMLVCUSTOMDRAW->nmcd.hdc);
       bchanged_item_font = false;
+      pcurrentfont = Fonts::GetInstance()->GetCurrentFont();
       *pLResult = CDRF_NOTIFYITEMDRAW;
       break;
 
     case CDDS_ITEMPREPAINT:
       // Item PrePaint
       if (m_bUseHighLighting) {
-        hfont = GetFontBasedOnStatus(hItem, pci, cf);
-        if (hfont != NULL) {
+        COLORREF cf;
+        CFont *uFont = GetFontBasedOnStatus(hItem, pci, cf);
+        if (uFont != NULL) {
           bchanged_item_font = true;
-          SelectObject(pNMLVCUSTOMDRAW->nmcd.hdc, hfont);
+          pDC->SelectObject(uFont);
           if (pci == NULL || GetItemState(hItem, TVIS_SELECTED) == 0)
             pNMLVCUSTOMDRAW->clrText = cf;
           *pLResult |= (CDRF_NOTIFYPOSTPAINT | CDRF_NEWFONT);
@@ -2292,7 +2303,7 @@ void CPWTreeCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
       // Item PostPaint - restore old font if any
       if (bchanged_item_font) {
         bchanged_item_font = false;
-        SelectObject(pNMLVCUSTOMDRAW->nmcd.hdc, (HFONT)m_fonts.m_pCurrentFont);
+        SelectObject(pNMLVCUSTOMDRAW->nmcd.hdc, (HFONT)pcurrentfont);
         *pLResult |= CDRF_NEWFONT;
       }
       break;

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -30,10 +30,12 @@ protected:
   //{{AFX_DATA(COptionsPasswordHistory)
   enum { IDD = IDD_PS_PASSWORDHISTORY };
 
-  BOOL m_SavePWHistory;
+  BOOL m_SavePWHistory, mApplyToProtected;
   int m_PWHistoryNumDefault;
   int  m_PWHAction;
   //}}AFX_DATA
+
+  CButtonExtn m_chkbox;
 
   // Overrides
   // ClassWizard generate virtual function overrides
@@ -60,6 +62,4 @@ protected:
 
 private:
   CToolTipCtrl* m_pToolTipCtrl;
-
-  static const UINT uiDBPrefs[];
 };

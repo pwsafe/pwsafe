@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -66,6 +66,7 @@ public:
     RESERVED = 0x0b /* cannot use */, RMTIME = 0x0c, URL = 0x0d, AUTOTYPE = 0x0e,
     PWHIST = 0x0f, POLICY = 0x10, XTIME_INT = 0x11, RUNCMD = 0x12, DCA = 0x13,
     EMAIL = 0x14, PROTECTED = 0x15, SYMBOLS = 0x16, SHIFTDCA = 0x17,
+    POLICYNAME = 0x18,
     LAST,        // Start of unknown fields!
     END = 0xff,
     // Internal fields only - used in filters
@@ -172,6 +173,7 @@ public:
   void GetProtected(unsigned char &ucprotected) const;
   bool IsProtected() const;
   StringX GetSymbols() const;
+  StringX GetPolicyName() const;
 
   StringX GetFieldValue(const FieldType &ft) const;
 
@@ -237,6 +239,7 @@ public:
   void SetEmail(const StringX &sx_email);
   void SetProtected(const bool &bOnOff);
   void SetSymbols(const StringX &sx_symbols);
+  void SetPolicyName(const StringX &sx_PolicyName);
 
   void SetFieldValue(const FieldType &ft, const StringX &value);
 
@@ -269,6 +272,7 @@ public:
   bool IsURLEmpty() const {return m_URL.IsEmpty();}
   bool IsRunCommandEmpty() const {return m_RunCommand.IsEmpty();}
   bool IsEmailEmpty() const {return m_email.IsEmpty();}
+  bool IsPolicyEmpty() const {return m_PolicyName.IsEmpty();}
 
   bool IsGroupSet() const                     { return !m_Group.IsEmpty();        }
   bool IsUserSet() const                      { return !m_User.IsEmpty();         }
@@ -291,10 +295,11 @@ public:
   bool IsDCASet() const                       { return !m_DCA.IsEmpty();          }
   bool IsProtectionSet() const                { return !m_protected.IsEmpty();    }
   bool IsSymbolsSet() const                   { return !m_symbols.IsEmpty();      }
+  bool IsPolicyNameSet() const                { return !m_PolicyName.IsEmpty();   }
     
   void SerializePlainText(std::vector<char> &v,
                           const CItemData *pcibase = NULL) const;
-  bool DeserializePlainText(const std::vector<char> &v);
+  bool DeSerializePlainText(const std::vector<char> &v);
   bool SetField(int type, const unsigned char *data, size_t len);
 
   EntryType GetEntryType() const {return m_entrytype;}
@@ -351,6 +356,7 @@ private:
   CItemField m_email;
   CItemField m_protected;
   CItemField m_symbols;
+  CItemField m_PolicyName;
 
   // Save unknown record fields on read to put back on write unchanged
   UnknownFields m_URFL;

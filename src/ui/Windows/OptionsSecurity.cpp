@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -31,10 +31,6 @@
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
-
-const UINT COptionsSecurity::uiDBPrefs[] = {
-  IDC_COPYPSWDURL, IDC_LOCK_TIMER
-};
 
 /////////////////////////////////////////////////////////////////////////////
 // COptionsSecurity property page
@@ -71,6 +67,9 @@ void COptionsSecurity::DoDataExchange(CDataExchange* pDX)
   DDX_Check(pDX, IDC_LOCKONMINIMIZE, m_LockOnMinimize);
   DDX_Check(pDX, IDC_CONFIRMCOPY, m_ConfirmCopy);
   DDX_Check(pDX, IDC_LOCKONSCREEN, m_LockOnWindowLock);
+
+  DDX_Control(pDX, IDC_COPYPSWDURL, m_chkbox[0]);
+  DDX_Control(pDX, IDC_LOCK_TIMER, m_chkbox[1]);
   //}}AFX_DATA_MAP
 }
 
@@ -91,8 +90,9 @@ BOOL COptionsSecurity::OnInitDialog()
 {
   COptions_PropertyPage::OnInitDialog();
 
-  for (int i = 0; i < sizeof(uiDBPrefs) / sizeof(uiDBPrefs[0]); i++) {
-    SetWindowTheme(GetDlgItem(uiDBPrefs[i])->GetSafeHwnd(), L"", L"");
+  for (int i = 0; i < 2; i++) {
+    m_chkbox[i].SetTextColour(CR_DATABASE_OPTIONS);
+    m_chkbox[i].SetBkgColour(COLOR_WINDOW);
   }
 
   OnLockOnIdleTimeout();
@@ -223,11 +223,9 @@ HBRUSH COptionsSecurity::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
 {
   HBRUSH hbr = CPWPropertyPage::OnCtlColor(pDC, pWnd, nCtlColor);
 
-  // Database preferences - controls + associated static text
+  // Database preferences - associated static text
   switch (pWnd->GetDlgCtrlID()) {
     case IDC_STATIC_IDLEMINS:
-    case IDC_COPYPSWDURL:
-    case IDC_LOCK_TIMER:
       pDC->SetTextColor(CR_DATABASE_OPTIONS);
       pDC->SetBkMode(TRANSPARENT);
       break;

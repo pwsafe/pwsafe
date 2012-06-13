@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -24,6 +24,7 @@
 #include "PWSFaultHandler.h"
 
 #include "core\StringX.h"
+#include "core\PWSLog.h"
 
 #include "resource3.h"
 
@@ -259,7 +260,7 @@ void PopulateMinidumpUserStreams(PWSprefs *prefs, bool bOpen, bool bRW, UserStre
     swprintf_s(szUserStream1, USERSTREAMSIZE,
                L"US01 %s", sx_Buffer.substr(0, len).c_str());
   }
-  
+
   if (iStream == usAll || iStream == usPrefs || iStream == us2) {
     // Get all Integer preferences
     sx_Buffer = prefs->PWSprefs::GetAllIntPrefs();
@@ -353,7 +354,7 @@ LONG TakeMiniDump(struct _EXCEPTION_POINTERS *pExInfo, const int itype,
     excpInfo.ExceptionPointers = pExInfo;
     excpInfo.ThreadId = GetCurrentThreadId();
 
-    MINIDUMP_USER_STREAM UserStreams[4];
+    MINIDUMP_USER_STREAM UserStreams[5];
 
     UserStreams[0].Type = LastReservedStream + 1;
     UserStreams[0].Buffer = (void *)&szUserStream0[0];
@@ -368,8 +369,16 @@ LONG TakeMiniDump(struct _EXCEPTION_POINTERS *pExInfo, const int itype,
     UserStreams[3].Buffer = (void *)&szUserStream3[0];
     UserStreams[3].BufferSize = (ULONG)((wcslen(szUserStream3) + 1) * sizeof(wchar_t));
 
+    stringT us4 = PWSLog::GetLog()->DumpLog();
+
+    if (us4.length() > 0) {
+      UserStreams[4].Type = LastReservedStream + 5;
+      UserStreams[4].Buffer = (void *)us4.c_str();
+      UserStreams[4].BufferSize = (ULONG)(us4.length() * sizeof(TCHAR));
+    }
+
     MINIDUMP_USER_STREAM_INFORMATION musi;
-    musi.UserStreamCount = 4;
+    musi.UserStreamCount = (us4.length() > 0) ? 5 : 4;
     musi.UserStreamArray = UserStreams;
 
     pfcnMiniDumpWriteDump(GetCurrentProcess(), GetCurrentProcessId(), hFile,

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -56,6 +56,11 @@ void CPWListCtrl::ActivateND(const bool bActivate)
   if (!m_bShowNotes) {
     m_bMouseInWindow = false;
   }
+}
+
+void CPWListCtrl::SetUpFont()
+{
+  Fonts::GetInstance()->SetUpFont(this, Fonts::GetInstance()->GetCurrentFont());
 }
 
 LRESULT CPWListCtrl::OnCharItemlist(WPARAM wParam, LPARAM /* lParam */)
@@ -321,16 +326,17 @@ void CPWListCtrl::OnSelectionChanged(NMHDR *pNotifyStruct, LRESULT *pLResult)
   }
 }
 
-HFONT CPWListCtrl::GetFontBasedOnStatus(CItemData *pci, COLORREF &cf)
+CFont *CPWListCtrl::GetFontBasedOnStatus(CItemData *pci, COLORREF &cf)
 {
   if (pci == NULL)
     return NULL;
 
+  Fonts *pFonts = Fonts::GetInstance();
   switch (pci->GetStatus()) {
     case CItemData::ES_ADDED:
     case CItemData::ES_MODIFIED:
-      cf = PWFonts::MODIFIED_COLOR;
-      return (HFONT)*m_fonts.m_pModifiedFont;
+      cf = pFonts->GetModified_Color();
+      return pFonts->GetModifiedFont();
     default:
       break;
   }
@@ -345,51 +351,54 @@ void CPWListCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
 
   static bool bitem_selected(false);
   static bool bchanged_item_font(false), bchanged_subitem_font(false);
-  HFONT hfont;
-  COLORREF cf;
-  int nItem = (int)pNMLVCUSTOMDRAW->nmcd.dwItemSpec;
+  static CFont *pCurrentFont = NULL;
+  static CFont *pPasswordFont = NULL;
+  static CDC *pDC = NULL;
+
+  HDITEM hdi = {0};
+  hdi.mask = HDI_LPARAM;
+
   CItemData *pci = (CItemData *)pNMLVCUSTOMDRAW->nmcd.lItemlParam;
 
   switch (pNMLVCUSTOMDRAW->nmcd.dwDrawStage) {
     case CDDS_PREPAINT:
       // PrePaint
+      pDC = CDC::FromHandle(pNMLVCUSTOMDRAW->nmcd.hdc);
       bchanged_item_font = bchanged_subitem_font = false;
+      pCurrentFont = Fonts::GetInstance()->GetCurrentFont();
+      pPasswordFont = Fonts::GetInstance()->GetPasswordFont();
       *pLResult = CDRF_NOTIFYITEMDRAW;
       break;
 
     case CDDS_ITEMPREPAINT:
       // Item PrePaint
-      if (m_bUseHighLighting) {
-        bitem_selected = GetItemState(nItem, LVIS_SELECTED) != 0;
-        hfont = GetFontBasedOnStatus(pci, cf);
-        if (hfont != NULL) {
-          bchanged_item_font = true;
-          SelectObject(pNMLVCUSTOMDRAW->nmcd.hdc, hfont);
-          if (!bitem_selected)
-            pNMLVCUSTOMDRAW->clrText = cf;
-          *pLResult |= (CDRF_NOTIFYPOSTPAINT | CDRF_NEWFONT);
-        }
-        *pLResult |= CDRF_NOTIFYSUBITEMDRAW;
-      }
+      *pLResult |= CDRF_NOTIFYSUBITEMDRAW;
       break;
 
     case CDDS_ITEMPOSTPAINT:
       // Item PostPaint - restore old font if any
       if (bchanged_item_font) {
         bchanged_item_font = false;
-        SelectObject(pNMLVCUSTOMDRAW->nmcd.hdc, (HFONT)m_fonts.m_pCurrentFont);
+        pDC->SelectObject(pCurrentFont);
         *pLResult |= CDRF_NEWFONT;
       }
       break;
 
     case CDDS_ITEMPREPAINT | CDDS_SUBITEM:
       // Sub-item PrePaint
-      // int nSubItem = pNMLVCUSTOMDRAW->iSubItem; // Not needed, although valid
+      GetHeaderCtrl()->GetItem(pNMLVCUSTOMDRAW->iSubItem, &hdi);
+      if (hdi.lParam == CItemData::PASSWORD) {
+        // Use Password font
+        bchanged_subitem_font = true;
+        pDC->SelectObject(pPasswordFont);
+        *pLResult |= (CDRF_NOTIFYPOSTPAINT | CDRF_NEWFONT);
+      } else
       if (m_bUseHighLighting) {
-        hfont = GetFontBasedOnStatus(pci, cf);
-        if (hfont != NULL) {
+        COLORREF cf;
+        CFont *uFont = GetFontBasedOnStatus(pci, cf);
+        if (uFont != NULL) {
           bchanged_subitem_font = true;
-          SelectObject(pNMLVCUSTOMDRAW->nmcd.hdc, hfont);
+          pDC->SelectObject(uFont);
           if (!bitem_selected)
             pNMLVCUSTOMDRAW->clrText = cf;
           *pLResult |= (CDRF_NOTIFYPOSTPAINT | CDRF_NEWFONT);
@@ -399,11 +408,10 @@ void CPWListCtrl::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
 
     case CDDS_ITEMPOSTPAINT | CDDS_SUBITEM:
       // Sub-item PostPaint
-      // int nSubItem = pNMLVCUSTOMDRAW->iSubItem; // Not needed, although valid
       // Restore old font if any
       if (bchanged_subitem_font) {
         bchanged_subitem_font = false;
-        SelectObject(pNMLVCUSTOMDRAW->nmcd.hdc, (HFONT)m_fonts.m_pCurrentFont);
+        pDC->SelectObject(pCurrentFont);
         *pLResult |= CDRF_NEWFONT;
       }
       break;

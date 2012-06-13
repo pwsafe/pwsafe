@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+ * Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -153,10 +153,12 @@ wxObject* MultiCheckboxValidator::Clone() const
 
 bool MultiCheckboxValidator::Validate(wxWindow* parent)
 {
+  bool allDisabled = true;
   for(size_t idx = 0; idx < m_count; ++idx) {
     wxWindow* win = GetWindow()->FindWindow(m_ids[idx]);
     if (win) {
       if (win->IsEnabled()) {
+        allDisabled = false;
         wxCheckBox* cb = wxDynamicCast(win, wxCheckBox);
         if (cb) {
           if (cb->IsChecked()) {
@@ -172,8 +174,12 @@ bool MultiCheckboxValidator::Validate(wxWindow* parent)
       wxFAIL_MSG(wxString::Format(wxT("No child with id (%d) found in MultiCheckboxValidator"), m_ids[idx]));
     }
   }
-  wxMessageBox(m_msg, m_title, wxOK|wxICON_EXCLAMATION, parent);
-  return false;
+  if (allDisabled)
+    return true;
+  else {
+    wxMessageBox(m_msg, m_title, wxOK|wxICON_EXCLAMATION, parent);
+    return false;
+  }
 }
 
 int pless(int* first, int* second) { return *first - *second; }

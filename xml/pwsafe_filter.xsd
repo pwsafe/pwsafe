@@ -8,7 +8,7 @@
     supported by PasswordSafe.  If either of these are not true, the filters cannot be
     loaded into PasswordSafe.
 
-    This XML Schema corresponds to V3.26 of Password Safe for filters.
+    This XML Schema corresponds to V3.28 of Password Safe for filters.
     Rules:
       EQ - equals
       NE - not equals
@@ -482,6 +482,7 @@
     <xs:element name="policy_hexadecimal" type="booleansetfilterentry" minOccurs="1" maxOccurs="1" />
 
     <xs:element name="password_length" type="integerfilterentry" minOccurs="1" maxOccurs="1" />
+    <xs:element name="policy_name" type="stringfilterentry" minOccurs="1" maxOccurs="1" />
     <xs:element name="entrysize" type="sizefilterentry" minOccurs="1" maxOccurs="1" />
     <xs:element name="entrytype" type="entrytypefilterentry" minOccurs="1" maxOccurs="1" />
     <xs:element name="entrystatus" type="entrystatusfilterentry" minOccurs="1" maxOccurs="1" />

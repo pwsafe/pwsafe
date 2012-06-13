@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -171,7 +171,7 @@ BOOL CInfoDisplay::Create(int /* x */, int /* y */, LPCWSTR sztext, CWnd * paren
   if (NDclass == NULL)
     return FALSE;
    
-  CFont *f = parent->GetFont();
+  CFont *pFont = parent->GetFont();
    
   CRect r(0, 0, 10, 10); // meaningless values, will be recomputed after creation
 
@@ -186,7 +186,7 @@ BOOL CInfoDisplay::Create(int /* x */, int /* y */, LPCWSTR sztext, CWnd * paren
   if (!bresult)
     return FALSE;
 
-  SetFont(f);
+  SetFont(pFont);
 
   return TRUE;
 }

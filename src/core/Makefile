@@ -20,7 +20,7 @@ LIBSRC          = BlowFish.cpp CheckVersion.cpp hmac.cpp \
                   PWHistory.cpp PWSAuxParse.cpp \
                   PWScore.cpp PWSdirs.cpp PWSfile.cpp \
                   PWSfileV1V2.cpp PWSfileV3.cpp \
-                  PWSFilters.cpp PWSprefs.cpp \
+                  PWSFilters.cpp PWSLog.cpp PWSprefs.cpp \
                   Command.cpp PWSrand.cpp Report.cpp \
                   sha1.cpp sha256.cpp core_st.cpp\
                   StringX.cpp SysInfo.cpp \
@@ -32,7 +32,7 @@ LIBSRC          = BlowFish.cpp CheckVersion.cpp hmac.cpp \
                   XML/XMLFileHandlers.cpp XML/XMLFileValidation.cpp \
                   XML/Xerces/XFileSAX2Handlers.cpp XML/Xerces/XFileValidator.cpp \
                   XML/Xerces/XFileXMLProcessor.cpp XML/Xerces/XFilterSAX2Handlers.cpp \
-                  XML/Xerces/XFilterXMLProcessor.cpp XML/Xerces/XSecMemMgr.cpp                  
+                  XML/Xerces/XFilterXMLProcessor.cpp XML/Xerces/XSecMemMgr.cpp PWSLog.cpp
 
 SRC             = $(LIBSRC)
 
@@ -78,6 +78,8 @@ $(LIB): $(LIBOBJ)
 
 core_st.cpp core_st.h : core.rc2
 	../../Misc/rc2cpp.pl $^
+
+StringX.cpp: core_st.h
 
 clean:
 	@rm -f *~ $(OBJ) $(TEST) $(LIB)

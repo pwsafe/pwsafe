@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -17,6 +17,7 @@ down the streetsky.  [Groucho Marx]
 #include "PWFileDialog.h"
 #include "ThisMfcApp.h"
 #include "GeneralMsgBox.h"
+#include "PWSversion.h"
 
 #include "core/PwsPlatform.h"
 #include "core/Pwsdirs.h"
@@ -42,6 +43,7 @@ down the streetsky.  [Groucho Marx]
 #include "SysColStatic.h"
 
 #include "PasskeyEntry.h"
+#include "Fonts.h"
 #include "TryAgainDlg.h"
 #include "DboxMain.h" // for CheckPasskey()
 #include "PasskeySetup.h"
@@ -81,6 +83,17 @@ CPasskeyEntry::CPasskeyEntry(CWnd* pParent, const CString& a_filespec, int index
 
   m_pDbx = dynamic_cast<DboxMain *>(pParent);
   ASSERT(m_pDbx != NULL);
+
+  PWSversion *pPWSver = PWSversion::GetInstance();
+  int nMajor = pPWSver->GetMajor();
+  int nMinor = pPWSver->GetMinor();
+  int nBuild = pPWSver->GetBuild();
+  CString csSpecialBuild = pPWSver->GetSpecialBuild();
+
+  if (nBuild == 0)
+    m_appversion.Format(L"Version %d.%02d%s", nMajor, nMinor, csSpecialBuild);
+  else
+    m_appversion.Format(L"Version %d.%02d.%02d%s", nMajor, nMinor, nBuild, csSpecialBuild);
 }
 
 CPasskeyEntry::~CPasskeyEntry()
@@ -174,6 +187,10 @@ BOOL CPasskeyEntry::OnInitDialog(void)
 #else
   CPKBaseDlg::OnInitDialog();
 #endif
+
+  Fonts::GetInstance()->ApplyPasswordFont(GetDlgItem(IDC_PASSKEY));
+
+  m_pctlPasskey->SetPasswordChar(PSSWDCHAR);
 
   switch(m_index) {
     case GCP_FIRST:

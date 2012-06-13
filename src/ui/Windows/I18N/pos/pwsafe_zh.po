@@ -132,6 +132,10 @@ msgstr " '密码策略'"
 msgid " 'Password'"
 msgstr " '密码'"
 
+#. Resource IDs: (370)
+msgid " 'Policy Name'"
+msgstr ""
+
 #. Resource IDs: (336)
 msgid " 'Record Modification Time'"
 msgstr " '档案修改时间'"
@@ -327,9 +331,24 @@ msgstr "%d 个项目"
 msgid "%d of %d matches."
 msgstr "%d 中 %d 个相匹配！"
 
+#. Resource IDs: (215)
+#, c-format
+msgid "%s  - Imported %s"
+msgstr ""
+
 #. Resource IDs: (366)
 #, c-format
 msgid "%s (database-specific)"
+msgstr ""
+
+#. Resource IDs: (370)
+#, c-format
+msgid "%s - Drag & Drop %s"
+msgstr ""
+
+#. Resource IDs: (215)
+#, c-format
+msgid "%s - Merged %s"
 msgstr ""
 
 #. Resource IDs: (3887)
@@ -627,6 +646,10 @@ msgstr ""
 msgid "&Keep"
 msgstr "保存(&K)"
 
+#. Resource IDs: (1462)
+msgid "&List"
+msgstr ""
+
 #. Resource IDs: (32150)
 msgid "&Manage"
 msgstr "管理(&M)"
@@ -666,10 +689,6 @@ msgstr "新建/编辑筛选(&N)"
 #. Resource IDs: (2)
 msgid "&No"
 msgstr "否(&N)"
-
-#. Resource IDs: (1229)
-msgid "&None"
-msgstr ""
 
 #. Resource IDs: (1354, 65535)
 msgid "&Notes:"
@@ -1233,7 +1252,7 @@ msgid "A new password database will be created. The safe combination you enter w
 msgstr "即将创建一个新密码数据库，请输入你的保险箱数据库保护密码，保险箱密码可以使用所有键盘上区分大小写的字符。"
 
 #. Resource IDs: (367)
-msgid "A red and white indicator means that a filter is active\r\n(double click to clear filter)"
+msgid "A red and white indicator means that a filter is active\r\n(if showing, double click to clear filter)"
 msgstr ""
 
 #. Resource IDs: (3843)
@@ -1280,6 +1299,10 @@ msgstr "添加项目"
 #. Resource IDs: (32057)
 msgid "Add Group"
 msgstr "添加组"
+
+#. Resource IDs: (370)
+msgid "Add a New Database Named Password Policy"
+msgstr ""
 
 #. Resource IDs: (466)
 msgid "Additional"
@@ -1356,6 +1379,10 @@ msgstr "所有文件 (*.*)"
 #. Resource IDs: (339)
 msgid "All available columns are being displayed."
 msgstr "显示所有可用栏目"
+
+#. Resource IDs: (368)
+msgid "All changes to Password Policies will be lost"
+msgstr ""
 
 #. Resource IDs: (1333)
 msgid "Allow multiple instances (requires all instances to be restarted)"
@@ -1521,6 +1548,10 @@ msgstr "可用字段:"
 #. Resource IDs: (65535)
 msgid "Available Filters:"
 msgstr "可用筛选:"
+
+#. Resource IDs: (65535)
+msgid "Available Password Policies:"
+msgstr ""
 
 #. Resource IDs: (518)
 msgid "Azeri Cyrillic"
@@ -1780,6 +1811,18 @@ msgstr ""
 msgid "Change the maximum number of saved passwords for entries currently saving password history to the new maximum, if currently saving fewer.\n\nEntries with more than this new maximum already saved will remain unchanged."
 msgstr "如果当前存储数量较少，更改当前项目保存历史密码数量到新的最大值；对于已经保存大于该新建值的项目历史密码将保留不被更改！"
 
+#. Resource IDs: (370)
+msgid "Change/View Database Default Password Policy"
+msgstr ""
+
+#. Resource IDs: (370)
+msgid "Change/View a Database Named Password Policy"
+msgstr ""
+
+#. Resource IDs: (368)
+msgid "Change/View selected Named Password Policy or the database default policy"
+msgstr ""
+
 #. Resource IDs: (1187)
 msgid "Changes to existing entries will be applied on pressing OK"
 msgstr "点击“确定”将更改应用到现有项目！"
@@ -1825,7 +1868,7 @@ msgid "Clear clipboard upon minimize"
 msgstr "最小化时清空剪贴板"
 
 #. Resource IDs: (1453)
-msgid "Click here or details on the various preferences."
+msgid "Click here for details on the various preferences."
 msgstr ""
 
 #. Resource IDs: (351)
@@ -1835,6 +1878,10 @@ msgstr "单击这里选择字段"
 #. Resource IDs: (510)
 msgid "Click to change case."
 msgstr "单击更改大小写"
+
+#. Resource IDs: (370)
+msgid "Click to copy generated password to clipboard"
+msgstr ""
 
 #. Resource IDs: (353)
 msgid "Click to copy to clipboard"
@@ -2170,6 +2217,10 @@ msgstr "创建计划缓存%2d 发生错误 0x%08X 在 %s 期间！"
 msgid "Create Shortcut"
 msgstr "创建快捷方式"
 
+#. Resource IDs: (368)
+msgid "Create a new Password Policy"
+msgstr ""
+
 #. Resource IDs: (1199)
 msgid "Create intermediate backups (.ibak) before saving"
 msgstr "在保存之前创建中间备份 (.ibak)"
@@ -2308,6 +2359,10 @@ msgstr ""
 msgid "Default Autotype string:"
 msgstr "默认自动输入字串:"
 
+#. Resource IDs: (368)
+msgid "Default Policy"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Default Username"
 msgstr "默认用户名"
@@ -2340,6 +2395,10 @@ msgstr "确认删除一个基本项目？"
 msgid "Delete a filter"
 msgstr "删除一个筛选"
 
+#. Resource IDs: (368)
+msgid "Delete selected Password Policy\n(only an unused Named Password Policy may be deleted)"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Description:"
 msgstr ""
@@ -2359,6 +2418,10 @@ msgstr "目标磁盘驱动器已满！"
 #. Resource IDs: (337)
 msgid "Destination location does not exist or is not accessible."
 msgstr "目标位置不存在或不可到达！"
+
+#. Resource IDs: (370)
+msgid "Details"
+msgstr ""
 
 #. Resource IDs: (329)
 #, c-format
@@ -2390,6 +2453,10 @@ msgstr "显示"
 #. Resource IDs: (151, 152, 153, 154, 155, 156)
 msgid "Display Filter - "
 msgstr "显示筛选 -"
+
+#. Resource IDs: (368)
+msgid "Display policy setings or List entries using this named policy\n(The latter may take a while depending on the number of entries in this database)"
+msgstr ""
 
 #. Resource IDs: (32262)
 msgid "Display subset of Password"
@@ -2476,6 +2543,10 @@ msgstr "双击项目查看/编辑"
 #. Resource IDs: (65535)
 msgid "Double-click action"
 msgstr "双击操作"
+
+#. Resource IDs: (370)
+msgid "Double-click an entry to Edit/View it"
+msgstr ""
 
 #. Resource IDs: (366)
 msgid "Doubleclick action for current entry"
@@ -2675,6 +2746,10 @@ msgstr "项目仅在比较数据库 (%s):"
 msgid "Entries only in current database (%s):"
 msgstr "项目仅在当前数据库 (%s):"
 
+#. Resource IDs: (1469)
+msgid "Entries using selected policy:"
+msgstr ""
+
 #. Resource IDs: (365)
 msgid "Entries with a password expiry"
 msgstr "项目使用的一个密码到期"
@@ -2683,6 +2758,10 @@ msgstr "项目使用的一个密码到期"
 #, c-format
 msgid "Entry %s%d with Group=\"%s\", Title=\"%s\", User=\"%s\""
 msgstr "项目 %s%d 与组=“%s”，标题=“%s”，用户=“%s”。"
+
+#. Resource IDs: (370)
+msgid "Entry Password Policy Changes"
+msgstr ""
 
 #. Resource IDs: (1407)
 msgid "Entry Unique ID:"
@@ -2994,6 +3073,11 @@ msgstr "文件: %s 验证失败，违反 XML 规划:\n\n%s！"
 msgid "File: %s passed Validation but had the following errors during import:\r\n\r\n%s"
 msgstr "文件: %s 已通过验证，但在导入数据时存在下列错误:\n\n%s！"
 
+#. Resource IDs: (370)
+#, c-format
+msgid "File: %s was imported (%d warning(s) issued about missing Password Policy Names). See report for details."
+msgstr ""
+
 #. Resource IDs: (335)
 #, c-format
 msgid "File: %s was imported (entries validated %d / imported %d%s%s%s). See report for details."
@@ -3085,6 +3169,10 @@ msgstr "全部展开"
 msgid "Gaelic"
 msgstr "盖尔语"
 
+#. Resource IDs: (1025)
+msgid "Generate"
+msgstr ""
+
 #. Resource IDs: (32157)
 msgid "Generate &Password"
 msgstr "生成密码(&P)"
@@ -3096,6 +3184,10 @@ msgstr "生成可发音密码(&P)"
 #. Resource IDs: (359)
 msgid "Generate Password"
 msgstr "生成密码"
+
+#. Resource IDs: (370)
+msgid "Generate Password using selected Password Policy"
+msgstr ""
 
 #. Resource IDs: (516)
 msgid "Georgian"
@@ -3413,6 +3505,10 @@ msgstr "如果这是 PasswordSafe 启动时被打开的第一个数据库，Pass
 #, c-format
 msgid "If this keyboard supports characters via the %s, then this key will be enabled and can be used to select them.\n\nYou may need to also select the Shift key to see them."
 msgstr "如果该键盘支持字符通过 %s，则该键将被启用及可以被用于它们的所选。\n\n你还可以按需同时选择 Shift 键查看它们。"
+
+#. Resource IDs: (370)
+msgid "If you specify using your own symbol list, you cannot leave it empty. Unselecting use of symbols."
+msgstr ""
 
 #. Resource IDs: (517)
 msgid "Igbo"
@@ -3803,6 +3899,10 @@ msgstr "生成备份"
 msgid "Manage Filters"
 msgstr "管理筛选"
 
+#. Resource IDs: (515)
+msgid "Manage Password Policies"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Manage password history of current entries"
 msgstr "管理当前项目的历史密码"
@@ -3870,16 +3970,20 @@ msgid "Minimize after Autotype"
 msgstr "自动输入后最小化"
 
 #. Resource IDs: (350)
-msgid "Minimum digit characters"
-msgstr "最少数字字符"
+msgid "Minimum digits"
+msgstr ""
 
 #. Resource IDs: (349)
 msgid "Minimum lowercase characters"
 msgstr "最少小写字母字符"
 
+#. Resource IDs: (349)
+msgid "Minimum password length"
+msgstr ""
+
 #. Resource IDs: (350)
-msgid "Minimum symbol characters"
-msgstr "最少符号字符"
+msgid "Minimum symbols"
+msgstr ""
 
 #. Resource IDs: (349)
 msgid "Minimum uppercase characters"
@@ -3940,6 +4044,10 @@ msgstr "名称.名称.名称"
 
 #. Resource IDs: (65535)
 msgid "Name:"
+msgstr ""
+
+#. Resource IDs: (1471)
+msgid "Named Policy"
 msgstr ""
 
 #. Resource IDs: (32103)
@@ -4099,6 +4207,10 @@ msgstr "挪威语(萨米)"
 msgid "Not all of the system registry entries (or INI file) were removed."
 msgstr "系统注册表项目 (或 INI 文件)  删除不全！"
 
+#. Resource IDs: (370)
+msgid "Not used"
+msgstr ""
+
 #. Resource IDs: (3887)
 msgid "Note that if you choose to recover the auto-saved documents, you must explicitly save them to overwrite the original documents.  If you choose to not recover the auto-saved versions, they will be deleted."
 msgstr "请注意，如果你选择恢复自动保存的文档，必须明确保存它们覆盖原始文档；如果选择不恢复自动保存的版本，它们将被删除！"
@@ -4110,6 +4222,10 @@ msgstr "备注: 空白字段显示为 »*»"
 #. Resource IDs: (33126)
 msgid "Note: Entry format is »Group»Title»Username»"
 msgstr "备注: 项目格式为 »组»标题»用户名»"
+
+#. Resource IDs: (215)
+msgid "Note: These Password Policies will not replace existing policies with the same name in the current database."
+msgstr ""
 
 #. Resource IDs: (211)
 msgid "Note: These preferences are only used when importing into an empty database."
@@ -4206,6 +4322,10 @@ msgstr "开"
 #. Resource IDs: (359)
 msgid "One of more preferences have been changed. Are you sure you wish to cancel?"
 msgstr "多个首选项中的一个已被更改，你是否确认想要取消？"
+
+#. Resource IDs: (369)
+msgid "One or more Password Policies have been changed. Are you sure you wish to cancel?"
+msgstr ""
 
 #. Resource IDs: (3887)
 msgid "One or more auto-saved documents were found."
@@ -4348,6 +4468,10 @@ msgstr "密码修改时间"
 msgid "Password Modified Time"
 msgstr "密码修改时间"
 
+#. Resource IDs: (32159)
+msgid "Password Policies..."
+msgstr ""
+
 #. Resource IDs: (141, 345)
 msgid "Password Policy"
 msgstr "密码策略"
@@ -4355,6 +4479,10 @@ msgstr "密码策略"
 #. Resource IDs: (351)
 msgid "Password Policy Filter"
 msgstr "密码策略筛选"
+
+#. Resource IDs: (193)
+msgid "Password Policy Name"
+msgstr ""
 
 #. Resource IDs: (329)
 msgid "Password Policy Override"
@@ -4428,10 +4556,6 @@ msgstr "密码长度必须在 4 和 1024 之间！"
 #. Resource IDs: (65535)
 msgid "Password length:"
 msgstr "密码长度:"
-
-#. Resource IDs: (349)
-msgid "Password minimum length"
-msgstr "密码最小长度"
 
 #. Resource IDs: (188)
 msgid "Password should be mixed case, with at least one digit or punctuation character"
@@ -4518,14 +4642,14 @@ msgstr "请选择作为新建数据库的名称"
 msgid "Please choose a new name for the current database:"
 msgstr "请选择作为当前数据库的新名称"
 
+#. Resource IDs: (353)
+#, c-format
+msgid "Please confirm delete of the %s filter %s?"
+msgstr ""
+
 #. Resource IDs: (331)
 msgid "Please confirm that you wish to delete current user's PasswordSafe configuration information from the Windows registry.\n\n"
 msgstr ""
-
-#. Resource IDs: (353)
-#, c-format
-msgid "Please confirm you wish to delete the %s filter %s?"
-msgstr "请确认你想要删除的 %s 筛选 %s？"
 
 #. Resource IDs: (330)
 msgid "Please enter a search string"
@@ -4600,6 +4724,22 @@ msgstr "请指定包含所有备份文件的子目录！"
 msgid "Please visit the <a href=\"http://pwsafe.org/\">PasswordSafe website.</a>"
 msgstr "请访问 <a href=\"http://pwsafe.org/\">PasswordSafe 站点</a>"
 
+#. Resource IDs: (368)
+msgid "Policy Name"
+msgstr ""
+
+#. Resource IDs: (369)
+msgid "Policy Name is already in use"
+msgstr ""
+
+#. Resource IDs: (369)
+msgid "Policy Name is blank"
+msgstr ""
+
+#. Resource IDs: (369)
+msgid "Policy field"
+msgstr ""
+
 #. Resource IDs: (519)
 msgid "Polish (214)"
 msgstr "波兰语"
@@ -4639,6 +4779,10 @@ msgstr "程序 (*.exe)|*.exe|所有文件 (*.*)|*.*||"
 #. Resource IDs: (350)
 msgid "Pronounceable passwords"
 msgstr "可发音密码"
+
+#. Resource IDs: (370)
+msgid "Pronounceable passwords must contain either lowercase or uppercase characters or both"
+msgstr ""
 
 #. Resource IDs: (136)
 msgid "Properties"
@@ -4758,6 +4902,10 @@ msgstr "重复 (%d 天)"
 msgid "Redo"
 msgstr "重选"
 
+#. Resource IDs: (368)
+msgid "Redo the last change to password policies that was previously undone"
+msgstr ""
+
 #. Resource IDs: (1229)
 msgid "Relative"
 msgstr "相对"
@@ -4810,10 +4958,6 @@ msgstr ""
 #. Resource IDs: (356)
 msgid "Required Unicode font is not installed on this system.\n\nUnable to provide Virtual Keyboard."
 msgstr "在该系统没有安装所需的 Unicode 字集。\n\n不能提供虚拟键盘！"
-
-#. Resource IDs: (1377)
-msgid "Rese&t to Database Defaults"
-msgstr "重置为默认数据库(&T)"
 
 #. Resource IDs: (356)
 #, c-format
@@ -4979,6 +5123,10 @@ msgstr "另存为"
 msgid "Save Error"
 msgstr "保存错误！"
 
+#. Resource IDs: (368)
+msgid "Save all changes to Password Policies"
+msgstr ""
+
 #. Resource IDs: (3857)
 #, c-format
 msgid "Save changes to %1?"
@@ -5085,6 +5233,10 @@ msgstr "选择字段:"
 #. Resource IDs: (65535)
 msgid "Selected filter details:"
 msgstr "选择筛选细节:"
+
+#. Resource IDs: (1468)
+msgid "Selected policy details:"
+msgstr ""
 
 #. Resource IDs: (1380)
 msgid "Send"
@@ -5503,6 +5655,10 @@ msgstr "鞑靼语"
 msgid "Telugu"
 msgstr "泰卢固语"
 
+#. Resource IDs: (65535)
+msgid "Test Selected Policy"
+msgstr ""
+
 #. Resource IDs: (347)
 msgid "Text"
 msgstr "文本"
@@ -5617,6 +5773,11 @@ msgstr "下列栏目被认可，但只有 组/标题、用户名称和密码可�
 #. Resource IDs: (204)
 msgid "The following columns will be processed: "
 msgstr "下列栏目将被处理:"
+
+#. Resource IDs: (215)
+#, c-format
+msgid "The following entries had a policy name that already existed in this database but with different settings.\r\nA new named policy has been created with the current date/time (%s) appended:%s"
+msgstr ""
 
 #. Resource IDs: (205)
 msgid "The following entries had an invalid Password History.  This has been rebuilt with available data.  There may be some loss of history."
@@ -6012,6 +6173,10 @@ msgstr "不校验"
 msgid "Undo"
 msgstr "撤销"
 
+#. Resource IDs: (368)
+msgid "Undo the last change to password policies"
+msgstr ""
+
 #. Resource IDs: (3859)
 msgid "Unexpected file format."
 msgstr "意外文件格式！"
@@ -6122,17 +6287,37 @@ msgstr "使用符号(&S) (如: &, %, $,等)"
 msgid "Use &UPPERCASE letters"
 msgstr "使用大写字母(&U)"
 
-#. Resource IDs: (1375)
-msgid "Use Database De&faults"
-msgstr "使用默认数据库(&F)"
+#. Resource IDs: (1465)
+msgid "Use Database Policy"
+msgstr ""
 
 #. Resource IDs: (1378)
 msgid "Use Default"
 msgstr "使用默认"
 
+#. Resource IDs: (1470)
+msgid "Use Named Policy"
+msgstr ""
+
+#. Resource IDs: (369)
+msgid "Use count"
+msgstr ""
+
+#. Resource IDs: (369)
+msgid "Use digits"
+msgstr ""
+
+#. Resource IDs: (369)
+msgid "Use lowercase characters"
+msgstr ""
+
 #. Resource IDs: (1051)
 msgid "Use only &Easy-to-read characters (i.e., no  'l', '1', etc.)"
 msgstr "仅使用易读字符(&E) (如: no  'l', '1',等)"
+
+#. Resource IDs: (369)
+msgid "Use symbols"
+msgstr ""
 
 #. Resource IDs: (1376)
 msgid "Use the P&olicy below:"
@@ -6145,6 +6330,10 @@ msgstr "使用应用程序在这里浏览一个项目网址字段以 [alt] 开�
 #. Resource IDs: (320)
 msgid "Use the application specified here to edit an entry's Notes field via the right-click context menu during Add/Edit."
 msgstr "使用应用程序指定这里编辑一个项目的备注字段，通过在 添加/编辑 时右击上下文菜单。"
+
+#. Resource IDs: (369)
+msgid "Use uppercase characters"
+msgstr ""
 
 #. Resource IDs: (327)
 msgid "User Name"
@@ -6182,6 +6371,10 @@ msgstr "验证"
 #, c-format
 msgid "Validated %d %s\r\n\r\nImported %d %s"
 msgstr "验证 %d %s\r\n\r\n导入 %d %s"
+
+#. Resource IDs: (369)
+msgid "Value"
+msgstr ""
 
 #. Resource IDs: (1322)
 msgid "Value:"
@@ -6369,6 +6562,26 @@ msgstr "年月日_时分秒"
 msgid "Yes"
 msgstr "是"
 
+#. Resource IDs: (369)
+#, c-format
+msgid "Yes (at least %d)"
+msgstr ""
+
+#. Resource IDs: (370)
+#, c-format
+msgid "Yes - At least %d from %s: %s"
+msgstr ""
+
+#. Resource IDs: (369)
+#, c-format
+msgid "Yes - EasyVision Symbols: %s"
+msgstr ""
+
+#. Resource IDs: (369)
+#, c-format
+msgid "Yes - Pronounceable Symbols: %s"
+msgstr ""
+
 #. Resource IDs: (1084)
 msgid "Yes:"
 msgstr "是:"
@@ -6391,8 +6604,8 @@ msgstr ""
 
 #. Resource IDs: (357)
 #, c-format
-msgid "Your requested font '%s' is not installed on this system, using '%s' instead."
-msgstr "你所请求字体“%s”没有安装在该系统，是否使用“%s”代替？"
+msgid "Your requested font, '%s', could not be found (not installed?), using '%s' instead."
+msgstr ""
 
 #. Resource IDs: (330)
 msgid "[No current database]"
@@ -6759,6 +6972,19 @@ msgstr "\t组='%s', 标题='%s', 用户='%s' %s"
 msgid "\tNo entries were found containing search string '%s'"
 msgstr ""
 
+#. Resource IDs: (215)
+msgid "\tOne or more Password Policy Names were already in this database but had different settings. They have been renamed."
+msgstr ""
+
+#. Resource IDs: (215)
+msgid "\tOne or more Password Policy Names were not found in the database. The affected entries have been changed to use the database's default policy."
+msgstr ""
+
+#. Resource IDs: (215)
+#, c-format
+msgid "\tPassword policy name '%s' is not in the database."
+msgstr ""
+
 #. Resource IDs: (347)
 #, c-format
 msgid "\tThe following entries contain search string '%s'"
@@ -6892,6 +7118,10 @@ msgstr "天后"
 #. Resource IDs: (65535)
 msgid "days before passwords expire"
 msgstr "天通知密码失效"
+
+#. Resource IDs: (369)
+msgid "default symbol set"
+msgstr ""
 
 #. Resource IDs: (206)
 msgid "does not begin with"
@@ -7089,6 +7319,10 @@ msgstr "在线"
 msgid "pixels"
 msgstr "像素"
 
+#. Resource IDs: (369)
+msgid "policy specific symbols"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "previous passwords per entry"
 msgstr "个早期每项目密码"
@@ -7123,10 +7357,6 @@ msgstr ""
 #, c-format
 msgid "subset: '%s' field '%s' '%s' %s"
 msgstr "子集:“%s”字段“%s”“%s”“%s”"
-
-#. Resource IDs: (366)
-msgid "symbols"
-msgstr ""
 
 #. Resource IDs: (366)
 msgid "synchronized"

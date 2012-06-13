@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-# Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+# Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 # All rights reserved. Use of the code is allowed under the
 # Artistic License 2.0 terms, as specified in the LICENSE file
 # distributed with this code, or available from
@@ -109,6 +109,8 @@ sub ReadRC2File {
             my ($key, $val) = ($1, $2);
             # replace "" with \"
             $val =~ s/\"\"/\\\"/g;
+	    # replace \xab and \xbb with gettext-friendly \":
+	    $val =~ s/\\x[ab]b/\\\"/g;
             $MAP{$key} = $val;
         }
     }

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -75,6 +75,8 @@ public:
   int getNumEntriesSkipped() {return m_numEntriesSkipped;}
   int getNumEntriesRenamed() {return m_numEntriesRenamed;}
   int getNumEntriesPWHErrors() {return m_numEntriesPWHErrors;}
+  int getNumNoPolicies() {return m_numNoPolicies;}
+  int getNumRenamedPolicies() const {return m_numRenamedPolicies;}
 
 private:
   PWScore *m_pXMLcore;
@@ -86,6 +88,7 @@ private:
   stringT m_strXMLErrors, m_strSkippedList, m_strRenameList, m_strPWHErrorList;
   int m_numEntriesValidated, m_numEntriesImported, m_numEntriesSkipped;
   int m_numEntriesPWHErrors, m_numEntriesRenamed;
+  int m_numRenamedPolicies, m_numNoPolicies;
   TCHAR m_delimiter;
   bool m_bValidation;
 };

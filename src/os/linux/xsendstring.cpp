@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -11,9 +11,10 @@
  *
  * Calls X library functions defined in Xt and Xtst
  *
+ * To-Do list:
  * +. Initialize all the params of XKeyEvent
- * +  More escape sequences from http://msdn.microsoft.com/en-us/library/h21280bw%28VS.80%29.aspx
- * +  XGetErrorText and sprintf overflow
+ * +  __STD_ISO_10646__ check
+ * +  Remap an unused keycode to a keysym of XKeysymToKeycode fails
  */
 
 #include <stdio.h>
@@ -35,6 +36,7 @@
 #include "../sleep.h"
 #include "../../core/PwsPlatform.h" // for NumberOf()
 #include "../../core/StringX.h"
+#include "./unicode2keysym.h"
 
 namespace { // anonymous namespace for hiding
   //           local variables and functions
@@ -47,10 +49,15 @@ struct AutotypeGlobals
 {
 	Boolean			error_detected;
 	char			errorString[1024];
-	KeyCode 		lshiftCode;
-  pws_os::AutotypeMethod	method;
-	Boolean			LiteralKeysymsInitialized;
-} atGlobals	= { False, {0}, 0, pws_os::ATMETHOD_AUTO, False };
+} atGlobals	= { False, {0} };
+
+class autotype_exception: public std::exception
+{
+  public:
+  virtual const char* what() const throw() {
+    return atGlobals.errorString;
+  }
+};
 
 /*
  * ErrorHandler will be called when X detects an error. This function
@@ -62,98 +69,12 @@ int ErrorHandler(Display *my_dpy, XErrorEvent *event)
 
   atGlobals.error_detected = TRUE;
   XGetErrorText(my_dpy, event->error_code, xmsg, NumberOf(xmsg) - 1);
-  snprintf(atGlobals.errorString, NumberOf(atGlobals.errorString)-1, "X error (%d): %s\n", event->request_code, xmsg);
+  snprintf(atGlobals.errorString, NumberOf(atGlobals.errorString)-1, "X error (%d): %s", event->request_code, xmsg);
   return 0;
 }
 
-int ShiftRequired(char* keystring)
-{
-	if (isupper(keystring[0]))
-		return 1;
-
-	switch(keystring[0]) {
-		case '~': case '!': case '@': case '#': case '$': case '%':
-		case '^': case '&': case '*': case '(': case ')': case '_':
-		case '+': case '{': case '}': case '|': case ':': case '"':
-		case '<': case '>': case '?':
-			return 1;
-		default:
-			return 0;
-	}
-}
 
 
-/*
- * - characters which need to be manually converted to KeySyms
- */
-
-static struct {
-    char ch;
-    const char* keystr;
-	KeySym sym;
-} LiteralKeysyms[] =
-{
-    { ' ', 		"space", 		NoSymbol },
-    { '\t', 	"Tab",  		NoSymbol },
-    { '\n', 	"Linefeed", 	NoSymbol },
-    { '\r', 	"Return", 		NoSymbol },
-    { '\010', 	"BackSpace", 	NoSymbol },  /* \b doesn't work */
-    { '\177', 	"Delete", 		NoSymbol },
-    { '\033', 	"Escape", 		NoSymbol },  /* \e doesn't work and \e is non-iso escape sequence*/
-    { '!', 		"exclam", 		NoSymbol },
-    { '#', 		"numbersign", 	NoSymbol },
-    { '%', 		"percent", 		NoSymbol },
-    { '$', 		"dollar", 		NoSymbol },
-    { '&', 		"ampersand", 	NoSymbol },
-    { '"', 		"quotedbl", 	NoSymbol },
-    { '\'', 	"apostrophe", 	NoSymbol },
-    { '(', 		"parenleft", 	NoSymbol },
-    { ')', 		"parenright", 	NoSymbol },
-    { '*', 		"asterisk", 	NoSymbol },
-    { '=', 		"equal", 		NoSymbol },
-    { '+', 		"plus", 		NoSymbol },
-    { ',', 		"comma", 		NoSymbol },
-    { '-', 		"minus", 		NoSymbol },
-    { '.', 		"period", 		NoSymbol },
-    { '/', 		"slash", 		NoSymbol },
-    { ':', 		"colon", 		NoSymbol },
-    { ';', 		"semicolon", 	NoSymbol },
-    { '<', 		"less", 		44 	 }, /* I don't understand why we get '>' instead of '<' unless we hardcode this */
-    { '>', 		"greater", 		NoSymbol },
-    { '?', 		"question", 	NoSymbol },
-    { '@', 		"at", 			NoSymbol },
-    { '[', 		"bracketleft", 	NoSymbol },
-    { ']', 		"bracketright", NoSymbol },
-    { '\\', 	"backslash", 	NoSymbol },
-    { '^', 		"asciicircum", 	NoSymbol },
-    { '_', 		"underscore", 	NoSymbol },
-    { '`', 		"grave", 		NoSymbol },
-    { '{', 		"braceleft", 	NoSymbol },
-    { '|', 		"bar", 			NoSymbol },
-    { '}', 		"braceright", 	NoSymbol },
-    { '~', 		"asciitilde", 	NoSymbol },
-};
-
-
-void InitLiteralKeysyms(void)
-{
-	size_t idx;
-	for (idx = 0; idx < NumberOf(LiteralKeysyms); ++idx)
-		if (LiteralKeysyms[idx].sym == NoSymbol)
-			LiteralKeysyms[idx].sym = XStringToKeysym(LiteralKeysyms[idx].keystr);
-
-	atGlobals.lshiftCode = XKeysymToKeycode(XOpenDisplay(NULL), XK_Shift_L);
-}
-
-KeySym GetLiteralKeysym(char* keystring)
-{
-	size_t idx;
-	for (idx = 0; idx < NumberOf(LiteralKeysyms); ++idx)
-		if (keystring[0] ==  LiteralKeysyms[idx].ch )
-			return LiteralKeysyms[idx].sym;
-
-	return NoSymbol;
-}
 
 void XTest_SendEvent(XKeyEvent *event)
 {
@@ -185,7 +106,7 @@ void XTest_SendKeyEvent(XKeyEvent* event)
 	if (event->state & ShiftMask) {
 		memcpy(&shiftEvent, event, sizeof(shiftEvent));
 
-		shiftEvent.keycode = atGlobals.lshiftCode;
+		shiftEvent.keycode = XKeysymToKeycode(event->display, XK_Shift_L);
 		shiftEvent.type = KeyPress;
 
 		XTest_SendEvent(&shiftEvent);
@@ -206,34 +127,159 @@ void XTest_SendKeyEvent(XKeyEvent* event)
 
 }
 
-Bool UseXTest(void)
+Bool UseXTest(Display* disp)
 {
 	int major_opcode, first_event, first_error;
 	static Bool useXTest;
 	static int checked = 0;
 
 	if (!checked) {
-		useXTest = XQueryExtension(XOpenDisplay(0), "XTEST", &major_opcode, &first_event, &first_error);
+		useXTest = XQueryExtension(disp, "XTEST", &major_opcode, &first_event, &first_error);
 		checked = 1;
 	}
 	return useXTest;
 }
 
-void InitKeyEvent(XKeyEvent* event)
-{
-	int	  revert_to;
-	event->display = XOpenDisplay(NULL);
-	XGetInputFocus(event->display, &event->window, &revert_to);
+class AutotypeEvent: public XKeyEvent {
+public:
+  AutotypeEvent()
+  {
+    display = XOpenDisplay(NULL);
+    if (display) {
+      int	  revert_to;
+      XGetInputFocus(display, &window, &revert_to);
+      subwindow = None;
+      x = y = x_root = y_root = 1;
+      same_screen = True;
+    }
+  }
 
-	event->subwindow = None;
-	event->x = event->y = event->x_root = event->y_root = 1;
-	event->same_screen = TRUE;
+  ~AutotypeEvent() {
+    if (display)
+      XCloseDisplay(display);
+  }
+  
+  bool operator !() const { return display == NULL; }
+};
+
+
+int FindModifierMask(Display* disp, KeySym sym)
+{
+  int modmask = 0;
+  XModifierKeymap* modmap = XGetModifierMapping(disp);
+  if (modmap) {
+    const int last = 8*modmap->max_keypermod;
+    //begin at 4th row, where Mod1 starts
+    for (int i = 3*modmap->max_keypermod && !modmask; i < last; i++) {
+      //
+      const KeyCode kc = modmap->modifiermap[i];
+      if (!kc)
+        continue;
+      int keysyms_per_keycode = 0;
+      // For each keycode attached to this modifier, get a list of all keysyms
+      // attached with this keycode. If any of those keysyms is what we are looking
+      // for, then this is the modifier to use
+      KeySym* symlist = XGetKeyboardMapping(disp, kc, 1, &keysyms_per_keycode);
+      if ( symlist) {
+        for (int j = 0; j < keysyms_per_keycode; j++) {
+          if (sym == symlist[j]) {
+            modmask = (i / modmap->max_keypermod);
+            break;
+          }
+        }
+      }
+    }
+    XFreeModifiermap(modmap);
+    assert( modmask >= 3 && modmask <= 7);
+  }
+  return 1 << modmask;
 }
 
-} // anonymous namespace
+int CalcModifiersForKeysym(KeyCode code, KeySym sym, Display* disp)
+{
+  int keysyms_per_keycode = 0;
+  const KeySym* symlist = XGetKeyboardMapping(disp, code, 1, &keysyms_per_keycode);
+  if (symlist != NULL && keysyms_per_keycode > 0) {
+    const int ModeSwitchMask = FindModifierMask(disp, XK_Mode_switch);
+    const int Level3ShiftMask = FindModifierMask(disp, XK_ISO_Level3_Shift);
+    int mods[] = {
+      0,                  //none
+      ShiftMask,
+      ModeSwitchMask,
+      ShiftMask | ModeSwitchMask,  
+      // beyond this, its all guesswork since there's no documentation, but see this:
+      //
+      //     http://superuser.com/questions/189869/xmodmap-six-characters-to-one-key
+      //
+      // Also, if you install mulitple keyboard layouts the number of keysyms-per-keycode 
+      // will keep increasing to a max of 16 (up to 4 layouts can be installed together 
+      // in Ubuntu 11.04).  For some keycodes, you will actually have non-NoSymbol
+      // keysyms beyond the first four
+      // 
+      // We probably shouldn't go here if Mode_switch and ISO_Level3_Shift are assigned to
+      // the same modifier mask
+      Level3ShiftMask,
+      ShiftMask | Level3ShiftMask,
+      ModeSwitchMask | Level3ShiftMask,
+      ShiftMask | ModeSwitchMask | Level3ShiftMask,
+    };
+    const int max_keysym_index = std::min(int(NumberOf(mods)), keysyms_per_keycode);
+    for (int idx = 0; idx < max_keysym_index; ++idx) {
+      if (symlist[idx] == sym)
+        return mods[idx];
+    }
+  }
+  // we should at least find the keysym without any mods (index 0)
+  assert(0);
+  return 0;
+}
+
+KeySym wchar2keysym(wchar_t wc)
+{
+  if (wc < 0x100) {
+    if (wc >= 0x20)
+      return wc;
+    switch(wc) {
+      case L'\t': return XK_Tab;
+      case L'\r': return XK_Return;
+      case L'\n': return XK_Linefeed;
+      case '\010': return XK_BackSpace;
+      case '\177': return XK_Delete;
+      case '\033': return XK_Escape;
+      default:
+        return NoSymbol;
+    }
+  }
+  if (wc > 0x10ffff || (wc > 0x7e && wc < 0xa0))
+    return NoSymbol;
+  KeySym sym = unicode2keysym(wc);
+  if (sym != NoSymbol)
+    return sym;
+  //For everything else, there's Mastercard :)
+  return wc | 0x01000000;
+}
+
+//converts a  single wchar_t to a byte string [i.e. char*]
+class wchar2bytes
+{
+private:
+  //MB_CUR_MAX is a function call, not a constant
+  char* bytes;
+public:
+  wchar2bytes(wchar_t wc):  bytes(new char[MB_CUR_MAX*2 + sizeof(wchar_t)*2 + 2 + 1]) {
+    mbstate_t ps = {0};
+    size_t n;
+    if ((n = wcrtomb(bytes, wc, &ps)) == size_t(-1))
+      snprintf(bytes, NumberOf(bytes), "U+%04X", int(wc));
+    else
+      bytes[n] = 0;
+  }
+  ~wchar2bytes() { delete [] bytes; }
+  const char* str() const {return bytes;}
+};
 
 /*
- * SendString - sends a string to the X Window having input focus
+ * DoSendString - actually sends a string to the X Window having input focus
  *
  * The main task of this function is to convert the ascii char values
  * into X KeyCodes.  But they need to be converted to X KeySyms first
@@ -243,17 +289,19 @@ void InitKeyEvent(XKeyEvent* event)
  * Some escape sequences can be converted to the appropriate KeyCodes
  * by this function.  See the code below for details
  */
-
-void pws_os::SendString(const StringX& str, AutotypeMethod method, unsigned delayMS)
+void DoSendString(const StringX& str, pws_os::AutotypeMethod method, unsigned delayMS)
 {
-
-  if (!atGlobals.LiteralKeysymsInitialized) {
-    InitLiteralKeysyms();
-    atGlobals.LiteralKeysymsInitialized = True;
+  atGlobals.error_detected = false;
+  atGlobals.errorString[0] = 0;
+  
+  AutotypeEvent event;
+  if (!event) {
+    if (!atGlobals.error_detected)
+      atGlobals.error_detected = true;
+    if (!atGlobals.errorString[0])
+      strncpy(atGlobals.errorString, "Could not open X display for autotyping", NumberOf(atGlobals.errorString));
+    throw autotype_exception();
   }
-
-  XKeyEvent event;
-  InitKeyEvent(&event);
 
   // convert all the chars into keycodes and required shift states first
   // Abort if any of the characters cannot be converted
@@ -266,48 +314,29 @@ void pws_os::SendString(const StringX& str, AutotypeMethod method, unsigned dela
     //as a workaround for some issues with IE 
     if (*srcIter == _T('\v'))
       continue;
-    
-    //This array holds the multibyte representation of the current (wide) char, plus NULL
-    char keystring[MB_LEN_MAX + 1] = {0};
-
-    mbstate_t state = mbstate_t();//using init throw constructor because of missing initializer warning
-
-    size_t ret = wcrtomb(keystring, *srcIter, &state);
-    if (ret == static_cast<size_t>(-1)) {
-      snprintf(atGlobals.errorString, NumberOf(atGlobals.errorString),
-              "char at index(%u), value(%d) couldn't be converted to keycode. %s\n",
-                  static_cast<unsigned int>(std::distance(str.begin(), srcIter)), static_cast<int>(*srcIter), strerror(errno));
-      atGlobals.error_detected = True;
-      return;
-    }
-
-    ASSERT(ret < (NumberOf(keystring)-1));
 
     //Try a regular conversion first
-    KeySym sym = XStringToKeysym(keystring);
+    KeySym sym = wchar2keysym(*srcIter);
 
-    //Failing which, use our hard-coded special names for certain keys
-    if (NoSymbol != sym || (sym = GetLiteralKeysym(keystring)) != NoSymbol) {
+    if (NoSymbol != sym) {
       KeyPressInfo keypress = {0, 0};
       if ((keypress.code = XKeysymToKeycode(event.display, sym)) != 0) {
         //non-zero return value implies sym -> code was successful
-        if (ShiftRequired(keystring)) {
-          keypress.state |= ShiftMask;
-        }
+        keypress.state |= CalcModifiersForKeysym(keypress.code, sym, event.display);
         keypresses.push_back(keypress);
       }
       else {
         const char* symStr = XKeysymToString(sym);
         snprintf(atGlobals.errorString, NumberOf(atGlobals.errorString),
-              "Could not get keycode for key char(%s) - sym(%d) - str(%s). Aborting autotype\n",
-                          keystring, static_cast<int>(sym), symStr ? symStr : "NULL");
+              "Could not get keycode for key char(%s) - sym(%#X) - str(%s). Aborting autotype.\n\nIf \'xmodmap -pk\' does not list this KeySym, you probably need to install an appropriate keyboard layout.",
+                          wchar2bytes(*srcIter).str(), static_cast<int>(sym), symStr ? symStr : "NULL");
         atGlobals.error_detected = True;
         return;
       }
     }
     else {
       snprintf(atGlobals.errorString, NumberOf(atGlobals.errorString),
-              "Cannot convert '%s' to keysym. Aborting autotype\n", keystring);
+              "Cannot convert '%s' [U+%04X] to keysym. Aborting autotype", wchar2bytes(*srcIter).str(), int(*srcIter));
       atGlobals.error_detected = True;
       return;
     }
@@ -316,7 +345,7 @@ void pws_os::SendString(const StringX& str, AutotypeMethod method, unsigned dela
   XSetErrorHandler(ErrorHandler);
   atGlobals.error_detected = False;
 
-  bool useXTEST = (UseXTest() && method != ATMETHOD_XSENDKEYS);
+  bool useXTEST = (UseXTest(event.display) && method != pws_os::ATMETHOD_XSENDKEYS);
   void (*KeySendFunction)(XKeyEvent*);
 
   if ( useXTEST) {
@@ -345,4 +374,24 @@ void pws_os::SendString(const StringX& str, AutotypeMethod method, unsigned dela
   }
 
   XSetErrorHandler(NULL);
+}
+
+} // anonymous namespace
+
+/*
+ * SendString - The interface method for CKeySend
+ *
+ * The actual work is done by DoSendString above. This function just
+ * just throws an exception if DoSendString encounters an error.
+ *
+ */
+void pws_os::SendString(const StringX& str, AutotypeMethod method, unsigned delayMS)
+{
+  atGlobals.error_detected = false;
+  atGlobals.errorString[0] = 0;
+
+  DoSendString(str, method, delayMS);
+
+  if (atGlobals.error_detected)
+    throw autotype_exception();
 }

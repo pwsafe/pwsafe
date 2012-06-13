@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -21,7 +21,7 @@ CKeySend::~CKeySend()
 
 void CKeySend::SendString(const StringX &data)
 {
-  pws_os::SendString(data, pws_os::ATMETHOD_AUTO, m_delayMS);
+  pws_os::SendString(data, pws_os::ATMETHOD_XSENDKEYS, m_delayMS);
 }
 
 void CKeySend::SetDelay(unsigned d)

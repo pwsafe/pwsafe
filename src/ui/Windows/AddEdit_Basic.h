@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -14,6 +14,7 @@
 #include "AddEdit_PropertyPage.h"
 #include "ExtThread.h"
 #include "ControlExtns.h"
+
 #include "core/ItemData.h"
 
 class DboxMain;
@@ -35,14 +36,13 @@ public:
   enum { IDD = IDD_ADDEDIT_BASIC, IDD_SHORT = IDD_ADDEDIT_BASIC_SHORT };
 
   CSecString m_password, m_password2;
-  CSecString m_notes, m_notesww;
+  CSecString m_notes;
 
   CComboBoxExtn m_ex_group;
 
   CEditExtn m_ex_title;
   CEditExtn m_ex_username;
-  CEditExtn *m_pex_notes;
-  CEditExtn *m_pex_notesww;
+  CRichEditExtn *m_pex_notes;
   CEditExtn m_ex_URL;
   CEditExtn m_ex_email;
 
@@ -84,7 +84,7 @@ protected:
   afx_msg void OnHelp();
   afx_msg BOOL OnKillActive();
   afx_msg LRESULT OnQuerySiblings(WPARAM wParam, LPARAM);
-  afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
+  afx_msg HBRUSH OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor);
 
   afx_msg void OnPasskeySetFocus();
   afx_msg void OnENSetFocusPassword();
@@ -98,7 +98,7 @@ protected:
   afx_msg void OnENChangeEmail();
   afx_msg void OnGroupComboChanged();
 
-  afx_msg void OnRandom();
+  afx_msg void OnGeneratePassword();
   afx_msg void OnShowPassword();
   afx_msg void OnSTCExClicked(UINT nId);
   afx_msg void OnViewDependents();
@@ -109,11 +109,13 @@ protected:
   afx_msg LRESULT OnExternalEditorEnded(WPARAM, LPARAM);
   afx_msg LRESULT OnWordWrap(WPARAM, LPARAM);
   afx_msg LRESULT OnShowNotes(WPARAM, LPARAM);
+  afx_msg LRESULT OnZoomNotes(WPARAM, LPARAM);
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
 
 private:
+  void SetZoomMenu();
   void SelectAllNotes();
   void ShowPassword();
   void HidePassword();
@@ -131,6 +133,7 @@ private:
 
   CToolTipCtrl *m_pToolTipCtrl;
   bool m_bInitdone;
+  int m_iPointSize;
 };
 //-----------------------------------------------------------------------------
 // Local variables:

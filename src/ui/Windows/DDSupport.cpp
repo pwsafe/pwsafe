@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -14,8 +14,9 @@
 
 using namespace std;
 
-void CDDObject::DDSerialize(CSMemFile &outDDmemfile)
+void CDDObject::DDSerializeEntry(CSMemFile &outDDmemfile)
 {
+  // Serialize an entry
   vector<char> v;
   const CItemData *pbci(NULL);
   if (m_item.IsDependent()) {
@@ -30,15 +31,16 @@ void CDDObject::DDSerialize(CSMemFile &outDDmemfile)
   trashMemory(&(*v.begin()), v.size());
 }
 
-void CDDObject::DDUnSerialize(CSMemFile &inDDmemfile)
+void CDDObject::DDUnSerializeEntry(CSMemFile &inDDmemfile)
 {
+  // Deserialize an entry
   size_t len = 0;
   size_t lenlen = inDDmemfile.Read(&len, sizeof(len));
   ASSERT(lenlen == sizeof(len) && len != 0);
   vector<char> v(len);
   size_t lenRead = inDDmemfile.Read(&(*v.begin()), (UINT)len);
   ASSERT(lenRead == len);
-  bool status = m_item.DeserializePlainText(v);
+  bool status = m_item.DeSerializePlainText(v);
   ASSERT(status);
   trashMemory(&(*v.begin()), v.size());
 }
@@ -46,9 +48,10 @@ void CDDObject::DDUnSerialize(CSMemFile &inDDmemfile)
 void CDDObList::DDSerialize(CSMemFile &outDDmemfile)
 {
   // NOTE:  Do not call the base class!
+  // Serialize ALL entries
   int nCount;
   POSITION Pos;
-  CDDObject* pDDObject;
+  CDDObject *pDDObject;
 
   nCount = (int)GetCount();
 
@@ -58,22 +61,23 @@ void CDDObList::DDSerialize(CSMemFile &outDDmemfile)
   Pos = GetHeadPosition();
   while (Pos != NULL) {
     pDDObject = (CDDObject *)GetNext(Pos);
-    pDDObject->DDSerialize(outDDmemfile);
+    pDDObject->DDSerializeEntry(outDDmemfile);
   }
 }
 
 void CDDObList::DDUnSerialize(CSMemFile &inDDmemfile)
 {
+  // Deserialize all entries
   ASSERT(GetCount() == 0);
   int n, nCount;
-  CDDObject* pDDObject;
+  CDDObject *pDDObject;
 
   inDDmemfile.Read((void *)&nCount, sizeof(nCount));
   inDDmemfile.Read((void *)&m_bDragNode, sizeof(bool));
 
   for (n = 0; n < nCount; n++) {
     pDDObject = new CDDObject();
-    pDDObject->DDUnSerialize(inDDmemfile);
+    pDDObject->DDUnSerializeEntry(inDDmemfile);
     AddTail(pDDObject);
   }
 }

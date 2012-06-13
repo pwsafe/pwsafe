@@ -1,6 +1,6 @@
 /*
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -20,7 +20,7 @@
 
 #include "../resource2.h"
 #include "../resource3.h"
-#include "core/core.h"
+
 #include "core/PWSFilters.h"
 
 // CPWFiltersDlg dialog
@@ -70,7 +70,7 @@ BOOL CPWFiltersDlg::OnInitDialog()
 
   m_FilterLC.Init(this, m_pfilters, m_iType);
   if (m_filtername.IsEmpty() || m_pfilters->fname.empty())
-    m_filtername.LoadString(IDS_FILTER1);
+    m_filtername.LoadString(IDS_FILTER_NAME);
   else
     m_filtername = m_pfilters->fname.c_str();
 

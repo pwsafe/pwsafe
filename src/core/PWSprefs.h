@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -49,7 +49,6 @@ class CXMLprefs;
 class PWSprefs
 {
 public:
-
   enum ConfigOption {CF_NONE = 0, CF_REGISTRY,
                      CF_FILE_RO, CF_FILE_RW, CF_FILE_RW_NEW};
 
@@ -102,6 +101,7 @@ public:
     UsePrimarySelectionForClipboard,  //Only under X-Windows
     CopyPasswordWhenBrowseToURL,
     NumBoolPrefs};
+
   enum IntPrefs {Column1Width, Column2Width, Column3Width, Column4Width,
     SortedColumn, PWDefaultLength, MaxMRUItems, IdleTimeout,
     DoubleClickAction, HotKey, MaxREItems, TreeDisplayStatusAtOpen,
@@ -110,6 +110,7 @@ public:
     PWLowercaseMinLength, PWSymbolMinLength, PWUppercaseMinLength,
     OptShortcutColumnWidth, ShiftDoubleClickAction,
     NumIntPrefs};
+
   enum StringPrefs {CurrentBackup, CurrentFile, LastView, DefaultUsername,
     TreeFont, BackupPrefixValue, BackupDir, AltBrowser, ListColumns,
     ColumnWidths, DefaultAutotypeString, AltBrowserCmdLineParms,

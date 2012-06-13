@@ -8,7 +8,7 @@
 #
 # Oh, this works with GNU make under Cygwin. YMMV on other makes...
 
-RELEASENUM := 3.27
+RELEASENUM := 3.29
 RELEASE_SPECIAL := Y
 RELEASENAME= $(RELEASENUM)$(RELEASE_SPECIAL)
 

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -13,7 +13,7 @@
 #include "WZSelectDB.h"
 #include "WZPropertySheet.h"
 
-#include "PwFont.h"
+#include "Fonts.h"
 #include "TryAgainDlg.h"
 #include "SecString.h"
 #include "GeneralMsgBox.h"
@@ -152,7 +152,7 @@ BOOL CWZSelectDB::OnInitDialog()
 {
   CWZPropertyPage::OnInitDialog();
   SetTimer(1, 250, 0); // Setup a timer to poll YubiKey every 250 ms
-  ApplyPasswordFont(GetDlgItem(IDC_PASSKEY));
+  Fonts::GetInstance()->ApplyPasswordFont(GetDlgItem(IDC_PASSKEY));
   m_pctlPasskey->SetPasswordChar(PSSWDCHAR);
 
   const UINT nID = m_pWZPSH->GetID();
@@ -263,7 +263,7 @@ BOOL CWZSelectDB::OnInitDialog()
   return FALSE;
 }
 
-HBRUSH CWZSelectDB::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
+HBRUSH CWZSelectDB::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
 {
   HBRUSH hbr = CWZPropertyPage::OnCtlColor(pDC, pWnd, nCtlColor);
 

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -39,8 +39,6 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 int CALLBACK SetSelProc(HWND hWnd, UINT uMsg, LPARAM , LPARAM lpData);
-
-const UINT COptionsBackup::uiDBPrefs[] = {IDC_SAVEIMMEDIATELY};
 
 /////////////////////////////////////////////////////////////////////////////
 // COptionsBackup property page
@@ -95,6 +93,8 @@ void COptionsBackup::DoDataExchange(CDataExchange* pDX)
   DDX_Radio(pDX, IDC_DFLTBACKUPLOCATION, m_BackupLocation); // only first!
   DDX_Text(pDX, IDC_USERBACKUPOTHRLOCATIONVALUE, m_UserBackupOtherLocation);
   DDX_Text(pDX, IDC_BACKUPMAXINC, m_MaxNumIncBackups);
+
+  DDX_Control(pDX, IDC_SAVEIMMEDIATELY, m_chkbox);
   //}}AFX_DATA_MAP
 }
 
@@ -120,13 +120,11 @@ BOOL COptionsBackup::OnInitDialog()
 {
   COptions_PropertyPage::OnInitDialog();
 
+  m_chkbox.SetTextColour(CR_DATABASE_OPTIONS);
+  m_chkbox.SetBkgColour(COLOR_WINDOW);
+
   if (!M_pDbx()->IsDBReadOnly())
     GetDlgItem(IDC_STATIC_DB_PREFS_RO_WARNING)->ShowWindow(SW_HIDE);
-
-  // Need to disable XP themes to change colour of non-static controls!
-  for (int i = 0; i < sizeof(uiDBPrefs) / sizeof(uiDBPrefs[0]); i++) {
-    SetWindowTheme(GetDlgItem(uiDBPrefs[i])->GetSafeHwnd(), L"", L"");
-  }
 
   if (m_backupsuffix_cbox.GetCount() == 0) {
     // add the strings in alphabetical order
@@ -489,10 +487,6 @@ HBRUSH COptionsBackup::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
 
   // Database preferences - controls + associated static text
   switch (pWnd->GetDlgCtrlID()) {
-    case IDC_SAVEIMMEDIATELY:
-      pDC->SetTextColor(CR_DATABASE_OPTIONS);
-      pDC->SetBkMode(TRANSPARENT);
-      break;
     case IDC_STATIC_PREFERENCES:
       pDC->SetTextColor(RGB(0, 0, 255));
       pDC->SetBkMode(TRANSPARENT);

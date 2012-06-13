@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -45,6 +45,9 @@ protected:
   int m_TrayIconColour;
   //}}AFX_DATA
 
+  CButtonExtn m_chkbox[4];
+  CButtonExtn m_radiobtn[3];
+
   // Overrides
   // ClassWizard generate virtual function overrides
   //{{AFX_VIRTUAL(COptionsDisplay)
@@ -66,7 +69,4 @@ protected:
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
-
-private:
-  static const UINT uiDBPrefs[];
 };

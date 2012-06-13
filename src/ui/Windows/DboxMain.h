@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -95,6 +95,8 @@ DECLARE_HANDLE(HDROP);
 #define PWS_MSG_EDIT_WORDWRAP           (WM_APP + 42)
 #define PWS_MSG_EDIT_SHOWNOTES          (WM_APP + 43)
 #define PWS_MSG_EDIT_APPLY              (WM_APP + 44)
+#define PWS_MSG_CALL_NOTESZOOMIN        (WM_APP + 45)
+#define PWS_MSG_CALL_NOTESZOOMOUT       (WM_APP + 46)
 
 // Simulate Ctrl+F from Find Toolbar "enter"
 #define PWS_MSG_TOOLBAR_FIND            (WM_APP + 50)
@@ -316,7 +318,7 @@ public:
   bool ClearClipboardData() {return m_clipboard.ClearData();}
   bool SetClipboardData(const StringX &data)
   {return m_clipboard.SetData(data.c_str());}
-  void AddEntries(CDDObList &in_oblist, const StringX &DropGroup);
+  void AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup);
   StringX GetUniqueTitle(const StringX &group, const StringX &title,
                          const StringX &user, const int IDS_MESSAGE) const
   {return m_core.GetUniqueTitle(group, title, user, IDS_MESSAGE);}
@@ -369,6 +371,19 @@ public:
   {return m_core.IsNodeModified(path);}
   StringX GetCurFile() const {return m_core.GetCurFile();}
 
+  bool EditItem(CItemData *pci, PWScore *pcore = NULL);
+  bool GetPolicyFromName(StringX sxPolicyName, st_PSWDPolicy &st_pp)
+  {return m_core.GetPolicyFromName(sxPolicyName, st_pp);}
+  void GetPolicyNames(std::vector<std::wstring> &vNames)
+  {m_core.GetPolicyNames(vNames);}
+  const PSWDPolicyMap &GetPasswordPolicies()
+  {return m_core.GetPasswordPolicies();}
+  
+  // Need this to be public
+  bool LongPPs();
+  bool GetShortCut(const unsigned int &uiMenuItem, unsigned char &cVirtKey,
+                   unsigned char &cModifier);
+
   // Following to simplify Command creation in child dialogs:
   CommandInterface *GetCore() {return &m_core;}
   
@@ -399,6 +414,8 @@ public:
   {return m_core.TestSelection(bAdvanced, subgroup_name,
                                subgroup_object, subgroup_function, il);}
   void MakeOrderedItemList(OrderedItemList &il) const;
+  bool MakeMatchingGTUSet(GTUSet &setGTU, const StringX &sxPolicyName) const
+  {return m_core.InitialiseGTU(setGTU, sxPolicyName);}
   CItemData *getSelectedItem();
   void UpdateGUIDisplay();
   CString ShowCompareResults(const StringX sx_Filename1, const StringX sx_Filename2,
@@ -433,7 +450,7 @@ public:
   StringX m_AutoType;
   std::vector<size_t> m_vactionverboffsets;
 
-  // Used in Add & Edit & OptionsPasswordPolicy
+  // Used in Add & Edit & PasswordPolicyDlg
   PWPolicy m_pwp;
 
   // Mapping Group to Tree Item to save searching all the time!
@@ -509,8 +526,7 @@ protected:
   bool m_bBoldItem;
 
   WCHAR *m_pwchTip;
-  char *m_pchTip;
-
+  
   StringX m_TreeViewGroup; // used by OnAdd & OnAddGroup
   CCoolMenuManager m_menuManager;
   CMenuTipManager m_menuTipManager;
@@ -586,7 +602,6 @@ protected:
   int New(void);
 
   void AutoType(const CItemData &ci);
-  bool EditItem(CItemData *pci, PWScore *pcore = NULL);
   void UpdateEntry(CAddEdit_PropertySheet *pentry_psh);
   bool EditShortcut(CItemData *pci, PWScore *pcore = NULL);
   void SetFindToolBar(bool bShow);
@@ -693,6 +708,7 @@ protected:
   afx_msg void OnRename();
   afx_msg void OnDuplicateEntry();
   afx_msg void OnOptions();
+  afx_msg void OnManagePasswordPolicies();
   afx_msg void OnValidate();
   afx_msg void OnGeneratePassword();
   afx_msg void OnYubikey();
@@ -811,7 +827,6 @@ private:
   int m_nColumnWidthByIndex[CItemData::LAST];
   int m_nColumnHeaderWidthByType[CItemData::LAST];
   int m_iheadermaxwidth;
-  CFont *m_pFontTree;
 
   pws_os::CUUID m_LUUIDSelectedAtMinimize; // to restore List entry selection upon un-minimize
   pws_os::CUUID m_TUUIDSelectedAtMinimize; // to restore Tree entry selection upon un-minimize
@@ -862,7 +877,7 @@ private:
   void DoBrowse(const bool bDoAutotype, const bool bSendEmail);
   bool GetSubtreeEntriesProtectedStatus(int &numProtected, int &numUnprotected);
   void ChangeSubtreeEntriesProtectStatus(const UINT nID);
-  void CopyDataToClipBoard(const CItemData::FieldType ft, const bool special = false);
+  void CopyDataToClipBoard(const CItemData::FieldType ft, const bool bSpecial = false);
   void UpdateSystemMenu();
   void RestoreWindows(); // extended ShowWindow(SW_RESTORE), sort of
   void CancelPendingPasswordDialog();
@@ -977,8 +992,6 @@ private:
   void SetLanguage(LCID lcid);
   int m_ilastaction;  // Last action
   void SetDragbarToolTips();
-
-  bool LongPPs();
 
   // The following is for saving information over an execute/undo/redo
   // Might need to add more e.g. if filter is active and which one?

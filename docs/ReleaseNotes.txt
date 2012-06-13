@@ -1,5 +1,5 @@
-Password Safe 3.27Ypre Release Notes - October 2011
-===================================================
+Password Safe 3.27.1 Release Notes - January 2012
+=================================================
 
 This note describe the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -8,8 +8,51 @@ information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
 
-New Features for 3.27Ypre
-=========================
+New Features for 3.27.1
+=======================
+[3468289] Use the Password font for passwords displayed in the Password History and for
+those displayed in the List view.  Also add the ability to zoom in/out of the Notes field
+to enable any text to be more easily read.
+[3455436] Users may now delete the password history for all existing entries in a database.
+They may choose to also change Protected Entries, although the default is not to.
+[3421963] Centralized Password Policies can now be saved in a database, managed (added,
+edited and deleted), exported and imported, used in filters and to generate passwords.
+
+Changes to Existing Features in 3.27.1
+======================================
+[] The default backup policy has been changed to save the last three versions of the database, instead of one.
+[3445820] The Edit menu item and entry right-click context menu item "Copy Run Command to
+Clipboard" will, by default, substitute any variables within the command. To disable this,
+hold down the Ctrl key when selecting these menu items.  The standard menu shortcut cannot
+be used to disable the substitution as the Ctrl key may be used to select a different
+menu item/command.
+[] As indicated with the V3.26 release, date time fields, when exported to XML,
+now are in the W3C dateTime standard format instead of PasswordSafe's.  This release
+can nolonger import XML files with date time fields in the old PasswordSafe's forms.
+See Help file (the XML section of "Import Password Entries") on how to manually change
+the XML file exported prior to V3.26 to allow it to be successfully imported in this release.
+[] After closing the current database, on opening another, PasswordSafe will first
+attempt to access the directory of the last opened database in order to allow the user
+to start browsing for their intended database.  If this directory is not available,
+PasswordSafe will open the default "My Safes" directory as it did prior to this change.
+
+Bugs fixed in 3.27.1
+====================
+[3468853] The number of saved passwords can be changed and after the user presses Apply
+they will no longer be warned that the entry has been changed when pressing Cancel.
+[3462520] A password entry's expiry time in days now correctly
+reflects the expiration date for non-recurring expiration.
+[3440318] Filters can now be cleared by double-clicking on the filter indicator in
+the status bar. Also, Filter Menu correctly changed when a filter is active.
+[3435869] '-g config_file' option now accepts a non-existing file,
+creating it after notfying the user.
+[3430196] Buttons in the Options property pages now retain the user's Windows theme.
+[] Fix inability to copy entries to the original database in the Compare database results
+dialog.
+[] Thanks to Jon F. for proofreading the online help.
+
+New Features for 3.27
+=====================
 [3367590] User can now add a database name and description via the Properties
 diaolg.
 [3349458] Allow filters to match on rules based on the password's length.
@@ -17,16 +60,16 @@ diaolg.
 Default is copy the username to the clipboard.
 [] Preferences stored in the database are shown in blue in the Options dialogs.
 
-Changes to Existing Features in 3.27Ypre
-========================================
+Changes to Existing Features in 3.27
+====================================
 [3406549] Tooltip for System tray (displaying database file path) is
 now limited to 40 characters (replacing text in the middle with '...'
 if needed).
 [3348954] The passphrase is now required to change from read-only to
 read/write.
 
-Bugs fixed in 3.27Ypre
-======================
+Bugs fixed in 3.27
+==================
 [3411210] No longer crashes when unlocking with Subset Password dialog
 box opened.
 [3395549] PasswordSafe now displays forms correctly on Netbooks.

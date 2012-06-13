@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -26,6 +26,7 @@
 #include "os/debug.h"
 #include "os/file.h"
 #include "os/mem.h"
+#include "os/logit.h"
 
 #include <iostream>
 #include <iomanip>
@@ -159,6 +160,10 @@ void PWScore::DoAddEntry(const CItemData &item)
   if (item.NumberUnknownFields() > 0)
     IncrementNumRecordsWithUnknownFields();
 
+  if (item.IsNormal() && item.IsPolicyNameSet()) {
+    IncrementPasswordPolicy(item.GetPolicyName());
+  }
+
   m_bDBChanged = true;
 }
 
@@ -236,8 +241,13 @@ void PWScore::DoDeleteEntry(const CItemData &item)
 
     m_bDBChanged = true;
     m_pwlist.erase(pos); // at last!
+
     if (item.NumberUnknownFields() > 0)
       DecrementNumRecordsWithUnknownFields();
+
+    if (item.IsNormal() && item.IsPolicyNameSet()) {
+      DecrementPasswordPolicy(item.GetPolicyName());
+    }
 
     NotifyDBModified();
   } // pos != m_pwlist.end()
@@ -261,6 +271,14 @@ void PWScore::DoReplaceEntry(const CItemData &old_ci, const CItemData &new_ci)
       RemoveExpiryEntry(old_ci);
     if (tttXTime_new != time_t(0))
       AddExpiryEntry(new_ci);
+  }
+
+  if (old_ci.IsNormal() && old_ci.IsPolicyNameSet()) {
+    DecrementPasswordPolicy(old_ci.GetPolicyName());
+  }
+
+  if (new_ci.IsNormal() && new_ci.IsPolicyNameSet()) {
+    IncrementPasswordPolicy(new_ci.GetPolicyName());
   }
 
   m_bDBChanged = true;
@@ -292,12 +310,17 @@ void PWScore::ClearData(void)
   // Clear out database filters
   m_MapFilters.clear();
 
+  // Clear out policies
+  m_MapPSWDPLC.clear();
+
   // Clear out commands
   ClearCommands();
 }
 
 void PWScore::ReInit(bool bNewFile)
 {
+  PWS_LOGIT;
+
   // Now reset all values as if created from new
   if (bNewFile)
     m_ReadFileVersion = PWSfile::NEWFILE;
@@ -366,6 +389,8 @@ private:
 int PWScore::WriteFile(const StringX &filename, const bool bUpdateSig,
                        PWSfile::VERSION version)
 {
+  PWS_LOGIT_ARGS("bUpdateSig=%s", bUpdateSig ? _T("true") : _T("false"));
+
   int status;
   PWSfile *out = PWSfile::MakePWSfile(filename, version,
                                       PWSfile::Write, status);
@@ -394,6 +419,7 @@ int PWScore::WriteFile(const StringX &filename, const bool bUpdateSig,
   if (out3 != NULL) {
     out3->SetUnknownHeaderFields(m_UHFL);
     out3->SetFilters(m_MapFilters); // Give it the filters to write out
+    out3->SetPasswordPolicies(m_MapPSWDPLC); // Give it the password policies to write out
   }
 
   try { // exception thrown on write error
@@ -438,6 +464,8 @@ void PWScore::ClearCommands()
 
 void PWScore::ResetStateAfterSave()
 {
+  PWS_LOGIT;
+
   // After a Save/SaveAs, need to change all saved DB modified states
   // in any commands in the list that can be undone or redone
   // State = whether DB changed (false: no, true: yes)
@@ -542,6 +570,8 @@ int PWScore::CheckPasskey(const StringX &filename, const StringX &passkey)
 int PWScore::ReadFile(const StringX &a_filename,
                       const StringX &a_passkey, const size_t iMAXCHARS)
 {
+  PWS_LOGIT;
+
   int status;
   // Clear any old expired password entries
   m_ExpireCandidates.clear();
@@ -612,8 +642,10 @@ int PWScore::ReadFile(const StringX &a_filename,
   bool limited = false;
 
   PWSfileV3 *in3 = dynamic_cast<PWSfileV3 *>(in); // XXX cleanup
-  if (in3 != NULL  && !in3->GetFilters().empty())
+  if (in3 != NULL) {
+    if (!in3->GetFilters().empty())
     m_MapFilters = in3->GetFilters();
+  }
 
   UUIDVector Possible_Aliases, Possible_Shortcuts;
   size_t uimaxsize(0);
@@ -702,6 +734,11 @@ int PWScore::ReadFile(const StringX &a_filename,
         break;
     } // switch
   } while (go);
+
+  if (in3 != NULL && !in3->GetPasswordPolicies().empty()) {
+    // Wait til now so that reading in the records updates the use counts
+    m_MapPSWDPLC = in3->GetPasswordPolicies();
+  }
 
   m_nRecordsWithUnknownFields = in->GetNumRecordsWithUnknownFields();
   in->GetUnknownHeaderFields(m_UHFL);
@@ -1091,6 +1128,8 @@ StringX PWScore::GetPassKey() const
 
 void PWScore::SetDisplayStatus(const vector<bool> &s)
 { 
+  PWS_LOGIT;
+
   // DON'T set m_bDBChanged!
   // Application should use WasDisplayStatusChanged()
   // to determine if state has changed.
@@ -1100,6 +1139,8 @@ void PWScore::SetDisplayStatus(const vector<bool> &s)
 
 const vector<bool> &PWScore::GetDisplayStatus() const
 {
+  PWS_LOGIT;
+
   return m_hdr.m_displaystatus;
 }
 
@@ -1111,7 +1152,7 @@ bool PWScore::WasDisplayStatusChanged() const
 }
 
 // GetUniqueGroups - returns an array of all group names, with no duplicates.
-void PWScore::GetUniqueGroups(vector<stringT> &aryGroups) const
+void PWScore::GetUniqueGroups(vector<stringT> &vUniqueGroups) const
 {
   // use the fact that set eliminates dups for us
   set<stringT> setGroups;
@@ -1123,9 +1164,83 @@ void PWScore::GetUniqueGroups(vector<stringT> &aryGroups) const
     setGroups.insert(ci.GetGroup().c_str());
   }
 
-  aryGroups.clear();
+  vUniqueGroups.clear();
   // copy unique results from set to caller's vector
-  copy(setGroups.begin(), setGroups.end(), back_inserter(aryGroups));
+  copy(setGroups.begin(), setGroups.end(), back_inserter(vUniqueGroups));
+}
+
+// GetPolicyNames - returns an array of all password policy names
+void PWScore::GetPolicyNames(vector<stringT> &vNames) const
+{
+  vNames.clear();
+
+  PSWDPolicyMapCIter citer;
+
+  for (citer = m_MapPSWDPLC.begin(); citer != m_MapPSWDPLC.end(); citer++ ) {
+    vNames.push_back(citer->first.c_str());
+  }
+}
+
+bool PWScore::GetPolicyFromName(StringX sxPolicyName, st_PSWDPolicy &st_pp)
+{
+  PSWDPolicyMapIter iter = m_MapPSWDPLC.find(sxPolicyName);
+  if (iter != m_MapPSWDPLC.end()) {
+    st_pp = iter->second;
+    return true;
+  } else {
+    st_pp.Empty();
+    return false;
+  }
+}
+
+class PolicyNameMatch
+{
+public:
+  PolicyNameMatch(StringX &policyname) : m_policyname(policyname) {}
+
+  bool operator()(const std::pair<StringX, StringX> &pr)
+  {
+    return (m_policyname == pr.second);
+  }
+
+private:
+  StringX m_policyname;
+};
+
+void PWScore::MakePolicyUnique(std::map<StringX, StringX> &mapRenamedPolicies,
+                               StringX &sxPolicyName, const StringX &sxDateTime,
+                               const int IDS_MESSAGE)
+{
+  // 'mapRenamedPolicies' contains those policies already renamed. It will be
+  // updated with any new name generated.
+  // The map key is old name and the value is new name
+  // 'sxPolicyName' is the current name and will be returned as the new name
+
+  std::map<StringX, StringX>::iterator iter;
+  // Have we done it already?
+  iter = mapRenamedPolicies.find(sxPolicyName);
+  if (iter != mapRenamedPolicies.end()) {
+    // Yes - give them the new name
+    sxPolicyName = iter->second;
+    return;
+  }
+
+  StringX sxNewPolicyName;
+  Format(sxNewPolicyName, IDS_MESSAGE, sxPolicyName.c_str(), sxDateTime.c_str());
+
+  // Verify new policy name not already in this database
+  if (m_MapPSWDPLC.find(sxNewPolicyName) != m_MapPSWDPLC.end())
+    ASSERT(0);  // Already there - how can this be????
+
+  // Now try to see if we have added this
+  if (std::find_if(mapRenamedPolicies.begin(), mapRenamedPolicies.end(),
+                   PolicyNameMatch(sxNewPolicyName)) == mapRenamedPolicies.end()) {
+    // No. OK we have got a new unique policy name - save it
+    mapRenamedPolicies[sxPolicyName] = sxNewPolicyName;
+  }
+
+  sxPolicyName = sxNewPolicyName;
+  return;
 }
 
 void PWScore::CopyPWList(const ItemList &in)
@@ -1429,6 +1544,31 @@ bool PWScore::InitialiseGTU(GTUSet &setGTU)
     }
   }
   m_bUniqueGTUValidated = true;
+  return true;
+}
+
+bool PWScore::InitialiseGTU(GTUSet &setGTU, const StringX &sxPolicyName)
+{
+  setGTU.clear();
+
+  if (sxPolicyName.empty())
+    return false;
+
+  // Populate the set of all group/title/user entries
+  GTUSetPair pr_gtu;
+  ItemListConstIter citer;
+
+  for (citer = m_pwlist.begin(); citer != m_pwlist.end(); citer++) {
+    const CItemData &ci = citer->second;
+    if (ci.GetPolicyName() == sxPolicyName) {
+      pr_gtu = setGTU.insert(st_GroupTitleUser(ci.GetGroup(), ci.GetTitle(), ci.GetUser()));
+      if (!pr_gtu.second) {
+        // Could happen if merging or synching a bad database!
+        setGTU.clear();
+        return false;
+      }
+    }
+  }
   return true;
 }
 
@@ -2204,14 +2344,17 @@ void PWScore::AddChangedNodes(StringX path)
 
 struct HistoryUpdater {
   HistoryUpdater(int &num_altered, 
-                 SavePWHistoryMap &mapSavedHistory)
-  : m_num_altered(num_altered), m_mapSavedHistory(mapSavedHistory)
+                 SavePWHistoryMap &mapSavedHistory, bool bExcludeProtected)
+  : m_num_altered(num_altered), m_mapSavedHistory(mapSavedHistory),
+   m_bExcludeProtected(bExcludeProtected)
   {}
   virtual void operator() (CItemData &ci) = 0;
 
 protected:
   int &m_num_altered;
   SavePWHistoryMap &m_mapSavedHistory;
+  std::vector<BYTE> m_vSavedEntryStatus;
+  bool m_bExcludeProtected;
 
 private:
   HistoryUpdater& operator=(const HistoryUpdater&); // Do not implement
@@ -2219,17 +2362,24 @@ private:
 
 struct HistoryUpdateResetOff : public HistoryUpdater {
   HistoryUpdateResetOff(int &num_altered, 
-                        SavePWHistoryMap &mapSavedHistory)
- : HistoryUpdater(num_altered, mapSavedHistory) {}
+                        SavePWHistoryMap &mapSavedHistory, bool bExcludeProtected)
+ : HistoryUpdater(num_altered, mapSavedHistory, bExcludeProtected) {}
 
   void operator()(CItemData &ci) {
+    if (!ci.IsProtected() ||
+        (!m_bExcludeProtected && ci.IsProtected())) {
     StringX cs_tmp = ci.GetPWHistory();
     if (cs_tmp.length() >= 5 && cs_tmp[0] == L'1') {
-      m_mapSavedHistory[ci.GetUUID()] = cs_tmp;
+        st_PWH_status st_pwhs;
+        st_pwhs.pwh = cs_tmp;
+        st_pwhs.es = ci.GetStatus();
+        m_mapSavedHistory[ci.GetUUID()] = st_pwhs;
       cs_tmp[0] = L'0';
       ci.SetPWHistory(cs_tmp);
+        ci.SetStatus(CItemData::ES_MODIFIED);
       m_num_altered++;
     }
+  }
   }
 
 private:
@@ -2238,24 +2388,31 @@ private:
 
 struct HistoryUpdateResetOn : public HistoryUpdater {
   HistoryUpdateResetOn(int &num_altered, int new_default_max,
-                       SavePWHistoryMap &mapSavedHistory)
-    : HistoryUpdater(num_altered, mapSavedHistory)
+                       SavePWHistoryMap &mapSavedHistory, bool bExcludeProtected)
+    : HistoryUpdater(num_altered, mapSavedHistory, bExcludeProtected)
   {Format(m_text, _T("1%02x00"), new_default_max);}
 
   void operator()(CItemData &ci) {
+    if (!ci.IsProtected() ||
+        (!m_bExcludeProtected && ci.IsProtected())) {
     StringX cs_tmp = ci.GetPWHistory();
+      st_PWH_status st_pwhs;
+      st_pwhs.pwh = cs_tmp;
+      st_pwhs.es = ci.GetStatus();
     if (cs_tmp.length() < 5) {
-      m_mapSavedHistory[ci.GetUUID()] = cs_tmp;
+        m_mapSavedHistory[ci.GetUUID()] = st_pwhs;
       ci.SetPWHistory(m_text);
       m_num_altered++;
     } else {
       if (cs_tmp[0] == L'0') {
-        m_mapSavedHistory[ci.GetUUID()] = cs_tmp;
+          m_mapSavedHistory[ci.GetUUID()] = st_pwhs;
         cs_tmp[0] = L'1';
         ci.SetPWHistory(cs_tmp);
+          ci.SetStatus(CItemData::ES_MODIFIED);
         m_num_altered++;
       }
     }
+  }
   }
 
 private:
@@ -2265,17 +2422,22 @@ private:
 
 struct HistoryUpdateSetMax : public HistoryUpdater {
   HistoryUpdateSetMax(int &num_altered, int new_default_max,
-                      SavePWHistoryMap &mapSavedHistory)
-    : HistoryUpdater(num_altered, mapSavedHistory),
+                      SavePWHistoryMap &mapSavedHistory, bool bExcludeProtected)
+    : HistoryUpdater(num_altered, mapSavedHistory, bExcludeProtected),
     m_new_default_max(new_default_max)
   {Format(m_text, _T("1%02x"), new_default_max);}
 
   void operator()(CItemData &ci) {
+    if (!ci.IsProtected() ||
+        (!m_bExcludeProtected && ci.IsProtected())) {
     StringX cs_tmp = ci.GetPWHistory();
 
     size_t len = cs_tmp.length();
     if (len >= 5) {
-      m_mapSavedHistory[ci.GetUUID()] = cs_tmp;
+        st_PWH_status st_pwhs;
+        st_pwhs.pwh = cs_tmp;
+        st_pwhs.es = ci.GetStatus();
+        m_mapSavedHistory[ci.GetUUID()] = st_pwhs;
       int status, old_max, num_saved;
       const wchar_t *lpszPWHistory = cs_tmp.c_str();
 #if (_MSC_VER >= 1400)
@@ -2288,9 +2450,11 @@ struct HistoryUpdateSetMax : public HistoryUpdater {
       if (iread == 3 && status == 1 && num_saved <= m_new_default_max) {
         cs_tmp = m_text + cs_tmp.substr(3);
         ci.SetPWHistory(cs_tmp);
+          ci.SetStatus(CItemData::ES_MODIFIED);
         m_num_altered++;
       }
     }
+  }
   }
 
 private:
@@ -2299,25 +2463,66 @@ private:
   StringX m_text;
 };
 
+struct HistoryUpdateClearAll : public HistoryUpdater {
+  HistoryUpdateClearAll(int &num_altered,
+                        SavePWHistoryMap &mapSavedHistory, bool bExcludeProtected)
+  : HistoryUpdater(num_altered, mapSavedHistory, bExcludeProtected) {}
+
+  void operator()(CItemData &ci) {
+    if (!ci.IsProtected() ||
+        (!m_bExcludeProtected && ci.IsProtected())) {
+      StringX cs_tmp = ci.GetPWHistory();
+      size_t len = cs_tmp.length();
+      if (len != 0 && cs_tmp != _T("00000")) {
+        st_PWH_status st_pwhs;
+        st_pwhs.pwh = cs_tmp;
+        st_pwhs.es = ci.GetStatus();
+        m_mapSavedHistory[ci.GetUUID()] = st_pwhs;
+        ci.SetPWHistory(L"");
+        ci.SetStatus(CItemData::ES_MODIFIED);
+        m_num_altered++;
+      }
+    }
+  }
+
+private:
+  HistoryUpdateClearAll& operator=(const HistoryUpdateClearAll&); // Do not implement
+};
+
 int PWScore::DoUpdatePasswordHistory(int iAction, int new_default_max,
                                      SavePWHistoryMap &mapSavedHistory)
 {
   int num_altered = 0;
   HistoryUpdater *updater = NULL;
+  bool bExcludeProtected(true);
 
-  HistoryUpdateResetOff reset_off(num_altered, mapSavedHistory);
-  HistoryUpdateResetOn reset_on(num_altered, new_default_max, mapSavedHistory);
-  HistoryUpdateSetMax set_max(num_altered, new_default_max, mapSavedHistory);
+  if (iAction < 0)
+    bExcludeProtected = false;
+
+  HistoryUpdateResetOff reset_off(num_altered, mapSavedHistory, bExcludeProtected);
+  HistoryUpdateResetOn  reset_on(num_altered, new_default_max, mapSavedHistory,
+                                 bExcludeProtected);
+  HistoryUpdateSetMax   set_max(num_altered, new_default_max, mapSavedHistory,
+                                bExcludeProtected);
+  HistoryUpdateClearAll clearall(num_altered, mapSavedHistory, bExcludeProtected);
+
 
   switch (iAction) {
-    case 1:   // reset off
+    case -1:   // reset off - include protected entries
+    case  1:   // reset off - exclude protected entries
       updater = &reset_off;
       break;
-    case 2:   // reset on
+    case -2:   // reset on - include protected entries
+    case  2:   // reset on - exclude protected entries
       updater = &reset_on;
       break;
-    case 3:   // setmax
+    case -3:   // setmax - include protected entries
+    case  3:   // setmax - exclude protected entries
       updater = &set_max;
+      break;
+    case -4:   // clearall - include protected entries
+    case  4:   // clearall - exclude protected entries
+      updater = &clearall;
       break;
     default:
       ASSERT(0);
@@ -2352,7 +2557,8 @@ void PWScore::UndoUpdatePasswordHistory(SavePWHistoryMap &mapSavedHistory)
   for (itr = mapSavedHistory.begin(); itr != mapSavedHistory.end(); itr++) {
     ItemListIter listPos = m_pwlist.find(itr->first);
     if (listPos != m_pwlist.end()) {
-      listPos->second.SetPWHistory(itr->second);
+      listPos->second.SetPWHistory(itr->second.pwh);
+      listPos->second.SetStatus(itr->second.es);
     }
   }
 }
@@ -2462,6 +2668,8 @@ void PWScore::UpdateExpiryEntry(const CUUID &uuid, const CItemData::FieldType ft
 
 bool PWScore::ChangeMode(stringT &locker, int &iErrorCode)
 {
+  PWS_LOGIT;
+
   // We do not have to close or re-open the database as the database is closed after processing.
   /*
    So what do we need to do?
@@ -2479,6 +2687,7 @@ bool PWScore::ChangeMode(stringT &locker, int &iErrorCode)
       // OK - still exists but is R-O - can't change mode!
       // Need new return code but not this close to release - later
       iErrorCode = READ_FAIL;
+      PWS_LOGIT_ARGS0("Failed: READ_FAIL");
       return false;
     }
 
@@ -2487,6 +2696,7 @@ bool PWScore::ChangeMode(stringT &locker, int &iErrorCode)
                                 m_lockFileHandle, m_LockCount);
     if (!brc) {
       iErrorCode = CANT_GET_LOCK;
+      PWS_LOGIT_ARGS0("Failed: CANT_GET_LOCK");
       return false;
     }
 
@@ -2506,12 +2716,16 @@ bool PWScore::ChangeMode(stringT &locker, int &iErrorCode)
     if (iErrorCode != 0) {
       pws_os::UnlockFile(m_currfile.c_str(), 
                          m_lockFileHandle, m_LockCount);
+      PWS_LOGIT_ARGS("Failed code: %d", iErrorCode);
       return false;
     }
   } else {
     // In R/W mode
-    if (m_LockCount != 1)
+    if (m_LockCount != 1) {
+      iErrorCode = FAILURE; // Not actually used as only one failure type
+      PWS_LOGIT_ARGS0("Failed count not 1");
       return false;
+    }
 
     // Try to unlock file
     pws_os::UnlockFile(m_currfile.c_str(), 
@@ -2554,3 +2768,43 @@ void PWScore::SetYubiSK(const unsigned char *sk)
   }
 }
 
+
+bool PWScore::IncrementPasswordPolicy(const StringX &sxPolicyName)
+{
+  PSWDPolicyMapIter iter = m_MapPSWDPLC.find(sxPolicyName);
+  if (iter == m_MapPSWDPLC.end()) {
+    return false;
+  } else {
+    iter->second.usecount++;
+    return true;
+  }
+}
+
+bool PWScore::DecrementPasswordPolicy(const StringX &sxPolicyName)
+{
+  PSWDPolicyMapIter iter = m_MapPSWDPLC.find(sxPolicyName);
+  if (iter == m_MapPSWDPLC.end() || iter->second.usecount == 0) {
+    return false;
+  } else {
+    iter->second.usecount--;
+    return true;
+  }
+}
+
+void PWScore::AddPolicy(const StringX &sxPolicyName, const st_PSWDPolicy &st_pp,
+                        const bool bAllowReplace)
+{
+  bool bDoIt(false);
+  PSWDPolicyMapIter iter = m_MapPSWDPLC.find(sxPolicyName);
+
+  if (iter == m_MapPSWDPLC.end())
+    bDoIt = true;
+  else if (bAllowReplace) {
+    bDoIt = true;
+    m_MapPSWDPLC.erase(iter);
+  }
+  if (bDoIt) {
+    m_MapPSWDPLC[sxPolicyName] = st_pp;
+    SetDBChanged(true);
+  }
+}

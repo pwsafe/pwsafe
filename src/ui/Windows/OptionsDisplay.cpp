@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -30,12 +30,6 @@
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
-
-const UINT COptionsDisplay::uiDBPrefs[] = {
-  IDC_DEFUNSHOWINTREE, IDC_DEFPWSHOWINTREE, IDC_DEFPWSHOWINEDIT,
-  IDC_DEFNOTESSHOWINEDIT, IDC_TREE_DISPLAY_COLLAPSED,
-  IDC_TREE_DISPLAY_EXPANDED, IDC_TREE_DISPLAY_LASTSAVE
-};
 
 /////////////////////////////////////////////////////////////////////////////
 // COptionsDisplay property page
@@ -87,12 +81,19 @@ void COptionsDisplay::DoDataExchange(CDataExchange* pDX)
   DDX_Text(pDX, IDC_PREEXPIRYWARNDAYS, m_PreExpiryWarnDays);
   DDX_Check(pDX, IDC_HIGHLIGHTCHANGES, m_HighlightChanges);
   DDX_Radio(pDX, IDC_RST_BLK, m_TrayIconColour); // only first!
+
+  DDX_Control(pDX, IDC_DEFUNSHOWINTREE, m_chkbox[0]);
+  DDX_Control(pDX, IDC_DEFPWSHOWINTREE, m_chkbox[1]);
+  DDX_Control(pDX, IDC_DEFPWSHOWINEDIT, m_chkbox[2]);
+  DDX_Control(pDX, IDC_DEFNOTESSHOWINEDIT,m_chkbox[3]);
+  DDX_Control(pDX, IDC_TREE_DISPLAY_COLLAPSED, m_radiobtn[0]);
+  DDX_Control(pDX, IDC_TREE_DISPLAY_EXPANDED, m_radiobtn[1]);
+  DDX_Control(pDX, IDC_TREE_DISPLAY_LASTSAVE, m_radiobtn[2]);
   //}}AFX_DATA_MAP
 }
 
 BEGIN_MESSAGE_MAP(COptionsDisplay, COptions_PropertyPage)
   //{{AFX_MSG_MAP(COptionsDisplay)
-  ON_WM_CTLCOLOR()
   ON_BN_CLICKED(ID_HELP, OnHelp)
 
   ON_BN_CLICKED(IDC_PREWARNEXPIRY, OnPreWarn)
@@ -108,8 +109,14 @@ BOOL COptionsDisplay::OnInitDialog()
 {
   COptions_PropertyPage::OnInitDialog();
 
-  for (int i = 0; i < sizeof(uiDBPrefs) / sizeof(uiDBPrefs[0]); i++) {
-    SetWindowTheme(GetDlgItem(uiDBPrefs[i])->GetSafeHwnd(), L"", L"");
+  for (int i = 0; i < 4; i++) {
+    m_chkbox[i].SetTextColour(CR_DATABASE_OPTIONS);
+    m_chkbox[i].SetBkgColour(COLOR_WINDOW);
+  }
+  for (int i = 0; i < 3; i++) {
+    m_radiobtn[i].SetTextColour(CR_DATABASE_OPTIONS);
+    m_radiobtn[i].SetType(BS_AUTORADIOBUTTON);
+    m_radiobtn[i].SetBkgColour(COLOR_WINDOW);
   }
 
   if (m_ShowUsernameInTree == FALSE) {
@@ -228,25 +235,4 @@ void COptionsDisplay::OnDisplayUserInTree()
     ((CButton*)GetDlgItem(IDC_DEFPWSHOWINTREE))->SetCheck(BST_UNCHECKED);
   } else
     GetDlgItem(IDC_DEFPWSHOWINTREE)->EnableWindow(TRUE);
-}
-
-HBRUSH COptionsDisplay::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
-{
-  HBRUSH hbr = CPWPropertyPage::OnCtlColor(pDC, pWnd, nCtlColor);
-
-  // Database preferences - controls + associated static text
-  switch (pWnd->GetDlgCtrlID()) {
-    case IDC_DEFUNSHOWINTREE:
-    case IDC_DEFPWSHOWINTREE:
-    case IDC_DEFPWSHOWINEDIT:
-    case IDC_DEFNOTESSHOWINEDIT:
-    case IDC_TREE_DISPLAY_COLLAPSED:
-    case IDC_TREE_DISPLAY_EXPANDED:
-    case IDC_TREE_DISPLAY_LASTSAVE:
-      pDC->SetTextColor(CR_DATABASE_OPTIONS);
-      pDC->SetBkMode(TRANSPARENT);
-      break;
-  }
-
-  return hbr;
 }

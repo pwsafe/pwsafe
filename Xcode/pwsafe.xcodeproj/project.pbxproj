@@ -1960,7 +1960,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		E6391BC712FD21B9009BBB8D /* Generate version.h */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 8;
+			buildActionMask = 12;
 			files = (
 			);
 			inputPaths = (
@@ -1970,7 +1970,7 @@
 			outputPaths = (
 				../src/ui/wxWidgets/version.h,
 			);
-			runOnlyForDeploymentPostprocessing = 1;
+			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "../Misc/mkversion.pl ../src/ui/wxWidgets/version.in ../src/ui/wxWidgets/version.h";
 		};

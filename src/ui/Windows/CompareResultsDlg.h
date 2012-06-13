@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -45,11 +45,11 @@ public:
     CReport *pRpt);
 
   // st_CompareInfo Functions
-  enum {EDIT = 0, VIEW, COPY_TO_ORIGINALDB, COPY_TO_COMPARISONDB, SYNCH};
+  enum {EDIT = 0, VIEW, COPY_TO_ORIGINALDB, SYNCH};
 
   // Column indices
   // IDENTICAL means CURRENT + COMPARE but identical
-  // BOTH means CURRENT + COMPARE but with differences
+  // BOTH      means CURRENT + COMPARE but with differences
 
   // NOTE: BOTH = -1 , CURRENT = 0, COMPARE = 1
   // MUST be the same as in "core/DBCompareData.h"
@@ -85,7 +85,6 @@ protected:
   //}}AFX_VIRTUAL
 
   // Implementation
-  bool CopyLeftOrRight(const bool bCopyLeft);
   void UpdateStatusBar();
   bool ProcessFunction(const int ifunction, st_CompareData *st_data);
   void WriteReportData();
@@ -105,7 +104,6 @@ protected:
   afx_msg void OnCompareViewEdit();
   afx_msg void OnCompareSynchronize();
   afx_msg void OnCompareCopyToOriginalDB();
-  afx_msg void OnCompareCopyToComparisonDB();
   afx_msg void OnSize(UINT nType, int cx, int cy);
   afx_msg void OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL);
   //}}AFX_MSG

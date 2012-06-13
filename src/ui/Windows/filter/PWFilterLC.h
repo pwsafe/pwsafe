@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2011 Rony Shapiro <ronys@users.sourceforge.net>.
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -96,7 +96,6 @@ protected:
   std::vector<st_Fcbxdata> vWCFcbx_data;   // Working copy Field combobox & fieldtypes
 
   WCHAR *m_pwchTip;
-  char *m_pchTip;
 
   BOOL OnCommand(WPARAM wParam, LPARAM lParam);
   INT_PTR OnToolHitTest(CPoint point, TOOLINFO * pTI) const;
@@ -182,6 +181,6 @@ private:
   COLORREF m_crGrayText, m_crWindow, m_crWindowText, m_crButtonFace, m_crRedText;
   int m_fwidth, m_lwidth, m_rowheight;
   CComboBox *m_pComboBox;
-  CFont* m_pFont;
+  CFont *m_pFont;
   int m_iItem;
 };

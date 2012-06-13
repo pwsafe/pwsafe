@@ -16,7 +16,7 @@
     <bool name="make_unicode_strings">1</bool>
     <bool name="extract_strings">0</bool>
     <string name="user_name">"Rony Shapiro"</string>
-    <string name="copyright_string">"Copyright (c) 2003-2011 Rony Shapiro &lt;ronys@users.sourceforge.net&gt;"</string>
+    <string name="copyright_string">"Copyright (c) 2003-2012 Rony Shapiro &lt;ronys@users.sourceforge.net&gt;"</string>
     <string name="resource_prefix">""</string>
     <bool name="use_two_step_construction">0</bool>
     <bool name="use_enums">0</bool>
