@@ -346,7 +346,7 @@ msgstr "%s  - Zaimportowano %s"
 #. Resource IDs: (371)
 #, c-format
 msgid "%s (%s)"
-msgstr ""
+msgstr "%s (%s)"
 
 #. Resource IDs: (366)
 #, c-format
@@ -356,7 +356,7 @@ msgstr "%s (specyficzny dla bazy danych)"
 #. Resource IDs: (216)
 #, c-format
 msgid "%s - Copied %s"
-msgstr ""
+msgstr "%s - Skopiowano %s"
 
 #. Resource IDs: (370)
 #, c-format
@@ -371,7 +371,7 @@ msgstr "%s - Połączony %s"
 #. Resource IDs: (216)
 #, c-format
 msgid "%s - Sync'd %s"
-msgstr ""
+msgstr "%s - Zsynchronizowano %s"
 
 #. Resource IDs: (3887)
 #, c-format
@@ -943,7 +943,7 @@ msgstr "* oznacza, że baza danych została zmieniona"
 
 #. Resource IDs: (371)
 msgid "*** Operation aborted by User ***"
-msgstr ""
+msgstr "*** Operacja przerwana przez użytkownika ***"
 
 #. Resource IDs: (213)
 #, c-format
@@ -1674,7 +1674,7 @@ msgstr "Idź do URL + Autouzupełnianie"
 
 #. Resource IDs: (65535)
 msgid "Browser Command Line parameters:"
-msgstr ""
+msgstr "Linia parametrów przeglądarki:"
 
 #. Resource IDs: (520)
 msgid "Bulgarian"
@@ -2107,7 +2107,7 @@ msgstr "Informacje o konfiguracji"
 #. Resource IDs: (191)
 #, c-format
 msgid "Configuration file error:\n%s\n%s\noffset approximately at %d"
-msgstr ""
+msgstr "Błąd pliku konfiguracyjnego:\n%s\n%s\nprzybliżone przesunięcie w %d"
 
 #. Resource IDs: (367)
 msgid "Configuration file status"
@@ -2147,7 +2147,7 @@ msgstr "Potwierdzenie:"
 #. Resource IDs: (214)
 #, c-format
 msgid "Conflicting entries for «%s» «%s» «%s».\r\n  Adding merged entry as «%s» «%s» «%s».\r\n    Differing field(s): %s"
-msgstr ""
+msgstr "Rozbieżne wpisy dla «%s» «%s» «%s».\r\n  Dodawanie złączonego wpisu jako «%s» «%s» «%s».\r\n    Różnice w polach: %s"
 
 #. Resource IDs: (1, 347)
 msgid "Continue"
@@ -2282,7 +2282,7 @@ msgstr "&Stwórz skrót"
 #. Resource IDs: (191)
 #, c-format
 msgid "Create SchemaCache60 Error 0x%08X during %s."
-msgstr ""
+msgstr "Błąd twozenia SchemaCache60 0x%08X podczas %s."
 
 #. Resource IDs: (117, 32272)
 msgid "Create Shortcut"
@@ -2400,7 +2400,7 @@ msgstr "Format Bazy Danych:"
 
 #. Resource IDs: (1454)
 msgid "Database is read-only. Changes to database preferences will not be saved."
-msgstr ""
+msgstr "Baza danych jest trybie tylko do odczytu. Zmiany w opcjach bazy nie będą zachowane."
 
 #. Resource IDs: (337)
 msgid "Database is read-only. Sorry, cannot save changed any database preferences."
@@ -5217,7 +5217,7 @@ msgstr "Błąd parsowania SAX podczas %s\r\n%s."
 #. Resource IDs: (191)
 #, c-format
 msgid "SAX Parse60 Error 0x%08X during %s."
-msgstr ""
+msgstr "Błąd SAX Parse60 0x%08X podczas %s."
 
 #. Resource IDs: (131)
 msgid "Safe Combination Entry"
@@ -6859,7 +6859,7 @@ msgstr "\nUwzględiaj wielkość liter"
 
 #. Resource IDs: (2009)
 msgid "\nClear Filters"
-msgstr ""
+msgstr "\nWyczyść filtry"
 
 #. Resource IDs: (2020)
 msgid "\nClear Find"
@@ -7019,7 +7019,7 @@ msgstr "\nOpcje"
 
 #. Resource IDs: (2010)
 msgid "\nPassword Policies"
-msgstr ""
+msgstr "\nPolityki haseł"
 
 #. Resource IDs: (2004)
 msgid "\nPerform Autotype"
@@ -7215,7 +7215,7 @@ msgstr "\tJedna lub więcej z nazw polityk haseł nie została znaleziona w bazi
 #. Resource IDs: (215)
 #, c-format
 msgid "\tPassword policy name '%s' is not in the database."
-msgstr "\nNazwy polityki haseł '%s' nie ma w bazie danych."
+msgstr "\tNazwy polityki haseł '%s' nie ma w bazie danych."
 
 #. Resource IDs: (347)
 #, c-format
