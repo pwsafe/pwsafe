@@ -111,6 +111,8 @@ LangString ITALIAN_SUPPORT ${LANG_RUSSIAN} "Итальянский"
 LangString DANISH_SUPPORT ${LANG_RUSSIAN} "Датский"
 ; KOREAN_SUPPORT "Korean"
 LangString KOREAN_SUPPORT ${LANG_RUSSIAN} "Корейский"
+; PORTUGUESEBR_SUPPORT "Portuguese (Brazil)"
+LangString PORTUGUESEBR_SUPPORT ${LANG_RUSSIAN} "Португальский (Бразилия)"
 
 ; LANG_PROGRAM "Program Language"
 LangString LANG_PROGRAM ${LANG_RUSSIAN} "Язык программы"
