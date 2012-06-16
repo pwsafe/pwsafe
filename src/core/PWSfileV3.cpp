@@ -968,63 +968,78 @@ int PWSfileV3::ReadHeader()
       break;
 
       case HDR_PSWDPOLICIES:
-      {
-        if (utf8 != NULL) utf8[utf8Len] = '\0';
-        utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
-        if (utf8status) {
-          const size_t recordlength = text.length();
-          StringX sxBlank(_T(" "));  // Needed in case hex value is all zeroes!
-          StringX sxTemp;
-
-          // Get number of polices
-          sxTemp = text.substr(0, 2) + sxBlank;
-          size_t j = 2;  // Skip over # name entries
-          iStringXStream is(sxTemp);
-          int num(0);
-          is >> hex >> num;
-
-          // Get the policies and save them
-          for (int n = 0; n < num; n++) {
-            if (j > recordlength) break;  // Error
-
-            int namelength, symbollength;
-
-            sxTemp = text.substr(j, 2) + sxBlank;
+        /**
+         * Very sad situation here: this field code was also assigned to
+         * YUBI_SK in 3.27Y. Here we try to infer the actual type based
+         * on the actual value stored in the field.
+         * Specifically, YUBI_SK is YUBI_SK_LEN bytes of binary data, whereas
+         * HDR_PSWDPOLICIES is of varying length, starting with at least 4 hex
+         * digits.
+         */
+        if (utf8Len != HeaderRecord::YUBI_SK_LEN ||
+            (utf8Len >= 4 &&
+             isxdigit(utf8[0]) && isxdigit(utf8[1]) &&
+             isxdigit(utf8[1]) && isxdigit(utf8[2]))) {
+          if (utf8 != NULL) utf8[utf8Len] = '\0';
+          utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
+          if (utf8status) {
+            const size_t recordlength = text.length();
+            StringX sxBlank(_T(" "));  // Needed in case hex value is all zeroes!
+            StringX sxTemp;
+            
+            // Get number of polices
+            sxTemp = text.substr(0, 2) + sxBlank;
+            size_t j = 2;  // Skip over # name entries
             iStringXStream is(sxTemp);
-            j += 2;  // Skip over name length
+            int num(0);
+            is >> hex >> num;
 
-            is >> hex >> namelength;
-            if (j + namelength > recordlength) break;  // Error
+            // Get the policies and save them
+            for (int n = 0; n < num; n++) {
+              if (j > recordlength) break;  // Error
+
+              int namelength, symbollength;
+              
+              sxTemp = text.substr(j, 2) + sxBlank;
+              iStringXStream is(sxTemp);
+              j += 2;  // Skip over name length
+
+              is >> hex >> namelength;
+              if (j + namelength > recordlength) break;  // Error
             
-            StringX sxPolicyName = text.substr(j, namelength);
-            j += namelength;  // Skip over name
-            if (j + 19 > recordlength) break;  // Error
-
-            StringX cs_pwp(text.substr(j, 19));
-            PWPolicy pwp(cs_pwp);
-            j += 19;  // Skip over pwp
-
-            if (j + 2 > recordlength) break;  // Error
-            sxTemp = text.substr(j, 2) + sxBlank;
-            is.str(sxTemp);
-            j += 2;  // Skip over symbols length
-            is >> hex >> symbollength;
+              StringX sxPolicyName = text.substr(j, namelength);
+              j += namelength;  // Skip over name
+              if (j + 19 > recordlength) break;  // Error
+              
+              StringX cs_pwp(text.substr(j, 19));
+              PWPolicy pwp(cs_pwp);
+              j += 19;  // Skip over pwp
+              
+              if (j + 2 > recordlength) break;  // Error
+              sxTemp = text.substr(j, 2) + sxBlank;
+              is.str(sxTemp);
+              j += 2;  // Skip over symbols length
+              is >> hex >> symbollength;
             
-            StringX sxSymbols;
-            if (symbollength != 0) {
-              if (j + symbollength > recordlength) break;  // Error
-              sxSymbols = text.substr(j, symbollength);
-              j += symbollength;  // Skip over symbols
+              StringX sxSymbols;
+              if (symbollength != 0) {
+                if (j + symbollength > recordlength) break;  // Error
+                sxSymbols = text.substr(j, symbollength);
+                j += symbollength;  // Skip over symbols
             }
-            pwp.symbols = sxSymbols;
+              pwp.symbols = sxSymbols;
 
-            pair< map<StringX, PWPolicy>::iterator, bool > pr;
-            pr = m_MapPSWDPLC.insert(PSWDPolicyMapPair(sxPolicyName, pwp));
-            if (pr.second == false) break; // Error
+              pair< map<StringX, PWPolicy>::iterator, bool > pr;
+              pr = m_MapPSWDPLC.insert(PSWDPolicyMapPair(sxPolicyName, pwp));
+              if (pr.second == false) break; // Error
+            }
           }
+        } else { // Looks like YUBI_OLD_SK: field length is exactly YUBI_SK_LEN
+          //        and at least one non-hex character in first 4 of field.
+          m_hdr.m_yubi_sk = new unsigned char[HeaderRecord::YUBI_SK_LEN];
+          memcpy(m_hdr.m_yubi_sk, utf8, HeaderRecord::YUBI_SK_LEN);
         }
         break;
-      }
 
       case HDR_EMPTYGROUP:
       {
