@@ -56,11 +56,6 @@ struct pwhistory_entry {
   StringX oldpassword;
 };
 
-struct pw_policy {
-  StringX name;
-  st_PSWDPolicy st_pp;
-};
-
 typedef std::vector<pw_entry *> vdb_entries;
 
 class PWScore;
@@ -93,8 +88,6 @@ public:
   stringT getRenameList() const {return m_strRenameList;}
 
   vdb_entries & getVDB_Entries() {return m_ventries;}
-  stringT getDefaultAutotypeString() const {return m_sDefaultAutotypeString;}
-  stringT getDefaultUsername() const {return m_sDefaultUsername;}
  
   TCHAR getDelimiter() const {return m_delimiter;}
  
@@ -115,12 +108,13 @@ protected:
   void AddXMLEntries();
   void AddDBPreferences();
 
+  PWPolicy currentDB_default_pwp, importDB_default_pwp;
+
   vdb_entries m_ventries;
   pw_entry *cur_entry;
   pwhistory_entry *cur_pwhistory_entry;
-  pw_policy *cur_policy;
 
-  StringX m_strElemContent;
+  StringX m_sxElemContent;
   stringT m_strErrorMessage;
   stringT m_strXMLErrors;
   stringT m_strPWHErrorList;
@@ -140,7 +134,7 @@ protected:
   bool m_bEntryBeingProcessed;
   bool m_bPolicyBeingProcessed;
   bool m_bValidation;
-  bool m_bInPolicyNames;
+  bool m_bInPolicyNames, m_bInEmptyGroups;
   bool m_bErrors, m_bRecordHeaderErrors, m_bDatabaseHeaderErrors;
   bool m_bImportPSWDsOnly;
   unsigned char m_ctype;
@@ -158,19 +152,16 @@ private:
   int m_ipwh;
   int m_fieldlen;
   bool m_bheader;
-  unsigned char * m_pfield;
+  unsigned char *m_pfield;
 
   // Preferences possibly stored in database
-  // Note: boolean is integer to allow an 'not set' value of '-1'
-  int prefsinXML[NUMPREFSINXML];
   stringT m_ImportedPrefix;
-  stringT m_sDefaultAutotypeString;
-  stringT m_sDefaultUsername;
-  stringT m_sDefaultSymbols;
-  stringT m_sNamedPolicySymbols;
 
+  StringX m_PolicyName;
+  PWPolicy m_Named_pwp;
   PSWDPolicyMap m_MapPSWDPLC;
   std::map<StringX, StringX> m_mapRenamedPolicies;
+  std::vector<StringX> m_vEmptyGroups;
   StringX m_sxXML_DateTime;
 };
 

@@ -95,6 +95,21 @@ BEGIN_MESSAGE_MAP(CWZPropertySheet, CPropertySheet)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
+void CWZPropertySheet::PreSubclassWindow() 
+{
+  if(m_hWnd != NULL) {
+    // First get the current Window Styles
+    LONG lStyle = GetWindowLong(m_hWnd, GWL_STYLE);
+
+    // Remove the SYSMENU to have a close button
+    lStyle &= ~WS_SYSMENU;
+                        
+    //Now set the Modified Window Style
+    SetWindowLong(m_hWnd, GWL_STYLE, lStyle);  
+  }
+  CPropertySheet::PreSubclassWindow();
+}
+
 LRESULT CWZPropertySheet::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {
   CWnd *pParent = GetParent();
@@ -129,12 +144,19 @@ INT_PTR CWZPropertySheet::DoModal()
   return rc;
 }
 
-BOOL CWZPropertySheet::PreTranslateMessage(MSG* pMsg)
+BOOL CWZPropertySheet::PreTranslateMessage(MSG *pMsg)
 {
-  if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
-    CWZPropertyPage *pp = (CWZPropertyPage *)GetActivePage();
-    pp->PostMessage(WM_COMMAND, MAKELONG(ID_HELP, BN_CLICKED), NULL);
-    return TRUE;
+  if (pMsg->message == WM_KEYDOWN) {
+    if (pMsg->wParam == VK_F1) {
+      CWZPropertyPage *pp = (CWZPropertyPage *)GetActivePage();
+      pp->PostMessage(WM_COMMAND, MAKELONG(ID_HELP, BN_CLICKED), NULL);
+      return TRUE;
+    }
+
+    if (pMsg->wParam == VK_ESCAPE) {
+      PostMessage(WM_COMMAND, MAKELONG(IDCANCEL, BN_CLICKED), NULL);
+      return TRUE;
+    }
   }
 
   return CPropertySheet::PreTranslateMessage(pMsg);

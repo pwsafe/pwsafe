@@ -44,6 +44,7 @@ CWZFinish::~CWZFinish()
 BEGIN_MESSAGE_MAP(CWZFinish, CWZPropertyPage)
   //{{AFX_MSG_MAP(CWZFinish)
   ON_BN_CLICKED(ID_HELP, OnHelp)
+  ON_BN_CLICKED(IDC_ABORT, OnAbort)
   ON_BN_CLICKED(IDC_VIEWREPORT, OnViewReport)
   ON_MESSAGE(PWS_MSG_WIZARD_EXECUTE_THREAD_ENDED, OnExecuteThreadEnded)
   //}}AFX_MSG_MAP
@@ -64,12 +65,41 @@ BOOL CWZFinish::OnInitDialog()
 
   m_pWZPSH->GetDlgItem(ID_WIZBACK)->EnableWindow(FALSE);
   m_pWZPSH->GetDlgItem(ID_WIZBACK)->ShowWindow(SW_HIDE);
-  m_pWZPSH->GetDlgItem(IDCANCEL)->EnableWindow(FALSE);
-  m_pWZPSH->GetDlgItem(IDCANCEL)->ShowWindow(SW_HIDE);
+  
+  switch (m_pWZPSH->GetID()) {
+    case ID_MENUITEM_COMPARE:
+    case ID_MENUITEM_MERGE:
+    case ID_MENUITEM_SYNCHRONIZE:
+    {
+      // Override IDCANCEL otherwise we don't get control
+      m_pWZPSH->GetDlgItem(IDCANCEL)->SetDlgCtrlID(IDC_ABORT);
+
+      // Set button text
+      CString cs_Abort(MAKEINTRESOURCE(IDS_ABORT));
+      m_pWZPSH->GetDlgItem(IDC_ABORT)->SetWindowText(cs_Abort);
+      break;
+    }
+    default:
+      m_pWZPSH->GetDlgItem(IDCANCEL)->EnableWindow(FALSE);
+      m_pWZPSH->GetDlgItem(IDCANCEL)->ShowWindow(SW_HIDE);
+  }
 
   m_bInitDone = true;
 
   return TRUE;
+}
+
+void CWZFinish::OnAbort()
+{
+  m_thdpms.bCancel = true;
+
+  // Stop multiple presses
+  m_pWZPSH->GetDlgItem(IDC_ABORT)->EnableWindow(FALSE);
+}
+
+void CWZFinish::DisableAbort()
+{
+  m_pWZPSH->GetDlgItem(IDC_ABORT)->EnableWindow(FALSE);
 }
 
 static UINT WZExecuteThread(LPVOID pParam)
@@ -81,15 +111,19 @@ static UINT WZExecuteThread(LPVOID pParam)
   switch (pthdpms->nID) {
     case ID_MENUITEM_COMPARE:
       status = pthdpms->pWZPSH->WZPSHDoCompare(pthdpms->pcore,
-                   pthdpms->bAdvanced, pthdpms->prpt) ? 0 : -1;
+                   pthdpms->bAdvanced, pthdpms->prpt, &pthdpms->bCancel) ? 0 : -1;
+      pthdpms->pWZFinish->DisableAbort();
       break;
     case ID_MENUITEM_MERGE:
       pthdpms->csResults = pthdpms->pWZPSH->WZPSHDoMerge(pthdpms->pcore, 
-                   pthdpms->bAdvanced, pthdpms->prpt);
+                   pthdpms->bAdvanced, pthdpms->prpt, &pthdpms->bCancel);
+      pthdpms->pWZFinish->DisableAbort();
       break;
     case ID_MENUITEM_SYNCHRONIZE:
       pthdpms->pWZPSH->WZPSHDoSynchronize(pthdpms->pcore,
-                   pthdpms->bAdvanced, pthdpms->numProcessed, pthdpms->prpt);
+                   pthdpms->bAdvanced, pthdpms->numProcessed, pthdpms->prpt,
+                   &pthdpms->bCancel);
+      pthdpms->pWZFinish->DisableAbort();
       break;
     case ID_MENUITEM_EXPORT2PLAINTEXT:
     case ID_MENUITEM_EXPORTENT2PLAINTEXT:
@@ -191,17 +225,25 @@ int CWZFinish::ExecuteAction()
     // Not really needed but...
     m_pothercore->ClearData();
 
-    // Reading a new file changes the preferences!
-    const StringX sxSavePrefString(PWSprefs::GetInstance()->Store());
-    const bool bDBPrefsChanged = PWSprefs::GetInstance()->IsDBprefsChanged();
+    // Reading a new file changes the preferences as they are instance dependent
+    // not core dependent
+    PWSprefs *prefs =  PWSprefs::GetInstance();
+
+    const StringX sxSavePrefString(prefs->Store());
+    const bool bSaveIfDBPrefsChanged = prefs->IsDBprefsChanged();
 
     const StringX passkey = m_pWZPSH->GetPassKey();
 
+    // Read the other database
     rc = m_pothercore->ReadFile(sx_Filename2, passkey);
 
+    // Save all the 'other core' preferences in the copy - to use for
+    // 'other' default Password Policy when needed in Compare, Merge & Sync
+    prefs->SetupCopyPrefs();
+
     // Reset database preferences - first to defaults then add saved changes!
-    PWSprefs::GetInstance()->Load(sxSavePrefString);
-    PWSprefs::GetInstance()->SetDBprefsChanged(bDBPrefsChanged);
+    prefs->Load(sxSavePrefString);
+    prefs->SetDBprefsChanged(bSaveIfDBPrefsChanged);
 
     switch (rc) {
       case PWScore::SUCCESS:
@@ -250,16 +292,15 @@ int CWZFinish::ExecuteAction()
 
     const bool bAdvanced = m_pWZPSH->GetAdvanced();
 
-    WZExecuteThreadParms *pthdpms = new WZExecuteThreadParms;
-    pthdpms->pWZFinish = this;
-    pthdpms->nID = nID;
-    pthdpms->pWZPSH = m_pWZPSH;
-    pthdpms->pcore = m_pothercore;
-    pthdpms->prpt = m_prpt;
-    pthdpms->sx_Filename = sx_Filename2;
-    pthdpms->bAdvanced = bAdvanced;
+    m_thdpms.pWZFinish = this;
+    m_thdpms.nID = nID;
+    m_thdpms.pWZPSH = m_pWZPSH;
+    m_thdpms.pcore = m_pothercore;
+    m_thdpms.prpt = m_prpt;
+    m_thdpms.sx_Filename = sx_Filename2;
+    m_thdpms.bAdvanced = bAdvanced;
 
-    m_pExecuteThread = AfxBeginThread(WZExecuteThread, pthdpms,
+    m_pExecuteThread = AfxBeginThread(WZExecuteThread, &m_thdpms,
                                 THREAD_PRIORITY_NORMAL, 0, CREATE_SUSPENDED);
 
     if (m_pExecuteThread == NULL) {
@@ -275,14 +316,10 @@ int CWZFinish::ExecuteAction()
   return rc;
 }
 
-LRESULT CWZFinish::OnExecuteThreadEnded(WPARAM wParam, LPARAM )
+LRESULT CWZFinish::OnExecuteThreadEnded(WPARAM , LPARAM )
 {
-  WZExecuteThreadParms *pthdpms = (WZExecuteThreadParms *)wParam;
-
   // Wait for it to actually end
   WaitForSingleObject(m_pExecuteThread->m_hThread, INFINITE);
-
-  m_bComplete = true;
 
   // Now tidy up (m_bAutoDelete was set to FALSE)
   delete m_pExecuteThread;
@@ -294,46 +331,42 @@ LRESULT CWZFinish::OnExecuteThreadEnded(WPARAM wParam, LPARAM )
   // Was in DboxMain::Merge etc - but not allowed when called from a worker thread!!!!!
   m_pWZPSH->WZPSHUpdateGUIDisplay();
 
-  // Can't do UI (show results dialog) from a worker thread!
   CString cs_results;
-  switch (pthdpms->nID) {
-    case ID_MENUITEM_COMPARE:
-      if (pthdpms->status != 0) {
-        cs_results = m_pWZPSH->WZPSHShowCompareResults(m_pWZPSH->WZPSHGetCurFile(), 
-                                                       pthdpms->sx_Filename,
-                                                       m_pothercore, m_prpt);
-        m_prpt->EndReport();
-      } else {
-        cs_results.LoadString(IDS_IDENTICALDATABASES);
-      }
-      break;
-    case ID_MENUITEM_MERGE:
-      cs_results = pthdpms->csResults.c_str();
-      break;
-    case ID_MENUITEM_SYNCHRONIZE:
-      cs_results.Format(IDS_SYNCHRONIZED, pthdpms->numProcessed);
-      break;
-    case ID_MENUITEM_EXPORT2PLAINTEXT:
-    case ID_MENUITEM_EXPORTENT2PLAINTEXT:
-    case ID_MENUITEM_EXPORT2XML:
-    case ID_MENUITEM_EXPORTENT2XML:
-      cs_results.Format(IDS_EXPORTED, pthdpms->numProcessed);
-      break;
-    default:
-      ASSERT(0);
-      break;
+  if (m_thdpms.bCancel) {
+    cs_results.LoadString(IDS_OPERATION_ABORTED);
+  } else {
+   // Can't do UI (show results dialog) from a worker thread!
+    switch (m_thdpms.nID) {
+      case ID_MENUITEM_COMPARE:
+        if (m_thdpms.status != 0) {
+          cs_results = m_pWZPSH->WZPSHShowCompareResults(m_pWZPSH->WZPSHGetCurFile(), 
+                                                         m_thdpms.sx_Filename,
+                                                         m_pothercore, m_prpt);
+          m_prpt->EndReport();
+        } else {
+          cs_results.LoadString(IDS_IDENTICALDATABASES);
+        }
+        break;
+      case ID_MENUITEM_MERGE:
+        cs_results = m_thdpms.csResults.c_str();
+        break;
+      case ID_MENUITEM_SYNCHRONIZE:
+        cs_results.Format(IDS_SYNCHRONIZED, m_thdpms.numProcessed);
+        break;
+      case ID_MENUITEM_EXPORT2PLAINTEXT:
+      case ID_MENUITEM_EXPORTENT2PLAINTEXT:
+      case ID_MENUITEM_EXPORT2XML:
+      case ID_MENUITEM_EXPORTENT2XML:
+        cs_results.Format(IDS_EXPORTED, m_thdpms.numProcessed);
+        break;
+      default:
+        ASSERT(0);
+        break;
+    }
+    m_pWZPSH->SetNumProcessed(m_thdpms.numProcessed);
   }
 
-  GetDlgItem(IDC_STATIC_WZRESULTS)->SetWindowText(cs_results);
-  GetDlgItem(IDC_STATIC_WZRESULTS)->ShowWindow(SW_SHOW);
-  GetDlgItem(IDC_STATIC_WZRESULTS)->EnableWindow(TRUE);
-
-  m_pWZPSH->SetNumProcessed(pthdpms->numProcessed);
-
-  UINT nID = pthdpms->nID;
-  m_status = pthdpms->status;
-  delete pthdpms;
-
+  // Tidy up other core
   if (m_pothercore != NULL) {
     if (m_pothercore->IsLockedFile(m_pothercore->GetCurFile().c_str()))
       m_pothercore->UnlockFile(m_pothercore->GetCurFile().c_str());
@@ -344,6 +377,12 @@ LRESULT CWZFinish::OnExecuteThreadEnded(WPARAM wParam, LPARAM )
     m_pothercore = NULL;
   }
 
+  GetDlgItem(IDC_STATIC_WZRESULTS)->SetWindowText(cs_results);
+  GetDlgItem(IDC_STATIC_WZRESULTS)->ShowWindow(SW_SHOW);
+  GetDlgItem(IDC_STATIC_WZRESULTS)->EnableWindow(TRUE);
+
+  m_status = m_thdpms.status;
+
   // Enable Finish button
   m_pWZPSH->SetWizardButtons(PSWIZB_FINISH);
 
@@ -352,35 +391,43 @@ LRESULT CWZFinish::OnExecuteThreadEnded(WPARAM wParam, LPARAM )
 
   m_pWZPSH->WZPSHSetUpdateWizardWindow(NULL);
 
-  CString cs_text;
-  if (m_status != 0) {
-    UINT uiMsg(0);
-    switch (nID) {
-      case ID_MENUITEM_COMPARE:
-        uiMsg = IDS_WZCOMPARE;
-        break;
-      case ID_MENUITEM_MERGE:
-        uiMsg = IDS_WZMERGE;
-        break;
-      case ID_MENUITEM_SYNCHRONIZE:
-        uiMsg = IDS_WZSYNCH;
-        break;
-      case ID_MENUITEM_EXPORT2PLAINTEXT:
-      case ID_MENUITEM_EXPORTENT2PLAINTEXT:
-        uiMsg = IDS_WZEXPORTTEXT;
-        break;
-      case ID_MENUITEM_EXPORT2XML:
-      case ID_MENUITEM_EXPORTENT2XML:
-        uiMsg = IDS_WZEXPORTXML;
-        break;
-      default:
-        ASSERT(0);
-        break;
+  // In Compare status == 0 means identical, status != 0 means different
+  // Details placed in results summary.
+  // In other functions, status != 0 means : failed.
+  CString cs_text, cs_temp;
+  if (m_thdpms.bCancel) {
+    cs_text.LoadString(IDS_OPERATION_ABORTED);
+  } else {
+    if (m_thdpms.nID == ID_MENUITEM_COMPARE) {
+      cs_text.LoadStringW(IDS_COMPARECOMPLETE);
+    } else {
+      if (m_status != 0) {
+        UINT uiMsg(0);
+        switch (m_thdpms.nID) {
+          case ID_MENUITEM_MERGE:
+            uiMsg = IDS_WZMERGE;
+            break;
+          case ID_MENUITEM_SYNCHRONIZE:
+            uiMsg = IDS_WZSYNCH;
+            break;
+          case ID_MENUITEM_EXPORT2PLAINTEXT:
+          case ID_MENUITEM_EXPORTENT2PLAINTEXT:
+            uiMsg = IDS_WZEXPORTTEXT;
+            break;
+          case ID_MENUITEM_EXPORT2XML:
+          case ID_MENUITEM_EXPORTENT2XML:
+            uiMsg = IDS_WZEXPORTXML;
+            break;
+          default:
+            ASSERT(0);
+            break;
+        }
+        cs_temp.LoadString(uiMsg);
+        cs_text.Format(IDS_WZACTIONFAILED, cs_temp);
+      } else
+        cs_text.LoadString(IDS_COMPLETE);
     }
-    CString cs_temp(MAKEINTRESOURCE(uiMsg));
-    cs_text.Format(IDS_WZACTIONFAILED, cs_temp);
-  } else
-    cs_text.LoadString(IDS_COMPLETE);
+  }
 
   GetDlgItem(IDC_STATIC_WZPROCESSING)->SetWindowText(cs_text);
   GetDlgItem(IDC_ENTRY)->ShowWindow(SW_HIDE);

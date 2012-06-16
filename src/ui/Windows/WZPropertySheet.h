@@ -59,25 +59,30 @@ public:
   void WZPSHSetUpdateWizardWindow(CWnd *pWnd)
   {m_pDbx->SetUpdateWizardWindow(pWnd);}
 
-  bool WZPSHDoCompare(PWScore *pothercore, const bool bAdvanced, CReport *prpt)
-  {return m_pDbx->DoCompare(pothercore, bAdvanced, prpt);}
+  bool WZPSHDoCompare(PWScore *pothercore, const bool bAdvanced, CReport *prpt,
+                      bool *pbCancel)
+  {return m_pDbx->DoCompare(pothercore, bAdvanced, prpt, pbCancel);}
 
-  stringT WZPSHDoMerge(PWScore *pothercore, const bool bAdvanced, CReport *prpt)
-  {return m_pDbx->DoMerge(pothercore, bAdvanced, prpt);}
+  stringT WZPSHDoMerge(PWScore *pothercore, const bool bAdvanced, CReport *prpt,
+                       bool *pbCancel)
+  {return m_pDbx->DoMerge(pothercore, bAdvanced, prpt, pbCancel);}
 
   void WZPSHDoSynchronize(PWScore *pothercore,
-                          const bool bAdvanced, int &numExported, CReport *prpt)
-  {m_pDbx->DoSynchronize(pothercore, bAdvanced, numExported, prpt);}
+                          const bool bAdvanced, int &numExported, CReport *prpt,
+                          bool *pbCancel)
+  {m_pDbx->DoSynchronize(pothercore, bAdvanced, numExported, prpt, pbCancel);}
 
   int WZPSHDoExportText(const StringX &sx_Filename, const bool bAll,
                         const wchar_t &delimiter, const bool bAdvanced, 
                         int &numExported, CReport *prpt)
-  {return m_pDbx->DoExportText(sx_Filename, bAll, delimiter, bAdvanced, numExported, prpt);}
+  {return m_pDbx->DoExportText(sx_Filename, bAll, delimiter, bAdvanced, numExported,
+                               prpt);}
 
   int WZPSHDoExportXML(const StringX &sx_Filename, const bool bAll,
                        const wchar_t &delimiter, const bool bAdvanced, 
                        int &numExported, CReport *prpt)
-  {return m_pDbx->DoExportXML(sx_Filename, bAll, delimiter, bAdvanced, numExported, prpt);}
+  {return m_pDbx->DoExportXML(sx_Filename, bAll, delimiter, bAdvanced, numExported,
+                              prpt);}
 
   void WZPSHViewReport(CReport &prpt)
   {m_pDbx->ViewReport(prpt);}
@@ -108,6 +113,7 @@ public:
   virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
   // Following override to stop accelerators interfering
   virtual INT_PTR DoModal();
+  virtual void PreSubclassWindow();
 
   DECLARE_MESSAGE_MAP()
 

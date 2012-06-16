@@ -98,6 +98,13 @@
     <File Name="../src/ui/wxWidgets/fieldselectionpanel.cpp"/>
     <File Name="../src/ui/wxWidgets/fieldselectiondlg.cpp"/>
     <File Name="../src/ui/wxWidgets/fieldselectiondlg.h"/>
+    <File Name="../src/ui/wxWidgets/pwsmenushortcuts.h"/>
+    <File Name="../src/ui/wxWidgets/pwsmenushortcuts.cpp"/>
+    <File Name="../src/ui/wxWidgets/PasswordPolicy.cpp"/>
+    <File Name="../src/ui/wxWidgets/PasswordPolicy.h"/>
+    <File Name="../src/ui/wxWidgets/ManagePwdPolicies.cpp"/>
+    <File Name="../src/ui/wxWidgets/ManagePwdPolicies.h"/>
+    <File Name="../src/ui/wxWidgets/mainManage.cpp"/>
   </VirtualDirectory>
   <Dependencies Name="Release">
     <Project Name="core"/>

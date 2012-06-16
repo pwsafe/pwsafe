@@ -452,6 +452,12 @@ void PasswordSafeFrame::DoCopyEmail(CItemData &item)
  */
 void PasswordSafeFrame::DoAutotype(CItemData &ci)
 {
+  std::vector<size_t> vactionverboffsets;
+  const StringX sxautotype = PWSAuxParse::GetAutoTypeString(ci, m_core,
+                                                            vactionverboffsets);
+
+  UpdateAccessTime(ci);
+
   // Called from OnAutoType and OnTrayAutoType
 
   // Rules are ("Minimize on Autotype" takes precedence):
@@ -477,10 +483,6 @@ void PasswordSafeFrame::DoAutotype(CItemData &ci)
     m_guiInfo->Save(this);
     Hide();
   }
- 
-  std::vector<size_t> vactionverboffsets;
-  const StringX sxautotype = PWSAuxParse::GetAutoTypeString(ci, m_core,
-                                                            vactionverboffsets);
 
   bool autotype_err = false;
   wxString autotype_err_msg;
@@ -492,10 +494,10 @@ void PasswordSafeFrame::DoAutotype(CItemData &ci)
 #ifndef _WIN32
     // pws_os::towc is not defined for Windows
     autotype_err_msg = towxstring(pws_os::towc(e.what()));
+#else
+    UNREFERENCED_PARAMETER(e);
 #endif
   }
-
-  UpdateAccessTime(ci);
 
   // Restore the UI if
   //   1. there was an error autotyping

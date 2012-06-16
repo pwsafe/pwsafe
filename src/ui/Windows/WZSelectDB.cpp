@@ -400,6 +400,11 @@ LRESULT CWZSelectDB::OnWizardNext()
         // pws_os::FOpen(...) cannot create any missing directories
         std::wstring dir, cdrive, cdir, cfile, cextn;
         pws_os::splitpath(m_filespec.GetString(), cdrive, cdir, cfile, cextn);
+        //  If root directory - nothing to create
+        if (cdir == L"\\")          
+          break;
+
+        // Try and create necessary directories
         dir = cdrive + cdir;
         int rc = ::SHCreateDirectoryEx(NULL, dir.c_str(), NULL);
         switch (rc) {
@@ -429,7 +434,7 @@ LRESULT CWZSelectDB::OnWizardNext()
   // Check that this file isn't already open
   const StringX sx_Filename1(m_pWZPSH->WZPSHGetCurFile());
   const StringX sx_Filename2 = m_filespec.GetString();
-  const StringX sx_passkey = StringX(m_passkey);
+  const StringX sx_passkey = (LPCWSTR)m_passkey;
   const bool bOtherIsDB = nID == ID_MENUITEM_COMPARE ||
                           nID == ID_MENUITEM_MERGE   ||
                           nID == ID_MENUITEM_SYNCHRONIZE;

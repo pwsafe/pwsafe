@@ -55,7 +55,7 @@ using namespace std;
 
 XFilterSAX2Handlers::XFilterSAX2Handlers()
 {
-  m_strElemContent.clear();
+  m_sxElemContent = _T("");
   m_iXMLVersion = -1;
   m_iSchemaVersion = -1;
   m_bErrors = false;
@@ -68,7 +68,7 @@ XFilterSAX2Handlers::~XFilterSAX2Handlers()
 
 void XFilterSAX2Handlers::startDocument()
 {
-  m_strXMLErrors.clear();
+  m_strXMLErrors = _T("");
   m_bEntryBeingProcessed = false;
 }
 
@@ -154,7 +154,7 @@ void XFilterSAX2Handlers::startElement(const XMLCh* const /* uri */,
     }
   }
 
-  m_strElemContent = _T("");
+  m_sxElemContent = _T("");
 }
 
 void XFilterSAX2Handlers::characters(const XMLCh* const chars,
@@ -169,10 +169,10 @@ void XFilterSAX2Handlers::characters(const XMLCh* const chars,
   XMLString::copyNString(xmlchData, chars, length);
   xmlchData[length] = L'\0';
 #ifdef UNICODE
-  m_strElemContent += StringX(_X2SX(xmlchData));
+  m_sxElemContent += StringX(_X2SX(xmlchData));
 #else
   char *szData = XMLString::transcode(xmlchData);
-  m_strElemContent += StringX(szData);
+  m_sxElemContent += StringX(szData);
   XMLString::release(&szData);
 #endif
   delete [] xmlchData;
@@ -190,10 +190,10 @@ void XFilterSAX2Handlers::ignorableWhitespace(const XMLCh* const chars,
   XMLString::copyNString(xmlchData, chars, length);
   xmlchData[length] = L'\0';
 #ifdef UNICODE
-  m_strElemContent += StringX(_X2SX(xmlchData));
+  m_sxElemContent += StringX(_X2SX(xmlchData));
 #else
   char *szData = XMLString::transcode(xmlchData);
-  m_strElemContent += StringX(szData);
+  m_sxElemContent += StringX(szData);
   XMLString::release(&szData);
 #endif
   delete [] xmlchData;
@@ -554,44 +554,44 @@ void XFilterSAX2Handlers::endElement(const XMLCh* const /* uri */,
   }
 
   else if (XMLString::equals(qname, _A2X("rule"))) {
-    ToUpper(m_strElemContent);
-    cur_filterentry->rule = PWSMatch::GetRule(m_strElemContent.c_str());
+    ToUpper(m_sxElemContent);
+    cur_filterentry->rule = PWSMatch::GetRule(m_sxElemContent.c_str());
   }
 
   else if (XMLString::equals(qname, _A2X("logic"))) {
-    if (m_strElemContent == _T("or"))
+    if (m_sxElemContent == _T("or"))
       cur_filterentry->ltype = LC_OR;
     else
       cur_filterentry->ltype = LC_AND;
   }
 
   else if (XMLString::equals(qname, _A2X("string"))) {
-    cur_filterentry->fstring = m_strElemContent;
+    cur_filterentry->fstring = m_sxElemContent;
   }
 
   else if (XMLString::equals(qname, _A2X("case"))) {
-    cur_filterentry->fcase = _ttoi(m_strElemContent.c_str()) != 0;
+    cur_filterentry->fcase = _ttoi(m_sxElemContent.c_str()) != 0;
   }
 
   else if (XMLString::equals(qname, _A2X("warn"))) {
-    cur_filterentry->fnum1 = _ttoi(m_strElemContent.c_str());
+    cur_filterentry->fnum1 = _ttoi(m_sxElemContent.c_str());
   }
 
   else if (XMLString::equals(qname, _A2X("num1"))) {
-    cur_filterentry->fnum1 = _ttoi(m_strElemContent.c_str());
+    cur_filterentry->fnum1 = _ttoi(m_sxElemContent.c_str());
   }
 
   else if (XMLString::equals(qname, _A2X("num2"))) {
-    cur_filterentry->fnum2 = _ttoi(m_strElemContent.c_str());
+    cur_filterentry->fnum2 = _ttoi(m_sxElemContent.c_str());
   }
 
   else if (XMLString::equals(qname, _A2X("unit"))) {
-    cur_filterentry->funit = _ttoi(m_strElemContent.c_str());
+    cur_filterentry->funit = _ttoi(m_sxElemContent.c_str());
   }
 
   else if (XMLString::equals(qname, _A2X("date1"))) {
     time_t t(0);
-    if (VerifyXMLDateString(m_strElemContent.c_str(), t) &&
+    if (VerifyXMLDateString(m_sxElemContent.c_str(), t) &&
         (t != (time_t)-1))
       cur_filterentry->fdate1 = t;
     else
@@ -600,7 +600,7 @@ void XFilterSAX2Handlers::endElement(const XMLCh* const /* uri */,
 
   else if (XMLString::equals(qname, _A2X("date2"))) {
     time_t t(0);
-    if (VerifyXMLDateString(m_strElemContent.c_str(), t) &&
+    if (VerifyXMLDateString(m_sxElemContent.c_str(), t) &&
         (t != (time_t)-1))
       cur_filterentry->fdate2 = t;
     else
@@ -608,30 +608,30 @@ void XFilterSAX2Handlers::endElement(const XMLCh* const /* uri */,
   }
 
   else if (XMLString::equals(qname, _A2X("DCA"))) {
-    cur_filterentry->fdca = (short)_ttoi(m_strElemContent.c_str());
+    cur_filterentry->fdca = (short)_ttoi(m_sxElemContent.c_str());
   }
 
   else if (XMLString::equals(qname, _A2X("type"))) {
-    if (m_strElemContent == _T("normal"))
+    if (m_sxElemContent == _T("normal"))
       cur_filterentry->etype = CItemData::ET_NORMAL;
-    else if (m_strElemContent == _T("alias"))
+    else if (m_sxElemContent == _T("alias"))
       cur_filterentry->etype = CItemData::ET_ALIAS;
-    else if (m_strElemContent == _T("shortcut"))
+    else if (m_sxElemContent == _T("shortcut"))
       cur_filterentry->etype = CItemData::ET_SHORTCUT;
-    else if (m_strElemContent == _T("aliasbase"))
+    else if (m_sxElemContent == _T("aliasbase"))
       cur_filterentry->etype = CItemData::ET_ALIASBASE;
-    else if (m_strElemContent == _T("shortcutbase"))
+    else if (m_sxElemContent == _T("shortcutbase"))
       cur_filterentry->etype = CItemData::ET_SHORTCUTBASE;
     else
       cur_filterentry->etype = CItemData::ET_INVALID;
   }
 
   else if (XMLString::equals(qname, _A2X("status"))) {
-    if (m_strElemContent == _T("clean"))
+    if (m_sxElemContent == _T("clean"))
       cur_filterentry->estatus = CItemData::ES_CLEAN;
-    else if (m_strElemContent == _T("added"))
+    else if (m_sxElemContent == _T("added"))
       cur_filterentry->estatus = CItemData::ES_ADDED;
-    else if (m_strElemContent == _T("modified"))
+    else if (m_sxElemContent == _T("modified"))
       cur_filterentry->estatus = CItemData::ES_MODIFIED;
     else
       cur_filterentry->estatus = CItemData::ES_INVALID;

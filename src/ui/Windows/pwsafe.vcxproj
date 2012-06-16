@@ -1087,11 +1087,13 @@
     <ClCompile Include="ColumnChooserDlg.cpp" />
     <ClCompile Include="ColumnChooserLC.cpp" />
     <ClCompile Include="CompareResultsDlg.cpp" />
+    <ClCompile Include="CompareWithSelectDlg.cpp" />
     <ClCompile Include="ConfirmDeleteDlg.cpp" />
     <ClCompile Include="ControlExtns.cpp" />
     <ClCompile Include="CoolMenu.cpp" />
     <ClCompile Include="CreateShortcutDlg.cpp" />
     <ClCompile Include="CryptKeyEntry.cpp" />
+    <ClCompile Include="CWTreeCtrl.cpp" />
     <ClCompile Include="DboxMain.cpp" />
     <ClCompile Include="DboxTray.cpp" />
     <ClCompile Include="DDStatic.cpp" />
@@ -1175,6 +1177,7 @@
     <ClCompile Include="RichEditCtrlExtn.cpp" />
     <ClCompile Include="RUEList.cpp" />
     <ClCompile Include="SampleTextDlg.cpp" />
+    <ClCompile Include="SCWListCtrl.cpp" />
     <ClCompile Include="SecString.cpp" />
     <ClCompile Include="filter\SetFiltersDlg.cpp" />
     <ClCompile Include="filter\SetHistoryFiltersDlg.cpp" />
@@ -1182,6 +1185,7 @@
     <ClCompile Include="SHCTHotKey.cpp" />
     <ClCompile Include="SHCTListCtrl.cpp" />
     <ClCompile Include="Shortcut.cpp" />
+    <ClCompile Include="ShowCompareDlg.cpp" />
     <ClCompile Include="SingleInstance.cpp" />
     <ClCompile Include="SMemFile.cpp" />
     <ClCompile Include="Subclass.cpp" />
@@ -1214,12 +1218,14 @@
     <ClInclude Include="ColumnChooserDlg.h" />
     <ClInclude Include="ColumnChooserLC.h" />
     <ClInclude Include="CompareResultsDlg.h" />
+    <ClInclude Include="CompareWithSelectDlg.h" />
     <ClInclude Include="ConfirmDeleteDlg.h" />
     <ClInclude Include="ControlExtns.h" />
     <ClInclude Include="CoolMenu.h" />
     <ClInclude Include="..\..\core\core.h" />
     <ClInclude Include="CreateShortcutDlg.h" />
     <ClInclude Include="CryptKeyEntry.h" />
+    <ClInclude Include="CWTreeCtrl.h" />
     <ClInclude Include="DboxMain.h" />
     <ClInclude Include="DDStatic.h" />
     <ClInclude Include="DDSupport.h" />
@@ -1299,6 +1305,7 @@
     <ClInclude Include="RichEditCtrlExtn.h" />
     <ClInclude Include="RUEList.h" />
     <ClInclude Include="SampleTextDlg.h" />
+    <ClInclude Include="SCWListCtrl.h" />
     <ClInclude Include="SecString.h" />
     <ClInclude Include="filter\SetFiltersDlg.h" />
     <ClInclude Include="filter\SetHistoryFiltersDlg.h" />
@@ -1306,6 +1313,7 @@
     <ClInclude Include="SHCTHotKey.h" />
     <ClInclude Include="SHCTListCtrl.h" />
     <ClInclude Include="Shortcut.h" />
+    <ClInclude Include="ShowCompareDlg.h" />
     <ClInclude Include="SingleInstance.h" />
     <ClInclude Include="SMemFile.h" />
     <ClInclude Include="StdAfx.h" />
@@ -1339,6 +1347,7 @@
     <None Include="graphics\abase_warn.ico" />
     <None Include="graphics\dragbar\classic\AutotypeX.bmp" />
     <None Include="graphics\dragbar\new\AutotypeX.bmp" />
+    <None Include="graphics\empty_node.bmp" />
     <None Include="graphics\findtoolbar\classic\findadvancedon.bmp" />
     <None Include="graphics\findtoolbar\new\findadvancedon.bmp" />
     <None Include="graphics\toolbar\classic\addgroup.bmp" />

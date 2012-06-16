@@ -403,7 +403,7 @@ void COptionsBackup::SetExample()
       time_t now;
       time(&now);
       CString cs_datetime = PWSUtil::ConvertToDateTimeString(now,
-                                                             TMC_EXPORT_IMPORT).c_str();
+                                                             PWSUtil::TMC_EXPORT_IMPORT).c_str();
       cs_example += L"_";
       cs_example = cs_example + cs_datetime.Left(4) +  // YYYY
         cs_datetime.Mid(5,2) +  // MM

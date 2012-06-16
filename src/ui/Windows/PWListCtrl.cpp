@@ -32,6 +32,7 @@ CPWListCtrl::~CPWListCtrl()
 
 BEGIN_MESSAGE_MAP(CPWListCtrl, CListCtrl)
   //{{AFX_MSG_MAP(CPWListCtrl)
+  ON_NOTIFY_REFLECT(LVN_ITEMCHANGING, OnItemChanging)
   ON_NOTIFY_REFLECT(LVN_KEYDOWN, OnSelectionChanged)
   ON_NOTIFY_REFLECT(NM_CUSTOMDRAW, OnCustomDraw)
   ON_MESSAGE(WM_CHAR, OnCharItemlist)
@@ -309,6 +310,28 @@ BOOL CPWListCtrl::OnEraseBkgnd(CDC* pDC)
   return TRUE;
 }
 
+void CPWListCtrl::OnItemChanging(NMHDR *pNMHDR, LRESULT *pLResult)
+{
+  *pLResult = FALSE;  // Allow change
+
+  NMLISTVIEW *pNMLV = reinterpret_cast<NMLISTVIEW *>(pNMHDR);
+  
+  // Check if state unchanged - unchanged == not interested
+  if ((pNMLV->uChanged & LVIF_STATE) != LVIF_STATE)
+    return;
+
+  // Has the selected state changed?  Only care if not selected and now is
+  if (!(pNMLV->uOldState & LVIS_SELECTED) == 0 && (pNMLV->uNewState & LVIS_SELECTED) != 0) {
+    return;
+  }
+
+  if ((GetKeyState(VK_CONTROL) & 0x8000) && GetSelectedCount() == 2) {
+    // Control key pressed - multi-select
+      *pLResult = TRUE; // Deny change - no more than 2 allowed to be selected
+      return;
+  }
+}
+
 void CPWListCtrl::OnSelectionChanged(NMHDR *pNotifyStruct, LRESULT *pLResult)
 {
   if (GetItemCount() == 0)
@@ -319,7 +342,7 @@ void CPWListCtrl::OnSelectionChanged(NMHDR *pNotifyStruct, LRESULT *pLResult)
   switch(pLVKeyDown->wVKey) {
     case VK_UP:
     case VK_DOWN:
-      m_pDbx->OnItemSelected(pNotifyStruct, pLResult);
+      m_pDbx->OnItemSelected(pNotifyStruct, pLResult, false);
       break;
     default:
       break;

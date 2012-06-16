@@ -124,7 +124,7 @@ void CProperties::Init()
     m_whenlastsaved = _("Unknown");
   } else {
     m_whenlastsaved = PWSUtil::ConvertToDateTimeString(twls,
-                                                       TMC_EXPORT_IMPORT).c_str();
+                                                       PWSUtil::TMC_EXPORT_IMPORT).c_str();
   }
 
   if (m_core.GetHeader().m_lastsavedby.empty() &&

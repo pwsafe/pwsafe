@@ -387,6 +387,18 @@
     <ClCompile Include="PWHistListCtrl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ShowCompareDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CompareWithSelectDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CWTreeCtrl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SCWListCtrl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AboutDlg.h">
@@ -774,6 +786,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PWHistListCtrl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CompareWithSelectDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ShowCompareDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CWTreeCtrl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SCWListCtrl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1604,6 +1628,9 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="graphics\toolbar\new\copytoclipboard.bmp">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="graphics\empty_node.bmp">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

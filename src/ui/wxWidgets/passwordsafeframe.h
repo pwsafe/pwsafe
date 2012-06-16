@@ -36,11 +36,11 @@
 ////@begin forward declarations
 class PWSGrid;
 class PWSTreeCtrl;
+////@end forward declarations
 class SystemTray;
 class GUIInfo;
 struct SelectionCriteria;
 class PWSDragBar;
-////@end forward declarations
 class PasswordSafeSearch;
 
 /*!
@@ -98,6 +98,7 @@ class PasswordSafeSearch;
 #define ID_BACKUP 10057
 #define ID_RESTORE 10058
 #define ID_OPTIONS_M 10059
+#define ID_PWDPOLSM 10215
 #define ID_MENUITEM 10012
 #define SYMBOL_PASSWORDSAFEFRAME_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxMINIMIZE_BOX|wxMAXIMIZE_BOX|wxCLOSE_BOX
 #define SYMBOL_PASSWORDSAFEFRAME_TITLE _("PasswordSafe")
@@ -127,7 +128,6 @@ enum {
   ID_TOOLBAR_NEW,
   ID_TOOLBAR_CLASSIC,
   ID_SYNCHRONIZE,
-  ID_VALIDATE
 };
 
 
@@ -191,7 +191,7 @@ public:
   void OnSaveClick( wxCommandEvent& evt);
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_SAVEAS
-  void OnSaveAsClick(wxCommandEvent& evt);
+  void OnSaveAsClick( wxCommandEvent& evt);
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_PROPERTIES
   void OnPropertiesClick( wxCommandEvent& evt);
@@ -223,9 +223,6 @@ public:
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_COPYURL
   void OnCopyurlClick( wxCommandEvent& evt);
 
-  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_COPYEMAIL
-  void OnCopyEmailClick( wxCommandEvent& evt);
-
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_LIST_VIEW
   void OnListViewClick( wxCommandEvent& evt);
 
@@ -237,6 +234,9 @@ public:
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_OPTIONS_M
   void OnOptionsMClick( wxCommandEvent& evt);
+
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_PWDPOLSM
+  void OnPwdPolsMClick( wxCommandEvent& evt);
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for wxID_ABOUT
   void OnAboutClick( wxCommandEvent& evt);
@@ -302,6 +302,9 @@ public:
   /// called when one of the MRU db's is selected from File menu
   void OnOpenRecentDB(wxCommandEvent& evt);
   
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_COPYEMAIL
+  void OnCopyEmailClick( wxCommandEvent& evt);
+
   /// wxEVT_UPDATE_UI event handler for all command ids
   void OnUpdateUI(wxUpdateUIEvent& evt);
   
@@ -338,9 +341,6 @@ public:
   
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_TOOLBAR_CLASSIC and ID_TOOLBAR_NEW
   void OnChangeToolbarType(wxCommandEvent& /*evt*/);
-
-  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_VALIDATE
-  void OnValidate(wxCommandEvent& evt);
 
   void OnBackupSafe(wxCommandEvent& evt);
   void OnRestoreSafe(wxCommandEvent& evt);
@@ -405,8 +405,6 @@ public:
   CItemData *GetSelectedEntry() const;
     wxString GetCurrentSafe() const { return towxstring(m_core.GetCurFile()); }
     
-  void ValidateCurrentDatabase();
-    
 ////@begin PasswordSafeFrame member variables
   PWSGrid* m_grid;
   PWSTreeCtrl* m_tree;
@@ -449,6 +447,7 @@ public:
   PWSDragBar* GetDragBar();
   bool IsClosed() const;
   void SaveSettings() const;
+  void LockDb();
 
   void Merge(const StringX &sx_Filename2, PWScore *pothercore, const SelectionCriteria& selection);
   int MergeDependents(PWScore *pothercore, MultiCommands *pmulticmds,
@@ -487,6 +486,7 @@ public:
   enum {iListOnly = 1, iTreeOnly = 2, iBothViews = 3};
   // top-level windows that we hid while locking the UI
   wxWindowList hiddenWindows;
+  bool m_bUnlocking;
 };
 
 BEGIN_DECLARE_EVENT_TYPES()

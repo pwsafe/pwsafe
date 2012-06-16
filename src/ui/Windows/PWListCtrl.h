@@ -31,9 +31,6 @@ public:
   void Initialize();
   void ActivateND(const bool bActivate);
 
-  LRESULT OnCharItemlist(WPARAM wParam, LPARAM lParam);
-  bool FindNext(const CString &cs_find, const int iSubItem);
-
   void SetFilterState(bool bState);
   void SetUpFont();
   void SetHighlightChanges(bool bvalue)
@@ -46,17 +43,21 @@ protected:
   afx_msg LRESULT OnMouseLeave(WPARAM, LPARAM);
   afx_msg void OnMouseMove(UINT nFlags, CPoint point);
   afx_msg BOOL OnEraseBkgnd(CDC* pDC);
+  afx_msg void OnItemChanging(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnSelectionChanged(NMHDR *pNotifyStruct, LRESULT *pLResult);
-  afx_msg void OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnPaint();
+  afx_msg void OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar);
   //}}AFX_MSG
 
+  LRESULT OnCharItemlist(WPARAM wParam, LPARAM lParam);
   BOOL PreTranslateMessage(MSG* pMsg);
 
   DECLARE_MESSAGE_MAP()
 
 private:
+  bool FindNext(const CString &cs_find, const int iSubItem);
+
   DboxMain *m_pDbx;
   CString m_csFind;
   UINT_PTR m_FindTimerID;

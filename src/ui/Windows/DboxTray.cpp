@@ -101,7 +101,7 @@ void DboxMain::OnTrayCopyUsername(UINT nID)
   const StringX cs_username = ci.GetUser();
   SetClipboardData(cs_username);
   UpdateLastClipboardAction(CItemData::USER);
-  UpdateAccessTime(&ci);
+  UpdateAccessTime(ci.GetUUID());
 }
 
 void DboxMain::OnUpdateTrayCopyUsername(CCmdUI *)
@@ -124,7 +124,7 @@ void DboxMain::OnTrayCopyPassword(UINT nID)
   const StringX cs_password = ci.GetPassword();
   SetClipboardData(cs_password);
   UpdateLastClipboardAction(CItemData::PASSWORD);
-  UpdateAccessTime(&ci);
+  UpdateAccessTime(ci.GetUUID());
 }
 
 void DboxMain::OnUpdateTrayCopyPassword(CCmdUI *)
@@ -145,7 +145,7 @@ void DboxMain::OnTrayCopyNotes(UINT nID)
 
   SetClipboardData(ci.GetNotes());
   UpdateLastClipboardAction(CItemData::NOTES);
-  UpdateAccessTime(&ci);
+  UpdateAccessTime(ci.GetUUID());
 }
 
 void DboxMain::OnUpdateTrayCopyNotes(CCmdUI *)
@@ -189,7 +189,7 @@ void DboxMain::OnTrayBrowse(UINT nID)
     } else
       UpdateLastClipboardAction(CItemData::URL);
   }
-  UpdateAccessTime(&ci);
+  UpdateAccessTime(ci.GetUUID());
 }
 
 void DboxMain::OnUpdateTrayBrowse(CCmdUI *pCmdUI)
@@ -254,7 +254,7 @@ void DboxMain::OnTrayCopyEmail(UINT nID)
   const StringX cs_email = ci.GetEmail();
   SetClipboardData(cs_email);
   UpdateLastClipboardAction(CItemData::EMAIL);
-  UpdateAccessTime(&ci);
+  UpdateAccessTime(ci.GetUUID());
 }
 
 void DboxMain::OnUpdateTrayCopyEmail(CCmdUI *)
@@ -285,7 +285,7 @@ void DboxMain::OnTraySendEmail(UINT nID)
   if (!cs_command.IsEmpty()) {
     std::vector<size_t> vactionverboffsets;
     LaunchBrowser(cs_command, L"", vactionverboffsets, false);
-    UpdateAccessTime(&ci);
+    UpdateAccessTime(ci.GetUUID());
   }
 }
 
@@ -337,7 +337,7 @@ void DboxMain::OnTrayAutoType(UINT nID)
 
   m_bInAT = true;
   AutoType(ci);
-  UpdateAccessTime(&ci);
+  UpdateAccessTime(ci.GetUUID());
   m_bInAT = false;
 }
 
@@ -372,7 +372,7 @@ void DboxMain::OnTrayCopyURL(UINT nID)
 
   SetClipboardData(cs_URL);
   UpdateLastClipboardAction(CItemData::URL);
-  UpdateAccessTime(&ci);
+  UpdateAccessTime(ci.GetUUID());
 }
 
 void DboxMain::OnUpdateTrayCopyURL(CCmdUI *)
@@ -406,7 +406,7 @@ void DboxMain::OnTrayRunCommand(UINT nID)
 
   SetClipboardData(cs_URL);
   UpdateLastClipboardAction(CItemData::URL);
-  UpdateAccessTime(&ci);
+  UpdateAccessTime(ci.GetUUID());
 }
 
 void DboxMain::OnUpdateTrayRunCommand(CCmdUI *)

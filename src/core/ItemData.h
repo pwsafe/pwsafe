@@ -96,6 +96,14 @@ public:
                     ES_DELETED      =  4,  // Deleted  but not yet removed from disk copy
                     ES_LAST};
 
+  // Flags if error found during validate of the entry
+  enum  {VF_OK              =  0,
+         VF_BAD_UUID        =  1,
+         VF_EMPTY_TITLE     =  2,
+         VF_EMPTY_PASSWORD  =  4,
+         VF_NOT_UNIQUE_GTU  =  8,
+         VF_BAD_PSWDHISTORY = 16};
+
   // a bitset for indicating a subset of an item's fields: 
   typedef std::bitset<LAST> FieldBits;
 
@@ -127,31 +135,31 @@ public:
   StringX GetGroup() const; // V20
   StringX GetURL() const; // V30
   StringX GetAutoType() const; // V30
-  StringX GetATime() const {return GetTime(ATIME, TMC_ASC_UNKNOWN);}  // V30
-  StringX GetCTime() const {return GetTime(CTIME, TMC_ASC_UNKNOWN);}  // V30
-  StringX GetXTime() const {return GetTime(XTIME, TMC_ASC_UNKNOWN);}  // V30
-  StringX GetPMTime() const {return GetTime(PMTIME, TMC_ASC_UNKNOWN);}  // V30
-  StringX GetRMTime() const {return GetTime(RMTIME, TMC_ASC_UNKNOWN);}  // V30
-  StringX GetATimeL() const {return GetTime(ATIME, TMC_LOCALE);}  // V30
-  StringX GetCTimeL() const {return GetTime(CTIME, TMC_LOCALE);}  // V30
-  StringX GetXTimeL() const {return GetTime(XTIME, TMC_LOCALE);}  // V30
-  StringX GetPMTimeL() const {return GetTime(PMTIME, TMC_LOCALE);}  // V30
-  StringX GetRMTimeL() const {return GetTime(RMTIME, TMC_LOCALE);}  // V30
-  StringX GetATimeN() const {return GetTime(ATIME, TMC_ASC_NULL);}  // V30
-  StringX GetCTimeN() const {return GetTime(CTIME, TMC_ASC_NULL);}  // V30
-  StringX GetXTimeN() const {return GetTime(XTIME, TMC_ASC_NULL);}  // V30
-  StringX GetPMTimeN() const {return GetTime(PMTIME, TMC_ASC_NULL);}  // V30
-  StringX GetRMTimeN() const {return GetTime(RMTIME, TMC_ASC_NULL);}  // V30
-  StringX GetATimeExp() const {return GetTime(ATIME, TMC_EXPORT_IMPORT);}  // V30
-  StringX GetCTimeExp() const {return GetTime(CTIME, TMC_EXPORT_IMPORT);}  // V30
-  StringX GetXTimeExp() const {return GetTime(XTIME, TMC_EXPORT_IMPORT);}  // V30
-  StringX GetPMTimeExp() const {return GetTime(PMTIME, TMC_EXPORT_IMPORT);}  // V30
-  StringX GetRMTimeExp() const {return GetTime(RMTIME, TMC_EXPORT_IMPORT);}  // V30
-  StringX GetATimeXML() const {return GetTime(ATIME, TMC_XML);}  // V30
-  StringX GetCTimeXML() const {return GetTime(CTIME, TMC_XML);}  // V30
-  StringX GetXTimeXML() const {return GetTime(XTIME, TMC_XML);}  // V30
-  StringX GetPMTimeXML() const {return GetTime(PMTIME, TMC_XML);}  // V30
-  StringX GetRMTimeXML() const {return GetTime(RMTIME, TMC_XML);}  // V30
+  StringX GetATime() const {return GetTime(ATIME, PWSUtil::TMC_ASC_UNKNOWN);}  // V30
+  StringX GetCTime() const {return GetTime(CTIME, PWSUtil::TMC_ASC_UNKNOWN);}  // V30
+  StringX GetXTime() const {return GetTime(XTIME, PWSUtil::TMC_ASC_UNKNOWN);}  // V30
+  StringX GetPMTime() const {return GetTime(PMTIME, PWSUtil::TMC_ASC_UNKNOWN);}  // V30
+  StringX GetRMTime() const {return GetTime(RMTIME, PWSUtil::TMC_ASC_UNKNOWN);}  // V30
+  StringX GetATimeL() const {return GetTime(ATIME, PWSUtil::TMC_LOCALE);}  // V30
+  StringX GetCTimeL() const {return GetTime(CTIME, PWSUtil::TMC_LOCALE);}  // V30
+  StringX GetXTimeL() const {return GetTime(XTIME, PWSUtil::TMC_LOCALE_DATE_ONLY);}  // V30
+  StringX GetPMTimeL() const {return GetTime(PMTIME, PWSUtil::TMC_LOCALE);}  // V30
+  StringX GetRMTimeL() const {return GetTime(RMTIME, PWSUtil::TMC_LOCALE);}  // V30
+  StringX GetATimeN() const {return GetTime(ATIME, PWSUtil::TMC_ASC_NULL);}  // V30
+  StringX GetCTimeN() const {return GetTime(CTIME, PWSUtil::TMC_ASC_NULL);}  // V30
+  StringX GetXTimeN() const {return GetTime(XTIME, PWSUtil::TMC_ASC_NULL);}  // V30
+  StringX GetPMTimeN() const {return GetTime(PMTIME, PWSUtil::TMC_ASC_NULL);}  // V30
+  StringX GetRMTimeN() const {return GetTime(RMTIME, PWSUtil::TMC_ASC_NULL);}  // V30
+  StringX GetATimeExp() const {return GetTime(ATIME, PWSUtil::TMC_EXPORT_IMPORT);}  // V30
+  StringX GetCTimeExp() const {return GetTime(CTIME, PWSUtil::TMC_EXPORT_IMPORT);}  // V30
+  StringX GetXTimeExp() const {return GetTime(XTIME, PWSUtil::TMC_EXPORT_IMPORT);}  // V30
+  StringX GetPMTimeExp() const {return GetTime(PMTIME, PWSUtil::TMC_EXPORT_IMPORT);}  // V30
+  StringX GetRMTimeExp() const {return GetTime(RMTIME, PWSUtil::TMC_EXPORT_IMPORT);}  // V30
+  StringX GetATimeXML() const {return GetTime(ATIME, PWSUtil::TMC_XML);}  // V30
+  StringX GetCTimeXML() const {return GetTime(CTIME, PWSUtil::TMC_XML);}  // V30
+  StringX GetXTimeXML() const {return GetTime(XTIME, PWSUtil::TMC_XML);}  // V30
+  StringX GetPMTimeXML() const {return GetTime(PMTIME, PWSUtil::TMC_XML);}  // V30
+  StringX GetRMTimeXML() const {return GetTime(RMTIME, PWSUtil::TMC_XML);}  // V30
   //  These populate the time structure instead of giving a character string
   void GetATime(time_t &t) const {GetTime(ATIME, t);}  // V30
   void GetCTime(time_t &t) const {GetTime(CTIME, t);}  // V30
@@ -248,10 +256,11 @@ public:
   DisplayInfoBase *GetDisplayInfo() const {return m_display_info;}
   void SetDisplayInfo(DisplayInfoBase *di) {delete m_display_info; m_display_info = di;}
   void Clear();
+
   // check record for mandatory fields, silently fix if missing
-  int ValidateUUID(const unsigned short &nMajor, const unsigned short &nMinor,
-                   uuid_array_t &uuid_array);
+  bool ValidateEntry(int &flags);
   bool ValidatePWHistory(); // return true if OK, false if there's a problem
+
   bool IsExpired() const;
   bool WillExpire(const int numdays) const;
 
@@ -348,15 +357,17 @@ private:
   CItemField m_tttPMTime; // last 'P'assword 'M'odification time
   CItemField m_tttRMTime; // last 'R'ecord 'M'odification time
   CItemField m_PWHistory;
-  CItemField m_PWPolicy;
   CItemField m_XTimeInterval;
   CItemField m_RunCommand;
   CItemField m_DCA;
   CItemField m_ShiftDCA;
   CItemField m_email;
   CItemField m_protected;
-  CItemField m_symbols;
-  CItemField m_PolicyName;
+  // Password Policy stuff: Either m_PWPolicy (+ optionally m_symbols) is not empty
+  // or m_PolicyName is not empty. Both cannot be set. All can be empty.
+  CItemField m_PWPolicy;  // string encoding of item-specific password policy
+  CItemField m_symbols;   // string of item-specific password symbols
+  CItemField m_PolicyName; // named non-default password policy for this item
 
   // Save unknown record fields on read to put back on write unchanged
   UnknownFields m_URFL;
@@ -376,7 +387,7 @@ private:
   // move from pre-2.0 name to post-2.0 title+user
   void SplitName(const StringX &name,
                  StringX &title, StringX &username);
-  StringX GetTime(int whichtime, int result_format) const; // V30
+  StringX GetTime(int whichtime, PWSUtil::TMC result_format) const; // V30
   void GetTime(int whichtime, time_t &t) const; // V30
   void SetTime(const int whichtime); // V30
   void SetTime(const int whichtime, time_t t); // V30
@@ -398,9 +409,10 @@ private:
 
 inline bool CItemData::IsTextField(unsigned char t)
 {
-  return !(t == UUID || t == CTIME || t == PMTIME ||
-    t == ATIME || t == XTIME || t == RMTIME || t == XTIME_INT ||
-    t == RESERVED || t == DCA || t == SHIFTDCA ||
+  return !(t == UUID ||
+    t == CTIME     || t == PMTIME || t == ATIME || t == XTIME || t == RMTIME ||
+    t == XTIME_INT ||
+    t == RESERVED  || t == DCA    || t == SHIFTDCA || t == PROTECTED ||
     t >= LAST);
 }
 #endif /* __ITEMDATA_H */

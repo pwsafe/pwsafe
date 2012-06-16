@@ -1,5 +1,5 @@
-Password Safe 3.27.1 Release Notes - January 2012
-=================================================
+Password Safe 3.29pre Release Notes - June 2012
+===============================================
 
 This note describe the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -8,206 +8,97 @@ information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
 
-New Features for 3.27.1
-=======================
-[3468289] Use the Password font for passwords displayed in the Password History and for
-those displayed in the List view.  Also add the ability to zoom in/out of the Notes field
-to enable any text to be more easily read.
-[3455436] Users may now delete the password history for all existing entries in a database.
-They may choose to also change Protected Entries, although the default is not to.
-[3421963] Centralized Password Policies can now be saved in a database, managed (added,
-edited and deleted), exported and imported, used in filters and to generate passwords.
+New Features for 3.29pre
+========================
+[3519484] Empty Groups are now persistent (previously a group with no
+entries would 'disappear' if the database was locked or closed).
+[3510481] The Last Modified and Password Modified date/times are
+initially set to show the entry's creation time, instead of being blank.
+[] When comparing databases, you can now display of the details of the
+entries' differences in the results dialog by right-click -> compare
+selected entries.
+[] You can now cancel a long running Compare, Merge or Synchronize
+database operation. Note: You should check the operation's report file
+to see if the operation was indeed cancelled. If not, you can undo it
+as all operations).
+[] Portuguese (Brazil) installation instructions added, thanks to Andreas.
 
-Changes to Existing Features in 3.27.1
-======================================
-[] The default backup policy has been changed to save the last three versions of the database, instead of one.
+Changes to Existing Features in 3.29pre
+=======================================
+None
+
+Bugs fixed in 3.29pre
+=====================
+[3525995] Find now only highlights/select the found entry.
+[3523117] Password Expiration Date now correctly set when using intervals.
+[3521158] Paste into the Notes field (Add or Edit entry) is now always
+in plain text.
+[3518734] When generating passwords (Ctrl-P), the user is no longer
+prompted to save changes when pressing Esc if they have selected a
+Named Password Policy but not generated a password.
+[3518732] Custom special symbol set now handled correctly in Generate
+Password dialog box.
+[3518389] All date/time fields in the List view are now displayed
+using the user's "short date" format as specified via the Windows
+Control Panel "Region and Language" tab.
+[3515692] Fixed crash with Generate Password switching to default
+policy with > 1 named policy.
+[3514819] Add Group now works again.
+[3510590] Password History is now correctly repaired during the
+automatic Validate on database open. 
+[3508891] Editing an entry's Notes using an external editor no longer
+adds blank lines and fully supports non-Latin characters.
+[3498625] Test selected password policy now reflects any edits done to
+the policy.
+[3495473] Notes Word Wrap during edit now works again.
+
+New Features for 3.28
+=====================
+[3468289] The passwords in the Password History and in the List view now
+displayed with the specified Password Font. In addition, you can now zoom
+in and out of the Notes field, for easy reading of texts.
+[3455436] The password history can now be deleted for all existing entries
+in a database at once (optionally including Protected Entries).
+[3421963] Multiple Password Policies can now be defined, managed and
+selected in entries to generate passwords.
+[] Partial support for Czech has been added, thanks to butchtik.
+
+Changes to Existing Features in 3.28
+====================================
 [3445820] The Edit menu item and entry right-click context menu item "Copy Run Command to
-Clipboard" will, by default, substitute any variables within the command. To disable this,
-hold down the Ctrl key when selecting these menu items.  The standard menu shortcut cannot
-be used to disable the substitution as the Ctrl key may be used to select a different
-menu item/command.
-[] As indicated with the V3.26 release, date time fields, when exported to XML,
-now are in the W3C dateTime standard format instead of PasswordSafe's.  This release
-can nolonger import XML files with date time fields in the old PasswordSafe's forms.
-See Help file (the XML section of "Import Password Entries") on how to manually change
-the XML file exported prior to V3.26 to allow it to be successfully imported in this release.
+Clipboard" will now substitute any variables within the command. This can
+be disabled by holding down the Ctrl key when selecting these menu
+items. (Note that the standard menu shortcut can't be used to disable, as
+the Ctrl key may be used to select a different menu item/command.)
+[] As mentioned in the V3.26 release, the XML representation of date/time
+fields, are now in the W3C dateTime standard format instead of PasswordSafe's. This release
+no longer supports import of XML files with date time fields in the old PasswordSafe's format.
+See the online Help (the XML section of "Import Password Entries") if you
+need to manually convert old XML files.
 [] After closing the current database, on opening another, PasswordSafe will first
 attempt to access the directory of the last opened database in order to allow the user
 to start browsing for their intended database.  If this directory is not available,
 PasswordSafe will open the default "My Safes" directory as it did prior to this change.
+[] Databases are now always validated when opened. The Manage->Validate
+menu item has therefore been removed.
+[] The default backup policy has been changed to save the last three
+versions of the database, instead of one. 
+[] The graphic symbols for entries, groups, etc. have been redone, as most
+displays now support more than 256 colors.
 
-Bugs fixed in 3.27.1
-====================
+Bugs fixed in 3.28
+==================
+[3486960] Rename of a group is now complete even if a filter is active.
+[3486959] PasswordSafe no longer crashes when returning to edit after lock.
 [3468853] The number of saved passwords can be changed and after the user presses Apply
 they will no longer be warned that the entry has been changed when pressing Cancel.
-[3462520] A password entry's expiry time in days now correctly
-reflects the expiration date for non-recurring expiration.
+[3462520] A password entry's expiry time in days now correctly reflects the
+expiration date for non-recurring expiration.
 [3440318] Filters can now be cleared by double-clicking on the filter indicator in
 the status bar. Also, Filter Menu correctly changed when a filter is active.
-[3435869] '-g config_file' option now accepts a non-existing file,
-creating it after notfying the user.
+[3435869] '-g config_file' option now accepts a non-existing file, creating
+it after notfying the user.
 [3430196] Buttons in the Options property pages now retain the user's Windows theme.
 [] Fix inability to copy entries to the original database in the Compare database results
 dialog.
 [] Thanks to Jon F. for proofreading the online help.
-
-New Features for 3.27
-=====================
-[3367590] User can now add a database name and description via the Properties
-diaolg.
-[3349458] Allow filters to match on rules based on the password's length.
-[3316779] Shift + "left mouse button 'Double-Click'" now configurable for user.
-Default is copy the username to the clipboard.
-[] Preferences stored in the database are shown in blue in the Options dialogs.
-
-Changes to Existing Features in 3.27
-====================================
-[3406549] Tooltip for System tray (displaying database file path) is
-now limited to 40 characters (replacing text in the middle with '...'
-if needed).
-[3348954] The passphrase is now required to change from read-only to
-read/write.
-
-Bugs fixed in 3.27
-==================
-[3411210] No longer crashes when unlocking with Subset Password dialog
-box opened.
-[3395549] PasswordSafe now displays forms correctly on Netbooks.
-[3382422] Toolbar now updated to reflect R/W or R-O mode when user
-dynamically changes mode. 
-[3380714] User can now save database after manually taking a bakup.
-[3380424] System Menu 'X' now closes the Edit/View PropertyPages when
-the database is in R-O mode or the entry is protected.
-[] Filter image in Status bar is no longer replaced by 'Filter1' after
-changing preferences via Manage->Options.
-[] Selecting hexadecimal passwords as the database policy no longer
-causes validation to fail.
-[] Correctly show database has been modified (to allow saving) if
-database preferences have been changed.
-
-New Features for 3.26
-=====================
-[3288341] Autotype has been added to the DragBar. Drag the image to an
-input area on another Window (e.g., Browser) and PasswordSafe will
-begin Autotype from there. 
-[3286721] User can now toggle between read-only and read-write modes
-via a menu item or by double-clicking on the current R-O or R/W
-indicator in the Status Bar.
-[3203152] The displayed language can now be changed via the new
-Manage->Change Language menu.
-[3065111] Add/Edit now displays both the Application's (PasswordSafe) and the
-current database's default Autotype string (if set via Manage->Options).
-[2964804, 1855389] The user can specify the list of symbols valid for
-password generation, and can override this for any particular
-entry (except when EasyVision or Pronounceable passwords are chosen).
-[1831893, 1471134] Added Autotype code "\s" to send "Shift+Tab" (back tab).
-[] Allow user to control copying of the password to clipboard when
-performing "Browse to URL" via an option in Options->Security. This is
-a database option i.e., you can have different setting for different
-databases.
-[] Support importing of TXT, CSV files and XML exported from KeePass
-V1 and KeePass V2 XML files. Note that KeePass V2's export in the V1
-format is does not conform to their own format as specified by their
-V1 product and can not be imported. Please review our Help file for
-the settings in KeePass required during their export. 
-
-Changes to Existing Features in 3.26
-====================================
-[] New image on start-up dialog - courtesy of user Prinz_Eugen.
-[] Polish installation texts added thanks to Michal Niklas.
-[] An entry's password expiry date is set or cleared directly rather than using
-the Set and Clear buttons after changing values.
-[] The default password generation policy is now for 12 character
-passwords that include symbol characters (previous default was 8, no
-symbols).
-[] Unknown database header fields and unknown entry fields are no
-longer exported when a database is exported to XML as there is no
-mechanism to re-check them during import. Exporting to XML and then
-importing to a new database can be used to remove these unknown
-fields.
-[] Date time fields, when exported to XML, now are in the W3C dateTime
-standard format instead of PasswordSafe's.  This release can import
-XML files with date time fields in either of these forms. The next
-release will only be able to process the W3C standard.
-[] Fully support importing of TXT files exported from KeePass V1
-including the Group Tree structure, URL and date time fields. Please
-review the online help for more details.
-
-Bugs fixed in 3.26
-==================
-[3325116] Users can no longer select an entry via the System Tray
-icon's Recent Entry menu if the display has not been restored after
-minimize or unlock.
-[3306357, 3062632, 2888026] User preference changes are now correctly
-saved. This includes allowing user to change database preferences when
-the database is read-only.
-[3303018] Filters with quotes in their name are now correctly
-exported, imported and displayed in the Manage Filters dialog.
-[3301904] Export XML, export Text and the export of filters functions
-now process file names and paths containing non-Latin characters.  In
-addition, missing directories in the specified path are created as
-neeeded.
-[3234204] PasswordSafe no longer exits if the command flag is set to
-"-s <databasename>".
-[3088187] The correct entry in List View is now used for Autotype when
-using the keyboard to select the entry when PasswordSafe first opens.
-[] Controls in Edit are now disabled if entry is protected.
-[] Compare databases now correctly compares the 'Protect' and password
-policy 'symbols' fields of entries.
-
-New Features for 3.25
-=====================
-[] Dutch installation instructions thank to Kees, and a first
-(incomplete) Dutch translation of the application thank to Bert, Kees
-and Fred.
-[] Korean texts in the application and installer program thanks to
-Seunggyun.
-[] Poserpro has provided Traditional Chinese texts for the installer
-program.
-[] New View menu option: Show entries with Expiry. This is useful for
-displaying entries with passwords that are expired or about to expire.
-
-Changes to Existing Features in 3.25
-====================================
-[3171962] The password expiration warning mechanism now checks for
-expiration daily. The display of expired and almost-expired entries
-has been redesigned, allowing users to update the entry directly. When
-an expired password is changed, the expiry date will be cleared unless
-there is a recurring password expiry interval, in which case a new
-expiry date will be calculated.
-[3131945] Double-clicking on the system tray icon when PasswordSafe is
-not minimized now brings it to front, instead of minimizing.
-[3131935] Rename of an entry or group in the Tree View can now only be
-performed via the Rename shortcut (default value F2), using the Edit
-menu or the right-click context menu. Edit in place by double clicking
-the entry is no longer allowed as, most of the time, this was not the
-desired action.
-[] Filtered views are now updated when an entry's edited, e.g., if an
-entry is edited such that it no longer satisfies the filter's
-criteria, it will be removed from the display. 
-[] The Russian online help has been totally rewritten and updated,
-thanks to pm_kan.
-[] pm_kan has updated the Russian texts.
-[] The Spanish texts have been updated thanks to Jose.
-[] Karlo has updated the German texts.
-[] Francois has updated the French texts.
-[] Bjorne has updated the Swedish version.
-[] Freedoctor has updated the Chinese texts.
-
-Bugs fixed in 3.25
-==================
-[3194472] Fix new group creation location. When a Group is selected, then
-selecting 'Add Group' from the Edit menu or from the context menu
-displayed by right clicking on that Group, the new group will be a
-child of the selected group. However, when using the context menu
-displayed on right clicking on 'white space' below the last
-entry/group displayed, the group will be created at the topmost
-level. 
-[3165889] No longer crashes if search starts with Shift-Enter (search
-backwards).
-[3148701] Windows installer will now refuse to install on Win2K,
-referring user to last supported version on that OS (3.18).
-[3115760] Window view is now saved and restored if the user uses the Windows
-"Show Desktop" feature.
-[] No longer crashes when doing an Undo after a Merge.
-[] Ensure Undo/Redo honour the changes to the display of the original change.

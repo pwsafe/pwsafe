@@ -131,9 +131,8 @@ CFont * CCoolMenuManager::GetMenuFont()
 BOOL CCoolMenuManager::CMOnMeasureItem(LPMEASUREITEMSTRUCT lpmis)
 {
   ASSERT(lpmis);
-  CMenuItemData* pmd = (CMenuItemData*)lpmis->itemData;
-  ASSERT(pmd);
-  if (lpmis->CtlType != ODT_MENU || !pmd->IsCMID())
+  CMenuItemData *pmd = (CMenuItemData *)lpmis->itemData;
+  if (lpmis->CtlType != ODT_MENU || pmd == NULL || !pmd->IsCMID())
     return FALSE; // not handled by me
 
   if (pmd->fType & MFT_SEPARATOR) {
@@ -174,9 +173,8 @@ BOOL CCoolMenuManager::CMOnMeasureItem(LPMEASUREITEMSTRUCT lpmis)
 BOOL CCoolMenuManager::CMOnDrawItem(LPDRAWITEMSTRUCT lpdis)
 {
   ASSERT(lpdis);
-  CMenuItemData* pmd = (CMenuItemData*)lpdis->itemData;
-  ASSERT(pmd);
-  if (lpdis->CtlType != ODT_MENU || !pmd->IsCMID())
+  CMenuItemData *pmd = (CMenuItemData *)lpdis->itemData;
+  if (lpdis->CtlType != ODT_MENU || pmd == NULL || !pmd->IsCMID())
     return FALSE; // not handled by me
 
   ASSERT(lpdis->itemAction != ODA_FOCUS);

@@ -17,6 +17,36 @@
 #include "core/Report.h"
 #include "core/DBCompareData.h"
 
+class CCompareResultsDlg;
+
+// Trivial class for results CListCtrl for detecting left mouse click and 
+// performing custom draw
+
+class CCPListCtrl : public CListCtrl
+{
+public:
+  CCPListCtrl();
+  ~CCPListCtrl();
+
+  virtual BOOL PreTranslateMessage(MSG *pMsg);
+
+  inline int GetRow() {return m_row;}
+  inline int GetColumn() {return m_column;}
+  void SetRow(const int iRow) {m_row = iRow;}
+  void SetColumn(const int iColumn) {m_column = iColumn;}
+  bool IsSelected(const int iRow);
+
+protected:
+  //{{AFX_MSG(CCPListCtrl)
+  afx_msg void OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult);
+  //}}AFX_MSG
+
+  DECLARE_MESSAGE_MAP()
+
+private:
+  int m_row, m_column;
+};
+
 class DboxMain;
 
 // The following structure is needed for compare to send back data
@@ -35,17 +65,16 @@ class CCompareResultsDlg : public CPWResizeDialog
 
   // Construction
 public:
-  CCompareResultsDlg(CWnd* pParent,
-    CompareData &OnlyInCurrent,
-    CompareData &OnlyInComp,
-    CompareData &Conflicts,
-    CompareData &Identical,
-    CItemData::FieldBits &bsFields,
-    PWScore *pcore0, PWScore *pcore1,
-    CReport *pRpt);
+  CCompareResultsDlg(CWnd* pParent, CompareData &OnlyInCurrent, CompareData &OnlyInComp,
+                     CompareData &Conflicts, CompareData &Identical,
+                     CItemData::FieldBits &bsFields,
+                     PWScore *pcore0, PWScore *pcore1,
+                     CReport *pRpt);
+
+  virtual ~CCompareResultsDlg();
 
   // st_CompareInfo Functions
-  enum {EDIT = 0, VIEW, COPY_TO_ORIGINALDB, SYNCH};
+  enum {EDIT = 0, VIEW, COPY_TO_ORIGINALDB, SYNCH, COPYALL_TO_ORIGINALDB, SYNCHALL};
 
   // Column indices
   // IDENTICAL means CURRENT + COMPARE but identical
@@ -54,16 +83,24 @@ public:
   // NOTE: BOTH = -1 , CURRENT = 0, COMPARE = 1
   // MUST be the same as in "core/DBCompareData.h"
 
-  enum {IDENTICAL = -2, BOTH = -1 , CURRENT = 0, COMPARE = 1, 
-    GROUP, TITLE, USER, PASSWORD, NOTES, URL, AUTOTYPE, PWHIST, 
-    CTIME, ATIME, XTIME, XTIME_INT, PMTIME, RMTIME, POLICY, RUNCMD,
-    DCA, SHIFTDCA, EMAIL, PROTECTED, SYMBOLS,
+  enum {
+    // Used to determine if entries are in both DBs and whether different
+    IDENTICAL = -2, BOTH = -1 ,
+    // Fixed columns - MUST be same order as FixedCols member variable data
+    CURRENT = 0, COMPARE = 1, 
+    GROUP, TITLE, USER,
+    // Optional columns - do NOT have to be in same order as OptCols member variable data
+    PASSWORD, NOTES, URL, AUTOTYPE, PWHIST, 
+    POLICY, POLICYNAME, SYMBOLS, RUNCMD, EMAIL,
+    DCA, SHIFTDCA, PROTECTED,
+    CTIME, ATIME, XTIME, XTIME_INT, PMTIME, RMTIME,
     LAST};
 
   // Dialog Data
   //{{AFX_DATA(CCompareResultsDlg)
   enum { IDD = IDD_COMPARE_RESULTS };
-  CListCtrl m_LCResults;
+
+  CCPListCtrl m_LCResults;
   int m_iSortedColumn;
   bool m_bSortAscending;
   CSecString m_scFilename1, m_scFilename2;
@@ -72,6 +109,7 @@ public:
 
   bool m_bOriginalDBReadOnly, m_bComparisonDBReadOnly;
   bool m_OriginalDBChanged, m_ComparisonDBChanged;
+  bool m_bTreatWhiteSpaceasEmpty;
   CString GetResults() {return m_results;}
 
 protected:
@@ -85,25 +123,23 @@ protected:
   //}}AFX_VIRTUAL
 
   // Implementation
-  void UpdateStatusBar();
-  bool ProcessFunction(const int ifunction, st_CompareData *st_data);
-  void WriteReportData();
-  st_CompareData * GetCompareData(const LONG_PTR dwItemData);
-  static st_CompareData * GetCompareData(const LONG_PTR dwItemData, CCompareResultsDlg *self);
-  void AddCompareEntries(const bool bAddIdentical);
 
   // Generated message map functions
   //{{AFX_MSG(CCompareResultsDlg)
   virtual void OnCancel();
   virtual void OnOK();
   afx_msg void OnHelp();
-  afx_msg void OnShowIdenticalEntries();
-  afx_msg void OnColumnClick(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnItemDoubleClick(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnItemRightClick(NMHDR *pNotifyStruct, LRESULT *pLResult);
+  afx_msg void OnItemChanging(NMHDR *pNotifyStruct, LRESULT *pLResult);
+  afx_msg void OnShowIdenticalEntries();
+  afx_msg void OnColumnClick(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnCompareViewEdit();
   afx_msg void OnCompareSynchronize();
   afx_msg void OnCompareCopyToOriginalDB();
+  afx_msg void OnCompareCopyAllToOriginalDB();
+  afx_msg void OnCompareSynchronizeAll();
+  afx_msg void OnCompareBothEntries();
   afx_msg void OnSize(UINT nType, int cx, int cy);
   afx_msg void OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL);
   //}}AFX_MSG
@@ -111,6 +147,16 @@ protected:
   DECLARE_MESSAGE_MAP()
 
 private:
+  void UpdateStatusBar();
+  bool ProcessFunction(const int ifunction, st_CompareData *st_data);
+  LRESULT ProcessAllFunction(const int ifunction, std::vector<st_CompareData *> vpst_data);
+  void WriteReportData();
+  st_CompareData * GetCompareData(const LONG_PTR dwItemData);
+  static st_CompareData * GetCompareData(const LONG_PTR dwItemData, CCompareResultsDlg *self);
+  void AddCompareEntries(const bool bAddIdentical);
+  void DoAllFunctions(const int ifunction);
+  bool CompareEntries(st_CompareData *pst_data);
+  
   CompareData m_OnlyInCurrent;
   CompareData m_OnlyInComp;
   CompareData m_Conflicts;
@@ -124,6 +170,14 @@ private:
 
   CString m_results;
   size_t m_numOnlyInCurrent, m_numOnlyInComp, m_numConflicts, m_numIdentical;
-  int m_row, m_column;
   int m_nCols;
+  bool m_bFirstInCompare;
+
+  // These columns always shown
+  static const UINT FixedCols[USER + 1];
+
+  // These columns are optional
+  static struct OptionalColumns {
+    CItemData::FieldType ft; UINT ids;
+  }   OptCols[LAST - PASSWORD];
 };

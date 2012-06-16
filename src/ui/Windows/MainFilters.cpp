@@ -427,7 +427,7 @@ bool DboxMain::PassesPWHFiltering(const CItemData *pci,
 
   bool status = CreatePWHistoryList(pci->GetPWHistory(),
                                     pwh_max, err_num,
-                                    pwhistlist, TMC_EXPORT_IMPORT);
+                                    pwhistlist, PWSUtil::TMC_EXPORT_IMPORT);
 
   bPresent = pwh_max > 0 || !pwhistlist.empty();
 
@@ -595,18 +595,18 @@ bool DboxMain::PassesPWPFiltering(const CItemData *pci,
           mt = PWSMatch::MT_INTEGER;
           break;
         case PT_HEXADECIMAL:
-          bValue = (pwp.flags & PWSprefs::PWPolicyUseHexDigits) ==
-                       PWSprefs::PWPolicyUseHexDigits;
+          bValue = (pwp.flags & PWPolicy::UseHexDigits) ==
+                       PWPolicy::UseHexDigits;
           mt = PWSMatch::MT_BOOL;
           break;
         case PT_EASYVISION:
-          bValue = (pwp.flags & PWSprefs::PWPolicyUseEasyVision) ==
-                       PWSprefs::PWPolicyUseEasyVision;
+          bValue = (pwp.flags & PWPolicy::UseEasyVision) ==
+                       PWPolicy::UseEasyVision;
           mt = PWSMatch::MT_BOOL;
           break;
         case PT_PRONOUNCEABLE:
-          bValue = (pwp.flags & PWSprefs::PWPolicyMakePronounceable) ==
-                       PWSprefs::PWPolicyMakePronounceable;
+          bValue = (pwp.flags & PWPolicy::MakePronounceable) ==
+                       PWPolicy::MakePronounceable;
           mt = PWSMatch::MT_BOOL;
           break;
         default:

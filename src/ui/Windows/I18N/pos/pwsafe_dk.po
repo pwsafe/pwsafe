@@ -336,9 +336,19 @@ msgstr "%d af %d passer sammen."
 msgid "%s  - Imported %s"
 msgstr ""
 
+#. Resource IDs: (371)
+#, c-format
+msgid "%s (%s)"
+msgstr ""
+
 #. Resource IDs: (366)
 #, c-format
 msgid "%s (database-specific)"
+msgstr ""
+
+#. Resource IDs: (216)
+#, c-format
+msgid "%s - Copied %s"
 msgstr ""
 
 #. Resource IDs: (370)
@@ -349,6 +359,11 @@ msgstr ""
 #. Resource IDs: (215)
 #, c-format
 msgid "%s - Merged %s"
+msgstr ""
+
+#. Resource IDs: (216)
+#, c-format
+msgid "%s - Sync'd %s"
 msgstr ""
 
 #. Resource IDs: (3887)
@@ -838,10 +853,6 @@ msgstr "&Brugernavn:"
 msgid "&Validate"
 msgstr "&Vurder"
 
-#. Resource IDs: (32156)
-msgid "&Validate..."
-msgstr ""
-
 #. Resource IDs: (32101)
 msgid "&View"
 msgstr "&Se"
@@ -920,6 +931,10 @@ msgstr ")"
 
 #. Resource IDs: (367)
 msgid "* means that the database has been modified since last save"
+msgstr ""
+
+#. Resource IDs: (371)
+msgid "*** Operation aborted by User ***"
 msgstr ""
 
 #. Resource IDs: (213)
@@ -1478,6 +1493,10 @@ msgstr "Ethvert felt senest ændret d.:"
 msgid "Apply"
 msgstr "Anvend"
 
+#. Resource IDs: (1478)
+msgid "Apply these changes to Protected Entries (if required)."
+msgstr ""
+
 #. Resource IDs: (513)
 msgid "Arabic (101)"
 msgstr "Arabic (101)"
@@ -1499,8 +1518,8 @@ msgid "Armenian Western"
 msgstr "Armenian Western"
 
 #. Resource IDs: (330)
-msgid "As the double quotation character is used to delimit the whole notes field, it cannot be used within it to delimit multiple lines. Please enter another character."
-msgstr "Efter som dobbelt anførelsestegn er brugt til at afgrænse hele notes feltet, kan det ikke bruges inden for til afgrænse flere linier. Indsæt venligst et andet tegn."
+msgid "As the double quote character is used to delimit the whole notes field, it cannot be used within it to delimit multiple lines. Please enter another character."
+msgstr ""
 
 #. Resource IDs: (331)
 msgid "At least one type of character (lowercase, uppercase, digits,\nsymbols, hexadecimal) must be permitted."
@@ -1563,10 +1582,6 @@ msgstr "Azeri Latin"
 
 #. Resource IDs: (65535)
 msgid "Backup Directory"
-msgstr ""
-
-#. Resource IDs: (65535)
-msgid "Backup Directory:"
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -1642,8 +1657,8 @@ msgid "Browse to URL + Autotype"
 msgstr "Gennemse efter URL + Autoindsæt"
 
 #. Resource IDs: (65535)
-msgid "Browser Command Line parameters"
-msgstr "Browser Kommando Linie parametre"
+msgid "Browser Command Line parameters:"
+msgstr ""
 
 #. Resource IDs: (520)
 msgid "Bulgarian"
@@ -1824,8 +1839,8 @@ msgid "Change/View selected Named Password Policy or the database default policy
 msgstr ""
 
 #. Resource IDs: (1187)
-msgid "Changes to existing entries will be applied on pressing OK"
-msgstr "Ændringer til eksisterende poster vil blive anvendt ved tryk på OK"
+msgid "Changes to existing entries will be applied on pressing OK."
+msgstr ""
 
 #. Resource IDs: (210)
 msgid "Characters present between end of index ']' and '}'"
@@ -1866,6 +1881,10 @@ msgstr "Tøm klipbord ved afslut"
 #. Resource IDs: (1061)
 msgid "Clear clipboard upon minimize"
 msgstr "Tøm klipbord ved minimering"
+
+#. Resource IDs: (1477)
+msgid "Clear password history for ALL entries"
+msgstr ""
 
 #. Resource IDs: (1453)
 msgid "Click here for details on the various preferences."
@@ -2012,6 +2031,10 @@ msgstr "Sammenlign Database Resultater"
 msgid "Compare complete of current database:\n\t %s\n and:\n\t %s"
 msgstr "fuldstændigt den nuværende database:\n\t %s\nog:\n\t %s"
 
+#. Resource IDs: (32091)
+msgid "Compare entries..."
+msgstr ""
+
 #. Resource IDs: (32019)
 msgid "Compare..."
 msgstr "Sammenlign..."
@@ -2032,6 +2055,10 @@ msgstr "Sammenligning"
 #. Resource IDs: (65535)
 msgid "Comparison Database:"
 msgstr "sammenlign Database:"
+
+#. Resource IDs: (371)
+msgid "Comparison Entry"
+msgstr ""
 
 #. Resource IDs: (362)
 msgid "Completed but ...."
@@ -2055,8 +2082,8 @@ msgstr "Konfigurations Oplysninger"
 
 #. Resource IDs: (191)
 #, c-format
-msgid "Configuration file error:\n%s\n%s\nline %d column %d"
-msgstr "Konfigurations fil fejl:\n%s\n%s\nlinie %d kolonne %d"
+msgid "Configuration file error:\n%s\n%s\noffset approximately at %d"
+msgstr ""
 
 #. Resource IDs: (367)
 msgid "Configuration file status"
@@ -2074,23 +2101,38 @@ msgstr "Bekræft sletning af post"
 msgid "Confirm item copy to clipboard"
 msgstr "Bekræft kopiering af post til klipbord"
 
+#. Resource IDs: (371)
+#, c-format
+msgid "Confirm that you wish to copy these entries from %s to %s\n\nIf already present in the target database, they will be replaced!"
+msgstr ""
+
 #. Resource IDs: (340)
 #, c-format
-msgid "Confirm that you wish to copy this entry from the %s database to the %s database?\n\nIf already present in the target database, it will be replaced!"
-msgstr "Bekræft at du vil kopiere denne post fra %s databasen til %s databasen?\n\nHvis den allerede findes i mål databasen, vil den blive erstattet!"
+msgid "Confirm that you wish to copy this entry from %s to %s.\n\nIf already present in the target database, it will be replaced!"
+msgstr ""
+
+#. Resource IDs: (371)
+#, c-format
+msgid "Confirm that you wish to synchronize these entries from %s to %s?\n\nSelected fields will be replaced in all entries!"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Confirmation:"
 msgstr "Bekræftelse:"
 
-#. Resource IDs: (335)
+#. Resource IDs: (214)
 #, c-format
-msgid "Conflicting entries for «%s» «%s» «%s».\r\n  Added merged entry as «%s» «%s» «%s».\r\n    Differing field(s): %s"
-msgstr "Modstridende poster for «%s» «%s» «%s».\r\n  Tilføjet flettet post som «%s» «%s» «%s».\r\n    Afvigende felt(er): %s"
+msgid "Conflicting entries for «%s» «%s» «%s».\r\n  Adding merged entry as «%s» «%s» «%s».\r\n    Differing field(s): %s"
+msgstr ""
 
 #. Resource IDs: (1, 347)
 msgid "Continue"
 msgstr "Fortsæt"
+
+#. Resource IDs: (360)
+#, c-format
+msgid "Copied password\r\n\r\n\"%s\"\r\n\r\nto the clipboard."
+msgstr ""
 
 #. Resource IDs: (32060)
 msgid "Copy &Notes to Clipboard"
@@ -2132,6 +2174,10 @@ msgstr "Kopier URL til Klipbord"
 msgid "Copy URL to clipboard"
 msgstr "Kopier URL til klipbord"
 
+#. Resource IDs: (32223)
+msgid "Copy all entries to Original"
+msgstr ""
+
 #. Resource IDs: (32071)
 msgid "Copy email to Clipboard"
 msgstr "Kopier email til Klipbord"
@@ -2161,8 +2207,8 @@ msgid "Copy to DB"
 msgstr "Kopier til DB"
 
 #. Resource IDs: (32221)
-msgid "Copy to Orignal"
-msgstr "Kopier til Original"
+msgid "Copy to Original"
+msgstr ""
 
 #. Resource IDs: (325)
 msgid "Copy username to clipboard"
@@ -2210,8 +2256,8 @@ msgstr "Opret &Genvej"
 
 #. Resource IDs: (191)
 #, c-format
-msgid "Create SchemaCache%2d Error 0x%08X during %s."
-msgstr "Opret SkemaCache%2d Fejl 0x%08X under %s."
+msgid "Create SchemaCache60 Error 0x%08X during %s."
+msgstr ""
 
 #. Resource IDs: (117, 32272)
 msgid "Create Shortcut"
@@ -2260,6 +2306,10 @@ msgstr "Ctrl+"
 #. Resource IDs: (2132)
 msgid "Cu&t"
 msgstr "Kl&ip"
+
+#. Resource IDs: (371)
+msgid "Current Entry"
+msgstr ""
 
 #. Resource IDs: (343)
 #, c-format
@@ -2319,12 +2369,8 @@ msgstr "Databasens enestående ID:"
 msgid "Database format:"
 msgstr "Database format:"
 
-#. Resource IDs: (213)
-msgid "Database has some large entries!"
-msgstr "Databasen har nogle store poster!"
-
 #. Resource IDs: (1454)
-msgid "Database is read-only. Changes to DB preferences will not be saved and are only valid for this session."
+msgid "Database is read-only. Changes to database preferences will not be saved."
 msgstr ""
 
 #. Resource IDs: (337)
@@ -2379,6 +2425,10 @@ msgstr ""
 msgid "Delete"
 msgstr "Slet"
 
+#. Resource IDs: (213)
+msgid "Delete Base Entry Confirmation"
+msgstr ""
+
 #. Resource IDs: (116)
 msgid "Delete Confirmation"
 msgstr "Bekræft Slet"
@@ -2386,10 +2436,6 @@ msgstr "Bekræft Slet"
 #. Resource IDs: (32053)
 msgid "Delete Entry"
 msgstr "Slet Post"
-
-#. Resource IDs: (341)
-msgid "Delete a Base Entry Confirmation?"
-msgstr "Slet en Base Adgangs Bekræftelse?"
 
 #. Resource IDs: (352)
 msgid "Delete a filter"
@@ -2615,10 +2661,6 @@ msgstr "Rediger/&Se Post..."
 msgid "Either or both of the Group/Title and Password columns are missing. No records imported."
 msgstr "Den ene eller begge af Grupoe/Titel og Adgangskode kolonner mangler. Intet arkiv importeret."
 
-#. Resource IDs: (354)
-msgid "Either unable to load the necessary DLL, or it is the incorrect version, to support Autotype during Launch of a Browser or Run a command.\n\nAutotype for these functions is disabled."
-msgstr "Den ene kan ikke indlæse den nødvendige DLL, eller det er en ukorrekt version, til understøttelse af Autoindsæt under start af en Browser eller Køre en kommando.\n\nAutoindsæt for disse funktioner er deaktiveret."
-
 #. Resource IDs: (204)
 #, c-format
 msgid "Empty line %d skipped"
@@ -2758,6 +2800,10 @@ msgstr ""
 #, c-format
 msgid "Entry %s%d with Group=\"%s\", Title=\"%s\", User=\"%s\""
 msgstr "Post %s%d med Gruppe=\"%s\", Titel=\"%s\", Bruger=\"%s\""
+
+#. Resource IDs: (522)
+msgid "Entry Comparison"
+msgstr ""
 
 #. Resource IDs: (370)
 msgid "Entry Password Policy Changes"
@@ -2960,6 +3006,10 @@ msgstr "Oprettelse af tomt dokument fejlede."
 #. Resource IDs: (3857)
 msgid "Failed to launch help."
 msgstr "Åbning af hjælp fejlede."
+
+#. Resource IDs: (354)
+msgid "Failed to load Autotype support DLL (wrong version?).\n\nAutotype for Launch of a Browser or Running a command is disabled."
+msgstr ""
 
 #. Resource IDs: (208)
 msgid "Failed to lock configuration file - opened by another instance of PasswordSafe?"
@@ -3314,8 +3364,8 @@ msgid "Hexadecimal characters"
 msgstr "Hexadecimal tegn"
 
 #. Resource IDs: (331)
-msgid "Hexadecimal is mutually exclusive to all other options!"
-msgstr "Hexadecimal er uforenelige med alle andre muligheder!"
+msgid "Hexadecimal is mutually exclusive to all other options."
+msgstr ""
 
 #. Resource IDs: (1426)
 msgid "Hide System Tray icon (Hot Key MUST be active)"
@@ -3331,6 +3381,10 @@ msgstr "Hindi Traditional"
 
 #. Resource IDs: (189)
 msgid "History"
+msgstr ""
+
+#. Resource IDs: (371)
+msgid "History entry"
 msgstr ""
 
 #. Resource IDs: (1088)
@@ -3490,8 +3544,8 @@ msgid "If enabled, a 'snapshot' will be taken before every save, and named accor
 msgstr "Hvis aktiveret, et 'øjebliksbillede' vil blive taget før hver gemning, og navngivet alt efter mulighederne herunder."
 
 #. Resource IDs: (330)
-msgid "If requested, then a delimiter character must be entered!"
-msgstr "Hvis anmodet, så skal et afgrænset tegn indsættes!"
+msgid "If requested, then a delimiter character must be entered."
+msgstr ""
 
 #. Resource IDs: (361)
 msgid "If the passphrase is the same as the currently opened database, properties of this backup are shown."
@@ -3830,13 +3884,13 @@ msgstr "Linie %d sprunget over - Kun %d felter fundet, medens analysering af Ove
 
 #. Resource IDs: (205)
 #, c-format
-msgid "Line %d skipped. It has an empty mandatory Password field."
-msgstr "Linie %d sprunget over. Den har et tomt obligatorisk Adgangskode felt."
+msgid "Line %d skipped: Empty mandatory Password field."
+msgstr ""
 
 #. Resource IDs: (205)
 #, c-format
-msgid "Line %d skipped. It has an empty mandatory Title field."
-msgstr "Linie %d sprunget over. Den har et tomt obligatorisk Titel felt."
+msgid "Line %d skipped: Empty mandatory Title field."
+msgstr ""
 
 #. Resource IDs: (189)
 #, c-format
@@ -3887,6 +3941,15 @@ msgstr "Lås adgangskode databasen ved arbejdsstation låsning"
 msgid "MBytes"
 msgstr "MBytes"
 
+#. Resource IDs: (215)
+msgid "MISSING PASSWORD"
+msgstr ""
+
+#. Resource IDs: (215)
+#, c-format
+msgid "MISSING TITLE # %d"
+msgstr ""
+
 #. Resource IDs: (3866)
 msgid "Mail system DLL is invalid."
 msgstr "Mail system DLL er ugyldig."
@@ -3931,6 +3994,10 @@ msgstr "Maximum antal dage der kan være specifiseret er %d"
 #. Resource IDs: (349)
 msgid "Maximum number stored"
 msgstr "Maximum antal gemt"
+
+#. Resource IDs: (371)
+msgid "Maximum saved"
+msgstr ""
 
 #. Resource IDs: (348)
 msgid "Maximum value for first number and 'Between' rule"
@@ -4062,10 +4129,6 @@ msgstr "Aldrig"
 msgid "New"
 msgstr "Ny"
 
-#. Resource IDs: (1003)
-msgid "New Database"
-msgstr "Ny Database"
-
 #. Resource IDs: (332)
 msgid "New Group"
 msgstr "Ny Gruppe"
@@ -4081,6 +4144,10 @@ msgstr "Ny Version Fundet!"
 #. Resource IDs: (331)
 msgid "New safe combination and confirmation do not match"
 msgstr "Ny hoved nøgle og bekræftelse matcher ikke"
+
+#. Resource IDs: (1003)
+msgid "New..."
+msgstr ""
 
 #. Resource IDs: (364)
 msgid "Next >"
@@ -4273,13 +4340,18 @@ msgstr ""
 
 #. Resource IDs: (190)
 #, c-format
-msgid "Number of entries processed: %d\n\nNumber of UUIDs fixed: %d\n\nNumber of Password Histories fixed: %d\n\nNumber of non-unique Group/Title/User fixed: %d\n\nNumber of Alias warnings issued: %d\n\nNumber of Shortcut warnings issued: %d\n\nNumber of entries with fields that cannot be fully displayed: %d"
-msgstr "Antal poster behandlet: %d\n\nAntal af UUIDs ordnet: %d\n\nAntal af Adgangskode Historik ordnet: %d\n\n Antal af ikke-unikke Gruppe/Titel/Bruger ordnet: %d\n\nAntal af Alias advarsler udstedt: %d\n\nAntal af Genvejs advarsler udstedt: %d\n\nAntal af adgange med felter der ikke kan vises fuldt ud: %d"
+msgid "Number of entries processed: %d\n\nNumber of invalid UUIDs fixed: %d\n\nNumber of duplicate UUIDs fixed: %d\n\nNumber of non-unique Group/Title/User fixed: %d\n\nNumber of Password Histories fixed: %d\n\nNumber of Alias warnings issued: %d\n\nNumber of Shortcut warnings issued: %d\n\nNumber of entries with fields that cannot be fully displayed: %d.\n\nRecommend that the database is now saved."
+msgstr ""
 
 #. Resource IDs: (337)
 #, c-format
 msgid "Number of entries that had their 'maximum saved passwords' changed to the new default was %d"
 msgstr "Antal poster der fik deres  'maximum gemte adgangskoder' ændret til den nye standart er %d"
+
+#. Resource IDs: (371)
+#, c-format
+msgid "Number of entries that had their password history removed was %d"
+msgstr ""
 
 #. Resource IDs: (337)
 #, c-format
@@ -4294,6 +4366,10 @@ msgstr "Antal poster med ændrede indstillinger for at gemme adgangskode histori
 #. Resource IDs: (1266)
 msgid "Number of unknown fields:"
 msgstr "Antal af unkendte felter:"
+
+#. Resource IDs: (371)
+msgid "Number saved"
+msgstr ""
 
 #. Resource IDs: (349)
 msgid "Number stored"
@@ -4333,8 +4409,8 @@ msgstr ""
 
 #. Resource IDs: (340)
 #, c-format
-msgid "Only in Original DB: %d; Only in Comparison DB: %d; In both (differences): %d; In both (identical): %d"
-msgstr "Kun i Original DB: %d; Kun i Sammenlignings DB: %d; I begge (forskelle): %d; I begge (identiske): %d"
+msgid "Only in Original DB: %d; Only in Comparison DB: %d; In both (differing): %d; In both (identical): %d"
+msgstr ""
 
 #. Resource IDs: (3841)
 msgid "Open"
@@ -4427,10 +4503,6 @@ msgstr "Adgangskode"
 #. Resource IDs: (364)
 msgid "Password Database:"
 msgstr ""
-
-#. Resource IDs: (1114)
-msgid "Password Expires on:"
-msgstr "Adgangskode Udløber den:"
 
 #. Resource IDs: (1123)
 msgid "Password Expiry"
@@ -4550,8 +4622,8 @@ msgid "Password length is less than sum of 'at least' constraints"
 msgstr "Adgangskode længden er mindre end summena af  'mindste' begrænsningen"
 
 #. Resource IDs: (331)
-msgid "Password length must be between 4 and 1024."
-msgstr "Adgangskode længden skal være mellem 4 og 1024."
+msgid "Password length must be between 4 and 1024 characters."
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Password length:"
@@ -4648,7 +4720,7 @@ msgid "Please confirm delete of the %s filter %s?"
 msgstr ""
 
 #. Resource IDs: (331)
-msgid "Please confirm that you wish to delete current user's PasswordSafe configuration information from the Windows registry.\n\n"
+msgid "Please confirm that you wish to delete current user's PasswordSafe configuration from the Windows registry.\n\n"
 msgstr ""
 
 #. Resource IDs: (330)
@@ -4680,8 +4752,8 @@ msgid "Please enter the safe combination for this password database."
 msgstr "Indsæt venligst hovednøglen for denne adgangskode database."
 
 #. Resource IDs: (337)
-msgid "Please enter your backup database prefix!"
-msgstr "Indsæt venligst din sikkerheds databases præfiks!"
+msgid "Please enter your backup database prefix."
+msgstr ""
 
 #. Resource IDs: (334)
 msgid "Please name the XML file"
@@ -4893,11 +4965,6 @@ msgstr ""
 msgid "Recurring"
 msgstr "Periodisk"
 
-#. Resource IDs: (348)
-#, c-format
-msgid "Recurring (%d days)"
-msgstr "Periodisk(%d dage)"
-
 #. Resource IDs: (32083)
 msgid "Redo"
 msgstr "Sæt tilbage"
@@ -4920,6 +4987,10 @@ msgstr "Husk sidste"
 
 #. Resource IDs: (1188)
 msgid "Remove PasswordSafe configuration from Registry"
+msgstr ""
+
+#. Resource IDs: (320)
+msgid "Remove all saved passwords for entries and stop saving any new password history in all entries."
 msgstr ""
 
 #. Resource IDs: (32291)
@@ -5068,8 +5139,8 @@ msgstr "SAX Analyse Fejl under %s\r\n%s."
 
 #. Resource IDs: (191)
 #, c-format
-msgid "SAX Parse%2d Error 0x%08X during %s."
-msgstr "SAX Analyse%2d Fejl 0x%08X under %s."
+msgid "SAX Parse60 Error 0x%08X during %s."
+msgstr ""
 
 #. Resource IDs: (131)
 msgid "Safe Combination Entry"
@@ -5154,8 +5225,8 @@ msgid "Second date must be later than first"
 msgstr "Anden dato skal være senere end den første"
 
 #. Resource IDs: (348)
-msgid "Second number must be more than first"
-msgstr "Andet tal skal være større end det første"
+msgid "Second number must be greater than first"
+msgstr ""
 
 #. Resource IDs: (142)
 msgid "Security"
@@ -5217,6 +5288,10 @@ msgstr "Vælg alle poster"
 #. Resource IDs: (352)
 msgid "Select and apply a filter"
 msgstr "Vælg og anvend et filter"
+
+#. Resource IDs: (523)
+msgid "Select entry to compare"
+msgstr ""
 
 #. Resource IDs: (340)
 msgid "Select some entries"
@@ -5434,6 +5509,10 @@ msgstr "Vis poster med identisk sammenlignede felter (Bemærk: Ukendte felter bl
 msgid "Show grid lines in List View"
 msgstr "Vis gitter linier i Liste Visning"
 
+#. Resource IDs: (1479)
+msgid "Show identical compared fields (Note: Unknown fields were not compared.)"
+msgstr ""
+
 #. Resource IDs: (360)
 msgid "Shutdown, Restart or Logoff in progress"
 msgstr "Lukning, Genstart eller Log-af i gang"
@@ -5465,6 +5544,10 @@ msgstr "Slovenian"
 #. Resource IDs: (1383)
 msgid "Some characters may be missing or not be displayed correctly, as we were unable to find the Arial Unicode MS font."
 msgstr "Nogle tegn kan mangle eller ikke blive vist korrekt, fordi det var umuligt at finde skriften Arial Unicode MS."
+
+#. Resource IDs: (371)
+msgid "Some consistency issues were found while opening the database.\n\nYou should save this database before proceeding. Please view report for details."
+msgstr ""
 
 #. Resource IDs: (364)
 msgid "Some of the entries in this database have passwords that have expired or are about to.  Do you wish to list them and possibly update them?"
@@ -5597,6 +5680,10 @@ msgstr "Synkroniser"
 #. Resource IDs: (121)
 msgid "Synchronize Entries"
 msgstr "Synkroniser Adgange"
+
+#. Resource IDs: (32224)
+msgid "Synchronize all entries"
+msgstr ""
 
 #. Resource IDs: (364)
 msgid "Synchronizing current database with:"
@@ -5732,8 +5819,8 @@ msgstr "Databasen:\n%s\n\nbruges tilsyneladende af:\n%s%s.\n\nÅben databasen fo
 
 #. Resource IDs: (328)
 #, c-format
-msgid "The database:\n%s\n\nis apparently being used by:\n%s%s.\n\nOpen the database for Read-Only, Read-Write, or Exit?\r\n\r\nNote: Choose \"Read-Write\" only if you are certain that the file is in fact not being used by anyone else,\nincluding another copy of Password Safe running on your machine."
-msgstr "Databasen:\n%s\n\nbruges tilsyneladende af:\n%s%s.\n\nÅben databasen for Kun-Læse eller, Læse-Skrive, eller Afslutte?\r\n\r\nBemærk: Vælg kun \"Læse-Skrive\"  hvis du er sikker på at filen ikke bliver brugt af nogen anden,\ninklusiv en anden kopi af Password Safe kørende på din maskine."
+msgid "The database:\n%s\n\nis apparently being used by:\n%s%s.\n\nOpen the database for Read-Only, Read-Write, or Exit?\r\n\r\nNote: Choose \"Read-Write\" only if you are certain that the file isn't being used by anyone else,\nincluding another copy of Password Safe running on your machine."
+msgstr ""
 
 #. Resource IDs: (361)
 #, c-format
@@ -5766,6 +5853,14 @@ msgstr "Filteret XML version (%d) er større end det nuværende skema (%d)."
 msgid "The filter XML version is missing."
 msgstr "Filteret XML version mangler."
 
+#. Resource IDs: (216)
+msgid "The following ERRORS were detected and were FIXED."
+msgstr ""
+
+#. Resource IDs: (216)
+msgid "The following WARNINGS were detected - you should review and fix them manually."
+msgstr ""
+
 #. Resource IDs: (211)
 msgid "The following columns were recognised but only Group/Title, Username and Password will be processed:"
 msgstr "De følgende kolonner blev genkendt men kun Gruppe/Titel, Brugernavn og Adgangskode vil blive behandlet:"
@@ -5775,8 +5870,21 @@ msgid "The following columns will be processed: "
 msgstr "De følgende kolonner vil blive behandlet: "
 
 #. Resource IDs: (215)
+msgid "The following entries had a duplicate UUID field.  This has been corrected."
+msgstr ""
+
+#. Resource IDs: (215)
 #, c-format
 msgid "The following entries had a policy name that already existed in this database but with different settings.\r\nA new named policy has been created with the current date/time (%s) appended:%s"
+msgstr ""
+
+#. Resource IDs: (215)
+#, c-format
+msgid "The following entries had an empty Password field, which is not permitted. The password has been set to '%s'"
+msgstr ""
+
+#. Resource IDs: (215)
+msgid "The following entries had an empty Title field, which is not permitted."
 msgstr ""
 
 #. Resource IDs: (205)
@@ -5789,7 +5897,12 @@ msgstr "De følgende poster havde et ugyldigt UUID felt. Disse er blevet rettet"
 
 #. Resource IDs: (212)
 #, c-format
-msgid "The following entries have one or more text fields too long to display or edit (over %d characters)."
+msgid "The following entries have one or more text fields too long to display or edit (over %d characters).  The largest entry size found was ~%d %s."
+msgstr ""
+
+#. Resource IDs: (216)
+#, c-format
+msgid "The following entries have passwords in the correct form for %s, but the base entry does not exist."
 msgstr ""
 
 #. Resource IDs: (212)
@@ -5804,6 +5917,11 @@ msgstr ""
 #, c-format
 msgid "The following entry was copied to the %s database: '%s:%s:%s'"
 msgstr "Den følgende post blev kopieret til %s databasen: '%s:%s:%s'"
+
+#. Resource IDs: (371)
+#, c-format
+msgid "The following entry was synchronized to the %s database: '%s:%s:%s'"
+msgstr ""
 
 #. Resource IDs: (362)
 msgid "The following records had errors in their Password History:"
@@ -5840,11 +5958,6 @@ msgstr ""
 #, c-format
 msgid "The password is in 'alias' form but the referenced entry '%s:%s:%s' is itself an alias.\r\n\r\nDo you wish this entry to point to the 'real' base entry?"
 msgstr "Adgangskoden er i 'alias' form men den adgang der refereres til '%s:%s:%s' er selv et alias.\r\n\r\nVil du have denne post til at pege på den 'rigtige' basis adgang?"
-
-#. Resource IDs: (360)
-#, c-format
-msgid "The password\r\n\r\n\"%s\"\r\n\r\nhas been copied to the clipboard."
-msgstr "Adgangskoden\r\n\r\n\"%s\"\r\n\r\ner blevet kopieret til klipbord."
 
 #. Resource IDs: (65535)
 msgid "The safe combination has been entered three times without success. If you don't know the safe combination, you can either try to open another password database, or create a new blank password database."
@@ -5994,8 +6107,8 @@ msgid "This will delete the selected Failsafe Backup file.  If the current drive
 msgstr ""
 
 #. Resource IDs: (331)
-msgid "Time out period must be between 1 and 120 minutes."
-msgstr "Pause perioden skal være mellem 1 og 120 minutter."
+msgid "Timeout period must be between 1 and 120 minutes."
+msgstr ""
 
 #. Resource IDs: (327)
 msgid "Title"
@@ -6008,6 +6121,10 @@ msgstr "Titel [Oblikatorisk Felt]"
 #. Resource IDs: (355)
 msgid "Title copied "
 msgstr "Titel kopieret "
+
+#. Resource IDs: (65535)
+msgid "Title:"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "To add a new entry, simply fill in the fields below. At least a title and a password are required. If you have set a default username, it will appear in the username field."
@@ -6291,10 +6408,6 @@ msgstr "Brug &STORE bogstaver"
 msgid "Use Database Policy"
 msgstr ""
 
-#. Resource IDs: (1378)
-msgid "Use Default"
-msgstr "Brug Standart"
-
 #. Resource IDs: (1470)
 msgid "Use Named Policy"
 msgstr ""
@@ -6349,6 +6462,10 @@ msgstr "Bruger kopieret "
 
 #. Resource IDs: (188)
 msgid "Username"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Username:"
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -6466,11 +6583,6 @@ msgstr "Advar"
 msgid "Warning"
 msgstr "Advarsel"
 
-#. Resource IDs: (213)
-#, c-format
-msgid "Warning - %d %s in your database may have one or more fields too large to display or edit.\r\n\r\nThe largest entry size found was ~%d %s.\r\n\r\nYou can use the Filter to selectively display these record(s)."
-msgstr "Advarsel- %d %s i din database kan have en eller flere felter der er for store til at vises eller redigere.\r\n\r\nDen størst fundne adgangs str. er  ~%d %s.\r\n\r\nDu kan bruge Filteret til selektivt at vise disse registreringer."
-
 #. Resource IDs: (363)
 msgid "Warning - excessive field contents"
 msgstr "Advarsel - alt for stort felt indhold"
@@ -6518,8 +6630,8 @@ msgstr "Tekstombrydning af Notater i Tilføj && Rediger"
 
 #. Resource IDs: (332)
 #, c-format
-msgid "Would you like to set \"%s\" as your default username?\n\nIt would then automatically be put in the dialog each time you add a new item."
-msgstr "Vil du gerne have \"%s\" som dit standart brugernavn\n\nDet vil så automatisk blive indsat i dialogen hver gang du tilføjer en ny post."
+msgid "Would you like to set \"%s\" as your default username?\n\nIt would then be used by default for new items."
+msgstr ""
 
 #. Resource IDs: (333)
 msgid "Write Error"
@@ -6607,6 +6719,14 @@ msgstr ""
 msgid "Your requested font, '%s', could not be found (not installed?), using '%s' instead."
 msgstr ""
 
+#. Resource IDs: (371)
+msgid "Zoom in\tCtrl + NUM PLUS"
+msgstr ""
+
+#. Resource IDs: (371)
+msgid "Zoom out\tCtrl + NUM SUB"
+msgstr ""
+
 #. Resource IDs: (330)
 msgid "[No current database]"
 msgstr "[Ingen nuværende database]"
@@ -6643,6 +6763,10 @@ msgstr "\nBogstavs ufølsom søgning"
 msgid "\nCase sensitive search"
 msgstr "\nBogstavs følsom søgning"
 
+#. Resource IDs: (2009)
+msgid "\nClear Filters"
+msgstr ""
+
 #. Resource IDs: (2020)
 msgid "\nClear Find"
 msgstr "\nTøm Find"
@@ -6662,6 +6786,10 @@ msgstr "\nLuk Find Linien"
 #. Resource IDs: (2007)
 msgid "\nCollapse All"
 msgstr "\nLuk Udvidelse"
+
+#. Resource IDs: (2006)
+msgid "\nCompare entries..."
+msgstr ""
 
 #. Resource IDs: (2002)
 msgid "\nCompare two Databases"
@@ -6791,6 +6919,10 @@ msgstr "\nÅben en Anden Database"
 #. Resource IDs: (2010)
 msgid "\nOptions"
 msgstr "\nValgmuligheder"
+
+#. Resource IDs: (2010)
+msgid "\nPassword Policies"
+msgstr ""
 
 #. Resource IDs: (2004)
 msgid "\nPerform Autotype"
@@ -7118,6 +7250,10 @@ msgstr "dage"
 #. Resource IDs: (65535)
 msgid "days before passwords expire"
 msgstr "dage før adgangskode udløber"
+
+#. Resource IDs: (251)
+msgid "default"
+msgstr ""
 
 #. Resource IDs: (369)
 msgid "default symbol set"

@@ -224,7 +224,9 @@ int DboxMain::RestoreSafe()
   // clear the data before restoring
   ClearData();
 
-  rc = m_core.ReadFile(backup, passkey, MAXTEXTCHARS);
+  // Validate it unless user says NO
+  CReport Rpt;
+  rc = m_core.ReadFile(backup, passkey, !m_bNoValidation, MAXTEXTCHARS, &Rpt);
   if (rc == PWScore::CANT_OPEN_FILE) {
     cs_temp.Format(IDS_CANTOPENREADING, backup);
     cs_title.LoadString(IDS_FILEREADERROR);
@@ -244,47 +246,6 @@ int DboxMain::RestoreSafe()
   return PWScore::SUCCESS;
 }
 
-void DboxMain::OnValidate() 
-{
-  CGeneralMsgBox gmb;
-  if (!m_bValidate) {
-    // We didn't get here via command line flag - so must be via the menu
-    int rc = Open(IDS_CHOOSEDATABASEV);
-    if (rc != PWScore::SUCCESS)
-      return;
-  }
-
-  CReport rpt;
-  std::wstring cs_title;
-  LoadAString(cs_title, IDS_RPTVALIDATE);
-  rpt.StartReport(cs_title.c_str(), m_core.GetCurFile().c_str());
-
-  std::wstring cs_msg;
-  bool bchanged = m_core.Validate(cs_msg, rpt, MAXTEXTCHARS);
-  if (!bchanged)
-    LoadAString(cs_msg, IDS_VALIDATEOK);
-  else {
-    SetChanged(Data);
-    ChangeOkUpdate();
-  }
-
-  rpt.EndReport();
-
-  gmb.SetTitle(cs_title.c_str());
-  gmb.SetMsg(cs_msg.c_str());
-  gmb.SetStandardIcon(bchanged ? MB_ICONEXCLAMATION : MB_ICONINFORMATION);
-  gmb.AddButton(IDS_OK, IDS_OK, TRUE, TRUE);
-  if (bchanged)
-    gmb.AddButton(IDS_VIEWREPORT, IDS_VIEWREPORT);
-
-  INT_PTR rc = gmb.DoModal();
-  if (rc == IDS_VIEWREPORT)
-    ViewReport(rpt);
-
-  // Show UUID in Edit Date/Time property sheet stats
-  CAddEdit_DateTimes::m_bShowUUID = true;
-}
-
 void DboxMain::OnOptions()
 {
   PWS_LOGIT;
@@ -293,13 +254,6 @@ void DboxMain::OnOptions()
 
   // Get old DB preferences String value for use later
   const StringX sxOldDBPrefsString(prefs->Store());
-
-  bool bLongPPs = LongPPs();
-
-  COptions_PropertySheet optionsPS(IDS_OPTIONS, this, bLongPPs);
-
-  // Remove the "Apply Now" button.
-  optionsPS.m_psh.dwFlags |= PSH_NOAPPLYNOW;
 
   // Save Hotkey info
   DWORD hotkey_value;
@@ -316,19 +270,38 @@ void DboxMain::OnOptions()
   // selecting the new key!
   UnregisterHotKey(m_hWnd, PWS_HOTKEY_ID); // clear last - never hurts
 
-  INT_PTR rc = optionsPS.DoModal();
+  COptions_PropertySheet *pOptionsPS(NULL);
+  
+  // Try Tall version
+  pOptionsPS = new COptions_PropertySheet(IDS_OPTIONS, this, true);
+
+  // Remove the "Apply Now" button.
+  pOptionsPS->m_psh.dwFlags |= PSH_NOAPPLYNOW;
+
+  INT_PTR rc = pOptionsPS->DoModal();
+
+  if (rc < 0) {
+    // Try again with Wide version
+    delete pOptionsPS;
+    pOptionsPS = new COptions_PropertySheet(IDS_OPTIONS, this, false);
+
+    // Remove the "Apply Now" button.
+    pOptionsPS->m_psh.dwFlags |= PSH_NOAPPLYNOW;
+  
+    rc = pOptionsPS->DoModal(); 
+  }
 
   if (rc == IDOK) {
     // Now update the application look and feel as appropriate
 
     // Get updated Hotkey information as we will either re-instate the original or
     // set these new values
-    hotkey_enabled = optionsPS.GetHotKeyState();
-    hotkey_value = optionsPS.GetHotKeyValue();
+    hotkey_enabled = pOptionsPS->GetHotKeyState();
+    hotkey_value = pOptionsPS->GetHotKeyValue();
 
     // Update status bar
     UINT uiMessage(IDS_STATCOMPANY);
-    switch (optionsPS.GetDCA()) {
+    switch (pOptionsPS->GetDCA()) {
       case PWSprefs::DoubleClickAutoType:
         uiMessage = IDS_STATAUTOTYPE; break;
       case PWSprefs::DoubleClickBrowse:
@@ -360,12 +333,12 @@ void DboxMain::OnOptions()
                             m_statusBar.GetItemID(CPWStatusBar::SB_DBLCLICK),
                             SBPS_STRETCH, NULL);
 
-    int iTrayColour = optionsPS.GetTrayIconColour();
+    int iTrayColour = pOptionsPS->GetTrayIconColour();
     app.SetClosedTrayIcon(iTrayColour);
 
     UpdateSystemMenu();
     
-    if (optionsPS.GetMaxMRUItems() == 0)
+    if (pOptionsPS->GetMaxMRUItems() == 0)
       app.ClearMRU();  // Clear any currently saved
     
     UpdateAlwaysOnTop();
@@ -373,8 +346,8 @@ void DboxMain::OnOptions()
     DWORD dwExtendedStyle = m_ctlItemList.GetExtendedStyle();
     bool bGridLines = ((dwExtendedStyle & LVS_EX_GRIDLINES) == LVS_EX_GRIDLINES);
 
-    if (optionsPS.GetEnableGrid() != bGridLines) {
-      if (optionsPS.GetEnableGrid()) {
+    if (pOptionsPS->GetEnableGrid() != bGridLines) {
+      if (pOptionsPS->GetEnableGrid()) {
         dwExtendedStyle |= LVS_EX_GRIDLINES;
       } else {
         dwExtendedStyle &= ~LVS_EX_GRIDLINES;
@@ -382,15 +355,15 @@ void DboxMain::OnOptions()
       m_ctlItemList.SetExtendedStyle(dwExtendedStyle);
     }
 
-    m_ctlItemTree.ActivateND(optionsPS.GetNotesAsTips());
-    m_ctlItemList.ActivateND(optionsPS.GetNotesAsTips());
+    m_ctlItemTree.ActivateND(pOptionsPS->GetNotesAsTips());
+    m_ctlItemList.ActivateND(pOptionsPS->GetNotesAsTips());
 
-    m_RUEList.SetMax(optionsPS.GetMaxREItems());
+    m_RUEList.SetMax(pOptionsPS->GetMaxREItems());
     
-    if (optionsPS.StartupShortcutChanged()) {
+    if (pOptionsPS->StartupShortcutChanged()) {
       CShortcut pws_shortcut;
       const CString PWSLnkName(L"Password Safe"); // for startup shortcut
-      if (optionsPS.StartupShortcut()) {
+      if (pOptionsPS->StartupShortcut()) {
         // Put it there
         wchar_t exeName[MAX_PATH];
         GetModuleFileName(NULL, exeName, MAX_PATH);
@@ -403,28 +376,28 @@ void DboxMain::OnOptions()
     }
 
     // Update Lock on Window Lock
-    if (optionsPS.LockOnWindowLockChanged()) {
-      if (optionsPS.LockOnWindowLock()) {
+    if (pOptionsPS->LockOnWindowLockChanged()) {
+      if (pOptionsPS->LockOnWindowLock()) {
         startLockCheckTimer();
       } else {
         KillTimer(TIMER_LOCKONWTSLOCK);
       }
     }
 
-    if (optionsPS.RefreshViews()) {
-      m_ctlItemList.SetHighlightChanges(optionsPS.HighlightChanges());
-      m_ctlItemTree.SetHighlightChanges(optionsPS.HighlightChanges());
+    if (pOptionsPS->RefreshViews()) {
+      m_ctlItemList.SetHighlightChanges(pOptionsPS->HighlightChanges());
+      m_ctlItemTree.SetHighlightChanges(pOptionsPS->HighlightChanges());
       RefreshViews();
     }
 
-    if (optionsPS.SaveGroupDisplayState())
+    if (pOptionsPS->SaveGroupDisplayState())
       SaveGroupDisplayState();
 
-    if (optionsPS.UpdateShortcuts()) {
+    if (pOptionsPS->UpdateShortcuts()) {
       // Create vector of shortcuts for user's config file
       std::vector<st_prefShortcut> vShortcuts;
       MapMenuShortcutsIter iter, iter_entry, iter_group;
-      m_MapMenuShortcuts = optionsPS.GetMaps();
+      m_MapMenuShortcuts = pOptionsPS->GetMaps();
 
       for (iter = m_MapMenuShortcuts.begin(); iter != m_MapMenuShortcuts.end();
            iter++) {
@@ -438,15 +411,30 @@ void DboxMain::OnOptions()
           continue;
         }
         // Now only those different from default
-        if (iter->second.cVirtKey  != iter->second.cdefVirtKey  ||
-            iter->second.cModifier != iter->second.cdefModifier) {
+        if (iter->second.siVirtKey  != iter->second.siDefVirtKey  ||
+            iter->second.cModifier != iter->second.cDefModifier) {
           st_prefShortcut stxst;
           stxst.id = iter->first;
-          stxst.cVirtKey = iter->second.cVirtKey;
+          stxst.siVirtKey = iter->second.siVirtKey;
           stxst.cModifier = iter->second.cModifier;
           vShortcuts.push_back(stxst);
         }
       }
+
+      // We need to convert from MFC shortcut modifiers to PWS modifiers
+      for (size_t i = 0; i < vShortcuts.size(); i++) {
+        unsigned char cModifier(0), cWindowsMod = vShortcuts[i].cModifier;
+        if ((cWindowsMod & HOTKEYF_ALT    ) == HOTKEYF_ALT)
+          cModifier |= PWS_HOTKEYF_ALT;
+        if ((cWindowsMod & HOTKEYF_CONTROL) == HOTKEYF_CONTROL)
+          cModifier |= PWS_HOTKEYF_CONTROL;
+        if ((cWindowsMod & HOTKEYF_SHIFT  ) == HOTKEYF_SHIFT)
+          cModifier |= PWS_HOTKEYF_SHIFT;
+        if ((cWindowsMod & HOTKEYF_EXT    ) == HOTKEYF_EXT)
+          cModifier |= PWS_HOTKEYF_EXT;
+        vShortcuts[i].cModifier = cModifier;
+      }
+
       prefs->SetPrefShortcuts(vShortcuts);
       prefs->SaveShortcuts();
 
@@ -477,7 +465,7 @@ void DboxMain::OnOptions()
       app.HideIcon();
     }
 
-    if (optionsPS.CheckExpired()) {
+    if (pOptionsPS->CheckExpired()) {
       CheckExpireList();
       TellUserAboutExpiredPasswords();
     }
@@ -497,11 +485,11 @@ void DboxMain::OnOptions()
       if (sxOldDBPrefsString != sxNewDBPrefsString) {
         // Determine whether Tree needs redisplayng due to change
         // in what is shown (e.g. usernames/passwords)
-        bool bUserDisplayChanged = optionsPS.UserDisplayChanged();
+        bool bUserDisplayChanged = pOptionsPS->UserDisplayChanged();
         // Note: passwords are only shown in the Tree if usernames are also shown
-        bool bPswdDisplayChanged = optionsPS.PswdDisplayChanged();
+        bool bPswdDisplayChanged = pOptionsPS->PswdDisplayChanged();
         bool bNeedGUITreeUpdate = bUserDisplayChanged || 
-                 (optionsPS.ShowUsernameInTree() && bPswdDisplayChanged);
+                 (pOptionsPS->ShowUsernameInTree() && bPswdDisplayChanged);
         if (bNeedGUITreeUpdate) {
           Command *pcmd = UpdateGUICommand::Create(&m_core,
                                                    UpdateGUICommand::WN_UNDO,
@@ -519,8 +507,8 @@ void DboxMain::OnOptions()
       }
     }
 
-    const int iAction = optionsPS.GetPWHAction();
-    const int new_default_max = optionsPS.GetPWHistoryMax();
+    const int iAction = pOptionsPS->GetPWHAction();
+    const int new_default_max = pOptionsPS->GetPWHistoryMax();
     size_t ipwh_exec(0);
     int num_altered(0);
 
@@ -617,47 +605,39 @@ void DboxMain::OnOptions()
 
   // Update Minidump user streams
   app.SetMinidumpUserStreams(m_bOpen, !IsDBReadOnly(), usPrefs);
+  
+  // Delete Options Property page
+  delete pOptionsPS;
 }
 
 void DboxMain::OnGeneratePassword()
 {
   PSWDPolicyMap MapPSWDPLC = GetPasswordPolicies();
-
-  PWSprefs *prefs = PWSprefs::GetInstance();
-  st_PSWDPolicy st_default_pp;
-
-  if (prefs->GetPref(PWSprefs::PWUseLowercase))
-    st_default_pp.pwp.flags |= PWSprefs::PWPolicyUseLowercase;
-  if (prefs->GetPref(PWSprefs::PWUseUppercase))
-    st_default_pp.pwp.flags |= PWSprefs::PWPolicyUseUppercase;
-  if (prefs->GetPref(PWSprefs::PWUseDigits))
-    st_default_pp.pwp.flags |= PWSprefs::PWPolicyUseDigits;
-  if (prefs->GetPref(PWSprefs::PWUseSymbols))
-    st_default_pp.pwp.flags |= PWSprefs::PWPolicyUseSymbols;
-  if (prefs->GetPref(PWSprefs::PWUseHexDigits))
-    st_default_pp.pwp.flags |= PWSprefs::PWPolicyUseHexDigits;
-  if (prefs->GetPref(PWSprefs::PWUseEasyVision))
-    st_default_pp.pwp.flags |= PWSprefs::PWPolicyUseEasyVision;
-  if (prefs->GetPref(PWSprefs::PWMakePronounceable))
-    st_default_pp.pwp.flags |= PWSprefs::PWPolicyMakePronounceable;
-
-  st_default_pp.pwp.length = prefs->GetPref(PWSprefs::PWDefaultLength);
-  st_default_pp.pwp.digitminlength = prefs->GetPref(PWSprefs::PWDigitMinLength);
-  st_default_pp.pwp.lowerminlength = prefs->GetPref(PWSprefs::PWLowercaseMinLength);
-  st_default_pp.pwp.symbolminlength = prefs->GetPref(PWSprefs::PWSymbolMinLength);
-  st_default_pp.pwp.upperminlength = prefs->GetPref(PWSprefs::PWUppercaseMinLength);
-
-  st_default_pp.symbols = prefs->GetPref(PWSprefs::DefaultSymbols);
-
-  bool bLongPPs = LongPPs();
-  CPasswordPolicyDlg GenPswdPS(IDS_GENERATEPASSWORD, this, bLongPPs, 
-                               IsDBReadOnly(), st_default_pp);
+  PWPolicy st_default_pp(PWSprefs::GetInstance()->GetDefaultPolicy());
+  CPasswordPolicyDlg *pDlg(NULL);
+  
+  // Try Tall version
+  pDlg = new CPasswordPolicyDlg(IDS_GENERATEPASSWORD, this, true, IsDBReadOnly(), st_default_pp);
 
   // Pass default values, PolicyName map
   CString cs_poliyname(L"");
-  GenPswdPS.SetPolicyData(cs_poliyname, MapPSWDPLC, this);
+  pDlg->SetPolicyData(cs_poliyname, MapPSWDPLC, this);
 
-  GenPswdPS.DoModal();
+  INT_PTR rc = pDlg->DoModal();
+  
+  if (rc < 0) {
+    // Try again with Wide version
+    delete pDlg;
+    pDlg = new CPasswordPolicyDlg(IDS_GENERATEPASSWORD, this, false, IsDBReadOnly(), st_default_pp);
+
+    // Pass default values, PolicyName map
+    pDlg->SetPolicyData(cs_poliyname, MapPSWDPLC, this);
+  
+    pDlg->DoModal(); 
+  }
+
+  // Delete generate password dialog
+  delete pDlg;
 }
 
 void DboxMain::OnYubikey()
@@ -668,26 +648,35 @@ void DboxMain::OnYubikey()
 
 void DboxMain::OnManagePasswordPolicies()
 {
-  bool bLongPPs = LongPPs();
-
   PWSprefs *prefs = PWSprefs::GetInstance();
   
   // Set up copy of preferences
   prefs->SetupCopyPrefs();
   
-  CManagePSWDPolices ManagePSWDPoliciesDlg(this, bLongPPs);
+  CManagePSWDPolices *pDlg(NULL);
   
-  st_PSWDPolicy st_old_default_pp;
+  // Try Tall version
+  pDlg = new CManagePSWDPolices(this, true);
+  
+  PWPolicy st_old_default_pp;
 
   // Let ManagePSWDPoliciesDlg fill out database default policy during construction
-  ManagePSWDPoliciesDlg.GetDefaultPasswordPolicies(st_old_default_pp);
+  pDlg->GetDefaultPasswordPolicies(st_old_default_pp);
   
-  INT_PTR rc = ManagePSWDPoliciesDlg.DoModal();
+  INT_PTR rc = pDlg->DoModal();
   
-  if (rc == IDOK && ManagePSWDPoliciesDlg.IsChanged()) {
+  if (rc < 0) {
+    // Try again with Wide version
+    delete pDlg;
+    pDlg = new CManagePSWDPolices(this, false);
+
+    pDlg->DoModal(); 
+  }
+  
+  if (rc == IDOK && pDlg->IsChanged()) {
     // Get new DB preferences String value
-    st_PSWDPolicy st_new_default_pp;
-    PSWDPolicyMap MapPSWDPLC = ManagePSWDPoliciesDlg.GetPasswordPolicies(st_new_default_pp);
+    PWPolicy st_new_default_pp;
+    PSWDPolicyMap MapPSWDPLC = pDlg->GetPasswordPolicies(st_new_default_pp);
     
     // Maybe needed if this causes changes to database
     // (currently only DB default policy preferences + updating Named Policies)
@@ -697,39 +686,10 @@ void DboxMain::OnManagePasswordPolicies()
     if (st_old_default_pp != st_new_default_pp) {
       // User has changed database default policy - need to update preferences
       // Update the copy only!
-      PWSprefs *prefs = PWSprefs::GetInstance();
-
-      prefs->SetPref(PWSprefs::PWUseLowercase,
-                 (st_new_default_pp.pwp.flags & PWSprefs::PWPolicyUseLowercase) != 0, true);
-      prefs->SetPref(PWSprefs::PWUseUppercase,
-                 (st_new_default_pp.pwp.flags & PWSprefs::PWPolicyUseUppercase) != 0, true);
-      prefs->SetPref(PWSprefs::PWUseDigits,
-                 (st_new_default_pp.pwp.flags & PWSprefs::PWPolicyUseDigits) != 0, true);
-      prefs->SetPref(PWSprefs::PWUseSymbols,
-                 (st_new_default_pp.pwp.flags & PWSprefs::PWPolicyUseSymbols) != 0, true);
-      prefs->SetPref(PWSprefs::PWUseHexDigits,
-                 (st_new_default_pp.pwp.flags & PWSprefs::PWPolicyUseHexDigits) != 0, true);
-      prefs->SetPref(PWSprefs::PWUseEasyVision,
-                 (st_new_default_pp.pwp.flags & PWSprefs::PWPolicyUseEasyVision) != 0, true);
-      prefs->SetPref(PWSprefs::PWMakePronounceable,
-                 (st_new_default_pp.pwp.flags & PWSprefs::PWPolicyMakePronounceable) != 0, true);
-
-      prefs->SetPref(PWSprefs::PWDefaultLength,
-                     st_new_default_pp.pwp.length, true);
-      prefs->SetPref(PWSprefs::PWDigitMinLength,
-                     st_new_default_pp.pwp.digitminlength, true);
-      prefs->SetPref(PWSprefs::PWLowercaseMinLength,
-                     st_new_default_pp.pwp.lowerminlength, true);
-      prefs->SetPref(PWSprefs::PWSymbolMinLength,
-                     st_new_default_pp.pwp.symbolminlength, true);
-      prefs->SetPref(PWSprefs::PWUppercaseMinLength,
-                     st_new_default_pp.pwp.upperminlength, true);
-    
-      prefs->SetPref(PWSprefs::DefaultSymbols,
-                     st_new_default_pp.symbols, true);
+      PWSprefs::GetInstance()->SetDefaultPolicy(st_new_default_pp, true);
 
       // Now get new DB preferences String value
-      StringX sxNewDBPrefsString(prefs->Store(true));
+      StringX sxNewDBPrefsString(PWSprefs::GetInstance()->Store(true));
 
       // Set up Command to update string in database
       if (m_core.GetReadFileVersion() == PWSfile::VCURRENT) {
@@ -740,7 +700,7 @@ void DboxMain::OnManagePasswordPolicies()
 
     // Now update named preferences
     Command *pcmd2 = DBPolicyNamesCommand::Create(&m_core, MapPSWDPLC,
-                             DBPolicyNamesCommand::REPLACEALL);
+                             DBPolicyNamesCommand::NP_REPLACEALL);
     pmulticmds->Add(pcmd2);
     Execute(pmulticmds);
 
@@ -749,4 +709,7 @@ void DboxMain::OnManagePasswordPolicies()
     
     ChangeOkUpdate();
   }
+  
+  // Delete Manage Password Policies dialog
+  delete pDlg;
 }

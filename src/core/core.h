@@ -109,8 +109,8 @@
 #define IDSC_IMPORTINVALIDFIELD         3266
 #define IDSC_IMPORTNOPASSWORD           3268
 #define IDSC_IMPORTNOTITLE              3269
-#define IDSC_VALIDATEUUID               3270
-#define IDSC_VALIDATEPWH                3271
+#define IDSC_VALIDATE_BADUUID           3270
+#define IDSC_VALIDATE_PWH               3271
 #define IDSC_IMPORTWARNINGHDR           3272
 #define IDSC_IMPORTWARNING1             3273
 #define IDSC_IMPORTWARNING1A            3274
@@ -211,15 +211,13 @@
 #define IDSC_IMPORTCONFLICTSX1          3385
 #define IDSC_IMPORTCONFLICTSX2          3386
 #define IDSC_DUPLICATENUMBER            3387
-#define IDSC_VALIDATEDUPLICATES         3388
+#define IDSC_VALIDATE_DUPLICATES        3388
 #define IDSC_IMPORTRECSKIPPED           3389
-#define IDSC_VALIDATETEXT               3390
-#define IDSC_VALIDATEENTRY              3391
-#define IDSC_VALIDATEENTRY2             3392
-#define IDSC_WARNINGENTRYLENGTH         3393
+#define IDSC_VALIDATE_TEXT              3390
+#define IDSC_VALIDATE_ENTRY             3391
+#define IDSC_VALIDATE_ENTRY2            3392
 #define IDSC_ENTRY                      3394
 #define IDSC_ENTRIES                    3395
-#define IDSC_LARGEENTRIES               3396
 #define IDSC_RELATIVE                   3397
 #define IDSC_FILE_UNREADABLE            3398
 #define IDSC_FILE_TRUNCATED             3399
@@ -255,6 +253,17 @@
 #define IDSC_MERGEPOLICY                3432
 #define IDSC_ENTRIES_POLICIES           3433
 #define IDSC_RENAMEDPOLICYNAMES         3434
+#define IDSC_MISSINGPASSWORD            3435
+#define IDSC_MISSINGTITLE               3436
+#define IDSC_VALIDATE_EMPTYTITLE        3437
+#define IDSC_VALIDATE_EMPTYPSWD         3438
+#define IDSC_VALIDATE_DUPUUID           3439
+#define IDSC_RPTVALIDATE                3440
+#define IDSC_VALIDATE_DEPS              3441
+#define IDSC_VALIDATE_ERRORS            3442
+#define IDSC_VALIDATE_WARNINGS          3443
+#define IDSC_SYNCPOLICY                 3444
+#define IDSC_COPYPOLICY                 3445
 
 // Keep DCA together
 #define IDSC_CURRENTDEFAULTDCA          4000
@@ -269,3 +278,20 @@
 #define IDSC_DCARUN                     4009
 #define IDSC_DCASENDEMAIL               4010
 #define IDSC_DEFAULT                    4011
+
+// Named Policy stuff
+#define IDSC_PUSELOWER                  4100
+#define IDSC_PUSEUPPER                  4101
+#define IDSC_PUSEDIGITS                 4102
+#define IDSC_PUSESYMBOL                 4103
+#define IDSC_YESNUMBER                  4104
+#define IDSC_YESEASYVISON               4105
+#define IDSC_YESPRONOUNCEABLE           4106
+#define IDSC_YESSYMBOLS                 4107
+#define IDSC_PLENGTH                    4108
+#define IDSC_DEFAULTSYMBOLS             4109
+#define IDSC_SPECFICSYMBOLS             4110
+#define IDSC_PEASYVISION                4111
+#define IDSC_PPRONOUNCEABLE             4112
+#define IDSC_PHEXADECIMAL               4113
+#define IDSC_DEFAULT_POLICY             4114

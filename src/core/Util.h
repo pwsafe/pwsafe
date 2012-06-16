@@ -38,7 +38,7 @@
 #define V10 0
 #define V15 1
 
-extern void trashMemory(void* buffer, size_t length);
+extern void trashMemory(void *buffer, size_t length);
 extern void trashMemory(LPTSTR buffer, size_t length);
 extern void burnStack(unsigned long len); // borrowed from libtomcrypt
 
@@ -46,21 +46,21 @@ extern void ConvertString(const StringX &text,
                           unsigned char *&txt, size_t &txtlen);
 
 extern void GenRandhash(const StringX &passkey,
-                        const unsigned char* m_randstuff,
-                        unsigned char* m_randhash);
+                        const unsigned char *m_randstuff,
+                        unsigned char *m_randhash);
 
 // buffer is allocated by _readcbc, *** delete[] is responsibility of caller ***
-extern size_t _readcbc(FILE *fp, unsigned char* &buffer,
+extern size_t _readcbc(FILE *fp, unsigned char * &buffer,
                        size_t &buffer_len,
                        unsigned char &type, Fish *Algorithm,
-                       unsigned char* cbcbuffer,
+                       unsigned char *cbcbuffer,
                        const unsigned char *TERMINAL_BLOCK = NULL, 
                        size_t file_len = 0);
 
 // _writecbc will throw(EIO) iff a write fail occurs!
-extern size_t _writecbc(FILE *fp, const unsigned char* buffer, size_t length,
+extern size_t _writecbc(FILE *fp, const unsigned char *buffer, size_t length,
                         unsigned char type, Fish *Algorithm,
-                        unsigned char* cbcbuffer);
+                        unsigned char *cbcbuffer);
 
 /*
 * Get an integer that is stored in little-endian format
@@ -123,10 +123,6 @@ inline void putInt32(unsigned char buf[4], const int val )
 #endif
 }
 
-// Time conversion result formats - powers of 2 as they can be combined!
-enum {TMC_ASC_UNKNOWN = 1, TMC_ASC_NULL = 2, TMC_EXPORT_IMPORT = 4, TMC_XML = 8,
-      TMC_LOCALE = 16};
-
 namespace PWSUtil {
   // namespace of common utility functions
 
@@ -134,7 +130,10 @@ namespace PWSUtil {
   // and use secure versions (_s) when available
   void strCopy(LPTSTR target, size_t tcount, const LPCTSTR source, size_t scount);
   size_t strLength(const LPCTSTR str);
-  StringX ConvertToDateTimeString(const time_t &t, const int result_format);
+  // Time conversion result formats:
+  enum TMC {TMC_ASC_UNKNOWN, TMC_ASC_NULL, TMC_EXPORT_IMPORT, TMC_XML,
+            TMC_LOCALE, TMC_LOCALE_DATE_ONLY};
+  StringX ConvertToDateTimeString(const time_t &t, TMC result_format);
   stringT GetNewFileName(const stringT &oldfilename, const stringT &newExtn);
   extern const TCHAR *UNKNOWN_ASC_TIME_STR, *UNKNOWN_XML_TIME_STR;
   void GetTimeStamp(stringT &sTimeStamp, const bool bShort = false);

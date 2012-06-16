@@ -44,53 +44,6 @@ void CItemData::SetSessionKey()
   IsSessionKeySet = true;
 }
 
-void String2PWPolicy(const stringT &cs_pwp, PWPolicy &pwp)
-{
-  // should really be a c'tor of PWPolicy - later...
-
-  // We need flags(4), length(3), lower_len(3), upper_len(3)
-  //   digit_len(3), symbol_len(3) = 4 + 5 * 3 = 19
-  // All fields are hexadecimal digits representing flags or lengths
-
-  // Note: order of fields set by PWSprefs enum that can have minimum lengths.
-  // Later releases must support these as a minimum.  Any fields added
-  // by these releases will be lost if the user changes these field.
-  ASSERT(cs_pwp.length() == 19);
-
-  // Get fields
-  istringstreamT is_flags(stringT(cs_pwp, 0, 4));
-  istringstreamT is_length(stringT(cs_pwp, 4, 3));
-  istringstreamT is_digitminlength(stringT(cs_pwp, 7, 3));
-  istringstreamT is_lowreminlength(stringT(cs_pwp, 10, 3));
-  istringstreamT is_symbolminlength(stringT(cs_pwp, 13, 3));
-  istringstreamT is_upperminlength(stringT(cs_pwp, 16, 3));
-
-  // Put them into PWPolicy structure
-  unsigned int f; // dain bramaged istringstream requires this runaround
-  is_flags >> hex >> f;
-  pwp.flags = static_cast<unsigned short>(f);
-  is_length >> hex >> pwp.length;
-  is_digitminlength >> hex >> pwp.digitminlength;
-  is_lowreminlength >> hex >> pwp.lowerminlength;
-  is_symbolminlength >> hex >> pwp.symbolminlength;
-  is_upperminlength >> hex >> pwp.upperminlength;
-}
-
-void PWPolicy2String(const PWPolicy &pwp, stringT &cs_pwp)
-{
-  ostringstreamT os;
-  unsigned int f; // dain bramaged istringstream requires this runaround
-  f = static_cast<unsigned int>(pwp.flags);
-  os.fill(charT('0'));
-  os << hex << setw(4) << f
-     << setw(3) << pwp.length
-     << setw(3) << pwp.digitminlength
-     << setw(3) << pwp.lowerminlength
-     << setw(3) << pwp.symbolminlength
-     << setw(3) << pwp.upperminlength;
-  cs_pwp = os.str().c_str();
-}
-
 //-----------------------------------------------------------------------------
 // Constructors
 
@@ -100,9 +53,9 @@ CItemData::CItemData()
     m_URL(URL), m_AutoType(AUTOTYPE),
     m_tttATime(ATIME), m_tttCTime(CTIME), m_tttXTime(XTIME),
     m_tttPMTime(PMTIME), m_tttRMTime(RMTIME), m_PWHistory(PWHIST),
-    m_PWPolicy(POLICY), m_XTimeInterval(XTIME_INT), m_RunCommand(RUNCMD),
+    m_XTimeInterval(XTIME_INT), m_RunCommand(RUNCMD),
     m_DCA(DCA), m_ShiftDCA(SHIFTDCA), m_email(EMAIL), m_protected(PROTECTED),
-    m_symbols(SYMBOLS), m_PolicyName(POLICYNAME), 
+    m_PWPolicy(POLICY), m_symbols(SYMBOLS), m_PolicyName(POLICYNAME), 
     m_entrytype(ET_NORMAL), m_entrystatus(ES_CLEAN),
     m_display_info(NULL)
 {
@@ -116,10 +69,10 @@ CItemData::CItemData(const CItemData &that) :
   m_tttATime(that.m_tttATime), m_tttCTime(that.m_tttCTime),
   m_tttXTime(that.m_tttXTime), m_tttPMTime(that.m_tttPMTime),
   m_tttRMTime(that.m_tttRMTime), m_PWHistory(that.m_PWHistory),
-  m_PWPolicy(that.m_PWPolicy), m_XTimeInterval(that.m_XTimeInterval),
+  m_XTimeInterval(that.m_XTimeInterval),
   m_RunCommand(that.m_RunCommand), m_DCA(that.m_DCA), m_ShiftDCA(that.m_ShiftDCA),
-  m_email(that.m_email), m_protected(that.m_protected), m_symbols(that.m_symbols),
-  m_PolicyName(that.m_PolicyName),
+  m_email(that.m_email), m_protected(that.m_protected), 
+  m_PWPolicy(that.m_PWPolicy), m_symbols(that.m_symbols), m_PolicyName(that.m_PolicyName),
   m_entrytype(that.m_entrytype), m_entrystatus(that.m_entrystatus),
   m_display_info(that.m_display_info == NULL ?
                       NULL : that.m_display_info->clone())
@@ -279,51 +232,7 @@ StringX CItemData::GetFieldValue(const FieldType &ft) const
     case PWHIST:     /* 0f */
       return GetPWHistory();
     case POLICY:     /* 10 */
-    {
-      PWPolicy pwp;
-      GetPWPolicy(pwp);
-      if (pwp.flags != 0) {
-        stringT st_pwp(_T("")), st_text;
-        if (pwp.flags & PWSprefs::PWPolicyUseLowercase) {
-          st_pwp += _T("L");
-          if (pwp.lowerminlength > 1) {
-            Format(st_text, _T("(%d)"), pwp.lowerminlength);
-            st_pwp += st_text;
-          }
-        }
-        if (pwp.flags & PWSprefs::PWPolicyUseUppercase) {
-          st_pwp += _T("U");
-          if (pwp.upperminlength > 1) {
-            Format(st_text, _T("(%d)"), pwp.upperminlength);
-            st_pwp += st_text;
-          }
-        }
-        if (pwp.flags & PWSprefs::PWPolicyUseDigits) {
-          st_pwp += _T("D");
-          if (pwp.digitminlength > 1) {
-            Format(st_text, _T("(%d)"), pwp.digitminlength);
-            st_pwp += st_text;
-          }
-        }
-        if (pwp.flags & PWSprefs::PWPolicyUseSymbols) {
-          st_pwp += _T("S");
-            if (pwp.symbolminlength > 1) {
-            Format(st_text, _T("(%d)"), pwp.symbolminlength);
-              st_pwp += st_text;
-          }
-        }
-        if (pwp.flags & PWSprefs::PWPolicyUseHexDigits)
-          st_pwp += _T("H");
-        if (pwp.flags & PWSprefs::PWPolicyUseEasyVision)
-          st_pwp += _T("E");
-        if (pwp.flags & PWSprefs::PWPolicyMakePronounceable)
-          st_pwp += _T("P");
-        oStringXStream osx;
-        osx << st_pwp << _T(":") << pwp.length;
-        return osx.str().c_str();
-      }
-      break;
-    }
+      return GetPWPolicy();
     case XTIME_INT:  /* 11 */
      return GetXTimeInt();
     case RUNCMD:     /* 12 */
@@ -475,7 +384,7 @@ StringX CItemData::GetAutoType() const
   return GetField(m_AutoType);
 }
 
-StringX CItemData::GetTime(int whichtime, int result_format) const
+StringX CItemData::GetTime(int whichtime, PWSUtil::TMC result_format) const
 {
   time_t t;
 
@@ -539,11 +448,8 @@ const CUUID CItemData::GetUUID() const
 
 void CItemData::GetPWPolicy(PWPolicy &pwp) const
 {
-  StringX cs_pwp(GetField(m_PWPolicy));
-
-  pwp.flags = 0;
-  if (cs_pwp.length() == 19)
-    String2PWPolicy(cs_pwp.c_str(), pwp);
+  PWPolicy mypol(GetField(m_PWPolicy));
+  pwp = mypol;
 }
 
 StringX CItemData::GetPWPolicy() const
@@ -731,7 +637,7 @@ StringX CItemData::GetPlaintext(const TCHAR &separator,
     PWHistList pwhistlist;
 
     pwh_status = CreatePWHistoryList(GetPWHistory(), pwh_max, num_err,
-                                     pwhistlist, TMC_EXPORT_IMPORT);
+                                     pwhistlist, PWSUtil::TMC_EXPORT_IMPORT);
 
     //  Build export string
     history = MakePWHistoryHeader(pwh_status, pwh_max, pwhistlist.size());
@@ -957,19 +863,19 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
       oss << "\t\t<PasswordPolicy>" << endl;
       oss << dec;
       oss << "\t\t\t<PWLength>" << pwp.length << "</PWLength>" << endl;
-      if (pwp.flags & PWSprefs::PWPolicyUseLowercase)
+      if (pwp.flags & PWPolicy::UseLowercase)
         oss << "\t\t\t<PWUseLowercase>1</PWUseLowercase>" << endl;
-      if (pwp.flags & PWSprefs::PWPolicyUseUppercase)
+      if (pwp.flags & PWPolicy::UseUppercase)
         oss << "\t\t\t<PWUseUppercase>1</PWUseUppercase>" << endl;
-      if (pwp.flags & PWSprefs::PWPolicyUseDigits)
+      if (pwp.flags & PWPolicy::UseDigits)
         oss << "\t\t\t<PWUseDigits>1</PWUseDigits>" << endl;
-      if (pwp.flags & PWSprefs::PWPolicyUseSymbols)
+      if (pwp.flags & PWPolicy::UseSymbols)
         oss << "\t\t\t<PWUseSymbols>1</PWUseSymbols>" << endl;
-      if (pwp.flags & PWSprefs::PWPolicyUseHexDigits)
+      if (pwp.flags & PWPolicy::UseHexDigits)
         oss << "\t\t\t<PWUseHexDigits>1</PWUseHexDigits>" << endl;
-      if (pwp.flags & PWSprefs::PWPolicyUseEasyVision)
+      if (pwp.flags & PWPolicy::UseEasyVision)
         oss << "\t\t\t<PWUseEasyVision>1</PWUseEasyVision>" << endl;
-      if (pwp.flags & PWSprefs::PWPolicyMakePronounceable)
+      if (pwp.flags & PWPolicy::MakePronounceable)
         oss << "\t\t\t<PWMakePronounceable>1</PWMakePronounceable>" << endl;
 
       if (pwp.lowerminlength > 0) {
@@ -996,7 +902,7 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
     size_t pwh_max, num_err;
     PWHistList pwhistlist;
     bool pwh_status = CreatePWHistoryList(GetPWHistory(), pwh_max, num_err,
-                                          pwhistlist, TMC_XML);
+                                          pwhistlist, PWSUtil::TMC_XML);
     oss << dec;
     if (pwh_status || pwh_max > 0 || !pwhistlist.empty()) {
       oss << "\t\t<pwhistory>" << endl;
@@ -1209,7 +1115,7 @@ void CItemData::UpdatePasswordHistory()
   } else {
     size_t num_err;
     saving = CreatePWHistoryList(pwh_str, pwh_max, num_err,
-                                 pwhistlist, TMC_EXPORT_IMPORT);
+                                 pwhistlist, PWSUtil::TMC_EXPORT_IMPORT);
   }
   if (!saving)
     return;
@@ -1226,7 +1132,7 @@ void CItemData::UpdatePasswordHistory()
   pwh_ent.password = GetPassword();
   pwh_ent.changetttdate = t;
   pwh_ent.changedate =
-    PWSUtil::ConvertToDateTimeString(t, TMC_EXPORT_IMPORT);
+    PWSUtil::ConvertToDateTimeString(t, PWSUtil::TMC_EXPORT_IMPORT);
 
   if (pwh_ent.changedate.empty()) {
     StringX unk;
@@ -1428,18 +1334,11 @@ void CItemData::SetPWHistory(const StringX &PWHistory)
 
 void CItemData::SetPWPolicy(const PWPolicy &pwp)
 {
-  // Must be some flags; however hex incompatible with other flags
-  bool bhex_flag = (pwp.flags & PWSprefs::PWPolicyUseHexDigits) != 0;
-  bool bother_flags = (pwp.flags & (~PWSprefs::PWPolicyUseHexDigits)) != 0;
+  const StringX cs_pwp(pwp);
 
-  stringT cs_pwp;
-
-  if (pwp.flags == 0 || (bhex_flag && bother_flags)) {
-    cs_pwp = _T("");
-  } else {
-    PWPolicy2String(pwp, cs_pwp);
-  }
-  SetField(m_PWPolicy, cs_pwp.c_str());
+  SetField(m_PWPolicy, cs_pwp);
+  if (!pwp.symbols.empty())
+    SetSymbols(pwp.symbols);
 }
 
 bool CItemData::SetPWPolicy(const stringT &cs_pwp)
@@ -1449,27 +1348,13 @@ bool CItemData::SetPWPolicy(const stringT &cs_pwp)
     SetField(m_PWPolicy, cs_pwp.c_str());
     return true;
   }
-  if (cs_pwp.length() < 19)
+
+  const StringX cs_pwpolicy(cs_pwp.c_str());
+  PWPolicy pwp(cs_pwpolicy);
+  PWPolicy emptyPol;
+  // a non-empty string creates an empty policy iff it's ill-formed
+  if (pwp == emptyPol)
     return false;
-
-  // Parse policy string, more sanity checks
-  // See String2PWPolicy for valid format
-  PWPolicy pwp;
-  String2PWPolicy(stringT(cs_pwp), pwp);
-  StringX cs_pwpolicy(cs_pwp.c_str());
-
-  // Must be some flags; however hex incompatible with other flags
-  bool bhex_flag = (pwp.flags & PWSprefs::PWPolicyUseHexDigits) != 0;
-  bool bother_flags = (pwp.flags & (~PWSprefs::PWPolicyUseHexDigits)) != 0;
-  const int total_sublength = pwp.digitminlength + pwp.lowerminlength +
-    pwp.symbolminlength + pwp.upperminlength;
-
-  if (pwp.flags == 0 || (bhex_flag && bother_flags) ||
-      pwp.length > 1024 || total_sublength > pwp.length ||
-      pwp.digitminlength > 1024 || pwp.lowerminlength > 1024 ||
-      pwp.symbolminlength > 1024 || pwp.upperminlength > 1024) {
-    cs_pwpolicy.clear();
-  }
 
   SetField(m_PWPolicy, cs_pwpolicy);
   return true;
@@ -1595,6 +1480,9 @@ void CItemData::SetFieldValue(const FieldType &ft, const StringX &value)
     case SHIFTDCA:   /* 17 */
       SetShiftDCA(value.c_str());
       break;
+    case POLICYNAME: /* 18 */
+      SetPolicyName(value);
+      break;
     case GROUPTITLE: /* 00 */
     case UUID:       /* 01 */
     case RESERVED:   /* 0b */
@@ -1615,41 +1503,21 @@ BlowFish *CItemData::MakeBlowFish(bool noData) const
                                   m_salt, SaltLength);
 }
 
-int CItemData::ValidateUUID(const unsigned short &nMajor, const unsigned short &nMinor,
-                            uuid_array_t &uuid_array)
+bool CItemData::ValidateEntry(int &flags)
 {
-  // currently only ensure that item has a uuid, creating one if missing.
+  // Validate possible issues with an entry
+  // Add more internal functions as necessary
+  flags = VF_OK;
 
-  /* NOTE the unusual position of the default statement.
+  if (!ValidatePWHistory())
+    flags |= VF_BAD_PSWDHISTORY;
 
-  This is by design as it assumes that if we don't know the version, the
-  database probably has all the problems and should be fixed.
-
-  To date, we know that databases of format 0x0200 and 0x0300 have a UUID
-  problem if records were duplicated.  Databases of format 0x0100 did not
-  have the duplicate function and it has been fixed in databases in format
-  0x0301.
-
-  As more problems are detected and need to be fixed, this code will expand
-  and may have to change.
-  */
-  int iResult(0);
-  switch ((nMajor << 8) + nMinor) {
-    default:
-    case 0x0200:  // V2 format
-    case 0x0300:  // V3 format prior to PWS V3.03
-      CreateUUID();
-      GetUUID(uuid_array);
-      iResult = 1;
-    case 0x0100:  // V1 format
-    case 0x0301:  // V3 format PWS V3.03 and later
-      break;
-  }
-  return iResult;
+  return (flags != VF_OK);
 }
 
 bool CItemData::ValidatePWHistory()
 {
+  // Return true if valid
   if (m_PWHistory.IsEmpty())
     return true;
 
@@ -1662,7 +1530,7 @@ bool CItemData::ValidatePWHistory()
   size_t pwh_max, num_err;
   PWHistList pwhistlist;
   bool pwh_status = CreatePWHistoryList(pwh, pwh_max, num_err,
-                                        pwhistlist, TMC_EXPORT_IMPORT);
+                                        pwhistlist, PWSUtil::TMC_EXPORT_IMPORT);
   if (num_err == 0)
     return true;
 
@@ -1676,23 +1544,21 @@ bool CItemData::ValidatePWHistory()
   if (listnum > pwh_max)
     pwh_max = listnum;
 
-  if (pwh_max < listnum)
-    pwh_max = listnum;
-
   // Rebuild PWHistory from the data we have
-  StringX history = MakePWHistoryHeader(pwh_status, pwh_max, listnum);
+  StringX sxBuffer;
+  StringX sxNewHistory = MakePWHistoryHeader(pwh_status, pwh_max, listnum);
 
-  PWHistList::iterator iter;
-  for (iter = pwhistlist.begin(); iter != pwhistlist.end(); iter++) {
-    const PWHistEntry &pwshe = *iter;
-    history += pwshe.changedate;
-    oStringXStream os1;
-    os1 << hex << setfill(charT('0')) << setw(4)
-        << pwshe.password.length();
-    history += os1.str();
-    history += pwshe.password;
+  PWHistList::const_iterator citer;
+  for (citer = pwhistlist.begin(); citer != pwhistlist.end(); citer++) {
+    Format(sxBuffer, _T("%08x%04x%s"),
+	           static_cast<long>(citer->changetttdate), citer->password.length(),
+	           citer->password.c_str());
+	    sxNewHistory += sxBuffer;
+	    sxBuffer = _T("");
   }
-  SetPWHistory(history);
+
+  if (pwh != sxNewHistory)
+    SetPWHistory(sxNewHistory);
 
   return false;
 }

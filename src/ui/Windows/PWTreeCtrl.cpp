@@ -296,7 +296,10 @@ BOOL CPWTreeCtrl::PreTranslateMessage(MSG* pMsg)
   // Process user's Rename shortcut
   if (m_pDbx != NULL && m_pDbx->CheckPreTranslateRename(pMsg)) {
     //  Send via main window to ensure it isn't an Edit in place
-    m_pDbx->SendMessage(WM_COMMAND, ID_MENUITEM_RENAME);
+    HTREEITEM hItem = GetSelectedItem();
+    CItemData *pci = (CItemData *)GetItemData(hItem);
+    m_pDbx->SendMessage(WM_COMMAND,
+          pci == NULL ? ID_MENUITEM_RENAMEENTRY : ID_MENUITEM_RENAMEGROUP);
     return TRUE;
   }
 
@@ -440,29 +443,6 @@ void CPWTreeCtrl::OnDragLeave()
 void CPWTreeCtrl::SetUpFont()
 {
   Fonts::GetInstance()->SetUpFont(this, Fonts::GetInstance()->GetCurrentFont());
-}
-
-void CPWTreeCtrl::UpdateLeafsGroup(MultiCommands *pmulticmds, HTREEITEM hItem, CString prefix)
-{
-  // Starting with hItem, update the Group field of all of hItem's
-  // children. Called after a label has been edited.
-  if (IsLeaf(hItem)) {
-    CItemData *pci = (CItemData *)GetItemData(hItem);
-    ASSERT(pci != NULL);
-    Command *pcmd = NULL;
-    pcmd = UpdateEntryCommand::Create(m_pDbx->GetCore(), *pci,
-                                               CItemData::GROUP, (LPCWSTR)prefix);
-    pcmd->SetNoGUINotify();
-    pmulticmds->Add(pcmd);
-  } else { // update prefix with current group name and recurse
-    if (!prefix.IsEmpty())
-      prefix += GROUP_SEP;
-    prefix += GetItemText(hItem);
-    HTREEITEM child;
-    for (child = GetChildItem(hItem); child != NULL; child = GetNextSiblingItem(child)) {
-      UpdateLeafsGroup(pmulticmds, child, prefix);
-    }
-  }
 }
 
 void CPWTreeCtrl::OnBeginLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
@@ -640,7 +620,7 @@ void CPWTreeCtrl::OnSelectionChanged(NMHDR *pNotifyStruct, LRESULT *pLResult)
   if (((NMTREEVIEW *)pNotifyStruct)->action != TVC_BYKEYBOARD || GetCount() == 0)
     return;
 
-  m_pDbx->OnItemSelected(pNotifyStruct, pLResult);
+  m_pDbx->OnItemSelected(pNotifyStruct, pLResult, true);
 }
 
 void CPWTreeCtrl::OnDeleteItem(NMHDR *pNotifyStruct, LRESULT *pLResult)
@@ -683,13 +663,26 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
   these fields cannot be empty.
   */
 
+  PWScore *pcore = (PWScore *)m_pDbx->GetCore();
+
+  MultiCommands *pmulticmds = MultiCommands::Create(pcore);
+
   NMTVDISPINFO *ptvinfo = (NMTVDISPINFO *)pNotifyStruct;
   HTREEITEM ti = ptvinfo->item.hItem;
   if (ptvinfo->item.pszText == NULL ||     // NULL if edit cancelled,
       ptvinfo->item.pszText[0] == L'\0') { // empty if text deleted - not allowed
     // If called from AddGroup, user cancels EditLabel - save it
-    // (Still called "New Group")
+    // (Still called "New Group" or the changed name if that already existed)
     if (m_pDbx->IsInAddGroup()) {
+      // m_eLabel is the old name but need to get the path
+      StringX sxPath = GetGroup(ti);
+
+      pmulticmds->Add(DBEmptyGroupsCommand::Create(pcore, sxPath,
+                             DBEmptyGroupsCommand::EG_ADD));
+
+      // Do it
+      m_pDbx->Execute(pmulticmds);
+
       m_pDbx->ResetInAddGroup();
       *pLResult = TRUE;
     }
@@ -706,7 +699,6 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
   StringX sxOldPath, sxNewPath;                  // For Node
   CString prefix;                                // For Node
   
-  PWScore *pcore = (PWScore *)m_pDbx->GetCore();
   PWSprefs *prefs = PWSprefs::GetInstance();
   bool bShowUsernameInTree = prefs->GetPref(PWSprefs::ShowUsernameInTree);
   bool bShowPasswordInTree = prefs->GetPref(PWSprefs::ShowPasswordInTree);
@@ -792,18 +784,18 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
 
     // Check that pathname with node name doesn't already exist.
     // (We could do fancy merging if so, but for now we'll reject the rename)
-    // Check is simple - just see if there's a sibling NODE name sxNewText
+    // Check is simple - just see if there's a sibling GROUP name sxNewText
 
-    HTREEITEM parent = GetParentItem(ti);
-    HTREEITEM sibling = GetChildItem(parent);
+    HTREEITEM hParent = GetParentItem(ti);
+    HTREEITEM hSibling = GetChildItem(hParent);
     do {
-      if (sibling != ti && !IsLeaf(sibling)) {
-        const CString siblingText = GetItemText(sibling);
-        if (siblingText == sxNewText.c_str())
+      if (hSibling != ti && !IsLeaf(hSibling)) {
+        CString cs_SiblingText = GetItemText(hSibling);
+        if (cs_SiblingText == sxNewText.c_str())
           goto bad_exit;
       }
-      sibling = GetNextSiblingItem(sibling);
-    } while (sibling != NULL);
+      hSibling = GetNextSiblingItem(hSibling);
+    } while (hSibling != NULL);
     // If we made it here, then name's unique.
 
 
@@ -836,16 +828,17 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
         sxOldPath = (LPCWSTR)m_eLabel;
         sxNewPath = sxNewText;
       } else {
-        sxOldPath = StringX(prefix) + StringX(GROUP_SEP2) + StringX(m_eLabel);
+        sxOldPath = StringX(prefix) + StringX(GROUP_SEP2) + (LPCWSTR)m_eLabel;
         sxNewPath = StringX(prefix) + StringX(GROUP_SEP2) + sxNewText;
       }
 
-      m_pDbx->UpdateGroupNamesInMap(sxOldPath, sxNewPath);
+      if (m_pDbx->IsEmptyGroup(sxOldPath))
+        pmulticmds->Add(DBEmptyGroupsCommand::Create(pcore, sxOldPath, sxNewPath));
+      else
+        m_pDbx->UpdateGroupNamesInMap(sxOldPath, sxNewPath);
 
     } // good group name (no GROUP_SEP)
   } // !IsLeaf
-
-  MultiCommands *pmulticmds = MultiCommands::Create(pcore);
 
   if (bIsLeaf) {
     // Update Leaf
@@ -865,11 +858,36 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
       }
     }
   } else {
-    // Update Group
-    UpdateLeafsGroup(pmulticmds, ti, prefix);
+    // Group
+    if (m_pDbx->IsInAddGroup()) {
+      // Add the group
+      pmulticmds->Add(DBEmptyGroupsCommand::Create(pcore, sxNewPath,
+                      DBEmptyGroupsCommand::EG_ADD));
+
+      m_pDbx->ResetInAddGroup();
+      *pLResult = TRUE;
+    } else {
+      // We refresh the view
+      Command *pcmd1 = UpdateGUICommand::Create(pcore,
+                                                UpdateGUICommand::WN_UNDO,
+                                                UpdateGUICommand::GUI_REFRESH_TREE);
+      pmulticmds->Add(pcmd1);
+
+      // Update Group
+      pmulticmds->Add(RenameGroupCommand::Create(pcore, sxOldPath, sxNewPath));
+
+      // We refresh the view
+      Command *pcmd2 = UpdateGUICommand::Create(pcore,
+                                              UpdateGUICommand::WN_EXECUTE_REDO,
+                                              UpdateGUICommand::GUI_REFRESH_TREE);
+      pmulticmds->Add(pcmd2);
+    }
   }
 
-  m_pDbx->Execute(pmulticmds);
+  if (pmulticmds->GetSize() > 0)
+    m_pDbx->Execute(pmulticmds);
+  else
+    delete pmulticmds;
 
   // Mark database as modified
   m_pDbx->SetChanged(DboxMain::Data);
@@ -881,7 +899,8 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
   // OK
   *pLResult = TRUE;
   m_bEditLabelCompleted = true;
-  if (m_pDbx->IsFilterActive())
+
+  if (bIsLeaf)
     m_pDbx->RefreshViews();
 
   return;
@@ -891,7 +910,6 @@ bad_exit:
   m_pDbx->RefreshViews();
 
   // restore text
-  // (not that this is documented anywhere in MS's docs...)
   *pLResult = FALSE;
 }
 
@@ -911,7 +929,7 @@ bool CPWTreeCtrl::IsLeaf(HTREEITEM hItem) const
   int i, dummy;
   BOOL status = GetItemImage(hItem, i, dummy);
   ASSERT(status);
-  return (i != NODE);
+  return (i != GROUP && i!= EMPTY_GROUP);
 }
 
 // Returns the number of children of this group
@@ -948,8 +966,9 @@ void CPWTreeCtrl::DeleteWithParents(HTREEITEM hItem)
   } while (parent != TVI_ROOT && parent != NULL);
 }
 
-// Return the full path leading up to a given item, but
+// If passed an entry, return the full path leading up to a given item, but
 // not including the name of the item itself.
+// If passed a Group, return full path including this group.
 CString CPWTreeCtrl::GetGroup(HTREEITEM hItem)
 {
   CString retval(L""), nodeText;
@@ -966,24 +985,23 @@ CString CPWTreeCtrl::GetGroup(HTREEITEM hItem)
   return retval;
 }
 
-static CSecString GetPathElem(CSecString &path)
+static StringX GetFirstPathElem(StringX &sxPath)
 {
   // Get first path element and chop it off, i.e., if
   // path = "a.b.c.d"
   // will return "a" and path will be "b.c.d"
   // (assuming GROUP_SEP is '.')
 
-  CSecString retval;
-  int N = path.Find(GROUP_SEP);
-  if (N == -1) {
-    retval = path;
-    path = L"";
+  StringX sxElement;
+  const size_t n1stDot = sxPath.find_first_of(L'.');
+  if (n1stDot == StringX::npos) {
+    sxElement = sxPath;
+    sxPath = L"";
   } else {
-    const int Len = path.GetLength();
-    retval = CSecString(path.Left(N));
-    path = CSecString(path.Right(Len - N - 1));
+    sxElement = sxPath.substr(0, n1stDot);
+    sxPath = sxPath.substr(n1stDot + 1);
   }
-  return retval;
+  return sxElement;
 }
 
 bool CPWTreeCtrl::ExistsInTree(HTREEITEM &node, const CSecString &s, HTREEITEM &si) const
@@ -1009,26 +1027,29 @@ HTREEITEM CPWTreeCtrl::AddGroup(const CString &group, bool &bAlreadyExists)
   HTREEITEM ti = TVI_ROOT;
   HTREEITEM si;
   bAlreadyExists = true;
-  if (!group.IsEmpty()) {
-    CSecString path = group;
-    CSecString s;
-    StringX path2root(L""), sxDot(L".");
-    do {
-      s = GetPathElem(path);
-      if (path2root.empty())
-        path2root = (LPCWSTR)s;
-      else
-        path2root += sxDot + StringX(s);
 
-      if (!ExistsInTree(ti, s, si)) {
-        ti = InsertItem(s, ti, TVI_SORT);
-        SetItemImage(ti, CPWTreeCtrl::NODE, CPWTreeCtrl::NODE);
+  if (!group.IsEmpty()) {
+    StringX sxPath = group;
+    StringX sxTemp, sxPath2Root(L""), sxDot(L".");
+    do {
+      sxTemp = GetFirstPathElem(sxPath);
+      if (sxPath2Root.empty())
+        sxPath2Root = sxTemp;
+      else
+        sxPath2Root += sxDot + sxTemp;
+
+      if (!ExistsInTree(ti, sxTemp, si)) {
+        ti = InsertItem(sxTemp.c_str(), ti, TVI_SORT);
+        SetItemImage(ti, CPWTreeCtrl::GROUP, CPWTreeCtrl::GROUP);
         bAlreadyExists = false;
       } else
         ti = si;
-      m_pDbx->m_mapGroupToTreeItem[path2root] = ti;
-    } while (!path.IsEmpty());
+      m_pDbx->m_mapGroupToTreeItem[sxPath2Root] = ti;
+    } while (!sxPath.empty());
   }
+  if (m_pDbx->IsEmptyGroup(StringX(group)))
+    SetItemImage(ti, CPWTreeCtrl::EMPTY_GROUP, CPWTreeCtrl::EMPTY_GROUP);
+
   return ti;
 }
 

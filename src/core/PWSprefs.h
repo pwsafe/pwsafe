@@ -40,11 +40,12 @@ extern int s_cfgLockCount;
 
 struct st_prefShortcut {
   unsigned int id;
-  unsigned char cVirtKey;
+  unsigned short int siVirtKey;
   unsigned char cModifier;
 };
 
 class CXMLprefs;
+struct PWPolicy;
 
 class PWSprefs
 {
@@ -142,16 +143,6 @@ public:
   enum {stiBlack = 0, stiBlue = 1, stiWhite = 2, stiYellow = 3};
 
   // For Password Policy
-  enum {
-    PWPolicyUseLowercase        = 0x8000, // Can have a minimum length field
-    PWPolicyUseUppercase        = 0x4000, // Can have a minimum length field
-    PWPolicyUseDigits           = 0x2000, // Can have a minimum length field
-    PWPolicyUseSymbols          = 0x1000, // Can have a minimum length field
-    PWPolicyUseHexDigits        = 0x0800,
-    PWPolicyUseEasyVision       = 0x0400,
-    PWPolicyMakePronounceable   = 0x0200,
-    PWPolicyUnused              = 0x01ff};
-
   // Preferences changed (Database or Application or Shortcuts)
   enum {DB_PREF = 0, APP_PREF = 1, SHC_PREF = 2};
 
@@ -167,28 +158,34 @@ public:
   void ForceWriteApplicationPreferences()
   {m_prefs_changed[APP_PREF] = true; m_prefs_changed[SHC_PREF] = true;}
 
-  bool GetPref(BoolPrefs pref_enum) const;
-  unsigned int GetPref(IntPrefs pref_enum) const;
-  // Following for case where default value is determined @ runtime
-  unsigned int GetPref(IntPrefs pref_enum, unsigned int defVal) const;
-  StringX GetPref(StringPrefs pref_enum) const;
+  bool GetPref(BoolPrefs pref_enum, const bool bUseCopy = false) const;
+  unsigned int GetPref(IntPrefs pref_enum, const bool bUseCopy = false) const;
+  StringX GetPref(StringPrefs pref_enum, const bool bUseCopy = false) const;
+
+  // Following is for case where default value is determined at runtime
+  //  Note: last parameter cannot be defaulted and must be specified in any
+  //  call to distinguish it from the normal integer GetPref
+  unsigned int GetPref(IntPrefs pref_enum, unsigned int defVal,
+                       const bool bUseCopy) const;
 
   bool GetPrefDefVal(BoolPrefs pref_enum) const;
   unsigned int GetPrefDefVal(IntPrefs pref_enum) const;
   StringX GetPrefDefVal(StringPrefs pref_enum) const;
 
   // Get all preferences for minidump user stream
-  StringX GetAllBoolPrefs();
-  StringX GetAllIntPrefs();
-  StringX GetAllStringPrefs();
+  StringX GetAllBoolPrefs(const bool bUseCopy = false);
+  StringX GetAllIntPrefs(const bool bUseCopy = false);
+  StringX GetAllStringPrefs(const bool bUseCopy = false);
 
   // Special cases
   void GetPrefRect(long &top, long &bottom, long &left, long &right) const;
   void SetPrefRect(long top, long bottom, long left, long right);
   void GetPrefPSSRect(long &top, long &bottom, long &left, long &right) const;
   void SetPrefPSSRect(long top, long bottom, long left, long right);
-  int GetMRUList(stringT *MRUFiles);
+  int GetMRUList(stringT *MRUFiles) const;
   int SetMRUList(const stringT *MRUFiles, int n, int max_MRU);
+  PWPolicy GetDefaultPolicy(const bool bUseCopy = false) const;
+  void SetDefaultPolicy(const PWPolicy &pol, const bool bUseCopy = false);
 
   void SetupCopyPrefs();
   void UpdateFromCopyPrefs(const PWSprefs::PrefType ptype);

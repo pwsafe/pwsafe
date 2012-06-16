@@ -32,7 +32,7 @@ static char THIS_FILE[] = __FILE__;
 // Functor for count_if
 struct CountShortcuts {
   bool operator()(const std::pair<const UINT, CMenuShortcut> &p) {
-    return (p.second.cVirtKey != (unsigned char)0);
+    return (p.second.siVirtKey != 0);
   }
 };
 
@@ -40,14 +40,15 @@ struct CountShortcuts {
 struct CreateAccelTable {
   CreateAccelTable(ACCEL *pacceltbl, unsigned char ucAutotypeKey) 
     : m_pacceltbl(pacceltbl), m_ucAutotypeKey(ucAutotypeKey) {}
+
   void operator()(const std::pair<UINT, CMenuShortcut> &p)
   {
-    if (p.second.cVirtKey != 0 && p.second.cVirtKey != m_ucAutotypeKey) {
+    if (p.second.siVirtKey != 0 && p.second.siVirtKey != m_ucAutotypeKey) {
       m_pacceltbl->fVirt = FVIRTKEY |
-                           ((p.second.cModifier & HOTKEYF_CONTROL) == HOTKEYF_CONTROL ? FCONTROL : 0) |
-                           ((p.second.cModifier & HOTKEYF_ALT)    == HOTKEYF_ALT      ? FALT     : 0) |
-                           ((p.second.cModifier & HOTKEYF_SHIFT)  == HOTKEYF_SHIFT    ? FSHIFT   : 0);
-      m_pacceltbl->key = (WORD)p.second.cVirtKey;
+               ((p.second.cModifier & HOTKEYF_CONTROL) == HOTKEYF_CONTROL ? FCONTROL : 0) |
+               ((p.second.cModifier & HOTKEYF_ALT)     == HOTKEYF_ALT     ? FALT     : 0) |
+               ((p.second.cModifier & HOTKEYF_SHIFT)   == HOTKEYF_SHIFT   ? FSHIFT   : 0);
+      m_pacceltbl->key = (WORD)p.second.siVirtKey;
       m_pacceltbl->cmd = (WORD)p.first;
       m_pacceltbl++;
     }
@@ -188,7 +189,7 @@ void DboxMain::SetUpInitialMenuStrings()
   m_ReservedShortcuts.clear();
 
   st_MenuShortcut st_mst;
-  st_mst.cVirtKey;
+  st_mst.siVirtKey;
   st_mst.cModifier = HOTKEYF_ALT;
 
   for (UINT ui = 0; ui < uiCount; ui++) {
@@ -207,22 +208,22 @@ void DboxMain::SetUpInitialMenuStrings()
       CString csMainMenuItem = tcMenuString;
       int iamp = csMainMenuItem.Find(L'&');
       if (iamp >= 0 && iamp < csMainMenuItem.GetLength() - 1) {
-        st_mst.cVirtKey = (unsigned char)csMainMenuItem[iamp + 1];
+        st_mst.siVirtKey = csMainMenuItem[iamp + 1];
         m_ReservedShortcuts.push_back(st_mst);
       }
     }
   }
 
   // Add 3 special keys F1 (for Help), Ctrl+Q/Alt+F4 (Exit)
-  st_mst.cVirtKey = VK_F1;
+  st_mst.siVirtKey = VK_F1;
   st_mst.cModifier = 0;
   m_ReservedShortcuts.push_back(st_mst);
 
-  st_mst.cVirtKey = 'Q';
+  st_mst.siVirtKey = 'Q';
   st_mst.cModifier = HOTKEYF_CONTROL;
   m_ReservedShortcuts.push_back(st_mst);
 
-  st_mst.cVirtKey = VK_F4;
+  st_mst.siVirtKey = VK_F4;
   st_mst.cModifier = HOTKEYF_ALT;
   m_ReservedShortcuts.push_back(st_mst);
 
@@ -326,9 +327,9 @@ void DboxMain::SetUpInitialMenuStrings()
 
       iter = m_MapMenuShortcuts.find((UINT)paccel->cmd);
       if (iter != m_MapMenuShortcuts.end()) {
-        iter->second.cdefVirtKey = iter->second.cVirtKey = 
+        iter->second.siDefVirtKey = iter->second.siVirtKey = 
           (unsigned char)paccel->key;
-          iter->second.cdefModifier = iter->second.cModifier =
+          iter->second.cDefModifier = iter->second.cModifier =
           ((paccel->fVirt & FCONTROL) == FCONTROL ? HOTKEYF_CONTROL : 0) |
           ((paccel->fVirt & FALT)     == FALT     ? HOTKEYF_ALT     : 0) |
           ((paccel->fVirt & FSHIFT)   == FSHIFT   ? HOTKEYF_SHIFT   : 0) |
@@ -345,6 +346,20 @@ void DboxMain::SetUpInitialMenuStrings()
   // Now go through the default table and see if the user has changed anything,
   // change shortcuts as per preferences
   std::vector<st_prefShortcut> vShortcuts(PWSprefs::GetInstance()->GetPrefShortcuts());
+
+  // We need to convert from PWS shortcut modifiers to MFC modifiers
+  for (size_t i = 0; i < vShortcuts.size(); i++) {
+    unsigned char cModifier(0), cWindowsMod = vShortcuts[i].cModifier;
+    if ((cWindowsMod & PWS_HOTKEYF_ALT    ) == PWS_HOTKEYF_ALT)
+      cModifier |= HOTKEYF_ALT;
+    if ((cWindowsMod & PWS_HOTKEYF_CONTROL) == PWS_HOTKEYF_CONTROL)
+      cModifier |= HOTKEYF_CONTROL;
+    if ((cWindowsMod & PWS_HOTKEYF_SHIFT  ) == PWS_HOTKEYF_SHIFT)
+      cModifier |= HOTKEYF_SHIFT;
+    if ((cWindowsMod & PWS_HOTKEYF_EXT    ) == PWS_HOTKEYF_EXT)
+      cModifier |= HOTKEYF_EXT;
+    vShortcuts[i].cModifier = cModifier;
+  }
 
   size_t N = vShortcuts.size();
   for (size_t i = 0; i < N; i++) {
@@ -365,8 +380,8 @@ void DboxMain::SetUpInitialMenuStrings()
       continue;
     }
     // Check not already in use (ignore if deleting current shortcut)
-    if (stxst.cVirtKey != (unsigned char)0) {
-      st_mst.cVirtKey = stxst.cVirtKey;
+    if (stxst.siVirtKey != 0) {
+      st_mst.siVirtKey = stxst.siVirtKey;
       st_mst.cModifier = stxst.cModifier;
       already_inuse inuse(st_mst);
       inuse_iter = std::find_if(m_MapMenuShortcuts.begin(),
@@ -378,10 +393,10 @@ void DboxMain::SetUpInitialMenuStrings()
         continue;
       }
     }
-    if ((iter->second.cVirtKey  != stxst.cVirtKey  ||
+    if ((iter->second.siVirtKey  != stxst.siVirtKey  ||
          iter->second.cModifier != stxst.cModifier)) {
       // User changed a added or shortcut
-      iter->second.cVirtKey  = stxst.cVirtKey;
+      iter->second.siVirtKey  = stxst.siVirtKey;
       iter->second.cModifier = stxst.cModifier;
     }
   }
@@ -468,7 +483,7 @@ void DboxMain::SetUpMenuStrings(CMenu *pPopupMenu)
       iter = m_MapMenuShortcuts.find(miteminfo.wID);
       if (iter != m_MapMenuShortcuts.end()) {
         CString str;
-        if (iter->second.cVirtKey != 0) {
+        if (iter->second.siVirtKey != 0) {
             str.Format(L"%s\t%s", iter->second.name.c_str(), 
                        CMenuShortcut::FormatShortcut(iter));
         } else {
@@ -628,11 +643,13 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
           pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
         }
       }
-      pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                             ID_MENUITEM_UNDO, tc_dummy);
-      pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                             ID_MENUITEM_REDO, tc_dummy);
-      pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
+      if (m_core.AnyToUndo() || m_core.AnyToRedo()) {
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
+                               ID_MENUITEM_UNDO, tc_dummy);
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
+                               ID_MENUITEM_REDO, tc_dummy);
+        pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
+      }
       pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                              ID_MENUITEM_CLEARCLIPBOARD, tc_dummy);
       goto exit;
@@ -669,11 +686,13 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
         }
       }
       pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
-      pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                             ID_MENUITEM_UNDO, tc_dummy);
-      pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                             ID_MENUITEM_REDO, tc_dummy);
-      pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
+      if (m_core.AnyToUndo() || m_core.AnyToRedo()) {
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
+                               ID_MENUITEM_UNDO, tc_dummy);
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
+                               ID_MENUITEM_REDO, tc_dummy);
+        pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
+      }
       pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                              ID_MENUITEM_CLEARCLIPBOARD, tc_dummy);
       goto exit;
@@ -686,6 +705,21 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
     //               Entry functions (copy to clipboard, browse, run etc)
     if (pci != NULL) {
       // Entry is selected
+
+      // Deal with multi-selection
+      // More than 2 is meaningless in List view
+      if (m_IsListView && m_ctlItemList.GetSelectedCount() > 2)
+        return;
+
+      // If exactly 2 selected - show compare entries menu
+      if (m_IsListView  && m_ctlItemList.GetSelectedCount() == 2) {
+        CString cs_txt(MAKEINTRESOURCE(ID_MENUITEM_COMPARE_ENTRIES));
+        cs_txt.TrimLeft();  // Remove leading newline
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
+                               ID_MENUITEM_COMPARE_ENTRIES, cs_txt);
+        return;
+      }
+
       if (!bReadOnly) {
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_ADD, tc_dummy);
@@ -715,18 +749,20 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
       if (!bReadOnly) {
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_DUPLICATEENTRY, tc_dummy);
-        pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
         if (!m_IsListView) {
+          pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
           pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                  ID_MENUITEM_ADDGROUP, tc_dummy);
         }
       }
       pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
-      pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                             ID_MENUITEM_UNDO, tc_dummy);
-      pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                             ID_MENUITEM_REDO, tc_dummy);
-      pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
+      if (m_core.AnyToUndo() || m_core.AnyToRedo()) {
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
+                               ID_MENUITEM_UNDO, tc_dummy);
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
+                               ID_MENUITEM_REDO, tc_dummy);
+        pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
+      }
       pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                              ID_MENUITEM_CLEARCLIPBOARD, tc_dummy);
       pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
@@ -821,6 +857,12 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                pci->IsProtected() ? ID_MENUITEM_UNPROTECT : ID_MENUITEM_PROTECT,
                                tc_dummy);
+
+      // Tree view and command flag present only
+      if (!m_IsListView && m_bCompareEntries &&
+           etype_original != CItemData::ET_SHORTCUT)
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
+                               ID_MENUITEM_COMPARE_ENTRIES, tc_dummy);
     } else {
       // Must be List view with no entry selected
       pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
@@ -1015,7 +1057,7 @@ void DboxMain::OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL)
 }
 
 // Called when right-click is invoked in the client area of the window.
-void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint screen)
+void DboxMain::OnContextMenu(CWnd * /* pWnd */, CPoint screen)
 {
 #if defined(POCKET_PC)
   const DWORD dwTrackPopupFlags = TPM_LEFTALIGN;
@@ -1138,7 +1180,7 @@ void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint screen)
         item = pdi->list_index;
         m_ctlItemTree.SelectItem(ti); // So that OnEdit gets the right one
       } else {
-        // right-click was on a group (NODE)
+        // right-click was on a group (GROUP)
         m_ctlItemTree.SelectItem(ti);
         if (menu.LoadMenu(IDR_POPEDITGROUP)) {
           minfo.dwMenuData = IDR_POPEDITGROUP;
@@ -1183,6 +1225,29 @@ void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint screen)
 
   // RClick over an entry
   if (item >= 0) {
+    CMenu *pPopup(NULL);
+
+    // More than 2 is meaningless in List view
+    if (m_IsListView && m_ctlItemList.GetSelectedCount() > 2)
+      return;
+
+    // Only compare entries if 2 entries are selected - List view only
+    if (m_IsListView && m_ctlItemList.GetSelectedCount() == 2) {
+      brc = menu.LoadMenu(IDR_POPCOMPAREENTRIES);
+      ASSERT(brc != 0);
+
+      minfo.dwMenuData = IDR_POPCOMPAREENTRIES;
+      brc = menu.SetMenuInfo(&minfo);
+      ASSERT(brc != 0);
+
+      pPopup = menu.GetSubMenu(0);
+      ASSERT_VALID(pPopup);
+
+      // Use this DboxMain for commands
+      pPopup->TrackPopupMenu(dwTrackPopupFlags, screen.x, screen.y, this);
+      return;
+    }
+
     ASSERT(pci != NULL);
     brc = menu.LoadMenu(IDR_POPEDITMENU);
     ASSERT(brc != 0);
@@ -1191,7 +1256,7 @@ void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint screen)
     brc = menu.SetMenuInfo(&minfo);
     ASSERT(brc != 0);
 
-    CMenu* pPopup = menu.GetSubMenu(0);
+    pPopup = menu.GetSubMenu(0);
     ASSERT_VALID(pPopup);
 
     const CItemData::EntryType etype_original = pci->GetEntryType();
@@ -1255,8 +1320,18 @@ void DboxMain::OnContextMenu(CWnd* /* pWnd */, CPoint screen)
       pPopup->RemoveMenu(ID_MENUITEM_RUNCOMMAND, MF_BYCOMMAND);
     }
 
+    if (m_IsListView) {
+      // Rename not valid in List View
+      pPopup->RemoveMenu(ID_MENUITEM_RENAMEENTRY, MF_BYCOMMAND);
+    }
+
     // Since an entry - remove Duplicate Group
     pPopup->RemoveMenu(ID_MENUITEM_DUPLICATEGROUP, MF_BYCOMMAND);
+
+    // Remove if in List View, not allowed in Tree view or a shortcut
+    if (m_IsListView || !m_bCompareEntries ||
+        etype_original == CItemData::ET_SHORTCUT)
+        pPopup->RemoveMenu(ID_MENUITEM_COMPARE_ENTRIES, MF_BYCOMMAND);
 
     // Use this DboxMain for commands
     pPopup->TrackPopupMenu(dwTrackPopupFlags, screen.x, screen.y, this);
@@ -1277,9 +1352,10 @@ void DboxMain::SetupSpecialShortcuts()
     iter_group = m_MapMenuShortcuts.find(ID_MENUITEM_DELETEGROUP);
     iter_group->second.SetKeyFlags(iter->second);
 
-    m_wpDeleteMsg = ((iter->second.cModifier & HOTKEYF_ALT) == HOTKEYF_ALT) ? WM_SYSKEYDOWN : WM_KEYDOWN;
-    m_wpDeleteKey = iter->second.cVirtKey;
-    m_bDeleteCtrl = (iter->second.cModifier & HOTKEYF_CONTROL) == HOTKEYF_CONTROL;
+    m_wpDeleteMsg = ((iter->second.cModifier & HOTKEYF_ALT) == HOTKEYF_ALT) ?
+                           WM_SYSKEYDOWN : WM_KEYDOWN;
+    m_wpDeleteKey = iter->second.siVirtKey;
+    m_bDeleteCtrl = (iter->second.cModifier  & HOTKEYF_CONTROL) == HOTKEYF_CONTROL;
     m_bDeleteShift = (iter->second.cModifier & HOTKEYF_SHIFT) == HOTKEYF_SHIFT;
   } else {
     m_wpDeleteKey = 0;
@@ -1295,8 +1371,9 @@ void DboxMain::SetupSpecialShortcuts()
     iter_group = m_MapMenuShortcuts.find(ID_MENUITEM_RENAMEGROUP);
     iter_group->second.SetKeyFlags(iter->second);
 
-    m_wpRenameMsg = ((iter->second.cModifier & HOTKEYF_ALT) == HOTKEYF_ALT) ? WM_SYSKEYDOWN : WM_KEYDOWN;
-    m_wpRenameKey = iter->second.cVirtKey;
+    m_wpRenameMsg = ((iter->second.cModifier & HOTKEYF_ALT) == HOTKEYF_ALT) ?
+                           WM_SYSKEYDOWN : WM_KEYDOWN;
+    m_wpRenameKey = iter->second.siVirtKey;
     m_bRenameCtrl = (iter->second.cModifier & HOTKEYF_CONTROL) == HOTKEYF_CONTROL;
     m_bRenameShift = (iter->second.cModifier & HOTKEYF_SHIFT) == HOTKEYF_SHIFT;
   } else {
@@ -1308,9 +1385,11 @@ void DboxMain::SetupSpecialShortcuts()
   
   // Save for CTreeCtrl & CListCtrl PreTranslateMessage
   if (iter != m_MapMenuShortcuts.end()) {
-    m_wpAutotypeDNMsg = ((iter->second.cModifier & HOTKEYF_ALT) == HOTKEYF_ALT) ? WM_SYSKEYDOWN : WM_KEYDOWN;
-    m_wpAutotypeUPMsg = ((iter->second.cModifier & HOTKEYF_ALT) == HOTKEYF_ALT) ? WM_SYSKEYUP : WM_KEYUP;
-    m_wpAutotypeKey = iter->second.cVirtKey;
+    m_wpAutotypeDNMsg = ((iter->second.cModifier & HOTKEYF_ALT) == HOTKEYF_ALT) ?
+                               WM_SYSKEYDOWN : WM_KEYDOWN;
+    m_wpAutotypeUPMsg = ((iter->second.cModifier & HOTKEYF_ALT) == HOTKEYF_ALT) ?
+                               WM_SYSKEYUP : WM_KEYUP;
+    m_wpAutotypeKey = iter->second.siVirtKey;
     m_bAutotypeCtrl = (iter->second.cModifier & HOTKEYF_CONTROL) == HOTKEYF_CONTROL;
     m_bAutotypeShift = (iter->second.cModifier & HOTKEYF_SHIFT) == HOTKEYF_SHIFT;
   } else {

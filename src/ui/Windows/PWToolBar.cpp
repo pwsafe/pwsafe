@@ -14,9 +14,9 @@
 #include "resource.h"
 #include "resource2.h"
 
-#include <vector>
 #include <map>
 #include <algorithm>
+#include <iterator>
 
 // CPWToolBar
 
@@ -143,7 +143,6 @@ const UINT CPWToolBar::m_OtherIDs[] = {
   ID_MENUITEM_CHANGECOMBO,
   ID_MENUITEM_BACKUPSAFE,
   ID_MENUITEM_RESTORESAFE,
-  ID_MENUITEM_VALIDATE,
   ID_MENUITEM_EXIT,
   ID_MENUITEM_ABOUT,
   ID_MENUITEM_TRAYUNLOCK,
@@ -161,7 +160,9 @@ const UINT CPWToolBar::m_OtherIDs[] = {
   ID_MENUITEM_EXPORTENT2XML,
   ID_MENUITEM_DUPLICATEGROUP,
   ID_MENUITEM_REPORT_EXPORTTEXT,
-  ID_MENUITEM_REPORT_EXPORTXML
+  ID_MENUITEM_REPORT_EXPORTXML,
+  ID_MENUITEM_COPYALL_TO_ORIGINAL,
+  ID_MENUITEM_SYNCHRONIZEALL
 };
 
 const UINT CPWToolBar::m_MainToolBarClassicBMs[] = {
@@ -227,7 +228,6 @@ const UINT CPWToolBar::m_OtherClassicBMs[] = {
   IDB_CHANGECOMBO_CLASSIC,
   IDB_BACKUPSAFE_CLASSIC,
   IDB_RESTORE_CLASSIC,
-  IDB_VALIDATE_CLASSIC,     // Yes, it is correct to be here twice!
   IDB_EXIT_CLASSIC,
   IDB_ABOUT_CLASSIC,
   IDB_TRAYUNLOCK_CLASSIC,
@@ -246,6 +246,8 @@ const UINT CPWToolBar::m_OtherClassicBMs[] = {
   IDB_DUPLICATEGROUP_CLASSIC,
   IDB_EXPORTTEXT_CLASSIC,   // For report of the same name
   IDB_EXPORTXML_CLASSIC,    // For report of the same name
+  IDB_IMPORT_CLASSIC,
+  IDB_IMPORT_CLASSIC,
 };
 
 const UINT CPWToolBar::m_MainToolBarNewBMs[] = {
@@ -356,7 +358,6 @@ const UINT CPWToolBar::m_OtherNewBMs[] = {
   IDB_CHANGECOMBO_NEW,
   IDB_BACKUPSAFE_NEW,
   IDB_RESTORE_NEW,
-  IDB_VALIDATE_NEW,       // Yes, it is correct to be here twice!
   IDB_EXIT_NEW,
   IDB_ABOUT_NEW,
   IDB_TRAYUNLOCK_NEW,
@@ -375,6 +376,8 @@ const UINT CPWToolBar::m_OtherNewBMs[] = {
   IDB_DUPLICATEGROUP_NEW,
   IDB_EXPORTTEXT_NEW,     // For report of the same name
   IDB_EXPORTXML_NEW,      // For report of the same name
+  IDB_IMPORT_NEW,
+  IDB_IMPORT_NEW
 };
 
 // Additional bitmaps not on ToolBar
@@ -395,7 +398,6 @@ const UINT CPWToolBar::m_OtherNewDisBMs[] = {
   IDB_CHANGECOMBO_NEW_D,
   IDB_BACKUPSAFE_NEW_D,
   IDB_RESTORE_NEW_D,
-  IDB_VALIDATE_NEW_D,       // Yes, it is correct to be here twice!
   IDB_EXIT_NEW_D,
   IDB_ABOUT_NEW_D,
   IDB_TRAYUNLOCK_NEW_D,
@@ -414,6 +416,8 @@ const UINT CPWToolBar::m_OtherNewDisBMs[] = {
   IDB_DUPLICATEGROUP_NEW_D,
   IDB_EXPORTTEXT_NEW_D,    // For report of the same name
   IDB_EXPORTXML_NEW_D,     // For report of the same name
+  IDB_IMPORT_NEW_D,
+  IDB_IMPORT_NEW_D
 };
 
 IMPLEMENT_DYNAMIC(CPWToolBar, CToolBar)
@@ -617,24 +621,17 @@ void CPWToolBar::CustomizeButtons(CString csButtonNames)
     tbCtrl.DeleteButton(i);
   }
 
-  std::vector<CString> vcsButtonNameArray;
 
   csButtonNames.MakeLower();
-
-  for (i = 0; i < m_iMaxNumButtons; i++) {
-    vcsButtonNameArray.push_back(m_csMainButtons[i]);
-  }
-
-  std::vector<CString>::const_iterator cstring_iter;
-
   int curPos(0);
   // Note all separators will be treated as the first!
   i = 0;
   CString csToken = csButtonNames.Tokenize(L" ", curPos);
   while (csToken != L"" && curPos != -1) {
-    cstring_iter = std::find(vcsButtonNameArray.begin(), vcsButtonNameArray.end(), csToken);
-    if (cstring_iter != vcsButtonNameArray.end()) {
-      int index = (int)(cstring_iter - vcsButtonNameArray.begin());
+    const CString *cstring_iter = std::find(m_csMainButtons,
+                                            m_csMainButtons + m_iMaxNumButtons, csToken);
+    if (cstring_iter != m_csMainButtons + m_iMaxNumButtons) {
+      int index = std::distance(m_csMainButtons, cstring_iter);
       tbCtrl.AddButtons(1, &m_pOriginalTBinfo[index]);
     }
     csToken = csButtonNames.Tokenize(L" ", curPos);
@@ -643,7 +640,7 @@ void CPWToolBar::CustomizeButtons(CString csButtonNames)
   tbCtrl.AutoSize();
 }
 
-CString CPWToolBar::GetButtonString()
+CString CPWToolBar::GetButtonString() const
 {
   CString cs_buttonnames(L"");
   TBBUTTONINFO tbinfo;
@@ -652,13 +649,6 @@ CString CPWToolBar::GetButtonString()
   CToolBarCtrl& tbCtrl = GetToolBarCtrl();
 
   num_buttons = tbCtrl.GetButtonCount();
-
-  std::vector<UINT> vcsButtonIDArray;
-  std::vector<UINT>::const_iterator uint_iter;
-
-  for (i = 0; i < m_iMaxNumButtons; i++) {
-    vcsButtonIDArray.push_back(m_MainToolBarIDs[i]);
-  }
 
   SecureZeroMemory(&tbinfo, sizeof(tbinfo));
   tbinfo.cbSize = sizeof(tbinfo);
@@ -672,11 +662,14 @@ CString CPWToolBar::GetButtonString()
       continue;
     }
 
-    uint_iter = std::find(vcsButtonIDArray.begin(), vcsButtonIDArray.end(), 
-                          tbinfo.idCommand);
-    if (uint_iter != vcsButtonIDArray.end()) {
-      int index = (int)(uint_iter - vcsButtonIDArray.begin());
+    const UINT *uint_iter = std::find(m_MainToolBarIDs,
+                                      m_MainToolBarIDs + m_iMaxNumButtons,
+                                      tbinfo.idCommand);
+    if (uint_iter != m_MainToolBarIDs + m_iMaxNumButtons) {
+      int index = std::distance(m_MainToolBarIDs, uint_iter);
       cs_buttonnames += m_csMainButtons[index] + L" ";
+    } else {
+      ASSERT(0);
     }
   }
 

@@ -24,12 +24,12 @@ void CMenuShortcut::InitStrings()
   CS_SHIFTP.LoadString(IDS_SHIFTP);
 }
 
-CString CMenuShortcut::FormatShortcut(unsigned char cModifier, unsigned char cVirtKey)
+CString CMenuShortcut::FormatShortcut(unsigned short int cModifier, unsigned short int siVirtKey)
 {
   CString str(L"");
 
-  if (cVirtKey && IsNormalShortcut(cModifier, cVirtKey)){
-    str = CHotKeyCtrl::GetKeyName(cVirtKey, cModifier & HOTKEYF_EXT);
+  if (siVirtKey && IsNormalShortcut(cModifier, siVirtKey)){
+    str = CHotKeyCtrl::GetKeyName(siVirtKey, cModifier & HOTKEYF_EXT);
     if (str.GetLength() == 1)
       str.MakeUpper();
   if ((cModifier & HOTKEYF_CONTROL) == HOTKEYF_CONTROL)
@@ -42,20 +42,20 @@ CString CMenuShortcut::FormatShortcut(unsigned char cModifier, unsigned char cVi
   return str;
 }
 
-bool CMenuShortcut::IsNormalShortcut(unsigned char cModifier, unsigned char cVirtKey)
+bool CMenuShortcut::IsNormalShortcut(unsigned short int cModifier, unsigned short int siVirtKey)
 {
   UNREFERENCED_PARAMETER(cModifier);
   //reserved or unassigned by Windows
   //http://msdn.microsoft.com/en-us/library/dd375731%28v=VS.85%29.aspx
-  return (cVirtKey < 0xE0) &&//OEM specific and "Media"  keys
-         (cVirtKey != 0x07) && (cVirtKey != 0x0A) &&
-         (cVirtKey != 0x0B) && (cVirtKey != 0x0E) &&
-         (cVirtKey != 0x0F) && (cVirtKey != 0x16) && 
-         (cVirtKey != 0x1A) && (cVirtKey != 0x1B) && //0x1B -- Esc
-         ((cVirtKey < 0x3A) || (cVirtKey > 0x40)) &&
-         ((cVirtKey < 0x5B) || (cVirtKey > 0x5F)) &&//0x5B -- Left Win, 0x5C -- Right Win, 0x5D -- App key, 0x5F -- Sleep
-         ((cVirtKey < 0x88) || (cVirtKey > 0x8F)) &&
-         ((cVirtKey < 0x92) || (cVirtKey > 0x9F)) &&//0x92-0x96 -- OEM specific 
-         ((cVirtKey < 0xA6) || (cVirtKey > 0xB9)) &&//0xA6-0xB7 -- "Media" keys
-         ((cVirtKey < 0xC1) || (cVirtKey > 0xDA));
+  return (siVirtKey < 0xE0) &&//OEM specific and "Media"  keys
+         (siVirtKey != 0x07) && (siVirtKey != 0x0A) &&
+         (siVirtKey != 0x0B) && (siVirtKey != 0x0E) &&
+         (siVirtKey != 0x0F) && (siVirtKey != 0x16) && 
+         (siVirtKey != 0x1A) && (siVirtKey != 0x1B) && //0x1B -- Esc
+         ((siVirtKey < 0x3A) || (siVirtKey > 0x40)) &&
+         ((siVirtKey < 0x5B) || (siVirtKey > 0x5F)) &&//0x5B -- Left Win, 0x5C -- Right Win, 0x5D -- App key, 0x5F -- Sleep
+         ((siVirtKey < 0x88) || (siVirtKey > 0x8F)) &&
+         ((siVirtKey < 0x92) || (siVirtKey > 0x9F)) &&//0x92-0x96 -- OEM specific 
+         ((siVirtKey < 0xA6) || (siVirtKey > 0xB9)) &&//0xA6-0xB7 -- "Media" keys
+         ((siVirtKey < 0xC1) || (siVirtKey > 0xDA));
 }

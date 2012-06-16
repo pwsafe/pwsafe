@@ -25,6 +25,10 @@
 #include "./fieldselectionpanel.h"
 #include "./wxutils.h"
 
+#ifdef __WXMSW__
+#include <wx/msw/msvcrt.h>
+#endif
+
 wxString defValidationTitle();
 
 wxString ValidationMessage(const wxString& msg, const wxString& operation) {

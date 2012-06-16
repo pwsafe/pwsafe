@@ -94,7 +94,7 @@ public:
     GUI_UNDO_MERGESYNC,
     GUI_REFRESH_TREE,
     GUI_DB_PREFERENCES_CHANGED,
-    GUI_PWH_CHANGED_IN_DB
+    GUI_PWH_CHANGED_IN_DB,
   };
 
   static UpdateGUICommand *Create(CommandInterface *pcomInt,
@@ -132,14 +132,14 @@ private:
 class DBPolicyNamesCommand : public Command
 {
 public:
-  enum Function {ADDNEW = 0, REPLACEALL};
+  enum Function {NP_ADDNEW = 0, NP_REPLACEALL};
 
   static DBPolicyNamesCommand *Create(CommandInterface *pcomInt,
                                 PSWDPolicyMap &MapPSWDPLC,
                                 Function function)
   { return new DBPolicyNamesCommand(pcomInt, MapPSWDPLC, function); }
   static DBPolicyNamesCommand *Create(CommandInterface *pcomInt,
-                                StringX &sxPolicyName, st_PSWDPolicy &st_pp)
+                                StringX &sxPolicyName, PWPolicy &st_pp)
   { return new DBPolicyNamesCommand(pcomInt, sxPolicyName, st_pp); }
   int Execute();
   void Undo();
@@ -148,14 +148,46 @@ private:
   DBPolicyNamesCommand(CommandInterface *pcomInt, PSWDPolicyMap &MapPSWDPLC,
                        Function function);
   DBPolicyNamesCommand(CommandInterface *pcomInt, StringX &sxPolicyName,
-                       st_PSWDPolicy &st_pp);
+                       PWPolicy &st_pp);
 
   PSWDPolicyMap m_OldMapPSWDPLC;
   PSWDPolicyMap m_NewMapPSWDPLC;
   StringX m_sxPolicyName;
-  st_PSWDPolicy m_st_ppp;
+  PWPolicy m_st_ppp;
   Function m_function;
-  bool m_bOldState, bSingleAdd;
+  bool m_bOldState, m_bSingleAdd;
+};
+
+class DBEmptyGroupsCommand : public Command
+{
+public:
+  enum Function {EG_ADD = 0, EG_DELETE, EG_RENAME, EG_ADDALL = 10, EG_REPLACEALL};
+
+  static DBEmptyGroupsCommand *Create(CommandInterface *pcomInt,
+                                std::vector<StringX> &vEmptyGroups,
+                                Function function)
+  { return new DBEmptyGroupsCommand(pcomInt, vEmptyGroups, function); }
+  static DBEmptyGroupsCommand *Create(CommandInterface *pcomInt,
+                                StringX &sxEmptyGroup, Function function)
+  { return new DBEmptyGroupsCommand(pcomInt, sxEmptyGroup, function); }
+  static DBEmptyGroupsCommand *Create(CommandInterface *pcomInt,
+                                StringX &sxOldGroup, StringX &sxNewGroup)
+  { return new DBEmptyGroupsCommand(pcomInt, sxOldGroup, sxNewGroup); }
+  int Execute();
+  void Undo();
+
+private:
+  DBEmptyGroupsCommand(CommandInterface *pcomInt, std::vector<StringX> &vEmptyGroups,
+                       Function function);
+  DBEmptyGroupsCommand(CommandInterface *pcomInt, StringX &sxEmptyGroup,
+                       Function function);
+  DBEmptyGroupsCommand(CommandInterface *pcomInt, StringX &sxOldGroup, StringX &sxNewGroup);
+
+  std::vector<StringX> m_vOldEmptyGroups;
+  std::vector<StringX> m_vNewEmptyGroups;
+  StringX m_sxEmptyGroup, m_sxOldGroup, m_sxNewGroup;
+  Function m_function;
+  bool m_bOldState, m_bSingleGroup;
 };
 
 class DeleteEntryCommand;
@@ -390,6 +422,22 @@ private:
   int m_iAction;
   int m_new_default_max;
   SavePWHistoryMap m_mapSavedHistory;
+};
+
+class RenameGroupCommand : public Command
+{
+public:
+  static RenameGroupCommand *Create(CommandInterface *pcomInt,
+                                    const StringX sxOldPath, const StringX sxNewPath)
+  { return new RenameGroupCommand(pcomInt, sxOldPath, sxNewPath); }
+  int Execute();
+  void Undo();
+
+private:
+  RenameGroupCommand(CommandInterface *pcomInt,
+                     StringX sxOldPath, StringX sxNewPath);
+
+   StringX m_sxOldPath, m_sxNewPath;
 };
 
 // Derived MultiCommands class

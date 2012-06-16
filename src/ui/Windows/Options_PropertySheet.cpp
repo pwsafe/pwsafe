@@ -17,7 +17,7 @@ IMPLEMENT_DYNAMIC(COptions_PropertySheet, CPWPropertySheet)
 
 COptions_PropertySheet::COptions_PropertySheet(UINT nID, CWnd* pParent,
                                                const bool bLongPPs)
-  : CPWPropertySheet(nID, pParent),
+  : CPWPropertySheet(nID, pParent, bLongPPs),
   m_save_bSymbols(L""), m_save_iUseOwnSymbols(DEFAULT_SYMBOLS),
   m_save_iPreExpiryWarnDays(0),
   m_bIsModified(false), m_bChanged(false),

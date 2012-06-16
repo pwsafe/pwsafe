@@ -128,7 +128,7 @@ DboxMain::DboxMain(CWnd* pParent)
   m_bTSUpdated(false),
   m_iSessionEndingStatus(IDIGNORE),
   m_pwchTip(NULL),
-  m_bValidate(false), m_bOpen(false), 
+  m_bOpen(false), 
   m_IsStartClosed(false), m_IsStartSilent(false),
   m_bStartHiddenAndMinimized(false),
   m_bAlreadyToldUserNoSave(false), m_inExit(false),
@@ -136,7 +136,7 @@ DboxMain::DboxMain(CWnd* pParent)
   m_lastclipboardaction(L""), m_pNotesDisplay(NULL),
   m_LastFoundTreeItem(NULL), m_bFilterActive(false), m_bNumPassedFiltering(0),
   m_currentfilterpool(FPOOL_LAST), m_bDoAutoType(false),
-  m_AutoType(L""), m_pToolTipCtrl(NULL), m_bWSLocked(false), m_bWTSRegistered(false),
+  m_sxAutoType(L""), m_pToolTipCtrl(NULL), m_bWSLocked(false), m_bWTSRegistered(false),
   m_savedDBprefs(EMPTYSAVEDDBPREFS), m_bBlockShutdown(false),
   m_pfcnShutdownBlockReasonCreate(NULL), m_pfcnShutdownBlockReasonDestroy(NULL),
   m_bFilterForStatus(false),
@@ -148,10 +148,10 @@ DboxMain::DboxMain(CWnd* pParent)
   m_bDeleteCtrl(false), m_bDeleteShift(false),
   m_bRenameCtrl(false), m_bRenameShift(false),
   m_bAutotypeCtrl(false), m_bAutotypeShift(false),
-  m_bInAT(false), m_bInRestoreWindowsData(false), m_bSetup(false),
+  m_bInAT(false), m_bInRestoreWindowsData(false), m_bSetup(false), m_bCompareEntries(false),
   m_bInRefresh(false), m_bInRestoreWindows(false), m_bExpireDisplayed(false),
   m_bTellUserExpired(false), m_bInRename(false), m_bWhitespaceRightClick(false),
-  m_ilastaction(0),
+  m_ilastaction(0), m_bNoValidation(false),
     m_LUUIDSelectedAtMinimize(pws_os::CUUID::NullUUID()),
   m_TUUIDSelectedAtMinimize(pws_os::CUUID::NullUUID()),
   m_LUUIDVisibleAtMinimize(pws_os::CUUID::NullUUID()),
@@ -194,8 +194,8 @@ DboxMain::DboxMain(CWnd* pParent)
   m_hIconSm = (HICON) ::LoadImage(app.m_hInstance, MAKEINTRESOURCE(IDI_CORNERICON),
                                   IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
 
-  m_sxSelectedGroup.clear();
-  m_sxVisibleGroup.clear();
+  m_sxSelectedGroup = L"";
+  m_sxVisibleGroup = L"";
 
   ClearData();
 
@@ -294,14 +294,14 @@ LRESULT DboxMain::OnWH_SHELL_CallBack(WPARAM wParam, LPARAM )
   // lParam = 0
 
   bool brc;
-  if (!m_bDoAutoType || (m_bDoAutoType && m_AutoType.empty())) {
+  if (!m_bDoAutoType || (m_bDoAutoType && m_sxAutoType.empty())) {
     // Should never happen as we should not be active if not doing AutoType!
     brc = m_runner.UnInit();
     pws_os::Trace(L"DboxMain::OnWH_SHELL_CallBack - Error - AT_HK_UnInitialise : %s\n",
           brc ? L"OK" : L"FAILED");
     // Reset Autotype
     m_bDoAutoType = false;
-    m_AutoType.clear();
+    m_sxAutoType = L"";
     // Reset Keyboard/Mouse Input
     pws_os::Trace(L"DboxMain::OnWH_SHELL_CallBack - BlockInput reset\n");
     ::BlockInput(FALSE);
@@ -349,11 +349,11 @@ LRESULT DboxMain::OnWH_SHELL_CallBack(WPARAM wParam, LPARAM )
   // Do Autotype!  Note: All fields were substituted before getting here
   // Pure guess to wait 1 second.  Might be more or less but certainly > 0
   ::Sleep(1000);
-  DoAutoType(m_AutoType, m_vactionverboffsets);
+  DoAutoType(m_sxAutoType, m_vactionverboffsets);
 
   // Reset AutoType
   m_bDoAutoType = false;
-  m_AutoType.clear();
+  m_sxAutoType = L"";
 
   return 0L;
 }
@@ -417,6 +417,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_REDO, OnRedo)
   ON_COMMAND(ID_MENUITEM_EXPORTENT2PLAINTEXT, OnExportEntryText)
   ON_COMMAND(ID_MENUITEM_EXPORTENT2XML, OnExportEntryXML)
+  ON_COMMAND(ID_MENUITEM_COMPARE_ENTRIES, OnCompareEntries)
   ON_COMMAND_RANGE(ID_MENUITEM_PROTECT, ID_MENUITEM_UNPROTECTGROUP, OnProtect)
 
   // View Menu
@@ -467,7 +468,6 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_RESETCOLUMNS, OnResetColumns)
 
   // Others
-  ON_COMMAND(ID_MENUITEM_VALIDATE, OnValidate)
   // Double-click on R-O R/W indicator on StatusBar
   ON_COMMAND(IDS_READ_ONLY, OnChangeMode)
   // Double-click on filter indicator on StatusBar
@@ -541,6 +541,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_MESSAGE(PWS_MSG_HDRTOCC_DD_COMPLETE, OnHdrToCCDragComplete)
   ON_MESSAGE(PWS_MSG_HDR_DRAG_COMPLETE, OnHeaderDragComplete)
   ON_MESSAGE(PWS_MSG_COMPARE_RESULT_FUNCTION, OnProcessCompareResultFunction)
+  ON_MESSAGE(PWS_MSG_COMPARE_RESULT_ALLFNCTN, OnProcessCompareResultAllFunction)
   ON_MESSAGE(PWS_MSG_EXPIRED_PASSWORD_EDIT, OnEditExpiredPasswordEntry)
   ON_MESSAGE(PWS_MSG_TOOLBAR_FIND, OnToolBarFindMessage)
   ON_MESSAGE(PWS_MSG_DRAGAUTOTYPE, OnDragAutoType)
@@ -644,6 +645,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_REDO, true, false, true, false},
   {ID_MENUITEM_EXPORTENT2PLAINTEXT, true, true, false, false},
   {ID_MENUITEM_EXPORTENT2XML, true, true, false, false},
+  {ID_MENUITEM_COMPARE_ENTRIES, true, false, false, false},
   // View menu
   {ID_MENUITEM_LIST_VIEW, true, true, true, false},
   {ID_MENUITEM_TREE_VIEW, true, true, true, false},
@@ -681,7 +683,6 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_BACKUPSAFE, true, true, true, false},
   {ID_MENUITEM_RESTORESAFE, true, false, true, false},
   {ID_MENUITEM_OPTIONS, true, true, true, true},
-  {ID_MENUITEM_VALIDATE, false, false, false, true},
   {ID_MENUITEM_GENERATEPASSWORD, true, true, true, true},
   {ID_MENUITEM_YUBIKEY, true, false, true, false},
   {ID_MENUITEM_PSWD_POLICIES, true, true, true, false},
@@ -697,6 +698,8 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   // Compare popup menu
   {ID_MENUITEM_COMPVIEWEDIT, true, false, true, false},
   {ID_MENUITEM_COPY_TO_ORIGINAL, true, false, true, false},
+  {ID_MENUITEM_COPYALL_TO_ORIGINAL, true, false, true, false},
+  {ID_MENUITEM_SYNCHRONIZEALL, true, false, true, false},
   // Tray popup menu
   {ID_MENUITEM_TRAYUNLOCK, true, true, true, false},
   {ID_MENUITEM_TRAYLOCK, true, true, true, false},
@@ -778,13 +781,14 @@ void DboxMain::InitPasswordSafe()
   // Change all pixels in this 'grey' to transparent
   const COLORREF crTransparent = RGB(192, 192, 192);
 
-  bitmap.LoadBitmap(IDB_NODE);
+  bitmap.LoadBitmap(IDB_GROUP);
   bitmap.GetBitmap(&bm);
   
   m_pImageList = new CImageList();
   // Number (12) corresponds to number in CPWTreeCtrl public enum
   BOOL status = m_pImageList->Create(bm.bmWidth, bm.bmHeight, 
-                                     ILC_MASK | ILC_COLORDDB, 12, 0);
+                                     ILC_MASK | ILC_COLORDDB, 
+                                     CPWTreeCtrl::NUM_IMAGES, 0);
   ASSERT(status != 0);
 
   // Dummy Imagelist needed if user adds then removes Icon column
@@ -794,7 +798,7 @@ void DboxMain::InitPasswordSafe()
 
   // Order of LoadBitmap() calls matches CPWTreeCtrl public enum
   // Also now used by CListCtrl!
-  //bitmap.LoadBitmap(IDB_NODE); - already loaded above to get width
+  //bitmap.LoadBitmap(IDB_GROUP); - already loaded above to get width
   m_pImageList->Add(&bitmap, crTransparent);
   bitmap.DeleteObject();
   UINT bitmapResIDs[] = {
@@ -803,6 +807,7 @@ void DboxMain::InitPasswordSafe()
     IDB_ALIAS,
     IDB_SBASE, IDB_SBASE_WARNEXPIRED, IDB_SBASE_EXPIRED,
     IDB_SHORTCUT,
+    IDB_EMPTY_GROUP
   };
 
   for (int i = 0; i < sizeof(bitmapResIDs) / sizeof(bitmapResIDs[0]); i++) {
@@ -1392,6 +1397,11 @@ void DboxMain::FixListIndexes()
 void DboxMain::OnItemDoubleClick(NMHDR *, LRESULT *pLResult)
 {
   *pLResult = 0L;
+
+  // Ignore double-click if multiple entries selected (List view only)
+  if (m_IsListView && m_ctlItemList.GetSelectedCount() != 1)
+    return;
+
   UnFindItem();
 
   // TreeView only - use DoubleClick to Expand/Collapse group
@@ -1489,8 +1499,6 @@ void DboxMain::OnBrowse()
 void DboxMain::DoBrowse(const bool bDoAutotype, const bool bSendEmail)
 {
   CItemData *pci = getSelectedItem();
-  CItemData *pci_original(pci);
-
   if (pci != NULL) {
     StringX sx_pswd;
     if (pci->IsDependent()) {
@@ -1511,6 +1519,7 @@ void DboxMain::DoBrowse(const bool bDoAutotype, const bool bSendEmail)
     }
 
     if (!cs_command.IsEmpty()) {
+      const pws_os::CUUID uuid = pci->GetUUID();
       std::vector<size_t> vactionverboffsets;
       StringX sxautotype = PWSAuxParse::GetAutoTypeString(*pci, m_core,
                                                           vactionverboffsets);
@@ -1522,7 +1531,7 @@ void DboxMain::DoBrowse(const bool bDoAutotype, const bool bSendEmail)
       } else
         UpdateLastClipboardAction(CItemData::URL);
 
-      UpdateAccessTime(pci_original);
+      UpdateAccessTime(uuid);
     }
   }
 }
@@ -2180,6 +2189,7 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
 
     switch (rc_passphrase) {
       case PWScore::SUCCESS:
+        // Don't validate again
         rc_readdatabase = m_core.ReadCurFile(passkey);
 #if !defined(POCKET_PC)
         m_titlebar = PWSUtil::NormalizeTTT(L"Password Safe - " +
@@ -2405,7 +2415,12 @@ void DboxMain::SetLanguage(LCID lcid)
   }
 
   // Update Statusbar
-  CItemData *pci = getSelectedItem();
+  // Double-click action meaningless if multiple entries selected - pci should be NULL
+  // List view only
+  CItemData *pci(NULL);
+  if (m_IsListView && m_ctlItemList.GetSelectedCount() == 1)
+    pci = getSelectedItem();
+
   SetDCAText(pci);
   if (m_ilastaction != 0)
     UpdateLastClipboardAction(m_ilastaction);
@@ -2485,36 +2500,41 @@ void DboxMain::TellUserAboutExpiredPasswords()
   }
 }
 
-void DboxMain::UpdateAccessTime(CItemData *pci)
+void DboxMain::UpdateAccessTime(const pws_os::CUUID &uuid)
 {
   // Mark access time if so configured
-  ASSERT(pci != NULL);
-
   // First add to RUE List
-  m_RUEList.AddRUEntry(pci->GetUUID());
+  m_RUEList.AddRUEntry(uuid);
 
   bool bMaintainDateTimeStamps = PWSprefs::GetInstance()->
               GetPref(PWSprefs::MaintainDateTimeStamps);
 
   if (!m_core.IsReadOnly() && bMaintainDateTimeStamps) {
-    pci->SetATime();
+    ItemListIter iter = Find(uuid);
+    ASSERT(iter != End());
+    // fail safely in Release build:
+    if (iter == End())
+      return;
+    CItemData &item = iter->second;
+    item.SetATime();
     SetChanged(TimeStamp);
 
-    if (!IsGUIEmpty()) {
+    if (!IsGUIEmpty() &&
+        (m_nColumnIndexByType[CItemData::ATIME] != -1)) {
       // Need to update view if there and the display has been
       // rebuilt/restored after unlocking or minimized
-      if (m_nColumnIndexByType[CItemData::ATIME] != -1) {
         // Get index of entry
-        DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
+      DisplayInfo *pdi = (DisplayInfo *)item.GetDisplayInfo();
+      ASSERT(pdi != NULL);
         // Get value in correct format
-        CString cs_atime = pci->GetATimeL().c_str();
+      const CString cs_atime(item.GetATimeL().c_str());
         // Update it
         m_ctlItemList.SetItemText(pdi->list_index,
-                 m_nColumnIndexByType[CItemData::ATIME], cs_atime);
+                                m_nColumnIndexByType[CItemData::ATIME],
+                                cs_atime);
       }
     }
   }
-}
 
 LRESULT DboxMain::OnQueryEndSession(WPARAM , LPARAM lParam)
 {
@@ -2751,6 +2771,11 @@ void DboxMain::SetDCAText(CItemData *pci)
     if (si_dca == -1)
       si_dca = si_dca_default;
   }
+
+  // Double-click action meaningless if multiple entries selected - pci should be NULL
+  // List View only
+  if (m_IsListView && m_ctlItemList.GetSelectedCount() != 1)
+    si_dca = -1;
 
   UINT ui_dca;
   switch (si_dca) {

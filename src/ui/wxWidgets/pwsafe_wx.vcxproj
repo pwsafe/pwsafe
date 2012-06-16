@@ -235,7 +235,7 @@
     </PreBuildEvent>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(WXDIR)/include;../../core;../../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WXDIR)/lib/vc_lib/mswud;$(WXDIR)/include;../../core;../../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;UNICODE;_UNICODE;__WX__;__WXMSW__;__WXDEBUG__;wxUSE_UNICODE;_USE_32BIT_TIME_T;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1;_CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1;WINVER=0x0500;USE_XML_LIBRARY=XERCES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -451,6 +451,7 @@
     <ClInclude Include="addeditpropsheet.h" />
     <ClInclude Include="AdvancedSelectionDlg.h" />
     <ClInclude Include="CompareDlg.h" />
+    <ClInclude Include="ComparisonGridTable.h" />
     <ClInclude Include="createshortcutdlg.h" />
     <ClInclude Include="DbSelectionPanel.h" />
     <ClInclude Include="deleteconfirmation.h" />
@@ -458,13 +459,17 @@
     <ClInclude Include="editshortcut.h" />
     <ClInclude Include="ExportTextWarningDlg.h" />
     <ClInclude Include="ExternalKeyboardButton.h" />
+    <ClInclude Include="fieldselectiondlg.h" />
+    <ClInclude Include="fieldselectionpanel.h" />
     <ClInclude Include="guiinfo.h" />
     <ClInclude Include="helpmap.h" />
     <ClInclude Include="ImportTextDlg.h" />
     <ClInclude Include="ImportXmlDlg.h" />
+    <ClInclude Include="ManagePwdPolicies.h" />
     <ClInclude Include="MergeDlg.h" />
     <ClInclude Include="OpenFilePickerValidator.h" />
     <ClInclude Include="optionspropsheet.h" />
+    <ClInclude Include="PasswordPolicy.h" />
     <ClInclude Include="passwordsafeframe.h" />
     <ClInclude Include="PasswordSafeSearch.h" />
     <ClInclude Include="properties.h" />
@@ -473,7 +478,9 @@
     <ClInclude Include="PWSDragBar.h" />
     <ClInclude Include="PWSgrid.h" />
     <ClInclude Include="PWSgridtable.h" />
+    <ClInclude Include="pwsmenushortcuts.h" />
     <ClInclude Include="PwsSync.h" />
+    <ClInclude Include="PwsToolbarButtons.h" />
     <ClInclude Include="PWStree.h" />
     <ClInclude Include="RecentDBList.h" />
     <ClInclude Include="RUEList.h" />
@@ -482,6 +489,7 @@
     <ClInclude Include="safecombinationentry.h" />
     <ClInclude Include="safecombinationprompt.h" />
     <ClInclude Include="safecombinationsetup.h" />
+    <ClInclude Include="SizeRestrictedPanel.h" />
     <ClInclude Include="SystemTray.h" />
     <ClInclude Include="SystemTrayMenuId.h" />
     <ClInclude Include="version.h" />
@@ -505,13 +513,18 @@
     <ClCompile Include="editshortcut.cpp" />
     <ClCompile Include="ExportTextWarningDlg.cpp" />
     <ClCompile Include="ExternalKeyboardButton.cpp" />
+    <ClCompile Include="fieldselectiondlg.cpp" />
+    <ClCompile Include="fieldselectionpanel.cpp" />
     <ClCompile Include="guiinfo.cpp" />
     <ClCompile Include="ImportTextDlg.cpp" />
     <ClCompile Include="ImportXmlDlg.cpp" />
     <ClCompile Include="mainEdit.cpp" />
+    <ClCompile Include="mainManage.cpp" />
+    <ClCompile Include="ManagePwdPolicies.cpp" />
     <ClCompile Include="MergeDlg.cpp" />
     <ClCompile Include="OpenFilePickerValidator.cpp" />
     <ClCompile Include="optionspropsheet.cpp" />
+    <ClCompile Include="PasswordPolicy.cpp" />
     <ClCompile Include="passwordsafeframe.cpp" />
     <ClCompile Include="PasswordSafeSearch.cpp" />
     <ClCompile Include="properties.cpp" />
@@ -520,6 +533,7 @@
     <ClCompile Include="PWSDragBar.cpp" />
     <ClCompile Include="PWSgrid.cpp" />
     <ClCompile Include="PWSgridtable.cpp" />
+    <ClCompile Include="pwsmenushortcuts.cpp" />
     <ClCompile Include="PwsSync.cpp" />
     <ClCompile Include="PWStree.cpp" />
     <ClCompile Include="RUEList.cpp" />

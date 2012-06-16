@@ -296,8 +296,8 @@ void CAddEdit_Additional::SetupDCAComboBoxes(CComboBox *pcbox, bool isShift)
                                                       PWSprefs::ShiftDoubleClickAction :
                                                       PWSprefs::DoubleClickAction);
     CString cs_text;
-
-    for (int i = 0; ResPref[i].res != 0; i++) {
+    int i;
+    for (i = 0; ResPref[i].res != 0; i++) {
       cs_text.LoadString(ResPref[i].res);
       if (ResPref[i].pref == DefaultDCA) {
         const CString cs_default(MAKEINTRESOURCE(IDSC_DEFAULT));
@@ -306,6 +306,12 @@ void CAddEdit_Additional::SetupDCAComboBoxes(CComboBox *pcbox, bool isShift)
       int nIndex = pcbox->AddString(cs_text);
       pcbox->SetItemData(nIndex, ResPref[i].pref);
       m_DCA_to_Index[ResPref[i].pref] = nIndex;
+    }
+    // set up m_DCA_to_Index after populating pcbox, as order may be changed
+    int N = pcbox->GetCount();
+    for (i = 0; i < N; i++) {
+      DWORD_PTR j = pcbox->GetItemData(i);
+      m_DCA_to_Index[j] = i;
     }
   }
 }
@@ -551,14 +557,14 @@ void CAddEdit_Additional::OnSTCExClicked(UINT nID)
           sxData = PWSprefs::GetInstance()->
                         GetPref(PWSprefs::DefaultAutotypeString);
         else
-          sxData = StringX(M_autotype());
+          sxData = (LPCWSTR)M_autotype();
       } else {
-        sxData = PWSAuxParse::GetAutoTypeString(StringX(M_autotype()),
-                                                StringX(M_group()),
-                                                StringX(M_title()),
-                                                StringX(M_username()),
-                                                StringX(M_realpassword()),
-                                                StringX(M_realnotes()),
+        sxData = PWSAuxParse::GetAutoTypeString(M_autotype(),
+                                                M_group(),
+                                                M_title(),
+                                                M_username(),
+                                                M_realpassword(),
+                                                M_realnotes(),
                                                 vactionverboffsets);
       }
       iaction = CItemData::AUTOTYPE;
@@ -568,7 +574,7 @@ void CAddEdit_Additional::OnSTCExClicked(UINT nID)
       // If Ctrl pressed - just copy un-substituted Run Command
       // else substitute
       if ((GetKeyState(VK_CONTROL) & 0x8000) != 0 || M_runcommand().IsEmpty()) {
-        sxData = StringX(M_runcommand());
+        sxData = (LPCWSTR)M_runcommand();
       } else {
         std::wstring errmsg;
         size_t st_column;
@@ -577,7 +583,7 @@ void CAddEdit_Additional::OnSTCExClicked(UINT nID)
                                                  M_currentDB(),
                                                  M_pci(),
                                                  M_pDbx()->m_bDoAutoType,
-                                                 M_pDbx()->m_AutoType,
+                                                 M_pDbx()->m_sxAutoType,
                                                  errmsg, st_column, bURLSpecial);
         if (errmsg.length() > 0) {
           CGeneralMsgBox gmb;
@@ -676,12 +682,13 @@ int CALLBACK CAddEdit_Additional::PWHistCompareFunc(LPARAM lParam1, LPARAM lPara
   CSecString password2, changedate2;
   time_t t1, t2;
 
-  int iResult;
+  int iResult(0);
   switch(nSortColumn) {
     case 0:
       t1 = pLHS.changetttdate;
       t2 = pRHS.changetttdate;
-      iResult = ((long) t1 < (long) t2) ? -1 : 1;
+      if (t1 != t2)
+        iResult = ((long) t1 < (long) t2) ? -1 : 1;
       break;
     case 1:
       password1 = pLHS.password;
@@ -689,11 +696,10 @@ int CALLBACK CAddEdit_Additional::PWHistCompareFunc(LPARAM lParam1, LPARAM lPara
       iResult = ((CString)password1).Compare(password2);
       break;
     default:
-      iResult = 0; // should never happen - just keep compiler happy
       ASSERT(FALSE);
   }
 
-  if (!self->m_bSortAscending)
+  if (!self->m_bSortAscending && iResult != 0)
     iResult *= -1;
 
   return iResult;

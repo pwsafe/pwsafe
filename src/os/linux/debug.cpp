@@ -7,6 +7,7 @@
 */
 
 #include "../debug.h"
+#include "../fmtspecs_cvt.h"
 #include "../core/Util.h"
 
 #if defined(_DEBUG) || defined(DEBUG)
@@ -16,10 +17,6 @@
 #include <stdarg.h>
 #include <syslog.h>
 
-// See discussion on CONVERT_GLIBC_FORMATSPECS in core/StringX.cpp
-#if defined(__GNUC__)  && (defined(UNICODE) || defined(_UNICODE))
-#define CONVERT_GLIBC_FORMATSPECS
-#endif
 
 
 // Debug output - Same usage as MFC TRACE
@@ -32,21 +29,13 @@ void pws_os::Trace(LPCTSTR lpszFormat, ...)
   int num_required, num_written;
 
 #ifdef UNICODE
-#ifdef CONVERT_GLIBC_FORMATSPECS
-  std::wstring fmt(lpszFormat);
-  for(std::wstring::size_type pos = 0;
-      (pos = fmt.find(L"%s", pos)) != std::wstring::npos; pos += 2)
-    fmt.insert(pos + 1, 1, L'l');
-  LPCTSTR format_str = fmt.c_str();
-#else
-  LPCTSTR format_str = lpszFormat;
-#endif /* CONVERT_GLIBC_FORMATSPECS */
-  num_required = GetStringBufSize(format_str, args);
+  stringT format = FormatStr(lpszFormat);
+  num_required = GetStringBufSize(format.c_str(), args);
   va_end(args);//after using args we should reset list
   va_start(args, lpszFormat);
 
   wchar_t *wcbuffer = new wchar_t[num_required];
-  num_written = vswprintf(wcbuffer, num_required, format_str, args);
+  num_written = vswprintf(wcbuffer, num_required, format.c_str(), args);
   assert(num_required == num_written+1);
   wcbuffer[num_required-1] = L'\0';
 

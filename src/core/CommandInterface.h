@@ -67,6 +67,9 @@ class CommandInterface {
                                       SavePWHistoryMap &mapSavedHistory) = 0;
   virtual void UndoUpdatePasswordHistory(SavePWHistoryMap &mapSavedHistory) = 0;
 
+  virtual int DoRenameGroup(const StringX &sxOldPath, const StringX &sxNewPath) = 0;
+  virtual void UndoRenameGroup(const StringX &sxOldPath, const StringX &sxNewPath) = 0;
+
   virtual const std::vector<StringX> &GetVnodesModified() const = 0;
   virtual void SetVnodesModified(const std::vector<StringX> &) = 0;
   virtual void AddChangedNodes(StringX path) = 0;
@@ -94,10 +97,16 @@ class CommandInterface {
 
   virtual const PSWDPolicyMap &GetPasswordPolicies() = 0;
   virtual void SetPasswordPolicies(const PSWDPolicyMap &MapPSWDPLC) = 0;
-  virtual void AddPolicy(const StringX &sxPolicyName, const st_PSWDPolicy &st_pp,
+  virtual void AddPolicy(const StringX &sxPolicyName, const PWPolicy &st_pp,
                          const bool bAllowReplace = false) = 0;
-  virtual bool GetPolicyFromName(StringX sxPolicyName, st_PSWDPolicy &st_pp) = 0;
+  virtual bool GetPolicyFromName(const StringX &sxPolicyName, PWPolicy &st_pp) const = 0;
 
+  virtual void SetEmptyGroups(const std::vector<StringX> &vEmptyGroups) = 0;
+  virtual bool AddEmptyGroup(const StringX &sxEmptyGroup) = 0;
+  virtual bool RemoveEmptyGroup(const StringX &sxEmptyGroup) = 0;
+  virtual void RenameEmptyGroup(const StringX &sxOldPath, const StringX &sxNewPath) = 0;
+  virtual const std::vector<StringX> & GetEmptyGroups() = 0;
+  
   virtual ~CommandInterface() {}
 };
 

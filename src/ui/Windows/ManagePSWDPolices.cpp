@@ -16,6 +16,7 @@
 #include "ThisMfcApp.h" // for online help
 #include "GeneralMsgBox.h"
 
+#include "core/core.h"
 #include "core/PWCharPool.h"
 
 #include "resource3.h"  // String resources
@@ -36,39 +37,12 @@ CManagePSWDPolices::CManagePSWDPolices(CWnd* pParent, const bool bLongPPs)
   m_pDbx = static_cast<DboxMain *>(pParent);
   m_bReadOnly = m_pDbx->IsDBReadOnly();
   
-  m_bUndoShortcut = m_pDbx->GetShortCut(ID_MENUITEM_UNDO, m_cUndoVirtKey, m_cUndoModifier);
-  m_bRedoShortcut = m_pDbx->GetShortCut(ID_MENUITEM_REDO, m_cRedoVirtKey, m_cRedoModifier);
+  m_bUndoShortcut = m_pDbx->GetShortCut(ID_MENUITEM_UNDO, m_siUndoVirtKey, m_cUndoModifier);
+  m_bRedoShortcut = m_pDbx->GetShortCut(ID_MENUITEM_REDO, m_siRedoVirtKey, m_cRedoModifier);
 
   m_MapPSWDPLC = m_pDbx->GetPasswordPolicies();
 
-  PWSprefs *prefs = PWSprefs::GetInstance();
-  m_st_default_pp.Empty();
-  if (prefs->GetPref(PWSprefs::PWUseLowercase))
-    m_st_default_pp.pwp.flags |= PWSprefs::PWPolicyUseLowercase;
-  if (prefs->GetPref(PWSprefs::PWUseUppercase))
-    m_st_default_pp.pwp.flags |= PWSprefs::PWPolicyUseUppercase;
-  if (prefs->GetPref(PWSprefs::PWUseDigits))
-    m_st_default_pp.pwp.flags |= PWSprefs::PWPolicyUseDigits;
-  if (prefs->GetPref(PWSprefs::PWUseSymbols))
-    m_st_default_pp.pwp.flags |= PWSprefs::PWPolicyUseSymbols;
-  if (prefs->GetPref(PWSprefs::PWUseHexDigits))
-    m_st_default_pp.pwp.flags |= PWSprefs::PWPolicyUseHexDigits;
-  if (prefs->GetPref(PWSprefs::PWUseEasyVision))
-    m_st_default_pp.pwp.flags |= PWSprefs::PWPolicyUseEasyVision;
-  if (prefs->GetPref(PWSprefs::PWMakePronounceable))
-    m_st_default_pp.pwp.flags |= PWSprefs::PWPolicyMakePronounceable;
-
-  m_st_default_pp.pwp.length = prefs->GetPref(PWSprefs::PWDefaultLength);
-  m_st_default_pp.pwp.digitminlength = prefs->GetPref(PWSprefs::PWDigitMinLength);
-  m_st_default_pp.pwp.lowerminlength = prefs->GetPref(PWSprefs::PWLowercaseMinLength);
-  m_st_default_pp.pwp.symbolminlength = prefs->GetPref(PWSprefs::PWSymbolMinLength);
-  m_st_default_pp.pwp.upperminlength = prefs->GetPref(PWSprefs::PWUppercaseMinLength);
-
-  m_st_default_pp.symbols = prefs->GetPref(PWSprefs::DefaultSymbols);
-
-  CPasswordCharPool::GetDefaultSymbols(m_std_symbols);
-  CPasswordCharPool::GetEasyVisionSymbols(m_easyvision_symbols);
-  CPasswordCharPool::GetPronounceableSymbols(m_pronounceable_symbols);
+  m_st_default_pp = PWSprefs::GetInstance()->GetDefaultPolicy();
 }
 
 CManagePSWDPolices::~CManagePSWDPolices()
@@ -300,7 +274,7 @@ BOOL CManagePSWDPolices::PreTranslateMessage(MSG* pMsg)
 
   // If user hit the appropriate shortcut - do Undo/Redo
   if (pMsg->message == WM_KEYDOWN) {
-    if (m_bUndoShortcut && pMsg->wParam == m_cUndoVirtKey) {
+    if (m_bUndoShortcut && pMsg->wParam == m_siUndoVirtKey) {
       if (((m_cUndoModifier & HOTKEYF_CONTROL) == HOTKEYF_CONTROL &&
           (GetKeyState(VK_CONTROL) & 0x8000) == 0) || 
           ((m_cUndoModifier & HOTKEYF_ALT) == HOTKEYF_ALT &&
@@ -315,7 +289,7 @@ BOOL CManagePSWDPolices::PreTranslateMessage(MSG* pMsg)
       // Tell Windows we have processed it
       return TRUE;
     }
-    if (m_bRedoShortcut && pMsg->wParam == m_cRedoVirtKey) {
+    if (m_bRedoShortcut && pMsg->wParam == m_siRedoVirtKey) {
       if (((m_cRedoModifier & HOTKEYF_CONTROL) == HOTKEYF_CONTROL &&
           (GetKeyState(VK_CONTROL) & 0x8000) == 0) || 
           ((m_cRedoModifier & HOTKEYF_ALT) == HOTKEYF_ALT &&
@@ -367,22 +341,34 @@ void CManagePSWDPolices::OnCancel()
 
 void CManagePSWDPolices::OnNew()
 {
-  bool bLongPPs = m_pDbx->LongPPs();
+  CPasswordPolicyDlg *pDlg(NULL);
 
-  CPasswordPolicyDlg PasswordPolicy(IDS_PSWDPOLICY, this, bLongPPs, m_bReadOnly, m_st_default_pp);
+  // Try Tall version
+  pDlg = new CPasswordPolicyDlg(IDS_PSWDPOLICY, this, true, m_bReadOnly, m_st_default_pp);
 
   // Pass default values, PolicyName map and indicate New (Blank policy name)
   CString cs_policyname(L"");
-  PasswordPolicy.SetPolicyData(cs_policyname, m_MapPSWDPLC, m_pDbx);
+  pDlg->SetPolicyData(cs_policyname, m_MapPSWDPLC, m_pDbx);
 
-  INT_PTR rc = PasswordPolicy.DoModal();
+  INT_PTR rc = pDlg->DoModal();
+  
+  if (rc < 0) {
+    // Try again with Wide version
+    delete pDlg;
+    pDlg = new CPasswordPolicyDlg(IDS_PSWDPOLICY, this, false, m_bReadOnly, m_st_default_pp);
+
+    // Pass default values, PolicyName map and indicate New (Blank policy name)
+    pDlg->SetPolicyData(cs_policyname, m_MapPSWDPLC, m_pDbx);
+
+    rc = pDlg->DoModal(); 
+  }
 
   if (rc == IDOK) {
     m_bChanged = true;
     CString cs_policyname;
     
     // Get new named password policy
-    PasswordPolicy.GetPolicyData(m_st_default_pp, cs_policyname, m_MapPSWDPLC);
+    pDlg->GetPolicyData(m_st_default_pp, cs_policyname, m_MapPSWDPLC);
 
     // Save changes for Undo/Redo
     st_PSWDPolicyChange st_change;
@@ -394,6 +380,7 @@ void CManagePSWDPolices::OnNew()
     PSWDPolicyMapIter iter_new = m_MapPSWDPLC.find(StringX((LPCWSTR)cs_policyname));
     if (iter_new == m_MapPSWDPLC.end())
       ASSERT(0);
+
     st_change.st_pp_new = iter_new->second;
 
     if (m_iundo_pos != (int)m_vchanges.size() - 1) {
@@ -422,6 +409,7 @@ void CManagePSWDPolices::OnNew()
 
     UpdateDetails();
   }
+  delete pDlg;
 }
 
 void CManagePSWDPolices::OnEdit()
@@ -432,16 +420,29 @@ void CManagePSWDPolices::OnEdit()
   if (m_iSelectedItem != 0 && iter == m_MapPSWDPLC.end())
     return;
 
-  bool bLongPPs = m_pDbx->LongPPs();
+  CPasswordPolicyDlg *pDlg(NULL);
 
-  CPasswordPolicyDlg PasswordPolicy(m_iSelectedItem == 0 ? IDS_OPTIONS : IDS_PSWDPOLICY,
-                                    this, bLongPPs, m_bReadOnly, m_st_default_pp);
+  // Try Tall version
+  pDlg = new CPasswordPolicyDlg(m_iSelectedItem == 0 ? IDS_OPTIONS : IDS_PSWDPOLICY,
+                                this, true, m_bReadOnly, m_st_default_pp);
 
   // Pass default values and PolicyName map
-  PasswordPolicy.SetPolicyData(cs_policyname, m_MapPSWDPLC, m_pDbx);
+  pDlg->SetPolicyData(cs_policyname, m_MapPSWDPLC, m_pDbx);
 
-  INT_PTR rc = PasswordPolicy.DoModal();
+  INT_PTR rc = pDlg->DoModal();
   
+  if (rc < 0) {
+    // Try again with Wide version
+    delete pDlg;
+    pDlg = new CPasswordPolicyDlg(m_iSelectedItem == 0 ? IDS_OPTIONS : IDS_PSWDPOLICY,
+                                  this, false, m_bReadOnly, m_st_default_pp);
+
+    // Pass default values, PolicyName map and indicate New (Blank policy name)
+    pDlg->SetPolicyData(cs_policyname, m_MapPSWDPLC, m_pDbx);
+
+    rc = pDlg->DoModal(); 
+  }
+
   if (rc == IDOK) {
     m_bChanged = true;
 
@@ -452,7 +453,7 @@ void CManagePSWDPolices::OnEdit()
     st_change.st_pp_save = m_iSelectedItem != 0 ?iter->second : m_st_default_pp;
 
     // Update default (if changed) or the named policies
-    PasswordPolicy.GetPolicyData(m_st_default_pp, cs_policyname, m_MapPSWDPLC);
+    pDlg->GetPolicyData(m_st_default_pp, cs_policyname, m_MapPSWDPLC);
 
     if (m_iSelectedItem != 0) {
       // Changed a named password policy
@@ -493,6 +494,7 @@ void CManagePSWDPolices::OnEdit()
 
     UpdateDetails();
   }
+  delete pDlg;
 }
 
 void CManagePSWDPolices::OnList()
@@ -568,37 +570,12 @@ void CManagePSWDPolices::OnDelete()
 
 void CManagePSWDPolices::OnGeneratePassword()
 {
-  st_PSWDPolicy st_pp;
+  PWPolicy st_pp;
   CString cs_policyname(L"");
 
-  if (m_iSelectedItem == 0) {
-    // Use Default Password policy
-    PWSprefs *prefs = PWSprefs::GetInstance();
-  
-    if (prefs->GetPref(PWSprefs::PWUseLowercase))
-      st_pp.pwp.flags |= PWSprefs::PWPolicyUseLowercase;
-    if (prefs->GetPref(PWSprefs::PWUseUppercase))
-      st_pp.pwp.flags |= PWSprefs::PWPolicyUseUppercase;
-    if (prefs->GetPref(PWSprefs::PWUseDigits))
-      st_pp.pwp.flags |= PWSprefs::PWPolicyUseDigits;
-    if (prefs->GetPref(PWSprefs::PWUseSymbols))
-      st_pp.pwp.flags |= PWSprefs::PWPolicyUseSymbols;
-    if (prefs->GetPref(PWSprefs::PWUseHexDigits))
-      st_pp.pwp.flags |= PWSprefs::PWPolicyUseHexDigits;
-    if (prefs->GetPref(PWSprefs::PWUseEasyVision))
-      st_pp.pwp.flags |= PWSprefs::PWPolicyUseEasyVision;
-    if (prefs->GetPref(PWSprefs::PWMakePronounceable))
-      st_pp.pwp.flags |= PWSprefs::PWPolicyMakePronounceable;
-  
-    st_pp.pwp.length = prefs->GetPref(PWSprefs::PWDefaultLength);
-    st_pp.pwp.digitminlength = prefs->GetPref(PWSprefs::PWDigitMinLength);
-    st_pp.pwp.lowerminlength = prefs->GetPref(PWSprefs::PWLowercaseMinLength);
-    st_pp.pwp.symbolminlength = prefs->GetPref(PWSprefs::PWSymbolMinLength);
-    st_pp.pwp.upperminlength = prefs->GetPref(PWSprefs::PWUppercaseMinLength);
-  
-    st_pp.symbols = prefs->GetPref(PWSprefs::DefaultSymbols);
-  } else {
-    // Named Password Policy
+  if (m_iSelectedItem == 0) { // Use Default Password policy
+    st_pp = m_st_default_pp;
+  } else { // Named Password Policy
     cs_policyname = m_PolicyNames.GetItemText(m_iSelectedItem, 0);
 
     PSWDPolicyMapIter iter = m_MapPSWDPLC.find(StringX((LPCWSTR)cs_policyname));
@@ -609,7 +586,7 @@ void CManagePSWDPolices::OnGeneratePassword()
   }
   
   StringX passwd;
-  m_pDbx->MakeRandomPassword(passwd, st_pp.pwp, st_pp.symbols.c_str(), false);
+  m_pDbx->MakeRandomPassword(passwd, st_pp);
   m_password = passwd.c_str();
   m_ex_password.SetWindowText(m_password);
   m_ex_password.Invalidate();
@@ -706,11 +683,11 @@ void CManagePSWDPolices::OnEntryDoubleClicked(NMHDR *, LRESULT *pLResult)
   // Set we have processed the event
   *pLResult = 1L;
 
-  POSITION p = m_PolicyEntries.GetFirstSelectedItemPosition();
-  if (p == NULL)
+  POSITION pos = m_PolicyEntries.GetFirstSelectedItemPosition();
+  if (pos == NULL)
     return;
 
-  int nIndex = m_PolicyEntries.GetNextSelectedItem(p);
+  int nIndex = m_PolicyEntries.GetNextSelectedItem(pos);
 
   if (nIndex < 0)
     return;
@@ -825,7 +802,7 @@ void CManagePSWDPolices::UpdateNames()
   int nPos = 0;
 
   // Add in the default policy as the first entry
-  CString cs_text(MAKEINTRESOURCE(IDS_DATABASE_DEFAULT));
+  CString cs_text(MAKEINTRESOURCE(IDSC_DEFAULT_POLICY));
   nPos = m_PolicyNames.InsertItem(nPos, cs_text);
   cs_text.LoadString(IDS_NA);
   m_PolicyNames.SetItemText(nPos, 1, cs_text);
@@ -851,6 +828,15 @@ void CManagePSWDPolices::UpdateNames()
   m_PolicyNames.SetColumnWidth(1, LVSCW_AUTOSIZE_USEHEADER);
 }
 
+static void WindowsRowPutter(int row, const stringT &name, const stringT &value,
+                             void *table)
+{
+  // Callback function used by st_PSWDPolicy::Policy2Table
+  CListCtrl *tableControl = (CListCtrl *)table;
+  tableControl->InsertItem(row, name.c_str());
+  tableControl->SetItemText(row, 1, value.c_str());
+}
+
 void CManagePSWDPolices::UpdateDetails()
 {
   // Make sure correct ListCtrl and title are visible
@@ -863,12 +849,15 @@ void CManagePSWDPolices::UpdateDetails()
 
   // Now fill in the details!
 
+  if (m_iSelectedItem == -1) // or not...
+    return;
+
   /*
     If m_iSelectedItem = 0, then fill in with the database default,
     otherwise use the name entry
   */
 
-  st_PSWDPolicy st_pp;
+  PWPolicy st_pp;
 
   if (m_iSelectedItem != 0) {
     CString cs_policyname = m_PolicyNames.GetItemText(m_iSelectedItem, 0);
@@ -882,100 +871,9 @@ void CManagePSWDPolices::UpdateDetails()
     st_pp = m_st_default_pp;
   }
 
-  CString cs_yes(MAKEINTRESOURCE(IDS_YES)), cs_no(MAKEINTRESOURCE(IDS_NO));
-  cs_yes.Remove(L'&');
-  cs_no.Remove(L'&');
-
-  const bool bEV = (st_pp.pwp.flags & PWSprefs::PWPolicyUseEasyVision) != 0;
-  const bool bPR = (st_pp.pwp.flags & PWSprefs::PWPolicyMakePronounceable) != 0;
-
-  int nPos = 0;
-
   // Clear out previous info
   m_PolicyDetails.DeleteAllItems();
-
-  if (m_iSelectedItem == -1)
-    return;
-
-  // Length, Lowercase, Uppercase, Digits, Symbols, EasyVision, Pronounceable, Hexadecimal
-  CString cs_text(MAKEINTRESOURCE(IDS_PLENGTH));
-  m_PolicyDetails.InsertItem(nPos, cs_text);
-  cs_text.Format(L"%d", st_pp.pwp.length);
-  m_PolicyDetails.SetItemText(nPos, 1, cs_text);
-  nPos++;
-
-  cs_text.LoadString(IDS_PUSELOWER);
-  m_PolicyDetails.InsertItem(nPos, cs_text);
-  if ((st_pp.pwp.flags & PWSprefs::PWPolicyUseLowercase) != 0) {
-    if (bEV || bPR)
-      cs_text = cs_yes;
-    else
-      cs_text.Format(IDS_YESNUMBER, st_pp.pwp.lowerminlength);
-  } else {
-    cs_text = cs_no;
-  }
-  m_PolicyDetails.SetItemText(nPos, 1, cs_text);
-  nPos++;
-
-  cs_text.LoadString(IDS_PUSEUPPER);
-  m_PolicyDetails.InsertItem(nPos, cs_text);
-  if ((st_pp.pwp.flags & PWSprefs::PWPolicyUseUppercase) != 0) {
-    if (bEV | bPR)
-      cs_text = cs_yes;
-    else
-      cs_text.Format(IDS_YESNUMBER, st_pp.pwp.upperminlength);
-  } else {
-    cs_text = cs_no;
-  }
-  m_PolicyDetails.SetItemText(nPos, 1, cs_text);
-  nPos++;
-
-  cs_text.LoadString(IDS_PUSEDIGITS);
-  m_PolicyDetails.InsertItem(nPos, cs_text);
-  if ((st_pp.pwp.flags & PWSprefs::PWPolicyUseDigits) != 0) {
-    if (bEV || bPR)
-      cs_text = cs_yes;
-    else
-      cs_text.Format(IDS_YESNUMBER, st_pp.pwp.digitminlength);
-  } else {
-    cs_text = cs_no;
-  }
-  m_PolicyDetails.SetItemText(nPos, 1, cs_text);
-  nPos++;
-
-  cs_text.LoadString(IDS_PUSESYMBOL);
-  m_PolicyDetails.InsertItem(nPos, cs_text);
-  if ((st_pp.pwp.flags & PWSprefs::PWPolicyUseSymbols) != 0) {
-    if (bEV || bPR) {
-      cs_text.Format(bEV ? IDS_YESEASYVISON : IDS_YESPRONOUNCEABLE,
-                     bEV ? m_easyvision_symbols.c_str() : m_pronounceable_symbols.c_str());
-    } else {
-      CString cs_tmp;
-      cs_tmp.LoadString(st_pp.symbols.empty() ? IDS_DEFAULTSYMBOLS : IDS_SPECFICSYMBOLS);
-      cs_text.Format(IDS_YESSYMBOLS, st_pp.pwp.symbolminlength, cs_tmp,
-        st_pp.symbols.empty() ? m_std_symbols.c_str() : st_pp.symbols.c_str());
-    }
-  } else {
-    cs_text = cs_no;
-  }
-  m_PolicyDetails.SetItemText(nPos, 1, cs_text);
-  nPos++;
-
-  cs_text.LoadString(IDS_PEASYVISION);
-  m_PolicyDetails.InsertItem(nPos, cs_text);
-  m_PolicyDetails.SetItemText(nPos, 1, bEV ? cs_yes : cs_no);
-  nPos++;
-
-  cs_text.LoadString(IDS_PPRONOUNCEABLE);
-  m_PolicyDetails.InsertItem(nPos, cs_text);
-  m_PolicyDetails.SetItemText(nPos, 1, bPR ? cs_yes : cs_no);
-  nPos++;
-
-  cs_text.LoadString(IDS_PHEXADECIMAL);
-  m_PolicyDetails.InsertItem(nPos, cs_text);
-  m_PolicyDetails.SetItemText(nPos, 1,
-          (st_pp.pwp.flags & PWSprefs::PWPolicyUseHexDigits) != 0 ? cs_yes : cs_no);
-  nPos++;
+  st_pp.Policy2Table(WindowsRowPutter, &m_PolicyDetails);
 
   m_PolicyDetails.SetColumnWidth(0, LVSCW_AUTOSIZE);
   m_PolicyDetails.SetColumnWidth(1, LVSCW_AUTOSIZE_USEHEADER);

@@ -87,7 +87,7 @@ void XFileSAX2Handlers::startElement(const XMLCh* const /* uri */,
     }
   }
 
-  m_strElemContent = _T("");
+  m_sxElemContent = _T("");
 
   st_file_element_data edata;
   m_pValidator->GetElementInfo(qname, edata);
@@ -126,10 +126,10 @@ void XFileSAX2Handlers::characters(const XMLCh* const chars, const XMLSize_t len
   XMLString::copyNString(xmlchData, chars, length);
   xmlchData[length] = L'\0';
 #ifdef UNICODE
-  m_strElemContent += StringX(_X2SX(xmlchData));
+  m_sxElemContent += StringX(_X2SX(xmlchData));
 #else
   char *szData = XMLString::transcode(xmlchData);
-  m_strElemContent += StringX(szData);
+  m_sxElemContent += StringX(szData);
   XMLString::release(&szData);
 #endif
   delete [] xmlchData;
@@ -147,10 +147,10 @@ void XFileSAX2Handlers::ignorableWhitespace(const XMLCh* const chars,
   XMLString::copyNString(xmlchData, chars, length);
   xmlchData[length] = L'\0';
 #ifdef UNICODE
-  m_strElemContent += StringX(_X2SX(xmlchData));
+  m_sxElemContent += StringX(_X2SX(xmlchData));
 #else
   char *szData = XMLString::transcode(xmlchData);
-  m_strElemContent += StringX(szData);
+  m_sxElemContent += StringX(szData);
   XMLString::release(&szData);
 #endif
   delete [] xmlchData;

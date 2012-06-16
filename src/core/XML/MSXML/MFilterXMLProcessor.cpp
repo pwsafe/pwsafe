@@ -28,7 +28,7 @@
 
 MFilterXMLProcessor::MFilterXMLProcessor(PWSFilters &mapfilters, const FilterPool fpool,
                                          Asker *pAsker)
-  : m_MSXML_Version(60), m_MapFilters(mapfilters), m_FPool(fpool), m_pAsker(pAsker)
+  : m_MapFilters(mapfilters), m_FPool(fpool), m_pAsker(pAsker)
 {
 }
 
@@ -41,7 +41,7 @@ bool MFilterXMLProcessor::Process(const bool &bvalidation,
                                   const stringT &strXMLFileName,
                                   const stringT &strXSDFileName)
 {
-  HRESULT hr, hr0, hr60, hr40, hr30;
+  HRESULT hr, hr0, hr60;
   bool b_ok(false);
   stringT cs_validation;
   LoadAString(cs_validation, IDSC_XMLVALIDATION);
@@ -52,58 +52,27 @@ bool MFilterXMLProcessor::Process(const bool &bvalidation,
   m_bValidation = bvalidation;  // Validate or Import
 
   //  Create SAXReader object
-  ISAXXMLReader* pSAX2Reader = NULL;
+  ISAXXMLReader *pSAX2Reader = NULL;
   //  Get ready for XSD schema validation
-  IXMLDOMSchemaCollection2* pSchemaCache = NULL;
+  IXMLDOMSchemaCollection2 *pSchemaCache = NULL;
 
   if (m_bValidation) { //XMLValidate
-    // Try 60
     hr60 = CoCreateInstance(__uuidof(SAXXMLReader60), NULL, CLSCTX_ALL,
                             __uuidof(ISAXXMLReader), (void **)&pSAX2Reader);
     if (FAILED(hr60)) {
-      // Try 40
-      hr40 = CoCreateInstance(__uuidof(SAXXMLReader40), NULL, CLSCTX_ALL,
-                              __uuidof(ISAXXMLReader), (void **)&pSAX2Reader);
-      if (FAILED(hr40)) {
-        // Try 30
-        hr30 = CoCreateInstance(__uuidof(SAXXMLReader30), NULL, CLSCTX_ALL,
-                                __uuidof(ISAXXMLReader), (void **)&pSAX2Reader);
-        if (FAILED(hr30)) {
-          LoadAString(m_strXMLErrors, IDSC_NOMSXMLREADER);
-          goto exit;
-        } else {
-          m_MSXML_Version = 30;
-        }
-      } else {
-        m_MSXML_Version = 40;
-      }
-    } else {
-      m_MSXML_Version = 60;
+      LoadAString(m_strXMLErrors, IDSC_NOMSXMLREADER);
+      goto exit;
     }
   } else {  // XMLImport
-    switch (m_MSXML_Version) {
-      case 60:
-        hr0 = CoCreateInstance(__uuidof(SAXXMLReader60), NULL, CLSCTX_ALL,
-                               __uuidof(ISAXXMLReader), (void **)&pSAX2Reader);
-        break;
-      case 40:
-        hr0 = CoCreateInstance(__uuidof(SAXXMLReader40), NULL, CLSCTX_ALL,
-                               __uuidof(ISAXXMLReader), (void **)&pSAX2Reader);
-        break;
-      case 30:
-        hr0 = CoCreateInstance(__uuidof(SAXXMLReader30), NULL, CLSCTX_ALL,
-                               __uuidof(ISAXXMLReader), (void **)&pSAX2Reader);
-        break;
-      default:
-        // Should never get here as validate would have sorted it and this doesn't get called if it fails
-        ASSERT(0);
-    }
+    hr0 = CoCreateInstance(__uuidof(SAXXMLReader60), NULL, CLSCTX_ALL,
+                           __uuidof(ISAXXMLReader), (void **)&pSAX2Reader);
+
   }
 
   //  Create ContentHandlerImpl object
-  MFilterSAX2ContentHandler* pCH = new MFilterSAX2ContentHandler;
+  MFilterSAX2ContentHandler *pCH = new MFilterSAX2ContentHandler;
   //  Create ErrorHandlerImpl object
-  MFilterSAX2ErrorHandler* pEH = new MFilterSAX2ErrorHandler;
+  MFilterSAX2ErrorHandler *pEH = new MFilterSAX2ErrorHandler;
 
   pCH->SetVariables(m_pAsker, &m_MapFilters, m_FPool, m_bValidation);
 
@@ -113,23 +82,8 @@ bool MFilterXMLProcessor::Process(const bool &bvalidation,
   //  Set Error Handler
   hr = pSAX2Reader->putErrorHandler(pEH);
 
-  switch (m_MSXML_Version) {
-    case 60:
-      hr = CoCreateInstance(__uuidof(XMLSchemaCache60), NULL, CLSCTX_ALL,
-                            __uuidof(IXMLDOMSchemaCollection2), (void **)&pSchemaCache);
-      break;
-    case 40:
-      hr = CoCreateInstance(__uuidof(XMLSchemaCache40), NULL, CLSCTX_ALL,
-                            __uuidof(IXMLDOMSchemaCollection2), (void **)&pSchemaCache);
-      break;
-    case 30:
-      hr = CoCreateInstance(__uuidof(XMLSchemaCache30), NULL, CLSCTX_ALL,
-                            __uuidof(IXMLDOMSchemaCollection2), (void **)&pSchemaCache);
-      break;
-    default:
-      LoadAString(m_strXMLErrors, IDSC_CANTXMLVALIDATE);
-      goto exit;
-  }
+  hr = CoCreateInstance(__uuidof(XMLSchemaCache60), NULL, CLSCTX_ALL,
+                        __uuidof(IXMLDOMSchemaCollection2), (void **)&pSchemaCache);
 
   if (!FAILED(hr)) {  // Create SchemaCache
     //  Initialize the SchemaCache object with the XSD filename
@@ -181,8 +135,10 @@ bool MFilterXMLProcessor::Process(const bool &bvalidation,
       // Don't allow user to override validation by using DTDs
       hr = pSAX2Reader->putFeature(L"prohibit-dtd", VARIANT_TRUE);
       // Don't allow user to override validation by using DTDs (2 features)
-      hr = pSAX2Reader->putFeature(L"http://xml.org/sax/features/external-general-entities", VARIANT_FALSE);
-      hr = pSAX2Reader->putFeature(L"http://xml.org/sax/features/external-parameter-entities", VARIANT_FALSE);
+      hr = pSAX2Reader->putFeature(L"http://xml.org/sax/features/external-general-entities",
+                                   VARIANT_FALSE);
+      hr = pSAX2Reader->putFeature(L"http://xml.org/sax/features/external-parameter-entities",
+                                   VARIANT_FALSE);
       // Want to validate XML file
       hr = pSAX2Reader->putFeature(L"schema-validation", VARIANT_TRUE);
       // Ignore any schema specified in the XML file
@@ -221,13 +177,13 @@ bool MFilterXMLProcessor::Process(const bool &bvalidation,
       if (pEH->bErrorsFound == TRUE) {
         m_strXMLErrors = pEH->m_strValidationResult;
       } else {
-        Format(m_strXMLErrors, IDSC_MSXMLPARSEERROR, m_MSXML_Version, hr,
+        Format(m_strXMLErrors, IDSC_MSXMLPARSEERROR, hr,
                m_bValidation ? cs_validation.c_str() : cs_import.c_str());
       }
     }  // End Check for parsing errors
 
   } else {
-    Format(m_strXMLErrors, IDSC_MSXMLBADCREATESCHEMA, m_MSXML_Version, hr,
+    Format(m_strXMLErrors, IDSC_MSXMLBADCREATESCHEMA, hr,
            m_bValidation ? cs_validation.c_str() : cs_import.c_str());
   }  // End Create Schema Cache
 

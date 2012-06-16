@@ -67,6 +67,9 @@ public:
   void SetPasswordPolicies(const PSWDPolicyMap &MapPSWDPLC) {m_MapPSWDPLC = MapPSWDPLC;}
   const PSWDPolicyMap &GetPasswordPolicies() const {return m_MapPSWDPLC;}
 
+  void SetEmptyGroups(const std::vector<StringX> &vEmptyGroups) {m_vEmptyGroups = vEmptyGroups;}
+  const std::vector<StringX> &GetEmptyGroups() const {return m_vEmptyGroups;}
+
 private:
   unsigned char m_ipthing[TwoFish::BLOCKSIZE]; // for CBC
   unsigned char m_key[32];
@@ -82,6 +85,9 @@ private:
   int ReadHeader();
   PWSFilters m_MapFilters;
   PSWDPolicyMap m_MapPSWDPLC;
+
+  // EmptyGroups
+  std::vector<StringX> m_vEmptyGroups;
 
   static int SanityCheck(FILE *stream); // Check for TAG and EOF marker
   static void StretchKey(const unsigned char *salt, unsigned long saltLen,

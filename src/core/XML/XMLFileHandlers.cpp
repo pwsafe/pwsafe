@@ -22,6 +22,7 @@
 #include "../PWSfileV3.h"
 #include "../VerifyFormat.h"
 #include "../Command.h"
+
 #include "os/UUID.h"
 
 #include <algorithm>
@@ -35,12 +36,8 @@ XMLFileHandlers::XMLFileHandlers()
 {
   cur_entry = NULL;
   cur_pwhistory_entry = NULL;
-  cur_policy = NULL;
-  m_strElemContent.clear();
+  m_sxElemContent = _T("");
 
-  m_sDefaultAutotypeString = _T("");
-  m_sDefaultUsername = _T("");
-  m_sDefaultSymbols = _T("");
   m_delimiter = _T('\0');
   m_strErrorMessage = _T("");
 
@@ -55,10 +52,13 @@ XMLFileHandlers::XMLFileHandlers()
   
   m_sxXML_DateTime = PWSUtil::GetTimeStamp(true).c_str();
 
-  // Following are user preferences stored in the database and for PolicyNames
-  for (int i = 0; i < NUMPREFSINXML; i++) {
-    prefsinXML[i] = -1;
-  }
+  // Set up copy of preferences to use for password policies and if we import into an
+  // empty database - Note: Load of empty string sets it to all defaults
+  PWSprefs::GetInstance()->Load(_T(""), true);
+  
+  // Get current DB default policy (any import DB default policy will be set after all
+  // the preferences are read in)
+  currentDB_default_pwp = PWSprefs::GetInstance()->GetDefaultPolicy();
 }
 
 XMLFileHandlers::~XMLFileHandlers()
@@ -153,18 +153,13 @@ bool XMLFileHandlers::ProcessStartElement(const int icurrent_element)
       if (m_bValidation)
         return false;
 
-      // Reset preferences in XML for PolicyNames (we reuse those for preferences)
-      for (int i = 0; i < NUMPREFSINXML; i++) {
-        prefsinXML[i] = -1;
-      }
-      m_sNamedPolicySymbols = _T("");
-
-      cur_policy = new pw_policy;
-
       // Clear all fields
-      cur_policy->name = _T("");
-      cur_policy->st_pp.pwp.Empty();
-      cur_policy->st_pp.symbols = _T("");
+      m_Named_pwp.Empty();
+      m_PolicyName = _T("");
+
+      break;
+    case XLE_EMPTYGROUPS:
+      m_bInEmptyGroups = true;
       break;
     case XLE_PWNAME:
     default:
@@ -178,9 +173,13 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
   StringX buffer(_T(""));
   int i;
 
+  PWSprefs::BoolPrefs bpref(PWSprefs::NumBoolPrefs);
+  PWSprefs::IntPrefs ipref(PWSprefs::NumIntPrefs);
+  PWSprefs::StringPrefs spref(PWSprefs::NumStringPrefs);
+
   switch (icurrent_element) {
     case XLE_NUMBERHASHITERATIONS:
-      i = _ttoi(m_strElemContent.c_str());
+      i = _ttoi(m_sxElemContent.c_str());
       if (i > MIN_HASH_ITERATIONS) {
         m_nITER = i;
       }
@@ -189,145 +188,270 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
       m_ventries.push_back(cur_entry);
       m_numEntries++;
       break;
-    case XLE_DISPLAYEXPANDEDADDEDITDLG:
-      // Obsoleted in 3.18
-      return;
-    case XLE_LOCKDBONIDLETIMEOUT:
-    case XLE_IDLETIMEOUT:
-    case XLE_MAINTAINDATETIMESTAMPS:
-    case XLE_NUMPWHISTORYDEFAULT:
-    case XLE_PWDEFAULTLENGTH:
-    case XLE_PWDIGITMINLENGTH:
-    case XLE_PWLOWERCASEMINLENGTH:
-    case XLE_PWMAKEPRONOUNCEABLE:
-    case XLE_PWSYMBOLMINLENGTH:
-    case XLE_PWUPPERCASEMINLENGTH:
-    case XLE_PWUSEDIGITS:
-    case XLE_PWUSEEASYVISION:
-    case XLE_PWUSEHEXDIGITS:
-    case XLE_PWUSELOWERCASE:
-    case XLE_PWUSESYMBOLS:
-    case XLE_PWUSEUPPERCASE:
-    case XLE_SAVEIMMEDIATELY:
-    case XLE_SAVEPASSWORDHISTORY:
-    case XLE_SHOWNOTESDEFAULT:
-    case XLE_SHOWPASSWORDINTREE:
-    case XLE_SHOWPWDEFAULT:
-    case XLE_SHOWUSERNAMEINTREE:
-    case XLE_SORTASCENDING:
-    case XLE_USEDEFAULTUSER:
-      prefsinXML[icurrent_element - XLE_PREF_START] = _ttoi(m_strElemContent.c_str());
+
+    case XLE_PREFERENCES:
+      // Preferences finished - get the default policy (if any) from the import XML file
+      importDB_default_pwp = PWSprefs::GetInstance()->GetDefaultPolicy(true);
       break;
+    // Boolean DB preferences
+    case XLE_PREF_SHOWPWDEFAULT:
+      bpref = PWSprefs::ShowPWDefault;
+      break;
+    case XLE_PREF_SHOWPASSWORDINTREE:
+      bpref = PWSprefs::ShowPasswordInTree;
+      break;
+    case XLE_PREF_SORTASCENDING:
+      bpref = PWSprefs::SortAscending;
+      break;
+    case XLE_PREF_USEDEFAULTUSER:
+      bpref = PWSprefs::UseDefaultUser;
+      break;
+    case XLE_PREF_SAVEIMMEDIATELY:
+      bpref = PWSprefs::SaveImmediately;
+      break;
+    case XLE_PREF_PWUSELOWERCASE:
+      if (m_bPolicyBeingProcessed)
+        if (m_sxElemContent == _T("1"))
+          m_Named_pwp.flags |= PWPolicy::UseLowercase;
+        else
+          m_Named_pwp.flags &= ~PWPolicy::UseLowercase;
+      else
+        bpref = PWSprefs::PWUseLowercase;
+      break;
+    case XLE_PREF_PWUSEUPPERCASE:
+      if (m_bPolicyBeingProcessed)
+        if (m_sxElemContent == _T("1"))
+          m_Named_pwp.flags |= PWPolicy::UseUppercase;
+        else
+          m_Named_pwp.flags &= ~PWPolicy::UseUppercase;
+      else
+        bpref = PWSprefs::PWUseUppercase;
+      break;
+    case XLE_PREF_PWUSEDIGITS:
+      if (m_bPolicyBeingProcessed)
+        if (m_sxElemContent == _T("1"))
+          m_Named_pwp.flags |= PWPolicy::UseDigits;
+        else
+          m_Named_pwp.flags &= ~PWPolicy::UseDigits;
+      else
+        bpref = PWSprefs::PWUseDigits;
+      break;
+    case XLE_PREF_PWUSESYMBOLS:
+      if (m_bPolicyBeingProcessed)
+        if (m_sxElemContent == _T("1"))
+          m_Named_pwp.flags |= PWPolicy::UseSymbols;
+        else
+          m_Named_pwp.flags &= ~PWPolicy::UseSymbols;
+      else
+        bpref = PWSprefs::PWUseSymbols;
+      break;
+    case XLE_PREF_PWUSEHEXDIGITS:
+      if (m_bPolicyBeingProcessed)
+        if (m_sxElemContent == _T("1"))
+          m_Named_pwp.flags |= PWPolicy::UseHexDigits;
+        else
+          m_Named_pwp.flags &= ~PWPolicy::UseHexDigits;
+      else
+        bpref = PWSprefs::PWUseHexDigits;
+      break;
+    case XLE_PREF_PWUSEEASYVISION:
+      if (m_bPolicyBeingProcessed)
+        if (m_sxElemContent == _T("1"))
+          m_Named_pwp.flags |= PWPolicy::UseEasyVision;
+        else
+          m_Named_pwp.flags &= ~PWPolicy::UseEasyVision;
+      else
+        bpref = PWSprefs::PWUseEasyVision;
+      break;
+    case XLE_PREF_MAINTAINDATETIMESTAMPS:
+      bpref = PWSprefs::MaintainDateTimeStamps;
+      break;
+    case XLE_PREF_SAVEPASSWORDHISTORY:
+      bpref = PWSprefs::SavePasswordHistory;
+      break;
+    case XLE_PREF_SHOWNOTESDEFAULT:
+      bpref = PWSprefs::ShowNotesDefault;
+      break;
+    case XLE_PREF_SHOWUSERNAMEINTREE:
+      bpref = PWSprefs::ShowUsernameInTree;
+      break;
+    case XLE_PREF_PWMAKEPRONOUNCEABLE:
+      if (m_bPolicyBeingProcessed)
+        if (m_sxElemContent == _T("1"))
+          m_Named_pwp.flags |= PWPolicy::MakePronounceable;
+        else
+          m_Named_pwp.flags &= ~PWPolicy::MakePronounceable;
+      else
+        bpref = PWSprefs::PWMakePronounceable;
+      break;
+    case XLE_PREF_LOCKDBONIDLETIMEOUT:
+      bpref = PWSprefs::LockDBOnIdleTimeout;
+      break;
+    case XLE_PREF_COPYPASSWORDWHENBROWSETOURL:
+      bpref = PWSprefs::CopyPasswordWhenBrowseToURL;
+      break;
+    // Integer DB preferences
+    case XLE_PREF_PWDEFAULTLENGTH:
+      if (m_bPolicyBeingProcessed)
+        m_Named_pwp.length = _ttoi(m_sxElemContent.c_str());
+      else
+        ipref = PWSprefs::PWDefaultLength;
+      break;
+    case XLE_PREF_IDLETIMEOUT:
+      ipref = PWSprefs::IdleTimeout;
+      break;
+    case XLE_PREF_TREEDISPLAYSTATUSATOPEN:
+      // Since value is a string - need to convert here to corresponding integer value
+      if (m_sxElemContent == _T("AllCollapsed"))
+        i = PWSprefs::AllCollapsed;
+      else if (m_sxElemContent == _T("AllExpanded"))
+        i = PWSprefs::AllExpanded;
+      else if (m_sxElemContent == _T("AsPerLastSave"))
+        i = PWSprefs::AsPerLastSave;
+      else
+        break;
+      PWSprefs::GetInstance()->SetPref(PWSprefs::TreeDisplayStatusAtOpen, i, true);
+      return;
+    case XLE_PREF_NUMPWHISTORYDEFAULT:
+      ipref = PWSprefs::NumPWHistoryDefault;
+      break;
+    case XLE_PREF_PWDIGITMINLENGTH:
+      if (m_bPolicyBeingProcessed)
+        m_Named_pwp.digitminlength = _ttoi(m_sxElemContent.c_str());
+      else
+        ipref = PWSprefs::PWDigitMinLength;
+      break;
+    case XLE_PREF_PWLOWERCASEMINLENGTH:
+      if (m_bPolicyBeingProcessed)
+         m_Named_pwp.lowerminlength = _ttoi(m_sxElemContent.c_str());
+      else
+        ipref = PWSprefs::PWLowercaseMinLength;
+      break;
+    case XLE_PREF_PWSYMBOLMINLENGTH:
+      if (m_bPolicyBeingProcessed)
+        m_Named_pwp.symbolminlength = _ttoi(m_sxElemContent.c_str());
+      else
+        ipref = PWSprefs::PWSymbolMinLength;
+      break;
+    case XLE_PREF_PWUPPERCASEMINLENGTH:
+      if (m_bPolicyBeingProcessed)
+        m_Named_pwp.upperminlength = _ttoi(m_sxElemContent.c_str());
+      else
+        ipref = PWSprefs::PWUppercaseMinLength;
+      break;
+    // String DB preferences
+    case XLE_PREF_DEFAULTUSERNAME:
+      spref = PWSprefs::DefaultUsername;
+      break;
+    case XLE_PREF_DEFAULTAUTOTYPESTRING:
+      spref = PWSprefs::DefaultAutotypeString;
+      break;
+    case XLE_PREF_DEFAULTSYMBOLS:
+      spref = PWSprefs::DefaultSymbols;
+      break;
+
     case XLE_PASSWORDPOLICYNAMES:
       m_bInPolicyNames = false;
       break;
-    case XLE_TREEDISPLAYSTATUSATOPEN:
-      if (m_strElemContent == _T("AllCollapsed"))
-        prefsinXML[XLE_TREEDISPLAYSTATUSATOPEN - XLE_PREF_START] = PWSprefs::AllCollapsed;
-      else if (m_strElemContent == _T("AllExpanded"))
-        prefsinXML[XLE_TREEDISPLAYSTATUSATOPEN - XLE_PREF_START] = PWSprefs::AllExpanded;
-      else if (m_strElemContent == _T("AsPerLastSave"))
-        prefsinXML[XLE_TREEDISPLAYSTATUSATOPEN - XLE_PREF_START] = PWSprefs::AsPerLastSave;
+    case XLE_EMPTYGROUPS:
+      m_bInEmptyGroups = false;
       break;
-    case XLE_DEFAULTUSERNAME:
-      m_sDefaultUsername = m_strElemContent.c_str();
+    case XLE_EGNAME:
+      if (!m_sxElemContent.empty() &&
+          find(m_vEmptyGroups.begin(), m_vEmptyGroups.end(), m_sxElemContent) == m_vEmptyGroups.end())
+        m_vEmptyGroups.push_back(m_sxElemContent);
       break;
-    case XLE_DEFAULTAUTOTYPESTRING:
-      m_sDefaultAutotypeString = m_strElemContent.c_str();
-      break;
-    case XLE_DEFAULTSYMBOLS:
-      m_sDefaultSymbols = m_strElemContent.c_str();
-      break;
+
     // MUST be in the same order as enum beginning STR_GROUP...
     case XLE_GROUP:
-      cur_entry->group = m_strElemContent;
+      cur_entry->group = m_sxElemContent;
       break;
     case XLE_TITLE:
-      cur_entry->title = m_strElemContent;
+      cur_entry->title = m_sxElemContent;
       break;
     case XLE_USERNAME:
-      cur_entry->username = m_strElemContent;
+      cur_entry->username = m_sxElemContent;
       break;
     case XLE_URL:
-      cur_entry->url = m_strElemContent;
+      cur_entry->url = m_sxElemContent;
       break;
     case XLE_AUTOTYPE:
-      cur_entry->autotype = m_strElemContent;
+      cur_entry->autotype = m_sxElemContent;
       break;
     case XLE_NOTES:
-      cur_entry->notes = m_strElemContent;
+      cur_entry->notes = m_sxElemContent;
       break;
     case XLE_UUID:
-      cur_entry->uuid = m_strElemContent;
+      cur_entry->uuid = m_sxElemContent;
       break;
     case XLE_PASSWORD:
-      cur_entry->password = m_strElemContent;
-      if (Replace(m_strElemContent, _T(':'), _T(';')) <= 2) {
-        if (m_strElemContent.substr(0, 2) == _T("[[") &&
-            m_strElemContent.substr(m_strElemContent.length() - 2) == _T("]]")) {
+      cur_entry->password = m_sxElemContent;
+      if (Replace(m_sxElemContent, _T(':'), _T(';')) <= 2) {
+        if (m_sxElemContent.substr(0, 2) == _T("[[") &&
+            m_sxElemContent.substr(m_sxElemContent.length() - 2) == _T("]]")) {
             cur_entry->entrytype = ALIAS;
         }
-        if (m_strElemContent.substr(0, 2) == _T("[~") &&
-            m_strElemContent.substr(m_strElemContent.length() - 2) == _T("~]")) {
+        if (m_sxElemContent.substr(0, 2) == _T("[~") &&
+            m_sxElemContent.substr(m_sxElemContent.length() - 2) == _T("~]")) {
             cur_entry->entrytype = SHORTCUT;
         }
       }
       break;
     case XLE_CTIMEX:
-      cur_entry->ctime = m_strElemContent;
+      cur_entry->ctime = m_sxElemContent;
       break;
     case XLE_ATIMEX:
-      cur_entry->atime = m_strElemContent;
+      cur_entry->atime = m_sxElemContent;
       break;
     case XLE_XTIMEX:
-      cur_entry->xtime = m_strElemContent;
+      cur_entry->xtime = m_sxElemContent;
       break;
     case XLE_PMTIMEX:
-      cur_entry->pmtime = m_strElemContent;
+      cur_entry->pmtime = m_sxElemContent;
       break;
     case XLE_RMTIMEX:
-      cur_entry->rmtime = m_strElemContent;
+      cur_entry->rmtime = m_sxElemContent;
       break;
     case XLE_XTIME_INTERVAL:
-      cur_entry->xtime_interval = Trim(m_strElemContent);
+      cur_entry->xtime_interval = Trim(m_sxElemContent);
       break;
     case XLE_RUNCOMMAND:
-      cur_entry->run_command = m_strElemContent;
+      cur_entry->run_command = m_sxElemContent;
       break;
     case XLE_DCA:
-      cur_entry->dca = Trim(m_strElemContent);
+      cur_entry->dca = Trim(m_sxElemContent);
       break;
     case XLE_SHIFTDCA:
-      cur_entry->shiftdca = Trim(m_strElemContent);
+      cur_entry->shiftdca = Trim(m_sxElemContent);
       break;
     case XLE_EMAIL:
-      cur_entry->email = m_strElemContent;
+      cur_entry->email = m_sxElemContent;
       break;
     case XLE_PROTECTED:
-      if (m_strElemContent == _T("1"))
+      if (m_sxElemContent == _T("1"))
         cur_entry->ucprotected = 1;
       break;
     case XLE_SYMBOLS:
-      if (m_bEntryBeingProcessed)
-        cur_entry->symbols = m_strElemContent;
+      if (m_bPolicyBeingProcessed)
+        m_Named_pwp.symbols = m_sxElemContent;
       else
-        cur_policy->st_pp.symbols = m_strElemContent;
+        cur_entry->symbols = m_sxElemContent;
       break;
     case XLE_ENTRY_PASSWORDPOLICYNAME:
-      cur_entry->policyname = m_strElemContent;
+      cur_entry->policyname = m_sxElemContent;
       break;
     case XLE_STATUS:
-      i = _ttoi(m_strElemContent.c_str());
+      i = _ttoi(m_sxElemContent.c_str());
       Format(buffer, _T("%01x"), i);
       cur_entry->pwhistory = buffer;
       break;
     case XLE_MAX:
-      i = _ttoi(m_strElemContent.c_str());
+      i = _ttoi(m_sxElemContent.c_str());
       Format(buffer, _T("%02x"), i);
       cur_entry->pwhistory += buffer;
       break;
     case XLE_NUM:
-      i = _ttoi(m_strElemContent.c_str());
+      i = _ttoi(m_sxElemContent.c_str());
       Format(buffer, _T("%02x"), i);
       cur_entry->pwhistory += buffer;
       break;
@@ -342,71 +466,70 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
       cur_pwhistory_entry = NULL;
       break;
     case XLE_CHANGEDX:
-      cur_pwhistory_entry->changed = m_strElemContent;
+      cur_pwhistory_entry->changed = m_sxElemContent;
       break;
     case XLE_OLDPASSWORD:
       ASSERT(cur_pwhistory_entry != NULL);
-      cur_pwhistory_entry->oldpassword = m_strElemContent;
+      cur_pwhistory_entry->oldpassword = m_sxElemContent;
       break;
     case XLE_ENTRY_PWLENGTH:
-      cur_entry->pwp.length = _ttoi(m_strElemContent.c_str());
+      cur_entry->pwp.length = _ttoi(m_sxElemContent.c_str());
       break;
     case XLE_ENTRY_PWUSEDIGITS:
-      if (m_strElemContent == _T("1"))
-        cur_entry->pwp.flags |= PWSprefs::PWPolicyUseDigits;
+      if (m_sxElemContent == _T("1"))
+        cur_entry->pwp.flags |= PWPolicy::UseDigits;
       else
-        cur_entry->pwp.flags &= ~PWSprefs::PWPolicyUseDigits;
+        cur_entry->pwp.flags &= ~PWPolicy::UseDigits;
       break;
     case XLE_ENTRY_PWUSEEASYVISION:
-      if (m_strElemContent == _T("1"))
-        cur_entry->pwp.flags |= PWSprefs::PWPolicyUseEasyVision;
+      if (m_sxElemContent == _T("1"))
+        cur_entry->pwp.flags |= PWPolicy::UseEasyVision;
       else
-        cur_entry->pwp.flags &= ~PWSprefs::PWPolicyUseEasyVision;
+        cur_entry->pwp.flags &= ~PWPolicy::UseEasyVision;
       break;
     case XLE_ENTRY_PWUSEHEXDIGITS:
-      if (m_strElemContent == _T("1"))
-        cur_entry->pwp.flags |= PWSprefs::PWPolicyUseHexDigits;
+      if (m_sxElemContent == _T("1"))
+        cur_entry->pwp.flags |= PWPolicy::UseHexDigits;
       else
-        cur_entry->pwp.flags &= ~PWSprefs::PWPolicyUseHexDigits;
+        cur_entry->pwp.flags &= ~PWPolicy::UseHexDigits;
       break;
     case XLE_ENTRY_PWUSELOWERCASE:
-      if (m_strElemContent == _T("1"))
-        cur_entry->pwp.flags |= PWSprefs::PWPolicyUseLowercase;
+      if (m_sxElemContent == _T("1"))
+        cur_entry->pwp.flags |= PWPolicy::UseLowercase;
       else
-        cur_entry->pwp.flags &= ~PWSprefs::PWPolicyUseLowercase;
+        cur_entry->pwp.flags &= ~PWPolicy::UseLowercase;
       break;
     case XLE_ENTRY_PWUSESYMBOLS:
-      if (m_strElemContent == _T("1"))
-        cur_entry->pwp.flags |= PWSprefs::PWPolicyUseSymbols;
+      if (m_sxElemContent == _T("1"))
+        cur_entry->pwp.flags |= PWPolicy::UseSymbols;
       else
-        cur_entry->pwp.flags &= ~PWSprefs::PWPolicyUseSymbols;
+        cur_entry->pwp.flags &= ~PWPolicy::UseSymbols;
       break;
     case XLE_ENTRY_PWUSEUPPERCASE:
-      if (m_strElemContent == _T("1"))
-        cur_entry->pwp.flags |= PWSprefs::PWPolicyUseUppercase;
+      if (m_sxElemContent == _T("1"))
+        cur_entry->pwp.flags |= PWPolicy::UseUppercase;
       else
-        cur_entry->pwp.flags &= ~PWSprefs::PWPolicyUseUppercase;
+        cur_entry->pwp.flags &= ~PWPolicy::UseUppercase;
       break;
     case XLE_ENTRY_PWMAKEPRONOUNCEABLE:
-      if (m_strElemContent == _T("1"))
-        cur_entry->pwp.flags |= PWSprefs::PWPolicyMakePronounceable;
+      if (m_sxElemContent == _T("1"))
+        cur_entry->pwp.flags |= PWPolicy::MakePronounceable;
       else
-        cur_entry->pwp.flags &= ~PWSprefs::PWPolicyMakePronounceable;
+        cur_entry->pwp.flags &= ~PWPolicy::MakePronounceable;
       break;
     case XLE_ENTRY_PWDIGITMINLENGTH:
-      cur_entry->pwp.digitminlength = _ttoi(m_strElemContent.c_str());
+      cur_entry->pwp.digitminlength = _ttoi(m_sxElemContent.c_str());
       break;
     case XLE_ENTRY_PWLOWERCASEMINLENGTH:
-      cur_entry->pwp.lowerminlength = _ttoi(m_strElemContent.c_str());
+      cur_entry->pwp.lowerminlength = _ttoi(m_sxElemContent.c_str());
       break;
     case XLE_ENTRY_PWSYMBOLMINLENGTH:
-      cur_entry->pwp.symbolminlength = _ttoi(m_strElemContent.c_str());
+      cur_entry->pwp.symbolminlength = _ttoi(m_sxElemContent.c_str());
       break;
     case XLE_ENTRY_PWUPPERCASEMINLENGTH:
-      cur_entry->pwp.upperminlength = _ttoi(m_strElemContent.c_str());
+      cur_entry->pwp.upperminlength = _ttoi(m_sxElemContent.c_str());
       break;
     case XLE_PASSWORDSAFE:
-    case XLE_PREFERENCES:
     case XLE_PWHISTORY:
     case XLE_HISTORY_ENTRIES:
     case XLE_ENTRY_PASSWORDPOLICY:
@@ -415,97 +538,36 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
     case XLE_POLICY:
     {
       // Deal with Named Policies in the XML file
-      int ivalue;
-      PWSprefs *prefs = PWSprefs::GetInstance();
-      if ((ivalue = prefsinXML[XLE_PWDEFAULTLENGTH - XLE_PREF_START]) != -1)
-        cur_policy->st_pp.pwp.length = ivalue;
-      else
-        cur_policy->st_pp.pwp.length =
-                              prefs->GetPrefDefVal(PWSprefs::PWDefaultLength);
-
-      if (prefsinXML[XLE_PWUSEDIGITS - XLE_PREF_START]  == 1)
-        cur_policy->st_pp.pwp.flags |= PWSprefs::PWPolicyUseDigits;
-      else
-        cur_policy->st_pp.pwp.flags &= ~PWSprefs::PWPolicyUseDigits;
-
-      if (prefsinXML[XLE_PWUSEEASYVISION - XLE_PREF_START]  == 1)
-        cur_policy->st_pp.pwp.flags |= PWSprefs::PWPolicyUseEasyVision;
-      else
-        cur_policy->st_pp.pwp.flags &= ~PWSprefs::PWPolicyUseEasyVision;
-
-      if (prefsinXML[XLE_PWUSEHEXDIGITS - XLE_PREF_START]  == 1)
-        cur_policy->st_pp.pwp.flags |= PWSprefs::PWPolicyUseHexDigits;
-      else
-        cur_policy->st_pp.pwp.flags &= ~PWSprefs::PWPolicyUseHexDigits;
-
-      if (prefsinXML[XLE_PWUSELOWERCASE - XLE_PREF_START]  == 1)
-        cur_policy->st_pp.pwp.flags |= PWSprefs::PWPolicyUseLowercase;
-      else
-        cur_policy->st_pp.pwp.flags &= ~PWSprefs::PWPolicyUseLowercase;
-
-      if (prefsinXML[XLE_PWUSESYMBOLS - XLE_PREF_START]  == 1)
-        cur_policy->st_pp.pwp.flags |= PWSprefs::PWPolicyUseSymbols;
-      else
-        cur_policy->st_pp.pwp.flags &= ~PWSprefs::PWPolicyUseSymbols;
-
-      if (prefsinXML[XLE_PWUSEUPPERCASE - XLE_PREF_START]  == 1)
-        cur_policy->st_pp.pwp.flags |= PWSprefs::PWPolicyUseUppercase;
-      else
-        cur_policy->st_pp.pwp.flags &= ~PWSprefs::PWPolicyUseUppercase;
-
-      if (prefsinXML[XLE_PWMAKEPRONOUNCEABLE - XLE_PREF_START]  == 1)
-        cur_policy->st_pp.pwp.flags |= PWSprefs::PWPolicyMakePronounceable;
-      else
-        cur_policy->st_pp.pwp.flags &= ~PWSprefs::PWPolicyMakePronounceable;
-
-      if ((ivalue = prefsinXML[XLE_PWDIGITMINLENGTH - XLE_PREF_START]) != -1)
-        cur_policy->st_pp.pwp.digitminlength = ivalue;
-      else
-        cur_policy->st_pp.pwp.digitminlength =
-                              prefs->GetPrefDefVal(PWSprefs::PWDigitMinLength);
-
-      if ((ivalue = prefsinXML[XLE_PWLOWERCASEMINLENGTH - XLE_PREF_START]) != -1)
-        cur_policy->st_pp.pwp.lowerminlength = ivalue;
-      else
-        cur_policy->st_pp.pwp.lowerminlength =
-                              prefs->GetPrefDefVal(PWSprefs::PWLowercaseMinLength);
-
-      if ((ivalue = prefsinXML[XLE_PWSYMBOLMINLENGTH - XLE_PREF_START]) != -1)
-        cur_policy->st_pp.pwp.symbolminlength = ivalue;
-      else
-        cur_policy->st_pp.pwp.symbolminlength =
-                              prefs->GetPrefDefVal(PWSprefs::PWSymbolMinLength);
-
-      if ((ivalue = prefsinXML[XLE_PWUPPERCASEMINLENGTH - XLE_PREF_START]) != -1)
-        cur_policy->st_pp.pwp.upperminlength = ivalue;
-      else
-        cur_policy->st_pp.pwp.upperminlength = 
-                              prefs->GetPrefDefVal(PWSprefs::PWUppercaseMinLength);
-
-      cur_policy->st_pp.symbols = m_sDefaultSymbols.c_str();
-
-      st_PSWDPolicy currentDB_st_pp;
-      if (m_pXMLcore->GetPolicyFromName(cur_policy->name, currentDB_st_pp)) {
+      PWPolicy currentDB_st_pp;
+      if (m_pXMLcore->GetPolicyFromName(m_PolicyName, currentDB_st_pp)) {
         // It already exists in current database
-        if (currentDB_st_pp != cur_policy->st_pp) {
+        if (currentDB_st_pp != m_Named_pwp) {
           // They are not the same
-          m_pXMLcore->MakePolicyUnique(m_mapRenamedPolicies, cur_policy->name,
+          m_pXMLcore->MakePolicyUnique(m_mapRenamedPolicies, m_PolicyName,
                               m_sxXML_DateTime, IDSC_IMPORTPOLICY);
           // Now renamed add it
-          m_MapPSWDPLC[cur_policy->name] = cur_policy->st_pp;
+          m_MapPSWDPLC[m_PolicyName] = m_Named_pwp;
           m_numRenamedPolicies++;
         }
       } else {
-        // Doesn't exist - add
-        m_MapPSWDPLC[cur_policy->name] = cur_policy->st_pp;
+        // Doesn't exist - need to add it
+        m_MapPSWDPLC[m_PolicyName] = m_Named_pwp;
       }
-      delete cur_policy;
       m_bPolicyBeingProcessed = false;
       break;
     }
     case XLE_PWNAME:
-      cur_policy->name = m_strElemContent.c_str();
+      m_PolicyName = m_sxElemContent.c_str();
+      break;
   }
+  
+  // If we have processed a DB preference - add it to our copy
+  if (bpref != PWSprefs::NumBoolPrefs)    // boolean
+    PWSprefs::GetInstance()->SetPref(bpref, _ttoi(m_sxElemContent.c_str()) == 0 ? false : true, true);
+  if (ipref != PWSprefs::NumIntPrefs)     // integer
+    PWSprefs::GetInstance()->SetPref(ipref, _ttoi(m_sxElemContent.c_str()), true);
+  if (spref != PWSprefs::NumStringPrefs)  // string
+    PWSprefs::GetInstance()->SetPref(spref, m_sxElemContent, true);
 }
 
 void XMLFileHandlers::AddXMLEntries()
@@ -514,10 +576,24 @@ void XMLFileHandlers::AddXMLEntries()
   // This must be done prior to importing entries that may reference them
   if (!m_MapPSWDPLC.empty()) {
     Command *pcmd = DBPolicyNamesCommand::Create(m_pXMLcore, m_MapPSWDPLC,
-                            DBPolicyNamesCommand::ADDNEW);
+                            DBPolicyNamesCommand::NP_ADDNEW);
     m_pmulticmds->Add(pcmd);
   }
   
+  // Then add any Empty Groups imported that are not already in the database
+  if (!m_vEmptyGroups.empty()) {
+    Command *pcmd = DBEmptyGroupsCommand::Create(m_pXMLcore, m_vEmptyGroups,
+                           DBEmptyGroupsCommand::EG_ADDALL);
+    m_pmulticmds->Add(pcmd);
+  }
+
+  // Gte current DB default password policy and that from the XML file and
+  // check that they are the same?
+  PWPolicy st_to_default_pp, st_import_default_pp;
+  st_to_default_pp = PWSprefs::GetInstance()->GetDefaultPolicy();
+  st_import_default_pp = PWSprefs::GetInstance()->GetDefaultPolicy(true);
+  const bool bPWPDefaults_Different = st_to_default_pp != st_import_default_pp;
+        
   StringX sxEntriesWithNewNamedPolicies;
   vdb_entries::iterator entry_iter;
   CItemData ci_temp;
@@ -718,29 +794,50 @@ void XMLFileHandlers::AddXMLEntries()
     if (!cur_entry->symbols.empty())
       ci_temp.SetSymbols(cur_entry->symbols);
 
-    if (!cur_entry->policyname.empty()) {
-      // First check if it is one we renamed because it exists in the current
-      // database but with different settings
-      std::map<StringX, StringX>::iterator iter;
-      iter = m_mapRenamedPolicies.find(cur_entry->policyname);
-      if (iter != m_mapRenamedPolicies.end()) {
-        // Yes we did, so use renamed version
-        cur_entry->policyname = iter->second;
-        StringX sxChanged = L"\r\n\xab" + cur_entry->group + L"\xbb " +
-	                        L"\xab" + cur_entry->title + L"\xbb " +
-	                        L"\xab" + cur_entry->username + L"\xbb";
-        sxEntriesWithNewNamedPolicies += sxChanged;
+    if (cur_entry->policyname.empty()) {
+      // Not using a named password policy
+      if (cur_entry->pwp.flags == 0) {
+        // If no specific policy (meaning use default) and they are different,
+        // Make this entry have the imported default its specific policy
+        if (bPWPDefaults_Different) {
+          ci_temp.SetPWPolicy(st_import_default_pp);
+        }
       } else {
-        // No we didn't, verify current database has it
-        st_PSWDPolicy currentDB_st_pp;
-        if (!m_pXMLcore->GetPolicyFromName(cur_entry->policyname, currentDB_st_pp)) {
-          // Not here - make a note and clear the name
-          // As we have no information about it's settings we can't even give
-          // this entry a specific policy
-          sxMissingPolicyName = cur_entry->policyname;
-          cur_entry->policyname = _T("");
-          m_numNoPolicies++;
-          bNoPolicy = true;
+        // Has been imported with a specific password policy - set it
+        ci_temp.SetPWPolicy(cur_entry->pwp);
+      }
+    } else {
+      // Using a named password policy
+      // Checks:
+      // 1. Are we about to add it?
+      // 2. If not, did we rename it?
+      // 3. Is it in our current DB?
+
+      if (m_MapPSWDPLC.find(cur_entry->policyname) == m_MapPSWDPLC.end()) {
+        // We are not about to add it - so
+        // Is it one we renamed because it exists in the current
+        // database but with different settings?
+        std::map<StringX, StringX>::const_iterator citer;
+        citer = m_mapRenamedPolicies.find(cur_entry->policyname);
+        if (citer != m_mapRenamedPolicies.end()) {
+          // Yes we did, so use renamed version
+          cur_entry->policyname = citer->second;
+          StringX sxChanged = L"\r\n\xab" + cur_entry->group    + L"\xbb " +
+	                            L"\xab"     + cur_entry->title    + L"\xbb " +
+	                            L"\xab"     + cur_entry->username + L"\xbb";
+          sxEntriesWithNewNamedPolicies += sxChanged;
+        } else {
+          // No we didn't, verify current database has it
+          PWPolicy currentDB_named_st_pp;
+          if (!m_pXMLcore->GetPolicyFromName(cur_entry->policyname, currentDB_named_st_pp)) {
+            // Not here - make a note and clear the name
+            // As we have no information about it's settings we can't even give
+            // this entry a specific policy
+            sxMissingPolicyName = cur_entry->policyname;
+            cur_entry->policyname = _T("");
+            m_numNoPolicies++;
+            bNoPolicy = true;
+          }
         }
       }
       ci_temp.SetPolicyName(cur_entry->policyname);
@@ -838,74 +935,8 @@ void XMLFileHandlers::AddXMLEntries()
 
 void XMLFileHandlers::AddDBPreferences()
 {
-  PWSprefs *prefs = PWSprefs::GetInstance();
-  int ivalue;
-  // Integer/Boolean preferences
-  /* Obsolete in 3.18
-  if ((ivalue = prefsinXML[XLE_DISPLAYEXPANDEDADDEDITDLG - XLE_PREF_START]) != -1)
-    prefs->SetPref(PWSprefs::DisplayExpandedAddEditDlg, ivalue == 1);
-  */
-  if ((ivalue = prefsinXML[XLE_LOCKDBONIDLETIMEOUT - XLE_PREF_START]) != -1)
-    prefs->SetPref(PWSprefs::LockDBOnIdleTimeout, ivalue == 1);
-  if ((ivalue = prefsinXML[XLE_IDLETIMEOUT - XLE_PREF_START]) != -1)
-    prefs->SetPref(PWSprefs::IdleTimeout, ivalue);
-  if ((ivalue = prefsinXML[XLE_MAINTAINDATETIMESTAMPS - XLE_PREF_START]) != -1)
-    prefs->SetPref(PWSprefs::MaintainDateTimeStamps, ivalue == 1);
-  if ((ivalue = prefsinXML[XLE_NUMPWHISTORYDEFAULT - XLE_PREF_START]) != -1)
-    prefs->SetPref(PWSprefs::NumPWHistoryDefault, ivalue);
-  if ((ivalue = prefsinXML[XLE_PWDIGITMINLENGTH - XLE_PREF_START]) != -1)
-    prefs->SetPref(PWSprefs::PWDigitMinLength, ivalue);
-  if ((ivalue = prefsinXML[XLE_PWLOWERCASEMINLENGTH - XLE_PREF_START]) != -1)
-    prefs->SetPref(PWSprefs::PWLowercaseMinLength, ivalue);
-  if ((ivalue = prefsinXML[XLE_PWMAKEPRONOUNCEABLE - XLE_PREF_START]) != -1)
-    prefs->SetPref(PWSprefs::PWMakePronounceable, ivalue == 1);
-  if ((ivalue = prefsinXML[XLE_PWSYMBOLMINLENGTH - XLE_PREF_START]) != -1)
-    prefs->SetPref(PWSprefs::PWSymbolMinLength, ivalue);
-  if ((ivalue = prefsinXML[XLE_PWUPPERCASEMINLENGTH - XLE_PREF_START]) != -1)
-    prefs->SetPref(PWSprefs::PWUppercaseMinLength, ivalue);
-  if ((ivalue = prefsinXML[XLE_PWDEFAULTLENGTH - XLE_PREF_START]) != -1)
-    prefs->SetPref(PWSprefs::PWDefaultLength, ivalue);
-  if ((ivalue = prefsinXML[XLE_PWUSEDIGITS - XLE_PREF_START]) != -1)
-    prefs->SetPref(PWSprefs::PWUseDigits, ivalue == 1);
-  if ((ivalue = prefsinXML[XLE_PWUSEEASYVISION - XLE_PREF_START]) != -1)
-    prefs->SetPref(PWSprefs::PWUseEasyVision, ivalue == 1);
-  if ((ivalue = prefsinXML[XLE_PWUSEHEXDIGITS - XLE_PREF_START]) != -1)
-    prefs->SetPref(PWSprefs::PWUseHexDigits, ivalue == 1);
-  if ((ivalue = prefsinXML[XLE_PWUSELOWERCASE - XLE_PREF_START]) != -1)
-    prefs->SetPref(PWSprefs::PWUseLowercase, ivalue == 1);
-  if ((ivalue = prefsinXML[XLE_PWUSESYMBOLS - XLE_PREF_START]) != -1)
-    prefs->SetPref(PWSprefs::PWUseSymbols, ivalue == 1);
-  if ((ivalue = prefsinXML[XLE_PWUSEUPPERCASE - XLE_PREF_START]) != -1)
-    prefs->SetPref(PWSprefs::PWUseUppercase, ivalue == 1);
-  if ((ivalue = prefsinXML[XLE_SAVEIMMEDIATELY - XLE_PREF_START]) != -1)
-    prefs->SetPref(PWSprefs::SaveImmediately, ivalue == 1);
-  if ((ivalue = prefsinXML[XLE_SAVEPASSWORDHISTORY - XLE_PREF_START]) != -1)
-    prefs->SetPref(PWSprefs::SavePasswordHistory, ivalue == 1);
-  if ((ivalue = prefsinXML[XLE_SHOWNOTESDEFAULT - XLE_PREF_START]) != -1)
-    prefs->SetPref(PWSprefs::ShowNotesDefault, ivalue == 1);
-  if ((ivalue = prefsinXML[XLE_SHOWPASSWORDINTREE - XLE_PREF_START]) != -1)
-    prefs->SetPref(PWSprefs::ShowPasswordInTree, ivalue == 1);
-  if ((ivalue = prefsinXML[XLE_SHOWPWDEFAULT - XLE_PREF_START]) != -1)
-    prefs->SetPref(PWSprefs::ShowPWDefault, ivalue == 1);
-  if ((ivalue = prefsinXML[XLE_SHOWUSERNAMEINTREE - XLE_PREF_START]) != -1)
-    prefs->SetPref(PWSprefs::ShowUsernameInTree, ivalue == 1);
-  if ((ivalue = prefsinXML[XLE_SORTASCENDING - XLE_PREF_START]) != -1)
-    prefs->SetPref(PWSprefs::SortAscending, ivalue == 1);
-  if ((ivalue = prefsinXML[XLE_TREEDISPLAYSTATUSATOPEN - XLE_PREF_START]) != -1)
-    prefs->SetPref(PWSprefs::TreeDisplayStatusAtOpen, ivalue);
-  if ((ivalue = prefsinXML[XLE_USEDEFAULTUSER - XLE_PREF_START]) != -1)
-    prefs->SetPref(PWSprefs::UseDefaultUser, ivalue == 1);
-
-  // String preferences
-  if (!m_sDefaultUsername.empty())
-    prefs->SetPref(PWSprefs::DefaultUsername,
-                   m_sDefaultUsername.c_str());
-  if (!m_sDefaultAutotypeString.empty())
-    prefs->SetPref(PWSprefs::DefaultAutotypeString,
-                   m_sDefaultAutotypeString.c_str());
-  if (!m_sDefaultSymbols.empty())
-    prefs->SetPref(PWSprefs::DefaultSymbols,
-                   m_sDefaultSymbols.c_str());
+  // Copy over preferences from XML input to this DB (only if DB was empty before import)
+  PWSprefs::GetInstance()->UpdateFromCopyPrefs(PWSprefs::ptDatabase);
 }
 
 #endif /* USE_XML_LIBRARY */

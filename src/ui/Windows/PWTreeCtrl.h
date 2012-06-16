@@ -37,10 +37,12 @@ public:
   // NOTE for normal and base entries items, order MUST be: 
   //    Not-Expired, Warn-Expired, Expired
   // used by DboxMain::GetEntryImage & ExpPWListDlg
-  enum {NODE = 0,
+  enum {GROUP = 0,
     NORMAL, WARNEXPIRED_NORMAL, EXPIRED_NORMAL,
     ALIASBASE, WARNEXPIRED_ALIASBASE, EXPIRED_ALIASBASE, ALIAS,
-    SHORTCUTBASE, WARNEXPIRED_SHORTCUTBASE, EXPIRED_SHORTCUTBASE, SHORTCUT};
+    SHORTCUTBASE, WARNEXPIRED_SHORTCUTBASE, EXPIRED_SHORTCUTBASE, SHORTCUT,
+    EMPTY_GROUP,
+    NUM_IMAGES};
 
   struct TreeItemFunctor { // For use by Iterate()
     virtual void operator()(HTREEITEM) = 0;
@@ -143,7 +145,6 @@ private:
   bool CopyItem(HTREEITEM hitem, HTREEITEM hNewParent, const CSecString &prefix);
   bool IsChildNodeOf(HTREEITEM hitemChild, HTREEITEM hitemSuspectedParent) const;
   bool ExistsInTree(HTREEITEM &node, const CSecString &s, HTREEITEM &si) const; 
-  void UpdateLeafsGroup(MultiCommands *pmulticmds, HTREEITEM hItem, CString prefix);
   void CollapseBranch(HTREEITEM hItem);
   CSecString GetPrefix(HTREEITEM hItem) const;
   bool CollectData(BYTE * &out_buffer, long &outLen);

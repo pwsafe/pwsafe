@@ -51,6 +51,8 @@ using namespace std;
 #include <wx/clipbrd.h>
 #endif
 #include <wx/snglinst.h>
+#include "../../core/PWSLog.h"
+#include "./pwsmenushortcuts.h"
 
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
@@ -145,36 +147,35 @@ END_EVENT_TABLE()
 
 
  
-static void initLanguageSupport()
+void PwsafeApp::initLanguageSupport()
 {
-  wxLocale* locale;
   long language =  wxLANGUAGE_DEFAULT;
  
   // load language if possible, fall back to english otherwise
   if(wxLocale::IsAvailable(language)) {
-    locale = new wxLocale( language, wxLOCALE_CONV_ENCODING );
+    m_locale = new wxLocale( language, wxLOCALE_CONV_ENCODING );
  
     // add locale search paths
-    locale->AddCatalogLookupPathPrefix(wxT("/usr"));
-    locale->AddCatalogLookupPathPrefix(wxT("/usr/local"));
+    m_locale->AddCatalogLookupPathPrefix(wxT("/usr"));
+    m_locale->AddCatalogLookupPathPrefix(wxT("/usr/local"));
 #if defined(__WXDEBUG__) || defined(_DEBUG) || defined(DEBUG)
-    locale->AddCatalogLookupPathPrefix(wxT("../I18N/mos"));
+    m_locale->AddCatalogLookupPathPrefix(wxT("../I18N/mos"));
 #endif
-    if (!locale->AddCatalog(wxT("pwsafe"))) {
+    if (!m_locale->AddCatalog(wxT("pwsafe"))) {
       std::wcerr << L"Couldn't load text for "
-		 << locale->GetLanguageName(language).c_str() << endl;
+		 << m_locale->GetLanguageName(language).c_str() << endl;
     }
  
-    if(! locale->IsOk()) {
+    if(! m_locale->IsOk()) {
       std::cerr << "selected language is wrong" << std::endl;
-      delete locale;
-      locale = new wxLocale( wxLANGUAGE_ENGLISH );
+      delete m_locale;
+      m_locale = new wxLocale( wxLANGUAGE_ENGLISH );
       language = wxLANGUAGE_ENGLISH;
     }
   } else {
     std::cerr << "The selected language is not supported by your system."
 	      << "Try installing support for this language." << std::endl;
-    locale = new wxLocale( wxLANGUAGE_ENGLISH );
+    m_locale = new wxLocale( wxLANGUAGE_ENGLISH );
     language = wxLANGUAGE_ENGLISH;
   }
 }
@@ -184,8 +185,8 @@ static void initLanguageSupport()
  */
 
 PwsafeApp::PwsafeApp() : m_activityTimer(new wxTimer(this, ACTIVITY_TIMER_ID)),
-  m_frame(0), m_recentDatabases(0),
-  m_controller(new wxHtmlHelpController)
+			 m_frame(0), m_recentDatabases(0),
+			 m_controller(new wxHtmlHelpController), m_locale(NULL)
 {
     Init();
 }
@@ -200,8 +201,10 @@ PwsafeApp::~PwsafeApp()
 
   PWSprefs::DeleteInstance();
   PWSrand::DeleteInstance();
+  PWSLog::DeleteLog();
   
   delete m_controller;
+  delete m_locale;
 }
 
 /*!
@@ -253,7 +256,6 @@ bool PwsafeApp::OnInit()
   wxString filename, user, host, cfg_file;
   bool cmd_ro = cmdParser.Found(wxT("r"));
   // Next variable currently not referenced
-  bool cmd_validate = cmdParser.Found(wxT("v"), &filename);
   bool cmd_encrypt = cmdParser.Found(wxT("e"), &filename);
   bool cmd_decrypt = cmdParser.Found(wxT("d"), &filename);
   bool cmd_closed = cmdParser.Found(wxT("c"));
@@ -338,7 +340,6 @@ bool PwsafeApp::OnInit()
     //dbox.SetStartClosed(true);
     // dbox.SetStartSilent(true);
   }
-  // dbox.SetValidate(cmd_validate);
 
   //Initialize help subsystem
   wxFileSystem::AddHandler(new wxArchiveFSHandler);
@@ -366,8 +367,6 @@ bool PwsafeApp::OnInit()
     wxASSERT_MSG(!m_frame, wxT("Frame window created unexpectedly"));
     m_frame = new PasswordSafeFrame(NULL, m_core);
     m_frame->Load(initWindow->GetPassword());
-    if (cmd_validate)
-      m_frame->ValidateCurrentDatabase();
   } 
   else {
     wxASSERT_MSG(!m_frame, wxT("Frame window created unexpectedly"));
@@ -380,6 +379,22 @@ bool PwsafeApp::OnInit()
   return true;
 }
 
+void PwsafeApp::StopIdleTimer()
+{
+  m_activityTimer->Stop();
+}
+
+void PwsafeApp::StartIdleTimer()
+{
+  int timeout = PWSprefs::GetInstance()->GetPref(PWSprefs::IdleTimeout);
+  if (timeout != 0)
+    m_activityTimer->Start(timeout*60*1000, true);
+}
+
+bool PwsafeApp::IsIdleTimerRunning() const
+{
+  return m_activityTimer->IsRunning();
+}
 
 /*!
  * Cleanup for PwsafeApp
@@ -387,13 +402,17 @@ bool PwsafeApp::OnInit()
 
 int PwsafeApp::OnExit()
 {    
+  StopIdleTimer();
   recentDatabases().Save();
   PWSprefs *prefs = PWSprefs::GetInstance();
   if (!m_core.GetCurFile().empty())
     prefs->SetPref(PWSprefs::CurrentFile, m_core.GetCurFile());
   // Save Application related preferences
   prefs->SaveApplicationPreferences();
-  m_activityTimer->Stop();
+  // Save shortcuts, if changed
+  PWSMenuShortcuts::GetShortcutsManager()->SaveUserShortcuts();
+
+  PWSMenuShortcuts::DestroyShortcutsManager();
 ////@begin PwsafeApp cleanup
   return wxApp::OnExit();
 ////@end PwsafeApp cleanup
@@ -401,28 +420,28 @@ int PwsafeApp::OnExit()
 
 void PwsafeApp::OnActivate(wxActivateEvent& actEvent)
 {
-  if (actEvent.GetActive()) {
-    m_activityTimer->Stop();
-  }
-  else {
-    m_activityTimer->Stop();
-    m_activityTimer->Start(PWSprefs::GetInstance()->GetPref(PWSprefs::IdleTimeout)*60*1000, true);
+  StopIdleTimer();
+  if (!actEvent.GetActive()) {
+    StartIdleTimer();
   }
   actEvent.Skip();
 }
 
-void PwsafeApp::OnActivityTimer(wxTimerEvent& /* timerEvent */)
+void PwsafeApp::OnActivityTimer(wxTimerEvent &evt)
 {
-  if (!m_frame->GetCurrentSafe().IsEmpty())
-    m_frame->HideUI(true);  //true => lock
+  if (evt.GetId() == ACTIVITY_TIMER_ID) {
+    if (!m_frame->GetCurrentSafe().IsEmpty())
+      m_frame->HideUI(true);  //true => lock
+  }
 }
 
 void PwsafeApp::OnDBGUIPrefsChange(wxEvent& evt)
 {
   UNREFERENCED_PARAMETER(evt);
-  if (m_activityTimer->IsRunning()) {
-    m_activityTimer->Stop();
-    m_activityTimer->Start(PWSprefs::GetInstance()->GetPref(PWSprefs::IdleTimeout)*60*1000, true);
+  if (IsIdleTimerRunning()) {
+    // Restart, in case Idle timer settings have just changed
+    StopIdleTimer();
+    StartIdleTimer();
   }
 }
 

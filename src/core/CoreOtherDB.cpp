@@ -14,6 +14,7 @@
 //     Compare, Merge & Synchronize
 //-----------------------------------------------------------------
 #include "PWScore.h"
+#include "PWSprefs.h"
 #include "core.h"
 #include "Util.h"
 #include "Report.h"
@@ -59,7 +60,8 @@ void PWScore::Compare(PWScore *pothercore,
                       const bool &bTreatWhiteSpaceasEmpty,  const stringT &subgroup_name,
                       const int &subgroup_object, const int &subgroup_function,
                       CompareData &list_OnlyInCurrent, CompareData &list_OnlyInComp,
-                      CompareData &list_Conflicts, CompareData &list_Identical)
+                      CompareData &list_Conflicts, CompareData &list_Identical,
+                      bool *pbCancel)
 {
   /*
   Purpose:
@@ -94,6 +96,11 @@ void PWScore::Compare(PWScore *pothercore,
   for (currentPos = GetEntryIter();
        currentPos != GetEntryEndIter();
        currentPos++) {
+    // See if user has cancelled
+    if (pbCancel != NULL && *pbCancel) {
+      return;
+    }
+
     st_data.Empty();
     CItemData currentItem = GetEntry(currentPos);
 
@@ -148,35 +155,56 @@ void PWScore::Compare(PWScore *pothercore,
          .... ..1.  SYMBOLS    [0x16]
          .... ...1  SHIFTDCA   [0x17]
 
-         Forth byte
+         Fourth byte
          1... ....  POLICYNAME [0x18] - not checked by default
 
 
-         */
+        */
         bsConflicts.reset();
+        StringX sxCurrentPassword, sxComparisonPassword;
 
         CItemData compItem = pothercore->GetEntry(foundPos);
+
+        if (currentItem.IsDependent()) {
+          CItemData *pci_base = GetBaseEntry(&currentItem);
+          sxCurrentPassword = pci_base->GetPassword();
+        } else
+          sxCurrentPassword = currentItem.GetPassword();
+
+        if (compItem.IsDependent()) {
+          CItemData *pci_base = pothercore->GetBaseEntry(&compItem);
+          sxComparisonPassword = pci_base->GetPassword();
+        } else
+          sxComparisonPassword = compItem.GetPassword();
+
+        if (bsFields.test(CItemData::PASSWORD) &&
+            sxCurrentPassword != sxComparisonPassword)
+          bsConflicts.flip(CItemData::PASSWORD);
+
         if (bsFields.test(CItemData::NOTES) &&
             FieldsNotEqual(currentItem.GetNotes(), compItem.GetNotes(), bTreatWhiteSpaceasEmpty))
           bsConflicts.flip(CItemData::NOTES);
-        if (bsFields.test(CItemData::PASSWORD) &&
-            currentItem.GetPassword() != compItem.GetPassword())
-          bsConflicts.flip(CItemData::PASSWORD);
+
         if (bsFields.test(CItemData::CTIME) &&
             currentItem.GetCTime() != compItem.GetCTime())
           bsConflicts.flip(CItemData::CTIME);
+
         if (bsFields.test(CItemData::PMTIME) &&
             currentItem.GetPMTime() != compItem.GetPMTime())
           bsConflicts.flip(CItemData::PMTIME);
+
         if (bsFields.test(CItemData::ATIME) &&
             currentItem.GetATime() != compItem.GetATime())
           bsConflicts.flip(CItemData::ATIME);
+
         if (bsFields.test(CItemData::XTIME) &&
             currentItem.GetXTime() != compItem.GetXTime())
           bsConflicts.flip(CItemData::XTIME);
+
         if (bsFields.test(CItemData::RMTIME) &&
             currentItem.GetRMTime() != compItem.GetRMTime())
           bsConflicts.flip(CItemData::RMTIME);
+
         if (bsFields.test(CItemData::XTIME_INT)) {
           int current_xint, comp_xint;
           currentItem.GetXTimeInt(current_xint);
@@ -184,39 +212,65 @@ void PWScore::Compare(PWScore *pothercore,
           if (current_xint != comp_xint)
             bsConflicts.flip(CItemData::XTIME_INT);
         }
+
         if (bsFields.test(CItemData::URL) &&
-            FieldsNotEqual(currentItem.GetURL(), compItem.GetURL(), bTreatWhiteSpaceasEmpty))
+            FieldsNotEqual(currentItem.GetURL(), compItem.GetURL(),
+                           bTreatWhiteSpaceasEmpty))
           bsConflicts.flip(CItemData::URL);
+
         if (bsFields.test(CItemData::AUTOTYPE) &&
-            FieldsNotEqual(currentItem.GetAutoType(), compItem.GetAutoType(), bTreatWhiteSpaceasEmpty))
+            FieldsNotEqual(currentItem.GetAutoType(), compItem.GetAutoType(),
+                           bTreatWhiteSpaceasEmpty))
           bsConflicts.flip(CItemData::AUTOTYPE);
+
         if (bsFields.test(CItemData::PWHIST) &&
             currentItem.GetPWHistory() != compItem.GetPWHistory())
           bsConflicts.flip(CItemData::PWHIST);
-        if (bsFields.test(CItemData::POLICY) &&
-            currentItem.GetPWPolicy() != compItem.GetPWPolicy())
-          bsConflicts.flip(CItemData::POLICY);
+
         if (bsFields.test(CItemData::POLICYNAME) &&
             currentItem.GetPolicyName() != compItem.GetPolicyName())
           bsConflicts.flip(CItemData::POLICYNAME);
+
+        // Don't test policy or symbols if either entry is using a named policy
+        // as these are meaningless to compare
+        if (currentItem.GetPolicyName().empty() && compItem.GetPolicyName().empty()) {
+          if (bsFields.test(CItemData::POLICY)) {
+            PWPolicy cur_pwp, cmp_pwp;
+            if (currentItem.GetPWPolicy().empty())
+              cur_pwp = PWSprefs::GetInstance()->GetDefaultPolicy();
+            else
+              currentItem.GetPWPolicy(cur_pwp);
+            if (compItem.GetPWPolicy().empty())
+              cmp_pwp = PWSprefs::GetInstance()->GetDefaultPolicy(true);
+            else
+              compItem.GetPWPolicy(cmp_pwp);
+            if (cur_pwp != cmp_pwp)
+              bsConflicts.flip(CItemData::POLICY);
+          }
+          if (bsFields.test(CItemData::SYMBOLS) &&
+              currentItem.GetSymbols() != compItem.GetSymbols())
+            bsConflicts.flip(CItemData::SYMBOLS);
+        }
+
         if (bsFields.test(CItemData::RUNCMD) &&
             currentItem.GetRunCommand() != compItem.GetRunCommand())
           bsConflicts.flip(CItemData::RUNCMD);
+
         if (bsFields.test(CItemData::DCA) &&
             currentItem.GetDCA() != compItem.GetDCA())
           bsConflicts.flip(CItemData::DCA);
+
         if (bsFields.test(CItemData::SHIFTDCA) &&
             currentItem.GetShiftDCA() != compItem.GetShiftDCA())
           bsConflicts.flip(CItemData::SHIFTDCA);
+
         if (bsFields.test(CItemData::EMAIL) &&
             currentItem.GetEmail() != compItem.GetEmail())
           bsConflicts.flip(CItemData::EMAIL);
+
         if (bsFields.test(CItemData::PROTECTED) &&
             currentItem.GetProtected() != compItem.GetProtected())
           bsConflicts.flip(CItemData::PROTECTED);
-        if (bsFields.test(CItemData::SYMBOLS) &&
-            currentItem.GetSymbols() != compItem.GetSymbols())
-          bsConflicts.flip(CItemData::SYMBOLS);
 
         st_data.uuid0 = currentPos->first;
         st_data.uuid1 = foundPos->first;
@@ -254,6 +308,11 @@ void PWScore::Compare(PWScore *pothercore,
   for (compPos = pothercore->GetEntryIter();
        compPos != pothercore->GetEntryEndIter();
        compPos++) {
+    // See if user has cancelled
+    if (pbCancel != NULL && *pbCancel) {
+      return;
+    }
+
     st_data.Empty();
     CItemData compItem = pothercore->GetEntry(compPos);
 
@@ -287,6 +346,11 @@ void PWScore::Compare(PWScore *pothercore,
       }
     }
   } // iteration over other core's element
+
+  // See if user has cancelled too late - reset flag so incorrect information not given to user
+  if (pbCancel != NULL && *pbCancel) {
+    *pbCancel = false;
+  }
 }
 
 // Return whether first '«g» «t» «u»' is greater than the second '«g» «t» «u»'
@@ -342,7 +406,7 @@ stringT PWScore::Merge(PWScore *pothercore,
                        const bool &subgroup_bset,
                        const stringT &subgroup_name,
                        const int &subgroup_object, const int &subgroup_function,
-                       CReport *prpt)
+                       CReport *pRpt, bool *pbCancel)
 {
   std::vector<StringX> vs_added;
   std::vector<StringX> vs_AliasesAdded;
@@ -351,6 +415,12 @@ stringT PWScore::Merge(PWScore *pothercore,
   std::map<StringX, StringX> mapRenamedPolicies;
 
   const StringX sxMerge_DateTime = PWSUtil::GetTimeStamp(true).c_str();
+
+  stringT str_timestring;  // To append to title if already in current database
+  str_timestring = sxMerge_DateTime.c_str();
+  Remove(str_timestring, _T('/'));
+  Remove(str_timestring, _T(':'));
+
   /*
     Purpose:
       Merge entries from otherCore to m_core
@@ -387,6 +457,12 @@ stringT PWScore::Merge(PWScore *pothercore,
   for (otherPos = pothercore->GetEntryIter();
        otherPos != pothercore->GetEntryEndIter();
        otherPos++) {
+    // See if user has cancelled
+    if (pbCancel != NULL && *pbCancel) {
+      delete pmulticmds;
+      return _T("");
+    }
+
     CItemData otherItem = pothercore->GetEntry(otherPos);
     CItemData::EntryType et = otherItem.GetEntryType();
 
@@ -402,7 +478,6 @@ stringT PWScore::Merge(PWScore *pothercore,
     const StringX sx_otherTitle = otherItem.GetTitle();
     const StringX sx_otherUser = otherItem.GetUser();
 
-    stringT str_timestring(_T(""));
     ItemListConstIter foundPos = Find(sx_otherGroup, sx_otherTitle, sx_otherUser);
 
     otherItem.GetUUID(base_uuid);
@@ -426,31 +501,47 @@ stringT PWScore::Merge(PWScore *pothercore,
         LoadAString(str_temp, IDSC_FLDNMPASSWORD);
         str_diffs += str_temp + _T(", ");
       }
+
       if (otherItem.GetNotes() != curItem.GetNotes()) {
         diff_flags |= MRG_NOTES;
         LoadAString(str_temp, IDSC_FLDNMNOTES);
         str_diffs += str_temp + _T(", ");
       }
+
       if (otherItem.GetURL() != curItem.GetURL()) {
         diff_flags |= MRG_URL;
         LoadAString(str_temp, IDSC_FLDNMURL);
         str_diffs += str_temp + _T(", ");
       }
+
       if (otherItem.GetAutoType() != curItem.GetAutoType()) {
         diff_flags |= MRG_AUTOTYPE;
         LoadAString(str_temp, IDSC_FLDNMAUTOTYPE);
         str_diffs += str_temp + _T(", ");
       }
+
       if (otherItem.GetPWHistory() != curItem.GetPWHistory()) {
         diff_flags |= MRG_HISTORY;
         LoadAString(str_temp, IDSC_FLDNMPWHISTORY);
         str_diffs += str_temp + _T(", ");
       }
-      if (otherItem.GetPWPolicy() != curItem.GetPWPolicy()) {
-        diff_flags |= MRG_POLICY;
-        LoadAString(str_temp, IDSC_FLDNMPWPOLICY);
-        str_diffs += str_temp + _T(", ");
+
+      // Don't test policy or symbols if either entry is using a named policy
+      // as these are meaningless to compare
+      if (otherItem.GetPolicyName().empty() && curItem.GetPolicyName().empty()) {
+        PWPolicy cur_pwp, oth_pwp;
+        if (curItem.GetPWPolicy().empty())
+          cur_pwp = PWSprefs::GetInstance()->GetDefaultPolicy();
+        else
+          curItem.GetPWPolicy(cur_pwp);
+        if (otherItem.GetPWPolicy().empty())
+          oth_pwp = PWSprefs::GetInstance()->GetDefaultPolicy(true);
+        else
+          otherItem.GetPWPolicy(oth_pwp);
+        if (cur_pwp != oth_pwp)
+          diff_flags |= MRG_POLICY;
       }
+
       otherItem.GetXTime(oxt);
       curItem.GetXTime(cxt);
       if (oxt != cxt) {
@@ -458,6 +549,7 @@ stringT PWScore::Merge(PWScore *pothercore,
         LoadAString(str_temp, IDSC_FLDNMXTIME);
         str_diffs += str_temp + _T(", ");
       }
+
       otherItem.GetXTimeInt(oxtint);
       curItem.GetXTimeInt(cxtint);
       if (oxtint != cxtint) {
@@ -465,11 +557,13 @@ stringT PWScore::Merge(PWScore *pothercore,
         LoadAString(str_temp, IDSC_FLDNMXTIMEINT);
         str_diffs += str_temp + _T(", ");
       }
+
       if (otherItem.GetRunCommand() != curItem.GetRunCommand()) {
         diff_flags |= MRG_EXECUTE;
         LoadAString(str_temp, IDSC_FLDNMRUNCOMMAND);
         str_diffs += str_temp + _T(", ");
       }
+
       // Must use integer values not compare strings
       short other_hDCA, cur_hDCA;
       otherItem.GetDCA(other_hDCA);
@@ -479,16 +573,19 @@ stringT PWScore::Merge(PWScore *pothercore,
         LoadAString(str_temp, IDSC_FLDNMDCA);
         str_diffs += str_temp + _T(", ");
       }
+
       if (otherItem.GetEmail() != curItem.GetEmail()) {
         diff_flags |= MRG_EMAIL;
         LoadAString(str_temp, IDSC_FLDNMEMAIL);
         str_diffs += str_temp + _T(", ");
       }
+
       if (otherItem.GetSymbols() != curItem.GetSymbols()) {
         diff_flags |= MRG_SYMBOLS;
         LoadAString(str_temp, IDSC_FLDNMSYMBOLS);
         str_diffs += str_temp + _T(", ");
       }
+
       otherItem.GetShiftDCA(other_hDCA);
       curItem.GetShiftDCA(cur_hDCA);
       if (other_hDCA != cur_hDCA) {
@@ -496,19 +593,34 @@ stringT PWScore::Merge(PWScore *pothercore,
         LoadAString(str_temp, IDSC_FLDNMSHIFTDCA);
         str_diffs += str_temp + _T(", ");
       }
-      if (otherItem.GetPolicyName() != curItem.GetPolicyName()) {
+
+      PWPolicy st_to_pp, st_from_pp;
+      StringX sxCurrentPolicyName = curItem.GetPolicyName();
+      StringX sxOtherPolicyName = otherItem.GetPolicyName();
+      bool bCurrent(false), bOther(false);
+
+      if (!sxCurrentPolicyName.empty())
+        bCurrent = GetPolicyFromName(sxCurrentPolicyName, st_to_pp);
+      if (!sxOtherPolicyName.empty())
+        bOther = pothercore->GetPolicyFromName(sxOtherPolicyName, st_from_pp);
+
+      /*
+        There will be differences if only one has a named password policy, or
+        both have policies but the new entry's one is not in our database, or
+        both have the same policy but they are different
+      */
+      if ((bCurrent && !bOther) || (!bCurrent && bOther) ||
+          sxCurrentPolicyName != sxOtherPolicyName ||
+          (bCurrent && bOther && st_to_pp != st_from_pp)) {
         diff_flags |= MRG_POLICYNAME;
         LoadAString(str_temp, IDSC_FLDNMPWPOLICYNAME);
         str_diffs += str_temp + _T(", ");
       }
+
       if (diff_flags != 0) {
         // have a match on group/title/user, but not on other fields
         // add an entry suffixed with -merged-YYYYMMDD-HHMMSS
         StringX sx_newTitle;
-        time_t time_now;
-        time(&time_now);
-        str_timestring = PWSUtil::ConvertToDateTimeString(time_now, TMC_XML).c_str();
-        Replace(str_timestring, _T('T'), _T('-'));
         Format(sx_newTitle, _T("%s%s%s"), sx_otherTitle.c_str(), sx_merged.c_str(),
                             str_timestring.c_str());
 
@@ -520,8 +632,8 @@ stringT PWScore::Merge(PWScore *pothercore,
                        str_diffs.c_str());
 
         // log it
-        if (prpt != NULL)
-          prpt->WriteLine(strWarnMsg.c_str());
+        if (pRpt != NULL)
+          pRpt->WriteLine(strWarnMsg.c_str());
 
         // Check no conflict of unique uuid
         if (Find(base_uuid) != GetEntryEndIter()) {
@@ -529,53 +641,18 @@ stringT PWScore::Merge(PWScore *pothercore,
           otherItem.GetUUID(new_base_uuid);
         }
 
-        // do it
-        bTitleRenamed = true;
-        StringX osxPolicyName = otherItem.GetPolicyName();
-        // If named policy in use....
-        if (!osxPolicyName.empty()) {
-          st_PSWDPolicy st_pp, o_st_ppp;
-          bool bInOtherCore = pothercore->GetPolicyFromName(osxPolicyName, o_st_ppp);
-          bool bInThisCore = GetPolicyFromName(osxPolicyName, st_pp);
-          if (bInThisCore) {
-            // In current database - need to make sure the same settings
-            if (bInOtherCore) {
-              // In this database and other database
-              if (st_pp != o_st_ppp) {
-                // But have different setting. Make unique
-                MakePolicyUnique(mapRenamedPolicies, osxPolicyName,
-                                 sxMerge_DateTime, IDSC_MERGEPOLICY);
-                // Don't add it twice
-                if (std::find(vs_PoliciesAdded.begin(), vs_PoliciesAdded.end(), osxPolicyName) ==
-                    vs_PoliciesAdded.end()) {
-                  Command *pcmd = DBPolicyNamesCommand::Create(this, osxPolicyName, o_st_ppp);
-                  pmulticmds->Add(pcmd);
-                  vs_PoliciesAdded.push_back(osxPolicyName);
-                } 
-              } else {
-                 // In both but have same settings - no need to do anything
-              }
-            } else {
-              // Not there!!!!  Remove any reference to it
-              osxPolicyName = _T("");
-            }
-          } else {
-            // Not in current database
-            if (bInOtherCore) {
-              // Was in other database, so we can add it, if not already added
-              if (std::find(vs_PoliciesAdded.begin(), vs_PoliciesAdded.end(), osxPolicyName) ==
-                   vs_PoliciesAdded.end()) {
-                Command *pcmd = DBPolicyNamesCommand::Create(this, osxPolicyName, o_st_ppp);
-                pmulticmds->Add(pcmd);
-                vs_PoliciesAdded.push_back(osxPolicyName);
-              }
-            } else {
-              // Not here or there!!!!  Remove any reference to it
-              osxPolicyName = _T("");
-            }
-          }
-          otherItem.SetPolicyName(osxPolicyName);
-        }
+        // Special processing for password policies (default & named)
+        bool bUpdated; // not needed for Merge
+        StringX sxOtherPolicyName = otherItem.GetPolicyName();
+
+        Command *pPolicyCmd = ProcessPolicyName(pothercore, otherItem,
+                             mapRenamedPolicies, vs_PoliciesAdded,
+                             sxOtherPolicyName, bUpdated,
+                             sxMerge_DateTime, IDSC_MERGEPOLICY);
+
+        if (pPolicyCmd != NULL)
+          pmulticmds->Add(pPolicyCmd);
+        
         otherItem.SetTitle(sx_newTitle);
         otherItem.SetStatus(CItemData::ES_ADDED);
         Command *pcmd = AddEntryCommand::Create(this, otherItem);
@@ -599,25 +676,18 @@ stringT PWScore::Merge(PWScore *pothercore,
         otherItem.GetUUID(new_base_uuid);
       }
 
-      StringX osxPolicyName = otherItem.GetPolicyName();
-      // If named policy in use and not already added....
-        if (!osxPolicyName.empty() &&
-            std::find(vs_PoliciesAdded.begin(), vs_PoliciesAdded.end(), osxPolicyName) ==
-                 vs_PoliciesAdded.end()) {
-        st_PSWDPolicy st_pp;
-        // If this policy does not exist in current database - get it and add it
-        if (!GetPolicyFromName(osxPolicyName, st_pp)) {
-          // But only if it exists there
-          if (pothercore->GetPolicyFromName(osxPolicyName, st_pp)) {
-            Command *pcmd = DBPolicyNamesCommand::Create(this, osxPolicyName, st_pp);
-            pmulticmds->Add(pcmd);
-            vs_PoliciesAdded.push_back(osxPolicyName);
-          } else {
-            // Not there or here - remove any reference to it
-            otherItem.SetPolicyName(_T(""));
-          }
-        }
-      }
+      // Special processing for password policies (default & named)
+      bool bUpdated;  // Not needed for Merge
+      StringX sxOtherPolicyName = otherItem.GetPolicyName();
+
+      Command *pPolicyCmd = ProcessPolicyName(pothercore, otherItem,
+                           mapRenamedPolicies, vs_PoliciesAdded,
+                           sxOtherPolicyName, bUpdated,
+                           sxMerge_DateTime, IDSC_MERGEPOLICY);
+
+      if (pPolicyCmd != NULL)
+        pmulticmds->Add(pPolicyCmd);
+     
       otherItem.SetStatus(CItemData::ES_ADDED);
       Command *pcmd = AddEntryCommand::Create(this, otherItem);
       pcmd->SetNoGUINotify();
@@ -648,52 +718,63 @@ stringT PWScore::Merge(PWScore *pothercore,
   } // iteration over other core's entries
 
   stringT str_results;
-  if (numAdded > 0 && prpt != NULL) {
+  if (numAdded > 0 && pRpt != NULL) {
     std::sort(vs_added.begin(), vs_added.end(), MergeSyncGTUCompare);
     stringT str_singular_plural_type, str_singular_plural_verb;
     LoadAString(str_singular_plural_type, numAdded == 1 ? IDSC_ENTRY : IDSC_ENTRIES);
     LoadAString(str_singular_plural_verb, numAdded == 1 ? IDSC_WAS : IDSC_WERE);
     Format(str_results, IDSC_MERGEADDED, str_singular_plural_type.c_str(),
                     str_singular_plural_verb.c_str());
-    prpt->WriteLine(str_results.c_str());
+    pRpt->WriteLine(str_results.c_str());
     for (size_t i = 0; i < vs_added.size(); i++) {
       Format(str_results, _T("\t%s"), vs_added[i].c_str());
-      prpt->WriteLine(str_results.c_str());
+      pRpt->WriteLine(str_results.c_str());
     }
   }
 
-  if (numAliasesAdded > 0 && prpt != NULL) {
+  if (numAliasesAdded > 0 && pRpt != NULL) {
     std::sort(vs_AliasesAdded.begin(), vs_AliasesAdded.end(), MergeSyncGTUCompare);
     stringT str_singular_plural_type, str_singular_plural_verb;
     LoadAString(str_singular_plural_type, numAliasesAdded == 1 ? IDSC_ENTRY : IDSC_ENTRIES);
     LoadAString(str_singular_plural_verb, numAliasesAdded == 1 ? IDSC_WAS : IDSC_WERE);
     Format(str_results, IDSC_MERGEADDED, str_singular_plural_type.c_str(),
                     str_singular_plural_verb.c_str());
-    prpt->WriteLine(str_results.c_str());
+    pRpt->WriteLine(str_results.c_str());
     for (size_t i = 0; i < vs_AliasesAdded.size(); i++) {
       Format(str_results, _T("\t%s"), vs_AliasesAdded[i].c_str());
-      prpt->WriteLine(str_results.c_str());
+      pRpt->WriteLine(str_results.c_str());
     }
   }
 
-  if (numShortcutsAdded > 0 && prpt != NULL) {
+  if (numShortcutsAdded > 0 && pRpt != NULL) {
     std::sort(vs_ShortcutsAdded.begin(), vs_ShortcutsAdded.end(), MergeSyncGTUCompare);
     stringT str_singular_plural_type, str_singular_plural_verb;
     LoadAString(str_singular_plural_type, numShortcutsAdded == 1 ? IDSC_ENTRY : IDSC_ENTRIES);
     LoadAString(str_singular_plural_verb, numShortcutsAdded == 1 ? IDSC_WAS : IDSC_WERE);
     Format(str_results, IDSC_MERGEADDED, str_singular_plural_type.c_str(),
                     str_singular_plural_verb.c_str());
-    prpt->WriteLine(str_results.c_str());
+    pRpt->WriteLine(str_results.c_str());
     for (size_t i = 0; i < vs_ShortcutsAdded.size(); i++) {
       Format(str_results, _T("\t%s"), vs_ShortcutsAdded[i].c_str());
-      prpt->WriteLine(str_results.c_str());
+      pRpt->WriteLine(str_results.c_str());
     }
+  }
+
+  // See if user has cancelled
+  if (pbCancel != NULL && *pbCancel) {
+    delete pmulticmds;
+    return _T("");
   }
 
   Command *pcmd2 = UpdateGUICommand::Create(this, UpdateGUICommand::WN_REDO,
                                             UpdateGUICommand::GUI_REDO_MERGESYNC);
   pmulticmds->Add(pcmd2);
   Execute(pmulticmds);
+
+  // See if user has cancelled too late - reset flag so incorrect information not given to user
+  if (pbCancel != NULL && *pbCancel) {
+    *pbCancel = false;
+  }
 
   // Tell the user we're done & provide short merge report
   stringT str_entries, str_conflicts, str_aliases, str_shortcuts;
@@ -708,7 +789,7 @@ stringT PWScore::Merge(PWScore *pothercore,
                    numConflicts, str_conflicts.c_str(),
                    numAliasesAdded, str_aliases.c_str(),
                    numShortcutsAdded, str_shortcuts.c_str());
-  prpt->WriteLine(str_results.c_str());
+  pRpt->WriteLine(str_results.c_str());
 
   return str_results;
 }
@@ -787,7 +868,7 @@ void PWScore::Synchronize(PWScore *pothercore,
                           const CItemData::FieldBits &bsFields, const bool &subgroup_bset,
                           const stringT &subgroup_name,
                           const int &subgroup_object, const int &subgroup_function,
-                          int &numUpdated, CReport *prpt)
+                          int &numUpdated, CReport *pRpt, bool *pbCancel)
 {
   /*
   Purpose:
@@ -808,13 +889,24 @@ void PWScore::Synchronize(PWScore *pothercore,
                                             UpdateGUICommand::GUI_UNDO_MERGESYNC);
   pmulticmds->Add(pcmd1);
 
+  // Make sure we don't add it multiple times
+  std::map<StringX, StringX> mapRenamedPolicies;
+  std::vector<StringX> vs_PoliciesAdded;
+  const StringX sxSync_DateTime = PWSUtil::GetTimeStamp(true).c_str();
+
   ItemListConstIter otherPos;
   for (otherPos = pothercore->GetEntryIter();
        otherPos != pothercore->GetEntryEndIter();
        otherPos++) {
+    // See if user has cancelled
+    if (pbCancel != NULL && *pbCancel) {
+      delete pmulticmds;
+      return;
+    }
+
     CItemData otherItem = pothercore->GetEntry(otherPos);
     CItemData::EntryType et = otherItem.GetEntryType();
-
+    
     // Do not process Aliases and Shortcuts
     if (et == CItemData::ET_ALIAS || et == CItemData::ET_SHORTCUT)
       continue;
@@ -841,16 +933,29 @@ void PWScore::Synchronize(PWScore *pothercore,
       updItem.SetDisplayInfo(NULL);
 
       if (curItem.GetUUID() != otherItem.GetUUID()) {
-        pws_os::Trace(_T("Synchronize: Mis-match UUIDs for [%s:%s:%s]\n"), sx_otherGroup.c_str(), sx_otherTitle.c_str(), sx_otherUser.c_str());
+        pws_os::Trace(_T("Synchronize: Mis-match UUIDs for [%s:%s:%s]\n"),
+             sx_otherGroup.c_str(), sx_otherTitle.c_str(), sx_otherUser.c_str());
       }
 
       bool bUpdated(false);
-      for (size_t i = 0; i < bsFields.size(); i++) {
+      // Do not try and change GROUPTITLE = 0x00 (use GROUP & TITLE separately) or UUID = 0x01
+      for (size_t i = 2; i < bsFields.size(); i++) {
         if (bsFields.test(i)) {
-          const StringX sxValue = otherItem.GetFieldValue(static_cast<CItemData::FieldType>(i));
-          if (sxValue != updItem.GetFieldValue(static_cast<CItemData::FieldType>(i))) {
-            bUpdated = true;
-            updItem.SetFieldValue(static_cast<CItemData::FieldType>(i), sxValue);
+          StringX sxValue = otherItem.GetFieldValue(static_cast<CItemData::FieldType>(i));
+          
+          // Special processing for password policies (default & named)
+          if ((CItemData::FieldType)i == CItemData::POLICYNAME) {
+            Command *pPolicyCmd = ProcessPolicyName(pothercore, updItem, 
+                                   mapRenamedPolicies, vs_PoliciesAdded,
+                                   sxValue, bUpdated,
+                                   sxSync_DateTime, IDSC_SYNCPOLICY);
+            if (pPolicyCmd != NULL)
+              pmulticmds->Add(pPolicyCmd);
+          } else {
+            if (sxValue != updItem.GetFieldValue(static_cast<CItemData::FieldType>(i))) {
+              bUpdated = true;
+              updItem.SetFieldValue(static_cast<CItemData::FieldType>(i), sxValue);
+            }
           }
         }
       }
@@ -879,18 +984,24 @@ void PWScore::Synchronize(PWScore *pothercore,
   } // iteration over other core's entries
 
   stringT str_results;
-  if (numUpdated > 0 && prpt != NULL) {
+  if (numUpdated > 0 && pRpt != NULL) {
     std::sort(vs_updated.begin(), vs_updated.end(), MergeSyncGTUCompare);
     stringT str_singular_plural_type, str_singular_plural_verb;
     LoadAString(str_singular_plural_type, numUpdated == 1 ? IDSC_ENTRY : IDSC_ENTRIES);
     LoadAString(str_singular_plural_verb, numUpdated == 1 ? IDSC_WAS : IDSC_WERE);
     Format(str_results, IDSC_SYNCHUPDATED, str_singular_plural_type.c_str(),
                     str_singular_plural_verb.c_str());
-    prpt->WriteLine(str_results.c_str());
+    pRpt->WriteLine(str_results.c_str());
     for (size_t i = 0; i < vs_updated.size(); i++) {
       Format(str_results, _T("\t%s"), vs_updated[i].c_str());
-      prpt->WriteLine(str_results.c_str());
+      pRpt->WriteLine(str_results.c_str());
     }
+  }
+
+  // See if user has cancelled
+  if (pbCancel != NULL && *pbCancel) {
+    delete pmulticmds;
+    return;
   }
 
   Command *pcmd2 = UpdateGUICommand::Create(this, UpdateGUICommand::WN_REDO,
@@ -898,9 +1009,71 @@ void PWScore::Synchronize(PWScore *pothercore,
   pmulticmds->Add(pcmd2);
   Execute(pmulticmds);
 
+  // See if user has cancelled too late - reset flag so incorrect information not given to user
+  if (pbCancel != NULL && *pbCancel) {
+    *pbCancel = false;
+    return;
+  }
+
   // tell the user we're done & provide short Synchronize report
   stringT str_entries;
   LoadAString(str_entries, numUpdated == 1 ? IDSC_ENTRY : IDSC_ENTRIES);
   Format(str_results, IDSC_SYNCHCOMPLETED, numUpdated, str_entries.c_str());
-  prpt->WriteLine(str_results.c_str());
+  pRpt->WriteLine(str_results.c_str());
+}
+
+Command *PWScore::ProcessPolicyName(PWScore *pothercore, CItemData &updtEntry,
+                                    std::map<StringX, StringX> &mapRenamedPolicies,
+                                    std::vector<StringX> &vs_PoliciesAdded,
+                                    StringX &sxOtherPolicyName, bool &bUpdated,
+                                    const StringX &sxDateTime, const UINT &IDS_MESSAGE)
+{
+  Command *pcmd(NULL);
+
+  if (sxOtherPolicyName.empty()) {
+    // If now blank, meaning default, are the defaults the same?
+    PWPolicy st_to_default_pp, st_from_default_pp;
+    st_to_default_pp = PWSprefs::GetInstance()->GetDefaultPolicy();
+    st_from_default_pp = PWSprefs::GetInstance()->GetDefaultPolicy(true);
+
+    // Is our default different from the other default?
+    if (st_to_default_pp != st_from_default_pp) {
+      // Not the same - need at make this entry have this specific policy
+      bUpdated = true;
+      updtEntry.SetPWPolicy(st_from_default_pp);
+    }
+  } else {
+    // Policy name not blank, check if that policy is in current DB and, if so,
+    // has the same values!
+    PWPolicy st_to_pp, st_from_pp;
+    bool bInTo = this->GetPolicyFromName(sxOtherPolicyName, st_to_pp);
+    bool bInFrom = pothercore->GetPolicyFromName(sxOtherPolicyName, st_from_pp);
+    
+    if (!bInFrom) {
+      ASSERT(bInFrom); // Problem if set but not there!
+      return NULL;
+    }
+
+    if (bInTo) {
+      // Same named policy in both databases
+      if (st_to_pp != st_from_pp) {
+        // But with different values - make new one unique and add
+        StringX sxNewPolicyName(sxOtherPolicyName);
+        MakePolicyUnique(mapRenamedPolicies, sxNewPolicyName, sxDateTime, IDS_MESSAGE);
+        pcmd = DBPolicyNamesCommand::Create(this, sxNewPolicyName, st_from_pp);
+        bUpdated = true;
+        updtEntry.SetPolicyName(sxNewPolicyName);
+      }
+    } else {
+      // Not in current database - add it - but only once!
+      if (find(vs_PoliciesAdded.begin(), vs_PoliciesAdded.end(), sxOtherPolicyName) ==
+               vs_PoliciesAdded.end()) {
+        vs_PoliciesAdded.push_back(sxOtherPolicyName);
+        pcmd = DBPolicyNamesCommand::Create(this, sxOtherPolicyName, st_from_pp);
+      }
+      bUpdated = true;
+      updtEntry.SetPolicyName(sxOtherPolicyName);
+    }
+  }
+  return pcmd;
 }

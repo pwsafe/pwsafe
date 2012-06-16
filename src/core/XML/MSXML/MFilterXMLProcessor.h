@@ -30,7 +30,6 @@ public:
   stringT getXMLErrors() {return m_strXMLErrors;}
   stringT getPWHErrorList() {return m_strPWHErrorList;}
   stringT getRenameList() {return m_strRenameList;}
-  int m_MSXML_Version;
 
 private:
   Asker *m_pAsker;

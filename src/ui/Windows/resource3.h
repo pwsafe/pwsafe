@@ -216,7 +216,7 @@
 #define IDS_PICKBACKUP                  5375
 #define IDS_PICKRESTORE                 5376
 #define IDS_UNTITLEDRESTORE             5377
-#define IDS_VALIDATEOK                  5378
+#define IDS_VALIDATE_OK                 5378
 #define IDS_FAILEDSAVEPREF              5379
 #define IDS_FAILEDSAVEPREFRO            5380
 #define IDS_ENTRIESCHANGEDSTOP          5381
@@ -374,7 +374,6 @@
 #define IDS_READWRITE                   5551
 #define IDS_SEARCH                      5552
 #define IDS_NEW                         5553
-#define IDS_IN_N_DAYS                   5554
 #define IDS_OVERRIDE_POLICY             5555
 #define IDS_PASSWORDEXPIRYDATEINT       5556
 #define IDS_NOFIELDSFORFILTER           5557
@@ -401,14 +400,10 @@
 #define IDS_HMAX                        5578
 #define IDS_HDATE                       5579
 #define IDS_HPSWD                       5580
-#define IDS_PLENGTH                     5581
 #define IDS_PLOWER                      5582
 #define IDS_PUPPER                      5583
 #define IDS_PDIGITS                     5584
 #define IDS_PSYMBOL                     5585
-#define IDS_PEASYVISION                 5586
-#define IDS_PPRONOUNCEABLE              5587
-#define IDS_PHEXADECIMAL                5588
 #define IDS_PASSWORDHISTORY             5589
 #define IDS_UNKNOWNFIELDSFILTER         5590
 #define IDS_FILTERACTIVE                5594
@@ -679,8 +674,6 @@
 #define IDS_ENTER_NEW_DB_NAME           5875
 #define IDS_ENTER_NEW_DB_DESCRIPTION    5876
 #define IDS_INPUTBOX_CHAR_COUNT         5877
-
-#define IDS_DATABASE_DEFAULT            5878
 #define IDS_POLICYNAME                  5879
 #define IDS_NEWPOLICY                   5880
 #define IDS_EDITPOLICY                  5881
@@ -694,19 +687,9 @@
 #define IDS_PSWDPOLICY                  5889
 #define IDS_POLICYFIELD                 5890
 #define IDS_VALUE                       5891
-#define IDS_DEFAULTSYMBOLS              5892
-#define IDS_SPECFICSYMBOLS              5893
 #define IDS_AREYOUSURE_PN               5894
 #define IDS_INVALIDPOLICYNAME1          5895
 #define IDS_INVALIDPOLICYNAME2          5896
-#define IDS_PUSELOWER                   5897
-#define IDS_PUSEUPPER                   5898
-#define IDS_PUSEDIGITS                  5899
-#define IDS_PUSESYMBOL                  5900
-#define IDS_YESNUMBER                   5901
-#define IDS_YESEASYVISON                5902
-#define IDS_YESPRONOUNCEABLE            5903
-#define IDS_YESSYMBOLS                  5904
 #define IDS_XMLIMPORTWITHWARNINGS       5905
 #define IDS_CHANGED_POLICIES            5906
 #define IDS_DRAGPOLICY                  5907
@@ -729,3 +712,15 @@
 #define IDS_YUBI_CLICK_PROMPT           6000
 #define IDS_YUBI_INSERT_PROMPT          6001
 
+#define IDS_VALIDATE_ISSUES             5923
+#define IDS_CURRENT_ENTRY               5924
+#define IDS_COMPARISON_ENTRY            5925
+#define IDS_PWHACTIVE                   5926
+#define IDS_PWHMAX                      5927
+#define IDS_PWHNUM                      5928
+#define IDS_PWHENTRY                    5929
+#define IDS_COPYALL                     5930
+#define IDS_SYNCHRONIZEALL              5931
+#define IDS_SYNCENTRY                   5932
+#define IDS_OPERATION_ABORTED           5933
+#define IDS_FORMAT_CMP_POLICY           5934

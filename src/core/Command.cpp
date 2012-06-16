@@ -261,7 +261,7 @@ DBPolicyNamesCommand::DBPolicyNamesCommand(CommandInterface *pcomInt,
                                            PSWDPolicyMap &MapPSWDPLC,
                                            Function function)
   : Command(pcomInt), m_NewMapPSWDPLC(MapPSWDPLC), m_function(function),
-  bSingleAdd(false)
+  m_bSingleAdd(false)
 {
   m_OldMapPSWDPLC = pcomInt->GetPasswordPolicies();
   m_bOldState = pcomInt->IsChanged();
@@ -269,9 +269,9 @@ DBPolicyNamesCommand::DBPolicyNamesCommand(CommandInterface *pcomInt,
 
 DBPolicyNamesCommand::DBPolicyNamesCommand(CommandInterface *pcomInt,
                                            StringX &sxPolicyName,
-                                           st_PSWDPolicy &st_pp)
+                                           PWPolicy &st_pp)
   : Command(pcomInt), m_sxPolicyName(sxPolicyName), m_st_ppp(st_pp),
-  bSingleAdd(true)
+  m_bSingleAdd(true)
 {
   m_OldMapPSWDPLC = pcomInt->GetPasswordPolicies();
   m_bOldState = pcomInt->IsChanged();
@@ -280,11 +280,11 @@ DBPolicyNamesCommand::DBPolicyNamesCommand(CommandInterface *pcomInt,
 int DBPolicyNamesCommand::Execute()
 {
   if (!m_pcomInt->IsReadOnly()) {
-    if (bSingleAdd) {
+    if (m_bSingleAdd) {
       m_pcomInt->AddPolicy(m_sxPolicyName, m_st_ppp);
     } else {
       switch (m_function) {
-       case ADDNEW:
+       case NP_ADDNEW:
         {
           PSWDPolicyMapIter iter;
           for (iter = m_NewMapPSWDPLC.begin(); iter != m_NewMapPSWDPLC.end(); iter++) {
@@ -292,7 +292,7 @@ int DBPolicyNamesCommand::Execute()
           }
           break;
         }
-        case REPLACEALL:
+        case NP_REPLACEALL:
           m_pcomInt->SetPasswordPolicies(m_NewMapPSWDPLC);
           break;
       }
@@ -320,6 +320,131 @@ void DBPolicyNamesCommand::Undo()
                                         CUUID::NullUUID());
     }
 
+    m_bState = false;
+  }
+}
+
+// ------------------------------------------------
+// DBEmptyGroupsCommand
+// ------------------------------------------------
+
+DBEmptyGroupsCommand::DBEmptyGroupsCommand(CommandInterface *pcomInt,
+                                           std::vector<StringX> &vEmptyGroups,
+                                           Function function)
+  : Command(pcomInt), m_vNewEmptyGroups(vEmptyGroups),
+  m_function(function), m_bSingleGroup(false)
+{
+  m_vOldEmptyGroups = pcomInt->GetEmptyGroups();
+  m_bOldState = pcomInt->IsChanged();
+}
+
+DBEmptyGroupsCommand::DBEmptyGroupsCommand(CommandInterface *pcomInt,
+                                           StringX &sxEmptyGroup,
+                                           Function function)
+  : Command(pcomInt), m_sxEmptyGroup(sxEmptyGroup), m_function(function),
+  m_bSingleGroup(true)
+{
+  m_vOldEmptyGroups = pcomInt->GetEmptyGroups();
+  m_bOldState = pcomInt->IsChanged();
+}
+
+
+DBEmptyGroupsCommand::DBEmptyGroupsCommand(CommandInterface *pcomInt,
+                                           StringX &sxOldGroup,
+                                           StringX &sxNewGroup)
+  : Command(pcomInt), m_sxOldGroup(sxOldGroup), m_sxNewGroup(sxNewGroup),
+  m_function(EG_RENAME), m_bSingleGroup(true)
+{
+  //
+}
+
+int DBEmptyGroupsCommand::Execute()
+{
+  if (!m_pcomInt->IsReadOnly()) {
+    if (m_bSingleGroup) {
+      // Single Empty Group functions
+      switch (m_function) {
+        case EG_ADD:
+          m_pcomInt->AddEmptyGroup(m_sxEmptyGroup);
+          break;
+        case EG_DELETE:
+          m_pcomInt->RemoveEmptyGroup(m_sxEmptyGroup);
+          break;
+        case EG_RENAME:
+          m_pcomInt->RenameEmptyGroup(m_sxOldGroup, m_sxNewGroup);
+          break;
+        default:
+          // Ignore multi-group functions
+          ASSERT(0);
+          break;
+      }
+    } else {
+      // Multi-Empty Group functions
+      switch (m_function) {
+        case EG_ADDALL:
+          for (size_t n = 0; n < m_vNewEmptyGroups.size(); n++) {
+            m_pcomInt->AddEmptyGroup(m_vNewEmptyGroups[n]);
+          }
+          break;
+        case EG_REPLACEALL:
+          m_pcomInt->SetEmptyGroups(m_vNewEmptyGroups);
+          break;
+        default:
+          // Ignore single group functions
+          ASSERT(0);
+          break;
+      }
+    }
+    if (m_bNotifyGUI) {
+      m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_REFRESH_TREE,
+                                        CUUID::NullUUID());
+    }
+    m_pcomInt->SetDBChanged(true);
+
+    m_bState = true;
+  }
+  return 0;
+}
+
+void DBEmptyGroupsCommand::Undo()
+{
+  if (!m_pcomInt->IsReadOnly()) {
+    if (m_bSingleGroup) {
+      // Single Empty Group functions
+      switch (m_function) {
+        case EG_ADD:
+          m_pcomInt->RemoveEmptyGroup(m_sxEmptyGroup);
+          break;
+        case EG_DELETE:
+          m_pcomInt->AddEmptyGroup(m_sxEmptyGroup);
+          break;
+        case EG_RENAME:
+          m_pcomInt->RenameEmptyGroup(m_sxNewGroup, m_sxOldGroup);
+          break;
+        default:
+          // Ignore multi-group functions
+          ASSERT(0);
+          break;
+      }
+    } else {
+      // Multi-Empty Group functions
+      switch (m_function) {
+        case EG_ADDALL:
+        case EG_REPLACEALL:
+          m_pcomInt->SetEmptyGroups(m_vOldEmptyGroups);
+          break;
+        default:
+          // Ignore single group functions
+          ASSERT(0);
+          break;
+      }
+    }
+    m_pcomInt->SetDBChanged(m_bOldState);
+
+    if (m_bNotifyGUI) {
+      m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_REFRESH_TREE,
+                                        CUUID::NullUUID());
+    }
     m_bState = false;
   }
 }
@@ -897,6 +1022,37 @@ void UpdatePasswordHistoryCommand::Undo()
     return;
 
   m_pcomInt->UndoUpdatePasswordHistory(m_mapSavedHistory);
+  RestoreState();
+  m_bState = false;
+}
+
+// ------------------------------------------------
+// RenameGroupCommand
+// ------------------------------------------------
+
+RenameGroupCommand::RenameGroupCommand(CommandInterface *pcomInt,
+                                       const StringX sxOldPath, const StringX sxNewPath)
+ : Command(pcomInt), m_sxOldPath(sxOldPath), m_sxNewPath(sxNewPath)
+{}
+
+int RenameGroupCommand::Execute()
+{
+  SaveState();
+
+  if (m_pcomInt->IsReadOnly())
+    return 0;
+
+  int rc = m_pcomInt->DoRenameGroup(m_sxOldPath, m_sxNewPath);
+  m_bState = true;
+  return rc;
+}
+
+void RenameGroupCommand::Undo()
+{
+  if (m_pcomInt->IsReadOnly())
+    return;
+
+  m_pcomInt->UndoRenameGroup(m_sxOldPath, m_sxNewPath);
   RestoreState();
   m_bState = false;
 }

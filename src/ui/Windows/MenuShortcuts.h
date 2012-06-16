@@ -17,7 +17,7 @@
 
 // Structure used for vector of reserved Hotkeys
 struct st_MenuShortcut {
-  unsigned char cVirtKey;
+  unsigned short int siVirtKey;
   unsigned char cModifier;
 };
 
@@ -39,22 +39,22 @@ public:
   // Used to sort shortcuts in the CListCtrl in OptionsShortcuts
   int iMenuPosition;
   // Default values
-  unsigned char cdefVirtKey;
-  unsigned char cdefModifier;
+  unsigned short int siDefVirtKey;
+  unsigned char cDefModifier;
   // new User values
-  unsigned char cVirtKey;
+  unsigned short int siVirtKey;
   unsigned char cModifier;
 
   CMenuShortcut()
   : uiParentID(0), iMenuPosition(0),
-    cdefVirtKey(0), cdefModifier(0), cVirtKey(0), cModifier(0)
+    siDefVirtKey(0), cDefModifier(0), siVirtKey(0), cModifier(0)
   {}
 
   CMenuShortcut(const CMenuShortcut &that)
   : name(that.name), uiParentID(that.uiParentID),
     iMenuPosition(that.iMenuPosition),
-    cdefVirtKey(that.cdefVirtKey), cdefModifier(that.cdefModifier),
-    cVirtKey(that.cVirtKey), cModifier(that.cModifier)
+    siDefVirtKey(that.siDefVirtKey), cDefModifier(that.cDefModifier),
+    siVirtKey(that.siVirtKey), cModifier(that.cModifier)
   {}
 
   ~CMenuShortcut()
@@ -64,15 +64,16 @@ public:
   void ClearKeyFlags()
   {
     // Only clear Key/flags - not name, parent ID or menu position
-    cdefVirtKey = cdefModifier = cVirtKey = cModifier = (unsigned char)0;
+    siDefVirtKey = siVirtKey = 0;
+    cDefModifier = cModifier = 0;
   }
 
   void SetKeyFlags(const CMenuShortcut &that)
   {
     // Only set Key/flags - not name, parent ID or menu position
-    cdefVirtKey = that.cdefVirtKey;
-    cdefModifier = that.cdefModifier;
-    cVirtKey = that.cVirtKey;
+    siDefVirtKey = that.siDefVirtKey;
+    cDefModifier = that.cDefModifier;
+    siVirtKey = that.siVirtKey;
     cModifier = that.cModifier;
   }
 
@@ -82,9 +83,9 @@ public:
       name = that.name;
       uiParentID = that.uiParentID;
       iMenuPosition = that.iMenuPosition;
-      cdefVirtKey = that.cdefVirtKey;
-      cdefModifier = that.cdefModifier;
-      cVirtKey = that.cVirtKey;
+      siDefVirtKey = that.siDefVirtKey;
+      cDefModifier = that.cDefModifier;
+      siVirtKey = that.siVirtKey;
       cModifier = that.cModifier;
     }
     return *this;
@@ -93,18 +94,18 @@ public:
   static void InitStrings();
 
   static CString FormatShortcut(MapMenuShortcutsIter iter)
-  {return FormatShortcut(iter->second.cModifier, iter->second.cVirtKey);}
+  {return FormatShortcut(iter->second.cModifier, iter->second.siVirtKey);}
 
   static CString FormatShortcut(const st_MenuShortcut &mst)
-  {return FormatShortcut(mst.cModifier, mst.cVirtKey);}
+  {return FormatShortcut(mst.cModifier, mst.siVirtKey);}
   static bool IsNormalShortcut(const st_MenuShortcut &mst)
-  {return IsNormalShortcut(mst.cModifier, mst.cVirtKey);}
+  {return IsNormalShortcut(mst.cModifier, mst.siVirtKey);}
 
 private:
-  static bool IsNormalShortcut(unsigned char cModifier,
-                                unsigned char cVirtKey);  
-  static CString FormatShortcut(unsigned char cModifier,
-                                unsigned char cVirtKey);
+  static bool IsNormalShortcut(unsigned short int cModifier,
+                               unsigned short int siVirtKey);  
+  static CString FormatShortcut(unsigned short int cModifier,
+                                unsigned short int siVirtKey);
   static CString CS_CTRLP, CS_ALTP, CS_SHIFTP;
 };
 
@@ -113,7 +114,7 @@ struct already_inuse {
   already_inuse(st_MenuShortcut& st_mst) : m_st_mst(st_mst) {}
   bool operator()(MapMenuShortcutsPair const & p) const
   {
-    return (p.second.cVirtKey  == m_st_mst.cVirtKey &&
+    return (p.second.siVirtKey  == m_st_mst.siVirtKey &&
             p.second.cModifier == m_st_mst.cModifier);
   }
 

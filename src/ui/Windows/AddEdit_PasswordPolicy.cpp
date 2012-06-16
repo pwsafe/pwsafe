@@ -16,6 +16,7 @@
 #include "AddEdit_PasswordPolicy.h"
 #include "AddEdit_PropertySheet.h"
 
+#include "core/core.h"
 #include "core/PwsPlatform.h"
 #include "core/ItemData.h"
 #include "core/PWSprefs.h"
@@ -173,13 +174,14 @@ BOOL CAddEdit_PasswordPolicy::OnInitDialog()
 
   // Populate the combo box
   m_cbxPolicyNames.ResetContent();
+  m_cbxPolicyNames.ChangeColour();
 
   // Get all password policy names
   std::vector<std::wstring> vNames;
   M_pDbx()->GetPolicyNames(vNames);
 
   // Add Default
-  CString cs_text(MAKEINTRESOURCE(IDS_DATABASE_DEFAULT));
+  CString cs_text(MAKEINTRESOURCE(IDSC_DEFAULT_POLICY));
   m_cbxPolicyNames.AddString(cs_text);
 
   // Add the rest (if any)
@@ -214,9 +216,9 @@ BOOL CAddEdit_PasswordPolicy::OnInitDialog()
 
   if (M_ipolicy() == NAMED_POLICY) {
     if (index != 0) {
-      st_PSWDPolicy st_pp;
+      PWPolicy st_pp;
       M_pDbx()->GetPolicyFromName(StringX((LPCWSTR)M_policyname()), st_pp);
-      M_pwp() = st_pp.pwp;
+      M_pwp() = st_pp;
       M_symbols() = st_pp.symbols;
     } else {
       M_policyname().Empty();
@@ -697,7 +699,7 @@ void CAddEdit_PasswordPolicy::OnOwnSymbolsChanged()
   CString cs_symbols;
   m_symbols.GetWindowText(cs_symbols);
 
-  std::wstring oldstr = M_symbols();
+  std::wstring oldstr = (LPCWSTR)M_symbols();
   std::wstring newstr = cs_symbols;
 
   // First check lengths the same
@@ -742,9 +744,9 @@ void CAddEdit_PasswordPolicy::OnSelectNamedPolicy()
     m_cbxPolicyNames.GetLBText(index, cs_text);
     M_policyname() = (LPCWSTR)cs_text;
 
-    st_PSWDPolicy st_pp;
+    PWPolicy st_pp;
     M_pDbx()->GetPolicyFromName(StringX((LPCWSTR)cs_text), st_pp);
-    M_pwp() = st_pp.pwp;
+    M_pwp() = st_pp;
     M_symbols() = st_pp.symbols;
 
     m_cbxPolicyNames.EnableWindow(TRUE);
@@ -862,25 +864,25 @@ void CAddEdit_PasswordPolicy::SetPolicyFromVariables()
       // checked but the checkbox is disabled, we have to check both
       if (m_pwuselowercase == TRUE &&
           (GetDlgItem(IDC_USELOWERCASE)->IsWindowEnabled() == TRUE))
-        M_pwp().flags |= PWSprefs::PWPolicyUseLowercase;
+        M_pwp().flags |= PWPolicy::UseLowercase;
       if (m_pwuseuppercase == TRUE &&
           (GetDlgItem(IDC_USEUPPERCASE)->IsWindowEnabled() == TRUE))
-        M_pwp().flags |= PWSprefs::PWPolicyUseUppercase;
+        M_pwp().flags |= PWPolicy::UseUppercase;
       if (m_pwusedigits == TRUE &&
           (GetDlgItem(IDC_USEDIGITS)->IsWindowEnabled() == TRUE))
-        M_pwp().flags |= PWSprefs::PWPolicyUseDigits;
+        M_pwp().flags |= PWPolicy::UseDigits;
       if (m_pwusesymbols == TRUE &&
           (GetDlgItem(IDC_USESYMBOLS)->IsWindowEnabled() == TRUE))
-        M_pwp().flags |= PWSprefs::PWPolicyUseSymbols;
+        M_pwp().flags |= PWPolicy::UseSymbols;
       if (m_pwusehexdigits == TRUE &&
           (GetDlgItem(IDC_USEHEXDIGITS)->IsWindowEnabled() == TRUE))
-        M_pwp().flags |= PWSprefs::PWPolicyUseHexDigits;
+        M_pwp().flags |= PWPolicy::UseHexDigits;
       if (m_pweasyvision == TRUE &&
           (GetDlgItem(IDC_EASYVISION)->IsWindowEnabled() == TRUE))
-        M_pwp().flags |= PWSprefs::PWPolicyUseEasyVision;
+        M_pwp().flags |= PWPolicy::UseEasyVision;
       if (m_pwmakepronounceable == TRUE &&
           (GetDlgItem(IDC_PRONOUNCEABLE)->IsWindowEnabled() == TRUE))
-        M_pwp().flags |= PWSprefs::PWPolicyMakePronounceable;
+        M_pwp().flags |= PWPolicy::MakePronounceable;
 
       M_pwp().length = (int)m_pwdefaultlength;
       M_pwp().digitminlength = (int)m_pwdigitminlength;
@@ -903,13 +905,13 @@ void CAddEdit_PasswordPolicy::SetPolicyFromVariables()
 
 void CAddEdit_PasswordPolicy::SetVariablesFromPolicy()
 {
-  m_pwuselowercase = (M_pwp().flags & PWSprefs::PWPolicyUseLowercase) ? TRUE : FALSE;
-  m_pwuseuppercase = (M_pwp().flags & PWSprefs::PWPolicyUseUppercase) ? TRUE : FALSE;
-  m_pwusedigits = (M_pwp().flags & PWSprefs::PWPolicyUseDigits) ? TRUE : FALSE;
-  m_pwusesymbols = (M_pwp().flags & PWSprefs::PWPolicyUseSymbols) ? TRUE : FALSE;
-  m_pwusehexdigits = (M_pwp().flags & PWSprefs::PWPolicyUseHexDigits) ? TRUE : FALSE;
-  m_pweasyvision = (M_pwp().flags & PWSprefs::PWPolicyUseEasyVision) ? TRUE : FALSE;
-  m_pwmakepronounceable =  (M_pwp().flags & PWSprefs::PWPolicyMakePronounceable) ? TRUE : FALSE;
+  m_pwuselowercase = (M_pwp().flags & PWPolicy::UseLowercase) ? TRUE : FALSE;
+  m_pwuseuppercase = (M_pwp().flags & PWPolicy::UseUppercase) ? TRUE : FALSE;
+  m_pwusedigits = (M_pwp().flags & PWPolicy::UseDigits) ? TRUE : FALSE;
+  m_pwusesymbols = (M_pwp().flags & PWPolicy::UseSymbols) ? TRUE : FALSE;
+  m_pwusehexdigits = (M_pwp().flags & PWPolicy::UseHexDigits) ? TRUE : FALSE;
+  m_pweasyvision = (M_pwp().flags & PWPolicy::UseEasyVision) ? TRUE : FALSE;
+  m_pwmakepronounceable =  (M_pwp().flags & PWPolicy::MakePronounceable) ? TRUE : FALSE;
   m_pwdefaultlength = M_pwp().length;
   m_pwdigitminlength = M_pwp().digitminlength;
   m_pwlowerminlength = M_pwp().lowerminlength;
@@ -978,9 +980,9 @@ void CAddEdit_PasswordPolicy::OnNamesComboChanged()
   }
 
   if (index != 0) {
-    st_PSWDPolicy st_pp;
+    PWPolicy st_pp;
     M_pDbx()->GetPolicyFromName(StringX((LPCWSTR)cs_policyname), st_pp);
-    M_pwp() = st_pp.pwp;
+    M_pwp() = st_pp;
     M_symbols() = st_pp.symbols;
 
     m_cbxPolicyNames.EnableWindow(TRUE);

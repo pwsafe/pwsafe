@@ -108,7 +108,6 @@ protected:
   afx_msg LRESULT OnCallExternalEditor(WPARAM, LPARAM);
   afx_msg LRESULT OnExternalEditorEnded(WPARAM, LPARAM);
   afx_msg LRESULT OnWordWrap(WPARAM, LPARAM);
-  afx_msg LRESULT OnShowNotes(WPARAM, LPARAM);
   afx_msg LRESULT OnZoomNotes(WPARAM, LPARAM);
   //}}AFX_MSG
 

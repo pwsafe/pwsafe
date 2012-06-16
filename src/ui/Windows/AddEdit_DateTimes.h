@@ -40,13 +40,13 @@ public:
   // m_how's values DEFAULT_SYMBOLS - in Radio button order
   enum {ABSOLUTE_EXP = 0, RELATIVE_EXP = 1, NONE_EXP = 2};
 
-  CDateTimeCtrl m_pTimeCtl;    // time picker control
   CDateTimeCtrl m_pDateCtl;    // date picker control
 
   BOOL m_bRecurringPswdExpiry;   // e.g., is interval recurring or 1-shot.
   int m_how;                    // is expiration absolute or relative? (int for DDX)
   int m_numDays;                // interval (in days) to expiration when m_how == RELATIVE
   int m_maxDays;                // limited s.t. time_t can't overflow
+  bool m_inSetX;                // avoid nasty recursion when updating stuff directly
 
   void UpdateStats();
 
@@ -68,12 +68,9 @@ protected:
 
   afx_msg void OnDaysChanged();
   afx_msg void OnDateTimeChanged(NMHDR *pNotifyStruct, LRESULT *pLResult);
-
-  afx_msg void OnClearXTime();
-  afx_msg void OnDateTime();
-  afx_msg void OnDays();
   afx_msg void OnRecurringPswdExpiry();
   //}}AFX_MSG
+  afx_msg void OnHowChanged(); // When a RB's clicked
 
   DECLARE_MESSAGE_MAP()
 

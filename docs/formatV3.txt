@@ -1,5 +1,5 @@
-PasswordSafe database format description version 3.28
------------------------------------------------------
+PasswordSafe database format description version 3.29Y
+------------------------------------------------------
 
 Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
 All rights reserved. Use of the code is allowed under the Artistic

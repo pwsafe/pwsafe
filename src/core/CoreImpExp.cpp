@@ -220,11 +220,11 @@ struct TextRecordWriter {
           const int &subgroup_object, const int &subgroup_function,
           const CItemData::FieldBits &bsFields,
           const TCHAR &delimiter, coStringXStream &ofs, FILE * &txtfile,
-          int &numExported, CReport *prpt, PWScore *pcore) :
+          int &numExported, CReport *pRpt, PWScore *pcore) :
   m_subgroup_name(subgroup_name), m_subgroup_object(subgroup_object),
   m_subgroup_function(subgroup_function), m_bsFields(bsFields),
   m_delimiter(delimiter), m_ofs(ofs), m_txtfile(txtfile), m_pcore(pcore),
-  m_prpt(prpt), m_numExported(numExported)
+  m_pRpt(pRpt), m_numExported(numExported)
   {}
 
   // operator for ItemList
@@ -245,8 +245,8 @@ struct TextRecordWriter {
                              item.GetTitle() + StringX(_T("\xbb \xab")) +
                              item.GetUser()  + StringX(_T("\xbb"));
 
-        if (m_prpt != NULL)
-          m_prpt->WriteLine(sx_exported.c_str());
+        if (m_pRpt != NULL)
+          m_pRpt->WriteLine(sx_exported.c_str());
         m_pcore->UpdateWizard(sx_exported.c_str());
 
         CUTF8Conv conv; // can't make a member, as no copy c'tor!
@@ -277,7 +277,7 @@ private:
   coStringXStream &m_ofs;
   FILE * &m_txtfile;
   PWScore *m_pcore;
-  CReport *m_prpt;
+  CReport *m_pRpt;
   int &m_numExported;
 };
 
@@ -287,7 +287,7 @@ int PWScore::WritePlaintextFile(const StringX &filename,
                                 const int &subgroup_object,
                                 const int &subgroup_function,
                                 const TCHAR &delimiter, int &numExported, 
-                                const OrderedItemList *il, CReport *prpt)
+                                const OrderedItemList *il, CReport *pRpt)
 {
   numExported = 0;
 
@@ -330,7 +330,7 @@ int PWScore::WritePlaintextFile(const StringX &filename,
   ofs.str("");
 
   TextRecordWriter put_text(subgroup_name, subgroup_object, subgroup_function,
-                   bsFields, delimiter, ofs, txtfile, numExported, prpt, this);
+                   bsFields, delimiter, ofs, txtfile, numExported, pRpt, this);
 
   if (il != NULL) {
     for_each(il->begin(), il->end(), put_text);
@@ -349,11 +349,11 @@ struct XMLRecordWriter {
                   const int subgroup_object, const int subgroup_function,
                   const CItemData::FieldBits &bsFields,
                   TCHAR delimiter, coStringXStream &ofs, FILE * &xmlfile,
-                  int &numExported, CReport *prpt, PWScore *pcore) :
+                  int &numExported, CReport *pRpt, PWScore *pcore) :
   m_subgroup_name(subgroup_name), m_subgroup_object(subgroup_object),
   m_subgroup_function(subgroup_function), m_bsFields(bsFields),
   m_delimiter(delimiter), m_ofs(ofs), m_xmlfile(xmlfile), m_id(0), m_pcore(pcore),
-  m_numExported(numExported), m_prpt(prpt)
+  m_numExported(numExported), m_pRpt(pRpt)
   {}
 
   // operator for ItemList
@@ -390,8 +390,8 @@ struct XMLRecordWriter {
         }
       }
 
-      if (m_prpt != NULL)
-        m_prpt->WriteLine(sx_exported.c_str());
+      if (m_pRpt != NULL)
+        m_pRpt->WriteLine(sx_exported.c_str());
       m_pcore->UpdateWizard(sx_exported.c_str());
 
       const CItemData *pcibase = m_pcore->GetBaseEntry(&item);
@@ -419,15 +419,16 @@ private:
   unsigned int m_id;
   PWScore *m_pcore;
   int &m_numExported;
-  CReport *m_prpt;
+  CReport *m_pRpt;
 };
 
 int PWScore::WriteXMLFile(const StringX &filename,
                           const CItemData::FieldBits &bsFields,
                           const stringT &subgroup_name,
                           const int &subgroup_object, const int &subgroup_function,
-                          const TCHAR &delimiter, int &numExported, const OrderedItemList *il,
-                          const bool &bFilterActive, CReport *prpt)
+                          const TCHAR &delimiter, int &numExported,
+                          const OrderedItemList *il,
+                          const bool &bFilterActive, CReport *pRpt)
 {
   numExported = 0;
 
@@ -453,7 +454,7 @@ int PWScore::WriteXMLFile(const StringX &filename,
   time_t time_now;
 
   time(&time_now);
-  const StringX now = PWSUtil::ConvertToDateTimeString(time_now, TMC_XML);
+  const StringX now = PWSUtil::ConvertToDateTimeString(time_now, PWSUtil::TMC_XML);
 
   ofs << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" << endl;
   ofs << "<?xml-stylesheet type=\"text/xsl\" href=\"pwsafe.xsl\"?>" << endl;
@@ -499,7 +500,7 @@ int PWScore::WriteXMLFile(const StringX &filename,
   }
   if (m_hdr.m_whenlastsaved != 0) {
     StringX wls = PWSUtil::ConvertToDateTimeString(m_hdr.m_whenlastsaved,
-                                                   TMC_XML);
+                                                   PWSUtil::TMC_XML);
     conv.ToUTF8(wls.c_str(), utf8, utf8Len);
     ofs << "WhenLastSaved=\"";
     ofs.write(reinterpret_cast<const char *>(utf8), utf8Len);
@@ -522,7 +523,7 @@ int PWScore::WriteXMLFile(const StringX &filename,
   fwrite(ofs.str().c_str(), 1, ofs.str().length(), xmlfile);
   ofs.str("");
 
-  // write out preferences stored in database
+  // Write out preferences stored in database
   LoadAString(cs_temp, IDSC_XMLEXP_PREFERENCES);
   oss_xml << _T(" <!-- ") << cs_temp << _T(" --> ");
   conv.ToUTF8(oss_xml.str(), utf8, utf8Len);
@@ -536,7 +537,7 @@ int PWScore::WriteXMLFile(const StringX &filename,
 
   stringT pwpolicies = GetXMLPWPolicies();
   if (!pwpolicies.empty()) {
-    // write out password policies stored in database
+    // Write out password policies stored in database
     LoadAString(cs_temp, IDSC_XMLEXP_POLICIES);
     oss_xml << _T(" <!-- ") << cs_temp << _T(" --> ");
     conv.ToUTF8(oss_xml.str(), utf8, utf8Len);
@@ -545,6 +546,19 @@ int PWScore::WriteXMLFile(const StringX &filename,
     oss_xml.str(_T(""));  // Clear buffer for next user
 
     conv.ToUTF8(pwpolicies.c_str(), utf8, utf8Len);
+    ofs.write(reinterpret_cast<const char *>(utf8), utf8Len);
+  }
+
+  if (!m_vEmptyGroups.empty()) {
+    // Write out empty groups stored in database
+    ostringstreamT os;
+    os << "\t<EmptyGroups>" << endl;
+    for (size_t n = 0; n < m_vEmptyGroups.size(); n++) {
+      stringT sTemp = PWSUtil::GetSafeXMLString(m_vEmptyGroups[n]);
+      os << "\t\t<EGName>" << sTemp << "</EGName>" << endl;
+    }
+    os << "\t</EmptyGroups>" << endl << endl;
+    conv.ToUTF8(os.str().c_str(), utf8, utf8Len);
     ofs.write(reinterpret_cast<const char *>(utf8), utf8Len);
   }
 
@@ -647,7 +661,7 @@ int PWScore::WriteXMLFile(const StringX &filename,
   ofs.str("");
 
   XMLRecordWriter put_xml(subgroup_name, subgroup_object, subgroup_function,
-                          bsFields, delimiter, ofs, xmlfile, numExported, prpt, this);
+                          bsFields, delimiter, ofs, xmlfile, numExported, pRpt, this);
 
   if (il != NULL) {
     for_each(il->begin(), il->end(), put_xml);
@@ -1508,7 +1522,7 @@ int PWScore::ImportKeePassV1TXTFile(const StringX &filename,
           pgs.push_back(item);
         }
         // Construct the parent groups
-        sx_Parent_Groups.clear();
+        sx_Parent_Groups = _T("");
         for (size_t i = 0; i < pgs.size(); i++) {
           sx_Parent_Groups = sx_Parent_Groups + pgs[i] + dot;
         }
@@ -1738,23 +1752,23 @@ void ProcessKeePassCSVLine(const string &linebuf, std::vector<StringX> &tokens)
     else
     if (!bInField && ch == ',' && linebuf[i + 1] == ',') {
       conv.FromUTF8((unsigned char *)item.c_str(), item.length(), sxdata);
-      tokens.push_back(sxdata); item.clear(); sxdata.clear();
+      tokens.push_back(sxdata); item.clear(); sxdata = _T("");
     }
     else
     if (!bInField && ch == ',' && linebuf[i + 1] == '\r') {
       conv.FromUTF8((unsigned char *)item.c_str(), item.length(), sxdata);
-      tokens.push_back(sxdata); item.clear(); sxdata.clear();
+      tokens.push_back(sxdata); item.clear(); sxdata = _T("");
     }
     else
     if (!bInField && ch == ',' && linebuf[i + 1] == '\n') {
       conv.FromUTF8((unsigned char *)item.c_str(), item.length(), sxdata);
-      tokens.push_back(sxdata); item.clear(); sxdata.clear();
+      tokens.push_back(sxdata); item.clear(); sxdata = _T("");
     }
     else
     if (ch == '\"') {
       if (bInField) {
         conv.FromUTF8((unsigned char *)item.c_str(), item.length(), sxdata);
-        tokens.push_back(sxdata); item.clear(); sxdata.clear();
+        tokens.push_back(sxdata); item.clear(); sxdata = _T("");
         bInField = false;
       }
       else bInField = true;
@@ -2042,7 +2056,7 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
       }
 
       // Construct the parent groups
-      sx_parent_groups.clear();
+      sx_parent_groups = _T("");
       for (size_t i = 0; i < parent_groups.size(); i++) {
         sx_parent_groups = sx_parent_groups + parent_groups[i].c_str() + dot;
       }
@@ -2059,7 +2073,7 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
           ua[i] = static_cast<unsigned char>(x);
         }
       } else
-        sx_uuid.clear();
+        sx_uuid = _T("");
     }
 
     if (i_Offset[CTIME] >= 0 && !tokens[i_Offset[CTIME]].empty()) {
@@ -2229,28 +2243,28 @@ stringT PWScore::GetXMLPWPolicies()
     stringT sTemp = PWSUtil::GetSafeXMLString(iter->first);
     os << "\t\t\t<PWName>" << sTemp << "</PWName>" << endl;
 
-    os << "\t\t\t<PWDefaultLength>" << iter->second.pwp.length <<
+    os << "\t\t\t<PWDefaultLength>" << iter->second.length <<
           "</PWDefaultLength>" << endl;
 
-    if (iter->second.pwp.flags & PWSprefs::PWPolicyUseLowercase)
+    if (iter->second.flags & PWPolicy::UseLowercase)
       os << "\t\t\t<PWUseLowercase>1</PWUseLowercase>" << endl;
 
-    if (iter->second.pwp.flags & PWSprefs::PWPolicyUseUppercase)
+    if (iter->second.flags & PWPolicy::UseUppercase)
       os << "\t\t\t<PWUseUppercase>1</PWUseUppercase>" << endl;
 
-    if (iter->second.pwp.flags & PWSprefs::PWPolicyUseDigits)
+    if (iter->second.flags & PWPolicy::UseDigits)
       os << "\t\t\t<PWUseDigits>1</PWUseDigits>" << endl;
 
-    if (iter->second.pwp.flags & PWSprefs::PWPolicyUseSymbols)
+    if (iter->second.flags & PWPolicy::UseSymbols)
       os << "\t\t\t<PWUseSymbols>1</PWUseSymbols>" << endl;
 
-    if (iter->second.pwp.flags & PWSprefs::PWPolicyUseHexDigits)
+    if (iter->second.flags & PWPolicy::UseHexDigits)
       os << "\t\t\t<PWUseHexDigits>1</PWUseHexDigits>" << endl;
 
-    if (iter->second.pwp.flags & PWSprefs::PWPolicyUseEasyVision)
+    if (iter->second.flags & PWPolicy::UseEasyVision)
       os << "\t\t\t<PWUseEasyVision>1</PWUseEasyVision>" << endl;
 
-    if (iter->second.pwp.flags & PWSprefs::PWPolicyMakePronounceable)
+    if (iter->second.flags & PWPolicy::MakePronounceable)
       os << "\t\t\t<PWMakePronounceable>1</PWMakePronounceable>" << endl;
 
     if (!iter->second.symbols.empty()) {

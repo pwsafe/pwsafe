@@ -1564,7 +1564,7 @@ void CPWFilterLC::SetUpComboBoxData()
         stf.ftype = PT_PRESENT;
         vFcbx_data.push_back(stf);
 
-        stf.cs_text.LoadString(IDS_PLENGTH);
+        stf.cs_text.LoadString(IDSC_PLENGTH);
         stf.cs_text.TrimRight(L'\t');
         stf.ftype = PT_LENGTH;
         vFcbx_data.push_back(stf);
@@ -1589,17 +1589,17 @@ void CPWFilterLC::SetUpComboBoxData()
         stf.ftype = PT_SYMBOLS;
         vFcbx_data.push_back(stf);
 
-        stf.cs_text.LoadString(IDS_PHEXADECIMAL);
+        stf.cs_text.LoadString(IDSC_PHEXADECIMAL);
         stf.cs_text.TrimRight(L'\t');
         stf.ftype = PT_HEXADECIMAL;
         vFcbx_data.push_back(stf);
 
-        stf.cs_text.LoadString(IDS_PEASYVISION);
+        stf.cs_text.LoadString(IDSC_PEASYVISION);
         stf.cs_text.TrimRight(L'\t');
         stf.ftype = PT_EASYVISION;
         vFcbx_data.push_back(stf);
 
-        stf.cs_text.LoadString(IDS_PPRONOUNCEABLE);
+        stf.cs_text.LoadString(IDSC_PPRONOUNCEABLE);
         stf.cs_text.TrimRight(L'\t');
         stf.ftype = PT_PRONOUNCEABLE;
         vFcbx_data.push_back(stf);

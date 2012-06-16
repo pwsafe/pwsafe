@@ -32,6 +32,7 @@
 #include <iomanip>
 #include <string>
 #include <vector>
+#include <functional>
 #include <algorithm>
 #include <map>
 
@@ -101,11 +102,11 @@ static void GetFilterTestXML(const st_FilterRow &st_fldata,
     case PWSMatch::MT_DATE:
     {
       if (st_fldata.fdatetype == 0 /* DTYPE_ABS */) {
-        const StringX tmp1 = PWSUtil::ConvertToDateTimeString(st_fldata.fdate1, TMC_XML);
+        const StringX tmp1 = PWSUtil::ConvertToDateTimeString(st_fldata.fdate1, PWSUtil::TMC_XML);
         utf8conv.ToUTF8(tmp1.substr(0, 10), utf8, utf8Len);
         oss << sztab5 << "<date1>" << utf8
                                                 << "</date1>" << szendl;
-        const StringX tmp2 = PWSUtil::ConvertToDateTimeString(st_fldata.fdate2, TMC_XML);
+        const StringX tmp2 = PWSUtil::ConvertToDateTimeString(st_fldata.fdate2, PWSUtil::TMC_XML);
         utf8conv.ToUTF8(tmp2.substr(0, 10), utf8, utf8Len);
         oss << sztab5 << "<date2>" << utf8
                                                 << "</date2>" << szendl;
@@ -532,7 +533,7 @@ std::string PWSFilters::GetFilterXMLHeader(const StringX &currentfile,
   time_t time_now;
 
   time(&time_now);
-  const StringX now = PWSUtil::ConvertToDateTimeString(time_now, TMC_XML);
+  const StringX now = PWSUtil::ConvertToDateTimeString(time_now, PWSUtil::TMC_XML);
 
   oss << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" << endl;
   oss << endl;
@@ -576,7 +577,7 @@ std::string PWSFilters::GetFilterXMLHeader(const StringX &currentfile,
     }
     if (hdr.m_whenlastsaved != 0) {
       StringX wls = PWSUtil::ConvertToDateTimeString(hdr.m_whenlastsaved,
-                                                     TMC_XML);
+                                                     PWSUtil::TMC_XML);
       utf8conv.ToUTF8(wls.c_str(), utf8, utf8Len);
       oss << "WhenLastSaved=\"";
       oss << reinterpret_cast<const char *>(utf8);

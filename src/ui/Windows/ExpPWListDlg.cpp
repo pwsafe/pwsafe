@@ -53,7 +53,7 @@ CExpPWListDlg::CExpPWListDlg(CWnd* pParent,
 
     // Get XTime and string versions
     elle.expirytttXTime = m_expPWList[i].expirytttXTime;
-    elle.sx_expirylocdate = PWSUtil::ConvertToDateTimeString(elle.expirytttXTime, TMC_LOCALE);
+    elle.sx_expirylocdate = PWSUtil::ConvertToDateTimeString(elle.expirytttXTime, PWSUtil::TMC_LOCALE);
     
     // Get entrytype (used for selecting image)
     elle.et = pci->GetEntryType();
@@ -128,18 +128,19 @@ BOOL CExpPWListDlg::OnInitDialog()
   // Change all pixels in this 'grey' to transparent
   const COLORREF crTransparent = RGB(192, 192, 192);
 
-  bitmap.LoadBitmap(IDB_NODE);
+  bitmap.LoadBitmap(IDB_GROUP);
   bitmap.GetBitmap(&bm);
 
   m_pImageList = new CImageList();
   // Number (12) corresponds to number in CPWTreeCtrl public enum
   BOOL status = m_pImageList->Create(bm.bmWidth, bm.bmHeight,
-                                     ILC_MASK | ILC_COLORDDB, 12, 0);
+                                     ILC_MASK | ILC_COLORDDB,
+                                     CPWTreeCtrl::NUM_IMAGES, 0);
   ASSERT(status != 0);
 
   // Order of LoadBitmap() calls matches CPWTreeCtrl public enum
   // Also now used by CListCtrl!
-  //bitmap.LoadBitmap(IDB_NODE); - already loaded above to get width
+  //bitmap.LoadBitmap(IDB_GROUP); - already loaded above to get width
   m_pImageList->Add(&bitmap, crTransparent);
   bitmap.DeleteObject();
   UINT bitmapResIDs[] = {
@@ -257,12 +258,13 @@ int CALLBACK CExpPWListDlg::ExpPWCompareFunc(LPARAM lParam1, LPARAM lParam2,
   int et1, et2;
   time_t t1, t2;
 
-  int iResult;
+  int iResult(0);
   switch(nSortColumn) {
     case 0:
       et1 = (int)pLHS.et;
       et2 = (int)pRHS.et;
-      iResult = (et1 < et2) ? -1 : 1;
+      if (et1 != et2)
+        iResult = (et1 < et2) ? -1 : 1;
       break;
     case 1:
       group1 = pLHS.sx_group;
@@ -282,14 +284,14 @@ int CALLBACK CExpPWListDlg::ExpPWCompareFunc(LPARAM lParam1, LPARAM lParam2,
     case 4:
       t1 = pLHS.expirytttXTime;
       t2 = pRHS.expirytttXTime;
-      iResult = ((long)t1 < (long)t2) ? -1 : 1;
+      if (t1 != t2)
+        iResult = ((long)t1 < (long)t2) ? -1 : 1;
       break;
     default:
-      iResult = 0; // should never happen - just keep compiler happy
       ASSERT(FALSE);
   }
 
-  if (!self->m_bSortAscending)
+  if (!self->m_bSortAscending && iResult != 0)
     iResult *= -1;
 
   return iResult;

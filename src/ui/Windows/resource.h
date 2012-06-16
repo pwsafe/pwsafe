@@ -89,6 +89,7 @@
 #define IDI_TRAY_YELLOW                 208
 #define IDI_UNLOCKEDICON                209
 #define IDR_POPLANGUAGES                210
+#define IDR_POPCOPYALLTOORIGINAL        211
 #define IDB_CLOGO                       220
 #define IDB_CLOGO_SMALL                 221
 #define IDB_PSLOGO                      223
@@ -97,7 +98,7 @@
 #define IDB_ABASE                       231
 #define IDB_ABASE_EXPIRED               232
 #define IDB_ABASE_WARNEXPIRED           233
-#define IDB_NODE                        234
+#define IDB_GROUP                       234
 #define IDB_NORMAL                      235
 #define IDB_NORMAL_EXPIRED              236
 #define IDB_NORMAL_WARNEXPIRED          237
@@ -357,8 +358,14 @@
 #define IDB_PSWD_POLICIES_NEW_D         518
 #define IDB_COPYTOCLIPBOARD_CLASSIC     519
 #define IDB_COPYTOCLIPBOARD_NEW         520
-#define IDB_YUBI_LOGO                   521
-#define IDD_YUBIKEY                     522
+#define IDR_POPCOMPAREENTRIES           521
+#define IDD_SHOW_COMPARE                522
+#define IDD_COMPARE_WITH                523
+#define IDB_EMPTY_GROUP                 524
+
+#define IDB_YUBI_LOGO                   525
+#define IDD_YUBIKEY                     526
+
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_CREATE_DB                   1003
@@ -769,14 +776,18 @@
 #define IDC_REDO                        1476
 #define IDC_CLEARPWHISTORY              1477
 #define IDC_UPDATEPROTECTEDPWH          1478
+#define IDC_SHOW_IDENTICAL_FIELDS       1479
+#define IDC_ABORT                       1480
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
+
 #define _APS_NEXT_RESOURCE_VALUE        524
+#define _APS_NEXT_RESOURCE_VALUE        527
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1479
+#define _APS_NEXT_CONTROL_VALUE         1481
 #define _APS_NEXT_SYMED_VALUE           166
 #endif
 #endif

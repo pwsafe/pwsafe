@@ -14,7 +14,6 @@
 #include "PWSdirs.h"
 #include "PWSprefs.h"
 #include "core.h"
-#include "PWSLog.h"
 
 #include "os/debug.h"
 #include "os/file.h"
@@ -30,9 +29,6 @@
 #include <sys/stat.h>
 #include <errno.h>
 #include <iomanip>
-
-extern void String2PWPolicy(const stringT &cs_pwp, PWPolicy &pwp);
-extern void PWPolicy2String(const PWPolicy &pwp, stringT &cs_pwp);
 
 using namespace std;
 using pws_os::CUUID;
@@ -259,6 +255,7 @@ int PWSfileV3::WriteRecord(const CItemData &item)
   WriteCBC(CItemData::TITLE, item.GetTitle());
   WriteCBC(CItemData::USER, item.GetUser());
   WriteCBC(CItemData::PASSWORD, item.GetPassword());
+
   tmp = item.GetNotes();
   if (!tmp.empty())
     WriteCBC(CItemData::NOTES, tmp);
@@ -641,6 +638,7 @@ int PWSfileV3::WriteHeader()
     if (numWritten <= 0) { status = FAILURE; goto end; }
   }
 
+  // Named Policies
   if (!m_MapPSWDPLC.empty()) {
     oStringXStream oss;
     oss.fill(charT('0'));
@@ -660,8 +658,7 @@ int PWSfileV3::WriteHeader()
 
       oss << setw(2) << hex << iter->first.length();
       oss << iter->first.c_str();
-      stringT strpwp;
-      PWPolicy2String(iter->second.pwp, strpwp);
+      StringX strpwp(iter->second);
       oss << strpwp.c_str();
       if (iter->second.symbols.empty()) {
         oss << _T("00");
@@ -673,6 +670,14 @@ int PWSfileV3::WriteHeader()
 
     numWritten = WriteCBC(HDR_PSWDPOLICIES, StringX(oss.str().c_str()));
     if (numWritten <= 0) { status = FAILURE; goto end; }
+  }
+
+  // Empty Groups
+  if (!m_vEmptyGroups.empty()) {
+    for (size_t n = 0; n < m_vEmptyGroups.size(); n++) {
+      numWritten = WriteCBC(HDR_EMPTYGROUP, m_vEmptyGroups[n]);
+      if (numWritten <= 0) { status = FAILURE; goto end; }
+    }
   }
 
   if (!m_UHFL.empty()) {
@@ -995,13 +1000,10 @@ int PWSfileV3::ReadHeader()
             j += namelength;  // Skip over name
             if (j + 19 > recordlength) break;  // Error
 
-            PWPolicy pwp;
             StringX cs_pwp(text.substr(j, 19));
+            PWPolicy pwp(cs_pwp);
             j += 19;  // Skip over pwp
 
-            pwp.flags = 0;
-            String2PWPolicy(cs_pwp.c_str(), pwp);
-            
             if (j + 2 > recordlength) break;  // Error
             sxTemp = text.substr(j, 2) + sxBlank;
             is.str(sxTemp);
@@ -1014,12 +1016,22 @@ int PWSfileV3::ReadHeader()
               sxSymbols = text.substr(j, symbollength);
               j += symbollength;  // Skip over symbols
             }
+            pwp.symbols = sxSymbols;
 
-            st_PSWDPolicy st_pp(pwp, sxSymbols, 0);
-            pair< map<StringX, st_PSWDPolicy>::iterator, bool > pr;
-            pr = m_MapPSWDPLC.insert(PSWDPolicyMapPair(sxPolicyName, st_pp));
+            pair< map<StringX, PWPolicy>::iterator, bool > pr;
+            pr = m_MapPSWDPLC.insert(PSWDPolicyMapPair(sxPolicyName, pwp));
             if (pr.second == false) break; // Error
           }
+        }
+        break;
+      }
+
+      case HDR_EMPTYGROUP:
+      {
+        if (utf8 != NULL) utf8[utf8Len] = '\0';
+        utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
+        if (utf8status) {
+          m_vEmptyGroups.push_back(text);
         }
         break;
       }

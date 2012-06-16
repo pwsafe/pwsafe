@@ -14,6 +14,8 @@
 #include "PwsPlatform.h"
 #include "core.h"
 #include "StringXStream.h"
+#include "PWPolicy.h"
+
 #include "Util.h"
 
 #include "os/debug.h"
@@ -30,7 +32,7 @@
 using namespace std;
 
 // used by CBC routines...
-static void xormem(unsigned char* mem1, const unsigned char* mem2, int length)
+static void xormem(unsigned char *mem1, const unsigned char *mem2, int length)
 {
   for (int x = 0; x < length; x++)
     mem1[x] ^= mem2[x];
@@ -46,7 +48,7 @@ static void xormem(unsigned char* mem1, const unsigned char* mem2, int length)
 #ifdef _WIN32
 #pragma optimize("",off)
 #endif
-void trashMemory(void* buffer, size_t length)
+void trashMemory(void *buffer, size_t length)
 {
   ASSERT(buffer != NULL);
   // {kjp} no point in looping around doing nothing is there?
@@ -107,8 +109,8 @@ void ConvertString(const StringX &text,
 
 //Generates a passkey-based hash from stuff - used to validate the passkey
 void GenRandhash(const StringX &a_passkey,
-                 const unsigned char* a_randstuff,
-                 unsigned char* a_randhash)
+                 const unsigned char *a_randstuff,
+                 unsigned char *a_randhash)
 {
   size_t pkeyLen = 0;
   unsigned char *pstr = NULL;
@@ -150,8 +152,8 @@ void GenRandhash(const StringX &a_passkey,
   keyHash.Final(a_randhash);
 }
 
-size_t _writecbc(FILE *fp, const unsigned char* buffer, size_t length, unsigned char type,
-                 Fish *Algorithm, unsigned char* cbcbuffer)
+size_t _writecbc(FILE *fp, const unsigned char *buffer, size_t length, unsigned char type,
+                 Fish *Algorithm, unsigned char *cbcbuffer)
 {
   const unsigned int BS = Algorithm->GetBlockSize();
   size_t numWritten = 0;
@@ -239,7 +241,7 @@ size_t _writecbc(FILE *fp, const unsigned char* buffer, size_t length, unsigned 
 */
 size_t _readcbc(FILE *fp,
          unsigned char* &buffer, size_t &buffer_len, unsigned char &type,
-         Fish *Algorithm, unsigned char* cbcbuffer,
+         Fish *Algorithm, unsigned char *cbcbuffer,
          const unsigned char *TERMINAL_BLOCK, size_t file_len)
 {
   const unsigned int BS = Algorithm->GetBlockSize();
@@ -355,8 +357,7 @@ size_t PWSUtil::strLength(const LPCTSTR str)
 const TCHAR *PWSUtil::UNKNOWN_XML_TIME_STR = _T("1970-01-01 00:00:00");
 const TCHAR *PWSUtil::UNKNOWN_ASC_TIME_STR = _T("Unknown");
 
-StringX PWSUtil::ConvertToDateTimeString(const time_t &t,
-                                         const int result_format)
+StringX PWSUtil::ConvertToDateTimeString(const time_t &t, TMC result_format)
 {
   StringX ret;
   if (t != 0) {
@@ -374,32 +375,40 @@ StringX PWSUtil::ConvertToDateTimeString(const time_t &t,
     if (st == NULL) // null means invalid time
       return ConvertToDateTimeString(0, result_format);
 #endif
-    if ((result_format & TMC_EXPORT_IMPORT) == TMC_EXPORT_IMPORT)
+    switch (result_format) {
+    case TMC_EXPORT_IMPORT:
       _tcsftime(datetime_str, sizeof(datetime_str) / sizeof(datetime_str[0]),
                 _T("%Y/%m/%d %H:%M:%S"), st);
-    else if ((result_format & TMC_XML) == TMC_XML)
+      break;
+    case TMC_XML:
       _tcsftime(datetime_str, sizeof(datetime_str) / sizeof(datetime_str[0]),
                 _T("%Y-%m-%dT%H:%M:%S"), st);
-    else if ((result_format & TMC_LOCALE) == TMC_LOCALE) {
+      break;
+    case TMC_LOCALE:
       setlocale(LC_TIME, "");
       _tcsftime(datetime_str, sizeof(datetime_str) / sizeof(datetime_str[0]),
                 _T("%c"), st);
-    } else {
-      int terr = _tasctime_s(datetime_str, 32, st);  // secure version
-      if (terr != 0)
+      break;
+    case TMC_LOCALE_DATE_ONLY:
+      setlocale(LC_TIME, "");
+      _tcsftime(datetime_str, sizeof(datetime_str) / sizeof(datetime_str[0]),
+                _T("%x"), st);
+      break;
+    default:
+      if (_tasctime_s(datetime_str, 32, st) != 0)
         return ConvertToDateTimeString(0, result_format);
     }
     ret = datetime_str;
-  } else {
+  } else { // t == 0
     switch (result_format) {
-      case TMC_ASC_UNKNOWN:
-        ret = UNKNOWN_ASC_TIME_STR;
-        break;
-      case TMC_XML:
-        ret = UNKNOWN_XML_TIME_STR;
-        break;
-      default:
-        ret = _T("");
+    case TMC_ASC_UNKNOWN:
+      ret = UNKNOWN_ASC_TIME_STR;
+      break;
+    case TMC_XML:
+      ret = UNKNOWN_XML_TIME_STR;
+      break;
+    default:
+      ret = _T("");
     }
   }
   // remove the trailing EOL char.
@@ -491,7 +500,7 @@ stringT PWSUtil::Base64Encode(const BYTE *strIn, size_t len)
   return cs_Out;
 }
 
-void PWSUtil::Base64Decode(const StringX &inString, BYTE* &outData, size_t &out_len)
+void PWSUtil::Base64Decode(const StringX &inString, BYTE * &outData, size_t &out_len)
 {
   static const char szCS[]=
     "=ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
@@ -550,7 +559,7 @@ void PWSUtil::WriteXMLField(ostream &os, const char *fname,
                             const StringX &value, CUTF8Conv &utf8conv,
                             const char *tabs)
 {
-  const unsigned char * utf8 = NULL;
+  const unsigned char *utf8 = NULL;
   size_t utf8Len = 0;
   StringX::size_type p = value.find(_T("]]>")); // special handling required
   if (p == StringX::npos) {
@@ -646,6 +655,7 @@ int GetStringBufSize(const TCHAR *fmt, va_list args)
       break;
     else { // too small, resize & try again
       delete[] buffer;
+      buffer = NULL;
       guess *= 2;
     }
   }
@@ -653,7 +663,8 @@ int GetStringBufSize(const TCHAR *fmt, va_list args)
 #endif
   if (buffer)
     delete[] buffer;
-  ASSERT(len>0);
+
+  ASSERT(len > 0);
   return len;
 }
 

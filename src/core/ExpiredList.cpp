@@ -11,6 +11,7 @@
 #include "ExpiredList.h"
 #include "ItemData.h"
 
+#include <functional>
 #include <algorithm>
 
 using namespace std;

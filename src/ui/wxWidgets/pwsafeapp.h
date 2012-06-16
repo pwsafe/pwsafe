@@ -33,6 +33,7 @@
 class wxTimer;
 class PasswordSafeFrame;
 class wxHtmlHelpController;
+class wxLocale;
 
 /*!
  * Control identifiers
@@ -89,6 +90,10 @@ public:
 
   wxIconBundle GetAppIcons() const { return m_appIcons; }
   
+  void StopIdleTimer();
+  void StartIdleTimer();
+  bool IsIdleTimerRunning() const;
+
  private:
     PWScore m_core;
     wxTimer* m_activityTimer;
@@ -102,6 +107,8 @@ public:
     wxHtmlHelpController* m_controller;
 
     wxIconBundle m_appIcons;
+    wxLocale *m_locale; // set in initLanguageSupport(), deleted in d'tor, unused elsewhere
+    void initLanguageSupport();
     
  public:
     CRecentDBList &recentDatabases();

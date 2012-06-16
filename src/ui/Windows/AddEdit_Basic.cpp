@@ -25,6 +25,8 @@
 #include "core/core.h"
 #include "core/command.h"
 
+#include "os/file.h"
+
 #include <shlwapi.h>
 #include <fstream>
 
@@ -85,13 +87,6 @@ CAddEdit_Basic::CAddEdit_Basic(CWnd *pParent, st_AE_master_data *pAEMD)
   st_cm.menu_string = cs_menu_string;
   st_cm.message_number = PWS_MSG_EDIT_WORDWRAP;
   st_cm.flags = m_bWordWrap ? MF_CHECKED : MF_UNCHECKED;
-  vmenu_items.push_back(st_cm);
-
-  st_cm.Empty();
-  LoadAString(cs_menu_string, IDS_SHOW_NOTES);
-  st_cm.menu_string = cs_menu_string;
-  st_cm.message_number = PWS_MSG_EDIT_SHOWNOTES;
-  st_cm.flags = m_isNotesHidden ? MF_CHECKED : MF_UNCHECKED;
   vmenu_items.push_back(st_cm);
 
   st_cm.Empty();
@@ -199,7 +194,6 @@ BEGIN_MESSAGE_MAP(CAddEdit_Basic, CAddEdit_PropertyPage)
   ON_MESSAGE(PWS_MSG_CALL_EXTERNAL_EDITOR, OnCallExternalEditor)
   ON_MESSAGE(PWS_MSG_EXTERNAL_EDITOR_ENDED, OnExternalEditorEnded)
   ON_MESSAGE(PWS_MSG_EDIT_WORDWRAP, OnWordWrap)
-  ON_MESSAGE(PWS_MSG_EDIT_SHOWNOTES, OnShowNotes)
   ON_MESSAGE(PWS_MSG_CALL_NOTESZOOMIN, OnZoomNotes)
   ON_MESSAGE(PWS_MSG_CALL_NOTESZOOMOUT, OnZoomNotes)
 
@@ -222,6 +216,9 @@ BOOL CAddEdit_Basic::OnInitDialog()
 
   // Need to get change notifcations
   m_pex_notes->SetEventMask(ENM_CHANGE | m_pex_notes->GetEventMask());
+
+  // Set plain text - not that it seems to do much!
+  m_pex_notes->SetTextMode(TM_PLAINTEXT);
 
   if (M_uicaller() == IDS_EDITENTRY && M_protected() != 0) {
     GetDlgItem(IDC_STATIC_PROTECTED)->ShowWindow(SW_SHOW);
@@ -299,9 +296,6 @@ BOOL CAddEdit_Basic::OnInitDialog()
     // Disable Button
     GetDlgItem(IDC_GENERATEPASSWORD)->EnableWindow(FALSE);
   }
-
-  m_pex_notes->EnableWindow(m_bWordWrap ? FALSE : TRUE);
-  m_pex_notes->ShowWindow(m_bWordWrap ? SW_HIDE : SW_SHOW);
 
   // Populate the combo box
   m_ex_group.ResetContent(); // groups might be from a previous DB (BR 3062758)
@@ -392,6 +386,10 @@ BOOL CAddEdit_Basic::OnInitDialog()
     // If at the limit - don't allow to be called again in that direction
     SetZoomMenu();
   }
+
+  // Set initial Word Wrap
+  m_pex_notes->SetTargetDevice(NULL, m_bWordWrap ? 0 : 1);
+  m_pex_notes->UpdateState(PWS_MSG_EDIT_WORDWRAP, m_bWordWrap);
 
   UpdateData(FALSE);
   m_bInitdone = true;
@@ -527,35 +525,32 @@ BOOL CAddEdit_Basic::PreTranslateMessage(MSG* pMsg)
   if (m_pToolTipCtrl != NULL)
     m_pToolTipCtrl->RelayEvent(pMsg);
 
-  // if user hit Ctrl+A in Notes control, then SelectAllNotes
-  if (pMsg->message == WM_KEYDOWN && pMsg->wParam == 'A' &&
+  // Ctrl + 'key' in Notes
+  if (pMsg->message == WM_KEYDOWN &&
       (GetKeyState(VK_CONTROL) & 0x8000)  == 0x8000 &&
       m_pex_notes->m_hWnd == ::GetFocus()) {
-    SelectAllNotes();
-    return TRUE;
+    switch (pMsg->wParam) {
+      case 'A':
+        // Ctrl+A (Select All), then SelectAllNotes
+        SelectAllNotes();
+        return TRUE;
+      case 'V':
+        // Ctrl+V (Paste), then do PasteSpecial
+        m_pex_notes->PasteSpecial(CF_UNICODETEXT);
+        return TRUE;
+      case VK_ADD:
+      case VK_SUBTRACT:
+        // Zoom in/out
+        OnZoomNotes(0, pMsg->wParam == VK_ADD ? 1 : -1);
+        return TRUE;
+    }
   }
-
+  
   if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_CONTROL &&
-      !m_bLaunchPlus && GetDlgItem(IDC_LAUNCH)->IsWindowEnabled()) {
-    CString cs_text(MAKEINTRESOURCE(IDS_LAUNCHPLUS));
+      GetDlgItem(IDC_LAUNCH)->IsWindowEnabled()) {
+    CString cs_text(MAKEINTRESOURCE(m_bLaunchPlus ? IDS_LAUNCH : IDS_LAUNCHPLUS));
     GetDlgItem(IDC_LAUNCH)->SetWindowText(cs_text);
-    m_bLaunchPlus = true;
-    return TRUE;
-  }
-
-  if (pMsg->message == WM_KEYUP && pMsg->wParam == VK_CONTROL &&
-      m_bLaunchPlus && GetDlgItem(IDC_LAUNCH)->IsWindowEnabled()) {
-    CString cs_text(MAKEINTRESOURCE(IDS_LAUNCH));
-    GetDlgItem(IDC_LAUNCH)->SetWindowText(cs_text);
-    m_bLaunchPlus = false;
-    return TRUE;
-  }
-
-  if (pMsg->message == WM_KEYDOWN && 
-      (pMsg->wParam == VK_ADD || pMsg->wParam == VK_SUBTRACT) &&
-      (GetKeyState(VK_CONTROL) & 0x8000) == 0x8000 &&
-      m_pex_notes->m_hWnd == ::GetFocus()) {
-    OnZoomNotes(0, pMsg->wParam == VK_ADD ? 1 : -1);
+    m_bLaunchPlus = !m_bLaunchPlus;
     return TRUE;
   }
 
@@ -756,21 +751,6 @@ void CAddEdit_Basic::HidePassword()
   m_ex_password2.Invalidate();
 }
 
-LRESULT CAddEdit_Basic::OnShowNotes(WPARAM, LPARAM)
-{
-  UpdateData(TRUE);
-  if (m_isNotesHidden) {
-    ShowNotes();
-  } else {
-    HideNotes();
-  }
-  UpdateData(FALSE);
-
-  m_pex_notes->UpdateState(PWS_MSG_EDIT_SHOWNOTES, m_isNotesHidden ? FALSE : TRUE);
-
-  return 0L;
-}
-
 void CAddEdit_Basic::SetZoomMenu()
 {
     m_pex_notes->EnableMenuItem(PWS_MSG_CALL_NOTESZOOMIN, m_iPointSize < 72);
@@ -817,7 +797,7 @@ void CAddEdit_Basic::ShowNotes()
 
   // If at the limit - don't allow to be called again in that direction
   SetZoomMenu();
- }
+}
 
 void CAddEdit_Basic::HideNotes()
 {
@@ -866,11 +846,14 @@ void CAddEdit_Basic::OnGeneratePassword()
 
   StringX passwd;
   if (M_ipolicy() == NAMED_POLICY) {
-    st_PSWDPolicy st_pp;
+    PWPolicy st_pp;
     M_pDbx()->GetPolicyFromName(M_policyname(), st_pp);
-    M_pDbx()->MakeRandomPassword(passwd, st_pp.pwp, st_pp.symbols.c_str());
+    M_pDbx()->MakeRandomPassword(passwd, st_pp);
   } else {
-    M_pDbx()->MakeRandomPassword(passwd, M_pwp(), M_symbols());
+    // XXX temp - to be cleaned up
+    PWPolicy policy(M_pwp());
+    policy.symbols = LPCWSTR(M_symbols());
+    M_pDbx()->MakeRandomPassword(passwd, policy);
   }
 
   if (rc == CChangeAliasPswd::CHANGEBASE) {
@@ -913,6 +896,12 @@ void CAddEdit_Basic::OnENChangeNotes()
   if (!m_bInitdone || m_AEMD.uicaller != IDS_EDITENTRY)
     return;
 
+  // Called for any change - even just clicking on it - so check really changed
+  CSecString current_notes;
+  m_pex_notes->GetWindowText(current_notes);
+  if (current_notes == M_realnotes())
+    return;
+
   m_ae_psh->SetChanged(true);
   m_ae_psh->SetNotesChanged(true); // Needed if Notes field is long and will be truncated
   UpdateData(TRUE);
@@ -936,43 +925,43 @@ void CAddEdit_Basic::OnSTCExClicked(UINT nID)
 {
   UpdateData(TRUE);
 
-  StringX cs_data;
+  CSecString cs_data;
   int iaction(0);
 
   // NOTE: These values must be contiguous in "resource.h"
   switch (nID) {
     case IDC_STATIC_GROUP:
       m_stc_group.FlashBkgnd(CAddEdit_PropertyPage::crefGreen);
-      cs_data = StringX(M_group());
+      cs_data = M_group();
       iaction = CItemData::GROUP;
       break;
     case IDC_STATIC_TITLE:
       m_stc_title.FlashBkgnd(CAddEdit_PropertyPage::crefGreen);
-      cs_data = StringX(M_title());
+      cs_data = M_title();
       iaction = CItemData::TITLE;
       break;
     case IDC_STATIC_USERNAME:
       m_stc_username.FlashBkgnd(CAddEdit_PropertyPage::crefGreen);
-      cs_data = StringX(M_username());
+      cs_data = M_username();
       iaction = CItemData::USER;
       break;
     case IDC_STATIC_PASSWORD:
       m_stc_password.FlashBkgnd(CAddEdit_PropertyPage::crefGreen);
-      cs_data = StringX(M_realpassword());
+      cs_data = M_realpassword();
       iaction = CItemData::PASSWORD;
       break;
     case IDC_STATIC_NOTES:
       m_stc_notes.FlashBkgnd(CAddEdit_PropertyPage::crefGreen);
-      cs_data = StringX(M_realnotes());
+      cs_data = M_realnotes();
       iaction = CItemData::NOTES;
       break;
     case IDC_STATIC_URL:
-      cs_data = StringX(M_URL());
+      cs_data = M_URL();
       m_stc_URL.FlashBkgnd(CAddEdit_PropertyPage::crefGreen);
       iaction = CItemData::URL;
       break;
     case IDC_STATIC_EMAIL:
-      cs_data = StringX(M_email());
+      cs_data = M_email();
       // If Ctrl pressed - also copy to URL field with the 'mailto:' prefix
       if ((GetKeyState(VK_CONTROL) & 0x8000) != 0 && !M_email().IsEmpty()) {
         M_URL() = L"mailto:" + cs_data;
@@ -1017,7 +1006,7 @@ void CAddEdit_Basic::OnENSetFocusNotes()
 void CAddEdit_Basic::OnENKillFocusNotes()
 {
   UpdateData(TRUE);
-  if (m_isNotesHidden) {
+  if (!m_isNotesHidden) {
     HideNotes();
   } else
     M_realnotes() = m_notes;
@@ -1028,7 +1017,6 @@ void CAddEdit_Basic::OnENKillFocusNotes()
 void CAddEdit_Basic::OnLaunch()
 {
   UpdateData(TRUE);
-  StringX sx_url = StringX(M_URL());
   std::vector<size_t> vactionverboffsets;
   StringX sx_autotype = PWSAuxParse::GetAutoTypeString(M_autotype(),
                                                        M_group(),
@@ -1040,7 +1028,7 @@ void CAddEdit_Basic::OnLaunch()
 
   const bool bDoAutoType = (GetKeyState(VK_CONTROL) & 0x8000) != 0;
 
-  M_pDbx()->LaunchBrowser(sx_url.c_str(), sx_autotype, vactionverboffsets, bDoAutoType);
+  M_pDbx()->LaunchBrowser(M_URL(), sx_autotype, vactionverboffsets, bDoAutoType);
   M_pDbx()->UpdateLastClipboardAction(CItemData::URL);
 
   if (bDoAutoType) {
@@ -1058,9 +1046,8 @@ void CAddEdit_Basic::OnLaunch()
 void CAddEdit_Basic::OnSendEmail()
 {
   UpdateData(TRUE);
-  StringX sx_email = StringX(M_email());
 
-  M_pDbx()->SendEmail(sx_email.c_str());
+  M_pDbx()->SendEmail(M_email());
   M_pDbx()->UpdateLastClipboardAction(CItemData::EMAIL);
 }
 
@@ -1104,14 +1091,22 @@ UINT CAddEdit_Basic::ExternalEditorThread(LPVOID me) // static method!
                   0,                     // create unique name
                   self->m_szTempName);   // buffer for name
 
-  // Open it and put the Notes field in it
-  std::wofstream ofs(self->m_szTempName);
-  if (ofs.bad())
-    return 16;
+  FILE *fd;
 
-  ofs << LPCWSTR(self->M_realnotes()) << std::endl;
-  ofs.flush();
-  ofs.close();
+  if ((fd = pws_os::FOpen(self->m_szTempName, _T("w+b"))) == NULL) {
+    return false;
+  }
+
+  // Write BOM
+  const unsigned int iBOM = 0xFEFF;
+  putwc(iBOM, fd);
+
+  // Write out text
+  fwrite(reinterpret_cast<const void *>((LPCWSTR)self->M_realnotes()), sizeof(BYTE),
+             self->M_realnotes().GetLength() * sizeof(TCHAR), fd);
+
+  // Close file before invoking editor
+  fclose(fd);
 
   StringX sxEditor = PWSprefs::GetInstance()->GetPref(PWSprefs::AltNotesEditor);
   if (sxEditor.empty()) {
@@ -1175,24 +1170,45 @@ LRESULT CAddEdit_Basic::OnExternalEditorEnded(WPARAM, LPARAM)
   GetDlgItem(IDC_NOTES)->EnableWindow(TRUE);
 
   // Now get what the user saved in this file and put it back into Notes field
-  std::wifstream ifs(m_szTempName);
-  if (ifs.bad())
-    return 16;
-
   M_realnotes().Empty();
   std::wstring linebuf, note;
 
-  // Get first line
-  getline(ifs, note, L'\n');
+  FILE *fd;
 
-  // Now get the rest (if any)
-  while (!ifs.eof()) {
-    getline(ifs, linebuf, L'\n');
-    note += L"\r\n";
-    note += linebuf;
+  if ((fd = pws_os::FOpen(m_szTempName, _T("r+b"))) == NULL) {
+    return 0L;
   }
 
-  ifs.close();
+  long flength = pws_os::fileLength(fd);
+
+  ASSERT(flength % 2 == 0);
+
+  BYTE *pBuffer = new BYTE[flength + sizeof(wchar_t)];
+  memset(pBuffer, 0, flength + sizeof(wchar_t));
+
+  if (flength >= 2) {
+    // Read in BOM and check it is
+    const unsigned char BOM[] = {0xff, 0xfe};
+    fread(pBuffer, 1, 2, fd);
+
+    // if not a BOM - backspace and treat as data
+    if (pBuffer[0] != BOM[0] || pBuffer[1] != BOM[1]) {
+      fseek(fd, 0, SEEK_SET);
+      flength += 2;
+    }
+  }
+
+  // Clear BOM
+  memset(pBuffer, 0, 2);
+  // Read in text
+  fread(pBuffer, sizeof(BYTE), flength - 2, fd);
+
+  note = reinterpret_cast<const LPCWSTR>(pBuffer);
+
+  delete [] pBuffer;
+
+  // Close file before invoking editor
+  fclose(fd);
 
   if (note.length() > MAXTEXTCHARS) {
     note = note.substr(0, MAXTEXTCHARS);

@@ -73,6 +73,10 @@
 		E6391BF212FD21B9009BBB8D /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B1448712B26D1500415AAE /* Cocoa.framework */; };
 		E6391BF312FD21B9009BBB8D /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B1449312B26D7E00415AAE /* IOKit.framework */; };
 		E6391BF412FD21B9009BBB8D /* QuickTime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B144BA12B2707E00415AAE /* QuickTime.framework */; };
+		E6651E9C14E914320057D8EC /* pwsmenushortcuts.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6651E9A14E914320057D8EC /* pwsmenushortcuts.cpp */; };
+		E6651E9D14E914320057D8EC /* pwsmenushortcuts.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6651E9A14E914320057D8EC /* pwsmenushortcuts.cpp */; };
+		E6651E9E14E914320057D8EC /* pwsmenushortcuts.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6651E9A14E914320057D8EC /* pwsmenushortcuts.cpp */; };
+		E6651E9F14E914320057D8EC /* pwsmenushortcuts.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6651E9A14E914320057D8EC /* pwsmenushortcuts.cpp */; };
 		E66EE0B313921B30005C10C5 /* ComparisonGridTable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66EE0B113921B30005C10C5 /* ComparisonGridTable.cpp */; };
 		E66EE0B413921B30005C10C5 /* ComparisonGridTable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66EE0B113921B30005C10C5 /* ComparisonGridTable.cpp */; };
 		E66EE0B513921B30005C10C5 /* ComparisonGridTable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66EE0B113921B30005C10C5 /* ComparisonGridTable.cpp */; };
@@ -81,6 +85,9 @@
 		E66FB84E13ACA5C3004DBB97 /* SizeRestrictedPanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66FB84B13ACA5C3004DBB97 /* SizeRestrictedPanel.cpp */; };
 		E66FB84F13ACA5C3004DBB97 /* SizeRestrictedPanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66FB84B13ACA5C3004DBB97 /* SizeRestrictedPanel.cpp */; };
 		E66FB85013ACA5C3004DBB97 /* SizeRestrictedPanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E66FB84B13ACA5C3004DBB97 /* SizeRestrictedPanel.cpp */; };
+		E683B21A150481DF0013D588 /* pugixml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E683B218150481DF0013D588 /* pugixml.cpp */; };
+		E683B21B150481DF0013D588 /* pugixml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E683B218150481DF0013D588 /* pugixml.cpp */; };
+		E683B21C150481DF0013D588 /* pugixml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E683B218150481DF0013D588 /* pugixml.cpp */; };
 		E690B55F12984A1B007EA508 /* pwsafe_filter.xsd in Resources */ = {isa = PBXBuildFile; fileRef = E690B55C12984A1A007EA508 /* pwsafe_filter.xsd */; };
 		E690B56012984A1B007EA508 /* pwsafe.xsd in Resources */ = {isa = PBXBuildFile; fileRef = E690B55D12984A1A007EA508 /* pwsafe.xsd */; };
 		E690B56112984A1B007EA508 /* pwsafe.xsl in Resources */ = {isa = PBXBuildFile; fileRef = E690B55E12984A1A007EA508 /* pwsafe.xsl */; };
@@ -90,6 +97,12 @@
 		E691FB58140D551F00925F96 /* fieldselectionpanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E691FB55140D551E00925F96 /* fieldselectionpanel.cpp */; };
 		E691FB59140D551F00925F96 /* fieldselectionpanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E691FB55140D551E00925F96 /* fieldselectionpanel.cpp */; };
 		E691FB5A140D551F00925F96 /* fieldselectionpanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E691FB55140D551E00925F96 /* fieldselectionpanel.cpp */; };
+		E698273E14C01ABC0043C243 /* logit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E698273D14C01ABC0043C243 /* logit.cpp */; };
+		E698273F14C01ABC0043C243 /* logit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E698273D14C01ABC0043C243 /* logit.cpp */; };
+		E698274014C01ABC0043C243 /* logit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E698273D14C01ABC0043C243 /* logit.cpp */; };
+		E698275A14C01B7D0043C243 /* PWSLog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E698275814C01B7D0043C243 /* PWSLog.cpp */; };
+		E698275B14C01B7D0043C243 /* PWSLog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E698275814C01B7D0043C243 /* PWSLog.cpp */; };
+		E698275C14C01B7D0043C243 /* PWSLog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E698275814C01B7D0043C243 /* PWSLog.cpp */; };
 		E69B7FA811F600BA0084F6C4 /* ImportXmlDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E69B7FA411F600BA0084F6C4 /* ImportXmlDlg.cpp */; };
 		E69B7FA911F600BA0084F6C4 /* OpenFilePickerValidator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E69B7FA611F600BA0084F6C4 /* OpenFilePickerValidator.cpp */; };
 		E6A7ECAE12CDEAA40021D898 /* DbSelectionPanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6A7ECA912CDEAA40021D898 /* DbSelectionPanel.cpp */; };
@@ -204,10 +217,6 @@
 		E6BF9EA113348CDB0084A011 /* sha256.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83CD11E87E9700B01518 /* sha256.cpp */; };
 		E6BF9EA213348CDB0084A011 /* StringX.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83CF11E87E9700B01518 /* StringX.cpp */; };
 		E6BF9EA313348CDB0084A011 /* SysInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83D211E87E9700B01518 /* SysInfo.cpp */; };
-		E6BF9EA413348CDB0084A011 /* tinystr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83D511E87E9700B01518 /* tinystr.cpp */; };
-		E6BF9EA513348CDB0084A011 /* tinyxml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83D711E87E9700B01518 /* tinyxml.cpp */; };
-		E6BF9EA613348CDB0084A011 /* tinyxmlerror.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83D911E87E9700B01518 /* tinyxmlerror.cpp */; };
-		E6BF9EA713348CDB0084A011 /* tinyxmlparser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83DA11E87E9700B01518 /* tinyxmlparser.cpp */; };
 		E6BF9EA813348CDB0084A011 /* TwoFish.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83DC11E87E9700B01518 /* TwoFish.cpp */; };
 		E6BF9EA913348CDB0084A011 /* twofish_tab.c in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83DE11E87E9700B01518 /* twofish_tab.c */; };
 		E6BF9EAA13348CDB0084A011 /* UnknownField.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83E011E87E9700B01518 /* UnknownField.cpp */; };
@@ -311,10 +320,6 @@
 		E6E31A3A12FD69A0001618AB /* sha256.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83CD11E87E9700B01518 /* sha256.cpp */; };
 		E6E31A3B12FD69A0001618AB /* StringX.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83CF11E87E9700B01518 /* StringX.cpp */; };
 		E6E31A3C12FD69A0001618AB /* SysInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83D211E87E9700B01518 /* SysInfo.cpp */; };
-		E6E31A3D12FD69A0001618AB /* tinystr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83D511E87E9700B01518 /* tinystr.cpp */; };
-		E6E31A3E12FD69A0001618AB /* tinyxml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83D711E87E9700B01518 /* tinyxml.cpp */; };
-		E6E31A3F12FD69A0001618AB /* tinyxmlerror.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83D911E87E9700B01518 /* tinyxmlerror.cpp */; };
-		E6E31A4012FD69A0001618AB /* tinyxmlparser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83DA11E87E9700B01518 /* tinyxmlparser.cpp */; };
 		E6E31A4112FD69A0001618AB /* TwoFish.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83DC11E87E9700B01518 /* TwoFish.cpp */; };
 		E6E31A4212FD69A0001618AB /* twofish_tab.c in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83DE11E87E9700B01518 /* twofish_tab.c */; };
 		E6E31A4312FD69A0001618AB /* UnknownField.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83E011E87E9700B01518 /* UnknownField.cpp */; };
@@ -404,10 +409,6 @@
 		E6EE843311E87E9800B01518 /* sha256.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83CD11E87E9700B01518 /* sha256.cpp */; };
 		E6EE843411E87E9800B01518 /* StringX.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83CF11E87E9700B01518 /* StringX.cpp */; };
 		E6EE843511E87E9800B01518 /* SysInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83D211E87E9700B01518 /* SysInfo.cpp */; };
-		E6EE843611E87E9800B01518 /* tinystr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83D511E87E9700B01518 /* tinystr.cpp */; };
-		E6EE843711E87E9800B01518 /* tinyxml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83D711E87E9700B01518 /* tinyxml.cpp */; };
-		E6EE843811E87E9800B01518 /* tinyxmlerror.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83D911E87E9700B01518 /* tinyxmlerror.cpp */; };
-		E6EE843911E87E9800B01518 /* tinyxmlparser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83DA11E87E9700B01518 /* tinyxmlparser.cpp */; };
 		E6EE843A11E87E9800B01518 /* TwoFish.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83DC11E87E9700B01518 /* TwoFish.cpp */; };
 		E6EE843B11E87E9800B01518 /* twofish_tab.c in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83DE11E87E9700B01518 /* twofish_tab.c */; };
 		E6EE843C11E87E9800B01518 /* UnknownField.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83E011E87E9700B01518 /* UnknownField.cpp */; };
@@ -524,10 +525,15 @@
 		E6391BF812FD21B9009BBB8D /* pwsafe-i386.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "pwsafe-i386.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E63E37CC14002ABB00994022 /* pwsafe64-debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "pwsafe64-debug.xcconfig"; sourceTree = "<group>"; };
 		E63E37CD14002ABB00994022 /* pwsafe64-release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "pwsafe64-release.xcconfig"; sourceTree = "<group>"; };
+		E6651E9A14E914320057D8EC /* pwsmenushortcuts.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = pwsmenushortcuts.cpp; sourceTree = "<group>"; };
+		E6651E9B14E914320057D8EC /* pwsmenushortcuts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pwsmenushortcuts.h; sourceTree = "<group>"; };
 		E66EE0B113921B30005C10C5 /* ComparisonGridTable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ComparisonGridTable.cpp; sourceTree = "<group>"; };
 		E66EE0B213921B30005C10C5 /* ComparisonGridTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComparisonGridTable.h; sourceTree = "<group>"; };
 		E66FB84B13ACA5C3004DBB97 /* SizeRestrictedPanel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SizeRestrictedPanel.cpp; sourceTree = "<group>"; };
 		E66FB84C13ACA5C3004DBB97 /* SizeRestrictedPanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SizeRestrictedPanel.h; sourceTree = "<group>"; };
+		E683B217150481DF0013D588 /* pugiconfig.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = pugiconfig.hpp; sourceTree = "<group>"; };
+		E683B218150481DF0013D588 /* pugixml.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = pugixml.cpp; sourceTree = "<group>"; };
+		E683B219150481DF0013D588 /* pugixml.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = pugixml.hpp; sourceTree = "<group>"; };
 		E690B55C12984A1A007EA508 /* pwsafe_filter.xsd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = pwsafe_filter.xsd; path = ../xml/pwsafe_filter.xsd; sourceTree = SOURCE_ROOT; };
 		E690B55D12984A1A007EA508 /* pwsafe.xsd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = pwsafe.xsd; path = ../xml/pwsafe.xsd; sourceTree = SOURCE_ROOT; };
 		E690B55E12984A1A007EA508 /* pwsafe.xsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = pwsafe.xsl; path = ../xml/pwsafe.xsl; sourceTree = SOURCE_ROOT; };
@@ -535,6 +541,10 @@
 		E6919C631298FB25001F96D9 /* pwsafe.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = pwsafe.icns; path = ../src/ui/wxWidgets/graphics/pwsafe.icns; sourceTree = SOURCE_ROOT; };
 		E691FB55140D551E00925F96 /* fieldselectionpanel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = fieldselectionpanel.cpp; sourceTree = "<group>"; };
 		E691FB56140D551F00925F96 /* fieldselectionpanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fieldselectionpanel.h; sourceTree = "<group>"; };
+		E698273C14C01ABC0043C243 /* logit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = logit.h; sourceTree = "<group>"; };
+		E698273D14C01ABC0043C243 /* logit.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = logit.cpp; path = mac/logit.cpp; sourceTree = "<group>"; };
+		E698275814C01B7D0043C243 /* PWSLog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PWSLog.cpp; sourceTree = "<group>"; };
+		E698275914C01B7D0043C243 /* PWSLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PWSLog.h; sourceTree = "<group>"; };
 		E69B7FA411F600BA0084F6C4 /* ImportXmlDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ImportXmlDlg.cpp; sourceTree = "<group>"; };
 		E69B7FA511F600BA0084F6C4 /* ImportXmlDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImportXmlDlg.h; sourceTree = "<group>"; };
 		E69B7FA611F600BA0084F6C4 /* OpenFilePickerValidator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OpenFilePickerValidator.cpp; sourceTree = "<group>"; };
@@ -939,12 +949,6 @@
 		E6EE83D111E87E9700B01518 /* StringXStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringXStream.h; sourceTree = "<group>"; };
 		E6EE83D211E87E9700B01518 /* SysInfo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SysInfo.cpp; sourceTree = "<group>"; };
 		E6EE83D311E87E9700B01518 /* SysInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SysInfo.h; sourceTree = "<group>"; };
-		E6EE83D511E87E9700B01518 /* tinystr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinystr.cpp; sourceTree = "<group>"; };
-		E6EE83D611E87E9700B01518 /* tinystr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tinystr.h; sourceTree = "<group>"; };
-		E6EE83D711E87E9700B01518 /* tinyxml.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxml.cpp; sourceTree = "<group>"; };
-		E6EE83D811E87E9700B01518 /* tinyxml.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tinyxml.h; sourceTree = "<group>"; };
-		E6EE83D911E87E9700B01518 /* tinyxmlerror.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxmlerror.cpp; sourceTree = "<group>"; };
-		E6EE83DA11E87E9700B01518 /* tinyxmlparser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxmlparser.cpp; sourceTree = "<group>"; };
 		E6EE83DB11E87E9700B01518 /* trigram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = trigram.h; sourceTree = "<group>"; };
 		E6EE83DC11E87E9700B01518 /* TwoFish.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TwoFish.cpp; sourceTree = "<group>"; };
 		E6EE83DD11E87E9700B01518 /* TwoFish.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwoFish.h; sourceTree = "<group>"; };
@@ -1041,6 +1045,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E683B216150481DF0013D588 /* pugixml */ = {
+			isa = PBXGroup;
+			children = (
+				E683B217150481DF0013D588 /* pugiconfig.hpp */,
+				E683B218150481DF0013D588 /* pugixml.cpp */,
+				E683B219150481DF0013D588 /* pugixml.hpp */,
+			);
+			path = pugixml;
+			sourceTree = "<group>";
+		};
 		E690B1031297D76E007EA508 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -1399,6 +1413,8 @@
 		E6ADB9A411957099004E2BE5 /* wxWidgets */ = {
 			isa = PBXGroup;
 			children = (
+				E6651E9A14E914320057D8EC /* pwsmenushortcuts.cpp */,
+				E6651E9B14E914320057D8EC /* pwsmenushortcuts.h */,
 				E691FB55140D551E00925F96 /* fieldselectionpanel.cpp */,
 				E691FB56140D551F00925F96 /* fieldselectionpanel.h */,
 				E6D17CEA1411156D003BDBE7 /* fieldselectiondlg.h */,
@@ -1524,6 +1540,8 @@
 		E6EE837D11E87CD200B01518 /* os */ = {
 			isa = PBXGroup;
 			children = (
+				E698273C14C01ABC0043C243 /* logit.h */,
+				E698273D14C01ABC0043C243 /* logit.cpp */,
 				E6C6876C137C3EFA00A916C1 /* UUID.h */,
 				E6EE837F11E87DAC00B01518 /* debug.h */,
 				E6EE838011E87DAC00B01518 /* dir.h */,
@@ -1551,6 +1569,9 @@
 		E6EE839111E87E9700B01518 /* core */ = {
 			isa = PBXGroup;
 			children = (
+				E683B216150481DF0013D588 /* pugixml */,
+				E698275814C01B7D0043C243 /* PWSLog.cpp */,
+				E698275914C01B7D0043C243 /* PWSLog.h */,
 				E6DDC6FF1389120E00F0C0D1 /* CoreOtherDB.cpp */,
 				E6DDC7001389120E00F0C0D1 /* DBCompareData.h */,
 				E6112A61131D720E00AA1454 /* ExpiredList.cpp */,
@@ -1613,7 +1634,6 @@
 				E6EE83D111E87E9700B01518 /* StringXStream.h */,
 				E6EE83D211E87E9700B01518 /* SysInfo.cpp */,
 				E6EE83D311E87E9700B01518 /* SysInfo.h */,
-				E6EE83D411E87E9700B01518 /* tinyxml */,
 				E6EE83DB11E87E9700B01518 /* trigram.h */,
 				E6EE83DC11E87E9700B01518 /* TwoFish.cpp */,
 				E6EE83DD11E87E9700B01518 /* TwoFish.h */,
@@ -1637,19 +1657,6 @@
 			sourceTree = SOURCE_ROOT;
 			tabWidth = 2;
 			usesTabs = 0;
-		};
-		E6EE83D411E87E9700B01518 /* tinyxml */ = {
-			isa = PBXGroup;
-			children = (
-				E6EE83D511E87E9700B01518 /* tinystr.cpp */,
-				E6EE83D611E87E9700B01518 /* tinystr.h */,
-				E6EE83D711E87E9700B01518 /* tinyxml.cpp */,
-				E6EE83D811E87E9700B01518 /* tinyxml.h */,
-				E6EE83D911E87E9700B01518 /* tinyxmlerror.cpp */,
-				E6EE83DA11E87E9700B01518 /* tinyxmlparser.cpp */,
-			);
-			path = tinyxml;
-			sourceTree = "<group>";
 		};
 		E6EE83EA11E87E9800B01518 /* XML */ = {
 			isa = PBXGroup;
@@ -2151,6 +2158,7 @@
 				E66FB84E13ACA5C3004DBB97 /* SizeRestrictedPanel.cpp in Sources */,
 				E691FB59140D551F00925F96 /* fieldselectionpanel.cpp in Sources */,
 				E6D17CED1411156D003BDBE7 /* fieldselectiondlg.cpp in Sources */,
+				E6651E9D14E914320057D8EC /* pwsmenushortcuts.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2184,10 +2192,6 @@
 				E6EE843311E87E9800B01518 /* sha256.cpp in Sources */,
 				E6EE843411E87E9800B01518 /* StringX.cpp in Sources */,
 				E6EE843511E87E9800B01518 /* SysInfo.cpp in Sources */,
-				E6EE843611E87E9800B01518 /* tinystr.cpp in Sources */,
-				E6EE843711E87E9800B01518 /* tinyxml.cpp in Sources */,
-				E6EE843811E87E9800B01518 /* tinyxmlerror.cpp in Sources */,
-				E6EE843911E87E9800B01518 /* tinyxmlparser.cpp in Sources */,
 				E6EE843A11E87E9800B01518 /* TwoFish.cpp in Sources */,
 				E6EE843B11E87E9800B01518 /* twofish_tab.c in Sources */,
 				E6EE843C11E87E9800B01518 /* UnknownField.cpp in Sources */,
@@ -2205,6 +2209,8 @@
 				E6EE845511E87E9800B01518 /* XMLprefs.cpp in Sources */,
 				E6112A64131D720E00AA1454 /* ExpiredList.cpp in Sources */,
 				E6DDC7011389120E00F0C0D1 /* CoreOtherDB.cpp in Sources */,
+				E698275A14C01B7D0043C243 /* PWSLog.cpp in Sources */,
+				E683B21A150481DF0013D588 /* pugixml.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2227,6 +2233,7 @@
 				E6C1255511E1B2BA00D22D92 /* utf8conv.cpp in Sources */,
 				E6C1255B11E1B35600D22D92 /* macsendstring.cpp in Sources */,
 				E6C6876E137C406300A916C1 /* UUID.cpp in Sources */,
+				E698274014C01ABC0043C243 /* logit.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2276,6 +2283,7 @@
 				E66FB84D13ACA5C3004DBB97 /* SizeRestrictedPanel.cpp in Sources */,
 				E691FB5A140D551F00925F96 /* fieldselectionpanel.cpp in Sources */,
 				E6D17CEE1411156D003BDBE7 /* fieldselectiondlg.cpp in Sources */,
+				E6651E9C14E914320057D8EC /* pwsmenushortcuts.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2325,6 +2333,7 @@
 				E66FB85013ACA5C3004DBB97 /* SizeRestrictedPanel.cpp in Sources */,
 				E691FB58140D551F00925F96 /* fieldselectionpanel.cpp in Sources */,
 				E6D17CEC1411156D003BDBE7 /* fieldselectiondlg.cpp in Sources */,
+				E6651E9F14E914320057D8EC /* pwsmenushortcuts.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2358,10 +2367,6 @@
 				E6BF9EA113348CDB0084A011 /* sha256.cpp in Sources */,
 				E6BF9EA213348CDB0084A011 /* StringX.cpp in Sources */,
 				E6BF9EA313348CDB0084A011 /* SysInfo.cpp in Sources */,
-				E6BF9EA413348CDB0084A011 /* tinystr.cpp in Sources */,
-				E6BF9EA513348CDB0084A011 /* tinyxml.cpp in Sources */,
-				E6BF9EA613348CDB0084A011 /* tinyxmlerror.cpp in Sources */,
-				E6BF9EA713348CDB0084A011 /* tinyxmlparser.cpp in Sources */,
 				E6BF9EA813348CDB0084A011 /* TwoFish.cpp in Sources */,
 				E6BF9EA913348CDB0084A011 /* twofish_tab.c in Sources */,
 				E6BF9EAA13348CDB0084A011 /* UnknownField.cpp in Sources */,
@@ -2379,6 +2384,8 @@
 				E6BF9EB713348CDB0084A011 /* XMLprefs.cpp in Sources */,
 				E6BF9EB813348CDB0084A011 /* ExpiredList.cpp in Sources */,
 				E6DDC7031389120E00F0C0D1 /* CoreOtherDB.cpp in Sources */,
+				E698275C14C01B7D0043C243 /* PWSLog.cpp in Sources */,
+				E683B21C150481DF0013D588 /* pugixml.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2401,6 +2408,7 @@
 				E6BF9ECD13348CF00084A011 /* utf8conv.cpp in Sources */,
 				E6BF9ECE13348CF00084A011 /* macsendstring.cpp in Sources */,
 				E6C6876F137C406300A916C1 /* UUID.cpp in Sources */,
+				E698273E14C01ABC0043C243 /* logit.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2423,6 +2431,7 @@
 				E6E31A1A12FD6957001618AB /* utf8conv.cpp in Sources */,
 				E6E31A1B12FD6957001618AB /* macsendstring.cpp in Sources */,
 				E6C68770137C406300A916C1 /* UUID.cpp in Sources */,
+				E698273F14C01ABC0043C243 /* logit.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2456,10 +2465,6 @@
 				E6E31A3A12FD69A0001618AB /* sha256.cpp in Sources */,
 				E6E31A3B12FD69A0001618AB /* StringX.cpp in Sources */,
 				E6E31A3C12FD69A0001618AB /* SysInfo.cpp in Sources */,
-				E6E31A3D12FD69A0001618AB /* tinystr.cpp in Sources */,
-				E6E31A3E12FD69A0001618AB /* tinyxml.cpp in Sources */,
-				E6E31A3F12FD69A0001618AB /* tinyxmlerror.cpp in Sources */,
-				E6E31A4012FD69A0001618AB /* tinyxmlparser.cpp in Sources */,
 				E6E31A4112FD69A0001618AB /* TwoFish.cpp in Sources */,
 				E6E31A4212FD69A0001618AB /* twofish_tab.c in Sources */,
 				E6E31A4312FD69A0001618AB /* UnknownField.cpp in Sources */,
@@ -2477,6 +2482,8 @@
 				E6E31A5012FD69A0001618AB /* XMLprefs.cpp in Sources */,
 				E6112A63131D720E00AA1454 /* ExpiredList.cpp in Sources */,
 				E6DDC7021389120E00F0C0D1 /* CoreOtherDB.cpp in Sources */,
+				E698275B14C01B7D0043C243 /* PWSLog.cpp in Sources */,
+				E683B21B150481DF0013D588 /* pugixml.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2526,6 +2533,7 @@
 				E66FB84F13ACA5C3004DBB97 /* SizeRestrictedPanel.cpp in Sources */,
 				E691FB57140D551F00925F96 /* fieldselectionpanel.cpp in Sources */,
 				E6D17CEF1411156D003BDBE7 /* fieldselectiondlg.cpp in Sources */,
+				E6651E9E14E914320057D8EC /* pwsmenushortcuts.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

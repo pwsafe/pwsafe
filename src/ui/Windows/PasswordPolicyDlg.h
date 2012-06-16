@@ -28,12 +28,12 @@ class CPasswordPolicyDlg : public CPWDialog
 public:
   // Construction
   CPasswordPolicyDlg(UINT uicaller, CWnd *pParent, bool bLongPPs, bool bReadOnly,
-                     st_PSWDPolicy &st_pp);
+                     PWPolicy &st_pp);
   ~CPasswordPolicyDlg();
 
   void SetPolicyData(CString &cs_policyname, PSWDPolicyMap &MapPSWDPLC,
                      DboxMain *pDbx);
-  void GetPolicyData(st_PSWDPolicy &st_pp, CString &cs_policyname, PSWDPolicyMap &MapPSWDPLC)
+  void GetPolicyData(PWPolicy &st_pp, CString &cs_policyname, PSWDPolicyMap &MapPSWDPLC)
   {st_pp = m_st_default_pp; cs_policyname = m_policyname; MapPSWDPLC = m_MapPSWDPLC;}
  
 protected:
@@ -127,7 +127,7 @@ private:
   UINT m_savelen[N_HEX_LENGTHS];
 
   stringT m_PolicyName;
-  st_PSWDPolicy m_st_default_pp;
+  PWPolicy m_st_default_pp;
   PSWDPolicyMap m_MapPSWDPLC;
   PSWDPolicyMapIter m_iter;
 
@@ -135,4 +135,5 @@ private:
   bool m_bReadOnly;
 
   DboxMain *m_pDbx;
+  bool m_bLongPPs;
 };

@@ -57,6 +57,16 @@ Set objStdOut = WScript.StdOut
 DoneSome = false
 
 ' Now do them
+If (DO_ALL = True Or DO_COUNTRY = "CZ") Then
+  If (objFSO.FileExists("pos\pwsafe_cz.po")) Then
+    objStdOut.WriteLine " Updating Czech Language PO"
+  Else
+    objStdOut.WriteLine " Creating Czech Language PO"
+  End If
+  Call UpdatePO("CZ")
+  DoneSome = true
+End If
+
 If (DO_ALL = True Or DO_COUNTRY = "DE") Then
   If (objFSO.FileExists("pos\pwsafe_de.po")) Then
     objStdOut.WriteLine " Updating German Language PO"

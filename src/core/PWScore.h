@@ -56,6 +56,63 @@ struct st_DBProperties {
   StringX db_description;
 };
 
+// Results of a database verification
+struct st_ValidateResults {
+  int num_invalid_UUIDs;
+  int num_duplicate_UUIDs;
+  int num_empty_titles;
+  int num_empty_passwords;
+  int num_duplicate_GTU_fixed;
+  int num_PWH_fixed;
+  int num_excessivetxt_found;
+  int num_alias_warnings;
+  int num_shortcuts_warnings;
+
+  st_ValidateResults()
+  : num_invalid_UUIDs(0), num_duplicate_UUIDs(0),
+  num_empty_titles(0), num_empty_passwords(0),
+  num_duplicate_GTU_fixed(0),
+  num_PWH_fixed(0), num_excessivetxt_found(0),
+  num_alias_warnings(0), num_shortcuts_warnings(0)
+  {}
+
+  st_ValidateResults(const st_ValidateResults &that)
+  : num_invalid_UUIDs(that.num_invalid_UUIDs),
+  num_duplicate_UUIDs(that.num_duplicate_UUIDs),
+  num_empty_titles(that.num_empty_titles),
+  num_empty_passwords(that.num_empty_passwords),
+  num_duplicate_GTU_fixed(that.num_duplicate_GTU_fixed),
+  num_PWH_fixed(that.num_PWH_fixed),
+  num_excessivetxt_found(that.num_excessivetxt_found),
+  num_alias_warnings(that.num_alias_warnings),
+  num_shortcuts_warnings(that.num_shortcuts_warnings)
+  {}
+
+  st_ValidateResults &operator=(const st_ValidateResults &that) {
+    if (this != &that) {
+      num_invalid_UUIDs = that.num_invalid_UUIDs;
+      num_duplicate_UUIDs = that.num_duplicate_UUIDs;
+      num_empty_titles = that.num_empty_titles;
+      num_empty_passwords = that.num_empty_passwords;
+      num_duplicate_GTU_fixed = that.num_duplicate_GTU_fixed;
+      num_PWH_fixed = that.num_PWH_fixed;
+      num_excessivetxt_found = that.num_excessivetxt_found;
+      num_alias_warnings = that.num_alias_warnings;
+      num_shortcuts_warnings = that.num_shortcuts_warnings;
+    }
+    return *this;
+  }
+
+  int TotalIssues()
+  { 
+    return (num_invalid_UUIDs + num_duplicate_UUIDs +
+            num_empty_titles + num_empty_passwords +
+            num_duplicate_GTU_fixed +
+            num_PWH_fixed + num_excessivetxt_found +
+            num_alias_warnings + num_shortcuts_warnings);
+  }
+};
+
 class PWScore : public CommandInterface
 {
 public:
@@ -83,7 +140,8 @@ public:
     UNIMPLEMENTED,                            //  19
     NO_ENTRIES_EXPORTED,                      //  20
     DB_HAS_DUPLICATES,                        //  21
-    OK_WITH_ERRORS                            //  22
+    OK_WITH_ERRORS,                           //  22
+    OK_WITH_VALIDATION_ERRORS                 // 23
   };
 
   PWScore();
@@ -122,9 +180,12 @@ public:
   StringX GetCurFile() const {return m_currfile;}
   void SetCurFile(const StringX &file) {m_currfile = file;}
 
-  int ReadCurFile(const StringX &passkey, const size_t iMAXCHARS = 0)
-  {return ReadFile(m_currfile, passkey, iMAXCHARS);}
-  int ReadFile(const StringX &filename, const StringX &passkey, const size_t iMAXCHARS = 0);
+  int ReadCurFile(const StringX &passkey, const bool bValidate = false,
+                  const size_t iMAXCHARS = 0, CReport *pRpt = NULL)
+  {return ReadFile(m_currfile, passkey, bValidate, iMAXCHARS, pRpt);}
+  int ReadFile(const StringX &filename, const StringX &passkey,
+               const bool bValidate = false, const size_t iMAXCHARS = 0,
+               CReport *pRpt = NULL);
   PWSfile::VERSION GetReadFileVersion() const {return m_ReadFileVersion;}
   bool BackupCurFile(int maxNumIncBackups, int backupSuffix,
                      const stringT &userBackupPrefix,
@@ -160,19 +221,20 @@ public:
                const bool &bTreatWhiteSpaceasEmpty, const stringT &subgroup_name,
                const int &subgroup_object, const int &subgroup_function,
                CompareData &list_OnlyInCurrent, CompareData &list_OnlyInComp,
-               CompareData &list_Conflicts, CompareData &list_Identical);
+               CompareData &list_Conflicts, CompareData &list_Identical,
+               bool *pbCancel = NULL);
 
   stringT Merge(PWScore *pothercore,
                 const bool &subgroup_bset,
                 const stringT &subgroup_name,
                 const int &subgroup_object, const int &subgroup_function,
-                CReport *prpt);
+                CReport *pRpt, bool *pbCancel = NULL);
 
   void Synchronize(PWScore *pothercore, 
                    const CItemData::FieldBits &bsFields, const bool &subgroup_bset,
                    const stringT &subgroup_name,
                    const int &subgroup_object, const int &subgroup_function,
-                   int &numUpdated, CReport *prpt);
+                   int &numUpdated, CReport *pRpt, bool *pbCancel = NULL);
 
   // Export databases
   int WritePlaintextFile(const StringX &filename,
@@ -180,7 +242,7 @@ public:
                          const stringT &subgroup, const int &iObject,
                          const int &iFunction, const TCHAR &delimiter,
                          int &numExported, const OrderedItemList *il = NULL,
-                         CReport *prpt = NULL);
+                         CReport *pRpt = NULL);
 
   int WriteXMLFile(const StringX &filename,
                    const CItemData::FieldBits &bsExport,
@@ -188,7 +250,7 @@ public:
                    const int &iFunction, const TCHAR &delimiter,
                    int &numExported, const OrderedItemList *il = NULL,
                    const bool &bFilterActive = false,
-                   CReport *prpt = NULL);
+                   CReport *pRpt = NULL);
 
   // Import databases
   // If returned status is SUCCESS, then returned Command * can be executed.
@@ -240,10 +302,17 @@ public:
                          const StringX &user, const int IDS_MESSAGE);
   // Get all password policy names
   void GetPolicyNames(std::vector<stringT> &vNames) const;
-  bool GetPolicyFromName(StringX sxPolicyName, st_PSWDPolicy &st_pp);
+  bool GetPolicyFromName(const StringX &sxPolicyName, PWPolicy &st_pp) const;
+  Command *ProcessPolicyName(PWScore *pothercore, CItemData &updtEntry,
+                             std::map<StringX, StringX> &mapRenamedPolicies,
+                             std::vector<StringX> &vs_PoliciesAdded,
+                             StringX &sxOtherPolicyName, bool &bUpdated,
+                             const StringX &sxDateTime, const UINT &IDS_MESSAGE);
+
+  // This routine should only be directly called from XML import
   void MakePolicyUnique(std::map<StringX, StringX> &mapRenamedPolicies,
-                        StringX &sxPolicyName, const StringX &sxMerge_DateTime,
-                        const int IDS_MESSAGE);
+                        StringX &sxPolicyName, const StringX &sxDateTime,
+                        const UINT IDS_MESSAGE);
 
   // Populate setGTU & setUUID from m_pwlist. Returns false & empty set if
   // m_pwlist had one or more entries with same GTU/UUID respectively.
@@ -355,11 +424,6 @@ public:
   const std::vector<bool> &GetDisplayStatus() const;
   bool WasDisplayStatusChanged() const;
 
-  void CopyPWList(const ItemList &in);
-
-  // Validate() returns true if data modified, false if all OK
-  bool Validate(stringT &status, CReport &rpt, const size_t iMAXCHARS = 0);
-
   const PWSfile::HeaderRecord &GetHeader() const {return m_hdr;}
   void GetDBProperties(st_DBProperties &st_dbp);
   void SetHeaderUserFields(st_DBProperties &st_dbp);
@@ -389,12 +453,20 @@ public:
   // Password Policies
   bool IncrementPasswordPolicy(const StringX &sxPolicyName);
   bool DecrementPasswordPolicy(const StringX &sxPolicyName);
+
   const PSWDPolicyMap &GetPasswordPolicies()
   {return m_MapPSWDPLC;}
   void SetPasswordPolicies(const PSWDPolicyMap &MapPSWDPLC)
   {m_MapPSWDPLC = MapPSWDPLC; SetDBChanged(true);}
-  void AddPolicy(const StringX &sxPolicyName, const st_PSWDPolicy &st_pp,
+
+  void AddPolicy(const StringX &sxPolicyName, const PWPolicy &st_pp,
                  const bool bAllowReplace = false);
+
+  // Empty Groups
+  void SetEmptyGroups(const std::vector<StringX> &vEmptyGroups)
+  {m_vEmptyGroups = vEmptyGroups; SetDBChanged(true);}
+  const std::vector<StringX> &GetEmptyGroups() {return m_vEmptyGroups;}
+  bool IsEmptyGroup(const StringX &sxEmptyGroup);
 
 private:
   // Database update routines
@@ -430,7 +502,20 @@ private:
                                       SavePWHistoryMap &mapSavedHistory);
   virtual void UndoUpdatePasswordHistory(SavePWHistoryMap &mapSavedHistory);
 
+  virtual int DoRenameGroup(const StringX &sxOldPath, const StringX &sxNewPath);
+  virtual void UndoRenameGroup(const StringX &sxOldPath, const StringX &sxNewPath);
+
+  virtual bool AddEmptyGroup(const StringX &sxEmptyGroup);
+  virtual bool RemoveEmptyGroup(const StringX &sxEmptyGroup);
+  virtual void RenameEmptyGroup(const StringX &sxOldPath, const StringX &sxNewPath);
+
   // End of Command Interface implementations
+
+  // Validate() returns true if data modified, false if all OK
+  bool Validate(const size_t iMAXCHARS, const bool bInReadfile,
+                CReport *pRpt, st_ValidateResults &st_vr);
+
+  void ParseDependants(); // populate data structures as needed - called in ReadFile()
   void ResetAllAliasPasswords(const pws_os::CUUID &base_uuid);
   
   StringX GetPassKey() const; // returns cleartext - USE WITH CARE
@@ -500,6 +585,9 @@ private:
   virtual void SetVnodesModified(const std::vector<StringX> &mvm)
   {m_vnodes_modified = mvm;}
   void AddChangedNodes(StringX path);
+
+  // EmptyGroups
+  std::vector<StringX> m_vEmptyGroups;
 
   UnknownFieldList m_UHFL;
   int m_nRecordsWithUnknownFields;

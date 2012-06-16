@@ -36,7 +36,6 @@
 #include "passwordsafeframe.h"
 #include "safecombinationprompt.h"
 #include "properties.h"
-#include "optionspropsheet.h"
 #include "core/PWSprefs.h"
 #include "core/PWSdirs.h"
 #include "PasswordSafeSearch.h"
@@ -65,14 +64,15 @@
 
 // main toolbar images
 #include "./PwsToolbarButtons.h"
+#include "./pwsmenushortcuts.h"
 
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
 #endif
 
 ////@begin XPM images
-#include "./graphics/cpane.xpm"
 ////@end XPM images
+#include "./graphics/cpane.xpm"
 
 using pws_os::CUUID;
 
@@ -124,15 +124,15 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
 
   EVT_MENU( ID_COPYURL, PasswordSafeFrame::OnCopyurlClick )
 
-  EVT_MENU( ID_COPYEMAIL, PasswordSafeFrame::OnCopyEmailClick )
-
   EVT_MENU( ID_LIST_VIEW, PasswordSafeFrame::OnListViewClick )
 
   EVT_MENU( ID_TREE_VIEW, PasswordSafeFrame::OnTreeViewClick )
 
   EVT_MENU( ID_CHANGECOMBO, PasswordSafeFrame::OnChangePasswdClick )
 
-  EVT_MENU( wxID_PREFERENCES, PasswordSafeFrame::OnOptionsMClick )
+  EVT_MENU( ID_OPTIONS_M, PasswordSafeFrame::OnOptionsMClick )
+
+  EVT_MENU( ID_PWDPOLSM, PasswordSafeFrame::OnPwdPolsMClick )
 
   EVT_MENU( wxID_ABOUT, PasswordSafeFrame::OnAboutClick )
 
@@ -196,8 +196,6 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_MENU( ID_MENU_CLEAR_MRU, PasswordSafeFrame::OnClearRecentHistory )
   EVT_UPDATE_UI( ID_MENU_CLEAR_MRU, PasswordSafeFrame::OnUpdateClearRecentDBHistory )
   
-  EVT_MENU(ID_VALIDATE,    PasswordSafeFrame::OnValidate)
-
   EVT_MENU(ID_BACKUP,      PasswordSafeFrame::OnBackupSafe)
   EVT_MENU(ID_RESTORE,     PasswordSafeFrame::OnRestoreSafe)
 
@@ -228,7 +226,6 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_UPDATE_UI(wxID_UNDO,          PasswordSafeFrame::OnUpdateUI )
   EVT_UPDATE_UI(wxID_REDO,          PasswordSafeFrame::OnUpdateUI )
   EVT_UPDATE_UI(ID_SYNCHRONIZE,     PasswordSafeFrame::OnUpdateUI )
-  EVT_UPDATE_UI(ID_VALIDATE,        PasswordSafeFrame::OnUpdateUI )
 END_EVENT_TABLE()
 
 static void DisplayFileWriteError(int rc, const StringX &fname);
@@ -239,7 +236,8 @@ static void DisplayFileWriteError(int rc, const StringX &fname);
 
 PasswordSafeFrame::PasswordSafeFrame(PWScore &core)
 : m_core(core), m_currentView(GRID), m_search(0), m_sysTray(new SystemTray(this)), m_exitFromMenu(false),
-  m_RUEList(core), m_guiInfo(new GUIInfo), m_bTSUpdated(false), m_savedDBPrefs(wxEmptyString)
+  m_RUEList(core), m_guiInfo(new GUIInfo), m_bTSUpdated(false), m_savedDBPrefs(wxEmptyString),
+  m_bUnlocking(false)
 {
     Init();
 }
@@ -249,7 +247,8 @@ PasswordSafeFrame::PasswordSafeFrame(wxWindow* parent, PWScore &core,
                                      const wxPoint& pos, const wxSize& size,
                                      long style)
   : m_core(core), m_currentView(GRID), m_search(0), m_sysTray(new SystemTray(this)), m_exitFromMenu(false),
-    m_RUEList(core), m_guiInfo(new GUIInfo), m_bTSUpdated(false), m_savedDBPrefs(wxEmptyString)
+    m_RUEList(core), m_guiInfo(new GUIInfo), m_bTSUpdated(false), m_savedDBPrefs(wxEmptyString),
+    m_bUnlocking(false)
 {
     Init();
     if (PWSprefs::GetInstance()->GetPref(PWSprefs::AlwaysOnTop))
@@ -268,7 +267,7 @@ bool PasswordSafeFrame::Create( wxWindow* parent, wxWindowID id, const wxString&
   wxFrame::Create( parent, id, caption, pos, size, style );
 
   CreateControls();
-  SetIcons(wxGetApp().GetAppIcons());
+  SetIcon(GetIconResource(wxT("../graphics/wxWidgets/cpane.xpm")));
   Centre();
 ////@end PasswordSafeFrame creation
   m_search = new PasswordSafeSearch(this);
@@ -353,14 +352,14 @@ void PasswordSafeFrame::CreateControls()
 
   wxMenuBar* menuBar = new wxMenuBar;
   wxMenu* itemMenu3 = new wxMenu;
-  itemMenu3->Append(wxID_NEW, _("&New..."), _T(""), wxITEM_NORMAL);
-  itemMenu3->Append(wxID_OPEN, _("&Open..."), _T(""), wxITEM_NORMAL);
-  itemMenu3->Append(wxID_CLOSE, _("&Close"), _T(""), wxITEM_NORMAL);
+  itemMenu3->Append(wxID_NEW);
+  itemMenu3->Append(wxID_OPEN);
+  itemMenu3->Append(wxID_CLOSE);
   itemMenu3->AppendSeparator();
   itemMenu3->Append(ID_MENU_CLEAR_MRU, _("Clear Recent Safe List"), _T(""), wxITEM_NORMAL);
   itemMenu3->AppendSeparator();
-  itemMenu3->Append(wxID_SAVE, _("&Save..."), _T(""), wxITEM_NORMAL);
-  itemMenu3->Append(wxID_SAVEAS, _("Save &As..."), _T(""), wxITEM_NORMAL);
+  itemMenu3->Append(wxID_SAVE);
+  itemMenu3->Append(wxID_SAVEAS);
   itemMenu3->AppendSeparator();
   wxMenu* itemMenu13 = new wxMenu;
   itemMenu13->Append(ID_EXPORT2OLD1XFORMAT, _("v&1.x format..."), _T(""), wxITEM_NORMAL);
@@ -377,9 +376,9 @@ void PasswordSafeFrame::CreateControls()
   itemMenu3->Append(ID_COMPARE, _("Compare..."), _T(""), wxITEM_NORMAL);
   itemMenu3->Append(ID_SYNCHRONIZE, _("S&ynchronize..."), _T(""), wxITEM_NORMAL);
   itemMenu3->AppendSeparator();
-  itemMenu3->Append(wxID_PROPERTIES, _("&Properties"), _T(""), wxITEM_NORMAL);
+  itemMenu3->Append(wxID_PROPERTIES);
   itemMenu3->AppendSeparator();
-  itemMenu3->Append(wxID_EXIT, _("E&xit"), _T(""), wxITEM_NORMAL);
+  itemMenu3->Append(wxID_EXIT);
   menuBar->Append(itemMenu3, _("&File"));
   wxGetApp().recentDatabases().UseMenu(itemMenu3);
   wxGetApp().recentDatabases().AddFilesToMenu(itemMenu3);  //must add existing history entries manually.
@@ -393,8 +392,8 @@ void PasswordSafeFrame::CreateControls()
   itemMenu28->AppendSeparator();
   itemMenu28->Append(ID_ADDGROUP, _("Add Group"), _T(""), wxITEM_NORMAL);
   itemMenu28->AppendSeparator();
-  itemMenu28->Append(wxID_UNDO, _("Undo"), _T(""), wxITEM_NORMAL);
-  itemMenu28->Append(wxID_REDO, _("Redo"), _T(""), wxITEM_NORMAL);
+  itemMenu28->Append(wxID_UNDO);
+  itemMenu28->Append(wxID_REDO);
   itemMenu28->Append(ID_CLEARCLIPBOARD, _("C&lear Clipboard\tCtrl+Del"), _T(""), wxITEM_NORMAL);
   itemMenu28->AppendSeparator();
   itemMenu28->Append(ID_COPYPASSWORD, _("&Copy Password to Clipboard\tCtrl+C"), _T(""), wxITEM_NORMAL);
@@ -442,14 +441,16 @@ void PasswordSafeFrame::CreateControls()
   itemMenu72->Append(ID_BACKUP, _("Make &Backup\tCtrl+B"), _T(""), wxITEM_NORMAL);
   itemMenu72->Append(ID_RESTORE, _("&Restore from Backup...\tCtrl+R"), _T(""), wxITEM_NORMAL);
   itemMenu72->AppendSeparator();
-  itemMenu72->Append(wxID_PREFERENCES, _("&Options..."), _T(""), wxITEM_NORMAL);
-  itemMenu72->Append(ID_VALIDATE, _("&Validate..."), _T(""), wxITEM_NORMAL);
+  itemMenu72->Append(ID_OPTIONS_M, _("&Options...\tCtrl+M"), _T(""), wxITEM_NORMAL);
+  itemMenu72->Append(ID_PWDPOLSM, _("Password Policies..."), _T(""), wxITEM_NORMAL);
   menuBar->Append(itemMenu72, _("&Manage"));
   wxMenu* itemMenu79 = new wxMenu;
-  itemMenu79->Append(wxID_HELP, _("Get &Help"), _T(""), wxITEM_NORMAL);
+  itemMenu79->Append(wxID_HELP);
   itemMenu79->Append(ID_MENUITEM, _("Visit Password Safe &website..."), _T(""), wxITEM_NORMAL);
-  itemMenu79->Append(wxID_ABOUT, _("&About Password Safe..."), _T(""), wxITEM_NORMAL);
+  itemMenu79->Append(wxID_ABOUT);
   menuBar->Append(itemMenu79, _("&Help"));
+  PWSMenuShortcuts* scmgr = PWSMenuShortcuts::CreateShortcutsManager(menuBar);
+  scmgr->ReadApplyUserShortcuts();
   itemFrame1->SetMenuBar(menuBar);
 
   wxBoxSizer* mainsizer = new wxBoxSizer(wxVERTICAL); //to add the search bar later to the bottom
@@ -574,7 +575,7 @@ wxIcon PasswordSafeFrame::GetIconResource( const wxString& name )
     // Icon retrieval
 ////@begin PasswordSafeFrame icon retrieval
   wxUnusedVar(name);
-  if (name == _T("./graphics/cpane.xpm"))
+  if (name == _T("../graphics/wxWidgets/cpane.xpm"))
   {
     wxIcon icon(cpane_xpm);
     return icon;
@@ -1316,7 +1317,13 @@ int PasswordSafeFrame::SaveAs()
 void PasswordSafeFrame::OnCloseWindow( wxCloseEvent& evt )
 {
   wxGetApp().SaveFrameCoords();
-  if (m_exitFromMenu) {
+  const bool systrayEnabled = PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray);
+  /*
+   * Really quit if the user chooses to quit from File menu, or
+   * by clicking the 'X' in title bar or the system menu pulldown
+   * from the top-left of the titlebar while systray is disabled
+   */
+  if (m_exitFromMenu || !systrayEnabled) {
     if (evt.CanVeto()) {
       int rc = SaveIfChanged();
       if (rc == PWScore::USER_CANCEL) {
@@ -1329,7 +1336,8 @@ void PasswordSafeFrame::OnCloseWindow( wxCloseEvent& evt )
     Destroy();
   }
   else {
-    HideUI(false); //false => don't lock the UI yet, wait for interactivity timer from app
+    const bool lockOnMinimize = PWSprefs::GetInstance()->GetPref(PWSprefs::DatabaseClear);
+    HideUI(lockOnMinimize);
   } 
 }
 
@@ -1344,42 +1352,6 @@ void PasswordSafeFrame::OnAboutClick( wxCommandEvent& /* evt */ )
   window->ShowModal();
   window->Destroy();
 }
-
-
-/*!
- * wxEVT_COMMAND_MENU_SELECTED event handler for ID_OPTIONS_M
- */
-
-void PasswordSafeFrame::OnOptionsMClick( wxCommandEvent& /* evt */ )
-{
-  PWSprefs* prefs = PWSprefs::GetInstance();
-  const StringX sxOldDBPrefsString(prefs->Store());
-  COptions *window = new COptions(this);
-  if (window->ShowModal() == wxID_OK) {
-    StringX sxNewDBPrefsString(prefs->Store(true));
-
-    // Maybe needed if this causes changes to database
-    // Update the display through a command, so that any changes to DB can be UNDOne
-    MultiCommands *pmulticmds = MultiCommands::Create(&m_core);
-
-    if (pmulticmds && !m_core.GetCurFile().empty() && !m_core.IsReadOnly() &&
-        m_core.GetReadFileVersion() == PWSfile::VCURRENT) {
-      if (sxOldDBPrefsString != sxNewDBPrefsString) {
-        Command *pcmd = DBPrefsCommand::Create(&m_core, sxNewDBPrefsString);
-        if (pcmd) {
-            //I don't know why notifications should ever be suspended, but that's how
-            //things were before I messed with them, so I want to limit the damage by
-            //enabling notifications only as long as required and no more 
-            m_core.ResumeOnDBNotification();
-            Execute(pcmd);  //deleted automatically
-            m_core.SuspendOnDBNotification();
-        }
-      }
-    }
-  }
-  window->Destroy();
-}
-
 
 /*!
  * wxEVT_COMMAND_MENU_SELECTED event handler for ID_BROWSEURL
@@ -1757,7 +1729,7 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
     case ID_COPYEMAIL:
     {
       CItemData* item = GetBaseOfSelectedEntry();
-      evt.Enable( item && !item->IsURLEmpty()  && item->IsURLEmail() );
+      evt.Enable( item && !item->IsEmailEmpty() );
       break;
     }
     case ID_COPYUSERNAME:
@@ -1812,10 +1784,6 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
       
     case ID_SYNCHRONIZE:
       evt.Enable(!m_core.IsReadOnly() && !m_core.GetCurFile().empty() && m_core.GetNumEntries() != 0);
-      break;
-
-    case ID_VALIDATE:
-      evt.Enable(IsClosed());
       break;
 
     default:
@@ -2251,6 +2219,7 @@ void PasswordSafeFrame::UnlockSafe(bool restoreUI)
 {
   StringX password;
   if (m_sysTray->IsLocked()) {
+    AutoRestore<bool> unlocking(m_bUnlocking,true);
     if (VerifySafeCombination(password)) {
       if (ReloadDatabase(password)) {
         m_sysTray->SetTrayStatus(SystemTray::TRAY_UNLOCKED);
@@ -2283,6 +2252,10 @@ void PasswordSafeFrame::UnlockSafe(bool restoreUI)
     m_guiInfo->Restore(this);
     Raise();
   }
+  else if (IsShown()) { /* if it is somehow visible, show it correctly */
+    Show(true);
+    m_guiInfo->Restore(this);
+  }
 }
 
 bool PasswordSafeFrame::VerifySafeCombination(StringX& password)
@@ -2305,28 +2278,43 @@ void PasswordSafeFrame::SetFocus()
 
 void PasswordSafeFrame::OnIconize(wxIconizeEvent& evt)
 {
-  // being restored?
+  const bool beingRestored = 
 #if wxCHECK_VERSION(2,9,0)
-  if (!evt.IsIconized() && m_sysTray->IsLocked()){
+    !evt.IsIconized();
 #else
-  if (!evt.Iconized() && m_sysTray->IsLocked()){
+    !evt.Iconized();
 #endif
-    StringX password;
-    if (VerifySafeCombination(password)) {
-      if (ReloadDatabase(password)) {
-        ShowWindowRecursively(hiddenWindows);
-        //On Linux, the UI is already restored, so just set the status flag
-        m_sysTray->SetTrayStatus(SystemTray::TRAY_UNLOCKED);
-        Show(true); //show the tree/grid
-        m_guiInfo->Restore(this);
+
+  if (beingRestored) {
+    if (m_sysTray->IsLocked() && !m_bUnlocking) {
+      /* 
+       * the frame is automatically un-iconized by gtk when the Safe Combination Entry dialog comes up
+       * which causes the code here to throw up a second SCE dialog.  This ugly hack (m_bUnlocking) is
+       *  the only way I could come up with to prevent that
+       */
+      StringX password;
+      if (VerifySafeCombination(password)) {
+        if (ReloadDatabase(password)) {
+          ShowWindowRecursively(hiddenWindows);
+          m_sysTray->SetTrayStatus(SystemTray::TRAY_UNLOCKED);
+          Show(true); //show the tree/grid
+          m_guiInfo->Restore(this);
+        }
+        else {
+          CleanupAfterReloadFailure(true);
+        }
       }
       else {
-        CleanupAfterReloadFailure(true);
+        // Make sure the window remains iconized
+        Iconize();
       }
     }
-    else {
-      //On Linux, the UI is already restored, so hide it back
-      HideUI(true); //true => lock UI
+  }
+  else {
+    const bool lockOnMinimize = PWSprefs::GetInstance()->GetPref(PWSprefs::DatabaseClear);
+    // if not already locked, lock it if "lock on minimize" is set
+    if (m_sysTray->GetTrayStatus() == SystemTray::TRAY_UNLOCKED && lockOnMinimize) {
+      LockDb();
     }
   }
 }
@@ -2336,10 +2324,8 @@ void PasswordSafeFrame::HideUI(bool lock)
   m_guiInfo->Save(this);
   wxGetApp().SaveFrameCoords();
   
-  if (lock) {
-    if (!SaveAndClearDatabase())
-      return;
-    m_sysTray->SetTrayStatus(SystemTray::TRAY_LOCKED);
+  if (lock && m_sysTray->GetTrayStatus() == SystemTray::TRAY_UNLOCKED) {
+    LockDb();
   }
 
   wxClipboard().Clear();
@@ -2347,9 +2333,6 @@ void PasswordSafeFrame::HideUI(bool lock)
 #ifndef __WXMAC__
   if (!IsIconized()) {
     Iconize();
-    while (!IsIconized()) {
-      wxSafeYield();
-    }
   }
 #endif
   
@@ -2362,6 +2345,13 @@ void PasswordSafeFrame::HideUI(bool lock)
   }  
 }
 
+void PasswordSafeFrame::LockDb()
+{
+  wxGetApp().StopIdleTimer();
+  m_guiInfo->Save(this);
+  if (SaveAndClearDatabase())
+    m_sysTray->SetTrayStatus(SystemTray::TRAY_LOCKED);
+}
 
 void PasswordSafeFrame::OnOpenRecentDB(wxCommandEvent& evt)
 {
@@ -3031,176 +3021,10 @@ void PasswordSafeFrame::OnCompare(wxCommandEvent& /*evt*/)
   dlg.ShowModal();
 }
 
-//------------ Validation
-//
-//
-void PasswordSafeFrame::OnValidate(wxCommandEvent& /*evt*/) 
-{
-  if (DoOpen(_("Please Choose a Database to Validate:")) == PWScore::SUCCESS)
-    ValidateCurrentDatabase();
-}
-
-void PasswordSafeFrame::ValidateCurrentDatabase()
-{
-  CReport rpt;
-  rpt.StartReport(_("Validate"), m_core.GetCurFile().c_str());
-
-  stringT cs_msg;
-  const bool bchanged = m_core.Validate(cs_msg, rpt, MAXTEXTCHARS);
-  if (bchanged) {
-    SetChanged(Data);
-
-#ifdef NOT_YET
-    ChangeOkUpdate();
-#endif
-
-    rpt.EndReport();
-
-    if (wxMessageBox(towxstring(cs_msg) << _("\r\n\r\nDo you wish to see a detailed report?"),
-                            _("Validate"), wxYES_NO|wxICON_EXCLAMATION, this) == wxYES)
-      ViewReport(rpt);
-  }
-  else {
-    wxMessageBox(_("Database validated - no problems found."), _("Validate"), wxOK|wxICON_INFORMATION, this);
-  }
-#ifdef NOT_YET
-  // Show UUID in Edit Date/Time property sheet stats
-  CAddEdit_DateTimes::m_bShowUUID = true;
-#endif
-}
-
-//////////////////////////////////////////
-// Backup and Restore
-//
-void PasswordSafeFrame::OnBackupSafe(wxCommandEvent& /*evt*/)
-{
-  PWSprefs *prefs = PWSprefs::GetInstance();
-  const wxFileName currbackup(towxstring(prefs->GetPref(PWSprefs::CurrentBackup)));
-
-  const wxString title(_("Please Choose a Name for this Backup:"));
-
-  wxString dir;
-  if (m_core.GetCurFile().empty())
-    dir = towxstring(PWSdirs::GetSafeDir());
-  else {
-    wxFileName::SplitPath(towxstring(m_core.GetCurFile()), &dir, NULL, NULL);
-    wxCHECK_RET(!dir.IsEmpty(), _("Could not parse current file path"));
-  }
-
-  //returns empty string if user cancels
-  wxString wxbf = wxFileSelector(title,
-                                 dir,
-                                 currbackup.GetFullName(),
-                                 _("bak"),
-                                 _("Password Safe Backups (*.bak)|*.bak"),
-                                 wxFD_SAVE|wxFD_OVERWRITE_PROMPT,
-                                 this);
-  /*
-  The wxFileSelector code says it appends the default extension if user
-  doesn't type one, but it actually doesn't and I don't see the purported
-  code in 2.8.10.  And doing it ourselves after the dialog has returned is
-  risky because we might silenty overwrite an existing file
-  */
-  
-  //create a copy to avoid multiple conversions to StringX
-  const StringX backupfile(tostringx(wxbf));
-  
-#ifdef NOT_YET
-  if (m_inExit) {
-    // If U3ExitNow called while in CPWFileDialog,
-    // PostQuitMessage makes us return here instead
-    // of exiting the app. Try resignalling 
-    PostQuitMessage(0);
-    return PWScore::USER_CANCEL;
-  }
-#endif
-
-  if (!backupfile.empty()) {  //i.e. if user didn't cancel
-    if (m_core.WriteFile(backupfile) == PWScore::CANT_OPEN_FILE) {
-      wxMessageBox( wxbf << _("\n\nCould not open file for writing!"),
-                    _("Write Error"), wxOK|wxICON_ERROR, this);
-    }
-
-    prefs->SetPref(PWSprefs::CurrentBackup, backupfile);
-  }
-}
-
-void PasswordSafeFrame::OnRestoreSafe(wxCommandEvent& /*evt*/)
-{
-  if (SaveIfChanged() != PWScore::SUCCESS)
-    return;
-
-  const wxFileName currbackup(towxstring(PWSprefs::GetInstance()->GetPref(PWSprefs::CurrentBackup)));
-
-  wxString dir;
-  if (m_core.GetCurFile().empty())
-    dir = towxstring(PWSdirs::GetSafeDir());
-  else {
-    wxFileName::SplitPath(towxstring(m_core.GetCurFile()), &dir, NULL, NULL);
-    wxCHECK_RET(!dir.IsEmpty(), _("Could not parse current file path"));
-  }
-
-  //returns empty string if user cancels
-  wxString wxbf = wxFileSelector(_("Please Choose a Backup to restore:"),
-                                 dir,
-                                 currbackup.GetFullName(),
-                                 _("bak"),
-                                 _("Password Safe Backups (*.bak)|*.bak"),
-                                 wxFD_OPEN|wxFD_FILE_MUST_EXIST,
-                                 this);
-  if (wxbf.empty())
-    return;
-
-#ifdef NOT_YET
-  if (m_inExit) {
-    // If U3ExitNow called while in CPWFileDialog,
-    // PostQuitMessage makes us return here instead
-    // of exiting the app. Try resignalling 
-    PostQuitMessage(0);
-    return PWScore::USER_CANCEL;
-  }
-#endif
-
-  CSafeCombinationPrompt pwdprompt(this, m_core, wxbf);
-  if (pwdprompt.ShowModal() == wxID_OK) {
-    const StringX passkey = pwdprompt.GetPassword();
-    // unlock the file we're leaving
-    if (!m_core.GetCurFile().empty()) {
-      m_core.UnlockFile(m_core.GetCurFile().c_str());
-    }
-
-    // clear the data before restoring
-    ClearData();
-
-    if (m_core.ReadFile(tostringx(wxbf), passkey, MAXTEXTCHARS) == PWScore::CANT_OPEN_FILE) {
-      wxMessageBox(wxbf << _("\n\nCould not open file for reading!"), 
-                      _("File Read Error"), wxOK | wxICON_ERROR, this);
-      return /*PWScore::CANT_OPEN_FILE*/;
-    }
-
-    m_core.SetCurFile(L"");    // Force a Save As...
-    m_core.SetDBChanged(true); // So that the restored file will be saved
-
-#if !defined(POCKET_PC)
-    SetTitle(_("Password Safe - <Untitled Restored Backup>"));
-
-#ifdef NOT_YET
-    app.SetTooltipText(L"PasswordSafe");
-#endif
-
-#endif
-
-#ifdef NOT_YET
-    ChangeOkUpdate();
-#endif
-
-    RefreshViews();
-  }
-}
-
 //-----------------------------------------------------------------
 // Remove all DialogBlock-generated stubs below this line, as we
-// already have them implemented in mainEdit.cpp
+// already have them implemented in main*.cpp
 // (how to get DB to stop generating them??)
 //-----------------------------------------------------------------
+
 
