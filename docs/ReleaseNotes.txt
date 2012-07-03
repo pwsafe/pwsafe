@@ -1,5 +1,5 @@
-Password Safe 3.29pre Release Notes - June 2012
-===============================================
+Password Safe 3.29Y Release Notes - June 2012
+=============================================
 
 This note describe the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -8,8 +8,8 @@ information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
 
-New Features for 3.29pre
-========================
+New Features for 3.29Y
+======================
 [3519484] Empty Groups are now persistent (previously a group with no
 entries would 'disappear' if the database was locked or closed).
 [3510481] The Last Modified and Password Modified date/times are
@@ -23,12 +23,12 @@ to see if the operation was indeed cancelled. If not, you can undo it
 as all operations).
 [] Portuguese (Brazil) installation instructions added, thanks to Andreas.
 
-Changes to Existing Features in 3.29pre
-=======================================
+Changes to Existing Features in 3.29Y
+=====================================
 None
 
-Bugs fixed in 3.29pre
-=====================
+Bugs fixed in 3.29Y
+===================
 [3525995] Find now only highlights/select the found entry.
 [3523117] Password Expiration Date now correctly set when using intervals.
 [3521158] Paste into the Notes field (Add or Edit entry) is now always
