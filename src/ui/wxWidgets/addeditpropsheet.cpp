@@ -1063,10 +1063,10 @@ void AddEditPropSheet::OnGenerateButtonClick( wxCommandEvent& /* evt */ )
 
 void AddEditPropSheet::OnShowHideClick( wxCommandEvent& /* evt */ )
 {
+  m_password = m_PasswordCtrl->GetValue(); // save visible password
   if (m_isPWHidden) {
     ShowPassword();
   } else {
-    m_password = m_PasswordCtrl->GetValue(); // save visible password
     HidePassword();
   }
 }
