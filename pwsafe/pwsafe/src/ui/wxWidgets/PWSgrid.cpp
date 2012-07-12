@@ -445,7 +445,7 @@ void PWSGrid::OnChar( wxKeyEvent& evt )
 {
   if (evt.GetKeyCode() == WXK_ESCAPE &&
       PWSprefs::GetInstance()->GetPref(PWSprefs::EscExits)) {
-    GetParent()->Close();
+    GetParent()->Close(true);
   }
   evt.Skip();
 }
