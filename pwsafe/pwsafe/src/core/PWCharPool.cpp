@@ -82,13 +82,17 @@ CPasswordCharPool::CPasswordCharPool(const PWPolicy &policy)
     m_char_arrays[LOWERCASE] = easyvision_lowercase_chars;
     m_char_arrays[UPPERCASE] = easyvision_uppercase_chars;
     m_char_arrays[DIGIT] = easyvision_digit_chars;
-    m_char_arrays[SYMBOL] = easyvision_symbol_chars;
+    m_char_arrays[SYMBOL] = policy.symbols.empty() ? 
+      easyvision_symbol_chars : _tcsdup(policy.symbols.c_str());
     m_char_arrays[HEXDIGIT] = easyvision_hexdigit_chars;
 
     m_lengths[LOWERCASE] = m_uselowercase ? easyvision_lowercase_len : 0;
     m_lengths[UPPERCASE] = m_useuppercase ? easyvision_uppercase_len : 0;
     m_lengths[DIGIT] = m_usedigits ? easyvision_digit_len : 0;
-    m_lengths[SYMBOL] = m_usesymbols ? easyvision_symbol_len : 0;
+    if (m_usesymbols)
+      m_lengths[SYMBOL] = policy.symbols.empty() ? easyvision_symbol_len : policy.symbols.length();
+    else
+      m_lengths[SYMBOL] = 0;
     m_lengths[HEXDIGIT] = m_usehexdigits ? easyvision_hexdigit_len : 0;
   } else { // !easyvision
     m_char_arrays[LOWERCASE] = std_lowercase_chars;
@@ -129,7 +133,9 @@ CPasswordCharPool::CPasswordCharPool(const PWPolicy &policy)
 
 CPasswordCharPool::~CPasswordCharPool()
 {
-  if (m_bDefaultSymbols)
+  if (m_char_arrays[SYMBOL] != NULL &&
+      m_char_arrays[SYMBOL] != std_symbol_chars &&
+      m_char_arrays[SYMBOL] != easyvision_symbol_chars)
     free(const_cast<charT*>(m_char_arrays[SYMBOL]));
 }
 
