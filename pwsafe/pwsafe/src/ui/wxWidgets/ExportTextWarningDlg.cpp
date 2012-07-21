@@ -47,10 +47,10 @@ CExportTextWarningDlgBase::CExportTextWarningDlgBase(wxWindow* parent) : wxDialo
   wxBoxSizer* dlgSizer = new wxBoxSizer(wxVERTICAL);
   dlgSizer->AddSpacer(TopMargin);
   
-  wxString warningTxt(_("Warning! This operation will create an unprotected copy of ALL of the passwords\r\nin the database. Deleting this copy after use is NOT sufficient."));
-  wxString warningTxt2(_("Please do not use this option unless you understand and accept the risks. This option\r\nbypasses the security provided by this program."));
+  wxString warningTxt(_("Warning! This operation will create an unprotected copy of ALL of the passwords\nin the database. Deleting this copy after use is NOT sufficient."));
+  wxString warningTxt2(_("Please do not use this option unless you understand and accept the risks. This option\nbypasses the security provided by this program."));
   
-  wxStaticText* rt = new wxStaticText(this, wxID_ANY, warningTxt + _("\r\n\r\n") + warningTxt2, wxDefaultPosition, 
+  wxStaticText* rt = new wxStaticText(this, wxID_ANY, warningTxt + _("\n\n") + warningTxt2, wxDefaultPosition, 
                                               wxSize(-1, 200));
   rt->SetForegroundColour(*wxRED);
   dlgSizer->Add(rt, wxSizerFlags().Border(wxLEFT|wxRIGHT, SideMargin).Proportion(1).Expand());

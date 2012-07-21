@@ -2610,7 +2610,7 @@ void PasswordSafeFrame::OnImportXML(wxCommandEvent& evt)
 #if USE_XML_LIBRARY == MSXML || USE_XML_LIBRARY == XERCES
   if (!XSDFilename.FileExists()) {
     wxString filepath(XSDFilename.GetFullPath());
-    wxMessageBox(wxString::Format(_("Can't find XML Schema Definition file (%s) in your PasswordSafe Application Directory.\r\nPlease copy it from your installation file, or re-install PasswordSafe."), filepath.c_str()), 
+    wxMessageBox(wxString::Format(_("Can't find XML Schema Definition file (%s) in your PasswordSafe Application Directory.\nPlease copy it from your installation file, or re-install PasswordSafe."), filepath.c_str()), 
                           wxString(_("Missing XSD File - ")) + wxSTRINGIZE_T(USE_XML_LIBRARY) + _(" Build"), wxOK | wxICON_ERROR, this);
     return;
   }
@@ -2652,13 +2652,13 @@ void PasswordSafeFrame::OnImportXML(wxCommandEvent& evt)
   switch (rc) {
     case PWScore::XML_FAILED_VALIDATION:
       rpt.WriteLine(strXMLErrors.c_str());
-      cs_temp = wxString::Format(_("File: %s failed validation against XML Schema:\r\n\r\n%s"),
+      cs_temp = wxString::Format(_("File: %s failed validation against XML Schema:\n\n%s"),
                                         dlg.filepath.c_str(), wxT(""));
       delete pcmd;
       break;
     case PWScore::XML_FAILED_IMPORT:
       rpt.WriteLine(strXMLErrors.c_str());
-      cs_temp = wxString::Format(_("File: %s passed Validation but had the following errors during import:\r\n\r\n%s"),
+      cs_temp = wxString::Format(_("File: %s passed Validation but had the following errors during import:\n\n%s"),
                               dlg.filepath.c_str(), wxT(""));
       delete pcmd;
       break;
@@ -2707,7 +2707,7 @@ void PasswordSafeFrame::OnImportXML(wxCommandEvent& evt)
       } else {
         const TCHAR* cs_validate = numValidated == 1 ? _("entry") : _("entries");
         const TCHAR* cs_imported = numImported == 1 ? _("entry") : _("entries");
-        cs_temp.Printf(_("Validated %d %s\r\n\r\nImported %d %s"), numValidated, cs_validate, numImported, cs_imported);
+        cs_temp.Printf(_("Validated %d %s\n\nImported %d %s"), numValidated, cs_validate, numImported, cs_imported);
       }
 
       RefreshViews();
@@ -2992,7 +2992,7 @@ void PasswordSafeFrame::Merge(const StringX &sx_Filename2, PWScore *pothercore, 
 
   rpt.EndReport();
 
-  if (!result.empty() && wxMessageBox(towxstring(result) + _("\r\n\r\nDo you wish to see a detailed report?"),
+  if (!result.empty() && wxMessageBox(towxstring(result) + _("\n\nDo you wish to see a detailed report?"),
                                         _("Merge Complete"), wxYES_NO|wxICON_QUESTION, this) == wxYES) {
     ViewReport(rpt);
   }

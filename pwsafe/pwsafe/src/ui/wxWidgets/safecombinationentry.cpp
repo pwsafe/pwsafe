@@ -411,7 +411,7 @@ void CSafeCombinationEntry::OnNewDbClick( wxCommandEvent& /* evt */ )
     EndModal(wxID_OK);
   }
   else {
-    wxMessageBox(wxString()<< newfile << _("\r\n\r\nCould not open file for writing!"),
+    wxMessageBox(wxString()<< newfile << _("\n\nCould not open file for writing!"),
                  _("Write Error"), wxOK | wxICON_ERROR, this);
   }
 }

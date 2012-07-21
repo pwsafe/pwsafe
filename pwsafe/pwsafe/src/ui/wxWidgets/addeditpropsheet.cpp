@@ -1270,7 +1270,7 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
         if (m_defPWPRB->GetValue()) {
           polName = m_cbxPolicyNames->GetValue();
           if (polName == _("Default Policy"))
-            polName = _("");
+            polName = wxT("");
         } else {
           m_item.SetPWPolicy(pwp);
         }
@@ -1717,7 +1717,7 @@ void AddEditPropSheet::OnSendButtonClick( wxCommandEvent& event )
     StringX mail_cmd=_("mailto:");
     mail_cmd += m_email.c_str();
     PWSRun runner;
-    runner.issuecmd(mail_cmd, _(""), false);
+    runner.issuecmd(mail_cmd, wxT(""), false);
   }
 }
 
