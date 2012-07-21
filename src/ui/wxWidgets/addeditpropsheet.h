@@ -265,6 +265,12 @@ public:
   wxString GetUser() const { return m_user ; }
   void SetUser(wxString value) { m_user = value ; }
 
+  bool GetUsedefaultsymbols() const { return m_usedefaultsymbols ; }
+  void SetUsedefaultsymbols(bool value) { m_usedefaultsymbols = value ; }
+
+  bool GetUseownsymbols() const { return m_useownsymbols ; }
+  void SetUseownsymbols(bool value) { m_useownsymbols = value ; }
+
   /// Retrieves bitmap resources
   wxBitmap GetBitmapResource( const wxString& name );
 
@@ -310,6 +316,7 @@ public:
   wxCheckBox* m_pwpSymCtrl;
   wxBoxSizer* m_pwNumSymbox;
   wxSpinCtrl* m_pwpSymSpin;
+  wxTextCtrl* m_ownsymbols;
   wxCheckBox* m_pwpEasyCtrl;
   wxCheckBox* m_pwpPronounceCtrl;
   wxCheckBox* m_pwpHexCtrl;
@@ -333,6 +340,8 @@ private:
   wxString m_title;
   wxString m_url;
   wxString m_user;
+  bool m_usedefaultsymbols;
+  bool m_useownsymbols;
   ////@end AddEditPropSheet member variables
   short m_DCA;
   short m_ShiftDCA;
@@ -340,7 +349,6 @@ private:
   wxString m_PWHistory; // string as stored in CItemData
   StringX m_password;
   bool m_isPWHidden;
-  int m_useownsymbols;
   PWScore &m_core;
   UIInterFace *m_ui;
   wxString m_selectedGroup;  //Group title in tree view user right-clicked on to add an item
@@ -352,8 +360,8 @@ private:
   void SetXTime(wxObject *src);
   void UpdatePWPolicyControls(const PWPolicy& pwp);
   void EnablePWPolicyControls(bool enable);
-  PWPolicy GetPWPolicyFromUI() const;
-  PWPolicy GetSelectedPWPolicy() const;
+  PWPolicy GetPWPolicyFromUI();
+  PWPolicy GetSelectedPWPolicy();
   void ShowPWPSpinners(bool show);
   void EnableNonHexCBs(bool enable);
   void ShowPassword();

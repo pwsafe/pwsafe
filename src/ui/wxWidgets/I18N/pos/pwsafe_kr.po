@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-21 10:18+0300\n"
+"POT-Creation-Date: 2012-07-21 10:37+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -162,7 +162,7 @@ msgid "Password:"
 msgstr "비밀번호(&P):"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:307
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1077
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1078
 msgid "&Hide"
 msgstr "숨기기(&H)"
 
@@ -197,228 +197,228 @@ msgstr "보내기"
 msgid "Notes:"
 msgstr "메모(&N):"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:358
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:357
 msgid "Basic"
 msgstr "기본"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:366
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:365
 #, fuzzy
 msgid "Autotype:"
 msgstr "자동 입력(&A):"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:372
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:371
 msgid "Run Cmd:"
 msgstr "명령 실행:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:378
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:377
 #, fuzzy
 msgid ""
 "Double-Click\n"
 "Action:"
 msgstr "더블클릭 행동:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:382
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:398
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:805
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:381
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:397
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:806
 #, fuzzy
 msgid "Auto Type"
 msgstr "자동입력"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:383
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:399
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:806
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:382
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:398
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:807
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:341
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:481
 msgid "Browse"
 msgstr "탐색"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:384
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:400
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:807
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:383
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:399
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:808
 #, fuzzy
 msgid "Browse + Auto Type"
 msgstr "URL으로 탐색하고 자동입력"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:385
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:401
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:808
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:384
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:400
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:809
 #, fuzzy
 msgid "Copy Notes"
 msgstr "노트 보이기"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:386
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:402
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:809
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:385
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:401
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:810
 #, fuzzy
 msgid "Copy Password"
 msgstr "비밀번호"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:387
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:403
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:810
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:386
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:402
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:811
 #, fuzzy
 msgid "Copy Password + Minimize"
 msgstr "비밀번호를 클립보드에 복사하고 창 최소화"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:388
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:404
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:811
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:387
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:403
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:812
 #, fuzzy
 msgid "Copy Username"
 msgstr "사용자 이름"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:389
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:405
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:812
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:388
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:404
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:813
 #, fuzzy
 msgid "View/Edit Entry"
 msgstr "항목 편집"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:390
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:406
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:813
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:389
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:405
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:814
 #, fuzzy
 msgid "Execute Run command"
 msgstr "'명령 실행'"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:394
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:393
 #, fuzzy
 msgid ""
 "Shift-Double-Click\n"
 "Action:"
 msgstr "더블클릭 행동:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:410
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:409
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:632
 msgid "Password History"
 msgstr "비밀번호 내역"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:415
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:414
 msgid "Keep"
 msgstr "유지"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:422
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:421
 msgid "last passwords"
 msgstr "이전 비밀번호"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:435
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:434
 msgid "Clear History"
 msgstr "내역 비우기"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:440
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:439
 msgid "Copy All"
 msgstr "모두 복사"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:443
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:442
 msgid "Additional"
 msgstr "추가"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:449
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:448
 msgid "Password Expiry"
 msgstr "비밀번호 만료"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:456
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:455
 msgid "On"
 msgstr "켜기"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:465
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:464
 #, fuzzy
 msgid "In"
 msgstr "아이콘"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:474
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:473
 msgid "days"
 msgstr "days"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:477
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:476
 msgid "Recurring"
 msgstr "되풀이"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:483
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:952
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1448
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:482
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:953
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1449
 msgid "Never"
 msgstr "전혀"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:489
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:488
 msgid "Original Value:"
 msgstr "원본 값:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:495
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:494
 msgid "Statistics"
 msgstr "통계:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:500
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:499
 #: ../../../ui/wxWidgets/editshortcut.cpp:195
 msgid "Created on:"
 msgstr "생성된 일자:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:506
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:505
 msgid "Password last changed on:"
 msgstr "비밀번호가 마지막으로 변경된 때:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:509
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:521
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:624
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:508
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:520
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:623
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:255
 #: ../../../ui/wxWidgets/properties.cpp:188
 #, fuzzy
 msgid "Static text"
 msgstr "정적"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:512
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:511
 #: ../../../ui/wxWidgets/editshortcut.cpp:207
 msgid "Last accessed on:"
 msgstr "최종 접근 시간:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:515
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:514
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:394
 msgid "N/A"
 msgstr "N/A"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:518
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:517
 #: ../../../ui/wxWidgets/editshortcut.cpp:213
 msgid "Any field last changed on:"
 msgstr "마지막으로 변경된 날짜:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:524
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:523
 msgid "Dates and Times"
 msgstr "요일 및 시간"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:527
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:526
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:495
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:171
 msgid "Random password generation rules"
 msgstr "난수 비밀번호 생성 규칙"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:533
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:532
 #, fuzzy
 msgid "Use Database Policy"
 msgstr "데이터베이스 기본값 사용(&F)"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:543
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:542
 #, fuzzy
 msgid "Use the policy below:"
 msgstr "아래에 있는 정책 사용하기(&O):"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:552
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:551
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:501
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:178
 #, fuzzy
 msgid "Password length: "
 msgstr "비밀번호 길이:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:560
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:559
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:509
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:187
 #, fuzzy
 msgid "Use lowercase letters"
 msgstr "소문자 사용(&L)"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:566
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:581
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:596
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:611
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:565
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:580
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:595
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:610
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:515
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:530
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:545
@@ -431,11 +431,11 @@ msgstr "소문자 사용(&L)"
 msgid "(At least "
 msgstr "(최소한"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:572
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:587
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:602
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:617
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:839
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:571
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:586
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:601
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:616
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:840
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:521
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:536
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:551
@@ -447,39 +447,39 @@ msgstr "(최소한"
 msgid ")"
 msgstr ")"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:575
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:574
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:524
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:203
 #, fuzzy
 msgid "Use UPPERCASE letters"
 msgstr "대문자 사용"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:590
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:589
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:539
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:219 ../../../core/core_st.cpp:243
 #, fuzzy
 msgid "Use digits"
 msgstr "숫자 사용(&D)"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:605
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:604
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:554
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:235
 #, fuzzy
 msgid "Use symbols (i.e., ., %, $, etc.)"
 msgstr "특수문자 사용 (i.e. &, %, $, etc.)(&S)"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:620
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:619
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:251
 #, fuzzy
 msgid "Default set"
 msgstr "기본 사용자 이름"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:627
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:626
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:258
 msgid "Special set"
 msgstr ""
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:634
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:633
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:569
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:265
 #, fuzzy
@@ -488,73 +488,73 @@ msgid ""
 "(i.e., no 'l', '1', etc.)"
 msgstr "읽기 쉬운 문자열만 사용 (i.e., no  'l', '1', etc.)(&E)"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:640
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:639
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:575
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:271
 #, fuzzy
 msgid "Generate pronounceable passwords"
 msgstr "발음 가능한 비밀번호 생성(&P)"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:646
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:645
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:581
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:277 ../../../core/core_st.cpp:236
 msgid "Or"
 msgstr "또는"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:649
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:648
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:584
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:280
 #, fuzzy
 msgid "Use hexadecimal digits only (0-9, a-f)"
 msgstr "16진수만 사용(&H) (0-9,a-f)"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:653
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1492
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:652
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1493
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:591
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:592
 #: ../../../core/core_st.cpp:132
 msgid "Password Policy"
 msgstr "비밀번호 정책"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:678
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:679
 msgid "Set Date/Time"
 msgstr "날짜/시간 설정"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:679
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:680
 #: ../../../core/core_st.cpp:128
 msgid "Password"
 msgstr "비밀번호"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:839
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:840
 msgid " ("
 msgstr ""
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:839 ../../../core/core_st.cpp:74
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:840 ../../../core/core_st.cpp:74
 #, fuzzy
 msgid "default"
 msgstr "기본값 사용"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:896
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:897
 msgid "[Notes hidden - click here to display]"
 msgstr "[노트가 숨겨져있음 - 표시하려면 이곳을 클릭하세요]"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:998
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1018
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1272
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1733
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:999
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1019
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1273
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1730
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:393
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:470
 #: ../../../core/core_st.cpp:75
 msgid "Default Policy"
 msgstr ""
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1046
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1047
 msgid "Couldn't generate password - invalid policy"
 msgstr ""
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1047
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1155
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1162
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1048
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1156
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1163
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:98
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:105
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:113
@@ -579,48 +579,48 @@ msgstr ""
 msgid "Error"
 msgstr "오류"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1102
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1103
 msgid "&Show"
 msgstr "보이기(&S)"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1154
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1155
 #, fuzzy
 msgid "This entry must have a "
 msgstr "이 항목은 반드시 제목을 가져야 합니다."
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1154
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1155
 #, fuzzy
 msgid "title"
 msgstr "주제"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1154
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1155
 #, fuzzy
 msgid "password"
 msgstr "비밀번호"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1162
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1163
 #, fuzzy
 msgid "Passwords do not match"
 msgstr "두 항목이 일치하지 않습니다."
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1427
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1428
 #, fuzzy, c-format
 msgid " (every %d days)"
 msgstr "되풀이 (%d 일)"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1491
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1492
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:1277
 msgid "Sorry, 'pronounceable' and 'easy-to-read' are not supported together"
 msgstr ""
 "죄송합니다만, '발음할 수 있는' 속성과 '읽기쉬운' 속성이 동시에 지원되지 않습"
 "니다"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1717
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1714
 #, fuzzy
 msgid "mailto:"
 msgstr "전자우편(&E)"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1737
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1734
 #, c-format
 msgid "Couldn't find policy %s\n"
 msgstr ""
