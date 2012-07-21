@@ -255,7 +255,7 @@ void CAbout::OnHyperlinkctrl1HyperlinkClicked( wxHyperlinkEvent& /* evt */ )
   PasswordSafeFrame *pFrm = static_cast<PasswordSafeFrame *>(GetParent());
 
   if (pFrm->GetNumEntries() != 0) {
-    const wxString cs_txt(_("For security, the database must be closed before connecting to the Internet.\r\nPress OK to close database and continue (Changes will be saved)"));
+    const wxString cs_txt(_("For security, the database must be closed before connecting to the Internet.\nPress OK to close database and continue (Changes will be saved)"));
     const wxString cs_title(_("Confirm Close Dialog"));
     wxMessageDialog dlg(this, cs_txt, cs_title,
                         (wxICON_QUESTION | wxOK | wxCANCEL));
@@ -323,8 +323,8 @@ void CAbout::OnHyperlinkctrl1HyperlinkClicked( wxHyperlinkEvent& /* evt */ )
     {
       wxString newer(_("Current version: "));
       newer += pwsafeVersionString;
-      newer += _("\r\nLatest version:\t"); newer += latest.c_str();
-      newer += _("\r\n\r\nPlease visit the PasswordSafe website to download the latest version.");
+      newer += _("\nLatest version:\t"); newer += latest.c_str();
+      newer += _("\n\nPlease visit the PasswordSafe website to download the latest version.");
       const wxString cs_title(_("Newer Version Found!"));
       *m_newVerStatus << cs_title;
       wxMessageDialog dlg(this, newer, cs_title, wxOK);
