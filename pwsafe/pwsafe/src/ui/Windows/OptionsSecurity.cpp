@@ -92,7 +92,7 @@ BOOL COptionsSecurity::OnInitDialog()
 
   for (int i = 0; i < 2; i++) {
     m_chkbox[i].SetTextColour(CR_DATABASE_OPTIONS);
-    m_chkbox[i].SetBkgColour(COLOR_WINDOW);
+    m_chkbox[i].ResetBkgColour();//Use current window's background
   }
 
   OnLockOnIdleTimeout();

@@ -121,7 +121,7 @@ BOOL COptionsBackup::OnInitDialog()
   COptions_PropertyPage::OnInitDialog();
 
   m_chkbox.SetTextColour(CR_DATABASE_OPTIONS);
-  m_chkbox.SetBkgColour(COLOR_WINDOW);
+  m_chkbox.ResetBkgColour();//Use current window's background
 
   if (!M_pDbx()->IsDBReadOnly())
     GetDlgItem(IDC_STATIC_DB_PREFS_RO_WARNING)->ShowWindow(SW_HIDE);
