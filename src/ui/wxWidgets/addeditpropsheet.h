@@ -262,14 +262,14 @@ public:
   wxString GetUrl() const { return m_url ; }
   void SetUrl(wxString value) { m_url = value ; }
 
-  wxString GetUser() const { return m_user ; }
-  void SetUser(wxString value) { m_user = value ; }
-
   bool GetUsedefaultsymbols() const { return m_usedefaultsymbols ; }
   void SetUsedefaultsymbols(bool value) { m_usedefaultsymbols = value ; }
 
   bool GetUseownsymbols() const { return m_useownsymbols ; }
   void SetUseownsymbols(bool value) { m_useownsymbols = value ; }
+
+  wxString GetUser() const { return m_user ; }
+  void SetUser(wxString value) { m_user = value ; }
 
   /// Retrieves bitmap resources
   wxBitmap GetBitmapResource( const wxString& name );
@@ -339,9 +339,9 @@ private:
   wxString m_symbols;
   wxString m_title;
   wxString m_url;
-  wxString m_user;
   bool m_usedefaultsymbols;
   bool m_useownsymbols;
+  wxString m_user;
   ////@end AddEditPropSheet member variables
   short m_DCA;
   short m_ShiftDCA;
