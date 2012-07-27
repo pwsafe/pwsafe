@@ -8413,9 +8413,9 @@ Type the new combination once again to confirm it."</string>
           <string name="variable-15">"m_symbols|wxString|Symbols||2|0|"</string>
           <string name="variable-16">"m_title|wxString|Title||2|0|"</string>
           <string name="variable-17">"m_url|wxString|Url||2|0|"</string>
-          <string name="variable-18">"m_user|wxString|User||2|0|"</string>
-          <string name="variable-19">"m_usedefaultsymbols|bool|Usedefaultsymbols||2|0|"</string>
-          <string name="variable-20">"m_useownsymbols|bool|Useownsymbols||2|0|"</string>
+          <string name="variable-18">"m_usedefaultsymbols|bool|Usedefaultsymbols||2|0|"</string>
+          <string name="variable-19">"m_useownsymbols|bool|Useownsymbols||2|0|"</string>
+          <string name="variable-20">"m_user|wxString|User||2|0|"</string>
           <string name="proxy-Id name">"ID_ADDEDITPROPSHEET"</string>
           <long name="proxy-Id value">10083</long>
           <string name="proxy-Class">"AddEditPropSheet"</string>
@@ -10430,9 +10430,9 @@ username field."</string>
                   <long name="proxy-X">-1</long>
                   <long name="proxy-Y">-1</long>
                   <long name="proxy-Width">-1</long>
-                  <long name="proxy-Height">-1</long>
+                  <long name="proxy-Height">50</long>
                   <string name="proxy-AlignH">"Centre"</string>
-                  <string name="proxy-AlignV">"Centre"</string>
+                  <string name="proxy-AlignV">"Expand"</string>
                   <long name="proxy-Stretch factor">5</long>
                   <long name="proxy-Border">3</long>
                   <bool name="proxy-wxLEFT">1</bool>
