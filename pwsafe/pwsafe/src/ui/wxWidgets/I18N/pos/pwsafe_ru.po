@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-21 10:37+0300\n"
+"POT-Creation-Date: 2012-07-28 11:58+0300\n"
 "PO-Revision-Date: 2011-10-02 13:43+0300\n"
 "Last-Translator: Andrey Kuznetsov <pm_kan@users.sourceforge.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -127,7 +127,7 @@ msgstr "Обнаружена новая версия!"
 msgid "Could not read server version data."
 msgstr "%sНевозможно получить с сервера данные о версии.%s"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:267
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:268
 #, fuzzy
 msgid ""
 "To add a new entry, simply fill in the fields below. At least a title and a\n"
@@ -139,288 +139,288 @@ msgstr ""
 "пароль должны быть указаны. Если задано имя пользователя по умолчанию, оно "
 "будет введено в поле «Имя»"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:272
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:273
 #: ../../../ui/wxWidgets/createshortcutdlg.cpp:153
 #: ../../../ui/wxWidgets/editshortcut.cpp:169
 msgid "Group:"
 msgstr "Группа:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:281
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:282
 #: ../../../ui/wxWidgets/createshortcutdlg.cpp:160
 #: ../../../ui/wxWidgets/editshortcut.cpp:176
 #, fuzzy
 msgid "Title:"
 msgstr "&Заголовок:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:289
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:290
 #: ../../../ui/wxWidgets/createshortcutdlg.cpp:166
 #: ../../../ui/wxWidgets/editshortcut.cpp:182
 #, fuzzy
 msgid "Username:"
 msgstr "&Имя пользователя:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:297
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:298
 #, fuzzy
 msgid "Password:"
 msgstr "&Пароль:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:307
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1078
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:308
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1086
 msgid "&Hide"
 msgstr "&Скрыть"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:312
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:313
 msgid "&Generate"
 msgstr "&Создать"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:315
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:316
 #, fuzzy
 msgid "Confirm:"
 msgstr "Подтверждение:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:323
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:324
 msgid "URL:"
 msgstr ""
 
 # переход по ссылке/выполнение команды в диалоге создания/редактирования элемента
 # "перейти" не входит по длине
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:333
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:334
 msgid "Go"
 msgstr "Перейти"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:336
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:337
 #, fuzzy
 msgid "email:"
 msgstr "E-mail:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:346
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:347
 msgid "Send"
 msgstr "Отправ."
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:351
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:352
 #, fuzzy
 msgid "Notes:"
 msgstr "За&метки:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:357
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:358
 msgid "Basic"
 msgstr "Основные"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:365
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:366
 #, fuzzy
 msgid "Autotype:"
 msgstr "&Автонабор:"
 
 # урезано
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:371
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:372
 msgid "Run Cmd:"
 msgstr "Выполнить:"
 
 # урезано
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:377
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:378
 #, fuzzy
 msgid ""
 "Double-Click\n"
 "Action:"
 msgstr "Действие по двойному клику"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:381
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:397
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:806
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:382
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:398
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:808
 #, fuzzy
 msgid "Auto Type"
 msgstr "Автонабор"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:382
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:398
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:807
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:383
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:399
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:809
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:341
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:481
 msgid "Browse"
 msgstr "Обзор"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:383
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:399
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:808
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:384
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:400
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:810
 #, fuzzy
 msgid "Browse + Auto Type"
 msgstr "Перейти по ссылке и выполнить автонабор"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:384
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:400
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:809
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:385
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:401
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:811
 #, fuzzy
 msgid "Copy Notes"
 msgstr "Показать заметки"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:385
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:401
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:810
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:386
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:402
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:812
 #, fuzzy
 msgid "Copy Password"
 msgstr "Пароль"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:386
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:402
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:811
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:387
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:403
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:813
 #, fuzzy
 msgid "Copy Password + Minimize"
 msgstr "Копировать пароль в буфер и свернуть"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:387
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:403
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:812
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:388
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:404
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:814
 #, fuzzy
 msgid "Copy Username"
 msgstr "Имя пользователя"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:388
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:404
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:813
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:389
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:405
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:815
 #, fuzzy
 msgid "View/Edit Entry"
 msgstr "Редактировать элемент"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:389
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:405
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:814
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:390
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:406
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:816
 #, fuzzy
 msgid "Execute Run command"
 msgstr " 'Выполнить команду'"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:393
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:394
 #, fuzzy
 msgid ""
 "Shift-Double-Click\n"
 "Action:"
 msgstr "Действие по Shift + двойной клик:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:409
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:410
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:632
 msgid "Password History"
 msgstr "История паролей"
 
 # В истории паролей
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:414
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:415
 msgid "Keep"
 msgstr "Хранить"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:421
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:422
 msgid "last passwords"
 msgstr "предыдущих паролей"
 
 # урезано
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:434
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:435
 msgid "Clear History"
 msgstr "Очистить"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:439
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:440
 msgid "Copy All"
 msgstr "Копировать все"
 
 # закладка в диалоге создания/редактирования элемента
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:442
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:443
 msgid "Additional"
 msgstr "Дополнительно"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:448
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:449
 #, fuzzy
 msgid "Password Expiry"
 msgstr "Пароль истекает"
 
 # Пароль истекает ...
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:455
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:456
 msgid "On"
 msgstr " "
 
 # ? Ex.: Password expires In 5 days
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:464
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:465
 #, fuzzy
 msgid "In"
 msgstr "&Через"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:473
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:474
 msgid "days"
 msgstr "дней"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:476
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:477
 #, fuzzy
 msgid "Recurring"
 msgstr "Повторять"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:482
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:953
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1449
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:483
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:955
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1457
 msgid "Never"
 msgstr "Никогда"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:488
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:489
 msgid "Original Value:"
 msgstr "Исходное значение:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:494
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:495
 msgid "Statistics"
 msgstr "Статистика"
 
 # "Создан" т.к. относится к элементу
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:499
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:500
 #: ../../../ui/wxWidgets/editshortcut.cpp:195
 msgid "Created on:"
 msgstr "Создан:"
 
 # урезано из-за ограничения размеров
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:505
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:506
 msgid "Password last changed on:"
 msgstr "Пароль изменён:"
 
 # No need to translate these
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:508
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:520
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:623
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:509
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:521
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:624
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:255
 #: ../../../ui/wxWidgets/properties.cpp:188
 #, fuzzy
 msgid "Static text"
 msgstr "Static"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:511
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:512
 #: ../../../ui/wxWidgets/editshortcut.cpp:207
 msgid "Last accessed on:"
 msgstr "Последнее обращение:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:514
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:515
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:394
 msgid "N/A"
 msgstr "Н/Д"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:517
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:518
 #: ../../../ui/wxWidgets/editshortcut.cpp:213
 msgid "Any field last changed on:"
 msgstr "Изменено хотя бы одно поле:"
 
 # закладка в диалоге создания/редактирования элемента
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:523
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:524
 msgid "Dates and Times"
 msgstr "Дата и время"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:526
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:527
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:495
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:171
 msgid "Random password generation rules"
 msgstr "Правила создания случайного пароля"
 
 # в диалоге редактирования элемента на закладке политик
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:532
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:533
 #, fuzzy
 msgid "Use Database Policy"
 msgstr "Использовать настройки контейнера по &умолчанию"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:542
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:543
 #, fuzzy
 msgid "Use the policy below:"
 msgstr "Переопределить п&олитику:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:551
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:552
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:501
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:178
 #, fuzzy
@@ -428,17 +428,17 @@ msgid "Password length: "
 msgstr "Длина пароля:"
 
 # урезано из-за ограничения длины
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:559
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:560
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:509
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:187
 #, fuzzy
 msgid "Use lowercase letters"
 msgstr "С&трочные буквы"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:565
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:580
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:595
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:610
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:566
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:581
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:596
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:611
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:515
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:530
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:545
@@ -451,11 +451,11 @@ msgstr "С&трочные буквы"
 msgid "(At least "
 msgstr "(хотя бы"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:571
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:586
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:601
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:616
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:840
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:572
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:587
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:602
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:617
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:842
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:521
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:536
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:551
@@ -468,7 +468,7 @@ msgid ")"
 msgstr ")"
 
 # урезано из-за ограничения длины
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:574
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:575
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:524
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:203
 #, fuzzy
@@ -476,7 +476,7 @@ msgid "Use UPPERCASE letters"
 msgstr "П&РОПИСНЫЕ буквы"
 
 # урезано из-за ограничения длины
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:589
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:590
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:539
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:219 ../../../core/core_st.cpp:243
 #, fuzzy
@@ -484,25 +484,25 @@ msgid "Use digits"
 msgstr "&Цифры"
 
 # урезано из-за ограничения длины
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:604
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:605
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:554
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:235
 #, fuzzy
 msgid "Use symbols (i.e., ., %, $, etc.)"
 msgstr "&Символы (напр. &, %, $ и т.п.)"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:619
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:620
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:251
 msgid "Default set"
 msgstr "Стандартный набор"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:626
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:627
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:258
 msgid "Special set"
 msgstr "Особый набор"
 
 # урезано из-за ограничения длины
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:633
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:634
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:569
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:265
 #, fuzzy
@@ -511,29 +511,29 @@ msgid ""
 "(i.e., no 'l', '1', etc.)"
 msgstr "Только &удобочитаемые символы (не исп. «l», «1» и т. п.)"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:639
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:640
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:575
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:271
 #, fuzzy
 msgid "Generate pronounceable passwords"
 msgstr "Создавать &произносимые пароли"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:645
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:646
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:581
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:277 ../../../core/core_st.cpp:236
 msgid "Or"
 msgstr "Или"
 
 # урезано из-за ограничения длины
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:648
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:649
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:584
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:280
 #, fuzzy
 msgid "Use hexadecimal digits only (0-9, a-f)"
 msgstr "Только &шестнадцатеричные цифры (0-9, a-f)"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:652
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1493
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:653
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1501
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:591
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:592
 #: ../../../core/core_st.cpp:132
@@ -541,32 +541,32 @@ msgid "Password Policy"
 msgstr "Политика создания паролей"
 
 # Столбец в истории
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:679
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:681
 msgid "Set Date/Time"
 msgstr "Дата/время создания"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:680
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:682
 #: ../../../core/core_st.cpp:128
 msgid "Password"
 msgstr "Пароль"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:840
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:842
 msgid " ("
 msgstr ""
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:840 ../../../core/core_st.cpp:74
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:842 ../../../core/core_st.cpp:74
 #, fuzzy
 msgid "default"
 msgstr "По умолчанию"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:897
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:899
 msgid "[Notes hidden - click here to display]"
 msgstr "[Заметки скрыты - кликните для отображения]"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:999
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1019
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1273
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1730
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1001
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1025
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1281
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1776
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:393
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:470
 #: ../../../core/core_st.cpp:75
@@ -574,13 +574,15 @@ msgstr "[Заметки скрыты - кликните для отображе�
 msgid "Default Policy"
 msgstr "Стандартный набор"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1047
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1054
 msgid "Couldn't generate password - invalid policy"
 msgstr ""
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1048
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1156
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1163
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1055
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1164
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1171
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1655
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1681
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:98
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:105
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:113
@@ -605,47 +607,56 @@ msgstr ""
 msgid "Error"
 msgstr "Ошибка"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1103
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1111
 msgid "&Show"
 msgstr "&Показать"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1155
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1163
 #, fuzzy
 msgid "This entry must have a "
 msgstr "Элемент должен иметь заголовок."
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1155
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1163
 #, fuzzy
 msgid "title"
 msgstr "Заголовок"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1155
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1163
 #, fuzzy
 msgid "password"
 msgstr "Пароль"
 
 # Выводится при неверном повторе пароля (взоможно, где-то ещё), поэтому entry переведено как «значение»
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1163
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1171
 #, fuzzy
 msgid "Passwords do not match"
 msgstr "Введённые значения не совпадают"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1428
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1436
 #, fuzzy, c-format
 msgid " (every %d days)"
 msgstr "Повторять (%d дней)"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1492
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1500
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:1277
 msgid "Sorry, 'pronounceable' and 'easy-to-read' are not supported together"
 msgstr "Параметры «произносимые» и «удобочитаемые» несовместимы"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1714
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1654
+msgid "Sorry, \"easy-to-read\" and \"pronouncable\" cannot be both selected"
+msgstr ""
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1680
+#, fuzzy
+msgid "Sorry, \"pronouncable\" and \"easy-to-read\" cannot be both selected"
+msgstr "Параметры «произносимые» и «удобочитаемые» несовместимы"
+
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1760
 #, fuzzy
 msgid "mailto:"
 msgstr "E-mail:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1734
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1780
 #, c-format
 msgid "Couldn't find policy %s\n"
 msgstr ""
