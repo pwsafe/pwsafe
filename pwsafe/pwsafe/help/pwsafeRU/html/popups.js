@@ -7,16 +7,16 @@
 
 popFont="Arial,9,,ITALIC"
 
-strPasswordPolicies="Политика паролей определяет правила создания паролей. Длина, буквы, цифры и специальные символы, используемые для для создания паролей, настраиваются на вкладке «Управление»→«Настройки»→«Политика создания паролей»"
+strPasswordPolicies="A password policy determines how a password is created. The length, letters, numbers, and special characters used to generate a password are easily controlled through the Password Policy dialog in the Option menu."
 
-strBruce="Автор «Прикладной криптографии» («Applied Cryptography») и других книг, создатель алгоритма Blowfish, а также создатель и технический директор Counterpane Internet Security."
+strBruce="Author of Applied Cryptography and other books, creator of the Blowfish algorithm, and founder and CTO of Counterpane Internet Security."
 
 strSpecialChars="   `   ~   !   @   #   $   %   ^   &   *   (   )   _   +   -   =   |   }   {   [   ]   <   >   ?   /   \   :   ;   |   "
 
-strCombination="В нашей терминологии комбинация — пароль, позволяющий получить доступ к контейнеру Password Safe."
+strCombination="In our terminology, the Combination is the password that you use to gain access to the Password Safe database."
 
-strPopText1="Заглушка"
+strPopText1="Dummy Placeholder"
 
-strExternalFile="Поддерживаемые форматы: контейнер Password Safe версии 1.x; текстовые файлы (.txt) с разделителем табуляция. НАСТОЯТЕЛЬНО рекомендуется избегать экспорта важной информации текстовый формат, и надёжно удалять эти файлы после использования."
+strExternalFile="Supported file formats: Version 1.x Password Safe database; tab-delimited text (.txt) files. It is STRONGLY recommended that the use of text files with sensitive password information be avoided when possible and that the file be securely deleted or wiped afterwards."
 
-strHexDec="Только следующие:\n 0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f"
+strHexDec="Only the following:\n 0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f"

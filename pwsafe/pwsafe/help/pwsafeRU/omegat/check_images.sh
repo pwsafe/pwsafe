@@ -1,10 +1,10 @@
 #!/bin/sh
-
+REV=4988
 CDIR=`pwd`/../html/images
 DDIR=`pwd`/../../default/html/images
 
 #check for updated files
-LC_ALL=C md5sum -c images.md5 --quiet 2>/dev/null
+svn diff -r${REV}:HEAD --summarize  ../../default/html/images
 
 #check for new files
 cd $DDIR

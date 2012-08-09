@@ -1,13 +1,15 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <omegat>
-  <project version="1.0">
-    <source_dir>__DEFAULT__</source_dir>
-    <target_dir>..</target_dir>
-    <tm_dir>__DEFAULT__</tm_dir>
-    <glossary_dir>__DEFAULT__</glossary_dir>
-    <dictionary_dir>//</dictionary_dir>
-    <source_lang>EN-US</source_lang>
-    <target_lang>RU-RU</target_lang>
-    <sentence_seg>true</sentence_seg>
-  </project>
+    <project version="1.0">
+        <source_dir>__DEFAULT__</source_dir>
+        <target_dir>..</target_dir>
+        <tm_dir>__DEFAULT__</tm_dir>
+        <glossary_dir>__DEFAULT__</glossary_dir>
+        <glossary_file>__DEFAULT__</glossary_file>
+        <dictionary_dir>//</dictionary_dir>
+        <source_lang>EN-US</source_lang>
+        <target_lang>RU-RU</target_lang>
+        <sentence_seg>true</sentence_seg>
+        <support_default_translations>true</support_default_translations>
+    </project>
 </omegat>
