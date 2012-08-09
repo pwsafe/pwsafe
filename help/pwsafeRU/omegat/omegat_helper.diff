@@ -1,50 +1,7 @@
-Common subdirectories: ../../default/html/.svn and ./source/html/.svn
-diff -bNau ../../default/html/backup_and_restore.html ./source/html/backup_and_restore.html
---- ../../default/html/backup_and_restore.html	2011-06-20 13:14:58.000000000 +0400
-+++ ./source/html/backup_and_restore.html	2011-10-02 19:40:56.000000000 +0400
-@@ -68,7 +68,7 @@
- from the file menu. You will be prompted to "Save" the database and
- give it a name if you have not saved it prior to exiting the
- application.</li>
--<li>In addition to the backup and restore described here, <b>Password Safe</p>
-+<li>In addition to the backup and restore described here, <b>Password Safe</b>
- automatically keeps a copy of the database before you save a change. The copy
- is in the same directory as the current database, and the name is identical,
- except for the extension, which is ".ibak", meaning "incremental backup",
-diff -bNau ../../default/html/entering_pwd_pp.html ./source/html/entering_pwd_pp.html
---- ../../default/html/entering_pwd_pp.html	2011-06-20 13:14:58.000000000 +0400
-+++ ./source/html/entering_pwd_pp.html	2011-10-02 19:40:56.000000000 +0400
-@@ -32,7 +32,7 @@
- symbols to use when generating a password contaning them.  You may also set this list
- for the whole database via
- <a href="password_policies.html">"Manage&nbsp;&rarr;&nbsp;Options&nbsp;&rarr;&nbsp;Password Policy"</a>
--tab and override it for specific entries.  Note: the internal "Easy-Vision" symbol list
-+tab and override it for specific entries.  <b>Note:</b> the internal "Easy-Vision" symbol list
- will be used for all Easy-Vision and Pronounceable generated passwords.</p>
- 
- <!-- Added some white space at the bottom for natural scrolling -->
 diff -bNau ../../default/html/export.html ./source/html/export.html
---- ../../default/html/export.html	2011-06-22 17:35:46.000000000 +0400
-+++ ./source/html/export.html	2011-10-02 19:40:56.000000000 +0400
-@@ -45,7 +45,7 @@
- used to view the reports at a later date. The name of the report file is fixed and
- dependent on the function that created it. If the same function is repeated
- and its report saved to disk, any existing report for this function will be
--overwritten. <span style="color=red;">Note: The report may contain sensitive data and
-+overwritten. <span style="color=red;"><b>Note:</b> The report may contain sensitive data and
- care should be taken when selecting the "save to disk" option.</span></p>
- 
- <h3><a name="te"></a>Text Export</h3>
-@@ -104,7 +104,7 @@
- to be exported. See <a href="wzselectdb.html">here</a> for more details.</p>
- 
- <hr style="width: 100%; height: 2px;">
--<small>Note: Details on the format of the exported text file may be found in the
-+<small><b>Note:</b> Details on the format of the exported text file may be found in the
- "<a href="imp_exp_text_details.html">Plain Text Export &amp; Import Format</a>" section.</small>
- <hr style="width: 100%; height: 2px;">
- 
-@@ -133,8 +133,7 @@
+--- ../../default/html/export.html	2012-08-08 20:01:05.000000000 +0400
++++ ./source/html/export.html	2012-08-09 02:18:59.000000000 +0400
+@@ -134,8 +134,7 @@
  <p>The display of XML files is specified by <i>pwsafe.xsl</i>
  - an eXtensible Stylesheet Language file. A sample file, which may be
  modified for your own needs, is supplied as part of the distribution.
@@ -54,66 +11,10 @@ diff -bNau ../../default/html/export.html ./source/html/export.html
  and will not alter it, you will still be able to import it into
  <b>Password Safe</b> at some later time.</p>
  
-diff -bNau ../../default/html/failsafebackups.html ./source/html/failsafebackups.html
---- ../../default/html/failsafebackups.html	2011-06-20 13:14:58.000000000 +0400
-+++ ./source/html/failsafebackups.html	2011-10-02 19:40:56.000000000 +0400
-@@ -60,7 +60,7 @@
- save the Failsafe Backup with a completely new name.</li>
- <li>Once you are satisfied that you have recovered the correct database, either the original or a
- Failsafe Backup, you should delete any old Failsafe Backups so that you will not be prompted to
--decide at a later date. Note: If you use this dialog to delete these files, they will be sent to the
-+decide at a later date. <b>Note:</b> If you use this dialog to delete these files, they will be sent to the
- Recycle Bin, if your version of Windows supports it on the media containing them.</li>
- </ul>
- 
-diff -bNau ../../default/html/file_menu.html ./source/html/file_menu.html
---- ../../default/html/file_menu.html	2011-06-22 17:35:46.000000000 +0400
-+++ ./source/html/file_menu.html	2011-10-02 19:40:56.000000000 +0400
-@@ -136,7 +136,7 @@
- used to view the reports at a later date. The name of the report file is fixed and
- dependent on the function that created it. If the same function is repeated
- and its report saved to disk, any existing report for this function will be
--overwritten. <span style="color=red;">Note: The report may contain sensitive data and
-+overwritten. <span style="color=red;"><b>Note:</b> The report may contain sensitive data and
- care should be taken when selecting the "save to disk" option.</span></p>
- 
- <img alt="file menu" src="images/view_report.jpg">
 Common subdirectories: ../../default/html/images and ./source/html/images
-diff -bNau ../../default/html/images.html ./source/html/images.html
---- ../../default/html/images.html	2011-06-20 13:14:58.000000000 +0400
-+++ ./source/html/images.html	2011-10-02 19:40:56.000000000 +0400
-@@ -23,8 +23,8 @@
- 
- <h1>Entry Icons</h1>
- 
--<p>The following images are used to show the type of entry in the Tree and List views.
--Note: these images are always displayed in the Tree view.  In the List view, the Icon
-+<p>The following images are used to show the type of entry in the Tree and List views.</p>
-+<p><b>Note:</b> these images are always displayed in the Tree view.  In the List view, the Icon
- column can be added or removed using the Column Picker but can only be in column 1.</p>
- 
- <p class="indented"><img src="images/node.png"/>Node or Group [Tree View <i>only</i>]</p>
 diff -bNau ../../default/html/imp_exp_text_details.html ./source/html/imp_exp_text_details.html
---- ../../default/html/imp_exp_text_details.html	2011-07-13 23:16:54.000000000 +0400
-+++ ./source/html/imp_exp_text_details.html	2011-10-02 19:40:56.000000000 +0400
-@@ -15,7 +15,7 @@
- 
- <hr style="width: 100%; height: 2px;">
- 
--<p><style="color: rgb(255, 0, 0);">
-+<p style="color: rgb(255, 0, 0);">
- <b><i><u>Warning</u></i></b>: The Export of sensitive information from a
- <b>Password Safe</b> database to a text file has serious security
- consequences. This operation will create an unprotected copy of
-@@ -26,7 +26,7 @@
- 
- <hr style="width: 100%; height: 2px;">
- 
--<small>Note: The Export and Import to/from text files feature has been changed
-+<small><b>Note:</b> The Export and Import to/from text files feature has been changed
- in V3.06. This page describes the current format.</small>
- 
- <hr style="width: 100%; height: 2px;">
+--- ../../default/html/imp_exp_text_details.html	2012-08-08 20:01:06.000000000 +0400
++++ ./source/html/imp_exp_text_details.html	2012-08-09 02:18:59.000000000 +0400
 @@ -49,25 +49,25 @@
  <p>The Title Row for full data export currently contains the
  following fields by default, separated by a tab.</span></p>
@@ -184,8 +85,8 @@ diff -bNau ../../default/html/imp_exp_text_details.html ./source/html/imp_exp_te
  <td style="padding: 0in 5.4pt;"> </td>
  </tr>
  <tr>
--<td style="padding: 0in 5.4pt;">Autotype</td>
-+<td style="padding: 0in 5.4pt;">_Autotype_</td>
+-<td style="padding: 0in 5.4pt;">AutoType</td>
++<td style="padding: 0in 5.4pt;">_AutoType_</td>
  <td style="padding: 0in 5.4pt;"> </td>
  </tr>
  <tr>
@@ -264,156 +165,10 @@ diff -bNau ../../default/html/imp_exp_text_details.html ./source/html/imp_exp_te
  <td style="padding: 0in 5.4pt;">
  <ul>
  <li>The Notes field should be enclosed by double quotes ("like this").</li>
-@@ -202,18 +202,8 @@
- 
- <br>
- 
--<table border="0" cellpadding="0" cellspacing="0">
--<tbody>
--<tr>
--<td style="padding: 0in 5.4pt; width: 80pt;">
--<p><a name="1"></a><b><u>Notes:</u> <sup>1</sup></b></p>
--</td>
--<td style="padding: 0in 5.4pt;">
--<p>Time fields can be one of the following 7 formats:</p>
--</td>
--</tr>
--</tbody>
--</table>
-+<a name="1"></a><b><u>Note 1.</u></b>
-+Time fields can be one of the following 7 formats:
- 
- <br>
- 
-@@ -221,7 +211,7 @@
- <tbody>
- <tr>
- <td style="padding: 0in 15.4pt;">1.</td>
--<td style="padding: 0in 15.4pt; font-size: 11pt; font-family: 'Courier New'">yyyy/mm/dd hh:mm:ss</td>
-+<td style="padding: 0in 15.4pt; font-size: 11pt; font-family: 'Courier New'">yyyy/MM/dd hh:mm:ss</td>
- <td style="padding: 0in 15.4pt;">e.g., 2007/01/26 19:31:25</td>
- </tr>
- <tr>
-@@ -231,17 +221,17 @@
- </tr>
- <tr>
- <td style="padding: 0in 15.4pt;">3.</td>
--<td style="padding: 0in 15.4pt; font-size: 11pt; font-family: 'Courier New'">yyyy-mm-ddThh:mm:ss</td>
-+<td style="padding: 0in 15.4pt; font-size: 11pt; font-family: 'Courier New'">yyyy-MM-ddThh:mm:ss</td>
- <td style="padding: 0in 15.4pt;">e.g., 2007-01-26T19:31:25</td>
- </tr>
- <tr>
- <td style="padding: 0in 15.4pt;">4.</td>
--<td style="padding: 0in 15.4pt; font-size: 11pt; font-family: 'Courier New'">yyyy-mm-ddThh:mm:ssZ (XML only)</td>
-+<td style="padding: 0in 15.4pt; font-size: 11pt; font-family: 'Courier New'">yyyy-MM-ddThh:mm:ssZ (XML only)</td>
- <td style="padding: 0in 15.4pt;">e.g., 2007-01-26T19:31:25Z</td>
- </tr>
- <tr>
- <td style="padding: 0in 15.4pt;">5.</td>
--<td style="padding: 0in 15.4pt; font-size: 11pt; font-family: 'Courier New'">yyyy-mm-ddThh:mm:ss&plusmn;hh:mm (XML only)</td>
-+<td style="padding: 0in 15.4pt; font-size: 11pt; font-family: 'Courier New'">yyyy-MM-ddThh:mm:ss&plusmn;hh:mm (XML only)</td>
- <td style="padding: 0in 15.4pt;">e.g., 2007-01-26T19:31:25+01:00</td>
- </tr>
- <tr>
-@@ -264,7 +254,7 @@
- <td style="padding: 0in 15.4pt;">yyyy</td><td>The year in full. Value is between 1970 and 2038.</td>
- </tr>
- <tr>
--<td style="padding: 0in 15.4pt;">mm</td><td>The month; e.g. 01 = January, 02 = February etc.</td>
-+<td style="padding: 0in 15.4pt;">MM</td><td>The month; e.g. 01 = January, 02 = February etc.</td>
- </tr>
- <tr>
- <td style="padding: 0in 15.4pt;">dd</td><td>The day of the month</td>
-@@ -287,24 +277,14 @@
- </tbody>
- </table>
- 
--<p><small>Note: Format '2' is the output from the ANSI C function <big><a name="asctime">'</a><code>asctime</code>'</big> and format
-+<p><small><b>Note:</b> Format '2' is the output from the ANSI C function <big><a name="asctime">'</a><code>asctime</code>'</big> and format
- '3' conforms to the ISO 8601 standard.</small></p>
- 
- <hr style="width: 100%; height: 2px;">
- 
--<table border="0" cellpadding="0" cellspacing="0">
--<tbody>
--<tr style="">
--<td style="padding: 0in 5.4pt; width: 80pt;" valign="top" width="47">
--<p><a name="2"></a><b><u>Notes:</u> <sup>2</sup></b></p>
--</td>
--<td style="padding: 0in 5.4pt; ">
--<p>Password history is represented in the exported entry record as a text field
--comprising a header followed by the required number of entries of old passwords:</p>
--</td>
--</tr>
--</tbody>
--</table>
-+<a name="2"></a><b><u>Note 2.</u></b>
-+Password history is represented in the exported entry record as a text field
-+comprising a header followed by the required number of entries of old passwords:
- 
- <p>Password History Header:</p>
- 
-@@ -322,16 +302,10 @@
- 
- <hr>
- 
--<table border="0" cellpadding="0" cellspacing="0">
--<tbody>
--<tr>
--<td style="padding: 0in 5.4pt; width: 80pt;">
--<p><a name="3"></a><b><u>Notes:</u> <sup>3</sup></b></p>
--</td>
--<td style="padding: 0in 5.4pt;">
--<p>The Password Policy is represented in the exported entry record as a text field 'ffffnnnllluuudddsss'
-+<a name="3"></a><b><u>Note 3.</u></b>
-+The Password Policy is represented in the exported entry record as a text field 'ffffnnnllluuudddsss'
- in hexadecimal format, e.g. 'F000010004002005003'.
--6 hexadecimal values are contained in this format. The first value has 4 digits, all other 3.</p>
-+6 hexadecimal values are contained in this format. The first value has 4 digits, all other 3.
- <p>'ffffnnnllluuudddsss' means in detail:</p>
- 
- <ul>
-@@ -372,14 +346,8 @@
- 
- <hr>
- 
--<table border="0" cellpadding="0" cellspacing="0">
--<tbody>
--<tr>
--<td style="padding: 0in 5.4pt; width: 80pt;">
--<p><a name="4"></a><b><u>Notes:</u> <sup>4</sup></b></p>
--</td>
--<td style="padding: 0in 5.4pt;">
--<p>The following values for <i><b>Double Click Action</b></i> are availble:</p>
-+<a name="4"></a><b><u>Note 4.</u></b>
-+The following values for <i><b>Double Click Action</b></i> are availble:
- <ul>
- <li>-1: Use the database default</li>
- <li>0: Copy password to clipboard</li>
-@@ -393,10 +361,6 @@
- <li>8: Run Command</li>
- <li>9: Send email</li>
- </ul>
--</td>
--</tr>
--</tbody>
--</table>
- 
- <!-- Added some white space at the bottom for natural scrolling -->
- <br>
 diff -bNau ../../default/html/import.html ./source/html/import.html
---- ../../default/html/import.html	2011-06-20 13:14:58.000000000 +0400
-+++ ./source/html/import.html	2011-10-02 19:40:56.000000000 +0400
-@@ -36,7 +36,7 @@
- view the reports at a later date. The name of the report file is fixed and
- depends on the function that created it. If the same function is repeated
- and its report saved to disk, any existing report for this function will be
--overwritten. <span style="color=red;">Note: The report may contain sensitive data and
-+overwritten. <span style="color=red;"><b>Note:</b> The report may contain sensitive data and
- care should be taken when selecting the "save to disk" option.</span></p>
- 
- <p><b>Note:</b> You can also 'import' a subset of entries from another <b>Password Safe</b>
-@@ -348,11 +348,11 @@
+--- ../../default/html/import.html	2012-08-08 20:01:07.000000000 +0400
++++ ./source/html/import.html	2012-08-09 02:18:59.000000000 +0400
+@@ -396,11 +396,11 @@
  </tr>
  </thead>
  <tbody>
@@ -430,45 +185,9 @@ diff -bNau ../../default/html/import.html ./source/html/import.html
  <tr><td>All others</td><td>Inserted into the <b>Password Safe</b> Notes field in the form:<br> "Key: Value"</td></tr>
  </tbody>
  </table>
-diff -bNau ../../default/html/manage_menu.html ./source/html/manage_menu.html
---- ../../default/html/manage_menu.html	2011-06-22 17:35:46.000000000 +0400
-+++ ./source/html/manage_menu.html	2011-10-02 19:40:56.000000000 +0400
-@@ -16,7 +16,7 @@
- <p>The <b>Manage Menu</b> is where all of <b>Password Safe</b>'s
- options and settings are controlled. </p>
- 
--<h3>Change Safe Combination</h3>
-+<h3>Change Safe Combination...</h3>
- 
- <p>Selecting this option brings up the Change Safe Password dialog.</p>
- 
-@@ -30,7 +30,7 @@
- <p><small><i>See <a href="backup_and_restore.html">Backing
- Up and Restoring Databases</a> for more information.</i></small></p>
- 
--<h3>Restore from Backup</h3>
-+<h3>Restore from Backup...</h3>
- 
- <p>Restore a backed up password database file.</p>
- 
-@@ -60,12 +60,12 @@
- 
- <hr>
- 
--<h3>Validate</h3>
-+<h3>Validate...</h3>
- 
- <p>After selecting a database, this database will be checked for being
- completely compatible to <b>Password Safe</b>.</p>
- 
--<p><small>Note: This menu item will only be enabled if there is no database 
-+<p><small><b>Note:</b> This menu item will only be enabled if there is no database 
- currently opened.</small></p>
- 
- <h3>Customize Main Toolbar</h3>
 diff -bNau ../../default/html/menu_toolbar.html ./source/html/menu_toolbar.html
---- ../../default/html/menu_toolbar.html	2011-06-20 13:14:58.000000000 +0400
-+++ ./source/html/menu_toolbar.html	2011-10-02 19:40:56.000000000 +0400
+--- ../../default/html/menu_toolbar.html	2012-08-08 20:01:08.000000000 +0400
++++ ./source/html/menu_toolbar.html	2012-08-09 02:18:59.000000000 +0400
 @@ -33,8 +33,8 @@
  <table align="center" cellspacing="5">
  <tbody>
@@ -481,8 +200,8 @@ diff -bNau ../../default/html/menu_toolbar.html ./source/html/menu_toolbar.html
  <td><b><font color="white">Description</font></b></td>
  </tr>
 diff -bNau ../../default/html/password_history.html ./source/html/password_history.html
---- ../../default/html/password_history.html	2011-06-20 13:14:58.000000000 +0400
-+++ ./source/html/password_history.html	2011-10-02 19:40:56.000000000 +0400
+--- ../../default/html/password_history.html	2012-08-08 20:01:09.000000000 +0400
++++ ./source/html/password_history.html	2012-08-09 02:18:59.000000000 +0400
 @@ -24,8 +24,7 @@
  <img alt="Password History" src="images/edit_view_entry_add.jpg">
  
@@ -493,7 +212,7 @@ diff -bNau ../../default/html/password_history.html ./source/html/password_histo
  operations here:</p>
  
  <h3>Keep <i>N</i> last passwords</h3>
-@@ -45,13 +44,13 @@
+@@ -45,7 +44,7 @@
  <p>Clicking on a row in the list of recent passwords will copy the password displayed in
  that row to the clipboard.</p>
  
@@ -502,70 +221,21 @@ diff -bNau ../../default/html/password_history.html ./source/html/password_histo
  
  <p>Clicking on this button will clear the previous passwords stored with this entry.</p>
  
- <hr style="width: 100%; height: 2px;">
- 
--<small><b>Note: </b>The entry is not actually
-+<small><b>Note:</b> The entry is not actually
- modified until you click on the OK button in the Edit/View Entry dialog
- box. If you clicked on Clear History by mistake, just click on Cancel
- instead of OK in the Edit/View Entry dialog box.</small><br>
 diff -bNau ../../default/html/password_history_tab.html ./source/html/password_history_tab.html
---- ../../default/html/password_history_tab.html	2011-06-20 13:14:58.000000000 +0400
-+++ ./source/html/password_history_tab.html	2011-10-02 19:40:56.000000000 +0400
+--- ../../default/html/password_history_tab.html	2012-08-08 20:01:09.000000000 +0400
++++ ./source/html/password_history_tab.html	2012-08-09 02:18:59.000000000 +0400
 @@ -1,7 +1,7 @@
  <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
  <html>
  <head>
--<title>Setting a Password Policy</title>
+-<title>Saving Old Password History</title>
 +<title>Password History</title>
  <!-- pwsafe version: 2.11--><!-- Modified: 15/06/2005 --><!--Popup control -->
  <script language="javascript" src="html/popups.js">
  </script>
-diff -bNau ../../default/html/password_policies.html ./source/html/password_policies.html
---- ../../default/html/password_policies.html	2011-06-20 13:14:58.000000000 +0400
-+++ ./source/html/password_policies.html	2011-10-02 19:40:56.000000000 +0400
-@@ -11,7 +11,7 @@
- <object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"></object>
- <!-- Popup Source File -->
- 
--<h2>Setting a Password Policy</h2>
-+<h2>Password Policy Tab</h2>
- 
- <img alt="password policy" src="images/options/password_policy_tab.jpg">
- 
-@@ -60,7 +60,7 @@
- <p>It is now possible to select the default symbol list that will be used in a database via the
- <a href="password_policies.html">"Manage&nbsp;&rarr;&nbsp;Options&nbsp;&rarr;&nbsp;Password Policy"</a>
- tab. In addition, each entry can have its own symbol list specified via the Add or Edit entry
--dialogs. Note: these symbol lists are not used for either pronounceable or
-+dialogs. <b>Note:</b> these symbol lists are not used for either pronounceable or
- easy-to-read passwords.</p>
- 
- <!-- Added some white space at the bottom for natural scrolling -->
-diff -bNau ../../default/html/preferences.html ./source/html/preferences.html
---- ../../default/html/preferences.html	2011-07-13 23:16:54.000000000 +0400
-+++ ./source/html/preferences.html	2011-10-02 19:40:56.000000000 +0400
-@@ -66,7 +66,7 @@
- <p>Note that only non-default preference values are stored in the
-   configuration file or database.</p>
- 
--<p><big>Note: Do <b>NOT</b> modify any of the preferences in the pwsafe.cfg file manually, as this may
-+<p><big><b>Note:</b> Do <b>NOT</b> modify any of the preferences in the pwsafe.cfg file manually, as this may
- cause unexpected or unpredictable results.  Whilst we have made every effort to verify any preference we
- read in, we cannot guarantee that manually edited values will not cause a problem.</p>
- 
-@@ -831,7 +831,7 @@
- <td>DefaultSymbols</td>
- <td>&lt;none&gt;</td>
- <td>database</td>
--<td>The default list of symbols to be used when generating a password with symbols. Note: each
-+<td>The default list of symbols to be used when generating a password with symbols. <b>Note:</b> each
- entry may override this value.</td>
- </tr>
- </tbody>
 diff -bNau ../../default/html/run_command.html ./source/html/run_command.html
---- ../../default/html/run_command.html	2011-06-20 13:14:58.000000000 +0400
-+++ ./source/html/run_command.html	2011-10-02 19:40:56.000000000 +0400
+--- ../../default/html/run_command.html	2012-08-08 20:01:11.000000000 +0400
++++ ./source/html/run_command.html	2012-08-09 02:18:59.000000000 +0400
 @@ -1,6 +1,6 @@
  <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
  <html><head>
@@ -583,18 +253,9 @@ diff -bNau ../../default/html/run_command.html ./source/html/run_command.html
  
  <p>An entry's 'Run Command' field can contain a command that will
  be run when the Run Command action is selected. The command can be anything
-@@ -223,7 +223,7 @@
- be determined by running 'cmd.exe' and issuing the 'set' command without any
- parameters. Any unknown environmental variable is left unchanged in the
- Run Command e.g., %xyz%\notepad.exe remains as %xyz%\notepad.exe if
--variable 'xyz' is not set. Note: Windows environmental variables are <b>not</b>
-+variable 'xyz' is not set.</p> <p><b>Note:</b> Windows environmental variables are <b>not</b>
- case sensitive.</p>
- </ul>
- </ul>
 diff -bNau ../../default/html/style.css ./source/html/style.css
---- ../../default/html/style.css	2011-06-20 13:14:58.000000000 +0400
-+++ ./source/html/style.css	2011-10-02 19:40:56.000000000 +0400
+--- ../../default/html/style.css	2012-08-08 20:01:12.000000000 +0400
++++ ./source/html/style.css	2012-08-09 02:18:59.000000000 +0400
 @@ -6,6 +6,7 @@
  	color:black;
  	font-size="small";
@@ -603,7 +264,7 @@ diff -bNau ../../default/html/style.css ./source/html/style.css
  	}
  
  A:link {color: #0069CE; text-decoration: none;} 
-@@ -26,19 +27,23 @@
+@@ -31,19 +32,23 @@
  	{
  	margin-top: .75em;
  	margin-bottom: 1.25em;	
@@ -627,7 +288,7 @@ diff -bNau ../../default/html/style.css ./source/html/style.css
  	}
  
  ul.onestep
-@@ -72,3 +77,16 @@
+@@ -77,3 +82,16 @@
  	vertical-align: top;
  	padding: 0;
  	}
@@ -644,33 +305,9 @@ diff -bNau ../../default/html/style.css ./source/html/style.css
 +	text-indent: 3ex;
 +	margin:0.25em;
 +	}
-diff -bNau ../../default/html/view_menu.html ./source/html/view_menu.html
---- ../../default/html/view_menu.html	2011-06-22 17:35:46.000000000 +0400
-+++ ./source/html/view_menu.html	2011-10-02 19:40:56.000000000 +0400
-@@ -92,7 +92,7 @@
- 
- <p>Overview of all changed entries:<br><img alt="Data, only changes" src="images/tree_view_change_only.jpg"></p>
- 
--<p><small>Note: As long as there are some unsaved items, there will be
-+<p><small><b>Note:</b> As long as there are some unsaved items, there will be
- a "*" in the status area at the bottom of the application's window.</small></p>
- 
- <h3>Show entries with Expiry dates</h3>
-diff -bNau ../../default/html/wzfinish.html ./source/html/wzfinish.html
---- ../../default/html/wzfinish.html	2011-06-20 13:14:58.000000000 +0400
-+++ ./source/html/wzfinish.html	2011-10-02 19:40:56.000000000 +0400
-@@ -24,7 +24,7 @@
- and/or copy the contents to the clipboard. If saved to disk, you can view it again via the
- <a href="view_menu.html">"View&nbsp;&rarr;&nbsp;Reports"</a> menu. Note that when saved
- to disk, it will overwrite any previous report file found in this directory for this function.
--<span style="color=red;">Note: The report may contain sensitive data and care should be
-+<span style="color=red;"><b>Note:</b> The report may contain sensitive data and care should be
- taken when selecting the "save to disk" option.</span></p>
- 
- <!-- Added some white space at the bottom for natural scrolling -->
 diff -bNau ../../default/html/wzselectdb.html ./source/html/wzselectdb.html
---- ../../default/html/wzselectdb.html	2011-06-20 13:14:58.000000000 +0400
-+++ ./source/html/wzselectdb.html	2011-10-02 19:40:56.000000000 +0400
+--- ../../default/html/wzselectdb.html	2012-08-08 20:01:13.000000000 +0400
++++ ./source/html/wzselectdb.html	2012-08-09 02:18:59.000000000 +0400
 @@ -41,15 +41,19 @@
  
  <p>Selecting 'Back' will return to the first Wizard tab where you may unselect the
@@ -698,8 +335,8 @@ diff -bNau ../../default/html/wzselectdb.html ./source/html/wzselectdb.html
  <!-- Added some white space at the bottom for natural scrolling -->
  <br>
  <br>
---- ../../default/pwsafe.hhc	2011-03-07 11:34:42.000000000 +0300
-+++ ./source/pwsafe.hhc	2011-10-02 19:40:56.000000000 +0400
+--- ../../default/pwsafe.hhc	2012-08-08 20:02:04.000000000 +0400
++++ ./source/pwsafe.hhc	2012-08-09 02:18:59.000000000 +0400
 @@ -153,7 +153,7 @@
  			<param name="Local" value="html\display_tab.html">
  			</OBJECT>
