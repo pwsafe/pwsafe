@@ -114,7 +114,7 @@ HRESULT STDMETHODCALLTYPE MFileSAX2ErrorHandler::fatalError(struct ISAXLocator *
                                                             const wchar_t * pwchErrorMessage,
                                                             HRESULT hrErrorCode )
 {
-  return S_OK;
+  return error(pLocator, pwchErrorMessage, hrErrorCode);
 }
 
 HRESULT STDMETHODCALLTYPE MFileSAX2ErrorHandler::ignorableWarning(struct ISAXLocator * pLocator,

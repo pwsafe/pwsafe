@@ -2113,8 +2113,9 @@ void DboxMain::OnImportXML()
     bool bWasEmpty = m_core.GetNumEntries() == 0;
     std::wstring strXMLErrors, strSkippedList, strPWHErrorList, strRenameList;
     CString XMLFilename = fd.GetPathName();
-    int numValidated, numImported, numSkipped, numRenamed, numPWHErrors;
-    int numRenamedPolicies, numNoPolicy;
+    //num* must be initialised because ImportXMLFile doesn't set them in case of validation errors
+    int numValidated=0, numImported=0, numSkipped=0, numRenamed=0, numPWHErrors=0;
+    int numRenamedPolicies=0, numNoPolicy=0;
     bool bImportPSWDsOnly = dlg.m_bImportPSWDsOnly == TRUE;
 
     CWaitCursor waitCursor;  // This may take a while!
