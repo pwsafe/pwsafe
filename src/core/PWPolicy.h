@@ -106,7 +106,10 @@ struct PWPolicy {
   void Policy2Table(RowPutter rp, void *table);
 
 private:
-  friend class PWSprefs; // PWSprefs is the only one who can call Normalize()
+  friend class PWSprefs; // PWSprefs can call Normalize()
+#ifdef USE_XML_LIBRARY
+  friend class XMLFileHandlers; // XMLFileHandlers also need Normalize()
+#endif
   void Normalize(); // make policy internally consistent
 };
 
