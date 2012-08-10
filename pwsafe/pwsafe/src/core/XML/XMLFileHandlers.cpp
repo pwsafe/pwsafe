@@ -537,6 +537,8 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
       break;
     case XLE_POLICY:
     {
+      // Normalize imported policy
+      m_Named_pwp.Normalize();
       // Deal with Named Policies in the XML file
       PWPolicy currentDB_st_pp;
       if (m_pXMLcore->GetPolicyFromName(m_PolicyName, currentDB_st_pp)) {
