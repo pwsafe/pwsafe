@@ -388,13 +388,14 @@ LRESULT CAddEdit_PasswordPolicy::OnQuerySiblings(WPARAM wParam, LPARAM )
   // Have any of my fields been changed?
   switch (wParam) {
     case PP_DATA_CHANGED:
-      if (M_ipolicy()     != M_oldipolicy() ||
+      if (M_ipolicy()     != M_oldipolicy()     ||
           (M_ipolicy()    == SPECIFIC_POLICY &&
-           M_pwp()        != M_oldpwp()) ||
+           M_pwp()        != M_oldpwp())        ||
           (M_ipolicy()    == NAMED_POLICY &&
            M_policyname() != M_oldpolicyname()) ||
           M_iownsymbols() != M_ioldownsymbols() ||
-          M_symbols()     != M_oldsymbols())
+          (M_ipolicy()    != NAMED_POLICY &&
+           M_symbols()    != M_oldsymbols())      )
         return 1L;
       break;
     case PP_UPDATE_VARIABLES:
