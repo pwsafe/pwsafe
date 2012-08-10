@@ -487,8 +487,9 @@ LRESULT CAddEdit_Basic::OnQuerySiblings(WPARAM wParam, LPARAM )
               M_realnotes()    != M_originalrealnotesTRC() ||
               M_URL()          != M_pci()->GetURL()        ||
               M_email()        != M_pci()->GetEmail()      ||
-              M_symbols()      != M_pci()->GetSymbols()    ||
-              M_realpassword() != M_oldRealPassword())
+              (M_ipolicy() != NAMED_POLICY &&
+               M_symbols()      != M_pci()->GetSymbols())  ||
+              M_realpassword() != M_oldRealPassword()        )
             return 1L;
           break;
         case IDS_ADDENTRY:
