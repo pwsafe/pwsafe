@@ -7091,16 +7091,16 @@
       <tuv lang="EN-US">
         <seg>However, if the imported Named Password Policy has different policy settings to that in the database with the same name, then it will be imported with the word "Merged - &lt;i0&gt;datetime&lt;/i0&gt;" appended to its name (where the '&lt;i1&gt;datetime&lt;/i1&gt;' is the date/time of the Merge) and all entries refering to it will now reference the newly named policy.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20120809T132407Z">
-        <seg>В случае, если именованная политика с совпадающим именем имеет другие параметры, к имени импортированной политики будет добавлена приставка «Объединено — &lt;i0&gt;дата/время&lt;/i0&gt;» (где «&lt;i1&gt;дата/время&lt;/i1&gt;» — дата и время слияния). Все соответствующие элементы будут привязаны к ней.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20120810T124403Z">
+        <seg>В случае, если именованная политика с совпадающим именем имеет другие параметры, к имени импортированной политики добавляется фраза «Объединено &lt;i0&gt;дата/время&lt;/i0&gt;» (где «&lt;i1&gt;дата/время&lt;/i1&gt;» — дата и время слияния). Все соответствующие элементы будут привязаны к ней.</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="EN-US">
         <seg>However, if the imported Named Password Policy has different policy settings to that in the database with the same name, then the policy will be imported with the words "Imported - &lt;i3&gt;datetime&lt;/i3&gt;" appended to its name (where the '&lt;i4&gt;datetime&lt;/i4&gt;' is the date/time of the Import) and all imported entries refering to it will now reference the newly named policy.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20120809T124425Z">
-        <seg>В случае, если именованная политика с совпадающим именем имеет другие параметры, к имени импортированной политики будет добавлена приставка «Импортировано — &lt;i3&gt;дата/время&lt;/i3&gt;» (где «&lt;i4&gt;дата/время&lt;/i4&gt;» — дата и время импорта). Все соответствующие импортированные элементы будут привязаны к ней.</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20120810T124213Z">
+        <seg>В случае, если именованная политика с совпадающим именем имеет другие параметры, к имени импортированной политики добавляется фраза «Импортировано &lt;i3&gt;дата/время&lt;/i3&gt;» (где «&lt;i4&gt;дата/время&lt;/i4&gt;» — дата и время импорта). Все соответствующие импортированные элементы будут привязаны к ней.</seg>
       </tuv>
     </tu>
     <tu>
@@ -12078,8 +12078,8 @@
       <tuv lang="EN-US">
         <seg>Similarly, when one or more entries are dragged from another database and dropped into the current database except "Drag - &lt;i0&gt;datetime&lt;/i0&gt;" will be used to make the Named Password Policy unique.</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20120809T132640Z">
-        <seg>Аналогично, при перетаскивании одного или нескольких элементов из одного контейнера в другой, для обеспечения уникальности будет использоваться приставка «Перетянуто — &lt;i0&gt;дата/время&lt;/i0&gt;».</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20120810T124510Z">
+        <seg>Аналогично, при перетаскивании одного или нескольких элементов из одного контейнера в другой, для обеспечения уникальности будет использоваться фраза «Перетянуто &lt;i0&gt;дата/время&lt;/i0&gt;».</seg>
       </tuv>
     </tu>
     <tu>

@@ -7091,16 +7091,16 @@
       <tuv xml:lang="EN-US">
         <seg>However, if the imported Named Password Policy has different policy settings to that in the database with the same name, then it will be imported with the word "Merged - <bpt i="0" x="0">&lt;i0&gt;</bpt>datetime<ept i="0">&lt;/i0&gt;</ept>" appended to its name (where the '<bpt i="1" x="1">&lt;i1&gt;</bpt>datetime<ept i="1">&lt;/i1&gt;</ept>' is the date/time of the Merge) and all entries refering to it will now reference the newly named policy.</seg>
       </tuv>
-      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20120809T132407Z">
-        <seg>В случае, если именованная политика с совпадающим именем имеет другие параметры, к имени импортированной политики будет добавлена приставка «Объединено — <bpt i="0" x="0">&lt;i0&gt;</bpt>дата/время<ept i="0">&lt;/i0&gt;</ept>» (где «<bpt i="1" x="1">&lt;i1&gt;</bpt>дата/время<ept i="1">&lt;/i1&gt;</ept>» — дата и время слияния). Все соответствующие элементы будут привязаны к ней.</seg>
+      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20120810T124403Z">
+        <seg>В случае, если именованная политика с совпадающим именем имеет другие параметры, к имени импортированной политики добавляется фраза «Объединено <bpt i="0" x="0">&lt;i0&gt;</bpt>дата/время<ept i="0">&lt;/i0&gt;</ept>» (где «<bpt i="1" x="1">&lt;i1&gt;</bpt>дата/время<ept i="1">&lt;/i1&gt;</ept>» — дата и время слияния). Все соответствующие элементы будут привязаны к ней.</seg>
       </tuv>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
         <seg>However, if the imported Named Password Policy has different policy settings to that in the database with the same name, then the policy will be imported with the words "Imported - <bpt i="3" x="3">&lt;i3&gt;</bpt>datetime<ept i="3">&lt;/i3&gt;</ept>" appended to its name (where the '<bpt i="4" x="4">&lt;i4&gt;</bpt>datetime<ept i="4">&lt;/i4&gt;</ept>' is the date/time of the Import) and all imported entries refering to it will now reference the newly named policy.</seg>
       </tuv>
-      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20120809T124425Z">
-        <seg>В случае, если именованная политика с совпадающим именем имеет другие параметры, к имени импортированной политики будет добавлена приставка «Импортировано — <bpt i="3" x="3">&lt;i3&gt;</bpt>дата/время<ept i="3">&lt;/i3&gt;</ept>» (где «<bpt i="4" x="4">&lt;i4&gt;</bpt>дата/время<ept i="4">&lt;/i4&gt;</ept>» — дата и время импорта). Все соответствующие импортированные элементы будут привязаны к ней.</seg>
+      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20120810T124213Z">
+        <seg>В случае, если именованная политика с совпадающим именем имеет другие параметры, к имени импортированной политики добавляется фраза «Импортировано <bpt i="3" x="3">&lt;i3&gt;</bpt>дата/время<ept i="3">&lt;/i3&gt;</ept>» (где «<bpt i="4" x="4">&lt;i4&gt;</bpt>дата/время<ept i="4">&lt;/i4&gt;</ept>» — дата и время импорта). Все соответствующие импортированные элементы будут привязаны к ней.</seg>
       </tuv>
     </tu>
     <tu>
@@ -12078,8 +12078,8 @@
       <tuv xml:lang="EN-US">
         <seg>Similarly, when one or more entries are dragged from another database and dropped into the current database except "Drag - <bpt i="0" x="0">&lt;i0&gt;</bpt>datetime<ept i="0">&lt;/i0&gt;</ept>" will be used to make the Named Password Policy unique.</seg>
       </tuv>
-      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20120809T132640Z">
-        <seg>Аналогично, при перетаскивании одного или нескольких элементов из одного контейнера в другой, для обеспечения уникальности будет использоваться приставка «Перетянуто — <bpt i="0" x="0">&lt;i0&gt;</bpt>дата/время<ept i="0">&lt;/i0&gt;</ept>».</seg>
+      <tuv xml:lang="RU-RU" changeid="pm_kan" changedate="20120810T124510Z">
+        <seg>Аналогично, при перетаскивании одного или нескольких элементов из одного контейнера в другой, для обеспечения уникальности будет использоваться фраза «Перетянуто <bpt i="0" x="0">&lt;i0&gt;</bpt>дата/время<ept i="0">&lt;/i0&gt;</ept>».</seg>
       </tuv>
     </tu>
     <tu>
