@@ -1806,7 +1806,7 @@ stringT PWSprefs::GetXMLPreferences()
     if (m_stringValues[i] != m_string_prefs[i].defVal &&
         m_string_prefs[i].ptype == ptDatabase) {
       stringT sTemp = PWSUtil::GetSafeXMLString(m_stringValues[i]);
-      os << "\t\t<" << m_string_prefs[i].name << sTemp << "</" << 
+      os << "\t\t<" << m_string_prefs[i].name << ">" << sTemp << "</" << 
           m_string_prefs[i].name << ">" << endl;
     }
   }
