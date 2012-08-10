@@ -74,6 +74,7 @@ BEGIN_MESSAGE_MAP(CManagePSWDPolices, CPWDialog)
   ON_STN_CLICKED(IDC_STATIC_COPYPSWD, OnCopyPassword) 
 
   ON_NOTIFY(NM_CLICK, IDC_POLICYLIST, OnPolicySelected)
+  ON_NOTIFY(LVN_KEYDOWN, IDC_POLICYLIST, OnPolicySelected)
   ON_NOTIFY(NM_DBLCLK, IDC_POLICYENTRIES, OnEntryDoubleClicked)
 
   ON_NOTIFY(HDN_ITEMCLICK, IDC_POLICYNAMES_HEADER, OnColumnNameClick)
@@ -621,10 +622,10 @@ void CManagePSWDPolices::OnPolicySelected(NMHDR *pNotifyStruct, LRESULT *pLResul
       LPNMLVKEYDOWN pLVKeyDown = reinterpret_cast<LPNMLVKEYDOWN>(pNotifyStruct);
       m_iSelectedItem = m_PolicyNames.GetNextItem(-1, LVNI_SELECTED);
       int nCount = m_PolicyNames.GetItemCount();
-      if (pLVKeyDown->wVKey == VK_DOWN)
-        m_iSelectedItem = (m_iSelectedItem + 1) % nCount;
-      if (pLVKeyDown->wVKey == VK_UP)
-        m_iSelectedItem = (m_iSelectedItem - 1 + nCount) % nCount;
+      if ((pLVKeyDown->wVKey == VK_DOWN) && (m_iSelectedItem + 1 < nCount))
+        m_iSelectedItem++;
+      if ((pLVKeyDown->wVKey == VK_UP) && (m_iSelectedItem - 1 >= 0))
+        m_iSelectedItem--;
       break;
     }
     default:
@@ -655,17 +656,17 @@ void CManagePSWDPolices::OnPolicySelected(NMHDR *pNotifyStruct, LRESULT *pLResul
     default:
       // Can Edit any other but only...
       // List if use count is not zero & Delete if use count is zero
-      PSWDPolicyMapCIter citer = m_MapPSWDPLC.cbegin();
-      advance(citer, m_PolicyNames.GetItemData(m_iSelectedItem));
+      CString cs_policyname = m_PolicyNames.GetItemText(m_iSelectedItem, 0);
+      PSWDPolicyMapCIter citer = m_MapPSWDPLC.find(StringX((LPCWSTR)cs_policyname));
 
       // Always allow edit/view
       GetDlgItem(IDC_EDIT)->EnableWindow(TRUE);
 
         // Do not allow delete of policy if use count is non-zero
-      GetDlgItem(IDC_DELETE)->EnableWindow((citer->second.usecount != 0 || m_bReadOnly) ? FALSE : TRUE);
+      GetDlgItem(IDC_DELETE)->EnableWindow(((citer == m_MapPSWDPLC.end()) || citer->second.usecount != 0 || m_bReadOnly) ? FALSE : TRUE);
 
       // Do not allow list of associated items if use count is zero
-      GetDlgItem(IDC_LIST_POLICYENTRIES)->EnableWindow(citer->second.usecount == 0 ?
+      GetDlgItem(IDC_LIST_POLICYENTRIES)->EnableWindow(((citer == m_MapPSWDPLC.end()) || (citer->second.usecount == 0)) ?
                                          FALSE : TRUE);
 
       break;
