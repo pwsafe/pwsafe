@@ -88,7 +88,7 @@ BOOL COptionsPasswordHistory::OnInitDialog()
   COptions_PropertyPage::OnInitDialog();
 
   m_chkbox.SetTextColour(CR_DATABASE_OPTIONS);
-  m_chkbox.SetBkgColour(COLOR_WINDOW);
+  m_chkbox.ResetBkgColour();//Use current window's background
 
   CSpinButtonCtrl *pspin = (CSpinButtonCtrl *)GetDlgItem(IDC_PWHSPIN);
 
@@ -239,6 +239,13 @@ HBRUSH COptionsPasswordHistory::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
     case IDC_STATIC_NUMPWSDHIST:
       pDC->SetTextColor(CR_DATABASE_OPTIONS);
       pDC->SetBkMode(TRANSPARENT);
+      break;
+    case IDC_SAVEPWHISTORY:
+      //OnCustomDraw in CButtonExtn called only when themes are used, so we need to set colors manually when themes are off
+      if (!IsThemeActive()) {
+        pDC->SetTextColor(CR_DATABASE_OPTIONS);
+        pDC->SetBkMode(TRANSPARENT);
+  }
       break;
   }
 

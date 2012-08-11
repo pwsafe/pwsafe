@@ -92,7 +92,7 @@ BOOL COptionsSecurity::OnInitDialog()
 
   for (int i = 0; i < 2; i++) {
     m_chkbox[i].SetTextColour(CR_DATABASE_OPTIONS);
-    m_chkbox[i].SetBkgColour(COLOR_WINDOW);
+    m_chkbox[i].ResetBkgColour();//Use current window's background
   }
 
   OnLockOnIdleTimeout();
@@ -228,6 +228,14 @@ HBRUSH COptionsSecurity::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
     case IDC_STATIC_IDLEMINS:
       pDC->SetTextColor(CR_DATABASE_OPTIONS);
       pDC->SetBkMode(TRANSPARENT);
+      break;
+    case IDC_COPYPSWDURL:
+    case IDC_LOCK_TIMER:
+      //OnCustomDraw in CButtonExtn called only when themes are used, so we need to set colors manually when themes are off
+      if (!IsThemeActive()) {
+        pDC->SetTextColor(CR_DATABASE_OPTIONS);
+        pDC->SetBkMode(TRANSPARENT);
+  }
       break;
   }
 

@@ -1186,15 +1186,16 @@ void CButtonExtn::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
   *pLResult = CDRF_DODEFAULT;
 
   switch (lpNMCustomDraw->dwDrawStage) {
-    case CDDS_PREERASE:
+    case CDDS_PREPAINT:
       BOOL fChecked = GetCheck() & BST_CHECKED;
       BOOL fHot = lpNMCustomDraw->uItemState & CDIS_HOT;
+      BOOL fFocus = lpNMCustomDraw->uItemState & CDIS_FOCUS;
       DrawButton(lpNMCustomDraw->hdr.hwndFrom, lpNMCustomDraw->hdc,
-				     		&lpNMCustomDraw->rc, fChecked, fHot);
+				     		&lpNMCustomDraw->rc, fChecked, fHot, fFocus);
   }
 }
 
-void CButtonExtn::DrawButton(HWND hWnd, HDC hDC, RECT *pRect, BOOL fChecked, BOOL fHot)
+void CButtonExtn::DrawButton(HWND hWnd, HDC hDC, RECT *pRect, BOOL fChecked, BOOL fHot, BOOL fFocus)
 {
   // Code originally by Nikita Leontiev in answer to "Change checkBox text color Win32"
   // in MS's Forum: "Visual Studio Developer Center > Visual Studio vNext Forums > Visual C++ General"
@@ -1208,8 +1209,6 @@ void CButtonExtn::DrawButton(HWND hWnd, HDC hDC, RECT *pRect, BOOL fChecked, BOO
   SelectObject(hMemDC, hBitmap);
 
   RECT rFillRect = {0, 0, nWidth, nHeight};
-  FillRect(hMemDC, &rFillRect,
-           CreateSolidBrush(GetSysColor(m_bUseBkgColour ? m_icolour : COLOR_WINDOW)));
 
   HTHEME hTheme = OpenThemeData(hWnd, L"BUTTON");
   int nStateID(0);
@@ -1224,12 +1223,21 @@ void CButtonExtn::DrawButton(HWND hWnd, HDC hDC, RECT *pRect, BOOL fChecked, BOO
       nStateID = (fChecked) ? RBS_CHECKEDHOT : RBS_UNCHECKEDHOT;
   }
 
+  //If bg color isn't set, try get backgroung color from current theme
+  if (m_bUseBkgColour) {
+    FillRect(hMemDC, &rFillRect, CreateSolidBrush(GetSysColor(m_icolour)));
+  }
+  else { 
+    // Don't check IsThemeBackgroundPartiallyTransparent because it return false for BP_CHECKBOX
+    DrawThemeParentBackground(hWnd, hMemDC, &rFillRect);
+  }
+
   RECT rIconRect = {0, 0, 13, nHeight};
   DrawThemeBackground(hTheme, hMemDC, m_type == BS_AUTOCHECKBOX ? BP_CHECKBOX : BP_RADIOBUTTON,
                       nStateID, &rIconRect, NULL);
   CloseThemeData(hTheme);
 
-  RECT rTextRect = {18, 0, nWidth - 18, nHeight};
+  RECT rTextRect = {16, 0, nWidth - 16, nHeight};
   SetBkMode(hMemDC, TRANSPARENT);
   if (m_bUseTextColour)
     SetTextColor(hMemDC, m_crfText);
@@ -1242,6 +1250,13 @@ void CButtonExtn::DrawButton(HWND hWnd, HDC hDC, RECT *pRect, BOOL fChecked, BOO
   }
 
   DrawText(hMemDC, m_caption, m_caption.GetLength(), &rTextRect, DT_SINGLELINE | DT_VCENTER);
+
+  if (fFocus){
+    DrawText(hMemDC, m_caption, m_caption.GetLength(), &rTextRect, DT_SINGLELINE | DT_VCENTER | DT_CALCRECT);
+    rTextRect.left--;
+    rTextRect.right++;
+    DrawFocusRect(hMemDC, &rTextRect);
+  }
 
   BitBlt(hDC, 0, 0, nWidth, nHeight, hMemDC, 0, 0, SRCCOPY);
 

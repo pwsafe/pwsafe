@@ -219,6 +219,7 @@ void AddEditPropSheet::Init()
   m_pwpSymCtrl = NULL;
   m_pwNumSymbox = NULL;
   m_pwpSymSpin = NULL;
+  m_ownsymbols = NULL;
   m_pwpEasyCtrl = NULL;
   m_pwpPronounceCtrl = NULL;
   m_pwpHexCtrl = NULL;
@@ -347,13 +348,12 @@ void AddEditPropSheet::CreateControls()
   itemBoxSizer32->Add(itemButton34, 0, wxALIGN_CENTER_VERTICAL|wxALL, 0);
 
   wxBoxSizer* itemBoxSizer35 = new wxBoxSizer(wxHORIZONTAL);
-  itemBoxSizer3->Add(itemBoxSizer35, 1, wxGROW|wxALL, 5);
+  itemBoxSizer3->Add(itemBoxSizer35, 0, wxGROW|wxALL, 5);
   wxStaticText* itemStaticText36 = new wxStaticText( m_BasicPanel, wxID_STATIC, _("Notes:"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer35->Add(itemStaticText36, 1, wxALIGN_TOP|wxALL, 5);
 
-  m_noteTX = new wxTextCtrl( m_BasicPanel, ID_TEXTCTRL7, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE );
-  itemBoxSizer35->Add(m_noteTX, 5, wxEXPAND|wxALIGN_CENTER_VERTICAL|wxALL, 3);
-  itemBoxSizer35->Add(10, 10, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_noteTX = new wxTextCtrl( m_BasicPanel, ID_TEXTCTRL7, wxEmptyString, wxDefaultPosition, wxSize(-1, m_BasicPanel->ConvertDialogToPixels(wxSize(-1, 50)).y), wxTE_MULTILINE );
+  itemBoxSizer35->Add(m_noteTX, 5, wxGROW|wxALL, 3);
 
   GetBookCtrl()->AddPage(m_BasicPanel, _("Basic"));
 
@@ -628,8 +628,8 @@ void AddEditPropSheet::CreateControls()
   itemRadioButton121->SetValue(false);
   m_pwMinsGSzr->Add(itemRadioButton121, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxTextCtrl* itemTextCtrl122 = new wxTextCtrl( itemPanel87, IDC_OWNSYMBOLS, wxEmptyString, wxDefaultPosition, wxSize(itemPanel87->ConvertDialogToPixels(wxSize(60, -1)).x, -1), 0 );
-  m_pwMinsGSzr->Add(itemTextCtrl122, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 0);
+  m_ownsymbols = new wxTextCtrl( itemPanel87, IDC_OWNSYMBOLS, wxEmptyString, wxDefaultPosition, wxSize(itemPanel87->ConvertDialogToPixels(wxSize(60, -1)).x, -1), 0 );
+  m_pwMinsGSzr->Add(m_ownsymbols, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 0);
 
   m_pwpEasyCtrl = new wxCheckBox( itemPanel87, ID_CHECKBOX7, _("Use only easy-to-read characters\n(i.e., no 'l', '1', etc.)"), wxDefaultPosition, wxDefaultSize, 0 );
   m_pwpEasyCtrl->SetValue(false);
@@ -669,9 +669,12 @@ void AddEditPropSheet::CreateControls()
   itemStaticText82->SetValidator( wxGenericValidator(& m_PMTime) );
   itemStaticText84->SetValidator( wxGenericValidator(& m_ATime) );
   itemStaticText86->SetValidator( wxGenericValidator(& m_RMTime) );
+  itemRadioButton119->SetValidator( wxGenericValidator(& m_usedefaultsymbols) );
+  itemRadioButton121->SetValidator( wxGenericValidator(& m_useownsymbols) );
+  m_ownsymbols->SetValidator( wxGenericValidator(& m_symbols) );
   // Connect events and objects
   m_noteTX->Connect(ID_TEXTCTRL7, wxEVT_SET_FOCUS, wxFocusEventHandler(AddEditPropSheet::OnNoteSetFocus), NULL, this);
-  itemTextCtrl122->Connect(IDC_OWNSYMBOLS, wxEVT_SET_FOCUS, wxFocusEventHandler(AddEditPropSheet::OnOwnSymSetFocus), NULL, this);
+  m_ownsymbols->Connect(IDC_OWNSYMBOLS, wxEVT_SET_FOCUS, wxFocusEventHandler(AddEditPropSheet::OnOwnSymSetFocus), NULL, this);
 ////@end AddEditPropSheet content construction
 
   // Non-DialogBlock initializations:
@@ -1008,6 +1011,10 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
   if (specificPwPolicy) {
     m_item.GetPWPolicy(policy);
     policy.symbols = m_item.GetSymbols().c_str();
+    m_usedefaultsymbols = policy.symbols.empty();
+    m_useownsymbols = !m_usedefaultsymbols;
+    if (m_useownsymbols)
+      m_ownsymbols->SetValue(policy.symbols.c_str());
   } else { // no item-specific policy, either default or named
     // Select item's named policy, or Default
     const wxString itemPolName = m_item.GetPolicyName().c_str();
@@ -1040,6 +1047,7 @@ void AddEditPropSheet::OnGoButtonClick( wxCommandEvent& /* evt */ )
 
 void AddEditPropSheet::OnGenerateButtonClick( wxCommandEvent& /* evt */ )
 {
+  if (Validate() && TransferDataFromWindow()) {
   PWPolicy pwp = GetSelectedPWPolicy();
   StringX password = pwp.MakeRandomPassword();
   if (password.empty()) {
@@ -1055,6 +1063,7 @@ void AddEditPropSheet::OnGenerateButtonClick( wxCommandEvent& /* evt */ )
     m_Password2Ctrl->ChangeValue(m_password.c_str());
   }
 }
+}
 
 
 /*!
@@ -1063,10 +1072,10 @@ void AddEditPropSheet::OnGenerateButtonClick( wxCommandEvent& /* evt */ )
 
 void AddEditPropSheet::OnShowHideClick( wxCommandEvent& /* evt */ )
 {
+  m_password = m_PasswordCtrl->GetValue(); // save visible password
   if (m_isPWHidden) {
     ShowPassword();
   } else {
-    m_password = m_PasswordCtrl->GetValue(); // save visible password
     HidePassword();
   }
 }
@@ -1270,7 +1279,7 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
         if (m_defPWPRB->GetValue()) {
           polName = m_cbxPolicyNames->GetValue();
           if (polName == _("Default Policy"))
-            polName = _("");
+            polName = wxT("");
         } else {
           m_item.SetPWPolicy(pwp);
         }
@@ -1532,8 +1541,9 @@ void AddEditPropSheet::OnNoteSetFocus( wxFocusEvent& /* evt */ )
   }
 }
 
-PWPolicy AddEditPropSheet::GetPWPolicyFromUI() const
+PWPolicy AddEditPropSheet::GetPWPolicyFromUI()
 {
+  Validate(); TransferDataFromWindow();
   wxASSERT_MSG(m_ourPWPRB->GetValue() && !m_defPWPRB->GetValue(), wxT("Trying to get Password policy from UI when db defaults are to be used"));
   
   PWPolicy pwp;
@@ -1568,10 +1578,13 @@ PWPolicy AddEditPropSheet::GetPWPolicyFromUI() const
   if (m_pwpHexCtrl->GetValue())
     pwp.flags = PWPolicy::UseHexDigits; //yes, its '=' and not '|='
 
+  if (m_useownsymbols) 
+    pwp.symbols = m_symbols.c_str(); 
+
   return pwp;
 }
 
-PWPolicy AddEditPropSheet::GetSelectedPWPolicy() const
+PWPolicy AddEditPropSheet::GetSelectedPWPolicy()
 {
   PWPolicy pwp;
   if (m_defPWPRB->GetValue()) {
@@ -1633,7 +1646,23 @@ void AddEditPropSheet::OnClearPWHist(wxCommandEvent& /*evt*/)
 
 void AddEditPropSheet::OnEZreadCBClick( wxCommandEvent& evt)
 {
-  evt.Skip();
+  stringT st_symbols;
+  if (evt.IsChecked()) {
+    // Check if pronounceable is also set - forbid both
+    if (m_pwpPronounceCtrl->GetValue()) {
+      m_pwpEasyCtrl->SetValue(false);
+      wxMessageBox(_("Sorry, \"easy-to-read\" and \"pronouncable\" cannot be both selected"),
+                   _("Error"), wxOK|wxICON_ERROR, this);
+      return;      
+}
+    CPasswordCharPool::GetEasyVisionSymbols(st_symbols);
+  } else { // not checked - restore default symbols to appropriate value
+    if (m_pwpPronounceCtrl->GetValue())
+      CPasswordCharPool::GetPronounceableSymbols(st_symbols);
+    else
+      CPasswordCharPool::GetDefaultSymbols(st_symbols);
+  }    
+  FindWindow(IDC_STATIC_DEFAULT_SYMBOLS)->SetLabel(st_symbols.c_str());
 }
 
 
@@ -1643,7 +1672,23 @@ void AddEditPropSheet::OnEZreadCBClick( wxCommandEvent& evt)
 
 void AddEditPropSheet::OnPronouceableCBClick( wxCommandEvent& evt)
 {
-  evt.Skip();
+  stringT st_symbols;
+  if (evt.IsChecked()) {
+    // Check if ezread is also set - forbid both
+    if (m_pwpEasyCtrl->GetValue()) {
+      m_pwpPronounceCtrl->SetValue(false);
+      wxMessageBox(_("Sorry, \"pronouncable\" and \"easy-to-read\" cannot be both selected"),
+                   _("Error"), wxOK|wxICON_ERROR, this);
+      return;      
+}
+    CPasswordCharPool::GetPronounceableSymbols(st_symbols);
+  } else { // not checked - restore default symbols to appropriate value
+    if (m_pwpEasyCtrl->GetValue())
+      CPasswordCharPool::GetEasyVisionSymbols(st_symbols);
+    else
+      CPasswordCharPool::GetDefaultSymbols(st_symbols);
+  }    
+  FindWindow(IDC_STATIC_DEFAULT_SYMBOLS)->SetLabel(st_symbols.c_str());
 }
 
 
@@ -1653,11 +1698,9 @@ void AddEditPropSheet::OnPronouceableCBClick( wxCommandEvent& evt)
 
 void AddEditPropSheet::OnSymbolsRB( wxCommandEvent& evt)
 {
-  m_useownsymbols = ((evt.GetId() == IDC_USE_DEFAULTSYMBOLS)
-		     ? DEFAULT_SYMBOLS : OWN_SYMBOLS);
+  m_useownsymbols = (evt.GetId() == IDC_USE_OWNSYMBOLS);
 
-  //  FindWindow(IDC_OWNSYMBOLS)->Enable(m_useownsymbols == OWN_SYMBOLS);
-  if (m_useownsymbols == OWN_SYMBOLS)
+  if (m_useownsymbols)
     FindWindow(IDC_OWNSYMBOLS)->SetFocus();
 }
 
@@ -1717,7 +1760,7 @@ void AddEditPropSheet::OnSendButtonClick( wxCommandEvent& event )
     StringX mail_cmd=_("mailto:");
     mail_cmd += m_email.c_str();
     PWSRun runner;
-    runner.issuecmd(mail_cmd, _(""), false);
+    runner.issuecmd(mail_cmd, wxT(""), false);
   }
 }
 

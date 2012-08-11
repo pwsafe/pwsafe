@@ -2149,7 +2149,7 @@ msgstr "Полное сравнение"
 
 #. Resource IDs: (115)
 msgid "Compare Database Results"
-msgstr "Сравнить результаты"
+msgstr "Результаты сравнения"
 
 #. Resource IDs: (335)
 #, c-format
@@ -7109,7 +7109,7 @@ msgstr "\nСвернуть все"
 
 #. Resource IDs: (2006)
 msgid "\nCompare entries..."
-msgstr "\Сравнить элементы..."
+msgstr "\nСравнить элементы..."
 
 #. Resource IDs: (2002)
 msgid "\nCompare two Databases"
@@ -7285,9 +7285,10 @@ msgstr "\nСохранить контейнер"
 msgid "\nSave Database As..."
 msgstr "\nСохранить контейнер как..."
 
+# Переход к элементу из контекстного меню недавно использованных
 #. Resource IDs: (2016)
 msgid "\nSelect Entry"
-msgstr "\nВыбрать элемент"
+msgstr "Перейти к элементу"
 
 #. Resource IDs: (2005)
 msgid "\nSend email"

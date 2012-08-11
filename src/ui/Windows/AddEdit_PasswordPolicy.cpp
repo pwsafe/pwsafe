@@ -394,7 +394,8 @@ LRESULT CAddEdit_PasswordPolicy::OnQuerySiblings(WPARAM wParam, LPARAM )
           (M_ipolicy()    == NAMED_POLICY &&
            M_policyname() != M_oldpolicyname()) ||
           M_iownsymbols() != M_ioldownsymbols() ||
-          M_symbols()     != M_oldsymbols())
+          (M_ipolicy()    != NAMED_POLICY &&
+           M_symbols()    != M_oldsymbols())      )
         return 1L;
       break;
     case PP_UPDATE_VARIABLES:

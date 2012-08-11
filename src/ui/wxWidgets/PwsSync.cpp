@@ -340,16 +340,16 @@ SyncStartPage::SyncStartPage(wxWizard* parent, SyncData* data) : SyncWizardPage(
 {
   wxBoxSizer* sizer = m_pageSizer;
 
-  const wxString explanation(_("Synchroinzing with another database will update the entries in your\r\ndatabase with matching entries from the other database."));
+  const wxString explanation(_("Synchronizing with another database will update the entries in your\ndatabase with matching entries from the other database."));
   sizer->Add(new wxStaticText(this, wxID_ANY, explanation), wxSizerFlags().Expand().Proportion(0).Border());
 
   wxCollapsiblePane* pane = new wxCollapsiblePane(this, wxID_ANY, _("More Info"));
   
   const wxChar* helpItems[] = {
-    _("1. Two entries from different databases match if their Group, Title\r\nand User fields match."),
-    _("2. You can select the fields to update, as well as filter the entries\r\nfor synchronization."),
-    _("3. Only existing entries in your database are updated.  No new entries are\r\nadded or existing entries removed during this process."),
-    _("4. You can undo the operation once it is complete, but won't be\r\nable to abort it mid-way.")
+    _("1. Two entries from different databases match if their Group, Title\nand User fields match."),
+    _("2. You can select the fields to update, as well as filter the entries\nfor synchronization."),
+    _("3. Only existing entries in your database are updated.  No new entries are\nadded or existing entries removed during this process."),
+    _("4. You can undo the operation once it is complete, but won't be\nable to abort it mid-way.")
   };
   
   wxBoxSizer* paneSizer = new wxBoxSizer(wxVERTICAL);
@@ -442,7 +442,7 @@ SyncOptionsSummaryPage::SyncOptionsSummaryPage(wxWizard* parent, SyncData* data)
   sizer->Add(m_notUpdatedFieldsGrid, gridFlags.Proportion(1));
   sizer->AddSpacer(RowSeparation*2);
 
-  const wxString warning(_("WARNING!!\r\n\r\nIf you continue, fields will be updated in your existing database\r\nfrom your selected input database"));
+  const wxString warning(_("WARNING!!\n\nIf you continue, fields will be updated in your existing database\nfrom your selected input database"));
   wxStaticText* txtWarn = new wxStaticText(this, wxID_ANY, warning);
   txtWarn->SetForegroundColour(*wxRED);
   sizer->Add(txtWarn, flags.Proportion(0).Bottom());
@@ -630,7 +630,7 @@ void SyncStatusPage::Synchronize(PWScore* currentCore, const PWScore *otherCore)
   CReport& rpt = m_syncData->syncReport;
 
   rpt.StartReport(_("Synchronize"), currentCore->GetCurFile().c_str());
-  wxString line = wxString::Format(_("Synchronizing from database: %s\r\n"), otherCore->GetCurFile().c_str());
+  wxString line = wxString::Format(_("Synchronizing from database: %s\n"), otherCore->GetCurFile().c_str());
   rpt.WriteLine(static_cast<const wxChar*>(line));
 
   ReportAdvancedOptions(&rpt, _("synchronized"));
@@ -723,7 +723,7 @@ void SyncStatusPage::Synchronize(PWScore* currentCore, const PWScore *otherCore)
     std::sort(vs_updated.begin(), vs_updated.end(), MergeSyncGTUCompare);
     const wxChar* cs_singular_plural_type = (numUpdated == 1 ? _("entry") : _("entries"));
     const wxChar* cs_singular_plural_verb = (numUpdated == 1 ? _("was") : _("were"));
-    const wxString resultStr = wxString::Format(_("\r\nThe following %s %s updated:"), cs_singular_plural_type, 
+    const wxString resultStr = wxString::Format(_("\nThe following %s %s updated:"), cs_singular_plural_type, 
                                                                 cs_singular_plural_verb);
     rpt.WriteLine(static_cast<const wxChar*>(resultStr));
     for (size_t i = 0; i < vs_updated.size(); i++) {
@@ -739,7 +739,7 @@ void SyncStatusPage::Synchronize(PWScore* currentCore, const PWScore *otherCore)
       
   /* tell the user we're done & provide short merge report */
   const wxChar* cs_entries = (numUpdated == 1 ? _("entry") : _("entries"));
-  wxString resultStr = wxString::Format(_("\r\nSynchronize completed: %d %s updated"), numUpdated, cs_entries);
+  wxString resultStr = wxString::Format(_("\nSynchronize completed: %d %s updated"), numUpdated, cs_entries);
   rpt.WriteLine(static_cast<const wxChar*>(resultStr));
   rpt.EndReport();
 

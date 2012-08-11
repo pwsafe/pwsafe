@@ -1405,15 +1405,24 @@ void DboxMain::OnItemDoubleClick(NMHDR *, LRESULT *pLResult)
   UnFindItem();
 
   // TreeView only - use DoubleClick to Expand/Collapse group
+  // Skip double clicks near items that not selected (for example, clicks on hierarchy lines)
   if (m_ctlItemTree.IsWindowVisible()) {
-    HTREEITEM hItem = m_ctlItemTree.GetSelectedItem();
+    POINT pt;
+    if(!GetCursorPos(&pt))
+      return;
+    m_ctlItemTree.ScreenToClient(&pt);
+    HTREEITEM hItem = m_ctlItemTree.HitTest(pt);
+    
+    HTREEITEM hItemSel = m_ctlItemTree.GetSelectedItem();
+    
+    if (hItem!=hItemSel)//Clicked near item, that is different from current
+       return;
     // Only if a group is selected
     if ((hItem != NULL && !m_ctlItemTree.IsLeaf(hItem))) {
       // Do standard double-click processing - i.e. toggle expand/collapse!
       return;
     }
   }
-
   // Now set we have processed the event
   *pLResult = 1L;
 

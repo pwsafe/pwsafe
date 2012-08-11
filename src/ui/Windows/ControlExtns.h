@@ -341,7 +341,7 @@ protected:
   DECLARE_MESSAGE_MAP()
 
 private:
-  void DrawButton(HWND hWnd, HDC hDC, RECT *pRect, BOOL fChecked, BOOL fHot);
+  void DrawButton(HWND hWnd, HDC hDC, RECT *pRect, BOOL fChecked, BOOL fHot, BOOL fFocus);
 
   CString m_caption;
   bool m_bUseTextColour, m_bUseBkgColour;

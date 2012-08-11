@@ -94,6 +94,7 @@ void COptionsDisplay::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(COptionsDisplay, COptions_PropertyPage)
   //{{AFX_MSG_MAP(COptionsDisplay)
+  ON_WM_CTLCOLOR()
   ON_BN_CLICKED(ID_HELP, OnHelp)
 
   ON_BN_CLICKED(IDC_PREWARNEXPIRY, OnPreWarn)
@@ -111,12 +112,12 @@ BOOL COptionsDisplay::OnInitDialog()
 
   for (int i = 0; i < 4; i++) {
     m_chkbox[i].SetTextColour(CR_DATABASE_OPTIONS);
-    m_chkbox[i].SetBkgColour(COLOR_WINDOW);
+    m_chkbox[i].ResetBkgColour();//Use current window's background
   }
   for (int i = 0; i < 3; i++) {
     m_radiobtn[i].SetTextColour(CR_DATABASE_OPTIONS);
     m_radiobtn[i].SetType(BS_AUTORADIOBUTTON);
-    m_radiobtn[i].SetBkgColour(COLOR_WINDOW);
+    m_radiobtn[i].ResetBkgColour();//Use current window's background
   }
 
   if (m_ShowUsernameInTree == FALSE) {
@@ -235,4 +236,28 @@ void COptionsDisplay::OnDisplayUserInTree()
     ((CButton*)GetDlgItem(IDC_DEFPWSHOWINTREE))->SetCheck(BST_UNCHECKED);
   } else
     GetDlgItem(IDC_DEFPWSHOWINTREE)->EnableWindow(TRUE);
+}
+
+HBRUSH COptionsDisplay::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
+{
+  HBRUSH hbr = CPWPropertyPage::OnCtlColor(pDC, pWnd, nCtlColor);
+
+  // Database preferences - controls + associated static text
+  //OnCustomDraw in CButtonExtn called only when themes are used, so we need to set colors manually when themes are off
+  if (!IsThemeActive()) {
+    switch (pWnd->GetDlgCtrlID()) {
+      case IDC_DEFUNSHOWINTREE:
+      case IDC_DEFPWSHOWINTREE:
+      case IDC_DEFPWSHOWINEDIT:
+      case IDC_DEFNOTESSHOWINEDIT:
+      case IDC_TREE_DISPLAY_COLLAPSED:
+      case IDC_TREE_DISPLAY_EXPANDED:
+      case IDC_TREE_DISPLAY_LASTSAVE:
+        pDC->SetTextColor(CR_DATABASE_OPTIONS);
+        pDC->SetBkMode(TRANSPARENT);
+        break;
+    }
+  }
+
+  return hbr;
 }

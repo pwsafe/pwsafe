@@ -124,7 +124,7 @@ BOOL COptionsMisc::OnInitDialog()
 
   for (int i = 0; i < 2; i++) {
     m_chkbox[i].SetTextColour(CR_DATABASE_OPTIONS);
-    m_chkbox[i].SetBkgColour(COLOR_WINDOW);
+    m_chkbox[i].ResetBkgColour();//Use current window's background
   }
 
   OnUseDefUser();
@@ -441,6 +441,14 @@ HBRUSH COptionsMisc::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
     case IDC_STATIC_DEFAUTOTYPE:
       pDC->SetTextColor(CR_DATABASE_OPTIONS);
       pDC->SetBkMode(TRANSPARENT);
+      break;
+    case IDC_MAINTAINDATETIMESTAMPS:
+    case IDC_USEDEFUSER:
+      //OnCustomDraw in CButtonExtn called only when themes are used, so we need to set colors manually when themes are off
+      if (!IsThemeActive()) {
+        pDC->SetTextColor(CR_DATABASE_OPTIONS);
+        pDC->SetBkMode(TRANSPARENT);
+  }
       break;
   }
 
