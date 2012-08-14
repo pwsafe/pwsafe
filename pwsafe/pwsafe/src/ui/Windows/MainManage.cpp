@@ -352,6 +352,7 @@ void DboxMain::OnOptions()
         dwExtendedStyle &= ~LVS_EX_GRIDLINES;
       }
       m_ctlItemList.SetExtendedStyle(dwExtendedStyle);
+      m_ctlItemList.UpdateRowHeight(true);
     }
 
     m_ctlItemTree.ActivateND(pOptionsPS->GetNotesAsTips());

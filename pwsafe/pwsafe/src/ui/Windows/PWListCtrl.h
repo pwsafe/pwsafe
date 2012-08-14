@@ -35,7 +35,7 @@ public:
   void SetUpFont();
   void SetHighlightChanges(bool bvalue)
   {m_bUseHighLighting = bvalue;}
-
+  void UpdateRowHeight(bool bInvalidate);
 protected:
   //{{AFX_MSG(CPWListCtrl)
   afx_msg void OnDestroy();
@@ -48,10 +48,13 @@ protected:
   afx_msg void OnPaint();
   afx_msg void OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar);
+  afx_msg LRESULT OnSetFont(WPARAM, LPARAM);
+  afx_msg void MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct);
   //}}AFX_MSG
 
   LRESULT OnCharItemlist(WPARAM wParam, LPARAM lParam);
   BOOL PreTranslateMessage(MSG* pMsg);
+  virtual void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);
 
   DECLARE_MESSAGE_MAP()
 

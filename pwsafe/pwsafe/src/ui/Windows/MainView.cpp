@@ -2248,6 +2248,9 @@ void DboxMain::OnChangePswdFont()
     // Transfer the new font to the passwords
     pFonts->SetPasswordFont(&lf);
 
+    // Recalculating row height
+    m_ctlItemList.UpdateRowHeight(true);
+
     LOGFONT dfltfont;
     pFonts->GetDefaultPasswordFont(dfltfont);
 

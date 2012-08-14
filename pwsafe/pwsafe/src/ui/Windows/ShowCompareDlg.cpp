@@ -74,7 +74,7 @@ BOOL CShowCompareDlg::OnInitDialog()
   // Add grid lines
   m_ListCtrl.SetExtendedStyle(LVS_EX_GRIDLINES | LVS_EX_FULLROWSELECT |
                               m_ListCtrl.GetExtendedStyle());
-
+  m_ListCtrl.UpdateRowHeight(false);// Update height because LVS_EX_GRIDLINES style changed
   // Insert List columns
   CString cs_text;
   cs_text.LoadString(IDS_SELECTFIELD);

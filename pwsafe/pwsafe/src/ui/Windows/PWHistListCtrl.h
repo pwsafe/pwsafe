@@ -13,11 +13,13 @@ class CPWHistListCtrl : public CListCtrl
 public:
   CPWHistListCtrl() {}
   virtual ~CPWHistListCtrl() {}
-
+  void UpdateRowHeight(bool bInvalidate);
 protected:
   //{{AFX_MSG(CPWHistListCtrl)
   afx_msg void OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult);
+  afx_msg LRESULT OnSetFont(WPARAM, LPARAM);
+  afx_msg void MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct);
   //}}AFX_MSG
-
+  virtual void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);
   DECLARE_MESSAGE_MAP()
 };
