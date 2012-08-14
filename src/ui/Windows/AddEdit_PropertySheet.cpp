@@ -552,7 +552,9 @@ void CAddEdit_PropertySheet::SetupInitialValues()
                                         PWSUtil::TMC_EXPORT_IMPORT) ? TRUE : FALSE;
   m_AEMD.oldNumPWHistory = m_AEMD.NumPWHistory = m_AEMD.pwhistlist.size();
   m_AEMD.oldSavePWHistory = m_AEMD.SavePWHistory = HasHistory;
-
+  if (m_AEMD.MaxPWHistory == 0)
+    m_AEMD.MaxPWHistory = PWSprefs::GetInstance()->
+                           GetPref(PWSprefs::NumPWHistoryDefault);
   // PWPolicy fields
   // Note different pci depending on if Alias
   pciA->GetPWPolicy(m_AEMD.pwp);
