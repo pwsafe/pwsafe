@@ -710,7 +710,8 @@ void XMLFileHandlers::AddXMLEntries()
     StringX sxnewgroup, sxnewtitle(cur_entry->title);
     if (!m_ImportedPrefix.empty()) {
       sxnewgroup = m_ImportedPrefix.c_str();
-      sxnewgroup += _T(".");
+      if (!cur_entry->group.empty())
+         sxnewgroup += _T(".");
     }
     sxnewgroup += cur_entry->group;
     EmptyIfOnlyWhiteSpace(sxnewgroup);
