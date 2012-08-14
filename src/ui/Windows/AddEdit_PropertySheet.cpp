@@ -544,7 +544,7 @@ void CAddEdit_PropertySheet::SetupInitialValues()
   // Note different pci depending on if Alias
   size_t num_err;
   m_AEMD.PWHistory = pciA->GetPWHistory();
-
+  m_AEMD.pwhistlist.clear(); //clear list before filling, because SetupInitialValues could be called multiple times
   BOOL HasHistory = CreatePWHistoryList(m_AEMD.PWHistory,
                                         m_AEMD.MaxPWHistory,
                                         num_err,
