@@ -20,7 +20,7 @@ bool CreatePWHistoryList(const StringX &pwh_str,
 {
   // Return boolean value stating if PWHistory status is active
   pwh_max = num_err = 0;
-
+  pwhl.clear();
   StringX pwh_s = pwh_str;
   const size_t len = pwh_s.length();
 
