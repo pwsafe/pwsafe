@@ -43,10 +43,34 @@ bool CreatePWHistoryList(const StringX &pwh_str,
 
   // Sanity check: Each entry has at least 12 bytes representing
   // time + pw length
-  // so if pwh_s isn't long enough, we bail out pronto.
-  if (pwh_s.length() - 5 < unsigned(12 * n)) {
-    num_err = n;
-    return false;
+  // so if pwh_s isn't long enough check if it contains integral number of history records
+  if (len - 5 < unsigned(12 * n)) {
+    size_t offset = 5;
+    bool err=false;
+    while (offset < len) {
+      offset += 8; //date
+      if (offset + 4 >= len) { //passwd len
+        err = true;
+        break;
+      }
+      iStringXStream ispwlen(StringX(pwh_s, offset, 4)); // pw length 2 byte hex
+      if (!ispwlen){
+        err = true;
+        break;
+      }
+      int ipwlen = 0;
+      ispwlen >> hex >> ipwlen;
+      if ( (ipwlen <= 0) || (offset + 4 + ipwlen > len) ) {
+        err = true;
+        break;
+      }
+      offset += 4 + ipwlen;
+    }
+    if ( err || (offset != len) ) {
+      num_err = n;
+      return false;
+    }
+    //number of errors will be counted later
   }
 
   // Case when password history field is too long and no passwords present
