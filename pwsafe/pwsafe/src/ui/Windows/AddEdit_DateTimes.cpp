@@ -438,7 +438,7 @@ void CAddEdit_DateTimes::SetXTime()
     M_XTimeInt() = 0;
   } else { // m_how == RELATIVE_EXP
     const CTime today(now.GetYear(), now.GetMonth(), now.GetDay(), 0, 1, 0);
-    LDateTime = today + CTimeSpan(m_numDays + 1, 0, 0, 0);
+    LDateTime = today + CTimeSpan(m_numDays, 0, 0, 0);
     VERIFY(m_pDateCtl.SetTime(&LDateTime));
     M_XTimeInt() = m_bRecurringPswdExpiry == FALSE ? 0 : m_numDays;
   }
