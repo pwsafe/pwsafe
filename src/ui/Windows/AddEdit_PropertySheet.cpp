@@ -14,6 +14,7 @@
 
 #include "core/ItemData.h"
 #include "core/PWSprefs.h"
+#include <string.h>
 
 using pws_os::CUUID;
 
@@ -142,18 +143,18 @@ BOOL CAddEdit_PropertySheet::OnInitDialog()
     case IDS_VIEWENTRY:
     case IDS_EDITENTRY:
       {
-      CString cs_title;
+      CString cs_title, asterik = "*";
       StringX sx_group(L""), sx_title, sx_user(L"");
       if (!m_AEMD.pci->IsGroupEmpty())
         sx_group = m_AEMD.pci->GetGroup();
-      sx_title = m_AEMD.pci->GetTitle();
+      sx_title = m_AEMD.pci->GetTitle(); 
       if (!m_AEMD.pci->IsUserEmpty())
         sx_user = m_AEMD.pci->GetUser();
 
       // Set up and pass Propertysheet caption showing entry being edited/viewed
       // If entry is protected, set to 'View' even if DB is in R/W mode
       cs_title.Format(m_AEMD.ucprotected != 0 ? IDS_PROTECTEDENTRY : m_AEMD.uicaller,
-                      sx_group.c_str(), sx_title.c_str(), sx_user.c_str());
+                      sx_group.c_str(), sx_title.c_str(), sx_user.c_str()); 
       SetWindowText(cs_title);
       break;
       }
@@ -170,7 +171,7 @@ BOOL CAddEdit_PropertySheet::OnInitDialog()
       GetDlgItem(IDCANCEL)->ShowWindow(SW_HIDE);
       break;
     case IDS_EDITENTRY:
-      GetDlgItem(IDOK)->EnableWindow((m_bChanged || m_bSymbolsChanged || m_AEMD.ucprotected != 0) ? TRUE : FALSE);
+//      GetDlgItem(IDOK)->EnableWindow((m_bChanged || m_bSymbolsChanged || m_AEMD.ucprotected != 0) ? TRUE : FALSE); // commented by SHIVA
       GetDlgItem(ID_APPLY_NOW)->EnableWindow(m_bChanged || m_bSymbolsChanged ? TRUE : FALSE);
       break;
   }
@@ -190,9 +191,39 @@ void CAddEdit_PropertySheet::SetSymbolsChanged(const bool bSymbolsChanged)
 void CAddEdit_PropertySheet::SetChanged(const bool bChanged)
 {
   if (m_bChanged != bChanged) {
-    GetDlgItem(IDOK)->EnableWindow(bChanged ? TRUE : FALSE);
+   // GetDlgItem(IDOK)->EnableWindow(bChanged ? TRUE : FALSE);
     if (m_AEMD.uicaller == IDS_EDITENTRY)
       GetDlgItem(ID_APPLY_NOW)->EnableWindow(bChanged ? TRUE : FALSE);
+	// Function Call for the modification of the title, Till then the code added by SHIVA
+	switch (m_AEMD.uicaller) {
+    case IDS_ADDENTRY:
+      break;
+    case IDS_VIEWENTRY:
+    case IDS_EDITENTRY:
+      {
+      CString cs_title, asterik = "*";
+      StringX sx_group(L""), sx_title, sx_user(L"");
+      if (!m_AEMD.pci->IsGroupEmpty())
+        sx_group = m_AEMD.pci->GetGroup();
+      sx_title = m_AEMD.pci->GetTitle(); 
+      if (!m_AEMD.pci->IsUserEmpty())
+        sx_user = m_AEMD.pci->GetUser();
+
+      // Set up and pass Propertysheet caption showing entry being edited/viewed
+      // If entry is protected, set to 'View' even if DB is in R/W mode
+      cs_title.Format(m_AEMD.ucprotected != 0 ? IDS_PROTECTEDENTRY : m_AEMD.uicaller,
+                      sx_group.c_str(), sx_title.c_str(), sx_user.c_str());
+	  if (bChanged ? TRUE : FALSE)
+		cs_title = cs_title + asterik; 
+	  else
+		  int n = cs_title.Replace(asterik, NULL);
+
+      SetWindowText(cs_title);
+      break;
+      }
+    default:
+      ASSERT(0);
+  }
     m_bChanged = bChanged;
   }
 }
@@ -268,8 +299,7 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
           m_AEMD.PWHistory = m_AEMD.PWHistory;
           m_AEMD.oldNumPWHistory = m_AEMD.NumPWHistory;
           m_AEMD.oldMaxPWHistory = m_AEMD.MaxPWHistory;
-          m_AEMD.oldSavePWHistory = m_AEMD.SavePWHistory;
-
+          m_AEMD.oldSavePWHistory = m_AEMD.SavePWHistory;		  
           switch (m_AEMD.ipolicy) {
             case DEFAULT_POLICY:
               m_AEMD.pci->SetPWPolicy(L"");
