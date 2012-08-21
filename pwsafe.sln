@@ -14,7 +14,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pws_autotype", "src\os\wind
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pws_osk", "src\os\windows\pws_osk\pws_osk.vcxproj", "{5F619D4F-185A-4B4B-8E77-02698EAEB962}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "YkLib22", "src\yubi\YkLib22.vcxproj", "{326058EE-494B-4E51-BB34-1F4505E368B7}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "YkLib22", "src\os\windows\yubi\YkLib22.vcxproj", "{326058EE-494B-4E51-BB34-1F4505E368B7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
