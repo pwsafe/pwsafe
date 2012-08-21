@@ -9,8 +9,7 @@
 
 // TryAgainDlg.h
 //-----------------------------------------------------------------------------
-//#include "PWDialog.h"   commented by me 
-#include "PasskeyEntry.h"
+#include "PWDialog.h"
 
 //Globally useful values...
 enum
@@ -30,7 +29,6 @@ class CTryAgainDlg : public CPWDialog
 public:
   CTryAgainDlg(CWnd* pParent = NULL);   // standard constructor
   int GetCancelReturnValue();
-  CPasskeyEntry* temppointer;           // added by me 
 
   // Dialog Data
   //{{AFX_DATA(CTryAgainDlg)

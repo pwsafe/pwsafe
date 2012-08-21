@@ -43,12 +43,8 @@ public:
   const CSecString &GetPasskey() const {return m_passkey;}
   const CString &GetFileName() const {return m_filespec;}
   CString m_appversion;
-  afx_msg void OnOpenFileBrowser();     // added by me to gain access to this method
-  afx_msg void OnCreateDb();            // added by me to gain access to this method
 
-
-protected:  
-  
+protected:
   // Dialog Data
   enum { IDD_BASIC = IDD_PASSKEYENTRY };
   enum { IDD_WEXIT = IDD_PASSKEYENTRY_WITHEXIT };
@@ -96,10 +92,10 @@ protected:
   afx_msg void OnPasskeySetfocus();
   afx_msg void OnPasskeyKillfocus();
 #endif
-  //afx_msg void OnCreateDb();               // commented by me
+  afx_msg void OnCreateDb();
   afx_msg void OnComboEditChange();
   afx_msg void OnComboSelChange();
-  //afx_msg void OnOpenFileBrowser();        // commented by me
+  afx_msg void OnOpenFileBrowser();
   afx_msg void OnVirtualKeyboard();
   afx_msg LRESULT OnInsertBuffer(WPARAM, LPARAM);
   //}}AFX_MSG
