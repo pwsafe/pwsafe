@@ -26,8 +26,8 @@ static char THIS_FILE[] = __FILE__;
 CTryAgainDlg::CTryAgainDlg(CWnd* pParent)
   : CPWDialog(CTryAgainDlg::IDD, pParent), cancelreturnval(TAR_INVALID)
 {
+	temppointer = (CPasskeyEntry*) pParent;      // temp pointer to access CPasskeyEntry methods 
 }
-
 void
 CTryAgainDlg::DoDataExchange(CDataExchange* pDX)
 {
@@ -62,14 +62,16 @@ void CTryAgainDlg::OnHelp()
 void CTryAgainDlg::OnOpen() 
 {
   cancelreturnval = TAR_OPEN;
-  CPWDialog::OnCancel();
-}
+  //CPWDialog::OnCancel();   commented by me
+  CTryAgainDlg::temppointer->OnOpenFileBrowser(); // added by me to openanotherdatabase
+  }
 
 void CTryAgainDlg::OnNew() 
 {
   cancelreturnval = TAR_NEW;
-  CPWDialog::OnCancel();
-}
+  //CPWDialog::OnCancel();  commented by me  
+	CTryAgainDlg::temppointer->OnCreateDb();   // added by me to create new database
+  }
 
 int CTryAgainDlg::GetCancelReturnValue()
 {
