@@ -332,6 +332,7 @@
 #define IDS_MULTIPLETARGETSFOUND        5505
 #define IDS_TARGETNOTFOUND              5506
 #define IDS_PROVISMUTUALLYEXCL          5507
+#define IDS_EASY_VISION_SYMBOLS         5935
 #define IDS_PWPOLICY                    5508
 #define IDS_COMPPWPOLICY                5509
 #define IDS_SETPASSWORDPOLICY           5510
