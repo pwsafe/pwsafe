@@ -5257,7 +5257,7 @@ msgstr "Wijzigingen bewaren in %1?"
 
 #. Resource IDs: (1045)
 msgid "Save database immediately after Edit or Add"
-msgstr "Opslaan van de database onmidellijk na Wijzigen of Toevoegen"
+msgstr "Opslaan van de database onmiddellijk na Wijzigen of Toevoegen"
 
 #. Resource IDs: (1094)
 msgid "Sc&ript:"
