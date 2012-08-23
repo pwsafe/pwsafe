@@ -663,7 +663,7 @@ void CPWTreeCtrl::OnEndLabelEdit(NMHDR *pNotifyStruct, LRESULT *pLResult)
   these fields cannot be empty.
   */
 
-  PWScore *pcore = (PWScore *)m_pDbx->GetCore();
+  CommandInterface *pcore = m_pDbx->GetCore();
 
   MultiCommands *pmulticmds = MultiCommands::Create(pcore);
 
@@ -1252,24 +1252,24 @@ BOOL CPWTreeCtrl::OnDrop(CWnd * , COleDataObject *pDataObject,
 
   bool bForceRoot(false);
   switch (uFlags) {
-    case TVHT_ABOVE: case TVHT_BELOW: case TVHT_TOLEFT: case TVHT_TORIGHT:
+  case TVHT_ABOVE: case TVHT_BELOW: case TVHT_TOLEFT: case TVHT_TORIGHT:
+    return FALSE;
+  case TVHT_NOWHERE:
+    if (hitemDrop == NULL) {
+      // Treat as drop in root
+      hitemDrop = GetRootItem();
+      bForceRoot = true;
+    } else
       return FALSE;
-    case TVHT_NOWHERE:
-      if (hitemDrop == NULL) {
-        // Treat as drop in root
-        hitemDrop = GetRootItem();
-        bForceRoot = true;
-      } else
-        return FALSE;
-      break;
-    case TVHT_ONITEM: case TVHT_ONITEMBUTTON: case TVHT_ONITEMICON:
-    case TVHT_ONITEMINDENT: case TVHT_ONITEMLABEL: case TVHT_ONITEMRIGHT:
-    case TVHT_ONITEMSTATEICON:
-      if (hitemDrop == NULL)
-        return FALSE;
-      break;
-    default:
+    break;
+  case TVHT_ONITEM: case TVHT_ONITEMBUTTON: case TVHT_ONITEMICON:
+  case TVHT_ONITEMINDENT: case TVHT_ONITEMLABEL: case TVHT_ONITEMRIGHT:
+  case TVHT_ONITEMSTATEICON:
+    if (hitemDrop == NULL)
       return FALSE;
+    break;
+  default:
+    return FALSE;
   }
 
   BOOL retval(FALSE);
@@ -1326,13 +1326,13 @@ BOOL CPWTreeCtrl::OnDrop(CWnd * , COleDataObject *pDataObject,
                                             point.x, point.y, this);
       pPopup->DestroyMenu();
       switch (dwcode) {
-        case ID_MENUITEM_COPYHERE:
-          dropEffect = DROPEFFECT_COPY;
-          break;
-        case ID_MENUITEM_MOVEHERE:
-          dropEffect = DROPEFFECT_MOVE;
-          break;
-        case ID_MENUITEM_RCREATESHORTCUT:
+      case ID_MENUITEM_COPYHERE:
+        dropEffect = DROPEFFECT_COPY;
+        break;
+      case ID_MENUITEM_MOVEHERE:
+        dropEffect = DROPEFFECT_MOVE;
+        break;
+      case ID_MENUITEM_RCREATESHORTCUT:
         {
           // Shortcut group from drop point, title & user from drag entry
           CSecString cs_group, cs_title, cs_user;
@@ -1365,10 +1365,10 @@ BOOL CPWTreeCtrl::OnDrop(CWnd * , COleDataObject *pDataObject,
           SelectItem(NULL);  // Deselect
           goto exit;
         }
-        case ID_MENUITEM_CANCEL:
-        default:
-          SelectItem(NULL);  // Deselect
-          goto exit;
+      case ID_MENUITEM_CANCEL:
+      default:
+        SelectItem(NULL);  // Deselect
+        goto exit;
       }
     }
   }
@@ -1395,12 +1395,21 @@ BOOL CPWTreeCtrl::OnDrop(CWnd * , COleDataObject *pDataObject,
       if (dropEffect == DROPEFFECT_MOVE) {
         MultiCommands *pmulticmds = MultiCommands::Create(m_pDbx->GetCore());
         MoveItem(pmulticmds, m_hitemDrag, hitemDrop);
+        
+        // Make sure that the folder to which drag is performed will 
+        // be removed from the vector of empty groups
+        StringX sxGroup(GetGroup(hitemDrop));
+        if (m_pDbx->IsEmptyGroup(sxGroup)) {
+          pmulticmds->Add(DBEmptyGroupsCommand::Create(m_pDbx->GetCore(), sxGroup,
+                                                       DBEmptyGroupsCommand::EG_DELETE));
+        }
+		
         m_pDbx->Execute(pmulticmds);
       } else
-      if (dropEffect == DROPEFFECT_COPY) {
-        CopyItem(m_hitemDrag, hitemDrop, GetPrefix(m_hitemDrag));
-        SortTree(hitemDrop);
-      }
+        if (dropEffect == DROPEFFECT_COPY) {
+          CopyItem(m_hitemDrag, hitemDrop, GetPrefix(m_hitemDrag));
+          SortTree(hitemDrop);
+        }
       SelectItem(hitemDrop);
       retval = TRUE;
     } else {
@@ -1420,7 +1429,7 @@ BOOL CPWTreeCtrl::OnDrop(CWnd * , COleDataObject *pDataObject,
   m_pDbx->FixListIndexes();
   GetParent()->SetFocus();
 
-exit:
+ exit:
   GlobalUnlock(hGlobal);
   if (retval == TRUE) {
     m_pDbx->SetChanged(DboxMain::Data);

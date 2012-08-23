@@ -21,6 +21,8 @@ Bugs fixed in 3.29.1
 [3556730] In Add/Edit dialog, clicking Apply no longer disables the OK
 button. An asterisk (*) is displayed in the title bar when the entry's
 modified and Apply's not clicked upon. Thanks to shivak7 for the fix.
+[3539347] An empty diamond icon is now updated to a full one when an
+entry is dragged into it. Thanks to nsaipraveen for the fix.
 
 New Features for 3.29
 =====================
