@@ -643,26 +643,18 @@ void CAddEdit_PasswordPolicy::OnUseHexdigits()
 
 void CAddEdit_PasswordPolicy::OnEasyVision()
 {
-  if (!(IsDlgButtonChecked(IDC_USESYMBOLS) == BST_CHECKED))  {
   CGeneralMsgBox gmb;
   UpdateData(TRUE);
   m_ae_psh->SetChanged(true);
 
   if (m_pweasyvision && m_pwmakepronounceable) {
     ((CButton*)GetDlgItem(IDC_EASYVISION))->SetCheck(FALSE);
-    gmb.AfxMessageBox(IDS_EASY_VISION_SYMBOLS);
+    gmb.AfxMessageBox(IDS_PROVISMUTUALLYEXCL);
     m_pweasyvision = FALSE;
   }
 
   do_easyorpronounceable(IsDlgButtonChecked(IDC_EASYVISION) == BST_CHECKED);
   UpdateData(FALSE);
-  }
-  else {
-	  CGeneralMsgBox gmb;
-	   ((CButton*)GetDlgItem(IDC_EASYVISION))->SetCheck(FALSE);
-    gmb.AfxMessageBox(IDS_PROVISMUTUALLYEXCL);
-    m_pweasyvision = FALSE;
-  }
 }
 
 void CAddEdit_PasswordPolicy::OnMakePronounceable()
