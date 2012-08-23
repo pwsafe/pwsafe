@@ -20,7 +20,7 @@ using pws_os::CUUID;
 IMPLEMENT_DYNAMIC(CAddEdit_PropertySheet, CPWPropertySheet)
 
 CAddEdit_PropertySheet::CAddEdit_PropertySheet(UINT nID, CWnd* pParent,
-                                               PWScore *pcore, 
+                                               PWScore *pcore,
                                                CItemData *pci_original, CItemData *pci,
                                                const bool bLongPPs,
                                                const StringX currentDB)
@@ -68,7 +68,7 @@ CAddEdit_PropertySheet::CAddEdit_PropertySheet(UINT nID, CWnd* pParent,
 
     // Date & Time initialisation
     m_AEMD.locCTime.LoadString(IDS_NA);
-    m_AEMD.locXTime = m_AEMD.locATime = m_AEMD.locRMTime = m_AEMD.locPMTime = 
+    m_AEMD.locXTime = m_AEMD.locATime = m_AEMD.locRMTime = m_AEMD.locPMTime =
           m_AEMD.oldlocXTime = m_AEMD.locCTime;
     m_AEMD.tttXTime = m_AEMD.tttCPMTime = (time_t)0;
     m_AEMD.oldXTimeInt = m_AEMD.XTimeInt = 0;
@@ -142,7 +142,7 @@ BOOL CAddEdit_PropertySheet::OnInitDialog()
     case IDS_VIEWENTRY:
     case IDS_EDITENTRY:
       {
-      CString cs_title;
+        CString cs_title;
       StringX sx_group(L""), sx_title, sx_user(L"");
       if (!m_AEMD.pci->IsGroupEmpty())
         sx_group = m_AEMD.pci->GetGroup();
@@ -170,7 +170,6 @@ BOOL CAddEdit_PropertySheet::OnInitDialog()
       GetDlgItem(IDCANCEL)->ShowWindow(SW_HIDE);
       break;
     case IDS_EDITENTRY:
-      GetDlgItem(IDOK)->EnableWindow((m_bChanged || m_bSymbolsChanged || m_AEMD.ucprotected != 0) ? TRUE : FALSE);
       GetDlgItem(ID_APPLY_NOW)->EnableWindow(m_bChanged || m_bSymbolsChanged ? TRUE : FALSE);
       break;
   }
@@ -190,9 +189,39 @@ void CAddEdit_PropertySheet::SetSymbolsChanged(const bool bSymbolsChanged)
 void CAddEdit_PropertySheet::SetChanged(const bool bChanged)
 {
   if (m_bChanged != bChanged) {
-    GetDlgItem(IDOK)->EnableWindow(bChanged ? TRUE : FALSE);
     if (m_AEMD.uicaller == IDS_EDITENTRY)
       GetDlgItem(ID_APPLY_NOW)->EnableWindow(bChanged ? TRUE : FALSE);
+    switch (m_AEMD.uicaller) {
+    case IDS_ADDENTRY:
+      break;
+    case IDS_VIEWENTRY:
+    case IDS_EDITENTRY:
+      {
+        CString cs_title;
+        StringX sx_group(L""), sx_title, sx_user(L"");
+        if (!m_AEMD.pci->IsGroupEmpty())
+          sx_group = m_AEMD.pci->GetGroup();
+        sx_title = m_AEMD.pci->GetTitle();
+        if (!m_AEMD.pci->IsUserEmpty())
+          sx_user = m_AEMD.pci->GetUser();
+
+        // Set up and pass Propertysheet caption showing entry being edited/viewed
+        // If entry is protected, set to 'View' even if DB is in R/W mode
+        cs_title.Format(m_AEMD.ucprotected != 0 ? IDS_PROTECTEDENTRY : m_AEMD.uicaller,
+                        sx_group.c_str(), sx_title.c_str(), sx_user.c_str());
+
+        const CString asterisk = L"*";
+        if (bChanged)
+          cs_title += asterisk;
+        else
+          cs_title.TrimRight(asterisk[0]);
+
+        SetWindowText(cs_title);
+        break;
+      }
+    default:
+      ASSERT(0);
+    }
     m_bChanged = bChanged;
   }
 }
@@ -268,8 +297,7 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
           m_AEMD.PWHistory = m_AEMD.PWHistory;
           m_AEMD.oldNumPWHistory = m_AEMD.NumPWHistory;
           m_AEMD.oldMaxPWHistory = m_AEMD.MaxPWHistory;
-          m_AEMD.oldSavePWHistory = m_AEMD.SavePWHistory;
-
+          m_AEMD.oldSavePWHistory = m_AEMD.SavePWHistory;		 
           switch (m_AEMD.ipolicy) {
             case DEFAULT_POLICY:
               m_AEMD.pci->SetPWPolicy(L"");
@@ -431,7 +459,7 @@ BOOL CAddEdit_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
   return CPWPropertySheet::OnCommand(wParam, lParam);
 }
 
-BOOL CAddEdit_PropertySheet::PreTranslateMessage(MSG* pMsg) 
+BOOL CAddEdit_PropertySheet::PreTranslateMessage(MSG* pMsg)
 {
   // In View mode, there is no 'Cancel' button and 'OK' is renamed 'Close'
   // Make Escape key still work as designed
@@ -445,7 +473,7 @@ BOOL CAddEdit_PropertySheet::PreTranslateMessage(MSG* pMsg)
       BOOL brc = pp->OnQueryCancel();
       if (brc == TRUE)
         CPWPropertySheet::EndDialog(IDCANCEL);
-      
+     
       return TRUE;
     }
   }
