@@ -29,6 +29,7 @@
 
 ////@begin forward declarations
 ////@end forward declarations
+class wxTimer;
 
 /*!
  * Control identifiers
@@ -87,6 +88,7 @@ public:
   void OnYkSetClick( wxCommandEvent& event );
 
 ////@end YubiCfgDlg event handler declarations
+  void OnPollingTimer(wxTimerEvent& timerEvent);
 
 ////@begin YubiCfgDlg member function declarations
 
@@ -111,6 +113,8 @@ private:
   wxString m_yksernum; // Device's serial number
   wxString m_yksk; // Device's secret key
 ////@end YubiCfgDlg member variables
+  enum { POLLING_TIMER_ID = 66 } ; 
+  wxTimer* m_pollingTimer;
 };
 
 #endif

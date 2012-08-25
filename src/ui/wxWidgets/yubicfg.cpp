@@ -23,6 +23,7 @@
 ////@begin includes
 ////@end includes
 
+#include <wx/timer.h>
 #include "yubicfg.h"
 
 ////@begin XPM images
@@ -50,7 +51,7 @@ BEGIN_EVENT_TABLE( YubiCfgDlg, wxDialog )
   EVT_BUTTON( ID_YK_SET, YubiCfgDlg::OnYkSetClick )
 
 ////@end YubiCfgDlg event table entries
-
+EVT_TIMER(POLLING_TIMER_ID, YubiCfgDlg::OnPollingTimer)
 END_EVENT_TABLE()
 
 
@@ -99,6 +100,7 @@ YubiCfgDlg::~YubiCfgDlg()
 {
 ////@begin YubiCfgDlg destruction
 ////@end YubiCfgDlg destruction
+  delete m_pollingTimer;
 }
 
 
@@ -110,6 +112,7 @@ void YubiCfgDlg::Init()
 {
 ////@begin YubiCfgDlg member initialisation
 ////@end YubiCfgDlg member initialisation
+  m_pollingTimer = new wxTimer(this, POLLING_TIMER_ID);
 }
 
 
@@ -168,6 +171,7 @@ void YubiCfgDlg::CreateControls()
   itemTextCtrl5->SetValidator( wxGenericValidator(& m_yksernum) );
   itemTextCtrl7->SetValidator( wxGenericValidator(& m_yksk) );
 ////@end YubiCfgDlg content construction
+  m_pollingTimer->Start(250); // check for Yubikey every 250ms.
 }
 
 
@@ -204,6 +208,13 @@ wxIcon YubiCfgDlg::GetIconResource( const wxString& name )
   wxUnusedVar(name);
   return wxNullIcon;
 ////@end YubiCfgDlg icon retrieval
+}
+
+void YubiCfgDlg::OnPollingTimer(wxTimerEvent &evt)
+{
+  if (evt.GetId() == POLLING_TIMER_ID) {
+    // TBD
+  }
 }
 
 
