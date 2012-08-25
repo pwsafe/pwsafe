@@ -23,6 +23,8 @@ button. An asterisk (*) is displayed in the title bar when the entry's
 modified and Apply's not clicked upon. Thanks to shivak7 for the fix.
 [3539347] An empty diamond icon is now updated to a full one when an
 entry is dragged into it. Thanks to nsaipraveen for the fix.
+[3537861] An off-by-one issue with expiration dates has been fixed by
+suthakar123.
 
 New Features for 3.29
 =====================
