@@ -25,7 +25,7 @@
 #include "os/env.h"
 #include "os/file.h"
 #include "os/dir.h"
-#include "yubi/yklib.h"
+#include "os/windows/yubi/YkLib.h"
 
 #include "resource3.h"
 

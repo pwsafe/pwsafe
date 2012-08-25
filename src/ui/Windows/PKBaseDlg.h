@@ -15,7 +15,7 @@
 
 #include "PWDialog.h"
 #include "ControlExtns.h"
-#include "yubi/yklib.h"
+#include "os/windows/yubi/YkLib.h"
 
 class CPKBaseDlg : public CPWDialog {
  public:

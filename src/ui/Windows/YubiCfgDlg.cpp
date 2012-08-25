@@ -20,7 +20,7 @@
 #include "ThisMfcApp.h"
 #include "YubiCfgDlg.h"
 
-#include "yubi/yklib.h"
+#include "os/windows/yubi/YkLib.h"
 #include "core/StringX.h"
 #include "core/PWScore.h"
 
