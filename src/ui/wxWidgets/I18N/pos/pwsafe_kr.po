@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-28 11:58+0300\n"
+"POT-Creation-Date: 2012-08-12 21:36+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -456,7 +456,7 @@ msgstr "대문자 사용"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:590
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:539
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:219 ../../../core/core_st.cpp:243
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:219
 #, fuzzy
 msgid "Use digits"
 msgstr "숫자 사용(&D)"
@@ -497,7 +497,7 @@ msgstr "발음 가능한 비밀번호 생성(&P)"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:646
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:581
-#: ../../../ui/wxWidgets/PasswordPolicy.cpp:277 ../../../core/core_st.cpp:236
+#: ../../../ui/wxWidgets/PasswordPolicy.cpp:277
 msgid "Or"
 msgstr "또는"
 
@@ -512,7 +512,6 @@ msgstr "16진수만 사용(&H) (0-9,a-f)"
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:1501
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:591
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:592
-#: ../../../core/core_st.cpp:132
 msgid "Password Policy"
 msgstr "비밀번호 정책"
 
@@ -521,7 +520,6 @@ msgid "Set Date/Time"
 msgstr "날짜/시간 설정"
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:682
-#: ../../../core/core_st.cpp:128
 msgid "Password"
 msgstr "비밀번호"
 
@@ -529,7 +527,7 @@ msgstr "비밀번호"
 msgid " ("
 msgstr ""
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:842 ../../../core/core_st.cpp:74
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:842
 #, fuzzy
 msgid "default"
 msgstr "기본값 사용"
@@ -544,7 +542,6 @@ msgstr "[노트가 숨겨져있음 - 표시하려면 이곳을 클릭하세요]"
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:1776
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:393
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:470
-#: ../../../core/core_st.cpp:75
 msgid "Default Policy"
 msgstr ""
 
@@ -577,7 +574,6 @@ msgstr ""
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:210
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:216
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:241
-#: ../../../core/core_st.cpp:256
 msgid "Error"
 msgstr "오류"
 
@@ -926,7 +922,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/editshortcut.cpp:123
 #: ../../../ui/wxWidgets/properties.cpp:124
 #: ../../../ui/wxWidgets/properties.cpp:132
-#: ../../../ui/wxWidgets/properties.cpp:143 ../../../core/core_st.cpp:271
+#: ../../../ui/wxWidgets/properties.cpp:143
 msgid "Unknown"
 msgstr "알 수 없는"
 
@@ -1211,12 +1207,11 @@ msgid "Value"
 msgstr "값:"
 
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:290
-#: ../../../core/core_st.cpp:125
 msgid "Group"
 msgstr "그룹"
 
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:291
-#: ../../../ui/wxWidgets/PWSgrid.cpp:136 ../../../core/core_st.cpp:138
+#: ../../../ui/wxWidgets/PWSgrid.cpp:136
 msgid "Title"
 msgstr "주제"
 
@@ -1264,7 +1259,7 @@ msgid "merge"
 msgstr "병합"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:127
-#: ../../../ui/wxWidgets/properties.cpp:171 ../../../core/core_st.cpp:233
+#: ../../../ui/wxWidgets/properties.cpp:171
 msgid "None"
 msgstr "None"
 
@@ -1278,54 +1273,53 @@ msgid "Incremented Number [001-999]"
 msgstr "증가수 [001-999]"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:136
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:430 ../../../core/core_st.cpp:68
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:430
 msgid "Copy password to clipboard"
 msgstr "클립보드에 비밀번호 복사"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:137
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:435 ../../../core/core_st.cpp:73
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:435
 msgid "View/Edit selected entry"
 msgstr "선택한 항목을 편집"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:138
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:426
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:439 ../../../core/core_st.cpp:64
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:439
 msgid "Autotype"
 msgstr "자동 입력"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:139
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:427 ../../../core/core_st.cpp:65
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:427
 msgid "Browse to URL"
 msgstr "URL으로 탐색"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:140
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:429 ../../../core/core_st.cpp:67
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:429
 msgid "Copy notes to clipboard"
 msgstr "노트를 클립보드에 복사"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:141
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:432 ../../../core/core_st.cpp:70
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:432
 msgid "Copy username to clipboard"
 msgstr "사용자 이름을 클립보드에 복사"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:142
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:431 ../../../core/core_st.cpp:69
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:431
 msgid "Copy password to clipboard, minimize"
 msgstr "비밀번호를 클립보드에 복사하고 창 최소화"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:143
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:428 ../../../core/core_st.cpp:66
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:428
 msgid "Browse to URL + Autotype"
 msgstr "URL으로 탐색하고 자동입력"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:144
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:433 ../../../core/core_st.cpp:71
-#: ../../../core/core_st.cpp:135
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:433
 msgid "Run Command"
 msgstr "명령 실행"
 
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:145
-#: ../../../ui/wxWidgets/optionspropsheet.cpp:434 ../../../core/core_st.cpp:72
+#: ../../../ui/wxWidgets/optionspropsheet.cpp:434
 msgid "Send email"
 msgstr "전자우편 보내기"
 
@@ -2181,7 +2175,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2708
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2709
 #: ../../../ui/wxWidgets/PwsSync.cpp:573 ../../../ui/wxWidgets/PwsSync.cpp:724
-#: ../../../ui/wxWidgets/PwsSync.cpp:741 ../../../core/core_st.cpp:93
+#: ../../../ui/wxWidgets/PwsSync.cpp:741
 msgid "entry"
 msgstr "항목"
 
@@ -2189,7 +2183,7 @@ msgstr "항목"
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2708
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2709
 #: ../../../ui/wxWidgets/PwsSync.cpp:573 ../../../ui/wxWidgets/PwsSync.cpp:724
-#: ../../../ui/wxWidgets/PwsSync.cpp:741 ../../../core/core_st.cpp:91
+#: ../../../ui/wxWidgets/PwsSync.cpp:741
 msgid "entries"
 msgstr "항목들"
 
@@ -2451,20 +2445,20 @@ msgstr "이전 검색 내역의 보고서 만들기"
 msgid "Clear Find"
 msgstr "검색창 비우기"
 
-#: ../../../ui/wxWidgets/properties.cpp:138 ../../../core/core_st.cpp:276
+#: ../../../ui/wxWidgets/properties.cpp:138
 #, c-format
 msgid "%s on %s"
 msgstr "%s - %s중에서"
 
-#: ../../../ui/wxWidgets/properties.cpp:160 ../../../core/core_st.cpp:307
+#: ../../../ui/wxWidgets/properties.cpp:160
 msgid "Yes"
 msgstr "Yes"
 
-#: ../../../ui/wxWidgets/properties.cpp:160 ../../../core/core_st.cpp:228
+#: ../../../ui/wxWidgets/properties.cpp:160
 msgid "No"
 msgstr "아니오"
 
-#: ../../../ui/wxWidgets/properties.cpp:162 ../../../core/core_st.cpp:273
+#: ../../../ui/wxWidgets/properties.cpp:162
 #, c-format
 msgid "In Headers(%s)/In Entries("
 msgstr "In Headers(%s)/In Entries("
@@ -2740,11 +2734,11 @@ msgstr "데이터베이스로부터 동기화 중: %s\r\n"
 msgid "synchronized"
 msgstr "동기화됨"
 
-#: ../../../ui/wxWidgets/PwsSync.cpp:725 ../../../core/core_st.cpp:289
+#: ../../../ui/wxWidgets/PwsSync.cpp:725
 msgid "was"
 msgstr "was"
 
-#: ../../../ui/wxWidgets/PwsSync.cpp:725 ../../../core/core_st.cpp:290
+#: ../../../ui/wxWidgets/PwsSync.cpp:725
 msgid "were"
 msgstr "were"
 
@@ -2947,7 +2941,6 @@ msgid "Please enter the key and verify it."
 msgstr "비밀번호를 입력하시고 검사해보세요."
 
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:234
-#: ../../../core/core_st.cpp:258
 msgid "Warning"
 msgstr "경고"
 
@@ -3009,1333 +3002,894 @@ msgstr ""
 msgid "Trial Version Limitation"
 msgstr "시험 버전 제약"
 
-#: ../../../core/core_st.cpp:32
-msgid ""
-"\n"
-"Unexpected exception during parsing."
-msgstr ""
-"\n"
-"분석 중 예기치 못한 예외가 발생했습니다."
+#~ msgid ""
+#~ "\n"
+#~ "Unexpected exception during parsing."
+#~ msgstr ""
+#~ "\n"
+#~ "분석 중 예기치 못한 예외가 발생했습니다."
 
-#: ../../../core/core_st.cpp:33
-msgid "OutOfMemoryException."
-msgstr "메모리 예외 초과"
+#~ msgid "OutOfMemoryException."
+#~ msgstr "메모리 예외 초과"
 
-#: ../../../core/core_st.cpp:34
-msgid "after"
-msgstr "after"
+#~ msgid "after"
+#~ msgstr "after"
 
-#: ../../../core/core_st.cpp:35
-msgid "alias"
-msgstr "보조 항목"
+#~ msgid "alias"
+#~ msgstr "보조 항목"
 
-#: ../../../core/core_st.cpp:36
-msgid "aliases"
-msgstr "보조 항목들"
+#~ msgid "aliases"
+#~ msgstr "보조 항목들"
 
-#: ../../../core/core_st.cpp:37
-msgid "And"
-msgstr "And"
+#~ msgid "And"
+#~ msgstr "And"
 
-#: ../../../core/core_st.cpp:38
-msgid "autotype:"
-msgstr "자동입력:"
+#~ msgid "autotype:"
+#~ msgstr "자동입력:"
 
-#: ../../../core/core_st.cpp:39
-msgid "Incorrect password"
-msgstr "일치하지 않는 비밀번호"
+#~ msgid "Incorrect password"
+#~ msgstr "일치하지 않는 비밀번호"
 
-#: ../../../core/core_st.cpp:40
-msgid "before"
-msgstr "이전에"
+#~ msgid "before"
+#~ msgstr "이전에"
 
-#: ../../../core/core_st.cpp:41
-msgid "begins with"
-msgstr "begins with"
+#~ msgid "begins with"
+#~ msgstr "begins with"
 
-#: ../../../core/core_st.cpp:42
-msgid "between"
-msgstr "between"
+#~ msgid "between"
+#~ msgstr "between"
 
-#: ../../../core/core_st.cpp:43
-msgid ""
-"Unable to create a new XML configuration file or add your settings to an "
-"existing XML configuration file.\n"
-"\n"
-"All application configuration settings will be saved in your registry entry "
-"on this computer.\n"
-"\n"
-"Database related settings will be stored in the open database when it is "
-"closed, assuming it is not read-only or locked by another user."
-msgstr ""
-"XML 설정 파일을 만들 수 없거나 XML 설정 사항에 변경 사항을 추가할 수 없습니"
-"다.\n"
-"\n"
-"응용 프로그램의 모든 설정이 이 컴퓨터의 레지스트리에 저장됩니다.\n"
-"\n"
-"데이터베이스와 관련된 설정은 데이터베이스가 닫힐 때 데이터베이스로 저장되지"
-"만, 읽기 전용이 아니고 다른 사용자들로부터 잠기지 않습니다."
+#~ msgid ""
+#~ "Unable to create a new XML configuration file or add your settings to an "
+#~ "existing XML configuration file.\n"
+#~ "\n"
+#~ "All application configuration settings will be saved in your registry "
+#~ "entry on this computer.\n"
+#~ "\n"
+#~ "Database related settings will be stored in the open database when it is "
+#~ "closed, assuming it is not read-only or locked by another user."
+#~ msgstr ""
+#~ "XML 설정 파일을 만들 수 없거나 XML 설정 사항에 변경 사항을 추가할 수 없습"
+#~ "니다.\n"
+#~ "\n"
+#~ "응용 프로그램의 모든 설정이 이 컴퓨터의 레지스트리에 저장됩니다.\n"
+#~ "\n"
+#~ "데이터베이스와 관련된 설정은 데이터베이스가 닫힐 때 데이터베이스로 저장되"
+#~ "지만, 읽기 전용이 아니고 다른 사용자들로부터 잠기지 않습니다."
 
-#: ../../../core/core_st.cpp:44
-msgid ""
-"Error - unable to determine settings configuration!\n"
-"\n"
-"No application settings will be saved.\n"
-"\n"
-"Database related settings will be stored in the open database when it is "
-"closed, assuming it is not read-only or locked by another user."
-msgstr ""
-"오류 - 환경 설정을 읽을 수 없습니다.\n"
-"\n"
-"어떠한 프로그램 설정의 변경도 저장되지 않을 것입니다.\n"
-"\n"
-"데이터베이스에 관련된 설정은 현재 열려있는 데이터베이스를 닫을 때 저장되므"
-"로, 데이터베이스가 다른 사용자에 의해 잠겨 있거나 읽기 전용 모드가 아닌지 확"
-"인해 주십시오."
+#~ msgid ""
+#~ "Error - unable to determine settings configuration!\n"
+#~ "\n"
+#~ "No application settings will be saved.\n"
+#~ "\n"
+#~ "Database related settings will be stored in the open database when it is "
+#~ "closed, assuming it is not read-only or locked by another user."
+#~ msgstr ""
+#~ "오류 - 환경 설정을 읽을 수 없습니다.\n"
+#~ "\n"
+#~ "어떠한 프로그램 설정의 변경도 저장되지 않을 것입니다.\n"
+#~ "\n"
+#~ "데이터베이스에 관련된 설정은 현재 열려있는 데이터베이스를 닫을 때 저장되므"
+#~ "로, 데이터베이스가 다른 사용자에 의해 잠겨 있거나 읽기 전용 모드가 아닌지 "
+#~ "확인해 주십시오."
 
-#: ../../../core/core_st.cpp:45
-msgid ""
-"Trouble reading stored filters (version mismatch?). Filters will be unusable."
-msgstr ""
-"저장된 필터를 불러오는 데 문제가 있습니다.(버전이 잘못되었습니까?) 필터들을 "
-"사용할 수 없습니다."
+#~ msgid ""
+#~ "Trouble reading stored filters (version mismatch?). Filters will be "
+#~ "unusable."
+#~ msgstr ""
+#~ "저장된 필터를 불러오는 데 문제가 있습니다.(버전이 잘못되었습니까?) 필터들"
+#~ "을 사용할 수 없습니다."
 
-#: ../../../core/core_st.cpp:46
-msgid "Unable to read locker?"
-msgstr "잠금 파일을 불러올 수 없었습니다"
+#~ msgid "Unable to read locker?"
+#~ msgstr "잠금 파일을 불러올 수 없었습니다"
 
-#: ../../../core/core_st.cpp:47
-msgid ""
-"Unable to update your entries in the existing XML configuration file.\n"
-"\n"
-"All application configuration settings will be loaded from this file but no "
-"changes will be saved.\n"
-"\n"
-"Database related settings will be stored in the open database when it is "
-"closed, assuming it is not read-only or locked by another user."
-msgstr ""
-"존재하는 XML 설정 파일 내에 항목들을 갱신할 수 없습니다.\n"
-"\n"
-"이 파일에서 모든 프로그램 환경 설정을 불러오지만 변경사항은 저장되지 않을 것"
-"입니다.\n"
-"\n"
-"데이터베이스에 관련된 설정은 현재 열려있는 데이터베이스를 닫을 때 저장되므"
-"로, 데이터베이스가 다른 사용자에 의해 잠겨 있거나 읽기 전용 모드가 아닌지 확"
-"인해 주십시오."
+#~ msgid ""
+#~ "Unable to update your entries in the existing XML configuration file.\n"
+#~ "\n"
+#~ "All application configuration settings will be loaded from this file but "
+#~ "no changes will be saved.\n"
+#~ "\n"
+#~ "Database related settings will be stored in the open database when it is "
+#~ "closed, assuming it is not read-only or locked by another user."
+#~ msgstr ""
+#~ "존재하는 XML 설정 파일 내에 항목들을 갱신할 수 없습니다.\n"
+#~ "\n"
+#~ "이 파일에서 모든 프로그램 환경 설정을 불러오지만 변경사항은 저장되지 않을 "
+#~ "것입니다.\n"
+#~ "\n"
+#~ "데이터베이스에 관련된 설정은 현재 열려있는 데이터베이스를 닫을 때 저장되므"
+#~ "로, 데이터베이스가 다른 사용자에 의해 잠겨 있거나 읽기 전용 모드가 아닌지 "
+#~ "확인해 주십시오."
 
-#: ../../../core/core_st.cpp:48
-#, c-format
-msgid ""
-"%s\n"
-"\n"
-"The configuration file will not be used."
-msgstr ""
-"%s\n"
-"\n"
-"설정 파일이 사용되지 않을 것입니다."
+#~ msgid ""
+#~ "%s\n"
+#~ "\n"
+#~ "The configuration file will not be used."
+#~ msgstr ""
+#~ "%s\n"
+#~ "\n"
+#~ "설정 파일이 사용되지 않을 것입니다."
 
-#: ../../../core/core_st.cpp:49
-msgid "Missing XSD File"
-msgstr "xsd 파일 없음"
+#~ msgid "Missing XSD File"
+#~ msgstr "xsd 파일 없음"
 
-#: ../../../core/core_st.cpp:50
-msgid "Unable to validate a XML file using a XML Schema (XSD) on your system."
-msgstr ""
-"이 시스템에서 XML 스키마(XSD) 파일을 통한 XML 파일 유효성 검사를 할 수 없습니"
-"다."
+#~ msgid ""
+#~ "Unable to validate a XML file using a XML Schema (XSD) on your system."
+#~ msgstr ""
+#~ "이 시스템에서 XML 스키마(XSD) 파일을 통한 XML 파일 유효성 검사를 할 수 없"
+#~ "습니다."
 
-#: ../../../core/core_st.cpp:51
-msgid "(case insensitive)"
-msgstr "(대소문자 무시)"
+#~ msgid "(case insensitive)"
+#~ msgstr "(대소문자 무시)"
 
-#: ../../../core/core_st.cpp:52
-msgid "(case sensitive)"
-msgstr "(대소문자 구별)"
+#~ msgid "(case sensitive)"
+#~ msgstr "(대소문자 구별)"
 
-#: ../../../core/core_st.cpp:53
-msgid "C:F[R-O]"
-msgstr "C:F[R-O]"
+#~ msgid "C:F[R-O]"
+#~ msgstr "C:F[R-O]"
 
-#: ../../../core/core_st.cpp:54
-msgid "C:F[R/W]"
-msgstr "C:F[R/W]"
+#~ msgid "C:F[R/W]"
+#~ msgstr "C:F[R/W]"
 
-#: ../../../core/core_st.cpp:55
-msgid "C:None  "
-msgstr "C:None  "
+#~ msgid "C:None  "
+#~ msgstr "C:None  "
 
-#: ../../../core/core_st.cpp:56
-msgid "C:Reg   "
-msgstr "C:Reg   "
+#~ msgid "C:Reg   "
+#~ msgstr "C:Reg   "
 
-#: ../../../core/core_st.cpp:57
-msgid "conflict"
-msgstr "conflict"
+#~ msgid "conflict"
+#~ msgstr "conflict"
 
-#: ../../../core/core_st.cpp:58
-msgid "conflicts"
-msgstr "conflicts"
+#~ msgid "conflicts"
+#~ msgstr "conflicts"
 
-#: ../../../core/core_st.cpp:59
-msgid "contains"
-msgstr "contains"
+#~ msgid "contains"
+#~ msgstr "contains"
 
-#: ../../../core/core_st.cpp:60
-msgid "contains all of"
-msgstr ""
-
-#: ../../../core/core_st.cpp:61
-msgid "contains any of"
-msgstr ""
-
-#: ../../../core/core_st.cpp:62
-#, fuzzy, c-format
-msgid "%s - Copied %s"
-msgstr "%d %s 불러옴"
-
-#: ../../../core/core_st.cpp:63
-#, c-format
-msgid " Current default (%s)"
-msgstr "현재 기본값 (%s)"
-
-#: ../../../core/core_st.cpp:76
-msgid "default symbol set"
-msgstr ""
-
-#: ../../../core/core_st.cpp:77
-#, c-format
-msgid ""
-"This entry has the following %d %s:\r\n"
-"%s\r\n"
-"Please confirm to continue (alias entry's passwords will be replaced by this "
-"entry's password)?"
-msgstr ""
-
-#: ../../../core/core_st.cpp:78
 #, fuzzy
-msgid "Delete Base Entry Confirmation"
-msgstr "기본 항목 삭제 확인"
+#~ msgid "%s - Copied %s"
+#~ msgstr "%d %s 불러옴"
 
-#: ../../../core/core_st.cpp:79
-#, c-format
-msgid ""
-"This entry has the following %d %s:\r\n"
-"%s\r\n"
-"Please confirm to continue (All shortcuts to this entry will be deleted)?"
-msgstr ""
+#~ msgid " Current default (%s)"
+#~ msgstr "현재 기본값 (%s)"
 
-#: ../../../core/core_st.cpp:80
-msgid "does not begin with"
-msgstr "does not begin with"
-
-#: ../../../core/core_st.cpp:81
-msgid "does not contain"
-msgstr "does not contain"
-
-#: ../../../core/core_st.cpp:82
-msgid "does not contain all of"
-msgstr ""
-
-#: ../../../core/core_st.cpp:83
-msgid "does not contain any of"
-msgstr ""
-
-#: ../../../core/core_st.cpp:84
-msgid "does not end with"
-msgstr "does not end with"
-
-#: ../../../core/core_st.cpp:85
-msgid "does not equal"
-msgstr "does not equal"
-
-#: ../../../core/core_st.cpp:86
-#, c-format
-msgid " Duplicate # %d"
-msgstr "# %d 을(를) 복제"
-
-#: ../../../core/core_st.cpp:87
-#, c-format
-msgid ""
-"Trouble with a non-textual (e.g., time) field in record '%s' - please check "
-"data carefully."
-msgstr ""
-"'%s' 레코드에서 텍스트가 아닌 필드에 오류가 발생 - 데이터를 꼼꼼히 살펴 주십"
-"시오."
-
-#: ../../../core/core_st.cpp:88
-msgid "End Report"
-msgstr "보고 중지"
-
-#: ../../../core/core_st.cpp:89
-msgid "--------------------------------------------------------------------------------"
-msgstr "--------------------------------------------------------------------------------"
-
-#: ../../../core/core_st.cpp:90
-msgid "ends with"
-msgstr "ends with"
-
-#: ../../../core/core_st.cpp:92
-#, c-format
-msgid ""
-"The following entries had a policy name that already existed in this "
-"database but with different settings.\r\n"
-"A new named policy has been created with the current date/time (%s) appended:"
-"%s"
-msgstr ""
-
-#: ../../../core/core_st.cpp:94
-msgid "equals"
-msgstr "equals"
-
-#: ../../../core/core_st.cpp:95
-msgid "has expired"
-msgstr "has expired"
-
-#: ../../../core/core_st.cpp:96
-#, c-format
-msgid "within %d day(s)"
-msgstr "within %d day(s)"
-
-#: ../../../core/core_st.cpp:97
-msgid "First character of variable name must be alphabetic"
-msgstr "변수 이름의 첫 글자는 반드시 알파벳이 와야 합니다"
-
-#: ../../../core/core_st.cpp:98
-msgid "Index not numeric"
-msgstr "색인이 숫자가 아님"
-
-#: ../../../core/core_st.cpp:99
-msgid "Input string is empty"
-msgstr "입력란이 비어있습니다"
-
-#: ../../../core/core_st.cpp:100
-msgid "Characters present between end of index ']' and '}'"
-msgstr "인덱서 ']' 와 '}' 의 끝이 나타나기 전에 문자열이 존재합니다."
-
-#: ../../../core/core_st.cpp:101
-msgid "Index is invalid or missing"
-msgstr "색인이 올바르지 않거나 손상되었습니다"
-
-#: ../../../core/core_st.cpp:102
-msgid "Missing ending curly bracket for variable name"
-msgstr "변수 이름의 폐행문자가 없음"
-
-#: ../../../core/core_st.cpp:103
-msgid "Missing ending round bracket for Autotype value"
-msgstr "자동 입력 값의 폐행문자가 없음"
-
-#: ../../../core/core_st.cpp:104
-msgid "Missing ending square bracket for index value"
-msgstr "목차값의 폐행문자가 없음"
-
-#: ../../../core/core_st.cpp:105
-msgid "There are unmatched quotes in the run command"
-msgstr "실행 명령에 짝이 맞지 않는 쌍따옴표가 있습니다"
-
-#: ../../../core/core_st.cpp:106
-msgid "Variable name is empty"
-msgstr "변수 이름이 비어있습니다"
-
-#: ../../../core/core_st.cpp:107
-msgid "Variable name must be alphanumeric"
-msgstr "변수 이름은 반드시 알파벳과 숫자로 구성되어야 합니다"
-
-#: ../../../core/core_st.cpp:108
-msgid "an alias entry"
-msgstr "보조 항목"
-
-#: ../../../core/core_st.cpp:109
-msgid "a base entry of an alias"
-msgstr "보조 항목의 기본 항목"
-
-#: ../../../core/core_st.cpp:110
-msgid "  Field is too long."
-msgstr "필드 값이 너무 깁니다."
-
-#: ../../../core/core_st.cpp:111
-msgid "  Field is too short."
-msgstr "필드 값이 너무 짧습니다."
-
-#: ../../../core/core_st.cpp:112
-msgid "Error: A file with this name already exists"
-msgstr "오류: 같은 이름의 파일이 이미 존재합니다"
-
-#: ../../../core/core_st.cpp:113
-msgid "The file was not found."
-msgstr "파일을 찾을 수 없습니다."
-
-#: ../../../core/core_st.cpp:114
-msgid "Error: File is read-only"
-msgstr "오류: 파일이 읽기전용 입니다."
-
-#: ../../../core/core_st.cpp:115
-msgid "File is truncated or otherwise corrupt. Please use backup database."
-msgstr ""
-
-#: ../../../core/core_st.cpp:116
-msgid "Cannot read file. Please check file permissions."
-msgstr "파일을 읽을 수 없습니다. 파일 권한을 점검해 보십시오."
-
-#: ../../../core/core_st.cpp:117
-msgid "Error while writing file! Try saving in a different location"
-msgstr "파일 작성 중 오류가 발생했습니다! 다른 곳에 저장해 보십시오"
-
-#: ../../../core/core_st.cpp:118
-#, c-format
-msgid ""
-"Filter %s already exists in the database, do you wish to replace it with "
-"this?"
-msgstr ""
-"%s 필터가 이미 데이터베이스에 존재합니다만, 이 것으로 교체하시겠습니까?"
-
-#: ../../../core/core_st.cpp:119
-msgid "Stored filters will be unusable until the file's restored."
-msgstr "파일을 다시 불러오기 전 까지 저장된 필터는 사용할 수 없습니다."
-
-#: ../../../core/core_st.cpp:120
-msgid "Last Access Time"
-msgstr "최종 접근 시간:"
-
-#: ../../../core/core_st.cpp:121
-msgid "AutoType"
-msgstr "자동입력"
-
-#: ../../../core/core_st.cpp:122
-msgid "Created Time"
-msgstr "생성 시간"
-
-#: ../../../core/core_st.cpp:123
-msgid "DCA"
-msgstr "DCA"
-
-#: ../../../core/core_st.cpp:124
-msgid "e-mail"
-msgstr "전자우편"
-
-#: ../../../core/core_st.cpp:126
-msgid "Group/Title"
-msgstr "그룹/주제"
-
-#: ../../../core/core_st.cpp:127
-msgid "Notes"
-msgstr "노트"
-
-#: ../../../core/core_st.cpp:129
-msgid "Password Modified Time"
-msgstr "비밀번호 수정 시간"
-
-#: ../../../core/core_st.cpp:130
-msgid "Protected"
-msgstr "보호됨"
-
-#: ../../../core/core_st.cpp:131
-msgid "History"
-msgstr "내역"
-
-#: ../../../core/core_st.cpp:133
 #, fuzzy
-msgid "Password Policy Name"
-msgstr "비밀번호 정책"
-
-#: ../../../core/core_st.cpp:134
-msgid "Record Modified Time"
-msgstr "기록이 수정된 시간"
-
-#: ../../../core/core_st.cpp:136
-msgid "Shift+DCA"
-msgstr ""
-
-#: ../../../core/core_st.cpp:137
-msgid "Symbols"
-msgstr ""
-
-#: ../../../core/core_st.cpp:139
-msgid "URL"
-msgstr "URL"
-
-#: ../../../core/core_st.cpp:140
-msgid "Username"
-msgstr "사용자 이름"
-
-#: ../../../core/core_st.cpp:141
-msgid "UUID"
-msgstr "UUID"
-
-#: ../../../core/core_st.cpp:142
-msgid "Password Expiry Date"
-msgstr "비밀번호 만료일"
-
-#: ../../../core/core_st.cpp:143
-msgid "Password Expiry Interval"
-msgstr "비밀번호 만료 간격"
-
-#: ../../../core/core_st.cpp:144
-msgid "a normal entry"
-msgstr "일반 항목"
-
-#: ../../../core/core_st.cpp:145
-msgid "added but not yet saved to database"
-msgstr "추가되었지만 데이터베이스에 저장되지 않음"
-
-#: ../../../core/core_st.cpp:146
-msgid "in the database"
-msgstr "in the database"
-
-#: ../../../core/core_st.cpp:147
-msgid "a shortcut entry"
-msgstr "바로가기 항목"
-
-#: ../../../core/core_st.cpp:148
-msgid "a base entry of a shortcut"
-msgstr "바로가기의 기본 항목"
-
-#: ../../../core/core_st.cpp:149
-msgid "changed but not yet saved to database"
-msgstr "변경되었지만 데이터베이스에 저장되지 않음"
-
-#: ../../../core/core_st.cpp:150
-msgid "greater than"
-msgstr "greater than"
-
-#: ../../../core/core_st.cpp:151
-msgid "greater than or equal to"
-msgstr "greater than or equal to"
-
-#: ../../../core/core_st.cpp:152
-#, c-format
-msgid ""
-"Invalid input on line %d.  Number of fields separated by '%c' is not as "
-"expected."
-msgstr ""
-"%d 행에서 잘못된 입력값이 있습니다..  Number of fields separated by '%c' is "
-"not as expected."
-
-#: ../../../core/core_st.cpp:153
-#, c-format
-msgid "Line %d: "
-msgstr "%d 행:"
-
-#: ../../../core/core_st.cpp:154
-#, c-format
-msgid ""
-"File ends on line %d before ending double quote of last entry's note field."
-msgstr ""
-"파일의 %d번째 줄에서 마지막 항목의 메모 노트에 포함된 쌍따옴표가 나타나기 전"
-"에 파일의 끝에 도착했습니다."
-
-#: ../../../core/core_st.cpp:155
-msgid "Import aborted. Please see report."
-msgstr ""
-
-#: ../../../core/core_st.cpp:156
-msgid ""
-"The TXT or CSV file was not exported as required as entry records span "
-"multiple lines in the CSV file.\r\n"
-"\r\n"
-"Import aborted."
-msgstr ""
-
-#: ../../../core/core_st.cpp:157
-#, c-format
-msgid ""
-"%s, Title=\"%s\", User=\"%s\" already exists in your database or in the "
-"Import file. Added imported entry with title=\"%s\".\r\n"
-msgstr ""
-"%s, 주제=\"%s\", 사용자=\"%s\" 가 이미 데이터베이스 혹은 불러온 파일에 존재합"
-"니다. 불러온 항목에 다음과 같이 주제를 추가했습니다=\"%s\".\r\n"
-
-#: ../../../core/core_st.cpp:158
-#, c-format
-msgid "Entry on line %d with Group=\"%s\""
-msgstr "Entry on line %d with Group=\"%s\""
-
-#: ../../../core/core_st.cpp:159
-#, c-format
-msgid "Entry on line %d with no group"
-msgstr "%d 행의 그룹이 없는 항목"
-
-#: ../../../core/core_st.cpp:160
-#, c-format
-msgid "Entry with Group=\"%s\""
-msgstr "\"%s\" 그룹의 항목"
-
-#: ../../../core/core_st.cpp:161
-msgid "Entry with no group"
-msgstr "그룹이 없는 항목"
-
-#: ../../../core/core_st.cpp:162
-#, c-format
-msgid "Empty line %d skipped"
-msgstr "비어있는 %d째 줄이 생략됨"
-
-#: ../../../core/core_st.cpp:163
-#, c-format
-msgid "Entry %s%d with Group=\"%s\", Title=\"%s\", User=\"%s\""
-msgstr "Entry %s%d with Group=\"%s\", Title=\"%s\", User=\"%s\""
-
-#: ../../../core/core_st.cpp:164
-msgid "id="
-msgstr "id="
-
-#: ../../../core/core_st.cpp:165
-msgid "Internal error. Import failed. No records imported."
-msgstr "내부 오류: 불러오기 실패. 아무 레코드도 불러오지 않았습니다."
-
-#: ../../../core/core_st.cpp:166
-#, c-format
-msgid "Found %d known column headers:"
-msgstr "컬럼 헤더에서 알려진 %d개 발견:"
-
-#: ../../../core/core_st.cpp:167
-#, c-format
-msgid "Entry of line %d has an invalid \"%s\" field. It has been ignored."
-msgstr ""
-"%d 행에 있는 항목이 잘못된 \"%s\" 필드값을 가지고 잇습니다. 이 항목은 무시될 "
-"것입니다."
-
-#: ../../../core/core_st.cpp:168
-msgid "The following columns will be processed: "
-msgstr "다음 항목이 처리될 것입니다:"
-
-#: ../../../core/core_st.cpp:169
-msgid ""
-"The following columns were recognised but only Group/Title, Username and "
-"Password will be processed:"
-msgstr ""
-"다음 항목들이 인식되었으나 그룹/제목,  사용자 이름과 비밀번호만 처리됩니다:"
-
-#: ../../../core/core_st.cpp:170
-#, c-format
-msgid ""
-"Line %d skipped - Only %d fields found, whereas parsing the Header says "
-"there should be %d."
-msgstr ""
-"%d 행 생략됨: 헤더에는 %d개의 필드가 있다고 분석되었지만 불과 %d개만 검색되었"
-"습니다"
-
-#: ../../../core/core_st.cpp:171
-msgid ""
-"Either or both of the Group/Title and Password columns are missing. No "
-"records imported."
-msgstr ""
-"그룹/제목 항목과 비밀번호 항목 중 적어도 하나 이상이 손상되었습니다. 아무 항"
-"목도 불러오지 않았습니다."
-
-#: ../../../core/core_st.cpp:172
-msgid ""
-"Could not find the next entry's title field in the KeePass V1 TXT (should be "
-"within square brackets)."
-msgstr ""
-
-#: ../../../core/core_st.cpp:173
-msgid "Column header row not recognised as first record. No records imported."
-msgstr ""
-"첫번째 항목으로 컬럼 헤더의 행이 인식되지 않았습니다. 아무 항목도 불러오지 않"
-"았습니다."
-
-#: ../../../core/core_st.cpp:174
-msgid "No records in import file!"
-msgstr "불러온 파일에 레코드가 없습니다!"
-
-#: ../../../core/core_st.cpp:175
-#, fuzzy, c-format
-msgid "Line %d skipped: Empty mandatory Password field."
-msgstr "%d 행 생략됨: 비밀번호 항목이 비어 있습니다."
-
-#: ../../../core/core_st.cpp:176
-#, fuzzy, c-format
-msgid "Line %d skipped: Empty mandatory Title field."
-msgstr "%d 행 생략됨: 제목 항목이 비어 있습니다"
-
-#: ../../../core/core_st.cpp:177
-#, c-format
-msgid " Import # %d"
-msgstr "# %d 을(를) 불러오기"
-
-#: ../../../core/core_st.cpp:178
-msgid "on line "
-msgstr "on line "
-
-#: ../../../core/core_st.cpp:179
-#, fuzzy, c-format
-msgid "%s  - Imported %s"
-msgstr "%d %s 불러옴"
-
-#: ../../../core/core_st.cpp:180
-msgid ""
-"To replace passwords of existing entries, all the following columns must be "
-"present: Group/Title, Username and Password.  One or more are missing and no "
-"entries have been updated."
-msgstr ""
-"존재하는 항목들의 비밀번호를 교체하려면, 다음 모든 항목들의 값이 존재해야 합"
-"니다: 그룹/제목, 사용자 이름 그리고 비밀번호. 하나라도 빠트리면 아무 항목도 "
-"갱신되지 않을 것입니다."
-
-#: ../../../core/core_st.cpp:181
-#, c-format
-msgid "%s not found. Cannot update entry's password.\r\n"
-msgstr "%s 가 발견되지 않았습니다. 항목의 비밀번호를 갱신할 수 없습니다.\r\n"
-
-#: ../../../core/core_st.cpp:182
-#, c-format
-msgid "%s has an empty %s.\r\n"
-msgstr "%s 항목이 비었습니다 %s.\r\n"
-
-#: ../../../core/core_st.cpp:183
-#, c-format
-msgid ""
-"Entry \"%s, %s, %s\" has a password in the correct form for an alias, but "
-"the base entry is already an alias."
-msgstr ""
-"Entry \"%s, %s, %s\" 가 보조 항목에 대한 올바른 비밀번호를 가지고 있으나, 기"
-"본 항목이 이미 보조 항목에 속해 있습니다."
-
-#: ../../../core/core_st.cpp:184
-msgid "\tThis entry has been made an alias of associated base entry."
-msgstr "\t이 항목은 연관된 기본 항목의 보조 항목으로 만들어졌습니다."
-
-#: ../../../core/core_st.cpp:185
-#, c-format
-msgid ""
-"Entry \"%s, %s, %s\" has a password in the correct form for an alias, but "
-"the base entry does not exist."
-msgstr ""
-"Entry \"%s, %s, %s\" 가 보조 항목에 대한 올바른 비밀번호를 가지고 있으나, 기"
-"본 항목이 존재하지 않습니다."
-
-#: ../../../core/core_st.cpp:186
-msgid ""
-"\tThis entry remains a normal entry and the password has not been changed."
-msgstr "\t이 항목은 일반 항목으로 남아 있고 비밀번호는 변경되지 않았습니다."
-
-#: ../../../core/core_st.cpp:187
-#, c-format
-msgid ""
-"The %s entry \"%s, %s, %s\" doesn't point to a normal or existing %s base "
-"entry. It cannot be imported."
-msgstr ""
-"%s \"%s, %s, %s\" 항목이 일반항목 혹은 존재하는 기본항목 %s 을 향하지 않습니"
-"다. 이 항목을 불러올 수 없습니다."
-
-#: ../../../core/core_st.cpp:188
-msgid "Entry import warnings"
-msgstr "항목 불러오기 경고"
-
-#: ../../../core/core_st.cpp:189
-msgid "Internal error: Invalid oflag or pmode argument"
-msgstr "내부 오류: 잘못된 플래그 혹은 모드 변수"
-
-#: ../../../core/core_st.cpp:190
-msgid "invalid!"
-msgstr "invalid!"
-
-#: ../../../core/core_st.cpp:191
-msgid "  Invalid date/time value."
-msgstr "잘못된 날짜/시간 값입니다."
-
-#: ../../../core/core_st.cpp:192
-msgid "  Field length is incorrect."
-msgstr ""
-
-#: ../../../core/core_st.cpp:193
-msgid "Internal error: An invalid flag was specified"
-msgstr "내부 오류: 잘못된 플래그가 지정되었습니다"
-
-#: ../../../core/core_st.cpp:194
-#, c-format
-msgid "  Invalid header: '%s' (must be 5 hexadecimal characters)."
-msgstr ""
-
-#: ../../../core/core_st.cpp:195
-#, c-format
-msgid "  Invalid number of saved old passwords %d."
-msgstr "저장된 과거 비밀번호의 수 %d가 잘못되었습니다."
-
-#: ../../../core/core_st.cpp:196
-#, c-format
-msgid "  Invalid status value: %d (must be either 0 or 1)."
-msgstr ""
-
-#: ../../../core/core_st.cpp:197
-msgid "  Invalid password length found (not a hexadecimal number)."
-msgstr ""
-
-#: ../../../core/core_st.cpp:198
-msgid ""
-"  Invalid password length found (differs from length of following password)."
-msgstr ""
-
-#: ../../../core/core_st.cpp:199
-msgid "Invalid Filter schema."
-msgstr "잘못된 필터 스키마"
-
-#: ../../../core/core_st.cpp:200
-msgid "Schema does not have a version number."
-msgstr "스키마가 버전 정보를 가지고 있지 않습니다."
-
-#: ../../../core/core_st.cpp:201
-msgid ""
-"  Invalid field separator character found - only a single blank is allowed "
-"between fields."
-msgstr ""
-"잘못된 필드 구분자가 발견되었습니다 - 필드 사이에는 반드시 하나의 공백만 가능"
-"합니다."
-
-#: ../../../core/core_st.cpp:202
-#, c-format
-msgid "The filter XML version (%d) is greater than the current schema (%d)."
-msgstr "필터의 XML 버전 (%d) 이 현재 스키마 (%d) 보다 높습니다."
-
-#: ../../../core/core_st.cpp:203
-#, c-format
-msgid ""
-"The filter XML version (%d) is greater than that supported by this instance "
-"of PasswordSafe (%d)."
-msgstr ""
-"필터의 XML 버전 (%d) 이 그것을 지원하는 Password Safe의 버전 (%d) 보다 높습니"
-"다."
-
-#: ../../../core/core_st.cpp:204
-msgid "is"
-msgstr "is"
-
-#: ../../../core/core_st.cpp:205
-msgid "is active"
-msgstr "is active"
-
-#: ../../../core/core_st.cpp:206
-msgid "is inactive"
-msgstr "is inactive"
-
-#: ../../../core/core_st.cpp:207
-msgid "is not"
-msgstr "is not"
-
-#: ../../../core/core_st.cpp:208
-msgid "is not present"
-msgstr "is not present"
-
-#: ../../../core/core_st.cpp:209
-msgid "is present"
-msgstr "is present"
-
-#: ../../../core/core_st.cpp:210
-msgid "less than"
-msgstr "less than"
-
-#: ../../../core/core_st.cpp:211
-msgid "less than or equal to"
-msgstr "less than or equal to"
-
-#: ../../../core/core_st.cpp:212
-msgid "File or path not found"
-msgstr "파일 또는 경로를 찾을 수 없습니다"
-
-#: ../../../core/core_st.cpp:213
-#, c-format
-msgid ""
-"\r\n"
-"The following new %s %s merged into this database:"
-msgstr "다음 새 데이터베이스 %s %s 가 이 데이터베이스로 병합됩니다:"
-
-#: ../../../core/core_st.cpp:214
-#, c-format
-msgid ""
-"\r\n"
-"Merge completed: %d %s added (%d %s, %d %s, %d %s)"
-msgstr ""
-"\r\n"
-"병합 완료: %d %s 추가됨 (%d %s, %d %s, %d %s)"
-
-#: ../../../core/core_st.cpp:215
-#, fuzzy, c-format
-msgid ""
-"Conflicting entries for \"%s\" \"%s\" \"%s\".\r\n"
-"  Adding merged entry as \"%s\" \"%s\" \"%s\".\r\n"
-"    Differing field(s): %s"
-msgstr ""
-"«%s» «%s» «%s» 항목과 겹침.\r\n"
-"  «%s» «%s» «%s» 항목으로 병합함.\r\n"
-"    차이점: %s"
-
-#: ../../../core/core_st.cpp:216
-msgid "-merged-"
-msgstr "-통합됨-"
-
-#: ../../../core/core_st.cpp:217
-#, c-format
-msgid "%s - Merged %s"
-msgstr ""
-
-#: ../../../core/core_st.cpp:218
-msgid "MISSING PASSWORD"
-msgstr ""
-
-#: ../../../core/core_st.cpp:219
-#, c-format
-msgid "\tPassword policy name '%s' is not in the database."
-msgstr ""
-
-#: ../../../core/core_st.cpp:220
-msgid ""
-"\tOne or more Password Policy Names were not found in the database. The "
-"affected entries have been changed to use the database's default policy."
-msgstr ""
-
-#: ../../../core/core_st.cpp:221
-msgid "Can't obtain the schema version."
-msgstr "스키마 버전을 획득할 수 없습니다."
-
-#: ../../../core/core_st.cpp:222
-#, c-format
-msgid "MISSING TITLE # %d"
-msgstr ""
-
-#: ../../../core/core_st.cpp:223
-msgid "The filter XML version is missing."
-msgstr "필터의 XML 버전이 없습니다."
-
-#: ../../../core/core_st.cpp:224
-#, c-format
-msgid ""
-"Can't find XML Schema Definition file (%s) in your PasswordSafe Application "
-"Directory.\r\n"
-"Please copy it from your installation file, or re-install PasswordSafe."
-msgstr ""
-"Password Safe 실행 폴더에서 XML 스키마 정의 파일 (%s) 을 찾을 수 없습니다."
-"\r\n"
-"설치 파일에서 복사하시거나, Password Safe를 재설치 해 주십시오."
-
-#: ../../../core/core_st.cpp:225
-#, fuzzy, c-format
-msgid "Create SchemaCache60 Error 0x%08X during %s."
-msgstr "Create SchemaCache%2d Error 0x%08X during %s."
-
-#: ../../../core/core_st.cpp:226
-#, fuzzy, c-format
-msgid "SAX Parse60 Error 0x%08X during %s."
-msgstr "SAX Parse%2d Error 0x%08X during %s."
-
-#: ../../../core/core_st.cpp:227
-#, c-format
-msgid "Error (%08X): line %d character %d %s"
-msgstr "오류 (%08X): %d 행 %d 열 %s"
-
-#: ../../../core/core_st.cpp:229
-msgid ""
-"Unable to get configuration file lock.\n"
-"\n"
-"Will use registry."
-msgstr ""
-"잠겨진 설정파일을 불러오는 데 실패했습니다.\n"
-"\n"
-"레지스트리를 대신 사용합니다."
-
-#: ../../../core/core_st.cpp:230
-msgid "Cannot create lock file - no permission in directory?"
-msgstr "잠금 파일을 만들 수 없습니다 - 디렉터리 권한이 없습니까?"
-
-#: ../../../core/core_st.cpp:231
-msgid "Internal error: Out of file handles"
-msgstr "내부 오류: 파일 핸들 오류"
-
-#: ../../../core/core_st.cpp:232
-msgid ""
-"Unable to use a MS XML reader on your system.  Neither MS XML V3, V4 or V6 "
-"seems available."
-msgstr ""
-"이 시스템에서 MS XML 리더를 사용할 수 없습니다. MS XML의 버전이 V3, V4 혹은 "
-"V6 을  사용할 수 없는 것 같습니다."
-
-#: ../../../core/core_st.cpp:234
-msgid "is not set"
-msgstr "is not set"
-
-#: ../../../core/core_st.cpp:235
-#, fuzzy, c-format
-msgid ""
-"Number of entries processed: %d\n"
-"\n"
-"Number of invalid UUIDs fixed: %d\n"
-"\n"
-"Number of duplicate UUIDs fixed: %d\n"
-"\n"
-"Number of non-unique Group/Title/User fixed: %d\n"
-"\n"
-"Number of Password Histories fixed: %d\n"
-"\n"
-"Number of Alias warnings issued: %d\n"
-"\n"
-"Number of Shortcut warnings issued: %d\n"
-"\n"
-"Number of entries with fields that cannot be fully displayed: %d.\n"
-"\n"
-"Recommend that the database is now saved."
-msgstr ""
-"처리된 항목: %d\n"
-"\n"
-"수정된 UUID 항목: %d\n"
-"\n"
-"수정된 비밀번호 내역: %d\n"
-"\n"
-"개별적이지 않은 그룹/제목/사용자 이름 항목: %d\n"
-"\n"
-"수정된 보조 항목: %d\n"
-"\n"
-"수정된 바로가기 항목: %d\n"
-"\n"
-"전부 표시할 수 없는 항목: %d"
-
-#: ../../../core/core_st.cpp:237
-msgid ""
-"Password should be mixed case, with at least one digit or punctuation "
-"character"
-msgstr ""
-"비밀번호가 반드시 대소문자를 혼합하고, 최소한 1개의 숫자 혹은 알파벳 문자를 "
-"입력해야 합니다"
-
-#: ../../../core/core_st.cpp:238
-msgid "Password is too short"
-msgstr "비밀번호가 너무 짧습니다"
-
-#: ../../../core/core_st.cpp:239
-msgid "Easyvision characters"
-msgstr "읽기 쉬운 문자들"
-
-#: ../../../core/core_st.cpp:240
-msgid "Hexadecimal characters"
-msgstr "16진수 문자"
-
-#: ../../../core/core_st.cpp:241
+#~ msgid "Delete Base Entry Confirmation"
+#~ msgstr "기본 항목 삭제 확인"
+
+#~ msgid "does not begin with"
+#~ msgstr "does not begin with"
+
+#~ msgid "does not contain"
+#~ msgstr "does not contain"
+
+#~ msgid "does not end with"
+#~ msgstr "does not end with"
+
+#~ msgid "does not equal"
+#~ msgstr "does not equal"
+
+#~ msgid " Duplicate # %d"
+#~ msgstr "# %d 을(를) 복제"
+
+#~ msgid ""
+#~ "Trouble with a non-textual (e.g., time) field in record '%s' - please "
+#~ "check data carefully."
+#~ msgstr ""
+#~ "'%s' 레코드에서 텍스트가 아닌 필드에 오류가 발생 - 데이터를 꼼꼼히 살펴 주"
+#~ "십시오."
+
+#~ msgid "End Report"
+#~ msgstr "보고 중지"
+
+#~ msgid "--------------------------------------------------------------------------------"
+#~ msgstr "--------------------------------------------------------------------------------"
+
+#~ msgid "ends with"
+#~ msgstr "ends with"
+
+#~ msgid "equals"
+#~ msgstr "equals"
+
+#~ msgid "has expired"
+#~ msgstr "has expired"
+
+#~ msgid "within %d day(s)"
+#~ msgstr "within %d day(s)"
+
+#~ msgid "First character of variable name must be alphabetic"
+#~ msgstr "변수 이름의 첫 글자는 반드시 알파벳이 와야 합니다"
+
+#~ msgid "Index not numeric"
+#~ msgstr "색인이 숫자가 아님"
+
+#~ msgid "Input string is empty"
+#~ msgstr "입력란이 비어있습니다"
+
+#~ msgid "Characters present between end of index ']' and '}'"
+#~ msgstr "인덱서 ']' 와 '}' 의 끝이 나타나기 전에 문자열이 존재합니다."
+
+#~ msgid "Index is invalid or missing"
+#~ msgstr "색인이 올바르지 않거나 손상되었습니다"
+
+#~ msgid "Missing ending curly bracket for variable name"
+#~ msgstr "변수 이름의 폐행문자가 없음"
+
+#~ msgid "Missing ending round bracket for Autotype value"
+#~ msgstr "자동 입력 값의 폐행문자가 없음"
+
+#~ msgid "Missing ending square bracket for index value"
+#~ msgstr "목차값의 폐행문자가 없음"
+
+#~ msgid "There are unmatched quotes in the run command"
+#~ msgstr "실행 명령에 짝이 맞지 않는 쌍따옴표가 있습니다"
+
+#~ msgid "Variable name is empty"
+#~ msgstr "변수 이름이 비어있습니다"
+
+#~ msgid "Variable name must be alphanumeric"
+#~ msgstr "변수 이름은 반드시 알파벳과 숫자로 구성되어야 합니다"
+
+#~ msgid "an alias entry"
+#~ msgstr "보조 항목"
+
+#~ msgid "a base entry of an alias"
+#~ msgstr "보조 항목의 기본 항목"
+
+#~ msgid "  Field is too long."
+#~ msgstr "필드 값이 너무 깁니다."
+
+#~ msgid "  Field is too short."
+#~ msgstr "필드 값이 너무 짧습니다."
+
+#~ msgid "Error: A file with this name already exists"
+#~ msgstr "오류: 같은 이름의 파일이 이미 존재합니다"
+
+#~ msgid "The file was not found."
+#~ msgstr "파일을 찾을 수 없습니다."
+
+#~ msgid "Error: File is read-only"
+#~ msgstr "오류: 파일이 읽기전용 입니다."
+
+#~ msgid "Cannot read file. Please check file permissions."
+#~ msgstr "파일을 읽을 수 없습니다. 파일 권한을 점검해 보십시오."
+
+#~ msgid "Error while writing file! Try saving in a different location"
+#~ msgstr "파일 작성 중 오류가 발생했습니다! 다른 곳에 저장해 보십시오"
+
+#~ msgid ""
+#~ "Filter %s already exists in the database, do you wish to replace it with "
+#~ "this?"
+#~ msgstr ""
+#~ "%s 필터가 이미 데이터베이스에 존재합니다만, 이 것으로 교체하시겠습니까?"
+
+#~ msgid "Stored filters will be unusable until the file's restored."
+#~ msgstr "파일을 다시 불러오기 전 까지 저장된 필터는 사용할 수 없습니다."
+
+#~ msgid "Last Access Time"
+#~ msgstr "최종 접근 시간:"
+
+#~ msgid "AutoType"
+#~ msgstr "자동입력"
+
+#~ msgid "Created Time"
+#~ msgstr "생성 시간"
+
+#~ msgid "DCA"
+#~ msgstr "DCA"
+
+#~ msgid "e-mail"
+#~ msgstr "전자우편"
+
+#~ msgid "Group/Title"
+#~ msgstr "그룹/주제"
+
+#~ msgid "Notes"
+#~ msgstr "노트"
+
+#~ msgid "Password Modified Time"
+#~ msgstr "비밀번호 수정 시간"
+
+#~ msgid "Protected"
+#~ msgstr "보호됨"
+
+#~ msgid "History"
+#~ msgstr "내역"
+
 #, fuzzy
-msgid "Minimum password length"
-msgstr "비밀번호 길이:"
+#~ msgid "Password Policy Name"
+#~ msgstr "비밀번호 정책"
 
-#: ../../../core/core_st.cpp:242
-msgid "Pronounceable passwords"
-msgstr "발음할 수 있는 비밀번호"
+#~ msgid "Record Modified Time"
+#~ msgstr "기록이 수정된 시간"
 
-#: ../../../core/core_st.cpp:244
+#~ msgid "URL"
+#~ msgstr "URL"
+
+#~ msgid "Username"
+#~ msgstr "사용자 이름"
+
+#~ msgid "UUID"
+#~ msgstr "UUID"
+
+#~ msgid "Password Expiry Date"
+#~ msgstr "비밀번호 만료일"
+
+#~ msgid "Password Expiry Interval"
+#~ msgstr "비밀번호 만료 간격"
+
+#~ msgid "a normal entry"
+#~ msgstr "일반 항목"
+
+#~ msgid "added but not yet saved to database"
+#~ msgstr "추가되었지만 데이터베이스에 저장되지 않음"
+
+#~ msgid "in the database"
+#~ msgstr "in the database"
+
+#~ msgid "a shortcut entry"
+#~ msgstr "바로가기 항목"
+
+#~ msgid "a base entry of a shortcut"
+#~ msgstr "바로가기의 기본 항목"
+
+#~ msgid "changed but not yet saved to database"
+#~ msgstr "변경되었지만 데이터베이스에 저장되지 않음"
+
+#~ msgid "greater than"
+#~ msgstr "greater than"
+
+#~ msgid "greater than or equal to"
+#~ msgstr "greater than or equal to"
+
+#~ msgid ""
+#~ "Invalid input on line %d.  Number of fields separated by '%c' is not as "
+#~ "expected."
+#~ msgstr ""
+#~ "%d 행에서 잘못된 입력값이 있습니다..  Number of fields separated by '%c' "
+#~ "is not as expected."
+
+#~ msgid "Line %d: "
+#~ msgstr "%d 행:"
+
+#~ msgid ""
+#~ "File ends on line %d before ending double quote of last entry's note "
+#~ "field."
+#~ msgstr ""
+#~ "파일의 %d번째 줄에서 마지막 항목의 메모 노트에 포함된 쌍따옴표가 나타나기 "
+#~ "전에 파일의 끝에 도착했습니다."
+
+#~ msgid ""
+#~ "%s, Title=\"%s\", User=\"%s\" already exists in your database or in the "
+#~ "Import file. Added imported entry with title=\"%s\".\r\n"
+#~ msgstr ""
+#~ "%s, 주제=\"%s\", 사용자=\"%s\" 가 이미 데이터베이스 혹은 불러온 파일에 존"
+#~ "재합니다. 불러온 항목에 다음과 같이 주제를 추가했습니다=\"%s\".\r\n"
+
+#~ msgid "Entry on line %d with Group=\"%s\""
+#~ msgstr "Entry on line %d with Group=\"%s\""
+
+#~ msgid "Entry on line %d with no group"
+#~ msgstr "%d 행의 그룹이 없는 항목"
+
+#~ msgid "Entry with Group=\"%s\""
+#~ msgstr "\"%s\" 그룹의 항목"
+
+#~ msgid "Entry with no group"
+#~ msgstr "그룹이 없는 항목"
+
+#~ msgid "Empty line %d skipped"
+#~ msgstr "비어있는 %d째 줄이 생략됨"
+
+#~ msgid "Entry %s%d with Group=\"%s\", Title=\"%s\", User=\"%s\""
+#~ msgstr "Entry %s%d with Group=\"%s\", Title=\"%s\", User=\"%s\""
+
+#~ msgid "id="
+#~ msgstr "id="
+
+#~ msgid "Internal error. Import failed. No records imported."
+#~ msgstr "내부 오류: 불러오기 실패. 아무 레코드도 불러오지 않았습니다."
+
+#~ msgid "Found %d known column headers:"
+#~ msgstr "컬럼 헤더에서 알려진 %d개 발견:"
+
+#~ msgid "Entry of line %d has an invalid \"%s\" field. It has been ignored."
+#~ msgstr ""
+#~ "%d 행에 있는 항목이 잘못된 \"%s\" 필드값을 가지고 잇습니다. 이 항목은 무시"
+#~ "될 것입니다."
+
+#~ msgid "The following columns will be processed: "
+#~ msgstr "다음 항목이 처리될 것입니다:"
+
+#~ msgid ""
+#~ "The following columns were recognised but only Group/Title, Username and "
+#~ "Password will be processed:"
+#~ msgstr ""
+#~ "다음 항목들이 인식되었으나 그룹/제목,  사용자 이름과 비밀번호만 처리됩니"
+#~ "다:"
+
+#~ msgid ""
+#~ "Line %d skipped - Only %d fields found, whereas parsing the Header says "
+#~ "there should be %d."
+#~ msgstr ""
+#~ "%d 행 생략됨: 헤더에는 %d개의 필드가 있다고 분석되었지만 불과 %d개만 검색"
+#~ "되었습니다"
+
+#~ msgid ""
+#~ "Either or both of the Group/Title and Password columns are missing. No "
+#~ "records imported."
+#~ msgstr ""
+#~ "그룹/제목 항목과 비밀번호 항목 중 적어도 하나 이상이 손상되었습니다. 아무 "
+#~ "항목도 불러오지 않았습니다."
+
+#~ msgid ""
+#~ "Column header row not recognised as first record. No records imported."
+#~ msgstr ""
+#~ "첫번째 항목으로 컬럼 헤더의 행이 인식되지 않았습니다. 아무 항목도 불러오"
+#~ "지 않았습니다."
+
+#~ msgid "No records in import file!"
+#~ msgstr "불러온 파일에 레코드가 없습니다!"
+
 #, fuzzy
-msgid "Use lowercase characters"
-msgstr "최소 소문자 개수"
+#~ msgid "Line %d skipped: Empty mandatory Password field."
+#~ msgstr "%d 행 생략됨: 비밀번호 항목이 비어 있습니다."
 
-#: ../../../core/core_st.cpp:245
-msgid "Use symbols"
-msgstr ""
-
-#: ../../../core/core_st.cpp:246
 #, fuzzy
-msgid "Use uppercase characters"
-msgstr "최소 대문자 개수"
+#~ msgid "Line %d skipped: Empty mandatory Title field."
+#~ msgstr "%d 행 생략됨: 제목 항목이 비어 있습니다"
 
-#: ../../../core/core_st.cpp:247
-#, c-format
-msgid "Error in a Password History %s:"
-msgstr ""
+#~ msgid " Import # %d"
+#~ msgstr "# %d 을(를) 불러오기"
 
-#: ../../../core/core_st.cpp:248
-#, c-format
-msgid "sub-field starting at position %d (within the History field): "
-msgstr ""
+#~ msgid "on line "
+#~ msgstr "on line "
 
-#: ../../../core/core_st.cpp:249
-msgid "  All Password History ignored."
-msgstr "모든 비밀번호 내역이 무시되었습니다."
-
-#: ../../../core/core_st.cpp:250
-msgid "Read Error"
-msgstr "읽기 오류"
-
-#: ../../../core/core_st.cpp:251
-msgid ""
-"\tOne or more Password Policy Names were already in this database but had "
-"different settings. They have been renamed."
-msgstr ""
-
-#: ../../../core/core_st.cpp:252
-#, c-format
-msgid "%s%s%s_Report.txt"
-msgstr "%s%s%s_보고서.txt"
-
-#: ../../../core/core_st.cpp:253
-#, c-format
-msgid "Report of %s function started at %s"
-msgstr "%s 의 보고서 기능이 %s에 시작했습니다."
-
-#: ../../../core/core_st.cpp:254
-#, c-format
-msgid "on database %s"
-msgstr "on database %s"
-
-#: ../../../core/core_st.cpp:255
-msgid "Validate"
-msgstr "유효화"
-
-#: ../../../core/core_st.cpp:257
-msgid "Fatal Error"
-msgstr "치명적 오류"
-
-#: ../../../core/core_st.cpp:259
-#, fuzzy, c-format
-msgid ""
-"\n"
-"Error in Password History for entry: \"%s\"%s\"%s\": "
-msgstr ""
-"\n"
-"비밀번호 내역의 다음 항목에서 에러가 발생했습니다: »%s»%s»%s»: "
-
-#: ../../../core/core_st.cpp:260
-msgid "See Password History filters"
-msgstr "비밀번호 내역 필터 보기"
-
-#: ../../../core/core_st.cpp:261
-msgid "See Password Policy filters"
-msgstr "비밀번호 정책 필터 보기"
-
-#: ../../../core/core_st.cpp:262
-msgid "is set"
-msgstr "is set"
-
-#: ../../../core/core_st.cpp:263
-msgid "shortcut"
-msgstr "바로가기"
-
-#: ../../../core/core_st.cpp:264
-msgid "shortcuts"
-msgstr "shortcuts"
-
-#: ../../../core/core_st.cpp:265
-msgid "policy specific symbols"
-msgstr ""
-
-#: ../../../core/core_st.cpp:266
-msgid "Start Report"
-msgstr "보고서 시작"
-
-#: ../../../core/core_st.cpp:267
-#, c-format
-msgid ""
-"\r\n"
-"Synchronize completed: %d %s updated"
-msgstr ""
-"\r\n"
-"동기화 완료: %d %s 갱신됨"
-
-#: ../../../core/core_st.cpp:268
-#, c-format
-msgid ""
-"\r\n"
-"The following %s %s updated:"
-msgstr ""
-"\r\n"
-"다음 %s %s 가 갱신됨:"
-
-#: ../../../core/core_st.cpp:269
-#, c-format
-msgid "%s - Sync'd %s"
-msgstr ""
-
-#: ../../../core/core_st.cpp:270
-msgid "System error: No more file handles available"
-msgstr "시스템 오류: 더 이상 사용 가능한 파일 핸들이 없습니다"
-
-#: ../../../core/core_st.cpp:272
-msgid "Internal error: Unexpected error number"
-msgstr "내부 오류: 예기치 못한 오류"
-
-#: ../../../core/core_st.cpp:274
-msgid "Unknown function"
-msgstr "알 수 없는 기능"
-
-#: ../../../core/core_st.cpp:275
-msgid "Unknown object"
-msgstr "알 수 없는 객체"
-
-#: ../../../core/core_st.cpp:277
-msgid ""
-"The following entries had an invalid UUID field.  This has been corrected."
-msgstr ""
-"다음 항목이 잘못된 UUID 항목 값을 가지고 있습니다. 이 항목은 다시 교정되었습"
-"니다."
-
-#: ../../../core/core_st.cpp:278
-#, fuzzy, c-format
-msgid ""
-"The following entries have passwords in the correct form for %s, but the "
-"base entry does not exist."
-msgstr ""
-"Entry \"%s, %s, %s\" 가 보조 항목에 대한 올바른 비밀번호를 가지고 있으나, 기"
-"본 항목이 존재하지 않습니다."
-
-#: ../../../core/core_st.cpp:279
-msgid "The following entries were duplicates of an existing entry."
-msgstr "다음 항목은 같은 항목의 복제본입니다."
-
-#: ../../../core/core_st.cpp:280
 #, fuzzy
-msgid ""
-"The following entries had a duplicate UUID field.  This has been corrected."
-msgstr ""
-"다음 항목이 잘못된 UUID 항목 값을 가지고 있습니다. 이 항목은 다시 교정되었습"
-"니다."
+#~ msgid "%s  - Imported %s"
+#~ msgstr "%d %s 불러옴"
 
-#: ../../../core/core_st.cpp:281
-#, c-format
-msgid ""
-"The following entries had an empty Password field, which is not permitted. "
-"The password has been set to '%s'"
-msgstr ""
+#~ msgid ""
+#~ "To replace passwords of existing entries, all the following columns must "
+#~ "be present: Group/Title, Username and Password.  One or more are missing "
+#~ "and no entries have been updated."
+#~ msgstr ""
+#~ "존재하는 항목들의 비밀번호를 교체하려면, 다음 모든 항목들의 값이 존재해야 "
+#~ "합니다: 그룹/제목, 사용자 이름 그리고 비밀번호. 하나라도 빠트리면 아무 항"
+#~ "목도 갱신되지 않을 것입니다."
 
-#: ../../../core/core_st.cpp:282
+#~ msgid "%s not found. Cannot update entry's password.\r\n"
+#~ msgstr ""
+#~ "%s 가 발견되지 않았습니다. 항목의 비밀번호를 갱신할 수 없습니다.\r\n"
+
+#~ msgid "%s has an empty %s.\r\n"
+#~ msgstr "%s 항목이 비었습니다 %s.\r\n"
+
+#~ msgid ""
+#~ "Entry \"%s, %s, %s\" has a password in the correct form for an alias, but "
+#~ "the base entry is already an alias."
+#~ msgstr ""
+#~ "Entry \"%s, %s, %s\" 가 보조 항목에 대한 올바른 비밀번호를 가지고 있으나, "
+#~ "기본 항목이 이미 보조 항목에 속해 있습니다."
+
+#~ msgid "\tThis entry has been made an alias of associated base entry."
+#~ msgstr "\t이 항목은 연관된 기본 항목의 보조 항목으로 만들어졌습니다."
+
+#~ msgid ""
+#~ "Entry \"%s, %s, %s\" has a password in the correct form for an alias, but "
+#~ "the base entry does not exist."
+#~ msgstr ""
+#~ "Entry \"%s, %s, %s\" 가 보조 항목에 대한 올바른 비밀번호를 가지고 있으나, "
+#~ "기본 항목이 존재하지 않습니다."
+
+#~ msgid ""
+#~ "\tThis entry remains a normal entry and the password has not been changed."
+#~ msgstr "\t이 항목은 일반 항목으로 남아 있고 비밀번호는 변경되지 않았습니다."
+
+#~ msgid ""
+#~ "The %s entry \"%s, %s, %s\" doesn't point to a normal or existing %s base "
+#~ "entry. It cannot be imported."
+#~ msgstr ""
+#~ "%s \"%s, %s, %s\" 항목이 일반항목 혹은 존재하는 기본항목 %s 을 향하지 않습"
+#~ "니다. 이 항목을 불러올 수 없습니다."
+
+#~ msgid "Entry import warnings"
+#~ msgstr "항목 불러오기 경고"
+
+#~ msgid "Internal error: Invalid oflag or pmode argument"
+#~ msgstr "내부 오류: 잘못된 플래그 혹은 모드 변수"
+
+#~ msgid "invalid!"
+#~ msgstr "invalid!"
+
+#~ msgid "  Invalid date/time value."
+#~ msgstr "잘못된 날짜/시간 값입니다."
+
+#~ msgid "Internal error: An invalid flag was specified"
+#~ msgstr "내부 오류: 잘못된 플래그가 지정되었습니다"
+
+#~ msgid "  Invalid number of saved old passwords %d."
+#~ msgstr "저장된 과거 비밀번호의 수 %d가 잘못되었습니다."
+
+#~ msgid "Invalid Filter schema."
+#~ msgstr "잘못된 필터 스키마"
+
+#~ msgid "Schema does not have a version number."
+#~ msgstr "스키마가 버전 정보를 가지고 있지 않습니다."
+
+#~ msgid ""
+#~ "  Invalid field separator character found - only a single blank is "
+#~ "allowed between fields."
+#~ msgstr ""
+#~ "잘못된 필드 구분자가 발견되었습니다 - 필드 사이에는 반드시 하나의 공백만 "
+#~ "가능합니다."
+
+#~ msgid "The filter XML version (%d) is greater than the current schema (%d)."
+#~ msgstr "필터의 XML 버전 (%d) 이 현재 스키마 (%d) 보다 높습니다."
+
+#~ msgid ""
+#~ "The filter XML version (%d) is greater than that supported by this "
+#~ "instance of PasswordSafe (%d)."
+#~ msgstr ""
+#~ "필터의 XML 버전 (%d) 이 그것을 지원하는 Password Safe의 버전 (%d) 보다 높"
+#~ "습니다."
+
+#~ msgid "is"
+#~ msgstr "is"
+
+#~ msgid "is active"
+#~ msgstr "is active"
+
+#~ msgid "is inactive"
+#~ msgstr "is inactive"
+
+#~ msgid "is not"
+#~ msgstr "is not"
+
+#~ msgid "is not present"
+#~ msgstr "is not present"
+
+#~ msgid "is present"
+#~ msgstr "is present"
+
+#~ msgid "less than"
+#~ msgstr "less than"
+
+#~ msgid "less than or equal to"
+#~ msgstr "less than or equal to"
+
+#~ msgid "File or path not found"
+#~ msgstr "파일 또는 경로를 찾을 수 없습니다"
+
+#~ msgid ""
+#~ "\r\n"
+#~ "The following new %s %s merged into this database:"
+#~ msgstr "다음 새 데이터베이스 %s %s 가 이 데이터베이스로 병합됩니다:"
+
+#~ msgid ""
+#~ "\r\n"
+#~ "Merge completed: %d %s added (%d %s, %d %s, %d %s)"
+#~ msgstr ""
+#~ "\r\n"
+#~ "병합 완료: %d %s 추가됨 (%d %s, %d %s, %d %s)"
+
 #, fuzzy
-msgid "The following entries had an empty Title field, which is not permitted."
-msgstr ""
-"다음 항목이 잘못된 UUID 항목 값을 가지고 있습니다. 이 항목은 다시 교정되었습"
-"니다."
+#~ msgid ""
+#~ "Conflicting entries for \"%s\" \"%s\" \"%s\".\r\n"
+#~ "  Adding merged entry as \"%s\" \"%s\" \"%s\".\r\n"
+#~ "    Differing field(s): %s"
+#~ msgstr ""
+#~ "«%s» «%s» «%s» 항목과 겹침.\r\n"
+#~ "  «%s» «%s» «%s» 항목으로 병합함.\r\n"
+#~ "    차이점: %s"
 
-#: ../../../core/core_st.cpp:283
-#, c-format
-msgid "\tGroup='%s', Title='%s', User='%s' %s"
-msgstr "\t그룹:'%s'; 제목:'%s'; 사용자 이름:'%s' %s"
+#~ msgid "-merged-"
+#~ msgstr "-통합됨-"
 
-#: ../../../core/core_st.cpp:284
-#, c-format
-msgid "- Its title has been changed to:'%s'"
-msgstr "- 주제가 다음과 같이 변경되었습니다:'%s'"
+#~ msgid "Can't obtain the schema version."
+#~ msgstr "스키마 버전을 획득할 수 없습니다."
 
-#: ../../../core/core_st.cpp:285
-msgid "The following ERRORS were detected and were FIXED."
-msgstr ""
+#~ msgid "The filter XML version is missing."
+#~ msgstr "필터의 XML 버전이 없습니다."
 
-#: ../../../core/core_st.cpp:286
-msgid ""
-"The following entries had an invalid Password History.  This has been "
-"rebuilt with available data.  There may be some loss of history."
-msgstr ""
-"다음 항목이 잘못된 비밀번호 내역을 가지고 있습니다. 곧 사용가능한 데이터로 재"
-"생성 될 것입니다. 이전 기록의 손실이 발생할 수 있습니다."
+#~ msgid ""
+#~ "Can't find XML Schema Definition file (%s) in your PasswordSafe "
+#~ "Application Directory.\r\n"
+#~ "Please copy it from your installation file, or re-install PasswordSafe."
+#~ msgstr ""
+#~ "Password Safe 실행 폴더에서 XML 스키마 정의 파일 (%s) 을 찾을 수 없습니다."
+#~ "\r\n"
+#~ "설치 파일에서 복사하시거나, Password Safe를 재설치 해 주십시오."
 
-#: ../../../core/core_st.cpp:287
-#, c-format
-msgid ""
-"The following entries have one or more text fields too long to display or "
-"edit (over %d characters).  The largest entry size found was ~%d %s."
-msgstr ""
+#, fuzzy
+#~ msgid "Create SchemaCache60 Error 0x%08X during %s."
+#~ msgstr "Create SchemaCache%2d Error 0x%08X during %s."
 
-#: ../../../core/core_st.cpp:288
-msgid ""
-"The following WARNINGS were detected - you should review and fix them "
-"manually."
-msgstr ""
+#, fuzzy
+#~ msgid "SAX Parse60 Error 0x%08X during %s."
+#~ msgstr "SAX Parse%2d Error 0x%08X during %s."
 
-#: ../../../core/core_st.cpp:291
-msgid "will expire"
-msgstr "will expire"
+#~ msgid "Error (%08X): line %d character %d %s"
+#~ msgstr "오류 (%08X): %d 행 %d 열 %s"
 
-#: ../../../core/core_st.cpp:292
-#, c-format
-msgid ""
-"SAX Parse Error during %s\r\n"
-"%s."
-msgstr ""
-"%s 도중 SAX 분석 오류가 발생했습니다.\r\n"
-"%s."
+#~ msgid ""
+#~ "Unable to get configuration file lock.\n"
+#~ "\n"
+#~ "Will use registry."
+#~ msgstr ""
+#~ "잠겨진 설정파일을 불러오는 데 실패했습니다.\n"
+#~ "\n"
+#~ "레지스트리를 대신 사용합니다."
 
-#: ../../../core/core_st.cpp:293
-#, c-format
-msgid "XML %s: line %d character %d: %s"
-msgstr "XML %s: line %d character %d: %s"
+#~ msgid "Cannot create lock file - no permission in directory?"
+#~ msgstr "잠금 파일을 만들 수 없습니다 - 디렉터리 권한이 없습니까?"
 
-#: ../../../core/core_st.cpp:294
-msgid "Internal error: Couldn't initialize config file XML structure"
-msgstr "내부 오류: 설정 XML 파일을 초기화 할 수 없었습니다"
+#~ msgid "Internal error: Out of file handles"
+#~ msgstr "내부 오류: 파일 핸들 오류"
 
-#: ../../../core/core_st.cpp:295
-msgid ""
-"A filter was active. Export of data was restricted to include only those "
-"displayed."
-msgstr "필터가 활성화되었습니다. 현재 표시된 데이터만 내보낼 수 있습니다."
+#~ msgid ""
+#~ "Unable to use a MS XML reader on your system.  Neither MS XML V3, V4 or "
+#~ "V6 seems available."
+#~ msgstr ""
+#~ "이 시스템에서 MS XML 리더를 사용할 수 없습니다. MS XML의 버전이 V3, V4 혹"
+#~ "은 V6 을  사용할 수 없는 것 같습니다."
 
-#: ../../../core/core_st.cpp:296
-msgid "Export of data was restricted to certain fields by the user."
-msgstr "사용자에 의해 특정 필드값의 데이터가 제한되어 내보내졌습니다."
+#~ msgid "is not set"
+#~ msgstr "is not set"
 
-#: ../../../core/core_st.cpp:297
-msgid ""
-"Note: These Password Policies will not replace existing policies with the "
-"same name in the current database."
-msgstr ""
+#, fuzzy
+#~ msgid ""
+#~ "Number of entries processed: %d\n"
+#~ "\n"
+#~ "Number of invalid UUIDs fixed: %d\n"
+#~ "\n"
+#~ "Number of duplicate UUIDs fixed: %d\n"
+#~ "\n"
+#~ "Number of non-unique Group/Title/User fixed: %d\n"
+#~ "\n"
+#~ "Number of Password Histories fixed: %d\n"
+#~ "\n"
+#~ "Number of Alias warnings issued: %d\n"
+#~ "\n"
+#~ "Number of Shortcut warnings issued: %d\n"
+#~ "\n"
+#~ "Number of entries with fields that cannot be fully displayed: %d.\n"
+#~ "\n"
+#~ "Recommend that the database is now saved."
+#~ msgstr ""
+#~ "처리된 항목: %d\n"
+#~ "\n"
+#~ "수정된 UUID 항목: %d\n"
+#~ "\n"
+#~ "수정된 비밀번호 내역: %d\n"
+#~ "\n"
+#~ "개별적이지 않은 그룹/제목/사용자 이름 항목: %d\n"
+#~ "\n"
+#~ "수정된 보조 항목: %d\n"
+#~ "\n"
+#~ "수정된 바로가기 항목: %d\n"
+#~ "\n"
+#~ "전부 표시할 수 없는 항목: %d"
 
-#: ../../../core/core_st.cpp:298
-msgid ""
-"Note: These preferences are only used when importing into an empty database."
-msgstr "주의: 이 설정들은 다른 빈 데이터베이스를 불러올 때에만 사용됩니다."
+#~ msgid ""
+#~ "Password should be mixed case, with at least one digit or punctuation "
+#~ "character"
+#~ msgstr ""
+#~ "비밀번호가 반드시 대소문자를 혼합하고, 최소한 1개의 숫자 혹은 알파벳 문자"
+#~ "를 입력해야 합니다"
 
-#: ../../../core/core_st.cpp:299
-msgid "Subset of entries restricted by the following rule:"
-msgstr "다음 규칙에 따라 제한된 항목들:"
+#~ msgid "Password is too short"
+#~ msgstr "비밀번호가 너무 짧습니다"
 
-#: ../../../core/core_st.cpp:300
-msgid ""
-"The user specified that the following fields be excluded from the export:"
-msgstr "사용자가 입력한 다음 필드는 내보내기 중에 제외됩니다:"
+#~ msgid "Easyvision characters"
+#~ msgstr "읽기 쉬운 문자들"
 
-#: ../../../core/core_st.cpp:301
-#, fuzzy, c-format
-msgid ""
-"Configuration file error:\n"
-"%s\n"
-"%s\n"
-"offset approximately at %d"
-msgstr ""
-"설정 파일 오류:\n"
-"%s\n"
-"%s\n"
-"%d 행 %d 열"
+#~ msgid "Hexadecimal characters"
+#~ msgstr "16진수 문자"
 
-#: ../../../core/core_st.cpp:302
-msgid "import"
-msgstr "import"
+#, fuzzy
+#~ msgid "Minimum password length"
+#~ msgstr "비밀번호 길이:"
 
-#: ../../../core/core_st.cpp:303
-msgid "Unable to load configuration file"
-msgstr "설정 파일을 불러올 수 없었습니다"
+#~ msgid "Pronounceable passwords"
+#~ msgstr "발음할 수 있는 비밀번호"
 
-#: ../../../core/core_st.cpp:304
-msgid ""
-"Failed to lock configuration file - opened by another instance of "
-"PasswordSafe?"
-msgstr ""
-"설정파일을 잠그는 데 실패했습니다 - 다른 Password Safe에 의해 열려있습니까?"
+#, fuzzy
+#~ msgid "Use lowercase characters"
+#~ msgstr "최소 소문자 개수"
 
-#: ../../../core/core_st.cpp:305
-msgid "Unable to save configuration file"
-msgstr "설정 파일을 저장할 수 없었습니다"
+#, fuzzy
+#~ msgid "Use uppercase characters"
+#~ msgstr "최소 대문자 개수"
 
-#: ../../../core/core_st.cpp:306
-msgid "validation"
-msgstr "validation"
+#~ msgid "  All Password History ignored."
+#~ msgstr "모든 비밀번호 내역이 무시되었습니다."
 
-#: ../../../core/core_st.cpp:308
-#, c-format
-msgid "Yes - EasyVision Symbols: %s"
-msgstr ""
+#~ msgid "Read Error"
+#~ msgstr "읽기 오류"
 
-#: ../../../core/core_st.cpp:309
-#, fuzzy, c-format
-msgid "Yes (at least %d)"
-msgstr "최소 %d 이상이어야 합니다"
+#~ msgid "%s%s%s_Report.txt"
+#~ msgstr "%s%s%s_보고서.txt"
 
-#: ../../../core/core_st.cpp:310
-#, c-format
-msgid "Yes - Pronounceable Symbols: %s"
-msgstr ""
+#~ msgid "Report of %s function started at %s"
+#~ msgstr "%s 의 보고서 기능이 %s에 시작했습니다."
 
-#: ../../../core/core_st.cpp:311
-#, c-format
-msgid "Yes - At least %d from %s: %s"
-msgstr ""
+#~ msgid "on database %s"
+#~ msgstr "on database %s"
+
+#~ msgid "Validate"
+#~ msgstr "유효화"
+
+#~ msgid "Fatal Error"
+#~ msgstr "치명적 오류"
+
+#, fuzzy
+#~ msgid ""
+#~ "\n"
+#~ "Error in Password History for entry: \"%s\"%s\"%s\": "
+#~ msgstr ""
+#~ "\n"
+#~ "비밀번호 내역의 다음 항목에서 에러가 발생했습니다: »%s»%s»%s»: "
+
+#~ msgid "See Password History filters"
+#~ msgstr "비밀번호 내역 필터 보기"
+
+#~ msgid "See Password Policy filters"
+#~ msgstr "비밀번호 정책 필터 보기"
+
+#~ msgid "is set"
+#~ msgstr "is set"
+
+#~ msgid "shortcut"
+#~ msgstr "바로가기"
+
+#~ msgid "shortcuts"
+#~ msgstr "shortcuts"
+
+#~ msgid "Start Report"
+#~ msgstr "보고서 시작"
+
+#~ msgid ""
+#~ "\r\n"
+#~ "Synchronize completed: %d %s updated"
+#~ msgstr ""
+#~ "\r\n"
+#~ "동기화 완료: %d %s 갱신됨"
+
+#~ msgid ""
+#~ "\r\n"
+#~ "The following %s %s updated:"
+#~ msgstr ""
+#~ "\r\n"
+#~ "다음 %s %s 가 갱신됨:"
+
+#~ msgid "System error: No more file handles available"
+#~ msgstr "시스템 오류: 더 이상 사용 가능한 파일 핸들이 없습니다"
+
+#~ msgid "Internal error: Unexpected error number"
+#~ msgstr "내부 오류: 예기치 못한 오류"
+
+#~ msgid "Unknown function"
+#~ msgstr "알 수 없는 기능"
+
+#~ msgid "Unknown object"
+#~ msgstr "알 수 없는 객체"
+
+#~ msgid ""
+#~ "The following entries had an invalid UUID field.  This has been corrected."
+#~ msgstr ""
+#~ "다음 항목이 잘못된 UUID 항목 값을 가지고 있습니다. 이 항목은 다시 교정되었"
+#~ "습니다."
+
+#, fuzzy
+#~ msgid ""
+#~ "The following entries have passwords in the correct form for %s, but the "
+#~ "base entry does not exist."
+#~ msgstr ""
+#~ "Entry \"%s, %s, %s\" 가 보조 항목에 대한 올바른 비밀번호를 가지고 있으나, "
+#~ "기본 항목이 존재하지 않습니다."
+
+#~ msgid "The following entries were duplicates of an existing entry."
+#~ msgstr "다음 항목은 같은 항목의 복제본입니다."
+
+#, fuzzy
+#~ msgid ""
+#~ "The following entries had a duplicate UUID field.  This has been "
+#~ "corrected."
+#~ msgstr ""
+#~ "다음 항목이 잘못된 UUID 항목 값을 가지고 있습니다. 이 항목은 다시 교정되었"
+#~ "습니다."
+
+#, fuzzy
+#~ msgid ""
+#~ "The following entries had an empty Title field, which is not permitted."
+#~ msgstr ""
+#~ "다음 항목이 잘못된 UUID 항목 값을 가지고 있습니다. 이 항목은 다시 교정되었"
+#~ "습니다."
+
+#~ msgid "\tGroup='%s', Title='%s', User='%s' %s"
+#~ msgstr "\t그룹:'%s'; 제목:'%s'; 사용자 이름:'%s' %s"
+
+#~ msgid "- Its title has been changed to:'%s'"
+#~ msgstr "- 주제가 다음과 같이 변경되었습니다:'%s'"
+
+#~ msgid ""
+#~ "The following entries had an invalid Password History.  This has been "
+#~ "rebuilt with available data.  There may be some loss of history."
+#~ msgstr ""
+#~ "다음 항목이 잘못된 비밀번호 내역을 가지고 있습니다. 곧 사용가능한 데이터"
+#~ "로 재생성 될 것입니다. 이전 기록의 손실이 발생할 수 있습니다."
+
+#~ msgid "will expire"
+#~ msgstr "will expire"
+
+#~ msgid ""
+#~ "SAX Parse Error during %s\r\n"
+#~ "%s."
+#~ msgstr ""
+#~ "%s 도중 SAX 분석 오류가 발생했습니다.\r\n"
+#~ "%s."
+
+#~ msgid "XML %s: line %d character %d: %s"
+#~ msgstr "XML %s: line %d character %d: %s"
+
+#~ msgid "Internal error: Couldn't initialize config file XML structure"
+#~ msgstr "내부 오류: 설정 XML 파일을 초기화 할 수 없었습니다"
+
+#~ msgid ""
+#~ "A filter was active. Export of data was restricted to include only those "
+#~ "displayed."
+#~ msgstr "필터가 활성화되었습니다. 현재 표시된 데이터만 내보낼 수 있습니다."
+
+#~ msgid "Export of data was restricted to certain fields by the user."
+#~ msgstr "사용자에 의해 특정 필드값의 데이터가 제한되어 내보내졌습니다."
+
+#~ msgid ""
+#~ "Note: These preferences are only used when importing into an empty "
+#~ "database."
+#~ msgstr "주의: 이 설정들은 다른 빈 데이터베이스를 불러올 때에만 사용됩니다."
+
+#~ msgid "Subset of entries restricted by the following rule:"
+#~ msgstr "다음 규칙에 따라 제한된 항목들:"
+
+#~ msgid ""
+#~ "The user specified that the following fields be excluded from the export:"
+#~ msgstr "사용자가 입력한 다음 필드는 내보내기 중에 제외됩니다:"
+
+#, fuzzy
+#~ msgid ""
+#~ "Configuration file error:\n"
+#~ "%s\n"
+#~ "%s\n"
+#~ "offset approximately at %d"
+#~ msgstr ""
+#~ "설정 파일 오류:\n"
+#~ "%s\n"
+#~ "%s\n"
+#~ "%d 행 %d 열"
+
+#~ msgid "import"
+#~ msgstr "import"
+
+#~ msgid "Unable to load configuration file"
+#~ msgstr "설정 파일을 불러올 수 없었습니다"
+
+#~ msgid ""
+#~ "Failed to lock configuration file - opened by another instance of "
+#~ "PasswordSafe?"
+#~ msgstr ""
+#~ "설정파일을 잠그는 데 실패했습니다 - 다른 Password Safe에 의해 열려있습니"
+#~ "까?"
+
+#~ msgid "Unable to save configuration file"
+#~ msgstr "설정 파일을 저장할 수 없었습니다"
+
+#~ msgid "validation"
+#~ msgstr "validation"
+
+#, fuzzy
+#~ msgid "Yes (at least %d)"
+#~ msgstr "최소 %d 이상이어야 합니다"
 
 #, fuzzy
 #~ msgid ""

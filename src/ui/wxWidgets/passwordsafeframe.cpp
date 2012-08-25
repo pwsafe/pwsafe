@@ -134,6 +134,8 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
 
   EVT_MENU( ID_PWDPOLSM, PasswordSafeFrame::OnPwdPolsMClick )
 
+  EVT_MENU( ID_YUBIKEY_MNG, PasswordSafeFrame::OnYubikeyMngClick )
+
   EVT_MENU( wxID_ABOUT, PasswordSafeFrame::OnAboutClick )
 
 ////@end PasswordSafeFrame event table entries
@@ -348,6 +350,7 @@ void PasswordSafeFrame::CreateControls()
   const StringX lastView = prefs->GetPref(PWSprefs::LastView);
   m_currentView = (lastView == _T("list")) ? GRID : TREE;
 
+////@begin PasswordSafeFrame content construction
   PasswordSafeFrame* itemFrame1 = this;
 
   wxMenuBar* menuBar = new wxMenuBar;
@@ -443,12 +446,15 @@ void PasswordSafeFrame::CreateControls()
   itemMenu72->AppendSeparator();
   itemMenu72->Append(ID_OPTIONS_M, _("&Options...\tCtrl+M"), _T(""), wxITEM_NORMAL);
   itemMenu72->Append(ID_PWDPOLSM, _("Password Policies..."), _T(""), wxITEM_NORMAL);
+  itemMenu72->AppendSeparator();
+  itemMenu72->Append(ID_YUBIKEY_MNG, _("YubiKey..."), _T("Configure and backup YubiKeys"), wxITEM_NORMAL);
   menuBar->Append(itemMenu72, _("&Manage"));
   wxMenu* itemMenu79 = new wxMenu;
   itemMenu79->Append(wxID_HELP);
   itemMenu79->Append(ID_MENUITEM, _("Visit Password Safe &website..."), _T(""), wxITEM_NORMAL);
   itemMenu79->Append(wxID_ABOUT);
   menuBar->Append(itemMenu79, _("&Help"));
+////@end PasswordSafeFrame content construction
   PWSMenuShortcuts* scmgr = PWSMenuShortcuts::CreateShortcutsManager(menuBar);
   scmgr->ReadApplyUserShortcuts();
   itemFrame1->SetMenuBar(menuBar);
@@ -3032,5 +3038,4 @@ void PasswordSafeFrame::OnCompare(wxCommandEvent& /*evt*/)
 // already have them implemented in main*.cpp
 // (how to get DB to stop generating them??)
 //-----------------------------------------------------------------
-
 
