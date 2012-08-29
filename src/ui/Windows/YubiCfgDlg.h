@@ -18,7 +18,6 @@ class PWScore;
 class CYubiCfgDlg : public CPWDialog
 {
 public:
-  enum {YUBI_SK_LEN = 20};
 	CYubiCfgDlg(CWnd* pParent, PWScore &core);   // standard constructor
 	virtual ~CYubiCfgDlg();
 
@@ -41,6 +40,7 @@ public:
   afx_msg void OnTimer(UINT_PTR nIDEvent);
   afx_msg void OnHelp();
  private:
+  enum {YUBI_SK_LEN = 20};
   void ReadYubiSN();
   bool IsYubiInserted() const;
 	void yubiInserted(void); // called when Yubikey's inserted

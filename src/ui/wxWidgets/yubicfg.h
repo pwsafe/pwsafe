@@ -30,6 +30,7 @@
 ////@begin forward declarations
 ////@end forward declarations
 class wxTimer;
+class PWScore;
 
 /*!
  * Control identifiers
@@ -56,13 +57,12 @@ class wxTimer;
 
 class YubiCfgDlg: public wxDialog
 {    
-  DECLARE_DYNAMIC_CLASS( YubiCfgDlg )
+  DECLARE_CLASS( YubiCfgDlg )
   DECLARE_EVENT_TABLE()
 
 public:
   /// Constructors
-  YubiCfgDlg();
-  YubiCfgDlg( wxWindow* parent, wxWindowID id = SYMBOL_YUBICFGDLG_IDNAME, const wxString& caption = SYMBOL_YUBICFGDLG_TITLE, const wxPoint& pos = SYMBOL_YUBICFGDLG_POSITION, const wxSize& size = SYMBOL_YUBICFGDLG_SIZE, long style = SYMBOL_YUBICFGDLG_STYLE );
+  YubiCfgDlg( wxWindow* parent, PWScore &core, wxWindowID id = SYMBOL_YUBICFGDLG_IDNAME, const wxString& caption = SYMBOL_YUBICFGDLG_TITLE, const wxPoint& pos = SYMBOL_YUBICFGDLG_POSITION, const wxSize& size = SYMBOL_YUBICFGDLG_SIZE, long style = SYMBOL_YUBICFGDLG_STYLE );
 
   /// Creation
   bool Create( wxWindow* parent, wxWindowID id = SYMBOL_YUBICFGDLG_IDNAME, const wxString& caption = SYMBOL_YUBICFGDLG_TITLE, const wxPoint& pos = SYMBOL_YUBICFGDLG_POSITION, const wxSize& size = SYMBOL_YUBICFGDLG_SIZE, long style = SYMBOL_YUBICFGDLG_STYLE );
@@ -115,6 +115,19 @@ private:
 ////@end YubiCfgDlg member variables
   enum { POLLING_TIMER_ID = 66 } ; 
   wxTimer* m_pollingTimer;
+  enum {YUBI_SK_LEN = 20};
+  void ReadYubiSN();
+  int WriteYubiSK(const unsigned char *yubi_sk_bin);
+  bool IsYubiInserted() const;
+  void yubiInserted(void); // called when Yubikey's inserted
+  void yubiRemoved(void);  // called when Yubikey's removed
+  void ShowSK();
+  void HideSK();
+
+  bool m_present; // key present?
+  bool m_isSKHidden;
+  mutable wxMutex m_mutex; // protect against race conditions when calling Yubi API
+  PWScore &m_core;
 };
 
 #endif

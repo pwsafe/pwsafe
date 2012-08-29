@@ -211,7 +211,7 @@ void PasswordSafeFrame::OnPwdPolsMClick( wxCommandEvent&  )
 
 void PasswordSafeFrame::OnYubikeyMngClick( wxCommandEvent& event )
 {
-  YubiCfgDlg ykCfg(this);
+  YubiCfgDlg ykCfg(this, m_core);
   ykCfg.ShowModal();
 }
 
