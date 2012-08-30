@@ -119,6 +119,7 @@ LangString ITALIAN_SUPPORT ${LANG_DANISH} "en:Italian"
 LangString DANISH_SUPPORT ${LANG_DANISH} "en:Danish"
 ; KOREAN_SUPPORT "Korean"
 LangString KOREAN_SUPPORT ${LANG_DANISH} "en:Korean"
+LangString CZECH_SUPPORT ${LANG_DANISH} "en:Czech"
 
 ; LANG_SELECT "Please select the language for the installation"
 LangString LANG_SELECT ${LANG_DANISH} "Vælg venligst installations sprog"
