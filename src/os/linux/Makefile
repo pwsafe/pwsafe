@@ -16,8 +16,8 @@ LIBSRC          = debug.cpp dir.cpp env.cpp \
                   pws_time.cpp rand.cpp run.cpp\
                   utf8conv.cpp KeySend.cpp\
                   sleep.cpp xsendstring.cpp\
-									registry.cpp UUID.cpp\
-                  unicode2keysym.cpp
+		  registry.cpp UUID.cpp\
+                  unicode2keysym.cpp PWYubi.cpp
 
 SRC             = $(LIBSRC)
 
@@ -29,7 +29,7 @@ LIBOBJ    = $(addprefix $(OBJPATH)/,$(subst .cpp,.o,$(LIBSRC)))
 LIB       = $(LIBPATH)/libos.a
 OBJ       = $(LIBOBJ)
 
-CPPFLAGS = $(CXXFLAGS) -Wall -I../../core -I../..
+CPPFLAGS = $(CXXFLAGS) -Wall -I../../core -I../.. -I/usr/local/include/ykpers-1
 ifeq ($(CONFIG),debug)
 CPPFLAGS += -O0 -g -ggdb -DDEBUG
 CFLAGS += -g

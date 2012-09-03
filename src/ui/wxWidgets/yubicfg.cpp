@@ -33,6 +33,7 @@
 #include "core/PWScore.h"
 
 #include "os/rand.h"
+#include "os/linux/PWYubi.h"
 
 using namespace std;
 
@@ -448,13 +449,7 @@ void YubiCfgDlg::yubiRemoved(void)
 
 bool YubiCfgDlg::IsYubiInserted() const
 {
-#ifdef NOTYET
-  CSingleLock singeLock(&m_mutex);
-  CYkLib yk;
-  singeLock.Lock();
-  return (yk.enumPorts() == 1);
-#else
-  return false;
-#endif
+  const PWYubi yubi;
+  return yubi.IsYubiInserted();
 }
 
