@@ -27,6 +27,7 @@
 #include "PasswordPolicy.h"
 #include "pwsclip.h"
 #include "core/PWCharPool.h"
+#include "./wxutils.h"
 
 ////@begin XPM images
 #include "graphics/toolbar/new/copypassword.xpm"
@@ -442,7 +443,7 @@ PWPolicy CManagePasswordPolicies::GetSelectedPolicy() const
   if (row > 0) {
     const wxString policyname = m_PolicyNames->GetCellValue(row, 0);
 
-    PSWDPolicyMapCIter iter = m_MapPSWDPLC.find(policyname.c_str());
+    PSWDPolicyMapCIter iter = m_MapPSWDPLC.find(tostringx(policyname));
     if (iter == m_MapPSWDPLC.end())
       return m_st_default_pp;
 
@@ -470,7 +471,7 @@ void CManagePasswordPolicies::UpdatePolicy(const wxString &polname, const PWPoli
   if (polname == _("Default Policy"))
     m_st_default_pp = pol;
   else
-    m_MapPSWDPLC[polname.c_str()] = pol;
+    m_MapPSWDPLC[tostringx(polname)] = pol;
 #ifdef NOTYET
     // Save changes for Undo/Redo
     PWPolicyChange st_change;
@@ -717,7 +718,7 @@ void CManagePasswordPolicies::OnGeneratePasswordClick( wxCommandEvent& event )
 
 void CManagePasswordPolicies::OnCopyPasswordClick( wxCommandEvent& )
 {
-  PWSclip::SetData(m_passwordCtrl->GetValue().c_str());
+  PWSclip::SetData(tostringx(m_passwordCtrl->GetValue()));
 }
 
 

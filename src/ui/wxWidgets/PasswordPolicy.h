@@ -41,6 +41,10 @@ class wxSpinCtrl;
  * Control identifiers
  */
 
+#ifndef wxDIALOG_MODAL
+#define wxDIALOG_MODAL 0
+#endif
+
 ////@begin control identifiers
 #define ID_CPASSWORDPOLICY 10221
 #define ID_POLICYNAME 10223

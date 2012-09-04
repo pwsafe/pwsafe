@@ -1020,7 +1020,7 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
     const wxString itemPolName = m_item.GetPolicyName().c_str();
     if (!itemPolName.IsEmpty()) {
       m_cbxPolicyNames->SetValue(itemPolName);
-      m_core.GetPolicyFromName(itemPolName.c_str(), policy);
+      m_core.GetPolicyFromName(tostringx(itemPolName), policy);
     } else {
       m_cbxPolicyNames->SetValue(_("Default Policy"));
       policy = prefs->GetDefaultPolicy();
@@ -1283,7 +1283,7 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
         } else {
           m_item.SetPWPolicy(pwp);
         }
-        m_item.SetPolicyName(polName.c_str());
+        m_item.SetPolicyName(tostringx(polName));
         m_item.SetDCA(m_DCA);
         m_item.SetShiftDCA(m_ShiftDCA);
       } // bIsModified
@@ -1589,7 +1589,7 @@ PWPolicy AddEditPropSheet::GetSelectedPWPolicy()
   PWPolicy pwp;
   if (m_defPWPRB->GetValue()) {
     const wxString polName = m_cbxPolicyNames->GetValue();
-    m_core.GetPolicyFromName(polName.c_str(), pwp);
+    m_core.GetPolicyFromName(tostringx(polName), pwp);
   } else
     pwp = GetPWPolicyFromUI();
   return pwp;
@@ -1757,8 +1757,8 @@ void AddEditPropSheet::OnSendButtonClick( wxCommandEvent& event )
    *   user@example.com?subject=Message Title&body=Message Content"
    */
   if (Validate() && TransferDataFromWindow() && !m_email.IsEmpty()) {
-    StringX mail_cmd=_("mailto:");
-    mail_cmd += m_email.c_str();
+    StringX mail_cmd= tostringx(_("mailto:"));
+    mail_cmd += tostringx(m_email);
     PWSRun runner;
     runner.issuecmd(mail_cmd, wxT(""), false);
   }
@@ -1776,8 +1776,8 @@ void AddEditPropSheet::OnPolicylistSelected( wxCommandEvent& event )
   if (polName == _("Default Policy")) {
     policy = PWSprefs::GetInstance()->GetDefaultPolicy();
   } else {
-    if (!m_core.GetPolicyFromName(polName.c_str(), policy)) {
-      pws_os::Trace(_("Couldn't find policy %s\n"), polName.c_str());
+    if (!m_core.GetPolicyFromName(tostringx(polName), policy)) {
+      pws_os::Trace(_("Couldn't find policy %s\n"), ToStr(polName));
       return;
     }
   }
