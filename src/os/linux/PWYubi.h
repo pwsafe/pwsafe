@@ -16,6 +16,7 @@ public:
   ~PWYubi() {}
   bool IsYubiInserted() const;
 private:
+  void report_error();
   static bool isInited;
   static pthread_mutex_t s_mutex;
 };

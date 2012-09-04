@@ -11,7 +11,9 @@
 */
 
 #include "PWYubi.h"
+#include "../debug.h"
 #include <ykcore.h>
+#include <ykpers.h>
 
 bool PWYubi::isInited = false;
 pthread_mutex_t PWYubi::s_mutex = PTHREAD_MUTEX_INITIALIZER;
@@ -41,3 +43,18 @@ bool PWYubi::IsYubiInserted() const
   return retval;
 }
 
+void PWYubi::report_error()
+{
+  if (ykp_errno)
+    pws_os::Trace(_S("Yubikey personalization error: %s\n"),
+                  ykp_strerror(ykp_errno));
+  if (yk_errno) {
+    if (yk_errno == YK_EUSBERR) {
+      pws_os::Trace(_S("USB error: %s\n"),
+                    yk_usb_strerror());
+    } else {
+      pws_os::Trace(_S("Yubikey core error: %s\n"),
+                    yk_strerror(yk_errno));
+    }
+  }
+}
