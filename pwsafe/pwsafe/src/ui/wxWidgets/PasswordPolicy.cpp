@@ -25,6 +25,7 @@
 
 #include "PasswordPolicy.h"
 #include "core/PWCharPool.h"
+#include "./wxutils.h"
 
 ////@begin XPM images
 ////@end XPM images
@@ -395,7 +396,7 @@ bool CPasswordPolicy::Verify()
     id = ID_POLICYNAME;
     retval = false;
   } else if ((m_polname != m_oldpolname &&
-              (m_MapPSWDPLC.find(m_polname.c_str()) != m_MapPSWDPLC.end()))) {
+              (m_MapPSWDPLC.find(tostringx(m_polname)) != m_MapPSWDPLC.end()))) {
     mess = _("Policy name is already in use");
     id = ID_POLICYNAME;
     retval = false;
