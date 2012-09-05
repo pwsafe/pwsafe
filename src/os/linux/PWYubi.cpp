@@ -37,13 +37,15 @@ bool PWYubi::IsYubiInserted() const
     if (ykey != NULL) {
       yk_close_key(ykey);
       retval = true;
+    } else {
+      report_error(); // debug only
     }
   }
   pthread_mutex_unlock(&s_mutex);
   return retval;
 }
 
-void PWYubi::report_error()
+void PWYubi::report_error() const
 {
   if (ykp_errno)
     pws_os::Trace(_S("Yubikey personalization error: %s\n"),
@@ -53,8 +55,8 @@ void PWYubi::report_error()
       pws_os::Trace(_S("USB error: %s\n"),
                     yk_usb_strerror());
     } else {
-      pws_os::Trace(_S("Yubikey core error: %s\n"),
-                    yk_strerror(yk_errno));
+      pws_os::Trace(_S("Yubikey core error(%d): %s\n"),
+                    yk_errno, yk_strerror(yk_errno));
     }
   }
 }
