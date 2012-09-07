@@ -376,7 +376,7 @@ void YubiCfgDlg::ReadYubiSN()
     m_yksernum = wxT("");
     m_ykstatus->SetLabel(yk.GetErrStr().c_str());
   } else {
-    m_yksernum.Printf(wxT("%ux"), serial);
+    m_yksernum.Printf(wxT("%u"), serial);
     m_ykstatus->SetLabel(wxT(""));
   }
 }

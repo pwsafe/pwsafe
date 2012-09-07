@@ -14,14 +14,14 @@
 class PWYubi {
 public:
   PWYubi();
-  ~PWYubi() {}
+  ~PWYubi();
   bool IsYubiInserted() const;
   bool GetSerial(unsigned int &serial) const;
   // if GetErrStr().empty(), then no error:
   const std::wstring &GetErrStr() const {return m_ykerrstr;}
 private:
   void report_error() const;
-  static bool isInited;
+  mutable bool m_isInited;
   static pthread_mutex_t s_mutex;
   mutable std::wstring m_ykerrstr;
 };

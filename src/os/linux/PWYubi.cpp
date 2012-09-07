@@ -18,15 +18,20 @@
 #include <ykpers.h>
 #include <string>
 
-bool PWYubi::isInited = false;
 pthread_mutex_t PWYubi::s_mutex = PTHREAD_MUTEX_INITIALIZER;
 
-PWYubi::PWYubi()
+PWYubi::PWYubi() : m_isInited(false)
 {
   pthread_mutex_lock(&s_mutex);
-  if (!isInited) {
-    isInited = yk_init() != 0;
-  }
+  m_isInited = yk_init() != 0;
+  pthread_mutex_unlock(&s_mutex);
+}
+
+PWYubi::~PWYubi()
+{
+  pthread_mutex_lock(&s_mutex);
+  if (m_isInited)
+    yk_release();
   pthread_mutex_unlock(&s_mutex);
 }
 
@@ -34,15 +39,19 @@ bool PWYubi::IsYubiInserted() const
 {
   bool retval = false;
   pthread_mutex_lock(&s_mutex);
-  // if yk isn't init'ed, don't bother
-  if (isInited) {
+  if (m_isInited) {
     YK_KEY *ykey = yk_open_first_key();
     if (ykey != NULL) {
       yk_close_key(ykey);
       retval = true;
     } else {
       report_error(); // debug only
+      // reset s.t. we'll init next time
+      yk_release();
+      m_isInited = false;
     }
+  } else { // try again
+    m_isInited = yk_init() != 0;
   }
   pthread_mutex_unlock(&s_mutex);
   return retval;
@@ -73,7 +82,7 @@ bool PWYubi::GetSerial(unsigned int &serial) const
   YK_KEY *ykey = NULL;
   pthread_mutex_lock(&s_mutex);
   // if yk isn't init'ed, don't bother
-  if (isInited) {
+  if (m_isInited) {
     ykey = yk_open_first_key();
     if (ykey != NULL) {
       if (!check_firmware_version(ykey)) {
