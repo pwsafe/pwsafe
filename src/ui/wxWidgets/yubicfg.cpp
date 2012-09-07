@@ -187,10 +187,11 @@ void YubiCfgDlg::CreateControls()
   wxStaticBoxSizer* itemStaticBoxSizer6 = new wxStaticBoxSizer(itemStaticBoxSizer6Static, wxVERTICAL);
   itemBoxSizer2->Add(itemStaticBoxSizer6, 0, wxGROW|wxALL, 5);
 
-  wxTextCtrl* itemTextCtrl7 = new wxTextCtrl( itemDialog1, ID_YKSK, _("Please insert your YubiKey"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
+  wxTextCtrl* itemTextCtrl7 = new wxTextCtrl( itemDialog1, ID_YKSK, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
   itemStaticBoxSizer6->Add(itemTextCtrl7, 0, wxGROW|wxALL, 5);
 
   m_ykstatus = new wxStaticText( itemDialog1, wxID_STATIC, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+  m_ykstatus->SetForegroundColour(wxColour(165, 42, 42));
   itemStaticBoxSizer6->Add(m_ykstatus, 0, wxGROW|wxALL, 5);
 
   wxBoxSizer* itemBoxSizer9 = new wxBoxSizer(wxHORIZONTAL);
@@ -369,28 +370,15 @@ void YubiCfgDlg::HideSK()
 
 void YubiCfgDlg::ReadYubiSN()
 {
-#ifdef NOTYET
-  CYkLib yk;
-  BYTE buffer[128];
-  YKLIB_RC rc;
-  STATUS status;
-  CSingleLock singeLock(&m_mutex);
-
-  memset(&status, 0, sizeof(status));
-  singeLock.Lock();
-  rc = yk.openKey();
-  if (rc != YKLIB_OK) goto fail;
-  rc = yk.readSerialBegin();
-  if (rc != YKLIB_OK) goto fail;
-  // Wait for response completion
-  rc = yk.waitForCompletion(YKLIB_MAX_SERIAL_WAIT, buffer, sizeof(DWORD));
-  if (rc != YKLIB_OK) goto fail;
-  m_yksernem = BinSN2Str(buffer).c_str();
-  rc = yk.closeKey();
-  return; // good return
- fail:
-#endif
-  m_yksernum = _("Error reading YubiKey");
+  PWYubi yk;
+  unsigned int serial;
+  if (!yk.GetSerial(serial)) {
+    m_yksernum = wxT("");
+    m_ykstatus->SetLabel(yk.GetErrStr().c_str());
+  } else {
+    m_yksernum.Printf(wxT("%ux"), serial);
+    m_ykstatus->SetLabel(wxT(""));
+  }
 }
 
 int YubiCfgDlg::WriteYubiSK(const unsigned char *yubi_sk_bin)
@@ -425,6 +413,7 @@ int YubiCfgDlg::WriteYubiSK(const unsigned char *yubi_sk_bin)
 
 void YubiCfgDlg::yubiInserted(void)
 {
+  m_ykstatus->SetLabel(wxT(""));
   FindWindow(ID_YK_SERNUM)->Enable(true);
   FindWindow(ID_YKSK)->Enable(true);
   FindWindow(ID_YK_GENERATE)->Enable(true);
@@ -441,6 +430,7 @@ void YubiCfgDlg::yubiInserted(void)
 
 void YubiCfgDlg::yubiRemoved(void)
 {
+  m_ykstatus->SetLabel(_("Please insert your YubiKey"));
   m_yksernum = _("");
   m_yksk = _("Please insert your YubiKey");
   ShowSK();

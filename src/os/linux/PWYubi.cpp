@@ -41,14 +41,63 @@ bool PWYubi::IsYubiInserted() const
       yk_close_key(ykey);
       retval = true;
     } else {
-      const_cast<PWYubi *>(this)->report_error(); // debug only
+      report_error(); // debug only
     }
   }
   pthread_mutex_unlock(&s_mutex);
   return retval;
 }
 
-void PWYubi::report_error()
+// Following not a member function as we don't want to expose
+// YK_KEY in the interface (header file).
+
+static bool check_firmware_version(YK_KEY *yk)
+{
+  YK_STATUS *st = ykds_alloc();
+  bool retval = false;
+
+  if (yk_get_status(yk, st) && 
+      (ykds_version_major(st) > 2 ||
+       (ykds_version_major(st) == 2
+        && ykds_version_minor(st) >= 2))) {
+    retval = true;
+  }
+  free(st);
+  return retval;
+}
+
+
+bool PWYubi::GetSerial(unsigned int &serial) const
+{
+  bool retval = false;
+  YK_KEY *ykey = NULL;
+  pthread_mutex_lock(&s_mutex);
+  // if yk isn't init'ed, don't bother
+  if (isInited) {
+    ykey = yk_open_first_key();
+    if (ykey != NULL) {
+      if (!check_firmware_version(ykey)) {
+        m_ykerrstr = _S("YubiKey firmware version unsupported");
+        goto done;
+      }
+      if (!yk_get_serial(ykey, 0, 0, &serial)) {
+        m_ykerrstr = _S("Failed to read serial number");
+        goto done;
+      }
+      retval = true;
+    } else { // NULL ykey, perhaps removed?
+      report_error();
+    }
+  }
+  done:
+  if (ykey != NULL)
+    yk_close_key(ykey);
+    pthread_mutex_unlock(&s_mutex);
+    return retval;
+}
+
+
+void PWYubi::report_error() const
 {
   std::string yk_errstr;
   if (ykp_errno) {
@@ -60,7 +109,7 @@ void PWYubi::report_error()
       pws_os::Trace(_S("USB error(%d)\n"), yk_errno);
       yk_errstr += yk_usb_strerror();
     } else {
-      pws_os::Trace(_S("Yubikey core error(%d): %s\n"), yk_errno);
+      pws_os::Trace(_S("Yubikey core error(%d)\n"), yk_errno);
       yk_errstr += yk_strerror(yk_errno);
     }
   }
