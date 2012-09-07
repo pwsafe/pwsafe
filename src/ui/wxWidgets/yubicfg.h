@@ -109,6 +109,7 @@ public:
   static bool ShowToolTips();
 
 ////@begin YubiCfgDlg member variables
+  wxStaticText* m_ykstatus;
 private:
   wxString m_yksernum; // Device's serial number
   wxString m_yksk; // Device's secret key

@@ -3,13 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#: ../../../ui/wxWidgets/yubicfg.cpp:431 ../../../ui/wxWidgets/yubicfg.cpp:439
+#: ../../../ui/wxWidgets/yubicfg.cpp:432 ../../../ui/wxWidgets/yubicfg.cpp:440
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-03 21:58+0300\n"
+"POT-Creation-Date: 2012-09-04 21:51+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -56,7 +56,7 @@ msgstr "Zie LICENTIE voor detail over open source."
 msgid "Copyright (c) 2003-2012 by Rony Shapiro"
 msgstr ""
 
-#: ../../../ui/wxWidgets/about.cpp:177 ../../../ui/wxWidgets/yubicfg.cpp:206
+#: ../../../ui/wxWidgets/about.cpp:177 ../../../ui/wxWidgets/yubicfg.cpp:207
 msgid "&Close"
 msgstr "&Afsluiten"
 
@@ -846,7 +846,7 @@ msgstr "Annuleer"
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:293
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:456
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:171
-#: ../../../ui/wxWidgets/yubicfg.cpp:209
+#: ../../../ui/wxWidgets/yubicfg.cpp:210
 msgid "&Help"
 msgstr "&Help"
 
@@ -1185,7 +1185,7 @@ msgid "Test Selected Policy"
 msgstr ""
 
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:202
-#: ../../../ui/wxWidgets/yubicfg.cpp:197
+#: ../../../ui/wxWidgets/yubicfg.cpp:198
 #, fuzzy
 msgid "Generate"
 msgstr "&Genereer"
@@ -3109,33 +3109,33 @@ msgstr ""
 msgid "Trial Version Limitation"
 msgstr "Beperking in proef versie"
 
-#: ../../../ui/wxWidgets/yubicfg.cpp:178
+#: ../../../ui/wxWidgets/yubicfg.cpp:179
 msgid "YubiKey Serial Number: "
 msgstr ""
 
-#: ../../../ui/wxWidgets/yubicfg.cpp:184
+#: ../../../ui/wxWidgets/yubicfg.cpp:185
 msgid "YubiKey Secret Key (20 Byte Hex)"
 msgstr ""
 
-#: ../../../ui/wxWidgets/yubicfg.cpp:188 ../../../ui/wxWidgets/yubicfg.cpp:440
+#: ../../../ui/wxWidgets/yubicfg.cpp:189 ../../../ui/wxWidgets/yubicfg.cpp:441
 msgid "Please insert your YubiKey"
 msgstr ""
 
-#: ../../../ui/wxWidgets/yubicfg.cpp:194 ../../../ui/wxWidgets/yubicfg.cpp:342
+#: ../../../ui/wxWidgets/yubicfg.cpp:195 ../../../ui/wxWidgets/yubicfg.cpp:343
 #, fuzzy
 msgid "Hide"
 msgstr "&Verberg"
 
-#: ../../../ui/wxWidgets/yubicfg.cpp:200
+#: ../../../ui/wxWidgets/yubicfg.cpp:201
 msgid "Set YubiKey"
 msgstr ""
 
-#: ../../../ui/wxWidgets/yubicfg.cpp:355
+#: ../../../ui/wxWidgets/yubicfg.cpp:356
 #, fuzzy
 msgid "Show"
 msgstr "&Toon"
 
-#: ../../../ui/wxWidgets/yubicfg.cpp:388
+#: ../../../ui/wxWidgets/yubicfg.cpp:389
 msgid "Error reading YubiKey"
 msgstr ""
 

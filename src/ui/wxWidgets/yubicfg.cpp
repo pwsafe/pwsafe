@@ -119,6 +119,7 @@ YubiCfgDlg::~YubiCfgDlg()
 void YubiCfgDlg::Init()
 {
 ////@begin YubiCfgDlg member initialisation
+  m_ykstatus = NULL;
 ////@end YubiCfgDlg member initialisation
   m_pollingTimer = new wxTimer(this, POLLING_TIMER_ID);
   m_yksernum = m_yksk = wxT("");
@@ -174,7 +175,7 @@ void YubiCfgDlg::CreateControls()
   itemDialog1->SetSizer(itemBoxSizer2);
 
   wxBoxSizer* itemBoxSizer3 = new wxBoxSizer(wxHORIZONTAL);
-  itemBoxSizer2->Add(itemBoxSizer3, 0, 0, 0);
+  itemBoxSizer2->Add(itemBoxSizer3, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
 
   wxStaticText* itemStaticText4 = new wxStaticText( itemDialog1, wxID_STATIC, _("YubiKey Serial Number: "), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer3->Add(itemStaticText4, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
@@ -189,28 +190,31 @@ void YubiCfgDlg::CreateControls()
   wxTextCtrl* itemTextCtrl7 = new wxTextCtrl( itemDialog1, ID_YKSK, _("Please insert your YubiKey"), wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
   itemStaticBoxSizer6->Add(itemTextCtrl7, 0, wxGROW|wxALL, 5);
 
-  wxBoxSizer* itemBoxSizer8 = new wxBoxSizer(wxHORIZONTAL);
-  itemStaticBoxSizer6->Add(itemBoxSizer8, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
+  m_ykstatus = new wxStaticText( itemDialog1, wxID_STATIC, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+  itemStaticBoxSizer6->Add(m_ykstatus, 0, wxGROW|wxALL, 5);
 
-  wxButton* itemButton9 = new wxButton( itemDialog1, ID_YK_HIDESHOW, _("Hide"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer8->Add(itemButton9, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  wxBoxSizer* itemBoxSizer9 = new wxBoxSizer(wxHORIZONTAL);
+  itemStaticBoxSizer6->Add(itemBoxSizer9, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
 
-  wxButton* itemButton10 = new wxButton( itemDialog1, ID_YK_GENERATE, _("Generate"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer8->Add(itemButton10, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  wxButton* itemButton10 = new wxButton( itemDialog1, ID_YK_HIDESHOW, _("Hide"), wxDefaultPosition, wxDefaultSize, 0 );
+  itemBoxSizer9->Add(itemButton10, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxButton* itemButton11 = new wxButton( itemDialog1, ID_YK_SET, _("Set YubiKey"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer8->Add(itemButton11, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  wxButton* itemButton11 = new wxButton( itemDialog1, ID_YK_GENERATE, _("Generate"), wxDefaultPosition, wxDefaultSize, 0 );
+  itemBoxSizer9->Add(itemButton11, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxStdDialogButtonSizer* itemStdDialogButtonSizer12 = new wxStdDialogButtonSizer;
+  wxButton* itemButton12 = new wxButton( itemDialog1, ID_YK_SET, _("Set YubiKey"), wxDefaultPosition, wxDefaultSize, 0 );
+  itemBoxSizer9->Add(itemButton12, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  itemBoxSizer2->Add(itemStdDialogButtonSizer12, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
-  wxButton* itemButton13 = new wxButton( itemDialog1, wxID_OK, _("&Close"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemStdDialogButtonSizer12->AddButton(itemButton13);
+  wxStdDialogButtonSizer* itemStdDialogButtonSizer13 = new wxStdDialogButtonSizer;
 
-  wxButton* itemButton14 = new wxButton( itemDialog1, wxID_HELP, _("&Help"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemStdDialogButtonSizer12->AddButton(itemButton14);
+  itemBoxSizer2->Add(itemStdDialogButtonSizer13, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
+  wxButton* itemButton14 = new wxButton( itemDialog1, wxID_OK, _("&Close"), wxDefaultPosition, wxDefaultSize, 0 );
+  itemStdDialogButtonSizer13->AddButton(itemButton14);
 
-  itemStdDialogButtonSizer12->Realize();
+  wxButton* itemButton15 = new wxButton( itemDialog1, wxID_HELP, _("&Help"), wxDefaultPosition, wxDefaultSize, 0 );
+  itemStdDialogButtonSizer13->AddButton(itemButton15);
+
+  itemStdDialogButtonSizer13->Realize();
 
   // Set validators
   itemTextCtrl5->SetValidator( wxGenericValidator(& m_yksernum) );
