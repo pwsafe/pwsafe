@@ -12,8 +12,11 @@
 
 #include "PWYubi.h"
 #include "../debug.h"
+#include "../utf8conv.h"
+
 #include <ykcore.h>
 #include <ykpers.h>
+#include <string>
 
 bool PWYubi::isInited = false;
 pthread_mutex_t PWYubi::s_mutex = PTHREAD_MUTEX_INITIALIZER;
@@ -38,25 +41,31 @@ bool PWYubi::IsYubiInserted() const
       yk_close_key(ykey);
       retval = true;
     } else {
-      report_error(); // debug only
+      const_cast<PWYubi *>(this)->report_error(); // debug only
     }
   }
   pthread_mutex_unlock(&s_mutex);
   return retval;
 }
 
-void PWYubi::report_error() const
+void PWYubi::report_error()
 {
-  if (ykp_errno)
-    pws_os::Trace(_S("Yubikey personalization error: %s\n"),
-                  ykp_strerror(ykp_errno));
+  std::string yk_errstr;
+  if (ykp_errno) {
+    pws_os::Trace(_S("Yubikey personalization error(%d)\n"), ykp_errno);
+    yk_errstr = ykp_strerror(ykp_errno);
+  }
   if (yk_errno) {
     if (yk_errno == YK_EUSBERR) {
-      pws_os::Trace(_S("USB error: %s\n"),
-                    yk_usb_strerror());
+      pws_os::Trace(_S("USB error(%d)\n"), yk_errno);
+      yk_errstr += yk_usb_strerror();
     } else {
-      pws_os::Trace(_S("Yubikey core error(%d): %s\n"),
-                    yk_errno, yk_strerror(yk_errno));
+      pws_os::Trace(_S("Yubikey core error(%d): %s\n"), yk_errno);
+      yk_errstr += yk_strerror(yk_errno);
     }
   }
+  if (yk_errstr.empty())
+    m_ykerrstr = L"";
+  else
+    m_ykerrstr = pws_os::towc(yk_errstr.c_str());
 }

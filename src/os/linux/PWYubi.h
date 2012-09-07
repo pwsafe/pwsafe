@@ -9,16 +9,20 @@
 #ifndef __PWYUBI_H
 
 #include <pthread.h> // for wxMutex et. al.
+#include <string>
 
 class PWYubi {
 public:
   PWYubi();
   ~PWYubi() {}
   bool IsYubiInserted() const;
+  // if GetErrStr().empty(), then no error:
+  const std::wstring &GetErrStr() const {return m_ykerrstr;}
 private:
-  void report_error() const;
+  void report_error();
   static bool isInited;
   static pthread_mutex_t s_mutex;
+  std::wstring m_ykerrstr;
 };
 #define __PWYUBI_H
 
