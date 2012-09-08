@@ -313,33 +313,23 @@ void YubiCfgDlg::OnYkGenerateClick( wxCommandEvent& event )
 
 void YubiCfgDlg::OnYkSetClick( wxCommandEvent& event )
 {
-#ifdef NOTYET
-  UpdateData(TRUE);  
-  StringX skStr = m_yksk;
-  
-  FindWindow(IDC_YUBI_API)->ShowWindow(SW_HIDE); // in case of retry
+  Validate(); TransferDataFromWindow();
+  m_ykstatus->SetLabel(wxT(""));
+  StringX skStr = m_yksk.c_str();
   if (!skStr.empty()) {
     unsigned char yubi_sk_bin[YUBI_SK_LEN];
     HexStr2BinSK(skStr, yubi_sk_bin, YUBI_SK_LEN);
-    int rc;
-    if ((rc = WriteYubiSK(yubi_sk_bin)) == YKLIB_OK) { // 1. Update SK on Yubi.
+    PWYubi yk;
+    if (yk.WriteSK(yubi_sk_bin, YUBI_SK_LEN)) { // 1. Update SK on Yubi.
       // 2. If YubiKey update succeeds, update in core.
       m_core.SetYubiSK(yubi_sk_bin);
       // 3. Write DB ASAP!
       m_core.WriteCurFile();
       trashMemory(yubi_sk_bin, YUBI_SK_LEN);
     } else {
-      const CString err = _T("Failed to update YubiKey");
-      FindWindow(IDC_YUBI_API)->ShowWindow(SW_SHOW);
-      FindWindow(IDC_YUBI_API)->SetLabel(err);
+      m_ykstatus->SetLabel(wxT("Failed to update YubiKey"));
     }
   }
-#else
-////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YK_SET in YubiCfgDlg.
-  // Before editing this code, remove the block markers.
-  event.Skip();
-////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YK_SET in YubiCfgDlg.
-#endif
 }
 
 void YubiCfgDlg::ShowSK()
@@ -379,36 +369,6 @@ void YubiCfgDlg::ReadYubiSN()
     m_yksernum.Printf(wxT("%u"), serial);
     m_ykstatus->SetLabel(wxT(""));
   }
-}
-
-int YubiCfgDlg::WriteYubiSK(const unsigned char *yubi_sk_bin)
-{
-#ifdef NOTYET
-  CYkLib yk;
-  YKLIB_RC rc;
-  STATUS status;
-  CONFIG config;
-  CSingleLock singeLock(&m_mutex);
-
-  memset(&status, 0, sizeof(status));
-  memset(&config, 0, sizeof(config));
-  config.tktFlags = TKTFLAG_CHAL_RESP;
-  config.cfgFlags = CFGFLAG_CHAL_HMAC | CFGFLAG_HMAC_LT64 | CFGFLAG_CHAL_BTN_TRIG;
-  config.extFlags = EXTFLAG_SERIAL_API_VISIBLE;
-  yk.setKey160(&config, yubi_sk_bin);
-  singeLock.Lock();
-  rc = yk.openKey();
-  if (rc != YKLIB_OK) goto fail;
-  rc = yk.writeConfigBegin(1, &config, NULL);
-  if (rc != YKLIB_OK) goto fail;
-  // Wait for response completion
-  rc = yk.waitForCompletion(YKLIB_MAX_WRITE_WAIT);
-  if (rc != YKLIB_OK) goto fail;
- fail:
-  return rc;
-#else
-  return 0;
-#endif
 }
 
 void YubiCfgDlg::yubiInserted(void)

@@ -17,6 +17,7 @@ public:
   ~PWYubi();
   bool IsYubiInserted() const;
   bool GetSerial(unsigned int &serial) const;
+  bool WriteSK(const unsigned char *sk, size_t sklen);
   // if GetErrStr().empty(), then no error:
   const std::wstring &GetErrStr() const {return m_ykerrstr;}
 private:

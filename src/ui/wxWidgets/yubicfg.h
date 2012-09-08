@@ -118,7 +118,6 @@ private:
   wxTimer* m_pollingTimer;
   enum {YUBI_SK_LEN = 20};
   void ReadYubiSN();
-  int WriteYubiSK(const unsigned char *yubi_sk_bin);
   bool IsYubiInserted() const;
   void yubiInserted(void); // called when Yubikey's inserted
   void yubiRemoved(void);  // called when Yubikey's removed
