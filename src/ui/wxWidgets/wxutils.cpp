@@ -182,4 +182,23 @@ bool MultiCheckboxValidator::Validate(wxWindow* parent)
   }
 }
 
+void ShowHideText(wxTextCtrl *&txtCtrl, wxWindow *parent, wxWindowID id,
+                  const wxString &text, wxSizer *sizer, bool show)
+{
+  // Per Dave Silvia's suggestion:
+  // Following kludge since wxTE_PASSWORD style is immutable
+  wxTextCtrl *tmp = txtCtrl;
+  txtCtrl = new wxTextCtrl(parent, id, text,
+                           wxDefaultPosition, wxDefaultSize,
+                           show ? 0 : wxTE_PASSWORD);
+  ApplyPasswordFont(txtCtrl);
+  sizer->Replace(tmp, txtCtrl);
+  delete tmp;
+  sizer->Layout();
+  if (!text.IsEmpty()) {
+    txtCtrl->ChangeValue(text);
+    txtCtrl->SetModified(true);
+  }
+}
+
 int pless(int* first, int* second) { return *first - *second; }

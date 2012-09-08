@@ -1085,21 +1085,8 @@ void AddEditPropSheet::ShowPassword()
   m_isPWHidden = false;
   m_ShowHideCtrl->SetLabel(_("&Hide"));
 
-  // Per Dave Silvia's suggestion:
-  // Following kludge since wxTE_PASSWORD style is immutable
-  wxTextCtrl *tmp = m_PasswordCtrl;
-  const wxString pwd = m_password.c_str();
-  m_PasswordCtrl = new wxTextCtrl(m_BasicPanel, ID_TEXTCTRL2,
-                                  pwd,
-                                  wxDefaultPosition, wxDefaultSize,
-                                  0);
-  if (!pwd.IsEmpty()) {
-    m_PasswordCtrl->ChangeValue(pwd);
-    m_PasswordCtrl->SetModified(true);
-  }
-  m_BasicFGSizer->Replace(tmp, m_PasswordCtrl);
-  delete tmp;
-  m_BasicFGSizer->Layout();
+  ShowHideText(m_PasswordCtrl, m_BasicPanel, ID_TEXTCTRL2,
+               m_password.c_str(), m_BasicFGSizer, true);
   // Disable confirmation Ctrl, as the user can see the password entered
   m_Password2Ctrl->Clear();
   m_Password2Ctrl->Enable(false);
@@ -1110,24 +1097,9 @@ void AddEditPropSheet::HidePassword()
   m_isPWHidden = true;
   m_ShowHideCtrl->SetLabel(_("&Show"));
 
-  // Per Dave Silvia's suggestion:
-  // Following kludge since wxTE_PASSWORD style is immutable
-  // Need verification as the user can not see the password entered
-  wxTextCtrl *tmp = m_PasswordCtrl;
-  const wxString pwd = m_password.c_str();
-  m_PasswordCtrl = new wxTextCtrl(m_BasicPanel, ID_TEXTCTRL2,
-                                  pwd,
-                                  wxDefaultPosition, wxDefaultSize,
-                                  wxTE_PASSWORD);
-  ApplyPasswordFont(m_PasswordCtrl);
-  m_BasicFGSizer->Replace(tmp, m_PasswordCtrl);
-  delete tmp;
-  m_BasicFGSizer->Layout();
-  if (!pwd.IsEmpty()) {
-    m_PasswordCtrl->ChangeValue(pwd);
-    m_PasswordCtrl->SetModified(true);
-  }
-  m_Password2Ctrl->ChangeValue(pwd);
+  ShowHideText(m_PasswordCtrl, m_BasicPanel, ID_TEXTCTRL2,
+               m_password.c_str(), m_BasicFGSizer, false);
+  m_Password2Ctrl->ChangeValue(m_password.c_str());
   m_Password2Ctrl->Enable(true);
 }
 

@@ -127,6 +127,10 @@ inline const wxChar* ToStr(bool b) {
 void HideWindowRecursively(wxTopLevelWindow* win, wxWindowList& hiddenWindows);
 void ShowWindowRecursively(wxWindowList& hiddenWindows);
 
+// Workaround for wxTE_PASSWORD being immutable:
+void ShowHideText(wxTextCtrl *&txtCtrl, wxWindow *parent, wxWindowID id,
+                  const wxString &text, wxSizer *sizer, bool show);
+
 //ensures at least one of the checkboxes are selected
 class MultiCheckboxValidator: public wxValidator
 {
