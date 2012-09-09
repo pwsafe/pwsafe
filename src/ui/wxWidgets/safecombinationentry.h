@@ -44,12 +44,8 @@
 #define ID_COMBINATION 10004
 #define ID_READONLY 10005
 #define ID_NEWDB 10006
-#define ID_VKBD 10007
-#if WXWIN_COMPATIBILITY_2_6
+#define ID_YUBIBTN 10229
 #define SYMBOL_CSAFECOMBINATIONENTRY_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxDIALOG_MODAL|wxTAB_TRAVERSAL
-#else
-#define SYMBOL_CSAFECOMBINATIONENTRY_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxTAB_TRAVERSAL
-#endif
 #define SYMBOL_CSAFECOMBINATIONENTRY_TITLE _("Safe Combination Entry")
 #define SYMBOL_CSAFECOMBINATIONENTRY_IDNAME ID_CSAFECOMBINATIONENTRY
 #define SYMBOL_CSAFECOMBINATIONENTRY_SIZE wxSize(400, 300)
@@ -94,6 +90,9 @@ public:
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_NEWDB
   void OnNewDbClick( wxCommandEvent& event );
 
+  /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YUBIBTN
+  void OnYubibtnClick( wxCommandEvent& event );
+
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
   void OnOk( wxCommandEvent& event );
 
@@ -117,6 +116,7 @@ public:
 ////@begin CSafeCombinationEntry member variables
   wxStaticText* m_version;
   wxComboBox* m_filenameCB;
+  wxStaticText* m_yubiStatusCtrl;
 ////@end CSafeCombinationEntry member variables
  private:
   wxString m_filename;
