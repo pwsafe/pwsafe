@@ -28,6 +28,7 @@
 
 #include <wx/timer.h>
 #include "yubicfg.h"
+#include "./wxutils.h"
 
 #include "core/StringX.h"
 #include "core/PWScore.h"
@@ -119,22 +120,14 @@ YubiCfgDlg::~YubiCfgDlg()
 void YubiCfgDlg::Init()
 {
 ////@begin YubiCfgDlg member initialisation
+  m_SKSizer = NULL;
+  m_SKCtrl = NULL;
   m_ykstatus = NULL;
 ////@end YubiCfgDlg member initialisation
   m_pollingTimer = new wxTimer(this, POLLING_TIMER_ID);
   m_yksernum = m_yksk = wxT("");
   m_isSKHidden = true;
   m_present = !IsYubiInserted(); // lie to trigger correct actions in timer even
-}
-
-static StringX BinSN2Str(const unsigned char *snstr)
-{
-  unsigned int sn = 0;
-  sn = (snstr[0] << 24) | (snstr[1] << 16);
-  sn |= (snstr[2] << 8) | snstr[3];
-  wostringstream os;
-  os << sn;
-  return StringX(os.str().c_str());
 }
 
 static StringX BinSK2HexStr(const unsigned char *sk, int len)
@@ -184,18 +177,18 @@ void YubiCfgDlg::CreateControls()
   itemBoxSizer3->Add(itemTextCtrl5, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticBox* itemStaticBoxSizer6Static = new wxStaticBox(itemDialog1, wxID_ANY, _("YubiKey Secret Key (20 Byte Hex)"));
-  wxStaticBoxSizer* itemStaticBoxSizer6 = new wxStaticBoxSizer(itemStaticBoxSizer6Static, wxVERTICAL);
-  itemBoxSizer2->Add(itemStaticBoxSizer6, 0, wxGROW|wxALL, 5);
+  m_SKSizer = new wxStaticBoxSizer(itemStaticBoxSizer6Static, wxVERTICAL);
+  itemBoxSizer2->Add(m_SKSizer, 0, wxGROW|wxALL, 5);
 
-  wxTextCtrl* itemTextCtrl7 = new wxTextCtrl( itemDialog1, ID_YKSK, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
-  itemStaticBoxSizer6->Add(itemTextCtrl7, 0, wxGROW|wxALL, 5);
+  m_SKCtrl = new wxTextCtrl( itemDialog1, ID_YKSK, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
+  m_SKSizer->Add(m_SKCtrl, 0, wxGROW|wxALL, 5);
 
   m_ykstatus = new wxStaticText( itemDialog1, wxID_STATIC, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
   m_ykstatus->SetForegroundColour(wxColour(165, 42, 42));
-  itemStaticBoxSizer6->Add(m_ykstatus, 0, wxGROW|wxALL, 5);
+  m_SKSizer->Add(m_ykstatus, 0, wxGROW|wxALL, 5);
 
   wxBoxSizer* itemBoxSizer9 = new wxBoxSizer(wxHORIZONTAL);
-  itemStaticBoxSizer6->Add(itemBoxSizer9, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
+  m_SKSizer->Add(itemBoxSizer9, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
 
   wxButton* itemButton10 = new wxButton( itemDialog1, ID_YK_HIDESHOW, _("Hide"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer9->Add(itemButton10, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
@@ -219,7 +212,7 @@ void YubiCfgDlg::CreateControls()
 
   // Set validators
   itemTextCtrl5->SetValidator( wxGenericValidator(& m_yksernum) );
-  itemTextCtrl7->SetValidator( wxGenericValidator(& m_yksk) );
+  m_SKCtrl->SetValidator( wxGenericValidator(& m_yksk) );
 ////@end YubiCfgDlg content construction
   m_pollingTimer->Start(250); // check for Yubikey every 250ms.
 }
@@ -334,28 +327,20 @@ void YubiCfgDlg::OnYkSetClick( wxCommandEvent& event )
 
 void YubiCfgDlg::ShowSK()
 {
-  m_isSKHidden = false;
-  FindWindow(ID_YK_HIDESHOW)->SetLabel(_("Hide"));
-#ifdef NOTYET
-  m_ex_YubiSK.SetSecure(false);
-
-  // Remove password character so that the password is displayed
-  m_ex_YubiSK.SetPasswordChar(0);
-  m_ex_YubiSK.Invalidate();
-#endif
+  if (Validate() && TransferDataFromWindow()) {
+    m_isSKHidden = false;
+    FindWindow(ID_YK_HIDESHOW)->SetLabel(_("Hide"));
+    ShowHideText(m_SKCtrl, m_yksk, m_SKSizer, true);
+  }
 }
 
 void YubiCfgDlg::HideSK()
 {
-  m_isSKHidden = true;
-  FindWindow(ID_YK_HIDESHOW)->SetLabel(_("Show"));
-#ifdef NOTYET
-  m_ex_YubiSK.SetSecure(true);
-
-  // Set password character so that the password is not displayed
-  m_ex_YubiSK.SetPasswordChar(PSSWDCHAR);
-  m_ex_YubiSK.Invalidate();
-#endif
+  if (Validate() && TransferDataFromWindow()) {
+    m_isSKHidden = true;
+    FindWindow(ID_YK_HIDESHOW)->SetLabel(_("Show"));
+    ShowHideText(m_SKCtrl, m_yksk, m_SKSizer, false);
+  }
 }
 
 void YubiCfgDlg::ReadYubiSN()
@@ -391,10 +376,8 @@ void YubiCfgDlg::yubiInserted(void)
 void YubiCfgDlg::yubiRemoved(void)
 {
   m_ykstatus->SetLabel(_("Please insert your YubiKey"));
-  m_yksernum = _("");
-  m_yksk = _("Please insert your YubiKey");
+  m_yksernum = m_yksk = wxT("");
   ShowSK();
-  Validate(); TransferDataToWindow();
   FindWindow(ID_YK_SERNUM)->Enable(false);
   FindWindow(ID_YKSK)->Enable(false);
   FindWindow(ID_YK_GENERATE)->Enable(false);

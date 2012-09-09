@@ -32520,7 +32520,7 @@ to the base entry "</string>
               <long name="proxy-Id value">-1</long>
               <string name="proxy-Label">"YubiKey Secret Key (20 Byte Hex)"</string>
               <string name="proxy-Member variable name">""</string>
-              <string name="proxy-Sizer member variable name">""</string>
+              <string name="proxy-Sizer member variable name">"m_SKSizer"</string>
               <string name="proxy-Foreground colour">""</string>
               <string name="proxy-Font">""</string>
               <bool name="proxy-Hidden">0</bool>
@@ -32559,7 +32559,7 @@ to the base entry "</string>
                 <bool name="proxy-Separate files">0</bool>
                 <string name="proxy-Implementation filename">""</string>
                 <string name="proxy-Header filename">""</string>
-                <string name="proxy-Member variable name">""</string>
+                <string name="proxy-Member variable name">"m_SKCtrl"</string>
                 <string name="proxy-Initial value">""</string>
                 <long name="proxy-Max length">0</long>
                 <string name="proxy-Help text">""</string>

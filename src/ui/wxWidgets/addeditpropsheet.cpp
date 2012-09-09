@@ -1085,8 +1085,7 @@ void AddEditPropSheet::ShowPassword()
   m_isPWHidden = false;
   m_ShowHideCtrl->SetLabel(_("&Hide"));
 
-  ShowHideText(m_PasswordCtrl, m_BasicPanel, ID_TEXTCTRL2,
-               m_password.c_str(), m_BasicFGSizer, true);
+  ShowHideText(m_PasswordCtrl, m_password.c_str(), m_BasicFGSizer, true);
   // Disable confirmation Ctrl, as the user can see the password entered
   m_Password2Ctrl->Clear();
   m_Password2Ctrl->Enable(false);
@@ -1097,8 +1096,7 @@ void AddEditPropSheet::HidePassword()
   m_isPWHidden = true;
   m_ShowHideCtrl->SetLabel(_("&Show"));
 
-  ShowHideText(m_PasswordCtrl, m_BasicPanel, ID_TEXTCTRL2,
-               m_password.c_str(), m_BasicFGSizer, false);
+  ShowHideText(m_PasswordCtrl, m_password.c_str(), m_BasicFGSizer, false);
   m_Password2Ctrl->ChangeValue(m_password.c_str());
   m_Password2Ctrl->Enable(true);
 }

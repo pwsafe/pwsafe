@@ -109,6 +109,8 @@ public:
   static bool ShowToolTips();
 
 ////@begin YubiCfgDlg member variables
+  wxStaticBoxSizer* m_SKSizer;
+  wxTextCtrl* m_SKCtrl;
   wxStaticText* m_ykstatus;
 private:
   wxString m_yksernum; // Device's serial number
