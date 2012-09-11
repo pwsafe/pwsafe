@@ -18,6 +18,15 @@ public:
   bool IsYubiInserted() const;
   bool GetSerial(unsigned int &serial) const;
   bool WriteSK(const unsigned char *sk, size_t sklen);
+
+  // request is non-blocking
+  // GetResponse returns pending until done or timeout. If ERROR returned,
+  // call GetErrStr for details.
+  bool RequestHMacSHA1(const unsigned char *challenge, unsigned int len);
+  enum RequestStatus {DONE, PENDING, TIMEOUT, ERROR};
+  enum {RESPLEN=20};
+  RequestStatus GetResponse(unsigned char resp[RESPLEN]);
+
   // if GetErrStr().empty(), then no error:
   const std::wstring &GetErrStr() const {return m_ykerrstr;}
 private:

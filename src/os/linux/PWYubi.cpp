@@ -164,6 +164,18 @@ bool PWYubi::WriteSK(const unsigned char *yubi_sk_bin, size_t sklen)
   return retval;
 }
 
+bool PWYubi::RequestHMacSHA1(const unsigned char *challenge, unsigned int len)
+{
+  return true;
+}
+
+PWYubi::RequestStatus GetResponse(unsigned char resp[PWYubi::RESPLEN])
+{
+  return PWYubi::DONE;
+}
+
+
+
 void PWYubi::report_error() const
 {
   std::string yk_errstr;
