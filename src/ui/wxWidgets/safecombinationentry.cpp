@@ -314,12 +314,14 @@ void CSafeCombinationEntry::OnOk( wxCommandEvent& )
       wxMessageDialog err(this, _("The combination cannot be blank."),
                           _("Error"), wxOK | wxICON_EXCLAMATION);
       err.ShowModal();
+      FindWindow(ID_COMBINATION)->SetFocus();
       return;
     }
     if (!pws_os::FileExists(tostdstring(m_filename))) {
       wxMessageDialog err(this, _("File or path not found."),
                           _("Error"), wxOK | wxICON_EXCLAMATION);
       err.ShowModal();
+      m_filenameCB->SetFocus();
       return;
     }
     int status = m_core.CheckPasskey(tostringx(m_filename), m_password);
@@ -455,9 +457,16 @@ void CSafeCombinationEntry::OnNewDbClick( wxCommandEvent& /* evt */ )
 
 void CSafeCombinationEntry::OnYubibtnClick( wxCommandEvent& event )
 {
-////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YUBIBTN in CSafeCombinationEntry.
+  if (!pws_os::FileExists(tostdstring(m_filename))) {
+    wxMessageDialog err(this, _("File or path not found."),
+                        _("Error"), wxOK | wxICON_EXCLAMATION);
+    err.ShowModal();
+    m_filenameCB->SetFocus();
+    return;
+  }
+  ////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YUBIBTN in CSafeCombinationEntry.
   // Before editing this code, remove the block markers.
   event.Skip();
-////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YUBIBTN in CSafeCombinationEntry. 
+  ////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YUBIBTN in CSafeCombinationEntry. 
 }
 
