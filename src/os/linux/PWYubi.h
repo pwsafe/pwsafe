@@ -34,6 +34,7 @@ private:
   mutable bool m_isInited;
   static pthread_mutex_t s_mutex;
   mutable std::wstring m_ykerrstr;
+  RequestStatus m_reqstat;
 };
 #define __PWYUBI_H
 

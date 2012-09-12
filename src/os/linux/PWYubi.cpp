@@ -17,6 +17,7 @@
 #include <ykcore.h>
 #include <ykpers.h>
 #include <string>
+#include <cstring>
 #include <sstream>
 #include <iostream>
 #include <iomanip>
@@ -25,7 +26,7 @@ using namespace std;
 
 pthread_mutex_t PWYubi::s_mutex = PTHREAD_MUTEX_INITIALIZER;
 
-PWYubi::PWYubi() : m_isInited(false)
+PWYubi::PWYubi() : m_isInited(false), m_reqstat(ERROR)
 {
   pthread_mutex_lock(&s_mutex);
   m_isInited = yk_init() != 0;
@@ -166,12 +167,59 @@ bool PWYubi::WriteSK(const unsigned char *yubi_sk_bin, size_t sklen)
 
 bool PWYubi::RequestHMacSHA1(const unsigned char *challenge, unsigned int len)
 {
-  return true;
+  bool retval = false;
+  m_reqstat = ERROR;
+  YK_KEY *ykey = NULL;
+  pthread_mutex_lock(&s_mutex);
+  // if yk isn't init'ed, don't bother
+  if (m_isInited) {
+    ykey = yk_open_first_key();
+    if (ykey == NULL)
+      goto done;
+	if (yk_write_to_key(ykey, SLOT_CHAL_HMAC2, challenge, len)) {
+      m_reqstat = PENDING;
+      retval = true;
+    }
+  }
+ done:
+  if (ykey != NULL)
+    yk_close_key(ykey);
+  pthread_mutex_unlock(&s_mutex);
+  return retval;
 }
 
-PWYubi::RequestStatus GetResponse(unsigned char resp[PWYubi::RESPLEN])
+PWYubi::RequestStatus PWYubi::GetResponse(unsigned char resp[PWYubi::RESPLEN])
 {
-  return PWYubi::DONE;
+ YK_KEY *ykey = NULL;
+  pthread_mutex_lock(&s_mutex);
+  // if yk isn't init'ed, don't bother
+  if (m_isInited && m_reqstat == PENDING) {
+    ykey = yk_open_first_key();
+    if (ykey == NULL) {
+      m_reqstat = ERROR;
+      goto done;
+    }
+    unsigned char response[64];
+    unsigned int response_len = 0;
+    if (yk_read_response_from_key(ykey, 2, 0,
+                                  response, sizeof(response),
+                                  20, &response_len)) {
+      memcpy(resp, response, RESPLEN);
+      m_reqstat = DONE;
+    } else {
+      if (yk_errno == YK_ETIMEOUT)
+        m_reqstat = TIMEOUT;
+      // It's unclear what's returned if the user hasn't
+      // pressed the button. We'll leave the status untouched (PENDING)
+      // if read failed but hasn't timed out, so that next time
+      // it could possibly succeed.
+    }
+  }
+ done:
+  if (ykey != NULL)
+    yk_close_key(ykey);
+  pthread_mutex_unlock(&s_mutex);
+  return m_reqstat;
 }
 
 
