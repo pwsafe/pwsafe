@@ -31,6 +31,9 @@
 #include "core/core.h"
 #include "core/PWSdirs.h"
 #include "os/file.h"
+#include "os/sleep.h"
+#include "os/linux/PWYubi.h"
+
 ////@begin XPM images
 #include "graphics/Yubikey-button.xpm"
 ////@end XPM images
@@ -44,6 +47,9 @@
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
 #endif
+
+#include <iostream> // for debugging
+#include <iomanip> // for debugging
 
 /*!
  * CSafeCombinationEntry type definition
@@ -464,9 +470,24 @@ void CSafeCombinationEntry::OnYubibtnClick( wxCommandEvent& event )
     m_filenameCB->SetFocus();
     return;
   }
-  ////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YUBIBTN in CSafeCombinationEntry.
-  // Before editing this code, remove the block markers.
-  event.Skip();
-  ////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YUBIBTN in CSafeCombinationEntry. 
-}
+  PWYubi yubi;
 
+  if (yubi.RequestHMacSHA1((const unsigned char *)"hello", 5)) {
+    unsigned char hmac[PWYubi::RESPLEN];
+    PWYubi::RequestStatus status = PWYubi::PENDING;
+    do {
+      status = yubi.GetResponse(hmac);
+      if (status == PWYubi::PENDING)
+        pws_os::sleep_ms(250); // Ugh.
+    } while (status == PWYubi::PENDING);
+    if (status == PWYubi::DONE) {
+      for (unsigned i = 0; i < sizeof(hmac); i++)
+        std::cerr << std::hex << std::setw(2) << (int)hmac[i];
+      std::cerr << std::endl;
+    } else {
+      std::cerr << "yubi.GetResponse returned " << status << std::endl;
+    }
+  } else {
+      std::cerr << "yubi.RequestHMacSHA1 failed" << std::endl;
+  }
+}
