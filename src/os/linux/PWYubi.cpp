@@ -201,7 +201,7 @@ PWYubi::RequestStatus PWYubi::GetResponse(unsigned char resp[PWYubi::RESPLEN])
     }
     unsigned char response[64];
     unsigned int response_len = 0;
-    if (yk_read_response_from_key(ykey, 2, 0,
+    if (yk_read_response_from_key(ykey, 2, YK_FLAG_MAYBLOCK,
                                   response, sizeof(response),
                                   20, &response_len)) {
       memcpy(resp, response, RESPLEN);
