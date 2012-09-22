@@ -51,7 +51,6 @@ bool PWYubi::IsYubiInserted() const
       yk_close_key(ykey);
       retval = true;
     } else {
-      report_error(); // debug only
       // reset s.t. we'll init next time
       yk_release();
       m_isInited = false;

@@ -24,7 +24,8 @@ public:
   // call GetErrStr for details.
   bool RequestHMacSHA1(const unsigned char *challenge, unsigned int len);
   enum RequestStatus {DONE, PENDING, TIMEOUT, ERROR};
-  enum {RESPLEN=20};
+  enum {RESPLEN=20, SHA1_MAX_BLOCK_SIZE=64};
+
   RequestStatus GetResponse(unsigned char resp[RESPLEN]);
 
   // if GetErrStr().empty(), then no error:

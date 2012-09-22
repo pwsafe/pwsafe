@@ -3,13 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#: ../../../ui/wxWidgets/yubicfg.cpp:432 ../../../ui/wxWidgets/yubicfg.cpp:440
+#: ../../../ui/wxWidgets/yubicfg.cpp:370
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-04 21:51+0300\n"
+"POT-Creation-Date: 2012-09-22 19:55+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -51,7 +51,7 @@ msgstr ""
 msgid "Copyright (c) 2003-2012 by Rony Shapiro"
 msgstr ""
 
-#: ../../../ui/wxWidgets/about.cpp:177 ../../../ui/wxWidgets/yubicfg.cpp:207
+#: ../../../ui/wxWidgets/about.cpp:177 ../../../ui/wxWidgets/yubicfg.cpp:205
 msgid "&Close"
 msgstr ""
 
@@ -318,7 +318,7 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:483
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:955
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1457
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1427
 msgid "Never"
 msgstr ""
 
@@ -482,7 +482,7 @@ msgid "Use hexadecimal digits only (0-9, a-f)"
 msgstr ""
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:653
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1501
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1471
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:591
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:592
 #: ../../../core/core_st.cpp:132
@@ -512,8 +512,8 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:1001
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:1025
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1281
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1776
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1251
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1746
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:393
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:470
 #: ../../../core/core_st.cpp:75
@@ -525,10 +525,10 @@ msgid "Couldn't generate password - invalid policy"
 msgstr ""
 
 #: ../../../ui/wxWidgets/addeditpropsheet.cpp:1055
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1164
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1171
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1655
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1681
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1134
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1141
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1625
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1651
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:98
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:105
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:113
@@ -540,9 +540,10 @@ msgstr ""
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:259
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:265
 #: ../../../ui/wxWidgets/SafeCombinationCtrl.cpp:69
-#: ../../../ui/wxWidgets/safecombinationentry.cpp:283
-#: ../../../ui/wxWidgets/safecombinationentry.cpp:289
-#: ../../../ui/wxWidgets/safecombinationentry.cpp:320
+#: ../../../ui/wxWidgets/safecombinationentry.cpp:326
+#: ../../../ui/wxWidgets/safecombinationentry.cpp:333
+#: ../../../ui/wxWidgets/safecombinationentry.cpp:365
+#: ../../../ui/wxWidgets/safecombinationentry.cpp:473
 #: ../../../ui/wxWidgets/safecombinationprompt.cpp:223
 #: ../../../ui/wxWidgets/safecombinationprompt.cpp:229
 #: ../../../ui/wxWidgets/safecombinationprompt.cpp:243
@@ -553,52 +554,52 @@ msgstr ""
 msgid "Error"
 msgstr ""
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1111
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1097
 msgid "&Show"
 msgstr "&Mostra"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1163
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1133
 msgid "This entry must have a "
 msgstr ""
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1163
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1133
 #, fuzzy
 msgid "title"
 msgstr "&Titolo:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1163
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1133
 #, fuzzy
 msgid "password"
 msgstr "&Password:"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1171
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1141
 #, fuzzy
 msgid "Passwords do not match"
 msgstr "&Caratteri per Password"
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1436
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1406
 #, c-format
 msgid " (every %d days)"
 msgstr ""
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1500
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1470
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:1277
 msgid "Sorry, 'pronounceable' and 'easy-to-read' are not supported together"
 msgstr ""
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1654
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1624
 msgid "Sorry, \"easy-to-read\" and \"pronouncable\" cannot be both selected"
 msgstr ""
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1680
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1650
 msgid "Sorry, \"pronouncable\" and \"easy-to-read\" cannot be both selected"
 msgstr ""
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1760
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1730
 msgid "mailto:"
 msgstr ""
 
-#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1780
+#: ../../../ui/wxWidgets/addeditpropsheet.cpp:1750
 #, c-format
 msgid "Couldn't find policy %s\n"
 msgstr ""
@@ -692,7 +693,7 @@ msgid "Synchronize"
 msgstr ""
 
 #: ../../../ui/wxWidgets/CompareDlg.cpp:451
-#: ../../../ui/wxWidgets/safecombinationentry.cpp:179
+#: ../../../ui/wxWidgets/safecombinationentry.cpp:194
 msgid "..."
 msgstr "..."
 
@@ -787,7 +788,8 @@ msgstr "Elimina"
 #: ../../../ui/wxWidgets/PasswordPolicy.cpp:293
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:456
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:171
-#: ../../../ui/wxWidgets/yubicfg.cpp:210
+#: ../../../ui/wxWidgets/safecombinationentry.cpp:234
+#: ../../../ui/wxWidgets/yubicfg.cpp:208
 msgid "&Help"
 msgstr "&Aiuto"
 
@@ -801,13 +803,14 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:67
 #: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:60
-#: ../../../ui/wxWidgets/safecombinationentry.cpp:182
+#: ../../../ui/wxWidgets/safecombinationentry.cpp:197
 #: ../../../ui/wxWidgets/safecombinationsetup.cpp:140
 msgid "Safe Combination:"
 msgstr ""
 
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:98
-#: ../../../ui/wxWidgets/safecombinationentry.cpp:288
+#: ../../../ui/wxWidgets/safecombinationentry.cpp:332
+#: ../../../ui/wxWidgets/safecombinationentry.cpp:472
 #: ../../../ui/wxWidgets/safecombinationprompt.cpp:228
 msgid "File or path not found."
 msgstr ""
@@ -817,7 +820,7 @@ msgid "That file is already open."
 msgstr ""
 
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:112
-#: ../../../ui/wxWidgets/safecombinationentry.cpp:314
+#: ../../../ui/wxWidgets/safecombinationentry.cpp:359
 #: ../../../ui/wxWidgets/safecombinationprompt.cpp:240
 msgid ""
 "Incorrect passkey, not a PasswordSafe database, or a corrupt database. "
@@ -1016,7 +1019,7 @@ msgid "Password Safe Backups (*.bak)|*.bak"
 msgstr ""
 
 #: ../../../ui/wxWidgets/mainManage.cpp:116
-#: ../../../ui/wxWidgets/safecombinationentry.cpp:414
+#: ../../../ui/wxWidgets/safecombinationentry.cpp:459
 #, fuzzy
 msgid ""
 "\n"
@@ -1032,7 +1035,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:837
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:842
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2027
-#: ../../../ui/wxWidgets/safecombinationentry.cpp:415
+#: ../../../ui/wxWidgets/safecombinationentry.cpp:460
 msgid "Write Error"
 msgstr ""
 
@@ -1098,7 +1101,7 @@ msgid "Test Selected Policy"
 msgstr ""
 
 #: ../../../ui/wxWidgets/ManagePwdPolicies.cpp:202
-#: ../../../ui/wxWidgets/yubicfg.cpp:198
+#: ../../../ui/wxWidgets/yubicfg.cpp:196
 msgid "Generate"
 msgstr ""
 
@@ -1557,7 +1560,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/optionspropsheet.cpp:1120
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:1229
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2139
-#: ../../../ui/wxWidgets/safecombinationentry.cpp:373
+#: ../../../ui/wxWidgets/safecombinationentry.cpp:418
 msgid "pwsafe"
 msgstr ""
 
@@ -1920,7 +1923,7 @@ msgid ": "
 msgstr ""
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:995
-#: ../../../ui/wxWidgets/safecombinationentry.cpp:348
+#: ../../../ui/wxWidgets/safecombinationentry.cpp:393
 msgid "Please Choose a Database to Open:"
 msgstr ""
 
@@ -2013,7 +2016,7 @@ msgid "Do you want to save changes to the password database: "
 msgstr "Vuoi salvare i cambiamenti nel database delle password: %s?"
 
 #: ../../../ui/wxWidgets/passwordsafeframe.cpp:2137
-#: ../../../ui/wxWidgets/safecombinationentry.cpp:378
+#: ../../../ui/wxWidgets/safecombinationentry.cpp:423
 msgid "Please choose a name for the new database"
 msgstr ""
 
@@ -2695,7 +2698,7 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/safecombinationchange.cpp:244
 #: ../../../ui/wxWidgets/SafeCombinationCtrl.cpp:69
-#: ../../../ui/wxWidgets/safecombinationentry.cpp:282
+#: ../../../ui/wxWidgets/safecombinationentry.cpp:325
 #: ../../../ui/wxWidgets/safecombinationprompt.cpp:222
 msgid "The combination cannot be blank."
 msgstr ""
@@ -2714,45 +2717,61 @@ msgid ""
 "Use it anyway?"
 msgstr ""
 
-#: ../../../ui/wxWidgets/safecombinationentry.cpp:166
+#: ../../../ui/wxWidgets/safecombinationentry.cpp:181
 msgid "VX.YY"
 msgstr ""
 
-#: ../../../ui/wxWidgets/safecombinationentry.cpp:169
+#: ../../../ui/wxWidgets/safecombinationentry.cpp:184
 msgid "Open Password Database:"
 msgstr ""
 
-#: ../../../ui/wxWidgets/safecombinationentry.cpp:191
+#: ../../../ui/wxWidgets/safecombinationentry.cpp:206
 msgid "Open as read-only"
 msgstr ""
 
-#: ../../../ui/wxWidgets/safecombinationentry.cpp:197
-#, fuzzy
-msgid ""
-"New\n"
-"Database"
-msgstr "Database"
+#: ../../../ui/wxWidgets/safecombinationentry.cpp:212
+msgid "New..."
+msgstr ""
 
-#: ../../../ui/wxWidgets/safecombinationentry.cpp:208
+#: ../../../ui/wxWidgets/safecombinationentry.cpp:221
+#: ../../../ui/wxWidgets/safecombinationentry.cpp:527
+#: ../../../ui/wxWidgets/yubicfg.cpp:378
+msgid "Please insert your YubiKey"
+msgstr ""
+
+#: ../../../ui/wxWidgets/safecombinationentry.cpp:227
+msgid "OK"
+msgstr ""
+
+#: ../../../ui/wxWidgets/safecombinationentry.cpp:231
+#, fuzzy
+msgid "Cancel"
+msgstr "Elimina"
+
+#: ../../../ui/wxWidgets/safecombinationentry.cpp:245
 #, c-format
 msgid "V%d.%d %s"
 msgstr ""
 
-#: ../../../ui/wxWidgets/safecombinationentry.cpp:211
+#: ../../../ui/wxWidgets/safecombinationentry.cpp:248
 #, c-format
 msgid "V%d.%d.%d %s"
 msgstr ""
 
-#: ../../../ui/wxWidgets/safecombinationentry.cpp:311
+#: ../../../ui/wxWidgets/safecombinationentry.cpp:356
 #: ../../../ui/wxWidgets/safecombinationprompt.cpp:237
 msgid "Three strikes - yer out!"
 msgstr ""
 
-#: ../../../ui/wxWidgets/safecombinationentry.cpp:350
-#: ../../../ui/wxWidgets/safecombinationentry.cpp:380
+#: ../../../ui/wxWidgets/safecombinationentry.cpp:395
+#: ../../../ui/wxWidgets/safecombinationentry.cpp:425
 msgid ""
 "Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat| All files (*.*; *)|"
 "*.*;*"
+msgstr ""
+
+#: ../../../ui/wxWidgets/safecombinationentry.cpp:521
+msgid "Click on button to the left, then touch your YubiKey"
 msgstr ""
 
 #: ../../../ui/wxWidgets/safecombinationprompt.cpp:143
@@ -2851,35 +2870,27 @@ msgstr ""
 msgid "Trial Version Limitation"
 msgstr ""
 
-#: ../../../ui/wxWidgets/yubicfg.cpp:179
+#: ../../../ui/wxWidgets/yubicfg.cpp:173
 msgid "YubiKey Serial Number: "
 msgstr ""
 
-#: ../../../ui/wxWidgets/yubicfg.cpp:185
+#: ../../../ui/wxWidgets/yubicfg.cpp:179
 msgid "YubiKey Secret Key (20 Byte Hex)"
 msgstr ""
 
-#: ../../../ui/wxWidgets/yubicfg.cpp:189 ../../../ui/wxWidgets/yubicfg.cpp:441
-msgid "Please insert your YubiKey"
-msgstr ""
-
-#: ../../../ui/wxWidgets/yubicfg.cpp:195 ../../../ui/wxWidgets/yubicfg.cpp:343
+#: ../../../ui/wxWidgets/yubicfg.cpp:193 ../../../ui/wxWidgets/yubicfg.cpp:332
 #, fuzzy
 msgid "Hide"
 msgstr "&Nascondi"
 
-#: ../../../ui/wxWidgets/yubicfg.cpp:201
+#: ../../../ui/wxWidgets/yubicfg.cpp:199
 msgid "Set YubiKey"
 msgstr ""
 
-#: ../../../ui/wxWidgets/yubicfg.cpp:356
+#: ../../../ui/wxWidgets/yubicfg.cpp:341
 #, fuzzy
 msgid "Show"
 msgstr "&Mostra"
-
-#: ../../../ui/wxWidgets/yubicfg.cpp:389
-msgid "Error reading YubiKey"
-msgstr ""
 
 #: ../../../core/core_st.cpp:32
 msgid ""
@@ -4166,6 +4177,12 @@ msgstr ""
 #, fuzzy, c-format
 msgid "Yes - At least %d from %s: %s"
 msgstr "(almeno"
+
+#, fuzzy
+#~ msgid ""
+#~ "New\n"
+#~ "Database"
+#~ msgstr "Database"
 
 #, fuzzy
 #~ msgid ""

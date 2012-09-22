@@ -468,32 +468,49 @@ void CSafeCombinationEntry::OnNewDbClick( wxCommandEvent& /* evt */ )
 
 void CSafeCombinationEntry::OnYubibtnClick( wxCommandEvent& event )
 {
-  if (!pws_os::FileExists(tostdstring(m_filename))) {
-    wxMessageDialog err(this, _("File or path not found."),
-                        _("Error"), wxOK | wxICON_EXCLAMATION);
-    err.ShowModal();
-    m_filenameCB->SetFocus();
-    return;
-  }
-  PWYubi yubi;
-
-  if (yubi.RequestHMacSHA1((const unsigned char *)"hello", 5)) {
-    unsigned char hmac[PWYubi::RESPLEN];
-    PWYubi::RequestStatus status = PWYubi::PENDING;
-    do {
-      status = yubi.GetResponse(hmac);
-      if (status == PWYubi::PENDING)
-        pws_os::sleep_ms(250); // Ugh.
-    } while (status == PWYubi::PENDING);
-    if (status == PWYubi::DONE) {
-      for (unsigned i = 0; i < sizeof(hmac); i++)
-        std::cerr << std::hex << std::setw(2) << (int)hmac[i];
-      std::cerr << std::endl;
-    } else {
-      std::cerr << "yubi.GetResponse returned " << status << std::endl;
+  if (Validate() && TransferDataFromWindow()) {
+    if (!pws_os::FileExists(tostdstring(m_filename))) {
+      wxMessageDialog err(this, _("File or path not found."),
+                          _("Error"), wxOK | wxICON_EXCLAMATION);
+      err.ShowModal();
+      m_filenameCB->SetFocus();
+      return;
     }
-  } else {
-      std::cerr << "yubi.RequestHMacSHA1 failed" << std::endl;
+
+    m_yubiStatusCtrl->SetLabel(_("Now touch your YubiKey's button"));
+
+    BYTE chalBuf[PWYubi::SHA1_MAX_BLOCK_SIZE];
+    BYTE chalLength = BYTE(m_password.length()*sizeof(TCHAR));
+    memset(chalBuf, 0, PWYubi::SHA1_MAX_BLOCK_SIZE);
+    if (chalLength > PWYubi::SHA1_MAX_BLOCK_SIZE)
+      chalLength = PWYubi::SHA1_MAX_BLOCK_SIZE;
+
+    memcpy(chalBuf, m_password.c_str(), chalLength);
+
+    PWYubi yubi;
+
+    if (yubi.RequestHMacSHA1(chalBuf, chalLength)) {
+      unsigned char hmac[PWYubi::RESPLEN];
+      PWYubi::RequestStatus status = PWYubi::PENDING;
+      do {
+        status = yubi.GetResponse(hmac);
+        if (status == PWYubi::PENDING)
+          pws_os::sleep_ms(250); // Ugh.
+      } while (status == PWYubi::PENDING);
+      if (status == PWYubi::DONE) {
+        for (unsigned i = 0; i < sizeof(hmac); i++)
+          std::cerr << std::hex << std::setw(2) << (int)hmac[i];
+        std::cerr << std::endl;
+      } else {
+        if (status == PWYubi::TIMEOUT) {
+          m_yubiStatusCtrl->SetLabel(_("Timeout - please try again"));
+        } else { // error
+          m_yubiStatusCtrl->SetLabel(_("Error: Bad response from YubiKey"));
+        }
+      }
+    } else {
+      m_yubiStatusCtrl->SetLabel(_("Error: Unconfigured YubiKey?"));
+    }
   }
 }
 
@@ -518,7 +535,7 @@ void CSafeCombinationEntry::OnPollingTimer(wxTimerEvent &evt)
 void CSafeCombinationEntry::yubiInserted(void)
 {
   FindWindow(ID_YUBIBTN)->Enable(true);
-  m_yubiStatusCtrl->SetLabel(_("Click on button to the left, then touch your YubiKey"));
+  m_yubiStatusCtrl->SetLabel(_("<- Click on button to the left"));
 }
 
 void CSafeCombinationEntry::yubiRemoved(void)
