@@ -125,9 +125,9 @@ void YubiCfgDlg::Init()
   m_ykstatus = NULL;
 ////@end YubiCfgDlg member initialisation
   m_pollingTimer = new wxTimer(this, POLLING_TIMER_ID);
+  m_present = !IsYubiInserted(); // lie to trigger correct actions in timer even
   m_yksernum = m_yksk = wxT("");
   m_isSKHidden = true;
-  m_present = !IsYubiInserted(); // lie to trigger correct actions in timer even
 }
 
 static StringX BinSK2HexStr(const unsigned char *sk, int len)

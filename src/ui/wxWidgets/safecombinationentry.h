@@ -32,6 +32,7 @@
 
 ////@begin forward declarations
 ////@end forward declarations
+class wxTimer;
 
 /*!
  * Control identifiers
@@ -100,6 +101,7 @@ public:
   void OnCancel( wxCommandEvent& event );
 
 ////@end CSafeCombinationEntry event handler declarations
+  void OnPollingTimer(wxTimerEvent& timerEvent);
 
 ////@begin CSafeCombinationEntry member function declarations
 
@@ -124,6 +126,15 @@ public:
   bool m_readOnly;
   PWScore &m_core;
   unsigned m_tries;
+
+  // yubi-stuff - refactor to mixin:
+  void yubiInserted(void);
+  void yubiRemoved(void);
+  bool IsYubiInserted() const;
+
+  enum { POLLING_TIMER_ID = 83 } ; 
+  wxTimer* m_pollingTimer;
+  bool m_present; // key present?
 };
 
 #endif // _SAFECOMBINATIONENTRY_H_

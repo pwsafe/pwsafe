@@ -25,6 +25,7 @@
 ////@begin includes
 ////@end includes
 
+#include <wx/timer.h>
 #include "safecombinationentry.h"
 #include "safecombinationsetup.h"
 #include "version.h"
@@ -76,7 +77,7 @@ BEGIN_EVENT_TABLE( CSafeCombinationEntry, wxDialog )
   EVT_BUTTON( wxID_CANCEL, CSafeCombinationEntry::OnCancel )
 
 ////@end CSafeCombinationEntry event table entries
-
+EVT_TIMER(POLLING_TIMER_ID, CSafeCombinationEntry::OnPollingTimer)
 END_EVENT_TABLE()
 
 
@@ -131,6 +132,7 @@ CSafeCombinationEntry::~CSafeCombinationEntry()
 {
 ////@begin CSafeCombinationEntry destruction
 ////@end CSafeCombinationEntry destruction
+  delete m_pollingTimer;
 }
 
 
@@ -147,6 +149,8 @@ void CSafeCombinationEntry::Init()
   m_filenameCB = NULL;
   m_yubiStatusCtrl = NULL;
 ////@end CSafeCombinationEntry member initialisation
+  m_pollingTimer = new wxTimer(this, POLLING_TIMER_ID);
+  m_present = !IsYubiInserted(); // lie to trigger correct actions in timer even
 }
 
 
@@ -255,6 +259,7 @@ void CSafeCombinationEntry::CreateControls()
     FindWindow(ID_COMBINATION)->SetFocus();
   }
   SetIcons(wxGetApp().GetAppIcons());
+  m_pollingTimer->Start(250); // check for Yubikey every 250ms.
 }
 
 
@@ -490,4 +495,40 @@ void CSafeCombinationEntry::OnYubibtnClick( wxCommandEvent& event )
   } else {
       std::cerr << "yubi.RequestHMacSHA1 failed" << std::endl;
   }
+}
+
+void CSafeCombinationEntry::OnPollingTimer(wxTimerEvent &evt)
+{
+  if (evt.GetId() == POLLING_TIMER_ID) {
+    // If an operation is pending, check if it has completed
+
+    // No HMAC operation is pending - check if one and only one key is present
+    bool inserted = IsYubiInserted();
+    // call relevant callback if something's changed
+    if (inserted != m_present) {
+      m_present = inserted;
+      if (m_present)
+        yubiInserted();
+      else
+        yubiRemoved();
+    }
+  }
+}
+
+void CSafeCombinationEntry::yubiInserted(void)
+{
+  FindWindow(ID_YUBIBTN)->Enable(true);
+  m_yubiStatusCtrl->SetLabel(_("Click on button to the left, then touch your YubiKey"));
+}
+
+void CSafeCombinationEntry::yubiRemoved(void)
+{
+  FindWindow(ID_YUBIBTN)->Enable(false);
+  m_yubiStatusCtrl->SetLabel(_("Please insert your YubiKey"));
+}
+
+bool CSafeCombinationEntry::IsYubiInserted() const
+{
+  const PWYubi yubi;
+  return yubi.IsYubiInserted();
 }

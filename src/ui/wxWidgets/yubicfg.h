@@ -116,8 +116,6 @@ private:
   wxString m_yksernum; // Device's serial number
   wxString m_yksk; // Device's secret key
 ////@end YubiCfgDlg member variables
-  enum { POLLING_TIMER_ID = 66 } ; 
-  wxTimer* m_pollingTimer;
   enum {YUBI_SK_LEN = 20};
   void ReadYubiSN();
   bool IsYubiInserted() const;
@@ -126,6 +124,8 @@ private:
   void ShowSK();
   void HideSK();
 
+  enum { POLLING_TIMER_ID = 66 } ; 
+  wxTimer* m_pollingTimer;
   bool m_present; // key present?
   bool m_isSKHidden;
   mutable wxMutex m_mutex; // protect against race conditions when calling Yubi API
