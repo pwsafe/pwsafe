@@ -50,8 +50,8 @@
 #endif
 
 #include <iostream> // for debugging
-#include <iomanip> // for debugging
-
+#include <iomanip>
+#include <sstream>
 /*!
  * CSafeCombinationEntry type definition
  */
@@ -335,39 +335,44 @@ void CSafeCombinationEntry::OnOk( wxCommandEvent& )
       m_filenameCB->SetFocus();
       return;
     }
-    int status = m_core.CheckPasskey(tostringx(m_filename), m_password);
-    wxString errmess;
-    switch (status) {
-    case PWScore::SUCCESS:
-      m_core.SetReadOnly(m_readOnly);
-      m_core.SetCurFile(tostringx(m_filename));
-      wxGetApp().recentDatabases().AddFileToHistory(m_filename);
-      EndModal(wxID_OK);
-      return;
-    case PWScore::CANT_OPEN_FILE:
-      { stringT str;
-        LoadAString(str, IDSC_FILE_UNREADABLE);
-        errmess = str.c_str();
-      }
-      break;
-    case PWScore::WRONG_PASSWORD:
-    default:
-      if (m_tries >= 2) {
-        errmess = _("Three strikes - yer out!");
-      } else {
-        m_tries++;
-        errmess = _("Incorrect passkey, not a PasswordSafe database, or a corrupt database. (Backup database has same name as original, ending with '~')");
-      }
-      break;
-    } // switch (status)
-    // here iff CheckPasskey failed.
-    wxMessageDialog err(this, errmess,
-                        _("Error"), wxOK | wxICON_EXCLAMATION);
-    err.ShowModal();
-    wxTextCtrl *txt = (wxTextCtrl *)FindWindow(ID_COMBINATION);
-    txt->SetSelection(-1,-1);
-    txt->SetFocus();
+    ProcessPhrase();
   } // Validate && TransferDataFromWindow
+}
+
+void CSafeCombinationEntry::ProcessPhrase()
+{
+  int status = m_core.CheckPasskey(tostringx(m_filename), m_password);
+  wxString errmess;
+  switch (status) {
+  case PWScore::SUCCESS:
+    m_core.SetReadOnly(m_readOnly);
+    m_core.SetCurFile(tostringx(m_filename));
+    wxGetApp().recentDatabases().AddFileToHistory(m_filename);
+    EndModal(wxID_OK);
+    return;
+  case PWScore::CANT_OPEN_FILE:
+    { stringT str;
+      LoadAString(str, IDSC_FILE_UNREADABLE);
+      errmess = str.c_str();
+    }
+    break;
+  case PWScore::WRONG_PASSWORD:
+  default:
+    if (m_tries >= 2) {
+      errmess = _("Three strikes - yer out!");
+    } else {
+      m_tries++;
+      errmess = _("Incorrect passkey, not a PasswordSafe database, or a corrupt database. (Backup database has same name as original, ending with '~')");
+    }
+    break;
+  } // switch (status)
+    // here iff CheckPasskey failed.
+  wxMessageDialog err(this, errmess,
+                      _("Error"), wxOK | wxICON_EXCLAMATION);
+  err.ShowModal();
+  wxTextCtrl *txt = (wxTextCtrl *)FindWindow(ID_COMBINATION);
+  txt->SetSelection(-1,-1);
+  txt->SetFocus();
 }
 
 
@@ -466,6 +471,17 @@ void CSafeCombinationEntry::OnNewDbClick( wxCommandEvent& /* evt */ )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YUBIBTN
  */
 
+static StringX Bin2Hex(const unsigned char *buf, int len)
+{
+  std::wostringstream os;
+  os << std::setw(2);
+  os << std::setfill(L'0');
+  for (int i = 0; i < len; i++) {
+    os << std::hex << std::setw(2) << int(buf[i]);
+  }
+  return StringX(os.str().c_str());
+}
+
 void CSafeCombinationEntry::OnYubibtnClick( wxCommandEvent& event )
 {
   if (Validate() && TransferDataFromWindow()) {
@@ -501,6 +517,10 @@ void CSafeCombinationEntry::OnYubibtnClick( wxCommandEvent& event )
         for (unsigned i = 0; i < sizeof(hmac); i++)
           std::cerr << std::hex << std::setw(2) << (int)hmac[i];
         std::cerr << std::endl;
+        // The returned hash is the passkey
+        m_password = Bin2Hex(hmac, PWYubi::RESPLEN);
+        ProcessPhrase();
+        // TBD - if ProcessPhrase() returns, reset prompt
       } else {
         if (status == PWYubi::TIMEOUT) {
           m_yubiStatusCtrl->SetLabel(_("Timeout - please try again"));
@@ -517,9 +537,8 @@ void CSafeCombinationEntry::OnYubibtnClick( wxCommandEvent& event )
 void CSafeCombinationEntry::OnPollingTimer(wxTimerEvent &evt)
 {
   if (evt.GetId() == POLLING_TIMER_ID) {
-    // If an operation is pending, check if it has completed
-
-    // No HMAC operation is pending - check if one and only one key is present
+    // Currently hmac check is blocking (ugh), so no need to check here
+    // if a request is in-progress.
     bool inserted = IsYubiInserted();
     // call relevant callback if something's changed
     if (inserted != m_present) {

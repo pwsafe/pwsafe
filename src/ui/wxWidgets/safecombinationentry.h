@@ -131,6 +131,8 @@ public:
   void yubiInserted(void);
   void yubiRemoved(void);
   bool IsYubiInserted() const;
+  // Not strictly yubi, but refactored to work with it:
+  void ProcessPhrase();
 
   enum { POLLING_TIMER_ID = 83 } ; 
   wxTimer* m_pollingTimer;
