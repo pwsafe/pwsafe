@@ -373,6 +373,11 @@ msgstr "%s - Połączony %s"
 msgid "%s - Sync'd %s"
 msgstr "%s - Zsynchronizowano %s"
 
+#. Resource IDs: (363)
+#, c-format
+msgid "%s Either try to save database with another name or exit without saving."
+msgstr ""
+
 #. Resource IDs: (3887)
 #, c-format
 msgid "%s [Recovered]"
@@ -427,11 +432,6 @@ msgstr "%s%s%s_Report.txt"
 #, c-format
 msgid "%s, Title=\"%s\", User=\"%s\" already exists in your database or in the Import file. Added imported entry with title=\"%s\".\r\n"
 msgstr "%s, nazwa=\"%s\", użytkownik=\"%s\" już jest w Twojej bazie danych lub w pliku importu. Dodano zaimportowany wpis z tytułem=\"%s\".\r\n"
-
-#. Resource IDs: (363)
-#, c-format
-msgid "%s. Either try to save database with another name or exit without saving."
-msgstr "%s. Zapisz bazę danych używając innej nazwy lub wyjdź bez zapisywania danych."
 
 #. Resource IDs: (343)
 #, c-format
@@ -4099,10 +4099,6 @@ msgstr "Minimalna liczba cyfr"
 msgid "Minimum lowercase characters"
 msgstr "Minimalna liczba znaków zawierających małe litery"
 
-#. Resource IDs: (349)
-msgid "Minimum password length"
-msgstr "Minimalna długość hasła"
-
 #. Resource IDs: (350)
 msgid "Minimum symbols"
 msgstr "Minimalna liczba symboli"
@@ -4687,6 +4683,10 @@ msgstr "Hasło jest zbyt krótkie"
 #. Resource IDs: (1110)
 msgid "Password last changed on:"
 msgstr "Ostatnia zmiana hasła:"
+
+#. Resource IDs: (257)
+msgid "Password length"
+msgstr ""
 
 #. Resource IDs: (345)
 msgid "Password length is less than sum of 'at least' constraints"

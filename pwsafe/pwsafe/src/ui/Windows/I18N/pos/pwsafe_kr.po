@@ -366,6 +366,11 @@ msgstr ""
 msgid "%s - Sync'd %s"
 msgstr ""
 
+#. Resource IDs: (363)
+#, c-format
+msgid "%s Either try to save database with another name or exit without saving."
+msgstr ""
+
 #. Resource IDs: (3887)
 #, c-format
 msgid "%s [Recovered]"
@@ -420,11 +425,6 @@ msgstr "%s%s%s_보고서.txt"
 #, c-format
 msgid "%s, Title=\"%s\", User=\"%s\" already exists in your database or in the Import file. Added imported entry with title=\"%s\".\r\n"
 msgstr "%s, 주제=\"%s\", 사용자=\"%s\" 가 이미 데이터베이스 혹은 불러온 파일에 존재합니다. 불러온 항목에 다음과 같이 주제를 추가했습니다=\"%s\".\r\n"
-
-#. Resource IDs: (363)
-#, c-format
-msgid "%s. Either try to save database with another name or exit without saving."
-msgstr "%s. 데이터베이스를 다른 이름으로 저장하거나, 저장하지 말고 종료해주십시오."
 
 #. Resource IDs: (343)
 #, c-format
@@ -4044,10 +4044,6 @@ msgstr ""
 msgid "Minimum lowercase characters"
 msgstr "최소 소문자 개수"
 
-#. Resource IDs: (349)
-msgid "Minimum password length"
-msgstr ""
-
 #. Resource IDs: (350)
 msgid "Minimum symbols"
 msgstr ""
@@ -4616,6 +4612,10 @@ msgstr "비밀번호가 너무 짧습니다"
 #. Resource IDs: (1110)
 msgid "Password last changed on:"
 msgstr "비밀번호가 마지막으로 변경된 때:"
+
+#. Resource IDs: (257)
+msgid "Password length"
+msgstr ""
 
 #. Resource IDs: (345)
 msgid "Password length is less than sum of 'at least' constraints"
