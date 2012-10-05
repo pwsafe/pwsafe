@@ -383,6 +383,11 @@ msgstr "%s - Spojeno %s"
 msgid "%s - Sync'd %s"
 msgstr ""
 
+#. Resource IDs: (363)
+#, c-format
+msgid "%s Either try to save database with another name or exit without saving."
+msgstr ""
+
 #. Resource IDs: (3887)
 #, c-format
 msgid "%s [Recovered]"
@@ -437,11 +442,6 @@ msgstr "%s%s%s_Report.txt"
 #, c-format
 msgid "%s, Title=\"%s\", User=\"%s\" already exists in your database or in the Import file. Added imported entry with title=\"%s\".\r\n"
 msgstr "%s, Title=\"%s\", User=\"%s\" existuje v databázi nebo importu.Přidej záznam s názvem =\"%s\".\r\n"
-
-#. Resource IDs: (363)
-#, c-format
-msgid "%s. Either try to save database with another name or exit without saving."
-msgstr "%s. Zkus uložit s jiným jménem."
 
 #. Resource IDs: (343)
 #, c-format
@@ -4084,10 +4084,6 @@ msgstr ""
 msgid "Minimum lowercase characters"
 msgstr ""
 
-#. Resource IDs: (349)
-msgid "Minimum password length"
-msgstr ""
-
 #. Resource IDs: (350)
 msgid "Minimum symbols"
 msgstr ""
@@ -4655,6 +4651,10 @@ msgstr ""
 
 #. Resource IDs: (1110)
 msgid "Password last changed on:"
+msgstr ""
+
+#. Resource IDs: (257)
+msgid "Password length"
 msgstr ""
 
 #. Resource IDs: (345)

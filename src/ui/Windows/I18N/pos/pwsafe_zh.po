@@ -366,6 +366,11 @@ msgstr ""
 msgid "%s - Sync'd %s"
 msgstr ""
 
+#. Resource IDs: (363)
+#, c-format
+msgid "%s Either try to save database with another name or exit without saving."
+msgstr ""
+
 #. Resource IDs: (3887)
 #, c-format
 msgid "%s [Recovered]"
@@ -420,11 +425,6 @@ msgstr "%s%s%s_Report.txt"
 #, c-format
 msgid "%s, Title=\"%s\", User=\"%s\" already exists in your database or in the Import file. Added imported entry with title=\"%s\".\r\n"
 msgstr "%s, 标题=“%s”，用户=“%s”已存在你的数据库或导入文件中。添加导入项目标题=“%s”。\r\n"
-
-#. Resource IDs: (363)
-#, c-format
-msgid "%s. Either try to save database with another name or exit without saving."
-msgstr "%s. 选择尝试保存数据库为其它名称或退出不保存！"
 
 #. Resource IDs: (343)
 #, c-format
@@ -4044,10 +4044,6 @@ msgstr ""
 msgid "Minimum lowercase characters"
 msgstr "最少小写字母字符"
 
-#. Resource IDs: (349)
-msgid "Minimum password length"
-msgstr ""
-
 #. Resource IDs: (350)
 msgid "Minimum symbols"
 msgstr ""
@@ -4616,6 +4612,10 @@ msgstr "密码太短！"
 #. Resource IDs: (1110)
 msgid "Password last changed on:"
 msgstr "密码最后更改时间:"
+
+#. Resource IDs: (257)
+msgid "Password length"
+msgstr ""
 
 #. Resource IDs: (345)
 msgid "Password length is less than sum of 'at least' constraints"

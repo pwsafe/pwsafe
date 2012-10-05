@@ -390,7 +390,7 @@ BEGIN
   IDSC_YESEASYVISON        "Yes - EasyVision Symbols: %s"
   IDSC_YESPRONOUNCEABLE    "Yes - Pronounceable Symbols: %s"
   IDSC_YESSYMBOLS          "Yes - At least %d from %s: %s"
-  IDSC_PLENGTH             "Minimum password length"
+  IDSC_PLENGTH             "Password length"
   IDSC_DEFAULTSYMBOLS      "default symbol set"
   IDSC_SPECFICSYMBOLS      "policy specific symbols"
   IDSC_PEASYVISION         "Easyvision characters"

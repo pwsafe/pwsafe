@@ -366,6 +366,11 @@ msgstr ""
 msgid "%s - Sync'd %s"
 msgstr ""
 
+#. Resource IDs: (363)
+#, c-format
+msgid "%s Either try to save database with another name or exit without saving."
+msgstr ""
+
 #. Resource IDs: (3887)
 #, c-format
 msgid "%s [Recovered]"
@@ -420,11 +425,6 @@ msgstr "%s%s%s_Rapport.txt"
 #, c-format
 msgid "%s, Title=\"%s\", User=\"%s\" already exists in your database or in the Import file. Added imported entry with title=\"%s\".\r\n"
 msgstr "%s, Titel=\"%s\", Bruger=\"%s\" eksisterer allerede i din database eller i den importerede fil. Ekstra importeret adgang med titlen=\"%s\".\r\n"
-
-#. Resource IDs: (363)
-#, c-format
-msgid "%s. Either try to save database with another name or exit without saving."
-msgstr "%s. Prøv enten at gemme databasen med et andet navn eller afslut uden at gemme."
 
 #. Resource IDs: (343)
 #, c-format
@@ -4044,10 +4044,6 @@ msgstr ""
 msgid "Minimum lowercase characters"
 msgstr "Minimum små tegn"
 
-#. Resource IDs: (349)
-msgid "Minimum password length"
-msgstr ""
-
 #. Resource IDs: (350)
 msgid "Minimum symbols"
 msgstr ""
@@ -4616,6 +4612,10 @@ msgstr "Adgangskode er for kort"
 #. Resource IDs: (1110)
 msgid "Password last changed on:"
 msgstr "Adgangskode sidst ændret den:"
+
+#. Resource IDs: (257)
+msgid "Password length"
+msgstr ""
 
 #. Resource IDs: (345)
 msgid "Password length is less than sum of 'at least' constraints"
