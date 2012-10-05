@@ -25,6 +25,9 @@ modified and Apply's not clicked upon. Thanks to shivak7 for the fix.
 entry is dragged into it. Thanks to nsaipraveen for the fix.
 [3537861] An off-by-one issue with expiration dates has been fixed by
 suthakar123.
+[1063] Intermediate backups also work correctly when relative path to
+database is specified on command line. Thanks to Matt for tracking
+this down.
 
 New Features for 3.29
 =====================

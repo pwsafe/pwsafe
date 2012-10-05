@@ -896,7 +896,11 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone)
       } else { // arg isn't a flag, treat it as a filename
         if (CheckFile(*arg)) {
           fileGiven = true;
-          m_core.SetCurFile(arg->GetString());
+          // We send core the full path 'cause otherwise incr. backups & such get confused.
+          stringT abspath = pws_os::fullpath(arg->GetString());
+          if (abspath.empty()) // Should never happen, but try to slog on if so.
+            abspath = arg->GetString();
+          m_core.SetCurFile(abspath.c_str());
         } else {
           return false;
         }
