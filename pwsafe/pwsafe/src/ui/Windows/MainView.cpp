@@ -1620,6 +1620,7 @@ int DboxMain::InsertItemIntoGUITreeList(CItemData &ci, int iIndex,
 
     time_t t;
     const StringX sxUnknown = PWSUtil::UNKNOWN_ASC_TIME_STR;
+    StringX sxNA; LoadAString(sxNA, IDS_NA);
     for (int i = 1; i < m_nColumns; i++) {
       const CItemData::FieldType ft = (CItemData::FieldType)m_nColumnTypeByIndex[i];
       switch (ft) {
@@ -1632,11 +1633,11 @@ int DboxMain::InsertItemIntoGUITreeList(CItemData &ci, int iIndex,
           break;
         case CItemData::PMTIME:
           ci.GetPMTime(t);
-          sx_fielddata = ((long)t == 0) ? ci.GetCTimeL() : ci.GetPMTimeL();
+          sx_fielddata = ((long)t == 0) ? sxNA : ci.GetPMTimeL();
           break;
         case CItemData::RMTIME:
           ci.GetRMTime(t);
-          sx_fielddata = ((long)t == 0) ? ci.GetCTimeL() : ci.GetRMTimeL();
+          sx_fielddata = ((long)t == 0) ? sxNA : ci.GetRMTimeL();
           break;
         case CItemData::POLICY:
         {
@@ -4047,7 +4048,8 @@ void DboxMain::RefreshEntryFieldInGUI(CItemData &ci, CItemData::FieldType ft)
   DisplayInfo *pdi = (DisplayInfo *)ci.GetDisplayInfo();
 
   StringX sx_fielddata;
-  const StringX sxUnknown = PWSUtil::UNKNOWN_ASC_TIME_STR;
+  const StringX &sxUnknown = PWSUtil::UNKNOWN_ASC_TIME_STR;
+  StringX sxNA; LoadAString(sxNA, IDS_NA);
   time_t t;
 
   switch (ft) {
@@ -4078,11 +4080,11 @@ void DboxMain::RefreshEntryFieldInGUI(CItemData &ci, CItemData::FieldType ft)
       break;
     case CItemData::PMTIME:
       ci.GetPMTime(t);
-      sx_fielddata = ((long)t == 0) ? ci.GetCTimeL() : ci.GetPMTimeL();
+      sx_fielddata = ((long)t == 0) ? sxNA : ci.GetPMTimeL();
       break;
     case CItemData::RMTIME:
       ci.GetRMTime(t);
-      sx_fielddata = ((long)t == 0) ? ci.GetCTimeL() : ci.GetRMTimeL();
+      sx_fielddata = ((long)t == 0) ? sxNA : ci.GetRMTimeL();
       break;
     case CItemData::POLICY:
     {
