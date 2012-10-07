@@ -58,7 +58,7 @@ BEGIN_EVENT_TABLE( CSafeCombinationSetup, wxDialog )
   EVT_BUTTON( wxID_CANCEL, CSafeCombinationSetup::OnCancelClick )
 
 ////@end CSafeCombinationSetup event table entries
-
+EVT_TIMER(POLLING_TIMER_ID, CSafeCombinationSetup::OnPollingTimer)
 END_EVENT_TABLE()
 
 
@@ -95,6 +95,7 @@ bool CSafeCombinationSetup::Create( wxWindow* parent, wxWindowID id, const wxStr
   }
   Centre();
 ////@end CSafeCombinationSetup creation
+  SetupMixin(FindWindow(ID_YUBIBTN), FindWindow(ID_YUBISTATUS));
   return true;
 }
 
@@ -282,4 +283,11 @@ void CSafeCombinationSetup::OnCancelClick( wxCommandEvent& event )
   // Before editing this code, remove the block markers.
   event.Skip();
 ////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in CSafeCombinationSetup. 
+}
+
+void CSafeCombinationSetup::OnPollingTimer(wxTimerEvent &evt)
+{
+  if (evt.GetId() == POLLING_TIMER_ID) {
+    HandlePollingTimer(); // in CYubiMixin
+  }
 }

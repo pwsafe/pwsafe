@@ -25,6 +25,7 @@
 #include "wx/valgen.h"
 ////@end includes
 #include "core/PWScore.h"
+#include "YubiMixin.h"
 
 /*!
  * Forward declarations
@@ -59,7 +60,7 @@ class wxTimer;
  * CSafeCombinationEntry class declaration
  */
 
-class CSafeCombinationEntry: public wxDialog
+class CSafeCombinationEntry: public wxDialog, private CYubiMixin
 {    
   DECLARE_CLASS( CSafeCombinationEntry )
   DECLARE_EVENT_TABLE()
@@ -129,16 +130,9 @@ public:
   PWScore &m_core;
   unsigned m_tries;
 
-  // yubi-stuff - refactor to mixin:
-  void yubiInserted(void);
-  void yubiRemoved(void);
-  bool IsYubiInserted() const;
   // Not strictly yubi, but refactored to work with it:
   void ProcessPhrase();
 
-  enum { POLLING_TIMER_ID = 83 } ; 
-  wxTimer* m_pollingTimer;
-  bool m_present; // key present?
 };
 
 #endif // _SAFECOMBINATIONENTRY_H_

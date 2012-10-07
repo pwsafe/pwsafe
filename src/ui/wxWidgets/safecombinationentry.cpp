@@ -51,7 +51,7 @@
 
 #include <iostream> // for debugging
 #include <iomanip>
-#include <sstream>
+
 /*!
  * CSafeCombinationEntry type definition
  */
@@ -120,6 +120,7 @@ bool CSafeCombinationEntry::Create( wxWindow* parent, wxWindowID id, const wxStr
   }
   Centre();
 ////@end CSafeCombinationEntry creation
+  SetupMixin(FindWindow(ID_YUBIBTN), FindWindow(ID_YUBISTATUS));
   return true;
 }
 
@@ -132,7 +133,6 @@ CSafeCombinationEntry::~CSafeCombinationEntry()
 {
 ////@begin CSafeCombinationEntry destruction
 ////@end CSafeCombinationEntry destruction
-  delete m_pollingTimer;
 }
 
 
@@ -150,8 +150,6 @@ void CSafeCombinationEntry::Init()
   m_YubiBtn = NULL;
   m_yubiStatusCtrl = NULL;
 ////@end CSafeCombinationEntry member initialisation
-  m_pollingTimer = new wxTimer(this, POLLING_TIMER_ID);
-  m_present = !IsYubiInserted(); // lie to trigger correct actions in timer even
 }
 
 
@@ -260,7 +258,6 @@ void CSafeCombinationEntry::CreateControls()
     FindWindow(ID_COMBINATION)->SetFocus();
   }
   SetIcons(wxGetApp().GetAppIcons());
-  m_pollingTimer->Start(250); // check for Yubikey every 250ms.
 }
 
 
@@ -472,17 +469,6 @@ void CSafeCombinationEntry::OnNewDbClick( wxCommandEvent& /* evt */ )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YUBIBTN
  */
 
-static StringX Bin2Hex(const unsigned char *buf, int len)
-{
-  std::wostringstream os;
-  os << std::setw(2);
-  os << std::setfill(L'0');
-  for (int i = 0; i < len; i++) {
-    os << std::hex << std::setw(2) << int(buf[i]);
-  }
-  return StringX(os.str().c_str());
-}
-
 void CSafeCombinationEntry::OnYubibtnClick( wxCommandEvent& event )
 {
   if (Validate() && TransferDataFromWindow()) {
@@ -538,34 +524,7 @@ void CSafeCombinationEntry::OnYubibtnClick( wxCommandEvent& event )
 void CSafeCombinationEntry::OnPollingTimer(wxTimerEvent &evt)
 {
   if (evt.GetId() == POLLING_TIMER_ID) {
-    // Currently hmac check is blocking (ugh), so no need to check here
-    // if a request is in-progress.
-    bool inserted = IsYubiInserted();
-    // call relevant callback if something's changed
-    if (inserted != m_present) {
-      m_present = inserted;
-      if (m_present)
-        yubiInserted();
-      else
-        yubiRemoved();
-    }
+    HandlePollingTimer(); // in CYubiMixin
   }
 }
 
-void CSafeCombinationEntry::yubiInserted(void)
-{
-  FindWindow(ID_YUBIBTN)->Enable(true);
-  m_yubiStatusCtrl->SetLabel(_("<- Click on button to the left"));
-}
-
-void CSafeCombinationEntry::yubiRemoved(void)
-{
-  FindWindow(ID_YUBIBTN)->Enable(false);
-  m_yubiStatusCtrl->SetLabel(_("Please insert your YubiKey"));
-}
-
-bool CSafeCombinationEntry::IsYubiInserted() const
-{
-  const PWYubi yubi;
-  return yubi.IsYubiInserted();
-}

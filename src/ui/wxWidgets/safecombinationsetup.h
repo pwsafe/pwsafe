@@ -24,6 +24,7 @@
 ////@begin includes
 #include "wx/valgen.h"
 ////@end includes
+#include "YubiMixin.h"
 
 /*!
  * Forward declarations
@@ -54,7 +55,7 @@
  * CSafeCombinationSetup class declaration
  */
 
-class CSafeCombinationSetup: public wxDialog
+class CSafeCombinationSetup: public wxDialog, private CYubiMixin
 {    
   DECLARE_DYNAMIC_CLASS( CSafeCombinationSetup )
   DECLARE_EVENT_TABLE()
@@ -87,6 +88,7 @@ public:
   void OnCancelClick( wxCommandEvent& event );
 
 ////@end CSafeCombinationSetup event handler declarations
+  void OnPollingTimer(wxTimerEvent& timerEvent);
 
 ////@begin CSafeCombinationSetup member function declarations
 
