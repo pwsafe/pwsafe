@@ -130,9 +130,9 @@ public:
   PWScore &m_core;
   unsigned m_tries;
 
+  wxTimer* m_pollingTimer; // for Yubi, but can't go into mixin :-(
   // Not strictly yubi, but refactored to work with it:
   void ProcessPhrase();
-
 };
 
 #endif // _SAFECOMBINATIONENTRY_H_

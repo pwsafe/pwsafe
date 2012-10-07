@@ -96,6 +96,8 @@ bool CSafeCombinationSetup::Create( wxWindow* parent, wxWindowID id, const wxStr
   Centre();
 ////@end CSafeCombinationSetup creation
   SetupMixin(FindWindow(ID_YUBIBTN), FindWindow(ID_YUBISTATUS));
+  m_pollingTimer = new wxTimer(this, POLLING_TIMER_ID);
+  m_pollingTimer->Start(250); // check for Yubikey every 250ms.
   return true;
 }
 
@@ -108,6 +110,7 @@ CSafeCombinationSetup::~CSafeCombinationSetup()
 {
 ////@begin CSafeCombinationSetup destruction
 ////@end CSafeCombinationSetup destruction
+  delete m_pollingTimer;
 }
 
 

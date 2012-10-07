@@ -30,9 +30,7 @@ void CYubiMixin::SetupMixin(wxWindow *btn, wxWindow *status)
 {
   m_btn = btn;
   m_status = status;
-  m_pollingTimer = new wxTimer(reinterpret_cast<wxEvtHandler *>(this), POLLING_TIMER_ID);
   m_present = !IsYubiInserted(); // lie to trigger correct actions in timer even
-  m_pollingTimer->Start(250); // check for Yubikey every 250ms.
 }
 
 

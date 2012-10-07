@@ -23,8 +23,8 @@ class wxTimer;
 
 class CYubiMixin {
  public:
- CYubiMixin() : m_pollingTimer(NULL), m_present(false), m_btn(NULL), m_status(NULL) {}
-  ~CYubiMixin() {delete m_pollingTimer;}
+ CYubiMixin() : m_present(false), m_btn(NULL), m_status(NULL) {}
+  ~CYubiMixin() {}
 
   void SetupMixin(wxWindow *btn, wxWindow *status);
   void yubiInserted(void);
@@ -38,7 +38,6 @@ class CYubiMixin {
   void HandlePollingTimer();
 
   enum { POLLING_TIMER_ID = 83 } ; 
-  wxTimer* m_pollingTimer;
   bool m_present; // key present?
 
  private:

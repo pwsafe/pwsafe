@@ -32,6 +32,7 @@
 
 ////@begin forward declarations
 ////@end forward declarations
+class wxTimer;
 
 /*!
  * Control identifiers
@@ -107,6 +108,7 @@ public:
   wxStaticText* m_yubiStatusCtrl;
 ////@end CSafeCombinationSetup member variables
  private:
+  wxTimer* m_pollingTimer; // for Yubi, but can't go into mixin :-(
   wxString m_password;
   wxString m_verify;
 };
