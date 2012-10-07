@@ -147,6 +147,7 @@ void CSafeCombinationEntry::Init()
 ////@begin CSafeCombinationEntry member initialisation
   m_version = NULL;
   m_filenameCB = NULL;
+  m_YubiBtn = NULL;
   m_yubiStatusCtrl = NULL;
 ////@end CSafeCombinationEntry member initialisation
   m_pollingTimer = new wxTimer(this, POLLING_TIMER_ID);
@@ -215,10 +216,10 @@ void CSafeCombinationEntry::CreateControls()
   wxBoxSizer* itemBoxSizer18 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer4->Add(itemBoxSizer18, 0, wxGROW|wxALL, 5);
 
-  wxBitmapButton* itemBitmapButton19 = new wxBitmapButton( itemDialog1, ID_YUBIBTN, itemDialog1->GetBitmapResource(wxT("graphics/Yubikey-button.xpm")), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(40, 15)), wxBU_AUTODRAW );
-  itemBoxSizer18->Add(itemBitmapButton19, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM|wxSHAPED, 5);
+  m_YubiBtn = new wxBitmapButton( itemDialog1, ID_YUBIBTN, itemDialog1->GetBitmapResource(wxT("graphics/Yubikey-button.xpm")), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(40, 15)), wxBU_AUTODRAW );
+  itemBoxSizer18->Add(m_YubiBtn, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM|wxSHAPED, 5);
 
-  m_yubiStatusCtrl = new wxStaticText( itemDialog1, wxID_STATIC, _("Please insert your YubiKey"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_yubiStatusCtrl = new wxStaticText( itemDialog1, ID_YUBISTATUS, _("Please insert your YubiKey"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer18->Add(m_yubiStatusCtrl, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStdDialogButtonSizer* itemStdDialogButtonSizer21 = new wxStdDialogButtonSizer;

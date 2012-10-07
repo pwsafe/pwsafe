@@ -35,6 +35,7 @@
 #endif
 
 ////@begin XPM images
+#include "graphics/Yubikey-button.xpm"
 ////@end XPM images
 
 
@@ -116,6 +117,8 @@ CSafeCombinationSetup::~CSafeCombinationSetup()
 void CSafeCombinationSetup::Init()
 {
 ////@begin CSafeCombinationSetup member initialisation
+  m_YubiBtn = NULL;
+  m_yubiStatusCtrl = NULL;
 ////@end CSafeCombinationSetup member initialisation
 }
 
@@ -130,6 +133,7 @@ void CSafeCombinationSetup::CreateControls()
   CSafeCombinationSetup* itemDialog1 = this;
 
   wxBoxSizer* itemBoxSizer2 = new wxBoxSizer(wxVERTICAL);
+  itemDialog1->SetSizer(itemBoxSizer2);
 
   wxStaticText* itemStaticText3 = new wxStaticText( itemDialog1, wxID_STATIC, _("A new password database will be created.\nThe safe combination will be used to encrypt the password database file.\nYou can use any keyboard character. The combination is case-sensitive.\n"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer2->Add(itemStaticText3, 0, wxALIGN_LEFT|wxALL, 5);
@@ -149,11 +153,25 @@ void CSafeCombinationSetup::CreateControls()
   wxTextCtrl* itemTextCtrl8 = new wxTextCtrl( itemDialog1, ID_VERIFY, wxEmptyString, wxDefaultPosition, wxSize(itemDialog1->ConvertDialogToPixels(wxSize(120, -1)).x, -1), wxTE_PASSWORD );
   itemGridSizer4->Add(itemTextCtrl8, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxStdDialogButtonSizer* sizer = CreateStdDialogButtonSizer(wxOK|wxCANCEL|wxHELP);
-  sizer->Add(new ExternalKeyboardButton(itemDialog1), wxSizerFlags().Border(wxLEFT));
-  itemBoxSizer2->Add(sizer, wxSizerFlags().Border().Expand().Proportion(0));
+  m_YubiBtn = new wxBitmapButton( itemDialog1, ID_YUBIBTN, itemDialog1->GetBitmapResource(wxT("graphics/Yubikey-button.xpm")), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(40, 15)), wxBU_AUTODRAW );
+  itemGridSizer4->Add(m_YubiBtn, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM|wxSHAPED, 5);
 
-  SetSizerAndFit(itemBoxSizer2);
+  m_yubiStatusCtrl = new wxStaticText( itemDialog1, ID_YUBISTATUS, _("Please insert your YubiKey"), wxDefaultPosition, wxDefaultSize, 0 );
+  itemGridSizer4->Add(m_yubiStatusCtrl, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+
+  wxStdDialogButtonSizer* itemStdDialogButtonSizer11 = new wxStdDialogButtonSizer;
+
+  itemBoxSizer2->Add(itemStdDialogButtonSizer11, 0, wxALIGN_LEFT|wxALL, 5);
+  wxButton* itemButton12 = new wxButton( itemDialog1, wxID_OK, _("&OK"), wxDefaultPosition, wxDefaultSize, 0 );
+  itemStdDialogButtonSizer11->AddButton(itemButton12);
+
+  wxButton* itemButton13 = new wxButton( itemDialog1, wxID_CANCEL, _("&Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
+  itemStdDialogButtonSizer11->AddButton(itemButton13);
+
+  wxButton* itemButton14 = new wxButton( itemDialog1, wxID_HELP, _("&Help"), wxDefaultPosition, wxDefaultSize, 0 );
+  itemStdDialogButtonSizer11->AddButton(itemButton14);
+
+  itemStdDialogButtonSizer11->Realize();
 
   // Set validators
   itemTextCtrl6->SetValidator( wxGenericValidator(& m_password) );
@@ -180,6 +198,11 @@ wxBitmap CSafeCombinationSetup::GetBitmapResource( const wxString& name )
   // Bitmap retrieval
 ////@begin CSafeCombinationSetup bitmap retrieval
   wxUnusedVar(name);
+  if (name == _T("graphics/Yubikey-button.xpm"))
+  {
+    wxBitmap bitmap(Yubikey_button_xpm);
+    return bitmap;
+  }
   return wxNullBitmap;
 ////@end CSafeCombinationSetup bitmap retrieval
 }

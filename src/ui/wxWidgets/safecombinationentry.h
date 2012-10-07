@@ -46,6 +46,7 @@ class wxTimer;
 #define ID_READONLY 10005
 #define ID_NEWDB 10006
 #define ID_YUBIBTN 10229
+#define ID_YUBISTATUS 10230
 #define SYMBOL_CSAFECOMBINATIONENTRY_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxDIALOG_MODAL|wxTAB_TRAVERSAL
 #define SYMBOL_CSAFECOMBINATIONENTRY_TITLE _("Safe Combination Entry")
 #define SYMBOL_CSAFECOMBINATIONENTRY_IDNAME ID_CSAFECOMBINATIONENTRY
@@ -118,6 +119,7 @@ public:
 ////@begin CSafeCombinationEntry member variables
   wxStaticText* m_version;
   wxComboBox* m_filenameCB;
+  wxBitmapButton* m_YubiBtn;
   wxStaticText* m_yubiStatusCtrl;
 ////@end CSafeCombinationEntry member variables
  private:
