@@ -32,7 +32,6 @@
 #include "core/core.h"
 #include "core/PWSdirs.h"
 #include "os/file.h"
-#include "os/sleep.h"
 #include "os/linux/PWYubi.h"
 
 ////@begin XPM images
@@ -483,43 +482,11 @@ void CSafeCombinationEntry::OnYubibtnClick( wxCommandEvent& event )
       return;
     }
 
-    m_yubiStatusCtrl->SetLabel(_("Now touch your YubiKey's button"));
-
-    BYTE chalBuf[PWYubi::SHA1_MAX_BLOCK_SIZE];
-    BYTE chalLength = BYTE(m_password.length()*sizeof(TCHAR));
-    memset(chalBuf, 0, PWYubi::SHA1_MAX_BLOCK_SIZE);
-    if (chalLength > PWYubi::SHA1_MAX_BLOCK_SIZE)
-      chalLength = PWYubi::SHA1_MAX_BLOCK_SIZE;
-
-    memcpy(chalBuf, m_password.c_str(), chalLength);
-
-    PWYubi yubi;
-
-    if (yubi.RequestHMacSHA1(chalBuf, chalLength)) {
-      unsigned char hmac[PWYubi::RESPLEN];
-      PWYubi::RequestStatus status = PWYubi::PENDING;
-      do {
-        status = yubi.GetResponse(hmac);
-        if (status == PWYubi::PENDING)
-          pws_os::sleep_ms(250); // Ugh.
-      } while (status == PWYubi::PENDING);
-      if (status == PWYubi::DONE) {
-        for (unsigned i = 0; i < sizeof(hmac); i++)
-          std::cerr << std::hex << std::setw(2) << (int)hmac[i];
-        std::cerr << std::endl;
-        // The returned hash is the passkey
-        m_password = Bin2Hex(hmac, PWYubi::RESPLEN);
-        ProcessPhrase();
-        // TBD - if ProcessPhrase() returns, reset prompt
-      } else {
-        if (status == PWYubi::TIMEOUT) {
-          m_yubiStatusCtrl->SetLabel(_("Timeout - please try again"));
-        } else { // error
-          m_yubiStatusCtrl->SetLabel(_("Error: Bad response from YubiKey"));
-        }
-      }
-    } else {
-      m_yubiStatusCtrl->SetLabel(_("Error: Unconfigured YubiKey?"));
+    StringX response;
+    if (PerformChallengeResponse(m_password, response)) {
+      m_password = response;
+      ProcessPhrase();
+      // TBD - if ProcessPhrase() returns, reset prompt
     }
   }
 }

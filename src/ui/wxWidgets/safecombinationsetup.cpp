@@ -53,6 +53,8 @@ IMPLEMENT_DYNAMIC_CLASS( CSafeCombinationSetup, wxDialog )
 BEGIN_EVENT_TABLE( CSafeCombinationSetup, wxDialog )
 
 ////@begin CSafeCombinationSetup event table entries
+  EVT_BUTTON( ID_YUBIBTN, CSafeCombinationSetup::OnYubibtnClick )
+
   EVT_BUTTON( wxID_OK, CSafeCombinationSetup::OnOkClick )
 
   EVT_BUTTON( wxID_CANCEL, CSafeCombinationSetup::OnCancelClick )
@@ -294,3 +296,26 @@ void CSafeCombinationSetup::OnPollingTimer(wxTimerEvent &evt)
     HandlePollingTimer(); // in CYubiMixin
   }
 }
+
+
+/*!
+ * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YUBIBTN
+ */
+
+void CSafeCombinationSetup::OnYubibtnClick( wxCommandEvent& event )
+{
+  if (Validate() && TransferDataFromWindow()) {
+    if (m_password != m_verify) {
+      wxMessageDialog err(this, _("The two entries do not match."),
+                          _("Error"), wxOK | wxICON_EXCLAMATION);
+      err.ShowModal();
+      return;
+    }
+    StringX response;
+    if (PerformChallengeResponse(m_password.c_str(), response)) {
+      m_password = response.c_str();
+      EndModal(wxID_OK);
+    }
+  }
+}
+

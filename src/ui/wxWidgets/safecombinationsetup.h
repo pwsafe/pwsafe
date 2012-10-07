@@ -82,6 +82,9 @@ public:
 
   ////@begin CSafeCombinationSetup event handler declarations
 
+  /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YUBIBTN
+  void OnYubibtnClick( wxCommandEvent& event );
+
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
   void OnOkClick( wxCommandEvent& event );
 

@@ -30,6 +30,7 @@ class CYubiMixin {
   void yubiInserted(void);
   void yubiRemoved(void);
   bool IsYubiInserted() const;
+  bool PerformChallengeResponse(const StringX &challenge, StringX &response);
   StringX Bin2Hex(const unsigned char *buf, int len) const;
 
   // Following should be called in timer event handler of mixed-in class

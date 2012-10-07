@@ -25,6 +25,7 @@
 
 #include "YubiMixin.h"
 #include "os/linux/PWYubi.h"
+#include "os/sleep.h"
 
 void CYubiMixin::SetupMixin(wxWindow *btn, wxWindow *status)
 {
@@ -66,6 +67,51 @@ void CYubiMixin::HandlePollingTimer()
       yubiRemoved();
   }
 }
+
+bool CYubiMixin::PerformChallengeResponse(const StringX &challenge,
+                                          StringX &response)
+{
+  bool retval = false;
+  m_status->SetLabel(_("Now touch your YubiKey's button"));
+  BYTE chalBuf[PWYubi::SHA1_MAX_BLOCK_SIZE];
+  BYTE chalLength = BYTE(challenge.length()*sizeof(TCHAR));
+  memset(chalBuf, 0, PWYubi::SHA1_MAX_BLOCK_SIZE);
+  if (chalLength > PWYubi::SHA1_MAX_BLOCK_SIZE)
+    chalLength = PWYubi::SHA1_MAX_BLOCK_SIZE;
+
+  memcpy(chalBuf, challenge.c_str(), chalLength);
+
+  PWYubi yubi;
+  if (yubi.RequestHMacSHA1(chalBuf, chalLength)) {
+    unsigned char hmac[PWYubi::RESPLEN];
+    PWYubi::RequestStatus status = PWYubi::PENDING;
+    do {
+      status = yubi.GetResponse(hmac);
+      if (status == PWYubi::PENDING)
+        pws_os::sleep_ms(250); // Ugh.
+    } while (status == PWYubi::PENDING);
+    if (status == PWYubi::DONE) {
+#if 0
+      for (unsigned i = 0; i < sizeof(hmac); i++)
+        std::cerr << std::hex << std::setw(2) << (int)hmac[i];
+      std::cerr << std::endl;
+#endif
+      // The returned hash is the passkey
+      response = Bin2Hex(hmac, PWYubi::RESPLEN);
+      retval = true;
+    } else {
+      if (status == PWYubi::TIMEOUT) {
+        m_status->SetLabel(_("Timeout - please try again"));
+      } else { // error
+        m_status->SetLabel(_("Error: Bad response from YubiKey"));
+      }
+    }
+  } else {
+    m_status->SetLabel(_("Error: Unconfigured YubiKey?"));
+  }
+  return retval;
+}
+
 
 StringX CYubiMixin::Bin2Hex(const unsigned char *buf, int len) const
 {
