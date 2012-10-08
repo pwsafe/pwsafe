@@ -29,6 +29,7 @@ public:
   StringX GetCombination() const;
   void SetValidatorTarget(StringX* str);
   void SelectCombinationText() const;
+  void AllowEmptyCombination(bool flag); // for YubiKey
 
 private:
   wxTextCtrl* textCtrl;
