@@ -22,6 +22,7 @@
 #include "wx/valgen.h"
 ////@end includes
 #include "core/PWScore.h"
+#include "YubiMixin.h"
 
 /*!
  * Forward declarations
@@ -29,6 +30,7 @@
 
 ////@begin forward declarations
 ////@end forward declarations
+class wxTimer;
 
 /*!
  * Control identifiers
@@ -78,6 +80,12 @@ public:
 
 ////@begin CSafeCombinationChange event handler declarations
 
+  /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YUBIBTN
+  void OnYubibtnClick( wxCommandEvent& event );
+
+  /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YUBIBTN2
+  void OnYubibtn2Click( wxCommandEvent& event );
+
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
   void OnOkClick( wxCommandEvent& event );
 
@@ -85,6 +93,7 @@ public:
   void OnCancelClick( wxCommandEvent& event );
 
 ////@end CSafeCombinationChange event handler declarations
+  void OnPollingTimer(wxTimerEvent& timerEvent);
 
 ////@begin CSafeCombinationChange member function declarations
 
@@ -117,6 +126,10 @@ private:
   wxString m_oldpasswd;
 ////@end CSafeCombinationChange member variables
   PWScore &m_core;
+
+  // try having 2 mixin objects to handle things:
+  CYubiMixin m_yubiMixin1, m_yubiMixin2;
+  wxTimer* m_pollingTimer; // for Yubi
 };
 
 #endif

@@ -51,12 +51,16 @@ IMPLEMENT_CLASS( CSafeCombinationChange, wxDialog )
 BEGIN_EVENT_TABLE( CSafeCombinationChange, wxDialog )
 
 ////@begin CSafeCombinationChange event table entries
+  EVT_BUTTON( ID_YUBIBTN, CSafeCombinationChange::OnYubibtnClick )
+
+  EVT_BUTTON( ID_YUBIBTN2, CSafeCombinationChange::OnYubibtn2Click )
+
   EVT_BUTTON( wxID_OK, CSafeCombinationChange::OnOkClick )
 
   EVT_BUTTON( wxID_CANCEL, CSafeCombinationChange::OnCancelClick )
 
 ////@end CSafeCombinationChange event table entries
-
+EVT_TIMER(CYubiMixin::POLLING_TIMER_ID, CSafeCombinationChange::OnPollingTimer)
 END_EVENT_TABLE()
 
 
@@ -302,3 +306,35 @@ void CSafeCombinationChange::OnCancelClick( wxCommandEvent& /* evt */ )
 ////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in CSafeCombinationChange. 
 }
 
+
+/*!
+ * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YUBIBTN
+ */
+
+void CSafeCombinationChange::OnYubibtnClick( wxCommandEvent& event )
+{
+////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YUBIBTN in CSafeCombinationChange.
+  // Before editing this code, remove the block markers.
+  event.Skip();
+////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YUBIBTN in CSafeCombinationChange. 
+}
+
+
+/*!
+ * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YUBIBTN2
+ */
+
+void CSafeCombinationChange::OnYubibtn2Click( wxCommandEvent& event )
+{
+////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YUBIBTN2 in CSafeCombinationChange.
+  // Before editing this code, remove the block markers.
+  event.Skip();
+////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YUBIBTN2 in CSafeCombinationChange. 
+}
+
+void CSafeCombinationChange::OnPollingTimer(wxTimerEvent &evt)
+{
+  if (evt.GetId() == CYubiMixin::POLLING_TIMER_ID) {
+    // TBD
+  }
+}

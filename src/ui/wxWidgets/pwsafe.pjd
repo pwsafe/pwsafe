@@ -7383,7 +7383,7 @@ Type the new combination once again to confirm it."</string>
                 <long name="title-mode">0</long>
                 <long name="locked">0</long>
                 <string name="proxy-type">"wbBitmapButtonProxy"</string>
-                <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnYubibtnClick|NONE||CSafeCombinationEntry"</string>
+                <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnYubibtnClick|NONE||CSafeCombinationChange"</string>
                 <string name="proxy-Id name">"ID_YUBIBTN"</string>
                 <long name="proxy-Id value">10229</long>
                 <string name="proxy-Name">""</string>
@@ -7605,7 +7605,7 @@ Type the new combination once again to confirm it."</string>
                 <long name="title-mode">0</long>
                 <long name="locked">0</long>
                 <string name="proxy-type">"wbBitmapButtonProxy"</string>
-                <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnYubibtn2Click|NONE||CSafeCombinationEntry"</string>
+                <string name="event-handler-0">"wxEVT_COMMAND_BUTTON_CLICKED|OnYubibtn2Click|NONE||CSafeCombinationChange"</string>
                 <string name="proxy-Id name">"ID_YUBIBTN2"</string>
                 <long name="proxy-Id value">10000</long>
                 <string name="proxy-Name">""</string>
