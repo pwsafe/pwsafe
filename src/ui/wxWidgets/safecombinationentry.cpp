@@ -32,7 +32,6 @@
 #include "core/core.h"
 #include "core/PWSdirs.h"
 #include "os/file.h"
-#include "os/linux/PWYubi.h"
 
 ////@begin XPM images
 #include "graphics/Yubikey-button.xpm"
@@ -42,7 +41,6 @@
 #include "pwsafeapp.h"
 #include "SafeCombinationCtrl.h"
 #include <wx/filename.h>
-#include "./SafeCombinationCtrl.h"
 
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
