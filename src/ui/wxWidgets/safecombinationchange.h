@@ -37,13 +37,12 @@
 ////@begin control identifiers
 #define ID_CSAFECOMBINATIONCHANGE 10074
 #define ID_OLDPASSWD 10075
+#define ID_YUBIBTN 10229
 #define ID_NEWPASSWD 10076
+#define ID_YUBIBTN2 10000
 #define ID_CONFIRM 10077
-#if WXWIN_COMPATIBILITY_2_6
+#define ID_YUBISTATUS 10230
 #define SYMBOL_CSAFECOMBINATIONCHANGE_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxDIALOG_MODAL|wxTAB_TRAVERSAL
-#else
-#define SYMBOL_CSAFECOMBINATIONCHANGE_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxTAB_TRAVERSAL
-#endif
 #define SYMBOL_CSAFECOMBINATIONCHANGE_TITLE _("Change Safe Combination")
 #define SYMBOL_CSAFECOMBINATIONCHANGE_IDNAME ID_CSAFECOMBINATIONCHANGE
 #define SYMBOL_CSAFECOMBINATIONCHANGE_SIZE wxSize(400, 300)
@@ -80,23 +79,23 @@ public:
 ////@begin CSafeCombinationChange event handler declarations
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
-  void OnOkClick( wxCommandEvent& evt);
+  void OnOkClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL
-  void OnCancelClick( wxCommandEvent& evt);
+  void OnCancelClick( wxCommandEvent& event );
 
 ////@end CSafeCombinationChange event handler declarations
 
 ////@begin CSafeCombinationChange member function declarations
 
-  wxString GetOldpasswd() const { return m_oldpasswd ; }
-  void SetOldpasswd(wxString value) { m_oldpasswd = value ; }
+  wxString GetConfirm() const { return m_confirm ; }
+  void SetConfirm(wxString value) { m_confirm = value ; }
 
   wxString GetNewpasswd() const { return m_newpasswd ; }
   void SetNewpasswd(wxString value) { m_newpasswd = value ; }
 
-  wxString GetConfirm() const { return m_confirm ; }
-  void SetConfirm(wxString value) { m_confirm = value ; }
+  wxString GetOldpasswd() const { return m_oldpasswd ; }
+  void SetOldpasswd(wxString value) { m_oldpasswd = value ; }
 
   /// Retrieves bitmap resources
   wxBitmap GetBitmapResource( const wxString& name );
@@ -109,10 +108,13 @@ public:
   static bool ShowToolTips();
 
 ////@begin CSafeCombinationChange member variables
+  wxBitmapButton* m_YubiBtn;
+  wxBitmapButton* m_YubiBtn2;
+  wxStaticText* m_yubiStatusCtrl;
 private:
-  wxString m_oldpasswd;
-  wxString m_newpasswd;
   wxString m_confirm;
+  wxString m_newpasswd;
+  wxString m_oldpasswd;
 ////@end CSafeCombinationChange member variables
   PWScore &m_core;
 };
