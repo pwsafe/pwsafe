@@ -376,9 +376,8 @@ msgstr "%s - Zsynchronizowano %s"
 #. Resource IDs: (363)
 #, c-format
 msgid "%s Either try to save database with another name or exit without saving."
-msgstr ""
-
-#. Resource IDs: (3887)
+msgstr "%s Zapisz bazę danych pod inną nazwą lub zakończ pracę bez zapisywania."
+ #. Resource IDs: (3887)
 #, c-format
 msgid "%s [Recovered]"
 msgstr "%s [Odzyskany]"
@@ -4684,11 +4683,10 @@ msgstr "Hasło jest zbyt krótkie"
 msgid "Password last changed on:"
 msgstr "Ostatnia zmiana hasła:"
 
-#. Resource IDs: (257)
+ #. Resource IDs: (257)
 msgid "Password length"
-msgstr ""
-
-#. Resource IDs: (345)
+msgstr "Długość hasła"
+ #. Resource IDs: (345)
 msgid "Password length is less than sum of 'at least' constraints"
 msgstr "Liczba znaków w haśle jest większa niż suma ograniczeń określonych opcją 'przynajmniej'"
 
