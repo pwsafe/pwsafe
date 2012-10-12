@@ -23,6 +23,7 @@
 #endif
 
 ////@begin includes
+#include "SafeCombinationCtrl.h"
 ////@end includes
 
 #include <wx/timer.h>
@@ -39,7 +40,6 @@
 #include "./graphics/cpane.xpm"
 #include "./graphics/psafetxt.xpm"
 #include "pwsafeapp.h"
-#include "SafeCombinationCtrl.h"
 #include <wx/filename.h>
 
 #ifdef __WXMSW__
@@ -147,6 +147,7 @@ void CSafeCombinationEntry::Init()
 ////@begin CSafeCombinationEntry member initialisation
   m_version = NULL;
   m_filenameCB = NULL;
+  m_combinationEntry = NULL;
   m_YubiBtn = NULL;
   m_yubiStatusCtrl = NULL;
 ////@end CSafeCombinationEntry member initialisation
@@ -196,8 +197,8 @@ void CSafeCombinationEntry::CreateControls()
   wxStaticText* itemStaticText12 = new wxStaticText( itemDialog1, wxID_STATIC, _("Safe Combination:"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer4->Add(itemStaticText12, 0, wxALIGN_LEFT|wxALL, 3);
 
-  CSafeCombinationCtrl* combinationEntry = new CSafeCombinationCtrl(itemDialog1, ID_COMBINATION);
-  itemBoxSizer4->Add(combinationEntry, 0, wxGROW|wxRIGHT|wxTOP|wxBOTTOM, 5);
+  m_combinationEntry = new CSafeCombinationCtrl( itemDialog1, ID_COMBINATION, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+  itemBoxSizer4->Add(m_combinationEntry, 0, wxGROW|wxRIGHT|wxTOP|wxBOTTOM, 5);
 
   wxBoxSizer* itemBoxSizer14 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer4->Add(itemBoxSizer14, 0, wxGROW|wxALL, 5);
@@ -239,7 +240,7 @@ void CSafeCombinationEntry::CreateControls()
   m_filenameCB->SetValidator( wxGenericValidator(& m_filename) );
   itemCheckBox15->SetValidator( wxGenericValidator(& m_readOnly) );
 ////@end CSafeCombinationEntry content construction
-  combinationEntry->SetValidatorTarget(& m_password);
+  m_combinationEntry->SetValidatorTarget(& m_password);
 #if (REVISION == 0)
   m_version->SetLabel(wxString::Format(_("V%d.%d %s"),
                                        MAJORVERSION, MINORVERSION, SPECIALBUILD));

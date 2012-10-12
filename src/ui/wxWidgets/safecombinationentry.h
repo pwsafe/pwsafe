@@ -32,6 +32,7 @@
  */
 
 ////@begin forward declarations
+class CSafeCombinationCtrl;
 ////@end forward declarations
 class wxTimer;
 
@@ -120,6 +121,7 @@ public:
 ////@begin CSafeCombinationEntry member variables
   wxStaticText* m_version;
   wxComboBox* m_filenameCB;
+  CSafeCombinationCtrl* m_combinationEntry;
   wxBitmapButton* m_YubiBtn;
   wxStaticText* m_yubiStatusCtrl;
 ////@end CSafeCombinationEntry member variables
