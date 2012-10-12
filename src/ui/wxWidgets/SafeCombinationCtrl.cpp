@@ -104,13 +104,11 @@ bool SafeCombinationValidator::TransferFromWindow()
   return true;
 }
 
-CSafeCombinationCtrl::CSafeCombinationCtrl(wxWindow* parent, 
-                                            wxWindowID textCtrlID /*= wxID_ANY*/,
-                                            StringX* valPtr /*= 0*/,
-                                            const wxPoint& pos /* = wxDefaultPosition*/,
-                                            const wxSize& size /* = wxDefaultSize */) : 
-                                                                        wxBoxSizer(wxHORIZONTAL), 
-                                                                        textCtrl(0)
+void CSafeCombinationCtrl::Init(wxWindow* parent, 
+                                wxWindowID textCtrlID /*= wxID_ANY*/,
+                                StringX* valPtr /*= 0*/,
+                                const wxPoint& pos /* = wxDefaultPosition*/,
+                                const wxSize& size /* = wxDefaultSize */)
 {
   SafeCombinationValidator scValidator(valPtr);
   textCtrl = new wxTextCtrl(parent, textCtrlID, wxEmptyString, pos, size, 
