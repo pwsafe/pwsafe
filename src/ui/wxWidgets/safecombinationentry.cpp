@@ -472,6 +472,8 @@ void CSafeCombinationEntry::OnNewDbClick( wxCommandEvent& /* evt */ )
 
 void CSafeCombinationEntry::OnYubibtnClick( wxCommandEvent& event )
 {
+  m_combinationEntry->AllowEmptyCombinationOnce();  // Allow blank password when Yubi's used
+
   if (Validate() && TransferDataFromWindow()) {
     if (!pws_os::FileExists(tostdstring(m_filename))) {
       wxMessageDialog err(this, _("File or path not found."),

@@ -52,7 +52,7 @@ public:
   // Called to transfer data from the window
   virtual bool TransferFromWindow();
 
-  void AllowEmptyCombination(bool flag) {m_allowBlank = flag;}
+  void AllowEmptyCombinationOnce() {m_allowBlank = true;}
 
 private:
   StringX* m_str;
@@ -66,14 +66,16 @@ private:
 //
 bool SafeCombinationValidator::Validate(wxWindow* parent)
 {
+  bool retval = true;
   wxTextCtrl* win = wxDynamicCast(GetWindow(), wxTextCtrl);
   wxCHECK_MSG(win, false, wxT("You must associate a wxTextCtrl window with SafeCombinationValidator"));
   if (!m_allowBlank && win->IsEmpty()) {
     wxMessageBox(_("The combination cannot be blank."), _("Error"), wxOK | wxICON_EXCLAMATION, parent);
     win->SetFocus();
-    return false;
+    retval = false;
   }
-  return true;
+  m_allowBlank = false; // allowBlank is a one-shot: must be set each time!
+  return retval;
 }
 
 bool SafeCombinationValidator::TransferToWindow()
@@ -142,9 +144,9 @@ void CSafeCombinationCtrl::SelectCombinationText() const
   textCtrl->SetSelection(-1,-1);
 }
 
-void CSafeCombinationCtrl::AllowEmptyCombination(bool flag)
+void CSafeCombinationCtrl::AllowEmptyCombinationOnce()
 {
   SafeCombinationValidator *scValidator = dynamic_cast<SafeCombinationValidator *>(textCtrl->GetValidator());
   if (scValidator != NULL)
-    scValidator->AllowEmptyCombination(flag);
+    scValidator->AllowEmptyCombinationOnce();
 }

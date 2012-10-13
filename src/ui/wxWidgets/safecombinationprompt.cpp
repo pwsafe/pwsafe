@@ -314,6 +314,7 @@ void CSafeCombinationPrompt::OnCancelClick( wxCommandEvent& /* evt */ )
 
 void CSafeCombinationPrompt::OnYubibtnClick( wxCommandEvent& event )
 {
+  m_scctrl->AllowEmptyCombinationOnce();  // Allow blank password when Yubi's used
   if (Validate() && TransferDataFromWindow()) {
     if (!pws_os::FileExists(tostdstring(m_filename))) {
       wxMessageDialog err(this, _("File or path not found."),

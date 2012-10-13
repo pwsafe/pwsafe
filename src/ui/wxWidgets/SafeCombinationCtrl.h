@@ -37,7 +37,7 @@ public:
   StringX GetCombination() const;
   void SetValidatorTarget(StringX* str);
   void SelectCombinationText() const;
-  void AllowEmptyCombination(bool flag); // for YubiKey
+  void AllowEmptyCombinationOnce(); // for YubiKey, one-shot for use in YubiBtn event handlers
 
 private:
   wxTextCtrl* textCtrl;
