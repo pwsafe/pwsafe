@@ -122,6 +122,7 @@ CSafeCombinationPrompt::~CSafeCombinationPrompt()
 void CSafeCombinationPrompt::Init()
 {
 ////@begin CSafeCombinationPrompt member initialisation
+  m_scctrl = NULL;
   m_YubiBtn = NULL;
   m_yubiStatusCtrl = NULL;
 ////@end CSafeCombinationPrompt member initialisation
@@ -161,8 +162,8 @@ void CSafeCombinationPrompt::CreateControls()
   wxStaticText* itemStaticText9 = new wxStaticText( itemDialog1, wxID_STATIC, _("Safe\ncombination:"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer8->Add(itemStaticText9, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  CSafeCombinationCtrl* scctrl = new CSafeCombinationCtrl( itemDialog1, ID_PASSWORD, &m_password, wxDefaultPosition, wxSize(itemDialog1->ConvertDialogToPixels(wxSize(150, -1)).x, -1));
-  itemBoxSizer8->Add(scctrl, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_scctrl = new CSafeCombinationCtrl( itemDialog1, ID_PASSWORD, &m_password, wxDefaultPosition, wxSize(itemDialog1->ConvertDialogToPixels(wxSize(150, -1)).x, -1) );
+  itemBoxSizer8->Add(m_scctrl, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxBoxSizer* itemBoxSizer11 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer5->Add(itemBoxSizer11, 0, wxGROW|wxALL, 5);

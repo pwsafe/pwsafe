@@ -28,6 +28,7 @@
  */
 
 ////@begin forward declarations
+class CSafeCombinationCtrl;
 ////@end forward declarations
 class wxTimer;
 
@@ -103,6 +104,7 @@ public:
   static bool ShowToolTips();
 
 ////@begin CSafeCombinationPrompt member variables
+  CSafeCombinationCtrl* m_scctrl;
   wxBitmapButton* m_YubiBtn;
   wxStaticText* m_yubiStatusCtrl;
 ////@end CSafeCombinationPrompt member variables
