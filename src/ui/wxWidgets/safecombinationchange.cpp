@@ -267,10 +267,6 @@ void CSafeCombinationChange::OnOkClick( wxCommandEvent& /* evt */ )
       wxMessageDialog err(this, _("New safe combination and confirmation do not match"),
                           _("Error"), wxOK | wxICON_EXCLAMATION);
       err.ShowModal();
-    } else if (m_newpasswd.empty()) {
-      wxMessageDialog err(this, _("The combination cannot be blank."),
-                          _("Error"), wxOK | wxICON_EXCLAMATION);
-      err.ShowModal();
     // Vox populi vox dei - folks want the ability to use a weak
     // passphrase, best we can do is warn them...
     // If someone want to build a version that insists on proper
@@ -318,14 +314,20 @@ void CSafeCombinationChange::OnCancelClick( wxCommandEvent& /* evt */ )
 
 void CSafeCombinationChange::OnYubibtnClick( wxCommandEvent& event )
 {
-  // Here we just need to verify the existing c/r
+  // Here we just need to get the existing c/r. We verify it as a curtesy to the user,
+  // that is, to indicate asap that it's incorrect.
+  m_oldresponse.clear();
   m_oldPasswdEntry->AllowEmptyCombinationOnce();  // Allow blank password when Yubi's used
 
   if (Validate() && TransferDataFromWindow()) {
-    StringX response;
-    if (m_yubiMixin1.PerformChallengeResponse(m_oldpasswd, response)) {
-      m_oldpasswd = response;
-      // TBD - verify the damn response
+    if (m_yubiMixin1.PerformChallengeResponse(m_oldpasswd, m_oldresponse)) {
+      // Verify the response - a convenience, as we double check in OnYubibtn2Click().
+      int rc = m_core.CheckPasskey(m_core.GetCurFile(), m_oldresponse);
+      if (rc == PWScore::WRONG_PASSWORD) {
+        m_oldresponse.clear();
+        m_yubiStatusCtrl->SetForegroundColour(*wxRED);
+        m_yubiStatusCtrl->SetLabel(_("YubiKey safe combination incorrect"));
+      }
     }
   }
 }
@@ -337,10 +339,42 @@ void CSafeCombinationChange::OnYubibtnClick( wxCommandEvent& event )
 
 void CSafeCombinationChange::OnYubibtn2Click( wxCommandEvent& event )
 {
-////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YUBIBTN2 in CSafeCombinationChange.
-  // Before editing this code, remove the block markers.
-  event.Skip();
-////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YUBIBTN2 in CSafeCombinationChange. 
+  // Allow blank password when Yubi's used:
+  m_newPasswdEntry->AllowEmptyCombinationOnce();
+  m_confirmEntry->AllowEmptyCombinationOnce();
+  if (Validate() && TransferDataFromWindow()) {
+    int rc;
+    // First check existing password/response:
+    // 1. Both old password and old response can't be blank
+    if (m_oldpasswd.empty() && m_oldresponse.empty()) {
+      m_yubiStatusCtrl->SetForegroundColour(*wxRED);
+      m_yubiStatusCtrl->SetLabel(_("Please confirm existing combination"));
+      return;
+    }
+    // 2. If there's an old response, it should already have been checked, but JIC:
+    if (!m_oldresponse.empty()) {
+      rc = m_core.CheckPasskey(m_core.GetCurFile(), m_oldresponse);
+      if (rc == PWScore::WRONG_PASSWORD) {
+        m_oldresponse.clear();
+        m_yubiStatusCtrl->SetForegroundColour(*wxRED);
+        m_yubiStatusCtrl->SetLabel(_("YubiKey safe combination incorrect"));
+        return;
+      }
+    } else {
+      // 3. No old response, we can only check the old password
+      rc = m_core.CheckPasskey(m_core.GetCurFile(), m_oldpasswd);
+      if (rc == PWScore::WRONG_PASSWORD) {
+        m_yubiStatusCtrl->SetForegroundColour(*wxRED);
+        m_yubiStatusCtrl->SetLabel(_("Current safe combination incorrect"));
+        return;
+      }
+    }
+    StringX response;
+    if (m_yubiMixin2.PerformChallengeResponse(m_newpasswd, response)) {
+      m_newpasswd = response;
+      EndModal(wxID_OK);
+    }
+  }
 }
 
 void CSafeCombinationChange::OnPollingTimer(wxTimerEvent &evt)

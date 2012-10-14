@@ -127,6 +127,7 @@ private:
   StringX m_confirm;
   StringX m_newpasswd;
   StringX m_oldpasswd;
+  StringX m_oldresponse;
 ////@end CSafeCombinationChange member variables
   PWScore &m_core;
 

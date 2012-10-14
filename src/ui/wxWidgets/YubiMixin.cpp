@@ -38,12 +38,14 @@ void CYubiMixin::SetupMixin(wxWindow *btn, wxWindow *status)
 void CYubiMixin::yubiInserted(void)
 {
   m_btn->Enable(true);
+  m_status->SetForegroundColour(wxNullColour);
   m_status->SetLabel(_("<- Click on button to the left"));
 }
 
 void CYubiMixin::yubiRemoved(void)
 {
   m_btn->Enable(false);
+  m_status->SetForegroundColour(wxNullColour);
   m_status->SetLabel(_("Please insert your YubiKey"));
 }
 
@@ -72,7 +74,9 @@ bool CYubiMixin::PerformChallengeResponse(const StringX &challenge,
                                           StringX &response)
 {
   bool retval = false;
+  m_status->SetForegroundColour(wxNullColour);
   m_status->SetLabel(_("Now touch your YubiKey's button"));
+  ::wxSafeYield(); // get text to update
   BYTE chalBuf[PWYubi::SHA1_MAX_BLOCK_SIZE];
   BYTE chalLength = BYTE(challenge.length()*sizeof(TCHAR));
   memset(chalBuf, 0, PWYubi::SHA1_MAX_BLOCK_SIZE);
@@ -89,6 +93,7 @@ bool CYubiMixin::PerformChallengeResponse(const StringX &challenge,
       status = yubi.GetResponse(hmac);
       if (status == PWYubi::PENDING)
         pws_os::sleep_ms(250); // Ugh.
+      ::wxSafeYield(); // so as not to totally freeze the app...
     } while (status == PWYubi::PENDING);
     if (status == PWYubi::DONE) {
 #if 0
@@ -101,12 +106,15 @@ bool CYubiMixin::PerformChallengeResponse(const StringX &challenge,
       retval = true;
     } else {
       if (status == PWYubi::TIMEOUT) {
+        m_status->SetForegroundColour(*wxRED);
         m_status->SetLabel(_("Timeout - please try again"));
       } else { // error
+        m_status->SetForegroundColour(*wxRED);
         m_status->SetLabel(_("Error: Bad response from YubiKey"));
       }
     }
   } else {
+    m_status->SetForegroundColour(*wxRED);
     m_status->SetLabel(_("Error: Unconfigured YubiKey?"));
   }
   return retval;
