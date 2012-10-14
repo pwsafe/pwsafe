@@ -19,7 +19,6 @@
  */
 
 ////@begin includes
-#include "wx/valgen.h"
 ////@end includes
 #include "core/PWScore.h"
 #include "YubiMixin.h"
@@ -29,6 +28,7 @@
  */
 
 ////@begin forward declarations
+class CSafeCombinationCtrl;
 ////@end forward declarations
 class wxTimer;
 
@@ -97,14 +97,14 @@ public:
 
 ////@begin CSafeCombinationChange member function declarations
 
-  wxString GetConfirm() const { return m_confirm ; }
-  void SetConfirm(wxString value) { m_confirm = value ; }
+  StringX GetConfirm() const { return m_confirm ; }
+  void SetConfirm(StringX value) { m_confirm = value ; }
 
-  wxString GetNewpasswd() const { return m_newpasswd ; }
-  void SetNewpasswd(wxString value) { m_newpasswd = value ; }
+  StringX GetNewpasswd() const { return m_newpasswd ; }
+  void SetNewpasswd(StringX value) { m_newpasswd = value ; }
 
-  wxString GetOldpasswd() const { return m_oldpasswd ; }
-  void SetOldpasswd(wxString value) { m_oldpasswd = value ; }
+  StringX GetOldpasswd() const { return m_oldpasswd ; }
+  void SetOldpasswd(StringX value) { m_oldpasswd = value ; }
 
   /// Retrieves bitmap resources
   wxBitmap GetBitmapResource( const wxString& name );
@@ -117,13 +117,16 @@ public:
   static bool ShowToolTips();
 
 ////@begin CSafeCombinationChange member variables
+  CSafeCombinationCtrl* m_oldPasswdEntry;
   wxBitmapButton* m_YubiBtn;
+  CSafeCombinationCtrl* m_newPasswdEntry;
   wxBitmapButton* m_YubiBtn2;
+  CSafeCombinationCtrl* m_confirmEntry;
   wxStaticText* m_yubiStatusCtrl;
 private:
-  wxString m_confirm;
-  wxString m_newpasswd;
-  wxString m_oldpasswd;
+  StringX m_confirm;
+  StringX m_newpasswd;
+  StringX m_oldpasswd;
 ////@end CSafeCombinationChange member variables
   PWScore &m_core;
 

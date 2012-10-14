@@ -7057,9 +7057,9 @@ combination:"</string>
           <string name="app-kind">"Standard"</string>
           <long name="use-xrc">0</long>
           <long name="working-mode">0</long>
-          <string name="variable-0">"m_confirm|wxString|Confirm||2|0|"</string>
-          <string name="variable-1">"m_newpasswd|wxString|Newpasswd||2|0|"</string>
-          <string name="variable-2">"m_oldpasswd|wxString|Oldpasswd||2|0|"</string>
+          <string name="variable-0">"m_confirm|StringX|Confirm||2|0|"</string>
+          <string name="variable-1">"m_newpasswd|StringX|Newpasswd||2|0|"</string>
+          <string name="variable-2">"m_oldpasswd|StringX|Oldpasswd||2|0|"</string>
           <string name="proxy-Id name">"ID_CSAFECOMBINATIONCHANGE"</string>
           <long name="proxy-Id value">10074</long>
           <string name="proxy-Class">"CSafeCombinationChange"</string>
@@ -7133,14 +7133,6 @@ combination:"</string>
             <string name="proxy-type">"wbBoxSizerProxy"</string>
             <string name="proxy-Orientation">"Vertical"</string>
             <string name="proxy-Member variable name">""</string>
-            <string name="proxy-AlignH">"Centre"</string>
-            <string name="proxy-AlignV">"Centre"</string>
-            <long name="proxy-Stretch factor">0</long>
-            <long name="proxy-Border">5</long>
-            <bool name="proxy-wxLEFT">1</bool>
-            <bool name="proxy-wxRIGHT">1</bool>
-            <bool name="proxy-wxTOP">1</bool>
-            <bool name="proxy-wxBOTTOM">1</bool>
             <bool name="proxy-wxSHAPED">0</bool>
             <bool name="proxy-wxADJUST_MINSIZE">0</bool>
             <bool name="proxy-wxFIXED_MINSIZE">0</bool>
@@ -7316,7 +7308,7 @@ Type the new combination once again to confirm it."</string>
                 <string name="proxy-Custom ctor arguments">""</string>
               </document>
               <document>
-                <string name="title">"wxTextCtrl: ID_OLDPASSWD"</string>
+                <string name="title">"CSafeCombinationCtrl: ID_OLDPASSWD"</string>
                 <string name="type">"dialog-control-document"</string>
                 <string name="filename">""</string>
                 <string name="icon-name">"textctrl"</string>
@@ -7328,13 +7320,13 @@ Type the new combination once again to confirm it."</string>
                 <string name="proxy-Id name">"ID_OLDPASSWD"</string>
                 <long name="proxy-Id value">10075</long>
                 <string name="proxy-Name">""</string>
-                <string name="proxy-Class">"wxTextCtrl"</string>
-                <string name="proxy-Base class">"wxTextCtrl"</string>
+                <string name="proxy-Class">"CSafeCombinationCtrl"</string>
+                <string name="proxy-Base class">"CSafeCombinationCtrl"</string>
                 <bool name="proxy-External implementation">1</bool>
                 <bool name="proxy-Separate files">0</bool>
                 <string name="proxy-Implementation filename">""</string>
-                <string name="proxy-Header filename">""</string>
-                <string name="proxy-Member variable name">""</string>
+                <string name="proxy-Header filename">"SafeCombinationCtrl.h"</string>
+                <string name="proxy-Member variable name">"m_oldPasswdEntry"</string>
                 <string name="proxy-Initial value">""</string>
                 <long name="proxy-Max length">0</long>
                 <string name="proxy-Help text">""</string>
@@ -7345,8 +7337,8 @@ Type the new combination once again to confirm it."</string>
                 <bool name="proxy-Hidden">0</bool>
                 <bool name="proxy-Enabled">1</bool>
                 <string name="proxy-Platform">"&lt;Any platform&gt;"</string>
-                <string name="proxy-Data variable">"m_oldpasswd"</string>
-                <string name="proxy-Data validator">"wxGenericValidator(&amp; %VARIABLE%)"</string>
+                <string name="proxy-Data variable">""</string>
+                <string name="proxy-Data validator">""</string>
                 <string name="proxy-Data source">""</string>
                 <string name="proxy-Data class name">""</string>
                 <string name="proxy-Data class implementation filename">""</string>
@@ -7355,7 +7347,7 @@ Type the new combination once again to confirm it."</string>
                 <bool name="proxy-wxTE_MULTILINE">0</bool>
                 <bool name="proxy-wxTE_PROCESS_ENTER">0</bool>
                 <bool name="proxy-wxTE_PROCESS_TAB">0</bool>
-                <bool name="proxy-wxTE_PASSWORD">1</bool>
+                <bool name="proxy-wxTE_PASSWORD">0</bool>
                 <bool name="proxy-wxTE_READONLY">0</bool>
                 <bool name="proxy-wxTE_RICH">0</bool>
                 <bool name="proxy-wxTE_RICH2">0</bool>
@@ -7383,7 +7375,7 @@ Type the new combination once again to confirm it."</string>
                 <long name="proxy-Y">-1</long>
                 <long name="proxy-Width">150</long>
                 <long name="proxy-Height">-1</long>
-                <string name="proxy-AlignH">"Right"</string>
+                <string name="proxy-AlignH">"Left"</string>
                 <string name="proxy-AlignV">"Centre"</string>
                 <long name="proxy-Stretch factor">0</long>
                 <long name="proxy-Border">5</long>
@@ -7394,7 +7386,7 @@ Type the new combination once again to confirm it."</string>
                 <bool name="proxy-wxSHAPED">0</bool>
                 <bool name="proxy-wxADJUST_MINSIZE">0</bool>
                 <bool name="proxy-wxFIXED_MINSIZE">0</bool>
-                <string name="proxy-Custom arguments">""</string>
+                <string name="proxy-Custom arguments">"%PARENT%, %ID%, &amp;m_oldpasswd, %POSITION%, %SIZE%"</string>
                 <string name="proxy-Custom ctor arguments">""</string>
               </document>
               <document>
@@ -7538,7 +7530,7 @@ Type the new combination once again to confirm it."</string>
                 <string name="proxy-Custom ctor arguments">""</string>
               </document>
               <document>
-                <string name="title">"wxTextCtrl: ID_NEWPASSWD"</string>
+                <string name="title">"CSafeCombinationCtrl: ID_NEWPASSWD"</string>
                 <string name="type">"dialog-control-document"</string>
                 <string name="filename">""</string>
                 <string name="icon-name">"textctrl"</string>
@@ -7550,13 +7542,13 @@ Type the new combination once again to confirm it."</string>
                 <string name="proxy-Id name">"ID_NEWPASSWD"</string>
                 <long name="proxy-Id value">10076</long>
                 <string name="proxy-Name">""</string>
-                <string name="proxy-Class">"wxTextCtrl"</string>
-                <string name="proxy-Base class">"wxTextCtrl"</string>
+                <string name="proxy-Class">"CSafeCombinationCtrl"</string>
+                <string name="proxy-Base class">"CSafeCombinationCtrl"</string>
                 <bool name="proxy-External implementation">1</bool>
                 <bool name="proxy-Separate files">0</bool>
                 <string name="proxy-Implementation filename">""</string>
-                <string name="proxy-Header filename">""</string>
-                <string name="proxy-Member variable name">""</string>
+                <string name="proxy-Header filename">"SafeCombinationCtrl.h"</string>
+                <string name="proxy-Member variable name">"m_newPasswdEntry"</string>
                 <string name="proxy-Initial value">""</string>
                 <long name="proxy-Max length">0</long>
                 <string name="proxy-Help text">""</string>
@@ -7567,8 +7559,8 @@ Type the new combination once again to confirm it."</string>
                 <bool name="proxy-Hidden">0</bool>
                 <bool name="proxy-Enabled">1</bool>
                 <string name="proxy-Platform">"&lt;Any platform&gt;"</string>
-                <string name="proxy-Data variable">"m_newpasswd"</string>
-                <string name="proxy-Data validator">"wxGenericValidator(&amp; %VARIABLE%)"</string>
+                <string name="proxy-Data variable">""</string>
+                <string name="proxy-Data validator">""</string>
                 <string name="proxy-Data source">""</string>
                 <string name="proxy-Data class name">""</string>
                 <string name="proxy-Data class implementation filename">""</string>
@@ -7577,7 +7569,7 @@ Type the new combination once again to confirm it."</string>
                 <bool name="proxy-wxTE_MULTILINE">0</bool>
                 <bool name="proxy-wxTE_PROCESS_ENTER">0</bool>
                 <bool name="proxy-wxTE_PROCESS_TAB">0</bool>
-                <bool name="proxy-wxTE_PASSWORD">1</bool>
+                <bool name="proxy-wxTE_PASSWORD">0</bool>
                 <bool name="proxy-wxTE_READONLY">0</bool>
                 <bool name="proxy-wxTE_RICH">0</bool>
                 <bool name="proxy-wxTE_RICH2">0</bool>
@@ -7616,7 +7608,7 @@ Type the new combination once again to confirm it."</string>
                 <bool name="proxy-wxSHAPED">0</bool>
                 <bool name="proxy-wxADJUST_MINSIZE">0</bool>
                 <bool name="proxy-wxFIXED_MINSIZE">0</bool>
-                <string name="proxy-Custom arguments">""</string>
+                <string name="proxy-Custom arguments">"%PARENT%, %ID%, &amp;m_newpasswd, %POSITION%, %SIZE%"</string>
                 <string name="proxy-Custom ctor arguments">""</string>
               </document>
               <document>
@@ -7760,7 +7752,7 @@ Type the new combination once again to confirm it."</string>
                 <string name="proxy-Custom ctor arguments">""</string>
               </document>
               <document>
-                <string name="title">"wxTextCtrl: ID_CONFIRM"</string>
+                <string name="title">"CSafeCombinationCtrl: ID_CONFIRM"</string>
                 <string name="type">"dialog-control-document"</string>
                 <string name="filename">""</string>
                 <string name="icon-name">"textctrl"</string>
@@ -7772,13 +7764,13 @@ Type the new combination once again to confirm it."</string>
                 <string name="proxy-Id name">"ID_CONFIRM"</string>
                 <long name="proxy-Id value">10077</long>
                 <string name="proxy-Name">""</string>
-                <string name="proxy-Class">"wxTextCtrl"</string>
-                <string name="proxy-Base class">"wxTextCtrl"</string>
+                <string name="proxy-Class">"CSafeCombinationCtrl"</string>
+                <string name="proxy-Base class">"CSafeCombinationCtrl"</string>
                 <bool name="proxy-External implementation">1</bool>
                 <bool name="proxy-Separate files">0</bool>
                 <string name="proxy-Implementation filename">""</string>
-                <string name="proxy-Header filename">""</string>
-                <string name="proxy-Member variable name">""</string>
+                <string name="proxy-Header filename">"SafeCombinationCtrl.h"</string>
+                <string name="proxy-Member variable name">"m_confirmEntry"</string>
                 <string name="proxy-Initial value">""</string>
                 <long name="proxy-Max length">0</long>
                 <string name="proxy-Help text">""</string>
@@ -7789,8 +7781,8 @@ Type the new combination once again to confirm it."</string>
                 <bool name="proxy-Hidden">0</bool>
                 <bool name="proxy-Enabled">1</bool>
                 <string name="proxy-Platform">"&lt;Any platform&gt;"</string>
-                <string name="proxy-Data variable">"m_confirm"</string>
-                <string name="proxy-Data validator">"wxGenericValidator(&amp; %VARIABLE%)"</string>
+                <string name="proxy-Data variable">""</string>
+                <string name="proxy-Data validator">""</string>
                 <string name="proxy-Data source">""</string>
                 <string name="proxy-Data class name">""</string>
                 <string name="proxy-Data class implementation filename">""</string>
@@ -7799,7 +7791,7 @@ Type the new combination once again to confirm it."</string>
                 <bool name="proxy-wxTE_MULTILINE">0</bool>
                 <bool name="proxy-wxTE_PROCESS_ENTER">0</bool>
                 <bool name="proxy-wxTE_PROCESS_TAB">0</bool>
-                <bool name="proxy-wxTE_PASSWORD">1</bool>
+                <bool name="proxy-wxTE_PASSWORD">0</bool>
                 <bool name="proxy-wxTE_READONLY">0</bool>
                 <bool name="proxy-wxTE_RICH">0</bool>
                 <bool name="proxy-wxTE_RICH2">0</bool>
@@ -7838,7 +7830,7 @@ Type the new combination once again to confirm it."</string>
                 <bool name="proxy-wxSHAPED">0</bool>
                 <bool name="proxy-wxADJUST_MINSIZE">0</bool>
                 <bool name="proxy-wxFIXED_MINSIZE">0</bool>
-                <string name="proxy-Custom arguments">""</string>
+                <string name="proxy-Custom arguments">"%PARENT%, %ID%, &amp;m_confirm, %POSITION%, %SIZE%"</string>
                 <string name="proxy-Custom ctor arguments">""</string>
               </document>
               <document>
