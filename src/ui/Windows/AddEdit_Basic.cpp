@@ -56,7 +56,8 @@ CAddEdit_Basic::CAddEdit_Basic(CWnd *pParent, st_AE_master_data *pAEMD)
   : CAddEdit_PropertyPage(pParent,
                           CAddEdit_Basic::IDD, CAddEdit_Basic::IDD_SHORT,
                           pAEMD),
-  m_pToolTipCtrl(NULL), m_bInitdone(false), m_thread(NULL)
+  m_pToolTipCtrl(NULL), m_bInitdone(false), m_thread(NULL),
+  m_isNotesHidden(false)
 {
   if (CS_SHOW.IsEmpty()) { // one-time initializations
     HIDDEN_NOTES.LoadString(IDS_HIDDENNOTES);
@@ -369,6 +370,8 @@ BOOL CAddEdit_Basic::OnInitDialog()
     ShowNotes();
   } else {
     HideNotes();
+    m_pex_notes->EnableMenuItem(PWS_MSG_CALL_NOTESZOOMIN, false);
+    m_pex_notes->EnableMenuItem(PWS_MSG_CALL_NOTESZOOMOUT, false);
   }
 
   CHARFORMAT cf = {0};
@@ -378,14 +381,6 @@ BOOL CAddEdit_Basic::OnInitDialog()
   m_pex_notes->SendMessage(EM_GETCHARFORMAT, SCF_SELECTION, (LPARAM)&cf);
   m_iPointSize = cf.yHeight / 20;
   m_pex_notes->Clear();
-
-  if (m_isNotesHidden) {
-    m_pex_notes->EnableMenuItem(PWS_MSG_CALL_NOTESZOOMIN, false);
-    m_pex_notes->EnableMenuItem(PWS_MSG_CALL_NOTESZOOMOUT, false);
-  } else {
-    // If at the limit - don't allow to be called again in that direction
-    SetZoomMenu();
-  }
 
   // Set initial Word Wrap
   m_pex_notes->SetTargetDevice(NULL, m_bWordWrap ? 0 : 1);
@@ -754,8 +749,9 @@ void CAddEdit_Basic::HidePassword()
 
 void CAddEdit_Basic::SetZoomMenu()
 {
-    m_pex_notes->EnableMenuItem(PWS_MSG_CALL_NOTESZOOMIN, m_iPointSize < 72);
-    m_pex_notes->EnableMenuItem(PWS_MSG_CALL_NOTESZOOMOUT, m_iPointSize > 6);
+  // If at the limit - don't allow to be called again in that direction
+  m_pex_notes->EnableMenuItem(PWS_MSG_CALL_NOTESZOOMIN, m_iPointSize < 72);
+  m_pex_notes->EnableMenuItem(PWS_MSG_CALL_NOTESZOOMOUT, m_iPointSize > 6);
 }
 
 LRESULT CAddEdit_Basic::OnZoomNotes(WPARAM, LPARAM lParam)
@@ -791,27 +787,26 @@ LRESULT CAddEdit_Basic::OnZoomNotes(WPARAM, LPARAM lParam)
 
 void CAddEdit_Basic::ShowNotes()
 {
-  m_isNotesHidden = false;
-  m_notes = M_realnotes();
-
-  ((CEdit *)GetDlgItem(IDC_NOTES))->Invalidate();
-
-  // If at the limit - don't allow to be called again in that direction
-  SetZoomMenu();
+  if (m_isNotesHidden) { // idempotent
+    m_isNotesHidden = false;
+    m_notes = M_realnotes();
+    GetDlgItem(IDC_NOTES)->Invalidate();
+    SetZoomMenu();
+  }
 }
 
 void CAddEdit_Basic::HideNotes()
 {
-  m_isNotesHidden = true;
-  M_realnotes() = m_notes;
-
-  m_notes = HIDDEN_NOTES;
-
-  ((CEdit *)GetDlgItem(IDC_NOTES))->Invalidate();
-
-  // Disable zoom of hidden text
-  m_pex_notes->EnableMenuItem(PWS_MSG_CALL_NOTESZOOMIN, false);
-  m_pex_notes->EnableMenuItem(PWS_MSG_CALL_NOTESZOOMOUT, false);
+  if (!m_isNotesHidden) { // idempotent
+    m_isNotesHidden = true;
+    M_realnotes() = m_notes;
+    
+    m_notes = HIDDEN_NOTES;
+    GetDlgItem(IDC_NOTES)->Invalidate();
+    // Disable zoom of hidden text
+    m_pex_notes->EnableMenuItem(PWS_MSG_CALL_NOTESZOOMIN, false);
+    m_pex_notes->EnableMenuItem(PWS_MSG_CALL_NOTESZOOMOUT, false);
+  }
 }
 
 void CAddEdit_Basic::OnGeneratePassword()
@@ -998,16 +993,14 @@ LRESULT CAddEdit_Basic::OnWordWrap(WPARAM, LPARAM)
 void CAddEdit_Basic::OnENSetFocusNotes()
 {
   UpdateData(TRUE);
-  if (m_isNotesHidden) {
-    ShowNotes();
-  }
+  ShowNotes();
   UpdateData(FALSE);
 }
 
 void CAddEdit_Basic::OnENKillFocusNotes()
 {
   UpdateData(TRUE);
-  if (!m_isNotesHidden) {
+  if (!PWSprefs::GetInstance()->GetPref(PWSprefs::ShowNotesDefault)) {
     HideNotes();
   } else
     M_realnotes() = m_notes;
@@ -1225,7 +1218,7 @@ LRESULT CAddEdit_Basic::OnExternalEditorEnded(WPARAM, LPARAM)
   M_realnotes() = m_notes = note.c_str();
 
   UpdateData(FALSE);
-  ((CEdit*)GetDlgItem(IDC_NOTES))->Invalidate();
+  GetDlgItem(IDC_NOTES)->Invalidate();
 
   // Delete temporary file
   _wremove(m_szTempName);
