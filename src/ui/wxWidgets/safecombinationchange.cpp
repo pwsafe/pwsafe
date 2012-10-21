@@ -101,6 +101,7 @@ bool CSafeCombinationChange::Create( wxWindow* parent, wxWindowID id, const wxSt
   m_yubiMixin1.SetupMixin(FindWindow(ID_YUBIBTN), FindWindow(ID_YUBISTATUS));
   m_yubiMixin1.SetPrompt1(_("Enter old safe combination (if any) and click on top Yubikey button"));
   m_yubiMixin2.SetupMixin(FindWindow(ID_YUBIBTN2), FindWindow(ID_YUBISTATUS));
+  m_yubiMixin2.SetPrompt1(_("Enter old safe combination (if any) and click on top Yubikey button"));
   m_pollingTimer = new wxTimer(this, CYubiMixin::POLLING_TIMER_ID);
   m_pollingTimer->Start(250); // check for Yubikey every 250ms.
   return true;
