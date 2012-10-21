@@ -317,7 +317,10 @@ void CSafeCombinationChange::OnYubibtnClick( wxCommandEvent& event )
   // Here we just need to get the existing c/r. We verify it as a curtesy to the user,
   // that is, to indicate asap that it's incorrect.
   m_oldresponse.clear();
-  m_oldPasswdEntry->AllowEmptyCombinationOnce();  // Allow blank password when Yubi's used
+  // Allow blank password when Yubi's used
+  m_oldPasswdEntry->AllowEmptyCombinationOnce();
+  m_newPasswdEntry->AllowEmptyCombinationOnce();
+  m_confirmEntry->AllowEmptyCombinationOnce();
 
   if (Validate() && TransferDataFromWindow()) {
     if (m_yubiMixin1.PerformChallengeResponse(m_oldpasswd, m_oldresponse)) {
@@ -340,6 +343,7 @@ void CSafeCombinationChange::OnYubibtnClick( wxCommandEvent& event )
 void CSafeCombinationChange::OnYubibtn2Click( wxCommandEvent& event )
 {
   // Allow blank password when Yubi's used:
+  m_oldPasswdEntry->AllowEmptyCombinationOnce();
   m_newPasswdEntry->AllowEmptyCombinationOnce();
   m_confirmEntry->AllowEmptyCombinationOnce();
   if (Validate() && TransferDataFromWindow()) {
