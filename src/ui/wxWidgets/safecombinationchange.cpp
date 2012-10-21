@@ -99,6 +99,7 @@ bool CSafeCombinationChange::Create( wxWindow* parent, wxWindowID id, const wxSt
   Centre();
 ////@end CSafeCombinationChange creation
   m_yubiMixin1.SetupMixin(FindWindow(ID_YUBIBTN), FindWindow(ID_YUBISTATUS));
+  m_yubiMixin1.SetPrompt1(_("Enter old safe combination (if any) and click on top Yubikey button"));
   m_yubiMixin2.SetupMixin(FindWindow(ID_YUBIBTN2), FindWindow(ID_YUBISTATUS));
   m_pollingTimer = new wxTimer(this, CYubiMixin::POLLING_TIMER_ID);
   m_pollingTimer->Start(250); // check for Yubikey every 250ms.
@@ -179,27 +180,23 @@ void CSafeCombinationChange::CreateControls()
 
   itemFlexGridSizer4->Add(10, 10, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  itemFlexGridSizer4->Add(10, 10, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
-
   m_yubiStatusCtrl = new wxStaticText( itemDialog1, ID_YUBISTATUS, _("Please insert your YubiKey"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemFlexGridSizer4->Add(m_yubiStatusCtrl, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  itemBoxSizer2->Add(m_yubiStatusCtrl, 0, wxGROW|wxALL, 5);
 
-  itemFlexGridSizer4->Add(10, 10, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  wxStdDialogButtonSizer* itemStdDialogButtonSizer15 = new wxStdDialogButtonSizer;
 
-  wxStdDialogButtonSizer* itemStdDialogButtonSizer17 = new wxStdDialogButtonSizer;
+  itemBoxSizer2->Add(itemStdDialogButtonSizer15, 0, wxGROW|wxALL, 5);
+  wxButton* itemButton16 = new wxButton( itemDialog1, wxID_OK, _("&OK"), wxDefaultPosition, wxDefaultSize, 0 );
+  itemButton16->SetDefault();
+  itemStdDialogButtonSizer15->AddButton(itemButton16);
 
-  itemBoxSizer2->Add(itemStdDialogButtonSizer17, 0, wxGROW|wxALL, 5);
-  wxButton* itemButton18 = new wxButton( itemDialog1, wxID_OK, _("&OK"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemButton18->SetDefault();
-  itemStdDialogButtonSizer17->AddButton(itemButton18);
+  wxButton* itemButton17 = new wxButton( itemDialog1, wxID_CANCEL, _("&Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
+  itemStdDialogButtonSizer15->AddButton(itemButton17);
 
-  wxButton* itemButton19 = new wxButton( itemDialog1, wxID_CANCEL, _("&Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemStdDialogButtonSizer17->AddButton(itemButton19);
+  wxButton* itemButton18 = new wxButton( itemDialog1, wxID_HELP, _("&Help"), wxDefaultPosition, wxDefaultSize, 0 );
+  itemStdDialogButtonSizer15->AddButton(itemButton18);
 
-  wxButton* itemButton20 = new wxButton( itemDialog1, wxID_HELP, _("&Help"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemStdDialogButtonSizer17->AddButton(itemButton20);
-
-  itemStdDialogButtonSizer17->Realize();
+  itemStdDialogButtonSizer15->Realize();
 
 ////@end CSafeCombinationChange content construction
 }
@@ -330,6 +327,9 @@ void CSafeCombinationChange::OnYubibtnClick( wxCommandEvent& event )
         m_oldresponse.clear();
         m_yubiStatusCtrl->SetForegroundColour(*wxRED);
         m_yubiStatusCtrl->SetLabel(_("YubiKey safe combination incorrect"));
+      } else {
+        m_yubiMixin2.SetPrompt1(_("Enter new safe combination (if any) and click on bottom Yubikey button"));
+        m_yubiMixin2.UpdateStatus();
       }
     }
   }

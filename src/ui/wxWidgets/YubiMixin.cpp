@@ -29,6 +29,8 @@
 
 void CYubiMixin::SetupMixin(wxWindow *btn, wxWindow *status)
 {
+  m_prompt1 = _("<- Click on button to the left"); // change via SetPrompt1
+  m_prompt2 = _("Now touch your YubiKey's button"); // change via SetPrompt2
   m_btn = btn;
   m_status = status;
   m_present = !IsYubiInserted(); // lie to trigger correct actions in timer even
@@ -39,7 +41,7 @@ void CYubiMixin::yubiInserted(void)
 {
   m_btn->Enable(true);
   m_status->SetForegroundColour(wxNullColour);
-  m_status->SetLabel(_("<- Click on button to the left"));
+  m_status->SetLabel(m_prompt1);
 }
 
 void CYubiMixin::yubiRemoved(void)
@@ -60,14 +62,18 @@ void CYubiMixin::HandlePollingTimer()
   // Currently hmac check is blocking (ugh), so no need to check here
   // if a request is in-progress.
   bool inserted = IsYubiInserted();
-  // call relevant callback if something's changed
   if (inserted != m_present) {
     m_present = inserted;
-    if (m_present)
-      yubiInserted();
-    else
-      yubiRemoved();
+    UpdateStatus();
   }
+}
+
+void CYubiMixin::UpdateStatus()
+{
+  if (m_present)
+    yubiInserted();
+  else
+    yubiRemoved();
 }
 
 bool CYubiMixin::PerformChallengeResponse(const StringX &challenge,
@@ -75,7 +81,7 @@ bool CYubiMixin::PerformChallengeResponse(const StringX &challenge,
 {
   bool retval = false;
   m_status->SetForegroundColour(wxNullColour);
-  m_status->SetLabel(_("Now touch your YubiKey's button"));
+  m_status->SetLabel(m_prompt2);
   ::wxSafeYield(); // get text to update
   BYTE chalBuf[PWYubi::SHA1_MAX_BLOCK_SIZE];
   BYTE chalLength = BYTE(challenge.length()*sizeof(TCHAR));

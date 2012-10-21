@@ -127,8 +127,8 @@ private:
   StringX m_confirm;
   StringX m_newpasswd;
   StringX m_oldpasswd;
-  StringX m_oldresponse;
 ////@end CSafeCombinationChange member variables
+  StringX m_oldresponse;
   PWScore &m_core;
 
   // try having 2 mixin objects to handle things:

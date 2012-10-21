@@ -327,9 +327,7 @@ void CSafeCombinationPrompt::OnYubibtnClick( wxCommandEvent& event )
     if (PerformChallengeResponse(m_password, response)) {
       m_password = response;
       ProcessPhrase();
-      // reset prompt. Doing it this way works correctly
-      // if yubi was removed in the meantime:
-      m_present = ! m_present; HandlePollingTimer();
+      UpdateStatus();
     }
   }
 }
