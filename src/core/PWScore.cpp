@@ -2730,7 +2730,6 @@ int PWScore::DoUpdatePasswordHistory(int iAction, int new_default_max,
                                 bExcludeProtected);
   HistoryUpdateClearAll clearall(num_altered, mapSavedHistory, bExcludeProtected);
 
-
   switch (iAction) {
     case -1:   // reset off - include protected entries
     case  1:   // reset off - exclude protected entries
@@ -2987,7 +2986,11 @@ bool PWScore::ChangeMode(stringT &locker, int &iErrorCode)
                                   m_lockFileHandle, m_LockCount);
 
       // No idea what to do if we can't put it back :-(
+#ifdef DEBUG
       ASSERT(brc);
+#else
+      UNREFERENCED_PARAMETER(brc); // In Release build only otherwise MS Compiler warning
+#endif
       return false;
     }
   }

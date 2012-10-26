@@ -22,7 +22,7 @@
 
 #include <wx/grid.h>
 #include <algorithm>
-
+#include <functional>
 #include <iterator>
 
 #ifdef __WXMSW__

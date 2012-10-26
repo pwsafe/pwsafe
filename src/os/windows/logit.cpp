@@ -23,8 +23,11 @@ void pws_os::Logit(LPCTSTR lpszFormat, ...)
   TCHAR szBuffer[1024];
   int nBuf = _vsntprintf_s(szBuffer, sizeof(szBuffer) / sizeof(TCHAR), _TRUNCATE,
                            lpszFormat, args);
+#ifdef DEBUG
   ASSERT(nBuf > 0);
-
+#else
+  UNREFERENCED_PARAMETER(nBuf); // In Release build only otherwise MS Compiler warning
+#endif
   PWSLog::GetLog()->Add(stringT(szBuffer));
   va_end(args);
 }

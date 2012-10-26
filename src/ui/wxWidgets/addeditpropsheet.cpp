@@ -44,7 +44,6 @@
 ////@begin XPM images
 ////@end XPM images
 
-
 /*!
  * AddEditPropSheet type definition
  */
@@ -107,7 +106,6 @@ BEGIN_EVENT_TABLE( AddEditPropSheet, wxPropertySheetDialog )
   EVT_BUTTON( ID_BUTTON1,    AddEditPropSheet::OnClearPWHist )
 END_EVENT_TABLE()
 
-
 /*!
  * AddEditPropSheet constructors
  */
@@ -144,7 +142,6 @@ AddEditPropSheet::AddEditPropSheet(wxWindow* parent, PWScore &core,
   }
   Create(parent, id, dlgTitle, pos, size, style);
 }
-
 
 /*!
  * AddEditPropSheet creator
@@ -226,7 +223,6 @@ void AddEditPropSheet::Init()
 ////@end AddEditPropSheet member initialisation
 }
 
-
 class PolicyValidator : public MultiCheckboxValidator
 {
 public:
@@ -260,6 +256,8 @@ void AddEditPropSheet::CreateControls()
 {
 ////@begin AddEditPropSheet content construction
   AddEditPropSheet* itemPropertySheetDialog1 = this;
+
+  UNREFERENCED_PARAMETER(itemPropertySheetDialog1); // Remove MS Compiler warning
 
   m_BasicPanel = new wxPanel( GetBookCtrl(), ID_PANEL_BASIC, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER|wxTAB_TRAVERSAL );
   wxBoxSizer* itemBoxSizer3 = new wxBoxSizer(wxVERTICAL);
@@ -692,7 +690,6 @@ void AddEditPropSheet::CreateControls()
   FindWindow(IDC_STATIC_DEFAULT_SYMBOLS)->SetLabel(sx_symbols.c_str());
 }
 
-
 /*!
  * Should we show tooltips?
  */
@@ -1004,6 +1001,8 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
     m_cbxPolicyNames->Append(sviter->c_str());
   // Does item use a named policy or item-specific policy?
   bool namedPwPolicy = !m_item.GetPolicyName().empty();
+  UNREFERENCED_PARAMETER(namedPwPolicy); // Remove MS Compiler warning
+
   bool specificPwPolicy = !m_item.GetPWPolicy().empty();
   ASSERT(!(namedPwPolicy && specificPwPolicy)); // both cannot be true!
   m_defPWPRB->SetValue(!specificPwPolicy);

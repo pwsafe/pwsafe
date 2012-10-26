@@ -44,6 +44,7 @@ END_MESSAGE_MAP()
 
 void CTryAgainDlg::OnQuit() 
 {
+  cancelreturnval = TAR_EXIT;
   CPWDialog::OnCancel();
 }
 
