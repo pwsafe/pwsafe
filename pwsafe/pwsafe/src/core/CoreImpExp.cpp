@@ -261,7 +261,11 @@ struct TextRecordWriter {
         }
         // Write what we have and reset the buffer
         size_t numwritten = fwrite(m_ofs.str().c_str(), 1, m_ofs.str().length(), m_txtfile);
+#ifdef DEBUG
         ASSERT(numwritten == m_ofs.str().length());
+#else
+        UNREFERENCED_PARAMETER(numwritten); // In Release build only otherwise MS Compiler warning
+#endif
         m_ofs.str("");
       } // !line.IsEmpty()
     } // we've a match
@@ -403,7 +407,11 @@ struct XMLRecordWriter {
     }
     // Write what we have and reset the buffer
     size_t numwritten = fwrite(m_ofs.str().c_str(), 1, m_ofs.str().length(), m_xmlfile);
+#ifdef DEBUG
     ASSERT(numwritten == m_ofs.str().length());
+#else
+    UNREFERENCED_PARAMETER(numwritten); // In Release build only otherwise MS Compiler warning
+#endif
     m_ofs.str("");
   }
 

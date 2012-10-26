@@ -1,9 +1,9 @@
 @echo off
 ::**************************************************************************
 :: File:           wxBuild_wxWidgets.bat
-:: Version:        1.12
+:: Version:        1.13
 :: Name:           RJP Computing - modified for 64-bit VS compilation
-:: Date:           09/03/2009
+:: Date:           02/06/2012
 :: Description:    Build wxWidgets with the MinGW/Visual C++.
 ::                 
 ::                 	v1.01 - Added Compiler setup for VC7.1 and VC8.0.
@@ -15,15 +15,16 @@
 ::					        Added a better clean method.
 ::					        Added an app name parameter.
 :: 					v1.06 - Fixed that the monolithic static libraries were not
-::							built using the static run-time library.
+::							    built using the static run-time library.
 :: 					v1.07 - Added MinGW Gcc 4.x.x compiler.
 :: 					v1.08 - Added a move command to help automate building with
-::							multiple compilers from the same family.
-::							(ie. vc and gcc).
+::							    multiple compilers from the same family.
+::							    (ie. vc and gcc).
 ::					v1.09 - Removed 'CXXFLAGS=/Zc:wchar_t-' from VC8.0 setup.
 ::					v1.10 - Added USE_GDIPLUS=1 to FLAGS for wxGraphicsContext.
 ::					v1.11 - Added support for VC 9.0
 ::          V1.12 - Added support for VC 10.0 and x64 builds
+::          V1.13 - Added support for VC 11.0
 ::**************************************************************************
 SETLOCAL
 set WXBUILD_VERSION=1.12
@@ -58,6 +59,10 @@ if %1 == VC100    goto SETUP_VC100_BUILD_ENVIRONMENT
 if %1 == vc100    goto SETUP_VC100_BUILD_ENVIRONMENT
 if %1 == VC100_64 goto SETUP_VC100_64_BUILD_ENVIRONMENT
 if %1 == vc100_64 goto SETUP_VC100_64_BUILD_ENVIRONMENT
+if %1 == VC110    goto SETUP_VC110_BUILD_ENVIRONMENT
+if %1 == vc110    goto SETUP_VC110_BUILD_ENVIRONMENT
+if %1 == VC110_64 goto SETUP_VC110_64_BUILD_ENVIRONMENT
+if %1 == vc110_64 goto SETUP_VC110_64_BUILD_ENVIRONMENT
 if %1 == MINGW    goto SETUP_GCC_BUILD_ENVIRONMENT
 if %1 == mingw    goto SETUP_GCC_BUILD_ENVIRONMENT
 if %1 == MINGW4   goto SETUP_GCC4_BUILD_ENVIRONMENT
@@ -221,6 +226,45 @@ set MAKEFILE=makefile.vc
 set FLAGS=USE_ODBC=1 USE_OPENGL=1 USE_QA=1 USE_GDIPLUS=1
 goto START
 
+:SETUP_VC110_BUILD_ENVIRONMENT
+:: If cleaning or moving - no need to set up environment
+if %2 == CLEAN goto CLEAN_VS
+if %2 == clean goto CLEAN_VS
+if %2 == MOVE  goto MOVE
+if %2 == move  goto MOVE
+
+:: Add the VC 2012 includes.
+echo Setting environment for Visual C++ 11.0...
+echo.
+call "%VS110COMNTOOLS%vsvars32.bat"
+set INCLUDE=%WXWIN%\include;%INCLUDE%
+:: -- Setup the make executable and the actual makefile name --
+set MAKE=nmake
+set MAKEFILE=makefile.vc
+set FLAGS=USE_ODBC=1 USE_OPENGL=1 USE_QA=1 USE_GDIPLUS=1
+goto START
+
+:SETUP_VC110_64_BUILD_ENVIRONMENT
+:: If cleaning or moving - no need to set up environment
+if %2 == CLEAN goto CLEAN_VS64
+if %2 == clean goto CLEAN_VS64
+if %2 == MOVE  goto MOVE
+if %2 == move  goto MOVE
+
+:: Add the VC 2012 64-bit includes.
+echo Setting environment for Visual C++ 11.0 64-bit...
+echo.
+set CPU=AMD64
+set CMD32="%VS110COMNTOOLS%vcvarsall.bat"
+set CMD64=%CMD32:\Common7\Tools\=\VC\%
+call %CMD64% amd64
+set INCLUDE=%WXWIN%\include;%INCLUDE%
+:: -- Setup the make executable and the actual makefile name --
+set MAKE=nmake
+set MAKEFILE=makefile.vc
+set FLAGS=USE_ODBC=1 USE_OPENGL=1 USE_QA=1 USE_GDIPLUS=1
+goto START
+
 :SETUP_GCC_BUILD_ENVIRONMENT
 :: If cleaning or moving - no need to set up environment
 if %2 == CLEAN goto CLEAN_MINGW
@@ -365,6 +409,10 @@ if %1 == VC100    goto MOVE_VC100
 if %1 == vc100    goto MOVE_VC100
 if %1 == VC100_64 goto MOVE_VC100_64
 if %1 == vc100_64 goto MOVE_VC100_64
+if %1 == VC110    goto MOVE_VC110
+if %1 == vc110    goto MOVE_VC110
+if %1 == VC110_64 goto MOVE_VC110_64
+if %1 == vc110_64 goto MOVE_VC110_64
 if %1 == MINGW    goto MOVE_MINGW
 if %1 == mingw    goto MOVE_MINGW
 if %1 == MINGW4   goto MOVE_MINGW4
@@ -420,6 +468,21 @@ goto END
 if not exist ..\..\lib64 mkdir ..\..\lib64
 if exist ..\..\lib\vc_amd64_lib move /Y ..\..\lib\vc_amd64_lib ..\..\lib64\vc10_lib
 if exist ..\..\lib\vc_amd64_dll move /Y ..\..\lib\vc_amd64_dll ..\..\lib64\vc10_dll
+echo.
+goto END
+
+:MOVE_VC110
+:: Move Visual C++ 11.0 directories.
+if exist ..\..\lib\vc_lib move /Y ..\..\lib\vc_lib ..\..\lib\vc11_lib
+if exist ..\..\lib\vc_dll move /Y ..\..\lib\vc_dll ..\..\lib\vc11_dll
+echo.
+goto END
+
+:MOVE_VC110_64
+:: Move Visual C++ 11.0 64-bit directories.
+if not exist ..\..\lib64 mkdir ..\..\lib64
+if exist ..\..\lib\vc_amd64_lib move /Y ..\..\lib\vc_amd64_lib ..\..\lib64\vc11_lib
+if exist ..\..\lib\vc_amd64_dll move /Y ..\..\lib\vc_amd64_dll ..\..\lib64\vc11_dll
 echo.
 goto END
 
@@ -686,7 +749,7 @@ echo.
 echo %WXBUILD_APPNAME% v%WXBUILD_VERSION%
 echo     Build wxWidgets with the MinGW/Visual C++ Tool chains.
 echo.
-echo Usage: "wxBuild_wxWidgets.bat <Compiler{MINGW|VCTK|VC71|VC80|VC90}> <BuildTarget{LIB|DLL|ALL|CLEAN|MOVE|NULL}> [Specific Option (See Below)]"
+echo Usage: "wxBuild_wxWidgets.bat <Compiler{MINGW|VCTK|VC71|VC80|VC90|VC100|VC110}> <BuildTarget{LIB|DLL|ALL|CLEAN|MOVE|NULL}> [Specific Option (See Below)]"
 goto SHOW_OPTIONS
 
 :SHOW_OPTIONS
@@ -702,6 +765,8 @@ echo           VC90     = Visual C++ 9.0
 echo           VC90_64  = Visual C++ 9.0 64-bit
 echo           VC100    = Visual C++ 10.0
 echo           VC100_64 = Visual C++ 10.0 64-bit
+echo           VC110    = Visual C++ 11.0
+echo           VC110_64 = Visual C++ 11.0 64-bit
 echo.
 echo      BuildTarget Options:
 echo           LIB   = Builds all the static library targets.

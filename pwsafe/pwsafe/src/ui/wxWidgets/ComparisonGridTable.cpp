@@ -26,6 +26,7 @@
 #include "../../core/PWScore.h"
 #include "./wxutils.h"
 #include <algorithm>
+#include <functional>
 
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
@@ -39,7 +40,6 @@ class ComparisonGridCellAttr: public wxGridCellAttr
 public:
   ComparisonGridCellAttr(ComparisonGridTable* table): m_table(table)
   {}
-  
 
 private:
   ComparisonGridTable* m_table;
@@ -244,8 +244,6 @@ wxGridCellAttr* UniSafeCompareGridTable::GetAttr(int /*row*/, int /*col*/, wxGri
   m_gridAttr->IncRef();
   return m_gridAttr;
 }
-
-
 
 int UniSafeCompareGridTable::GetItemRow(const pws_os::CUUID& uuid) const
 {
@@ -529,4 +527,3 @@ wxPen ComparisonGrid::GetRowGridLinePen(int row)
   }
   return wxGrid::GetRowGridLinePen(row);
 }
-
