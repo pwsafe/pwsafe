@@ -2891,13 +2891,12 @@ void PasswordSafeFrame::DoExportText()
     return;
   
   StringX newfile;
-  StringX pw(et.passKey);
-  if (m_core.CheckPasskey(sx_temp, pw) == PWScore::SUCCESS) {
+  if (m_core.CheckPasskey(sx_temp, et.GetPassKey()) == PWScore::SUCCESS) {
     const CItemData::FieldBits bsExport = et.selCriteria.GetSelectedFields();
     const std::wstring subgroup_name = tostdstring(et.selCriteria.SubgroupSearchText());
     const int subgroup_object = et.selCriteria.SubgroupObject();
     const int subgroup_function = et.selCriteria.SubgroupFunctionWithCase();
-    wchar_t delimiter = et.delimiter.IsEmpty()? wxT('\xbb') : et.delimiter[0];
+    const TCHAR delimiter = et.GetDelimiter();
 
     // Note: MakeOrderedItemList gets its members by walking the 
     // tree therefore, if a filter is active, it will ONLY export

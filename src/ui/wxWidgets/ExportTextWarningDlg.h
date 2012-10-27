@@ -12,23 +12,40 @@
 #include <wx/dialog.h> // Base class: wxDialog
 
 #include "./AdvancedSelectionDlg.h"
+#include "YubiMixin.h"
 
-class CExportTextWarningDlgBase : public wxDialog {
+class CSafeCombinationCtrl;
+class wxTimer;
+
+class CExportTextWarningDlgBase : public wxDialog , private CYubiMixin {
 
   DECLARE_CLASS( CExportTextWarningDlgBase )
   DECLARE_EVENT_TABLE()
 
 public:
   CExportTextWarningDlgBase(wxWindow* parent);
-  ~CExportTextWarningDlgBase() {}
+  ~CExportTextWarningDlgBase() {delete m_pollingTimer;}
 
   void OnAdvancedSelection( wxCommandEvent& evt );
+  StringX GetPassKey() const { return passKey; }
+  TCHAR GetDelimiter() const
+  { return delimiter.IsEmpty() ? defDelim[0] : delimiter[0]; }
 
   virtual void DoAdvancedSelection() = 0;
 
   SelectionCriteria selCriteria;
-  StringX           passKey;
+ private:
+  void OnYubibtnClick( wxCommandEvent& event );
+  void OnPollingTimer(wxTimerEvent& timerEvent);
+
+  const wxString defDelim;
   wxString          delimiter;
+  StringX           passKey;
+  CSafeCombinationCtrl* m_combinationEntry;
+  wxBitmapButton* m_YubiBtn;
+  wxStaticText* m_yubiStatusCtrl;
+  wxTimer* m_pollingTimer; // for Yubi, but can't go into mixin :-(
+
 };
 
 template <class DlgType>
