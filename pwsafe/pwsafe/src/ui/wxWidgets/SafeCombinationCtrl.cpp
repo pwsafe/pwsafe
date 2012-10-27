@@ -38,7 +38,7 @@ class SafeCombinationValidator: public wxValidator
   SafeCombinationValidator();
 //  DECLARE_NO_COPY_CLASS(SafeCombinationValidator)
 public:
-  SafeCombinationValidator(StringX* str): m_str(str) {}
+  SafeCombinationValidator(StringX* str): m_str(str), m_allowBlank(false) {}
   virtual ~SafeCombinationValidator() { m_str = 0; }
   
   virtual wxObject *Clone() const { return new SafeCombinationValidator(m_str); }
@@ -52,25 +52,30 @@ public:
   // Called to transfer data from the window
   virtual bool TransferFromWindow();
 
+  void AllowEmptyCombinationOnce() {m_allowBlank = true;}
+
 private:
   StringX* m_str;
+  bool m_allowBlank;
 };
 
 //
 // Right now, we only validate if the user entered something in the combination box
-// May be we could hook it up with the wxFilePickerCtrl and validate the safe 
+// Maybe we could hook it up with the wxFilePickerCtrl and validate the safe 
 // combination itself
 //
 bool SafeCombinationValidator::Validate(wxWindow* parent)
 {
+  bool retval = true;
   wxTextCtrl* win = wxDynamicCast(GetWindow(), wxTextCtrl);
   wxCHECK_MSG(win, false, wxT("You must associate a wxTextCtrl window with SafeCombinationValidator"));
-  if (win->IsEmpty()) {
+  if (!m_allowBlank && win->IsEmpty()) {
     wxMessageBox(_("The combination cannot be blank."), _("Error"), wxOK | wxICON_EXCLAMATION, parent);
     win->SetFocus();
-    return false;
+    retval = false;
   }
-  return true;
+  m_allowBlank = false; // allowBlank is a one-shot: must be set each time!
+  return retval;
 }
 
 bool SafeCombinationValidator::TransferToWindow()
@@ -101,13 +106,11 @@ bool SafeCombinationValidator::TransferFromWindow()
   return true;
 }
 
-CSafeCombinationCtrl::CSafeCombinationCtrl(wxWindow* parent, 
-                                            wxWindowID textCtrlID /*= wxID_ANY*/,
-                                            StringX* valPtr /*= 0*/,
-                                            const wxPoint& pos /* = wxDefaultPosition*/,
-                                            const wxSize& size /* = wxDefaultSize */) : 
-                                                                        wxBoxSizer(wxHORIZONTAL), 
-                                                                        textCtrl(0)
+void CSafeCombinationCtrl::Init(wxWindow* parent, 
+                                wxWindowID textCtrlID /*= wxID_ANY*/,
+                                StringX* valPtr /*= 0*/,
+                                const wxPoint& pos /* = wxDefaultPosition*/,
+                                const wxSize& size /* = wxDefaultSize */)
 {
   SafeCombinationValidator scValidator(valPtr);
   textCtrl = new wxTextCtrl(parent, textCtrlID, wxEmptyString, pos, size, 
@@ -126,12 +129,7 @@ CSafeCombinationCtrl::~CSafeCombinationCtrl()
 
 StringX CSafeCombinationCtrl::GetCombination() const
 {
-  wxString tmp = textCtrl->GetValue();
-  StringX str = tostringx(tmp);
-  //clear out the memory.  Is there a way to prevent this from getting optimized away?
-  for( size_t idx = 0; idx < tmp.Len(); ++idx)
-    tmp[idx] = 0;
-  return str;
+  return textCtrl->GetValue().c_str();
 }
 
 void CSafeCombinationCtrl::SetValidatorTarget(StringX* str)
@@ -144,4 +142,11 @@ void CSafeCombinationCtrl::SelectCombinationText() const
 {
   textCtrl->SetFocus();
   textCtrl->SetSelection(-1,-1);
+}
+
+void CSafeCombinationCtrl::AllowEmptyCombinationOnce()
+{
+  SafeCombinationValidator *scValidator = dynamic_cast<SafeCombinationValidator *>(textCtrl->GetValidator());
+  if (scValidator != NULL)
+    scValidator->AllowEmptyCombinationOnce();
 }

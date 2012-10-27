@@ -31,6 +31,7 @@
  */
 
 ////@begin forward declarations
+class CSafeCombinationCtrl;
 ////@end forward declarations
 
 /*!
@@ -44,12 +45,7 @@
 #define ID_COMBINATION 10004
 #define ID_READONLY 10005
 #define ID_NEWDB 10006
-#define ID_VKBD 10007
-#if WXWIN_COMPATIBILITY_2_6
 #define SYMBOL_CSAFECOMBINATIONENTRY_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxDIALOG_MODAL|wxTAB_TRAVERSAL
-#else
-#define SYMBOL_CSAFECOMBINATIONENTRY_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxTAB_TRAVERSAL
-#endif
 #define SYMBOL_CSAFECOMBINATIONENTRY_TITLE _("Safe Combination Entry")
 #define SYMBOL_CSAFECOMBINATIONENTRY_IDNAME ID_CSAFECOMBINATIONENTRY
 #define SYMBOL_CSAFECOMBINATIONENTRY_SIZE wxSize(400, 300)
@@ -84,9 +80,7 @@ public:
   /// Creates the controls and sizers
   void CreateControls();
 
-  StringX GetPassword() const {return m_password;}
-  
-////@begin CSafeCombinationEntry event handler declarations
+  ////@begin CSafeCombinationEntry event handler declarations
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_ELLIPSIS
   void OnEllipsisClick( wxCommandEvent& event );
@@ -104,6 +98,9 @@ public:
 
 ////@begin CSafeCombinationEntry member function declarations
 
+  StringX GetPassword() const { return m_password ; }
+  void SetPassword(StringX value) { m_password = value ; }
+
   /// Retrieves bitmap resources
   wxBitmap GetBitmapResource( const wxString& name );
 
@@ -117,10 +114,12 @@ public:
 ////@begin CSafeCombinationEntry member variables
   wxStaticText* m_version;
   wxComboBox* m_filenameCB;
+  CSafeCombinationCtrl* m_combinationEntry;
+private:
+  StringX m_password;
 ////@end CSafeCombinationEntry member variables
  private:
   wxString m_filename;
-  StringX m_password;
   bool m_readOnly;
   PWScore &m_core;
   unsigned m_tries;
