@@ -1,8 +1,8 @@
 # Toplevel Makefile for Linux build of PasswordSafe
 
 # TBD: Grok following from src/ui/wxWidgets/version.in
-RELEASENUM := 0.8
-RELEASE_SPECIAL := BETA
+RELEASENUM := 0.8Y
+RELEASE_SPECIAL := -BETA
 
 # Shouldn't change anything below here
 
