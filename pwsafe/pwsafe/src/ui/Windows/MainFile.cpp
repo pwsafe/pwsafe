@@ -2300,14 +2300,11 @@ void DboxMain::OnChangeMode()
   } else {
     // Taken from GetAndCheckPassword.
     // We don't want all the other processing that GetAndCheckPassword does
-    CPasskeyEntry *dbox_pkentry = new CPasskeyEntry(this,
-                                   m_core.GetCurFile().c_str(),
-                                   GCP_CHANGEMODE, true,
-                                   false,
-                                   true);
+    CPasskeyEntry dbox_pkentry(this,
+                               m_core.GetCurFile().c_str(),
+                               GCP_CHANGEMODE, true, false, true);
 
-    INT_PTR rc = dbox_pkentry->DoModal();
-    delete dbox_pkentry;
+    INT_PTR rc = dbox_pkentry.DoModal();
     if (rc != IDOK)
       return;
   }
