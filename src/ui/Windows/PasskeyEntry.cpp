@@ -221,8 +221,10 @@ BOOL CPasskeyEntry::OnInitDialog(void)
       break;
     case GCP_RESTORE:
     case GCP_WITHEXIT:
+      GetDlgItem(IDC_READONLY)->EnableWindow(m_bForceReadOnly ? FALSE : TRUE);
+      GetDlgItem(IDC_READONLY)->ShowWindow(SW_SHOW);
+      break;
     case GCP_CHANGEMODE:
-      // on Restore - user can't change status
       GetDlgItem(IDC_READONLY)->EnableWindow(FALSE);
       GetDlgItem(IDC_READONLY)->ShowWindow(SW_HIDE);
       break;
@@ -449,6 +451,29 @@ void CPasskeyEntry::ProcessPhrase()
 
   switch (m_pDbx->CheckPasskey(LPCWSTR(m_filespec), LPCWSTR(m_passkey))) {
   case PWScore::SUCCESS:
+    // Try to change read-only state if user changed checkbox:
+    // r/w -> r-o always succeeds
+    // r-o -> r/w may fail
+    // Note that if file is read-only, m_bForceReadOnly is true -> checkbox
+    // is disabled -> don't need to worry about that.
+    if ((m_index == GCP_RESTORE || m_index == GCP_WITHEXIT) && 
+        (m_PKE_ReadOnly == TRUE) == pws_os::IsLockedFile(LPCWSTR(m_filespec))) {
+      DboxMain *parent = dynamic_cast<DboxMain *>(GetParent());
+      ASSERT(parent != NULL);
+      PWScore *core = dynamic_cast<PWScore *>(parent->GetCore());
+      ASSERT(core != NULL);
+      std::wstring locker = L"";
+      int iErrorCode;
+      bool brc = core->ChangeMode(locker, iErrorCode);
+      if (brc) {
+        parent->UpdateStatusBar();
+        parent->UpdateToolBarROStatus(m_PKE_ReadOnly == TRUE);
+      } else {
+        // Failed to change mode. For now we'll fail silently.
+        // Right thing is to refactor reporting code in DboxMain::OnChangeMode()
+        // and call it.
+      }
+    }
     CPWDialog::OnOK();
     break;
   case PWScore::WRONG_PASSWORD:
