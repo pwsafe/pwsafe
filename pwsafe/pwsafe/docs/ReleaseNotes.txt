@@ -25,6 +25,10 @@ modified and Apply's not clicked upon. Thanks to shivak7 for the fix.
 entry is dragged into it. Thanks to nsaipraveen for the fix.
 [3537861] An off-by-one issue with expiration dates has been fixed by
 suthakar123.
+[1066] Default changed: 'Browse to URL' does not copy password to
+clipboard by default. Although convenient, this is a security issue if
+the user isn't expecting it. Also show correct screen in Security
+Options help.
 [1065] Don't hide notes in Add/Edit dialog box when changing field
 focus if user chose not to.
 [1063] Intermediate backups also work correctly when relative path to
