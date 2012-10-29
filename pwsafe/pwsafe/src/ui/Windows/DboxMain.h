@@ -481,9 +481,10 @@ public:
   
   // ClassWizard generated virtual function overrides
   //{{AFX_VIRTUAL(DboxMain)
-  void UpdateStatusBar();
-    
-protected:
+
+  void ChangeMode(bool promptUser); // r-o <-> r/w
+  
+ protected:
   virtual void DoDataExchange(CDataExchange* pDX);  // DDX/DDV support
   //}}AFX_VIRTUAL
 
@@ -596,6 +597,7 @@ protected:
   void SetListView();
   void SetTreeView();
   void SetToolbar(const int menuItem, bool bInit = false);
+  void UpdateStatusBar();
   void UpdateMenuAndToolBar(const bool bOpen);
   void SortListView();
 

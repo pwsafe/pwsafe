@@ -10,7 +10,8 @@ releases may be found in the file ChangeLog.txt.
 
 New Features for 3.29.1
 =======================
-None
+[689] It's now possible to change the r/w state of a database when
+unlocking it. Thanks to Jeff for the suggestion.
 
 Changes to Existing Features in 3.29.1
 ======================================
