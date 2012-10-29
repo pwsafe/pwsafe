@@ -460,19 +460,8 @@ void CPasskeyEntry::ProcessPhrase()
         (m_PKE_ReadOnly == TRUE) == pws_os::IsLockedFile(LPCWSTR(m_filespec))) {
       DboxMain *parent = dynamic_cast<DboxMain *>(GetParent());
       ASSERT(parent != NULL);
-      PWScore *core = dynamic_cast<PWScore *>(parent->GetCore());
-      ASSERT(core != NULL);
-      std::wstring locker = L"";
-      int iErrorCode;
-      bool brc = core->ChangeMode(locker, iErrorCode);
-      if (brc) {
-        parent->UpdateStatusBar();
-        parent->UpdateToolBarROStatus(m_PKE_ReadOnly == TRUE);
-      } else {
-        // Failed to change mode. For now we'll fail silently.
-        // Right thing is to refactor reporting code in DboxMain::OnChangeMode()
-        // and call it.
-      }
+      parent->ChangeMode(false); // false means
+      //                           "don't prompt use for password", as we just got it.
     }
     CPWDialog::OnOK();
     break;
