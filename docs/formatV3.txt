@@ -46,7 +46,7 @@ Where:
 quick way for the application to identify the database as a PasswordSafe
 version 3 file. This tag has no cryptographic value.
 
-2.1 SALT is a 256 bit random value, generated at file creation time.
+2.2 SALT is a 256 bit random value, generated at file creation time.
 
 2.3 P' is the "stretched key" generated from the user's passphrase and
 the SALT, as defined in by the hash-function-based key stretching
