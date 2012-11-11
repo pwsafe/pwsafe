@@ -13,6 +13,9 @@
 #include "../typedefs.h"
 #include "../mem.h"
 
+#include <Wincrypt.h>
+#pragma comment(lib, "crypt32.lib")
+
 bool pws_os::mlock(void *p, size_t size)
 {
 #ifndef POCKET_PC
@@ -31,3 +34,14 @@ bool pws_os::munlock(void *p, size_t size)
 #endif
 }
 
+bool pws_os::mcryptProtect(void *p, size_t size)
+{
+  ASSERT((size % CRYPTPROTECTMEMORY_BLOCK_SIZE) == 0);
+  return CryptProtectMemory(p, size, CRYPTPROTECTMEMORY_SAME_PROCESS) == TRUE;
+}
+
+bool pws_os::mcryptUnprotect(void *p, size_t size)
+{
+  ASSERT((size % CRYPTPROTECTMEMORY_BLOCK_SIZE) == 0);
+  return CryptUnprotectMemory(p, size, CRYPTPROTECTMEMORY_SAME_PROCESS) == TRUE;
+}
