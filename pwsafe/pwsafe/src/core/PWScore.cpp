@@ -10,7 +10,7 @@
 
 #include "PWScore.h"
 #include "core.h"
-#include "BlowFish.h"
+#include "TwoFish.h"
 #include "PWSprefs.h"
 #include "PWSrand.h"
 #include "Util.h"
@@ -40,8 +40,7 @@
 using namespace std;
 using pws_os::CUUID;
 
-unsigned char PWScore::m_session_key[20];
-unsigned char PWScore::m_session_salt[20];
+unsigned char PWScore::m_session_key[32];
 unsigned char PWScore::m_session_initialized = false;
 Asker *PWScore::m_pAsker = NULL;
 Reporter *PWScore::m_pReporter = NULL;
@@ -75,8 +74,6 @@ PWScore::PWScore() :
     CItemData::SetSessionKey(); // per-session initialization
     pws_os::mlock(m_session_key, sizeof(m_session_key));
     PWSrand::GetInstance()->GetRandomData(m_session_key, sizeof(m_session_key));
-    PWSrand::GetInstance()->GetRandomData(m_session_salt,
-                                          sizeof(m_session_salt));
   }
   m_undo_iter = m_redo_iter = m_vpcommands.end();
 }
@@ -85,7 +82,7 @@ PWScore::~PWScore()
 {
   // do NOT trash m_session_*, as there may be other cores around
   // relying on it. Trashing the ciphertext encrypted with it is enough
-  const unsigned int BS = BlowFish::BLOCKSIZE;
+  const unsigned int BS = TwoFish::BLOCKSIZE;
   if (m_passkey_len > 0) {
     trashMemory(m_passkey, ((m_passkey_len + (BS - 1)) / BS) * BS);
     delete[] m_passkey;
@@ -298,7 +295,7 @@ void PWScore::DoReplaceEntry(const CItemData &old_ci, const CItemData &new_ci)
 
 void PWScore::ClearData(void)
 {
-  const unsigned int BS = BlowFish::BLOCKSIZE;
+  const unsigned int BS = TwoFish::BLOCKSIZE;
   if (m_passkey_len > 0) {
     trashMemory(m_passkey, ((m_passkey_len + (BS - 1)) / BS) * BS);
     delete[] m_passkey;
@@ -342,7 +339,7 @@ void PWScore::ReInit(bool bNewFile)
   else
     m_ReadFileVersion = PWSfile::UNKNOWN_VERSION;
 
-  const unsigned int BS = BlowFish::BLOCKSIZE;
+  const unsigned int BS = TwoFish::BLOCKSIZE;
   if (m_passkey_len > 0) {
     trashMemory(m_passkey, ((m_passkey_len + (BS - 1)) / BS) * BS);
     delete[] m_passkey;
@@ -1111,13 +1108,9 @@ void PWScore::EncryptPassword(const unsigned char *plaintext, size_t len,
   ASSERT(len > 0);
   unsigned int ulen = static_cast<unsigned int>(len);
 
-  // ciphertext is '((len + 7) / 8) * 8' bytes long
-  const unsigned int BS = BlowFish::BLOCKSIZE;
+  const unsigned int BS = TwoFish::BLOCKSIZE;
 
-  BlowFish *bf = BlowFish::MakeBlowFish(m_session_key,
-                                        sizeof(m_session_key),
-                                        m_session_salt,
-                                        sizeof(m_session_salt));
+  TwoFish tf(m_session_key, sizeof(m_session_key));
   unsigned int BlockLength = ((ulen + (BS - 1)) / BS) * BS;
   unsigned char curblock[BS];
 
@@ -1133,17 +1126,16 @@ void PWScore::EncryptPassword(const unsigned char *plaintext, size_t len,
       for (i = 0; i < BS; i++) {
         curblock[i] = plaintext[x + i];
       }
-    bf->Encrypt(curblock, curblock);
+    tf.Encrypt(curblock, curblock);
     memcpy(ciphertext + x, curblock, BS);
   }
   trashMemory(curblock, sizeof(curblock));
-  delete bf;
 }
 
 void PWScore::SetPassKey(const StringX &new_passkey)
 {
   // Only used when opening files and for new files
-  const unsigned int BS = BlowFish::BLOCKSIZE;
+  const unsigned int BS = TwoFish::BLOCKSIZE;
   // if changing, clear old
   if (m_passkey_len > 0) {
     trashMemory(m_passkey, ((m_passkey_len + (BS -1)) / BS) * BS);
@@ -1162,12 +1154,9 @@ StringX PWScore::GetPassKey() const
 {
   StringX retval(_T(""));
   if (m_passkey_len > 0) {
-    const unsigned int BS = BlowFish::BLOCKSIZE;
+    const unsigned int BS = TwoFish::BLOCKSIZE;
     size_t BlockLength = ((m_passkey_len + (BS - 1)) / BS) * BS;
-    BlowFish *bf = BlowFish::MakeBlowFish(m_session_key,
-                                          sizeof(m_session_key),
-                                          m_session_salt,
-                                          sizeof(m_session_salt));
+    TwoFish tf(m_session_key, sizeof(m_session_key));
     unsigned char curblock[BS];
     for (unsigned int x = 0; x < BlockLength; x += BS) {
       unsigned int i;
@@ -1175,7 +1164,7 @@ StringX PWScore::GetPassKey() const
         curblock[i] = m_passkey[x + i];
       }
 
-      bf->Decrypt(curblock, curblock);
+      tf.Decrypt(curblock, curblock);
       for (i = 0; i < BS; i += sizeof(TCHAR)) {
         if (x + i < m_passkey_len) {
           retval += *(reinterpret_cast<TCHAR*>(curblock + i));
@@ -1183,7 +1172,6 @@ StringX PWScore::GetPassKey() const
       }
     }
     trashMemory(curblock, sizeof(curblock));
-    delete bf;
   }
   return retval;
 }
