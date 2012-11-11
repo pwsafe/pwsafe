@@ -130,7 +130,7 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
 
   EVT_MENU( ID_CHANGECOMBO, PasswordSafeFrame::OnChangePasswdClick )
 
-  EVT_MENU( ID_OPTIONS_M, PasswordSafeFrame::OnOptionsMClick )
+  EVT_MENU( wxID_PREFERENCES, PasswordSafeFrame::OnPreferencesClick )
 
   EVT_MENU( ID_PWDPOLSM, PasswordSafeFrame::OnPwdPolsMClick )
 
@@ -441,7 +441,7 @@ void PasswordSafeFrame::CreateControls()
   itemMenu72->Append(ID_BACKUP, _("Make &Backup\tCtrl+B"), _T(""), wxITEM_NORMAL);
   itemMenu72->Append(ID_RESTORE, _("&Restore from Backup...\tCtrl+R"), _T(""), wxITEM_NORMAL);
   itemMenu72->AppendSeparator();
-  itemMenu72->Append(ID_OPTIONS_M, _("&Options...\tCtrl+M"), _T(""), wxITEM_NORMAL);
+  itemMenu72->Append(wxID_PREFERENCES, _("&Options...\tCtrl+M"), _T(""), wxITEM_NORMAL);
   itemMenu72->Append(ID_PWDPOLSM, _("Password Policies..."), _T(""), wxITEM_NORMAL);
   menuBar->Append(itemMenu72, _("&Manage"));
   wxMenu* itemMenu79 = new wxMenu;
@@ -1164,10 +1164,6 @@ int PasswordSafeFrame::Open(const wxString &fname)
 #endif
 }
 
-
-/*!
- * wxEVT_COMMAND_MENU_SELECTED event handler for wxID_PROPERTIES
- */
 
 void PasswordSafeFrame::OnPropertiesClick( wxCommandEvent& /* evt */ )
 {
@@ -3032,5 +3028,3 @@ void PasswordSafeFrame::OnCompare(wxCommandEvent& /*evt*/)
 // already have them implemented in main*.cpp
 // (how to get DB to stop generating them??)
 //-----------------------------------------------------------------
-
-
