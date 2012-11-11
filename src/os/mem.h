@@ -17,6 +17,14 @@ namespace pws_os {
    */
   extern bool mlock(void *p, size_t size);
   extern bool munlock(void *p, size_t size);
+
+  /**
+   * Following are wrappers for Window's 'protect memory' functions,
+   * that use an unspecified algorithm with an unspecified key
+   * to 'protect' memory in user space. FWIW.
+   */
+  extern bool mcryptProtect(void *p, size_t size);
+  extern bool mcryptUnprotect(void *p, size_t size);
 }
 #endif /* __MEM_H */
 //-----------------------------------------------------------------------------

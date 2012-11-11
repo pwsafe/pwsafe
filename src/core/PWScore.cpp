@@ -74,6 +74,9 @@ PWScore::PWScore() :
     CItemData::SetSessionKey(); // per-session initialization
     pws_os::mlock(m_session_key, sizeof(m_session_key));
     PWSrand::GetInstance()->GetRandomData(m_session_key, sizeof(m_session_key));
+    if (!pws_os::mcryptProtect(m_session_key, sizeof(m_session_key))) {
+      pws_os::Trace(_T("pws_os::mcryptProtect failed"));
+    }
   }
   m_undo_iter = m_redo_iter = m_vpcommands.end();
 }
@@ -1110,7 +1113,13 @@ void PWScore::EncryptPassword(const unsigned char *plaintext, size_t len,
 
   const unsigned int BS = TwoFish::BLOCKSIZE;
 
+  if (!pws_os::mcryptUnprotect(m_session_key, sizeof(m_session_key))) {
+    pws_os::Trace(_T("pws_os::mcryptUnprotect failed"));
+  }
   TwoFish tf(m_session_key, sizeof(m_session_key));
+  if (!pws_os::mcryptProtect(m_session_key, sizeof(m_session_key))) {
+    pws_os::Trace(_T("pws_os::mcryptProtect failed"));
+  }
   unsigned int BlockLength = ((ulen + (BS - 1)) / BS) * BS;
   unsigned char curblock[BS];
 
@@ -1156,7 +1165,13 @@ StringX PWScore::GetPassKey() const
   if (m_passkey_len > 0) {
     const unsigned int BS = TwoFish::BLOCKSIZE;
     size_t BlockLength = ((m_passkey_len + (BS - 1)) / BS) * BS;
+    if (!pws_os::mcryptUnprotect(m_session_key, sizeof(m_session_key))) {
+      pws_os::Trace(_T("pws_os::mcryptUnprotect failed"));
+    }
     TwoFish tf(m_session_key, sizeof(m_session_key));
+    if (!pws_os::mcryptProtect(m_session_key, sizeof(m_session_key))) {
+      pws_os::Trace(_T("pws_os::mcryptProtect failed"));
+    }
     unsigned char curblock[BS];
     for (unsigned int x = 0; x < BlockLength; x += BS) {
       unsigned int i;

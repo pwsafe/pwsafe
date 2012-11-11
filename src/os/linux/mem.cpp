@@ -26,3 +26,13 @@ bool pws_os::munlock(void *p, size_t size)
   return ::munlock(p, size) == 0;
 }
 
+// Following has OS support only in Windows
+bool pws_os::mcryptProtect(void *, size_t)
+{
+  return true;
+}
+
+bool pws_os::mcryptUnprotect(void *, size_t)
+{
+  return true;
+}
