@@ -978,11 +978,15 @@ void DboxMain::OnEdit()
   if (SelItemOk() == TRUE) {
     CItemData *pci = getSelectedItem();
     ASSERT(pci != NULL);
-
-    if (pci->IsShortcut())
-      EditShortcut(pci);
-    else
-      EditItem(pci);
+    try {
+      if (pci->IsShortcut())
+        EditShortcut(pci);
+      else
+        EditItem(pci);
+    } catch (CString err) {
+      CGeneralMsgBox gmb;
+      gmb.MessageBox(err, NULL, MB_OK | MB_ICONERROR);
+    }
   } else {
     // entry item not selected - perhaps here on Enter on tree item?
     // perhaps not the most elegant solution to improving non-mouse use,

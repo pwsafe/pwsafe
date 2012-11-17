@@ -521,6 +521,10 @@ void CAddEdit_PropertySheet::SetupInitialValues()
   const CItemData *pciA(m_AEMD.pci);
   if (m_AEMD.pci->IsAlias()) {
     pciA = m_AEMD.pcore->GetBaseEntry(m_AEMD.pci);
+    if (pciA == NULL) {
+      CString err(MAKEINTRESOURCE(IDS_ABASE_MISSING));
+      throw err;
+    }
   }
 
   // Additional data
