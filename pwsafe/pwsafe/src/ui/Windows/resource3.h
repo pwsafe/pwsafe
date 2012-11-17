@@ -323,6 +323,7 @@
 #define IDS_NOREPORTSEXIST              5488
 #define IDS_VISIT_WEBSITE               5489
 #define IDS_ICON                        5496
+#define IDS_ABASE_MISSING               5497
 #define IDS_ABASEINVALID                5499
 #define IDS_SBASEINVALID                5500
 #define IDS_MUSTHAVETARGET              5501
