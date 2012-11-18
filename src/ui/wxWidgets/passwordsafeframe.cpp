@@ -149,6 +149,8 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
 
   EVT_MENU( ID_SENDEMAIL, PasswordSafeFrame::OnSendEmail )
 
+  EVT_MENU( ID_COPYRUNCOMMAND, PasswordSafeFrame::OnCopyRunCmd )
+
   EVT_MENU( ID_RUNCOMMAND, PasswordSafeFrame::OnRunCommand )
 
   EVT_MENU( ID_AUTOTYPE, PasswordSafeFrame::OnAutoType )
