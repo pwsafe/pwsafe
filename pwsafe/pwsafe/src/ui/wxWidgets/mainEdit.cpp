@@ -264,6 +264,24 @@ void PasswordSafeFrame::DoCopyPassword(CItemData &item)
   UpdateAccessTime(item);
 }
 
+/*!
+ * wxEVT_COMMAND_MENU_SELECTED event handler for ID_COPYRUNCOMMAND
+ */
+
+void PasswordSafeFrame::OnCopyRunCmd(wxCommandEvent& evt)
+{
+  CItemData rueItem;
+  CItemData* item = IsRUEEvent(evt)? (m_RUEList.GetPWEntry(GetEventRUEIndex(evt), rueItem)? &rueItem: NULL) : GetSelectedEntry();
+  if (item != NULL)
+    DoCopyRunCmd(*item);
+}
+
+void PasswordSafeFrame::DoCopyRunCmd(CItemData &item)
+{
+  PWSclip::SetData(item.GetRunCommand());
+  UpdateAccessTime(item);
+}
+
 
 
 /*!
