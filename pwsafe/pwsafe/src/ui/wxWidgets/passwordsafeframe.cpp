@@ -1744,7 +1744,7 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
     case ID_COPYRUNCOMMAND:
     {
       CItemData* item = GetBaseOfSelectedEntry();
-      evt.Enable(item && item->IsRunCommandEmpty());
+      evt.Enable(item && !item->IsRunCommandEmpty());
       break;
     }
     case ID_CREATESHORTCUT:
