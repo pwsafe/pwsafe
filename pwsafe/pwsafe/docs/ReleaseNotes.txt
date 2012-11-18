@@ -35,6 +35,7 @@ focus if user chose not to.
 [1063] Intermediate backups also work correctly when relative path to
 database is specified on command line. Thanks to Matt for tracking
 this down.
+[353] Easy-to-read option now respected in Generate Password screen.
 
 New Features for 3.29
 =====================

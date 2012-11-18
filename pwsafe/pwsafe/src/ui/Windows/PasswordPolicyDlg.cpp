@@ -670,11 +670,15 @@ void CPasswordPolicyDlg::do_easyorpronounceable(const int iSet)
       GetDlgItem(LenTxts[2 * i + 1])->ShowWindow(SW_HIDE);
     }
 
-    GetDlgItem(IDC_USESYMBOLS)->EnableWindow(FALSE);
-    GetDlgItem(IDC_USEDEFAULTSYMBOLS)->EnableWindow(FALSE);
-    GetDlgItem(IDC_USEOWNSYMBOLS)->EnableWindow(FALSE);
-    GetDlgItem(IDC_STATIC_DEFAULTSYMBOLS)->EnableWindow(FALSE);
-    GetDlgItem(IDC_OWNSYMBOLS)->EnableWindow(FALSE);
+    // Pronounceable has its own set of symbols that
+    // can't be changed
+    if (iSet == EVPR_PR) {
+      GetDlgItem(IDC_USESYMBOLS)->EnableWindow(FALSE);
+      GetDlgItem(IDC_USEDEFAULTSYMBOLS)->EnableWindow(FALSE);
+      GetDlgItem(IDC_USEOWNSYMBOLS)->EnableWindow(FALSE);
+      GetDlgItem(IDC_STATIC_DEFAULTSYMBOLS)->EnableWindow(FALSE);
+      GetDlgItem(IDC_OWNSYMBOLS)->EnableWindow(FALSE);
+    }
 
     m_savelen[SAVE_LOWERCASE] = m_PWLowerMinLength;
     m_savelen[SAVE_UPPERCASE] = m_PWUpperMinLength;
@@ -716,6 +720,7 @@ void CPasswordPolicyDlg::do_easyorpronounceable(const int iSet)
 
 void CPasswordPolicyDlg::OnUseLowerCase()
 {
+  UnselectNamedPolicy();
   UpdateData(TRUE);
   BOOL bChecked = (IsDlgButtonChecked(IDC_USELOWERCASE) == BST_CHECKED) ? TRUE : FALSE;
 
@@ -729,6 +734,7 @@ void CPasswordPolicyDlg::OnUseLowerCase()
 
 void CPasswordPolicyDlg::OnUseUpperCase()
 {
+  UnselectNamedPolicy();
   UpdateData(TRUE);
   BOOL bChecked = (IsDlgButtonChecked(IDC_USEUPPERCASE) == BST_CHECKED) ? TRUE : FALSE;
 
@@ -742,6 +748,7 @@ void CPasswordPolicyDlg::OnUseUpperCase()
 
 void CPasswordPolicyDlg::OnUseDigits()
 {
+  UnselectNamedPolicy();
   UpdateData(TRUE);
   BOOL bChecked = (IsDlgButtonChecked(IDC_USEDIGITS) == BST_CHECKED) ? TRUE : FALSE;
 
@@ -755,6 +762,7 @@ void CPasswordPolicyDlg::OnUseDigits()
 
 void CPasswordPolicyDlg::OnUseSymbols()
 {
+  UnselectNamedPolicy();
   UpdateData(TRUE);
 
   BOOL bChecked = (IsDlgButtonChecked(IDC_USESYMBOLS) == BST_CHECKED &&
@@ -777,6 +785,7 @@ void CPasswordPolicyDlg::OnUseSymbols()
 
 void CPasswordPolicyDlg::OnUseHexdigits()
 {
+  UnselectNamedPolicy();
   UpdateData(TRUE);
 
   do_hex(IsDlgButtonChecked(IDC_USEHEXDIGITS) == BST_CHECKED);
@@ -786,6 +795,7 @@ void CPasswordPolicyDlg::OnUseHexdigits()
 
 void CPasswordPolicyDlg::OnEasyVision()
 {
+  UnselectNamedPolicy();
   UpdateData(TRUE);
 
   if (m_PWEasyVision && m_PWMakePronounceable) {
@@ -805,6 +815,7 @@ void CPasswordPolicyDlg::OnEasyVision()
 
 void CPasswordPolicyDlg::OnMakePronounceable()
 {
+  UnselectNamedPolicy();
   UpdateData(TRUE);
 
   if (m_PWEasyVision && m_PWMakePronounceable) {
@@ -908,8 +919,6 @@ void CPasswordPolicyDlg::OnGeneratePassword()
 {
   UpdateData(TRUE);
 
-  stringT st_symbols;
-
   PWPolicy st_pp;
 
   if (m_UseNamedPolicy == BST_UNCHECKED) {
@@ -939,11 +948,8 @@ void CPasswordPolicyDlg::OnGeneratePassword()
 
     if (m_UseOwnSymbols == OWN_SYMBOLS) {
       m_SymbolsEdit.GetWindowText(m_Symbols);
-      st_symbols = LPCWSTR(m_Symbols);
-    } else
-      CPasswordCharPool::GetDefaultSymbols(st_symbols);
-
-    st_pp.symbols = st_symbols.c_str();
+      st_pp.symbols = LPCWSTR(m_Symbols);
+    }
   } else {
     // Use named policy
     if (m_PolicyNameEdit.IsWindowVisible()) {
@@ -954,11 +960,6 @@ void CPasswordPolicyDlg::OnGeneratePassword()
     }
     StringX sxPolicyName(m_policyname);
     m_pDbx->GetPolicyFromName(sxPolicyName, st_pp);
-
-    if (st_pp.symbols.empty()) {
-      CPasswordCharPool::GetDefaultSymbols(st_symbols);
-      st_pp.symbols = st_symbols.c_str();
-    }
   }
 
   StringX passwd;
@@ -1050,10 +1051,6 @@ void CPasswordPolicyDlg::SetSpecificPolicyControls(const BOOL bEnable)
     for (int i = 0; i < N_HEX_LENGTHS; i++) {
       GetDlgItem(nonHexLengthSpins[i])->EnableWindow(FALSE);
     }
-
-    // Disable lengths
-    GetDlgItem(IDC_STATIC_PSWDLENGTH)->EnableWindow(FALSE);
-    GetDlgItem(IDC_DEFPWLENGTH)->EnableWindow(FALSE);
 
     // Disable Symbols
     GetDlgItem(IDC_USEDEFAULTSYMBOLS)->EnableWindow(FALSE);
@@ -1151,4 +1148,10 @@ bool CPasswordPolicyDlg::UpdatePasswordPolicy()
     m_MapPSWDPLC[sxPolicyName] = st_pp;
   }
   return true;
+}
+
+void CPasswordPolicyDlg::UnselectNamedPolicy()
+{
+  ((CButton *)GetDlgItem(IDC_USENAMED_POLICY))->SetCheck(BST_UNCHECKED);
+  m_cbxPolicyNames.EnableWindow(FALSE);
 }

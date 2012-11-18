@@ -109,7 +109,8 @@ private:
   BOOL Validate();
   bool UpdatePasswordPolicy();
   void SetSpecificPolicyControls(const BOOL bEnable);
-
+  void UnselectNamedPolicy();
+  
   void do_hex(const bool bNonHex); // bNonHex == true enable non-hex
   void do_easyorpronounceable(const int iSet); // iSet == 0 none, 1 - EasyVision, 2 - Pronounceable
 
