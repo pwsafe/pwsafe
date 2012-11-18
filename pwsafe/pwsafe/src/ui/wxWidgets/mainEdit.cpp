@@ -40,6 +40,7 @@
 #include "../../core/PWSAuxParse.h"
 #include "../../core/Util.h"
 #include "../../os/KeySend.h"
+#include "../../os/run.h"
 #include "../../os/sleep.h"
 #include "../../os/utf8conv.h"
 
@@ -766,7 +767,10 @@ BOOL PasswordSafeFrame::LaunchBrowser(const wxString &csURL, const StringX &/*sx
 
 void PasswordSafeFrame::DoRun(CItemData& item)
 {
-  UpdateAccessTime(item);
+  const StringX runee = item.GetRunCommand();
+  PWSRun runner;
+  if (runner.runcmd(runee, false))
+    UpdateAccessTime(item);
 }
 
 void PasswordSafeFrame::DoEmail(CItemData& item )

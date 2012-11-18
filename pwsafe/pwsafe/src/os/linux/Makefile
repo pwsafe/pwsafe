@@ -7,6 +7,9 @@
 CONFIG=unicodedebug
 #CONFIG=unicoderelease
 
+WX_CONFIG?=/usr/bin/wx-config
+CPPINC=`$(WX_CONFIG) --debug=no --unicode=yes --inplace --cxxflags`
+
 DEPDIR= ./deps
 
 NAME=os
@@ -29,7 +32,7 @@ LIBOBJ    = $(addprefix $(OBJPATH)/,$(subst .cpp,.o,$(LIBSRC)))
 LIB       = $(LIBPATH)/libos.a
 OBJ       = $(LIBOBJ)
 
-CPPFLAGS = $(CXXFLAGS) -Wall -I../../core -I../..
+CPPFLAGS = $(CXXFLAGS) -Wall -I../../core -I../.. $(CPPINC)
 ifeq ($(CONFIG),debug)
 CPPFLAGS += -O0 -g -ggdb -DDEBUG
 CFLAGS += -g
