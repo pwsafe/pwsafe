@@ -136,6 +136,7 @@ public:
   void OnSelectAll( wxCommandEvent& evt );
   void OnRemoveSome( wxCommandEvent& evt );
   void OnRemoveAll( wxCommandEvent& evt );
+  void OnRestrictSearchItems(wxCommandEvent& evt);
 
   void CreateControls(wxWindow* parentWnd);
   bool DoValidation();               //actual validator

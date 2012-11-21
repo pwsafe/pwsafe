@@ -29,6 +29,8 @@
 #include <wx/msw/msvcrt.h>
 #endif
 
+void EnableSizerElements(wxSizer* sizer, wxWindow* ignore, bool enable);
+
 CItemData::FieldType subgroups[] = {  CItemData::GROUP,
                                       CItemData::GROUPTITLE,
                                       CItemData::NOTES,
@@ -133,6 +135,8 @@ void AdvancedSelectionPanel::CreateControls(wxWindow* parentWnd)
     wxCheckBox* check = new wxCheckBox(this, wxID_ANY, wxT("&Restrict to a subset of entries:"));
     check->SetValidator(wxGenericValidator(&m_criteria.m_fUseSubgroups));
     sizer->Add(check, wxSizerFlags().Border());
+    check->Connect(wxEVT_COMMAND_CHECKBOX_CLICKED, 
+                    wxCommandEventHandler(AdvancedSelectionPanel::OnRestrictSearchItems));
 
     wxBoxSizer* hbox = new wxBoxSizer(wxHORIZONTAL);
     hbox->Add(new wxStaticText(this, wxID_ANY, wxT("&Where")), wxSizerFlags(0));
@@ -163,6 +167,8 @@ void AdvancedSelectionPanel::CreateControls(wxWindow* parentWnd)
     sizer->Add( checkCaseSensitivity, wxSizerFlags().Border() );
     
     dlgSizer->Add(sizer, wxSizerFlags().Border(wxLEFT|wxRIGHT, SideMargin).Expand());
+
+    EnableSizerElements(sizer, check, check->IsChecked());
   }
 
   if (ShowFieldSelection()) {
@@ -366,3 +372,29 @@ void AdvancedSelectionPanel::OnRemoveAll( wxCommandEvent& /* evt */ )
   }
 }
 
+/*
+ * Recursively enables/disables all sizer elements.  The <ignore> window
+ * is not disabled
+ */
+void EnableSizerElements(wxSizer* sizer, wxWindow* ignore, bool enable)
+{
+  wxCHECK_RET(sizer, wxT("Null sizer passed to EnableSizerElements"));
+  
+  wxSizerItemList& items = sizer->GetChildren();
+  for (wxSizerItemList::iterator itr = items.begin(); itr != items.end(); ++itr) {
+    wxSizerItem* item = *itr;
+    if (item->IsWindow() && item->GetWindow() != ignore)
+      item->GetWindow()->Enable(enable);
+    else if (item->IsSizer())
+      EnableSizerElements(item->GetSizer(), ignore, enable);
+  }
+}
+
+void AdvancedSelectionPanel::OnRestrictSearchItems(wxCommandEvent& evt)
+{
+  wxWindow* checkbox = wxDynamicCast(evt.GetEventObject(), wxWindow);
+  wxCHECK_RET(checkbox, wxT("Could not get checkbox from check event object"));
+  wxSizer* sizer = checkbox->GetContainingSizer();
+  wxCHECK_RET(sizer, wxT("Could not get the sizer owning the checkbox"));
+  EnableSizerElements(sizer, checkbox, evt.IsChecked());
+}
