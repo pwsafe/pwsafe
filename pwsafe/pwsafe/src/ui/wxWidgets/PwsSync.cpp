@@ -411,7 +411,7 @@ SyncFieldSelectionPage::SyncFieldSelectionPage(wxWizard* parent, SyncData* data)
 {
   wxBoxSizer* sizer = m_pageSizer;
   
-  m_panel = new SyncFieldSelectionPanel(this, data->selCriteria, false);
+  m_panel = new SyncFieldSelectionPanel(this, &data->selCriteria, false);
   m_panel->CreateControls(this);
   sizer->Add(m_panel, wxSizerFlags().Expand().Proportion(1));
   SetSizerAndFit(sizer);
@@ -424,7 +424,7 @@ bool SyncFieldSelectionPage::OnPageLeave(PageDirection dir)
 
 void SyncFieldSelectionPage::SaveData(SyncData* data)
 {
-  data->selCriteria = m_panel->m_criteria;
+  data->selCriteria = *m_panel->m_criteria;
 }
 
 

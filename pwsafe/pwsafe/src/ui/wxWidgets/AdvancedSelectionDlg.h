@@ -127,7 +127,7 @@ class AdvancedSelectionPanel: public wxPanel
   DECLARE_NO_COPY_CLASS(AdvancedSelectionPanel)
 
 public:
-  AdvancedSelectionPanel(wxWindow* wnd, const SelectionCriteria& existingCriteria, bool autoValidate);
+  AdvancedSelectionPanel(wxWindow* wnd, SelectionCriteria* existingCriteria, bool autoValidate);
 
   bool Validate();               //overriden from wxWindow
   bool TransferDataToWindow();   //overriden from wxWindow
@@ -149,7 +149,7 @@ protected:
   virtual wxString GetTaskWord() const = 0;
   
 public:
-  SelectionCriteria m_criteria;
+  SelectionCriteria* m_criteria;
   bool m_autoValidate;
 };
 
@@ -157,7 +157,7 @@ template <class DlgType>
 class AdvancedSelectionImpl: public AdvancedSelectionPanel
 {
 public:
-  AdvancedSelectionImpl(wxWindow* wnd, const SelectionCriteria& existingCriteria, bool autoValidate):
+  AdvancedSelectionImpl(wxWindow* wnd, SelectionCriteria* existingCriteria, bool autoValidate):
     AdvancedSelectionPanel(wnd, existingCriteria, autoValidate)
   {}
 
@@ -191,7 +191,7 @@ class AdvancedSelectionDlg : public wxDialog
   PanelType* m_panel;
 
 public:
-  AdvancedSelectionDlg(wxWindow* parent, const SelectionCriteria& existingCriteria): m_panel(0)
+  AdvancedSelectionDlg(wxWindow* parent, SelectionCriteria* existingCriteria): m_panel(0)
   {
     wxDialog::Create(parent, wxID_ANY, wxEmptyString, wxDefaultPosition, 
                             wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER);
@@ -213,14 +213,6 @@ public:
     
     SetSizerAndFit(sizer);
   }
-
-  SelectionCriteria GetSelectionCriteria() const { return m_panel->m_criteria; }
-  
-  void GetSelectionCriteria(SelectionCriteria& other) const { 
-    if (other != m_panel->m_criteria)
-      other = m_panel->m_criteria;
-  }
-
 };
 
 

@@ -105,9 +105,8 @@ IMPLEMENT_CLASS_TEMPLATE( AdvancedSelectionDlg, wxDialog, AdvancedMergeOptions )
 
 void MergeDlg::OnAdvancedSelection(wxCommandEvent& )
 {
-  AdvancedSelectionDlg<AdvancedMergeOptions> dlg(this, *m_selection);
-  if (dlg.ShowModal() == wxID_OK)
-    dlg.GetSelectionCriteria(*m_selection);
+  AdvancedSelectionDlg<AdvancedMergeOptions> dlg(this, m_selection);
+  dlg.ShowModal();
 }
 
 wxString MergeDlg::GetOtherSafePath() const 

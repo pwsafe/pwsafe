@@ -244,10 +244,9 @@ IMPLEMENT_CLASS_TEMPLATE( AdvancedSelectionDlg, wxDialog, FindDlgType )
 void PasswordSafeSearch::OnAdvancedSearchOptions(wxCommandEvent& /* evt */)
 {
   m_criteria.Clean();
-  AdvancedSelectionDlg<FindDlgType> dlg(m_parentFrame, m_criteria);
+  AdvancedSelectionDlg<FindDlgType> dlg(m_parentFrame, &m_criteria);
   if (dlg.ShowModal() == wxID_OK) {
     m_fAdvancedSearch = true;
-    dlg.GetSelectionCriteria(m_criteria);
   }
 }
 

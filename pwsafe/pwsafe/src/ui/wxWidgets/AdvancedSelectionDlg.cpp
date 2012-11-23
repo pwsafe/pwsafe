@@ -125,7 +125,7 @@ END_EVENT_TABLE()
 
 
 AdvancedSelectionPanel::AdvancedSelectionPanel(wxWindow* parentWnd, 
-                                               const SelectionCriteria& existingCriteria,
+                                               SelectionCriteria* existingCriteria,
                                                bool autoValidate):
                                                   m_criteria(existingCriteria),
                                                   m_autoValidate(autoValidate)
@@ -145,7 +145,7 @@ void AdvancedSelectionPanel::CreateControls(wxWindow* parentWnd)
     wxStaticBoxSizer* sizer = new wxStaticBoxSizer(wxVERTICAL, this);
 
     wxCheckBox* check = new wxCheckBox(this, wxID_ANY, wxT("&Restrict to a subset of entries:"));
-    check->SetValidator(wxGenericValidator(&m_criteria.m_fUseSubgroups));
+    check->SetValidator(wxGenericValidator(&m_criteria->m_fUseSubgroups));
     sizer->Add(check, wxSizerFlags().Border());
     check->Connect(wxEVT_COMMAND_CHECKBOX_CLICKED, 
                     wxCommandEventHandler(AdvancedSelectionPanel::OnRestrictSearchItems));
@@ -156,14 +156,14 @@ void AdvancedSelectionPanel::CreateControls(wxWindow* parentWnd)
     
     wxComboBox* comboSubgroup = new wxComboBox(this, wxID_ANY);
     for (size_t idx = 0 ; idx < NumberOf(subgroups); ++idx) comboSubgroup->AppendString(GetSelectableFieldName(subgroups[idx]));
-    comboSubgroup->SetValidator(wxGenericValidator(&m_criteria.m_subgroupObject));
+    comboSubgroup->SetValidator(wxGenericValidator(&m_criteria->m_subgroupObject));
     hbox->Add(comboSubgroup, wxSizerFlags(1).Expand());
     
     hbox->AddSpacer(ColSeparation);
     
     wxComboBox* comboFunctions = new wxComboBox(this, wxID_ANY);
     for( size_t idx = 0; idx < NumberOf(subgroupFunctions); ++idx) comboFunctions->AppendString(subgroupFunctions[idx].name);
-    comboFunctions->SetValidator(wxGenericValidator(&m_criteria.m_subgroupFunction));
+    comboFunctions->SetValidator(wxGenericValidator(&m_criteria->m_subgroupFunction));
     hbox->Add(comboFunctions, wxSizerFlags(1).Expand());
     
     sizer->Add(hbox, wxSizerFlags().Border().Expand());
@@ -171,16 +171,16 @@ void AdvancedSelectionPanel::CreateControls(wxWindow* parentWnd)
     sizer->Add( new wxStaticText(this, wxID_ANY, wxT("the &following text:")), wxSizerFlags().Border());
 
     wxTextCtrl* txtCtrl = new wxTextCtrl(this, wxID_ANY, _("*"), wxDefaultPosition, wxSize(200, -1));
-    txtCtrl->SetValidator(wxGenericValidator(&m_criteria.m_subgroupText));
+    txtCtrl->SetValidator(wxGenericValidator(&m_criteria->m_subgroupText));
     sizer->Add(txtCtrl, wxSizerFlags().Border().Expand().FixedMinSize());
 
     wxCheckBox* checkCaseSensitivity = new wxCheckBox(this, wxID_ANY, wxT("&Case Sensitive"));
-    checkCaseSensitivity->SetValidator(wxGenericValidator(&m_criteria.m_fCaseSensitive));
+    checkCaseSensitivity->SetValidator(wxGenericValidator(&m_criteria->m_fCaseSensitive));
     sizer->Add( checkCaseSensitivity, wxSizerFlags().Border() );
     
     dlgSizer->Add(sizer, wxSizerFlags().Border(wxLEFT|wxRIGHT, SideMargin).Expand());
 
-    EnableSizerElements(sizer, check, m_criteria.HasSubgroupRestriction());
+    EnableSizerElements(sizer, check, m_criteria->HasSubgroupRestriction());
   }
 
   if (ShowFieldSelection()) {
@@ -244,7 +244,7 @@ bool AdvancedSelectionPanel::TransferDataToWindow()
     if (ShowFieldSelection()) {
       // Temporary hack until I can write a proper validator for SelectionCriteria class
       // which would set its dirty flag automatically
-      const bool criteriaChanged = (m_criteria != SelectionCriteria());
+      const bool criteriaChanged = (*m_criteria != SelectionCriteria());
       wxListBox* lbAvailable  = wxDynamicCast(FindWindow(ID_LB_AVAILABLE_FIELDS), wxListBox);
       wxListBox* lbSelected  = wxDynamicCast(FindWindow(ID_LB_SELECTED_FIELDS), wxListBox);
       lbAvailable->Clear();
@@ -253,7 +253,7 @@ bool AdvancedSelectionPanel::TransferDataToWindow()
       for (size_t idx = 0; idx < NumberOf(selectableFields); ++idx) {
         const CItemData::FieldType ft = selectableFields[idx];
         if (IsUsableField(ft)) {
-          if ( (criteriaChanged && m_criteria.IsFieldSelected(ft)) || 
+          if ( (criteriaChanged && m_criteria->IsFieldSelected(ft)) || 
                               (!criteriaChanged && IsPreselectedField(ft)) ) {
             const wxString title = GetSelectableFieldName(ft) + (IsMandatoryField(ft)? _(" [Mandatory Field]"): wxEmptyString);
             lbSelected->Append(title, reinterpret_cast<void *>(idx));
@@ -296,12 +296,12 @@ bool AdvancedSelectionPanel::TransferDataFromWindow()
       wxASSERT(lbSelected);
 
       //reset the selected field bits 
-      m_criteria.m_bsFields.reset();
+      m_criteria->m_bsFields.reset();
       const size_t count = lbSelected->GetCount();
       
       for (size_t idx = 0; idx < count; ++idx) {
           const size_t which = reinterpret_cast<size_t>(lbSelected->GetClientData(static_cast<unsigned int>(idx)));
-          m_criteria.m_bsFields.set(selectableFields[which], true);
+          m_criteria->m_bsFields.set(selectableFields[which], true);
       }
     }
     return true;

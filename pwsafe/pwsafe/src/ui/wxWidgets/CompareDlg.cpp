@@ -242,7 +242,7 @@ wxCollapsiblePane* CompareDlg::CreateOptionsPanel(wxSizer* dlgSizer)
   wxCollapsiblePane* optionsPane = new wxCollapsiblePane(this, wxID_ANY, _("Advanced Options..."));
   //Create the Advanced Selection Options panel with the pane's window as parent
   AdvancedSelectionPanel* advPanel = new AdvancedSelectionImpl<CompareDlgType>(optionsPane->GetPane(),
-                                                                               *m_selCriteria,
+                                                                               m_selCriteria,
                                                                                true);
   advPanel->CreateControls(optionsPane->GetPane());
   //Create a vertical box sizer
