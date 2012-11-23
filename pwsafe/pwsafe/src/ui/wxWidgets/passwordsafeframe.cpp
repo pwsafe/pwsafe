@@ -2805,6 +2805,14 @@ struct ExportFullText
     return false;
   }
   
+  static bool IsPreselectedField(CItemData::FieldType /*field*/) {
+    return true;
+  }
+
+  static bool IsUsableField(CItemData::FieldType /*field*/) {
+    return true;
+  }
+
   static bool ShowFieldSelection() {
     return true;
   }
@@ -2846,6 +2854,14 @@ struct ExportFullXml {
     return field == CItemData::TITLE || field == CItemData::PASSWORD;
   }
   
+  static bool IsPreselectedField(CItemData::FieldType /*field*/) {
+    return true;
+  }
+
+  static bool IsUsableField(CItemData::FieldType /*field*/) {
+    return true;
+  }
+
   static bool ShowFieldSelection() {
     return true;
   }

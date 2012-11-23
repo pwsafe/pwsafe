@@ -82,6 +82,16 @@ struct AdvancedMergeOptions {
     return false;
   }
   
+  static bool IsPreselectedField(CItemData::FieldType /*field*/) {
+    wxFAIL_MSG(wxT("Advanced field pre-selection options are not available for Merge"));
+    return true;
+  }
+
+  static bool IsUsableField(CItemData::FieldType /*field*/) {
+    wxFAIL_MSG(wxT("Advanced field usability options are not available for Merge"));
+    return true;
+  }
+
   static bool ShowFieldSelection() {
     return false;
   }

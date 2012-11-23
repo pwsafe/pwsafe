@@ -49,15 +49,27 @@ struct _subgroupFunctions subgroupFunctions[] = { {wxT("equals"),              P
                                                   {wxT("does not contain"),    PWSMatch::MR_NOTCONTAIN} } ;
 
 CItemData::FieldType selectableFields[] = { CItemData::GROUP,
-                                        CItemData::TITLE,
-                                        CItemData::USER,
-                                        CItemData::NOTES,
-                                        CItemData::PASSWORD,
-                                        CItemData::URL,
-                                        CItemData::AUTOTYPE,
-                                        CItemData::PWHIST,
-                                        CItemData::RUNCMD,
-                                        CItemData::EMAIL
+                                            CItemData::TITLE,
+                                            CItemData::USER,
+                                            CItemData::PASSWORD,
+                                            CItemData::NOTES,
+                                            CItemData::URL,
+                                            CItemData::AUTOTYPE,
+                                            CItemData::PWHIST,
+                                            CItemData::POLICY,
+                                            CItemData::POLICYNAME,
+                                            CItemData::SYMBOLS,
+                                            CItemData::RUNCMD,
+                                            CItemData::EMAIL,
+                                            CItemData::DCA,
+                                            CItemData::SHIFTDCA,
+                                            CItemData::PROTECTED,
+                                            CItemData::CTIME,
+                                            CItemData::ATIME,
+                                            CItemData::XTIME,
+                                            CItemData::XTIME_INT,
+                                            CItemData::PMTIME,
+                                            CItemData::RMTIME,
                                       };
 
 
@@ -168,7 +180,7 @@ void AdvancedSelectionPanel::CreateControls(wxWindow* parentWnd)
     
     dlgSizer->Add(sizer, wxSizerFlags().Border(wxLEFT|wxRIGHT, SideMargin).Expand());
 
-    EnableSizerElements(sizer, check, check->IsChecked());
+    EnableSizerElements(sizer, check, m_criteria.HasSubgroupRestriction());
   }
 
   if (ShowFieldSelection()) {
@@ -230,25 +242,25 @@ bool AdvancedSelectionPanel::TransferDataToWindow()
 {
   if (wxPanel::TransferDataToWindow()) {
     if (ShowFieldSelection()) {
-
+      // Temporary hack until I can write a proper validator for SelectionCriteria class
+      // which would set its dirty flag automatically
+      const bool criteriaChanged = (m_criteria != SelectionCriteria());
       wxListBox* lbAvailable  = wxDynamicCast(FindWindow(ID_LB_AVAILABLE_FIELDS), wxListBox);
-      lbAvailable->Clear();
-
-      for (size_t idx = 0; idx < NumberOf(selectableFields); ++idx) {
-        if (!m_criteria.m_bsFields.test(selectableFields[idx]))
-            lbAvailable->Append(GetSelectableFieldName(selectableFields[idx]), reinterpret_cast<void *>(idx));
-      }
-
       wxListBox* lbSelected  = wxDynamicCast(FindWindow(ID_LB_SELECTED_FIELDS), wxListBox);
+      lbAvailable->Clear();
       lbSelected->Clear();
 
-      for (size_t idx=0; idx < NumberOf(selectableFields); ++idx) {
-        if (m_criteria.m_bsFields.test(selectableFields[idx])) {
-          if (IsMandatoryField(selectableFields[idx]))
-            lbSelected->Append(GetSelectableFieldName(selectableFields[idx]) + _(" [Mandatory Field]"),
-                                     reinterpret_cast<void *>(idx));
-          else
-            lbSelected->Append(GetSelectableFieldName(selectableFields[idx]), reinterpret_cast<void *>(idx));
+      for (size_t idx = 0; idx < NumberOf(selectableFields); ++idx) {
+        const CItemData::FieldType ft = selectableFields[idx];
+        if (IsUsableField(ft)) {
+          if ( (criteriaChanged && m_criteria.IsFieldSelected(ft)) || 
+                              (!criteriaChanged && IsPreselectedField(ft)) ) {
+            const wxString title = GetSelectableFieldName(ft) + (IsMandatoryField(ft)? _(" [Mandatory Field]"): wxEmptyString);
+            lbSelected->Append(title, reinterpret_cast<void *>(idx));
+          }
+          else {
+            lbAvailable->Append(GetSelectableFieldName(ft), reinterpret_cast<void *>(idx));
+          }
         }
       }
     }
