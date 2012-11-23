@@ -204,6 +204,29 @@ struct FindDlgType {
     return false;
   }
   
+  static bool IsPreselectedField(CItemData::FieldType field) {
+    return true;
+  }
+
+  static bool IsUsableField(CItemData::FieldType field) {
+    switch (field) {
+      case CItemData::GROUP:
+      case CItemData::TITLE:
+      case CItemData::USER:
+      case CItemData::NOTES:
+      case CItemData::PASSWORD:
+      case CItemData::URL:
+      case CItemData::AUTOTYPE:
+      case CItemData::PWHIST:
+      case CItemData::RUNCMD:
+      case CItemData::EMAIL:
+      case CItemData::SYMBOLS:
+        return true;
+      default:
+        return false;
+    }
+  }
+
   static bool ShowFieldSelection() {
     return true;
   }

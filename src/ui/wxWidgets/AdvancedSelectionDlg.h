@@ -143,6 +143,8 @@ public:
 
 protected:
   virtual bool IsMandatoryField(CItemData::FieldType field) const = 0;
+  virtual bool IsPreselectedField(CItemData::FieldType field) const = 0;
+  virtual bool IsUsableField(CItemData::FieldType field) const = 0;
   virtual bool ShowFieldSelection() const = 0;
   virtual wxString GetTaskWord() const = 0;
   
@@ -163,6 +165,14 @@ public:
     return DlgType::IsMandatoryField(field);
   }
   
+  virtual bool IsPreselectedField(CItemData::FieldType field) const {
+    return DlgType::IsPreselectedField(field);
+  }
+
+  virtual bool IsUsableField(CItemData::FieldType field) const {
+    return DlgType::IsUsableField(field);
+  }
+
   virtual bool ShowFieldSelection() const {
     return DlgType::ShowFieldSelection();
   }

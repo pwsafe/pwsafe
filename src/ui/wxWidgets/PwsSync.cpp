@@ -124,6 +124,21 @@ struct SyncFieldSelection {
     return false;
   }
   
+  static bool IsPreselectedField(CItemData::FieldType /*field*/) {
+    return true;
+  }
+
+  static bool IsUsableField(CItemData::FieldType field) {
+    switch (field) {
+      case CItemData::GROUP:
+      case CItemData::USER:
+      case CItemData::TITLE:
+        return false;
+      default:
+        return true;
+    }
+  }
+
   static bool ShowFieldSelection() {
     return true;
   }

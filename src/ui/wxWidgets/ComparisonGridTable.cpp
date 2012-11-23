@@ -60,13 +60,26 @@ ComparisonGridTable::ComparisonGridTable(SelectionCriteria* criteria): m_criteri
                       m_colFields(new ColumnData[criteria->GetNumSelectedFields()-1])
 {
   //this is the order in which we want to display the comparison grids
-  const ColumnData columns[] = {{CItemData::PASSWORD, &CItemData::IsPasswordSet},
-                                {CItemData::URL,      &CItemData::IsURLSet},
-                                {CItemData::AUTOTYPE, &CItemData::IsAutoTypeSet},
-                                {CItemData::PWHIST,   &CItemData::IsPasswordHistorySet},
-                                {CItemData::RUNCMD,   &CItemData::IsRunCommandSet},
-                                {CItemData::EMAIL,    &CItemData::IsEmailSet},
-                                {CItemData::NOTES,    &CItemData::IsNotesSet}};
+  const ColumnData columns[] = {{CItemData::PASSWORD,     &CItemData::IsPasswordSet},
+                                {CItemData::URL,          &CItemData::IsURLSet},
+                                {CItemData::AUTOTYPE,     &CItemData::IsAutoTypeSet},
+                                {CItemData::PWHIST,       &CItemData::IsPasswordHistorySet},
+                                {CItemData::RUNCMD,       &CItemData::IsRunCommandSet},
+                                {CItemData::EMAIL,        &CItemData::IsEmailSet},
+                                {CItemData::NOTES,        &CItemData::IsNotesSet},
+                                {CItemData::POLICY,       &CItemData::IsPasswordPolicySet},
+                                {CItemData::POLICYNAME,   &CItemData::IsPolicyNameSet},
+                                {CItemData::SYMBOLS,      &CItemData::IsSymbolsSet},
+                                {CItemData::DCA,          &CItemData::IsDCASet},
+                                {CItemData::SHIFTDCA,     &CItemData::IsDCASet}, // <<=== NOTE!!
+                                {CItemData::PROTECTED,    &CItemData::IsProtectionSet},
+                                {CItemData::CTIME,        &CItemData::IsCreationTimeSet},
+                                {CItemData::ATIME,        &CItemData::IsLastAccessTimeSet},
+                                {CItemData::XTIME,        &CItemData::IsExpiryDateSet},
+                                {CItemData::XTIME_INT,    &CItemData::IsPasswordExpiryIntervalSet},
+                                {CItemData::PMTIME,       &CItemData::IsModificationTimeSet},
+                                {CItemData::RMTIME,       &CItemData::IsRecordModificationTimeSet},
+                              };
 
   const size_t ncols = size_t(GetNumberCols());
   for(size_t col = 0, idx = 0; (idx < WXSIZEOF(columns)) && (col < ncols); idx++) {
