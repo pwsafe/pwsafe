@@ -41,9 +41,8 @@ public:
   }
 
   virtual void DoAdvancedSelection() {
-    AdvancedSelectionDlg<DlgType> dlg(this, selCriteria);
-    if (dlg.ShowModal() == wxID_OK)
-      dlg.GetSelectionCriteria(selCriteria);
+    AdvancedSelectionDlg<DlgType> dlg(this, &selCriteria);
+    dlg.ShowModal();
   }
 };
 
