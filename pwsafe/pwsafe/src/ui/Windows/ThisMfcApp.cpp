@@ -613,6 +613,15 @@ void ThisMfcApp::SetupMenu()
   minfo.dwMenuData = ID_EDITMENU;
   pMenu1->SetMenuInfo(&minfo);
 
+  // Do Edit Menu Export Entry submenu
+  pos2 = app.FindMenuItem(pMenu1, ID_EXPORTENTMENU);
+  ASSERT(pos2 != -1);
+
+  pMenu2 = pMenu1->GetSubMenu(pos2);
+  minfo.dwMenuData = ID_EXPORTENTMENU;
+  pMenu2->SetMenuInfo(&minfo);
+
+
   // Do View Menu
   pos1 = app.FindMenuItem(m_pMainMenu, ID_VIEWMENU);
   ASSERT(pos1 != -1);
