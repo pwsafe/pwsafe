@@ -149,7 +149,7 @@ void DboxMain::SetUpInitialMenuStrings()
   // Add user Excluded Menu Items - anything that is a Popup Menu
     ID_FILEMENU, ID_EXPORTMENU, ID_IMPORTMENU, ID_EDITMENU,
     ID_VIEWMENU, ID_FILTERMENU, ID_CHANGEFONTMENU, ID_REPORTSMENU,
-    ID_MANAGEMENU, ID_LANGUAGEMENU, ID_HELPMENU, ID_FINDMENU,
+    ID_MANAGEMENU, ID_LANGUAGEMENU, ID_HELPMENU, ID_FINDMENU, ID_EXPORTENTMENU,
 
   // Plus Exit (2 shortcuts Ctrl+Q and Alt+F4) and Help (F1)
     ID_MENUITEM_EXIT, ID_HELP,
@@ -250,6 +250,9 @@ void DboxMain::SetUpInitialMenuStrings()
 
   // Do Edit Menu
   InsertShortcuts(pMainMenu, m_MapMenuShortcuts, ID_EDITMENU);
+
+  // Do Export Entry submenu
+  //  InsertShortcuts(pSubMenu, m_MapMenuShortcuts, ID_EXPORTENTMENU);
 
   // Do View Menu
   InsertShortcuts(pMainMenu, m_MapMenuShortcuts, ID_VIEWMENU);
@@ -503,7 +506,7 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
 
   // This routine changes the text in the menu via "ModifyMenu" and
   // adds the "check" mark via CheckMenuRadioItem for view type and toolbar.
-  // It now tailors the Edit menu depending on whether a Group or Entry is selected.
+  // It then tailors the Edit menu depending on whether a Group or Entry is selected.
   // "EnableMenuItem" is handled by the UPDATE_UI routines
   bool bGroupSelected(false);
   const bool bTreeView = m_ctlItemTree.IsWindowVisible() == TRUE;
@@ -848,10 +851,18 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
         default:
           ASSERT(0);
       }
-      pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                             ID_MENUITEM_EXPORTENT2PLAINTEXT, tc_dummy); 
-      pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                             ID_MENUITEM_EXPORTENT2XML, tc_dummy);
+
+      CMenu EEsubMenu;
+      CString EEstr;
+      EEsubMenu.CreatePopupMenu();
+      EEstr.LoadString(IDS_EXPORTENT2PLAINTEXT);
+      EEsubMenu.AppendMenu(MF_ENABLED | MF_STRING,
+                           ID_MENUITEM_EXPORTENT2PLAINTEXT, EEstr); 
+      EEstr.LoadString(IDS_EXPORTENT2XML);
+      EEsubMenu.AppendMenu(MF_ENABLED | MF_STRING,
+                          ID_MENUITEM_EXPORTENT2XML, EEstr);
+      EEstr.LoadString(IDS_EXPORTENTMENU);
+      pPopupMenu->AppendMenu(MF_POPUP, (UINT)EEsubMenu.Detach(), EEstr);
 
       if (!bReadOnly && etype_original != CItemData::ET_SHORTCUT)
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
@@ -908,10 +919,11 @@ void DboxMain::OnInitMenuPopup(CMenu* pPopupMenu, UINT, BOOL)
     case ID_EDITMENU:
     case ID_VIEWMENU:
     case ID_FILTERMENU:
+    case ID_EXPORTENTMENU:
     case ID_CHANGEFONTMENU:
     case ID_REPORTSMENU:
     case ID_MANAGEMENU:
-    case ID_HELPMENU:  //main menu items' shortuct should be always updated because keyboard layout could be changed
+    case ID_HELPMENU:  //main menu items' shortcut should be always updated because keyboard layout could be changed
       bDoShortcuts = true;
       break;
     default:

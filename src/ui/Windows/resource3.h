@@ -721,3 +721,6 @@
 #define IDS_SYNCENTRY                   5932
 #define IDS_OPERATION_ABORTED           5933
 #define IDS_FORMAT_CMP_POLICY           5934
+#define IDS_EXPORTENTMENU               5935
+#define IDS_EXPORTENT2PLAINTEXT         5936
+#define IDS_EXPORTENT2XML               5937
