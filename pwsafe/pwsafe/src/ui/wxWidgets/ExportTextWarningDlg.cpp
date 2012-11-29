@@ -22,6 +22,7 @@
 
 #include "ExportTextWarningDlg.h"
 #include "SafeCombinationCtrl.h"
+#include "./SelectionCriteria.h"
 
 #include <wx/statline.h>
 
@@ -40,7 +41,8 @@ END_EVENT_TABLE()
 
 CExportTextWarningDlgBase::CExportTextWarningDlgBase(wxWindow* parent) : wxDialog(parent, wxID_ANY, wxEmptyString,
                                                                       wxDefaultPosition, wxDefaultSize, 
-                                                                      wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER)
+                                                                      wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER),
+                                                                      selCriteria(new SelectionCriteria)
 {
   enum { TopMargin = 20, BottomMargin = 20, SideMargin = 30, RowSeparation = 10, ColSeparation = 20};
   
@@ -90,6 +92,11 @@ CExportTextWarningDlgBase::CExportTextWarningDlgBase(wxWindow* parent) : wxDialo
   dlgSizer->AddSpacer(BottomMargin);
   
   SetSizerAndFit(dlgSizer);
+}
+
+CExportTextWarningDlgBase::~CExportTextWarningDlgBase()
+{
+  delete selCriteria;
 }
 
 void CExportTextWarningDlgBase::OnAdvancedSelection( wxCommandEvent& evt )

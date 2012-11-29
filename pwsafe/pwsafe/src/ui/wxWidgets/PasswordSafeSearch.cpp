@@ -17,6 +17,7 @@
 #include "passwordsafeframe.h"
 #include "wxutils.h"
 #include "AdvancedSelectionDlg.h"
+#include "./SelectionCriteria.h"
 
 ////@begin XPM images
 #include "./graphics/findtoolbar/new/find.xpm"
@@ -66,7 +67,8 @@ enum {
 
 PasswordSafeSearch::PasswordSafeSearch(PasswordSafeFrame* parent) : m_toolbar(0), 
                                                                     m_parentFrame(parent), 
-                                                                    m_fAdvancedSearch(false)
+                                                                    m_fAdvancedSearch(false),
+                                                                    m_criteria(new SelectionCriteria)
 {
 }
 
@@ -74,6 +76,8 @@ PasswordSafeSearch::~PasswordSafeSearch(void)
 {
   delete m_toolbar;
   m_toolbar = 0;
+  delete m_criteria;
+  m_criteria = 0;
 }
 
 /*!
@@ -106,18 +110,18 @@ void PasswordSafeSearch::OnDoSearchT(Iter begin, Iter end, Accessor afn)
   if (searchText.IsEmpty())
     return;
     
-  if (m_criteria.IsDirty() || txtCtrl->IsModified() || m_searchPointer.IsEmpty())  {
+  if (m_criteria->IsDirty() || txtCtrl->IsModified() || m_searchPointer.IsEmpty())  {
       m_searchPointer.Clear();
    
       if (!m_fAdvancedSearch)
         FindMatches(tostringx(searchText), m_toolbar->GetToolState(ID_FIND_IGNORE_CASE), m_searchPointer, begin, end, afn);
       else
         FindMatches(tostringx(searchText), m_toolbar->GetToolState(ID_FIND_IGNORE_CASE), m_searchPointer, 
-                      m_criteria.GetSelectedFields(), m_criteria.HasSubgroupRestriction(), m_criteria.SubgroupSearchText(),
-                      m_criteria.SubgroupObject(), m_criteria.SubgroupFunction(), 
-                      m_criteria.CaseSensitive(), begin, end, afn);
+                      m_criteria->GetSelectedFields(), m_criteria->HasSubgroupRestriction(), m_criteria->SubgroupSearchText(),
+                      m_criteria->SubgroupObject(), m_criteria->SubgroupFunction(), 
+                      m_criteria->CaseSensitive(), begin, end, afn);
 
-      m_criteria.Clean();
+      m_criteria->Clean();
       txtCtrl->SetModified(false);
       m_searchPointer.InitIndex();
   }
@@ -243,8 +247,8 @@ IMPLEMENT_CLASS_TEMPLATE( AdvancedSelectionDlg, wxDialog, FindDlgType )
  */
 void PasswordSafeSearch::OnAdvancedSearchOptions(wxCommandEvent& /* evt */)
 {
-  m_criteria.Clean();
-  AdvancedSelectionDlg<FindDlgType> dlg(m_parentFrame, &m_criteria);
+  m_criteria->Clean();
+  AdvancedSelectionDlg<FindDlgType> dlg(m_parentFrame, m_criteria);
   if (dlg.ShowModal() == wxID_OK) {
     m_fAdvancedSearch = true;
   }

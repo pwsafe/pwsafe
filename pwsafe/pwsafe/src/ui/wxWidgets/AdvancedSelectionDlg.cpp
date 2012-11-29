@@ -24,6 +24,7 @@
 #include <wx/statline.h>
 
 #include "AdvancedSelectionDlg.h"
+#include "SelectionCriteria.h"
 
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>

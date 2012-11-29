@@ -28,6 +28,7 @@
 #include "./DbSelectionPanel.h"
 #include "./AdvancedSelectionDlg.h"
 #include "../../core/PWScore.h"
+#include "./SelectionCriteria.h"
 
 #include <wx/filename.h>
 #include <wx/valgen.h>

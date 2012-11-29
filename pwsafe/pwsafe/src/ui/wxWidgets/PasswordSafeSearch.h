@@ -21,11 +21,11 @@
 #include <wx/toolbar.h>
 
 #include "../../core/ItemData.h"
-#include "AdvancedSelectionDlg.h"
 ////@end includes
 
 ////@begin forward declarations
 class PasswordSafeFrame;
+struct SelectionCriteria;
 ////@end forward declarations
 
 #if 0
@@ -149,7 +149,7 @@ private:
   wxToolBar*           m_toolbar;
   PasswordSafeFrame*   m_parentFrame;
   bool                 m_fAdvancedSearch;
-  SelectionCriteria    m_criteria;
+  SelectionCriteria*    m_criteria;
   SearchPointer        m_searchPointer;
 };
 

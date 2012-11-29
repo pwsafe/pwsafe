@@ -23,6 +23,7 @@
 #include "./ComparisonGridTable.h"
 
 #include "./AdvancedSelectionDlg.h"
+#include "./SelectionCriteria.h"
 #include "../../core/PWScore.h"
 #include "./wxutils.h"
 #include <algorithm>

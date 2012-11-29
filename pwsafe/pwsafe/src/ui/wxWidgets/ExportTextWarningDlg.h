@@ -13,6 +13,8 @@
 
 #include "./AdvancedSelectionDlg.h"
 
+struct SelectionCriteria;
+
 class CExportTextWarningDlgBase : public wxDialog {
 
   DECLARE_CLASS( CExportTextWarningDlgBase )
@@ -20,13 +22,13 @@ class CExportTextWarningDlgBase : public wxDialog {
 
 public:
   CExportTextWarningDlgBase(wxWindow* parent);
-  ~CExportTextWarningDlgBase() {}
+  ~CExportTextWarningDlgBase();
 
   void OnAdvancedSelection( wxCommandEvent& evt );
 
   virtual void DoAdvancedSelection() = 0;
 
-  SelectionCriteria selCriteria;
+  SelectionCriteria* selCriteria;
   StringX           passKey;
   wxString          delimiter;
 };
@@ -41,7 +43,7 @@ public:
   }
 
   virtual void DoAdvancedSelection() {
-    AdvancedSelectionDlg<DlgType> dlg(this, &selCriteria);
+    AdvancedSelectionDlg<DlgType> dlg(this, selCriteria);
     dlg.ShowModal();
   }
 };

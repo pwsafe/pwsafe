@@ -30,6 +30,8 @@
 #include "../../core/core.h"
 #include "./addeditpropsheet.h"
 #include "./fieldselectiondlg.h"
+#include "./SelectionCriteria.h"
+
 #include <wx/statline.h>
 #include <wx/grid.h>
 #include <wx/ptr_scpd.h>
