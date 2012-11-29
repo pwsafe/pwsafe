@@ -17,6 +17,7 @@
 #include "./AdvancedSelectionDlg.h"
 #include "../../os/file.h"
 #include "./DbSelectionPanel.h"
+#include "./SelectionCriteria.h"
 
 #include <wx/statline.h>
 
