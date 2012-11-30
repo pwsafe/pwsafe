@@ -158,7 +158,7 @@ SOURCES= passwordsafeframe.cpp \
 	PwsSync.cpp DbSelectionPanel.cpp CompareDlg.cpp \
 	wxutils.cpp ComparisonGridTable.cpp SizeRestrictedPanel.cpp \
 	fieldselectionpanel.cpp fieldselectiondlg.cpp pwsmenushortcuts.cpp \
-	ManagePwdPolicies.cpp PasswordPolicy.cpp
+	ManagePwdPolicies.cpp PasswordPolicy.cpp SelectionCriteria.cpp
 
 
 OBJECTS=$(SOURCES:%.cpp=$(OBJECTPATH)/%.o)

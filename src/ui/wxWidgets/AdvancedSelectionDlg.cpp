@@ -32,84 +32,6 @@
 
 void EnableSizerElements(wxSizer* sizer, wxWindow* ignore, bool enable);
 
-CItemData::FieldType subgroups[] = {  CItemData::GROUP,
-                                      CItemData::GROUPTITLE,
-                                      CItemData::NOTES,
-                                      CItemData::TITLE,
-                                      CItemData::URL,
-                                      CItemData::USER
-                                  } ;
-
-struct _subgroupFunctions subgroupFunctions[] = { {wxT("equals"),              PWSMatch::MR_EQUALS},
-                                                  {wxT("does not equal"),      PWSMatch::MR_NOTEQUAL},
-                                                  {wxT("begins with"),         PWSMatch::MR_BEGINS},
-                                                  {wxT("does not begin with"), PWSMatch::MR_NOTBEGIN},
-                                                  {wxT("ends with"),           PWSMatch::MR_ENDS},
-                                                  {wxT("does not end with"),   PWSMatch::MR_NOTEND},
-                                                  {wxT("contains"),            PWSMatch::MR_CONTAINS},
-                                                  {wxT("does not contain"),    PWSMatch::MR_NOTCONTAIN} } ;
-
-CItemData::FieldType selectableFields[] = { CItemData::GROUP,
-                                            CItemData::TITLE,
-                                            CItemData::USER,
-                                            CItemData::PASSWORD,
-                                            CItemData::NOTES,
-                                            CItemData::URL,
-                                            CItemData::AUTOTYPE,
-                                            CItemData::PWHIST,
-                                            CItemData::POLICY,
-                                            CItemData::POLICYNAME,
-                                            CItemData::SYMBOLS,
-                                            CItemData::RUNCMD,
-                                            CItemData::EMAIL,
-                                            CItemData::DCA,
-                                            CItemData::SHIFTDCA,
-                                            CItemData::PROTECTED,
-                                            CItemData::CTIME,
-                                            CItemData::ATIME,
-                                            CItemData::XTIME,
-                                            CItemData::XTIME_INT,
-                                            CItemData::PMTIME,
-                                            CItemData::RMTIME,
-                                      };
-
-
-
-wxString GetSelectableFieldName(CItemData::FieldType ft) {
-  return towxstring(CItemData::FieldName(ft));
-}
-
-size_t GetNumFieldsSelectable() {
-  return WXSIZEOF(selectableFields);
-}
-
-CItemData::FieldType GetSelectableField(size_t idx) {
-  wxASSERT_MSG(idx < GetNumFieldsSelectable(), wxT("Invalid index for GetSelectableField"));
-  return selectableFields[idx];
-}
-
-wxString SelectionCriteria::GetGroupSelectionDescription() const
-{
-  if (!m_fUseSubgroups)
-    return _("All entries");
-  else
-    return wxString(_("Entries whose ")) << GetSelectableFieldName(subgroups[m_subgroupObject]) << wxT(' ')
-            << subgroupFunctions[m_subgroupFunction].name << wxT(" \"") << m_subgroupText
-            << wxT("\" [") << (m_fCaseSensitive? wxT("") : _("not ")) << _("case-sensitive]");
-}
-
-//returns true if all fields have been selected
-bool SelectionCriteria::GetFieldSelection(wxArrayString& selectedFields, wxArrayString& unselectedFields)
-{
-  for (size_t idx = 0; idx < GetNumFieldsSelectable(); ++idx) {
-    if (m_bsFields.test(selectableFields[idx]))
-      selectedFields.Add(GetSelectableFieldName(selectableFields[idx]));
-    else
-      unselectedFields.Add(GetSelectableFieldName(selectableFields[idx]));
-  }
-  return m_bsFields.count() == NumberOf(selectableFields);
-}
-
 ////////////////////////////////////////////////////////////////////////////
 // AdvancedSelectionPanel implementation
 
@@ -156,14 +78,14 @@ void AdvancedSelectionPanel::CreateControls(wxWindow* parentWnd)
     hbox->AddSpacer(ColSeparation);
     
     wxComboBox* comboSubgroup = new wxComboBox(this, wxID_ANY);
-    for (size_t idx = 0 ; idx < NumberOf(subgroups); ++idx) comboSubgroup->AppendString(GetSelectableFieldName(subgroups[idx]));
+    for (size_t idx = 0 ; idx < SelectionCriteria::GetNumSubgroups(); ++idx) comboSubgroup->AppendString(SelectionCriteria::GetSelectableFieldName(SelectionCriteria::GetSubgroup(idx)));
     comboSubgroup->SetValidator(wxGenericValidator(&m_criteria->m_subgroupObject));
     hbox->Add(comboSubgroup, wxSizerFlags(1).Expand());
     
     hbox->AddSpacer(ColSeparation);
     
     wxComboBox* comboFunctions = new wxComboBox(this, wxID_ANY);
-    for( size_t idx = 0; idx < NumberOf(subgroupFunctions); ++idx) comboFunctions->AppendString(subgroupFunctions[idx].name);
+    for( size_t idx = 0; idx < SelectionCriteria::GetNumSubgroups(); ++idx) comboFunctions->AppendString(SelectionCriteria::GetSubgroupFunctionName(idx));
     comboFunctions->SetValidator(wxGenericValidator(&m_criteria->m_subgroupFunction));
     hbox->Add(comboFunctions, wxSizerFlags(1).Expand());
     
@@ -229,9 +151,9 @@ void AdvancedSelectionPanel::CreateControls(wxWindow* parentWnd)
       
       //add all the field names to both listboxes to size the dialog/wizard page correctly
       //These are anyway removed in TransferDataToWindow below before doing anything else
-      for (size_t idx=0; idx < WXSIZEOF(selectableFields); ++idx) {
-        lbAvailable->Append(GetSelectableFieldName(selectableFields[idx]), reinterpret_cast<void *>(idx));
-        lbSelected->Append(GetSelectableFieldName(selectableFields[idx]), reinterpret_cast<void *>(idx));
+      for (size_t idx=0; idx < SelectionCriteria::GetNumFieldsSelectable(); ++idx) {
+        lbAvailable->Append(SelectionCriteria::GetSelectableFieldName(SelectionCriteria::GetSelectableField(idx)), reinterpret_cast<void *>(idx));
+        lbSelected->Append(SelectionCriteria::GetSelectableFieldName(SelectionCriteria::GetSelectableField(idx)), reinterpret_cast<void *>(idx));
       }      
     }
   }
@@ -251,16 +173,16 @@ bool AdvancedSelectionPanel::TransferDataToWindow()
       lbAvailable->Clear();
       lbSelected->Clear();
 
-      for (size_t idx = 0; idx < NumberOf(selectableFields); ++idx) {
-        const CItemData::FieldType ft = selectableFields[idx];
+      for (size_t idx = 0; idx < SelectionCriteria::GetNumFieldsSelectable(); ++idx) {
+        const CItemData::FieldType ft = SelectionCriteria::GetSelectableField(idx);
         if (IsUsableField(ft)) {
           if ( (criteriaChanged && m_criteria->IsFieldSelected(ft)) || 
                               (!criteriaChanged && IsPreselectedField(ft)) ) {
-            const wxString title = GetSelectableFieldName(ft) + (IsMandatoryField(ft)? _(" [Mandatory Field]"): wxEmptyString);
+            const wxString title = SelectionCriteria::GetSelectableFieldName(ft) + (IsMandatoryField(ft)? _(" [Mandatory Field]"): wxEmptyString);
             lbSelected->Append(title, reinterpret_cast<void *>(idx));
           }
           else {
-            lbAvailable->Append(GetSelectableFieldName(ft), reinterpret_cast<void *>(idx));
+            lbAvailable->Append(SelectionCriteria::GetSelectableFieldName(ft), reinterpret_cast<void *>(idx));
           }
         }
       }
@@ -302,7 +224,7 @@ bool AdvancedSelectionPanel::TransferDataFromWindow()
       
       for (size_t idx = 0; idx < count; ++idx) {
           const size_t which = reinterpret_cast<size_t>(lbSelected->GetClientData(static_cast<unsigned int>(idx)));
-          m_criteria->m_bsFields.set(selectableFields[which], true);
+          m_criteria->SelectField(SelectionCriteria::GetSelectableField(which));
       }
     }
     return true;
@@ -322,9 +244,9 @@ void AdvancedSelectionPanel::OnSelectSome( wxCommandEvent& /* evt */ )
   if (lbAvailable->GetSelections(aSelected)) {
     for (size_t idx = 0; idx < aSelected.GetCount(); ++idx) {
       size_t which = reinterpret_cast<size_t>(lbAvailable->GetClientData(static_cast<unsigned int>(aSelected[idx] - idx)));
-      wxASSERT(which < NumberOf(selectableFields));
+      wxASSERT(which < SelectionCriteria::GetNumFieldsSelectable());
       lbAvailable->Delete(static_cast<unsigned int>(aSelected[idx] - idx));
-      lbSelected->Append(GetSelectableFieldName(selectableFields[which]), reinterpret_cast<void *>(which));
+      lbSelected->Append(SelectionCriteria::GetSelectableFieldName(SelectionCriteria::GetSelectableField(which)), reinterpret_cast<void *>(which));
     }
   }
 }
@@ -340,7 +262,7 @@ void AdvancedSelectionPanel::OnSelectAll( wxCommandEvent& /* evt */ )
   while (lbAvailable->GetCount()) {
       size_t which = reinterpret_cast<size_t>(lbAvailable->GetClientData(0));
       lbAvailable->Delete(0);
-      lbSelected->Append(GetSelectableFieldName(selectableFields[which]), reinterpret_cast<void *>(which));
+      lbSelected->Append(SelectionCriteria::GetSelectableFieldName(SelectionCriteria::GetSelectableField(which)), reinterpret_cast<void *>(which));
   }
 }
 
@@ -356,10 +278,10 @@ void AdvancedSelectionPanel::OnRemoveSome( wxCommandEvent& /* evt */ )
   if (lbSelected->GetSelections(aSelected)) {
     for (size_t idx = 0, nRemoved = 0; idx < aSelected.GetCount(); ++idx) {
       size_t which = reinterpret_cast<size_t>(lbSelected->GetClientData(static_cast<unsigned int>(aSelected[idx] - nRemoved)));
-      wxASSERT(which < NumberOf(selectableFields));
-      if (!IsMandatoryField(selectableFields[which])) {
+      wxASSERT(which < SelectionCriteria::GetNumFieldsSelectable());
+      if (!IsMandatoryField(SelectionCriteria::GetSelectableField(which))) {
         lbSelected->Delete(static_cast<unsigned int>(aSelected[idx] - nRemoved++));
-        lbAvailable->Append(GetSelectableFieldName(selectableFields[which]), reinterpret_cast<void *>(which));
+        lbAvailable->Append(SelectionCriteria::GetSelectableFieldName(SelectionCriteria::GetSelectableField(which)), reinterpret_cast<void *>(which));
       }
     }
   }
@@ -375,9 +297,9 @@ void AdvancedSelectionPanel::OnRemoveAll( wxCommandEvent& /* evt */ )
 
   for(size_t itemsLeft = lbSelected->GetCount(), idx = 0; idx < itemsLeft; ) {
       size_t which = reinterpret_cast<size_t>(lbSelected->GetClientData(reinterpret_cast<unsigned int &>(idx)));
-      if (!IsMandatoryField(selectableFields[which])) {
+      if (!IsMandatoryField(SelectionCriteria::GetSelectableField(which))) {
         lbSelected->Delete(reinterpret_cast<unsigned int &>(idx));
-        lbAvailable->Append(GetSelectableFieldName(selectableFields[which]), reinterpret_cast<void *>(which));
+        lbAvailable->Append(SelectionCriteria::GetSelectableFieldName(SelectionCriteria::GetSelectableField(which)), reinterpret_cast<void *>(which));
         --itemsLeft;
       }
       else

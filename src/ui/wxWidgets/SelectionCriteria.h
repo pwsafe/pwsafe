@@ -9,17 +9,8 @@
 #ifndef __SELECTIONCRITERIA_H__
 #define __SELECTIONCRITERIA_H__
 
-extern CItemData::FieldType subgroups[];
-size_t GetNumFieldsSelectable();
-CItemData::FieldType GetSelectableField(size_t idx);
-
-struct _subgroupFunctions {
-  const charT* name;
-  PWSMatch::MatchRule function;
-};
-extern struct _subgroupFunctions subgroupFunctions[];
-
-
+#include "../../core/ItemData.h"
+#include "./wxutils.h"
 
 
 /*
@@ -65,8 +56,8 @@ public:
   size_t GetNumSelectedFields() const             { return m_bsFields.count(); }
   wxString SubgroupSearchText() const             { return m_subgroupText; }
   bool CaseSensitive() const                      { return m_fCaseSensitive; }
-  CItemData::FieldType SubgroupObject() const     { return subgroups[m_subgroupObject];}
-  PWSMatch::MatchRule  SubgroupFunction() const   { return subgroupFunctions[m_subgroupFunction].function; }
+  CItemData::FieldType SubgroupObject() const     { return GetSubgroup(m_subgroupObject);}
+  PWSMatch::MatchRule  SubgroupFunction() const   { return GetSubgroupFunction(m_subgroupFunction); }
   int  SubgroupFunctionWithCase() const           { return m_fCaseSensitive? -SubgroupFunction(): SubgroupFunction(); }
   void SelectAllFields()                          { for(size_t idx = 0; idx < GetNumFieldsSelectable(); ++idx) 
                                                       m_bsFields.set(GetSelectableField(idx));
@@ -100,6 +91,17 @@ SelectionCriteria& operator=(const SelectionCriteria& data) {
   }
   friend class AdvancedSelectionPanel;
   friend bool operator!=(const SelectionCriteria& a, const SelectionCriteria& b);
+
+  // static helpers for outsiders
+  static size_t GetNumSubgroups(void);
+  static CItemData::FieldType GetSubgroup(size_t idx);
+  static size_t GetNumFieldsSelectable();
+  static CItemData::FieldType GetSelectableField(size_t idx);
+  static wxString GetSelectableFieldName(CItemData::FieldType ft);
+  static size_t GetNumSubgroupFunctions();
+  static wxString GetSubgroupFunctionName(size_t idx);
+  static PWSMatch::MatchRule GetSubgroupFunction(size_t idx);
+
 };
 
 inline bool operator!=(const SelectionCriteria& a, const SelectionCriteria& b)
