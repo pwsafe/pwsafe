@@ -449,7 +449,7 @@ SyncOptionsSummaryPage::SyncOptionsSummaryPage(wxWizard* parent, SyncData* data)
 
   m_updatedFieldsGrid = new wxFlexGridSizer(0, 3, RowSeparation, ColSeparation);
   sizer->Add(m_updatedFieldsGrid, gridFlags.Proportion(1));
-  sizer->AddSpacer(RowSeparation);
+  sizer->AddSpacer(RowSeparation*2);
 
   sizer->Add(new wxStaticText(this, ID_NOT_UPDATED_TXT, wxEmptyString), flags.Proportion(0));
   sizer->AddSpacer(RowSeparation);
@@ -496,6 +496,11 @@ void SyncOptionsSummaryPage::OnPageEnter(PageDirection dir)
     for( size_t idx = 0; idx < fieldsNotSelected.Count(); ++idx) {
       m_notUpdatedFieldsGrid->Add(new wxStaticText(this, wxID_ANY, wxT("* ") + fieldsNotSelected[idx]));
     }
+
+    // Set the wxSizer Proportion of the two grids of field lists to the number
+    // of rows they have now, or else they overlap each other
+    m_pageSizer->GetItem(m_updatedFieldsGrid)->SetProportion(m_updatedFieldsGrid->GetRows());
+    m_pageSizer->GetItem(m_notUpdatedFieldsGrid)->SetProportion(m_notUpdatedFieldsGrid->GetRows());
   }
   GetSizer()->Layout();
 }
