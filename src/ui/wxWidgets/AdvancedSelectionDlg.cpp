@@ -85,7 +85,7 @@ void AdvancedSelectionPanel::CreateControls(wxWindow* parentWnd)
     hbox->AddSpacer(ColSeparation);
     
     wxComboBox* comboFunctions = new wxComboBox(this, wxID_ANY);
-    for( size_t idx = 0; idx < SelectionCriteria::GetNumSubgroups(); ++idx) comboFunctions->AppendString(SelectionCriteria::GetSubgroupFunctionName(idx));
+    for( size_t idx = 0; idx < SelectionCriteria::GetNumSubgroupFunctions(); ++idx) comboFunctions->AppendString(SelectionCriteria::GetSubgroupFunctionName(idx));
     comboFunctions->SetValidator(wxGenericValidator(&m_criteria->m_subgroupFunction));
     hbox->Add(comboFunctions, wxSizerFlags(1).Expand());
     
