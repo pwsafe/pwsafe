@@ -33,8 +33,6 @@ public:
   int GetBrowseURLImageIndex() const {return m_iBrowseURL_BM_offset;}
   int GetSendEmailImageIndex() {return m_iSendEmail_BM_offset;}
   void MapControlIDtoImage(ID2ImageMap &IDtoImages);
-  void SetupImageList(const UINT *pBM_IDs, const UINT *pDisBM_IDs, 
-                      const int numBMs, const int nImageList);
   void SetBitmapBackground(CBitmap &bm, const COLORREF newbkgrndColour);
   void RefreshImages();
 
@@ -51,16 +49,33 @@ protected:
   DECLARE_MESSAGE_MAP()
 
 private:
-  static const CString m_csMainButtons[];
-  static const UINT m_MainToolBarIDs[];
-  static const UINT m_MainToolBarClassicBMs[];
-  static const UINT m_MainToolBarNewBMs[];
-  static const UINT m_MainToolBarNewDisBMs[];
+  struct GuiRecord {
+    CString name;
+    UINT ID;
+    UINT classicBM; // RESID of classic bitmap,
+    UINT newBM;     // of New bitmap, and
+    UINT disBM;     // disabled version of new bitmap
+    UINT GetClassicBM() const {return classicBM;}
+    UINT GetNewBM() const {return newBM;}
+    UINT GetDisBM() const {return disBM;}
+  };
+  // member fuction pointer typedef for above getters
+  typedef UINT (GuiRecord::*GuiRecordGetter)() const;
+  
+  // Following needed for std::find_if
+  // Abandon with great joy when C++11 Lambda supported!
+  struct GuiInfoFinder {
+  GuiInfoFinder(const CString &s) : m_s(s) {}
+    bool operator()(const GuiRecord &r) {return r.name == m_s;}
+    const CString &m_s;
+  };
 
-  static const UINT m_OtherIDs[];
-  static const UINT m_OtherClassicBMs[];
-  static const UINT m_OtherNewBMs[];
-  static const UINT m_OtherNewDisBMs[];
+  void SetupImageList(const GuiRecord *guiInfo,
+                      GuiRecordGetter GetBM, GuiRecordGetter GetDisBM,
+                      const int numBMs, const int nImageList);
+
+  static const GuiRecord MainGuiInfo[];
+  static const GuiRecord OtherGuiInfo[];
 
   // 1st = Classic; 2nd = New 8; 3rd = New 32;
   CImageList m_ImageLists[3];
@@ -70,7 +85,7 @@ private:
   CString m_csDefaultButtonString;
   TBBUTTON *m_pOriginalTBinfo;
 
-  int m_iMaxNumButtons, m_iNum_Bitmaps, m_iNumDefaultButtons, m_NumBits;
+  int m_iNum_Bitmaps, m_iNumDefaultButtons, m_NumBits;
   int m_toolbarMode, m_bitmode;
   bool m_bIsDefault;
   int m_iBrowseURL_BM_offset, m_iSendEmail_BM_offset;
