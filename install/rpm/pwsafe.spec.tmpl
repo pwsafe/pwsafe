@@ -1,13 +1,13 @@
 Summary: Password Safe is a password database utility.
 Name: pwsafe
-Version: 0.8BETA
-Release: 1
-License: See /usr/share/doc/%{name}-%{version}/LICENSE
+Version: @VERSION@
+Release: 2
+License: Artistic2.0
 Group: Applications/Utils
 Vendor: Rony Shapiro
 URL: http://pwsafe.org/
 Packager: David Dreggors <dadreggors@gmail.com>
-Source:	pwsafe-0.8BETA-src.tgz
+Source:	pwsafe-@VERSION@-src.tgz
 BuildRequires: gcc-c++, libXt-devel, libXtst-devel, libuuid-devel, xerces-c-devel, wxGTK-devel, make
 
 %description
@@ -21,7 +21,7 @@ you use.
 %setup -q
 
 %build
-make dist RPMBUILD="true"
+make rpmbuild
 
 %install
 rm -rf ${RPM_BUILD_ROOT}
@@ -29,10 +29,20 @@ install -d -m 755 ${RPM_BUILD_ROOT}
 install -d -m 755 ${RPM_BUILD_ROOT}/usr/bin
 install -d -m 755 ${RPM_BUILD_ROOT}/usr/share/applications
 install -d -m 755 ${RPM_BUILD_ROOT}/usr/share/icons/hicolor/48x48/apps
-install -m 755 ${RPM_BUILD_DIR}/%{name}-%{version}/install/rpm/redhat/usr/bin/pwsafe ${RPM_BUILD_ROOT}/usr/bin
-cp -r ${RPM_BUILD_DIR}/%{name}-%{version}/install/rpm/redhat/usr/share/* ${RPM_BUILD_ROOT}/usr/share
-install -m 755 ${RPM_BUILD_DIR}/%{name}-%{version}/install/rpm/redhat/tmp/fedora-pwsafe.desktop ${RPM_BUILD_ROOT}/usr/share/applications
-install -m 755 ${RPM_BUILD_DIR}/%{name}-%{version}/install/rpm/redhat/tmp/pwsafe.png ${RPM_BUILD_ROOT}/usr/share/icons/hicolor/48x48/apps
+install -d -m 755 ${RPM_BUILD_ROOT}/usr/share/pwsafe/xml
+install -d -m 755 ${RPM_BUILD_ROOT}/usr/share/doc/passwordsafe/help
+install -d -m 755 ${RPM_BUILD_ROOT}/usr/share/man/man1
+install -d -m 755 ${RPM_BUILD_ROOT}/usr/share/locale
+install -d -m 755 ${RPM_BUILD_ROOT}/tmp
+install -m 755 -s ${RPM_BUILD_DIR}/%{name}-%{version}/src/ui/wxWidgets/GCCUnicodeRelease/pwsafe ${RPM_BUILD_ROOT}/usr/bin
+install -m 644 ${RPM_BUILD_DIR}/%{name}-%{version}/install/desktop/fedora-pwsafe.desktop ${RPM_BUILD_ROOT}/usr/share/applications
+install -m 644 ${RPM_BUILD_DIR}/%{name}-%{version}/install/graphics/pwsafe.png ${RPM_BUILD_ROOT}/usr/share/icons/hicolor/48x48/apps
+install -m 644 ${RPM_BUILD_DIR}/%{name}-%{version}/README.txt ${RPM_BUILD_DIR}/%{name}-%{version}/docs/ReleaseNotes.txt ${RPM_BUILD_DIR}/%{name}-%{version}/docs/ChangeLog.txt ${RPM_BUILD_DIR}/%{name}-%{version}/LICENSE ${RPM_BUILD_DIR}/%{name}-%{version}/install/copyright ${RPM_BUILD_ROOT}/usr/share/doc/passwordsafe
+install -m 644 ${RPM_BUILD_DIR}/%{name}-%{version}/docs/pwsafe.1 ${RPM_BUILD_ROOT}/usr/share/man/man1
+gzip -9 ${RPM_BUILD_ROOT}/usr/share/man/man1/pwsafe.1
+install -m 644 ${RPM_BUILD_DIR}/%{name}-%{version}/xml/* ${RPM_BUILD_ROOT}/usr/share/pwsafe/xml
+install -m 644 ${RPM_BUILD_DIR}/%{name}-%{version}/help/help.zip ${RPM_BUILD_ROOT}/usr/share/doc/passwordsafe/help
+cp -a ${RPM_BUILD_DIR}/%{name}-%{version}/src/ui/wxWidgets/I18N/mos/* ${RPM_BUILD_ROOT}/usr/share/locale
 
 %clean
 rm -rf ${RPM_BUILD_ROOT}
@@ -41,8 +51,10 @@ rm -rf ${RPM_BUILD_ROOT}
 
 %postun
 
+%docdir /usr/share/doc/passwordsafe
+%ghost docs/*
+
 %files
-%attr(755,root,root) %doc LICENSE docs
 %attr(755,root,root) /usr/share/pwsafe
 %attr(755,root,root) /usr/share/doc/passwordsafe
 %attr(644,root,root) /usr/share/locale/de/LC_MESSAGES/pwsafe.mo
@@ -62,6 +74,9 @@ rm -rf ${RPM_BUILD_ROOT}
 %attr(755, root, root) /usr/bin/pwsafe
 
 %changelog
+* Sun Dec 02 2012 Rony Shapiro <ronys@users.sourceforge.net> - 0.8BETA-2
+- Streamline rpm build process under PasswordSafe source tree
+- Remove unwanted doc files from RPM
 * Thu Nov 08 2012 David Dregors <dadreggors@gmail.com> - 0.8BETA-1
 - Spec file created for Fedora rpm builds
 - First rpm build for Fedora 17
