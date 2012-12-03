@@ -32,7 +32,7 @@ CViewReport::CViewReport(wxWindow* parent, CReport* pRpt) :
   wxBoxSizer* dlgSizer = new wxBoxSizer(wxVERTICAL);
   
   wxTextCtrl* textCtrl = new wxTextCtrl(this, wxID_ANY, towxstring(pRpt->GetString()), 
-                                      wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY);
+                                      wxDefaultPosition, wxSize(640,480), wxTE_MULTILINE|wxTE_READONLY);
   dlgSizer->Add(textCtrl, wxSizerFlags().Border(wxALL).Expand().Proportion(1));
   
   wxStdDialogButtonSizer* bs = CreateStdDialogButtonSizer(0);
@@ -40,8 +40,13 @@ CViewReport::CViewReport(wxWindow* parent, CReport* pRpt) :
   wxASSERT_MSG(bs, wxT("Could not create an empty wxStdDlgButtonSizer"));
   
   bs->Add(new wxButton(this, wxID_SAVE, _("&Save to Disk")));
+  bs->AddSpacer(ColSeparation);
   bs->Add(new wxButton(this, wxID_COPY, _("&Copy to Clipboard")));
-  bs->Add(new wxButton(this, wxID_CLOSE, _("&Finish")));
+  bs->AddSpacer(ColSeparation);
+  wxButton* finishButton = new wxButton(this, wxID_CLOSE, _("&Finish"));
+  finishButton->SetDefault();
+  bs->Add(finishButton);
+
   bs->Realize();
 
   Connect(wxID_SAVE, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(CViewReport::OnSave) );
