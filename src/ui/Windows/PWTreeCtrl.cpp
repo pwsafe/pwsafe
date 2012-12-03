@@ -42,8 +42,8 @@ static char THIS_FILE[] = __FILE__;
 // Hover time of 1.5 seconds before expanding a group during D&D
 #define HOVERTIME 1500
 
-const wchar_t GROUP_SEP = L'.';
-const wchar_t *GROUP_SEP2 = L".";
+extern const wchar_t GROUP_SEP = L'.';
+extern const wchar_t *GROUP_SEP2 = L".";
 
 // following header for D&D data passed over OLE:
 // Process ID of sender (to determine if src == tgt)
@@ -990,16 +990,28 @@ static StringX GetFirstPathElem(StringX &sxPath)
   // Get first path element and chop it off, i.e., if
   // path = "a.b.c.d"
   // will return "a" and path will be "b.c.d"
-  // (assuming GROUP_SEP is '.')
+  // path = "a..b.c.d"
+  // will return "a." and path will be "b.c.d"
+   // (assuming GROUP_SEP is '.')
 
   StringX sxElement;
-  const size_t n1stDot = sxPath.find_first_of(L'.');
-  if (n1stDot == StringX::npos) {
+  size_t dotPos = sxPath.find_first_of(GROUP_SEP);
+  size_t len=sxPath.length();
+  if (dotPos == StringX::npos){
     sxElement = sxPath;
     sxPath = L"";
   } else {
-    sxElement = sxPath.substr(0, n1stDot);
-    sxPath = sxPath.substr(n1stDot + 1);
+    while ((dotPos < len) && (sxPath[dotPos] == GROUP_SEP)) {// look for consecutive dots
+      dotPos++;
+    }
+    if (dotPos < len) {
+      sxElement = sxPath.substr(0, dotPos-1);
+      sxPath = sxPath.substr(dotPos);
+    }
+    else { // trailing dots
+      sxElement = sxPath;
+      sxPath = L"";
+    }
   }
   return sxElement;
 }
@@ -1030,13 +1042,13 @@ HTREEITEM CPWTreeCtrl::AddGroup(const CString &group, bool &bAlreadyExists)
 
   if (!group.IsEmpty()) {
     StringX sxPath = group;
-    StringX sxTemp, sxPath2Root(L""), sxDot(L".");
+    StringX sxTemp, sxPath2Root(L"");
     do {
       sxTemp = GetFirstPathElem(sxPath);
       if (sxPath2Root.empty())
         sxPath2Root = sxTemp;
       else
-        sxPath2Root += sxDot + sxTemp;
+        sxPath2Root += GROUP_SEP2 + sxTemp;
 
       if (!ExistsInTree(ti, sxTemp, si)) {
         ti = InsertItem(sxTemp.c_str(), ti, TVI_SORT);

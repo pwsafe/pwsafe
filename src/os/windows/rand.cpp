@@ -14,6 +14,7 @@
 #include <process.h>
 
 #include "../rand.h"
+#include "../lib.h"
 
 // See the MSDN documentation for RtlGenRandom. We will try to load it
 // and if that fails, use our own random number generator. The function
@@ -23,18 +24,7 @@ static BOOLEAN (APIENTRY *pfnGetRandomData)(void*, ULONG) = NULL;
 
 bool pws_os::InitRandomDataFunction()
 {
-  // Qualify full path name.  (Lockheed Martin) Secure Coding  11-14-2007
-  TCHAR szFileName[ MAX_PATH ];
-  memset( szFileName, 0, MAX_PATH );
-  GetSystemDirectory( szFileName, MAX_PATH );
-  size_t nLen = _tcslen( szFileName );
-  if (nLen > 0) {
-    if (szFileName[ nLen - 1 ] != '\\')
-      _tcscat_s( szFileName, MAX_PATH, _T("\\") );
-  }
-  _tcscat_s( szFileName, MAX_PATH, _T("ADVAPI32.DLL") );
-
-  HMODULE hLib = LoadLibrary( szFileName );
+  HMODULE hLib = LoadLibraryPWS(_T("ADVAPI32.DLL"), LOAD_LIBRARY_SYS);
   // End of change.  (Lockheed Martin) Secure Coding  11-14-2007
 
   BOOLEAN (APIENTRY *pfnGetRandomDataT)(void*, ULONG) = NULL;

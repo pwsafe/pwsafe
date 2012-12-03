@@ -12,6 +12,7 @@
 
 #include "../typedefs.h"
 #include "../mem.h"
+#include "../lib.h"
 
 #include <Wincrypt.h>
 #pragma comment(lib, "crypt32.lib")
@@ -34,14 +35,34 @@ bool pws_os::munlock(void *p, size_t size)
 #endif
 }
 
+typedef WINCRYPT32API BOOL (* LP_CryptProtectMemory)(LPVOID pDataIn, DWORD cbDataIn, DWORD dwFlags);
+
 bool pws_os::mcryptProtect(void *p, size_t size)
 {
   ASSERT((size % CRYPTPROTECTMEMORY_BLOCK_SIZE) == 0);
-  return CryptProtectMemory(p, size, CRYPTPROTECTMEMORY_SAME_PROCESS) == TRUE;
+  bool res = true;
+  //CryptProtectMemory available only in Vista+, so we need to check and load it manually 
+  HINSTANCE hCRYPT32 = pws_os::LoadLibraryPWS(_T("crypt32.dll"), pws_os::LOAD_LIBRARY_SYS);
+  if (hCRYPT32) {
+     LP_CryptProtectMemory protectPtr = (LP_CryptProtectMemory)GetProcAddress(hCRYPT32, "CryptProtectMemory");
+     if (protectPtr)
+       res = (protectPtr(p, size, CRYPTPROTECTMEMORY_SAME_PROCESS) == TRUE);
+     FreeLibrary(hCRYPT32);
+  }
+  return res;
 }
 
 bool pws_os::mcryptUnprotect(void *p, size_t size)
 {
   ASSERT((size % CRYPTPROTECTMEMORY_BLOCK_SIZE) == 0);
-  return CryptUnprotectMemory(p, size, CRYPTPROTECTMEMORY_SAME_PROCESS) == TRUE;
+   bool res = true;
+  //CryptProtectMemory available only in Vista+, so we need to check and load it manually 
+  HINSTANCE hCRYPT32 = pws_os::LoadLibraryPWS(_T("crypt32.dll"), pws_os::LOAD_LIBRARY_SYS);
+  if (hCRYPT32) {
+     LP_CryptProtectMemory unprotectPtr = (LP_CryptProtectMemory)GetProcAddress(hCRYPT32, "CryptUnprotectMemory");
+     if (unprotectPtr)
+       res = (unprotectPtr(p, size, CRYPTPROTECTMEMORY_SAME_PROCESS) == TRUE);
+     FreeLibrary(hCRYPT32);
+  }
+  return res;
 }

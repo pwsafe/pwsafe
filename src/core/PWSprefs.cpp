@@ -59,6 +59,14 @@ bool PWSprefs::m_userSetCfgFile = false; // true iff user set config file (-g co
 // One place for the config filename:
 const stringT PWSprefs::cfgFileName = _T("pwsafe.cfg");
 
+#ifdef UNICODE
+typedef std::wifstream ifstreamT;
+typedef std::wofstream ofstreamT;
+#else
+typedef std::ifstream ifstreamT;
+typedef std::ofstream ofstreamT;
+#endif
+
 /*
  Note: to change a preference between application and database, the way 
  to do it is to set the current one as obsolete and define a new one.
@@ -1069,7 +1077,7 @@ void PWSprefs::InitializePreferences()
 #else
     const char *fname = m_configfilename.c_str();
 #endif
-    ofstream ofs(reinterpret_cast<const char *>(fname));
+    ofstreamT ofs(m_configfilename.c_str());
     if (!ofs.bad()) {
       ofs.close();
       pws_os::DeleteAFile(m_configfilename.c_str());
