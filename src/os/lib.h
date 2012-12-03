@@ -20,7 +20,7 @@ namespace pws_os {
    //LOAD_LIBRARY_CUSTOM -- use specified path (ask system to find it)
    enum loadLibraryTypes { LOAD_LIBRARY_SYS, LOAD_LIBRARY_APP, LOAD_LIBRARY_CUSTOM };
 #ifdef _WIN32
-   extern HMODULE LoadLibraryPWS(const TCHAR *lib, loadLibraryTypes type);
+   extern HMODULE LoadLibrary(const TCHAR *lib, loadLibraryTypes type);
 #endif
 }
 #endif /* __LIB_H */
