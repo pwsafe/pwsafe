@@ -24,7 +24,7 @@ static BOOLEAN (APIENTRY *pfnGetRandomData)(void*, ULONG) = NULL;
 
 bool pws_os::InitRandomDataFunction()
 {
-  HMODULE hLib = LoadLibrary(_T("ADVAPI32.DLL"), LOAD_LIBRARY_SYS);
+  HMODULE hLib = HMODULE(LoadLibrary(_T("ADVAPI32.DLL"), LOAD_LIBRARY_SYS));
   // End of change.  (Lockheed Martin) Secure Coding  11-14-2007
 
   BOOLEAN (APIENTRY *pfnGetRandomDataT)(void*, ULONG) = NULL;

@@ -100,7 +100,7 @@ void InstallFaultHandler(const int major, const int minor, const int build,
                          const wchar_t *revision, const DWORD timestamp)
 {
   
-  hDbgHelp = pws_os::LoadLibrary(_T("DbgHelp.dll"), pws_os::LOAD_LIBRARY_SYS);
+  hDbgHelp = HMODULE(pws_os::LoadLibrary(_T("DbgHelp.dll"), pws_os::LOAD_LIBRARY_SYS));
   if (hDbgHelp == NULL)
     return;
 
