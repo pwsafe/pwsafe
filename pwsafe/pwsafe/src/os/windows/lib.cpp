@@ -28,6 +28,9 @@ HMODULE pws_os::LoadLibraryPWS(const TCHAR *lib, loadLibraryTypes type){
       TRACE(_T("GetModuleFileName failed when loading dynamic library\n"));
       return NULL;
     }
+    else
+       //set last slash to \0 for truncating app name
+       *_tcsrchr(szFilePath, _T('\\')) = _T('\0');
   }
   //Add slash after directory path
   if (type != LOAD_LIBRARY_CUSTOM) {
