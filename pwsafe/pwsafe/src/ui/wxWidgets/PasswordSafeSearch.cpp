@@ -208,7 +208,7 @@ struct FindDlgType {
     return false;
   }
   
-  static bool IsPreselectedField(CItemData::FieldType field) {
+  static bool IsPreselectedField(CItemData::FieldType /*field*/) {
     return true;
   }
 

@@ -202,7 +202,7 @@ struct CompareDlgType {
     }
   }
 
-  static bool IsUsableField(CItemData::FieldType field) {
+  static bool IsUsableField(CItemData::FieldType /*field*/) {
     return true;
   }
 

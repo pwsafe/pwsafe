@@ -162,6 +162,9 @@
     <ClInclude Include="SizeRestrictedPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SelectionCriteria.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="pwsafe.rc">
@@ -305,6 +308,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PasswordPolicy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SelectionCriteria.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
