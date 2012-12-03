@@ -10,18 +10,20 @@
 #define __LIB_H
 
 #include "typedefs.h"
-#ifdef _WIN32
-#include <wtypes.h>
-#endif
 
 namespace pws_os {
-   //LOAD_LIBRARY_SYS -- load form system dir
-   //LOAD_LIBRARY_APP -- load from application dir
-   //LOAD_LIBRARY_CUSTOM -- use specified path (ask system to find it)
+  /**
+   * Windows:
+   * LOAD_LIBRARY_SYS -- load from system dir
+   * LOAD_LIBRARY_APP -- load from application dir
+   * LOAD_LIBRARY_CUSTOM -- use specified path (ask system to find it)
+   *
+   * Linux: 'type' maps to 'flags' for dlopen()
+   */
    enum loadLibraryTypes { LOAD_LIBRARY_SYS, LOAD_LIBRARY_APP, LOAD_LIBRARY_CUSTOM };
-#ifdef _WIN32
-   extern HMODULE LoadLibrary(const TCHAR *lib, loadLibraryTypes type);
-#endif
+   extern void *LoadLibrary(const TCHAR *lib, int type);
+   extern void *GetFunction(void *handle, const char *name);
+   extern void FreeLibrary(void *handle);
 }
 #endif /* __LIB_H */
 //-----------------------------------------------------------------------------
