@@ -89,6 +89,7 @@ BEGIN_EVENT_TABLE( PWSTreeCtrl, wxTreeCtrl )
 ////@end PWSTreeCtrl event table entries
 END_EVENT_TABLE()
 
+const wchar_t GROUP_SEP = L'.';
 
 // helper class to match CItemData with wxTreeItemId
 class PWTreeItemData : public wxTreeItemData
@@ -194,19 +195,30 @@ static StringX GetPathElem(StringX &path)
   // Get first path element and chop it off, i.e., if
   // path = "a.b.c.d"
   // will return "a" and path will be "b.c.d"
-  // (assuming GROUP_SEP is '.')
-  const TCHAR GROUP_SEP = _T('.');
+  // path = "a..b.c.d"
+  // will return "a." and path will be "b.c.d"
+   // (assuming GROUP_SEP is '.')
 
-  StringX retval;
-  StringX::size_type N = path.find(GROUP_SEP);
-  if (N == StringX::npos) {
-    retval = path;
-    path = _T("");
+  StringX sxElement;
+  size_t dotPos = sxPath.find_first_of(GROUP_SEP);
+  size_t len=sxPath.length();
+  if (dotPos == StringX::npos){
+    sxElement = sxPath;
+    sxPath = L"";
   } else {
-    retval = path.substr(0, N);
-    path = path.substr(N + 1);
+    while ((dotPos < len) && (sxPath[dotPos] == GROUP_SEP)) {// look for consecutive dots
+      dotPos++;
+    }
+    if (dotPos < len) {
+      sxElement = sxPath.substr(0, dotPos-1);
+      sxPath = sxPath.substr(dotPos);
+    }
+    else { // trailing dots
+      sxElement = sxPath;
+      sxPath = L"";
+    }
   }
-  return retval;
+  return sxElement;
 }
 
 bool PWSTreeCtrl::ExistsInTree(wxTreeItemId node,

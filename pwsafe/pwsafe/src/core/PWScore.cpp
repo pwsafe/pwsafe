@@ -2792,6 +2792,7 @@ void PWScore::UndoUpdatePasswordHistory(SavePWHistoryMap &mapSavedHistory)
 int PWScore::DoRenameGroup(const StringX &sxOldPath, const StringX &sxNewPath)
 {
   const StringX sxDot(L".");
+  const wchar_t wcDot=L'.';
   StringX sxOldPath2 = sxOldPath + sxDot;
   const size_t len2 = sxOldPath2.length();
   ItemListIter iter;
@@ -2799,8 +2800,13 @@ int PWScore::DoRenameGroup(const StringX &sxOldPath, const StringX &sxNewPath)
   for (iter = m_pwlist.begin(); iter != m_pwlist.end(); iter++) {
     if (iter->second.GetGroup() == sxOldPath) {
       iter->second.SetGroup(sxNewPath);
-    } else
-    if (iter->second.GetGroup().substr(0, len2) == sxOldPath2) {
+    } 
+    else if ((iter->second.GetGroup().length() > len2) && (iter->second.GetGroup().substr(0, len2) == sxOldPath2) &&
+     (iter->second.GetGroup()[len2] != wcDot)) {
+      // Need to check that next symbol is not a dot
+      // to ensure not affecting another group
+      // (group name could contain traling dots, for example abc..def.g)
+      // subgroup name will have len > len2 (old_name + dot + subgroup_name)
       StringX sxSubGroups = iter->second.GetGroup().substr(len2);
       iter->second.SetGroup(sxNewPath + sxDot + sxSubGroups);
     }

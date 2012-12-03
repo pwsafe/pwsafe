@@ -49,6 +49,7 @@
 #include "os/dir.h"
 #include "os/file.h"
 #include "os/env.h"
+#include "os/lib.h"
 
 #include "Shlwapi.h"
 
@@ -406,14 +407,14 @@ void ThisMfcApp::LoadLocalizedStuff()
 
   // Find reseource-only DLL if requested
   const CString format_string = (cs_CTRY.IsEmpty()) ?
-                      L"%spwsafe%s%s.dll" : L"%spwsafe%s_%s.dll";
-  cs_ResPath.Format(format_string, cs_ExePath, cs_LANG, cs_CTRY);
-  m_hInstResDLL = LoadLibrary(cs_ResPath);
+                      _T("pwsafe%s%s.dll") : _T("pwsafe%s_%s.dll");
+  cs_ResPath.Format(format_string, cs_LANG, cs_CTRY);
+  m_hInstResDLL = pws_os::LoadLibraryPWS(LPCTSTR(cs_ResPath), pws_os::LOAD_LIBRARY_APP);
 
   if (m_hInstResDLL == NULL && !cs_CTRY.IsEmpty()) {
     // Now try base
-    cs_ResPath.Format(L"%spwsafe%s.dll", cs_ExePath, cs_LANG);
-    m_hInstResDLL = LoadLibrary(cs_ResPath);
+    cs_ResPath.Format(_T("pwsafe%s.dll"), cs_LANG);
+    m_hInstResDLL = pws_os::LoadLibraryPWS(LPCTSTR(cs_ResPath), pws_os::LOAD_LIBRARY_APP);
   }
 
   if (m_hInstResDLL == NULL) {

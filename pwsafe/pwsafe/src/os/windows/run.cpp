@@ -19,6 +19,7 @@
 #include "../env.h"
 #include "../file.h"
 #include "../utf8conv.h"
+#include "../lib.h"
 
 #include "pws_autotype/pws_at.h"
 
@@ -42,13 +43,12 @@ struct st_run_impl {
     : pInit(NULL), pUnInit(NULL), hCBWnd(NULL), m_AT_HK_module(NULL) {
     // Support Autotype with Launch Browser and Run Command
     // Try to load DLL to call back when window active for Autotype
-    stringT dll_loc = pws_os::getexecdir();
 #if defined( _DEBUG ) || defined( DEBUG )
-    dll_loc += _T("pws_at_D.dll");
+    TCHAR *dll_name = _T("pws_at_D.dll");
 #else
-    dll_loc += _T("pws_at.dll");
+    TCHAR *dll_name = _T("pws_at.dll");
 #endif
-    m_AT_HK_module = LoadLibrary(dll_loc.c_str());
+    m_AT_HK_module = pws_os::LoadLibraryPWS(dll_name, pws_os::LOAD_LIBRARY_APP);
     if (m_AT_HK_module != NULL) {
       pws_os::Trace(_T("st_run_impl::st_run_impl - AutoType DLL Loaded: OK\n"));
       pInit  = (AT_PROC_BOOL)GetProcAddress(m_AT_HK_module, "AT_HK_Initialise");
