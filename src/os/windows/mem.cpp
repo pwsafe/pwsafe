@@ -35,7 +35,7 @@ bool pws_os::munlock(void *p, size_t size)
 #endif
 }
 
-typedef WINCRYPT32API BOOL (* LP_CryptProtectMemory)(LPVOID pDataIn, DWORD cbDataIn, DWORD dwFlags);
+typedef BOOL (WINAPI *LP_CryptProtectMemory)(LPVOID pDataIn, DWORD cbDataIn, DWORD dwFlags);
 
 bool pws_os::mcryptProtect(void *p, size_t size)
 {
