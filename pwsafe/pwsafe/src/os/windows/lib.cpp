@@ -13,7 +13,7 @@
 #include "../debug.h"
 #include <windows.h>
 
-HMODULE pws_os::LoadLibraryPWS(const TCHAR *lib, loadLibraryTypes type){
+HMODULE pws_os::LoadLibrary(const TCHAR *lib, loadLibraryTypes type){
 // Qualify full path name.  (Lockheed Martin) Secure Coding  11-14-2007
   TCHAR szFilePath[MAX_PATH+1];
   memset(szFilePath, 0, MAX_PATH+1);

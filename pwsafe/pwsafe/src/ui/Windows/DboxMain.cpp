@@ -159,7 +159,7 @@ DboxMain::DboxMain(CWnd* pParent)
   m_TUUIDVisibleAtMinimize(pws_os::CUUID::NullUUID())
 {
   // Need to do the following as using the direct calls will fail for Windows versions before Vista
-  m_hUser32 = pws_os::LoadLibraryPWS(_T("User32.dll"), pws_os::LOAD_LIBRARY_SYS);
+  m_hUser32 = pws_os::LoadLibrary(_T("User32.dll"), pws_os::LOAD_LIBRARY_SYS);
   if (m_hUser32 != NULL) {
     m_pfcnShutdownBlockReasonCreate = (PSBR_CREATE)::GetProcAddress(m_hUser32, "ShutdownBlockReasonCreate"); 
     m_pfcnShutdownBlockReasonDestroy = (PSBR_DESTROY)::GetProcAddress(m_hUser32, "ShutdownBlockReasonDestroy");
@@ -233,7 +233,7 @@ void DboxMain::RegisterSessionNotification(const bool bRegister)
   typedef DWORD (WINAPI *PWTS_UnRegSN) (HWND);
 
   m_bWTSRegistered = false;
-  HINSTANCE hWTSAPI32 = pws_os::LoadLibraryPWS(_T("wtsapi32.dll"), pws_os::LOAD_LIBRARY_SYS);
+  HINSTANCE hWTSAPI32 = pws_os::LoadLibrary(_T("wtsapi32.dll"), pws_os::LOAD_LIBRARY_SYS);
   if (hWTSAPI32 == NULL)
     return;
 
