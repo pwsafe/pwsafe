@@ -51,22 +51,22 @@ struct st_run_impl {
     m_AT_HK_module = HMODULE(pws_os::LoadLibrary(dll_name, pws_os::LOAD_LIBRARY_APP));
     if (m_AT_HK_module != NULL) {
       pws_os::Trace(_T("st_run_impl::st_run_impl - AutoType DLL Loaded: OK\n"));
-      pInit  = (AT_PROC_BOOL)GetProcAddress(m_AT_HK_module, "AT_HK_Initialise");
+      pInit  = AT_PROC_BOOL(pws_os::GetFunction(m_AT_HK_module, "AT_HK_Initialise"));
       pws_os::Trace(_T("st_run_impl::st_run_impl - Found AT_HK_Initialise: %s\n"),
             pInit != NULL ? _T("OK") : _T("FAILED"));
 
-      pUnInit = (AT_PROC_BOOL)GetProcAddress(m_AT_HK_module, "AT_HK_UnInitialise");
+      pUnInit = AT_PROC_BOOL(pws_os::GetFunction(m_AT_HK_module, "AT_HK_UnInitialise"));
       pws_os::Trace(_T("st_run_impl::st_run_impl - Found AT_HK_UnInitialise: %s\n"),
             pUnInit != NULL ? _T("OK") : _T("FAILED"));
 
-      pGetVer = (AT_PROC_INT)GetProcAddress(m_AT_HK_module, "AT_HK_GetVersion");
+      pGetVer = AT_PROC_INT(pws_os::GetFunction(m_AT_HK_module, "AT_HK_GetVersion"));
       pws_os::Trace(_T("st_run_impl::st_run_impl - Found AT_HK_GetVersion: %s\n"),
             pGetVer != NULL ? _T("OK") : _T("FAILED"));
 
       if (pGetVer == NULL || pGetVer() != AT_DLL_VERSION) {
         pws_os::Trace(_T("st_run_impl::st_run_impl - Unable to determine DLL version")
                       _T(" or incorrect version\n"));
-        BOOL brc = FreeLibrary(m_AT_HK_module);
+        BOOL brc = pws_os::FreeLibrary(m_AT_HK_module);
         pws_os::Trace(_T("st_run_impl::st_run_impl - Free Autotype DLL: %s\n"),
                       brc == TRUE ? _T("OK") : _T("FAILED"));
         m_AT_HK_module = NULL;
@@ -96,7 +96,7 @@ struct st_run_impl {
       // during the callback process.  It will probably return failed
       // but we don't care.
       pUnInit(hCBWnd);
-      BOOL brc = FreeLibrary(m_AT_HK_module);
+      BOOL brc = pws_os::FreeLibrary(m_AT_HK_module);
       pws_os::Trace(_T("st_run_impl::~st_run_impl - Free Autotype DLL: %s\n"),
                     brc == TRUE ? _T("OK") : _T("FAILED"));
       m_AT_HK_module = NULL;

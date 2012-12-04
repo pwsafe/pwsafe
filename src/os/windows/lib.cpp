@@ -14,6 +14,7 @@
 #include <windows.h>
 
 void *pws_os::LoadLibrary(const TCHAR *lib, int type){
+  ASSERT(lib != NULL);
 // Qualify full path name.  (Lockheed Martin) Secure Coding  11-14-2007
   TCHAR szFilePath[MAX_PATH+1];
   memset(szFilePath, 0, MAX_PATH+1);
@@ -44,4 +45,20 @@ void *pws_os::LoadLibrary(const TCHAR *lib, int type){
   _tcscat_s(szFilePath, MAX_PATH, lib);
   TRACE(_T("Loading Library: %s\n"), szFilePath);
   return ::LoadLibrary(szFilePath);
+  // End of change.  (Lockheed Martin) Secure Coding  11-14-2007
 }
+
+bool pws_os::FreeLibrary(void *handle)
+{
+  if (handle != NULL)
+    return ::FreeLibrary(HMODULE(handle)) == TRUE;
+  else
+    return false;
+}
+
+void *pws_os::GetFunction(void *handle, const char *name)
+{
+  ASSERT(handle != NULL && name != NULL);
+  return ::GetProcAddress(HMODULE(handle), name);
+}
+

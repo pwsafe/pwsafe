@@ -61,10 +61,11 @@ bool pws_os::mcryptUnprotect(void *p, size_t size)
    HINSTANCE hCRYPT32 = HINSTANCE(pws_os::LoadLibrary(_T("crypt32.dll"),
                                                       pws_os::LOAD_LIBRARY_SYS));
   if (hCRYPT32) {
-     LP_CryptProtectMemory unprotectPtr = (LP_CryptProtectMemory)GetProcAddress(hCRYPT32, "CryptUnprotectMemory");
+     LP_CryptProtectMemory unprotectPtr =
+       LP_CryptProtectMemory(pws_os::GetFunction(hCRYPT32, "CryptUnprotectMemory"));
      if (unprotectPtr)
        res = (unprotectPtr(p, size, CRYPTPROTECTMEMORY_SAME_PROCESS) == TRUE);
-     FreeLibrary(hCRYPT32);
+     pws_os::FreeLibrary(hCRYPT32);
   }
   return res;
 }
