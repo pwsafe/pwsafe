@@ -23,7 +23,7 @@ namespace pws_os {
    enum loadLibraryTypes { LOAD_LIBRARY_SYS, LOAD_LIBRARY_APP, LOAD_LIBRARY_CUSTOM };
    extern void *LoadLibrary(const TCHAR *lib, int type);
    extern void *GetFunction(void *handle, const char *name);
-   extern void FreeLibrary(void *handle);
+   extern bool FreeLibrary(void *handle);
 }
 #endif /* __LIB_H */
 //-----------------------------------------------------------------------------

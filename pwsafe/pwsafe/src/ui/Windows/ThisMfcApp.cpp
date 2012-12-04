@@ -258,8 +258,8 @@ void ThisMfcApp::SetMinidumpUserStreams(const bool bOpen, const bool bRW, UserSt
 
 int ThisMfcApp::ExitInstance()
 {
-  if (m_hInstResDLL != NULL && m_hInstResDLL != m_hInstance)
-    FreeLibrary(m_hInstResDLL);
+  if (m_hInstResDLL != m_hInstance)
+    pws_os::FreeLibrary(m_hInstResDLL);
 
   CWinApp::ExitInstance();
   return 0;
@@ -368,8 +368,7 @@ void ThisMfcApp::LoadLocalizedStuff()
 
   if (cs_LANG == L"EN" && cs_CTRY.IsEmpty()) {
     // This means use the embedded resources!
-    if (m_hInstResDLL)
-      FreeLibrary(m_hInstResDLL);
+    pws_os::FreeLibrary(m_hInstResDLL);
     m_hInstResDLL = NULL;
     pws_os::Trace(L"Using embedded resources\n");
 
@@ -433,7 +432,7 @@ void ThisMfcApp::LoadLocalizedStuff()
                   HIWORD(dw_fileMajorMinor), LOWORD(dw_fileMajorMinor), HIWORD(dw_fileBuildRevision),
                   HIWORD(m_dwMajorMinor), LOWORD(m_dwMajorMinor), HIWORD(m_dwBuildRevision));
       gmb.AfxMessageBox(oops);
-      FreeLibrary(m_hInstResDLL);
+      pws_os::FreeLibrary(m_hInstResDLL);
       m_hInstResDLL = NULL;
     } else { // Passed version check
       pws_os::Trace(L"Using language DLL '%s'.\n", cs_ResPath);
@@ -688,7 +687,7 @@ void ThisMfcApp::SetupMenu()
 void ThisMfcApp::SetLanguage()
 {
   // Free old resource only DLL
-  if (m_hInstResDLL != NULL && m_hInstResDLL != m_hInstance)
+  if (m_hInstResDLL != m_hInstance)
     FreeLibrary(m_hInstResDLL);
 
   m_hInstResDLL = NULL;

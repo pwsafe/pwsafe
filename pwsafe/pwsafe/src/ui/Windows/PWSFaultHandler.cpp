@@ -104,10 +104,10 @@ void InstallFaultHandler(const int major, const int minor, const int build,
   if (hDbgHelp == NULL)
     return;
 
-  pfcnMiniDumpWriteDump = (PMDWD)::GetProcAddress(hDbgHelp, "MiniDumpWriteDump");
+  pfcnMiniDumpWriteDump = PMDWD(pws_os::GetFunction(hDbgHelp, "MiniDumpWriteDump"));
 
   if (pfcnMiniDumpWriteDump == NULL) {
-    ::FreeLibrary(hDbgHelp);
+    pws_os::FreeLibrary(hDbgHelp);
     hDbgHelp = NULL;
     return;
   }
@@ -392,7 +392,7 @@ LONG TakeMiniDump(struct _EXCEPTION_POINTERS *pExInfo, const int itype,
 
  exit:
   // Now we can free the library
-  ::FreeLibrary(hDbgHelp);
+  pwsos::FreeLibrary(hDbgHelp);
   hDbgHelp = NULL;
   pfcnMiniDumpWriteDump = NULL;
 
@@ -407,7 +407,7 @@ void RemoveFaultHandler(bool bFreeLibrary)
 
   // Free library if called during application normal termination
   if (bFreeLibrary && hDbgHelp != NULL) {
-    ::FreeLibrary(hDbgHelp);
+    pws_os::FreeLibrary(hDbgHelp);
     hDbgHelp = NULL;
   }
 
