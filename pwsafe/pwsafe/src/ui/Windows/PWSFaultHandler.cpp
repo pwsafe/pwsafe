@@ -392,7 +392,7 @@ LONG TakeMiniDump(struct _EXCEPTION_POINTERS *pExInfo, const int itype,
 
  exit:
   // Now we can free the library
-  pwsos::FreeLibrary(hDbgHelp);
+  pws_os::FreeLibrary(hDbgHelp);
   hDbgHelp = NULL;
   pfcnMiniDumpWriteDump = NULL;
 
