@@ -190,7 +190,7 @@ void PWSTreeCtrl::CreateControls()
 
 // XXX taken from Windows PWSTreeCtrl.cpp
 // XXX move to core
-static StringX GetPathElem(StringX &path)
+static StringX GetPathElem(StringX &sxPath)
 {
   // Get first path element and chop it off, i.e., if
   // path = "a.b.c.d"
