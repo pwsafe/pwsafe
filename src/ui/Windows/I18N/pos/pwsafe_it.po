@@ -2246,6 +2246,10 @@ msgstr ""
 msgid "Could not start print job."
 msgstr "Impossibile iniziare la stampa."
 
+#. Resource IDs: (344)
+msgid "Couldn't find base entry - inconsistent database"
+msgstr ""
+
 #. Resource IDs: (332)
 msgid "Couldn't save database - Please save manually"
 msgstr "Impossibile salvare il database - Si prega di salvare manualmente."
@@ -2950,12 +2954,8 @@ msgstr ""
 msgid "Export &XML"
 msgstr ""
 
-#. Resource IDs: (32085)
-msgid "Export Entry in XML format..."
-msgstr ""
-
-#. Resource IDs: (32084)
-msgid "Export Entry to Plain Text..."
+#. Resource IDs: (371, 32135)
+msgid "Export Entry To"
 msgstr ""
 
 #. Resource IDs: (123)
@@ -4452,6 +4452,10 @@ msgstr ""
 msgid "Oriya"
 msgstr ""
 
+#. Resource IDs: (1116)
+msgid "Other value last changed on:"
+msgstr ""
+
 #. Resource IDs: (1081, 1201, 1207)
 msgid "Other:"
 msgstr ""
@@ -4660,6 +4664,10 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Physical Keyboard:"
+msgstr ""
+
+#. Resource IDs: (372, 32084)
+msgid "Plain Text (tab separated)..."
 msgstr ""
 
 #. Resource IDs: (337)
@@ -6664,6 +6672,10 @@ msgstr ""
 
 #. Resource IDs: (316)
 msgid "XML files (*.xml)|*.xml||"
+msgstr ""
+
+#. Resource IDs: (372, 32085)
+msgid "XML format..."
 msgstr ""
 
 #. Resource IDs: (358)

@@ -376,8 +376,9 @@ msgstr "%s - Zsynchronizowano %s"
 #. Resource IDs: (363)
 #, c-format
 msgid "%s Either try to save database with another name or exit without saving."
-msgstr "%s Zapisz bazę danych pod inną nazwą lub zakończ pracę bez zapisywania."
- #. Resource IDs: (3887)
+msgstr ""
+
+#. Resource IDs: (363)
 #, c-format
 msgid "%s [Recovered]"
 msgstr "%s [Odzyskany]"
@@ -2270,6 +2271,10 @@ msgstr "Nie można usunąć %1 ponieważ jest to aktualny katalog."
 msgid "Could not start print job."
 msgstr "Nie udało się rozpocząć drukowania."
 
+#. Resource IDs: (344)
+msgid "Couldn't find base entry - inconsistent database"
+msgstr ""
+
 #. Resource IDs: (332)
 msgid "Couldn't save database - Please save manually"
 msgstr "Nie można zapisać bazy danych - Proszę zapisać ręcznie"
@@ -2987,13 +2992,9 @@ msgstr "Ekspor&tuj do"
 msgid "Export &XML"
 msgstr "Eksportuj &XML"
 
-#. Resource IDs: (32085)
-msgid "Export Entry in XML format..."
-msgstr "Eksportuj wpis w formacie XML..."
-
-#. Resource IDs: (32084)
-msgid "Export Entry to Plain Text..."
-msgstr "Eskportu wpis do zwykłego tekstu..."
+#. Resource IDs: (371, 32135)
+msgid "Export Entry To"
+msgstr ""
 
 #. Resource IDs: (123)
 msgid "Export Text"
@@ -4518,6 +4519,10 @@ msgstr "Wartość oryginalna:"
 msgid "Oriya"
 msgstr "Orija"
 
+#. Resource IDs: (1116)
+msgid "Other value last changed on:"
+msgstr ""
+
 #. Resource IDs: (1081, 1201, 1207)
 #, fuzzy
 msgid "Other:"
@@ -4683,10 +4688,10 @@ msgstr "Hasło jest zbyt krótkie"
 msgid "Password last changed on:"
 msgstr "Ostatnia zmiana hasła:"
 
- #. Resource IDs: (257)
+#. Resource IDs: (257)
 msgid "Password length"
-msgstr "Długość hasła"
- #. Resource IDs: (345)
+msgstr ""
+
 msgid "Password length is less than sum of 'at least' constraints"
 msgstr "Liczba znaków w haśle jest większa niż suma ograniczeń określonych opcją 'przynajmniej'"
 
@@ -4731,6 +4736,10 @@ msgstr "Perski"
 #. Resource IDs: (65535)
 msgid "Physical Keyboard:"
 msgstr "Klawiatura fizyczna:"
+
+#. Resource IDs: (372, 32084)
+msgid "Plain Text (tab separated)..."
+msgstr ""
 
 #. Resource IDs: (337)
 msgid "Please Choose a Backup to restore:"
@@ -6756,6 +6765,10 @@ msgstr "Pliki XML (*.xml)|*.xml|Wszystkie pliki (*.*)|*.*||"
 #. Resource IDs: (316)
 msgid "XML files (*.xml)|*.xml||"
 msgstr "Pliki XML (*.xml)|*.xml||"
+
+#. Resource IDs: (372, 32085)
+msgid "XML format..."
+msgstr ""
 
 #. Resource IDs: (358)
 msgid "YYMMDD_HHMMSS"
