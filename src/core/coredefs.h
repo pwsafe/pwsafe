@@ -37,7 +37,6 @@ struct st_SaveTypePW {
   }  
 };
 
-
 // Used to verify uniqueness of GTU using std::set
 struct st_GroupTitleUser {
   StringX group;
@@ -109,5 +108,10 @@ typedef std::map<StringX, PWPolicy> PSWDPolicyMap;
 typedef std::map<StringX, PWPolicy>::iterator PSWDPolicyMapIter;
 typedef std::map<StringX, PWPolicy>::const_iterator PSWDPolicyMapCIter;
 typedef std::pair<StringX, PWPolicy> PSWDPolicyMapPair;
+
+typedef std::map<int, pws_os::CUUID> KBShortcutMap;
+typedef KBShortcutMap::iterator KBShortcutMapIter;
+typedef KBShortcutMap::const_iterator KBShortcutMapConstIter;
+typedef std::pair<int, pws_os::CUUID> KBShortcutMapPair;
 
 #endif /* __COREDEFS_H */

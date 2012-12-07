@@ -17,6 +17,7 @@
 
 // Structure used for vector of reserved Hotkeys
 struct st_MenuShortcut {
+  unsigned int nControlID;
   unsigned short int siVirtKey;
   unsigned char cModifier;
 };
@@ -95,7 +96,6 @@ public:
 
   static CString FormatShortcut(MapMenuShortcutsIter iter)
   {return FormatShortcut(iter->second.cModifier, iter->second.siVirtKey);}
-
   static CString FormatShortcut(const st_MenuShortcut &mst)
   {return FormatShortcut(mst.cModifier, mst.siVirtKey);}
   static bool IsNormalShortcut(const st_MenuShortcut &mst)
@@ -116,6 +116,18 @@ struct already_inuse {
   {
     return (p.second.siVirtKey  == m_st_mst.siVirtKey &&
             p.second.cModifier == m_st_mst.cModifier);
+  }
+
+  st_MenuShortcut m_st_mst;
+};
+
+// Functor for find_if to see if shortcut is reserved
+struct reserved {
+  reserved(st_MenuShortcut& st_mst) : m_st_mst(st_mst) {}
+  bool operator()(st_MenuShortcut const& rdata) const
+  {
+    return (m_st_mst.siVirtKey == rdata.siVirtKey &&
+            m_st_mst.cModifier == rdata.cModifier);
   }
 
   st_MenuShortcut m_st_mst;

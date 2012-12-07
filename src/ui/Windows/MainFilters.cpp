@@ -276,6 +276,10 @@ bool DboxMain::PassesFiltering(const CItemData &ci,
         case FT_XTIME_INT:
           mt = PWSMatch::MT_INTEGER;
           break;
+        case FT_KBSHORTCUT:
+          bValue = ci.GetKBShortcut() != 0;
+          mt = PWSMatch::MT_BOOL;
+          break;
         case FT_UNKNOWNFIELDS:
           bValue = ci.NumberUnknownFields() > 0;
           mt = PWSMatch::MT_BOOL;

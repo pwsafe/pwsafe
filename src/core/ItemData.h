@@ -66,7 +66,7 @@ public:
     RESERVED = 0x0b /* cannot use */, RMTIME = 0x0c, URL = 0x0d, AUTOTYPE = 0x0e,
     PWHIST = 0x0f, POLICY = 0x10, XTIME_INT = 0x11, RUNCMD = 0x12, DCA = 0x13,
     EMAIL = 0x14, PROTECTED = 0x15, SYMBOLS = 0x16, SHIFTDCA = 0x17,
-    POLICYNAME = 0x18,
+    POLICYNAME = 0x18, KBSHORTCUT = 0x19,
     LAST,        // Start of unknown fields!
     END = 0xff,
     // Internal fields only - used in filters
@@ -182,6 +182,8 @@ public:
   bool IsProtected() const;
   StringX GetSymbols() const;
   StringX GetPolicyName() const;
+  int GetKBShortcut() const;
+  StringX GetKBShortcut(int &iKBShortcut) const;
 
   StringX GetFieldValue(const FieldType &ft) const;
 
@@ -248,6 +250,8 @@ public:
   void SetProtected(const bool &bOnOff);
   void SetSymbols(const StringX &sx_symbols);
   void SetPolicyName(const StringX &sx_PolicyName);
+  void SetKBShortcut(const StringX &sx_KBShortcut);
+  void SetKBShortcut(const int &iKBShortcut);
 
   void SetFieldValue(const FieldType &ft, const StringX &value);
 
@@ -368,6 +372,7 @@ private:
   CItemField m_PWPolicy;  // string encoding of item-specific password policy
   CItemField m_symbols;   // string of item-specific password symbols
   CItemField m_PolicyName; // named non-default password policy for this item
+  CItemField m_KBShortcut;
 
   // Save unknown record fields on read to put back on write unchanged
   UnknownFields m_URFL;
@@ -409,10 +414,12 @@ private:
 
 inline bool CItemData::IsTextField(unsigned char t)
 {
-  return !(t == UUID ||
-    t == CTIME     || t == PMTIME || t == ATIME || t == XTIME || t == RMTIME ||
-    t == XTIME_INT ||
-    t == RESERVED  || t == DCA    || t == SHIFTDCA || t == PROTECTED ||
+  return !(
+    t == UUID       ||
+    t == CTIME      || t == PMTIME || t == ATIME    || t == XTIME     || t == RMTIME ||
+    t == XTIME_INT  ||
+    t == RESERVED   || t == DCA    || t == SHIFTDCA || t == PROTECTED ||
+    t == KBSHORTCUT ||
     t >= LAST);
 }
 #endif /* __ITEMDATA_H */

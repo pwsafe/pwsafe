@@ -108,7 +108,7 @@ void CShowCompareDlg::PopulateResults(const bool bShowAll)
     CItemData::RUNCMD, CItemData::EMAIL,
     CItemData::DCA, CItemData::SHIFTDCA,
     CItemData::PROTECTED, CItemData::SYMBOLS,
-    CItemData::POLICY, CItemData::POLICYNAME,
+    CItemData::POLICY, CItemData::POLICYNAME, CItemData::KBSHORTCUT,
     CItemData::CTIME, CItemData::PMTIME, CItemData::ATIME, CItemData::XTIME,
     CItemData::RMTIME, CItemData::XTIME_INT, CItemData::PWHIST, CItemData::NOTES
   };

@@ -55,7 +55,8 @@ CItemData::CItemData()
     m_tttPMTime(PMTIME), m_tttRMTime(RMTIME), m_PWHistory(PWHIST),
     m_XTimeInterval(XTIME_INT), m_RunCommand(RUNCMD),
     m_DCA(DCA), m_ShiftDCA(SHIFTDCA), m_email(EMAIL), m_protected(PROTECTED),
-    m_PWPolicy(POLICY), m_symbols(SYMBOLS), m_PolicyName(POLICYNAME), 
+    m_PWPolicy(POLICY), m_symbols(SYMBOLS), m_PolicyName(POLICYNAME),
+    m_KBShortcut(KBSHORTCUT),
     m_entrytype(ET_NORMAL), m_entrystatus(ES_CLEAN),
     m_display_info(NULL)
 {
@@ -73,6 +74,7 @@ CItemData::CItemData(const CItemData &that) :
   m_RunCommand(that.m_RunCommand), m_DCA(that.m_DCA), m_ShiftDCA(that.m_ShiftDCA),
   m_email(that.m_email), m_protected(that.m_protected), 
   m_PWPolicy(that.m_PWPolicy), m_symbols(that.m_symbols), m_PolicyName(that.m_PolicyName),
+  m_KBShortcut(that.m_KBShortcut),
   m_entrytype(that.m_entrytype), m_entrystatus(that.m_entrystatus),
   m_display_info(that.m_display_info == NULL ?
                       NULL : that.m_display_info->clone())
@@ -117,6 +119,7 @@ CItemData& CItemData::operator=(const CItemData &that)
     m_PWPolicy = that.m_PWPolicy;
     m_XTimeInterval = that.m_XTimeInterval;
     m_protected = that.m_protected;
+    m_KBShortcut = that.m_KBShortcut;
 
     delete m_display_info;
     m_display_info = that.m_display_info == NULL ?
@@ -159,6 +162,7 @@ void CItemData::Clear()
   m_PWPolicy.Empty();
   m_XTimeInterval.Empty();
   m_protected.Empty();
+  m_KBShortcut.Empty();
   m_URFL.clear();
   m_entrytype = ET_NORMAL;
   m_entrystatus = ES_CLEAN;
@@ -256,6 +260,11 @@ StringX CItemData::GetFieldValue(const FieldType &ft) const
       return GetShiftDCA();
     case POLICYNAME: /* 18 */
       return GetPolicyName();
+    case KBSHORTCUT: /* 19 */
+    {
+      int iKBShortcut;
+      return GetKBShortcut(iKBShortcut);
+    }
     default:
       ASSERT(0);
   }
@@ -558,6 +567,56 @@ StringX CItemData::GetPolicyName() const
   return GetField(m_PolicyName);
 }
 
+int CItemData::GetKBShortcut() const
+{
+  int iKBShortcut;
+  GetKBShortcut(iKBShortcut);
+  return iKBShortcut;
+}
+
+StringX CItemData::GetKBShortcut(int &iKBShortcut) const
+{
+  unsigned char in[TwoFish::BLOCKSIZE]; // required by GetField
+  size_t tlen = sizeof(in); // ditto
+
+  GetField(m_KBShortcut, in, tlen);
+
+  if (tlen != 0) {
+    ASSERT(tlen == sizeof(int));
+    memcpy(&iKBShortcut, in, sizeof(int));
+
+    StringX kbs(_T(""));
+
+    WORD vk = (iKBShortcut & 0xffff0000) >> 16;
+    WORD wPWSModifiers = iKBShortcut & 0xff;
+
+    if (iKBShortcut != 0) {
+      if (wPWSModifiers & PWS_HOTKEYF_ALT)
+        kbs += _T("A");
+      if (wPWSModifiers & PWS_HOTKEYF_CONTROL)
+        kbs += _T("C");
+      if (wPWSModifiers & PWS_HOTKEYF_SHIFT)
+        kbs += _T("S");
+      if (wPWSModifiers & PWS_HOTKEYF_EXT)
+        kbs += _T("E");
+      if (wPWSModifiers & PWS_HOTKEYF_META)
+        kbs += _T("M");
+      if (wPWSModifiers & PWS_HOTKEYF_WIN)
+        kbs += _T("W");
+      if (wPWSModifiers & PWS_HOTKEYF_CMD)
+        kbs += _T("D");
+
+      kbs += _T(":");
+      ostringstreamT os1;
+      os1 << hex << setfill(charT('0')) << setw(4) << vk;
+      kbs += os1.str().c_str();
+      return kbs;
+    }
+  }
+  iKBShortcut = 0;
+  return _T("");
+}
+
 void CItemData::GetUnknownField(unsigned char &type, size_t &length,
                                 unsigned char * &pdata,
                                 const CItemField &item) const
@@ -674,6 +733,7 @@ StringX CItemData::GetPlaintext(const TCHAR &separator,
   if (bsFields.count() == bsFields.size()) {
     // Everything - note can't actually set all bits via dialog!
     // Must be in same order as full header
+    int iKBShortcut;
     unsigned char uc;
     GetProtected(uc);
     StringX sxProtected = uc != 0 ? _T("Y") : _T("N");
@@ -697,6 +757,7 @@ StringX CItemData::GetPlaintext(const TCHAR &separator,
            GetEmail() + separator +
            sxProtected + separator +
            GetSymbols() + separator +
+           GetKBShortcut(iKBShortcut) + separator +
            _T("\"") + notes + _T("\""));
   } else {
     // Not everything
@@ -755,6 +816,12 @@ StringX CItemData::GetPlaintext(const TCHAR &separator,
     }
     if (bsFields.test(CItemData::SYMBOLS))
       ret += GetSymbols() + separator;
+
+    if (bsFields.test(CItemData::KBSHORTCUT)) {
+      int iKBShortcut;
+      ret += GetKBShortcut(iKBShortcut) + separator;
+    }
+
     if (bsFields.test(CItemData::NOTES))
       ret += _T("\"") + notes + _T("\"");
     // remove trailing separator
@@ -970,6 +1037,10 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
   tmp = GetSymbols();
   if (bsExport.test(CItemData::SYMBOLS) && !tmp.empty())
     PWSUtil::WriteXMLField(oss, "symbols", tmp, utf8conv);
+
+  tmp = GetKBShortcut(i32);
+  if (bsExport.test(CItemData::KBSHORTCUT) && i32 != 0)
+    PWSUtil::WriteXMLField(oss, "kbshortcut", tmp, utf8conv);
 
   oss << "\t</entry>" << endl << endl;
   return oss.str();
@@ -1414,6 +1485,51 @@ void CItemData::SetProtected(const bool &bOnOff)
   SetField(m_protected, &ucProtected, sizeof(char));
 }
 
+void CItemData::SetKBShortcut(const StringX &sx_KBShortcut)
+{
+  int iKBShortcut(0);
+  WORD wVirtualKeyCode(0);
+  WORD wPWSModifiers(0);
+  size_t len = sx_KBShortcut.length();
+  size_t i(0);
+  if (!sx_KBShortcut.empty()) {
+    for (i = 0; i < len; i++) {
+      if (sx_KBShortcut.substr(i, 1) == _T(":")) {
+        // 4 hex digits should follow the colon
+        ASSERT(i + 5 == len);
+        istringstreamT iss(sx_KBShortcut.substr(i + 1, 4).c_str());
+        iss >> hex >> wVirtualKeyCode;
+        break;
+      }
+      if (sx_KBShortcut.substr(i, 1) == _T("A"))
+        wPWSModifiers |= PWS_HOTKEYF_ALT;
+      if (sx_KBShortcut.substr(i, 1) == _T("C"))
+        wPWSModifiers |= PWS_HOTKEYF_CONTROL;
+      if (sx_KBShortcut.substr(i, 1) == _T("S"))
+        wPWSModifiers |= PWS_HOTKEYF_SHIFT;
+      if (sx_KBShortcut.substr(i, 1) == _T("E"))
+        wPWSModifiers |= PWS_HOTKEYF_EXT;
+      if (sx_KBShortcut.substr(i, 1) == _T("M"))
+        wPWSModifiers |= PWS_HOTKEYF_META;
+      if (sx_KBShortcut.substr(i, 1) == _T("W"))
+        wPWSModifiers |= PWS_HOTKEYF_WIN;
+      if (sx_KBShortcut.substr(i, 1) == _T("D"))
+        wPWSModifiers |= PWS_HOTKEYF_CMD;
+    }
+  }
+
+  if (wPWSModifiers != 0 && wVirtualKeyCode != 0) {
+    iKBShortcut = (wVirtualKeyCode << 16) + wPWSModifiers;
+  }
+
+  SetField(m_KBShortcut, reinterpret_cast<const unsigned char *>(&iKBShortcut), sizeof(int));
+}
+
+void CItemData::SetKBShortcut(const int &iKBShortcut)
+{
+  SetField(m_KBShortcut, reinterpret_cast<const unsigned char *>(&iKBShortcut), sizeof(int));
+}
+
 void CItemData::SetFieldValue(const FieldType &ft, const StringX &value)
 {
   switch (ft) {
@@ -1482,6 +1598,9 @@ void CItemData::SetFieldValue(const FieldType &ft, const StringX &value)
       break;
     case POLICYNAME: /* 18 */
       SetPolicyName(value);
+      break;
+    case KBSHORTCUT: /* 19 */
+      SetKBShortcut(value);
       break;
     case GROUPTITLE: /* 00 */
     case UUID:       /* 01 */
@@ -1636,6 +1755,9 @@ bool CItemData::Matches(int num1, int num2, int iObject,
       break;
     case PASSWORDLEN:
       iValue = GetPasswordLength();
+      break;
+    case KBSHORTCUT:
+      iValue = GetKBShortcut();
       break;
     default:
       ASSERT(0);
@@ -2013,6 +2135,10 @@ bool CItemData::SetField(int type, const unsigned char *data, size_t len)
       if (!pull_string(str, data, len)) return false;
       SetPolicyName(str);
       break;
+    case KBSHORTCUT:
+      if (!pull_int32(i32, data, sizeof(int32))) return false;
+      SetKBShortcut(i32);
+      break;
     case END:
       break;
     default:
@@ -2142,6 +2268,7 @@ void CItemData::SerializePlainText(vector<char> &v,
   GetProtected(uc); push_uchar(v, PROTECTED, uc);
   push_string(v, SYMBOLS, GetSymbols());
   push_string(v, POLICYNAME, GetPolicyName());
+  GetKBShortcut(i32); push_int32(v, KBSHORTCUT, i32);
 
   UnknownFieldsConstIter vi_IterURFE;
   for (vi_IterURFE = GetURFIterBegin();
@@ -2194,6 +2321,7 @@ stringT CItemData::FieldName(FieldType ft)
   case PROTECTED:    LoadAString(retval, IDSC_FLDNMPROTECTED); break;
   case SYMBOLS:      LoadAString(retval, IDSC_FLDNMSYMBOLS); break;
   case POLICYNAME:   LoadAString(retval, IDSC_FLDNMPWPOLICYNAME); break;
+  case KBSHORTCUT:   LoadAString(retval, IDSC_FLDNMKBSHORTCUT); break;
   default:
     ASSERT(0);
   };
@@ -2227,6 +2355,7 @@ stringT CItemData::EngFieldName(FieldType ft)
   case PROTECTED:  return _T("Protected");
   case SYMBOLS:    return _T("Symbols");
   case POLICYNAME: return _T("Password Policy Name");
+  case KBSHORTCUT: return _T("Keyboard Shortcut");
   default:
     ASSERT(0);
     return _T("");

@@ -29,25 +29,77 @@ default value for the AutoType function (which is dislayed above and comes from
 either the <b>Password Safe</b> default or this database's default as set via the
 <a href="misc_tab.html">"Manage&nbsp;&rarr;&nbsp;Options&nbsp;&rarr;&nbsp;Misc."</a>
 tab). For more information, see the <a href="autotype.html">"AutoType"</a> help topic.</li>
+<p></p>
 <li><b>Run Cmd:</b> This field can be used to specify a command or program
 to be run via the 'Run Command' action (via the Edit menu, right-click popup
 menu or Ctrl-R). <b>Password Safe</b> is able to pass arguments to the command
 such as the entry's username, password, etc., as described <a href="run_command.html">here</a>.</li>
-
+<p></p>
 <li><b>Double click and Shift-Double click on entry:</b> This allows you to define what action
 <b>Password Safe</b> will take when
 you double-click, or double-click with Shift depressed, on an
 entry. The default is to copy the entry's password and username to the
 clipboard for double-click and shift + double-click, respectively. The
-default actions are set in <a href="misc_tab.html">, and marked with
-  "(default)" in the drop-down lists.
-
-"Manage&nbsp;&rarr;&nbsp;Options&nbsp;&rarr;&nbsp;Misc."</a> tab.</li>
+default actions are set in
+<a href="misc_tab.html">Manage&nbsp;&rarr;&nbsp;Options&nbsp;&rarr;&nbsp;Misc.</a> tab,
+and marked with "(default)" in the drop-down lists.</li>
+<p></p>
 <li><b>Password History:</b> It is possible to configure <b>Password Safe</b>
 to save the last few passwords of an entry. This can be done either when the entry is created,
 or when viewing an existing entry. You see the recent passwords associated
 with the entry. You can change the number of recent passwords that are kept.
 For more information see the Password History page <a href="password_history.html">here</a>.</li>
+<p></p>
+<li><b>Keyboard Shortcut:</b>
+Keyboard shortcuts can be assigned to an entry and allow that entry to be immediately
+selected irrespective of the current display of the database by pressing the appropriate
+keystrokes.<br><br>
+<blockquote>
+<i>Additional notes on entry keyboard shortcuts:</i>
+<ul>
+<li>The new Entry Keyboard Shortcuts are implemented as a new field in each entry in the database.
+However, the Password Safe application also has keyboard shortcuts defined that correspond
+to its menu items.  The scope of the menu item shortcuts is for all databases opened by
+that user on a particular PC and can be customised by the user
+(Manage&nbsp;&rarr;&nbsp;Options) and may change according to the user selected
+application language e.g. English, German etc.</li>
+
+<li>Therefore, although the user will be warned if they select an entry keyboard shortcut that
+is currently allocated to a menu item, there may not be a conflict if the user then
+customises the menu shortcuts or changes the application display language.  Similarly,
+an entry keyboard shortcut may not be in use when added to an entry but could become a
+conflict if the user later customises the menu shortcuts or changes the language.</li>
+
+<li>As entry keyboard shortcuts cannot change the database when used, unlike say a menu item
+shortcut that could delete an entry, to ensure that no damage is inadvertently caused,
+entry keyboard shortcuts will take precedence over menu item shortcuts.</li>
+
+<li>An entry keyboard shortcut must include the Alt or Ctrl key (with or without the Shift key).
+If this is not included when entering a value, the Alt key is added automatically. For
+example, if the user specifies "Shift + 6", the shortcut will be changed to "Alt + Shift + 6".
+If the user specifies, for example, "Ctrl + 6" it will not be altered.</li>
+
+<li>The keyboard shortcut will be removed from an entry, if it is already
+assigned to another entry in the database, in the following cases:
+<ul>
+<li>If an entry is imported (via text or XML). Note: This will also be noted in the Import
+report.</li>
+
+<li>If an entry is added during a database merge. Note: This will also be noted in the Merge
+report.</li>
+
+<li>If an entry is "Dragged & Dropped" into the database from another database.  This will
+not be the case if an entry is dragged within the same database.</li>
+
+<li>If entries are copied to the database via the results of a database Compare dialog.</li>
+
+<li>Any entry created via "Duplicate Group" or "Duplicate Entry" actions.</li>
+</li>
+</ul>
+</ul>
+</blockquote>
+</li>
+
 </ul>
 
 <!-- Added some white space at the bottom for natural scrolling -->

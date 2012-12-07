@@ -271,6 +271,7 @@ public:
                     int &numValidated, int &numImported, int &numSkipped,
                     int &numPWHErrors, int &numRenamed,
                     int &numNoPolicy,  int &numRenamedPolicies,
+                    int &numShortcutsRemoved,
                     CReport &rpt, Command *&pcommand);
   int ImportKeePassV1TXTFile(const StringX &filename,
                              int &numImported, int &numSkipped, int &numRenamed,
@@ -464,6 +465,11 @@ public:
   const std::vector<StringX> &GetEmptyGroups() {return m_vEmptyGroups;}
   bool IsEmptyGroup(const StringX &sxEmptyGroup);
 
+  // Keyboard shortcuts
+  bool AddKBShortcut(const int &iKBShortcut, const pws_os::CUUID &uuid);
+  bool DelKBShortcut(const int &iKBShortcut, const pws_os::CUUID &uuid);
+  const pws_os::CUUID & GetKBShortcut(const int &iKBShortcut);
+
 private:
   // Database update routines
 
@@ -623,6 +629,8 @@ private:
 
   stringT GetXMLPWPolicies();
   PSWDPolicyMap m_MapPSWDPLC;
+
+  KBShortcutMap m_KBShortcutMap;
 };
 
 #endif /* __PWSCORE_H */

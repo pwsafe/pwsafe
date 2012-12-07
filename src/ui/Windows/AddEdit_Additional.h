@@ -40,6 +40,7 @@ public:
   int m_DCA_to_Index[PWSprefs::maxDCA + 1];
 
   CPWHistListCtrl m_PWHistListCtrl;
+  CHotKeyCtrl m_KBShortcutCtrl;
   int m_iSortedColumn;
   bool m_bSortAscending;
   bool m_ClearPWHistory;
@@ -81,6 +82,8 @@ private:
   static int CALLBACK PWHistCompareFunc(LPARAM lParam1, LPARAM lParam2,
                                         LPARAM lParamSort);
   void SetupDCAComboBoxes(CComboBox *pcbox, bool isShift);
+  BOOL CheckKeyboardShortcut(int &iKBShortcut);
+  
   CToolTipCtrl *m_pToolTipCtrl;
 
   COLORREF m_autotype_cfOldColour, m_runcmd_cfOldColour;

@@ -909,6 +909,7 @@ void DboxMain::InitPasswordSafe()
     case CItemData::AUTOTYPE:
     case CItemData::POLICY:
     case CItemData::PROTECTED:
+    case CItemData::KBSHORTCUT:
       break;
     case CItemData::PWHIST:  // Not displayed in ListView
     default:
@@ -2276,21 +2277,78 @@ BOOL DboxMain::PreTranslateMessage(MSG* pMsg)
   if (m_pToolTipCtrl != NULL)
     m_pToolTipCtrl->RelayEvent(pMsg);
 
-  if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F1) {
-    OnHelp();
-    return TRUE;
-  }
+  if (pMsg->message == WM_KEYDOWN) {
+    switch (pMsg->wParam) {
+      case VK_F1:
+      {
+        OnHelp();
+        return TRUE;
+      }
 
-  if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_ESCAPE) {
-    // If Find Toolbar visible, close it and do not pass the ESC along.
-    if (m_FindToolBar.IsVisible()) {
-      OnHideFindToolBar();
-      return TRUE;
+      case VK_ESCAPE:
+      {
+        // If Find Toolbar visible, close it and do not pass the ESC along.
+        if (m_FindToolBar.IsVisible()) {
+          OnHideFindToolBar();
+          return TRUE;
+        }
+        // Do NOT pass the ESC along if preference EscExits is false.
+        if (!PWSprefs::GetInstance()->GetPref(PWSprefs::EscExits)) {
+          return TRUE;
+        }
+      }
+
+      case VK_MENU:
+      case VK_CONTROL:
+      case VK_SHIFT:
+        break;
+
+      default:
+      {
+        // Get PWS modifier
+        WORD wPWSModifiers(0);
+        if (GetKeyState(VK_MENU) & 0x8000)
+          wPWSModifiers |= PWS_HOTKEYF_ALT;
+        if (GetKeyState(VK_CONTROL) & 0x8000)
+          wPWSModifiers |= PWS_HOTKEYF_CONTROL;
+        if (GetKeyState(VK_SHIFT) & 0x8000)
+          wPWSModifiers |= PWS_HOTKEYF_SHIFT;
+
+        // If non-zero - see if it is an entry keyboard shortcut
+        if (wPWSModifiers != 0) {
+          int iKBShortcut = (pMsg->wParam << 16) | wPWSModifiers;
+          pws_os::CUUID uuid = m_core.GetKBShortcut(iKBShortcut);
+
+          if (uuid != pws_os::CUUID::NullUUID()) {
+            // Yes - find the entry  and deselect any already selected
+            ItemListIter iter = m_core.Find(uuid);
+            DisplayInfo *pdi = (DisplayInfo *)iter->second.GetDisplayInfo();
+            ASSERT(pdi != NULL);
+            if (m_ctlItemList.IsWindowVisible()) {
+              // Unselect all others first
+              POSITION pos = m_ctlItemList.GetFirstSelectedItemPosition();
+              while (pos) {
+                int iIndex = m_ctlItemList.GetNextSelectedItem(pos);
+                m_ctlItemList.SetItemState(iIndex, 0, LVIS_FOCUSED | LVIS_SELECTED);
+                m_ctlItemList.Update(iIndex);
+              }
+            } else {
+              HTREEITEM hti = m_ctlItemTree.GetSelectedItem();
+              if (hti != NULL) {
+                RECT r;
+                m_ctlItemTree.SetItemState(hti, 0, TVIS_DROPHILITED);
+                m_ctlItemTree.GetItemRect(hti, &r, FALSE);
+                m_ctlItemTree.InvalidateRect(&r, TRUE);
+              }
+            }
+            // Now select the target of the keyboard shortcut!
+            SelectEntry(pdi->list_index, FALSE);
+            return TRUE;
+          }
+        }
+      }
     }
-    // Do NOT pass the ESC along if preference EscExits is false.
-    if (!PWSprefs::GetInstance()->GetPref(PWSprefs::EscExits)) {
-      return TRUE;
-    }
+
   }
   return CDialog::PreTranslateMessage(pMsg);
 }

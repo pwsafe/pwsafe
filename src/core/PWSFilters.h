@@ -60,6 +60,7 @@ enum FieldType {
   FT_PROTECTED     = CItemData::PROTECTED,
   FT_SYMBOLS       = CItemData::SYMBOLS,
   FT_POLICYNAME    = CItemData::POLICYNAME,
+  FT_KBSHORTCUT    = CItemData::KBSHORTCUT,
   FT_END           = CItemData::END,
 
   // Internal fields purely for filters

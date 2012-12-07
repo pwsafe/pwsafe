@@ -92,7 +92,7 @@ public:
     // Optional columns - do NOT have to be in same order as OptCols member variable data
     PASSWORD, NOTES, URL, AUTOTYPE, PWHIST, 
     POLICY, POLICYNAME, SYMBOLS, RUNCMD, EMAIL,
-    DCA, SHIFTDCA, PROTECTED,
+    DCA, SHIFTDCA, PROTECTED, KBSHORTCUT,
     CTIME, ATIME, XTIME, XTIME_INT, PMTIME, RMTIME,
     LAST};
 

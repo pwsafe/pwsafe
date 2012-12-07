@@ -800,6 +800,11 @@ bool CPWFilterLC::SetField(const int iItem)
           m_fbool.m_bt = CFilterBoolDlg::BT_IS;
           mt = PWSMatch::MT_BOOL;
           break;
+        case FT_KBSHORTCUT:
+          // 'Add Present' not needed - bool match
+          m_fbool.m_bt = CFilterBoolDlg::BT_PRESENT;
+          mt = PWSMatch::MT_BOOL;
+          break;
         case FT_UNKNOWNFIELDS:
           // 'Add Present' not needed - bool match
           m_fbool.m_bt = CFilterBoolDlg::BT_PRESENT;
@@ -1493,6 +1498,10 @@ void CPWFilterLC::SetUpComboBoxData()
 
         stf.cs_text = CItemData::FieldName(CItemData::RMTIME).c_str();
         stf.ftype = FT_RMTIME;
+        vFcbx_data.push_back(stf);
+
+        stf.cs_text.LoadString(IDS_KBSHORTCUT);
+        stf.ftype = FT_KBSHORTCUT;
         vFcbx_data.push_back(stf);
 
         stf.cs_text.LoadString(IDS_PASSWORDHISTORY);

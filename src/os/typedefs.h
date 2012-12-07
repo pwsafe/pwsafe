@@ -48,7 +48,7 @@ typedef char charT;
 #define PWS_HOTKEYF_EXT     0x08
  
 // wxWidgets Only - Not used in Windows MFC
-#define PWS_HOTKEYF_ALTGR   HOTKEYF_ALT | HOTKEYF_CONTROL
+#define PWS_HOTKEYF_ALTGR   PWS_HOTKEYF_ALT | PWS_HOTKEYF_CONTROL
 #define PWS_HOTKEYF_META    0x10
 #define PWS_HOTKEYF_WIN     0x20
 #define PWS_HOTKEYF_CMD     0x40

@@ -44,7 +44,7 @@
 #include <algorithm>
 #include <set>
 
-const TCHAR *EXPORTHEADER  = _T("Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tPassword Expiry Interval\tRecord Modified Time\tPassword Policy\tPassword Policy Name\tHistory\tRun Command\tDCA\tShift DCA\te-mail\tProtected\tSymbols\tNotes");
+const TCHAR *EXPORTHEADER  = _T("Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tPassword Expiry Interval\tRecord Modified Time\tPassword Policy\tPassword Policy Name\tHistory\tRun Command\tDCA\tShift DCA\te-mail\tProtected\tSymbols\tKeyboard Shortcut\tNotes");
 const TCHAR *KPEXPORTHEADER  = _T("Password Groups\tGroup Tree\tAccount\tLogin Name\tPassword\tWeb Site\tComments\tUUID\tIcon\tCreation Time\tLast Access\tLast Modification\tExpires\tAttachment Description\tAttachment");
 const TCHAR *KPIMPORTEDPREFIX = _T("ImportedKeePass");
 const TCHAR *FORMATIMPORTED = _T("\xab%s\xbb \xab%s\xbb \xab%s\xbb");
@@ -201,6 +201,9 @@ StringX PWScore::BuildHeader(const CItemData::FieldBits &bsFields, const bool bI
   }
   if (bittest(bsFields, CItemData::SYMBOLS, bIncluded)) {
     hdr += CItemData::FieldName(CItemData::SYMBOLS) + TAB;
+  }
+  if (bittest(bsFields, CItemData::KBSHORTCUT, bIncluded)) {
+    hdr += CItemData::FieldName(CItemData::KBSHORTCUT) + TAB;
   }
   if (bittest(bsFields, CItemData::NOTES, bIncluded)) {
     hdr += CItemData::FieldName(CItemData::NOTES);
@@ -705,6 +708,7 @@ int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLF
                            int &numValidated, int &numImported, int &numSkipped,
                            int &numPWHErrors, int &numRenamed,
                            int &numNoPolicy, int &numRenamedPolicies,
+                           int &numShortcutsRemoved,
                            CReport &rpt, Command *&pcommand)
 {
   UUIDVector Possible_Aliases, Possible_Shortcuts;
@@ -741,6 +745,7 @@ int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLF
   numPWHErrors = iXML.getNumEntriesPWHErrors();
   numNoPolicy = iXML.getNumNoPolicies();
   numRenamedPolicies = iXML.getNumRenamedPolicies();
+  numShortcutsRemoved = iXML.getNumShortcutsRemoved();
 
   strXMLErrors = iXML.getXMLErrors();
   strSkippedList = iXML.getSkippedList();
@@ -820,7 +825,8 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   // The following's a stream of chars.  We need to process the header row 
   // as straight ASCII, and we need to handle rest as utf-8
   numImported = numSkipped = numRenamed = numPWHErrors = 0;
-  int numlines = 0;
+  int numlines(0), numshortcutsremoved(0);
+  StringX sxTemp;
 
   CItemData ci_temp;
   vector<string> vs_Header;
@@ -838,7 +844,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   enum Fields {GROUPTITLE, USER, PASSWORD, URL, AUTOTYPE,
                CTIME, PMTIME, ATIME, XTIME, XTIME_INT, RMTIME,
                POLICY, POLICYNAME, HISTORY, RUNCMD, DCA, SHIFTDCA, EMAIL,
-               PROTECTED, SYMBOLS, NOTES, 
+               PROTECTED, SYMBOLS, KBSHORTCUT, NOTES, 
                NUMFIELDS};
 
   int i_Offset[NUMFIELDS];
@@ -950,6 +956,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   // Initialize set
   GTUSet setGTU;
   InitialiseGTU(setGTU);
+  StringX sxImportedEntry;
 
   for (;;) {
     bool bNoPolicy(false);
@@ -1181,6 +1188,9 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
       numRenamed++;
     }
 
+    Format(sxImportedEntry, FORMATIMPORTED,
+                        sx_group.c_str(), sx_title.c_str(), sx_user.c_str());
+                           
     if (i_Offset[URL] >= 0 && tokens.size() > static_cast<size_t>(i_Offset[URL]))
       ci_temp.SetURL(tokens[i_Offset[URL]].c_str());
     if (i_Offset[AUTOTYPE] >= 0 && tokens.size() > static_cast<size_t>(i_Offset[AUTOTYPE]))
@@ -1257,6 +1267,8 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
         ci_temp.SetProtected(true);
     if (i_Offset[SYMBOLS] >= 0 && tokens.size() > static_cast<size_t>(i_Offset[SYMBOLS]))
       ci_temp.SetSymbols(tokens[i_Offset[SYMBOLS]].c_str());
+    if (i_Offset[KBSHORTCUT] >= 0 && tokens.size() > static_cast<size_t>(i_Offset[KBSHORTCUT]))
+      ci_temp.SetKBShortcut(tokens[i_Offset[KBSHORTCUT]].c_str());
 
     // The notes field begins and ends with a double-quote, with
     // replacement of delimiter by CR-LF.
@@ -1297,29 +1309,58 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
     // Get GUI to populate its field
     GUISetupDisplayInfo(ci_temp);
 
+    // Need to check that entry keyboard shortcut not already in use!
+    int iKBShortcut;
+    ci_temp.GetKBShortcut(iKBShortcut);
+    
+    if (iKBShortcut != 0) {
+      CUUID existingUUID = GetKBShortcut(iKBShortcut);
+      if (existingUUID != CUUID::NullUUID()) {
+        // Remove it
+        ci_temp.SetKBShortcut(0);
+        ItemListIter iter = Find(existingUUID);
+        if (iter == m_pwlist.end())
+          break;
+        // Tell the user via the report
+        StringX sxExistingEntry, sx_imported;
+        LoadAString(sx_imported, IDSC_IMPORTED);
+        Format(sxExistingEntry, FORMATIMPORTED,
+                           iter->second.GetGroup().c_str(), iter->second.GetTitle().c_str(),
+                           iter->second.GetUser().c_str());
+        Format(sxTemp, IDSC_KBSHORTCUT_REMOVED, sx_imported.c_str(), sxImportedEntry.c_str(),
+                       sxExistingEntry.c_str(), sx_imported.c_str());
+        rpt.WriteLine(sxTemp.c_str());
+        numshortcutsremoved++;
+      }
+    }
+    
     // Add to commands to execute
     Command *pcmd = AddEntryCommand::Create(this, ci_temp);
     pcmd->SetNoGUINotify();
     pmulticmds->Add(pcmd);
     numImported++;
 
-    StringX sx_imported;
-    Format(sx_imported, FORMATIMPORTED,
-                        sx_group.c_str(), sx_title.c_str(), sx_user.c_str());
-
-    rpt.WriteLine(sx_imported.c_str());
+    rpt.WriteLine(sxImportedEntry.c_str());
 
     if (bNoPolicy) {
-      Format(sx_imported, IDSC_MISSINGPOLICYNAME, sxPolicyName.c_str());
-      rpt.WriteLine(sx_imported.c_str());
+      Format(sxTemp, IDSC_MISSINGPOLICYNAME, sxPolicyName.c_str());
+      rpt.WriteLine(sxTemp.c_str());
     }
   } // file processing for (;;) loop
 
   if (numNoPolicy != 0) {
     rpt.WriteLine();
 
-    StringX sxTemp;
     LoadAString(sxTemp, IDSC_MISSINGPOLICYNAMES);
+    rpt.WriteLine(sxTemp.c_str());
+  }// 
+
+  if (numshortcutsremoved != 0) {
+    rpt.WriteLine();
+
+    StringX sx_imported;
+    LoadAString(sx_imported, IDSC_IMPORTED);
+    Format(sxTemp, IDSC_REMOVEDKBSHORTCUTS, sx_imported.c_str());
     rpt.WriteLine(sxTemp.c_str());
   }
 
@@ -1342,7 +1383,8 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   if (numImported > 0)
     SetDBChanged(true);
 
-  return ((numSkipped + numRenamed + numPWHErrors)) == 0 ? SUCCESS : OK_WITH_ERRORS;
+  return ((numSkipped + numRenamed + numPWHErrors + numshortcutsremoved)) == 0 ?
+             SUCCESS : OK_WITH_ERRORS;
 }
 
 int PWScore::ImportKeePassV1TXTFile(const StringX &filename,

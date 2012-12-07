@@ -1,4 +1,4 @@
-PasswordSafe database format description version 3.29
+PasswordSafe database format description version 3.30
 -----------------------------------------------------
 
 Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
@@ -174,6 +174,7 @@ PasswordSafe V3.26 introduced Format 0x0309
 PasswordSafe V3.28 introduced Format 0x030A
 PasswordSafe V3.29 introduced Format 0x030B
 PasswordSafe V3.29Y introduced Format 0x030C
+PasswordSafe V3.30 introduced Format 0x030D
 
 [2] A universally unique identifier is needed in order to synchronize
 databases, e.g., between a handheld pocketPC device and a
@@ -327,7 +328,8 @@ Protected Entry             0x15        1 byte        Y              [17]
 Own symbols for password    0x16        Text          Y              [18]
 Shift Double-Click Action   0x17        2 bytes       Y              [15]
 Password Policy Name        0x18        Text          Y              [19]
-End of Entry                0xff        [empty]       Y              [20]
+Entry keyboard shortcut     0x19        4 bytes       Y              [20]
+End of Entry                0xff        [empty]       Y              [21]
 
 [1] Per-record UUID to assist in sync, merge, etc. Representation is
 as described in Section 3.1.1.
@@ -464,9 +466,22 @@ set. This field is mutually exclusive with the policy name field
 the database header for password generation. This field is mutually
 exclusive with the specific policy field [0x10] and with the Own
 symbols for password field [0x16]. This was introduced in version
-0x0311 (PasswordSafe V3.28).
+0x030B (PasswordSafe V3.28).
 
-[20] An explicit end of entry field is useful for supporting new fields
+[20] Entry keyboard shortcut.  Format is:
+  Bytes 0-1: Virtual KeyCode for the character (Windows only uses byte 1)
+  Byte  2  : zero
+  Byte  3  : Keyboard Modifiers - a bitwise OR of any valid combination of:
+    PWS_HOTKEYF_ALT     0x01
+    PWS_HOTKEYF_CONTROL 0x02
+    PWS_HOTKEYF_SHIFT   0x04
+    PWS_HOTKEYF_EXT     0x08
+    PWS_HOTKEYF_META    0x10 (not supported by Windows)
+    PWS_HOTKEYF_WIN     0x20 (not supported by Windows)
+    PWS_HOTKEYF_CMD     0x40 (not supported by Windows)
+This was introduced in version 0x030D (PasswordSafe V3.30).
+
+[21] An explicit end of entry field is useful for supporting new fields
 without breaking backwards compatability.
 
 4. Extensibility

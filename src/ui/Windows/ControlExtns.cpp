@@ -286,7 +286,7 @@ HBRUSH CEditExtn::CtlColor(CDC* pDC, UINT /*nCtlColor*/)
   }
 }
 
-// Following structure used by botlh CEditExtn and CRichEditExtn for
+// Following structure used by both CEditExtn and CRichEditExtn for
 // finding menu items in the supplied extra vector based on command message number
 struct equal_cmd {
   equal_cmd(UINT_PTR const& nCmd) : m_nCmd(nCmd) {}

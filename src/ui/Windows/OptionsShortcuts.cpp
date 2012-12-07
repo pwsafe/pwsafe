@@ -308,18 +308,6 @@ void COptionsShortcuts::InitialSetup(const MapMenuShortcuts MapMenuShortcuts,
   m_ReservedShortcuts = ReservedShortcuts;
 }
 
-// Functor for find_if to see if shortcut is reserved
-struct reserved {
-  reserved(st_MenuShortcut& st_mst) : m_st_mst(st_mst) {}
-  bool operator()(st_MenuShortcut const& rdata) const
-  {
-    return (m_st_mst.siVirtKey  == rdata.siVirtKey &&
-            m_st_mst.cModifier == rdata.cModifier);
-  }
-
-  st_MenuShortcut m_st_mst;
-};
-
 // Tortuous route to get here!
 // m_HotKey looses focus and calls parent (CListCtrl) that calls here
 void COptionsShortcuts::OnHotKeyKillFocus(const int item, const UINT id,

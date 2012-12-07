@@ -25,7 +25,7 @@
 
 using pws_os::CUUID;
 
-/////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 // CAddEdit_Additional property page
 
 IMPLEMENT_DYNAMIC(CAddEdit_Additional, CAddEdit_PropertyPage)
@@ -37,6 +37,7 @@ CAddEdit_Additional::CAddEdit_Additional(CWnd * pParent, st_AE_master_data *pAEM
   m_ClearPWHistory(false), m_bSortAscending(true),
   m_pToolTipCtrl(NULL), m_bInitdone(false), m_iSortedColumn(-1)
 {
+  
   if (M_MaxPWHistory() == 0)
     M_MaxPWHistory() = PWSprefs::GetInstance()->
                            GetPref(PWSprefs::NumPWHistoryDefault);
@@ -69,6 +70,9 @@ void CAddEdit_Additional::DoDataExchange(CDataExchange* pDX)
   DDX_Control(pDX, IDC_PWHISTORY_LIST, m_PWHistListCtrl);
   DDX_Check(pDX, IDC_SAVE_PWHIST, M_SavePWHistory());
   DDX_Text(pDX, IDC_MAXPWHISTORY, M_MaxPWHistory());
+
+  // Keyboard shortcut
+  DDX_Control(pDX, IDC_KBSHORTCUT_CTRL, m_KBShortcutCtrl);
   //}}AFX_DATA_MAP
 }
 
@@ -80,6 +84,7 @@ BEGIN_MESSAGE_MAP(CAddEdit_Additional, CAddEdit_PropertyPage)
   ON_EN_CHANGE(IDC_AUTOTYPE, OnChanged)
   ON_EN_CHANGE(IDC_MAXPWHISTORY, OnChanged)
   ON_EN_CHANGE(IDC_RUNCMD, OnChanged)
+  ON_EN_CHANGE(IDC_KBSHORTCUT_CTRL, OnChanged)
 
   ON_CONTROL_RANGE(STN_CLICKED, IDC_STATIC_AUTO, IDC_STATIC_RUNCMD, OnSTCExClicked)
   ON_CBN_SELCHANGE(IDC_DOUBLE_CLICK_ACTION, OnDCAComboChanged)
@@ -132,6 +137,7 @@ BOOL CAddEdit_Additional::OnInitDialog()
 
   GetDlgItem(IDC_DEFAULTAUTOTYPE)->SetWindowText(cs_dats);
 
+
   if (M_uicaller() != IDS_ADDENTRY) {
     m_pToolTipCtrl = new CToolTipCtrl;
     if (!m_pToolTipCtrl->Create(this, TTS_BALLOON | TTS_NOPREFIX)) {
@@ -157,6 +163,28 @@ BOOL CAddEdit_Additional::OnInitDialog()
     m_stc_autotype.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);
     m_stc_runcommand.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);
   }
+  
+  // These wil be zero for Add entry
+  WORD wVirtualKeyCode, wModifiers(0), wPWSModifiers;
+  wVirtualKeyCode = (M_KBShortcut() & 0xffff0000) >> 16;
+  wPWSModifiers = M_KBShortcut() & 0xff;
+
+  // Convert PWS (cross-platform) modifiers to Windows hotkey modifiers
+  if (wPWSModifiers & PWS_HOTKEYF_ALT)
+    wModifiers |= HOTKEYF_ALT;
+  if (wPWSModifiers & PWS_HOTKEYF_CONTROL)
+    wModifiers |= HOTKEYF_CONTROL;
+  if (wPWSModifiers & PWS_HOTKEYF_SHIFT)
+    wModifiers |= HOTKEYF_SHIFT;
+  if (wPWSModifiers & PWS_HOTKEYF_EXT)
+    wModifiers |= HOTKEYF_EXT;
+
+  m_KBShortcutCtrl.SetHotKey(wVirtualKeyCode, wModifiers);
+
+  // We could do this to ensure user has at least Alt or Ctrl key
+  // But it gets changed without the user knowing - so we do it elsewhere
+  // instead and tell them.
+  //m_KBShortcutCtrl.SetRules(HKCOMB_NONE | HKCOMB_S, HOTKEYF_ALT);
 
   if (M_uicaller() == IDS_VIEWENTRY || M_protected() != 0) {
     // Disable normal Edit controls
@@ -381,7 +409,69 @@ BOOL CAddEdit_Additional::OnKillActive()
   if (UpdateData(TRUE) == FALSE)
     return FALSE;
 
+  int iKBShortcut(0);
+  if (CheckKeyboardShortcut(iKBShortcut) == FALSE)
+    return FALSE;
+
   return CAddEdit_PropertyPage::OnKillActive();
+}
+
+BOOL CAddEdit_Additional::CheckKeyboardShortcut(int &iKBShortcut)
+{
+  CGeneralMsgBox gmb;
+  WORD wVirtualKeyCode, wModifiers, wPWSModifiers(0);
+  m_KBShortcutCtrl.GetHotKey(wVirtualKeyCode, wModifiers);
+  
+  // Convert Windows hotkey modifiers to PWS (cross-platform) modifiers
+  if (wModifiers & HOTKEYF_ALT)
+    wPWSModifiers |= PWS_HOTKEYF_ALT;
+  if (wModifiers & HOTKEYF_CONTROL)
+    wPWSModifiers |= PWS_HOTKEYF_CONTROL;
+  if (wModifiers & HOTKEYF_SHIFT)
+    wPWSModifiers |= PWS_HOTKEYF_SHIFT;
+  if (wModifiers & HOTKEYF_EXT)
+    wPWSModifiers |= PWS_HOTKEYF_EXT;
+
+  iKBShortcut = (wVirtualKeyCode << 16) + wPWSModifiers;
+
+  if (iKBShortcut != 0) {
+    if ((wModifiers & HOTKEYF_ALT) == 0 && (wModifiers & HOTKEYF_CONTROL) == 0) {
+      // Add Alt key and tell user
+      gmb.AfxMessageBox(IDS_KBS_INVALID);
+      wModifiers |= HOTKEYF_ALT;
+      m_KBShortcutCtrl.SetHotKey(wVirtualKeyCode, wModifiers);
+      ((CHotKeyCtrl *)GetDlgItem(IDC_KBSHORTCUT_CTRL))->SetFocus();
+      return FALSE;
+    }
+    pws_os::CUUID uuid = M_pcore()->GetKBShortcut(iKBShortcut);
+
+    if (uuid != CUUID::NullUUID() && uuid != M_entry_uuid()) {
+      // Tell user that it already exists as an entry keyboard shortcut
+      ItemListIter iter = M_pcore()->Find(uuid);
+      const StringX sxGroup = iter->second.GetGroup();
+      const StringX sxTitle = iter->second.GetTitle();
+      const StringX sxUser  = iter->second.GetUser();
+      CString cs_errmsg;
+      cs_errmsg.Format(IDS_KBS_INUSE, sxGroup.c_str(), sxTitle.c_str(), sxUser.c_str());
+      gmb.AfxMessageBox(cs_errmsg);
+      ((CHotKeyCtrl *)GetDlgItem(IDC_KBSHORTCUT_CTRL))->SetFocus();
+      return FALSE;
+    }
+    
+    StringX sxMenuItemName;
+    unsigned char ucModifiers = wModifiers & 0xff;
+    unsigned int nCID = M_pDbx()->GetMenuShortcut(wVirtualKeyCode,ucModifiers, sxMenuItemName);
+    if (nCID != 0) {
+      // Warn user that it is already in use for a menu item (on this instance for this user!)
+      Remove(sxMenuItemName, L'&');
+      CString cs_errmsg;
+      cs_errmsg.Format(IDS_KBS_INUSEBYMENU, sxMenuItemName.c_str());
+      gmb.AfxMessageBox(cs_errmsg);
+      // We have warned them - so now accept
+      return TRUE;
+    }
+  }
+  return TRUE;
 }
 
 LRESULT CAddEdit_Additional::OnQuerySiblings(WPARAM wParam, LPARAM )
@@ -401,7 +491,8 @@ LRESULT CAddEdit_Additional::OnQuerySiblings(WPARAM wParam, LPARAM )
           if (M_autotype()    != M_pci()->GetAutoType()   ||
               M_runcommand()  != M_pci()->GetRunCommand() ||
               M_DCA()         != M_oldDCA()               ||
-              M_ShiftDCA()    != M_oldShiftDCA())
+              M_ShiftDCA()    != M_oldShiftDCA()          ||
+              M_KBShortcut()  != M_oldKBShortcut())
             return 1L;
           break;
         case IDS_ADDENTRY:
@@ -434,6 +525,14 @@ BOOL CAddEdit_Additional::OnApply()
   UpdateData(TRUE);
   M_autotype().EmptyIfOnlyWhiteSpace();
   M_runcommand().EmptyIfOnlyWhiteSpace();
+
+  int iKBShortcut(0);
+  if (CheckKeyboardShortcut(iKBShortcut) == FALSE) {
+    pFocus = GetDlgItem(IDC_KBSHORTCUT_CTRL);
+    goto error;
+  }
+
+  M_KBShortcut() = iKBShortcut;
 
   if (M_runcommand().GetLength() > 0) {
     //Check Run Command parses - don't substitute
@@ -721,3 +820,4 @@ void CAddEdit_Additional::OnPWHCopyAll()
 
   M_pDbx()->SetClipboardData(HistStr);
 }
+

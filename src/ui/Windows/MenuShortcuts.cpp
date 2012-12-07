@@ -47,7 +47,7 @@ bool CMenuShortcut::IsNormalShortcut(unsigned short int cModifier, unsigned shor
   UNREFERENCED_PARAMETER(cModifier);
   //reserved or unassigned by Windows
   //http://msdn.microsoft.com/en-us/library/dd375731%28v=VS.85%29.aspx
-  return (siVirtKey < 0xE0) &&//OEM specific and "Media"  keys
+  return (siVirtKey  < 0xE0) && //OEM specific and "Media"  keys
          (siVirtKey != 0x07) && (siVirtKey != 0x0A) &&
          (siVirtKey != 0x0B) && (siVirtKey != 0x0E) &&
          (siVirtKey != 0x0F) && (siVirtKey != 0x16) && 

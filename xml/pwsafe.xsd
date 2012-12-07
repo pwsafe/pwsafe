@@ -117,6 +117,18 @@ xmlns:xs="http://www.w3.org/2001/XMLSchema" version="3.18">
     <xs:maxInclusive value="9" />
   </xs:restriction>
 </xs:simpleType>
+
+<xs:simpleType name="kbshortcutType">
+  <xs:restriction base="xs:string">
+    <!-- Modifier:    A(lt), C(trl), S(hift), E(xt), M(eta), W(in), cm(D)
+                      Note: Meta, Win & Cmd are not supported by Windows
+         Virtual Key: Any except: space (&\20), tab (\t), newline (\n) and return (\r)
+                      Written as 4 hex characters
+      -->
+    <xs:pattern value="(A|C|S|E|M|W|D)+:[0-9a-fA-F]{4}" />
+  </xs:restriction>
+</xs:simpleType>
+
 <!-- End of Special types -->
 
 <xs:complexType name="policynamesType">
@@ -260,6 +272,7 @@ xmlns:xs="http://www.w3.org/2001/XMLSchema" version="3.18">
               <xs:element name="email" type="stringType" minOccurs="0" maxOccurs="1" />
               <xs:element name="protected" type="boolType" minOccurs="0" maxOccurs="1" />
               <xs:element name="symbols" type="stringType" minOccurs="0" maxOccurs="1" />
+              <xs:element name="kbshortcut" type="kbshortcutType" minOccurs="0" maxOccurs="1" />
             </xs:all>
             <xs:attribute name="id" type="xs:int" use="optional" />
             <xs:attribute name="normal" type="xs:boolean" use="optional" />

@@ -238,6 +238,12 @@ BOOL CAdvancedDlg::OnInitDialog()
     m_pLC_Selected->SetItemData(iItem, CItemData::PROTECTED | NORMALFIELD);
     m_bsAllowedFields.set(CItemData::PROTECTED);
     m_bsDefaultSelectedFields.set(CItemData::PROTECTED);
+
+    cs_text.LoadString(IDS_KBSHORTCUT);
+    iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
+    m_pLC_Selected->SetItemData(iItem, CItemData::KBSHORTCUT | NORMALFIELD);
+    m_bsAllowedFields.set(CItemData::KBSHORTCUT);
+    m_bsDefaultSelectedFields.set(CItemData::KBSHORTCUT);
   }
 
   // Deal with text fields - all selected by default

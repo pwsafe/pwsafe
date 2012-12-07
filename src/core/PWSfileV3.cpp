@@ -321,6 +321,9 @@ int PWSfileV3::WriteRecord(const CItemData &item)
   tmp = item.GetPolicyName();
   if (!tmp.empty())
     WriteCBC(CItemData::POLICYNAME, tmp);
+  i32 = item.GetKBShortcut();
+  if (i32 != 0)
+    WriteCBC(CItemData::KBSHORTCUT, reinterpret_cast<unsigned char *>(&i32), sizeof(int));
 
   UnknownFieldsConstIter vi_IterURFE;
   for (vi_IterURFE = item.GetURFIterBegin();
@@ -401,6 +404,11 @@ int PWSfileV3::ReadRecord(CItemData &item)
       iter->second.usecount++;
     }
   }
+
+  if (item.GetKBShortcut() != 0) {
+    int iKBShortcut = item.GetKBShortcut();
+    m_KBShortcutMap.insert(KBShortcutMapPair(iKBShortcut, item.GetUUID()));
+  }
     
   if (numread > 0)
     return status;
@@ -445,7 +453,7 @@ void PWSfileV3::StretchKey(const unsigned char *salt, unsigned long saltLen,
   }
 }
 
-const short VersionNum = 0x030B;
+const short VersionNum = 0x030D;
 
 // Following specific for PWSfileV3::WriteHeader
 #define SAFE_FWRITE(p, sz, cnt, stream) \

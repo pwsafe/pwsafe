@@ -20,13 +20,13 @@ void *pws_os::LoadLibrary(const TCHAR *lib, int type){
   memset(szFilePath, 0, MAX_PATH+1);
   if (type == LOAD_LIBRARY_SYS) {
     if (!GetSystemDirectory(szFilePath, MAX_PATH)) {
-       TRACE(_T("GetSystemDirectory failed when loading dynamic library\n"));
+       pws_os::Trace(_T("GetSystemDirectory failed when loading dynamic library\n"));
        return NULL;
     }
   }
   else if (type == LOAD_LIBRARY_APP) {
     if (!GetModuleFileName(NULL, szFilePath, MAX_PATH)) {
-      TRACE(_T("GetModuleFileName failed when loading dynamic library\n"));
+      pws_os::Trace(_T("GetModuleFileName failed when loading dynamic library\n"));
       return NULL;
     }
     else
@@ -43,7 +43,7 @@ void *pws_os::LoadLibrary(const TCHAR *lib, int type){
   }
 
   _tcscat_s(szFilePath, MAX_PATH, lib);
-  TRACE(_T("Loading Library: %s\n"), szFilePath);
+  pws_os::Trace(_T("Loading Library: %s\n"), szFilePath);
   return ::LoadLibrary(szFilePath);
   // End of change.  (Lockheed Martin) Secure Coding  11-14-2007
 }

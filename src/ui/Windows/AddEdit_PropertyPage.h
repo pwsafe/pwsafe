@@ -81,6 +81,9 @@ struct st_AE_master_data {
   CSecString oldsymbols;
   CSecString policyname;
   CSecString oldpolicyname;
+
+  // Keyboard shortcut
+  int KBShortcut, oldKBShortcut;
   
   // Attributes
   unsigned char ucprotected;
@@ -174,6 +177,10 @@ public:
   inline int &M_ioldownsymbols() {return m_AEMD.ioldownsymbols;}
   inline CSecString &M_policyname() {return m_AEMD.policyname;}
   inline CSecString &M_oldpolicyname() {return m_AEMD.oldpolicyname;}
+
+  // Keyboard shortcut
+  inline int &M_KBShortcut() {return m_AEMD.KBShortcut;}
+  inline int &M_oldKBShortcut() {return m_AEMD.oldKBShortcut;}
   
   // Attributes
   inline unsigned char &M_protected() {return m_AEMD.ucprotected;}

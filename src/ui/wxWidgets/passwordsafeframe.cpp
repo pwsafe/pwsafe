@@ -2624,6 +2624,7 @@ void PasswordSafeFrame::OnImportXML(wxCommandEvent& evt)
   wxString XMLFilename = dlg.filepath;
   int numValidated, numImported, numSkipped, numRenamed, numPWHErrors;
   int numRenamedPolicies, numNoPolicy;
+  int numShortcutsRemoved;
   bool bImportPSWDsOnly = dlg.importPasswordsOnly;
 
   wxBeginBusyCursor();  // This may take a while!
@@ -2640,7 +2641,7 @@ void PasswordSafeFrame::OnImportXML(wxCommandEvent& evt)
                             tostdstring(XSDFilename.GetFullPath()), bImportPSWDsOnly,
                             strXMLErrors, strSkippedList, strPWHErrorList, strRenameList,
                             numValidated, numImported, numSkipped, numPWHErrors, numRenamed,
-                            numNoPolicy, numRenamedPolicies,
+                            numNoPolicy, numRenamedPolicies, numShortcutsRemoved,
                             rpt, pcmd);
   wxEndBusyCursor();  // Restore normal cursor
 

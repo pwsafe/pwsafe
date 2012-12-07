@@ -176,6 +176,12 @@ void PWScore::DoAddEntry(const CItemData &item)
     IncrementPasswordPolicy(item.GetPolicyName());
   }
 
+  int iKBShortcut;
+  item.GetKBShortcut(iKBShortcut);
+
+  if (iKBShortcut != 0)
+    VERIFY(AddKBShortcut(iKBShortcut, item.GetUUID()));
+
   m_bDBChanged = true;
 }
 
@@ -251,6 +257,12 @@ void PWScore::DoDeleteEntry(const CItemData &item)
       }
     }
 
+    int iKBShortcut;
+    item.GetKBShortcut(iKBShortcut);
+
+    if (iKBShortcut != 0)
+      VERIFY(DelKBShortcut(iKBShortcut, item.GetUUID()));
+
     m_bDBChanged = true;
     m_pwlist.erase(pos); // at last!
 
@@ -291,6 +303,17 @@ void PWScore::DoReplaceEntry(const CItemData &old_ci, const CItemData &new_ci)
 
   if (new_ci.IsNormal() && new_ci.IsPolicyNameSet()) {
     IncrementPasswordPolicy(new_ci.GetPolicyName());
+  }
+
+  int ioldKBShortcut, inewKBShortcut;
+  old_ci.GetKBShortcut(ioldKBShortcut);
+  new_ci.GetKBShortcut(inewKBShortcut);
+
+  if (ioldKBShortcut != inewKBShortcut) {
+    if (ioldKBShortcut != 0)
+      VERIFY(DelKBShortcut(ioldKBShortcut, old_ci.GetUUID()));
+    if (inewKBShortcut != 0)
+      VERIFY(AddKBShortcut(inewKBShortcut, new_ci.GetUUID()));
   }
 
   m_bDBChanged = true;
@@ -356,6 +379,9 @@ void PWScore::ReInit(bool bNewFile)
   
   // Clear expired password entries
   m_ExpireCandidates.clear();
+
+  // Clear entry keyboard shortcuts
+  m_KBShortcutMap.clear();
 
   SetChanged(false, false);
 }
@@ -598,6 +624,9 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
   // Clear any old expired password entries
   m_ExpireCandidates.clear();
 
+  // Clear any old entry keyboard shortcuts
+  m_KBShortcutMap.clear();
+
   PWSfile *in = PWSfile::MakePWSfile(a_filename, m_ReadFileVersion,
                                      PWSfile::Read, status, m_pAsker, m_pReporter);
 
@@ -768,6 +797,10 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
 
   if (in3 != NULL && !in3->GetEmptyGroups().empty()) {
     m_vEmptyGroups = in3->GetEmptyGroups();
+  }
+
+  if (in3 != NULL && !in3->GetKBShortcuts().empty()) {
+    m_KBShortcutMap = in3->GetKBShortcuts();
   }
 
   m_nRecordsWithUnknownFields = in->GetNumRecordsWithUnknownFields();
@@ -3086,4 +3119,36 @@ void PWScore::RenameEmptyGroup(const StringX &sxOldPath, const StringX &sxNewPat
 
   m_vEmptyGroups.erase(iter);
   m_vEmptyGroups.push_back(sxNewPath);
+}
+
+bool PWScore::AddKBShortcut(const int &iKBShortcut, const pws_os::CUUID &uuid)
+{
+  pair< map<int, pws_os::CUUID>::iterator, bool > pr;
+  pr = m_KBShortcutMap.insert(KBShortcutMapPair(iKBShortcut, uuid));
+
+  return pr.second;
+}
+
+bool PWScore::DelKBShortcut(const int &iKBShortcut, const pws_os::CUUID &uuid)
+{
+  KBShortcutMapConstIter iter = m_KBShortcutMap.find(iKBShortcut);
+
+  if (iter == m_KBShortcutMap.end())
+    return false;
+  else {
+    ASSERT(uuid == iter->second);
+    if (uuid == iter->second)
+      m_KBShortcutMap.erase(iter);
+    return true;
+  }
+}
+
+const pws_os::CUUID & PWScore::GetKBShortcut(const int &iKBShortcut)
+{
+  KBShortcutMapConstIter iter = m_KBShortcutMap.find(iKBShortcut);
+
+  if (iter == m_KBShortcutMap.end())
+    return CUUID::NullUUID();
+  else
+    return iter->second;
 }

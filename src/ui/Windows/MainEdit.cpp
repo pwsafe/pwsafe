@@ -458,6 +458,9 @@ void DboxMain::OnDuplicateGroup()
         const StringX sxThisEntryNewGroup = sxNewPath + subPath;
         ci2.SetGroup(sxThisEntryNewGroup);
 
+        // Remove any keyboard shortcut otherwise it will be doubly assigned (not allowed!)
+        ci2.SetKBShortcut(0);
+
         if (pci->IsBase()) {
           mapOldToNewBaseUUIDs.insert(std::make_pair(pci->GetUUID(),
                                                      ci2.GetUUID()));
@@ -493,6 +496,10 @@ void DboxMain::OnDuplicateGroup()
           ci2.CreateUUID();
           ci2.SetStatus(CItemData::ES_ADDED);
           ci2.SetProtected(false);
+
+          // Remove any keyboard shortcut otherwise it will be doubly assigned (not allowed!)
+          ci2.SetKBShortcut(0);
+
           // Set new group
           StringX subPath =  pci->GetGroup();
           ASSERT(subPath.length() >= grplen);
@@ -1226,6 +1233,7 @@ void DboxMain::UpdateEntry(CAddEdit_PropertySheet *pentry_psh)
   SetChanged(Data);
 
   ChangeOkUpdate();
+  
   // Order may have changed as a result of edit
   m_ctlItemTree.SortTree(TVI_ROOT);
   SortListView();
@@ -1354,6 +1362,9 @@ void DboxMain::OnDuplicateEntry()
     ci2.SetUser(ci2_user);
     ci2.SetStatus(CItemData::ES_ADDED);
     ci2.SetProtected(false);
+
+    // Remove any keyboard shortcut otherwise it will be doubly assigned (not allowed!)
+    ci2.SetKBShortcut(0);
 
     Command *pcmd = NULL;
     if (pci->IsDependent()) {
@@ -2027,6 +2038,17 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup)
       }
     }
     ci_temp.SetStatus(CItemData::ES_ADDED);
+    
+    // Need to check that entry keyboard shortcut not already in use!
+    int iKBShortcut;
+    ci_temp.GetKBShortcut(iKBShortcut);
+    
+    if (iKBShortcut != 0 && 
+      m_core.GetKBShortcut(iKBShortcut) != CUUID::NullUUID()) {
+      // Remove it but no mechanism to tell user!
+      ci_temp.SetKBShortcut(0);
+    }
+
     // Add to pwlist
     Command *pcmd = AddEntryCommand::Create(&m_core, ci_temp);
     if (!bAddToViews) {

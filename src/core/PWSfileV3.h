@@ -69,6 +69,8 @@ public:
   void SetEmptyGroups(const std::vector<StringX> &vEmptyGroups) {m_vEmptyGroups = vEmptyGroups;}
   const std::vector<StringX> &GetEmptyGroups() const {return m_vEmptyGroups;}
 
+  const std::map<int, pws_os::CUUID> &GetKBShortcuts() const {return m_KBShortcutMap;}
+
 private:
   unsigned char m_ipthing[TwoFish::BLOCKSIZE]; // for CBC
   unsigned char m_key[32];
@@ -84,6 +86,8 @@ private:
   int ReadHeader();
   PWSFilters m_MapFilters;
   PSWDPolicyMap m_MapPSWDPLC;
+
+  KBShortcutMap m_KBShortcutMap;
 
   // EmptyGroups
   std::vector<StringX> m_vEmptyGroups;

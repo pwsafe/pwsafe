@@ -2114,8 +2114,8 @@ void DboxMain::OnImportXML()
     std::wstring strXMLErrors, strSkippedList, strPWHErrorList, strRenameList;
     CString XMLFilename = fd.GetPathName();
     //num* must be initialised because ImportXMLFile doesn't set them in case of validation errors
-    int numValidated=0, numImported=0, numSkipped=0, numRenamed=0, numPWHErrors=0;
-    int numRenamedPolicies=0, numNoPolicy=0;
+    int numValidated(0), numImported(0), numSkipped(0), numRenamed(0), numPWHErrors(0);
+    int numNoPolicy(0), numRenamedPolicies(0), numShortcutsRemoved(0);
     bool bImportPSWDsOnly = dlg.m_bImportPSWDsOnly == TRUE;
 
     CWaitCursor waitCursor;  // This may take a while!
@@ -2136,7 +2136,7 @@ void DboxMain::OnImportXML()
                               XSDFilename.c_str(), bImportPSWDsOnly,
                               strXMLErrors, strSkippedList, strPWHErrorList, strRenameList,
                               numValidated, numImported, numSkipped, numPWHErrors, numRenamed,
-                              numNoPolicy, numRenamedPolicies,
+                              numNoPolicy, numRenamedPolicies, numShortcutsRemoved,
                               rpt, pcmd);
     waitCursor.Restore();  // Restore normal cursor
 
@@ -2211,7 +2211,7 @@ void DboxMain::OnImportXML()
     // Finish Report
     rpt.WriteLine((LPCWSTR)cs_temp);
 
-    if (numNoPolicy != 0 || numRenamedPolicies != 0) {
+    if (numNoPolicy != 0 || numRenamedPolicies != 0 || numShortcutsRemoved != 0) {
       CString cs_tmp(MAKEINTRESOURCE(IDS_WITHWARNINGS));
       cs_temp += cs_tmp;
 
@@ -2223,6 +2223,12 @@ void DboxMain::OnImportXML()
       if (numRenamedPolicies != 0) {
         rpt.WriteLine();
         cs_tmp.LoadString(IDSC_RENAMEDPOLICYNAMES);
+        rpt.WriteLine((LPCWSTR)cs_tmp);
+      }
+      if (numShortcutsRemoved != 0) {
+        rpt.WriteLine();
+        CString cs_imported(MAKEINTRESOURCE(IDSC_IMPORTED));
+        cs_tmp.Format(IDSC_REMOVEDKBSHORTCUTS, cs_imported);
         rpt.WriteLine((LPCWSTR)cs_tmp);
       }
     }
@@ -2955,6 +2961,14 @@ LRESULT DboxMain::CopyCompareResult(PWScore *pfromcore, PWScore *ptocore,
     pmulticmds->Add(EditEntryCommand::Create(ptocore, *ptoEntry, ci_temp));
   } else {
     // Not there - add it
+    // Need to check that entry keyboard shortcut not already in use!
+    int iKBShortcut;
+    ci_temp.GetKBShortcut(iKBShortcut);
+    if (iKBShortcut != 0 && 
+      m_core.GetKBShortcut(iKBShortcut) != CUUID::NullUUID()) {
+      // Remove it but no mechanism to tell user!
+      ci_temp.SetKBShortcut(0);
+    }
     ci_temp.SetStatus(CItemData::ES_ADDED);
     pmulticmds->Add(AddEntryCommand::Create(ptocore, ci_temp));
   }
@@ -3104,6 +3118,14 @@ LRESULT DboxMain::CopyAllCompareResult(WPARAM wParam)
       pcmdCopy->SetNoGUINotify();
     } else {
       // Not there - add it
+      // Need to check that entry keyboard shortcut not already in use!
+      int iKBShortcut;
+      ci_temp.GetKBShortcut(iKBShortcut);
+      if (iKBShortcut != 0 && 
+        m_core.GetKBShortcut(iKBShortcut) != CUUID::NullUUID()) {
+        // Remove it but no mechanism to tell user!
+        ci_temp.SetKBShortcut(0);
+      }
       ci_temp.SetStatus(CItemData::ES_ADDED);
       pcmdCopy = AddEntryCommand::Create(ptocore, ci_temp);
       pcmdCopy->SetNoGUINotify();
@@ -3631,11 +3653,13 @@ void DboxMain::ReportAdvancedOptions(CReport *pRpt, const bool bAdvanced, const 
     int ifields[] = {CItemData::PASSWORD, CItemData::NOTES, CItemData::URL,
                      CItemData::AUTOTYPE, CItemData::PWHIST, CItemData::POLICY,
                      CItemData::RUNCMD, CItemData::DCA, CItemData::SHIFTDCA, CItemData::EMAIL,
-                     CItemData::PROTECTED, CItemData::SYMBOLS, CItemData::POLICYNAME};
+                     CItemData::PROTECTED, CItemData::SYMBOLS, CItemData::POLICYNAME,
+                     CItemData::KBSHORTCUT};
     UINT uimsgids[] = {IDS_COMPPASSWORD, IDS_COMPNOTES, IDS_COMPURL,
                        IDS_COMPAUTOTYPE, IDS_COMPPWHISTORY, IDS_COMPPWPOLICY,
                        IDS_COMPRUNCOMMAND, IDS_COMPDCA, IDS_COMPSHIFTDCA, IDS_COMPEMAIL,
-                       IDS_COMPPROTECTED, IDS_COMPSYMBOLS, IDS_COMPPOLICYNAME};
+                       IDS_COMPPROTECTED, IDS_COMPSYMBOLS, IDS_COMPPOLICYNAME,
+                       IDS_COMPKBSHORTCUT};
     ASSERT(_countof(ifields) == _countof(uimsgids));
 
     // Time fields

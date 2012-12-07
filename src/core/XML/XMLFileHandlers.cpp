@@ -93,6 +93,7 @@ bool XMLFileHandlers::ProcessStartElement(const int icurrent_element)
       m_numEntriesPWHErrors = 0;
       m_numNoPolicies = 0;
       m_numRenamedPolicies = 0;
+      m_numShortcutsRemoved = 0;
       m_bEntryBeingProcessed = false;
       break;
     case XLE_ENTRY:
@@ -125,6 +126,7 @@ bool XMLFileHandlers::ProcessStartElement(const int icurrent_element)
       cur_entry->email = _T("");
       cur_entry->symbols = _T("");
       cur_entry->policyname = _T("");
+      cur_entry->kbshortcut = _T("");
       cur_entry->ucprotected = 0;
       cur_entry->entrytype = NORMAL;
       cur_entry->bforce_normal_entry = false;
@@ -439,6 +441,9 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
       break;
     case XLE_ENTRY_PASSWORDPOLICYNAME:
       cur_entry->policyname = m_sxElemContent;
+      break;
+    case XLE_KBSHORTCUT:
+      cur_entry->kbshortcut = m_sxElemContent;
       break;
     case XLE_STATUS:
       i = _ttoi(m_sxElemContent.c_str());
@@ -846,6 +851,10 @@ void XMLFileHandlers::AddXMLEntries()
       ci_temp.SetPolicyName(cur_entry->policyname);
     }
 
+    if (!cur_entry->kbshortcut.empty()) {
+      ci_temp.SetKBShortcut(cur_entry->kbshortcut);
+    }
+
     StringX newPWHistory;
     stringT strPWHErrorList;
 
@@ -893,16 +902,42 @@ void XMLFileHandlers::AddXMLEntries()
       ci_temp.SetStatus(CItemData::ES_ADDED);
     }
 
-    StringX sx_imported;
-    Format(sx_imported, FORMATIMPORTED,
+    StringX sxImportedEntry;
+    Format(sxImportedEntry, FORMATIMPORTED,
                         cur_entry->group.c_str(), cur_entry->title.c_str(), cur_entry->username.c_str());
-    m_prpt->WriteLine(sx_imported.c_str());
+    m_prpt->WriteLine(sxImportedEntry.c_str());
 
     if (bNoPolicy) {
-      Format(sx_imported, IDSC_MISSINGPOLICYNAME, sxMissingPolicyName.c_str());
-      m_prpt->WriteLine(sx_imported.c_str());
+      Format(sxImportedEntry, IDSC_MISSINGPOLICYNAME, sxMissingPolicyName.c_str());
+      m_prpt->WriteLine(sxImportedEntry.c_str());
     }
 
+    // Need to check that entry keyboard shortcut not already in use!
+    int iKBShortcut;
+    ci_temp.GetKBShortcut(iKBShortcut);
+    
+    if (iKBShortcut != 0) {
+      CUUID existingUUID = m_pXMLcore->GetKBShortcut(iKBShortcut);
+      if (existingUUID != CUUID::NullUUID()) {
+        // Remove it
+        ci_temp.SetKBShortcut(0);
+        ItemListIter iter = m_pXMLcore->Find(existingUUID);
+        if (iter == m_pXMLcore->GetEntryEndIter())
+          break;
+        // Tell the user via the report
+        StringX sxExistingEntry;
+        Format(sxExistingEntry, FORMATIMPORTED,
+                           iter->second.GetGroup().c_str(), iter->second.GetTitle().c_str(),
+                           iter->second.GetUser().c_str());
+
+        StringX sxTemp, sxImported;
+        LoadAString(sxImported, IDSC_IMPORTED);
+        Format(sxTemp, IDSC_KBSHORTCUT_REMOVED,
+               sxImported.c_str(), sxImportedEntry.c_str(), sxExistingEntry.c_str(), sxImported.c_str());
+        m_prpt->WriteLine(sxTemp.c_str());
+        m_numShortcutsRemoved++;
+      }
+    }
     m_pXMLcore->GUISetupDisplayInfo(ci_temp);
     Command *pcmd = AddEntryCommand::Create(m_pXMLcore, ci_temp);
     pcmd->SetNoGUINotify();

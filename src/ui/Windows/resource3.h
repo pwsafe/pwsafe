@@ -724,3 +724,8 @@
 #define IDS_EXPORTENTMENU               5935
 #define IDS_EXPORTENT2PLAINTEXT         5936
 #define IDS_EXPORTENT2XML               5937
+#define IDS_KBSHORTCUT                  5938
+#define IDS_COMPKBSHORTCUT              5939
+#define IDS_KBS_INVALID                 5940
+#define IDS_KBS_INUSE                   5941
+#define IDS_KBS_INUSEBYMENU             5942

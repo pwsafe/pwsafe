@@ -1097,6 +1097,7 @@ CString CManageFiltersDlg::GetFieldTypeName(FieldType ft)
   case FT_PWHIST:       return CItemData::FieldName(CItemData::PWHIST).c_str();
   case FT_POLICY:       return CItemData::FieldName(CItemData::POLICY).c_str();
   case FT_POLICYNAME:   return CItemData::FieldName(CItemData::POLICYNAME).c_str();
+  case FT_KBSHORTCUT:   return CItemData::FieldName(CItemData::KBSHORTCUT).c_str();
 
   case FT_PASSWORDLEN:   nID = IDS_PASSWORDLEN; break;
   case FT_ENTRYSIZE:     nID = IDS_ENTRYSIZE; break;
