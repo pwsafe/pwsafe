@@ -191,6 +191,9 @@ BOOL CAddEdit_Additional::OnInitDialog()
     GetDlgItem(IDC_AUTOTYPE)->SendMessage(EM_SETREADONLY, TRUE, 0);
     GetDlgItem(IDC_RUNCMD)->SendMessage(EM_SETREADONLY, TRUE, 0);
 
+   // Disable Hotkey
+    m_KBShortcutCtrl.EnableWindow(FALSE);
+
     // Disable Combobox
     GetDlgItem(IDC_DOUBLE_CLICK_ACTION)->EnableWindow(FALSE);
     GetDlgItem(IDC_SHIFT_DOUBLE_CLICK_ACTION)->EnableWindow(FALSE);
