@@ -67,7 +67,6 @@ enum {
 
 PasswordSafeSearch::PasswordSafeSearch(PasswordSafeFrame* parent) : m_toolbar(0), 
                                                                     m_parentFrame(parent), 
-                                                                    m_fAdvancedSearch(false),
                                                                     m_criteria(new SelectionCriteria)
 {
 }
@@ -113,7 +112,7 @@ void PasswordSafeSearch::OnDoSearchT(Iter begin, Iter end, Accessor afn)
   if (m_criteria->IsDirty() || txtCtrl->IsModified() || m_searchPointer.IsEmpty())  {
       m_searchPointer.Clear();
    
-      if (!m_fAdvancedSearch)
+      if (!m_toolbar->GetToolState(ID_FIND_ADVANCED_OPTIONS))
         FindMatches(tostringx(searchText), m_toolbar->GetToolState(ID_FIND_IGNORE_CASE), m_searchPointer, begin, end, afn);
       else
         FindMatches(tostringx(searchText), m_toolbar->GetToolState(ID_FIND_IGNORE_CASE), m_searchPointer, 
@@ -245,12 +244,25 @@ IMPLEMENT_CLASS_TEMPLATE( AdvancedSelectionDlg, wxDialog, FindDlgType )
 /*!
  * wxEVT_COMMAND_TOOL_CLICKED event handler for ID_FIND_ADVANCED_OPTIONS
  */
-void PasswordSafeSearch::OnAdvancedSearchOptions(wxCommandEvent& /* evt */)
+void PasswordSafeSearch::OnAdvancedSearchOptions(wxCommandEvent& evt)
 {
-  m_criteria->Clean();
-  AdvancedSelectionDlg<FindDlgType> dlg(m_parentFrame, m_criteria);
-  if (dlg.ShowModal() == wxID_OK) {
-    m_fAdvancedSearch = true;
+  if (evt.IsChecked()) {
+    m_criteria->Clean();
+    AdvancedSelectionDlg<FindDlgType> dlg(m_parentFrame, m_criteria);
+    if (dlg.ShowModal() == wxID_OK) {
+      // No check for m_criteria.IsDirty() here because we want to start a new search
+      // whether or not the group/field selection were modified because user just 
+      // toggled the "Advanced Options" on.  It was OFF before just now. 
+      m_searchPointer.Clear();
+    }
+    else {
+      // No change, but need to toggle off "Advanced Options" button manually
+      m_toolbar->ToggleTool(evt.GetId(), false);
+    }
+  }
+  else {
+    // Advanced Options were toggled off.  Start a new search next time
+    m_searchPointer.Clear();
   }
 }
 
@@ -310,7 +322,7 @@ void PasswordSafeSearch::CreateSearchBar()
   m_toolbar->AddControl(srchCtrl);
   m_toolbar->AddTool(ID_FIND_NEXT, wxT(""), wxBitmap(find_xpm), wxBitmap(find_disabled_xpm), wxITEM_NORMAL, _("Find Next"));
   m_toolbar->AddCheckTool(ID_FIND_IGNORE_CASE, wxT(""), wxBitmap(findcase_i_xpm), wxBitmap(findcase_s_xpm), _("Case Insensitive Search"));
-  m_toolbar->AddTool(ID_FIND_ADVANCED_OPTIONS, wxT(""), wxBitmap(findadvanced_xpm), wxNullBitmap, wxITEM_NORMAL, _("Advanced Find Options"));
+  m_toolbar->AddTool(ID_FIND_ADVANCED_OPTIONS, wxT(""), wxBitmap(findadvanced_xpm), wxNullBitmap, wxITEM_CHECK, _("Advanced Find Options"));
   m_toolbar->AddTool(ID_FIND_CREATE_REPORT, wxT(""), wxBitmap(findreport_xpm), wxNullBitmap, wxITEM_NORMAL, _("Create report of previous Find search"));
   m_toolbar->AddTool(ID_FIND_CLEAR, wxT(""), wxBitmap(findclear_xpm), wxNullBitmap, wxITEM_NORMAL, _("Clear Find"));
   m_toolbar->AddControl(new wxStaticText(m_toolbar, ID_FIND_STATUS_AREA, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY));
