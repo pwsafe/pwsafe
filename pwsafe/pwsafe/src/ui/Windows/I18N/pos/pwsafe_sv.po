@@ -2311,6 +2311,10 @@ msgstr "Kunde inte ta bort %1 då den är den aktuella mappen."
 msgid "Could not start print job."
 msgstr "Kunde inte starta utskriften."
 
+#. Resource IDs: (344)
+msgid "Couldn't find base entry - inconsistent database"
+msgstr ""
+
 #. Resource IDs: (332)
 msgid "Couldn't save database - Please save manually"
 msgstr "Kunde inte spara databasen - Vänligen, spara manuellt"
@@ -3015,13 +3019,9 @@ msgstr "Exportera &till"
 msgid "Export &XML"
 msgstr "Exporterad X&ML"
 
-#. Resource IDs: (32085)
-msgid "Export Entry in XML format..."
-msgstr "Exportera post till XML-format..."
-
-#. Resource IDs: (32084)
-msgid "Export Entry to Plain Text..."
-msgstr "Exportera post till ren text..."
+#. Resource IDs: (371, 32135)
+msgid "Export Entry To"
+msgstr ""
 
 #. Resource IDs: (123)
 msgid "Export Text"
@@ -4517,6 +4517,10 @@ msgstr "Ursprungligt värde:"
 msgid "Oriya"
 msgstr "Oriya"
 
+#. Resource IDs: (1116)
+msgid "Other value last changed on:"
+msgstr ""
+
 #. Resource IDs: (1081, 1201, 1207)
 msgid "Other:"
 msgstr "Övrigt:"
@@ -4726,6 +4730,10 @@ msgstr "Persiskt"
 #. Resource IDs: (65535)
 msgid "Physical Keyboard:"
 msgstr "Fysiskt tangentbord:"
+
+#. Resource IDs: (372, 32084)
+msgid "Plain Text (tab separated)..."
+msgstr ""
 
 #. Resource IDs: (337)
 msgid "Please Choose a Backup to restore:"
@@ -6730,6 +6738,10 @@ msgstr "XML filer (*.xml)|*.xml|Alla filer (*.*)|*.*||"
 #. Resource IDs: (316)
 msgid "XML files (*.xml)|*.xml||"
 msgstr "XML filer (*.xml)|*.xml||"
+
+#. Resource IDs: (372, 32085)
+msgid "XML format..."
+msgstr ""
 
 #. Resource IDs: (358)
 msgid "YYMMDD_HHMMSS"

@@ -2338,6 +2338,10 @@ msgstr "Konnte %1 nicht entfernen weil es das aktive Verzeichnis ist."
 msgid "Could not start print job."
 msgstr "Konnte die Druckaufgabe nicht starten."
 
+#. Resource IDs: (344)
+msgid "Couldn't find base entry - inconsistent database"
+msgstr ""
+
 #. Resource IDs: (332)
 msgid "Couldn't save database - Please save manually"
 msgstr "Konnte Datenbank nicht speichern - bitte manuell speichern"
@@ -3042,13 +3046,9 @@ msgstr "Exportiere &zu"
 msgid "Export &XML"
 msgstr "Exportiere &XML"
 
-#. Resource IDs: (32085)
-msgid "Export Entry in XML format..."
-msgstr "Exportiere Eintrag in XML Format..."
-
-#. Resource IDs: (32084)
-msgid "Export Entry to Plain Text..."
-msgstr "Exportiere Eintrag als Text ..."
+#. Resource IDs: (371, 32135)
+msgid "Export Entry To"
+msgstr ""
 
 #. Resource IDs: (365)
 msgid "Export Text"
@@ -4544,6 +4544,10 @@ msgstr "Originaler Wert:"
 msgid "Oriya"
 msgstr "Oriya"
 
+#. Resource IDs: (1116)
+msgid "Other value last changed on:"
+msgstr ""
+
 #. Resource IDs: (1081, 1201)
 msgid "Other:"
 msgstr "Andere:"
@@ -4753,6 +4757,10 @@ msgstr "Persisch"
 #. Resource IDs: (65535)
 msgid "Physical Keyboard:"
 msgstr "Physische Tastatur:"
+
+#. Resource IDs: (372, 32084)
+msgid "Plain Text (tab separated)..."
+msgstr ""
 
 #. Resource IDs: (337)
 msgid "Please Choose a Backup to restore:"
@@ -6757,6 +6765,10 @@ msgstr "XML Dateien (*.xml)|*.xml|Alle Dateien (*.*)|*.*||"
 #. Resource IDs: (316)
 msgid "XML files (*.xml)|*.xml||"
 msgstr "XMLDateien (*.xml)|*.xml||"
+
+#. Resource IDs: (372, 32085)
+msgid "XML format..."
+msgstr ""
 
 #. Resource IDs: (358)
 msgid "YYMMDD_HHMMSS"

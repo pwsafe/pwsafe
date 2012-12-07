@@ -2246,6 +2246,10 @@ msgstr "这是当前目录，不能删除 %1！"
 msgid "Could not start print job."
 msgstr "不能启动打印作业！"
 
+#. Resource IDs: (344)
+msgid "Couldn't find base entry - inconsistent database"
+msgstr ""
+
 #. Resource IDs: (332)
 msgid "Couldn't save database - Please save manually"
 msgstr "不能保存数据库 - 请手工保存！"
@@ -2950,13 +2954,9 @@ msgstr "导出为(&T)"
 msgid "Export &XML"
 msgstr "导出 XML(&X)"
 
-#. Resource IDs: (32085)
-msgid "Export Entry in XML format..."
-msgstr "导出项目为 XML 格式..."
-
-#. Resource IDs: (32084)
-msgid "Export Entry to Plain Text..."
-msgstr "导出项目为纯文本..."
+#. Resource IDs: (371, 32135)
+msgid "Export Entry To"
+msgstr ""
 
 #. Resource IDs: (123)
 msgid "Export Text"
@@ -4452,6 +4452,10 @@ msgstr "原始值:"
 msgid "Oriya"
 msgstr "奥里亚语"
 
+#. Resource IDs: (1116)
+msgid "Other value last changed on:"
+msgstr ""
+
 #. Resource IDs: (1081, 1201, 1207)
 msgid "Other:"
 msgstr "其它:"
@@ -4661,6 +4665,10 @@ msgstr "波斯语"
 #. Resource IDs: (65535)
 msgid "Physical Keyboard:"
 msgstr "物理键盘:"
+
+#. Resource IDs: (372, 32084)
+msgid "Plain Text (tab separated)..."
+msgstr ""
 
 #. Resource IDs: (337)
 msgid "Please Choose a Backup to restore:"
@@ -6665,6 +6673,10 @@ msgstr "XML 文件 (*.xml)|*.xml|所有文件 (*.*)|*.*||"
 #. Resource IDs: (316)
 msgid "XML files (*.xml)|*.xml||"
 msgstr "XML 文件 (*.xml)|*.xml||"
+
+#. Resource IDs: (372, 32085)
+msgid "XML format..."
+msgstr ""
 
 #. Resource IDs: (358)
 msgid "YYMMDD_HHMMSS"

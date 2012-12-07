@@ -2280,6 +2280,10 @@ msgstr "Could not remove %1 because it is the current directory."
 msgid "Could not start print job."
 msgstr "Could not start print job."
 
+#. Resource IDs: (344)
+msgid "Couldn't find base entry - inconsistent database"
+msgstr ""
+
 #. Resource IDs: (332)
 msgid "Couldn't save database - Please save manually"
 msgstr "Nemohu uložit, proveď manuálně."
@@ -2990,13 +2994,9 @@ msgstr "&Export do"
 msgid "Export &XML"
 msgstr ""
 
-#. Resource IDs: (32085)
-msgid "Export Entry in XML format..."
-msgstr "Exportuj záznam jako XML..."
-
-#. Resource IDs: (32084)
-msgid "Export Entry to Plain Text..."
-msgstr "Exportuj záznam jako text..."
+#. Resource IDs: (371, 32135)
+msgid "Export Entry To"
+msgstr ""
 
 #. Resource IDs: (365)
 msgid "Export Text"
@@ -4492,6 +4492,10 @@ msgstr ""
 msgid "Oriya"
 msgstr ""
 
+#. Resource IDs: (1116)
+msgid "Other value last changed on:"
+msgstr ""
+
 #. Resource IDs: (1081, 1201)
 msgid "Other:"
 msgstr "Jiný :"
@@ -4700,6 +4704,10 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Physical Keyboard:"
+msgstr ""
+
+#. Resource IDs: (372, 32084)
+msgid "Plain Text (tab separated)..."
 msgstr ""
 
 #. Resource IDs: (337)
@@ -6708,6 +6716,10 @@ msgstr "XML files (*.xml)|*.xml|All files (*.*)|*.*||"
 #. Resource IDs: (316)
 msgid "XML files (*.xml)|*.xml||"
 msgstr "XML files (*.xml)|*.xml||"
+
+#. Resource IDs: (372, 32085)
+msgid "XML format..."
+msgstr ""
 
 #. Resource IDs: (358)
 msgid "YYMMDD_HHMMSS"

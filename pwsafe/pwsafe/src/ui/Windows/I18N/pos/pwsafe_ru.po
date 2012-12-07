@@ -2382,6 +2382,10 @@ msgstr "Не удалось удалить %1, поскольку это тек�
 msgid "Could not start print job."
 msgstr "Не удалось запустить задание печати."
 
+#. Resource IDs: (344)
+msgid "Couldn't find base entry - inconsistent database"
+msgstr ""
+
 #. Resource IDs: (332)
 msgid "Couldn't save database - Please save manually"
 msgstr "Невозможно сохранить контейнер. Произведите сохранение вручную."
@@ -3129,13 +3133,9 @@ msgstr "Экспортировать &в"
 msgid "Export &XML"
 msgstr "Экспорт в &XML"
 
-#. Resource IDs: (32085)
-msgid "Export Entry in XML format..."
-msgstr "Экспортировать элемент в XML формат..."
-
-#. Resource IDs: (32084)
-msgid "Export Entry to Plain Text..."
-msgstr "Экспортировать элемент в простой текст..."
+#. Resource IDs: (371, 32135)
+msgid "Export Entry To"
+msgstr ""
 
 #. Resource IDs: (365)
 # урезано (кнопка в мастере)
@@ -4685,6 +4685,10 @@ msgstr "Исходное значение:"
 msgid "Oriya"
 msgstr "Ория"
 
+#. Resource IDs: (1116)
+msgid "Other value last changed on:"
+msgstr ""
+
 #. Resource IDs: (1081, 1201)
 # (Настройки->резервные копии) Имя для контейнера:
 # и
@@ -4907,6 +4911,10 @@ msgstr "Персидская"
 # используется на экранной клавиатуре, входит только первое слово (отображется системная раскладка по умолчанию)
 msgid "Physical Keyboard:"
 msgstr "Системная:"
+
+#. Resource IDs: (372, 32084)
+msgid "Plain Text (tab separated)..."
+msgstr ""
 
 #. Resource IDs: (337)
 msgid "Please Choose a Backup to restore:"
@@ -6986,6 +6994,10 @@ msgstr "XML-файлы (*.xml)|*.xml|Все файлы (*.*)|*.*||"
 #. Resource IDs: (316)
 msgid "XML files (*.xml)|*.xml||"
 msgstr "XML-файлы (*.xml)|*.xml||"
+
+#. Resource IDs: (372, 32085)
+msgid "XML format..."
+msgstr ""
 
 #. Resource IDs: (358)
 msgid "YYMMDD_HHMMSS"
