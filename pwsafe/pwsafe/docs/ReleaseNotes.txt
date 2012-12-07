@@ -36,6 +36,7 @@ focus if user chose not to.
 database is specified on command line. Thanks to Matt for tracking
 this down.
 [353] Easy-to-read option now respected in Generate Password screen.
+[] Update ListView immediately when an entry's field has been changed.
 
 New Features for 3.29
 =====================
