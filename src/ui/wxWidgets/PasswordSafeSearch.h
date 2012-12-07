@@ -148,7 +148,6 @@ private:
 
   wxToolBar*           m_toolbar;
   PasswordSafeFrame*   m_parentFrame;
-  bool                 m_fAdvancedSearch;
   SelectionCriteria*    m_criteria;
   SearchPointer        m_searchPointer;
 };
