@@ -121,6 +121,7 @@ public:
   void OnSearchClose(wxCommandEvent& evt);
   void OnAdvancedSearchOptions(wxCommandEvent& evt);
   void OnChar(wxKeyEvent& evt);
+  void OnSearchClear(wxCommandEvent& evt);
   void FindNext(void);
   void FindPrevious(void);
   void UpdateView();
@@ -142,6 +143,7 @@ private:
 
   void CreateSearchBar(void);
   void HideSearchToolbar();
+  void ClearToolbarStatusArea();
   
   template <class Iter, class Accessor>
   void OnDoSearchT( Iter begin, Iter end, Accessor afn); 

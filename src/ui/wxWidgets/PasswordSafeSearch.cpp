@@ -178,6 +178,15 @@ void PasswordSafeSearch::OnSearchClose(wxCommandEvent& /* evt */)
   HideSearchToolbar();
 }
 
+void PasswordSafeSearch::OnSearchClear(wxCommandEvent& evt)
+{
+  wxSearchCtrl* txtCtrl = wxDynamicCast(m_toolbar->FindControl(ID_FIND_EDITBOX), wxSearchCtrl);
+  wxCHECK_RET(txtCtrl, wxT("Could not get search ctrl from toolbar"));
+  txtCtrl->Clear();
+  m_searchPointer.Clear();
+  ClearToolbarStatusArea();
+}
+
 void PasswordSafeSearch::HideSearchToolbar()
 {
   m_toolbar->Show(false);
@@ -196,6 +205,13 @@ void PasswordSafeSearch::HideSearchToolbar()
 
     editMenu->Insert(FIND_MENU_POSITION, wxID_FIND, _("&Find Entry...\tCtrl+F"), _T(""), wxITEM_NORMAL);
   }
+}
+
+void PasswordSafeSearch::ClearToolbarStatusArea()
+{
+  wxStaticText* statusArea = wxDynamicCast(m_toolbar->FindWindow(ID_FIND_STATUS_AREA), wxStaticText);
+  wxCHECK_RET(statusArea, wxT("Could not retrieve status area from search bar"));
+  statusArea->SetLabel(wxEmptyString);
 }
 
 struct FindDlgType {
@@ -363,6 +379,7 @@ void PasswordSafeSearch::CreateSearchBar()
   m_toolbar->Connect(ID_FIND_CLOSE, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(PasswordSafeSearch::OnSearchClose), NULL, this);
   m_toolbar->Connect(ID_FIND_ADVANCED_OPTIONS, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(PasswordSafeSearch::OnAdvancedSearchOptions), NULL, this);
   m_toolbar->Connect(ID_FIND_NEXT, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(PasswordSafeSearch::OnDoSearch), NULL, this);
+  m_toolbar->Connect(ID_FIND_CLEAR, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler(PasswordSafeSearch::OnSearchClear), NULL, this);
 }
 
 void PasswordSafeSearch::OnSearchBarTextChar(wxKeyEvent& evt)
@@ -396,9 +413,10 @@ void PasswordSafeSearch::Activate(void)
     }
   }
 
-  wxASSERT(m_toolbar);
+  wxCHECK_RET(m_toolbar, wxT("Could not create or retrieve search bar"));
 
   m_toolbar->FindControl(ID_FIND_EDITBOX)->SetFocus();
+  ClearToolbarStatusArea();
 }
 
 
