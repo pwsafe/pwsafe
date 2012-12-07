@@ -466,7 +466,7 @@ set. This field is mutually exclusive with the policy name field
 the database header for password generation. This field is mutually
 exclusive with the specific policy field [0x10] and with the Own
 symbols for password field [0x16]. This was introduced in version
-0x030B (PasswordSafe V3.28).
+0x030A (PasswordSafe V3.28).
 
 [20] Entry keyboard shortcut.  Format is:
   Bytes 0-1: Virtual KeyCode for the character (Windows only uses byte 1)
