@@ -77,19 +77,28 @@ class SearchPointer
 public:
     SearchPointer() {
         m_currentIndex = m_indices.end();
-        m_label = wxT("No matches found");
+        PrintLabel();
     }
 
-    void Clear() { m_indices.clear() ; m_currentIndex = m_indices.end(); m_label = wxT("No matches found"); }
+    void Clear() { m_indices.clear() ; m_currentIndex = m_indices.end(); PrintLabel(); }
     bool IsEmpty() const { return m_indices.empty(); }
-    const pws_os::CUUID& operator*() const { return *m_currentIndex; }
+    const pws_os::CUUID& operator*() const { 
+      wxCHECK_MSG(!IsEmpty(), pws_os::CUUID::NullUUID(), wxT("Empty search pointer dereferenced"));
+      return *m_currentIndex;
+    }
     size_t Size() const { return m_indices.size(); }
 
     void InitIndex(void) { 
         m_currentIndex = m_indices.begin();
     }
 
-    void Add(const pws_os::CUUID& uuid) { m_indices.push_back(uuid); m_label.Printf(wxT("%d matches found"), m_indices.size());}
+    void Add(const pws_os::CUUID& uuid) {
+      // every time we add to the array, we risk getting the iterators invalidated
+      const bool restart = (m_indices.empty() || m_currentIndex == m_indices.begin());
+      m_indices.push_back(uuid);
+      if (restart) { InitIndex(); }
+      PrintLabel();
+    }
 
     SearchPointer& operator++();
     SearchPointer& operator--();
@@ -97,6 +106,7 @@ public:
     const wxString& GetLabel(void) const { return m_label; }
 
 private:
+    void PrintLabel(const TCHAR* prefix = 0);
 };
 
 
