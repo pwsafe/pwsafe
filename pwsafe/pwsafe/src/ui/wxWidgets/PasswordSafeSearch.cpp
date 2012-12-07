@@ -520,10 +520,10 @@ SearchPointer& SearchPointer::operator++()
     m_currentIndex++;
     if (m_currentIndex == m_indices.end()) {
       m_currentIndex = m_indices.begin();
-      m_label = wxT("Search hit bottom, continuing at top");
+      PrintLabel(wxT("Search hit bottom, continuing at top"));
     }
     else {
-      m_label.Printf(wxT("%d matches found"), m_indices.size());
+      PrintLabel();
     }
   }
   else {
@@ -538,15 +538,30 @@ SearchPointer& SearchPointer::operator--()
   if (!m_indices.empty()) {
     if (m_currentIndex == m_indices.begin()) {
       m_currentIndex = --m_indices.end();
-      m_label = wxT("Search hit top, continuing at bottom");
+      PrintLabel(wxT("Search hit top, continuing at bottom"));
     }
     else {
       m_currentIndex--;
-      m_label.Printf(wxT("%d matches found"), m_indices.size());
+      PrintLabel();
     }
   }
   else
     m_currentIndex = m_indices.end();
 
   return *this;
+}
+
+void SearchPointer::PrintLabel(const TCHAR* prefix /*= 0*/)
+{
+  if (m_indices.empty())
+    m_label = wxT("No matches found");
+  else if (m_indices.size() == 1)
+    m_label = wxT("1 match");
+  else {
+    // need a const object so we get both args to distance() as const iterators 
+    const SearchIndices& idx = m_indices;
+    m_label.Printf(wxT("%d/%d matches"), std::distance(idx.begin(), m_currentIndex)+1, m_indices.size());
+    if (prefix)
+      m_label = wxString(prefix) + wxT(".  ") + m_label;
+  }
 }
