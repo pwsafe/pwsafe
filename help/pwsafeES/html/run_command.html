@@ -1,0 +1,492 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head> <META HTTP-EQUIV="Content-Type" Content="text/html; charset=iso-8859-1">
+
+
+
+
+  
+  
+
+  
+  <title>Ejecutar comando</title>
+<!-- pwsafe version: 3.23--><!-- Modified: 11/08/2010 --><!--Popup control -->
+  <script language="javascript" src="html/popups.js">
+  </script>
+  
+  
+  
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+
+<body>
+
+
+
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"> </object>
+<!-- Popup Source File -->
+<h1>Ejecutar comando</h1>
+
+
+
+<p>Un campo "Ejecutar comando" de una entrada puede contener un comando que se ejecutará cuando se selecciona 
+la acción ejecutar comando. El comando puede ser cualquier cosa que pueda ejecutarse en el diálogo Inicio-&gt;Ejecutar... 
+de tu computador.</p>
+
+
+
+<p>Además, <b>Password Safe</b> puede pasar argumentos al comando como el nombre de la entrada 
+contraseña, etc., como se describe más abajo. Esto te permite programar acciones complejas, como 
+ejecutar un programa de acceso remoto (<a target="_blank" href="http://www.chiark.greenend.org.uk/%7Esgtatham/putty/">PuTTY</a>, 
+por ejemplo) y pasarle el usuario y contrasaña asociado con la entrada.</p>
+
+
+
+<p>En general, las 'variables' son reemplazadas por los valores asociados con ellas, 
+antes de transferirlos al ordenador para su ejecución. El signo ('$') dólar se emplea para indicar una variable.</p>
+
+
+
+<ul>
+
+
+  <li>Las variables se especifican como '$nombre', y <i>se distingue entre mayúsculas y minúsculas</i>. 
+Los nombres de variables siempre comienzan con un carácter alfabético y el resto de los caracteres son alfanuméricos. 
+El nombre de la variable se termina al encontrarse con un carácter no alfanumérico (como un espacio) o al 
+alcanzar el final del campo Ejecutar comando.</li>
+
+
+  
+  <ul>
+
+
+    <li>Para utilizar una variable seguida de inmediato por un carácter alfanumérico, escribe el nombre de la variable 
+entre llaves, por ejemplo, '${nombrevar}cadena'.</li>
+
+
+
+    <li>Para utilizar un '$' en la cadena como texto normal (sin indicar que el texto que sigue es un nombre de variable), 
+utiliza una barra invertida ('\'), por ejemplo '\$texto' se convierte en '$texto' y no es tratada como una variable 
+llamada 'texto'.</li>
+
+
+
+    <li>Para utilizar una barra invertida antes de que un '$', precédela con una barra invertida, por ejemplo, 
+'\\$nombre' se convierte en "\$nombre' en el texto resultante y' $nombre' se trata como una variable. No hay que preceder
+una barra invertida con otra barra invertida a menos que preceda a un '$' indicando una variable.</li>
+
+    <li>Una variable puede ser seguido por un valor numérico entre corchetes que se denomina un 'valor índice'. 
+El valor índice 'n' puede estar precedido por '+' o '-' ejemplo [-2] o [2] o [+2]. <b>Password Safe</b> interpreta 
+un índice con valor cero como todo el campo.
+    </li>
+
+
+  
+  </ul>
+
+
+
+  <br>
+
+
+
+  <li>Actualmente se reconocen las siguientes variables:</li>
+
+
+
+  <br>
+
+
+
+  
+  <ul>
+
+
+    <li>Relacionados con la aplicación:</li>
+
+
+
+    
+    <table border="0" cellpadding="10" cellspacing="0" width="90%">
+
+
+ <colgroup><col width="15%"><col width="85%"></colgroup>
+ <tbody>
+
+        <tr>
+
+          <td style="font-weight: bold;">appdir</td>
+
+          <td>El directorio que contiene la apliación <b>Password Safe</b>. Ver notas <a href="#n1">1</a> y <a href="#n2">2</a>
+  más abajo.</td>
+
+        </tr>
+
+
+      
+      </tbody>
+    
+    </table>
+
+
+
+    <br>
+
+
+
+    <li>Relacionados con la base de datos actual:</li>
+
+
+
+    
+    <table border="0" cellpadding="10" cellspacing="0" width="90%">
+
+
+ <colgroup><col width="15%"><col width="85%"></colgroup>
+ <tbody>
+
+        <tr>
+
+          <td style="font-weight: bold;">dbdir</td>
+
+          <td>Directorio de la base de datos actualmente abierta. Ver notas <a href="#n1">1</a> y <a href="#n2">2</a> más abajo.</td>
+
+        </tr>
+
+
+ <tr>
+
+          <td style="font-weight: bold;">fulldb</td>
+
+          <td>Ruta de acceso completa, nombre de archivo y extensión de la base de datos abierta. Ver nota
+  <a href="#n2">2</a> más abajo.</td>
+
+        </tr>
+
+
+ <tr>
+
+          <td style="font-weight: bold;">dbname</td>
+
+          <td>Nombre de archivo de la base de datos abierta.</td>
+
+        </tr>
+
+
+ <tr>
+
+          <td style="font-weight: bold;">dbextn</td>
+
+          <td>Extensión de la base de datos abierta.</td>
+
+        </tr>
+
+
+      
+      </tbody>
+    
+    </table>
+
+
+
+    <br>
+
+
+
+    <li>Relacionadas con la entrada actual:</li>
+
+
+
+    
+    <table border="0" cellpadding="10" cellspacing="0" width="90%">
+
+
+ <colgroup><col width="15%"><col width="85%"></colgroup>
+ <tbody>
+
+        <tr>
+
+          <td style="font-weight: bold;">g <span style="font-weight: normal;">o</span> group</td>
+
+          <td>Grupo (estructura de árbol completo hasta la raíz con grupos separados por puntos).</td>
+
+        </tr>
+
+
+ <tr>
+
+          <td style="font-weight: bold;">G <span style="font-weight: normal;">o</span> GROUP</td>
+
+          <td>El grupo que contiene esta entrada sólo.</td>
+
+        </tr>
+
+
+ <tr>
+
+          <td style="font-weight: bold;">t <span style="font-weight: normal;">o</span> title</td>
+
+          <td>Título</td>
+
+        </tr>
+
+
+ <tr>
+
+          <td style="font-weight: bold;">u <span style="font-weight: normal;">o</span> user</td>
+
+          <td>Usuario</td>
+
+        </tr>
+
+
+ <tr>
+
+          <td style="font-weight: bold;">p <span style="font-weight: normal;">o</span> password</td>
+
+          <td>Contraseña</td>
+
+        </tr>
+
+
+ <tr>
+
+          <td style="font-weight: bold;">a <span style="font-weight: normal;">o </span>autotype</td>
+
+          <td>Autoescritura. Ver nota <a href="#n5">5</a> más abajo.</td>
+
+        </tr>
+
+
+ <tr>
+
+          <td style="font-weight: bold;">url</td>
+
+          <td>URL</td>
+
+        </tr>
+
+
+ <tr>
+
+          <td><b>n</b> o <b>n[0]</b></td>
+
+          <td>El campo notas completo (también: notes or notes[0]). Ver nota <a href="#n3">3</a>
+  más abajo.</td>
+
+        </tr>
+
+
+ <tr>
+
+          <td><b>n[i]</b> o <b>notes[i]</b></td>
+
+          <td>Línea i del campo Notas empezando por el principio, i=1 es la primera línea, 
+  i=2 es la segunda línea etc. Ver nota <a href="#n4">4</a> más abajo.</td>
+
+        </tr>
+
+
+ <tr>
+
+          <td><b>n[-i]</b> o <b>notes[-i]</b></td>
+
+          <td>Línea idel campo Notas empezando por el final, i=1 es la última línea, 
+  i=2 es la penúltima línea etc. Ver nota <a href="#n4">4</a> más abajo.</td>
+
+        </tr>
+
+
+      
+      </tbody>
+    
+    </table>
+
+
+
+    <br>
+
+
+
+    
+    <table border="0" cellpadding="10" cellspacing="0" width="90%">
+
+
+ <colgroup><col width="5%"><col width="95%"></colgroup>
+ <tbody>
+
+        <tr>
+
+          <th align="center">Notas</th>
+
+          <th>&nbsp;</th>
+
+        </tr>
+
+
+ <tr>
+
+          <td align="center">1<a name="n1"></a></td>
+
+          <td>Los nombres de directorio (appdir o dbdir) no tienen una '\' al final.
+  Recuerda añadirla si la necesitas en tu Ejecutar comando.</td>
+
+        </tr>
+
+
+ <tr>
+
+          <td align="center">2<a name="n2"></a></td>
+
+          <td>El contenido de las variables (incluyendo los valores de directorio y ruta de acceso completa)
+  puede incluir espaciones en blanco. Puedes necesitar encerrar el resultado entre comillas para una
+  correcta ejecución de Ejecutar comando.</td>
+
+        </tr>
+
+
+ <tr>
+
+          <td align="center">3<a name="n3"></a></td>
+
+          <td>Si el campo Notas contiene más de una línea, se incluirá cualquier retorno de carro (CR) o 
+  avance de línea (LF) incrustado. Esto puede causar problemas cuando se ejecuta y CR y/o LF se toman como 'Intro'.</td>
+
+        </tr>
+
+
+ <tr>
+
+          <td align="center">4<a name="n4"></a></td>
+
+          <td>Cualquier CR y/o LF final se quitan de las líneas individuales seleccionadas del campo Notas.</td>
+
+        </tr>
+
+
+ <tr>
+
+          <td align="center">5<a name="n5"></a></td>
+
+          <td>Si la variable Autoescritura está presente en el comando Ejecutar, se llevará a cabo una vez que 
+  la ventana de destino esté activa. La variable y su valor, si existe, será eliminado de la cadena que se ejecuta. 
+  Esta variable puede aparecer en cualquier lugar en el comando Ejecutar, ya que sólo especifica lo que 
+  <b>Password Safe</b> hará después de la cadena de comando se ha ejecutado. A diferencia de otras variables, ésta 
+  podrá tomar un valor para reemplazar el valor actual de la entrada. El formato es el siguiente 
+  (puede indicarse '$autotype' en lugar de '$a' en los ejemplos siguientes):<br>
+
+
+  
+          
+          <table border="0" cellpadding="10" cellspacing="0">
+
+
+   <colgroup><col width="20%"><col width="80%"></colgroup>
+   <tbody>
+
+              <tr>
+
+                <td>$a</td>
+
+                <td>Usa el valor de la entrada actual.</td>
+
+              </tr>
+
+
+   <tr>
+
+                <td>${a}</td>
+
+                <td>Usa el valor de la entrada actual (se usa si hay texto que sigue a la variable '$a').</td>
+
+              </tr>
+
+
+   <tr>
+
+                <td>$a(valor)</td>
+
+                <td>Usa la cadena especificada entre paréntesis para la autoescritura.</td>
+
+              </tr>
+
+
+   <tr>
+
+                <td>${a}(valor)</td>
+
+                <td>Usa la cadena especificada entre paréntesis para la autoescritura.</td>
+
+              </tr>
+
+
+  
+            
+            </tbody>
+          
+          </table>
+
+
+  </td>
+
+        </tr>
+
+
+      
+      </tbody>
+    
+    </table>
+
+
+
+    
+    <p><b>Nota:</b> Asegúrate de añadir comillas alrededor de la cadena si es necesario, por ejemplo si el directorio 
+de la base de datos contiene espacios, para acceder a un archivo de texto en el que basa en el nombre de base de datos 
+abierta necesitarás lo siguiente (con comillas):<br>
+
+
+'$dbdir\\$dbname.txt'<br>
+
+
+La barra invertida está precedida por otra de forma que '$dbname' se reconoce como una variable.</p>
+
+
+
+    
+    <p>En Windows se lleva a cabo la sustitución normal de las variables de entorno (especificado en %nombre_variable%).
+Por ejemplo: '%windir%\notepad.exe' puede convertirse (dependiendo de tu instalación) en
+'C:\Windows\notepad.exe'. Los valores de entorno se puede comprobar ejecutando 'cmd.exe' 
+e indicando el comando 'set' sin parámetros. Cualquier variable de entorno desconocida se deja sin cambios 
+en Ejecutar comando, por ejemplo, %xyz%\notepad.exe permanece como %xyz%\notepad.exe si la 
+variable 'xyz' no está definida. Nota: Las variables de entorno de Windows <b>no</b> 
+distinguen maýusculas y minúsculas.</p>
+
+
+
+    
+    <hr>
+
+    <br>
+
+
+    <br>
+
+
+    <br>
+
+
+    <br>
+
+
+
+
+    <object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+    <param name="Keyword" value="Ejecutar comando"> <param name="Keyword" value="Usando ejecutar comando"> </object>
+  
+  </ul>
+
+</ul>
+
+</body>
+</html>

@@ -1,0 +1,386 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Формат текстового экспорта и импорта</title><!-- pwsafe version: 3.06--><!-- Modified: 21/02/2007 --><!--Popup control -->
+
+<script language="javascript" src="html/popups.js">
+</script>
+<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"></object><!-- Popup Source File -->
+
+
+<h1>Формат текстового экспорта и импорта</h1>
+
+<hr style="width: 100%; height: 2px;">
+
+<p style="color: rgb(255, 0, 0);">
+<b><i><u>Внимание!</u></i></b> Экспорт важной информации из контейнера <b>Password Safe</b> в текстовый файл может привести к серьёзным последствиям, связанным с безопасностью. Эта операция приводит к созданию незащищённой копии указанных элементов. Простого удаления данной копии <b>недостаточно</b>, и требуется использование дополнительных утилит для гарантированного удаления данных. Экспорт важной информации позволяет обойти меры защиты, предоставляемые Password Safe.</p>
+
+<hr style="width: 100%; height: 2px;">
+
+<small><b>Примечание.</b> Некоторые параметры текстового экспорта и импорта были изменены в версии 3.06. Здесь описывается текущий формат.</small>
+
+<hr style="width: 100%; height: 2px;">
+
+<p>Текстовый файл с экспортированными данными:</p>
+<ul>
+<li>Начинается со строки с заголовками.</li>
+<li>Для замены переносов строк в многострочных заметках и точки («.») в заголовках используется разделитель. По умолчанию это символ ‘»’ [Alt+0187], который может быть переопределён.</li>
+</ul>
+<p>При импорте считается, что:</p>
+<ul>
+<li>Первая строка содержит заголовки.</li>
+<li>Для замены переносов строк в многострочных заметках и точки («.») в заголовках используется разделитель. По умолчанию это символ ‘»’ [Alt+0187], который может быть переопределён.</li>
+</ul>
+<p>Строка с заголовками для полного экспорта содержит следующие поля, разделённые табуляцией (в скобках приведён перевод, который не пишется в файл экспорта):</span></p>
+<ul>
+<li>Group/Title (группа/заголовок)</li>
+<li>Username (имя пользователя)</li>
+<li>Password (пароль)</li>
+<li>URL (ссылка)</li>
+<li>Autotype (автонабор)</li>
+<li>Created Time (время создания)</li>
+<li>Password Modified Time (время изменения пароля)</li>
+<li>Last Access Time (время последнего доступа)</li>
+<li>Password Expiry Date (дата истечения пароля)</li>
+<li>Password Expiry Interval (срок действия пароля)</li>
+<li>Record Modified Time (время изменения записи)</li>
+<li>Password Policy (политика создания паролей)</li>
+<li>History (история)</li>
+<li>Run Command (выполнить команду)</li>
+<li>DCA (действие по двойному клику)</li>
+<li>e-mail (электронная почта)</li>
+<li>Protected (защита элемента)</li>
+<li>Symbols (набор символов для создания пароля)</li>
+<li>Notes (заметки)</li>
+</ul>
+
+<p>С помощью расширенных настроек экспорта можно исключить ненужные поля из заголовка и экспортируемых записей. Расширенные настройки также позволяют выбрать подмножество элементов для экспорта.</p>
+
+<p><img alt="Расширенные настройки экспорта в простой текст" src="images/export_text_adv.jpg"></p>
+
+<p>При импорте из текстового файла строка с заголовками должна содержать имена столбцов, совпадающие с именами из указанного списка. Если какой-либо из заголовков повторяется, будут использованы данные из последнего столбца с повторяющимся именем. Если заголовок не совпадает ни с одним из указанных, данные из этого столбца игнорируются. Поля должны быть разделены определённым символом, который указывается в диалоге импорта.</p>
+
+<hr style="width: 100%; height: 2px;">
+
+<small><b>Примечания:</b><br>
+<ul>
+<li>При импорте данных в Password Safe <i><u>должны</u></i> присутствовать и содержать непустые значения поля «Group/Title» (заголовок) и «Password» (пароль). Это ограничение вызвано требованиями к содержанию элементов, созданных стандартным способом.</li>
+</ul>
+<ul>
+<li>Порядок столбцов может быть любым.&nbsp;Соответствие полей определяется по заголовкам.</li>
+</ul>
+</small>
+
+<hr style="width: 100%; height: 2px;">
+
+<h2><u>Формат данных</u></h2>
+
+<table border="1" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td style="border: 1pt solid windowtext; padding: 0in 5.4pt; width: 143.4pt;" valign="top" width="191">
+<b>Имя столбца (поля)</b>
+</td>
+<td style="border-style: solid solid solid none; border-color: windowtext windowtext windowtext -moz-use-text-color; border-width: 1pt 1pt 1pt medium; padding: 0in 5.4pt; width: 4.75in;" valign="top" width="456">
+<b>Примечания</b>
+</td>
+</tr>
+<tr>
+<td style="padding: 0in 5.4pt;">Group/Title (группа/заголовок)</td>
+<td style="padding: 0in 5.4pt;">Группы (если присутствуют) разделяются точками («.»). Поле «Title» (заголовок) не может быть пустым или содержать символ-разделитель.</td>
+</tr>
+<tr>
+<td style="padding: 0in 5.4pt;">Username (имя пользователя)</td>
+<td style="padding: 0in 5.4pt;"> </td>
+</tr>
+<tr>
+<td style="padding: 0in 5.4pt;">Password (пароль)</td>
+<td style="padding: 0in 5.4pt;">Не может быть пустым.</td>
+</tr>
+<tr>
+<td style="padding: 0in 5.4pt;">URL (ссылка)</td>
+<td style="padding: 0in 5.4pt;"> </td>
+</tr>
+<tr>
+<td style="padding: 0in 5.4pt;">Autotype (автонабор)</td>
+<td style="padding: 0in 5.4pt;"> </td>
+</tr>
+<tr>
+<td style="padding: 0in 5.4pt;">Created Time (время создания)</td>
+<td style="padding: 0in 5.4pt;">См. примечание <a href="#1"><sup>1</sup></a></td>
+</tr>
+<tr>
+<td style="padding: 0in 5.4pt;">Password Modified Time (время изменения пароля)</td>
+<td style="padding: 0in 5.4pt;">См. примечание <a href="#1"><sup>1</sup></a></td>
+</tr>
+<tr>
+<td style="padding: 0in 5.4pt;">Last Access Time (время последнего доступа)</td>
+<td style="padding: 0in 5.4pt;">См. примечание <a href="#1"><sup>1</sup></a></td>
+</tr>
+<tr>
+<td style="padding: 0in 5.4pt;">Password Expiry Date (дата истечения пароля)</td>
+<td style="padding: 0in 5.4pt;">См. примечание <a href="#1"><sup>1</sup></a></td>
+</tr>
+<tr>
+<td style="padding: 0in 5.4pt;">Password Expiry Interval (срок действия пароля)</td>
+<td style="padding: 0in 5.4pt;">См. примечание <a href="#1"><sup>1</sup></a></td>
+</tr>
+<tr>
+<td style="padding: 0in 5.4pt;">Record Modified Time (время изменения записи)</td>
+<td style="padding: 0in 5.4pt;">См. примечание <a href="#1"><sup>1</sup></a></td>
+</tr>
+<tr>
+<td style="padding: 0in 5.4pt;">Password Policy (политика создания паролей)</td>
+<td style="padding: 0in 5.4pt;">См. примечание <a href="#3"><sup>3</sup></a></td>
+</tr>
+<tr>
+<td style="padding: 0in 5.4pt;">History (история)</td>
+<td style="padding: 0in 5.4pt;">См. примечание <a href="#2"><sup>2</sup></a></td>
+</tr>
+<tr>
+<td style="padding: 0in 5.4pt;">Run Command (выполнить команду)</td>
+<td style="padding: 0in 5.4pt;"></td>
+</tr>
+<tr>
+<td style="padding: 0in 5.4pt;">DCA (действие по двойному клику)</td>
+<td style="padding: 0in 5.4pt;">  См. примечание <a href="#4"><sup>4</sup></a></td>
+</tr>
+<tr>
+<td style="padding: 0in 5.4pt;">Shift+DCA (действие по Shift+двойной клик)</td>
+<td style="padding: 0in 5.4pt;">  См. примечание <a href="#4"><sup>4</sup></a></td>
+</tr>
+<tr>
+<td style="padding: 0in 5.4pt;">e-mail (электронная почта)</td>
+<td style="padding: 0in 5.4pt;"></td>
+</tr>
+<tr>
+<td style="padding: 0in 5.4pt;">Protected (защита элемента)</td>
+<td style="padding: 0in 5.4pt;"></td>
+</tr>
+<tr>
+<td style="padding: 0in 5.4pt;">Symbols (набор символов для создания пароля)</td>
+<td style="padding: 0in 5.4pt;"></td>
+</tr>
+<tr>
+<td style="padding: 0in 5.4pt;">Notes (заметки)</td>
+<td style="padding: 0in 5.4pt;">
+<ul>
+<li>Содержимое поля с заметками должно быть заключено в двойные кавычки ("например, так").</li>
+<li>Заметки не должны содержать символ-разделитель, так как при импорте он будет преобразован в перенос строки.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+
+<br>
+
+<table border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td style="padding: 0in 5.4pt; width: 80pt;">
+<p><a name="1"></a><b><u>Примечание 1.</u><sup></sup></b></p>
+</td>
+<td style="padding: 0in 5.4pt;">
+<p>Время может быть указано в одном из 7 форматов:</p>
+</td>
+</tr>
+</tbody>
+</table>
+
+<br>
+
+<table border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td style="padding: 0in 15.4pt;">1. </td>
+<td style="padding: 0in 15.4pt; font-size: 11pt; font-family: 'Courier New'">гггг/ММ/дд чч:мм:сс</td>
+<td style="padding: 0in 15.4pt;">например, 2007/01/26 19:31:25</td>
+</tr>
+<tr>
+<td style="padding: 0in 15.4pt;">2.</td>
+<td style="padding: 0in 15.4pt; font-size: 11pt; font-family: 'Courier New'">ддд МММ дд чч:мм:сс гггг</td>
+<td style="padding: 0in 15.4pt;">например, Вск Окт 31 19:31:25 2010</td>
+</tr>
+<tr>
+<td style="padding: 0in 15.4pt;">3.</td>
+<td style="padding: 0in 15.4pt; font-size: 11pt; font-family: 'Courier New'">гггг-ММ-ддTчч:мм:сс</td>
+<td style="padding: 0in 15.4pt;">например, 2007-01-26T19:31:25</td>
+</tr>
+<tr>
+<td style="padding: 0in 15.4pt;">4.</td>
+<td style="padding: 0in 15.4pt; font-size: 11pt; font-family: 'Courier New'">гггг-ММ-ддTчч:мм:ссZ (только XML)</td>
+<td style="padding: 0in 15.4pt;">например, 2007-01-26T19:31:25Z</td>
+</tr>
+<tr>
+<td style="padding: 0in 15.4pt;">5.</td>
+<td style="padding: 0in 15.4pt; font-size: 11pt; font-family: 'Courier New'">гггг-ММ-ддTчч:мм:сс±чч:мм (только XML)</td>
+<td style="padding: 0in 15.4pt;">например, 2007-01-26T19:31:25+01:00</td>
+</tr>
+<tr>
+<td style="padding: 0in 15.4pt;">6.</td>
+<td style="padding: 0in 15.4pt;">0</td>
+<td style="padding: 0in 15.4pt;">оставить поле незаполненным</td>
+</tr>
+<tr>
+<td style="padding: 0in 15.4pt;">7.</td>
+<td style="padding: 0in 15.4pt;">now</td>
+<td style="padding: 0in 15.4pt;">Использовать время импорта</td>
+</tr>
+</tbody>
+</table>
+
+<p>где:</p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td style="padding: 0in 15.4pt;">гггг</td><td>Год в четырёхзначном виде. Значение от 1970 до 2038.</td>
+</tr>
+<tr>
+<td style="padding: 0in 15.4pt;">ММ</td><td>Месяц в двузначном виде: 01 = январь, 02 = февраль, и т. д.</td>
+</tr>
+<tr>
+<td style="padding: 0in 15.4pt;">дд</td><td>День месяца.</td>
+</tr>
+<tr>
+<td style="padding: 0in 15.4pt;">МММ</td><td>Краткое наименования месяца (язык сокращения для месяца зависит от текущей локали):  Jan = January, Feb = February или Янв = январь, Фев = февраль и т. д.</td>
+</tr>
+<tr>
+<td style="padding: 0in 15.4pt;">ддд</td><td>Краткое наименование дня недели (язык сокращения для дня недели зависит от текущей локали): Mon = Monday, Tue = Tuesday, Вск = воскресенье, Пнд. = понедельник и т. д.</td>
+</tr>
+<tr>
+<td style="padding: 0in 15.4pt;">чч</td><td>Час в 24-часовом формате.</td>
+</tr>
+<tr>
+<td style="padding: 0in 15.4pt;">мм</td><td>Минуты в двузначном формате</td>
+</tr>
+<tr>
+<td style="padding: 0in 15.4pt;">сс</td><td>Секунды в двузначном формате</td>
+</tr>
+</tbody>
+</table>
+
+<p><small><b>Примечание.</b> Формат 2 является выводом ANSI C функции <big><a name="asctime">«</a><code>asctime</code>»</big>, а формат 3 соответствует стандарту ISO 8601.</small></p>
+
+<hr style="width: 100%; height: 2px;">
+
+<table border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr style="">
+<td style="padding: 0in 5.4pt; width: 80pt;" valign="top" width="47">
+<p><a name="2"></a><b><u>Примечания:</u> <sup>2</sup></b></p>
+</td>
+<td style="padding: 0in 5.4pt; ">
+<p>История паролей состоит из заголовка, описывающего элементы истории и требуемого количества записей о старых паролях:</p>
+</td>
+</tr>
+</tbody>
+</table>
+
+<p>Заголовок истории паролей:</p>
+
+<ul>
+<li>1 шестнадцатеричная цифра — ведение истории паролей для данного элемента (0 = нет; 1 = да);</li>
+<li>2 шестнадцатеричные цифры — максимальное количество элементов истории для данного элемента;</li>
+<li>2 шестнадцатеричные цифры — количество сохранённых паролей в истории.</li>
+</ul>
+<p>Элемент истории паролей:</p>
+<ul>
+<li>8 шестнадцатеричных цифр — время помещения пароля в историю;</li>
+<li>4 шестнадцатеричные цифры — длина пароля в данном элементе;</li>
+<li>строка символов — пароль, сохранённый в истории.</li>
+</ul>
+
+<hr>
+
+<table border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td style="padding: 0in 5.4pt; width: 80pt;">
+<p><a name="3"></a><b><u>Примечания:</u> <sup>3</sup></b></p>
+</td>
+<td style="padding: 0in 5.4pt;">
+<p>Политика создания паролей экспортируется как текстовое поле «ffffnnnllluuudddsss» в шестнадцатеричном формате, например, «F000010004002005003». Это поле содержит 6 шестнадцатеричных чисел. Первое из них состоит из 4-х цифр, остальные — из 3-х.</p>
+<p>расшифровка «ffffnnnllluuudddsss»:</p>
+
+<ul>
+<li>ffff — 4 шестнадцатеричные цифры, являющиеся комбинацией флагов:
+<ul>
+<li>0x8000 — использовать строчные буквы;</li>
+<li>0x4000 — использовать прописные буквы;</li>
+<li>0x2000 — использовать цифры;</li>
+<li>0x1000 — использовать символы;</li>
+<li>0x0800 — использовать только шестнадцатеричные (0-9,a-f) символы (если указан данный флаг, остальные не должны быть установлены);</li>
+<li>0x0400 — использовать удобочитаемые символы;</li>
+<li>0x0200 — создавать произносимые пароли;</li>
+<li>0x01FF — не используется.</li>
+</ul>
+</li>
+<li>nnn — 3 шестнадцатеричные цифры: длина пароля;</li>
+<li>lll — 3 шестнадцатеричные цифры: минимальное количество строчных букв;</li>
+<li>uuu — 3 шестнадцатеричные цифры: минимальное количество прописных букв;</li>
+<li>ddd — 3 шестнадцатеричные цифры: минимальное количество цифр;</li>
+<li>sss — 3 шестнадцатеричные цифры: минимальное количество символов.</li>
+</ul>
+
+<p>Политика паролей «F000010004002005003» расшифровывается как:</p>
+
+<ul>
+<li>F000 — использовать строчные и прописные буквы, цифры и символы;</li>
+<li>010 — минимальная длина пароля 16 символов (в десятичной системе счисления);</li>
+<li>004 — не менее 4 строчных букв;</li>
+<li>002 — не менее 2 прописных букв;</li>
+<li>005 — не менее 5 цифр;</li>
+<li>003 — не менее 3 символов.</li>
+</ul>
+
+</td>
+</tr>
+</tbody>
+</table>
+
+<hr>
+
+<table border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td style="padding: 0in 5.4pt; width: 80pt;">
+<p><a name="4"></a><b><u>Примечания:</u> <sup>4</sup></b></p>
+</td>
+<td style="padding: 0in 5.4pt;">
+<p>Допустимы следующие значения для <i><b>действия по двойному клику</b></i>:</p>
+<ul>
+<li>-1 —&nbsp;действие по умолчанию;</li>
+<li>0 —&nbsp;копировать пароль в буфер обмена;</li>
+<li>1 —&nbsp;просмотр/редактирование элемента;</li>
+<li>2 —&nbsp;автонабор;</li>
+<li>3 —&nbsp;перейти по ссылке;</li>
+<li>4 —&nbsp;копировать заметки в буфер обмена;</li>
+<li>5 —&nbsp;копировать имя пользователя в буфер;</li>
+<li>6 —&nbsp;копировать пароль в буфер обмена и свернуть;</li>
+<li>7 —&nbsp;перейти по ссылке и выполнить автонабор;</li>
+<li>8 —&nbsp;выполнить команду;</li>
+<li>9 —&nbsp;отправить письмо.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table><!-- Added some white space at the bottom for natural scrolling -->
+
+
+<br>
+<br>
+<br>
+
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="Keyword" value="Export Password Entries">
+<param name="Keyword" value="Import Password Entries">
+<param name="Keyword" value="Converting Existing Password Data">
+</object>
+
+</body>
+</html>

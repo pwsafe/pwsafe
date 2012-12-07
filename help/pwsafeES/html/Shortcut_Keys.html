@@ -1,0 +1,2727 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head> <META HTTP-EQUIV="Content-Type" Content="text/html; charset=iso-8859-1">
+
+  <meta content="text/html;charset=ISO-8859-1" http-equiv="Content-Type">
+  <title>Atajos de teclado</title>
+
+
+<!-- pwsafe version: 3.23--><!-- Modified: 09/08/2010 --><!--Popup control -->
+  <script language="javascript" src="html/popups.js">
+  </script>
+  <link rel="stylesheet" type="text/css" href="style.css">
+
+  <style>
+<!--
+p.ok {font-size: 14.0pt; color: green;}
+p.not_ok {font-size: 14.0pt; color: red;}
+p.reserved {font-size: 14.0pt; color: red; font-weight: lighter;}
+td {nowrap; text-align: center;}
+th {nowrap; text-align: center;}
+sup {font-size: small; font-weight: normal;}
+-->
+  </style>
+</head>
+
+
+
+<body>
+
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"> </object>
+<!-- Popup Source File -->
+<h2>Atajos de teclado / Aceleradores</h2>
+
+<p>Los siguientes son los detalles y las limitaciones con respecto a la posibilidad 
+de definir atajos de teclado personalizados para <b>PasswordSafe</b>.</p>
+<p>Estas combinaciones de teclas han sido probadas en un teclado extendido de 102 teclas Reino Unido. 
+Los caracteres estándar debería funcionar en cualquier otro teclado con caracteres latinos. 
+Algunas combinaciones de teclas pueden ser diferentes en estos teclados - por ejemplo en un teclado 
+de Reino Unido el símbolo # tiene su propia tecla (con la tilde ~), pero en un teclado de EE.UU. 
+está por encima de la tecla 3 (es decir, Mays+3).
+Por favor, lea esta tabla y trasladela a su teclado específico según corresponda - 
+siempre se puede experimentar para ver si una combinación de teclas particular funciona en tu caso.</p>
+
+<p>Dependiendo de su traducción, ciertas teclas con la tecla Alt
+están reservadas. Corresponden a las letras utilizadas para invocar el menú principal. 
+Al presionar la tecla Alt en la pantalla principal se mostrarán estos caracteres, como se destaca.
+En español, esto es Alt+A (<u>A</u>rchivo), Alt+E (<u>E</u>ditar),
+Alt+V (<u>V</u>er), Alt+H (<u>H</u>erramientas) y 
+Alt+U (Ay<u>u</u>da). Para otras traducciones, fíjate en las letras subrayadas
+en el menú principal para determinar cuales están reservadas. Por ejemplo, en la traducción al alemán el menú "<u>A</u>rchivo"
+se transforma en "<u>D</u>atei" y por tanto Alt+D está reservada en lugar de Alt+A etc.</p>
+
+<p>La <i>tecla Intro</i> también está reservada ya que se usa para fijar el valor 
+de un atajo en la página de propiedades Herramientas-&gt;Opciones-&gt;Atajos. Por tanto,
+no es posible asignar esta tecla a una función. Ten en cuenta que la función "Expandir/Contraer grupo" en el modo
+vista de árbol se consigue seleccionando el grupo y presionando la tecla Intro. 
+Aunque esto podría haber sido cambiado y ser válido en cualquier acceso directo, el uso de la tecla Enter 
+para esta función seguiría estando activa, ya que es una función de la vista de árbol.
+Por esta razón, esta función no se puede cambiar a través de la página de propiedades de accesos directos.</p>
+
+<p>La <i>tecla Escape</i> está reservada para usarse para cerrar la barra de herramientas de búsqueda 
+o para minimizar Password Safe al área de notificación. Es el equivalente del botón Cancelar en cualquier diálogo.</p>
+
+<p>El valor de acceso directo para visualización de una entrada en modo de sólo lectura 
+es la misma que para la edición del texto en modo lectura / escritura. No puede fijarse independientemente. 
+Del mismo moto, 'Borrar entrada' es el mismo que 'Borrar grupo' y 'Renombrar entrada' es el mismo que 
+'Renombrar grupo'. Se muestran en la página de propiedades de atajos como 'Eliminar' y 'Renombrar' respectivamente.</p>
+
+<p>Algunas teclas están reservadas por Windows - por ejemplo
+Ctrl+Alt+Supr; Tab; Mayus+Tab; Alt+Tab;
+Alt+Mayus+Tab etc.</p>
+
+<p>Las teclas no estandar no están soportadas (por ejemplo aquellas que sólo están en un teclado Kanji).</p>
+
+<p>Los atajaos de <b>PasswordSafe</b> no reconocen la diferencia entre las teclas Alt, Ctrl
+y Mayus de la izquierda del teclado de las que están a la derecha. Esto puede hacer algunas combinaciones 
+de teclas indisponibles en algunos teclados. Por ejemplo, el simbolo del Euro en un teclado extendido Reino Unido 102
+es la tecla Alt Dcha (Alt Gr) y la tecla 4. Sin embargo, al pulsar este combinación da como resultado un atajo de 
+teclas Ctrl + Alt +4. Esta es la forma en que funciona el procesamiento de atajos de Microsoft y no es una restricción 
+de Password Safe.</p>
+
+<p><b>Nota: Configurar teclas no estándar puede hacer que estos accesos directos 
+no estén disponibles si a continuación utiliza otro equipo con un teclado que no tiene estas teclas.
+Se recomienda que sólo uses las combinaciones que aparecen en esta lista.</b></p>
+
+<p>En la tabla de abajo, la columna encabezado significa:</p>
+
+<table border="1" cellpadding="0" cellspacing="0">
+
+  <col style="text-align: center;" width="120"> <col style="text-align: left;" width="350"> <tbody>
+
+    <tr>
+
+      <th><b>Encabezado</b></th>
+
+      <th>
+      <p style="text-align: center;"><b>Significa pulsar</b></p>
+
+      </th>
+
+    </tr>
+
+    <tr>
+
+      <td>T</td>
+
+      <td style="text-align: left;">&nbsp;La tecla sola</td>
+
+    </tr>
+
+    <tr>
+
+      <td>A+T</td>
+
+      <td style="text-align: left;">&nbsp;La tecla con Alt</td>
+
+    </tr>
+
+    <tr>
+
+      <td>C+T</td>
+
+      <td style="text-align: left;">&nbsp;La tecla con Ctrl</td>
+
+    </tr>
+
+    <tr>
+
+      <td>M+T</td>
+
+      <td style="text-align: left;">&nbsp;La tecla con Mayus.</td>
+
+    </tr>
+
+    <tr>
+
+      <td>A+M+T</td>
+
+      <td style="text-align: left;">&nbsp;La tecla con Alt y Mayus.</td>
+
+    </tr>
+
+    <tr>
+
+      <td>C+M+T</td>
+
+      <td style="text-align: left;">&nbsp;La tecla con Ctrl y Mayus.</td>
+
+    </tr>
+
+    <tr>
+
+      <td>A+C+T</td>
+
+      <td style="text-align: left;">&nbsp;La tecla con Alt y Ctrl</td>
+
+    </tr>
+
+    <tr>
+
+      <td>A+C+M+T</td>
+
+      <td style="text-align: left;">&nbsp;La tecla con Alt, Ctrl y Mayus.</td>
+
+    </tr>
+
+  </tbody>
+</table>
+
+<p>&nbsp;</p>
+
+<table border="1" cellpadding="0" cellspacing="0" width="872">
+
+  <col width="100"> <col span="8" width="60">
+  <tbody>
+
+    <tr>
+
+      <th>
+      <p><b>Nombre de tecla</b></p>
+
+      </th>
+
+      <th>
+      <p><b>T</b></p>
+
+      </th>
+
+      <th>
+      <p><b>A+T</b></p>
+
+      </th>
+
+      <th>
+      <p><b>C+T</b></p>
+
+      </th>
+
+      <th>
+      <p><b>M+T</b></p>
+
+      </th>
+
+      <th>
+      <p><b>A+M+T</b></p>
+
+      </th>
+
+      <th>
+      <p><b>C+M+T</b></p>
+
+      </th>
+
+      <th>
+      <p><b>A+C+T</b></p>
+
+      </th>
+
+      <th>
+      <p><b>A+C+M+T</b></p>
+
+      </th>
+
+    </tr>
+
+    <tr>
+
+      <td>
+      <p>Retroceso</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="not_ok">N</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="not_ok">N</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+    </tr>
+
+    <tr>
+
+      <td>
+      <p>Tab</p>
+
+      </td>
+
+      <td>
+      <p class="not_ok">N</p>
+
+      </td>
+
+      <td>
+      <p class="not_ok">N</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="not_ok">N</p>
+
+      </td>
+
+      <td>
+      <p class="not_ok">N</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+    </tr>
+
+    <tr>
+
+      <td>
+      <p>Intro</p>
+
+      </td>
+
+      <td>
+      <p class="reserved"><b>R <sup>(1)</sup></b></p>
+
+      </td>
+
+      <td>
+      <p class="not_ok">N</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="not_ok">N</p>
+
+      </td>
+
+      <td>
+      <p class="not_ok">N</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+    </tr>
+
+    <tr>
+
+      <td>
+      <p>Escape</p>
+
+      </td>
+
+      <td>
+      <p class="not_ok">N</p>
+
+      </td>
+
+      <td>
+      <p class="not_ok">N</p>
+
+      </td>
+
+      <td>
+      <p class="not_ok">N</p>
+
+      </td>
+
+      <td>
+      <p class="not_ok">N</p>
+
+      </td>
+
+      <td>
+      <p class="not_ok">N</p>
+
+      </td>
+
+      <td>
+      <p class="not_ok">N</p>
+
+      </td>
+
+      <td>
+      <p class="not_ok">N</p>
+
+      </td>
+
+      <td>
+      <p class="not_ok">N</p>
+
+      </td>
+
+    </tr>
+
+    <tr>
+
+      <td>
+      <p>Espacio</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="not_ok">N</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="not_ok">N</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+    </tr>
+
+    <tr>
+
+      <td>
+      <p>Re Pag</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="not_ok">N</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="not_ok">N</p>
+
+      </td>
+
+      <td>
+      <p class="not_ok">N</p>
+
+      </td>
+
+      <td>
+      <p class="not_ok">N</p>
+
+      </td>
+
+    </tr>
+
+    <tr>
+
+      <td>
+      <p>Av Pag</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="not_ok">N</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="not_ok">N</p>
+
+      </td>
+
+      <td>
+      <p class="not_ok">N</p>
+
+      </td>
+
+      <td>
+      <p class="not_ok">N</p>
+
+      </td>
+
+    </tr>
+
+    <tr>
+
+      <td>
+      <p>Fin</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+    </tr>
+
+    <tr>
+
+      <td>
+      <p>Inicio</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+    </tr>
+
+    <tr>
+
+      <td>
+      <p>Flecha izquierda</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+    </tr>
+
+    <tr>
+
+      <td>
+      <p>Flecha arriba</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+    </tr>
+
+    <tr>
+
+      <td>
+      <p>Flecha derecha</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+    </tr>
+
+    <tr>
+
+      <td>
+      <p>Flecha abajo</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+    </tr>
+
+    <tr>
+
+      <td>
+      <p>Imprimir pantalla</p>
+
+      </td>
+
+      <td>
+      <p class="not_ok">N</p>
+
+      </td>
+
+      <td>
+      <p class="not_ok">N</p>
+
+      </td>
+
+      <td>
+      <p class="not_ok">N</p>
+
+      </td>
+
+      <td>
+      <p class="not_ok">N</p>
+
+      </td>
+
+      <td>
+      <p class="not_ok">N</p>
+
+      </td>
+
+      <td>
+      <p class="not_ok">N</p>
+
+      </td>
+
+      <td>
+      <p class="not_ok">N</p>
+
+      </td>
+
+      <td>
+      <p class="not_ok">N</p>
+
+      </td>
+
+    </tr>
+
+    <tr>
+
+      <td>
+      <p>Insertar</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+    </tr>
+
+    <tr>
+
+      <td>
+      <p>Suprimir</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="not_ok">N</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="not_ok">N</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="not_ok">N</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+    </tr>
+
+    <tr>
+
+      <td>
+      <p>0-9</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+    </tr>
+
+    <tr>
+
+      <td>
+      <p>A-Z</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="reserved"><b>R <sup>(2)</sup></b></p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+    </tr>
+
+    <tr>
+
+      <td>
+      <p>Tecl num 0-9</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="not_ok">N</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="not_ok">N</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="not_ok">N</p>
+
+      </td>
+
+    </tr>
+
+    <tr>
+
+      <td>
+      <p>Tecl num *</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+    </tr>
+
+    <tr>
+
+      <td>
+      <p>Tecl num +</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+    </tr>
+
+    <tr>
+
+      <td>
+      <p>Tecl num -</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+    </tr>
+
+    <tr>
+
+      <td>
+      <p>Tecl num .</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="not_ok">N</p>
+
+      </td>
+
+      <td>
+      <p class="not_ok">N</p>
+
+      </td>
+
+      <td>
+      <p class="not_ok">N</p>
+
+      </td>
+
+      <td>
+      <p class="not_ok">N</p>
+
+      </td>
+
+      <td>
+      <p class="not_ok">N</p>
+
+      </td>
+
+    </tr>
+
+    <tr>
+
+      <td>
+      <p>Tecl num /</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+    </tr>
+
+    <tr>
+
+      <td>
+      <p>F1</p>
+
+      </td>
+
+      <td>
+      <p class="reserved"><b>R <sup>(3)</sup></b></p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+    </tr>
+
+    <tr>
+
+      <td>
+      <p>F2</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+    </tr>
+
+    <tr>
+
+      <td>
+      <p>F3</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+    </tr>
+
+    <tr>
+
+      <td>
+      <p>F4</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="reserved"><b>R <sup>(2)</sup></b></p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+    </tr>
+
+    <tr>
+
+      <td>
+      <p>F5</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+    </tr>
+
+    <tr>
+
+      <td>
+      <p>F6</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+    </tr>
+
+    <tr>
+
+      <td>
+      <p>F7</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+    </tr>
+
+    <tr>
+
+      <td>
+      <p>F8</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+    </tr>
+
+    <tr>
+
+      <td>
+      <p>F9</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+    </tr>
+
+    <tr>
+
+      <td>
+      <p>F10</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+    </tr>
+
+    <tr>
+
+      <td>
+      <p>F11</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+    </tr>
+
+    <tr>
+
+      <td>
+      <p>F12</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+    </tr>
+
+    <tr>
+
+      <td>
+      <p>Bloq Num</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="not_ok">N</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="not_ok">N</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+    </tr>
+
+    <tr>
+
+      <td>
+      <p>Bloq despl</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+    </tr>
+
+    <tr>
+
+      <td>
+      <p style="color: blue;">;
+:&nbsp;&nbsp;&nbsp;<sup>(4)</sup></p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+    </tr>
+
+    <tr>
+
+      <td>
+      <p>+ =</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+    </tr>
+
+    <tr>
+
+      <td>
+      <p>, &lt;</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+    </tr>
+
+    <tr>
+
+      <td>
+      <p>- _</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+    </tr>
+
+    <tr>
+
+      <td>
+      <p>. &gt;</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+    </tr>
+
+    <tr>
+
+      <td>
+      <p style="color: blue;">/
+?&nbsp;&nbsp;&nbsp;<sup>(4)</sup></p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+    </tr>
+
+    <tr>
+
+      <td>
+      <p style="color: blue;">#
+~&nbsp;&nbsp;&nbsp;<sup>(4)</sup></p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+    </tr>
+
+    <tr>
+
+      <td>
+      <p style="color: blue;">[
+{&nbsp;&nbsp;&nbsp;<sup>(4)</sup></p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+    </tr>
+
+    <tr>
+
+      <td>
+      <p style="color: blue;">\
+|&nbsp;&nbsp;&nbsp;<sup>(4)</sup></p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+    </tr>
+
+    <tr>
+
+      <td>
+      <p style="color: blue;">]
+}&nbsp;&nbsp;&nbsp;<sup>(4)</sup></p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+    </tr>
+
+    <tr>
+
+      <td>
+      <p style="color: blue;">'
+@&nbsp;&nbsp;&nbsp;<sup>(4)</sup></p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+    </tr>
+
+    <tr>
+
+      <td>
+      <p style="color: blue;">`
+&not;&nbsp;&nbsp;&nbsp;<sup>(4)</sup></p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+      <td>
+      <p class="ok">S</p>
+
+      </td>
+
+    </tr>
+
+  </tbody>
+</table>
+
+<p>Notas:</p>
+
+<ol>
+
+  <li value="1">
+    <p style="color: red;">Puesto que la tecla Intro se utiliza para establecer el valor 
+del acceso directo, no pueden asignarse a ninguna función.</p>
+
+  </li>
+
+  <li value="2">
+    <p style="color: red;">Ctrl+Q y Alt+F4 están reservados para salir de la aplicación Password.</p>
+
+  </li>
+
+  <li value="3">
+    <p style="color: red;">F1 está reservado pra Ayuda.</p>
+
+  </li>
+
+  <li value="4">
+    <p style="color: blue;">Esto depende del teclado.</p>
+
+  </li>
+
+</ol>
+
+<!-- Added some white space at the bottom for natural scrolling -->
+<br>
+
+<br>
+
+<br>
+
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e"> 
+<param name="Keyword" value="Atajos"> 
+<param name="Keyword" value="Configuraci&oacute;n"> 
+<param name="Keyword" value="Teclado">
+</object>
+</body>
+</html>

@@ -1,0 +1,5 @@
+#!/bin/bash
+xdg-desktop-menu uninstall --mode system pwsafe.desktop
+xdg-icon-resource uninstall --size 48 --mode system \
+                  pwsafe.png
+exit 0

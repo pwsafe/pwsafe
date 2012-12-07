@@ -1,0 +1,364 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>Text Export &amp; Import Format</title>
+<!-- pwsafe version: 3.06--><!-- Modified: 21/02/2007 --><!--Popup control --><!-- VdG 3.15 DE 31/01/2009 -->
+  <script language="javascript" src="html/popups.js">
+  </script>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"> </object>
+<!-- Popup Source File -->
+<h2>Text Export &amp; Import Format</h2>
+<hr>
+<p><b><i><u>Warnung</u></i>:</b> Der Export von sensiblen Informationen aus einer <b>Passwort Safe</b> Datenbank in einer Textdatei bringt erhebliche Sicherheitsprobleme mit sich. Bei diesem Vorgang wird eine ungesch&uuml;tzte Kopie der Passw&ouml;rter in der Datenbank erstellt. Das L&ouml;schen dieser Kopie nach deren Verwendung ist <b>nicht</b> ausreichend und darum m&uuml;ssten andere Anwendungen eingesetzt werden, um die Daten "garantiert" zu l&ouml;schen (z.B. externe Hilfsmitteln zum "Schreddern" der Daten). Der Export von sensiblen Informationen aus einer <b>Passwort Safe</b> Datenbank umgeht die Sicherheit der Anwendung.</p>
+<hr>
+<small>Hinweis: Das Exportieren und Importieren zu/von Textdateien wurde in Version V3.06 ge&auml;ndert. Auf dieser Seite wird das aktuelle Format beschrieben.</small>
+<hr>
+<p>Exportierter Text wird:</p>
+<ul>
+  <li>beginnen mit einer Titel-Zeile als erster Datensatz in der Textdatei</li>
+  <li>ein Trennzeichen anwenden, um das "neue Zeile"-Zeichen in Notizen mit mehr als einer Zeile und den Punkt ('.') im Feld Titel zu ersetzen. Das Standardtrennzeichen ist '&raquo;' [Alt+0187]. Es kann, wenn notwendig, &uuml;berschrieben werden.</li>
+</ul>
+<p>Importierter Text setzt voraus dass:</p>
+<ul>
+  <li>eine Titel-Zeile als erste Zeile in der Textdatei vorhanden ist.</li>
+  <li>ein Trennzeichen da ist, um das "neue Zeile"-Zeichen in Notizen mit mehr als einer Zeile und den Punkt ('.') im Feld Titel zur&uuml;ckzuersetzen. Das Standardtrennzeichen ist '&raquo;' [Alt+0187]. Es kann, wenn notwendig, &uuml;berschrieben werden.</li>
+</ul>
+<p>Die Titel-Zeile enth&auml;lt f&uuml;r einen vollst&auml;ndigen Export standardm&auml;&szlig;ig folgende Felder, getrennt mit einem TAB-Zeichen.</p>
+<ul>
+  <li>Gruppe/Titel</li>
+  <li>Benutzername</li>
+  <li>Passwort</li>
+  <li>URL</li>
+  <li>Autom. Eingabe</li>
+  <li>Erstellungszeit</li>
+  <li>Passwort &Auml;nderungszeit</li>
+  <li>Letzter Zugriffszeit</li>
+  <li>Passwort Ablaufdatum</li>
+  <li>Passwort Ablaufintervall</li>
+  <li>Datensatz &Auml;nderungszeit</li>
+  <li>Passwort Richtlinie</li>
+  <li>Historie</li>
+  <li>Kommando Ausf&uuml;hren</li>
+  <li>Doppel Klick Aktion</li>
+  <li>Email</li>
+  <li>Notizen</li>
+</ul>
+<p>Beim Exportieren von Daten, k&ouml;nnen Sie auf "Erweitert" dr&uuml;cken, um eine beliebige Anzahl dieser Felder auszuschlie&szlig;en in der Titel-Zeile und den Datens&auml;tzen. In der Option "Erweitert" (siehe unten) definieren Sie eine Untermenge an Eintr&auml;ge die Sie Exportieren wollen.</p>
+<p><img alt="Erweiterte Optionen f&uml;r Text Export " src="images/export_text_adv.jpg"> </p>
+<p>Beim Importieren muss die eingebaute Titel-Zeile exakt die Elemente als 'Spalten-K&ouml;pfe' enthalten, wie oben definiert. Wenn irgendein 'Spalten-Kopf' wiederholt wird, werden nur die Daten des letzten &uuml;bernommen beim Importieren. Wenn ein 'Spalten-Kopf' nicht in der obigen Liste vorkommt, wird er beim Importieren nicht ber&uuml;cksichtigt. Die Daten m&uuml;ssen mit dem Trennzeichen unterteilt sein wie es im Dialog Text Importieren definiert wurde.</p>
+<hr>
+<small>Hinweis:<br>
+<ul>
+  <li>Um &uuml;berhaupt Daten zu <b>Passwort Safe</b> importieren zu k&ouml;nnen <i><u>m&uuml;ssen</u></i> unbedingt die Felder Titel und Passwort vorhanden sein. Sie d&uuml;rfen weder nur Leerzeichen noch leer sein, wie es auch der Fall ist beim Einf&uuml;gen eines Eintrages zu einer Datenbank.</li>
+  <li>Es besteht keine Einschr&auml;nkung in der Reihenfolge der 'Spalten-K&ouml;pfe'. <b>Passwort Safe</b> wird die mitgebrachte Titel-Zeile verwenden, um die spezifizierten Daten im richtigen Feld abzulegen.</li>
+</ul>
+</small>
+<hr>
+<h2><u>Daten Formate</u></h2>
+<table class="MsoNormalTable" style="border: medium none ; border-collapse: collapse;" border="1" cellpadding="0" cellspacing="0">
+  <tbody>
+    <tr>
+      <td style="border: 1pt solid windowtext; padding: 0in 5.4pt; width: 143.4pt;" valign="top" width="191">
+      <b>Spalte Kopf/Feld</b>
+      </td>
+      <td style="border-style: solid solid solid none; border-color: windowtext windowtext windowtext -moz-verwende-text-color; border-width: 1pt 1pt 1pt medium; padding: 0in 5.4pt; width: 4.75in;" valign="top" width="456">
+      <b>Kommentare</b>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding: 0in 5.4pt;">Gruppe/Titel</td>
+      <td style="padding: 0in 5.4pt;">Wenn vorhanden, werden Gruppen mit Punkt getrennt ('.'). Das Feld Titel darf nicht leer sein, nur Leerzeichen oder &uuml;berhaupt Trennzeichen enthalten.</td>
+    </tr>
+    <tr>
+      <td style="padding: 0in 5.4pt;">Benutzername</td>
+      <td style="padding: 0in 5.4pt;"> </td>
+    </tr>
+    <tr>
+      <td style="padding: 0in 5.4pt;">Passwort</td>
+      <td style="padding: 0in 5.4pt;">kann kein Leerzeichen oder &uuml;berhaupt leer sein.</td>
+    </tr>
+    <tr>
+      <td style="padding: 0in 5.4pt;">URL</td>
+      <td style="padding: 0in 5.4pt;"> </td>
+    </tr>
+    <tr>
+      <td style="padding: 0in 5.4pt;">Autom. Eingabe</td>
+      <td style="padding: 0in 5.4pt;"> </td>
+    </tr>
+    <tr>
+      <td style="padding: 0in 5.4pt;">Erstellungszeit</td>
+      <td style="padding: 0in 5.4pt;">Siehe Hinweis <a href="#1"><sup>1</sup></a> unten</td>
+    </tr>
+    <tr>
+      <td style="padding: 0in 5.4pt;">Passwort &Auml;nderungszeit</td>
+      <td style="padding: 0in 5.4pt;">Siehe Hinweis <a href="#1"><sup>1</sup></a> unten</td>
+    </tr>
+    <tr>
+      <td style="padding: 0in 5.4pt;">Letzter Zugriffszeit</td>
+      <td style="padding: 0in 5.4pt;">Siehe Hinweis <a href="#1"><sup>1</sup></a> unten</td>
+    </tr>
+    <tr>
+      <td style="padding: 0in 5.4pt;">Passwort Ablaufdatum</td>
+      <td style="padding: 0in 5.4pt;">Siehe Hinweis <a href="#1"><sup>1</sup></a> unten</td>
+    </tr>
+    <tr>
+      <td style="padding: 0in 5.4pt;">Passwort Ablaufinterval</td>
+      <td style="padding: 0in 5.4pt;">Siehe Hinweis <a href="#1"><sup>1</sup></a> unten</td>
+    </tr>
+    <tr>
+      <td style="padding: 0in 5.4pt;">Datensatz &Auml;nderungszeit</td>
+      <td style="padding: 0in 5.4pt;">Siehe Hinweis <a href="#1"><sup>1</sup></a> unten</td>
+    </tr>
+    <tr>
+      <td style="padding: 0in 5.4pt;">Passwort Richtlinie</td>
+      <td style="padding: 0in 5.4pt;">Siehe Hinweis <a href="#3"><sup>3</sup></a> unten</td>
+    </tr>
+    <tr>
+      <td style="padding: 0in 5.4pt;">Historie</td>
+      <td style="padding: 0in 5.4pt;">Siehe Hinweis <a href="#2"><sup>2</sup></a> unten</td>
+    </tr>
+    <tr>
+      <td style="padding: 0in 5.4pt;">Kommando Ausf&uuml;hren</td>
+      <td style="padding: 0in 5.4pt;"></td>
+    </tr>
+    <tr>
+      <td style="padding: 0in 5.4pt;">DCA</td>
+      <td style="padding: 0in 5.4pt;">= 'Doppel Klick Aktion'. Siehe Hinweis <a href="#4"><sup>4</sup></a> unten</td>
+    </tr>
+    <tr>
+      <td style="padding: 0in 5.4pt;">Shift-DCA</td>
+      <td style="padding: 0in 5.4pt;">= 'Doppel Klick Aktion'. Siehe Hinweis <a href="#4"><sup>4</sup></a> unten</td>
+    </tr>
+    <tr>
+      <td style="padding: 0in 5.4pt;">E-Mail</td>
+      <td style="padding: 0in 5.4pt;"></td>
+    </tr>
+    <tr>
+      <td style="padding: 0in 5.4pt;">Gesch&uuml;tzt</td>
+      <td style="padding: 0in 5.4pt;"></td>
+    </tr>
+    <tr>
+      <td style="padding: 0in 5.4pt;">Symbole</td>
+      <td style="padding: 0in 5.4pt;"></td>
+    </tr>
+    <tr>
+      <td style="padding: 0in 5.4pt;">Notizen</td>
+      <td style="padding: 0in 5.4pt;">
+      <ul>
+        <li>Das Feld Notizen sollte in G&auml;nsef&uuml;&szlig;chen eingeschlossen sein ("wie dies").</li>
+        <li>Das Feld Notizen sollte kein Trennzeichen enthalten, weil es sonst beim Importieren in "neue Zeile" umgesetzt wird.</li>
+      </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<table border="0" cellpadding="0" cellspacing="0">
+  <tbody>
+    <tr>
+      <td style="padding: 0in 5.4pt; width: 80pt;" valign="top">
+      <p><a name="1"></a><b><u>Hinweis:</u> <sup>1</sup></b></p>
+      </td>
+      <td style="padding: 0in 5.4pt; width: 457.35pt;" valign="top">
+      <p><i><b>Zeit-Felder</b></i> k&ouml;nnen eines der 5 folgende Formate haben:</p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<table border="0" cellpadding="0" cellspacing="0">
+  <tbody>
+    <tr>
+  <td style="padding: 0in 15.4pt;">1.</td>
+  <td style="padding: 0in 15.4pt; font-size: 12pt; font-family: 'Courier New'">yyyy/mm/dd hh:mm:ss</td>
+  <td style="padding: 0in 15.4pt;">z.B., 2007/01/26 19:31:25</td>
+    </tr>
+    <tr>
+  <td style="padding: 0in 15.4pt;">2.</td>
+  <td style="padding: 0in 15.4pt; font-size: 12pt; font-family: 'Courier New'">ddd MMM dd hh:mm:ss yyyy</td>
+  <td style="padding: 0in 15.4pt;">z.B., Fri Jan 26 19:31:25 2007</td>
+    </tr>
+    <tr>
+  <td style="padding: 0in 15.4pt;">3.</td>
+  <td style="padding: 0in 15.4pt; font-size: 12pt; font-family: 'Courier New'">yyyy-mm-ddThh:mm:ss</td>
+  <td style="padding: 0in 15.4pt;">z.B., 2007-01-26T19:31:25</td>
+    </tr>
+    <tr>
+  <td style="padding: 0in 15.4pt;">4.</td>
+  <td style="padding: 0in 15.4pt; font-size: 12pt; font-family: 'Courier New'">yyyy-mm-ddThh:mm:ssZ (nur XML)</td>
+  <td style="padding: 0in 15.4pt;">z.B., 2007-01-26T19:31:25Z</td>
+    </tr>
+    <tr>
+  <td style="padding: 0in 15.4pt;">5.</td>
+  <td style="padding: 0in 15.4pt; font-size: 12pt; font-family: 'Courier New'">yyyy-mm-ddThh:mm:ssthh:mm (nur XML)</td>
+  <td style="padding: 0in 15.4pt;">z.B., 2007-01-26T19:31:25+01:00</td>
+    </tr>
+    <tr>
+  <td style="padding: 0in 15.4pt;">6.</td>
+  <td style="padding: 0in 15.4pt;">0</td>
+  <td style="padding: 0in 15.4pt;">das Feld unbesetzt lassen</td>
+    </tr>
+    <tr>
+  <td style="padding: 0in 15.4pt;">7.</td>
+  <td style="padding: 0in 15.4pt;">now</td>
+  <td style="padding: 0in 15.4pt;">die Zeit des Importierens anwenden</td>
+    </tr>
+  </tbody>
+</table>
+<p>wo:</p>
+<table border="0" cellpadding="0" cellspacing="0">
+  <tbody>
+  <tr>
+    <td style="padding: 0in 15.4pt;">yyyy</td><td>das voll ausgeschriebene Jahr. Der Wert liegt zwischen 1970 und 2038.</td>
+    </tr>
+    <tr>
+    <td style="padding: 0in 15.4pt;">mm</td><td>der Monat; z.B. 01 = Januar, 02 = Februar usw.</td>
+    </tr>
+    <tr>
+    <td style="padding: 0in 15.4pt;">dd</td><td>der Tag im Monat</td>
+    </tr>
+    <tr>
+    <td style="padding: 0in 15.4pt;">MMM</td><td>die Kurzform des Monats; z.B. Jan = Januar, Feb = Februar usw.</td>
+    </tr>
+    <tr>
+    <td style="padding: 0in 15.4pt;">ddd</td><td>die Kurzform des Wochentages; z.B. Mon = Montag, Tue = Dienstag (Tuesday) usw.</td>
+    </tr>
+    <tr>
+    <td style="padding: 0in 15.4pt;">hh</td><td>die Stunde (24-teilig).</td>
+    </tr>
+    <tr>
+    <td style="padding: 0in 15.4pt;">mm</td><td>die Minuten</td>
+    </tr>
+    <tr>
+    <td style="padding: 0in 15.4pt;">ss</td><td>die Sekunden</td>
+    </tr>
+  </tbody>
+</table>
+<small>Hinweis: Format '2' ist das Ergebnis der ANSI C Funktion <big><a name="asctime">'</a><code>asctime</code>'</big> und Format '3' ist konform zum ISO 8601 Standard.</small>
+<hr>
+<table border="0" cellpadding="0" cellspacing="0">
+  <tbody>
+    <tr>
+      <td style="padding: 0in 5.4pt; width: 80pt;" valign="top">
+      <p><a name="2"></a><b><u>Hinweis:</u> <sup>2</sup></b></p>
+      </td>
+      <td style="padding: 0in 5.4pt; width: 457.35pt;" valign="top">
+      <p>Die <i><b>Passworthistorie</b></i> wird im exportierten Datensatz in einem Textfeld abgebildet durch eine Kopf gefolgt von einer Anzahl Felder mit den alten Passw&ouml;rtern:
+</p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>Passworthistorie Kopf:</p>
+<table border="0" cellpadding="0" cellspacing="0">
+  <tbody>
+    <tr>
+      <td style="padding: 0in 15.4pt;">1 hexadezimales Zeichen</td>
+      <td>Status zum Speicher der Passworthistorie f&uuml;r diesen Eintrag (0 = nein; 1 = ja)</td>
+    </tr>
+    <tr>
+      <td style="padding: 0in 15.4pt;">2 hexadezimale Zeichen</td>
+      <td>Maximum Anzahl an Eintr&auml;gen f&uuml;r diesem Satz</td>
+    </tr>
+    <tr>
+      <td style="padding: 0in 15.4pt;">2 hexadezimale Zeichen</td>
+      <td>Anzahl der aktuel abgespeicherten Eintr&auml;ge</td>
+    </tr>
+  </tbody>
+</table>
+<p>Jeder Eintrag der Passworthistorie:</p>
+<table border="0" cellpadding="0" cellspacing="0">
+  <tbody>
+    <tr>
+      <td style="padding: 0in 15.4pt;">8 hexadezimale Zeichen</td>
+      <td>Zeit wann das alte Passwort gesetzt wurde</td>
+    </tr>
+    <tr>
+      <td style="padding: 0in 15.4pt;">4 hexadezimale Zeichen</td>
+      <td>L&auml;nge des alten Passwortes</td>
+    </tr>
+    <tr>
+      <td style="padding: 0in 15.4pt;">Zeichen String</td>
+      <td>altes Passwort</td>
+    </tr>
+  </tbody>
+</table>
+<hr>
+<table border="0" cellpadding="0" cellspacing="0">
+  <tbody>
+    <tr>
+      <td style="padding: 0in 5.4pt; width: 80pt;" valign="top">
+      <p><a name="3"></a><b><u>Hinweis:</u> <sup>3</sup></b></p>
+      </td>
+      <td style="padding: 0in 5.4pt;" valign="top">
+      Die <i><b>Passwortrichtlinie</b></i> wird im exportierten Datensatz wie ein Textstring '<span style="font-size: 12pt; font-family: 'Courier New'">ffffnnnllluuudddsss</span>'
+      in hexadezimalem Format abgelegt, z.B. '<span style="font-size: 12pt; font-family: 'Courier New'">F000010004002005003</span>'.
+      Insgesamt sind 6 Hexadezimalwerte enthalten. Der erste Wert ist 4-stelling, alle andere sind 3-stellig.
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>'<span style="font-size: 12pt; font-family: 'Courier New'">ffffnnnllluuudddsss</span>' bedeutet im Detail:</p>
+<ul>
+<li><span style="font-size: 12pt; font-family: 'Courier New'">ffff</span> : 4 Hexadezimalzeichen als Flag f&uuml;r
+  <ul>
+  <li>0x8000: verwende kleingeschriebene Buchstaben</li>
+  <li>0x4000: verwende grossgeschriebene Buchstaben</li>
+  <li>0x2000: verwende numerische Zeichen</li>
+  <li>0x1000: verwende Sonderzeichen</li>
+  <li>0x0800: verwende nur Hexadezimalzeichen (0-9,a-f) (wenn gesetzt, kann kein anderes Bit gesetzt sein)</li>
+  <li>0x0400: verwende ein leicht zu lesendes Passwort (EasyVision)</li>
+  <li>0x0200: verwende ein aussprechbares Passwort</li>
+  <li>0x01FF: nicht verwendet</li>
+  </ul></li>
+<li><span style="font-size: 12pt; font-family: 'Courier New'">nnn&nbsp;</span> : 3 Hexadezimalzeichen : gesamte Passwortl&auml;nge</li>
+<li><span style="font-size: 12pt; font-family: 'Courier New'">lll&nbsp;</span> : 3 Hexadezimalzeichen : minimum Anzahl kleingeschriebene Buchstaben im Passwort</li>
+<li><span style="font-size: 12pt; font-family: 'Courier New'">uuu&nbsp;</span> : 3 Hexadezimalzeichen : minimum Anzahl grossgeschriebene Buchstaben im Passwort</li>
+<li><span style="font-size: 12pt; font-family: 'Courier New'">ddd&nbsp;</span> : 3 Hexadezimalzeichen : minimum Anzahl numerische Zeichen im Passwort</li>
+<li><span style="font-size: 12pt; font-family: 'Courier New'">sss&nbsp;</span> : 3 Hexadezimalzeichen : minimum Anzahl Sonderzeichen im Passwort</li>
+</ul>
+<p>Die Passwortrichtlinie '<span style="font-size: 12pt; font-family: 'Courier New'">F000010004002005003</span>' gedeutet dann</p>
+<ul><li><span style="font-size: 12pt; font-family: 'Courier New'">F000</span> : verwende kleingeschriebene, grossgeschriebene, numerische und Sonderzeichen</li>
+<li><span style="font-size: 12pt; font-family: 'Courier New'">010&nbsp;</span> : verwende mindestens 16 (dez) Zeichen</li>
+<li><span style="font-size: 12pt; font-family: 'Courier New'">004&nbsp;</span> : verwende mindestens 4 kleingeschriebene Buchstaben</li>
+<li><span style="font-size: 12pt; font-family: 'Courier New'">002&nbsp;</span> : verwende mindestens 2 grossgeschriebene Buchstaben</li>
+<li><span style="font-size: 12pt; font-family: 'Courier New'">005&nbsp;</span> : verwende mindestens 5 numerische Zeichen</li>
+<li><span style="font-size: 12pt; font-family: 'Courier New'">003&nbsp;</span> : verwende mindestens 3 Sonderzeichen</li>
+</ul>
+<hr>
+<table border="0" cellpadding="0" cellspacing="0">
+  <tbody>
+    <tr>
+      <td style="padding: 0in 5.4pt; width: 80pt;" valign="top">
+      <p><a name="4"></a><b><u>Hinweis:</u> <sup>4</sup></b></p>
+      </td>
+      <td style="padding: 0in 5.4pt;" valign="top">
+      <p>Bei der Abspeicherung der <i><b>Doppel Klick Aktion</b></i> kommen folgende Werte vor:</p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<ul><li>-1:&nbsp;Standard</li>
+<li>0:&nbsp;&nbsp;Passwort in die Zwischenablage kopieren</li>
+<li>1:&nbsp;&nbsp;Zeige/&auml;ndere ausgew&auml;hlten Eintrag</li>
+<li>2:&nbsp;&nbsp;Autom. Eingabe</li>
+<li>3:&nbsp;&nbsp;Gehe zu URL</li>
+<li>4:&nbsp;&nbsp;Notizen in die Zwischenablage kopieren</li>
+<li>5:&nbsp;&nbsp;Benutzername in die Zwischenablage kopieren</li>
+<li>6:&nbsp;&nbsp;Passwort in die Zwischenablage kopieren, minimieren</li>
+<li>7:&nbsp;&nbsp;Gehe zu URL + Autom. Eingabe</li>
+<li>8:&nbsp;&nbsp;Kommando ausf&uuml;hren</li>
+<li>9:&nbsp;&nbsp;Email senden</li>
+</ul>
+<!-- Added some white space at the bottom for natural scrolling --><br>
+<br>
+<br>
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+ <param name="Keyword" value="Export von Passworteintr&auml;ge">
+ <param name="Keyword" value="Import von Passworteintr&auml;ge">
+ <param name="Keyword" value="Konvertieren von bestehenden Passwort Daten">
+</object>
+</body>
+</html>

@@ -1,0 +1,27 @@
+/* XPM */
+static const char *classic_merge_xpm[] = {
+/* columns rows colors chars-per-pixel */
+"16 16 4 1",
+/* colors */
+" 	c None",
+".	c #4000ff",
+"X	c Red",
+"o	c Black",
+/* pixels */
+"      ..   ...  ",
+"      . .  .  . ",
+"  XXXX.  . .  . ",
+"  X   .  . .... ",
+"XXXXX .  . .   .",
+" XXX  . .  .   .",
+"  X   ..   .... ",
+"                ",
+" oo   ooo       ",
+" o o  o  o      ",
+" o  o o  o      ",
+" o  o oooo      ",
+" o  o o   o     ",
+" o o  o   o     ",
+" oo   oooo      ",
+"                "
+};

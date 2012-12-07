@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head> <META HTTP-EQUIV="Content-Type" Content="text/html; charset=iso-8859-1"><title>Autoescritura</title><!-- pwsafe version: 3.23--><!-- Modified: 07/08/2010 --><!--Popup control -->
+
+
+<script language="javascript" src="html/popups.js">
+</script>
+<link rel="stylesheet" type="text/css" href="style.css"></head>
+<body>
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"> </object>
+<!-- Popup Source File -->
+<h2>Autoescritura</h2>
+<p><b>Autoescritura</b> proporciona una forma de introducir fácil y rápidamente
+la información de usuario y contraseña. Con un solo clic, el nombre de usuario y 
+contraseña se introducen y envían para validar. Por defecto, la fórmula seguida por 
+las pulsaciones automáticas es como sigue: <a name="defautotext"></a>el nombre de usuario, 
+seguido por un tabulador, seguido por el contraseña, otro tabulador y la tecla Intro(<i>usuario</i>
+<b>TAB</b> <i>contraseña</i> <b>TAB </b><b>INTRO</b>).
+Esto funciona bien en la mayoría de los sitios web que requieren identificación por usuario/contraseña.</p>
+<p>Para sitios web o aplicaciones que requiren información diferente, es posible adaptar
+el comportamiento de autoescritura como se describe en la sección <a href="#autotype_details">Personalizar autoescritura</a>
+que aparece mas abajo. También puedes personalizar el texto&nbsp;<span style="font-style: italic;"><a href="#defautotext">por defecto</a>&nbsp;</span> de autoescritura
+a través de la pestaña <span style="font-style: italic;"><a href="misc_tab.html">Misc</a>. </span>en el dialogo 
+Opciones. Este puede ser util si, por ejemplo, la autoescritura es demasiado rápida para tu máquina.&nbsp;</p>
+<div class="instr">
+<h3>Usando autoescritura</h3>
+<ol>
+<li>Situa el cursor en el campo usuario del formulario</li>
+<li>Maximiza o abre Password Safe</li>
+<li>Selecciona una entrada</li>
+<li><b>Ctrl -T</b> or clic derecho y selecciona <b>Realizar autoescritura</b> o 
+haz clic en el botón Autoescritura de la barra de herramientas.</li>
+</ol>
+<h3><a name="autotype_details"></a>Personalizar autoescritura</h3>
+<p>Para sitios web o aplicaciones que no tengan el campo de usuario seguido por el 
+campo de contraseña y el botón entrar, puedes modificar el comportamiento 
+rellenando el campo <a href="#N1">campo "Autoescritura"</a>
+con texto que especifique el comportamiento deseado:</p>
+<ul>
+<li><span style="font-weight: bold;">\u</span>
+se reemplaza por el usuario de la entrada.</li>
+<li><span style="font-weight: bold;">\p</span>
+se reemplaza por la contraseñas de la entrada.</li>
+<li><span style="font-weight: bold;">\g</span>
+se reemplaza por el grupo de la entrada.</li>
+<li><span style="font-weight: bold;">\i</span>
+se reemplaza por el título de la entrada.</li>
+<li><span style="font-weight: bold;">\o</span>
+se reemplaza por el contenido del campo notas (puede incluir varias líneas).</li>
+<ul>
+<li>Cualquier caracter de fin de línea 
+&#8216;\n&#8217;, &#8216;\r&#8217; o
+&#8216;\r\n&#8217; se convierten a &#8216;\r&#8217;
+(retorno de carro).</li>
+<li>No se hacen sustituciones de secuencias de escape dentro del 
+campo Notas (&#8216;\u&#8217;, &#8216;\p&#8217;
+etc.) excepto la secuencia &#8216;\t&#8217; que se reemplaza por el caracter tab.</li>
+</ul>
+<li><span style="font-weight: bold;">\o</span><span style="font-style: italic; font-weight: bold;">NNN</span>
+se reemplaza por el contenido de la enésima línea del campo notas</li>
+<ul>
+<li><span style="font-style: italic;">NNN </span>pueden ser de uno a tres dígitos 
+(\o5 para la quinta línea, \o45 para la cuadragésimoquinta, etc.</li>
+<li><span style="font-style: italic;">No</span> se incluyen caracteres de fin de línea.</li>
+<li>Si <span style="font-style: italic;">NNN </span>es mayor que el múmero de líneas 
+del campo notas, no tiene efecto.<br>
+</li>
+</ul>
+<hr> <small><b>Nota</b> esta es un forma apropiada de soportar autoescritura 
+en aplicaciones que requieren una segunda contraseña u otro texto arbitrario 
+como parte del proceso de identificación.</small>
+<hr> <li><span style="font-weight: bold;">\b</span>
+se reemplaza por la tecla retroceso.&nbsp;<span style="font-weight: bold;"></span></li>
+<li><span style="font-weight: bold;">\t</span>
+se reemplaza por la tecla Tab, saltando un campo.</li>
+<li><span style="font-weight: bold;">\n</span>
+se reemplaza por la tecla intro, presionando un botón.</li>
+<li><span style="font-weight: bold;">\\</span>
+se reemplaza por la tecla contrabarra (\).</li>
+<li><span style="font-weight: bold;">\d<span style="font-style: italic;">NNN</span></span>
+fija el retardo entre caracteres en <span style="font-style: italic;">NNN</span>
+milisegundos, en los lugar de los 10 por defecto. Esto cambia el retardo del actual y 
+subsecuentes caracteres. Por ejemplo, "rápido\d500lento" resultará en 
+'rápido' escribiéndose con el retardo por defecto, y las letras 'l', 'e',
+'n', 't' y 'o' escritas con una pausa de medio segundo antes de cada una. Si quieres
+fijar un retardo puntual que no afecte la velocidad de los siguientes caracteres, 
+usa '\w' o '\W', como se indica más abajo.</li>
+<li><span style="font-weight: bold;">\w</span><span style="font-style: italic; font-weight: bold;">NNN</span>
+<span style="font-weight: bold;"> o </span><span style="font-style: italic; font-weight: bold;">\WNNN</span>
+ introduce un retardo de <span style="font-style: italic;">NNN</span> milisegundos
+para \w, o segundos si se usa \W. Por ejemplo, "como\w500ahora" ocasionará que se escriba 
+'como' (a la velocidad por defecto o aquella especificada en el último 
+\d), seguido por una pausa de medio segundo, seguida por 'ahora' escrita a la 
+misma velocidad que 'como'). Igualmente, "como\W2ahora" introduce una pausa de 2 segundos
+entre las dos palabras. Esto es útil para ajustar los tiempos con ciertas páginas web.</li>
+<li><span style="font-weight: bold;">\z</span> invoca el antiguo mecanismo de autoescritura.  Este 
+mecanismo puede manejar incorrectamente caracteres no latimos, pero puede hacer funcionar
+la autoescritura en ciertos sitios web problemáticos.
+Si ves que autoescritura no funciona bien en un sitio web en concreto, prueba este código en el campo autoescritura.</li>
+<li>Todos los demás textos se escriben tal cual.</li>
+</ul>
+<p><span style="font-weight: bold;">Ejemplo:</span>
+Lo siguiente puede usarse para introducir el número de cuenta bancaria (12345) antes del
+usuario y  contraseñas:<br>
+<br>
+<span style="font-style: italic;">12345\t\u\t\p\t\n</span></p>
+<p><span style="font-style: italic;"></span></p>
+</div>
+<hr> <small><b>Nota:</b>&nbsp;<a name="N1">Si tienes problemas con autoescritura, puedes desactivar 
+bloqueadores de popup. Se han reportado problemas con la interacción de bloqueadores de 
+popup con la funcionalidad de autoescritura.</a></small>
+<hr><!-- Added some white space at the bottom for natural scrolling --><a name="N1"><b><br>
+<br>
+<br>
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e"> <param name="Keyword" value="Autoescritura"> <param name="Keyword" value="Usar autoescritura"> </object>
+</b></a>
+</body></html>

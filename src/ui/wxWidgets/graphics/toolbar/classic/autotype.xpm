@@ -1,0 +1,26 @@
+/* XPM */
+static const char *classic_autotype_xpm[] = {
+/* columns rows colors chars-per-pixel */
+"16 16 3 1",
+/* colors */
+"  c None",
+"X c black",
+". c cyan",
+/* pixels */
+"                ",
+"      XXX       ",
+"      X.X       ",
+"     X...X      ",
+"     X...X      ",
+"    X.....X     ",
+"    X.XXX.X     ",
+"   X..X X..X    ",
+"   X..XXX..X    ",
+"   X.......X    ",
+"  X..XXXXX..X   ",
+"  X..X   X..X   ",
+" X..XX   XX..X  ",
+" X..X     X..X  ",
+" XXXX     XXXX  ",
+"                "
+};

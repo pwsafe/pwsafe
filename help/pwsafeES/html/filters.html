@@ -1,0 +1,159 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head> <META HTTP-EQUIV="Content-Type" Content="text/html; charset=iso-8859-1">
+
+  <meta content="text/html;charset=ISO-8859-1" http-equiv="Content-Type">
+  <title>Filtros</title>
+
+
+<!-- pwsafe version: 3.23--><!-- Modified: 15/8/2010 -->
+<!--Popup control -->
+  <script language="javascript" src="html/popups.js">
+  </script>
+  <link rel="stylesheet" type="text/css" href="style.css">
+
+</head>
+
+
+<body>
+
+<h1><object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"></object>Filtros</h1>
+
+<div class="instr"><br>
+
+Un "filtro" es un criterio (o conjunto de criterios) con que una entrada coincide o no.
+<b>PasswordSafe</b> te permite definir filtros, y mostrar sólo aquellas entradas que coincidan con un filtro dado. 
+Puedes definir un filtro para consultar una sola vez, o puedes definir varios filtros, 
+nombrarlos y almacenarlos, por usarlos reiteradamente.
+Los filtros pueden almacenarse junto con la base de datos, o externamente, para 
+compartir el mismo filtro a través de varias bases de datos.<br>
+
+<h2>Definir un filtro</h2>
+
+Para definir un nuevo filtro, selecciona el menú Ver-&gt;Filtros-&gt;Nuevo/Editar Filtro. 
+Se mostrará el siguiente cuadro de diálogo:<br>
+
+<img alt="Diálogo filtro de visualización" src="images/filter.jpg"><br>
+
+<br>
+
+Como puedes ver, cada filtro está compuesto de una o más <b>filas,</b> donde cada fila define un 
+<b>criterio</b> sobre un <b>campo</b> determinado.
+Las condiciones definidas en cada fila puede ser enlazadas con "y" u "o" con las condiciones 
+definidas en la fila anterior. Esto te permite definir los siguientes tipos de filtros:<br>
+
+1. Todas las entradas cuyo usuario contiene "jose" or "José" or "JOSÉ"<br>
+
+<img alt="example1" src="images/filter-ex1.jpg"><br>
+
+2. Todas las entradas con usuario "José" (exactamente) creado tras el 5 de mayo de 2010<br>
+
+<img alt="example2" src="images/filter-ex2.jpg"><br>
+
+3. Todas la entradas cuyo usuario contenga "José" or "María"<br>
+
+<img alt="example3" src="images/filter-ex3.jpg"><br>
+
+<br>
+
+Como puedes ver, los filtrol pueden tener cualquier complejidad.<br>
+
+<br>
+
+Las columnas de la tabla filtro son las siguientes:<br>
+
+<ul>
+
+  <li>'#' - Este es el número de fila. Se muestra por conveniencia y no se puede modificar.</li>
+
+  <li>'?' - La casilla de verificación en esta columna determina si la fila está <b>activa</b> o no. Sólo 
+se usan las filas activas al aplicar el filtro. Hacer click en la casilla activa/desactiva la fila.</li>
+
+  <li>'+' - Clic para insertar una nueva fila por debajo de una fila determinada.</li>
+
+  <li>'-' - Click para eliminar la fila actual. <b>Nota:</b> Puesto que 
+borrar una fila es permanente, es posible que desees <b>deshabilitarlo</b>.</li>
+
+  <li>'Y/O' - Esto te permite determinar la relación de la regla que está añadiendo con la regla anterior.</li>
+
+  <li>'Campo' - Selecciona el campo de la entrada que te interesa, usuario, grupo, notas, etc.</li>
+
+  <li>'Criterio' - Define el valor que le interesa para el campos seleccionado. 
+Una vez hayas seleccionado un campo, al hacer clic en este abrirá un cuadro de diálogo que 
+permite especificar los criterios, que se muestran en la tabla.</li>
+
+</ul>
+
+</div>
+
+<h2>Aplicar un filtro</h2>
+
+Una vez que has definido el filtro, al hacer clic en 'Aplicar' se aplicará el filtro 
+en las entradas de la base de datos, al tiempo que deja el diálogo de ajustar filtro de visualizacion
+abierto. Esto es útil para fijar y refinar un filtro en base a los resultados. 
+Pulsando en 'Aceptar' también se aplica el filtro, pero se cierra el diálogo de ajustar filtro.
+<br>
+
+<br>
+
+<h2><a name="ManagingFilters"></a>Administrar filtros</h2>
+
+Fijar/editar un filtro es una buena forma de trabajar con filtros en tareas de una sóla vez. 
+Si ves que tienes varios filtros que quieres utilizar repetidamente, entonces puedes  
+almacenarlos y administrarlos a través del diálogo Ver-&gt;Filtros-&gt; Administrar...<br>
+
+<img alt="Administrar filtros" src="images/filter_mng.jpg"><br>
+
+<br>
+
+El cuadro de diálogo administrar filtros tiene dos tablas. La tabla superior muestra los filtros, 
+y las tabla inferior el contenido del filtro seleccionado.<br>
+
+<ul>
+
+  <li>Para añadir un nuevo filtro, haz clic en Nuevo. Esto es equivalente a 
+seleccionar el menú Ver-&gt;Filtros-&gt;Nuevo/editar filtro.</li>
+
+  <li>Para editar un filtro existente, selecciónelo y haga clic en Editar.</li>
+
+  <li>Para aplicar un filtro existente, haga clic en la casilla Aplicar en la fila el filtro deseado.
+Ten en cuenta que sólo puede aplicarse un filtro en un momento dado.</li>
+
+</ul>
+
+<br>
+
+<h4>Almacenar filtros</h4>
+
+Los filtros pueden ser almacenados como parte de la base de datos actual 
+o, externamente, como archivos XML. Almacenar filtros externamente aes una
+buena forma de compartir filtros entre bases de datos, mientras que 
+almacenarlos como parte de la base de datos asegura que información 
+potencialmente sensible de la definición de los filtros está protegida.<br>
+
+<ul>
+
+  <li>Para almacenar los filtros en un archivo externo: Fija la opción Exportar 
+de los filtros que desea almacenar externamente, a continuación, haga clic en el botón Exportar.</li>
+
+  <li>Para almacenar los filtros de la base de datos actual: Fija la opcion Copiar a la BD
+y pulsa el botón copiar.</li>
+
+  <li>Para cargar un filtro externo: Haz clic en el botón Importar.</li>
+
+</ul>
+
+<b>Nota:</b><br>
+
+Al iniciar PasswordSafe busca un archivo llamado autoload_filters.xml en el mismo directorio 
+que el archivo pwsafe.cfg (por defecto el directorio donde está instalado PasswordSafe). 
+Si existe tal archivo, entonces es automáticamente importado y los filtros que contiene 
+están listos para su uso.
+Esto es útil si tienes una serie de filtros que deseas compartir entre varias bases de datos, 
+sin tener que importarlos de forma explícita cada vez.<br>
+
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+  <param name="Keyword" value="Filtros">
+ </object>
+</body>
+</html>

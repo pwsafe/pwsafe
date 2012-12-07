@@ -1,0 +1,379 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Readme For Developers</title>
+</head>
+
+<body>
+
+<h1>Developer Notes</h1>
+
+<p>This file contains notes, hints and information of interest for those developers
+wishing to compile PasswordSafe for Windows. Linux developers should read the file
+<a href="README.LINUX.DEVELOPERS.txt">README.LINUX.DEVELOPERS.txt</a>.</p>
+ 
+<h3>Contents</h3>
+
+<ol>
+<li><a href="#Introduction">Introduction</a></li>
+<li><a href="README.WINDOWS.DEVELOPERS.html#Software_Requirements">Software Requirements</a></li>
+<li><a href="README.WINDOWS.DEVELOPERS.html#XML_Processing">XML Processing</a></li>
+<li><a href="README.WINDOWS.DEVELOPERS.html#Minidump_Production">Minidumps</a></li>
+</ol>
+
+<h3><a name="Introduction"></a>Introduction</h3>
+<p>There are several 'degrees of freedom' for Windows developers:</p>
+
+<ol>
+<li>Development tools: Microsoft's Visual Studio <i>2010</i>
+(referred to as 'VS2010' below) is currently the main development
+environment, although Visual Studio 2005 (MSVS8) is currently also
+supported. Visual Studio 2008 (MSVS9) should also work. See note below
+for Visual Express users.</li>
+<li>User interface library: The curently supported version of PasswordSafe for Windows
+is built upon MFC (Microsoft's Foundation Classes). Work is also being done on a
+wxWidgets version, which should provide cross platform support.</li>
+<li>XML support: As PasswordSafe provides XML import/export capabilities, it
+can be configured to use one of several XML parsers (or none).
+The curently supported version of PasswordSafe for Windows is built using the
+Microsoft XML parser. </li>
+</ol>
+
+<p>Note regarding Visual Express: The MFC version of PasswordSafe
+<span style="font-weight: bold;">cannot</span> be built using Visual Express,
+as Microsoft does not provide MFC support in this product. It should, however,
+be possible to build the wxWidgets version.</p>
+
+<p>To summarise: The 'official' version of PasswordSafe on Windows
+platforms is based on MFC (Microsoft's Foundation Classes), and
+uses Microsoft's XML parser. This corresponds to the <i>ReleaseM</i>
+configuration in the build environment, i.e., the release build using Microsoft's
+XML parser.  This will build the required DLLs using their Release configuration
+(pws_at.dll for AutoType support and pws_osk.dll for the Virtual Keyboard) and
+the base resource DLL (pwsafe_base.dll used to create non-English language support).</p>
+
+<p>The Visual Studio 2010 projects have been updated to be able to generate the 64-bit
+versions of both the MFC and wxWidgets. <b>This has only been tested on a 64-bit Windows
+environment with the VC10 64-bit compiler.  It has not been tested on a 32-bit Windows
+environment with a cross-compiler.</b> For wxWidgets, you will need the 64-bit static
+libraries and they should be placed in a new diretory 'lib64\vc_lib' corresponding to
+the current 'lib\vc_lib' for the 32-bit versions.  <i>If you continue to use VS2005,
+you should put the static libraries built by it in '\lib\vc8_lib'.</i></p>
+
+<p>For each Configuration there is an associated platform. Unfortunately, Visual Studio
+adds all defined platforms to all defined configurations even if a particular combination
+is not valid. The supported combinations are:</p>
+<ul>
+<li>If the Configuration name <i>does not</i> end with '64', only platform "Win32" is supported.</li>
+<li>If the Configuration name <i>does</i> end with '64', only platform "x64" is supported.</li>
+</ul>
+<b><i>No other combinations are supported or have been tested.</i></b>
+
+<p>The current MFC configurations are:</p>
+
+<ul>
+<li>32-bit versions - platform Win32:</li>
+<ul>
+<li><b>Debug</b> - builds the debug version of the required DLLs (pws_at_D.dll and pws_osk_D.dll).
+This project is automatically selected when any of the debug builds below are selected.</li>
+<li><b>DebugM</b> - builds the debug version using the Microsoft XML parser</li>
+<li><b>DebugX</b> - builds the debug version using the Xerces XML parser</li>
+<li><b>Release</b> - builds the release version of the required DLLs (pws_at.dll and pws_osk.dll)
+and the resource DLL (pwsafe_base.dll). This project is automatically selected when any 
+of the release builds below are selected.</li>
+<li><b>ReleaseM</b> - builds the release version using the Microsoft XML parser</li>
+<li><b>ReleaseX</b> - builds the release version using the Xerces XML parser</li>
+</ul>
+
+<li>64-bit versions - platform x64:</li>
+<ul>
+<li><b>Debug64</b> - builds the debug version of the required DLLs (pws_at_D.dll and pws_osk_D.dll).
+This project is automatically selected when any of the debug builds below are selected.</li>
+<li><b>DebugM64</b> - builds the debug version using the Microsoft XML parser</li>
+<li><b>DebugX64</b> - builds the debug version using the Xerces XML parser</li>
+<li><b>Release64</b> - builds the release version of the required DLLs (pws_at.dll and pws_osk.dll)
+and the resource DLL (pwsafe_base.dll). This project is automatically selected when any 
+of the release builds below are selected.</li>
+<li><b>ReleaseM64</b> - builds the release version using the Microsoft XML parser</li>
+<li><b>ReleaseX64</b> - builds the release version using the Xerces XML parser</li>
+</ul>
+</ul>
+
+<p>The current wxWidgets configurations are:</p>
+
+<ul>
+<li>32-bit versions - platform Win32:</li>
+<ul>
+<li><b>Debugwx</b> - builds the debug version without any XML parser</li>
+<li><b>DebugwxX</b> - builds the debug version using the Xerces XML parser</li>
+<li><b>Releasewx</b> - builds the release version without any XML parser</li>
+<li><b>ReleasewxX</b> - builds the release version using the Xerces XML parser</li>
+</ul>
+
+<li>64-bit versions - platform x64:</li>
+<ul>
+<li><b>Debugwx64</b> - builds the debug version without any XML parser</li>
+<li><b>DebugwxX64</b> - builds the debug version using the Xerces XML parser</li>
+<li><b>Releasewx64</b> - builds the release version without any XML parser</li>
+<li><b>ReleasewxX64</b> - builds the release version using the Xerces XML parser</li>
+</ul>
+</ul>
+
+<p>Note that the core and os project files contain <i>all</i> of the above projects,
+even if you are only selecting one of the MFC or the wxWidget builds. You should not
+have to select them individually as selecting the main PasswordSafe 
+configuration will select the correct configuration for these projects.  You should
+also be careful not to select all configrations in the VS2010 Batch Build process
+either to build, rebuild or clean all configurations.  Only select MFC configurations
+if using the MFC PasswordSafe solution (pwsafe.sln) and the wxWdigets
+configurations if using the wxWidgets PasswordSafe solution (pwsafe_wx.sln).</p>
+
+<h3><a name="Software_Requirements"></a>Software Requirements</h3>
+
+<h4>Getting Source code</h4>
+
+<p>The source code for PasswordSafe may be downloaded as a zip file, or retrieved
+from the Subversion repository at <a href="https://passwordsafe.svn.sourceforge.net/svnroot/passwordsafe/trunk/pwsafe/pwsafe">
+https://passwordsafe.svn.sourceforge.net/svnroot/passwordsafe/trunk/pwsafe/pwsafe</a>
+using a subversion client. Currently (August 2010), the Windows version
+is built using Microsoft's development tools as described <a href="#Windows_Build">below</a>.</p>
+
+<p>If you're going to commit code to the repository, please set your subversion client's
+configuration file as follows:</p>
+
+<p>In the "[miscellany]" section, ensure the following variable is set to 'yes':</p>
+<pre>
+  enable-auto-props = yes
+</pre>
+
+<p>In the "[auto-props]" section, add the following if not already there:</p>
+<pre>
+  *.c = svn:eol-style=native
+  *.cmd = svn:eol-style=native;svn:mime-type=text/plain
+  *.cpp = svn:eol-style=native
+  *.cs = svn:eol-style=native
+  *.csproj = svn:eol-style=native
+  *.dsp = svn:eol-style=CRLF
+  *.dsw = svn:eol-style=CRLF
+  *.h = svn:eol-style=native
+  *.hhc = svn:eol-style=native
+  *.hhk = svn:eol-style=native
+  *.hpp = svn:eol-style=native
+  *.html = svn:eol-style=native;svn:mime-type=text/html
+  *.ico = svn:mime-type=image/x-icon
+  *.in = svn:eol-style=native
+  *.inc = svn:eol-style=native
+  *.ini = svn:eol-style=native
+  *.iss = svn:eol-style=native
+  *.jpg = svn:mime-type=image/jpeg
+  *.js = svn:eol-style=native
+  *.linux = svn:eol-style=native
+  *.manifest = svn:eol-style=CRLF
+  *.nsi = svn:eol-style=CRLF
+  *.pjd = svn:eol-style=native
+  *.pl = svn:eol-style=native
+  *.png = svn:mime-type=image/png
+  *.po = svn:eol-style=native
+  *.rc = svn:eol-style=native
+  *.rc2 = svn:eol-style=native
+  *.resx = svn:eol-style=native
+  *.sh = svn:eol-style=native;svn:executable
+  *.sln = svn:eol-style=CRLF
+  *.txt = svn:eol-style=native;svn:mime-type=text/plain
+  *.vbs = svn:eol-style=native
+  *.vcproj = svn:eol-style=CRLF
+  *.windows = svn:eol-style=native
+  *.wxs = svn:eol-style=native
+  *.xml = svn:eol-style=native;svn:mime-type=text/xml
+  *.xpm = svn:mime-type=image/x-xpm
+  *.xsd = svn:eol-style=native
+  *.xsl = svn:eol-style=native
+  LICENSE = svn:eol-style=native;svn:mime-type=text/plain
+  Makefile = svn:eol-style=native;svn:mime-type=text/plain
+  README = svn:eol-style=native;svn:mime-type=text/plain
+</pre>
+
+<p>(This file is ~/.subversion/config for Linux, and under Documents and
+Settings\user\Application Data\Subversion\config on Windows.  If using Tortoise
+SVN client under Windows, this can be accessed by right clicking a file, selecting 
+Tortoise SVN and then select Settings from the menu and using the Edit button in the
+General Settings panel).</p>
+
+<h4><a name="Windows_Build"></a>Windows Build</h4>
+
+<p>The Windows version of PasswordSafe can be built using Microsoft Visual Studio
+2010 (C++ compiler for PaswordSafe ('VC10') and C# compiler if you wish to re-generate
+the Virtual Keyboard data, which is not normally necessary). Microsoft Visual Studio 2005
+(MSVS8) and 2008 are also supported, as described below. The VC10 Express compiler
+does <u>not</u> support Microsoft's Foundation Classes, which are used extensively
+within the current official Windows version.</p>
+
+<p>The main (toplevel) Microsoft Visual Studio 2010 solution file is pwsafe.sln. The
+MSVS8 version is pwsafe<span style="font-weight: bold;">8</span>.sln.
+Likewise, the other solution files in this project have "8" appended to the MSVS8 versions.</p>
+
+<p>In order to build the Windows version of PasswordSafe, you
+need to install the following freely available components, in addition to
+Visual Studio:</p>
+<ul>
+<li><a href="http://msdn.microsoft.com/en-us/windows/dd146047.aspx">
+Microsoft's Windows SDK</a>. If you have installed Visual Studio 2008,
+it will have installed a Windows SDK V6.0A and you do not have to install
+another SDK. If you haven't installed VS2008, then please select either
+of the following versions:
+<ul>
+<li>"Windows Vista Update &amp; .NET 3.0 SDK"
+[V6.1.6000.16384.10 dated February 2007] - known as V6.0.</li>
+<li>"Windows Server 2008 and .NET Framework 3.5"
+[V6.0.6001.18000.367 dated February 2008] - known as V6.1.</li>
+<li>"Windows 7 and .NET Framework 3.5 SP1
+[V6.1.7600.16385 dated August 2009] - known as V7.0.</li>
+</ul>
+All these replace the old "Platform SDK" and support Operating
+Systems: Vista and Windows XP; and Development Environments: Visual
+Studio 2005 and 2008. However, V7.0 and later support Windows 7 <b>but not</b>
+Visual Studio 2005. At this time, PasswordSafe does not use any facilities or
+functions that are not supported by Windows XP and Visual Studio 2005.
+<br>
+By default, the SDKs are installed in directory "C:\Program
+Files\Microsoft SDKs\Windows\NNN", where NNN is '6.0', '6.0A', '6.1' or '7.0'.
+<u>See note below.</u></li>
+<li>To compile and produce the Help files (.chm) then
+<a href="http://www.microsoft.com/downloads/details.aspx?FamilyID=00535334-%0D%0Ac8a6-452f-9aa0-d597d16580cc&amp;DisplayLang=en">
+Microsoft's HTML Help Workshop</a> is required. Note however that the headers and
+libraries necessary for compiling PasswordSafe itself are included in the
+Windows SDK mentioned above.</li>
+<li>A subversion client, such as <a href="http://tortoisesvn.net/downloads">
+Tortoise SVN Client</a> (for updating the revision number within PasswordSafe's
+version details)</li>
+<li>For XML Support, one or more of the following is needed (see the
+<a href="#XML_Processing"> XML processing section</a> for more details):
+<ul>
+<li>Headers and libraries to support Microsoft's XML V6.0 are included in
+the Windows SDK mentioned above and do not need to be installed separately.</li>
+<li><a target="_blank" href="http://xerces.apache.org/xerces-c/">Xerces
+V3.1.1 XML Library</a></li>
+</ul>
+</li>
+</ul>
+
+<p><b>SDK NOTE:</b> In order to compile PasswordSafe using MFC,
+the Microsoft Windows SDK's 'include' and 'lib' directories
+must be added to the directories supplied by Visual Studio 2005. This is
+achieved in VS2005 via Tools &gt; Options &gt; Project and Solutions
+&gt; VC++ directories &gt; Include files and Library files.
+They can be added at the end of each appropriate set using the directory you
+specified during installation (the defaults are: "C:\Program
+Files\Microsoft SDKs\Windows\NNN\Include" and "C:\Program
+Files\Microsoft SDKs\Windows\NNN\Lib", where NNN is 6.0, 6.0A, 6.1 or 7.0 as
+noted above). The Microsoft Visual Studio Registration Tool only adds
+the .Net libraries and not those needed for PasswordSafe. <b>It is
+recommended that you get SDK V6.1 <u>and</u> you place them above the
+libraries supplied with Visual Studio e.g. "$(VCInstallDir)PlatformSDK\include"
+and "$(VCInstallDir)PlatformSDK\lib" otherwise you may get warning messages
+compiling source members using BlockInput.</b></p>
+
+<p><b>Compiling using Visual Studio:</b> If you're using Microsoft's Visual
+Studio, the file "UserVariables.props" (for VS10) or "UserVariables.vsprops"
+(for VS8) <b><u><i>must</i></u></b> exist and describe the directories where
+the non-"Windows SDK" components have been installed. <b><u><i>The solution
+will not open correctly without this file being present</i></u></b>.
+For your convenience, we've included a simple Visual Basic script, "configure.vbs"
+(or "configure8.vbs" for VS8) in the src/ui/Windows directory, that you can
+run to generate the above file with the correct values.  These script will also
+prompt for the location of the 64-bit Xerces libraries for 64-bit builds.</p>
+
+<h3><a name="XML_Processing"></a>XML Processing</h3>
+
+<p>Originally, PasswordSafe used Microsoft's XML library for XML parsing and
+validation. For portability, we're now support the
+<a href="http://xerces.apache.org/xerces-c/" target="_blank">Xerces</a> XML
+libraries, which are available for non-Windows platforms.  We recommend the
+latest version (currently 3.1.1 as of April 2010), as they
+supply pre-built Windows binaries using the VS2005 (VC8) and VS2008 (VC9) and
+VS2010 (VC10) compilers. <b>Note: for 64-bit Xerces builds, you must use the 64-bit
+versions of the Xerces libraries.</b></p>
+
+<p>To determine which XML library to use while building PasswordSafe,
+we've defined a pre-processor variable (USE_XML_LIBRARY). If <u>NOT</u>
+defined, the compiled PasswordSafe <u>will not process XML files</u>
+(databases or filter definitions in XML format). Filters within a database
+will be treated as 'Unknown Fields' and will remain unchanged so that
+other versions of PasswordSafe that do support XML parsing can still
+use them. Note, however, that the application will be able to write XML files.</p>
+
+<p>The two valid values of the USE_XML_LIBRARY variable are
+"MSXML" and "XERCES" corresponding to the three different implementations.
+For wxWidgets builds, only XERCES will be possible but they are
+still under development (as of August 2010).</p>
+
+<p>PasswordSafe uses SAX2 processing for both Microsoft's and the Xerces' XML
+Parsers, which are full validating parsers and require the presence of
+the appropriate XSD Schema file (included in the distribution and in the
+"xml" sub-directory, to process either file or filter imports. This
+ensures that the data eventually hitting the SAX2 content handlers is
+correct and just needs placing in the appropriate fields.</p>
+
+<h3><a name="Minidump_Production"></a>Minidump Production (Windows only)</h3>
+
+<p>In order to help debug user problems when Windows just says "there has
+been an error", a "Windows Unhandled Fault Handler" has been added. This will
+create a minidump, which can then be used to find where the error took
+place and, hopefully, why.</p>
+
+<p>An extra "extended" Command Line flag of "--testdump" has been introduced
+for two reasons. Firstly, it allows the developer to test the minidump process,
+which is only available in the Release version of the executable and,
+secondly, allows the translators to check that the error screen displays
+as they wish.</p>
+
+<p><u>Note to Translators:</u> the error screen is a basic Windows function
+and has a fixed width. This is the reason why the minidump file name and
+directory have been split onto separate lines.</p>
+
+<p><u>Note: Extended flags start with two minus signs ('--') and must be
+specified in full - i.e. no abbreviations. They are not displayed in the
+Usage notes for the normal users and no error message or display is shown
+if they are not recognised.</u></p>
+
+<p>With this flag set, an extra button will appear in the bottom right
+hand corner of the "About PasswordSafe" dialog. Click it, and a minidump
+should be produced.</p>
+
+<p>In order to process the minidump, either the free Microsoft Windbg
+program can be used (see Microsoft's site for details), or Visual Studio
+(VS) can be used. In the latter case (and probably the former too!):</p>
+<ol>
+<li>You need the source corresponding to the failing release
+version. This should be available from SourceForge web site either in
+the normal Download section or from the Subversion repository, based on
+the revision number associated with that release. Without the
+corresponding source, VS can only show Windows source and line numbers in
+PasswordSafe source. With the corresponding source, VS can show you the
+exact line in PasswordSafe where the error took place and also the other
+statements within PasswordSafe as you follow the stack trace.</li>
+<li>You need the Program Debug Database (pwsafe.pdb) associated with the
+failing release. This is not normally uploaded to the SourceForge web
+site with the release package. It is large (~11.5MB or ~3MB
+compressed). Since this must correspond to the PasswordSafe executable that
+had the error, maybe this and, possibly, the associated Link Map can be
+uploaded to a Developers section on this web site to aid all developers.</li>
+<li>You should probably maintain the directory structure of the project
+as described in the source downloaded from SourceForge and place the
+Program Debug Database file in the '..\src\bin\releasem' directory.</li>
+<li>Save the user's minidump file on your PC. Use VS to Open this <u>as
+a Project</u> (e.g. File-&gt;Open-&gt;Project/Solution).</li>
+<li>In the Debugging Options, specify the directory containing the corresponding
+PDB file. (Go to: Tools-&gt;Options-&gt;Debugging-&gt;Symbols and add
+this directory in the section entitled "Symbol file (.pdb)
+locations:").</li>
+<li>Press F5 to start debugging, and away you go.</li>
+</ol>
+
+<p><b>*** End of Developer Notes ***</b></p>
+
+<br>
+<br>
+<br>
+</body>
+</html>

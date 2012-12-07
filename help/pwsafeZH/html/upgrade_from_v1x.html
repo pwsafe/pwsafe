@@ -1,0 +1,39 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>升级早期版本的 Password Safe</title>
+<!-- pwsafe version: 2.11--><!-- Modified: 15/06/2005 --><!--Popup control -->
+  <script language="javascript" src="html/popups.js">
+		</script>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11">
+		</object>
+		<!-- Popup Source File -->
+<h2>升级早期版本的 Password Safe</h2>
+为了支持新的功能和增强安全性，在主要版本之间用来存储项目的数据库格式和参数选择已经改变。然而，还有许多已经被努力改进的确保自动和显而易见的升级: <br>
+<ul>
+  <li>1.x 版本的 <span style="font-weight: bold;">Password Safe</span> 只能读取1.x.生成的数据库。</li>
+  <li>2.x 版本的 <span style="font-weight: bold;">Password Safe</span> 可以读取自身建立的数据库及1.x版本 <span style="font-weight: bold;">Password Safe</span> 生成的数据库。</li>
+  <li>3.x 版本的 <span style="font-weight: bold;">Password Safe</span> 可以读取所有早期版本建立的数据库。</li>
+</ul>
+在所有情况下，读取一个由早期版本 <span style="font-weight: bold;">Password Safe</span> 生成的数据库，
+只是打开它像所有数据库一样，项目将正常显示，可能 "未知" 字段值不被早期版本支持 (例如: 建立一个项目的日期)。<br>
+当保存这样一个数据库时，将被提醒新数据库不能被早期版本的 <span style="font-weight: bold;">Password Safe</span> 读取的事实。<br>
+<div class="instr">
+<h3>生成早期版本的数据库</h3>
+<p>用户可以建立能通过旧版本 <span style="font-weight: bold;">Password Safe</span> 读取的数据库并明确输出为想要的格式(<b>文件 &gt; 输出</b>和选择<b>V1 旧版本格式...</b>或<span style="font-weight: bold;">V2 旧版本格式...</span><b>)</b>。
+请注意输出的数据库将不包含附加在新版本中的信息。例如：一个版本 2 的数据库将没有涉及项目修改时间的信息。</p>
+		</div>
+		<!-- Added some white space at the bottom for natural scrolling -->
+		<br>
+<br>
+<br>
+		<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+			<param name="Keyword" value="升级早期版本">
+			<param name="Keyword" value="Password Safe 1.x">
+			<param name="Keyword" value="Password Safe 2.x">
+		</object>
+	</body>
+</html>

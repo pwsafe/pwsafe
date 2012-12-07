@@ -1,0 +1,11 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=PasswordSafe
+
+Comment=Manage passwords
+Exec=pwsafe %f
+Icon=pwsafe
+Terminal=false
+Type=Application
+StartupNotify=true
+Categories=GTK;Utility;Security;

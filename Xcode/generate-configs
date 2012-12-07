@@ -1,0 +1,41 @@
+#!/usr/bin/perl -w
+#
+# This script parses the output of  wx-config and generates xcconfig file contents
+# on its standard output. Redirect it to one of the xcconfig files mentioned in
+# README.MAC.DEVELOPERS.txt
+#
+# Usage:
+#
+# It takes two parameters, and you must pass in both.
+# The first is either "-d" or "-r", to tell this script if you want to generate the
+# xcconfig for a Debug or Release build.  The second parameter is the full path to
+# the 'wx-config' script of the wxWidgets build you want to use.
+# 
+
+sub usage {
+	die "usage: generate-configs -d|-r <path to wx-config>\n\twhere -d & -r stand for Debug/Release";
+}
+
+if (scalar @ARGV != 2){
+	&usage;
+}
+
+my $wxconfig = pop @ARGV;
+my $flag = pop @ARGV;
+
+die "unexpected flag: $flag" unless $flag eq "-d" || $flag eq "-r";
+die "wx-config \"$wxconfig\" does not exist" unless -e $wxconfig;
+die "wx-config \"$wxconfig\" is not executable" unless -x $wxconfig;
+
+my $dbgflag = $flag eq "-d" ? "yes" : "no";
+my $libflags;
+foreach(split /\s+/, `$wxconfig --libs --unicode=yes --debug=$dbgflag`) {
+	$libflags .= $_." " if /\A-[lL]|\.a\Z/;
+}
+print "OTHER_LDFLAGS = ", $libflags, "\n";
+
+my $cxxflags;
+foreach(split /\s+/, `$wxconfig --cxxflags --unicode=yes --debug=$dbgflag`) {
+	$cxxflags .= $1." " if /\A-I(.+)/;
+}
+print "HEADER_SEARCH_PATHS = ", $cxxflags, "\n";

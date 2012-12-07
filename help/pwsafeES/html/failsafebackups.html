@@ -1,0 +1,86 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head> <META HTTP-EQUIV="Content-Type" Content="text/html; charset=iso-8859-1"><title>Copias de seguridad a prueba de fallos</title><!-- pwsafe version: 3.23--><!-- Modified: 15/8/2010 --><!--Popup control -->
+
+<script language="javascript" src="html/popups.js">
+</script>
+<link rel="stylesheet" type="text/css" href="style.css"></head>
+<body>
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"> </object>
+<!-- Popup Source File -->
+<h2>Copias de seguridad a prueba de fallos</h2>
+
+<p>Cuando PasswordSafe finaliza normalmente, se te preguntará si hay cambios no guardados en la base de datos. 
+Sin embargo, si cierra la sesión la sesión de Windows, apaga o reiniciar su PC, entonces PasswordSafe pueden 
+no tener la oportunidad de preguntarle (el comportamiento exacto depende del tipo de cierre y la versión de Windows).</p>
+
+<p>En este caso, PasswordSafe intentará realizar una "copia de seguridad a prueba de fallos" (extensión de archivo 'fbak'). 
+Se creará en el mismo directorio que la base de datos actualmente abierta. La base de datos actual y sus "copias de 
+seguridad periódicas" no serán alteradas.</p>
+
+<p>Cuando la base de datos original se vuelve a abrir, PasswordSafe comprobará la existencia de cualquier archivo 
+de copia de seguridad a prueba de fallos y, si lo encuentra, se mostrará un cuadro de diálogo similar al de abajo.</p>
+
+<img alt="Copia de seguridad a prueba de fallos al abrir" src="images/failsafebackup.jpg">
+
+<p>La primera fila es la base de datos especificada seguido de información general al respecto (el mismo que figura 
+en el cuadro de diálogo Propiedades en el menú Archivo). Seguidamente aparece el archivo (o archivos) de copia de 
+seguridad a prueba de fallos. Si se puede abrir con la misma contraseña que la base de datos principal, sus propiedades 
+también se muestran. Si tienen una palabra de paso diferente o no es una base de datos válida, entonces un 'No' 
+se muestra en la columna de la frase de paso y se indican las propiedades.</p>
+
+<p>Tus opciones son las siguientes:
+<ul>
+<li>Continuar<br>
+Al hacer clic en este botón PasswordSafe ignora todos los archivos de copia de seguridad a prueba de fallos y continua 
+con la base de datos seleccionado actualmente.</li>
+<br>
+<li>Seleccionar<br>
+El archivo de copia de seguridad a prueba de fallos seleccionado se abre en lugar de la base de datos seleccionada 
+actualmente.</li>
+<br>
+<li>Eliminar<br>
+Esto eliminará el archivo de copia de seguridada prueba de fallos seleccionado. Si Windows es compatible con una 
+papelera de reciclaje en este medio (por lo general sólo discos locales), será trasladado allí. Si no, se eliminará 
+de forma permanente.</li>
+<br>
+<li>Salir<br>
+Si esta es la primera base de datos abierta en la puesta en marcha de PasswordSafe, PasswordSafe saldrá. 
+Si no, se cancelará la apertura y la base de datos abierta previamente, en su caso, se mantendrá abierta.</li>
+<br>
+<li>Ayuda<br>
+Muestra este tema de ayuda.</li>
+</ul>
+</p>
+
+<p><i>Sugerencias:</i></p>
+<p><ul>
+<li>Si no sabes elegir, continua con la base de datos actual y usa la función de comparar desde el menú Archivo 
+para mostrar las diferencias con la copia de seguridad a prueba de fallos.</li>
+<li>Si abres una copia de seguridad a prueba de fallos y has decidido que es la versión que deseas conservar, 
+debes guardarla como una base de datos normal. Cuando lo hagas, considera cambiar primero el nombre del original 
+o guarda la copia de seguridad a prueba de fallos con un nombre completamente nuevo.</li>
+<li>Una vez que estés satisfecho de haber recuperado la base de datos correcta, ya sea el original o una copia 
+de seguridad a prueba de fallos, debes borrar las viejas copias de seguridad a prueba de fallos para que no se te 
+pregunte de nuevo con posterioridad. Nota: Si utiliza este cuadro de diálogo para eliminar estos archivos, 
+se enviarán a la papelera de reciclaje, si tu versión de Windows es compatible con el medio que los contenga.</li>
+</ul></p>
+
+<p><b>Nota: No hay nada que <u>NINGUNA</u> aplicación pueda hacer para guardar la información si se apaga el PC,
+se queda sin batería o el procesador, el disco duro o cualquier otro componente falla. Al igual que con todos tus 
+datos importantes, debes hacer una copia de seguridad a otro medio regularmente. Este podría ser un pen drive USB, 
+discos duros externos, unidades de red, CD o DVD, etc. Estas copias de seguridad se deben almacenar en un lugar seguro.</b></p>
+
+<hr><!-- Added some white space at the bottom for natural scrolling --><b><a name="N1"><br>
+<br>
+<br>
+<object type="application/x-oleobject"
+    classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+ <param name="Keyword" value="Cerrar sesi&oacute;n">
+ <param name="Keyword" value="Apagar">
+ <param name="Keyword" value="Reiniciar">
+ <param name="Keyword" value="Copia de seguridad (a prueba de fallos)">
+ <param name="Keyword" value="A prueba de fallos">
+ <param name="Keyword" value="Recuperaci&oacute;n">
+</object>
+</a></b>
+</body></html>

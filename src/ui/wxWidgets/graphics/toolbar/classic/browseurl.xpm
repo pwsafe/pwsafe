@@ -1,0 +1,26 @@
+/* XPM */
+static const char *classic_browseurl_xpm[] = {
+/* columns rows colors chars-per-pixel */
+"16 16 3 1",
+/* colors */
+"  c None",
+"X c black",
+". c #808000008080",
+/* pixels */
+"                ",
+" XXXXXXXXXXXX   ",
+" X..........XX  ",
+" X...XXXXX...X  ",
+" X...X    X..X  ",
+" X...X    X.XX  ",
+" X...XXXXX.XX   ",
+" X.........X    ",
+" X.........XX   ",
+" X...XXXXX..XX  ",
+" X...X    X..X  ",
+" X...X    X..X  ",
+" X...XXXXX...X  ",
+" X..........XX  ",
+" XXXXXXXXXXXX   ",
+"                "
+};

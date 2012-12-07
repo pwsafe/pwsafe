@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioPropertySheet
+  ProjectType="Visual C++"
+	Version="8.00"
+	Name="UserVariables"
+	>
+	<UserMacro
+		Name="ConfigurationName"
+		Value="$(ConfigurationName)"
+		PerformEnvironmentSet="true"
+	/>
+	<UserMacro
+		Name="OutDir"
+		Value="$(OutDir)"
+		PerformEnvironmentSet="true"
+	/>
+	<UserMacro
+		Name="PWSBin"
+		Value="..\..\build8\bin\pwsafe\$(ConfigurationName)"
+		PerformEnvironmentSet="true"
+	/>
+	<UserMacro
+		Name="PWSObj"
+		Value="..\..\build8\obj\pwsafe\$(ConfigurationName)"
+		PerformEnvironmentSet="true"
+	/>
+	<UserMacro
+		Name="PWSLib"
+		Value="..\..\build8\lib\pwsafe\$(ConfigurationName)"
+		PerformEnvironmentSet="true"
+	/>
+</VisualStudioPropertySheet>

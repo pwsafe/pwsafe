@@ -1,0 +1,149 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head> <META HTTP-EQUIV="Content-Type" Content="text/html; charset=iso-8859-1">
+
+
+
+
+  <title>Alias de contraseñas</title>
+<!-- pwsafe version: 3.23--><!-- Modified: 07/08/2010 --><!--Popup control -->
+  <script language="javascript" src="html/popups.js">
+  </script>
+
+
+
+  
+  
+  
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+
+<body>
+
+
+
+
+<h2>Alias de contraseñas</h2>
+
+
+
+<p>Si estás usando un sistema que te permite compartir la misma contraseña en distintas 
+maquinas/servidores/aplicaciones, etc. puedes configurar las entradas de <span style="font-weight: bold;">Password Safe</span>
+en consecuencia, de manera que cambiar una contraseña afecte a todas las otras entradas relacionadas.
+Esto se conoce como alias de entradas. Esta sección describe como definir y usar esos alias.</p>
+
+
+
+<h4>Resumen</h4>
+
+
+
+<p>La idea básica es permitir que la contraseña de una entrada pueda ser referenciada 
+por otra. La entrada referenciada se llama <span style="font-weight: bold;">base</span>, 
+y la entrada (o entradas) que la referencia se llama
+<span style="font-weight: bold;">alias</span>.
+Cuando se fija una entrada como alias de otra entrada, la contraseña del alias
+se sincroniza con el contraseñas de esa entrada: Si copias la contraseña del alias
+al portapapeles, la contraseña que se copia es la de la base. Si cambias la contraseña
+de la base, se refleja inmediatamente en todos los alias asociados con la base. Aunque esto
+pueda sonar complicado, de hecho es muy simple e intuitivo de usar. La parte más complicada
+es fijar los aslias, como se describe abajo.</p>
+
+
+
+<h4>Definiendo un alias</h4>
+
+
+
+<p>En Password Safe, una entrada puede hacer referencia a la contraseña de otra
+por medio de una contraseña con un formato especial en la entrada referente.
+El formato es el "nombre" de la entrada referenciada entra corchetes. Generalmente
+"nombre" es sinónimo el campo título de una entrada, de forma que si el título de la entrada base
+es "maestro", por ejemplo, introduciendo "[maestro]" (sin las comillas) en el campo
+contraseña de otra entrada es suficiente para definir la otra entrada como un
+alias de "maestro".</p>
+<p>De forma más general, un "nombre" puede contener todos los campos siguientes, separados por dos puntos:
+Grupo, Titulo y Usuario. Si el título es único en la base de datos, entonces los otros campos
+son opcionales. Del mismo modo, si el grupo y título juntos o título y usuario juntos
+identifican una única entrada, el correspondiente usuario o grupo no tiene
+porqué indicarse.</p>
+
+
+
+<p>En las entradas de Password Safe, sólo el campo título es obligatorio.  Los campos grupo y usuario 
+son opcionales siempre que la combinación resultante "grupo/título/usuario&nbsp;nombre"
+sea única. Como se indica más arriba, la "contraseña" del alias tiene el formato [g:t:u] pero
+de hecho sólo tienes que especificar información suficiente para identificar de forma única
+la entrada base. Si hay sólo una entrada en la base de datos con título 't',
+entonces [t] será suficiente - puesto que título es obligatorio y se indica 
+un elemento, se asume que es el título.  Si hubiera más de una entrada con ese título,
+serías advertido de esa circunstancia, y necesitarias ser más específico para identificar
+la entrada base añadiendo su grupo o su usuario o ambos.
+Cuando hay sólo una entrada que coincide con la información proporcionada, se aceptar cualquiera
+de los siguientes formatos: [g:t:u], [g:t], [t:u] or [t].  Especificar dos puntos
+sin un valor implica un campo vacío, por ejemplo [g:t:] indica la entrada con 
+título 't' en grupo 'g' y sin nombre de usuario y [:t:] indica la entrada con título 't' 
+en la raíz sin nombre de usuario etc.</p>
+
+
+
+<p>Los siguientes ejemplo deberían clarificar esto.</p>
+
+
+
+<h4>Examples</h4>
+
+
+
+<p>1. Si el título de la entrada base es "Servidor LDAP", y no hay 
+otras entradas con ese título, entonces un alias se definirá con una
+entrada que tenga "[Servidor LDAP]" como contraseñas.</p>
+
+
+
+<p>2. Si hay entradas "Servidor LDAP" en dos grupos diferentes, digamos
+"Dept. A" y "Dept. B", se puede especificar un alias a este último con
+"[Dept. B:Servidor LDAP]". No tienes que indicar el usuario si la información
+indicada identifica sólo una entrada base.</p>
+
+
+
+<p>3. Los nombre de usuario pueden utilizarse para diferenciar entre
+entradas similares, por ejemplo "[Servidor LDAP:José]" y "[Servidor LDAP:María]".</p>
+
+
+
+<p>4. Finalmente, los tres campos pueden indicarse , como en "[Dept. A:Servidor LDAP:José]"</p>
+
+
+
+<h4>Visualización</h4>
+
+
+
+<p>Las entradas base, esto es, las entradas referenciadas por al menos un alias, 
+se muestran con un triángulo verde en lugar de un cuadrado verde en
+la vista de árbol jerarquizado.</p>
+
+
+
+<p>Las entradas alias se muestran con triángulos blancos.</p>
+
+
+
+<p><img style="border: 1px solid ; width: 163px; height: 127px;" alt="ejemplo de alias" src="images/alias_example.jpg"><br>
+
+
+
+
+
+
+
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e"> <param name="Keyword" value="Alias"> <param name="Keyword" value="Contrase&ntilde;as"> </object>
+</p>
+
+
+
+</body>
+</html>

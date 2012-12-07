@@ -1,0 +1,709 @@
+/*
+* Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
+* All rights reserved. Use of the code is allowed under the
+* Artistic License 2.0 terms, as specified in the LICENSE file
+* distributed with this code, or available from
+* http://www.opensource.org/licenses/artistic-license-2.0.php
+*/
+/// file MainManage.cpp
+//
+// Manage-related methods of DboxMain
+//-----------------------------------------------------------------------------
+
+#include "PasswordSafe.h"
+#include "ThisMfcApp.h"
+#include "GeneralMsgBox.h"
+#include "Shortcut.h"
+#include "PWFileDialog.h"
+#include "PWPropertySheet.h"
+#include "DboxMain.h"
+#include "PasskeyChangeDlg.h"
+#include "TryAgainDlg.h"
+#include "Options_PropertySheet.h"
+#include "OptionsSystem.h"
+#include "OptionsSecurity.h"
+#include "OptionsDisplay.h"
+#include "OptionsPasswordHistory.h"
+#include "OptionsMisc.h"
+#include "OptionsBackup.h"
+#include "OptionsShortcuts.h"
+#include "AddEdit_DateTimes.h"
+#include "PasswordPolicyDlg.h"
+#include "ManagePSWDPolices.h"
+
+#include "core/pwsprefs.h"
+#include "core/PWSdirs.h"
+#include "core/PWSAuxParse.h"
+
+#include "os/dir.h"
+#include "os/logit.h"
+
+using namespace std;
+
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
+
+// Change the master password for the database.
+void DboxMain::OnPassphraseChange()
+{
+  if (m_core.IsReadOnly()) // disable in read-only mode
+    return;
+  CPasskeyChangeDlg changeDlg(this);
+
+  INT_PTR rc = changeDlg.DoModal();
+
+  if (rc == IDOK) {
+    m_core.ChangePasskey(changeDlg.m_newpasskey);
+    ChangeOkUpdate();
+  }
+}
+
+void DboxMain::OnBackupSafe()
+{
+  BackupSafe();
+}
+
+int DboxMain::BackupSafe()
+{
+  INT_PTR rc;
+  PWSprefs *prefs = PWSprefs::GetInstance();
+  StringX tempname;
+  StringX currbackup = prefs->GetPref(PWSprefs::CurrentBackup);
+
+  CString cs_text(MAKEINTRESOURCE(IDS_PICKBACKUP));
+  CString cs_temp, cs_title;
+
+  std::wstring dir;
+  if (m_core.GetCurFile().empty())
+    dir = PWSdirs::GetSafeDir();
+  else {
+    std::wstring cdrive, cdir, dontCare;
+    pws_os::splitpath(m_core.GetCurFile().c_str(), cdrive, cdir, dontCare, dontCare);
+    dir = cdrive + cdir;
+  }
+
+  //SaveAs-type dialog box
+  while (1) {
+    CPWFileDialog fd(FALSE,
+                     L"bak",
+                     currbackup.c_str(),
+                     OFN_PATHMUSTEXIST | OFN_HIDEREADONLY |
+                        OFN_LONGNAMES | OFN_OVERWRITEPROMPT,
+                     CString(MAKEINTRESOURCE(IDS_FDF_BU)),
+                     this);
+
+    fd.m_ofn.lpstrTitle = cs_text;
+
+    if (!dir.empty())
+      fd.m_ofn.lpstrInitialDir = dir.c_str();
+
+    rc = fd.DoModal();
+
+    if (m_inExit) {
+      // If U3ExitNow called while in CPWFileDialog,
+      // PostQuitMessage makes us return here instead
+      // of exiting the app. Try resignalling 
+      PostQuitMessage(0);
+      return PWScore::USER_CANCEL;
+    }
+    if (rc == IDOK) {
+      tempname = fd.GetPathName();
+      break;
+    } else
+      return PWScore::USER_CANCEL;
+  }
+
+  rc = m_core.WriteFile(tempname, false);
+  if (rc == PWScore::CANT_OPEN_FILE) {
+    CGeneralMsgBox gmb;
+    cs_temp.Format(IDS_CANTOPENWRITING, tempname);
+    cs_title.LoadString(IDS_FILEWRITEERROR);
+    gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
+    return PWScore::CANT_OPEN_FILE;
+  }
+
+  prefs->SetPref(PWSprefs::CurrentBackup, tempname);
+  return PWScore::SUCCESS;
+}
+
+void DboxMain::OnRestoreSafe()
+{
+  if (!m_core.IsReadOnly()) // disable in read-only mode
+    RestoreSafe();
+}
+
+int DboxMain::RestoreSafe()
+{
+  int rc;
+  StringX backup, passkey, temp;
+  StringX currbackup =
+    PWSprefs::GetInstance()->GetPref(PWSprefs::CurrentBackup);
+
+  rc = SaveIfChanged();
+  if (rc != PWScore::SUCCESS && rc != PWScore::USER_DECLINED_SAVE)
+    return rc;
+   
+  // Reset changed flag to stop being asked again (only if rc == PWScore::USER_DECLINED_SAVE)
+  SetChanged(Clear);
+
+  CString cs_text, cs_temp, cs_title;
+  cs_text.LoadString(IDS_PICKRESTORE);
+
+  std::wstring dir;
+  if (m_core.GetCurFile().empty())
+    dir = PWSdirs::GetSafeDir();
+  else {
+    std::wstring cdrive, cdir, dontCare;
+    pws_os::splitpath(m_core.GetCurFile().c_str(), cdrive, cdir, dontCare, dontCare);
+    dir = cdrive + cdir;
+  }
+
+  //Open-type dialog box
+  while (1) {
+    CPWFileDialog fd(TRUE,
+                     L"bak",
+                     currbackup.c_str(),
+                     OFN_FILEMUSTEXIST | OFN_HIDEREADONLY | OFN_LONGNAMES,
+                     CString(MAKEINTRESOURCE(IDS_FDF_BUS)),
+                     this);
+
+    fd.m_ofn.lpstrTitle = cs_text;
+
+    if (!dir.empty())
+      fd.m_ofn.lpstrInitialDir = dir.c_str();
+
+    INT_PTR rc2 = fd.DoModal();
+
+    if (m_inExit) {
+      // If U3ExitNow called while in CPWFileDialog,
+      // PostQuitMessage makes us return here instead
+      // of exiting the app. Try resignalling 
+      PostQuitMessage(0);
+      return PWScore::USER_CANCEL;
+    }
+    if (rc2 == IDOK) {
+      backup = fd.GetPathName();
+      break;
+    } else
+      return PWScore::USER_CANCEL;
+  }
+
+  rc = GetAndCheckPassword(backup, passkey, GCP_NORMAL);  // OK, CANCEL, HELP
+  CGeneralMsgBox gmb;
+  switch (rc) {
+    case PWScore::SUCCESS:
+      break; // Keep going...
+    case PWScore::CANT_OPEN_FILE:
+      cs_temp.Format(IDS_CANTOPEN, backup);
+      cs_title.LoadString(IDS_FILEOPENERROR);
+      gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
+    case TAR_OPEN:
+      ASSERT(0);
+      return PWScore::FAILURE; // shouldn't be an option here
+    case TAR_NEW:
+      ASSERT(0);
+      return PWScore::FAILURE; // shouldn't be an option here
+    case PWScore::WRONG_PASSWORD:
+    case PWScore::USER_CANCEL:
+      /*
+      If the user just cancelled out of the password dialog,
+      assume they want to return to where they were before...
+      */
+      return PWScore::USER_CANCEL;
+  }
+
+  // unlock the file we're leaving
+  if (!m_core.GetCurFile().empty()) {
+    m_core.UnlockFile(m_core.GetCurFile().c_str());
+  }
+
+  // clear the data before restoring
+  ClearData();
+
+  // Validate it unless user says NO
+  CReport Rpt;
+  rc = m_core.ReadFile(backup, passkey, !m_bNoValidation, MAXTEXTCHARS, &Rpt);
+  if (rc == PWScore::CANT_OPEN_FILE) {
+    cs_temp.Format(IDS_CANTOPENREADING, backup);
+    cs_title.LoadString(IDS_FILEREADERROR);
+    gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONWARNING);
+    return PWScore::CANT_OPEN_FILE;
+  }
+
+  m_core.SetCurFile(L"");    // Force a Save As...
+  m_core.SetDBChanged(true); // So that the restored file will be saved
+#if !defined(POCKET_PC)
+  m_titlebar.LoadString(IDS_UNTITLEDRESTORE);
+  app.SetTooltipText(L"PasswordSafe");
+#endif
+  ChangeOkUpdate();
+  RefreshViews();
+
+  return PWScore::SUCCESS;
+}
+
+void DboxMain::OnOptions()
+{
+  PWS_LOGIT;
+
+  PWSprefs *prefs = PWSprefs::GetInstance();
+
+  // Get old DB preferences String value for use later
+  const StringX sxOldDBPrefsString(prefs->Store());
+
+  // Save Hotkey info
+  DWORD hotkey_value;
+  BOOL hotkey_enabled;
+  
+  hotkey_value = DWORD(prefs->GetPref(PWSprefs::HotKey));
+  // Can't be enabled if not set!
+  if (hotkey_value == 0)
+    hotkey_enabled = FALSE;
+  else
+    hotkey_enabled = prefs->GetPref(PWSprefs::HotKeyEnabled) ? TRUE : FALSE;
+
+  // Disable Hotkey around this as the user may press the current key when 
+  // selecting the new key!
+  UnregisterHotKey(m_hWnd, PWS_HOTKEY_ID); // clear last - never hurts
+
+  COptions_PropertySheet *pOptionsPS(NULL);
+  
+  // Try Tall version
+  pOptionsPS = new COptions_PropertySheet(IDS_OPTIONS, this, true);
+
+  // Remove the "Apply Now" button.
+  pOptionsPS->m_psh.dwFlags |= PSH_NOAPPLYNOW;
+
+  INT_PTR rc = pOptionsPS->DoModal();
+
+  if (rc < 0) {
+    // Try again with Wide version
+    delete pOptionsPS;
+    pOptionsPS = new COptions_PropertySheet(IDS_OPTIONS, this, false);
+
+    // Remove the "Apply Now" button.
+    pOptionsPS->m_psh.dwFlags |= PSH_NOAPPLYNOW;
+  
+    rc = pOptionsPS->DoModal(); 
+  }
+
+  if (rc == IDOK) {
+    // Now update the application look and feel as appropriate
+
+    // Get updated Hotkey information as we will either re-instate the original or
+    // set these new values
+    hotkey_enabled = pOptionsPS->GetHotKeyState();
+    hotkey_value = pOptionsPS->GetHotKeyValue();
+
+    // Update status bar
+    UINT uiMessage(IDS_STATCOMPANY);
+    switch (pOptionsPS->GetDCA()) {
+      case PWSprefs::DoubleClickAutoType:
+        uiMessage = IDS_STATAUTOTYPE; break;
+      case PWSprefs::DoubleClickBrowse:
+        uiMessage = IDS_STATBROWSE; break;
+      case PWSprefs::DoubleClickCopyNotes:
+        uiMessage = IDS_STATCOPYNOTES; break;
+      case PWSprefs::DoubleClickCopyPassword:
+        uiMessage = IDS_STATCOPYPASSWORD; break;
+      case PWSprefs::DoubleClickCopyUsername:
+        uiMessage = IDS_STATCOPYUSERNAME; break;
+      case PWSprefs::DoubleClickViewEdit:
+        uiMessage = IDS_STATVIEWEDIT; break;
+      case PWSprefs::DoubleClickCopyPasswordMinimize:
+        uiMessage = IDS_STATCOPYPASSWORDMIN; break;
+      case PWSprefs::DoubleClickBrowsePlus:
+        uiMessage = IDS_STATBROWSEPLUS; break;
+      case PWSprefs::DoubleClickRun:
+        uiMessage = IDS_STATRUN; break;
+      case PWSprefs::DoubleClickSendEmail:
+        uiMessage = IDS_STATSENDEMAIL; break;
+      default:
+        uiMessage = IDS_STATCOMPANY;
+    }
+    statustext[CPWStatusBar::SB_DBLCLICK] = uiMessage;
+    m_statusBar.SetIndicators(statustext, CPWStatusBar::SB_TOTAL);
+    UpdateStatusBar();
+    // Make a sunken or recessed border around the first pane
+    m_statusBar.SetPaneInfo(CPWStatusBar::SB_DBLCLICK,
+                            m_statusBar.GetItemID(CPWStatusBar::SB_DBLCLICK),
+                            SBPS_STRETCH, NULL);
+
+    int iTrayColour = pOptionsPS->GetTrayIconColour();
+    app.SetClosedTrayIcon(iTrayColour);
+
+    UpdateSystemMenu();
+    
+    if (pOptionsPS->GetMaxMRUItems() == 0)
+      app.ClearMRU();  // Clear any currently saved
+    
+    UpdateAlwaysOnTop();
+    
+    DWORD dwExtendedStyle = m_ctlItemList.GetExtendedStyle();
+    bool bGridLines = ((dwExtendedStyle & LVS_EX_GRIDLINES) == LVS_EX_GRIDLINES);
+
+    if (pOptionsPS->GetEnableGrid() != bGridLines) {
+      if (pOptionsPS->GetEnableGrid()) {
+        dwExtendedStyle |= LVS_EX_GRIDLINES;
+      } else {
+        dwExtendedStyle &= ~LVS_EX_GRIDLINES;
+      }
+      m_ctlItemList.SetExtendedStyle(dwExtendedStyle);
+      m_ctlItemList.UpdateRowHeight(true);
+    }
+
+    m_ctlItemTree.ActivateND(pOptionsPS->GetNotesAsTips());
+    m_ctlItemList.ActivateND(pOptionsPS->GetNotesAsTips());
+
+    m_RUEList.SetMax(pOptionsPS->GetMaxREItems());
+    
+    if (pOptionsPS->StartupShortcutChanged()) {
+      CShortcut pws_shortcut;
+      const CString PWSLnkName(L"Password Safe"); // for startup shortcut
+      if (pOptionsPS->StartupShortcut()) {
+        // Put it there
+        wchar_t exeName[MAX_PATH];
+        GetModuleFileName(NULL, exeName, MAX_PATH);
+        pws_shortcut.SetCmdArguments(CString(L"-s"));
+        pws_shortcut.CreateShortCut(exeName, PWSLnkName, CSIDL_STARTUP);
+      } else {
+        // remove existing startup shortcut
+        pws_shortcut.DeleteShortCut(PWSLnkName, CSIDL_STARTUP);
+      }
+    }
+
+    // Update Lock on Window Lock
+    if (pOptionsPS->LockOnWindowLockChanged()) {
+      if (pOptionsPS->LockOnWindowLock()) {
+        startLockCheckTimer();
+      } else {
+        KillTimer(TIMER_LOCKONWTSLOCK);
+      }
+    }
+
+    if (pOptionsPS->RefreshViews()) {
+      m_ctlItemList.SetHighlightChanges(pOptionsPS->HighlightChanges());
+      m_ctlItemTree.SetHighlightChanges(pOptionsPS->HighlightChanges());
+      RefreshViews();
+    }
+
+    if (pOptionsPS->SaveGroupDisplayState())
+      SaveGroupDisplayState();
+
+    if (pOptionsPS->UpdateShortcuts()) {
+      // Create vector of shortcuts for user's config file
+      std::vector<st_prefShortcut> vShortcuts;
+      MapMenuShortcutsIter iter, iter_entry, iter_group;
+      m_MapMenuShortcuts = pOptionsPS->GetMaps();
+
+      for (iter = m_MapMenuShortcuts.begin(); iter != m_MapMenuShortcuts.end();
+           iter++) {
+        // User should not have these sub-entries in their config file
+        if (iter->first == ID_MENUITEM_GROUPENTER  ||
+            iter->first == ID_MENUITEM_VIEW        || 
+            iter->first == ID_MENUITEM_DELETEENTRY ||
+            iter->first == ID_MENUITEM_DELETEGROUP ||
+            iter->first == ID_MENUITEM_RENAMEENTRY ||
+            iter->first == ID_MENUITEM_RENAMEGROUP) {
+          continue;
+        }
+        // Now only those different from default
+        if (iter->second.siVirtKey  != iter->second.siDefVirtKey  ||
+            iter->second.cModifier != iter->second.cDefModifier) {
+          st_prefShortcut stxst;
+          stxst.id = iter->first;
+          stxst.siVirtKey = iter->second.siVirtKey;
+          stxst.cModifier = iter->second.cModifier;
+          vShortcuts.push_back(stxst);
+        }
+      }
+
+      // We need to convert from MFC shortcut modifiers to PWS modifiers
+      for (size_t i = 0; i < vShortcuts.size(); i++) {
+        unsigned char cModifier(0), cWindowsMod = vShortcuts[i].cModifier;
+        if ((cWindowsMod & HOTKEYF_ALT    ) == HOTKEYF_ALT)
+          cModifier |= PWS_HOTKEYF_ALT;
+        if ((cWindowsMod & HOTKEYF_CONTROL) == HOTKEYF_CONTROL)
+          cModifier |= PWS_HOTKEYF_CONTROL;
+        if ((cWindowsMod & HOTKEYF_SHIFT  ) == HOTKEYF_SHIFT)
+          cModifier |= PWS_HOTKEYF_SHIFT;
+        if ((cWindowsMod & HOTKEYF_EXT    ) == HOTKEYF_EXT)
+          cModifier |= PWS_HOTKEYF_EXT;
+        vShortcuts[i].cModifier = cModifier;
+      }
+
+      prefs->SetPrefShortcuts(vShortcuts);
+      prefs->SaveShortcuts();
+
+      // Set up the shortcuts based on the main entry
+      // for View, Delete and Rename
+      iter = m_MapMenuShortcuts.find(ID_MENUITEM_EDIT);
+      iter_entry = m_MapMenuShortcuts.find(ID_MENUITEM_VIEW);
+      iter_entry->second.SetKeyFlags(iter->second);
+
+      SetupSpecialShortcuts();
+
+      UpdateAccelTable();
+
+      // Set menus to be rebuilt with user's changed shortcuts
+      for (int i = 0; i < NUMPOPUPMENUS; i++) {
+        m_bDoShortcuts[i] = true;
+      }
+    }
+
+    if (prefs->GetPref(PWSprefs::UseSystemTray)) { 
+      if (prefs->GetPref(PWSprefs::HideSystemTray) && 
+          prefs->GetPref(PWSprefs::HotKeyEnabled) &&
+          prefs->GetPref(PWSprefs::HotKey) > 0)
+        app.HideIcon();
+      else if (app.IsIconVisible() == FALSE)
+        app.ShowIcon();
+    } else {
+      app.HideIcon();
+    }
+
+    if (pOptionsPS->CheckExpired()) {
+      CheckExpireList();
+      TellUserAboutExpiredPasswords();
+    }
+
+    // Get new DB preferences String value
+    StringX sxNewDBPrefsString(prefs->Store(true));
+
+    // Maybe needed if this causes changes to database
+    // (currently only DB preferences + updating PWHistory in existing entries)
+    MultiCommands *pmulticmds = MultiCommands::Create(&m_core);
+
+    // Set up Command to update string in database, if necessary & possible
+    // Allow even if no entries (yet) in database and if the database is R-O.
+    // In the latter case - just won't be saved but will do what the user wants
+    // in this session with this database, until the database is closed.
+    if (m_core.GetReadFileVersion() == PWSfile::VCURRENT) {
+      if (sxOldDBPrefsString != sxNewDBPrefsString) {
+        // Determine whether Tree needs redisplayng due to change
+        // in what is shown (e.g. usernames/passwords)
+        bool bUserDisplayChanged = pOptionsPS->UserDisplayChanged();
+        // Note: passwords are only shown in the Tree if usernames are also shown
+        bool bPswdDisplayChanged = pOptionsPS->PswdDisplayChanged();
+        bool bNeedGUITreeUpdate = bUserDisplayChanged || 
+                 (pOptionsPS->ShowUsernameInTree() && bPswdDisplayChanged);
+        if (bNeedGUITreeUpdate) {
+          Command *pcmd = UpdateGUICommand::Create(&m_core,
+                                                   UpdateGUICommand::WN_UNDO,
+                                                   UpdateGUICommand::GUI_DB_PREFERENCES_CHANGED);
+          pmulticmds->Add(pcmd);
+        }
+        Command *pcmd = DBPrefsCommand::Create(&m_core, sxNewDBPrefsString);
+        pmulticmds->Add(pcmd);
+        if (bNeedGUITreeUpdate) {
+          Command *pcmd = UpdateGUICommand::Create(&m_core,
+                                                   UpdateGUICommand::WN_EXECUTE_REDO,
+                                                   UpdateGUICommand::GUI_DB_PREFERENCES_CHANGED);
+          pmulticmds->Add(pcmd);
+        }
+      }
+    }
+
+    const int iAction = pOptionsPS->GetPWHAction();
+    const int new_default_max = pOptionsPS->GetPWHistoryMax();
+    size_t ipwh_exec(0);
+    int num_altered(0);
+
+    if (iAction != 0) {
+      Command *pcmd1 = UpdateGUICommand::Create(&m_core,
+                                                UpdateGUICommand::WN_UNDO,
+                                                UpdateGUICommand::GUI_PWH_CHANGED_IN_DB);
+      pmulticmds->Add(pcmd1);
+      Command *pcmd = UpdatePasswordHistoryCommand::Create(&m_core,
+                                                           iAction,
+                                                           new_default_max);
+      pmulticmds->Add(pcmd);
+      ipwh_exec = pmulticmds->GetSize();
+
+      Command *pcmd2 = UpdateGUICommand::Create(&m_core,
+                                                UpdateGUICommand::WN_EXECUTE_REDO,
+                                                UpdateGUICommand::GUI_PWH_CHANGED_IN_DB);
+      pmulticmds->Add(pcmd2);
+    }
+
+    // If DB preferences changed and/or password history options
+    if (pmulticmds != NULL) {
+      if (pmulticmds->GetSize() > 0) {
+        Execute(pmulticmds);
+        if (ipwh_exec > 0) {
+          // We did do PWHistory update
+          if (pmulticmds->GetRC(ipwh_exec, num_altered)) {
+            UINT uimsg_id(0);
+            switch (iAction) {
+              case -1:   // reset off - include protected entries
+              case  1:   // reset off - exclude protected entries
+                uimsg_id = IDS_ENTRIESCHANGEDSTOP;
+                break;
+              case -2:   // reset on - include protected entries
+              case  2:   // reset on - exclude protected entries
+                uimsg_id = IDS_ENTRIESCHANGEDSAVE;
+                break;
+              case -3:   // setmax - include protected entries
+              case  3:   // setmax - exclude protected entries
+                uimsg_id = IDS_ENTRIESRESETMAX;
+                break;
+              case -4:   // clearall - include protected entries
+              case  4:   // clearall - exclude protected entries
+                uimsg_id = IDS_ENTRIESCLEARALL;
+                break;
+              default:
+                ASSERT(0);
+                break;
+            } // switch (iAction)
+
+            if (uimsg_id > 0) {
+              CGeneralMsgBox gmb;
+              CString cs_Msg;
+              cs_Msg.Format(uimsg_id, num_altered);
+              gmb.AfxMessageBox(cs_Msg);
+            }
+          }
+        } 
+      } else {
+        // Was created but no commands added in the end.
+        delete pmulticmds;
+      }
+    }
+
+    if (m_core.HaveDBPrefsChanged() || num_altered > 0) {
+      if (m_core.HaveDBPrefsChanged())
+        SetChanged(DBPrefs);
+      if (num_altered > 0)
+        SetChanged(Data);
+      
+      ChangeOkUpdate();
+    }
+  }
+
+  // Restore hotkey as it was or as user changed it - if user pressed OK
+  if (hotkey_enabled == TRUE) {
+    WORD wVirtualKeyCode = WORD(hotkey_value & 0xffff);
+    WORD mod = WORD(hotkey_value >> 16);
+    WORD wModifiers = 0;
+    // Translate between CHotKeyCtrl & CWnd modifiers
+    if (mod & HOTKEYF_ALT) 
+      wModifiers |= MOD_ALT; 
+    if (mod & HOTKEYF_CONTROL) 
+      wModifiers |= MOD_CONTROL; 
+    if (mod & HOTKEYF_SHIFT) 
+      wModifiers |= MOD_SHIFT; 
+    BOOL brc = RegisterHotKey(m_hWnd, PWS_HOTKEY_ID,
+                              UINT(wModifiers), UINT(wVirtualKeyCode));
+    if (brc == FALSE) {
+      CGeneralMsgBox gmb;
+      gmb.AfxMessageBox(IDS_NOHOTKEY, MB_OK);
+    }
+  }
+
+  // Update Minidump user streams
+  app.SetMinidumpUserStreams(m_bOpen, !IsDBReadOnly(), usPrefs);
+  
+  // Delete Options Property page
+  delete pOptionsPS;
+}
+
+void DboxMain::OnGeneratePassword()
+{
+  PSWDPolicyMap MapPSWDPLC = GetPasswordPolicies();
+  PWPolicy st_default_pp(PWSprefs::GetInstance()->GetDefaultPolicy());
+  CPasswordPolicyDlg *pDlg(NULL);
+  
+  // Try Tall version
+  pDlg = new CPasswordPolicyDlg(IDS_GENERATEPASSWORD, this, true, IsDBReadOnly(), st_default_pp);
+
+  // Pass default values, PolicyName map
+  CString cs_poliyname(L"");
+  pDlg->SetPolicyData(cs_poliyname, MapPSWDPLC, this);
+
+  INT_PTR rc = pDlg->DoModal();
+  
+  if (rc < 0) {
+    // Try again with Wide version
+    delete pDlg;
+    pDlg = new CPasswordPolicyDlg(IDS_GENERATEPASSWORD, this, false, IsDBReadOnly(), st_default_pp);
+
+    // Pass default values, PolicyName map
+    pDlg->SetPolicyData(cs_poliyname, MapPSWDPLC, this);
+  
+    pDlg->DoModal(); 
+  }
+
+  // Delete generate password dialog
+  delete pDlg;
+}
+
+void DboxMain::OnManagePasswordPolicies()
+{
+  PWSprefs *prefs = PWSprefs::GetInstance();
+  
+  // Set up copy of preferences
+  prefs->SetupCopyPrefs();
+  
+  CManagePSWDPolices *pDlg(NULL);
+  
+  // Try Tall version
+  pDlg = new CManagePSWDPolices(this, true);
+  
+  PWPolicy st_old_default_pp;
+
+  // Let ManagePSWDPoliciesDlg fill out database default policy during construction
+  pDlg->GetDefaultPasswordPolicies(st_old_default_pp);
+  
+  INT_PTR rc = pDlg->DoModal();
+  
+  if (rc < 0) {
+    // Try again with Wide version
+    delete pDlg;
+    pDlg = new CManagePSWDPolices(this, false);
+
+    pDlg->DoModal(); 
+  }
+  
+  if (rc == IDOK && pDlg->IsChanged()) {
+    // Get new DB preferences String value
+    PWPolicy st_new_default_pp;
+    PSWDPolicyMap MapPSWDPLC = pDlg->GetPasswordPolicies(st_new_default_pp);
+    
+    // Maybe needed if this causes changes to database
+    // (currently only DB default policy preferences + updating Named Policies)
+    MultiCommands *pmulticmds = MultiCommands::Create(&m_core);
+    
+    // Check for changes
+    if (st_old_default_pp != st_new_default_pp) {
+      // User has changed database default policy - need to update preferences
+      // Update the copy only!
+      PWSprefs::GetInstance()->SetDefaultPolicy(st_new_default_pp, true);
+
+      // Now get new DB preferences String value
+      StringX sxNewDBPrefsString(PWSprefs::GetInstance()->Store(true));
+
+      // Set up Command to update string in database
+      if (m_core.GetReadFileVersion() == PWSfile::VCURRENT) {
+          Command *pcmd1 = DBPrefsCommand::Create(&m_core, sxNewDBPrefsString);
+          pmulticmds->Add(pcmd1);
+      }
+    }
+
+    // Now update named preferences
+    Command *pcmd2 = DBPolicyNamesCommand::Create(&m_core, MapPSWDPLC,
+                             DBPolicyNamesCommand::NP_REPLACEALL);
+    pmulticmds->Add(pcmd2);
+    Execute(pmulticmds);
+
+    // Update Minidump user streams
+    app.SetMinidumpUserStreams(m_bOpen, !IsDBReadOnly(), usPrefs);
+    
+    ChangeOkUpdate();
+  }
+  
+  // Delete Manage Password Policies dialog
+  delete pDlg;
+}

@@ -1,0 +1,26 @@
+/* XPM */
+static const char *classic_runcmd_xpm[] = {
+/* columns rows colors chars-per-pixel */
+"16 16 3 1",
+/* colors */
+" 	c None",
+".	c #d3f9bc",
+"X	c #22b14c",
+/* pixels */
+" ..             ",
+" .X..           ",
+" .XXX..         ",
+" .XXXXX..       ",
+" .XXXXXXX..     ",
+" .XXXXXXXXX..   ",
+" .XXXXXXXXXXX.. ",
+" .XXXXXXXXXXXXX.",
+" .XXXXXXXXXXXXX.",
+" .XXXXXXXXXXX.. ",
+" .XXXXXXXXX..   ",
+" .XXXXXXX..     ",
+" .XXXXX..       ",
+" .XXX..         ",
+" .X..           ",
+" ..             "
+};

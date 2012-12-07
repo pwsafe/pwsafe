@@ -1,0 +1,28 @@
+/* XPM */
+static const char *classic_applyfilter_xpm[] = {
+/* columns rows colors chars-per-pixel */
+"16 16 5 1",
+/* colors */
+" 	c None",
+".	c Green",
+"X	c Gray100",
+"o	c #000080",
+"O	c Red",
+/* pixels */
+"                ",
+" .X.X.X.X.X.X.X ",
+" X.X.X.X.X.X.X. ",
+" .X.X.X.X.X.X.X ",
+" X.X.X.X.X.X.X. ",
+" .X.X.X.X.X.X.X ",
+" X.X.X.X.X.X.X. ",
+" ooOooOooOooOoo ",
+" ooOooOooOooOoo ",
+"   X  X  X  X   ",
+"   O  O  O  O   ",
+"   O  O  O  O   ",
+"   X  X  X  X   ",
+"   O  O  O  O   ",
+"   O  O  O  O   ",
+"                "
+};

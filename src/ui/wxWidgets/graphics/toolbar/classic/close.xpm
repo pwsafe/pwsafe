@@ -1,0 +1,27 @@
+/* XPM */
+static const char *classic_close_xpm[] = {
+/* columns rows colors chars-per-pixel */
+"16 16 4 1",
+/* colors */
+"  c None",
+"X c black",
+". c #808080800000",
+"o c gray100",
+/* pixels */
+"                ",
+"        XXX     ",
+"        XX      ",
+"        X XX    ",
+"            XX  ",
+"  XXX         X ",
+" XoooXXXXXXX    ",
+" XXXXXXXXXXX    ",
+" X.........X    ",
+" X.........X    ",
+" X.........X    ",
+" X.........X    ",
+" X.........X    ",
+" X.........X    ",
+" XXXXXXXXXXX    ",
+"                "
+};

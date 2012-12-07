@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeLite_Project Name="os" InternalType="Library">
+  <Plugins>
+    <Plugin Name="qmake">
+      <![CDATA[00060001N0005Debug0000000000000001N0006DebugE0000000000000001N0006DebugX0000000000000001N0007Release0000000000000001N0008ReleaseE0000000000000001N0008ReleaseX000000000000]]>
+    </Plugin>
+  </Plugins>
+  <Description/>
+  <Dependencies/>
+  <VirtualDirectory Name="src"/>
+  <VirtualDirectory Name="include"/>
+  <VirtualDirectory Name="linux">
+    <File Name="../src/os/linux/sleep.cpp"/>
+    <File Name="../src/os/linux/pws_time.cpp"/>
+    <File Name="../src/os/linux/xsendstring.cpp"/>
+    <File Name="../src/os/linux/mem.cpp"/>
+    <File Name="../src/os/linux/xsendstring.h"/>
+    <File Name="../src/os/linux/utf8conv.cpp"/>
+    <File Name="../src/os/linux/KeySend.cpp"/>
+    <File Name="../src/os/linux/env.cpp"/>
+    <File Name="../src/os/linux/pws_str.h"/>
+    <File Name="../src/os/linux/file.cpp"/>
+    <File Name="../src/os/linux/run.cpp"/>
+    <File Name="../src/os/linux/pws_time.h"/>
+    <File Name="../src/os/linux/debug.cpp"/>
+    <File Name="../src/os/linux/registry.cpp"/>
+    <File Name="../src/os/linux/rand.cpp"/>
+    <File Name="../src/os/linux/pws_str.cpp"/>
+    <File Name="../src/os/linux/dir.cpp"/>
+    <File Name="../src/os/linux/UUID.cpp"/>
+    <File Name="../src/os/linux/unicode2keysym.cpp"/>
+    <File Name="../src/os/linux/unicode2keysym.h"/>
+    <File Name="../src/os/linux/logit.cpp"/>
+  </VirtualDirectory>
+  <VirtualDirectory Name="os">
+    <File Name="../src/os/env.h"/>
+    <File Name="../src/os/utf8conv.h"/>
+    <File Name="../src/os/mem.h"/>
+    <File Name="../src/os/dir.h"/>
+    <File Name="../src/os/sleep.h"/>
+    <File Name="../src/os/debug.h"/>
+    <File Name="../src/os/pws_str.h"/>
+    <File Name="../src/os/pws_tchar.h"/>
+    <File Name="../src/os/run.h"/>
+    <File Name="../src/os/file.h"/>
+    <File Name="../src/os/rand.h"/>
+    <File Name="../src/os/KeySend.h"/>
+    <File Name="../src/os/registry.h"/>
+    <File Name="../src/os/typedefs.h"/>
+    <File Name="../src/os/UUID.h"/>
+    <File Name="../src/os/logit.h"/>
+  </VirtualDirectory>
+  <Dependencies Name="Release">
+    <Project Name="core"/>
+  </Dependencies>
+  <Dependencies Name="DebugE">
+    <Project Name="core"/>
+  </Dependencies>
+  <Dependencies Name="ReleaseE">
+    <Project Name="core"/>
+  </Dependencies>
+  <Dependencies Name="Debug">
+    <Project Name="core"/>
+  </Dependencies>
+  <Dependencies Name="DebugX">
+    <Project Name="core"/>
+  </Dependencies>
+  <Dependencies Name="ReleaseX">
+    <Project Name="core"/>
+  </Dependencies>
+  <Settings Type="Static Library">
+    <GlobalSettings>
+      <Compiler Options="" C_Options="">
+        <IncludePath Value="."/>
+      </Compiler>
+      <Linker Options="">
+        <LibraryPath Value="."/>
+      </Linker>
+      <ResourceCompiler Options=""/>
+    </GlobalSettings>
+    <Configuration Name="Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Static Library" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-g;-Wall;-O0" C_Options="-g;-Wall;-O0" Required="yes" PreCompiledHeader="">
+        <IncludePath Value="."/>
+        <IncludePath Value="../src/core"/>
+        <IncludePath Value="../src"/>
+        <Preprocessor Value="UNICODE"/>
+      </Compiler>
+      <Linker Options="" Required="yes"/>
+      <ResourceCompiler Options="" Required="no"/>
+      <General OutputFile="$(IntermediateDirectory)/lib$(ProjectName).a" IntermediateDirectory="./Debug" Command="" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName>None</ThirdPartyToolName>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild/>
+      </AdditionalRules>
+    </Configuration>
+    <Configuration Name="DebugX" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Static Library" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-g;-Wall;-O0" C_Options="-g;-Wall;-O0" Required="yes" PreCompiledHeader="">
+        <IncludePath Value="."/>
+        <IncludePath Value="../src/core"/>
+        <IncludePath Value="../src"/>
+        <Preprocessor Value="UNICODE"/>
+      </Compiler>
+      <Linker Options="" Required="yes"/>
+      <ResourceCompiler Options="" Required="no"/>
+      <General OutputFile="$(IntermediateDirectory)/lib$(ProjectName).a" IntermediateDirectory="./$(ConfigurationName)" Command="" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName>None</ThirdPartyToolName>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild/>
+      </AdditionalRules>
+    </Configuration>
+    <Configuration Name="Release" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Static Library" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-Wall;-O" C_Options="-Wall;-O" Required="yes" PreCompiledHeader="">
+        <IncludePath Value="."/>
+        <IncludePath Value="../src/core"/>
+        <IncludePath Value="../src"/>
+        <Preprocessor Value="UNICODE"/>
+      </Compiler>
+      <Linker Options="" Required="yes"/>
+      <ResourceCompiler Options="" Required="no"/>
+      <General OutputFile="$(IntermediateDirectory)/lib$(ProjectName).a" IntermediateDirectory="./Release" Command="" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName>None</ThirdPartyToolName>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild/>
+      </AdditionalRules>
+    </Configuration>
+    <Configuration Name="ReleaseX" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Static Library" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-Wall;-O" C_Options="-Wall;-O" Required="yes" PreCompiledHeader="">
+        <IncludePath Value="."/>
+        <IncludePath Value="../src/core"/>
+        <IncludePath Value="../src"/>
+        <Preprocessor Value="UNICODE"/>
+        <Preprocessor Value="NDEBUG"/>
+      </Compiler>
+      <Linker Options="" Required="yes"/>
+      <ResourceCompiler Options="" Required="no"/>
+      <General OutputFile="$(IntermediateDirectory)/lib$(ProjectName).a" IntermediateDirectory="./$(ConfigurationName)" Command="" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName>None</ThirdPartyToolName>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild/>
+      </AdditionalRules>
+    </Configuration>
+  </Settings>
+</CodeLite_Project>

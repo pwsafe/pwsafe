@@ -1,0 +1,25 @@
+/* XPM */
+static const char *classic_exportxml_xpm[] = {
+/* columns rows colors chars-per-pixel */
+"16 16 2 1",
+/* colors */
+" 	c None",
+".	c Black",
+/* pixels */
+"          .   . ",
+"           . .  ",
+"            .   ",
+"           . .  ",
+"   .      .   . ",
+"   ..           ",
+"   ...    .   . ",
+".......   .. .. ",
+"........  . . . ",
+".......   .   . ",
+"   ...          ",
+"   ..     .     ",
+"   .      .     ",
+"          .     ",
+"          .     ",
+"          ..... "
+};

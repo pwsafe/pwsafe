@@ -1,0 +1,26 @@
+/* XPM */
+static const char *classic_copyuser_xpm[] = {
+/* columns rows colors chars-per-pixel */
+"16 16 3 1",
+/* colors */
+"  c None",
+"X c black",
+". c #000080800000",
+/* pixels */
+"                ",
+"  XXXX    XXXX  ",
+"  X..X    X..X  ",
+"  X..X    X..X  ",
+"  X..X    X..X  ",
+"  X..X    X..X  ",
+"  X..X    X..X  ",
+"  X..X    X..X  ",
+"  X..X    X..X  ",
+"  X..X    X..X  ",
+"  X..X    X..X  ",
+"  X...XXXX...X  ",
+"   X........X   ",
+"    X......X    ",
+"     XXXXXX     ",
+"                "
+};

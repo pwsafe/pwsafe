@@ -1,0 +1,348 @@
+diff -bNau ../../default/html/export.html ./source/html/export.html
+--- ../../default/html/export.html	2012-08-08 20:01:05.000000000 +0400
++++ ./source/html/export.html	2012-08-09 02:18:59.000000000 +0400
+@@ -134,8 +134,7 @@
+ <p>The display of XML files is specified by <i>pwsafe.xsl</i>
+ - an eXtensible Stylesheet Language file. A sample file, which may be
+ modified for your own needs, is supplied as part of the distribution.
+-This file is only an example and you can easily modify it to display
+-whatever fields you want to show.  As this only displays the data
++As this only displays the data
+ and will not alter it, you will still be able to import it into
+ <b>Password Safe</b> at some later time.</p>
+ 
+Common subdirectories: ../../default/html/images and ./source/html/images
+diff -bNau ../../default/html/imp_exp_text_details.html ./source/html/imp_exp_text_details.html
+--- ../../default/html/imp_exp_text_details.html	2012-08-08 20:01:06.000000000 +0400
++++ ./source/html/imp_exp_text_details.html	2012-08-09 02:18:59.000000000 +0400
+@@ -49,25 +49,25 @@
+ <p>The Title Row for full data export currently contains the
+ following fields by default, separated by a tab.</span></p>
+ <ul>
+-<li>Group/Title</li>
+-<li>Username</li>
+-<li>Password</li>
+-<li>URL</li>
+-<li>AutoType</li>
+-<li>Created Time</li>
+-<li>Password Modified Time</li>
+-<li>Last Access Time</li>
+-<li>Password Expiry Date</li>
+-<li>Password Expiry Interval</li>
+-<li>Record Modified Time</li>
+-<li>Password Policy</li>
+-<li>History</li>
+-<li>Run Command</li>
+-<li>DCA</li>
+-<li>e-mail</li>
+-<li>Protected Status</li>
+-<li>Symbol list for password generation</li>
+-<li>Notes</li>
++<li>_Group/Title_</li>
++<li>_Username_</li>
++<li>_Password_</li>
++<li>_URL_</li>
++<li>_AutoType_</li>
++<li>_Created Time_</li>
++<li>_Password Modified Time_</li>
++<li>_Last Access Time_</li>
++<li>_Password Expiry Date_</li>
++<li>_Password Expiry Interval_</li>
++<li>_Record Modified Time_</li>
++<li>_Password Policy_</li>
++<li>_History_</li>
++<li>_Run Command_</li>
++<li>_DCA_</li>
++<li>_e-mail_</li>
++<li>_Protected_</li>
++<li>_Symbols_</li>
++<li>_Notes_</li>
+ </ul>
+ 
+ <p>When exporting data, you may use the 'Advanced' feature to exclude
+@@ -112,84 +112,84 @@
+ </td>
+ </tr>
+ <tr>
+-<td style="padding: 0in 5.4pt;">Column Heading/Field</td>
++<td style="padding: 0in 5.4pt;">_Group/Title_</td>
+ <td style="padding: 0in 5.4pt;">If present, groups are separated by periods ('.').
+ The Title field cannot be blank, empty or contain the delimiter character.</td>
+ </tr>
+ <tr>
+-<td style="padding: 0in 5.4pt;">Username</td>
++<td style="padding: 0in 5.4pt;">_Username_</td>
+ <td style="padding: 0in 5.4pt;"> </td>
+ </tr>
+ <tr>
+-<td style="padding: 0in 5.4pt;">Password</td>
++<td style="padding: 0in 5.4pt;">_Password_</td>
+ <td style="padding: 0in 5.4pt;">Cannot be blank or empty.</td>
+ </tr>
+ <tr>
+-<td style="padding: 0in 5.4pt;">URL</td>
++<td style="padding: 0in 5.4pt;">_URL_</td>
+ <td style="padding: 0in 5.4pt;"> </td>
+ </tr>
+ <tr>
+-<td style="padding: 0in 5.4pt;">AutoType</td>
++<td style="padding: 0in 5.4pt;">_AutoType_</td>
+ <td style="padding: 0in 5.4pt;"> </td>
+ </tr>
+ <tr>
+-<td style="padding: 0in 5.4pt;">Created Time</td>
++<td style="padding: 0in 5.4pt;">_Created Time_</td>
+ <td style="padding: 0in 5.4pt;">See note <a href="#1"><sup>1</sup></a> below</td>
+ </tr>
+ <tr>
+-<td style="padding: 0in 5.4pt;">Password Modified Time</td>
++<td style="padding: 0in 5.4pt;">_Password Modified Time_</td>
+ <td style="padding: 0in 5.4pt;">See note <a href="#1"><sup>1</sup></a> below</td>
+ </tr>
+ <tr>
+-<td style="padding: 0in 5.4pt;">Last Access Time</td>
++<td style="padding: 0in 5.4pt;">_Last Access Time_</td>
+ <td style="padding: 0in 5.4pt;">See note <a href="#1"><sup>1</sup></a> below</td>
+ </tr>
+ <tr>
+-<td style="padding: 0in 5.4pt;">Password Expiry Date</td>
++<td style="padding: 0in 5.4pt;">_Password Expiry Date_</td>
+ <td style="padding: 0in 5.4pt;">See note <a href="#1"><sup>1</sup></a> below</td>
+ </tr>
+ <tr>
+-<td style="padding: 0in 5.4pt;">Password Expiry Interval</td>
++<td style="padding: 0in 5.4pt;">_Password Expiry Interval_</td>
+ <td style="padding: 0in 5.4pt;">See note <a href="#1"><sup>1</sup></a> below</td>
+ </tr>
+ <tr>
+-<td style="padding: 0in 5.4pt;">Record Modified Time</td>
++<td style="padding: 0in 5.4pt;">_Record Modified Time_</td>
+ <td style="padding: 0in 5.4pt;">See note <a href="#1"><sup>1</sup></a> below</td>
+ </tr>
+ <tr>
+-<td style="padding: 0in 5.4pt;">Password Policy</td>
++<td style="padding: 0in 5.4pt;">_Password Policy_</td>
+ <td style="padding: 0in 5.4pt;">See note <a href="#3"><sup>3</sup></a> below</td>
+ </tr>
+ <tr>
+-<td style="padding: 0in 5.4pt;">History</td>
++<td style="padding: 0in 5.4pt;">_History_</td>
+ <td style="padding: 0in 5.4pt;">See note <a href="#2"><sup>2</sup></a> below</td>
+ </tr>
+ <tr>
+-<td style="padding: 0in 5.4pt;">Run command</td>
++<td style="padding: 0in 5.4pt;">_Run command_</td>
+ <td style="padding: 0in 5.4pt;"></td>
+ </tr>
+ <tr>
+-<td style="padding: 0in 5.4pt;">DCA</td>
++<td style="padding: 0in 5.4pt;">_DCA_</td>
+ <td style="padding: 0in 5.4pt;"> = 'Double Click Action'. See note <a href="#4"><sup>4</sup></a> below</td>
+ </tr>
+ <tr>
+-<td style="padding: 0in 5.4pt;">Shift+DCA</td>
++<td style="padding: 0in 5.4pt;">_Shift+DCA_</td>
+ <td style="padding: 0in 5.4pt;"> = 'Double Click Action'. See note <a href="#4"><sup>4</sup></a> below</td>
+ </tr>
+ <tr>
+-<td style="padding: 0in 5.4pt;">e-mail</td>
++<td style="padding: 0in 5.4pt;">_e-mail_</td>
+ <td style="padding: 0in 5.4pt;"></td>
+ </tr>
+ <tr>
+-<td style="padding: 0in 5.4pt;">Protect</td>
++<td style="padding: 0in 5.4pt;">_Protected_</td>
+ <td style="padding: 0in 5.4pt;"></td>
+ </tr>
+ <tr>
+-<td style="padding: 0in 5.4pt;">Symbols</td>
++<td style="padding: 0in 5.4pt;">_Symbols_</td>
+ <td style="padding: 0in 5.4pt;"></td>
+ </tr>
+ <tr>
+-<td style="padding: 0in 5.4pt;">Notes</td>
++<td style="padding: 0in 5.4pt;">_Notes_</td>
+ <td style="padding: 0in 5.4pt;">
+ <ul>
+ <li>The Notes field should be enclosed by double quotes ("like this").</li>
+diff -bNau ../../default/html/import.html ./source/html/import.html
+--- ../../default/html/import.html	2012-08-08 20:01:07.000000000 +0400
++++ ./source/html/import.html	2012-08-09 02:18:59.000000000 +0400
+@@ -396,11 +396,11 @@
+ </tr>
+ </thead>
+ <tbody>
+-<tr><td>Title</td><td>&lt;title&gt;</td></tr>
+-<tr><td>Username</td><td>&lt;username&gt;</td></tr>
+-<tr><td>Password</td><td>&lt;password&gt;</td></tr>
+-<tr><td>URL</td><td>&lt;url&gt; or &lt;runcommand&gt;<br>depending on the prefix (see notes above)</td></tr>
+-<tr><td>Notes</td><td>&lt;notes&gt;</td></tr>
++<tr><td>_Title_</td><td>&lt;title&gt;</td></tr>
++<tr><td>_Username_</td><td>&lt;username&gt;</td></tr>
++<tr><td>_Password_</td><td>&lt;password&gt;</td></tr>
++<tr><td>_URL_</td><td>&lt;url&gt; or &lt;runcommand&gt;<br>depending on the prefix (see notes above)</td></tr>
++<tr><td>_Notes_</td><td>&lt;notes&gt;</td></tr>
+ <tr><td>All others</td><td>Inserted into the <b>Password Safe</b> Notes field in the form:<br> "Key: Value"</td></tr>
+ </tbody>
+ </table>
+diff -bNau ../../default/html/menu_toolbar.html ./source/html/menu_toolbar.html
+--- ../../default/html/menu_toolbar.html	2012-08-08 20:01:08.000000000 +0400
++++ ./source/html/menu_toolbar.html	2012-08-09 02:18:59.000000000 +0400
+@@ -33,8 +33,8 @@
+ <table align="center" cellspacing="5">
+ <tbody>
+ <tr bgcolor="#003333">
+-<td align="center" width="10%"><b><font color="white">Classic</font></b></td>
+-<td align="center" width="10%"><b><font color="white">New</font></b></td>
++<td align="center" width="10%"><b><font color="white">Classic style</font></b></td>
++<td align="center" width="10%"><b><font color="white">New style</font></b></td>
+ <td align="center" width="10%"><b><font color="white">Default</font></b></td>
+ <td><b><font color="white">Description</font></b></td>
+ </tr>
+diff -bNau ../../default/html/password_history.html ./source/html/password_history.html
+--- ../../default/html/password_history.html	2012-08-08 20:01:09.000000000 +0400
++++ ./source/html/password_history.html	2012-08-09 02:18:59.000000000 +0400
+@@ -24,8 +24,7 @@
+ <img alt="Password History" src="images/edit_view_entry_add.jpg">
+ 
+ <p>This dialog box displays the last few previous passwords associated
+-with a given entry. To display this, click on the "Password History"
+-button in the Edit/View Entry dialog box. You can do the following
++with a given entry. You can do the following
+ operations here:</p>
+ 
+ <h3>Keep <i>N</i> last passwords</h3>
+@@ -45,7 +44,7 @@
+ <p>Clicking on a row in the list of recent passwords will copy the password displayed in
+ that row to the clipboard.</p>
+ 
+-<h3>Clear History</h3>
++<h3>Clear</h3>
+ 
+ <p>Clicking on this button will clear the previous passwords stored with this entry.</p>
+ 
+diff -bNau ../../default/html/password_history_tab.html ./source/html/password_history_tab.html
+--- ../../default/html/password_history_tab.html	2012-08-08 20:01:09.000000000 +0400
++++ ./source/html/password_history_tab.html	2012-08-09 02:18:59.000000000 +0400
+@@ -1,7 +1,7 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+ <html>
+ <head>
+-<title>Saving Old Password History</title>
++<title>Password History</title>
+ <!-- pwsafe version: 2.11--><!-- Modified: 15/06/2005 --><!--Popup control -->
+ <script language="javascript" src="html/popups.js">
+ </script>
+diff -bNau ../../default/html/run_command.html ./source/html/run_command.html
+--- ../../default/html/run_command.html	2012-08-08 20:01:11.000000000 +0400
++++ ./source/html/run_command.html	2012-08-09 02:18:59.000000000 +0400
+@@ -1,6 +1,6 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+ <html><head>
+-<title>Run Command</title><!-- pwsafe version: 3.17--><!-- Modified: 11/03/2009 --><!--Popup control -->
++<title>Using Run Command</title><!-- pwsafe version: 3.17--><!-- Modified: 11/03/2009 --><!--Popup control -->
+ <script language="javascript" src="html/popups.js">
+ </script>
+ <link rel="stylesheet" type="text/css" href="style.css"></head>
+@@ -8,7 +8,7 @@
+ <object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"></object>
+ <!-- Popup Source File -->
+ 
+-<h1>Run Command</h1>
++<h1>Using Run Command</h1>
+ 
+ <p>An entry's 'Run Command' field can contain a command that will
+ be run when the Run Command action is selected. The command can be anything
+diff -bNau ../../default/html/style.css ./source/html/style.css
+--- ../../default/html/style.css	2012-08-08 20:01:12.000000000 +0400
++++ ./source/html/style.css	2012-08-09 02:18:59.000000000 +0400
+@@ -6,6 +6,7 @@
+ 	color:black;
+ 	font-size="small";
+ 	background-color: white;
++	text-align:justify;
+ 	}
+ 
+ A:link {color: #0069CE; text-decoration: none;} 
+@@ -31,19 +32,23 @@
+ 	{
+ 	margin-top: .75em;
+ 	margin-bottom: 1.25em;	
++	text-align:justify;
+ 	}	
+ 
+ li	{
+ 	margin-left: .15in;
++	text-align:justify;
+ 	}	 
+ 
+ ol li
+ 	{
+ 	margin-left: .10in;
++	text-align:justify;
+ 	}
+ 
+ ul	{
+ 	list-style: disc;
++	text-align:justify;
+ 	}
+ 
+ ul.onestep
+@@ -77,3 +82,16 @@
+ 	vertical-align: top;
+ 	padding: 0;
+ 	}
++
++td p	{
++	margin: .25em;
++	vertical-align: top;
++	padding: 0;
++	text-indent: 0;
++	}
++
++p	{
++        text-align:justify;
++	text-indent: 3ex;
++	margin:0.25em;
++	}
+diff -bNau ../../default/html/wzselectdb.html ./source/html/wzselectdb.html
+--- ../../default/html/wzselectdb.html	2012-08-08 20:01:13.000000000 +0400
++++ ./source/html/wzselectdb.html	2012-08-09 02:18:59.000000000 +0400
+@@ -41,15 +41,19 @@
+ 
+ <p>Selecting 'Back' will return to the first Wizard tab where you may unselect the
+ "Advanced field selection" if you wish to export all entries and all their fields.</p>
+-
+-<p>Note 1: When exporting a single entry via the Edit Menu or Context Menu (by right
++<hr>
++<small><b>Notes:</b><br>
++<ul>
++<li>Note 1: When exporting a single entry via the Edit Menu or Context Menu (by right
+ clicking on the entry), the option to restrict the export based on the contents of
+-the Group, Title, User Name, URL or Notes fields is obviously not available.</p>
+-
+-<p>Note 2: When Merging a database into the currently open database, you will not be able
++the Group, Title, User Name, URL or Notes fields is obviously not available.
++</li>
++<li>Note 2: When Merging a database into the currently open database, you will not be able
+ to restrict which fields of the entries being merged are copied.  If an entry passes your
+-selection criteria, then the complete entry will be merged into the current database.</p>
+-
++selection criteria, then the complete entry will be merged into the current database.
++</li>
++</ul>
++</small>
+ <!-- Added some white space at the bottom for natural scrolling -->
+ <br>
+ <br>
+--- ../../default/pwsafe.hhc	2012-08-08 20:02:04.000000000 +0400
++++ ./source/pwsafe.hhc	2012-08-09 02:18:59.000000000 +0400
+@@ -153,7 +153,7 @@
+ 			<param name="Local" value="html\display_tab.html">
+ 			</OBJECT>
+ 		<LI> <OBJECT type="text/sitemap">
+-			<param name="Name" value="Misc. Options">
++			<param name="Name" value="Misc Options">
+ 			<param name="Local" value="html\misc_tab.html">
+ 			</OBJECT>
+ 		<LI> <OBJECT type="text/sitemap">

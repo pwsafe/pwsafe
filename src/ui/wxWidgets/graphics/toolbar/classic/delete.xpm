@@ -1,0 +1,27 @@
+/* XPM */
+static const char *classic_delete_xpm[] = {
+/* columns rows colors chars-per-pixel */
+"16 16 4 1",
+/* colors */
+"  c None",
+"X c black",
+". c #808080808080",
+"o c gray100",
+/* pixels */
+"                ",
+"                ",
+"        .XXXX.. ",
+"       X o o  X ",
+"      X o o o.X ",
+"     X o o oX.X ",
+"    X o o oX... ",
+"   X o o oX..X  ",
+"  X o o oX..X   ",
+" .X     X..X    ",
+" X      X.X     ",
+" X      XX      ",
+" .XXXXXX.       ",
+"                ",
+"                ",
+"                "
+};

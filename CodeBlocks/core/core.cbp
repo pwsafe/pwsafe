@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="core" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug_L64">
+				<Option platforms="Unix;" />
+				<Option output="libcore64d" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="obj/Debug64/" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Compiler>
+					<Add option="-Wshadow" />
+					<Add option="-Winit-self" />
+					<Add option="-Wswitch-default" />
+					<Add option="-pedantic" />
+					<Add option="-Wextra" />
+					<Add option="-Wall" />
+					<Add option="-g" />
+					<Add option="-fPIC" />
+					<Add option="-m64" />
+					<Add option="-Wformat=2" />
+					<Add option="-Wcast-qual" />
+					<Add option="-Wold-style-cast" />
+					<Add option="-D_DEBUG" />
+					<Add option="-DDEBUG" />
+					<Add option="-DDEBUG_XMLPREFS" />
+					<Add option="-DUSE_XML_LIBRARY=XERCES" />
+					<Add option="-DWCHAR_INCOMPATIBLE_XMLCH" />
+					<Add directory="../../src" />
+				</Compiler>
+				<Linker>
+					<Add option="-m64" />
+				</Linker>
+				<ExtraCommands>
+					<Add before="../../Misc/rc2cpp.pl ../../src/core/core.rc2" />
+					<Mode after="always" />
+				</ExtraCommands>
+			</Target>
+			<Target title="Debug_L32">
+				<Option platforms="Unix;" />
+				<Option output="libcore32d" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="obj/Debug32/" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Compiler>
+					<Add option="-Wshadow" />
+					<Add option="-Winit-self" />
+					<Add option="-Wswitch-default" />
+					<Add option="-pedantic" />
+					<Add option="-Wextra" />
+					<Add option="-Wall" />
+					<Add option="-g" />
+					<Add option="-fPIC" />
+					<Add option="-m32" />
+					<Add option="-Wformat=2" />
+					<Add option="-Wcast-qual" />
+					<Add option="-Wold-style-cast" />
+					<Add option="-D_DEBUG" />
+					<Add option="-DDEBUG" />
+					<Add option="-DDEBUG_XMLPREFS" />
+					<Add option="-DUSE_XML_LIBRARY=XERCES" />
+					<Add option="-DWCHAR_INCOMPATIBLE_XMLCH" />
+					<Add directory="../../src" />
+				</Compiler>
+				<Linker>
+					<Add option="-m32" />
+				</Linker>
+				<ExtraCommands>
+					<Add before="../../Misc/rc2cpp.pl ../../src/core/core.rc2" />
+					<Mode after="always" />
+				</ExtraCommands>
+			</Target>
+			<Target title="Release_L64">
+				<Option platforms="Unix;" />
+				<Option output="libcore64" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="obj/Release64/" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Compiler>
+					<Add option="-fomit-frame-pointer" />
+					<Add option="-O2" />
+					<Add option="-Wshadow" />
+					<Add option="-Winit-self" />
+					<Add option="-Wswitch-default" />
+					<Add option="-pedantic" />
+					<Add option="-Wextra" />
+					<Add option="-Wall" />
+					<Add option="-fPIC" />
+					<Add option="-m64" />
+					<Add option="-Wformat=2" />
+					<Add option="-Wcast-qual" />
+					<Add option="-Wold-style-cast" />
+					<Add option="-DNDEBUG" />
+					<Add option="-DUSE_XML_LIBRARY=XERCES" />
+					<Add option="-DWCHAR_INCOMPATIBLE_XMLCH" />
+					<Add directory="../../src" />
+				</Compiler>
+				<Linker>
+					<Add option="-m64" />
+				</Linker>
+				<ExtraCommands>
+					<Add before="../../Misc/rc2cpp.pl ../../src/core/core.rc2" />
+					<Mode after="always" />
+				</ExtraCommands>
+			</Target>
+			<Target title="Release_L32">
+				<Option platforms="Unix;" />
+				<Option output="libcore32" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="obj/Release32/" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Compiler>
+					<Add option="-fomit-frame-pointer" />
+					<Add option="-O2" />
+					<Add option="-Wshadow" />
+					<Add option="-Winit-self" />
+					<Add option="-Wswitch-default" />
+					<Add option="-pedantic" />
+					<Add option="-Wextra" />
+					<Add option="-Wall" />
+					<Add option="-fPIC" />
+					<Add option="-m32" />
+					<Add option="-Wformat=2" />
+					<Add option="-Wcast-qual" />
+					<Add option="-Wold-style-cast" />
+					<Add option="-DNDEBUG" />
+					<Add option="-DUSE_XML_LIBRARY=XERCES" />
+					<Add option="-DWCHAR_INCOMPATIBLE_XMLCH" />
+					<Add directory="../../src" />
+				</Compiler>
+				<Linker>
+					<Add option="-m32" />
+				</Linker>
+				<ExtraCommands>
+					<Add before="../../Misc/rc2cpp.pl ../../src/core/core.rc2" />
+					<Mode after="always" />
+				</ExtraCommands>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-DUNICODE" />
+		</Compiler>
+		<Unit filename="../../src/core/BlowFish.cpp" />
+		<Unit filename="../../src/core/BlowFish.h" />
+		<Unit filename="../../src/core/CheckVersion.cpp" />
+		<Unit filename="../../src/core/CheckVersion.h" />
+		<Unit filename="../../src/core/Command.cpp" />
+		<Unit filename="../../src/core/Command.h" />
+		<Unit filename="../../src/core/CommandInterface.h" />
+		<Unit filename="../../src/core/CoreImpExp.cpp" />
+		<Unit filename="../../src/core/CoreOtherDB.cpp" />
+		<Unit filename="../../src/core/DBCompareData.h" />
+		<Unit filename="../../src/core/ExpiredList.cpp" />
+		<Unit filename="../../src/core/ExpiredList.h" />
+		<Unit filename="../../src/core/Fish.h" />
+		<Unit filename="../../src/core/ItemData.cpp" />
+		<Unit filename="../../src/core/ItemData.h" />
+		<Unit filename="../../src/core/ItemField.cpp" />
+		<Unit filename="../../src/core/ItemField.h" />
+		<Unit filename="../../src/core/Match.cpp" />
+		<Unit filename="../../src/core/Match.h" />
+		<Unit filename="../../src/core/PWCharPool.cpp" />
+		<Unit filename="../../src/core/PWCharPool.h" />
+		<Unit filename="../../src/core/PWHistory.cpp" />
+		<Unit filename="../../src/core/PWHistory.h" />
+		<Unit filename="../../src/core/PWPolicy.cpp" />
+		<Unit filename="../../src/core/PWPolicy.h" />
+		<Unit filename="../../src/core/PWSAuxParse.cpp" />
+		<Unit filename="../../src/core/PWSAuxParse.h" />
+		<Unit filename="../../src/core/PWSFilters.cpp" />
+		<Unit filename="../../src/core/PWSFilters.h" />
+		<Unit filename="../../src/core/PWScore.cpp" />
+		<Unit filename="../../src/core/PWScore.h" />
+		<Unit filename="../../src/core/PWSdirs.cpp" />
+		<Unit filename="../../src/core/PWSdirs.h" />
+		<Unit filename="../../src/core/PWSfile.cpp" />
+		<Unit filename="../../src/core/PWSfile.h" />
+		<Unit filename="../../src/core/PWSfileV1V2.cpp" />
+		<Unit filename="../../src/core/PWSfileV1V2.h" />
+		<Unit filename="../../src/core/PWSfileV3.cpp" />
+		<Unit filename="../../src/core/PWSfileV3.h" />
+		<Unit filename="../../src/core/PWSprefs.cpp" />
+		<Unit filename="../../src/core/PWSprefs.h" />
+		<Unit filename="../../src/core/PWSrand.cpp" />
+		<Unit filename="../../src/core/PWSrand.h" />
+		<Unit filename="../../src/core/Proxy.h" />
+		<Unit filename="../../src/core/PwsPlatform.h" />
+		<Unit filename="../../src/core/Report.cpp" />
+		<Unit filename="../../src/core/Report.h" />
+		<Unit filename="../../src/core/StringX.cpp" />
+		<Unit filename="../../src/core/StringX.h" />
+		<Unit filename="../../src/core/StringXStream.h" />
+		<Unit filename="../../src/core/SysInfo.cpp" />
+		<Unit filename="../../src/core/SysInfo.h" />
+		<Unit filename="../../src/core/TwoFish.cpp" />
+		<Unit filename="../../src/core/TwoFish.h" />
+		<Unit filename="../../src/core/UIinterface.h" />
+		<Unit filename="../../src/core/UTF8Conv.cpp" />
+		<Unit filename="../../src/core/UTF8Conv.h" />
+		<Unit filename="../../src/core/UUIDGen.h" />
+		<Unit filename="../../src/core/UnknownField.cpp" />
+		<Unit filename="../../src/core/UnknownField.h" />
+		<Unit filename="../../src/core/Util.cpp" />
+		<Unit filename="../../src/core/Util.h" />
+		<Unit filename="../../src/core/VerifyFormat.cpp" />
+		<Unit filename="../../src/core/VerifyFormat.h" />
+		<Unit filename="../../src/core/XML/XMLDefs.h" />
+		<Unit filename="../../src/core/XML/XMLFileHandlers.cpp" />
+		<Unit filename="../../src/core/XML/XMLFileHandlers.h" />
+		<Unit filename="../../src/core/XML/XMLFileValidation.cpp" />
+		<Unit filename="../../src/core/XML/XMLFileValidation.h" />
+		<Unit filename="../../src/core/XML/Xerces/XFileSAX2Handlers.cpp" />
+		<Unit filename="../../src/core/XML/Xerces/XFileSAX2Handlers.h" />
+		<Unit filename="../../src/core/XML/Xerces/XFileValidator.cpp" />
+		<Unit filename="../../src/core/XML/Xerces/XFileValidator.h" />
+		<Unit filename="../../src/core/XML/Xerces/XFileXMLProcessor.cpp" />
+		<Unit filename="../../src/core/XML/Xerces/XFileXMLProcessor.h" />
+		<Unit filename="../../src/core/XML/Xerces/XFilterSAX2Handlers.cpp" />
+		<Unit filename="../../src/core/XML/Xerces/XFilterSAX2Handlers.h" />
+		<Unit filename="../../src/core/XML/Xerces/XFilterXMLProcessor.cpp" />
+		<Unit filename="../../src/core/XML/Xerces/XFilterXMLProcessor.h" />
+		<Unit filename="../../src/core/XML/Xerces/XMLChConverter.h" />
+		<Unit filename="../../src/core/XML/Xerces/XSecMemMgr.cpp" />
+		<Unit filename="../../src/core/XML/Xerces/XSecMemMgr.h" />
+		<Unit filename="../../src/core/XMLprefs.cpp" />
+		<Unit filename="../../src/core/XMLprefs.h" />
+		<Unit filename="../../src/core/core.h" />
+		<Unit filename="../../src/core/core.rc2" />
+		<Unit filename="../../src/core/core_st.cpp" />
+		<Unit filename="../../src/core/core_st.h" />
+		<Unit filename="../../src/core/coredefs.h" />
+		<Unit filename="../../src/core/hmac.cpp" />
+		<Unit filename="../../src/core/hmac.h" />
+		<Unit filename="../../src/core/sha1.cpp" />
+		<Unit filename="../../src/core/sha1.h" />
+		<Unit filename="../../src/core/sha256.cpp" />
+		<Unit filename="../../src/core/sha256.h" />
+		<Unit filename="../../src/core/tinyxml/tinyxml.cpp" />
+		<Unit filename="../../src/core/tinyxml/tinyxml.h" />
+		<Unit filename="../../src/core/tinyxml/tinyxmlerror.cpp" />
+		<Unit filename="../../src/core/tinyxml/tinyxmlparser.cpp" />
+		<Unit filename="../../src/core/trigram.h" />
+		<Unit filename="../../src/core/twofish_tab.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Extensions>
+			<envvars />
+			<code_completion />
+			<debugger />
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

@@ -1,0 +1,114 @@
+.\" Process this file with
+.\" groff -man -Tascii pwsafe.1
+.\"
+.TH PWSAFE 1 "JULY 2010" Linux "User Manuals"
+.SH NAME
+pwsafe \- Secure Password Manager
+.SH SYNOPSIS
+.B pwsafe [-g
+.I config-file
+.B ] [-u
+.I user
+.B ] [ -h
+.I host
+.B ]
+.B [-r]
+.B [
+.I database
+.B ]
+.br
+.B pwsafe
+.B -v
+.I database
+.br
+.B pwsafe
+.B [-e|-d]
+.I file
+.br
+.B pwsafe
+.B [-c|-s|-m]
+.SH DESCRIPTION
+.B pwsafe
+manages your passwords in a convenient yet secure manner.
+.SH OPTIONS
+.IP -g
+.I config-file
+This will cause the specified config-file to be used for loading and storing
+preferences, instead of the default pwsafe.cfg (see
+.B FILES
+).
+.IP -u
+.I user
+This will cause the application to read and write preferences under
+the specified
+.I user
+instead of under the login name.
+.IP -h
+.I host
+This will cause the application to read and write preferences under
+the specified 
+.I host
+, instead of under the machine's name.
+.IP -r
+.I [database]
+This will open the specified database in read-only mode. If a database
+is not specified, then the application will prompt the user for a
+database, which will be opened in read-only mode.
+.IP -v
+.I database
+This will validate the database after the correct passphrase is
+entered, correcting internal inconsistencies as necessary. Mostly
+useful when working with databases written by other applications.
+.IP -c
+This will start the application closed, that is, with
+no database, and without the initial opening dialog (To access a
+database, use the File menu).
+.IP -s
+This will start the application "silently", that is,
+minimized and with no database (unless one is specified). When the
+application is unminimized, the user is presented with the opening
+dialog box.
+.B Note:
+This implicitly puts the application in the system tray.
+.IP -m
+This is the same as the
+.B -c
+option, with the addition that the application is started as minimized.
+.SH FILES
+.I ~/.pwsafe/pwsafe.cfg
+.RS
+The application's preference file. Note that all security-related
+preferences are stored as part of the password database. This file
+only stores preferences pertaining to appearance, such as last size &
+location of the application's window, last files opened, etc.
+.RE
+.I ~/.pwsafe/pwsafe.psafe3
+.RS
+The user's default password database. A different database may be
+specified via command line, the initial dialog box or the File->Open menu.
+.RE
+.SH ENVIRONMENT
+.IP PWS_PREFSDIR
+If set,
+.B pwsafe
+will look for the preference file in this directory rather than in
+.I ~/.pwsafe.
+.SH DIAGNOSTICS
+.B pwsafe
+Will issue error messages if the database is damaged. If this occurs,
+invoking
+.B pwsafe
+with the 
+.B -v
+option may help.
+.SH BUGS
+The 
+.B -s
+,
+.B -c
+and 
+.B -m
+options are currently unimplemented.
+.SH AUTHOR
+Rony Shapiro <ronys at sf dot net>
+

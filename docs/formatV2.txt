@@ -1,0 +1,164 @@
+PasswordSafe database format description version 2
+--------------------------------------------------
+
+Copyright (c) 2003-2012 Rony Shapiro <ronys@users.sourceforge.net>.
+All rights reserved. Use of the code is allowed under the Artistic
+License terms, as specified in the LICENSE file distributed with this
+code, or available from
+http://www.opensource.org/licenses/artistic-license-2.0.php 
+
+The existing Passwordsafe file format is described in notes.txt This
+format, while efficient and secure, has several shortcomings:
+
+1. No version identifier. This makes changes to the record structure
+   very difficult.
+2. Integers (field length) stored in host order. This is a portability
+   issue when writing and reading on machines of different
+   endian-ness.
+3. Record structure is fixed and implicit.
+4. Record title and username are stored in the same field, separated
+   by a special character. This is kludgey, and apparantly breaks on
+   machines running Chinese Windows XP.
+5. Text is stored as ASCII, meaning that multilingual records are not
+   supported.
+6. Fields are encrypted/decrypted using a passkey derived from the master
+   passphrase and salt. This requires keeping the master passphrase in
+   memory for the lifetime of the application.
+
+The following proposed format attempts to address the above
+shortcomings:
+
+1. A PasswordSafe file will start with the RND|H(RND) pair as
+   define in the 1.x format, to enable quick verification of the
+   passphrase. 
+
+2. Following RND|H(RND) will be the SALT and IP as in the 1.x
+   format. From here onwards, all data is encrpyted in 8 byte blocks,
+   with the first block holding the length (in bytes) of the encrypted
+   field that follows and the type (see section 6). The length is
+   stored as a 32 bit unsigned value in little-endian byte order (to
+   maintain compatability with 1.x applications). The type is a 1-byte
+   code. The following N blocks contain the actual value of the
+   encrypted field, where N is the length read from the length block
+   divided by the blocksize in bytes (8), rounded upwards. Note that
+   the type byte is new for version 2. Version 1.x currently reads
+   only the 4 byte length value from the first block.
+
+3. Following the SALT and IP is a Format Description Block. This will
+   be parsed by 1.x applications so as to show "!!!Version 2 File
+   Format!!!" as the title of the first entry. (The following entries
+   will be displayed as "garbage", but this should give the user an
+   indication of what the problem is.) In more detail, the Format
+   Description Block will consist of the following fields: Title,
+   Password, Notes. Each field consists of a length block followed by
+   one or more value blocks. Unlike the actual database entries, these
+   field values are encoded in ASCII (not Unicode), so that they may
+   be displayed correctly on a 1.x application. The actual values of
+   these fields in the Format Description Block are as follows:
+   Name:	"!!!Version 2 File Format!!!" (Type byte == 0)
+   Password:	"2.0" - corresponds to the major and minor version
+		numbers of this file format (Type byte as described
+                below for Password field).
+   Notes:	Used to store preferences: String is of the form
+		"X nn vv X nn vv..." Where X=[BIS] for binary,
+		integer and string, resp., nn is the numeric value of
+		the enum, and vv is the value, {1.0} for bool,
+		unsigned integer for int, and quoted string for
+		String. Only values != default are stored (Type byte
+		as described below for Notes field).
+		See PWSprefs.cpp for more details.
+
+   The Type byte for the above fields is 0.
+
+4. Following the Format Description Block will be the actual password
+   records. As for version 1.x, the order of records has no
+   meaning. Each record consists of a fixed number of fields, with
+   empty fields having a length of 0 in their first block.  Textual
+   data will be stored in Unicode (wchar_t) [See Note 1]. Numerical
+   data will be stored in network byte order.
+   Timestamps will be stored as 32 bit, little endian, unsigned integers,
+   representing the number of seconds since Midnight, January 1, 1970,	
+   GMT. (This is equivalent to the time_t type on Windows and POSIX.
+   On the Macintosh, the value needs to be adjusted by the constant
+   value 2082844800 to account for the different epoch of its time_t
+   type.) Timestamps will be stored in GMT.
+
+[Note 1] An "isUTF8" preference has been added to version 2.xx. The
+   semantics are as follows: If the IsUTF8 preference is true, textual data
+   is stored in UTF-8 format. If the IsUTF8 preference is false, textual
+   data is stored using the current locale. As of PasswordSafe 2.11, this
+   behaviour is not implemented. The flag will, howe ver, enable
+   PasswordSafe compatible implementations to interoperate in the future.
+
+5. The fields for each record for version 2.0 are as follows:
+
+							 Currently
+   Name			      Type byte value	Type     Implemented Comments
+   --------------------------------------------------------------------------
+   UUID			      0x1		UUID		Y	[1]
+   Group		      0x2		Text		Y	[2]
+   Title		      0x3		Text		Y
+   Username		      0x4		Text		Y
+   Notes		      0x5		Text		Y
+   Password		      0x6		Text		Y
+   Creation Time	      0x7		time_t		N
+   Password Modification Time 0x8 		time_t		N
+   Last Access Time	      0x9		time_t		N	[3]
+   Password Lifetime	      0xa		time_t		N	[4]
+   Password Policy	      0xb		4 bytes		N	[5]
+   Last Mod. time	      0xc		time_t		N	[6]
+   End of Entry		      0xff		[empty]		Y	[7]
+
+[1] A universally unique identifier is needed in order to synchronize
+databases, i.e., between a handheld pocketPC device and a PC. The UUID
+data type is 16 bytes long. Windows has functions for this, and for
+other platforms, it's possible to use code from the OSF.
+[2] The "Group" is meant to support displaying the entries in a
+tree-like manner. Groups can be heirarchical, with elements separated
+by a period, supporting groups such as "Finance.credit cards.Visa",
+"Finance.credit cards.Mastercard", Finance.bank.web access", etc. Dots
+entered by the user are "escaped" by the application.
+[3] This will be updated whenever the password of this entry is copied
+to the clipboard, or whenever the Password Modification Time is
+updated.
+[4] This will allow the user to enter a lifetime for an entry. The
+application can then prompt the user about passwords that need to be
+changed. Password lifetime is in seconds, and a value of zero means
+"forever".
+[5] Currently, the password policy is a global property. It makes
+sense, however, to want to control this on a per-entry basis. Four
+bytes seems sufficient to store the policy. Exact encoding TBD.
+[6] This is the time that any field of the record was modified, useful
+for merging databases.
+[7] An explicit end of entry field is needed so that 2.x programs
+won't break when reading 2.y files where x != y. Alternately, we could
+have relied on the UUID field being the first, but this would have
+been a bit less elegant to parse, as well as less robust (suppose we
+decide to drop the UUID, or move it to the last field?).
+
+6. Conversion from 1.x databases to 2.x is automatic. The user
+   is notified that the 1.x database will be renamed with a
+   ".old" suffix added, and the 2.x saved with the old's original
+   name.
+
+$Log$
+Revision 1.8  2005/07/20 21:15:01  ronys
+Updated to refelct 2.11 status + some midifications discussed on dev list.
+
+Revision 1.7  2005/04/07 19:44:37  ronys
+Fixed some errors in the format descriptions, moved stuff to Misc directory, removed unused files.
+
+Revision 1.6  2004/09/01 18:56:31  ronys
+Documented 2.05 preference storage format, added modification time.
+
+Revision 1.5  2003/10/05 10:42:51  ronys
+Support for UUID as part of V2 file format.
+
+Revision 1.4  2003/07/17 04:16:06  ronys
+Added END field type
+
+Revision 1.3  2003/05/25 14:52:29  ronys
+Added GUID
+
+Revision 1.2  2003/05/25 12:14:13  ronys
+Updated after comments on devel mailing list

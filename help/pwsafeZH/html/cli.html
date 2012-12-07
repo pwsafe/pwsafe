@@ -1,0 +1,64 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>命令行参数</title>
+<!-- pwsafe version: 2.11--><!-- Modified: 15/06/2005 --><!--Popup control -->
+  <script language="javascript" src="html/popups.js">
+  </script>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"> </object>
+<!-- Popup Source File -->
+<h2>命令行参数</h2>
+<p>调用 <span style="font-weight: bold;">Password
+Safe</span> 不带参数将导致应用程序提示为最后被打开过的数据库输入密码或在计算机未打开有过早期数据库时提示输入新数据库密码(例如: 首次使用 <span style="font-weight: bold;">Password Safe</span>)。
+不管如何，尽可能修改 <span style="font-weight: bold;">Password Safe</span> 的这些参数引用如下:</p>
+<ul>
+  <li><i>pwsafe</i> <b>数据库名称</b><br>
+该参数将打开指定的数据库文件，而不打开最后一次被打开过的数据库。
+假如只考虑一个文件名而没有路径，它将搜索其中被引用的应用程序目录。
+注意，如果文件名和/或为空，将被双引号标识。
+  </li>
+  <li><i>pwsafe</i> <b>-r [数据库名称]</b><br>
+该参数将以只读模式打开指定的数据库。如果未指定数据库，则应用程序将提示用户指定一个需要被打开为只读模式的数据库。</li>
+  <li><span style="font-style: italic;">pwsafe </span><span style="font-weight: bold;">-v 数据库名称<br>
+    <span style="font-weight: bold;"></span></span>该参数将验证数据库在输入正确的密码语句后，校正内部不一致的错误。
+对于通过其它应用程序写入数据库时这是有帮助的。<span style="font-weight: bold;"><span style="font-weight: bold;"></span></span></li>
+  <li><i>pwsafe</i> <b>-e 文件名</b><br>
+该参数将提示用户给予一个密码语句和使用一个密码语句密匙加密文件。
+<b>注意:</b> 文件可以是<i>任何</i>文件。被加密的文件将与原始文件同样的名称
+，是具有附加后缀为 ".PSF" 的文件。<br>
+  </li>
+  <li><i>pwsafe</i> <b>-d 文件名</b><br>
+该参数将提示用户给予一个密码语句和使用一个密码语句密码解密文件。
+<b>注意:</b> 该参数将只作用于被加密的文件已引用了 pwsafe '-e'
+选项时(查看前一个参数)。</li>
+  <li><span style="font-style: italic;">pwsafe </span><span style="font-weight: bold;">-c<br>
+</span>该参数将启动应用程序的关闭菜单功能，即程序启动后没有数据库和没有初始打开对话(要访问数据库，使用文件菜单)。</li>
+  <li><span style="font-style: italic;">pwsafe </span><span style="font-weight: bold;">-s<br>
+    </span>该参数将应用程序启动为“静默”，即最小化和没有数据库。
+当解除应用程序最小化时，用户可见打开对话框(该选项表示启动应用程序时为登录界面，通过一个快捷方式启动用户文件夹)。
+<b>注意:</b> 该参数调用设置应用程序在系统托盘。</li>
+  <li><span style="font-style: italic;">pwsafe</span>
+    <span style="font-weight: bold;">-m</span><br>
+    <big><span style="width: 500px;"><font size="-1"><big>该参数与 '<span style="font-weight: bold;">-c</span>' 选项等同，具有增添应用程序启动时为最小化。</big></font></span></big></li>
+</ul>
+<big><span style="width: 500px;"><font size="-1"><big>另外，下列选项承认:<br>
+</big></font></span></big>
+<ul>
+  <li><span style="font-weight: bold;">-u</span> <span style="font-style: italic;">用户名</span><br>
+该参数将导致应用程序读取和写入在指定 <span style="font-style: italic;">用户名</span> 下的参数选择，代替登录名称。</li>
+  <li><span style="font-weight: bold;">-h</span> <span style="font-style: italic;">主机名称</span><br>
+该参数将导致应用程序读取和写入在指定<span style="font-style: italic;">主机名称</span>下的参数选择，代替本计算机名称。</li>
+  <li><span style="font-weight: bold;">-g</span> <span style="font-style: italic;">配置_文件</span><br>
+该参数将导致指定用于加载和保存参数选择的文件，代替默认的 pwsafe.cfg。如果只给予一个文件名称而没有一个路径，
+程序将搜索调用应用程序目录。注意如果文件名称 和/或 路径为空，将被双引号标识。</li>
+</ul>
+<ul>
+</ul>
+这些参数可能有助于假设你希望共享相同参数选择跨越多个计算机时，例如: 当运行 <span style="font-weight: bold;">Password Safe</span> 于 U 盘时。<br>
+<br>
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e"> <param name="Keyword" value="只读"> <param name="Keyword" value="CLI"> <param name="Keyword" value="命令行参数"> <param name="Keyword" value="加密文件"> <param name="Keyword" value="解密文件"> </object>
+</body>
+</html>

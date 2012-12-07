@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeLite_Project Name="pwsafe" InternalType="GUI">
+  <Plugins>
+    <Plugin Name="qmake">
+      <![CDATA[00060001N0005Debug0000000000000001N0006DebugE0000000000000001N0006DebugX0000000000000001N0007Release0000000000000001N0008ReleaseE0000000000000001N0008ReleaseX000000000000]]>
+    </Plugin>
+  </Plugins>
+  <Description/>
+  <Dependencies/>
+  <VirtualDirectory Name="src"/>
+  <VirtualDirectory Name="wxWidgets">
+    <File Name="../src/ui/wxWidgets/passwordsafeframe.cpp"/>
+    <File Name="../src/ui/wxWidgets/SystemTray.h"/>
+    <File Name="../src/ui/wxWidgets/safecombinationchange.cpp"/>
+    <File Name="../src/ui/wxWidgets/safecombinationentry.h"/>
+    <File Name="../src/ui/wxWidgets/PasswordSafeSearch.cpp"/>
+    <File Name="../src/ui/wxWidgets/safecombinationchange.h"/>
+    <File Name="../src/ui/wxWidgets/PWSgrid.cpp"/>
+    <File Name="../src/ui/wxWidgets/PasswordSafeSearch.h"/>
+    <File Name="../src/ui/wxWidgets/version.h"/>
+    <File Name="../src/ui/wxWidgets/pwsclip.h"/>
+    <File Name="../src/ui/wxWidgets/pwsafeapp.cpp"/>
+    <File Name="../src/ui/wxWidgets/mainEdit.cpp"/>
+    <File Name="../src/ui/wxWidgets/safecombinationsetup.cpp"/>
+    <File Name="../src/ui/wxWidgets/safecombinationprompt.h"/>
+    <File Name="../src/ui/wxWidgets/wxMessages.h"/>
+    <File Name="../src/ui/wxWidgets/deleteconfirmation.cpp"/>
+    <File Name="../src/ui/wxWidgets/properties.h"/>
+    <File Name="../src/ui/wxWidgets/optionspropsheet.cpp"/>
+    <File Name="../src/ui/wxWidgets/PWSgridtable.h"/>
+    <File Name="../src/ui/wxWidgets/addeditpropsheet.h"/>
+    <File Name="../src/ui/wxWidgets/wxutils.h"/>
+    <File Name="../src/ui/wxWidgets/version.cpp"/>
+    <File Name="../src/ui/wxWidgets/safecombinationsetup.h"/>
+    <File Name="../src/ui/wxWidgets/SystemTray.cpp"/>
+    <File Name="../src/ui/wxWidgets/about.h"/>
+    <File Name="../src/ui/wxWidgets/createshortcutdlg.h"/>
+    <File Name="../src/ui/wxWidgets/pwsclip.cpp"/>
+    <File Name="../src/ui/wxWidgets/safecombinationprompt.cpp"/>
+    <File Name="../src/ui/wxWidgets/createshortcutdlg.cpp"/>
+    <File Name="../src/ui/wxWidgets/PWSgrid.h"/>
+    <File Name="../src/ui/wxWidgets/optionspropsheet.h"/>
+    <File Name="../src/ui/wxWidgets/safecombinationentry.cpp"/>
+    <File Name="../src/ui/wxWidgets/addeditpropsheet.cpp"/>
+    <File Name="../src/ui/wxWidgets/passwordsafeframe.h"/>
+    <File Name="../src/ui/wxWidgets/PWStree.h"/>
+    <File Name="../src/ui/wxWidgets/about.cpp"/>
+    <File Name="../src/ui/wxWidgets/PWSgridtable.cpp"/>
+    <File Name="../src/ui/wxWidgets/PWStree.cpp"/>
+    <File Name="../src/ui/wxWidgets/deleteconfirmation.h"/>
+    <File Name="../src/ui/wxWidgets/editshortcut.h"/>
+    <File Name="../src/ui/wxWidgets/editshortcut.cpp"/>
+    <File Name="../src/ui/wxWidgets/properties.cpp"/>
+    <File Name="../src/ui/wxWidgets/pwsafeapp.h"/>
+    <File Name="../src/ui/wxWidgets/RUEList.cpp"/>
+    <File Name="../src/ui/wxWidgets/RUEList.h"/>
+    <File Name="../src/ui/wxWidgets/guiinfo.cpp"/>
+    <File Name="../src/ui/wxWidgets/guiinfo.h"/>
+    <File Name="../src/ui/wxWidgets/RecentDBList.h"/>
+    <File Name="../src/ui/wxWidgets/ImportTextDlg.h"/>
+    <File Name="../src/ui/wxWidgets/ImportTextDlg.cpp"/>
+    <File Name="../src/ui/wxWidgets/ImportXmlDlg.h"/>
+    <File Name="../src/ui/wxWidgets/ImportXmlDlg.cpp"/>
+    <File Name="../src/ui/wxWidgets/OpenFilePickerValidator.cpp"/>
+    <File Name="../src/ui/wxWidgets/OpenFilePickerValidator.h"/>
+    <File Name="../src/ui/wxWidgets/ExportTextWarningDlg.cpp"/>
+    <File Name="../src/ui/wxWidgets/ExportTextWarningDlg.h"/>
+    <File Name="../src/ui/wxWidgets/SafeCombinationCtrl.h"/>
+    <File Name="../src/ui/wxWidgets/SafeCombinationCtrl.cpp"/>
+    <File Name="../src/ui/wxWidgets/AdvancedSelectionDlg.cpp"/>
+    <File Name="../src/ui/wxWidgets/AdvancedSelectionDlg.h"/>
+    <File Name="../src/ui/wxWidgets/ViewReport.h"/>
+    <File Name="../src/ui/wxWidgets/ViewReport.cpp"/>
+    <File Name="../src/ui/wxWidgets/dragbar.cpp"/>
+    <File Name="../src/ui/wxWidgets/dragbar.h"/>
+    <File Name="../src/ui/wxWidgets/PWSDragBar.h"/>
+    <File Name="../src/ui/wxWidgets/PWSDragBar.cpp"/>
+    <File Name="../src/ui/wxWidgets/MergeDlg.h"/>
+    <File Name="../src/ui/wxWidgets/MergeDlg.cpp"/>
+    <File Name="../src/ui/wxWidgets/helpmap.h"/>
+    <File Name="../src/ui/wxWidgets/SystemTrayMenuId.h"/>
+    <File Name="../src/ui/wxWidgets/PwsToolbarButtons.h"/>
+    <File Name="../src/ui/wxWidgets/ExternalKeyboardButton.h"/>
+    <File Name="../src/ui/wxWidgets/ExternalKeyboardButton.cpp"/>
+    <File Name="../src/ui/wxWidgets/PwsSync.h"/>
+    <File Name="../src/ui/wxWidgets/PwsSync.cpp"/>
+    <File Name="../src/ui/wxWidgets/DbSelectionPanel.h"/>
+    <File Name="../src/ui/wxWidgets/DbSelectionPanel.cpp"/>
+    <File Name="../src/ui/wxWidgets/CoreEvents.h"/>
+    <File Name="../src/ui/wxWidgets/CompareDlg.h"/>
+    <File Name="../src/ui/wxWidgets/CompareDlg.cpp"/>
+    <File Name="../src/ui/wxWidgets/wxutils.cpp"/>
+    <File Name="../src/ui/wxWidgets/ComparisonGridTable.h"/>
+    <File Name="../src/ui/wxWidgets/ComparisonGridTable.cpp"/>
+    <File Name="../src/ui/wxWidgets/SizeRestrictedPanel.h"/>
+    <File Name="../src/ui/wxWidgets/SizeRestrictedPanel.cpp"/>
+    <File Name="../src/ui/wxWidgets/fieldselectionpanel.h"/>
+    <File Name="../src/ui/wxWidgets/fieldselectionpanel.cpp"/>
+    <File Name="../src/ui/wxWidgets/fieldselectiondlg.cpp"/>
+    <File Name="../src/ui/wxWidgets/fieldselectiondlg.h"/>
+    <File Name="../src/ui/wxWidgets/pwsmenushortcuts.h"/>
+    <File Name="../src/ui/wxWidgets/pwsmenushortcuts.cpp"/>
+    <File Name="../src/ui/wxWidgets/PasswordPolicy.cpp"/>
+    <File Name="../src/ui/wxWidgets/PasswordPolicy.h"/>
+    <File Name="../src/ui/wxWidgets/ManagePwdPolicies.cpp"/>
+    <File Name="../src/ui/wxWidgets/ManagePwdPolicies.h"/>
+    <File Name="../src/ui/wxWidgets/mainManage.cpp"/>
+  </VirtualDirectory>
+  <Dependencies Name="Release">
+    <Project Name="core"/>
+    <Project Name="os"/>
+  </Dependencies>
+  <Dependencies Name="DebugE">
+    <Project Name="core"/>
+    <Project Name="os"/>
+  </Dependencies>
+  <Dependencies Name="Debug">
+    <Project Name="core"/>
+    <Project Name="os"/>
+  </Dependencies>
+  <Dependencies Name="ReleaseE">
+    <Project Name="core"/>
+    <Project Name="os"/>
+  </Dependencies>
+  <Dependencies Name="DebugX">
+    <Project Name="core"/>
+    <Project Name="os"/>
+  </Dependencies>
+  <Dependencies Name="ReleaseX">
+    <Project Name="core"/>
+    <Project Name="os"/>
+  </Dependencies>
+  <Settings Type="Executable">
+    <GlobalSettings>
+      <Compiler Options="" C_Options="">
+        <IncludePath Value="."/>
+      </Compiler>
+      <Linker Options="">
+        <LibraryPath Value="."/>
+      </Linker>
+      <ResourceCompiler Options=""/>
+    </GlobalSettings>
+    <Configuration Name="Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-Wall;$(shell wx-config --cxxflags --unicode=yes --debug=yes --inplace);-ggdb;-O0" C_Options="-Wall;$(shell wx-config --cxxflags --unicode=yes --debug=yes --inplace);-ggdb;-O0" Required="yes" PreCompiledHeader="">
+        <IncludePath Value="../src"/>
+        <Preprocessor Value="UNICODE"/>
+      </Compiler>
+      <Linker Options="$(shell wx-config --debug=yes --unicode=yes --inplace --libs)" Required="yes">
+        <LibraryPath Value="$(OutDir)"/>
+        <Library Value="core"/>
+        <Library Value="os"/>
+        <Library Value="uuid"/>
+        <Library Value="Xtst"/>
+      </Linker>
+      <ResourceCompiler Options="$(shell wx-config --rcflags)" Required="no"/>
+      <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./Debug" Command="./$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
+        <PostConnectCommands/>
+        <StartupCommands>dir ../wx/src</StartupCommands>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName>None</ThirdPartyToolName>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild>../src/ui/wxWidgets/version.h
+#dummy line to keep CodeLite from stripping the TAB from the next line
+	
+../src/ui/wxWidgets/version.h: ../src/ui/wxWidgets/version.in
+	../Misc/mkversion.pl ../src/ui/wxWidgets/version.in ../src/ui/wxWidgets/version.h</CustomPreBuild>
+      </AdditionalRules>
+    </Configuration>
+    <Configuration Name="DebugX" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-Wall;$(shell wx-config --cxxflags --unicode=yes --debug=yes --inplace);-ggdb;-O0" C_Options="-Wall;$(shell wx-config --cxxflags --unicode=yes --debug=yes --inplace);-ggdb;-O0" Required="yes" PreCompiledHeader="">
+        <IncludePath Value="../src"/>
+        <Preprocessor Value="UNICODE"/>
+        <Preprocessor Value="USE_XML_LIBRARY=XERCES"/>
+      </Compiler>
+      <Linker Options="$(shell wx-config --debug=yes --unicode=yes --inplace --libs)" Required="yes">
+        <LibraryPath Value="$(OutDir)"/>
+        <Library Value="core"/>
+        <Library Value="os"/>
+        <Library Value="uuid"/>
+        <Library Value="Xtst"/>
+        <Library Value="xerces-c"/>
+      </Linker>
+      <ResourceCompiler Options="$(shell wx-config --rcflags)" Required="no"/>
+      <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./DebugX" Command="./$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
+        <PostConnectCommands/>
+        <StartupCommands>dir ../wx/src
+dir /usr/src/gtk+2.0-2.18.3/gtk
+dir /usr/src/gtk+2.0-2.18.3/gdk
+</StartupCommands>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName>None</ThirdPartyToolName>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild>../src/ui/wxWidgets/version.h
+#dummy line to keep CodeLite from stripping the TAB from the next line
+	
+../src/ui/wxWidgets/version.h: ../src/ui/wxWidgets/version.in
+	../Misc/mkversion.pl ../src/ui/wxWidgets/version.in ../src/ui/wxWidgets/version.h</CustomPreBuild>
+      </AdditionalRules>
+    </Configuration>
+    <Configuration Name="Release" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-O;-Wall;$(shell wx-config --cxxflags --unicode=yes --debug=no --inplace)" C_Options="-O;-Wall;$(shell wx-config --cxxflags --unicode=yes --debug=no --inplace)" Required="yes" PreCompiledHeader="">
+        <IncludePath Value="../src"/>
+        <Preprocessor Value="UNICODE"/>
+      </Compiler>
+      <Linker Options="$(shell wx-config --debug=no --unicode=yes --inplace --libs)" Required="yes">
+        <LibraryPath Value="$(OutDir)"/>
+        <Library Value="core"/>
+        <Library Value="os"/>
+        <Library Value="uuid"/>
+        <Library Value="Xtst"/>
+      </Linker>
+      <ResourceCompiler Options="$(shell wx-config --rcflags)" Required="no"/>
+      <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./Release" Command="./$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
+        <PostConnectCommands/>
+        <StartupCommands/>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName>None</ThirdPartyToolName>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild>../src/ui/wxWidgets/version.h
+#dummy line to prevent CodeLite from stripping the TAB from the next line
+	
+../src/ui/wxWidgets/version.h: ../src/ui/wxWidgets/version.in
+	../Misc/mkversion.pl ../src/ui/wxWidgets/version.in ../src/ui/wxWidgets/version.h</CustomPreBuild>
+      </AdditionalRules>
+    </Configuration>
+    <Configuration Name="ReleaseX" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
+      <Compiler Options="-O;-Wall;$(shell wx-config --cxxflags --unicode=yes --debug=no --inplace);-ggdb" C_Options="-O;-Wall;$(shell wx-config --cxxflags --unicode=yes --debug=no --inplace);;-ggdb" Required="yes" PreCompiledHeader="">
+        <IncludePath Value="../src"/>
+        <Preprocessor Value="UNICODE"/>
+        <Preprocessor Value="USE_XML_LIBRARY=XERCES"/>
+        <Preprocessor Value="NDEBUG"/>
+      </Compiler>
+      <Linker Options="$(shell wx-config --debug=no --unicode=yes --inplace --libs)" Required="yes">
+        <LibraryPath Value="$(OutDir)"/>
+        <Library Value="core"/>
+        <Library Value="os"/>
+        <Library Value="uuid"/>
+        <Library Value="Xtst"/>
+        <Library Value="xerces-c"/>
+      </Linker>
+      <ResourceCompiler Options="$(shell wx-config --rcflags)" Required="no"/>
+      <General OutputFile="$(IntermediateDirectory)/$(ProjectName)" IntermediateDirectory="./ReleaseX" Command="./$(ProjectName)" CommandArguments="" UseSeparateDebugArgs="no" DebugArguments="" WorkingDirectory="$(IntermediateDirectory)" PauseExecWhenProcTerminates="yes"/>
+      <Environment EnvVarSetName="&lt;Use Defaults&gt;" DbgSetName="&lt;Use Defaults&gt;"/>
+      <Debugger IsRemote="no" RemoteHostName="" RemoteHostPort="" DebuggerPath="">
+        <PostConnectCommands/>
+        <StartupCommands>set follow-fork-mode child
+dir ../wx/src</StartupCommands>
+      </Debugger>
+      <PreBuild/>
+      <PostBuild/>
+      <CustomBuild Enabled="no">
+        <RebuildCommand/>
+        <CleanCommand/>
+        <BuildCommand/>
+        <PreprocessFileCommand/>
+        <SingleFileCommand/>
+        <MakefileGenerationCommand/>
+        <ThirdPartyToolName>None</ThirdPartyToolName>
+        <WorkingDirectory/>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild/>
+        <CustomPreBuild>../src/ui/wxWidgets/version.h
+#dummy line to prevent CodeLite from stripping the TAB from the next line
+	
+../src/ui/wxWidgets/version.h: ../src/ui/wxWidgets/version.in
+	../Misc/mkversion.pl ../src/ui/wxWidgets/version.in ../src/ui/wxWidgets/version.h
+</CustomPreBuild>
+      </AdditionalRules>
+    </Configuration>
+  </Settings>
+</CodeLite_Project>
