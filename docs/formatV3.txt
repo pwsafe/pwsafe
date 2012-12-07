@@ -464,7 +464,7 @@ set. This field is mutually exclusive with the policy name field
 the database header for password generation. This field is mutually
 exclusive with the specific policy field [0x10] and with the Own
 symbols for password field [0x16]. This was introduced in version
-0x0311 (PasswordSafe V3.28).
+0x030A (PasswordSafe V3.28).
 
 [20] An explicit end of entry field is useful for supporting new fields
 without breaking backwards compatability.
