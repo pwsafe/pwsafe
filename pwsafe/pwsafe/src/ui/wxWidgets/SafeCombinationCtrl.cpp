@@ -129,7 +129,7 @@ CSafeCombinationCtrl::~CSafeCombinationCtrl()
 
 StringX CSafeCombinationCtrl::GetCombination() const
 {
-  return textCtrl->GetValue().c_str();
+  return tostringx(textCtrl->GetValue());
 }
 
 void CSafeCombinationCtrl::SetValidatorTarget(StringX* str)
