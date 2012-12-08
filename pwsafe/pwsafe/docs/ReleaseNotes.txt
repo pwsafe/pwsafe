@@ -1,4 +1,4 @@
-Password Safe 3.29.1 Release Notes - August 2012
+Password Safe 3.30 Release Notes - December 2012
 ================================================
 
 This note describe the new features, fixed bugs and known problems
@@ -8,17 +8,17 @@ information on the product and the project, please visit
 http://passwordsafe.sourceforge.net. Details about changes to older
 releases may be found in the file ChangeLog.txt.
 
-New Features for 3.29.1
-=======================
+New Features for 3.30
+=====================
 [689] It's now possible to change the r/w state of a database when
 unlocking it. Thanks to Jeff for the suggestion.
 
-Changes to Existing Features in 3.29.1
-======================================
+Changes to Existing Features in 3.30
+====================================
 None
 
-Bugs fixed in 3.29.1
-====================
+Bugs fixed in 3.30
+==================
 [3556730] In Add/Edit dialog, clicking Apply no longer disables the OK
 button. An asterisk (*) is displayed in the title bar when the entry's
 modified and Apply's not clicked upon. Thanks to shivak7 for the fix.
