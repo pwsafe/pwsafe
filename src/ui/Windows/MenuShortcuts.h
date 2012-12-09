@@ -100,12 +100,12 @@ public:
   {return FormatShortcut(mst.cModifier, mst.siVirtKey);}
   static bool IsNormalShortcut(const st_MenuShortcut &mst)
   {return IsNormalShortcut(mst.cModifier, mst.siVirtKey);}
+  static CString FormatShortcut(unsigned short int cModifier,
+                                unsigned short int siVirtKey);
   
 private:
   static bool IsNormalShortcut(unsigned short int cModifier,
                                unsigned short int siVirtKey);  
-  static CString FormatShortcut(unsigned short int cModifier,
-                                unsigned short int siVirtKey);
   static CString CS_CTRLP, CS_ALTP, CS_SHIFTP;
 };
 

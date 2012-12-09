@@ -23,6 +23,7 @@
 #include "InfoDisplay.h"
 #include "ViewReport.h"
 #include "ExpPWListDlg.h"
+#include "MenuShortcuts.h"
 
 #include "VirtualKeyboard/VKeyBoardDlg.h"
 
@@ -4604,53 +4605,6 @@ bool DboxMain::GetShortCut(const unsigned int &uiMenuItem,
   return true;
 }
 
-CString GetKeyName(UINT vk, BOOL fExtended)
-{
-  LONG lScan = MapVirtualKey(vk, 0) << 16;
-
-  // if it's an extended key, add the extended flag
-  if (fExtended)
-    lScan |= 0x01000000L;
-
-  CString str;
-  int nBufferLen = 64;
-  int nLen;
-  do {
-    nBufferLen *= 2;
-    LPTSTR psz = str.GetBufferSetLength(nBufferLen);
-    nLen = ::GetKeyNameText(lScan, psz, nBufferLen + 1);
-    str.ReleaseBuffer(nLen);
-  }  while (nLen == nBufferLen);
-
-  return str;
-}
-
-CString GetHotKeyName(WORD wVirtualKeyCode, WORD wModifiers)
-{
-  CString strKeyName(L"");
-
-  if (wVirtualKeyCode != 0 || wModifiers != 0) {
-    if (wModifiers & HOTKEYF_CONTROL) {
-        strKeyName += GetKeyName(VK_CONTROL, FALSE);
-        strKeyName +=  L"+";
-    }
-
-    if (wModifiers & HOTKEYF_SHIFT) {
-        strKeyName += GetKeyName(VK_SHIFT, FALSE);
-        strKeyName +=  L"+";
-    }
-
-    if (wModifiers & HOTKEYF_ALT) {
-        strKeyName += GetKeyName(VK_MENU, FALSE);
-        strKeyName +=  L"+";
-    }
-
-    strKeyName += GetKeyName(wVirtualKeyCode, wModifiers & HOTKEYF_EXT);
-  }
-
-  return strKeyName;
-}
-
 StringX DboxMain::GetListViewItemText(CItemData &ci, const int &icolumn)
 {
   StringX sx_fielddata(L"");
@@ -4708,7 +4662,7 @@ StringX DboxMain::GetListViewItemText(CItemData &ci, const int &icolumn)
           sx_fielddata += _T("D");
         */
 
-        sx_fielddata = GetHotKeyName(wVirtualKeyCode, wModifiers);
+        sx_fielddata = CMenuShortcut::FormatShortcut(wModifiers, wVirtualKeyCode);
       }
       break;
     }
