@@ -376,7 +376,7 @@ msgstr "%s - Zsynchronizowano %s"
 #. Resource IDs: (363)
 #, c-format
 msgid "%s Either try to save database with another name or exit without saving."
-msgstr ""
+msgstr "%s Zapisz bazę danych używając innej nazwy lub wyjdź bez zapisu."
 
 #. Resource IDs: (363)
 #, c-format
@@ -2273,7 +2273,7 @@ msgstr "Nie udało się rozpocząć drukowania."
 
 #. Resource IDs: (344)
 msgid "Couldn't find base entry - inconsistent database"
-msgstr ""
+msgstr "Nie można znaleźć wpisu bazowego - baza danych nie jest spójna"
 
 #. Resource IDs: (332)
 msgid "Couldn't save database - Please save manually"
@@ -2994,7 +2994,7 @@ msgstr "Eksportuj &XML"
 
 #. Resource IDs: (371, 32135)
 msgid "Export Entry To"
-msgstr ""
+msgstr "Eksportuj wpis do"
 
 #. Resource IDs: (123)
 msgid "Export Text"
@@ -4521,7 +4521,7 @@ msgstr "Orija"
 
 #. Resource IDs: (1116)
 msgid "Other value last changed on:"
-msgstr ""
+msgstr "Inna wartość ostatnio zmieniona:"
 
 #. Resource IDs: (1081, 1201, 1207)
 #, fuzzy
@@ -4690,7 +4690,7 @@ msgstr "Ostatnia zmiana hasła:"
 
 #. Resource IDs: (257)
 msgid "Password length"
-msgstr ""
+msgstr "Długość hasła"
 
 msgid "Password length is less than sum of 'at least' constraints"
 msgstr "Liczba znaków w haśle jest większa niż suma ograniczeń określonych opcją 'przynajmniej'"
@@ -4739,7 +4739,7 @@ msgstr "Klawiatura fizyczna:"
 
 #. Resource IDs: (372, 32084)
 msgid "Plain Text (tab separated)..."
-msgstr ""
+msgstr "Czysty tekst (oddzielony tabulacjami)..."
 
 #. Resource IDs: (337)
 msgid "Please Choose a Backup to restore:"
@@ -6768,7 +6768,7 @@ msgstr "Pliki XML (*.xml)|*.xml||"
 
 #. Resource IDs: (372, 32085)
 msgid "XML format..."
-msgstr ""
+msgstr "Format XML..."
 
 #. Resource IDs: (358)
 msgid "YYMMDD_HHMMSS"
