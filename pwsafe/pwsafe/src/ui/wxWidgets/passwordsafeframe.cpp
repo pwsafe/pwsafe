@@ -1528,7 +1528,28 @@ void PasswordSafeFrame::UpdateAccessTime(CItemData &ci)
 
 void PasswordSafeFrame::DispatchDblClickAction(CItemData &item)
 {
-  switch (PWSprefs::GetInstance()->GetPref(PWSprefs::DoubleClickAction)) {
+  /**
+   * If entry has a double-click action, use it.
+   * (Unless the entry's a shortcut, in which case we ask the base)
+   * Otherwise, use the preference.
+   * XXX TBD - detech and support shift-doubleclick
+   */
+  
+  bool isShift = false;
+  PWSprefs::IntPrefs pref = (isShift) ?
+    PWSprefs::ShiftDoubleClickAction : PWSprefs::DoubleClickAction;
+
+  short DCA = short(PWSprefs::GetInstance()->GetPref(pref));
+  
+  CItemData *pci = item.IsShortcut() ? m_core.GetBaseEntry(&item) : &item;
+
+  short itemDCA;
+  pci->GetDCA(itemDCA, isShift);
+
+  if (itemDCA >= PWSprefs::minDCA && itemDCA <= PWSprefs::maxDCA)
+    DCA = itemDCA;
+
+  switch (DCA) {
   case PWSprefs::DoubleClickAutoType:
     DoAutotype(item);
     break;
