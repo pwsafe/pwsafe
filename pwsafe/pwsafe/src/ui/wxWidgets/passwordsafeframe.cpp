@@ -1532,10 +1532,9 @@ void PasswordSafeFrame::DispatchDblClickAction(CItemData &item)
    * If entry has a double-click action, use it.
    * (Unless the entry's a shortcut, in which case we ask the base)
    * Otherwise, use the preference.
-   * XXX TBD - detech and support shift-doubleclick
    */
   
-  bool isShift = false;
+  bool isShift = ::wxGetKeyState(WXK_SHIFT);
   PWSprefs::IntPrefs pref = (isShift) ?
     PWSprefs::ShiftDoubleClickAction : PWSprefs::DoubleClickAction;
 

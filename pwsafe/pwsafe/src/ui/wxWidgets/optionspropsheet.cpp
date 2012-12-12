@@ -134,7 +134,7 @@ enum {NO_SFX, TS_SFX, INC_SFX}; // For backup file suffix name
 // Following in enum order (see PWSprefs.h)
 const wxChar *DCAStrings[] = {
   _("Copy password to clipboard"),
-  _("View/Edit selected entry"),
+  _("Edit/View selected entry"),
   _("Autotype"),
   _("Browse to URL"),
   _("Copy notes to clipboard"),
