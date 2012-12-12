@@ -10963,7 +10963,7 @@ Action:"</string>
                   <string name="proxy-Implementation filename">""</string>
                   <string name="proxy-Header filename">""</string>
                   <string name="proxy-Member variable name">"m_DCAcomboBox"</string>
-                  <string name="proxy-Strings">"Auto Type|Browse|Browse + Auto Type|Copy Notes|Copy Password|Copy Password + Minimize|Copy Username|View/Edit Entry|Execute Run command"</string>
+                  <string name="proxy-Strings">"Auto Type|Browse|Browse + Auto Type|Copy Notes|Copy Password|Copy Password + Minimize|Copy Username|Edit/View Entry|Execute Run command"</string>
                   <string name="proxy-Initial value">""</string>
                   <string name="proxy-Help text">""</string>
                   <string name="proxy-Tooltip text">""</string>
@@ -11098,7 +11098,7 @@ Action:"</string>
                   <string name="proxy-Implementation filename">""</string>
                   <string name="proxy-Header filename">""</string>
                   <string name="proxy-Member variable name">"m_SDCAcomboBox"</string>
-                  <string name="proxy-Strings">"Auto Type|Browse|Browse + Auto Type|Copy Notes|Copy Password|Copy Password + Minimize|Copy Username|View/Edit Entry|Execute Run command"</string>
+                  <string name="proxy-Strings">"Auto Type|Browse|Browse + Auto Type|Copy Notes|Copy Password|Copy Password + Minimize|Copy Username|Edit/View Entry|Execute Run command"</string>
                   <string name="proxy-Initial value">""</string>
                   <string name="proxy-Help text">""</string>
                   <string name="proxy-Tooltip text">""</string>
@@ -18515,7 +18515,7 @@ Action:"</string>
                   <string name="proxy-Implementation filename">""</string>
                   <string name="proxy-Header filename">""</string>
                   <string name="proxy-Member variable name">"m_DCACB"</string>
-                  <string name="proxy-Strings">"Autotype|Browse to URL|Browse to URL + Autotype|Copy notes to clipboard|Copy password to clipboard|Copy password to clipboard, minimize|Copy username to clipboard|Run Command|Send email|View/Edit selected entry"</string>
+                  <string name="proxy-Strings">"Autotype|Browse to URL|Browse to URL + Autotype|Copy notes to clipboard|Copy password to clipboard|Copy password to clipboard, minimize|Copy username to clipboard|Run Command|Send email|Edit/View selected entry"</string>
                   <string name="proxy-Initial value">""</string>
                   <string name="proxy-Help text">""</string>
                   <string name="proxy-Tooltip text">""</string>

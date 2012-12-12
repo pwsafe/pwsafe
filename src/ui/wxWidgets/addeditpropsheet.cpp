@@ -384,7 +384,7 @@ void AddEditPropSheet::CreateControls()
   m_DCAcomboBoxStrings.Add(_("Copy Password"));
   m_DCAcomboBoxStrings.Add(_("Copy Password + Minimize"));
   m_DCAcomboBoxStrings.Add(_("Copy Username"));
-  m_DCAcomboBoxStrings.Add(_("View/Edit Entry"));
+  m_DCAcomboBoxStrings.Add(_("Edit/View Entry"));
   m_DCAcomboBoxStrings.Add(_("Execute Run command"));
   m_DCAcomboBox = new wxComboBox( itemPanel38, ID_COMBOBOX, wxEmptyString, wxDefaultPosition, wxDefaultSize, m_DCAcomboBoxStrings, wxCB_READONLY );
   itemFlexGridSizer40->Add(m_DCAcomboBox, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
@@ -400,7 +400,7 @@ void AddEditPropSheet::CreateControls()
   m_SDCAcomboBoxStrings.Add(_("Copy Password"));
   m_SDCAcomboBoxStrings.Add(_("Copy Password + Minimize"));
   m_SDCAcomboBoxStrings.Add(_("Copy Username"));
-  m_SDCAcomboBoxStrings.Add(_("View/Edit Entry"));
+  m_SDCAcomboBoxStrings.Add(_("Edit/View Entry"));
   m_SDCAcomboBoxStrings.Add(_("Execute Run command"));
   m_SDCAcomboBox = new wxComboBox( itemPanel38, ID_COMBOBOX2, wxEmptyString, wxDefaultPosition, wxDefaultSize, m_SDCAcomboBoxStrings, wxCB_READONLY );
   itemFlexGridSizer40->Add(m_SDCAcomboBox, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
@@ -809,7 +809,7 @@ static struct {short pv; wxString name;}
     {PWSprefs::DoubleClickCopyPassword, _("Copy Password")},
     {PWSprefs::DoubleClickCopyPasswordMinimize, _("Copy Password + Minimize")},
     {PWSprefs::DoubleClickCopyUsername, _("Copy Username")},
-    {PWSprefs::DoubleClickViewEdit, _("View/Edit Entry")},
+    {PWSprefs::DoubleClickViewEdit, _("Edit/View Entry")},
     {PWSprefs::DoubleClickRun, _("Execute Run command")},
    };
 
@@ -905,6 +905,8 @@ void AddEditPropSheet::ItemFieldsToPropSheet()
   m_runcmd = m_item.GetRunCommand().c_str();
 
   // double-click actions:
+  m_item.GetDCA(m_DCA, false);
+  m_item.GetDCA(m_ShiftDCA, true);
   SetupDCAComboBoxes(m_DCAcomboBox, m_DCA, false);
   SetupDCAComboBoxes(m_SDCAcomboBox, m_ShiftDCA, true);
 
@@ -1325,6 +1327,7 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
       m_item.SetAutoType(tostringx(m_autotype));
       m_item.SetRunCommand(tostringx(m_runcmd));
       m_item.SetDCA(m_DCA);
+      m_item.SetShiftDCA(m_ShiftDCA);
       time(&t);
       m_item.SetCTime(t);
       if (m_keepPWHist)
