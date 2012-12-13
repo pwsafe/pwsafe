@@ -1132,19 +1132,17 @@ void AddEditPropSheet::HidePassword()
   m_Password2Ctrl->Enable(true);
 }
 
-static short GetSelectedDCA(wxComboBox *pcbox, short defval)
+static void GetSelectedDCA(const wxComboBox *pcbox, short &val,
+                           short lastval, short defval)
 {
   int sel = pcbox->GetSelection();
-  intptr_t retval = -1;
-  if (sel == wxNOT_FOUND) { // no selection - is this possible with our combobox?
-    goto done;
+  intptr_t ival = -1;
+  if (sel == wxNOT_FOUND) { // no selection
+    val = (lastval == defval) ? -1 : lastval;
   } else {
-    retval = reinterpret_cast<intptr_t>(pcbox->GetClientData(sel));
+    ival = reinterpret_cast<intptr_t>(pcbox->GetClientData(sel));
+    val = (ival == defval) ? -1 : ival;
   }
-  if (retval == defval)
-    retval = -1;
- done:
-  return retval;
 }
 
 void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
@@ -1180,14 +1178,14 @@ void AddEditPropSheet::OnOk(wxCommandEvent& /* evt */)
     case EDIT: {
       bool bIsModified, bIsPSWDModified;
       short lastDCA, lastShiftDCA;
+      const PWSprefs *prefs = PWSprefs::GetInstance();
       m_item.GetDCA(lastDCA);
-      m_DCA = GetSelectedDCA(m_DCAcomboBox,
-			     short(PWSprefs::GetInstance()->GetPref(PWSprefs::DoubleClickAction)));
+      GetSelectedDCA(m_DCAcomboBox, m_DCA, lastDCA,
+                     short(prefs->GetPref(PWSprefs::DoubleClickAction)));
       
       m_item.GetShiftDCA(lastShiftDCA);
-      m_ShiftDCA = GetSelectedDCA(m_SDCAcomboBox,
-			     short(PWSprefs::GetInstance()->GetPref(PWSprefs::ShiftDoubleClickAction)));
-
+      GetSelectedDCA(m_SDCAcomboBox, m_ShiftDCA, lastShiftDCA,
+                     short(prefs->GetPref(PWSprefs::ShiftDoubleClickAction)));
       // Check if modified
       int lastXTimeInt;
       m_item.GetXTimeInt(lastXTimeInt);
