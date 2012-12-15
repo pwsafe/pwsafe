@@ -106,6 +106,7 @@ public:
   void SelectItem(const pws_os::CUUID& uuid);
   void SortChildrenRecursively(const wxTreeItemId& item);
   wxString GetItemGroup(const wxTreeItemId& item) const;
+  bool ItemIsGroup(const wxTreeItemId& item) const ;
 
  private:
   //overriden from base for case-insensitive sort

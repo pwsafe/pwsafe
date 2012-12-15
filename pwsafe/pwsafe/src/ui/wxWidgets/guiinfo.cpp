@@ -43,12 +43,12 @@ void GUIInfo::SaveTreeViewInfo(PWSTreeCtrl* tree)
 {
   //save the first visible item
   wxTreeItemId treeItem = tree->GetFirstVisibleItem();
-  if (treeItem.IsOk()) {
+  if (treeItem.IsOk() && treeItem != tree->GetRootItem()) {
     CItemData* item = tree->GetItem(treeItem);
     if (item) {
       m_treeTop = item->GetUUID();
     }
-    else if (tree->ItemHasChildren(treeItem)) {
+    else if (tree->ItemIsGroup(treeItem)) {
       m_treeTop = tree->GetItemText(treeItem);
     }
     else {
@@ -84,7 +84,7 @@ void GUIInfo::SaveTreeViewInfo(PWSTreeCtrl* tree)
   //save the selected item
   wxTreeItemId selection = tree->GetSelection();
   if (selection.IsOk() && selection != tree->GetRootItem()) {
-    if(tree->HasChildren(selection)) {
+    if(tree->ItemIsGroup(selection)) {
       m_treeSelection = tree->GetItemText(selection);
       const wxString selectionStr = m_treeSelection;
       wxASSERT(!selectionStr.IsEmpty());
@@ -167,7 +167,7 @@ void VisitGroupItems(PWSTreeCtrl* tree, const Predicate& pred, TreeFunc func, bo
   const wxTreeItemId root = tree->GetRootItem();
   if (root.IsOk()) {
     for ( wxTreeItemId id = tree->GetFirstChild(root, dummy); id.IsOk(); ) {
-      if (tree->ItemHasChildren(id)) {
+      if (tree->ItemIsGroup(id)) {
         if (pred(tree->GetItemText(id))) {
           func(tree, id); 
           if (!visitAll)
