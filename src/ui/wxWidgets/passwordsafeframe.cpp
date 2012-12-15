@@ -468,6 +468,9 @@ void PasswordSafeFrame::CreateControls()
   m_tree = new PWSTreeCtrl( itemFrame1, m_core, ID_TREECTRL, wxDefaultPosition,
                             wxDefaultSize,
                             wxTR_EDIT_LABELS|wxTR_HAS_BUTTONS |wxTR_HIDE_ROOT|wxTR_SINGLE );
+  // let the tree ctrl handle ID_ADDGROUP all by itself
+  Connect(ID_ADDGROUP, wxEVT_COMMAND_MENU_SELECTED, 
+                       wxCommandEventHandler(PWSTreeCtrl::OnAddGroup), NULL, m_tree);
   itemBoxSizer83->Add(m_tree, wxSizerFlags().Expand().Border(0).Proportion(1));
   itemBoxSizer83->Layout();
 
