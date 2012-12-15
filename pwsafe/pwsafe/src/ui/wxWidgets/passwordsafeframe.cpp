@@ -665,6 +665,13 @@ void PasswordSafeFrame::ShowTree(bool show)
          iter++) {
       m_tree->AddItem(iter->second);
     }
+
+    // Empty groups need to be added separately
+    typedef std::vector<StringX> StringVectorX;
+    const StringVectorX& emptyGroups = m_core.GetEmptyGroups();
+    for (StringVectorX::const_iterator itr = emptyGroups.begin(); itr != emptyGroups.end(); ++itr)
+      m_tree->AddEmptyGroup(*itr);
+
     if (!m_tree->IsEmpty()) // avoid assertion!
       m_tree->SortChildrenRecursively(m_tree->GetRootItem());
   }
