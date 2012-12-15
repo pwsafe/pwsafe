@@ -188,6 +188,12 @@ void PWSTreeCtrl::CreateControls()
   AssignImageList(iList);
 }
 
+bool PWSTreeCtrl::ItemIsGroup(const wxTreeItemId& item) const
+{
+  int image = GetItemImage(item);
+  return image == NODE_II || GetRootItem() == item;
+}
+
 // XXX taken from Windows PWSTreeCtrl.cpp
 // XXX move to core
 static StringX GetPathElem(StringX &sxPath)
@@ -308,7 +314,7 @@ wxString PWSTreeCtrl::GetItemGroup(const wxTreeItemId& item) const
 {
   if (!item.IsOk() || item == GetRootItem())
     return wxEmptyString;
-  else if (ItemHasChildren(item)) {
+  else if (ItemIsGroup(item)) {
     const wxString path = GetPath(item);
     const wxString name = GetItemText(item);
     if (path.IsEmpty())//parent is root
@@ -397,8 +403,8 @@ CItemData *PWSTreeCtrl::GetItem(const wxTreeItemId &id) const
 int PWSTreeCtrl::OnCompareItems(const wxTreeItemId& item1, const wxTreeItemId& item2)
 {
   const bool groupsFirst = PWSprefs::GetInstance()->GetPref(PWSprefs::ExplorerTypeTree),
-             item1isGroup = ItemHasChildren(item1),
-             item2isGroup = ItemHasChildren(item2);
+             item1isGroup = ItemIsGroup(item1),
+             item2isGroup = ItemIsGroup(item2);
 
   if (groupsFirst) {
     if (item1isGroup && !item2isGroup)
@@ -414,11 +420,14 @@ int PWSTreeCtrl::OnCompareItems(const wxTreeItemId& item1, const wxTreeItemId& i
 
 void PWSTreeCtrl::SortChildrenRecursively(const wxTreeItemId& item)
 {
+  if (!ItemIsGroup(item) || GetChildrenCount(item) <= 0)
+    return;
+  
   SortChildren(item);
   
   wxTreeItemIdValue cookie;
   for( wxTreeItemId childId = GetFirstChild(item, cookie); childId.IsOk(); childId = GetNextChild(item, cookie)) {
-    if (ItemHasChildren(childId)) {
+    if (ItemIsGroup(childId) && GetChildrenCount(childId) > 0) { //logically redundant, but probably more efficient
       SortChildrenRecursively(childId);
     }
   }
@@ -491,7 +500,7 @@ void PWSTreeCtrl::SetItemImage(const wxTreeItemId &node,
 void PWSTreeCtrl::OnTreectrlItemActivated( wxTreeEvent& evt )
 {
   const wxTreeItemId item = evt.GetItem();
-  if (ItemHasChildren(item) && GetChildrenCount(item) > 0){
+  if (ItemIsGroup(item) && GetChildrenCount(item) > 0){
     if (IsExpanded(item))
       Collapse(item);
     else {
