@@ -62,57 +62,31 @@ EVT_BUTTON( wxID_OK, COptions::OnOk )
 
 ////@begin COptions event table entries
   EVT_CHECKBOX( ID_CHECKBOX11, COptions::OnBackupB4SaveClick )
-
   EVT_RADIOBUTTON( ID_RADIOBUTTON4, COptions::OnBuPrefix )
-
   EVT_RADIOBUTTON( ID_RADIOBUTTON5, COptions::OnBuPrefix )
-
   EVT_COMBOBOX( ID_COMBOBOX2, COptions::OnSuffixCBSet )
-
   EVT_RADIOBUTTON( ID_RADIOBUTTON6, COptions::OnBuDirRB )
-
   EVT_RADIOBUTTON( ID_RADIOBUTTON7, COptions::OnBuDirRB )
-
   EVT_BUTTON( ID_BUTTON, COptions::OnBuDirBrowseClick )
-
   EVT_CHECKBOX( ID_CHECKBOX13, COptions::OnShowUsernameInTreeCB )
-
   EVT_CHECKBOX( ID_CHECKBOX19, COptions::OnPreExpiryWarnClick )
-
   EVT_CHECKBOX( ID_CHECKBOX24, COptions::OnUseDefaultUserClick )
-
   EVT_BUTTON( ID_BUTTON8, COptions::OnBrowseLocationClick )
-
   EVT_CHECKBOX( ID_CHECKBOX3, COptions::OnPwPolUseClick )
-
   EVT_CHECKBOX( ID_CHECKBOX4, COptions::OnPwPolUseClick )
-
   EVT_CHECKBOX( ID_CHECKBOX5, COptions::OnPwPolUseClick )
-
   EVT_CHECKBOX( ID_CHECKBOX6, COptions::OnPwPolUseClick )
-
   EVT_CHECKBOX( ID_CHECKBOX7, COptions::OnPwPolUseClick )
-
   EVT_CHECKBOX( ID_CHECKBOX8, COptions::OnPwPolUseClick )
-
   EVT_CHECKBOX( ID_CHECKBOX9, COptions::OnPwPolUseClick )
-
   EVT_CHECKBOX( ID_CHECKBOX26, COptions::OnPWHistSaveClick )
-
   EVT_RADIOBUTTON( ID_PWHISTNOCHANGE, COptions::OnPWHistRB )
-
   EVT_RADIOBUTTON( ID_PWHISTSTOP, COptions::OnPWHistRB )
-
   EVT_RADIOBUTTON( ID_PWHISTSTART, COptions::OnPWHistRB )
-
   EVT_RADIOBUTTON( ID_PWHISTSETMAX, COptions::OnPWHistRB )
-
   EVT_BUTTON( ID_PWHISTNOCHANGE, COptions::OnPWHistApply )
-
   EVT_CHECKBOX( ID_CHECKBOX29, COptions::OnLockOnIdleClick )
-
   EVT_CHECKBOX( ID_CHECKBOX30, COptions::OnUseSystrayClick )
-
 ////@end COptions event table entries
 
   EVT_BOOKCTRL_PAGE_CHANGING(wxID_ANY, COptions::OnPageChanging)
@@ -722,7 +696,7 @@ void COptions::CreateControls()
   itemBoxSizer126->Add(itemCheckBox141, 0, wxALIGN_LEFT|wxALL, 5);
 
 #if defined(__X__) || defined(__WXGTK__)
-  wxCheckBox* itemCheckBox142 = new wxCheckBox( itemPanel125, ID_CHECKBOX35, _("Use Primary Selection for clipboard"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxCheckBox* itemCheckBox142 = new wxCheckBox( itemPanel125, ID_CHECKBOX39, _("Use Primary Selection for clipboard"), wxDefaultPosition, wxDefaultSize, 0 );
   itemCheckBox142->SetValue(false);
   itemBoxSizer126->Add(itemCheckBox142, 0, wxALIGN_LEFT|wxALL, 5);
 #endif

@@ -33,8 +33,8 @@
 class wxSpinCtrl;
 class wxGridSizer;
 class wxBoxSizer;
-class wxBookCtrlEvent;
 ////@end forward declarations
+class wxBookCtrlEvent;
 
 /*!
  * Control identifiers
@@ -115,9 +115,7 @@ class wxBookCtrlEvent;
 #define ID_CHECKBOX32 10185
 #define ID_CHECKBOX33 10186
 #define ID_CHECKBOX34 10005
-#if defined(__X__) || defined(__WXGTK__)
-#define ID_CHECKBOX35 10006
-#endif
+#define ID_CHECKBOX39 10010
 #define ID_PANEL7 10138
 #define ID_GRID1 10187
 #if WXWIN_COMPATIBILITY_2_6
@@ -208,68 +206,45 @@ public:
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX30
   void OnUseSystrayClick( wxCommandEvent& evt );
 
+////@end COptions event handler declarations
+
   /// wxEVT_COMMAND_BOOKCTRL_PAGE_CHANGING event handler for all pages (wxID_ANY)
   void OnPageChanging(wxBookCtrlEvent& evt);
 
   void OnAtLeastChars(wxSpinEvent& evt);
 
-////@end COptions event handler declarations
 
 ////@begin COptions member function declarations
-
-  bool GetSaveimmediate() const { return m_saveimmediate ; }
-  void SetSaveimmediate(bool value) { m_saveimmediate = value ; }
-
-  bool GetBackupb4save() const { return m_backupb4save ; }
-  void SetBackupb4save(bool value) { m_backupb4save = value ; }
 
   bool GetAlwaysontop() const { return m_alwaysontop ; }
   void SetAlwaysontop(bool value) { m_alwaysontop = value ; }
 
-  bool GetShowusernameintree() const { return m_showusernameintree ; }
-  void SetShowusernameintree(bool value) { m_showusernameintree = value ; }
+  wxString GetAutotypeStr() const { return m_autotypeStr ; }
+  void SetAutotypeStr(wxString value) { m_autotypeStr = value ; }
 
-  bool GetShownotesastipsinviews() const { return m_shownotesastipsinviews ; }
-  void SetShownotesastipsinviews(bool value) { m_shownotesastipsinviews = value ; }
-
-  bool GetPwshowinedit() const { return m_pwshowinedit ; }
-  void SetPwshowinedit(bool value) { m_pwshowinedit = value ; }
-
-  bool GetWordwrapnotes() const { return m_wordwrapnotes ; }
-  void SetWordwrapnotes(bool value) { m_wordwrapnotes = value ; }
-
-  int GetInittreeview() const { return m_inittreeview ; }
-  void SetInittreeview(int value) { m_inittreeview = value ; }
-
-  bool GetPreexpirywarn() const { return m_preexpirywarn ; }
-  void SetPreexpirywarn(bool value) { m_preexpirywarn = value ; }
-
-  bool GetNotesshowinedit() const { return m_notesshowinedit ; }
-  void SetNotesshowinedit(bool value) { m_notesshowinedit = value ; }
+  bool GetBackupb4save() const { return m_backupb4save ; }
+  void SetBackupb4save(bool value) { m_backupb4save = value ; }
 
   bool GetConfirmdelete() const { return m_confirmdelete ; }
   void SetConfirmdelete(bool value) { m_confirmdelete = value ; }
 
-  bool GetMaintaindatetimestamps() const { return m_maintaindatetimestamps ; }
-  void SetMaintaindatetimestamps(bool value) { m_maintaindatetimestamps = value ; }
+  int GetDoubleclickaction() const { return m_doubleclickaction ; }
+  void SetDoubleclickaction(int value) { m_doubleclickaction = value ; }
 
   bool GetEscexits() const { return m_escexits ; }
   void SetEscexits(bool value) { m_escexits = value ; }
 
-  int GetDoubleclickaction() const { return m_doubleclickaction ; }
-  void SetDoubleclickaction(int value) { m_doubleclickaction = value ; }
+  int GetInittreeview() const { return m_inittreeview ; }
+  void SetInittreeview(int value) { m_inittreeview = value ; }
+
+  bool GetMaintaindatetimestamps() const { return m_maintaindatetimestamps ; }
+  void SetMaintaindatetimestamps(bool value) { m_maintaindatetimestamps = value ; }
 
   bool GetMinauto() const { return m_minauto ; }
   void SetMinauto(bool value) { m_minauto = value ; }
 
-  wxString GetAutotypeStr() const { return m_autotypeStr ; }
-  void SetAutotypeStr(wxString value) { m_autotypeStr = value ; }
-
-  bool GetUsedefuser() const { return m_usedefuser ; }
-  void SetUsedefuser(bool value) { m_usedefuser = value ; }
-
-  bool GetQuerysetdef() const { return m_querysetdef ; }
-  void SetQuerysetdef(bool value) { m_querysetdef = value ; }
+  bool GetNotesshowinedit() const { return m_notesshowinedit ; }
+  void SetNotesshowinedit(bool value) { m_notesshowinedit = value ; }
 
   wxString GetOtherbrowser() const { return m_otherbrowser ; }
   void SetOtherbrowser(wxString value) { m_otherbrowser = value ; }
@@ -277,26 +252,47 @@ public:
   wxString GetOtherbrowserparams() const { return m_otherbrowserparams ; }
   void SetOtherbrowserparams(wxString value) { m_otherbrowserparams = value ; }
 
+  bool GetPreexpirywarn() const { return m_preexpirywarn ; }
+  void SetPreexpirywarn(bool value) { m_preexpirywarn = value ; }
+
+  bool GetPutgroups1st() const { return m_putgroups1st ; }
+  void SetPutgroups1st(bool value) { m_putgroups1st = value ; }
+
   int GetPwdefaultlength() const { return m_pwdefaultlength ; }
   void SetPwdefaultlength(int value) { m_pwdefaultlength = value ; }
 
-  bool GetSecclrclponmin() const { return m_secclrclponmin ; }
-  void SetSecclrclponmin(bool value) { m_secclrclponmin = value ; }
+  bool GetPwshowinedit() const { return m_pwshowinedit ; }
+  void SetPwshowinedit(bool value) { m_pwshowinedit = value ; }
+
+  bool GetQuerysetdef() const { return m_querysetdef ; }
+  void SetQuerysetdef(bool value) { m_querysetdef = value ; }
+
+  bool GetSaveimmediate() const { return m_saveimmediate ; }
+  void SetSaveimmediate(bool value) { m_saveimmediate = value ; }
 
   bool GetSecclrclponexit() const { return m_secclrclponexit ; }
   void SetSecclrclponexit(bool value) { m_secclrclponexit = value ; }
 
-  bool GetSeclockonmin() const { return m_seclockonmin ; }
-  void SetSeclockonmin(bool value) { m_seclockonmin = value ; }
+  bool GetSecclrclponmin() const { return m_secclrclponmin ; }
+  void SetSecclrclponmin(bool value) { m_secclrclponmin = value ; }
 
   bool GetSecconfrmcpy() const { return m_secconfrmcpy ; }
   void SetSecconfrmcpy(bool value) { m_secconfrmcpy = value ; }
 
+  bool GetSeclockonmin() const { return m_seclockonmin ; }
+  void SetSeclockonmin(bool value) { m_seclockonmin = value ; }
+
   bool GetSeclockonwinlock() const { return m_seclockonwinlock ; }
   void SetSeclockonwinlock(bool value) { m_seclockonwinlock = value ; }
 
-  bool GetSysstartup() const { return m_sysstartup ; }
-  void SetSysstartup(bool value) { m_sysstartup = value ; }
+  bool GetShownotesastipsinviews() const { return m_shownotesastipsinviews ; }
+  void SetShownotesastipsinviews(bool value) { m_shownotesastipsinviews = value ; }
+
+  bool GetShowusernameintree() const { return m_showusernameintree ; }
+  void SetShowusernameintree(bool value) { m_showusernameintree = value ; }
+
+  bool GetSysdefopenro() const { return m_sysdefopenro ; }
+  void SetSysdefopenro(bool value) { m_sysdefopenro = value ; }
 
   int GetSysmaxmru() const { return m_sysmaxmru ; }
   void SetSysmaxmru(int value) { m_sysmaxmru = value ; }
@@ -304,14 +300,17 @@ public:
   bool GetSysmruonfilemenu() const { return m_sysmruonfilemenu ; }
   void SetSysmruonfilemenu(bool value) { m_sysmruonfilemenu = value ; }
 
-  bool GetSysdefopenro() const { return m_sysdefopenro ; }
-  void SetSysdefopenro(bool value) { m_sysdefopenro = value ; }
-
   bool GetSysmultinst() const { return m_sysmultinst ; }
   void SetSysmultinst(bool value) { m_sysmultinst = value ; }
 
-  bool GetPutgroups1st() const { return m_putgroups1st ; }
-  void SetPutgroups1st(bool value) { m_putgroups1st = value ; }
+  bool GetSysstartup() const { return m_sysstartup ; }
+  void SetSysstartup(bool value) { m_sysstartup = value ; }
+
+  bool GetUsedefuser() const { return m_usedefuser ; }
+  void SetUsedefuser(bool value) { m_usedefuser = value ; }
+
+  bool GetWordwrapnotes() const { return m_wordwrapnotes ; }
+  void SetWordwrapnotes(bool value) { m_wordwrapnotes = value ; }
 
   /// Retrieves bitmap resources
   wxBitmap GetBitmapResource( const wxString& name );
@@ -365,41 +364,41 @@ public:
   wxSpinCtrl* m_sysmaxREitemsSB;
   wxString m_otherbrowserparams;
 private:
-  bool m_saveimmediate;
-  bool m_backupb4save;
   bool m_alwaysontop;
-  bool m_showusernameintree;
-  bool m_shownotesastipsinviews;
-  bool m_pwshowinedit;
-  bool m_wordwrapnotes;
-  int m_inittreeview;
-  bool m_preexpirywarn;
-  bool m_notesshowinedit;
-  bool m_confirmdelete;
-  bool m_maintaindatetimestamps;
-  bool m_escexits;
-  int m_doubleclickaction;
-  bool m_minauto;
   wxString m_autotypeStr;
-  bool m_usedefuser;
-  bool m_querysetdef;
+  bool m_backupb4save;
+  bool m_confirmdelete;
+  int m_doubleclickaction;
+  bool m_escexits;
+  int m_inittreeview;
+  bool m_maintaindatetimestamps;
+  bool m_minauto;
+  bool m_notesshowinedit;
   wxString m_otherbrowser;
+  bool m_preexpirywarn;
+  bool m_putgroups1st;
   int m_pwdefaultlength;
-  bool m_secclrclponmin;
+  bool m_pwshowinedit;
+  bool m_querysetdef;
+  bool m_saveimmediate;
   bool m_secclrclponexit;
-  bool m_seclockonmin;
+  bool m_secclrclponmin;
   bool m_secconfrmcpy;
+  bool m_seclockonmin;
   bool m_seclockonwinlock;
-  bool m_sysstartup;
+  bool m_shownotesastipsinviews;
+  bool m_showusernameintree;
+  bool m_sysdefopenro;
   int m_sysmaxmru;
   bool m_sysmruonfilemenu;
-  bool m_sysdefopenro;
   bool m_sysmultinst;
-  bool m_putgroups1st;
+  bool m_sysstartup;
+  bool m_usedefuser;
+  bool m_wordwrapnotes;
+////@end COptions member variables
 #if defined(__X__) || defined(__WXGTK__)
   bool m_usePrimarySelection;
 #endif
-////@end COptions member variables
  private:
   void PrefsToPropSheet();
   void PropSheetToPrefs();
