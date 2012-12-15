@@ -92,6 +92,11 @@ public:
   //converted to an event by frame
   void OnDBGUIPrefsChange(wxEvent& evt);
 
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_ADDGROUP
+  void OnAddGroup(wxCommandEvent& evt);
+
+  void OnEndLabelEdit( wxTreeEvent& evt );
+
 ////@begin PWSTreeCtrl member function declarations
 
 ////@end PWSTreeCtrl member function declarations

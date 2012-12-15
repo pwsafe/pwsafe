@@ -29,6 +29,7 @@
 #include "PWStree.h"
 #include "passwordsafeframe.h" // for DispatchDblClickAction()
 #include "core/PWSprefs.h"
+#include "../../core/Command.h"
 
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
@@ -74,6 +75,11 @@ enum {
   SHORTCUT_II,     // 11
 };
 
+// We use/need this ID to re-post to AddPendingEvent the wxTreeEvent from END_LABEL notification.
+// We need to re-post as we cannot touch the wxTreeCtrl at all in the actual notification. So we have
+// to let that stack unwind.
+enum {ID_TREECTRL_1 = ID_TREECTRL + 1 };
+
 /*!
  * PWSTreeCtrl event table definition
  */
@@ -86,6 +92,9 @@ BEGIN_EVENT_TABLE( PWSTreeCtrl, wxTreeCtrl )
   EVT_CHAR( PWSTreeCtrl::OnChar )
   EVT_CUSTOM(wxEVT_GUI_DB_PREFS_CHANGE, wxID_ANY, PWSTreeCtrl::OnDBGUIPrefsChange)
   EVT_TREE_ITEM_GETTOOLTIP( ID_TREECTRL, PWSTreeCtrl::OnGetToolTip )
+  EVT_MENU( ID_ADDGROUP, PWSTreeCtrl::OnAddGroup )
+  EVT_TREE_END_LABEL_EDIT( ID_TREECTRL, PWSTreeCtrl::OnEndLabelEdit )
+  EVT_TREE_END_LABEL_EDIT( ID_TREECTRL_1, PWSTreeCtrl::OnEndLabelEdit )
 ////@end PWSTreeCtrl event table entries
 END_EVENT_TABLE()
 
@@ -571,4 +580,63 @@ void PWSTreeCtrl::OnDBGUIPrefsChange(wxEvent& evt)
   wxASSERT(pwsframe != NULL);
   if (pwsframe->IsTreeView())
     pwsframe->RefreshViews();
+}
+
+void PWSTreeCtrl::OnAddGroup(wxCommandEvent& /*evt*/)
+{
+  wxCHECK_RET(IsShown(), wxT("Group can only be added while in tree view"));
+  wxTreeItemId parentId = GetSelection();
+  wxString newItemPath = (!parentId || parentId == GetRootItem())? wxT("New Group"): GetItemGroup(parentId)+wxT(".New Group");
+  wxTreeItemId newItem = AddGroup(tostringx(newItemPath));
+  wxCHECK_RET(newItem.IsOk(), wxT("Could not add empty group item to tree"));
+  ::wxYield();
+  EnsureVisible(newItem);
+  ::wxYield();
+  EditLabel(newItem);
+}
+
+void PWSTreeCtrl::OnEndLabelEdit( wxTreeEvent& evt )
+{
+  switch (evt.GetId()) {
+    case ID_TREECTRL:
+    {
+      // Not safe to modify the tree ctrl in any way.  Wait for the stack to unwind.
+      wxTreeEvent newEvt(evt);
+      newEvt.SetId(ID_TREECTRL_1);
+      AddPendingEvent(newEvt);
+      break;
+    }
+    case ID_TREECTRL_1:
+    {
+      wxTreeItemId groupItem = evt.GetItem();
+      if (evt.IsEditCancelled()) {
+        if (GetItemData(groupItem) == NULL) {
+          // new item, not yet in db.  Or may be we could check in m_item_map
+          Delete(groupItem);
+        }
+      }
+      else {
+        wxString groupName = evt.GetLabel();
+        for (wxTreeItemId parent = GetItemParent(groupItem);
+                          parent != GetRootItem(); parent = GetItemParent(parent)) {
+          groupName = GetItemText(parent) + wxT(".") + groupName;
+        }
+        StringX sxGroup = tostringx(groupName);
+        DBEmptyGroupsCommand* cmd = DBEmptyGroupsCommand::Create(&m_core,
+                                                                 sxGroup,
+                                                                 DBEmptyGroupsCommand::EG_ADD);
+        if (cmd)
+          m_core.Execute(cmd);
+        
+        // What we just added will get removed once the update GUI callback from core happens.
+        // A new item will be inserted instead, which will have a different wxTreeItemId.
+        // Just rememember the path and select it once everything is done.  Also sort the 
+        // sub-tree correctly.      
+      }
+      break;
+    }
+    default:
+      wxFAIL_MSG(wxString::Format(wxT("End Label Edit handler received an unexpected identifier: %d"), evt.GetId()));
+      break;
+  }
 }
