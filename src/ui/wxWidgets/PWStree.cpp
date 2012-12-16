@@ -592,7 +592,9 @@ void PWSTreeCtrl::OnAddGroup(wxCommandEvent& /*evt*/)
   ::wxYield();
   EnsureVisible(newItem);
   ::wxYield();
-  EditLabel(newItem);
+  wxTextCtrl* edit = EditLabel(newItem);
+  if (edit)
+    edit->SelectAll();
 }
 
 void PWSTreeCtrl::OnEndLabelEdit( wxTreeEvent& evt )
