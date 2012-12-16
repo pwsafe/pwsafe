@@ -633,22 +633,26 @@ void PWSTreeCtrl::OnEndLabelEdit( wxTreeEvent& evt )
         }
       }
       else {
+        // Can't call GetItemGroup here since the item doesn't actually have the new label
         wxString groupName = evt.GetLabel();
         for (wxTreeItemId parent = GetItemParent(groupItem);
                           parent != GetRootItem(); parent = GetItemParent(parent)) {
           groupName = GetItemText(parent) + wxT(".") + groupName;
         }
         StringX sxGroup = tostringx(groupName);
+
+        // The new item we just added above will get removed once the update GUI callback from core happens.
         DBEmptyGroupsCommand* cmd = DBEmptyGroupsCommand::Create(&m_core,
                                                                  sxGroup,
                                                                  DBEmptyGroupsCommand::EG_ADD);
         if (cmd)
           m_core.Execute(cmd);
         
-        // What we just added will get removed once the update GUI callback from core happens.
-        // A new item will be inserted instead, which will have a different wxTreeItemId.
-        // Just rememember the path and select it once everything is done.  Also sort the 
-        // sub-tree correctly.      
+        // evt.GetItem() is not valid anymore.  A new item has been inserted instead.
+        // We can select it using the full path we computed earlier
+        wxTreeItemId newItem = Find(groupName, GetRootItem());
+        if (newItem.IsOk())
+          wxTreeCtrl::SelectItem(newItem);
       }
       break;
     }
