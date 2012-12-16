@@ -39,6 +39,18 @@ void GUIInfo::Restore(PasswordSafeFrame* frame)
   RestoreGridViewInfo(frame->m_grid);
 }
 
+void CollectExpandedNodes(PWSTreeCtrl* tree, wxTreeItemId root, wxArrayString& expanded)
+{
+  wxTreeItemIdValue cookie;
+  for( wxTreeItemId id = tree->GetFirstChild(root, cookie); id.IsOk(); id = tree->GetNextChild(root, cookie))
+  {
+    if (tree->ItemHasChildren(id) && tree->IsExpanded(id)) {
+      expanded.Add(tree->GetItemGroup(id));
+      CollectExpandedNodes(tree, id, expanded);
+    }
+  }
+}
+      
 void GUIInfo::SaveTreeViewInfo(PWSTreeCtrl* tree)
 {
   //save the first visible item
@@ -49,7 +61,7 @@ void GUIInfo::SaveTreeViewInfo(PWSTreeCtrl* tree)
       m_treeTop = item->GetUUID();
     }
     else if (tree->ItemIsGroup(treeItem)) {
-      m_treeTop = tree->GetItemText(treeItem);
+      m_treeTop = tree->GetItemGroup(treeItem);
     }
     else {
       m_treeTop.Clear();
@@ -63,29 +75,13 @@ void GUIInfo::SaveTreeViewInfo(PWSTreeCtrl* tree)
   m_expanded.Empty();
 
   //find out all the expanded groups in a depth-first manner
-  wxTreeItemIdValue dummy;
-  const wxTreeItemId root = tree->GetRootItem();
-  if (root.IsOk()) {
-    for ( wxTreeItemId id = tree->GetFirstChild(root, dummy); id.IsOk(); ) {
-      if (tree->ItemHasChildren(id) && tree->IsExpanded(id)) {
-        m_expanded.Add(tree->GetItemText(id));
-        id = tree->GetFirstChild(id, dummy);
-      }
-      else {
-        wxTreeItemId parent = tree->GetItemParent(id);
-        for (id = tree->GetNextSibling(id); !id.IsOk() && parent != root; 
-                   id = tree->GetNextSibling(parent), parent = tree->GetItemParent(parent))
-        {
-        }
-      }
-    }
-  }
-
+  CollectExpandedNodes(tree, tree->GetRootItem(), m_expanded);
+ 
   //save the selected item
   wxTreeItemId selection = tree->GetSelection();
   if (selection.IsOk() && selection != tree->GetRootItem()) {
     if(tree->ItemIsGroup(selection)) {
-      m_treeSelection = tree->GetItemText(selection);
+      m_treeSelection = tree->GetItemGroup(selection);
       const wxString selectionStr = m_treeSelection;
       wxASSERT(!selectionStr.IsEmpty());
     }
@@ -160,44 +156,22 @@ void GUIInfo::RestoreGridViewInfo(PWSGrid* grid)
   }
 }
 
-template <class TreeFunc, class Predicate>
-void VisitGroupItems(PWSTreeCtrl* tree, const Predicate& pred, TreeFunc func, bool visitAll)
-{
-  wxTreeItemIdValue dummy;
-  const wxTreeItemId root = tree->GetRootItem();
-  if (root.IsOk()) {
-    for ( wxTreeItemId id = tree->GetFirstChild(root, dummy); id.IsOk(); ) {
-      if (tree->ItemIsGroup(id)) {
-        if (pred(tree->GetItemText(id))) {
-          func(tree, id); 
-          if (!visitAll)
-            break;
-        }
-        id = tree->GetFirstChild(id, dummy);
-      }
-      else {
-        wxTreeItemId parent = tree->GetItemParent(id);
-        for (id = tree->GetNextSibling(id); !id.IsOk() && parent != root; 
-                 id = tree->GetNextSibling(parent), parent = tree->GetItemParent(parent))
-        {
-        }
-      }
-    }
-  }
-}
-
 template <class TreeFunc>
 void RestoreTreeItem(PWSTreeCtrl* tree, const string_or_uuid& val, TreeFunc func)
 {
-  if (val.Type() == string_or_uuid::ITEM_NORMAL) {
-    wxTreeItemId id = tree->Find(val);
-    if (id.IsOk())
-      func(tree, id); 
+  wxTreeItemId id;
+  switch(val.Type()) {
+    case string_or_uuid::ITEM_NORMAL:
+      id = tree->Find(static_cast<pws_os::CUUID> (val));
+      break;
+    case string_or_uuid::ITEM_GROUP:
+      id = tree->Find(static_cast<wxString>(val), tree->GetRootItem());
+      break;
+    default:
+      break;
   }
-  else {
-    const wxString valStr = val;
-    VisitGroupItems(tree, std::bind2nd(std::equal_to<wxString>(), valStr), func, false);
-  }
+  if (id.IsOk())
+    func(tree, id);
 }
 
 struct SelectItem {
@@ -211,24 +185,23 @@ struct BringItemToTop {
   void operator()(PWSTreeCtrl* tree, const wxTreeItemId& id) { tree->ScrollTo(id); }
 };
 
-struct FindInArray : public std::binary_function<wxString, wxArrayString, bool>{
-  bool operator() (const wxString& val, const wxArrayString& as) const {
-    return as.Index(val) != wxNOT_FOUND;
-  }
-};
-
-struct ExpandItem {
-  void operator()( PWSTreeCtrl* tree, const wxTreeItemId& id) { 
-    tree->Expand(id); 
-  }
-};
-
 void GUIInfo::RestoreTreeViewInfo(PWSTreeCtrl* tree)
 {
-  if (m_treeTop.Type() != string_or_uuid::ITEM_NONE)
-    RestoreTreeItem(tree, m_treeTop, BringItemToTop());
-  if (m_treeSelection.Type() != string_or_uuid::ITEM_NONE)
-    RestoreTreeItem(tree, m_treeSelection, SelectItem());
-  VisitGroupItems(tree, std::bind2nd(FindInArray(), m_expanded), ExpandItem(), true);
+  // We do this first to ensure that item selection and scrolling an item to top are not wasted by this
+  for (size_t idx = 0; idx < m_expanded.Count(); ++idx) {
+    wxTreeItemId group = tree->Find(m_expanded[idx], tree->GetRootItem());
+    if (group.IsOk()) {
+      tree->Expand(group);
+    }
+    else {
+      wxFAIL_MSG( wxString(wxT("Could not find group \"")) << m_expanded[idx] << wxT("\" to expand"));
+    }
+  }
+
+  // Then restore the "Top" item
+  RestoreTreeItem(tree, m_treeTop, BringItemToTop());
+  
+  // Finally select the previously "selected" item
+  RestoreTreeItem(tree, m_treeSelection, SelectItem());
 }
 

@@ -107,6 +107,7 @@ public:
   CItemData *GetItem(const wxTreeItemId &id) const;
   wxTreeItemId Find(const pws_os::CUUID &uuid) const;
   wxTreeItemId Find(const CItemData &item) const;
+  wxTreeItemId Find(const wxString &path, wxTreeItemId subtree) const;
   bool Remove(const pws_os::CUUID &uuid); // only remove from tree, not from m_core
   void SelectItem(const pws_os::CUUID& uuid);
   void SortChildrenRecursively(const wxTreeItemId& item);
@@ -118,7 +119,7 @@ public:
   //overriden from base for case-insensitive sort
   virtual int OnCompareItems(const wxTreeItemId& item1, const wxTreeItemId& item2);
   bool ExistsInTree(wxTreeItemId node,
-                    const StringX &s, wxTreeItemId &si);
+                    const StringX &s, wxTreeItemId &si) const;
   wxTreeItemId AddGroup(const StringX &group);
   wxString ItemDisplayString(const CItemData &item) const;
   wxString GetPath(const wxTreeItemId &node) const;
