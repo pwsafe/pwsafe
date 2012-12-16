@@ -35,6 +35,8 @@
 #include <wx/msw/msvcrt.h>
 #endif
 
+#include <wx/tokenzr.h>
+
 ////@begin XPM images
 ////@end XPM images
 #include "./graphics/abase_exp.xpm"
@@ -237,7 +239,7 @@ static StringX GetPathElem(StringX &sxPath)
 }
 
 bool PWSTreeCtrl::ExistsInTree(wxTreeItemId node,
-                               const StringX &s, wxTreeItemId &si)
+                               const StringX &s, wxTreeItemId &si) const
 {
   // returns true iff s is a direct descendant of node
   wxTreeItemIdValue cookie;
@@ -457,6 +459,19 @@ wxTreeItemId PWSTreeCtrl::Find(const CItemData &item) const
   uuid_array_t uuid;
   item.GetUUID(uuid);
   return Find(uuid);
+}
+
+wxTreeItemId PWSTreeCtrl::Find(const wxString &path, wxTreeItemId subtree) const
+{
+  wxArrayString elems(::wxStringTokenize(path, wxT('.')));
+  for( size_t idx = 0; idx < elems.Count(); ++idx) {
+    wxTreeItemId next;
+    if (ExistsInTree(subtree, tostringx(elems[idx]), next))
+      subtree = next;
+    else
+      return wxTreeItemId();
+  }
+  return subtree;
 }
 
 bool PWSTreeCtrl::Remove(const CUUID &uuid)
