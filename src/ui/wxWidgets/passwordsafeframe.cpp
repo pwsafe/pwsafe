@@ -650,7 +650,13 @@ void PasswordSafeFrame::ShowGrid(bool show)
          iter++) {
       m_grid->AddItem(iter->second, i++);
     }
+
+    m_guiInfo->RestoreGridViewInfo(m_grid);
   }
+  else {
+    m_guiInfo->SaveGridViewInfo(m_grid);
+  }
+
   m_grid->Show(show);
   GetSizer()->Layout();
 }
@@ -677,6 +683,11 @@ void PasswordSafeFrame::ShowTree(bool show)
 
     if (!m_tree->IsEmpty()) // avoid assertion!
       m_tree->SortChildrenRecursively(m_tree->GetRootItem());
+
+    m_guiInfo->RestoreTreeViewInfo(m_tree);
+  }
+  else {
+    m_guiInfo->SaveTreeViewInfo(m_tree);
   }
 
   m_tree->Show(show);
