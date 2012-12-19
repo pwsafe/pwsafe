@@ -195,6 +195,7 @@ void COptions::Init()
   m_preexpirywarnCB = NULL;
   m_preexpirywarndaysSB = NULL;
   m_DCACB = NULL;
+  m_SDCACB = NULL;
   m_defusernameTXT = NULL;
   m_defusernameLBL = NULL;
   m_pwMinsGSzr = NULL;
@@ -409,6 +410,14 @@ void COptions::CreateControls()
   m_DCACBStrings.Add(_("View/Edit selected entry"));
   m_DCACB = new wxComboBox( itemPanel44, ID_COMBOBOX3, wxEmptyString, wxDefaultPosition, wxDefaultSize, m_DCACBStrings, wxCB_READONLY );
   itemBoxSizer49->Add(m_DCACB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+
+  wxBoxSizer* itemBoxSizer49a = new wxBoxSizer(wxHORIZONTAL);
+  itemBoxSizer45->Add(itemBoxSizer49a, 0, wxGROW|wxALL, 0);
+  wxStaticText* itemStaticText50a = new wxStaticText( itemPanel44, wxID_STATIC, _("Shift double-click action"), wxDefaultPosition, wxDefaultSize, 0 );
+  itemBoxSizer49a->Add(itemStaticText50a, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+
+  m_SDCACB = new wxComboBox( itemPanel44, ID_COMBOBOX, wxEmptyString, wxDefaultPosition, wxDefaultSize, m_DCACBStrings, wxCB_READONLY );
+  itemBoxSizer49a->Add(m_SDCACB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticBox* itemStaticBoxSizer52Static = new wxStaticBox(itemPanel44, wxID_ANY, _("Autotype"));
   wxStaticBoxSizer* itemStaticBoxSizer52 = new wxStaticBoxSizer(itemStaticBoxSizer52Static, wxVERTICAL);
@@ -846,12 +855,15 @@ void COptions::PrefsToPropSheet()
   m_maintaindatetimestamps = prefs->GetPref(PWSprefs::MaintainDateTimeStamps);
   m_escexits = prefs->GetPref(PWSprefs::EscExits);
   m_doubleclickaction = prefs->GetPref(PWSprefs::DoubleClickAction);
-  wxASSERT(m_doubleclickaction >= 0 &&
-           m_doubleclickaction < int(sizeof(DCAStrings)/sizeof(DCAStrings[0])));
   if (m_doubleclickaction < 0 ||
       m_doubleclickaction >= int(sizeof(DCAStrings)/sizeof(DCAStrings[0])))
     m_doubleclickaction = 0;
   m_DCACB->SetValue(DCAStrings[m_doubleclickaction]);
+  m_shiftdoubleclickaction = prefs->GetPref(PWSprefs::ShiftDoubleClickAction);
+  if (m_shiftdoubleclickaction < 0 ||
+      m_shiftdoubleclickaction >= int(sizeof(DCAStrings)/sizeof(DCAStrings[0])))
+    m_shiftdoubleclickaction = 0;
+  m_SDCACB->SetValue(DCAStrings[m_shiftdoubleclickaction]);
   m_minauto = prefs->GetPref(PWSprefs::MinimizeOnAutotype);
   m_autotypeStr = prefs->GetPref(PWSprefs::DefaultAutotypeString).c_str();
   if (m_autotypeStr.empty())
@@ -904,6 +916,16 @@ void COptions::PrefsToPropSheet()
 #endif
 }
 
+static int DCAStr2Int(const wxString &str)
+{
+  for (int i = 0; i < int(sizeof(DCAStrings)/sizeof(DCAStrings[0])); ++i)
+    if (str == DCAStrings[i]) {
+      return i;
+    }
+  ASSERT(0);
+  return -1;
+}
+
 void COptions::PropSheetToPrefs()
 {
   PWSprefs *prefs = PWSprefs::GetInstance();
@@ -944,14 +966,10 @@ void COptions::PropSheetToPrefs()
   // Misc. preferences
   prefs->SetPref(PWSprefs::DeleteQuestion, m_confirmdelete);
   prefs->SetPref(PWSprefs::EscExits, m_escexits);
-  const wxString dcaStr = m_DCACB->GetValue();
-  for (int i = 0; i < int(sizeof(DCAStrings)/sizeof(DCAStrings[0])); ++i)
-    if (dcaStr == DCAStrings[i]) {
-      m_doubleclickaction = i;
-      break;
-    }
-
+  m_doubleclickaction = DCAStr2Int(m_DCACB->GetValue());
   prefs->SetPref(PWSprefs::DoubleClickAction, m_doubleclickaction);
+  m_shiftdoubleclickaction = DCAStr2Int(m_SDCACB->GetValue());
+  prefs->SetPref(PWSprefs::ShiftDoubleClickAction, m_shiftdoubleclickaction);
   prefs->SetPref(PWSprefs::MinimizeOnAutotype, m_minauto);
   prefs->SetPref(PWSprefs::QuerySetDef, m_querysetdef);
   prefs->SetPref(PWSprefs::AltBrowser, tostringx(m_otherbrowser));
@@ -1063,10 +1081,7 @@ void COptions::OnBackupB4SaveClick( wxCommandEvent& /* evt */ )
 
 void COptions::OnBuPrefix( wxCommandEvent& evt )
 {
-////@begin wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_RADIOBUTTON4 in COptions.
-  // Before editing this code, remove the block markers.
   evt.Skip();
-////@end wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_RADIOBUTTON4 in COptions. 
 }
 
 
@@ -1277,10 +1292,7 @@ void COptions::OnPWHistApply( wxCommandEvent& evt )
 {
   // XXX TBD - send this to someone who knows how to deal with it!
 
-////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_PWHISTNOCHANGE in COptions.
-  // Before editing this code, remove the block markers.
   evt.Skip();
-////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_PWHISTNOCHANGE in COptions. 
 }
 
 
