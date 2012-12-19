@@ -71,6 +71,7 @@ class wxBookCtrlEvent;
 #define ID_CHECKBOX21 10161
 #define ID_CHECKBOX22 10162
 #define ID_COMBOBOX3 10163
+#define ID_COMBOBOX 10006
 #define ID_CHECKBOX23 10164
 #define ID_TEXTCTRL11 10165
 #define ID_CHECKBOX24 10166
@@ -118,11 +119,7 @@ class wxBookCtrlEvent;
 #define ID_CHECKBOX39 10010
 #define ID_PANEL7 10138
 #define ID_GRID1 10187
-#if WXWIN_COMPATIBILITY_2_6
 #define SYMBOL_COPTIONS_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxDIALOG_MODAL
-#else
-#define SYMBOL_COPTIONS_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX
-#endif
 #define SYMBOL_COPTIONS_TITLE _("Options")
 #define SYMBOL_COPTIONS_IDNAME ID_OPTIONS
 #define SYMBOL_COPTIONS_SIZE wxSize(400, 300)
@@ -159,52 +156,52 @@ public:
 ////@begin COptions event handler declarations
 
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX11
-  void OnBackupB4SaveClick( wxCommandEvent& evt );
+  void OnBackupB4SaveClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_RADIOBUTTON4
-  void OnBuPrefix( wxCommandEvent& evt );
+  void OnBuPrefix( wxCommandEvent& event );
 
   /// wxEVT_SET_FOCUS event handler for ID_TEXTCTRL9
-  void OnBuPrefixTxtSetFocus( wxFocusEvent& evt );
+  void OnBuPrefixTxtSetFocus( wxFocusEvent& event );
 
   /// wxEVT_COMMAND_COMBOBOX_SELECTED event handler for ID_COMBOBOX2
-  void OnSuffixCBSet( wxCommandEvent& evt );
+  void OnSuffixCBSet( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_RADIOBUTTON6
-  void OnBuDirRB( wxCommandEvent& evt );
+  void OnBuDirRB( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON
-  void OnBuDirBrowseClick( wxCommandEvent& evt );
+  void OnBuDirBrowseClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX13
-  void OnShowUsernameInTreeCB( wxCommandEvent& evt );
+  void OnShowUsernameInTreeCB( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX19
-  void OnPreExpiryWarnClick( wxCommandEvent& evt );
+  void OnPreExpiryWarnClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX24
-  void OnUseDefaultUserClick( wxCommandEvent& evt );
+  void OnUseDefaultUserClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON8
-  void OnBrowseLocationClick( wxCommandEvent& evt );
+  void OnBrowseLocationClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX3
-  void OnPwPolUseClick( wxCommandEvent& evt );
+  void OnPwPolUseClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX26
-  void OnPWHistSaveClick( wxCommandEvent& evt );
+  void OnPWHistSaveClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_RADIOBUTTON_SELECTED event handler for ID_PWHISTNOCHANGE
-  void OnPWHistRB( wxCommandEvent& evt );
+  void OnPWHistRB( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_PWHISTNOCHANGE
-  void OnPWHistApply( wxCommandEvent& evt );
+  void OnPWHistApply( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX29
-  void OnLockOnIdleClick( wxCommandEvent& evt );
+  void OnLockOnIdleClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX30
-  void OnUseSystrayClick( wxCommandEvent& evt );
+  void OnUseSystrayClick( wxCommandEvent& event );
 
 ////@end COptions event handler declarations
 
@@ -312,6 +309,9 @@ public:
   bool GetWordwrapnotes() const { return m_wordwrapnotes ; }
   void SetWordwrapnotes(bool value) { m_wordwrapnotes = value ; }
 
+  int GetShiftdoubleclickaction() const { return m_shiftdoubleclickaction ; }
+  void SetShiftdoubleclickaction(int value) { m_shiftdoubleclickaction = value ; }
+
   /// Retrieves bitmap resources
   wxBitmap GetBitmapResource( const wxString& name );
 
@@ -337,6 +337,7 @@ public:
   wxCheckBox* m_preexpirywarnCB;
   wxSpinCtrl* m_preexpirywarndaysSB;
   wxComboBox* m_DCACB;
+  wxComboBox* m_SDCACB;
   wxTextCtrl* m_defusernameTXT;
   wxStaticText* m_defusernameLBL;
   wxGridSizer* m_pwMinsGSzr;
@@ -395,6 +396,7 @@ private:
   bool m_sysstartup;
   bool m_usedefuser;
   bool m_wordwrapnotes;
+  int m_shiftdoubleclickaction;
 ////@end COptions member variables
 #if defined(__X__) || defined(__WXGTK__)
   bool m_usePrimarySelection;
