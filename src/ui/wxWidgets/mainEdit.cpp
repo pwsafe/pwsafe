@@ -103,7 +103,7 @@ void PasswordSafeFrame::OnAddClick( wxCommandEvent& /* evt */ )
 {
   wxString selectedGroup = wxEmptyString;
   wxTreeItemId selection;
-  if (IsTreeView() && (selection = m_tree->GetSelection()).IsOk() && m_tree->ItemHasChildren(selection)) {
+  if (IsTreeView() && (selection = m_tree->GetSelection()).IsOk() && m_tree->ItemIsGroup(selection)) {
     selectedGroup = m_tree->GetItemGroup(selection);
   }
 
