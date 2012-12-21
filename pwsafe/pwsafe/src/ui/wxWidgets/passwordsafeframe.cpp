@@ -2017,11 +2017,11 @@ void PasswordSafeFrame::GUIRefreshEntry(const CItemData& item)
   if (item.GetStatus() ==CItemData::ES_DELETED) {
     uuid_array_t uuid;
     item.GetUUID(uuid);
-    m_tree->Remove(uuid);
-    m_grid->Remove(uuid);
+    if (m_currentView == TREE) { m_tree->Remove(uuid); }
+    else { m_grid->Remove(uuid); }
   } else {
-    m_tree->UpdateItem(item);
-    m_grid->UpdateItem(item);
+    if (m_currentView == TREE) { m_tree->UpdateItem(item); }
+    else { m_grid->UpdateItem(item); }
   }
 }
 
