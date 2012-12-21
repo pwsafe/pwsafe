@@ -95,6 +95,7 @@ BEGIN_EVENT_TABLE( PWSTreeCtrl, wxTreeCtrl )
   EVT_CUSTOM(wxEVT_GUI_DB_PREFS_CHANGE, wxID_ANY, PWSTreeCtrl::OnDBGUIPrefsChange)
   EVT_TREE_ITEM_GETTOOLTIP( ID_TREECTRL, PWSTreeCtrl::OnGetToolTip )
   EVT_MENU( ID_ADDGROUP, PWSTreeCtrl::OnAddGroup )
+  EVT_MENU( ID_RENAME, PWSTreeCtrl::OnRenameGroup )
   EVT_TREE_END_LABEL_EDIT( ID_TREECTRL, PWSTreeCtrl::OnEndLabelEdit )
   EVT_TREE_END_LABEL_EDIT( ID_TREECTRL_1, PWSTreeCtrl::OnEndLabelEdit )
 ////@end PWSTreeCtrl event table entries
@@ -106,13 +107,26 @@ const wchar_t GROUP_SEP = L'.';
 class PWTreeItemData : public wxTreeItemData
 {
 public:
-  PWTreeItemData(const CItemData &item)
+  PWTreeItemData(): m_state(UNMODIFIED)
+  { pws_os::CUUID::NullUUID().GetARep(m_uuid); }
+  PWTreeItemData(bool): m_state(ADDED)
+  { pws_os::CUUID::NullUUID().GetARep(m_uuid); }
+  PWTreeItemData(const wxString& oldPath): m_state(EDITED), m_oldPath(oldPath)
+  { pws_os::CUUID::NullUUID().GetARep(m_uuid); }
+  PWTreeItemData(const CItemData &item): m_state(UNMODIFIED)
   {
     item.GetUUID(m_uuid);
   }
   const uuid_array_t &GetUUID() const {return m_uuid;}
+  bool BeingAdded() const {return m_state == ADDED; }
+  bool BeingEdited() const {return m_state == EDITED; }
+  wxString GetOldPath() const { return m_oldPath; }
 private:
+  typedef enum { UNMODIFIED, ADDED, EDITED } ItemState;
+
   uuid_array_t m_uuid;
+  ItemState    m_state;
+  wxString     m_oldPath;
 };
 
 /*!
@@ -597,6 +611,18 @@ void PWSTreeCtrl::OnDBGUIPrefsChange(wxEvent& evt)
     pwsframe->RefreshViews();
 }
 
+void EditTreeLabel(wxTreeCtrl* tree, const wxTreeItemId& id)
+{
+  if (!id) return;
+  wxTextCtrl* edit = tree->EditLabel(id);
+  if (edit) {
+    wxTextValidator val(wxFILTER_EXCLUDE_CHAR_LIST);
+    const wxChar* dot = wxT(".");
+    val.SetExcludes(wxArrayString(1, &dot));
+    edit->SetValidator(val);
+    edit->SelectAll();
+  }
+}
 void PWSTreeCtrl::OnAddGroup(wxCommandEvent& /*evt*/)
 {
   wxCHECK_RET(IsShown(), wxT("Group can only be added while in tree view"));
@@ -604,12 +630,22 @@ void PWSTreeCtrl::OnAddGroup(wxCommandEvent& /*evt*/)
   wxString newItemPath = (!parentId || parentId == GetRootItem())? wxT("New Group"): GetItemGroup(parentId)+wxT(".New Group");
   wxTreeItemId newItem = AddGroup(tostringx(newItemPath));
   wxCHECK_RET(newItem.IsOk(), wxT("Could not add empty group item to tree"));
+  // mark it as a new group that is still under construction.  wxWidgets would delete it
+  SetItemData(newItem, new PWTreeItemData(true));
   ::wxYield();
   EnsureVisible(newItem);
   ::wxYield();
-  wxTextCtrl* edit = EditLabel(newItem);
-  if (edit)
-    edit->SelectAll();
+  EditTreeLabel(this, newItem);
+}
+
+void PWSTreeCtrl::OnRenameGroup(wxCommandEvent& evt)
+{
+  wxTreeItemId sel = GetSelection();
+  if (sel.IsOk()) {
+    wxCHECK_RET(ItemIsGroup(sel), wxT("Renaming of non-Group items is not implemented"));
+    SetItemData(sel, new PWTreeItemData(GetItemGroup(sel)));
+    EditTreeLabel(this, sel);
+  }
 }
 
 void PWSTreeCtrl::OnEndLabelEdit( wxTreeEvent& evt )
@@ -617,42 +653,29 @@ void PWSTreeCtrl::OnEndLabelEdit( wxTreeEvent& evt )
   switch (evt.GetId()) {
     case ID_TREECTRL:
     {
+      if (evt.GetLabel().Find(wxT('.')) == wxNOT_FOUND) {
       // Not safe to modify the tree ctrl in any way.  Wait for the stack to unwind.
       wxTreeEvent newEvt(evt);
       newEvt.SetId(ID_TREECTRL_1);
       AddPendingEvent(newEvt);
+      }
+      else {
+        evt.Veto();
+        wxMessageBox(wxT("Dots are not allowed in group names"), wxT("Invalid Character"), wxOK|wxICON_ERROR);
+      }
       break;
     }
     case ID_TREECTRL_1:
     {
       wxTreeItemId groupItem = evt.GetItem();
-      if (evt.IsEditCancelled()) {
-        if (GetItemData(groupItem) == NULL) {
-          // new item, not yet in db.  Or may be we could check in m_item_map
-          Delete(groupItem);
-        }
+      PWTreeItemData* data = dynamic_cast<PWTreeItemData *>(GetItemData(groupItem));
+      if (data && data->BeingAdded()) {
+        // A new group being added
+        FinishAddingGroup(evt, groupItem);
       }
-      else {
-        // Can't call GetItemGroup here since the item doesn't actually have the new label
-        wxString groupName = evt.GetLabel();
-        for (wxTreeItemId parent = GetItemParent(groupItem);
-                          parent != GetRootItem(); parent = GetItemParent(parent)) {
-          groupName = GetItemText(parent) + wxT(".") + groupName;
-        }
-        StringX sxGroup = tostringx(groupName);
-
-        // The new item we just added above will get removed once the update GUI callback from core happens.
-        DBEmptyGroupsCommand* cmd = DBEmptyGroupsCommand::Create(&m_core,
-                                                                 sxGroup,
-                                                                 DBEmptyGroupsCommand::EG_ADD);
-        if (cmd)
-          m_core.Execute(cmd);
-        
-        // evt.GetItem() is not valid anymore.  A new item has been inserted instead.
-        // We can select it using the full path we computed earlier
-        wxTreeItemId newItem = Find(groupName, GetRootItem());
-        if (newItem.IsOk())
-          wxTreeCtrl::SelectItem(newItem);
+      else if (data && data->BeingEdited()) {
+        // An existing group being renamed
+        FinishRenamingGroup(evt, groupItem, data->GetOldPath());
       }
       break;
     }
@@ -661,3 +684,78 @@ void PWSTreeCtrl::OnEndLabelEdit( wxTreeEvent& evt )
       break;
   }
 }
+
+void PWSTreeCtrl::FinishAddingGroup(wxTreeEvent& evt, wxTreeItemId groupItem)
+{
+  if (evt.IsEditCancelled()) {
+    // New item, not yet in db.  So we could just remove from the tree
+    Delete(groupItem);
+  }
+  else {
+    // Can't call GetItemGroup here since the item doesn't actually have the new label
+    wxString groupName = evt.GetLabel();
+    for (wxTreeItemId parent = GetItemParent(groupItem);
+                      parent != GetRootItem(); parent = GetItemParent(parent)) {
+      groupName = GetItemText(parent) + wxT(".") + groupName;
+    }
+    StringX sxGroup = tostringx(groupName);
+
+    // The new item we just added above will get removed once the update GUI callback from core happens.
+    DBEmptyGroupsCommand* cmd = DBEmptyGroupsCommand::Create(&m_core,
+                                                             sxGroup,
+                                                             DBEmptyGroupsCommand::EG_ADD);
+    if (cmd)
+      m_core.Execute(cmd);
+    
+    // evt.GetItem() is not valid anymore.  A new item has been inserted instead.
+    // We can select it using the full path we computed earlier
+    wxTreeItemId newItem = Find(groupName, GetRootItem());
+    if (newItem.IsOk())
+      wxTreeCtrl::SelectItem(newItem);
+  }
+}
+
+void PWSTreeCtrl::FinishRenamingGroup(wxTreeEvent& evt, wxTreeItemId groupItem, const wxString& oldPath)
+{
+  wxCHECK_RET(ItemIsGroup(groupItem), wxT("Cannot handle renaming of non-group items"));
+
+  if (evt.IsEditCancelled())
+    return;
+
+  // We DON'T need to handle these two as they can only occur while moving items
+  //    not removing groups as they become empty
+  //    renaming of groups that have only other groups as children
+
+  MultiCommands* pmcmd = MultiCommands::Create(&m_core);
+  if (!pmcmd)
+    return;
+
+  // For some reason, Command objects can't handle const references
+  StringX sxOldPath = tostringx(oldPath);
+  StringX sxNewPath = tostringx(GetItemGroup(groupItem));
+
+  // This takes care of modifying all the actual items
+  pmcmd->Add(RenameGroupCommand::Create(&m_core, sxOldPath, sxNewPath));
+
+  // But we have to do the empty groups ourselves because EG_RENAME is not recursive
+  typedef std::vector<StringX> EmptyGroupsArray;
+  const EmptyGroupsArray& emptyGroups = m_core.GetEmptyGroups();
+  StringX sxOldPathWithDot = sxOldPath + _T('.');
+  for( EmptyGroupsArray::const_iterator itr = emptyGroups.begin(); itr != emptyGroups.end(); ++itr)
+  {
+    if (*itr == sxOldPath || itr->find(sxOldPathWithDot) == 0) {
+      StringX sxOld = *itr;
+      StringX sxNew = sxNewPath + itr->substr(sxOldPath.size());
+      pmcmd->Add(DBEmptyGroupsCommand::Create(&m_core, sxOld, sxNew));
+    }
+  }
+
+  if (pmcmd->GetSize())
+    m_core.Execute(pmcmd);
+
+  // The old treeItem is gone, since it was renamed.  We need to find the new one to select it
+  wxTreeItemId newItem = Find(towxstring(sxNewPath), GetRootItem());
+  if (newItem.IsOk())
+    wxTreeCtrl::SelectItem(newItem);
+}
+

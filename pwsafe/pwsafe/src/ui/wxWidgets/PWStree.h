@@ -95,6 +95,9 @@ public:
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_ADDGROUP
   void OnAddGroup(wxCommandEvent& evt);
 
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_RENAME
+  void OnRenameGroup(wxCommandEvent& evt);
+
   void OnEndLabelEdit( wxTreeEvent& evt );
 
 ////@begin PWSTreeCtrl member function declarations
@@ -124,6 +127,8 @@ public:
   wxString ItemDisplayString(const CItemData &item) const;
   wxString GetPath(const wxTreeItemId &node) const;
   void SetItemImage(const wxTreeItemId &node, const CItemData &item);
+  void FinishAddingGroup(wxTreeEvent& evt, wxTreeItemId groupItem);
+  void FinishRenamingGroup(wxTreeEvent& evt, wxTreeItemId groupItem, const wxString& oldPath);
 ////@begin PWSTreeCtrl member variables
 ////@end PWSTreeCtrl member variables
   PWScore &m_core;
