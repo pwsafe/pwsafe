@@ -194,7 +194,9 @@ void GUIInfo::RestoreTreeViewInfo(PWSTreeCtrl* tree)
       tree->Expand(group);
     }
     else {
-      wxFAIL_MSG( wxString(wxT("Could not find group \"")) << m_expanded[idx] << wxT("\" to expand"));
+      // It is possible that the group with single item was deleted when item was moved to another group
+      // We need to prevent that from happening.  But for now, it will assert too much
+      wxLogDebug( wxString(wxT("Could not find group \"")) << m_expanded[idx] << wxT("\" to expand") );
     }
   }
 
