@@ -468,9 +468,12 @@ void PasswordSafeFrame::CreateControls()
   m_tree = new PWSTreeCtrl( itemFrame1, m_core, ID_TREECTRL, wxDefaultPosition,
                             wxDefaultSize,
                             wxTR_EDIT_LABELS|wxTR_HAS_BUTTONS |wxTR_HIDE_ROOT|wxTR_SINGLE );
-  // let the tree ctrl handle ID_ADDGROUP all by itself
+  // let the tree ctrl handle ID_ADDGROUP & ID_RENAME all by itself
   Connect(ID_ADDGROUP, wxEVT_COMMAND_MENU_SELECTED, 
                        wxCommandEventHandler(PWSTreeCtrl::OnAddGroup), NULL, m_tree);
+  Connect(ID_RENAME, wxEVT_COMMAND_MENU_SELECTED, 
+                       wxCommandEventHandler(PWSTreeCtrl::OnRenameGroup), NULL, m_tree);
+
   itemBoxSizer83->Add(m_tree, wxSizerFlags().Expand().Border(0).Proportion(1));
   itemBoxSizer83->Layout();
 
@@ -1660,7 +1663,6 @@ void PasswordSafeFrame::OnContextMenu(const CItemData* item)
     itemEditMenu.Append(ID_AUTOTYPE,       wxT("Perform Auto &Type"));
     itemEditMenu.AppendSeparator();
     itemEditMenu.Append(ID_EDIT,           wxT("Edit/&View Entry..."));
-    itemEditMenu.Append(ID_RENAME,         wxT("Rename Entry"));
     itemEditMenu.Append(ID_DUPLICATEENTRY, wxT("&Duplicate Entry"));
     itemEditMenu.Append(wxID_DELETE,       wxT("Delete Entry"));
     itemEditMenu.Append(ID_CREATESHORTCUT, wxT("Create &Shortcut"));
@@ -1754,7 +1756,8 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
     
     case ID_RENAME:
       // only allowed if a GROUP item is selected in tree view
-      evt.Enable(m_currentView == TREE && m_tree->ItemIsGroup(m_tree->GetSelection()));
+      evt.Enable(m_currentView == TREE && m_tree->ItemIsGroup(m_tree->GetSelection()) 
+                    && m_tree->GetSelection() != m_tree->GetRootItem());
       break;
 
     case ID_BROWSEURL:
