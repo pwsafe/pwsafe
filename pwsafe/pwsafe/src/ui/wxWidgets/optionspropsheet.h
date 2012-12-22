@@ -40,6 +40,10 @@ class wxBookCtrlEvent;
  * Control identifiers
  */
 
+#ifndef wxDIALOG_MODAL
+#define wxDIALOG_MODAL 0
+#endif
+
 ////@begin control identifiers
 #define ID_OPTIONS 10130
 #define ID_PANEL 10131
