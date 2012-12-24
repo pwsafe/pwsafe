@@ -8139,8 +8139,8 @@
       <tuv lang="EN-US">
         <seg>Export to Text (the whole database or a single entry)</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20120808T180527Z">
-        <seg>Экспорт в простой текст (весь контейнер или одни элемент)</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T083856Z">
+        <seg>Экспорт в простой текст (весь контейнер или один элемент)</seg>
       </tuv>
     </tu>
     <tu>
@@ -8155,8 +8155,8 @@
       <tuv lang="EN-US">
         <seg>Export to XML (the whole database or a single entry)</seg>
       </tuv>
-      <tuv lang="RU-RU" changeid="pm_kan" changedate="20120808T180543Z">
-        <seg>Экспорт в XML (весь контейнер или одни элемент)</seg>
+      <tuv lang="RU-RU" changeid="pm_kan" changedate="20121224T083902Z">
+        <seg>Экспорт в XML (весь контейнер или один элемент)</seg>
       </tuv>
     </tu>
     <tu>
