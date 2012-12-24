@@ -547,6 +547,14 @@ Verify that the correct path and file name are given.</seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg>%s Either try to save database with another name or exit without saving.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>%s Сохраните контейнер под другим именем или выйдите без сохранения.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg>%s [Recovered]</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
@@ -613,14 +621,6 @@ Can't open file. Please choose another.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
         <seg>%s%s%s_Report.txt</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="EN-US">
-        <seg>%s. Either try to save database with another name or exit without saving.</seg>
-      </tuv>
-      <tuv xml:lang="RU-RU">
-        <seg>%s. Сохраните контейнер под другим именем или выйдите без сохранения.</seg>
       </tuv>
     </tu>
     <tu>
@@ -3741,7 +3741,7 @@ Entries with more than this new maximum already saved will remain unchanged.</se
         <seg>Compare Database Results</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Сравнить результаты</seg>
+        <seg>Результаты сравнения</seg>
       </tuv>
     </tu>
     <tu>
@@ -4186,6 +4186,14 @@ to the clipboard.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
         <seg>Не удалось запустить задание печати.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>Couldn't find base entry - inconsistent database</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Невозможно найти исходный элемент. Контейнер находится в противоречивом состоянии.</seg>
       </tuv>
     </tu>
     <tu>
@@ -5524,18 +5532,10 @@ Database related settings will be stored in the open database when it is closed,
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>Export Entry in XML format...</seg>
+        <seg>Export Entry To</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>Экспортировать элемент в XML формат...</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="EN-US">
-        <seg>Export Entry to Plain Text...</seg>
-      </tuv>
-      <tuv xml:lang="RU-RU">
-        <seg>Экспортировать элемент в простой текст...</seg>
+        <seg>Экспортировать элемент в</seg>
       </tuv>
     </tu>
     <tu>
@@ -7637,14 +7637,6 @@ must be between 1 and 999.</seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
-        <seg>Minimum password length</seg>
-      </tuv>
-      <tuv xml:lang="RU-RU">
-        <seg>Минимальная длина пароля</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="EN-US">
         <seg>Minimum symbols</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
@@ -8477,6 +8469,14 @@ Recommend that the database is now saved.</seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg>Other value last changed on:</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Изменения в других полях:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg>Other:</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
@@ -8785,6 +8785,14 @@ Every entry must have a title.</seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg>Password length</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Длина пароля</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg>Password length is less than sum of 'at least' constraints</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
@@ -8869,6 +8877,14 @@ Every entry must have a title.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
         <seg>Системная:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>Plain Text (tab separated)...</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Простой текст (разделитель табуляция)...</seg>
       </tuv>
     </tu>
     <tu>
@@ -8973,6 +8989,14 @@ Every entry must have a title.</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
         <seg>Укажите имя нового файла для текущего контейнера</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>Please confirm delete of the %s filter %s?</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Подтверждаете удаление %s фильтра %s?</seg>
       </tuv>
     </tu>
     <tu>
@@ -11665,6 +11689,14 @@ Please confirm to continue (alias entry's passwords will be replaced by this ent
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg>This shortcut's target [%s:%s:%s] is not a normal entry or already a shortcut base.</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>Целевой элемент [%s:%s:%s] для данного ярлыка не является обычным элементом либо сам является ярлыком.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg>This version of PasswordSafe does not support more than %d entries in a database.
 To get an unlimited version for the U3 platform, please visit http://software.u3.com
 Do you want to open this database anyway?
@@ -12881,6 +12913,14 @@ Try saving in a different location</seg>
     </tu>
     <tu>
       <tuv xml:lang="EN-US">
+        <seg>XML format...</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>XML формат...</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
         <seg>YYMMDD_HHMMSS</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
@@ -13135,7 +13175,8 @@ Collapse All</seg>
 Compare entries...</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>\Сравнить элементы...</seg>
+        <seg>
+Сравнить элементы...</seg>
       </tuv>
     </tu>
     <tu>
@@ -13574,8 +13615,7 @@ Save Database As...</seg>
 Select Entry</seg>
       </tuv>
       <tuv xml:lang="RU-RU">
-        <seg>
-Выбрать элемент</seg>
+        <seg>Перейти к элементу</seg>
       </tuv>
     </tu>
     <tu>
@@ -13786,6 +13826,36 @@ Merge completed: %d %s added (%d %s, %d %s, %d %s)</seg>
       <tuv xml:lang="RU-RU">
         <seg>&#13;
 Слияние завершено: %d %s добавлено (%d %s, %d %s, %d %s)</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>&#13;
+Synchronize completed: %d %s updated</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>&#13;
+Синхронизация завершена: %d %s обновлено</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>&#13;
+The following %s %s updated:</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>&#13;
+Следующие %s %s обновлены:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="EN-US">
+        <seg>&#13;
+The following new %s %s merged into this database:</seg>
+      </tuv>
+      <tuv xml:lang="RU-RU">
+        <seg>&#13;
+Новые %s %s добавлены в данный контейнер:</seg>
       </tuv>
     </tu>
     <tu>
