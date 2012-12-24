@@ -8,7 +8,7 @@
 		<Build>
 			<Target title="Debug_L64">
 				<Option platforms="Unix;" />
-				<Option output="libcore64d" prefix_auto="1" extension_auto="1" />
+				<Option output="core64d" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="" />
 				<Option object_output="obj/Debug64/" />
 				<Option type="2" />
@@ -27,6 +27,7 @@
 					<Add option="-Wformat=2" />
 					<Add option="-Wcast-qual" />
 					<Add option="-Wold-style-cast" />
+					<Add option="-Wno-variadic-macros" />
 					<Add option="-D_DEBUG" />
 					<Add option="-DDEBUG" />
 					<Add option="-DDEBUG_XMLPREFS" />
@@ -44,7 +45,7 @@
 			</Target>
 			<Target title="Debug_L32">
 				<Option platforms="Unix;" />
-				<Option output="libcore32d" prefix_auto="1" extension_auto="1" />
+				<Option output="core32d" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="" />
 				<Option object_output="obj/Debug32/" />
 				<Option type="2" />
@@ -63,6 +64,7 @@
 					<Add option="-Wformat=2" />
 					<Add option="-Wcast-qual" />
 					<Add option="-Wold-style-cast" />
+					<Add option="-Wno-variadic-macros" />
 					<Add option="-D_DEBUG" />
 					<Add option="-DDEBUG" />
 					<Add option="-DDEBUG_XMLPREFS" />
@@ -80,7 +82,7 @@
 			</Target>
 			<Target title="Release_L64">
 				<Option platforms="Unix;" />
-				<Option output="libcore64" prefix_auto="1" extension_auto="1" />
+				<Option output="core64" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="" />
 				<Option object_output="obj/Release64/" />
 				<Option type="2" />
@@ -100,6 +102,7 @@
 					<Add option="-Wformat=2" />
 					<Add option="-Wcast-qual" />
 					<Add option="-Wold-style-cast" />
+					<Add option="-Wno-variadic-macros" />
 					<Add option="-DNDEBUG" />
 					<Add option="-DUSE_XML_LIBRARY=XERCES" />
 					<Add option="-DWCHAR_INCOMPATIBLE_XMLCH" />
@@ -115,7 +118,7 @@
 			</Target>
 			<Target title="Release_L32">
 				<Option platforms="Unix;" />
-				<Option output="libcore32" prefix_auto="1" extension_auto="1" />
+				<Option output="core32" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="" />
 				<Option object_output="obj/Release32/" />
 				<Option type="2" />
@@ -135,6 +138,7 @@
 					<Add option="-Wformat=2" />
 					<Add option="-Wcast-qual" />
 					<Add option="-Wold-style-cast" />
+					<Add option="-Wno-variadic-macros" />
 					<Add option="-DNDEBUG" />
 					<Add option="-DUSE_XML_LIBRARY=XERCES" />
 					<Add option="-DWCHAR_INCOMPATIBLE_XMLCH" />
@@ -181,6 +185,8 @@
 		<Unit filename="../../src/core/PWSAuxParse.h" />
 		<Unit filename="../../src/core/PWSFilters.cpp" />
 		<Unit filename="../../src/core/PWSFilters.h" />
+		<Unit filename="../../src/core/PWSLog.cpp" />
+		<Unit filename="../../src/core/PWSLog.h" />
 		<Unit filename="../../src/core/PWScore.cpp" />
 		<Unit filename="../../src/core/PWScore.h" />
 		<Unit filename="../../src/core/PWSdirs.cpp" />
@@ -243,14 +249,13 @@
 		<Unit filename="../../src/core/coredefs.h" />
 		<Unit filename="../../src/core/hmac.cpp" />
 		<Unit filename="../../src/core/hmac.h" />
+		<Unit filename="../../src/core/pugixml/pugiconfig.hpp" />
+		<Unit filename="../../src/core/pugixml/pugixml.cpp" />
+		<Unit filename="../../src/core/pugixml/pugixml.hpp" />
 		<Unit filename="../../src/core/sha1.cpp" />
 		<Unit filename="../../src/core/sha1.h" />
 		<Unit filename="../../src/core/sha256.cpp" />
 		<Unit filename="../../src/core/sha256.h" />
-		<Unit filename="../../src/core/tinyxml/tinyxml.cpp" />
-		<Unit filename="../../src/core/tinyxml/tinyxml.h" />
-		<Unit filename="../../src/core/tinyxml/tinyxmlerror.cpp" />
-		<Unit filename="../../src/core/tinyxml/tinyxmlparser.cpp" />
 		<Unit filename="../../src/core/trigram.h" />
 		<Unit filename="../../src/core/twofish_tab.c">
 			<Option compilerVar="CC" />

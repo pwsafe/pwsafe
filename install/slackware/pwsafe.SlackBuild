@@ -2,7 +2,7 @@
 
 # Password Safe build script 
 #--
-# Last edited: 13.07.2011
+# Last edited: 23.12.2012
 #--
 
 if [ $UID = 0 ]; then
@@ -15,9 +15,9 @@ if [ $UID = 0 ]; then
 fi
 
 PRGNAM=pwsafe
-VERSION=${VERSION:-0.6}
+VERSION=${VERSION:-0.9beta}
 ARCH=${ARCH:-x86_64} # i[345]6 or x86_64
-BUILD_ID=${BUILD_ID:-3}
+BUILD_ID=${BUILD_ID:-2}
 BUILDER_ID=${BUILDER_ID:-kan}
 OUTPUT=${OUTPUT:-$(pwd)/packages}
 LOGS=${LOGS:-$(pwd)/logs}
@@ -27,6 +27,7 @@ BINDIR=$(pwd)/../../src/ui/wxWidgets/GCCUnicodeRelease
 DOCSRCDIR=$(pwd)/../../docs
 XMLSRCDIR=$(pwd)/../../xml
 HELPSRCDIR=$(pwd)/../../help
+ISRCDIR=$(pwd)/../../src/ui/wxWidgets/I18N
 ##
 PKGNAME=${PRGNAM}-${VERSION/-/.}-$ARCH-$BUILD_ID$BUILDER_ID
 ##
@@ -37,6 +38,7 @@ XMLDIR=$PREFIX/share/$PRGNAM/xml
 MANDIR=$PREFIX/man
 PIXMAPDIR=$PREFIX/share/pixmaps
 APPDIR=$PREFIX/share/applications
+IDIR=$PREFIX/share/locale
 ##
 OPTIMIZE="-O2"
 DATE=$(LC_ALL=C /bin/date +%d-%b-%Y)
@@ -81,11 +83,16 @@ export CFLAGS="$SLKCFLAGS"
 
 #make binaries
 cd $MAKEDIR
+echo "- cleanup"
 make clean
+echo "- binaries"
 make $MAKE_OPTIONS 2>&1 | tee $LOGS/make-${PRGNAM}.log || exit 1
-#make help
+echo "- help"
 cd $HELPSRCDIR
 make
+echo "- i18n"
+cd $ISRCDIR
+make mos
 
 #collect files before packaging
 #copy binaries
@@ -95,12 +102,15 @@ cp $BINDIR/pwsafe $PKG/$PREFIX/bin
 mkdir -p $PKG/$DOCDIR/help
 cp $DOCSRCDIR/* $PKG/$DOCDIR
 cp $MAKEDIR/README* $MAKEDIR/LICENSE $PKG/$DOCDIR
-cp $MYDIR/../deb/copyright $PKG/$DOCDIR
+cp $MYDIR/../copyright $PKG/$DOCDIR
 mkdir -p $PKG/$HELPDIR
 cp $HELPSRCDIR/help*.zip $PKG/$HELPDIR
 #move man pages to mandir
 mkdir -p $PKG/$MANDIR/man1
 mv $PKG/$DOCDIR/*.1 $PKG/$MANDIR/man1
+#copy lang
+mkdir -p $PKG/$IDIR
+cp -R $ISRCDIR/mos/* $PKG/$IDIR
 #copy XML files
 mkdir -p $PKG/$XMLDIR
 cp $XMLSRCDIR/* $PKG/$XMLDIR
