@@ -6616,7 +6616,7 @@ msgstr "США (международная)"
 # дата в истории паролей
 #. Resource IDs: (211)
 msgid "Unknown"
-msgstr "Незвестно"
+msgstr "Неизвестно"
 
 #. Resource IDs: (329)
 msgid "Unknown            "
