@@ -380,7 +380,6 @@ BOOL CAddEdit_Basic::OnInitDialog()
   m_pex_notes->SetSel(0, -1);
   m_pex_notes->SendMessage(EM_GETCHARFORMAT, SCF_SELECTION, (LPARAM)&cf);
   m_iPointSize = cf.yHeight / 20;
-  m_pex_notes->Clear();
 
   // Set initial Word Wrap
   m_pex_notes->SetTargetDevice(NULL, m_bWordWrap ? 0 : 1);
