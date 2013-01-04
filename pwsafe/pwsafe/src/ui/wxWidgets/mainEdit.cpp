@@ -183,22 +183,31 @@ Command *PasswordSafeFrame::Delete(wxTreeItemId tid)
       Command *delCmd = Delete(ti);
       if (delCmd != NULL)
         retval->Add(delCmd);
-      // go through all siblings too
-      wxTreeItemId sibling = m_tree->GetNextSibling(ti);
-      while (sibling.IsOk()) {
-        Command *delSibCmd = Delete(sibling);
-        if (delSibCmd != NULL)
-          retval->Add(delSibCmd);
-        sibling = m_tree->GetNextSibling(sibling);
-      } // while siblings
-      ti = m_tree->GetNextChild(ti, cookie);
+      ti = m_tree->GetNextChild(tid, cookie);
     } // while children
+    // Explicitly delete any empty groups coinciding with this wxTreeItem's group hierarchy
+    // Otherwise the user will see a these empty groups still hanging around inspite
+    // of just deleting the parent/ancestor
+    StringX sxGroup = tostringx(m_tree->GetItemGroup(tid));
+    if (m_core.IsEmptyGroup(sxGroup)) {
+      Command *delGrp = DBEmptyGroupsCommand::Create(&m_core, sxGroup, DBEmptyGroupsCommand::EG_DELETE);
+      if (delGrp)
+        retval->Add(delGrp);
+    }
   } else { // leaf
     CItemData *leaf = m_tree->GetItem(tid);
-    ASSERT(leaf != NULL);
-    Command *delLeafCmd = Delete(leaf); // gets user conf. if needed
-    if (delLeafCmd != NULL)
-      retval->Add(delLeafCmd);
+    if (leaf != NULL) {
+      Command *delLeafCmd = Delete(leaf); // gets user conf. if needed
+      if (delLeafCmd != NULL)
+        retval->Add(delLeafCmd);
+    }
+    else {
+      wxASSERT_MSG(m_tree->ItemIsGroup(tid), wxT("Childless item without CItemData must be an empty group"));
+      StringX sxGroup = tostringx(m_tree->GetItemGroup(tid));
+      Command *delGrp = DBEmptyGroupsCommand::Create(&m_core, sxGroup, DBEmptyGroupsCommand::EG_DELETE);
+      if (delGrp)
+        retval->Add(delGrp);
+    }
   }
 
   // If MultiCommands is empty, delete and return NULL
