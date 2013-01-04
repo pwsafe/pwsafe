@@ -148,7 +148,7 @@ void PasswordSafeFrame::OnDeleteClick( wxCommandEvent& /* evt */ )
     CItemData *item = GetSelectedEntry();
     if (item != NULL) {
       doit = Delete(item);
-    } else if (num_children > 0) {
+    } else if (m_tree->GetSelection() != m_tree->GetRootItem()) {
       doit = Delete(m_tree->GetSelection());
     }
     if (doit != NULL)
@@ -173,13 +173,13 @@ Command *PasswordSafeFrame::Delete(wxTreeItemId tid)
   // Called for deleting a group
   // Recursively build the appropriate multi-command
 
+  if (!tid) return NULL;
   MultiCommands *retval = MultiCommands::Create(&m_core);
-  ASSERT(tid.IsOk());
   if (m_tree->GetChildrenCount(tid) > 0) {
     wxTreeItemIdValue cookie;
     wxTreeItemId ti = m_tree->GetFirstChild(tid, cookie);
     
-    while (ti) {
+    while (ti.IsOk()) {
       Command *delCmd = Delete(ti);
       if (delCmd != NULL)
         retval->Add(delCmd);
