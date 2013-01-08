@@ -186,8 +186,7 @@ void DboxMain::OnTrayBrowse(UINT nID)
     if (PWSprefs::GetInstance()->GetPref(PWSprefs::CopyPasswordWhenBrowseToURL)) {
       SetClipboardData(ci.GetPassword());
       UpdateLastClipboardAction(CItemData::PASSWORD);
-    } else
-      UpdateLastClipboardAction(CItemData::URL);
+    }
   }
   UpdateAccessTime(ci.GetUUID());
 }
