@@ -2261,9 +2261,14 @@ void DboxMain::startLockCheckTimer()
 
 void DboxMain::OnHelp()
 {
-  CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + L"::/html/Welcome.html";
-  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
+  if (!app.GetHelpFileName().IsEmpty()) {
+    CString cs_HelpTopic;
+    cs_HelpTopic = app.GetHelpFileName() + L"::/html/Welcome.html";
+    HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
+  } else {
+    CGeneralMsgBox gmb;
+    gmb.AfxMessageBox(IDS_HELP_UNAVALIABLE, MB_ICONERROR);
+  }
 }
 
 BOOL DboxMain::PreTranslateMessage(MSG* pMsg)
