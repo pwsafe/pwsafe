@@ -724,3 +724,4 @@
 #define IDS_EXPORTENTMENU               5935
 #define IDS_EXPORTENT2PLAINTEXT         5936
 #define IDS_EXPORTENT2XML               5937
+#define IDS_HELP_UNAVALIABLE            5938
